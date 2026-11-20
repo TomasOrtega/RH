@@ -4,23 +4,21 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ _ c hc h2 n J hJ hdet Z₀ hZ`. Take `⟨u, hu⟩ : ∃ u : O, u * 2 = 1` from `⟨h2.unit⁻¹.val, h2.val_inv_mul⟩`. Establish `hcu : c u = u`. Establish `h1 : c u * 2 = 1`. Use `congrArg c hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, map_ofNat]`. Combine the equalities or inequalities in the displayed calculation. Use `set E := Z₀ᵀ * J + J * Z₀.map c with hE`. Establish `hJc : (J.map c)ᵀ = J`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.transpose_apply, Matrix.map_apply, hJ]`. Establish `hEc : (E.map c)ᵀ = E`. Use extensionality with `i j`. Simplify using `only [hE, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.mul_apply, map_add, map_sum, map_mul, hc, hJ]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl (fun k _ => ?_) <;> ring`. Establish `hJinv : J * ((J⁻¹).map c)ᵀ = 1`. Combine the equalities or inequalities in the displayed calculation. Use `set D := (u • (E * J⁻¹))ᵀ with hD`. Establish `hDT : Dᵀ * J = u • E`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD, Matrix.transpose_transpose, Matrix.smul_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul J hdet, Matrix.mul_one]`. Establish `hDmap : D.map c = u • (((J⁻¹).map c)ᵀ * (E.map c)ᵀ)`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hD]`. Use extensionality with `i j`. Simplify using `[Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.mul_apply, map_sum, map_mul, hcu]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDc : J * D.map c = u • E`. Rewrite using `[hDmap, Matrix.mul_smul, ← Matrix.mul_assoc, hJinv, Matrix.one_mul, hEc]`. Use `⟨Z₀ - D, ?_, ?_⟩` and prove the remaining obligations. Establish `hmap : (Z₀ - D).map c = Z₀.map c - D.map c`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.map_apply]`. Rewrite using `[Matrix.transpose_sub, Matrix.sub_mul, hmap, Matrix.mul_sub, hDT, hDc]`. Establish `: E - u • E - u • E = 0`. Rewrite using `[sub_sub, ← add_smul, ← two_mul, mul_comm, hu, one_smul, sub_self]`. Rewrite using `[← this, hE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Introduce `i j`. Establish `: (Z₀ - D) i j - Z₀ i j = -(u * ∑ k, E j k * J⁻¹ k i)`. Simplify using `[hD, Matrix.transpose_apply, Matrix.mul_apply, Matrix.smul_apply, mul_comm]`. Rewrite using `[this]`.
-
-Conclude with `neg_mem (Ideal.mul_mem_left _ _ (Ideal.sum_mem _ (fun k _ => Ideal.mul_mem_right _ _ (hZ j k))))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_mod_maximal_skew : ∀ (O : Type) [CommRing O] [IsLocalRing O] (c : O →+* O), (∀ x, c (c x) = x) → IsUnit (2 : O) →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) O), (∀ i j, c (J j i) = J i j) → IsUnit J.det →

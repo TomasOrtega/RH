@@ -27,16 +27,16 @@ def toAddHom {V A : Type*} [AddGroup V] [Group A] (e : V → A) (he : ∀ z w, e
   AddMonoidHom.mk' (fun z => Additive.ofMul (e z)) fun z w => by rw [he, ofMul_mul]
 
 /- English proof (translation)
-The claim follows from `(toAddHom e he).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem map_zero_eq_one {V A : Type*} [AddGroup V] [Group A] (e : V → A) (he : ∀ z w, e (z + w) = e z * e w) :
     e 0 = 1 :=
   (toAddHom e he).map_zero
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `ht : Tendsto (fun j : ℕ => (2⁻¹ : ℝ) ^ j • v) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (2⁻¹ : ℝ)) (by norm_num) (by norm_num)).smul_const v`. Take `⟨j, hj⟩` from `(ht.eventually h).exists`. Establish `hv : v = (2 ^ j : ℕ) • (2⁻¹ : ℝ) ^ j • v`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, smul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[hv, map_nsmul, map_nsmul, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem addMonoidHom_eq_of_eventuallyEq_addGroup {V A : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [AddGroup A]
     {e e' : V →+ A} (h : e =ᶠ[𝓝 0] e') : e = e' := by
@@ -51,11 +51,11 @@ theorem addMonoidHom_eq_of_eventuallyEq_addGroup {V A : Type*} [NormedAddCommGro
   rw [hv, map_nsmul, map_nsmul, hj]
 
 /- English proof (translation)
-Establish `hadd : Tendsto (fun p : V × V ↦ p.1 + p.2) (𝓝 0) (𝓝 0)`. Simplify using `using continuous_add.tendsto (0 : V × V)`. Establish `hL` using `eventuallyEq_fderiv_of_eventually_add_mod_discrete hker hd h0 <| by filter_upwards [hadd.eventually hk, (continuous_fst.tendsto (0 : V × V)).eventually hk, (continuous_snd.tendsto (0 : V × V)).eventually hk] with p h1 h2 h3`. Rewrite using `[AddMonoidHom.mem_ker, sub_sub, map_sub, map_add, h1, h2, h3, map_add, sub_self]`. Establish `hL' : ex'.comp (fderiv ℂ k 0 : V →+ W) = ex` using `addMonoidHom_eq_of_eventuallyEq_addGroup <| by filter_upwards [hL, hk] with z h1 h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ex' (fderiv ℂ k 0 z) = ex z`. Rewrite using `[← h1, h2]`. Establish `hL'' : ∀ z, ex' (fderiv ℂ k 0 z) = ex z` using `fun z => DFunLike.congr_fun hL' z`. Use `⟨(fderiv ℂ k 0 : V →ₗ[ℂ] W), hL'', fun L h => ?_⟩` and prove the remaining obligations. Use `realLinear_eq_of_sub_mem_discrete hker (L := L.restrictScalars ℝ) (L' := (fderiv ℂ k 0 : V →ₗ[ℂ] W).restrictScalars ℝ) fun x => by` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[AddMonoidHom.mem_ker, map_sub]`. Conclude with `sub_eq_zero.2 ((h x).trans (hL'' x).symm)`. Conclude with `LinearMap.ext fun z => DFunLike.congr_fun this z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_linearMap_lift_of_germ {V W A : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [NormedAddCommGroup W] [NormedSpace ℂ W] [AddGroup A] {ex : V →+ A} {ex' : W →+ A}
@@ -80,19 +80,19 @@ theorem existsUnique_linearMap_lift_of_germ {V W A : Type*} [NormedAddCommGroup 
   exact LinearMap.ext fun z => DFunLike.congr_fun this z
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibPt_fst {X : Scheme.{0}} (G : Over X) {y : Sp ℂ ⟶ X} (x : Over.mk y ⟶ G) :
     fibPt G x ≫ pullback.fst _ _ = x.left := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibPt_snd {X : Scheme.{0}} (G : Over X) {y : Sp ℂ ⟶ X} (x : Over.mk y ⟶ G) :
     fibPt G x ≫ pullback.snd _ _ = 𝟙 _ := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by rw [← fibPt_fst, h, fibPt_fst])`.
+A detailed English derivation is pending.
 -/
 theorem fibPt_injective {X : Scheme.{0}} (G : Over X) {y : Sp ℂ ⟶ X} {x x' : Over.mk y ⟶ G}
     (h : fibPt G x = fibPt G x') : x = x' :=
@@ -103,7 +103,7 @@ end UniformLift
 open UniformLift in
 
 /- English proof (translation)
-Introduce `X X' G G' _ _ y y' g g' e e' ψ ψp hsm he he' hol hol' hder hdisc hψ hψp`. Establish `hsm' : Smooth (pullback.snd G'.hom y')` using `inferInstance`. Establish `hd` using `isDerivAt0_fibre X' G' y' g' e' _ _ _ (fun z => fibPt G' (e' z)) (IsPullback.of_hasPullback G'.hom y') (fun z => ⟨fibPt_fst _ _, fibPt_snd _ _⟩) hol' hder`. Take `⟨k, k0, hka, hk⟩` from `LocalLift.exists_local_lift _ (pullback.snd G'.hom y') g g' (fun z => fibPt G (e z) ≫ ψ) (fun z => fibPt G' (e' z)) hsm' (fun z => by rw [Category.assoc, hψ, fibPt_snd]) (fun z => fibPt_snd _ _) ((T.isHolTo_fibPt_and_comp_fibre X G y g e hol).2 _ ψ) (T.isHolTo_fibPt_and_comp_fibr …`. Conclude with `existsUnique_linearMap_lift_of_germ (ex := toAddHom (fun z => ψp (e z)) fun z w => by rw [he, map_mul]) (ex' := toAddHom e' he') ⟨hdisc⟩ hka.differentiableAt k0 (hk.mono fun z hz => fibPt_injective G' (hz.trans (hψp _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem existsUnique_linear_lift_fibre :
     ∀ (X X' : Scheme.{0}) (G : Over X) (G' : Over X') [GrpObj G] [GrpObj G'] (y : Sp ℂ ⟶ X) (y' : Sp ℂ ⟶ X') (g g' : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) (e' : (Fin g' → ℂ) → (Over.mk y' ⟶ G')) (ψ : pullback G.hom y ⟶ pullback G'.hom y') (ψp : (Over.mk y ⟶ G) →* (Over.mk y' ⟶ G')), Smooth G'.hom → (∀ z w, e (z + w) = e z * e w) → (∀ z w, e' (z + w) = e' z * e' w) → IsHolTo Set.univ (fun z => (e z).left) → IsHolTo Set.univ (fun z => (e' z).left) → ((∀ w, ∃! v : epsPt y' ⟶ G', IsDerivAt0 (fun z => (e' z).left) w v.left) ∧ ∀ v : epsPt y' ⟶ G', spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e' 0).left → ∃! w, IsDerivAt0 (fun z => (e' z).left) w v.left) → DiscreteTopology {z // e' z = 1} → ψ ≫ pullback.snd _ _ = pullback.snd _ _ → (∀ x, fibPt G x ≫ ψ = fibPt G' (ψp x)) → ∃! h : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ), ∀ z, e' (h z) = ψp (e z) := by

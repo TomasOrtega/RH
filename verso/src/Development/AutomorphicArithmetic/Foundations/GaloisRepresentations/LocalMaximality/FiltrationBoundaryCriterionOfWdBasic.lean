@@ -7,14 +7,14 @@ section
 variable {σ E : Type} [LinearOrder σ] [Fintype σ] [AddCommGroup E] [Module ℂ E]
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma wd_apply' (w : σ → Module.End ℂ E) (c : Finset σ → E) (t : Finset σ) :
     wd w c t = ∑ i ∈ t, (GlobalTheory.cubeSign t i : ℤ) • w i (c (t.erase i)) := by
   simp [wd, LinearMap.pi_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[wd_apply', wd_apply']`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Break down `h i hi with h | h` into its components or cases. Simplify using `[h]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma wd_congr' (w : σ → Module.End ℂ E) (c c' : Finset σ → E) (t : Finset σ)
     (h : ∀ i ∈ t, w i = 0 ∨ c (t.erase i) = c' (t.erase i)) : wd w c t = wd w c' t := by
@@ -25,9 +25,9 @@ private lemma wd_congr' (w : σ → Module.End ℂ E) (c c' : Finset σ → E) (
   · rw [h]
 
 /- English proof (translation)
-Establish `h1 : (t.erase i) ∩ Q = (t ∩ Q).erase i`. Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_erase]`. The claim follows by propositional logic. Establish `h2 : i ∈ t ∩ Q` using `Finset.mem_inter.2 ⟨hi, hQ⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Establish `h3 : 0 < (t ∩ Q).card` using `Finset.card_pos.2 ⟨i, h2⟩`. Rewrite using `[h1, Finset.card_erase_of_mem h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma card_erase_mem' {Q t : Finset σ} {i : σ} (hi : i ∈ t) (hQ : i ∈ Q) :
     (((t.erase i) ∩ Q).card : ℤ) = ((t ∩ Q).card : ℤ) - 1 := by
@@ -41,9 +41,9 @@ private lemma card_erase_mem' {Q t : Finset σ} {i : σ} (hi : i ∈ t) (hQ : i 
   omega
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Finset.mem_inter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h⟩, h'⟩`. Conclude with `⟨h, h'⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h, h'⟩`. Conclude with `⟨⟨fun e => hQ (e ▸ h'), h⟩, h'⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma card_erase_not' {Q t : Finset σ} {i : σ} (hQ : i ∉ Q) :
     (t.erase i) ∩ Q = t ∩ Q := by
@@ -56,11 +56,11 @@ private lemma card_erase_not' {Q t : Finset σ} {i : σ} (hQ : i ∉ Q) :
     exact ⟨⟨fun e => hQ (e ▸ h'), h⟩, h'⟩
 
 /- English proof (translation)
-Introduce `t ht`. Establish `ht' : ¬ (((t ∩ Q).card : ℤ) = m')` using `ht`. Establish `h0 : wd (wOn Q w) y t = wd (wOn Q w) 0 t`. Use `wd_congr' _ _ _ _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hiQ : i ∈ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `right`. Use `hy _ ?_` and prove the remaining obligations. Establish `h1` using `card_erase_mem' hi hiQ`. Use `show ¬ ((((t.erase i) ∩ Q).card : ℤ) = m)`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Simplify using `[wOn, hiQ]`. Rewrite using `[h0, map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma levQ' (w : σ → Module.End ℂ E) (Q : Finset σ) {m m' : ℤ} (hm : m' = m + 1)
     {y : Finset σ → E} (hy : Lev Q (· = m) y) : Lev Q (· = m') (wd (wOn Q w) y) := by
@@ -80,11 +80,11 @@ private lemma levQ' (w : σ → Module.End ℂ E) (Q : Finset σ) {m m' : ℤ} (
   rfl
 
 /- English proof (translation)
-Introduce `t ht`. Establish `ht' : ¬ (((t ∩ Q).card : ℤ) = m)` using `ht`. Establish `h0 : wd (wOn Qᶜ w) y t = wd (wOn Qᶜ w) 0 t`. Use `wd_congr' _ _ _ _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hiQ : i ∈ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `left`. Simplify using `[wOn, hiQ]`. Use `right`. Use `hy _ ?_` and prove the remaining obligations. Use `show ¬ ((((t.erase i) ∩ Q).card : ℤ) = m)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[card_erase_not' hiQ]`. Conclude with `ht'`. Rewrite using `[h0, map_zero]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private lemma levC' (w : σ → Module.End ℂ E) (Q : Finset σ) {m : ℤ}
     {y : Finset σ → E} (hy : Lev Q (· = m) y) : Lev Q (· = m) (wd (wOn Qᶜ w) y) := by
@@ -104,9 +104,9 @@ private lemma levC' (w : σ → Module.End ℂ E) (Q : Finset σ) {m : ℤ}
   rfl
 
 /- English proof (translation)
-Establish `h` using `(hW σ E A (wOn Q w)).2.2.1 (wOn Qᶜ w)`. Establish `h2 : wOn Q w + wOn Qᶜ w = w`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i ∈ Q <;> simp [wOn, hi]`. Rewrite `h` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma wd_split' (hW : WdBasic) (A : Finset σ → Submodule ℂ E) (w : σ → Module.End ℂ E)
     (Q : Finset σ) (c : Finset σ → E) (t : Finset σ) :
@@ -120,9 +120,9 @@ private lemma wd_split' (hW : WdBasic) (A : Finset σ → Submodule ℂ E) (w : 
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hcx _ y hy`. Rewrite `h1` using `[sub_add_cancel]`. Take `⟨hc1, hc2⟩` from `Submodule.mem_inf.1 hc`. Use `Submodule.mem_inf.2 ⟨Submodule.sub_mem _ hc1 h1, ?_⟩` and prove the remaining obligations. Establish `h3 : wd w c = 0` using `hc2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : wd w (wd w y) = 0` using `h2`. Use `show wd w (c - wd w y) = 0`. Rewrite using `[map_sub, h3, h4, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sub_cocycle' {A : Finset σ → Submodule ℂ E} {w : σ → Module.End ℂ E}
     (hcx : (acx A w).IsCx) {n : ℤ} {c y : Finset σ → E} (hc : c ∈ (acx A w).Z n)
@@ -137,7 +137,7 @@ private lemma sub_cocycle' {A : Finset σ → Submodule ℂ E} {w : σ → Modul
   rw [map_sub, h3, h4, sub_zero]
 
 /- English proof (translation)
-Establish `h2 : wd w y ∈ (acx A w).B n` using `Submodule.mem_map_of_mem hy`. Simplify using `using add_mem h h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma of_sub' {A : Finset σ → Submodule ℂ E} {w : σ → Module.End ℂ E} {n : ℤ}
     {c y : Finset σ → E} (hy : y ∈ (acx A w).C (n - 1)) (h : c - wd w y ∈ (acx A w).B n) :
@@ -146,35 +146,31 @@ private lemma of_sub' {A : Finset σ → Submodule ℂ E} {w : σ → Module.End
   simpa using add_mem h h2
 
 /- English proof (translation)
-Establish `hcx : (acx A w).IsCx` using `(hW σ E A w).2.1 hok`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ n c hc hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : c = 0`. Use function extensionality and compare the values at `s`. Use `hl s ?_` and prove the remaining obligations. Use `show ¬ (((s ∩ Q).card : ℤ) ≤ ((0 : ℕ) : ℤ) - 1)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `succ k ih`. Introduce `hk n c hc hl`. Establish `hkd : (k : ℤ) < d` using `by omega`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : ∀ s, (k : ℤ) < ((s ∩ Q).card : ℤ) → c s = 0`. Introduce `s hs`. Use `hl s ?_` and prove the remaining obligations. Use `show ¬ (((s ∩ Q).card : ℤ) ≤ ((k + 1 : ℕ) : ℤ) - 1)`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨hc1, hc2⟩` from `Submodule.mem_inf.1 hc`. Establish `hc3 : wd w c = 0` using `hc2`. Set `cm : Finset σ → E` to `fun s => if ((s ∩ Q).card : ℤ) = k then c s else 0`. Establish `hcm : cm ∈ (acx A w).C n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `Submodule.mem_pi.2 fun s hs => ?_` and prove the remaining obligations. Distinguish the cases in `h : ((s ∩ Q).card : ℤ) = k`. Establish `: cm s = c s` using `if_pos h`. Rewrite using `[this]`. Conclude with `Submodule.mem_pi.1 hc1 s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: cm s = 0` using `if_neg h`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `hcl : Lev Q (· = (k : ℤ)) cm` using `fun s hs => if_neg hs`. Establish `hkill : wd (wOn Q w) cm = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : ((t ∩ Q).card : ℤ) = k + 1`. Establish `e1 : wd (wOn Q w) cm t = wd (wOn Q w) c t`. Use `wd_congr' _ _ _ _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hiQ : i ∈ Q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `right`. Establish `h1` using `card_erase_mem' hi hiQ`. Conclude with `if_pos (by omega)`. Use `left`. Simplify using `[wOn, hiQ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e2 : wd (wOn Qᶜ w) c t = wd (wOn Qᶜ w) 0 t`. Use `wd_congr' _ _ _ _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hiQ : i ∈ Q`. Use `left`. Simplify using `[wOn, hiQ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Use `hl' _ ?_` and prove the remaining obligations. Rewrite using `[card_erase_not' hiQ]`. Use linear arithmetic over natural numbers and integers. Establish `e3` using `wd_split' hW A w Q c t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e3` using `[hc3, e2, map_zero]`. Rewrite using `[e1]`. Simplify using `using e3.symm`. Conclude with `levQ' w Q rfl hcl t ht`. Take `⟨y, hy, hyl, hyd⟩` from `hq n k hkd cm hcm hcl hkill`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `of_sub' hy (ih (by omega) n _ (sub_cocycle' hcx hc hy) ?_)` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : ¬ (((s ∩ Q).card : ℤ) ≤ (k : ℤ) - 1)` using `hs`. Establish `e1` using `wd_split' hW A w Q y s`. Establish `e2 : wd (wOn Qᶜ w) y s = 0` using `levC' w Q hyl s (by show ¬ (((s ∩ Q).card : ℤ) = (k : ℤ) - 1) omega)`.
-
-Establish `e3 : wd (wOn Q w) y s = cm s` using `congrFun hyd s`. Establish `e4 : cm s = c s`. Distinguish the cases in `h : ((s ∩ Q).card : ℤ) = k`. Conclude with `if_pos h`. Establish `: cm s = 0` using `if_neg h`.
-
-Rewrite using `[this, hl' s (by omega)]`. Use `show c s - wd w y s = 0`. Rewrite using `[e1, e2, e3, e4, add_zero, sub_self]`.
+A detailed English derivation is pending.
 -/
 private lemma low' (hW : WdBasic) {A : Finset σ → Submodule ℂ E} {w : σ → Module.End ℂ E}
     {Q : Finset σ} {d : ℤ} (hok : WOk A w) (hq : QEx A w Q d) :
@@ -259,13 +255,13 @@ private lemma low' (hW : WdBasic) {A : Finset σ → Submodule ℂ E} {w : σ �
 end
 
 /- English proof (translation)
-Introduce `hW σ E _ _ _ _ A w Q d n hok hq c hc hl hy0`. Take `⟨y, hy, hyl, hyd⟩` from `hy0`. Establish `hcx : (acx A w).IsCx` using `(hW σ E A w).2.1 hok`. Establish `hl' : ∀ s, d < ((s ∩ Q).card : ℤ) → c s = 0`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hl s ?_` and prove the remaining obligations. Use `show ¬ (((s ∩ Q).card : ℤ) ≤ d)`. Use linear arithmetic over natural numbers and integers. Use `of_sub' hy (low' hW hok hq d.toNat le_rfl n _ (sub_cocycle' hcx hc hy) ?_)` and prove the remaining obligations. Introduce `s hs`.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs' : ¬ (((s ∩ Q).card : ℤ) ≤ (d.toNat : ℤ) - 1)` using `hs`. Establish `hge : d ≤ ((s ∩ Q).card : ℤ)` using `by omega`. Establish `e1` using `wd_split' hW A w Q y s`. Establish `e2 : wd (wOn Qᶜ w) y s = 0` using `levC' w Q hyl s (by show ¬ (((s ∩ Q).card : ℤ) = d - 1) omega)`. Use `show c s - wd w y s = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e1, e2, add_zero]`. Distinguish the cases in `h : ((s ∩ Q).card : ℤ) = d`. Rewrite using `[hyd s h, sub_self]`. Establish `e3 : wd (wOn Q w) y s = 0` using `levQ' w Q (by ring) hyl s h`. Rewrite using `[e3, hl' s (by omega), sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.filtrationBoundaryCriterion_of_wdBasic :
     WdBasic → FiltrationBoundaryCriterion := by

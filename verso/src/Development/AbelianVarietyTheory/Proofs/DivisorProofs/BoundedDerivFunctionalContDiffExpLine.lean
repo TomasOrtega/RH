@@ -12,13 +12,13 @@ open scoped ContDiff
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h d b _ _ μ _ S _ hS K _ Λ hΛ l i f hf`. Establish `hd : ∀ (l : List (Fin d)) (s : ℝ), HasDerivAt (fun t : ℝ => Λ l fun y => f (h.expG (t • b i) * y)) (Λ (i :: l) fun y => f (h.expG (s • b i) * y)) s`. Introduce `l s`. Establish `h1` using `hΛ.der l i _ (hS f hf (h.expG (s • b i)))`. Establish `h2 : HasDerivAt (fun t : ℝ => Λ l fun y => f (h.expG ((s + t) • b i) * y)) (Λ (i :: l) fun y => f (h.expG (s • b i) * y)) (s - s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_self]`. Simplify `h1` using `only [h.expG_add_smul, mul_assoc]`. Establish `h3` using `h2.comp_sub_const s s`. Simplify `h3` using `only [add_sub_cancel]`. Establish `hi : ∀ p : ℕ, iteratedDeriv p (fun t : ℝ => Λ l fun y => f (h.expG (t • b i) * y)) = fun s : ℝ => Λ (List.replicate p i ++ l) fun y => f (h.expG (s • b i) * y)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `p`. Proceed by induction on `p with`. Consider the case `zero => simp`. Consider the case `succ p ih`. Rewrite using `[iteratedDeriv_succ, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[(hd _ s).deriv, List.replicate_succ, List.cons_append]`. Use `⟨contDiff_of_differentiable_iteratedDeriv fun m _ => ?_, fun p s => by rw [hi p]⟩` and prove the remaining obligations. Rewrite using `[hi m]`. Conclude with `fun s => (hd _ s).differentiableAt`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smFn_contDiff_line :
     ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∀ (S : Submodule ℂ (G → ℂ)), (∀ f ∈ S, Continuous f) → (∀ f ∈ S, ∀ g, (fun y => f (g * y)) ∈ S) → ∀ K : Set G, IsCompact K → ∀ Λ : List (Fin d) → (G → ℂ) → ℂ, SmFn h b μ S K Λ → ∀ l i, ∀ f ∈ S, ContDiff ℝ ∞ (fun t : ℝ => Λ l fun y => f (h.expG (t • b i) * y)) ∧ ∀ (p : ℕ) (s : ℝ), iteratedDeriv p (fun t : ℝ => Λ l fun y => f (h.expG (t • b i) * y)) s = Λ (List.replicate p i ++ l) fun y => f (h.expG (s • b i) * y) := by

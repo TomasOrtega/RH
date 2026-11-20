@@ -17,7 +17,7 @@ namespace GlobalTheory.RelChart
 open GlobalTheory.TangentOrigin
 
 /- English proof (translation)
-Simplify using `only [evalPt, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalPt_appLE {R : Type} [CommRing R] {X Y : Scheme.{0}} (v : Sp R ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
     (V : X.Opens) (e : V ≤ φ ⁻¹ᵁ U) (f : Γ(Y, U)) (hV : ⊤ ≤ v ⁻¹ᵁ V) (hU : ⊤ ≤ (v ≫ φ) ⁻¹ᵁ U) :
@@ -26,7 +26,7 @@ theorem evalPt_appLE {R : Type} [CommRing R] {X Y : Scheme.{0}} (v : Sp R ⟶ X)
   rw [← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_preimage]`. Conclude with `fun _ hp => e (hV hp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_comp {R : Type} [CommRing R] {X Y : Scheme.{0}} (v : Sp R ⟶ X) (φ : X ⟶ Y) {U : Y.Opens}
     {V : X.Opens} (e : V ≤ φ ⁻¹ᵁ U) (hV : ⊤ ≤ v ⁻¹ᵁ V) : ⊤ ≤ (v ≫ φ) ⁻¹ᵁ U := by
@@ -34,13 +34,13 @@ theorem top_le_comp {R : Type} [CommRing R] {X Y : Scheme.{0}} (v : Sp R ⟶ X) 
   exact fun _ hp => e (hV hp)
 
 /- English proof (translation)
-Set `_` to `ψ.toAlgebra`. Set `_ : Algebra P (DualNumber ℂ)` to `(F'.comp ψ).toAlgebra`. Establish `_ : Algebra.Etale P R` using `hψ`. Set `G : R →ₐ[P] DualNumber ℂ` to `{ F with commutes' := h }`. Set `G₀ : R →ₐ[P] DualNumber ℂ` to `{ F' with commutes' := fun _ => rfl }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hnil : IsNilpotent (RingHom.ker fstC)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : x.fst = 0` using `hx`. Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx', hy']`. Establish `hG : G = G₀` using `Algebra.FormallyUnramified.ext' fstC hnil G G₀ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `RingHom.ext fun r => AlgHom.congr_fun hG r`.
+A detailed English derivation is pending.
 -/
 theorem dual_ext {P R : Type} [CommRing P] [CommRing R] (ψ : P →+* R) (hψ : ψ.Etale)
     (F F' : R →+* DualNumber ℂ) (h : ∀ a, F (ψ a) = F' (ψ a)) (h0 : ∀ r, fstC (F r) = fstC (F' r)) : F = F' := by
@@ -62,23 +62,21 @@ theorem dual_ext {P R : Type} [CommRing P] [CommRing R] (ψ : P →+* R) (hψ : 
   exact RingHom.ext fun r => AlgHom.congr_fun hG r
 
 /- English proof (translation)
-Introduce `hring m g Z X p B y b₀ z₀ hp hB hb₀ hy hz₀`. Take `⟨V, hV, U, hU, hz, hle, hsm⟩` from `hp.exists_isStandardSmoothOfRelativeDimension (z₀ (default : PrimeSpectrum ℂ))`. Take `⟨ψ, hψC, hψ⟩` from `hsm.exists_etale_mvPolynomial`. Establish `hC : ∀ a, ψ (MvPolynomial.C a) = (p.appLE V U hle).hom a` using `fun a => RingHom.congr_fun hψC a`. Establish `hzU : ⊤ ≤ z₀ ⁻¹ᵁ U` using `(top_le_preimage_iff_mem z₀ U).2 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀ : ⊤ ≤ y b₀ ⁻¹ᵁ V` using `hz₀ ▸ top_le_comp z₀ p hle hzU`. Set `φ : (Fin m → ℂ) → (Γ(X, V) →+* ℂ)` to `fun b => if h : ⊤ ≤ y b ⁻¹ᵁ V then evalPt (y b) V h else evalPt (y b₀) V hy₀`. Establish `hφ : ∀ b, ⊤ ≤ y b ⁻¹ᵁ V → ∀ a, φ b a = valAt' (y b) V a` using `fun b h a => by`. Simplify using `only [φ, dif_pos h, valAt'_eq_evalPt _ _ h]`. Establish `hover : ∀ b (x : Sp ℂ ⟶ Z) (hx : ⊤ ≤ x ⁻¹ᵁ U), x ≫ p = y b → ∀ a, evalPt x U hx (ψ (MvPolynomial.C a)) = φ b a` using `fun b x hx hxb a => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hφ b (hxb ▸ top_le_comp x p hle hx), hC, ← valAt'_eq_evalPt, valAt'_appLE _ _ _ _ _ _ hx, hxb]`. Take `⟨N, σ, n, f, O, hN, hO, h₀, hσd, hσ, hrec⟩` from `hring m g Γ(X, V) Γ(Z, U) ψ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ V} φ b₀ (evalPt z₀ U hzU) hψ (hy V 0).1 ⟨hb₀, hy₀⟩ (fun a => (hy V a).2.congr fun b hb => hφ b hb.2 a) (hover b₀ z₀ hzU hz₀)`. Use `choose s hsU hs using fun q => exists_evalPt_eq hU (σ q)`. Establish `hval : ∀ q a, valAt' (s q) U a = σ q a` using `fun q a => by`. Rewrite using `[valAt'_eq_evalPt _ _ (hsU q), hs]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, fun i => ψ (MvPolynomial.X i), n, f, N, O, s, hN, hO, hzU, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h₀` using `only [valAt'_eq_evalPt _ _ hzU]`. Introduce `W a`. Use `holFamily_of_affine valAt'_rules N Z s (fun q _ => ⟨U, hU, hsU q, ?_, fun r => ?_⟩) W a` and prove the remaining obligations. Simplify using `only [hsU, and_true]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hN`. Simplify using `only [hsU, and_true, hval]`. Conclude with `hσd r`. Introduce `q hq`. Take `⟨h1, h2, h3⟩` from `hσ q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ext_evalPt hV (top_le_comp _ p hle (hsU q)) h1.2 (RingHom.ext fun a => ?_), hsU q, fun i => (hval _ _).trans (h3 i)⟩` and prove the remaining obligations. Rewrite using `[← evalPt_appLE _ p V U hle a (hsU q), hs, ← hC, h2, hφ _ h1.2, valAt'_eq_evalPt]`. Introduce `b x hxb hx hxO`. Simplify using `only [valAt'_eq_evalPt _ _ hx] at hxO ⊢`. Take `⟨h1, h2⟩` from `hrec b (evalPt x U hx) (hover b x hx hxb) hxO`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h1, ext_evalPt hU (hsU _) hx ((hs _).trans h2)⟩`. Introduce `v v' h h' hvp hv0 hvt`. Use `ext_evalPt hU h h' (dual_ext ψ hψ _ _ (fun a => ?_) fun r => ?_)` and prove the remaining obligations. Establish `: (evalPt v U h).comp ψ = (evalPt v' U h').comp ψ`. Use `MvPolynomial.ringHom_ext (fun c => ?_) hvt` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, hC]`. Rewrite using `[evalPt_appLE v p V U hle c h (top_le_comp v p hle h), evalPt_appLE v' p V U hle c h' (top_le_comp v' p hle h')]`. Simplify using `only [hvp]`. Conclude with `RingHom.congr_fun this a`. Rewrite using `[← evalPt_spMap_comp fstC v U h ((top_le_preimage_iff v U).1 h), ← evalPt_spMap_comp fstC v' U h' ((top_le_preimage_iff v' U).1 h')]`.
-
-Establish `hv0' : spMap fstC ≫ v = spMap fstC ≫ v'` using `hv0`. Simplify using `only [hv0']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chart_with_parameters :
     (∀ (m g : ℕ) (A R : Type) [CommRing A] [CommRing R] (ψ : MvPolynomial (Fin g) A →+* R) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →+* ℂ)) (b₀ : Fin m → ℂ) (e : R →+* ℂ), ψ.Etale → IsOpen B → b₀ ∈ B → (∀ a, DifferentiableOn ℂ (fun b => φ b a) B) → (∀ a, e (ψ (MvPolynomial.C a)) = φ b₀ a) → ∃ (N : Set ((Fin m → ℂ) × (Fin g → ℂ))) (σ : (Fin m → ℂ) × (Fin g → ℂ) → (R →+* ℂ)) (n : ℕ) (f : Fin n → R) (O : Set ((Fin m → ℂ) × (Fin n → ℂ))), IsOpen N ∧ IsOpen O ∧ (b₀, fun j => e (f j)) ∈ O ∧ (∀ a, DifferentiableOn ℂ (fun q => σ q a) N) ∧ (∀ q ∈ N, q.1 ∈ B ∧ (∀ a, σ q (ψ (MvPolynomial.C a)) = φ q.1 a) ∧ ∀ i, σ q (ψ (MvPolynomial.X i)) = q.2 i) ∧ ∀ (b : Fin m → ℂ) (x : R →+* ℂ), (∀ a, x (ψ (MvPolynomial.C a)) = φ b a) → (b, fun j => x (f j)) ∈ O → (b, fun i => x (ψ (MvPolynomial.X i))) ∈ N ∧ σ (b, fun i => x (ψ (MvPolynomial.X i))) = x) → (∀ (m g : ℕ) (Z X : Scheme.{0}) (p : Z ⟶ X) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ) (z₀ : Sp ℂ ⟶ Z), SmoothOfRelativeDimension g p → IsOpen B → b₀ ∈ B → IsHolTo B y → z₀ ≫ p = y b₀ → ∃ (U : Z.Opens) (t : Fin g → Γ(Z, U)) (n : ℕ) (f : Fin n → Γ(Z, U)) (N : Set ((Fin m → ℂ) × (Fin g → ℂ))) (O : Set ((Fin m → ℂ) × (Fin n → ℂ))) (σ : (Fin m → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ Z)), IsOpen N ∧ IsOpen O ∧ ⊤ ≤ z₀ ⁻¹ᵁ U ∧ (b₀, fun j => valAt' z₀ U (f j)) ∈ O ∧ IsHolTo N σ ∧ (∀ q ∈ N, σ q ≫ p = y q.1 ∧ ⊤ ≤ σ q ⁻¹ᵁ U ∧ ∀ i, valAt' (σ q) U (t i) = q.2 i) ∧ (∀ (b : Fin m → ℂ) (x : Sp ℂ ⟶ Z), x ≫ p = y b → ⊤ ≤ x ⁻¹ᵁ U → (b, fun j => valAt' x U (f j)) ∈ O → (b, fun i => valAt' x U (t i)) ∈ N ∧ σ (b, fun i => valAt' x U (t i)) = x) ∧ ∀ (v v' : Sp (DualNumber ℂ) ⟶ Z) (h : ⊤ ≤ v ⁻¹ᵁ U) (h' : ⊤ ≤ v' ⁻¹ᵁ U), v ≫ p = v' ≫ p → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v' → (∀ i, GlobalTheory.TangentOrigin.evalPt v U h (t i) = GlobalTheory.TangentOrigin.evalPt v' U h' (t i)) → v = v') := by

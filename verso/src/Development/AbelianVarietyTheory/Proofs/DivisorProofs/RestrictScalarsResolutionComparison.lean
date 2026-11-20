@@ -15,7 +15,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `i hi`. Conclude with `(restr φ).map_isZero (K.isZero_of_isStrictlyGE 0 i hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restrRes_strictlyGE {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (K : Cx S) [K.IsStrictlyGE 0] :
     ((rcx φ).obj K).IsStrictlyGE 0 := by
@@ -46,19 +46,15 @@ end GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R S _ _ φ F`. Take `⟨_, hinjS, hgeS, hqS, hιS, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties S F`. Take `⟨hKR, -, hgeR, -, hιR, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R ((restr φ).obj F)`. Use `haveI := hgeS`. Use `haveI := hqS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hKR`. Use `haveI := hgeR`. Use `haveI : ((rcx φ).obj (res S F)).IsStrictlyGE 0 := restrRes_strictlyGE φ (res S F)`. Use `haveI : QuasiIso (rAug φ (resAug F)) := rAug_quasiIso φ (resAug F)`. Take `⟨u, hu⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective R ((restr φ).obj F) ((rcx φ).obj (res S F)) (res R ((restr φ).obj F)) (rAug φ (resAug F))).1 (resAug _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨semiOfRestr φ (res S F) u, ?_, ?_⟩` and prove the remaining obligations. Introduce `U a`. Establish `h0` using `rAug_f_zero φ (resAug F) U a`. Establish `h1 : Sec.map ((resAug F).f 0) (Sec.map (sglι F) a) = Sec.map (resι S F) a`. Rewrite using `[← hιS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `h2 : Sec.map ((rAug φ (resAug F) ≫ u).f 0) (Sec.map (sglι ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a)) = Sec.map (resι R ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a)`. Rewrite using `[hu, ← hιR]`. Both sides reduce to the same expression. Rewrite using `[← h2, semiOfRestr_app]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = Sec.map (u.f 0) (Sec.map ((rAug φ (resAug F)).f 0) (Sec.map (sglι ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a)))`. Rewrite using `[h0, h1]`. Both sides reduce to the same expression. Introduce `E n`. Establish `hc` using `GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective S R (idSemi φ (res S F)) (semiOfRestr φ (res S F) u) u (fun U s a => semiOfRestr_app φ (res S F) u U s a)`.
-
-Establish `hid` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective S R (idSemi φ (res S F)) (idSemi φ (res S F)) (𝟙 _) (fun U s a => rfl)).2 (fun U s => Function.bijective_id) E n`. Establish `hpush` using `GlobalTheory.T.acyclic_resolution_computes_etale_cohomology R ((restr φ).obj F) ((rcx φ).obj (res S F)) (rAug φ (resAug F)) u hu (fun t P m hm => by haveI := hinjS t`. Conclude with `GlobalTheory.T.restrictScalars_injective_sheaf_acyclic R S φ ((res S F).X t) P m hm) E n`. Establish `heq : (semiOfRestr φ (res S F) u).op.app E n = fun x => cpush _ u n ((idSemi φ (res S F)).op.app E n x)` using `funext (hc.1 E n)`. Rewrite using `[heq]`.
-
-Conclude with `hpush.comp hid`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrRes_comparison : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (F : Shv S),
     ∃ ρ : SemiMap (res S F) (res R ((restr φ).obj F)),

@@ -14,14 +14,14 @@ namespace GlobalTheory.CM.EllComp
 variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullSame L _ _ _ ψ fun _ => rfl) (chartPullPull L' ψ ψ rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {φ : X' ⟶ X} (h : LBIso (L.pull φ) L')
     (ψ : X'' ⟶ X') : LBIso (L.pull (ψ ≫ φ)) (L'.pull ψ) :=
   LBIso.chartPull (chartPullSame L _ _ _ ψ fun _ => rfl) (chartPullPull L' ψ ψ rfl) h
 
 /- English proof (translation)
-Use `(spMap_comp_spMap _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp (f : R →+* R') (g : R' →+* R'') :
     spMap (Chart.dualMapR g) ≫ spMap (Chart.dualMapR f) = spMap (Chart.dualMapR (g.comp f)) := by
@@ -31,7 +31,7 @@ theorem dualMapR_comp (f : R →+* R') (g : R' →+* R'') :
   ext <;> simp [Chart.dualMapR]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h'.1.trans h.1, (h'.2.1.comp h.2.1).congr (spMap_comp_spMap _ _) rfl, LBIso.trans (pull_isLB P.isLB _) (pull_isLB P'.isLB _) P''.isLB (lbIso_pull_comp h.2.2 ψ) h'.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPolFibre_comp {f : R →+* R'} {g : R' →+* R''} {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')}
     {P'' : Out.PolAV (Sp R'')} {φ : P'.A.left ⟶ P.A.left} {ψ : P''.A.left ⟶ P'.A.left}
@@ -40,7 +40,7 @@ theorem isPolFibre_comp {f : R →+* R'} {g : R' →+* R''} {P : Out.PolAV (Sp R
     LBIso.trans (pull_isLB P.isLB _) (pull_isLB P'.isLB _) P''.isLB (lbIso_pull_comp h.2.2 ψ) h'.2.2⟩
 
 /- English proof (translation)
-Unfold `IsVecOver at *`. Rewrite using `[← Category.assoc, h', Category.assoc, h, ← Category.assoc]`. Conclude with `congrArg (· ≫ v.left) (dualMapR_comp f g)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVecOver_comp {f : R →+* R'} {g : R' →+* R''} {A : Over (Sp R)} {A' : Over (Sp R')} {A'' : Over (Sp R'')}
     {φ : A'.left ⟶ A.left} {ψ : A''.left ⟶ A'.left} {v : epsR R ⟶ A} {v' : epsR R' ⟶ A'} {v'' : epsR R'' ⟶ A''}
@@ -50,9 +50,9 @@ theorem isVecOver_comp {f : R →+* R'} {g : R' →+* R''} {A : Over (Sp R)} {A'
   exact congrArg (· ≫ v.left) (dualMapR_comp f g)
 
 /- English proof (translation)
-Establish `n' : IsGrpPullback P''.A P.A (spMap g ≫ spMap f) χ` using `n.2.1.congr (spMap_comp_spMap _ _).symm rfl`. Establish `w : χ ≫ P.A.hom = (P''.A.hom ≫ spMap g) ≫ spMap f` using `n'.1.w.trans (Category.assoc _ _ _).symm`. Establish `e : h.2.1.1.lift _ _ w ≫ φ = χ` using `h.2.1.1.lift_fst _ _ w`. Use `⟨h.2.1.1.lift _ _ w, e, n.1.trans h.1.symm, h.2.1.cancel (n'.congr rfl e.symm) (h.2.1.1.lift_snd _ _ w), ?_⟩` and prove the remaining obligations. Use `LBIso.trans (pull_isLB P'.isLB _) (pull_isLB P.isLB _) P''.isLB (lbIso_pull_comp h.2.2 _).symm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `n.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPolFibre_lift {f : R →+* R'} {g : R' →+* R''} {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')}
     {P'' : Out.PolAV (Sp R'')} {φ : P'.A.left ⟶ P.A.left} {χ : P''.A.left ⟶ P.A.left}
@@ -68,9 +68,7 @@ theorem exists_isPolFibre_lift {f : R →+* R'} {g : R' →+* R''} {P : Out.PolA
   exact n.2.2
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `existsUnique_isVecOver hψ v'`. Establish `hp : IsPullback (ψ ≫ φ) A''.hom A.hom (spMap (g.comp f))`. Rewrite using `[← spMap_comp_spMap]`. Conclude with `hψ.paste_horiz hφ`. Rewrite using `[(existsUnique_isVecOver hp v).unique n (isVecOver_comp h hw)]`.
-
-Conclude with `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVecOver_cancel {f : R →+* R'} {g : R' →+* R''} {A : Over (Sp R)} {A' : Over (Sp R')} {A'' : Over (Sp R'')}
     {φ : A'.left ⟶ A.left} {ψ : A''.left ⟶ A'.left} {v : epsR R ⟶ A} {v' : epsR R' ⟶ A'} {v'' : epsR R'' ⟶ A''}
@@ -84,9 +82,9 @@ theorem isVecOver_cancel {f : R →+* R'} {g : R' →+* R''} {A : Over (Sp R)} {
   exact hw
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, ψ, w, u, Hm, χ, z, h₁, h₂, h₃⟩`. Conclude with `⟨Q, ψ ≫ φ, w, u, Hm, χ, z, isPolFibre_comp h h₁, isVecOver_comp hv h₂, h₃⟩`. Introduce and unpack `⟨Q, ψ₀, w, u, Hm, χ, z, h₁, h₂, h₃⟩`. Take `⟨ψ, rfl, hψ⟩` from `exists_isPolFibre_lift h h₁`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q, ψ, w, u, Hm, χ, z, hψ, isVecOver_cancel h.2.1.1 hψ.2.1.1 hv h₂, h₃⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLieNormSq_iff {f : R →+* R'} {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')} {φ : P'.A.left ⟶ P.A.left}
     {v : epsR R ⟶ P.A} {v' : epsR R' ⟶ P'.A} (h : IsPolFibre f P P' φ) (hv : IsVecOver f φ v v') (σ : R' →+* ℂ)
@@ -99,7 +97,7 @@ theorem isLieNormSq_iff {f : R →+* R'} {P : Out.PolAV (Sp R)} {P' : Out.PolAV 
     exact ⟨Q, ψ, w, u, Hm, χ, z, hψ, isVecOver_cancel h.2.1.1 hψ.2.1.1 hv h₂, h₃⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ ω C R' _ ω' C' f φ h`. Use `⟨fun R'' _ ω'' C'' f' φ' h' => ⟨?_, isPolFibre_comp h.2.1 h'.2.1, isVecOver_comp h.2.2.1 h'.2.2.1, fun a => ?_⟩, fun σ hC Q ψ hψ => hC Q (ψ ≫ φ) (isPolFibre_comp h.2.1 hψ), fun σ r _ => isLieNormSq_iff h.2.1 h.2.2.1 σ r⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, h.1, h'.1]`. Rewrite using `[← Category.assoc, h'.2.2.2 a, Category.assoc, h.2.2.2 a, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ellMap_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (ω : R) (C : Ell H R ω) (R' : Type) [CommRing R'] (ω' : R') (C' : Ell H R' ω') (f : R →+* R') (φ : C'.P.A.left ⟶ C.P.A.left), EllMap C' C f φ → (∀ (R'' : Type) [CommRing R''] (ω'' : R'') (C'' : Ell H R'' ω'') (f' : R' →+* R'') (φ' : C''.P.A.left ⟶ C'.P.A.left), EllMap C'' C' f' φ' → EllMap C'' C (f'.comp f) (φ' ≫ φ)) ∧ (∀ σ : R' →+* ℂ, C.IsPrincipalAt (σ.comp f) → C'.IsPrincipalAt σ) ∧ ∀ (σ : R' →+* ℂ) (r : ℝ), Out.PolBaseChangeSt → (IsLieNormSq C'.P C'.v σ r ↔ IsLieNormSq C.P C.v (σ.comp f) r) := by
   intro E _ _ _ H R _ ω C R' _ ω' C' f φ h

@@ -22,9 +22,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] 
   {φ : G'.left ⟶ G.left} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, IsPullback.isoPullback_hom_fst, pullTorus_left, Category.assoc]`. Establish `: ((Over.pullback f).map i).left ≫ pullback.fst G.hom f = pullback.fst (splitTorus S X).hom f ≫ i.left` using `by simp; exact pullback.lift_fst _ _ _`. Rewrite using `[this, ← Category.assoc, GlobalTheory.SplitTorus.bcIso_hom_fst]`. Rewrite using `[Category.assoc, IsPullback.isoPullback_hom_snd, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((Over.pullback f).map i).left ≫ pullback.snd G.hom f = pullback.snd (splitTorus S X).hom f` using `by simp; exact pullback.lift_snd _ _ _`. Rewrite using `[this, Over.w (pullTorus h i)]`. Conclude with `(Over.w (bcIso f X).hom).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullTorus_left_comp_iso (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) :
     (pullTorus h i).left ≫ h.1.isoPullback.hom = (bcIso f X).hom.left ≫ ((Over.pullback f).map i).left := by
@@ -40,7 +40,7 @@ theorem pullTorus_left_comp_iso (h : IsGrpPullback G' G f φ) (i : splitTorus S 
     exact (Over.w (bcIso f X).hom).symm
 
 /- English proof (translation)
-Establish `k` using `pullTorus_left_comp_iso h i`. Establish `: Mono ((bcIso f X).hom.left ≫ ((Over.pullback f).map i).left)` using `inferInstance`. Rewrite `this` using `[← k]`. Establish `: Mono (pullTorus h i).left` using `mono_of_mono _ h.1.isoPullback.hom`. Conclude with `(Over.forget _).mono_of_mono_map this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G)
     (hc : IsClosedImmersion ((Over.pullback f).map i).left) : Mono (pullTorus h i) := by
@@ -51,9 +51,7 @@ theorem mono_pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G)
   exact (Over.forget _).mono_of_mono_map this
 
 /- English proof (translation)
-Establish `k` using `pullTorus_left_comp_iso h i`. Establish `e : ((Over.pullback f).map i).left = (bcIso f X).inv.left ≫ (pullTorus h i).left ≫ h.1.isoPullback.hom`. Rewrite using `[k, ← Category.assoc, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]`. Use `haveI : IsIso (bcIso f X).inv.left := inferInstanceAs (IsIso ((Over.forget _).map (bcIso f X).inv))`. Rewrite using `[e]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closedImm_of_pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G)
     (hc : IsClosedImmersion (pullTorus h i).left) : IsClosedImmersion ((Over.pullback f).map i).left := by
@@ -65,9 +63,7 @@ theorem closedImm_of_pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X
   infer_instance
 
 /- English proof (translation)
-Take `⟨-, B, _, q, hB, -, hk⟩` from `h`. Establish `h₁ : IsClosedImmersion (η[B].left ≫ B.hom)`. Rewrite using `[Over.w]`. Conclude with `inferInstanceAs (IsClosedImmersion (𝟙 S))`. Establish `h₂ : IsClosedImmersion η[B].left` using `IsClosedImmersion.of_comp _ B.hom`.
-
-Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (hk.map (Over.forget S)).flip h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_of_isTorPart {tι : splitTorus S X ⟶ G} (h : IsTorPart tι) : IsClosedImmersion tι.left := by
   obtain ⟨-, B, _, q, hB, -, hk⟩ := h
@@ -77,7 +73,7 @@ theorem isClosedImmersion_of_isTorPart {tι : splitTorus S X ⟶ G} (h : IsTorPa
   exact MorphismProperty.of_isPullback (P := @IsClosedImmersion) (hk.map (Over.forget S)).flip h₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨torusMap T e.symm.toAddMonoidHom, by rw [← GlobalTheory.SplitTorus.torusMap_comp, ← GlobalTheory.SplitTorus.torusMap_id]; congr 1; ext x; simp, by rw [← GlobalTheory.SplitTorus.torusMap_comp, ← GlobalTheory.SplitTorus.torusMap_id]; congr 1; ext x; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIso_torusMap (T : Scheme.{0}) {Y : Type} [AddCommGroup Y] (e : X ≃+ Y) :
     IsIso (torusMap T e.toAddMonoidHom) :=
@@ -88,7 +84,7 @@ theorem isIso_torusMap (T : Scheme.{0}) {Y : Type} [AddCommGroup Y] (e : X ≃+ 
 end General
 
 /- English proof (translation)
-Rewrite using `[genericPoint_eq_bot_of_affine]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap V (FractionRing V)) (maximalIdeal (FractionRing V)) = ⊥`. Rewrite using `[maximalIdeal_eq_bot, ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V _)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_fractionRing_closedPoint (V : Type) [CommRing V] [IsDomain V] :
     (spMap (algebraMap V (FractionRing V))) (closedPoint (FractionRing V)) = genericPoint (Sp V) := by
@@ -99,11 +95,11 @@ theorem spMap_fractionRing_closedPoint (V : Type) [CommRing V] [IsDomain V] :
   exact (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V _)
 
 /- English proof (translation)
-Establish `hs : Function.Surjective ρ`. Set `l : X₁ →+ X₁ ⧸ ρ.range` to `QuotientAddGroup.mk' ρ.range`. Establish `e : torusMap (Sp κ) l ≫ torusMap (Sp κ) ρ = torusMap (Sp κ) (0 : X₁ →+ X₁ ⧸ ρ.range) ≫ torusMap (Sp κ) ρ`. Rewrite using `[← GlobalTheory.SplitTorus.torusMap_comp, ← GlobalTheory.SplitTorus.torusMap_comp]`. Use `congr 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using `[l]`. Establish `e2` using `GlobalTheory.SplitTorus.torusMap_injective ((cancel_mono _).1 e)`. Introduce `y`. Establish `hy : QuotientAddGroup.mk' ρ.range y = 0` using `DFunLike.congr_fun e2 y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `(QuotientAddGroup.eq_zero_iff y).1 hy`. Conclude with `⟨x, hx⟩`. Set `e₀ : X₁ ≃ₗ[ℤ] X₀` to `LinearEquiv.ofFinrankEq X₁ X₀ hr.symm`. Establish `hinj` using `OrzechProperty.injective_of_surjective_endomorphism (e₀.toLinearMap ∘ₗ ρ.toIntLinearMap) (e₀.surjective.comp hs)`. Conclude with `⟨fun a b hab => hinj (by simp [hab]), hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bijective_of_mono_torusMap {κ : Type} [Field κ] {X₀ X₁ : Type} [AddCommGroup X₀] [AddCommGroup X₁]
     [Module.Free ℤ X₀] [Module.Finite ℤ X₀] [Module.Free ℤ X₁] [Module.Finite ℤ X₁]
@@ -134,21 +130,15 @@ namespace GlobalTheory.Poinc.FibClosed
 open GlobalTheory.SplitTorus (torusMap bcMap bcIso)
 
 /- English proof (translation)
-Introduce `V _ _ _ G₁ _ _ hG X₁ _ _ _ j hj GK _ ψ hψ hgen κ _ b hb G₀ _ ψ₀ hψ₀ X₀ _ _ _ t₀ ht₀ hr`. Use `haveI := hj`. Set `e : X₁ ≃+ (Fin (Module.finrank ℤ X₁) → ℤ)` to `(Module.finBasis ℤ X₁).equivFun.toAddEquiv`. Set `u : splitTorus (Sp V) (Fin (Module.finrank ℤ X₁) → ℤ) ⟶ G₁` to `torusMap (Sp V) e.toAddMonoidHom ≫ j`. Establish `hu : IsMonHom u` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgenU : ∀ (k : Type) [Field k] (g : Sp k ⟶ Sp V), g (closedPoint k) = genericPoint (Sp V) → IsClosedImmersion ((Over.pullback g).map u).left`. Introduce `k _ g hg`. Rewrite using `[GlobalTheory.TorusFibreImm.closedImm_iff_residue u k g, hg, ← spMap_fractionRing_closedPoint V, ← GlobalTheory.TorusFibreImm.closedImm_iff_residue u (FractionRing V) _]`. Use `closedImm_of_pullTorus hψ u ?_` and prove the remaining obligations. Rewrite using `[pullTorus_torusMap_comp, Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := isClosedImmersion_of_isTorPart hgen`. Use `haveI := isIso_torusMap (Sp (FractionRing V)) e`. Use `haveI : IsIso (torusMap (Sp (FractionRing V)) e.toAddMonoidHom).left := inferInstanceAs (IsIso ((Over.forget _).map (torusMap (Sp (FractionRing V)) e.toAddMonoidHom)))`. Use `infer_instance`. Establish `hsp` using `GlobalTheory.TorusFibre.isClosedImmersion_special_of_local V (FractionRing V) G₁ hG _ u hu (by haveI := hgenU (FractionRing V) _ (spMap_fractionRing_closedPoint V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono ((Over.pullback (spMap (algebraMap V (FractionRing V)))).map u).left)))`. Establish `hfib : IsClosedImmersion ((Over.pullback (spMap b)).map u).left`. Establish `h2` using `(GlobalTheory.TorusFibreImm.closedImm_iff_residue u (ResidueField V) _).1 hsp`. Establish `h3 : (Spec.map (CommRingCat.ofHom (algebraMap V (ResidueField V)))) (closedPoint (ResidueField V)) = (spMap b) (closedPoint κ)` using `(IsLocalRing.comap_closedPoint (residue V)).trans (IsLocalRing.comap_closedPoint b).symm`. Rewrite using `[GlobalTheory.TorusFibreImm.closedImm_iff_residue, ← h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h2`. Establish `hmono : Mono (pullTorus hψ₀ u)` using `mono_pullTorus hψ₀ u hfib`. Establish `hmono' : Mono (pullTorus hψ₀ j)`. Establish `k : pullTorus hψ₀ j = torusMap _ e.symm.toAddMonoidHom ≫ pullTorus hψ₀ u`. Rewrite using `[pullTorus_torusMap_comp, ← Category.assoc, ← GlobalTheory.SplitTorus.torusMap_comp, show e.symm.toAddMonoidHom.comp e.toAddMonoidHom = AddMonoidHom.id X₁ from by ext x; simp, GlobalTheory.SplitTorus.torusMap_id, Category.id_comp]`.
-
-Use `haveI := isIso_torusMap (Sp κ) e.symm`. Rewrite using `[k]`. Use `infer_instance`. Take `⟨ρ, hρ⟩` from `ht₀.factor (pullTorus hψ₀ j) inferInstance`. Use `haveI : Mono (torusMap (Sp κ) ρ) := by`.
-
-Rewrite `hmono'` using `[hρ]`. Conclude with `mono_of_mono _ t₀`. Establish `hbij` using `bijective_of_mono_torusMap (κ := κ) hr ρ`. Establish `h` using `ht₀.equiv (AddEquiv.ofBijective ρ hbij)`. Rewrite using `[hρ]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTorPart_pullTorus_closed : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (G₁ : Over (Sp V)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (X₁ : Type) [AddCommGroup X₁] [Module.Free ℤ X₁] [Module.Finite ℤ X₁] (j : splitTorus (Sp V) X₁ ⟶ G₁), IsMonHom j → ∀ (GK : Over (Sp (FractionRing V))) [GrpObj GK] (ψ : GK.left ⟶ G₁.left) (hψ : IsGrpPullback GK G₁ (spMap (algebraMap V (FractionRing V))) ψ), IsTorPart (pullTorus hψ j) → ∀ (κ : Type) [Field κ] (b : V →+* κ), IsLocalHom b → ∀ (G₀ : Over (Sp κ)) [GrpObj G₀] (ψ₀ : G₀.left ⟶ G₁.left) (hψ₀ : IsGrpPullback G₀ G₁ (spMap b) ψ₀) (X₀ : Type) [AddCommGroup X₀] [Module.Free ℤ X₀] [Module.Finite ℤ X₀] (t₀ : splitTorus (Sp κ) X₀ ⟶ G₀), IsTorPart t₀ → Module.finrank ℤ X₀ = Module.finrank ℤ X₁ → IsTorPart (pullTorus hψ₀ j) := by
   intro V _ _ _ G₁ _ _ hG X₁ _ _ _ j hj GK _ ψ hψ hgen κ _ b hb G₀ _ ψ₀ hψ₀ X₀ _ _ _ t₀ ht₀ hr

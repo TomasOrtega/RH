@@ -16,9 +16,9 @@ namespace GlobalTheory.CuspGL.PsiPrimitive
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, ← Fintype.sum_subtype_add_sum_subtype p]`. Establish `h1 : ∀ i : {a // p a}, (if h : p i.1 then f ⟨i.1, h⟩ else 0) = f i` using `fun i => by`. Rewrite using `[dif_pos i.2]`. Establish `h2 : ∀ i : {a // ¬ p a}, (if h : p i.1 then f ⟨i.1, h⟩ else 0) = 0` using `fun i => by`. Rewrite using `[dif_neg i.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, h2, Finset.sum_const_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finsum_sub {α : Type} [Fintype α] (p : α → Prop) (f : {a // p a} → ℂ) :
     ∑ᶠ x, f x = ∑ a, if h : p a then f ⟨a, h⟩ else 0 := by
@@ -36,13 +36,11 @@ def res {F : Type} [Field F] (s : F[X] → ℂ) {V : Type} [AddCommGroup V] [Mod
   if hk : ∀ x ∈ W, k x ∈ W then psi s W (k.restrict hk) else 0
 
 /- English proof (translation)
-Rewrite using `[psi_eq s V g]`. Establish `hpoly : LinearMap.charpoly g = 1`. Establish `hdeg : (LinearMap.charpoly g).natDegree = 0`. Rewrite using `[LinearMap.charpoly_natDegree]`. Conclude with `Module.finrank_zero_of_subsingleton`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Polynomial.eq_one_of_monic_natDegree_zero (LinearMap.charpoly_monic g) hdeg`. Establish `hs1 : s 1 = 0`. Establish `h11` using `hs 1 1 monic_one monic_one`. Rewrite `h11` using `[one_mul]`. Take the linear combination `-h11`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hempty : IsEmpty {W : Submodule F V // W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W}`. Use `⟨fun W => W.2.1 ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `W.1.zero_mem`.
-
-Rewrite using `[hpoly, hs1, finsum_of_isEmpty, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_trivial {F : Type} [Field F] (s : F[X] → ℂ) (hs : IsAdditive s) (V : Type)
     [AddCommGroup V] [Module F V] [FiniteDimensional F V] [Subsingleton V] (g : Module.End F V) :
@@ -65,9 +63,9 @@ theorem psi_trivial {F : Type} [Field F] (s : F[X] → ℂ) (hs : IsAdditive s) 
   rw [hpoly, hs1, finsum_of_isEmpty, sub_zero]
 
 /- English proof (translation)
-Establish `htop : ∀ x ∈ (⊤ : Submodule F V), k x ∈ (⊤ : Submodule F V)` using `fun _ _ => Submodule.mem_top`. Unfold `res`. Rewrite using `[dif_pos htop]`. Establish `hconj` using `GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj F s (⊤ : Submodule F V) V Submodule.topEquiv (k.restrict htop)`. Rewrite using `[← hconj]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem res_top {F : Type} [Field F] (s : F[X] → ℂ) {V : Type} [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (k : Module.End F V) : res s ⊤ k = psi s V k := by
@@ -79,43 +77,41 @@ theorem res_top {F : Type} [Field F] (s : F[X] → ℂ) {V : Type} [AddCommGroup
   congr 1
 
 /- English proof (translation)
-Establish `: Finite V` using `Module.finite_of_finite F`. Establish `: Finite (Module.End F V)` using `Finite.of_injective (fun f : Module.End F V => (f : V → V)) fun a b h => LinearMap.ext (congrFun h)`. Establish `: Finite (Submodule F V)` using `Finite.of_injective (fun W : Submodule F V => (W : Set V)) SetLike.coe_injective`. Set `_ : Fintype (Module.End F V)` to `Fintype.ofFinite _`. Set `_ : Fintype (Submodule F V)` to `Fintype.ofFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `A hA0 hAT g hg`. Use `set H : Finset (Module.End F V) := Finset.univ.filter fun h => h ∈ nilRad A with hH`. Establish `memH : ∀ h, h ∈ H ↔ h ∈ nilRad A` using `fun h => by simp [hH]`. Establish `sum_H : ∀ f : Module.End F V → ℂ, ∑ h ∈ H, f h = ∑ h, if h ∈ nilRad A then f h else 0` using `fun f => by`. Rewrite using `[hH, Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `card_H : ((Nat.card (nilRad A) : ℕ) : ℂ) = (H.card : ℂ)`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `res_bot : ∀ k : Module.End F V, res s (⊥ : Submodule F V) k = 0`. Introduce `k`. Unfold `res`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Use `split_ifs`. Conclude with `psi_trivial s hs _ _`. Both sides reduce to the same expression. Establish `s_cp : ∀ k : Module.End F V, s (LinearMap.charpoly k) = ∑ W : Submodule F V, res s W k`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.apply_charpoly_eq_finsum_psi_invariant_submodules F V s k).trans (finsum_sub (fun W : Submodule F V => ∀ x ∈ W, k x ∈ W) fun W => psi s W.1 (k.restrict W.2))`. Establish `res_le : ∀ h ∈ nilRad A, ∀ W : Submodule F V, W ≤ A → res s W (g + h) = res s W g`. Introduce `h hh W hWA`. Establish `hh' : (∀ x, h x ∈ A) ∧ ∀ x ∈ A, h x = 0` using `hh`. Establish `h0 : ∀ x ∈ W, h x = 0` using `fun x hx => hh'.2 x (hWA hx)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `res`. Distinguish the cases in `hk : ∀ x ∈ W, g x ∈ W`. Establish `hk' : ∀ x ∈ W, (g + h) x ∈ W` using `fun x hx => by`. Simplify `hk x hx` using `[h0 x hx]`. Rewrite using `[dif_pos hk', dif_pos hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `[h0 x.1 x.2]`. Establish `hk' : ¬ ∀ x ∈ W, (g + h) x ∈ W` using `fun hk' => hk fun x hx => by`. Simplify `hk' x hx` using `[h0 x hx]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hk', dif_neg hk]`. Establish `res_mixed : ∀ W : Submodule F V, W ≠ ⊤ → W ⊓ A ≠ ⊥ → ¬ W ≤ A → ∑ h ∈ H, res s W (g + h) = 0`. Introduce `W hWT hWA hWle`. Establish `key` using `(finsum_sub (fun h : Module.End F V => h ∈ nilRad A ∧ ∀ x ∈ W, (g + h) x ∈ W) fun h => psi s W ((g + h.1).restrict h.2.2)).symm.trans (GlobalTheory.T.sum_primitiveEndClassFunction_restrict_mixed_subspace F V A W g hg hWA hWle (psi s W) (ih W hWT))`. Rewrite using `[← key, sum_H]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hh : h ∈ nilRad A <;> simp [hh, res]`. Establish `sum_le : ∑ W : Submodule F V, (if W ≤ A then res s W g else 0) = s (LinearMap.charpoly (g.restrict hg))`. Establish `key` using `(finsum_sub (fun W : Submodule F V => W ≤ A ∧ ∀ x ∈ W, g x ∈ W) fun W => psi s W.1 (g.restrict W.2.2)).symm.trans (GlobalTheory.T.finsum_mobiusInverseCharpoly_invariant_le F V s A g hg)`. Rewrite using `[← key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hW : W ≤ A <;> by_cases hk : ∀ x ∈ W, g x ∈ W <;> simp [hW, hk, res]`. Establish `sum_disj : ∑ W : Submodule F V, (if W ⊓ A = ⊥ then ∑ h ∈ H, res s W (g + h) else 0) = (H.card : ℂ) * s (LinearMap.charpoly (A.mapQ A g (fun x hx => hg x hx)))`. Establish `key` using `(finsum_sub (fun x : Module.End F V × Submodule F V => x.1 ∈ nilRad A ∧ x.2 ⊓ A = ⊥ ∧ ∀ v ∈ x.2, (g + x.1) v ∈ x.2) fun x => psi s x.1.2 ((g + x.1.1).restrict x.2.2.2)).symm.trans (GlobalTheory.T.finsum_mobiusInverseCharpoly_transversal_subspaces F V s A g hg)`. Rewrite using `[← card_H, ← key, Fintype.sum_prod_type, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Distinguish the cases in `hW : W ⊓ A = ⊥`. Rewrite using `[if_pos hW, sum_H]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hh : h ∈ nilRad A <;> simp [hh, hW, res]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hW]`. Use `symm`. Use `Finset.sum_eq_zero fun h _ => ?_` and prove the remaining obligations. Simplify using `[hW]`. Establish `split : ∀ W : Submodule F V, W ≠ ⊤ → ∑ h ∈ H, res s W (g + h) = (if W ⊓ A = ⊥ then ∑ h ∈ H, res s W (g + h) else 0) + (if W ≤ A then (H.card : ℂ) * res s W g else 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `W hWT`. Distinguish the cases in `hb : W = ⊥`. Substitute `hb` using the available equality. Simplify using `[res_bot]`. Distinguish the cases in `hle : W ≤ A`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeet : W ⊓ A ≠ ⊥` using `by rw [inf_eq_left.2 hle]; exact hb`. Rewrite using `[if_neg hmeet, if_pos hle, zero_add, Finset.sum_congr rfl fun h hh => res_le h ((memH h).1 hh) W hle, Finset.sum_const, nsmul_eq_mul]`. Distinguish the cases in `hd : W ⊓ A = ⊥`. Rewrite using `[if_pos hd, if_neg hle, add_zero]`. Rewrite using `[if_neg hd, if_neg hle, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `res_mixed W hWT hd hle`. Establish `s_split : s (LinearMap.charpoly g) = s (LinearMap.charpoly (g.restrict hg)) + s (LinearMap.charpoly (A.mapQ A g (fun x hx => hg x hx)))`. Rewrite using `[(GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F V A g hg).1]`. Conclude with `hs _ _ (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _)`. Establish `s_const : ∑ h ∈ H, s (LinearMap.charpoly (g + h)) = (H.card : ℂ) * s (LinearMap.charpoly g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun h hh => by rw [(GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F V A g hg).2 h ((memH h).1 hh)], Finset.sum_const, nsmul_eq_mul]`. Establish `psi_expand : ∀ k : Module.End F V, psi s V k = s (LinearMap.charpoly k) - ∑ W ∈ Finset.univ.erase ⊤, res s W k`. Introduce `k`. Rewrite using `[s_cp, ← Finset.add_sum_erase _ _ (Finset.mem_univ ⊤), res_top]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `proper : ∑ W ∈ Finset.univ.erase ⊤, ∑ h ∈ H, res s W (g + h) = (H.card : ℂ) * s (LinearMap.charpoly (A.mapQ A g (fun x hx => hg x hx))) + (H.card : ℂ) * s (LinearMap.charpoly (g.restrict hg))`. Rewrite using `[Finset.sum_congr rfl fun W hW => split W (Finset.ne_of_mem_erase hW), Finset.sum_add_distrib]`. Establish `htop1 : ¬ (⊤ : Submodule F V) ⊓ A = ⊥` using `by rw [top_inf_eq]; exact hA0`. Establish `htop2 : ¬ (⊤ : Submodule F V) ≤ A` using `fun h => hAT (top_le_iff.1 h)`. Rewrite using `[Finset.sum_erase _ (by rw [if_neg htop1]), Finset.sum_erase _ (by rw [if_neg htop2]), sum_disj, ← sum_le, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[finsum_mem_def, finsum_eq_sum_of_fintype]`. Simplify using `only [Set.indicator_apply]`.
-
-Rewrite using `[← sum_H, Finset.sum_congr rfl fun h _ => psi_expand (g + h), Finset.sum_sub_distrib, Finset.sum_comm, proper, s_const, s_split]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step {F : Type} [Field F] [Finite F] (s : F[X] → ℂ) (hs : IsAdditive s) (V : Type)
     [AddCommGroup V] [Module F V] [FiniteDimensional F V]
@@ -244,9 +240,9 @@ end GlobalTheory.CuspGL.PsiPrimitive
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ s hs`. It suffices to establish `key : ∀ n : ℕ, ∀ (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V], Module.finrank F V < n → IsPrimitive (psi s V) from key _ V (Nat.lt_succ_self _)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro V _ _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd h (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `V _ _ _ h`. Conclude with `PsiPrimitive.step s hs V fun W hW => ih W (lt_of_lt_of_le (Submodule.finrank_lt hW) (Nat.lt_succ_iff.1 h))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPrimitive_psi : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (s : F[X] → ℂ), IsAdditive s → IsPrimitive (psi s V) := by

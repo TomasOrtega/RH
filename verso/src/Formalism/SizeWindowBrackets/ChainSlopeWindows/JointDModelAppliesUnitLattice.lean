@@ -19,41 +19,41 @@ variable {m n o : Type} [Fintype m] [Fintype n] [Fintype o] [DecidableEq m] [Dec
   [DecidableEq o]
 
 /- English proof (translation)
-The claim follows from `Matrix.toLpLin_mul 2 2 2 A B`.
+A detailed English derivation is pending.
 -/
 theorem to_euclidean_lin_mul (A : Matrix m n ℂ) (B : Matrix n o ℂ) :
     Matrix.toEuclideanLin (A * B) = Matrix.toEuclideanLin A ∘ₗ Matrix.toEuclideanLin B :=
   Matrix.toLpLin_mul 2 2 2 A B
 
 /- English proof (translation)
-The claim follows from `Matrix.toLpLin_one 2`.
+A detailed English derivation is pending.
 -/
 theorem to_euclidean_lin_one : Matrix.toEuclideanLin (1 : Matrix n n ℂ) = LinearMap.id :=
   Matrix.toLpLin_one 2
 
 /- English proof (translation)
-Rewrite using `[Matrix.toEuclideanLin_eq_toLin_orthonormal, Matrix.trace_toLin_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem to_euclidean_lin_trace (A : Matrix n n ℂ) :
     LinearMap.trace ℂ (EuclideanSpace ℂ n) (Matrix.toEuclideanLin A) = A.trace := by
   rw [Matrix.toEuclideanLin_eq_toLin_orthonormal, Matrix.trace_toLin_eq]
 
 /- English proof (translation)
-The claim follows from `(Matrix.toEuclideanLin_conjTranspose_eq_adjoint A).symm`.
+A detailed English derivation is pending.
 -/
 theorem to_euclidean_lin_adjoint_eq (A : Matrix m n ℂ) :
     LinearMap.adjoint (Matrix.toEuclideanLin A) = Matrix.toEuclideanLin Aᴴ :=
   (Matrix.toEuclideanLin_conjTranspose_eq_adjoint A).symm
 
 /- English proof (translation)
-Unfold `hs2`. Rewrite using `[to_euclidean_lin_adjoint_eq, ← to_euclidean_lin_mul, to_euclidean_lin_trace, HilbertSchmidtNormSquare.hsSq_eq_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_norm_sq_to_euclidean_lin (A : Matrix m n ℂ) : hs2 (Matrix.toEuclideanLin A) = hsSq A := by
   unfold hs2
   rw [to_euclidean_lin_adjoint_eq, ← to_euclidean_lin_mul, to_euclidean_lin_trace, HilbertSchmidtNormSquare.hsSq_eq_re]
 
 /- English proof (translation)
-Unfold `frK`. Rewrite using `[to_euclidean_lin_adjoint_eq, ← to_euclidean_lin_mul, map_sub, map_smul, to_euclidean_lin_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_kernel_to_lin_sub_id (c : ℝ) (A : Matrix m n ℂ) :
     frK c (Matrix.toEuclideanLin A) - LinearMap.id
@@ -64,7 +64,7 @@ theorem frame_kernel_to_lin_sub_id (c : ℝ) (A : Matrix m n ℂ) :
 end Lin
 
 /- English proof (translation)
-Unfold `KdG KpG`. Rewrite using `[Real.sqrt_mul_self hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem weighted_gram_eq_smul {I α : Type} [Fintype α] {ι : I → Type} (B : ∀ i, Matrix α (ι i) ℂ)
     (ga : I → ℝ) (i : I) (hi : 0 ≤ ga i) : KdG B ga i = ((ga i : ℝ) : ℂ) • ((B i)ᴴ * B i) := by
@@ -72,7 +72,7 @@ theorem weighted_gram_eq_smul {I α : Type} [Fintype α] {ι : I → Type} (B : 
   rw [Real.sqrt_mul_self hi]
 
 /- English proof (translation)
-Introduce `I α _ ι _ _ B ga i hi`. Rewrite using `[frame_kernel_to_lin_sub_id, hs_norm_sq_to_euclidean_lin, weighted_gram_eq_smul B ga i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hilbert_schmidt_transfer_holds : BridgeHS := by
   intro I α _ ι _ _ B ga i hi
@@ -80,7 +80,7 @@ theorem hilbert_schmidt_transfer_holds : BridgeHS := by
   rw [frame_kernel_to_lin_sub_id, hs_norm_sq_to_euclidean_lin, weighted_gram_eq_smul B ga i hi]
 
 /- English proof (translation)
-Unfold `frQ QmG`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, to_euclidean_lin_mul, to_euclidean_lin_adjoint_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem weighted_frame_operator_to_lin {I α : Type} [Fintype I] [Fintype α] [DecidableEq α] {ι : I → Type}
     [∀ i, Fintype (ι i)] [∀ i, DecidableEq (ι i)] (B : ∀ i, Matrix α (ι i) ℂ) (ga : I → ℝ) :
@@ -91,7 +91,7 @@ theorem weighted_frame_operator_to_lin {I α : Type} [Fintype I] [Fintype α] [D
   rw [map_smul, to_euclidean_lin_mul, to_euclidean_lin_adjoint_eq]
 
 /- English proof (translation)
-Introduce `I α _ _ _ ι _ _ B ga`. Rewrite using `[weighted_frame_operator_to_lin, ← to_euclidean_lin_mul, to_euclidean_lin_trace, to_euclidean_lin_trace]`. Conclude with `⟨rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem quadratic_transfer_holds : BridgeQ := by
   intro I α _ _ _ ι _ _ B ga
@@ -99,7 +99,7 @@ theorem quadratic_transfer_holds : BridgeQ := by
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Unfold `HilbertSchmidtNormSquare.hsSq`. Rewrite using `[← e.symm.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← f.symm.sum_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hs_sq_reindex {m n m' n' : Type} [Fintype m] [Fintype n] [Fintype m'] [Fintype n']
     (e : m ≃ m') (f : n ≃ n') (M : Matrix m n ℂ) : hsSq (Matrix.reindex e f M) = hsSq M := by
@@ -110,7 +110,7 @@ theorem hs_sq_reindex {m n m' n' : Type} [Fintype m] [Fintype n] [Fintype m'] [F
   rfl
 
 /- English proof (translation)
-Unfold `Matrix.trace`. Rewrite using `[← e.symm.sum_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem matrix_trace_reindex {m m' : Type} [Fintype m] [Fintype m'] (e : m ≃ m')
     (M : Matrix m m ℂ) : (Matrix.reindex e e M).trace = M.trace := by
@@ -119,7 +119,7 @@ theorem matrix_trace_reindex {m m' : Type} [Fintype m] [Fintype m'] (e : m ≃ m
   rfl
 
 /- English proof (translation)
-Unfold `HilbertSchmidtNormSquare.Kp KpG toFin`. Simplify using `only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_smul, Pi.smul_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem kernel_matrix_reindex {I α : Type} [Fintype α] {ι : I → Type} [∀ i, Fintype (ι i)]
     (B : ∀ i, Matrix α (ι i) ℂ) (ga : I → ℝ) (i j : I) :
@@ -130,7 +130,7 @@ theorem kernel_matrix_reindex {I α : Type} [Fintype α] {ι : I → Type} [∀ 
     Matrix.submatrix_smul, Pi.smul_apply]
 
 /- English proof (translation)
-Unfold `HilbertSchmidtNormSquare.Kd KdG`. Rewrite using `[kernel_matrix_reindex]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_sub, Matrix.submatrix_one_equiv, Pi.sub_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weighted_gram_sub_one_reindex {I α : Type} [Fintype α] {ι : I → Type} [∀ i, Fintype (ι i)]
     [∀ i, DecidableEq (ι i)] (B : ∀ i, Matrix α (ι i) ℂ) (ga : I → ℝ) (i : I) :
@@ -141,7 +141,7 @@ theorem weighted_gram_sub_one_reindex {I α : Type} [Fintype α] {ι : I → Typ
   simp only [Matrix.reindex_apply, Matrix.submatrix_sub, Matrix.submatrix_one_equiv, Pi.sub_apply]
 
 /- English proof (translation)
-Unfold `HilbertSchmidtNormSquare.Qm QmG toFin`. Rewrite using `[← Matrix.coe_reindexLinearEquiv ℂ ℂ, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.coe_reindexLinearEquiv, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_smul, Pi.smul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem quadratic_matrix_fin_reindex {I α : Type} [Fintype I] [Fintype α] {ι : I → Type} [∀ i, Fintype (ι i)]
     (B : ∀ i, Matrix α (ι i) ℂ) (ga : I → ℝ) :
@@ -154,9 +154,9 @@ theorem quadratic_matrix_fin_reindex {I α : Type} [Fintype I] [Fintype α] {ι 
     Matrix.submatrix_mul_equiv, Matrix.submatrix_smul, Pi.smul_apply]
 
 /- English proof (translation)
-Introduce `I α _ _ ι _ _ B ga`. Use `⟨fun i j => ?_, fun i => ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[kernel_matrix_reindex, hs_sq_reindex]`. Rewrite using `[weighted_gram_sub_one_reindex, hs_sq_reindex]`. Rewrite using `[quadratic_matrix_fin_reindex, matrix_trace_reindex]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[quadratic_matrix_fin_reindex]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Conclude with `matrix_trace_reindex (Fintype.equivFin α) (QmG B ga * QmG B ga)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_fin_index_holds : BridgeFin := by
   intro I α _ _ ι _ _ B ga
@@ -169,7 +169,7 @@ theorem transfer_fin_index_holds : BridgeFin := by
     exact matrix_trace_reindex (Fintype.equivFin α) (QmG B ga * QmG B ga)
 
 /- English proof (translation)
-Introduce `I α _ _ ι _ _ B ga Dstar η0 η1 e0`. Take `⟨h1, h2, -, -, -⟩` from `transfer_fin_index_holds I α ι B ga`. Unfold `HilbertSchmidtNormSquare.InputS InputSG`. Simplify using `only [h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem input_size_transfer_holds : BridgeInputS := by
   intro I α _ _ ι _ _ B ga Dstar η0 η1 e0
@@ -178,11 +178,11 @@ theorem input_size_transfer_holds : BridgeInputS := by
   simp only [h1, h2]
 
 /- English proof (translation)
-Introduce `I α _ ιf ι _ _ _ Bf Vr`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `i`. Unfold `toFin HilbertSchmidtNormSquare.Bram toFinV`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `HilbertSchmidtNormSquare.Isom toFinV`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun M => M.submatrix (Fintype.equivFin (ι i)) (Fintype.equivFin (ι i))) h` as an intermediate fact. Simplify using `using this`. Introduce `h`. Rewrite using `[h, Matrix.submatrix_one_equiv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramification_transfer_holds : BridgeRam := by
   intro I α _ ιf ι _ _ _ Bf Vr
@@ -201,7 +201,7 @@ theorem ramification_transfer_holds : BridgeRam := by
       rw [h, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Introduce `I α _ _ ι _ _ B ga η`. Take `⟨-, -, h3, h4, -⟩` from `transfer_fin_index_holds I α ι B ga`. Take `⟨q1, q2⟩` from `quadratic_transfer_holds I α ι B ga`. Unfold `HilbertSchmidtNormSquare.F1 FrameTraceRatioLinear`. Rewrite using `[h3, h4, q1, q2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem first_family_transfer_holds : FrameTraceRatioFinEquiv := by
   intro I α _ _ ι _ _ B ga η
@@ -212,7 +212,7 @@ theorem first_family_transfer_holds : FrameTraceRatioFinEquiv := by
   rw [h3, h4, q1, q2]
 
 /- English proof (translation)
-Introduce `I α _ _ ι _ _ B ga e hga`. Take `⟨-, h2, -, -, h5⟩` from `transfer_fin_index_holds I α ι B ga`. Unfold `HilbertSchmidtNormSquare.F2 FrameDeviationLinear`. Rewrite using `[h5]`. Simplify using `only [h2, fun i => hilbert_schmidt_transfer_holds I α ι B ga i (hga i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -225,7 +225,7 @@ theorem second_family_transfer_holds : FrameDeviationFinEquiv := by
   rfl
 
 /- English proof (translation)
-Introduce `s mu logI δ u HH η e`. Unfold `PhiMonotonicityLemmas.ConclF PhiMonotonicityLemmas.ErrF PhiMonotonicityLemmas.phi`. Rewrite using `[mul_assoc 4 u]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem transfer_conclusion_holds : BridgeConcl := by
   intro s mu logI δ u HH η e
@@ -233,13 +233,13 @@ theorem transfer_conclusion_holds : BridgeConcl := by
   rw [mul_assoc 4 u]
 
 /- English proof (translation)
-Introduce `I α _ _ ιf ι _ _ _ _ Bf Vr ga Dstar sg η0 η1 e0 de hV hga hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS`. Establish `hS'` using `(input_size_transfer_holds I α ιf Bf ga Dstar η0 η1 e0).2 hS`. Take `⟨hB, hI⟩` from `ramification_transfer_holds I α ιf ι Bf Vr`. Establish `hV'` using `hI.2 hV`. Establish `f1` using `HilbertSchmidtNormSquare.compressTraceSquareBound I (Fintype.card α) (fun i => Fintype.card (ιf i)) (fun i => Fintype.card (ι i)) (toFin Bf) (toFinV Vr) ga Dstar sg η0 η1 e0 de hV' hga hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hRr, f2⟩` from `HilbertSchmidtNormSquare.compressDiagDefectBound I (Fintype.card α) (fun i => Fintype.card (ιf i)) (fun i => Fintype.card (ι i)) (toFin Bf) (toFinV Vr) ga de e0 hV' (by linarith) he0 hS'.2.1 hcor`. Rewrite `f1`, `f2` using `[← hB]`. Use `⟨(first_family_transfer_holds I α ι _ ga _).1 f1, (second_family_transfer_holds I α ι _ ga _ hga).1 f2, ?_, ?_⟩` and prove the remaining obligations. Establish `hs` using `Real.sq_sqrt he0`. Establish `hn` using `Real.sqrt_nonneg e0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : (0 : ℝ) < RsG ιf` using `lt_of_lt_of_le (div_pos hD hsg) hR`. Establish `hpos' : (0 : ℝ) < HilbertSchmidtNormSquare.Rs (fun i => Fintype.card (ι i))`. Use `lt_of_lt_of_le ?_ hRr` and prove the remaining obligations. Conclude with `mul_pos (by linarith) hpos`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `HilbertSchmidtNormSquare.Rs at hpos'`. Conclude with `hpos'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ramification_linear_case_holds : RamLin := by
   intro I α _ _ ιf ι _ _ _ _ Bf Vr ga Dstar sg η0 η1 e0 de hV hga hD hsg hsg20 hR h0 h0' h1 he0 hse
@@ -265,7 +265,7 @@ theorem ramification_linear_case_holds : RamLin := by
     exact_mod_cast hpos'
 
 /- English proof (translation)
-Introduce `K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ hG hN hγ hF2 he he4 hF1 hη`. Take `⟨g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15⟩` from `hG`. Take `⟨n1, n2, n3, n4, n5⟩` from `hN`. Conclude with `theoremF K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 n1 n2 n3 n4 n5 g12 g13 g14 g15 hγ hF2 he he4 hF1 hη`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem flat_lattice_theorem_holds : TheoremFLat := by
   intro K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ hG hN hγ hF2 he he4 hF1 hη
@@ -275,7 +275,7 @@ theorem flat_lattice_theorem_holds : TheoremFLat := by
     g9 g10 g11 n1 n2 n3 n4 n5 g12 g13 g14 g15 hγ hF2 he he4 hF1 hη
 
 /- English proof (translation)
-Introduce `K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ hG hN hγ hF2 he he4 hF1 hη`. Take `⟨g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15⟩` from `hG`. Take `⟨n1, n2, n3, n4, n5⟩` from `hN`. Conclude with `theoremFSharp K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ g1 g2 g3 g4 g5 g6 g7 g8 g9 g10 g11 n1 n2 n3 n4 n5 g12 g13 g14 g15 hγ hF2 he he4 hF1 hη`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sharp_flat_lattice_theorem_holds :
   ∀ (K W κ κ₁ I : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
@@ -299,7 +299,7 @@ theorem sharp_flat_lattice_theorem_holds :
     g7 g8 g9 g10 g11 n1 n2 n3 n4 n5 g12 g13 g14 g15 hγ hF2 he he4 hF1 hη
 
 /- English proof (translation)
-Introduce `K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ ιf _ _ Bf Vr s u HH δ Dstar sg η0 η1 e0 de hG hN hγ hBV hV hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS`. Take `⟨f1, f2, he, -⟩` from `ramification_linear_case_holds I (κ ⊕ κ₁) ιf ι Bf Vr γ Dstar sg η0 η1 e0 de hV (fun i => (hγ i).le) hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS`. Establish `hB : Ball = fun i => Bf i * Vr i` using `funext hBV`. Rewrite `f1`, `f2` using `[← hB]`. Conclude with `⟨flat_lattice_theorem_holds K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ s u HH (2 * e0) (5 * sg + 3 * Real.sqrt de) δ hG hN hγ f2 (by positivity) he f1 (by positivity), sharp_flat_lattice_theorem_holds K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ s u HH (2 * e0) (5 * sg + …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ramification_condition_holds :
   ∀ (K W κ κ₁ I : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
@@ -341,7 +341,7 @@ theorem ramification_condition_holds :
       (5 * sg + 3 * Real.sqrt de) δ hG hN hγ f2 (by positivity) he f1 (by positivity)⟩
 
 /- English proof (translation)
-Introduce `K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ ιf _ _ Bf Vr s u HH δ Dstar sg η0 η1 e0 de hG hN hγ hBV hV hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS`. Conclude with `(ramification_condition_holds K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ ιf Bf Vr s u HH δ Dstar sg η0 η1 e0 de hG hN hγ hBV hV hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem joint_a_ramified_holds : JointARam := by
   intro K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ ιf _ _ Bf Vr s u HH δ Dstar sg η0 η1 e0 de hG hN hγ hBV hV hD hsg hsg20 hR h0 h0' h1 he0
@@ -350,11 +350,11 @@ theorem joint_a_ramified_holds : JointARam := by
     η1 e0 de hG hN hγ hBV hV hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS).1
 
 /- English proof (translation)
-Establish `hne : N ≠ ⊥`. Introduce and unpack `rfl`. Establish `h0 : (⊥ : Submodule K V) = ⊤` using `by rw [← hsp]; simp`. Establish `: Subsingleton (Submodule K V)` using `subsingleton_of_bot_eq_top h0`. Establish `: Subsingleton V` using `(Submodule.subsingleton_iff K).1 inferInstance`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Module.finrank_eq_card_basis b` as an intermediate fact. Rewrite `this` using `[Module.finrank_zero_of_subsingleton]`. Use linear arithmetic over natural numbers and integers. Establish `hLat` using `(plLat K V ι b X hX N hFG).1`. Use `(muChar _ _ _ (Formalism.HermitianLatticesTheory.realize b X) N hLat hne).2.2.2.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `muDef muMaxDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem slope_le_max_slope {K V ι : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
@@ -376,9 +376,9 @@ theorem slope_le_max_slope {K V ι : Type} [Field K] [NumberField K] [StarRing K
   linarith
 
 /- English proof (translation)
-Introduce `I _ ιf _ Dstar sg C0 Gam hD hsg hC hG hI hd`. Establish `h1 : (Fintype.card I : ℝ) * (Dstar * (Gam ^ 2)⁻¹ / C0) ≤ RsG ιf`. Unfold `RsG`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∑ i, (Fintype.card (ιf i) : ℝ) := Finset.sum_le_sum fun i _ => hd i`. Establish `h2 : 0 ≤ Dstar * (Gam ^ 2)⁻¹ / C0` using `by positivity`. Establish `h3 : C0 * Gam ^ 2 / sg * (Dstar * (Gam ^ 2)⁻¹ / C0) = Dstar / sg`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem word_count_bound_holds : WordsR := by
   intro I _ ιf _ Dstar sg C0 Gam hD hsg hC hG hI hd

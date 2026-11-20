@@ -8,13 +8,13 @@ open scoped Matrix MatrixGroups
 namespace UpperTheory.V.Af.Nf
 
 /- English proof (translation)
-Establish `hdet : x.det = 1` using `by rw [Matrix.det_fin_two, hc, hd]; linear_combination h1`. Use `⟨hdet, ((x 1 0 : ℂ) * Complex.I + x 1 1) ^ (-(k : ℤ)), fun F => ?_⟩` and prove the remaining obligations. Establish `h1' : (x 0 0 : ℂ) ^ 2 + (x 0 1 : ℂ) ^ 2 = 1` using `by exact_mod_cast h1`. Establish `hne : (x 1 0 : ℂ) * Complex.I + x 1 1 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hc, hd]`. Move the coercions through the operations in `at h`. Establish `: (1 : ℂ) = 0`. Take the linear combination `((x 0 1 : ℂ) * Complex.I + x 0 0) * h - h1' + (x 0 1 : ℂ) ^ 2 * Complex.I_sq`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hq : ((x 0 0 : ℂ) * Complex.I + x 0 1) / ((x 1 0 : ℂ) * Complex.I + x 1 1) = (UpperHalfPlane.I : UpperHalfPlane)`. Rewrite using `[div_eq_iff hne, hc, hd, UpperHalfPlane.coe_I]`. Use `push_cast`. Take the linear combination `(x 0 1 : ℂ) * Complex.I_sq`. Unfold `nsl`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet, UpperHalfPlane.coe_I, hq]`. Rewrite using `[sign_one, SignType.coe_one, Complex.ofReal_one, one_mul, UpperHalfPlane.ofComplex_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rot_nsl (k : ℕ) (x : Matrix (Fin 2) (Fin 2) ℝ) (h1 : x 0 0 ^ 2 + x 0 1 ^ 2 = 1) (hc : x 1 0 = -x 0 1)
     (hd : x 1 1 = x 0 0) : x.det = 1 ∧ ∃ c : ℂ, ∀ F : UpperHalfPlane → ℂ, nsl k F x UpperHalfPlane.I = c * F UpperHalfPlane.I := by
@@ -38,9 +38,9 @@ private theorem rot_nsl (k : ℕ) (x : Matrix (Fin 2) (Fin 2) ℝ) (h1 : x 0 0 ^
   simp
 
 /- English proof (translation)
-Take `⟨hdet, c, hF⟩` from `rot_nsl k x.val h1 hc hd`. Use `⟨c, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Take `⟨γ, h, u, hu, rfl⟩` from `decomp M hM g`. Establish `e : ratGL ℚ 2 γ * (upR h * finGL ℚ 2 u) * upR x = ratGL ℚ 2 γ * (upR (h * x) * finGL ℚ 2 u)`. Rewrite using `[map_mul, mul_assoc, mul_assoc, ← upR_comm, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TR.rt_apply, e, hφ γ _ u hu]`. Express the relevant statement in the definitionally equal form `_ = c * φ.1 _`. Rewrite using `[hφ γ h u hu, ← hF, (nslMul k f).1 h.val x.val h.det_ne_zero (by rw [hdet]; exact one_pos)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rot_rt (k M : ℕ) (hM : 1 ≤ M) (f : UpperHalfPlane → ℂ) (φ : TR.Sm ℚ 2) (hφ : IsLift k M f φ.1)
     (x : GL (Fin 2) ℝ) (h1 : x.val 0 0 ^ 2 + x.val 0 1 ^ 2 = 1) (hc : x.val 1 0 = -x.val 0 1) (hd : x.val 1 1 = x.val 0 0) :
@@ -56,7 +56,7 @@ private theorem rot_rt (k M : ℕ) (hM : 1 ≤ M) (f : UpperHalfPlane → ℂ) (
   rfl
 
 /- English proof (translation)
-Establish `hD : (a * d - b * c - 1) * (a * d - b * c + 1) = 0`. Take the linear combination `(c ^ 2 + d ^ 2) * h1 + h2 - (a * c + b * d) * h3`. Break down `mul_eq_zero.1 hD with h | h` into its components or cases. Conclude with `Or.inl ⟨by linear_combination (-c) * h1 + a * h3 - b * h, by linear_combination (-d) * h1 + b * h3 + a * h⟩`. Conclude with `Or.inr ⟨by linear_combination (-c) * h1 + a * h3 - b * h, by linear_combination (-d) * h1 + b * h3 + a * h⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 private theorem orth_cases {a b c d : ℝ} (h1 : a ^ 2 + b ^ 2 = 1) (h2 : c ^ 2 + d ^ 2 = 1)
     (h3 : a * c + b * d = 0) : (c = -b ∧ d = a) ∨ (c = b ∧ d = -a) := by
@@ -73,17 +73,17 @@ end UpperTheory.V.Af.Nf
 
 open UpperTheory.V.Af.Nf in
 /- English proof (translation)
-Introduce `k M hM f φ hφ`. Establish `: FiniteDimensional ℂ (Submodule.span ℂ ({φ, TR.rt ℚ 2 (upR epsG) φ} : Set (TR.Sm ℚ 2)))` using `FiniteDimensional.span_of_finite ℂ (Set.toFinite _)`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ({φ, TR.rt ℚ 2 (upR epsG) φ} : Set (TR.Sm ℚ 2))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩`. Use `set x : GL (Fin 2) ℝ := Matrix.GeneralLinearGroup.map ev (Unitary.toUnits r) with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : TR.cptRep ℚ 2 r φ = TR.rt ℚ 2 (upR x) φ` using `by rw [hx, upR_ev]; rfl`. Establish `hr : ∀ i j, x.val i 0 * x.val j 0 + x.val i 1 * x.val j 1 = if i = j then 1 else 0`. Introduce `i j`. Establish `h` using `congrArg (fun m => ev (m i j)) r.2.2`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.star_apply, map_add, map_mul, Matrix.one_apply] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[apply_ite ev, map_one, map_zero]`. Conclude with `h`. Establish `h1 : x.val 0 0 ^ 2 + x.val 0 1 ^ 2 = 1` using `by have := hr 0 0; simp only [if_true] at this; linear_combination this`. Establish `h2 : x.val 1 0 ^ 2 + x.val 1 1 ^ 2 = 1` using `by have := hr 1 1; simp only [if_true] at this; linear_combination this`. Establish `h3 : x.val 0 0 * x.val 1 0 + x.val 0 1 * x.val 1 1 = 0` using `by simpa using hr 0 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `TR.cptRep ℚ 2 r φ ∈ _`. Rewrite using `[e]`. Use `clear_value x`. Break down `orth_cases h1 h2 h3 with ⟨hc, hd⟩ | ⟨hc, hd⟩` into its components or cases. Take `⟨c, hc⟩` from `rot_rt k M hM f φ hφ x h1 hc hd`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Establish `hv : (epsG * x).val = !![-x.val 0 0, -x.val 0 1; x.val 1 0, x.val 1 1]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsG, eps, Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `rot_rt k M hM f φ hφ (epsG * x) (by rw [hv]; simpa using h1) (by rw [hv]; simpa using hc) (by rw [hv]; simpa using hd)`. Establish `e2 : x = epsG * (epsG * x)`. Rewrite using `[← mul_assoc, show epsG * epsG = 1 from Units.ext epsG.val_inv, one_mul]`. Rewrite using `[e2, map_mul, map_mul, Module.End.mul_apply, hc, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.liftK :
     UpperTheory.V.Af.Nf.LiftK := by

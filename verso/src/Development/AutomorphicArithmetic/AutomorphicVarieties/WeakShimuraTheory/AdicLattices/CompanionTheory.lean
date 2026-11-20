@@ -36,13 +36,13 @@ def EntVan (P : PD Φ.ι Γ R) : Prop :=
     (∀ v, ∀ s ∈ Φ.Gv v, P.r s i j = m v * (a (Φ.χ j s) - a (Φ.χ i s))) → (∀ g, P.r g i j = 0) ∧ m = 0
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro _ <;> ext i j <;> simp [tconj, wv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem TConj.refl {ι Γ R K : Type} [Group Γ] [CommRing R] [CommRing K] (f : R →+* K) (P : PD ι Γ R) : TConj f 1 P P := by
   constructor <;> intro _ <;> ext i j <;> simp [tconj, wv]
 
 /- English proof (translation)
-The claim follows from `.inl ⟨by simp, by simp, by rintro w (rfl | rfl) <;> simp [nP]⟩`.
+A detailed English derivation is pending.
 -/
 example : CompanionTheory {wBe, -wPs} := .inl ⟨by simp, by simp, by rintro w (rfl | rfl) <;> simp [nP]⟩
 

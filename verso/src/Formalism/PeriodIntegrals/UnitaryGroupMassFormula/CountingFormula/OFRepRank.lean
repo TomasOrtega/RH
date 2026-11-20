@@ -11,17 +11,17 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D T T' Z hG`. Distinguish the cases in `hdet : Z.det = 0`. Establish `hm : leadMinorE Z D.R.rS ≠ 0`. Introduce `hm`. Apply `hG` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : leadMinorE Z (D.R.rS + 1) = 0`. Unfold `Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos le_rfl, Fin.castLE_rfl, Matrix.submatrix_id_id]`. Conclude with `hdet`. Simplify using `[Formalism.L2.SG.CntLocal.GZ, h1, hm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : D.R.rS ≤ D.R.rS + 1` using `Nat.le_succ _`. Use `set B := Z.submatrix (Fin.castLE h) (Fin.castLE h) with hB`. Establish `hBdet : B.det ≠ 0`. Establish `e : leadMinorE Z D.R.rS = B.det`. Unfold `Formalism.MainNotions.S.leadMinorE`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[dif_pos h]`. Rewrite using `[← e]` and apply the resulting hypothesis. Use `⟨Matrix.of fun j i => if hj : (j : ℕ) < D.R.rS then B⁻¹ ⟨j, hj⟩ i else 0, ?_⟩` and prove the remaining obligations. Establish `hBB : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B (isUnit_iff_ne_zero.2 hBdet)`. Use extensionality with `a i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hBB]`. Simplify using `only [Matrix.mul_apply, betaZ, Matrix.submatrix_apply, Matrix.of_apply, Fin.sum_univ_castSucc, Fin.coe_castSucc, Fin.is_lt, dif_pos, Fin.val_last, lt_irrefl, not_false_eq_true, dif_neg, mul_zero, add_zero, id]`. Both sides reduce to the same expression. Use `⟨(Z⁻¹).submatrix id Fin.castSucc, ?_⟩` and prove the remaining obligations. Establish `hZ : Z * Z⁻¹ = 1` using `Matrix.mul_nonsing_inv Z (isUnit_iff_ne_zero.2 hdet)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `betaZ`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, hZ]`. Conclude with `Matrix.submatrix_one_embedding Fin.castSuccEmb`.
+A detailed English derivation is pending.
 -/
 theorem rank_gram : RankG := by
   intro D T T' Z hG

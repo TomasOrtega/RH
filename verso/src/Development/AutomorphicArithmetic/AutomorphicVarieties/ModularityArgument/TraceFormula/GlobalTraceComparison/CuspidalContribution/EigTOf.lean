@@ -8,11 +8,9 @@ open GroundTheory.Automorphic.AutomorphicForm (constantTerm)
 open PositivityTheory.Rg.BcB.SpectralAccumulation (TypeB)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `capOfEig E a φ h0 fun t u => ⟨_, hl (.inl (t, u))⟩`. Establish `hB : ∀ w : UpperTheory.V.Cj.S.Pl E, ∃ B : Multiset ℂˣ, w ∉ T → IsSatVecGL w (fL a w) φ B`. Introduce `w`. Distinguish the cases in `hw : w ∈ T`. Conclude with `⟨0, fun h => (h hw).elim⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨B, hB⟩` from `satOfEig E w a _ (fL a w) φ h0 (hfix w hw) fun h hh => ⟨_, hl (.inr ⟨⟨w, hw⟩, ⟨h, hh⟩⟩)⟩`. Conclude with `⟨B, fun _ => hB⟩`. Use `choose B hB using hB`. Use `⟨m, B, ⟨h0, haut, hty, hm, hB⟩, fun t u => ?_, fun w hw ϖ hu j hj => ?_⟩` and prove the remaining obligations. Conclude with `smul_left_injective ℂ h0 ((hl (.inl (t, u))).symm.trans ((hm t).2 u))`.
-
-Conclude with `smul_left_injective ℂ h0 ((hl (.inr ⟨⟨w, hw⟩, ⟨_, Tj_mem_hecke hu j⟩⟩)).symm.trans ((hB w hw).2.2.2 ϖ hu j hj))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem eigT_of {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} {T : Set (UpperTheory.V.Cj.S.Pl E)} {K W}
     (φ : Sm E a) (h0 : φ ≠ 0) (haut : IsAutForm φ) (hty : TypeB K W φ) (hfix : ∀ w ∉ T, φ ∈ fixed (fL a w) (KGL w a))
@@ -43,25 +41,25 @@ private def tySub {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} (
   smul_mem' c _ h := ⟨fun u hu g => congrArg (c * ·) (h.1 u hu g), fun g => W.smul_mem c (h.2 g)⟩
 
 /- English proof (translation)
-Introduce `hI hSl hSt E _ _ _ r s bad K W hK hW`. Take `⟨K', W', hK', hW', hI⟩` from `hI E r s bad K W hK hW`. Take `⟨K₁, W₁, K₂, W₂, l₁, f₁, l₂, f₂, hSl⟩` from `hSl E r s bad K' W' hK' hW'`. Use `⟨K₁, W₁, K₂, W₂, l₁, f₁, l₂, f₂, fun φ₀ m B h₀ hne₀ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hne⟩` from `hI φ₀ m B h₀ hne₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S₁, S₂, hS₁, hS₂, hs₁, hs₂⟩` from `sliceBdd singleBdd E r s φ hφ.aut`. Take `⟨t₁, t₂⟩` from `hSl φ hφ.aut hφ.ty`. Take `⟨V₁, a₁, fd₁, aut₁, fix₁, st₁⟩` from `hSt E r bad K₁ W₁ l₁ f₁ (S₁ ⊓ tySub K₁ W₁) (hS₁.mono (Submodule.map_mono inf_le_left)) fun _ h => h.2`. Take `⟨V₂, a₂, fd₂, aut₂, fix₂, st₂⟩` from `hSt E s bad K₂ W₂ l₂ f₂ (S₂ ⊓ tySub K₂ W₂) (hS₂.mono (Submodule.map_mono inf_le_left)) fun _ h => h.2`. Take `⟨ψ, hψ, hNI, hcap⟩` from `ctCap E (r + s) r φ hφ.aut`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₁, hφ₁, φ₂, hφ₂, e₁, e₂, n₁, n₂, g₁, g₂, H⟩` from `twoVar tensEigB _ _ (Sm E r) (Sm E s) V₁ V₂ fd₁ fd₂ (Ix r bad) (Ix s bad) opIx opIx st₁ st₂ (fun i i' v hv => opComm capAct E r bad i i' v fun w hw => fix₁ w hw hv) (fun i i' v hv => opComm capAct E s bad i i' v fun w hw => fix₂ w hw hv) (res (constantTerm r φ.1)) hne (fun y => ( …`. Rewrite `hne`, `H` using `[← hψ]`. Establish `hψ0 : ψ ≠ 0`. Introduce and unpack `rfl`. Take `⟨x, y, h⟩` from `hne`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `h rfl`. Take `⟨m₁, B₁, E₁, c₁, s₁⟩` from `eigT_of φ₁ n₁ (aut₁ _ hφ₁).1 (aut₁ _ hφ₁).2 (fun w hw => fix₁ w hw hφ₁) e₁ g₁`. Take `⟨m₂, B₂, E₂, c₂, s₂⟩` from `eigT_of φ₂ n₂ (aut₂ _ hφ₂).1 (aut₂ _ hφ₂).2 (fun w hw => fix₂ w hw hφ₂) e₂ g₂`. Use `⟨φ₁, φ₂, m₁, m₂, B₁, B₂, E₁, E₂, fun t => ?_, fun ν ν' hν hν' w hw => ?_⟩` and prove the remaining obligations. Use `capArith (m t) (m₁ t) (m₂ t) _ _ fun u => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : u + ((-((s : ℝ) / 2) : ℝ) : ℂ) = u - (s : ℂ) / 2` using `by push_cast; ring`. Establish `e2 : u + (((r : ℝ) / 2 : ℝ) : ℂ) = u + (r : ℂ) / 2` using `by push_cast; ring`. Rewrite using `[e1, e2, ← c₁, ← c₂]`. Use `H Unit (fun _ => 1) (fun _ => .inl (t, _)) (fun _ => .inl (t, _)) (fun _ => _) ((m t).map (u + ·)).prod (fun _ => capRel slice capBlock E r s ψ hNI t u) fun x y => by` as an intermediate fact. Rewrite using `[hcap t u, (hφ.cap t).2 u, hψ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [res, constantTerm, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, Finset.univ_unique, Finset.sum_singleton, one_mul]`. Conclude with `MeasureTheory.integral_const_mul _ _`. Simplify using `using this`. Establish `hv` using `ctSat E (r + s) r φ ψ hφ.aut hψ hψ0 w (B w) (hφ.sat w hw)`. Take `⟨ϖ, hu⟩` from `exists_isUnifV w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `satArith (qV E w) r s (qV_ne_zero w) (B w) (B₁ w) (B₂ w) (hφ.sat w hw).2.2.1 (E₁.sat w hw).2.2.1 (E₂.sat w hw).2.2.1 (fun j hj => ?_) _ _ ?_ ?_` and prove the remaining obligations. Take `⟨G, hG, hsum⟩` from `hkRel slice hkSum (hkLocal sumInner matBlock) gl2_local_to_adelic_embedding E r s ψ hNI w hv.2.1 ϖ hu j hj`. Use `H (Fin (r + 1) × Fin (s + 1)) _ (fun p => .inr ⟨⟨w, hw⟩, ⟨_, Tj_mem_hecke hu p.1⟩⟩) (fun p => .inr ⟨⟨w, hw⟩, ⟨_, Tj_mem_hecke hu p.2⟩⟩) G (satEig (qV E w) (r + s) (B w) j) hG fun x y => by` as an intermediate fact. Rewrite using `[hsum x y]`. Establish `: tOp (r + s) w hu j ψ = satEig (qV E w) (r + s) (B w) j • ψ` using `hv.2.2.2 ϖ hu j hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[s₁ w hw ϖ hu p.1 (Nat.lt_succ_iff.1 p.1.2), s₂ w hw ϖ hu p.2 (Nat.lt_succ_iff.1 p.2.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hν.2.1 w]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hν'.2.1 w]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.stepT :
     IwaT → SliceT → StabT → StepT := by

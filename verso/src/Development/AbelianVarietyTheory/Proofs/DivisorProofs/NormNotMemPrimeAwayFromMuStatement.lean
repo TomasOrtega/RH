@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 open GlobalTheory.FunObj.SqNum (nuH halfRank IsTor)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThmAUpper.qn_not_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormNotMemPrimeAwayFromMu.lean&line=17#L17)
 -/

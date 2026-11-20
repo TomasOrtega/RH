@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.HermitianLattices.WeakMeanSquareEstimates
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.PrimeNumberTheoremConsequences.mean_square_of_prime_number_theorem`.
+A detailed English derivation is pending.
 -/
 theorem mean_square_weak_of_prime_number_theorem : Formalism.HermitianLattices.PrimeNumberTheoremConsequences.PNTAPRelW →
     ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∃ C x₀ : ℝ, 0 < C ∧ MeanSquareHypW ε C x₀ :=

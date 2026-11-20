@@ -4,7 +4,7 @@ import Mathlib
 open IsLocalRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.height_comap_eq_one_of_flat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHeightComapFlatHeightOne.lean&line=6#L6)
 -/

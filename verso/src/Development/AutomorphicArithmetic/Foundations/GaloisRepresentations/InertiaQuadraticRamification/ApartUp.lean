@@ -4,9 +4,9 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Use `set y₀ : 𝓞 M := algebraMap (𝓞 K) (𝓞 M) (algebraMap (𝓞 (maximalRealSubfield K)) (𝓞 K) x) with hy₀`. Establish `hz : (y₀ : M) = algebraMap K M (((x : maximalRealSubfield K)) : K)` using `rfl`. Establish `hmem : (y₀ : M) ∈ maximalRealSubfield M`. Rewrite using `[hz]`. Conclude with `(mem_maximalRealSubfield_iff _).2 fun φ => (mem_maximalRealSubfield_iff _).1 (x : maximalRealSubfield K).2 (φ.comp (algebraMap K M))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hint : IsIntegral ℤ (⟨(y₀ : M), hmem⟩ : maximalRealSubfield M)` using `(isIntegral_algebraMap_iff (B := M) (algebraMap (maximalRealSubfield M) M).injective).1 (RingOfIntegers.isIntegral_coe y₀)`. Conclude with `⟨⟨⟨(y₀ : M), hmem⟩, hint⟩, RingOfIntegers.ext rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_real_lift (K M : Type) [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M]
     [Algebra K M] (x : 𝓞 (maximalRealSubfield K)) :
@@ -24,15 +24,13 @@ private theorem exists_real_lift (K M : Type) [Field K] [NumberField K] [IsCMFie
   exact ⟨⟨⟨(y₀ : M), hmem⟩, hint⟩, RingOfIntegers.ext rfl⟩
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _`. Use `⟨fun w₁ w₂ hap h => hap ?_, fun v => ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Apply `Ideal.ext` to reduce the goal to its premises. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `exists_real_lift K M x`. Establish `h' : y ∈ (w₁.under (𝓞 (maximalRealSubfield M))).asIdeal ↔ y ∈ (w₂.under (𝓞 (maximalRealSubfield M))).asIdeal` using `by rw [h]`. Simplify using `only [HeightOneSpectrum.under_asIdeal, Ideal.mem_comap, hy] at h' ⊢`. Conclude with `h'`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) (𝓞 M))` using `FaithfulSMul.algebraMap_injective _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : RingHom.ker (algebraMap (𝓞 K) (𝓞 M)) ≤ v.asIdeal`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le`. Use `haveI := v.isMaximal`. Take `⟨Q, hQ, hQm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 M) v.asIdeal hker`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQm, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Use `⟨⟨Q, hQ.isPrime, hne⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Conclude with `hQm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.apartUp :
     ApartUp := by

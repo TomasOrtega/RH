@@ -16,17 +16,15 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ e Γ m p _ _ A B ⟨X, hX, hXc⟩`. Use `letI := e.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b, X a b ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hX (Matrix.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ⟩ : ∃ ℓ : Module.Dual K ℂ, ℓ (X a b) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hab ((Module.forall_dual_apply_eq_zero_iff K (X a b)).1 h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ (x : ℂ) (c : K), ℓ (x * e c) = ℓ x * c`. Introduce `x c`. Establish `: x * e c = c • x` using `by rw [Algebra.smul_def, mul_comm]; rfl`. Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`. Establish `h2 : ∀ (x : ℂ) (c : K), ℓ (e c * x) = c * ℓ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x c`. Establish `: e c * x = c • x` using `by rw [Algebra.smul_def]; rfl`. Rewrite using `[this, map_smul, smul_eq_mul]`. Use `⟨X.map ℓ, ?_, fun γ => ?_⟩` and prove the remaining obligations. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Apply `hℓ` to reduce the goal to its premises. Use `congrFun (congrFun h a) b` as an intermediate fact. Simplify using `using this`. Use extensionality with `i j`. Establish `key` using `congrArg (fun M => ℓ (M i j)) (hXc γ)`.
-
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, h1, h2] at key ⊢`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matrix_intertwiner_descends : ∀ (K : Type) [Field K] (e : K →+* ℂ) (Γ m p : Type) [Fintype m] [Fintype p] (A : Γ → Matrix m m K) (B : Γ → Matrix p p K), (∃ X : Matrix p m ℂ, X ≠ 0 ∧ ∀ γ, X * (A γ).map e = (B γ).map e * X) → ∃ X : Matrix p m K, X ≠ 0 ∧ ∀ γ, X * A γ = B γ * X := by
   intro K _ e Γ m p _ _ A B ⟨X, hX, hXc⟩

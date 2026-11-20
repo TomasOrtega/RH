@@ -21,7 +21,7 @@ private def bm (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
   Matrix.reindex (eIdx h) (eIdx h) (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val)
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Unfold `bm`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 m.1.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 m.2.isUnit)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bm_isUnit (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) : IsUnit (bm h w m X) := by
@@ -31,7 +31,7 @@ private theorem bm_isUnit (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
   exact ((Matrix.isUnit_iff_isUnit_det _).1 m.1.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 m.2.isUnit)
 
 /- English proof (translation)
-Use `show (if hM : IsUnit (bm h w m X) then hM.unit else 1).val = _`. Rewrite using `[dif_pos (bm_isUnit h w m X)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem blk_val (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) : (GlobalTheory.BCT.blk h w m X).val = bm h w m X := by
@@ -40,7 +40,7 @@ private theorem blk_val (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, blk_val, blk_val, blk_val]`. Unfold `bm`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_add, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem blk_add (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X Y : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
@@ -51,17 +51,17 @@ private theorem blk_add (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
   simp [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_add, add_comm]
 
 /- English proof (translation)
-Set `Y' : Matrix (Fin a) (Fin b) (Ov E w)` to `fun i j => ⟨Y i j, hY i j⟩`. Set `N : Matrix (Fin n) (Fin n) (Ov E w)` to `Matrix.reindex (eIdx h) (eIdx h) (Matrix.fromBlocks 1 Y' 0 1)`. Establish `hN : IsUnit N`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Simplify using `[N, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨hN.unit, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[blk_val]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(eIdx h).surjective i`. Take `⟨j, rfl⟩` from `(eIdx h).surjective j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(Ov E w).subtype (N _ _) = bm h w 1 Y _ _`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [N, bm, Y', Matrix.one_apply]`. Express the relevant statement in the definitionally equal form `(((1 : Matrix (Fin a) (Fin a) (Ov E w)) i j : Ov E w) : w.adicCompletion E) = _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Matrix.one_apply_eq]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hij]`. Simplify using `[hij]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(((1 : Matrix (Fin b) (Fin b) (Ov E w)) i j : Ov E w) : w.adicCompletion E) = _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hij]`. Simplify using `[hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem blk_one_mem (h : a + b = n) (w : Pl E) (Y : Matrix (Fin a) (Fin b) (w.adicCompletion E))
     (hY : ∀ i j, Valued.v (Y i j) ≤ 1) : GlobalTheory.BCT.blk h w 1 Y ∈ GlobalTheory.LFun.KGL w n := by
@@ -95,11 +95,11 @@ private theorem blk_one_mem (h : a + b = n) (w : Pl E) (Y : Matrix (Fin a) (Fin 
       simp [hij]
 
 /- English proof (translation)
-Unfold `intMat at hY`. Proceed by induction on `hY using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => intro i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mul x y _ _ hx hy`. Introduce `i j`. Simplify using `only [toAdd_mul, Matrix.add_apply]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (hx i j) (hy i j))`. Consider the case `inv x _ hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `using hx i j`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem intMat_le (w : Pl E) (Y : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)))
     (hY : Y ∈ intMat a b w) : ∀ i j, Valued.v (Multiplicative.toAdd Y i j) ≤ 1 := by
@@ -116,9 +116,9 @@ private theorem intMat_le (w : Pl E) (Y : Multiplicative (Matrix (Fin a) (Fin b)
     simpa using hx i j
 
 /- English proof (translation)
-Establish `hs : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[rStab]`. Unfold `avg`. Rewrite using `[hs, Subgroup.index_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Rewrite using `[finsum_eq_single _ (1 : H ⧸ (⊤ : Subgroup H)) (fun x hx => absurd (Subsingleton.elim _ _) hx)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have hs : rStab (fun _ : H => c) = ⊤ := by
@@ -131,21 +131,19 @@ private theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) 
   simp
 
 /- English proof (translation)
-Set `ψ : GLw n w → Matrix (Fin a) (Fin b) (w.adicCompletion E)` to `fun g => (m.1⁻¹).val * Matrix.of fun i j => g.val (eIdx h (Sum.inl i)) (eIdx h (Sum.inr j))`. Establish `hψ : Continuous ψ`. Use `continuous_const.matrix_mul ?_` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_elem _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hψb : ∀ X, ψ (GlobalTheory.BCT.blk h w m X) = X`. Introduce `X`. Establish `hb : (Matrix.of fun i j => (GlobalTheory.BCT.blk h w m X).val (eIdx h (Sum.inl i)) (eIdx h (Sum.inr j))) = m.1.val * X`. Use extensionality with `i j`. Rewrite using `[blk_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[bm]`. Simplify using `only [ψ]`. Rewrite using `[hb, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hC : IsCompact (ψ '' tsupport f)` using `hf.isCompact.image hψ`. Establish `hU : ∀ X ∈ ψ '' tsupport f, {Y : Matrix (Fin a) (Fin b) (w.adicCompletion E) | ∀ i j, Valued.v ((Y - X) i j) ≤ 1} ∈ 𝓝 X`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X _`. Establish `h0 : {x : w.adicCompletion E | Valued.v x ≤ 1} ∈ 𝓝 (0 : w.adicCompletion E)` using `(Valued.mem_nhds_zero).2 ⟨1, fun x hx => show Valued.v x ≤ 1 from le_of_lt (by simpa using hx)⟩`. Establish `: ∀ i j, ∀ᶠ Y : Matrix (Fin a) (Fin b) (w.adicCompletion E) in 𝓝 X, Valued.v ((Y - X) i j) ≤ 1`. Introduce `i j`. Establish `hc : Continuous fun Y : Matrix (Fin a) (Fin b) (w.adicCompletion E) => (Y - X) i j` using `(continuous_id.sub continuous_const).matrix_elem i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun Y : Matrix (Fin a) (Fin b) (w.adicCompletion E) => (Y - X) i j) (𝓝 X) (𝓝 0)`. Use `hc.tendsto X` as an intermediate fact. Simplify using `using this`. Conclude with `ht h0`. Conclude with `eventually_all.2 fun i => eventually_all.2 fun j => this i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, -, ht⟩` from `hC.elim_nhds_subcover _ hU`. Use `(t.finite_toSet.image fun X => (QuotientGroup.mk (Multiplicative.ofAdd X) : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) ⧸ intMat a b w)).subset ?_` and prove the remaining obligations. Introduce `q hq`. Establish `hmem : Multiplicative.toAdd q.out ∈ ψ '' tsupport f` using `⟨_, subset_tsupport f hq, hψb _⟩`. Take `⟨X, hX, hXY⟩` from `Set.mem_iUnion₂.1 (ht hmem)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X, hX, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q]`. Use `QuotientGroup.eq.2 (Subgroup.subset_closure ?_)` and prove the remaining obligations. Introduce `i j`. Use `hXY i j` as an intermediate fact.
-
-Simplify `this` using `[sub_eq_neg_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem supp_fin (h : a + b = n) (w : Pl E) (f : GLw n w → ℂ) (hf : HasCompactSupport f)
     (m : GLw a w × GLw b w) :
@@ -198,11 +196,11 @@ private theorem supp_fin (h : a + b = n) (w : Pl E) (f : GLw n w → ℂ) (hf : 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ w n a b h f hf m`. Use `⟨?_, supp_fin h w f hf.1 m⟩` and prove the remaining obligations. Establish `hinv` using `hf.2`. Establish `havg : ∀ y : GLw n w, (avg fun k : GlobalTheory.LFun.KGL w n => f ((k : GLw n w)⁻¹ * y * k)) = f y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun k : GlobalTheory.LFun.KGL w n => f ((k : GLw n w)⁻¹ * y * k)) = fun _ => f y`. Use function extensionality and compare the values at `k`. Rewrite using `[(hinv k k.2 _).2, (hinv _ (inv_mem k.2) y).1]`. Rewrite using `[this, avg_const]`. Unfold `ct`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [havg]`. Rewrite using `[hintSph _ (intMat a b w) (fun X => f (GlobalTheory.BCT.blk h w m (Multiplicative.toAdd X)))]`. Introduce `k hk x`. Use `show f (GlobalTheory.BCT.blk h w m (Multiplicative.toAdd x + Multiplicative.toAdd k)) = _`. Rewrite using `[blk_add, (hinv _ (blk_one_mem h w _ (intMat_le w k hk)) _).2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctSph : CtSph := by
   intro E _ _ _ w n a b h f hf m

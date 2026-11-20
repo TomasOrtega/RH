@@ -10,7 +10,7 @@ namespace UpperTheory.Esk.HyperbolicKappaLemmas
 open UpperTheory.Esk
 
 /- English proof (translation)
-Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [Complex.sub_re, Complex.sub_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsq (z w : ℂ) : ‖z - conj w‖ ^ 2 = (z.re - w.re) ^ 2 + (z.im + w.im) ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply]
@@ -18,14 +18,14 @@ theorem nsq (z w : ℂ) : ‖z - conj w‖ ^ 2 = (z.re - w.re) ^ 2 + (z.im + w.i
   ring
 
 /- English proof (translation)
-Rewrite using `[nsq]`. Use polynomial arithmetic with `[sq_nonneg (z.re - w.re), sq_nonneg z.im, sq_nonneg w.im]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pos_den {z w : ℂ} (h : 0 < z.im * w.im) : 0 < ‖z - conj w‖ ^ 2 := by
   rw [nsq]
   nlinarith [sq_nonneg (z.re - w.re), sq_nonneg z.im, sq_nonneg w.im]
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_of {z w : P} (h : 0 < z.1.im * w.1.im) :
     kap z w = 4 * (z.1.im * w.1.im) / ‖z.1 - conj w.1‖ ^ 2 := by
@@ -33,14 +33,14 @@ theorem kap_of {z w : P} (h : 0 < z.1.im * w.1.im) :
   rw [if_pos h]
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_of_not {z w : P} (h : ¬ 0 < z.1.im * w.1.im) : kap z w = 0 := by
   unfold kap
   rw [if_neg h]
 
 /- English proof (translation)
-Unfold `kap`. Use `split_ifs with h`. Conclude with `div_nonneg (by linarith) (sq_nonneg _)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kap_nonneg (z w : P) : 0 ≤ kap z w := by
   unfold kap
@@ -49,9 +49,9 @@ theorem kap_nonneg (z w : P) : 0 ≤ kap z w := by
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h13 : 0 < z.im * u.im`. Assume the negation of the conclusion as `hc`. Establish `hc` using `not_lt.mp hc`. Use polynomial arithmetic with `[mul_pos h1 h2, mul_nonneg (neg_nonneg.mpr hc) (sq_nonneg w.im)]`. Establish `hp : 0 ≤ z.im ^ 2 + 2 * z.im * w.im` using `by nlinarith [sq_nonneg z.im]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hq : 0 ≤ u.im ^ 2 + 2 * w.im * u.im` using `by nlinarith [sq_nonneg u.im]`. Rewrite using `[nsq, nsq, nsq]`. Use polynomial arithmetic with `[sq_nonneg ((z.re - w.re) * (w.re - u.re) - w.im ^ 2), mul_nonneg (sq_nonneg (z.re - w.re)) hq, mul_nonneg (sq_nonneg (w.re - u.re)) hp, mul_nonneg (sq_nonneg w.im) h1.le, mul_nonneg (sq_nonneg w.im) h2.le, mul_nonneg (sq_nonneg w.im) h13.le, mul_nonneg h13.le h1.le, mul_nonneg h …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem key {z w u : ℂ} (h1 : 0 < z.im * w.im) (h2 : 0 < w.im * u.im) :
     w.im ^ 2 * ‖z - conj u‖ ^ 2 ≤ ‖z - conj w‖ ^ 2 * ‖w - conj u‖ ^ 2 := by
@@ -69,11 +69,11 @@ theorem key {z w u : ℂ} (h1 : 0 < z.im * w.im) (h2 : 0 < w.im * u.im) :
     sq_nonneg (z.im * u.im)]
 
 /- English proof (translation)
-Use `⟨kap_nonneg z w, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : 0 < z.1.im * w.1.im`. Rewrite using `[kap_of h, div_le_iff₀ (pos_den h), nsq]`. Use polynomial arithmetic with `[sq_nonneg (z.1.re - w.1.re), sq_nonneg (z.1.im - w.1.im)]`. Rewrite using `[kap_of_not h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `e2 : ‖w.1 - conj z.1‖ ^ 2 = ‖z.1 - conj w.1‖ ^ 2`. Rewrite using `[nsq, nsq]`. Expand and normalize the polynomial expressions, which then agree. Unfold `kap`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_comm w.1.im z.1.im, e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem p1 (z w : P) : 0 ≤ kap z w ∧ kap z w ≤ 1 ∧ kap z w = kap w z := by
   refine ⟨kap_nonneg z w, ?_, ?_⟩
@@ -89,7 +89,7 @@ theorem p1 (z w : P) : 0 ≤ kap z w ∧ kap z w ≤ 1 ∧ kap z w = kap w z := 
     rw [mul_comm w.1.im z.1.im, e2]
 
 /- English proof (translation)
-Establish `h : 0 < z.1.im * z.1.im` using `mul_self_pos.mpr z.2`. Rewrite using `[kap_of h, div_eq_one_iff_eq (pos_den h).ne', nsq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem p2 (z : P) : kap z z = 1 := by
   have h : 0 < z.1.im * z.1.im := mul_self_pos.mpr z.2
@@ -97,13 +97,11 @@ theorem p2 (z : P) : kap z z = 1 := by
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h1 : 0 < z.1.im * w.1.im`. Distinguish the cases in `h2 : 0 < w.1.im * u.1.im`. Establish `h13 : 0 < z.1.im * u.1.im`. Assume the negation of the conclusion as `hc`. Establish `hc` using `not_lt.mp hc`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_pos h1 h2, mul_nonneg (neg_nonneg.mpr hc) (sq_nonneg w.1.im)]`. Establish `hA` using `pos_den h1`. Establish `hB` using `pos_den h2`. Establish `hC` using `pos_den h13`. Establish `hk` using `mul_le_mul_of_nonneg_left (key h1 h2) h13.le`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[kap_of h1, kap_of h2, kap_of h13, div_mul_div_comm, mul_div_assoc', le_div_iff₀ hC, div_mul_eq_mul_div, div_le_iff₀ (mul_pos hA hB)]`. Use polynomial arithmetic with `[hk]`. Rewrite using `[kap_of_not h2, mul_zero]`. Conclude with `mul_nonneg (by norm_num) (kap_nonneg z u)`. Rewrite using `[kap_of_not h1, zero_mul]`.
-
-Conclude with `mul_nonneg (by norm_num) (kap_nonneg z u)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p3 (z w u : P) : kap z w * kap w u ≤ 4 * kap z u := by
   by_cases h1 : 0 < z.1.im * w.1.im
@@ -125,9 +123,9 @@ theorem p3 (z w u : P) : kap z w * kap w u ≤ 4 * kap z u := by
     exact mul_nonneg (by norm_num) (kap_nonneg z u)
 
 /- English proof (translation)
-Distinguish the cases in `h : 0 < z.1.im * w.1.im`. Rewrite using `[kap_of h, div_mul_eq_mul_div, div_le_iff₀ (pos_den h), nsq]`. Break down `lt_or_gt_of_ne w.2 with hw | hw` into its components or cases. Establish `hz : z.1.im < 0` using `by nlinarith [h, hw]`. Rewrite using `[abs_of_neg hw, abs_of_neg hz]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg (neg_nonneg.mpr hz.le) (sq_nonneg (z.1.re - w.1.re)), mul_nonneg (neg_nonneg.mpr hz.le) (sq_nonneg z.1.im), mul_nonneg (sq_nonneg z.1.im) (neg_nonneg.mpr hw.le)]`. Establish `hz : 0 < z.1.im` using `by nlinarith [h, hw]`. Rewrite using `[abs_of_pos hw, abs_of_pos hz]`. Use polynomial arithmetic with `[mul_nonneg hz.le (sq_nonneg (z.1.re - w.1.re)), mul_nonneg hz.le (sq_nonneg z.1.im), mul_nonneg (sq_nonneg z.1.im) hw.le]`. Rewrite using `[kap_of_not h, zero_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
 Check the signs of the components of the expression.
 -/
@@ -148,15 +146,13 @@ theorem p4 (z w : P) : kap z w * |w.1.im| ≤ 4 * |z.1.im| := by
     positivity
 
 /- English proof (translation)
-Establish `hv1 : Continuous (fun p : P × P => p.1.1)` using `continuous_subtype_val.comp continuous_fst`. Establish `hv2 : Continuous (fun p : P × P => p.2.1)` using `continuous_subtype_val.comp continuous_snd`. Establish `hc : Continuous (fun p : P × P => p.1.1.im * p.2.1.im)` using `(Complex.continuous_im.comp hv1).mul (Complex.continuous_im.comp hv2)`. Establish `hd : Continuous (fun p : P × P => ‖p.1.1 - conj p.2.1‖ ^ 2)` using `((hv1.sub (Complex.continuous_conj.comp hv2)).norm).pow 2`. Establish `hopen : IsOpen {p : P × P | 0 < p.1.1.im * p.2.1.im}` using `isOpen_lt continuous_const hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed {p : P × P | 0 < p.1.1.im * p.2.1.im}`. Establish `e : {p : P × P | 0 < p.1.1.im * p.2.1.im} = {p : P × P | 0 ≤ p.1.1.im * p.2.1.im}`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `⟨fun h => le_of_lt h, fun h => lt_of_le_of_ne h (Ne.symm (mul_ne_zero p.1.2 p.2.2))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `isClosed_le continuous_const hc`. Establish `hfr : frontier {p : P × P | 0 < p.1.1.im * p.2.1.im} = ∅`. Rewrite using `[frontier, hclosed.closure_eq, hopen.interior_eq, Set.sdiff_self]`. Use `show Continuous (fun p : P × P => if 0 < p.1.1.im * p.2.1.im then 4 * (p.1.1.im * p.2.1.im) / ‖p.1.1 - conj p.2.1‖ ^ 2 else 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `continuous_if` to reduce the goal to its premises. Introduce `a ha`. Simplify using `[hfr] at ha`. Rewrite using `[hclosed.closure_eq]`. Conclude with `((continuous_const.mul hc).continuousOn).div hd.continuousOn (fun p hp => (pos_den (z := p.1.1) (w := p.2.1) hp).ne')`.
-
-Conclude with `continuousOn_const`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p5 : Continuous (fun p : P × P => kap p.1 p.2) := by
   have hv1 : Continuous (fun p : P × P => p.1.1) := continuous_subtype_val.comp continuous_fst
@@ -186,11 +182,11 @@ theorem p5 : Continuous (fun p : P × P => kap p.1 p.2) := by
   · exact continuousOn_const
 
 /- English proof (translation)
-Establish `hdet : (!![z.1.im, z.1.re; 0, 1] : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0`. Rewrite using `[Matrix.det_fin_two_of]`. Simplify using `using z.2`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, rfl, rfl, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show num (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) Complex.I / den (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) Complex.I = z.1`. Establish `h00 : (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) 0 0 = z.1.im` using `rfl`. Establish `h01 : (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) 0 1 = z.1.re` using `rfl`. Establish `h10 : (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) 1 0 = 0` using `rfl`. Establish `h11 : (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) 1 1 = 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[num, den, h00, h01, h10, h11]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem p6 (z : P) : ∃ g : GL (Fin 2) ℝ, g 1 0 = 0 ∧ g 1 1 = 1 ∧ g • iP = z := by
   have hdet : (!![z.1.im, z.1.re; 0, 1] : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0 := by
@@ -212,7 +208,7 @@ end UpperTheory.Esk.HyperbolicKappaLemmas
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-Unfold `B1c`. Conclude with `⟨HyperbolicKappaLemmas.p1, HyperbolicKappaLemmas.p2, HyperbolicKappaLemmas.p3, HyperbolicKappaLemmas.p4, HyperbolicKappaLemmas.p5, HyperbolicKappaLemmas.p6⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem hyperbolic_kappa_properties_proof : B1c := by
   unfold B1c

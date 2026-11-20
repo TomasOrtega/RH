@@ -25,9 +25,9 @@ def shift (c : F) : MvPolynomial (Option (Idx D N)) F →ₐ[F] MvPolynomial (Op
   aeval (shiftFun F D N c)
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(_ | (p | j | j))`. Simplify using `[shift, shiftFun]`. Simplify using `[shift, shiftFun]`. Simplify using `[shift, shiftFun]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[shift, shiftFun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shift_comp (c : F) : (shift F D N c).comp (shift F D N (-c)) = AlgHom.id F _ := by
   apply MvPolynomial.algHom_ext
@@ -46,14 +46,14 @@ def place : Fin (D + 1) × Fin N → Option (Idx D N) := fun p =>
     (fun i => some (Sum.inl (i, p.2))) p.1
 
 /- English proof (translation)
-Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Apply the tactic sequence `induction a using Fin.lastCases <;> induction a' using Fin.lastCases <;> simp_all [place]`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem place_injective : Function.Injective (place D N) := by
   rintro ⟨a, b⟩ ⟨a', b'⟩ h
   induction a using Fin.lastCases <;> induction a' using Fin.lastCases <;> simp_all [place]
 
 /- English proof (translation)
-Establish `key : (aeval (join (fun i j => (Polynomial.C (X (Sum.inl (i, j)) : MvPolynomial (Idx D N) F))) (fun j => Polynomial.C (X (Sum.inr (Sum.inl j))) + Polynomial.C (X (Sum.inr (Sum.inr j))) * Polynomial.X)) : MvPolynomial (Fin (D + 1) × Fin N) F →ₐ[F] Polynomial (MvPolynomial (Idx D N …`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [join, place, theta, shift, shiftFun, AlgEquiv.ofAlgHom_apply]`. Conclude with `congrArg (fun φ => φ f) key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem line_eq (f : MvPolynomial (Fin (D + 1) × Fin N) F) :
     GlobalTheory.PencilDisc.line (fun i j => (X (Sum.inl (i, j)) : MvPolynomial (Idx D N) F))
@@ -71,19 +71,19 @@ theorem line_eq (f : MvPolynomial (Fin (D + 1) × Fin N) F) :
 end GlobalTheory.PencilDisc.GenericLine
 
 /- English proof (translation)
-Establish `hk : ∀ p : MvPolynomial σ K, killCompl hg (rename g p) = p` using `killCompl_rename_app hg`. Establish `hf0 : rename g f ≠ 0`. Introduce `h`. Apply `hf.ne_zero` to reduce the goal to its premises. Rewrite using `[← hk f, h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hvars : ∀ a : MvPolynomial τ K, a ∣ rename g f → ∃ q, rename g q = a`. Introduce and unpack `a ⟨b, hab⟩`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[zero_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf0 hab`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[mul_zero]`. Conclude with `hf0 hab`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exists_rename_eq_of_vars_subset_range a g hg ?_` and prove the remaining obligations. Introduce `i hi`. Assume the negation of the conclusion as `hni`. Establish `h1 : degreeOf i (rename g f) = 0`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : i ∈ (rename g f).vars` using `mem_vars_iff_degreeOf_ne_zero.2 hne`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 (vars_rename g f hmem)`. Conclude with `hni ⟨j, rfl⟩`. Rewrite `h1` using `[hab, degreeOf_mul_eq ha hb]`. Conclude with `mem_vars_iff_degreeOf_ne_zero.1 (Finset.mem_coe.1 hi) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `irreducible_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hu`. Conclude with `(irreducible_iff.1 hf).1 (by simpa [hk] using hu.map (killCompl hg))`. Introduce `a b hab`. Take `⟨a', rfl⟩` from `hvars a ⟨b, hab⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Take `⟨b', rfl⟩` from `hvars b ⟨rename g a', by rw [hab, mul_comm]⟩`. Rewrite `hab` using `[← map_mul]`. Break down `(irreducible_iff.1 hf).2 (rename_injective g hg hab) with h | h` into its components or cases. Conclude with `Or.inl (h.map _)`. Conclude with `Or.inr (h.map _)`.
+A detailed English derivation is pending.
 -/
 private theorem irreducible_rename_of_injective' {σ τ K : Type} [Field K] (g : σ → τ)
     (hg : Function.Injective g) (f : MvPolynomial σ K) (hf : Irreducible f) :
@@ -128,7 +128,7 @@ private theorem irreducible_rename_of_injective' {σ τ K : Type} [Field K] (g :
 open GlobalTheory.PencilDisc.GenericLine in
 
 /- English proof (translation)
-Rewrite using `[line_eq F D N f, MulEquiv.irreducible_iff, MulEquiv.irreducible_iff]`. Conclude with `irreducible_rename_of_injective' (place D N) (place_injective D N) f hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PencilDisc.irreducible_line_generic (F : Type) [Field F] (D N : ℕ)
     (f : MvPolynomial (Fin (D + 1) × Fin N) F) (hf : Irreducible f) :

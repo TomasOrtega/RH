@@ -15,7 +15,7 @@ section Lemmas
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_mul (g h : GL (Fin r) E) (v : Fin r → E) :
     ((g * h : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v =
@@ -23,14 +23,14 @@ theorem mulVec_mul (g h : GL (Fin r) E) (v : Fin r → E) :
   rw [Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_inv_mulVec (g : GL (Fin r) E) (v : Fin r → E) :
     ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((g : Matrix (Fin r) (Fin r) E) *ᵥ v) = v := by
   rw [← mulVec_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_mulVec_inv (g : GL (Fin r) E) (v : Fin r → E) :
     (g : Matrix (Fin r) (Fin r) E) *ᵥ (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = v := by
@@ -39,9 +39,7 @@ theorem mulVec_mulVec_inv (g : GL (Fin r) E) (v : Fin r → E) :
 variable {X X' : Data E r} {N : ℕ}
 
 /- English proof (translation)
-Use `⟨h.psi, h.p0, h.xi, fun u v => ?_, fun v hv => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_mul, mulVec_mul, hg.1, h.iso]`. Rewrite using `[mulVec_mul, ← Matrix.mulVec_smul]`. Conclude with `(hg.2 _).1 (h.lat v hv)`. Rewrite using `[mul_inv_rev, mulVec_mul]`.
-
-Conclude with `h.lat' _ ((hg.2 _).2 (by rw [mulVec_mulVec_inv]; exact hw))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qmatch_stab_mul {a g : GL (Fin r) E} (h : QMatch X X' N a) (hg : IsUStab X'.Gm X'.Λ g) :
     QMatch X X' N (g * a) := by
@@ -56,9 +54,9 @@ def InL (X' : Data E r) (N : ℕ) (a : GL (Fin r) E) (v : Fin r → E) : Prop :=
   (N : E)⁻¹ • ((a : Matrix (Fin r) (Fin r) E) *ᵥ v) ∈ X'.Λ
 
 /- English proof (translation)
-Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Establish `key : ∀ g : GL (Fin r) E, (N : E)⁻¹ • ((g : Matrix (Fin r) (Fin r) E) *ᵥ ((N : E) • (((a'⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ w))) = (g : Matrix (Fin r) (Fin r) E) *ᵥ (((a'⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ w)`. Introduce `g`. Rewrite using `[Matrix.mulVec_smul, smul_smul, inv_mul_cancel₀ hN', one_smul]`. Establish `h1` using `hP _ (h'.lat' w hw) (by unfold InL; rw [key, mulVec_mulVec_inv]; exact hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `InL at h1`. Rewrite `h1` using `[key]`. Rewrite using `[mulVec_mul]`. Conclude with `h1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inL_transfer (hN : 0 < N) {a a' : GL (Fin r) E} (h' : QMatch X X' N a')
     (hP : ∀ v ∈ X.Λ, InL X' N a' v → InL X' N a v) {w : Fin r → E} (hw : w ∈ X'.Λ) :
@@ -76,7 +74,7 @@ theorem inL_transfer (hN : 0 < N) {a a' : GL (Fin r) E} (h' : QMatch X X' N a')
   exact h1
 
 /- English proof (translation)
-Use `⟨fun x y => ?_, fun x => ⟨fun hx => inL_transfer hN h' (fun v hv => (hP v hv).2) hx, fun hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mulVec_mul, mulVec_mul, h.iso, ← h'.iso, mulVec_mulVec_inv, mulVec_mulVec_inv]`. Use `inL_transfer hN h (fun v hv => (hP v hv).1) hx` as an intermediate fact. Rewrite `this` using `[mulVec_mul, mulVec_mul, mulVec_inv_mulVec, mulVec_mulVec_inv]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUStab_of_inL (hN : 0 < N) {a a' : GL (Fin r) E} (h : QMatch X X' N a) (h' : QMatch X X' N a')
     (hP : ∀ v ∈ X.Λ, InL X' N a v ↔ InL X' N a' v) : IsUStab X'.Gm X'.Λ (a * a'⁻¹) := by
@@ -88,23 +86,19 @@ theorem isUStab_of_inL (hN : 0 < N) {a a' : GL (Fin r) E} (h : QMatch X X' N a) 
 end Lemmas
 
 /- English proof (translation)
-Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Use `set A := X.Λ.toAddSubgroup`. Establish `hfg : A.FG` using `by haveI : Module.Finite (𝓞 E) X.Λ := Module.Finite.iff_fg.2 X.Λ_fg haveI : Module.Finite ℤ X.Λ := Module.Finite.trans (𝓞 E) X.Λ`. Conclude with `(AddGroup.fg_iff_addSubgroup_fg _).1 (Module.Finite.iff_addGroup_fg.1 this)`. Use `haveI : AddGroup.FG A := (AddGroup.fg_iff_addSubgroup_fg _).2 hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K := (nsmulAddMonoidHom (α := A) (N * N)).range`. Use `haveI : K.FiniteIndex := AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg A (mul_ne_zero hN.ne' hN.ne')`. Use `haveI : Fintype (Set (A ⧸ K)) := Fintype.ofFinite _`. Set `f : GL (Fin r) E → Set (A ⧸ K)` to `fun a => (QuotientAddGroup.mk : A → A ⧸ K) '' {v | InL X' N a (v : Fin r → E)}`. Establish `hf : ∀ a, QMatch X X' N a → ∀ v : A, (QuotientAddGroup.mk v : A ⧸ K) ∈ f a ↔ InL X' N a (v : Fin r → E)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v', hv', he⟩`. Take `⟨u, hu⟩` from `QuotientAddGroup.eq.1 he`. Establish `hv : (v : Fin r → E) = (v' : Fin r → E) + ((N : E) * N) • (u : Fin r → E)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congrArg (fun z : A => (z : Fin r → E)) hu` as an intermediate fact. Simplify using `only [nsmulAddMonoidHom_apply, AddSubgroup.coe_add, AddSubgroup.coe_neg, AddSubgroup.coe_nsmul] at this`. Rewrite using `[← Nat.cast_mul, Nat.cast_smul_eq_nsmul, this]`. Normalize the expressions using the abelian group laws. Use `show InL X' N a (v : Fin r → E)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hv'' : InL X' N a (v' : Fin r → E)` using `hv'`. Unfold `InL at hv'' ⊢`. Rewrite using `[hv, Matrix.mulVec_add, Matrix.mulVec_smul, smul_add, smul_smul, ← _root_.mul_assoc, inv_mul_cancel₀ hN0, _root_.one_mul]`. Conclude with `X'.Λ.add_mem hv'' (ha.lat _ u.2)`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨v, h, rfl⟩`. Set `rep : Set (A ⧸ K) → GL (Fin r) E` to `fun T => if h : ∃ a, QMatch X X' N a ∧ f a = T then h.choose else 1`. Take `⟨S0, hS0⟩` from `X'.Γ_index`. Use `⟨((Finset.univ ×ˢ S0).image fun p => p.2⁻¹ * rep p.1).filter (QMatch X X' N), fun s hs => (Finset.mem_filter.1 hs).2, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ a', QMatch X X' N a' ∧ f a' = f a` using `⟨a, ha, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrep : rep (f a) = hex.choose` using `dif_pos hex`. Take `⟨ha', hfa⟩` from `hex.choose_spec`. Establish `hP : ∀ v ∈ X.Λ, InL X' N hex.choose v ↔ InL X' N a v`. Introduce `v hv`. Rewrite using `[← hf _ ha' ⟨v, hv⟩, ← hf a ha ⟨v, hv⟩, hfa]`.
-
-Take `⟨s, hs, hsΓ⟩` from `hS0 _ (isUStab_of_inL hN ha' ha hP)`. Establish `hq` using `qmatch_stab_mul ha (X'.Γ_stab _ hsΓ)`. Establish `e : s⁻¹ * (hex.choose * a⁻¹) * a = s⁻¹ * hex.choose` using `by group`. Rewrite `hq` using `[e]`. Use `⟨s⁻¹ * hex.choose, Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨(f a, s), Finset.mem_product.2 ⟨Finset.mem_univ _, hs⟩, ?_⟩, hq⟩, (s⁻¹ * (hex.choose * a⁻¹))⁻¹, X'.Γ.inv_mem hsΓ, by group⟩` and prove the remaining obligations.
-
-Use `show s⁻¹ * rep (f a) = s⁻¹ * hex.choose`. Rewrite using `[hrep]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_reps (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X X' : Data E r) (N : ℕ)
     (hN : 0 < N) : ∃ S : Finset (GL (Fin r) E), (∀ s ∈ S, QMatch X X' N s) ∧

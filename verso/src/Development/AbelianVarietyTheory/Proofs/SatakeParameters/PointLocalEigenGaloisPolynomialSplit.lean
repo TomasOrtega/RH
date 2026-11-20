@@ -16,17 +16,15 @@ namespace GlobalTheory.PtLocalEig
 open Formalism.L2
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨w', hover, hw'⟩` from `hmem`. Take `⟨-, e2⟩` from `(D.nd.locs_mem j w i).1 h`. Establish `hl : D.nd.l i = D.what₂.places.resChar w` using `by rw [← D.nd.w_l i, e2]`. Establish `hp : ∀ p : ℕ, w' ∈ placesOver D.host.E p → v ∈ placesOver D.host.E p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `h1 : algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ w'.asIdeal` using `by rw [map_natCast]; exact hp`. Establish `h2 : (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.v.asIdeal`. Rewrite using `[← hover]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.w.asIdeal`. Rewrite using `[← Ideal.mem_comap, s.w_under]`. Conclude with `h2`. Rewrite `h3` using `[map_natCast]`. Conclude with `(hc (p : 𝓞 D.host.E) (p : 𝓞 D.host.E) (by simp)).2 h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hw' with hQ | ⟨kk, hg⟩ | hpd` into its components or cases. Rewrite `hQ` using `[T.Q_eq j w i h]`. Establish `hsw : s.w ∈ T.B.Qc j w` using `T.B.Qc_over j w w' s.w hQ ⟨s.v, hover, s.w_under⟩`. Conclude with `hvk.2.2.2.1 (T.B.Qc_conj j w v s.w hsw hc)`. Apply `hvk.2.2.1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the first alternative. Prove the second alternative.
 
-Use `⟨?_, hvk.2.1⟩` and prove the remaining obligations. Establish `hv` using `hp _ hg`. Use `fin_cases kk`. Conclude with `Or.inl hv`. Conclude with `Or.inr (Or.inl hv)`.
-
-Apply `hvk.2.2.1` to reduce the goal to its premises. Use `⟨?_, hvk.2.1⟩` and prove the remaining obligations. Rewrite `hpd` using `[hl]`. Conclude with `Or.inr (Or.inr (hp _ hpd))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem not_bad_of_genAt {D : D7} {M : Formalism.L2.MtFam D} (T : Formalism.L2.NormalizedLocalCompatibility D M) (j : ℕ) (w : D.what₂.places.Pl)
     (i : D.nd.Loc) (h : i ∈ D.nd.locs j w) (v : PlE D.host) (k : ℕ) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
@@ -63,47 +61,43 @@ theorem not_bad_of_genAt {D : D7} {M : Formalism.L2.MtFam D} (T : Formalism.L2.N
     exact Or.inr (Or.inr (hp _ hpd))
 
 /- English proof (translation)
-Introduce `D M HT HR AV NL i hyp P x hcong`. Establish `tN0 : ∀ (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (k : ℕ), Formalism.L2.NG.tN (M.loc i).J s ϖ k (0 : Formalism.AUTREP.GAf D.host.E D.R.nV → (M.loc i).wt.W) = 0`. Introduce `s ϖ k`. Use extensionality with `g`. Simplify using `[Formalism.L2.NG.tN, Formalism.L2.NG.heckeD]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hP0 : D.naut.typeV i P = ⊥`. Use `⟨x, (AV.ptV i P x).2 ?_⟩` and prove the remaining obligations. Introduce `v k s ϖ _ _ _ _ _ y hy`. Rewrite `hy` using `[hP0, Submodule.mem_bot]`. Substitute `hy` using the available equality.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[map_zero, smul_zero, tN0]`. Take `⟨y0, hy0, hy0ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP0`. Establish `h : i ∈ D.nd.locs (D.nd.j i) (D.nd.w i)` using `(D.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Set `lamF : PlE D.host → ℕ → ℂ` to `fun v => if hv : SplitOut D.nd i v then Classical.choose (hyp P v hv) else 0`. Establish `hlamF : ∀ v (hv : SplitOut D.nd i v), lamF v = Classical.choose (hyp P v hv)` using `fun v hv => dif_pos hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinjO : Function.Injective (iotaO D.nd D.naut i)`. Unfold `iotaO`. Simplify using `only [RingHom.coe_comp]`. Conclude with `(D.naut.iotaQC i).injective.comp ((D.naut.iotaQ i).injective.comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))))`. Establish `hcoef : ∀ v k, SplitOut D.nd i v → 1 ≤ k → k ≤ D.R.nV → ∃ a : D.nd.O i, iotaO D.nd D.naut i a = lamF v k ∧ IsLocalRing.residue (D.nd.O i) a = IsLocalRing.residue (D.nd.O i) ((D.nd.hT i v k : D.nd.X i → D.nd.O i) x)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v k hv hk1 hk2`. Take `⟨p, hp1, hp2⟩` from `hcong v hv`. Establish `e1` using `(Classical.choose_spec (hyp P v hv)).1`. Rewrite `e1` using `[← hlamF v hv]`. Conclude with `coeff_extract (iotaO D.nd D.naut i) hinjO D.R.nV (normV v) (normV_unit D i v hv.2.1) p (lamF v) (fun k => (D.nd.hT i v k : D.nd.X i → D.nd.O i) x) (hp1.trans e1) hp2 k hk1 hk2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `aF : PlE D.host → ℕ → D.nd.O i` to `fun v k => if hv : SplitOut D.nd i v ∧ 1 ≤ k ∧ k ≤ D.R.nV then Classical.choose (hcoef v k hv.1 hv.2.1 hv.2.2) else 0`. Establish `haF : ∀ v k (hv : SplitOut D.nd i v ∧ 1 ≤ k ∧ k ≤ D.R.nV), iotaO D.nd D.naut i (aF v k) = lamF v k ∧ IsLocalRing.residue (D.nd.O i) (aF v k) = IsLocalRing.residue (D.nd.O i) ((D.nd.hT i v k : D.nd.X i → D.nd.O i) x)`. Introduce `v k hv`. Simplify using `only [aF, dif_pos hv]`. Conclude with `Classical.choose_spec (hcoef v k hv.1 hv.2.1 hv.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiotaC : ∀ z, iotaO D.nd D.naut i z = NL.iotaC _ _ (NL.phO _ _ i h z)` using `NL.iotaC_coh _ _ i h`. Establish `hinjC : Function.Injective (NL.iotaC (D.nd.j i) (D.nd.w i))`. Introduce `a b hab`. Establish `e2 : (NL.phO _ _ i h).symm a = (NL.phO _ _ i h).symm b` using `hinjO (by`. Rewrite using `[hiotaC, hiotaC, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hab)`. Simplify using `using congrArg (NL.phO _ _ i h) e2`. Set `φ : FractionRing (NL.B.Oc (D.nd.j i) (D.nd.w i)) →+* ℂ` to `IsFractionRing.lift hinjC`. Establish `hφalg : ∀ z, φ (algebraMap _ _ z) = NL.iotaC _ _ z` using `fun z => IsFractionRing.lift_algebraMap hinjC z`. Establish `hφK : φ.comp (NL.phK _ _ i h).toRingHom = (D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors (D.nd.O i))` to reduce the goal to its premises. Use extensionality with `z`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, NL.phK_alg, hφalg]`. Rewrite using `[← hiotaC]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ y, φ (NL.B.ec _ _ y) = D.what₂.embLL y`. Introduce `y`. Rewrite using `[← NL.phK_emb _ _ i h y, ← D.naut.iota_LL i y]`. Conclude with `congrArg (fun f : FractionRing (D.nd.O i) →+* ℂ => f (D.nd.embK i y)) hφK`. Set `κ : PlE D.host → ℕ → FractionRing (NL.B.Oc (D.nd.j i) (D.nd.w i))` to `fun v k => algebraMap _ _ (NL.phO _ _ i h (aF v k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hκ : ∀ v k, SplitOut D.nd i v → 1 ≤ k → k ≤ D.R.nV → φ (κ v k) = lamF v k`. Introduce `v k hv hk1 hk2`. Simplify using `only [κ, hφalg]`. Rewrite using `[← hiotaC]`. Conclude with `(haF v k ⟨hv, hk1, hk2⟩).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, hene, he⟩` from `GlobalTheory.T.complexHeckeEigenvector_descends_to_coefficientField D M NL.B (D.nd.j i) (D.nd.w i) (D.nd.mu i) (D.nd.j_range i).1 (D.nd.j_range i).2 (D.nd.mu_w i) φ hφ κ y0 hy0ne (by`. Introduce `v k hvk`. Take `⟨hv, hk1, hk2⟩` from `(Formalism.L2.genAt_iff NL h v k).2 hvk`. Take `⟨s, ϖ, hc, hu⟩` from `GlobalTheory.T.splitEx_every_datum D v hv.1`. Establish `hbad : s.v ∉ Formalism.L2.badPl D i` using `not_bad_of_genAt NL _ _ i h v k s hvk hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin` using `GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level D.host.E D.R.nV (M.loc i).J (M.loc i).χ (Formalism.L2.badPl D i) (HT.J_hyp i) s ϖ k hbad hu`. Use `⟨s, ϖ, hc, hu, ?_, ?_⟩` and prove the remaining obligations. Introduce `c f f' show Formalism.L2.NG.tN (M.loc i).J s ϖ k (c • f + f') = c • Formalism.L2.NG.tN (M.loc i).J s ϖ k f + Formalism.L2.NG.tN (M.loc i).J s ϖ k f'`. Simplify using `only [Formalism.L2.NG.tN]`. Rewrite using `[heckeD_add _ _ _ _ hfin c f f', smul_add, smul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hκ v k hv hk1 hk2]`. Establish `e3` using `(Classical.choose_spec (hyp P v hv)).2 k s ϖ hc hu hk1 hk2 y0 hy0`. Rewrite `e3` using `[← hlamF v hv]`. Conclude with `e3)`. Establish `hinjK : Function.Injective (algebraMap (NL.B.Oc (D.nd.j i) (D.nd.w i)) (FractionRing (NL.B.Oc (D.nd.j i) (D.nd.w i))))` using `IsFractionRing.injective _ _`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨ψ, hψ, hψW⟩` from `pt_of_eigvec (Formalism.L2.heckeGens NL.B (D.nd.j i) (D.nd.w i)) e hene hinjK (by`. Introduce and unpack `_ ⟨v, k, hvk, rfl⟩`. Conclude with `⟨NL.phO _ _ i h (aF v k), he v k hvk⟩)`. Establish `hψv : ∀ v k (hvk : Formalism.L2.GenAt D (D.what₂.places.resChar (D.nd.w i)) (NL.B.Qc (D.nd.j i) (D.nd.w i)) v k), ψ ⟨NL.B.hK _ _ v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ = NL.phO _ _ i h (aF v k)`. Introduce `v k hvk`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinjK` to reduce the goal to its premises. Establish `h1` using `hψ ⟨NL.B.hK _ _ v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩`. Establish `h2` using `he v k hvk`. Express the relevant statement in the definitionally equal form `NL.B.hK _ _ v k e = _ at h1`. Rewrite `h1` using `[h2]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(smul_left_injective _ hene h1).symm`. Establish `hcls : Formalism.L2.NCov.cls ψ = NL.mx _ _ i`. Use `(cls_eq_of_residue _ ψ (NL.ptX _ _ i h x).1 ?_).trans (NL.ptX _ _ i h x).2.1` and prove the remaining obligations. Introduce and unpack `_ ⟨v, k, hvk, rfl⟩`. Rewrite using `[hψv v k hvk, ← NL.ptX_hT _ _ i h x v k hvk]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hv, hk1, hk2⟩` from `(Formalism.L2.genAt_iff NL h v k).2 hvk`. Conclude with `residue_map_equiv (NL.phO _ _ i h) (haF v k ⟨hv, hk1, hk2⟩).2`. Establish `hW : Formalism.L2.NCov.W (Formalism.L2.heckeAlg NL.B _ _) (Formalism.L2.NCov.pt ψ) ≠ ⊥`. Introduce `h0`. Apply `hene` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h3` using `hψW`. Rewrite `h3` using `[h0]`. Conclude with `(Submodule.mem_bot _).1 h3`. Use `⟨(NL.ptX _ _ i h).symm ⟨ψ, hcls, hW⟩, (AV.ptV i P _).2 ?_⟩` and prove the remaining obligations. Introduce `v k s ϖ hv hc hu hk1 hk2 y hy`.
-
-Establish `hvk` using `(Formalism.L2.genAt_iff NL h v k).1 ⟨hv, hk1, hk2⟩`. Establish `e1` using `(Classical.choose_spec (hyp P v hv)).2 k s ϖ hc hu hk1 hk2 y hy`. Rewrite `e1` using `[← hlamF v hv]`. Rewrite using `[e1]`. Use `congr 1`.
-
-Use `show lamF v k = iotaO D.nd D.naut i _`. Rewrite using `[hiotaC, NL.ptX_hT _ _ i h _ v k hvk, Equiv.apply_symm_apply]`. Use `show lamF v k = NL.iotaC _ _ (ψ ⟨NL.B.hK _ _ v k, _⟩)`. Rewrite using `[hψv v k hvk, ← hiotaC]`. Conclude with `(haF v k ⟨hv, hk1, hk2⟩).1.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (M : Formalism.L2.MtFam D), Formalism.L2.HeckeTied D M → Formalism.L2.HeckeRational D M → Formalism.L2.AVTied D M → Formalism.L2.NormalizedLocalCompatibility D M → ∀ i : D.nd.Loc, (∀ (P : D.naut.AV i) (w : PlE D.host), SplitOut D.nd i w → ∃ lam : ℕ → ℂ, galPol D.naut (D.naut.lpTw (D.naut.locV i P w) ((1 - (D.R.nV : ℝ)) / 2)) = X ^ D.R.nV + ∑ k ∈ Finset.Icc 1 D.R.nV, C ((-1) ^ k * ((normV w : ℕ) : ℂ) ^ (k * (k - 1) / 2) * lam k) * X ^ (D.R.nV - k) ∧ ∀ (k : ℕ) (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host w s.w → Formalism.AUTREP.IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → ∀ y ∈ D.naut.typeV i P, Formalism.L2.NG.tN (M.loc i).J s ϖ k ((M.loc i).real y) = lam k • (M.loc i).real y) → GlobalTheory.ThetaExh.PtLocal D.nd D.naut i := by
   intro D M HT HR AV NL i hyp P x hcong

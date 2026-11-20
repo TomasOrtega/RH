@@ -32,7 +32,7 @@ def HasDeg (k : ℕ) (α : Alt n) : Prop := ∀ S, (bas n).repr α S ≠ 0 → S
 def degPart (n k : ℕ) : Alt n →ₗ[ℂ] Alt n := (bas n).constr ℂ fun S => if S.card = k then bas n S else 0
 
 /- English proof (translation)
-Rewrite using `[PullType.repr_scale, ← pow_add, ← Finset.card_filter_add_card_filter_not (s := S) (·.val < n)]`. Simplify using `only [not_lt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_scale_self (t : ℂ) (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (PullType.scale n t t α) S = t ^ S.card * (bas n).repr α S := by
@@ -40,11 +40,11 @@ theorem repr_scale_self (t : ℂ) (α : Alt n) (S : Finset (Fin (n + n))) :
   simp only [not_lt]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[repr_scale_self, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Distinguish the cases in `hS : (bas n).repr α S = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hS]`. Rewrite using `[h S hS]`. Introduce `h S hS`. Establish `e` using `congrArg (fun β => (bas n).repr β S) h`. Simplify using `only [repr_scale_self, map_smul, Finsupp.smul_apply, smul_eq_mul] at e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (2 : ℕ) ^ S.card = 2 ^ k` using `by exact_mod_cast mul_right_cancel₀ hS e`. Conclude with `Nat.pow_right_injective le_rfl this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDeg_iff_scale (k : ℕ) (α : Alt n) : HasDeg k α ↔ PullType.scale n 2 2 α = (2 : ℂ) ^ k • α := by
   constructor
@@ -61,47 +61,47 @@ theorem hasDeg_iff_scale (k : ℕ) (α : Alt n) : HasDeg k α ↔ PullType.scale
     exact Nat.pow_right_injective le_rfl this
 
 /- English proof (translation)
-Rewrite `hα`, `hβ`, the goal using `[hasDeg_iff_scale]`. Rewrite using `[map_mul, hα, hβ, smul_mul_smul_comm, pow_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.mul {k l : ℕ} {α β : Alt n} (hα : HasDeg k α) (hβ : HasDeg l β) : HasDeg (k + l) (α * β) := by
   rw [hasDeg_iff_scale] at hα hβ ⊢
   rw [map_mul, hα, hβ, smul_mul_smul_comm, pow_add]
 
 /- English proof (translation)
-Introduce `S h` and use `by simp at h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasDeg.zero (k : ℕ) : HasDeg k (0 : Alt n) := fun S h => by simp at h
 
 /- English proof (translation)
-Rewrite `hα`, `hβ`, the goal using `[hasDeg_iff_scale]`. Rewrite using `[map_add, hα, hβ, smul_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.add {k : ℕ} {α β : Alt n} (hα : HasDeg k α) (hβ : HasDeg k β) : HasDeg k (α + β) := by
   rw [hasDeg_iff_scale] at hα hβ ⊢
   rw [map_add, hα, hβ, smul_add]
 
 /- English proof (translation)
-Rewrite `hα`, the goal using `[hasDeg_iff_scale]`. Rewrite using `[map_smul, hα, smul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.smul {k : ℕ} {α : Alt n} (c : ℂ) (hα : HasDeg k α) : HasDeg k (c • α) := by
   rw [hasDeg_iff_scale] at hα ⊢
   rw [map_smul, hα, smul_comm]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ _ (fun _ _ => HasDeg.add) (.zero k) h`.
+A detailed English derivation is pending.
 -/
 theorem HasDeg.sum {k : ℕ} {ι : Type} {t : Finset ι} {α : ι → Alt n} (h : ∀ i ∈ t, HasDeg k (α i)) :
     HasDeg k (∑ i ∈ t, α i) :=
   Finset.sum_induction _ _ (fun _ _ => HasDeg.add) (.zero k) h
 
 /- English proof (translation)
-Rewrite `hα`, the goal using `[hasDeg_iff_scale]`. Rewrite using `[PullType.scale_pull, hα, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.pull {k : ℕ} {α : Alt m} (L : V n →L[ℂ] V m) (hα : HasDeg k α) : HasDeg k (pull L α) := by
   rw [hasDeg_iff_scale] at hα ⊢
   rw [PullType.scale_pull, hα, map_smul]
 
 /- English proof (translation)
-Introduce `T hT` and use `by rw [Module.Basis.repr_self, Finsupp.single_apply] at hT split_ifs at hT with h exacts [h ▸ rfl, (hT rfl).elim]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDeg_bas (S : Finset (Fin (n + n))) : HasDeg S.card (bas n S) := fun T hT => by
   rw [Module.Basis.repr_self, Finsupp.single_apply] at hT
@@ -109,15 +109,15 @@ theorem hasDeg_bas (S : Finset (Fin (n + n))) : HasDeg S.card (bas n S) := fun T
   exacts [h ▸ rfl, (hT rfl).elim]
 
 /- English proof (translation)
-Rewrite using `[hasDeg_iff_scale, AlgHom.commutes, pow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDeg_algebraMap (c : ℂ) : HasDeg 0 (algebraMap ℂ (Alt n) c) := by
   rw [hasDeg_iff_scale, AlgHom.commutes, pow_zero, one_smul]
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, ← bas_empty]`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Distinguish the cases in `hS : ∅ = S`. Substitute `hS` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (bas n).repr α S = 0`. Assume the negation of the conclusion as `h'`. Conclude with `hS (Finset.card_eq_zero.1 (h S h')).symm`. Simplify using `[this, hS]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HasDeg.eq_algebraMap {α : Alt n} (h : HasDeg 0 α) : α = algebraMap ℂ _ ((bas n).repr α ∅) := by
   rw [Algebra.algebraMap_eq_smul_one, ← bas_empty]
@@ -130,7 +130,7 @@ theorem HasDeg.eq_algebraMap {α : Alt n} (h : HasDeg 0 α) : α = algebraMap �
     simp [this, hS]
 
 /- English proof (translation)
-Rewrite using `[← map_smul]`. Use `(ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[← smul_zero t, ← Matrix.fromBlocks_smul, Matrix.fromBlocks_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_ι (t : ℂ) (u : Fin n ⊕ Fin n → ℂ) :
     PullType.scale n t t (ExteriorAlgebra.ι ℂ u) = t • ExteriorAlgebra.ι ℂ u := by
@@ -140,19 +140,19 @@ theorem scale_ι (t : ℂ) (u : Fin n ⊕ Fin n → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[hasDeg_iff_scale, scale_ι, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDeg_ι (u : Fin n ⊕ Fin n → ℂ) : HasDeg 1 (ExteriorAlgebra.ι ℂ u) := by
   rw [hasDeg_iff_scale, scale_ι, pow_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← (bas n).sum_repr α]`. Use `Submodule.sum_mem _ fun S _ => ?_` and prove the remaining obligations. Distinguish the cases in `hS : (bas n).repr α S = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hS]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← h S hS, bas, ExteriorAlgebra.basis_apply]`. Conclude with `ExteriorAlgebra.ιMulti_range _ _ ⟨_, rfl⟩`. Introduce `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `h using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r => exact hasDeg_algebraMap r`. Consider the case `add x y i _ _ hx hy => exact hx.add hy`. Consider the case `mem_mul u hu i x _ hx`. Take `⟨u, rfl⟩` from `hu`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.succ_eq_one_add]`. Conclude with `(hasDeg_ι u).mul hx`.
+A detailed English derivation is pending.
 -/
 theorem hasDeg_iff_mem (k : ℕ) (α : Alt n) : HasDeg k α ↔ α ∈ ⋀[ℂ]^k (Fin n ⊕ Fin n → ℂ) := by
   constructor
@@ -174,7 +174,7 @@ theorem hasDeg_iff_mem (k : ℕ) (α : Alt n) : HasDeg k α ↔ α ∈ ⋀[ℂ]^
       exact (hasDeg_ι u).mul hx
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas n).sum_repr α]`. Simplify using `only [map_sum, map_smul, degPart, Module.Basis.constr_basis, Finsupp.finset_sum_apply, Finsupp.smul_apply]`. Apply the tactic sequence `rw [Finset.sum_eq_single S (fun T _ h => by split_ifs <;> simp [h]) (by simp)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem repr_degPart (k : ℕ) (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (degPart n k α) S = if S.card = k then (bas n).repr α S else 0 := by
@@ -184,7 +184,7 @@ theorem repr_degPart (k : ℕ) (α : Alt n) (S : Finset (Fin (n + n))) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `S hS` and use `by rw [repr_degPart] at hS by_contra h exact hS (if_neg h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDeg_degPart (k : ℕ) (α : Alt n) : HasDeg k (degPart n k α) := fun S hS => by
   rw [repr_degPart] at hS
@@ -192,7 +192,7 @@ theorem hasDeg_degPart (k : ℕ) (α : Alt n) : HasDeg k (degPart n k α) := fun
   exact hS (if_neg h)
 
 /- English proof (translation)
-Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[repr_degPart]`. Distinguish the cases in `hS : (bas n).repr α S = 0`. Apply the tactic sequence `split_ifs <;> simp [hS]`. Apply the tactic sequence `rw [h S hS] split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem HasDeg.degPart_eq {j : ℕ} {α : Alt n} (h : HasDeg j α) (k : ℕ) : degPart n k α = if j = k then α else 0 := by
   refine (bas n).ext_elem fun S => ?_
@@ -203,7 +203,7 @@ theorem HasDeg.degPart_eq {j : ℕ} {α : Alt n} (h : HasDeg j α) (k : ℕ) : d
     split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: degPart n k ∘ₗ (pull L).toLinearMap = (pull L).toLinearMap ∘ₗ degPart m k` using `(bas m).ext fun S => by`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[((hasDeg_bas S).pull L).degPart_eq, (hasDeg_bas S).degPart_eq, apply_ite (pull L), map_zero]`. Conclude with `LinearMap.congr_fun this α`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degPart_pull (L : V n →L[ℂ] V m) (k : ℕ) (α : Alt m) : degPart n k (pull L α) = pull L (degPart m k α) := by
   have : degPart n k ∘ₗ (pull L).toLinearMap = (pull L).toLinearMap ∘ₗ degPart m k := (bas m).ext fun S => by
@@ -212,9 +212,9 @@ theorem degPart_pull (L : V n →L[ℂ] V m) (k : ℕ) (α : Alt m) : degPart n 
   exact LinearMap.congr_fun this α
 
 /- English proof (translation)
-Establish `h₁ : degPart n (k + 1) ∘ₗ LinearMap.mulLeft ℂ (ExteriorAlgebra.ι ℂ u) = LinearMap.mulLeft ℂ (ExteriorAlgebra.ι ℂ u) ∘ₗ degPart n k` using `(bas n).ext fun S => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Rewrite using `[((hasDeg_ι u).mul (hasDeg_bas S)).degPart_eq, (hasDeg_bas S).degPart_eq, add_comm 1]`. Simplify using the standard rewrite rules. Establish `h₂ : degPart n 0 ∘ₗ LinearMap.mulLeft ℂ (ExteriorAlgebra.ι ℂ u) = 0` using `(bas n).ext fun S => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Rewrite using `[((hasDeg_ι u).mul (hasDeg_bas S)).degPart_eq]`. Simplify using the standard rewrite rules. Conclude with `⟨LinearMap.congr_fun h₁ α, LinearMap.congr_fun h₂ α⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem degPart_ι_mul (u : Fin n ⊕ Fin n → ℂ) (k : ℕ) (α : Alt n) :
     degPart n (k + 1) (ExteriorAlgebra.ι ℂ u * α) = ExteriorAlgebra.ι ℂ u * degPart n k α ∧
@@ -231,13 +231,13 @@ theorem degPart_ι_mul (u : Fin n ⊕ Fin n → ℂ) (k : ℕ) (α : Alt n) :
   exact ⟨LinearMap.congr_fun h₁ α, LinearMap.congr_fun h₂ α⟩
 
 /- English proof (translation)
-Rewrite using `[par, scale_ι, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem par_ι (u : Fin n ⊕ Fin n → ℂ) : par n (ExteriorAlgebra.ι ℂ u) = -ExteriorAlgebra.ι ℂ u := by
   rw [par, scale_ι, neg_one_smul]
 
 /- English proof (translation)
-Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[par, repr_scale_self, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Distinguish the cases in `hS : (bas n).repr α S = 0`. Simplify using `[hS]`. Rewrite using `[h S hS]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.par_eq {k : ℕ} {α : Alt n} (h : HasDeg k α) : par n α = (-1 : ℂ) ^ k • α := by
   refine (bas n).ext_elem fun S => ?_
@@ -247,7 +247,7 @@ theorem HasDeg.par_eq {k : ℕ} {α : Alt n} (h : HasDeg k α) : par n α = (-1 
   · rw [h S hS]
 
 /- English proof (translation)
-Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[par, repr_scale_self, repr_scale_self, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem par_par (α : Alt n) : par n (par n α) = α := by
   refine (bas n).ext_elem fun S => ?_
@@ -255,9 +255,9 @@ theorem par_par (α : Alt n) : par n (par n α) = α := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `α using ExteriorAlgebra.induction with`. Consider the case `algebraMap r => rw [AlgHom.commutes, Algebra.commutes]`. Consider the case `ι x => rw [par_ι, neg_mul]`. Conclude with `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap u x)`. Consider the case `mul a b ha hb => rw [← mul_assoc, ha, mul_assoc, hb, map_mul, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [mul_add, ha, hb, map_add, add_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ι_mul_eq (u : Fin n ⊕ Fin n → ℂ) (α : Alt n) :
     ExteriorAlgebra.ι ℂ u * α = par n α * ExteriorAlgebra.ι ℂ u := by
@@ -268,9 +268,9 @@ theorem ι_mul_eq (u : Fin n ⊕ Fin n → ℂ) (α : Alt n) :
   | add a b ha hb => rw [mul_add, ha, hb, map_add, add_mul]
 
 /- English proof (translation)
-Rewrite `hα` using `[hasDeg_iff_mem]`. Proceed by induction on `hα using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r => rw [zero_mul, pow_zero, one_smul, Algebra.commutes]`. Consider the case `add x y i _ _ hx hy => rw [add_mul, mul_add, hx, hy, smul_add]`. Consider the case `mem_mul u hu i x _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨u, rfl⟩` from `hu`. Rewrite using `[mul_assoc, hx, mul_smul_comm, ← mul_assoc, ι_mul_eq, hβ.par_eq, smul_mul_assoc, smul_mul_assoc, smul_smul, ← pow_add, mul_assoc, Nat.succ_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.mul_comm {k l : ℕ} {α β : Alt n} (hα : HasDeg k α) (hβ : HasDeg l β) :
     α * β = (-1 : ℂ) ^ (k * l) • (β * α) := by
@@ -284,13 +284,11 @@ theorem HasDeg.mul_comm {k l : ℕ} {α β : Alt n} (hα : HasDeg k α) (hβ : H
       ← pow_add, mul_assoc, Nat.succ_mul]
 
 /- English proof (translation)
-Establish `key (S : Finset (Fin (n + n))) : bas n S * β ∈ holGe n (holCount S + q)`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa [bas_empty, holCount] using hβ`. Consider the case `insert a s ha ih`. Take `⟨ε, e⟩` from `bas_insert_eq ha`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, holCount_insert ha, Units.smul_def, smul_mul_assoc, mul_assoc, add_right_comm]`. Conclude with `zsmul_mem (bas_single_mul_mem a ih) _`. Proceed by induction on `hα using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨S, hS, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `holGe_anti (Nat.add_le_add_right hS _) (key S)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_holGe {p q : ℕ} {α β : Alt n} (hα : α ∈ holGe n p) (hβ : β ∈ holGe n q) : α * β ∈ holGe n (p + q) := by
   have key (S : Finset (Fin (n + n))) : bas n S * β ∈ holGe n (holCount S + q) := by
@@ -309,7 +307,7 @@ theorem mul_mem_holGe {p q : ℕ} {α β : Alt n} (hα : α ∈ holGe n p) (hβ 
   | smul c x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Use `(Finset.card_le_card_of_injOn (t := Finset.range n) Fin.val (fun a ha => ?_) Fin.val_injective.injOn).trans_eq (Finset.card_range n)` and prove the remaining obligations. Simplify using `using (Finset.mem_filter.1 ha).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem holCount_le (S : Finset (Fin (n + n))) : holCount S ≤ n := by
   refine (Finset.card_le_card_of_injOn (t := Finset.range n) Fin.val (fun a ha => ?_)
@@ -331,9 +329,9 @@ def opAt (s : Fin n → Fin n ⊕ Fin n) (F : V n → Alt n) (v : V n) : Alt n :
   ∑ a, ExteriorAlgebra.ι ℂ (Pi.single (s a) 1) * coefwise (fun f => dirD (s a) f v) F
 
 /- English proof (translation)
-Break down `i with a | a` into its components or cases. Simplify using `only [dirD]`. Rewrite using `[del_sum fun p _ => (hf p).fun_const_smul (c p), ContinuousLinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [del_const_smul _ (hf p)]; rfl`. Simplify using `only [dirD]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dbar_sum fun p _ => (hf p).fun_const_smul (c p), ContinuousLinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [dbar_const_smul _ (hf p)]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem dirD_sum_mul (i : Fin n ⊕ Fin n) {ι : Type} [Fintype ι] {f : ι → V n → ℂ} (hf : ∀ p, DifferentiableAt ℝ (f p) v)
     (c : ι → ℂ) : dirD i (fun x => ∑ p, c p • f p x) v = ∑ p, c p • dirD i (f p) v := by
@@ -346,13 +344,13 @@ theorem dirD_sum_mul (i : Fin n ⊕ Fin n) {ι : Type} [Fintype ι] {f : ι → 
     exact Finset.sum_congr rfl fun p _ => by rw [dbar_const_smul _ (hf p)]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with a | a <;> simp [dirD]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dirD_zero (i : Fin n ⊕ Fin n) : dirD i (fun _ => 0) v = 0 := by
   rcases i with a | a <;> simp [dirD]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Conclude with `SecForm.DdcLoc.del_del_comm hf _ _`. Conclude with `(ddbar_eq_del_dbar hf _ _).symm.trans (ddbar_eq_dbar_del hf _ _)`. Conclude with `(ddbar_eq_dbar_del hf _ _).symm.trans (ddbar_eq_del_dbar hf _ _)`. Conclude with `SecForm.DdcLoc.dbar_dbar_comm hf _ _`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dirD_comm {f : V n → ℂ} (hf : ContDiffAt ℝ 2 f v) (i j : Fin n ⊕ Fin n) :
     dirD i (dirD j f) v = dirD j (dirD i f) v := by
@@ -363,7 +361,7 @@ theorem dirD_comm {f : V n → ℂ} (hf : ContDiffAt ℝ 2 f v) (i j : Fin n ⊕
   · exact SecForm.DdcLoc.dbar_dbar_comm hf _ _
 
 /- English proof (translation)
-Break down `i with a | a` into its components or cases. Conclude with `(SecForm.DdcLoc.contDiffAt_del_at (j := 1) hf (by norm_num) _).differentiableAt one_ne_zero`. Conclude with `(SecForm.DdcLoc.contDiffAt_dbar_at (j := 1) hf (by norm_num) _).differentiableAt one_ne_zero`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem differentiableAt_dirD {f : V n → ℂ} (hf : ContDiffAt ℝ 2 f v) (i : Fin n ⊕ Fin n) :
     DifferentiableAt ℝ (dirD i f) v := by
@@ -372,7 +370,7 @@ theorem differentiableAt_dirD {f : V n → ℂ} (hf : ContDiffAt ℝ 2 f v) (i :
   · exact (SecForm.DdcLoc.contDiffAt_dbar_at (j := 1) hf (by norm_num) _).differentiableAt one_ne_zero
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas n).sum_repr α]`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_linear (L : Alt n →ₗ[ℂ] Alt n) (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (L α) S = ∑ T, (bas n).repr (L (bas n T)) S • (bas n).repr α T := by
@@ -380,7 +378,7 @@ theorem repr_linear (L : Alt n →ₗ[ℂ] Alt n) (α : Alt n) (S : Finset (Fin 
   simp only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[FormMul.repr_coefwise, repr_linear L (coefwise _ F)]`. Simplify using `only [repr_linear L (F _), FormMul.repr_coefwise]`. Conclude with `dirD_sum_mul i hF _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coefwise_dirD_linear (i : Fin n ⊕ Fin n) (L : Alt n →ₗ[ℂ] Alt n) {F : V n → Alt n}
     (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v) :
@@ -391,13 +389,11 @@ theorem coefwise_dirD_linear (i : Fin n ⊕ Fin n) (L : Alt n →ₗ[ℂ] Alt n)
   exact dirD_sum_mul i hF _
 
 /- English proof (translation)
-Establish `hd (b : Fin n) (S) : DifferentiableAt ℝ (fun x => (bas n).repr (coefwise (fun f => dirD (t b) f x) F) S) v`. Simplify using `only [FormMul.repr_coefwise]`. Conclude with `differentiableAt_dirD (hF S) _`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e : opAt t F = fun x => ∑ b, LinearMap.mulLeft ℂ (ExteriorAlgebra.ι ℂ (Pi.single (t b) 1)) (coefwise (fun f => dirD (t b) f x) F)` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, coefwise_sum_of, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_dirD_linear _ _ (hd b), LinearMap.mulLeft_apply, mul_assoc]`. Use `congr 2`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [FormMul.repr_coefwise]`. Introduce `S`. Use `dirD_sum_mul (s a) (v := v) (f := fun b x => (bas n).repr (LinearMap.mulLeft ℂ (ExteriorAlgebra.ι ℂ (Pi.single (t b) 1)) (coefwise (fun f => dirD (t b) f x) F)) S) (fun b => by` as an intermediate fact. Simplify using `only [repr_linear (LinearMap.mulLeft ℂ _) (coefwise _ F)]`. Conclude with `DifferentiableAt.fun_sum fun T _ => (hd b T).fun_const_smul _) 1`.
-
-Simplify `this` using `only [Pi.one_apply, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem opAt_opAt (s t : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
     (hF : ∀ S, ContDiffAt ℝ 2 (fun x => (bas n).repr (F x) S) v) :
@@ -423,9 +419,9 @@ theorem opAt_opAt (s t : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
     simpa only [Pi.one_apply, one_smul] using this
 
 /- English proof (translation)
-Rewrite using `[opAt_opAt s t hF, opAt_opAt t s hF, Finset.sum_comm (f := fun a b => ExteriorAlgebra.ι ℂ (Pi.single (t a) 1) * _ * _), ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Establish `: coefwise (fun f => dirD (t b) (dirD (s a) f) v) F = coefwise (fun f => dirD (s a) (dirD (t b) f) v) F` using `(bas n).ext_elem fun S => by rw [FormMul.repr_coefwise, FormMul.repr_coefwise, dirD_comm (hF S)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, ← add_mul, ExteriorAlgebra.ι_add_mul_swap, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opAt_anticomm (s t : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
     (hF : ∀ S, ContDiffAt ℝ 2 (fun x => (bas n).repr (F x) S) v) :
@@ -440,7 +436,7 @@ theorem opAt_anticomm (s t : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
   rw [this, ← add_mul, ExteriorAlgebra.ι_add_mul_swap, zero_mul]
 
 /- English proof (translation)
-Establish `h2 {y : Alt n} (h : y + y = 0) : y = 0`. Rewrite `h` using `[← two_smul ℂ]`. Conclude with `(smul_eq_zero.1 h).resolve_left two_ne_zero`. Conclude with `⟨h2 (opAt_anticomm .inl .inl hF), h2 (opAt_anticomm .inr .inr hF), opAt_anticomm .inl .inr hF⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem delAt_dbarAt_sq {F : V n → Alt n} (hF : ∀ S, ContDiffAt ℝ 2 (fun x => (bas n).repr (F x) S) v) :
     delAt (delAt F) v = 0 ∧ dbarAt (dbarAt F) v = 0 ∧ delAt (dbarAt F) v + dbarAt (delAt F) v = 0 := by
@@ -450,7 +446,7 @@ theorem delAt_dbarAt_sq {F : V n → Alt n} (hF : ∀ S, ContDiffAt ℝ 2 (fun x
   exact ⟨h2 (opAt_anticomm .inl .inl hF), h2 (opAt_anticomm .inr .inr hF), opAt_anticomm .inl .inr hF⟩
 
 /- English proof (translation)
-The claim follows from `have h := FormMul.leibniz_of_comm n F G v (par n (F v)) hF hG ⟨h.1 fun _ => ι_mul_eq _ _, h.2 fun _ => ι_mul_eq _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem delAt_dbarAt_mul {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v)
     (hG : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) :
@@ -460,7 +456,7 @@ theorem delAt_dbarAt_mul {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ
   ⟨h.1 fun _ => ι_mul_eq _ _, h.2 fun _ => ι_mul_eq _ _⟩
 
 /- English proof (translation)
-Rewrite using `[opAt, opAt, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, par_ι, neg_mul, neg_neg]`. Conclude with `congrArg _ (coefwise_dirD_linear (s a) (par n).toLinearMap hF)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opAt_par (s : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
     (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v) :
@@ -471,7 +467,7 @@ theorem opAt_par (s : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
   exact congrArg _ (coefwise_dirD_linear (s a) (par n).toLinearMap hF)
 
 /- English proof (translation)
-Rewrite using `[opAt, opAt, map_sum, map_sum]`. Use `⟨Finset.sum_congr rfl fun a _ => ?_, Finset.sum_eq_zero fun a _ => (degPart_ι_mul _ k _).2⟩` and prove the remaining obligations. Rewrite using `[(degPart_ι_mul _ k _).1, coefwise_dirD_linear _ _ hF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem degPart_opAt (s : Fin n → Fin n ⊕ Fin n) (k : ℕ) {F : V n → Alt n}
     (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v) :
@@ -481,9 +477,9 @@ theorem degPart_opAt (s : Fin n → Fin n ⊕ Fin n) (k : ℕ) {F : V n → Alt 
   rw [(degPart_ι_mul _ k _).1, coefwise_dirD_linear _ _ hF]
 
 /- English proof (translation)
-Use `HasDeg.sum fun a _ => add_comm 1 k ▸ (hasDeg_ι _).mul fun S hS => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `: (fun x => (bas n).repr (F x) S) = fun _ => 0` using `funext fun x => by`. Assume the negation of the conclusion as `h'`. Conclude with `h (hF x S h')`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS` using `[FormMul.repr_coefwise, this, dirD_zero]`. Conclude with `hS rfl`.
+A detailed English derivation is pending.
 -/
 theorem hasDeg_opAt (s : Fin n → Fin n ⊕ Fin n) {k : ℕ} {F : V n → Alt n} (hF : ∀ x, HasDeg k (F x)) :
     HasDeg (k + 1) (opAt s F v) := by
@@ -496,9 +492,9 @@ theorem hasDeg_opAt (s : Fin n → Fin n ⊕ Fin n) {k : ℕ} {F : V n → Alt n
   exact hS rfl
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← bas_singleton]`. Use `holGe_anti (Nat.le_add_right _ _) (bas_single_mul_mem _ ((mem_holGe_iff _).2 fun S hS => ?_))` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `: (fun x => (bas n).repr (F x) S) = fun _ => 0` using `funext fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Conclude with `h ((mem_holGe_iff _).1 (hF x) S h')`. Rewrite `hS` using `[FormMul.repr_coefwise, this, dirD_zero]`. Conclude with `hS rfl`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opAt_mem_holGe (s : Fin n → Fin n ⊕ Fin n) {p : ℕ} {F : V n → Alt n} (hF : ∀ x, F x ∈ holGe n p) :
     opAt s F v ∈ holGe n p := by
@@ -548,14 +544,14 @@ def forms : Subalgebra ℂ A.Fld where
 variable {A} in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_forms {α : A.Fld} : α ∈ A.forms ↔ A.IsForm α := Iff.rfl
 
 variable {A}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `loc`. Use `split_ifs`. Use `exacts [rfl, (map_zero L).symm]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loc_linear (L : Alt n →ₗ[ℂ] Alt n) (α : A.Fld) (i : A.ι) :
     A.loc (fun x => L (α x)) i = fun v => L (A.loc α i v) := by
@@ -565,7 +561,7 @@ theorem loc_linear (L : Alt n →ₗ[ℂ] Alt n) (α : A.Fld) (i : A.ι) :
   exacts [rfl, (map_zero L).symm]
 
 /- English proof (translation)
-Use `⟨fun i S => ?_, fun x x' h => by rw [hα.compat x x' h, hL]⟩` and prove the remaining obligations. Simplify using `only [loc_linear, repr_linear L (A.loc α i _)]`. Conclude with `ContDiffOn.sum fun T _ => (hα.smooth i T).const_smul _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsForm.linear {α : A.Fld} (hα : A.IsForm α) (L : Alt n →ₗ[ℂ] Alt n)
     (hL : ∀ (T : V n →L[ℂ] V n) (β : Alt n), L (pull T β) = pull T (L β)) : A.IsForm fun x => L (α x) := by
@@ -574,25 +570,25 @@ theorem IsForm.linear {α : A.Fld} (hα : A.IsForm α) (L : Alt n →ₗ[ℂ] Al
   exact ContDiffOn.sum fun T _ => (hα.smooth i T).const_smul _
 
 /- English proof (translation)
-The claim follows from `hα.linear (par n).toLinearMap fun T β => PullType.scale_pull T _ _ β`.
+A detailed English derivation is pending.
 -/
 theorem IsForm.parFld {α : A.Fld} (hα : A.IsForm α) : A.IsForm (A.parFld α) :=
   hα.linear (par n).toLinearMap fun T β => PullType.scale_pull T _ _ β
 
 /- English proof (translation)
-The claim follows from `hα.linear (degPart n k) fun T β => degPart_pull T k β`.
+A detailed English derivation is pending.
 -/
 theorem IsForm.degFld {α : A.Fld} (hα : A.IsForm α) (k : ℕ) : A.IsForm (A.degFld k α) :=
   hα.linear (degPart n k) fun T β => degPart_pull T k β
 
 /- English proof (translation)
-The claim follows from `A.forms.add_mem (A.isForm_del_dbar hα).1 (A.isForm_del_dbar hα).2`.
+A detailed English derivation is pending.
 -/
 theorem IsForm.dExt {α : A.Fld} (hα : A.IsForm α) : A.IsForm (A.dExt α) :=
   A.forms.add_mem (A.isForm_del_dbar hα).1 (A.isForm_del_dbar hα).2
 
 /- English proof (translation)
-Take `⟨h₁, h₂, -, -⟩` from `(del_dbar_linear M n A).2 1 α β hα hβ`. Rewrite using `[dExt, h₁, h₂, add_add_add_comm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dExt_add {α β : A.Fld} (hα : A.IsForm α) (hβ : A.IsForm β) : A.dExt (α + β) = A.dExt α + A.dExt β := by
   obtain ⟨h₁, h₂, -, -⟩ := (del_dbar_linear M n A).2 1 α β hα hβ
@@ -600,7 +596,7 @@ theorem dExt_add {α β : A.Fld} (hα : A.IsForm α) (hβ : A.IsForm β) : A.dEx
   rfl
 
 /- English proof (translation)
-Take `⟨-, -, h₁, h₂⟩` from `(del_dbar_linear M n A).2 c α α hα hα`. Rewrite using `[dExt, h₁, h₂, ← smul_add]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dExt_smul (c : ℂ) {α : A.Fld} (hα : A.IsForm α) : A.dExt (c • α) = c • A.dExt α := by
   obtain ⟨-, -, h₁, h₂⟩ := (del_dbar_linear M n A).2 c α α hα hα
@@ -631,20 +627,20 @@ Both sides reduce to the same expression.
 variable (A) in
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (map_zero A.dForms)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem dExt_zero : A.dExt 0 = 0 := congrArg Subtype.val (map_zero A.dForms)
 
 variable (A) in
 
 /- English proof (translation)
-Rewrite using `[dExt, (del_dbar_linear M n A).1.1, (del_dbar_linear M n A).1.2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem dExt_one : A.dExt 1 = 0 := by
   rw [dExt, (del_dbar_linear M n A).1.1, (del_dbar_linear M n A).1.2, add_zero]
 
 /- English proof (translation)
-Use `filter_upwards [GlobLin.target_mem_nhds A x] with v hv`. Rewrite using `[loc, dif_pos hv]`. Conclude with `congrArg (T _) ((A.e x.1.1).right_inv hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_op_eventuallyEq (T : (V n → Alt n) → V n → Alt n) (α : A.Fld) (x : A.Pt) :
     A.loc (fun y => T (A.loc α y.1.1) y.crd) x.1.1 =ᶠ[𝓝 x.crd] T (A.loc α x.1.1) := by
@@ -653,9 +649,9 @@ theorem loc_op_eventuallyEq (T : (V n → Alt n) → V n → Alt n) (α : A.Fld)
   exact congrArg (T _) ((A.e x.1.1).right_inv hv)
 
 /- English proof (translation)
-Establish `key (x : A.Pt) : A.del (A.del α) x = 0 ∧ A.dbar (A.dbar α) x = 0 ∧ A.del (A.dbar α) x + A.dbar (A.del α) x = 0`. Establish `h` using `delAt_dbarAt_sq (v := x.crd) (F := A.loc α x.1.1) fun S => ((hα.smooth x.1.1 S).contDiffAt (GlobLin.target_mem_nhds A x)).of_le (by norm_cast)`. Establish `hg` using `(delAt_dbarAt_linear_local n x.crd).2.2.2.1`. Establish `h₁` using `hg _ _ (loc_op_eventuallyEq delAt α x)`. Establish `h₂` using `hg _ _ (loc_op_eventuallyEq dbarAt α x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h₁.1.trans h.1, h₂.2.trans h.2.1, (congrArg₂ (· + ·) h₂.1 h₁.2).trans h.2.2⟩`. Conclude with `⟨funext fun x => (key x).1, funext fun x => (key x).2.1, funext fun x => (key x).2.2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem del_dbar_sq {α : A.Fld} (hα : A.IsForm α) :
     A.del (A.del α) = 0 ∧ A.dbar (A.dbar α) = 0 ∧ A.del (A.dbar α) + A.dbar (A.del α) = 0 := by
@@ -670,7 +666,7 @@ theorem del_dbar_sq {α : A.Fld} (hα : A.IsForm α) :
   exact ⟨funext fun x => (key x).1, funext fun x => (key x).2.1, funext fun x => (key x).2.2⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `del_dbar_sq hα`. Rewrite using `[dExt.eq_1 A α, dExt_add (A.isForm_del_dbar hα).1 (A.isForm_del_dbar hα).2, dExt, dExt, h₁, h₂, zero_add, add_zero, add_comm, h₃]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dExt_dExt {α : A.Fld} (hα : A.IsForm α) : A.dExt (A.dExt α) = 0 := by
   obtain ⟨h₁, h₂, h₃⟩ := del_dbar_sq hα
@@ -678,7 +674,7 @@ theorem dExt_dExt {α : A.Fld} (hα : A.IsForm α) : A.dExt (A.dExt α) = 0 := b
     add_comm, h₃]
 
 /- English proof (translation)
-Establish `key (x : A.Pt)` using `delAt_dbarAt_mul (A.loc_diffAt hα x) (A.loc_diffAt hβ x)`. Simplify using `only [← A.loc_mul, A.loc_crd] at key`. Conclude with `⟨funext fun x => (key x).1, funext fun x => (key x).2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem del_dbar_mul {α β : A.Fld} (hα : A.IsForm α) (hβ : A.IsForm β) :
     A.del (α * β) = A.del α * β + A.parFld α * A.del β ∧ A.dbar (α * β) = A.dbar α * β + A.parFld α * A.dbar β := by
@@ -687,7 +683,7 @@ theorem del_dbar_mul {α β : A.Fld} (hα : A.IsForm α) (hβ : A.IsForm β) :
   exact ⟨funext fun x => (key x).1, funext fun x => (key x).2⟩
 
 /- English proof (translation)
-Rewrite using `[dExt, (del_dbar_mul hα hβ).1, (del_dbar_mul hα hβ).2, dExt, dExt, add_mul, mul_add, add_add_add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dExt_mul {α β : A.Fld} (hα : A.IsForm α) (hβ : A.IsForm β) :
     A.dExt (α * β) = A.dExt α * β + A.parFld α * A.dExt β := by
@@ -700,7 +696,7 @@ theorem dExt_apply (α : A.Fld) (x : A.Pt) :
     A.dExt α x = opAt .inl (A.loc α x.1.1) x.crd + opAt .inr (A.loc α x.1.1) x.crd := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h` using `loc_linear (par n).toLinearMap α x.1.1`. Rewrite using `[dExt_apply, show A.loc (A.parFld α) x.1.1 = _ from h, Pi.neg_apply, parFld_apply, dExt_apply, map_add, neg_add]`. Conclude with `congrArg₂ _ (opAt_par _ (A.loc_diffAt hα x)) (opAt_par _ (A.loc_diffAt hα x))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dExt_parFld {α : A.Fld} (hα : A.IsForm α) : A.dExt (A.parFld α) = -A.parFld (A.dExt α) := by
   funext x
@@ -709,7 +705,7 @@ theorem dExt_parFld {α : A.Fld} (hα : A.IsForm α) : A.dExt (A.parFld α) = -A
   exact congrArg₂ _ (opAt_par _ (A.loc_diffAt hα x)) (opAt_par _ (A.loc_diffAt hα x))
 
 /- English proof (translation)
-Use `⟨funext fun x => ?_, funext fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `loc_linear (degPart n k) α x.1.1`. Rewrite using `[dExt_apply, show A.loc (A.degFld k α) x.1.1 = _ from h, degFld_apply, dExt_apply, map_add, (degPart_opAt _ k (A.loc_diffAt hα x)).1, (degPart_opAt _ k (A.loc_diffAt hα x)).1]`. Rewrite using `[degFld_apply, dExt_apply, map_add, (degPart_opAt _ k (A.loc_diffAt hα x)).2, (degPart_opAt _ k (A.loc_diffAt hα x)).2, add_zero, Pi.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem degFld_dExt {α : A.Fld} (hα : A.IsForm α) (k : ℕ) :
     A.degFld (k + 1) (A.dExt α) = A.dExt (A.degFld k α) ∧ A.degFld 0 (A.dExt α) = 0 := by
@@ -723,7 +719,7 @@ theorem degFld_dExt {α : A.Fld} (hα : A.IsForm α) (k : ℕ) :
 variable (A) in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => par_par (α.1 x)) d_sg α := Subtype.ext (dExt_parFld α.2) d_mul α β := Subtype.ext (dExt_mul α.2 β.2) d_d α := Subtype.ext (dExt_dExt α.2)`.
+A detailed English derivation is pending.
 -/
 theorem isDga : GlobalTheory.PD.IsDga A.parForms A.dForms where
   sg_sg α := Subtype.ext (funext fun x => par_par (α.1 x))
@@ -732,7 +728,7 @@ theorem isDga : GlobalTheory.PD.IsDga A.parForms A.dForms where
   d_d α := Subtype.ext (dExt_dExt α.2)
 
 /- English proof (translation)
-Unfold `loc`. Use `split_ifs`. Use `exacts [hα _, h₀]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loc_prop {P : Alt n → Prop} (h₀ : P 0) {α : A.Fld} (hα : ∀ x, P (α x)) (i : A.ι) (v : V n) : P (A.loc α i v) := by
   unfold loc
@@ -740,62 +736,62 @@ theorem loc_prop {P : Alt n → Prop} (h₀ : P 0) {α : A.Fld} (hα : ∀ x, P 
   exacts [hα _, h₀]
 
 /- English proof (translation)
-Introduce `x` and use `(hasDeg_opAt .inl (loc_prop (.zero k) hα x.1.1)).add (hasDeg_opAt .inr (loc_prop (.zero k) hα x.1.1))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsDeg.dExt {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.IsDeg (k + 1) (A.dExt α) := fun x =>
   (hasDeg_opAt .inl (loc_prop (.zero k) hα x.1.1)).add (hasDeg_opAt .inr (loc_prop (.zero k) hα x.1.1))
 
 /- English proof (translation)
-Introduce `x` and use `(hα x).mul (hβ x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsDeg.mul {k l : ℕ} {α β : A.Fld} (hα : A.IsDeg k α) (hβ : A.IsDeg l β) : A.IsDeg (k + l) (α * β) :=
   fun x => (hα x).mul (hβ x)
 
 /- English proof (translation)
-Introduce `x` and use `hasDeg_degPart k (α x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDeg_degFld (k : ℕ) (α : A.Fld) : A.IsDeg k (A.degFld k α) := fun x => hasDeg_degPart k (α x)
 
 /- English proof (translation)
-The claim follows from `funext fun x => ((hα x).degPart_eq k).trans (if_pos rfl)`.
+A detailed English derivation is pending.
 -/
 theorem IsDeg.degFld_eq {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.degFld k α = α :=
   funext fun x => ((hα x).degPart_eq k).trans (if_pos rfl)
 
 /- English proof (translation)
-The claim follows from `funext fun x => (hα x).par_eq`.
+A detailed English derivation is pending.
 -/
 theorem IsDeg.parFld_eq {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.parFld α = (-1 : ℂ) ^ k • α :=
   funext fun x => (hα x).par_eq
 
 /- English proof (translation)
-The claim follows from `funext fun x => (hα x).mul_comm (hβ x)`.
+A detailed English derivation is pending.
 -/
 theorem IsDeg.mul_comm {k l : ℕ} {α β : A.Fld} (hα : A.IsDeg k α) (hβ : A.IsDeg l β) :
     α * β = (-1 : ℂ) ^ (k * l) • (β * α) :=
   funext fun x => (hα x).mul_comm (hβ x)
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun x => (mem_holGe_iff (α x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem typeGe_iff {p : ℕ} {α : A.Fld} : A.TypeGe p α ↔ ∀ x, α x ∈ holGe n p :=
   forall_congr' fun x => (mem_holGe_iff (α x)).symm
 
 /- English proof (translation)
-The claim follows from `typeGe_iff.2 fun x => mul_mem_holGe (typeGe_iff.1 hα x) (typeGe_iff.1 hβ x)`.
+A detailed English derivation is pending.
 -/
 theorem TypeGe.mul {p q : ℕ} {α β : A.Fld} (hα : A.TypeGe p α) (hβ : A.TypeGe q β) : A.TypeGe (p + q) (α * β) :=
   typeGe_iff.2 fun x => mul_mem_holGe (typeGe_iff.1 hα x) (typeGe_iff.1 hβ x)
 
 /- English proof (translation)
-The claim follows from `typeGe_iff.2 fun x => add_mem (opAt_mem_holGe .inl (loc_prop (zero_mem _) (typeGe_iff.1 hα) x.1.1)) (opAt_mem_holGe .inr (loc_prop (zero_mem _) (typeGe_iff.1 hα) x.1.1))`.
+A detailed English derivation is pending.
 -/
 theorem TypeGe.dExt {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) : A.TypeGe p (A.dExt α) :=
   typeGe_iff.2 fun x => add_mem (opAt_mem_holGe .inl (loc_prop (zero_mem _) (typeGe_iff.1 hα) x.1.1))
     (opAt_mem_holGe .inr (loc_prop (zero_mem _) (typeGe_iff.1 hα) x.1.1))
 
 /- English proof (translation)
-The claim follows from `funext fun x => (bas n).ext_elem fun S => by by_contra h exact ((hα x S (by simpa using h)).trans (holCount_le S)).not_gt hp`.
+A detailed English derivation is pending.
 -/
 theorem TypeGe.eq_zero {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) (hp : n < p) : α = 0 :=
   funext fun x => (bas n).ext_elem fun S => by
@@ -803,16 +799,16 @@ theorem TypeGe.eq_zero {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) (hp : n < p)
     exact ((hα x S (by simpa using h)).trans (holCount_le S)).not_gt hp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_id, fun j i => A.holo j i⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHolo_id : A.IsHolo A id := ⟨continuous_id, fun j i => A.holo j i⟩
 
 variable {A' A''}
 
 /- English proof (translation)
-Use `⟨hf.1.comp hg.1, fun l i v hv => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `A'.cover (g ((A''.e l).symm v))`. Establish `hU` using `(A''.e l).isOpen_inter_preimage_symm ((A'.e j).open_source.preimage hg.1)`. Establish `hW` using `(A'.e j).isOpen_inter_preimage_symm ((A.e i).open_source.preimage hf.1)`. Establish `d₁` using `(hg.2 l j).differentiableAt (hU.mem_nhds ⟨hv.1, hj⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₂` using `(hf.2 j i).differentiableAt (hW.mem_nhds (x := A'.e j (g ((A''.e l).symm v))) ⟨(A'.e j).map_source hj, by rw [Set.mem_preimage, (A'.e j).left_inv hj]; exact hv.2⟩)`. Use `((d₂.comp v d₁).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds ⟨hv.1, hj⟩] with w hw`. Establish `hw' : g ((A''.e l).symm w) ∈ (A'.e j).source` using `hw.2`. Simplify using `only [Function.comp, (A'.e j).left_inv hw']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsHolo.comp {f : M' → M} {g : M'' → M'} (hf : A.IsHolo A' f) (hg : A'.IsHolo A'' g) : A.IsHolo A'' (f ∘ g) := by
   refine ⟨hf.1.comp hg.1, fun l i v hv => ?_⟩
@@ -839,13 +835,13 @@ Both sides reduce to the same expression.
 @[simp] theorem pullbackAlg_apply (f : M' → M) (α : A.Fld) : A.pullbackAlg A' f α = A.pullback A' f α := rfl
 
 /- English proof (translation)
-The claim follows from `PullbackForm.isForm_pullback M M' n n' A A' f α hf hα`.
+A detailed English derivation is pending.
 -/
 theorem IsForm.pullback {f : M' → M} (hf : A.IsHolo A' f) {α : A.Fld} (hα : A.IsForm α) : A'.IsForm (A.pullback A' f α) :=
   PullbackForm.isForm_pullback M M' n n' A A' f α hf hα
 
 /- English proof (translation)
-Rewrite using `[dExt, (pullback_del_dbar A A' f α hf hα).1, (pullback_del_dbar A A' f α hf hα).2]`. Conclude with `(map_add (A.pullbackAlg A' f) (A.del α) (A.dbar α)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dExt_pullback {f : M' → M} (hf : A.IsHolo A' f) {α : A.Fld} (hα : A.IsForm α) :
     A'.dExt (A.pullback A' f α) = A.pullback A' f (A.dExt α) := by
@@ -853,33 +849,31 @@ theorem dExt_pullback {f : M' → M} (hf : A.IsHolo A' f) {α : A.Fld} (hα : A.
   exact (map_add (A.pullbackAlg A' f) (A.del α) (A.dbar α)).symm
 
 /- English proof (translation)
-Introduce `_` and use `(hα _).pull _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsDeg.pullback (f : M' → M) {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A'.IsDeg k (A.pullback A' f α) :=
   fun _ => (hα _).pull _
 
 /- English proof (translation)
-The claim follows from `typeGe_iff.2 fun _ => pull_mem_holGe _ (typeGe_iff.1 hα _)`.
+A detailed English derivation is pending.
 -/
 theorem TypeGe.pullback (f : M' → M) {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) : A'.TypeGe p (A.pullback A' f α) :=
   typeGe_iff.2 fun _ => pull_mem_holGe _ (typeGe_iff.1 hα _)
 
 /- English proof (translation)
-The claim follows from `funext fun x => (hα.compat x ⟨(_, x.pt), (A.cover x.pt).choose_spec⟩ rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem pullback_id {α : A.Fld} (hα : A.IsForm α) : A.pullback A id α = α :=
   funext fun x => (hα.compat x ⟨(_, x.pt), (A.cover x.pt).choose_spec⟩ rfl).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hj` using `(A'.cover (g x.pt)).choose_spec`. Establish `hi` using `(A.cover (f (g x.pt))).choose_spec`. Use `set j := (A'.cover (g x.pt)).choose`. Use `set i := (A.cover (f (g x.pt))).choose`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `pull (fderiv ℂ (A.e i ∘ (f ∘ g) ∘ x.ch.symm) x.crd) _ = pull (fderiv ℂ (A'.e j ∘ g ∘ x.ch.symm) x.crd) (pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) (A'.e j (g x.pt))) _)`. Rewrite using `[← pull_comp]`. Establish `hx : x.ch.symm x.crd = x.pt` using `x.ch.left_inv x.2`. Establish `hU` using `x.ch.isOpen_inter_preimage_symm ((A'.e j).open_source.preimage hg.1)`. Establish `hW` using `(A'.e j).isOpen_inter_preimage_symm ((A.e i).open_source.preimage hf.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxU : x.crd ∈ x.ch.target ∩ x.ch.symm ⁻¹' (g ⁻¹' (A'.e j).source)` using `⟨x.ch.map_source x.2, by simpa only [Set.mem_preimage, hx] using hj⟩`. Establish `d₁` using `(hg.2 x.1.1 j).differentiableAt (hU.mem_nhds hxU)`. Establish `d₂` using `(hf.2 j i).differentiableAt (hW.mem_nhds (x := A'.e j (g x.pt)) ⟨(A'.e j).map_source hj, by simpa only [Set.mem_preimage, (A'.e j).left_inv hj] using hi⟩)`. Establish `hpt : (A'.e j ∘ g ∘ x.ch.symm) x.crd = A'.e j (g x.pt)` using `by simp only [Function.comp, hx]`. Establish `hc` using `fderiv_comp x.crd (hpt ▸ d₂) d₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[hpt]`. Rewrite using `[← hc]`. Use `congr 2`. Use `Filter.EventuallyEq.fderiv_eq (Filter.eventually_of_mem (hU.mem_nhds hxU) fun w hw => ?_)` and prove the remaining obligations. Establish `hw' : g (x.ch.symm w) ∈ (A'.e j).source` using `hw.2`.
-
-Simplify using `only [Function.comp, (A'.e j).left_inv hw']`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullback_comp {f : M' → M} {g : M'' → M'} (hf : A.IsHolo A' f) (hg : A'.IsHolo A'' g) (α : A.Fld) :
     A.pullback A'' (f ∘ g) α = A'.pullback A'' g (A.pullback A' f α) := by

@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.GeoTorus
 variable {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ}
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => φ.hom a) (Proj.awayMap_awayToSection (grK K N) hg hx)`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom] at h`. Simplify using `only [evV, RingHom.comp_apply]`. Rewrite using `[h, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evV_awayMap (i : X ⟶ PSpace K N) {f g x : MvPolynomial (Fin (N + 1)) K} {m : ℕ}
     (hg : g ∈ grK K N m) (hx : x = f * g) (V : X.Opens)
@@ -29,11 +29,11 @@ theorem evV_awayMap (i : X ⟶ PSpace K N) {f g x : MvPolynomial (Fin (N + 1)) K
   rw [h, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Establish `hVx : V ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (f * g)`. Rewrite using `[Proj.basicOpen_mul]`. Conclude with `le_inf hVf hVg`. Rewrite using `[← evV_awayMap i hg rfl V hVf hVx, ← evV_awayMap i hf (mul_comm f g) V hVg hVx, ← evV_awayMap i hf (mul_comm f g) V hVg hVx, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.awayMap_mk, HomogeneousLocalization.val_mul, HomogeneousLocalization.Away.val_mk, Localization.mk_mul]`. Use `Localization.mk_eq_mk_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submonoid.coe_mul, OneMemClass.coe_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evV_mul_cross (i : X ⟶ PSpace K N) {f g u : MvPolynomial (Fin (N + 1)) K} {a b n m : ℕ}
     (hf : f ∈ grK K N a) (hg : g ∈ grK K N b) (V : X.Opens)
@@ -58,11 +58,11 @@ theorem evV_mul_cross (i : X ⟶ PSpace K N) {f g u : MvPolynomial (Fin (N + 1))
   ring
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[HomogeneousLocalization.Away.val_mk, ← HomogeneousLocalization.algebraMap_apply, map_prod]`. Simplify using `only [map_pow, HomogeneousLocalization.algebraMap_apply, HomogeneousLocalization.Away.val_mk]`. Establish `key : ∀ s : Finset (Fin m), Localization.mk (∏ k ∈ s, y k ^ β k) (⟨g ^ ∑ k ∈ s, β k, ⟨_, rfl⟩⟩ : Submonoid.powers g) = ∏ k ∈ s, Localization.mk (y k) (⟨g ^ 1, ⟨_, rfl⟩⟩ : Submonoid.powers g) ^ β k`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Localization.mk_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ← ih, Localization.mk_pow, Localization.mk_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Finset.sum_insert ha, pow_add, ← pow_mul]`. Conclude with `key Finset.univ`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mk_prod_pow {m e : ℕ} {g : MvPolynomial (Fin (N + 1)) K} (hg : g ∈ grK K N e)
     (y : Fin m → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, y k ∈ grK K N (1 • e)) (β : Fin m → ℕ) {n : ℕ}
@@ -87,7 +87,7 @@ theorem mk_prod_pow {m e : ℕ} {g : MvPolynomial (Fin (N + 1)) K} (hg : g ∈ g
   exact key Finset.univ
 
 /- English proof (translation)
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_add, HomogeneousLocalization.Away.val_mk, Localization.add_mk_self]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mk_add' {f u v : MvPolynomial (Fin (N + 1)) K} {a n : ℕ} (hf : f ∈ grK K N a) (hu : u ∈ grK K N (n • a))
     (hv : v ∈ grK K N (n • a)) (h : u + v ∈ grK K N (n • a)) :
@@ -97,7 +97,7 @@ theorem mk_add' {f u v : MvPolynomial (Fin (N + 1)) K} {a n : ℕ} (hf : f ∈ g
   simp only [HomogeneousLocalization.val_add, HomogeneousLocalization.Away.val_mk, Localization.add_mk_self]
 
 /- English proof (translation)
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_mul, HomogeneousLocalization.Away.val_mk, Localization.mk_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mk_C_mul {f u : MvPolynomial (Fin (N + 1)) K} {a n : ℕ} (hf : f ∈ grK K N a) (r : K)
     (hr : MvPolynomial.C r ∈ grK K N (0 • a)) (hu : u ∈ grK K N (n • a)) (h : MvPolynomial.C r * u ∈ grK K N (n • a)) :
@@ -111,7 +111,7 @@ theorem mk_C_mul {f u : MvPolynomial (Fin (N + 1)) K} {a n : ℕ} (hf : f ∈ gr
   simp
 
 /- English proof (translation)
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[Localization.mk_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mk_zero' {f : MvPolynomial (Fin (N + 1)) K} {a n : ℕ} (hf : f ∈ grK K N a) (h : 0 ∈ grK K N (n • a)) :
     HomogeneousLocalization.Away.mk (grK K N) hf n 0 h = 0 := by
@@ -119,11 +119,11 @@ theorem mk_zero' {f : MvPolynomial (Fin (N + 1)) K} {a n : ℕ} (hf : f ∈ grK 
   simp [Localization.mk_zero]
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Establish `h0 : HomogeneousLocalization.Away.mk (grK K N) hf 0 (MvPolynomial.C r) hr = HomogeneousLocalization.fromZeroRingHom (grK K N) _ (algebraMap K (grK K N 0) r)`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[HomogeneousLocalization.fromZeroRingHom]`. Establish `e : (Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ (i ≫ PSpace.str K N).appLE ⊤ V le_top = CommRingCat.ofHom (algebraMap K (grK K N 0)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (grK K N 0))).inv ≫ (Proj.toSpecZero (grK K N)).appTop ≫ i.appLE ⊤ V le_top`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap K (grK K N 0)))`. Rewrite using `[reassoc_of% hn, Scheme.Hom.comp_appLE, PSpace.str, Scheme.Hom.comp_app, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[h0]`. Simplify using `only [evV, RingHom.comp_apply, strV]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, GroundTheory.Arith.Modular.awayToSection_fromZero (grK K N) hf]`. Establish `h2` using `Scheme.Hom.map_appLE i hVf (homOfLE (le_top : Proj.basicOpen (grK K N) f ≤ ⊤)).op`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.Hom.appTop (Proj.toSpecZero (grK K N))) ((Scheme.ΓSpecIso (CommRingCat.of (grK K N 0))).inv (algebraMap K (grK K N 0) r)))) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evV_const (i : X ⟶ PSpace K N) (q : X ⟶ Spec (CommRingCat.of K)) (hq : i ≫ PSpace.str K N = q)
     {f : MvPolynomial (Fin (N + 1)) K} {a : ℕ} (hf : f ∈ grK K N a) (V : X.Opens)
@@ -150,20 +150,20 @@ theorem evV_const (i : X ⟶ PSpace K N) (q : X ⟶ Spec (CommRingCat.of K)) (hq
 def bS {m : ℕ} (S : Finset (Fin m)) (j : ℕ) (k : Fin m) : ℕ := if k ∈ S then j else 0
 
 /- English proof (translation)
-Simplify using `[bS, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_bS {m : ℕ} (S : Finset (Fin m)) (j : ℕ) : ∑ k, bS S j k = j * S.card := by
   simp [bS, mul_comm]
 
 /- English proof (translation)
-Simplify using `[yS, bS, pow_ite, Finset.prod_ite_mem, Finset.prod_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yS_pow {m : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K) (S : Finset (Fin m)) (j : ℕ) :
     yS y S ^ j = ∏ k, y k ^ bS S j k := by
   simp [yS, bS, pow_ite, Finset.prod_ite_mem, Finset.prod_pow]
 
 /- English proof (translation)
-Establish `h` using `MvPolynomial.IsHomogeneous.prod Finset.univ (fun k => y k ^ α k) (fun k => e * α k) (fun k _ => (hy k).pow (α k))`. Rewrite `h` using `[← Finset.mul_sum, hα]`. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule, smul_eq_mul, mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_mem {m e n : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e)
     (α : Fin m → ℕ) (hα : ∑ k, α k = n) : ∏ k, y k ^ α k ∈ grK K N (n • e) := by
@@ -174,11 +174,11 @@ theorem mono_mem {m e n : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K) (hy 
   exact h
 
 /- English proof (translation)
-Use `⟨fun k hk => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Simplify using `[bS, hk]`. Establish `h1` using `sum_bS S j`. Rewrite `h1`, `hα` using `[Fin.sum_univ_succ]`. Establish `h2 : bS S j 0 = 0` using `by simp [bS, h0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, zero_add]`. Rewrite using `[Finset.sum_sub_distrib]`. Establish `h3 : ((∑ k : Fin d, α k.succ : ℕ) : ℤ) + α 0 = ((∑ k : Fin d, bS S j k.succ : ℕ) : ℤ)`. Rewrite using `[h1, ← hα]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Move the coercions through the operations in `at h3`. Establish `h4 : (0 : ℤ) ≤ α 0` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mem_expS {d : ℕ} (S : Finset (Fin (d + 1))) (j : ℕ) (α : Fin (d + 1) → ℕ) (hα : ∑ k, α k = j * S.card) :
     (fun k : Fin d => (α k.succ : ℤ) - (bS S j k.succ : ℤ)) ∈ expS S := by
@@ -196,17 +196,17 @@ theorem mem_expS {d : ℕ} (S : Finset (Fin (d + 1))) (j : ℕ) (α : Fin (d + 1
     linarith
 
 /- English proof (translation)
-Establish `h0 : y 0 ∈ grK K N e` using `(MvPolynomial.mem_homogeneousSubmodule e (y 0)).2 (hy 0)`. Establish `hV0 : V ≤ i ⁻¹ᵁ Proj.basicOpen (grK K N) (y 0)` using `hV.trans (iInf_le (fun k => i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k)) 0)`. Establish `hy1 : ∀ k, y k ∈ grK K N (1 • e)` using `fun k => by`. Simplify using `using (MvPolynomial.mem_homogeneousSubmodule e (y k)).2 (hy k)`. Establish `one : HomogeneousLocalization.Away.mk (grK K N) h0 1 (y 0) (hy1 0) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[Localization.mk_self]`. Establish `A2 : ∀ (γ : Fin (d + 1) → ℕ) (hγ : ∑ k, γ k = j * S.card) (h' : ∏ k, y k ^ γ k ∈ grK K N ((j * S.card) • e)), evV i (y 0) V hV0 (HomogeneousLocalization.Away.mk (grK K N) h0 (j * S.card) (∏ k, y k ^ γ k) h') = ∏ k : Fin d, tV i y hy V hV k ^ γ k.succ`. Introduce `γ hγ h'`. Rewrite using `[mk_prod_pow h0 y hy1 γ hγ h', map_prod, Fin.prod_univ_succ]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, one, map_one, one_pow, one_mul]`. Both sides reduce to the same expression. Establish `hu' : ∏ k, y k ^ α k ∈ grK K N ((j * S.card) • e)` using `mono_mem y hy α hα`. Establish `hβ' : ∏ k, y k ^ bS S j k ∈ grK K N ((j * S.card) • e)` using `mono_mem y hy _ (sum_bS S j)`. Establish `hfn : yS y S ^ j ∈ grK K N ((j * S.card) • e)` using `by rw [yS_pow]; exact hβ'`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A1` using `evV_mul_cross i (yS_mem y hy S) h0 V hS hV0 h hu' hfn`. Establish `A3 : evV i (y 0) V hV0 (HomogeneousLocalization.Away.mk (grK K N) h0 (j * S.card) (yS y S ^ j) hfn) = ∏ k : Fin d, tV i y hy V hV k ^ bS S j k.succ`. Rewrite using `[← A2 _ (sum_bS S j) hβ']`. Simplify using `only [yS_pow]`. Rewrite `A1` using `[A2 α hα hu', A3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `U : Γ(X, V)ˣ` to `∏ k : Fin d, (ht k).unit ^ bS S j k.succ`. Establish `hU : (U : Γ(X, V)) = ∏ k : Fin d, tV i y hy V hV k ^ bS S j k.succ`. Simplify using `[U, Units.coe_prod]`. Rewrite `A1` using `[← hU]`. Use `(Units.mul_left_inj U).1 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[A1, tpow, ← Units.val_mul]`. Simplify using `only [U]`. Rewrite using `[← Finset.prod_mul_distrib, Units.coe_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_sub, zpow_natCast, zpow_natCast, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -255,23 +255,21 @@ theorem evV_monomial {d e : ℕ} (i : X ⟶ PSpace K N) (y : Fin (d + 1) → MvP
   simp
 
 /- English proof (translation)
-Use `letI := (strV q V).toAlgebra`. Establish `hdeg : ∀ α ∈ c.support, ∑ k, α k = j * S.card` using `fun α hα => by`. Establish `h` using `hc (MvPolynomial.mem_support_iff.1 hα)`. Rewrite using `[← h]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmono : ∀ α ∈ c.support, ∏ k, y k ^ α k ∈ grK K N (j • (S.card * e))` using `fun α hα => by`. Use `mono_mem y hy (fun k => α k) (hdeg α hα)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_assoc, ← smul_eq_mul]`. Then use the resulting hypothesis. Establish `hC : ∀ r : K, MvPolynomial.C r ∈ grK K N (0 • (S.card * e))` using `fun r => by`. Simplify using `using MvPolynomial.isHomogeneous_C (Fin (N + 1)) r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hCm : ∀ (r : K) (u : MvPolynomial (Fin (N + 1)) K), u ∈ grK K N (j • (S.card * e)) → MvPolynomial.C r * u ∈ grK K N (j • (S.card * e))` using `fun r u hu => by`. Rewrite using `[MvPolynomial.C_mul']`. Conclude with `Submodule.smul_mem _ r hu`. Establish `key : ∀ s : Finset (Fin (d + 1) →₀ ℕ), s ⊆ c.support → ∀ h, evV i (yS y S) V hS (HomogeneousLocalization.Away.mk (grK K N) (yS_mem y hy S) j (∑ α ∈ s, MvPolynomial.C (MvPolynomial.coeff α c) * ∏ k, y k ^ α k) h) ∈ torusS K (fun k => (ht k).unit) S`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ h`. Simplify using `only [Finset.sum_empty]`. Rewrite using `[mk_zero', map_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `insert a s ha ih`. Introduce `hs h`. Establish `hs' : s ⊆ c.support` using `(Finset.subset_insert a s).trans hs`. Establish `hA : a ∈ c.support` using `hs (Finset.mem_insert_self a s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrest : ∑ α ∈ s, MvPolynomial.C (MvPolynomial.coeff α c) * ∏ k, y k ^ α k ∈ grK K N (j • (S.card * e))` using `Submodule.sum_mem _ fun α hα => hCm _ _ (hmono α (hs' hα))`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[mk_add' _ (hCm _ _ (hmono a hA)) hrest, map_add]`. Use `add_mem ?_ (ih hs' hrest)` and prove the remaining obligations. Rewrite using `[mk_C_mul _ _ (hC _) (hmono a hA), map_mul, evV_const i q hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem ?_ ?_` and prove the remaining obligations. Conclude with `Subalgebra.algebraMap_mem _ _`. Rewrite using `[evV_monomial i y hy hV S hS ht (fun k => a k) (hdeg a hA)]`. Conclude with `Algebra.subset_adjoin ⟨_, mem_expS S j _ (hdeg a hA), rfl⟩`. Establish `hsum : MvPolynomial.aeval y c = ∑ α ∈ c.support, MvPolynomial.C (MvPolynomial.coeff α c) * ∏ k, y k ^ α k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq']`. Both sides reduce to the same expression. Establish `gen : ∀ (p : MvPolynomial (Fin (N + 1)) K) (hp : p ∈ grK K N (j • (S.card * e))), MvPolynomial.aeval y c = p → evV i (yS y S) V hS (HomogeneousLocalization.Away.mk (grK K N) (yS_mem y hy S) j p hp) ∈ torusS K (fun k => (ht k).unit) S → evV i (yS y S) V hS (HomogeneousLocalization …`. Introduce and unpack `_ _ rfl h`. Conclude with `h`.
-
-Establish `hp` using `hsum ▸ aeval_mem y hy S c hc`. Conclude with `gen _ hp hsum (key _ subset_rfl hp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeval_mem_torusS {K : Type} [Field K] {X : Scheme.{0}} {N d e : ℕ} (i : X ⟶ PSpace K N)
     (y : Fin (d + 1) → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e) {V : X.Opens}

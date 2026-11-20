@@ -11,13 +11,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `q _ D R R' _ _ _ b gb N N' N₀ c c' X X₁ s s₁ o' o u f ψ hiso hmon hact hpol heta n`. Take `⟨hP⟩` from `hpol`. Establish `hrefl : ∀ {Y : Scheme} (L : LB Y), L.IsLB → LBIso L L` using `fun L hL => (GlobalTheory.CechPic.cls_eq_iff hL hL).mp rfl`. Establish `h1 : (Hecke.lbPow o'.P 1).IsLB` using `DVR.linComb_isLB _ o'.isLB _ _`. Establish `e1 : LBIso o'.P (Hecke.lbPow o'.P 1)` using `(GlobalTheory.CechPic.cls_eq_iff o'.isLB h1).mp (by rw [GlobalTheory.LocTrivDescent.cls_lbPow_eq o'.isLB 1 h1, one_smul])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : LBIso (o.P.pull (Hecke.sq2 ψ)) ((u.P.pull n.φ₂).pull (Hecke.sq2 ψ))` using `LBIso.chartPull (chartPullPull _ _ _ rfl) (chartPullPull _ _ _ rfl) n.pol`. Establish `e4 : LBIso ((u.P.pull n.φ₂).pull (Hecke.sq2 ψ)) (u.P.pull (Hecke.sq2 ψ ≫ n.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn u.P (fun _ => n.φ₂) (fun _ => (1 : ℤ)) (Hecke.sq2 ψ)) (hrefl _ (pull_isLB (pull_isLB u.isLB _) _))`. Establish `pol : LBIso o'.P (u.P.pull (Hecke.sq2 ψ ≫ n.φ₂))` using `LBIso.trans o'.isLB (pull_isLB o.isLB _) (pull_isLB u.isLB _) (LBIso.trans o'.isLB h1 (pull_isLB o.isLB _) e1 hP) (LBIso.trans (pull_isLB o.isLB _) (pull_isLB (pull_isLB u.isLB _) _) (pull_isLB u.isLB _) e3 e4)`. Use `⟨⟨Over.Hom.left ψ ≫ n.φ, Hecke.sq2 ψ ≫ n.φ₂, ?_, ?_, ?_, pol, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hc` using `(GlobalTheory.FibreAct.isGrpPullback_of_iso ψ).comp n.cart`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using hc`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, n.sq.1, ← Category.assoc, ← Category.assoc, Hecke.sq2, ← Over.comp_left, lift_fst, Over.comp_left]`. Rewrite using `[Category.assoc, n.sq.2, ← Category.assoc, ← Category.assoc, Hecke.sq2, ← Over.comp_left, lift_snd, Over.comp_left]`. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Category.assoc, ← Over.comp_left, hact x, Over.comp_left, Category.assoc, n.act x, Category.assoc]`. Introduce `y`. Rewrite using `[← Category.assoc, ← Over.comp_left, heta y, n.eta y]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.quotient_moduli_iso : UpperTheory.Gal.Int.Geo.QIso := by
   intro q _ D R R' _ _ _ b gb N N' N₀ c c' X X₁ s s₁ o' o u f ψ hiso hmon hact hpol heta n

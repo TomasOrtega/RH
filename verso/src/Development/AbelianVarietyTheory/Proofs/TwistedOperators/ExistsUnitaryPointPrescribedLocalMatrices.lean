@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.RowLocBig
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s ch _ _ t _ hj g => GlobalTheory.RowRep.exists_hasLoc s.core.lev ch.S.B t hj g⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hasLoc_big : Big fun ch => ∀ t (j : ℕ) (hj : j ≤ _)
     (g : ∀ w : GlobalTheory.FunObj.locPl ch.G t, GL (Fin ((GlobalTheory.FunObj.locGrid ch.G t w.1).rank (_, j))) (GlobalTheory.FunObj.Kw w.1)),

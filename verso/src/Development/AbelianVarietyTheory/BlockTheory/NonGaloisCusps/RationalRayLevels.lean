@@ -103,7 +103,7 @@ def SeriesRat : Prop :=
         SeriesRatOn T R i hV C (κ i) u (c0L i) ph
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨odd_one, squarefree_one, fun _ hp h => absurd (Nat.dvd_one.1 h) hp.ne_one, Nat.coprime_one_left _, Nat.coprime_one_left _⟩`.
+Supply the required witnesses or components.
 -/
 theorem auxiliarySplitSquarefreeLevel_one (M : ℕ) : IsAuxiliarySplitSquarefreeLevel D M 1 :=
   ⟨odd_one, squarefree_one, fun _ hp h => absurd (Nat.dvd_one.1 h) hp.ne_one, Nat.coprime_one_left _, Nat.coprime_one_left _⟩

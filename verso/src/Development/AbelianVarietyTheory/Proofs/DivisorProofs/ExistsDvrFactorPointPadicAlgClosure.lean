@@ -15,37 +15,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Poinc.FibLat GlobalTheory.Poinc.Eq8
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ M p _ V _ _ _ hc κ hV y`. Use `haveI : CharZero (FractionRing V) := κ.charZero`. Use `haveI : CharZero V := (algebraMap V (FractionRing V)).charZero`. Use `set x : M.Z := y (cPt p) with hxdef`. Take `⟨φ, hφloc, hφ, -⟩` from `GlobalTheory.ValPt.exists_unique_stalk_hom M.Z x p y rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨U, hU, hxU, hft⟩` from `GlobalTheory.RatModel.exists_affineOpen_finiteType_int o Ω M x`. Establish `hQ` using `GlobalTheory.PadicUnitBall.padic_mem_range p V hc κ hV`. Set `y₀ : Γ(M.Z, U) →+* PadicAlgCl p` to `(OO p).subtype.comp (φ.comp (M.Z.presheaf.germ U x hxU).hom)`. Take `⟨W, _, _, _, hcW, _, fV, fK, κ', -, hfVloc, -, hfK, hκ', hW, hy₀⟩` from `GlobalTheory.DvrFinExt.exists_finite_extension p V hc κ hV hQ Γ(M.Z, U) y₀`. Set `j : W →+* PadicAlgCl p` to `κ'.comp (algebraMap W (FractionRing W))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hj : Function.Injective j` using `κ'.injective.comp (IsFractionRing.injective W (FractionRing W))`. Set `ψ : M.Z.presheaf.stalk x →+* PadicAlgCl p` to `(OO p).subtype.comp φ`. Establish `hψK : ∀ s, ψ s ∈ κ'.range`. Introduce `s`. Set `xU : U` to `⟨x, hxU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := M.Z.presheaf.algebra_section_stalk xU`. Use `haveI := hU.isLocalization_stalk xU`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (hU.primeIdealOf xU).asIdeal.primeCompl (show M.Z.presheaf.stalk (xU : M.Z) from s)`. Establish `hb : IsUnit (algebraMap Γ(M.Z, U) (M.Z.presheaf.stalk (xU : M.Z)) (b : Γ(M.Z, U)))` using `IsLocalization.map_units _ b`. Establish `hb' : ψ (algebraMap Γ(M.Z, U) (M.Z.presheaf.stalk (xU : M.Z)) (b : Γ(M.Z, U))) ≠ 0` using `((hb.map φ).map (OO p).subtype).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hga : ∀ c : Γ(M.Z, U), ψ (algebraMap Γ(M.Z, U) (M.Z.presheaf.stalk (xU : M.Z)) c) = y₀ c` using `fun c => rfl`. Take `⟨ka, hka⟩` from `hy₀ a`. Take `⟨kb, hkb⟩` from `hy₀ (b : Γ(M.Z, U))`. Establish `e1 : ψ s * y₀ b = y₀ a`. Rewrite using `[← hga, ← hga, ← map_mul, hab]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb'' : y₀ b ≠ 0` using `by rw [← hga]; exact hb'`. Use `⟨ka * kb⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, hka, hkb, ← e1, mul_inv_cancel_right₀ hb'']`. Establish `hψW : ∀ s, ψ s ∈ j.range`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk⟩` from `hψK s`. Establish `hn : ‖κ' k‖ ≤ 1` using `by rw [hk]; exact (mem_OO_iff _).1 (φ s).2`. Take `⟨w, hw⟩` from `(hW k).1 hn`. Conclude with `⟨w, by rw [← hk, ← hw]; rfl⟩`. Set `e` to `RingEquiv.ofBijective j.rangeRestrict ⟨fun a b h => hj (congrArg Subtype.val h), j.rangeRestrict_surjective⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `φ' : M.Z.presheaf.stalk x →+* W` to `e.symm.toRingHom.comp (ψ.codRestrict j.range hψW)`. Establish `hjφ' : ∀ s, j (φ' s) = ψ s`. Introduce `s`. Establish `h` using `e.apply_symm_apply (ψ.codRestrict j.range hψW s)`. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjO : ∀ w, j w ∈ OO p` using `fun w => (mem_OO_iff _).2 ((hW _).2 ⟨w, rfl⟩)`. Set `iV : W →+* OO p` to `j.codRestrict (OO p) hjO`. Establish `hiVloc : IsLocalHom iV`. Prove the components needed by the constructor for the conclusion. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hw`. Establish `hw0 : j w ≠ 0`. Introduce `h0`. Establish `: ((u : OO p) : PadicAlgCl p) = 0` using `by rw [hu]; exact h0`. Conclude with `u.ne_zero (Subtype.ext this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hwne : algebraMap W (FractionRing W) w ≠ 0` using `fun h => hw0 (by simp [j, h])`. Establish `hinv : ‖κ' (algebraMap W (FractionRing W) w)⁻¹‖ ≤ 1`. Establish `h1 : ((u⁻¹ : (OO p)ˣ) : OO p) * (u : OO p) = 1` using `u.inv_mul`. Establish `h2 : ((((u⁻¹ : (OO p)ˣ) : OO p) : PadicAlgCl p)) * j w = 1`. Use `congrArg (fun t : OO p => (t : PadicAlgCl p)) h1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at this`. Rewrite `this` using `[hu]`. Conclude with `this`. Establish `h3 : κ' (algebraMap W (FractionRing W) w)⁻¹ = (((u⁻¹ : (OO p)ˣ) : OO p) : PadicAlgCl p)`. Rewrite using `[map_inv₀]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `(eq_inv_of_mul_eq_one_left h2).symm`. Rewrite using `[h3]`. Conclude with `(mem_OO_iff _).1 (Subtype.prop _)`. Take `⟨w', hw'⟩` from `(hW _).1 hinv`. Establish `hww : w * w' = 1`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `IsFractionRing.injective W (FractionRing W)` to reduce the goal to its premises. Rewrite using `[map_mul, hw', map_one, mul_inv_cancel₀ hwne]`. Conclude with `⟨⟨w, w', hww, by rw [mul_comm]; exact hww⟩, rfl⟩`. Establish `hcomp : iV.comp φ' = φ`. Use extensionality with `s`.
-
-Conclude with `hjφ' s`. Use `⟨W, inferInstance, inferInstance, inferInstance, fV, fK, κ', iV, spMap φ' ≫ M.Z.fromSpecStalk x, hfVloc, hfK, hκ', hiVloc, fun w => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← hφ, ← hcomp]`. Use `show (Spec.map (CommRingCat.ofHom iV) ≫ Spec.map (CommRingCat.ofHom φ')) ≫ _ = Spec.map (CommRingCat.ofHom (iV.comp φ')) ≫ _`. Rewrite using `[← Spec.map_comp]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ValPt.exists_dvr_factor : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M : RatModel o Ω) (p : ℕ) [Fact p.Prime] (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (maximalIdeal V) V → ∀ (κ : FractionRing V →+* PadicAlgCl p), (∀ x, ‖κ x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap V (FractionRing V))) → ∀ y : Sp (OO p) ⟶ M.Z, ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsDiscreteValuationRing V') (fV : V →+* V') (fK : FractionRing V →+* FractionRing V') (κ' : FractionRing V' →+* PadicAlgCl p) (iV : V' →+* OO p) (ξ : Sp V' ⟶ M.Z), IsLocalHom fV ∧ (∀ x, fK (algebraMap V _ x) = algebraMap V' _ (fV x)) ∧ κ'.comp fK = κ ∧ IsLocalHom iV ∧ (∀ x, (iV x : PadicAlgCl p) = κ' (algebraMap V' _ x)) ∧ spMap iV ≫ ξ = y := by
   intro o Ω _ _ _ _ M p _ V _ _ _ hc κ hV y

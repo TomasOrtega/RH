@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-Establish `hs' : s - 1 ≠ 0` using `sub_ne_zero.mpr hs`. Rewrite using `[deriv_riemannZeta_eq_neg_inv_sub_sq_mul_add hs, riemannZeta_eq_inv_sub_mul hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma shld_identity {s : ℂ} (hs : s ≠ 1) (h1 : riemannZeta₁ s ≠ 0) :
     deriv riemannZeta s / riemannZeta s + 1 / (s - 1) =
@@ -18,9 +18,9 @@ lemma shld_identity {s : ℂ} (hs : s ≠ 1) (h1 : riemannZeta₁ s ≠ 0) :
   ring
 
 /- English proof (translation)
-Introduce `h`. Distinguish the cases in `hs1 : s = 1`. Substitute `hs1` using the available equality. Simplify using `at h`. Establish `hz` using `riemannZeta_ne_zero_of_one_le_re hs`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hz` using `[riemannZeta_eq_inv_sub_mul hs1, h, mul_zero]`. Conclude with `hz rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma riemannZeta₁_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZeta₁ s ≠ 0 := by
   intro h
@@ -32,19 +32,17 @@ lemma riemannZeta₁_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZ
     exact hz rfl
 
 /- English proof (translation)
-Introduce `T`. Establish `hK : IsCompact (Icc (1 : ℝ) 3 ×ℂ Icc (-T) T)` using `isCompact_Icc.reProdIm isCompact_Icc`. Establish `hU : IsOpen {s : ℂ | riemannZeta₁ s ≠ 0}` using `isOpen_ne_fun differentiable_riemannZeta₁.continuous continuous_const`. Establish `hKU : Icc (1 : ℝ) 3 ×ℂ Icc (-T) T ⊆ {s : ℂ | riemannZeta₁ s ≠ 0}` using `fun s hs => riemannZeta₁_ne_zero_of_one_le_re (Complex.mem_reProdIm.mp hs).1.1`. Take `⟨δ, hδ, hδU⟩` from `hK.exists_thickening_subset_open hU hKU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : ∀ s : ℂ, |s.im| ≤ T → 1 - δ / 2 ≤ s.re → s.re ≤ 3 → riemannZeta₁ s ≠ 0`. Introduce `s him hre hre3`. Distinguish the cases in `h1 : 1 ≤ s.re`. Conclude with `riemannZeta₁_ne_zero_of_one_le_re h1`. Apply `hδU` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_thickening_iff]`. Use `⟨1 + s.im * I, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.mem_reProdIm]`. Take `⟨h3, h4⟩` from `abs_le.mp him`. Apply the tactic sequence `refine ⟨⟨?_, ?_⟩, ?_, ?_⟩ <;> simp <;> linarith`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.dist_eq]`. Establish `hd : s - (1 + s.im * I) = ((s.re - 1 : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[hd, Complex.norm_real, Real.norm_eq_abs, abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ / 2, ?_⟩` and prove the remaining obligations. Establish `hKc : IsCompact (Icc (1 - δ / 2) 3 ×ℂ Icc (-T) T)` using `isCompact_Icc.reProdIm isCompact_Icc`. Establish `hcont : ContinuousOn (fun s => deriv riemannZeta₁ s / riemannZeta₁ s) (Icc (1 - δ / 2) 3 ×ℂ Icc (-T) T)`. Apply `ContinuousOn.div` to reduce the goal to its premises. Conclude with `((differentiable_riemannZeta₁.differentiableOn.deriv isOpen_univ).continuousOn).mono (subset_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `differentiable_riemannZeta₁.continuous.continuousOn`. Introduce `s hs`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `Complex.mem_reProdIm.mp hs`. Conclude with `hne s (abs_le.mpr ⟨h3, h4⟩) h1 h2`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hcont`.
-
-Use `⟨C, half_pos hδ, ?_⟩` and prove the remaining obligations. Introduce `s hs him hre hre3`. Rewrite using `[shld_identity hs (hne s him hre hre3)]`. Conclude with `hC s (Complex.mem_reProdIm.mpr ⟨⟨hre, hre3⟩, abs_le.mp him⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivBoundedHeight : SmallHeightLogDeriv := by
   intro T

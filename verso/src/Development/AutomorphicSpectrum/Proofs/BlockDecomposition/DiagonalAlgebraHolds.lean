@@ -6,7 +6,7 @@ open PositivityTheory.Rg.BcB.F.Eig
 namespace GlobalTheory.CompanionTheory.BlockScalars
 
 /- English proof (translation)
-Simplify using `[diagOp, Matrix.toLpLin_apply, Matrix.mulVec_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagOp_apply {ι : Type} {d : ℕ} (blk : Fin d → ι) (c : ι → ℂ)
     (x : EuclideanSpace ℂ (Fin d)) (j : Fin d) :
@@ -14,11 +14,11 @@ theorem diagOp_apply {ι : Type} {d : ℕ} (blk : Fin d → ι) (c : ι → ℂ)
   simp [diagOp, Matrix.toLpLin_apply, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Introduce `ι d blk c c' z`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x j`. Simplify using `[diagOp_apply, ContinuousLinearMap.mul_def, mul_assoc]`. Use extensionality with `x j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[diagOp_apply, add_mul]`. Use extensionality with `x j`. Simplify using `[diagOp_apply]`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`. Use `symm`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Simplify using `only [PiLp.inner_apply, diagOp_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[RCLike.inner_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -12,9 +12,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.Convolut
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨hfd, rfl⟩` from `h`. Establish `hr : LinearMap.range (c • A) = LinearMap.range A` using `LinearMap.range_smul _ _ hc`. Establish `key : ∀ W : Submodule ℂ V, W = LinearMap.range A → ∀ h' : ∀ v ∈ W, (c • A) v ∈ W, LinearMap.trace ℂ W ((c • A).restrict h') = c * LinearMap.trace ℂ (LinearMap.range A) (A.restrict (p` using `LinearMap.range A) (q := LinearMap.range A) fun v _ => LinearMap.mem_range_self A v) := by`. Introduce and unpack `W rfl h'`. Establish `: (c • A).restrict h' = c • A.restrict (p` using `LinearMap.range A) (q := LinearMap.range A) (fun v _ => LinearMap.mem_range_self A v) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[this, map_smul, smul_eq_mul]`. Conclude with `⟨hr ▸ hfd, key _ hr _⟩`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem trace_range_smul {V : Type} [AddCommGroup V] [Module ℂ V] (A : V →ₗ[ℂ] V) {c s : ℂ} (hc : c ≠ 0)
     (h : HasFinTrace A s) : HasFinTrace (c • A) (c * s) := by
@@ -32,9 +32,9 @@ private theorem trace_range_smul {V : Type} [AddCommGroup V] [Module ℂ V] (A :
   exact ⟨hr ▸ hfd, key _ hr _⟩
 
 /- English proof (translation)
-Take `⟨A, hA, hT⟩` from `h`. Establish `hr : (d.toReal : ℂ) ≠ 0`. Conclude with `(ENNReal.toReal_pos h0 ht).ne'` after adjusting the coercions. Use `⟨((d.toReal : ℂ))⁻¹ • A, fun v l => ?_, trace_range_smul A (inv_ne_zero hr) hT⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hA v l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(integrable_smul_measure h0 ht).1 h1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, h2, integral_smul_measure, smul_eq_mul, Complex.real_smul, inv_mul_cancel_left₀ hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hasTrace_of_smul {G V : Type} [Group G] [MeasurableSpace G] [AddCommGroup V] [Module ℂ V]
     {m : Measure G} {ρ : Representation ℂ G V} {f : G → ℂ} {s : ℂ} {d : ENNReal} (h0 : d ≠ 0) (ht : d ≠ ⊤)
@@ -48,13 +48,13 @@ private theorem hasTrace_of_smul {G V : Type} [Group G] [MeasurableSpace G] [Add
   rw [LinearMap.smul_apply, map_smul, h2, integral_smul_measure, smul_eq_mul, Complex.real_smul, inv_mul_cancel_left₀ hr]
 
 /- English proof (translation)
-Take `⟨A, hA, hfd, -⟩` from `h`. Establish `hr : ((m (I : Set G)).toReal : ℂ) ≠ 0`. Conclude with `(ENNReal.toReal_pos h0 ht).ne'` after adjusting the coercions. Establish `hfix : ∀ v ∈ fixedVectors ρ I, A v = ((m (I : Set G)).toReal : ℂ) • v`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA v l).2, map_smul, smul_eq_mul]`. Establish `e : (fun g => (I : Set G).indicator (1 : G → ℂ) g * l (ρ g v)) = (I : Set G).indicator fun _ => l v`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : g ∈ (I : Set G)`. Establish `: ρ g v = v` using `hv g hg`. Simplify using `[hg, this]`. Simplify using `[hg]`. Rewrite using `[e, integral_indicator hIm, setIntegral_const, measureReal_def, Complex.real_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : fixedVectors ρ I ≤ LinearMap.range A`. Introduce `v hv`. Use `⟨((m (I : Set G)).toReal : ℂ)⁻¹ • v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hfix v hv, smul_smul, inv_mul_cancel₀ hr, one_smul]`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fd_of_trace {G V : Type} [Group G] [MeasurableSpace G] [AddCommGroup V] [Module ℂ V]
     {m : Measure G} {ρ : Representation ℂ G V} {I : Subgroup G} {s : ℂ} (hIm : MeasurableSet (I : Set G))
@@ -82,11 +82,9 @@ private theorem fd_of_trace {G V : Type} [Group G] [MeasurableSpace G] [AddCommG
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Take `⟨hc, ho⟩` from `(UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test K n w).1`. Establish `hcl : IsClosed ((GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)) : Set (Gw n w))` using `Subgroup.isClosed_of_isOpen _ ho`. Use `⟨?_, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ ((GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)) : Set (Gw n w))`. Use `filter_upwards [ho.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Both sides reduce to the same expression. Use `filter_upwards [hcl.isOpen_compl.mem_nhds hx] with y hy`.
-
-Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem test_ind {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) :
     Test (((GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)) : Set (Gw n w)).indicator (1 : Gw n w → ℂ)) := by
@@ -104,11 +102,11 @@ private theorem test_ind {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl 
     rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Take `⟨hc, ho⟩` from `(UpperTheory.iwahori_compactOpen_and_iwCoset_indicator_test K n w).1`. Establish `hpos : m (GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)) ≠ 0` using `(ho.measure_pos m ⟨1, one_mem _⟩).ne'`. Establish `htop : m (GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)) ≠ ⊤` using `hc.measure_lt_top.ne`. Establish `hfd` using `fd_of_trace ho.measurableSet hpos htop h₀`. Use `set d : ENNReal := (m (GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)))⁻¹ with hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `ENNReal.inv_ne_zero.2 htop`. Establish `hdt : d ≠ ⊤` using `ENNReal.inv_ne_top.2 hpos`. Use `haveI : (d • m).IsHaarMeasure := Measure.IsHaarMeasure.smul m hd0 hdt`. Establish `h1 : (d • m) (GLnLocal.iwahori (w.adicCompletion K) n : Subgroup (Gw n w)) = 1`. Rewrite using `[Measure.smul_apply, smul_eq_mul, hd, ENNReal.inv_mul_cancel hpos htop]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Z, hZ0, -, hZ⟩` from `UpperTheory.ConvolutionTheory.C.iwPow K n w (d • m) h1 σ ν hν hfd`. Conclude with `⟨_, Z, hZ0, fun j => hasTrace_of_smul hd0 hdt (hZ j)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem iw_pow_at {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) [MeasurableSpace (Gw n w)]
     [BorelSpace (Gw n w)] (m : Measure (Gw n w)) [m.IsHaarMeasure] (σ : SmIrr (Gw n w)) (ν : Fin n → ℤ) (hν : Antitone ν)
@@ -129,9 +127,9 @@ private theorem iw_pow_at {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl
   exact ⟨_, Z, hZ0, fun j => hasTrace_of_smul hd0 hdt (hZ j)⟩
 
 /- English proof (translation)
-Substitute `h2 h3` using the available equality. Establish `: ∀ (ν' : Measure (archGroup K n)) (_ : ν'.IsHaarMeasure) (_ : ν' = ν) , Oinf μ ν' 𝔞.a₀ = Oinf μ ν 𝔞.a₀`. Introduce `ν' _ h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `congrArg (· ∘L prj (fixF μ 𝔞.U)) (this 𝔞.ν 𝔞.haar h1)`.
+A detailed English derivation is pending.
 -/
 private theorem amp_A_eq {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
     (𝔞 : Amp μ) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (a : TI K n)
@@ -143,7 +141,7 @@ private theorem amp_A_eq {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Me
   exact congrArg (· ∘L prj (fixF μ 𝔞.U)) (this 𝔞.ν 𝔞.haar h1)
 
 /- English proof (translation)
-Use `UpperTheory.trOn_eq_mul_of_eq_smul_on_subspace H ⊥ B B 0 inferInstance (fun v hv => by` as an intermediate fact. Rewrite using `[(Submodule.mem_bot ℂ).1 hv]`. Use the proof step `simp)`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem trOn_bot' {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (B : H →L[ℂ] H) :
     trOn (⊥ : Submodule ℂ H) B = 0 := by
@@ -152,29 +150,25 @@ private theorem trOn_bot' {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
   simpa using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ n l hn μ _ ν _ _ _ m hm a q w₀ S UF e he p x hx`. Use `haveI hmH : ∀ v, (m v).IsHaarMeasure := fun v => (hm v).1`. Distinguish the cases in `hex : ∃ (L : GM.Loc σ n q w₀) (𝔣 : Side (Twist.id μ) l), L.S = S ∧ (∀ v ∈ S, L.UF v = UF v) ∧ GM.IsSideF L ν a e 𝔣`. Use `swap`. Use `⟨Empty, inferInstance, fun i => i.elim, fun i => i.elim, fun i => i.elim, fun i => i.elim, fun i => i.elim, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `L 𝔣 h1 h2 h3`. Conclude with `absurd ⟨L, 𝔣, h1, h2, h3⟩ hex`. Take `⟨L₀, 𝔣₀, hS₀, hU₀, hF₀⟩` from `hex`. Take `⟨κ, -, hT⟩` from `UpperTheory.ConvolutionTheory.C.termF F E σ n l hn μ ν m hm`. Establish `hfin` using `(UpperTheory.ConvolutionTheory.T.ampFin F n hn μ 𝔣₀.toAmp).1 x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : Set (Submodule ℂ (LL μ)) := {V | IsSummand μ V ∧ eigIn V 𝔣₀.toAmp.A x ≠ ⊥ ∧ p V} with hP`. Establish `hPfin : P.Finite` using `hfin.subset fun V h => ⟨h.1, h.2.1⟩`. Establish `hτ : ∀ V : P, ∃ τ : ∀ v : Pl F, SmIrr (Gw n v), ∀ v, Occurs μ V.1 v (τ v)` using `fun V => by`. Use `fun v => (UpperTheory.ConvolutionTheory.C.occursBasics F n μ V.1 v (m v) V.2.1).1` as an intermediate fact. Use `choose τ hτ using this`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `⟨τ, hτ⟩`. Use `choose τ hτ using hτ`. Establish `hZ : ∀ V : P, ∃ (c : ℂ) (Z : Multiset ℂ), 0 ∉ Z ∧ ∀ j : ℕ, HasTrace (m q) (τ V q).ρ ((GM.iwCoset q (j • e)).indicator 1) (c * (Z.map (· ^ j)).sum)` using `fun V => by`. Take `⟨s₀, hs₀⟩` from `(UpperTheory.ConvolutionTheory.C.occursBasics F n μ V.1 q (m q) V.2.1).2.2 (τ V q) (hτ V q) _ (test_ind q)`. Conclude with `iw_pow_at q (m q) (τ V q) e he hs₀`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `choose c Z hZ0 hZ using hZ`. Establish `hN` using `fun V : P => hT a q w₀ S V.1 (τ V) x V.2.1 hx (fun v _ => hτ V v)`. Use `choose N hN using hN`. Use `letI : Fintype P := hPfin.fintype`. Use `⟨P, inferInstance, fun V => V.1, τ, fun V => κ * x * N V * c V, Z, fun V => ⟨V.2.1, V.2.2.2, hZ0 V, hτ V⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `L 𝔣 hS hU hF s hs j`. Establish `hUF : L.UF = L₀.UF`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hU v hv, hU₀ v hv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hq : v = q`. Substitute `hq` using the available equality. Rewrite using `[L.at_q.2.2.2, L₀.at_q.2.2.2]`. Rewrite using `[(L.off v (hS ▸ hv) hq).2.2.2, (L₀.off v (hS₀ ▸ hv) hq).2.2.2]`. Establish `hA : 𝔣.toAmp.A = 𝔣₀.toAmp.A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, -, h3, -, -⟩` from `hF`. Take `⟨h1', h2', -, h3', -, -⟩` from `hF₀`. Rewrite using `[amp_A_eq 𝔣.toAmp ν a _ h1 h2 h3, amp_A_eq 𝔣₀.toAmp ν a _ h1' h2' h3', hUF]`. Establish `hid : ∀ V : Submodule ℂ (LL μ), V.map ((Twist.id μ).U : LL μ →ₗ[ℂ] LL μ) = V` using `fun V => by`. Establish `: ((Twist.id μ).U : LL μ →ₗ[ℂ] LL μ) = LinearMap.id` using `LinearMap.ext fun _ => rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, Submodule.map_id]`. Establish `hsum : 𝔣.tr p x j = ∑ᶠ V ∈ P, trOn (eigIn V 𝔣.toAmp.A x) ((𝔣.Uq 0 ^ j) ∘L Rop μ 𝔣.g ∘L (Twist.id μ).U)`. Unfold `Side.tr`. Use `finsum_mem_inter_support_eq _ _ _ ?_` and prove the remaining obligations. Use extensionality with `V`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Function.mem_support, hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, -, h3⟩, h4⟩`. Use `⟨⟨h1, fun h => h4 ?_, h3⟩, h4⟩` and prove the remaining obligations. Rewrite using `[hA, h, trOn_bot']`.
-
-Introduce and unpack `⟨⟨h1, -, h3⟩, h4⟩`. Conclude with `⟨⟨h1, hid V, h3⟩, h4⟩`. Rewrite using `[hsum, ← finsum_set_coe_eq_finsum_mem, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun V _ => ?_` and prove the remaining obligations. Rewrite using `[(hN V).2 L e 𝔣 hS he hF j _ (s V) (hZ V j) (hs V)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.sideSum :
     UpperTheory.ConvolutionTheory.T.SideSum := by

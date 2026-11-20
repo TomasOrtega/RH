@@ -35,7 +35,7 @@ variable (δ : D.host.E) (hδ : D.sp.cm.sig δ = -δ) (hδ0 : δ ≠ 0)
 
 include hδ hδ0 in
 /- English proof (translation)
-Rewrite using `[← pt_co δ hδ hδ0 y, cA_pt δ hδ, cA_pt δ hδ, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_cA (y : AE D) : cA D (cA D y) = y := by
   rw [← pt_co δ hδ hδ0 y, cA_pt δ hδ, cA_pt δ hδ, neg_neg]
@@ -43,19 +43,19 @@ theorem cA_cA (y : AE D) : cA D (cA D y) = y := by
 end Inv
 
 /- English proof (translation)
-Take `⟨δ, hδ, hδ0⟩` from `exists_delta_D D`. Conclude with `cA_cA δ hδ hδ0 y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cA_cA' (y : AE D) : cA D (cA D y) = y := by
   obtain ⟨δ, hδ, hδ0⟩ := exists_delta_D D
   exact cA_cA δ hδ hδ0 y
 
 /- English proof (translation)
-The claim follows from `Units.ext (cA_cA' _)`.
+A detailed English derivation is pending.
 -/
 theorem cUD_cUD' (x : (AE D)ˣ) : cUD D (cUD D x) = x := Units.ext (cA_cA' _)
 
 /- English proof (translation)
-Establish `h : hq D x * cUD D (hq D x) = 1`. Rewrite using `[hq_apply, map_div, cUD_cUD', div_mul_div_cancel, div_self']`. Use `show ((hq D x : (AE D)ˣ) : AE D) * cA D ((hq D x : (AE D)ˣ) : AE D) = 1`. Use `congrArg (fun z : (AE D)ˣ => (z : AE D)) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hq_mem (x : (AE D)ˣ) : hq D x ∈ FirstPropositionFrame D := by
   have h : hq D x * cUD D (hq D x) = 1 := by
@@ -74,7 +74,7 @@ variable (δ : D.host.E) (hδ : D.sp.cm.sig δ = -δ) (hδ0 : δ ≠ 0) (Δ : D.
 end Coord
 
 /- English proof (translation)
-Use `show ((Matrix.GeneralLinearGroup.det (matHom V g) : (AE D)ˣ) : AE D) * cA D ((Matrix.GeneralLinearGroup.det (matHom V g) : (AE D)ˣ) : AE D) = 1`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, mul_comm]`. Conclude with `det_conj_mul V g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detU_mem (V : HSp D) (g : GA D V) : Matrix.GeneralLinearGroup.det (matHom V g) ∈ FirstPropositionFrame D := by
   show ((Matrix.GeneralLinearGroup.det (matHom V g) : (AE D)ˣ) : AE D) *

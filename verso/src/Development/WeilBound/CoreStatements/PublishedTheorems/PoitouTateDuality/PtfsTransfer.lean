@@ -13,11 +13,11 @@ section Abstract
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Unfold `Function.Exact at h ⊢`. Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `h1 : g' (eB b) = 0` using `by rw [hg, hb, map_zero, smul_zero]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a', ha'⟩` from `(h (eB b)).1 h1`. Use `⟨(u : R) • eA.symm a', eB.injective ?_⟩` and prove the remaining obligations. Use `hf (eA.symm a')` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, ha']`. Rewrite using `[map_smul, map_smul, this, Units.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, rfl⟩`. Establish `h2 : g' (f' (eA a)) = 0` using `(h _).2 ⟨_, rfl⟩`. Rewrite `h2` using `[hf, Units.smul_def, map_smul, hg, ← Units.smul_def, smul_eq_zero_iff_eq, smul_eq_zero_iff_eq, LinearEquiv.map_eq_zero_iff]`. Conclude with `h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_of_transfer {A B C A' B' C' : Type} [AddCommGroup A] [Module R A] [AddCommGroup B]
     [Module R B] [AddCommGroup C] [Module R C] [AddCommGroup A'] [Module R A'] [AddCommGroup B']
@@ -55,13 +55,13 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (hρ : ContAction ρ)
 
 /- English proof (translation)
-Take `⟨B0, B1, B2, B3, B4, B5, B6, B7, BetaSesquilinearity, g0, g1, g2, g3, g4, g5, g6, g7, e0, e1, e2, e3, e4, e5, e6, e7, e8, u, h0, h1, h3, h4, h6, h7, i0, x01, x12, x23, x34, x45, x56, x67, s7⟩` from `h`. Establish `k2 : ∀ a, g2 (e2 a) = (1 : (ZMod (l ^ r))ˣ) • e3 ((e3.symm.toLinearMap ∘ₗ g2 ∘ₗ e2.toLinearMap) a)`. Introduce `a`. Rewrite using `[one_smul]`. Conclude with `(e3.apply_symm_apply _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k5 : ∀ a, g5 (e5 a) = (1 : (ZMod (l ^ r))ˣ) • e6 ((e6.symm.toLinearMap ∘ₗ g5 ∘ₗ e5.toLinearMap) a)`. Introduce `a`. Rewrite using `[one_smul]`. Conclude with `(e6.apply_symm_apply _).symm`. Use `⟨e3.symm.toLinearMap ∘ₗ g2 ∘ₗ e2.toLinearMap, e6.symm.toLinearMap ∘ₗ g5 ∘ₗ e5.toLinearMap, ?_, exact_of_transfer _ _ _ _ e0 e1 e2 _ _ h0 h1 x01, exact_of_transfer _ _ _ _ e1 e2 e3 _ _ h1 k2 x12, exact_of_transfer _ _ _ _ e2 e3 e4 _ _ k2 h3 x23, exact_of_transfer _ _ _ _ e3 e4 e5 …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Apply `e0.injective` to reduce the goal to its premises. Apply `i0` to reduce the goal to its premises. Rewrite using `[h0, h0, hab]`. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `s7 (e8 y)`. Use `⟨((u 5 : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) • e7.symm b, e8.injective ?_⟩` and prove the remaining obligations. Use `h7 (e7.symm b)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, hb]`. Rewrite using `[map_smul, map_smul, this, Units.smul_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nineTermExact_of_nineCmp
     (h : NineCmp (loc0 S Av ρ) (tr0 S Av μ j ρ) (loc1 S Av ρ) (tr1 S Av μ j ρ hρ)

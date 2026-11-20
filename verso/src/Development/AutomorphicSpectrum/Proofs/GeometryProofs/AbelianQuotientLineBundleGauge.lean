@@ -21,14 +21,14 @@ abbrev sqU : Over.mk ((GF t x ⊗ GF t x).hom ≫ x) ⟶ t.G ⊗ t.G :=
   lift (sqPr t x (fst _ _)) (sqPr t x (snd _ _))
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sqPt_left_fst (a : t.G ⊗ t.G ⟶ t.G) :
     (sqPt t x a).left ≫ pullback.fst t.G.hom x = sqMap t x ≫ a.left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext h` to reduce the goal to its premises. Conclude with `(Over.w a).trans (Over.w b).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fib_ext {T : Over (Sp k)} {a b : T ⟶ GF t x}
     (h : a.left ≫ pullback.fst t.G.hom x = b.left ≫ pullback.fst t.G.hom x) : a = b := by
@@ -37,7 +37,7 @@ theorem fib_ext {T : Over (Sp k)} {a b : T ⟶ GF t x}
   exact (Over.w a).trans (Over.w b).symm
 
 /- English proof (translation)
-Apply `fib_ext` to reduce the goal to its premises. Rewrite using `[sqPt_left_fst]`. Use `Eq.symm (psum_push (isGrpPullback_pullback t.G x) _ xs (sqU t x) (fun i => ?_) I)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `sqPt_left_fst t x (xs i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sqPt_psum {n : ℕ} (xs : Fin n → (t.G ⊗ t.G ⟶ t.G)) (I : Finset (Fin n)) :
     sqPt t x (psum t.G xs I) = psum (GF t x) (fun i => sqPt t x (xs i)) I := by
@@ -48,7 +48,7 @@ theorem sqPt_psum {n : ℕ} (xs : Fin n → (t.G ⊗ t.G ⟶ t.G)) (I : Finset (
   exact sqPt_left_fst t x (xs i)
 
 /- English proof (translation)
-Apply `fib_ext` to reduce the goal to its premises. Rewrite using `[sqPt_left_fst]`. Use `show (sqU t x ≫ fst t.G t.G).left = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sqPt_fst : sqPt t x (fst t.G t.G) = fst (GF t x) (GF t x) := by
   apply fib_ext
@@ -58,7 +58,7 @@ theorem sqPt_fst : sqPt t x (fst t.G t.G) = fst (GF t x) (GF t x) := by
   rfl
 
 /- English proof (translation)
-Apply `fib_ext` to reduce the goal to its premises. Rewrite using `[sqPt_left_fst]`. Use `show (sqU t x ≫ snd t.G t.G).left = _`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sqPt_snd : sqPt t x (snd t.G t.G) = snd (GF t x) (GF t x) := by
   apply fib_ext
@@ -68,7 +68,7 @@ theorem sqPt_snd : sqPt t x (snd t.G t.G) = snd (GF t x) (GF t x) := by
   rfl
 
 /- English proof (translation)
-Apply `fib_ext` to reduce the goal to its premises. Rewrite using `[sqPt_left_fst, Over.comp_left, Over.comp_left, Category.assoc]`. Establish `A : ((Over.pullback x).map c).left ≫ pullback.fst t.G.hom x = pullback.fst t.G.hom x ≫ c.left` using `pullback.lift_fst _ _ _`. Rewrite using `[A, ← Category.assoc (Over.Hom.left (sqPt t x b)), sqPt_left_fst]`. Simplify using `only [Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sqPt_comp (b : t.G ⊗ t.G ⟶ t.G) (c : t.G ⟶ t.G) :
     sqPt t x (b ≫ c) = sqPt t x b ≫ (Over.pullback x).map c := by
@@ -80,7 +80,7 @@ theorem sqPt_comp (b : t.G ⊗ t.G ⟶ t.G) (c : t.G ⟶ t.G) :
   simp only [Category.assoc]
 
 /- English proof (translation)
-The claim follows from `psum_hom (MonoidHom.mk' (· ≫ q) fun a b => MonObj.mul_comp a b q) ys I`.
+A detailed English derivation is pending.
 -/
 theorem psum_comp_hom {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (q : A ⟶ B) [IsMonHom q] {T : Over S} {n : ℕ} (ys : Fin n → (T ⟶ A)) (I : Finset (Fin n)) :
@@ -88,7 +88,7 @@ theorem psum_comp_hom {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A
   psum_hom (MonoidHom.mk' (· ≫ q) fun a b => MonObj.mul_comp a b q) ys I
 
 /- English proof (translation)
-The claim follows from `psum_hom (preHom U) ys I`.
+A detailed English derivation is pending.
 -/
 theorem comp_psum {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B]
     {T T' : Over S} (U : T' ⟶ T) {n : ℕ} (ys : Fin n → (T ⟶ B)) (I : Finset (Fin n)) :
@@ -103,7 +103,7 @@ abbrev qL : GF t x ⊗ GF t x ⟶ Q.tB.G ⊗ Q.tB.G :=
   lift (fst (GF t x) (GF t x) ≫ Q.q) (snd (GF t x) (GF t x) ≫ Q.q)
 
 /- English proof (translation)
-Use `haveI := Q.q_hom`. Establish `e : sqPt t x (psum t.G xs I) ≫ Q.q = qL Q ≫ psum Q.tB.G ys I`. Rewrite using `[sqPt_psum, psum_comp_hom, comp_psum]`. Conclude with `congrArg (fun z => psum Q.tB.G z I) (funext h)`. Conclude with `congrArg (fun z => z.left) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqPt_psum_q {n : ℕ} (xs : Fin n → (t.G ⊗ t.G ⟶ t.G)) (ys : Fin n → (Q.tB.G ⊗ Q.tB.G ⟶ Q.tB.G))
     (h : ∀ i, sqPt t x (xs i) ≫ Q.q = qL Q ≫ ys i) (I : Finset (Fin n)) :
@@ -115,19 +115,19 @@ theorem sqPt_psum_q {n : ℕ} (xs : Fin n → (t.G ⊗ t.G ⟶ t.G)) (ys : Fin n
   exact congrArg (fun z => z.left) e
 
 /- English proof (translation)
-Rewrite using `[sqPt_fst, lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqPt_fst_q : sqPt t x (fst t.G t.G) ≫ Q.q = qL Q ≫ fst Q.tB.G Q.tB.G := by
   rw [sqPt_fst, lift_fst]
 
 /- English proof (translation)
-Rewrite using `[sqPt_snd, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqPt_snd_q : sqPt t x (snd t.G t.G) ≫ Q.q = qL Q ≫ snd Q.tB.G Q.tB.G := by
   rw [sqPt_snd, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[sqPt_comp, Category.assoc, Q.act_q, ← Category.assoc, h, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqPt_act_q {b : t.G ⊗ t.G ⟶ t.G} {b' : Q.tB.G ⊗ Q.tB.G ⟶ Q.tB.G}
     (h : sqPt t x b ≫ Q.q = qL Q ≫ b') (a : 𝓞 E) :
@@ -137,7 +137,7 @@ theorem sqPt_act_q {b : t.G ⊗ t.G ⟶ t.G} {b' : Q.tB.G ⊗ Q.tB.G ⟶ Q.tB.G}
 end Quot
 
 /- English proof (translation)
-Break down `i with I | I` into its components or cases. Conclude with `sqPt_left_fst t x _`. Conclude with `sqPt_left_fst t x _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem adF_fst (a : 𝓞 E) (i : ULift (Finset (Fin 2)) ⊕ ULift (Finset (Fin 2))) :
     adF t x a i ≫ pullback.fst t.G.hom x = sqMap t x ≫ Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)])
@@ -147,9 +147,7 @@ theorem adF_fst (a : 𝓞 E) (i : ULift (Finset (Fin 2)) ⊕ ULift (Finset (Fin 
   · exact sqPt_left_fst t x _
 
 /- English proof (translation)
-Break down `i with I | I` into its components or cases. Use `sqPt_psum_q Q _ _ (fun i => ?_) I.down fin_cases i` and prove the remaining obligations. Conclude with `sqPt_fst_q Q`. Conclude with `sqPt_act_q Q (sqPt_snd_q Q) _`. Use `sqPt_psum_q Q _ _ (fun i => ?_) I.down fin_cases i` and prove the remaining obligations.
-
-Conclude with `sqPt_act_q Q (sqPt_fst_q Q) _`. Conclude with `sqPt_snd_q Q`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adF_q {t : SAB H X} {x : Sp k ⟶ X} (Q : AbQuot t x) (a : 𝓞 E) (i : ULift (Finset (Fin 2)) ⊕ ULift (Finset (Fin 2))) :
     adF t x a i ≫ Q.q.left = qq Q ≫ Sum.elim (cφG Q.tB ![fst Q.tB.G Q.tB.G, snd Q.tB.G Q.tB.G ≫ Q.tB.act.act (H.bar a)])
@@ -165,7 +163,7 @@ theorem adF_q {t : SAB H X} {x : Sp k ⟶ X} (Q : AbQuot t x) (a : 𝓞 E) (i : 
     · exact sqPt_snd_q Q
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ _ X t k _ _ p _ _ x Q d d' g gB w hw a wL wB hL hB`. Conclude with `GlobalTheory.T.generator_ratio_unit_exists t.G.left Q.tB.G.left (GF t x).left t.PP.L Q.tB.PP.L (pullback.fst t.G.hom x) Q.q.left t.PP.isLB Q.tB.PP.isLB w hw _ _ (adF t x a) _ _ _ _ _ (adF_fst t x a) (adF_q Q a) (LB.isGen_pullGen _ _ _ _ hL _) (LB.isGen_pullGen _ _ _ _ hB _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adjunction_ratio : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X) (Q : AbQuot t x) (d d' : ℕ) (g : GermAt t x d) (gB : GermAt Q.tB (𝟙 (Sp k)) d'), ∀ (w : LB.Iso (t.PP.L.pull (pullback.fst t.G.hom x)) (Q.tB.PP.L.pull Q.q.left)), w.IsGen → ∀ (a : 𝓞 E) (wL : AdTy t a) (wB : AdTy Q.tB a), wL.IsGen → wB.IsGen → ∃ u : Γ((GF t x ⊗ GF t x).left, ⊤)ˣ, Tr w (adF t x a) (fun i => sqMap t x ≫ Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)]) (cφG t ![fst t.G t.G ≫ t.act.act a, snd t.G t.G]) i) (fun i => qq Q ≫ Sum.elim (cφG Q.tB ![fst Q.tB.G Q.tB.G, snd Q.tB.G Q.tB.G ≫ Q.tB.act.act (H.bar a)]) (cφG Q.tB ![fst Q.tB.G Q.tB.G ≫ Q.tB.act.act a, snd Q.tB.G Q.tB.G]) i) (Sum.elim (cε 2) fun I => -cε 2 I) (LB.pullGen t.PP.L _ _ wL (sqMap t x)) (LB.pullGen Q.tB.PP.L _ _ wB (qq Q)) u := by
   intro E _ _ _ H _ _ X t k _ _ p _ _ x Q d d' g gB w hw a wL wB hL hB

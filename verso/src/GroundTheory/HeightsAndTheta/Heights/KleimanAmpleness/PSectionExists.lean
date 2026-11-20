@@ -12,13 +12,13 @@ open Filter
 universe u w
 
 /- English proof (translation)
-Take `⟨n₀, hn₀⟩` from `eventually_atTop.mp h`. Take `⟨K, hK⟩` from `exists_nat_gt (C * ((d + 1).factorial : ℝ) / A)`. Use `⟨n₀ + K + 1, by omega, ?_⟩` and prove the remaining obligations. Establish `hle : n₀ + K + 1 ≤ D * (n₀ + K + 1)` using `Nat.le_mul_of_pos_left _ hD`. Use `lt_of_lt_of_le ?_ (hn₀ _ (le_trans (by omega) hle))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnK : (K : ℝ) < ((D * (n₀ + K + 1) : ℕ) : ℝ)`. Establish `: K < D * (n₀ + K + 1)` using `lt_of_lt_of_le (by omega) hle`. Conclude with `this` after adjusting the coercions. Generalize the expression as in `((D * (n₀ + K + 1) : ℕ) : ℝ) = n at hnK ⊢`. Establish `hA' : (0 : ℝ) < A` using `by exact_mod_cast hA`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : (0 : ℝ) < ((d + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hnpos : (0 : ℝ) < n` using `lt_of_le_of_lt (Nat.cast_nonneg K) hnK`. Establish `h1 : C * ((d + 1).factorial : ℝ) < A * n`. Use `lt_trans hK hnK` as an intermediate fact. Rewrite `this` using `[div_lt_iff₀ hA', mul_comm n]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : C < A * n / ((d + 1).factorial : ℝ)` using `by rw [lt_div_iff₀ hF]; exact h1`. Establish `h3 : (A : ℝ) * n ^ (d + 1) / ((d + 1).factorial : ℝ) - C * n ^ d = n ^ d * (A * n / ((d + 1).factorial : ℝ) - C)` using `by ring`. Rewrite using `[h3]`. Conclude with `mul_pos (pow_pos hnpos d) (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos_of_eventually_lower {d : ℕ} {A : ℤ} (hA : 0 < A) {C : ℝ} {f : ℕ → ℝ}
     (h : ∀ᶠ n : ℕ in atTop,
@@ -46,25 +46,25 @@ theorem exists_pos_of_eventually_lower {d : ℕ} {A : ℤ} (hA : 0 < A) {C : ℝ
   exact mul_pos (pow_pos hnpos d) (by linarith)
 
 /- English proof (translation)
-Take `⟨Nb, hNb⟩` from `exists_lineBundle_twistMul M Q mQ`. Establish `hvaN : IsVeryAmple Nb.toSubSystem` using `hNb ▸ hva`. Take `⟨b, hb⟩ : ∃ b : ℕ, b = ⌊(Q : ℚ) * s'⌋₊ + 1` from `⟨_, rfl⟩`. Establish `hQs'0 : 0 ≤ (Q : ℚ) * s'` using `by positivity`. Establish `hb_gt : (Q : ℚ) * s' < b` using `by rw [hb]; push_cast; exact Nat.lt_floor_add_one _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb_le : (b : ℚ) ≤ Q * s' + 1` using `by rw [hb]; push_cast; linarith [Nat.floor_le hQs'0]`. Establish `hd0 : (d : ℚ) + 1 ≠ 0` using `by positivity`. Establish `hd : (0 : ℚ) < d + 1` using `by positivity`. Establish `hbT : (b : ℚ) < Q * (t / (d + 1))`. Use `hgap` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbm : ((d + 1 : ℕ) : ℤ) * b < mQ`. Establish `h1 : ((d : ℚ) + 1) * b < (d + 1) * (Q * (t / (d + 1)))` using `mul_lt_mul_of_pos_left hbT hd`. Establish `h2 : ((d : ℚ) + 1) * (Q * (t / (d + 1))) = Q * t` using `by field_simp`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((((d + 1 : ℕ) : ℤ) * b : ℤ) : ℚ) < (mQ : ℚ)`. Use `push_cast`. Rewrite using `[hmQ]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hb1 : 1 ≤ b` using `by omega`. Take `⟨C, hC⟩` from `hcount k Ω N x d Nb b hZ hvaN hb1`. Establish `hcoef` using `hlead k Ω N x d M Nb Q mQ b hZ hM hNb hvaN hbm`. Establish `hden` using `Rat.mul_den_eq_num ((Q : ℚ) * s')`. Establish `hD1 : 0 < ((Q : ℚ) * s').den` using `Rat.den_pos _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `((Q : ℚ) * s').den = D at hden hD1`. Generalize the expression as in `((Q : ℚ) * s').num = E at hden`. Take `⟨n₁, hn₁, hpos⟩` from `exists_pos_of_eventually_lower hcoef hC D hD1`. Establish `hne : (twistMul Nb.toSubSystem (D * n₁) (-(((D * n₁ : ℕ) : ℤ) * b))).secs ≠ ⊥`. Introduce `h`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[h, finrank_bot]`. Simplify using `at hpos`. Take `⟨σ, hσ, hσne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Rewrite `hσ` using `[hNb, twistMul_twistMul]`. Use `⟨D * n₁ * Q, ((D * n₁ : ℕ) : ℤ) * mQ - n₁ * E, ((D * n₁ : ℕ) : ℤ) * b - n₁ * E, Nat.mul_pos (Nat.mul_pos hD1 hn₁) hQ, ?_, ?_, σ, ?_, hσne⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[hmQ, ← hden]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDn : (0 : ℚ) < (D : ℚ) * n₁` using `by positivity`. Establish `hpos' : (0 : ℚ) < ((((D * n₁ : ℕ) : ℤ) * b - n₁ * E : ℤ) : ℚ)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[← hden]`. Establish `key : (D : ℚ) * n₁ * (b - Q * s') = D * n₁ * b - n₁ * (Q * s' * D)` using `by ring`. Use `mul_pos hDn (sub_pos.mpr hb_gt)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (0 : ℤ) < ((D * n₁ : ℕ) : ℤ) * b - n₁ * E` using `by exact_mod_cast hpos'`. Use linear arithmetic over natural numbers and integers. Establish `hm : ((D * n₁ : ℕ) : ℤ) * mQ - n₁ * E - (((D * n₁ : ℕ) : ℤ) * b - n₁ * E) = ((D * n₁ : ℕ) : ℤ) * mQ + -(((D * n₁ : ℕ) : ℤ) * b)` using `by ring`. Rewrite using `[hm]`. Conclude with `hσ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sectionExists_of_gap (hcount : SectionCount.Statement.{u, w})
     (hlead : LeadingCoeffPos.Statement.{u, w}) {k : Type u} [Field k] {Ω : Type w} [Field Ω]
@@ -131,13 +131,13 @@ theorem sectionExists_of_gap (hcount : SectionCount.Statement.{u, w})
     exact hσ
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x d M t s' hZ hM hs' hst hq`. Take `⟨q, m, hq1, hm, hva⟩` from `hq`. Establish `hδ : 0 < t / (d + 1) - s'` using `by linarith`. Establish `hqpos : (0 : ℚ) < q` using `by exact_mod_cast hq1`. Establish `hqδ` using `mul_pos hqpos hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j₀, hj₀⟩` from `exists_nat_gt (1 / ((q : ℚ) * (t / (d + 1) - s')))`. Rewrite `hj₀` using `[div_lt_iff₀ hqδ]`. Establish `hgap : 1 < (((j₀ + 1) * q : ℕ) : ℚ) * (t / (d + 1) - s')`. Use `push_cast`. Establish `: ((j₀ : ℚ) + 1) * q * (t / (d + 1) - s') = j₀ * (q * (t / (d + 1) - s')) + q * (t / (d + 1) - s')` using `by ring`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Nb0, hNb0⟩` from `exists_lineBundle_twistMul M q m`. Establish `hvaQ : IsVeryAmple (twistMul M.toSubSystem ((j₀ + 1) * q) (((j₀ + 1 : ℕ) : ℤ) * m))`. Use `hpow k Ω N x Nb0 (j₀ + 1) (by rw [hNb0]; exact hva) (by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hNb0, pow_twistMul]`. Conclude with `this`. Conclude with `sectionExists_of_gap hcount hlead hZ hM hs' (Nat.mul_pos (Nat.succ_pos _) hq1) (by push_cast; rw [hm]; ring) hvaQ hgap`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SectionExists.proof (hcount : SectionCount.Statement.{u, w})
     (hpow : VeryAmplePow.Statement.{u, w}) (hlead : LeadingCoeffPos.Statement.{u, w}) :

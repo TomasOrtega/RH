@@ -11,13 +11,13 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Introduce `hW hS hN E _ _ _ n U hU l sU`. Establish `nice : ∀ φ ∈ U, Nice φ.1` using `fun φ hφ => (hN E n φ).2 (l hφ)`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hU`. Establish `N` using `nice φ hφ`. Establish `hg : ∃ g, whittaker φ.1 g ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `h0 (Subtype.ext (MultiplicityOne.eq_zero_of_whittaker_eq_zero N.cont N.left N.cusp ?_ fun g => not_not.1 fun h' => h ⟨g, h'⟩))` and prove the remaining obligations. Rewrite using `[Fb.finEmb_eq]`. Conclude with `N.level`. Take `⟨g, hg⟩` from `hg`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[← GlobalTheory.CuspRep.infGL_mul_finGL g]`. Generalize the expression as in `GeneralLinearGroup.map (pInf E) g = y at hg`. Generalize the expression as in `GeneralLinearGroup.map (pFin E) g = k at hg`. Establish `hφ'` using `sU.τ k φ hφ`. Use `⟨_, hφ', hS E n _ (hW E n _ (nice _ hφ')).1 y ?_⟩` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (finRepCusp E n k φ).1 = fun x => φ.1 (x * finGL E n k)`. Rewrite using `[← Fb.finEmb_eq]`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify `hg` using `only [whittaker, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.seed :
     UpperTheory.V.Af.Smo.WhBasic → UpperTheory.V.Af.StrongMultiplicityOne.SeedConv → UpperTheory.V.Af.StrongMultiplicityOne.NiceOf → UpperTheory.V.Af.StrongMultiplicityOne.Seed := by

@@ -16,11 +16,11 @@ open GlobalTheory.AbLaw
 namespace GlobalTheory.CurveThrough
 
 /- English proof (translation)
-Use `HasRingHomProperty.of_iSup_eq_top (P := @Smooth) (fun U : {U : C.affineOpens // Nonempty U.1} => U.1) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨U, hU⟩, ⟨⟨x, hx⟩⟩⟩, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨U, hU⟩, hne⟩ haveI := h U hU hne`. Establish `hft : (f.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType f inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Set `e` to `Scheme.ΓSpecIso (CommRingCat.of k)`. Set `φ : k →+* Γ(C, U)` to `(e.inv ≫ f.appLE ⊤ U le_top).hom`. Establish `hφ : φ.FiniteType` using `(RingHom.finiteType_respectsIso.cancel_left_isIso e.inv (f.appLE ⊤ U le_top)).2 hft`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : φ.Smooth`. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.FiniteType k Γ(C, U) := hφ`. Conclude with `GlobalTheory.DedekindSmooth.smooth_of_isDedekindDomain k Γ(C, U)`. Conclude with `(RingHom.Smooth.propertyIsLocal.respectsIso.cancel_left_isIso e.inv (f.appLE ⊤ U le_top)).1 hs`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem smooth_of_dedekind_charts (k : Type) [Field k] [IsAlgClosed k] (C : Scheme.{0})
     (f : C ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType f]

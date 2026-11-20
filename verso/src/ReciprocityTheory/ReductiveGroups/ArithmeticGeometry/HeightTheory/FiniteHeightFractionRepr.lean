@@ -17,9 +17,9 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨hpr, hh⟩` from `hp`. Use `haveI := hpr`. Take `⟨g, hg, hpg⟩` from `ValUFD.heightOne_principal p hh`. Establish `hPr : p.IsPrincipal` using `⟨⟨g, hpg⟩⟩`. Unfold `gen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hPr]`. Introduce `h0`. Establish `hbot : p = ⊥` using `(Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero p).2 h0`. Rewrite `hpg` using `[hbot]`. Conclude with `hg.ne_zero (Ideal.span_singleton_eq_bot.1 hpg.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_ne_zero_of_mem_htOne {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) : d.gen p ≠ 0 := by
   obtain ⟨hpr, hh⟩ := hp
@@ -34,29 +34,27 @@ theorem gen_ne_zero_of_mem_htOne {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne
   exact hg.ne_zero (Ideal.span_singleton_eq_bot.1 hpg.symm)
 
 /- English proof (translation)
-Establish `hspec : ∀ c, hd.a4.choose c ∈ 𝒜 c d.wF ∧ hd.a4.choose c ≠ 0` using `hd.a4.choose_spec.1`. Establish `hfin : ∀ c, {p | p ∈ d.HtOne ∧ d.nP h c d.wF (hd.a4.choose c) p ≠ 0}.Finite` using `fun c => (d.good_primes_properties hd h c).2.2.1 d.wF (hd.a4.choose c) (hspec c).1 (hspec c).2`. Take `⟨T, hmemT⟩ : ∃ T : ι → Finset (Ideal (KTp K d.D d.N)), ∀ c p, p ∈ T c ↔ p ∈ d.HtOne ∧ d.nP h c d.wF (hd.a4.choose c) p ≠ 0` from `⟨fun c => (hfin c).toFinset, fun c p => by simp⟩`. Establish `hmemS : ∀ x ∈ Finset.univ.sigma T, x.2 ∈ d.HtOne ∧ d.nP h x.1 d.wF (hd.a4.choose x.1) x.2 ≠ 0`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[Finset.mem_sigma]`. Conclude with `(hmemT _ _).1 hx.2`. Establish `hne : ∀ x ∈ Finset.univ.sigma T, d.gen x.2 ≠ 0` using `fun x hx => d.gen_ne_zero_of_mem_htOne (hmemS x hx).1`. Establish `hmh : ∀ x ∈ Finset.univ.sigma T, IsMultiHomogeneous (fun b : Fin (d.D + 1) => if b = 0 then 0 else d.dg (d.gen x.2)) (d.gen x.2)`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hp, hn⟩` from `hmemS x hx`. Use `(d.good_primes_properties hd h x.1).2.1 x.2 hp ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hw`. Use `push_neg at hw`. Apply `hn` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[nP, hw]`. Establish `halg : ∀ x ∈ Finset.univ.sigma T, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen x.2) ≠ 0` using `fun x hx => (map_ne_zero_iff _ (IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N))).2 (hne x hx)`. Establish `key : ∀ (a : KTf K d.D d.N), a ≠ 0 → ∀ m : ℤ, a ^ m * a ^ (-m).toNat = a ^ m.toNat`. Introduce `a ha m`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨∏ x ∈ Finset.univ.sigma T, d.gen x.2 ^ (d.nP h x.1 d.wF (hd.a4.choose x.1) x.2).toNat, ∏ x ∈ Finset.univ.sigma T, d.gen x.2 ^ (-d.nP h x.1 d.wF (hd.a4.choose x.1) x.2).toNat, Finset.prod_ne_zero_iff.2 fun x hx => pow_ne_zero _ (hne x hx), Finset.prod_ne_zero_iff.2 fun x hx => po …` and prove the remaining obligations. Establish `hfac : ∀ c, (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ d.nP h c d.wF (hd.a4.choose c) p) = ∏ p ∈ T c, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ d.nP h c d.wF (hd.a4.choose c) p`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `finprod_mem_eq_prod_of_subset` to reduce the goal to its premises. Introduce and unpack `p ⟨hp, hp1⟩`. Rewrite `hp1` using `[Function.mem_mulSupport]`. Rewrite using `[Finset.mem_coe, hmemT]`. Conclude with `⟨hp, fun h0' => hp1 (by rw [h0', zpow_zero])⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Conclude with `((hmemT c p).1 hp).1`. Establish `hf : d.fDivE hd h = ∏ x ∈ Finset.univ.sigma T, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen x.2) ^ d.nP h x.1 d.wF (hd.a4.choose x.1) x.2`. Rewrite using `[Finset.prod_sigma]`. Unfold `fDivE`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun c _ => hfac c`. Rewrite using `[hf, map_prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Conclude with `key _ (halg x hx) _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : ∀ c, (∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.nP h c d.wF (hd.a4.choose c) p : ℝ) * h0 (d.gen p)) = ∑ p ∈ T c, (d.nP h c d.wF (hd.a4.choose c) p : ℝ) * h0 (d.gen p)`. Introduce `c`. Apply `finsum_mem_eq_sum_of_subset` to reduce the goal to its premises. Introduce and unpack `p ⟨hp, hp1⟩`. Rewrite `hp1` using `[Function.mem_support]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_coe, hmemT]`. Conclude with `⟨hp, fun h0' => hp1 (by rw [h0', Int.cast_zero, zero_mul])⟩`. Introduce `p hp`. Conclude with `((hmemT c p).1 hp).1`. Establish `hn0 : 0 < d.N + 1` using `Nat.succ_pos _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : h0 (∏ x ∈ Finset.univ.sigma T, d.gen x.2 ^ (d.nP h x.1 d.wF (hd.a4.choose x.1) x.2).toNat) = ∑ x ∈ Finset.univ.sigma T, ((d.nP h x.1 d.wF (hd.a4.choose x.1) x.2).toNat : ℝ) * h0 (d.gen x.2)` using `HeightMultiplicativity.logHeight_prod_pow (B := d.D + 1) (n := d.N + 1) hn0 (Finset.univ.sigma T) (fun x b => if b = 0 then 0 else d.dg (d.gen x.2)) (fun x => d.gen x.2) _ hne hmh`. Establish `hV : h0 (∏ x ∈ Finset.univ.sigma T, d.gen x.2 ^ (-d.nP h x.1 d.wF (hd.a4.choose x.1) x.2).toNat) = ∑ x ∈ Finset.univ.sigma T, ((-d.nP h x.1 d.wF (hd.a4.choose x.1) x.2).toNat : ℝ) * h0 (d.gen x.2)` using `HeightMultiplicativity.logHeight_prod_pow (B := d.D + 1) (n := d.N + 1) hn0 (Finset.univ.sigma T) (fun x b => if b = 0 then 0 else d.dg (d.gen x.2)) (fun x => d.gen x.2) _ hne hmh`. Rewrite using `[hU, hV, ← Finset.sum_sub_distrib, Finset.sum_sigma]`. Unfold `h0f`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hsum c]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul]`. Use `congr 1`. Conclude with `(Int.toNat_sub_toNat_neg _).symm` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem finite_height_fraction_repr (hd : d.AxH 𝒜) (h : d.S1) :
     ∃ U V : KTp K d.D d.N, U ≠ 0 ∧ V ≠ 0 ∧ (∃ eU, IsMultiHomogeneous eU U) ∧

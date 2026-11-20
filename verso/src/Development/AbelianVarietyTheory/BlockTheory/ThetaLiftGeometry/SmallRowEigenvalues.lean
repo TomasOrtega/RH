@@ -14,7 +14,7 @@ def RowEigSmall {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H 
       ∀ α ∈ A.frobEig (A.locW i σ w), ‖α‖ < ((normV w : ℕ) : ℝ) ^ (((R.t : ℝ) - 1) / 2)
 
 /- English proof (translation)
-Unfold `normV`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Establish `: Nontrivial (𝓞 E ⧸ w.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top`. Conclude with `Finite.one_lt_card`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_lt_normV {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     1 < normV w := by
@@ -24,9 +24,9 @@ theorem one_lt_normV {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum
   exact Finite.one_lt_card
 
 /- English proof (translation)
-Introduce `i σ hσ w hw hu α hα`. Establish `hrt : R.r < R.t` using `by have := R.rank_add_five_le; unfold Ranks.r; omega`. Use `lt_of_le_of_lt (h i σ hσ w hw hu α hα) ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `h2 : (R.r : ℝ) < (R.t : ℝ)` using `by exact_mod_cast hrt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_lt_rpow_of_exponent_lt h1 (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem rowEigSmall_of_le {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
     (A : NAut N)

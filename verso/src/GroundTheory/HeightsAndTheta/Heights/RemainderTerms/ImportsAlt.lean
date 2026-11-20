@@ -9,13 +9,11 @@ open Finset Comb
 noncomputable section
 
 /- English proof (translation)
-Introduce `m lam hlam`. Set `e : {T : youngCells lam ≃ Fin (youngCells lam).card // IsStandard T} ≃ latticeWords (youngCells lam).card lam` to `{ toFun := fun T => ⟨rowWord T.1, (h2 m lam hlam T.1 T.2).1⟩ invFun := fun w => ⟨Classical.choose (h3 m lam hlam w.1 w.2), (Classical.choose_spec (h3 m lam hlam w.1 w.2)).1⟩ left_inv := by`. Introduce and unpack `⟨T, hT⟩`. Establish `hs` using `Classical.choose_spec (h3 m lam hlam (rowWord T) (h2 m lam hlam T hT).1)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `k1` using `(h2 m lam hlam _ hs.1).2`. Establish `k2` using `(h2 m lam hlam T hT).2`. Establish `hsymm : (Classical.choose (h3 m lam hlam (rowWord T) (h2 m lam hlam T hT).1)).symm = T.symm`. Use `Equiv.ext fun t => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← k1 t, ← k2 t, hs.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using congrArg Equiv.symm hsymm`. Use `right_inv := by`. Introduce and unpack `⟨w, hw⟩`. Conclude with `Subtype.ext (Classical.choose_spec (h3 m lam hlam w hw)).2 }`. Use `show Nat.card {T : youngCells lam ≃ Fin (youngCells lam).card // IsStandard T} = _`.
-
-Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, Fintype.card_coe, h1 m lam]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CombTableEqWords.proof (h1 : CombCardYoungCells.Statement)
     (h2 : CombWordOfTableau.Statement) (h3 : CombTableauOfWord.Statement) :

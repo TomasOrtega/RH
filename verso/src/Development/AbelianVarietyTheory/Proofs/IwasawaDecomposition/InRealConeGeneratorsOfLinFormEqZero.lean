@@ -8,13 +8,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Take `⟨c, hc, hsum⟩` from `hβ`. Establish `happ` using `apply_eq_of_toReal_eq hsum h`. Rewrite `happ` using `[hβ0, Int.cast_zero]`. Establish `hterm : ∀ i ∈ (Finset.univ : Finset (Fin m)), c i * (h (δ i) : ℝ) = 0` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hnn i)).1 happ.symm`. Establish `hvan : ∀ i, i ∉ Set.range e → c i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Break down `mul_eq_zero.1 (hterm i (Finset.mem_univ i)) with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (hz i (by exact_mod_cast h1)) hi`. Use `⟨fun k => c (e k), fun k => hc (e k), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[hsum, ← Finset.sum_map Finset.univ e (fun i => c i • toReal (δ i))]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `i _ hi`. Establish `: i ∉ Set.range e`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨k, rfl⟩`. Conclude with `hi (Finset.mem_map_of_mem e (Finset.mem_univ k))`. Rewrite using `[hvan i this, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem inRCone_of_apply_eq_zero {X : Type} [AddCommGroup X] {m p : ℕ}
     (δ : Fin m → LinearMap.BilinForm ℤ X) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)

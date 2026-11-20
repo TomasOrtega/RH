@@ -8,16 +8,16 @@ namespace Formalism.YangianSpanCharacter.P
 open Matrix Formalism.YangianSpanCharacter.T Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Introduce `m E _ _ l Y`. Conclude with `transposeSymplecticShift ℂ (Module.End ℂ (WSm m E)) _ _ _ Y (weylRel_end (E := E) l)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem transpose_j_transpose_real : Formalism.YangianSpanCharacter.B.TJTReal := by
   intro m E _ _ l Y
   exact transposeSymplecticShift ℂ (Module.End ℂ (WSm m E)) _ _ _ Y (weylRel_end (E := E) l)
 
 /- English proof (translation)
-Introduce `m E _ _ l Y`. Take `⟨h1, h2, h3⟩` from `weylRel_end_bar (E := E) l`. Establish `h3' : cbEnd (E` using `E) l * -pbEnd l = -pbEnd l * cbEnd l + cbEnd l := by`. Rewrite using `[mul_neg, neg_mul, h3]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Conclude with `transpose_j_reversed ℂ (Module.End ℂ (WSm m E)) _ _ _ Y h1 h2 h3'`.
+A detailed English derivation is pending.
 -/
 theorem twisted_j_transpose_real : Formalism.YangianSpanCharacter.B.TvJTsReal := by
   intro m E _ _ l Y
@@ -27,7 +27,7 @@ theorem twisted_j_transpose_real : Formalism.YangianSpanCharacter.B.TvJTsReal :=
   exact transpose_j_reversed ℂ (Module.End ℂ (WSm m E)) _ _ _ Y h1 h2 h3'
 
 /- English proof (translation)
-Introduce `m E _ _ l Y Y'`. Conclude with `rttRelation ℂ (Module.End ℂ (WSm m E)) _ _ _ Y Y' (weylRel_end (E := E) l)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rtt_real : Formalism.YangianSpanCharacter.B.RTTReal := by
   intro m E _ _ l Y Y'

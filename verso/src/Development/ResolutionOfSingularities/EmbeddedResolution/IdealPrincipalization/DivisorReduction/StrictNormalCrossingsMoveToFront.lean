@@ -16,14 +16,14 @@ def moveToFront (E : List α) (j : ℕ) : List α :=
   | none => E
 
 /- English proof (translation)
-Simplify using `[moveToFront, List.getElem?_eq_getElem hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem moveToFront_eq_cons (E : List α) (j : ℕ) (hj : j < E.length) :
     moveToFront E j = (E[j]'hj) :: E.eraseIdx j := by
   simp [moveToFront, List.getElem?_eq_getElem hj]
 
 /- English proof (translation)
-Rewrite using `[moveToFront_eq_cons E j hj, List.length_cons, List.length_eraseIdx_add_one hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) :
     (moveToFront E j).length = E.length := by
@@ -45,13 +45,13 @@ Both sides reduce to the same expression.
 theorem indexBeforeMoveToFront_succ (j i : ℕ) : indexBeforeMoveToFront j (i + 1) = if i < j then i else i + 1 := rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Consider the cases of `a with`. Consider the case `zero`. Consider the cases of `b with`. Consider the case `zero => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ i`. It suffices to derive a contradiction. Simplify using `only [indexBeforeMoveToFront] at hab`. Apply the tactic sequence `split_ifs at hab <;> omega`. Consider the case `succ i`.
+Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the cases of `b with`. Consider the case `zero`. It suffices to derive a contradiction. Simplify using `only [indexBeforeMoveToFront] at hab`. Apply the tactic sequence `split_ifs at hab <;> omega`.
+Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ i'`. Simplify using `only [indexBeforeMoveToFront] at hab`. Apply the tactic sequence `split_ifs at hab <;> omega`.
+Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indexBeforeMoveToFront_injective (j : ℕ) : Function.Injective (indexBeforeMoveToFront j) := by
   intro a b hab
@@ -74,7 +74,7 @@ theorem indexBeforeMoveToFront_injective (j : ℕ) : Function.Injective (indexBe
       split_ifs at hab <;> omega
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero => exact hj`. Consider the case `succ n => show (if n < j then n else n + 1) < E.length split <;> omega`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem indexBeforeMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ)
     (hi : i < E.length) : indexBeforeMoveToFront j i < E.length := by
@@ -85,13 +85,13 @@ theorem indexBeforeMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.len
     split <;> omega
 
 /- English proof (translation)
-Establish `hi' : i < E.length` using `by rw [length_moveToFront E j hj] at hi; exact hi`. Establish `hlt : indexBeforeMoveToFront j i < E.length` using `indexBeforeMoveToFront_lt_length E j hj i hi'`. Establish `key : (moveToFront E j)[i]? = E[indexBeforeMoveToFront j i]?`. Rewrite using `[moveToFront_eq_cons E j hj]`. Consider the cases of `i with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Rewrite using `[List.getElem?_cons_zero, indexBeforeMoveToFront_zero, List.getElem?_eq_getElem hj]`. Consider the case `succ m`. Rewrite using `[List.getElem?_cons_succ, indexBeforeMoveToFront_succ]`. Distinguish the cases in `hm : m < j`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hm]`. Simplify using `[List.getElem?_eraseIdx_of_lt, hm]`. Rewrite using `[if_neg hm]`. Establish `hm' : j ≤ m` using `by omega`. Simplify using `[List.getElem?_eraseIdx_of_ge, hm']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[List.getElem?_eq_getElem hi, List.getElem?_eq_getElem hlt]`. Conclude with `Option.some.inj key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ)
     (hi : i < (moveToFront E j).length) :
@@ -119,13 +119,13 @@ theorem getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ
 def indexInMoveToFront (j : ℕ) (i : ℕ) : ℕ := if i = j then 0 else if i < j then i + 1 else i
 
 /- English proof (translation)
-Simplify using `[indexInMoveToFront]`.
+Simplify using the standard rewrite rules.
 -/
 theorem indexInMoveToFront_self (j : ℕ) : indexInMoveToFront j j = 0 := by
   simp [indexInMoveToFront]
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `only [indexInMoveToFront] at hab`. Apply the tactic sequence `split_ifs at hab <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indexInMoveToFront_injective (j : ℕ) : Function.Injective (indexInMoveToFront j) := by
   intro a b hab
@@ -133,7 +133,7 @@ theorem indexInMoveToFront_injective (j : ℕ) : Function.Injective (indexInMove
   split_ifs at hab <;> omega
 
 /- English proof (translation)
-Rewrite using `[length_moveToFront E j hj]`. Use `show (if i = j then 0 else if i < j then i + 1 else i) < E.length`. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem indexInMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ) (hi : i < E.length) :
     indexInMoveToFront j i < (moveToFront E j).length := by
@@ -142,11 +142,11 @@ theorem indexInMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.length)
   split_ifs <;> omega
 
 /- English proof (translation)
-Break down `lt_trichotomy i j with h | h | h` into its components or cases. Establish `hb : indexInMoveToFront j i = i + 1`. Simplify using `only [indexInMoveToFront]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[moveToFront_eq_cons E j hj, hb, List.getElem_eraseIdx_of_lt, h]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `only [moveToFront_eq_cons E _ hj, indexInMoveToFront_self, List.getElem_cons_zero]`. Establish `hb : indexInMoveToFront j i = i`. Simplify using `only [indexInMoveToFront]`. Apply the tactic sequence `split_ifs <;> omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨k, rfl⟩ : ∃ k, i = k + 1` from `⟨i - 1, by omega⟩`. Establish `hjk : j ≤ k` using `by omega`. Simplify using `[moveToFront_eq_cons E j hj, hb, List.getElem_eraseIdx_of_ge, hjk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem getElem_eq_getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ)
     (hi : i < E.length) :
@@ -166,7 +166,7 @@ theorem getElem_eq_getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.lengt
     simp [moveToFront_eq_cons E j hj, hb, List.getElem_eraseIdx_of_ge, hjk]
 
 /- English proof (translation)
-Rewrite `hD` using `[moveToFront_eq_cons E j hj]`. Break down `List.mem_cons.mp hD with h1 | h2` into its components or cases. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Conclude with `List.mem_of_mem_eraseIdx h2`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (D : α)
     (hD : D ∈ moveToFront E j) : D ∈ E := by
@@ -177,11 +177,9 @@ theorem mem_of_mem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (D : 
   · exact List.mem_of_mem_eraseIdx h2
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hit hjt`. Simplify using `only [Function.comp_apply] at hit hjt`. Conclude with `hinj (hainj (σ i) (hlt i hi) (σ j) (hlt j hj) t hit hjt)`. Introduce `i h hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply] at hn`. Rewrite using `[hEq i h]`. Conclude with `hnone (σ i) (hlt i h) hn`. Introduce `i h t ht`. Simplify using `only [Function.comp_apply] at ht`.
-
-Rewrite using `[hEq i h]`. Conclude with `hsome (σ i) (hlt i h) t ht`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartAssignment_comp_of_injective {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
@@ -213,11 +211,11 @@ theorem chartAssignment_comp_of_injective {X : Scheme.{u}} {k : Type u} [Field k
     exact hsome (σ i) (hlt i h) t ht
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `D hD`. Conclude with `hE.1 D (mem_of_mem_moveToFront E j hj D hD)`. Introduce `x`. Take `⟨U, hxU, m, c, a, h1, h2, h3⟩` from `hE.2 x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlen : (moveToFront E j).length = E.length` using `length_moveToFront E j hj`. Establish `hlt : ∀ i, i < (moveToFront E j).length → indexBeforeMoveToFront j i < E.length`. Introduce `i hi`. Use `indexBeforeMoveToFront_lt_length E j hj i ?_` and prove the remaining obligations. Rewrite `hi` using `[hlen]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi`. Establish `hEq : ∀ i, ∀ h : i < (moveToFront E j).length, ((moveToFront E j)[i]'h) = E[indexBeforeMoveToFront j i]'(hlt i h)` using `fun i h => getElem_moveToFront E j hj i h`. Take `⟨k1, k2, k3⟩` from `chartAssignment_comp_of_injective c a E (moveToFront E j) (indexBeforeMoveToFront j) (indexBeforeMoveToFront_injective j) hlt hEq h1 h2 h3`. Conclude with `⟨U, hxU, m, c, a ∘ indexBeforeMoveToFront j, k1, k2, k3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_moveToFront {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (j : ℕ)
@@ -242,9 +240,9 @@ theorem inStrictNormalCrossingPosition_moveToFront {X : Scheme.{u}} {k : Type u}
     exact ⟨U, hxU, m, c, a ∘ indexBeforeMoveToFront j, k1, k2, k3⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨U, hxU, m, c, a, S, h1, h2, h3, h4⟩` from `hZ x hx`. Establish `hlt : ∀ i, i < E.length → indexInMoveToFront j i < (moveToFront E j).length` using `fun i hi => indexInMoveToFront_lt_length E j hj i hi`. Establish `hEq : ∀ i, ∀ h : i < E.length, (E[i]'h) = (moveToFront E j)[indexInMoveToFront j i]'(hlt i h)` using `fun i h => getElem_eq_getElem_moveToFront E j hj i h`. Take `⟨k1, k2, k3⟩` from `chartAssignment_comp_of_injective c a (moveToFront E j) E (indexInMoveToFront j) (indexInMoveToFront_injective j) hlt hEq h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hxU, m, c, a ∘ indexInMoveToFront j, S, k1, k2, k3, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasStrictNormalCrossingsWith_of_moveToFront {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (Z : X.IdealSheafData)

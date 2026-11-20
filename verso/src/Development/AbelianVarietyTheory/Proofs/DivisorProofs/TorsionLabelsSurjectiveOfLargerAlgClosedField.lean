@@ -9,15 +9,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.Mum.Desc
 
 /- English proof (translation)
-Introduce `R _ _ _ D A N hN lab F _ _ _ em lab' hext hon x`. Take `⟨h1, h2⟩` from `GlobalTheory.T.levelPoints_algClosure_fractionRing_bijective R D F em N hN`. Establish `cancel : ∀ y y' : TFK (R` using `R) (Kb R) ⟶ A.A, baseEm em ≫ y = baseEm em ≫ y' → y = y' := by`. Introduce `y y' h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `GlobalTheory.spec_map_field_cancel em.toRingHom y.left y'.left (congrArg CommaMorphism.left h)`. Establish `hlab : ∀ p p', QkExt em.toRingHom p p' → lab' p' = baseEm em ≫ lab p`. Introduce `p p' hp`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hext p p' hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (baseEm em ≫ x) ^ N = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Take `⟨p', hp'⟩` from `(hon _).1 hx'`. Take `⟨p, hp, -⟩` from `h2 p'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, cancel _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← hlab p p' hp, hp']`. Introduce and unpack `⟨p, rfl⟩`. Take `⟨p', hp', -⟩` from `h1 p`. Establish `h3` using `(hon (lab' p')).2 ⟨p', rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h3` using `[hlab p p' hp']`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[MonObj.comp_pow, h3, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.Desc.lab_onto_of_labExt : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (N : ℕ), 1 ≤ N → ∀ (lab : QkPt D (Kb R) N → (TFK (R := R) (Kb R) ⟶ A.A)) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (em : Kb R →ₐ[FractionRing R] F) (lab' : QkPt D F N → (TFK (R := R) F ⟶ A.A)), LabExt em lab lab' → (∀ x : TFK (R := R) F ⟶ A.A, x ^ N = 1 ↔ ∃ p, lab' p = x) → ∀ x : TFK (R := R) (Kb R) ⟶ A.A, x ^ N = 1 ↔ ∃ p, lab p = x := by
   intro R _ _ _ D A N hN lab F _ _ _ em lab' hext hon x

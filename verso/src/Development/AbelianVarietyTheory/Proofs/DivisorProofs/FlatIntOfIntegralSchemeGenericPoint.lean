@@ -11,19 +11,17 @@ open GlobalTheory GlobalTheory.USep
 namespace GlobalTheory.IntFlat
 
 /- English proof (translation)
-Introduce `X _ s x hx`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Flat) (Q := RingHom.Flat)` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (P := @Flat) X.affineOpenCover.openCover fun i => ?_` and prove the remaining obligations. Set `R` to `X.affineOpenCover.X i`. Set `j : Spec R ⟶ X` to `X.affineOpenCover.f i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsOpenImmersion j` using `X.affineOpenCover.map_prop i`. Express the relevant statement in the definitionally equal form `Flat (j ≫ s)`. Break down `isEmpty_or_nonempty (Spec R) with h | h` into its components or cases. Use `infer_instance`. Establish `: IsIntegral (Spec R)` using `isIntegral_of_isOpenImmersion j`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain R` using `(affine_isIntegral_iff R).1 this`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (j ≫ s)`. Set `p0 : PrimeSpectrum R` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hg : genericPoint X ∈ Set.range j` using `(genericPoint_specializes (j (Classical.arbitrary (Spec R)))).mem_open j.isOpenEmbedding.isOpen_range ⟨_, rfl⟩`. Take `⟨q, hq⟩` from `hg`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : p0 ⤳ q` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Establish `h2 : j p0 ⤳ x` using `hq ▸ (h1.map j.continuous) |>.trans (genericPoint_specializes x)`. Establish `h3 : (j ≫ s) p0 ⤳ s x` using `h2.map s.continuous`. Establish `h4 : ((j ≫ s) p0).asIdeal ≤ ⊥` using `hx ▸ (PrimeSpectrum.le_iff_specializes _ _).2 h3`. Rewrite `h4` using `[← hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φ.hom`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `n hn`. Establish `: n ∈ ((Spec.map φ) p0).asIdeal` using `by show n ∈ Ideal.comap φ.hom ⊥`. Simplify using `[hn]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h4 this`. Establish `e : φ.hom = algebraMap ℤ R` using `RingHom.ext_int _ _`. Establish `: CharZero R` using `charZero_of_injective_algebraMap (e ▸ hinj)`. Rewrite using `[← hφ, HasRingHomProperty.Spec_iff (P := @Flat)]`. Rewrite using `[e, RingHom.flat_algebraMap_iff]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_generic_zero : ∀ {X : Scheme.{0}} [IsIntegral X] (s : X ⟶ Spec (CommRingCat.of ℤ)) (x : X), (s x).asIdeal = ⊥ → Flat s := by
   intro X _ s x hx

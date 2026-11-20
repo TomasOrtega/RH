@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.EvVal
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `TLinPf.glue M.U hc (fun j => s.f j * ((t.s j)⁻¹).val) (fun i j => by`. Establish `e` using `congrArg (fun x : Γ(Y, M.U i ⊓ M.U j)ˣ => (x⁻¹).val) (ht i j)`. Simplify using `only [mul_inv, ← map_inv, Units.val_mul] at e`. Rewrite using `[map_mul, map_mul, s.compat i j]`. Use `(congrArg (_ * ·) e).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.mul_mul_mul_comm, Units.mul_inv, _root_.one_mul]`. Use the proof step `rfl)`. Use `⟨v, fun j => ?_, fun w hw => TLinPf.eq_local M.U hc _ _ fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hv j, Units.inv_mul_cancel_right]`. Rewrite using `[hv j, hw j, Units.mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_sec_eq_mul_gen {Y : Scheme.{0}} (M : LB Y) (hc : ⨆ j, M.U j = ⊤)
     (s : LB.Sec M) (t : LB.Gen M) (ht : t.IsGen) :
@@ -51,7 +51,7 @@ def pullSec {X Y Y' : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → 
     simp only [Geo.Tor.trF, Category.assoc, e]
 
 /- English proof (translation)
-Introduce `i j`. Establish `h` using `congrArg (· ^ k) (he i j)`. Simplify using `only [mul_zpow, ← map_zpow] at h`. Use `h.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Simplify using `only [LB.LinComb, Fintype.prod_unique, zpow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -67,7 +67,7 @@ theorem powFrame_isGen {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) 
   rfl
 
 /- English proof (translation)
-Introduce `S P N T z e he s`. Conclude with `existsUnique_sec_eq_mul_gen _ (TLinPf.linComb_cover P.L P.isLB _ _) (pullSec P.L (fun _ : Fin 1 => (snd T P.A).left) (fun _ => (N : ℤ)) (ptSecT P.A z).left (fun _ => z.left) (fun _ => by rw [← Over.comp_left, ptSecT, lift_snd]) (val_le P.A P.L z) s) (powFrame P.A P.L z e N) (powF …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evValSt : ∀ S : Scheme.{0}, EvValSt (S := S) := by
   intro S P N T z e he s

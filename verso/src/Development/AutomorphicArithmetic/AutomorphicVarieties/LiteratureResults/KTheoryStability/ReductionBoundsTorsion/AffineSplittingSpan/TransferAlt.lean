@@ -9,7 +9,7 @@ namespace PositivityTheory.KB.SplitAffineSpectral.PrismTransfer
 open PositivityTheory.KB.SplitAffineSpectral Polynomial
 
 /- English proof (translation)
-The claim follows from `| 0, v => rfl | n + 1, v => by rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, h, pow_intertwine T T' L h n]`.
+A detailed English derivation is pending.
 -/
 theorem pow_intertwine {V W : Type} [AddCommGroup V] [Module ℝ V] [AddCommGroup W] [Module ℝ W]
     (T : Module.End ℝ V) (T' : Module.End ℝ W) (L : V →ₗ[ℝ] W) (h : ∀ v, T' (L v) = L (T v)) :
@@ -19,7 +19,7 @@ theorem pow_intertwine {V W : Type} [AddCommGroup V] [Module ℝ V] [AddCommGrou
     rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, h, pow_intertwine T T' L h n]
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a`. Simplify using `only [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, pow_intertwine T T' L h n, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem aeval_intertwine {V W : Type} [AddCommGroup V] [Module ℝ V] [AddCommGroup W] [Module ℝ W]
     (T : Module.End ℝ V) (T' : Module.End ℝ W) (L : V →ₗ[ℝ] W) (h : ∀ v, T' (L v) = L (T v))
@@ -31,7 +31,7 @@ theorem aeval_intertwine {V W : Type} [AddCommGroup V] [Module ℝ V] [AddCommGr
       pow_intertwine T T' L h n, map_smul]
 
 /- English proof (translation)
-The claim follows from `| 0, v, hv => hv | n + 1, v, hv => by rw [pow_succ, Module.End.mul_apply] exact pow_mem T S hT n _ (hT v hv)`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem {V : Type} [AddCommGroup V] [Module ℝ V] (T : Module.End ℝ V) (S : Submodule ℝ V)
     (hT : ∀ v ∈ S, T v ∈ S) : ∀ (n : ℕ) (v : V), v ∈ S → (T ^ n) v ∈ S
@@ -41,9 +41,7 @@ theorem pow_mem {V : Type} [AddCommGroup V] [Module ℝ V] (T : Module.End ℝ V
     exact pow_mem T S hT n _ (hT v hv)
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply]`. Conclude with `S.add_mem hp hq`. Consider the case `monomial n a`. Simplify using `only [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`.
-
-Conclude with `S.smul_mem a (pow_mem T S hT n v hv)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_mem {V : Type} [AddCommGroup V] [Module ℝ V] (T : Module.End ℝ V) (S : Submodule ℝ V)
     (hT : ∀ v ∈ S, T v ∈ S) (f : ℝ[X]) (v : V) (hv : v ∈ S) : aeval T f v ∈ S := by
@@ -80,43 +78,41 @@ namespace PositivityTheory.KB.SplitAffineSpectral
 open PrismTransfer Polynomial
 
 /- English proof (translation)
-Introduce `P Q A _ _ _ pr s hs u hu ι hι hran φ hφ m hA q hq`. Take `⟨f, hf1, hfA⟩` from `hA q hq`. Use `⟨f, hf1, fun c hc hcc => ?_⟩` and prove the remaining obligations. Use `set t := s u with ht`. Establish `hker : ∀ k : P, k ∈ (pr.ker : Set P) ↔ pr k = 1` using `fun k => MonoidHom.mem_ker`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ρ : P → P` to `fun y => y * (s (pr y))⁻¹`. Establish `hρk : ∀ y, ∃ a, ι a = ρ y` using `fun y => (hran _).1 (by simp [ρ, hs])`. Set `ρA : P → A` to `fun y => Classical.choose (hρk y)`. Establish `hρA : ∀ y, ι (ρA y) = ρ y` using `fun y => Classical.choose_spec (hρk y)`. Establish `hιk : ∀ b, pr (ι b) = 1` using `fun b => (hran _).2 ⟨b, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρmul : ∀ k y, pr k = 1 → ρ (k * y) = k * ρ y`. Introduce `k y hk`. Simplify using `only [ρ, map_mul, hk, one_mul, mul_assoc]`. Establish `hρAmul : ∀ b y, ρA (ι b * y) = b * ρA y`. Introduce `b y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hι` to reduce the goal to its premises. Rewrite using `[map_mul, hρA, hρA, hρmul _ _ (hιk b)]`. Establish `hcomm : ∀ g : Q, s g * t = t * s g`. Introduce `g`. Rewrite using `[ht, ← map_mul, ← map_mul, hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρconj : ∀ y, ρ (t⁻¹ * y * t) = t⁻¹ * ρ y * t`. Introduce `y`. Establish `hp : pr (t⁻¹ * y * t) = pr y`. Rewrite using `[map_mul, map_mul, map_inv, ht, hs, hu, mul_inv_cancel_left]`. Establish `hc' : (s (pr y))⁻¹ * t = t * (s (pr y))⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hcomm, mul_assoc, mul_inv_cancel, mul_one]`. Use `show t⁻¹ * y * t * (s (pr (t⁻¹ * y * t)))⁻¹ = t⁻¹ * (y * (s (pr y))⁻¹) * t`. Rewrite using `[hp]`. Simplify using `only [mul_assoc, hc']`. Establish `hρAconj : ∀ y, ρA (t⁻¹ * y * t) = φ (ρA y)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Apply `hι` to reduce the goal to its premises. Rewrite using `[hρA, hρconj, hφ, hρA]`. Set `cA : (Fin (q + 2) → A) → ℝ` to `fun x => c fun i => ι (x i)`. Establish `hcA : InvS Set.univ cA`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ x`. Simplify using `only [cA, map_mul]`. Conclude with `hc (ι b) ((hker _).2 (hιk b)) _`. Establish `hccA : dc cA = 0`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `congrFun hcc (fun i => ι (x i))` as an intermediate fact. Simplify `this` using `[dc, cA]`. Take `⟨eA, heA, hfe⟩` from `hfA cA hcA hccA`. Set `T : (n : ℕ) → Module.End ℝ ((Fin n → P) → ℝ)` to `fun n => mapOp (fun y => t⁻¹ * y * t) n`. Establish `hTR : ∀ (n : ℕ) (g : (Fin n → A) → ℝ), T n (pullL ρA n g) = pullL ρA n (mapOp φ n g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `n g`. Use function extensionality and compare the values at `y`. Simplify using `only [T, mapOp, pullL, LinearMap.coe_mk, AddHom.coe_mk, hρAconj]`. Establish `hTd : ∀ (n : ℕ) (F : (Fin (n + 1) → P) → ℝ), T (n + 2) (dcL P n F) = dcL P n (T (n + 1) F)` using `fun n F => rfl`. Establish `hRd : ∀ (n : ℕ) (g : (Fin (n + 1) → A) → ℝ), pullL ρA (n + 2) (dcL A n g) = dcL P n (pullL ρA (n + 1) g)` using `fun n g => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hpr : c = pullL ρA (q + 2) cA - dc (prism ρ q c)`. Use function extensionality and compare the values at `y`. Establish `h1` using `prism_htpy ρ q c y`. Rewrite `h1` using `[hcc]`. Establish `h0 : prism ρ (q + 1) (fun _ => (0 : ℝ)) y = 0` using `prism_zero ρ (q + 1) y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h2 : pullL ρA (q + 2) cA y = c (ρ ∘ y)`. Simplify using `only [pullL, cA, LinearMap.coe_mk, AddHom.coe_mk, hρA]`. Both sides reduce to the same expression. Simplify using `only [Pi.sub_apply, h2]`. Establish `h3 : (0 : (Fin (q + 3) → P) → ℝ) = fun _ => 0` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h1` using `[h3, h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprismInv : InvS (pr.ker : Set P) (prism ρ q c)`. Introduce `k hk y`. Rewrite using `[prism_smul ρ k (fun y => hρmul k y ((hker k).1 hk)) q c y]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `hc k hk z`. Establish `hTinv : ∀ (n : ℕ), ∀ F ∈ invSub (pr.ker : Set P) n, T n F ∈ invSub (pr.ker : Set P) n`. Introduce `n F hF k hk y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [T, mapOp, LinearMap.coe_mk, AddHom.coe_mk]`. Establish `hk' : t⁻¹ * k * t ∈ (pr.ker : Set P)`. Rewrite `hk`, the goal using `[hker]`. Rewrite using `[map_mul, map_mul, hk, mul_one, map_inv, inv_mul_cancel]`. Use `hF _ hk' (fun i => t⁻¹ * y i * t)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mul_assoc, mul_inv_cancel_left] at this ⊢`. Conclude with `this`. Use `⟨pullL ρA (q + 1) eA - aeval (T (q + 1)) f (prism ρ q c), ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk y`. Take `⟨b, rfl⟩` from `(hran k).1 ((hker k).1 hk)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h1 : aeval (T (q + 1)) f (prism ρ q c) ∈ invSub (pr.ker : Set P) (q + 1)` using `aeval_mem _ _ (hTinv (q + 1)) f _ hprismInv`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[h1 (ι b) hk y]`. Use `congr 1`. Simplify using `only [pullL, LinearMap.coe_mk, AddHom.coe_mk, hρAmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heA b trivial _`. Establish `e1 : aeval (T (q + 2)) f c = aeval (T (q + 2)) f (pullL ρA (q + 2) cA) - aeval (T (q + 2)) f (dcL P q (prism ρ q c))` using `by conv_lhs => rw [hpr]`. Rewrite using `[map_sub]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `aeval (T (q + 2)) f c = _`.
-
-Rewrite using `[e1, aeval_intertwine (mapOp φ (q + 2)) (T (q + 2)) (pullL ρA (q + 2)) (hTR (q + 2)), aeval_intertwine (T (q + 1)) (T (q + 2)) (dcL P q) (hTd q), hfe]`. Rewrite using `[show dc eA = dcL A q eA from rfl, hRd]`. Rewrite using `[← map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transfer : Transfer := by
   intro P Q A _ _ _ pr s hs u hu ι hι hran φ hφ m hA q hq

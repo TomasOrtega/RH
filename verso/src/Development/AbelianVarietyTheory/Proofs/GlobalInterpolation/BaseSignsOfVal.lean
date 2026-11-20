@@ -8,11 +8,11 @@ namespace GlobalTheory.Fc.Sg
 open GlobalTheory.LvT.WtSign Formalism.MainNotions.product_first_zeroth_parts
 
 /- English proof (translation)
-Establish `hS : SignLaw X.toD7.hc (· ∈ tops X.toD7)`. Use `⟨uLast_le L, fun τ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hτ : τ ∈ tops X.toD7`. Conclude with `eFirst_ge_of_uLast_le _ (uLast_le L τ hτ)`. Apply `eFirst_ge_of_uLast_nonpos` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hk : 0 < X.toD7.R.k` using `lt_of_lt_of_le (m_pos X.toD7.R) (by have := X.toD7.R.m_add_three_le_k; omega)`. Establish `h1` using `(h.hc.2.1 τ hk (fun h' => hτ ((mem_tops τ).2 h'))).2`. Unfold `uLast`. Rewrite using `[h1]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `e : ∀ τ, τ ∈ tops X.toD7 ↔ τ ∈ X.B.wts.tops` using `fun τ => (mem_tops (D := assemble X.B X.C X.W X.V X.S X.N X.G) τ).trans (X.B.mem_wts_tops τ).symm`. Conclude with `⟨fun τ hτ => hS.1 τ ((e τ).2 hτ), hS.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem baseSigns_of_val (X : Stages) (L : SizeData₂ X.toD7) {C : FC} {cD ch : ℝ} (h : Val C cD ch L) :
     GlobalTheory.LvT.WtSign.BaseSigns X.B := by
@@ -31,7 +31,7 @@ theorem baseSigns_of_val (X : Stages) (L : SizeData₂ X.toD7) {C : FC} {cD ch :
   exact ⟨fun τ hτ => hS.1 τ ((e τ).2 hτ), hS.2⟩
 
 /- English proof (translation)
-Introduce `_ β` and use `baseSigns_of_val β.X β.p.L β.val`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem baseSigns_of_bPt : ∀ (K : Ctx) (β : BPt K), GlobalTheory.LvT.WtSign.BaseSigns β.X.B :=
   fun _ β => baseSigns_of_val β.X β.p.L β.val

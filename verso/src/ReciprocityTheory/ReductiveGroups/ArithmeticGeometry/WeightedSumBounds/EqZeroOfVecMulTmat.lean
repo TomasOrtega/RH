@@ -13,7 +13,7 @@ def tmat (γ : Fin d → Fin d → PowerSeries C) : Matrix (Fin d) (Fin d) C :=
   Matrix.of fun a b => tangent (γ a) b
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `[Matrix.vecMul, dotProduct, tmat, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_tangent (γ : Fin d → Fin d → PowerSeries C) (x : Fin d → C) :
     ∑ b, x b • tangent (γ b) = Matrix.vecMul x (tmat γ) := by
@@ -21,7 +21,7 @@ theorem sum_smul_tangent (γ : Fin d → Fin d → PowerSeries C) (x : Fin d →
   simp [Matrix.vecMul, dotProduct, tmat, Finset.sum_apply]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hdet` using `[h]`. Simplify using `at hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmat_det_ne_zero {γ : Fin d → Fin d → PowerSeries C} (hdet : v (tmat γ).det = 0) :
     (tmat γ).det ≠ 0 := by
@@ -30,23 +30,19 @@ theorem tmat_det_ne_zero {γ : Fin d → Fin d → PowerSeries C} (hdet : v (tma
   simp at hdet
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_ne_zero.mpr (tmat_det_ne_zero hdet)`.
+A detailed English derivation is pending.
 -/
 theorem tmat_isUnit_det {γ : Fin d → Fin d → PowerSeries C} (hdet : v (tmat γ).det = 0) :
     IsUnit (tmat γ).det := isUnit_iff_ne_zero.mpr (tmat_det_ne_zero hdet)
 
 /- English proof (translation)
-Set `S : Subring C` to `{ carrier := {x | 0 ≤ v x} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, AddValuation.map_mul] at *`. Conclude with `add_nonneg ha hb`. Use the proof step `one_mem' := by simp`. Use the proof step `add_mem' := fun {a b} ha hb => le_trans (le_min ha hb) (AddValuation.map_add v a b)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by simpa [AddValuation.map_neg] using ha }`. Establish `hent : ∀ a b, tmat γ a b ∈ S` using `fun a b => by show 0 ≤ v (tmat γ a b)`. Conclude with `(hγ a b).2 1`. Set `M' : Matrix (Fin d) (Fin d) S` to `fun a b => ⟨tmat γ a b, hent a b⟩`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : tmat γ = S.subtype.mapMatrix M'`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hadj : ∀ i j, (tmat γ).adjugate i j ∈ S`. Introduce `i j`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, ← RingHom.map_adjugate]`. Use `first`. Consider the case `exact (M'.adjugate i j).2`. Consider the case `simp`. Establish `hdet_inv : v ((tmat γ).det⁻¹) = 0`.
-
-Establish `h1 : v ((tmat γ).det⁻¹ * (tmat γ).det) = 0`. Rewrite using `[inv_mul_cancel₀ (tmat_det_ne_zero hdet), AddValuation.map_one]`. Rewrite `h1` using `[AddValuation.map_mul, hdet, add_zero]`. Then use the resulting hypothesis. Use `show 0 ≤ v ((tmat γ)⁻¹ i j)`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv, Matrix.smul_apply, smul_eq_mul, AddValuation.map_mul, hdet_inv, zero_add]`.
-
-Conclude with `hadj i j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_tmat_inv {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a, IsCurve v (γ a))
     (hdet : v (tmat γ).det = 0) (i j : Fin d) : IsIntV v ((tmat γ)⁻¹ i j) := by
@@ -82,14 +78,14 @@ theorem isIntV_tmat_inv {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a, I
   exact hadj i j
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (tmat_isUnit_det hdet), Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vecMul_inv_tmat {γ : Fin d → Fin d → PowerSeries C} (hdet : v (tmat γ).det = 0)
     (w : Fin d → C) : Matrix.vecMul (Matrix.vecMul w (tmat γ)⁻¹) (tmat γ) = w := by
   rw [Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (tmat_isUnit_det hdet), Matrix.vecMul_one]
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun w => Matrix.vecMul w (tmat γ)⁻¹) h`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (tmat_isUnit_det hdet), Matrix.vecMul_one, Matrix.zero_vecMul] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_vecMul_tmat {γ : Fin d → Fin d → PowerSeries C} (hdet : v (tmat γ).det = 0)
     {x : Fin d → C} (h : Matrix.vecMul x (tmat γ) = 0) : x = 0 := by
@@ -99,11 +95,7 @@ theorem eq_zero_of_vecMul_tmat {γ : Fin d → Fin d → PowerSeries C} (hdet : 
   exact h2
 
 /- English proof (translation)
-Set `S : Subring C` to `{ carrier := {x | 0 ≤ v x} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, AddValuation.map_mul] at *`. Conclude with `add_nonneg ha hb`. Use the proof step `one_mem' := by simp`. Use the proof step `add_mem' := fun {a b} ha hb => le_trans (le_min ha hb) (AddValuation.map_add v a b)`.
-
-Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by simpa [AddValuation.map_neg] using ha }`. Establish `hmem : Matrix.vecMul w (tmat γ)⁻¹ b ∈ S`. Simplify using `only [Matrix.vecMul, dotProduct]`. Conclude with `S.sum_mem fun c _ => S.mul_mem (hw c) (isIntV_tmat_inv hγ hdet c b)`.
-
-Conclude with `hmem`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntV_vecMul_inv {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a, IsCurve v (γ a))
     (hdet : v (tmat γ).det = 0) {w : Fin d → C} (hw : ∀ c, IsIntV v (w c)) (b : Fin d) :
@@ -123,15 +115,15 @@ theorem isIntV_vecMul_inv {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a,
   exact hmem
 
 /- English proof (translation)
-Introduce `b hb`. Use `set x' : Fin d → C := fun b => if ty b ≠ τ then x b else 0 with hx'`. Establish `hz : Matrix.vecMul x' (tmat γ) = 0`. Use function extensionality and compare the values at `c`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : ty c = τ`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b' _`. Distinguish the cases in `hb' : ty b' ≠ τ`. Establish `h0 : tangent (γ b') c = 0` using `ht b' c (by rw [hc]; exact fun h => hb' h.symm)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hx', hb', tmat, h0]`. Simplify using `[hx', hb']`. Establish `h0` using `hw c hc`. Simplify using `only [Matrix.vecMul, dotProduct] at h0`. Rewrite using `[← h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b' _`. Distinguish the cases in `hb' : ty b' ≠ τ`. Simplify using `[hx', hb']`. Establish `hb2 : ty b' = τ` using `not_not.mp hb'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : tangent (γ b') c = 0` using `ht b' c (by rw [hb2]; exact hc)`. Simplify using `[hx', hb', tmat, h1]`. Establish `h3` using `congrFun (eq_zero_of_vecMul_tmat hdet hz) b`. Simplify `h3` using `[hx', hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem vecMul_tmat_support {h : ℕ} (ty : Fin d → ZMod h) {γ : Fin d → Fin d → PowerSeries C}
     (hdet : v (tmat γ).det = 0) (ht : ∀ b c, ty c ≠ ty b → tangent (γ b) c = 0)

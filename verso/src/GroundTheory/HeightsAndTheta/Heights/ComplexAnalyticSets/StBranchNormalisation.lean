@@ -15,11 +15,11 @@ def branchOrder {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ} (c : 
   analyticOrderAt (fun τ : ℂ ↦ eval (c.toFun fun _ ↦ τ) f) 0
 
 /- English proof (translation)
-Take `⟨H, hHd, hH0, hF⟩` from `h`. Set `ι : ℂ → (Fin 1 → ℂ)` to `fun τ _ ↦ τ`. Establish `hιd : Differentiable ℂ ι` using `differentiable_pi.2 fun _ ↦ differentiable_id`. Establish `hball : ∀ τ ∈ Metric.ball (0 : ℂ) c.radius, ι τ ∈ Metric.ball (0 : Fin 1 → ℂ) c.radius`. Introduce `τ hτ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hτ` using `[ι, Metric.mem_ball, dist_zero_right, pi_norm_const]`. Establish `hg : AnalyticAt ℂ (H ∘ ι) 0` using `(hHd.comp hιd.differentiableOn hball).analyticAt (Metric.ball_mem_nhds 0 c.radius_pos)`. Establish `hev : ∀ᶠ τ in 𝓝 (0 : ℂ), eval (c.toFun (ι τ)) f = (τ - 0) ^ k • (H ∘ ι) τ` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℂ) c.radius_pos] with τ hτ`. Use `(hF _ (hball τ hτ)).trans ?_` and prove the remaining obligations. Simplify using `[ι]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hF' : AnalyticAt ℂ (fun τ : ℂ ↦ eval (c.toFun (ι τ)) f) 0` using `AnalyticAt.congr (((analyticAt_id.sub analyticAt_const).pow k).smul hg) (hev.mono fun τ h ↦ h.symm)`. Conclude with `hF'.analyticOrderAt_eq_natCast.2 ⟨H ∘ ι, hg, hH0 _ (hball 0 (Metric.mem_ball_self c.radius_pos)), hev⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem branchOrder_eq_of_vanishesToOrder {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (c : VarBranch I 1 q) (f : MvPolynomial (Fin n) ℂ) (k : ℕ)

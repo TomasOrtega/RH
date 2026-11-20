@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 open Formalism.L2.Pj Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.EigenvalueLevelCeiling NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GoodDepth.normalizedLattice_exponent_eq_roundedDepth_goodPlace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FNormalizedLatticeExponentEqRoundedDepthGoodPlace.lean&line=77#L77)
 -/

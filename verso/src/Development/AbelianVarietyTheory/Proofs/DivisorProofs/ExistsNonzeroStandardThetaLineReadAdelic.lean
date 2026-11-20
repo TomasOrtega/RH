@@ -30,9 +30,9 @@ namespace GlobalTheory.VacRead
 def posSig {D : D7} (S : HSp D) : HSp D := {S with sig := fun _ => (S.rank, 0)}
 
 /- English proof (translation)
-Use `⟨(Equiv.sumEmpty (Fin n) (Fin 0)).symm, 1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases. Simplify using `[Formalism.UG.Jpq, Formalism.UG.cT, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `j.elim0`. Conclude with `i.elim0`.
+A detailed English derivation is pending.
 -/
 theorem hasSignature_one (n : ℕ) : Formalism.UG.HasSignature (1 : Matrix (Fin n) (Fin n) ℂ) n 0 := by
   refine ⟨(Equiv.sumEmpty (Fin n) (Fin 0)).symm, 1, ?_⟩
@@ -44,7 +44,7 @@ theorem hasSignature_one (n : ℕ) : Formalism.UG.HasSignature (1 : Matrix (Fin 
   · exact i.elim0
 
 /- English proof (translation)
-Introduce `τ`. Use `show Formalism.UG.HasSignature (S.gram.map τ) S.rank 0`. Rewrite using `[h, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Conclude with `hasSignature_one _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigOK_posSig {D : D7} (S : HSp D) (h : S.gram = 1) : (posSig S).SigOK := by
   intro τ
@@ -54,7 +54,7 @@ theorem sigOK_posSig {D : D7} (S : HSp D) (h : S.gram = 1) : (posSig S).SigOK :=
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Establish `: gramAt D S τ = 1` using `by show (HSpace.gram S).map (tauE D τ) = 1`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[this]`. Conclude with `⟨by simp, by simp, by simpa using (Matrix.PosDef.one : Matrix.PosDef (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ))⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isCartanInv_one {D : D7} (S : HSp D) (h : S.gram = 1) (τ : D.what₂.Tau) : IsCartanInv (gramAt D S τ) 1 := by
   have : gramAt D S τ = 1 := by
@@ -64,7 +64,7 @@ theorem isCartanInv_one {D : D7} (S : HSp D) (h : S.gram = 1) (τ : D.what₂.Ta
   exact ⟨by simp, by simp, by simpa using (Matrix.PosDef.one : Matrix.PosDef (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ))⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ (posSig S) (posSig T) (fun _ => 1) (fun _ => 1) (sigOK_posSig S gS) (sigOK_posSig T gT) (isCartanInv_one S gS) (isCartanInv_one T gT) ΛS ΛT hS hT`. Conclude with `⟨f, hf.1, ⟨hf.2.inf, ⟨hf.2.theta.quasi, hf.2.theta.level, hf.2.theta.cont, hf.2.theta.smooth⟩, hf.2.lat, hf.2.fock, hf.2.norm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vac_exists_gram_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) (S T : HSp D) (gS : S.gram = 1) (gT : T.gram = 1)
@@ -79,17 +79,17 @@ theorem vac_exists_gram_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E}
 
 /- English proof (translation)
-Establish `hr : r ≠ 0` using `IsScale.ne_zero hc.1.1 h`. Establish `hA` using `area_pos hc`. Establish `hx` using `xiR_pos D`. Establish `key : ∀ τ, Complex.normSq (embT D τ r) * area (lamOf D D.host.ccK δ) = area (lamOf D cc δ)`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `normSq_scale hc.1.1 h δ τ`. Establish `h2` using `normSq_scale D.host.ccK_ne_bot (isScale_one D) δ τ`. Rewrite `h2` using `[map_one, mul_one]`. Rewrite `h1` using `[Complex.normSq_mul, h2]`. Establish `h3 : (2 * Formalism.L2.Pj.xiR D) * (Complex.normSq (embT D τ r) * area (lamOf D D.host.ccK δ)) = (2 * Formalism.L2.Pj.xiR D) * area (lamOf D cc δ)` using `by rw [← h1]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ (by positivity) h3`. Establish `hL : ∀ c : Ideal (𝓞 D.host.K), (tor0 D c δ).abelian₂ = lamOf D c δ` using `fun _ => rfl`. Rewrite using `[Formalism.MainNotions.TaylorLogMetric.Hf, Formalism.MainNotions.TaylorLogMetric.Hf, hL, hL, Finset.sum_div, Finset.sum_div]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div, Finset.sum_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`. Establish `htc : starRingEnd ℂ (embT D τ r) ≠ 0` using `(map_ne_zero _).2 ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (area (lamOf D D.host.ccK δ) : ℂ) ≠ 0`. Establish `: 0 < area (lamOf D D.host.ccK δ)`. Use `key τ` as an intermediate fact. Establish `h0 : 0 < Complex.normSq (embT D τ r)` using `Complex.normSq_pos.2 ht`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[← key τ, map_div₀]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Hf_div_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h : IsScale D cc r) {a d : ℕ} (z x : VC D a d) :
     Hf D (tor0 D D.host.ccK δ) (fun τ i j => z τ i j / embT D τ r) (fun τ i j => x τ i j / embT D τ r) =
@@ -127,11 +127,11 @@ theorem Hf_div_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ
   field_simp
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hl : Differentiable ℂ (fun Y : VC D a d => (fun τ i j => Y τ i j / embT D τ r : VC D a d))` using `by fun_prop`. Conclude with `hΦ.1.comp hl`. Introduce `x hx z`. Establish `e1` using `hΦ.2 _ (hLa x hx) (fun τ i j => z τ i j / embT D τ r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hal : Formalism.MainNotions.TaylorLogMetric.al D (tor0 D cc δ) x = Formalism.MainNotions.TaylorLogMetric.al D (tor0 D D.host.ccK δ) (fun τ i j => x τ i j / embT D τ r)`. Simplify using `only [Formalism.MainNotions.TaylorLogMetric.al, Hf_div_scale hc h]`. Establish `hadd : (fun τ i j => (z + x) τ i j / embT D τ r) = (fun τ i j => z τ i j / embT D τ r) + (fun τ i j => x τ i j / embT D τ r)`. Use function extensionality and compare the values at `τ i j`. Simplify using `[add_div]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = Φ fun τ i j => z τ i j / embT D τ r`. Rewrite using `[← e1, hal]`. Simplify using `only [Formalism.MainNotions.TaylorLogMetric.U]`. Rewrite using `[Hf_div_scale hc h, Hf_div_scale hc h, hadd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_div_scale (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) (h : IsScale D cc r) {a d : ℕ}
     {L Ls : GlobalTheory.InertSign.Lat D a} {L' Lt : GlobalTheory.InertSign.Lat D d}
@@ -162,25 +162,25 @@ end GlobalTheory.VacRead
 namespace GlobalTheory.VacRead
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT cc δ r hset`. Substitute `hS hT` using the available equality. Take `⟨hψ, hθ, gS, gT, crv, sc⟩` from `hset`. Establish `hc : cc ≠ ⊥` using `crv.1.1`. Establish `hr : r ≠ 0` using `IsScale.ne_zero hc sc`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : δ ≠ 0` using `delta_ne_zero crv`. Establish `hS1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin S.rank) D.host.E).1 * S.gram * (1 : GL (Fin S.rank) D.host.E).1 = 1`. Rewrite using `[gS]`. Simplify using `[Formalism.UG.cT]`. Establish `hT1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin T.rank) D.host.E).1 * T.gram * (1 : GL (Fin T.rank) D.host.E).1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[gT]`. Simplify using `[Formalism.UG.cT]`. Establish `hLs : Formalism.MainNotions.StandardLatticesGL3.SD D (lsB D cc r S.rank)` using `GlobalTheory.T.invDifferentLatticeProductHermitian_isSelfDual D cc r S.rank hc sc`. Establish `hLt : Formalism.MainNotions.StandardLatticesGL3.SD D (stdL D T.rank)` using `GlobalTheory.MovedVacuum.sd_stdL D T.rank`. Take `⟨ΛS, hΛS, hSd⟩` from `GlobalTheory.MovedDict.isSelfDualC_inV S 1 hS1 _ hLs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ΛT, hΛT, hTd⟩` from `GlobalTheory.MovedDict.isSelfDualC_inV T 1 hT1 _ hLt`. Take `⟨f, hf⟩` from `vac_exists_gram_one ψ θ hψ hθ S T gS gT ΛS ΛT hSd hTd`. Rewrite `hf` using `[hΛS, hΛT]`. Take `⟨Φ, hΦd, hΦ⟩` from `GlobalTheory.FockPos.vacuum_real_entire ψ θ S T 1 1 _ _ hS1 hT1 f hf`. Establish `hth` using `theta_of_unit_vacuum ψ θ S T 1 1 hS1 hT1 δ hδ _ _ hLs hLt f hf Φ hΦd hΦ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLa : ∀ x ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) (stdL D S.rank) (stdL D T.rank), (fun τ i j => x τ i j / embT D τ r) ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) (lsB D cc r S.rank) (stdL D T.rank)`. Introduce `x hx`. Take `⟨z, hz, rfl⟩` from `GlobalTheory.ThetaLatImage.La_sub hx`. Establish `h2` using `GlobalTheory.ThetaLatImage.pt_mem_La (δ := δ) (GlobalTheory.T.inv_smul_mem_rationalHomLatticeScaled_of_normScale D cc r S.rank T.rank hc sc z hz) 1`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `τ i j`. Rewrite using `[one_smul, GlobalTheory.ThetaLatImage.pt_apply, GlobalTheory.ThetaLatImage.pt_apply]`. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hG` using `th_div_scale crv sc hLa hth`. Establish `hback : ∀ Z : VC D S.rank T.rank, (δ⁻¹ • fun τ i j => (δ * embT D τ r * Z τ i j) / embT D τ r : VC D S.rank T.rank) = Z`. Introduce `Z`. Use function extensionality and compare the values at `τ i j`. Establish `ht : embT D τ r ≠ 0` using `(map_ne_zero _).2 hr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨_, hG, ?_, f, (reads_iff crv sc _ f).2 ⟨hf.2.theta, fun w hw => ?_⟩⟩` and prove the remaining obligations. Introduce `h0`. Apply `GlobalTheory.StepMove.vacO_ne_zero hf` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real hf.2.theta fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hΦ w hw]`. Establish `e` using `congrFun h0 (fun τ i j => δ * embT D τ r * GlobalTheory.FockPos.zCo θ 1 1 w τ i j)`. Simplify using `only [Pi.zero_apply, hback] at e`. Rewrite using `[e, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ w hw]`. Simplify using `only [hback]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_vac_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →

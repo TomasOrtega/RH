@@ -34,21 +34,19 @@ Both sides reduce to the same expression.
 theorem up_inv (f : ℍ → ℂ) : up f⁻¹ = (up f)⁻¹ := rfl
 
 /- English proof (translation)
-Introduce `Ω _ ε`. Take `⟨hden, hsing⟩` from `GlobalTheory.T.hasCommonExponentDenominator_ring_operations Ω`. Take `⟨hmono, hadd, hmon, hcongr⟩` from `GlobalTheory.T.hasQExpansionSumAbove_basic_properties Ω ε`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f f' h h' ⟨hd, C, hC⟩ ⟨hd', C', hC'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨d1, d2, d3⟩` from `hden h h' hd hd'`. Establish `e1 : HS ε (max C C') (up f) h` using `hmono _ _ _ _ (le_max_left _ _) hC`. Establish `e2 : HS ε (max C C') (up f') h'` using `hmono _ _ _ _ (le_max_right _ _) hC'`. Take `⟨s1, s2⟩` from `hadd _ _ _ _ _ e1 e2`. Use `⟨⟨d1, max C C', ?_⟩, ⟨d2, max C C', ?_⟩, ⟨d3, max C C', ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[up_add]`. Conclude with `s1`. Rewrite using `[up_sub]`. Conclude with `s2`. Rewrite using `[up_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.T.hasQExpansionSumAbove_mul Ω ε _ _ _ _ _ e1 e2`. Introduce and unpack `f h h' ⟨hd, C, hC⟩ ⟨hd', C', hC'⟩`. Conclude with `GlobalTheory.T.hahnSeries_eq_of_qExpansionSumAbove_eventually_eq Ω ε C C' 0 (up f) (up f) h h' hd hd' hC hC' (fun _ _ => rfl)`. Introduce `c`. Establish `hC : HahnSeries.C c = (HahnSeries.single (0 : ℚ) c : HahnSeries ℚ Ω)` using `HahnSeries.C_apply c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hC]`. Use `⟨hsing 0 c, 0, ?_⟩` and prove the remaining obligations. Use `hcongr 0 _ _ _ ?_ (hmon 0 0 c)` and prove the remaining obligations. Introduce `z _`. Simplify using `[up]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `f hf ⟨_, C, hC⟩`. Apply `GlobalTheory.T.upperHalfPlane_eq_zero_of_vanish_above_im f C hf` to reduce the goal to its premises. Introduce `τ hτ`. Establish `hz` using `hC (τ : ℂ) (by simpa using hτ)`. Establish `h0 : (fun r : ℚ => ε ((0 : HahnSeries ℚ Ω).coeff r) * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * (τ : ℂ))) = fun _ => 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `r`. Simplify using the standard rewrite rules. Rewrite `hz` using `[h0]`. Use `hz.unique hasSum_zero` as an intermediate fact. Simplify `this` using `[up, UpperHalfPlane.ofComplex_apply]`.
-
-Introduce and unpack `f h hne ⟨hd, C, hC⟩`. Take `⟨d, C', hC'⟩` from `GlobalTheory.T.den_inv_and_hs_inv_of_hs Ω ε C (up f) h hd hne hC`. Conclude with `⟨d, C', by rw [up_inv]; exact hC'⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exp_props : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ), (∀ (f f' : ℍ → ℂ) (h h' : HahnSeries ℚ Ω), IsExp ε f h → IsExp ε f' h' → IsExp ε (f + f') (h + h') ∧ IsExp ε (f - f') (h - h') ∧ IsExp ε (f * f') (h * h')) ∧ (∀ (f : ℍ → ℂ) (h h' : HahnSeries ℚ Ω), IsExp ε f h → IsExp ε f h' → h = h') ∧ (∀ c : Ω, IsExp ε (fun _ => ε c) (HahnSeries.C c)) ∧ (∀ f : ℍ → ℂ, MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f → IsExp ε f (0 : HahnSeries ℚ Ω) → f = 0) ∧ ∀ (f : ℍ → ℂ) (h : HahnSeries ℚ Ω), h ≠ 0 → IsExp ε f h → IsExp ε f⁻¹ h⁻¹ := by
   intro Ω _ ε

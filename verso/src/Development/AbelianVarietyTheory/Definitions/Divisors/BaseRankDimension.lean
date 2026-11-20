@@ -91,13 +91,13 @@ def EvWC (prem : ∀ {eps : ℝ}, FamP eps → Prop) (q : ℝ → ℝ → BdP Bd
   Closed (W3 𝒜) fun Fm CH => ∀ hc : W3 𝒜 Fm, prem Fm → ∃ C0 : ℝ, 0 ≤ C0 ∧ ∀ C, C0 ≤ C → Ev σ Fm (w3_a hc) (q C CH)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x hx _ i => h Fm hc x hx i⟩`.
+Supply the required witnesses or components.
 -/
 theorem ev_of_atAll {𝒜 : FamClass} {σ : RawSel Bd 𝒜} {q : BdP Bd} (h : AtAll q 𝒜 σ) {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) :
     Ev σ Fm hc q := ⟨0, fun x hx _ i => h Fm hc x hx i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨b.R, b.S, b.P, b.pin, b.DH, b.C.c.face, b.C.Sp, b.C.ok1, b.B, Rr, psi, pins, muDef, recPins⟩, HEq.rfl, Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) (Rr : RealRec b.B.Q)
     (psi : PsiPPTie D b.P.P0 b.P.ψ0 b.P.Ps b.P.ψs b.P.I.eG) (pins : RealPins b.B.Q)
@@ -106,7 +106,7 @@ example {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) (Rr : RealRec b.B.Q)
   ⟨⟨b.R, b.S, b.P, b.pin, b.DH, b.C.c.face, b.C.Sp, b.C.ok1, b.B, Rr, psi, pins, muDef, recPins⟩, HEq.rfl, Iff.rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {D : D7} {O : Obj D} (P : RowSideFamily O.ex) (Del h0 : ℕ) (c c' : ℝ) (Zs : DefSub P.A3.fam3.amb3) :
     (zsc P Del h0 c Zs).F0 = (zsc P Del h0 c' Zs).F0 ∧ (zsc P Del h0 c Zs).l6u = 0 := ⟨rfl, rfl⟩

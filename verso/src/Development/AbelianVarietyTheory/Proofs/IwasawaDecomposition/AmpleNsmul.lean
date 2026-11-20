@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.ProjVar GlobalTheory.CechPic GlobalTheory.Cartier
 namespace GlobalTheory.ProjVar.Var
 
 /- English proof (translation)
-Introduce `F _ Y Δ n hn h`. Establish `hL` using `isLB_toLB Δ`. Use `(Var.ample_iff_of_toPic_eq (isLB_lbPow hL n) ?_).2 ((isAmpleLB_pow_iff hL hn).2 h)` and prove the remaining obligations. Rewrite using `[cls_lbPow hL, map_nsmul, toPic_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ample_nsmul : ∀ (F : Type) [Field F] (Y : Var F) (Δ : Y.Dv) (n : ℕ), 0 < n → Y.ample Δ → Y.ample (n • Δ) := by
   intro F _ Y Δ n hn h

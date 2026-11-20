@@ -13,12 +13,12 @@ namespace PositivityTheory.Rg.BcB.E1
 attribute [local instance] borelH
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem sBound_of (h : SB) : F.SBound := h
 
 /- English proof (translation)
-Introduce `E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ F₁ F₂ h₁ h₂`. Take `⟨D, hD, hI⟩` from `h E a b μ₁ μ₂ F₁ F₂ h₁ h₂`. Conclude with `⟨D, hD, fun τ φ => hI _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bridge_of (h : ProdDom) : F.Bridge := by
   intro E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ F₁ F₂ h₁ h₂
@@ -26,7 +26,7 @@ theorem bridge_of (h : ProdDom) : F.Bridge := by
   exact ⟨D, hD, fun τ φ => hI _⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D ι _`. Use `⟨fun Φ hΦ => h1 (ctx h D) ι Φ hΦ, fun Φ₁ Φ₂ T₁ T₂ a1 a2 b1 b2 => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2⟩` from `h3 (ctx h D) ι Φ₁ Φ₂ T₁ T₂ a1 a2 b1 b2`. Conclude with `⟨c1, c2, h2 (ctx h D) ι Φ₁ T₁ a1 b1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem opEx_of (h : RatProper) (h1 : OpExA) (h2 : OpAdj) (h3 : OpMul) : F.OpEx := by
   intro E _ _ _ a b D ι _
@@ -35,7 +35,7 @@ theorem opEx_of (h : RatProper) (h1 : OpExA) (h2 : OpAdj) (h3 : OpMul) : F.OpEx 
   exact ⟨c1, c2, h2 (ctx h D) ι Φ₁ T₁ a1 b1⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D ι _ Φ hΦ`. Take `⟨h1, h2⟩` from `h E a b D ι`. Take `⟨T, hT, -⟩` from `h1 Φ hΦ`. Conclude with `⟨T, hT, (h2 Φ Φ T T hΦ hΦ hT hT).2.2, fun Φ' T' a1 a2 => (h2 Φ Φ' T T' hΦ a1 hT a2).2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kernel_operator_exists_of (h : F.OpEx) : SmoothSeminormGrowth := by
   intro E _ _ _ a b D ι _ Φ hΦ
@@ -44,11 +44,11 @@ theorem kernel_operator_exists_of (h : F.OpEx) : SmoothSeminormGrowth := by
   exact ⟨T, hT, (h2 Φ Φ T T hΦ hΦ hT hT).2.2, fun Φ' T' a1 a2 => (h2 Φ Φ' T T' hΦ a1 hT a2).2.1⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D ι _ Φ hΦ`. Take `⟨h1, h2⟩` from `ho E a b D ι`. Take `⟨T, hT, -⟩` from `h1 Φ hΦ`. Establish `ha : IsTestM (adjM Φ)` using `fun i j => (hb (ctx h D) (Φ j i) (hΦ j i)).2.2.2.1`. Establish `ht` using `(h2 Φ (adjM Φ) T _ hΦ ha hT (h2 Φ Φ T T hΦ hΦ hT hT).2.2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c1, c2⟩` from `hl (ctx h D) ι (fun i => mulM D.μ Φ (adjM Φ) i i) (fun _ => 1) fun i => ht i i`. Use `⟨2 * (a + b), fun M hM => ?_⟩` and prove the remaining obligations. Use `hw E a b D _ c1 M hM` as an intermediate fact. Use `lt_of_eq_of_lt (lintegral_congr fun x => ?_) this` and prove the remaining obligations. Establish `e : kerH (fun z => ∑ i, mulM D.μ Φ (adjM Φ) i i z * 1) x x = ∑ i, kerH (mulM D.μ Φ (adjM Φ) i i) x x * 1` using `c2 x x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z : ℂ => ENNReal.ofReal (wt x ^ (-(2 * M : ℤ))) * ‖z‖ₑ) ((Finset.sum_congr rfl fun i _ => (mul_one _).symm).trans e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem kernel_diagonal_integrable_of (h : RatProper) (hb : KerBasic) (hl : KerLin) (ho : F.OpEx) (hw : WtDiag) : KernelDiagonalIntegrable := by
   intro E _ _ _ a b D ι _ Φ hΦ
@@ -65,13 +65,13 @@ theorem kernel_diagonal_integrable_of (h : RatProper) (hb : KerBasic) (hl : KerL
     ((Finset.sum_congr rfl fun i _ => (mul_one _).symm).trans e.symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ _ a b _ _ _ _ μ₁ _ μ₂ _`. Take `⟨F₁, h₁⟩` from `hD E a μ₁`. Take `⟨F₂, h₂⟩` from `hD E b μ₂`. Take `⟨D, -, hI⟩` from `hB E a b μ₁ μ₂ F₁ F₂ h₁ h₂`. Take `⟨C₀, hC₀, hell⟩` from `hE E a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨D, fun ι _ Φ₁ Φ₂ T₁ T₂ M r₀ r₁ a1 a2 b1 b2 hr₀ hr₁ => ?_⟩` and prove the remaining obligations. Take `⟨C, N, hb⟩` from `hS E a b D ι Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Use `⟨|C| * (1 + C₀ * (1 + r₀ + r₁)) ^ N, N, fun k U Φ c1 c2 c3 => ?_⟩` and prove the remaining obligations. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hr : 0 ≤ r₀ + k * r₁` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : 0 ≤ C₀ * (1 + (r₀ + k * r₁))` using `by positivity`. Rewrite using `[← hell μ₁ μ₂ F₁ F₂ _ _ _ h₁ h₂ c3 hr le_rfl, ← hI]`. Use `(hb _ U Φ hτ c1 c2).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by positivity) ?_ N) (by positivity) (abs_nonneg C)` and prove the remaining obligations. Establish `e1 : 0 ≤ C₀ * (1 + r₀) * k` using `by positivity`. Establish `e2 : 0 ≤ C₀ * r₁` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem growth_of (hE : EllFormula2) (hS : F.SBound) (hB : F.Bridge) (hD : DomEx) : F.Growth := by
   intro E _ _ _ _ a b _ _ _ _ μ₁ _ μ₂ _
@@ -104,13 +104,13 @@ def GrowthJ : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [No
       D4.IsTest2J (F.trM Φ M) (r₀ + k * r₁) → ‖ellSum2 μ₁ μ₂ (F.trM Φ M)‖ ≤ C * (1 + k) ^ N * ‖U‖
 
 /- English proof (translation)
-Introduce `E _ _ _ _ a b _ _ _ _ μ₁ _ μ₂ _`. Take `⟨F₁, h₁⟩` from `hD E a μ₁`. Take `⟨F₂, h₂⟩` from `hD E b μ₂`. Take `⟨D, -, hI⟩` from `hB E a b μ₁ μ₂ F₁ F₂ h₁ h₂`. Take `⟨C₀, hC₀, hell⟩` from `hE E a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨D, fun ι _ Φ₁ Φ₂ T₁ T₂ M r₀ r₁ a1 a2 b1 b2 hr₀ hr₁ => ?_⟩` and prove the remaining obligations. Take `⟨C, N, hb⟩` from `hS E a b D ι Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Use `⟨|C| * (1 + C₀ * (1 + r₀ + r₁)) ^ N, N, fun k U Φ c1 c2 c3 => ?_⟩` and prove the remaining obligations. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hr : 0 ≤ r₀ + k * r₁` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : 0 ≤ C₀ * (1 + (r₀ + k * r₁))` using `by positivity`. Rewrite using `[← hell μ₁ μ₂ F₁ F₂ _ _ _ h₁ h₂ c3 hr le_rfl, ← hI]`. Use `(hb _ U Φ hτ c1 c2).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by positivity) ?_ N) (by positivity) (abs_nonneg C)` and prove the remaining obligations. Establish `e1 : 0 ≤ C₀ * (1 + r₀) * k` using `by positivity`. Establish `e2 : 0 ≤ C₀ * r₁` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem growthJ_of (hE : D4.EllFormula2J) (hS : F.SBound) (hB : F.Bridge) (hD : DomEx) : GrowthJ := by
   intro E _ _ _ _ a b _ _ _ _ μ₁ _ μ₂ _

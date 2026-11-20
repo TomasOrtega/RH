@@ -8,17 +8,15 @@ open scoped ComplexOrder
 namespace GlobalTheory.MeanPeriodGenerator
 
 /- English proof (translation)
-Take `⟨M₀, _, hM₀, hs⟩` from `h`. Take `⟨s, hsc, hs⟩` from `hs τ`. Establish `hs0 : s ≠ 0` using `GlobalTheory.Glob.ne_zero_of_span_eq hM₀ hs.symm`. Establish `hc0 : cD τ ≠ 0` using `fun h => hs0 (Subtype.ext (hsc.trans h))`. Use `haveI : NumberField (M ⊔ M₀ : IntermediateField ℚ ℂ) := NumberField.mk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : ∀ τ x, TaylorLogMetric.embT D τ x ∈ (M ⊔ M₀ : IntermediateField ℚ ℂ)` using `fun τ x => (le_sup_left : M ≤ M ⊔ M₀) (hM τ x)`. Establish `h'` using `GlobalTheory.EigenlineBaseChange.ellT_eq_span_of_le D M₀ (M ⊔ M₀) le_sup_right hM₀ τ s hs`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : (⟨(x : ℂ), (le_sup_left : M ≤ M ⊔ M₀) x.2⟩ : (M ⊔ M₀ : IntermediateField ℚ ℂ)) ∈ TaylorLogMetric.ellT D (M ⊔ M₀) τ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Glob.mem_ellT_iff hM']`. Conclude with `(GlobalTheory.Glob.mem_ellT_iff hM τ x).1 hx`. Rewrite `hx'` using `[h', Submodule.mem_span_singleton]`. Take `⟨c, hcx⟩` from `hx'`. Establish `e : ((c : (M ⊔ M₀ : IntermediateField ℚ ℂ)) : ℂ) * (s : ℂ) = (x : ℂ)` using `congrArg (fun a : (M ⊔ M₀ : IntermediateField ℚ ℂ) => (a : ℂ)) hcx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : IsIntegral ℤ ((c : (M ⊔ M₀ : IntermediateField ℚ ℂ)) : ℂ)` using `(GlobalTheory.EigenlineBaseChange.isIntegral_coe_iff _).2 c.isIntegral_coe`. Establish `e2 : ((c : (M ⊔ M₀ : IntermediateField ℚ ℂ)) : ℂ) = (x : ℂ) * (cD τ)⁻¹`. Rewrite using `[← e, hsc, mul_inv_cancel_right₀ hc0]`. Rewrite `hi` using `[e2]`. Rewrite using `[Submodule.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨x * (⟨cD τ, hc⟩ : M)⁻¹, (GlobalTheory.EigenlineBaseChange.isIntegral_coe_iff _).1 hi⟩, ?_⟩` and prove the remaining obligations. Conclude with `inv_mul_cancel_right₀ (fun h => hc0 (congrArg (fun a : M => (a : ℂ)) h)) x`. Rewrite using `[Submodule.span_singleton_le_iff_mem, GlobalTheory.Glob.mem_ellT_iff hM]`. Use `(GlobalTheory.Glob.mem_ellT_iff hM₀ τ s).1 (hs ▸ Submodule.mem_span_singleton_self s)` as an intermediate fact. Rewrite `this` using `[hsc]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ellT_eq_span (D : D7) (cD : D.what₂.Tau → ℂ) (h : IsDgen D cD)
     (M : IntermediateField ℚ ℂ) [NumberField M] (hM : ∀ τ x, TaylorLogMetric.embT D τ x ∈ M)
@@ -56,11 +54,9 @@ theorem ellT_eq_span (D : D7) (cD : D.what₂.Tau → ℂ) (h : IsDgen D cD)
     exact this
 
 /- English proof (translation)
-Introduce `D cc dl cD hc hmean hgen`. Establish `hne : ∀ τ, cD τ ≠ 0`. Introduce `τ h`. Take `⟨M₀, _, hM₀, hs⟩` from `hgen`. Take `⟨s, hsc, hs⟩` from `hs τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Glob.ne_zero_of_span_eq hM₀ hs.symm (Subtype.ext (hsc.trans h))`. Use `⟨hne, fun M _ hD hcM τ => ?_⟩` and prove the remaining obligations. Use `haveI : NumberField M := NumberField.mk`. Establish `hell` using `ellT_eq_span D cD hgen M hD.1 τ (hcM τ)`. Establish `hl : TaylorLogMetric.liftM M (cD τ) = ⟨cD τ, hcM τ⟩` using `dif_pos (hcM τ)`.
-
-Rewrite using `[hl, ← hmean M hD τ, Finset.sum_neg_distrib]`. Conclude with `(GlobalTheory.Glob.meanLogOm_eq_of_gen hD.1 (GlobalTheory.Glob.area_lamConj_pos hc hD) hell.symm).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_logMet_eq : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (dl : ℂ) (cD : D.what₂.Tau → ℂ), StandardLatticesGL3.Crv D cc dl → GlobalTheory.IndefiniteRowSideFullHecke.MeanPeriodLogarithms.MeanPeriodAt D cc dl → IsDgen D cD → (∀ τ, cD τ ≠ 0) ∧ ∀ (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M], TaylorLogMetric.DataIn D (TaylorLogMetric.tor0 D cc dl) M → (∀ τ, cD τ ∈ M) → ∀ τ, (∑ ρ : M →ₐ[ℚ] ℂ, -TaylorLogMetric.logMet M (TaylorLogMetric.lamOf D cc dl) ρ (TaylorLogMetric.liftM M (cD τ))) / (Module.finrank ℚ M : ℝ) = TaylorLogMetric.logOmVal D := by
   intro D cc dl cD hc hmean hgen

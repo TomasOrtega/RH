@@ -9,21 +9,19 @@ namespace GlobalTheory
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z R _ a b ω _ _ hωb hloc jX hjX`. Use `c.fin` as an intermediate fact. Establish `: NumberField c.F` using `{}`. Establish `hb : IsOpenImmersion (spMap b)`. Set `` to `b.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `IsOpenImmersion.of_isLocalization (R := 𝓞 c.F) (S := R) a`. Establish `hfst : IsOpenImmersion (pullback.fst Z.s (spMap b))` using `inferInstance`. Take `⟨hN, -, -, hpre, hfl, hdom, hqc⟩` from `genericPart_dense_proOpen (𝓞 c.F) c.F Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense`. Establish `hj : Z.j = Z.jQ ≫ pullback.fst _ _` using `rfl`. Rewrite `hjX` using `[hj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnorm : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (pullback Z.s (spMap b))` using `by delta ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme`. Introduce `x`. Take `⟨h1, h2⟩` from `Z.normal (pullback.fst Z.s (spMap b) x)`. Set `e` to `(asIso ((pullback.fst Z.s (spMap b)).stalkMap x)).commRingCatIsoToRingEquiv`. Conclude with `⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hprop : IsProper Z.s`. Take `⟨N, i, hi, e⟩` from `Z.proj`. Use `isProper_str (𝓞 c.F) N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZfl : Flat Z.s` using `Z.flat`. Establish `hZint : LocallyOfFiniteType (spMap (algebraMap ℤ (𝓞 c.F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.FiniteType.of_finite (RingHom.finite_algebraMap.mpr inferInstance)`. Establish `hZintf : Flat (spMap (algebraMap ℤ (𝓞 c.F)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`. Establish `hc1 : IsDominant (jX ≫ pullback.fst Z.s (spMap b))` using `hjX ▸ hdom`. Establish `hc2 : IsPreimmersion (jX ≫ pullback.fst Z.s (spMap b))` using `hjX ▸ hpre`. Establish `hc3 : Flat (jX ≫ pullback.fst Z.s (spMap b))` using `hjX ▸ hfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc4 : QuasiCompact (jX ≫ pullback.fst Z.s (spMap b))` using `hjX ▸ hqc`. Use `⟨hfst, isLocallyNoetherian_of_isOpenImmersion (pullback.fst Z.s (spMap b)), hnorm, ⟨pullback.fst _ _ ≫ Z.s ≫ spMap (algebraMap ℤ (𝓞 c.F)), inferInstance, inferInstance⟩, IsPreimmersion.of_comp jX (pullback.fst Z.s (spMap b)), MorphismProperty.of_postcomp @Flat (W' := @IsOpenImmer …` and prove the remaining obligations. Rewrite using `[← cancel_mono (spMap b), Category.assoc, ← pullback.condition, ← Category.assoc, hjX, Category.assoc, pullback.condition, ← Category.assoc, Z.jQ_over, Category.assoc]`. Use `congr 1`. Rewrite using `[← hωb]`.
-
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Introduce `u hu`. Rewrite `hu` using `[hj]`. Conclude with `(cancel_mono (pullback.fst Z.s (spMap b))).mp (hu.trans hjX.symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modelAway_basic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (R : Type) [CommRing R] (a : 𝓞 c.F) (b : 𝓞 c.F →+* R) (ω : R →+* c.F) (C : Model Xo c ω), IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ a R _ b.toAlgebra → ∀ jX : Xo.XF c ⟶ pullback Z.s (spMap b), jX ≫ pullback.fst _ _ = Z.j → IsOpenImmersion (pullback.fst Z.s (spMap b)) ∧ IsLocallyNoetherian (pullback Z.s (spMap b)) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (pullback Z.s (spMap b)) ∧ (∃ z : pullback Z.s (spMap b) ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z) ∧ IsPreimmersion jX ∧ Flat jX ∧ IsDominant jX ∧ QuasiCompact jX ∧ jX ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap ω ∧ (∀ u : Xo.XF c ⟶ pullback Z.s (spMap b), u ≫ pullback.fst _ _ = Z.j → u = jX) := by
   intro E _ _ _ H D l Xo c Z R _ a b ω _ _ hωb hloc jX hjX

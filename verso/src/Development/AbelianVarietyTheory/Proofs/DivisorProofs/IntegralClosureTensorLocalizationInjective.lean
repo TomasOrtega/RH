@@ -7,17 +7,15 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S K L _ _ _ _ _ _ _ _ _ _ _ _ π e D _ _ _ _ _ _ _ Q _`. Use `set P := Q.under (integralClosure S L) with hP`. Use `letI := Localization.AtPrime.algebraOfLiesOver P Q`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl z`. Establish `h1 : algebraMap (Localization.AtPrime P) (Localization.AtPrime Q) (algebraMap (integralClosure S L) (Localization.AtPrime P) x) = 0`. Rewrite using `[← IsLocalization.mk'_spec (Localization.AtPrime P) x s, map_mul, hz, zero_mul]`. Establish `h2 : algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q) (algebraMap (integralClosure S L) (integralClosure D (TensorProduct S D L)) x) = 0`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Localization.localRingHom_to_map _ _ _ _ x).symm`. Take `⟨t, ht⟩` from `(IsLocalization.map_eq_zero_iff Q.primeCompl (Localization.AtPrime Q) _).1 h2`. Establish `hx : x = 0`. Assume the negation of the conclusion as `hx0`. Establish `hxL : (x : L) ≠ 0` using `fun h => hx0 (Subtype.ext h)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht' : ((t : integralClosure D (TensorProduct S D L)) : TensorProduct S D L) * ((1 : D) ⊗ₜ[S] (x : L)) = 0`. Use `congrArg (fun y : integralClosure D (TensorProduct S D L) => (y : TensorProduct S D L)) ht` as an intermediate fact. Simplify `this` using `[algebraMap_integralClosure_tensor_eq]`. Establish `hu : ((1 : D) ⊗ₜ[S] (x : L)) * ((1 : D) ⊗ₜ[S] ((x : L)⁻¹)) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_inv_cancel₀ hxL]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `ht0 : ((t : integralClosure D (TensorProduct S D L)) : TensorProduct S D L) = 0`. Use `congrArg (· * ((1 : D) ⊗ₜ[S] ((x : L)⁻¹))) ht'` as an intermediate fact. Simplify `this` using `[mul_assoc, hu]`. Establish `: (t : integralClosure D (TensorProduct S D L)) = 0` using `Subtype.ext ht0`.
-
-Conclude with `t.2 (this ▸ Q.zero_mem)`. Substitute `hx` using the available equality. Conclude with `IsLocalization.mk'_zero _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem integralClosure_tensor_localization_injective : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]

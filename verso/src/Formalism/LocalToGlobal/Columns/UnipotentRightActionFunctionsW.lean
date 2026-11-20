@@ -57,15 +57,13 @@ def WmL (P : LevFam X.E X.K R.r Pr.vGs) : Submodule (𝓞 X.K) (WmV W sel mu P) 
 @[reducible] def WmCSD (P : LevFam X.E X.K R.r Pr.vGs) (h : (wmGSD W sel mu P).Ok) : CSD X.K := (wmGSD W sel mu P).toCSD h
 
 /- English proof (translation)
-Generalize the expression as in `unipotentGroupBlockEmbedding Pr sel mu (le_refl R.r) a w = b`. Distinguish the cases in `hw : w.1 ∈ Pr.vGs`. Establish `e : (wmTy sel mu (rKg X Pr R)).inv w = ⟨⊥, 1⟩`. Unfold `LevFam.inv Lev.inv wmTy LevFam.glue`. Rewrite using `[dif_pos hw]`.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show ({ H := ⊥, lam := (1⁻¹)⁻¹ } : Lev (𝓞 X.E ⧸ (w : HeightOneSpectrum (𝓞 X.E)).asIdeal) X.K R.r) = ⟨⊥, 1⟩`. Use `congr 1`. Rewrite using `[e]`. Introduce `h`. Use `⟨h, ?_, rfl⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_bot.mp h.2, mul_one, one_mul]`. Establish `e : (wmTy sel mu (rKg X Pr R)).inv w = ⟨⊤, 1⟩`. Unfold `LevFam.inv Lev.inv wmTy LevFam.glue`. Rewrite using `[dif_neg hw]`. Use `show ({ H := ⊤, lam := 1⁻¹ } : Lev (𝓞 X.E ⧸ (w : HeightOneSpectrum (𝓞 X.E)).asIdeal) X.K R.r) = ⟨⊤, 1⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[e]`. Introduce `h`. Use `⟨⟨b⁻¹ * h.1 * b, Subgroup.mem_top _⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show b⁻¹ * h.1 = b⁻¹ * h.1 * b * b⁻¹`.
-
-Rewrite using `[mul_inv_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentHat_normalizes_W (a : G0 X.E Pr.vGs R.r) (w : rowSG Pr sel mu) :
     ((wmTy sel mu (rKg X Pr R)).inv w).NormBy (unipotentGroupBlockEmbedding Pr sel mu (le_refl R.r) a w) := by

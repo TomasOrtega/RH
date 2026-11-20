@@ -13,7 +13,7 @@ private noncomputable def eigChar {n : ℕ} (w : Fin n → ℂˣ) : Multiplicati
   map_mul' a b := by simp [monomialChar_add]
 
 /- English proof (translation)
-Establish `h` using `monomialChar_add a (-a) w`. Rewrite `h` using `[add_neg_cancel, monomialChar_zero]`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `one_ne_zero h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eig_mc_ne {n : ℕ} (a : Fin n → ℤ) (w : Fin n → ℂˣ) : monomialChar a w ≠ 0 := by
   have h := monomialChar_add a (-a) w
@@ -23,7 +23,7 @@ private lemma eig_mc_ne {n : ℕ} (a : Fin n → ℤ) (w : Fin n → ℂˣ) : mo
   exact one_ne_zero h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∏ j, (((w j) ^ ((Pi.single i (1 : ℤ) : Fin n → ℤ) j) : ℂˣ) : ℂ) = w i`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -37,13 +37,11 @@ private lemma eig_mc_single {n : ℕ} (i : Fin n) (w : Fin n → ℂˣ) :
   · simp
 
 /- English proof (translation)
-Introduce `w w' h`. Establish `H : ∀ a, Antitone a → monomialChar a w = monomialChar a w'` using `fun a ha => DFunLike.congr_fun h (Multiplicative.ofAdd ⟨a, ha⟩)`. Use function extensionality and compare the values at `i`. Set `p : Fin n → ℤ` to `fun j => if j < i then 1 else 0`. Establish `hp : Antitone p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j k hjk`. Simplify using `only [p]`. Use `split_ifs with h1 h2`. Conclude with `le_rfl`. Conclude with `absurd (lt_of_le_of_lt hjk h1) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `zero_le_one`. Conclude with `le_rfl`. Establish `hq : Antitone (Pi.single i 1 + p)`. Introduce `j k hjk`. Simplify using `only [p, Pi.add_apply, Pi.single_apply]`.
-
-Apply the tactic sequence `split_ifs <;> omega`. Establish `h1` using `H _ hq`. Rewrite `h1` using `[monomialChar_add, monomialChar_add, H p hp, eig_mc_single, eig_mc_single]`. Conclude with `Units.ext (mul_right_cancel₀ (eig_mc_ne _ _) h1)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eigChar_inj {n : ℕ} : Function.Injective (eigChar (n := n)) := by
   intro w w' h
@@ -68,35 +66,33 @@ private lemma eigChar_inj {n : ℕ} : Function.Injective (eigChar (n := n)) := b
   exact Units.ext (mul_right_cancel₀ (eig_mc_ne _ _) h1)
 
 /- English proof (translation)
-Introduce `n V _ _ _ hdim θ h0 hadd u ℓ z c hz hc hu`. Set `χ : Equiv.Perm (Fin n) → Multiplicative (eigCone n) → ℂ` to `fun σ => eigChar (z ∘ σ)`. Establish `hχ : ∀ σ a, χ σ a = monomialChar (a.toAdd : Fin n → ℤ) (z ∘ σ)` using `fun _ _ => rfl`. Establish `hinj : Function.Injective (fun σ : Equiv.Perm (Fin n) => eigChar (z ∘ σ))`. Introduce `σ τ h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `eigChar_inj h` as an intermediate fact. Conclude with `Equiv.ext fun i => hz (congrFun this i)`. Establish `hli : LinearIndependent ℂ χ` using `(linearIndependent_monoidHom (Multiplicative (eigCone n)) ℂ).comp _ hinj`. Set `Φ : V →ₗ[ℂ] (Multiplicative (eigCone n) → ℂ)` to `LinearMap.pi fun a => ℓ ∘ₗ θ (a.toAdd : Fin n → ℤ)`. Establish `hΦ : ∀ x a, Φ x a = ℓ (θ (a.toAdd : Fin n → ℤ) x)` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `L : (Equiv.Perm (Fin n) → ℂ) →ₗ[ℂ] (Multiplicative (eigCone n) → ℂ)` to `Fintype.linearCombination ℂ (fun σ => c σ • χ σ)`. Establish `hL : ∀ w a, L w a = ∑ σ, w σ * (c σ * χ σ a)`. Introduce `w a`. Simplify using `[L, Fintype.linearCombination_apply, Finset.sum_apply]`. Establish `hspan` using `span_flip_eq_top_iff_linearIndependent.2 hli`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Submodule.span ℂ (Set.range (flip χ)) ≤ (LinearMap.range Φ).comap L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Use `⟨θ (b.toAdd : Fin n → ℤ) u, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, hL, ← Module.End.mul_apply, ← hadd _ _ a.toAdd.2 b.toAdd.2, hu (_ + _) (a.toAdd + b.toAdd).2]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[monomialChar_add]`. Simplify using `only [flip, hχ]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hex : ∀ σ, ∃ x, Φ x = χ σ`. Introduce `σ`. Establish `h1 : (Pi.single σ (c σ)⁻¹ : Equiv.Perm (Fin n) → ℂ) ∈ (LinearMap.range Φ).comap L` using `hle (hspan ▸ Submodule.mem_top)`. Take `⟨x, hx⟩` from `h1`. Use `⟨x, hx.trans ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[hL, Finset.sum_eq_single σ]`. Rewrite using `[Pi.single_eq_same, ← mul_assoc, inv_mul_cancel₀ (hc σ), one_mul]`. Introduce `τ _ hτ`. Simplify using `[Pi.single_eq_of_ne hτ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `choose v hv using hex`. Establish `hlc : LinearIndependent ℂ (Φ ∘ v)`. Establish `: Φ ∘ v = χ` using `funext hv`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hli`. Establish `hlv : LinearIndependent ℂ v` using `LinearIndependent.of_comp Φ hlc`. Establish `hcard : Fintype.card (Equiv.Perm (Fin n)) = Module.finrank ℂ V`. Use `le_antisymm hlv.fintype_card_le_finrank ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_perm, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hdim`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hlv hcard`. Establish `hB : ∀ σ, B σ = v σ` using `fun σ => by`. Simplify using `[B, coe_basisOfLinearIndependentOfCardEqFinrank]`. Establish `hΦinj : Function.Injective Φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Rewrite `hx`, the goal using `[← B.sum_repr x]`. Simplify using `only [map_sum, map_smul, hB] at hx`. Use `Fintype.linearIndependent_iff.1 hlc (fun σ => B.repr x σ) hx` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[this]`. Use `⟨B, fun σ a ha => ?_, fun σ => ?_, ?_⟩` and prove the remaining obligations. Apply `hΦinj` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Rewrite using `[hB, map_smul, hv, hΦ, ← Module.End.mul_apply, ← hadd _ _ b.toAdd.2 ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrFun (hv σ) (Multiplicative.ofAdd ⟨_, Antitone.add b.toAdd.2 ha⟩)` as an intermediate fact. Rewrite `this` using `[hΦ, hχ]`. Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `monomialChar (_ + a) _ = _`. Rewrite using `[monomialChar_add, Pi.smul_apply, hχ, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrFun (hv σ) 1` as an intermediate fact. Rewrite `this` using `[hΦ, hχ]`. Simplify `this` using `[h0, monomialChar_zero, hB]`. Apply `hΦinj` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
-
-Rewrite using `[hΦ, hu _ a.toAdd.2]`. Simplify using `only [map_sum, map_smul, hB, hv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hχ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.eigBasis :
     ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V], Module.finrank ℂ V ≤ n.factorial →

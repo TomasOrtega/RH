@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N F Q d hF hFh hNd`. Unfold `RestTerms.IsPowerSumDecomposition at hF ⊢`. Establish `h` using `congrArg (homogeneousComponent d) hF`. Rewrite `h` using `[homogeneousComponent_eq_self hFh]`. Rewrite using `[h, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hlN : l ≤ N` using `(Finset.mem_Icc.mp hl).2`. Establish `hp : (RestTerms.blockPowerSum f N l τ).IsHomogeneous l`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `RestTerms.blockPowerSum`. Conclude with `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow _ _`. Rewrite using `[KRest.homogeneousComponent_mul_left hp, if_pos (hlN.trans hNd)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RestCutHomDecomp.proof : RestCutHomDecomp.Statement := by
   intro f N F Q d hF hFh hNd

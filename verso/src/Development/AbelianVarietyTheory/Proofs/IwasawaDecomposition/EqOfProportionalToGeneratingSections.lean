@@ -6,9 +6,9 @@ open AlgebraicGeometry CategoryTheory Limits TopologicalSpace ReciprocityTheory.
 namespace GlobalTheory.ProjBlowup
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨i', hi'⟩` from `(isCoordFamily_pullRatio ψ).exists_mem z`. Establish `hA : z ∈ A` using `W.basicOpen_le _ hz`. Establish `e` using `h (A ⊓ ψ ⁻¹ᵁ chart R m i') k (inf_le_left.trans hk) i' inf_le_right i`. Establish `e'` using `congrArg W.basicOpen e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[Scheme.basicOpen_mul, basicOpen_pullRatio, Scheme.basicOpen_appLE]`. Rewrite `hz` using `[Scheme.basicOpen_appLE]`. Establish `hz' : z ∈ (A ⊓ ψ ⁻¹ᵁ chart R m i') ⊓ g ⁻¹ᵁ X.basicOpen ((σ i).f k)` using `⟨⟨hA, hi'⟩, hz.2⟩`. Conclude with `(e'.le hz').1.2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Proportional.basicOpen_le_chart {R : Type} [CommRing R] {X W : Scheme.{0}} {L : LB X} {m : ℕ}
     {σ : Fin (m + 1) → L.Sec} {g : W ⟶ X} {ψ : W ⟶ PSpace R m} (h : Proportional σ g ψ)
@@ -25,11 +25,11 @@ theorem Proportional.basicOpen_le_chart {R : Type} [CommRing R] {X W : Scheme.{0
   exact (e'.le hz').1.2
 
 /- English proof (translation)
-Introduce `R _ X W L m σ g ψ ψ' hG hs h h'`. Use `hom_ext hs fun y => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hG.1.ge (Set.mem_univ y))`. Take `⟨_, ⟨A, hA, rfl⟩, hyA, hAk⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open hk (g ⁻¹ᵁ L.U k).isOpen`. Establish `hAk' : A ≤ g ⁻¹ᵁ L.U k` using `hAk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp` using `hG.2 k ⟨A, hA⟩ hAk'`. Establish `hsp' : Ideal.span (Set.range fun j => (g.appLE (L.U k) A hAk').hom ((σ j).f k)) = ⊤` using `hsp.symm`. Establish `hcov` using `(IsAffineOpen.self_le_iSup_basicOpen_iff hA).2 hsp'`. Take `⟨⟨_, i, rfl⟩, hi⟩` from `Opens.mem_iSup.1 (hcov hyA)`. Establish `hB` using `W.basicOpen_le ((g.appLE (L.U k) A hAk').hom ((σ i).f k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨_, hi, i, h.basicOpen_le_chart A k hAk' i, h'.basicOpen_le_chart A k hAk' i, fun j => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((g.appLE (L.U k) _ (hB.trans hAk')).hom ((σ i).f k))`. Rewrite using `[← resG_appLE g hAk' hB]`. Conclude with `RingedSpace.isUnit_res_basicOpen _ _`. Conclude with `hu.mul_right_cancel ((h _ k _ i _ j).symm.trans (h' _ k _ i _ j))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_proportional :
     ∀ (R : Type) [CommRing R] (X W : Scheme.{0}) (L : LB X) (m : ℕ) (σ : Fin (m + 1) → L.Sec) (g : W ⟶ X) (ψ ψ' : W ⟶ PSpace R m), GeneratesAlong ⊤ σ g → ψ ≫ PSpace.str R m = ψ' ≫ PSpace.str R m → Proportional σ g ψ → Proportional σ g ψ' → ψ = ψ' := by

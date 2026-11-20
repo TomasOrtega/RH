@@ -13,7 +13,7 @@ namespace AdaptedJ
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `congrFun (congrFun (incM_map_piInf_emb (F := F) (Matrix.of fun (_ : Unit) (_ : Unit) => e) τ) ()) ()` as an intermediate fact. Simplify `this` using `[incM]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (e : E) :
     piInf τ (inclR (F := F) (AF F) e) = τ.1 e := by
@@ -21,11 +21,11 @@ theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (e : E) :
   simpa [incM] using this
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (W.L : Set (Fin d → E))` using `by rw [hL.span_eq_top]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨s, t, u, -, -, -, h⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, h⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add p q _ _ hp hq`. Take `⟨s, t, u, h⟩` from `hp`. Take `⟨s', t', u', h'⟩` from `hq`. Conclude with `⟨s + s', t + t', u + u', by rw [h, h', Matrix.mulVec_add, add_smul, add_smul]; abel⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c p _ hp`. Take `⟨s, t, u, h⟩` from `hp`. Conclude with `⟨c * s, c * t, c • u, by rw [h, Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_plane_decomp {σ : E →ₐ[F] E} {B : Base F E} {d d₁ i₀ i₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁}
     {H' : Plane E d d₁} (hH : H'.IsAdapted σ B W W₁ i₀ i₁) (hL : W.L.IsLattice E) (v : Fin d → E) :
@@ -45,9 +45,9 @@ theorem exists_plane_decomp {σ : E →ₐ[F] E} {B : Base F E} {d d₁ i₀ i�
     exact ⟨c * s, c * t, c • u, by rw [h, Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]⟩
 
 /- English proof (translation)
-Use `choose s t U hU using fun k : Fin d => exists_plane_decomp hH hL (Pi.single k 1)`. Use `⟨Matrix.of U, s, t, ?_⟩` and prove the remaining obligations. Use extensionality with `k l`. Use `congrFun (hU k) l` as an intermediate fact. Simplify using `[Matrix.one_apply, Pi.single_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply] at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (if k = l then (1 : E) else 0) = if l = k then 1 else 0`. Apply the tactic sequence `by_cases h : k = l <;> simp [h, eq_comm]`. Rewrite using `[e, this]`. Repeatedly rewrite using `[mul_comm (H'.ι l _)]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem one_eq_plane_decomp {σ : E →ₐ[F] E} {B : Base F E} {d d₁ i₀ i₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁}
     {H' : Plane E d d₁} (hH : H'.IsAdapted σ B W W₁ i₀ i₁) (hL : W.L.IsLattice E) :
@@ -65,9 +65,9 @@ theorem one_eq_plane_decomp {σ : E →ₐ[F] E} {B : Base F E} {d d₁ i₀ i�
   ring
 
 /- English proof (translation)
-Establish `h1 : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hv : ∀ p q : Fin d → E, incM F (Matrix.vecMulVec p q) = Matrix.vecMulVec (incV F p) (incV F q)` using `fun p q => by`. Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply]`. Establish `hm : incM F (U * ιᵀ) = incM F U * (incM F ι)ᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [incM]`. Rewrite using `[Matrix.map_mul, Matrix.transpose_map]`. Use `conv_lhs => rw [← Matrix.mul_one u, ← h1, h]`. Simplify using `only [incM] at hv hm ⊢`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_add _ (map_add _), hm, hv, hv, Matrix.mul_add, Matrix.mul_add, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_plane_decomp {n d d₁ : ℕ} {ι : Matrix (Fin d) (Fin d₁) E} {x y : Fin d → E}
     {U : Matrix (Fin d) (Fin d₁) E} {s t : Fin d → E}
@@ -87,7 +87,7 @@ theorem adelic_plane_decomp {n d d₁ : ℕ} {ι : Matrix (Fin d) (Fin d₁) E} 
     Matrix.mul_vecMulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Rewrite using `[map_zero, map_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem inl_symm_eq_zero {F : Type} [Field F] [NumberField F] (g : mixedEmbedding.mixedSpace F) (hg : g = 0) :
     LinearMap.inl F (Ainf F) (Af F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm g) = 0 := by
@@ -99,39 +99,33 @@ end AdaptedJ
 open AdaptedJ in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH co h1 h2 h3 ε γ hγ`. Establish `hcm` using `hB.cm`. Use `haveI := hcm.1`. Take `⟨ξ, hξ⟩` from `GlobalTheory.RealLift.OneParam.exists_moved hcm`. Establish `hξ' : ∀ w, ((B.emb w).1 ξ).im ≠ 0` using `fun w => GlobalTheory.RealLift.OneParam.im_ne_zero hcm hξ (B.emb w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, sv, tv, hone⟩` from `one_eq_plane_decomp hH hW.lat`. Use `set L : Fin n × Fin d → AF F := fun i => LinearMap.inl F (Ainf F) (Af F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (γ i)) with hLdef`. Use `set u := co.e.symm (L, 0) with hudef`. Establish `hu : co.e u = (L, 0)` using `co.e.apply_symm_apply _`. Establish `hLat : ∀ t : AF F, evI F t = 0 → t • L = 0` using `fun t ht => by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t.1 * _ = 0`. Rewrite using `[GlobalTheory.RealLift.OneParam.inf_eq_zero ht, zero_mul]`. Express the relevant statement in the definitionally equal form `t.2 * 0 = 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_zero _`. Establish `huAt : At (evI F) u` using `fun t ht => by`. Rewrite using `[hudef, ← map_smul, Prod.smul_mk, hLat t ht, smul_zero]`. Conclude with `map_zero _`. Establish `hcwu : cw co u = (γ, 0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `show evI F ((co.e u).1 i) = γ i`. Rewrite using `[hu]`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (γ i)) = γ i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show evI F ((co.e u).2 i) = 0`. Rewrite using `[hu]`. Conclude with `evI_zero_eq`. Use `set z := u * incM F U with hzdef`. Use `set a := u *ᵥ incV F sv with hadef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set b := u *ᵥ incV F tv with hbdef`. Establish `hdec : u = z * (incM F H'.ι)ᵀ + Matrix.vecMulVec a (incV F H'.x) + Matrix.vecMulVec b (incV F H'.y)` using `adelic_plane_decomp hone u`. Establish `hsum : co.e (z * (incM F H'.ι)ᵀ) + co.e (Matrix.vecMulVec a (incV F H'.x)) + co.e (Matrix.vecMulVec b (incV F H'.y)) = (L, 0)`. Rewrite using `[← map_add, ← map_add, ← hdec, hu]`. Take `⟨ha1, ha2⟩` from `h2 a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hb2, hb1⟩` from `h3 b`. Establish `hz : M₁.co.e z = 0`. Use `Prod.ext (funext fun p => ?_) (funext fun p => ?_)` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q.1 ((idx hd).symm (Sum.inl p))) hsum`. Simplify using `only [Prod.fst_add, Pi.add_apply, h1 z, ha1, hb1 p, planeZeroInsertion_apply_inl, Pi.zero_apply, add_zero] at e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key : L ((idx hd).symm (Sum.inl p)) = 0`. Rewrite using `[hLdef]`. Conclude with `inl_symm_eq_zero _ (hγ p)`. Rewrite `e` using `[key]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fun q => q.2 ((idx hd).symm (Sum.inl p))) hsum`. Simplify using `only [Prod.snd_add, Pi.add_apply, h1 z, ha2 p, hb2, planeZeroInsertion_apply_inl, Pi.zero_apply, add_zero] at e`. Conclude with `e`. Establish `hzi : co.e (z * (incM F H'.ι)ᵀ) = 0`. Rewrite using `[h1 z, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[ins0_zero]`. Establish `hax : co.e (Matrix.vecMulVec a (incV F H'.x)) = 0`. Use `Prod.ext ha1 ?_` and prove the remaining obligations. Establish `e` using `congrArg Prod.snd hsum`. Simplify using `only [Prod.snd_add, hzi, hb2] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using e`. Establish `hu' : u = Matrix.vecMulVec b (incV F H'.y)`. Rewrite using `[hdec, co.e.map_eq_zero_iff.1 hzi, co.e.map_eq_zero_iff.1 hax, zero_add, zero_add]`. Use `choose c hc0 hcy using fun w => (hH.cartan w).2`. Establish `hθ : ∀ w, W.θ w *ᵥ (fun i => (B.emb w).1 (H'.y i)) = c w • fun i => (B.emb w).1 (H'.x i)` using `fun w => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcy w, Matrix.mulVec_smul, Matrix.mulVec_mulVec, (hW.cartan w).1, Matrix.one_mulVec]`. Use `set b' : Fin n → AE F E := fun i => GlobalTheory.RealLift.OneParam.liftC B.emb ξ (fun w => (((ε w : ℤ) : ℂ) * Complex.I * c w) * (X.θ w *ᵥ fun j => piInf (B.emb w) (b j)) i) with hb'def`. Use `⟨u, Matrix.vecMulVec b' (incV F H'.x), huAt, ?_, ?_, hcwu, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `: t • b' = 0` using `funext fun i => GlobalTheory.RealLift.OneParam.at_liftC B.emb ξ _ t ht`.
+Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.smul_vecMulVec, this]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `w`. Establish `hm : (Matrix.vecMulVec b (incV F H'.y)).map (piInf (B.emb w)) = Matrix.vecMulVec (fun j => piInf (B.emb w) (b j)) (fun l => (B.emb w).1 (H'.y l))`.
-
-Use extensionality with `i l`. Simplify using `[Matrix.vecMulVec_apply, incV, piInf_inclR]`. Establish `hm' : (Matrix.vecMulVec b' (incV F H'.x)).map (piInf (B.emb w)) = Matrix.vecMulVec (fun i => (((ε w : ℤ) : ℂ) * Complex.I * c w) * (X.θ w *ᵥ fun j => piInf (B.emb w) (b j)) i) (fun l => (B.emb w).1 (H'.x l))`. Use extensionality with `i l`. Simplify using `only [Matrix.map_apply, Matrix.vecMulVec_apply, map_mul, incV, piInf_inclR, hb'def, GlobalTheory.RealLift.OneParam.piInf_liftC B.emb hξ']`.
-
-Rewrite using `[hu', hm, hm', Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, hθ w, Matrix.vecMulVec_smul]`. Use extensionality with `i l`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i show evI F ((co.e (Matrix.vecMulVec b' (incV F H'.x))).1 i) = 0`.
-
-Rewrite using `[(h2 b').1]`. Conclude with `evI_zero_eq`. Introduce `p show evI F ((co.e (Matrix.vecMulVec b' (incV F H'.x))).2 ((idx hd).symm (Sum.inl p))) = 0`. Rewrite using `[(h2 b').2 p]`. Conclude with `evI_zero_eq`.
+A detailed English derivation is pending.
 -/
 theorem exists_plane_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M₁ : Model σ X W₁)

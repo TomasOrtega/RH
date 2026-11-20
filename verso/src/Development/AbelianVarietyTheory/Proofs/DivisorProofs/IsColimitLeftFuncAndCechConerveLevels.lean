@@ -4,11 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `J _ D c hc`. Use `⟨⟨isColimitOfPreserves Arrow.leftFunc hc⟩, fun k => ⟨?_⟩⟩` and prove the remaining obligations. Establish `e : (CosimplicialObject.cechConerve ⋙ (evaluation SimplexCategory CommRingCat.{0}).obj k) = CosimplicialObject.augmentedCechConerve ⋙ CosimplicialObject.Augmented.drop ⋙ (evaluation SimplexCategory CommRingCat.{0}).obj k` using `rfl`. Rewrite using `[e]`. Establish `h1 : PreservesColimitsOfSize.{0, 0} (CosimplicialObject.augmentedCechConerve (C` using `CommRingCat.{0})) := CosimplicialObject.cechConerveAdjunction.leftAdjoint_preservesColimits`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : PreservesColimitsOfShape J (CosimplicialObject.const CommRingCat.{0})` using `preservesColimitsOfShape_of_evaluation _ J fun m => by`. Establish `: PreservesColimitsOfShape J (𝟭 CommRingCat.{0})` using `inferInstance`. Conclude with `this`. Establish `h2 : PreservesColimitsOfShape J (CosimplicialObject.Augmented.drop (C` using `CommRingCat.{0})) := Comma.preservesColimitsOfShape_snd`. Establish `h3 : PreservesColimitsOfShape J ((evaluation SimplexCategory CommRingCat.{0}).obj k)` using `inferInstance`.
-
-Conclude with `@isColimitOfPreserves _ _ _ _ _ _ _ ((evaluation SimplexCategory CommRingCat.{0}).obj k) _ (isColimitOfPreserves CosimplicialObject.Augmented.drop (isColimitOfPreserves CosimplicialObject.augmentedCechConerve hc)) h3.preservesColimit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isColimit_leftFunc_and_cechConerve_levels :
     ∀ (J : Type) [SmallCategory J] (D : J ⥤ Arrow CommRingCat.{0}) (c : Cocone D), IsColimit c →

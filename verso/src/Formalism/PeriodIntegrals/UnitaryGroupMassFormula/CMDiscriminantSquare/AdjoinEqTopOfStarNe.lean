@@ -6,7 +6,7 @@ open NumberField Polynomial
 namespace PIW.CMDiscSq
 
 /- English proof (translation)
-Establish `: y ∈ Set.range (algebraMap F E)` using `by rw [hR]; exact hy`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_of_star_eq {F E : Type} [Field F] [Field E] [StarRing E] [Algebra F E]
     (hR : Set.range (algebraMap F E) = {a : E | star a = a}) {y : E} (hy : star y = y) :
@@ -15,11 +15,11 @@ theorem exists_of_star_eq {F E : Type} [Field F] [Field E] [StarRing E] [Algebra
   exact this
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hd : x - star x ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx)`. Establish `hbd : (y - star y) / (x - star x) * (x - star x) = y - star y` using `div_mul_cancel₀ _ hd`. Establish `hb : star ((y - star y) / (x - star x)) = (y - star y) / (x - star x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_div₀, star_sub, star_sub, star_star, star_star, ← neg_sub y, ← neg_sub x, neg_div_neg_eq]`. Establish `ha : star (y - (y - star y) / (x - star x) * x) = y - (y - star y) / (x - star x) * x`. Rewrite using `[star_sub, star_mul', hb]`. Take the linear combination `hbd`. Take `⟨b, hb'⟩` from `exists_of_star_eq hR hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha'⟩` from `exists_of_star_eq hR ha`. Establish `hy : y = algebraMap F E a + algebraMap F E b * x` using `by rw [ha', hb']; ring`. Rewrite using `[hy]`. Conclude with `Subalgebra.add_mem _ (Subalgebra.algebraMap_mem _ a) (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ b) (Algebra.subset_adjoin rfl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_eq_top_of_star_ne {F E : Type} [Field F] [Field E] [StarRing E] [Algebra F E]
     (hR : Set.range (algebraMap F E) = {a : E | star a = a}) {x : E} (hx : star x ≠ x) :
@@ -42,13 +42,13 @@ theorem adjoin_eq_top_of_star_ne {F E : Type} [Field F] [Field E] [StarRing E] [
     (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ b) (Algebra.subset_adjoin rfl))
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_of_star_eq hR (y := x + star x) (by rw [star_add, star_star, add_comm])`. Take `⟨n, hn⟩` from `exists_of_star_eq hR (y := x * star x) (by rw [star_mul', star_star, mul_comm])`. Use `⟨s, n, hs, hn, ?_⟩` and prove the remaining obligations. Establish `hmon : (X ^ 2 - C s * X + C n : F[X]).Monic` using `by monicity!`. Establish `hdeg : (X ^ 2 - C s * X + C n : F[X]).natDegree = 2` using `by compute_degree!`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : aeval x (X ^ 2 - C s * X + C n : F[X]) = 0`. Simplify using `only [map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, hs, hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Establish `h2 : 2 ≤ (minpoly F x).natDegree`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[minpoly.two_le_natDegree_iff hint]`. Introduce and unpack `⟨a, rfl⟩`. Apply `hx` to reduce the goal to its premises. Establish `: algebraMap F E a ∈ Set.range (algebraMap F E)` using `⟨a, rfl⟩`. Rewrite `this` using `[hR]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `(Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hmon (minpoly.dvd F x hroot) (by rw [hdeg]; exact h2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem minpoly_eq_of_star_ne {F E : Type} [Field F] [Field E] [StarRing E] [Algebra F E]
     [FiniteDimensional F E]

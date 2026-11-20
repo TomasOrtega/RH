@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `R S _ _ _ _ N _ f hf k χ`. Take `⟨hcond, hval, -⟩` from `b_condmap f hf χ`. Rewrite using `[Bprim_eq, Bprim_eq, hcond, map_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hval a, RingHom.map_rat_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Bern.b_primmap :
     ∀ {R S : Type} [CommRing R] [Algebra ℚ R] [CommRing S] [Algebra ℚ S] {N : ℕ} [NeZero N] (f : R →+* S), Function.Injective f → ∀ (k : ℕ) (χ : DirichletCharacter R N), f (Bprim k χ) = Bprim k (χ.ringHomComp f) := by

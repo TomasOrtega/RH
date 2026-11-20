@@ -7,15 +7,15 @@ open scoped InnerProductSpace ComplexOrder Matrix.Norms.L2Operator
 namespace GlobalTheory.SphJet
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => intro l₁ _`. Both sides reduce to the same expression. Consider the case `cons p _ ih`. Introduce `l₁ hl`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih (l₁ ++ [p]) (by simpa using hl)` as an intermediate fact. Simplify using `using this`. Consider the case `swap p q l`. Introduce `l₁ hl`. Take `⟨a, b⟩` from `q`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, d⟩` from `p`. Establish `h1` using `hB.1 l₁ l a b c d`. Establish `hlen : ∀ r : Fin n × Fin n, B (l₁ ++ r :: l) = 0`. Introduce `r`. Apply `h0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [List.length_append, List.length_cons] at hl ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[hlen, hlen, ite_self, ite_self, sub_zero]`. Conclude with `sub_eq_zero.mp h1`. Consider the case `trans h₁ _ ih₁ ih₂`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l₁ hl`. Rewrite using `[ih₁ l₁ hl, ih₂ l₁ (by rw [← hl]; simp [h₁.length_eq])]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetRel_perm_of_vanish_prefix {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] {n : ℕ} {ε : Fin n → Bool}
@@ -46,13 +46,13 @@ theorem jetRel_perm_of_vanish_prefix {V W : Type} [NormedAddCommGroup V] [InnerP
     rw [ih₁ l₁ hl, ih₂ l₁ (by rw [← hl]; simp [h₁.length_eq])]
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ n ε E Λ u j B m hL hB h0`. Establish `hperm : ∀ l l' : List (Fin n × Fin n), l.Perm l' → l.length = m + 1 → B l = B l'`. Introduce `l l' h hl`. Simplify `hl)` using `using jetRel_perm_of_vanish_prefix hB h0 h [] (by simpa`. Use `⟨hperm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `l hl ⟨⟨a, b⟩, hp, hab⟩`. Establish `hpe` using `List.perm_cons_erase hp`. Establish `hlen : (l.erase (a, b)).length ≤ m`. Use `hpe.length_eq` as an intermediate fact. Simplify using `only [List.length_cons] at this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hperm _ _ hpe hl]`. Use extensionality with `y x`. Establish `hy : j y ∈ Formalism.REAL.kSpan ε E u`. Rewrite using `[← hL.2.2.2.2]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, rfl⟩`. Establish `hy2 : E b a (j y) ∈ Formalism.REAL.kSpan ε E u` using `compact_span_compact_stable ε E u b a hab.symm _ hy`. Rewrite `hy2` using `[← hL.2.2.2.2]`. Take `⟨y', hy'⟩` from `hy2`. Rewrite using `[hB.2.2.1 _ a b hab y y' x hy', h0 _ hlen]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

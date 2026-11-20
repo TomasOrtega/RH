@@ -5,19 +5,19 @@ namespace GlobalTheory
 open Complex
 
 /- English proof (translation)
-Introduce `E _ _ _ _ p hp Z x h`. Use `haveI := hp.continuousSMul`. Use `haveI : LocallyConvexSpace ℝ E := hp.toLocallyConvexSpace`. Assume the negation of the conclusion as `hx`. Rewrite `hx` using `[← Z.topologicalClosure_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨f, u, hfx, hf⟩` from `RCLike.geometric_hahn_banach_point_closed (𝕜 := ℂ) ((Z.topologicalClosure.restrictScalars ℝ).convex) Z.isClosed_topologicalClosure hx`. Simplify using `only [RCLike.re_to_complex] at hfx hf`. Establish `hre : ∀ w ∈ Z, (f w).re = 0`. Introduce `w hw`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : ℝ := (u - 1) / (f w).re`. Establish `hmem : ((t : ℂ) • w) ∈ Z.topologicalClosure` using `Z.le_topologicalClosure (Z.smul_mem _ hw)`. Establish `h1` using `hf _ hmem`. Rewrite `h1` using `[map_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Establish `: t * (f w).re = u - 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [t]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvan : ∀ z ∈ Z, f z = 0`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hre z hz`. Establish `h2` using `hre (Complex.I • z) (Z.smul_mem _ hz)`. Rewrite `h2` using `[map_smul, smul_eq_mul, Complex.mul_re, Complex.I_re, Complex.I_im]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using h1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `at h2`. Simplify using `using h2`. Establish `h0` using `hf 0 (Z.topologicalClosure.zero_mem)`. Establish `hfx0` using `h f hvan`. Rewrite `h0` using `[map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hfx` using `[hfx0]`. Simplify using `at h0 hfx`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem mem_closure_of_forall_dual_vanish :
     ∀ {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E]

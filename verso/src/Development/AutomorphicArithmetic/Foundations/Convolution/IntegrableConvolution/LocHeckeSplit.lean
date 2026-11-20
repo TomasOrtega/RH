@@ -13,7 +13,7 @@ open PositivityTheory.Rg.Tf.Geo
 namespace UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-The claim follows from `| 0, p, φ, h => by simpa [cvAll] using h 0 | m + 1, p, φ, h => by rw [Fin.prod_univ_succ] exact (sphLaws.2 K n v).2.2 mF hH h1 _ _ _ _ (h 0) (isSph_cvAll mF hH h1 m (Fin.tail p) (Fin.tail φ) fun i => h i.succ)`.
+A detailed English derivation is pending.
 -/
 private theorem isSph_cvAll {K : Type} [Field K] [NumberField K] {n : ℕ} {v : Pl K}
     [MeasurableSpace (GL (Fin n) (v.adicCompletion K))] [BorelSpace (GL (Fin n) (v.adicCompletion K))]
@@ -31,11 +31,11 @@ end UpperTheory.ConvolutionTheory.L1
 
 open GroundTheory.Global.SemiLocal in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ hp n hn v hv p h f hh hf`. Take `⟨m, hm⟩ : ∃ m, Module.finrank F E = m + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hp.pos).symm⟩`. Take `⟨w₀⟩` from `nonempty_placesOver E v`. Take `⟨w, -, hM⟩` from `UpperTheory.ConvolutionTheory.L1.matchProd F E σ hσ m hm n v w₀ hv`. Introduce `_ _ _ _ mE mF hE hF h1E h1F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ u : PlacesOver E v, Continuous (h u) ∧ HasCompactSupport (h u)` using `fun u => (UpperTheory.ConvolutionTheory.L1.sphLaws.2 E n u.1).1 _ _ (hh u)`. Establish `hm'` using `hM h hc mF hF h1F`. Establish `hs` using `UpperTheory.ConvolutionTheory.L1.isSph_cvAll mF hF h1F m (fun i => p (w i)) (fun i g => h (w i) (mapGL n (completionMap v (w i).1) g)) (fun i => UpperTheory.ConvolutionTheory.L1.sphLaws.1 F E v (w i) (hv (w i)) n _ _ (hh (w i)))`. Establish `hprod : (∏ i, p (w i)) = ∏ᶠ u, p u`. Rewrite using `[finprod_eq_prod_of_fintype]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Equiv.prod_comp w p`. Rewrite `hs` using `[hprod]`. Establish `key` using `(UpperTheory.ConvolutionTheory.L1.sphLaws.2 F n v).2.1 _ _ _ hs hf`. Rewrite `hm'` using `[key]`. Conclude with `hm' mE mF hE hF h1E h1F`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.locHeckeSplit :
     UpperTheory.ConvolutionTheory.GM.LocHeckeSplit := by

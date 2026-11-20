@@ -10,14 +10,14 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC.ClosedCover
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
 
 /- English proof (translation)
-Simplify using `only [spMap]`. Rewrite using `[show CommRingCat.ofHom (RingHom.id A) = 𝟙 (CommRingCat.of A) from rfl, Spec.map_id]`. Conclude with `sch.map_id _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]
@@ -25,11 +25,11 @@ theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   exact sch.map_id _
 
 /- English proof (translation)
-Establish `h1 : ∀ x, pull (ZMod q) (spMap (e.symm : B →+* A)) (tw q i) n (pull (ZMod q) (spMap (e : A →+* B)) (tw q i) n x) = x`. Introduce `x`. Rewrite using `[← pull_comp, ← spMap_comp]`. Establish `: (e.symm : B →+* A).comp (e : A →+* B) = RingHom.id A` using `by ext; simp`. Rewrite using `[this, spMap_id, pull_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ x, pull (ZMod q) (spMap (e : A →+* B)) (tw q i) n (pull (ZMod q) (spMap (e.symm : B →+* A)) (tw q i) n x) = x`. Introduce `x`. Rewrite using `[← pull_comp, ← spMap_comp]`. Establish `: (e : A →+* B).comp (e.symm : B →+* A) = RingHom.id B` using `by ext; simp`. Rewrite using `[this, spMap_id, pull_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_spMap_bij {q : ℕ} {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (n i : ℤ) :
     Function.Bijective (pull (ZMod q) (spMap (e : A →+* B)) (tw q i) n) := by
@@ -46,11 +46,11 @@ theorem pull_spMap_bij {q : ℕ} {A B : Type} [CommRing A] [CommRing B] (e : A �
   exact ⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Simplify using `only [RingHom.prod_apply, Prod.mk_eq_zero, Polynomial.coe_mapRingHom] at hp`. Use extensionality with `n`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `using congrArg (fun r => Polynomial.coeff r n) hp.1`. Simplify using `using congrArg (fun r => Polynomial.coeff r n) hp.2`. Introduce and unpack `⟨p, p'⟩`. Set `N` to `max p.natDegree p'.natDegree + 1`. Use `⟨∑ k ∈ Finset.range N, Polynomial.monomial k (p.coeff k, p'.coeff k), ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingHom.prod_apply, Polynomial.coe_mapRingHom, Polynomial.map_sum, Polynomial.map_monomial]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(Polynomial.as_sum_range' p N (by omega)).symm`. Conclude with `(Polynomial.as_sum_range' p' N (by omega)).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polyProd_bij (A B : Type) [CommRing A] [CommRing B] :
     Function.Bijective ((Polynomial.mapRingHom (RingHom.fst A B)).prod (Polynomial.mapRingHom (RingHom.snd A B))) := by
@@ -70,15 +70,15 @@ theorem polyProd_bij (A B : Type) [CommRing A] [CommRing B] :
     · exact (Polynomial.as_sum_range' p' N (by omega)).symm
 
 /- English proof (translation)
-Introduce `q _ A B _ _ hA hB i n`. Set `e : Polynomial (A × B) ≃+* Polynomial A × Polynomial B` to `RingEquiv.ofBijective _ (polyProd_bij A B)`. Set `g : A × B →+* Polynomial A × Polynomial B` to `RingHom.prodMap Polynomial.C Polynomial.C`. Establish `hg : e.toRingHom.comp Polynomial.C = g`. Apply the tactic sequence `ext x <;> simp [e, g]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hgb : Function.Bijective (pull (ZMod q) (spMap g) (tw q i) n)`. Establish `hP` using `GlobalTheory.T.etaleCohomology_prod_ring_projections_bijective q A B n i`. Establish `hD` using `GlobalTheory.T.etaleCohomology_prod_ring_projections_bijective q (Polynomial A) (Polynomial B) n i`. Establish `hsq : ∀ x : Ht q (sp (A × B)) n i, (pull _ (spMap (RingHom.fst (Polynomial A) (Polynomial B))) _ _ (pull _ (spMap g) _ n x), pull _ (spMap (RingHom.snd (Polynomial A) (Polynomial B))) _ _ (pull _ (spMap g) _ n x)) = Prod.map (pull _ (spMap (Polynomial.C : A →+* Polynomial A)) (tw …`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Prod.map]`. Rewrite using `[← pull_comp, ← pull_comp, ← pull_comp, ← pull_comp, ← spMap_comp, ← spMap_comp, ← spMap_comp, ← spMap_comp]`. Both sides reduce to the same expression. Establish `hcomp : (fun x : Ht q (sp (Polynomial A × Polynomial B)) n i => (pull _ (spMap (RingHom.fst (Polynomial A) (Polynomial B))) _ _ x, pull _ (spMap (RingHom.snd (Polynomial A) (Polynomial B))) _ _ x)) ∘ (pull _ (spMap g) _ n) = Prod.map (pull _ (spMap (Polynomial.C : A →+* Polynomia …`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hsq x`. Establish `hR : Function.Bijective (Prod.map (pull _ (spMap (Polynomial.C : A →+* Polynomial A)) (tw q i) n) (pull _ (spMap (Polynomial.C : B →+* Polynomial B)) (tw q i) n))` using `Function.Bijective.prodMap (hA i n) (hB i n)`. Use `(hR.comp hP)` as an intermediate fact. Rewrite `this` using `[← hcomp]`. Conclude with `(Function.Bijective.of_comp_iff' hD _).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `heq : ⇑(pull (ZMod q) (spMap g) (tw q i) n) = ⇑(pull (ZMod q) (spMap e.toRingHom) (tw q i) n) ∘ ⇑(pull (ZMod q) (spMap (Polynomial.C : A × B →+* Polynomial (A × B))) (tw q i) n)`. Use function extensionality and compare the values at `x`. Rewrite using `[Function.comp_apply, ← pull_comp, ← spMap_comp, hg]`. Rewrite `hgb` using `[heq]`. Conclude with `(Function.Bijective.of_comp_iff' (pull_spMap_bij e n i) _).mp hgb`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodL : ∀ (q : ℕ) [NeZero q] (A B : Type) [CommRing A] [CommRing B], HInv q A → HInv q B → HInv q (A × B) := by
   intro q _ A B _ _ hA hB i n
@@ -132,7 +132,7 @@ noncomputable def consLin (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (
     (tmulEquiv A B).trans (reindex A (fun _ => B) (finSumFinEquiv.trans (finCongr (by omega))))
 
 /- English proof (translation)
-Simplify using `[consLin, reindex_tprod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem consLin_tmul (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k : ℕ) (b : B) (x : Fin (k + 1) → B) :
     consLin A B k (b ⊗ₜ PiTensorProduct.tprod A x) =
@@ -140,11 +140,11 @@ theorem consLin_tmul (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k : �
   simp [consLin, reindex_tprod]
 
 /- English proof (translation)
-Introduce `A B _ _ _ k`. Use `⟨(AlgEquiv.ofLinearEquiv (consLin A B k) ?_ ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.one_def, PiTensorProduct.one_def, consLin_tmul, PiTensorProduct.one_def]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr (by omega))).symm i with j | j <;> rfl`. Use `(LinearMap.map_mul_iff _).mpr ?_` and prove the remaining obligations. Use extensionality with `b x b' x'`. Simplify using `only [LinearMap.compr₂_apply, LinearMap.mul_apply', LinearMap.compl₂_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, Algebra.TensorProduct.tmul_mul_tmul, tprod_mul_tprod, consLin_tmul, TensorProduct.AlgebraTensorModule.curry_apply, TensorProduct.curry_apply, LinearMap.compMulti …`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr (by omega))).symm i with j | j <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem succL : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k : ℕ), Nonempty (PiTensorProduct A (fun _ : Fin (k + 2) => B) ≃ₐ[A] B ⊗[A] PiTensorProduct A (fun _ : Fin (k + 1) => B)) := by
   intro A B _ _ _ k
@@ -167,11 +167,11 @@ end GlobalTheory.EtC.ClosedCover
 namespace GlobalTheory.EtC.ClosedCover
 
 /- English proof (translation)
-Introduce `A B _ _ _`. Set `f` to `PiTensorProduct.singleAlgHom (R := A) (A := fun _ : Fin 1 => B) 0`. Set `g` to `PiTensorProduct.subsingletonEquiv (R := A) (s := fun _ : Fin 1 => B) (0 : Fin 1)`. Establish `hgf : ∀ a, g (f a) = a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[f, g, PiTensorProduct.subsingletonEquiv_apply_tprod]`. Establish `hf : Function.Bijective f`. Establish `: (f : B → _) = g.symm`. Use function extensionality and compare the values at `a`. Apply `g.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hgf, LinearEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `g.symm.bijective`. Conclude with `⟨(AlgEquiv.ofBijective f hf).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oneL : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B], Nonempty (PiTensorProduct A (fun _ : Fin 1 => B) ≃ₐ[A] B) := by
   intro A B _ _ _
@@ -219,7 +219,7 @@ namespace GlobalTheory.EtC.ClosedCover
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q X Y e.toRingEquiv h`.
+A detailed English derivation is pending.
 -/
 theorem hinv_of_algEquiv {q : ℕ} [NeZero q] {X Y : Type} [CommRing X] [CommRing Y] [Algebra A X] [Algebra A Y]
     (e : X ≃ₐ[A] Y) (h : HInv q X) : HInv q Y :=
@@ -228,9 +228,7 @@ theorem hinv_of_algEquiv {q : ℕ} [NeZero q] {X Y : Type} [CommRing X] [CommRin
 def Good (I J L : Ideal A) : Prop := L = I ∨ L = J ∨ L = I ⊔ J
 
 /- English proof (translation)
-Break down `h with rfl | rfl | rfl` into its components or cases. Use `left`. Simplify using the standard rewrite rules. Use `right`. Use `right`.
-
-Conclude with `sup_comm _ _`. Use `right`. Use `right`. Rewrite using `[sup_assoc, sup_comm J I, ← sup_assoc, sup_idem]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_sup_left {I J L : Ideal A} (h : Good I J L) : Good I J (L ⊔ I) := by
   rcases h with rfl | rfl | rfl
@@ -239,9 +237,7 @@ theorem good_sup_left {I J L : Ideal A} (h : Good I J L) : Good I J (L ⊔ I) :=
   · right; right; rw [sup_assoc, sup_comm J I, ← sup_assoc, sup_idem]
 
 /- English proof (translation)
-Break down `h with rfl | rfl | rfl` into its components or cases. Use `right`. Use `right`. Both sides reduce to the same expression. Use `right`.
-
-Use `left`. Simplify using the standard rewrite rules. Use `right`. Use `right`. Rewrite using `[sup_assoc, sup_idem]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_sup_right {I J L : Ideal A} (h : Good I J L) : Good I J (L ⊔ J) := by
   rcases h with rfl | rfl | rfl
@@ -250,7 +246,7 @@ theorem good_sup_right {I J L : Ideal A} (h : Good I J L) : Good I J (L ⊔ J) :
   · right; right; rw [sup_assoc, sup_idem]
 
 /- English proof (translation)
-Introduce `L hL`. Conclude with `hinv_of_algEquiv (stepEquiv L I J C).symm (prodL q _ _ (hC _ (good_sup_left hL)) (hC _ (good_sup_right hL)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main_step (q : ℕ) [NeZero q] (I J : Ideal A) (C : Type) [CommRing C] [Algebra A C]
     (hC : ∀ L, Good I J L → HInv q ((A ⧸ L) ⊗[A] C)) :
@@ -260,7 +256,7 @@ theorem main_step (q : ℕ) [NeZero q] (I J : Ideal A) (C : Type) [CommRing C] [
     (prodL q _ _ (hC _ (good_sup_left hL)) (hC _ (good_sup_right hL)))
 
 /- English proof (translation)
-The claim follows from `hinv_of_algEquiv (prodLeftAlg _ _ C).symm (prodL q _ _ (hC I (Or.inl rfl)) (hC J (Or.inr (Or.inl rfl))))`.
+A detailed English derivation is pending.
 -/
 theorem main_fin (q : ℕ) [NeZero q] (I J : Ideal A) (C : Type) [CommRing C] [Algebra A C]
     (hC : ∀ L, Good I J L → HInv q ((A ⧸ L) ⊗[A] C)) :
@@ -268,7 +264,7 @@ theorem main_fin (q : ℕ) [NeZero q] (I J : Ideal A) (C : Type) [CommRing C] [A
   hinv_of_algEquiv (prodLeftAlg _ _ C).symm (prodL q _ _ (hC I (Or.inl rfl)) (hC J (Or.inr (Or.inl rfl))))
 
 /- English proof (translation)
-Introduce `L hL` and use `hinv_of_algEquiv (Algebra.TensorProduct.congr (AlgEquiv.refl : (A ⧸ L) ≃ₐ[A] (A ⧸ L)) e) (hC L hL)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_congr (q : ℕ) [NeZero q] (I J : Ideal A) {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebra A D]
     (e : C ≃ₐ[A] D) (hC : ∀ L, Good I J L → HInv q ((A ⧸ L) ⊗[A] C)) :
@@ -276,11 +272,11 @@ theorem good_congr (q : ℕ) [NeZero q] (I J : Ideal A) {C D : Type} [CommRing C
   hinv_of_algEquiv (Algebra.TensorProduct.congr (AlgEquiv.refl : (A ⧸ L) ≃ₐ[A] (A ⧸ L)) e) (hC L hL)
 
 /- English proof (translation)
-Establish `h0 : ∀ L, Good I J L → HInv q ((A ⧸ L) ⊗[A] A)`. Introduce `L hL`. Use `hinv_of_algEquiv (Algebra.TensorProduct.rid A A (A ⧸ L)).symm ?_` and prove the remaining obligations. Break down `hL with rfl | rfl | rfl` into its components or cases. Use `exacts [hI, hJ, hIJ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero`. Take `⟨e⟩` from `oneL A ((A ⧸ I) × (A ⧸ J))`. Set `e'` to `e.trans (Algebra.TensorProduct.rid A A ((A ⧸ I) × (A ⧸ J))).symm`. Conclude with `⟨good_congr q I J e'.symm (main_step q I J A h0), hinv_of_algEquiv e'.symm (main_fin q I J A h0)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨e⟩` from `succL A ((A ⧸ I) × (A ⧸ J)) k`. Conclude with `⟨good_congr q I J e.symm (main_step q I J _ ih.1), hinv_of_algEquiv e.symm (main_fin q I J _ ih.1)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tensorPow (q : ℕ) [NeZero q] (I J : Ideal A)
     (hI : HInv q (A ⧸ I)) (hJ : HInv q (A ⧸ J)) (hIJ : HInv q (A ⧸ (I ⊔ J))) (k : ℕ) :
@@ -303,9 +299,9 @@ theorem tensorPow (q : ℕ) [NeZero q] (I J : Ideal A)
       hinv_of_algEquiv e.symm (main_fin q I J _ ih.1)⟩
 
 /- English proof (translation)
-Introduce `q _ A _ I J hn hq hI hJ hIJ`. Use `GlobalTheory.T.etaleHomotopyInvariance_cechDescent_integral q A ((A ⧸ I) × (A ⧸ J)) inferInstance ?_ hq (fun k => (tensorPow q I J hI hJ hIJ k).2)` and prove the remaining obligations. Introduce `x hx`. Apply `hn` to reduce the goal to its premises. Rewrite `hx` using `[RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg Prod.fst hx`. Establish `h2` using `congrArg Prod.snd hx`. Simplify using `only [Prod.fst_zero, Prod.snd_zero] at h1 h2`. Conclude with `⟨Ideal.Quotient.eq_zero_iff_mem.mp h1, Ideal.Quotient.eq_zero_iff_mem.mp h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem closedCover : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (I J : Ideal A), I ⊓ J ≤ nilradical A →
     IsUnit (q : A) → HInv q (A ⧸ I) → HInv q (A ⧸ J) → HInv q (A ⧸ (I ⊔ J)) → HInv q A := by

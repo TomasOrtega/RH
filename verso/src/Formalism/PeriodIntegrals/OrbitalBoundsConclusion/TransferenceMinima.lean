@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeTransference.Num
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeTransference.KeySmall
 
 /- English proof (translation)
-The claim follows from `PI.Tr.transferenceMinima_of' PI.Tr.poissonGauss PI.Tr.gaussStep PI.Tr.keySmall`.
+A detailed English derivation is pending.
 -/
 theorem transference_successive_minima : PI.TransferenceMinima :=
   PI.Tr.transferenceMinima_of' PI.Tr.poissonGauss PI.Tr.gaussStep PI.Tr.keySmall

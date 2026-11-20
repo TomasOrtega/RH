@@ -10,9 +10,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ M G Y α t h W hW`. Use `haveI := M.proper`. Use `haveI : M.S.IsSeparated := by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← terminal.comp_from M.π]`.
-
-Use `infer_instance`. Use `haveI : IsAffineHom M.gp := by haveI : IsAffineHom (M.gp ≫ terminal.from M.S) := inferInstance`. Conclude with `IsAffineHom.of_comp M.gp (terminal.from M.S)`. Use `haveI : IsAffineHom α := MorphismProperty.of_isPullback (P := @IsAffineHom) h.flip inferInstance`. Conclude with `hW.preimage α`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_preimage_genericBaseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (M : Modif R) (G : Over M.S) (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)), IsPullback α t G.hom M.gp → ∀ W : G.left.Opens, IsAffineOpen W → IsAffineOpen (α ⁻¹ᵁ W) := by
   intro R _ _ M G Y α t h W hW

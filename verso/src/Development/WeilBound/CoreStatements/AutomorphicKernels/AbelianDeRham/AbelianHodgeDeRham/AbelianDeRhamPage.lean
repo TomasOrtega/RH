@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.Abe
 namespace MainStatements.Hodge.Free
 
 /- English proof (translation)
-The claim follows from `page_of_hodge abelianHodgeDeRham`.
+A detailed English derivation is pending.
 -/
 theorem abelianDeRhamPage : FubiniStudyChowHeightFormula₂.Hdr.AbelianDeRhamPage := page_of_hodge abelianHodgeDeRham
 

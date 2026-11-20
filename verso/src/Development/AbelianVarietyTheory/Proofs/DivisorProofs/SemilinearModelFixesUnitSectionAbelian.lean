@@ -15,13 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SemilinearModel
 
 /- English proof (translation)
-Introduce `W K' _ _ _ _ _ G _ hG σ τ φ ρ hστ hφ hρ e₀ he x hx hxρ`. Use `haveI := hG.proper`. Establish `hj : spMap σ ≫ spMap (algebraMap W K') = spMap (algebraMap W K') ≫ spMap τ`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `y`. Simplify using `[hστ]`. Use `haveI : IsDominant (spMap (algebraMap W K')) := by`. Use `⟨?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap W K')).2 (by` as an intermediate fact. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective W K')]`. Conclude with `bot_le)`. Conclude with `this`. Use `ext_of_isDominant_of_isSeparated G.hom ?_ (spMap (algebraMap W K')) ?_` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, hφ, ← Category.assoc, he, Category.assoc, he]`. Simplify using the standard rewrite rules. Rewrite using `[← Category.assoc, ← hx, Category.assoc, hρ, ← Category.assoc, hxρ, Category.assoc, hx, ← Category.assoc, hj, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_section_semilinear : ∀ (W K' : Type) [CommRing W] [IsDomain W] [Field K'] [Algebra W K'] [IsFractionRing W K'] (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ (σ : K' →+* K') (τ : W →+* W) (φ : G.left ⟶ G.left) (ρ : pullback G.hom (spMap (algebraMap W K')) ⟶ pullback G.hom (spMap (algebraMap W K'))), (∀ x : W, σ (algebraMap W K' x) = algebraMap W K' (τ x)) → φ ≫ G.hom = G.hom ≫ spMap τ → pullback.fst G.hom (spMap (algebraMap W K')) ≫ φ = ρ ≫ pullback.fst G.hom (spMap (algebraMap W K')) → ∀ (e₀ : Sp W ⟶ G.left), e₀ ≫ G.hom = 𝟙 _ → ∀ x : Sp K' ⟶ pullback G.hom (spMap (algebraMap W K')), x ≫ pullback.fst G.hom (spMap (algebraMap W K')) = spMap (algebraMap W K') ≫ e₀ → x ≫ ρ = spMap σ ≫ x → e₀ ≫ φ = spMap τ ≫ e₀ := by
   intro W K' _ _ _ _ _ G _ hG σ τ φ ρ hστ hφ hρ e₀ he x hx hxρ

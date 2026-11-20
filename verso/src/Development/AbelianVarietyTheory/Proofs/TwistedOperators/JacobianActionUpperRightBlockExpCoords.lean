@@ -9,20 +9,20 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.PolarU
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conjTranspose, pY_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jac_exp_herm {p q : ℕ} (B : Fin p → Fin q → ℂ) :
     (NormedSpace.exp (pY B))ᴴ = NormedSpace.exp (pY B) := by
   rw [← Matrix.exp_conjTranspose, pY_conjTranspose]
 
 /- English proof (translation)
-The claim follows from `Matrix.exp_add_of_commute _ _ (Commute.refl _)`.
+A detailed English derivation is pending.
 -/
 theorem jac_exp_two {p q : ℕ} (B : Fin p → Fin q → ℂ) :
     NormedSpace.exp (pY B + pY B) = NormedSpace.exp (pY B) * NormedSpace.exp (pY B) := Matrix.exp_add_of_commute _ _ (Commute.refl _)
 
 /- English proof (translation)
-Establish `hu` using `Matrix.isUnit_exp (pY B)`. Conclude with `hu.mul_left_cancel (hu.mul_right_cancel h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jac_cancel {p q : ℕ} (B : Fin p → Fin q → ℂ) (X Z : Mat p q)
     (h : NormedSpace.exp (pY B) * X * NormedSpace.exp (pY B)
@@ -31,7 +31,7 @@ theorem jac_cancel {p q : ℕ} (B : Fin p → Fin q → ℂ) (X Z : Mat p q)
   exact hu.mul_left_cancel (hu.mul_right_cancel h)
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.toBlocks₁₂ h`. Simplify `h1` using `[pY, pOf, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jac_block {p q : ℕ} (X Z : Fin p → Fin q → ℂ) (U : Matrix (Fin p) (Fin p) ℂ)
     (V : Matrix (Fin q) (Fin q) ℂ)
@@ -57,7 +57,7 @@ theorem of_jacMul {m n : Type} [Fintype m] [Fintype n] (U : Matrix m m ℂ) (V :
     (Z : m → n → ℂ) : Matrix.of (jacMul U V Z) = U * Matrix.of Z * V := rfl
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) • X = (2 : ℝ) • Z` using `by rw [two_smul, two_smul]; exact h`. Establish `h3` using `congrArg (fun W => (1 / 2 : ℝ) • W) h2`. Simplify `h3` using `[smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pow_two_pow_eq_neg_one_of_isPrimitiveRoot_two_pow_succ {E : Type*} [AddCommGroup E] [Module ℝ E] (X Z : E)
     (h : X + X = Z + Z) : X = Z := by
@@ -66,7 +66,7 @@ private theorem pow_two_pow_eq_neg_one_of_isPrimitiveRoot_two_pow_succ {E : Type
   simpa [smul_smul] using h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Establish `h1` using `congrFun (congrFun (congrArg Matrix.toBlocks₁₂ h) i) j`. Simplify `h1` using `[pY, pOf]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pY_injective {p q : ℕ} (X Z : Fin p → Fin q → ℂ) (h : pY X = pY Z) : X = Z := by
   funext i j
@@ -74,7 +74,7 @@ private theorem pY_injective {p q : ℕ} (X Z : Fin p → Fin q → ℂ) (h : pY
   simpa [pY, pOf] using h1
 
 /- English proof (translation)
-Establish `h1 : gᴴ * E = (E * g)ᴴ` using `by rw [Matrix.conjTranspose_mul, hE]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem conjTranspose_mul_mul_mul_eq_of_mul_eq {n : Type*} [Fintype n] [DecidableEq n] (g E F k X : Matrix n n ℂ)
     (hE : Eᴴ = E) (hF : Fᴴ = F) (h : E * g = k * F) :
@@ -85,7 +85,7 @@ private theorem conjTranspose_mul_mul_mul_eq_of_mul_eq {n : Type*} [Fintype n] [
     _ = F * (kᴴ * X * k) * F := by rw [Matrix.conjTranspose_mul, hF]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `hU`, `hV` using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Rewrite using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`. Simplify using `[hU, hV]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fromBlocks_unitary_conjTranspose_mul_self {p q : ℕ} (U : Matrix (Fin p) (Fin p) ℂ) (V : Matrix (Fin q) (Fin q) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin p) ℂ) (hV : V ∈ Matrix.unitaryGroup (Fin q) ℂ) :
@@ -95,14 +95,14 @@ private theorem fromBlocks_unitary_conjTranspose_mul_self {p q : ℕ} (U : Matri
   simp [hU, hV]
 
 /- English proof (translation)
-The claim follows from `(LinearMap.equivOfDetNeZero f h).injective`.
+A detailed English derivation is pending.
 -/
 private theorem injective_of_det_ne_zero {E : Type*} [AddCommGroup E] [Module ℝ E] [FiniteDimensional ℝ E]
     (f : E →ₗ[ℝ] E) (h : LinearMap.det f ≠ 0) : Function.Injective f :=
   (LinearMap.equivOfDetNeZero f h).injective
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Rewrite `hU` using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Conclude with `hU`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conjTranspose_mem_unitaryGroup {n : Type*} [Fintype n] [DecidableEq n] {U : Matrix n n ℂ}
     (hU : U ∈ Matrix.unitaryGroup n ℂ) : Uᴴ ∈ Matrix.unitaryGroup n ℂ := by
@@ -111,25 +111,23 @@ private theorem conjTranspose_mem_unitaryGroup {n : Type*} [Fintype n] [Decidabl
   exact hU
 
 /- English proof (translation)
-Introduce `p q g ψ hψ hK hdet hsAd hdiff B`. Take `⟨A, hA, hAeq⟩` from `hdiff (ψ B)`. Take `⟨A0, hA0, hA0eq⟩` from `hdiff B`. Take `⟨U, hU, V, hV, hUV⟩` from `hK B`. Use `set L := LinearMap.toContinuousLinearMap (jacMul gᴴ g) with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLapp : ∀ M, Matrix.of (L M) = gᴴ * Matrix.of M * g` using `fun M => of_jacMul gᴴ g M`. Establish `hcomp : (fun y => (fun C (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) (ψ y)) = fun y => L ((fun C (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) y)`. Use function extensionality and compare the values at `y`. Take `⟨U', hU', V', hV', hy⟩` from `hK y`. Establish `hmat : NormedSpace.exp (pY (ψ y) + pY (ψ y)) = gᴴ * NormedSpace.exp (pY y + pY y) * g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `conjTranspose_mul_mul_mul_eq_of_mul_eq g _ _ _ 1 (jac_exp_herm y) (jac_exp_herm (ψ y)) hy`. Rewrite `hs` using `[Matrix.mul_one, Matrix.mul_one, fromBlocks_unitary_conjTranspose_mul_self U' V' hU' hV', Matrix.mul_one]`. Rewrite using `[jac_exp_two, jac_exp_two, hs]`. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[hLapp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmat`. Establish `hLd : HasFDerivAt (fun y => (fun C (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) (ψ y)) (L.comp A0) B`. Rewrite using `[hcomp]`. Conclude with `L.hasFDerivAt.comp B hA0.hasFDerivAt`. Establish `hinj : Function.Injective A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `C1 C2 h`. Establish `h1 : Matrix.of (A C1) = Matrix.of (A C2)` using `by rw [h]`. Rewrite `h1` using `[hAeq, hAeq]`. Establish `h2` using `jac_cancel (ψ B) _ _ h1`. Rewrite `h2` using `[← pY_add, ← pY_add, hsAd, hsAd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `pow_two_pow_eq_neg_one_of_isPrimitiveRoot_two_pow_succ _ _ (injective_of_det_ne_zero _ (hdet (ψ B)).ne' (pY_injective _ _ h2))`. Take `⟨P, hP, hPA⟩` from `GlobalTheory.hasFDerivAt_of_comp_immersion (Fin p → Fin q → ℂ) (Ix p q → Ix p q → ℂ) (fun C (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) ψ B A (L.comp A0) hA hinj hψ.continuousAt hLd`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `hkey : ∀ C, sP (pY (ψ B)) (P C) = jacMul Uᴴ V (sP (pY B) C)`. Introduce `C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun T : (Fin p → Fin q → ℂ) →L[ℝ] (Ix p q → Ix p q → ℂ) => Matrix.of (T C)) hPA`. Simplify using `only [ContinuousLinearMap.comp_apply] at h1`. Rewrite `h1` using `[hLapp, hAeq, hA0eq, conjTranspose_mul_mul_mul_eq_of_mul_eq g _ _ _ _ (jac_exp_herm B) (jac_exp_herm (ψ B)) hUV]`. Establish `h3` using `jac_cancel (ψ B) _ _ h1`. Rewrite `h3` using `[← pY_add, ← pY_add, hsAd, hsAd]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `jac_block _ _ U V h3`. Rewrite `h4` using `[← of_jacMul]`. Establish `h5` using `Matrix.of.injective h4`. Simplify using `only [map_add] at h5`. Conclude with `pow_two_pow_eq_neg_one_of_isPrimitiveRoot_two_pow_succ _ _ h5`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : (sP (pY (ψ B))).comp (P : (Fin p → Fin q → ℂ) →ₗ[ℝ] (Fin p → Fin q → ℂ)) = (jacMul Uᴴ V).comp (sP (pY B))` using `LinearMap.ext hkey`. Establish `hd` using `congrArg (fun T => |LinearMap.det T|) hlin`. Simplify using `only [LinearMap.det_comp, abs_mul] at hd`. Rewrite `hd` using `[abs_det_unitary_mul_mul p q Uᴴ (conjTranspose_mem_unitaryGroup hU) V hV _ (of_jacMul Uᴴ V), one_mul, abs_of_pos (hdet (ψ B)), abs_of_pos (hdet B)]`. Use `show |LinearMap.det (P : (Fin p → Fin q → ℂ) →ₗ[ℝ] (Fin p → Fin q → ℂ))| * _ = _`.
-
-Rewrite using `[mul_comm]`. Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 theorem jacobian_action_p : ∀ (p q : ℕ) (g : Mat p q) (ψ : (Fin p → Fin q → ℂ) → (Fin p → Fin q → ℂ)), Continuous ψ → (∀ B, ∃ U ∈ Matrix.unitaryGroup (Fin p) ℂ, ∃ V ∈ Matrix.unitaryGroup (Fin q) ℂ, NormedSpace.exp (pY B) * g = Matrix.fromBlocks U 0 0 V * NormedSpace.exp (pY (ψ B))) → (∀ B : Fin p → Fin q → ℂ, 0 < LinearMap.det (sP (pY B))) → (∀ B C : Fin p → Fin q → ℂ, sAd (pY B) (pY C) = pY (sP (pY B) C)) → (∀ B : Fin p → Fin q → ℂ, ∃ A : (Fin p → Fin q → ℂ) →L[ℝ] (Ix p q → Ix p q → ℂ), HasStrictFDerivAt (fun (C : Fin p → Fin q → ℂ) (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) A B ∧ ∀ C, Matrix.of (A C) = NormedSpace.exp (pY B) * sAd (pY B) (pY C + pY C) * NormedSpace.exp (pY B)) → ∀ B, ∃ P : (Fin p → Fin q → ℂ) →L[ℝ] (Fin p → Fin q → ℂ), HasFDerivAt ψ P B ∧ |P.det| * LinearMap.det (sP (pY (ψ B))) = LinearMap.det (sP (pY B)) := by
   intro p q g ψ hψ hK hdet hsAd hdiff B

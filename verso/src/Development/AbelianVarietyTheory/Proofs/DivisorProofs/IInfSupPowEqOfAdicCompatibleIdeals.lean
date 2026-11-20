@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IInfSupPowEq
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.InfimumSupPowerIdeal.iInf_sup_pow_eq`. Consider the case `exact _root_.GlobalTheory.InfimumSupPowerIdeal.iInf_sup_pow_eq`. Consider the case `(apply _root_.GlobalTheory.InfimumSupPowerIdeal.iInf_sup_pow_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.InfimumSupPowerIdeal.iInf_sup_pow_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.InfimumSupPowerIdeal.iInf_sup_pow_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.InfimumSupPowerIdeal.iInf_sup_pow_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iInf_sup_pow_eq_of_compatible :
     ∀ (C : Type) [CommRing C] (J : Ideal C), IsAdicComplete J C → ∀ u : ℕ → Ideal C,

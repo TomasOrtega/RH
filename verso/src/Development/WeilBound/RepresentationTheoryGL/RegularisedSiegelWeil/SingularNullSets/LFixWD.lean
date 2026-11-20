@@ -15,7 +15,7 @@ namespace PositivityTheory.Rg.Rsw.L.LFixW
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Filter.eventually_cofinite.1 h).toFinset, fun v hv => by rw [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not] at hv; exact hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_fin {p : Pl D → Prop} (h : ∀ᶠ v in cofinite, p v) : ∃ S₀ : Finset (Pl D), ∀ v ∉ S₀, p v :=
   ⟨(Filter.eventually_cofinite.1 h).toFinset, fun v hv => by
@@ -29,74 +29,72 @@ def OffS (S : Finset (Pl D)) (a : AE D) : Prop :=
 variable {S : Finset (Pl D)}
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_add]; exact add_mem (ha v hv) (hb v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntS.add {a b : AE D} (ha : IntS S a) (hb : IntS S b) : IntS S (a + b) := fun v hv => by
   rw [map_add]; exact add_mem (ha v hv) (hb v hv)
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_mul]; exact mul_mem (ha v hv) (hb v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntS.mul {a b : AE D} (ha : IntS S a) (hb : IntS S b) : IntS S (a * b) := fun v hv => by
   rw [map_mul]; exact mul_mem (ha v hv) (hb v hv)
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_neg]; exact neg_mem (ha v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntS.neg {a : AE D} (ha : IntS S a) : IntS S (-a) := fun v hv => by
   rw [map_neg]; exact neg_mem (ha v hv)
 
 /- English proof (translation)
-Introduce `v _` and use `by rw [map_zero]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intS_zero : IntS S (0 : AE D) := fun v _ => by rw [map_zero]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_sum]; exact sum_mem fun i hi => h i hi v hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intS_sum {ι : Type} (s : Finset ι) (f : ι → AE D) (h : ∀ i ∈ s, IntS S (f i)) : IntS S (∑ i ∈ s, f i) :=
   fun v hv => by rw [map_sum]; exact sum_mem fun i hi => h i hi v hv
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [LIdemEx.cv_cA]; exact sigR_mem_intLoc _ (ha v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntS.cA {a : AE D} (ha : IntS S a) : IntS S (cA D a) := fun v hv => by
   rw [LIdemEx.cv_cA]; exact sigR_mem_intLoc _ (ha v hv)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => by rw [map_add, ha.1 w, hb.1 w, add_zero], fun v hv => by rw [map_add, ha.2.1 v hv, hb.2.1 v hv, add_zero], ha.2.2.add hb.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem OffS.add {a b : AE D} (ha : OffS S a) (hb : OffS S b) : OffS S (a + b) :=
   ⟨fun w => by rw [map_add, ha.1 w, hb.1 w, add_zero], fun v hv => by rw [map_add, ha.2.1 v hv, hb.2.1 v hv, add_zero],
     ha.2.2.add hb.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => map_zero _, fun v _ => map_zero _, intS_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem offS_zero : OffS S (0 : AE D) := ⟨fun w => map_zero _, fun v _ => map_zero _, intS_zero⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => by rw [map_neg, ha.1 w, neg_zero], fun v hv => by rw [map_neg, ha.2.1 v hv, neg_zero], ha.2.2.neg⟩`.
+Supply the required witnesses or components.
 -/
 theorem OffS.neg {a : AE D} (ha : OffS S a) : OffS S (-a) :=
   ⟨fun w => by rw [map_neg, ha.1 w, neg_zero], fun v hv => by rw [map_neg, ha.2.1 v hv, neg_zero], ha.2.2.neg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => by rw [map_mul, hb.1 w, mul_zero], fun v hv => by rw [map_mul, hb.2.1 v hv, mul_zero], ha.mul hb.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem OffS.mul_left {a b : AE D} (ha : IntS S a) (hb : OffS S b) : OffS S (a * b) :=
   ⟨fun w => by rw [map_mul, hb.1 w, mul_zero], fun v hv => by rw [map_mul, hb.2.1 v hv, mul_zero], ha.mul hb.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => by rw [map_mul, ha.1 w, zero_mul], fun v hv => by rw [map_mul, ha.2.1 v hv, zero_mul], ha.2.2.mul hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem OffS.mul_right {a b : AE D} (ha : OffS S a) (hb : IntS S b) : OffS S (a * b) :=
   ⟨fun w => by rw [map_mul, ha.1 w, zero_mul], fun v hv => by rw [map_mul, ha.2.1 v hv, zero_mul], ha.2.2.mul hb⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `offS_zero`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `(h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offS_sum {ι : Type} (s : Finset ι) (f : ι → AE D) (h : ∀ i ∈ s, OffS S (f i)) : OffS S (∑ i ∈ s, f i) := by
   classical
@@ -107,66 +105,66 @@ theorem offS_sum {ι : Type} (s : Finset ι) (f : ι → AE D) (h : ∀ i ∈ s,
     exact (h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => by rw [LIdemEx.compInf_cA, ha.1 w, map_zero], fun v hv => by rw [LIdemEx.cv_cA, ha.2.1 v hv, map_zero], ha.2.2.cA⟩`.
+Supply the required witnesses or components.
 -/
 theorem OffS.cA {a : AE D} (ha : OffS S a) : OffS S (cA D a) :=
   ⟨fun w => by rw [LIdemEx.compInf_cA, ha.1 w, map_zero], fun v hv => by rw [LIdemEx.cv_cA, ha.2.1 v hv, map_zero],
     ha.2.2.cA⟩
 
 /- English proof (translation)
-The claim follows from `ha.2.2`.
+A detailed English derivation is pending.
 -/
 theorem OffS.intS {a : AE D} (ha : OffS S a) : IntS S a := ha.2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i j v hv => h v hv i j, fun h v hv i j => h i j v hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem intOff_iff {a b : ℕ} (x : Mx D a b) : IntOff S x ↔ ∀ i j, IntS S (x i j) :=
   ⟨fun h i j v hv => h v hv i j, fun h v hv i j => h i j v hv⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `offS_sum _ _ fun k _ => (hy k j).mul_left (hx i k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offS_mul_left {a b c : ℕ} {x : Mx D a b} {y : Mx D b c} (hx : ∀ i j, IntS S (x i j)) (hy : ∀ i j, OffS S (y i j))
     (i : Fin a) (j : Fin c) : OffS S ((x * y) i j) := by
   rw [Matrix.mul_apply]; exact offS_sum _ _ fun k _ => (hy k j).mul_left (hx i k)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `offS_sum _ _ fun k _ => (hx i k).mul_right (hy k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offS_mul_right {a b c : ℕ} {x : Mx D a b} {y : Mx D b c} (hx : ∀ i j, OffS S (x i j)) (hy : ∀ i j, IntS S (y i j))
     (i : Fin a) (j : Fin c) : OffS S ((x * y) i j) := by
   rw [Matrix.mul_apply]; exact offS_sum _ _ fun k _ => (hx i k).mul_right (hy k j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `intS_sum _ _ fun k _ => (hx i k).mul (hy k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_mul {a b c : ℕ} {x : Mx D a b} {y : Mx D b c} (hx : ∀ i j, IntS S (x i j)) (hy : ∀ i j, IntS S (y i j))
     (i : Fin a) (j : Fin c) : IntS S ((x * y) i j) := by
   rw [Matrix.mul_apply]; exact intS_sum _ _ fun k _ => (hx i k).mul (hy k j)
 
 /- English proof (translation)
-The claim follows from `offS_sum _ _ fun i _ => hx i i`.
+A detailed English derivation is pending.
 -/
 theorem offS_trace {a : ℕ} {x : Mx D a a} (hx : ∀ i j, OffS S (x i j)) : OffS S (Matrix.trace x) :=
   offS_sum _ _ fun i _ => hx i i
 
 /- English proof (translation)
-The claim follows from `(hx j i).cA`.
+A detailed English derivation is pending.
 -/
 theorem adj_intS {a b : ℕ} {x : Mx D a b} (hx : ∀ i j, IntS S (x i j)) (i : Fin b) (j : Fin a) : IntS S (adj x i j) :=
   (hx j i).cA
 
 /- English proof (translation)
-The claim follows from `(hx j i).cA`.
+A detailed English derivation is pending.
 -/
 theorem adj_offS {a b : ℕ} {x : Mx D a b} (hx : ∀ i j, OffS S (x i j)) (i : Fin b) (j : Fin a) : OffS S (adj x i j) :=
   (hx j i).cA
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v : Pl D in cofinite, IsGood D.host.F D.host.E v ∧ ∀ i j k, algebraMap D.host.F (Fv D.host.F v) ((bE D.host.F D.host.E).repr (Q i j) k) ∈ v.adicCompletionIntegers D.host.F` using `eventually_good.and (eventually_all.2 fun i => eventually_all.2 fun j => eventually_coord (Q i j))`. Take `⟨S₀, hS₀⟩` from `exists_fin h`. Use `⟨S₀, fun S hS i j v hv => ?_⟩` and prove the remaining obligations. Take `⟨hg, hc⟩` from `hS₀ v (fun h => hv (hS h))`. Use `show (1 : Fv D.host.F v) ⊗ₜ[D.host.F] Q i j ∈ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_intLoc_iff hg _).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[crd_tmul, one_mul]`. Conclude with `hc i j k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_int {a b : ℕ} (Q : Matrix (Fin a) (Fin b) D.host.E) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ i j, IntS S (rat Q i j) := by
@@ -182,13 +180,13 @@ theorem exists_rat_int {a b : ℕ} (Q : Matrix (Fin a) (Fin b) D.host.E) :
   exact hc i j k
 
 /- English proof (translation)
-Take `⟨S₁, hS₁⟩` from `psi_kernel hψ`. Take `⟨S₂, hS₂⟩` from `exists_fin (eventually_good (F := D.host.F) (E := D.host.E))`. Use `⟨S₁ ∪ S₂, fun S hS z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : (trA z).1 = 0` using `funext fun w => by rw [trA_fst, hz.1 w, map_zero]; rfl`. Establish `hg : ∀ v ∉ S, IsGood D.host.F D.host.E v` using `fun v hv => hS₂ v fun h => hv (hS (Finset.mem_union_right _ h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ v ∈ S, (trA z).2 v = 0` using `fun v hv => by rw [trA_snd, hz.2.1 v hv, map_zero]`. Establish `h3 : ∀ v ∉ S, (trA z).2 v ∈ v.adicCompletionIntegers D.host.F` using `fun v hv => by`. Rewrite using `[trA_snd]`. Conclude with `trace_mem (hg v hv) (hz.2.2 v hv)`. Establish `hS1 : S₁ ⊆ S` using `fun v h => hS (Finset.mem_union_left _ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hS₁ S hS1 _ h1 h2 h3, hS₁ S hS1 _ ?_ ?_ ?_⟩` and prove the remaining obligations. Use `show (algebraMap D.host.F (AF D.host.F) (1 / 2)).1 * (trA z).1 = 0`. Rewrite using `[h1, mul_zero]`. Introduce `v hv show (algebraMap D.host.F (AF D.host.F) (1 / 2)).2 v * (trA z).2 v = 0`. Rewrite using `[h2 v hv, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv show (algebraMap D.host.F (AF D.host.F) (1 / 2)).2 v * (trA z).2 v ∈ _`. Use `mul_mem ?_ (h3 v hv)` and prove the remaining obligations. Use `(hg v hv).half` as an intermediate fact. Rewrite using `[one_div]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem psi_off {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ z : AE D, OffS S z → ψ (trA z) = 1 ∧ ψ (halfTr z) = 1 := by
@@ -216,11 +214,11 @@ theorem psi_off {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) :
     rwa [one_div]
 
 /- English proof (translation)
-Take `⟨S₀, hS₀⟩` from `exists_fin ((eventually_good (F := D.host.F) (E := D.host.E)).and (GlobalTheory.CompanionTheory.PsiCondLoc.psiCond D.host.F ψ hψ))`. Use `⟨S₀, fun v hv c hc => ?_⟩` and prove the remaining obligations. Take `⟨hg, hp⟩` from `hS₀ v hv`. Use `mem_of_trace hg c fun t ht => (hp _).1 fun s hs => ?_` and prove the remaining obligations. Establish `hst : algebraMap (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E) s * t ∈ intLoc D.host.F D.host.E v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_mem ?_ ht` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `tmul_one_mem hs`. Use `hc _ hst` as an intermediate fact. Establish `e : c * (algebraMap (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E) s * t) = s • (c * t)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e, LinearMap.map_smul, smul_eq_mul, mul_comm]`. Conclude with `this`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ v ∉ S₀, ∀ c : Fv D.host.F v ⊗[D.host.F] D.host.E,

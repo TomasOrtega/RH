@@ -22,36 +22,36 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   (P : Ideal (MRing ι)) [P.IsPrime] (𝒲 : Set (Ideal (MRing ι)))
 
 /- English proof (translation)
-Introduce `h` and use `(hI.mem_or_mem h).elim ha hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem notMem_mul {I : Ideal (MRing ι)} (hI : I.IsPrime) {a b : MRing ι} (ha : a ∉ I) (hb : b ∉ I) :
     a * b ∉ I :=
   fun h => (hI.mem_or_mem h).elim ha hb
 
 /- English proof (translation)
-Introduce `h` and use `hI.ne_top ((Ideal.eq_top_iff_one I).mpr h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_notMem {I : Ideal (MRing ι)} (hI : I.IsPrime) : (1 : MRing ι) ∉ I :=
   fun h => hI.ne_top ((Ideal.eq_top_iff_one I).mpr h)
 
 /- English proof (translation)
-Introduce `h` and use `hw (fracHom_eq_zero_iff.mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fracHom_ne_zero {w : MRing ι} (hw : w ∉ P) : fracHom P w ≠ 0 :=
   fun h => hw (fracHom_eq_zero_iff.mp h)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨u, w, a, hw, hwW, hu, hwa, rfl⟩` from `hx`. Conclude with `⟨u, w, a, hu, hwa, fun h => nonZeroDivisors.ne_zero hw (Ideal.Quotient.eq_zero_iff_mem.mpr h), hwW, IsLocalization.mk'_spec _ _ _⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero`. Conclude with `⟨0, 1, 0, homog_zero 0, homog_one, one_notMem ‹_›, fun W hW => one_notMem (h𝒲 W hW), by simp⟩`. Consider the case `one`. Conclude with `⟨1, 1, 0, homog_one, homog_one, one_notMem ‹_›, fun W hW => one_notMem (h𝒲 W hW), by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨u, w, a, hu, hw, hwP, hwW, hx⟩` from `hx`. Take `⟨u', w', a', hu', hw', hwP', hwW', hy⟩` from `hy`. Use `⟨u * w' + u' * w, w * w', a + a', homog_add (homog_mul hu hw') ?_, homog_mul hw hw', notMem_mul ‹_› hwP hwP', fun W hW => notMem_mul (h𝒲 W hW) (hwW W hW) (hwW' W hW), ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm a a']`. Conclude with `homog_mul hu' hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_mul]`. Rewrite using `[← hx, ← hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨u, w, a, hu, hw, hwP, hwW, hx⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-u, w, a, homog_neg hu, hw, hwP, hwW, by rw [map_neg, ← hx, neg_mul]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨u, w, a, hu, hw, hwP, hwW, hx⟩` from `hx`. Take `⟨u', w', a', hu', hw', hwP', hwW', hy⟩` from `hy`. Use `⟨u * u', w * w', a + a', homog_mul hu hu', homog_mul hw hw', notMem_mul ‹_› hwP hwP', fun W hW => notMem_mul (h𝒲 W hW) (hwW W hW) (hwW' W hW), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Rewrite using `[← hx, ← hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_frac (h𝒲 : ∀ W ∈ 𝒲, W.IsPrime) (x : semiLocRing P 𝒲) :
     ∃ (u w : MRing ι) (a : K → ℕ), IsMultiHomog u a ∧ IsMultiHomog w a ∧ w ∉ P ∧ (∀ W ∈ 𝒲, w ∉ W) ∧
@@ -89,7 +89,7 @@ theorem exists_frac (h𝒲 : ∀ W ∈ 𝒲, W.IsPrime) (x : semiLocRing P 𝒲)
     ring
 
 /- English proof (translation)
-Establish `hw' : Ideal.Quotient.mk P w ∈ nonZeroDivisors (MRing ι ⧸ P)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Use `Subring.subset_closure ⟨u, w, a, hw', hwW, hu, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[IsFractionRing.mk'_eq_div]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frac_mem {u w : MRing ι} {a : K → ℕ} (hu : IsMultiHomog u a) (hw : IsMultiHomog w a) (hwP : w ∉ P)
     (hwW : ∀ W ∈ 𝒲, w ∉ W) : fracHom P u / fracHom P w ∈ semiLocRing P 𝒲 := by
@@ -100,7 +100,7 @@ theorem frac_mem {u w : MRing ι} {a : K → ℕ} (hu : IsMultiHomog u a) (hw : 
   rfl
 
 /- English proof (translation)
-Unfold `semiMaxIdeal`. Rewrite using `[Ideal.mem_comap]`. Conclude with `mem_maximalIdeal_iff hPW _ hu hw hwW (by rw [semiToLoc_coe]; exact hb)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_semiMaxIdeal_iff {W' : Ideal (MRing ι)} [W'.IsPrime] (hW' : W' ∈ 𝒲) (hPW : P ≤ W')
     [IsLocalRing (locRing P W')] (b : semiLocRing P 𝒲) {u w : MRing ι} {a : K → ℕ} (hu : IsMultiHomog u a)
@@ -112,7 +112,7 @@ theorem mem_semiMaxIdeal_iff {W' : Ideal (MRing ι)} [W'.IsPrime] (hW' : W' ∈ 
   exact mem_maximalIdeal_iff hPW _ hu hw hwW (by rw [semiToLoc_coe]; exact hb)
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one (⟨_, frac_mem P 𝒲 hw hu huP huW⟩ : semiLocRing P 𝒲) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b : FractionRing (MRing ι ⧸ P)) * (fracHom P w / fracHom P u) = 1`. Rewrite using `[mul_div_assoc', hb, div_self (fracHom_ne_zero P huP)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_of (b : semiLocRing P 𝒲) {u w : MRing ι} {a : K → ℕ} (hu : IsMultiHomog u a)
     (hw : IsMultiHomog w a) (huP : u ∉ P) (huW : ∀ W ∈ 𝒲, u ∉ W)
@@ -122,7 +122,7 @@ theorem isUnit_of (b : semiLocRing P 𝒲) {u w : MRing ι} {a : K → ℕ} (hu 
   rw [mul_div_assoc', hb, div_self (fracHom_ne_zero P huP)]
 
 /- English proof (translation)
-Take `⟨d₀, hd₀⟩` from `AvoidRing.exists_form_avoid 𝒲 hfin h𝒲`. Take `⟨h, hh, hhW⟩` from `hd₀ (a + d₀) le_add_self`. Take `⟨t, ht, htW⟩` from `exists_form_notMem hr hp d₀`. Conclude with `⟨t, h, d₀, ht, hh, htW, hhW⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_scale (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMultiProjPrime W) (a : K → ℕ) {W' : Ideal (MRing ι)}
     (hr : IsRelevant W') (hp : W'.IsPrime) :
@@ -135,11 +135,11 @@ theorem exists_scale (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMultiProjPr
 variable {P 𝒲}
 
 /- English proof (translation)
-Take `⟨⟨hp1, ⟨S, hS, hW1⟩, -⟩, hP1⟩` from `h𝒲 W₁ h₁`. Take `⟨⟨hp2, -, hr2⟩, hP2⟩` from `h𝒲 W₂ h₂`. Establish `hmem : ∀ f ∈ S, f ∈ W₁` using `fun f hf => hW1 ▸ Ideal.subset_span hf`. Rewrite using `[hW1, Ideal.span_le]`. Introduce `f hfS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, hfa⟩` from `hS f hfS`. Take `⟨t, h, d, ht, hh, htW, hhW⟩` from `exists_scale 𝒲 hfin (fun W hW => (h𝒲 W hW).1) a hr2 hp2`. Establish `hhP : h ∉ P` using `fun hP => hhW W₁ h₁ (hP1 hP)`. Set `b : semiLocRing P 𝒲` to `⟨_, frac_mem P 𝒲 (homog_mul hfa ht) hh hhP hhW⟩`. Establish `hb : (b : FractionRing (MRing ι ⧸ P)) * fracHom P h = fracHom P (f * t)` using `div_mul_cancel₀ _ (fracHom_ne_zero P hhP)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : b ∈ semiMaxIdeal P 𝒲 W₁ h₁` using `(mem_semiMaxIdeal_iff P 𝒲 h₁ hP1 b (homog_mul hfa ht) hh (hhW W₁ h₁) hb).mpr (W₁.mul_mem_right t (hmem f hfS))`. Establish `h2` using `(mem_semiMaxIdeal_iff P 𝒲 h₂ hP2 b (homog_mul hfa ht) hh (hhW W₂ h₂) hb).mp (hle h1)`. Conclude with `(hp2.mem_or_mem h2).resolve_right htW`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_semiMaxIdeal_le (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMultiProjPrime W ∧ P ≤ W)
     {W₁ W₂ : Ideal (MRing ι)} (h₁ : W₁ ∈ 𝒲) (h₂ : W₂ ∈ 𝒲) [IsLocalRing (locRing P W₁)]
@@ -162,15 +162,15 @@ theorem le_of_semiMaxIdeal_le (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMu
   exact (hp2.mem_or_mem h2).resolve_right htW
 
 /- English proof (translation)
-Set `` to `(semiToLoc P 𝒲 W' hW').toAlgebra`. Take `⟨⟨hp, -, hr⟩, hPW⟩` from `h𝒲 W' hW'`. Use `(isLocalization_iff _ _).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Assume the negation of the conclusion as `hu`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc (Ideal.mem_comap.mpr ((IsLocalRing.mem_maximalIdeal _).mpr hu))`. Introduce `z`. Take `⟨u, w, a, hu, hw, hwW, hz⟩` from `(mem_locRing_iff hPW).mp z.2`. Take `⟨t, h, d, ht, hh, htW, hhW⟩` from `exists_scale 𝒲 hfin (fun W hW => (h𝒲 W hW).1) a hr hp`. Establish `hhP : h ∉ P` using `fun hP => hhW W' hW' (hPW hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : semiLocRing P 𝒲` to `⟨_, frac_mem P 𝒲 (homog_mul hu ht) hh hhP hhW⟩`. Set `c : semiLocRing P 𝒲` to `⟨_, frac_mem P 𝒲 (homog_mul hw ht) hh hhP hhW⟩`. Establish `hc : c ∉ semiMaxIdeal P 𝒲 W' hW'`. Rewrite using `[mem_semiMaxIdeal_iff P 𝒲 hW' hPW c (homog_mul hw ht) hh (hhW W' hW') (div_mul_cancel₀ _ (fracHom_ne_zero P hhP))]`. Conclude with `notMem_mul hp hwW htW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(b, ⟨c, show c ∈ (semiMaxIdeal P 𝒲 W' hW').primeCompl from hc⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z : FractionRing (MRing ι ⧸ P)) * (fracHom P (w * t) / fracHom P h) = fracHom P (u * t) / fracHom P h`. Rewrite using `[map_mul, map_mul, ← hz]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : x = y`. Use `congrArg Subtype.val hxy` as an intermediate fact. Rewrite `this` using `[RingHom.algebraMap_toAlgebra, semiToLoc_coe, semiToLoc_coe]`. Conclude with `Subtype.ext this`. Conclude with `⟨1, by rw [e]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLocalization (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMultiProjPrime W ∧ P ≤ W) {W' : Ideal (MRing ι)}
     (hW' : W' ∈ 𝒲) [IsLocalRing (locRing P W')] :
@@ -204,15 +204,13 @@ theorem isLocalization (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMultiProj
     exact ⟨1, by rw [e]⟩
 
 /- English proof (translation)
-Establish `: Fintype 𝒲` using `hfin.fintype`. Take `⟨W0, hW0⟩` from `hne`. Set `f : 𝒲 → Ideal (semiLocRing P 𝒲)` to `fun W =>`. Use `(h𝒲 W W.2).1.1` as an intermediate fact. Use `isLocalRing (h𝒲 W W.2).2` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `semiMaxIdeal P 𝒲 W W.2`. Establish `hcov : (M : Set (semiLocRing P 𝒲)) ⊆ ⋃ i ∈ ((Finset.univ : Finset 𝒲) : Set 𝒲), (f i : Set _)`. Introduce `b hbM`. Take `⟨u, w, a, hu, hw, hwP, hwW, hb⟩` from `exists_frac P 𝒲 (fun W hW => (h𝒲 W hW).1.1) b`. Assume the negation of the conclusion as `hnot`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `huW : ∀ W ∈ 𝒲, u ∉ W`. Introduce `W hW huW`. Use `(h𝒲 W hW).1.1` as an intermediate fact. Use `isLocalRing (h𝒲 W hW).2` as an intermediate fact. Use `hnot (Set.mem_biUnion (x := (⟨W, hW⟩ : 𝒲)) (Finset.mem_coe.mpr (Finset.mem_univ _)) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(mem_semiMaxIdeal_iff P 𝒲 hW (h𝒲 W hW).2 b hu hw (hwW W hW) hb).mpr huW`. Establish `huP : u ∉ P` using `fun h => huW W0 hW0 ((h𝒲 W0 hW0).2 h)`. Conclude with `hM.ne_top (Ideal.eq_top_of_isUnit_mem _ hbM (isUnit_of P 𝒲 b hu hw huP huW hb))`. Take `⟨⟨W', hW'⟩, -, hle⟩` from `(Ideal.subset_union_prime (⟨W0, hW0⟩ : 𝒲) (⟨W0, hW0⟩ : 𝒲) (fun i _ _ _ => by dsimp only [f]; infer_instance)).mp hcov`. Use `⟨W', hW', ?_⟩` and prove the remaining obligations.
-
-Introduce `_`. Use `(h𝒲 W' hW').1.1` as an intermediate fact. Conclude with `hM.eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_isMaximal (hfin : 𝒲.Finite) (h𝒲 : ∀ W ∈ 𝒲, IsMultiProjPrime W ∧ P ≤ W)
     (hne : 𝒲.Nonempty) (M : Ideal (semiLocRing P 𝒲)) (hM : M.IsMaximal) :
@@ -248,23 +246,21 @@ end SemilocMaxIdeals
 open SemilocMaxIdeals regularityLocalFlat_holds in
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hZ hs hsP hW`. Use `hP'.2.1.1` as an intermediate fact. Establish `hfin` using `hFin K ι K' ι' κ v P' n s α W hv hP' hZ hs hsP hW`. Establish `h𝒲 : ∀ W' ∈ fibreOver v P' W, IsMultiProjPrime W' ∧ P' ≤ W'` using `fun W' h => ⟨h.1, h.2.1⟩`. Establish `hcov : ∀ M : Ideal (semiLocRing P' (fibreOver v P' W)), M.IsMaximal → ∃ (W' : Ideal (MRing ι')) (hW' : W' ∈ fibreOver v P' W), ∀ [IsLocalRing (locRing P' W')], M = semiMaxIdeal P' (fibreOver v P' W) W' hW'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `M hM`. Break down `(fibreOver v P' W).eq_empty_or_nonempty with he | hne` into its components or cases. It suffices to derive a contradiction. Establish `hfield : IsField (semiLocRing P' (fibreOver v P' W))`. Use `⟨⟨0, 1, fun h => zero_ne_one (congrArg Subtype.val h)⟩, mul_comm, fun {b} hb0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, w, a, hu, hw, hwP, hwW, hb⟩` from `exists_frac P' _ (fun W' h => (h𝒲 W' h).1.1) b`. Establish `huP : u ∉ P'`. Introduce `huP`. Rewrite `hb` using `[(fracHom_eq_zero_iff (P := P')).mpr huP]`. Conclude with `hb0 (Subtype.ext ((mul_eq_zero.mp hb).resolve_right (fracHom_ne_zero P' hwP)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isUnit_of P' _ b hu hw huP (by simp [he]) hb).exists_right_inv`. Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Set `` to `(locToSemiloc hv P' W).toAlgebra`. Use `hInt K ι K' ι' κ v P' n s α W hv hP' hZ hs hsP hW` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap (locRing (imageZ v P') W) (semiLocRing P' (fibreOver v P' W)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y hxy`. Use `congrArg Subtype.val hxy` as an intermediate fact. Rewrite `this` using `[RingHom.algebraMap_toAlgebra, locToSemiloc_coe, locToSemiloc_coe]`. Conclude with `Subtype.ext ((fracMapZ v P').injective this)`. Establish `hd` using `(hDim K ι (imageZ v P') s α W hZ.2.1 hs hsP hW).2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hd` using `[ringKrullDim_eq_zero_of_isField (isField_of_isIntegral_of_isField hinj hfield)]`. Conclude with `zero_ne_one hd`. Conclude with `exists_eq_of_isMaximal hfin h𝒲 hne M hM`. Use `⟨fun W' hW' _ => ⟨?_, isLocalization (P := P') hfin h𝒲 hW'⟩, ?_, hcov⟩` and prove the remaining obligations. Use `swap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `W₁ W₂ h₁ h₂ _ _ he`. Use `(h𝒲 W₁ h₁).1.1` as an intermediate fact. Use `(h𝒲 W₂ h₂).1.1` as an intermediate fact. Conclude with `le_antisymm (le_of_semiMaxIdeal_le (P := P') hfin h𝒲 h₁ h₂ he.le) (le_of_semiMaxIdeal_le (P := P') hfin h𝒲 h₂ h₁ he.ge)`. Use `(h𝒲 W' hW').1.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ (Ideal.IsPrime.ne_top (semiMaxIdeal.isPrime P' (fibreOver v P' W) W' hW'))`. Take `⟨W₂, h₂, hM₂⟩` from `hcov M hM`. Use `(h𝒲 W₂ h₂).1.1` as an intermediate fact. Use `isLocalRing (h𝒲 W₂ h₂).2` as an intermediate fact. Establish `e : M = semiMaxIdeal P' (fibreOver v P' W) W₂ h₂` using `hM₂`.
-
-Establish `hW₂ : W' = W₂` using `hInc K ι K' ι' κ v P' n s α W hv hP' hZ hs hsP hW W' W₂ hW' h₂ (le_of_semiMaxIdeal_le hfin h𝒲 hW' h₂ (hle.trans e.le))`. Substitute `hW₂` using the available equality. Rewrite `hM` using `[e]`. Conclude with `hM`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemilocMaxIdeals.proof (hFin : FibreOverFinite.Statement) (hInc : FibreIncomp.Statement)
     (hInt : SemilocIntegral.Statement) (hDim : LocRingDimOne.Statement) : SemilocMaxIdeals.Statement := by

@@ -20,7 +20,7 @@ def DetTie.Pinned (Hh : Formalism.L2.Herm.HermTied D) (Y : DetTie S) : Prop :=
     Y.dt x = Hh.dt y
 
 /- English proof (translation)
-The claim follows from `(h x y hy).trans (h' x y hy).symm`.
+A detailed English derivation is pending.
 -/
 theorem DetTie.Pinned.eq {Hh : Formalism.L2.Herm.HermTied D} {Y Y' : DetTie S} (h : Y.Pinned Hh) (h' : Y'.Pinned Hh)
     (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm)

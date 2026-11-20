@@ -8,7 +8,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.BlochKatoLocalAllOfTateDualityEulerChar₂
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.BlochKatoLocalOfHyp.blochKatoLocal_allPrimes_of_blochKato`.
+A detailed English derivation is pending.
 -/
 theorem aux_of_blochKato_tateDuality_eulerChar₂ :
     GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →

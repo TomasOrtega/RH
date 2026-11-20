@@ -16,21 +16,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Rf : FinMaps F a a'}
 
 /- English proof (translation)
-Establish `hsub : GlobalTheory.Published.ThetaSub om v (LinearMap.ker (Rf.p v) ⊓ SB _)`. Use `⟨le_inf (hf.inv v) ?_, inf_le_right, ?_⟩` and prove the remaining obligations. Rewrite using `[augAt, Submodule.span_le]`. Introduce and unpack `_ ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `Submodule.sub_mem _ hφ₁ hφ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh φ hφ φ₁ hφ₁ hA`. Take `⟨hφk, hφs⟩` from `Submodule.mem_inf.1 hφ`. Use `Submodule.mem_inf.2 ⟨?_, hφ₁⟩` and prove the remaining obligations. Establish `h0 : Acts (evFin F v) (om' (1, h)) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) 0`. Introduce `r _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : tens (evFin F v) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Rewrite using `[e, map_zero]`. Use `hf.equiv v h hh φ hφs 0 (Submodule.zero_mem _) φ₁ hφ₁ 0 (Submodule.zero_mem _) hA h0 (by rw [map_zero]; exact LinearMap.mem_ker.1 hφk)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, this, map_zero]`. Use `⟨⟨hsub, fun hK => ?_⟩, fun P hP hKP => ?_⟩` and prove the remaining obligations. Use `haveI := hf.nontriv v`. Take `⟨y, hy⟩` from `exists_ne (0 : Rf.Pi v)`. Establish `hy' : y ∈ (SB _).map (Rf.p v)` using `by rw [hf.onto v]; trivial`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ, rfl⟩` from `hy'`. Establish `: φ ∈ LinearMap.ker (Rf.p v) ⊓ SB _` using `by rw [hK]; exact hφ`. Conclude with `hy (LinearMap.mem_ker.1 (Submodule.mem_inf.1 this).1)`. Take `⟨hP, hPne⟩` from `hP`. Establish `key : ∀ φ ∈ SB _, Rf.p v φ ∈ P.map (Rf.p v) → φ ∈ P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `φ hφ hm`. Take `⟨ψ, hψ, he⟩` from `hm`. Establish `hd : φ - ψ ∈ LinearMap.ker (Rf.p v) ⊓ SB _` using `Submodule.mem_inf.2 ⟨by rw [LinearMap.mem_ker, map_sub, he, sub_self], Submodule.sub_mem _ hφ (hP.2.1 hψ)⟩`. Simplify using `using P.add_mem (hKP hd) hψ`. Break down `hf.irred v (P.map (Rf.p v)) (fun h hh φ hφ φ₁ hφ₁ hA hm => ⟨φ₁, hP.2.2 h hh φ (key φ hφ hm) φ₁ hφ₁ hA, rfl⟩) with h0 | h1` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `φ hφ`. Use `Submodule.mem_inf.2 ⟨?_, hP.2.1 hφ⟩` and prove the remaining obligations. Establish `: Rf.p v φ ∈ P.map (Rf.p v)` using `⟨φ, hφ, rfl⟩`. Rewrite `this` using `[h0]`. Conclude with `LinearMap.mem_ker.2 ((Submodule.mem_bot ℂ).1 this)`.
-
-Conclude with `absurd (le_antisymm hP.2.1 fun φ hφ => key φ hφ (by rw [h1]; trivial)) hPne`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_maximal (hf : IsFinMaps B G X om om' Rf) (v : Pl F) :
     Maximal (fun Q => GlobalTheory.Published.ThetaSub om v Q ∧ Q ≠ SB _) (LinearMap.ker (Rf.p v) ⊓ SB _) := by
@@ -75,9 +73,9 @@ theorem ker_maximal (hf : IsFinMaps B G X om om' Rf) (v : Pl F) :
     · exact absurd (le_antisymm hP.2.1 fun φ hφ => key φ hφ (by rw [h1]; trivial)) hPne
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hm N hN hI f φ hf hφ hφc v hv`. Assume the negation of the conclusion as `hn`. Take `⟨P, hPm, hPv⟩` from `GlobalTheory.T.maximal_theta_factorization hKP F E σ B a a' G X om om' hm.triple N hN hI f φ hf hφ hφc hn v`. Establish `e` using `GlobalTheory.T.maximal_proper_thetaSub_unique hKP F E σ B a a' G X om om' hm.triple v P _ hPm (ker_maximal hm.fin v)`. Rewrite `hPv` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hPv (Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 hv, hφ v⟩)`.
+A detailed English derivation is pending.
 -/
 theorem killFin : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om (GlobalTheory.ThK.PolData B G.M) N → (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → ∀ (f : SInf F (Fin a × Fin (a + a'))) (φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ), f ∈ G.M.Pol B.ψ B.emb → (∀ v, φ v ∈ SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → ∀ v, Rf.p v (φ v) = 0 → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ N := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hm N hN hI f φ hf hφ hφc v hv

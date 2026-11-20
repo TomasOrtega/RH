@@ -15,9 +15,9 @@ namespace GlobalTheory.Mem.NatEqui
 variable {D : D7}
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `γ`. Establish `hst : ∀ x : D.host.E, star x = D.host.conj x` using `GlobalTheory.NormSum.AdLattice.star_eq_conj D`. Set `z : unitary D.host.E` to `⟨_, Matrix.det_of_mem_unitary γ.2⟩`. Rewrite using `[GlobalTheory.Mem.Col2.ChiFacLaw.detId_image D (stdL D n) L (SDLat.smulLat (γ : Matrix (Fin n) (Fin n) D.host.E) L) (γ : Matrix (Fin n) (Fin n) D.host.E) (star (γ : Matrix (Fin n) (Fin n) D.host.E)) γ.2.2 (fun x hx => ⟨x, hx, rfl⟩) ?_, hχ.1 _ _ (GlobalTheory.Mem.Col2.ChiFacLaw.no …`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `(star (γ : Matrix (Fin n) (Fin n) D.host.E)).mulVec ((γ : Matrix (Fin n) (Fin n) D.host.E).mulVec y) ∈ L`. Rewrite using `[Matrix.mulVec_mulVec, γ.2.1, Matrix.one_mulVec]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem chi_smulLat {χ : IdE D → ℂ} (hχ : IsChi D χ) {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hL : SD D L) : letI := D.host.cmStar
@@ -38,7 +38,7 @@ theorem chi_smulLat {χ : IdE D → ℂ} (hχ : IsChi D χ) {n : ℕ} {L : Submo
   rwa [Matrix.mulVec_mulVec, γ.2.1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `γ`. Take `⟨g, hg⟩` from `GlobalTheory.TrueTheta.exists_moves_of_selfDual D n L hL`. Take `⟨γA, hγ⟩` from `GlobalTheory.TrueTheta.exists_rat γ`. Conclude with `GlobalTheory.VacuumScalar.sd_of_moves (GlobalTheory.TrueTheta.moves_smulLat hγ hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sd_smulLat {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (hL : SD D L) : letI := D.host.cmStar
     ∀ γ : Matrix.unitaryGroup (Fin n) D.host.E, SD D (SDLat.smulLat (γ : Matrix (Fin n) (Fin n) D.host.E) L) := by
@@ -48,7 +48,7 @@ theorem sd_smulLat {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)
   exact GlobalTheory.VacuumScalar.sd_of_moves (GlobalTheory.TrueTheta.moves_smulLat hγ hg)
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (zpow_ne_zero _ (chi_detId_ne_zero hχ (sd_stdL D N) h)) (zpow_ne_zero _ (chi_detId_ne_zero hχ (sd_stdL D N') h'))`.
+A detailed English derivation is pending.
 -/
 theorem chiFac_ne_zero {χ : IdE D → ℂ} (hχ : IsChi D χ) {N N' : ℕ} {L L'} (h : SD D L) (h' : SD D L') :
     Base.chiFac χ N N' L L' ≠ 0 :=
@@ -56,7 +56,7 @@ theorem chiFac_ne_zero {χ : IdE D → ℂ} (hχ : IsChi D χ) {N N' : ℕ} {L L
     (zpow_ne_zero _ (chi_detId_ne_zero hχ (sd_stdL D N') h'))
 
 /- English proof (translation)
-Unfold `Base.chiFac`. Rewrite using `[chi_detId_mul hχ (sd_stdL D N') h' h'', mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiFac_right {χ : IdE D → ℂ} (hχ : IsChi D χ) {N N' : ℕ} (L) {L' L''} (h' : SD D L') (h'' : SD D L'') :
     Base.chiFac χ N N' L L'' = χ (detId D L' L'') ^ (-((N / 2 : ℕ) : ℤ)) * Base.chiFac χ N N' L L' := by
@@ -65,7 +65,7 @@ theorem chiFac_right {χ : IdE D → ℂ} (hχ : IsChi D χ) {N N' : ℕ} (L) {L
   ring
 
 /- English proof (translation)
-Unfold `Base.chiFac`. Rewrite using `[chi_detId_mul hχ (sd_stdL D N) h h₁, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiFac_left {χ : IdE D → ℂ} (hχ : IsChi D χ) {N N' : ℕ} {L L₁} (L') (h : SD D L) (h₁ : SD D L₁) :
     Base.chiFac χ N N' L₁ L' = χ (detId D L L₁) ^ (((N' / 2 : ℕ) : ℤ)) * Base.chiFac χ N N' L L' := by
@@ -74,27 +74,27 @@ theorem chiFac_left {χ : IdE D → ℂ} (hχ : IsChi D χ) {N N' : ℕ} {L L₁
   ring
 
 /- English proof (translation)
-Introduce `D cc δ B χ hc hδ hχ`. Use `letI := D.host.cmStar`. Establish `hC : Crv D cc δ` using `⟨hc, hδ⟩`. Take `⟨χ', e, hχ', hv, q1, q2, q3⟩` from `GlobalTheory.T.exists_thetaVectorFamily_of_curveDatum D cc δ hC`. Establish `key : ∀ N N', Even N → Even N' → ∃ a : ℂ, ∀ L L', SD D L → SD D L' → B.eNat χ N N' L L' = fun z => (a * (Base.chiFac χ N N' L L' / Base.chiFac χ' N N' L L')) * e N N' L L' z`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `N N' hN hN'`. Establish `s` using `sd_stdL D N`. Establish `s'` using `sd_stdL D N'`. Take `⟨v1, v2, -⟩` from `hv N N' _ _ ⟨hN, hN', s, s'⟩`. Take `⟨a, ha⟩` from `(GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hC N N' _ (Or.inr ⟨_, _, s, s', rfl⟩)).1 _ (GlobalTheory.Mem.Col2.WeilVac.thZero_mem B (GlobalTheory.FourthRootStd.stdOK_of_crv D cc δ B hC) N N') _ v1 v2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a, fun L L' h h' => funext fun z => ?_⟩` and prove the remaining obligations. Establish `e3` using `q3 N N' ⟨_, s⟩ ⟨L, h⟩ ⟨_, s'⟩ hN hN'`. Establish `e2` using `congrFun (q2 N N' ⟨L, h⟩ ⟨_, s'⟩ ⟨L', h'⟩ hN hN') z`. Simplify using `only at e2 e3`. Rewrite `e2` using `[e3, iop_mul, ← mul_assoc, mul_comm (χ' _ ^ _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hh : B.thHalf N N' L = fun w => a * Iop D (tor0 D cc δ) (La D (tor0 D cc δ) (stdL D N) (stdL D N')) (La D (tor0 D cc δ) L (stdL D N')) (e N N' (stdL D N) (stdL D N')) w`. Use function extensionality and compare the values at `w`. Rewrite using `[Base.thHalf, ha]`. Conclude with `iop_mul D _ _ _ a _ w`. Establish `h0` using `chiFac_ne_zero hχ' h h'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Base.chiFac χ N N' L L' * B.thMoved N N' L L' z = _`. Rewrite using `[Base.thMoved, hh, iop_mul, e2]`. Express the relevant statement in the definitionally equal form `_ = a * (_ / Base.chiFac χ' N N' L L') * (Base.chiFac χ' N N' L L' * _)`. Clear the denominators using the available nonvanishing facts. Use `⟨fun N N' L L' hN hN' γ γ' => ?_, fun N N' L L' L'' hN hN' => ?_, fun N N' L L₁ L' hN hN' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `key N N' hN hN'`. Rewrite using `[ha _ _ L.2 L'.2, ha _ _ (sd_smulLat L.2 γ) (sd_smulLat L'.2 γ'), ← q1 N N' L L' hN hN' γ γ']`. Establish `h1` using `chiFac_ne_zero hχ' (sd_smulLat L.2 γ) (sd_smulLat L'.2 γ')`. Establish `h0` using `chiFac_ne_zero hχ' L.2 L'.2`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ * pull D _ _ _ (e N N' L.1 L'.1) z = _`. Use `congr 2`. Rewrite using `[div_eq_div_iff h0 h1]`. Unfold `Base.chiFac`. Rewrite using `[chi_smulLat hχ L.2, chi_smulLat hχ L'.2, chi_smulLat hχ' L.2, chi_smulLat hχ' L'.2]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `key N N' hN hN'`. Rewrite using `[ha _ _ L.2 L'.2, ha _ _ L.2 L''.2, q2 N N' L L' L'' hN hN']`. Use function extensionality and compare the values at `z`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `zpow_ne_zero (-((N / 2 : ℕ) : ℤ)) (chi_detId_ne_zero hχ' L'.2 L''.2)`. Rewrite using `[iop_mul, chiFac_right hχ _ L'.2 L''.2, chiFac_right hχ' _ L'.2 L''.2]`. Establish `h0` using `chiFac_ne_zero hχ' L.2 L'.2`. Generalize the expression as in `χ' _ ^ _ = u at h1 ⊢`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `key N N' hN hN'`. Rewrite using `[ha _ _ L.2 L'.2, ha _ _ L₁.2 L'.2, q3 N N' L L₁ L' hN hN']`. Use function extensionality and compare the values at `z`. Establish `h1` using `zpow_ne_zero (((N' / 2 : ℕ) : ℤ)) (chi_detId_ne_zero hχ' L.2 L₁.2)`. Rewrite using `[iop_mul, chiFac_left hχ _ L.2 L₁.2, chiFac_left hχ' _ L.2 L₁.2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `chiFac_ne_zero hχ' L.2 L'.2`. Generalize the expression as in `χ' _ ^ _ = u at h1 ⊢`. Clear the denominators using the available nonvanishing facts.
+Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eqP : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : IdE D → ℂ),
     IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → B.EqP χ := by

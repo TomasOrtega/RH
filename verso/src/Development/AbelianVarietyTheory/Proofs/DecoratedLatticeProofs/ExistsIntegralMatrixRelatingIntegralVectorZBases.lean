@@ -6,35 +6,33 @@ open NumberField Matrix Formalism.MainNotions.S GlobalTheory.CuspGeo
 namespace GlobalTheory.CuspGeo
 
 /- English proof (translation)
-Set `A : (Fin N → ℤ) →ₗ[ℤ] (Fin n → E)` to `Fintype.linearCombination ℤ e`. Set `B : (Fin N → ℤ) →ₗ[ℤ] (Fin n → E)` to `Fintype.linearCombination ℤ e₀`. Establish `hA : ∀ z, A z = ∑ i, z i • e i` using `fun z => Fintype.linearCombination_apply ℤ e z`. Establish `hB : ∀ z, B z = ∑ i, z i • e₀ i` using `fun z => Fintype.linearCombination_apply ℤ e₀ z`. Establish `hAs : ∀ j, A (Pi.single j 1) = e j` using `fun j => by simp [A]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBs : ∀ j, B (Pi.single j 1) = e₀ j` using `fun j => by simp [B]`. Establish `hAinj : Function.Injective A`. Use `(injective_iff_map_eq_zero A).2 fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[hA]`. Conclude with `funext (Fintype.linearIndependent_iff.1 hli z hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `heint : ∀ j i, IsIntegral ℤ (e j i)` using `fun j => (he _).2 ⟨Pi.single j 1, by rw [← hA, hAs]⟩`. Set `S : Submodule ℤ ((Fin n → E) × (Fin n → E))` to `LinearMap.range (A.prod B)`. Establish `hk : ∀ (k : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) (z : Fin N → ℤ), (integralBasis E k : E) • (A z, B z) ∈ S`. Introduce `k z`. Establish `h1 : (integralBasis E k : E) • (A z, B z) = ∑ j, z j • ((integralBasis E k : E) • (e j, e₀ j))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (A z, B z) = ∑ j, z j • (e j, e₀ j)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_sum]`. Conclude with `hA z`. Rewrite using `[Prod.snd_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hB z`. Rewrite using `[h0, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm (z j)]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `S.sum_mem fun j _ => S.smul_mem _ ?_` and prove the remaining obligations. Establish `hint : ∀ i, IsIntegral ℤ (((integralBasis E k : E) • e j) i)` using `fun i => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, integralBasis_apply]`. Conclude with `(RingOfIntegers.isIntegral_coe _).mul (heint j i)`. Take `⟨w, hw⟩` from `(he _).1 hint`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `hw₀` using `h k j w hw`. Rewrite `hw` using `[← hA]`. Rewrite `hw₀` using `[← hB]`. Conclude with `Prod.ext hw.symm hw₀.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ a : E, IsIntegral ℤ a → ∀ z : Fin N → ℤ, a • (A z, B z) ∈ S`. Introduce `a hai z`. Set `a' : 𝓞 E` to `⟨a, hai⟩`. Establish `h1 : a = ∑ k, (RingOfIntegers.basis E).repr a' k • (integralBasis E k : E)`. Establish `h2` using `congrArg (algebraMap (𝓞 E) E) ((RingOfIntegers.basis E).sum_repr a')`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[map_sum]`. Simplify using `only [map_zsmul] at h2`. Simplify using `only [integralBasis_apply]`. Conclude with `h2.symm`. Rewrite using `[h1, Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `S.sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Conclude with `S.smul_mem _ (hk k z)`. Establish `hu : ∀ j : Fin n, ∃ z : Fin N → ℤ, (Pi.single j 1 : Fin n → E) = A z` using `fun j => by`. Take `⟨z, hz⟩` from `(he (Pi.single j 1)).1 fun i => by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[hij]`. Conclude with `⟨z, by rw [hA]; exact hz⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose c hc using hu`. Use `⟨Matrix.of fun i j => B (c j) i, fun i j => (he₀ _).2 ⟨c j, hB _⟩ i, fun l => ?_⟩` and prove the remaining obligations. Establish `hs : ∑ j, e l j • (A (c j), B (c j)) ∈ S` using `S.sum_mem fun j _ => ha _ (heint l j) _`. Take `⟨w, hw⟩` from `hs`. Establish `hw1 : A w = e l`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Prod.fst hw`. Rewrite `h1` using `[Prod.fst_sum]`. Simplify using `only [Prod.smul_mk, ← hc] at h1`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Use extensionality with `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hw2 : B w = ∑ j, e l j • B (c j)`. Establish `h1` using `congrArg Prod.snd hw`. Rewrite `h1` using `[Prod.snd_sum]`. Conclude with `h1`.
-
-Establish `hw3 : w = Pi.single l 1` using `hAinj (by rw [hw1, hAs])`. Rewrite using `[← hBs, ← hw3, hw2]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integralMatrix_of_same_multiplicationMatrices {E : Type*} [Field E] [NumberField E] {n N : ℕ}
     (e e₀ : Fin N → Fin n → E) (hli : LinearIndependent ℤ e)
@@ -119,7 +117,7 @@ theorem exists_integralMatrix_of_same_multiplicationMatrices {E : Type*} [Field 
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Introduce `_ _ e e₀ he he₀ h` and use `exists_integralMatrix_of_same_multiplicationMatrices e e₀ he.1 he.2 he₀.2 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_integral_matrix_of_same_mul : ∀ (I : AutInst) {N : ℕ} (e e₀ : Fin N → Fin I.n → I.E),
     IsZBasis I e → IsZBasis I e₀ →

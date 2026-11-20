@@ -7,15 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `G X Y _ _ M e d A b hsurj hex hA hb hd`. Use `set S : Set (X →₀ ℤ) := Set.range (fun y => d (Finsupp.single y 1)) with hS`. Establish `hspan : Submodule.span ℤ S = LinearMap.range d`. Establish `h1 : S = d '' Set.range (fun y : Y => Finsupp.single y (1 : ℤ))`. Rewrite using `[hS, ← Set.range_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_image, ← Submodule.map_top]`. Use `congr 1`. Use `(Finsupp.basisSingleOne (R := ℤ) (ι := Y)).span_eq` as an intermediate fact. Rewrite `this` using `[Finsupp.coe_basisSingleOne]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hker : ∀ f : X →₀ ℤ, e.hom f = 0 ↔ f ∈ Submodule.span ℤ S`. Introduce `f`. Rewrite using `[hspan, LinearMap.mem_range]`. Conclude with `(hex f).trans Set.mem_range`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨φ⟩` from `hZero G X M e S hsurj hker`. Establish `hL : ∀ x ∈ Finsupp.mapDomain (Quotient.mk (MulAction.orbitRel G X)) '' S, l1 x ≤ b`. Introduce and unpack `x ⟨s, ⟨y, rfl⟩, rfl⟩`. Conclude with `(l1_mapDomain_le_and_l1_faceD_single_le.1 _ _ _ _).trans (hd y)`. Establish `hT` using `cokerTors (MulAction.orbitRel.Quotient G X) A b _ hA hb hL`.
-
-Conclude with `transport.1 _ _ φ.symm _ hT`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.base :
     ∀ (G X Y : Type) [Group G] [MulAction G X] (M : Rep ℤ G) (e : permRep G X ⟶ M)

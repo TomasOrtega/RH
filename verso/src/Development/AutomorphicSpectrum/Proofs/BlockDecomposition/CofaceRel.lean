@@ -7,9 +7,9 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.WpCoface
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin n, (k.succAbove i).succAbove ((i.predAbove k).succAbove j) = k.succAbove (i.succAbove j)` using `fun j => Fin.succAbove_succAbove_succAbove_predAbove k i j`. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Use `(hwp n).uniq (K (n + 1 + 1)) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_algebraMap, AlgHom.comp_algebraMap]`. Introduce `j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((δ (n + 1) (k.succAbove i)).comp (δ n (i.predAbove k))).comp (ι n j) = ((δ (n + 1) k).comp (δ n i)).comp (ι n j)`. Rewrite using `[AlgHom.comp_assoc, hδ, hδ, AlgHom.comp_assoc, hδ, hδ, key]`. Use extensionality with `x`. Conclude with `AlgHom.congr_fun h1 x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coface_rel (A : Type) [CommRing A] (B : Type) [CommRing B] [Algebra A B] (K : ℕ → Type)
     [∀ n, CommRing (K n)] [∀ n, Algebra A (K n)] (ι : ∀ n, Fin n → (B →ₐ[A] K n))

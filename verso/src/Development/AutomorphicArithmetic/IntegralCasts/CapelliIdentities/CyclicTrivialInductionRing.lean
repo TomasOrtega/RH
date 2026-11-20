@@ -1,21 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `H _ n P hcyc hext A`. Proceed by induction on `hk : Nat.card A.V using Nat.strong_induction_on generalizing A with`. Consider the case `_ k ih`. Introduce `hfin htriv htors`. Distinguish the cases in `hne : ∃ a : A.V, a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha⟩` from `hne`. Set `B : Submodule R A.V` to `Submodule.span _ {a}`. Set `S : Rep.{0, 0, 0} R H` to `Rep.of (Representation.trivial R H B)`. Set `Q : Rep.{0, 0, 0} R H` to `Rep.of (Representation.trivial R H (A.V ⧸ B))`. Set `f : S ⟶ A` to `Rep.ofHom (ρ := Representation.trivial R H B) (σ := A.ρ) (B.subtype.intertwiningMap_of_isIntertwiningMap _ _ (fun g v => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `using (htriv g v.1).symm))`. Set `g : A ⟶ Q` to `Rep.ofHom (ρ := A.ρ) (σ := Representation.trivial R H (A.V ⧸ B)) (B.mkQ.intertwiningMap_of_isIntertwiningMap _ _ (fun g v => by`. Simplify using `[htriv g v]))`. Establish `hlt : Nat.card (A.V ⧸ B) < Nat.card A.V`. Assume the negation of the conclusion as `hcon`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hbij` using `(Submodule.mkQ_surjective B).bijective_of_nat_card_le (not_lt.mp hcon)`. Establish `hmem : a ∈ B` using `Submodule.mem_span_singleton_self a`. Establish `h0 : B.mkQ a = B.mkQ 0`. Simplify using `using (Submodule.Quotient.mk_eq_zero B).2 hmem`. Conclude with `ha (hbij.1 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hS : P S`. Use `hcyc S (inferInstanceAs (Finite B)) ?_ (fun _ _ => rfl) ?_` and prove the remaining obligations. Use `(⟨⟨⟨a, Submodule.mem_span_singleton_self a⟩, fun x => ?_⟩⟩ : IsAddCyclic B)` and prove the remaining obligations. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 x.2`. Take `⟨m, rfl⟩` from `hR c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.mem_zmultiples_iff.2 ⟨m, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression. Introduce `c`. Conclude with `Subtype.ext (htors c.1)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ : P Q`. Use `ih (Nat.card (A.V ⧸ B)) (hk ▸ hlt) Q rfl (Finite.of_surjective B.mkQ (Submodule.mkQ_surjective B)) (fun _ _ => rfl) ?_` and prove the remaining obligations. Introduce `c`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective B c`. Establish `: n • B.mkQ x = B.mkQ (n • x)` using `(map_nsmul B.mkQ n x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.trans (by rw [htors x, map_zero])`. Conclude with `hext S A Q f g (fun _ _ => rfl) (fun _ _ => rfl) (Subtype.val_injective) (LinearMap.exact_subtype_mkQ B) (Submodule.mkQ_surjective B) hS hQ`. Establish `: Subsingleton A.V` using `⟨fun x y => by push_neg at hne`. Rewrite using `[hne x, hne y]⟩`. Conclude with `hcyc A hfin inferInstance htriv htors`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.cyclic_trivial_induction_ring {R : Type} [Ring R] (hR : ∀ c : R, ∃ m : ℤ, c = m) :
     ∀ {H : Type} [Monoid H] (n : ℕ) (P : Rep.{0, 0, 0} R H → Prop),
@@ -76,7 +76,7 @@ private theorem UpperTheory.cyclic_trivial_induction_ring {R : Type} [Ring R] (h
       exact hcyc A hfin inferInstance htriv htors
 
 /- English proof (translation)
-Introduce `H _`. Conclude with `UpperTheory.cyclic_trivial_induction_ring (R := ULift.{0, 0} ℤ) (fun c => ⟨c.down, ULift.ext _ _ (by simp)⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cyclic_trivial_induction :
     ∀ {H : Type} [Monoid H] (n : ℕ) (P : Rep.{0, 0, 0} (ULift.{0, 0} ℤ) H → Prop),

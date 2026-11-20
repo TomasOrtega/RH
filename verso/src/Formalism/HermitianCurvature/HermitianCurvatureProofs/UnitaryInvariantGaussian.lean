@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.G8
 instance sigmaFinite_mu (β : ℂ) : SigmaFinite (mu β) := by unfold mu; infer_instance
 
 /- English proof (translation)
-Unfold `muPi`. Use `Measure.pi_eq (μ := fun _ : ι => mu β) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[volume_pi]`. Simplify using `only [mu, Measure.smul_apply, Measure.pi_pi, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem muPi_eq (β : ℂ) (ι : Type) [Fintype ι] :
     muPi β ι = (Real.toNNReal (‖β‖ / (2 * Real.pi))) ^ Fintype.card ι • (volume : Measure (ι → ℂ)) := by
@@ -18,7 +18,7 @@ theorem muPi_eq (β : ℂ) (ι : Type) [Fintype ι] :
     Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]
 
 /- English proof (translation)
-Establish `h1` using `(Unitary.mem_iff.1 (Matrix.det_of_mem_unitary hW)).1`. Establish `h2 : ((Complex.normSq W.det : ℝ) : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Conclude with `h1`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSq_det_unitary (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ)
     (hW : W ∈ Matrix.unitaryGroup (Fin d) ℂ) : Complex.normSq W.det = 1 := by
@@ -28,9 +28,9 @@ theorem normSq_det_unitary (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ)
   exact_mod_cast h2
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det ((Matrix.toLin' W).restrictScalars ℝ) = 1`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, normSq_det_unitary d W hW]`. Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin d → ℂ)) (f := (Matrix.toLin' W).restrictScalars ℝ) (by rw [hdet]; exact one_ne_zero)`. Rewrite `h` using `[hdet]`. Establish `hf : (fun x : Fin d → ℂ => W *ᵥ x) = ⇑((Matrix.toLin' W).restrictScalars ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hf, h]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_unitary (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ) (hW : W ∈ Matrix.unitaryGroup (Fin d) ℂ) :
     Measure.map (fun x : Fin d → ℂ => W *ᵥ x) (volume : Measure (Fin d → ℂ)) = volume := by
@@ -45,7 +45,7 @@ theorem volume_unitary (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ) (hW : W ∈ Ma
   rw [hf, h]; simp
 
 /- English proof (translation)
-Establish `: Continuous (fun x : Fin d → ℂ => W *ᵥ x)` using `by fun_prop`. Conclude with `this.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_mulVec (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ) :
     Measurable (fun x : Fin d → ℂ => W *ᵥ x) := by
@@ -53,7 +53,7 @@ theorem measurable_mulVec (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ) :
   exact this.measurable
 
 /- English proof (translation)
-Introduce `d β W hW`. Use `⟨measurable_mulVec d W, ?_⟩` and prove the remaining obligations. Rewrite using `[muPi_eq, Measure.map_smul, volume_unitary d W hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitaryInvariant : UnitaryInvariant := by
   intro d β W hW
@@ -61,13 +61,13 @@ theorem unitaryInvariant : UnitaryInvariant := by
   rw [muPi_eq, Measure.map_smul, volume_unitary d W hW]
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0` using `by rintro rfl; simp at hu`. Establish `harg : u.arg ≠ Real.pi`. Introduce `h`. Use `(Complex.arg_eq_pi_iff.1 h).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hπ` using `Real.pi_pos`. Establish `hRc : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hπc : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast hπ.ne'`. Establish `e1 : (Real.pi : ℂ) / u = ((Real.pi : ℝ) : ℂ) * u⁻¹` using `div_eq_mul_inv _ _`. Establish `e2 : (Real.pi : ℂ) / ((R : ℂ) / u) = ((Real.pi / R : ℝ) : ℂ) * u` using `by push_cast; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpR : 0 < Real.pi / R` using `by positivity`. Rewrite using `[e1, e2, Complex.cpow_def_of_ne_zero (mul_ne_zero hπc (inv_ne_zero hu0)), Complex.cpow_def_of_ne_zero (mul_ne_zero (by exact_mod_cast hpR.ne') hu0), ← Complex.exp_add, Complex.log_ofReal_mul hπ (inv_ne_zero hu0), Complex.log_ofReal_mul hpR hu0, Complex.log_inv _ harg]`. Establish `hs : 0 < Real.sqrt R` using `Real.sqrt_pos.2 hR`. Establish `e3 : Real.pi / Real.sqrt R = Real.exp (Real.log Real.pi - Real.log R / 2)`. Rewrite using `[← Real.log_sqrt hR.le, ← Real.log_div hπ.ne' hs.ne', Real.exp_log (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, Real.log_div hπ.ne' hR.ne']`. Use `push_cast`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpow_half_mul (u : ℂ) (hu : 0 < u.re) (R : ℝ) (hR : 0 < R) :
     ((Real.pi : ℂ) / u) ^ (1 / 2 : ℂ) * ((Real.pi : ℂ) / ((R : ℂ) / u)) ^ (1 / 2 : ℂ) =
@@ -98,7 +98,7 @@ noncomputable def gK (δ p q : ℝ) (z : ℝ × ℝ) : ℂ :=
     -((δ : ℂ) - Complex.I * p) * (z.1 : ℂ) ^ 2)
 
 /- English proof (translation)
-Rewrite using `[gK, Complex.norm_exp, ← Real.exp_add]`. Use `congr 1`. Simplify using `[pow_two]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_gK (δ p q : ℝ) (z : ℝ × ℝ) :
     ‖gK δ p q z‖ = Real.exp (-δ * z.1 ^ 2) * Real.exp (-δ * z.2 ^ 2) := by
@@ -108,7 +108,7 @@ theorem norm_gK (δ p q : ℝ) (z : ℝ × ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h1 : Integrable (fun z : ℝ × ℝ => Real.exp (-δ * z.1 ^ 2) * Real.exp (-δ * z.2 ^ 2)) ((volume : Measure ℝ).prod (volume : Measure ℝ))` using `(integrable_exp_neg_mul_sq hδ).mul_prod (integrable_exp_neg_mul_sq hδ)`. Use `h1.mono' ?_ (Filter.Eventually.of_forall fun z => (norm_gK δ p q z).le)` and prove the remaining obligations. Establish `: Continuous (gK δ p q)` using `by unfold gK; fun_prop`. Conclude with `this.aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_gK (δ p q : ℝ) (hδ : 0 < δ) : Integrable (gK δ p q) (volume : Measure (ℝ × ℝ)) := by
   have h1 : Integrable (fun z : ℝ × ℝ => Real.exp (-δ * z.1 ^ 2) * Real.exp (-δ * z.2 ^ 2))
@@ -119,17 +119,15 @@ theorem integrable_gK (δ p q : ℝ) (hδ : 0 < δ) : Integrable (gK δ p q) (vo
   exact this.aestronglyMeasurable
 
 /- English proof (translation)
-Establish `hR : 0 < δ ^ 2 + p ^ 2 + q ^ 2` using `by positivity`. Use `set u : ℂ := (δ : ℂ) + Complex.I * p with hu`. Establish `hure : u.re = δ` using `by simp [hu]`. Establish `hu0 : u ≠ 0` using `by intro h; rw [h] at hure; simp at hure; exact hδ.ne hure`. Rewrite using `[Measure.volume_eq_prod, integral_prod _ (integrable_gK δ p q hδ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hin : ∀ x : ℝ, ∫ y : ℝ, gK δ p q (x, y) = ((Real.pi : ℂ) / u) ^ (1 / 2 : ℂ) * Complex.exp (-(((δ ^ 2 + p ^ 2 + q ^ 2 : ℝ) : ℂ) / u) * (x : ℂ) ^ 2)`. Introduce `x`. Use `show ∫ y : ℝ, Complex.exp (-u * (y : ℂ) ^ 2 + (-2 * Complex.I * q * x) * (y : ℂ) + -((δ : ℂ) - Complex.I * p) * (x : ℂ) ^ 2) = _`. Rewrite using `[integral_cexp_quadratic (by rw [Complex.neg_re, hure]; linarith)]`. Rewrite using `[neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Establish `hconj : ((δ : ℂ) - Complex.I * p) * u = (δ : ℂ) ^ 2 + (p : ℂ) ^ 2`. Rewrite using `[hu]`. Take the linear combination `(-(p:ℂ)^2) * Complex.I_sq`. Take `⟨v, hv⟩ : ∃ v : ℂ, v = (δ : ℂ) - Complex.I * p` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hconj`, the goal using `[← hv]`. Use `clear_value u`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-4 * (x:ℂ)^2) * hconj + (4 * (q:ℂ)^2 * (x:ℂ)^2) * Complex.I_sq`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hin]`. Rewrite using `[integral_const_mul, integral_gaussian_complex, cpow_half_mul u (by rw [hure]; exact hδ) _ hR]`. Rewrite using `[Complex.div_re]`. Simplify using `only [Complex.ofReal_re, Complex.ofReal_im, zero_mul, zero_div, add_zero, hure]`. Establish `: 0 < Complex.normSq u` using `Complex.normSq_pos.2 hu0`.
-
-Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem integral_gK (δ p q : ℝ) (hδ : 0 < δ) :
     ∫ z : ℝ × ℝ, gK δ p q z = ((Real.pi / Real.sqrt (δ ^ 2 + p ^ 2 + q ^ 2) : ℝ) : ℂ) := by
@@ -163,17 +161,17 @@ theorem integral_gK (δ p q : ℝ) (hδ : 0 < δ) :
   positivity
 
 /- English proof (translation)
-Introduce `β a δ hδ`. Take `⟨γ, hγ⟩ : ∃ γ : ℂ, γ = β * a / 2` from `⟨_, rfl⟩`. Establish `hint : ∀ w : ℂ, ((Real.exp (-δ * ‖w‖ ^ 2) : ℝ) : ℂ) * psi β (a * w ^ 2 / 2) = gK δ γ.re γ.im (Complex.measurableEquivRealProd w)`. Introduce `w`. Establish `h1 : (β * (a * w ^ 2 / 2)).re = γ.re * (w.re ^ 2 - w.im ^ 2) - γ.im * (2 * w.re * w.im)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: β * (a * w ^ 2 / 2) = γ * (w * w)` using `by rw [hγ]; ring`. Rewrite using `[this]`. Simplify using `only [Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[psi, gK, Complex.ofReal_exp, ← Complex.exp_add, h1, Complex.sq_norm, Complex.normSq_apply, Complex.measurableEquivRealProd_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : γ.re ^ 2 + γ.im ^ 2 = ‖β‖ ^ 2 * ‖a‖ ^ 2 / 4`. Establish `: ‖γ‖ ^ 2 = γ.re ^ 2 + γ.im ^ 2` using `by rw [Complex.sq_norm, Complex.normSq_apply]; ring`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, hγ, norm_div, norm_mul]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hint]`. Rewrite using `[mu, integral_smul_nnreal_measure, Complex.volume_preserving_equiv_real_prod.integral_comp (MeasurableEquiv.measurableEmbedding _) (gK δ γ.re γ.im), integral_gK δ _ _ hδ, NNReal.smul_def, Real.coe_toNNReal _ (by positivity), Complex.real_smul, ← Complex.ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hR : 0 < δ ^ 2 + γ.re ^ 2 + γ.im ^ 2` using `by positivity`. Establish `e : 4 * δ ^ 2 + ‖β‖ ^ 2 * ‖a‖ ^ 2 = 2 ^ 2 * (δ ^ 2 + γ.re ^ 2 + γ.im ^ 2)`. Take the linear combination `(-4 : ℝ) * hn`. Rewrite using `[e, Real.sqrt_mul (by norm_num), Real.sqrt_sq (by norm_num)]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : 0 < Real.sqrt (δ ^ 2 + γ.re ^ 2 + γ.im ^ 2)` using `Real.sqrt_pos.2 hR`. Use `Real.pi_pos` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem gaussOneDamped : GaussOneDamped := by
   intro β a δ hδ
@@ -208,13 +206,13 @@ theorem gaussOneDamped : GaussOneDamped := by
   field_simp
 
 /- English proof (translation)
-Introduce `β a hβ ha`. Establish `h1 : ∀ᶠ δ in 𝓝[>] (0:ℝ), ((‖β‖ / Real.sqrt (4 * δ ^ 2 + ‖β‖ ^ 2 * ‖a‖ ^ 2) : ℝ) : ℂ) = ∫ w : ℂ, ((Real.exp (-δ * ‖w‖ ^ 2) : ℝ) : ℂ) * psi β (a * w ^ 2 / 2) ∂(mu β)` using `by filter_upwards [self_mem_nhdsWithin] with δ hδ using (h β a δ hδ).symm`. Use `Filter.Tendsto.congr' h1 ?_` and prove the remaining obligations. Establish `hb : 0 < ‖β‖` using `norm_pos_iff.2 hβ`. Establish `hab : 0 < ‖a‖` using `norm_pos_iff.2 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (fun δ:ℝ => ‖β‖ / Real.sqrt (4 * δ ^ 2 + ‖β‖ ^ 2 * ‖a‖ ^ 2)) 0`. Apply `ContinuousAt.div continuousAt_const (by fun_prop)` to reduce the goal to its premises. Establish `: 0 < 4 * (0:ℝ) ^ 2 + ‖β‖ ^ 2 * ‖a‖ ^ 2` using `by positivity`. Conclude with `(Real.sqrt_pos.2 this).ne'`. Establish `h2` using `(Complex.continuous_ofReal.continuousAt.comp hc).tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0:ℝ)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp]`. Use `congr 1`. Establish `: 4 * (0:ℝ) ^ 2 + ‖β‖ ^ 2 * ‖a‖ ^ 2 = (‖β‖ * ‖a‖) ^ 2` using `by ring`. Use `show ‖a‖⁻¹ = ‖β‖ / Real.sqrt (4 * (0:ℝ) ^ 2 + ‖β‖ ^ 2 * ‖a‖ ^ 2)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this, Real.sqrt_sq (by positivity)]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem gaussOne_of_damped (h : GaussOneDamped) : GaussOne := by
   intro β a hβ ha
@@ -239,18 +237,18 @@ theorem gaussOne_of_damped (h : GaussOneDamped) : GaussOne := by
   field_simp
 
 /- English proof (translation)
-Simplify using `only [psi, mul_add, Complex.add_re, Complex.ofReal_add, Complex.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_add (β x y : ℂ) : psi β (x + y) = psi β x * psi β y := by
   simp only [psi, mul_add, Complex.add_re, Complex.ofReal_add, Complex.exp_add]
 
 /- English proof (translation)
-Simplify using `[psi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_zero (β : ℂ) : psi β 0 = 1 := by simp [psi]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [psi_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, psi_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psi_sum {ι : Type} (β : ℂ) (s : Finset ι) (f : ι → ℂ) :
     psi β (∑ k ∈ s, f k) = ∏ k ∈ s, psi β (f k) := by
@@ -260,15 +258,15 @@ theorem psi_sum {ι : Type} (β : ℂ) (s : Finset ι) (f : ι → ℂ) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, psi_add, ih]
 
 /- English proof (translation)
-Unfold `psi`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_psi (β : ℂ) : Continuous (psi β) := by
   unfold psi; fun_prop
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `h` using `Matrix.mem_unitaryGroup_iff'.1 hW`. Establish `e : star Wᵀ = (star W)ᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.star_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← Matrix.transpose_mul, h, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_mem_unitary (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ)
     (hW : W ∈ Matrix.unitaryGroup (Fin d) ℂ) : Wᵀ ∈ Matrix.unitaryGroup (Fin d) ℂ := by
@@ -279,9 +277,9 @@ theorem transpose_mem_unitary (d : ℕ) (W : Matrix (Fin d) (Fin d) ℂ)
   rw [e, ← Matrix.transpose_mul, h, Matrix.transpose_one]
 
 /- English proof (translation)
-Establish `e : ∀ y : Fin d → ℂ, ((∑ k, ‖y k‖ ^ 2 : ℝ) : ℂ) = star y ⬝ᵥ y`. Introduce `y`. Simplify using `only [dotProduct, Pi.star_apply, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h` using `Matrix.mem_unitaryGroup_iff'.1 hU`. Establish `: ((∑ k, ‖(U *ᵥ x) k‖ ^ 2 : ℝ) : ℂ) = ((∑ k, ‖x k‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[e, e, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, h, Matrix.one_mulVec]`. Conclude with `this` after adjusting the coercions.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_sq_unitary (d : ℕ) (U : Matrix (Fin d) (Fin d) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin d) ℂ) (x : Fin d → ℂ) :
@@ -298,7 +296,7 @@ theorem sum_norm_sq_unitary (d : ℕ) (U : Matrix (Fin d) (Fin d) ℂ)
   exact_mod_cast this
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.mulVec_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_form_takagi (d : ℕ) (W D : Matrix (Fin d) (Fin d) ℂ) (x : Fin d → ℂ) :
     x ⬝ᵥ ((W * D * Wᵀ) *ᵥ x) = (Wᵀ *ᵥ x) ⬝ᵥ (D *ᵥ (Wᵀ *ᵥ x)) := by
@@ -309,7 +307,7 @@ noncomputable def diagF (β : ℂ) (d : ℕ) (σ : Fin d → ℝ) (t : ℂ) (δ 
     psi β ((y ⬝ᵥ (Matrix.diagonal (fun i => ((σ i : ℝ) : ℂ)) *ᵥ y)) / (2 * t))
 
 /- English proof (translation)
-Unfold `diagF`. Use `Continuous.mul (by fun_prop) ((continuous_psi β).comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_diagF (β : ℂ) (d : ℕ) (σ : Fin d → ℝ) (t : ℂ) (δ : ℝ) :
     Continuous (diagF β d σ t δ) := by
@@ -318,9 +316,9 @@ theorem continuous_diagF (β : ℂ) (d : ℕ) (σ : Fin d → ℝ) (t : ℂ) (δ
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_mul_distrib, ← psi_sum, ← Complex.ofReal_prod, ← Real.exp_sum, ← Finset.mul_sum, diagF]`. Use `congr 2`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Finset.sum_div]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_div, mul_comm t 2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagF_eq_prod (β : ℂ) (d : ℕ) (σ : Fin d → ℝ) (t : ℂ) (δ : ℝ) (y : Fin d → ℂ) :
     diagF β d σ t δ y =
@@ -334,9 +332,9 @@ theorem diagF_eq_prod (β : ℂ) (d : ℕ) (σ : Fin d → ℝ) (t : ℂ) (δ : 
   ring
 
 /- English proof (translation)
-Establish `hWt` using `transpose_mem_unitary d W hW`. Establish `hmp` using `hU d β Wᵀ hWt`. Establish `h1 : gaussInt β d (W * Matrix.diagonal (fun i => ((σ i : ℝ) : ℂ)) * Wᵀ) t δ = ∫ x : Fin d → ℂ, diagF β d σ t δ (Wᵀ *ᵥ x) ∂(muPi β (Fin d))`. Unfold `gaussInt diagF`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [quad_form_takagi, sum_norm_sq_unitary d Wᵀ hWt x]`. Rewrite using `[h1, ← integral_map hmp.measurable.aemeasurable (continuous_diagF β d σ t δ).aestronglyMeasurable, hmp.map_eq]`. Repeatedly rewrite using `[diagF_eq_prod]`. Conclude with `integral_fintype_prod_eq_prod (μ := fun _ : Fin d => mu β) (fun k w => ((Real.exp (-δ * ‖w‖ ^ 2) : ℝ) : ℂ) * psi β (((σ k : ℂ) / t) * w ^ 2 / 2))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussInt_takagi (hU : UnitaryInvariant) (d : ℕ) (β t : ℂ) (W : Matrix (Fin d) (Fin d) ℂ)
     (hW : W ∈ Matrix.unitaryGroup (Fin d) ℂ) (σ : Fin d → ℝ) (δ : ℝ) :
@@ -356,15 +354,15 @@ theorem gaussInt_takagi (hU : UnitaryInvariant) (d : ℕ) (β t : ℂ) (W : Matr
     (fun k w => ((Real.exp (-δ * ‖w‖ ^ 2) : ℝ) : ℂ) * psi β (((σ k : ℂ) / t) * w ^ 2 / 2))
 
 /- English proof (translation)
-Introduce `hT hU hG d β t H hβ ht hsym hdet`. Take `⟨W, hW, σ, hσ, hH⟩` from `hT d H hsym`. Establish `hnW : ‖W.det‖ = 1`. Establish `h` using `normSq_det_unitary d W hW`. Rewrite `h` using `[Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg W.det, sq_nonneg (‖W.det‖ - 1)]`. Establish `hdH : H.det = W.det * (∏ k, ((σ k : ℝ) : ℂ)) * W.det`. Rewrite using `[hH, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_transpose]`. Establish `hσ0 : ∀ k, σ k ≠ 0`. Introduce `k hk`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[hdH, Finset.prod_eq_zero (Finset.mem_univ k) (by rw [hk]; simp)]`. Simplify using the standard rewrite rules. Establish `hkey : gaussInt β d H t = fun δ => ∏ k, ∫ w : ℂ, ((Real.exp (-δ * ‖w‖ ^ 2) : ℝ) : ℂ) * psi β (((σ k : ℂ) / t) * w ^ 2 / 2) ∂(mu β)`. Use function extensionality and compare the values at `δ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hH]`. Conclude with `gaussInt_takagi hU d β t W hW σ δ`. Establish `hlim : ((‖t‖ ^ d / ‖H.det‖ : ℝ) : ℂ) = ∏ k : Fin d, (((‖(σ k : ℂ) / t‖)⁻¹ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_prod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdH, norm_mul, norm_mul, hnW, norm_prod]`. Simplify using `only [norm_div, inv_div, Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, one_mul, mul_one]`. Rewrite using `[hkey, hlim]`. Use `tendsto_finsetProd _ fun k _ => ?_` and prove the remaining obligations. Conclude with `gaussOne_of_damped hG β _ hβ (div_ne_zero (by exact_mod_cast hσ0 k) ht)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gaussMultiOfOne : GaussMultiOfOne := by
   intro hT hU hG d β t H hβ ht hsym hdet
@@ -394,15 +392,15 @@ theorem gaussMultiOfOne : GaussMultiOfOne := by
   exact gaussOne_of_damped hG β _ hβ (div_ne_zero (by exact_mod_cast hσ0 k) ht)
 
 /- English proof (translation)
-Introduce `hG hD m β t z hβ ht hz`. Establish `hdet : (z⁻¹ • (1 + Matrix.of fun _ _ => (1 : ℂ)) : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ).det ≠ 0`. Rewrite using `[hD m z]`. Establish `: ((m:ℂ)+2) ≠ 0`. Establish `: ((m:ℂ)+2) = ((m+2 : ℕ) : ℂ)` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(Nat.succ_ne_zero (m+1))` after adjusting the coercions. Conclude with `mul_ne_zero this (pow_ne_zero _ (inv_ne_zero hz))`. Establish `hs : (z⁻¹ • (1 + Matrix.of fun _ _ => (1 : ℂ)) : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ).IsSymm`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.transpose_apply, Matrix.one_apply, eq_comm, mul_add]`. Establish `h` using `hG (m+1) β t _ hβ ht hs hdet`. Rewrite `h` using `[hD m z]`. Use `h using 3` and compare the differences between its conclusion and the goal. Establish `h2 : ‖(m:ℂ)+2‖ = (m:ℝ)+2`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((m:ℂ)+2) = (((m:ℝ)+2 : ℝ):ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Rewrite using `[norm_mul, norm_pow, norm_inv, h2]`. Establish `: 0 < ‖z‖` using `norm_pos_iff.2 hz`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_pow]`. Simplify using `[this.ne']`.
+A detailed English derivation is pending.
 -/
 theorem gaussHessOfMulti : GaussHessOfMulti := by
   intro hG hD m β t z hβ ht hz
@@ -430,27 +428,27 @@ end Formalism.FourierDecayAlt.P.G8
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `G8.gaussOneDamped`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_one_damped : Formalism.FourierDecayAlt.G.GaussOneDamped := G8.gaussOneDamped
 
 /- English proof (translation)
-The claim follows from `G8.gaussOne_of_damped G8.gaussOneDamped`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_one_dim : Formalism.FourierDecayAlt.G.GaussOne := G8.gaussOne_of_damped G8.gaussOneDamped
 
 /- English proof (translation)
-The claim follows from `G8.gaussMultiOfOne`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_multi_of_one : Formalism.FourierDecayAlt.G.GaussMultiOfOne := G8.gaussMultiOfOne
 
 /- English proof (translation)
-The claim follows from `G8.gaussHessOfMulti`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_hessian_of_multi : Formalism.FourierDecayAlt.G.GaussHessOfMulti := G8.gaussHessOfMulti
 
 /- English proof (translation)
-The claim follows from `G8.unitaryInvariant`.
+A detailed English derivation is pending.
 -/
 theorem unitary_invariant_gaussian : Formalism.FourierDecayAlt.G.UnitaryInvariant := G8.unitaryInvariant
 

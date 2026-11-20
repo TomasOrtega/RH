@@ -9,13 +9,13 @@ variable {K : Type*} [Field K] {B n : ℕ}
 def bw (b : Fin B) (s : Fin B × Fin n →₀ ℕ) : ℕ := ∑ j, s (b, j)
 
 /- English proof (translation)
-Simplify using `[bw, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bw_add (b : Fin B) (s t : Fin B × Fin n →₀ ℕ) : bw b (s + t) = bw b s + bw b t := by
   simp [bw, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `v`. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality. Simplify using `[bw, Finsupp.single_apply]`. Simplify using `[bw, Finsupp.single_apply, h]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bw_single (b : Fin B) (v : Fin B × Fin n) (e : ℕ) :
     bw b (Finsupp.single v e) = if v.1 = b then e else 0 := by
@@ -29,14 +29,14 @@ noncomputable def psiB (b : Fin B) :
   aeval fun v => if v.1 = b then Polynomial.C (X v) * Polynomial.X else Polynomial.C (X v)
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [psiB, aeval_X]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiB_X (b : Fin B) (v : Fin B × Fin n) :
     psiB (K := K) b (X v) = Polynomial.C (X v) * Polynomial.X ^ (if v.1 = b then 1 else 0) := by
   simp only [psiB, aeval_X]; split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finsupp.induction generalizing a`. Simplify using `[psiB, bw, MvPolynomial.algebraMap_eq, Polynomial.algebraMap_apply]`. Name the introduced variables `v e f _ _ ih`. Rewrite using `[monomial_single_add, map_mul, map_pow, ih, psiB_X, bw_add, bw_single]`. Apply the tactic sequence `split_ifs <;> simp only [map_mul, map_pow, mul_pow, ← pow_mul, pow_add, mul_one, mul_zero, pow_zero, add_zero, zero_add] <;> ring`.
+Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiB_monomial (b : Fin B) (s : Fin B × Fin n →₀ ℕ) (a : K) :
     psiB b (monomial s a) = Polynomial.C (monomial s a) * Polynomial.X ^ bw b s := by
@@ -48,7 +48,7 @@ theorem psiB_monomial (b : Fin B) (s : Fin B × Fin n →₀ ℕ) (a : K) :
       pow_zero, add_zero, zero_add] <;> ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun s hs => by rw [psiB_monomial, hf s hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiB_eq_of_hom (b : Fin B) (δ : ℕ) (f : MvPolynomial (Fin B × Fin n) K)
     (hf : ∀ s ∈ f.support, bw b s = δ) : psiB b f = Polynomial.C f * Polynomial.X ^ δ := by
@@ -58,11 +58,9 @@ theorem psiB_eq_of_hom (b : Fin B) (δ : ℕ) (f : MvPolynomial (Fin B × Fin n)
   exact Finset.sum_congr rfl fun s hs => by rw [psiB_monomial, hf s hs]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrArg (MvPolynomial.coeff s) h0`. Use `conv at h1 => lhs`. Rewrite using `[f.as_sum]`. Rewrite `h1` using `[map_sum, Polynomial.finsetSum_coeff, coeff_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [psiB_monomial, Polynomial.coeff_C_mul_X_pow, coeff_zero] at h1`. Rewrite `h1` using `[Finset.sum_eq_single s]`. Simplify using `at h1`. Conclude with `(mem_support_iff.1 hs) h1`. Apply the tactic sequence `intro s' _ hne split_ifs <;> simp [coeff_monomial, hne]`.
-
-Introduce `h`. Conclude with `absurd hs h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_psiB_ne_zero (b : Fin B) (f : MvPolynomial (Fin B × Fin n) K)
     (s : Fin B × Fin n →₀ ℕ) (hs : s ∈ f.support) : (psiB b f).coeff (bw b s) ≠ 0 := by
@@ -79,7 +77,7 @@ theorem coeff_psiB_ne_zero (b : Fin B) (f : MvPolynomial (Fin B × Fin n) K)
   · intro h; exact absurd hs h
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, Polynomial.natTrailingDegree_mul (pow_ne_zero _ hp) hp, ih, Nat.succ_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ntd_pow {R : Type*} [CommRing R] [IsDomain R] (p : Polynomial R) (hp : p ≠ 0) (m : ℕ) :
     (p ^ m).natTrailingDegree = m * p.natTrailingDegree := by
@@ -89,17 +87,17 @@ theorem ntd_pow {R : Type*} [CommRing R] [IsDomain R] (p : Polynomial R) (hp : p
     rw [pow_succ, Polynomial.natTrailingDegree_mul (pow_ne_zero _ hp) hp, ih, Nat.succ_mul]
 
 /- English proof (translation)
-Establish `key : ∀ b : Fin B, ∃ k, m * k = δ ∧ ∀ s ∈ F0.support, bw b s = k`. Introduce `b`. Establish `h1` using `psiB_eq_of_hom b δ _ (fun s hs => h s hs b)`. Rewrite using `[map_mul, map_pow, show psiB b (C κ) = Polynomial.C (C κ) by`. Simplify using `[psiB, MvPolynomial.algebraMap_eq, Polynomial.algebraMap_apply], map_mul] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hCk : (Polynomial.C (C κ) : Polynomial (MvPolynomial (Fin B × Fin n) K)) ≠ 0`. Simplify using `[hκ]`. Establish `h2 : psiB b F0 ^ m = Polynomial.C (F0 ^ m) * Polynomial.X ^ δ`. Apply `mul_left_cancel₀ hCk` to reduce the goal to its premises. Rewrite using `[h1, map_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨s0, hs0⟩ : F0.support.Nonempty` from `Finset.nonempty_iff_ne_empty.2 fun h0 => hF0 (support_eq_empty.1 h0)`. Establish `hP : psiB b F0 ≠ 0` using `fun h0 => coeff_psiB_ne_zero b F0 s0 hs0 (by rw [h0]; simp)`. Establish `hFm : F0 ^ m ≠ 0` using `pow_ne_zero _ hF0`. Establish `hdeg` using `congrArg Polynomial.natDegree h2`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr` using `congrArg Polynomial.natTrailingDegree h2`. Rewrite `hdeg` using `[Polynomial.natDegree_pow, Polynomial.natDegree_C_mul_X_pow _ _ hFm]`. Rewrite `htr` using `[ntd_pow _ hP, Polynomial.C_mul_X_pow_eq_monomial, Polynomial.natTrailingDegree_monomial hFm]`. Establish `heq : (psiB b F0).natDegree = (psiB b F0).natTrailingDegree` using `Nat.eq_of_mul_eq_mul_left hm (hdeg.trans htr.symm)`. Use `⟨(psiB b F0).natDegree, hdeg, fun s hs => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `coeff_psiB_ne_zero b F0 s hs`. Establish `h3` using `Polynomial.le_natDegree_of_ne_zero hc`. Establish `h4` using `Polynomial.natTrailingDegree_le_of_ne_zero hc`. Use linear arithmetic over natural numbers and integers. Take `⟨k0, hk0, -⟩` from `key ⟨0, hB⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `⟨k0, hk0, fun s hs b => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hks⟩` from `key b`. Rewrite using `[show (∑ j, s (b, j)) = bw b s from rfl, hks s hs]`. Conclude with `Nat.eq_of_mul_eq_mul_left hm (hk.trans hk0.symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMH_of_pow (hB : 0 < B) (F0 : MvPolynomial (Fin B × Fin n) K) (κ : K) (m δ : ℕ)
     (hm : 1 ≤ m) (hκ : κ ≠ 0) (hF0 : F0 ≠ 0)

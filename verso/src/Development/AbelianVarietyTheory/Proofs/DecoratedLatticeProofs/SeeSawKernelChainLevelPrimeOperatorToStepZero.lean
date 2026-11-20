@@ -35,7 +35,7 @@ end Lin
 variable {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
 
 /- English proof (translation)
-Use `⟨o.I.foldr (fun i G => (sOpLin (o.β j i) (o.Q j i) o.q (resChar (o.χ i) (o.hχ i) o.q) (ε j i)).comp G) LinearMap.id, fun f => ?_⟩` and prove the remaining obligations. Unfold `TDat.S`. Proceed by induction on `o.I with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.foldr_cons, LinearMap.comp_apply, ih]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
 Both sides reduce to the same expression.
 -/
@@ -49,7 +49,7 @@ theorem S_lin (o : TDat c k ι) (ε : ℕ → ι → 𝓀[k]ˣ) (j : ℕ) :
   | cons i l ih => simp only [List.foldr_cons, LinearMap.comp_apply, ih]; rfl
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `S_lin o ε j`. Rewrite using `[hL, hL, map_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_smul (o : TDat c k ι) (ε : ℕ → ι → 𝓀[k]ˣ) (j : ℕ) (a : ℂ) (f : GA D (c.X j) → ℂ) :
     o.S ε j (a • f) = a • o.S ε j f := by
@@ -57,7 +57,7 @@ theorem S_smul (o : TDat c k ι) (ε : ℕ → ι → 𝓀[k]ˣ) (j : ℕ) (a : 
   rw [hL, hL, map_smul]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `S_lin o ε j`. Rewrite using `[hL, map_sum]`. Simplify using `only [hL]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem S_sum (o : TDat c k ι) (ε : ℕ → ι → 𝓀[k]ˣ) (j : ℕ) {α : Type} (s : Finset α) (f : α → GA D (c.X j) → ℂ) :
     o.S ε j (∑ a ∈ s, f a) = ∑ a ∈ s, o.S ε j (f a) := by
@@ -65,7 +65,7 @@ theorem S_sum (o : TDat c k ι) (ε : ℕ → ι → 𝓀[k]ˣ) (j : ℕ) {α : 
   rw [hL, map_sum]; simp only [hL]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [KerDat.lift, liftT_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -96,9 +96,9 @@ Both sides reduce to the same expression.
 theorem col_succ (t : Tup c) (j : ℕ) (ψ : t.Col 0) : t.col (j + 1) ψ = t.K j (t.col j ψ) := rfl
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _ ψ hψ`. Conclude with `hψ`. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj ψ hψ`. Rewrite using `[col_succ]`. Conclude with `hI.stabK j (by omega) _ (ih (by omega) ψ hψ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mem (t : Tup c) (hI : t.Is) : ∀ j, j ≤ D.R.m → ∀ ψ ∈ t.Ram 0, t.col j ψ ∈ t.Ram j := by
   intro j
@@ -110,9 +110,7 @@ theorem col_mem (t : Tup c) (hI : t.Is) : ∀ j, j ≤ D.R.m → ∀ ψ ∈ t.Ra
     exact hI.stabK j (by omega) _ (ih (by omega) ψ hψ)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro ψ hψ`. Conclude with `hψ`. Consider the case `succ i ih => intro ψ hψ`.
-
-Conclude with `(hR.S₀ _ _ (ih ψ hψ)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iterS_mem (o : TDat c k ι) (t : Tup c) (ε : ℕ → ι → 𝓀[k]ˣ) (S₀ : (ι → 𝓀[k]ˣ) → t.Col 0 → t.Col 0)
     (hR : ReadS o t ε S₀) : ∀ i, ∀ ψ ∈ t.Ram 0, iterS S₀ ε i ψ ∈ t.Ram 0 := by
@@ -122,9 +120,9 @@ theorem iterS_mem (o : TDat c k ι) (t : Tup c) (ε : ℕ → ι → 𝓀[k]ˣ) 
   | succ i ih => intro ψ hψ; exact (hR.S₀ _ _ (ih ψ hψ)).1
 
 /- English proof (translation)
-Introduce `γ y'`. Take `⟨hc, hB⟩` from `hK j hj`. Take `⟨n, y, P, hP⟩` from `hB y'`. Establish `e1` using `hP a ha γ`. Rewrite `e1` using `[h, lift_smul, ← Finset.smul_sum, ← hP b hb γ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `e1` using `[smul_comm]`. Conclude with `smul_right_injective _ hc e1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepK (t : Tup c) (hK : t.KBack) {j : ℕ} (hj : j < D.R.m) {a b : t.Col j} (ha : a ∈ t.Ram j) (hb : b ∈ t.Ram j)
     (x : ℂ) (h : ∀ α y, t.rd j α a y = x • t.rd j α b y) :
@@ -138,17 +136,15 @@ theorem stepK (t : Tup c) (hK : t.KBack) {j : ℕ} (hj : j < D.R.m) {a b : t.Col
   exact smul_right_injective _ hc e1
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ ψ hψ α y`. Rewrite using `[Finset.range_zero, Finset.prod_empty, one_smul, col_zero, col_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hR.S₀ η ψ hψ).2 α y).symm`. Consider the case `succ j ih`. Introduce `hj ψ hψ γ y'`. Establish `hj' : j < D.R.m` using `by omega`. Take `⟨hc, hB⟩` from `hK j hj'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, y, P, hP⟩` from `hB y'`. Establish `m1` using `col_mem t hI j hj'.le ψ hψ`. Establish `m2` using `col_mem t hI j hj'.le _ (hR.S₀ η ψ hψ).1`. Establish `e1` using `hP _ m1 γ`. Establish `e2` using `hP _ m2 γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `smul_right_injective _ hc` to reduce the goal to its premises. Use `show t.cK j • o.S (fun _ => η) (j + 1) (t.rd (j + 1) γ (t.K j (t.col j ψ)) y') = t.cK j • ((∏ l ∈ Finset.range (j + 1), o.cL l) • t.rd (j + 1) γ (t.K j (t.col j (S₀ η ψ))) y')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, S_sum]`. Simplify using `only [S_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ a, ∑ α, (o.cL j * ∏ l ∈ Finset.range j, o.cL l) • (t.ker j α γ).lift c.ψ c.θ (c.x j) (c.x (j + 1)) (P a) (t.rd j α (t.col j (S₀ η ψ)) (y a)) := by`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[(hL j hj' α γ (P a) _ (hR.ram j hj'.le _ m1 α (y a))).2 η, ih hj'.le ψ hψ α (y a), lift_smul, smul_smul]`. Use `_ = (o.cL j * ∏ l ∈ Finset.range j, o.cL l) • (t.cK j • t.rd (j + 1) γ (t.K j (t.col j (S₀ η ψ))) y') := by`. Rewrite using `[e2]`.
-
-Simplify using `only [Finset.smul_sum]`. Use `_ = t.cK j • ((∏ l ∈ Finset.range (j + 1), o.cL l) • t.rd (j + 1) γ (t.K j (t.col j (S₀ η ψ))) y') := by`. Rewrite using `[Finset.prod_range_succ, smul_comm, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepB (o : TDat c k ι) (t : Tup c) (ε : ℕ → ι → 𝓀[k]ˣ) (S₀ : (ι → 𝓀[k]ˣ) → t.Col 0 → t.Col 0)
     (hI : t.Is) (hK : t.KBack) (hL : LiftS o t) (hR : ReadS o t ε S₀) (η : ι → 𝓀[k]ˣ) :
@@ -187,17 +183,17 @@ theorem stepB (o : TDat c k ι) (t : Tup c) (ε : ℕ → ι → 𝓀[k]ˣ) (S�
           rw [Finset.prod_range_succ, smul_comm, mul_comm]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ ψ hψ`. Use `⟨hψ, fun α y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [TDat.cS, Finset.range_zero, Finset.prod_empty, one_smul]`. Both sides reduce to the same expression. Consider the case `succ i ih`. Introduce `hi ψ hψ`. Take `⟨hu, hr⟩` from `ih (by omega) ψ hψ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hφ` using `iterS_mem o t ε S₀ hR i ψ hψ`. Establish `hS` using `hI.stabS (2 * i) (by omega) _ hu`. Establish `hw` using `col_mem t hI (2 * i) (by omega) _ (hR.S₀ (ε (2 * i)) _ hφ).1`. Establish `hv` using `col_mem t hI (2 * i) (by omega) _ hφ`. Establish `h0 : ∀ α y, t.rd (2 * i) α (t.S (2 * i) (t.up i ψ)) y = (o.cS i * ∏ l ∈ Finset.range (2 * i), o.cL l) • t.rd (2 * i) α (t.col (2 * i) (S₀ (ε (2 * i)) (iterS S₀ ε i ψ))) y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `α y`. Rewrite using `[hR.S (2 * i) (by omega) _ hu α y, hr α y, S_smul, mul_smul]`. Use `congr 1`. Conclude with `stepB o t ε S₀ hI hK hL hR (ε (2 * i)) (2 * i) (by omega) _ hφ α y`. Establish `h1` using `stepK t hK (j := 2 * i) (by omega) hS hw _ h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt1 : 2 * i < D.R.m` using `by omega`. Establish `hlt2 : 2 * i + 1 < D.R.m` using `by omega`. Establish `h2` using `stepK t hK (j := 2 * i + 1) hlt2 (hI.stabK (2 * i) hlt1 _ hS) (hI.stabK (2 * i) hlt1 _ hw) _ h1`. Use `⟨hI.stabK (2 * i + 1) hlt2 _ (hI.stabK (2 * i) hlt1 _ hS), fun α y => ?_⟩` and prove the remaining obligations. Establish `hc : o.cS (i + 1) = o.cS i * ∏ l ∈ Finset.range (2 * i), o.cL l`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [TDat.cS, Finset.prod_range_succ]`. Rewrite using `[hc]`. Conclude with `h2 α y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepC (o : TDat c k ι) (t : Tup c) (ε : ℕ → ι → 𝓀[k]ˣ) (S₀ : (ι → 𝓀[k]ˣ) → t.Col 0 → t.Col 0)
     (hI : t.Is) (hK : t.KBack) (hL : LiftS o t) (hR : ReadS o t ε S₀) :
@@ -239,7 +235,7 @@ end GlobalTheory.SeeSaw.MoveZero
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Introduce `D c k _ _ _ _ ι o t ε S₀ hI hK hT hL hR n h ψ hψ F`. Take `⟨hu, hr⟩` from `MoveZero.stepC o t ε S₀ hI hK hL hR n h.le ψ hψ`. Conclude with `hT (2 * n) h _ hu _ (MoveZero.col_mem t hI (2 * n) h.le _ (MoveZero.iterS_mem o t ε S₀ hR n ψ hψ)) _ hr F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem commX_of_laws : ∀ (D : D7) (c : Comm D) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι) (t : Tup c) (ε : ℕ → ι → 𝓀[k]ˣ)

@@ -13,7 +13,7 @@ open MeasureTheory Topology Filter Metric NumberField Formalism.BasicNotions For
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Use extensionality with `p`. Apply the tactic sequence `by_cases h : p.2.2.2 <;> simp [reimV, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reimV_add {V : Type} {n m : ℕ} (A B : V → Matrix (Fin n) (Fin m) ℂ) :
     reimV (A + B) = reimV A + reimV B := by
@@ -21,7 +21,7 @@ theorem reimV_add {V : Type} {n m : ℕ} (A B : V → Matrix (Fin n) (Fin m) ℂ
   by_cases h : p.2.2.2 <;> simp [reimV, h]
 
 /- English proof (translation)
-Use extensionality with `p`. Apply the tactic sequence `by_cases h : p.2.2.2 <;> simp [reimV, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reimV_smul {V : Type} {n m : ℕ} (r : ℝ) (A : V → Matrix (Fin n) (Fin m) ℂ) :
     reimV (fun v => (r : ℂ) • A v) = r • reimV A := by
@@ -29,7 +29,7 @@ theorem reimV_smul {V : Type} {n m : ℕ} (r : ℝ) (A : V → Matrix (Fin n) (F
   by_cases h : p.2.2.2 <;> simp [reimV, h]
 
 /- English proof (translation)
-Establish `h1 : A.map f * (A⁻¹).map f = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hA), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `(Matrix.inv_eq_right_inv h1).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_of_det {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (A : Matrix (Fin n) (Fin n) K)
     (hA : A.det ≠ 0) : (A⁻¹).map f = (A.map f)⁻¹ := by
@@ -38,7 +38,7 @@ theorem map_inv_of_det {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ
   exact (Matrix.inv_eq_right_inv h1).symm
 
 /- English proof (translation)
-Use extensionality with `i b`. Simplify using `only [betaV, Matrix.of_apply, wV]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Rewrite using `[show Y0 X u' b j = inclR (Ainf X.B.I.F) (tupH (frameOf X u') b j) from rfl, thetaInf_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_frame_coordinates {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     betaV X v (Y0 X u') = Matrix.of fun i b => wV X u' v b i := by
@@ -49,7 +49,7 @@ theorem beta_frame_coordinates {D : D7} (X : HidaSetting D) (u' : D.what₂.Word
   rw [show Y0 X u' b j = inclR (Ainf X.B.I.F) (tupH (frameOf X u') b j) from rfl, thetaInf_inclR]
 
 /- English proof (translation)
-Use extensionality with `b b'`. Rewrite using `[Matrix.map_apply, ← gram_wV, beta_frame_coordinates]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,9 +65,9 @@ theorem gram_betaV {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : Infin
   ring
 
 /- English proof (translation)
-Establish `h1 : (μ.map e).map e.symm = μ`. Rewrite using `[Measure.map_map e.symm.continuous.measurable e.continuous.measurable]`. Establish `: (e.symm ∘ e : E → E) = id` using `by funext x; simp`. Rewrite using `[this, Measure.map_id]`. Rewrite `h1` using `[h, Measure.map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, smul_smul, ENNReal.inv_mul_cancel ha0 hat, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_symm_of_map {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -81,7 +81,7 @@ theorem map_symm_of_map {E F : Type} [NormedAddCommGroup E] [InnerProductSpace �
   rw [← h1, smul_smul, ENNReal.inv_mul_cancel ha0 hat, one_smul]
 
 /- English proof (translation)
-Use `hf 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem add_zero_of {A B : Type} [AddCommGroup A] [AddCommGroup B] (f : A → B) (hf : ∀ x y, f (x + y) = f x + f y) :
     f 0 = 0 := by
@@ -90,67 +90,59 @@ theorem add_zero_of {A B : Type} [AddCommGroup A] [AddCommGroup B] (f : A → B)
   simpa using this
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hPH η _ eH cν hadd hν hb c S ι _ L hc hL`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : BorelSpace (TupI X) := PI.AprimeInfT.borelSpace_tup (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (D.R.rS + 1 + D.R.rS)`. Use `haveI : BorelSpace (HmI X) := ⟨rfl⟩`. Take `⟨Bc, hBc⟩` from `hB X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, _, Hh, Tc, hH1, hH2, hH3, hTcadd, hHθ, hνT⟩` from `hN X u' ψ hT μinf νinf fibInf hPH`. Establish `hμT` using `densMu_holds X u' ψ hT μinf νinf fibInf hPH`. Establish `hμB` using `hM X u' ψ hT μinf νinf fibInf hPH`. Use `set s := Real.sqrt |(matI X).det| with hs`. Use `set N := X.B.I.n * (D.R.rS + 1 + D.R.rS) * Fintype.card (InfinitePlace X.B.I.F) with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set w : InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin (D.R.rS + 1 + D.R.rS)) ℂ := fun v => uMat (c v)⁻¹ * betaV X v (Y0 X u') with hw`. Establish `hcinv : ∀ v, (uMat (c v)⁻¹)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat (c v)⁻¹ = Formalism.REAL.Jm (X.B.I.ε v)` using `fun v => ((c v)⁻¹).2`. Establish `hcu : ∀ v, (uMat (c v))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat (c v) = Formalism.REAL.Jm (X.B.I.ε v)` using `fun v => (c v).2`. Establish `hcc : ∀ v, uMat (c v) * uMat (c v)⁻¹ = 1` using `fun v => by simp [uMat]`. Establish `hG : ∀ v, (w v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * w v = (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (X.B.I.φ v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[← gram_betaV]`. Simplify using `only [hw, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdet` using `detNZ_holds X u' ψ hT μinf νinf fibInf hPH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmd : ∀ v, ((gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (X.B.I.φ v)).det = X.B.I.φ v (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).det` using `fun v => (RingHom.map_det _ _).symm`. Establish `hGdet : ∀ v, ((w v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * w v).det ≠ 0`. Introduce `v`. Rewrite using `[hG, hmd]`. Conclude with `(map_ne_zero _).2 hdet`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hGnorm : ∀ v, ‖((w v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * w v).det‖ = Tw u'`. Introduce `v`. Rewrite using `[hG, hmd]`. Conclude with `hDet X u' ψ hT μinf νinf fibInf hPH v`. Take `⟨Fe, hFe, hvolF⟩` from `hP (InfinitePlace X.B.I.F) X.B.I.n (D.R.rS + 1 + D.R.rS) X.B.I.ε S w (fun v => uMat (c v)) L Hh (fun v => by rw [(hc.1 v).1]; exact dimNK_holds X) (hR X u' ψ hT μinf νinf fibInf hPH hb c S hc) hGdet hcu (fun x v => hL.1 x v) hL.2.1 hL.2.2 hH1 hH2 hH3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hEs : ∀ x y, eH.symm (x + y) = eH.symm x + eH.symm y`. Introduce `x y`. Apply `eH.injective` to reduce the goal to its premises. Rewrite using `[hadd]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hTs : ∀ x y, Tc.symm (x + y) = Tc.symm x + Tc.symm y`. Introduce `x y`. Apply `Tc.injective` to reduce the goal to its premises. Rewrite using `[hTcadd]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `Th0 : EuclideanSpace ℝ η →+ EuclideanSpace ℝ κ` to `{ toFun := fun t => Tc (eH.symm t) map_zero' := by rw [add_zero_of _ hEs, add_zero_of _ hTcadd] map_add' := fun x y => by rw [hEs, hTcadd] }`. Set `Ti0 : EuclideanSpace ℝ κ →+ EuclideanSpace ℝ η` to `{ toFun := fun t => eH (Tc.symm t) map_zero' := by rw [add_zero_of _ hTs, add_zero_of _ hadd] map_add' := fun x y => by rw [hTs, hadd] }`. Set `Th : EuclideanSpace ℝ η ≃L[ℝ] EuclideanSpace ℝ κ` to `ContinuousLinearEquiv.equivOfInverse (Th0.toRealLinearMap (Tc.continuous.comp eH.symm.continuous)) (Ti0.toRealLinearMap (eH.continuous.comp Tc.symm.continuous)) (fun t => by simp [Th0, Ti0]) (fun t => by simp [Th0, Ti0])`. Establish `hThe : ∀ t, Th t = Tc (eH.symm t)` using `fun t => rfl`. Establish `hvolT : (volume : Measure (EuclideanSpace ℝ η)).map Th = (ENNReal.ofReal cν)⁻¹ • volume`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : νinf.map Tc = (νinf.map eH).map Th`. Rewrite using `[Measure.map_map Th.continuous.measurable eH.continuous.measurable]`. Use `congr 1`. Use function extensionality and compare the values at `S'`. Simplify using `[hThe]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[hνT, hν, Measure.map_smul]`. Establish `hc0 : ENNReal.ofReal cν ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, zero_smul]`. Conclude with `(NeZero.ne (volume : Measure (EuclideanSpace ℝ κ))) h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, smul_smul, ENNReal.inv_mul_cancel hc0 ENNReal.ofReal_ne_top, one_smul]`. Establish `hcν : 0 < cν`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h1 : νinf.map Tc = (νinf.map eH).map Th`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Measure.map_map Th.continuous.measurable eH.continuous.measurable]`. Use `congr 1`. Use function extensionality and compare the values at `S'`. Simplify using `[hThe]`. Rewrite `h1` using `[hνT, hν, ENNReal.ofReal_of_nonpos hneg, zero_smul, Measure.map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(NeZero.ne (volume : Measure (EuclideanSpace ℝ κ))) h1`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 (abs_pos.2 (matNDH_holds X u' ψ hT μinf νinf fibInf hPH))`. Establish `hvolB : (volume : Measure (EuclideanSpace ℝ (KapI X))).map Bc = ((ENNReal.ofReal s)⁻¹ * ENNReal.ofReal (2 ^ N)) • volume`. Establish `h2 : μinf.map (fun Y => reimV (fun v => betaV X v Y)) = (μinf.map (tupCoord X)).map Bc`. Rewrite using `[Measure.map_map Bc.continuous.measurable (tupCoord X).continuous.measurable]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `Y`. Conclude with `(hBc Y).symm`. Rewrite `h2` using `[hμB, hμT, Measure.map_smul]`. Establish `hs0' : ENNReal.ofReal s ≠ 0` using `(ENNReal.ofReal_pos.2 hs0).ne'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ENNReal.inv_mul_cancel hs0' ENNReal.ofReal_ne_top, one_smul]`. Use `_ = _ := by rw [← h2, smul_smul]`. Set `Φ : (EuclideanSpace ℝ ι × EuclideanSpace ℝ η) ≃L[ℝ] EuclideanSpace ℝ (KapI X)` to `((ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ ι)).prodCongr Th).trans (Fe.trans Bc.symm)`. Establish `hΦ : ∀ z, Φ z = Bc.symm (Fe (z.1, Th z.2))` using `fun z => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hTinv : ∀ v, (TinvI X u').map (PI.AprimeInfU.thetaInf X v) = ((w v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * w v)⁻¹`. Introduce `v`. Rewrite using `[hG, ← map_inv_of_det _ _ hdet]`. Use extensionality with `i j`. Simplify using `only [TinvI, Matrix.map_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `thetaInf_inclR X v _`. Use `⟨Φ, fun z => ?_, ?_⟩` and prove the remaining obligations. Apply `Bc.injective` to reduce the goal to its premises. Rewrite using `[hΦ, ContinuousLinearEquiv.apply_symm_apply, hFe]`. Unfold `LamMap`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_add, map_smul]`. Establish `e1 : Bc (fderiv ℝ (KapOrb X u' (kap0 X hb c L)) 0 z.1) = reimV (fun v => uMat (c v) * L z.1 v * uMat (c v)⁻¹ * betaV X v (Y0 X u'))`. Rewrite using `[← (tupCoord X).apply_symm_apply (fderiv ℝ (KapOrb X u' (kap0 X hb c L)) 0 z.1), hBc]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hD X u' ψ hT μinf νinf fibInf hPH hb c S L hc hL z.1 v`. Establish `e2 : Bc (tupCoord X (rmulT X (TinvI X u' * ((eH.symm z.2 : HmI X) : Matrix _ _ _)) (Y0 X u'))) = reimV (fun v => betaV X v (Y0 X u') * ((w v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * w v)⁻¹ * Hh (Th z.2) v)`. Rewrite using `[hBc]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[betaV_rmul, Matrix.map_mul, hTinv, hThe, hHθ]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, e2, ← reimV_smul, ← reimV_add]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hw, Matrix.mul_add, Matrix.mul_smul, Pi.add_apply]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[show ((1 / 2 : ℝ) : ℂ) = (1 / 2 : ℂ) by push_cast; ring]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [← Matrix.mul_assoc, hcc, Matrix.one_mul]`. Establish `hTw : (0 : ℝ) < Tw u'`. Unfold `Tw`. Conclude with `(D.mem u').A.T_prime.pos` after adjusting the coercions. Use `set DP := ∏ v, (2 : ℝ) ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS)) / ‖((w v)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * w v).det‖ ^ (S v).card with hDP`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDP' : DP = ((2 : ℝ) ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS)) / Tw u' ^ D.R.k) ^ Fintype.card (InfinitePlace X.B.I.F)`. Rewrite using `[hDP, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hGnorm v, (hc.1 v).1]`. Establish `hDPpos : 0 < DP` using `by rw [hDP']; positivity`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hN2 : (0 : ℝ) < 2 ^ N` using `by positivity`. Use `set Dv := s * DP / (cν * 2 ^ N) with hDv`. Establish `hDvpos : 0 < Dv` using `by positivity`. Use `⟨Dv, hDvpos, ?_, ?_⟩` and prove the remaining obligations. Establish `hP1 : (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).map ((ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ ι)).prodCongr Th) = (ENNReal.ofReal cν)⁻¹ • (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.volume_eq_prod, Measure.volume_eq_prod]`. Establish `e : (((ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ ι)).prodCongr Th : EuclideanSpace ℝ ι × EuclideanSpace ℝ η → EuclideanSpace ℝ ι × EuclideanSpace ℝ κ)) = Prod.map id Th`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Rewrite using `[e, ← Measure.map_prod_map _ _ measurable_id Th.continuous.measurable, Measure.map_id, hvolT, Measure.prod_smul_right]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : (ENNReal.ofReal s)⁻¹ * ENNReal.ofReal (2 ^ N) ≠ 0` using `mul_ne_zero (ENNReal.inv_ne_zero.2 ENNReal.ofReal_ne_top) (ENNReal.ofReal_pos.2 hN2).ne'`. Establish `hat : (ENNReal.ofReal s)⁻¹ * ENNReal.ofReal (2 ^ N) ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 (ENNReal.ofReal_pos.2 hs0).ne') ENNReal.ofReal_ne_top`. Establish `hB2` using `map_symm_of_map _ _ Bc _ ha0 hat hvolB`. Establish `e2 : (Φ : EuclideanSpace ℝ ι × EuclideanSpace ℝ η → EuclideanSpace ℝ (KapI X)) = Bc.symm ∘ Fe ∘ ((ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ ι)).prodCongr Th)`. Use function extensionality and compare the values at `z`.
-
-Both sides reduce to the same expression. Rewrite using `[e2, ← Measure.map_map Bc.symm.continuous.measurable (Fe.continuous.measurable.comp ((ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ ι)).prodCongr Th).continuous.measurable), ← Measure.map_map Fe.continuous.measurable ((ContinuousLinearEquiv.refl ℝ (EuclideanSpace ℝ ι)).prodCongr …`. Use `congr 1`. Establish `h1 : (0 : ℝ) < s⁻¹ * 2 ^ N` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ cν⁻¹ * DP` using `by positivity`.
-
-Rewrite using `[← ENNReal.ofReal_inv_of_pos hcν, ← ENNReal.ofReal_inv_of_pos hs0, ← ENNReal.ofReal_mul (inv_nonneg.2 hs0.le), ← ENNReal.ofReal_inv_of_pos h1, ← ENNReal.ofReal_mul (inv_nonneg.2 hcν.le), ← ENNReal.ofReal_mul h2]`. Use `congr 1`. Rewrite using `[hDv]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hDv, hDP']`.
-
-Use `show s / (s * (((2 : ℝ) ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS)) / Tw u' ^ D.R.k) ^ Fintype.card (InfinitePlace X.B.I.F)) / (cν * 2 ^ N) * cν) = Tw u' ^ (D.R.k * Fintype.card (InfinitePlace X.B.I.F))`. Rewrite using `[hNdef, pow_mul, pow_mul, div_pow]`. Establish `hb : (0 : ℝ) < (Tw u' ^ D.R.k) ^ Fintype.card (InfinitePlace X.B.I.F)` using `by positivity`. Establish `ha : (0 : ℝ) < ((2 : ℝ) ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS))) ^ Fintype.card (InfinitePlace X.B.I.F)`. Check the signs of the components of the expression.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Check the signs of the components of the expression. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lamDet_of (hB : BetaIso) (hM : MuBridge) (hN : NuBridge) (hD : DKForm) (hR : RowsZ) (hDet : DetT)
     (hP : PlaceJacAll) : LamDet := by

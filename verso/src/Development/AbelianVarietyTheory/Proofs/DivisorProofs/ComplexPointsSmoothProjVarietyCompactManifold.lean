@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y` and use `haveI : CompactSpace (CxPts Y.str (RingHom.id ℂ)) := CxPts.compactSpace _ Y.isProjOver ⟨this, t2Space_cxPts_of_isProjOver _ Y.isProjOver, secondCountableTopology_of_isProjOver _ Y.isProjOver, (AnRead.all Y.str (RingHom.id ℂ) Y.dim).finAtlas, AnRead.isAlgAtlas_finAtlas _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cxPts_var_compact_manifold : ∀ Y : Var ℂ, CompactSpace (CxPts Y.str (RingHom.id ℂ)) ∧ T2Space (CxPts Y.str (RingHom.id ℂ)) ∧ SecondCountableTopology (CxPts Y.str (RingHom.id ℂ)) ∧ ∃ A : FinHolAtlas Y.dim (CxPts Y.str (RingHom.id ℂ)), IsAlgAtlas A := fun Y =>
   haveI : CompactSpace (CxPts Y.str (RingHom.id ℂ)) := CxPts.compactSpace _ Y.isProjOver

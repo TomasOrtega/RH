@@ -3,13 +3,13 @@ open Polynomial
 namespace GlobalTheory.LineThrough
 
 /- English proof (translation)
-Establish `hd : Dense (⋂ f ∈ S, {c : Fin d → ℂ | MvPolynomial.eval c f ≠ 0})`. Use `dense_biInter_of_isOpen (fun f _ => ?_) hS (fun f hf => ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun (MvPolynomial.continuous_eval f) continuous_const`. Rewrite using `[Metric.dense_iff]`. Introduce `x r hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Apply `h0` to reduce the goal to its premises. Establish `: f = 0`. Use `MvPolynomial.funext_set (fun i => Metric.ball (x i) r) (fun i => (Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self hr)) |> infinite_of_mem_nhds (x i)) ?_` and prove the remaining obligations. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hy0`. Apply `hne` to reduce the goal to its premises. Use `⟨y, ?_, by simpa using hy0⟩` and prove the remaining obligations. Rewrite using `[ball_pi _ hr]`. Conclude with `hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `this ▸ hf`. Take `⟨c, hc⟩` from `hd.nonempty`. Conclude with `⟨c, fun f hf => by simpa using Set.mem_iInter₂.1 hc f hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_nonroot (d : ℕ) (S : Set (MvPolynomial (Fin d) ℂ)) (hS : S.Countable)
     (h0 : (0 : MvPolynomial (Fin d) ℂ) ∉ S) :
@@ -38,7 +38,7 @@ noncomputable def lineMap {d : ℕ} (a c : Fin d → ℂ) : MvPolynomial (Fin d)
   MvPolynomial.aeval fun i => C (a i) + C (c i - a i) * X
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [lineMap]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, eval_mul, hp]`. Simplify using `[lineMap]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem eval_zero_lineMap {d : ℕ} (a c : Fin d → ℂ) (f : MvPolynomial (Fin d) ℂ) :
     (lineMap a c f).eval 0 = MvPolynomial.eval a f := by
@@ -48,7 +48,7 @@ theorem eval_zero_lineMap {d : ℕ} (a c : Fin d → ℂ) (f : MvPolynomial (Fin
   | mul_X p i hp => rw [map_mul, eval_mul, hp]; simp [lineMap]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [lineMap]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, eval_mul, hp]`. Simplify using `[lineMap]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem eval_one_lineMap {d : ℕ} (a c : Fin d → ℂ) (f : MvPolynomial (Fin d) ℂ) :
     (lineMap a c f).eval 1 = MvPolynomial.eval c f := by
@@ -58,7 +58,7 @@ theorem eval_one_lineMap {d : ℕ} (a c : Fin d → ℂ) (f : MvPolynomial (Fin 
   | mul_X p i hp => rw [map_mul, eval_mul, hp]; simp [lineMap]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [lineMap]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, hp]`. Simplify using `[lineMap]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem lineMap_self {d : ℕ} (a : Fin d → ℂ) (f : MvPolynomial (Fin d) ℂ) :
     lineMap a a f = C (MvPolynomial.eval a f) := by
@@ -68,9 +68,9 @@ theorem lineMap_self {d : ℕ} (a : Fin d → ℂ) (f : MvPolynomial (Fin d) ℂ
   | mul_X p i hp => rw [map_mul, hp]; simp [lineMap]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.1 h`. Establish `hi' : c i - a i ≠ 0` using `sub_ne_zero.2 hi`. Establish `hX : (X : ℂ[X]) ∈ (lineMap a c).range`. Use `⟨MvPolynomial.C (c i - a i)⁻¹ * (MvPolynomial.X i - MvPolynomial.C (a i)), ?_⟩` and prove the remaining obligations. Simplify using `only [lineMap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_mul, map_sub, MvPolynomial.aeval_C, MvPolynomial.aeval_X, Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_sub_cancel_left, ← mul_assoc, ← C_sub, ← C_mul, inv_mul_cancel₀ hi', C_1, one_mul]`. Rewrite using `[← AlgHom.range_eq_top, eq_top_iff, ← Polynomial.adjoin_X]`. Conclude with `Algebra.adjoin_le (by simpa using hX)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineMap_surjective {d : ℕ} {a c : Fin d → ℂ} (h : c ≠ a) :
     Function.Surjective (lineMap a c) := by
@@ -86,13 +86,13 @@ theorem lineMap_surjective {d : ℕ} {a c : Fin d → ℂ} (h : c ≠ a) :
   exact Algebra.adjoin_le (by simpa using hX)
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Establish `hk : RingHom.ker (lineMap c c) = RingHom.ker (MvPolynomial.eval c)`. Use extensionality with `f`. Simplify using `[RingHom.mem_ker, lineMap_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hm : (RingHom.ker (MvPolynomial.eval c)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun z => ⟨MvPolynomial.C z, by simp⟩)`. Rewrite `h` using `[hk]`. Conclude with `absurd (hm.1.2 P h) hP.ne_top`. Establish `hs` using `lineMap_surjective hc`. Establish `hp : (P.map (lineMap a c)).IsPrime` using `Ideal.map_isPrime_of_surjective hs h.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : (P.map (lineMap a c)).comap (lineMap a c) = P`. Rewrite using `[Ideal.comap_map_of_surjective _ hs, sup_eq_left]`. Conclude with `h.le`. Establish `hne : P.map (lineMap a c) ≠ ⊥`. Introduce `hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcm` using `[hb]`. Conclude with `h.ne hcm`. Establish `hm : (P.map (lineMap a c)).IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hne hp`. Rewrite using `[← hcm]`. Conclude with `Ideal.comap_isMaximal_of_surjective _ hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaximal_of_ker_lineMap_lt {d : ℕ} (a c : Fin d → ℂ)
     (P : Ideal (MvPolynomial (Fin d) ℂ)) [hP : P.IsPrime] (h : RingHom.ker (lineMap a c) < P) :
@@ -120,25 +120,23 @@ theorem isMaximal_of_ker_lineMap_lt {d : ℕ} (a c : Fin d → ℂ)
     exact Ideal.comap_isMaximal_of_surjective _ hs
 
 /- English proof (translation)
-Take `⟨d, g, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg ℂ E`. Use `letI : Algebra (MvPolynomial (Fin d) ℂ) E := g.toRingHom.toAlgebra`. Use `haveI : Algebra.IsIntegral (MvPolynomial (Fin d) ℂ) E := ⟨hint⟩`. Use `haveI : FaithfulSMul (MvPolynomial (Fin d) ℂ) E := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `hn : ∀ r : T, ∃ n : MvPolynomial (Fin d) ℂ, n ≠ 0 ∧ algebraMap _ E n ∈ Ideal.span {(r : E)}`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r`. Establish `hr : (r : E) ≠ 0` using `fun h => h0 (h ▸ r.2)`. Use `Ideal.comap_ne_bot_of_integral_mem (R := MvPolynomial (Fin d) ℂ) hr (Ideal.mem_span_singleton_self (r : E)) (Algebra.IsIntegral.isIntegral _)` as an intermediate fact. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot this`. Conclude with `⟨n, hn0, hn⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose n hn0 hn using hn`. Use `haveI : Countable T := hT.to_subtype`. Take `⟨c, hc⟩` from `exists_common_nonroot d (Set.range n) (Set.countable_range n) (by rintro ⟨r, hr⟩; exact hn0 r hr)`. Set `a : Fin d → ℂ` to `fun i => e (g (MvPolynomial.X i))`. Establish `hea : ∀ f, e (g f) = MvPolynomial.eval a f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: g (MvPolynomial.C r) = algebraMap ℂ E r` using `g.commutes r`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp, a]`. Use `haveI hpp : (RingHom.ker (lineMap a c)).IsPrime := RingHom.ker_isPrime _`. Use `haveI hM : (RingHom.ker e).IsPrime := RingHom.ker_isPrime _`. Establish `hle : RingHom.ker (lineMap a c) ≤ (RingHom.ker e).under (MvPolynomial (Fin d) ℂ)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf`. Express the relevant statement in the definitionally equal form `e (g f) = 0`. Rewrite using `[hea, ← eval_zero_lineMap a c, RingHom.mem_ker.1 hf, eval_zero]`. Take `⟨Q, hQ, hQp, hQo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := RingHom.ker (lineMap a c)) (RingHom.ker e) hle`. Establish `hQc : Q.comap (algebraMap (MvPolynomial (Fin d) ℂ) E) = RingHom.ker (lineMap a c)` using `hQo.over.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Q, hQp, hQ, fun r hr hrQ => ?_, ⟨fun {P} hP0 hP => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : n ⟨r, hr⟩ ∈ RingHom.ker (lineMap a c)`. Rewrite using `[← hQc]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hrQ (hn ⟨r, hr⟩)`. Apply `hc _ ⟨⟨r, hr⟩, rfl⟩` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← eval_one_lineMap a c, RingHom.mem_ker.1 h1, eval_zero]`. Establish `hs : Function.Surjective (Ideal.Quotient.mk Q)` using `Ideal.Quotient.mk_surjective`. Establish `hlt : Q < P.comap (Ideal.Quotient.mk Q)`. Use `lt_of_le_of_ne (fun x hx => ?_) (fun h => hP0 ?_)` and prove the remaining obligations. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.2 hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Ideal.map_comap_of_surjective _ hs P, ← h, Ideal.map_quotient_self]`. Establish `hlt'` using `Ideal.IsIntegral.comap_lt_comap (R := MvPolynomial (Fin d) ℂ) hlt`. Rewrite `hlt'` using `[hQc]`. Establish `hm` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := MvPolynomial (Fin d) ℂ) _ (isMaximal_of_ker_lineMap_lt a c _ hlt')`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective _ hs hm with h | h` into its components or cases.
-
-Rewrite `h` using `[Ideal.map_comap_of_surjective _ hs]`. Conclude with `absurd h hP.ne_top`. Rewrite `h` using `[Ideal.map_comap_of_surjective _ hs]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_dimensionLEOne_avoiding
     (E : Type) [CommRing E] [IsDomain E] [Algebra ℂ E] [Algebra.FiniteType ℂ E]

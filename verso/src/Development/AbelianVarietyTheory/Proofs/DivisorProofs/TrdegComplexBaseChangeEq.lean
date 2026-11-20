@@ -4,9 +4,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite `ht`, the goal using `[algebraicIndependent_iff_injective_aeval]`. Establish `h1 : Function.Injective (Algebra.TensorProduct.map (AlgHom.id K K) (MvPolynomial.aeval t : MvPolynomial ι k →ₐ[k] L))` using `Module.Flat.lTensor_preserves_injective_linearMap (M := K) (MvPolynomial.aeval t : MvPolynomial ι k →ₐ[k] L).toLinearMap ht`. Establish `h2 : (MvPolynomial.aeval (fun i => (1 : K) ⊗ₜ[k] t i) : MvPolynomial ι K →ₐ[K] K ⊗[k] L) = (Algebra.TensorProduct.map (AlgHom.id K K) (MvPolynomial.aeval t : MvPolynomial ι k →ₐ[k] L)).comp (MvPolynomial.algebraTensorAlgEquiv k K (σ` using `ι)).symm.toAlgHom := by`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `h1.comp (MvPolynomial.algebraTensorAlgEquiv k K (σ := ι)).symm.injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_one_tmul_of_field {k K L ι : Type} [Field k] [Field K] [CommRing L] [Algebra k K] [Algebra k L]
     {t : ι → L} (ht : AlgebraicIndependent k t) :
@@ -25,23 +25,21 @@ theorem algebraicIndependent_one_tmul_of_field {k K L ι : Type} [Field k] [Fiel
   exact h1.comp (MvPolynomial.algebraTensorAlgEquiv k K (σ := ι)).symm.injective
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis k L`. Establish `hi` using `algebraicIndependent_one_tmul_of_field (K := K) hs.1`. Use `set S := Algebra.adjoin K (Set.range fun i : s => (1 : K) ⊗ₜ[k] (i : L)) with hS`. Establish `halg : Algebra.IsAlgebraic S (K ⊗[k] L)`. Establish `hA` using `hs.isAlgebraic`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := Algebra.adjoin k (Set.range (Subtype.val : s → L)) with hT`. Establish `hmem : ∀ x : T, (1 : K) ⊗ₜ[k] (x : L) ∈ S`. Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hx`. Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Consider the case `algebraMap r`. Establish `: (1 : K) ⊗ₜ[k] (algebraMap k L r) = algebraMap K (K ⊗[k] L) (algebraMap k K r)`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply', IsScalarTower.algebraMap_apply k K (K ⊗[k] L)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Conclude with `S.algebraMap_mem _`. Consider the case `add x y hx hy ihx ihy`. Simplify using `only [TensorProduct.tmul_add]`. Conclude with `S.add_mem ihx ihy`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Consider the case `mul x y hx hy ihx ihy`. Establish `: (1 : K) ⊗ₜ[k] (x * y) = ((1 : K) ⊗ₜ[k] x) * ((1 : K) ⊗ₜ[k] y)` using `by simp`. Simplify using `only [this]`. Conclude with `S.mul_mem ihx ihy`. Set `g : L →+* K ⊗[k] L` to `(Algebra.TensorProduct.includeRight (R := k) (A := K) (B := L)).toRingHom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Set `f : T →+* S` to `(g.comp T.val.toRingHom).codRestrict S hmem`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Establish `: g x = g y` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (g.injective this)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun z => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact isAlgebraic_zero`. Consider the case `add x y hx hy => exact hx.add hy`. Consider the case `tmul a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : IsAlgebraic S (g b)` using `(hA.isAlgebraic b).ringHom_of_comp_eq f g hf (by ext; rfl)`. Establish `h2 : IsAlgebraic S (algebraMap S (K ⊗[k] L) (algebraMap K S a))` using `isAlgebraic_algebraMap _`. Establish `h3 : a ⊗ₜ[k] b = algebraMap S (K ⊗[k] L) (algebraMap K S a) * g b`. Simplify using `[g]`. Rewrite using `[h3]`.
-
-Conclude with `h2.mul h1`. Establish `hb : IsTranscendenceBasis K (fun i : s => (1 : K) ⊗ₜ[k] (i : L))` using `hi.isTranscendenceBasis_iff_isAlgebraic.mpr halg`. Rewrite using `[← hb.cardinalMk_eq_trdeg, ← hs.cardinalMk_eq_trdeg]`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_tensorProduct_eq {k K L : Type} [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L]
     [IsDomain (K ⊗[k] L)] : Algebra.trdeg K (K ⊗[k] L) = Algebra.trdeg k L := by
@@ -92,7 +90,7 @@ theorem trdeg_tensorProduct_eq {k K L : Type} [Field k] [Field K] [Field L] [Alg
   rw [← hb.cardinalMk_eq_trdeg, ← hs.cardinalMk_eq_trdeg]
 
 /- English proof (translation)
-The claim follows from `trdeg_tensorProduct_eq`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_complex_baseChange_eq : ∀ {K κ' : Type} [Field K] [Field κ'] [Algebra ℂ K] [Algebra ℂ κ'] [IsDomain (K ⊗[ℂ] κ')], Algebra.trdeg K (K ⊗[ℂ] κ') = Algebra.trdeg ℂ κ' :=
   trdeg_tensorProduct_eq

@@ -20,16 +20,16 @@ def pj_Q (x y x' y' : Hs) : Prop :=
 variable {μ σ d}
 
 /- English proof (translation)
-Unfold `pj_Q`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pj_Q_zero1 (y x' y' : Hs) : pj_Q μ σ d 0 y x' y' := by
   unfold pj_Q
   simp
 
 /- English proof (translation)
-Establish `e : (fun g => ⟪y, σ g (x1 + x2)⟫_ℂ * star ⟪y', σ g x'⟫_ℂ) = fun g => ⟪y, σ g x1⟫_ℂ * star ⟪y', σ g x'⟫_ℂ + ⟪y, σ g x2⟫_ℂ * star ⟪y', σ g x'⟫_ℂ`. Use function extensionality and compare the values at `g`. Rewrite using `[map_add, inner_add_right, add_mul]`. Unfold `pj_Q`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1.1.add h2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add h1.1 h2.1, h1.2, h2.2, inner_add_right]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schur_relation_add_first {x1 x2 y x' y' : Hs} (h1 : pj_Q μ σ d x1 y x' y') (h2 : pj_Q μ σ d x2 y x' y') :
     pj_Q μ σ d (x1 + x2) y x' y' := by
@@ -44,9 +44,9 @@ theorem schur_relation_add_first {x1 x2 y x' y' : Hs} (h1 : pj_Q μ σ d x1 y x'
   ring
 
 /- English proof (translation)
-Establish `e : (fun g => ⟪y, σ g (a • x)⟫_ℂ * star ⟪y', σ g x'⟫_ℂ) = fun g => a * (⟪y, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_smul, inner_smul_right, mul_assoc]`. Unfold `pj_Q`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1.1.const_mul a, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, h1.2, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pj_Q_smul1 {x y x' y' : Hs} (a : ℂ) (h1 : pj_Q μ σ d x y x' y') : pj_Q μ σ d (a • x) y x' y' := by
   have e : (fun g => ⟪y, σ g (a • x)⟫_ℂ * star ⟪y', σ g x'⟫_ℂ) =
@@ -60,16 +60,16 @@ theorem pj_Q_smul1 {x y x' y' : Hs} (a : ℂ) (h1 : pj_Q μ σ d x y x' y') : pj
   ring
 
 /- English proof (translation)
-Unfold `pj_Q`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pj_Q_zero2 (x x' y' : Hs) : pj_Q μ σ d x 0 x' y' := by
   unfold pj_Q
   simp
 
 /- English proof (translation)
-Establish `e : (fun g => ⟪y1 + y2, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ) = fun g => ⟪y1, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ + ⟪y2, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_add_left, add_mul]`. Unfold `pj_Q`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1.1.add h2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add h1.1 h2.1, h1.2, h2.2, inner_add_left]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schur_relation_add_second {x y1 y2 x' y' : Hs} (h1 : pj_Q μ σ d x y1 x' y') (h2 : pj_Q μ σ d x y2 x' y') :
     pj_Q μ σ d x (y1 + y2) x' y' := by
@@ -84,9 +84,9 @@ theorem schur_relation_add_second {x y1 y2 x' y' : Hs} (h1 : pj_Q μ σ d x y1 x
   ring
 
 /- English proof (translation)
-Establish `e : (fun g => ⟪a • y, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ) = fun g => (starRingEnd ℂ) a * (⟪y, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_smul_left, mul_assoc]`. Unfold `pj_Q`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1.1.const_mul _, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, h1.2, inner_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pj_Q_smul2 {x y x' y' : Hs} (a : ℂ) (h1 : pj_Q μ σ d x y x' y') : pj_Q μ σ d x (a • y) x' y' := by
   have e : (fun g => ⟪a • y, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ) =
@@ -100,9 +100,9 @@ theorem pj_Q_smul2 {x y x' y' : Hs} (a : ℂ) (h1 : pj_Q μ σ d x y x' y') : pj
   ring
 
 /- English proof (translation)
-Establish `e : (fun g => ⟪y', σ g x'⟫_ℂ * star ⟪y, σ g x⟫_ℂ) = fun g => (starRingEnd ℂ) (⟪y, σ g x⟫_ℂ * star ⟪y', σ g x'⟫_ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_mul, ← starRingEnd_apply, ← starRingEnd_apply, Complex.conj_conj, mul_comm]`. Unfold `pj_Q`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_conj, h.2, map_div₀, map_mul, inner_conj_symm, inner_conj_symm, Complex.conj_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pj_Q_symm {x y x' y' : Hs} (h : pj_Q μ σ d x y x' y') : pj_Q μ σ d x' y' x y := by
   have e : (fun g => ⟪y', σ g x'⟫_ℂ * star ⟪y, σ g x⟫_ℂ) =
@@ -115,11 +115,11 @@ theorem pj_Q_symm {x y x' y' : Hs} (h : pj_Q μ σ d x y x' y') : pj_Q μ σ d x
   rw [integral_conj, h.2, map_div₀, map_mul, inner_conj_symm, inner_conj_symm, Complex.conj_ofReal]
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ Submodule.span ℂ S, ∀ b ∈ S, pj_Q μ σ d x b x' y'`. Introduce `x hx b hb`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => exact hS a ha b hb`. Consider the case `zero => exact pj_Q_zero1 _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => exact schur_relation_add_first hu hv`. Consider the case `smul a u _ hu => exact pj_Q_smul1 a hu`. Introduce `x hx y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb => exact h1 x hx b hb`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact pj_Q_zero2 _ _ _`. Consider the case `add u v _ _ hu hv => exact schur_relation_add_second hu hv`. Consider the case `smul a u _ hu => exact pj_Q_smul2 a hu`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem schur_relation_span {S : Set Hs} {x' y' : Hs} (hS : ∀ a ∈ S, ∀ b ∈ S, pj_Q μ σ d a b x' y') :
     ∀ x ∈ Submodule.span ℂ S, ∀ y ∈ Submodule.span ℂ S, pj_Q μ σ d x y x' y' := by
@@ -138,7 +138,7 @@ theorem schur_relation_span {S : Set Hs} {x' y' : Hs} (hS : ∀ a ∈ S, ∀ b �
   | smul a u _ hu => exact pj_Q_smul2 a hu
 
 /- English proof (translation)
-Introduce `x hx y hy`. Use `fun x' hx' y' hy' => pj_Q_symm ?_` and prove the remaining obligations. Use `schur_relation_span (fun a' ha' b' hb' => pj_Q_symm ?_) x' hx' y' hy'` and prove the remaining obligations. Conclude with `schur_relation_span (fun a ha b hb => hS a ha b hb a' ha' b' hb') x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pj_Q_span {S : Set Hs} (hS : ∀ a ∈ S, ∀ b ∈ S, ∀ a' ∈ S, ∀ b' ∈ S, pj_Q μ σ d a b a' b') :
     ∀ x ∈ Submodule.span ℂ S, ∀ y ∈ Submodule.span ℂ S, ∀ x' ∈ Submodule.span ℂ S, ∀ y' ∈ Submodule.span ℂ S,
@@ -149,11 +149,11 @@ theorem pj_Q_span {S : Set Hs} (hS : ∀ a ∈ S, ∀ b ∈ S, ∀ a' ∈ S, ∀
   exact schur_relation_span (fun a ha b hb => hS a ha b hb a' ha' b' hb') x hx y hy
 
 /- English proof (translation)
-Take `⟨hi, he⟩` from `h`. Establish `hfun : (fun g => ⟪y, σ g x⟫_ℂ * star ⟪y, σ g x⟫_ℂ) = fun g => ((‖⟪y, σ g x⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Conclude with `mul_star_eq _`. Rewrite `hi`, `he` using `[hfun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hi.re.congr (Filter.Eventually.of_forall fun g => Complex.ofReal_re _), ?_⟩` and prove the remaining obligations. Rewrite `he` using `[integral_complex_ofReal]`. Establish `h2 : ((∫ g, ‖⟪y, σ g x⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ) = ((‖x‖ ^ 2 * ‖y‖ ^ 2 / d : ℝ) : ℂ)`. Rewrite using `[he, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem pj_Q_diag {x y : Hs} (h : pj_Q μ σ d x y x y) :
     Integrable (fun g => ‖⟪y, σ g x⟫_ℂ‖ ^ 2) μ ∧ ∫ g, ‖⟪y, σ g x⟫_ℂ‖ ^ 2 ∂μ = ‖x‖ ^ 2 * ‖y‖ ^ 2 / d := by
@@ -173,15 +173,15 @@ theorem pj_Q_diag {x y : Hs} (h : pj_Q μ σ d x y x y) :
 end Q
 
 /- English proof (translation)
-Establish `hd : ∀ v, IsFdeg (Formalism.REAL.muG (X.I.ε v)) (X.σ v) (fdegOf (Formalism.REAL.muG (X.I.ε v)) (X.σ v) (X.w v))`. Introduce `v`. Take `⟨d, hd⟩` from `h1 X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v)`. Rewrite using `[fdegOf_eq hd (hX.2.1.2.1 v).1]`. Conclude with `hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ (a b : ∀ v, X.H v) (g : X.I.Ginf), ⟪X.tens b, X.σs g (X.tens a)⟫_ℂ = ∏ v, coefOn (X.σ v) (a v) (b v) (g v)`. Introduce `a b g`. Rewrite using `[hX.2.1.2.2.1.2.1 g a, hX.2.1.2.2.1.1]`. Both sides reduce to the same expression. Establish `e : (fun g => ⟪X.tens b, X.σs g (X.tens a)⟫_ℂ * star ⟪X.tens b', X.σs g (X.tens a')⟫_ℂ) = fun g : X.I.Ginf => ∏ v, (fun y => coefOn (X.σ v) (a v) (b v) y * star (coefOn (X.σ v) (a' v) (b' v) y)) (g v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hc, hc, Finset.prod_mul_distrib]`. Use `congr 1`. Conclude with `map_prod (starRingEnd ℂ) _ _`. Unfold `pj_Q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `⟨Integrable.fintype_prod_dep fun v => ((hd v).2 (a v) (b v) (a' v) (b' v)).1, ?_⟩` and prove the remaining obligations. Use `(integral_fintype_prod_eq_prod (μ := fun v => Formalism.REAL.muG (X.I.ε v)) (fun v y => coefOn (X.σ v) (a v) (b v) y * star (coefOn (X.σ v) (a' v) (b' v) y))).trans ?_` and prove the remaining obligations. Simplify using `only [((hd _).2 _ _ _ _).2]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_mul_distrib, hX.2.1.2.2.1.1, hX.2.1.2.2.1.1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `fdegAll`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pj_Q_pure (D : Formalism.BasicNotions.D7) (h1 : adm1 D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A)
     (a b a' b' : ∀ v, X.H v) :
@@ -214,7 +214,7 @@ theorem pj_Q_pure (D : Formalism.BasicNotions.D7) (h1 : adm1 D) (X : CData) {n�
   rfl
 
 /- English proof (translation)
-Introduce `x hx y hy`. Use `pj_Q_diag (pj_Q_span ?_ x hx y hy x hx y hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩ _ ⟨a', rfl⟩ _ ⟨b', rfl⟩`. Conclude with `pj_Q_pure D h1 X hX a b a' b'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pj_schur_span (D : Formalism.BasicNotions.D7) (h1 : adm1 D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) :
     ∀ x ∈ Submodule.span ℂ (Set.range X.tens), ∀ y ∈ Submodule.span ℂ (Set.range X.tens),

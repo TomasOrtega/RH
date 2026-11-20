@@ -19,7 +19,7 @@ section deriv
 variable {k r : ℕ} {F F' : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] [NormedAddCommGroup F'] [NormedSpace ℂ F']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `B.LdV`. Conclude with `P.JCTx6.Pos.deriv_cle_comp L L' hL (fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ldV_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) = y) (X : B.Mat k r) (f : B.Mat k r → F) :
     B.LdV X (fun g => L (f g)) = fun g => L (B.LdV X f g) := by
@@ -28,7 +28,7 @@ theorem ldV_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) 
   exact P.JCTx6.Pos.deriv_cle_comp L L' hL (fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `Formalism.REAL.RdV`. Conclude with `P.JCTx6.Pos.deriv_cle_comp L L' hL (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rdV_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) = y) (X : B.Mat k r) (f : B.Mat k r → F) :
     Formalism.REAL.RdV X (fun g => L (f g)) = fun g => L (Formalism.REAL.RdV X f g) := by
@@ -37,7 +37,7 @@ theorem rdV_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) 
   exact P.JCTx6.Pos.deriv_cle_comp L L' hL (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: v, f => by show Formalism.REAL.RdV X (B.Rw v fun g => L (f g)) = fun g => L (Formalism.REAL.RdV X (B.Rw v f) g) rw [rw_rl L L' hL v f, rdV_rl L L' hL X]`.
+A detailed English derivation is pending.
 -/
 theorem rw_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) = y) :
     ∀ (v : List (B.Mat k r)) (f : B.Mat k r → F), B.Rw v (fun g => L (f g)) = fun g => L (B.Rw v f g)
@@ -47,7 +47,7 @@ theorem rw_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) =
     rw [rw_rl L L' hL v f, rdV_rl L L' hL X]
 
 /- English proof (translation)
-The claim follows from `| [], f => rw_rl L L' hL w f | X :: u, f => by show B.LdV X (B.dLR u w fun g => L (f g)) = fun g => L (B.LdV X (B.dLR u w f) g) rw [dLR_rl L L' hL w u f, ldV_rl L L' hL X]`.
+A detailed English derivation is pending.
 -/
 theorem dLR_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) = y) (w : List (B.Mat k r)) :
     ∀ (u : List (B.Mat k r)) (f : B.Mat k r → F), B.dLR u w (fun g => L (f g)) = fun g => L (B.dLR u w f g)
@@ -57,18 +57,18 @@ theorem dLR_rl (L : F →L[ℝ] F') (L' : F' →L[ℝ] F) (hL : ∀ y, L' (L y) 
     rw [dLR_rl L L' hL w u f, ldV_rl L L' hL X]
 
 /- English proof (translation)
-The claim follows from `dLR_rl (Complex.conjCLE : ℂ →L[ℝ] ℂ) (Complex.conjCLE : ℂ →L[ℝ] ℂ) (fun y => by simp) w u f`.
+A detailed English derivation is pending.
 -/
 theorem dLR_conj (u w : List (B.Mat k r)) (f : B.Mat k r → ℂ) :
     B.dLR u w (fun g => conj (f g)) = fun g => conj (B.dLR u w f g) :=
   dLR_rl (Complex.conjCLE : ℂ →L[ℝ] ℂ) (Complex.conjCLE : ℂ →L[ℝ] ℂ) (fun y => by simp) w u f
 
 /- English proof (translation)
-Distinguish the cases in `hA : A = 0`. Substitute `hA` using the available equality. Simplify using `only [smul_zero]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.dLR_zero u w`. Take `⟨ℓ, -, hℓ⟩` from `exists_dual_vector ℂ A (norm_ne_zero_iff.2 hA)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ((‖A‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hA`. Set `L : ℂ →L[ℝ] F` to `((ContinuousLinearMap.id ℂ ℂ).smulRight A).restrictScalars ℝ`. Set `L' : F →L[ℝ] ℂ` to `((((‖A‖ : ℝ) : ℂ))⁻¹ • ℓ).restrictScalars ℝ`. Establish `hL : ∀ y, L' (L y) = y` using `fun y => by`. Simplify using `only [L, L', ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.id_apply, map_smul, hℓ, smul_eq_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `norm_cast`. Conclude with `dLR_rl L L' hL w u f`.
+Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem dLR_smulc (A : F) (u w : List (B.Mat k r)) (f : B.Mat k r → ℂ) :
     B.dLR u w (fun g => f g • A) = fun g => B.dLR u w f g • A := by
@@ -88,9 +88,9 @@ theorem dLR_smulc (A : F) (u w : List (B.Mat k r)) (f : B.Mat k r → ℂ) :
 end deriv
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D Bg φ hφ`. Use `⟨fun g₀ hg₀ => ?_, fun ε hε m => ?_⟩` and prove the remaining obligations. Take `⟨U, φ', hU, hg, hφ', he⟩` from `hφ.1 g₀ hg₀`. Use `⟨U, fun g => conj (φ' g), hU, hg, ?_, fun g hgU hgG => by simp only; rw [he g hgU hgG]⟩` and prove the remaining obligations. Conclude with `(Complex.conjCLE : ℂ →L[ℝ] ℂ).contDiff.comp_contDiffOn hφ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hφ.2 ε hε m`. Use `⟨C, fun u w hu hw hl g hg hG => ?_⟩` and prove the remaining obligations. Rewrite using `[dLR_conj, Complex.norm_conj]`. Conclude with `hC u w hu hw hl g hg hG`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_conjugation_transfer : JAScalConj := by
   intro k r Wp Wq _ _ _ _ D Bg φ hφ
@@ -111,19 +111,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Establish `hφc` using `scalar_conjugation_transfer _ _ _ _ (T v).base _ φ hφ`. Use `SSn.real_to_bounded_holds E Wp Wq S T v hPl e Cb (fun g => φ g • ContinuousLinearMap.id ℂ (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (fun g => conj (φ g) • ContinuousLinearMap.id ℂ (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (fun ρ π q => if ρ = π then evD (D.parOf S v) q β else 0) _ hFr ⟨?_, ?_, ?_, …` and prove the remaining obligations. Introduce `x A B'`. Simplify using `only [B.hsInner, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, P.TBBx2.Tri.hsVec_smul, inner_smul_left, inner_smul_right, Complex.conj_conj]`. Introduce `g₀ hg₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, φ', hU, hg, hφ', he⟩` from `hφ.1 g₀ hg₀`. Conclude with `⟨U, fun g => φ' g • ContinuousLinearMap.id ℂ (Wq (S.pl v) →L[ℂ] Wp (S.pl v)), hU, hg, hφ'.smul contDiffOn_const, fun g hgU hgG => by simp only; rw [he g hgU hgG]⟩`. Introduce `g₀ hg₀`. Take `⟨U, φ', hU, hg, hφ', he⟩` from `hφc.1 g₀ hg₀`. Conclude with `⟨U, fun g => φ' g • ContinuousLinearMap.id ℂ (Wq (S.pl v) →L[ℂ] Wp (S.pl v)), hU, hg, hφ'.smul contDiffOn_const, fun g hgU hgG => by show conj (φ g) • _ = φ' g • _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[show conj (φ g) = φ' g from he g hgU hgG]⟩`. Introduce `p hp g _ X`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, hinv p hp g, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Introduce `p hp g _ X`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, hinv p hp g, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `ε hε m`. Take `⟨C, hC⟩` from `hφ.2 ε hε m`. Use `⟨C, fun u w hu hw hl g hg hG => ?_⟩` and prove the remaining obligations. Rewrite using `[dLR_smulc]`. Conclude with `(norm_smul_le _ _).trans ((mul_le_of_le_one_right (norm_nonneg _) ContinuousLinearMap.norm_id_le).trans (hC u w hu hw hl g hg hG))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε hε m`. Take `⟨C, hC⟩` from `hφc.2 ε hε m`. Use `⟨C, fun u w hu hw hl g hg hG => ?_⟩` and prove the remaining obligations. Rewrite using `[dLR_smulc]`. Conclude with `(norm_smul_le _ _).trans ((mul_le_of_le_one_right (norm_nonneg _) ContinuousLinearMap.norm_id_le).trans (hC u w hu hw hl g hg hG))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `q hq ρ π`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, P.TBBx2.Tri.hsVec_smul, inner_smul_right, (hFr.2 q.2 hq.2).2.1 ρ π, hval q hq]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `ρ π`. Distinguish the cases in `h : ρ = π`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `h` using the available equality. Conclude with `⟨β, by rw [Matrix.scalar_apply, Matrix.diagonal_apply_eq], fun q => by simp⟩`. Use `⟨0, ?_, fun q => by simp [h]⟩` and prove the remaining obligations. Rewrite using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ h, cjD_zero, multiplierPair_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_real (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
     (v : Fin S.f) (hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π')
@@ -186,7 +186,7 @@ end real
 section main
 
 /- English proof (translation)
-Unfold `phiR`. Rewrite using `[P.BigCellZetaMinors.dmin_sgs D hp, P.BigCellZetaMinors.dmin_sgs D hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiR_sgs {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p)
@@ -194,7 +194,7 @@ theorem phiR_sgs {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduc
   unfold phiR; rw [P.BigCellZetaMinors.dmin_sgs D hp, P.BigCellZetaMinors.dmin_sgs D hp]
 
 /- English proof (translation)
-Unfold `phiD`. Rewrite using `[P.BigCellZetaMinors.dmin_sgs D hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiD_sgs {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p)
@@ -202,11 +202,11 @@ theorem phiD_sgs {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduc
   unfold phiD; rw [P.BigCellZetaMinors.dmin_sgs D hp]
 
 /- English proof (translation)
-Establish `h1 : Dmin k r D.z D.z' (B.gq D q) ⟨r, by omega⟩ = ∏ a, q.1 a`. Use `(bigCellMinors k r D.z D.z' q.1 (D.μsec q.2) D.z_mem D.z'_mem).1 (Fin.last r)` as an intermediate fact. Simplify using `only [Fin.val_last] at this`. Rewrite using `[show B.gq D q = bigCell k r q.1 (D.μsec q.2) from rfl, this]`. Conclude with `Finset.prod_congr (by ext a; simp) fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hz` using `P.BigCellZetaMinors.zeta_gq D hq`. Establish `hne : Dmin k r D.z D.z' (B.gq D q) ⟨r, by omega⟩ ≠ 0`. Rewrite using `[h1]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hq.1 a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `zeta at hz`. Rewrite using `[← hz, ← h1, div_mul_cancel₀ _ hne]`.
+A detailed English derivation is pending.
 -/
 theorem dmin_gq {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {q : (Fin r → ℂ) × ℂ}
@@ -226,27 +226,27 @@ theorem dmin_gq {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduct
   rw [← hz, ← h1, div_mul_cancel₀ _ hne]
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `scalar_transfer_bound_holds`. Use `⟨K, hK0, fun Cc Cb _ hCb E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr _ hL b hb => ?_⟩` and prove the remaining obligations. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hT : Tz S.G.k S.G.r (T v).base.z = S.T` using `hPl.2.2.2.1`. Establish `hT' : Tz S.G.k S.G.r (T v).base.z' = S.T'` using `hPl.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z' = (D.parOf S v).TT`. Rewrite using `[hT, hT']`. Both sides reduce to the same expression. Establish `hTpos : 0 < (D.parOf S v).TT`. Rewrite using `[← hTT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos (T v).base.T_pos (T v).base.T'_pos`. Establish `hT0` using `hTpos.le`. Establish `hQD : ∀ q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, q ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `fun q hq => ⟨hq.1, by rw [hTT]; exact hq.2⟩`. Establish `hBg : K * ((S.G.r : ℝ) + 1) ≤ Cb * ((S.G.r : ℝ) + 1)` using `mul_le_mul_of_nonneg_right hCb (by positivity)`. Take `⟨hR, hD⟩` from `hK S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base _ hBg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hRc` using `scalar_conjugation_transfer _ _ _ _ (T v).base _ _ hR`. Establish `hDc` using `scalar_conjugation_transfer _ _ _ _ (T v).base _ _ hD`. Take `⟨-, -, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, -, -, -, -, -⟩` from `hL`. Establish `vR : ∀ q (hq : q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT), phiR S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base q) = (q.2)⁻¹` using `fun q hq => by`. Establish `hz'` using `P.BigCellZetaMinors.zeta_gq (T v).base (hQD q hq)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `zeta at hz'`. Unfold `phiR`. Rewrite using `[← hz', inv_div]`. Establish `vD : ∀ q (hq : q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT), phiD S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base q) = (∏ a, q.1 a) * q.2 * ((conj q.2)⁻¹ * ∏ a, (conj (q.1 a))⁻¹)` using `fun q hq => by`. Establish `h` using `(dmin_gq (T v).base (hQD q hq)).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : q.2 ≠ 0` using `BStar.z_ne hT0 ⟨q, hq⟩`. Establish `hc0 : ∀ a, q.1 a ≠ 0` using `hq.1`. Unfold `phiD`. Rewrite using `[h, map_mul, map_prod, Finset.prod_inv_distrib, div_eq_mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hb with rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[BStar.rep_zi hzi, ← BStar.cjD_izi hT0]`. Use `scal_real S T v hPl e hFr Cb _ hR (fun p hp g => phiR_sgs _ hp g) _ fun q hq => ?_` and prove the remaining obligations. Rewrite using `[vR q hq, BStar.evD_inv _ hT0, coordE_vz]`. Rewrite using `[BStar.rep_zbi hzbi, ← BStar.cjD_izbi hT0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `scal_real S T v hPl e hFr Cb _ hRc (fun p hp g => by simp only [phiR_sgs _ hp g]) _ fun q hq => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[vR q hq, BStar.evD_inv _ hT0, coordE_vzb, map_inv₀]`. Establish `e1 : L.D * L.Dbi = Matrix.scalar (M.Ty (D.parOf S v)) ((DQ (D.parOf S v)).fnP (βD (D.parOf S v)) (βDb (D.parOf S v)))`. Rewrite using `[LevelData.D, LevelData.Dbi, rep_Dr hc, zeta_eq_scalar_matrix hz, rep_zbi hzbi, rep_Drbi hcbi, scalar_mul_fnP, scalar_mul_fnP, scalar_mul_fnP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e1, ← BStar.cjD_βD hT0]`. Use `scal_real S T v hPl e hFr Cb _ hD (fun p hp g => phiD_sgs _ hp g) _ fun q hq => ?_` and prove the remaining obligations. Rewrite using `[vD q hq]`. Simplify using `only [βD, map_mul, map_prod, evaluation_of_coordinate_variable, BStar.evD_inv _ hT0, coordE_vc, coordE_vcb, coordE_vz, coordE_vzb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : L.Db * L.Di = Matrix.scalar (M.Ty (D.parOf S v)) ((DQ (D.parOf S v)).fnP (βDb (D.parOf S v)) (βD (D.parOf S v)))`. Rewrite using `[LevelData.Db, LevelData.Di, rep_Drb hcb, rep_zb hzb, rep_zi hzi, rep_Dri hci, scalar_mul_fnP, scalar_mul_fnP, scalar_mul_fnP]`. Both sides reduce to the same expression. Rewrite using `[e2, ← BStar.cjD_βDb hT0]`. Use `scal_real S T v hPl e hFr Cb _ hDc (fun p hp g => by simp only [phiD_sgs _ hp g]) _ fun q hq => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[vD q hq, ← BStar.cjD_βD hT0, evD_cjD]`. Simplify using `only [βD, map_mul, map_prod, evaluation_of_coordinate_variable, BStar.evD_inv _ hT0, coordE_vc, coordE_vcb, coordE_vz, coordE_vzb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bounded_scalar_transfer_holds : JABddScal := by
   obtain ⟨K, hK0, hK⟩ := scalar_transfer_bound_holds

@@ -8,11 +8,11 @@ namespace GlobalTheory.FiniteRadon
 open Classical in
 
 /- English proof (translation)
-Set `ev : Module.Dual k W →ₗ[k] k` to `Module.Dual.eval k W y`. Establish `hev : ∀ g, ev g = g y` using `fun g => rfl`. Establish `hs : Function.Surjective ev`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one k hy`. Introduce `t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨t • f, by simp [hev, hf]⟩`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker ev)`. Establish `h2 : Nat.card (Module.Dual k W ⧸ LinearMap.ker ev) = Nat.card k` using `Nat.card_congr (ev.quotKerEquivOfSurjective hs).toEquiv`. Establish `h3 : Nat.card (LinearMap.ker ev) = (Finset.univ.filter (fun g : Module.Dual k W => g y = 0)).card`. Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun g => by simp [LinearMap.mem_ker, hev]))`. Rewrite using `[← h3, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, h1, h2, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_annihilator_mul (k W : Type) [Field k] [Fintype k] [AddCommGroup W] [Module k W]
     [Fintype (Module.Dual k W)] (y : W) (hy : y ≠ 0) :
@@ -34,31 +34,29 @@ theorem card_annihilator_mul (k W : Type) [Field k] [Fintype k] [AddCommGroup W]
   rw [← h3, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, h1, h2, mul_comm]
 
 /- English proof (translation)
-Use `haveI : Fintype W := Fintype.ofFinite W`. Use `haveI : Finite (Module.Dual k W) := Finite.of_injective (fun g : Module.Dual k W => (g : W → k)) DFunLike.coe_injective`. Use `haveI : Fintype (Module.Dual k W) := Fintype.ofFinite _`. Establish `hq : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `hcancel : ∀ (n : ℕ) (m : M), n ≠ 0 → n • m = 0 → m = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `n m hn h`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul ℂ]`. Rewrite using `[← one_smul ℂ m, ← inv_mul_cancel₀ hn', mul_smul, h, smul_zero]`. Establish `A : ∀ (g : Module.Dual k W) (t : k), ∑ x, (if g x = t then ψ x else 0) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `g t`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Apply `hcancel (Fintype.card kˣ) _ Fintype.card_ne_zero` to reduce the goal to its premises. Establish `e : ∀ a : kˣ, ∑ x, (if g x = 0 then ψ x else 0) = ∑ x, (if g x = 0 then ψ ((a : k) • x) else 0)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Rewrite using `[← Equiv.sum_comp (MulAction.toPerm a)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[MulAction.toPerm, Units.smul_def]`. Rewrite using `[← Finset.card_univ, ← Finset.sum_const, Finset.sum_congr rfl (fun a _ => e a), Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : g x = 0`. Simplify using `only [hx, if_true]`. Conclude with `h2 x`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hg : g = 0`. Substitute `hg` using the available equality. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `[Ne.symm ht]`. Establish `h` using `h1 (t⁻¹ • g) (smul_ne_zero (inv_ne_zero ht) hg)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[finsum_mem_def, finsum_eq_sum_of_fintype]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `: (t⁻¹ • g) x = 1 ↔ g x = t`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_eq_one₀ ht, eq_comm]`. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq, this]`. Establish `T : ∑ x, ψ x = 0` using `by simpa using A 0 0`. Establish `B : ∑ x, (Finset.univ.filter (fun g : Module.Dual k W => g (x - x0) = 0)).card • ψ x = 0`. Establish `: ∑ g : Module.Dual k W, ∑ x, (if g x = g x0 then ψ x else 0) = 0` using `Finset.sum_eq_zero fun g _ => A g _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Finset.sum_comm]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const]`. Simplify using `only [map_sub, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set N := Fintype.card (Module.Dual k W) with hN`. Take `⟨r, hr⟩ : ∃ r, Fintype.card k = r + 1` from `⟨Fintype.card k - 1, by omega⟩`. Establish `C : ∀ x, Fintype.card k • ((Finset.univ.filter (fun g : Module.Dual k W => g (x - x0) = 0)).card • ψ x) = N • ψ x + (if x = x0 then (r * N) • ψ x0 else 0)`. Introduce `x`. Rewrite using `[← mul_smul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hx : x = x0`. Substitute `hx` using the available equality. Simplify using `only [sub_self, map_zero, Finset.filter_true, Finset.card_univ, if_true, hr]`. Rewrite using `[← add_smul]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `card_annihilator_mul k W (x - x0) (sub_ne_zero.mpr hx)` as an intermediate fact. Rewrite using `[if_neg hx, add_zero, hN, ← this]`. Use `congr!`. Establish `D` using `congrArg (fun m => Fintype.card k • m) B`.
-
-Simplify using `only [Finset.smul_sum, C] at D`. Simplify using `only [smul_zero, Finset.sum_add_distrib, ← Finset.smul_sum, T, Finset.sum_ite_eq', Finset.mem_univ, if_true, zero_add] at D`. Conclude with `hcancel _ _ (Nat.mul_ne_zero (show r ≠ 0 by omega) Fintype.card_ne_zero) D`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hyperplane_sums (k W M : Type) [Field k] [Fintype k] [DecidableEq k]
     [AddCommGroup W] [Module k W] [Finite W] [AddCommGroup M] [Module ℂ M] (ψ : W → M)

@@ -8,11 +8,11 @@ noncomputable section
 namespace GlobalTheory.SnMass.VolN.DepOne
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single (esI k r a)]`. Use `a.isLt` as an intermediate fact. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Hpk`. Rewrite using `[if_pos (by omega), one_mul]`. Introduce `l _ hl`. Establish `hl' : l.val ≠ 2 * r + k - a.val` using `fun h => hl (Fin.ext h)`. Use `a.isLt` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Hpk, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem Hpk_mulVec_e {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Hpk k r *ᵥ v) (eI k r a) = v (esI k r a) := by
@@ -31,9 +31,9 @@ theorem Hpk_mulVec_e {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   · simp
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Establish `h2 : (esI k r b).val = 2 * r + k - b.val` using `rfl`. Unfold `Hpk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos (by omega), if_pos rfl]`. Establish `hab' : a.val ≠ b.val` using `fun h => hab (Fin.ext h)`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hpk_e_es {k r : ℕ} (a b : Fin r) :
     Hpk k r (eI k r a) (esI k r b) = if a = b then 1 else 0 := by
@@ -49,15 +49,15 @@ theorem Hpk_e_es {k r : ℕ} (a b : Fin r) :
     rw [if_neg (by omega), if_neg (by omega), if_neg (by omega), if_neg hab]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `a han hab`. Establish `hU : xᴴ * Hpk k r * x = Hpk k r` using `hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hU (eI k r a)) (esI k r b)`. Rewrite `h` using `[Matrix.mul_assoc, Hpk_e_es]`. Establish `hs : (xᴴ * (Hpk k r * x)) (eI k r a) (esI k r b) = ∑ i, star (x i (eI k r a)) * (Hpk k r *ᵥ fun l => x l (esI k r b)) i`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Rewrite `h` using `[hs, Finset.sum_eq_single (eI k r a)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Hpk_mulVec_e, hx.2.1 a (eI k r a) le_rfl, if_pos rfl, star_one, one_mul]`. Conclude with `h`. Introduce `i _ hi`. Distinguish the cases in `hia : a.val ≤ i.val`. Rewrite using `[hx.2.1 a i hia, if_neg hi, star_zero, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha` using `a.isLt`. Take `⟨c, rfl⟩ : ∃ c : Fin r, i = eI k r c` from `⟨⟨i.val, by omega⟩, Fin.ext rfl⟩`. Establish `hca : c.val < a.val` using `by simpa [eI] using not_le.1 hia`. Rewrite using `[Hpk_mulVec_e]`. Establish `hcb : c ≤ b` using `le_trans (le_of_lt (show c < a from hca)) hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih c.val (han ▸ hca) c rfl hcb, if_neg (fun h => by`. Substitute `h` using the available equality. Conclude with `absurd hab (not_le.2 hca)), mul_zero]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem es_es {k r : ℕ} {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hx : x ∈ Nset k r)
     (b : Fin r) : ∀ (n : ℕ) (a : Fin r), a.val = n → a ≤ b →
@@ -88,17 +88,17 @@ theorem es_es {k r : ℕ} {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)
   · simp
 
 /- English proof (translation)
-Introduce `k r x hx i j hij`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, sub_eq_zero]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [pos] at hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hjr : j.val < r`. Apply the tactic sequence `have hji : j.val ≤ i.val := by split_ifs at hij <;> omega`. Establish `e : j = eI k r ⟨j.val, hjr⟩` using `Fin.ext rfl`. Use `hx.2.1 ⟨j.val, hjr⟩ i hji` as an intermediate fact. Rewrite `this` using `[← e]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Distinguish the cases in `hjm : j.val ≤ r + k`. Apply the tactic sequence `have hri : r ≤ i.val := by split_ifs at hij <;> omega`. Conclude with `hx.2.2 i j (by omega) hjm hri`. Apply the tactic sequence `have hji : j.val ≤ i.val := by split_ifs at hij <;> omega`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 2 * r + k - j.val < r` using `by omega`. Establish `hc : 2 * r + k - i.val < r` using `by omega`. Establish `ej : j = esI k r ⟨2 * r + k - j.val, hb⟩` using `Fin.ext (by simp [esI]; omega)`. Establish `ei : i = esI k r ⟨2 * r + k - i.val, hc⟩` using `Fin.ext (by simp [esI]; omega)`. Establish `key` using `es_es hx ⟨2 * r + k - j.val, hb⟩ _ ⟨2 * r + k - i.val, hc⟩ rfl (by rw [Fin.mk_le_mk]; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[← ei, ← ej]`. Rewrite using `[key]`. Distinguish the cases in `hij' : i = j`. Substitute `hij'` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hij', if_neg]`. Introduce `h`. Apply `hij'` to reduce the goal to its premises. Rewrite using `[ei, ej, h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dep_one : ∀ (k r : ℕ) (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ),
     x ∈ Nset k r → Dep k r 1 (x - 1) := by

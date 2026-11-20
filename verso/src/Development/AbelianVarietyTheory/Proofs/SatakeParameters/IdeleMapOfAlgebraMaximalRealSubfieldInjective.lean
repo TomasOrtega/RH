@@ -6,7 +6,7 @@ open NumberField HeckeCharacterZeroLocus.ThmBIn GlobalTheory.IndefiniteRowSideFu
 namespace GlobalTheory.IdeleMapInjective
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite `hab` using `[← toAdele_algebraMap, ← toAdele_algebraMap]`. Conclude with `Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (A := AF F) (B := E) (algebraMap F E).injective ((bijective_toAdele h).1 hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adeleMap_injective {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Function.Injective (adeleMap F E) := by
@@ -16,7 +16,7 @@ theorem adeleMap_injective {F E : Type} [Field F] [NumberField F] [Field E] [Num
     (algebraMap F E).injective ((bijective_toAdele h).1 hab)
 
 /- English proof (translation)
-Establish `h : IsCMExt (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom` using `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩`. Introduce `a b hab`. Conclude with `Units.ext (adeleMap_injective h (congrArg Units.val hab))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ideleMap_injective (E : Type) [Field E] [NumberField E] [IsCMField E] :
     Function.Injective (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E) := by

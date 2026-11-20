@@ -5,17 +5,17 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ N a f h s C hf hh`. Take `⟨hc, hb, hN, ha⟩` from `hh`. Establish `hbound : ∀ x g, ‖f g * h (g⁻¹ * x)‖ ≤ ‖f g‖ * C` using `fun x g => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hb _) (norm_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun g => ‖f g‖ * C) μ` using `hf.norm.mul_const C`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `conv`. Use `continuous_of_dominated (bound := fun g => ‖f g‖ * C) ?_ ?_ hint ?_` and prove the remaining obligations. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hf.aestronglyMeasurable.mul ?_` and prove the remaining obligations. Conclude with `(hc.comp (continuous_inv.mul continuous_const)).aestronglyMeasurable`. Introduce `x`. Conclude with `Eventually.of_forall (hbound x)`. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_const.mul (hc.comp (continuous_const.mul continuous_id))`. Introduce `x`. Unfold `conv`. Rewrite using `[← integral_mul_const]`. Conclude with `norm_integral_le_of_norm_le hint (Eventually.of_forall (hbound x))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `x m hm`. Unfold `conv`. Simplify using `only [← mul_assoc, hN _ m hm]`. Introduce `x t`. Unfold `conv`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← mul_assoc, ha]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.conv_isEig :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

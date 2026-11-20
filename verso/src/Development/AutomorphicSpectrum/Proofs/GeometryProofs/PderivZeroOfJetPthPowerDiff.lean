@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Ar.Coc
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[MvPolynomial.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h2 : x.2.degree ≤ e.degree`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hx, map_add]`. Conclude with `Nat.le_add_left _ _`. Rewrite using `[ha x.2 (lt_of_le_of_lt h2 he), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_mul_eq_zero_of_order_two_of_degree_le_two {σ k : Type} [CommRing k] (j : ℕ) (q a : MvPolynomial σ k)
     (ha : ∀ e : σ →₀ ℕ, e.degree < j → MvPolynomial.coeff e a = 0) :
@@ -26,17 +26,17 @@ private theorem coeff_mul_eq_zero_of_order_two_of_degree_le_two {σ k : Type} [C
   rw [ha x.2 (lt_of_le_of_lt h2 he), mul_zero]
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro P _ e he`. Conclude with `absurd he (Nat.not_lt_zero _)`. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Set `K : Ideal (MvPolynomial σ k)` to `{ carrier := {P | ∀ e : σ →₀ ℕ, e.degree < j + 1 → MvPolynomial.coeff e P = 0} add_mem' := fun {a b} ha hb e he => by rw [MvPolynomial.coeff_add, ha e he, hb e he, add_zero] zero_mem' := fun e _ => MvPolynomial.coeff_zero e smul_mem' := fun c a ha => coeff_mul_eq_zero_of_order_tw …`. Establish `hle : Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ k)) ^ (j + 1) ≤ K`. Rewrite using `[pow_succ, Ideal.mul_le]`. Introduce `r hr s hs`. Use `Submodule.span_induction (p := fun s _ => r * s ∈ K) ?_ ?_ ?_ ?_ hs` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩ show ∀ e : σ →₀ ℕ, e.degree < j + 1 → MvPolynomial.coeff e (r * MvPolynomial.X i) = 0`. Introduce `e he`. Rewrite using `[MvPolynomial.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_X']`. Use `split_ifs with hxi`. Establish `hx1 : x.1.degree + 1 = e.degree`. Rewrite using `[← hx, map_add, ← hxi, Finsupp.degree_single]`. Rewrite using `[ih r hr x.1 (by omega), zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Rewrite using `[mul_zero]`. Conclude with `K.zero_mem`. Introduce `a b _ _ ha hb`. Rewrite using `[mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `K.add_mem ha hb`. Introduce `c a _ ha`. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `K.mul_mem_left c ha`. Conclude with `fun P hP => hle hP`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_eq_zero_of_mem_span_X_pow_of_degree_lt {σ k : Type} [CommRing k] :
     ∀ (j : ℕ) (P : MvPolynomial σ k), P ∈ Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ k)) ^ j →
@@ -73,21 +73,19 @@ private theorem coeff_eq_zero_of_mem_span_X_pow_of_degree_lt {σ k : Type} [Comm
     exact fun P hP => hle hP
 
 /- English proof (translation)
-Introduce `k _ p _ _ d F f hf hF q`. Use extensionality with `e`. Take `⟨v, hv⟩` from `hF (e.degree + 1)`. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Establish `hmem : psTrunc (e.degree + 1) F + psTrunc (e.degree + 1) f - P ^ p ∈ orig k (Fin 1 × Fin d) ^ (e.degree + 1 + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_add, map_pow]`. Establish `h1 : psJet (e.degree + 1) F = Ideal.Quotient.mk (orig k (Fin 1 × Fin d) ^ (e.degree + 1 + 1)) (psTrunc (e.degree + 1) F)` using `rfl`. Establish `h2 : psJet (e.degree + 1) f = Ideal.Quotient.mk (orig k (Fin 1 × Fin d) ^ (e.degree + 1 + 1)) (psTrunc (e.degree + 1) f)` using `rfl`. Rewrite using `[← h1, ← h2, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hdeg : (e + Finsupp.single q 1).degree < e.degree + 1 + 1`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `hz` using `coeff_eq_zero_of_mem_span_X_pow_of_degree_lt (e.degree + 1 + 1) _ hmem (e + Finsupp.single q 1) hdeg`. Establish `hbd : ∀ i, (e + Finsupp.single q 1 : Fin 1 × Fin d →₀ ℕ) i ≤ (e + Finsupp.single q 1).degree`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Conclude with `Finsupp.le_degree i _`. Establish `hin : e + Finsupp.single q 1 ∈ degLE (e.degree + 1)`. Simplify using `only [degLE, Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => ⟨(e + Finsupp.single q 1 : Fin 1 × Fin d →₀ ℕ) i, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hbd i` as an intermediate fact. Rewrite `this` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show (e + Finsupp.single q 1).degree ≤ e.degree + 1`. Rewrite using `[map_add, Finsupp.degree_single]`. Establish `htr : ∀ g : MvPowerSeries (Fin 1 × Fin d) k, MvPolynomial.coeff (e + Finsupp.single q 1) (psTrunc (e.degree + 1) g) = MvPowerSeries.coeff (e + Finsupp.single q 1) g`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[psTrunc, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, hin]`. Establish `hpow : MvPowerSeries.pderiv k q ((P ^ p : MvPolynomial (Fin 1 × Fin d) k) : MvPowerSeries (Fin 1 × Fin d) k) = 0`. Rewrite using `[MvPolynomial.coe_pow, Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul k, CharP.cast_eq_zero, zero_smul]`. Establish `hG : MvPowerSeries.pderiv k q F = MvPowerSeries.pderiv k q (F + f - ((P ^ p : MvPolynomial (Fin 1 × Fin d) k) : MvPowerSeries (Fin 1 × Fin d) k))`. Rewrite using `[map_sub, map_add, hf q, hpow, add_zero, sub_zero]`.
-
-Rewrite using `[hG, MvPowerSeries.coeff_pderiv, map_zero, map_sub, map_add, MvPolynomial.coeff_coe, ← htr F, ← htr f, ← MvPolynomial.coeff_add, ← MvPolynomial.coeff_sub, hz, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_eq_zero_of_jet_pow_sub : ∀ (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (d : ℕ) (F f : MvPowerSeries (Fin 1 × Fin d) k), (∀ q, MvPowerSeries.pderiv k q f = 0) → (∀ m, ∃ v : Jet k (Fin 1 × Fin d) m, psJet m F = v ^ p - psJet m f) → ∀ q, MvPowerSeries.pderiv k q F = 0 := by
   intro k _ p _ _ d F f hf hF q

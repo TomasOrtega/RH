@@ -14,11 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Introduce `M`. Use `choose c hc using fun i p => hπ.1 (M i p)`. Establish `hX : (fun i => ∑ p, (c i p : Fv F v ⊗[F] E) • e p) ∈ lamA v Λ a` using `fun i => (he _).2 ⟨fun p => (c i p : Fv F v ⊗[F] E), fun p => (c i p).2, rfl⟩`. Use `⟨⟨_, hX⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phi_apply]`. Establish `h : cf σ J v Λ hSD he ⟨_, hX⟩ i p = c i p`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cf_coe]`. Conclude with `coord_eq σ J v e he1 (fun q => (c i q : Fv F v ⊗[F] E)) p`.
-
-Rewrite using `[h, hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_surj (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F] E} (he : Orb.IsOBas v Λ e)
     (he1 : gramR (Fv F v) σ J e = 1) {ϖ : Fv F v} {K : Type} [CommRing K] {τ : K →+* K}
@@ -38,17 +36,15 @@ theorem phi_surj (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F
   rw [h, hc]
 
 /- English proof (translation)
-Use extensionality with `X`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Z, hZ, hZX⟩`. Use function extensionality and compare the values at `i p`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[phi_apply, Pi.zero_apply, Pi.zero_apply]`. Apply `(hπ.2.1 _).2` to reduce the goal to its premises. Rewrite using `[cf_coe, ← hZX]`. Use `⟨hR (Fv F v) σ J (e p) (Z i), (hSD _).1 (hZ i) _ (bas_mem v Λ he p), ?_⟩` and prove the remaining obligations. Use `show hR (Fv F v) σ J (e p) (sc (E := E) v ϖ • Z i) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Orb.hR_smul_right]`. Introduce `h0`. Establish `hP : ∀ i p, ∃ d ∈ OEv (E` using `E) v, hR (Fv F v) σ J (e p) ((X : TupV (E := E) v n a) i) = sc (E := E) v ϖ * d := by`. Introduce `i p`. Use `(hπ.2.1 (cf σ J v Λ hSD he X i p)).1 (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun (congrFun h0 i) p`. Rewrite `h1` using `[phi_apply]`. Conclude with `h1)`. Conclude with `this`. Use `choose d hd hde using hP`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : (fun i => ∑ p, d i p • e p) ∈ lamA v Λ a` using `fun i => (he _).2 ⟨d i, hd i, rfl⟩`. Use `⟨_, hZ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[DistribMulAction.toAddMonoidHom_apply, Pi.smul_apply, expand σ J v Λ he he1 (memA v Λ X i), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hde, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_ker (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F] E} (he : Orb.IsOBas v Λ e)
     (he1 : gramR (Fv F v) σ J e = 1) {ϖ : Fv F v} {K : Type} [CommRing K] {τ : K →+* K}
@@ -83,7 +79,7 @@ theorem phi_ker (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F]
     rw [hde, smul_smul]
 
 /- English proof (translation)
-Use `show hR (Fv F v) σ J ((X : TupV (E := E) v n a) i) ((X : TupV (E := E) v n a) j) = _`. Use `conv_lhs => rw [expand σ J v Λ he he1 (memA v Λ X j)]`. Rewrite using `[Orb.hR_sum_right σ J v]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[cf_coe, cf_coe, Orb.hR_conj σ J v hcm hJ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_coord (hcm : IsCMExt F E σ) (hJ : ∀ i j, σ (J j i) = J i j) (hSD : IsSDLoc σ J v Λ)
     {e : Fin n → Fin n → Fv F v ⊗[F] E} (he : Orb.IsOBas v Λ e) (he1 : gramR (Fv F v) σ J e = 1) {a : ℕ}

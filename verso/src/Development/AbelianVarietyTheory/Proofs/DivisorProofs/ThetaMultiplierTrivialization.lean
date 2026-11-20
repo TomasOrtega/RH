@@ -21,7 +21,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusRM.TransFrame
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem differentiableOn_finprod {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E}
     (s : Finset κ) (φ : κ → E → ℂ) (h : ∀ k, DifferentiableOn ℂ (φ k) S) :
@@ -78,12 +78,12 @@ end
 variable {A : Over (Sp ℂ)} [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `(Hom.mul_def a b).symm`.
+A detailed English derivation is pending.
 -/
 theorem padd_eq' {T : Over (Sp ℂ)} (a b : T ⟶ A) : padd A a b = a * b := (Hom.mul_def a b).symm
 
 /- English proof (translation)
-Rewrite using `[pzero, Hom.one_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pzero_eq' (T : Over (Sp ℂ)) : pzero A T = 1 := by
   rw [pzero, Hom.one_def]
@@ -97,7 +97,7 @@ def shiftVec {g : ℕ} (w : Fin g → ℂ) (I : ULift.{0} (Finset (Fin 2))) (z :
   (if (0 : Fin 2) ∈ I.down then z else 0) + (if (1 : Fin 2) ∈ I.down then w else 0)
 
 /- English proof (translation)
-Unfold `shiftVec`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem differentiable_shiftVec {g : ℕ} (w : Fin g → ℂ) (I : ULift.{0} (Finset (Fin 2))) :
     Differentiable ℂ (shiftVec w I) := by
@@ -105,9 +105,9 @@ theorem differentiable_shiftVec {g : ℕ} (w : Fin g → ℂ) (I : ULift.{0} (Fi
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Establish `h0 : y ≫ pairRight c ≫ fst A A = y` using `by simp [pairRight]`. Establish `h1 : y ≫ pairRight c ≫ snd A A = c`. Simplify using `only [pairRight, lift_snd]`. Rewrite using `[← Category.assoc, toUnit_unique (y ≫ toUnit A) (𝟙 _), Category.id_comp]`. Establish `hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1}` using `by revert I; decide`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hI with rfl | rfl | rfl | rfl <;>`. Simplify using `[psum, padd_eq', pzero_eq', x2, List.finRange_succ, comp_mul, comp_one, h0, h1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pt_shiftSum (y c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (I : Finset (Fin 2)) :
     y ≫ (pairRight c ≫ psum A (x2 A) I) =
@@ -121,7 +121,7 @@ theorem pt_shiftSum (y c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (I : Finset (Fin 2)) :
     simp [psum, padd_eq', pzero_eq', x2, List.finRange_succ, comp_mul, comp_one, h0, h1]
 
 /- English proof (translation)
-Rewrite using `[shiftSum, pt_shiftSum, shiftVec, u.ex_add]`. Apply the tactic sequence `split_ifs <;> simp [holUnif_ex_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_shiftVec {M : LB A.left} {g : ℕ} (u : HolUnif A M g) (w : Fin g → ℂ) (I : ULift.{0} (Finset (Fin 2)))
     (z : Fin g → ℂ) : u.ex (shiftVec w I z) = u.ex z ≫ shiftSum (u.ex w) I := by
@@ -137,7 +137,7 @@ variable {A : Over (Sp ℂ)} [GrpObj A]
 def expo (I : ULift.{0} (Finset (Fin 2))) : ℤ := (-1) ^ (2 - I.down.card)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThetaPoint.top_le_pull_iff]`. Use `show ⊤ ≤ (x ≫ (pairRight c).left) ⁻¹ᵁ LB.wchart M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) (J PUnit.unit) ↔ _`. Use `(CubeValues.le_preimage_wchart _ M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) (J PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι)).trans ?_` and prove the remaining obligations. Simplify using `only [shiftSum, Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart (M : LB A.left) (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (x : Sp ℂ ⟶ A.left)
     (J : ((abelian₂ A M).pull (pairRight c).left).ι) :
@@ -151,7 +151,7 @@ theorem chart (M : LB A.left) (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (x : Sp ℂ ⟶ 
   simp only [shiftSum, Over.comp_left, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `CubeValues.le_preimage_wchart _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem chart' (M : LB A.left) (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (x : Sp ℂ ⟶ A.left)
     (j : ULift.{0} (Finset (Fin 2)) → M.ι) :
@@ -160,9 +160,9 @@ theorem chart' (M : LB A.left) (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (x : Sp ℂ ⟶
   CubeValues.le_preimage_wchart _ _ _ _
 
 /- English proof (translation)
-Use `(GlobalTheory.ThetaPoint.valAt'_pull_g _ _ _ _ _ h h').trans ?_` and prove the remaining obligations. Establish `hL` using `(GlobalTheory.ThetaPoint.top_le_pull_iff _ _ _ _).1 h`. Establish `hL'` using `(GlobalTheory.ThetaPoint.top_le_pull_iff _ _ _ _).1 h'`. Establish `hc` using `(chart' M c x (J PUnit.unit)).2 ((chart M c x J).1 h)`. Establish `hc'` using `(chart' M c x (J' PUnit.unit)).2 ((chart M c x J').1 h')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(CubeValues.val_linComb (x ≫ (pairRight c).left) valAt'_rules M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) expo (J PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι) (J' PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι) hL hL').trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (CubeValues.val_linComb x valAt'_rules M (fun I => (shiftSum c I).left) expo _ _ hc hc').symm` and prove the remaining obligations. Simplify using `only [shiftSum, Over.comp_left, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem val_g (M : LB A.left) (c : 𝟙_ (Over (Sp ℂ)) ⟶ A) (x : Sp ℂ ⟶ A.left)
     (J J' : ((abelian₂ A M).pull (pairRight c).left).ι)
@@ -221,7 +221,7 @@ end GlobalTheory.TorusRM.TransFrame
 namespace GlobalTheory.TorusRM.TransFrame
 
 /- English proof (translation)
-Rewrite using `[← Fintype.prod_equiv Equiv.ulift.symm (fun I : Finset (Fin 2) => f ⟨I⟩) f (fun _ => rfl)]`. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide]`. Rewrite using `[Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_ulift_finset_fin_two_eq (f : ULift.{0} (Finset (Fin 2)) → ℂ) :
     ∏ I, f I = f ⟨∅⟩ * f ⟨{0}⟩ * f ⟨{1}⟩ * f ⟨{0, 1}⟩ := by
@@ -234,19 +234,19 @@ theorem prod_ulift_finset_fin_two_eq (f : ULift.{0} (Finset (Fin 2)) → ℂ) :
 variable {A : Over (Sp ℂ)} [GrpObj A] {M : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Establish `hc : ∀ I, (⊤ : (Sp ℂ).Opens) ≤ (u.ex (shiftVec w I z)).left ⁻¹ᵁ M.U (J PUnit.unit I)`. Introduce `I`. Rewrite using `[ex_shiftVec, Over.comp_left]`. Conclude with `(chart M _ _ J).1 hz I`. Establish `hzl : u.ex (z + l) = u.ex z` using `by rw [u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : ∀ I, (⊤ : (Sp ℂ).Opens) ≤ (u.ex (shiftVec w I (z + l))).left ⁻¹ᵁ M.U (J PUnit.unit I)`. Introduce `I`. Rewrite using `[ex_shiftVec, hzl, ← ex_shiftVec]`. Conclude with `hc I`. Establish `c1 : (⊤ : (Sp ℂ).Opens) ≤ (u.ex z).left ⁻¹ᵁ M.U (J PUnit.unit ⟨{0}⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hc ⟨{0}⟩` using `[shiftVec]`. Establish `c3 : (⊤ : (Sp ℂ).Opens) ≤ (u.ex (z + w)).left ⁻¹ᵁ M.U (J PUnit.unit ⟨{0, 1}⟩)`. Simplify `hc ⟨{0, 1}⟩` using `[shiftVec]`. Establish `n1 : u.fr (J PUnit.unit ⟨{0}⟩) (z + l) ≠ 0` using `u.fr_ne _ _ (by simpa [shiftVec] using hcl ⟨{0}⟩)`. Establish `n2 : u.fr (J PUnit.unit ⟨{1}⟩) w ≠ 0` using `u.fr_ne _ _ (by simpa [shiftVec] using hc ⟨{1}⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `nχ : χ l ≠ 0`. Introduce `h0`. Use `hF.2.1 l` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hF.2.2 l (J PUnit.unit ⟨{0}⟩) z c1`. Establish `e3` using `hF.2.2 l (J PUnit.unit ⟨{0, 1}⟩) (z + w) c3`. Rewrite using `[transUnif_fr, transUnif_fr, prod_ulift_finset_fin_two_eq, prod_ulift_finset_fin_two_eq]`. Simplify using `only [shiftVec, expo]`. Simplify using `only [Finset.notMem_empty, if_false, Finset.mem_singleton, Finset.mem_insert, Finset.card_empty, Finset.card_singleton]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Rewrite using `[e1, e3, add_dotProduct, show z + l + w = z + w + l by abel]`. Establish `hexp : Complex.exp (Real.pi * ((z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + (w ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)))) = Complex.exp (Real.pi * (w ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)))) * Complex.exp (Real.pi * (z ⬝ …`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hexp]`. Establish `nE` using `Complex.exp_ne_zero (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem transUnif_factor (u : HolUnif A M g) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (hF : IsFactorAH u Hm χ) (w : Fin g → ℂ) (l : u.Λ) (J : ((abelian₂ A M).pull (pairRight (u.ex w)).left).ι)
@@ -298,9 +298,9 @@ end GlobalTheory.TorusRM.TransFrame
 namespace GlobalTheory.TorusRM.TransFrame
 
 /- English proof (translation)
-Establish `hm` using `(top_le_preimage_inf _ _ _).2 ⟨hj, hj'⟩`. Establish `e` using `congrArg (fun c : Γ(X, B.U j ⊓ B.U j')ˣ => valAt' x _ c.val) (ht j j')`. Simplify using `only [res, Units.coe_map, Units.val_mul, MonoidHom.coe_coe] at e`. Rewrite `e` using `[valAt'_mul, valAt'_map _ _ _ hm, valAt'_map _ _ _ hm]`. Establish `n3 : valAt' x (B.U j ⊓ B.U j') (B.g j j').val ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `(valAt'_rules _ x).2.1 _ hm`. Rewrite using `[hf]`. Conclude with `((B.g j j').isUnit.map f).ne_zero`. Rewrite using `[e, hab, mul_div_mul_left _ _ n3]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_div_eq {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (B : LB X) (t : B.Gen) (ht : t.IsGen) (j j' : B.ι)
     (hj : ⊤ ≤ x ⁻¹ᵁ B.U j) (hj' : ⊤ ≤ x ⁻¹ᵁ B.U j') (a b : ℂ)
@@ -317,7 +317,7 @@ theorem gen_div_eq {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (B : LB X) (t : B.Gen) (h
   rw [e, hab, mul_div_mul_left _ _ n3]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `(valAt'_rules _ x).2.1 _ h`. Rewrite using `[hf]`. Conclude with `(c.isUnit.map f).ne_zero`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitValue_ne_zero {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (V : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (c : Γ(X, V)ˣ) :
     valAt' x V c.val ≠ 0 := by
@@ -330,23 +330,21 @@ end GlobalTheory.TorusRM.TransFrame
 open GlobalTheory.TorusRM.TransFrame in
 
 /- English proof (translation)
-Introduce `g A _ hA M u Hm χ hM hF w hG`. Take `⟨t, ht⟩` from `hG`. Establish `hρ : lift (𝟙 A) (toUnit A) ≫ lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex w) = pairRight (u.ex w)`. Simplify using `[pairRight, comp_lift]`. Establish `key : (fun _ : PUnit => (lift (𝟙 A) (toUnit A)).left ≫ (lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex w)).left) = (fun _ : PUnit => (pairRight (u.ex w)).left)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `_`. Rewrite using `[← Over.comp_left, hρ]`. Establish `H : HasGen (LB.LinComb (abelian₂ A M) (fun _ : PUnit => (lift (𝟙 A) (toUnit A)).left ≫ (lift (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex w)).left) (fun _ => 1))` using `⟨_, ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen (abelian₂ A M) _ _ t ht (lift (𝟙 A) (toUnit A)).left⟩`. Rewrite `H` using `[key]`. Take `⟨t', ht'⟩` from `H`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hch : ∀ z, ∃ J : ((abelian₂ A M).pull (pairRight (u.ex w)).left).ι, ⊤ ≤ ((transUnif u w).ex z).left ⁻¹ᵁ ((abelian₂ A M).pull (pairRight (u.ex w)).left).U J`. Introduce `z`. Establish `hI : ∀ I : ULift.{0} (Finset (Fin 2)), ∃ i : M.ι, (⊤ : (Sp ℂ).Opens) ≤ ((u.ex z).left ≫ (shiftSum (u.ex w) I).left) ⁻¹ᵁ M.U i`. Introduce `I`. Establish `hmem : ((u.ex z).left ≫ (shiftSum (u.ex w) I).left) (default : PrimeSpectrum ℂ) ∈ ⨆ i, M.U i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hM.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hmem`. Conclude with `⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩`. Use `choose c hc using hI`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => c, (chart M _ _ _).2 hc⟩`. Use `choose J hJ using hch`. Establish `hv : ∀ j j' z, ⊤ ≤ ((transUnif u w).ex z).left ⁻¹ᵁ ((abelian₂ A M).pull (pairRight (u.ex w)).left).U j → ⊤ ≤ ((transUnif u w).ex z).left ⁻¹ᵁ ((abelian₂ A M).pull (pairRight (u.ex w)).left).U j' → valAt' ((transUnif u w).ex z).left _ (t'.s j).val / (transUnif u w).fr j z = valAt' …`. Introduce `j j' z hj hj'`. Conclude with `gen_div_eq _ _ t' ht' j j' hj hj' _ _ ((transUnif u w).fr_compat j j' z ((top_le_preimage_inf _ _ _).2 ⟨hj, hj'⟩)) ((transUnif u w).fr_ne _ z hj')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun z => valAt' ((transUnif u w).ex z).left _ (t'.s (J z)).val / (transUnif u w).fr (J z) z, fun z => ?_, fun z => ?_, fun l hl z => ?_⟩` and prove the remaining obligations. Take `⟨ho, hd⟩` from `(transUnif u w).hol _ (t'.s (J z)).val`. Establish `hn` using `ho.mem_nhds (hJ z)`. Establish `hq` using `(hd.differentiableAt hn).mul ((((transUnif u w).fr_hol (J z)).differentiableAt hn).inv ((transUnif u w).fr_ne _ z (hJ z)))`. Use `hq.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hn] with y hy`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, ← div_eq_mul_inv]`. Conclude with `hv (J y) (J z) y (hJ y) hy`. Conclude with `div_ne_zero (unitValue_ne_zero _ _ (hJ z) _) ((transUnif u w).fr_ne _ z (hJ z))`. Establish `hzl : (transUnif u w).ex (z + l) = (transUnif u w).ex z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(transUnif u w).ex_add, ((transUnif u w).ker l).2 hl, _root_.mul_one]`. Establish `hj : ⊤ ≤ ((transUnif u w).ex (z + l)).left ⁻¹ᵁ ((abelian₂ A M).pull (pairRight (u.ex w)).left).U (J z)`. Rewrite using `[hzl]`. Conclude with `hJ z`. Use `show _ / _ = _ * (_ / _)`.
-
-Rewrite using `[hv (J (z + l)) (J z) (z + l) (hJ _) hj, hzl, transUnif_factor u hF w ⟨l, hl⟩ (J z) z (hJ z)]`. Establish `n` using `(transUnif u w).fr_ne _ _ hj`. Establish `nE` using `Complex.exp_ne_zero (Real.pi * (w ⬝ᵥ Hm.mulVec (star l)))`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TorusRM.exists_theta_of_hasGen_lam_pull : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

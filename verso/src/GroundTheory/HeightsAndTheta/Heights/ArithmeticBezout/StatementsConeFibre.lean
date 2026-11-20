@@ -28,7 +28,7 @@ def ConeFibreDegree.Statement : Prop :=
         fibreCount h W π w = δ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℂ, isChowForm_point ℂ, isMultiHomog_point ℂ⟩`.
+Supply the required witnesses or components.
 -/
 theorem ConeFibreDegree.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧

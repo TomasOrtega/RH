@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Introduce `σ f hf h0`. Take `⟨hscal, hpos⟩` from `h σ`. Establish `key` using `hscal f hf`. Rewrite `key` using `[h0, map_zero]`. Distinguish the cases in `hb : what₂.isot (N.j i) σ = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hf` using `[hb]`. Conclude with `(Submodule.mem_bot ℂ).1 hf`. Establish `hne : ((what₂.lamP (N.mu i) (N.j i) σ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hpos hb).ne'`. Conclude with `(smul_eq_zero.1 key.symm).resolve_left hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem upInj_of_lamPos (i : N.Loc) (h : LamPos N i) : UpInj N i := by
   intro σ f hf h0
@@ -28,16 +28,16 @@ theorem upInj_of_lamPos (i : N.Loc) (h : LamPos N i) : UpInj N i := by
     exact (smul_eq_zero.1 key.symm).resolve_left hne
 
 /- English proof (translation)
-Introduce `P P' x hP hP' w _`. Rewrite using `[h P P' x hP hP']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem locOfPt_of_repOfPt (i : N.Loc) (h : RepOfPt N A i) : LocOfPt N A i := by
   intro P P' x hP hP' w _
   rw [h P P' x hP hP']
 
 /- English proof (translation)
-Introduce `x hx Sig hS`. Set `g : ↥(eigC N A i x) →ₗ[ℂ] ↥(MjSig N A i Sig)` to `((what₂.thetaP (N.mu i) (N.j i)).domRestrict (eigC N A i x)).codRestrict (MjSig N A i Sig) (fun v => h2 x hx Sig hS (Submodule.mem_map_of_mem v.2))`. Establish `hinj : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv' : what₂.thetaP (N.mu i) (N.j i) (v : what₂.Mt (N.mu i) (N.j i)) = 0` using `congrArg Subtype.val (LinearMap.mem_ker.1 hv)`. Conclude with `Subtype.ext (h1 x hx v v.2 hv')`. Conclude with `LinearMap.finrank_le_finrank_of_injective hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem count_of_down (i : N.Loc) (h1 : TypeNZ N A i) (h2 : DownMem N A i) : Count N A i := by
   intro x hx Sig hS
@@ -53,9 +53,9 @@ theorem count_of_down (i : N.Loc) (h1 : TypeNZ N A i) (h2 : DownMem N A i) : Cou
   exact LinearMap.finrank_le_finrank_of_injective hinj
 
 /- English proof (translation)
-Take `⟨hne, hle⟩` from `h`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨f, hf, hfy⟩` from `Submodule.mem_map.1 hy`. Use `⟨f, hf, y, hle hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hfy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inner_self_ne_zero.2 hy0`.
+A detailed English derivation is pending.
 -/
 theorem pairs_of_thetaOf (i : N.Loc) (σ : what₂.FT) (P : A.AV i) (h : thetaOf N A i σ P) :
     Pairs N A i σ P := by
@@ -67,9 +67,9 @@ theorem pairs_of_thetaOf (i : N.Loc) (σ : what₂.FT) (P : A.AV i) (h : thetaOf
   exact inner_self_ne_zero.2 hy0
 
 /- English proof (translation)
-Establish `hd : A.lpDim (A.locG χ w) = 1` using `A.locG_dim χ w`. Proceed by induction on `L with`. Consider the case `nil => exact ((hL w).2.1 _ hd).symm`. Consider the case `cons k L ih`. Simplify using `only [List.foldr_cons]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih, (hL w).1 _ _ _ hd, (hL w).2.2.1 _ _ _ hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem foldr_lpSum_lpChar_comm {ι : Type} (hL : ParamLaws N A) (χ : A.CG 1) (w : PlE H)
     (c : ι → ℝ) (b : A.LP w) (L : List ι) :
@@ -83,7 +83,7 @@ private theorem foldr_lpSum_lpChar_comm {ι : Type} (hL : ParamLaws N A) (χ : A
     rw [ih, (hL w).1 _ _ _ hd, (hL w).2.2.1 _ _ _ hd]
 
 /- English proof (translation)
-Unfold `spehLoc`. Simplify using `only [A.locG_tw]`. Conclude with `foldr_lpSum_lpChar_comm N A hL χ w (fun k : ℝ => ((p.d : ℝ) - 1) / 2 - k) (A.locG p.π w) _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem speh_char (hL : ParamLaws N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE H) :
     spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w = A.lpChar (spehLoc N A p w) (A.locG χ w) := by
@@ -92,7 +92,7 @@ theorem speh_char (hL : ParamLaws N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE H)
   exact foldr_lpSum_lpChar_comm N A hL χ w (fun k : ℝ => ((p.d : ℝ) - 1) / 2 - k) (A.locG p.π w) _
 
 /- English proof (translation)
-Establish `hd : A.lpDim (A.locG χ w) = 1` using `A.locG_dim χ w`. Proceed by induction on `S with`. Consider the case `nil => exact ((hL w).2.1 _ hd).symm`. Consider the case `cons p S ih => show A.lpSum (spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w) (isoLoc N A (twistIso N A S χ) w) = A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)`. Rewrite using `[ih, speh_char N A hL p χ w, (hL w).1 _ _ _ hd]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_char (hL : ParamLaws N A) (S : List (Part A.CG)) (χ : A.CG 1) (w : PlE H) :
     isoLoc N A (twistIso N A S χ) w = A.lpChar (isoLoc N A S w) (A.locG χ w) := by
@@ -105,7 +105,7 @@ theorem iso_char (hL : ParamLaws N A) (S : List (Part A.CG)) (χ : A.CG 1) (w : 
     rw [ih, speh_char N A hL p χ w, (hL w).1 _ _ _ hd]
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil => exact A.lpSum_comm _ _`. Consider the case `cons q S ih => show A.lpSum (spehLoc N A q w) (isoLoc N A (S ++ [p]) w) = A.lpSum (A.lpSum (spehLoc N A q w) (isoLoc N A S w)) (spehLoc N A p w)`. Rewrite using `[ih, A.lpSum_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_append (S : List (Part A.CG)) (p : Part A.CG) (w : PlE H) :
     isoLoc N A (S ++ [p]) w = A.lpSum (isoLoc N A S w) (spehLoc N A p w) := by
@@ -117,7 +117,7 @@ theorem iso_append (S : List (Part A.CG)) (p : Part A.CG) (w : PlE H) :
     rw [ih, A.lpSum_assoc]
 
 /- English proof (translation)
-Introduce `σ P hθ w hw`. Take `⟨Sig, hSig, hBC⟩` from `h σ P hθ`. Use `show A.locV i P w = A.lpChar (A.lpSum (A.locW i σ w) (spehLoc N A (muPart N A i) w)) (A.locG A.etaTinv w)`. Rewrite using `[← hBC.2.2.2.1 w hw, iso_char N A hL _ _ w, iso_append N A, hSig.2.2 w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitLift_of_liftParam (hL : ParamLaws N A) (i : N.Loc) (h : LiftParam N A i) :
     SplitLift N A i := by
@@ -128,7 +128,7 @@ theorem splitLift_of_liftParam (hL : ParamLaws N A) (i : N.Loc) (h : LiftParam N
   rw [← hBC.2.2.2.1 w hw, iso_char N A hL _ _ w, iso_append N A, hSig.2.2 w hw]
 
 /- English proof (translation)
-Use `⟨f, hf, (A.typeV i P).starProjection (what₂.thetaT (N.mu i) (N.j i) f), Submodule.starProjection_apply_mem _ _, ?_⟩` and prove the remaining obligations. Establish `e1` using `Submodule.starProjection_inner_eq_zero (K := A.typeV i P) (what₂.thetaT (N.mu i) (N.j i) f) _ (Submodule.starProjection_apply_mem (A.typeV i P) (what₂.thetaT (N.mu i) (N.j i) f))`. Rewrite `e1` using `[inner_sub_left, sub_eq_zero]`. Rewrite using `[Submodule.inner_starProjection_left_eq_right, e1]`. Conclude with `inner_self_ne_zero.2 hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pairs_of_starProjection_ne_zero (i : N.Loc) (σ : what₂.FT) (P : A.AV i) (f : what₂.Mj (N.j i))
     (hf : f ∈ what₂.isot (N.j i) σ)
@@ -144,17 +144,15 @@ private theorem pairs_of_starProjection_ne_zero (i : N.Loc) (σ : what₂.FT) (P
   exact inner_self_ne_zero.2 hne
 
 /- English proof (translation)
-Introduce `i σ hσ`. Use `letI : Fintype (A.AV i) := Fintype.ofFinite _`. Establish `hO : OrthogonalFamily ℂ (fun P => A.typeV i P) (fun P => (A.typeV i P).subtypeₗᵢ)` using `orthogonalFamily_iff_pairwise.2 (by intro P P' hP; exact h3 i P P' hP)`. Establish `hsum : ∀ u, (∑ Q, (A.typeV i Q).starProjection u) = u` using `fun u => hO.sum_projection_of_mem_iSup u (by rw [A.typeV_top i]; exact Submodule.mem_top)`. Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu0 : what₂.thetaT (N.mu i) (N.j i) f ≠ 0` using `fun h => hf0 (h1 i σ f hf h)`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : ∃ P, (A.typeV i P).starProjection (what₂.thetaT (N.mu i) (N.j i) f) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_exists, not_not] at hc`. Apply `hu0` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hsum (what₂.thetaT (N.mu i) (N.j i) f)]`. Conclude with `Finset.sum_eq_zero (fun Q _ => hc Q)`. Establish `hPair` using `pairs_of_starProjection_ne_zero N A i σ P f hf hP`. Use `⟨P, ?_, ?_⟩` and prove the remaining obligations. Introduce `hbot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu0` to reduce the goal to its premises. Establish `hm : what₂.thetaT (N.mu i) (N.j i) f ∈ (what₂.isot (N.j i) σ).map (what₂.thetaT (N.mu i) (N.j i))` using `Submodule.mem_map_of_mem hf`. Rewrite `hm` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).1 hm`. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.1 hu`. Establish `hz : ∀ Q, Q ≠ P → (A.typeV i Q).starProjection (what₂.thetaT (N.mu i) (N.j i) g) = 0`. Introduce `Q hQ`. Assume the negation of the conclusion as `hc`. Conclude with `hQ (h2 i σ Q P (pairs_of_starProjection_ne_zero N A i σ Q g hg hc) hPair)`.
-
-Rewrite using `[← hsum (what₂.thetaT (N.mu i) (N.j i) g), Finset.sum_eq_single P (fun Q _ hQ => hz Q hQ) (by simp)]`. Conclude with `Submodule.starProjection_apply_mem _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOne_of (h1 : ∀ i, UpInj N i) (h2 : ∀ i, HoweUp N A i) (h3 : ∀ i, TypeOrth N A i) :
     ThetaOne N A := by
@@ -192,7 +190,7 @@ theorem thetaOne_of (h1 : ∀ i, UpInj N i) (h2 : ∀ i, HoweUp N A i) (h3 : ∀
     exact Submodule.starProjection_apply_mem _ _
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `only [iotaO, RingHom.coe_comp, Function.comp_apply] at hab`. Conclude with `IsFractionRing.injective (N.O i) (FractionRing (N.O i)) ((A.iotaQ i).injective ((A.iotaQC i).injective hab))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iotaO_inj (i : N.Loc) : Function.Injective (iotaO N A i) := by
   intro a b hab
@@ -201,9 +199,9 @@ theorem iotaO_inj (i : N.Loc) : Function.Injective (iotaO N A i) := by
     ((A.iotaQ i).injective ((A.iotaQC i).injective hab))
 
 /- English proof (translation)
-Establish `hpol : ∀ w, SplitOut N i w → (heckePol N i x w).map (iotaO N A i) = galPol A (A.lpTw (A.locV i P w) ((1 - (R.nV : ℝ)) / 2))`. Introduce `w hw`. Rewrite using `[hl w hw]`. Conclude with `A.pt_loc i P' x hx w hw`. Take `⟨y, hy⟩` from `h P x (fun w hw => ⟨heckePol N i x w, hpol w hw, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, hy, fun w hw => ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective (iotaO N A i) (iotaO_inj N A i)` to reduce the goal to its premises. Rewrite using `[hpol w hw]`. Conclude with `A.pt_loc i P y hy w hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pt_of_loc (i : N.Loc) (h : PtLocal N A i) (P P' : A.AV i) (x : N.X i)
     (hx : A.ptV i P' = some x) (hl : ∀ w, SplitOut N i w → A.locV i P w = A.locV i P' w) :
@@ -220,9 +218,9 @@ theorem exists_pt_of_loc (i : N.Loc) (h : PtLocal N A i) (P P' : A.AV i) (x : N.
   exact A.pt_loc i P y hy w hw
 
 /- English proof (translation)
-Introduce `i σ hσ w hw hu α hα`. Use `lt_of_le_of_lt (h i σ hσ w hw hu α hα) ?_` and prove the remaining obligations. Apply `Real.rpow_lt_rpow_of_exponent_lt` to reduce the goal to its premises. Conclude with `hq w` after adjusting the coercions. Establish `hrt : R.r < R.t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `R.rank_add_five_le`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hrt' : (R.r : ℝ) < R.t` using `by exact_mod_cast hrt`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rowSize_of_le (hq : ∀ w : PlE H, 1 < (normV w : ℕ)) (h : RowSizeLe N A) : RowSize N A := by
   intro i σ hσ w hw hu α hα

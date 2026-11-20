@@ -10,9 +10,9 @@ namespace GlobalTheory.HeckeTwo
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 
 /- English proof (translation)
-Establish `hw : 0 < ‖w‖` using `lt_of_lt_of_le hc (hcw.trans (Complex.abs_im_le_norm w))`. Unfold `phi`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hw]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hre : (-2 * σ).re = -2 * σ.re` using `by simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hre]`. Conclude with `Real.rpow_le_rpow_of_nonpos hc (hcw.trans (Complex.abs_im_le_norm w)) (by linarith)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_phi_le (σ w : ℂ) (hσ : 0 < σ.re) (c : ℝ) (hc : 0 < c) (hcw : c ≤ |w.im|) :
     ‖phi σ w‖ ≤ ‖w⁻¹ ^ 2‖ * c ^ (-2 * σ.re) := by
@@ -25,15 +25,13 @@ theorem norm_phi_le (σ w : ℂ) (hσ : 0 < σ.re) (c : ℝ) (hc : 0 < c) (hcw :
   exact Real.rpow_le_rpow_of_nonpos hc (hcw.trans (Complex.abs_im_le_norm w)) (by linarith)
 
 /- English proof (translation)
-Establish `hM : latM 𝔞 ≠ 0`. Rewrite using `[latM_eq_dual]`. Conclude with `FractionalIdeal.dual_ne_zero ℤ ℚ (Units.ne_zero 𝔞)`. Use `set z' : Emb F → ℂ := fun τ => ((τ b : ℝ) : ℂ) * z τ with hz'`. Establish `hc : ∀ τ : Emb F, 0 < |τ b * (z τ).im|` using `fun τ => abs_pos.2 (mul_ne_zero ((map_ne_zero τ).2 hb) (hz τ).ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him : ∀ τ : Emb F, (z' τ).im ≠ 0` using `fun τ => by`. Use `hc τ` as an intermediate fact. Simplify using `only [hz', Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]`. Conclude with `abs_pos.1 this`. Establish `hs` using `GlobalTheory.LipschitzTR.summable_lhsTerm_ideal F (latM 𝔞) hM 2 le_rfl z' him`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs' : Summable (fun a : {a : F // a ∈ latM 𝔞} => GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.lhsTerm 2 z' a.1)` using `hs`. Use `set C : ℝ := ∏ τ : Emb F, |τ b * (z τ).im| ^ (-2 * σ.re) with hC`. Use `Summable.of_norm_bounded ((summable_norm_iff.2 hs').mul_left C) fun a => ?_` and prove the remaining obligations. Establish `hl : GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.lhsTerm 2 z' a.1 = ∏ τ : Emb F, (((τ a.1 : ℝ) : ℂ) + ((τ b : ℝ) : ℂ) * z τ)⁻¹ ^ 2`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.lhsTerm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, zpow_natCast, ← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hz', inv_pow, add_comm]`. Rewrite using `[hl, norm_prod, norm_prod, hC, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_comm (|τ b * (z τ).im| ^ (-2 * σ.re))]`. Use `norm_phi_le σ _ hσ _ (hc τ) (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_latSum (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 : Frac F) (σ : ℂ)
     (hσ : 0 < σ.re) (z : Emb F → ℂ) (hz : z ∈ upperHalf F) (b : F) (hb : b ≠ 0) :

@@ -10,7 +10,7 @@ namespace UpperTheory.FiniteGenerationAndTorsion
 open UpperTheory.V UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `L _ _ hL N m`. Use `hL` as an intermediate fact. Set `C` to `faceCx (KT.Gm L N) (KT.Sx L N) (KT.Sx.face L N) KT.Sx.face_smul`. Establish `hx` using `KT.sx_exact L N m`. Conclude with `h (KT.Gm L N) (KT.orbBound L N m) (3 ^ (KT.dd L N * N)) m (KT.Sx L N) (fun p => Rep.ofHom ⟨C.d p, fun g => LinearMap.ext fun f => C.d_equiv p g f⟩) (Rep.trivial ℤ (KT.Gm L N) ℤ) (Rep.ofHom ⟨C.ε, fun g => LinearMap.ext fun f => C.ε_equiv g f⟩) (Nat.one_le_pow _ _ (by norm_num)) hx …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hglFG_of (h : FgShift) : HglFG := by
   intro L _ _ hL N m

@@ -42,11 +42,11 @@ def IsLog (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicCo
 namespace Bridge.CrisIncl.CrisRestrictionLemmas
 
 /- English proof (translation)
-Use `choose j hj using h`. Use `⟨⟨⟨⟨j, ?_⟩, ?_⟩, ?_, ?_⟩, hj⟩` and prove the remaining obligations. Apply `hg` to reduce the goal to its premises. Rewrite using `[← hj, map_one, map_one]`. Introduce `x y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Simplify using `only [map_mul, ← hj]`. Apply `hg` to reduce the goal to its premises. Simplify using `only [map_zero, ← hj]`. Introduce `x y`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Simplify using `only [map_add, ← hj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_factor {A B C : Type*} [Ring A] [Ring B] [Ring C] (f : A →+* C) (g : B →+* C)
     (hg : Function.Injective g) (h : ∀ x, ∃ y, f x = g y) :
@@ -67,11 +67,11 @@ theorem exists_factor {A B C : Type*} [Ring A] [Ring B] [Ring C] (f : A →+* C)
 end Bridge.CrisIncl.CrisRestrictionLemmas
 
 /- English proof (translation)
-Introduce `l _ ι h`. Establish `hg : Function.Injective (algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l)))` using `IsFractionRing.injective _ _`. Take `⟨j, hj⟩` from `Bridge.CrisIncl.CrisRestrictionLemmas.exists_factor (ι.comp (algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)))) _ hg (fun x => by`. Take `⟨N, hN⟩` from `h.bdd 0`. Take `⟨y, a, hy, -⟩` from `hN x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩)`. Use `⟨j, hj, fun s => hg ((hj _).symm.trans (h.on0 s)), fun n => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `h.bdd n`. Use `⟨N, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, a, hy, ha⟩` from `hN x`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : j x = y` using `hg ((hj x).symm.trans hy)`. Conclude with `⟨a, e ▸ ha⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Bridge.CrisIncl.exists_restrict : ∀ (l : ℕ) [Fact l.Prime] (ι : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)) →+* (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (h : IsCrisDR l ι), ∃ j : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) →+* (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)), (∀ x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)), ι (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x) = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (j x)) ∧ (∀ s : ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)), j (algebraMap (↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s) = algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (s : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))) ∧ ∀ n : ℕ, ∃ N : ℕ, ∀ x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)), ∃ a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n (((l : ℕ) : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ^ N * j x) = Ideal.Quotient.mk _ (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) a) := by
   intro l _ ι h
@@ -103,9 +103,9 @@ def IsLog (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicCo
   ∃ h, y = Reformulated.AutPerF.BdRPlus.log (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (WittVector.teichmuller l e)) h
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨Reformulated.AutPerF.Bcris.toBdR l (PadicComplexInt l), fun a => ?_, fun n => ⟨n, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, Reformulated.AutPerF.Bcris.toBdR_algebraMap_acris, Reformulated.AutPerF.Acris.toBdRPlus_algebraMap_zero]`. Take `⟨b, hb⟩` from `Reformulated.AutPerF.AcrisZero.exists_p_pow_mul_eq n (Reformulated.AutPerF.Acris.toRange l (PadicComplexInt l) n x)`. Use `⟨Reformulated.AutPerF.Acris.toBdRPlus l (PadicComplexInt l) x, b, Reformulated.AutPerF.Bcris.toBdR_algebraMap_acris x, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_pow, map_natCast, Reformulated.AutPerF.Acris.eval_toBdRPlus]`. Establish `h` using `congrArg Subtype.val hb`. Move the coercions through the operations in `at h`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisIncl.exists_incl : ∀ (l : ℕ) [Fact l.Prime], ∃ ι : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)) →+* (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l)), IsCrisDR l ι := by
   intro l _

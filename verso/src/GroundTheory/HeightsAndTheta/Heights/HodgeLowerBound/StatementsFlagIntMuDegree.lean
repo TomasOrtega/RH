@@ -12,7 +12,7 @@ def FlagIntMuDegree.Statement : Prop :=
       flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * monomial b 1) = 0
 
 /- English proof (translation)
-Establish `hrho : rhoBlock Unit 2 1 = 0`. Use extensionality with `⟨u, i⟩`. Apply the tactic sequence `fin_cases i <;> simp [rhoBlock]`. Use `⟨by norm_num, ?_⟩` and prove the remaining obligations. Rewrite using `[hrho]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

@@ -6,11 +6,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV
 namespace GlobalTheory.ColumnNormCompare
 
 /- English proof (translation)
-Introduce `D L Del h0 hD hE`. Establish `hm : (D.R.m : ℝ) ≠ 0`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(show D.R.m ≠ 0 by omega)` after adjusting the coercions. Establish `h1 : ⌊D.s.Del⌋₊ = Del` using `by rw [hD]; exact Nat.floor_natCast Del`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ⌈LevelStarExponents.h0 L⌉₊ = h0`. Establish `: LevelStarExponents.h0 L = (h0 : ℝ)`. Unfold `LevelStarExponents.h0`. Rewrite using `[hE]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Nat.ceil_natCast h0`. Simplify using `only [numDatumOfParameters, ofRecord, h1, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem numRec_eq_ofRecord : ∀ (D : D7) (L : SizeData₂ D) (Del h0 : ℕ), D.s.Del = (Del : ℚ) → L.etaSz = (D.R.m : ℝ) * (h0 : ℝ) →
     GlobalTheory.ColumnNormCompare.numDatumOfParameters D L = ofRecord D L Del h0 := by

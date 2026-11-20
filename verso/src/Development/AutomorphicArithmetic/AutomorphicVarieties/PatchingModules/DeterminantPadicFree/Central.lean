@@ -2,15 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `F G _ _ n D Z hZ`. Establish `key : ∀ X ∈ Ev F F n D.a, X * Z = Z * X`. Introduce `X hX`. Rewrite `hX` using `[← D.span]`. Proceed by induction on `hX using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `hZ g hg`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, mul_add, hx, hy]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [Matrix.smul_mul, Matrix.mul_smul, hx]`. Use `⟨fun hO => ?_, fun _ g => key _ (D.ev g)⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `hij : ((i : ℕ) < D.a ↔ (j : ℕ) < D.a)`. Simplify using `using (hO i j).1 hij`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hne : i ≠ j` using `fun h => hij (by rw [h])`. Establish `hE : Matrix.diagonal (Pi.single i (1 : F)) ∈ Ev F F n D.a`. Introduce `p q`. Use `⟨fun _ => Submodule.mem_top, fun h => ?_⟩` and prove the remaining obligations. Establish `hpq : p ≠ q` using `fun e => h (by rw [e])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.diagonal_apply_ne _ hpq]`. Establish `h` using `congrFun (congrFun (key _ hE) i) j`. Rewrite `h` using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Simplify `h` using `[Pi.single_eq_of_ne hne.symm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.central :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) (Z : Matrix (Fin n) (Fin n) F), (∀ g ∈ D.G', D.r g * Z = Z * D.r g) → (Z ∈ Od F F n D.a → Z = 0) ∧ (Z ∈ Ev F F n D.a → ∀ g, D.r g * Z = Z * D.r g) := by

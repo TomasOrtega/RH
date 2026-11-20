@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.EisTestFun
 variable {k : Type} [Field k] [NumberField k]
 
 /- English proof (translation)
-Establish `h : ((ofFinite b : IdeleGroup k) : AdeleRing (𝓞 k) k).1 = (1 : AdeleRing (𝓞 k) k).1` using `rfl`. Unfold `infiniteModule`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[h, adele_fst_one_apply, norm_one, one_pow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteModule_ofFinite (b : (FiniteAdeleRing (𝓞 k) k)ˣ) :
     infiniteModule (ofFinite b) = 1 := by
@@ -22,14 +22,14 @@ theorem infiniteModule_ofFinite (b : (FiniteAdeleRing (𝓞 k) k)ˣ) :
   rw [h, adele_fst_one_apply, norm_one, one_pow]
 
 /- English proof (translation)
-Rewrite using `[ideleModule_apply, infiniteModule_ofFinite, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleModule_ofFinite (b : (FiniteAdeleRing (𝓞 k) k)ˣ) :
     (ideleModule k (ofFinite b) : ℝ) = finiteModule (ofFinite b) := by
   rw [ideleModule_apply, infiniteModule_ofFinite, one_mul]
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hg`. Use `⟨hlc.comp_continuous (continuous_pi fun _ => continuous_id), ?_⟩` and prove the remaining obligations. Conclude with `hcs.comp_homeomorph (Homeomorph.funUnique Unit (FiniteAdeleRing (𝓞 k) k)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem line_lc_cs {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ}
     (hg : g ∈ GJMatrix.finiteSchwartzBruhatPi k) :
@@ -40,31 +40,27 @@ theorem line_lc_cs {g : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ}
   exact hcs.comp_homeomorph (Homeomorph.funUnique Unit (FiniteAdeleRing (𝓞 k) k)).symm
 
 /- English proof (translation)
-Introduce `K _ _ g hg hnn h1 x hx`. Use `haveI := isHaarMeasure_finiteIdeleMeasure K`. Take `⟨hlc, hcs⟩` from `line_lc_cs hg`. Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles hcs.isCompact`. Take `⟨B, hB⟩` from `hlc.continuous.bounded_above_of_compact_support hcs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G : (FiniteAdeleRing (𝓞 K) K)ˣ → ℝ` to `fun b => (g fun _ => (b : FiniteAdeleRing (𝓞 K) K)).re`. Set `F : (FiniteAdeleRing (𝓞 K) K)ˣ → ℝ` to `fun b => G b * finiteZetaBound L x b`. Establish `hG0 : ∀ b, 0 ≤ G b`. Introduce `b`. Take `⟨r, hr, hgr⟩` from `hnn (b : FiniteAdeleRing (𝓞 K) K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [G, hgr, Complex.ofReal_re]`. Conclude with `hr`. Establish `hGc : Continuous G` using `Complex.continuous_re.comp (hlc.continuous.comp Units.continuous_val)`. Establish `hGB : ∀ b, ‖G b‖ ≤ B`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs]`. Conclude with `(Complex.abs_re_le_norm _).trans (hB _)`. Establish `hint : Integrable F (finiteIdeleMeasure K)` using `(integrable_finiteZetaBound L hx).bdd_mul hGc.aestronglyMeasurable (Filter.Eventually.of_forall hGB)`. Establish `hF0 : 0 ≤ F` using `fun b => mul_nonneg (hG0 b) (finiteZetaBound_nonneg L x b)`. Establish `hzero : ∀ b : (FiniteAdeleRing (𝓞 K) K)ˣ, (b : FiniteAdeleRing (𝓞 K) K) ∉ idealFiniteAdeles L → (g fun _ => (b : FiniteAdeleRing (𝓞 K) K)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `b hb`. Assume the negation of the conclusion as `hne`. Conclude with `hb (hL (subset_tsupport _ hne))`. Establish `heq : ∀ b : (FiniteAdeleRing (𝓞 K) K)ˣ, (g fun _ => (b : FiniteAdeleRing (𝓞 K) K)) * ((1 : HeckeCharacter K).toIdele (ofFinite b) : ℂ) * ((ideleModule K (ofFinite b) : ℝ) : ℂ) ^ (x : ℂ) = ((F b : ℝ) : ℂ)`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ((1 : HeckeCharacter K).toIdele (ofFinite b) : ℂ) = 1`. Rewrite using `[HeckeCharacter.toIdele_apply]`. Both sides reduce to the same expression. Rewrite using `[hc, mul_one, ideleModule_ofFinite]`. Simplify using `only [F, G, finiteZetaBound]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hb`. Take `⟨r, hr, hgr⟩` from `hnn (b : FiniteAdeleRing (𝓞 K) K)`. Rewrite using `[hgr, Complex.ofReal_re, Complex.ofReal_mul, Complex.ofReal_cpow (finiteModule_pos _).le]`. Rewrite using `[hzero b hb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : zFin g 1 (x : ℂ) = ((∫ b, F b ∂finiteIdeleMeasure K : ℝ) : ℂ)`. Unfold `zFin`. Conclude with `(integral_congr_ae (Filter.Eventually.of_forall heq)).trans integral_complex_ofReal`. Set `U : Set (FiniteAdeleRing (𝓞 K) K)ˣ` to `{b | (g fun _ => (b : FiniteAdeleRing (𝓞 K) K)) = g fun _ => 1}`. Establish `hUo : IsOpen U` using `(hlc.comp_continuous Units.continuous_val).isOpen_fiber _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1U : (1 : (FiniteAdeleRing (𝓞 K) K)ˣ) ∈ U` using `by show (g fun _ => ((1 : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K)) = g fun _ => 1`. Rewrite using `[Units.val_one]`. Take `⟨r, hr, hgr⟩` from `hnn 1`. Establish `hr0 : 0 < r`. Use `lt_of_le_of_ne hr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `rfl`. Conclude with `h1 (by rw [hgr, Complex.ofReal_zero])`. Establish `hUsub : U ⊆ Function.support F`. Introduce `b hb`. Establish `hgb : (g fun _ => (b : FiniteAdeleRing (𝓞 K) K)) = r` using `(show _ = _ from hb).trans hgr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : (b : FiniteAdeleRing (𝓞 K) K) ∈ idealFiniteAdeles L`. Assume the negation of the conclusion as `hn`. Establish `h0` using `hzero b hn`. Rewrite `h0` using `[hgb]`. Conclude with `hr0.ne' (by exact_mod_cast h0)`.
-
-Rewrite using `[Function.mem_support]`. Simplify using `only [F, G, finiteZetaBound, if_pos hmem, hgb, Complex.ofReal_re]`. Conclude with `(mul_pos hr0 (Real.rpow_pos_of_pos (finiteModule_pos _) _)).ne'`. Establish `hpos : 0 < finiteIdeleMeasure K (Function.support F)` using `(hUo.measure_pos _ ⟨1, h1U⟩).trans_le (measure_mono hUsub)`. Rewrite using `[hI, Complex.ofReal_ne_zero]`.
-
-Conclude with `((integral_pos_iff_support_of_nonneg hF0 hint).2 hpos).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zFinPos : ZFinPos := by
   intro K _ _ g hg hnn h1 x hx

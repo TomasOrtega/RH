@@ -3,15 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_third_bis_other
 
 /- English proof (translation)
-Introduce `R K V _ _ _ _ _ _ _ _ _ N v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact N.zero_mem⟩`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc, hcx⟩` from `hx`. Take `⟨d, hd, hdy⟩` from `hy`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem d hcx`. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem c hdy`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcx⟩` from `hx`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (nonZeroDivisors R) a`. Establish `hs : (s : R) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Use `⟨c * s, mul_ne_zero hc hs, ?_⟩` and prove the remaining obligations. Establish `key : (s : R) • (a • x) = r • x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K (s : R) (a • x), smul_smul, mul_comm, hrs, algebraMap_smul]`. Rewrite using `[mul_smul, key, smul_smul, mul_comm, ← smul_smul]`. Conclude with `N.smul_mem r hcx`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R K V : Type} [inst : CommRing.{0} R] [IsDomain.{0} R] [inst_2 : Field.{0} K] [inst_3 : Algebra.{0, 0} R K]

@@ -2,21 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Hc
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.X
 
 /- English proof (translation)
-Introduce `k Γ M _ _ _ _ _ ρ γ χ h`. Use `⟨fun σ hσ => ?_, fun σ hσ => ?_, fun hσ => ?_⟩` and prove the remaining obligations. Establish `: LinearMap.ker (ρ σ - 1) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `m _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h, hσ]`. Rewrite using `[this, finrank_top]`. Establish `: LinearMap.ker (ρ σ - 1) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `m hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_bot]`. Break down `hσ with h0 | h0` into its components or cases. Conclude with `(finrank_zero_iff_forall_zero.mp h0) m`. Establish `h1 : ((γ σ : k) - 1) • m = 0`. Rewrite `hm` using `[LinearMap.mem_ker, LinearMap.sub_apply, h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul, one_smul]`. Conclude with `hm`. Break down `smul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `absurd (Units.ext (sub_eq_zero.mp h2)) h0`. Conclude with `h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, finrank_bot]`. Establish `: Loc.H0dual χ ρ = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `m`. Break down `hσ with h0 | ⟨g, hg⟩` into its components or cases. Rewrite using `[(finrank_zero_iff_forall_zero.mp h0) m]`. Simplify using the standard rewrite rules. Establish `h1` using `hf g m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h, map_smul, smul_eq_mul]`. Establish `h2 : ((γ g : k) - χ g) * f m = 0`. Rewrite using `[sub_mul, h1]`. Simplify using the standard rewrite rules. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases.
-
-Conclude with `absurd (Units.ext (sub_eq_zero.mp h3)) hg`. Simplify using `using h3`. Rewrite using `[this, finrank_bot]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.scalDim :
     ∀ {k Γ M : Type} [Field k] [Group Γ] [AddCommGroup M] [Module k M] [Module.Finite k M] (ρ : Representation k Γ M) (γ χ : Γ →* kˣ), (∀ g m, ρ g m = (γ g : k) • m) → (∀ σ, γ σ = 1 → finrank k (LinearMap.ker (ρ σ - 1)) = finrank k M) ∧ (∀ σ, (finrank k M = 0 ∨ γ σ ≠ 1) → finrank k (LinearMap.ker (ρ σ - 1)) = 0) ∧ ((finrank k M = 0 ∨ ∃ g, γ g ≠ χ g) → finrank k (Loc.H0dual χ ρ) = 0) := by

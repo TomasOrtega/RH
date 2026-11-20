@@ -10,7 +10,7 @@ namespace GlobalTheory
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Use extensionality with `⟨i₁, i₂⟩ ⟨j₁, j₂⟩`. Simplify using `only [Matrix.conjTranspose_apply, _root_.GlobalTheory.CasKAdjoint.adMat, Prod.mk.injEq, star_sub, apply_ite star, star_one, star_zero]`. Use `congr 1`. Conclude with `if_congr ⟨fun ⟨h₁, h₂, h₃⟩ => ⟨h₂, h₁, h₃.symm⟩, fun ⟨h₁, h₂, h₃⟩ => ⟨h₂, h₁, h₃.symm⟩⟩ rfl rfl`. Conclude with `if_congr ⟨fun ⟨h₁, h₂, h₃⟩ => ⟨h₃, h₂.symm, h₁⟩, fun ⟨h₁, h₂, h₃⟩ => ⟨h₃, h₂.symm, h₁⟩⟩ rfl rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma adMat_conjTranspose_eq_adMat_swap {n : ℕ} (a b : Fin n) :
     (_root_.GlobalTheory.CasKAdjoint.adMat a b).conjTranspose = _root_.GlobalTheory.CasKAdjoint.adMat b a := by
@@ -24,7 +24,7 @@ private lemma adMat_conjTranspose_eq_adMat_swap {n : ℕ} (a b : Fin n) :
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Take `⟨i₁, i₂⟩` from `i`. Simplify using `only [_root_.GlobalTheory.CasKAdjoint.adMat, sub_smul, Finset.sum_sub_distrib, ite_smul, one_smul, zero_smul, Fintype.sum_prod_type, Prod.mk.injEq]`. Simplify using `[ite_and]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma sum_adMat_apply_first_index_smul {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (a b : Fin n) (x : Fin n × Fin n → M) (i : Fin n × Fin n) :
@@ -38,7 +38,7 @@ private lemma sum_adMat_apply_first_index_smul {M : Type} [AddCommGroup M] [Modu
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma norm_ite_zero_sq {M : Type} [NormedAddCommGroup M] (p : Prop) [Decidable p] (y : M) :
     ‖if p then y else 0‖ ^ 2 = if p then ‖y‖ ^ 2 else 0 := by
@@ -47,9 +47,9 @@ private lemma norm_ite_zero_sq {M : Type} [NormedAddCommGroup M] (p : Prop) [Dec
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Repeatedly rewrite using `[sum_adMat_apply_first_index_smul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h` using `norm_sub_le (if i.1 = a then x (b, i.2) else 0) (if i.2 = b then x (i.1, a) else 0)`. Use polynomial arithmetic with `[norm_nonneg ((if i.1 = a then x (b, i.2) else 0) - (if i.2 = b then x (i.1, a) else 0)), sq_nonneg (‖if i.1 = a then x (b, i.2) else 0‖ - ‖if i.2 = b then x (i.1, a) else 0‖)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = 2 * ∑ k, ‖x (b, k)‖ ^ 2 + 2 * ∑ k, ‖x (k, a)‖ ^ 2 := by`. Simplify using `only [norm_ite_zero_sq, Finset.sum_add_distrib, ← Finset.mul_sum, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_comm (f := fun x_1 y => if y = b then ‖x (x_1, a)‖ ^ 2 else 0)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sum_norm_sq_adMat_mulVec_le {M : Type} [NormedAddCommGroup M]
     [InnerProductSpace ℂ M] {n : ℕ} (a b : Fin n) (x : Fin n × Fin n → M) :
@@ -71,13 +71,11 @@ private lemma sum_norm_sq_adMat_mulVec_le {M : Type} [NormedAddCommGroup M]
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Establish `hS : ∑ j, ‖x j‖ ^ 2 = ∑ b, ∑ k, ‖x (b, k)‖ ^ 2` using `Fintype.sum_prod_type _`. Establish `hS' : ∑ j, ‖x j‖ ^ 2 = ∑ a, ∑ k, ‖x (k, a)‖ ^ 2`. Rewrite using `[hS, Finset.sum_comm]`. Establish `h0 : 0 ≤ ∑ j, ‖x j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `sum_norm_sq_adMat_mulVec_le a b x`. Check the signs of the components of the expression. Use `_ = 4 * n * ∑ j, ‖x j‖ ^ 2 := by`.
+Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[← hS, ← hS']`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (8 * (n : ℝ)) ^ 2 * ∑ j, ‖x j‖ ^ 2 := by`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
-
-Simplify using `[hn]`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ 4 * n) h0) (by linarith : (0:ℝ) ≤ 16 * n - 1)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma sum_eq_sign_norm_sq_adMat_mulVec_le {M : Type} [NormedAddCommGroup M]
     [InnerProductSpace ℂ M] {n : ℕ} (ε : Fin n → Bool) (x : Fin n × Fin n → M) :
@@ -108,7 +106,7 @@ private lemma sum_eq_sign_norm_sq_adMat_mulVec_le {M : Type} [NormedAddCommGroup
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Take `⟨j₁, j₂⟩` from `j`. Simplify using `only [_root_.GlobalTheory.CasKAdjoint.adMat, sub_smul, Finset.sum_sub_distrib, ite_smul, one_smul, zero_smul, Fintype.sum_prod_type, Prod.mk.injEq]`. Simplify using `[ite_and, eq_comm]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma sum_adMat_apply_second_index_smul {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (a b : Fin n) (y : Fin n × Fin n → M) (j : Fin n × Fin n) :
@@ -122,11 +120,11 @@ private lemma sum_adMat_apply_second_index_smul {M : Type} [AddCommGroup M] [Mod
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have h1 : (0:ℝ) ≤ if c = a then 1 else 0 := by split_ifs <;> norm_num`. Apply the tactic sequence `have h2 : (0:ℝ) ≤ if c = b then 1 else 0 := by split_ifs <;> norm_num`. Rewrite using `[show ω c + (if c = a then 1 else 0) - (if c = b then 1 else 0) - μ c = (ω c - μ c) + ((if c = a then 1 else 0) - (if c = b then 1 else 0)) by ring]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `(abs_add_le _ _).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Use `_ = ∑ c, |ω c - μ c| + 2 := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 private lemma sum_abs_shifted_weight_sub_le_add_two {n : ℕ} (ω μ : Fin n → ℝ) (a b : Fin n) :
     ∑ c, |ω c + (if c = a then 1 else 0) - (if c = b then 1 else 0) - μ c| ≤ ∑ c, |ω c - μ c| + 2 := by
@@ -146,13 +144,13 @@ private lemma sum_abs_shifted_weight_sub_le_add_two {n : ℕ} (ω μ : Fin n →
 open Finset in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Introduce `c`. Establish `h` using `LinearMap.congr_fun (hG c c a b) x`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hx c, map_smul, ite_apply, LinearMap.zero_apply, @eq_comm _ b c] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases ha : c = a <;> by_cases hb : c = b`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Substitute `ha` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[hb, add_smul]`. Normalize the expressions using the abelian group laws. Substitute `hb` using the available equality. Simplify using `[ha, sub_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `[ha, hb]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma isWeight_shift_of_glRel {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     {E : Fin n → Fin n → Module.End ℂ M} (hG : _root_.Formalism.REAL.GlRel E) {ω : Fin n → ℝ} {x : M} (hx : _root_.Formalism.REAL.IsWeight E ω x)
@@ -174,15 +172,15 @@ open Finset in
 open scoped InnerProductSpace in
 
 /- English proof (translation)
-Introduce `M _ _ n ε E μ j w hG hU hw a b`. Unfold `_root_.BranchingSupport.Lev _root_.BranchingSupport.WtNear at hw ⊢`. Take `⟨hC, hS⟩` from `hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hK` using `_root_.Formalism.REAL.isUnitary_kUnit ε E hU`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `_root_.GlobalTheory.TensOp.casKLe_tensor_operator M n ε E M (Fin n × Fin n) E (fun i => E i.1 i.2) _root_.GlobalTheory.CasKAdjoint.adMat _ (8 * n) hK hK (by positivity) (by positivity) (fun a b _ => adMat_conjTranspose_eq_adMat_swap a b) (sum_eq_sign_norm_sq_adMat_mulVec_le ε) (f …`. Establish `hs` using `sum_adMat_apply_second_index_smul a b (fun i => E i.1 i.2 v) k`. Simplify using `only at hs ⊢`. Rewrite using `[hs]`. Establish `h` using `LinearMap.congr_fun (hG a b k.1 k.2) v`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, ite_apply, LinearMap.zero_apply, @eq_comm _ b k.1] at h`. Rewrite `h` using `[sub_eq_iff_eq_add']`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp)`. Use `w hC (a, b)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Submodule.mem_comap]`. Use `Submodule.span_le.2 ?_ hS` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨ω, hd, hx⟩`. Conclude with `Submodule.subset_span ⟨_, (sum_abs_shifted_weight_sub_le_add_two ω _ a b).trans (by push_cast; linarith), isWeight_shift_of_glRel hG hx a b⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.lev_E_add_two : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (μ : Fin n → ℝ) (j : ℕ) (w : M), _root_.Formalism.REAL.GlRel E → _root_.Formalism.REAL.IsUnitary ε E → _root_.BranchingSupport.Lev ε E μ j w → ∀ a b, _root_.BranchingSupport.Lev ε E μ (j + 2) (E a b w) := by
   intro M _ _ n ε E μ j w hG hU hw a b

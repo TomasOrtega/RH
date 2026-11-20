@@ -15,7 +15,7 @@ variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀
   {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Rewrite using `[blockGram_eq d n f hf, blockGram_eq d n f hf]`. Simplify using `only [pairRe_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_symm (d : HSMBlockDatum D K ι Ω) (n : ℕ) {r : ℕ} (f : Fin r → MRing ι)
     (hf : ∀ k, IsMultiHomog (f k) (blockDeg d.k₀ n)) (k l : Fin r) :
@@ -25,7 +25,7 @@ theorem gram_symm (d : HSMBlockDatum D K ι Ω) (n : ℕ) {r : ℕ} (f : Fin r �
   simp only [pairRe_comm]
 
 /- English proof (translation)
-Rewrite using `[gram_quad d n f hf]`. Establish `h : ∀ z, 0 ≤ ‖comb f a z‖ ^ 2 / d.A.h z ^ (2 * n)` using `fun z => div_nonneg (sq_nonneg _) ((even_two_mul n).pow_nonneg _)`. Establish `h1` using `integral_nonneg (μ := d.dV) (f := fun x => ‖comb f a (blockPt d x)‖ ^ 2 / d.A.h (blockPt d x) ^ (2 * n)) fun x => h _`. Establish `h2` using `integral_nonneg (μ := d.dV) (f := fun x => ‖comb f a (conjPt (blockPt d x))‖ ^ 2 / d.A.h (conjPt (blockPt d x)) ^ (2 * n)) fun x => h _`. Conclude with `mul_nonneg (by norm_num) (add_nonneg h1 h2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quad_nonneg (d : HSMBlockDatum D K ι Ω) (n : ℕ) {r : ℕ} (f : Fin r → MRing ι)
     (hf : ∀ k, IsMultiHomog (f k) (blockDeg d.k₀ n)) (a : Fin r → ℝ) :
@@ -40,7 +40,7 @@ theorem quad_nonneg (d : HSMBlockDatum D K ι Ω) (n : ℕ) {r : ℕ} (f : Fin r
   exact mul_nonneg (by norm_num) (add_nonneg h1 h2)
 
 /- English proof (translation)
-Simplify using `[mulVec_add, dotProduct_add, add_dotProduct, hG l k]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entry_of_quad {r : ℕ} (G : Matrix (Fin r) (Fin r) ℝ) (hG : ∀ k l, G l k = G k l) (k l : Fin r) :
     G k l = ((Pi.single k 1 + Pi.single l 1) ⬝ᵥ (G *ᵥ (Pi.single k 1 + Pi.single l 1)) -
@@ -49,7 +49,7 @@ theorem entry_of_quad {r : ℕ} (G : Matrix (Fin r) (Fin r) ℝ) (hG : ∀ k l, 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Int.cast_add, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cast_single_add {r : ℕ} (k l : Fin r) :
     (fun j => (((Pi.single k 1 + Pi.single l 1 : Fin r → ℤ) j : ℤ) : ℝ)) = Pi.single k 1 + Pi.single l 1 := by
@@ -58,7 +58,7 @@ theorem cast_single_add {r : ℕ} (k l : Fin r) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cast_single {r : ℕ} (k : Fin r) :
     (fun j => (((Pi.single k 1 : Fin r → ℤ) j : ℤ) : ℝ)) = Pi.single k 1 := by
@@ -71,23 +71,21 @@ end BlockChiCovolume
 open BlockChiCovolume in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ d n E hE r ψ hψ hnorm _ _`. Establish `hex` using `exists_isSecBasisM d.y d.k₀ n`. Rewrite using `[blockChi, dif_pos hex]`. Establish `hb` using `hex.choose_spec`. Generalize the expression as in `hex.choose = p at hb ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨hbf, hli, hspan⟩` from `hb`. Use `choose f hf hfb using hbf`. Establish `hbeq : p.2 = fun j => map (Int.castRingHom ℚ) (f j)` using `funext hfb`. Rewrite `hli`, `hspan`, the goal using `[hbeq]`. Use `beta_reduce at hli hspan`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩ : ∃ w : Fin p.1 → Ω, w = fun j => aeval d.y (map (Int.castRingHom ℚ) (f j))` from `⟨_, rfl⟩`. Rewrite `hli`, `hspan` using `[← hw]`. Establish `hEN : E = (Submodule.span ℤ (Set.range w)).toAddSubgroup` using `hE.trans hspan.symm`. Set `eN : E ≃+ Submodule.span ℤ (Set.range w)` to `(AddEquiv.addSubgroupCongr hEN).trans (AddEquiv.refl _)`. Set `bE : Module.Basis (Fin p.1) ℤ E` to `(Module.Basis.span hli).map eN.symm.toIntLinearEquiv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hrange : LinearMap.range ψ.toIntLinearMap = imageLattice ψ`. Use extensionality with `v`. Simplify using `[imageLattice]`. Set `B : Module.Basis (Fin p.1) ℤ (imageLattice ψ)` to `(bE.map (LinearEquiv.ofInjective ψ.toIntLinearMap hψ)).map (LinearEquiv.ofEq _ _ hrange)`. Set `ε : Fin p.1 → E` to `fun j => ⟨w j, hEN ▸ Submodule.subset_span ⟨j, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ j, (B j : EuclideanSpace ℝ (Fin r)) = ψ (ε j)`. Introduce `j`. Rewrite using `[Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.map_apply]`. Use `show ψ (bE j) = ψ (ε j)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Module.Basis.map_apply]`. Establish `h : ((Module.Basis.span hli j : Submodule.span ℤ (Set.range w)) : Ω) = w j` using `congrArg Subtype.val (Module.Basis.span_apply hli j)`. Conclude with `h`. Use `set G := blockGram d n (fun j => map (Int.castRingHom ℚ) (f j)) with hG`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ m : Fin p.1 → ℤ, ‖ψ (∑ j, m j • ε j)‖ ^ 2 = (fun j => (m j : ℝ)) ⬝ᵥ (G *ᵥ fun j => (m j : ℝ))`. Introduce `m`. Rewrite using `[hnorm _ (∑ j, m j • f j) (isMultiHomog_zsum f m hf), blockL2Norm_sum_eq_sqrt_gram d n f hf m, Real.sq_sqrt (quad_nonneg d n f hf _)]`. Simplify using `[ε, hw, aeval_map_int, map_sum]`. Establish `hgram : Matrix.gram ℝ (fun i => (B i : EuclideanSpace ℝ (Fin r))) = G`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k l`. Rewrite using `[entry_of_quad G (gram_symm d n f hf) k l, ← cast_single_add, ← cast_single, ← cast_single, ← key, ← key, ← key]`. Simplify using `only [Matrix.gram, of_apply, hB]`. Simplify using `[Pi.single_apply, add_smul, Finset.sum_add_distrib]`. Rewrite using `[real_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hdet : 0 ≤ G.det` using `hgram ▸ (Matrix.posSemidef_gram ℝ _).det_nonneg`. Rewrite using `[covolume_eq_sqrt_det_gram (imageLattice ψ) B, hgram, Real.log_sqrt hdet]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem BlockChiCovolume.proof : BlockChiCovolume.Statement := by
   intro D K _ _ ι _ Ω _ _ d n E hE r ψ hψ hnorm _ _

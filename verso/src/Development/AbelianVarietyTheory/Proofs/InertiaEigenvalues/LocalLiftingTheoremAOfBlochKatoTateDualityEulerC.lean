@@ -12,7 +12,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hBK hTD hEC D HW F Cm C hC`. Conclude with `GlobalTheory.T.integralityFromMetric_of_160_le D HW F Cm 23 32 32 C hC (GlobalTheory.T.localLifting_theoremA_hypotheses_admitted hBK hTD hEC D HW F Cm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theoremA_closing : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), ∀ C : ℝ, 160 ≤ C → ElementDenominator.Conclusion1 D C := by
   intro hBK hTD hEC D HW F Cm C hC

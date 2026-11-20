@@ -13,7 +13,7 @@ variable (ι) in
 def blkW : (Σ k, ι k) → (K → ℕ) := fun p => Pi.single p.1 1
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma]`. Simplify using `[blkW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_blkW (β : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blkW ι) β k = ∑ i, β ⟨k, i⟩ := by
@@ -21,9 +21,9 @@ theorem weight_blkW (β : (Σ k, ι k) →₀ ℕ) (k : K) :
   simp [blkW, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite `hd` using `[coeff_map]`. Establish `hs' : d ∈ s.support`. Rewrite using `[mem_support_iff]`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hd` to reduce the goal to its premises. Simplify using `[h0]`. Use function extensionality and compare the values at `k`. Rewrite using `[weight_blkW]`. Conclude with `hs d hs' k`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_map_of_isMultiHomog {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) :
     IsWeightedHomogeneous (blkW ι) (map (Int.castRingHom ℂ) s) a := by
@@ -39,25 +39,25 @@ theorem isWeightedHomogeneous_map_of_isMultiHomog {s : MRing ι} {a : K → ℕ}
   exact hs d hs' k
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `e he`. Use `⟨1, by simp, fun z => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ p, e p = 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p`. Use `he p.1` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_zero_iff]`. Conclude with `this p.2 (Finset.mem_univ _)`. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `e he`. Establish `hex : ∀ k, ∃ i, 0 < e ⟨k, i⟩`. Introduce `k`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hne`. Establish `h1` using `he k`. Rewrite `h1` using `[Finset.sum_eq_zero (fun i _ => Nat.le_zero.1 (hne i))]`. Use linear arithmetic over natural numbers and integers. Use `choose i0 hi0 using hex`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e' : (Σ k, ι k) → ℕ` to `fun p => if p.2 = i0 p.1 then e p - 1 else e p`. Establish `hblk : ∀ k, ∑ i, e' ⟨k, i⟩ = d`. Introduce `k`. Establish `h1` using `he k`. Rewrite `h1`, the goal using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (i0 k))]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∑ i ∈ Finset.univ.erase (i0 k), e' ⟨k, i⟩ = ∑ i ∈ Finset.univ.erase (i0 k), e ⟨k, i⟩`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hne : i ≠ i0 k` using `Finset.ne_of_mem_erase hi`. Simplify using `[e', hne]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : e' ⟨k, i0 k⟩ = e ⟨k, i0 k⟩ - 1` using `by simp [e']`. Rewrite using `[h3]`. Use `hi0 k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨G', hG'deg, hG'⟩` from `ih e' hblk`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨X i0 * G', ?_, fun z => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eval_mul, eval_X, ← hG', segre, Fintype.prod_sigma, Fintype.prod_sigma, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ (i0 k)), ← Finset.mul_prod_erase _ _ (Finset.mem_univ (i0 k))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∏ i ∈ Finset.univ.erase (i0 k), z ⟨k, i⟩ ^ e' ⟨k, i⟩ = ∏ i ∈ Finset.univ.erase (i0 k), z ⟨k, i⟩ ^ e ⟨k, i⟩`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hne : i ≠ i0 k` using `Finset.ne_of_mem_erase hi`. Simplify using `[e', hne]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : e' ⟨k, i0 k⟩ = e ⟨k, i0 k⟩ - 1` using `by simp [e']`. Rewrite using `[h3]`. Establish `h4 : e ⟨k, i0 k⟩ = e ⟨k, i0 k⟩ - 1 + 1` using `by have := hi0 k; omega`. Use `conv_lhs => rw [h4, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diag_prod (d : ℕ) : ∀ e : (Σ k, ι k) → ℕ, (∀ k, ∑ i, e ⟨k, i⟩ = d) →
     ∃ G : MvPolynomial ((k : K) → ι k) ℂ, G.totalDegree ≤ d ∧
@@ -120,13 +120,13 @@ theorem diag_prod (d : ℕ) : ∀ e : (Σ k, ι k) → ℕ, (∀ k, ∑ i, e ⟨
       ring
 
 /- English proof (translation)
-Establish `hG : ∀ m : (Σ k, ι k) →₀ ℕ, ∃ G : MvPolynomial ((k : K) → ι k) ℂ, m ∈ f.support → G.totalDegree ≤ d ∧ ∀ z : (Σ k, ι k) → ℂ, ∏ p, z p ^ m p = eval (segre z) G`. Introduce `m`. Distinguish the cases in `hm : m ∈ f.support`. Establish `hw` using `hf (mem_support_iff.1 hm)`. Take `⟨G, h1, h2⟩` from `diag_prod d (fun p => m p) (fun k => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congrFun hw k` as an intermediate fact. Rewrite using `[weight_blkW] at this)` and apply the resulting hypothesis. Conclude with `⟨G, fun _ => ⟨h1, h2⟩⟩`. Conclude with `⟨0, fun h => absurd h hm⟩`. Use `choose Gf hGf using hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ m ∈ f.support, C (coeff m f) * Gf m, ?_, fun z => ?_⟩` and prove the remaining obligations. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun m hm => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Conclude with `(hGf m hm).1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eval_eq', map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[eval_mul, eval_C, (hGf m hm).2 z]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_of_homog (d : ℕ) {f : MvPolynomial (Σ k, ι k) ℂ}
     (hf : IsWeightedHomogeneous (blkW ι) f (fun _ => d)) :
@@ -156,17 +156,15 @@ theorem diag_of_homog (d : ℕ) {f : MvPolynomial (Σ k, ι k) ℂ}
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_mul, coeff_mul]`. Use `split_ifs with hx`. Use `Finset.sum_congr rfl fun ab hab => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : coeff ab.2 ψ = 0`. Simplify using `[hb]`. Establish `hwb` using `hψ hb`. Establish `hsum : Finsupp.weight w ab.1 + Finsupp.weight w ab.2 = Finsupp.weight w x`. Establish `hab' : ab.1 + ab.2 = x` using `by simpa using hab`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, hab']`. Establish `ha : Finsupp.weight w ab.1 = n`. Rewrite `hsum` using `[hwb, hx]`. Conclude with `add_right_cancel hsum`. Rewrite using `[if_pos ha]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `Finset.sum_eq_zero fun ab hab => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with ha`. Distinguish the cases in `hb : coeff ab.2 ψ = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hb]`. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises. Establish `hwb` using `hψ hb`. Establish `hab' : ab.1 + ab.2 = x` using `by simpa using hab`.
-
-Rewrite using `[← hab', map_add, ha, hwb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_mul_homog {σ : Type*} {M : Type*} [AddCancelCommMonoid M] [DecidableEq M] {w : σ → M}
     {ψ : MvPolynomial σ ℂ} {δ : M} (hψ : IsWeightedHomogeneous w ψ δ) (g : MvPolynomial σ ℂ) (n : M) :

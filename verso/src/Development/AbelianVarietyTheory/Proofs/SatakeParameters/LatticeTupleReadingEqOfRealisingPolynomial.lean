@@ -19,7 +19,7 @@ open Formalism.MainNotions.G.CmpJ.PStabEq
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castSt_K_U {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what₂.Tau (D.hcW u)} (e : C = C') {i : ℕ} {hi : i ≤ D.R.m}
     (S : GlobalTheory.TwU.StepCharts C i hi) (c : C.cls i) :
@@ -27,7 +27,7 @@ theorem castSt_K_U {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what�
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castSt_y {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what₂.Tau (D.hcW u)} (e : C = C') {i : ℕ} {hi : i ≤ D.R.m}
     (S : GlobalTheory.TwU.StepCharts C i hi) (c : C.cls i) :
@@ -37,17 +37,15 @@ theorem castSt_y {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what₂
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict ι j hj h La hLa φ V hR`. Use `rdJ_of_isValV I X.onCh H Formalism.L2.G.RelativeIndexFlags.blockRationality_holds ι j hj La.1 La.2 hLa φ V ?_` and prove the remaining obligations. Introduce `g hg c γ hγ κ hpt z z' hz`. Establish `hcls : IsCG (I.at' j hj).st La.1 La.2 c.1 γ` using `⟨_, _, c.2, g, κ, (I.at' j hj).st.eC.apply_symm_apply La.1, hg, hγ, hpt⟩`. Establish `hc0 : clsOf (H.core j hj) La.1 La.2 = c.1` using `clsOf_eq (H.core j hj) hcls`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclsAt : clsAt X H (j + 1) La.1 La.2 = castCls (X.onCh j hj) (j + 1) c.1`. Rewrite using `[clsAt_succ X H j hj, hc0]`. Take `⟨g', hg', hpt'⟩` from `GlobalTheory.T.latticeTupleSuccLevel_point_isComponentPointInChart S hDict j hj La hLa`. Establish `hx : Formalism.UG.bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * (((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).y c).1 * κ.1 ∈ UPts (sigD D) (gramN D (j + 1) hj) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := Subgroup.mul_mem _ (Subgroup.mul_mem _ (bc_mem hγ) (((I.at' j hj).st.K _).y c) …`. Take `⟨κ₀, e₀, hχ₀⟩` from `Formalism.L2.G.ptOne_of ((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).lev (H.core j hj ((I.at' j hj).st.eC.symm La.1).1).int (H.core j hj ((I.at' j hj).st.eC.symm La.1).1).hypP (H.core j hj ((I.at' j hj).st.eC.symm La.1).1).bad_p ((I.at' j hj).st.eC.symm La.1).2 La.2 g g' …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU : ((J.St (j + 1) hj).K (J.chart std (j + 1) hj La)).lev.U = ((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).lev.U`. Unfold `Joint.chart`. Rewrite using `[hclsAt, J.st j hj, castSt_K_U]`. Conclude with `congrArg (fun β => ((I.at' j hj).st.K β).lev.U) c.2`. Establish `hy : ((J.St (j + 1) hj).y (clsAt X H (j + 1) La.1 La.2)).1 = (((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).y c).1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hclsAt, J.st j hj, castSt_y]`. Conclude with `congrArg Subtype.val ((GlobalTheory.TwU.StepCharts.ofStepIn (I.at' j hj).st).y_eq c).symm`. Set `κ' : ((J.St (j + 1) hj).K (J.chart std (j + 1) hj La)).lev.U` to `⟨(κ * κ₀).1, by rw [hU]; exact (κ * κ₀).2⟩`. Take `⟨d, hdγ, hdκ⟩` from `GlobalTheory.T.latticeTupleDecomposition_occurs_in_family S hDict j hj La hLa γ hγ κ' (by`. Rewrite using `[e₀, hy]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show _ = _ * _ * (κ.1 * κ₀.1)`. Simplify using `only [mul_assoc])`. Take `⟨c₂, κ₂, hc₂, hκ₂, -, hiff⟩` from `GlobalTheory.T.realAt_succ_iff_decomposition_values S d j hj h La hLa`. Establish `ec : c₂ = c` using `Subtype.ext (castCls_inj (X.onCh j hj) (j + 1) (hc₂.trans hclsAt))`. Establish `eκ : κ₂ = κ * κ₀` using `Subtype.ext (hκ₂.trans (by rw [hdκ]))`.
-
-Establish `key` using `(hiff φ V).1 (hR d) z z' (by rw [hdγ]; exact hz)`. Rewrite using `[key, ec, eκ, map_mul, Units.val_mul, hχ₀, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdJ_eq_of_realAt : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → ∀ (ι : ℂ →+* ℂ_[D.what₂.places.resChar w]) j (hj : j + 1 ≤ D.R.m) (h : ((sysS H X std).Pj (j + 1)).m + 1 = D.R.N (j + 1)) (La : (sysS H X std).Lt (j + 1)), ((sysS H X std).Pj (j + 1)).IsLatTup La.2 → ∀ (φ : (D.chTw u μ).cls (j + 1) → (D.chTw u μ).Y (j + 1) → ℂ) (V : XR ((sysS H X std).Pj (j + 1)) ℂ), (∀ d : Dec J std, RealAt d (j + 1) hj h La φ V) → rdJ I X.onCh ι j La.1 La.2 φ = MvPolynomial.map ι V) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict ι j hj h La hLa φ V hR

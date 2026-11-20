@@ -14,9 +14,9 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [Complete
   [IsDiscreteValuationRing (normInteger K)]
 
 /- English proof (translation)
-Use `le_antisymm (ciSup_le fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = k`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `using Robba.norm_coeff_le_norm1 (Robba.single_mem_bounded k c) k`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Robba.gaussNorm_single_alt (k : ℤ) (c : K) : Robba.norm1 (Robba.single k c) = ‖c‖ := by
   refine le_antisymm (ciSup_le fun n => ?_) ?_
@@ -30,16 +30,16 @@ namespace FrobeniusLift
 variable (F : FrobeniusLift K)
 
 /- English proof (translation)
-The claim follows from `gaussNorm_phi (Robba.unit_mem_bounded u)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_phi_unit (u : (Robba K)ˣ) :
     Robba.norm1 (F.phi u) = Robba.norm1 (u : Robba K) :=
   gaussNorm_phi (Robba.unit_mem_bounded u)
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply]`. Establish `hu : IsUnit ((F.phi ^ d) (u : Robba K))` using `u.isUnit.map _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `F.gaussNorm_phi_unit hu.unit` as an intermediate fact. Rewrite `this` using `[IsUnit.unit_spec]`. Rewrite using `[this, ih]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussNorm_phi_pow_unit (d : ℕ) (u : (Robba K)ˣ) :
     Robba.norm1 ((F.phi ^ d) u) = Robba.norm1 (u : Robba K) := by
@@ -69,7 +69,7 @@ namespace PhiModule
 variable {R : Type*} [CommRing R] {φ : R →+* R}
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite `h` using `[isPhiModule_iff_isUnit_det b, phiMatrix_smul, det_smul]`. Rewrite using `[isPhiModule_iff_isUnit_det b]`. Conclude with `isUnit_of_mul_isUnit_right h`.
+Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiModule_of_smul [Nontrivial R] {M : Type*} [AddCommGroup M] [Module R M] [Module.Free R M]
     [Module.Finite R M] {Ψ : M →ₛₗ[φ] M} {c : R} (h : IsPhiModule (c • Ψ)) : IsPhiModule Ψ := by
@@ -80,7 +80,7 @@ theorem isPhiModule_of_smul [Nontrivial R] {M : Type*} [AddCommGroup M] [Module 
   exact isUnit_of_mul_isUnit_right h
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hd`. Rewrite `h` using `[isPhiModule_iff_isUnit_det b, zero_add, phiMatrix_iterate_succ, det_mul]`. Rewrite using `[isPhiModule_iff_isUnit_det b]`. Conclude with `isUnit_of_mul_isUnit_left h`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiModule_of_iterate [Nontrivial R] {M : Type*} [AddCommGroup M] [Module R M] [Module.Free R M]
     [Module.Finite R M] {Φ : M →ₛₗ[φ] M} {d : ℕ} (hd : 0 < d) (h : IsPhiModule (iterate Φ d)) :
@@ -93,7 +93,7 @@ theorem isPhiModule_of_iterate [Nontrivial R] {M : Type*} [AddCommGroup M] [Modu
   exact isUnit_of_mul_isUnit_left h
 
 /- English proof (translation)
-The claim follows from `| 0 => fun x hx => hx | d + 1 => fun x hx => by rw [iterate_succ_apply]; exact h _ (IsStable.iterate h d x hx)`.
+A detailed English derivation is pending.
 -/
 theorem IsStable.iterate [Nontrivial R] {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] {Φ : M →ₛₗ[φ] M} {N : Submodule R M} (h : IsStable Φ N) : ∀ d, IsStable (iterate Φ d) N
@@ -101,14 +101,14 @@ theorem IsStable.iterate [Nontrivial R] {M : Type*} [AddCommGroup M] [Module R M
   | d + 1 => fun x hx => by rw [iterate_succ_apply]; exact h _ (IsStable.iterate h d x hx)
 
 /- English proof (translation)
-Introduce `x hx` and use `N.smul_mem c (h x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsStable.smul {M : Type*} [AddCommGroup M] [Module R M] {ψ : R →+* R} {Ψ : M →ₛₗ[ψ] M}
     {N : Submodule R M} (h : IsStable Ψ N) (c : R) : IsStable (c • Ψ) N :=
   fun x hx => N.smul_mem c (h x hx)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | d + 1, x => by rw [iterate_succ_apply, iterate_succ_apply, coe_restrict_apply, coe_iterate_restrict h d x]`.
+A detailed English derivation is pending.
 -/
 theorem coe_iterate_restrict [Nontrivial R] {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] {Φ : M →ₛₗ[φ] M} {N : Submodule R M}
@@ -119,7 +119,7 @@ theorem coe_iterate_restrict [Nontrivial R] {M : Type*} [AddCommGroup M] [Module
     rw [iterate_succ_apply, iterate_succ_apply, coe_restrict_apply, coe_iterate_restrict h d x]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[coe_iterate_restrict h d x]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem restrict_smul_iterate [Nontrivial R] {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] {Φ : M →ₛₗ[φ] M} {N : Submodule R M}
@@ -144,7 +144,7 @@ Both sides reduce to the same expression.
 theorem coe_twistUnit (c : ℤ) : (twistUnit (K := K) c : Robba K) = Robba.single 0 (dvUnif K ^ (-c)) := rfl
 
 /- English proof (translation)
-Apply `Robba.ord_eq_of_norm1_eq` to reduce the goal to its premises. Rewrite using `[coe_twistUnit, Robba.gaussNorm_single_alt, norm_zpow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_twistUnit (c : ℤ) : Robba.ord (twistUnit (K := K) c) = -c := by
   apply Robba.ord_eq_of_norm1_eq
@@ -158,13 +158,13 @@ def IsPure (Φ : M →ₛₗ[F.phi] M) (s : ℚ) : Prop := IsEtale (twistIter F 
 variable [Module.Free (Robba K) M] [Module.Finite (Robba K) M] {F}
 
 /- English proof (translation)
-The claim follows from `isPhiModule_of_iterate s.den_pos (isPhiModule_of_smul (IsEtale.isPhiModule h))`.
+A detailed English derivation is pending.
 -/
 theorem IsPure.isPhiModule {Φ : M →ₛₗ[F.phi] M} {s : ℚ} (h : IsPure F Φ s) : IsPhiModule Φ :=
   isPhiModule_of_iterate s.den_pos (isPhiModule_of_smul (IsEtale.isPhiModule h))
 
 /- English proof (translation)
-Rewrite using `[twistIter, deg_smul _ (isPhiModule_iterate hΦ _) (twistUnit s.num), F.unitOrdPow_eq, deg_iterate F.unitOrd hΦ s.den]`. Express the relevant statement in the definitionally equal form `_ + _ * Robba.ord _ = _`. Rewrite using `[ord_twistUnit]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_twistIter {Φ : M →ₛₗ[F.phi] M} (hΦ : IsPhiModule Φ) (s : ℚ) :
     deg (F.unitOrdPow s.den) (twistIter F Φ s) =
@@ -176,7 +176,7 @@ theorem deg_twistIter {Φ : M →ₛₗ[F.phi] M} (hΦ : IsPhiModule Φ) (s : �
   ring
 
 /- English proof (translation)
-Establish `h0` using `IsEtale.deg_eq_zero (F.gaussNorm_phi_pow_unit s.den) (show IsEtale _ from h)`. Rewrite `h0` using `[show Robba.unitOrd (F.phi ^ s.den) (F.gaussNorm_phi_pow_unit s.den) = F.unitOrdPow s.den from rfl, deg_twistIter h.isPhiModule]`. Establish `hd : (s.den : ℚ) ≠ 0` using `by exact_mod_cast s.den_pos.ne'`. Establish `e : (s.den : ℚ) * deg F.unitOrd Φ = finrank (Robba K) M * s.num` using `by exact_mod_cast (by linarith)`. Rewrite using `[← Rat.num_div_den s]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -192,11 +192,9 @@ theorem IsPure.deg_eq {Φ : M →ₛₗ[F.phi] M} {s : ℚ} (h : IsPure F Φ s) 
   linarith
 
 /- English proof (translation)
-Establish `hNphi` using `isPhiModule_restrict h.isPhiModule hN`. Establish `hst : IsStable (twistIter F Φ s) N` using `(hN.iterate s.den).smul _`. Establish `h0` using `deg_restrict_nonneg_of_isEtale ((F.isGaussScaling).pow F.q_pos s.den) (pow_pos F.q_pos _) (F.gaussNorm_phi_pow_unit s.den) h hst`. Rewrite `h0` using `[show Robba.unitOrd (F.phi ^ s.den) (F.gaussNorm_phi_pow_unit s.den) = F.unitOrdPow s.den from rfl]`. Establish `e : restrict (twistIter F Φ s) N hst = twistIter F (restrict Φ N hN) s` using `restrict_smul_iterate hN s.den _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[e, deg_twistIter hNphi]`. Establish `hd : (0 : ℚ) < s.den` using `by exact_mod_cast s.den_pos`. Establish `h1 : (finrank (Robba K) N : ℚ) * s.num ≤ s.den * deg F.unitOrd (restrict Φ N hN)`. Conclude with `(by linarith)` after adjusting the coercions. Rewrite using `[← Rat.num_div_den s, div_mul_eq_mul_div, div_le_iff₀ hd]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem IsPure.le_deg {Φ : M →ₛₗ[F.phi] M} {s : ℚ} (h : IsPure F Φ s) {N : Submodule (Robba K) M}
     (hN : IsStable Φ N) [Module.IsTorsionFree (Robba K) (M ⧸ N)] [Module.Free (Robba K) N]
@@ -238,11 +236,11 @@ def IsSemistable (Φ : M →ₛₗ[F.phi] M) : Prop :=
     deg F.unitOrd Φ * (finrank (Robba K) N : ℤ) ≤ degSub F.unitOrd Φ N h * finrank (Robba K) M
 
 /- English proof (translation)
-Use `⟨h.isPhiModule, fun N hN _ => ?_⟩` and prove the remaining obligations. Use `free_of_saturated N` as an intermediate fact. Use `finite_of_saturated N` as an intermediate fact. Rewrite using `[degSub_eq]`. Establish `h1` using `h.le_deg hN`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h.deg_eq`. Establish `hM : (0 : ℚ) ≤ finrank (Robba K) M` using `by positivity`. Establish `key : (deg F.unitOrd Φ : ℚ) * finrank (Robba K) N ≤ (deg F.unitOrd (restrict Φ N hN) : ℚ) * finrank (Robba K) M`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem IsPure.isSemistable {Φ : M →ₛₗ[F.phi] M} {s : ℚ} (h : IsPure F Φ s) :
     IsSemistable F Φ := by
@@ -271,23 +269,23 @@ variable {A B : Type*} [AddCommGroup A] [Module (Robba K) A] [Module.Free (Robba
   [Module.Finite (Robba K) B]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hf0`. Establish `hK : IsStable ΦA (LinearMap.ker f)` using `hf.isStable_ker`. Establish `: Module.IsTorsionFree (Robba K) (A ⧸ LinearMap.ker f)` using `isTorsionFree_quotient_ker f`. Use `free_of_saturated (LinearMap.ker f)` as an intermediate fact. Use `finite_of_saturated (LinearMap.ker f)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `free_quot_of_saturated (LinearMap.ker f)` as an intermediate fact. Establish `hI : IsStable ΦB (LinearMap.range f)` using `hf.isStable_range`. Set `e : (A ⧸ LinearMap.ker f) ≃ₗ[Robba K] LinearMap.range f` to `f.quotKerEquivRange`. Establish `: Module.Free (Robba K) (LinearMap.range f)` using `Module.Free.of_equiv e`. Establish `: Module.Finite (Robba K) (LinearMap.range f)` using `Module.Finite.equiv e`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ x, e (quot ΦA _ hK x) = restrict ΦB _ hI (e x)` using `hf.quotKerEquivRange`. Establish `hQphi : IsPhiModule (quot ΦA _ hK)` using `isPhiModule_quot hA.isPhiModule hK`. Establish `hIphi : IsPhiModule (restrict ΦB _ hI)` using `(isPhiModule_congr e he).1 hQphi`. Establish `hdegI : deg F.unitOrd (restrict ΦB _ hI) = deg F.unitOrd (quot ΦA _ hK)` using `deg_congr _ e he`. Establish `hN : IsStable ΦB (saturation (LinearMap.range f))` using `hI.saturation F.phi_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `free_of_saturated (saturation (LinearMap.range f))` as an intermediate fact. Use `finite_of_saturated (saturation (LinearMap.range f))` as an intermediate fact. Establish `hNphi` using `isPhiModule_restrict hB.isPhiModule hN`. Establish `hrank : finrank (Robba K) (LinearMap.range f) = finrank (Robba K) (saturation (LinearMap.range f))` using `(finrank_saturation _).symm`. Establish `hle : deg F.unitOrd (restrict ΦB _ hN) ≤ deg F.unitOrd (restrict ΦB _ hI)` using `le_deg_of_le F.isGaussScaling F.q_pos F.gaussNorm_phi_unit (le_saturation _) hI hN hIphi hNphi hrank`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hB.le_deg hN`. Establish `hadd` using `deg_eq_deg_restrict_add F.unitOrd hA.isPhiModule hK`. Establish `h2` using `hA.le_deg hK`. Establish `h3` using `hA.deg_eq`. Establish `hrk` using `finrank_add_finrank_quotient (LinearMap.ker f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrkI : finrank (Robba K) (LinearMap.range f) = finrank (Robba K) (A ⧸ LinearMap.ker f)` using `e.finrank_eq.symm`. Establish `hIne : LinearMap.range f ≠ ⊥` using `fun h => hf0 (LinearMap.range_eq_bot.1 h)`. Establish `hpos : 0 < finrank (Robba K) (LinearMap.range f)` using `Submodule.one_le_finrank_iff.2 hIne`. Use `set r := finrank (Robba K) (LinearMap.range f)`. Establish `hrQ : (r : ℚ) > 0` using `by exact_mod_cast hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : (deg F.unitOrd (restrict ΦB _ hN) : ℚ) ≤ deg F.unitOrd (restrict ΦB _ hI)`. Conclude with `hle` after adjusting the coercions. Establish `hadd' : (deg F.unitOrd ΦA : ℚ) = deg F.unitOrd (restrict ΦA _ hK) + deg F.unitOrd (quot ΦA _ hK)`. Conclude with `hadd` after adjusting the coercions. Establish `hdegI' : (deg F.unitOrd (restrict ΦB _ hI) : ℚ) = deg F.unitOrd (quot ΦA _ hK)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdegI` after adjusting the coercions. Establish `hrk' : (finrank (Robba K) (LinearMap.ker f) : ℚ) + finrank (Robba K) (A ⧸ LinearMap.ker f) = finrank (Robba K) A` using `by exact_mod_cast hrk`. Rewrite `h1` using `[← hrank]`. Establish `hrkI' : (r : ℚ) = finrank (Robba K) (A ⧸ LinearMap.ker f)` using `by exact_mod_cast hrkI`. Establish `key : t * r ≤ s * r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: s * finrank (Robba K) A - s * finrank (Robba K) (LinearMap.ker f) = s * r`. Rewrite using `[hrkI', ← hrk']`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem IsPure.hom_eq_zero {ΦA : A →ₛₗ[F.phi] A} {ΦB : B →ₛₗ[F.phi] B} {s t : ℚ}
     (hA : IsPure F ΦA s) (hB : IsPure F ΦB t) (hst : s < t) {f : A →ₗ[Robba K] B}
@@ -364,7 +362,7 @@ theorem subquotMap_mk {P X Z Y : Submodule (Robba K) M} (hXY : X ≤ Y) (hPZ : P
   rfl
 
 /- English proof (translation)
-Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem isEquivariant_subquotMap {Φ : M →ₛₗ[F.phi] M} {P X Z Y : Submodule (Robba K) M}
     (hP : IsStable Φ P) (hX : IsStable Φ X) (hZ : IsStable Φ Z) (hY : IsStable Φ Y)
@@ -375,9 +373,9 @@ theorem isEquivariant_subquotMap {Φ : M →ₛₗ[F.phi] M} {P X Z Y : Submodul
   rfl
 
 /- English proof (translation)
-Introduce `h0`. Apply `hXZ` to reduce the goal to its premises. Introduce `x hx`. Use `LinearMap.congr_fun h0 (Submodule.Quotient.mk ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[subquotMap_mk, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem subquotMap_ne_zero {P X Z Y : Submodule (Robba K) M} (hXY : X ≤ Y) (hPZ : P ≤ Z)
     (hXZ : ¬ X ≤ Z) : subquotMap hXY hPZ ≠ 0 := by
@@ -398,7 +396,7 @@ def IsPureSubquot (Φ : M →ₛₗ[F.phi] M) (N N' : Submodule (Robba K) M) (h 
   IsPure F (subquot Φ N N' h h') s
 
 /- English proof (translation)
-Use `free_subquot (N := P) (N' := X)` as an intermediate fact. Use `finite_subquot (N := P) (N' := X)` as an intermediate fact. Use `free_subquot (N := Z) (N' := Y)` as an intermediate fact. Use `finite_subquot (N := Z) (N' := Y)` as an intermediate fact. Conclude with `IsPure.hom_eq_zero hs ht hst (isEquivariant_subquotMap hP hX hZ hY hXY hPZ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subquotMap_eq_zero {Φ : M →ₛₗ[F.phi] M} {P X Z Y : Submodule (Robba K) M}
     (hP : IsStable Φ P) (hX : IsStable Φ X) (hZ : IsStable Φ Z) (hY : IsStable Φ Y)
@@ -442,7 +440,7 @@ namespace SlopeFiltration
 variable {Φ : M →ₛₗ[F.phi] M}
 
 /- English proof (translation)
-Use `monotone_nat_of_le_succ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i < S.length`. Conclude with `(S.lt_succ i hi).le`. Rewrite using `[S.N_of_le i (not_lt.1 hi), S.N_of_le (i + 1) (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem N_mono (S : SlopeFiltration F Φ) : Monotone S.N := by
   refine monotone_nat_of_le_succ fun i => ?_
@@ -451,30 +449,28 @@ theorem N_mono (S : SlopeFiltration F Φ) : Monotone S.N := by
   · rw [S.N_of_le i (not_lt.1 hi), S.N_of_le (i + 1) (by omega)]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hi`. Conclude with `h (S.N_of_le i (not_lt.1 hi))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lt_length_of_ne_top (S : SlopeFiltration F Φ) {i : ℕ} (h : S.N i ≠ ⊤) : i < S.length := by
   by_contra hi
   exact h (S.N_of_le i (not_lt.1 hi))
 
 /- English proof (translation)
-Use `S₁.saturated i` as an intermediate fact. Use `S₁.saturated (i + 1)` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hcon`. Establish `hex : ∃ j, S₁.N (i + 1) ≤ S₂.N j` using `⟨S₂.length, by rw [S₂.N_of_le _ le_rfl]; exact le_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set j := Nat.find hex`. Establish `hj : S₁.N (i + 1) ≤ S₂.N j` using `Nat.find_spec hex`. Establish `hj1 : i + 1 < j`. Assume the negation of the conclusion as `hle`. Conclude with `hcon (hj.trans (S₂.N_mono (not_lt.1 hle)))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hkmin : ¬ S₁.N (i + 1) ≤ S₂.N k` using `Nat.find_min hex (by omega)`. Establish `hkl : k < S₂.length` using `S₂.lt_length_of_ne_top fun htop => hkmin (htop ▸ le_top)`. Use `S₂.saturated k` as an intermediate fact. Use `S₂.saturated (k + 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPZ : S₁.N i ≤ S₂.N k` using `hN ▸ S₂.N_mono (by omega)`. Establish `hXY : S₁.N (i + 1) ≤ S₂.N (k + 1)` using `hk ▸ hj`. Establish `hlt : S₁.slope i < S₂.slope k` using `lt_of_le_of_lt hs (S₂.slope_lt i k (by omega) hkl)`. Conclude with `subquotMap_ne_zero hXY hPZ hkmin (subquotMap_eq_zero (S₁.stable i) (S₁.stable (i + 1)) (S₂.stable k) (S₂.stable (k + 1)) hXY hPZ (S₁.pure i hi₁) (S₂.pure k hkl) hlt)`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hcon` using `[not_le]`. Establish `hle : S₁.N (i + 1) ≤ S₂.N (i + 1)`. Assume the negation of the conclusion as `hcon'`. Establish `hex : ∃ j, S₁.N (i + 1) ≤ S₂.N j` using `⟨S₂.length, by rw [S₂.N_of_le _ le_rfl]; exact le_top⟩`. Use `set j := Nat.find hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hj : S₁.N (i + 1) ≤ S₂.N j` using `Nat.find_spec hex`. Establish `hj1 : i + 1 < j`. Assume the negation of the conclusion as `hle`. Conclude with `hcon' (hj.trans (S₂.N_mono (not_lt.1 hle)))`. Take `⟨k, hk⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkmin : ¬ S₁.N (i + 1) ≤ S₂.N k` using `Nat.find_min hex (by omega)`. Establish `hkl : k < S₂.length` using `S₂.lt_length_of_ne_top fun htop => hkmin (htop ▸ le_top)`. Use `S₂.saturated k` as an intermediate fact. Use `S₂.saturated (k + 1)` as an intermediate fact. Establish `hPZ : S₁.N i ≤ S₂.N k` using `hN ▸ S₂.N_mono (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXY : S₁.N (i + 1) ≤ S₂.N (k + 1)` using `hk ▸ hj`. Establish `hlt : S₁.slope i < S₂.slope k` using `lt_of_le_of_lt hs (S₂.slope_lt i k (by omega) hkl)`. Conclude with `subquotMap_ne_zero hXY hPZ hkmin (subquotMap_eq_zero (S₁.stable i) (S₁.stable (i + 1)) (S₂.stable k) (S₂.stable (k + 1)) hXY hPZ (S₁.pure i hi₁) (S₂.pure k hkl) hlt)`. Use `S₂.saturated i` as an intermediate fact. Use `S₂.saturated (i + 1)` as an intermediate fact.
-
-Establish `hnot : ¬ S₁.N (i + 1) ≤ S₂.N i` using `fun h' => not_le_of_gt (S₁.lt_succ i hi₁) (by rw [hN]; exact h')`. Conclude with `subquotMap_ne_zero hle hN.le hnot (subquotMap_eq_zero (S₁.stable i) (S₁.stable (i + 1)) (S₂.stable i) (S₂.stable (i + 1)) hle hN.le (S₁.pure i hi₁) (S₂.pure i hi₂) hcon)`.
+A detailed English derivation is pending.
 -/
 theorem step (S₁ S₂ : SlopeFiltration F Φ) {i : ℕ} (hi₁ : i < S₁.length) (hi₂ : i < S₂.length)
     (hN : S₁.N i = S₂.N i) (hs : S₁.slope i ≤ S₂.slope i) :
@@ -530,21 +526,19 @@ theorem step (S₁ S₂ : SlopeFiltration F Φ) {i : ℕ} (hi₁ : i < S₁.leng
       (S₂.stable i) (S₂.stable (i + 1)) hle hN.le (S₁.pure i hi₁) (S₂.pure i hi₂) hcon)
 
 /- English proof (translation)
-Establish `hN : ∀ i, S₁.N i = S₂.N i`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rw [S₁.N_zero, S₂.N_zero]`. Consider the case `succ i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Distinguish the cases in `h₁ : i < S₁.length`. Distinguish the cases in `h₂ : i < S₂.length`. Break down `le_total (S₁.slope i) (S₂.slope i) with hs | hs` into its components or cases. Take `⟨hle, hs'⟩` from `step S₁ S₂ h₁ h₂ ih hs`. Conclude with `le_antisymm hle (step S₂ S₁ h₂ h₁ ih.symm hs').1`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hle, hs'⟩` from `step S₂ S₁ h₂ h₁ ih.symm hs`. Conclude with `le_antisymm (step S₁ S₂ h₁ h₂ ih hs').1 hle`. It suffices to derive a contradiction. Establish `h2` using `S₂.N_of_le i (not_lt.1 h₂)`. Use `S₁.lt_succ i h₁` as an intermediate fact.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[ih, h2]`. Conclude with `(this.trans_le le_top).false`. Establish `h1` using `S₁.N_of_le i (not_lt.1 h₁)`. Distinguish the cases in `h₂ : i < S₂.length`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `S₂.lt_succ i h₂` as an intermediate fact. Rewrite `this` using `[← ih, h1]`. Conclude with `(this.trans_le le_top).false`. Rewrite using `[S₁.N_of_le (i + 1) (by omega), S₂.N_of_le (i + 1) (by omega)]`. Establish `hlen : S₁.length = S₂.length`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Use `S₂.lt_succ S₁.length h` as an intermediate fact. Rewrite `this` using `[← hN, ← hN, S₁.N_of_le _ le_rfl, S₁.N_of_le _ (by omega)]`. Conclude with `this.false`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `S₁.lt_succ S₂.length h` as an intermediate fact. Rewrite `this` using `[hN, hN, S₂.N_of_le _ le_rfl, S₂.N_of_le _ (by omega)]`. Conclude with `this.false`. Use `⟨hlen, funext hN, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hi₂ : i < S₂.length` using `hlen ▸ hi`.
-
-Break down `le_total (S₁.slope i) (S₂.slope i) with hs | hs` into its components or cases. Conclude with `le_antisymm hs (step S₁ S₂ hi hi₂ (hN i) hs).2`. Conclude with `le_antisymm (step S₂ S₁ hi₂ hi (hN i).symm hs).2 hs`.
+A detailed English derivation is pending.
 -/
 theorem unique (S₁ S₂ : SlopeFiltration F Φ) :
     S₁.length = S₂.length ∧ S₁.N = S₂.N ∧ ∀ i < S₁.length, S₁.slope i = S₂.slope i := by

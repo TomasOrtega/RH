@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.PcFc
 variable {D : D7} {n ρ p : ℕ}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h0 : adj (0 : Mx D ρ p) = 0`. Use extensionality with `i j`. Simplify using `[adj]`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [bT, AddSubgroup.coe_add, AddSubgroup.coe_zero, h0, Matrix.add_apply, bl, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i' | i' <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j' | j' <;>`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem bT_add_right (hn : ρ + p = n) (z : hermA D ρ) (x : Mx D ρ p) (γ y : hermA D p) :
     bT hn z x (γ + y) = bT hn 0 0 γ + bT hn z x y := by
@@ -29,11 +29,11 @@ theorem bT_add_right (hn : ρ + p = n) (z : hermA D ρ) (x : Mx D ρ p) (γ y : 
     simp
 
 /- English proof (translation)
-Take `⟨η, hη⟩ : γ.1 ∈ ratMx D p p` from `hγ`. Establish `h0 : adj (0 : Mx D ρ p) = 0`. Use extensionality with `i j`. Simplify using `[adj]`. Use `(show (bT hn 0 0 γ : hermA D n).1 ∈ ratMx D n n from ⟨bl hn 0 0 0 η, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Establish `hij : ∀ a b, (incA D) (η a b) = γ.1 a b` using `fun a b => by`. Rewrite using `[← hη]`. Both sides reduce to the same expression. Simplify using `only [bT, AddSubgroup.coe_zero, h0, bl, AddMonoidHom.mapMatrix_apply, Matrix.map_apply, Matrix.submatrix_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i' | i' <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j' | j' <;>`. Simplify using `[hij]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem bT_zero_mem_ratHerm (hn : ρ + p = n) {γ : hermA D p} (hγ : γ ∈ ratHerm D p) :
     bT hn 0 0 γ ∈ ratHerm D n := by
@@ -53,7 +53,7 @@ theorem bT_zero_mem_ratHerm (hn : ρ + p = n) {γ : hermA D p} (hγ : γ ∈ rat
     simp [hij]
 
 /- English proof (translation)
-Introduce `γ hγ y`. Establish `h : ∀ x z, Φ (bT hn z x (γ + y)) = Φ (bT hn z x y)` using `fun x z => by`. Rewrite using `[bT_add_right]`. Conclude with `hΦ _ (bT_zero_mem_ratHerm hn hγ) _`. Simplify using `only [pm, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPer_pm {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ)
     (Φ : hermA D n → ℂ) (hΦ : IsPer Φ) : IsPer (pm hn m ψ b₀ Φ) := by

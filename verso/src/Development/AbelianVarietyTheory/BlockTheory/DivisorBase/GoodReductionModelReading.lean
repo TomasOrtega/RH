@@ -19,7 +19,7 @@ def IsOrthSum {X ι : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → 
     ∀ c ∈ Pi, ∀ c' ∈ Pi, c ≠ c' → ∀ x ∈ part c, ∀ y ∈ part c', Orth x y
 
 /- English proof (translation)
-Use `⟨Set.toFinite _, by simp, ?_, fun c _ c' _ h => absurd (Subsingleton.elim c c') h⟩` and prove the remaining obligations. Conclude with `iSupIndep_subsingleton _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example {X : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → Prop) (Y : Submodule ℂ X) :
     IsOrthSum Orth Y (fun _ : Unit => Y) Set.univ := by
@@ -27,7 +27,7 @@ example {X : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → Prop) (Y 
   exact iSupIndep_subsingleton _
 
 /- English proof (translation)
-Rewrite using `[h.2.1]`. Conclude with `iSup_of_empty _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {X ι : Type} [AddCommGroup X] [Module ℂ X] (Orth : X → X → Prop) (Y : Submodule ℂ X) (part : ι → Submodule ℂ X)
     (h : IsOrthSum Orth Y part ∅) : Y = ⊥ := by
@@ -127,7 +127,7 @@ def SumW (D : D7) : Prop :=
       (occursW θ D.R.m hm Mm βm ψ pl red om Sb)
 
 /- English proof (translation)
-The claim follows from `D.sp.W_rank j h1 h2`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (D.sp.W j).rank = D.R.r := D.sp.W_rank j h1 h2
 

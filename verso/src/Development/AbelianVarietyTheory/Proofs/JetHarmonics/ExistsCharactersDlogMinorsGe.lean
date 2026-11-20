@@ -19,9 +19,9 @@ namespace HodgeTateStep
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[dualScale]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptMap_fst_dualScale (a : O) :
     ptMap (TrivSqZeroExt.fstHom O O O) ≫ ptMap (dualScale a) =
@@ -43,7 +43,7 @@ noncomputable def torsionEnd (a : G ⟶ G) [IsMonHom a] (N : ℕ) : torsion G N 
     rw [← MonObj.pow_comp, KernelNoTorsion.torsionι_pow, MonObj.one_comp])
 
 /- English proof (translation)
-The claim follows from `KernelNoTorsion.torsionLift_ι _ _`.
+A detailed English derivation is pending.
 -/
 theorem torsionEnd_ι (a : G ⟶ G) [IsMonHom a] (N : ℕ) :
     torsionEnd a N ≫ torsion.ι G N = torsion.ι G N ≫ a :=
@@ -58,9 +58,9 @@ def HasDlog (p : ℕ) {L : Type} (e : L → LieG G)
         TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (algebraMap O R (y l))
 
 /- English proof (translation)
-Use `⟨fun T a b c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, MonObj.comp_mul, h.1 T a b c hc, h'.1 T a b c hc]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Introduce `l R _ _ hp w hw`. Rewrite using `[MonObj.comp_mul, GmPoints.unitOf_mul, Units.val_mul, h.2 l R hp w hw, h'.2 l R hp w hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [add_comm, Algebra.algebraMap_eq_smul_one, add_smul]`.
+A detailed English derivation is pending.
 -/
 theorem HasDlog.mul {p : ℕ} {L : Type} {e : L → LieG G}
     {κ κ' : torsion G (p ^ 1) ⟶ Gm (Spec (CommRingCat.of O))} {y y' : L → O}

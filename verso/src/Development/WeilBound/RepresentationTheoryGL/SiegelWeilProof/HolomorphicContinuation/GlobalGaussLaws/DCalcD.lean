@@ -16,13 +16,13 @@ variable {m n : ℕ}
 def sqN (v : Fin m → Fin n → ℂ) : ℝ := ∑ a, ∑ j, ‖v a j‖ ^ 2
 
 /- English proof (translation)
-Unfold `sqN`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem sqN_nonneg (v : Fin m → Fin n → ℂ) : 0 ≤ sqN v := by
   unfold sqN; positivity
 
 /- English proof (translation)
-Establish `h1 : ‖v a j‖ ^ 2 ≤ sqN v`. Unfold `sqN`. Establish `ha : ‖v a j‖ ^ 2 ≤ ∑ j', ‖v a j'‖ ^ 2` using `Finset.single_le_sum (f := fun j' => ‖v a j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Conclude with `ha.trans (Finset.single_le_sum (f := fun a' => ∑ j', ‖v a' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ a))`. Use polynomial arithmetic with `[norm_nonneg (v a j), sq_nonneg (‖v a j‖ - 1)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_add_sq (v : Fin m → Fin n → ℂ) (a : Fin m) (j : Fin n) : ‖v a j‖ ≤ 1 + sqN v := by
   have h1 : ‖v a j‖ ^ 2 ≤ sqN v := by
@@ -34,17 +34,17 @@ theorem norm_le_one_add_sq (v : Fin m → Fin n → ℂ) (a : Fin m) (j : Fin n)
   nlinarith [norm_nonneg (v a j), sq_nonneg (‖v a j‖ - 1)]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold crd; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_crd (v : Fin m → Fin n → ℂ) (k : Fin m × Fin n × Bool) : ‖crd v k‖ = ‖v k.1 k.2.1‖ := by
   unfold crd; split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨‖a‖, 0, norm_nonneg _, fun v => by simp [evX_eq]⟩`. Consider the case `add p q hp hq`. Take `⟨C1, N1, hC1, h1⟩` from `hp`. Take `⟨C2, N2, hC2, h2⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C1 + C2, max N1 N2, by positivity, fun v => ?_⟩` and prove the remaining obligations. Establish `hs : 1 ≤ 1 + sqN v` using `by linarith [sqN_nonneg v]`. Establish `e1` using `pow_le_pow_right₀ hs (le_max_left N1 N2)`. Establish `e2` using `pow_le_pow_right₀ hs (le_max_right N1 N2)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Consider the case `mul_X p k hp`. Take `⟨C, N, hC, h⟩` from `hp`. Use `⟨C, N + 1, hC, fun v => ?_⟩` and prove the remaining obligations. Establish `hk : ‖crd v k‖ ≤ 1 + sqN v` using `by rw [norm_crd]; exact norm_le_one_add_sq v _ _`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem evX_growth (Q : PX m n) : ∃ C N, 0 ≤ C ∧ ∀ v, ‖evX Q v‖ ≤ C * (1 + sqN v) ^ N := by
   induction Q using MvPolynomial.induction_on with
@@ -71,14 +71,14 @@ theorem evX_growth (Q : PX m n) : ∃ C N, 0 ≤ C ∧ ∀ v, ‖evX Q v‖ ≤ 
       _ = C * (1 + sqN v) ^ (N + 1) := by ring
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r23b.PositivityTheory.Rg.Sw.Glob.DCalcDH.poly_exp N a ha`.
+A detailed English derivation is pending.
 -/
 theorem poly_exp (N : ℕ) (a : ℝ) (ha : 0 < a) :
     ∃ C, 0 ≤ C ∧ ∀ x : ℝ, 0 ≤ x → (1 + x) ^ N * Real.exp (-(a * x)) ≤ C * Real.exp (-(a / 2 * x)) :=
   _root_.UpperTheory.Reformulated.B.P6.r23b.PositivityTheory.Rg.Sw.Glob.DCalcDH.poly_exp N a ha
 
 /- English proof (translation)
-Establish `h` using `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (a : ℂ)) (by simpa using ha) 0 0`. Use `h.norm.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero, Complex.norm_exp]`. Use `congr 1`. Simplify using `[Complex.mul_re, ← Complex.ofReal_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem integrable_gauss_C (a : ℝ) (ha : 0 < a) : Integrable (fun z : ℂ => Real.exp (-(a * ‖z‖ ^ 2))) := by
   have h := GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (a : ℂ)) (by simpa using ha) 0 0
@@ -88,9 +88,9 @@ theorem integrable_gauss_C (a : ℝ) (ha : 0 < a) : Integrable (fun z : ℂ => R
   simp [Complex.mul_re, ← Complex.ofReal_pow]
 
 /- English proof (translation)
-Establish `hinner : Integrable (fun w : Fin n → ℂ => ∏ j, Real.exp (-(a * ‖w j‖ ^ 2)))` using `Integrable.fintype_prod (ι := Fin n) (E := ℂ) (μ := fun _ => (volume : Measure ℂ)) (f := fun _ z => Real.exp (-(a * ‖z‖ ^ 2))) fun _ => integrable_gauss_C a ha`. Establish `houter : Integrable (fun u : Fin m → Fin n → ℂ => ∏ i, ∏ j, Real.exp (-(a * ‖u i j‖ ^ 2)))` using `Integrable.fintype_prod (ι := Fin m) (E := Fin n → ℂ) (μ := fun _ => (volume : Measure (Fin n → ℂ))) (f := fun _ w => ∏ j, Real.exp (-(a * ‖w j‖ ^ 2))) fun _ => hinner`. Use `houter.congr (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [sqN]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_gauss (a : ℝ) (ha : 0 < a) : Integrable (fun u : Fin m → Fin n → ℂ => Real.exp (-(a * sqN u))) := by
   have hinner : Integrable (fun w : Fin n → ℂ => ∏ j, Real.exp (-(a * ‖w j‖ ^ 2))) :=

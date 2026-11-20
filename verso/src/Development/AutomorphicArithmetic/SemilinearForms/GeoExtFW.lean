@@ -58,9 +58,9 @@ def fwBack {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] (R : RealDat3 D A3 T.Q.c
 end Set
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality. Use `⟨fun i => { aP := (by with_unfolding_all exact ((z.geo.κ i).aP :)) aM := (by with_unfolding_all exact ((z.geo.κ i).aM :)) aPlus_antitone := (by with_unfolding_all exact ((z.geo.κ i).aPlus_antitone :)) aM_anti := (by with_unfolding_all exact ((z.geo.κ i).aM_anti :)) n := (z.geo.κ …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : i = i'` from `Fin.ext hi`. Conclude with `⟨(by with_unfolding_all exact ((HEq.refl (z.geo.κ i).aP) :)), (by with_unfolding_all exact ((HEq.refl (z.geo.κ i).aM) :)), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_kap : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)
@@ -93,9 +93,9 @@ theorem exists_kap : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : 
   exact ⟨(by with_unfolding_all exact ((HEq.refl (z.geo.κ i).aP) :)), (by with_unfolding_all exact ((HEq.refl (z.geo.κ i).aM) :)), rfl⟩
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι`. Use `letI := alg'`. Take `⟨κ', hκ⟩` from `exists_kap B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι`. Take `⟨v₀', hv⟩` from `UpperTheory.cuspCoreDatum_transport_of_same_pre B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι`. Take `⟨e', he⟩` from `UpperTheory.cuspFormCoords_identification_of_same_pre B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι κ' hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨pt', hpt⟩` from `UpperTheory.pointEquiv_family_transport_of_same_pre B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι`. Conclude with `⟨κ', v₀', { alg_eq := GlobalTheory.Mem.R3.Rw.algebraMap_eq_OtoLL_eO_of_pin B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι e := e' ks := GlobalTheory.ksForm_moved B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore h …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fw_mu : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)
@@ -139,7 +139,7 @@ theorem exists_fw_mu : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T 
       ev := UpperTheory.cuspEvalProperty_indep_of_base_same_pre B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι κ' hκ v₀' hv e' he }, hκ, hv, he⟩
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Conclude with `⟨(by with_unfolding_all exact (m :)), (by with_unfolding_all exact ((HEq.refl m) :)), fun j => (by with_unfolding_all exact ((HEq.refl (m j)) :))⟩`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_reference_characters_over_extension {B B' : Base} {C : Cols B} {C' : Cols B'} {a : Late B C} {a' : Late B' C'} (hP : B'.toPre = B.toPre)
     (m : ℕ → ((AE a.D)ˣ →* Circle)) : ∃ m' : ℕ → ((AE a'.D)ˣ →* Circle), HEq m' m ∧ ∀ j, HEq (m' j) (m j) := by
@@ -149,11 +149,11 @@ theorem exists_reference_characters_over_extension {B B' : Base} {C : Cols B} {C
   exact ⟨(by with_unfolding_all exact (m :)), (by with_unfolding_all exact ((HEq.refl m) :)), fun j => (by with_unfolding_all exact ((HEq.refl (m j)) :))⟩
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hf hL' ι hι`. Use `letI := alg'`. Take `⟨m, hm, hm'⟩` from `exists_reference_characters_over_extension (a := Z) (a' := Z') hPre z.R.toLevCh.mu0`. Establish `hC : z.R.toLevCh.C = Top.Fr.at (w.st Z) f` using `z.lev.C.trans (by rw [w.C_eq])`. Establish `hC' : R'.toLevCh.C = Top.Fr.at (w'.st Z') f'` using `hL'.C.trans (by rw [w'.C_eq])`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmu0 : ∀ (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m), (i : ℕ) = i' → HEq (R'.toLevCh.C.mu0 i') (z.R.toLevCh.C.mu0 i)`. Introduce `i i' h`. Rewrite using `[hC, hC']`. Conclude with `LevExt.hermitianCodeCharFrame_referenceCharacter_heq (a := Z) (a' := Z') hPre hf h`. Establish `hm0 : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `(by with_unfolding_all exact ((congrArg (fun P : Pre => P.R.m) hPre) :))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ∀ i' : Fin (w'.st Z').toD7.R.m, m ((i' : ℕ) + 1) = R'.mu0 ((i' : ℕ) + 1)` using `fun i' => eq_of_heq ((hm' _).trans (LevExt.idc_heq (a := Z) (a' := Z') hPre (hmu0 ⟨i'.1, hm0 ▸ i'.2⟩ i' rfl) (z.lev.is.mu0 ⟨i'.1, hm0 ▸ i'.2⟩) (hL'.is.mu0 i')).symm)`. Take `⟨κ', v₀', fw', h1, h2, h3⟩` from `exists_fw_mu B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr (setMu0 R' m) ((by with_unfolding_all exact (hRS :))) hm ι hι`. Conclude with `⟨κ', v₀', fwBack R' m h fw', h1, h2, (by with_unfolding_all exact (h3 :))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fw : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

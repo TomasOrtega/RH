@@ -21,9 +21,9 @@ open GlobalTheory.KumUnit
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Use `haveI : NeZero (l ^ n) := ⟨hpos.ne'⟩`. Establish `h0 : ζ ≠ 0` using `by rintro rfl; rw [zero_pow hpos.ne'] at hζ; exact zero_ne_one hζ`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, ← zpow_natCast, ZMod.val_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `conv_lhs => rw [← Int.emod_add_mul_ediv j ((l ^ n : ℕ) : ℤ)]`. Rewrite using `[zpow_add₀ h0, zpow_mul, zpow_natCast, hζ, one_zpow, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kumVal_int {n : ℕ} {ζ u v : Ω} {s : G ℚ Ω} {j : ℤ} (hζ : ζ ^ (l ^ n) = 1) (hv : v ^ (l ^ n) = u)
     (hs : s v = ζ ^ j * v) : GlobalTheory.Col.KumVal (l := l) n ζ u s (j : ZMod (l ^ n)) := by
@@ -37,11 +37,9 @@ theorem kumVal_int {n : ℕ} {ζ u v : Ω} {s : G ℚ Ω} {j : ℤ} (hζ : ζ ^ 
   rw [zpow_add₀ h0, zpow_mul, zpow_natCast, hζ, one_zpow, mul_one]
 
 /- English proof (translation)
-Establish `hpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Use `haveI : NeZero (l ^ n) := ⟨hpos.ne'⟩`. Establish `h1 : (((j : ZMod (l ^ n)).val : ℕ) : ℤ) - j = ((l ^ n : ℕ) : ℤ) * (-(j / ((l ^ n : ℕ) : ℤ)))`. Rewrite using `[ZMod.val_intCast, Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : (((j : ZMod (l ^ n)).val : ℕ) : Qbar l) - (j : Qbar l) = (l : Qbar l) ^ n * ((-(j / ((l ^ n : ℕ) : ℤ)) : ℤ) : Qbar l)`. Use `congrArg (Int.cast : ℤ → Qbar l) h1` as an intermediate fact. Rewrite `this` using `[Int.cast_sub, Int.cast_mul, Int.cast_natCast, Int.cast_natCast, Nat.cast_pow]`. Conclude with `this`. Rewrite using `[Cg, e, norm_mul]`.
-
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one (Qbar l) _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_intCast (n : ℕ) (j : ℤ) : Cg (l := l) n (((j : ZMod (l ^ n)).val : ℕ) : Qbar l) (j : Qbar l) := by
   have hpos : 0 < l ^ n := pow_pos (Fact.out : l.Prime).pos n
@@ -57,9 +55,9 @@ theorem cg_intCast (n : ℕ) (j : ℤ) : Cg (l := l) n (((j : ZMod (l ^ n)).val 
   exact mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one (Qbar l) _)
 
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < ‖((l : ℕ) : Qbar l) ^ m‖` using `norm_pos_iff.2 (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))`. Establish `hn : {s | ‖h s‖ < ‖((l : ℕ) : Qbar l) ^ m‖} ∈ nhds (1 : G ℚ Ω)` using `(isOpen_lt hc.norm continuous_const).mem_nhds (by simpa [h1] using hl)`. Take `⟨E, hE, hsub⟩` from `(krullTopology_mem_nhds_one_iff ℚ Ω _).1 hn`. Use `⟨E.fixingSubgroup, E.fixingSubgroup_isOpen, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Cg, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_of_lt (hsub hs)`.
+A detailed English derivation is pending.
 -/
 theorem exists_open [IsAlgClosure ℚ Ω] (h : G ℚ Ω → Qbar l) (hc : Continuous h) (h1 : h 1 = 0) (m : ℕ) :
     ∃ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) ∧ ∀ s ∈ U, Cg m (h s) 0 := by
@@ -73,7 +71,7 @@ theorem exists_open [IsAlgClosure ℚ Ω] (h : G ℚ Ω → Qbar l) (hc : Contin
   exact le_of_lt (hsub hs)
 
 /- English proof (translation)
-Establish `h` using `hz.2 1 (one_mem _) 1 (one_mem _) 1`. Rewrite `h` using `[mul_one, map_one, inv_one, mul_one]`. Establish `h' : (ν 1 : Qbar l) * z 1 1 = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 h').resolve_left (ν 1).ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem layer_one {c : Coef l} {A : ValuationSubring Ω} {ν : G ℚ Ω → (Qbar l)ˣ} {r : ℕ}
     {z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} (hz : Layer2 c A ν r z) : z 1 1 = 0 := by
@@ -83,7 +81,7 @@ theorem layer_one {c : Coef l} {A : ValuationSubring Ω} {ν : G ℚ Ω → (Qba
   exact (mul_eq_zero.1 h').resolve_left (ν 1).ne_zero
 
 /- English proof (translation)
-Establish `h` using `hz.2 s hs t ht 1`. Rewrite `h` using `[hc, inv_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem layer_add {c : Coef l} {A : ValuationSubring Ω} {ν : G ℚ Ω → (Qbar l)ˣ} {r : ℕ}
     {z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} (hz : Layer2 c A ν r z) {s t : G ℚ Ω} (hs : s ∈ Dec (F := ℚ) A)

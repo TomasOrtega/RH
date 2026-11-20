@@ -19,7 +19,7 @@ def abv (S : Finset (HeightOneSpectrum (𝓞 E))) : S ⊕ InfinitePlace E → Ab
   | Sum.inr w => w.1
 
 /- English proof (translation)
-Break down `i with v | w` into its components or cases. Conclude with `GlobalTheory.LocalQuad.Approx.abv_isNontrivial S (Sum.inl v)`. Conclude with `InfinitePlace.isNontrivial _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem abv_isNontrivial (S : Finset (HeightOneSpectrum (𝓞 E))) (i : S ⊕ InfinitePlace E) :
     (abv S i).IsNontrivial := by
@@ -28,9 +28,9 @@ theorem abv_isNontrivial (S : Finset (HeightOneSpectrum (𝓞 E))) (i : S ⊕ In
   · exact InfinitePlace.isNontrivial _
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : abv S (Sum.inl v) ((2 : ℕ) : E) ≤ 1` using `NumberField.HeightOneSpectrum.adicAbv_natCast_le_one E v.1 2`. Rewrite `h1` using `[h.le_one_iff]`. Establish `h2 : abv S (Sum.inr w) ((2 : ℕ) : E) = 2` using `by show w ((2 : ℕ) : E) = 2`. Rewrite using `[← w.norm_embedding_eq, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Evaluate the numerical expressions using `at h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem abv_not_isEquiv (S : Finset (HeightOneSpectrum (𝓞 E))) (v : S) (w : InfinitePlace E) :
     ¬ (abv S (Sum.inl v)).IsEquiv (abv S (Sum.inr w)) := by
@@ -46,7 +46,7 @@ theorem abv_not_isEquiv (S : Finset (HeightOneSpectrum (𝓞 E))) (v : S) (w : I
   norm_num at h1
 
 /- English proof (translation)
-Introduce and unpack `(v | σ) (w | τ) hne h`. Conclude with `GlobalTheory.LocalQuad.Approx.abv_pairwise S (i := Sum.inl v) (j := Sum.inl w) (fun e => hne (congrArg Sum.inl (Sum.inl_injective e))) h`. Conclude with `abv_not_isEquiv S v τ h`. Conclude with `abv_not_isEquiv S w σ h.symm`. Conclude with `hne (congrArg Sum.inr (InfinitePlace.eq_iff_isEquiv.2 h))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem abv_pairwise (S : Finset (HeightOneSpectrum (𝓞 E))) :
     Pairwise fun i j ↦ ¬(abv S i).IsEquiv (abv S j) := by
@@ -66,7 +66,7 @@ def proj (S : Finset (HeightOneSpectrum (𝓞 E))) : AdeleRing (𝓞 E) E →* L
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Use `Dense.mono ?_ (InfinitePlace.Completion.denseRange_coe w)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨WithAbs.equiv w.1 a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem denseRange_inf (w : InfinitePlace E) : DenseRange (algebraMap E w.Completion) := by
   refine Dense.mono ?_ (InfinitePlace.Completion.denseRange_coe w)
@@ -74,19 +74,19 @@ theorem denseRange_inf (w : InfinitePlace E) : DenseRange (algebraMap E w.Comple
   exact ⟨WithAbs.equiv w.1 a, rfl⟩
 
 /- English proof (translation)
-The claim follows from `InfinitePlace.Completion.norm_coe w ((WithAbs.equiv w.1).symm x)`.
+A detailed English derivation is pending.
 -/
 theorem norm_inf (w : InfinitePlace E) (x : E) : ‖algebraMap E w.Completion x‖ = w x :=
   InfinitePlace.Completion.norm_coe w ((WithAbs.equiv w.1).symm x)
 
 /- English proof (translation)
-Use `Metric.denseRange_iff.2 fun y ε hε => ?_` and prove the remaining obligations. Establish `hε2 : 0 < ε / 2` using `half_pos hε`. Use `choose a ha using fun v : S => Metric.denseRange_iff.1 (HeightOneSpectrum.denseRange_algebraMap E v.1) (y.2 v) _ hε2`. Use `choose b hb using fun w : InfinitePlace E => Metric.denseRange_iff.1 (denseRange_inf w) (y.1 w) _ hε2`. Take `⟨x, hx⟩` from `GlobalTheory.LocalQuad.Approx.exists_forall_abv_sub_lt (abv_isNontrivial S) (abv_pairwise S) (Sum.elim a b) hε2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.dist_eq, max_lt_iff, dist_pi_lt_iff hε, dist_pi_lt_iff hε]`. Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : w (b w - x) < ε / 2` using `hx (Sum.inr w)`. Rewrite `h1` using `[← norm_inf, map_sub, ← dist_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `dist_triangle (y.1 w) (algebraMap E _ (b w)) (algebraMap E _ x)`. Establish `h3` using `hb w`. Express the relevant statement in the definitionally equal form `dist (y.1 w) (algebraMap E _ x) < ε`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : GlobalTheory.LocalQuad.Approx.abv S (Sum.inl v) (a v - x) < ε / 2` using `hx (Sum.inl v)`.
+Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[GlobalTheory.LocalQuad.Approx.abv_inl, map_sub, ← dist_eq_norm]`. Establish `h2` using `dist_triangle (y.2 v) (algebraMap E _ (a v)) (algebraMap E _ x)`. Establish `h3` using `ha v`. Express the relevant statement in the definitionally equal form `dist (y.2 v) (algebraMap E _ x) < ε`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem denseRange_proj (S : Finset (HeightOneSpectrum (𝓞 E))) :
     DenseRange fun x : E => proj S (algebraMap E (AdeleRing (𝓞 E) E) x) := by
@@ -115,9 +115,9 @@ theorem denseRange_proj (S : Finset (HeightOneSpectrum (𝓞 E))) :
     linarith
 
 /- English proof (translation)
-Establish `hg : IsOpenEmbedding (Units.val : (Loc S)ˣ → Loc S)` using `Units.isOpenEmbedding_val`. Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `U hU ⟨u, hu⟩`. Take `⟨k, v, hv, hk⟩` from `(denseRange_proj S).exists_mem_open (hg.isOpenMap U hU) ⟨_, u, hu, rfl⟩`. Establish `hk0 : k ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hk` using `[map_zero]`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Conclude with `left_ne_zero_of_mul_eq_one (congrArg (fun y : Loc S => y.1 w) v.mul_inv) (congrArg (fun y : Loc S => y.1 w) hk)`. Conclude with `⟨v, hv, Units.mk0 k hk0, Units.ext hk.symm⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem denseRange_units (S : Finset (HeightOneSpectrum (𝓞 E))) :
     DenseRange fun k : Eˣ => Units.map (proj S) (diagUnits E k) := by
@@ -138,14 +138,14 @@ def incl (S : Finset (HeightOneSpectrum (𝓞 E))) : Loc S →* AdeleRing (𝓞 
     (∏ v : S, (Neutral.B1.finiteSingle E v.1).comp (Pi.evalMonoidHom (fun v : S => v.1.adicCompletion E) v))
 
 /- English proof (translation)
-The claim follows from `MonoidHom.finsetProd_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem incl_snd (S : Finset (HeightOneSpectrum (𝓞 E))) (y : Loc S) :
     (incl S y).2 = ∏ v : S, Neutral.B1.finiteSingle E v.1 (y.2 v) :=
   MonoidHom.finsetProd_apply _ _ _
 
 /- English proof (translation)
-Use `Continuous.prodMk continuous_fst (?_ : Continuous fun y => (incl S y).2)` and prove the remaining obligations. Simplify using `only [incl_snd]`. Conclude with `continuous_finsetProd _ fun v _ => (GlobalTheory.Mem.UnrAe.continuous_finSingle v.1).comp ((continuous_apply v).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_incl (S : Finset (HeightOneSpectrum (𝓞 E))) : Continuous (incl S) := by
   refine Continuous.prodMk continuous_fst (?_ : Continuous fun y => (incl S y).2)
@@ -154,9 +154,7 @@ theorem continuous_incl (S : Finset (HeightOneSpectrum (𝓞 E))) : Continuous (
     (GlobalTheory.Mem.UnrAe.continuous_finSingle v.1).comp ((continuous_apply v).comp continuous_snd)
 
 /- English proof (translation)
-Set `e : FiniteAdeleRing (𝓞 E) E →* v.1.adicCompletion E` to `(GlobalTheory.Mem.LocTriv.ev v.1).comp (MonoidHom.inr (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E))`. Use `show e (incl S y).2 = _`. Rewrite using `[incl_snd, map_prod, Finset.prod_eq_single_of_mem v (Finset.mem_univ v)]`. Conclude with `Function.update_self v.1 (y.2 v) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))`. Introduce `w _ hw`.
-
-Conclude with `Function.update_of_ne (fun h => hw (Subtype.ext h.symm)) (y.2 w) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem incl_apply (S : Finset (HeightOneSpectrum (𝓞 E))) (y : Loc S) (v : S) : (incl S y).2 v.1 = y.2 v := by
   classical
@@ -170,7 +168,7 @@ theorem incl_apply (S : Finset (HeightOneSpectrum (𝓞 E))) (y : Loc S) (v : S)
       (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))
 
 /- English proof (translation)
-The claim follows from `Prod.ext rfl (funext fun v => incl_apply S y v)`.
+A detailed English derivation is pending.
 -/
 theorem proj_incl (S : Finset (HeightOneSpectrum (𝓞 E))) (y : Loc S) : proj S (incl S y) = y :=
   Prod.ext rfl (funext fun v => incl_apply S y v)
@@ -180,17 +178,17 @@ variable {B : Type} [CommGroup B] [TopologicalSpace B] [T2Space B]
 open GlobalTheory.Mem.LocTriv GlobalTheory.Mem.Chr GlobalTheory.Mem.Chr.IdlFact in
 
 /- English proof (translation)
-Establish `hp : ∀ (c : Ideles E) T, (∀ v, ψ (localIdele E v (Units.map (ev v) c)) = 1) → ψ (part c T) = 1` using `fun c T hc => by`. Rewrite using `[part, map_prod]`. Conclude with `Finset.prod_eq_one fun v _ => hc v`. Set `T` to `(finite_valAt_ne_one a).toFinset`. Set `b` to `part a⁻¹ T * a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb1 : ∀ v ∈ T, ev v (b : AdeleRing (𝓞 E) E) = 1` using `fun v hv => by`. Simplify using `only [b]`. Rewrite using `[Units.val_mul, map_mul, ev_part_mem _ hv, ← map_mul, Units.inv_mul, map_one]`. Establish `hb2 : ∀ v ∉ T, ev v (b : AdeleRing (𝓞 E) E) = ev v (a : AdeleRing (𝓞 E) E)` using `fun v hv => by`. Simplify using `only [b]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, map_mul, ev_part_not_mem _ hv, one_mul]`. Establish `hbu : b ∈ unitIdl E` using `fun v => by show Valued.v (ev v (b : AdeleRing (𝓞 E) E)) = 1`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[hb1 v hv, map_one]`. Rewrite using `[hb2 v hv]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : valAt v a = 1` using `by simpa [T] using hv`. Conclude with `h`. Establish `hbi : (b : AdeleRing (𝓞 E) E).1 = 1` using `by show (part a⁻¹ T : AdeleRing (𝓞 E) E).1 * (a : AdeleRing (𝓞 E) E).1 = 1`. Rewrite using `[part_fst, h1, one_mul]`. Establish `hbl : ∀ v, ψ (localIdele E v (Units.map (ev v) b)) = 1` using `fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ T`. Rewrite using `[show Units.map (ev v) b = 1 from Units.ext (hb1 v hv), map_one, map_one]`. Rewrite using `[show Units.map (ev v) b = Units.map (ev v) a from Units.ext (hb2 v hv), hl]`. Establish `t` using `(hψ.tendsto b).comp (tendsto_part hbu fun w => congrFun hbi w)`. Rewrite `t` using `[show ψ ∘ part b = fun _ => 1 from funext fun S => hp b S hbl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb : ψ b = 1` using `tendsto_nhds_unique t tendsto_const_nhds`. Simplify using `only [b] at hb`. Rewrite `hb` using `[← part_inv, map_mul, map_inv, hp a T hl, inv_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_one_of_local (ψ : Ideles E →* B) (hψ : Continuous ψ) (a : Ideles E)
     (h1 : (a : AdeleRing (𝓞 E) E).1 = 1) (hl : ∀ v, ψ (localIdele E v (Units.map (ev v) a)) = 1) : ψ a = 1 := by
@@ -229,11 +227,11 @@ theorem eq_one_of_local (ψ : Ideles E →* B) (hψ : Continuous ψ) (a : Ideles
 open GlobalTheory.Mem.LocTriv in
 
 /- English proof (translation)
-Establish `h0 : ∀ a : Ideles E, Units.map (proj S) a = 1 → ψ a = 1` using `fun a ha => by`. Establish `e : proj S (a : AdeleRing (𝓞 E) E) = 1` using `congrArg Units.val ha`. Use `eq_one_of_local ψ hψ a (congrArg Prod.fst e) fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[show Units.map (ev v) a = 1 from Units.ext (congrFun (congrArg Prod.snd e) ⟨v, hv⟩), map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS v hv _`. Establish `h1 : ∀ a : Ideles E, ψ (Units.map (incl S) (Units.map (proj S) a)) = ψ a` using `fun a => by`. Rewrite using `[← div_eq_one, ← map_div]`. Use `h0 _ ?_` and prove the remaining obligations. Rewrite using `[map_div, div_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.ext (proj_incl S _)`. Establish `h2 : ∀ y, ψ (Units.map (incl S) y) = 1` using `fun y => (denseRange_units S).induction_on (p := fun y => ψ (Units.map (incl S) y) = 1) y (isClosed_eq (hψ.comp ((continuous_incl S).units_map _)) continuous_const) fun k => (h1 _).trans (hd k)`. Use extensionality with `a`. Rewrite using `[← h1, h2, MonoidHom.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_away (ψ : Ideles E →* B) (hψ : Continuous ψ) (hd : ∀ k, ψ (diagUnits E k) = 1)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (hS : ∀ v ∉ S, ∀ x, ψ (localIdele E v x) = 1) : ψ = 1 := by
@@ -257,11 +255,11 @@ theorem eq_one_of_away (ψ : Ideles E →* B) (hψ : Continuous ψ) (hd : ∀ k,
 omit [TopologicalSpace B] [T2Space B] in
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_unif v`. Generalize the expression as in `atFin v k = p at hk`. Establish `hk' : Valued.v (p : v.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `hk`. Establish `hx : Valued.v (x : v.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).mpr x.ne_zero`. Establish `hu : IsUnifAt v (x * p ^ (WithZero.log (Valued.v (x : v.adicCompletion E)) + 1))` using `by show Valued.v _ = _`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, map_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, hk', ← WithZero.exp_zsmul]`. Use `nth_rewrite 1 [← WithZero.exp_log hx]`. Rewrite using `[← WithZero.exp_add]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h _ hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_zpow, h p hk, one_zpow, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_one_of_unif {v : HeightOneSpectrum (𝓞 E)} (θ : (v.adicCompletion E)ˣ →* B)
     (h : ∀ x, IsUnifAt v x → θ x = 1) (x : (v.adicCompletion E)ˣ) : θ x = 1 := by
@@ -280,11 +278,11 @@ theorem eq_one_of_unif {v : HeightOneSpectrum (𝓞 E)} (θ : (v.adicCompletion 
   rwa [map_mul, map_zpow, h p hk, one_zpow, mul_one] at this
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ art ha B _ _ _ _ φ hφ S hS`. Establish `h : (liftAb φ hφ).comp art = 1`. Use `eq_one_of_away _ ((continuous_liftAb φ hφ).comp ha.quot.continuous) (fun k => ?_) S fun v hv => ?_` and prove the remaining obligations. Establish `hk : diagUnits E k ∈ art.ker`. Rewrite using `[ha.ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.mem_ker.mp hk, map_one]`. Use `eq_one_of_unif (((liftAb φ hφ).comp art).comp (localIdele E v)) fun x hx => ?_` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Take `⟨σ, hσ, e⟩` from `(ha.frob v A hA _).mp ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, ← e, liftAb_toAb, map_inv, hS v hv A hA σ hσ, inv_one]`. Use extensionality with `σ`. Take `⟨x, hx⟩` from `ha.quot.surjective (toAb E Ω σ)`. Rewrite using `[← liftAb_toAb φ hφ, ← hx]`. Conclude with `DFunLike.congr_fun h x`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_frob : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (art : Ideles E →* Gab E Ω), IsGlobalArtin art → ∀ (B : Type) [CommGroup B] [TopologicalSpace B] [IsTopologicalGroup B] [T2Space B] (φ : G E Ω →* B), Continuous φ → ∀ S : Finset (HeightOneSpectrum (𝓞 E)), (∀ v, v ∉ S → ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∀ σ : G E Ω, IsFrob (F := E) A (normV v) σ → φ σ = 1) → φ = 1 := by
   intro E Ω _ _ _ _ _ art ha B _ _ _ _ φ hφ S hS

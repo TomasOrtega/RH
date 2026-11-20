@@ -7,7 +7,7 @@ open ValuativeRel Formalism.MainNotions.S.Loc Formalism.L2.SG.LsDatumA Formalism
 namespace Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, cor]`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> by_cases hj : j = Fin.last r <;>`. Simplify using `[hi, hj, Finset.sum_ite_eq', Finset.sum_ite_eq, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem corner_mul {K : Type} [Field K] {r : ℕ} (a d : K) (X : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     (Matrix.of fun i j : Fin (r + 1) => if i = Fin.last r ∧ j = Fin.last r then d else 0) * X *
@@ -19,19 +19,17 @@ theorem corner_mul {K : Type} [Field K] {r : ℕ} (a d : K) (X : Matrix (Fin (r 
     simp [hi, hj, Finset.sum_ite_eq', Finset.sum_ite_eq, mul_assoc]
 
 /- English proof (translation)
-Use `set A : Matrix (Fin (r + 1)) (Fin (r + 1)) K := Matrix.of fun i j => if i = Fin.last r ∧ j = Fin.last r then a else 0`. Use `set D : Matrix (Fin (r + 1)) (Fin (r + 1)) K := Matrix.of fun i j => if i = Fin.last r ∧ j = Fin.last r then d else 0`. Use `set J : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) K := Matrix.fromBlocks 0 1 1 0`. Establish `hJ : Matrix.fromBlocks B A D C * J = Matrix.fromBlocks A B C D`. Simplify using `[J, Matrix.fromBlocks_multiply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hJJ : J * J = 1`. Simplify using `[J, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`. Establish `hJd : J.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hJJ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Rewrite using `[← hJ, Matrix.det_mul]`. Use `mul_ne_zero ?_ hJd` and prove the remaining obligations. Use `haveI : Invertible B := Matrix.invertibleOfIsUnitDet B (isUnit_iff_ne_zero.mpr hB)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.det_fromBlocks₁₁, Matrix.invOf_eq_nonsing_inv, corner_mul]`. Establish `hsub : C - (Matrix.of fun i j => cor r i j (d * B⁻¹ (Fin.last r) (Fin.last r) * a)) = C + Matrix.of fun i j => cor r i j (-(d * B⁻¹ (Fin.last r) (Fin.last r) * a))`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.of_apply, cor]`. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : B⁻¹ (Fin.last r) (Fin.last r) = (B.submatrix Fin.castSucc Fin.castSucc).det / B.det`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last, Ring.inverse_eq_inv', smul_eq_mul]`. Establish `h2 : ((-1 : K) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ))) = 1`. Rewrite using `[Fin.val_last]`. Conclude with `Even.neg_one_pow ⟨r, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h2, one_mul, div_eq_inv_mul]`. Rewrite using `[hsub, det_add_cor, hinv]`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: B.det * (C.det + -(d * ((B.submatrix Fin.castSucc Fin.castSucc).det / B.det) * a) * (C.submatrix Fin.castSucc Fin.castSucc).det) = B.det * C.det - a * d * ((B.submatrix Fin.castSucc Fin.castSucc).det * (C.submatrix Fin.castSucc Fin.castSucc).det)`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← this, h0]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_corner_blocks_ne {K : Type} [Field K] {r : ℕ} (a d : K) (B C : Matrix (Fin (r + 1)) (Fin (r + 1)) K)
     (hB : B.det ≠ 0)
@@ -81,7 +79,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
 /- English proof (translation)
-Use `show (g.e (algebraMap F E a)).2 = a`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem splitSecondProj_algebraMap (a : F) : ph2 g (algebraMap F E a) = a := by
   show (g.e (algebraMap F E a)).2 = a
@@ -89,7 +87,7 @@ theorem splitSecondProj_algebraMap (a : F) : ph2 g (algebraMap F E a) = a := by
   rfl
 
 /- English proof (translation)
-Use `show (g.e (M.L.cj x)).2 = (g.e x).1`. Rewrite using `[g.e_cj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ph2_cj_eq_ph1 (x : E) : ph2 g (M.L.cj x) = ph1 g x := by
   show (g.e (M.L.cj x)).2 = (g.e x).1
@@ -97,17 +95,15 @@ theorem ph2_cj_eq_ph1 (x : E) : ph2 g (M.L.cj x) = ph1 g x := by
   rfl
 
 /- English proof (translation)
-Establish `hcor : ∀ (φ : E →+* F) (a b : Fin (r + 1)) (c : E), φ (cor r a b c) = cor r a b (φ c)`. Introduce `φ a b c`. Unfold `cor`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcorS : ∀ (a b : Fin (r + 1)) (c : F), cor r a b c = cor r b a c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `a b c`. Unfold `cor`. Simplify using `only [and_comm]`. Establish `h1 : ∀ x, ph1 g (M.L.cj x) = ph2 g x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (g.e (M.L.cj x)).1 = (g.e x).2`. Rewrite using `[g.e_cj]`. Both sides reduce to the same expression. Establish `ha1 : ∀ a : F, ph1 g (algebraMap F E a) = a`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (g.e (algebraMap F E a)).1 = a`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression. Unfold `gramG`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_map, Matrix.fromBlocks_transpose]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, hcor, map_neg, splitSecondProj_algebraMap, ha1]`. Conclude with `hcorS _ _ _`. Use `all_goals`.
-
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, hcor, map_mul, map_add, map_neg, map_sub, RingHom.coe_coe, splitSecondProj_algebraMap, ph2_cj_eq_ph1, h1, ha1]`. Apply the tactic sequence `first | ring1 | (rw [hcorS]; done) | (rw [hcorS]; ring1)`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_map_secondProj_transpose (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T) (algebraMap F E T')).map
@@ -145,7 +141,7 @@ theorem gram_map_secondProj_transpose (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E
     first | ring1 | (rw [hcorS]; done) | (rw [hcorS]; ring1)
 
 /- English proof (translation)
-Unfold `pM`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (inv_ne_zero hx)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_pM_ne (x : F) (hx : x ≠ 0) : (pM r x⁻¹).det ≠ 0 := by
   unfold pM
@@ -153,15 +149,13 @@ theorem det_pM_ne (x : F) (hx : x ≠ 0) : (pM r x⁻¹).det ≠ 0 := by
   exact pow_ne_zero _ (inv_ne_zero hx)
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g r T T' TT Zh Z Zσ h`. Take `⟨-, -, -, -, -, hdet, hx⟩` from `h`. Establish `hq` using `q_ne g`. Establish `h1 : ph1 g (gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T) (algebraMap F E T')).det ≠ 0`. Rewrite using `[det_ph, map_gramG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (mul_ne_zero (det_pM_ne _ hq) ?_) (det_pM_ne _ hq)` and prove the remaining obligations. Unfold `gHat`. Take `⟨-, hd2⟩` from `(isUnit_iff_ph (g := g) _).1 hdet`. Take `⟨hx1, -⟩` from `(isUnit_iff_ph (g := g) _).1 hx`. Use `det_corner_blocks_ne (-T) (-T') _ _ (by rwa [← det_ph]) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : ((Zh.map (ph1 g)).transpose.submatrix Fin.castSucc Fin.castSucc).det = ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[det_ph]`. Conclude with `Matrix.det_transpose _`. Rewrite using `[hm, Matrix.det_transpose]`. Simplify using `only [Matrix.submatrix_map, ← det_ph]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hx1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_mul, splitFirstProj_conj, splitFirstProj_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ph2 g (gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T) (algebraMap F E T')).det ≠ 0`. Rewrite using `[det_ph, gram_map_secondProj_transpose, Matrix.det_transpose, ← det_ph]`.
-
-Conclude with `h1`. Conclude with `(isUnit_iff_ph (g := g) _).2 ⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramUnit_split_holds : GramUnitG := by
   intro F _ _ _ E _ _ _ _ M g r T T' TT Zh Z Zσ h

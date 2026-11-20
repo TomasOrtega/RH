@@ -30,31 +30,31 @@ def ColLatRep (hK : X.LevelSubgroupCharacter) : Prop :=
     colD (cs.h (cs.base q.1)) h ∈ X.B.I.Kset → h = iotaF X u γ * cs.h ρ * (κ : Hfin X u) → cs.lamOf ρ = q.1
 
 /- English proof (translation)
-Introduce `v` and use `Formalism.L2.SG.NormCut.PsiNatEquivPf.isUni_mul (hx v) (hy v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UG_mul {x y : Iof TR} (hx : x ∈ UG TR) (hy : y ∈ UG TR) : x * y ∈ UG TR := fun v =>
   Formalism.L2.SG.NormCut.PsiNatEquivPf.isUni_mul (hx v) (hy v)
 
 /- English proof (translation)
-Introduce `v` and use `Formalism.L2.SG.NormCut.PsiNatEquivPf.isUni_inv (hx v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UG_inv {x : Iof TR} (hx : x ∈ UG TR) : x⁻¹ ∈ UG TR := fun v =>
   Formalism.L2.SG.NormCut.PsiNatEquivPf.isUni_inv (hx v)
 
 /- English proof (translation)
-Unfold `colD`. Use `group`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem colD_mul (h h' h'' : Hfin X u) : colD h h' * colD h' h'' = colD h h'' := by
   unfold colD; group
 
 /- English proof (translation)
-Unfold `colD`. Use `group`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem colD_inv (h h' : Hfin X u) : (colD h h')⁻¹ = colD h' h := by
   unfold colD; group
 
 /- English proof (translation)
-The claim follows from `colGood X u h h' hk (by have := K_inv X.B.I hk; rw [colD_inv] at this; exact this)`.
+A detailed English derivation is pending.
 -/
 theorem good_colD {h h' : Hfin X u} (hk : colD h h' ∈ X.B.I.Kset) : Good X (colD h h') :=
   colGood X u h h' hk (by have := K_inv X.B.I hk; rw [colD_inv] at this; exact this)
@@ -65,15 +65,13 @@ Both sides reduce to the same expression.
 theorem scOf_eq (ρ : cs.Cl) : scOf TR cs ρ = levi TR (colD (cs.h (cs.base (cs.lamOf ρ))) (cs.h ρ)) := rfl
 
 /- English proof (translation)
-Unfold `colD`. Simplify using `only [Subgroup.coe_mul]`. Use `group`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colD_conj (γ h h' : Hfin X u) : colD h (γ * h) * colD h h' = colD h (γ * h') := by
   unfold colD; simp only [Subgroup.coe_mul]; group
 
 /- English proof (translation)
-Use `show (X.xu u)⁻¹ * ((h⁻¹ * h' : Hfin X u) : X.B.I.Gf) * X.xu u ∈ X.K2`. Establish `e : (X.xu u)⁻¹ * ((h⁻¹ * h' : Hfin X u) : X.B.I.Gf) * X.xu u = colD h h'`. Unfold `colD`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`.
-
-Rewrite using `[e]`. Conclude with `hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colD_ku (hK : X.LevelSubgroupCharacter) {h h' : Hfin X u} (hm : colD h h' ∈ X.K2) : h⁻¹ * h' ∈ Ku X u hK := by
   show (X.xu u)⁻¹ * ((h⁻¹ * h' : Hfin X u) : X.B.I.Gf) * X.xu u ∈ X.K2
@@ -82,43 +80,37 @@ theorem colD_ku (hK : X.LevelSubgroupCharacter) {h h' : Hfin X u} (hm : colD h h
   rw [e]; exact hm
 
 /- English proof (translation)
-Use `set hb : Hfin X u := cs.h (cs.base q.1) with hhb`. Establish `hbl : cs.lamOf (cs.base q.1) = q.1` using `cs.base_lam _ q.2`. Establish `lamρ : ∀ ρ : {ρ : cs.Cl // lamQ cs ρ = q}, cs.lamOf ρ.1 = q.1` using `fun ρ => congrArg Subtype.val ρ.2`. Establish `kK : ∀ ρ : cs.Cl, cs.lamOf ρ = q.1 → colD hb (cs.h ρ) ∈ X.B.I.Kset` using `fun ρ hρ => hL (cs.base q.1) ρ (hbl.trans hρ.symm)`. Establish `kKi : ∀ ρ : cs.Cl, cs.lamOf ρ = q.1 → colD (cs.h ρ) hb ∈ X.B.I.Kset` using `fun ρ hρ => hL ρ (cs.base q.1) (hρ.trans hbl.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `scρ : ∀ ρ : {ρ : cs.Cl // lamQ cs ρ = q}, scOf TR cs ρ.1 = levi TR (colD hb (cs.h ρ.1))` using `fun ρ => by`. Rewrite using `[scOf_eq, lamρ ρ]`. Establish `aK : ∀ γ : Gam X u, ((cs.h (cs.base q.1) : X.B.I.Gf) * X.xu u)⁻¹ * (iotaF X u γ : X.B.I.Gf) * ((cs.h (cs.base q.1) : X.B.I.Gf) * X.xu u) = colD hb (iotaF X u γ * hb)` using `fun γ => by`. Unfold `colD`. Rewrite using `[hhb, Subgroup.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `group`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a1, ha1⟩, ρ1, w1⟩ ⟨⟨a2, ha2⟩, ρ2, w2⟩ heq`. Take `⟨γ1, hγ1K, ha1e⟩` from `ha1`. Take `⟨γ2, hγ2K, ha2e⟩` from `ha2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at heq`. Rewrite `hγ1K`, `hγ2K`, `ha1e`, `ha2e` using `[aK]`. Rewrite `heq` using `[ha1e, ha2e, scρ, scρ]`. Rewrite `heq` using `[← levi_mul TR (good_colD hγ1K) (good_colD (kK _ (lamρ ρ1))), ← levi_mul TR (good_colD hγ2K) (good_colD (kK _ (lamρ ρ2))), colD_conj, colD_conj]`. Establish `hP1 : colD hb (iotaF X u γ1 * cs.h ρ1.1) ∈ X.B.I.Kset`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← colD_conj]`. Conclude with `K_mul X.B.I hγ1K (kK _ (lamρ ρ1))`. Establish `hP2 : colD hb (iotaF X u γ2 * cs.h ρ2.1) ∈ X.B.I.Kset`. Rewrite using `[← colD_conj]`. Conclude with `K_mul X.B.I hγ2K (kK _ (lamρ ρ2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmK : colD (iotaF X u γ1 * cs.h ρ1.1) (iotaF X u γ2 * cs.h ρ2.1) ∈ X.B.I.Kset`. Rewrite using `[← colD_mul _ hb, ← colD_inv]`. Conclude with `K_mul X.B.I (K_inv X.B.I hP1) hP2`. Establish `hlm : levi TR (colD (iotaF X u γ1 * cs.h ρ1.1) (iotaF X u γ2 * cs.h ρ2.1)) = (w1 : Iof TR) * (w2 : Iof TR)⁻¹`. Rewrite using `[← colD_mul _ hb, ← colD_inv, levi_mul TR (good_inv X (good_colD hP1)) (good_colD hP2), levi_inv TR (good_colD hP1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, heq, mul_assoc, mul_inv_cancel, mul_one]`. Establish `hmU : ∀ v, Formalism.L2.SG.GGMirabolic.IsUni D.R.k (levi TR (colD (iotaF X u γ1 * cs.h ρ1.1) (iotaF X u γ2 * cs.h ρ2.1)) v)`. Rewrite using `[hlm]`. Conclude with `UG_mul TR w1.2 (UG_inv TR w2.2)`. Establish `hm2` using `mem_level_of_unitriangular TR (good_colD hmK) (ncong_colDiff u _ _ hmK) hmU`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hku` using `colD_ku hK hm2`. Establish `hρ : ρ1.1 = ρ2.1`. Establish `hu` using `hR (cs.h ρ2.1)`. Use `hu.unique ?_ ⟨1, 1, by simp⟩` and prove the remaining obligations. Use `⟨γ2⁻¹ * γ1, ⟨_, hku⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `hρ' : ρ1 = ρ2` using `Subtype.ext hρ`. Substitute `hρ'` using the available equality. Establish `hγ : γ1 = γ2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `h0 : γ1⁻¹ * γ2 = 1`. Use `hN (cs.h ρ1.1) (γ1⁻¹ * γ2) ?_` and prove the remaining obligations. Establish `e : (cs.h ρ1.1)⁻¹ * iotaF X u (γ1⁻¹ * γ2) * cs.h ρ1.1 = (iotaF X u γ1 * cs.h ρ1.1)⁻¹ * (iotaF X u γ2 * cs.h ρ1.1)`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[e]`. Conclude with `hku`. Rewrite `h0` using `[inv_mul_eq_one]`. Conclude with `h0`. Substitute `hγ` using the available equality.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : a1 = a2` using `ha1e.trans ha2e.symm`. Substitute `ha` using the available equality. Establish `hw : (w1 : Iof TR) = w2` using `mul_left_cancel heq`. Establish `: w1 = w2` using `Subtype.ext hw`. Substitute `this` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `s`. Take `⟨h, hk, hki, hs⟩` from `hO q s`. Take `⟨ρ, ⟨γ, κ, hh⟩, -⟩` from `hR h`. Establish `hlam : cs.lamOf ρ = q.1` using `hRep q h ρ γ κ hk hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hκ2 : colD 1 (κ : Hfin X u) ∈ X.K2`. Use `κ.2` as an intermediate fact. Establish `e : colD 1 (κ : Hfin X u) = (X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u`. Unfold `colD`. Simplify using `only [Subgroup.coe_one, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[e]`. Conclude with `this`. Establish `hκK : colD 1 (κ : Hfin X u) ∈ X.B.I.Kset` using `hκ2.1`. Establish `haE : colD hb (iotaF X u γ * hb) = colD hb h * (colD 1 (κ : Hfin X u))⁻¹ * colD (cs.h ρ) hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hh]`. Unfold `colD`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_one, one_mul]`. Use `group`. Establish `haK : colD hb (iotaF X u γ * hb) ∈ X.B.I.Kset`.
-
-Rewrite using `[haE]`. Conclude with `K_mul X.B.I (K_mul X.B.I hk (K_inv X.B.I hκK)) (kKi ρ hlam)`. Establish `ga` using `good_colD haK`. Establish `gr` using `good_colD (kK ρ hlam)`. Establish `gk` using `good_colD hκK`.
-
-Use `⟨⟨⟨levi TR (colD hb (iotaF X u γ * hb)), γ, by rw [aK]; exact haK, by rw [aK]⟩, ⟨ρ, Subtype.ext hlam⟩, ⟨levi TR (colD 1 (κ : Hfin X u)), fun v => unitriangular_reduction_of_mem_level TR gk hκ2 v⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[show scOf TR cs ρ = levi TR (colD hb (cs.h ρ)) by rw [scOf_eq, hlam], ← levi_mul TR ga gr, ← levi_mul TR (good_mul X ga gr) gk, colD_conj]`. Establish `e2 : colD hb (iotaF X u γ * cs.h ρ) * colD 1 (κ : Hfin X u) = colD hb h`. Rewrite using `[hh]`.
-
-Unfold `colD`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_one, one_mul]`. Use `group`. Rewrite using `[e2, hs]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colFreeBij_of (hK : X.LevelSubgroupCharacter) (hR : ColReps hK cs) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u hK) (hL : ColLatK cs)
     (hO : LeviOnto TR cs) (hRep : ColLatRep cs hK) (q : {Λ // Λ ∈ what₂}) :

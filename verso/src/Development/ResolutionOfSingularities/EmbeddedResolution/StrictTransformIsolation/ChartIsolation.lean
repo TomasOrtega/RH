@@ -82,17 +82,15 @@ structure ChartIsolationHypotheses (V : VanishingAssignment.{u}) (A : Principali
             (((D.toEmbeddedBlowupSequence A).strictTransformι i).base ξ) = 1
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hcert`. Establish `hiso` using `orderOneCentersIsolated_of_principalizationCertificate (V := V) hV hq`. Establish `hC₁comp` using `((S.mem_detachedComponents i C₁).1 h₁).1`. Establish `hC₁sub` using `((S.mem_detachedComponents i C₁).1 h₁).2`. Establish `hcl₁ : IsClosed C₁` using `isClosed_of_mem_irreducibleComponents _ hC₁comp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl₂ : IsClosed C₂` using `isClosed_of_mem_irreducibleComponents _ h₂`. Take `⟨ξ₁, hξ₁⟩` from `QuasiSober.sober hC₁comp.1 hcl₁`. Take `⟨ξ₂, hξ₂⟩` from `QuasiSober.sober h₂.1 hcl₂`. Establish `him1 : IsClosed (⇑(S.strictTransformι i).base '' C₁)` using `hcl.isClosedMap _ hcl₁`. Establish `him2 : IsClosed (⇑(S.strictTransformι i).base '' C₂)` using `hcl.isClosedMap _ hcl₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr1 : IsIrreducible (⇑(S.strictTransformι i).base '' C₁)` using `hC₁comp.1.image _ hcl.continuous.continuousOn`. Establish `hirr2 : IsIrreducible (⇑(S.strictTransformι i).base '' C₂)` using `h₂.1.image _ hcl.continuous.continuousOn`. Establish `hg1 : IsGenericPoint ((S.strictTransformι i).base ξ₁) (⇑(S.strictTransformι i).base '' C₁)` using `isGenericPoint_image_of_isClosedEmbedding hcl hξ₁`. Establish `hg2 : IsGenericPoint ((S.strictTransformι i).base ξ₂) (⇑(S.strictTransformι i).base '' C₂)` using `isGenericPoint_image_of_isClosedEmbedding hcl hξ₂`. Take `⟨hag1, hord1⟩` from `hagree C₁ hC₁comp ξ₁ hξ₁ him1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hag2, hord2⟩` from `hagree C₂ h₂ ξ₂ hξ₂ him2`. Establish `hnotcenter : ((S.strictTransformι i).base ξ₂) ∉ ((S.ambientCenter i).support : Set ↥(S.schemeAt i))`. Introduce `hmem2`. Apply `h₂'` to reduce the goal to its premises. Rewrite using `[S.mem_detachedComponents i C₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h₂, (hg2.mem_closed_set_iff (hV.isClosed_support (S.schemeAt i) (S.ambientCenter i))).mp hmem2⟩`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx1 hx2`. Conclude with `hiso ⟨⇑(S.strictTransformι i).base '' C₁, ⇑(S.strictTransformι i).base '' C₂, (S.strictTransformι i).base ξ₁, (S.strictTransformι i).base ξ₂, (S.strictTransformι i).base x, him1, him2, hirr1, hirr2, hg1, hg2, ⟨x, hx1, rfl⟩, ⟨x, hx2, rfl⟩⟩`. Use `rfl hC₁sub hnotcenter (hmem C₁ hC₁comp ξ₁ hξ₁) (hmem C₂ h₂ ξ₂ hξ₂) hag1 hord1`.
-
-Use the proof step `((one_le_orderAt_iff_mem_support I ((S.strictTransformι i).base ξ₂)).1 (le_of_eq hord2.symm))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem disjoint_detachedComponent_of_principalizationCertificate
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
@@ -153,9 +151,9 @@ theorem disjoint_detachedComponent_of_principalizationCertificate
     ((one_le_orderAt_iff_mem_support I ((S.strictTransformι i).base ξ₂)).1 (le_of_eq hord2.symm))
 
 /- English proof (translation)
-Use `hind.noetherianSpace_alive k Y pY D i (le_of_lt hi)` as an intermediate fact. Establish `hspec` using `(PrincipalizationRules.isMaxOrderReduction_outputLevelData (canonicalAlgorithmRules hres) hB (krullDimSucc D.ambient)).cert (markedTripleOrderOne k D.ambient D.ambientStruct (AlgebraicGeometry.Scheme.Hom.ker D.emb) []) (markedTripleOrderOne_isAdmissible k D.ambient D.ambientStruc …`. Use `disjoint_detachedComponent_of_principalizationCertificate hV (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)) i ((principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)).ideal i) (⋃ E ∈ (principalizationOfEmbedding k Y pY D (canonicalPrincipa …` and prove the remaining obligations. Introduce `C hC ξ hξ hx`. Take `⟨E, hE, hxE⟩` from `Set.mem_iUnion₂.mp hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hind.generic_not_mem_member k Y pY D i (le_of_lt hi) C hC ξ hξ E hE hxE`. Conclude with `hind.agreeNear_orderAt_eq_one k Y pY D i (le_of_lt hi)`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_detachedComponent_canonicalPrincipalization
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
@@ -194,7 +192,7 @@ theorem disjoint_detachedComponent_canonicalPrincipalization
   · exact hind.agreeNear_orderAt_eq_one k Y pY D i (le_of_lt hi)
 
 /- English proof (translation)
-Introduce `i hi`. Use `hind.noetherianSpace_alive k Y pY D i (le_of_lt hi)` as an intermediate fact. Rewrite using `[EmbeddedBlowupSequence.detachedLocus_eq_sUnion]`. Conclude with `isOpen_sUnion_of_irreducibleComponents _ (fun C₁ hC₁ C₂ hC₂ hC₂' => disjoint_detachedComponent_canonicalPrincipalization hV hres hB hrad hind k Y pY D i hi hC₁ hC₂ hC₂')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detachedLocusIsOpen_toEmbeddedBlowupSequence
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
@@ -214,7 +212,7 @@ theorem detachedLocusIsOpen_toEmbeddedBlowupSequence
       disjoint_detachedComponent_canonicalPrincipalization hV hres hB hrad hind k Y pY D i hi hC₁ hC₂ hC₂')
 
 /- English proof (translation)
-Introduce `k _ _ Y pY _ _ _ _ D`. Conclude with `detachedLocusIsOpen_toEmbeddedBlowupSequence hV hres hB hrad hind k Y pY D`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem detachedLocusIsOpenForEmbeddings_canonicalPrincipalization
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)

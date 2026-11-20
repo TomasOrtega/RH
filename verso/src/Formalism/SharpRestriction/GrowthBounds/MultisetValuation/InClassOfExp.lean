@@ -14,7 +14,7 @@ section IntRLemmas
 variable {ι K : Type} [Field K] {R : Subring K}
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_mul]`. Conclude with `Subring.sum_mem _ fun x _ => R.mul_mem (hf _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntR_mul {f g : MvPowerSeries ι K} (hf : IntR R f) (hg : IntR R g) : IntR R (f * g) := by
   classical
@@ -23,7 +23,7 @@ theorem IntR_mul {f g : MvPowerSeries ι K} (hf : IntR R f) (hg : IntR R g) : In
   exact Subring.sum_mem _ fun x _ => R.mul_mem (hf _) (hg _)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `ha`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntR_C {a : K} (ha : a ∈ R) : IntR R (MvPowerSeries.C a : MvPowerSeries ι K) := by
   classical
@@ -34,14 +34,14 @@ theorem IntR_C {a : K} (ha : a ∈ R) : IntR R (MvPowerSeries.C a : MvPowerSerie
   · exact R.zero_mem
 
 /- English proof (translation)
-Use `IntR_C (ι := ι) R.one_mem` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IntR_one : IntR R (1 : MvPowerSeries ι K) := by
   have := IntR_C (ι := ι) R.one_mem
   rwa [map_one] at this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `IntR_one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `IntR_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IntR_pow {f : MvPowerSeries ι K} (hf : IntR R f) (k : ℕ) : IntR R (f ^ k) := by
   induction k with
@@ -49,14 +49,14 @@ theorem IntR_pow {f : MvPowerSeries ι K} (hf : IntR R f) (k : ℕ) : IntR R (f 
   | succ k ih => rw [pow_succ]; exact IntR_mul ih hf
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (IntR R) (fun _ _ => IntR_mul) IntR_one h`.
+A detailed English derivation is pending.
 -/
 theorem IntR_prod {α : Type} (s : Finset α) (f : α → MvPowerSeries ι K) (h : ∀ a ∈ s, IntR R (f a)) :
     IntR R (∏ a ∈ s, f a) :=
   Finset.prod_induction f (IntR R) (fun _ _ => IntR_mul) IntR_one h
 
 /- English proof (translation)
-Introduce `n` and use `h (hf n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntR_mono {R' : Subring K} (h : R ≤ R') {f : MvPowerSeries ι K} (hf : IntR R f) : IntR R' f :=
   fun n => h (hf n)
@@ -78,7 +78,7 @@ theorem coeff_expK (f : MvPowerSeries ι K) (n : ι →₀ ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[map_sub, coeff_expK, expSum, map_sum, sub_eq_zero]`. Simplify using `only [MvPowerSeries.coeff_C_mul]`. Use `Finset.sum_subset (Finset.range_subset_range.2 (by omega)) fun k _ hk => ?_` and prove the remaining obligations. Rewrite using `[low_pow ((low_one_iff _).2 hf) k d (by simp only [mem_range] at hk; omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem low_expK_sub {f : MvPowerSeries ι K} (hf : MvPowerSeries.constantCoeff f = 0) (M : ℕ) :
     Low M (expK f - expSum f M) := by
@@ -89,17 +89,15 @@ theorem low_expK_sub {f : MvPowerSeries ι K} (hf : MvPowerSeries.constantCoeff 
   rw [low_pow ((low_one_iff _).2 hf) k d (by simp only [mem_range] at hk; omega), mul_zero]
 
 /- English proof (translation)
-Establish `hab : MvPowerSeries.constantCoeff (a + b) = 0` using `by rw [map_add, ha, hb, add_zero]`. Establish `la` using `(low_one_iff _).2 ha`. Establish `lb` using `(low_one_iff _).2 hb`. Use `eq_of_low fun M => ?_` and prove the remaining obligations. Establish `h3 : Low M (expSum a M * expSum b M - expSum (a + b) M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : expSum (a + b) M = ∑ k ∈ range M, ∑ l ∈ range (M - k), (MvPowerSeries.C ((k.factorial : K)⁻¹) * a ^ k) * (MvPowerSeries.C ((l.factorial : K)⁻¹) * b ^ l)`. Unfold `expSum`. Rewrite using `[Finset.sum_congr rfl fun i _ => exp_term a b i]`. Conclude with `sum_triangle (fun k l => (MvPowerSeries.C ((k.factorial : K)⁻¹) * a ^ k) * (MvPowerSeries.C ((l.factorial : K)⁻¹) * b ^ l)) M`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `expSum`. Rewrite using `[Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `low_sum _ _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Introduce `d hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sum, map_sum, sub_eq_zero]`. Use `symm`. Use `Finset.sum_subset (Finset.range_subset_range.2 (Nat.sub_le _ _)) fun l _ hl => ?_` and prove the remaining obligations. Establish `hkl : Low (k + l) ((MvPowerSeries.C ((k.factorial : K)⁻¹) * a ^ k) * (MvPowerSeries.C ((l.factorial : K)⁻¹) * b ^ l))`. Simplify using `using low_mul (low_mul (low_zero (MvPowerSeries.C ((k.factorial : K)⁻¹))) (low_pow la k)) (low_mul (low_zero (MvPowerSeries.C ((l.factorial : K)⁻¹))) (low_pow lb l))`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hkl d (by simp only [mem_range] at hl; omega)`. Establish `e : expK (a + b) - expK a * expK b = (expK (a + b) - expSum (a + b) M) - ((expK a - expSum a M) * expK b + expSum a M * (expK b - expSum b M) + (expSum a M * expSum b M - expSum (a + b) M))` using `by ring`. Rewrite using `[e]`. Use `low_sub (low_expK_sub hab M) (low_add (low_add ?_ ?_) h3)` and prove the remaining obligations. Simplify using `using low_mul (low_expK_sub ha M) (low_zero (expK b))`.
-
-Simplify using `using low_mul (low_zero (expSum a M)) (low_expK_sub hb M)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem expK_add [CharZero K] {a b : MvPowerSeries ι K}
     (ha : MvPowerSeries.constantCoeff a = 0) (hb : MvPowerSeries.constantCoeff b = 0) :
@@ -139,7 +137,7 @@ theorem expK_add [CharZero K] {a b : MvPowerSeries ι K}
   · simpa using low_mul (low_zero (expSum a M)) (low_expK_sub hb M)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[coeff_expK]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← map_pow, MvPowerSeries.coeff_C_mul, ← mul_assoc, mul_comm _ (c ^ k)]`. Conclude with `R.mul_mem (hc k) (IntR_pow hG k n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntR_expK {R : Subring K} {c : K} (hc : ∀ k : ℕ, c ^ k * ((k.factorial : K))⁻¹ ∈ R)
     {G : MvPowerSeries ι K} (hG : IntR R G) : IntR R (expK (MvPowerSeries.C c * G)) := by
@@ -150,9 +148,9 @@ theorem IntR_expK {R : Subring K} {c : K} (hc : ∀ k : ℕ, c ^ k * ((k.factori
   exact R.mul_mem (hc k) (IntR_pow hG k n)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.prod_empty, sub_self]`. Introduce `d _`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `insert v s hv ih`. Rewrite using `[Finset.prod_insert hv, Finset.prod_insert hv]`. Conclude with `low_mul_sub (h v (Finset.mem_insert_self _ _)) (ih fun v' hv' => h v' (Finset.mem_insert_of_mem hv'))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_prod_sub {Pl : Type} (s : Finset Pl) (a a' : Pl → MvPowerSeries ι K) (M : ℕ)
     (h : ∀ v ∈ s, Low M (a v - a' v)) : Low M (∏ v ∈ s, a v - ∏ v ∈ s, a' v) := by
@@ -167,7 +165,7 @@ theorem low_prod_sub {Pl : Type} (s : Finset Pl) (a a' : Pl → MvPowerSeries ι
     exact low_mul_sub (h v (Finset.mem_insert_self _ _)) (ih fun v' hv' => h v' (Finset.mem_insert_of_mem hv'))
 
 /- English proof (translation)
-Rewrite using `[neg_pow, mul_assoc]`. Conclude with `R.mul_mem (R.pow_mem (R.neg_mem R.one_mem) k) (hc k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_pow_mem {R : Subring K} {c : K} (hc : ∀ k : ℕ, c ^ k * ((k.factorial : K))⁻¹ ∈ R) (k : ℕ) :
     (-c) ^ k * ((k.factorial : K))⁻¹ ∈ R := by
@@ -175,9 +173,9 @@ theorem neg_pow_mem {R : Subring K} {c : K} (hc : ∀ k : ℕ, c ^ k * ((k.facto
   exact R.mul_mem (R.pow_mem (R.neg_mem R.one_mem) k) (hc k)
 
 /- English proof (translation)
-Establish `e : -(MvPowerSeries.C (c / pp) * h) = MvPowerSeries.C (-c / pp) * h`. Rewrite using `[neg_div, map_neg, neg_mul]`. Rewrite using `[e, mul_pow, ← map_pow]`. Establish `e2 : (MvPowerSeries.C ((-c / pp) ^ i) : MvPowerSeries ι K) = MvPowerSeries.C ((pp ^ i)⁻¹) * MvPowerSeries.C ((-c) ^ i)`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[div_pow, div_eq_mul_inv, mul_comm]`. Rewrite using `[e2, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_exp {pp c : K} (hpp : pp ≠ 0) (h : MvPowerSeries ι K) (i : ℕ) :
     MvPowerSeries.C ((i.factorial : K)⁻¹) * (-(MvPowerSeries.C (c / pp) * h)) ^ i =
@@ -194,11 +192,11 @@ theorem term_exp {pp c : K} (hpp : pp ≠ 0) (h : MvPowerSeries ι K) (i : ℕ) 
   ring
 
 /- English proof (translation)
-Use `⟨fun i => MvPowerSeries.C ((-c) ^ i * ((i.factorial : K))⁻¹) * V, fun i => IntR_mul (IntR_C (neg_pow_mem hc i)) hV, fun n => ?_⟩` and prove the remaining obligations. Establish `hx : MvPowerSeries.constantCoeff (-(MvPowerSeries.C (c / pp) * h)) = 0`. Rewrite using `[map_neg, map_mul, h0, mul_zero, neg_zero]`. Establish `h1 : Low (n.degree + 1) ((expK (-(MvPowerSeries.C (c / pp) * h)) - expSum (-(MvPowerSeries.C (c / pp) * h)) (n.degree + 1)) * V)`. Simplify using `using low_mul (low_expK_sub hx (n.degree + 1)) (low_zero V)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `h1 n (by omega)`. Rewrite `h2` using `[sub_mul, map_sub, sub_eq_zero]`. Rewrite using `[h2, expSum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[term_exp hpp, ← MvPowerSeries.coeff_C_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inClass_of_exp {R : Subring K} {pp c : K} (hpp : pp ≠ 0) (hc : ∀ k : ℕ, c ^ k * ((k.factorial : K))⁻¹ ∈ R)
     (h : MvPowerSeries ι K) (h0 : MvPowerSeries.constantCoeff h = 0) {V : MvPowerSeries ι K} (hV : IntR R V) :
@@ -221,11 +219,11 @@ theorem inClass_of_exp {R : Subring K} {pp c : K} (hpp : pp ≠ 0) (hc : ∀ k :
   ring
 
 /- English proof (translation)
-Use `⟨fun i => MvPowerSeries.C (∏ v, ((-c) ^ i v * (((i v).factorial : K))⁻¹)) * V, fun i => IntR_mul (IntR_C (Subring.prod_mem _ fun v _ => neg_pow_mem hc (i v))) hV, fun α => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ v, MvPowerSeries.constantCoeff (-(MvPowerSeries.C (c / pp) * h v)) = 0` using `fun v => by`. Rewrite using `[map_neg, map_mul, h0, mul_zero, neg_zero]`. Establish `h1 : Low (α.degree + 1) ((∏ v, expK (-(MvPowerSeries.C (c / pp) * h v)) - ∏ v, expSum (-(MvPowerSeries.C (c / pp) * h v)) (α.degree + 1)) * V)`. Simplify using `using low_mul (low_prod_sub univ _ _ (α.degree + 1) fun v _ => low_expK_sub (hx v) (α.degree + 1)) (low_zero V)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `h1 α (by omega)`. Rewrite `h2` using `[sub_mul, map_sub, sub_eq_zero]`. Rewrite using `[h2]`. Unfold `expSum`. Rewrite using `[Finset.prod_univ_sum, Finset.sum_mul, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.prod_congr rfl fun v _ => term_exp hpp (h v) (i v), Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Simplify using `only [map_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inProd_of_exp {Pl : Type} [Fintype Pl] [DecidableEq Pl] {R : Subring K} {pp c : K} (hpp : pp ≠ 0)
     (hc : ∀ k : ℕ, c ^ k * ((k.factorial : K))⁻¹ ∈ R)

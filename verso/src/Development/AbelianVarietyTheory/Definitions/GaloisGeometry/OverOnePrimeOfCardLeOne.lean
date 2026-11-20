@@ -31,13 +31,11 @@ def quadFields (K : Type) [Field K] [NumberField K] [IsCMField K] : Fields where
   emb := fun _ => RingHom.id K
 
 /- English proof (translation)
-Establish `hne : RingHom.id K ≠ (quadFields K).embBar ()` using `fun h => IsCMField.complexConj_ne_one K (AlgEquiv.ext fun x => (RingHom.congr_fun h x).symm)`. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨hK⟩`. Use `{ realF := inferInstanceAs (IsTotallyReal ℚ) rankE := hK star_F := fun x => ?_ conjE := fun φ x => IsCMField.complexEmbedding_complexConj K φ x cplxE := inferInstanceAs (IsTotallyComplex K) emb_star := fun _ _ => rfl card_Tau := ?_ emb_inj := fun _ _ _ => rfl emb_ne := fun _ _ => …` and prove the remaining obligations. Conclude with `map_ratCast (IsCMField.complexConj K) x`. Use `show Fintype.card Unit = Module.finrank ℚ ℚ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hφ`. Use `push Not at hφ`. Establish `hc : Fintype.card (K →+* K) ≤ 2`. Rewrite using `[Fintype.card_congr (RingHom.equivRatAlgHom (R := K) (S := K)), ← hK]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Conclude with `AlgHom.card_le`. Establish `h3 : ({φ, RingHom.id K, (quadFields K).embBar ()} : Finset (K →+* K)).card = 3` using `Finset.card_eq_three.2 ⟨_, _, _, hφ.1, hφ.2, hne, rfl⟩`. Use `Finset.card_le_univ ({φ, RingHom.id K, (quadFields K).embBar ()} : Finset (K →+* K))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `e : (quadFields K).Kq ≃+* K` to `RingEquiv.ofBijective (quadFields K).Kq.subtype ⟨Subtype.val_injective, fun x => ⟨⟨x, fun _ _ => rfl⟩, rfl⟩⟩`.
-
-Rewrite using `[← hK]`. Conclude with `(AlgEquiv.ofRingEquiv (R := ℚ) (f := e) (fun r => map_ratCast e r)).toLinearEquiv.finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quadFields_ok (K : Type) [Field K] [NumberField K] [IsCMField K] (hK : Module.finrank ℚ K = 2) :
     (quadFields K).Ok := by
@@ -81,13 +79,13 @@ instance isCyclotomicExtension_gauss : IsCyclotomicExtension {4} ℚ (Cyclotomic
   CyclotomicField.isCyclotomicExtension 4 ℚ
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.Rat.isCMField (CyclotomicField 4 ℚ) (S := {4}) ⟨4, rfl, by norm_num⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCMField_gauss : IsCMField (CyclotomicField 4 ℚ) :=
   IsCyclotomicExtension.Rat.isCMField (CyclotomicField 4 ℚ) (S := {4}) ⟨4, rfl, by norm_num⟩
 
 /- English proof (translation)
-Use `haveI := isCMField_gauss`. Use `⟨quadFields (CyclotomicField 4 ℚ), quadFields_ok _ ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[IsCyclotomicExtension.finrank (n := 4) (CyclotomicField 4 ℚ) (Polynomial.cyclotomic.irreducible_rat (by norm_num))]`. Evaluate the decidable proposition.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem exists_fields_ok : ∃ X : Fields, X.Ok ∧ X.f = 1 := by
   haveI := isCMField_gauss
@@ -99,14 +97,14 @@ def Wts.const {X : Fields} (Word : Type) {R : Ranks} (P : X.Tau → HCParam R) (
   ⟨fun τ => RowPar.of (P τ), fun _ τ => P τ, tops⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun τ => ⟨P τ, rfl⟩, fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Wts.const_ok {X : Fields} (Word : Type) {R : Ranks} (P : X.Tau → HCParam R) (tops : Finset X.Tau) :
     (Wts.const Word P tops).Ok :=
   ⟨fun τ => ⟨P τ, rfl⟩, fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ h => absurd h (Finset.notMem_empty _), fun _ h => absurd h (Finset.notMem_empty _), fun _ h => absurd h (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _)⟩, fun _ h => absurd h (Finset.notMem_empty _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem QDat.empty_ok (X : Fields) (Pr : Primes X) : (QDat.empty X).Ok ∧ (QDat.empty X).Off Pr :=
   ⟨⟨fun _ h => absurd h (Finset.notMem_empty _), fun _ h => absurd h (Finset.notMem_empty _),
@@ -118,11 +116,11 @@ def QDat.OverOnePrime {X : Fields} (Z : QDat X) (p : ℕ) : Prop :=
     P.asIdeal.comap (RingOfIntegers.mapRingHom X.Kq.subtype) = P'.asIdeal.comap (RingOfIntegers.mapRingHom X.Kq.subtype)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h P hP P' hP' h1 h2 x hx hxP`. Establish `hint : IsIntegral ℤ (⟨(x : X.E), hx⟩ : X.Kq)` using `(isIntegral_algHom_iff X.Kq.subtype.toIntAlgHom Subtype.val_injective).1 (RingOfIntegers.isIntegral_coe x)`. Take `⟨y, hy⟩ : ∃ y : 𝓞 X.Kq, RingOfIntegers.mapRingHom X.Kq.subtype y = x` from `⟨⟨⟨(x : X.E), hx⟩, hint⟩, RingOfIntegers.ext rfl⟩`. Establish `h3 : y ∈ P.asIdeal.comap (RingOfIntegers.mapRingHom X.Kq.subtype)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, hy]`. Conclude with `hxP`. Rewrite `h3` using `[h P hP P' hP' h1 h2, Ideal.mem_comap, hy]`. Conclude with `h3`. Introduce `h P hP P' hP' h1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Conclude with `⟨h P hP P' hP' h1 h2 _ (y : X.Kq).2, h P' hP' P hP h2 h1 _ (y : X.Kq).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem QDat.overOnePrime_iff {X : Fields} (Z : QDat X) (p : ℕ) :
     QDat.OverOnePrime Z p ↔ ∀ P ∈ Z.Q, ∀ P' ∈ Z.Q, ((p : ℕ) : 𝓞 X.E) ∈ P.asIdeal → ((p : ℕ) : 𝓞 X.E) ∈ P'.asIdeal →
@@ -144,7 +142,7 @@ theorem QDat.overOnePrime_iff {X : Fields} (Z : QDat X) (p : ℕ) :
     exact ⟨h P hP P' hP' h1 h2 _ (y : X.Kq).2, h P' hP' P hP h2 h1 _ (y : X.Kq).2⟩
 
 /- English proof (translation)
-Introduce `hb`. Establish `ha` using `(QDat.overOnePrime_iff Z p).1 h P hP P' hP' h1 h2 x hx hxP`. Take `⟨u, v, huv⟩` from `hc`. Conclude with `P'.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ add_mem (Ideal.mul_mem_left _ u ha) (Ideal.mul_mem_left _ v hb)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem QDat.OverOnePrime.conj_notMem {X : Fields} {Z : QDat X} {p : ℕ} (h : QDat.OverOnePrime Z p)
     {P P' : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Z.Q) (hP' : P' ∈ Z.Q) (h1 : ((p : ℕ) : 𝓞 X.E) ∈ P.asIdeal)
@@ -157,13 +155,13 @@ theorem QDat.OverOnePrime.conj_notMem {X : Fields} {Z : QDat X} {p : ℕ} (h : Q
     (huv ▸ add_mem (Ideal.mul_mem_left _ u ha) (Ideal.mul_mem_left _ v hb)))
 
 /- English proof (translation)
-Introduce `P hP P' hP' _ _` and use `by rw [Finset.card_le_one.1 h P hP P' hP']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem QDat.overOnePrime_of_card_le_one {X : Fields} (Z : QDat X) (p : ℕ) (h : Z.Q.card ≤ 1) : QDat.OverOnePrime Z p :=
   fun P hP P' hP' _ _ => by rw [Finset.card_le_one.1 h P hP P' hP']
 
 /- English proof (translation)
-Introduce `P hP P' hP' h1 h2`. Establish `h3` using `h.all`. Rewrite `h3` using `[hf]`. Rewrite using `[Finset.card_le_one.1 h3.le P (by simpa using ⟨hP, h1⟩) P' (by simpa using ⟨hP', h2⟩)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem QDat.overOnePrime_of_hasBase {X : Fields} {Z : QDat X} {p : ℕ} (h : Z.HasBase p) (hf : X.f = 1) :
     QDat.OverOnePrime Z p := by
@@ -179,14 +177,14 @@ Both sides reduce to the same expression.
 example : GlobalTheory.Formalism.L2.Col.Dat = _root_.Formalism.L2.Col.Dat := rfl
 
 /- English proof (translation)
-Simplify using `[Wts.lamTrue, shiftW]`.
+Simplify using the standard rewrite rules.
 -/
 example {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R) (u : Word) (j : ℕ) (τ : X.Tau) (i : Fin (R.N j)) :
     (W.lamTrue u j τ).w i + (j : ℤ) * (((R.t + 1) / 2 : ℕ) : ℤ) = (W.lamN u j τ).w i := by
   simp [Wts.lamTrue, shiftW]
 
 /- English proof (translation)
-Establish `h : Antitone ![(3 : ℚ), 1]`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Simplify using `[ofQ, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 example : (ofQ ![(3 : ℚ), 1]).w 0 = 3 := by
   have h : Antitone ![(3 : ℚ), 1] := by
@@ -195,7 +193,7 @@ example : (ofQ ![(3 : ℚ), 1]).w 0 = 3 := by
   simp [ofQ, h]
 
 /- English proof (translation)
-Use extensionality with `P`. Establish `h : {P : HeightOneSpectrum ℤ | (1 : ℤ) ∈ P.asIdeal} = ∅` using `Set.eq_empty_of_forall_notMem fun P hP => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hP)`. Simplify using `[divs, h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : divs (1 : ℤ) = ∅ := by
   ext P

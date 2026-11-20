@@ -9,29 +9,29 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.SteepMult
 
 /- English proof (translation)
-Introduce `R S M N hN B k Ψ hΨ i g`. Rewrite using `[Submodule.mem_orthogonalBilin_iff]`. Introduce `x hx`. Set `Φ : (Fin (k + 1) → NC R S) → N` to `fun g' => if ∀ j, j ≠ i → g' j = g j then x (fun _ => g' i) else 0`. Establish `hΦ : Φ ∈ (filt M.act N k).comap (phiN M.act N (k + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap]`. Apply `GlobalTheory.T.filtration_step_from_section_kernel R S M N hN k i Φ` to reduce the goal to its premises. Introduce `g''`. Distinguish the cases in `h : ∀ j, j ≠ i → g'' j = g j`. Establish `e : section1 Φ i g'' = x`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h'`. Simplify using `only [section1, Φ]`. Rewrite using `[if_pos (fun j hj => by rw [Function.update_of_ne hj]; exact h j hj)]`. Simplify using `only [Function.update_self]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`. Rewrite using `[e]`. Conclude with `hx`. Establish `e : section1 Φ i g'' = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h'`. Simplify using `only [section1, Φ]`. Rewrite using `[if_neg]`. Both sides reduce to the same expression. Introduce `hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Introduce `j hj`. Use `hc j hj` as an intermediate fact. Rewrite `this` using `[Function.update_of_ne hj]`. Then use the resulting hypothesis. Rewrite using `[e, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : formT (k + 1) B Φ Ψ = 0` using `(Submodule.mem_orthogonalBilin_iff.1 hΨ) Φ hΦ`. Establish `key : formT (k + 1) B Φ Ψ = ∑ y, B (x (fun _ => y)) (Ψ (Function.update g i y))`. Rewrite using `[formT_apply, ← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (Function.update g i)))]`. Rewrite using `[Finset.sum_image (fun a _ b _ hab => Function.update_injective g i hab)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φ]`. Rewrite using `[if_pos (fun j hj => Function.update_of_ne hj _ _)]`. Simplify using `only [Function.update_self]`. Introduce `g' _ hg'`. Simplify using `only [Φ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, map_zero, LinearMap.zero_apply]`. Introduce `hc`. Apply `hg'` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Use `⟨g' i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hj, hc j hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show formT 1 B x (section1 Ψ i g) = 0`. Rewrite `h0` using `[key]`. Rewrite using `[formT_apply]`. Use `(Fintype.sum_equiv (Equiv.funUnique (Fin 1) (NC R S)) _ _ fun h => ?_).trans h0` and prove the remaining obligations. Simplify using `only [section1, Equiv.funUnique_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j default]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section1_mem_orthogonal_ker : ∀ (R S : ℕ) (M : GKMod R S) (N : Submodule ℂ M.V), KStable M.act N →
     ∀ (B : N →ₗ⋆[ℂ] N →ₗ[ℂ] ℂ) (k : ℕ) (Ψ : (Fin (k + 1) → NC R S) → N),

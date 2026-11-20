@@ -16,7 +16,7 @@ def Norming {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (lam : I →
   ∀ (v : V) (c : ℝ), (∀ i, ‖lam i v‖ ≤ c) → ‖v‖ ≤ c
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `hN 0 (-1) (fun i => (h ⟨i⟩).elim)` as an intermediate fact. Rewrite `this` using `[norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma Norming.nonempty {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {lam : I → V →L[ℝ] E}
     (hN : Norming lam) : Nonempty I := by
@@ -26,7 +26,7 @@ lemma Norming.nonempty {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {
   linarith
 
 /- English proof (translation)
-Use `hN (v - w) 0 (fun i => by rw [map_sub, h i, sub_self, norm_zero])` as an intermediate fact. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma Norming.eq {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {lam : I → V →L[ℝ] E}
     (hN : Norming lam) {v w : V} (h : ∀ i, lam i v = lam i w) : v = w := by
@@ -34,7 +34,7 @@ lemma Norming.eq {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {lam : 
   exact sub_eq_zero.1 (norm_le_zero_iff.1 this)
 
 /- English proof (translation)
-The claim follows from `(convex_ball x₀ r).norm_image_sub_le_of_norm_fderiv_le hd hb (Metric.mem_ball_self (lt_of_le_of_lt dist_nonneg hy)) hy`.
+A detailed English derivation is pending.
 -/
 lemma lip_ball {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : X → F} {x₀ : X} {r M : ℝ}
     (hd : ∀ y ∈ Metric.ball x₀ r, DifferentiableAt ℝ f y)
@@ -44,11 +44,11 @@ lemma lip_ball {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : X → 
     (Metric.mem_ball_self (lt_of_le_of_lt dist_nonneg hy)) hy
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `lt_of_le_of_lt (norm_nonneg h) hh`. Establish `hx₀ : x₀ ∈ Metric.ball x₀ r` using `Metric.mem_ball_self hr`. Establish `hM : 0 ≤ M` using `le_trans (norm_nonneg _) (hb x₀ hx₀)`. Establish `hsub : Metric.closedBall x₀ ‖h‖ ⊆ Metric.ball x₀ r` using `Metric.closedBall_subset_ball hh`. Establish `key : ‖(f (x₀ + h) - fderiv ℝ f x₀ (x₀ + h)) - (f x₀ - fderiv ℝ f x₀ x₀)‖ ≤ M * ‖h‖ * ‖x₀ + h - x₀‖` using `(convex_closedBall x₀ ‖h‖).norm_image_sub_le_of_norm_hasFDerivWithin_le (f := fun y => f y - fderiv ℝ f x₀ y) (f' := fun y => fderiv ℝ f y - fderiv ℝ f x₀) (C := M * ‖h‖) (fun y hy => ((hd y (hsub hy)).hasFDerivAt.sub (fderiv ℝ f x₀).hasFDerivAt).hasFDerivWithinAt) (fun y hy => b …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `lip_ball hd2 hb (hsub hy)`. Establish `h2 : ‖y - x₀‖ ≤ ‖h‖` using `by rw [← dist_eq_norm]; exact Metric.mem_closedBall.1 hy`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left h2 hM))`. Use the proof step `(Metric.mem_closedBall_self (norm_nonneg h))`. Use the proof step `(show x₀ + h ∈ Metric.closedBall x₀ ‖h‖ by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left])`. Establish `e : (f (x₀ + h) - fderiv ℝ f x₀ (x₀ + h)) - (f x₀ - fderiv ℝ f x₀ x₀) = f (x₀ + h) - f x₀ - fderiv ℝ f x₀ h` using `by rw [map_add]; abel`. Rewrite `key` using `[e, add_sub_cancel_left]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma taylor2 {f : X → E} {x₀ : X} {r M : ℝ}
     (hd : ∀ y ∈ Metric.ball x₀ r, DifferentiableAt ℝ f y)
@@ -78,25 +78,25 @@ lemma taylor2 {f : X → E} {x₀ : X} {r M : ℝ}
     _ = M * ‖h‖ ^ 2 := by ring
 
 /- English proof (translation)
-Take `⟨i₀⟩` from `hN.nonempty`. Take `⟨ε, hε⟩ : ∃ ε : ℝ, ε = r / (2 * (‖h‖ + 1))` from `⟨_, rfl⟩`. Establish `hε0 : 0 < ε` using `by rw [hε]; positivity`. Establish `hεh : ε * ‖h‖ < r`. Rewrite using `[hε, div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg h]`. Take `⟨t, ht⟩ : ∃ t : ℕ → ℝ, ∀ n, t n = ε * (1 / 2) ^ n` from `⟨_, fun _ => rfl⟩`. Establish `ht0 : ∀ n, 0 < t n` using `fun n => by rw [ht]; positivity`. Establish `htε : ∀ n, t n ≤ ε` using `fun n => by`. Rewrite using `[ht]; exact mul_le_of_le_one_right hε0.le (pow_le_one₀ (by norm_num) (by norm_num))`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq⟩ : ∃ q : ℕ → V, ∀ n, q n = (t n)⁻¹ • (Φ (x₀ + t n • h) - Φ x₀)` from `⟨_, fun _ => rfl⟩`. Establish `key : ∀ i n, ‖lam i (q n) - D i h‖ ≤ M * ‖h‖ ^ 2 * t n`. Introduce `i n`. Establish `htn` using `(ht0 n).ne'`. Establish `hn : ‖t n • h‖ < r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, Real.norm_of_nonneg (ht0 n).le]`. Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_right (htε n) (norm_nonneg h)) hεh`. Establish `e : lam i (q n) - D i h = (t n)⁻¹ • (lam i (Φ (x₀ + t n • h)) - lam i (Φ x₀) - D i (t n • h))`. Rewrite using `[hq, map_smul, map_sub, map_smul, smul_sub, smul_sub, inv_smul_smul₀ htn, smul_sub]`. Rewrite using `[e, norm_smul, Real.norm_of_nonneg (inv_nonneg.2 (ht0 n).le)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, Real.norm_of_nonneg (ht0 n).le]`. Clear the denominators using the available nonvanishing facts. Establish `hMh : 0 ≤ M * ‖h‖ ^ 2`. Use `(norm_nonneg _).trans (key i₀ 0)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[ht0 0]`. Establish `hdist : ∀ n, dist (q n) (q (n + 1)) ≤ (2 * (M * ‖h‖ ^ 2) * ε) * (1 / 2) ^ n`. Introduce `n`. Rewrite using `[dist_eq_norm]`. Use `hN _ _ (fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : lam i (q n - q (n + 1)) = (lam i (q n) - D i h) - (lam i (q (n + 1)) - D i h)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Establish `hp : 0 ≤ ε * (1 / 2 : ℝ) ^ n` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht, ht, pow_succ (1 / 2 : ℝ) n]`. Use polynomial arithmetic with `[mul_nonneg hMh hp]`. Take `⟨v, hv⟩` from `cauchySeq_tendsto_of_complete (cauchySeq_of_le_geometric (1 / 2) _ (by norm_num) hdist)`. Use `⟨v, fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun n => lam i (q n)) atTop (𝓝 (lam i v))` using `((lam i).continuous.tendsto v).comp hv`. Establish `h2 : Tendsto (fun n => lam i (q n)) atTop (𝓝 (D i h))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun n => norm_nonneg _) (fun n => key i n) ?_` and prove the remaining obligations. Establish `: Tendsto (fun n : ℕ => M * ‖h‖ ^ 2 * (ε * (1 / 2 : ℝ) ^ n)) atTop (𝓝 (M * ‖h‖ ^ 2 * (ε * 0)))` using `tendsto_const_nhds.mul (tendsto_const_nhds.mul (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_zero, mul_zero]`. Simplify `this` using `only [ht]`. Conclude with `tendsto_nhds_unique h1 h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exists_vec {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     {lam : I → V →L[ℝ] E} (hN : Norming lam) {Φ : X → V} {x₀ : X} {r M : ℝ} (hr : 0 < r)
@@ -159,7 +159,7 @@ lemma exists_vec {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Comple
   exact tendsto_nhds_unique h1 h2
 
 /- English proof (translation)
-Rewrite using `[← iteratedFDerivWithin_of_isOpen q hΩ hx, ← iteratedFDerivWithin_of_isOpen q hΩ hx]`. Conclude with `L.norm_iteratedFDerivWithin_comp_left (hg x hx) hΩ.uniqueDiffOn hx hq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_iter_comp {F G : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
     [NormedSpace ℝ G] (L : F →L[ℝ] G) {g : X → F} {Ω : Set X} {n : WithTop ℕ∞} (hg : ContDiffOn ℝ n g Ω)
@@ -169,7 +169,7 @@ lemma norm_iter_comp {F G : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [No
   exact L.norm_iteratedFDerivWithin_comp_left (hg x hx) hΩ.uniqueDiffOn hx hq
 
 /- English proof (translation)
-Rewrite using `[← iteratedFDerivWithin_of_isOpen q hΩ hx, ← iteratedFDerivWithin_of_isOpen q hΩ hx]`. Conclude with `iteratedFDerivWithin_congr (fun y hy => h y hy) hx q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iter_congr {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {f g : X → F} {Ω : Set X}
     (hΩ : IsOpen Ω) (h : ∀ y ∈ Ω, f y = g y) {x : X} (hx : x ∈ Ω) (q : ℕ) :
@@ -178,7 +178,7 @@ lemma iter_congr {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {f g : X 
   exact iteratedFDerivWithin_congr (fun y hy => h y hy) hx q
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun T => by rw [ContinuousLinearMap.apply_apply, one_mul] exact (T.le_opNorm h).trans (mul_le_of_le_one_right (norm_nonneg _) hh))`.
+A detailed English derivation is pending.
 -/
 lemma norm_apply_le {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (h : X) (hh : ‖h‖ ≤ 1) :
     ‖ContinuousLinearMap.apply ℝ F h‖ ≤ 1 :=
@@ -187,7 +187,7 @@ lemma norm_apply_le {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (h : X
     exact (T.le_opNorm h).trans (mul_le_of_le_one_right (norm_nonneg _) hh))
 
 /- English proof (translation)
-Establish `h2 : ∀ᶠ y in 𝓝 x₀, bd y ∈ Iic (bd x₀ + 1)` using `Filter.Tendsto.eventually (hbd.continuousAt (hΩ.mem_nhds hx)) (Iic_mem_nhds (lt_add_one _))`. Establish `h1 : ∀ᶠ y in 𝓝 x₀, y ∈ Ω ∧ bd y ≤ bd x₀ + 1` using `Filter.Eventually.and (hΩ.mem_nhds hx) h2`. Conclude with `Metric.eventually_nhds_iff_ball.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma loc {Ω : Set X} {bd : X → ℝ} (hΩ : IsOpen Ω) (hbd : ContinuousOn bd Ω) {x₀ : X} (hx : x₀ ∈ Ω) :
     ∃ r > 0, ∀ y ∈ Metric.ball x₀ r, y ∈ Ω ∧ bd y ≤ bd x₀ + 1 := by
@@ -199,13 +199,11 @@ lemma loc {Ω : Set X} {bd : X → ℝ} (hΩ : IsOpen Ω) (hbd : ContinuousOn bd
 variable [FiniteDimensional ℝ X]
 
 /- English proof (translation)
-Use `choose ℓ hℓ using exists_vec hN hr D hT`. Set `ℓ' : X →ₗ[ℝ] V` to `{ toFun := ℓ map_add' := fun a b => hN.eq (fun i => by rw [map_add, hℓ, hℓ, hℓ, map_add]) map_smul' := fun c a => hN.eq (fun i => by rw [map_smul, hℓ, hℓ, map_smul]; rfl) }`. Establish `hL : ∀ h, (LinearMap.toContinuousLinearMap ℓ') h = ℓ h` using `fun h => rfl`. Use `⟨LinearMap.toContinuousLinearMap ℓ', ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Asymptotics.IsBigO.trans_isLittleO (g := fun h : X => ‖h‖ ^ 2) ?_ (Asymptotics.isLittleO_norm_pow_id one_lt_two)` and prove the remaining obligations. Use `Asymptotics.IsBigO.of_bound M ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds (0 : X) hr] with h hh`. Rewrite `hh` using `[mem_ball_zero_iff]`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hN _ _ (fun i => ?_)` and prove the remaining obligations. Establish `e : lam i (Φ (x₀ + h) - Φ x₀ - (LinearMap.toContinuousLinearMap ℓ') h) = lam i (Φ (x₀ + h)) - lam i (Φ x₀) - D i h`. Rewrite using `[map_sub, map_sub, hL, hℓ]`. Rewrite using `[e]`. Conclude with `hT i h hh`.
-
-Use extensionality with `h`. Rewrite using `[ContinuousLinearMap.comp_apply, hL, hℓ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasFDeriv_of {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     {lam : I → V →L[ℝ] E} (hN : Norming lam) {Φ : X → V} {x₀ : X} {r M : ℝ} (hr : 0 < r)
@@ -234,37 +232,33 @@ lemma hasFDeriv_of {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Comp
   · ext h; rw [ContinuousLinearMap.comp_apply, hL, hℓ]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `V I _ _ _ lam hN Ω Φ bd hΩ hbd hcd hb`. Establish `h0 : ∀ x ∈ Ω, ‖Φ x‖ ≤ bd x` using `fun x hx => hN _ _ (fun i => by`. Use `hb i 0 (Nat.zero_le _) x hx` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_iteratedFDeriv_zero] at this)` and apply the resulting hypothesis. Use `⟨?_, fun q hq x hx => ?_⟩` and prove the remaining obligations. Establish `hc : ContinuousOn Φ Ω`. Introduce `x₀ hx₀`. Take `⟨r, hr, hball⟩` from `loc hΩ hbd hx₀`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(continuousAt_of_locally_lipschitz hr (bd x₀ + 1) (fun y hy => ?_)).continuousWithinAt` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm]`. Use `hN _ _ (fun i => ?_)` and prove the remaining obligations. Rewrite using `[map_sub]`. Use `lip_ball (f := fun x => lam i (Φ x)) (fun z hz => ?_) (fun z hz => ?_) hy` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hcd i).differentiableOn (Nat.cast_ne_zero.2 (Nat.succ_ne_zero _))).differentiableAt (hΩ.mem_nhds (hball z hz).1)`. Rewrite using `[← norm_iteratedFDeriv_one]`. Conclude with `(hb i 1 (by omega) z (hball z hz).1).trans (hball z hz).2`. Use `(contDiffOn_zero (𝕜 := ℝ)).2 hc` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : q = 0` from `Nat.le_zero.1 hq`. Rewrite using `[norm_iteratedFDeriv_zero]`. Conclude with `h0 x hx`. Consider the case `succ m ih`. Introduce `V I _ _ _ lam hN Ω Φ bd hΩ hbd hcd hb`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i₀⟩` from `hN.nonempty`. Establish `hf1 : ∀ i, ContDiffOn ℝ ((m + 1 : ℕ) : WithTop ℕ∞) (fderiv ℝ (fun x => lam i (Φ x))) Ω` using `fun i => (hcd i).fderiv_of_isOpen hΩ (by push_cast; exact le_rfl)`. Establish `hdiff : ∀ i, ∀ y ∈ Ω, DifferentiableAt ℝ (fun x => lam i (Φ x)) y` using `fun i y hy => ((hcd i).differentiableOn (Nat.cast_ne_zero.2 (Nat.succ_ne_zero _))).differentiableAt (hΩ.mem_nhds hy)`. Establish `hdiff2 : ∀ i, ∀ y ∈ Ω, DifferentiableAt ℝ (fderiv ℝ (fun x => lam i (Φ x))) y` using `fun i y hy => ((hf1 i).differentiableOn (Nat.cast_ne_zero.2 (Nat.succ_ne_zero _))).differentiableAt (hΩ.mem_nhds hy)`. Establish `hder : ∀ x₀ ∈ Ω, ∃ L : X →L[ℝ] V, HasFDerivAt Φ L x₀ ∧ ∀ i, (lam i).comp L = fderiv ℝ (fun x => lam i (Φ x)) x₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x₀ hx₀`. Take `⟨r, hr, hball⟩` from `loc hΩ hbd hx₀`. Use `hasFDeriv_of hN hr (M := bd x₀ + 1) _ (fun i h hh => ?_)` and prove the remaining obligations. Establish `hmem : ∀ y ∈ Metric.ball x₀ r, y ∈ Ω` using `fun y hy => (hball y hy).1`. Conclude with `taylor2 (f := fun x => lam i (Φ x)) (fun y hy => hdiff i y (hmem y hy)) (fun y hy => hdiff2 i y (hmem y hy)) (fun y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← norm_iteratedFDeriv_one, norm_iteratedFDeriv_fderiv]`. Conclude with `(hb i 2 (by omega) y (hmem y hy)).trans (hball y hy).2) hh`. Establish `hD : ∀ x ∈ Ω, HasFDerivAt Φ (fderiv ℝ Φ x) x ∧ ∀ i, (lam i).comp (fderiv ℝ Φ x) = fderiv ℝ (fun x => lam i (Φ x)) x`. Introduce `x hx`. Take `⟨L, hL, hc⟩` from `hder x hx`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL.fderiv]`. Conclude with `⟨hL, hc⟩`. Set `lam' : I × {h : X // ‖h‖ ≤ 1} → (X →L[ℝ] V) →L[ℝ] E` to `fun j => (lam j.1).comp (ContinuousLinearMap.apply ℝ V j.2.1)`. Establish `hlam' : ∀ j T, lam' j T = lam j.1 (T j.2.1)` using `fun j T => rfl`. Establish `hN' : Norming lam'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T c hc`. Establish `c0 : 0 ≤ c`. Use `hc (i₀, ⟨0, by simp⟩)` as an intermediate fact. Rewrite `this` using `[hlam', map_zero, map_zero, norm_zero]`. Then use the resulting hypothesis. Use `ContinuousLinearMap.opNorm_le_of_unit_norm c0 (fun h hh => hN _ _ (fun i => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hc (i, ⟨h, hh.le⟩)` as an intermediate fact. Rewrite `this` using `[hlam']`. Then use the resulting hypothesis. Establish `heq : ∀ j : I × {h : X // ‖h‖ ≤ 1}, ∀ y ∈ Ω, lam' j (fderiv ℝ Φ y) = ContinuousLinearMap.apply ℝ E j.2.1 (fderiv ℝ (fun x => lam j.1 (Φ x)) y)`. Introduce `j y hy`. Rewrite using `[hlam', ContinuousLinearMap.apply_apply, ← (hD y hy).2 j.1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hcd' : ∀ j, ContDiffOn ℝ ((m + 1 : ℕ) : WithTop ℕ∞) (fun x => lam' j (fderiv ℝ Φ x)) Ω`. Introduce `j`. Conclude with `((ContinuousLinearMap.apply ℝ E j.2.1).contDiff.comp_contDiffOn (hf1 j.1)).congr (fun x hx => heq j x hx)`. Establish `hb' : ∀ j, ∀ q ≤ m + 1, ∀ x ∈ Ω, ‖iteratedFDeriv ℝ q (fun x => lam' j (fderiv ℝ Φ x)) x‖ ≤ bd x`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `j q hq x hx`. Rewrite using `[iter_congr hΩ (heq j) hx q]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (norm_apply_le _ j.2.2) ?_ (norm_nonneg _) zero_le_one` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_fderiv]; exact hb j.1 (q + 1) (by omega) x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `_ = bd x := one_mul _`. Take `⟨hcD, hbD⟩` from `ih (X →L[ℝ] V) (I × {h : X // ‖h‖ ≤ 1}) lam' hN' Ω (fun x => fderiv ℝ Φ x) bd hΩ hbd hcd' hb'`. Use `⟨?_, fun q hq x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[show ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1 by push_cast; rfl, contDiffOn_succ_iff_fderiv_of_isOpen hΩ]`. Use `⟨fun x hx => (hD x hx).1.differentiableAt.differentiableWithinAt, fun h => ?_, hcD⟩` and prove the remaining obligations.
-
-Simplify using `at h`. Break down `q with _ | q` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Conclude with `hN _ _ (fun i => by`. Use `hb i 0 (Nat.zero_le _) x hx` as an intermediate fact.
-
-Rewrite using `[norm_iteratedFDeriv_zero] at this)` and apply the resulting hypothesis. Rewrite using `[← norm_iteratedFDeriv_fderiv]`. Conclude with `hbD q (by omega) x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weak_to_strong_smoothness_real (m : ℕ) : ∀ (V I : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     (lam : I → V →L[ℝ] E), Norming lam → ∀ (Ω : Set X) (Φ : X → V) (bd : X → ℝ), IsOpen Ω →
@@ -368,7 +362,7 @@ theorem weak_to_strong_smoothness_real (m : ℕ) : ∀ (V I : Type) [NormedAddCo
 end real
 
 /- English proof (translation)
-Introduce `X V E I _ _ _ _ _ _ _ _ lam hN Ω Φ m bd hΩ hbd hcd hb`. Conclude with `weak_to_strong_smoothness_real (X := X) (E := E) m V I (fun i => (lam i).restrictScalars ℝ) hN Ω Φ bd hΩ hbd hcd hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.weak_to_strong_smoothness : Formalism.FourierDecayAlt.U.WeakToStrong := by
   intro X V E I _ _ _ _ _ _ _ _ lam hN Ω Φ m bd hΩ hbd hcd hb
@@ -384,25 +378,25 @@ variable {k ρ mm : ℕ} {E V : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedSpace ℂ V] {a : ℝ} {S : Set (B.Mat k ρ)}
 
 /- English proof (translation)
-The claim follows from `Real.rpow_nonneg (Real.sqrt_nonneg _) a`.
+A detailed English derivation is pending.
 -/
 lemma gNa_nonneg (γ : B.Mat k ρ) (a : ℝ) : 0 ≤ B.gN γ ^ a := Real.rpow_nonneg (Real.sqrt_nonneg _) a
 
 /- English proof (translation)
-Rewrite using `[map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma ev_add (M : U.CCModel k ρ E a mm S V) (w₁ w₂ : V) :
     M.ev (w₁ + w₂) = fun g => M.ev w₁ g + M.ev w₂ g := by
   rw [map_add]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma ev_smul (M : U.CCModel k ρ E a mm S V) (c : ℂ) (w : V) : M.ev (c • w) = fun g => c • M.ev w g := by
   rw [map_smul]; rfl
 
 /- English proof (translation)
-The claim follows from `BetaSesquilinearity.sCkOn_mono (by rw [BetaSesquilinearity.len_LR]; exact_mod_cast t.2.2.2.1) (M.mem w).1`.
+A detailed English derivation is pending.
 -/
 lemma ck_len (M : U.CCModel k ρ E a mm S V) (t : Idx k ρ mm) (w : V) :
     B.CkOn (((BetaSesquilinearity.wL t.1.1 ++ BetaSesquilinearity.wR t.1.2.1).length : ℕ) : ℕ∞) (B.GV k ρ) (M.ev w) :=
@@ -418,7 +412,7 @@ def lamL (M : U.CCModel k ρ E a mm S V) (t : Idx k ρ mm) : V →ₗ[ℂ] E whe
     exact smul_comm _ _ _
 
 /- English proof (translation)
-Use `show ‖((B.gN t.1.2.2 ^ a : ℝ) : ℂ) • B.dLR t.1.1 t.1.2.1 (M.ev w) t.1.2.2‖ ≤ ‖w‖`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg (gNa_nonneg _ _)]`. Conclude with `(M.mem w).2 _ _ t.2.1 t.2.2.1 t.2.2.2.1 _ t.2.2.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lamL_norm (M : U.CCModel k ρ E a mm S V) (t : Idx k ρ mm) (w : V) : ‖lamL M t w‖ ≤ ‖w‖ := by
   show ‖((B.gN t.1.2.2 ^ a : ℝ) : ℂ) • B.dLR t.1.1 t.1.2.1 (M.ev w) t.1.2.2‖ ≤ ‖w‖
@@ -435,7 +429,7 @@ lemma lamC_apply (M : U.CCModel k ρ E a mm S V) (t : Idx k ρ mm) (w : V) :
     lamC M t w = ((B.gN t.1.2.2 ^ a : ℝ) : ℂ) • B.dLR t.1.1 t.1.2.1 (M.ev w) t.1.2.2 := rfl
 
 /- English proof (translation)
-Use `M.least w c ⟨(M.mem w).1, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Use `h ⟨(u, v, g), hu, hv, hl, hg⟩` as an intermediate fact. Establish `e : ‖lamC M ⟨(u, v, g), hu, hv, hl, hg⟩ w‖ = B.gN g ^ a * ‖B.dLR u v (M.ev w) g‖` using `by show ‖((B.gN g ^ a : ℝ) : ℂ) • B.dLR u v (M.ev w) g‖ = _`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg (gNa_nonneg _ _)]`. Conclude with `(le_of_eq e.symm).trans this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lamC_norming (M : U.CCModel k ρ E a mm S V) (w : V) (c : ℝ) (h : ∀ t, ‖lamC M t w‖ ≤ c) : ‖w‖ ≤ c := by
   refine M.least w c ⟨(M.mem w).1, fun u v hu hv hl g hg => ?_⟩
@@ -454,7 +448,7 @@ Both sides reduce to the same expression.
 lemma sc_apply (c : ℝ) (y : E) : sc E c y = (c : ℂ) • y := rfl
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.opNorm_le_bound _ hc (fun y => by rw [sc_apply, norm_smul, Complex.norm_real, Real.norm_of_nonneg hc])`.
+A detailed English derivation is pending.
 -/
 lemma sc_norm (c : ℝ) (hc : 0 ≤ c) : ‖sc E c‖ ≤ c :=
   ContinuousLinearMap.opNorm_le_bound _ hc (fun y => by
@@ -463,17 +457,17 @@ lemma sc_norm (c : ℝ) (hc : 0 ≤ c) : ‖sc E c‖ ≤ c :=
 end thm
 
 /- English proof (translation)
-Introduce `hU41 hSupp hW k p s ρ σ d hd hs K hK hK0 m mm Q A₁ hQ ha`. Take `⟨C, hC⟩` from `hU41 k p s ρ σ d hd hs K hK hK0 m mm Q A₁ hQ ha`. Use `⟨C, fun z z' E _ _ _ F₁ B₁ hStar => ?_⟩` and prove the remaining obligations. Take `⟨hint, hcc, hder⟩` from `hC z z' E F₁ B₁ hStar`. Use `⟨hint, fun Z hZ hKZ γ hγ => hSupp k p s ρ σ d z z' E F₁ A₁ B₁ Q K hd hStar Z hZ hKZ γ hγ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S V _ _ _ M hS`. Establish `hex : ∀ Z : G.Mat s, ∃ v : V, G.detM Z ≠ 0 → ∀ γ ∈ B.GV k ρ, M.ev v γ = U.PhiFun k ρ σ d z z' F₁ Z γ`. Introduce `Z`. Distinguish the cases in `hZ : G.detM Z ≠ 0`. Take `⟨v, hv⟩` from `M.surj _ ⟨_, hcc Z hZ⟩ (hS Z hZ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, fun _ => hv⟩`. Conclude with `⟨0, fun h => absurd h hZ⟩`. Use `choose Φ hΦ using hex`. Use `⟨Φ, hΦ, ?_⟩` and prove the remaining obligations. Establish `hdet : Continuous (fun Z : G.Mat s => G.detM Z)`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `G.detM`. Conclude with `Continuous.matrix_det continuous_id`. Establish `hΩ : IsOpen {Z : G.Mat s | G.detM Z ≠ 0}` using `isOpen_ne_fun hdet continuous_const`. Establish `hbd : ContinuousOn (fun Z : G.Mat s => C * B₁ * (1 + ‖Z‖) ^ (-(U.a1 (p + s + ρ) A₁ m mm))) {Z : G.Mat s | G.detM Z ≠ 0}` using `(continuous_const.mul ((continuous_const.add continuous_norm).rpow_const (fun Z => Or.inl (add_pos_of_pos_of_nonneg one_pos (norm_nonneg Z)).ne'))).continuousOn`. Establish `key : ∀ (t : Idx k ρ mm), ∀ Z ∈ {Z : G.Mat s | G.detM Z ≠ 0}, lamC M t (Φ Z) = sc E (B.gN t.1.2.2 ^ (U.a1 (p + s + ρ) A₁ m mm)) (B.dLR t.1.1 t.1.2.1 (U.PhiFun k ρ σ d z z' F₁ Z) t.1.2.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t Z hZ`. Rewrite using `[lamC_apply, sc_apply]`. Use `congr 1`. Rewrite using `[BetaSesquilinearity.dLR_eq, BetaSesquilinearity.dLR_eq]`. Conclude with `BetaSesquilinearity.Dw_congr (BetaSesquilinearity.lie_LR (BetaSesquilinearity.unit_lie t.2.1) (BetaSesquilinearity.unit_lie t.2.2.1)) (hΦ Z hZ) _ t.2.2.2.2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hcont, hbound⟩` from `hW (G.Mat s) V E (Idx k ρ mm) (lamC M) (lamC_norming M) {Z : G.Mat s | G.detM Z ≠ 0} Φ m (fun Z => C * B₁ * (1 + ‖Z‖) ^ (-(U.a1 (p + s + ρ) A₁ m mm))) hΩ hbd (fun t => ((sc E _).contDiff.comp_contDiffOn (hder t.1.1 t.1.2.1 t.2.1 t.2.2.1 t.2.2.2.1 t.1.2.2 t.2.2.2.2).1).congr (fun …`. Rewrite using `[iter_congr hΩ (key t) hZ q]`. Establish `h2` using `(hder t.1.1 t.1.2.1 t.2.1 t.2.2.1 t.2.2.2.1 t.1.2.2 t.2.2.2.2).2 q hq Z hZ`. Combine the equalities or inequalities in the displayed calculation. Conclude with `fun Z hZ => ⟨hcont.contDiffAt (hΩ.mem_nhds hZ), fun q hq => hbound q hq Z hZ⟩`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.theorem_u_of_parts : Formalism.FourierDecayAlt.U.TheoremUOfParts := by
   intro hU41 hSupp hW k p s ρ σ d hd hs K hK hK0 m mm Q A₁ hQ ha

@@ -13,23 +13,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hw hG Z FP hB hR φ hφ _hinj _inst hmov d`. Establish `huniq` using `(GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hw hG Z FP hB hR).1`. Establish `key : ∀ (h : ↥(FlagPairStabilizer F F')) (y y' : Dat Z FP), RMoves h.1 y y' ↔ (fun p => φ h p • y p) = y'`. Introduce `h y y'`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hm`. Use function extensionality and compare the values at `p`. Take `⟨g', hg', hmv⟩` from `hm p`. Establish `he : g' = ((φ h p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)` using `(huniq h.1 p).unique hg' (hφ h p)`. Substitute `he` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(hmov p (φ h p) (y p) (y' p)).1 hmv`. Introduce `he p`. Conclude with `⟨_, hφ h p, (hmov p (φ h p) (y p) (y' p)).2 (congrFun he p)⟩`. Establish `hrel : GRel (Z` using `Z) (FP := FP) F F' = (fun y y' : (∀ p, LocNG.Datum (FP p)) => ∃ h : ↥(FlagPairStabilizer F F'), (fun p => φ h p • y p) = y') := by`. Use function extensionality and compare the values at `y y'`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, hm⟩`. Conclude with `⟨⟨h, (mem_H0sub F F' h).2 hh⟩, (key ⟨h, (mem_H0sub F F' h).2 hh⟩ y y').1 hm⟩`. Introduce and unpack `⟨h, hh⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨h.1, (mem_H0sub F F' h.1).1 h.2, (key h y y').2 hh⟩`. Establish `hstab : ∀ y : Dat Z FP, (stabY F F' y).encard = {h : ↥(FlagPairStabilizer F F') | (fun p => φ h p • y p) = y}.encard`. Introduce `y`. Establish `hs : stabY F F' y = Subtype.val '' {h : ↥(FlagPairStabilizer F F') | (fun p => φ h p • y p) = y}`. Use extensionality with `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hm⟩`. Conclude with `⟨⟨g, (mem_H0sub F F' g).2 hg⟩, (key ⟨g, (mem_H0sub F F' g).2 hg⟩ y y).1 hm, rfl⟩`. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨(mem_H0sub F F' h.1).1 h.2, (key h y y).2 hh⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, Subtype.val_injective.encard_image]`. Rewrite using `[massA, hrel]`. Use `tsum_congr fun o => ?_` and prove the remaining obligations. Establish `hin : InGen d o.out ↔ (∀ p, ∃ g : ↥(FP p).UW0, g • d p = o.out p) ∧ {p | o.out p ≠ d p}.Finite`. Unfold `InGen`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr (forall_congr' fun p => ?_) Iff.rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hm⟩`. Conclude with `⟨⟨g, hg⟩, (hmov p ⟨g, hg⟩ (d p) (o.out p)).1 hm⟩`. Introduce and unpack `⟨g, hg⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨g.1, g.2, (hmov p g (d p) (o.out p)).2 hg⟩`. Distinguish the cases in `hc : (∀ p, ∃ g : ↥(FP p).UW0, g • d p = o.out p) ∧ {p | o.out p ≠ d p}.Finite`. Rewrite using `[if_pos (hin.2 hc), if_pos hc, hstab]`. Rewrite using `[if_neg (mt hin.1 hc), if_neg hc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Unfold.massA_eq_sum_orbits : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (φ : ↥(FlagPairStabilizer F F') →* (∀ p, ↥(FP p).UW0)), (∀ (h : ↥(FlagPairStabilizer F F')) p, Ext p (h : GV D) ((φ h p : ↥(FP p).UW0) : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)) → Function.Injective φ → ∀ [∀ p, MulAction ↥(FP p).UW0 (LocNG.Datum (FP p))], (∀ p (g : ↥(FP p).UW0) (d d' : LocNG.Datum (FP p)), LocNG.Datum.Moves g.1 d d' ↔ g • d = d') → ∀ d : Dat Z FP, massA F F' d = ∑' o : Quot (fun y y' : (∀ p, LocNG.Datum (FP p)) => ∃ h : ↥(FlagPairStabilizer F F'), (fun p => φ h p • y p) = y'), if (∀ p, ∃ g : ↥(FP p).UW0, g • d p = o.out p) ∧ {p | o.out p ≠ d p}.Finite then (({h : ↥(FlagPairStabilizer F F') | (fun p => φ h p • o.out p) = o.out}.encard : ℝ≥0∞))⁻¹ else 0 := by
   intro D X Y u u' F F' w hw hG Z FP hB hR φ hφ _hinj _inst hmov d

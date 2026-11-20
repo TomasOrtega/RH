@@ -11,14 +11,14 @@ open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W U
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `[fEl]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem fEl_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {q n : ℕ} (Nq : Fin q → ℕ) (u : Fin q → Fin n → R) :
     f (fEl Nq u) = fEl Nq fun j i => f (u j i) := by
   simp [fEl]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ (Polynomial A) _).det = _`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single, Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem chi_rep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
@@ -29,7 +29,7 @@ private theorem chi_rep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G �
   by_cases h : i = j <;> simp [GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_dvd_prod_of_dvd _ _ fun _ _ => Finset.prod_dvd_prod_of_dvd _ _ fun _ _ => Finset.prod_dvd_prod_of_dvd _ _ fun _ _ => dvd_mul_right _ _`.
+A detailed English derivation is pending.
 -/
 private theorem g_dvd {O : Type} [CommRing O] {q n : ℕ} (Nq : Fin q → ℕ) (α : Fin q → Fin n → O) :
     (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (α j i - α j k)) ∣ fEl Nq α :=
@@ -37,7 +37,7 @@ private theorem g_dvd {O : Type} [CommRing O] {q n : ℕ} (Nq : Fin q → ℕ) (
     Finset.prod_dvd_prod_of_dvd _ _ fun _ _ => dvd_mul_right _ _
 
 /- English proof (translation)
-The claim follows from `(Finset.dvd_prod_of_mem (fun i => ∏ k ∈ Finset.univ.erase i, (α j i - α j k)) (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun j => ∏ i, ∏ k ∈ Finset.univ.erase i, (α j i - α j k)) (Finset.mem_univ j))`.
+A detailed English derivation is pending.
 -/
 private theorem e_dvd {O : Type} [CommRing O] {q n : ℕ} (α : Fin q → Fin n → O) (j : Fin q) (i : Fin n) :
     (∏ k ∈ Finset.univ.erase i, (α j i - α j k)) ∣ ∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (α j i - α j k) :=
@@ -45,9 +45,9 @@ private theorem e_dvd {O : Type} [CommRing O] {q n : ℕ} (α : Fin q → Fin n 
     (Finset.dvd_prod_of_mem (fun j => ∏ i, ∏ k ∈ Finset.univ.erase i, (α j i - α j k)) (Finset.mem_univ j))
 
 /- English proof (translation)
-Use `Dvd.dvd.trans ?_ h` and prove the remaining obligations. Take `⟨g', hg⟩` from `h1`. Take `⟨e', he⟩` from `h2`. Use `⟨g' ^ 2 * e' ^ (E + 1), ?_⟩` and prove the remaining obligations. Establish `: F ^ (3 * E + 6) = (g * g') ^ 2 * (F * F ^ E) ^ 2 * F * (e * e') ^ (E + 1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hg, ← he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem num_dvd {O : Type} [CommRing O] (a g F e z c : O) (E : ℕ) (h1 : g ∣ F) (h2 : e ∣ F)
     (h : a ^ 2 * z * F ^ (3 * E + 6) ∣ c) : (a * g * F * F ^ E) ^ 2 * (F * z) * e ^ (E + 1) ∣ c := by
@@ -60,43 +60,41 @@ private theorem num_dvd {O : Type} [CommRing O] (a g F e z c : O) (E : ℕ) (h1 
   rw [this]; ring
 
 /- English proof (translation)
-Introduce `l _ L G0 G h n O _ _ _ _ _ r B _ _ _ u J D b q N A y x Nq ph ta E α t₀ lam m₀ m c hn hgen hmap hEt hlam hta hα hA hN hc a`. Establish `hs` using `Sp.betaSurj l L G0 G h n O r B u J D b q N A hgen`. Establish `hβ` using `Sp.betaLam l L G0 G h n O r B u J D b q N A`. Take `⟨t₁, rfl⟩` from `hs t₀`. Establish `hP : ∀ j, (u.D.chi (MonoidAlgebra.single (h.p₀ (ph j)) 1)).map (x : B →+* O) = ∏ i, (Polynomial.X - Polynomial.C (α j i))` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `((UpperTheory.V.CA.d_gmap u.D).2.2.1 x.toRingHom (MonoidAlgebra.single (h.p₀ (ph j)) 1)).1`. Rewrite `h1` using `[MonoidAlgebra.mapRingHom_single, map_one, hmap.1, chi_rep, hα j]`. Conclude with `h1.symm`. Take `⟨lw, v₀, hlw, hv₀⟩` from `Sp.lamW O A.R B b.M A.Mw q n A.β x _ A.actw _ α lam m₀ hA.two hP hlam`. Take `⟨htr, hker⟩` from `Sp.trans A.R A.M1 A.Mw q n A.act1 A.actw A.tr A.tr_surj A.tr_ker A.tr_u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `A.tr_surj v₀`. Set `xU : PU A.R q n →+* O` to `MvPolynomial.eval₂Hom ((x.comp A.β : A.R →ₐ[O] O) : A.R →+* O) fun p => α p.1 p.2`. Set `π : PUY A.R q n →ₐ[A.R] PU A.R q n` to `MvPolynomial.aeval (Sum.elim MvPolynomial.X 0)`. Set `xT : PUY A.R q n →ₐ[O] O` to `{ xU.comp (π : PUY A.R q n →+* PU A.R q n) with commutes' := fun o => by`. Express the relevant statement in the definitionally equal form `xU (π (MvPolynomial.C (algebraMap O A.R o))) = o`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[xU, π] }`. Establish `hxT : ∀ τ, xT τ = xU (π τ)` using `fun _ => rfl`. Establish `hC : ∀ s, xT (MvPolynomial.C s) = x (A.β s)` using `fun s => by simp [hxT, xU, π]`. Establish `hU : ∀ j k, xT (uV A.R j k) = α j k` using `fun j k => by simp [hxT, xU, π]`. Establish `hY : ∀ j k, xT (yV A.R j k) = 0` using `fun j k => by simp [hxT, xU, π]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `I : Ideal A.R` to `(RingHom.ker (x.comp b.lam)).map (algebraMap (abelian₂ O Empty D) A.R)`. Establish `hI : ∀ w, w ∈ wtSub b x → w ∈ (I.map A.β • ⊤ : Submodule B b.M)` using `fun w hw => by`. Use `Submodule.smul_induction_on hw (fun s hs w _ => ?_) fun _ _ => add_mem` and prove the remaining obligations. Rewrite using `[b.smul_lam, ← hβ]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hs)) trivial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hkill` using `Sp.kill O A.R B b.M A.Mw q n A.β x _ A.actw _ α I t₁ hs hA.two hP fun a ha w => hI _ (hEt a ha w)`. Set `t : PUY A.R q n` to `MvPolynomial.C t₁ * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (uV A.R j i - MvPolynomial.C (algebraMap O A.R (α j k)))) * fEl Nq (uV A.R) * fEl Nq (uV A.R) ^ E`. Establish `hF : xT (fEl Nq (uV A.R)) = fEl Nq α`. Use `fEl_map (xT : PUY A.R q n →+* O) Nq (uV A.R)` as an intermediate fact. Simplify `this` using `[hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hxt : xT t = x (A.β t₁) * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (α j i - α j k)) * fEl Nq α * fEl Nq α ^ E`. Simplify using `only [t, map_mul, map_pow, map_prod, map_sub, hC, hU, hF, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `hv : lw (A.tr v) = fEl Nq α * lam m₀`. Rewrite using `[hv₀]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fEl_map xU Nq fun j i => MvPolynomial.X (j, i)` as an intermediate fact. Simplify `this` using `[xU]`. Take `⟨del, hd, h1, h2, h3⟩` from `Sp.derOp l L G0 G h n O r B u J D b q N A xT (lw.comp A.tr.toAddMonoidHom) t v I m hN hY (fun τ w => by`. Express the relevant statement in the definitionally equal form `lw (A.tr (A.act1 τ w)) = xT τ * lw (A.tr w)`. Rewrite using `[htr, hlw]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Use the proof step `(Ideal.span_le.2 (by`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `Ideal.subset_span ⟨s, rfl, by rw [hC, hβ]; exact hs⟩))`. Use the proof step `(fun s hs w => hker I _ (by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hπ : π (fEl Nq (uV A.R)) = fEl Nq fun j i => MvPolynomial.X (j, i)`. Use `fEl_map (π : PUY A.R q n →+* PU A.R q n) Nq (uV A.R)` as an intermediate fact. Simplify `this` using `[π]`. Establish `e : π (t * s) = MvPolynomial.C t₁ * (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O A.R (α j k)))) * (fEl Nq fun j i => MvPolynomial.X (j, i)) * π (fEl Nq (uV A.R) ^ E * s)`. Simplify using `only [t, map_mul, map_prod, map_sub, hπ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[π]`. Rewrite using `[htr]`. Express the relevant statement in the definitionally equal form `A.actw (π (t * s)) _ ∈ _`. Rewrite using `[e]`. Use `hkill _ ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `xT _ = 0`. Rewrite using `[map_mul, hs, mul_zero])) a`. Establish `hv' : (lw.comp A.tr.toAddMonoidHom) v = fEl Nq α * lam m₀` using `hv`. Rewrite `h1`, `h2` using `[hv']`. Establish `hq : ∀ j i, del (MvPolynomial.C (A.p.D.tr (twoPowerModulus E (ph j) (ta j) (fun k => algebraMap O A.R (α j k)) i 0))) = (∏ k ∈ Finset.univ.erase i, (α j i - α j k)) ^ (E + 1) • del (yV A.R j i)` using `fun j i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨k1, k2⟩` from `Sp.q2op l L G0 G h n O r B u J D b q N A y x (ph j) (ta j) (α j) E j i xT _ del hn hmap (hta j) (hα j) hC (hU j) (hY j i) hd`. Use `h3 _ k1 (by` as an intermediate fact. Simplify using `only [t]`. Rewrite using `[mul_assoc, map_mul, hA.rel2, mul_zero])`. Rewrite `k2` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 k2.symm`. Set `δ₀ : A.R →ₗ[O] Om O m` to `del ∘ₗ (IsScalarTower.toAlgHom O A.R (PUY A.R q n)).toLinearMap`. Establish `hδ : ∀ s, δ₀ s = del (MvPolynomial.C s)` using `fun _ => rfl`. Establish `hder : ∀ e : O, IsDer (x.comp A.β) (e • δ₀)` using `fun e s s' => by`. Simplify using `only [LinearMap.smul_apply, hδ, map_mul, hd _ _, hC, AlgHom.comp_apply, smul_add, smul_comm e]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnum` using `fun j i => num_dvd _ _ _ _ _ c E (g_dvd Nq α) ((e_dvd α j i).trans (g_dvd Nq α)) hc`. Establish `hn0` using `num_dvd _ _ _ 1 _ c E (g_dvd Nq α) (one_dvd _) hc`. Rewrite `hnum`, `hn0` using `[← hxt]`. Break down `a with k | ⟨j, i⟩` into its components or cases. Take `⟨e, he⟩` from `hn0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e • δ₀, hder e, fun k' => ?_, fun j i => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hδ, h1] split_ifs`. Rewrite using `[he, Algebra.smul_def, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[LinearMap.smul_apply, hδ, hq, h2]`. Simplify using the standard rewrite rules. Take `⟨e, he⟩` from `hnum j i`. Use `⟨e • δ₀, hder e, fun k' => ?_, fun j' i' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[LinearMap.smul_apply, hδ, h1]`. Simplify using the standard rewrite rules. Rewrite using `[LinearMap.smul_apply, hδ, hq, h2] split_ifs with hh`. Take `⟨rfl, rfl⟩ : j = j' ∧ i = i'` from `by simpa using hh`. Rewrite using `[he, Algebra.smul_def, Algebra.smul_def, ← map_mul, ← map_mul]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Sp.one :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 G : Glob l L) (h : G.Hom G0) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (b : TWBase u J Empty D) (q N : ℕ) (A : OpMod b h q N) (y : Pt G0.frame O n) (x : B →ₐ[O] O) (Nq : Fin q → ℕ) (ph ta : Fin q → G.G₀) (E : ℕ) (α : Fin q → Fin n → O) (t₀ : B) (lam : b.M →+ O) (m₀ : b.M) (m : ℕ) (c : O), 1 ≤ n → GenBy O (pairVals u) → u.Maps x.toRingHom (GDet.ofRep (mat y.ρ)) y.ψ → (∀ a : B, x a = 0 → ∀ w : b.M, (t₀ * a) • w ∈ wtSub b x) → (∀ (a : B) w, lam (a • w) = x a * lam w) → (∀ j, h.p₀ (ta j) = 1) → (∀ j, (mat y.ρ (h.p₀ (ph j))).charpoly = ∏ k, (Polynomial.X - Polynomial.C (α j k))) → OpRelX A Nq ph ta E → m ≤ N → x t₀ ^ 2 * lam m₀ * fEl Nq α ^ (3 * E + 6) ∣ c → ∀ a : Fin D ⊕ Fin q × Fin n, ∃ δ : A.R →ₗ[O] Om O m, IsDer (x.comp A.β) δ ∧ (∀ k, δ (algebraMap (abelian₂ O Empty D) A.R (MvPowerSeries.X (.inr k))) = if a = .inl k then algebraMap O _ c else 0) ∧ ∀ j i, δ (A.p.D.tr (twoPowerModulus E (ph j) (ta j) (fun k => algebraMap O A.R (α j k)) i 0)) = if a = .inr (j, i) then algebraMap O _ c else 0 := by

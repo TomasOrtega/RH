@@ -18,11 +18,11 @@ theorem toK_apply {σ : Type} (f : MvPolynomial σ (𝓞 K)) : toK K σ f = map 
 open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.DIV.nabStd`. Use `choose b hb _ using fun τ : ι => _root_.Formalism.GradedWeylDivisibility.sSBasis (𝓞 K) n n (lam τ).natW`. Establish `hinj : LinearMap.ker (_root_.Formalism.L2.DIV.toK K (Fin n × Fin n)) = ⊥` using `LinearMap.ker_eq_bot.mpr (MvPolynomial.map_injective _ (IsFractionRing.injective (𝓞 K) K))`. Establish `hwb : ∀ τ, LinearIndependent (𝓞 K) (b τ) ∧ Submodule.span (𝓞 K) (Set.range (b τ)) = _root_.Formalism.GradedWeylDivisibility.dualWeyl (𝓞 K) n n (lam τ).natW`. Introduce `τ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hb τ`. Unfold `_root_.Formalism.GradedWeylDivisibility.IsWeightBasis at h`. Conclude with `⟨h.1, h.2.1⟩`. Use `haveI : ∀ τ, Finite ↑(_root_.Formalism.GradedWeylDivisibility.ssIdx n n (lam τ).natW) := fun τ => (_root_.Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`. Take `⟨-, hspan⟩` from `_root_.Formalism.GradedWeylDivisibility.tensorBasis (𝓞 K) K ι n n (fun τ => ↑(_root_.Formalism.GradedWeylDivisibility.ssIdx n n (lam τ).natW)) (fun τ => Submodule.map (_root_.Formalism.L2.DIV.toK K (Fin n × Fin n)) (_root_.Formalism.BasicNotions.nablaSq (𝓞 K) n (lam τ))) (fun τ i …`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.range_comp' (g := _root_.Formalism.L2.DIV.toK K (Fin n × Fin n)) (f := b τ), ← Submodule.map_span, (hwb τ).2]`. Use the proof step `rfl)`. Rewrite using `[← hspan]`. Conclude with `Submodule.fg_def.mpr ⟨_, Set.finite_range _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma nabStd_fg' (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
     (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) : (_root_.Formalism.L2.DIV.nabStd K lam).FG := by
@@ -51,9 +51,9 @@ private lemma nabStd_fg' (K : Type) [Field K] [NumberField K] (ι : Type) [Finty
 open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 /- English proof (translation)
-Use extensionality with `P`. Rewrite using `[Set.mem_finset_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩ choose F hF hFe using fun s => hg (Finset.mem_univ s)`. Conclude with `⟨F, hF, Finset.prod_congr rfl fun s _ => (hFe s).symm⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨fun s => _root_.Formalism.GradedWeylDivisibility.blockEmb K s (F s), fun {s} _ => ⟨F s, hF s, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma prod_image_blockEmb_eq_setOf_prod {K : Type} [Field K] {S : Type} [Fintype S] {k n : ℕ}
     (X : S → Set (MvPolynomial (Fin k × Fin n) K)) :
@@ -72,7 +72,7 @@ private lemma prod_image_blockEmb_eq_setOf_prod {K : Type} [Field K] {S : Type} 
 open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 /- English proof (translation)
-Rewrite using `[← prod_image_blockEmb_eq_setOf_prod, ← Submodule.prod_span]`. Simplify using `only [Submodule.map_span, AlgHom.coe_toLinearMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma span_setOf_prod_blockEmb_eq_prod_map_span {K : Type} [Field K] {S : Type} [Fintype S] {k n : ℕ}
     (X : S → Set (MvPolynomial (Fin k × Fin n) K)) :
@@ -85,7 +85,7 @@ private lemma span_setOf_prod_blockEmb_eq_prod_map_span {K : Type} [Field K] {S 
 open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 /- English proof (translation)
-Unfold `_root_.Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `span_setOf_prod_blockEmb_eq_prod_map_span (K := K) (k := k) (n := n) fun s => (L s : Set (MvPolynomial (Fin k × Fin n) K))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma span_tensorLat_eq_prod_map_span {R K : Type} [CommRing R] [Field K] [Algebra R K] {S : Type} [Fintype S]
     {k n : ℕ} (L : S → Submodule R (MvPolynomial (Fin k × Fin n) K)) :
@@ -99,9 +99,9 @@ private lemma span_tensorLat_eq_prod_map_span {R K : Type} [CommRing R] [Field K
 open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 /- English proof (translation)
-Unfold `_root_.Formalism.BasicNotions.nablaSq`. Take `⟨b, hb, -⟩` from `_root_.Formalism.GradedWeylDivisibility.sSBasis (𝓞 K) n n μ.natW`. Rewrite using `[← _root_.Formalism.GradedWeylDivisibility.span_map_weightBasis_eq_dualWeyl (K := K) hb]`. Establish `hspan : Submodule.span (𝓞 K) (Set.range b) = _root_.Formalism.GradedWeylDivisibility.dualWeyl (𝓞 K) n n μ.natW`. Unfold `_root_.Formalism.GradedWeylDivisibility.IsWeightBasis at hb`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hb.2.1`. Rewrite using `[← hspan, Submodule.map_span, Submodule.span_span_of_tower, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma span_map_toK_nablaSq_eq_nablaSq (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : _root_.Formalism.BasicNotions.DomWeight n) :
     Submodule.span K (Submodule.map (_root_.Formalism.L2.DIV.toK K (Fin n × Fin n)) (_root_.Formalism.BasicNotions.nablaSq (𝓞 K) n μ) : Set _) =
@@ -118,9 +118,9 @@ private lemma span_map_toK_nablaSq_eq_nablaSq (K : Type) [Field K] [NumberField 
 open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 /- English proof (translation)
-Rewrite using `[_root_.Formalism.L2.Col.nablaSq_eq_delSq]`. Unfold `_root_.Formalism.BasicNotions.delSq _root_.Formalism.GradedWeylDivisibility.weyl`. Rewrite using `[Submodule.map_span, Submodule.span_span_of_tower, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap (𝓞 K) K) _ = _`. Rewrite using `[← _root_.Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, _root_.Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private lemma span_map_toK_delSq_eq_nablaSq (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : _root_.Formalism.BasicNotions.DomWeight n) :
     Submodule.span K (Submodule.map (_root_.Formalism.L2.DIV.toK K (Fin n × Fin n)) (_root_.Formalism.BasicNotions.delSq (𝓞 K) n μ) : Set _) =
@@ -137,9 +137,9 @@ open NumberField MvPolynomial Pointwise in
 variable (K : Type) [Field K] [NumberField K] in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam`. Establish `hnab` using `nabStd_fg' K ι n lam`. Use `⟨hnab, hnab.of_le (_root_.Formalism.L2.DIV.delStd_le_nabStd K lam), ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.L2.DIV.nabStd _root_.Formalism.L2.DIV.VV`. Rewrite using `[span_tensorLat_eq_prod_map_span, ← Submodule.span_eq (_root_.Formalism.GradedWeylDivisibility.tensorLat K K _), span_tensorLat_eq_prod_map_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [span_map_toK_nablaSq_eq_nablaSq, Submodule.span_eq]`. Unfold `_root_.Formalism.L2.DIV.delStd _root_.Formalism.L2.DIV.VV`. Rewrite using `[span_tensorLat_eq_prod_map_span, ← Submodule.span_eq (_root_.Formalism.GradedWeylDivisibility.tensorLat K K _), span_tensorLat_eq_prod_map_span]`. Simplify using `only [span_map_toK_delSq_eq_nablaSq, Submodule.span_eq]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.StdLatSpan.std_fg_span : ∀ (K : Type) [Field K] [NumberField K] (ι : Type)
     [Fintype ι] (n : ℕ) (lam : ι → _root_.Formalism.BasicNotions.DomWeight n),

@@ -21,7 +21,7 @@ section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end Weights
 /- English proof (translation)
-The claim follows from `Closed.imp (Closed.and h h') fun _ _ _ ⟨⟨C, _, a⟩, C', _, b⟩ => ⟨0, le_rfl, (a.and b).imp fun _ h x hx hle ι p hp i => ⟨⟨C, (h x hx hle ι p hp).1 i⟩, C', (h x hx hle ι p hp).2 i⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem lifts_and_alt {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
     (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop} (h : _root_.GlobalTheory.CovTop.LiftsCondition Q) (h' : _root_.GlobalTheory.CovTop.LiftsCondition Q') :

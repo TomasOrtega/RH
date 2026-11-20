@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `D C I ρ hT hG hA i hi`. Establish `hw : D.what₂.muAt (D.nd.w i) ≠ D.what₂.mu0` using `hi`. Take `⟨-, hg⟩` from `hG (D.nd.w i) hw`. Take `⟨hA1, hA2⟩` from `hA i hi`. Take `⟨-, -, -, ⟨epsT, hT0, hTs, hTle⟩, -, hD⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl : D.ntw.l (C.twI (D.nd.w i)) = D.nd.l i` using `by rw [← hT.twOf_eq]; exact D.ntw.twOf_l i`. Establish `heps : twEps D (C.twI (D.nd.w i)) = Formalism.MainNotions.TwistedPlaces.epsL (D.nd.l i)`. Rewrite using `[twEps, Formalism.MainNotions.TwistedPlaces.epsL, hl, one_div]`. Use `⟨fun π hπ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hfin, hle⟩` from `hA1 π hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hTle s hs`. Establish `hsum : epsT s ≤ twEps D (C.twI (D.nd.w i))` using `le_trans (Finset.single_le_sum (fun s _ => hT0 s) ((Formalism.MainNotions.BlochKatoReduction.Gen.mem_SigG _ _ s).2 hs)) hTs`. Establish `h0 : 0 ≤ (Formalism.MainNotions.BlochKatoReduction.Gen.nu D.ntw (C.twI (D.nd.w i)) : ℝ) + epsT s` using `add_nonneg (Nat.cast_nonneg _) (hT0 s)`. Establish `h2` using `le_trans hle h1`. Use `⟨hfin (ne_top_of_le_ne_top ENNReal.ofReal_ne_top h1), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[ENNReal.ofReal_le_ofReal_iff h0]`. Rewrite using `[← heps]`. Rewrite `h2` using `[UpperTheory.KStar.nu_eq_nuL, hl]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← heps]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_left hA2 (Nat.cast_nonneg _)) hD`.
+A detailed English derivation is pending.
 -/
 theorem twist_kills_selmer : ∀ (D : D7) (C : NChoice D) (I : TwIn D) (ρ : FamilyRepresentationConstants.RhoFam D), NChTie D C → TwGoodAt D C I →
     KillingConditions.SignatureChoiceCondition ρ C → KillingConditions.KillAt ρ := by

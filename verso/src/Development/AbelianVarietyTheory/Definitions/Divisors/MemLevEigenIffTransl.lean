@@ -63,12 +63,12 @@ theorem pull_apply (h : LevelAut Dw l) (f : Rul Xo c) (p : TRing c.F) (y : FrPt 
     pull Xo c h f p y = f p (move Xo c h⁻¹ y) := rfl
 
 /- English proof (translation)
-Rewrite using `[pull, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_inv (g : LevelAut Dw l) : pull Xo c g⁻¹ = transl Xo c g := by rw [pull, inv_inv]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem e hf`.
+A detailed English derivation is pending.
 -/
 theorem mem_secRing {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) : f ∈ secRing Xo c :=
   Submodule.mem_iSup_of_mem e hf
@@ -79,7 +79,7 @@ Both sides reduce to the same expression.
 theorem toSubmodule_secRing : Subalgebra.toSubmodule (secRing Xo c) = ⨆ e, secZ Xo c e := rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using one_mem_secZ`. Consider the case `cons a s ha ih => rw [Finset.prod_cons, Finset.card_cons, succ_nsmul']`. Conclude with `mul_mem_secZ (hf a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prod_mem_secZ {ι : Type} (s : Finset ι) {e : Ix Dw → ℤ} {f : ι → Rul Xo c} (hf : ∀ i, f i ∈ secZ Xo c e) :
     ∏ i ∈ s, f i ∈ secZ Xo c (s.card • e) := by
@@ -91,14 +91,14 @@ variable (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M)
 include hpq hA
 
 /- English proof (translation)
-The claim follows from `mvPt_spec (GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).total γ y`.
+A detailed English derivation is pending.
 -/
 theorem levR_move (γ : LevelAut Dw l) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     levR (levFull Dw l γ) y (move Xo c γ y) :=
   mvPt_spec (GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).total γ y
 
 /- English proof (translation)
-The claim follows from `have F := GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) (move Xo c γ y) F.1 _ _ F.2.1 ((GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).func γ S y _ _ (levR_move hpq hA γ y) h)`.
+A detailed English derivation is pending.
 -/
 theorem move_unique {γ : LevelAut Dw l} {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S}
     (h : levR (levFull Dw l γ) y y') : move Xo c γ y = y' :=
@@ -106,13 +106,13 @@ theorem move_unique {γ : LevelAut Dw l} {S : Type} [CommRing S] [Algebra c.F S]
   F.1 _ _ F.2.1 ((GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).func γ S y _ _ (levR_move hpq hA γ y) h)
 
 /- English proof (translation)
-The claim follows from `move_unique hpq hA ((GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).one S y)`.
+A detailed English derivation is pending.
 -/
 theorem move_one {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : move Xo c 1 y = y :=
   move_unique hpq hA ((GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).one S y)
 
 /- English proof (translation)
-The claim follows from `move_unique hpq hA ((GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA).mul γ δ S y _ _ (levR_move hpq hA γ y) (levR_move hpq hA δ _))`.
+A detailed English derivation is pending.
 -/
 theorem move_mul (γ δ : LevelAut Dw l) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     move Xo c (γ * δ) y = move Xo c δ (move Xo c γ y) :=
@@ -120,27 +120,27 @@ theorem move_mul (γ δ : LevelAut Dw l) {S : Type} [CommRing S] [Algebra c.F S]
     (levR_move hpq hA γ y) (levR_move hpq hA δ _))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Rewrite using `[transl_apply, move_one hpq hA]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_one (f : Rul Xo c) : transl Xo c 1 f = f := by
   funext p y; rw [transl_apply, move_one hpq hA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Rewrite using `[transl_apply, move_mul hpq hA]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem transl_mul (γ δ : LevelAut Dw l) (f : Rul Xo c) :
     transl Xo c (γ * δ) f = transl Xo c γ (transl Xo c δ f) := by
   funext p y; rw [transl_apply, move_mul hpq hA]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => by rw [pull, inv_one, transl_one hpq hA], fun h h' x => by rw [pull, mul_inv_rev, transl_mul hpq hA]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRightAct_pull : IsRightAct (pull Xo c) :=
   ⟨fun x => by rw [pull, inv_one, transl_one hpq hA], fun h h' x => by
     rw [pull, mul_inv_rev, transl_mul hpq hA]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `have L := GlobalTheory.FullLevelAction.actLaws_levFull Xo c hpq hA ⟨fun p q φ y z h => hf.1 p q φ _ _ (L.nat γ p.R q.R φ y _ z _ h (levR_move hpq hA γ y) (levR_move hpq hA γ z)), fun p t y y' h => hf.2 p t _ _ (L.bor γ p.R t y _ y' _ h (levR_move hpq hA γ y) (levR_move hpq hA γ y …`.
+A detailed English derivation is pending.
 -/
 theorem transl_mem_secZ (γ : LevelAut Dw l) {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) :
     transl Xo c γ f ∈ secZ Xo c e :=
@@ -149,13 +149,13 @@ theorem transl_mem_secZ (γ : LevelAut Dw l) {e : Ix Dw → ℤ} {f : Rul Xo c} 
     fun p t y y' h => hf.2 p t _ _ (L.bor γ p.R t y _ y' _ h (levR_move hpq hA γ y) (levR_move hpq hA γ y'))⟩
 
 /- English proof (translation)
-The claim follows from `transl_mem_secZ hpq hA _ hf`.
+A detailed English derivation is pending.
 -/
 theorem pull_mem_secZ (h : LevelAut Dw l) {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) :
     pull Xo c h f ∈ secZ Xo c e := transl_mem_secZ hpq hA _ hf
 
 /- English proof (translation)
-Establish `: (⨆ e, secZ Xo c e) ≤ (⨆ e, secZ Xo c e).comap (pull Xo c h).toLinearMap` using `iSup_le fun e g hg => mem_secRing (pull_mem_secZ hpq hA h hg)`. Conclude with `this hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_mem_secRing (h : LevelAut Dw l) {f : Rul Xo c} (hf : f ∈ secRing Xo c) : pull Xo c h f ∈ secRing Xo c := by
   have : (⨆ e, secZ Xo c e) ≤ (⨆ e, secZ Xo c e).comap (pull Xo c h).toLinearMap :=
@@ -168,7 +168,7 @@ def pullSec (h : LevelAut Dw l) : secRing Xo c →ₐ[c.F] secRing Xo c :=
   ((pull Xo c h).comp (secRing Xo c).val).codRestrict _ fun f => pull_mem_secRing hpq hA h f.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => Subtype.ext ((isRightAct_pull (Xo := Xo) (c := c) hpq hA).1 x), fun h h' x => Subtype.ext ((isRightAct_pull (Xo := Xo) (c := c) hpq hA).2 h h' x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRightAct_pullSec : IsRightAct (pullSec Xo c hpq hA) :=
   ⟨fun x => Subtype.ext ((isRightAct_pull (Xo := Xo) (c := c) hpq hA).1 x),
@@ -212,7 +212,7 @@ Both sides reduce to the same expression.
 theorem levMat_apply (u : Rul Xo c) (h g : S) : levMat Xo c S u h g = pull Xo c (h * g) u := rfl
 
 /- English proof (translation)
-The claim follows from `tr_apply _ χ F`.
+A detailed English derivation is pending.
 -/
 theorem levTr_apply (χ : S →* (c.F)ˣ) (F : Rul Xo c) :
     levTr Xo c S χ F = ∑ h : S, (((χ h)⁻¹ : (c.F)ˣ) : c.F) • pull Xo c h F := tr_apply _ χ F
@@ -224,13 +224,13 @@ theorem levPh_apply (χ : S →* (c.F)ˣ) (u f : Rul Xo c) (h : S) :
     levPh Xo c S χ u f h = levTr Xo c S χ (f * pull Xo c h u) := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levEigen {χ : S →* (c.F)ˣ} {F : Rul Xo c} :
     F ∈ levEigen Xo c S χ ↔ ∀ h : S, pull Xo c h F = ((χ h : (c.F)ˣ) : c.F) • F := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h g => by rw [← pull_inv, ← map_inv]; exact h g⁻¹, fun h g => by have := h g⁻¹; rw [map_inv, inv_inv] at this; exact this⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_levEigen_iff_transl {χ : S →* (c.F)ˣ} {F : Rul Xo c} :
     F ∈ levEigen Xo c S χ ↔ ∀ g : S, transl Xo c g F = (((χ g)⁻¹ : (c.F)ˣ) : c.F) • F :=
@@ -243,17 +243,17 @@ variable (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M)
 include hpq hA
 
 /- English proof (translation)
-The claim follows from `(isRightAct_pull hpq hA).comp S.subtype`.
+A detailed English derivation is pending.
 -/
 theorem isRightAct_pullOn : IsRightAct (pullOn Xo c S) := (isRightAct_pull hpq hA).comp S.subtype
 
 /- English proof (translation)
-The claim follows from `(isRightAct_pullSec hpq hA).comp S.subtype`.
+A detailed English derivation is pending.
 -/
 theorem isRightAct_pullSecOn : IsRightAct (pullSecOn Xo c S hpq hA) := (isRightAct_pullSec hpq hA).comp S.subtype
 
 /- English proof (translation)
-Rewrite using `[tr_apply, levTr_apply]`. Conclude with `map_sum (secRing Xo c).val _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_tr_pullSecOn (χ : S →* (c.F)ˣ) (F : secRing Xo c) :
     (tr (pullSecOn Xo c S hpq hA) χ F : Rul Xo c) = levTr Xo c S χ F := by
@@ -261,7 +261,7 @@ theorem coe_tr_pullSecOn (χ : S →* (c.F)ˣ) (F : secRing Xo c) :
   exact map_sum (secRing Xo c).val _ _
 
 /- English proof (translation)
-Establish `h` using `(secRing Xo c).val.toRingHom.map_det (groupMat (pullSecOn Xo c S hpq hA) u)`. Rewrite using `[levDet]`. Apply the tactic sequence `convert h using 2 <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coe_det_pullSecOn [DecidableEq S] (u : secRing Xo c) :
     ((groupMat (pullSecOn Xo c S hpq hA) u).det : Rul Xo c) = levDet Xo c S u := by
@@ -270,7 +270,7 @@ theorem coe_det_pullSecOn [DecidableEq S] (u : secRing Xo c) :
   convert h using 2 <;> rfl
 
 /- English proof (translation)
-Rewrite using `[levDet, Matrix.det_apply, Nat.card_eq_fintype_card]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem_secZ Finset.univ fun i => pull_mem_secZ hpq hA _ hu) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levDet_mem_secZ {e : Ix Dw → ℤ} {u : Rul Xo c} (hu : u ∈ secZ Xo c e) :
     levDet Xo c S u ∈ secZ Xo c (Nat.card S • e) := by
@@ -281,7 +281,7 @@ theorem levDet_mem_secZ {e : Ix Dw → ℤ} {u : Rul Xo c} (hu : u ∈ secZ Xo c
   exact zsmul_mem (prod_mem_secZ Finset.univ fun i => pull_mem_secZ hpq hA _ hu) _
 
 /- English proof (translation)
-The claim follows from `(isRightAct_pullOn hpq hA).tr_mem_eigen χ F`.
+A detailed English derivation is pending.
 -/
 theorem levTr_mem_levEigen (χ : S →* (c.F)ˣ) (F : Rul Xo c) : levTr Xo c S χ F ∈ levEigen Xo c S χ :=
   (isRightAct_pullOn hpq hA).tr_mem_eigen χ F
@@ -289,7 +289,7 @@ theorem levTr_mem_levEigen (χ : S →* (c.F)ˣ) (F : Rul Xo c) : levTr Xo c S �
 end Laws
 
 /- English proof (translation)
-The claim follows from `tr_of_mem_eigen _ fun h => by simp`.
+A detailed English derivation is pending.
 -/
 example : levTr Xo c S 1 1 = (Fintype.card S : c.F) • (1 : Rul Xo c) :=
   tr_of_mem_eigen _ fun h => by simp
@@ -299,13 +299,13 @@ variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) (S)
 def chiLat (χ : S →* (c.F)ˣ) : Submodule (𝓞 c.F) (cuspW Xo c U G) := latCap (latW U G) (levEigen Xo c S χ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_chiLat {χ : S →* (c.F)ˣ} {F : cuspW Xo c U G} : F ∈ chiLat S U G χ ↔
     F ∈ latW U G ∧ ∀ h : S, pull Xo c h (F : Rul Xo c) = ((χ h : (c.F)ˣ) : c.F) • (F : Rul Xo c) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.ext fun F => (mem_chiLat ⊥ U G).trans (and_iff_left fun h => by obtain rfl : h = 1 := Subsingleton.elim _ _ rw [map_one, Units.val_one, one_smul] exact (isRightAct_pull hpq hA).1 _)`.
+A detailed English derivation is pending.
 -/
 example (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (χ : (⊥ : Subgroup (LevelAut Dw l)) →* (c.F)ˣ) :
     chiLat ⊥ U G χ = latW U G :=
@@ -321,7 +321,7 @@ def cuspRep (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (hC : KeepsCusp U G
   (isRightAct_pull hpq hA).subRep _ hC
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (pull_inv (Xo := Xo) (c := c) g) (f : Rul Xo c)`.
+A detailed English derivation is pending.
 -/
 theorem coe_cuspRep (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (hC : KeepsCusp U G) (g : LevelAut Dw l)
     (f : cuspW Xo c U G) : (cuspRep U G hpq hA hC g f : Rul Xo c) = transl Xo c g f :=
@@ -360,7 +360,7 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {c : Coeff l}
 
 /- English proof (translation)
-Rewrite using `[hl.1]`. Conclude with `Nat.coprime_one_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTypeLevel.coprime (hl : IsTypeLevel l) : l.A.Coprime l.M := by
   rw [hl.1]; exact Nat.coprime_one_left _
@@ -379,20 +379,20 @@ def typeOp (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (e : MonoidAlgebra c.F (Le
 variable (hl : IsTypeLevel l) (fr : TypeFrame Dw l)
 
 /- English proof (translation)
-The claim follows from `(isRightAct_pull hpq hl.coprime).comp (typeEmb hl fr)`.
+A detailed English derivation is pending.
 -/
 theorem isRightAct_pullType (hpq : 1 ≤ Dw.p + Dw.q) : IsRightAct (pullType Xo c hl fr) :=
   (isRightAct_pull hpq hl.coprime).comp (typeEmb hl fr)
 
 /- English proof (translation)
-The claim follows from `(isRightAct_pullType hl fr hpq).algOp_mul e e'`.
+A detailed English derivation is pending.
 -/
 theorem typeOp_mul (hpq : 1 ≤ Dw.p + Dw.q) (e e' : MonoidAlgebra c.F (LevelGroup D.host)) :
     typeOp Xo c hl fr (e * e') = typeOp Xo c hl fr e * typeOp Xo c hl fr e' :=
   (isRightAct_pullType hl fr hpq).algOp_mul e e'
 
 /- English proof (translation)
-Rewrite using `[IsIdempotentElem, ← typeOp_mul hl fr hpq, he.eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isIdempotentElem_typeOp (hpq : 1 ≤ Dw.p + Dw.q) {e : MonoidAlgebra c.F (LevelGroup D.host)}
     (he : IsIdempotentElem e) : IsIdempotentElem (typeOp Xo c hl fr e) := by
@@ -424,26 +424,26 @@ def rankGood : ℕ := Formalism.HN.rkK (latGood hl fr U G ψ om j)
 def rankBad : ℕ := Formalism.HN.rkK (latBad hl fr U G ψ om j)
 
 /- English proof (translation)
-The claim follows from `latCap_le _ _`.
+A detailed English derivation is pending.
 -/
 theorem latN_le : latN fr U G ψ ≤ latW U G := latCap_le _ _
 
 /- English proof (translation)
-The claim follows from `mem_cutLat_iff (isIdempotentElem_typeOp hl fr hpq he)`.
+A detailed English derivation is pending.
 -/
 theorem mem_latGood_iff (hpq : 1 ≤ Dw.p + Dw.q) (he : IsIdempotentElem (goodIdemTw om j)) {F : cuspW Xo c U G} :
     F ∈ latGood hl fr U G ψ om j ↔ F ∈ latN fr U G ψ ∧ goodOp Xo c hl fr om j F = F :=
   mem_cutLat_iff (isIdempotentElem_typeOp hl fr hpq he)
 
 /- English proof (translation)
-The claim follows from `(mem_cutLat_iff (isIdempotentElem_typeOp hl fr hpq he).one_sub).trans (and_congr_right fun _ => sub_eq_self)`.
+A detailed English derivation is pending.
 -/
 theorem mem_latBad_iff (hpq : 1 ≤ Dw.p + Dw.q) (he : IsIdempotentElem (goodIdemTw om j)) {F : cuspW Xo c U G} :
     F ∈ latBad hl fr U G ψ om j ↔ F ∈ latN fr U G ψ ∧ goodOp Xo c hl fr om j F = 0 :=
   (mem_cutLat_iff (isIdempotentElem_typeOp hl fr hpq he).one_sub).trans (and_congr_right fun _ => sub_eq_self)
 
 /- English proof (translation)
-Rewrite using `[latCut, typeOp, (isRightAct_pullType hl fr hpq).algOp_eq, map_one, cutLat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (hpq : 1 ≤ Dw.p + Dw.q) : latCut hl fr U G ψ 1 = latN fr U G ψ := by
   rw [latCut, typeOp, (isRightAct_pullType hl fr hpq).algOp_eq, map_one, cutLat_one]
@@ -473,7 +473,7 @@ variable {V ι}
 abbrev levelOver (red : stabLat V →* LevelAut Dw l) (S : Subgroup (LevelAut Dw l)) : Subgroup (stabLat V) := S.comap red
 
 /- English proof (translation)
-The claim follows from `h.2.1 k`.
+A detailed English derivation is pending.
 -/
 theorem IsReduction.mem_ker {red : stabLat V →* LevelAut Dw l} (h : IsReduction V ι red) (k : stabLat V) :
     k ∈ red.ker ↔ (k : GA D V) ∈ prinLev V l.M := h.2.1 k

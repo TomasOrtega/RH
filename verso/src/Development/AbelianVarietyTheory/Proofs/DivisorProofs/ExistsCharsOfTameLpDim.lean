@@ -8,11 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TameInertiaChars
 
 /- English proof (translation)
-Establish `h1` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun g k _ => hc g k) fun g => Module.End.iSup_maxGenEigenspace_eq_top _`. Simplify using `only [fun g => (hs g).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace] at h1`. Set `T : Set (Fin n → ℂ)` to `{v | ∀ g, ∃ c : ℂ, f g v = c • v}`. Establish `h2 : ⊤ ≤ Submodule.span ℂ T`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iSup_le fun χ v hv => Submodule.subset_span fun g => ⟨χ g, Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hv g)⟩`. Set `B` to `Module.Basis.ofSpan h2`. Establish `h3` using `Module.Basis.ofSpan_subset h2`. Use `⟨B.reindex (B.indexEquiv (Pi.basisFun ℂ (Fin n))), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply]`.
-
-Conclude with `h3 ⟨_, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_eigen {n : ℕ} {Γ : Type} (f : Γ → Module.End ℂ (Fin n → ℂ))
     (hs : ∀ g, (f g).IsSemisimple) (hc : ∀ g k, Commute (f g) (f k)) :
@@ -32,9 +30,9 @@ theorem exists_basis_eigen {n : ℕ} {Γ : Type} (f : Γ → Module.End ℂ (Fin
   exact h3 ⟨_, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_toMatrix f B, ← Matrix.charpoly_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, hB, map_smul, B.repr_self, Matrix.diagonal_apply]`. Distinguish the cases in `e : i = j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, Ne.symm e, e]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem charpoly_of_basis {n : ℕ} (f : Module.End ℂ (Fin n → ℂ)) (B : Module.Basis (Fin n) ℂ (Fin n → ℂ))
     (c : Fin n → ℂ) (hB : ∀ j, f (B j) = c j • B j) : f.charpoly = ∏ j, (X - C (c j)) := by

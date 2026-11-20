@@ -12,9 +12,9 @@ section Gen
 variable {p : ℕ} [Fact p.Prime] {σ : Type}
 
 /- English proof (translation)
-Unfold `initPart`. Rewrite using `[coeff_sum]`. Simplify using `only [apply_ite (coeff n), coeff_monomial, coeff_zero]`. Rewrite using `[Finset.sum_eq_single n]`. Apply the tactic sequence `by_cases h : n v = e <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hn`. Establish `h0 : coeff n f = 0` using `by simpa [mem_support_iff] using hn`. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_initPart_eq_ite (v : σ) (e : ℕ) (f : MvPolynomial σ ℚ_[p]) (n : σ →₀ ℕ) :
     coeff n (initPart v e f) = if n v = e then coeff n f else 0 := by
@@ -31,7 +31,7 @@ private theorem coeff_initPart_eq_ite (v : σ) (e : ℕ) (f : MvPolynomial σ �
     simp [h0]
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem p_pow_ne_zero (n : ℕ) : ((p : ℚ_[p]) ^ n) ≠ 0 :=
   pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)
@@ -45,7 +45,7 @@ noncomputable def strip (p : ℕ) [Fact p.Prime] (v : σ) (e : ℕ) :
     rw [initPart_smul]; ext m; simp only [coeff_divMonomial, coeff_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Use `show coeff n ((initPart v e f).divMonomial (Finsupp.single v e)) = _`. Rewrite using `[coeff_divMonomial, coeff_initPart_eq_ite]`. Apply the tactic sequence `by_cases h : n v = 0 <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem coeff_strip (v : σ) (e : ℕ) (n : σ →₀ ℕ) (f : MvPolynomial σ ℚ_[p]) :
     coeff n (strip p v e f) = if n v = 0 then coeff (Finsupp.single v e + n) f else 0 := by
@@ -55,9 +55,9 @@ theorem coeff_strip (v : σ) (e : ℕ) (n : σ →₀ ℕ) (f : MvPolynomial σ 
   by_cases h : n v = 0 <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_strip, coeff_zero]`. Use `split_ifs with h`. Rewrite using `[coeff_monomial, if_neg]`. Introduce and unpack `rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hm` to reduce the goal to its premises. Simplify using `[h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem strip_monomial_ne (v : σ) (e : ℕ) (m : σ →₀ ℕ) (hm : m v ≠ e) :
     strip p v e (monomial m 1) = 0 := by
@@ -72,11 +72,11 @@ theorem strip_monomial_ne (v : σ) (e : ℕ) (m : σ →₀ ℕ) (hm : m v ≠ e
   · rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_strip, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h1 : n v = 0`. Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : m = n`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h2, if_neg]`. Introduce `h3`. Conclude with `h2 (add_left_cancel h3)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg]`. Introduce and unpack `rfl`. Conclude with `h1 hm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem strip_monomial_eq (v : σ) (e : ℕ) (m : σ →₀ ℕ) (hm : m v = 0) :
     strip p v e (monomial (Finsupp.single v e + m) 1) = monomial m 1 := by
@@ -96,16 +96,16 @@ theorem strip_monomial_eq (v : σ) (e : ℕ) (m : σ →₀ ℕ) (hm : m v = 0) 
     exact h1 hm
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monomial_single_add (v : σ) (e : ℕ) (m : σ →₀ ℕ) :
     (monomial (Finsupp.single v e + m) 1 : MvPolynomial σ ℚ_[p]) = X v ^ e * monomial m 1 := by
   rw [X_pow_eq_monomial, monomial_mul, one_mul]
 
 /- English proof (translation)
-Establish `hdisj : Disjoint (Finsupp.single v e).support m.support`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha hb`. Establish `ha'` using `Finsupp.support_single_subset ha`. Rewrite `ha'` using `[Finset.mem_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `ha'` using the available equality. Conclude with `(Finsupp.mem_support_iff.mp hb) hm`. Rewrite using `[Finsupp.prod_add_index_of_disjoint hdisj, Finsupp.prod_single_index (by simp)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_factorial_single_add_eq_mul (v : σ) (e : ℕ) (m : σ →₀ ℕ) (hm : m v = 0) :
     ((Finsupp.single v e + m).prod fun _ k => (k.factorial : ℚ_[p])) =
@@ -121,7 +121,7 @@ private theorem prod_factorial_single_add_eq_mul (v : σ) (e : ℕ) (m : σ →�
   rw [Finsupp.prod_add_index_of_disjoint hdisj, Finsupp.prod_single_index (by simp)]
 
 /- English proof (translation)
-Unfold `fock`. Use `Finset.sum_subset hS ?_` and prove the remaining obligations. Introduce `m _ hm`. Establish `h0 : F.coeff m = 0` using `by simpa [mem_support_iff] using hm`. Rewrite using `[h0, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fock_eq_sum_coeff_mul_factorial (F G : MvPolynomial σ ℚ_[p]) (S : Finset (σ →₀ ℕ)) (hS : F.support ⊆ S) :
     fock p F G = ∑ m ∈ S, F.coeff m * G.coeff m * (m.prod fun _ k => (k.factorial : ℚ_[p])) := by
@@ -132,7 +132,7 @@ private theorem fock_eq_sum_coeff_mul_factorial (F G : MvPolynomial σ ℚ_[p]) 
   rw [h0, zero_mul, zero_mul]
 
 /- English proof (translation)
-Unfold `fock`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases h m with h1 | h1 <;> simp [h1]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fock_eq_zero_of (F G : MvPolynomial σ ℚ_[p]) (h : ∀ m, coeff m F = 0 ∨ coeff m G = 0) : fock p F G = 0 := by
   unfold fock
@@ -140,11 +140,11 @@ theorem fock_eq_zero_of (F G : MvPolynomial σ ℚ_[p]) (h : ∀ m, coeff m F = 
   rcases h m with h1 | h1 <;> simp [h1]
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul']`. Use `split_ifs with h`. Rewrite using `[one_mul]`. Assume the negation of the conclusion as `hc`. Establish `hmem : (m - Finsupp.single v e) ∈ y.support` using `mem_support_iff.mpr hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `FreeOf at hy`. Rewrite `hy` using `[mem_restrictSupport_iff]`. Establish `h0 : (m - Finsupp.single v e) v = 0` using `hy (Finset.mem_coe.mpr hmem)`. Establish `hle : Finsupp.single v e v ≤ m v` using `(Finsupp.le_def.1 h) v`. Simplify using `only [Finsupp.tsub_apply, Finsupp.single_eq_same] at h0 hle`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coeff_pow_mul_ne (v : σ) (e : ℕ) (y : MvPolynomial σ ℚ_[p]) (hy : y ∈ FreeOf p v) (m : σ →₀ ℕ)
     (hm : m v ≠ e) : coeff m (X v ^ e * y) = 0 := by
@@ -163,15 +163,13 @@ theorem coeff_pow_mul_ne (v : σ) (e : ℕ) (y : MvPolynomial σ ℚ_[p]) (hy : 
   · rfl
 
 /- English proof (translation)
-Establish `hy' : ∀ m ∈ y.support, m v = 0`. Introduce `m hm`. Unfold `FreeOf at hy`. Rewrite `hy` using `[mem_restrictSupport_iff]`. Conclude with `hy (Finset.mem_coe.mpr hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoeff : ∀ (u : MvPolynomial σ ℚ_[p]) (m : σ →₀ ℕ), coeff (Finsupp.single v e + m) (X v ^ e * u) = coeff m u`. Introduce `u m`. Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul, one_mul]`. Establish `hsub : (X v ^ e * y).support ⊆ y.support.image (fun m => Finsupp.single v e + m)`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[mem_support_iff, X_pow_eq_monomial, coeff_monomial_mul']`. Use `split_ifs at hm with h`. Rewrite using `[Finset.mem_image]`. Use `⟨m - Finsupp.single v e, mem_support_iff.mpr (by simpa using hm), ?_⟩` and prove the remaining obligations. Conclude with `add_tsub_cancel_of_le h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd rfl hm`. Rewrite using `[fock_eq_sum_coeff_mul_factorial _ _ _ hsub, Finset.sum_image (fun a _ b _ h => add_left_cancel h)]`. Unfold `fock`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
-
-Rewrite using `[hcoeff, hcoeff, prod_factorial_single_add_eq_mul v e m (hy' m hm)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fock_pow_mul (v : σ) (e : ℕ) (y z : MvPolynomial σ ℚ_[p]) (hy : y ∈ FreeOf p v) :
     fock p (X v ^ e * y) (X v ^ e * z) = (e.factorial : ℚ_[p]) * fock p y z := by
@@ -207,7 +205,7 @@ section Last
 variable {p : ℕ} [Fact p.Prime] {K r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Unfold `XH XSp at hy`. Conclude with `(Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp hy).1).1).1).2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem xH_le_free (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
     (w : Fin r → ℤ) (y : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (hy : y ∈ XH p LL J M ρ w) :
@@ -216,15 +214,15 @@ theorem xH_le_free (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin
   exact (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp hy).1).1).1).2
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' x (fun u a => ?_) (fun f g hf hg => ?_)` and prove the remaining obligations. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt ‖a‖ (show (1 : ℝ) < p by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hp0 : (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `hpos : (0 : ℝ) < (p : ℝ) ^ n` using `pow_pos hp0 n`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖(p : ℚ_[p]) ^ n * a‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Unfold `IntPol`. Rewrite using `[LinearMap.mem_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩ : ∃ c : ℤ_[p], (c : ℚ_[p]) = (p : ℚ_[p]) ^ n * a` from `⟨⟨_, hle⟩, rfl⟩`. Use `⟨monomial u c, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, ← hc]`. Use `show MvPolynomial.map (algebraMap ℤ_[p] ℚ_[p]) _ = _`. Rewrite using `[map_monomial]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hg`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `key : ((p : ℚ_[p]) ^ (a + b)) • (f + g) = ((p : ℤ_[p]) ^ b) • (((p : ℚ_[p]) ^ a) • f) + ((p : ℤ_[p]) ^ a) • (((p : ℚ_[p]) ^ b) • g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul ℚ_[p] ((p : ℤ_[p]) ^ b) (((p : ℚ_[p]) ^ a) • f), ← algebraMap_smul ℚ_[p] ((p : ℤ_[p]) ^ a) (((p : ℚ_[p]) ^ b) • g)]`. Simplify using `only [map_pow, map_natCast, smul_smul, smul_add, ← pow_add, add_comm b a]`. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ ha) (Submodule.smul_mem _ _ hb)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_prime_pow_smul_mem_intPol {τ : Type} (x : MvPolynomial τ ℚ_[p]) :
     ∃ n : ℕ, ((p : ℚ_[p]) ^ n) • x ∈ IntPol p τ := by
@@ -259,7 +257,7 @@ private theorem exists_prime_pow_smul_mem_intPol {τ : Type} (x : MvPolynomial �
     exact Submodule.add_mem _ (Submodule.smul_mem _ _ ha) (Submodule.smul_mem _ _ hb)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨n, hn⟩` from `exists_prime_pow_smul_mem_intPol (p := p) x`. Take `⟨h', hY, -, hinit⟩` from `h _ (Submodule.smul_mem _ _ hx) hn`. Use `⟨((p : ℚ_[p]) ^ n)⁻¹ • h', Submodule.smul_mem _ _ hY, ?_⟩` and prove the remaining obligations. Rewrite using `[initPart_smul, hinit, smul_smul, inv_mul_cancel₀ (p_pow_ne_zero n), one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resOntoK_of_resSat (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
     (h : ResSat p LL J M ρ) : ResOntoK p LL J M ρ := by
@@ -270,13 +268,13 @@ theorem resOntoK_of_resSat (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) 
   rw [initPart_smul, hinit, smul_smul, inv_mul_cancel₀ (p_pow_ne_zero n), one_smul]
 
 /- English proof (translation)
-Establish `hMM` using `restriction_min_max_holds p K r (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ (shiftWt w ρ e) e1 hr hρ hv hP hE hO`. Establish `hGr` using `graded_eq_holds p K r LLw J M ρ w e hv he`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hle : grSpan p LLw J M ρ w e ≤ (XH p (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ (shiftWt w ρ e)).map (LinearMap.mulLeft ℚ_[p] (X (Fin.last K, ρ) ^ e : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]))`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `grSpan`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Take `⟨h, hh, rfl⟩` from `(hGr z).mp hz`. Use `Submodule.mem_map.mpr ⟨initPart (Fin.last K, ρ) 0 h, (hMM _).mpr ⟨h, ?_, rfl⟩, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.mem_inf.mp hh).1`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.mp (hle hx)`. Conclude with `⟨y, hy, hyx.symm⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨h, hh, rfl⟩` from `(hMM y).mp hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_smul_intPol h`. Establish `h1 : ((p : ℚ_[p]) ^ n) • h ∈ MMwZ p (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ (shiftWt w ρ e)` using `Submodule.mem_inf.mpr ⟨Submodule.smul_mem _ _ hh, hn⟩`. Establish `h2 : X (Fin.last K, ρ) ^ e * initPart (Fin.last K, ρ) 0 (((p : ℚ_[p]) ^ n) • h) ∈ grSpan p LLw J M ρ w e` using `Submodule.subset_span ((hGr _).mpr ⟨_, h1, rfl⟩)`. Establish `h3` using `(grSpan p LLw J M ρ w e).smul_mem (((p : ℚ_[p]) ^ n)⁻¹) h2`. Rewrite `h3` using `[initPart_smul, mul_smul_comm, smul_smul, inv_mul_cancel₀ (p_pow_ne_zero n), one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem grSpan_eq (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
     (w : Fin r → ℤ) (e e1 : ℕ) (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) (hv : LLw.vec (Fin.last K) = true)
@@ -318,9 +316,9 @@ theorem grSpan_eq (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin
 end Last
 
 /- English proof (translation)
-Introduce `p _ K r _ LLw q J M ρ w e e1 hr hρ hv he hP hE hS x hx hxI`. Take `⟨y, hy, rfl⟩` from `(grSpan_eq LLw J M ρ w e e1 hr hρ hv he hP hE (resOntoK_of_resSat _ J _ ρ hS) x).mp hx`. Rewrite `hxI` using `[pow_mul_int_iff]`. Take `⟨h, hh, hres⟩` from `restriction_min_max_int_holds p K r (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ (shiftWt w ρ e) e1 hr hρ hv hP hE hS y hy hxI`. Use `(graded_eq_holds p K r LLw J M ρ w e hv he _).mpr ⟨h, hh, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hres, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem saturation_at_holds : SatAtOf := by
   intro p _ K r _ LLw q J M ρ w e e1 hr hρ hv he hP hE hS x hx hxI
@@ -332,29 +330,29 @@ theorem saturation_at_holds : SatAtOf := by
   rw [hres, mul_smul_comm]
 
 /- English proof (translation)
-Introduce `p _ K r _ LLw q J M ρ w e e1 h1 h2 h3 h4 h5 h6 h7`. Take `⟨Pr', hPr'⟩` from `hX p K r (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ (shiftWt w ρ e) e1 h1 h2 h3 h5 h6`. Use `⟨(LinearMap.mulLeft ℚ_[p] (X (Fin.last K, ρ) ^ e)) ∘ₗ Pr' ∘ₗ strip p (Fin.last K, ρ) e, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Establish `hgr` using `grSpan_eq LLw J M ρ w e e1 h1 h2 h3 h4 h5 h6 h7`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfree : ∀ g ∈ grSpan p LLw J M ρ w e, ∃ y ∈ XH p (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ (shiftWt w ρ e), y ∈ FreeOf p (Fin.last K, ρ) ∧ g = X (Fin.last K, ρ) ^ e * y`. Introduce `g hg`. Take `⟨y, hy, rfl⟩` from `(hgr g).mp hg`. Conclude with `⟨y, hy, xH_le_free _ J _ ρ _ y hy, rfl⟩`. Distinguish the cases in `hme : m (Fin.last K, ρ) = e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Establish `hle : Finsupp.single (Fin.last K, ρ) e ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `hme.ge`. Take `⟨m', hm'v, hmm⟩ : ∃ m' : Fin (K + 1) × Fin r →₀ ℕ, m' (Fin.last K, ρ) = 0 ∧ m = Finsupp.single (Fin.last K, ρ) e + m'` from `⟨m - Finsupp.single (Fin.last K, ρ) e, by simp [hme], (add_tsub_cancel_of_le hle).symm⟩`. Substitute `hmm` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hMD : MultiDeg (setLast LLw (LLw.deg (Fin.last K) - e)) m'`. Unfold `MultiDeg at hm ⊢`. Introduce `i`. Establish `hi` using `hm i`. Express the relevant statement in the definitionally equal form `_ = Function.update LLw.deg (Fin.last K) (LLw.deg (Fin.last K) - e) i`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_apply]`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, Finsupp.single_apply, Prod.mk.injEq] at hi`. Distinguish the cases in `hik : i = Fin.last K`. Substitute `hik` using the available equality. Simplify using `at hi`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Use linear arithmetic over natural numbers and integers. Establish `hik' : ¬ Fin.last K = i` using `fun h => hik h.symm`. Simplify using `[hik'] at hi`. Rewrite using `[if_neg hik]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hi`. Take `⟨hP1, hP2, hP3⟩` from `hPr' m' hMD hm'v`. Establish `hPr : ((LinearMap.mulLeft ℚ_[p] (X (Fin.last K, ρ) ^ e)) ∘ₗ Pr' ∘ₗ strip p (Fin.last K, ρ) e) (monomial (Finsupp.single (Fin.last K, ρ) e + m') 1) = X (Fin.last K, ρ) ^ e * Pr' (monomial m' 1)`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, strip_monomial_eq _ _ _ hm'v]`. Rewrite using `[hPr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨(hgr _).mpr ⟨_, hP1, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `IntPol at hP2 ⊢`. Take `⟨z, hz⟩` from `LinearMap.mem_range.mp hP2`. Use `LinearMap.mem_range.mpr ⟨X (Fin.last K, ρ) ^ e * z, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap ℤ_[p] ℚ_[p]) z = _ at hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap ℤ_[p] ℚ_[p]) (X (Fin.last K, ρ) ^ e * z) = _`. Rewrite using `[map_mul, map_pow, map_X, hz, mul_smul_comm]`. Introduce `g hg`. Take `⟨y, hy, hyf, rfl⟩` from `hfree g hg`. Rewrite using `[fock_pow_mul _ _ _ _ hyf, hP3 y hy, monomial_single_add, fock_pow_mul _ _ _ _ hyf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPr : ((LinearMap.mulLeft ℚ_[p] (X (Fin.last K, ρ) ^ e)) ∘ₗ Pr' ∘ₗ strip p (Fin.last K, ρ) e) (monomial m 1) = 0`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, strip_monomial_ne _ _ _ hme, map_zero, map_zero]`. Rewrite using `[hPr]`. Use `⟨Submodule.zero_mem _, by rw [smul_zero]; exact Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hyf, rfl⟩` from `hfree g hg`. Rewrite using `[fock_eq_zero_of _ _ (fun n => Or.inr (coeff_zero n)), fock_eq_zero_of]`. Introduce `n`. Distinguish the cases in `hn : n = m`. Substitute `hn` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl (coeff_pow_mul_ne _ _ _ hyf _ hme)`. Use `right`. Rewrite using `[coeff_monomial, if_neg (Ne.symm hn)]`.
+A detailed English derivation is pending.
 -/
 theorem projAtOf_of (hX : ProjX) : ProjAtOf := by
   intro p _ K r _ LLw q J M ρ w e e1 h1 h2 h3 h4 h5 h6 h7
@@ -426,11 +424,11 @@ theorem projAtOf_of (hX : ProjX) : ProjAtOf := by
       rw [coeff_monomial, if_neg (Ne.symm hn)]
 
 /- English proof (translation)
-Introduce `p _ K r _ LLw q J M ρ e1 κ hr hρ hv hPE hS hκ w e k g hli hspan`. Distinguish the cases in `he : e ≤ LLw.deg (Fin.last K)`. Take `⟨hP, hE⟩` from `hPE (LLw.deg (Fin.last K) - e) (Nat.sub_le _ _)`. Use `graded_piece_bound_holds p K r LLw J M ρ w e ((K + 3) * e1) e1 κ (projAtOf_of hX p K r LLw J M ρ w e e1 hr hρ hv he hP hE (resOntoK_of_resSat _ J _ ρ (hS e he))) (saturation_at_holds p K r LLw J M ρ w e e1 hr hρ hv he hP hE (hS e he)) ?_ k g hli hspan` and prove the remaining obligations. Establish `: (K + 3) * e1 + 2 * e1 = (K + 5) * e1` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hκ`. Rewrite `hspan` using `[graded_bot_holds p K r LLw J M ρ w e (not_le.mp he)]`. Establish `hk : k = 0`. Assume the negation of the conclusion as `hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : g ⟨0, Nat.pos_of_ne_zero hk⟩ ∈ Submodule.span ℤ_[p] (Set.range g)` using `Submodule.subset_span ⟨_, rfl⟩`. Rewrite `h0` using `[hspan, Submodule.mem_bot]`. Conclude with `hli.ne_zero _ h0`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_bound_of_restriction_of_proj (hX : ProjX) : GramBoundOfRestriction := by
   intro p _ K r _ LLw q J M ρ e1 κ hr hρ hv hPE hS hκ w e k g hli hspan

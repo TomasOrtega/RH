@@ -17,14 +17,14 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂}
   {X : NTw D.R D.host D.what₂ D.LL0 N} (Y : NExp D.R D.host D.what₂ D.LL0 N X)
 
 /- English proof (translation)
-The claim follows from `(RingHom.charZero_iff ((IsFractionRing.map (A := X.O0 i) (B := X.O i) (K := FractionRing (X.O0 i)) (L := FractionRing (X.O i)) (X.O_inj i)).comp (X.emb0 i)).injective).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem charZero_frac (i : X.Tw) : CharZero (FractionRing (X.O i)) :=
   (RingHom.charZero_iff ((IsFractionRing.map (A := X.O0 i) (B := X.O i) (K := FractionRing (X.O0 i))
       (L := FractionRing (X.O i)) (X.O_inj i)).comp (X.emb0 i)).injective).1 inferInstance
 
 /- English proof (translation)
-Establish `h` using `congrArg (MonoidAlgebra.lift (FractionRing (X.O i)) (Module.End (FractionRing (X.O i)) (Y.Fm i j b)) (G0g N) (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (Y.actG i j b))) (Y.eAlg_idem i b)`. Rewrite `h` using `[map_mul]`. Conclude with `LinearMap.congr_fun h x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eG_eG (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) :
     Formalism.MainNotions.IntegralHeckeForms.eG Y i j b (Formalism.MainNotions.IntegralHeckeForms.eG Y i j b x) = Formalism.MainNotions.IntegralHeckeForms.eG Y i j b x := by
@@ -34,7 +34,7 @@ theorem eG_eG (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) :
   exact LinearMap.congr_fun h x
 
 /- English proof (translation)
-Take `⟨y, -, rfl⟩` from `hx`. Conclude with `eG_eG Y i j b y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_idempotent_fixes_mem_good_type_space (i : X.Tw) (j : ℕ) (b : Bool) {x : Y.Fm i j b} (hx : x ∈ V0 Y i j b) :
     Formalism.MainNotions.IntegralHeckeForms.eG Y i j b x = x := by
@@ -44,7 +44,7 @@ theorem good_idempotent_fixes_mem_good_type_space (i : X.Tw) (j : ℕ) (b : Bool
 open Formalism.MainNotions.IntegralHeckeForms in
 
 /- English proof (translation)
-Use `show ((D.what₂.restRowsFiniteGroupCard : ℕ) : X.O i) • eG Y i j b x = _`. Rewrite using `[← map_natCast (algebraMap (X.O i) (FractionRing (X.O i))), algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AO_eq (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) :
     AO Y i j b x = ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (X.O i)) • eG Y i j b x := by
@@ -54,7 +54,7 @@ theorem AO_eq (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) :
 open Formalism.MainNotions.IntegralHeckeForms in
 
 /- English proof (translation)
-Simplify using `only [Fm0, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `u`. Use `E.theta_base_equivariant i j b a ha u` as an intermediate fact. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem thetaSeries_mem_goodTypeForms (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) (a : Y.Dat i j b) (ha : a ∈ E.Dat0 i j b) :
     Y.th i j b a ∈ Fm0 Y i j b := by
@@ -66,9 +66,9 @@ theorem thetaSeries_mem_goodTypeForms (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : B
 open Formalism.MainNotions.IntegralHeckeForms in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[AO_eq]`. Use `Submodule.smul_mem _ _ ⟨y, ?_, rfl⟩` and prove the remaining obligations. Use `(Submodule.span_le (p := (Fm0 Y i j b).restrictScalars (X.O i))).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `thetaSeries_mem_goodTypeForms Y E i j b a ha`.
+A detailed English derivation is pending.
 -/
 theorem AO_Th_le (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) :
     ∀ x ∈ (Th Y i j b (SgJ Y E i j b)).map (AO Y i j b), x ∈ V0 Y i j b := by
@@ -82,9 +82,9 @@ theorem AO_Th_le (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool) :
 open Formalism.MainNotions.IntegralHeckeForms in
 
 /- English proof (translation)
-Use `haveI := charZero_frac (X := X) i`. Establish `hc : ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (X.O i)) ≠ 0` using `Nat.cast_ne_zero.2 D.what₂.restRowsFiniteGroupCard_pos.ne'`. Use `⟨subset_rfl, AO_Th_le Y E i j b, le_antisymm (Submodule.span_le.2 (AO_Th_le Y E i j b)) (h.trans ?_)⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e1 : eG Y i j b (Y.th i j b a) = ((D.what₂.restRowsFiniteGroupCard : ℕ) : FractionRing (X.O i))⁻¹ • AO Y i j b (Y.th i j b a)`. Rewrite using `[AO_eq, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[SetLike.mem_coe, e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, Submodule.subset_span ⟨a, ha, rfl⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fullRk_of_le (E : ExpDat Y) (i : X.Tw) (j : ℕ) (b : Bool)
     (h : V0 Y i j b ≤ Submodule.span (FractionRing (X.O i)) (eG Y i j b '' (Y.th i j b '' E.Dat0 i j b))) :
@@ -104,9 +104,9 @@ section Descent
 variable {ρ : Setup X} {i : X.Tw} {j : Fin D.R.m} {b : Bool}
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hz`. Consider the case `smul c x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem rd_mem_span (rd : Rd ρ Y i j b) (S : Set (Y.Fm i ((j : ℕ) + 1) b)) {y : Y.Fm i ((j : ℕ) + 1) b}
     (hy : y ∈ Submodule.span (FractionRing (X.O i)) S) : rd y ∈ Submodule.span ℂ (rd '' S) := by
@@ -117,15 +117,15 @@ theorem rd_mem_span (rd : Rd ρ Y i j b) (S : Set (Y.Fm i ((j : ℕ) + 1) b)) {y
   | smul c x _ hx => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `set W := Submodule.span (FractionRing (X.O i)) S`. Assume the negation of the conclusion as `hxW`. Set `bW` to `Module.finBasis (FractionRing (X.O i)) W`. Set `v : Fin (Module.finrank (FractionRing (X.O i)) W) → Y.Fm i ((j : ℕ) + 1) b` to `fun k => (bW k : Y.Fm i ((j : ℕ) + 1) b)`. Establish `hv : LinearIndependent (FractionRing (X.O i)) v` using `bW.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span (FractionRing (X.O i)) (Set.range v) = W`. Use `congrArg (Submodule.map W.subtype) bW.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `this`. Establish `hli : LinearIndependent (FractionRing (X.O i)) (Fin.cons x v : Fin _ → Y.Fm i ((j : ℕ) + 1) b)` using `linearIndependent_fin_cons.2 ⟨hv, by rw [hspan]; exact hxW⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `hf _ _ hli`. Establish `hC' : LinearIndependent ℂ (Fin.cons (rd x) (fun k => rd (v k)) : Fin _ → (GA D (Wc D j) → ℂ))`. Use `hC using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(linearIndependent_fin_cons.1 hC').2 ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Establish `hsW : s ∈ Submodule.span (FractionRing (X.O i)) (Set.range v)`. Rewrite using `[hspan]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.subset_span hs`. Use `rd_mem_span Y rd _ hsW` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_faithful {rd : Rd ρ Y i j b} (hf : Faithful rd) (S : Set (Y.Fm i ((j : ℕ) + 1) b))
     {x : Y.Fm i ((j : ℕ) + 1) b} (hx : rd x ∈ Submodule.span ℂ (rd '' S)) :
@@ -158,11 +158,11 @@ theorem mem_span_of_faithful {rd : Rd ρ Y i j b} (hf : Faithful rd) (S : Set (Y
 end Descent
 
 /- English proof (translation)
-Introduce `D ρ hρ rd T hF E i hR hall hS j hj b`. Establish `hj'` using `Finset.mem_Icc.1 hj`. Take `⟨j', rfl⟩ : ∃ j' : Fin D.R.m, j = (j' : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Use `fullRk_of_le D.nexp E i _ b ?_` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : rd i j' b x ∈ Submodule.span ℂ (rd i j' b '' (D.nexp.th i _ b '' E.Dat0 i _ b))`. Use `Submodule.span_mono ?_ (hS j' b x hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, h, P, hd, rfl⟩`. Take `⟨d, -, hc, hp⟩` from `(T i j' b).dat_onto s h P hd (hR j' b s h P hd)`. Use `⟨D.nexp.th i _ b d, ⟨d, hall _ hj b d, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(T i j' b).th_eq d, hc, hp]`. Establish `h2` using `mem_span_of_faithful D.nexp (hF i j' b) _ h1`. Rewrite using `[← good_idempotent_fixes_mem_good_type_space D.nexp i _ b hx]`. Establish `h3` using `Submodule.mem_map_of_mem (f := Formalism.MainNotions.IntegralHeckeForms.eG D.nexp i ((j' : ℕ) + 1) b) h2`. Rewrite `h3` using `[Submodule.map_span]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fullRk_of_spanGood : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), Comparison₂ hρ rd → (∀ i j b, Faithful (rd i j b)) → ∀ (E : IntegralHeckeForms.XD D) (i : D.ntw.Tw), (∀ j b, RatBase (rd i j b)) → (∀ j ∈ Finset.Icc 1 D.R.m, ∀ b a, a ∈ E.Dat0 i j b) → SpanGood rd i → ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, FullRk D.nexp E i j b (SgJ D.nexp E i j b) := by
   intro D ρ hρ rd T hF E i hR hall hS j hj b

@@ -23,9 +23,9 @@ def Poisson_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
 def ThetaW_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ), (∀ ε w, d.IsW ε w → ∀ Φ ∈ d.sch, d.om w Φ ∈ d.sch ∧ thetaSum F (d.om w Φ) = thetaSum F Φ) ∧
   ∃ Φ ∈ d.sch, thetaSum F Φ ≠ 0
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d ν hν ε w hw Φ hΦ X`. Take `⟨C, hC⟩` from `h1 F E σ d ν hν.1 ε w hw`. Take `⟨hθ, Φ₀, h0, hne⟩` from `h3 F E σ d`. Establish `e1` using `(hT F E σ d _ (hθ ε w hw Φ₀ h0).1).1.tsum_eq`. Establish `e2` using `(hT F E σ d _ h0).1.tsum_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `h2 F E σ d ν hν ε _ ((hB F E σ d).1 Φ₀ h0)`. Simplify using `only [hC Φ₀ h0] at e1`. Rewrite `e1` using `[tsum_mul_left, e3, e2, (hθ ε w hw Φ₀ h0).2]`. Establish `: C = 1` using `mul_right_cancel₀ hne (e1.trans (one_mul _).symm)`. Rewrite using `[hC Φ hΦ X, this, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tWeyl_of_k (hB : _root_.PositivityTheory.SiegelWeilFormula.TBij_k) (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (h1 : _root_.PositivityTheory.SiegelWeilFormula.TW.UpTo_k) (h2 : _root_.PositivityTheory.SiegelWeilFormula.TW.Poisson_k) (h3 : _root_.PositivityTheory.SiegelWeilFormula.TW.ThetaW_k) : _root_.PositivityTheory.SiegelWeilFormula.TWeyl_k := by
   intro F E _ _ _ _ _ σ d ν hν ε w hw Φ hΦ X

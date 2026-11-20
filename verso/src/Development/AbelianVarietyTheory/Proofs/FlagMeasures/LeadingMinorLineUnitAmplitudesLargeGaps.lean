@@ -31,11 +31,11 @@ open GlobalTheory.CellMinorLine GlobalTheory.BesselMove
 variable {k r q0 : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ R : Rep k r, (∀ i, p i = ν → R = X i) ∧ (n1 ν ≤ q0 → R.IsDG (PI.BesselPeriodGGP.eps48 k r) fun a => lam a + (ν a : ℝ))`. Introduce `ν`. Distinguish the cases in `h : ∃ i, p i = ν`. Take `⟨i, rfl⟩` from `h`. Conclude with `⟨X i, fun j hj => by rw [hp hj], fun _ => hX i⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hq : n1 ν ≤ q0`. Take `⟨R, hR⟩` from `hH.1.2.2.2.1 k r _ _ (hlam ν hq) hP (hgap ν hq)`. Conclude with `⟨R, fun i hi => absurd ⟨i, hi⟩ h, fun _ => hR⟩`. Conclude with `⟨R₀, fun i hi => absurd ⟨i, hi⟩ h, fun h' => absurd h' hq⟩`. Use `choose R h2 h3 using h1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨R, fun ν hν => h3 ν hν, fun i => h2 _ i rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_famG (hH : GlobalTheory.GapIn.Hyp) {lam : Fin (2 * r + k + 1) → ℝ}
     (hlam : ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 → IsHCParam fun a => lam a + (ν a : ℝ))
@@ -59,13 +59,13 @@ theorem exists_famG (hH : GlobalTheory.GapIn.Hyp) {lam : Fin (2 * r + k + 1) →
   exact ⟨R, fun ν hν => h3 ν hν, fun i => h2 _ i rfl⟩
 
 /- English proof (translation)
-Introduce `ν hν` and use `GlobalTheory.isDS_of_isDG (h ν hν)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFam_of_isFamG {lam : Fin (2 * r + k + 1) → ℝ} {R : (Fin (2 * r + k + 1) → ℤ) → Rep k r}
     (h : IsFamG lam q0 R) : IsFam lam q0 R := fun ν hν => GlobalTheory.isDS_of_isDG (h ν hν)
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Conclude with `GlobalTheory.T.amplitude_eq_smul_normalisedAmplitude_largeGap hH D τ w w' θ W lam A h l l' hθ hka hT hT' hW hA hg hok b1 b2 e1 e2`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem amp_eq (hH : GlobalTheory.GapIn.Hyp) (D : D7) {τ w w' θ} {W : LocW D.R.k D.R.rS} [CompleteSpace W.Wp]
     [CompleteSpace W.Wq]
@@ -93,31 +93,29 @@ theorem amp_eq (hH : GlobalTheory.GapIn.Hyp) (D : D7) {τ w w' θ} {W : LocW D.R
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨n1, n2, w0, η, hw0, hη, hJ⟩` from `amp_eq hH D hR hθ hka hT hT' hW hA₀ hg hok b1 b2 e1 e2`. Establish `hN : 0 < Real.sqrt ((Module.finrank ℂ W.Wp : ℝ) * (Module.finrank ℂ W.Wq : ℝ))`. Take `⟨v, -, hv⟩` from `n1`. Take `⟨v', -, hv'⟩` from `n2`. Use `haveI := nontrivial_of_ne _ _ hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := nontrivial_of_ne _ _ hv'`. Establish `a1 : 0 < Module.finrank ℂ W.Wp` using `Module.finrank_pos`. Establish `a2 : 0 < Module.finrank ℂ W.Wq` using `Module.finrank_pos`. Check the signs of the components of the expression. Establish `hI : ∀ I, ∃ (wI : (RI I).H) (ηI : ℂ), PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamI I) (RI I).σ wI ∧ (gd I → ‖ηI‖ = dI I * Real.sqrt ((Module.finrank ℂ W.Wp : ℝ) * (Module.finrank ℂ W.Wq : ℝ)) ∧ ∀ (ν : Measure (Mt D.R.k D.R.rS)) (γ : MatKR D.R.k D.R.rS), γ ∈ UH (Hpk D.R.k D …`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `I`. Distinguish the cases in `hI : gd I`. Take `⟨-, -, wI, ηI, h1, h2, h3⟩` from `amp_eq hH D (hRI I hI) hθ hka hT hT' hW (hAI I hI) (hDI I).2 hok (bI1 I) (bI2 I) (eI1 I) (eI2 I)`. Conclude with `⟨wI, ηI, h1, fun _ => ⟨by rw [h2, hdI I _ (ne_zero_of_low h1)], h3⟩⟩`. Take `⟨wI, -, h1⟩` from `GlobalTheory.exists_isLowUnitH_of_isDSHpk (hDI I).1.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨wI, 0, h1, fun h' => absurd h' hI⟩`. Use `choose wI ηI hwI hηI using hI`. Rewrite `hη` using `[hd _ (ne_zero_of_low hw0)]`. Take `⟨c, hc, hdeg⟩` from `GlobalTheory.GapDegreeTie.deg_eq_mul_fdegH hH D τ w w' θ W hcd hW`. Establish `hη0 : ∀ I, gd I → ηI I ≠ 0` using `fun I hI => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← norm_pos_iff, (hηI I hI).1]`. Conclude with `mul_pos (hdI0 I) hN`. Use `⟨fun I => if gd I then (Real.sqrt (d / dI I) : ℂ) * (η / d * ((ep I : ℂ) * κ₁ I * star (κ₀ I) * dI I) / ηI I) else 0, fun I hI => if_neg hI, fun I => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hI : gd I`. Apply the tactic sequence `have he : ‖(ep I : ℂ)‖ = 1 := by rcases hTH.ep_sq I with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Use `hdI0 I` as an intermediate fact. Simplify using `only [if_pos hI, norm_mul, norm_div, he, norm_star, hη, (hηI I hI).1, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd0, abs_of_pos this, abs_of_nonneg (Real.sqrt_nonneg _)]`. Use `le_of_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify using `only [if_neg hI, norm_zero]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Introduce `μsec K hK hM hMI γ p hγ θ' hθ' νR hν`. Take `⟨g₀, μR, ν₀, ν, s, hcell, hν₀, hD, hs⟩` from `GlobalTheory.T.amplitudes_relevant_cell_monomial_rep D τ w w' θ W hW lam A₀ hA₀ hT hT' hθ hka γ p hγ θ' hθ' νR hν`. Establish `hμ : W.μN = (toBessel D τ w w' θ W lam A₀ hW hA₀ hT hT').μN` using `hW.2.2.2.2.2.2.2.2.2.2.2.1`. Rewrite `e1`, `e2`, `eI1`, `eI2` using `[hμ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, mul_div_assoc]`. Conclude with `(mul_pos two_pos hka).ne'`. Establish `key` using `GlobalTheory.T.amplitude_pieri_relevantCell_largeGap hH hKF hCC D.R.k D.R.rS _ _ (cmp l) (cmp l (Hpk D.R.k D.R.rS)) l (toBessel D τ w w' θ W lam A₀ hW hA₀ hT hT') R RI io pr ep lam lamI h W.μG _ _ B B' BI BI' w0 wI κ₀ κ₁ hDS hg hDI hok hgc hc0 ENNReal.ofReal_ne_top hW.2.2.2.2.2.2 …`. Rewrite `key` using `[GlobalTheory.PrincipalMinorExterior.pairing_eq_leading_minor, hd _ (ne_zero_of_low hw0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDm : DminN W.z W.z' g₀ l = ((Zhat D.R.k D.R.rS W.z W.z' g₀).submatrix (Fin.castLE hl) (Fin.castLE hl)).det`. Rewrite using `[DminN, dif_pos (by omega)]; rfl`. Establish `hdc : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hd0.ne'`. Rewrite using `[hD, jhUnit, hs _ _ hA₀, hJ _ _ hcell.1 hν₀, hM, deg_eq hR (fun v hv => hdeg _ _ hA₀ ⟨h, hg, hok⟩ v hv) hd (ne_zero_of_low hw0)]`. Use `set M : ℂ := (((ENNReal.ofReal (K / (c * d))).toReal ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) with hMd`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : DminN W.z W.z' g₀ l • M • s • η • amp R B B' w0 ν₀ g₀ = (M * s * η / d) • (DminN W.z W.z' g₀ l * (d : ℂ)) • amp R B B' w0 ν₀ g₀`. Simplify using `only [smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `key' : (DminN W.z W.z' g₀ l * (d : ℂ)) • amp R B B' w0 ν₀ g₀ = ∑ I, ((ep I : ℂ) * κ₁ I * star (κ₀ I) * (PI.BesselPeriodGGP.fdegH W.μG (RI I).σ (wI I) : ℂ)) • amp (RI I) (BI I) (BI' I) (wI I) ν₀ g₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDm]`. Conclude with `key`. Rewrite using `[e, key', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hdI I _ (ne_zero_of_low (hwI I))]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `beta_reduce`. Distinguish the cases in `hI : gd I`. Rewrite using `[if_pos hI, jhUnit, hs _ _ (hAI I hI), (hηI I hI).2 _ _ hcell.1 hν₀, hMI I hI, deg_eq (hRI I hI) (fun v hv => hdeg _ _ (hAI I hI) ⟨h, (hDI I).2, hok⟩ v hv) (hdI I) (ne_zero_of_low (hwI I)), hMd, rpow_ratio hK hc hd0 (hdI0 I)]`. Simplify using `only [smul_smul]`. Use `congr 1`.
-
-Use `hη0 I hI` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg hI]`. Apply the tactic sequence `rcases hz I hI with h0 | h0 <;> simp only [h0, mul_zero, zero_mul, star_zero, zero_smul, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem line_of_tens (hH : GlobalTheory.GapIn.Hyp) (hKF : GlobalTheory.GapIn.AmpKF0) (hCC : CellConv) (D : D7) {τ w w' θ}
     {W : LocW D.R.k D.R.rS}
@@ -254,9 +252,9 @@ variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Complet
   {z : Fin (2 * r + k + 1) → ℂ} {π : MM k r → (Wp →L[ℂ] Wp)} {μW μN μG νq : Measure (Mt k r)} {t : MM k r}
 
 /- English proof (translation)
-Establish `hU` using `urep_of_isDS hR`. Take `⟨h1, h2⟩` from `(GlobalTheory.BesselMoveGap.bessel_move_gap hH k r Wp z π u c μW μN μG νq t ht hN hc hψ hS).2 R hU`. Use `⟨(h1 _).2 ?_, h2 l₁ hl⟩` and prove the remaining obligations. Establish `e : (fun v => l₁ (R.σ t⁻¹ (R.σ t v))) = l₁`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← sig_mul hU (inv_mem ht) ht, inv_mul' ht, sig_one hU]`. Rewrite using `[e]`. Conclude with `hl.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moved (hH : GlobalTheory.GapIn.Hyp) {u : ℕ → ℝ} {c : ℂ} (ht : t ∈ GG k r)
     (hN : ∀ n, n ∈ Nset k r ↔ t * n * t⁻¹ ∈ Nset k r)
@@ -278,7 +276,7 @@ theorem moved (hH : GlobalTheory.GapIn.Hyp) {u : ℕ → ℝ} {c : ℂ} (ht : t 
 
 omit [FiniteDimensional ℂ Wp] in
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `GlobalTheory.exists_isLowUnitH_of_isDSHpk (hS.2.1 ν hν).2`. Rewrite using `[← (hS.2.2.2 ν hν).2.2 w (ne_zero_of_low hw), hc _ _ (hS.2.1 ν hν) w (ne_zero_of_low hw)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_eq {lam u b bv ga h R l dg}
     (hS : SetupG (k := k) (r := r) lam u b bv ga h q0 z π μW μN μG νq R l dg) {c : ℝ}
@@ -290,7 +288,7 @@ theorem dg_eq {lam u b bv ga h R l dg}
 
 omit [FiniteDimensional ℂ Wp] in
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _).1 hS`.
+A detailed English derivation is pending.
 -/
 theorem setupG_of {lam u b bv ga h R l dg}
     (hS : Setup (k := k) (r := r) lam u b bv ga h q0 z π μW μN μG νq R l dg) :
@@ -298,23 +296,21 @@ theorem setupG_of {lam u b bv ga h R l dg}
   (GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _).1 hS
 
 /- English proof (translation)
-Establish `hSG` using `setupG_of hS`. Establish `hSG'` using `setupG_of hS'`. Establish `hν0 : n1 ν ≤ q0` using `by omega`. Establish `hνl : n1 ν + l ≤ q0` using `by nlinarith`. Establish `hR` using `hS.2.1 ν hν0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRG` using `hSG.2.1 ν hν0`. Establish `hRIG` using `fun J : Sub (2 * r + k + 1) l => hSG'.2.1 _ (firstNorm_add_subsetIndicator_le hνl J)`. Establish `hRI` using `fun J : Sub (2 * r + k + 1) l => hS'.2.1 _ (firstNorm_add_subsetIndicator_le hνl J)`. Establish `hU` using `urep_of_isDS hR`. Establish `hb` using `GlobalTheory.rep_basic_of_isDS hH.1.1.2.2.1 k r _ _ _ hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz' : NzOn (F ν) (l₁ ν)`. Take `⟨v, hv, hv0⟩` from `hnz`. Conclude with `⟨_, sig_sm hU (inv_mem ht) (hb.2.2.2.2.1 v (hb.2.2.2.2.2.2.1 v hv)), hv0⟩`. Take `⟨⟨κ₁, hκ⟩, hdual⟩` from `Gp91.GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH.1 k r _ _ _ _ l _ _ io pr ep _ _ _ Wp z π u μW μN' μG _ _ (l₁ ν) hRG hRIG (GlobalTheory.WedgeFRep.isFRep_cmp k r l) hT hS.2.2.1 (GlobalTheory.T.flagWedge_fixed_and_length_eq_prod_distances k r l hl z hS.2.2.1.1).1 …`. Establish `hnI : κ₁ ≠ 0 → NzOn (F' (ν + eZ I.1)) (m₁ (ν + eZ I.1))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨v, hv, hv0⟩` from `hnz'`. Use `⟨_, ?_, by rw [hκ v hv]; exact smul_ne_zero h0 hv0⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem (F' (ν + eZ I.1)).smSub fun c _ => (hT.raw.pr_sm I c).mem _ (Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hv)`. Establish `hH1 : 0 ≤ Hsq r (Tz k r z) b ^ l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.NumFam.num_fam k r _ _ _ _ _ _ _ hS.1).1` as an intermediate fact. Establish `hb0 : 0 ≤ b` using `by linarith [this.1, this.2.1]`. Unfold `Hsq`. Check the signs of the components of the expression. Use `⟨S * κ₁, kappa_move hT.raw hU (inv_mem ht) hω (hS.2.2.2 ν hν0).1.1.2.1 I hκ, ?_, fun h0 v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, mul_pow, mul_assoc, mul_div_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Distinguish the cases in `h0 : κ₁ = 0`. Simplify `hH1` using `[h0]`. Break down `hFF with rfl | ⟨rfl, h2, rfl⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hc⟩` from `Gp91.GlobalTheory.BesselDegree.schur_fdeg hH.1 k r (PI.BesselPeriodGGP.eps48 k r) μG hS.2.2.1.2.2.2.2.2.2.1`. Establish `e : ν + eZ I.1 = ν`. Rewrite using `[Finset.card_eq_zero.1 I.2]`. Use function extensionality and compare the values at `a`. Simplify using `[eZ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : dg' (ν + eZ I.1) = dg ν`. Rewrite using `[e, dg_eq hSG (fun mu R h => (hc mu R h).1) hν0, dg_eq hSG' (fun mu R h => (hc mu R h).1) hν0]`. Rewrite using `[e2, mul_div_assoc, div_self (hS.2.2.2 ν hν0).2.1.ne', mul_one, pow_zero]`. Conclude with `kappa_zero hT _ I hκ (hdual κ₁ hκ) (hnI h0)`. Take `rfl` from `eq_of_heq h2`.
-
-Conclude with `GlobalTheory.T.besselExteriorPower_constant_bound_largeGap hH k r Wp lam u b bv ga h q0 z π μW μN' μG _ _ _ _ hS l hl ν hν io pr ep hT hnz' I κ₁ (hnI h0) hκ`. Apply the tactic sequence `exact mass_move (urep_of_isDS (hRI I)) ht (hS'.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).2.1 (GlobalTheory.quotMeas_ae_mem_and_measurable hH.1.1.2.2.1 k r _ _ _ Wp z π u μW μN' μG _ hR hS.2.2.1).1 (((Gp91.GlobalTheory.T.bessel_functional_l2_bound_and_isometry hH.1 k r Wp …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem side_kappa (hH : GlobalTheory.GapIn.Hyp) (ht : t ∈ GG k r) {lam u u' b bv ga h F F' l₁ m₁ dg dg'}
     {μN' : Measure (Mt k r)}
@@ -386,7 +382,7 @@ theorem side_kappa (hH : GlobalTheory.GapIn.Hyp) (ht : t ∈ GG k r) {lam u u' b
 end side
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trivialWedgeDecomposition_discreteSeries_largeGaps`.
+A detailed English derivation is pending.
 -/
 theorem tens_zero : HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ)
     (F F' : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (ν : Fin (2 * r + k + 1) → ℤ), Num k r lam u b bv ga h q0 →
@@ -395,13 +391,11 @@ theorem tens_zero : HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ
   GlobalTheory.T.trivialWedgeDecomposition_discreteSeries_largeGaps
 
 /- English proof (translation)
-Distinguish the cases in `hl : l = 0`. Take `⟨F, hF, h1⟩` from `exists_famG hH hlam hgap hP (fun _ : Unit => ν) (fun _ _ _ => rfl) (fun _ => R₀) (fun _ => h0) R₀`. Take `⟨F', hF', h2⟩` from `exists_famG hH hlam hgap hP (fun I : {I // gd I} => ν + eZ I.1.1) ((eZ_inj ν).comp Subtype.val_injective) (fun I => X I.1) (fun I => hX I.1 I.2) R₀`. Conclude with `⟨F, F', hF, hF', h1 (), fun I hI => h2 ⟨I, hI⟩, Or.inl hl⟩`. Establish `hne : ∀ I : Sub (2 * r + k + 1) l, ν ≠ ν + eZ I.1` using `fun I h => by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `Finset.card_pos.1 (by rw [I.2]; omega : 0 < I.1.card)`. Use `congrFun h a` as an intermediate fact. Simplify using `[eZ, ha] at this`. Take `⟨F, hF, h1⟩` from `exists_famG hH hlam hgap hP (fun i : Option {I // gd I} => i.elim ν fun I => ν + eZ I.1.1) (by`. Introduce and unpack `(_ | I) (_ | J) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `absurd h (hne _)`. Conclude with `absurd h.symm (hne _)`. Conclude with `congrArg some (Subtype.ext (eZ_inj ν h)))`. Use the proof step `(fun i => i.elim R₀ fun I => X I.1) (by`.
-
-Introduce and unpack `(_ | I)`. Conclude with `h0`. Conclude with `hX I.1 I.2) R₀`. Conclude with `⟨F, F, hF, hF, h1 none, fun I hI => h1 (some ⟨I, hI⟩), Or.inr rfl⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fams (hH : GlobalTheory.GapIn.Hyp) {lam : Fin (2 * r + k + 1) → ℝ}
     (hlam : ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 → IsHCParam fun a => lam a + (ν a : ℝ))
@@ -439,69 +433,59 @@ theorem exists_fams (hH : GlobalTheory.GapIn.Hyp) {lam : Fin (2 * r + k + 1) →
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hH hKF hCC Cg cb Cu cT CT C0 C1`. Use `⟨2 * (2 * Cg + 2) + 2 * (|CT| + 20 * max 2 Cu) + 2 * max 2 Cu, fun Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₁, hJ⟩` from `GlobalTheory.T.openCellAmplitudeNorm_eq_const_div_degree_largeGap hH hKF hCC Cg cb Cu cT CT C0 C1 (Cn + 1)`. Use `⟨max m₁ (Cn + 1), fun D large₂ C' Cl hCl hBig hcd hZ τ w w' hTT θ hθw W hW lam' hlam A₀ hA₀ l hl => ⟨1, Or.inl rfl, fun AI hAI => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [one_smul] at hAI ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI := FiniteDimensional.complete ℂ W.Wp`. Use `haveI := FiniteDimensional.complete ℂ W.Wq`. Use `replace hJ := hJ D large₂ C' Cl hCl ⟨hBig.1, hBig.2.1, (le_max_left _ _).trans hBig.2.2⟩ hcd hZ τ w w' hTT θ hθw W hW`. Take `⟨-, -, hbe, hm, -, -, -, hmk, hv, -, hka, hvb, hg1, hgb, hCg, -, hTb, -, -⟩` from `GlobalTheory.Amp.SizesProof.sizes_of_hyp D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ`. Establish `hb1 : 1 ≤ large₂.sc.b` using `by linarith [Real.exp_one_gt_d9]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : 0 < θ` using `lt_of_lt_of_le (by positivity) hθw.1`. Establish `hka0 : 0 < D.host.ka / gg D` using `by rw [hka]; have := Real.pi_pos; positivity`. Establish `hT : 0 < Tr D w` using `by unfold Tr; exact_mod_cast hTT.1.pos`. Establish `hT' : 0 < Tr D w'` using `by unfold Tr; exact_mod_cast hTT.2.1.pos`. Establish `hmR : (D.R.m : ℝ) = 2 * D.R.rS + 2` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : (0 : ℝ) ≤ D.R.rS` using `Nat.cast_nonneg _`. Establish `hlR : (l : ℝ) ≤ D.R.rS + 1` using `by exact_mod_cast hl`. Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hm2 : (D.R.m : ℝ) ^ 2 ≤ D.R.k * (D.R.m : ℝ) ^ 3`. Establish `: (D.R.m : ℝ) ^ 2 ≤ (D.R.m : ℝ) ^ 3` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Use polynomial arithmetic with `[pow_nonneg (show (0 : ℝ) ≤ D.R.m by linarith) 3]`. Take `⟨hNum, hgc, heps⟩` from `GlobalTheory.T.momentPieriNumerics_of_sizeHyps D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w (fun n => if h : n - 1 < D.R.k then uS D w τ ⟨n - 1, h⟩ else 0) (fun i => by simp)`. Take `⟨⟨hbv, hbv', hnb, -, hok⟩, hnum⟩` from `GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hNum`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨ν, rfl⟩ : ∃ ν : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, lam' = fun a => lamD D τ a + (ν a : ℝ)` from `by choose x hx using hA₀.1.2 choose y hy using hNum.2.1.2`. Use `⟨x - y, funext fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Int.cast_sub]`. Combine the linear relations using `[hx a, hy a]`. Establish `hdist : ∀ μ : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, l1dist (fun a => lamD D τ a + (μ a : ℝ)) (lamD D τ) = n1 μ` using `fun μ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[l1dist, n1]`. Rewrite `hlam` using `[hdist]`. Establish `hν : n1 ν + (D.R.rS + 1) * (D.R.rS + 2) ≤ D.R.k * D.R.m ^ 5`. Establish `h1 : Cn + 1 ≤ (D.R.m : ℝ) ^ 2` using `by nlinarith [(le_max_right _ _).trans hBig.2.2]`. Establish `h2 : (Cn + 1) * (D.R.k * (D.R.m : ℝ) ^ 3) ≤ (D.R.m : ℝ) ^ 2 * (D.R.k * (D.R.m : ℝ) ^ 3)` using `mul_le_mul_of_nonneg_right h1 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((D.R.rS : ℝ) + 1) * (D.R.rS + 2) ≤ (D.R.m : ℝ) ^ 2` using `by rw [hmR]; nlinarith`. Establish `: (n1 ν : ℝ) + ((D.R.rS : ℝ) + 1) * (D.R.rS + 2) ≤ D.R.k * (D.R.m : ℝ) ^ 5` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hν0 : n1 ν ≤ D.R.k * D.R.m ^ 5` using `by omega`. Establish `hνl : n1 ν + l ≤ D.R.k * D.R.m ^ 5` using `by nlinarith`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hsh : ∀ I : Finset (Fin (2 * D.R.rS + D.R.k + 1)), (fun a => lamD D τ a + (ν a : ℝ)) + epsI I = fun a => lamD D τ a + ((ν + eZ I) a : ℝ)` using `fun I => by`. Use function extensionality and compare the values at `a`. Simplify using `only [epsI, eZ, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Simplify using `only [hsh] at hAI ⊢`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgapF : ∀ μ : Fin (2 * D.R.rS + D.R.k + 1) → ℤ, n1 μ ≤ D.R.k * D.R.m ^ 5 → ∃ h, GapAtLeast (PI.BesselPeriodGGP.eps48 D.R.k D.R.rS) (fun a => lamD D τ a + (μ a : ℝ)) h ∧ Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h` using `fun μ hμ => ⟨_, (hnum μ hμ).2.2.1, hok⟩`. Take `⟨F, F', hFG, hFG', hF0, hFI, hFF⟩` from `exists_fams hH (fun μ h => (hnum μ h).1) hgapF (by rw [heps]; obtain ⟨P, hP, -⟩ := hA₀.2.1; exact ⟨P, hP⟩) ν ⟨A₀.H, A₀.σ⟩ (by`. Use `⟨?_, ?_, hgapF ν hν0⟩` and prove the remaining obligations. Conclude with `hA₀.1`. Rewrite using `[heps]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA₀.2.1)`. Use the proof step `(fun I : Sub _ l => ∃ A : LocS W, GoodS D (fun a => lamD D τ a + ((ν + eZ I.1) a : ℝ)) A)`. Use the proof step `(fun I => ⟨(AI I.1).H, (AI I.1).σ⟩)`. Use the proof step `(fun I hI => by`. Use `⟨?_, ?_, hgapF _ (firstNorm_add_subsetIndicator_le hνl I)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hAI I.1 I.2 hI).1`. Rewrite using `[heps]`. Conclude with `(hAI I.1 I.2 hI).2.1)`. Establish `hF` using `isFam_of_isFamG hFG`. Establish `hF'` using `isFam_of_isFamG hFG'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, mul_div_assoc]`. Conclude with `(mul_pos two_pos hka0).ne'`. Take `⟨t, ht, hNt, hz, hs⟩` from `GlobalTheory.TorusScale.exists_torus_scale D.R.k D.R.rS _ hc0`. Use `choose s hs0 hs1 hs2 hs3 using hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod` using `GlobalTheory.T.amplitudeLocalData_momentPieriHypotheses hH D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w w' θ W hTT hθ hW t ht hNt (fun z h => (hz z h).2)`. Take `⟨U, U', l₁, l₂, dg, S1, S2⟩` from `hmod F hF`. Choose the witnesses or unpack the hypotheses as in `⟨V, V', m₁, m₂, dg', T1, T2, hE⟩ : ∃ V V' m₁ m₂ dg', Setup (lamD D τ) V (large₂.sc.b ^ max 2 Cu) (bOne D τ 1) ((D.R.r : ℝ) * (D.R.m : ℝ) ^ 10) ((D.R.r : ℝ) ^ 19) (D.R.k * D.R.m ^ 5) W.z W.π W.μW (W.μN.map fun x => fun i j => (t⁻¹ * Matrix.of x * t) i j) W.μG (W.νS.map fun x => fu …`. Break down `hFF with h | rfl` into its components or cases. Take `⟨V, V', m₁, m₂, dg', T1, T2⟩` from `hmod F' hF'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨V, V', m₁, m₂, dg', T1, T2, Or.inl h⟩`. Conclude with `⟨U, U', l₁, l₂, dg, S1, S2, Or.inr ⟨rfl, HEq.rfl, HEq.rfl, rfl⟩⟩`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN`. Rewrite using `[hW.2.2.2.2.2.2.2.2.2.2.2.1]`. Conclude with `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical _ _ _ (ENNReal.ofReal_pos.2 (by positivity)) ENNReal.ofReal_lt_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z1` using `hW.2.2.1`. Establish `z2` using `hW.2.2.2.1`. Establish `G1 : SideG D.R.k D.R.rS W.z W.π U W.μW W.μN W.μG W.νS` using `⟨z1, S1.2.2.1.2.1, S1.2.2.1.2.2.1, S1.2.2.1.2.2.2.1, S1.2.2.1.2.2.2.2.1, hNH, hW.2.2.2.2.2.2.1, hW.2.2.2.2.2.2.2.2.2.2.2.2.1⟩`. Establish `G2 : SideG D.R.k D.R.rS W.z' W.π' U' W.μW' W.μN W.μG W.νS'` using `⟨z2, S2.2.2.1.2.1, S2.2.2.1.2.2.1, S2.2.2.1.2.2.2.1, S2.2.2.1.2.2.2.2.1, hNH, hW.2.2.2.2.2.2.1, hW.2.2.2.2.2.2.2.2.2.2.2.2.2⟩`. Establish `hDS` using `hF ν hν0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDI` using `fun I : Sub _ l => hF' _ (firstNorm_add_subsetIndicator_le hνl I)`. Choose the witnesses or unpack the hypotheses as in `⟨io, pr, ep, hTH⟩ : ∃ io pr ep, TensH (cmp l) (cmp l (Hpk D.R.k D.R.rS)) (F ν) (fun I : Sub _ l => F' (ν + eZ I.1)) io pr ep := by`. Break down `hFF with h0 | h1` into its components or cases. Substitute `h0` using the available equality. Conclude with `tens_zero hH.1 _ _ _ _ _ _ _ _ _ F F' ν hNum hFG hFG' (by nlinarith)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Conclude with `(Gp91.GlobalTheory.T.pieri_tensor_decomposition hH.1 _ _ _ _ _ _ _ _ _ F hNum hFG ν).1 l hνl`. Take `⟨b1, e1⟩` from `moved hH ht hNt (hz _ z1).2.1 (hz _ z1).2.2 G1 hDS (S1.2.2.2 ν hν0).1`. Take `⟨b2, e2⟩` from `moved hH ht hNt (hz _ z2).2.1 (hz _ z2).2.2 G2 hDS (S2.2.2.2 ν hν0).1`. Establish `bI1` using `fun I : Sub _ l => moved hH ht hNt (hz _ z1).2.1 (hz _ z1).2.2 G1 (hDI I) (T1.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bI2` using `fun I : Sub _ l => moved hH ht hNt (hz _ z2).2.1 (hz _ z2).2.2 G2 (hDI I) (T2.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).1`. Establish `hDIG` using `fun I : Sub _ l => hFG' _ (firstNorm_add_subsetIndicator_le hνl I)`. Establish `hgap` using `fun μ h => (hnum μ h).2.2.1`. Rewrite `hDS`, `hDI`, `hgap`, `hDIG` using `[heps]`. Take `⟨n₁, n₂, -⟩` from `amp_eq hH D hF0 hθ hka0 hT hT' hW hA₀ (hgap ν hν0) hok b1 b2 e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose κ₀ hκ₀ hb₀ hm₀ using side_kappa hH ht S1 T1 hl (hE.imp id fun h => ⟨h.1, h.2.1, h.2.2.2⟩) hν hTH (cmp_wedge_eigen _ _ (fun a => s (Fin.castLE hl a)) fun a => hs3 _ _ z1) n₁`. Use `choose κ₁ hκ₁ hb₁ hm₁ using side_kappa hH ht S2 T2 hl (hE.imp id fun h => ⟨h.1, h.2.2.1, h.2.2.2⟩) hν hTH (cmp_wedge_eigen _ _ (fun a => s (Fin.castLE hl a)) fun a => hs3 _ _ z2) n₂`. Establish `hd0` using `(S1.2.2.2 ν hν0).2`. Establish `hdI` using `fun I : Sub _ l => (T1.2.2.2 _ (firstNorm_add_subsetIndicator_le hνl I)).2`. Take `⟨a, ha0, ha1, ha2⟩` from `line_of_tens hH hKF hCC D hcd hθ hka0 hT hT' hW hA₀ hl (AI := fun I => AI I.1) (fun I hI => hAI I.1 I.2 hI) hF0 hFI hDS (hgap ν hν0) (fun I => ⟨hDI I, hgap _ (firstNorm_add_subsetIndicator_le hνl I)⟩) hok hgc hTH b1 b2 e1 e2 (fun I => (bI1 I).1) (fun I => (bI2 I).1) (fun I => (bI …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hI (GlobalTheory.T.exists_goodLocalDatum_of_nonzero_periods_gap hH D τ w w' θ W _ _ 0 _ _ _ hcd hW (hDIG I) (bI1 I).1 (bI2 I).1 (hdI I).1 (hm₀ I hn.1) (hm₁ I hn.2)))`. Use the proof step `hd0.1 (fun I => (hdI I).1) hd0.2 (fun I => (hdI I).2)`. Establish `hsum : ∀ {E : Type} [AddCommMonoid E] (f : Finset (Fin (2 * D.R.rS + D.R.k + 1)) → E), ∑ I ∈ univ.filter (fun I => I.card = l), f I = ∑ I : Sub _ l, f I.1` using `fun f => Finset.sum_subtype _ (by simp) f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `haI : ∀ I : Sub (2 * D.R.rS + D.R.k + 1) l, (if h : I.1.card = l then a ⟨I.1, h⟩ else 0) = a I` using `fun I => dif_pos I.2`. Use `⟨fun I => if h : I.card = l then a ⟨I, h⟩ else 0, fun I hI hn => (haI ⟨I, hI⟩).trans (ha0 _ hn), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Simplify using `only [haI]`. Establish `hM : (0 : ℝ) ≤ max 2 Cu` using `le_trans zero_le_two (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn1 : (1 : ℝ) ≤ 2 * D.R.rS + D.R.k + 1` using `by linarith`. Establish `hN : ((2 * D.R.rS + D.R.k + 1 : ℝ)) ^ l ≤ large₂.sc.b ^ (max 2 Cu * (D.R.m : ℝ) ^ 2)` using `pow_le_rpow hb1 (by linarith) hnb hM (by rw [hmR]; nlinarith)`. Establish `hS : ‖∏ a : Fin l, s (Fin.castLE hl a)‖ ≤ large₂.sc.b ^ ((2 * Cg + 2) * (D.R.m : ℝ) ^ 2)`. Establish `hQ` using `scale_le hbe hv hvb hg1 hgb hCg`. Rewrite `hQ` using `[← hka]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ a, ‖s a‖ ≤ large₂.sc.b ^ ((2 * Cg + 2) * (D.R.m : ℝ))` using `fun a => (hs1 a).trans (pow_le_rpow hb1 (le_max_of_le_left (by positivity)) hQ (by linarith) (by linarith))`. Rewrite using `[norm_prod]`. Use `(Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun a _ => h1 _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `(pow_le_rpow (β := D.R.m) hb1 (by positivity) le_rfl (mul_nonneg (by linarith) (by linarith)) (by linarith)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨p1, p2⟩` from `hsq_le (r := D.R.rS) (l := l) hb1 hM (by linarith) (by linarith) (hTb w)`. Take `⟨q1, q2⟩` from `hsq_le (r := D.R.rS) (l := l) hb1 hM (by linarith) (by linarith) (hTb w')`. Rewrite `hb₀` using `[hW.2.2.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hb₁` using `[hW.2.2.2.2.2.1]`. Take `⟨c, hc, hcc⟩` from `Gp91.GlobalTheory.BesselDegree.schur_fdeg hH.1 D.R.k D.R.rS (PI.BesselPeriodGGP.eps48 _ _) W.μG hW.2.2.2.2.2.2.1`. Establish `S1G` using `setupG_of S1`. Establish `T1G` using `setupG_of T1`. Establish `hone : ∀ I, ‖a I‖ ≤ (large₂.sc.b ^ ((2 * Cg + 2) * (D.R.m : ℝ) ^ 2)) ^ 2 * large₂.sc.b ^ ((|CT| + 20 * max 2 Cu) * (D.R.m : ℝ) ^ 2) * large₂.sc.b ^ ((|CT| + 20 * max 2 Cu) * (D.R.m : ℝ) ^ 2) * large₂.sc.b ^ (max 2 Cu * (D.R.m : ℝ) ^ 2)` using `fun I => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : dg' (ν + eZ I.1) ≤ ((2 * D.R.rS + D.R.k + 1 : ℝ)) ^ l * dg ν`. Rewrite using `[dg_eq S1G (fun mu R h => (hcc mu R h).1) hν0, dg_eq T1G (fun mu R h => (hcc mu R h).1) (firstNorm_add_subsetIndicator_le hνl I), mul_left_comm]`. Use `(GlobalTheory.FamilyDegreeRatio.degree_ratios _ _ _ _ _ _ _ _ _ hNum ν hν0).2.1 I.1` as an intermediate fact. Rewrite `this` using `[I.2]`. Conclude with `mul_le_mul_of_nonneg_left this hc.le`.
-
-Use `(coef_le hd0.1 (hdI I).1 (norm_nonneg _) (norm_nonneg _) (ha1 I) (hb₀ I) (hb₁ I) h3 p1 q1 (one_le_pow₀ hn1)).trans ?_` and prove the remaining obligations. Use `gcongr`. Use `(Finset.sum_le_card_nsmul _ _ _ fun I _ => hone I).trans ?_` and prove the remaining obligations. Establish `hcard : ((univ : Finset (Sub (2 * D.R.rS + D.R.k + 1) l)).card : ℝ) ≤ large₂.sc.b ^ (max 2 Cu * (D.R.m : ℝ) ^ 2)`. Use `le_trans ?_ hN` and prove the remaining obligations.
-
-Rewrite using `[Finset.card_univ, Fintype.card_finset_len, Fintype.card_fin]`. Conclude with `Nat.choose_le_pow _ _` after adjusting the coercions. Rewrite using `[nsmul_eq_mul]`. Use `(mul_le_mul_of_nonneg_right hcard (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`.
-
-Rewrite using `[sq (large₂.sc.b ^ _), ← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `μsec hsec γ p hγ θ' hθ' νR hνR`. Take `⟨K, hK, hMM⟩` from `hJ μsec hsec`.
-
-Rewrite using `[hsum]`. Simplify using `only [haI]`. Use `ha2 μsec K hK (hMM _ ?_ _ hA₀) (fun I hI => hMM _ ?_ _ (hAI I.1 I.2 hI)) γ p hγ θ' (lt_of_lt_of_le (by positivity) hθ'.1) νR hνR` and prove the remaining obligations. Rewrite using `[hdist]`. Use polynomial arithmetic with `[sq_nonneg (D.R.m : ℝ)]`.
-
-Rewrite using `[hdist]`. Establish `h1 : (n1 (ν + eZ I.1) : ℝ) ≤ n1 ν + l` using `by exact_mod_cast firstNorm_add_subsetIndicator_le (le_refl (n1 ν + l)) I`. Establish `h2 : (l : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by rw [hmR]; nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem minor_line : GlobalTheory.GapIn.Hyp → GlobalTheory.GapIn.AmpKF0 → CellConv → ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C : ℝ, ∀ Cn : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), 1000 ≤ Cl → Big D large₂ Cl m₀ → cdScaleTie D → HypZ D large₂ C' Cl Cg cb Cu cT CT C0 → ∀ τ w w', HypTT D w w' → ∀ θ, normWin D large₂ C1 θ → ∀ W, GoodW D τ w w' θ W → ∀ lam', l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 → ∀ A₀ : LocS W, GoodS D lam' A₀ → ∀ l : ℕ, l ≤ D.R.rS + 1 → ∃ s : ℝ, (s = 1 ∨ s = -1) ∧ ∀ AI : Finset (Fin (2 * D.R.rS + D.R.k + 1)) → LocS W, (∀ I, I.card = l → (∃ A : LocS W, GoodS D (lam' + s • epsI I) A) → GoodS D (lam' + s • epsI I) (AI I)) → ∃ a : Finset (Fin (2 * D.R.rS + D.R.k + 1)) → ℂ, (∀ I, I.card = l → (¬ ∃ A : LocS W, GoodS D (lam' + s • epsI I) A) → a I = 0) ∧ (∑ I ∈ univ.filter (fun I => I.card = l), ‖a I‖) ≤ large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 2) ∧ ∀ μsec, IsSection D.R.k D.R.rS W.z W.z' μsec → ∀ γ p, RelPt D W.z W.z' γ p → ∀ θ', normWin D large₂ C1 θ' → ∀ νR, RMeas D W γ θ' νR → DminN W.z W.z' γ l • jhUnit D w w' A₀ μsec νR γ = ∑ I ∈ univ.filter (fun I => I.card = l), a I • jhUnit D w w' (AI I) μsec νR γ := by
   intro hH hKF hCC Cg cb Cu cT CT C0 C1

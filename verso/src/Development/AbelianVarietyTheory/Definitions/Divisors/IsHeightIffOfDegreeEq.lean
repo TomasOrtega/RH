@@ -35,20 +35,20 @@ theorem pointHeight_eq [NumberField F] [NumberField K] [Algebra F K] (w : Matrix
         (Module.finrank ℚ K : ℝ) := rfl
 
 /- English proof (translation)
-The claim follows from `le_ciSup (f := fun k => v (∑ j, φ (w j k) * y j)) (Set.finite_range _).bddAbove k`.
+A detailed English derivation is pending.
 -/
 theorem le_finSize (w : Matrix (Fin N) (Fin n) F) (φ : F →+* K) (v : AbsoluteValue K ℝ) (y : Fin N → K) (k : Fin n) :
     v (∑ j, φ (w j k) * y j) ≤ finSize w φ v y :=
   le_ciSup (f := fun k => v (∑ j, φ (w j k) * y j)) (Set.finite_range _).bddAbove k
 
 /- English proof (translation)
-The claim follows from `Real.iSup_nonneg fun _ => v.nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem finSize_nonneg (w : Matrix (Fin N) (Fin n) F) (φ : F →+* K) (v : AbsoluteValue K ℝ) (y : Fin N → K) :
     0 ≤ finSize w φ v y := Real.iSup_nonneg fun _ => v.nonneg _
 
 /- English proof (translation)
-Rewrite using `[finSize, finSize, Real.mul_iSup_of_nonneg (v.nonneg c)]`. Use `iSup_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Finset.mul_sum]`. Conclude with `congrArg v (Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finSize_smul (w : Matrix (Fin N) (Fin n) F) (φ : F →+* K) (v : AbsoluteValue K ℝ) (c : K) (y : Fin N → K) :
     finSize w φ v (c • y) = v c * finSize w φ v y := by
@@ -58,7 +58,7 @@ theorem finSize_smul (w : Matrix (Fin N) (Fin n) F) (φ : F →+* K) (v : Absolu
   exact congrArg v (Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _)
 
 /- English proof (translation)
-Rewrite using `[archSize, archSize, ← Real.sqrt_sq (norm_nonneg c), ← Real.sqrt_mul (sq_nonneg _), Finset.mul_sum]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_pow, ← norm_mul, Finset.mul_sum]`. Conclude with `congrArg (‖·‖ ^ 2) (Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archSize_smul (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (y : Fin N → ℂ) :
     archSize A (c • y) = ‖c‖ * archSize A y := by
@@ -68,9 +68,9 @@ theorem archSize_smul (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (y : Fin N → 
   exact congrArg (‖·‖ ^ 2) (Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _)
 
 /- English proof (translation)
-Use `(finSize_nonneg w φ v y).lt_of_ne' fun h => hy (funext fun j => ?_)` and prove the remaining obligations. Establish `h0 : ∀ k, ∑ j, φ (w j k) * y j = 0` using `fun k => v.eq_zero.1 (le_antisymm (h ▸ le_finSize w φ v y k) (v.nonneg _))`. Establish `key : ∀ u ∈ Submodule.span F (Set.range w.col), ∑ j, φ (u j) * y j = 0` using `fun u hu => by`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨k, rfl⟩ := h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `h0 k`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [add_mul, Finset.sum_add_distrib, ha, hb]`. Consider the case `smul c a _ ha => simp [mul_assoc, ← Finset.mul_sum, ha]`. Simplify `key (Pi.single j 1) (hw ▸ trivial)` using `[Pi.single_apply, apply_ite φ]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finSize_pos {w : Matrix (Fin N) (Fin n) F} (hw : Submodule.span F (Set.range w.col) = ⊤) (φ : F →+* K)
     (v : AbsoluteValue K ℝ) {y : Fin N → K} (hy : y ≠ 0) : 0 < finSize w φ v y := by
@@ -86,7 +86,7 @@ theorem finSize_pos {w : Matrix (Fin N) (Fin n) F} (hw : Submodule.span F (Set.r
   simpa [Pi.single_apply, apply_ite φ] using key (Pi.single j 1) (hw ▸ trivial)
 
 /- English proof (translation)
-Use `Real.sqrt_pos.2 ((Finset.sum_nonneg fun _ _ => sq_nonneg _).lt_of_ne' fun h => hy ?_)` and prove the remaining obligations. Use `Matrix.eq_zero_of_vecMul_eq_zero hA (funext fun i => ?_)` and prove the remaining obligations. Use `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => sq_nonneg _).1 h i (Finset.mem_univ i)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem archSize_pos {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) {y : Fin N → ℂ} (hy : y ≠ 0) :
     0 < archSize A y := by
@@ -96,9 +96,9 @@ theorem archSize_pos {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) {y : Fi
   simpa [Matrix.vecMul, dotProduct, mul_comm] using this
 
 /- English proof (translation)
-Establish `e : ∑ j, u j * y j = ∑ i, A⁻¹.mulVec u i * ∑ j, A j i * y j` using `by conv_lhs => rw [← Matrix.one_mulVec u, ← A.mul_nonsing_inv hA.isUnit, ← Matrix.mulVec_mulVec]`. Generalize the expression as in `A⁻¹.mulVec u = c`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Simplify using `only [norm_mul]`. Conclude with `Real.sum_mul_le_sqrt_mul_sqrt _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_pairing_le {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) (u y : Fin N → ℂ) :
     ‖∑ j, u j * y j‖ ≤ frameNorm A u * archSize A y := by
@@ -114,9 +114,9 @@ theorem norm_pairing_le {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) (u y
   exact Real.sum_mul_le_sqrt_mul_sqrt _ _ _
 
 /- English proof (translation)
-Establish `e : ∑ j, (w.map φ).mulVec x j * y j = ∑ k, x k * ∑ j, φ (w j k) * y j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction _ (fun a => v a ≤ finSize w φ v y) (fun a b ha hb => (hv a b).trans (max_le ha hb)) (by rw [map_zero]; exact finSize_nonneg w φ v y) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left (v.nonneg _) (hx k)).trans (le_finSize w φ v y k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_mulVec_le (w : Matrix (Fin N) (Fin n) F) (φ : F →+* K) {v : AbsoluteValue K ℝ}
     (hv : IsNonarchimedean v) {x : Fin n → K} (hx : ∀ k, v (x k) ≤ 1) (y : Fin N → K) :
@@ -224,14 +224,14 @@ def IsHeight (h : ℝ) : Prop :=
     ((T.D : ℝ) + 1) * d * h = formHeight d T.w T.A f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨d, f, _, hf⟩ => ⟨d, f, hf⟩, fun ⟨d, f, hf, e⟩ => ⟨d, f, hf.isChowFormInt.pos, hf, e⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeight_iff {h : ℝ} : T.IsHeight h ↔ ∃ (d : ℕ) (f : MvPolynomial (Fin (T.D + 1) × Fin T.N) F),
     IsChowForm T.imageIdeal T.D d f ∧ ((T.D : ℝ) + 1) * d * h = formHeight d T.w T.A f :=
   ⟨fun ⟨d, f, _, hf⟩ => ⟨d, f, hf⟩, fun ⟨d, f, hf, e⟩ => ⟨d, f, hf.isChowFormInt.pos, hf, e⟩⟩
 
 /- English proof (translation)
-The claim follows from `T.isHeight_iff.2 ⟨d, f, hf, mul_div_cancel₀ _ (mul_ne_zero (by positivity) (Nat.cast_ne_zero.2 hf.isChowFormInt.pos.ne'))⟩`.
+A detailed English derivation is pending.
 -/
 theorem isHeight_of_isChowForm {d : ℕ} {f : MvPolynomial (Fin (T.D + 1) × Fin T.N) F}
     (hf : IsChowForm T.imageIdeal T.D d f) : T.IsHeight (formHeight d T.w T.A f / (((T.D : ℝ) + 1) * d)) :=
@@ -239,7 +239,7 @@ theorem isHeight_of_isChowForm {d : ℕ} {f : MvPolynomial (Fin (T.D + 1) × Fin
     (mul_ne_zero (by positivity) (Nat.cast_ne_zero.2 hf.isChowFormInt.pos.ne'))⟩
 
 /- English proof (translation)
-Rewrite using `[isHeight_iff, ← hd, Int.cast_natCast]`. Use `⟨fun ⟨d', f, hf, e⟩ => ?_, fun ⟨f, hf⟩ => ⟨d, f, hf⟩⟩` and prove the remaining obligations. Take `rfl` from `(hf.isChowFormInt.unique hg.isChowFormInt).1`. Conclude with `⟨f, hf, e⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHeight_iff_of_degree_eq {d : ℕ} {g : MvPolynomial (Fin (T.D + 1) × Fin T.N) F}
     (hg : IsChowForm T.imageIdeal T.D d g) (hd : (d : ℤ) = T.del) {h : ℝ} :
@@ -264,7 +264,7 @@ theorem lattice_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] :
     (T.baseChange E).lattice = T.latticeOver E := rfl
 
 /- English proof (translation)
-Establish `e : T.wVec (fun k => (x k : E)) = ∑ k, x k • (T.w.map (algebraMap F E)).col k`. Use function extensionality and compare the values at `j`. Simplify using `[wVec, Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wVec_mem {E : Type} [Field E] [Algebra F E] (x : Fin T.n → 𝓞 E) :
     T.wVec (fun k => (x k : E)) ∈ T.latticeOver E := by
@@ -291,7 +291,7 @@ def archNormPow (x : T.PtOver σ) {m : ℤ} (f : (lbZPow T.L m).Sec) : ℝ :=
   ‖T.powVal x.1 f‖ / archSize (T.A σ) (T.coords x.1) ^ m
 
 /- English proof (translation)
-Take `⟨c, hc, h₁, h₂⟩` from `T.exists_frame_change x.1 i hi`. Rewrite using `[h₂, show (fun j => valR x.1 _ ((T.b j).f i)) = c • T.coords x.1 from funext fun j => h₁ _, finSize_smul, map_mul, map_zpow₀, mul_zpow, mul_div_mul_left _ _ (zpow_ne_zero _ (v.ne_zero hc)), finNormPow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finNormPow_eq_chart (v : AbsoluteValue K ℝ) (x : T.PtOver φ) {m : ℤ} (f : (lbZPow T.L m).Sec) (i : T.L.ι)
     (hi : ptOf x.1 ∈ T.L.U i) : T.finNormPow v x f =
@@ -301,7 +301,7 @@ theorem finNormPow_eq_chart (v : AbsoluteValue K ℝ) (x : T.PtOver φ) {m : ℤ
     map_mul, map_zpow₀, mul_zpow, mul_div_mul_left _ _ (zpow_ne_zero _ (v.ne_zero hc)), finNormPow]
 
 /- English proof (translation)
-Take `⟨c, hc, h₁, h₂⟩` from `T.exists_frame_change x.1 i hi`. Rewrite using `[h₂, show (fun j => valR x.1 _ ((T.b j).f i)) = c • T.coords x.1 from funext fun j => h₁ _, archSize_smul, norm_mul, norm_zpow, mul_zpow, mul_div_mul_left _ _ (zpow_ne_zero _ (norm_ne_zero_iff.2 hc)), archNormPow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem archNormPow_eq_chart (x : T.PtOver σ) {m : ℤ} (f : (lbZPow T.L m).Sec) (i : T.L.ι)
     (hi : ptOf x.1 ∈ T.L.U i) : T.archNormPow x f =
@@ -313,26 +313,26 @@ theorem archNormPow_eq_chart (x : T.PtOver σ) {m : ℤ} (f : (lbZPow T.L m).Sec
 variable {T}
 
 /- English proof (translation)
-The claim follows from `finSize_pos h.spans φ v (h.bpf.coords_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem IsAlgebraicData.finSize_coords_pos (h : T.IsAlgebraicData) (v : AbsoluteValue K ℝ) (x : T.PtOver φ) :
     0 < finSize T.w φ v (T.coords x.1) := finSize_pos h.spans φ v (h.bpf.coords_ne_zero _)
 
 /- English proof (translation)
-The claim follows from `archSize_pos (h σ) (hb.coords_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem Hermitian.archSize_coords_pos (h : T.Hermitian) (hb : T.BasePointFree) (x : T.PtOver σ) :
     0 < archSize (T.A σ) (T.coords x.1) := archSize_pos (h σ) (hb.coords_ne_zero _)
 
 /- English proof (translation)
-The claim follows from `(div_le_iff₀ (h.archSize_coords_pos hb x)).2 (norm_pairing_le (h σ) _ _)`.
+A detailed English derivation is pending.
 -/
 theorem Hermitian.archNorm_le (h : T.Hermitian) (hb : T.BasePointFree) (x : T.PtOver σ) (u : Fin T.N → ℂ) :
     T.archNorm x u ≤ frameNorm (T.A σ) u :=
   (div_le_iff₀ (h.archSize_coords_pos hb x)).2 (norm_pairing_le (h σ) _ _)
 
 /- English proof (translation)
-The claim follows from `div_le_one_of_le₀ (pairing_mulVec_le T.w φ hv ha _) (finSize_nonneg _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem finNorm_mulVec_le_one {v : AbsoluteValue K ℝ} (hv : IsNonarchimedean v) (x : T.PtOver φ) {a : Fin T.n → K}
     (ha : ∀ k, v (a k) ≤ 1) : T.finNorm v x ((T.w.map φ).mulVec a) ≤ 1 :=
@@ -403,7 +403,7 @@ structure IsAdelic : Prop where
   short : T.ShortGenerators
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.geom.alg, h.herm, h.conj, h.short.le, hd⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAdelic.isMetrized {T : Tuple F} (h : T.IsAdelic) (hd : 0 < T.del) : T.IsMetrized :=
   ⟨h.geom.alg, h.herm, h.conj, h.short.le, hd⟩
@@ -420,7 +420,7 @@ structure IsGoodSection (E : Type) [Field E] [Algebra F E] (s : Fin T.D → Fin 
   inOpen : T.InOpen E (T.linSection E s)
 
 /- English proof (translation)
-The claim follows from `h.finiteEtale.finite.finite_subPts _`.
+A detailed English derivation is pending.
 -/
 theorem IsGoodSection.finite_geomPts {T : Tuple F} {E : Type} [Field E] [Algebra F E] {s : Fin T.D → Fin T.N → E}
     (h : T.IsGoodSection E s) : (T.geomPts E (T.linSection E s)).Finite :=
@@ -443,7 +443,7 @@ namespace projTuple
 variable (M : ℕ)
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun u _ => by rw [pi_eq_sum_univ' u] refine Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, ?_⟩) funext j simp [Matrix.one_apply, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem spans : (projTuple M).Spans := top_le_iff.1 fun u _ => by
   rw [pi_eq_sum_univ' u]
@@ -452,9 +452,9 @@ theorem spans : (projTuple M).Spans := top_le_iff.1 fun u _ => by
   simp [Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun k σ => ?_, le_rfl⟩` and prove the remaining obligations. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem _ h => exact Submodule.subset_span h`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha`. Take `⟨z, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective c`. Rewrite using `[eq_intCast Rat.ringOfIntegersEquiv.symm z, Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ _ ha`. Simplify using `[HermSys.normAt, frameNorm, Matrix.one_apply, apply_ite]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shortGenerators : (projTuple M).ShortGenerators := by
   refine ⟨fun u hu => ?_, fun k σ => ?_, le_rfl⟩
@@ -469,9 +469,7 @@ theorem shortGenerators : (projTuple M).ShortGenerators := by
   · simp [HermSys.normAt, frameNorm, Matrix.one_apply, apply_ite]
 
 /- English proof (translation)
-Establish `hl : nonzeroLocus (projTuple M).th = ProjSpace.chart ℚ M (Fin.last M)` using `(nonzeroLocus_secToPow _ le_rfl).trans (ProjSpace.nonzeroLocus_coord ℚ M (Fin.last M))`. Use `⟨⟨⟨projSys.isVariety ℚ M hM, projSys.indep ℚ M, spans M, projSys.basePointFree ℚ M⟩, fun h => ?_⟩, ⟨projSys.birational ℚ M, projSys.noContract ℚ M _, le_rfl, fun h => ?_, fun y hy => hl ▸ hy⟩, fun σ => by simp, fun σ x => by simp [frameNorm], shortGenerators M⟩` and prove the remaining obligations. Conclude with `(h.ge (Set.mem_univ (projSys.gen ℚ M))) (projSys.gen_mem ℚ M _)`. Use `hl.ge (projSys.gen_mem ℚ M _)` as an intermediate fact. Rewrite `this` using `[h]`.
-
-Conclude with `nonzeroLocus_secZero.le this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdelic (hM : 1 ≤ M) : (projTuple M).IsAdelic := by
   have hl : nonzeroLocus (projTuple M).th = ProjSpace.chart ℚ M (Fin.last M) :=
@@ -485,13 +483,13 @@ theorem isAdelic (hM : 1 ≤ M) : (projTuple M).IsAdelic := by
     exact nonzeroLocus_secZero.le this
 
 /- English proof (translation)
-The claim follows from `(isAdelic M hM).isMetrized ((projSys.del_eq_one ℚ M).symm ▸ one_pos)`.
+A detailed English derivation is pending.
 -/
 theorem isMetrized (hM : 1 ≤ M) : (projTuple M).IsMetrized :=
   (isAdelic M hM).isMetrized ((projSys.del_eq_one ℚ M).symm ▸ one_pos)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_ / 2, 1, _, one_pos, (projSys.imageIdeal_eq_bot ℚ 1).symm ▸ Model.isChowForm_line ℚ, by rw [Nat.cast_one, mul_one, one_add_one_eq_two, mul_div_cancel₀ _ two_ne_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isHeight_line : ∃ h, (projTuple 1).IsHeight h :=
   ⟨_ / 2, 1, _, one_pos, (projSys.imageIdeal_eq_bot ℚ 1).symm ▸ Model.isChowForm_line ℚ, by
@@ -500,20 +498,20 @@ theorem exists_isHeight_line : ∃ h, (projTuple 1).IsHeight h :=
 end projTuple
 
 /- English proof (translation)
-Introduce `h` and use `AmpleModel.coord_ne_top ℚ ((ProjSpace.nonzeroLocus_coord ℚ 1 1).trans ((Opens.compl_compl (ProjSpace.chart ℚ 1 1)).symm.trans h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (projTuple 1).U ≠ ⊤ := fun h =>
   AmpleModel.coord_ne_top ℚ ((ProjSpace.nonzeroLocus_coord ℚ 1 1).trans
     ((Opens.compl_compl (ProjSpace.chart ℚ 1 1)).symm.trans h))
 
 /- English proof (translation)
-Simplify using `[archSize, Fin.sum_univ_two, Matrix.one_apply]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : archSize ((2 : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ)) ![1, 1] = Real.sqrt 8 := by
   simp [archSize, Fin.sum_univ_two, Matrix.one_apply]; norm_num
 
 /- English proof (translation)
-Establish `h : (projTuple 2).del = 1` using `projSys.del_eq_one ℚ 2`. Rewrite using `[Tuple.theta, h]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : (projTuple 2).theta 1 = 18 := by
   have h : (projTuple 2).del = 1 := projSys.del_eq_one ℚ 2

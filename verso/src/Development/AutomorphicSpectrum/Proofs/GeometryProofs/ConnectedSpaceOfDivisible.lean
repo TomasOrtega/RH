@@ -12,13 +12,13 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Set `H : Subgroup P` to `{ carrier := {a | c a = c 1} one_mem' := rfl mul_mem' := fun {a b} ha hb => by`. Use `hc a 1 b ha` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Conclude with `this.trans hb`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hc a 1 a⁻¹ ha` as an intermediate fact. Rewrite `this` using `[_root_.mul_inv_cancel, _root_.one_mul]`. Conclude with `this.symm }`. Establish `hinj : Function.Injective (fun q : P ⧸ H => c q.out)`. Introduce `q r hqr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' r, QuotientGroup.eq]`. Use `hc _ _ (q.out)⁻¹ hqr` as an intermediate fact. Simplify using `only [mul_inv_cancel] at this`. Express the relevant statement in the definitionally equal form `c _ = c 1`. Rewrite using `[mul_comm, this.symm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Finite (P ⧸ H)` using `Finite.of_injective _ hinj`. Establish `hi : H.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Take `⟨y, rfl⟩` from `hd _ hi x`. Conclude with `Subgroup.pow_index_mem H y`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_divisible {P Q : Type*} [CommGroup P] [Finite Q] (c : P → Q)
     (hc : ∀ a b t : P, c a = c b → c (a * t) = c (b * t))
@@ -47,19 +47,19 @@ theorem eq_one_of_divisible {P Q : Type*} [CommGroup P] [Finite Q] (c : P → Q)
   exact Subgroup.pow_index_mem H y
 
 /- English proof (translation)
-Introduce `K _ _ G _ _ hl hq hd`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: IsNoetherian G.left` using `{}`. Use `LocallyOfFiniteType.jacobsonSpace G.hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `pt : (𝟙_ (Over (Sp K))).left` to `IsLocalRing.closedPoint K`. Set `F : (𝟙_ (Over (Sp K)) ⟶ G) → G.left` to `fun x => x.left pt`. Establish `hopen : ∀ x : G.left, IsOpen (connectedComponent x)` using `fun x => isOpen_connectedComponent_of_noetherianSpace x`. Establish `: DiscreteTopology (_root_.ConnectedComponents G.left)` using `ConnectedComponents.discreteTopology_iff.2 hopen`. Establish `: Finite (_root_.ConnectedComponents G.left)` using `finite_of_compact_of_discrete`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : (𝟙_ (Over (Sp K)) ⟶ G) → _root_.ConnectedComponents G.left` to `fun x => F x`. Establish `htr : ∀ a t : 𝟙_ (Over (Sp K)) ⟶ G, F (a * t) = (GrpObj.mulRight t).hom.left (F a)`. Introduce `a t`. Establish `h : a ≫ (GrpObj.mulRight t).hom = a * t`. Simplify using `[comp_lift_assoc, Hom.mul_def]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [F, ← h, Over.comp_left, Scheme.Hom.comp_apply]`. Establish `hc : ∀ a b t, c a = c b → c (a * t) = c (b * t)`. Introduce `a b t hab`. Use `congrArg (Continuous.connectedComponentsMap (GrpObj.mulRight t).hom.left.continuous) hab` as an intermediate fact. Simplify `this` using `[c, htr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hall` using `eq_one_of_divisible c hc hd`. Establish `hsurj : ∀ x : G.left, IsClosed {x} → ∃ a, F a = x`. Introduce `x hx`. Use `⟨Over.homMk (pointOfClosedPoint G.hom x hx) (pointOfClosedPoint_comp G.hom x hx), ?_⟩` and prove the remaining obligations. Conclude with `pointOfClosedPoint_apply G.hom x hx _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `huniv : connectedComponent (F 1) = Set.univ`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hcl⟩` from `nonempty_inter_closedPoints (Set.nonempty_compl.2 hne) (IsOpen.isLocallyClosed isClosed_connectedComponent.isOpen_compl)`. Take `⟨a, rfl⟩` from `hsurj x hcl`. Apply `hx` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : connectedComponent (F a) = connectedComponent (F 1)` using `ConnectedComponents.coe_eq_coe.1 (hall a)`. Rewrite using `[← h1]`. Conclude with `mem_connectedComponent`. Conclude with `connectedSpace_iff_connectedComponent.2 ⟨F 1, huniv⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connectedSpace_of_divisible : ∀ (K : Type) [Field K] [IsAlgClosed K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G], LocallyOfFiniteType G.hom → QuasiCompact G.hom → (∀ n : ℕ, n ≠ 0 → ∀ x : 𝟙_ (Over (Sp K)) ⟶ G, ∃ y : 𝟙_ (Over (Sp K)) ⟶ G, y ^ n = x) → ConnectedSpace G.left := by
   intro K _ _ G _ _ hl hq hd

@@ -4,20 +4,18 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Imports
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S6.norm_le_one_of_isIntegral l x hx`.
+A detailed English derivation is pending.
 -/
 private theorem dO_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.S6.norm_le_one_of_isIntegral l x hx
 
 /- English proof (translation)
-Establish `hl0 : ((l : ℕ) : PadicAlgCl l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hl : (l : A) ≠ 0` using `fun h => hl0 (by simpa using congrArg y h)`. Establish `hl1 : ‖((l : ℕ) : PadicAlgCl l)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl hϖ`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hl1`. Use `⟨e * n, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (l : A) ^ n ∣ z`. Use `Dvd.dvd.trans ?_ hz` and prove the remaining obligations. Rewrite using `[pow_mul, hu]`. Conclude with `pow_dvd_pow_of_dvd (Units.mul_left_dvd.2 dvd_rfl) n`. Take `⟨w, rfl⟩` from `hd`.
-
-Rewrite using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hle w)) hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dO_small {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     (y : A →+* PadicAlgCl l) (hle : ∀ x, ‖y x‖ ≤ 1) {ε : ℝ} (hε : 0 < ε) :
@@ -41,15 +39,15 @@ private theorem dO_small {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] [IsDom
   exact lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hle w)) hn
 
 /- English proof (translation)
-Use `haveI : FaithfulSMul O Q := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Set `N : Submodule O Q` to `Submodule.span O (insert 1 (Set.range fun p : Fin n × Fin n => Y p.1 p.2))`. Use `haveI : Module.Finite O N := Module.Finite.span_of_finite O ((Set.finite_range _).insert _)`. Set `one : N` to `⟨1, Submodule.subset_span (Set.mem_insert _ _)⟩`. Set `Yn : Fin n → Fin n → N` to `fun i j => ⟨Y i j, Submodule.subset_span (Set.mem_insert_of_mem _ ⟨(i, j), rfl⟩)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : one ≠ 0` using `fun h => one_ne_zero (congrArg Subtype.val h)`. Take `⟨π, hπ⟩` from `Module.Projective.exists_dual_ne_zero O h1`. Use `⟨π one, Matrix.of fun i j => π (Yn i j), hπ, fun e A B Z h => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h2 : Z i j • one = e • (∑ k, ∑ m, (A i m * B k j) • Yn m k) - Yn i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul] at this`. Simplify using `only [one, Yn, Submodule.coe_smul, Submodule.coe_sub, Submodule.coe_sum, Algebra.smul_def, mul_one, this, map_mul, Finset.sum_mul]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => by ring` and prove the remaining obligations. Establish `h3` using `congrArg π h2`. Simplify using `only [map_smul, map_sub, map_sum, smul_eq_mul] at h3`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[mul_comm, h3]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => by ring` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 private theorem dO_desc {O Q : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field Q] [Algebra O Q]
     (hinj : Function.Injective (algebraMap O Q)) {n : ℕ} (Y : Matrix (Fin n) (Fin n) Q) :
@@ -81,11 +79,11 @@ private theorem dO_desc {O Q : Type} [CommRing O] [IsDomain O] [IsPrincipalIdeal
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Establish `e1 : P * B = s • (A'ᵀ * P)`. Rewrite using `[← Matrix.mul_smul, ← h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.transpose_mul, hA]`. Simplify using the standard rewrite rules. Establish `e2 : P * B' = s' • (Aᵀ * P)`. Rewrite using `[← Matrix.mul_smul, ← h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.transpose_mul, hA']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e3 : P * (a • W) = P * (e • (B * (P' * Yᵀ * P) * B') - P' * Yᵀ * P)`. Establish `f1 : P * (B * (P' * Yᵀ * P) * B') = (P * B) * P' * Yᵀ * (P * B')` using `by simp only [Matrix.mul_assoc]`. Establish `f2 : P * (P' * Yᵀ * P) = Yᵀ * P`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hP, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f3 : A'ᵀ * P * P' = A'ᵀ` using `by rw [Matrix.mul_assoc, hP, Matrix.mul_one]`. Rewrite using `[Matrix.mul_smul, hz, ← Matrix.smul_mul, ← Matrix.transpose_smul, hc, Matrix.mul_sub, Matrix.mul_smul, f1, f2, e1, e2, Matrix.smul_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul s, hs, one_smul, f3]`. Simplify using `only [Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.mul_assoc]`. Use `congrArg (P' * ·) e3` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, hP', Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem dO_pol {O : Type} [CommRing O] {n : ℕ} (P P' A A' B B' Y Z W : Matrix (Fin n) (Fin n) O) (s s' e a : O)
     (hP : P * P' = 1) (hP' : P' * P = 1) (hA : A * A' = 1) (hA' : A' * A = 1) (hs : s * s' = 1)
@@ -109,11 +107,11 @@ private theorem dO_pol {O : Type} [CommRing O] {n : ℕ} (P P' A A' B B' Y Z W :
   simpa only [← Matrix.mul_assoc, hP', Matrix.one_mul] using this
 
 /- English proof (translation)
-Establish `f2 : P * (P' * Yᵀ * P) = Yᵀ * P`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hP, Matrix.one_mul]`. Establish `f0 : P'ᵀ * Pᵀ = 1` using `by rw [← Matrix.transpose_mul, hP, Matrix.transpose_one]`. Establish `f3 : (P' * Yᵀ * P)ᵀ * P = P * Y`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `hs with h | h` into its components or cases. Rewrite `f0` using `[h]`. Rewrite using `[f0, h, Matrix.mul_one]`. Rewrite `f0` using `[h, Matrix.mul_neg, neg_eq_iff_eq_neg]`. Rewrite using `[f0, h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_add, Matrix.transpose_add, Matrix.add_mul, f2, f3, add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dO_sym {O : Type} [CommRing O] {n : ℕ} (P P' Y : Matrix (Fin n) (Fin n) O)
     (hP : P * P' = 1) (hP' : P' * P = 1) (hs : Pᵀ = P ∨ Pᵀ = -P) :
@@ -131,23 +129,19 @@ private theorem dO_sym {O : Type} [CommRing O] {n : ℕ} (P P' Y : Matrix (Fin n
   rw [Matrix.mul_add, Matrix.transpose_add, Matrix.add_mul, f2, f3, add_comm]
 
 /- English proof (translation)
-Introduce `l _ L G0 c n y S _ hQ z hcont hcoc hpol htr`. Use `set f := algebraMap c.O (Qbar l) with hf`. Establish `hinj : Function.Injective f` using `Subtype.val_injective`. Establish `hle : ∀ x : c.O, ‖f x‖ ≤ 1` using `fun x => dO_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map c.O.val)`. Establish `hm : ∀ g, mat (pushRep f y.ρ) g = (mat y.ρ g).map f` using `fun g => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ((GeneralLinearGroup.map f y.P : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) = (y.P : Matrix (Fin n) (Fin n) c.O).map f` using `rfl`. Establish `he : ∀ g : G0.G₀, ((G0.frame.eps c.O (Qbar l) g : (Qbar l)ˣ) : Qbar l) = f (algebraMap ℤ_[l] c.O (G0.ε g : ℤ_[l]))` using `fun g => rfl`. Take `⟨Y, hY⟩` from `hQ (fun g => (z g).map f) (by`. Use `continuous_matrix fun a b => continuous_iff_continuousAt.2 fun g => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `dO_small f hle hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [(hcont a b k).eventually_eq g] with g' hg'`. Rewrite using `[dist_eq_norm, Matrix.map_apply, Matrix.map_apply, ← map_sub]`. Conclude with `hk _ (Ideal.Quotient.eq.1 hg'))`. Use the proof step `(fun g g' => by`. Rewrite using `[hcoc, hm, hm, he, Matrix.map_add _ (map_add f), ← Matrix.map_mul, ← Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 1`. Apply the tactic sequence `all_goals (ext i j; simp))`. Use the proof step `(fun g => by rw [hP, ← Matrix.map_mul, hpol, Matrix.map_mul, Matrix.transpose_map])`. Use the proof step `(fun σ hσ k => by`. Rewrite using `[← map_pow, hm, ← Matrix.map_mul, ← AddMonoidHom.map_trace, map_pow, htr σ hσ k, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, Y0, ha, hY0⟩` from `dO_desc hinj Y`. Establish `hc : ∀ g : G0.G₀, a • z g = algebraMap ℤ_[l] c.O (G0.ε g : ℤ_[l]) • (mat y.ρ g * Y0 * mat y.ρ g⁻¹) - Y0` using `fun g => hY0 _ _ _ _ (hY g)`. Establish `hP1 : (y.P : Matrix (Fin n) (Fin n) c.O) * (y.P⁻¹ : GL (Fin n) c.O) = 1` using `Units.mul_inv _`. Establish `hP2 : ((y.P⁻¹ : GL (Fin n) c.O) : Matrix (Fin n) (Fin n) c.O) * y.P = 1` using `Units.inv_mul _`. Use `⟨a + a, Y0 + (y.P⁻¹ : GL (Fin n) c.O) * Y0ᵀ * y.P, ?_, dO_sym _ _ _ hP1 hP2 y.sgn, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← two_mul]`. Conclude with `mul_ne_zero two_ne_zero ha`. Establish `hcc : G0.frame.conj (G0.frame.conj g) = g`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2 : G0.c⁻¹ = G0.c` using `inv_eq_of_mul_eq_one_right G0.c_sq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show G0.c * (G0.c * g * G0.c⁻¹) * G0.c⁻¹ = g`. Rewrite using `[h2, ← mul_assoc, ← mul_assoc, G0.c_sq, one_mul, mul_assoc, G0.c_sq, mul_one]`. Establish `hε : G0.ε (G0.frame.conj g : G0.G₀) = G0.ε g` using `by show G0.ε (G0.c * g * G0.c⁻¹) = _`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Establish `h5` using `dO_pol _ _ _ _ _ _ Y0 _ _ _ _ _ a hP1 hP2 (by rw [← map_mul, mul_inv_cancel, map_one]) (by rw [← map_mul, inv_mul_cancel, map_one]) (by rw [← Units.val_mul, ← mul_zpow, ← map_mul, mul_inv_cancel, map_one, _root_.one_zpow, Units.val_one]) (y.form (G0.frame.conj g)) (y.form (G0.fra …`.
-
-Rewrite `h5` using `[map_inv, hcc, hε]`. Rewrite using `[add_smul, Matrix.mul_add, Matrix.add_mul, smul_add]`. Use `conv_lhs => rw [hc g]`. Use `arg 2`. Rewrite using `[← hc g, h5]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.detO :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (c : Coef l) (n : ℕ) (y : Pt G0.frame c.O n) (S : Set G0.G₀), l ≠ 2 → DetQ G0.frame c.O (pushRep (algebraMap c.O (Qbar l)) y.ρ) (GeneralLinearGroup.map (algebraMap c.O (Qbar l)) y.P) S → DetO y S := by

@@ -9,17 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Twist.NormRed
 
 /- English proof (translation)
-Introduce `D V' W μ' 𝓕' hμ' hF' μ'' 𝓕'' h''`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank V'.rank`. Use `haveI : BorelSpace (WO V' W) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (WO V' W) := i1`. Use `haveI : LocallyCompactSpace (WO V' W) := i2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (WO V' W) := i3`. Use `haveI : T2Space (WO V' W) := i4`. Use `haveI : DiscreteTopology (ratL W V') := i5`. Use `haveI : TopologicalSpace.SeparableSpace (ratL W V') := inferInstance`. Use `haveI : Countable (ratL W V') := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : MeasurableConstVAdd (ratL W V') (WO V' W) := ⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Take `⟨hμ'', hF'', -⟩` from `h''`. Use `haveI : VAddInvariantMeasure (ratL W V') (WO V' W) μ'' := ⟨fun c s _ => measure_preimage_add μ'' (c : WO V' W) s⟩`. Establish `e` using `Measure.isAddLeftInvariant_eq_smul μ' μ''`. Use `set c := Measure.addHaarScalarFactor μ' μ''`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : c ≠ 0` using `(Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure μ' μ'').ne'`. Establish `hac : μ'' ≪ μ'`. Rewrite using `[e]; exact Measure.absolutelyContinuous_smul (by exact_mod_cast hc)`. Establish `hF2 : IsAddFundamentalDomain (ratL W V') 𝓕' μ''` using `hF'.mono hac`. Use `⟨(c : ENNReal), fun g hg hper => ?_⟩` and prove the remaining obligations.
-
-Establish `hp : ∀ (γ : ratL W V') (x : WO V' W), ‖g (γ +ᵥ x)‖ₑ ^ 2 = ‖g x‖ₑ ^ 2`. Introduce `γ x`. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add]`. Establish `h1 : ‖g ((γ : WO V' W) + x)‖₊ = ‖g x‖₊` using `NNReal.eq (hper γ γ.2 x)`. Simplify using `only [enorm_eq_nnnorm, h1]`.
-
-Rewrite using `[e, Measure.restrict_smul, lintegral_smul_measure, hF2.setLIntegral_eq hF'' _ hp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sq_norm_two_haar : ∀ (D : D7) (V' W : HSp D) (μ' : Measure (WO V' W)) (𝓕' : Set (WO V' W)), μ'.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V') 𝓕' μ' → ∀ (μ'' : Measure (WO V' W)) (𝓕'' : Set (WO V' W)), IsCovolOne (ratL W V') μ'' 𝓕'' → ∃ c : ENNReal, ∀ g : WO V' W → ℂ, Continuous g → (∀ γ ∈ ratL W V', ∀ w, ‖g (γ + w)‖ = ‖g w‖) → ∫⁻ x in 𝓕', ‖g x‖ₑ ^ 2 ∂μ' = c * ∫⁻ x in 𝓕'', ‖g x‖ₑ ^ 2 ∂μ'' := by
   intro D V' W μ' 𝓕' hμ' hF' μ'' 𝓕'' h''

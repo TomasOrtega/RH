@@ -38,7 +38,7 @@ theorem prO_apply (S : Finset (HeightOneSpectrum (𝓞 E))) (a : ℕ) (g : GA E 
         (1 - idemS S) * (g : Matrix (Fin a) (Fin a) (Ad E)) i j := rfl
 
 /- English proof (translation)
-Rewrite using `[pLoc_pFin_idemS]`. Simplify using `[hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLoc_pFin_idemS_of_not_mem {S : Finset (HeightOneSpectrum (𝓞 E))} {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ S) :
     pLoc E w (pFin E (idemS S)) = 0 := by
@@ -46,7 +46,7 @@ theorem pLoc_pFin_idemS_of_not_mem {S : Finset (HeightOneSpectrum (𝓞 E))} {w 
   rw [pLoc_pFin_idemS]; simp [hw]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_sub, map_one, map_one, pLoc_pFin_idemS]`. Simplify using `[hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLoc_pFin_one_sub_idemS_of_mem {S : Finset (HeightOneSpectrum (𝓞 E))} {w : HeightOneSpectrum (𝓞 E)} (hw : w ∈ S) :
     pLoc E w (pFin E (1 - idemS S)) = 0 := by
@@ -54,9 +54,9 @@ theorem pLoc_pFin_one_sub_idemS_of_mem {S : Finset (HeightOneSpectrum (𝓞 E))}
   rw [map_sub, map_sub, map_one, map_one, pLoc_pFin_idemS]; simp [hw]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (Subtype.ext (funext fun w => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 - (idemS S : Ad E).1) * x.1 = 0`. Rewrite using `[fst_idemS, sub_self, zero_mul]`. Express the relevant statement in the definitionally equal form `pLoc E w (pFin E ((1 - idemS S) * x)) = pLoc E w (pFin E 0)`. Rewrite using `[map_mul, map_mul, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ S`. Rewrite using `[pLoc_pFin_one_sub_idemS_of_mem hw, zero_mul]`. Rewrite using `[h w hw, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_idemS_mul_eq_zero {S : Finset (HeightOneSpectrum (𝓞 E))} {x : Ad E}
     (h : ∀ w ∉ S, pLoc E w (pFin E x) = 0) : (1 - idemS S) * x = 0 := by
@@ -70,7 +70,7 @@ theorem one_sub_idemS_mul_eq_zero {S : Finset (HeightOneSpectrum (𝓞 E))} {x :
     · rw [h w hw, mul_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pLoc_pFin_one_apply (a : ℕ) (w : HeightOneSpectrum (𝓞 E)) (i j : Fin a) :
     pLoc E w (pFin E ((1 : Matrix (Fin a) (Fin a) (Ad E)) i j)) = (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j := by
@@ -79,7 +79,7 @@ theorem pLoc_pFin_one_apply (a : ℕ) (w : HeightOneSpectrum (𝓞 E)) (i j : Fi
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x : GL (Fin a) (w.adicCompletion E) => (x : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) (hg w hw)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pLoc_pFin_apply_of_mem_supS {a : ℕ} {S : Finset (HeightOneSpectrum (𝓞 E))} {g : GA E a}
     (hg : g ∈ GlobalTheory.JSW.supS E a S) {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ S) (i j : Fin a) :
@@ -88,7 +88,7 @@ theorem pLoc_pFin_apply_of_mem_supS {a : ℕ} {S : Finset (HeightOneSpectrum (�
   exact h
 
 /- English proof (translation)
-The claim follows from `one_sub_idemS_mul_eq_zero fun w hw => by rw [map_sub, map_sub, pLoc_pFin_apply_of_mem_supS hg hw, pLoc_pFin_one_apply, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem one_sub_idemS_mul_sub_eq_zero {a : ℕ} {S : Finset (HeightOneSpectrum (𝓞 E))} {g : GA E a}
     (hg : g ∈ GlobalTheory.JSW.supS E a S) (i j : Fin a) :
@@ -97,11 +97,11 @@ theorem one_sub_idemS_mul_sub_eq_zero {a : ℕ} {S : Finset (HeightOneSpectrum (
     rw [map_sub, map_sub, pLoc_pFin_apply_of_mem_supS hg hw, pLoc_pFin_one_apply, sub_self]
 
 /- English proof (translation)
-Use `⟨fun g hg => ⟨?_, ?_⟩, fun g w hw => ?_⟩` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[prS_apply]`. Take the linear combination `(-1 : Ad E) * one_sub_idemS_mul_sub_eq_zero hg i j`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prO_apply]`. Express the relevant statement in the definitionally equal form `_ = (1 : Matrix (Fin a) (Fin a) (Ad E)) i j`. Take the linear combination `(one_sub_idemS_mul_sub_eq_zero hg i j)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E w (pFin E ((prS S a g : Matrix (Fin a) (Fin a) (Ad E)) i j)) = (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[prS_apply, map_add, map_sub, map_mul, map_mul, map_add, map_sub, map_mul, map_mul, pLoc_pFin_idemS_of_not_mem hw, pLoc_pFin_one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prS_prO_supS (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) :
     (∀ g ∈ GlobalTheory.JSW.supS E a S, prS S a g = g ∧ prO S a g = 1) ∧ ∀ g, prS S a g ∈ GlobalTheory.JSW.supS E a S := by

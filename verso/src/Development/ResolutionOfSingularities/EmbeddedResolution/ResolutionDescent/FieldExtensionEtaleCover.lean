@@ -13,7 +13,7 @@ noncomputable section
 variable {k : Type u} [Field k] {X W : Scheme.{u}}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc]`. Conclude with `pullback.condition`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pullbackCondition_baseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X)
     (K : Type u) [Field K] [Algebra k K] :
@@ -29,7 +29,7 @@ def baseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeMap_comp_baseChangeProjection (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X)
     (K : Type u) [Field K] [Algebra k K] :
@@ -38,7 +38,7 @@ theorem baseChangeMap_comp_baseChangeProjection (f : X ⟶ Spec (CommRingCat.of 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeMap_comp_baseChangeToSpec (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X)
     (K : Type u) [Field K] [Algebra k K] :
@@ -46,7 +46,7 @@ theorem baseChangeMap_comp_baseChangeToSpec (f : X ⟶ Spec (CommRingCat.of k)) 
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback sq.flip hb`.
+A detailed English derivation is pending.
 -/
 private theorem morphismProperty_of_isPullback {P : MorphismProperty Scheme.{u}}
     [P.IsStableUnderBaseChange] {A B C' D : Scheme.{u}} {h : A ⟶ B} {v : A ⟶ C'} {v' : B ⟶ D}
@@ -54,7 +54,7 @@ private theorem morphismProperty_of_isPullback {P : MorphismProperty Scheme.{u}}
   MorphismProperty.IsStableUnderBaseChange.of_isPullback sq.flip hb
 
 /- English proof (translation)
-Establish `h1 : IsPullback (baseChangeToSpec (c ≫ f) K) (baseChangeProjection (c ≫ f) K) (specMapAlgebraMap k K) (c ≫ f)` using `(IsPullback.of_hasPullback (c ≫ f) (specMapAlgebraMap k K)).flip`. Establish `h2 : IsPullback (baseChangeToSpec f K) (baseChangeProjection f K) (specMapAlgebraMap k K) f` using `(IsPullback.of_hasPullback f (specMapAlgebraMap k K)).flip`. Use `IsPullback.of_right ?_ (baseChangeMap_comp_baseChangeProjection f c K) h2` and prove the remaining obligations. Rewrite using `[baseChangeMap_comp_baseChangeToSpec]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPullback_baseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X)
     (K : Type u) [Field K] [Algebra k K] :
@@ -68,7 +68,7 @@ private theorem isPullback_baseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c 
   exact h1
 
 /- English proof (translation)
-The claim follows from `morphismProperty_of_isPullback (P := @Etale) (isPullback_baseChangeMap f c K) ‹Etale c›`.
+A detailed English derivation is pending.
 -/
 theorem etale_baseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X) [Etale c]
     (K : Type u) [Field K] [Algebra k K] : Etale (baseChangeMap f c K) :=
@@ -79,7 +79,7 @@ instance instEtaleBaseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X
   etale_baseChangeMap f c K
 
 /- English proof (translation)
-The claim follows from `morphismProperty_of_isPullback (P := @Surjective) (isPullback_baseChangeMap f c K) ‹Surjective c›`.
+A detailed English derivation is pending.
 -/
 theorem surjective_baseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X) [Surjective c]
     (K : Type u) [Field K] [Algebra k K] : Surjective (baseChangeMap f c K) :=
@@ -90,7 +90,7 @@ instance instSurjectiveBaseChangeMap (f : X ⟶ Spec (CommRingCat.of k)) (c : W 
   surjective_baseChangeMap f c K
 
 /- English proof (translation)
-Establish `: IsAffineHom (baseChangeProjection p K)` using `morphismProperty_of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback p (specMapAlgebraMap k K)) inferInstance`. Conclude with `isAffine_of_isAffineHom (f := baseChangeProjection p K)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAffine_baseChange (p : W ⟶ Spec (CommRingCat.of k)) [IsAffine W]
     (K : Type u) [Field K] [Algebra k K] : IsAffine (baseChange p K) := by
@@ -100,14 +100,14 @@ theorem isAffine_baseChange (p : W ⟶ Spec (CommRingCat.of k)) [IsAffine W]
   exact isAffine_of_isAffineHom (f := baseChangeProjection p K)
 
 /- English proof (translation)
-The claim follows from `isAffine_baseChange (c ≫ f) K`.
+A detailed English derivation is pending.
 -/
 theorem isAffine_baseChange_comp (f : X ⟶ Spec (CommRingCat.of k)) (c : W ⟶ X) [IsAffine W]
     (K : Type u) [Field K] [Algebra k K] : IsAffine (baseChange (c ≫ f) K) :=
   isAffine_baseChange (c ≫ f) K
 
 /- English proof (translation)
-Establish `: ∀ y : ↥Y, _root_.IsReduced (Y.presheaf.stalk y)` using `h`. Conclude with `AlgebraicGeometry.isReduced_of_isReduced_stalk Y`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isReduced_of_isReduced_stalk (Y : Scheme.{u})
     (h : ∀ y : ↥Y, _root_.IsReduced (Y.presheaf.stalk y)) : IsReduced Y := by
@@ -115,7 +115,7 @@ private theorem isReduced_of_isReduced_stalk (Y : Scheme.{u})
   exact AlgebraicGeometry.isReduced_of_isReduced_stalk Y
 
 /- English proof (translation)
-The claim follows from `isReduced_of_injective (CategoryTheory.inv (w.stalkMap a)).hom (ConcreteCategory.bijective_of_isIso (CategoryTheory.inv (w.stalkMap a))).1`.
+A detailed English derivation is pending.
 -/
 private theorem isReduced_stalk_of_isOpenImmersion {A B : Scheme.{u}} (w : A ⟶ B)
     [IsOpenImmersion w] [IsReduced B] (a : ↥A) : _root_.IsReduced (A.presheaf.stalk a) :=
@@ -123,9 +123,9 @@ private theorem isReduced_stalk_of_isOpenImmersion {A B : Scheme.{u}} (w : A ⟶
     (ConcreteCategory.bijective_of_isIso (CategoryTheory.inv (w.stalkMap a))).1
 
 /- English proof (translation)
-Use `isReduced_of_isReduced_stalk Y ?_` and prove the remaining obligations. Introduce `y`. Take `⟨i, z, rfl⟩` from `hcov y`. Use `hj i` as an intermediate fact. Use `hZ i z` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isReduced_of_injective ((j i).stalkMap z).hom (ConcreteCategory.bijective_of_isIso ((j i).stalkMap z)).1`.
+A detailed English derivation is pending.
 -/
 private theorem isReduced_of_isReduced_stalk_of_cover {Y : Scheme.{u}} {ι : Type u} {Z : ι → Scheme.{u}}
     (j : ∀ i, Z i ⟶ Y) (hj : ∀ i, IsOpenImmersion (j i))
@@ -140,7 +140,7 @@ private theorem isReduced_of_isReduced_stalk_of_cover {Y : Scheme.{u}} {ι : Typ
     (ConcreteCategory.bijective_of_isIso ((j i).stalkMap z)).1
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(sigmaOpenCover Z).covers x`. Conclude with `⟨_, y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem sigma_jointly_surjective {ι : Type u} (Z : ι → Scheme.{u}) (x : ↥(∐ Z)) :
     ∃ (i : ι) (y : ↥(Z i)), (Sigma.ι Z i).base y = x := by
@@ -148,7 +148,7 @@ private theorem sigma_jointly_surjective {ι : Type u} (Z : ι → Scheme.{u}) (
   exact ⟨_, y, hy⟩
 
 /- English proof (translation)
-Take `⟨z, _, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := g1) (g := g2) a b h`. Conclude with `⟨z, hz2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_pullback_snd_base_eq {A B C' : Scheme.{u}} (g1 : A ⟶ C') (g2 : B ⟶ C')
     (a : ↥A) (b : ↥B) (h : g1.base a = g2.base b) :
@@ -157,11 +157,11 @@ private theorem exists_pullback_snd_base_eq {A B C' : Scheme.{u}} (g1 : A ⟶ C'
   exact ⟨z, hz2⟩
 
 /- English proof (translation)
-Establish `hsq : ∀ i : ι, IsPullback (pullback.snd (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K) ≫ baseChangeMap f (sigmaOpensDesc X U) K) (pullback.fst (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K)) (baseCh …`. Introduce `i`. Establish `h` using `IsPullback.paste_horiz (IsPullback.of_hasPullback (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K)).flip (isPullback_baseChangeMap f (sigmaOpensDesc X U) K)`. Rewrite `h` using `[sigma_ι_sigmaOpensDesc X U i]`. Then use the resulting hypothesis. Use `isReduced_of_isReduced_stalk_of_cover (Z := fun i => pullback (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K)) (fun i => pullback.snd (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K)) (fun i => inferIn …` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsOpenImmersion (pullback.snd (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K) ≫ baseChangeMap f (sigmaOpensDesc X U) K)` using `morphismProperty_of_isPullback (P := @IsOpenImmersion) (hsq i) inferInstance`. Conclude with `isReduced_stalk_of_isOpenImmersion (pullback.snd (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K) ≫ baseChangeMap f (sigmaOpensDesc X U) K) z`. Introduce `p`. Take `⟨i, y, hy⟩` from `sigma_jointly_surjective (fun i => (U i).toScheme) ((baseChangeProjection (sigmaOpensDesc X U ≫ f) K).base p)`. Take `⟨z, hz⟩` from `exists_pullback_snd_base_eq (Sigma.ι (fun i => (U i).toScheme) i) (baseChangeProjection (sigmaOpensDesc X U ≫ f) K) y p hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨i, z, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_baseChange_sigmaOpensDesc (f : X ⟶ Spec (CommRingCat.of k))
     (K : Type u) [Field K] [Algebra k K] [IsReduced (baseChange f K)]
@@ -202,9 +202,9 @@ theorem isReduced_baseChange_sigmaOpensDesc (f : X ⟶ Spec (CommRingCat.of k))
     exact ⟨i, z, hz⟩
 
 /- English proof (translation)
-Establish `: CompactSpace ↥X` using `QuasiCompact.compactSpace_of_compactSpace (f := f)`. Take `⟨ι, hι, U, hUaff, hUtop⟩` from `exists_finite_affine_cover X`. Use `hι` as an intermediate fact. Establish `hWaff : IsAffine (sigmaOpens X U)` using `isAffine_sigmaOpens X U hUaff`. Establish `hsurj : Surjective (sigmaOpensDesc X U)` using `surjective_sigmaOpensDesc X U hUtop`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqc : QuasiCompact (sigmaOpensDesc X U ≫ f)` using `inferInstance`. Establish `hbcaff : IsAffine (baseChange (sigmaOpensDesc X U ≫ f) K)` using `isAffine_baseChange_comp f (sigmaOpensDesc X U) K`. Use `⟨sigmaOpens X U, sigmaOpensDesc X U, baseChangeMap f (sigmaOpensDesc X U) K, hWaff, inferInstance, inferInstance, hqc, inferInstance, hsurj, hbcaff, isReduced_baseChange_sigmaOpensDesc f K U, ?_, ?_, inferInstance, inferInstance, baseChangeMap_comp_baseChangeToSpec f (sigmaOpensD …` and prove the remaining obligations. Conclude with `morphismProperty_of_isPullback (P := @LocallyOfFiniteType) (IsPullback.of_hasPullback (sigmaOpensDesc X U ≫ f) (specMapAlgebraMap k K)).flip inferInstance`. Conclude with `morphismProperty_of_isPullback (P := @QuasiCompact) (IsPullback.of_hasPullback (sigmaOpensDesc X U ≫ f) (specMapAlgebraMap k K)).flip inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_etale_surjective_affine_cover_baseChange (X : Scheme.{u}) (f : X ⟶ Spec (CommRingCat.of k))
     [LocallyOfFiniteType f] [QuasiCompact f] [IsReduced X]

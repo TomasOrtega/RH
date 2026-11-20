@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (σ : E →ₐ[F] E)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -23,9 +23,9 @@ theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (si
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramR, hR, Formalism.UG.hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => enter [2, k]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => enter [2, d, 2, k]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, d]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem gramR_comb {M a : ℕ} (J : Matrix (Fin M) (Fin M) E) (u : Matrix (Fin a) (Fin a) (R ⊗[F] E))
     (X : Fin a → Fin M → R ⊗[F] E) :
@@ -44,9 +44,9 @@ def cgr {a : ℕ} (m A : Matrix (Fin a) (Fin a) (R ⊗[F] E)) : Matrix (Fin a) (
   (m.map (sigR R σ)).transpose * A * m
 
 /- English proof (translation)
-Establish `e1 : (w.map (sigR R σ)).transpose * (u.map (sigR R σ)).transpose = 1`. Rewrite using `[← Matrix.transpose_mul, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, huw, map_one, Matrix.transpose_one]`. Unfold `cgr`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = A := by rw [e1, huw, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem cgr_cgr {a : ℕ} (u w A : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (huw : u * w = 1) :
     cgr R σ w (cgr R σ u A) = A := by
@@ -60,9 +60,9 @@ theorem cgr_cgr {a : ℕ} (u w A : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (huw : u
     _ = A := by rw [e1, huw, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hS : ∀ p q, sigR R σ ((S : Matrix (Fin a) (Fin a) (R ⊗[F] E)) q p) = (S : Matrix (Fin a) (Fin a) (R ⊗[F] E)) p q` using `S.2`. Introduce `p q`. Simplify using `only [cgr, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, sigR_invol R σ hσ, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hS]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cgr_mem (hσ : ∀ x, σ (σ x) = x) {a : ℕ} (m : Matrix (Fin a) (Fin a) (R ⊗[F] E))
     (S : HermR R σ a) : cgr R σ m (S : Matrix (Fin a) (Fin a) (R ⊗[F] E)) ∈ HermR R σ a := by
@@ -81,7 +81,7 @@ def cgrH (hσ : ∀ x, σ (σ x) = x) {a : ℕ} (m : Matrix (Fin a) (Fin a) (R �
   ⟨cgr R σ m S, cgr_mem R σ hσ m S⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => by rw [mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_comb {M a : ℕ} (u w : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (X : Fin a → Fin M → R ⊗[F] E) :
     (fun b => ∑ c, w c b • ∑ d, u d c • X d) = fun b => ∑ d, (u * w) d b • X d := by
@@ -91,7 +91,7 @@ theorem comb_comb {M a : ℕ} (u w : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (X : F
   exact Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => by rw [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `[Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_one {M a : ℕ} (X : Fin a → Fin M → R ⊗[F] E) :
     (fun b => ∑ d, (1 : Matrix (Fin a) (Fin a) (R ⊗[F] E)) d b • X d) = X := by
@@ -99,11 +99,11 @@ theorem comb_one {M a : ℕ} (X : Fin a → Fin M → R ⊗[F] E) :
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite `hX`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h0 : ∑ c, (m *ᵥ g) c • X c = 0`. Rewrite using `[← hg]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by rw [mul_comm]`. Establish `hv : m *ᵥ g = 0` using `funext (hX _ h0)`. Establish `: g = m' *ᵥ (m *ᵥ g)` using `by rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hv, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linIndep_comb {M a : ℕ} (m m' : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (h : m' * m = 1)
     (X : Fin a → Fin M → R ⊗[F] E) (hX : LinearIndependent (R ⊗[F] E) X) :
@@ -129,21 +129,17 @@ variable {V Y X : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
   [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Use `set em := e.toMeasurableEquiv with hem`. Use `set rm := r.toMeasurableEquiv with hrm`. Establish `hU' : em ⁻¹' U = U` using `hU`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hc hcs hts => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: em ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ⁻¹' {ι (r.symm b)} ∩ U)ᶜ`. Use extensionality with `x`. Establish `hx : e x ∈ U ↔ x ∈ U` using `Set.ext_iff.1 hU x`. Establish `hb` using `hf x (r.symm b)`. Rewrite `hb` using `[r.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_inter_iff, Set.mem_singleton_iff]`. Express the relevant statement in the definitionally equal form `¬ (f (e x) = ι b ∧ e x ∈ U) ↔ ¬ (f x = ι (r.symm b) ∧ x ∈ U)`. Rewrite using `[hb, hx]`. Rewrite using `[this]`. Conclude with `hfib.1 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∫⁻ x in U, φ (em x) ∂μ = ∫⁻ x in U, φ x ∂μ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← key, hfib.2.1 (fun x => φ (em x)) (hφ.comp em.measurable)]`. Establish `h2 : ∀ c, ∫⁻ x, φ (em x) ∂(fib c) = ∫⁻ x, φ x ∂((fib (r.symm (rm c))).map em)`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_map_equiv]`. Express the relevant statement in the definitionally equal form `_ = ∫⁻ x, φ (em x) ∂(fib (r.symm (r c)))`. Rewrite using `[r.symm_apply_apply]`. Repeatedly rewrite using `[h2]`. Use `conv_rhs => rw [← hν]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(lintegral_map_equiv (fun b => ∫⁻ x, φ x ∂((fib (r.symm b)).map em)) rm).symm`. Establish `hts' : tsupport (φ ∘ e) ⊆ U`. Rewrite using `[tsupport, Function.support_comp_eq_preimage, ← e.preimage_closure, ← hU]`. Conclude with `Set.preimage_mono hts`. Take `⟨h1, h2⟩` from `hfib.2.2 (φ ∘ e) (hc.comp e.continuous) (hcs.comp_homeomorph e) hts'`.
-
-Use `⟨fun b _ => (integrable_map_equiv em φ).2 (h1 _ (Set.mem_univ _)), ?_⟩` and prove the remaining obligations. Establish `e2 : (fun b => ∫ x, φ x ∂((fib (r.symm b)).map em)) = (fun c => ∫ x, (φ ∘ e) x ∂(fib c)) ∘ r.symm`. Use function extensionality and compare the values at `fun b => integral_map_equiv _ _`. Rewrite using `[e2]`. Establish `h3 : Continuous fun c => ∫ x, (φ ∘ e) x ∂(fib c)` using `continuousOn_univ.1 h2`.
-
-Conclude with `(h3.comp r.symm.continuous).continuousOn`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFibreFamily_transport (e : V ≃ₜ V) (r : X ≃ₜ X) {μ : Measure V} {f : V → Y} {ι : X → Y}
     {U : Set V} {ν : Measure X} {fib : X → Measure V} (hfib : IsFibreFamily μ f ι U ν Set.univ fib)
@@ -199,29 +195,25 @@ namespace GlobalTheory.FibreUnitri
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE n J hJ v a μ ν hμ hν fib hfib S u hdiag htri hS`. Establish `hσ : ∀ x, σ (σ x) = x` using `PI.VolStabS.sigma_invol σ hE.2.2.2`. Take `⟨hring, -, -, hsc, -⟩` from `GlobalTheory.LocalUnitaryTop.top_facts F E σ hE n J hJ v`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : u.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => htri i j hij)]`. Simplify using `[hdiag]`. Establish `hu : IsUnit u.det` using `by rw [hdet]; exact isUnit_one`. Use `set w := u⁻¹ with hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huw : u * w = 1` using `Matrix.mul_nonsing_inv u hu`. Establish `hwu : w * u = 1` using `Matrix.nonsing_inv_mul u hu`. Establish `hcont : ∀ m : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E), Continuous (fun (X : Fin a → Fin n → Fv F v ⊗[F] E) b => ∑ c, m c b • X c)`. Introduce `m`. Use `continuous_pi fun b => continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `(continuous_apply c).const_smul (m c b)`. Set `e : (Fin a → Fin n → Fv F v ⊗[F] E) ≃ₜ (Fin a → Fin n → Fv F v ⊗[F] E)` to `{ toFun := fun X b => ∑ c, u c b • X c invFun := fun X b => ∑ c, w c b • X c left_inv := fun X => by show (fun b => ∑ c, w c b • ∑ d, u d c • X d) = X`. Rewrite using `[comb_comb, huw, comb_one]`. Use `right_inv := fun X => by show (fun b => ∑ c, u c b • ∑ d, w d c • X d) = X`. Rewrite using `[comb_comb, hwu, comb_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_toFun := hcont u`. Use `continuous_invFun := hcont w }`. Establish `hcontH : ∀ m : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E), Continuous (cgrH (Fv F v) σ hσ m)`. Introduce `m`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const`. Set `r : HermR (Fv F v) σ a ≃ₜ HermR (Fv F v) σ a` to `{ toFun := cgrH (Fv F v) σ hσ u invFun := cgrH (Fv F v) σ hσ w left_inv := fun T => Subtype.ext (cgr_cgr (Fv F v) σ u w _ huw) right_inv := fun T => Subtype.ext (cgr_cgr (Fv F v) σ w u _ hwu) continuous_toFun := hcontH u continuous_invFun := hcontH w }`. Take `⟨hμu, hνu⟩` from `GlobalTheory.T.unitriangular_column_ops_preserve_haar_tuples_hermitian F E σ hE n J hJ v a u hdiag htri`. Establish `hμe : μ.map e.toMeasurableEquiv = μ` using `hμu μ hμ`. Establish `hνr : ν.map r.toMeasurableEquiv = ν` using `hνu ν hν r (fun T => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hf : ∀ X T, gramR (Fv F v) σ J (e X) = ((r T : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) ↔ gramR (Fv F v) σ J X = (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))`. Introduce `X T`. Establish `h1 : gramR (Fv F v) σ J (e X) = cgr (Fv F v) σ u (gramR (Fv F v) σ J X)` using `gramR_comb (Fv F v) σ J u X`. Establish `h2 : ((r T : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = cgr (Fv F v) σ u T` using `rfl`. Rewrite using `[h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (cgr (Fv F v) σ w) h` as an intermediate fact. Rewrite `this` using `[cgr_cgr _ _ _ _ _ huw, cgr_cgr _ _ _ _ _ huw]`. Then use the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h]`. Establish `hU : e ⁻¹' {X | LinearIndependent (Fv F v ⊗[F] E) X} = {X | LinearIndependent (Fv F v ⊗[F] E) X}`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `linIndep_comb (Fv F v) w u huw _ h`. Establish `e2 : (fun b => ∑ c, w c b • (e X) c) = X` using `e.left_inv X`. Rewrite `h'` using `[e2]`. Conclude with `h'`. Introduce `h`.
-
-Conclude with `linIndep_comb (Fv F v) u w hwu X h`. Establish `hfam` using `isFibreFamily_transport e r hfib hμe hνr hf hU`. Establish `heq` using `GlobalTheory.LocalFibreUnique.fibre_family_unique F E σ hE n J hJ v a μ ν hμ hν fib hfib _ hfam`. Establish `hrS : r.symm S = S`. Rewrite using `[Homeomorph.symm_apply_eq]`.
-
-Conclude with `Subtype.ext hS.symm`. Use `congrFun heq S` as an intermediate fact. Simplify using `only [hrS] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fibre_unitri_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ a : ℕ, ∀ (μ : Measure (Fin a → Fin n → Fv F v ⊗[F] E)) (ν : Measure (HermR (Fv F v) σ a)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∀ fib : HermR (Fv F v) σ a → Measure (Fin a → Fin n → Fv F v ⊗[F] E), IsFibreFamily μ (gramR (Fv F v) σ J) Subtype.val {X | LinearIndependent (Fv F v ⊗[F] E) X} ν Set.univ fib → ∀ (S : HermR (Fv F v) σ a) (u : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)), (∀ i, u i i = 1) → (∀ i j, j < i → u i j = 0) → (u.map (sigR (Fv F v) σ)).transpose * (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) * u = (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) → (fib S).map (fun X b => ∑ c, u c b • X c) = fib S := by
   intro F E _ _ _ _ _ σ hE n J hJ v a μ ν hμ hν fib hfib S u hdiag htri hS

@@ -16,7 +16,7 @@ open scoped Classical
 open GlobalTheory.CechKS
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SepAffInf.isAffineOpen_inf_of_le_preimage` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsAffineOpenInfOfSeparatedOverAffineOpen.lean&line=7#L7)
 -/

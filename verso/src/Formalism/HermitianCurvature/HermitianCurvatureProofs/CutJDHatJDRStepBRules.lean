@@ -16,7 +16,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `| 0, i, hi => by have : i = b.succ := Fin.ext (by simp [hi]) subst this exact ⟨1, by simp, glev_one _, fun v _ => by simp⟩ | n + 1, i, hi => by have hl : b.val + 1 + n < r := by have := i.isLt; omega set l : Fin r := ⟨b.val + 1 + n, hl⟩ with hldef have hil : i = l.succ := Fin.ext …`.
+A detailed English derivation is pending.
 -/
 theorem tailW (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (b : Fin r) : ∀ n : ℕ, ∀ i : Fin (r + 1), i.val = b.val + 1 + n →
     ∃ T : Mx k r, wCell k r i c = wCell k r b.succ c * T ∧ T ∈ Glev k r b.succ ∧
@@ -39,9 +39,9 @@ theorem tailW (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (b : Fin r) : ∀ n : 
       rw [← Matrix.mulVec_mulVec, Formalism.FourierDecayAlt.P.CutMP.unipotent_fixes_anisotropic_vector l _ v hv, hTv v hv]
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [bvec, Pi.single_apply]`. Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[wI] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bvec_wI_inWb (v : Fin (k + 1)) : inWb k r (bvec (wI k r v)) := by
   intro i hi
@@ -57,17 +57,17 @@ section rules
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : Mx k r => g * x` using `cont_lmul g`. Establish `hD' : IsOpen {x : Mx k r | g * x ∈ D}` using `hD.preimage hc`. Establish `hS' : SmoothLev k r a.castSucc {x | g * x ∈ D} (fun x => f (g * x))` using `smooth_left g (fun x hx => glev0 hg.1 hx) hS`. Establish `hR' : RightEq k r z' a.castSucc {x | g * x ∈ D} (fun x => f (g * x))`. Introduce `x hx n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hR (g * x) ⟨glev0 hg.1 hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`. Establish `h1 : (1 : Mx k r) ∈ Glev k r a.castSucc ∩ {x | g * x ∈ D}` using `⟨glev_one _, by simpa using hg.2⟩`. Establish `hrule` using `(Formalism.FourierDecayAlt.P.right_action_rule E k r z' a {x | g * x ∈ D} (fun x => f (g * x)) hz' hD' hS' hR' 1 h1).1`. Establish `hjlt : r + w.val - a.val - 1 < mdim k r a.succ` using `by simp [mdim]; omega`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : posL k r a.succ ⟨r + w.val - a.val - 1, hjlt⟩ = wI k r w`. Simplify using `[posL, wI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hrule ⟨r + w.val - a.val - 1, hjlt⟩`. Rewrite `h` using `[hpos, eH_left, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Establish `hx : xv k r z' a.succ ⟨r + w.val - a.val - 1, hjlt⟩ = 0`. Simplify using `only [xv, fvec, hpos]`. Rewrite using `[dif_pos (show (a.succ : Fin (r + 1)).val < r by simp; omega)]`. Simplify using `only [bvec, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg]`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `[wI, eI] at this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hx, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rightRuleB (z' : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r)) (f : Mx k r → E) (hz' : inWb k r z')
     (hD : IsOpen D) (hS : SmoothLev k r 0 D f) (hR : RightEq k r z' 0 D f) (g : Mx k r) (hg : g ∈ Glev k r 0 ∩ D)
@@ -102,21 +102,19 @@ theorem rightRuleB (z' : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r)) (f : Mx
   rw [hx, zero_smul]
 
 /- English proof (translation)
-Establish `hcne : ∀ l, c l ≠ 0` using `hc`. Take `⟨hW0, hWcomm⟩` from `head_comm (k := k) c hcne b.val b.castSucc (by simp)`. Take `⟨T, hT, hTG, hTv⟩` from `tailW (k := k) c hcne b (r - b.val - 1) (Fin.last r) (by simp; omega)`. Establish `hg₁ : T * g ∈ Glev k r b.succ` using `glev_mul hTG (glev_mono (Fin.le_last _) hg)`. Establish `hsplit : wCell k r (Fin.last r) c * g = wCell k r b.castSucc c * (w1 k r b (c b) * (T * g))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hT, Formalism.FourierDecayAlt.P.Qx6.wCell_succ, Matrix.mul_assoc]`. Establish `hWx : ∀ x ∈ Glev k r b.castSucc, wCell k r b.castSucc c * x ∈ Glev k r 0` using `fun x hx => glev0 hW0 hx`. Establish `hS'` using `smooth_left (E := E) (f := f) (D := D) (wCell k r b.castSucc c) hWx hS`. Establish `hcont : Continuous fun x : Mx k r => wCell k r b.castSucc c * x` using `cont_lmul _`. Establish `hD' : IsOpen {x : Mx k r | wCell k r b.castSucc c * x ∈ D}` using `hD.preimage hcont`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : ∀ x ∈ Glev k r b.castSucc ∩ {x | wCell k r b.castSucc c * x ∈ D}, ∀ n ∈ Nlev k r b.castSucc, n * x ∈ {x | wCell k r b.castSucc c * x ∈ D}`. Introduce `x hx n hn`. Use `show wCell k r b.castSucc c * (n * x) ∈ D`. Rewrite using `[← Matrix.mul_assoc, hWcomm b.castSucc le_rfl n hn.2, Matrix.mul_assoc]`. Conclude with `hDN _ ⟨hWx x hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL' : LeftEq k r z b.castSucc {x | wCell k r b.castSucc c * x ∈ D} (fun x => f (wCell k r b.castSucc c * x))`. Introduce `x hx n hn`. Use `show f (wCell k r b.castSucc c * (n * x)) = _ • f (wCell k r b.castSucc c * x)`. Rewrite using `[← Matrix.mul_assoc, hWcomm b.castSucc le_rfl n hn.2, Matrix.mul_assoc]`. Conclude with `hL _ ⟨hWx x hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : w1 k r b (c b) * (T * g) ∈ {x | wCell k r b.castSucc c * x ∈ D}` using `by show _ ∈ D`. Rewrite using `[← hsplit]`. Conclude with `hWD`. Establish `hrule` using `(Formalism.FourierDecayAlt.P.left_action_rule E k r z b {x | wCell k r b.castSucc c * x ∈ D} (fun x => f (wCell k r b.castSucc c * x)) hz hD' hS' hN' hL' (c b) (hcne b) (T * g) hg₁ hpt).1`. Establish `hjlt : r + v.val - b.val - 1 < mdim k r b.succ` using `by simp [mdim]; omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : posL k r b.succ ⟨r + v.val - b.val - 1, hjlt⟩ = wI k r v`. Simplify using `[posL, wI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hrule ⟨r + v.val - b.val - 1, hjlt⟩`. Rewrite `h` using `[hpos, eH_left, ← hsplit]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Establish `hb1 : (b.succ : Fin (r + 1)).val < r` using `by simp; omega`. Establish `hy : ybv k r z b.succ (T * g) ⟨r + v.val - b.val - 1, hjlt⟩ = 0`. Simplify using `only [ybv, hpos, fvec, dif_pos hb1]`. Rewrite using `[Formalism.FourierDecayAlt.P.SignAntidiagonal.herm_bvec_eI, ← Matrix.mulVec_mulVec]`.
-
-Establish `hgw : inWb k r (g *ᵥ bvec (wI k r v))` using `Formalism.FourierDecayAlt.P.NFRadRedLocSec.inWb_uwb (Formalism.FourierDecayAlt.P5.Rad.glev_last_uwb hg) (bvec_wI_inWb v)`. Rewrite using `[hTv _ hgw]`. Conclude with `hgw _ (Or.inr (by simp [esI]; omega))`. Rewrite using `[hy, mul_zero, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftRuleB (z : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r)) (f : Mx k r → E) (hz : inWb k r z)
     (hD : IsOpen D) (hDN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D) (hS : SmoothLev k r 0 D f)
@@ -171,13 +169,13 @@ end rules
 section ring
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, (Int.cast_commute z X).eq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zcomm {A : Type} [Ring A] (z : ℤ) (X Y : A) : ((z : ℤ) : A) * (X * Y) = X * (((z : ℤ) : A) * Y) := by
   rw [← mul_assoc, (Int.cast_commute z X).eq, mul_assoc]
 
 /- English proof (translation)
-Unfold `Fin.succAbove`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [Fin.lt_def]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem succ_above_one_val {t : ℕ} (i : Fin (t + 1)) :
     ((Fin.succ (0 : Fin (t + 1))).succAbove i).val = if i.val = 0 then 0 else i.val + 1 := by
@@ -185,37 +183,33 @@ theorem succ_above_one_val {t : ℕ} (i : Fin (t + 1)) :
   split_ifs with h1 h2 h2 <;> simp_all [Fin.lt_def]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zmul {A : Type} [Ring A] [Algebra ℂ A] (z : ℤ) (x : A) : ((z : ℤ) : A) * x = ((z : ℂ)) • x := by
   rw [Algebra.smul_def, map_intCast]
 
 /- English proof (translation)
-Use `set a' : Fin (t + 1) → Fin n := a ∘ (Fin.succ (0 : Fin (t + 1))).succAbove with ha'`. Use `set b' : Fin (t + 1) → Fin n := b ∘ Fin.succ with hb'`. Use `set τ : Equiv.Perm (Fin (t + 1)) := (Fin.last t).cycleRange with hτ`. Establish `hsq : ((Equiv.Perm.sign τ : ℤ) : A) * ((Equiv.Perm.sign τ : ℤ) : A) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsg : ((Equiv.Perm.sign τ : ℤ) : A) = (((-1 : ℤ) ^ t : ℤ) : A)`. Rewrite using `[hτ, Fin.sign_cycleRange]`. Simplify using the standard rewrite rules. Establish `hlast : (a' ∘ τ) (Fin.last t) = p0` using `by show a ((Fin.succ (0 : Fin (t + 1))).succAbove (τ (Fin.last t))) = p0`. Rewrite using `[hτ, Fin.cycleRange_self, ← ha0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Establish `hcs : (a' ∘ τ) ∘ Fin.castSucc = fun j : Fin t => a ⟨j.val + 2, by omega⟩`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, hτ, ha']`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[succ_above_one_val, Fin.coe_cycleRange_of_lt (by rw [Fin.lt_def]; simp)]`. Apply the tactic sequence `try simp`. Establish `hbs : b' ∘ Fin.succ = fun j : Fin t => b ⟨j.val + 2, by omega⟩`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, hb']`. Both sides reduce to the same expression. Establish `hQ' : Λ (qminor E a' b' (u - 1)) = Λ (qminor E (fun j : Fin t => a ⟨j.val + 2, by omega⟩) (fun j : Fin t => b ⟨j.val + 2, by omega⟩) (u - 1 - 1))`. Establish `hsk` using `Formalism.REAL.quantumMinorRowSkew_holds A n (t + 1) E a' b' τ (u - 1)`. Establish `e1 : qminor E a' b' (u - 1) = ((Equiv.Perm.sign τ : ℤ) : A) * qminor E (a' ∘ τ) b' (u - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsk, ← mul_assoc, hsq, one_mul]`. Rewrite using `[e1, Formalism.FourierDecayAlt.P.expansion_last_line A n t E hE (a' ∘ τ) b' (u - 1), Finset.mul_sum, map_sum, Fin.sum_univ_succ]`. Establish `hrest : ∀ m : Fin t, Λ (((Equiv.Perm.sign τ : ℤ) : A) * ((((-1 : ℤ) ^ (t + ((m.succ : Fin (t + 1)) : ℕ)) : ℤ) : A) * (qminor E ((a' ∘ τ) ∘ Fin.castSucc) (b' ∘ m.succ.succAbove) (u - 1 - 1) * Tm E (u - 1) ((a' ∘ τ) (Fin.last t)) (b' m.succ)))) = 0`. Introduce `m`. Establish `hbm : b' m.succ = b ⟨m.val + 2, by omega⟩` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlast, hbm]`. Unfold `Tm`. Rewrite using `[if_neg (Ne.symm (hbR ⟨m.val + 2, by omega⟩ (by simp))), zero_add, ← mul_assoc, ← mul_assoc]`. Conclude with `hR0 ⟨m.val + 2, by omega⟩ (by simp) _`. Rewrite using `[Finset.sum_eq_zero (fun m _ => hrest m), add_zero, hlast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0' : b' 0 = p1` using `by simp only [hb', Function.comp_apply]; exact hb1`. Rewrite using `[hb0']`. Unfold `Tm`. Rewrite using `[if_neg h01, zero_add, ← mul_assoc, ← mul_assoc, hR1, Fin.succAbove_zero, hcs, hbs, hsg, ← Int.cast_mul]`. Establish `h11 : ((-1 : ℤ) ^ t * (-1) ^ (t + ((0 : Fin (t + 1)) : ℕ))) = 1`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.val_zero, add_zero, ← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Rewrite using `[h11, Int.cast_one, one_mul]`. Rewrite using `[Formalism.FourierDecayAlt.P.expansion_first_column A n (t + 1) E a b u, map_sum, Fin.sum_univ_succ, Fin.sum_univ_succ]`. Establish `hrest : ∀ m : Fin t, Λ ((((-1 : ℤ) ^ ((m.succ.succ : Fin (t + 2)) : ℕ) : ℤ) : A) * (Tm E u (a m.succ.succ) (b 0) * qminor E (a ∘ m.succ.succ.succAbove) (b ∘ Fin.succ) (u - 1))) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[hb0]`. Unfold `Tm`. Rewrite using `[if_neg (haR _ (by simp)), zero_add, zcomm]`. Conclude with `hL0 _ (by simp) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun m _ => hrest m), add_zero]`. Establish `h1 : Λ ((((-1 : ℤ) ^ (((0 : Fin (t + 1)).succ : Fin (t + 2)) : ℕ) : ℤ) : A) * (Tm E u (a (0 : Fin (t + 1)).succ) (b 0) * qminor E (a ∘ (0 : Fin (t + 1)).succ.succAbove) (b ∘ Fin.succ) (u - 1))) = -(κ • Λ (qminor E a' b' (u - 1)))`. Establish `ha1' : a (0 : Fin (t + 1)).succ = p1` using `ha1`. Rewrite using `[ha1', hb0]`. Unfold `Tm`.
-
-Rewrite using `[if_neg (Ne.symm h01), zero_add, zcomm, hL1, zmul, map_smul]`. Apply the tactic sequence `simp <;> rfl`. Rewrite using `[h1, hQ']`. Simplify using `only [Fin.val_zero, pow_zero, Int.cast_one, one_mul, Fin.succAbove_zero, hb0, ha0]`. Rewrite using `[hb']`.
-
-Conclude with `(sub_eq_add_neg _ _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepB_ring {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     {M : Type} [AddCommGroup M] [Module ℂ M] (Λ : A →ₗ[ℂ] M) (p0 p1 : Fin n) (h01 : p0 ≠ p1) (κ : ℂ)

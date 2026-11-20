@@ -5,15 +5,13 @@ open IsLocalRing GlobalTheory.FormalOrigin
 namespace GlobalTheory.FormalOrigin
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨fun _ => rfl, fun h => absurd (fun i hi => by simp at hi) h⟩`. Consider the case `cons j l ih`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[List.foldr_cons, h j (by simp), ih.1 (fun i hi => h i (by simp [hi]))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[List.foldr_cons]`. Distinguish the cases in `hl : ∀ i ∈ l, α i = 0`. Rewrite using `[ih.1 hl]`. Establish `hj : α j ≠ 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hj`. Apply `h` to reduce the goal to its premises. Introduce `i hi`. Break down `List.mem_cons.1 hi with rfl | hi` into its components or cases. Conclude with `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hl i hi`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hj`. Rewrite using `[hk, Function.iterate_succ_apply, hc j]`. Conclude with `Function.iterate_fixed (h0 j) k`. Rewrite using `[ih.2 hl]`.
-
-Conclude with `Function.iterate_fixed (h0 j) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_iterate_of_kills {A ι : Type} [Zero A] (ds : ι → A → A) (α : ι → ℕ) (c : A)
     (hc : ∀ i, ds i c = 0) (h0 : ∀ i, ds i 0 = 0) (l : List ι) :
@@ -42,11 +40,11 @@ theorem foldr_iterate_of_kills {A ι : Type} [Zero A] (ds : ι → A → A) (α 
         exact Function.iterate_fixed (h0 j) _
 
 /- English proof (translation)
-Introduce `A B _ _ _ n ev ds c hc`. Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_C]`. Express the relevant statement in the definitionally equal form `(∏ i, ((α i).factorial : ℚ))⁻¹ • ev (iterOp (fun i => ⇑(ds i)) α c) = _`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[iterOp_zero]`. Simplify using the standard rewrite rules. Establish `: iterOp (fun i => ⇑(ds i)) α c = 0`. Use `(foldr_iterate_of_kills (fun i => ⇑(ds i)) α c hc (fun i => map_zero _) _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `h' i (List.mem_finRange i)`. Rewrite using `[this, map_zero, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_const :
     ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra ℚ B] (n : ℕ) (ev : A →+* B) (ds : Fin n → Derivation ℤ A A) (c : A), (∀ i, ds i c = 0) → taylor ev (fun i => ⇑(ds i)) c = MvPowerSeries.C (ev c) := by

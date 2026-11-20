@@ -8,14 +8,14 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
 /- English proof (translation)
-Unfold `soutPart`. Conclude with `Finset.prod_pos fun p hp => (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hp).1).pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem soutPart_pos (m₀ N : ℕ) : 0 < soutPart m₀ N := by
   unfold soutPart
   exact Finset.prod_pos fun p hp => (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hp).1).pos
 
 /- English proof (translation)
-Unfold `soutPart`. Use `Finset.squarefree_prod_of_pairwise_isCoprime (fun p hp r hr hpr => ?_) fun p hp => (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hp).1).squarefree` and prove the remaining obligations. Simplify using `only [← Nat.coprime_iff_isRelPrime]`. Conclude with `(Nat.coprime_primes (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hp).1) (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hr).1)).mpr hpr`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem soutPart_squarefree (m₀ N : ℕ) : Squarefree (soutPart m₀ N) := by
   unfold soutPart
@@ -26,7 +26,7 @@ theorem soutPart_squarefree (m₀ N : ℕ) : Squarefree (soutPart m₀ N) := by
     (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hr).1)).mpr hpr
 
 /- English proof (translation)
-Unfold `soutPart`. Conclude with `Nat.Coprime.prod_left fun p hp => (Nat.Prime.coprime_iff_not_dvd (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hp).1)).mpr (Finset.mem_filter.mp hp).2.2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem soutPart_coprime (m₀ N : ℕ) : (soutPart m₀ N).Coprime m₀ := by
   unfold soutPart
@@ -35,26 +35,26 @@ theorem soutPart_coprime (m₀ N : ℕ) : (soutPart m₀ N).Coprime m₀ := by
       (Finset.mem_filter.mp hp).2.2
 
 /- English proof (translation)
-Conclude with `Nat.coprime_two_right.mp ((soutPart_coprime m₀ N).coprime_dvd_right h2)`.
+A detailed English derivation is pending.
 -/
 theorem soutPart_odd (m₀ N : ℕ) (h2 : 2 ∣ m₀) : Odd (soutPart m₀ N) := by
   exact Nat.coprime_two_right.mp ((soutPart_coprime m₀ N).coprime_dvd_right h2)
 
 /- English proof (translation)
-Unfold `soutPart`. Conclude with `(Finset.prod_dvd_prod_of_subset _ _ _ (Finset.filter_subset _ _)).trans (Nat.prod_primeFactors_dvd N)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem soutPart_dvd (m₀ N : ℕ) : soutPart m₀ N ∣ N := by
   unfold soutPart
   exact (Finset.prod_dvd_prod_of_subset _ _ _ (Finset.filter_subset _ _)).trans (Nat.prod_primeFactors_dvd N)
 
 /- English proof (translation)
-Conclude with `Nat.le_of_dvd hN (soutPart_dvd m₀ N)`.
+A detailed English derivation is pending.
 -/
 theorem soutPart_le (m₀ N : ℕ) (hN : 0 < N) : soutPart m₀ N ≤ N := by
   exact Nat.le_of_dvd hN (soutPart_dvd m₀ N)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.prod_cons, Finset.prod_cons, jacobiSym.mul_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem jacobiSym_prod_left {ι : Type*} (s : Finset ι) (f : ι → ℤ) (b : ℕ) :
     jacobiSym (∏ i ∈ s, f i) b = ∏ i ∈ s, jacobiSym (f i) b := by
@@ -63,7 +63,7 @@ theorem jacobiSym_prod_left {ι : Type*} (s : Finset ι) (f : ι → ℤ) (b : �
   | cons a s ha ih => rw [Finset.prod_cons, Finset.prod_cons, jacobiSym.mul_left, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih`. Establish `hs : ∀ i ∈ s, f i ≠ 0` using `fun i hi => hf i (Finset.mem_cons.mpr (Or.inr hi))`. Rewrite using `[Finset.prod_cons, Finset.prod_cons, jacobiSym.mul_right' _ (hf a (Finset.mem_cons.mpr (Or.inl rfl))) (Finset.prod_ne_zero_iff.mpr hs), ih hs]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobiSym_prod_right {ι : Type*} (s : Finset ι) (a : ℤ) (f : ι → ℕ) (hf : ∀ i ∈ s, f i ≠ 0) :
     jacobiSym a (∏ i ∈ s, f i) = ∏ i ∈ s, jacobiSym a (f i) := by
@@ -75,7 +75,7 @@ theorem jacobiSym_prod_right {ι : Type*} (s : Finset ι) (a : ℤ) (f : ι → 
       jacobiSym.mul_right' _ (hf a (Finset.mem_cons.mpr (Or.inl rfl))) (Finset.prod_ne_zero_iff.mpr hs), ih hs]
 
 /- English proof (translation)
-Establish `h : (q / 2) % 2 = (q' / 2) % 2` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem recip_sign_congr (p q q' : ℕ) (h4 : q % 4 = q' % 4) :
     ((-1 : ℤ)) ^ (p / 2 * (q / 2)) = (-1) ^ (p / 2 * (q' / 2)) := by
@@ -85,9 +85,7 @@ theorem recip_sign_congr (p q q' : ℕ) (h4 : q % 4 = q' % 4) :
     _ = (-1) ^ (p / 2 * (q' / 2)) := (neg_one_pow_eq_pow_mod_two _).symm
 
 /- English proof (translation)
-Establish `h` using `(Nat.coprime_primes hp hq).mpr hpq.ne`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `h`. Rewrite using `[Int.gcd_natCast_natCast]`.
-
-Conclude with `h.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gcd_prime_lt {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q) :
     ((p : ℤ).gcd (q : ℤ) = 1) ∧ ((q : ℤ).gcd (p : ℤ) = 1) := by
@@ -99,11 +97,11 @@ theorem gcd_prime_lt {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q) :
     exact h.symm
 
 /- English proof (translation)
-Establish `hq2 : q ≠ 2` using `by have := hp.two_le; omega`. Establish `hq'2 : q' ≠ 2` using `by have := hp.two_le; omega`. Establish `hqo` using `hq.odd_of_ne_two hq2`. Establish `hq'o` using `hq'.odd_of_ne_two hq'2`. Break down `hp.eq_two_or_odd' with rfl | hpo` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h8m : q % 8 = q' % 8` using `Nat.ModEq.of_dvd h8 hqq`. Establish `hz : (q : ZMod 8) = (q' : ZMod 8)` using `(ZMod.natCast_eq_natCast_iff' q q' 8).mpr h8m`. Simplify using `only [Nat.cast_ofNat]`. Rewrite using `[jacobiSym.at_two hqo, jacobiSym.at_two hq'o, hz]`. Establish `h4 : q % 4 = q' % 4` using `Nat.ModEq.of_dvd (dvd_trans (by norm_num) h8) hqq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpm' : q % p = q' % p` using `Nat.ModEq.of_dvd hpm hqq`. Rewrite using `[jacobiSym.quadratic_reciprocity hpo hqo, jacobiSym.quadratic_reciprocity hpo hq'o, recip_sign_congr p q q' h4, jacobiSym.mod_left (q : ℤ), jacobiSym.mod_left (q' : ℤ), ← Int.natCast_mod, ← Int.natCast_mod, hpm']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobi_prime_in {m₀ p q q' : ℕ} (h8 : 8 ∣ m₀) (hp : p.Prime) (hpm : p ∣ m₀) (hq : q.Prime) (hq' : q'.Prime)
     (hqq : q % m₀ = q' % m₀) (hpq : p < q) (hpq' : p < q') :
@@ -124,9 +122,9 @@ theorem jacobi_prime_in {m₀ p q q' : ℕ} (h8 : 8 ∣ m₀) (hp : p.Prime) (hp
       ← Int.natCast_mod, ← Int.natCast_mod, hpm']
 
 /- English proof (translation)
-Establish `hp2 : p ≠ 2` using `fun h => hpm (h ▸ dvd_trans (by norm_num) h8)`. Establish `hq2 : q ≠ 2` using `by have := hp.two_le; omega`. Establish `hq'2 : q' ≠ 2` using `by have := hp.two_le; omega`. Establish `hpo` using `hp.odd_of_ne_two hp2`. Establish `hqo` using `hq.odd_of_ne_two hq2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq'o` using `hq'.odd_of_ne_two hq'2`. Establish `h4 : q % 4 = q' % 4` using `Nat.ModEq.of_dvd (dvd_trans (by norm_num) h8) hqq`. Establish `s1 : jacobiSym (q : ℤ) p ^ 2 = 1` using `jacobiSym.sq_one (gcd_prime_lt hp hq hpq).2`. Establish `s2 : jacobiSym (q' : ℤ) p ^ 2 = 1` using `jacobiSym.sq_one (gcd_prime_lt hp hq' hpq').2`. Rewrite using `[jacobiSym.quadratic_reciprocity hpo hqo, jacobiSym.quadratic_reciprocity hpo hq'o, mul_assoc, mul_assoc, ← sq, ← sq, s1, s2, recip_sign_congr p q q' h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobi_prime_out {m₀ p q q' : ℕ} (h8 : 8 ∣ m₀) (hp : p.Prime) (hpm : ¬ p ∣ m₀) (hq : q.Prime)
     (hq' : q'.Prime) (hqq : q % m₀ = q' % m₀) (hpq : p < q) (hpq' : p < q') :
@@ -144,9 +142,9 @@ theorem jacobi_prime_out {m₀ p q q' : ℕ} (h8 : 8 ∣ m₀) (hp : p.Prime) (h
     ← sq, ← sq, s1, s2, recip_sign_congr p q q' h4]
 
 /- English proof (translation)
-Establish `hNfac : (N : ℤ) = ∏ p ∈ N.primeFactors, (p : ℤ) ^ (N.factorization p)` using `by conv_lhs => rw [← Nat.prod_factorization_pow_eq_self hN.ne']`. Rewrite using `[Nat.prod_factorization_eq_prod_primeFactors, Nat.cast_prod]`. Simplify using `only [Nat.cast_pow]`. Rewrite using `[hNfac, jacobiSym_prod_left]`. Unfold `soutPart`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[jacobiSym_prod_right _ _ _ fun p hp => (Nat.prime_of_mem_primeFactors (Finset.mem_filter.mp hp).1).ne_zero, Finset.prod_filter, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[jacobiSym.pow_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobi_class_prod (m₀ N q : ℕ) (hN : 0 < N) :
     jacobiSym (N : ℤ) q * jacobiSym (q : ℤ) (soutPart m₀ N) =
@@ -164,11 +162,11 @@ theorem jacobi_class_prod (m₀ N q : ℕ) (hN : 0 < N) :
   rw [jacobiSym.pow_left]
 
 /- English proof (translation)
-Rewrite using `[jacobi_class_prod m₀ N q hN, jacobi_class_prod m₀ N q' hN]`. Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpP` using `Nat.prime_of_mem_primeFactors hp`. Establish `hpN : p ≤ N` using `Nat.le_of_mem_primeFactors hp`. Establish `hpq : p < q` using `by omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpq' : p < q'` using `by omega`. Distinguish the cases in `hpm : p ∣ m₀`. Rewrite using `[if_neg (fun h => h.2 hpm), if_neg (fun h => h.2 hpm), mul_one, mul_one, jacobi_prime_in h8 hpP hpm hq hq' hqq hpq hpq']`. Establish `hsq : ∀ r : ℕ, r.Prime → p < r → jacobiSym (p : ℤ) r ^ 2 = 1` using `fun r hr hpr => jacobiSym.sq_one (gcd_prime_lt hpP hr hpr).1`. Take `⟨k, hk | hk⟩` from `Nat.even_or_odd' (N.factorization p)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnodd : ¬ Odd (N.factorization p)` using `Nat.not_odd_iff_even.mpr ⟨k, by omega⟩`. Rewrite using `[if_neg (fun h => hnodd h.1), if_neg (fun h => hnodd h.1), mul_one, mul_one, hk, pow_mul, pow_mul, hsq q hq hpq, hsq q' hq' hpq', one_pow]`. Establish `hodd : Odd (N.factorization p)` using `⟨k, hk⟩`. Rewrite using `[if_pos ⟨hodd, hpm⟩, if_pos ⟨hodd, hpm⟩, hk, pow_succ, pow_succ, pow_mul, pow_mul, hsq q hq hpq, hsq q' hq' hpq', one_pow, one_mul, one_mul]`. Conclude with `jacobi_prime_out h8 hpP hpm hq hq' hqq hpq hpq'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacobi_class_congr {m₀ N q q' : ℕ} (h8 : 8 ∣ m₀) (hN : 0 < N) (hq : q.Prime) (hq' : q'.Prime)
     (hqq : q % m₀ = q' % m₀) (hNq : N < q) (hNq' : N < q') :
@@ -195,15 +193,13 @@ theorem jacobi_class_congr {m₀ N q q' : ℕ} (h8 : 8 ∣ m₀) (hN : 0 < N) (h
       exact jacobi_prime_out h8 hpP hpm hq hq' hqq hpq hpq'
 
 /- English proof (translation)
-Establish `hcop1 : ∀ q : ℕ, q.Prime → N < q → (N : ℤ).gcd q = 1`. Introduce `q hq hNq`. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `((Nat.Prime.coprime_iff_not_dvd hq).mpr fun h => absurd (Nat.le_of_dvd hN h) (by omega)).symm`. Establish `hcop2 : ∀ q : ℕ, q.Prime → N < q → (q : ℤ).gcd (soutPart m₀ N) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq hNq`. Establish `hle` using `soutPart_le m₀ N hN`. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hq).mpr fun h => absurd (Nat.le_of_dvd (soutPart_pos m₀ N) h) (by omega)`. Distinguish the cases in `hex : ∃ q₀ : ℕ, q₀.Prime ∧ q₀ % m₀ = a₀ % m₀ ∧ N < q₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q₀, hq₀, hq₀m, hNq₀⟩` from `hex`. Use `⟨jacobiSym (N : ℤ) q₀ * jacobiSym (q₀ : ℤ) (soutPart m₀ N), ?_, fun q hq hqm hNq => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases jacobiSym.eq_one_or_neg_one (hcop1 q₀ hq₀ hNq₀) with h | h <;>`. Apply the tactic sequence `rcases jacobiSym.eq_one_or_neg_one (hcop2 q₀ hq₀ hNq₀) with h' | h' <;> simp [h, h']`. Establish `hc` using `jacobi_class_congr h8 hN hq hq₀ (hqm.trans hq₀m.symm) hNq hNq₀`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : jacobiSym (q : ℤ) (soutPart m₀ N) ^ 2 = 1` using `jacobiSym.sq_one (hcop2 q hq hNq)`. Rewrite using `[← hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq, mul_one]`. Use `_ = jacobiSym (N : ℤ) q * jacobiSym (q : ℤ) (soutPart m₀ N) * jacobiSym (q : ℤ) (soutPart m₀ N) := by`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, Or.inl rfl, fun q hq hqm hNq => absurd ⟨q, hq, hqm, hNq⟩ hex⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jacobi_class (m₀ a₀ N : ℕ) (h8 : 8 ∣ m₀) (ha : a₀.Coprime m₀) (hN : 0 < N) :
     ∃ σ : ℤ, (σ = 1 ∨ σ = -1) ∧ ∀ q : ℕ, q.Prime → q % m₀ = a₀ % m₀ → N < q →

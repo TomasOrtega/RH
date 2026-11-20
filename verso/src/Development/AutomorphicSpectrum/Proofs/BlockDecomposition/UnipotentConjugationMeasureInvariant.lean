@@ -7,29 +7,25 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.HaarConj
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ U N hU hN hL _ _ μ _ n hn c hc`. Establish `hninv : n⁻¹ ∈ N` using `N.inv_mem hn`. Set `d : U → U` to `fun u => ⟨n⁻¹ * u * n⁻¹⁻¹, hN _ hninv _ u.2⟩`. Establish `hdc : ∀ u, d (c u) = u` using `fun u => Subtype.ext (by simp [d, hc, mul_assoc])`. Establish `hcd : ∀ u, c (d u) = u` using `fun u => Subtype.ext (by simp [d, hc, mul_assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcmul : ∀ u v, c (u * v) = c u * c v` using `fun u v => Subtype.ext (by simp [hc, mul_assoc])`. Establish `hcc : Continuous c`. Use `Topology.IsEmbedding.subtypeVal.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: (Subtype.val ∘ c) = fun u : U => n * (u : G) * n⁻¹` using `funext hc`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`. Establish `hdc' : Continuous d`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `fun_prop`. Set `e : U ≃* U` to `{ toFun := c, invFun := d, left_inv := hdc, right_inv := hcd, map_mul' := hcmul }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI hH : (μ.map c).IsHaarMeasure := e.isHaarMeasure_map μ hcc hdc'`. Use `haveI : LocallyCompactSpace U := hU.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology U := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Take `⟨L, hnL, -, hLc⟩` from `hL n hn`. Take `⟨Q, hQc, hQn⟩` from `exists_compact_mem_nhds (1 : U)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K : Set G` to `(fun p : G × G => p.1 * p.2 * p.1⁻¹) '' ((L : Set G) ×ˢ (Subtype.val '' Q))`. Establish `hK : IsCompact K` using `(hLc.prod (hQc.image continuous_subtype_val)).image (by fun_prop)`. Set `Q' : Set U` to `Subtype.val ⁻¹' K`. Establish `hQ'c : IsCompact Q'` using `hU.isClosedEmbedding_subtypeVal.isCompact_preimage hK`. Establish `hQQ' : Q ⊆ Q'` using `fun q hq => ⟨(1, (q : G)), ⟨L.one_mem, ⟨q, hq, rfl⟩⟩, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hpos : 0 < μ Q'` using `(MeasureTheory.Measure.measure_pos_of_mem_nhds μ hQn).trans_le (MeasureTheory.measure_mono hQQ')`. Establish `hfin : μ Q' ≠ ⊤` using `hQ'c.measure_lt_top.ne`. Establish `hpre : c ⁻¹' Q' = Q'`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `⟨⟨l, q⟩, ⟨hl, hq⟩, h⟩`. Use `⟨(n⁻¹ * l, q), ⟨L.mul_mem (L.inv_mem hnL) hl, hq⟩, ?_⟩` and prove the remaining obligations. Establish `h' : l * q * l⁻¹ = n * (u : G) * n⁻¹`. Rewrite using `[← hc]`. Conclude with `h`.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `n⁻¹ * l * q * (n⁻¹ * l)⁻¹ = (u : G)`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨⟨l, q⟩, ⟨hl, hq⟩, h⟩`. Use `⟨(n * l, q), ⟨L.mul_mem hnL hl, hq⟩, ?_⟩` and prove the remaining obligations. Establish `h' : l * q * l⁻¹ = (u : G)` using `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `n * l * q * (n * l)⁻¹ = (c u : G)`. Rewrite using `[hc, ← h']`. Use `group`. Establish `hmeas : MeasurableSet Q'` using `hQ'c.measurableSet`. Establish `h1 : μ.map c Q' = μ Q'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MeasureTheory.Measure.map_apply hcc.measurable hmeas, hpre]`. Establish `heq` using `MeasureTheory.Measure.isMulLeftInvariant_eq_smul (μ.map c) μ`. Establish `h2 : ((MeasureTheory.Measure.haarScalarFactor (μ.map c) μ : NNReal) : ENNReal) * μ Q' = 1 * μ Q'`. Establish `h3` using `congrArg (fun ν : MeasureTheory.Measure U => ν Q') heq`. Simplify using `only [MeasureTheory.Measure.smul_apply, h1] at h3`.
-
-Rewrite using `[one_mul]`. Conclude with `h3.symm.trans (by simp [ENNReal.smul_def])`. Establish `hκ : MeasureTheory.Measure.haarScalarFactor (μ.map c) μ = 1`. Use `(ENNReal.mul_left_inj hpos.ne' hfin).1 h2` as an intermediate fact. Conclude with `this` after adjusting the coercions.
-
-Use `⟨hcc.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, hκ, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_measurePreserving : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] (U N : Subgroup G), IsClosed (U : Set G) → (∀ n ∈ N, ∀ u ∈ U, n * u * n⁻¹ ∈ U) → (∀ n ∈ N, ∃ L : Subgroup G, n ∈ L ∧ L ≤ N ∧ IsCompact (L : Set G)) → ∀ [MeasurableSpace U] [BorelSpace U] (μ : MeasureTheory.Measure U) [μ.IsHaarMeasure], ∀ n ∈ N, ∀ c : U → U, (∀ u, (c u : G) = n * u * n⁻¹) → MeasureTheory.MeasurePreserving c μ μ := by
   intro G _ _ _ _ _ _ U N hU hN hL _ _ μ _ n hn c hc

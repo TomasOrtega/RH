@@ -6,11 +6,11 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits GlobalTheory.Hilbert
 namespace GlobalTheory.FiniteFlatLocal
 
 /- English proof (translation)
-Introduce `S Z z h1 h2 h3 s`. Take `⟨V, hV, hsV, -, hF⟩` from `GlobalTheory.FiniteAmpleFP.exists_finFree_app_fp z (x := s) (U := ⊤) trivial`. Establish `hZ : IsAffineOpen (z ⁻¹ᵁ V)` using `hV.preimage z`. Use `letI : Algebra Γ(S, V) Γ(Z, z ⁻¹ᵁ V) := (z.app V).hom.toAlgebra`. Establish `hfin : Module.Finite Γ(S, V) Γ(Z, z ⁻¹ᵁ V)` using `hF.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hfree : Module.Free Γ(S, V) Γ(Z, z ⁻¹ᵁ V)` using `hF.2`. Use `⟨V, Γ(S, V), Γ(Z, z ⁻¹ᵁ V), inferInstance, inferInstance, inferInstance, hfree, hfin, hV.isoSpec, hZ.isoSpec, hsV, ?_⟩` and prove the remaining obligations. Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec z hV hZ le_rfl`. Rewrite `e` using `[← Scheme.Hom.app_eq_appLE]`. Rewrite using `[← cancel_mono (hV.isoSpec.inv ≫ V.ι)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsAffineOpen.isoSpec_inv_ι, Category.assoc, Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec, morphismRestrict_ι, ← IsAffineOpen.isoSpec_hom_fromSpec hZ, Category.assoc, ← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_finFree_local : ∀ (S Z : Scheme.{0}) (z : Z ⟶ S), IsFinite z → Flat z → LocallyOfFinitePresentation z → ∀ s : S, ∃ (W : S.Opens) (A B : Type) (_ : CommRing A) (_ : CommRing B) (_ : Algebra A B) (_ : Module.Free A B) (_ : Module.Finite A B) (eW : W.toScheme ≅ Spec (CommRingCat.of A)) (eZ : (z ⁻¹ᵁ W).toScheme ≅ Spec (CommRingCat.of B)), s ∈ W ∧ eZ.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap A B)) = (z ∣_ W) ≫ eW.hom := by
   intro S Z z h1 h2 h3 s

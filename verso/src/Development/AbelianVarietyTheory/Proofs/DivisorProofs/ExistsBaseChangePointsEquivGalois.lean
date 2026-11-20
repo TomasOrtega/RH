@@ -15,7 +15,7 @@ variable (K L Ω : Type) [Field K] [Field L] [Field Ω] [Algebra K L] [Algebra L
   [IsScalarTower K L Ω]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_eq K L Ω]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_algebraMap_tower :
     spMap (algebraMap K Ω) = spMap (algebraMap L Ω) ≫ spMap (algebraMap K L) := by

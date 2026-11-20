@@ -19,7 +19,7 @@ section Props
 variable {Z : Scheme.{0}} {A B : Over Z} [GrpObj B] [IsCommMonObj B] {N : ℕ} {j : A ⟶ B}
 
 /- English proof (translation)
-Establish `h` using `hp.map (Over.forget Z)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kernel_isPullback (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B]) :
     IsPullback j.left A.hom ((𝟙 B) ^ N).left (η[B]).left := by
@@ -27,9 +27,7 @@ theorem kernel_isPullback (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B]) :
   simpa using h
 
 /- English proof (translation)
-Establish `h1` using `kernel_isPullback hp`. Use `haveI : IsSeparated (((𝟙 B) ^ N).left ≫ B.hom) := by rw [Over.w]; infer_instance`. Use `haveI : QuasiCompact (((𝟙 B) ^ N).left ≫ B.hom) := by rw [Over.w]; infer_instance`. Use `haveI : IsSeparated ((𝟙 B) ^ N).left := IsSeparated.of_comp _ B.hom`. Use `haveI : QuasiCompact ((𝟙 B) ^ N).left := QuasiCompact.of_comp _ B.hom`.
-
-Conclude with `⟨MorphismProperty.of_isPullback (P := @Flat) h1 inferInstance, MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) h1 inferInstance, MorphismProperty.of_isPullback (P := @IsSeparated) h1 inferInstance, MorphismProperty.of_isPullback (P := @QuasiCompact) h1 inferInstance, Mo …`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernel_props' (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B])
     [Flat ((𝟙 B) ^ N).left] [LocallyQuasiFinite ((𝟙 B) ^ N).left] [LocallyOfFinitePresentation ((𝟙 B) ^ N).left]
@@ -48,19 +46,17 @@ theorem kernel_props' (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B])
     MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) h1 inferInstance⟩
 
 /- English proof (translation)
-Establish `h1` using `kernel_isPullback hp`. Use `set m := ((𝟙 B) ^ N).left with hm`. Use `set mW := ((Over.pullback c).map ((𝟙 B) ^ N)).left with hmW`. Establish `hfu : FormallyUnramified mW`. Rewrite using `[hmW, ← GlobalTheory.MulEtaleDvr.mulN_eq_pow, GlobalTheory.MulEtaleDvr.pullback_map_mulN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.formallyUnramified_mulN _ _ _ hN`. Establish `hr` using `GlobalTheory.AbLaw.MulN.isPullback_baseChange c ((𝟙 B) ^ N)`. Establish `hpb` using `IsPullback.of_hasPullback A.hom c`. Establish `hbig : IsPullback (pullback.fst A.hom c ≫ j.left) (pullback.snd A.hom c) m (c ≫ (η[B]).left)` using `IsPullback.paste_horiz hpb h1`. Set `s : W ⟶ pullback B.hom c` to `pullback.lift (c ≫ (η[B]).left) (𝟙 W) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w (η[B])]`. Use the proof step `simp)`. Set `t : pullback A.hom c ⟶ pullback B.hom c` to `pullback.lift (pullback.fst A.hom c ≫ j.left) (pullback.snd A.hom c) (by`. Rewrite using `[Category.assoc, Over.w j, pullback.condition])`. Establish `ht1 : t ≫ pullback.fst B.hom c = pullback.fst A.hom c ≫ j.left` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : s ≫ pullback.fst B.hom c = c ≫ (η[B]).left` using `pullback.lift_fst _ _ _`. Establish `ht2 : t ≫ pullback.snd B.hom c = pullback.snd A.hom c` using `pullback.lift_snd _ _ _`. Establish `hs2 : s ≫ pullback.snd B.hom c = 𝟙 W` using `pullback.lift_snd _ _ _`. Establish `hw : mW ≫ pullback.snd B.hom c = pullback.snd B.hom c` using `Over.w ((Over.pullback c).map ((𝟙 B) ^ N))`. Establish `hsq : t ≫ mW = pullback.snd A.hom c ≫ s`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hs1, ← hr.w, ← Category.assoc, ht1, Category.assoc, h1.w, ← Category.assoc, pullback.condition, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, hw, ht2, hs2, Category.comp_id]`. Establish `hleft : IsPullback t (pullback.snd A.hom c) mW s`. Apply `IsPullback.of_right _ hsq hr` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ht1, hs1]`. Conclude with `hbig`. Establish `hU : FormallyUnramified (pullback.snd A.hom c)` using `MorphismProperty.of_isPullback (P := @FormallyUnramified) hleft hfu`. Establish `hF : Flat (pullback.snd A.hom c)` using `MorphismProperty.of_isPullback (P := @Flat) hpb inferInstance`. Establish `hL : LocallyOfFinitePresentation (pullback.snd A.hom c)` using `MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) hpb inferInstance`.
-
-Conclude with `Etale.iff_flat_and_formallyUnramified.2 ⟨hF, hU, hL⟩`.
+A detailed English derivation is pending.
 -/
 theorem kernel_base_etale' {W : Scheme.{0}} (c : W ⟶ Z) (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B])
     (hN : IsUnit (N : Γ(W, ⊤))) [Flat A.hom] [LocallyOfFinitePresentation A.hom] :
@@ -105,7 +101,7 @@ theorem kernel_base_etale' {W : Scheme.{0}} (c : W ⟶ Z) (hp : IsPullback j (to
 end Props
 
 /- English proof (translation)
-Use `haveI : LocallyOfFiniteType (u.left ≫ G.hom) := by rw [Over.w]; infer_instance`. Use `haveI : LocallyOfFiniteType u.left := locallyOfFiniteType_of_comp u.left G.hom`. Use `haveI : IsLocallyNoetherian G.left := LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `hu : LocallyOfFinitePresentation u.left` using `lofp_of_noeth u.left`. Conclude with `MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) (GlobalTheory.AbLaw.MulN.isPullback_baseChange x u) hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lofp_pullback_map {S' S : Scheme.{0}} [IsLocallyNoetherian S] (x : S' ⟶ S) {G : Over S}
     [LocallyOfFiniteType G.hom] (u : G ⟶ G) : LocallyOfFinitePresentation ((Over.pullback x).map u).left := by
@@ -117,13 +113,11 @@ theorem lofp_pullback_map {S' S : Scheme.{0}} [IsLocallyNoetherian S] (x : S' �
     (GlobalTheory.AbLaw.MulN.isPullback_baseChange x u) hu
 
 /- English proof (translation)
-Take `⟨Ω, _, _, a, c, hc, hcg⟩` from `exists_geom_point A.hom g hg`. Use `letI : Algebra (FractionRing R) Ω := a.toAlgebra`. Use `haveI : IsIntegrallyClosedIn (FractionRing R) Ω := isIntegrallyClosedIn_iff.2 ⟨(algebraMap (FractionRing R) Ω).injective, fun {x} hx => minpoly.mem_range_of_degree_eq_one _ x (IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible hx))⟩`. Establish `hpb` using `IsPullback.of_hasPullback A.hom (genPt R).hom`. Use `haveI : LocallyQuasiFinite (pullback.snd A.hom (genPt R).hom) := MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) hpb inferInstance`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `x : Spec (CommRingCat.of Ω) ⟶ pullback A.hom (genPt R).hom` to `pullback.lift c (Spec.map (CommRingCat.ofHom a)) hc`. Take `⟨x₀, hx₀, hf₀, -⟩` from `GlobalTheory.OnePoint.exists_section_of_locallyQuasiFinite (pullback.snd A.hom (genPt R).hom) Ω x (pullback.lift_snd _ _ _)`. Establish `hx₀' : Spec.map (CommRingCat.ofHom a) ≫ x₀ = x` using `hx₀`. Set `c' : genPt R ⟶ A` to `Over.homMk (x₀ ≫ pullback.fst A.hom (genPt R).hom) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hf₀]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `simp)`. Set `u0 : Spec (CommRingCat.of Ω)` to `IsLocalRing.closedPoint Ω`. Use `⟨c', Spec.map (CommRingCat.ofHom a) u0, ?_⟩` and prove the remaining obligations. Establish `key : (Spec.map (CommRingCat.ofHom a) ≫ x₀ ≫ pullback.fst A.hom (genPt R).hom) u0 = g`. Rewrite using `[← Category.assoc, hx₀', pullback.lift_fst]`.
-
-Conclude with `hcg u0`. Simplify `key` using `[c']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_genPt {R : Type} [CommRing R] [IsDomain R] [IsAlgClosed (FractionRing R)]
     (A : Over (Spec (CommRingCat.of R))) [LocallyQuasiFinite A.hom] [LocallyOfFiniteType A.hom] (g : A.left)
@@ -157,9 +151,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
   {S : Scheme.{0}} {G : Over S} {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (N : FractionRing R) ≠ 0`. Rewrite using `[← map_natCast (algebraMap R (FractionRing R))]`. Introduce `h`. Conclude with `hN (Nat.cast_eq_zero.mp ((IsFractionRing.injective R (FractionRing R)) (h.trans (map_zero _).symm)))`. Establish `h2` using `(IsUnit.mk0 _ h1).map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_frac [CharZero R] (hN : N ≠ 0) :
     IsUnit (N : Γ(Spec (CommRingCat.of (FractionRing R)), ⊤)) := by
@@ -171,31 +165,27 @@ theorem isUnit_natCast_frac [CharZero R] (hN : N ≠ 0) :
   simpa using h2
 
 /- English proof (translation)
-Use `haveI hmono : Mono j := mono_of_pullback hp`. Establish `hi : ∀ {Y : Over (Spec (CommRingCat.of R))} (y : Y ⟶ A) (g : Over.mk (Y.hom ≫ x) ⟶ G), y ≫ j = toPull x G g → y.left ≫ j.left ≫ pullback.fst G.hom x = g.left`. Introduce `Y y g h`. Rewrite using `[← toPull_fst x G g, ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi' : ∀ {Y : Over (Spec (CommRingCat.of R))} (y : Y ⟶ A) (g : Over.mk (Y.hom ≫ x) ⟶ G), y.left ≫ j.left ≫ pullback.fst G.hom x = g.left → y ≫ j = toPull x G g`. Introduce `Y y g h`. Apply `hom_ext_pull` to reduce the goal to its premises. Rewrite using `[toPull_fst, ← h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hP : ∀ {Y : Over (Spec (CommRingCat.of R))} (g : Over.mk (Y.hom ≫ x) ⟶ G), toPull x G g = toPullHom x G Y g` using `fun g => rfl`. Establish `hlift : ∀ t, ∃ w : genPt R ⟶ A, w ≫ j = toPull x G (τ t)` using `fun t => lift_of_torsion hp _ (by rw [hP, ← map_pow, hτ, map_one])`. Use `choose z hz using hlift`. Establish `hzu : ∀ t (w : genPt R ⟶ A), w ≫ j = toPull x G (τ t) → w = z t` using `fun t w hw => by`. Rewrite `hw` using `[← hz t]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(cancel_mono j).1 hw`. Set `pt : T →* (genPt R ⟶ A)` to `{ toFun := z map_one' := (hzu 1 1 (by rw [hP, map_one, map_one]; simp)).symm map_mul' := fun s t => (hzu (s * t) (z s * z t) (by rw [MonObj.mul_comp, hz, hz, hP, hP, hP, map_mul, map_mul])).symm }`. Set `Γ : QFGroup R T` to `{ G := A grp := inferInstance comm := inferInstance flat := hflat quasiFinite := hqf separated := hsep quasiCompact := hqc finPres := hfp pt := pt pt_inj := by`. Introduce `s t u v huv`. Establish `h1 : (z s).left = (z t).left` using `eq_of_same_point A.hom (z s).left (z t).left (Over.w (z s)) (Over.w (z t)) u v huv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : z s = z t` using `Over.OverMorphism.ext h1`. Establish `h3 : toPull x G (τ s) = toPull x G (τ t)` using `by rw [← hz s, ← hz t, h2]`. Conclude with `hinj (toPull_inj h3)`. Use `pt_onto := by`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, u, hcu⟩` from `hpt g hg`. Establish `htor : (ofPull x G (c ≫ j)) ^ N = 1`. Apply `toPull_inj` to reduce the goal to its premises. Rewrite using `[hP, hP, map_pow, map_one, ← hP, toPull_ofPull]`. Conclude with `torsion_of_comp hp c`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨t, ht⟩` from `hsurj _ htor`. Establish `hct : c = z t` using `hzu t c (by rw [← ht, toPull_ofPull])`. Conclude with `⟨t, u, by rw [← hcu, hct]; rfl⟩`. Use `gen_reduced := hred }`. Use `⟨Γ, j.left ≫ pullback.fst G.hom x, ⟨?_, ?_, ?_, ?_⟩, fun t => hi (z t) (τ t) (hz t)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (j.left ≫ pullback.fst G.hom x) ≫ G.hom = A.hom ≫ x`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `congr 1`. Conclude with `Over.w j`. Introduce `Y y w y₀ w₀ hy hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `hi' y y₀ hy.symm`. Establish `e2` using `hi' w w₀ hw.symm`. Establish `e3 : (y * w) ≫ j = toPull x G (y₀ * w₀)`. Rewrite using `[MonObj.mul_comp, e1, e2, hP, hP, hP, map_mul]`. Conclude with `(hi (y * w) (y₀ * w₀) e3).symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `Y y w h`. Apply `(cancel_mono j).1` to reduce the goal to its premises. Apply `hom_ext_pull` to reduce the goal to its premises. Simplify using `using h`. Introduce `Y g`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `htor : (toPull x G g) ^ N = 1`. Rewrite using `[hP, ← map_pow, hg, map_one]`. Take `⟨y, hy⟩` from `lift_of_torsion hp _ htor`.
-
-Conclude with `⟨y, hi y g hy⟩`. Introduce and unpack `⟨y, hy⟩`. Establish `e` using `hi' y g hy`. Apply `toPull_inj` to reduce the goal to its premises. Rewrite using `[hP, hP, map_pow, map_one, ← hP, ← e]`.
-
-Conclude with `torsion_of_comp hp y`.
+A detailed English derivation is pending.
 -/
 theorem qfGroup_of_kernel [GrpObj G] [IsCommMonObj G]
     {A : Over (Spec (CommRingCat.of R))} [GrpObj A] [IsCommMonObj A]
@@ -291,19 +281,11 @@ theorem qfGroup_of_kernel [GrpObj G] [IsCommMonObj G]
       exact torsion_of_comp hp y
 
 /- English proof (translation)
-Use `haveI : IsCommMonObj G := hG.comm`. Use `haveI : Smooth G.hom := hG.smooth`. Use `haveI : IsSeparated G.hom := hG.separated`. Use `haveI : QuasiCompact G.hom := hG.quasiCompact`. Establish `heq : (Over.pullback x).map ((𝟙 G) ^ N) = (𝟙 ((Over.pullback x).obj G)) ^ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[← GlobalTheory.MulEtaleDvr.mulN_eq_pow, GlobalTheory.MulEtaleDvr.pullback_map_mulN, GlobalTheory.MulEtaleDvr.mulN_eq_pow]`. Establish `hpb0` using `IsPullback.of_hasPullback ((𝟙 ((Over.pullback x).obj G)) ^ N) (η[(Over.pullback x).obj G])`. Establish `hp : IsPullback (pullback.fst ((𝟙 ((Over.pullback x).obj G)) ^ N) (η[(Over.pullback x).obj G])) (toUnit _) ((𝟙 ((Over.pullback x).obj G)) ^ N) η[(Over.pullback x).obj G]`. Use `hpb0 using 1` and compare the differences between its conclusion and the goal. Conclude with `toUnit_unique _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, _, _⟩` from `exists_kernel_grp hp`. Establish `hfl` using `GlobalTheory.SemiAbMulFlat.flat_and_locallyQuasiFinite_pow S G hG N hN`. Establish `hbc` using `GlobalTheory.AbLaw.MulN.isPullback_baseChange x ((𝟙 G) ^ N)`. Use `haveI : Flat ((𝟙 ((Over.pullback x).obj G)) ^ N).left := by`. Rewrite using `[← heq]`.
-
-Conclude with `MorphismProperty.of_isPullback (P := @Flat) hbc hfl.1`. Use `haveI : LocallyQuasiFinite ((𝟙 ((Over.pullback x).obj G)) ^ N).left := by`. Rewrite using `[← heq]`. Conclude with `MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) hbc hfl.2`. Use `haveI : LocallyOfFinitePresentation ((𝟙 ((Over.pullback x).obj G)) ^ N).left := by`.
-
-Rewrite using `[← heq]`. Conclude with `lofp_pullback_map x ((𝟙 G) ^ N)`. Use `haveI : IsSeparated ((Over.pullback x).obj G).hom := by show IsSeparated (pullback.snd G.hom x) infer_instance`. Use `haveI : QuasiCompact ((Over.pullback x).obj G).hom := by show QuasiCompact (pullback.snd G.hom x) infer_instance`. Take `⟨hflat, hqf, hsep, hqc, hfp⟩` from `kernel_props' hp`.
-
-Use `haveI := hflat`. Use `haveI := hqf`. Use `haveI := hfp`. Establish `hpt` using `fun g hg => exists_genPt (pullback ((𝟙 ((Over.pullback x).obj G)) ^ N) (η[(Over.pullback x).obj G])) g hg`. Use `haveI := kernel_base_etale' (genPt R).hom hp (isUnit_natCast_frac hN)`.
-
-Use `haveI : IsReduced (genPt R).left := by show IsReduced (Spec (CommRingCat.of (FractionRing R))) infer_instance`. Establish `hred` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd (pullback ((𝟙 ((Over.pullback x).obj G)) ^ N) (η[(Over.pullback x).obj G])).hom (genPt R).hom)`. Conclude with `qfGroup_of_kernel hp hflat hqf hsep hqc hfp hred τ hinj hτ hpt hsurj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_qfGroup [CharZero R] [IsAlgClosed (FractionRing R)] [IsLocallyNoetherian S] [GrpObj G]
     (hG : IsSemiAbelian G) (hN : N ≠ 0)
@@ -360,17 +342,17 @@ section Level
 open GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-Set `K` to `(p ^ n • (LinearMap.id : La →ₗ[ℤ] La)).range`. Establish `key : ∀ a b : La, Submodule.Quotient.mk (p` using `K) a = Submodule.Quotient.mk b → f a = f b := by`. Introduce `a b h`. Rewrite `h` using `[Submodule.Quotient.eq]`. Take `⟨c, hc⟩` from `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : f (a - b) = 1` using `(ker _).2 ⟨c, by rw [← hc, LinearMap.smul_apply, LinearMap.id_apply]⟩`. Combine the equalities or inequalities in the displayed calculation. Set `g : La ⧸ K → Q` to `fun q => Quotient.liftOn' q f (fun a b h => key a b (Quotient.sound h))`. Establish `hg : ∀ a, g (Submodule.Quotient.mk a) = f a` using `fun a => rfl`. Establish `f0 : f 0 = 1` using `(ker 0).2 ⟨0, by simp⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `τ : LevGrp La p n →* Q` to `{ toFun := fun t => g (Multiplicative.toAdd t) map_one' := f0 map_mul' := by`. Introduce `x y`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective K (Multiplicative.toAdd x)`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective K (Multiplicative.toAdd y)`. Establish `hx : x = Multiplicative.ofAdd (Submodule.Quotient.mk a)` using `by rw [ha]; rfl`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : y = Multiplicative.ofAdd (Submodule.Quotient.mk b)` using `by rw [hb]; rfl`. Substitute `hx hy` using the available equality. Use `show g (Submodule.Quotient.mk a + Submodule.Quotient.mk b) = g (Submodule.Quotient.mk a) * g (Submodule.Quotient.mk b)`. Rewrite using `[← Submodule.Quotient.mk_add, hg, hg, hg, add] }`. Use `⟨τ, ?_, fun a => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `x hx`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective K (Multiplicative.toAdd x)`. Establish `hx' : x = Multiplicative.ofAdd (Submodule.Quotient.mk a)` using `by rw [ha]; rfl`. Substitute `hx'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hfa : f a = 1` using `hx`. Take `⟨b, hb⟩` from `(ker a).1 hfa`. Establish `hz : Submodule.Quotient.mk (p` using `K) a = 0 := (Submodule.Quotient.mk_eq_zero K).2 ⟨b, by rw [LinearMap.smul_apply, LinearMap.id_apply, hb]⟩`. Rewrite using `[hz]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_levHom {La Q : Type} [AddCommGroup La] [Group Q] (p n : ℕ) (f : La → Q)
     (add : ∀ a b, f (a + b) = f a * f b) (ker : ∀ a, f a = 1 ↔ ∃ b, a = (p ^ n) • b) :
@@ -412,7 +394,7 @@ theorem exists_levHom {La Q : Type} [AddCommGroup La] [Group Q] (p n : ℕ) (f :
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)`. Conclude with `⟨a, by rw [lev, ha]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lev_surjective {La : Type} [AddCommGroup La] (p n : ℕ) (t : LevGrp La p n) : ∃ a, lev p n a = t := by
   obtain ⟨a, ha⟩ := Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)
@@ -425,17 +407,17 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D S _ t p hp O _ _ _ _ y I`. Establish `hp0 : ∀ n : ℕ, 0 < p ^ n` using `fun n => pow_pos hp.out.pos n`. Establish `hev_pow : ∀ (N : ℕ), 0 < N → ∀ (k : ℕ) (a : D.La), I.ev N (k • a) = I.ev N a ^ k`. Introduce `N hN k a`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [zero_smul, pow_zero]; exact (I.ker N hN 0).2 ⟨0, by rw [smul_zero]⟩`. Consider the case `succ k ih => rw [succ_nsmul, I.add, ih, pow_succ]`. Establish `hstep : ∀ n : ℕ, ∃ (Γ : QFGroup O (LevGrp D.La p n)) (i : Γ.G.left ⟶ t.G.left), Γ.IsTorsionAlong t.G y (p ^ n) i ∧ ∀ a, (Γ.pt (lev p n a)).left ≫ i = (I.ev (p ^ n) a).left`. Introduce `n`. Take `⟨τ, hinj, hτa⟩` from `exists_levHom p n (I.ev (p ^ n)) (I.add _) (I.ker _ (hp0 n))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hτ : ∀ s, τ s ^ (p ^ n) = 1`. Introduce `s`. Take `⟨a, rfl⟩` from `lev_surjective p n s`. Rewrite using `[hτa]`. Conclude with `(I.onto _ (hp0 n) _).2 ⟨a, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : ∀ g, g ^ (p ^ n) = 1 → ∃ s, g = τ s`. Introduce `g hg`. Take `⟨a, ha⟩` from `(I.onto _ (hp0 n) g).1 hg`. Conclude with `⟨lev p n a, by rw [hτa, ha]⟩`. Take `⟨Γ, i, htor, hpt⟩` from `exists_qfGroup t.semi (hp0 n).ne' τ hinj hτ hsurj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Γ, i, htor, fun a => by rw [hpt, hτa]⟩`. Use `choose Γ i htor hpt using hstep`. Use `⟨⟨Γ, i, htor, ?_⟩, fun n a => hpt n a, ?_⟩` and prove the remaining obligations. Introduce `n a`. Rewrite using `[hpt, hpt, hev_pow _ (hp0 (n + 1)), pow_succ, I.tower _ _ (hp0 n) hp.out.pos]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a n b`. Establish `e1` using `hpt n ((DistribMulAction.toAddMonoidHom D.La a) b)`. Establish `e2` using `hpt n b`. Establish `e3 : I.ev (p ^ n) ((DistribMulAction.toAddMonoidHom D.La a) b) = I.ev (p ^ n) b ≫ t.act.act a` using `I.lin _ a b`. Rewrite using `[e1, e3, Over.comp_left, ← e2, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (S : Scheme.{0}) [IsLocallyNoetherian S] (t : SAB H S) (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [CharZero O] [IsAlgClosed (FractionRing O)] (y : Sp O ⟶ S) (I : TateIso D (FractionRing O) (Over.mk ((BT.genPt O).hom ≫ y) ⟶ t.G) (fun a g => g ≫ t.act.act a) (fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c))), ∃ X : TorsTower p t.G y D.La, (∀ n (a : D.La), ((X.Γ n).pt (lev p n a)).left ≫ X.i n = (I.ev (p ^ n) a).left) ∧ ∀ a : 𝓞 E, X.Induces (t.act.act a) (DistribMulAction.toAddMonoidHom D.La a) := by
   intro E _ _ _ H D S _ t p hp O _ _ _ _ y I

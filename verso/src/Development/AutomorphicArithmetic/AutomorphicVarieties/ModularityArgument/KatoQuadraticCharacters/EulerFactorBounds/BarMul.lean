@@ -8,11 +8,11 @@ open scoped MatrixGroups Matrix Classical
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨a / (D' : ℤ), ?_⟩` and prove the remaining obligations. Establish `h1 : ((((a : ZMod D').val : ℕ) : ℤ)) = a % (D' : ℤ)` using `ZMod.val_intCast a`. Establish `h2 : (((a : ZMod D').val : ℕ) : ℚ) = ((a % (D' : ℤ) : ℤ) : ℚ)`. Rewrite using `[← h1]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hD : (D' : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne D'`. Establish `e : a % (D' : ℤ) = a - (D' : ℤ) * (a / (D' : ℤ))` using `Int.emod_def a D'`. Rewrite using `[h2, e]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem frac_eq (D D' : ℕ) [NeZero D] (h : D' = D) (a : ℤ) :
     ∃ j : ℤ, (a : ℚ) / (D' : ℚ) = (((a : ZMod D).val : ℕ) : ℚ) / D + j := by
@@ -31,9 +31,9 @@ private theorem frac_eq (D D' : ℕ) [NeZero D] (h : D' = D) (a : ℤ) :
   ring
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrArg (ZMod.castHom hD (ZMod l)) h0`. Simplify using `only [map_mul, map_ofNat, map_intCast, map_zero] at h1`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Establish `h3 : ((2 : ℕ) : ZMod l) = 0` using `by exact_mod_cast h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h3` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).mp h3)`. Conclude with `ha h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_ne (l D : ℕ) [Fact l.Prime] (hl : l ≠ 2) (hD : l ∣ D) (a : ℤ) (ha : (a : ZMod l) ≠ 0) :
     (2 : ZMod D) * (a : ZMod D) ≠ 0 := by
@@ -47,13 +47,13 @@ private theorem two_ne (l D : ℕ) [Fact l.Prime] (hl : l ≠ 2) (hD : l ∣ D) 
   · exact ha h2
 
 /- English proof (translation)
-Distinguish the cases in `hM : N * l ^ L = 0`. Establish `hp : p = 1`. Simplify `h` using `[hM]`. Substitute `hp` using the available equality. Establish `hv : ((1 : ZMod (N * l ^ L))⁻¹).val = 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[ZMod.inv_one, ZMod.val_one'' (by omega)]`. Simplify using `only [bar, Nat.cast_one, hv, Int.cast_one, mul_one]`. Use `haveI : NeZero (N * l ^ L) := ⟨hM⟩`. Establish `hdvd : l ∣ N * l ^ L` using `Dvd.dvd.mul_left (dvd_pow_self l hL) N`. Establish `hu : ((p : ZMod (N * l ^ L)) * (p : ZMod (N * l ^ L))⁻¹) = 1` using `ZMod.coe_mul_inv_eq_one p h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (ZMod.castHom hdvd (ZMod l)) hu`. Rewrite `h1` using `[map_mul, map_one, map_natCast]`. Establish `h2 : ((bar l L N p : ℤ) : ZMod l) = ZMod.castHom hdvd (ZMod l) ((p : ZMod (N * l ^ L))⁻¹)`. Unfold `bar`. Rewrite using `[Int.cast_natCast, ZMod.natCast_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h2, mul_comm]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bar_mul (l L N p : ℕ) (hL : L ≠ 0) (h : Nat.Coprime p (N * l ^ L)) :
     ((bar l L N p : ℤ) : ZMod l) * (p : ZMod l) = 1 := by
@@ -77,33 +77,27 @@ private theorem bar_mul (l L N p : ℕ) (hL : L ≠ 0) (h : Nat.Coprime p (N * l
     exact h1
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N p _ _ x c d w g hH hP hcop hLw hLift n r`. Take `⟨ws, hws⟩` from `hLw`. Establish `api` using `sApi Ω ε X l`. Establish `inv` using `sInvApi Ω ε X l N w`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hn` using the available equality. Conclude with `⟨fun σ _ => (inv 0).2.2.2.2.2.2.1 _, fun σ _ τ _ => (api 0).2.2.2.2.2.2.2.2.1 _ _, ⟨∅, fun σ _ τ _ _ => (api 0).2.2.2.2.2.2.2.2.1 _ _⟩⟩`. Establish `hl2 : l ≠ 2` using `hH.odd`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hL0 : r + n ≠ 0` using `by omega`.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpl : p.Coprime l` using `Nat.Coprime.coprime_dvd_right ⟨N * c * d, by ring⟩ hcop`. Establish `hpN : p.Coprime N` using `Nat.Coprime.coprime_dvd_right ⟨l * c * d, by ring⟩ hcop`. Establish `hpc : p.Coprime c` using `Nat.Coprime.coprime_dvd_right ⟨l * N * d, by ring⟩ hcop`. Establish `hpNL : p.Coprime (N * l ^ (r + n))` using `Nat.Coprime.mul_right hpN (Nat.Coprime.pow_right _ hpl)`. Establish `hcN : c.Coprime N` using `Nat.Coprime.coprime_dvd_right ⟨6 * l, by ring⟩ hH.cc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : c.Coprime l` using `Nat.Coprime.coprime_dvd_right ⟨6 * N, by ring⟩ hH.cc`. Establish `hdN : d.Coprime N` using `Nat.Coprime.coprime_dvd_right ⟨6 * l, by ring⟩ hH.cd`. Establish `hdl : d.Coprime l` using `Nat.Coprime.coprime_dvd_right ⟨6 * N, by ring⟩ hH.cd`. Establish `hpd : p.Coprime d` using `Nat.Coprime.coprime_dvd_right ⟨l * N * c, by ring⟩ hcop`. Establish `hM0 : N * l ^ (r + n) * p ≠ 0` using `mul_ne_zero (mul_ne_zero (NeZero.ne N) (pow_ne_zero _ hlp.ne_zero)) (NeZero.ne p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (N * l ^ (r + n) * p) := ⟨hM0⟩`. Establish `hMeq : lvT l n r N p = N * (N * l ^ (r + n) * p)`. Unfold `lvT`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : NeZero (lvT l n r N p) := ⟨by rw [hMeq]; exact mul_ne_zero (NeZero.ne N) hM0⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLev : Lev l n N (N * l ^ (r + n) * p) (lvT l n r N p) g` using `⟨hMeq, ⟨l ^ (r + n) * p, by ring⟩, ⟨N * l ^ r * p, by ring⟩, hn, hH.cop, hH.g0⟩`. Establish `hLv : Lv c d (N * l ^ (r + n) * p)` using `⟨Nat.pos_of_ne_zero hM0, Nat.Coprime.mul_right (Nat.Coprime.mul_right hcN (Nat.Coprime.pow_right _ hcl)) hpc.symm, Nat.Coprime.mul_right (Nat.Coprime.mul_right hdN (Nat.Coprime.pow_right _ hdl)) hpd.symm⟩`. Establish `hdvdl : l ∣ N * l ^ (r + n) * p` using `Dvd.dvd.mul_right (Dvd.dvd.mul_left (dvd_pow_self l hL0) N) p`. Establish `hbp : ((bar l (r + n) N p : ℤ) : ZMod l) * (p : ZMod l) = 1` using `bar_mul l (r + n) N p hL0 hpNL`. Establish `hlL : ((l : ZMod l)) ^ (r + n) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ZMod.natCast_self]`. Conclude with `zero_pow hL0`. Establish `hN0 : (N : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hlp).mp hH.cop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `ha0 : (((bar l (r + n) N p * ((N : ℤ) + ((x.val : ℕ) : ℤ) * ((topT l (r + n) N : ℕ) : ℤ) * (l : ℤ) ^ (r + n)) * (p : ℤ) + (N : ℤ) * (l : ℤ) ^ (r + n)) : ℤ) : ZMod l) ≠ 0`. Establish `e : (((bar l (r + n) N p * ((N : ℤ) + ((x.val : ℕ) : ℤ) * ((topT l (r + n) N : ℕ) : ℤ) * (l : ℤ) ^ (r + n)) * (p : ℤ) + (N : ℤ) * (l : ℤ) ^ (r + n)) : ℤ) : ZMod l) = (N : ZMod l)`. Use `push_cast`. Take the linear combination `(N : ZMod l) * hbp + (((bar l (r + n) N p : ℤ) : ZMod l) * ((x.val : ℕ) : ZMod l) * ((topT l (r + n) N : ℕ) : ZMod l) * (p : ZMod l) + (N : ZMod l)) * hlL`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hN0`. Establish `hb1 : (((bar l (r + n) N p * (N : ℤ) * (p : ℤ) + (N : ℤ) * (l : ℤ) ^ (r + n)) : ℤ) : ZMod l) ≠ 0`. Establish `e : (((bar l (r + n) N p * (N : ℤ) * (p : ℤ) + (N : ℤ) * (l : ℤ) ^ (r + n)) : ℤ) : ZMod l) = (N : ZMod l)`. Use `push_cast`. Take the linear combination `(N : ZMod l) * hbp + (N : ZMod l) * hlL`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hN0`. Set `x₀ : Row (N * l ^ (r + n) * p)` to `![(((bar l (r + n) N p * ((N : ℤ) + ((x.val : ℕ) : ℤ) * ((topT l (r + n) N : ℕ) : ℤ) * (l : ℤ) ^ (r + n)) * (p : ℤ) + (N : ℤ) * (l : ℤ) ^ (r + n)) : ℤ) : ZMod (N * l ^ (r + n) * p)), (((0 : ℤ)) : ZMod (N * l ^ (r + n) * p))]`. Set `y₀ : Row (N * l ^ (r + n) * p)` to `![(((bar l (r + n) N p * ((topT l (r + n) N : ℕ) : ℤ) * (l : ℤ) ^ (r + n) * (p : ℤ)) : ℤ) : ZMod (N * l ^ (r + n) * p)), (((bar l (r + n) N p * (N : ℤ) * (p : ℤ) + (N : ℤ) * (l : ℤ) ^ (r + n)) : ℤ) : ZMod (N * l ^ (r + n) * p))]`. Establish `hOk : Ok x₀ y₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun h 0`. Simplify using `only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, Nat.cast_ofNat] at h1`. Conclude with `two_ne l _ hl2 hdvdl _ ha0 h1`. Establish `h1` using `congrFun h 1`.
-
-Simplify using `only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, Nat.cast_ofNat] at h1`. Conclude with `two_ne l _ hl2 hdvdl _ hb1 h1`. Establish `hx : ∀ i : Fin 2, ∃ j : ℤ, ixUT l (r + n) N p x i = toQ (N * l ^ (r + n) * p) x₀ i + j`. Introduce `i`. Use `fin_cases i`.
-
-Conclude with `frac_eq _ _ rfl _`. Conclude with `frac_eq _ _ rfl _`. Establish `hy : ∀ i : Fin 2, ∃ j : ℤ, ixVT l (r + n) N p i = toQ (N * l ^ (r + n) * p) y₀ i + j`. Introduce `i`. Use `fin_cases i`.
-
-Conclude with `frac_eq _ _ rfl _`. Conclude with `frac_eq _ _ rfl _`. Take `⟨β, hβ, hcg⟩` from `sTopRel Ω ε X l n N (N * l ^ (r + n) * p) (lvT l n r N p) w g hLev hLift c d ws hws hLv x₀ y₀ hOk _ _ hx hy`. Conclude with `sTopCocG Ω ε X l n N _ _ w g hLev hLift x₀ y₀ hOk (ws n _) (hws.coc n _ hLv) _ β hβ hcg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sTopT :
     UpperTheory.V.Z.Kato.Nb.STopT := by

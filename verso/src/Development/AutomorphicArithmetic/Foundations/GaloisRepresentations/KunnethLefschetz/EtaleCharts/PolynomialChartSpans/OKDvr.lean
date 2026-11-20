@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IntegralityNearIde
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IntegralityNearIdentity.EqOneOfNear
 
 /- English proof (translation)
-Introduce `l _ K _`. Establish `hK : (CrystallineSemistableComparison.OK l K) = (integralClosure ℤ_[l] K).toSubring`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ‖(x : PadicAlgCl l)‖ ≤ 1` using `hx`. Establish `h2 : IsIntegral ℤ_[l] (x : PadicAlgCl l)` using `UpperTheory.V.Lib.Small.isIntegral_of_norm_le h1`. Conclude with `(isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective).1 h2`. Introduce `hx`. Establish `h2 : IsIntegral ℤ_[l] (x : PadicAlgCl l)` using `IsIntegral.map (K.val.restrictScalars ℤ_[l]) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UpperTheory.V.Lib.Small.norm_le_one_of_isIntegral l _ h2`. Rewrite using `[hK]`. Conclude with `(IsIntegralClosure.isNoetherianRing ℤ_[l] ℚ_[l] K (integralClosure ℤ_[l] K))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.oKDvr :
     UpperTheory.Gal.KunnethLefschetz.G.OKDvr := by

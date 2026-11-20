@@ -13,11 +13,11 @@ open GlobalTheory.OrbitSep
 namespace GlobalTheory.LogKSDiv
 
 /- English proof (translation)
-Introduce `k A _ _ α n D D' L hD η`. Use `letI := α.toAlgebra`. Establish `key : (Matrix.detRowAlternating.compLinearMap (LinearMap.pi fun j => (KaehlerDifferential.linearMapEquivDerivation k A).symm (D j)) : (Ω[A⁄k]) [⋀^Fin n]→ₗ[A] A) = L.det • Matrix.detRowAlternating.compLinearMap (LinearMap.pi fun j => (KaehlerDifferential.linearMapEquivDerivation k …`. Use extensionality with `v`. Simplify using `only [AlternatingMap.compLinearMap_apply, AlternatingMap.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i j => (KaehlerDifferential.linearMapEquivDerivation k A).symm (D j) (v i)) = L.det * Matrix.det (Matrix.of fun i j => (KaehlerDifferential.linearMapEquivDerivation k A).symm (D' j) (v i))`. Rewrite using `[mul_comm, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, hD j, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `show (exteriorPower.alternatingMapLinearEquiv _ : _ →ₗ[A] A) η = L.det * (exteriorPower.alternatingMapLinearEquiv _ : _ →ₗ[A] A) η`. Rewrite using `[key, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topPair_change_matrix : ∀ {k A : Type} [CommRing k] [CommRing A] (α : k →+* A) {n : ℕ}
     (D D' : Fin n → (letI := α.toAlgebra; Derivation k A A)) (L : Matrix (Fin n) (Fin n) A),

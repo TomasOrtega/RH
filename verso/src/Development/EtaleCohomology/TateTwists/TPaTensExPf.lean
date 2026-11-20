@@ -14,14 +14,14 @@ abbrev MC (R : Type) [CommRing R] := ModuleCat.{1} (ULift.{1} R)
 abbrev Ix (w : ℤ) := {p : ℤ × ℤ // p.1 + p.2 = w}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun f => ModuleCat.Hom.hom f a) (φ.hom.naturality g.op)`.
+A detailed English derivation is pending.
 -/
 theorem sec_nat {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.map φ (Sec.res g a) = Sec.res g (Sec.map φ a) :=
   congrArg (fun f => ModuleCat.Hom.hom f a) (φ.hom.naturality g.op)
 
 /- English proof (translation)
-Simplify using `[Tens.res, DirectSum.lmap_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tres_lof (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : Ix w)
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -54,7 +54,7 @@ def dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R
   DirectSum.toModule _ _ _ (dc I J U w)
 
 /- English proof (translation)
-Simplify using `[dT, dc, DirectSum.toModule_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dT_lof (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : Ix w) (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
     dT I J U w (DirectSum.lof (ULift.{1} R) _ _ p (a ⊗ₜ b)) =
@@ -65,9 +65,9 @@ theorem dT_lof (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : Ix w) (a : Sec (I.X 
   simp [dT, dc, DirectSum.toModule_lof]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[tres_lof, dT_lof, dT_lof, map_add, map_zsmul, tres_lof, tres_lof, sec_nat, sec_nat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dT_res (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     dT I J V w ∘ₗ Tens.res g w = Tens.res g (w + 1) ∘ₗ dT I J U w := by
@@ -85,7 +85,7 @@ namespace LateralTheory.EtaleFoundations.TensEx
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Sec.map (K.d h i ≫ K.d i j) a = 0`. Rewrite using `[K.d_comp_d]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sec_dd (K : Cx R) (h i j : ℤ) {U : Scheme.{0}} (a : Sec (K.X h) U) :
     Sec.map (K.d i j) (Sec.map (K.d h i) a) = 0 := by
@@ -94,9 +94,9 @@ theorem sec_dd (K : Cx R) (h i j : ℤ) {U : Scheme.{0}} (a : Sec (K.X h) U) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply (f := dT I J U (w + 1))]`. It suffices to establish `h : dT I J U (w + 1) ∘ₗ dT I J U w = 0 by rw [h]; rfl`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply]`. Rewrite using `[dT_lof, map_add, map_zsmul, dT_lof, dT_lof]`. Simplify using `only [sec_dd, TensorProduct.zero_tmul, TensorProduct.tmul_zero, map_zero, zero_add, add_zero, smul_add, smul_zero, Int.negOnePow_succ, Units.val_neg, neg_smul, smul_smul]`. Conclude with `neg_add_cancel _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dT_dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     dT I J U (w + 1) (dT I J U w x) = 0 := by
@@ -110,7 +110,7 @@ theorem dT_dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
   exact neg_add_cancel _
 
 /- English proof (translation)
-Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Conclude with `dT_dT I J U.unop w x`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tensorDifferential_comp_eq_zero (I J : Cx R) (w : ℤ) : dP I J w ≫ dP I J (w + 1) = 0 := by
   ext U : 2
@@ -123,13 +123,13 @@ def T (I J : Cx R) : Cx R :=
     (fun w => by rw [← Functor.map_comp, tensorDifferential_comp_eq_zero, Functor.map_zero])
 
 /- English proof (translation)
-Unfold `T`. Simplify using `[CochainComplex.of]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem T_d (I J : Cx R) (w : ℤ) : (T I J).d w (w + 1) = (presheafToSheaf Jt (MC R)).map (dP I J w) :=
   by unfold T; simp [CochainComplex.of]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => ModuleCat.Hom.hom f x) ((toSheafify Jt P).naturality g.op)).symm`.
+A detailed English derivation is pending.
 -/
 theorem toS_res (P : Scheme.{0}ᵒᵖ ⥤ MC R) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     ((sheafify Jt P).map g.op).hom (((toSheafify Jt P).app (op U)).hom x) =
@@ -137,7 +137,7 @@ theorem toS_res (P : Scheme.{0}ᵒᵖ ⥤ MC R) {V U : Scheme.{0}} (g : V ⟶ U)
   (congrArg (fun f => ModuleCat.Hom.hom f x) ((toSheafify Jt P).naturality g.op)).symm
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => ModuleCat.Hom.hom (NatTrans.app f (op U)) x) (toSheafify_naturality Jt η)).symm`.
+A detailed English derivation is pending.
 -/
 theorem toS_map {P Q : Scheme.{0}ᵒᵖ ⥤ MC R} (η : P ⟶ Q) {U : Scheme.{0}} (x : P.obj (op U)) :
     ((sheafifyMap Jt η).app (op U)).hom (((toSheafify Jt P).app (op U)).hom x) =
@@ -173,7 +173,7 @@ def tau (I J : Cx R) : Pair I J (T I J) where
     rw [dT_lof, map_add, map_zsmul, Units.smul_def]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [Pair.lift, LinearMap.comp_apply, DirectSum.toModule_lof, TensorProduct.lift.tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -184,11 +184,11 @@ theorem tau_lift (I J : Cx R) (U : Scheme.{0}) (w : ℤ) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `U w y`. Use `⟨_, Presheaf.imageSieve_mem Jt (toSheafify Jt (TP I J w)) (U := op U) y, ?_⟩` and prove the remaining obligations. Introduce `V g hg`. Take `⟨x, hx⟩` from `hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, by rw [tau_lift]; exact hx⟩`. Introduce `U w x hx`. Rewrite `hx` using `[tau_lift]`. Use `⟨_, Presheaf.equalizerSieve_mem Jt (toSheafify Jt (TP I J w)) (X := op U) x 0 (by rw [map_zero]; exact hx), ?_⟩` and prove the remaining obligations. Introduce `V g hg`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (TP I J w).map g.op x = (TP I J w).map g.op 0` using `hg`. Rewrite `this` using `[map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_isTensor (I J : Cx R) : (tau I J).IsTensor := by
   constructor
@@ -211,7 +211,7 @@ end LateralTheory.EtaleFoundations.TensEx
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Introduce `R _ I J`. Conclude with `⟨TensEx.T I J, TensEx.tau I J, TensEx.tau_isTensor I J⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem t_pa_tens_ex_of : t_pa_tens_ex := by
   intro R _ I J

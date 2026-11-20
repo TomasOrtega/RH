@@ -18,7 +18,7 @@ open PAlg
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `(des_semi (RingHom.id (Acris l)) (testι l) (FilF l n 0) (AcrF l n) (fun A => fil0Inclusion A n) (fun A a x => filtration_zero_inclusion_smul A n a x) (fun A => filtration_zero_inclusion_bijective A n) (fun f x => fil0Inclusion_map f n x) _).2 (hA n k)`.
+A detailed English derivation is pending.
 -/
 theorem des_Fil_zero (hA : ∀ n k, Des (AcrF l n) (algebraMap (Ainf l) (Acris l) (rtW l k))) (n k : ℕ) :
     Des (FilF l n 0) (algebraMap (Ainf l) (Acris l) (rtW l k)) :=
@@ -26,7 +26,7 @@ theorem des_Fil_zero (hA : ∀ n k, Des (AcrF l n) (algebraMap (Ainf l) (Acris l
     (fun A a x => filtration_zero_inclusion_smul A n a x) (fun A => filtration_zero_inclusion_bijective A n) (fun f x => fil0Inclusion_map f n x) _).2 (hA n k)
 
 /- English proof (translation)
-Establish `hs` using `(des_ses (algebraMap (Ainf l) (Acris l)) (algebraMap (Ainf l) (Acris l)) (RingHom.id (Ainf l)) (testι l) (FilF l n (r + 1)) (FilF l n r) (UnF l n) (fun A => incF A n r) (fun A => grF h.2.2.2.2 A n r) (fun A a x => incF_smul A n r a x) (fun A a x => grF_smul h.2.2.2.2 A n r a x) ( …`. Conclude with `des_span (testι l) (FilF l n (r + 1)) {algebraMap (Ainf l) (Acris l) (rtW l (k + 2) ^ 3)} (by`. Introduce and unpack `a rfl`. Conclude with `Or.inl hs) _ (Ideal.mem_span_singleton.2 (map_dvd _ (rtW_dvd l k).1))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem des_Fil_succ (h : RIn l) (n r k : ℕ) (ih : Des (FilF l n r) (algebraMap (Ainf l) (Acris l) (rtW l (k + 2)))) :
     Des (FilF l n (r + 1)) (algebraMap (Ainf l) (Acris l) (rtW l k)) := by
@@ -40,7 +40,7 @@ theorem des_Fil_succ (h : RIn l) (n r k : ℕ) (ih : Des (FilF l n r) (algebraMa
     rintro a rfl; exact Or.inl hs) _ (Ideal.mem_span_singleton.2 (map_dvd _ (rtW_dvd l k).1))
 
 /- English proof (translation)
-Proceed by induction on `r generalizing k with`. Consider the case `zero => exact des_Fil_zero l hA n k`. Consider the case `succ r ih => exact des_Fil_succ l h n r k (ih (k + 2))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem des_Fil_of (h : RIn l) (hA : ∀ n k, Des (AcrF l n) (algebraMap (Ainf l) (Acris l) (rtW l k))) (n r k : ℕ) :
     Des (FilF l n r) (algebraMap (Ainf l) (Acris l) (rtW l k)) := by

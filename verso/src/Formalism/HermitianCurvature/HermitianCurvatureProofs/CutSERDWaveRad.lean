@@ -27,37 +27,31 @@ theorem rdw_sub_snd (a b : Pr V) : (a - b).2.unop = a.2.unop - b.2.unop := rfl
 end PairSub
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hr s hD Wv Wv' hW hW'`. Take `⟨-, -, hL, hQ, -⟩` from `hD`. Establish `hL'` using `hL`. Take `⟨hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi, -⟩` from `hL`. Take `⟨hWave, hWc, hWci, hWp⟩` from `waveSiteAll Wp Wq P z z' π π' X L hL' ⟨0, hr⟩ s Wv Wv' hW hW'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hW1 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv s (c ⟨0, hr⟩) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW`. Establish `hW2 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv' Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv (-s) (c ⟨0, hr⟩) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW'`. Establish `hop : ∀ (l : Fin P.r) i (Φ : RadSp P.k P.r z z' π π'), (X.op l i Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) = crd (opL l i) (Φ : Fn P.k P.r (Wq →L[ℂ] Wp))` using `fun l i Φ => X.op_apply l i Φ`. Establish `hcomm : ∀ (W : Module.End ℂ (RadSp P.k P.r z z' π π')) (u : ℂ → ℂ), (∀ (Φ : RadSp P.k P.r z z' π π') c g, (W Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = u (c ⟨0, hr⟩) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g) → ∀ i : Fin 6, (i = 1 ∨ i = 2 ∨ i = 4 ∨ i = 5) → Commute W (X.op ⟨0, hr⟩ i)`. Introduce `W u hWu i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show W * X.op ⟨0, hr⟩ i = X.op ⟨0, hr⟩ i * W`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply, hWu, hop, crd]`. Apply the tactic sequence `rcases hi with rfl | rfl | rfl | rfl <;>`. Apply the tactic sequence `simp only [opL, cOp, ciOp, cbOp, cbiOp] <;> exact smul_comm _ _ _`. Establish `hoth : ∀ (t : ℂ) (W : Module.End ℂ (RadSp P.k P.r z z' π π')), (∀ (Φ : RadSp P.k P.r z z' π π') c g, (W Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv t (c ⟨0, hr⟩) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g) → ∀ l : Fin P.r, l ≠ ⟨0, hr⟩ → ∀ i : Fin 6, Commute W (X.op l i)` using `fun t W hWt l hl i => mulOp_comm_op X W t ⟨0, hr⟩ hWt hl i`. Use `⟨hWave, hWc, hWci, ?_, ?_, hWp, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcb]; exact Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hcomm Wv _ hW1 4 (by decide)) (hcomm Wv' _ hW2 1 (by decide))`. Rewrite using `[hcbi]; exact Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hcomm Wv _ hW1 5 (by decide)) (hcomm Wv' _ hW2 2 (by decide))`. Rewrite using `[hpb, hcb]`. Use `pr_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [mkPair_fst', pr_mul_fst, rdw_sub_fst, pr_alg_fst]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Take `⟨hd, h0⟩` from `radSp_regular Φ g c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply, Submodule.coe_sub, Submodule.coe_smul, Pi.sub_apply, Pi.smul_apply, hop, crd, hW1, opL]`. Establish `e` using `pbOp_fsv_smul (-s) ⟨0, hr⟩ _ c hd h0`. Simplify using `only [neg_neg] at e`. Rewrite using `[e]`. Simplify using `only [cbOp, map_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `module`. Simplify using `only [mkPair_snd', pr_mul_snd, rdw_sub_snd, pr_alg_snd]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `c g`. Take `⟨hd, h0⟩` from `radSp_regular Φ g c`. Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, LinearMap.neg_apply, Module.algebraMap_end_apply, Submodule.coe_sub, Submodule.coe_neg, Submodule.coe_smul, Pi.sub_apply, Pi.neg_apply, Pi.smul_apply, hop, crd, hW2, opL]`. Rewrite using `[pOp_fsv_smul (-s) ⟨0, hr⟩ _ c hd h0]`. Simplify using `only [cOp, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `module`. Introduce `l hl x hx`. Simplify using `only [coordOps, Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[hp l]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hoth s Wv hW1 l hl 0) (hoth (-s) Wv' hW2 l hl 3).neg_right`. Rewrite using `[hpb l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hoth s Wv hW1 l hl 3) (hoth (-s) Wv' hW2 l hl 0).neg_right`. Rewrite using `[hc l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hoth s Wv hW1 l hl 1) (hoth (-s) Wv' hW2 l hl 4)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hci l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hoth s Wv hW1 l hl 2) (hoth (-s) Wv' hW2 l hl 5)`. Rewrite using `[hcb l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hoth s Wv hW1 l hl 4) (hoth (-s) Wv' hW2 l hl 1)`. Rewrite using `[hcbi l]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hoth s Wv hW1 l hl 5) (hoth (-s) Wv' hW2 l hl 2)`. Establish `hf : ∀ j : Fin 6, Commute Wv (X.fn j) ∧ Commute Wv' (X.fn j)` using `fun j => ⟨TwistedTransfer.mulOp_comm_fn X Wv _ hW j, TwistedTransfer.mulOp_comm_fn X Wv' _ hW' j⟩`. Introduce `x hx`. Simplify using `only [Fr.zfns, Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases.
-
-Rewrite using `[hz]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hf 0).1 (hf 2).2`. Rewrite using `[hzi]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hf 1).1 (hf 3).2`. Rewrite using `[hzb]`.
-
-Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hf 2).1 (hf 0).2`. Rewrite using `[hzbi]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hf 3).1 (hf 1).2`. Rewrite using `[hG]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hf 4).1 (hf 4).2`.
-
-Rewrite using `[hGi]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (hf 5).1 (hf 5).2`. Introduce `Y a b`. Rewrite using `[hQ Y, Matrix.smul_apply, Formalism.FourierDecayAlt.P.NFx3.QQ_apply]`. Conclude with `(Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (comm_xt_of_fsv_smul_endomorphism X Wv s ⟨0, hr⟩ hW1 Y a b) (comm_xt_of_fsv_smul_endomorphism X Wv' (-s) ⟨0, hr⟩ hW2 (star Y) b a)).smul_right _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radial_wave_radial : RDWaveRad := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hr s hD Wv Wv' hW hW'

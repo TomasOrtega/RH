@@ -9,12 +9,12 @@ noncomputable section
 def divHom (e : ℕ) : ℤ →+ ℝ := zmultiplesHom ℝ ((e : ℝ)⁻¹)
 
 /- English proof (translation)
-Simplify using `[divHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem divHom_apply (e : ℕ) (n : ℤ) : divHom e n = n * (e : ℝ)⁻¹ := by simp [divHom]
 
 /- English proof (translation)
-Establish `he' : (e : ℝ) ≠ 0` using `by positivity`. Introduce `a b hab`. Rewrite `hab` using `[divHom_apply, divHom_apply]`. Conclude with `mul_right_cancel₀ (inv_ne_zero he') hab` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divHom_injective {e : ℕ} (he : 0 < e) : Function.Injective (divHom e) := by
   have he' : (e : ℝ) ≠ 0 := by positivity
@@ -23,7 +23,7 @@ theorem divHom_injective {e : ℕ} (he : 0 < e) : Function.Injective (divHom e) 
   exact_mod_cast mul_right_cancel₀ (inv_ne_zero he') hab
 
 /- English proof (translation)
-Establish `he' : (e : ℝ) ≠ 0` using `by positivity`. Rewrite using `[AddMonoidHom.map_zmultiples, divHom_apply]`. Use `congr 1`. Rewrite using `[Int.cast_natCast, mul_inv_cancel₀ he']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_divHom_zmultiples {e : ℕ} (he : 0 < e) :
     (AddSubgroup.zmultiples (e : ℤ)).map (divHom e) = AddSubgroup.zmultiples (1 : ℝ) := by
@@ -33,13 +33,13 @@ theorem map_divHom_zmultiples {e : ℕ} (he : 0 < e) :
   rw [Int.cast_natCast, mul_inv_cancel₀ he']
 
 /- English proof (translation)
-Rewrite using `[← AddMonoidHom.range_eq_map, divHom, AddSubgroup.range_zmultiplesHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_divHom_top (e : ℕ) : (⊤ : AddSubgroup ℤ).map (divHom e) = AddSubgroup.zmultiples ((e : ℝ)⁻¹) := by
   rw [← AddMonoidHom.range_eq_map, divHom, AddSubgroup.range_zmultiplesHom]
 
 /- English proof (translation)
-Rewrite using `[← map_divHom_zmultiples hn, ← map_divHom_top, AddSubgroup.relIndex_map_map_of_injective _ _ (divHom_injective hn), AddSubgroup.relIndex_top_right, Int.index_zmultiples, Int.natAbs_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_zmultiples_one_inv {n : ℕ} (hn : 0 < n) :
     (AddSubgroup.zmultiples (1 : ℝ)).relIndex (AddSubgroup.zmultiples ((n : ℝ)⁻¹)) = n := by
@@ -48,15 +48,15 @@ theorem relIndex_zmultiples_one_inv {n : ℕ} (hn : 0 < n) :
     Int.index_zmultiples, Int.natAbs_natCast]
 
 /- English proof (translation)
-Establish `he' : (e : ℝ) ≠ 0` using `by positivity`. Establish `hV : (V.comap (divHom e)).map (divHom e) = V`. Rewrite using `[AddSubgroup.map_comap_eq, inf_eq_right]`. Introduce `v hv`. Establish `h2` using `AddSubgroup.nsmul_relIndex_mem (AddSubgroup.zmultiples (1 : ℝ)) hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h2` using `[hee]`. Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.1 h2`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[divHom_apply]`. Establish `hk' : (k : ℝ) = e * v` using `by simpa using hk`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk']`. Clear the denominators using the available nonvanishing facts. Establish `hle : AddSubgroup.zmultiples (e : ℤ) ≤ V.comap (divHom e)`. Rewrite using `[← AddSubgroup.map_le_iff_le_comap, map_divHom_zmultiples he]`. Conclude with `AddSubgroup.zmultiples_le_of_mem h1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (AddSubgroup.zmultiples (e : ℤ)).relIndex (V.comap (divHom e)) = e`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ (divHom_injective he), map_divHom_zmultiples he, hV, hee]`. Establish `h4` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `h4` using `[h3, Int.index_zmultiples, Int.natAbs_natCast]`. Establish `h5 : (V.comap (divHom e)).index = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e * (V.comap (divHom e)).index = e * 1` using `by rw [h4, mul_one]`. Conclude with `Nat.eq_of_mul_eq_mul_left he this`. Rewrite `h5` using `[AddSubgroup.index_eq_one]`. Rewrite using `[← hV, h5, map_divHom_top]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_subgroup_eq_zmultiples (V : AddSubgroup ℝ) (h1 : (1 : ℝ) ∈ V) {e : ℕ}
     (hee : (AddSubgroup.zmultiples (1 : ℝ)).relIndex V = e) (he : 0 < e) :
@@ -86,7 +86,7 @@ theorem real_subgroup_eq_zmultiples (V : AddSubgroup ℝ) (h1 : (1 : ℝ) ∈ V)
   rw [← hV, h5, map_divHom_top]
 
 /- English proof (translation)
-Establish `h2` using `AddSubgroup.relIndex_mul_relIndex (AddSubgroup.zmultiples (1 : ℝ)) V _ (AddSubgroup.zmultiples_le_of_mem h1) hV`. Rewrite `h2` using `[relIndex_zmultiples_one_inv hn]`. Conclude with `Nat.pos_of_ne_zero fun h0 => by rw [h0, zero_mul] at h2; omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_pos_of_le_zmultiples (V : AddSubgroup ℝ) (h1 : (1 : ℝ) ∈ V) {n : ℕ} (hn : 0 < n)
     (hV : V ≤ AddSubgroup.zmultiples ((n : ℝ)⁻¹)) : 0 < (AddSubgroup.zmultiples (1 : ℝ)).relIndex V := by
@@ -98,14 +98,14 @@ theorem relIndex_pos_of_le_zmultiples (V : AddSubgroup ℝ) (h1 : (1 : ℝ) ∈ 
 variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Establish `h : (p : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends, Padic.norm_p]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_p : ‖(p : PadicAlgCl p)‖ = (p : ℝ)⁻¹ := by
   have h : (p : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]) := by simp
   rw [h, PadicAlgCl.norm_extends, Padic.norm_p]
 
 /- English proof (translation)
-Rewrite using `[norm_p, Real.logb_inv, Real.logb_self_eq_one (one_lt_p_real p)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logb_norm_p : Real.logb p ‖(p : PadicAlgCl p)‖ = -1 := by
   rw [norm_p, Real.logb_inv, Real.logb_self_eq_one (one_lt_p_real p)]
@@ -114,14 +114,14 @@ def pUnit : KbarMult p :=
   Additive.ofMul (Units.mk0 (p : PadicAlgCl p) (by exact_mod_cast (Fact.out : p.Prime).ne_zero))
 
 /- English proof (translation)
-Use `show (p : PadicAlgCl p) ∈ K`. Conclude with `natCast_mem K p`.
+A detailed English derivation is pending.
 -/
 theorem pUnit_mem : pUnit p ∈ multOf p K := by
   show (p : PadicAlgCl p) ∈ K
   exact natCast_mem K p
 
 /- English proof (translation)
-Rewrite using `[vbar_apply]`. Use `show - Real.logb p ‖(p : PadicAlgCl p)‖ = 1`. Rewrite using `[logb_norm_p, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vbar_pUnit : vbar p (pUnit p) = 1 := by
   rw [vbar_apply]
@@ -129,27 +129,27 @@ theorem vbar_pUnit : vbar p (pUnit p) = 1 := by
   rw [logb_norm_p, neg_neg]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pUnit p, pUnit_mem p K, vbar_pUnit p⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_valueGroup : (1 : ℝ) ∈ valueGroup p K := ⟨pUnit p, pUnit_mem p K, vbar_pUnit p⟩
 
 /- English proof (translation)
-The claim follows from `real_subgroup_eq_zmultiples _ (one_mem_valueGroup p K) rfl he`.
+A detailed English derivation is pending.
 -/
 theorem valueGroup_eq_zmultiples_of_pos (he : 0 < eK p K) :
     valueGroup p K = AddSubgroup.zmultiples ((eK p K : ℝ)⁻¹) :=
   real_subgroup_eq_zmultiples _ (one_mem_valueGroup p K) rfl he
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `finDim_extendScalars_of_le p hK (bot_le : ⊥ ≤ K)` as an intermediate fact. Use `set n := Module.finrank (⊥ : IntermediateField ℚ_[p] (PadicAlgCl p)) (IntermediateField.extendScalars (bot_le : ⊥ ≤ K)) with hn`. Establish `hn0 : 0 < n` using `Module.finrank_pos`. Establish `hn' : (n : ℝ) ≠ 0` using `by positivity`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : PadicAlgCl p := ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) with hy`. Establish `hy0 : y ≠ 0` using `Units.ne_zero _`. Establish `h1` using `norm_algebraNorm p hK (bot_le : ⊥ ≤ K) ⟨y, hx⟩`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 (Algebra.norm (⊥ : IntermediateField ℚ_[p] (PadicAlgCl p)) (⟨y, hx⟩ : IntermediateField.extendScalars (bot_le : ⊥ ≤ K))).2`. Rewrite `h1` using `[← ha, PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[norm_zero]`. Conclude with `(pow_ne_zero _ (norm_ne_zero_iff.2 hy0)) h1.symm`. Rewrite `h1` using `[Padic.norm_eq_zpow_neg_valuation ha0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `AddSubgroup.mem_zmultiples_iff.2 ⟨a.valuation, ?_⟩` and prove the remaining obligations. Rewrite using `[vbar_apply]`. Establish `h2` using `congrArg (Real.logb p) h1`. Rewrite `h2` using `[← Real.rpow_intCast, Real.logb_rpow (by linarith [one_lt_p_real p]) (one_lt_p_real p).ne', Real.logb_pow]`. Express the relevant statement in the definitionally equal form `_ = (n : ℝ) * Real.logb p ‖y‖ at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[zsmul_eq_mul]`. Move the coercions through the operations in `at h2`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem valueGroup_le_of_finiteDimensional (hK : FiniteDimensional ℚ_[p] K) :
     valueGroup p K ≤ AddSubgroup.zmultiples
@@ -183,7 +183,7 @@ theorem valueGroup_le_of_finiteDimensional (hK : FiniteDimensional ℚ_[p] K) :
   linarith
 
 /- English proof (translation)
-Use `finDim_extendScalars_of_le p hK (bot_le : ⊥ ≤ K)` as an intermediate fact. Conclude with `relIndex_pos_of_le_zmultiples _ (one_mem_valueGroup p K) Module.finrank_pos (valueGroup_le_of_finiteDimensional p K hK)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eK_pos (hK : FiniteDimensional ℚ_[p] K) : 0 < eK p K := by
   have := finDim_extendScalars_of_le p hK (bot_le : ⊥ ≤ K)
@@ -191,9 +191,9 @@ theorem eK_pos (hK : FiniteDimensional ℚ_[p] K) : 0 < eK p K := by
     (valueGroup_le_of_finiteDimensional p K hK)
 
 /- English proof (translation)
-Establish `he' : (eK p K : ℝ) ≠ 0` using `by positivity`. Establish `h1 : ((eK p K : ℝ)⁻¹) ∈ valueGroup p K`. Rewrite using `[valueGroup_eq_zmultiples_of_pos p K he]`. Conclude with `AddSubgroup.mem_zmultiples _`. Take `⟨x, hx, hxv⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : vOn p K ⟨x, hx⟩ = 1`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vOn_spec, hxv, Int.cast_one, mul_inv_cancel₀ he']`. Introduce `n`. Conclude with `⟨n • ⟨x, hx⟩, by rw [map_zsmul, h2, smul_eq_mul, mul_one]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vOn_surjective_of_pos (he : 0 < eK p K) : Function.Surjective (vOn p K) := by
   have he' : (eK p K : ℝ) ≠ 0 := by positivity
@@ -207,7 +207,7 @@ theorem vOn_surjective_of_pos (he : 0 < eK p K) : Function.Surjective (vOn p K) 
   exact ⟨n • ⟨x, hx⟩, by rw [map_zsmul, h2, smul_eq_mul, mul_one]⟩
 
 /- English proof (translation)
-The claim follows from `vOn_surjective_of_pos p K (eK_pos p K hK)`.
+A detailed English derivation is pending.
 -/
 theorem vOn_surjective (hK : FiniteDimensional ℚ_[p] K) : Function.Surjective (vOn p K) :=
   vOn_surjective_of_pos p K (eK_pos p K hK)
@@ -217,7 +217,7 @@ def unitOf (x : multOf p K) : Kˣ :=
     (fun h => (Additive.toMul x.1 : (PadicAlgCl p)ˣ).ne_zero (congrArg Subtype.val h))
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vK_spec, vOn_spec, vbar_apply]`. Use `show - ((eK p K : ℝ) * Real.logb p ‖((Additive.toMul x.1 : (PadicAlgCl p)ˣ) : PadicAlgCl p)‖) = _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vK_unitOf (x : multOf p K) : vK p K (unitOf p K x) = vOn p K x := by
   apply Int.cast_injective (α := ℝ)
@@ -226,20 +226,20 @@ theorem vK_unitOf (x : multOf p K) : vK p K (unitOf p K x) = vOn p K x := by
   ring
 
 /- English proof (translation)
-Introduce `n` and use `by obtain ⟨x, hx⟩ := vOn_surjective_of_pos p K he n exact ⟨unitOf p K x, by rw [vK_unitOf, hx]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vK_surjective_of_pos (he : 0 < eK p K) : Function.Surjective (vK p K) := fun n => by
   obtain ⟨x, hx⟩ := vOn_surjective_of_pos p K he n
   exact ⟨unitOf p K x, by rw [vK_unitOf, hx]⟩
 
 /- English proof (translation)
-The claim follows from `vK_surjective_of_pos p K (eK_pos p K hK)`.
+A detailed English derivation is pending.
 -/
 theorem vK_surjective (hK : FiniteDimensional ℚ_[p] K) : Function.Surjective (vK p K) :=
   vK_surjective_of_pos p K (eK_pos p K hK)
 
 /- English proof (translation)
-The claim follows from `vK_surjective p K hK 1`.
+A detailed English derivation is pending.
 -/
 theorem exists_vK_eq_one (hK : FiniteDimensional ℚ_[p] K) : ∃ π : Kˣ, vK p K π = 1 := vK_surjective p K hK 1
 

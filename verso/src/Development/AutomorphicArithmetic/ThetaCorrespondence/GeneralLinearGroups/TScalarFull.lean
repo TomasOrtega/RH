@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Simplify using `only [modExp, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_filter]`. Rewrite using `[sub_eq_zero, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sum_card_mul_modExp {α : Type} [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)] :
     ∑ a, (Fintype.card (m a) : ℤ) * modExp m a = 0 := by
@@ -17,11 +17,11 @@ private theorem sum_card_mul_modExp {α : Type} [Fintype α] [LinearOrder α] (m
   split_ifs <;> ring
 
 /- English proof (translation)
-Rewrite using `[val_deltaHalf]`. Establish `hx : nabs k t ≠ 0` using `(nabs_pos' k t).ne'`. Establish `hn : ∀ a, nabs k (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (m a) t)) = nabs k t ^ ((Fintype.card (m a) : ℤ))`. Introduce `a`. Rewrite using `[Matrix.GeneralLinearGroup.det_scalar, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[nabs, map_pow]`. Establish `key : ∀ (s : Finset α) (f : α → ℤ), ∏ a ∈ s, nabs k t ^ f a = nabs k t ^ (∑ a ∈ s, f a)`. Introduce `s f`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hx]`. Establish `hmod : modulus k m (fun a => Matrix.GeneralLinearGroup.scalar (m a) t) = 1`. Simplify using `only [modulus, hn, ← zpow_mul]`. Rewrite using `[key, sum_card_mul_modExp, zpow_zero]`. Rewrite using `[hmod]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -48,15 +48,15 @@ private theorem deltaHalf_scalar (k : Type) [Field k] [ValuativeRel k] [Topologi
   simp
 
 /- English proof (translation)
-Establish `hmem : Matrix.GeneralLinearGroup.scalar n t ∈ parab k e`. Rewrite using `[mem_parab]`. Introduce `i j hij`. Establish `hne : i ≠ j`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_irrefl _ hij`. Simplify using `[Matrix.GeneralLinearGroup.scalar, hne]`. Establish `hproj : leviProj k e ⟨_, hmem⟩ = fun a => Matrix.GeneralLinearGroup.scalar (m a) t`. Use function extensionality and compare the values at `a`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[leviProj, diagBlock, Matrix.GeneralLinearGroup.scalar, Matrix.one_apply, e.injective.eq_iff, Matrix.diagonal_apply, Sigma.mk.inj_iff]`. Establish `hcomm : ∀ x : GL n k, x * Matrix.GeneralLinearGroup.scalar n t = Matrix.GeneralLinearGroup.scalar n t * x`. Introduce `x`. Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show v.1.1 (x * Matrix.GeneralLinearGroup.scalar n t) = (c • v).1.1 x`. Rewrite using `[hcomm x]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlaw` using `parInd_law e ρ v ⟨_, hmem⟩ x`. Simplify using `only at hlaw`. Rewrite using `[hlaw, hproj, deltaHalf_scalar, hρ, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem parInd_scalar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {α n W : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ a, Fintype (m a)]
@@ -91,9 +91,9 @@ private theorem parInd_scalar {k : Type} [Field k] [ValuativeRel k] [Topological
   rfl
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[LinearMap.map_smul, piTensor_tprod]`. Simplify using `only [hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MultilinearMap.map_smul_univ, smul_comm]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, hx, hy, smul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem piTensor_scalar {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (g : ∀ a, Γ a) (c : α → ℂ)
@@ -108,7 +108,7 @@ private theorem piTensor_scalar {α : Type} [Fintype α] {Γ X : α → Type} [�
     rw [map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N y hc t c hy v`. Conclude with `parInd_scalar (stdBlocks (fun a => (y a).1) hc) (piTensor fun a => (y a).rep) t (∏ i, c i) (piTensor_scalar (fun a => (y a).rep) (fun a => Matrix.GeneralLinearGroup.scalar (Fin (y a).1) t) c (fun a w => hy a w)) v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cas.scalarFull :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h N : ℕ) (y : Fin h → IrrGL k) (hc : ∑ i, (y i).1 = N) (t : kˣ) (c : Fin h → ℂ), (∀ i, ScalarBy (y i) t (c i)) → ∀ v, prodIrr y hc (Matrix.GeneralLinearGroup.scalar (Fin N) t) v = (∏ i, c i) • v := by

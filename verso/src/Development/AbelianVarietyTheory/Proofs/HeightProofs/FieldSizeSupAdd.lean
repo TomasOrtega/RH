@@ -9,9 +9,9 @@ set_option autoImplicit false
 namespace GlobalTheory.FieldSize
 
 /- English proof (translation)
-Rewrite using `[natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow F (𝓞 F) L (𝓞 L)]`. Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Establish `h1` using `Ideal.absNorm_dvd_absNorm_of_le h`. Rewrite `h1` using `[Ideal.absNorm_algebraMap (𝓞 F') (𝓞 L), absNorm_differentIdeal F' (𝓞 F')]`. Establish `h2 : Module.finrank (𝓞 F') (𝓞 L) = Module.finrank F' L` using `(IsFractionRing.finrank_eq (𝓞 F') F' (𝓞 L) L).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Conclude with `Nat.le_of_dvd (pow_pos (Int.natAbs_pos.2 (discr_ne_zero F')) _) h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natAbs_discr_le_of_map_different_le (F F' L : Type) [Field F] [Field F'] [Field L]
     [NumberField F] [NumberField F'] [NumberField L] [Algebra F L] [Algebra F' L]
@@ -27,15 +27,15 @@ theorem natAbs_discr_le_of_map_different_le (F F' L : Type) [Field F] [Field F']
   exact Nat.le_of_dvd (pow_pos (Int.natAbs_pos.2 (discr_ne_zero F')) _) h1
 
 /- English proof (translation)
-Establish `h1` using `natAbs_discr_le_of_map_different_le F F' L h`. Establish `h2 : |((discr L : ℤ) : ℝ)| ≤ |((discr F' : ℤ) : ℝ)| ^ Module.finrank F' L * |((discr F : ℤ) : ℝ)| ^ Module.finrank F L`. Use `(Nat.cast_le (α := ℝ)).2 h1` as an intermediate fact. Simplify `this` using `[Nat.cast_natAbs]`. Establish `p : ∀ (K : Type) [Field K] [NumberField K], (0 : ℝ) < |((discr K : ℤ) : ℝ)|` using `fun K _ _ => abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero K))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `Real.log_le_log (p L) h2`. Rewrite `h3` using `[Real.log_mul (pow_pos (p F') _).ne' (pow_pos (p F) _).ne', Real.log_pow, Real.log_pow]`. Establish `e1 : (Module.finrank ℚ L : ℝ) = Module.finrank ℚ F * Module.finrank F L`. Conclude with `(Module.finrank_mul_finrank ℚ F L).symm` after adjusting the coercions. Establish `e2 : (Module.finrank ℚ L : ℝ) = Module.finrank ℚ F' * Module.finrank F' L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Module.finrank_mul_finrank ℚ F' L).symm` after adjusting the coercions. Establish `q : ∀ (K : Type) [Field K] [NumberField K], (0 : ℝ) < Module.finrank ℚ K` using `fun K _ _ => by`. Conclude with `Module.finrank_pos` after adjusting the coercions. Establish `qL` using `q L`. Establish `qF` using `q F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `qF'` using `q F'`. Rewrite using `[div_le_iff₀ qL, add_mul]`. Establish `a1 : Real.log |((discr F : ℤ) : ℝ)| / Module.finrank ℚ F * Module.finrank ℚ L = Module.finrank F L * Real.log |((discr F : ℤ) : ℝ)|`. Rewrite using `[e1]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `a2 : Real.log |((discr F' : ℤ) : ℝ)| / Module.finrank ℚ F' * Module.finrank ℚ L = Module.finrank F' L * Real.log |((discr F' : ℤ) : ℝ)|`. Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[a1, a2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_discr_div_le (F F' L : Type) [Field F] [Field F'] [Field L]
     [NumberField F] [NumberField F'] [NumberField L] [Algebra F L] [Algebra F' L]
@@ -69,13 +69,11 @@ theorem log_discr_div_le (F F' L : Type) [Field F] [Field F'] [Field L]
   rw [a1, a2]; linarith
 
 /- English proof (translation)
-Introduce and unpack `F F' a b a' b' ⟨i1, ha, hb⟩ ⟨i2, ha', hb'⟩`. Use `haveI i3 : FiniteDimensional ℚ ↥(F ⊔ F') := IntermediateField.finiteDimensional_sup F F'`. Use `letI : NumberField F := NumberField.mk`. Use `letI : NumberField F' := NumberField.mk`. Use `letI : NumberField ↥(F ⊔ F') := NumberField.mk`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i3, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (Module.finrank ℚ ↥(F ⊔ F') : ℝ) ≤ Module.finrank ℚ F * Module.finrank ℚ F'`. Conclude with `IntermediateField.finrank_sup_le F F'` after adjusting the coercions. Establish `q : ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K], (0 : ℝ) < Module.finrank ℚ K` using `fun K _ => by`. Conclude with `Module.finrank_pos` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `Real.log_le_log (q _) h1`. Rewrite `h2` using `[Real.log_mul (q F).ne' (q F').ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Use `letI : Algebra F ↥(F ⊔ F') := (IntermediateField.inclusion le_sup_left).toRingHom.toAlgebra`. Use `letI : Algebra F' ↥(F ⊔ F') := (IntermediateField.inclusion le_sup_right).toRingHom.toAlgebra`.
-
-Establish `h` using `log_discr_div_le F F' ↥(F ⊔ F') (GlobalTheory.T.map_different_le_different_sup_intermediateField F F')`. Conclude with `h.trans (add_le_add hb hb')`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sz_sup : ∀ (F F' : IntermediateField ℚ ℂ) (a b a' b' : ℝ), Sz F a b → Sz F' a' b' → Sz (F ⊔ F') (a + a') (b + b') := by
   rintro F F' a b a' b' ⟨i1, ha, hb⟩ ⟨i2, ha', hb'⟩

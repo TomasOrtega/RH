@@ -11,9 +11,9 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Introduce `d S m h j hj`. Unfold `leadMinor`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `ha : (a : ℕ) < m` using `lt_of_lt_of_le a.2 hj`. Establish `hb : (b : ℕ) < m` using `lt_of_lt_of_le b.2 hj`. Rewrite using `[dif_pos ⟨ha, hb⟩, dif_pos ⟨ha.trans_le h, hb.trans_le h⟩]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LeadMinorLeading.proof : LeadMinorLeading.Statement := by
   intro d S m h j hj

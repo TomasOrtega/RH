@@ -26,7 +26,7 @@ def IsRadQQd (L : Lev) (R : ℂ → Matrix (Fin 2) (Fin 2) L.POp) : Prop :=
   L.IsRadQQ R ∧ ∀ (Y : ℂ) (a b : Fin 2), IsDiffOpOn (2 * L.r + L.k0 + 2) L.BD (R Y a b)
 
 /- English proof (translation)
-Conclude with `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsRadQQd.rad {L : Lev} {R : ℂ → Matrix (Fin 2) (Fin 2) L.POp} (h : IsRadQQd L R) : L.IsRadQQ R := by
   exact h.1
@@ -83,7 +83,7 @@ def CkAt (Lt : Lev) (o : ℕ) (F : Lt.GF) (g₀ : Mat Lt.k0 Lt.r) : Prop :=
     ∀ g ∈ U, g ∈ UH (Hpk (Lt.k0 + 1) Lt.r) → F g = F' g
 
 /- English proof (translation)
-Take `⟨U, F', hU, hg0, hF', hEq⟩` from `h g₀ hg`. Conclude with `⟨U, F', hU, hg0, contDiffOn_infty.mp hF' o, fun g hgU hgH => hEq g hgU hgH⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CkAt.of_smooth {Lt : Lev} {F : Lt.GF} (h : SmoothOnH (Hpk (Lt.k0 + 1) Lt.r) F) (o : ℕ) {g₀ : Mat Lt.k0 Lt.r}
     (hg : g₀ ∈ UH (Hpk (Lt.k0 + 1) Lt.r)) : CkAt Lt o F g₀ := by
@@ -96,7 +96,7 @@ def IsInvC (Lt : Lev) (o : ℕ) (Θ : Lt.GF → Lt.GF) : Prop :=
       ∀ g ∈ UH (Hpk (Lt.k0 + 1) Lt.r), Θ (Lt.act h n h' n' F) g = Lt.act h n h' n' (Θ F) g
 
 /- English proof (translation)
-Introduce `h₀ hh₀ n hn h' hh' n' hn' F hF g hg`. Conclude with `h h₀ hh₀ n hn h' hh' n' hn' F (fun g' hg' => CkAt.of_smooth hF o hg') g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsInvC.isInv {Lt : Lev} {o : ℕ} {Θ : Lt.GF → Lt.GF} (h : IsInvC Lt o Θ) : Lt.IsInv Θ := by
   intro h₀ hh₀ n hn h' hh' n' hn' F hF g hg

@@ -9,7 +9,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.Cyc
 
 /- English proof (translation)
-Introduce `D h` and use `GlobalTheory.TateTop.tate_h2_of_local_duality h D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tateH2_of_finite_duality : ∀ (D : Formalism.BasicNotions.D7), adm2 D → adm3 D :=
   fun D h => GlobalTheory.TateTop.tate_h2_of_local_duality h D

@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Take `rfl : y = closedPoint Ω` from `Subsingleton.elim _ _`. Introduce `t`. Take `⟨U, f, hU, hf⟩` from `M.onto ((stalkClosedPointIso (CommRingCat.of Ω)).hom.hom t)`. Establish `h : ⊤ ≤ M.pt ⁻¹ᵁ U` using `M.top_le_preimage_pt hU`. Establish `e` using `GlobalTheory.Points.germ_stalkClosedPointTo_eq_valMap M.pt U h`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(M.Z.presheaf.germ U _ ((GlobalTheory.Points.le_preimage_iff M.pt U).1 h)).hom f, ?_⟩` and prove the remaining obligations. Apply `(ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of Ω)).hom).1` to reduce the goal to its premises. Establish `e2` using `congrArg (fun φ => φ.hom f) e`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`. Rewrite `hf` using `[GlobalTheory.Points.valF_eq_valR, GlobalTheory.Points.valR_eq _ _ h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hf, ← e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RatModel.stalkMap_pt_surjective {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     (y : Sp Ω) : Function.Surjective (M.pt.stalkMap y).hom := by
@@ -33,11 +33,11 @@ theorem RatModel.stalkMap_pt_surjective {o Ω : Type} [CommRing o] [Field Ω] [A
   rfl
 
 /- English proof (translation)
-Take `rfl : y = closedPoint L` from `Subsingleton.elim _ _`. Establish `e` using `Scheme.germ_stalkClosedPointTo_Spec (CommRingCat.ofHom φ)`. Establish `hc : (Scheme.stalkClosedPointTo (spMap φ)).hom.Finite`. Apply `RingHom.Finite.of_comp_finite (f := ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ (Spec (CommRingCat.of K)).presheaf.germ ⊤ _ trivial).hom)` to reduce the goal to its premises. Establish `: ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ (Spec (CommRingCat.of K)).presheaf.germ ⊤ _ trivial ≫ Scheme.stalkClosedPointTo (spMap φ)) = CommRingCat.ofHom φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e, Iso.inv_hom_id_assoc]`. Rewrite using `[← CommRingCat.hom_comp, Category.assoc, this]`. Conclude with `hφ`. Establish `: (spMap φ).stalkMap (closedPoint L) = Scheme.stalkClosedPointTo (spMap φ) ≫ (stalkClosedPointIso (CommRingCat.of L)).inv`. Rewrite using `[Scheme.stalkClosedPointTo, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, CommRingCat.hom_comp]`. Conclude with `RingHom.Finite.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of L)).inv).2) hc`.
+A detailed English derivation is pending.
 -/
 theorem stalkMap_spMap_finite {K L : Type} [Field K] [Field L] (φ : K →+* L) (hφ : φ.Finite) (y : Sp L) :
     ((spMap φ).stalkMap y).hom.Finite := by
@@ -64,9 +64,9 @@ end GlobalTheory.Poinc
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ o₂ Ω₂ _ _ _ _ _ _ κ hκ hc`. Use `haveI : IsDedekindDomain X₁.o₁ := ArithBase.ded (o := X₁.o₁) (Ω := X₁.Ω₁)`. Establish `hp : (spMap (algebraMap X₁.Ω₁ Ω₂) ≫ X₁.M.pt) ≫ X₁.M.s = spMap ((algebraMap o₂ Ω₂).comp κ)`. Rewrite using `[Category.assoc, X₁.M.pt_s, hc]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom (algebraMap X₁.o₁ X₁.Ω₁)) (CommRingCat.ofHom (algebraMap X₁.Ω₁ Ω₂))).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hst : ((spMap (algebraMap X₁.Ω₁ Ω₂) ≫ X₁.M.pt).stalkMap (genericPoint (Sp Ω₂))).hom.Finite`. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `RingHom.Finite.comp (stalkMap_spMap_finite _ (RingHom.finite_algebraMap.2 inferInstance) _) (RingHom.Finite.of_surjective _ (RatModel.stalkMap_pt_surjective X₁.M _))`. Take `⟨M, q, hn, hq, hpt⟩` from `exists_ratModel_normalization X₁.o₁ o₂ Ω₂ κ hκ X₁.M.Z X₁.M.s X₁.M.lft X₁.M.qc X₁.M.sep _ hp hst`. Conclude with `⟨M, q, GlobalTheory.IsNormalScheme.of_pred hn, hq, hpt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Setup.exists_model_of_finiteDimensional : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ}
     {Z : Scheme.{0}} {i : F.X ⟶ Z} (X₁ : Setup F W i) (o₂ Ω₂ : Type) [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂]

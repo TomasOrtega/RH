@@ -10,11 +10,11 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Take `⟨-, U, hy, n, f, J, ⟨-, hn⟩, hI⟩` from `h (genericPoint Y)`. Establish `hdim : ringKrullDim (Y.presheaf.stalk (genericPoint Y)) = 0` using `ringKrullDim_eq_zero_of_field Y.functionField`. Rewrite `hn` using `[hdim]`. Establish `hn0 : n = 0` using `by exact_mod_cast hn`. Substitute `hn0` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hJ : J = ∅` using `Finset.eq_empty_of_isEmpty J`. Substitute `hJ` using the available equality. Introduce `hB`. Establish `hs : genericPoint Y ∈ (Scheme.IdealSheafData.vanishingIdeal B).support`. Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB`. Rewrite `hs` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hy, hI, Scheme.mem_zeroLocus_iff]`. Use `hs 1 (Ideal.subset_span (by simp)) ?_` and prove the remaining obligations. Simplify using `using hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem genericPoint_notMem_of_snc (Y : Scheme.{0}) [IsIntegral Y] (B : Closeds Y)
     (h : FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal B)) : genericPoint Y ∉ B := by

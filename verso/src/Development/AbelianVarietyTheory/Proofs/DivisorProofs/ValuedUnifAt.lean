@@ -27,7 +27,7 @@ namespace GlobalTheory.CondLESplit
 open ValuativeRel
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Conclude with `isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEquiv_Fv {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     (valuation (Fv F v)).IsEquiv (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))) := by
@@ -36,13 +36,13 @@ theorem isEquiv_Fv {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (
   exact isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))
 
 /- English proof (translation)
-Establish `he` using `isEquiv_Fv v`. Establish `hϖ : GlobalTheory.SplitFlip.IsUnif (unifAt v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hπ' : Valued.v ((π : F) : Fv F v) = WithZero.exp (-1 : ℤ)`. Rewrite using `[v.valuedAdicCompletion_eq_valuation']`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hπ`. Establish `hlt : Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) < 1` using `he.lt_one_iff_lt_one.1 (hϖ ▸ uniformizer_lt_one)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `h0 : Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) ≠ 0` using `by simp`. Rewrite `hlt` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hπ']`. Establish `hπ1 : valuation (Fv F v) ((π : F) : Fv F v) < 1`. Use `he.lt_one_iff_lt_one.2 ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπ', ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Conclude with `(he _ _).1 (hϖ ▸ le_uniformizer_iff.2 hπ1)`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem valued_unifAt {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v ((unifAt v : (Fv F v)ˣ) : Fv F v) = WithZero.exp (-1 : ℤ) := by
@@ -68,17 +68,15 @@ end GlobalTheory.CondLESplit
 
 open GlobalTheory.CondLESplit in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v τ ρ n`. Use `set hw := GlobalTheory.AdelicU.splitPrime_under τ`. Use `set f := GlobalTheory.LFun.complMap hw`. Establish `he` using `isEquiv_Fv v`. Establish `hval : ∀ a : Fv F v, Valued.v (f a) = Valued.v a` using `GlobalTheory.LFun.SplitTie.valued_complMap τ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective f` using `GlobalTheory.LFun.SplitTie.complMap_bijective τ hw`. Establish `key : ∀ y : (Fv F v)ˣ, y ∈ GlobalTheory.SplitFlip.unitCong (unifAt v ^ n) ↔ (Formalism.L2.Host.IsUnitAt (GlobalTheory.AdelicU.splitPrime τ) (Units.map f.toMonoidHom y) ∧ Valued.v (((Units.map f.toMonoidHom y : ((GlobalTheory.AdelicU.splitPrime τ).adicCompletion E)ˣ) : (GlobalTheo …`. Introduce `y`. Establish `h1 : ((Units.map f.toMonoidHom y : ((GlobalTheory.AdelicU.splitPrime τ).adicCompletion E)ˣ) : (GlobalTheory.AdelicU.splitPrime τ).adicCompletion E) = f y` using `rfl`. Establish `hp : Valued.v (((unifAt v ^ n : (Fv F v)ˣ)) : Fv F v) = WithZero.exp (-(n : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Units.val_pow_eq_pow_val, map_pow, valued_unifAt, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `show (ValuativeRel.valuation (Fv F v) (y : Fv F v) = 1 ∧ ValuativeRel.valuation (Fv F v) ((y : Fv F v) - 1) ≤ ValuativeRel.valuation (Fv F v) (((unifAt v ^ n : (Fv F v)ˣ)) : Fv F v)) ↔ _`. Unfold `Formalism.L2.Host.IsUnitAt`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, he.eq_one_iff_eq_one, he, hp, ← map_one f, ← map_sub, hval, hval]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx1 hx2`. Take `⟨a, ha⟩` from `hbij.2 (x : (GlobalTheory.AdelicU.splitPrime τ).adicCompletion E)`. Establish `ha0 : a ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `x.ne_zero ha.symm`. Use `set y := Units.mk0 a ha0`. Establish `hy : Units.map f.toMonoidHom y = x` using `Units.ext ha`.
-
-Use `h y ((key y).2 (hy ▸ ⟨hx1, hx2⟩))` as an intermediate fact. Rewrite using `[← hy]`. Conclude with `this`. Introduce `h y hy`. Conclude with `h _ ((key y).1 hy).1 ((key y).1 hy).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CondLESplit.condLE_iff : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) (ρ : ((GlobalTheory.AdelicU.splitPrime τ).adicCompletion E)ˣ →* ℂˣ) (n : ℕ),

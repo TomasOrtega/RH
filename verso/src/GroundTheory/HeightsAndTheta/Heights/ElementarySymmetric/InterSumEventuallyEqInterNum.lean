@@ -20,7 +20,7 @@ section Symmetry
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Unfold `tensorSub`. Rewrite using `[List.foldl_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorSub_eq_foldl_map {n : ℕ} (L : Fin n → SubSystem S x Ω) (T : Finset (Fin n)) :
     tensorSub L T = (((List.finRange n).filter (· ∈ T)).map L).foldl
@@ -29,11 +29,11 @@ theorem tensorSub_eq_foldl_map {n : ℕ} (L : Fin n → SubSystem S x Ω) (T : F
   rw [List.foldl_map]
 
 /- English proof (translation)
-Rewrite using `[tensorSub_eq_foldl_map, tensorSub_eq_foldl_map]`. Establish `hp : (((List.finRange n).filter (· ∈ T)).map σ).Perm ((List.finRange n).filter (· ∈ T.map σ.toEmbedding))`. Rewrite using `[List.perm_ext_iff_of_nodup (((List.nodup_finRange n).filter _).map σ.injective) ((List.nodup_finRange n).filter _)]`. Introduce `a`. Simplify using `only [List.mem_map, List.mem_filter, List.mem_finRange, true_and, decide_eq_true_eq, Finset.mem_map_equiv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Simplify using `using hb`. Introduce `ha`. Conclude with `⟨σ.symm a, ha, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `hfun : (fun i => L (σ i)) = L ∘ σ` using `rfl`. Rewrite using `[hfun, ← List.map_map]`. Conclude with `(hp.map L).foldl_eq' (fun F _ P _ Q => by`. Rewrite using `[SubSystem.twist_assoc, SubSystem.twist_comm F, ← SubSystem.twist_assoc]) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorSub_comp_perm {n : ℕ} (L : Fin n → SubSystem S x Ω) (σ : Equiv.Perm (Fin n))
     (T : Finset (Fin n)) :
@@ -57,7 +57,7 @@ theorem tensorSub_comp_perm {n : ℕ} (L : Fin n → SubSystem S x Ω) (σ : Equ
     rw [SubSystem.twist_assoc, SubSystem.twist_comm F, ← SubSystem.twist_assoc]) _
 
 /- English proof (translation)
-Unfold `interSum`. Use `Fintype.sum_equiv (Equiv.finsetCongr σ) _ _ fun T => ?_` and prove the remaining obligations. Rewrite using `[Equiv.finsetCongr_apply, Finset.card_map, tensorSub_comp_perm]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem interSum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     (σ : Equiv.Perm (Fin n)) (c : ℕ) :
@@ -67,7 +67,7 @@ theorem interSum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubS
   rw [Equiv.finsetCongr_apply, Finset.card_map, tensorSub_comp_perm]
 
 /- English proof (translation)
-Unfold `interNum`. Use `congr 1`. Use function extensionality and compare the values at `c`. Conclude with `interSum_comp_perm pp L σ c`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem interNum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     (σ : Equiv.Perm (Fin n)) :
@@ -78,7 +78,7 @@ theorem interNum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubS
   exact interSum_comp_perm pp L σ c
 
 /- English proof (translation)
-Establish `ht : Tendsto (interSum pp L) atTop (nhds m)` using `tendsto_const_nhds.congr' (h.mono fun _ hc => hc.symm)`. Establish `hm : interNum pp L = m` using `ht.limUnder_eq`. Rewrite using `[hm]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interSum_eventually_eq_interNum (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     {m : ℤ} (h : ∀ᶠ c : ℕ in atTop, interSum pp L c = m) :
@@ -92,9 +92,7 @@ theorem interSum_eventually_eq_interNum (pp : Ideal (Poly S N)) {n : ℕ} (L : F
 end Symmetry
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x`. Use `⟨fun n pp L hW => ?_, fun n pp L σ _ => ?_, fun n pp L i L' L'' hW => ?_, fun n pp L Lc s hW hs hne => ?_, fun pp hW => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hE k Ω N x n pp L hW`. Conclude with `interSum_eventually_eq_interNum pp _ hm`. Conclude with `interNum_comp_perm pp (fun i => (L i).toSubSystem) σ`.
-
-Conclude with `hA k Ω N x n pp L i L' L'' hW`. Conclude with `hC k Ω N x n pp L Lc s hW hs hne`. Conclude with `hP k Ω N x pp hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GenericPointSectionInput.proof (hE : InterNumEventual.Statement.{u, w})
     (hA : InterNumAdditive.Statement.{u, w}) (hC : InterNumCut.Statement.{u, w})

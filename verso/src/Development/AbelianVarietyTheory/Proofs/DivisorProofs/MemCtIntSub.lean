@@ -29,7 +29,7 @@ def ctIntSub {d d₁ : ℕ} {W : Spc F E d} (H : Plane E d d₁) : Submodule ℂ
     exact (hf μ 𝓕 hμ h𝓕 h1 h).smul r
 
 /- English proof (translation)
-Introduce `μ 𝓕 hμ h𝓕 h1 h`. Simplify using `only [Pi.add_apply]`. Rewrite using `[hc μ 𝓕 hμ h𝓕 h1 h, he μ 𝓕 hμ h𝓕 h1 h, ← integral_add (hf μ 𝓕 hμ h𝓕 h1 h) (hg μ 𝓕 hμ h𝓕 h1 h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCT_add {d d₁ : ℕ} {W : Spc F E d} (H : Plane E d d₁) {f g c e : UA σ W.J → ℂ}
     (hf : CTInt H f) (hg : CTInt H g) (hc : IsCT H f c) (he : IsCT H g e) : IsCT H (f + g) (c + e) := by

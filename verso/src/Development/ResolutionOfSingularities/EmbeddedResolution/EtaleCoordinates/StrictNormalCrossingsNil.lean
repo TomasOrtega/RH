@@ -10,9 +10,9 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Take `⟨U, m, hxU, _, hc⟩` from `exists_etaleChart p x`. Take `⟨c⟩` from `hc`. Use `⟨U, hxU, m, c, fun _ => none, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Simplify using `at hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Simplify using `at hi`. Introduce `i hi`. Simplify using `at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inStrictNormalCrossingPositionAt_nil {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -28,7 +28,7 @@ theorem inStrictNormalCrossingPositionAt_nil {X : Scheme.{u}} {k : Type u} [Fiel
     simp at hi
 
 /- English proof (translation)
-Rewrite using `[inStrictNormalCrossingPosition_iff]`. Use `⟨?_, fun x => inStrictNormalCrossingPositionAt_nil p x⟩` and prove the remaining obligations. Introduce `D hD`. Simplify using `at hD`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inStrictNormalCrossingPosition_nil {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] :

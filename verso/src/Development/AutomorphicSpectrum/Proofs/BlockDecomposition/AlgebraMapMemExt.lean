@@ -12,29 +12,29 @@ namespace GlobalTheory.CompanionTheory.PDAcyc
 variable {B : Type} [CommRing B] {J : Ideal B}
 
 /- English proof (translation)
-Introduce `j hj`. Use `Ideal.subset_span ⟨[(1, j)], by simpa using hj, by simp, by simp [δ.dpow_one hj]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem le_fil_one (δ : DividedPowers J) : J ≤ fil δ 1 := by
   intro j hj
   refine Ideal.subset_span ⟨[(1, j)], by simpa using hj, by simp, by simp [δ.dpow_one hj]⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hj)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_ext (Q : PDPoly B) {j : B} (hj : j ∈ J) :
     algebraMap B Q.P j ∈ Q.ext J :=
   Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hj)
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem e_one_mem_ext (Q : PDPoly B) : Q.e 1 ∈ Q.ext J :=
   Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Establish `he1 : Q.e 1 ∈ Q.ext J` using `e_one_mem_ext Q`. Establish `hm : algebraMap B Q.P μ ∈ Q.ext J` using `algebraMap_mem_ext Q hμ`. Establish `hq : algebraMap B Q.P q * Q.e 1 ∈ Q.ext J` using `Ideal.mul_mem_left _ _ he1`. Establish `h0 : g (Q.e k) = η.dpow k (g (Q.e 1))`. Rewrite using `[hgd.dpow_comp _ he1, hS.var]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, h1, η.dpow_add hm hq, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun a b ↦ η.dpow a (algebraMap B Q.P μ) * η.dpow b (algebraMap B Q.P q * Q.e 1))]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[η.dpow_mul he1, hS.var, hS.dp.dpow_comp _ hμ, Algebra.smul_def, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_e {δ : DividedPowers J} {Q : PDPoly B} {η : DividedPowers (Q.ext J)}
     (hS : Q.IsStd δ η) {μ q : B} (hμ : μ ∈ J) (g : Q.P →+* Q.P) (hgd : IsDPMorphism η η g)
@@ -57,7 +57,7 @@ noncomputable def qDer (Q : PDPoly B) (q : B) (ν : ℕ → B) : Q.P →ₗ[B] Q
     ∑ m ∈ Finset.range k, (ν (m + 1) * q ^ (k - (m + 1))) • Q.e (k - (m + 1))
 
 /- English proof (translation)
-Simplify using `only [qDer, Module.Basis.constr_basis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qDer_e (Q : PDPoly B) (q : B) (ν : ℕ → B) (k : ℕ) :
     qDer Q q ν (Q.e k) = (∑ i ∈ Finset.range k, q ^ i) • Q.e k +
@@ -65,7 +65,7 @@ theorem qDer_e (Q : PDPoly B) (q : B) (ν : ℕ → B) (k : ℕ) :
   simp only [qDer, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Rewrite using `[map_e hS hμ g hgd h1, qDer_e, Finset.sum_range_succ', δ.dpow_zero hμ, smul_add, smul_smul, mul_geom_sum, Finset.smul_sum]`. Simplify using `only [hν, smul_smul, mul_assoc, Nat.sub_zero, one_mul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem map_e_sub {δ : DividedPowers J} {Q : PDPoly B} {η : DividedPowers (Q.ext J)}
     (hS : Q.IsStd δ η) {q : B} (hμ : q - 1 ∈ J) {ν : ℕ → B}
@@ -79,9 +79,9 @@ theorem map_e_sub {δ : DividedPowers J} {Q : PDPoly B} {η : DividedPowers (Q.e
   abel
 
 /- English proof (translation)
-Establish `hsm : ∀ (b : B) (w : Q.P), g (b • w) = b • g w` using `fun b w ↦ by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Conclude with `congrArg (· * g w) (RingHom.congr_fun hgB b)`. Set `gl : Q.P →ₗ[B] Q.P` to `{ toFun := g, map_add' := map_add g, map_smul' := fun b w ↦ by simpa using hsm b w }`. Establish `key : gl - LinearMap.id = (q - 1) • qDer Q q ν` using `Q.e.ext fun k ↦ by simpa [gl] using map_e_sub hS hμ hν g hgd h1 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `LinearMap.congr_fun key z` using `[gl]`.
+A detailed English derivation is pending.
 -/
 theorem map_sub_self {δ : DividedPowers J} {Q : PDPoly B} {η : DividedPowers (Q.ext J)}
     (hS : Q.IsStd δ η) {q : B} (hμ : q - 1 ∈ J) {ν : ℕ → B}
@@ -100,19 +100,19 @@ theorem map_sub_self {δ : DividedPowers J} {Q : PDPoly B} {η : DividedPowers (
   simpa [gl] using LinearMap.congr_fun key z
 
 /- English proof (translation)
-Introduce `B _ J δ Q η hS p hp hpn x hx g hgB hgd hg1`. Establish `hrepr : ∀ b : B, Q.e.repr (algebraMap B Q.P b) 0 = b` using `fun b ↦ by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← Q.e_zero, map_smul]`. Simplify using the standard rewrite rules. Establish `hμ : x ^ p - 1 ∈ J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← mul_geom_sum]`. Conclude with `J.mul_mem_left _ hx`. Take `⟨hqn, ν, hν1, hνd, hνf, hνn, hνz⟩` from `GlobalTheory.T.cyclotomic_divided_power_expansion δ p hp hpn x hx`. Take `⟨hfm, hfa, -, hfr⟩` from `GlobalTheory.T.divided_power_polynomial_filtration δ Q η hS`. Establish `h1 : g (Q.e 1) = algebraMap B Q.P (x ^ p - 1) + algebraMap B Q.P (x ^ p) * Q.e 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg1` as an intermediate fact. Rewrite `this` using `[map_add, map_one, mul_add, mul_one, add_comm (1 : Q.P)]`. Rewrite using `[_root_.map_sub, map_one (algebraMap B Q.P)]`. Take the linear combination `this`. Establish `hg` using `map_sub_self hS hμ hνd g hgB hgd h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hker, hsurj⟩` from `GlobalTheory.T.connection_on_divided_power_basis Q.e (fil δ) p (x ^ p) ν (qDer Q (x ^ p) ν) hp.ne_zero hpn hqn hfm hfa hν1 hνf hνn hνz (qDer_e Q (x ^ p) ν)`. Use `⟨fun a b hab ↦ by rw [← hrepr a, hab, hrepr], ?_, ?_⟩` and prove the remaining obligations. Introduce `r z hz hgz`. Establish `hD : qDer Q (x ^ p) ν ((x ^ p - 1) • z) = 0`. Rewrite using `[map_smul, ← hg, hgz, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hker _ hD`. Establish `hc' : algebraMap B Q.P c = algebraMap B Q.P (x ^ p - 1) * z`. Rewrite using `[← Algebra.smul_def, hc, Q.e_zero, Algebra.algebraMap_eq_smul_one]`. Use `⟨c, ?_, hc'⟩` and prove the remaining obligations. Establish `hc0 : c = (x ^ p - 1) * Q.e.repr z 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hrepr c` as an intermediate fact. Rewrite `this` using `[hc', ← Algebra.smul_def, map_smul]`. Simplify using `using this.symm`. Rewrite using `[hc0, add_comm]`. Establish `hz0 : Q.e.repr z 0 ∈ fil δ r` using `by simpa using (hfr r z).1 hz 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hfm 1 r (Ideal.mul_mem_mul (le_fil_one δ hμ) hz0)`. Introduce `r z hz`. Take `⟨y, hy, hDy⟩` from `hsurj r z ((hfr r z).1 hz)`. Use `⟨y, (hfr (r + 1) y).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hDy, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (Q : PDPoly B)
     (η : DividedPowers (Q.ext J)), Q.IsStd δ η → ∀ (p : ℕ), p.Prime → IsNilpotent (p : B) →

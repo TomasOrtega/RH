@@ -19,11 +19,9 @@ namespace GlobalTheory.HorComp
 open Limits in
 
 /- English proof (translation)
-Establish `h1 : IsPullback (pullback.fst (genStr Z) (spMap σ) ≫ pullback.fst Z.s (spMap β)) (pullback.snd (genStr Z) (spMap σ)) Z.s (spMap (σ.comp β))`. Rewrite using `[← spMap_comp_spMap]`. Conclude with `(IsPullback.of_hasPullback (genStr Z) (spMap σ)).paste_horiz (IsPullback.of_hasPullback Z.s (spMap β))`. Use `IsPullback.of_bot ?_ ?_ h1` and prove the remaining obligations. Establish `e : toGenCx j hj σ ≫ pullback.snd (genStr Z) (spMap σ) = pullback.snd q (spMap (σ.comp β))` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hj]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `e : toGenCx j hj σ ≫ pullback.fst (genStr Z) (spMap σ) = toGen j hj σ` using `pullback.lift_fst _ _ _`. Establish `e' : toGen j hj σ ≫ pullback.fst Z.s (spMap β) = pullback.fst q (spMap (σ.comp β)) ≫ j` using `pullback.lift_fst _ _ _`. Rewrite using `[← e', ← e]`.
-
-Conclude with `Category.assoc _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_toGenCx {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -48,7 +46,7 @@ theorem isPullback_toGenCx {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     exact Category.assoc _ _ _
 
 /- English proof (translation)
-Introduce `D A N j S κ s σ Y _ q jm hjm hq n _`. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (isPullback_toGenCx jm hq σ) hjm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_toGenCx : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → IsClosedImmersion (toGenCx jm hq σ) := by
   intro D A N j S κ s σ Y _ q jm hjm hq n _

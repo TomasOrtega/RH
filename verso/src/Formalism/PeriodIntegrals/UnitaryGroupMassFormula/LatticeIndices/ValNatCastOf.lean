@@ -11,13 +11,13 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum IsLocalRing
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h0 : (g : 𝓞 F) ≠ 0` using `fun h => hg2 (by rw [h]; exact zero_mem _)`. Establish `key` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (g : 𝓞 F)`. Rewrite `key` using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Establish `e : (((g : v.adicCompletionIntegers F) : v.adicCompletion F)) = algebraMap (𝓞 F) (v.adicCompletion F) (g : 𝓞 F)`. Rewrite using `[map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, show Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) (g : 𝓞 F)) = v.intValuation (g : 𝓞 F) from key]`. Establish `h1 : v.intValuation (g : 𝓞 F) ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(v.intValuation_le_pow_iff_mem _ 1).2 (by simpa using hg1)`. Establish `h2 : ¬ v.intValuation (g : 𝓞 F) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => hg2 ((v.intValuation_le_pow_iff_mem _ 2).1 h)`. Establish `hne : v.intValuation (g : 𝓞 F) ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `v.intValuation_ne_zero _ h0`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log hne]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at h1 h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem val_natCast_of (g : ℕ) (hg1 : (g : 𝓞 F) ∈ v.asIdeal) (hg2 : (g : 𝓞 F) ∉ v.asIdeal ^ 2) :
     Valued.v (((g : v.adicCompletionIntegers F) : v.adicCompletion F)) = WithZero.exp (-1 : ℤ) := by
@@ -42,9 +42,9 @@ theorem val_natCast_of (g : ℕ) (hg1 : (g : 𝓞 F) ∈ v.asIdeal) (hg2 : (g : 
   omega
 
 /- English proof (translation)
-Establish `hv` using `val_natCast_of v g hg1 hg2`. Establish `hmax` using `ReciprocityTheory.Aut.maxIdeal_eq_span (F := F) (v := v) (π := ((g : ℕ) : v.adicCompletionIntegers F)) hv`. Establish `hc : Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) = g`. Rewrite using `[ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue, hcard]`. Use `haveI : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hgp.out.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField (v.adicCompletionIntegers F))`. Set `e` to `ZMod.ringEquivOfPrime (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) hgp.out (by rw [← Nat.card_eq_fintype_card]; exact hc)`. Use `⟨(e.symm : IsLocalRing.ResidueField (v.adicCompletionIntegers F) →+* ZMod g).comp (IsLocalRing.residue _), e.symm.surjective.comp IsLocalRing.residue_surjective, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, RingEquiv.coe_toRingHom, EmbeddingLike.map_eq_zero_iff, IsLocalRing.residue_eq_zero_iff, hmax]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resZ_of (g : ℕ) [hgp : Fact g.Prime] (hcard : Nat.card (𝓞 F ⧸ v.asIdeal) = g)
     (hg1 : (g : 𝓞 F) ∈ v.asIdeal) (hg2 : (g : 𝓞 F) ∉ v.asIdeal ^ 2) :
@@ -77,15 +77,13 @@ def ResArith {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) : 
     ((gOf p : ℕ) : 𝓞 X.B.I.F) ∉ p.1.asIdeal ^ 2
 
 /- English proof (translation)
-Take `⟨hc, h1, h2⟩` from `h`. Establish `hg0 : gOf p ≠ 0`. Introduce `h0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[h0, Nat.cast_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `haveI := p.1.isMaximal`. Use `haveI : Finite (𝓞 X.B.I.F ⧸ p.1.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hg0)`. Use `letI : Fintype (𝓞 X.B.I.F ⧸ p.1.asIdeal) := Fintype.ofFinite _`. Use `letI : Field (𝓞 X.B.I.F ⧸ p.1.asIdeal) := Ideal.Quotient.field _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n, hl, hcard⟩` from `FiniteField.card (𝓞 X.B.I.F ⧸ p.1.asIdeal) (ringChar (𝓞 X.B.I.F ⧸ p.1.asIdeal))`. Rewrite `hcard` using `[← Nat.card_eq_fintype_card, hc]`. Establish `hlP : ((ringChar (𝓞 X.B.I.F ⧸ p.1.asIdeal) : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (n : ℕ) = 1`. Assume the negation of the conclusion as `hne`. Establish `h2n : 2 ≤ (n : ℕ)`. Use `n.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Apply `h2` to reduce the goal to its premises. Rewrite using `[hcard, Nat.cast_pow]`. Conclude with `Ideal.pow_le_pow_right h2n (Ideal.pow_mem_pow hlP n)`. Use `haveI : Fact (gOf p).Prime := ⟨by rw [hcard, hn, pow_one]; exact hl⟩`. Conclude with `MassDataIdxRes.resZ_of p.1 (gOf p) hc h1 h2`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stResZ_of {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) (h : ResArith X p) : StResZ X p := by
   obtain ⟨hc, h1, h2⟩ := h

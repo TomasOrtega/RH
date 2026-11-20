@@ -42,9 +42,9 @@ def CMConjSetF : Prop :=
         (Fintype.card (ClassGroup (𝓞 K)) : ℝ) = (Module.finrank ℚ M : ℝ)
 
 /- English proof (translation)
-Introduce `Λ Λ' hd h2 h3`. Establish `hd0 : Formalism.MainNotions.TaylorLogMetric.g2 Λ ^ 3 - 27 * Formalism.MainNotions.TaylorLogMetric.g3 Λ ^ 2 ≠ 0` using `hd`. Establish `hd' : Formalism.MainNotions.TaylorLogMetric.discr Λ' ≠ 0`. Unfold `Formalism.MainNotions.TaylorLogMetric.discr`. Rewrite using `[← h2, ← h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd0`. Conclude with `(hU _ _ hd0).2 Λ Λ' (hL Λ hd) (hL Λ' hd') rfl rfl h2.symm h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem uniqInv_of_lat (hL : LatOfDiscr) (hU : Uniformization) : UniqInv := by
   intro Λ Λ' hd h2 h3

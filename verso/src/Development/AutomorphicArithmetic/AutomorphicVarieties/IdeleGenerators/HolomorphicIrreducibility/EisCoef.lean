@@ -7,15 +7,15 @@ open Complex UpperHalfPlane UpperTheory.V.Af
 namespace UpperTheory.V.Sd
 
 /- English proof (translation)
-Establish `hs : Summable fun c : ℕ+ × ℕ+ => (c.2 : ℂ) ^ (k - 1) * x ^ (c.2 : ℕ) * q ^ (c.1 * c.2 : ℕ)`. Use `Summable.of_norm_bounded (summable_prod_mul_pow (k - 1) hq).norm fun c => ?_` and prove the remaining obligations. Simplify using `[norm_pow, hx]`. Use `⟨∑' c : ℕ+ × ℕ+, (c.2 : ℂ) ^ (k - 1) * x ^ (c.2 : ℕ) * q ^ (c.1 * c.2 : ℕ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hasSum_pnat_iff_hasSum_succ (f := fun m => Lk k (x * q ^ m))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `hs.hasSum.prod_fiberwise fun m => ?_` and prove the remaining obligations. Establish `h1 : ‖x * q ^ (m : ℕ)‖ < 1`. Rewrite using `[norm_mul, hx, one_mul, norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hq m.ne_zero`. Establish `h2` using `(lipschitz k hk).1 _ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hasSum_nat_add_iff' 1]`. Establish `hk' : k - 1 ≠ 0` using `by omega`. Simplify using `only [Finset.range_one, Finset.sum_singleton, Nat.cast_zero, zero_pow hk', zero_mul, sub_zero] at h2`. Rewrite `h2` using `[← hasSum_pnat_iff_hasSum_succ (f := fun e : ℕ => (e : ℂ) ^ (k - 1) * (x * q ^ (m : ℕ)) ^ e)]`. Simplify `h2` using `only [mul_pow, pow_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hasSum_pnat_iff_hasSum_succ (f := fun n => (∑ e ∈ n.divisors, (e : ℂ) ^ (k - 1) * x ^ e) * q ^ n)]`. Establish `h2` using `sigmaAntidiagonalEquivProd.hasSum_iff.2 hs.hasSum`. Use `h2.sigma fun n => ?_` and prove the remaining obligations. Use `(congrArg (HasSum _) ?_).mpr (hasSum_fintype _)` and prove the remaining obligations. Simplify using `only [Function.comp, sigmaAntidiagonalEquivProd, divisorsAntidiagonalFactors, PNat.mk_coe, Equiv.coe_fn_mk, Finset.univ_eq_attach]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[(n : ℕ).divisorsAntidiagonal.sum_attach (fun y : ℕ × ℕ => (y.2 : ℂ) ^ (k - 1) * x ^ y.2 * q ^ (y.1 * y.2)), Nat.sum_divisorsAntidiagonal' (fun u y => (y : ℂ) ^ (k - 1) * x ^ y * q ^ (u * y)), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Nat.div_mul_cancel (Nat.dvd_of_mem_divisors hi)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma lambert (k : ℕ) (hk : 2 ≤ k) {x q : ℂ} (hx : ‖x‖ = 1) (hq : ‖q‖ < 1) :
     ∃ S : ℂ, HasSum (fun m : ℕ => Lk k (x * q ^ (m + 1))) S ∧
@@ -48,21 +48,21 @@ private lemma lambert (k : ℕ) (hk : 2 ≤ k) {x q : ℂ} (hx : ‖x‖ = 1) (h
     rw [Nat.div_mul_cancel (Nat.dvd_of_mem_divisors hi)]
 
 /- English proof (translation)
-Establish `hN : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `hC : lipC k ≠ 0`. Unfold `lipC`. Use `Nat.factorial_ne_zero (k - 1)` as an intermediate fact. Simplify using `[Real.pi_ne_zero, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : ((b : ℂ) / N).im = 0`. Rewrite using `[show (b : ℂ) / N = (((b : ℝ) / N : ℝ) : ℂ) by push_cast; rfl, ofReal_im]`. Establish `h` using `(lipschitz k hk).2 (m * (z : ℂ) + b / N) ?_ ?_`. Establish `e : cexp (2 * Real.pi * Complex.I * (m * (z : ℂ) + b / N)) = (ZMod.stdAddChar (b : ZMod N) : ℂ) * (Function.Periodic.qParam 1 z) ^ m`. Rewrite using `[ZMod.stdAddChar_coe, Function.Periodic.qParam, ← Complex.exp_nat_mul, ← Complex.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Establish `h'` using `h.mul_left (lipC k)⁻¹`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[inv_mul_cancel_left₀ hC]`. Use `(congrArg (fun F => HasSum F _) (funext fun j => ?_)).mpr (h')` and prove the remaining obligations. Establish `: (((N * m : ℤ)) : ℂ) * (z : ℂ) + ((b + N * j : ℤ) : ℂ) = N * (m * (z : ℂ) + b / N + j)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_zpow, zpow_neg (N : ℂ), zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Use `z.im_pos` as an intermediate fact. Simplify using `[h0]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Introduce `j hj`. Establish `h1` using `congrArg Complex.im hj`. Use `z.im_pos.ne'` as an intermediate fact. Simplify using `[h0, this] at h1`.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `h1` using the available equality. Apply `hb` to reduce the goal to its premises. Establish `: (b : ℂ) = ((N * j : ℤ) : ℂ)`. Use `push_cast`. Rewrite using `[← hj]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[Int.cast_injective this]`. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma row (N k : ℕ) [NeZero N] (hk : 2 ≤ k) (b : ℤ) (hb : (b : ZMod N) ≠ 0) (z : ℍ) (m : ℕ) :
     HasSum (fun j : ℤ => (N : ℂ) ^ k / lipC k * ((((N * m : ℤ)) : ℂ) * (z : ℂ) + ((b + N * j : ℤ) : ℂ)) ^ (-(k : ℤ)))
@@ -109,13 +109,13 @@ private lemma row (N k : ℕ) [NeZero N] (hk : 2 ≤ k) (b : ℤ) (hb : (b : ZMo
     simp
 
 /- English proof (translation)
-Establish `hN : (N : ℤ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `hs : Summable fun v : ℤ × ℤ => ((v.1 : ℂ) * (z : ℂ) + (v.2 : ℂ)) ^ (-(k : ℤ))`. Use `(EisensteinSeries.summable_norm_eisSummand (k := k) (by exact_mod_cast hk) z).of_norm` as an intermediate fact. Rewrite `this` using `[← (finTwoArrowEquiv ℤ).symm.summable_iff]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `g : ℤ × ℤ → {v : ℤ × ℤ // (v.1 : ZMod N) = 0 ∧ (v.2 : ZMod N) = (b : ZMod N)}` to `fun c => ⟨(N * c.1, b + N * c.2), by simp⟩`. Establish `hg : Function.Bijective g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a1, a2⟩ ⟨b1, b2⟩ h`. Simplify `h` using `[g, hN, NeZero.ne N]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨v1, v2⟩, h1, h2⟩`. Take `⟨c1, rfl⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 h1`. Take `⟨c2, h⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 h2.symm`. Use `⟨(c1, c2), Subtype.ext (Prod.ext rfl ?_)⟩` and prove the remaining obligations. Simplify using `only [g] at h ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h` using `((Equiv.ofBijective g hg).hasSum_iff.2 (hs.subtype _).hasSum).mul_left ((N : ℂ) ^ k / lipC k)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma reindex (N k : ℕ) [NeZero N] (hk : 3 ≤ k) (b : ℤ) (z : ℍ) :
     HasSum (fun c : ℤ × ℤ => (N : ℂ) ^ k / lipC k *
@@ -141,23 +141,21 @@ private lemma reindex (N k : ℕ) [NeZero N] (hk : 3 ≤ k) (b : ℤ) (z : ℍ) 
   exact h
 
 /- English proof (translation)
-Use `set q := Function.Periodic.qParam 1 (z : ℂ) with hqd`. Establish `hq : ‖q‖ < 1` using `by simpa using UpperHalfPlane.norm_qParam_lt_one 1 z`. Establish `hk2 : 2 ≤ k` using `by omega`. Establish `hn : ∀ c : ZMod N, ‖(ZMod.stdAddChar c : ℂ)‖ = 1` using `fun c => by`. Rewrite using `[ZMod.stdAddChar_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Circle.norm_coe _`. Take `⟨S, hS1, hS2⟩` from `lambert k hk2 (hn b) hq`. Take `⟨T, hT1, hT2⟩` from `lambert k hk2 (hn (-b)) hq`. Set `g : ℤ → ℂ` to `fun m => if 0 ≤ m then Lk k ((ZMod.stdAddChar (b : ZMod N) : ℂ) * q ^ m.toNat) else (-1) ^ k * Lk k ((ZMod.stdAddChar (-(b : ZMod N)) : ℂ) * q ^ (-m).toNat)`. Establish `h1 : HasSum g (eisFun N k (b : ZMod N) z)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(reindex N k hk b z).prod_fiberwise fun m => ?_` and prove the remaining obligations. Distinguish the cases in `hm : 0 ≤ m`. Use `lift m to ℕ using hm`. Simplify `row N k hk2 b hb z m` using `only [g, Nat.cast_nonneg, if_true, Int.toNat_natCast]`. Take `⟨m, rfl⟩ : ∃ m' : ℕ, m = -(m' : ℤ)` from `⟨(-m).toNat, by omega⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `(row N k hk2 (-b) (by simpa using hb) z m).mul_left ((-1) ^ k)`. Rewrite `h` using `[← (Equiv.neg ℤ).hasSum_iff]`. Simplify using `only [g, if_neg hm, neg_neg, Int.toNat_natCast]`. Rewrite `h` using `[Int.cast_neg]`. Use `(congrArg (fun F => HasSum F _) (funext fun j => ?_)).mpr (h)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (((N * -(m : ℤ) : ℤ)) : ℂ) * (z : ℂ) + ((b + N * j : ℤ) : ℂ) = (-1) * ((((N * m : ℤ)) : ℂ) * (z : ℂ) + ((-b + N * -j : ℤ) : ℂ))`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp, Equiv.neg_apply]`. Rewrite using `[this, mul_zpow, zpow_neg (-1 : ℂ), zpow_natCast, ← inv_pow, inv_neg_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : HasSum g ((Lk k (ZMod.stdAddChar (b : ZMod N) : ℂ) + S) + (-1) ^ k * T)`. Use `HasSum.of_nat_of_neg_add_one ?_ ?_` and prove the remaining obligations. Use `HasSum.zero_add (f := fun m : ℕ => Lk k ((ZMod.stdAddChar (b : ZMod N) : ℂ) * q ^ m)) hS1` as an intermediate fact. Simplify `this` using `[g]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(congrArg (fun F => HasSum F _) (funext fun n => ?_)).mpr (hT1.mul_left ((-1) ^ k))` and prove the remaining obligations. Establish `: ¬ (0 : ℤ) ≤ -((n : ℤ) + 1)` using `by omega`. Simplify using `only [g, if_neg this, neg_neg]`. Both sides reduce to the same expression. Rewrite using `[h1.unique h2, add_assoc, ← hasSum_nat_add_iff' 1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.range_one, Finset.sum_singleton, if_true, pow_zero, smul_eq_mul, mul_one, add_sub_cancel_left, Nat.succ_ne_zero, if_false]`. Use `(congrArg (fun F => HasSum F _) (funext fun n => ?_)).mpr (hS2.add (hT2.mul_left ((-1) ^ k)))` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← add_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← AddChar.map_nsmul_eq_pow, ← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, nsmul_eq_mul, mul_neg, mul_comm (e : ZMod N)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma expansion (N k : ℕ) [NeZero N] (hk : 3 ≤ k) (b : ℤ) (hb : (b : ZMod N) ≠ 0) (z : ℍ) :
     HasSum (fun n : ℕ => (if n = 0 then Lk k (ZMod.stdAddChar (b : ZMod N) : ℂ) else
@@ -212,9 +210,9 @@ private lemma expansion (N k : ℕ) [NeZero N] (hk : 3 ≤ k) (b : ℤ) (hb : (b
 end UpperTheory.V.Sd
 
 /- English proof (translation)
-Introduce `N k _ hk a ha`. Take `⟨b, rfl⟩` from `ZMod.intCast_surjective a`. Take `⟨f, hf⟩` from `UpperTheory.V.Sd.eisMF N k hk b`. Establish `h` using `ModularFormClass.qExpansion_coeff_unique (f := f) one_pos (by rw [CongruenceSubgroup.strictPeriods_Gamma1]; exact AddSubgroup.mem_zmultiples 1) (fun τ => by rw [hf]; exact UpperTheory.V.Sd.expansion N k hk b ha τ)`. Rewrite `h` using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(h 0).symm, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Af.coef, ← h n, if_neg (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Sd.eisCoef :
     UpperTheory.V.Sd.EisCoef := by

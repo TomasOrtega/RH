@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsRegularR
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FibreRegular.isRegularLocalRing_stalk_quot_maximalIdeal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothFibreRegularLocalRing.lean&line=27#L27)
 -/

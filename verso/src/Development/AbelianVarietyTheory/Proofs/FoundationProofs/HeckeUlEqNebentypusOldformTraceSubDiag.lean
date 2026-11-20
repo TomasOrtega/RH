@@ -5,19 +5,19 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Introduce `hl hB`. Set `ε : SL(2, ℤ)` to `⟨!![(l : ℤ), a; (N : ℤ), b], by rw [Matrix.det_fin_two_of]; linear_combination h⟩`. Establish `hε : ε ∈ Gamma0 N`. Rewrite using `[Gamma0_mem]`. Simplify using `[ε]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hεB : B ∣[k] toGL (mat ε) = χ (b : ZMod N) • B`. Rewrite using `[← slash_SL_eq, hB ε hε]`. Both sides reduce to the same expression. Set `u : ℕ → Matrix (Fin 2) (Fin 2) ℤ` to `fun j => !![1, (j : ℤ); 0, (l : ℤ)]`. Establish `hu : ∀ j, 0 < (u j).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `[u, Matrix.det_fin_two_of]`. Conclude with `hl` after adjusting the coercions. Establish `hD : (dg (l : ℤ) 1).det ≠ 0`. Simplify using `[dg, Matrix.det_fin_two_of]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hl.ne'` after adjusting the coercions. Establish `key : ∀ j : ℕ, (B ∣[k] toGL (dg l 1)) ∣[k] gaOld N l a b h j = χ (b : ZMod N) • (B ∣[k] toGL (u j))`. Introduce `j`. Establish `hg : (mat (gaOld N l a b h j)).det ≠ 0` using `by simp [mat]`. Establish `hεd : (mat ε).det ≠ 0` using `by simp [mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hm : dg (l : ℤ) 1 * mat (gaOld N l a b h j) = mat ε * u j`. Apply the tactic sequence `ext i i' <;> fin_cases i <;> fin_cases i' <;>`. Apply the tactic sequence `simp [dg, gaOld, mat, ε, u, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Rewrite using `[slash_SL_eq, ← SlashAction.slash_mul, ← toGL_mul _ _ hD hg, hm, toGL_mul _ _ hεd (hu j).ne', SlashAction.slash_mul, hεB, smul_slash_toGL k _ (hu j)]`. Establish `hsum : trOld k N l a b h (B ∣[k] toGL (dg l 1)) - B ∣[k] toGL (dg l 1) = χ (b : ZMod N) • UlF k l B`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trOld, add_sub_cancel_left, UlF, hkF, Finset.smul_sum]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j)]`. Conclude with `(Fin.sum_univ_eq_sum_range (fun j => χ (b : ZMod N) • (B ∣[k] toGL (u j))) l).symm`. Establish `hlb : (l : ZMod N) * (b : ZMod N) = 1`. Use `congrArg (fun x : ℤ => (x : ZMod N)) h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at this`. Simplify `this` using `[ZMod.natCast_self]`. Rewrite using `[hsum, smul_smul, ← map_mul, hlb, map_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem ulF_eq_trOld (N l : ℕ) (k : ℤ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1)
     (χ : DirichletCharacter ℂ N) (B : ℍ → ℂ) :

@@ -19,11 +19,11 @@ namespace GlobalTheory.Mem.Top.KerOne.CertEq
 open Formalism.BasicNotions Formalism.MainNotions.G Formalism.MainNotions.G.CmpJ Formalism.MainNotions.G.ChartsLv Formalism.MainNotions.G.ChF Formalism.L2.G Formalism.L2.Forms
 
 /- English proof (translation)
-Introduce `x s b hb`. Establish `h` using `hw x s (b + 1) (by simp only [SizeData₂.lifts, Finset.mem_Icc]; omega)`. Establish `e1 : wj D (b + 1) (Gt.gat_pos u v hg ⟨x, s⟩) = (((D.hc (Gt.gat_pos u v hg ⟨x, s⟩)).e ⟨b, hb⟩ : ℚ) : ℝ)`. Unfold `wj`. Rewrite using `[dif_pos (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e1]`. Rewrite using `[D.hcW_e]`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Unfold `wG`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `G.kaJ at h`. Use `push_cast`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fillTie_of {D : D7} (Gt : GatTies D) (u : D.what₂.Word) (v : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar v)) (Fl : Fills (D.gat u v hg))
@@ -46,7 +46,7 @@ theorem fillTie_of {D : D7} (Gt : GatTies D) (u : D.what₂.Word) (v : D.what₂
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[reL_rfl, reL_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem reL_reL_symm {a b : ℕ} (h : a = b) {E : Type} [Field E] [NumberField E] (L : Submodule (𝓞 E) (Fin b → E)) :
     reL h (reL h.symm L) = L := by
@@ -54,7 +54,7 @@ theorem reL_reL_symm {a b : ℕ} (h : a = b) {E : Type} [Field E] [NumberField E
   rw [reL_rfl, reL_rfl]
 
 /- English proof (translation)
-Use `choose Fo hfin S hS using H`. Use `⟨⟨Fo, hfin, S⟩, fun Fl ht i hi => ?_⟩` and prove the remaining obligations. Take `⟨hT, hC, hbad, hstd, hpsi, hch, hok, hpT⟩` from `hS i hi`. Conclude with `{ frRat := SiteD.frRat _ Fl ht i hi sameU := SiteD.sameU _ Fl ht i hi hypT := hT bad_p := hbad std := hstd psi := hpsi chRat := hch hypC := hC ok := hok siteGood_prime_torsion := hpT Lb_eq := fun β => (reL_reL_symm _ _).symm }`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem site_of {D : D7} (X0 : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Gt : GatTies D) (c : LatCmp D)
@@ -79,11 +79,9 @@ theorem site_of {D : D7} (X0 : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (
       Lb_eq := fun β => (reL_reL_symm _ _).symm }
 
 /- English proof (translation)
-Introduce `K B f T w hO hF hP Z t Wt nch hn Y hMu hQ O hStd hUnf E hE Fl hFl hW u v hg _ hμ`. Use `haveI : Fact ((w.D Z).what₂.places.resChar v).Prime := ⟨(w.D Z).what₂.places.resChar_prime v⟩`. Establish `ht : (Fl u v hg).t = (w.D Z).R.t` using `(hFl u v hg).1`. Establish `hFt : FillTie t.Gt u v hg (Fl u v hg)` using `fillTie_of t.Gt u v hg (Fl u v hg) (hW u v hg)`. Take `⟨S, hS⟩` from `site_of t.g.herm u v hg t.Gt t.cmp (fun i hi => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : i + 1 + 1 ≤ (w.D Z).R.m`. Conclude with `GlobalTheory.T.memberFormsLayer_midStep_charts_conditions w hO hF hP Z t Wt nch hn Y hMu hQ O hStd hUnf E hE u v hg i hi h2`. Conclude with `GlobalTheory.T.memberFormsLayer_topStep_chart_conditions w hO hF hP Z t Wt nch hn Y hMu hQ O hStd hUnf E hE u v hg i hi (by omega))`. Establish `A : HypTiesI t.g.herm (S.inMem (w.tw Z) (Fl u v hg) ht t.Gt) t.Gt t.cmp` using `⟨ht, hFt, fun j hj => ⟨S.Fo j hj, S.loc (Fl u v hg) ht j hj, rfl, hS (Fl u v hg) ht j hj⟩⟩`. Rewrite using `[hμ]`.
-
-Conclude with `⟨S.lv (Fl u v hg) ht, S.inMem (w.tw Z) (Fl u v hg) ht t.Gt, A.hyp t.g.cmp, fun j hj => ((w.D Z).memberColumns_twistedChain_base u).symm, fun j hj => A.chX j hj, fun j hj => ⟨fun c => absurd c.1 (by omega)⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comparisonData_steps_at_baseCharacter : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (_ : NchT w Z Wt nch) (Y : DivX (w.D Z)),

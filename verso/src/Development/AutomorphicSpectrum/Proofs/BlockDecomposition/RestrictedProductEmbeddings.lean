@@ -13,11 +13,11 @@ open GlobalTheory.CompanionTheory.FinActS
 namespace GlobalTheory.CompanionTheory.FinActS
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Establish `hnd` using `List.nodup_cons.mp hl`. Establish `ih'` using `ih hnd.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih']`. Distinguish the cases in `hja : a = j`. Substitute `hja` using the available equality. Simplify using `[hnd.1, hpe]`. Establish `hne : ¬ j = a` using `fun h => hja h.symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hpe' a j _ hja, one_mul]`. Simplify using `[hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_list_prod_embed_of_nodup {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)]
     (p : ∀ i, Γ →* Hl i) (e : ∀ i, Hl i →* Γ)
@@ -38,33 +38,29 @@ theorem map_list_prod_embed_of_nodup {ι Γ : Type} [Group Γ] {Hl : ι → Type
       simp [hne]
 
 /- English proof (translation)
-Introduce `ι Γ _ Hl _ _ _ _ _ p e K KH hpc hec hpe hpe' hsep hK hKc hKo U hU`. Establish `hcomp : IsCompact ((K : Set Γ) \ (U : Set Γ))` using `hKc.diff hU`. Establish `hopen : ∀ i, IsOpen {x : Γ | p i x ≠ 1}` using `fun i => (isOpen_ne (x := (1 : Hl i))).preimage (hpc i)`. Establish `hcover : (K : Set Γ) \ (U : Set Γ) ⊆ ⋃ i, {x : Γ | p i x ≠ 1}`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hcon`. Establish `hall : ∀ i, p i x = p i 1`. Introduce `i`. Assume the negation of the conclusion as `hi`. Conclude with `hcon (Set.mem_iUnion.mpr ⟨i, by simpa using hi⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx1 : x = 1` using `hsep x 1 hall`. Conclude with `hx.2 (hx1 ▸ U.one_mem)`. Take `⟨T, hT⟩` from `hcomp.elim_finite_subcover _ hopen hcover`. Establish `hTU : ∀ x, x ∈ K → (∀ i ∈ T, p i x = 1) → x ∈ U`. Introduce `x hxK hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hxU`. Establish `hmem` using `hT ⟨hxK, hxU⟩`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, exists_prop] at hmem`. Take `⟨i, hi, hne⟩` from `hmem`. Conclude with `hne (hx i hi)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun i => if i ∈ T then KH i ⊓ U.comap (e i) else KH i, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `hi : i ∈ T`. Simplify using `only [hi, if_true]`. Conclude with `(hKo i).inter (hU.preimage (hec i))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, if_false]`. Conclude with `hKo i`. Introduce `i`. Distinguish the cases in `hi : i ∈ T`. Simplify using `only [hi, if_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `inf_le_left`. Simplify using `only [hi, if_false]`. Conclude with `le_rfl`. Establish `hfin : ∀ᶠ i in cofinite, i ∉ T` using `T.finite_toSet.compl_mem_cofinite filter_upwards [hfin] with i hi`. Simplify using `only [hi, if_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `u hu`. Establish `hle : ∀ i, p i u ∈ KH i`. Introduce `i`. Use `hu i` as an intermediate fact. Distinguish the cases in `hi : i ∈ T`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hi, if_true] at this`. Conclude with `this.1`. Simplify `this` using `only [hi, if_false]`. Establish `huK : u ∈ K` using `(hK u).mpr hle`. Use `set v : Γ := (T.toList.map fun i => e i (p i u)).prod with hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpv : ∀ j, p j v = if j ∈ T then p j u else 1`. Introduce `j`. Use `map_list_prod_embed_of_nodup p e hpe hpe' (fun i => p i u) j T.toList T.nodup_toList` as an intermediate fact. Simplify `this` using `[hv]`. Establish `hvU : v ∈ U`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `U.list_prod_mem ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, hi, rfl⟩` from `List.mem_map.mp hx`. Establish `hiT : i ∈ T` using `Finset.mem_toList.mp hi`. Use `hu i` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hiT, if_true] at this`. Conclude with `this.2`. Establish `hwK : v⁻¹ * u ∈ K`. Use `(hK _).mpr fun j => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hpv j]`.
-
-Distinguish the cases in `hj : j ∈ T`. Simplify using `[hj, (KH j).one_mem]`. Simplify `hle j` using `[hj]`. Establish `hwU : v⁻¹ * u ∈ U`. Use `hTU _ hwK fun i hi => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_inv, hpv i]`. Simplify using `[hi]`. Use `U.mul_mem hvU hwU` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_local_levels_le_open : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [∀ i, TopologicalSpace (Hl i)] [∀ i, T2Space (Hl i)]
     (p : ∀ i, Γ →* Hl i) (e : ∀ i, Hl i →* Γ) (K : Subgroup Γ) (KH : ∀ i, Subgroup (Hl i))

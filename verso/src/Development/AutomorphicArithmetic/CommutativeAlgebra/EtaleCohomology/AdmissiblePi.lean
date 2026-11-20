@@ -15,7 +15,7 @@ private def prI (B : Type) [AddCommGroup B] [Module F B] (i : I) : (∀ i, V i) 
   AlgebraTensorModule.map (LinearMap.proj i) LinearMap.id
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp [prI, h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem prI_map (i : I) (a : (∀ i, V i) →ₗ[F] (∀ i, V i)) (b : V i →ₗ[F] V i) (c : B →ₗ[F] B)
     (h : ∀ x, a x i = b (x i)) (x : (∀ i, V i) ⊗[F] B) :
@@ -31,9 +31,9 @@ private def inI (B : Type) [AddCommGroup B] [Module F B] (i : I) : V i ⊗[F] B 
   AlgebraTensorModule.map (LinearMap.single F V i) LinearMap.id
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y`. Simplify using `only [prI, inI, AlgebraTensorModule.map_tmul, LinearMap.proj_apply, LinearMap.id_apply, LinearMap.coe_single]`. Rewrite using `[← TensorProduct.sum_tmul, Finset.univ_sum_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => simp only [map_add, Finset.sum_add_distrib, hx, hy]`.
+Treat this case separately.
 -/
 private theorem sum_inI_prI (x : (∀ i, V i) ⊗[F] B) : ∑ i, inI B i (prI B i x) = x := by
   classical
@@ -45,7 +45,7 @@ private theorem sum_inI_prI (x : (∀ i, V i) ⊗[F] B) : ∑ i, inI B i (prI B 
   | add x y hx hy => simp only [map_add, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp [prI, inI]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem prI_inI_same (i : I) (y : V i ⊗[F] B) : prI B i (inI B i y) = y := by
   classical
@@ -55,7 +55,7 @@ private theorem prI_inI_same (i : I) (y : V i ⊗[F] B) : prI B i (inI B i y) = 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp [prI, inI, Pi.single_eq_of_ne (Ne.symm h)]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem prI_inI_ne {i j : I} (h : j ≠ i) (y : V j ⊗[F] B) : prI B i (inI B j y) = 0 := by
   classical
@@ -65,7 +65,7 @@ private theorem prI_inI_ne {i j : I} (h : j ≠ i) (y : V j ⊗[F] B) : prI B i 
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← sum_inI_prI x, ← sum_inI_prI y]`. Simplify using `only [h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ext_prI {x y : (∀ i, V i) ⊗[F] B} (h : ∀ i, prI B i x = prI B i y) : x = y := by
   rw [← sum_inI_prI x, ← sum_inI_prI y]; simp only [h]
@@ -73,9 +73,9 @@ private theorem ext_prI {x y : (∀ i, V i) ⊗[F] B} (h : ∀ i, prI B i x = pr
 variable (σ : G → End F B) (ρ : ∀ i, Representation F G (V i)) (ρ' : Representation F G (∀ i, V i))
 
 /- English proof (translation)
-Simplify using `only [mem_Dinv]`. Prove the components needed by the constructor for the conclusion. Introduce `h i g`. Rewrite using `[← prI_map i (ρ' g) (ρ i g) (σ g) (fun x => hρ g x i), h]`. Introduce `h g`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext_prI fun i => ?_` and prove the remaining obligations. Rewrite using `[prI_map i (ρ' g) (ρ i g) (σ g) (fun x => hρ g x i), h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_Dinv_pi (hρ : ∀ g x i, ρ' g x i = ρ i g (x i)) (x : (∀ i, V i) ⊗[F] B) :
     x ∈ Dinv σ ρ' ↔ ∀ i, prI B i x ∈ Dinv σ (ρ i) := by
@@ -106,13 +106,13 @@ private def dinvPi (hρ : ∀ g x i, ρ' g x i = ρ i g (x i)) : Dinv σ ρ' ≃
           exact Subtype.ext (hc i))
 
 /- English proof (translation)
-Establish `hfin : ∀ i, Module.Finite F (Dinv σ (ρ i))`. Introduce `i`. Distinguish the cases in `h0 : finrank F (V i) = 0`. Establish `: Subsingleton (V i)` using `Module.finrank_zero_iff.1 h0`. Establish `: Subsingleton (V i ⊗[F] B)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ c : V i ⊗[F] B, c = 0`. Introduce `c`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v y => rw [Subsingleton.elim v 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Rewrite using `[hz a, hz b]`. Use `infer_instance`. Conclude with `Module.finite_of_finrank_pos (by rw [h i]; exact Nat.mul_pos he (Nat.pos_of_ne_zero h0))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `admitted at *`. Rewrite using `[(dinvPi σ ρ ρ' hρ).finrank_eq, Module.finrank_pi_fintype, Module.finrank_pi_fintype, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h i`.
+A detailed English derivation is pending.
 -/
 private theorem adm_pi_rep_of_forall_adm_of_pos [∀ i, Module.Finite F (V i)] (hρ : ∀ g x i, ρ' g x i = ρ i g (x i)) {e : ℕ} (he : 0 < e)
     (h : ∀ i, admitted σ e (ρ i)) : admitted σ e ρ' := by
@@ -136,9 +136,9 @@ private theorem adm_pi_rep_of_forall_adm_of_pos [∀ i, Module.Finite F (V i)] (
   exact Finset.sum_congr rfl fun i _ => h i
 
 /- English proof (translation)
-Introduce `x hx`. Use `ext_prI fun i => ?_` and prove the remaining obligations. Use `h i _ ((mem_Dinv_pi σ ρ ρ' hρ x).1 hx i)` as an intermediate fact. Rewrite using `[map_zero, map_sum, ← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul, prI_map i (T' j) (T i j) (ψ ^ (n - j)) (fun x => hT j x i)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem annD_pi (ψ : End F B) (q n : ℕ) (T : ∀ i, ℕ → End F (V i)) (T' : ℕ → End F (∀ i, V i))
     (hρ : ∀ g x i, ρ' g x i = ρ i g (x i)) (hT : ∀ j x i, T' j x i = T i j (x i))
@@ -155,9 +155,7 @@ end
 end UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Introduce `l _ P K I _ V _ _ _ ρ f q n T ρ' T' hρ hT`. Use `⟨fun h => ?_, fun h => annD_pi _ ρ ρ' _ q n T T' hρ hT h⟩` and prove the remaining obligations. Establish `he : 0 < finrank ℚ_[l] ↥(K0 K)`. Use `(P.PD K).finK₀` as an intermediate fact. Conclude with `Module.finrank_pos`.
-
-Conclude with `adm_pi_rep_of_forall_adm_of_pos (fun g => (((P.PD K).actB g).toAlgHom.toLinearMap).restrictScalars ℚ_[l]) ρ ρ' hρ he h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.annPi :
     UpperTheory.Ru.crystallineComparison.AnnPi := by

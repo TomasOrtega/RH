@@ -22,7 +22,7 @@ def LeftInvRes (a : ℕ) : Prop :=
       N0 * M = 1 + sc (E := E) v ϖ • B
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem near_mulVec {a : ℕ} (ϖ : Fv F v) (B : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) (x : Fin a → Fv F v ⊗[F] E)
     (i : Fin a) :
@@ -31,25 +31,21 @@ theorem near_mulVec {a : ℕ} (ϖ : Fv F v) (B : Matrix (Fin a) (Fin a) (Fv F v 
   rfl
 
 /- English proof (translation)
-Introduce `hS hUn M hM hsat`. Take `⟨ϖ, hϖ⟩` from `unifEx_holds v`. Take `⟨h0, hπ, -⟩` from `unif_spec v ϖ hϖ`. Take `⟨N0, B, hN0, hB, hNB⟩` from `hR hS hUn ϖ hϖ M hM hsat`. Use `set C : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := 1 + sc (E := E) v ϖ • B with hCdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : ∀ d : Fin a → Fv F v ⊗[F] E, Matrix.mulVec C d = 0 → d = 0`. Introduce `d hd`. Use function extensionality and compare the values at `i`. Establish `hm : ∀ m : ℕ, sc (E` using `E) v (ϖ ^ m)⁻¹ * d i ∈ OEv (E := E) v := by`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `near_int v ϖ hϖ B hB (fun j => sc (E := E) v (ϖ ^ m)⁻¹ * d j) (fun j => ?_) i` and prove the remaining obligations. Use `near_mulVec v ϖ B (sc (E := E) v (ϖ ^ m)⁻¹ • d) j` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, ← hCdef, hd, smul_zero]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `oEv_zero v`. Assume the negation of the conclusion as `hne`. Establish `hN : {x : Fv F v ⊗[F] E | x ≠ d i} ∈ 𝓝 (0 : Fv F v ⊗[F] E)` using `isOpen_ne.mem_nhds (Ne.symm hne)`. Take `⟨k, hk⟩` from `PI.VolStabSW.eventually_smul_sub (OEv (E := E) v) (isCompact_oEv v) (fun k => ϖ ^ k) hπ _ hN`. Apply `hk _ (hm k)` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ϖ ^ k • (sc (E := E) v (ϖ ^ k)⁻¹ * d i) = d i`. Rewrite using `[smul_eq_sc, ← mul_assoc, sc_mul, mul_inv_cancel₀ (pow_ne_zero _ h0), sc_one, one_mul]`. Establish `hinj : Function.Injective (Matrix.mulVecLin C)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Conclude with `fun d hd => hker d hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hsurj : Function.Surjective (Matrix.mulVecLin C)`. Establish `hinj' : Function.Injective ((Matrix.mulVecLin C).restrictScalars (Fv F v))` using `hinj`. Conclude with `(LinearMap.injective_iff_surjective (f := (Matrix.mulVecLin C).restrictScalars (Fv F v))).1 hinj'`. Establish `hCu : IsUnit C` using `Matrix.mulVec_surjective_iff_isUnit.1 hsurj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hCd : IsUnit C.det` using `(Matrix.isUnit_iff_isUnit_det C).1 hCu`. Establish `hCi : ∀ i j, C⁻¹ i j ∈ OEv (E` using `E) v := by`. Introduce `i j`. Establish `hcol : ∀ l, (fun k => C⁻¹ k j) l + sc (E` using `E) v ϖ * ∑ k, B l k * (fun k => C⁻¹ k j) k ∈ OEv (E := E) v := by`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← near_mulVec v ϖ B (fun k => C⁻¹ k j) l, ← hCdef]`. Establish `e : Matrix.mulVec C (fun k => C⁻¹ k j) l = (C * C⁻¹) l j`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Rewrite using `[e, Matrix.mul_nonsing_inv C hCd, Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem_O v`. Conclude with `oEv_zero v`. Conclude with `near_int v ϖ hϖ B hB _ hcol i`. Use `⟨C⁻¹ * N0, fun i k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
-
-Conclude with `oEv_sum v _ _ fun l _ => oEv_mul v (hCi i l) (hN0 l k)`. Rewrite using `[Matrix.mul_assoc, hNB, Matrix.nonsing_inv_mul C hCd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftInvO_of (a : ℕ) (hR : LeftInvRes σ J ψ v (n := n) a) : LeftInvO σ J ψ v (n := n) a := by
   intro hS hUn M hM hsat

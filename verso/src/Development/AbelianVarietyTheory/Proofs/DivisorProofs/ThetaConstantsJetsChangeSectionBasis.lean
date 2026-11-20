@@ -20,13 +20,13 @@ namespace GlobalTheory.MBLow.JetUniq
 open GlobalTheory.MBLow.ScaleJet
 
 /- English proof (translation)
-Establish `hL` using `P.isLB`. Take `⟨α, s, hα, hn, h₁, h₂⟩` from `H`. Take `⟨α', s', hα', hn', h₁', h₂'⟩` from `H'`. Establish `hc` using `SymLiftOdd.symLift_unique globalFns_holds P.isAb hL hm.pow _ _ hU hU'`. Establish `ha` using `gen_unique' hL (fun _ _ _ => rfl) (fst T P.A).left (ptSecT P.A (1 : T ⟶ P.A)).left (congrArg (fun q => q.left) (lift_fst _ _ : lift (𝟙 T) (1 : T ⟶ P.A) ≫ _ = _)) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.surj_fst globalFns_holds P.isAb T) hα hα' (fun w I hI => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q` using `val_corr hI hn (𝟙 _)`. Establish `q'` using `val_corr hI hn' (𝟙 _)`. Rewrite `q`, `q'` using `[val_pull hI, Category.id_comp]`. Conclude with `q.trans q'.symm)`. Take `⟨p, φ, hφ⟩` from `U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p', φ', hφ'⟩` from `U'`. Take `rfl : p = x` from `hU.pt_eq`. Take `rfl : p' = p` from `hU'.pt_eq`. Use `sec_ext_val (φ := fun _ : Fin 1 => (snd T P.A).left) hL (fun y J hJ => ?_) j` and prove the remaining obligations. Use `(twist_val h₂ _ y hJ).trans (Eq.trans ?_ (twist_val h₂' _ y hJ).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) (congrArg Units.val (val_corr hJ hc _)) ?_` and prove the remaining obligations. Use `(twist_val h₁ _ y hJ).trans (Eq.trans ?_ (twist_val h₁' _ y hJ).symm)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (congrArg Units.val (ha _ _ y J hJ)) (congrArg (gs _ y _) (hth _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tr_unique {S : Scheme.{0}} (P : PolAV S) (ρ : LB.Gen (P.L.pull (eSec P.A))) {m : ℕ} (hm : Odd m) {T : Over S}
     {th th' : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) T)} (hth : ∀ j, th.f j = th'.f j) {x : T ⟶ P.A} {U U' t t'}
@@ -61,7 +61,7 @@ def germAt (z : Sp B) : B →+* (Sp B).presheaf.stalk z :=
   ((Sp B).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom
 
 /- English proof (translation)
-Rewrite using `[valR, dif_pos h, gs_eq x z U (h trivial), germAt, RingHom.comp_apply, Iso.hom_inv_id_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply (Sp B).presheaf (homOfLE h) z trivial _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germAt_valR (x : Sp B ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) (z : Sp B) :
     germAt z (valR x U f) = gs x z U f := by
@@ -69,7 +69,7 @@ theorem germAt_valR (x : Sp B ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f
   exact TopCat.Presheaf.germ_res_apply (Sp B).presheaf (homOfLE h) z trivial _
 
 /- English proof (translation)
-Establish `e : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom a = (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b` using `TopCat.Presheaf.section_ext (Sp B).sheaf ⊤ _ _ fun z _ => h z`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).inv).1 e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germAt_ext {a b : B} (h : ∀ z : Sp B, germAt z a = germAt z b) : a = b := by
   have e : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom a = (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b :=
@@ -77,16 +77,16 @@ theorem germAt_ext {a b : B} (h : ∀ z : Sp B, germAt z a = germAt z b) : a = b
   exact (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).inv).1 e
 
 /- English proof (translation)
-Rewrite using `[valR, dif_pos h]`. Conclude with `(u.isUnit.map _).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_valR (x : Sp B ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) : IsUnit (valR x U u.val) := by
   rw [valR, dif_pos h]
   exact (u.isUnit.map _).map _
 
 /- English proof (translation)
-Establish `a : ⊤ ≤ y ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => φ) fun _ => i` using `fun z hz => Set.mem_iInter.2 fun _ => h hz`. Establish `a' : ⊤ ≤ y ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => φ) fun _ => i'` using `fun z hz => Set.mem_iInter.2 fun _ => h' hz`. Establish `b : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ (L.U i' ⊓ L.U i)` using `fun z hz => ⟨h' hz, h hz⟩`. Use `germAt_ext fun z => ?_` and prove the remaining obligations. Establish `q` using `sec_trans s y z (a' trivial) (a trivial)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `q` using `[trF, Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val]`. Rewrite using `[map_mul, map_pow, germAt_valR _ _ b, gs_unit (y ≫ φ) z (L.U i' ⊓ L.U i) (b trivial)]`. Conclude with `(germAt_valR _ _ a' _ z).trans (q.trans (congrArg _ (germAt_valR _ _ a _ z).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_sec_chart {Y : Scheme.{0}} {L : LB X} (φ : Y ⟶ X) (n : ℕ)
     (s : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => φ) (fun _ => (n : ℤ)))) (y : Sp B ⟶ Y) {i i' : L.ι}
@@ -103,9 +103,9 @@ theorem valR_sec_chart {Y : Scheme.{0}} {L : LB X} (φ : Y ⟶ X) (n : ℕ)
   exact (germAt_valR _ _ a' _ z).trans (q.trans (congrArg _ (germAt_valR _ _ a _ z).symm))
 
 /- English proof (translation)
-Establish `a : ⊤ ≤ y ⁻¹ᵁ (L.pull φ).U fun _ => i` using `fun z hz => Set.mem_iInter.2 fun _ => h hz`. Establish `a' : ⊤ ≤ y ⁻¹ᵁ (L.pull φ).U fun _ => i'` using `fun z hz => Set.mem_iInter.2 fun _ => h' hz`. Establish `b : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ (L.U i' ⊓ L.U i)` using `fun z hz => ⟨h' hz, h hz⟩`. Use `germAt_ext fun z => ?_` and prove the remaining obligations. Establish `q` using `congrArg Units.val (gen_trans (φ := fun _ : PUnit => φ) (ε := fun _ => 1) hρ y z (a' trivial) (a trivial))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `q` using `[trF, Fintype.prod_unique, zpow_one, Units.val_mul]`. Rewrite using `[map_mul, germAt_valR _ _ b, gs_unit (y ≫ φ) z (L.U i' ⊓ L.U i) (b trivial)]`. Conclude with `((germAt_valR _ _ a' _ z).trans (gs_unit y z _ (a' trivial) _)).trans (q.trans (congrArg _ ((germAt_valR _ _ a _ z).trans (gs_unit y z _ (a trivial) _)).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_gen_chart {Y : Scheme.{0}} {L : LB X} (φ : Y ⟶ X) {ρ : LB.Gen (L.pull φ)} (hρ : ρ.IsGen) (y : Sp B ⟶ Y)
     {i i' : L.ι} (h : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ L.U i) (h' : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ L.U i') :
@@ -132,7 +132,7 @@ def toProd (A : Over (Sp R)) : A.left ⟶ (baseOver (Sp R) ⊗ A).left :=
 
 omit [GrpObj A] in
 /- English proof (translation)
-Rewrite using `[epsLift, toProd, ← Over.comp_left, comp_lift, Category.comp_id]`. Use `congr 2`. Conclude with `Over.OverMorphism.ext (Over.w v).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem epsLift_eq (v : epsR R ⟶ A) : epsLift v = v.left ≫ toProd A := by
   rw [epsLift, toProd, ← Over.comp_left, comp_lift, Category.comp_id]
@@ -141,15 +141,15 @@ theorem epsLift_eq (v : epsR R ⟶ A) : epsLift v = v.left ≫ toProd A := by
 
 omit [GrpObj A] in
 /- English proof (translation)
-Rewrite using `[epsLift, ← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem epsLift_snd (v : epsR R ⟶ A) : epsLift v ≫ (snd (baseOver (Sp R)) A).left = v.left := by
   rw [epsLift, ← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `j : Over.mk (T.hom ≫ 𝟙 (Sp R)) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `e₁ : x₀ = j ≫ x` using `Over.OverMorphism.ext (by simp [hx, j])`. Establish `e₂ : y₀ = j ≫ y` using `Over.OverMorphism.ext (by simp [hy, j])`. Rewrite using `[e₁, e₂, ← MonObj.comp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[j]`.
+Simplify using the standard rewrite rules.
 -/
 theorem grpPullback_id : IsGrpPullback A A (𝟙 (Sp R)) (𝟙 A.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
@@ -160,14 +160,14 @@ theorem grpPullback_id : IsGrpPullback A A (𝟙 (Sp R)) (𝟙 A.left) := by
   simp [j]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ArcLie.le_iff_fst, hv]`. Conclude with `hV`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_le {v : epsR R ⟶ A} (hv : IsTangent v) {V : A.left.Opens} (hV : ⊤ ≤ eSec A ⁻¹ᵁ V) : ⊤ ≤ v.left ⁻¹ᵁ V := by
   rw [GlobalTheory.ArcLie.le_iff_fst, hv]
   exact hV
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.HolHom.valR_spMap (TrivSqZeroExt.fstHom R R R).toRingHom v.left V (tan_le hv hV) f`. Rewrite `e` using `[hv]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_valR {v : epsR R ⟶ A} (hv : IsTangent v) {V : A.left.Opens} (hV : ⊤ ≤ eSec A ⁻¹ᵁ V) (f : Γ(A.left, V)) :
     (valR (A := DualNumber R) v.left V f).fst = valR (A := R) (eSec A) V f := by
@@ -176,7 +176,7 @@ theorem fst_valR {v : epsR R ⟶ A} (hv : IsTangent v) {V : A.left.Opens} (hV : 
   exact e.symm
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.ArcLieCoord.comb_snd grpPullback_id v hv c w hc V (by rw [Category.comp_id]; exact hV) f`. Simplify `e` using `only [Category.comp_id]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem snd_valR [IsCommMonObj A] {n : ℕ} {v : Fin n → (epsR R ⟶ A)} (hv : ∀ k, IsTangent (v k)) {c : Fin n → R}
     {w : epsR R ⟶ A} (hc : IsLieComb c v w) {V : A.left.Opens} (hV : ⊤ ≤ eSec A ⁻¹ᵁ V) (f : Γ(A.left, V)) :
@@ -186,15 +186,13 @@ theorem snd_valR [IsCommMonObj A] {n : ℕ} {v : Fin n → (epsR R ⟶ A)} (hv :
 
 omit [GrpObj A] in
 /- English proof (translation)
-Rewrite using `[toProd, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toProd_snd : toProd A ≫ (snd (baseOver (Sp R)) A).left = 𝟙 A.left := by
   rw [toProd, ← Over.comp_left, lift_snd]; rfl
 
 /- English proof (translation)
-Introduce `z hz`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `e : (toProd A ≫ (snd (baseOver (Sp R)) A).left) (eSec A z) ∈ L.U i`. Rewrite using `[toProd_snd]`. Conclude with `h hz`.
-
-Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_toProd {L : LB A.left} {i : L.ι} (h : ⊤ ≤ eSec A ⁻¹ᵁ L.U i) :
     ⊤ ≤ eSec A ⁻¹ᵁ toProd A ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => (snd (baseOver (Sp R)) A).left) fun _ => i := by
@@ -209,29 +207,29 @@ end Tangent
 local notation "cF" => ReciprocityTheory.ChartRestriction.G.Geo.Tor.constFn
 
 /- English proof (translation)
-Introduce `K _ P hp rig hr th hth v hv th' hth' v' hv' a M hs hM m hm _ I pt ϑ ϑ' J J'`. Introduce and unpack `⟨θ, hθ, U, t, i₀, c, hU, hi, H⟩ ⟨θ', hθ', U', t', i₁, c', hU', hi', H'⟩`. Use `P.isAb.comm` as an intermediate fact. Simplify using `only at hθ hθ' hU hU' hi hi' H H'`. Establish `k₀ : ⊤ ≤ eSec P.A ⁻¹ᵁ P.L.U i₀` using `fun z hz => hi hz`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `k₁ : ⊤ ≤ eSec P.A ⁻¹ᵁ P.L.U i₁` using `fun z hz => hi' hz`. Establish `hθ₁ : ∀ j, θ'.f j = (cMul (baseOver (Sp K) ⊗ P.A).hom a θ).f j` using `fun j => by`. Take `⟨i, rfl⟩ : ∃ i : P.L.ι, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Establish `h` using `LB.wchart_le P.L (fun _ : Fin 1 => (snd (baseOver (Sp K)) P.A).left) (fun _ => i) 0`. Conclude with `(hθ' i h).trans ((congrArg _ (hs i)).trans (polAVSectionInverseImage_mulConstant P _ th θ a hθ i h).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ i j, (t' i).f j = cF (baseOver (Sp K) ⊗ P.A).hom _ a * (t i).f j` using `fun i j => by`. Take `⟨α, s₁, h1, h2, h3, h4⟩` from `(hU i).2`. Conclude with `tr_unique P rig hm hθ₁ (hU' i).1 (hU i).1 (hU' i).2 (t' := cMul _ a (t i)) ⟨α, cMul _ a s₁, h1, h2, twist_cMul _ _ _ _ _ _ _ _ _ _ h3, twist_cMul _ _ _ _ _ _ _ _ _ _ h4⟩ j`. Set `V` to `LB.wchart P.L (fun _ : Fin 1 => (snd (baseOver (Sp K)) P.A).left) fun _ => i₀`. Set `D : I → (epsR K ⟶ P.A) → DualNumber K` to `fun i w => valR (epsLift w) V ((t i).f fun _ => i₀)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r : K` to `valR (𝟙 (Sp K)) ((P.L.pull (eSec P.A)).U fun _ => i₀) (rig.s fun _ => i₀).val`. Set `G : K` to `valR (A := K) (eSec P.A) (P.L.U i₁ ⊓ P.L.U i₀) (P.L.g i₁ i₀).val`. Set `u : Fin P.g → DualNumber K` to `fun j => valR (A := DualNumber K) (v' j).left (P.L.U i₁ ⊓ P.L.U i₀) (P.L.g i₁ i₀).val ^ (m ^ 2)`. Establish `k₂ : ⊤ ≤ eSec P.A ⁻¹ᵁ (P.L.U i₁ ⊓ P.L.U i₀)` using `fun z hz => ⟨k₁ hz, k₀ hz⟩`. Establish `hr₀ : r ≠ 0` using `(isUnit_valR (𝟙 (Sp K)) ((P.L.pull (eSec P.A)).U fun _ => i₀) (fun z hz => Set.mem_iInter.2 fun _ => k₀ hz) _).ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG₀ : G ≠ 0` using `(isUnit_valR (B := K) _ _ k₂ _).ne_zero`. Establish `hu : ∀ j, (u j).fst = G ^ (m ^ 2)` using `fun j => by`. Rewrite using `[TrivSqZeroExt.fst_pow, fst_valR (hv'.1 j) k₂]`. Establish `hD : ∀ i l, D i (v l) = TrivSqZeroExt.inl (r ^ (m ^ 2)) * (TrivSqZeroExt.inl (ϑ i) + TrivSqZeroExt.inr (J i l + c l * ϑ i))` using `H`. Establish `hD' : ∀ i w, D i w = valR (A` using `DualNumber K) w.left (toProd P.A ⁻¹ᵁ V) (((toProd P.A).app V).hom ((t i).f fun _ => i₀)) := fun i w => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [D]`. Rewrite using `[epsLift_eq]`. Conclude with `GlobalTheory.HolHom.valR_comp _ _ _ _`. Establish `f₁ : ∀ i j, (D i (v' j)).fst = r ^ (m ^ 2) * ϑ i` using `fun i j => by`. Establish `e` using `congrArg TrivSqZeroExt.fst (hD i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[hD', fst_valR (hv.1 j) (le_toProd k₀)]`. Rewrite using `[hD', fst_valR (hv'.1 j) (le_toProd k₀), e]`. Simplify using the standard rewrite rules. Establish `f₂ : ∀ i j, (D i (v' j)).snd = r ^ (m ^ 2) * (∑ l, M j l * J i l + (∑ l, M j l * c l) * ϑ i)` using `fun i j => by`. Rewrite using `[hD', snd_valR hv.1 (hM j) (le_toProd k₀), Finset.sum_mul, ← Finset.sum_add_distrib, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hD', hD]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `main : ∀ i j, algebraMap K (DualNumber K) a * (u j * D i (v' j)) = TrivSqZeroExt.inl ((G * r) ^ (m ^ 2)) * (TrivSqZeroExt.inl (ϑ' i) + TrivSqZeroExt.inr (J' i j + c' j * ϑ' i))` using `fun i j => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `valR_gen_chart (eSec P.A) hr (𝟙 (Sp K)) hi hi'`. Establish `e₂` using `valR_sec_chart (snd (baseOver (Sp K)) P.A).left (m ^ 2) (t i) (epsLift (v' j)) (i := i₀) (i' := i₁) (by rw [epsLift_snd]; exact tan_le (hv'.1 j) k₀) (by rw [epsLift_snd]; exact tan_le (hv'.1 j) k₁)`. Rewrite `e₂` using `[epsLift_snd]`. Establish `hx : epsLift (v' j) ≫ (baseOver (Sp K) ⊗ P.A).hom = spMap (algebraMap K (DualNumber K))` using `Over.w _`. Establish `e₃` using `valR_cMul _ _ _ hx _ a ((t i).f fun _ => i₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₄` using `H' i j`. Rewrite `e₄` using `[e₁]`. Conclude with `(congrArg _ e₂).symm.trans (e₃.symm.trans ((congrArg (valR _ _) (ht i _)).symm.trans e₄))`. Establish `hϑ : ∀ i, ϑ' i = a * ϑ i` using `fun i => by`. Establish `e` using `congrArg TrivSqZeroExt.fst (main i ⟨0, hp⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [TrivSqZeroExt.fst_mul, hu, f₁, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inr, add_zero, mul_pow] at e`. Use `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero (m ^ 2) hG₀) (pow_ne_zero (m ^ 2) hr₀)) ?_` and prove the remaining obligations. Take the linear combination `-e`. Use `⟨hϑ, fun j => a * (∑ l, M j l * c l + (u j).snd / G ^ (m ^ 2) - c' j), fun i j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg TrivSqZeroExt.snd (main i j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [DualNumber.snd_mul, TrivSqZeroExt.fst_mul, hu, f₁, f₂, hϑ, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inr, zero_add, zero_mul, add_zero, mul_pow] at e`. Establish `hG₁` using `pow_ne_zero (m ^ 2) hG₀`. Use `mul_left_cancel₀ (mul_ne_zero hG₁ (pow_ne_zero (m ^ 2) hr₀)) ?_` and prove the remaining obligations. Take the linear combination `-e - r ^ (m ^ 2) * a * ϑ i * div_mul_cancel₀ (u j).snd hG₁`.
+A detailed English derivation is pending.
 -/
 theorem thJet_change : ∀ (K : Type) [Field K] (P : PolAV (Sp K)) (hp rig hr th hth v hv th' hth' v' hv') (a : K) (M : Matrix (Fin P.g) (Fin P.g) K), (∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i) → (∀ i, IsLieComb (M i) v (v' i)) → ∀ (m : ℕ), Odd m → (m : K) ≠ 0 → ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ P.A)) (ϑ ϑ' : I → K) (J J' : I → Fin P.g → K), ThJet ⟨P, hp, rig, hr, th, hth, v, hv⟩ rfl m pt ϑ J → ThJet ⟨P, hp, rig, hr, th', hth', v', hv'⟩ rfl m pt ϑ' J' → (∀ i, ϑ' i = a * ϑ i) ∧ ∃ c : Fin P.g → K, ∀ i j, J' i j = a * ∑ l, M j l * J i l + c j * ϑ i := by
   intro K _ P hp rig hr th hth v hv th' hth' v' hv' a M hs hM m hm _ I pt ϑ ϑ' J J'

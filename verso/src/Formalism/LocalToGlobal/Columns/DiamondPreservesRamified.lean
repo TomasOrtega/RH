@@ -17,13 +17,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 open Classical in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `ext1`. Establish `h5` using `congrArg Deco.N h1`. Conclude with `h5`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `Q y`. Establish `h3 : d'.f Q = (d.dn P (d'.f P)).f Q` using `by rw [← h1]`. Simplify using `only [Deco.dia, Deco.dn] at h3 ⊢`. Break down `eq_or_ne Q P with rfl | hQ` into its components or cases. Rewrite using `[Function.update_self]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hQ]`. Rewrite `h3` using `[Function.update_of_ne hQ]`. Rewrite using `[h3, Pi.mulSingle_eq_of_ne hQ, Units.val_one, one_mul]`. Establish `h6` using `congrArg Deco.be h1`. Conclude with `h6`.
-
-Introduce `e he hfe show ((Pi.mulSingle P c : DiaG E ST) P).1 * d'.f P (q • e) = c.1 * a`. Rewrite using `[Pi.mulSingle_eq_same, h2 e he hfe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.IsDnA.dia1 {P : ST} {q : 𝓞 E} {a : 𝓞 E ⧸ P.1.asIdeal} {d d' : Deco E n ST SG}
     (h : Deco.IsDnA P q a d d') (c : (𝓞 E ⧸ P.1.asIdeal)ˣ) :
@@ -48,7 +46,7 @@ theorem Deco.IsDnA.dia1 {P : ST} {q : 𝓞 E} {a : 𝓞 E ⧸ P.1.asIdeal} {d d'
     rw [Pi.mulSingle_eq_same, h2 e he hfe]
 
 /- English proof (translation)
-Unfold `Deco.L`. Use `congr 1`. Use extensionality with `x`. Use `show (x ∈ d.N ∧ ∀ P : ST, (c P).1 * d.f P x = 0) ↔ (x ∈ d.N ∧ ∀ P : ST, d.f P x = 0)`. Simplify using `only [Units.mul_right_eq_zero]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Deco.L_dia (d : Deco E n ST SG) (c : DiaG E ST) : (d.dia c).L = d.L := by
   unfold Deco.L
@@ -58,7 +56,7 @@ theorem Deco.L_dia (d : Deco E n ST SG) (c : DiaG E ST) : (d.dia c).L = d.L := b
   simp only [Units.mul_right_eq_zero]
 
 /- English proof (translation)
-Unfold `Deco.Lsh`. Rewrite using `[Deco.L_dia]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Lsh_dia (d : Deco E n ST SG) (c : DiaG E ST) : (d.dia c).Lsh = d.Lsh := by
   unfold Deco.Lsh
@@ -78,7 +76,7 @@ section Cols
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (Ps : CharT X Pr)
 
 /- English proof (translation)
-Use `show delAtr X.emb (W.lamTrue u j) (d.1.dia c).Lsh = delAtr X.emb (W.lamTrue u j) d.1.Lsh`. Rewrite using `[Deco.Lsh_dia]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colDel_dia (u : Pr.Word) (j : ℕ) (c : DiaG X.E (Pr.vT u)) (d : (colGSD W Ch u j).D) :
     (colGSD W Ch u j).Del (c • d) = (colGSD W Ch u j).Del d := by
@@ -98,7 +96,7 @@ section AtW
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Unfold `TUmC UprodC expTc`. Rewrite using `[VVTc_of_seenBarC W hPr u w h, topsP_of_seenBarC W hPr u w h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem TUmC_of_seenBarC (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) (h : seenBarC Pr u w) :
     TUmC W Ch u w = 1 := by
@@ -107,11 +105,9 @@ theorem TUmC_of_seenBarC (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (�
   simp
 
 /- English proof (translation)
-Use extensionality with `φ`. Use `show (φ : MfV W Ch u) ∈ scaledRamifiedLattice W Ch u w ↔ (φ : MfV W Ch u) ∈ MfL W Ch u`. Unfold `scaledRamifiedLattice`. Rewrite using `[TUmC_of_seenBarC W Ch hPr u w h]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨ψ, hψ, e⟩`. Establish `e' : ψ = (φ : MfV W Ch u)` using `e`. Rewrite using `[← e']`. Conclude with `hψ.1`. Introduce `hφ`.
-
-Conclude with `⟨φ, ⟨hφ, φ.2⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem NlamG_of_seenBarC (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) (h : seenBarC Pr u w) :
     NlamG W Ch u w = MramL W Ch u := by

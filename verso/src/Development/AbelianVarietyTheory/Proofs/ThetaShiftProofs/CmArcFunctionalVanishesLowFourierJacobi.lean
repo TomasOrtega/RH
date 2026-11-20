@@ -11,9 +11,9 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcKill
 
 /- English proof (translation)
-Establish `: P * Q = 0` using `MvPolynomial.funext fun x => by`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hx : MvPolynomial.eval x Q = 0`. Rewrite using `[hx, mul_zero]`. Rewrite using `[h x hx, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_right hQ`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eval_off {σ : Type} {P Q : MvPolynomial σ ℂ} (hQ : Q ≠ 0)
     (h : ∀ x, MvPolynomial.eval x Q ≠ 0 → MvPolynomial.eval x P = 0) : P = 0 := by
@@ -27,13 +27,13 @@ theorem eq_zero_of_eval_off {σ : Type} {P Q : MvPolynomial σ ℂ} (hQ : Q ≠ 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Set `Q : MvPolynomial (ArcLt Dw) ℂ` to `∏ τ : E →+* ℂ, (Matrix.of fun i k : Fin (Dw.mult τ) => (MvPolynomial.X (⟨τ, (i, k)⟩ : ArcLt Dw) : MvPolynomial (ArcLt Dw) ℂ)).det`. Establish `hQe : ∀ x : ArcLt Dw → ℂ, MvPolynomial.eval x Q ≠ 0 ↔ InvBl x` using `fun x => by`. Rewrite using `[map_prod, Finset.prod_ne_zero_iff]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Establish `: (MvPolynomial.eval x).mapMatrix (Matrix.of fun i k : Fin (Dw.mult τ) => (MvPolynomial.X (⟨τ, (i, k)⟩ : ArcLt Dw) : MvPolynomial (ArcLt Dw) ℂ)) = Matrix.of fun i k : Fin (Dw.mult τ) => x ⟨τ, (i, k)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i k : 2`. Simplify using the standard rewrite rules. Rewrite using `[RingHom.map_det, this]`. Simplify using the standard rewrite rules. Establish `hone : InvBl (Dw` using `Dw) fun v => (1 : Matrix (Fin (Dw.mult v.1)) (Fin (Dw.mult v.1)) ℂ) v.2.1 v.2.2 := fun τ => (Matrix.det_one (n := Fin (Dw.mult τ)) (R := ℂ)).trans_ne one_ne_zero`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : Q ≠ 0` using `fun h0 => (hQe _).2 hone (by rw [h0, map_zero])`. Establish `hP : ∑ mo ∈ S, MvPolynomial.monomial mo (f mo) = 0` using `eq_zero_of_eval_off hQ fun x hx => by`. Rewrite using `[map_sum, ← h x ((hQe x).1 hx)]`. Conclude with `Finset.sum_congr rfl fun mo _ => MvPolynomial.eval_monomial`. Introduce `mo hmo`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (MvPolynomial.coeff mo) hP` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_sum]`. Simplify `this` using `[MvPolynomial.coeff_monomial, hmo]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_invBl (S : Finset (ArcLt Dw →₀ ℕ)) (f : (ArcLt Dw →₀ ℕ) → ℂ)
     (h : ∀ x : ArcLt Dw → ℂ, InvBl x → ∑ mo ∈ S, f mo * ∏ v ∈ mo.support, x v ^ mo v = 0) : ∀ mo ∈ S, f mo = 0 := by
@@ -62,13 +62,13 @@ theorem coeff_eq_zero_of_invBl (S : Finset (ArcLt Dw →₀ ℕ)) (f : (ArcLt Dw
   simpa [MvPolynomial.coeff_monomial, hmo] using this
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ em r U a' n hfam hgood hunf hdom htv F hF hS`. Take `⟨⟨hover, -, hpush⟩, ⟨s⟩⟩` from `hfam`. Take `⟨k, ξ', fr, u₁, κ, hu, hiso, -, hfr, hmain⟩` from `GlobalTheory.T.arcDatum_sectionValue_coeff_eq_fourierJacobi hK.laws hK.laws2 hK.ubc hK.laws5 hK.n5 E H Dw l Xo c K₁ d em r U s.ξ s.ν₀ a' n (hK.ev E H Dw l Xo c) hgood hunf hover s.tan hpush s.rk s.ξ_ne s.beta hdom htv`. Establish `hν : ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re ≤ c₁`. Establish `h1` using `TraceFormIndependence.trace_re (U.X k) s.ν₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `s.tr`. Rewrite `h2` using `[h1, ← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : ∀ x, InvBl x → ajAt d em F x = 0` using `fun x hx => by`. Use `hmain F hF (hS k).1.1 x hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[(hS k).2 ξ' hiso _ hν _ (hfr x hx), mul_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_right (zpow_ne_zero _ hu)`. Unfold `cfOf`. Distinguish the cases in `hmo : d.μ ∈ (arcNum (evR Xo c F d.yF)).support`. Conclude with `(map_eq_zero em).1 (coeff_eq_zero_of_invBl _ (fun mo => em (((arcNum (evR Xo c F d.yF)).coeff mo).coeff d.jj)) h0 _ hmo)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.1 hmo]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cfOf_eq_zero : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (n' : ℕ) (La c₁ : ℝ) (em : K₁ →+* ℂ) (r : ℕ) (U : Unf Xo c (em.comp (algebraMap c.F K₁)) r) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Fam n' La c₁ d → GoodEmb c (em.comp (algebraMap c.F K₁)) → IsUnf U → Dom a' n → (∀ k, TransvIn (U.X k) l.M' (laU U a' n k)) → ∀ F ∈ sec Xo c a' n, (∀ k, rdU U F k ∈ (U.X k).SSgt (laU U a' n k) c₁) → cfOf d.yF d.μ d.jj F = 0 := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ em r U a' n hfam hgood hunf hdom htv F hF hS

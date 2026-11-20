@@ -4,12 +4,12 @@ import Development.WeilBound.ThetaLifts.SmallCones.LinExOf
 namespace PositivityTheory.ThKCT
 
 /- English proof (translation)
-The claim follows from `soEv_of linEx_of hLow`.
+A detailed English derivation is pending.
 -/
 theorem soEv_of' (hLow : Low) : SoEv := soEv_of linEx_of hLow
 
 /- English proof (translation)
-The claim follows from `soZeroA'_of linEx_of hX hE hU`.
+A detailed English derivation is pending.
 -/
 theorem soZeroA'_of' (hX : PositivityTheory.ThKG.MixX) (hE : ThetaExp) (hU : EvUniq) : SoZeroA' := soZeroA'_of linEx_of hX hE hU
 

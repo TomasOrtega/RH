@@ -11,15 +11,11 @@ namespace Formalism.L2.FormalSeriesBounds
 variable {C : Type} [Field C] {V : VF C} {d : ℕ} {I J : Type} [Fintype I] [Fintype J]
 
 /- English proof (translation)
-Use `⟨{ carrier := {a | V.Ge 0 a} mul_mem' := ?_ one_mem' := ?_ add_mem' := ?_ zero_mem' := ?_ neg_mem' := ?_ }, fun a => Iff.rfl⟩` and prove the remaining obligations. Introduce `a b ha hb`. Establish `ha' : ((0 : ℝ) : WithTop ℝ) ≤ V.v a` using `ha`. Establish `hb' : ((0 : ℝ) : WithTop ℝ) ≤ V.v b` using `hb`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v (a * b)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddValuation.map_mul]`. Rewrite `ha'`, `hb'`, the goal using `[WithTop.coe_zero]`. Conclude with `add_nonneg ha' hb'`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v 1`. Rewrite using `[AddValuation.map_one, WithTop.coe_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Establish `ha' : ((0 : ℝ) : WithTop ℝ) ≤ V.v a` using `ha`. Establish `hb' : ((0 : ℝ) : WithTop ℝ) ≤ V.v b` using `hb`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v (a + b)`. Conclude with `le_trans (le_min ha' hb') (V.v.map_add a b)`.
-
-Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v 0`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Introduce `a ha`. Establish `ha' : ((0 : ℝ) : WithTop ℝ) ≤ V.v a` using `ha`.
-
-Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v (-a)`. Rewrite using `[AddValuation.map_neg]`. Conclude with `ha'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_subring_iff_ge_zero : ∃ R : Subring C, ∀ a, a ∈ R ↔ V.Ge 0 a := by
   refine ⟨{ carrier := {a | V.Ge 0 a}
@@ -52,7 +48,7 @@ private theorem exists_subring_iff_ge_zero : ∃ R : Subring C, ∀ a, a ∈ R �
     exact ha'
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_subring_iff_ge_zero (V := V)`. Conclude with `(hR _).1 (prod_mem fun i hi => (hR _).2 (h i hi))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem VF.Ge.prod {ι : Type*} {s : Finset ι} {f : ι → C} (h : ∀ i ∈ s, V.Ge 0 (f i)) :
     V.Ge 0 (∏ i ∈ s, f i) := by
@@ -60,9 +56,9 @@ theorem VF.Ge.prod {ι : Type*} {s : Finset ι} {f : ι → C} (h : ∀ i ∈ s,
   exact (hR _).1 (prod_mem fun i hi => (hR _).2 (h i hi))
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_subring_iff_ge_zero (V := V)`. Establish `hM : M = (Matrix.of fun a b => (⟨M a b, (hR _).2 (h a b)⟩ : R)).map R.subtype`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[hM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hR _).1 (Subtype.mem _)`.
+A detailed English derivation is pending.
 -/
 theorem det_int (M : Matrix I I C) (h : ∀ i j, V.Ge 0 (M i j)) : V.Ge 0 M.det := by
   obtain ⟨R, hR⟩ := exists_subring_iff_ge_zero (V := V)
@@ -73,9 +69,9 @@ theorem det_int (M : Matrix I I C) (h : ∀ i j, V.Ge 0 (M i j)) : V.Ge 0 M.det 
   exact (hR _).1 (Subtype.mem _)
 
 /- English proof (translation)
-Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero h`. Establish `e : V.v a + V.v a⁻¹ = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ ha, AddValuation.map_one]`. Rewrite `e` using `[h, zero_add]`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v a⁻¹`. Rewrite using `[e, WithTop.coe_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_unit_int {a : C} (h : V.v a = 0) : V.Ge 0 a⁻¹ := by
   have ha : a ≠ 0 := by
@@ -89,11 +85,9 @@ theorem inv_unit_int {a : C} (h : V.v a = 0) : V.Ge 0 a⁻¹ := by
   rw [e, WithTop.coe_zero]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_subring_iff_ge_zero (V := V)`. Establish `hadj : ∀ i j, V.Ge 0 (M.adjugate i j)`. Establish `hM : M = (Matrix.of fun a b => (⟨M a b, (hR _).2 (h a b)⟩ : R)).map R.subtype`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Introduce `i j`. Rewrite using `[hM, ← RingHom.mapMatrix_apply, ← RingHom.map_adjugate]`. Conclude with `(hR _).1 (Subtype.mem _)`. Introduce `i j`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`.
-
-Conclude with `(hR _).1 (mul_mem ((hR _).2 (inv_unit_int hd)) ((hR _).2 (hadj i j)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_int (M : Matrix I I C) (h : ∀ i j, V.Ge 0 (M i j)) (hd : V.v M.det = 0) :
     ∀ i j, V.Ge 0 (M⁻¹ i j) := by
@@ -120,11 +114,11 @@ def remL (L : (I ⊕ J → C) → ℕ → I ⊕ J → C) (x : ℕ → I ⊕ J �
 variable {X} {L : (I ⊕ J → C) → ℕ → I ⊕ J → C}
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero`. Establish `e : Vpow 0 y = y`. Use function extensionality and compare the values at `i n`. Simplify using `[Vpow]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `hy`. Consider the case `succ s ih`. Establish `e : Vpow (s + 1) y = Vpow 1 (Vpow s y)`. Use function extensionality and compare the values at `i n`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Vpow]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | rw [show i - (s + 1) = i - 1 - s by omega]`. Rewrite using `[e]`. Conclude with `X.V_mem _ ih`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vpow_mem_Ty (s : ℕ) {y : ℕ → I ⊕ J → C} (hy : y ∈ X.Ty) : Vpow s y ∈ X.Ty := by
   induction s with
@@ -143,13 +137,13 @@ private theorem vpow_mem_Ty (s : ℕ) {y : ℕ → I ⊕ J → C} (hy : y ∈ X.
     exact X.V_mem _ ih
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => exact ⟨hx, fun j hj => absurd hj (Nat.not_lt_zero _)⟩`. Consider the case `succ s ih`. Take `⟨hmemS, hz⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ n, V.Ge 0 (remL L x s s n)` using `X.t2 _ hmemS s hz`. Establish `hL` using `hmem _ hint`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Use `show remL L x s - Vpow s (L (remL L x s s)) ∈ X.Ty`. Conclude with `sub_mem hmemS (vpow_mem_Ty s hL)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show remL L x s j - Vpow s (L (remL L x s s)) j = 0`. Use function extensionality and compare the values at `n`. Simplify using `only [Pi.sub_apply, Vpow]`. Break down `(Nat.lt_succ_iff.mp hj).lt_or_eq with hj | rfl` into its components or cases. Rewrite using `[if_pos hj, hz j hj]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (lt_irrefl _), Nat.sub_self, hzero]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem remL_spec (hmem : ∀ h, (∀ n, V.Ge 0 (h n)) → L h ∈ X.Ty) (hzero : ∀ h, L h 0 = h)
     {x : ℕ → I ⊕ J → C} (hx : x ∈ X.Ty) :
@@ -174,7 +168,7 @@ theorem remL_spec (hmem : ∀ h, (∀ n, V.Ge 0 (h n)) → L h ∈ X.Ty) (hzero 
         simp
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp [remL]`. Consider the case `succ s ih => show remL L x s - Vpow s (L (remL L x s s)) = _`. Rewrite using `[Finset.sum_range_succ, ← sub_sub, ← ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem remL_eq (x : ℕ → I ⊕ J → C) (s : ℕ) :
     remL L x s = x - ∑ s' ∈ Finset.range s, Vpow s' (L (remL L x s' s')) := by
@@ -185,11 +179,11 @@ theorem remL_eq (x : ℕ → I ⊕ J → C) (s : ℕ) :
     rw [Finset.sum_range_succ, ← sub_sub, ← ih]
 
 /- English proof (translation)
-Use `⟨fun s => remL L x s s, fun s n => X.t2 _ (remL_spec hmem hzero hx s).1 s (remL_spec hmem hzero hx s).2 n, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i n`. Establish `h0` using `(remL_spec hmem hzero hx (i + 1)).2 i (Nat.lt_succ_self i)`. Rewrite `h0` using `[remL_eq]`. Establish `h1` using `congrFun h0 n`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.zero_apply] at h1`. Rewrite `h1` using `[sub_eq_zero]`. Rewrite using `[h1]`. Simplify using `only [sumV]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Vpow]`. Rewrite using `[if_neg (by simp at hs; omega)]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem expansionL (hmem : ∀ h, (∀ n, V.Ge 0 (h n)) → L h ∈ X.Ty) (hzero : ∀ h, L h 0 = h)
     {x : ℕ → I ⊕ J → C} (hx : x ∈ X.Ty) :
@@ -215,24 +209,24 @@ namespace Sys
 variable {X : Cart V d I J} (S : Sys X)
 
 /- English proof (translation)
-The claim follows from `(S.curve c).1`.
+A detailed English derivation is pending.
 -/
 theorem mem (c : I) : S.cur c ∈ X.Ty := (S.curve c).1
 
 /- English proof (translation)
-The claim follows from `(S.curve c).2.2`.
+A detailed English derivation is pending.
 -/
 theorem pure (c : I) : ∀ (i : ℕ) n, X.ty n ≠ X.ty (Sum.inl c) + i → S.cur c i n = 0 := (S.curve c).2.2
 
 /- English proof (translation)
-Rewrite using `[(S.curve c).2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cur_zero_inl (c k : I) : S.cur c 0 (Sum.inl k) = S.tan c k := by
   rw [(S.curve c).2.1]
   rfl
 
 /- English proof (translation)
-Rewrite using `[(S.curve c).2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem be_zero (c : I) (κ : J) : S.cur c 0 (Sum.inr κ) = 0 := by
   rw [(S.curve c).2.1]
@@ -241,7 +235,7 @@ theorem be_zero (c : I) (κ : J) : S.cur c 0 (Sum.inr κ) = 0 := by
 def U : Matrix I I C := Matrix.of S.tan
 
 /- English proof (translation)
-Use `X.t2 _ (S.mem c) 0 (fun i hi => absurd hi (Nat.not_lt_zero _)) (Sum.inl k)` as an intermediate fact. Rewrite `this` using `[S.cur_zero_inl]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem U_int (c k : I) : V.Ge 0 (S.U c k) := by
   have := X.t2 _ (S.mem c) 0 (fun i hi => absurd hi (Nat.not_lt_zero _)) (Sum.inl k)
@@ -249,7 +243,7 @@ theorem U_int (c k : I) : V.Ge 0 (S.U c k) := by
   exact this
 
 /- English proof (translation)
-Introduce `h0`. Use `S.unimod` as an intermediate fact. Express the relevant statement in the definitionally equal form `V.v S.U.det = 0 at this`. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem U_det_ne : S.U.det ≠ 0 := by
   intro h0
@@ -261,7 +255,7 @@ theorem U_det_ne : S.U.det ≠ 0 := by
 def co (h : I ⊕ J → C) (b : I) : C := ∑ k, h (Sum.inl k) * S.U⁻¹ k b
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_subring_iff_ge_zero (V := V)`. Establish `hinv` using `inv_int S.U (fun i j => S.U_int i j) S.unimod`. Use `show V.Ge 0 (∑ k, h (Sum.inl k) * S.U⁻¹ k b)`. Conclude with `(hR _).1 (sum_mem fun k _ => mul_mem ((hR _).2 (hh _)) ((hR _).2 (hinv k b)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem co_int {h : I ⊕ J → C} (hh : ∀ n, V.Ge 0 (h n)) (b : I) : V.Ge 0 (S.co h b) := by
   obtain ⟨R, hR⟩ := exists_subring_iff_ge_zero (V := V)
@@ -270,9 +264,9 @@ theorem co_int {h : I ⊕ J → C} (hh : ∀ n, V.Ge 0 (h n)) (b : I) : V.Ge 0 (
   exact (hR _).1 (sum_mem fun k _ => mul_mem ((hR _).2 (hh _)) ((hR _).2 (hinv k b)))
 
 /- English proof (translation)
-Establish `hU : S.U⁻¹ * S.U = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr S.U_det_ne)`. Establish `e : ∀ j, ∑ b, S.U⁻¹ j b * S.U b k = (1 : Matrix I I C) j k` using `fun j => by`. Rewrite using `[← hU, Matrix.mul_apply]`. Simplify using `only [co, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, ← Finset.mul_sum, e, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem co_spec (h : I ⊕ J → C) (k : I) : ∑ b, S.co h b * S.U b k = h (Sum.inl k) := by
   have hU : S.U⁻¹ * S.U = 1 := Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr S.U_det_ne)
@@ -287,12 +281,12 @@ def lift (h : I ⊕ J → C) : ℕ → I ⊕ J → C :=
   (∑ b, teich V.l (S.co h b) (S.cur b)) + const0 (Sum.elim (0 : I → C) (fun j => h (Sum.inr j)))
 
 /- English proof (translation)
-The claim follows from `add_mem (sum_mem fun b _ => X.teich_mem _ (S.co_int hh b) _ (S.mem b)) (X.t3 _ fun j => hh _)`.
+A detailed English derivation is pending.
 -/
 theorem lift_mem {h : I ⊕ J → C} (hh : ∀ n, V.Ge 0 (h n)) : S.lift h ∈ X.Ty := add_mem (sum_mem fun b _ => X.teich_mem _ (S.co_int hh b) _ (S.mem b)) (X.t3 _ fun j => hh _)
 
 /- English proof (translation)
-Simplify using `only [lift, Pi.add_apply, Finset.sum_apply, teich]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_apply (h : I ⊕ J → C) (i : ℕ) (n : I ⊕ J) : S.lift h i n =
     (∑ b, S.co h b ^ (V.l ^ i) * S.cur b i n) +
@@ -300,9 +294,9 @@ theorem lift_apply (h : I ⊕ J → C) (i : ℕ) (n : I ⊕ J) : S.lift h i n =
   simp only [lift, Pi.add_apply, Finset.sum_apply, teich]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Rewrite using `[lift_apply]`. Break down `n with k | κ` into its components or cases. Simplify using `only [pow_zero, pow_one, cur_zero_inl, const0, if_true, Sum.elim_inl, Pi.zero_apply, add_zero]`. Conclude with `S.co_spec h k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_zero, pow_one, be_zero, mul_zero, Finset.sum_const_zero, const0, if_true, Sum.elim_inr, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem lift_zero (h : I ⊕ J → C) : S.lift h 0 = h := by
   funext n
@@ -316,11 +310,11 @@ theorem lift_zero (h : I ⊕ J → C) : S.lift h 0 = h := by
 end Sys
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `x hx n`. Rewrite using `[pow_zero, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.t2 x hx 0 (fun j hj => absurd hj (Nat.not_lt_zero _)) n`. Consider the case `succ i ih`. Introduce `x hx n`. Establish `h` using `ih (Fs V.l x) (X.F_mem x hx) n`. Simplify using `only [Fs] at h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, mul_assoc]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem ge_zero_l_pow_mul_of_mem_Ty (X : Cart V d I J) :
     ∀ (i : ℕ) (x : ℕ → I ⊕ J → C), x ∈ X.Ty → ∀ n, V.Ge 0 ((V.l : C) ^ i * x i n) := by
@@ -338,11 +332,11 @@ private theorem ge_zero_l_pow_mul_of_mem_Ty (X : Cart V d I J) :
     exact h
 
 /- English proof (translation)
-Unfold `VF.Ge at *`. Rewrite `h` using `[AddValuation.map_mul, AddValuation.map_pow, V.v_l]`. Establish `hi : (i • (1 : WithTop ℝ)) = ((i : ℝ) : WithTop ℝ)`. Rewrite using `[← WithTop.coe_one, ← WithTop.coe_nsmul, nsmul_eq_mul, mul_one]`. Rewrite `h` using `[hi]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hy : V.v y = ⊤`. Rewrite using `[hy]`. Conclude with `le_top`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.mp hy`. Rewrite `h`, the goal using `[← ht]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← WithTop.coe_add]`. Establish `h'` using `WithTop.coe_le_coe.mp h`. Conclude with `WithTop.coe_le_coe.mpr (by linarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ge_neg_of_ge_zero_l_pow_mul (i : ℕ) (y : C) (h : V.Ge 0 ((V.l : C) ^ i * y)) : V.Ge (-(i : ℝ)) y := by
   unfold VF.Ge at *
@@ -360,22 +354,22 @@ private theorem ge_neg_of_ge_zero_l_pow_mul (i : ℕ) (y : C) (h : V.Ge 0 ((V.l 
     exact WithTop.coe_le_coe.mpr (by linarith)
 
 /- English proof (translation)
-Introduce `S c i n`. Conclude with `ge_neg_of_ge_zero_l_pow_mul i _ (ge_zero_l_pow_mul_of_mem_Ty X i _ (S.mem c) n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_inclusion_forms_injective (X : Cart V d I J) : LatticeInclusionFormsInjective X := by
   intro S c i n
   exact ge_neg_of_ge_zero_l_pow_mul i _ (ge_zero_l_pow_mul_of_mem_Ty X i _ (S.mem c) n)
 
 /- English proof (translation)
-The claim follows from `le_trans (WithTop.coe_le_coe.mpr hw) h`.
+A detailed English derivation is pending.
 -/
 private theorem ge_mono' {w w' : ℝ} {a : C} (h : V.Ge w a) (hw : w' ≤ w) : V.Ge w' a :=
   le_trans (WithTop.coe_le_coe.mpr hw) h
 
 /- English proof (translation)
-Introduce `a u x hx i hi`. Break down `Nat.lt_or_ge i 2 with h2 | h2` into its components or cases. Take `rfl : i = 1` from `by omega`. Use `⟨fun k => ?_, fun κ => ?_⟩` and prove the remaining obligations. Rewrite using `[hx.2 k] show ((_ : ℝ) : WithTop ℝ) ≤ V.v 0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Conclude with `ge_mono' (hx.bound_one _) (by norm_num)`. Take `⟨j, rfl⟩ : ∃ j, i = j + 2` from `⟨i - 2, by omega⟩`. Use `⟨fun k => ge_mono' (hx.bound j _) (by push_cast; linarith), fun κ => ge_mono' (hx.bound j _) (by push_cast; linarith [le_max_right (1 : ℝ) ((j : ℝ) + 2 - 1)])⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq16 (X : Cart V d I J) : Eq16 X := by
   intro a u x hx i hi
@@ -392,9 +386,9 @@ theorem eq16 (X : Cart V d I J) : Eq16 X := by
       fun κ => ge_mono' (hx.bound j _) (by push_cast; linarith [le_max_right (1 : ℝ) ((j : ℝ) + 2 - 1)])⟩
 
 /- English proof (translation)
-Introduce `u hu hty hdet`. Establish `hc : ∀ c, ∃ x, X.IsCurve (X.ty (Sum.inl c)) (u c) x` using `fun c => by`. Take `⟨x, hx, h0, hp⟩` from `X.t4 (X.ty (Sum.inl c)) (u c) (hu c) (fun k hk => hty c k hk)`. Conclude with `⟨x, hx, h0, hp⟩`. Use `choose cur hcur using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨u, cur, hcur, hdet⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sysExists (X : Cart V d I J) : SysExists X := by
   intro u hu hty hdet
@@ -405,33 +399,29 @@ theorem sysExists (X : Cart V d I J) : SysExists X := by
   exact ⟨⟨u, cur, hcur, hdet⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `S`. Establish `hz : V.Ge 0 (0 : C)` using `by show ((0 : ℝ) : WithTop ℝ) ≤ V.v 0`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Establish `hexp : ∀ a, ∃ h : ℕ → I ⊕ J → C, (∀ s n, V.Ge 0 (h s n)) ∧ Fs V.l (S.cur a) = sumV (fun s => S.lift (h s))` using `fun a => Cart.expansionL (X := X) (L := S.lift) (fun h hh => S.lift_mem hh) (fun h => S.lift_zero h) (X.F_mem _ (S.mem a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose H hHint hHeq using hexp`. Use `⟨fun s a b => if X.ty (Sum.inl b) = X.ty (Sum.inl a) + 1 + s then S.co (H a s) b else 0, fun i a κ => if X.ty (Sum.inr κ) = X.ty (Sum.inl a) + 1 + i then H a i (Sum.inr κ) else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s a b beta_reduce split_ifs`. Conclude with `S.co_int (hHint a s) b`. Conclude with `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s a κ beta_reduce split_ifs`. Conclude with `hHint a s (Sum.inr κ)`. Conclude with `hz`. Introduce `s a b hb beta_reduce`. Rewrite using `[if_neg hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a i n beta_reduce`. Establish `pur : ∀ b (j : ℕ), X.ty n ≠ X.ty (Sum.inl b) + j → S.cur b j n = 0` using `fun b j h => S.pure b j n h`. Establish `hl0 : ∀ k : ℕ, ((0 : C) ^ (V.l ^ k)) = 0` using `fun k => zero_pow (pow_ne_zero _ V.l_prime.ne_zero)`. Distinguish the cases in `hn : X.ty n = X.ty (Sum.inl a) + 1 + i`. Establish `e` using `congrFun (congrFun (hHeq a) i) n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Fs, sumV] at e`. Rewrite using `[e]`. Simplify using `only [Sys.lift_apply, Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s hs => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsi : s ≤ i` using `by simp at hs; omega`. Use `split_ifs with hb`. Both sides reduce to the same expression. Establish `hc : S.cur b (i - s) n = 0` using `pur b (i - s) (by`. Introduce `h'`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `hb` to reduce the goal to its premises. Rewrite `h'` using `[Nat.cast_sub hsi, hn]`. Take the linear combination `-h')`. Rewrite using `[hc, mul_zero, mul_zero]`. Rewrite using `[Finset.sum_eq_single i]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Nat.sub_self, const0, ↓reduceIte]`. Break down `n with k | κ` into its components or cases. Both sides reduce to the same expression. Simplify using `only [Sum.elim_inr]`. Rewrite using `[if_pos hn]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s hs hsi`. Establish `hne : i - s ≠ 0` using `by simp at hs; omega`. Simplify using `only [const0, if_neg hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (Nat.lt_succ_self i)) h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : S.cur a (i + 1) n = 0` using `pur a (i + 1) (by`. Introduce `h'`. Apply `hn` to reduce the goal to its premises. Rewrite using `[h']`. Use `push_cast`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `ring)`. Rewrite using `[hL, mul_zero]`. Use `symm`. Rewrite using `[Finset.sum_eq_zero, zero_add]`. Break down `n with k | κ` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Simplify using `only [Sum.elim_inr]`. Rewrite using `[if_neg hn]`. Introduce `s hs`. Establish `hsi : s ≤ i` using `by simp at hs; omega`.
-
-Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hb`. Establish `hc : S.cur b (i - s) n = 0` using `pur b (i - s) (by`. Introduce `h'`. Apply `hn` to reduce the goal to its premises.
-
-Rewrite using `[h', hb, Nat.cast_sub hsi]`. Use the proof step `ring)`. Rewrite using `[hc, mul_zero]`. Rewrite using `[hl0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem structEqAll (X : Cart V d I J) : StructEqAll X := by
   intro S

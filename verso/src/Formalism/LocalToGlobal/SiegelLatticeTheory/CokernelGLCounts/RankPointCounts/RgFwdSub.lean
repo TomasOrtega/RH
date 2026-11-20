@@ -16,35 +16,31 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
 /- English proof (translation)
-Use `set c : E := algebraMap F E (g.q : F) with hc`. Establish `hcO : c ∈ M.L.O` using `q_mem_O g`. Establish `hcL : ∀ (Λ : Submodule M.L.O V) {x : V}, x ∈ Λ → c • x ∈ Λ`. Introduce `Λ x hx`. Conclude with `Λ.smul_mem (⟨c, hcO⟩ : M.L.O) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMMU : ∀ (t : Term V M r) {x : V}, x ∈ MMsharp H t → x ∈ Submodule.span E (Set.range (Sum.elim t.f t.f'))`. Introduce `t x hx`. Establish `h1 : x ∈ Submodule.span E (Set.range (H.MMfam t))` using `hx.1`. Use `Submodule.span_le.mpr ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hle : H.Xp t.f ⊔ H.Xp t.f' ≤ Submodule.span E (Set.range (Sum.elim t.f t.f'))` using `sup_le (Submodule.span_mono (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨Sum.inl j, rfl⟩))`. Use the proof step `(Submodule.span_mono (by`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Sum.inr j, rfl⟩))`. Conclude with `hle (MMfam_mem_sup H t i)`. Introduce and unpack `_ ⟨p, ⟨u, u', u'', hu, hu', hd, rfl⟩, rfl⟩`. Take `⟨w, hw⟩` from `D.hsurj₁ u`. Take `⟨w'', hw''⟩` from `D.hsurj₁ u''`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w', hw'c⟩ : ∃ w' : ↥(H.W0 t₁.f t₁.f'), (w' : V) = (w : V) - c • (w'' : V)` from `⟨w - c • w'', rfl⟩`. Establish `hw'eq : w' = w - c • w''` using `Subtype.ext (by rw [hw'c]; rfl)`. Establish `hψw' : (ψ w' : V) = (ψ w : V) - c • (ψ w'' : V)`. Rewrite using `[hw'eq, map_sub, map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (u : V) + w ∈ H.perp (H.X t₁.f)` using `Submodule.add_mem _ hu (mem_perp_isotropicSpan_of_mem_framePerp H w.2)`. Establish `hx' : (u' : V) + w' ∈ H.perp (H.X t₁.f')` using `Submodule.add_mem _ hu' (mem_perp_isotropicSpan_of_mem_framePerp' H w'.2)`. Establish `hxL' : (u' : V) + w' ∈ t₁.abelian₂`. Establish `e : (u' : V) + w' = ((u : V) + w) - c • ((u'' : V) + w'')`. Rewrite using `[hw'c, smul_add, ← hd]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ hw (hcL _ hw'')`. Establish `hdiffL : ((u : V) + w) - ((u' : V) + w') ∈ H.smulLat c t₁.abelian₂`. Establish `e : ((u : V) + w) - ((u' : V) + w') = c • ((u'' : V) + w'')`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw'c, smul_add, ← hd]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, hw'', rfl⟩`. Establish `hmem : (φ' (H.mkW t₁.f' ⟨_, hx'⟩), φ (H.mkW t₁.f ⟨_, hx⟩)) ∈ H.iotaGraph g ⟨Λ₂, t₂.f, t₂.f', t₂.T, t₂.T'⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hI]`. Conclude with `⟨_, ⟨⟨_, hx'⟩, ⟨_, hx⟩, hxL', hw, hdiffL, rfl⟩, rfl⟩`. Take `⟨y', y, hy'L, hyL, hyd, hyeq⟩` from `hmem`. Rewrite `hyeq` using `[Prod.mk.injEq]`. Take `⟨hyeq', hyeq2⟩` from `hyeq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hzL, hz⟩` from `exists_of_mem_smulLat H hyd`. Take `⟨a, ha, b, hb, hab⟩` from `dec_of D.hU₂ (y : V)`. Take `⟨a', ha', b', hb', hab'⟩` from `dec_of D.hU₂ (y' : V)`. Take `⟨a'', ha'', b'', hb'', hab''⟩` from `dec_of D.hU₂ z`. Establish `hx₂ : a + b ∈ H.perp (H.X t₂.f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hab]`. Conclude with `y.2`. Establish `hx₂' : a' + b' ∈ H.perp (H.X t₂.f')`. Rewrite using `[hab']`. Conclude with `y'.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hap : a ∈ H.perp (H.X t₂.f)` using `perp_left H (mem_perp_isotropicSpan_of_mem_framePerp H hb) hx₂`. Establish `hap' : a' ∈ H.perp (H.X t₂.f')` using `perp_left H (mem_perp_isotropicSpan_of_mem_framePerp' H hb') hx₂'`. Establish `h1 : φ (H.mkW t₁.f ⟨_, hx⟩) = H.mkW t₂.f ⟨a + b, hx₂⟩` using `hyeq2.trans (congrArg _ (Subtype.ext hab.symm))`. Establish `h1' : φ' (H.mkW t₁.f' ⟨_, hx'⟩) = H.mkW t₂.f' ⟨a' + b', hx₂'⟩` using `hyeq'.trans (congrArg _ (Subtype.ext hab'.symm))`. Take `⟨hbψ, hφ⟩` from `RGHyp.trF H D (hMMU t₁ u.2) hu w hx ha hb hap hx₂ h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hb'ψ, hφ'⟩` from `RGHyp.trF' H D (hMMU t₁ u'.2) hu' w' hx' ha' hb' hap' hx₂' h1'`. Take `⟨hda, hdb⟩` from `dec_diff D.hU₂ c ha ha' ha'' hb hb' hb'' hab hab' hab'' hz`. Establish `hb''ψ : b'' = ψ w''`. Apply `smul_cancel_q g` to reduce the goal to its premises. Rewrite using `[← hdb, hbψ, hb'ψ, hψw']`.
-
-Normalize the expressions using the abelian group laws. Establish `haM : a ∈ MMsharp H t₂` using `part_MMsharp H t₂ Λ₂ D.hsd₂ D.hMM₂ ha hb (by rw [hab]; exact hyL)`. Establish `ha'M : a' ∈ MMsharp H t₂` using `part_MMsharp H t₂ Λ₂ D.hsd₂ D.hMM₂ ha' hb' (by rw [hab']; exact hy'L)`. Establish `ha''M : a'' ∈ MMsharp H t₂` using `part_MMsharp H t₂ Λ₂ D.hsd₂ D.hMM₂ ha'' hb'' (by rw [hab'']; exact hzL)`. Use `⟨⟨a, haM⟩, ⟨a', ha'M⟩, ⟨a'', ha''M⟩, hap, hap', hda, ?_⟩` and prove the remaining obligations.
-
-Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext hφ hφ'))` and prove the remaining obligations. Conclude with `(D.hθ u ⟨a, haM⟩).mpr ⟨w, hw, by rw [← hbψ, hab]; exact hyL⟩`. Conclude with `(D.hθ u'' ⟨a'', ha''M⟩).mpr ⟨w'', hw'', by rw [← hb''ψ, hab'']; exact hzL⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rg_fwd_sub (g : SplitG M.L) {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V}
     {ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f')} {θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂}

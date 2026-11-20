@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.LevDer
 
 /- English proof (translation)
-Rewrite `ha` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha`. Establish `hp : (p : Ω) ^ m ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Use `int_congr c.2 ?_` and prove the remaining obligations. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, SubringClass.coe_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -27,7 +27,7 @@ theorem int_div_of_mk {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (
   field_simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `push_cast`. Both sides reduce to the same expression.
+Substitute using the available equality. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem natCast_eq_pow {Ω : Type} [Field Ω] (N p k : ℕ) (h : N = p ^ (k + 1)) :
     (N : Ω) = (p : Ω) ^ (k + 1) := by
@@ -36,37 +36,37 @@ theorem natCast_eq_pow {Ω : Type} [Field Ω] (N p k : ℕ) (h : N = p ^ (k + 1)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hC T m hm`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo hC`. Take `⟨ι, hι⟩` from `Basic.exists_isEmb T m`. Take `⟨hinj, hrange⟩` from `GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hC T m hm ι hι`. Establish `hιA : ∀ z, ι z ∈ integralClosure (O0 p) Ω` using `fun z => Lev_int T m _ (hrange ▸ AlgHom.mem_range_self ι z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ιA : On p m →ₐ[O0 p] integralClosure (O0 p) Ω` to `ι.codRestrict _ hιA`. Establish `hιAv : ∀ z, ((ιA z : integralClosure (O0 p) Ω) : Ω) = ι z` using `fun z => rfl`. Set `I : Ideal (integralClosure (O0 p) Ω)` to `Ideal.span {((p : integralClosure (O0 p) Ω)) ^ m}`. Use `letI : Algebra (On p m) (integralClosure (O0 p) Ω ⧸ I) := ((Ideal.Quotient.mk I).comp ιA.toRingHom).toAlgebra`. Establish `halg : ∀ z, algebraMap (On p m) (integralClosure (O0 p) Ω ⧸ I) z = Ideal.Quotient.mk I (ιA z)` using `fun z => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower (O0 p) (On p m) (integralClosure (O0 p) Ω ⧸ I) := IsScalarTower.of_algebraMap_eq fun c => by`. Rewrite using `[halg, AlgHom.commutes, Ideal.Quotient.mk_algebraMap]`. Set `g : Ω → On p m` to `Function.invFun ι`. Establish `hg : ∀ x ∈ Lev T m, ι (g x) = x` using `fun x hx => Function.invFun_eq ((AlgHom.mem_range ι).1 (hrange.symm ▸ hx))`. Establish `hgm : ∀ x ∈ Lev T m, ∀ z, ι z = x → g x = z` using `fun x hx z hz => hinj ((hg x hx).trans hz.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `lift : (integralClosure (O0 p) Ω ⧸ I) → integralClosure (O0 p) Ω` to `Function.surjInv Ideal.Quotient.mk_surjective`. Establish `hlift : ∀ s, Ideal.Quotient.mk I (lift s) = s` using `Function.surjInv_eq _`. Establish `hdiv` using `fun a ha => GlobalTheory.LevDer.int_div_of_mk (p := p) (Ω := Ω) m a ha`. Establish `hF : ∀ D : Derivation (O0 p) (On p m) (integralClosure (O0 p) Ω ⧸ I), IsDer (Lev T m) (fun x => ((lift (D (g x)) : integralClosure (O0 p) Ω) : Ω) / (p : Ω) ^ m)`. Introduce `D`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun x hx y hy => ?_, fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `e : g (x + y) = g x + g y` using `hgm _ (add_mem hx hy) _ (by rw [map_add, hg x hx, hg y hy])`. Use `int_congr (hdiv (lift (D (g (x + y))) - lift (D (g x)) - lift (D (g y))) ?_) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, hlift, hlift, hlift, e, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e : g (x * y) = g x * g y` using `hgm _ (mul_mem hx hy) _ (by rw [map_mul, hg x hx, hg y hy])`. Use `int_congr (hdiv (lift (D (g (x * y))) - ιA (g x) * lift (D (g y)) - ιA (g y) * lift (D (g x))) ?_) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_mul, map_mul, hlift, hlift, hlift, e, Derivation.leibniz, Algebra.smul_def, Algebra.smul_def, halg, halg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Rewrite using `[hιAv, hιAv, hg x hx, hg y hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : g (algebraMap (O0 p) Ω c) = algebraMap (O0 p) (On p m) c` using `hgm _ (Subalgebra.algebraMap_mem _ c) _ (ι.commutes c)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hdiv _ ?_` and prove the remaining obligations. Rewrite using `[hlift, e, Derivation.map_algebraMap]`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `hpd` using `GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T 1 1 le_rfl (Nat.totient_pos.2 (ppow_pos (p := p) 1))`. Set `u : integralClosure (O0 p) Ω` to `⟨(p : Ω) / (T.ζ 1 - 1) ^ 1, hpd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1 : T.ζ 1 - 1 ≠ 0` using `sub_ne_zero.2 ((T.prim 1).ne_one (by simpa using (Fact.out : p.Prime).one_lt))`. Establish `hpow : T.ζ (k + 1) ^ p ^ k = T.ζ 1`. Use `zeta_pow T 1 k` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Establish `hxn : Ideal.Quotient.mk (towerIdeal p (k + 1)) (C X) = xn p (k + 1)` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyn : Ideal.Quotient.mk (towerIdeal p (k + 1)) X = yn p (k + 1)` using `rfl`. Establish `hd` using `congrArg ι (DlogUniq.derivative_cyclotomic_mul p k)`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast, map_one, hι.1, hpow] at hd`. Establish `hxz : algebraMap (On p (k + 1)) (integralClosure (O0 p) Ω ⧸ I) (aeval (xn p (k + 1)) (derivative (cyclotomic (p ^ (k + 1)) (O0 p)))) * algebraMap (On p (k + 1)) _ ((p : On p (k + 1)) * xn p (k + 1)) = 0`. Rewrite using `[← map_mul, halg, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨ιA (xn p (k + 1)) ^ (p ^ (k + 1) - 1) * u * ιA (xn p (k + 1)), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hp' : (p : Ω) = (T.ζ 1 - 1) * ((p : Ω) / (T.ζ 1 - 1) ^ 1)` using `by field_simp`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, SubringClass.coe_natCast, hιAv, map_mul, map_natCast, hι.1, u]`. Take the linear combination `(-((p : Ω) / (T.ζ 1 - 1) ^ 1 * T.ζ (k + 1))) * hd - (ι (aeval (xn p (k + 1)) (derivative (cyclotomic (p ^ (k + 1)) (O0 p)))) * T.ζ (k + 1)) * hp'`. Take `⟨Dz, hzx, hzy⟩` from `DlogUniq.exists_derivation (cyclotomic (p ^ (k + 1)) (O0 p)) (p ^ (k + 1)) (qO p) (towerIdeal p (k + 1)) rfl (integralClosure (O0 p) Ω ⧸ I) (algebraMap (On p (k + 1)) _ ((p : On p (k + 1)) * xn p (k + 1))) 0 hxz (mul_zero _)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyq : ∀ N : ℕ, N = p ^ (k + 1) → (N : integralClosure (O0 p) Ω ⧸ I) * algebraMap (On p (k + 1)) _ ((p : On p (k + 1)) * yn p (k + 1)) = 0`. Introduce `N hN`. Rewrite using `[← map_natCast (algebraMap (On p (k + 1)) (integralClosure (O0 p) Ω ⧸ I)) N, ← map_mul, halg, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Use `⟨ιA ((p : On p (k + 1)) * yn p (k + 1)), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, SubringClass.coe_natCast, hιAv, map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[natCast_eq_pow (Ω := Ω) N p k hN]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨N, hN⟩ : ∃ N, N = p ^ (k + 1)` from `⟨_, rfl⟩`. Take `⟨Dq, hqx, hqy⟩` from `DlogUniq.exists_derivation (cyclotomic (p ^ (k + 1)) (O0 p)) N (qO p) (towerIdeal p (k + 1)) (by rw [hN]; rfl) (integralClosure (O0 p) Ω ⧸ I) 0 (algebraMap (On p (k + 1)) _ ((p : On p (k + 1)) * yn p (k + 1))) (mul_zero _) (hyq N hN)`. Rewrite `hzx`, `hqx` using `[hxn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hzy`, `hqy` using `[hyn]`. Establish `hgz : g (T.ζ (k + 1)) = xn p (k + 1)` using `hgm _ (zeta_mem_Lev T _) _ hι.1`. Establish `hgq : g (T.qq (k + 1)) = yn p (k + 1)` using `hgm _ (qq_mem_Lev T _) _ hι.2`. Use `⟨fun x => ((lift (Dz (g x)) : integralClosure (O0 p) Ω) : Ω) / (p : Ω) ^ (k + 1), fun x => ((lift (Dq (g x)) : integralClosure (O0 p) Ω) : Ω) / (p : Ω) ^ (k + 1), hF Dz, hF Dq, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `int_congr (hdiv (lift (Dz (xn p (k + 1))) - ιA ((p : On p (k + 1)) * xn p (k + 1))) ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, hlift, hzx, halg, sub_self]`. Simplify using `only [hgz, MulMemClass.coe_mul, AddSubgroupClass.coe_sub, SubringClass.coe_natCast, hιAv, map_mul, map_natCast, hι.1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `int_congr (hdiv (lift (Dz (yn p (k + 1)))) (by rw [hlift, hzy])) (by simp only [hgq])`. Conclude with `int_congr (hdiv (lift (Dq (xn p (k + 1)))) (by rw [hlift, hqx])) (by simp only [hgz])`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `int_congr (hdiv (lift (Dq (yn p (k + 1))) - ιA ((p : On p (k + 1)) * yn p (k + 1))) ?_) ?_` and prove the remaining obligations. Rewrite using `[map_sub, hlift, hqy, halg, sub_self]`. Simplify using `only [hgq, MulMemClass.coe_mul, AddSubgroupClass.coe_sub, SubringClass.coe_natCast, hιAv, map_mul, map_natCast, hι.2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_levDer : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : Tower p Ω) (m : ℕ), 1 ≤ m →
     ∃ dz dq : Ω → Ω, IsDer (Lev T m) dz ∧ IsDer (Lev T m) dq ∧ Vals T m dz dq := by

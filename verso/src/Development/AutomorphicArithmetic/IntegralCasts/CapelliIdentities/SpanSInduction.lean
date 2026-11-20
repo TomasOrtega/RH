@@ -11,9 +11,9 @@ noncomputable def UpperTheory.Reformulated.B.Qe24.spanS.{u_1, u_2} :
       Submodule.span (↥S) (Set.range x)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ S n x p h0 hadd hsmul hx v hv`. Unfold `UpperTheory.Reformulated.B.Qe24.spanS at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `hx i`. Consider the case `zero => exact h0`. Consider the case `add a b _ _ ha hb => exact hadd a b ha hb`. Consider the case `smul c a _ ha => exact hsmul c.1 c.2 a ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe24.spanS_induction.{u_1, u_2} :
     ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [StarRing K] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module K V]

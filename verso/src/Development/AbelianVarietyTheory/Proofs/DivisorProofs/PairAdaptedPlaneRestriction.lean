@@ -27,7 +27,7 @@ namespace GlobalTheory.StraightEv0
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Establish `h : Sum.elim (v + w).1 (v + w).2 = Sum.elim v.1 v.2 + Sum.elim w.1 w.2`. Apply the tactic sequence `funext i; cases i <;> rfl`. Simplify using `only [GlobalTheory.AdelicSvN.act, h, Matrix.mulVec_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_add {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F)
     (v w : (κ → R) × (κ → R)) : GlobalTheory.AdelicSvN.act g (v + w) = GlobalTheory.AdelicSvN.act g v + GlobalTheory.AdelicSvN.act g w := by
@@ -37,7 +37,7 @@ theorem act_add {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (
   rfl
 
 /- English proof (translation)
-Establish `h : Sum.elim (t • v).1 (t • v).2 = t • Sum.elim v.1 v.2`. Apply the tactic sequence `funext i; cases i <;> rfl`. Simplify using `only [GlobalTheory.AdelicSvN.act, h, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_smul {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F)
     (t : R) (v : (κ → R) × (κ → R)) : GlobalTheory.AdelicSvN.act g (t • v) = t • GlobalTheory.AdelicSvN.act g v := by
@@ -47,7 +47,7 @@ theorem act_smul {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] 
   rfl
 
 /- English proof (translation)
-Establish `h` using `act_smul g (0 : R) (0 : (κ → R) × (κ → R))`. Rewrite `h` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem act_zero {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) :
     GlobalTheory.AdelicSvN.act g (0 : (κ → R) × (κ → R)) = 0 := by
@@ -55,9 +55,9 @@ theorem act_zero {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] 
   rwa [zero_smul, zero_smul] at h
 
 /- English proof (translation)
-Establish `h : Sum.elim (fun i => algebraMap F R (a i)) (fun i => algebraMap F R (b i)) = (algebraMap F R) ∘ Sum.elim a b`. Apply the tactic sequence `funext i; cases i <;> rfl`. Establish `key : ∀ k, (g.map (algebraMap F R) *ᵥ ((algebraMap F R) ∘ Sum.elim a b)) k = algebraMap F R ((g *ᵥ Sum.elim a b) k)` using `fun k => (RingHom.map_mulVec (algebraMap F R) g _ k).symm`. Use extensionality with `i`. Simplify using `only [GlobalTheory.AdelicSvN.act, Function.comp_apply, h, key]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AdelicSvN.act, Function.comp_apply, h, key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_hat {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F)
     (a b : κ → F) :
@@ -76,14 +76,14 @@ theorem act_hat {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (
 variable {E : Type} [Field E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `incM`. Conclude with `Matrix.map_mul`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem incM_mul [NumberField F] {a b c : ℕ} (x : Matrix (Fin a) (Fin b) E) (y : Matrix (Fin b) (Fin c) E) :
     incM F (x * y) = incM F x * incM F y := by
   unfold incM; exact Matrix.map_mul
 
 /- English proof (translation)
-Unfold `incM`. Conclude with `Matrix.transpose_map`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem incM_transpose [NumberField F] {a b : ℕ} (x : Matrix (Fin a) (Fin b) E) : incM F xᵀ = (incM F x)ᵀ := by
   unfold incM; exact Matrix.transpose_map
@@ -92,20 +92,20 @@ end GlobalTheory.StraightEv0
 
 namespace GlobalTheory.StraightEv0
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.span_base_change_of_annihilator`.
+A detailed English derivation is pending.
 -/
 theorem T1 : ∀ (F R : Type) [Field F] [CommRing R] [Algebra F R] (κ : Type) [Fintype κ] (A : Set (κ → F)) (x : κ → R),
     (∀ y : κ → F, (∀ a ∈ A, a ⬝ᵥ y = 0) → x ⬝ᵥ (fun i => algebraMap F R (y i)) = 0) →
     x ∈ Submodule.span R ((fun a : κ → F => fun i => algebraMap F R (a i)) '' A) := GlobalTheory.T.span_base_change_of_annihilator
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.symplectic_generator_preserves_form`.
+A detailed English derivation is pending.
 -/
 theorem T2 : ∀ (F : Type) [Field F] (κ : Type) [Fintype κ] [DecidableEq κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F),
     g ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ) →
     (∀ v w : κ ⊕ κ → F, ((g *ᵥ v) ∘ Sum.inl) ⬝ᵥ ((g *ᵥ w) ∘ Sum.inr) - ((g *ᵥ w) ∘ Sum.inl) ⬝ᵥ ((g *ᵥ v) ∘ Sum.inr) =
       (v ∘ Sum.inl) ⬝ᵥ (w ∘ Sum.inr) - (w ∘ Sum.inl) ⬝ᵥ (v ∘ Sum.inr)) ∧ Function.Surjective fun v : κ ⊕ κ → F => g *ᵥ v := GlobalTheory.T.symplectic_generator_preserves_form
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mixed_lagrangian_orthogonal_descent`.
+A detailed English derivation is pending.
 -/
 theorem T3 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -121,47 +121,43 @@ theorem T3 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
         ∃ u ∈ (iso0 n H' : Set (Matrix (Fin n) (Fin d) (AE F E))), w = M.co.e u := GlobalTheory.T.mixed_lagrangian_orthogonal_descent
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e₀ he`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hψne : ∀ a, B.ψ a ≠ 0` using `fun a h => by`. Establish `h'` using `AddChar.map_add_eq_mul B.ψ a (-a)`. Rewrite `h'` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h'`. Take `⟨L, hiso, hrk, hL⟩` from `GlobalTheory.T.skew_adapted_pair_restriction_theta F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁`. Take `⟨g, hg, hgL⟩` from `GlobalTheory.T.exists_symplecticBlockGenerators_lagrangian_normal_form F (Fin n × Fin d) L hiso hrk`. Take `⟨S, hS, hSs, hSa, hSi⟩` from `GlobalTheory.AdelicSvN.realised_of_mem_closure B.ψ hψ hg`. Take `⟨hω, hsurj⟩` from `T2 F (Fin n × Fin d) g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `V : Matrix (Fin n) (Fin d₁) (AE F E) → Matrix (Fin n) (Fin d) (AE F E)` to `fun z => incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ`. Set `Arat : Set (Fin n × Fin d → F)` to `{a | ∃ w : (Fin n × Fin d → F) × (Fin n × Fin d → F), w.1 = a ∧ ∃ z : Matrix (Fin n) (Fin d₁) E, GlobalTheory.AdelicSvN.act g ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i))) = M.co.e (V (incM F z))}`. Set `Y₀ : Submodule F (Fin n × Fin d → F)` to `{ carrier := {y | ∀ a ∈ Arat, a ⬝ᵥ y = 0} add_mem' := fun {y y'} hy hy' a ha => by rw [dotProduct_add, hy a ha, hy' a ha, add_zero] zero_mem' := fun a _ => dotProduct_zero a smul_mem' := fun c y hy a ha => by rw [dotProduct_smul, hy a ha, smul_zero] }`. Establish `hVrat : ∀ z : Matrix (Fin n) (Fin d₁) E, V (incM F z) = incM F ((1 : Matrix (Fin n) (Fin n) E) * z * H'.ιᵀ)`. Introduce `z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [V, incM_mul, incM_transpose]`. Establish `hY : ∀ y ∈ Y₀, ∃ u ∈ (iso0 n H' : Set (Matrix (Fin n) (Fin d) (AE F E))), GlobalTheory.AdelicSvN.act g ((0 : Fin n × Fin d → AF F), fun i => algebraMap F (AF F) (y i)) = M.co.e u`. Introduce `y hy`. Establish `h0 : GlobalTheory.AdelicSvN.act g ((0 : Fin n × Fin d → AF F), fun i => algebraMap F (AF F) (y i)) = ((fun i => algebraMap F (AF F) (((g *ᵥ Sum.elim 0 y) ∘ Sum.inl) i)), (fun i => algebraMap F (AF F) (((g *ᵥ Sum.elim 0 y) ∘ Sum.inr) i)))`. Rewrite using `[← act_hat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Reduce the equality to equality of the corresponding arguments. Rewrite using `[h0]`. Take `⟨u, hu, z, hz, hrel⟩` from `hL 1 _ (hgL y)`. Use `T3 F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ _ ⟨u, hu, z, hz, fun φ => by rw [← hrel φ, one_smul]⟩ ?_` and prove the remaining obligations. Introduce `z'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, hpq⟩` from `hP.good.rat ((1 : Matrix (Fin n) (Fin n) E) * z' * H'.ιᵀ)`. Take `⟨v, hv⟩` from `hsurj (Sum.elim p q)`. Use `replace hv : g *ᵥ v = Sum.elim p q := hv`. Establish `hvA : v ∘ Sum.inl ∈ Arat` using `⟨(v ∘ Sum.inl, v ∘ Sum.inr), rfl, z', by`. Rewrite using `[act_hat, hVrat, hpq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_comp_inl_inr]`. Rewrite using `[hv, Sum.elim_comp_inl, Sum.elim_comp_inr]⟩`. Establish `horth : (v ∘ Sum.inl) ⬝ᵥ y = 0` using `hy _ hvA`. Establish `hω'` using `hω (Sum.elim 0 y) v`. Rewrite `hω'` using `[hv, Sum.elim_comp_inl, Sum.elim_comp_inr, Sum.elim_comp_inl, Sum.elim_comp_inr, zero_dotProduct, horth, sub_zero, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : V (incM F z') = incM F (1 : Matrix (Fin n) (Fin n) E) * incM F z' * (incM F H'.ι)ᵀ` using `rfl`. Rewrite using `[← hM, hVrat, hpq]`. Use `show (algebraMap F (AF F)) ∘ ((g *ᵥ Sum.elim 0 y) ∘ Sum.inl) ⬝ᵥ (algebraMap F (AF F)) ∘ q = (algebraMap F (AF F)) ∘ p ⬝ᵥ (algebraMap F (AF F)) ∘ ((g *ᵥ Sum.elim 0 y) ∘ Sum.inr)`. Rewrite using `[← RingHom.map_dotProduct, ← RingHom.map_dotProduct, hω']`. Establish `hδ : GlobalTheory.MixUniq.ev0 (Fin n × Fin d₁) ∘ₗ e₀ ∈ (adeleClass F).adm (Fin n × Fin d)` using `GlobalTheory.T.eigen_intertwiner_composition F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e₀ hP.good hP₁.good he _ (GlobalTheory.MixUniq.adelicCoordinatesEvalZeroForm_mem_admissible _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l', hl', hl'e⟩` from `hSa _ hδ`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F B.ψ hψ (Fin n × Fin d) l' hl' (fun y φ hφ => by`. Establish `hm : (fun x => B.ψ (x ⬝ᵥ y) * φ x) = schr B.ψ (0, y) φ` using `by funext x; simp [schr]`. Rewrite using `[hm, hl'e _ (GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ φ hφ), hl'e φ hφ, hSi _ φ hφ, GlobalTheory.AdelicSvN.act_zero_eq_sum]`. Conclude with `GlobalTheory.AdelicSvN.inv_sum B.ψ hψ L hiso _ (fun t w hw Φ hΦ => GlobalTheory.MixUniq.evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H' e₀ he.Heisenberg₂ he.inv _ (hL t w hw) Φ hΦ) Finset.univ y _ (fun j => hgL _) _ (hS φ hφ))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.T.eigen_intertwiner_transitive F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e₀ hP.good hP₁.good he`. Take `⟨y₀, hy₀⟩` from `Function.ne_iff.1 hne`. Establish `hΦ₁` using `GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ (incM F (1 : Matrix (Fin n) (Fin n) E) * M₁.co.e.symm (y₀, 0) * (incM F H'.ι)ᵀ) Φ₀ hΦ₀`. Take `⟨φ₁, hφ₁, hSφ₁⟩` from `hSs _ hΦ₁`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Apply `hy₀` to reduce the goal to its premises. Establish `h1 : (GlobalTheory.MixUniq.ev0 (Fin n × Fin d₁) ∘ₗ e₀) (S φ₁) = 0` using `by rw [← hl'e φ₁ hφ₁, hc φ₁ hφ₁, h0, zero_mul]`. Rewrite `h1` using `[LinearMap.comp_apply, hSφ₁]`. Rewrite using `[GlobalTheory.MixUniq.apply_eq_evaluation_zero M M₁ B.ψ H'.ι e₀ he.Heisenberg₂ Φ₀ hΦ₀ y₀, h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `⟨Y₀, S, hS, fun Φ hΦ => hSs Φ hΦ, hSa, ?_, ?_⟩` and prove the remaining obligations. Introduce `t y hy`. Take `⟨u, ⟨y', rfl⟩, hu⟩` from `hY y hy`. Use `⟨Matrix.vecMulVec (t • y') (incV F H'.x), ⟨t • y', rfl⟩, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSi _ φ hφ]`. Establish `ht : ((0 : Fin n × Fin d → AF F), t • fun i => algebraMap F (AF F) (y i)) = t • ((0 : Fin n × Fin d → AF F), fun i => algebraMap F (AF F) (y i))`. Simplify using the standard rewrite rules. Rewrite using `[ht, act_smul, hu, ← map_smul, Matrix.smul_vecMulVec]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ h0 x hx`. Establish `hspan` using `T1 F (AF F) (Fin n × Fin d) Arat x (fun y hy => hx y hy)`. Establish `key : ∀ x' ∈ Submodule.span (AF F) ((fun a : Fin n × Fin d → F => fun i => algebraMap F (AF F) (a i)) '' Arat), ∃ w : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F), w.1 = x' ∧ ∃ Z, GlobalTheory.AdelicSvN.act g w = M.co.e (V Z)`. Introduce `x' hx'`. Proceed by induction on `hx' using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mem x' hx'`. Take `⟨a, ⟨w, rfl, z, hz⟩, rfl⟩` from `hx'`. Conclude with `⟨_, rfl, incM F z, hz⟩`. Consider the case `zero => exact ⟨0, rfl, 0, by rw [act_zero]; simp [V]⟩`. Consider the case `add x₁ x₂ _ _ h₁ h₂`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w₁, rfl, Z₁, hZ₁⟩` from `h₁`. Take `⟨w₂, rfl, Z₂, hZ₂⟩` from `h₂`. Conclude with `⟨w₁ + w₂, rfl, Z₁ + Z₂, by`. Rewrite using `[act_add, hZ₁, hZ₂, ← map_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [V, Matrix.mul_add, Matrix.add_mul]⟩`. Consider the case `smul t x₁ _ h₁`. Take `⟨w₁, rfl, Z₁, hZ₁⟩` from `h₁`. Conclude with `⟨t • w₁, rfl, t • Z₁, by`. Rewrite using `[act_smul, hZ₁, ← map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [V, Matrix.mul_smul, Matrix.smul_mul]⟩`. Take `⟨w, hwx, Z, hZ⟩` from `key x hspan`. Establish `hw` using `hSi w φ hφ`. Establish `h1 : (GlobalTheory.MixUniq.ev0 (Fin n × Fin d₁) ∘ₗ e₀) (S (schr B.ψ w φ)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hw, hZ]`. Use `show GlobalTheory.MixUniq.ev0 _ (e₀ (M.co.rho B.ψ (V Z) (S φ))) = 0`. Rewrite using `[he.Heisenberg₂ Z (S φ) (hS φ hφ), h0]`. Simplify using `[Darboux.rho, schr]`. Rewrite `h1` using `[← hl'e _ (GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ w φ hφ), hc _ (GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ w φ hφ)]`.
-
-Simplify using `only [schr, zero_dotProduct, zero_add, hwx] at h1`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h hc0`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h (hψne _)`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

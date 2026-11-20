@@ -21,7 +21,7 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   (X : ActualOps k r z z' π π') (μ : Measure (Mt k r)) (l : Fin r) (c : Fin r → ℂ)
 
 /- English proof (translation)
-Simplify using `only [wOp, List.map_cons, List.prod_cons]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wOp_cons (j : Fin 6) (js : List (Fin 6)) (Φ : RadSp k r z z' π π') :
     wOp X l (j :: js) Φ = X.op l j (wOp X l js Φ) := by
@@ -29,14 +29,14 @@ theorem wOp_cons (j : Fin 6) (js : List (Fin 6)) (Φ : RadSp k r z z' π π') :
   rfl
 
 /- English proof (translation)
-Simplify using `only [wOp, List.map_nil, List.prod_nil]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wOp_nil_sg (Φ : RadSp k r z z' π π') : wOp X l [] Φ = Φ := by
   simp only [wOp, List.map_nil, List.prod_nil]
   rfl
 
 /- English proof (translation)
-Simplify using `only [wOp, List.map_append, List.map_cons, List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, _root_.mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wOp_op (js : List (Fin 6)) (j : Fin 6) (Φ : RadSp k r z z' π π') :
     wOp X l js (X.op l j Φ) = wOp X l (js ++ [j]) Φ := by
@@ -45,9 +45,9 @@ theorem wOp_op (js : List (Fin 6)) (j : Fin 6) (Φ : RadSp k r z z' π π') :
   rfl
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `js with`. Consider the case `nil => rwa [wOp_nil_sg]`. Consider the case `cons j js ih`. Rewrite using `[wOp_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.FourierDecayAlt.P5.HerC.op_lc X l j _ ih`.
+A detailed English derivation is pending.
 -/
 theorem wOp_lc (js : List (Fin 6)) : ∀ Φ ∈ lcSub k r z z' π π', wOp X l js Φ ∈ lcSub k r z z' π π' := by
   intro Φ hΦ
@@ -58,9 +58,9 @@ theorem wOp_lc (js : List (Fin 6)) : ∀ Φ ∈ lcSub k r z z' π π', wOp X l j
     exact Formalism.FourierDecayAlt.P5.HerC.op_lc X l j _ ih
 
 /- English proof (translation)
-Establish `hz : B.hsInner (0 : Wq →L[ℂ] Wp) 0 = 0`. Unfold `B.hsInner`. Rewrite using `[show B.hsVec (0 : Wq →L[ℂ] Wp) = 0 from map_zero hsVecLin, inner_zero_left]`. Establish `h0 : ∀ p : Fin r → ℂ, pairAt μ (0 : RadSp k r z z' π π') 0 p = 0` using `fun p => by`. Unfold `pairAt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Submodule.coe_zero, ZeroMemClass.coe_zero, Pi.zero_apply, hz, integral_zero]`. Introduce `t0 _`. Use `⟨1, one_pos, fun _ => 0, integrable_zero _ _ _, fun t _ c' => ?_⟩` and prove the remaining obligations. Rewrite using `[h0, mul_zero, norm_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem slDom_zero : SlDom μ l c (0 : RadSp k r z z' π π') := by
   have hz : B.hsInner (0 : Wq →L[ℂ] Wp) 0 = 0 := by
@@ -74,33 +74,31 @@ theorem slDom_zero : SlDom μ l c (0 : RadSp k r z z' π π') := by
   rw [h0, mul_zero, norm_zero]
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨hμ.finite_compact⟩`. Use `haveI : SFinite μ := by first`. Consider the case `infer_instance`. Consider the case `exact (sigmaFinite_of_locallyFinite (μ := μ)).toSFinite`. Establish `hconj : ∀ (A C : RadSp k r z z' π π') p, pairAt μ A C p = starRingEnd ℂ (pairAt μ C A p)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `A C p`. Unfold `pairAt`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `B.hsInner`. Rewrite using `[inner_conj_symm]`. Establish `hpos : ∀ (A : RadSp k r z z' π π') p, ∃ s : ℝ, 0 ≤ s ∧ pairAt μ A A p = s`. Introduce `A p`. Use `⟨∫ x, ‖B.hsVec ((A : Fn k r (Wq →L[ℂ] Wp)) p (Matrix.of x))‖ ^ 2 ∂μ, integral_nonneg fun _ => by positivity, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Treat this case separately.
 
-Unfold `pairAt B.hsInner`. Use `first`. Consider the case `rw [← integral_complex_ofReal]`. Consider the case `rw [← integral_ofReal]`. Consider the case `rw [← integral_coe]`.
+Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadd : ∀ (A1 A2 C : RadSp k r z z' π π') p, A1 ∈ lcSub k r z z' π π' → A2 ∈ lcSub k r z z' π π' → C ∈ lcSub k r z z' π π' → pairAt μ (A1 + A2) C p = pairAt μ A1 C p + pairAt μ A2 C p` using `fun A1 A2 C p h1 h2 h3 => pairAt_add_left_lc (μ := μ) hμ h1 h2 h3 p`. Establish `hsub : ∀ (A1 A2 C : RadSp k r z z' π π') p, A1 ∈ lcSub k r z z' π π' → A2 ∈ lcSub k r z z' π π' → C ∈ lcSub k r z z' π π' → pairAt μ (A1 - A2) C p = pairAt μ A1 C p - pairAt μ A2 C p`. Introduce `A1 A2 C p h1 h2 h3`. Establish `h` using `hadd (A1 - A2) A2 C p (sub_mem h1 h2) h2 h3`. Rewrite `h` using `[sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : ∀ p, ‖pairAt μ (Φ + Ψ) (Φ + Ψ) p‖ ≤ 2 * ‖pairAt μ Φ Φ p‖ + 2 * ‖pairAt μ Ψ Ψ p‖`. Introduce `p`. Establish `hs` using `hadd Φ Ψ (Φ + Ψ) p hΦ hΨ (add_mem hΦ hΨ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `hsub Φ Ψ (Φ - Ψ) p hΦ hΨ (sub_mem hΦ hΨ)`. Establish `e1 : pairAt μ Φ (Φ + Ψ) p = pairAt μ Φ Φ p + pairAt μ Φ Ψ p`. Rewrite using `[hconj, hadd Φ Ψ Φ p hΦ hΨ hΦ, map_add, ← hconj, ← hconj]`. Establish `e2 : pairAt μ Ψ (Φ + Ψ) p = pairAt μ Ψ Φ p + pairAt μ Ψ Ψ p`. Rewrite using `[hconj, hadd Φ Ψ Ψ p hΦ hΨ hΨ, map_add, ← hconj, ← hconj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : pairAt μ Φ (Φ - Ψ) p = pairAt μ Φ Φ p - pairAt μ Φ Ψ p`. Rewrite using `[hconj, hsub Φ Ψ Φ p hΦ hΨ hΦ, map_sub, ← hconj, ← hconj]`. Establish `e4 : pairAt μ Ψ (Φ - Ψ) p = pairAt μ Ψ Φ p - pairAt μ Ψ Ψ p`. Rewrite using `[hconj, hsub Φ Ψ Ψ p hΦ hΨ hΨ, map_sub, ← hconj, ← hconj]`. Take `⟨s1, hs1, q1⟩` from `hpos (Φ + Ψ) p`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s2, hs2, q2⟩` from `hpos (Φ - Ψ) p`. Take `⟨a, ha, qa⟩` from `hpos Φ p`. Take `⟨b, hb, qb⟩` from `hpos Ψ p`. Establish `hpar : (s1 : ℂ) = 2 * a + 2 * b - s2`. Rewrite using `[← q1, ← q2, ← qa, ← qb, hs, hd, e1, e2, e3, e4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpar' : s1 = 2 * a + 2 * b - s2` using `by exact_mod_cast hpar`. Rewrite using `[q1, qa, qb, Complex.norm_real, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hs1, Real.norm_of_nonneg ha, Real.norm_of_nonneg hb]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t0 ht0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ε1, hε1, F1, hF1, hb1⟩` from `h1 t0 ht0`. Take `⟨ε2, hε2, F2, hF2, hb2⟩` from `h2 t0 ht0`. Use `⟨min ε1 ε2, lt_min hε1 hε2, fun c' => 2 * F1 c' + 2 * F2 c', (hF1.const_mul 2).add (hF2.const_mul 2), fun t ht c' => ?_⟩` and prove the remaining obligations. Establish `ht1 : t ∈ Metric.ball t0 ε1` using `Metric.ball_subset_ball (min_le_left _ _) ht`. Establish `ht2 : t ∈ Metric.ball t0 ε2` using `Metric.ball_subset_ball (min_le_right _ _) ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `k1` using `hb1 t ht1 c'`. Establish `k2` using `hb2 t ht2 c'`. Rewrite `k1`, `k2`, the goal using `[norm_mul]`. Establish `hk` using `hkey (glue l.succ (Function.update c l t) c')`. Establish `hw` using `norm_nonneg (wtI l.succ c')`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hk hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem slDom_add (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {Φ Ψ : RadSp k r z z' π π'}
     (hΦ : Φ ∈ lcSub k r z z' π π') (hΨ : Ψ ∈ lcSub k r z z' π π') (h1 : SlDom μ l c Φ) (h2 : SlDom μ l c Ψ) :
@@ -181,11 +179,9 @@ theorem slDom_add (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {Φ Ψ : RadSp k
   nlinarith [mul_le_mul_of_nonneg_left hk hw]
 
 /- English proof (translation)
-Establish `hp : ∀ p, pairAt μ (a • Φ) (a • Φ) p = (starRingEnd ℂ a * a) * pairAt μ Φ Φ p` using `fun p => by`. Simplify using `only [pairAt, B.hsInner, Submodule.coe_smul, Pi.smul_apply, hsVec_smul', inner_smul_left, inner_smul_right]`. Use `first`. Consider the case `(rw [← integral_const_mul]; congr 1; funext x; ring)`. Consider the case `(rw [← integral_mul_left]; congr 1; funext x; ring)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t0 ht0`. Take `⟨ε, hε, F, hF, hb⟩` from `h t0 ht0`. Use `⟨ε, hε, fun c' => ‖a‖ ^ 2 * F c', hF.const_mul _, fun t ht c' => ?_⟩` and prove the remaining obligations. Establish `e : ‖starRingEnd ℂ a * a‖ = ‖a‖ ^ 2` using `by rw [norm_mul, RCLike.norm_conj, sq]`. Rewrite using `[hp, show ∀ w q : ℂ, w * (starRingEnd ℂ a * a * q) = (starRingEnd ℂ a * a) * (w * q) from fun w q => by ring, norm_mul, e]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hb t ht c') (by positivity)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slDom_smul (a : ℂ) {Φ : RadSp k r z z' π π'} (h : SlDom μ l c Φ) : SlDom μ l c (a • Φ) := by
   have hp : ∀ p, pairAt μ (a • Φ) (a • Φ) p = (starRingEnd ℂ a * a) * pairAt μ Φ Φ p := fun p => by
@@ -217,20 +213,20 @@ def sgSub (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) : Submodule ℂ (RadSp k
     exact slDom_smul μ l c a (h1' js)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P5.HerC.op_lc X l j Φ h.1, fun js => by rw [wOp_op]; exact h.2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem sliceGood_op {Φ : RadSp k r z z' π π'} (h : SliceGood X μ l c Φ) (j : Fin 6) :
     SliceGood X μ l c (X.op l j Φ) :=
   ⟨Formalism.FourierDecayAlt.P5.HerC.op_lc X l j Φ h.1, fun js => by rw [wOp_op]; exact h.2 _⟩
 
 /- English proof (translation)
-The claim follows from `sliceGood_op X μ l c (sliceGood_op X μ l c h 0) 2`.
+A detailed English derivation is pending.
 -/
 theorem sliceGood_dT {Φ : RadSp k r z z' π π'} (h : SliceGood X μ l c Φ) : SliceGood X μ l c (dT X l Φ) :=
   sliceGood_op X μ l c (sliceGood_op X μ l c h 0) 2
 
 /- English proof (translation)
-The claim follows from `sliceGood_op X μ l c (sliceGood_op X μ l c h 3) 5`.
+A detailed English derivation is pending.
 -/
 theorem sliceGood_dTb {Φ : RadSp k r z z' π π'} (h : SliceGood X μ l c Φ) : SliceGood X μ l c (dTb X l Φ) :=
   sliceGood_op X μ l c (sliceGood_op X μ l c h 3) 5
@@ -238,9 +234,9 @@ theorem sliceGood_dTb {Φ : RadSp k r z z' π π'} (h : SliceGood X μ l c Φ) :
 end Clos
 
 /- English proof (translation)
-Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Establish `hle : ClsE S P z z' π π' X L st l0 D l ≤ sgSub X μ l c hμ`. Apply `opClos_le X l` to reduce the goal to its premises. Use `(base_le_wave_operator P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl).trans (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce `Ψ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hJ Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc Ψ hΨ`. Introduce `j Ψ hΨ`. Conclude with `sliceGood_op X μ l c hΨ j`. Conclude with `hle hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clsE_sliceGood_of (hJ : JSliceGen) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -264,9 +260,9 @@ theorem clsE_sliceGood_of (hJ : JSliceGen) {Wp Wq : Type} [NormedAddCommGroup Wp
   exact hle hΦ
 
 /- English proof (translation)
-Establish `hf` using `h.fderiv`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp [wirt, hf, wl]`. Use `first`. Consider the case `linear_combination ((B - A) / 2) * Complex.I_sq`. Consider the case `linear_combination ((A - B) / 2) * Complex.I_sq`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `linear_combination ((A - B) / 2) * Complex.I_sq`. Consider the case `linear_combination ((B - A) / 2) * Complex.I_sq`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wirt_of_hasFDerivAt {F : ℂ → ℂ} {A B t : ℂ} (h : HasFDerivAt F (wl A B) t) :
     wirt true F t = A ∧ wirt false F t = B := by
@@ -280,7 +276,7 @@ theorem wirt_of_hasFDerivAt {F : ℂ → ℂ} {A B t : ℂ} (h : HasFDerivAt F (
       | linear_combination ((B - A) / 2) * Complex.I_sq
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc t ht`. Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Establish `hsu : ∀ b, SliceGood X μ l c (u b)` using `fun b => clsE_sliceGood_of hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (u b) (hu b)`. Establish `hsv : ∀ b, SliceGood X μ l c (v b)` using `fun b => clsE_sliceGood_of hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (v b) (hv b)`. Conclude with `wirt_of_hasFDerivAt (hO P.k P.r z z' Wp Wq π π' X μ hμ l S u v c hc hsu hsv t ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leibnizCls_of (hO : OuterLeib) (hJ : JSliceGen) : LeibnizCls := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc t ht
@@ -292,7 +288,7 @@ theorem leibnizCls_of (hO : OuterLeib) (hJ : JSliceGen) : LeibnizCls := by
   exact wirt_of_hasFDerivAt (hO P.k P.r z z' Wp Wq π π' X μ hμ l S u v c hc hsu hsv t ht)
 
 /- English proof (translation)
-Establish `h0` using `h.2 []`. Rewrite `h0` using `[wOp_nil_sg]`. Conclude with `level_l2_of_slice_domination μ l c h0 ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelSquareIntegrable_succ_update_of_sliceGood {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -305,9 +301,9 @@ theorem levelSquareIntegrable_succ_update_of_sliceGood {k r : ℕ} {z z' : Fin (
   exact level_l2_of_slice_domination μ l c h0 ht
 
 /- English proof (translation)
-Establish `hN : (fun t : ℂ => Complex.normSq t) = fun t => t.re * t.re + t.im * t.im`. Use function extensionality and compare the values at `Complex.normSq_apply`. Establish `hq : ContDiff ℝ n (fun t : ℂ => Complex.normSq t)`. Rewrite using `[hN]`. Conclude with `(Complex.reCLM.contDiff.mul Complex.reCLM.contDiff).add (Complex.imCLM.contDiff.mul Complex.imCLM.contDiff)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : ContDiffOn ℝ n (fun t : ℂ => (Complex.normSq t)⁻¹) {t : ℂ | t ≠ 0}` using `hq.contDiffOn.inv fun t ht => by simpa [Complex.normSq_eq_zero] using ht`. Use `(Complex.ofRealCLM.contDiff.comp_contDiffOn hi).congr fun t _ => ?_` and prove the remaining obligations. Simplify using `[zpow_neg, Complex.normSq_eq_norm_sq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inverse_norm_sq (n : ℕ) :
     ContDiffOn ℝ n (fun t : ℂ => (((‖t‖ ^ (-2 : ℤ) : ℝ)) : ℂ)) {t : ℂ | t ≠ 0} := by
@@ -323,13 +319,13 @@ theorem contDiffOn_inverse_norm_sq (n : ℕ) :
   simp [zpow_neg, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Establish `hs : IsOpen {t : ℂ | t ≠ 0}` using `isOpen_ne`. Set `Lw : ℂ × ℂ →L[ℝ] (ℂ →L[ℝ] ℂ)` to `(ContinuousLinearMap.fst ℝ ℂ ℂ).smulRight (ContinuousLinearMap.id ℝ ℂ) + (ContinuousLinearMap.snd ℝ ℂ ℂ).smulRight Complex.conjCLE.toContinuousLinearMap`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `u v hu hv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Nat.cast_zero, contDiffOn_zero]`. Conclude with `fun t ht => (hO k r z z' Wp Wq π π' X μ hμ l S u v c hc hu hv t ht).continuousAt.continuousWithinAt`. Consider the case `succ n ih`. Introduce `u v hu hv`. Establish `hd` using `fun t (ht : t ∈ {t : ℂ | t ≠ 0}) => hO k r z z' Wp Wq π π' X μ hμ l S u v c hc hu hv t ht`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA` using `(ih (fun b => dT X l (u b)) v (fun b => sliceGood_dT X μ l c (hu b)) hv).add (ih u (fun b => dTb X l (v b)) hu (fun b => sliceGood_dTb X μ l c (hv b)))`. Establish `hB` using `(ih (fun b => dTb X l (u b)) v (fun b => sliceGood_dTb X μ l c (hu b)) hv).add (ih u (fun b => dT X l (v b)) hu (fun b => sliceGood_dT X μ l c (hv b)))`. Establish `hW : ContDiffOn ℝ n (fun t => wl (form μ l.succ (fun b => dT X l (u b)) v (Function.update c l t) + form μ l.succ u (fun b => dTb X l (v b)) (Function.update c l t)) (form μ l.succ (fun b => dTb X l (u b)) v (Function.update c l t) + form μ l.succ u (fun b => dT X l (v b)) (Funct …` using `by first`. Consider the case `exact (Lw.contDiff.comp_contDiffOn (hA.prodMk hB)).congr fun t _ => rfl`. Consider the case `exact (Lw.contDiff.comp_contDiffOn (hA.prod hB)).congr fun t _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hF : ContDiffOn ℝ n (fderiv ℝ fun t => form μ l.succ u v (Function.update c l t)) {t : ℂ | t ≠ 0}` using `hW.congr fun t ht => (hd t ht).fderiv`. Rewrite using `[Nat.cast_succ]`. Use `first`. Consider the case `exact (contDiffOn_succ_iff_fderiv_of_isOpen hs).2 ⟨fun t ht => (hd t ht).differentiableAt.differentiableWithinAt, fun h => by simp at h, hF⟩`. Consider the case `exact (contDiffOn_succ_iff_fderiv_of_isOpen hs).2 ⟨fun t ht => (hd t ht).differentiableAt.differentiableWithinAt, hF⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem form_contDiffOn (hO : OuterLeib) {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -373,9 +369,9 @@ theorem form_contDiffOn (hO : OuterLeib) {k r : ℕ} {z z' : Fin (2 * r + k + 1)
           ⟨fun t ht => (hd t ht).differentiableAt.differentiableWithinAt, hF⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc`. Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Establish `hsu : ∀ b, SliceGood X μ l c (u b)` using `fun b => clsE_sliceGood_of hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (u b) (hu b)`. Establish `hsv : ∀ b, SliceGood X μ l c (v b)` using `fun b => clsE_sliceGood_of hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (v b) (hv b)`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨hμ.finite_compact⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Use `haveI : SFinite μ := by first`. Consider the case `infer_instance`. Consider the case `exact (sigmaFinite_of_locallyFinite (μ := μ)).toSFinite`. Use `⟨fun n => ?_, fun t ht b => ⟨levelSquareIntegrable_succ_update_of_sliceGood X μ l c (hsu b) ht, levelSquareIntegrable_succ_update_of_sliceGood X μ l c (hsv b) ht⟩⟩` and prove the remaining obligations. Conclude with `(contDiffOn_inverse_norm_sq n).mul (form_contDiffOn hO X μ hμ l S c hc n u v hsu hsv)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem densSmoothCls_of (hO : OuterLeib) (hJ : JSliceGen) : DensSmoothCls := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc
@@ -393,25 +389,25 @@ theorem densSmoothCls_of (hO : OuterLeib) (hJ : JSliceGen) : DensSmoothCls := by
   exact (contDiffOn_inverse_norm_sq n).mul (form_contDiffOn hO X μ hμ l S c hc n u v hsu hsv)
 
 /- English proof (translation)
-The claim follows from `leibnizCls_of (outerLeib_of hP) hJ`.
+A detailed English derivation is pending.
 -/
 theorem leibnizCls_of_leaves (hP : PairAtDeriv) (hJ : JSliceGen) : LeibnizCls :=
   leibnizCls_of (outerLeib_of hP) hJ
 
 /- English proof (translation)
-The claim follows from `densSmoothCls_of (outerLeib_of hP) hJ`.
+A detailed English derivation is pending.
 -/
 theorem densSmoothCls_of_leaves (hP : PairAtDeriv) (hJ : JSliceGen) : DensSmoothCls :=
   densSmoothCls_of (outerLeib_of hP) hJ
 
 /- English proof (translation)
-The claim follows from `leibnizCls_of_leaves pairing_derivative_formula hJ`.
+A detailed English derivation is pending.
 -/
 theorem leibnizCls_of_jSlice (hJ : JSliceGen) : LeibnizCls :=
   leibnizCls_of_leaves pairing_derivative_formula hJ
 
 /- English proof (translation)
-The claim follows from `densSmoothCls_of_leaves pairing_derivative_formula hJ`.
+A detailed English derivation is pending.
 -/
 theorem densSmoothCls_of_jSlice (hJ : JSliceGen) : DensSmoothCls :=
   densSmoothCls_of_leaves pairing_derivative_formula hJ

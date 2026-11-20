@@ -3,21 +3,19 @@ import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocD
 open Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc Topology NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ j`. Use `haveI : IsAlgClosure ℚ Ω := Examples₂.LB.isAlgClosureQ F Ω`. Establish `hj : ∀ x : Ω, x ∈ placeJ j ↔ ‖j x‖ ≤ 1`. Introduce `x`. Express the relevant statement in the definitionally equal form `(Valued.v : Valuation (Om l) NNReal) (j x) ≤ 1 ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← NNReal.coe_le_coe]`. Conclude with `Iff.rfl`. Set `e` to `Examples₂.LB.eDec (E := F) hj`. Establish `he : Continuous e` using `Examples₂.LB.continuous_eDec hj`. Establish `hes : Continuous e.symm` using `Examples₂.LB.continuous_eDec_symm hj`.
+Unfold both sides to obtain the same proposition, which implies itself. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ g x, ((e g : _) : GQ l) (j x) = j ((g : G F Ω) x)` using `Examples₂.LB.eDec_comm hj`. Establish `hK : ∀ x : ↥(UpperTheory.V.Af.decJ F j), x.1.2 ∈ (Examples₂.LB.KwF (E` using `F) j).fixingSubgroup := by`. Introduce `x`. Use `Examples₂.LB.mem_GK_of_fix j _ fun y => ?_` and prove the remaining obligations. Use `x.2 (algebraMap F Ω y)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[AlgEquiv.commutes]`. Conclude with `this`. Establish `hfst : ∀ x : ↥(UpperTheory.V.Af.decJ F j), ((e.symm ⟨x.1.2, hK x⟩ : _) : G F Ω) = x.1.1`. Introduce `x`. Use `AlgEquiv.ext fun y => j.injective ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hc, MulEquiv.apply_symm_apply]`. Conclude with `x.2 y`. Set `h : ↥(UpperTheory.V.Af.decJ F j) ≃ₜ ↥(Examples₂.LB.KwF (E` to `F) j).fixingSubgroup := { toFun := fun x => ⟨x.1.2, hK x⟩ invFun := fun σ => ⟨(((e.symm σ : _) : G F Ω), σ.1), fun y => by`. Use `hc (e.symm σ) y` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `this⟩`. Use `left_inv := fun x => Subtype.ext (Prod.ext (hfst x) rfl)`. Use `right_inv := fun σ => rfl`. Use `continuous_toFun := (continuous_snd.comp continuous_subtype_val).subtype_mk _`. Use `continuous_invFun := ((continuous_subtype_val.comp hes).prodMk continuous_subtype_val).subtype_mk _ }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `e' : ↥(Examples₂.LB.KwF (E` to `F) j).fixingSubgroup ≃ₜ ↥(Dec (F := F) (placeJ j)) := { toEquiv := e.symm.toEquiv, continuous_toFun := hes, continuous_invFun := he }`. Establish `h1 : ⇑((MonoidHom.fst _ _).comp (UpperTheory.V.Af.decJ F j).subtype) = Subtype.val ∘ (h.trans e')`. Use function extensionality and compare the values at `fun x => (hfst x).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IntermediateField.fixingSubgroup_isOpen (Examples₂.LB.KwF (E := F) j)).isOpenEmbedding_subtypeVal.comp h.isOpenEmbedding`.
-
-Rewrite using `[h1]`. Conclude with `IsEmbedding.subtypeVal.comp (h.trans e').isEmbedding`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[MonoidHom.coe_range, h1, Set.range_comp, (h.trans e').surjective.range_eq, Set.image_univ, Subtype.range_coe_subtype]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.decJFacts :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (j : Ω →+* Om l), IsOpenEmbedding ((MonoidHom.snd _ _).comp (UpperTheory.V.Af.decJ F j).subtype) ∧ IsEmbedding ((MonoidHom.fst _ _).comp (UpperTheory.V.Af.decJ F j).subtype) ∧ ((MonoidHom.fst _ _).comp (UpperTheory.V.Af.decJ F j).subtype).range = Dec (F := F) (placeJ j) := by

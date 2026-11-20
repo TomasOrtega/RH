@@ -8,11 +8,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ Λ`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset (K := F) (W := (Λ : Set (FiniteAdeleRing (𝓞 F) F))) (Λ.isOpen.mem_nhds Λ.zero_mem)`. Use `⟨(idealFiniteAdeles (traceDualIdeal F J) : Set (FiniteAdeleRing (𝓞 F) F)), isCompact_idealFiniteAdeles _, fun x hx => ?_⟩` and prove the remaining obligations. Use `(forall_finiteAdelicChar_mul_eq_one_iff J x.2).1 fun y hy => ?_` and prove the remaining obligations. Establish `h` using `hx (finiteAdeleInr y) rfl (hJ hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : finiteAdeleInr y * x = finiteAdeleInr (y * x.2)`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : _) * x.1 = 0`. Conclude with `zero_mul _`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finiteAdelicChar_apply]`. Conclude with `Circle.ext h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.perpCpt :
     ∀ (F : Type) [Field F] [NumberField F] (Λ : OpenAddSubgroup (FiniteAdeleRing (𝓞 F) F)), ∃ K : Set (FiniteAdeleRing (𝓞 F) F), IsCompact K ∧

@@ -10,9 +10,9 @@ namespace GlobalTheory.MomOne.Frame
 variable {g : ℕ}
 
 /- English proof (translation)
-Simplify using `only [hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hf_sum_left {ι : Type} [Fintype ι] (Hm : Matrix (Fin g) (Fin g) ℂ) (z : ι → ℂ) (x : ι → Fin g → ℂ)
     (w : Fin g → ℂ) : hf Hm (∑ i, z i • x i) w = ∑ i, z i * hf Hm (x i) w := by
@@ -24,9 +24,9 @@ theorem hf_sum_left {ι : Type} [Fintype ι] (Hm : Matrix (Fin g) (Fin g) ℂ) (
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hf_sum_right {ι : Type} [Fintype ι] (Hm : Matrix (Fin g) (Fin g) ℂ) (z : ι → ℂ) (x : ι → Fin g → ℂ)
     (w : Fin g → ℂ) : hf Hm w (∑ i, z i • x i) = ∑ i, conj (z i) * hf Hm w (x i) := by
@@ -38,7 +38,7 @@ theorem hf_sum_right {ι : Type} [Fintype ι] (Hm : Matrix (Fin g) (Fin g) ℂ) 
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Simplify using `only [beta, hf_sum_left, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_sum_left {ι : Type} [Fintype ι] (d : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (z : ι → ℂ) (x : ι → Fin g → ℂ)
     (w : Fin g → ℂ) : beta d Hm (∑ i, z i • x i) w = ∑ i, z i * beta d Hm (x i) w := by
@@ -46,7 +46,7 @@ theorem beta_sum_left {ι : Type} [Fintype ι] (d : ℕ) (Hm : Matrix (Fin g) (F
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [beta, hf_sum_right, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_sum_right {ι : Type} [Fintype ι] (d : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (z : ι → ℂ) (x : ι → Fin g → ℂ)
     (w : Fin g → ℂ) : beta d Hm w (∑ i, z i • x i) = ∑ i, conj (z i) * beta d Hm w (x i) := by
@@ -57,14 +57,14 @@ section
 variable {d : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} {x : Fin g → Fin g → ℂ} {a : Fin g → ℕ}
 
 /- English proof (translation)
-Simplify using `[beta_sum_left, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem beta_coord (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) else 0) (z : Fin g → ℂ) (j : Fin g) :
     beta d Hm (∑ i, z i • x i) (x j) = z j * a j := by
   simp [beta_sum_left, hx]
 
 /- English proof (translation)
-Rewrite using `[beta_sum_right]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [beta_coord hx]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_frame (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) else 0) (z w : Fin g → ℂ) :
     beta d Hm (∑ i, z i • x i) (∑ i, w i • x i) = ∑ i, (a i : ℂ) * (z i * conj (w i)) := by
@@ -72,9 +72,9 @@ theorem beta_frame (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : �
   exact Finset.sum_congr rfl fun i _ => by rw [beta_coord hx]; ring
 
 /- English proof (translation)
-Establish `hs : ((Real.sqrt d : ℝ) : ℂ) ≠ 0`. Establish `: Real.sqrt d ≠ 0` using `by positivity`. Conclude with `this` after adjusting the coercions. Establish `h` using `beta_frame hx z w`. Establish `e : hf Hm (∑ i, z i • x i) (∑ i, w i • x i) = ((2 / Real.sqrt d : ℝ) : ℂ) * beta d Hm (∑ i, z i • x i) (∑ i, w i • x i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[beta]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, h, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h1]; ring`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hf_frame (hd : 0 < d) (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) else 0) (z w : Fin g → ℂ) :
     hf Hm (∑ i, z i • x i) (∑ i, w i • x i) = ∑ i, (a i : ℂ) * h1 d (z i) (w i) := by
@@ -89,11 +89,11 @@ theorem hf_frame (hd : 0 < d) (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j th
   exact Finset.sum_congr rfl fun i _ => by rw [h1]; ring
 
 /- English proof (translation)
-Establish `ha' : ∀ i, (a i : ℂ) ≠ 0` using `fun i => by exact_mod_cast (ha i).ne'`. Set `L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `Fintype.linearCombination ℂ x`. Establish `hL : ∀ z, L z = ∑ i, z i • x i` using `fun z => Fintype.linearCombination_apply _ _ _`. Establish `hinj : Function.Injective L`. Introduce `z w h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Establish `h1` using `beta_coord hx z j`. Establish `h2` using `beta_coord hx w j`. Rewrite `h1`, `h2` using `[← hL]`. Rewrite `h1` using `[h, h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_right_cancel₀ (ha' j) h1).symm`. Take `⟨z, rfl⟩` from `(LinearMap.injective_iff_surjective.1 hinj) v`. Rewrite using `[hL]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[beta_coord hx, mul_div_cancel_right₀ _ (ha' i)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) else 0) (ha : ∀ i, 0 < a i)
     (v : Fin g → ℂ) : v = ∑ i, (beta d Hm v (x i) / (a i : ℂ)) • x i := by
@@ -114,9 +114,9 @@ theorem expand (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) 
   rw [beta_coord hx, mul_div_cancel_right₀ _ (ha' i)]
 
 /- English proof (translation)
-Establish `e : (∑ i, z i • x i) + ∑ i, t i • x i = ∑ i, (z + t) i • x i`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Rewrite using `[opU, e, hG, hf_frame hd hx, hf_frame hd hx, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [U1, mul_pow, Finset.prod_mul_distrib, ← Complex.exp_nat_mul, ← Complex.exp_sum, Pi.add_apply, Finset.mul_sum, ← Finset.sum_sub_distrib, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 3`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem opU_frame (hd : 0 < d) (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) else 0)
     {m : ℕ} (c : Fin m → ℂ) (f : Fin m → Fin g → ℂ → ℂ) (G : (Fin g → ℂ) → ℂ)
@@ -132,11 +132,11 @@ theorem opU_frame (hd : 0 < d) (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j t
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `e : (((beta d Hm (∑ i, t i • x i) (∑ i, t i • x i)).re : ℝ) : ℂ) = ∑ i, (a i : ℂ) * ((Complex.normSq (t i) : ℝ) : ℂ)`. Rewrite using `[beta_frame hx]`. Simplify using `only [Complex.mul_conj]`. Establish `: (∑ i, (a i : ℂ) * ((Complex.normSq (t i) : ℝ) : ℂ)) = ((∑ i, (a i : ℝ) * Complex.normSq (t i) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[opW, opU_frame hd hx c f G hG, e, Finset.mul_sum _ (fun j => c j * _)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [W1, mul_pow, Finset.prod_mul_distrib, ← Complex.exp_nat_mul, ← Complex.exp_sum, Finset.mul_sum]`. Rewrite using `[mul_left_comm]`. Use `congr 3`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem opW_frame (hd : 0 < d) (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j then (a i : ℂ) else 0)
     {m : ℕ} (c : Fin m → ℂ) (f : Fin m → Fin g → ℂ → ℂ) (G : (Fin g → ℂ) → ℂ)
@@ -159,9 +159,9 @@ theorem opW_frame (hd : 0 < d) (hx : ∀ i j, beta d Hm (x i) (x j) = if i = j t
 end
 
 /- English proof (translation)
-Set `L : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `LinearMap.toContinuousLinearMap (Fintype.linearCombination ℂ x)`. Establish `hL : ∀ z, L z = ∑ i, z i • x i` using `fun z => Fintype.linearCombination_apply _ _ _`. Establish `e : (fun z : Fin g → ℂ => G (∑ i, z i • x i)) = G ∘ L`. Use function extensionality and compare the values at `z`. Simplify using `[hL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, L.iteratedFDeriv_comp_right hG 0 le_top, ContinuousMultilinearMap.compContinuousLinearMap_apply, map_zero, jetV]`. Simplify using `only [hL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jetV_frame (x : Fin g → Fin g → ℂ) (G : (Fin g → ℂ) → ℂ) (hG : ContDiff ℂ ⊤ G) (k : ℕ)
     (ys : Fin k → Fin g → ℂ) :
@@ -174,7 +174,7 @@ theorem jetV_frame (x : Fin g → Fin g → ℂ) (G : (Fin g → ℂ) → ℂ) (
   simp only [hL]
 
 /- English proof (translation)
-Introduce `_ _ x _ hd hx ha` and use `⟨expand hx ha, hf_frame hd hx, fun _ c f G hG t z => ⟨opU_frame hd hx c f G hG t z, opW_frame hd hx c f G hG t z⟩, jetV_frame x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem coord : ∀ (g : ℕ) (S : Setup g) (x : Fin g → Fin g → ℂ) (a : Fin g → ℕ), 0 < S.d → (∀ i j, beta S.d S.Hm (x i) (x j) = if i = j then (a i : ℂ) else 0) → (∀ i, 0 < a i) → (∀ v : Fin g → ℂ, v = ∑ i, (beta S.d S.Hm v (x i) / (a i : ℂ)) • x i) ∧ (∀ z w : Fin g → ℂ, hf S.Hm (∑ i, z i • x i) (∑ i, w i • x i) = ∑ i, (a i : ℂ) * h1 S.d (z i) (w i)) ∧ (∀ (m : ℕ) (c : Fin m → ℂ) (f : Fin m → Fin g → ℂ → ℂ) (G : (Fin g → ℂ) → ℂ), (∀ z : Fin g → ℂ, G (∑ i, z i • x i) = ∑ j, c j * ∏ i, f j i (z i) ^ a i) → ∀ t z : Fin g → ℂ, opU S.Hm (∑ i, t i • x i) G (∑ i, z i • x i) = ∑ j, c j * ∏ i, U1 S.d (t i) (f j i) (z i) ^ a i ∧ opW S.d S.Hm (∑ i, t i • x i) G (∑ i, z i • x i) = ∑ j, c j * ∏ i, W1 S.d (t i) (f j i) (z i) ^ a i) ∧ ∀ (G : (Fin g → ℂ) → ℂ), ContDiff ℂ ⊤ G → ∀ (k : ℕ) (ys : Fin k → Fin g → ℂ), jetV G (fun l => ∑ i, ys l i • x i) = iteratedFDeriv ℂ k (fun z : Fin g → ℂ => G (∑ i, z i • x i)) 0 ys :=
   fun _ _ x _ hd hx ha =>

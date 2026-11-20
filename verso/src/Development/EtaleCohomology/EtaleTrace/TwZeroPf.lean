@@ -12,13 +12,13 @@ def SplitLoc : Prop := ∀ (U : Scheme.{0}) (n : ℕ) (e : Fin n → Γ(U, ⊤))
   Loc U fun V g => ∃ i, g.appTop.hom (e i) = 1
 
 /- English proof (translation)
-Introduce `q _ U ζ ξ`. Take `⟨e, he, hs, hx, hc⟩` from `hS q Γ(U, ⊤) ζ ξ`. Take `⟨S, hSc, hP⟩` from `hL U q e he hs`. Use `⟨S, hSc, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hP V g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `key : g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (i : ℕ)`. Use `congrArg g.appTop.hom (hx i)` as an intermediate fact. Simplify `this` using `[map_mul, map_pow, hi]`. Distinguish the cases in `hcop : Nat.Coprime (i : ℕ) q`. Use `⟨ZMod.unitOfCoprime i hcop, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ _`. Rewrite using `[key, ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt i.2]`. Establish `h0` using `hc i hcop`. Rewrite `hi` using `[h0, map_zero]`. Establish `: Subsingleton Γ(V, ⊤)` using `subsingleton_of_zero_eq_one hi`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨1, Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem primLoc_of (hS : PrimSplit) (hL : SplitLoc) : PrimLoc := by
   intro q _ U ζ ξ
@@ -39,7 +39,7 @@ theorem primLoc_of (hS : PrimSplit) (hL : SplitLoc) : PrimLoc := by
     exact ⟨1, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-The claim follows from `TwZero_of_primLoc hTw (primLoc_of hS hL)`.
+A detailed English derivation is pending.
 -/
 theorem TwZero_of (hTw : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc) (hS : PrimSplit) (hL : SplitLoc) : TwZero :=
   TwZero_of_primLoc hTw (primLoc_of hS hL)

@@ -9,21 +9,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ τ w σ ⟨f, hf0, _, hf⟩`. Establish `hin : ∀ g (x y : LL μ), inner ℂ (rhoL μ w g x) (rhoL μ w g y) = inner ℂ x y`. Introduce `g x y`. Unfold `rhoL`. Conclude with `UnitaryRep.inner_map_map _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hinj : ∀ v, f v = 0 → v = 0`. Establish `hirr : σ.ρ.IsIrreducible` using `by cases σ; assumption`. Set `Q : Subrepresentation σ.ρ` to `⟨LinearMap.ker f, fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hv, map_zero]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_bot_or_eq_top Q with h | h` into its components or cases. Introduce `v hv`. Establish `: v ∈ Q` using `hv`. Rewrite `this` using `[h]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hf0` to reduce the goal to its premises. Use `ext1 v`. Establish `: v ∈ Q` using `by rw [h]; trivial`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => inner ℂ (f y) (f x)) ?_ ?_ ?_ ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c`. Simplify using `only [map_add, inner_add_right]`. Introduce `a b c`. Simplify using `only [map_smul, inner_smul_right, RingHom.id_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b c`. Simplify using `only [map_add, inner_add_left]`. Introduce `a b c`. Simplify using `only [map_smul, inner_smul_left, smul_eq_mul]`. Introduce `v u`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.mk₂'ₛₗ_apply, inner_conj_symm]`. Introduce `v hv`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Conclude with `(re_inner_self_pos (𝕜 := ℂ)).2 (fun h => hv (hinj v h))`. Introduce `g v u`.
-
-Simplify using `only [LinearMap.mk₂'ₛₗ_apply, hf, hin]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.occUnit :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (τ : Submodule ℂ (L2 μ)) (w : Pl K) (σ : SmIrr (Gw n w)), Occurs μ τ w σ → IsUnitarisable σ.ρ := by

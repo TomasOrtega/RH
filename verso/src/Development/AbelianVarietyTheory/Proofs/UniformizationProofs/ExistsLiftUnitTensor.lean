@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Use `⟨q ≫ (λ_ X).inv.left, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, leftUnitor_inv_snd, Over.id_left, Category.comp_id]`. Rewrite using `[Category.assoc, ← Over.comp_left, leftUnitor_inv_fst]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_lift_unit_tensor {S Z : Scheme.{0}} (X : Over S) (q : Z ⟶ X.left) :
     ∃ r : Z ⟶ (𝟙_ (Over S) ⊗ X).left, r ≫ (snd _ X).left = q ∧ r ≫ (fst _ X).left = q ≫ X.hom := by
@@ -28,17 +28,15 @@ theorem exists_lift_unit_tensor {S Z : Scheme.{0}} (X : Over S) (q : Z ⟶ X.lef
     rfl
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U U' hM k σ σ₀ σ' f f' hσ hG hB hE e`. Take `⟨semi, gen, gen_hom, P, wA, wA_gen, gt, gt_q, gt_t, w, w_gen, w_vals, w_compat⟩` from `U`. Consider the cases of `P`. Take `⟨-, hL, -, -, hgt, hw⟩` from `hM`. Simplify using `only at hL hgt hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hL hgt` using the available equality. Take `rfl` from `eq_of_heq hw`. Take `rfl` from `eq_of_heq hσ`. Take `⟨S, hS⟩` from `hE e`. Use `DVR.expandsAt_of_val U' e k σ f S fun y J hJ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨rG, hG₁, hG₂⟩` from `exists_lift_unit_tensor G (fstG I e G).left`. Take `⟨rB, hB₁, hB₂⟩` from `exists_lift_unit_tensor D.toPre.P.A (U'.gt e).pG.left`. Establish `hc : (U'.gt e).pG.left ≫ D.toPre.P.A.hom = (fstG I e G).left ≫ G.hom` using `(Over.w (U'.gt e).pG).trans (Over.w (fstG I e G)).symm`. Establish `H` using `hS _ (𝟙 _) rG rB (hG₁.trans (Category.id_comp _).symm) (hB₁.trans (Category.id_comp _).symm) (hB₂.trans (hc.trans hG₂.symm)) y`. Establish `hf : ∀ α, sval (f' α) rB y J = sval (f α) (DVR.pGl U' e) y J` using `fun α => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB α _ rB y J hJ, hB₁]`. Use `⟨fun α hα => ?_, fun jL hL => ?_⟩` and prove the remaining obligations. Use `choose JG hJG using fun ψ : (thickObj R I e G).left ⟶ G.left => exists_chart U'.LG.isLB (ψ y)`. Conclude with `(hf α).symm.trans ((H JG J hJG hJ).1 α hα)`. Take `⟨JG, hJG, eJ⟩` from `exists_good U'.LG.L U'.LG.isLB y (fun _ : PUnit => (fstG I e G).left) (fun _ => jL) (fun _ _ _ => rfl) (fun _ => hL)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₀ : JG (fstG I e G).left = jL` using `eJ PUnit.unit`. Establish `H₂` using `(H JG J hJG hJ).2`. Establish `hs : sval σ' rG y JG = DVR.sv U' k σ (DVR.fGl I G e) y jL`. Rewrite using `[hG _ rG y JG hJG, hG₁]`. Conclude with `sval_of σ _ y JG (fun _ => jL) (fun _ => by rw [Category.comp_id]; exact e₀)`.
-
-Simplify using `only [Category.id_comp, e₀, hs, hf] at H₂`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `H₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_of_expT : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D.toPre A G) (U' : UnifPre I D A G), Match U U' → ∀ (k : ℕ) (σ : H0 U'.LG.L k) (σ₀ : H0 U.P.L.L k) (σ' : U.SecGT (𝟙_ _) k) (f) (f'), HEq σ σ₀ → SameG σ₀ σ' → SameB f f' → U.ExpT (𝟙_ _) k σ' f' → ∀ e, U'.ExpandsAt e k σ f := by
   intro R _ _ I D A G _ _ U U' hM k σ σ₀ σ' f f' hσ hG hB hE e

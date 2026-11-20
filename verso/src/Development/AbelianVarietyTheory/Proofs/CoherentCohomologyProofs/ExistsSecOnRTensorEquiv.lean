@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.AbLaw.ExtProd
 
 /- English proof (translation)
-Set `E₁ : P ⊗[R] Q ≃ₗ[R] Q ⊗[R] P` to `TensorProduct.comm R P Q`. Set `E₂ : Q ⊗[R] P ≃ₗ[B] Q ⊗[B] (B ⊗[R] P)` to `(TensorProduct.AlgebraTensorModule.cancelBaseChange R B B Q P).symm`. Set `E₃ : Q ⊗[B] (B ⊗[R] P) ≃ₗ[B] (C ⊗[A] P) ⊗[B] Q` to `TensorProduct.comm B _ _ ≪≫ₗ (Algebra.IsPushout.cancelBaseChange R B A C P).symm.rTensor Q`. Set `E₄ : (C ⊗[A] P) ⊗[B] Q ≃ₗ[C] (C ⊗[A] P) ⊗[C] (C ⊗[B] Q)` to `(TensorProduct.AlgebraTensorModule.cancelBaseChange B C C (C ⊗[A] P) Q).symm`. Set `E₅ : (C ⊗[A] P) ⊗[C] (C ⊗[B] Q) ≃ₗ[C] N ⊗[C] N'` to `TensorProduct.congr hj.equiv hj'.equiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `E : P ⊗[R] Q ≃+ N ⊗[C] N'` to `(((E₁.toAddEquiv.trans E₂.toAddEquiv).trans E₃.toAddEquiv).trans E₄.toAddEquiv).trans E₅.toAddEquiv`. Establish `hE (x : P) (y : Q) : E (x ⊗ₜ y) = j x ⊗ₜ j' y`. Express the relevant statement in the definitionally equal form `E₅ (E₄ (E₃ (E₂ (E₁ (x ⊗ₜ y))))) = _`. Simplify using `[E₁, E₂, E₃, E₄, E₅]`. Use `⟨E, hE, fun r z => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Consider the case `tmul x y`. Rewrite using `[TensorProduct.smul_tmul', hE, hE, TensorProduct.smul_tmul', ← algebraMap_smul A r x, j.map_smul (algebraMap R A r) x, IsScalarTower.algebraMap_apply R A C, algebraMap_smul C]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_tensor_addEquiv {R A B C P Q N N' : Type*} [CommRing R] [CommRing A] [CommRing B]
     [CommRing C] [Algebra R A] [Algebra R B] [Algebra R C] [Algebra A C] [Algebra B C]
@@ -76,7 +76,7 @@ Both sides reduce to the same expression.
       rs X (inf_le_inf_left V inf_le_right) (coord t k) := rfl
 
 /- English proof (translation)
-The claim follows from `tw_ext fun p k => by simp only [twCoord_mul, twCoord_restrict, coord_restrict, map_mul, rs_rs]`.
+A detailed English derivation is pending.
 -/
 theorem restrict_mul (h : W ≤ V) (s : SecOn M V) (t : SecOn H V) :
     restrict _ h (mul s t) = mul (restrict M h s) (restrict H h t) :=
@@ -104,9 +104,9 @@ Both sides reduce to the same expression.
     secMulHom M H V (s ⊗ₜ t) = mul s t := rfl
 
 /- English proof (translation)
-Establish `hT` using `isLB_tw hM hH 1`. Establish `hpk : V ≤ (tw M H 1).U (p, k)` using `le_inf hp hk`. Establish `key (s : SecOn M V) (t : SecOn H V) : chart hT (p, k) hpk (mul s t) = chart hM p hp s * chart hH k hk t`. Express the relevant statement in the definitionally equal form `rs X (le_inf le_rfl (le_inf hp hk)) (twCoord (mul s t) p k) = _`. Rewrite using `[twCoord_mul, map_mul, rs_rs, rs_rs, chart_apply, chart_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(chart hM p hp).symm (chart hT (p, k) hpk x), (chart hH k hk).symm 1, (chart hT (p, k) hpk).injective ?_⟩` and prove the remaining obligations. Rewrite using `[key, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mul_eq (hM : M.IsLB) (hH : H.IsLB) (p : M.ι) (k : H.ι) (hp : V ≤ M.U p)
     (hk : V ≤ H.U k) (x : SecOn (tw M H 1) V) : ∃ s t, mul s t = x := by
@@ -121,15 +121,15 @@ theorem exists_mul_eq (hM : M.IsLB) (hH : H.IsLB) (p : M.ι) (k : H.ι) (hp : V 
   rw [key, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, _root_.mul_one]
 
 /- English proof (translation)
-Establish `hT` using `isLB_tw hM hH 1`. Use `haveI := invertible hM hV`. Use `haveI := invertible hH hV`. Use `haveI := invertible hT hV`. Use `Module.Invertible.bijective_of_surjective fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `S : Set Γ(X, V)` to `{a | ∃ p k, X.basicOpen a ≤ M.U p ∧ X.basicOpen a ≤ H.U k}`. Establish `hS : Ideal.span S = ⊤`. Rewrite using `[← hV.self_le_iSup_basicOpen_iff]`. Introduce `y hy`. Take `⟨p, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.cover.ge (Set.mem_univ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hH.cover.ge (Set.mem_univ y))`. Take `⟨a, ha, hya⟩` from `hV.exists_basicOpen_le (V := M.U p ⊓ H.U k) ⟨y, hp, hk⟩ hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, p, k, ha.trans inf_le_left, ha.trans inf_le_right⟩, hya⟩`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem (LinearMap.range (secMulHom M H V)) S hS x ?_` and prove the remaining obligations. Introduce and unpack `⟨a, p, k, hp, hk⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `X.basicOpen_le a`. Take `⟨s, t, e⟩` from `exists_mul_eq hM hH p k hp hk (restrict _ h x)`. Take `⟨n, s', hs⟩` from `exists_pow_smul_eq_restrict hM hV.isCompact hV.isQuasiSeparated a h rfl s`. Take `⟨m, t', ht⟩` from `exists_pow_smul_eq_restrict hH hV.isCompact hV.isQuasiSeparated a h rfl t`. Take `⟨l, hl⟩` from `exists_pow_smul_eq_zero hT hV.isCompact a h rfl (a ^ (n + m) • x - mul s' t') (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, restrict_mul, ← hs, ← ht, map_smulₛₗ, ← e, ← secMulHom_tmul, ← secMulHom_tmul, TensorProduct.smul_tmul_smul, map_smul, map_pow, pow_add, sub_self])`. Use `⟨l + (n + m), a ^ l • (s' ⊗ₜ t'), ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[smul_sub, sub_eq_zero, ← mul_smul, ← pow_add]`. Rewrite using `[map_smul, secMulHom_tmul, ← hl]`.
+A detailed English derivation is pending.
 -/
 theorem secMulHom_bijective (hM : M.IsLB) (hH : H.IsLB) (hV : IsAffineOpen V) :
     Function.Bijective (secMulHom M H V) := by
@@ -169,7 +169,7 @@ variable {R : Type} [CommRing R] {Y Y' Z : Scheme.{0}} {f : Y ⟶ Spec (CommRing
   {f' : Y' ⟶ Spec (CommRingCat.of R)} {p₁ : Z ⟶ Y} {p₂ : Z ⟶ Y'}
 
 /- English proof (translation)
-Establish `: IsAffine _` using `isAffineOpen_top (Spec (CommRingCat.of R))`. Establish `: IsAffine _` using `hU`. Establish `: IsAffine _` using `hW`. Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := ⊤) (UT := W) (UX := U) le_top le_top rfl).isoPullback.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_inf (H : IsPullback p₁ p₂ f f') {U : Y.Opens} {W : Y'.Opens}
     (hU : IsAffineOpen U) (hW : IsAffineOpen W) : IsAffineOpen (p₁ ⁻¹ᵁ U ⊓ p₂ ⁻¹ᵁ W) := by
@@ -180,7 +180,7 @@ theorem isAffineOpen_inf (H : IsPullback p₁ p₂ f f') {U : Y.Opens} {W : Y'.O
     rfl).isoPullback.hom
 
 /- English proof (translation)
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := W) (UX := U) (UY := O) le_top le_top e).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) hW hU)`. Use `po.flip.of_iso (Scheme.ΓSpecIso _) (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[cst_eq_appLE]`. Simplify using `[cst_eq_appLE]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -207,15 +207,13 @@ namespace GlobalTheory.AbLaw
 open ExtProd in
 
 /- English proof (translation)
-Introduce `R _ Y Y' Z f f' p₁ p₂ M M' H hM hM' U W O e₁ e₂ hU hW e`. Establish `hO : IsAffineOpen O` using `e ▸ isAffineOpen_inf H hU hW`. Use `letI := cstAlgebra f U`. Use `letI := cstAlgebra f' W`. Use `letI := cstAlgebra (p₁ ≫ f) O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra Γ(Y, U) Γ(Z, O) := (p₁.appLE U O e₁).hom.toAlgebra`. Use `letI : Algebra Γ(Y', W) Γ(Z, O) := (p₂.appLE W O e₂).hom.toAlgebra`. Use `haveI : IsScalarTower R Γ(Y, U) Γ(Z, O) := .of_algebraMap_eq fun r => (appLE_cst (g := RingHom.id R) (by simp) e₁ r).symm`. Use `haveI : IsScalarTower R Γ(Y', W) Γ(Z, O) := .of_algebraMap_eq fun r => (appLE_cst (g := RingHom.id R) (by simp [H.w]) e₂ r).symm`. Use `haveI : Algebra.IsPushout R Γ(Y', W) Γ(Y, U) Γ(Z, O) := CommRingCat.isPushout_iff_isPushout.mp (isPushout_prod H e₁ e₂ hU hW e)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Module Γ(Y, U) (SecOn (M.pull p₁) O) := Module.compHom _ (p₁.appLE U O e₁).hom`. Use `haveI : IsScalarTower Γ(Y, U) Γ(Z, O) (SecOn (M.pull p₁) O) := .of_algebraMap_smul fun _ _ => rfl`. Use `letI : Module Γ(Y', W) (SecOn (M'.pull p₂) O) := Module.compHom _ (p₂.appLE W O e₂).hom`. Use `haveI : IsScalarTower Γ(Y', W) Γ(Z, O) (SecOn (M'.pull p₂) O) := .of_algebraMap_smul fun _ _ => rfl`. Set `j₁ : SecOnR f M U →ₗ[Γ(Y, U)] SecOn (M.pull p₁) O` to `{ toFun := SecOn.pullLE M p₁ U O e₁ map_add' := (SecOn.pullLE M p₁ U O e₁).map_add map_smul' := (SecOn.pullLE M p₁ U O e₁).map_smulₛₗ }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `j₂ : SecOnR f' M' W →ₗ[Γ(Y', W)] SecOn (M'.pull p₂) O` to `{ toFun := SecOn.pullLE M' p₂ W O e₂ map_add' := (SecOn.pullLE M' p₂ W O e₂).map_add map_smul' := (SecOn.pullLE M' p₂ W O e₂).map_smulₛₗ }`. Establish `h₁ : IsBaseChange Γ(Z, O) j₁` using `SecOn.isBaseChange_pullLE hM p₁ hU hO e₁ (fun _ => rfl) j₁ fun _ => rfl`. Establish `h₂ : IsBaseChange Γ(Z, O) j₂` using `SecOn.isBaseChange_pullLE hM' p₂ hW hO e₂ (fun _ => rfl) j₂ fun _ => rfl`. Take `⟨E, hE, hE'⟩` from `exists_tensor_addEquiv (R := R) h₁ h₂`. Set `F` to `LinearEquiv.ofBijective _ (secMulHom_bijective (LB.isLB_pull hM p₁) (LB.isLB_pull hM' p₂) hO) ≪≫ₗ SecOnR.of (p₁ ≫ f) (tw (M.pull p₁) (M'.pull p₂) 1) O`.
-
-Use `⟨{ E.trans F.toAddEquiv with map_smul' := fun r z => (congrArg F (hE' r z)).trans (F.map_smul _ _) }, fun a b p l => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun z => SecOn.twCoord (secMulHom _ _ _ z) p l) (hE a b)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_secOnR_tensor_equiv : ∀ (R : Type) [CommRing R] (Y Y' Z : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (f' : Y' ⟶ Spec (CommRingCat.of R)) (p₁ : Z ⟶ Y) (p₂ : Z ⟶ Y') (M : LB Y) (M' : LB Y'), IsPullback p₁ p₂ f f' → M.IsLB → M'.IsLB → ∀ (U : Y.Opens) (W : Y'.Opens) (O : Z.Opens) (e₁ : O ≤ p₁ ⁻¹ᵁ U) (e₂ : O ≤ p₂ ⁻¹ᵁ W), IsAffineOpen U → IsAffineOpen W → O = p₁ ⁻¹ᵁ U ⊓ p₂ ⁻¹ᵁ W → ∃ E : SecOnR f M U ⊗[R] SecOnR f' M' W ≃ₗ[R] SecOnR (p₁ ≫ f) (tw (M.pull p₁) (M'.pull p₂) 1) O, ∀ (a : SecOn M U) (b : SecOn M' W) (p : (M.pull p₁).ι) (l : (M'.pull p₂).ι), SecOn.twCoord ((SecOnR.of _ _ O).symm (E (SecOnR.of f M U a ⊗ₜ SecOnR.of f' M' W b))) p l = rs Z (inf_le_inf_left O inf_le_left) (GlobalTheory.LB.coord (SecOn.pullLE M p₁ U O e₁ a) p) * rs Z (inf_le_inf_left O inf_le_right) (GlobalTheory.LB.coord (SecOn.pullLE M' p₂ W O e₂ b) l) := by
   intro R _ Y Y' Z f f' p₁ p₂ M M' H hM hM' U W O e₁ e₂ hU hW e

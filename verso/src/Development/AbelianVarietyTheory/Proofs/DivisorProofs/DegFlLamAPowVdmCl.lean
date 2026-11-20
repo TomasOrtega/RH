@@ -15,34 +15,34 @@ def blockPerm {N j : ℕ} (h : j ≤ N) (p : Equiv.Perm (Fin j) × Equiv.Perm (F
   (blockEquiv h).permCongr (Equiv.sumCongr p.1 p.2)
 
 /- English proof (translation)
-Simplify using `[blockEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEquiv_inl {N j : ℕ} (h : j ≤ N) (a : Fin j) : ((blockEquiv h (Sum.inl a) : Fin N) : ℕ) = a := by
   simp [blockEquiv]
 
 /- English proof (translation)
-Simplify using `[blockEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockEquiv_inr {N j : ℕ} (h : j ≤ N) (b : Fin (N - j)) :
     ((blockEquiv h (Sum.inr b) : Fin N) : ℕ) = j + b := by
   simp [blockEquiv]
 
 /- English proof (translation)
-Simplify using `[blockPerm, Equiv.permCongr_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockPerm_inl {N j : ℕ} (h : j ≤ N) (p : Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) (a : Fin j) :
     blockPerm h p (blockEquiv h (Sum.inl a)) = blockEquiv h (Sum.inl (p.1 a)) := by
   simp [blockPerm, Equiv.permCongr_apply]
 
 /- English proof (translation)
-Simplify using `[blockPerm, Equiv.permCongr_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockPerm_inr {N j : ℕ} (h : j ≤ N) (p : Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) (b : Fin (N - j)) :
     blockPerm h p (blockEquiv h (Sum.inr b)) = blockEquiv h (Sum.inr (p.2 b)) := by
   simp [blockPerm, Equiv.permCongr_apply]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `(blockEquiv h).surjective i`. Break down `s with a | b` into its components or cases. Rewrite using `[blockPerm_inl, blockEquiv_inl, blockEquiv_inl]`. Simplify using `[a.2, (p.1 a).2]`. Rewrite using `[blockPerm_inr, blockEquiv_inr, blockEquiv_inr]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -54,24 +54,24 @@ theorem blockPerm_lt {N j : ℕ} (h : j ≤ N) (p : Equiv.Perm (Fin j) × Equiv.
   · rw [blockPerm_inr, blockEquiv_inr, blockEquiv_inr]; omega
 
 /- English proof (translation)
-Simplify using `[blockPerm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sign_blockPerm {N j : ℕ} (h : j ≤ N) (p : Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) :
     Equiv.Perm.sign (blockPerm h p) = Equiv.Perm.sign p.1 * Equiv.Perm.sign p.2 := by
   simp [blockPerm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr]
 
 /- English proof (translation)
-Use `set f : ι × Fin N → ι × Fin N := fun x => (x.1, ρ x.1 x.2) with hfdef`. Establish `hinj : Function.Injective f`. Introduce and unpack `⟨a, i⟩ ⟨b, j⟩ h`. Simplify using `only [hfdef, Prod.mk.injEq] at h`. Take `⟨rfl, h2⟩` from `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[(ρ a).injective h2]`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨a, j⟩`. Conclude with `⟨(a, (ρ a).symm j), by simp [hfdef]⟩`. Establish `hexp : ∀ σ : ι → Equiv.Perm (Fin N), permExp (σ * ρ⁻¹) = (permExp σ).mapDomain f`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Use extensionality with `y`. Take `⟨⟨a, i⟩, rfl⟩` from `hsurj y`. Rewrite using `[Finsupp.mapDomain_apply hinj]`. Simplify using `[permExp, hfdef, Pi.mul_apply, Pi.inv_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsgn : ∀ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign ((σ * ρ⁻¹) τ) : ℤ) : ℝ)) = (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * ∏ τ, ((Equiv.Perm.sign (ρ τ) : ℤ) : ℝ)`. Introduce `σ`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Pi.mul_apply, Pi.inv_apply, Equiv.Perm.sign_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∑ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * (rename f P).coeff (permExp σ) = (∏ τ, ((Equiv.Perm.sign (ρ τ) : ℤ) : ℝ)) * ∑ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * P.coeff (permExp σ)`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight (ρ⁻¹ : ι → Equiv.Perm (Fin N))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulRight, hsgn, hexp, coeff_rename_mapDomain _ hinj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Unfold `degFl`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem degFl_rename_fibre {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (ρ : ι → Equiv.Perm (Fin N))
     (P : MvPolynomial (ι × Fin N) ℝ) :
@@ -112,7 +112,7 @@ theorem degFl_rename_fibre {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (
   ring
 
 /- English proof (translation)
-Simplify using `only [pLow, map_sum, map_pow, rename_X, Finset.sum_filter]`. Rewrite using `[← Equiv.sum_comp (blockPerm h (w τ)) (fun i : Fin N => if (i : ℕ) < j then (X (τ, i) : Pol ι N) ^ 1 else 0)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [blockPerm_lt]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_pLow {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : j ≤ N)
     (w : ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) (τ : ι) :
@@ -124,9 +124,9 @@ theorem rename_pLow {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : j
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [pHigh, map_sum, map_pow, rename_X, Finset.sum_filter]`. Rewrite using `[← Equiv.sum_comp (blockPerm h (w τ)) (fun i : Fin N => if j ≤ (i : ℕ) then (X (τ, i) : Pol ι N) ^ 1 else 0)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `blockPerm_lt h (w τ) i` as an intermediate fact. Simplify using `only [← not_lt, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_pHigh {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : j ≤ N)
     (w : ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) (τ : ι) :
@@ -139,7 +139,7 @@ theorem rename_pHigh {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [lamA, map_sum, map_sub, rename_pLow, rename_pHigh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_lamA {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : j ≤ N)
     (w : ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) :
@@ -147,15 +147,15 @@ theorem rename_lamA {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : j
   simp only [lamA, map_sum, map_sub, rename_pLow, rename_pHigh]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Subsingleton.elim (Fin.revPerm : Equiv.Perm (Fin 0)) 1]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `key : finRotate (n + 1) * (Fin.revPerm : Equiv.Perm (Fin (n + 1))) = Equiv.Perm.decomposeFin.symm (0, (Fin.revPerm : Equiv.Perm (Fin n)))`. Use extensionality with `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `[Equiv.Perm.decomposeFin_symm_apply_succ, Fin.rev_succ]`. Establish `hs` using `congrArg Equiv.Perm.sign key`. Rewrite `hs` using `[Equiv.Perm.sign_mul, sign_finRotate, Equiv.Perm.decomposeFin.symm_sign]`. Simplify using `only [if_true, one_mul, Nat.add_sub_cancel] at hs`. Rewrite using `[Fin.sum_univ_castSucc, pow_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.coe_castSucc, Fin.val_last]`. Rewrite using `[← ih]`. Establish `: Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (n + 1))) = (-1) ^ n * Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))`. Rewrite using `[← hs, ← mul_assoc, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sign_revPerm_cast {R : Type} [CommRing R] (n : ℕ) :
     ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : R) = (-1) ^ (∑ i : Fin n, (i : ℕ)) := by
@@ -182,7 +182,7 @@ theorem sign_revPerm_cast {R : Type} [CommRing R] (n : ℕ) :
     rw [this]; push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp (Fin.revPerm : Equiv.Perm (Fin n))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_rev_val (n : ℕ) : ∑ i : Fin n, (n - 1 - (i : ℕ)) = ∑ i : Fin n, (i : ℕ) := by
   rw [← Equiv.sum_comp (Fin.revPerm : Equiv.Perm (Fin n))]
@@ -191,13 +191,13 @@ theorem sum_rev_val (n : ℕ) : ∑ i : Fin n, (n - 1 - (i : ℕ)) = ∑ i : Fin
   omega
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun i k : Fin n => (-v i) ^ (n - 1 - (k : ℕ))) = (Matrix.vandermonde (fun i => -v i)).submatrix id Fin.revPerm`. Use extensionality with `i k`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.vandermonde_apply, Fin.revPerm_apply, Fin.val_rev]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hdet` using `congrArg Matrix.det hM`. Rewrite `hdet` using `[Matrix.det_apply', Matrix.det_permute', Matrix.det_vandermonde]`. Simplify using `only [Matrix.of_apply] at hdet`. Rewrite using `[hdet]`. Establish `hterm : ∀ i : Fin n, ∏ k ∈ Finset.Ioi i, (-v k - -v i) = (-1) ^ (n - 1 - (i : ℕ)) * ∏ b : Fin n, if i < b then v b - v i else 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[show (∏ k ∈ Finset.Ioi i, (-v k - -v i)) = ∏ k ∈ Finset.Ioi i, -(v k - v i) from Finset.prod_congr rfl fun _ _ => by ring, Finset.prod_neg, Fin.card_Ioi, ← Finset.prod_filter]`. Use `congr 2`. Use extensionality with `b`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hterm, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, sum_rev_val, sign_revPerm_cast]`. Rewrite using `[← mul_assoc, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vdm_alt {R : Type} [CommRing R] (n : ℕ) (v : Fin n → R) :
     ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : R) * ∏ a : Fin n, (-v (σ a)) ^ (n - 1 - (a : ℕ)) =
@@ -224,11 +224,11 @@ theorem vdm_alt {R : Type} [CommRing R] (n : ℕ) (v : Fin n → R) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← (blockEquiv h).prod_comp, Fintype.prod_sum_type]`. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (f := fun b' : Fin (N - j) => ∏ b : Fin N, if blockEquiv h (Sum.inr b') < b ∧ (b : ℕ) < j then (X (τ, b) - X (τ, blockEquiv h (Sum.inr b')) : MvPolynomial (ι × Fin N) ℝ) else 1) (fun b' _ => Finset.prod_eq_one fun b _ => if_neg fun hh => by`. Use `Fin.lt_def.1 hh.1` as an intermediate fact. Rewrite `this` using `[blockEquiv_inr]`. Use the proof step `omega), mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (blockEquiv h).prod_comp, Fintype.prod_sum_type]`. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (f := fun b' : Fin (N - j) => if blockEquiv h (Sum.inl a) < blockEquiv h (Sum.inr b') ∧ ((blockEquiv h (Sum.inr b') : Fin N) : ℕ) < j then (X (τ, blockEquiv h (Sum.inr b')) - X (τ, blockEquiv h (Sum.inl a)) : MvPolynomial (ι × Fin N) ℝ) else …`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hb` using `b.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.lt_def, blockEquiv_inl, hb, and_true]`.
+A detailed English derivation is pending.
 -/
 theorem vdmLow_reindex {ι : Type} {N j : ℕ} (h : j ≤ N) (τ : ι) :
     (∏ a : Fin N, ∏ b : Fin N, if a < b ∧ (b : ℕ) < j then (X (τ, b) - X (τ, a) : MvPolynomial (ι × Fin N) ℝ) else 1) =
@@ -251,11 +251,11 @@ theorem vdmLow_reindex {ι : Type} {N j : ℕ} (h : j ≤ N) (τ : ι) :
   simp only [Fin.lt_def, blockEquiv_inl, hb, and_true]
 
 /- English proof (translation)
-Rewrite using `[← (blockEquiv h).prod_comp, Fintype.prod_sum_type]`. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (f := fun a' : Fin j => ∏ b : Fin N, if blockEquiv h (Sum.inl a') < b ∧ j ≤ ((blockEquiv h (Sum.inl a') : Fin N) : ℕ) then (X (τ, b) - X (τ, blockEquiv h (Sum.inl a')) : MvPolynomial (ι × Fin N) ℝ) else 1) (fun a' _ => Finset.prod_eq_one fun …`. Use `hh.2` as an intermediate fact. Rewrite `this` using `[blockEquiv_inl]`. Use `a'.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `omega), one_mul]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (blockEquiv h).prod_comp, Fintype.prod_sum_type]`. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (f := fun b' : Fin j => if blockEquiv h (Sum.inr a) < blockEquiv h (Sum.inl b') ∧ j ≤ ((blockEquiv h (Sum.inr a) : Fin N) : ℕ) then (X (τ, blockEquiv h (Sum.inl b')) - X (τ, blockEquiv h (Sum.inr a)) : MvPolynomial (ι × Fin N) ℝ) else 1) (fu …`. Use `Fin.lt_def.1 hh.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[blockEquiv_inr, blockEquiv_inl]`. Use `b'.2` as an intermediate fact. Use the proof step `omega), one_mul]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.lt_def, blockEquiv_inr, Nat.le_add_right, and_true, Nat.add_lt_add_iff_left]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vdmHigh_reindex {ι : Type} {N j : ℕ} (h : j ≤ N) (τ : ι) :
     (∏ a : Fin N, ∏ b : Fin N, if a < b ∧ j ≤ (a : ℕ) then (X (τ, b) - X (τ, a) : MvPolynomial (ι × Fin N) ℝ) else 1) =
@@ -278,9 +278,9 @@ theorem vdmHigh_reindex {ι : Type} {N j : ℕ} (h : j ≤ N) (τ : ι) :
   simp only [Fin.lt_def, blockEquiv_inr, Nat.le_add_right, and_true, Nat.add_lt_add_iff_left]
 
 /- English proof (translation)
-Unfold `fibPt`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← (blockEquiv h).prod_comp, Fintype.prod_sum_type]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[blockEquiv_inl, if_pos a.2]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[blockEquiv_inr, if_neg (by omega)]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -299,9 +299,9 @@ theorem fibPt_blocks {ι : Type} [Fintype ι] {N j : ℕ} (h : j ≤ N) :
     congr 1; omega
 
 /- English proof (translation)
-Simplify using `only [vdmLow_reindex h, vdmHigh_reindex h]`. Simplify using `only [← vdm_alt]`. Rewrite using `[fibPt_blocks h]`. Simplify using `only [map_prod, map_mul, map_pow, map_neg, rename_X, blockPerm_inl, blockPerm_inr]`. Simplify using `only [map_intCast, Finset.sum_mul_sum, ← Fintype.sum_prod_type']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.prod_sum]`. Use `Fintype.sum_congr _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem antisym_fibPt {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h : j ≤ N) :
     ∑ w : ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j)),
@@ -320,19 +320,17 @@ theorem antisym_fibPt {ι : Type} [Fintype ι] [DecidableEq ι] {N j : ℕ} (h :
   refine Finset.prod_congr rfl fun τ _ => by ring
 
 /- English proof (translation)
-Introduce `ι _ _ N j k h`. Use `set G := lamA ι N j ^ k`. Use `set sg : (ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j))) → ℝ := fun w => ∏ τ, ((Equiv.Perm.sign (w τ).1 : ℤ) : ℝ) * ((Equiv.Perm.sign (w τ).2 : ℤ) : ℝ) with hsg`. Use `set c : ℝ := ((Nat.factorial j : ℝ)⁻¹ * (Nat.factorial (N - j) : ℝ)⁻¹) ^ Fintype.card ι with hc`. Establish `hv : vdmCl ι N j = C c * ∑ w : ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j)), C (sg w) * rename (fun x : ι × Fin N => (x.1, blockPerm h (w x.1) x.2)) (fibPt ι N j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[antisym_fibPt h, vdmCl, hc, ← Finset.card_univ, ← Finset.prod_const, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ w : ι → Equiv.Perm (Fin j) × Equiv.Perm (Fin (N - j)), degFl ι N (G * (C (sg w) * rename (fun x : ι × Fin N => (x.1, blockPerm h (w x.1) x.2)) (fibPt ι N j))) = degFl ι N (G * fibPt ι N j)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `w`. Establish `hG : rename (fun x : ι × Fin N => (x.1, blockPerm h (w x.1) x.2)) G = G`. Simplify using `only [G, map_pow, rename_lamA h w]`. Rewrite using `[mul_left_comm, PPowSum.degFl_C_mul, ← hG, ← map_mul, hG]`. Rewrite using `[degFl_rename_fibre (fun τ => blockPerm h (w τ)), ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: sg w * ∏ τ, ((Equiv.Perm.sign (blockPerm h (w τ)) : ℤ) : ℝ) = 1`. Rewrite using `[hsg, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[sign_blockPerm]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (w τ).1) with h1 | h1 <;>`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (w τ).2) with h2 | h2 <;> simp [h1, h2]`. Rewrite using `[this, one_mul]`. Rewrite using `[hv, mul_left_comm, PPowSum.degFl_C_mul, Finset.mul_sum, PPowSum.degFl_sum]`. Simplify using `only [hterm, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `one_mul _` and compare the differences between its conclusion and the goal. Rewrite using `[hc, Fintype.card_pi, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_perm, Fintype.card_perm, Fintype.card_fin, Fintype.card_fin]`. Establish `h1 : (Nat.factorial j : ℝ) ≠ 0` using `by positivity`. Establish `h2 : (Nat.factorial (N - j) : ℝ) ≠ 0` using `by positivity`. Use `push_cast`.
-
-Rewrite using `[← mul_pow]`. Clear the denominators using the available nonvanishing facts. Conclude with `one_pow _`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem degFl_lamA_pow_vdmCl : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N j k : ℕ), j ≤ N →
     degFl ι N (lamA ι N j ^ k * vdmCl ι N j) = degFl ι N (lamA ι N j ^ k * fibPt ι N j) := by

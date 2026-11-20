@@ -97,7 +97,7 @@ def GCoreOfCut : Prop :=
   SecExists → SecMove → FamLocal → GenTransfer → GenToQQ → ModelLocal → RadSpSmooth → GRawSmooth → GQLFam → AsmSec → GCore
 
 /- English proof (translation)
-Introduce `hSE hSM hFL hGT hGQ hML hRS hRaw hQL hA` and use `hSM hSE (hA hFL (hGQ hRS hGT) hML hRS hRaw hQL)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gauge_construction_of_truncation : GCoreOfCut := fun hSE hSM hFL hGT hGQ hML hRS hRaw hQL hA =>
   hSM hSE (hA hFL (hGQ hRS hGT) hML hRS hRaw hQL)

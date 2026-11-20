@@ -9,7 +9,7 @@ noncomputable def mon {n m : ℕ} (a : Fin n → Fin m) :
   (MultilinearMap.mkPiAlgebra ℝ (Fin n) ℝ).compLinearMap (fun j => LinearMap.proj (a j))
 
 /- English proof (translation)
-Simplify using `[mon]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mon_apply {n m : ℕ} (a : Fin n → Fin m) (v : Fin n → Fin m → ℝ) :
     mon a v = ∏ j, v j (a j) := by
@@ -22,20 +22,20 @@ noncomputable def formW : MultilinearMap ℝ (fun _ : Fin 3 => (Fin 3 → ℝ)) 
   (-(1 / 2) : ℝ) • ∑ k : Fin 3, mon (fun j => if j = k then 1 else 0)
 
 /- English proof (translation)
-Simplify using `[formI, mon_apply, Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem formI_apply (v : Fin 2 → Fin 2 → ℝ) : formI v = 1 / 2 * (v 0 0 * v 1 0) := by
   simp [formI, mon_apply, Fin.prod_univ_two]
 
 /- English proof (translation)
-Simplify using `only [formW, smul_apply, sum_apply, mon_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem formW_apply' (v : Fin 3 → Fin 3 → ℝ) :
     formW v = -(1 / 2) * ∑ k : Fin 3, ∏ j, v j (if j = k then 1 else 0) := by
   simp only [formW, smul_apply, sum_apply, mon_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[formW_apply']`. Simplify using `[Fin.sum_univ_three, Fin.prod_univ_three]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem formW_apply (v : Fin 3 → Fin 3 → ℝ) :
     formW v = -(1 / 2) * (v 0 1 * v 1 0 * v 2 0 + v 0 0 * v 1 1 * v 2 0 + v 0 0 * v 1 0 * v 2 1) := by
@@ -43,7 +43,7 @@ theorem formW_apply (v : Fin 3 → Fin 3 → ℝ) :
   simp [Fin.sum_univ_three, Fin.prod_univ_three]
 
 /- English proof (translation)
-Introduce `σ v`. Simplify using `only [formI, smul_apply, mon_apply, Function.comp_apply]`. Rewrite using `[Equiv.prod_comp σ (fun j => v j 0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem formI_symm : IsSymmForm formI := by
   intro σ v
@@ -51,7 +51,7 @@ theorem formI_symm : IsSymmForm formI := by
   rw [Equiv.prod_comp σ (fun j => v j 0)]
 
 /- English proof (translation)
-Introduce `σ v`. Rewrite using `[formW_apply', formW_apply', ← Equiv.sum_comp σ (fun k => ∏ j, v j (if j = k then 1 else 0))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.prod_comp σ (fun j => v j (if j = σ k then 1 else 0))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -105,7 +105,7 @@ noncomputable def model : FibreSquare.{0} 1 where
 end Inhabit
 
 /- English proof (translation)
-Use `⟨Inhabit.model, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Inhabit.formI (fun _ => ![1, 0]) ≠ 0`. Rewrite using `[Inhabit.formI_apply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inhabit_thm : InhabitStatement := by
   refine ⟨Inhabit.model, ?_⟩

@@ -12,7 +12,7 @@ namespace UpperTheory.Gal.Mod.FrobeniusTorsors
 open UpperTheory.Gal.TranscendenceTraces GlobalTheory.SS.FrobField
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one m ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hg`. Rewrite `h` using `[map_mul, ζ.2.2, zero_mul]`. Simplify `h` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem prim_pow {m : ℕ} {A : Type} [CommRing A] (ζ : Prim m A) : ζ.1 ^ m = 1 := by
   obtain ⟨g, hg⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one m ℤ
@@ -21,7 +21,7 @@ private theorem prim_pow {m : ℕ} {A : Type} [CommRing A] (ζ : Prim m A) : ζ.
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Use `haveI : NeZero (m : Ω) := ⟨hm.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Use `⟨Prim.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom ⟨ζ, hm, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hζ.isRoot_cyclotomic (NeZero.pos m)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prim_ex (m : ℕ) [NeZero m] (Ω : Type) [Field Ω] [IsAlgClosed Ω] (hm : IsUnit (m : Ω)) :
     Nonempty (Prim m Γ(gp Ω, ⊤)) := by
@@ -32,7 +32,7 @@ private theorem prim_ex (m : ℕ) [NeZero m] (Ω : Type) [Field Ω] [IsAlgClosed
   exact hζ.isRoot_cyclotomic (NeZero.pos m)
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `e : (1 : ULift.{1} (ZMod 1)) = 0` using `Subsingleton.elim _ _`. Rewrite using `[← one_smul (ULift.{1} (ZMod 1)) a, ← one_smul (ULift.{1} (ZMod 1)) b, e, zero_smul, zero_smul]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tw_sub (m : ℕ) [NeZero m] (hm : m = 1) (i : ℤ) {U : Scheme.{0}} (a b : Sec (tw m i) U) : a = b := by
   subst hm
@@ -46,17 +46,15 @@ private theorem frob_top (Ω : Type) [Field Ω] (p f : ℕ) (hp : p.Prime) (h : 
     (absFrob (gp Ω) p f hp h).appTop.hom c = c ^ p ^ f := rfl
 
 /- English proof (translation)
-Take `⟨ζ⟩` from `prim_ex m Ω hm`. Take `⟨φ, -, hφ⟩` from `secFun_holds m 0 (gp Ω) ζ y`. Establish `hI` using `GlobalTheory.T.tateTwist_sections_locally_generated m 0`. Establish `key : Sec.res (absFrob (gp Ω) p f hp h) (twGen 0 ζ) = twGen 0 ζ`. Rewrite using `[hI.2.2.2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : m = 1`. Conclude with `tw_sub m h1 0 _ _`. Establish `hpΩ : (p : Ω) = 0`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hcop : Nat.Coprime (p ^ f) m`. Use `Nat.Coprime.pow_left f ((Nat.Prime.coprime_iff_not_dvd hp).2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩`. Apply `hm.ne_zero` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk, Nat.cast_mul, hpΩ, zero_mul]`. Use `haveI : Fact (1 < m) := ⟨by`. Use `NeZero.ne m` as an intermediate fact. Use the proof step `omega⟩`. Rewrite using `[hI.2.2.2.2.1 (gp Ω) ζ _ (ZMod.unitOfCoprime (p ^ f) hcop)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[zpow_zero, Units.val_one, ZMod.val_one, one_smul]`. Use `show (absFrob (gp Ω) p f hp h).appTop.hom ζ.1 = ζ.1 ^ ((ZMod.unitOfCoprime (p ^ f) hcop : ZMod m)).val`. Rewrite using `[frob_top, ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Use `conv_lhs => rw [← Nat.mod_add_div (p ^ f) m]`. Rewrite using `[pow_add, pow_mul, prim_pow ζ, one_pow, mul_one]`.
-
-Apply `ptInj_holds m 0` to reduce the goal to its premises. Introduce `Ω' _ _ x`. Rewrite using `[res_res, hφ Ω' _, hφ Ω' x, ← res_res, key, Subsingleton.elim (pt (x ≫ absFrob (gp Ω) p f hp h)) (pt x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frob_pt (m : ℕ) [NeZero m] (Ω : Type) [Field Ω] [IsAlgClosed Ω] (p f : ℕ) (hp : p.Prime)
     (h : (p : Γ(gp Ω, ⊤)) = 0) (hm : IsUnit (m : Ω)) (y : Sec (tw m 0) (gp Ω)) :
@@ -91,9 +89,9 @@ private theorem frob_pt (m : ℕ) [NeZero m] (Ω : Type) [Field Ω] [IsAlgClosed
   rw [res_res, hφ Ω' _, hφ Ω' x, ← res_res, key, Subsingleton.elim (pt (x ≫ absFrob (gp Ω) p f hp h)) (pt x)]
 
 /- English proof (translation)
-Use `ptInj_holds m 0 U _ _ fun Ω _ _ x => ?_` and prove the remaining obligations. Establish `hΩ : (p : Γ(gp Ω, ⊤)) = 0` using `cast_zero_of_hom x h`. Establish `hmΩ : IsUnit (m : Ω)`. Establish `h1` using `(hm.map x.appTop.hom).map (Scheme.ΓSpecIso (.of Ω)).hom.hom`. Simplify using `using h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[res_res, ← absFrob_nat x p f hp hΩ h, ← res_res]`. Conclude with `frob_pt m Ω p f hp hΩ hmΩ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frob_sec (m : ℕ) [NeZero m] (U : Scheme.{0}) (p f : ℕ) (hp : p.Prime) (h : (p : Γ(U, ⊤)) = 0)
     (hm : IsUnit (m : Γ(U, ⊤))) (a : Sec (tw m 0) U) : Sec.res (absFrob U p f hp h) a = a := by
@@ -111,17 +109,17 @@ private noncomputable def sc (A : Sq (𝟙 X)) : A.U ⟶ A.V :=
   A.pb.lift A.u (𝟙 _) (by simp)
 
 /- English proof (translation)
-The claim follows from `A.pb.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem sc_v (A : Sq (𝟙 X)) : sc A ≫ A.v = A.u := A.pb.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `A.pb.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem sc_r (A : Sq (𝟙 X)) : sc A ≫ A.r = 𝟙 _ := A.pb.lift_snd _ _ _
 
 /- English proof (translation)
-Use `A.pb.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sc_v, Category.id_comp, ← A.pb.w, Category.comp_id]`. Rewrite using `[Category.assoc, sc_r, Category.comp_id, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem r_sc (A : Sq (𝟙 X)) : A.r ≫ sc A = 𝟙 _ := by
   refine A.pb.hom_ext ?_ ?_
@@ -129,7 +127,7 @@ private theorem r_sc (A : Sq (𝟙 X)) : A.r ≫ sc A = 𝟙 _ := by
   · rw [Category.assoc, sc_r, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Use `B.pb.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, t.hv, sc_v, Category.assoc, sc_v, t.hu]`. Rewrite using `[Category.assoc, t.hr, ← Category.assoc, sc_r, Category.id_comp, Category.assoc, sc_r, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sc_nat {A B : Sq (𝟙 X)} (t : A.To B) : sc A ≫ t.k = t.g ≫ sc B := by
   refine B.pb.hom_ext ?_ ?_
@@ -140,7 +138,7 @@ private noncomputable def fk (p f : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 
   absFrob A.U p f hp (cast_zero_of_hom A.u h) ≫ sc A
 
 /- English proof (translation)
-Unfold `fk`. Rewrite using `[← Category.assoc, ← absFrob_nat t.g p f hp (cast_zero_of_hom A.u h) (cast_zero_of_hom B.u h), Category.assoc, ← sc_nat, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fk_nat (p f : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) {A B : Sq (𝟙 X)} (t : A.To B) :
     t.g ≫ fk p f hp h B = fk p f hp h A ≫ t.k := by
@@ -160,7 +158,7 @@ private noncomputable def fam (p f : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) =
   comm A s t a := (map_res (I.d s t) (fk p f hp h A) a)
 
 /- English proof (translation)
-Unfold `fk`. Establish `h1 : sc (Sq.self (𝟙 X)) = 𝟙 _` using `(Category.comp_id (sc (Sq.self (𝟙 X)))).symm.trans (sc_r (Sq.self (𝟙 X)))`. Rewrite using `[h1]`. Conclude with `Category.comp_id _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fk_self (p f : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) :
     fk p f hp h (Sq.self (𝟙 X)) = absFrob X p f hp h := by
@@ -176,13 +174,13 @@ private theorem fam_app (p f : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) {R
     (A : Sq (𝟙 X)) (a : Sec (I.X s) A.V) : ((fam p f hp h I).deg s).app A a = Sec.res (fk p f hp h A) a := rfl
 
 /- English proof (translation)
-Introduce `A a`. Establish `hmU : IsUnit (m : Γ(A.U, ⊤))` using `by simpa using hm.map A.u.appTop.hom`. Use `⟨Sec.res (sc A) a, ?_, fun Ω _ _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[fam_app, ← map_res]`. Use `congrArg (Sec.map (resι _ _)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `fk`. Rewrite using `[← res_res]`. Conclude with `frob_sec m A.U p f hp _ hmU _`. Establish `hf : fib A.r x = {x ≫ sc A}`. Use extensionality with `z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hz' : z ≫ A.r = x` using `hz`. Rewrite using `[Set.mem_singleton_iff, ← hz', Category.assoc, r_sc, Category.comp_id]`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(x ≫ sc A) ≫ A.r = x`. Rewrite using `[Category.assoc, sc_r, Category.comp_id]`. Rewrite using `[hf, finsum_mem_singleton, res_res]`. Conclude with `(one_smul ℤ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fam_sums (m : ℕ) [NeZero m] (p f : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) (hm : IsUnit (m : Γ(X, ⊤))) :
     (fam p f hp h (res _ (tw m 0))).Sums (Wt.const X 1) := by
@@ -210,9 +208,9 @@ end UpperTheory.Gal.Mod.FrobeniusTorsors
 
 open UpperTheory.Gal.Mod.FrobeniusTorsors in
 /- English proof (translation)
-Introduce `m _ X p f hp h hm k x`. Establish `e1` using `(TranscendenceTraces.trChar_holds m 0 (𝟙 X) (Wt.const X 1) (TranscendenceTraces.wtLin_holds.2.2 (𝟙 X) 1) hm).2.2 _ (fam_sums m p f hp h hm) k`. Establish `e2` using `(TranscendenceTraces.trLin_holds m k 0).2.2 X 1 hm x`. Rewrite `e2` using `[e1, one_smul]`. Take `⟨a, ha⟩` from `(TranscendenceTraces.rpBasic_holds _ (res _ (tw m 0)) X k).1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(TranscendenceTraces.rpBasic_holds _ (res _ (tw m 0)) X k).2.2.2.1 X (absFrob X p f hp h) x a ha`. Establish `h2` using `TranscendenceTraces.rpOp_holds _ _ (fam p f hp h (res _ (tw m 0))) k x a ha`. Rewrite `h2` using `[e2]`. Use `((TranscendenceTraces.rpBasic_holds _ _ X k).2.2.1 _ _ _ _ h1 h2).2.1 ?_` and prove the remaining obligations. Conclude with `(congrArg (fun e => Sec.res e a) (fk_self p f hp h)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.frobTors :
     FrobTors := by

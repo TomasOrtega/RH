@@ -19,9 +19,9 @@ open scoped TensorProduct
 namespace GlobalTheory.PlaceSupp
 
 /- English proof (translation)
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul a x`. Conclude with `⟨((0, a) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ⊗ₜ[D.host.F] x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add y z hy hz`. Take `⟨a, rfl⟩` from `hy`. Take `⟨b, rfl⟩` from `hz`. Conclude with `⟨a + b, (Formalism.L2.Theta.finPart D).map_add a b⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finPart_surjective (D : D7) : Function.Surjective (Formalism.L2.Theta.finPart D) := by
   intro y
@@ -35,11 +35,11 @@ theorem finPart_surjective (D : D7) : Function.Surjective (Formalism.L2.Theta.fi
     exact ⟨a + b, (Formalism.L2.Theta.finPart D).map_add a b⟩
 
 /- English proof (translation)
-Introduce `D sp hF p c hπ`. Establish `hι1 : p.ι 1 = p.e`. Use `p.ι_π 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis. Establish `hπe : p.π p.e = 1` using `by rw [← hι1, p.π_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `c.injective` to reduce the goal to its premises. Rewrite using `[← hπ, hπe, map_one]`. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `finPart_surjective D x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `finPart_surjective D y`. Establish `hab : p.π a = p.π b` using `by rw [hπ, hπ, hxy]`. Establish `key : p.e * a = p.e * b` using `by rw [← p.ι_π, ← p.ι_π, hab]`. Rewrite using `[← map_mul, ← map_mul, key]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_idem : ∀ (D : D7) (sp : SplitPlace D.host.E) (hF : D.host.F = maximalRealSubfield D.host.E)
     (p : GlobalTheory.LocMod.Place D (sp.w.adicCompletion D.host.E))

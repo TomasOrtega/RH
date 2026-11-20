@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem`. Consider the case `exact _root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem`. Consider the case `(apply _root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subIner_component_mem {L Y I α : Type} [Field L] [AddCommGroup Y] [Module L Y]
     (T : I → Y →ₗ[L] Y) (χ : α → I → L) (hχ : Function.Injective χ) (U : Submodule L Y)
@@ -27,13 +27,13 @@ theorem subIner_component_mem {L Y I α : Type} [Field L] [AddCommGroup Y] [Modu
   | (intros; exact _root_.GlobalTheory.EigenvectorOfSum.eigenvector_mem_of_sum_mem ..)
 
 /- English proof (translation)
-Establish `key` using `subIner_component_mem (Y := J → Y) (fun g => LinearMap.pi fun j => (T' j g).comp (LinearMap.proj j)) χ hχ (D.map (LinearMap.pi m)) (by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Conclude with `⟨T g x, hD g x hx, by ext j; simp [hm]⟩) S (fun a j => y j a)`. Use the proof step `(fun a ha g => by ext j; simp [hy j a ha g])`. Use the proof step `⟨d, hd, by ext j; simp [← hs j, Finset.sum_apply]⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ a, ∃ x : X, a ∈ S → x ∈ D ∧ ∀ j, m j x = y j a`. Introduce `a`. Distinguish the cases in `ha : a ∈ S`. Take `⟨x, hx, e⟩` from `key a ha`. Conclude with `⟨x, fun _ => ⟨hx, fun j => congrFun e j⟩⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, fun h => absurd h ha⟩`. Use `choose x hx using h1`. Use `⟨x, fun a ha => ⟨(hx a ha).1, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hinj _ fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, hm, map_smul, (hx a ha).2, hy j a ha, sub_self]`. Rewrite using `[← sub_eq_zero]`. Use `hinj _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sum, ← hs j, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun a ha => (hx a ha).2 j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subIner_pullback {L X Y I α J : Type} [Field L] [AddCommGroup X] [Module L X]
     [AddCommGroup Y] [Module L Y] (T : I → X →ₗ[L] X) (T' : J → I → Y →ₗ[L] Y)
@@ -69,11 +69,11 @@ theorem subIner_pullback {L X Y I α J : Type} [Field L] [AddCommGroup X] [Modul
     exact Finset.sum_congr rfl fun a ha => (hx a ha).2 j
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `(LinearMap.pi p).exists_leftInverse_of_injective (LinearMap.ker_eq_bot'.2 fun v hv => hp v fun j => congrFun hv j)`. Establish `h1 : ∀ v, ∑ j, q (Pi.single j (p j v)) = v`. Introduce `v`. Rewrite using `[← map_sum, Finset.univ_sum_single]`. Conclude with `LinearMap.congr_fun hq v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ z : V ⊗[Qp] B, ∑ j, AlgebraTensorModule.rTensor Qp B (q.comp (LinearMap.single LL (fun _ => U) j)) (AlgebraTensorModule.rTensor Qp B (p j) z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => conv_rhs => rw [← h1 v, TensorProduct.sum_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add z w hz hw => simp only [map_add, Finset.sum_add_distrib, hz, hw]`. Rewrite using `[← h2 x]`. Simplify using `[hx]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subIner_rTensor_inj {Qp LL B V U : Type} [Field Qp] [Field LL] [Algebra Qp LL]
     [AddCommGroup B] [Module Qp B]
@@ -117,9 +117,9 @@ variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀
     {U : Type} [AddCommGroup U] [Module LL U] [Module Qp U] [IsScalarTower Qp LL U]
 
 /- English proof (translation)
-Establish `h1 : ∀ (h : PC.H) (z : V ⊗[Qp] B), actVB PC.PD' (PC.resH ρ) h z = actVB PC.PD ρ h z`. Introduce `h z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, PotCrysData.resH, PC.actB_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add z w hz hw => simp only [map_add, hz, hw]`. Simplify using `[PotCrysData.Dpcris, Dcris, Submodule.mem_iInf, sub_eq_zero, h1]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem subIner_mem_Dpcris (ρ : Representation LL G V) (x : V ⊗[Qp] B) :
     x ∈ PC.Dpcris ρ ↔ ∀ h ∈ PC.H, actVB PC.PD ρ h x = x := by
@@ -132,7 +132,7 @@ theorem subIner_mem_Dpcris (ρ : Representation LL G V) (x : V ⊗[Qp] B) :
   simp [PotCrysData.Dpcris, Dcris, Submodule.mem_iInf, sub_eq_zero, h1]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB]`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem subIner_actVB_mul (ρ : Representation LL G V) (g h : G) (z : V ⊗[Qp] B) :
     actVB PC.PD ρ g (actVB PC.PD ρ h z) = actVB PC.PD ρ (g * h) z := by
@@ -142,9 +142,9 @@ theorem subIner_actVB_mul (ρ : Representation LL G V) (g h : G) (z : V ⊗[Qp] 
   | add z w hz hw => simp only [map_add, hz, hw]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[subIner_mem_Dpcris]`. Introduce `h hh`. Establish `h1` using `hx (g⁻¹ * h * g⁻¹⁻¹) (PC.normal.conj_mem h hh g⁻¹)`. Use `conv_rhs => rw [← h1]`. Rewrite using `[subIner_actVB_mul, subIner_actVB_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem subIner_Dpcris_stable (ρ : Representation LL G V) (g : G) (x : V ⊗[Qp] B)
     (hx : x ∈ PC.Dpcris ρ) : actVB PC.PD ρ g x ∈ PC.Dpcris ρ := by
@@ -157,7 +157,7 @@ theorem subIner_Dpcris_stable (ρ : Representation LL G V) (g : G) (x : V ⊗[Qp
   group
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, hf]`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem subIner_rTensor_actVB (ρ : Representation LL G V) (σ : Representation LL G U)
     (f : V →ₗ[LL] U) (hf : ∀ g v, f (ρ g v) = σ g (f v)) (g : G) (z : V ⊗[Qp] B) :
@@ -169,16 +169,16 @@ theorem subIner_rTensor_actVB (ρ : Representation LL G V) (σ : Representation 
   | add z w hz hw => simp only [map_add, hz, hw]
 
 /- English proof (translation)
-Simplify using `[PotCrysData.Eig, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem subIner_mem_Eig (ρ : Representation LL G V) (I : Subgroup G) (a : I →* LLˣ) (x : V ⊗[Qp] B) :
     x ∈ PC.Eig ρ I a ↔ x ∈ PC.Dpcris ρ ∧ ∀ g : I, actVB PC.PD ρ g x = ((a g : LLˣ) : LL) • x := by
   simp [PotCrysData.Eig, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Use `le_antisymm (fun d hd => ?_) (iSup₂_le fun a _ => inf_le_left)` and prove the remaining obligations. Establish `h1 : ∀ j, ∃ μ : ∀ a, PC.Eig (σ j) I a, ∑ a ∈ Sig, (μ a : U ⊗[Qp] B) = AlgebraTensorModule.rTensor Qp B (p j) d`. Introduce `j`. Rewrite using `[← Submodule.mem_iSup_finset_iff_exists_sum, ← hσ j, subIner_mem_Dpcris]`. Introduce `h hh`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← subIner_rTensor_actVB PC ρ (σ j) (p j) (hp j), (subIner_mem_Dpcris PC ρ d).1 hd h hh]`. Use `choose μ hμ using h1`. Take `⟨x, hx, rfl⟩` from `subIner_pullback (fun g : I => actVB PC.PD ρ g) (fun j (g : I) => actVB PC.PD (σ j) g) (fun j => AlgebraTensorModule.rTensor Qp B (p j)) (fun j g z => subIner_rTensor_actVB PC ρ (σ j) (p j) (hp j) g z) (subIner_rTensor_inj p hinj) (fun (a : I →* LLˣ) g => ((a g : LLˣ) : LL)) (fun …`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem ha ((subIner_mem_Eig PC ρ I a _).2 (hx a ha)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subIner_Dpcris_eq (ρ : Representation LL G V) {n : ℕ} (σ : Fin n → Representation LL G U)
     (p : Fin n → V →ₗ[LL] U) (hp : ∀ j g v, p j (ρ g v) = σ j g (p j v))
@@ -207,7 +207,7 @@ theorem subIner_Dpcris_eq (ρ : Representation LL G V) {n : ℕ} (σ : Fin n →
 end General
 
 /- English proof (translation)
-Introduce `l _ P K K' LL h hN hF hS ι k Ms W hW Sig h1 h2 h3`. Take `⟨a, x, p, hp, hinj⟩` from `hW`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Conclude with `subIner_Dpcris_eq (pc P h hN hF hS) W.ρ (fun j => matRep (Ms (x j))) p (fun j g v => by rw [hp]; simp [matRep]) hinj _ Sig fun j => (h3 (x j)).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inertiaThrough_of_isSubFam : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l) (h : K.1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : ↥(GK K)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B c) = algebraMap ↥(K0 K') P.R.B c') (ι : Type) (k : ℕ) (Ms : ι → (↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1)) (W : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), IsSubFam Ms W → ∀ (Sig : Finset ((pc P h hN hF hS).Iner →* (↥LL.1)ˣ)), (∀ a ∈ Sig, ∀ g : (pc P h hN hF hS).Iner, (g : ↥(GK K)) ∈ (pc P h hN hF hS).H → a g = 1) → (∀ a ∈ Sig, Nat.Coprime (orderOf a) (pc P h hN hF hS).PD.p) → (∀ x, (pc P h hN hF hS).InertiaThrough (matRep (Ms x)) Sig) → (pc P h hN hF hS).InertiaThrough W.ρ Sig := by
   intro l _ P K K' LL h hN hF hS ι k Ms W hW Sig h1 h2 h3

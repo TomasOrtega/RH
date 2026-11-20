@@ -23,7 +23,7 @@ namespace GlobalTheory.TripleGlueMap
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨m⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem nonempty_cast {A B : Scheme.{0}} {t : SAB H A} {t' : SAB H B} {f g : A ⟶ B} (h : f = g)
     (m : SABMap t t' f) : Nonempty (SABMap t t' g) := by
@@ -31,9 +31,9 @@ theorem nonempty_cast {A B : Scheme.{0}} {t : SAB H A} {t' : SAB H B} {f g : A �
   exact ⟨m⟩
 
 /- English proof (translation)
-Establish `hp` using `sabPull Out.CubePf.cubePull e.inv t`. Establish `m` using `hp.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose`. Take `⟨i, -⟩` from `GlobalTheory.ObjMaps.exists_sab_id t`. Take `⟨i'⟩` from `nonempty_cast (by simp) i (g := e.hom ≫ e.inv)`. Take `⟨k, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m i'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, ⟨m⟩, ⟨k⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_transport {A B : Scheme.{0}} (e : A ≅ B) (t : SAB H A) :
     ∃ t' : SAB H B, Nonempty (SABMap t' t e.inv) ∧ Nonempty (SABMap t t' e.hom) := by
@@ -45,9 +45,7 @@ theorem exists_transport {A B : Scheme.{0}} (e : A ≅ B) (t : SAB H A) :
   exact ⟨_, ⟨m⟩, ⟨k⟩⟩
 
 /- English proof (translation)
-Establish `hx' : closure {Scheme.homeoOfIso e x} ∈ irreducibleComponents B`. Rewrite using `[Scheme.coe_homeoOfIso]`. Conclude with `hx`. Establish `key` using `preimage_mem_irreducibleComponents hx' (Scheme.homeoOfIso e).isOpenEmbedding ⟨Scheme.homeoOfIso e x, subset_closure rfl, x, rfl⟩`. Rewrite `key` using `[(Scheme.homeoOfIso e).preimage_closure, ← Set.image_singleton, (Scheme.homeoOfIso e).injective.preimage_image]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_genericPoints_iso {A B : Scheme.{0}} (e : A ≅ B) (x : A) (hx : e.hom x ∈ genericPoints B) :
     x ∈ genericPoints A := by
@@ -61,13 +59,13 @@ theorem mem_genericPoints_iso {A B : Scheme.{0}} (e : A ≅ B) (x : A) (hx : e.h
   exact key
 
 /- English proof (translation)
-Take `⟨hr, hg⟩` from `h`. Use `⟨@isReduced_of_isOpenImmersion _ _ e.inv _ hr, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : e.inv y ∈ genericPoints A`. Apply `mem_genericPoints_iso e` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hyy : e.hom (e.inv y) = y` using `(Scheme.homeoOfIso e).apply_symm_apply y`. Rewrite using `[hyy]`. Conclude with `hy`. Establish `ha` using `hg hy'`. Simplify using `only [abLocus, Set.mem_setOf_eq] at ha ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _ _ u hu`. Establish `hp : IsProper (pullback.snd t.G.hom (u ≫ e.inv))`. Apply `ha K (u ≫ e.inv)` to reduce the goal to its premises. Take `⟨p, rfl⟩` from `hu`. Conclude with `⟨p, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `sq` using `(IsPullback.of_hasPullback t'.G.hom u).paste_horiz m.cart.1`. Rewrite using `[← sq.isoIsPullback_hom_snd _ _ (IsPullback.of_hasPullback t.G.hom (u ≫ e.inv))]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso @IsProper _ _).mpr hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_transport {A B : Scheme.{0}} (e : A ≅ B) {t : SAB H A} {t' : SAB H B} (m : SABMap t' t e.inv)
     (h : IsReduced A ∧ genericPoints A ⊆ abLocus t.G) : IsReduced B ∧ genericPoints B ⊆ abLocus t'.G := by
@@ -91,19 +89,19 @@ theorem generic_transport {A B : Scheme.{0}} (e : A ≅ B) {t : SAB H A} {t' : S
   exact (MorphismProperty.cancel_left_of_respectsIso @IsProper _ _).mpr hp
 
 /- English proof (translation)
-Introduce `E _ _ _ H X X₀ X₁ X₂ ψ₁ ψ₂ φ₁ φ₂ t₀ t₁ t₂ m₁ m₂ h₁ h₂ sq hcov g₁ g₂`. Take `⟨t₁', ⟨a₁⟩, ⟨b₁⟩⟩` from `exists_transport ψ₁.isoOpensRange t₁`. Take `⟨t₂', ⟨a₂⟩, ⟨b₂⟩⟩` from `exists_transport ψ₂.isoOpensRange t₂`. Establish `G₁` using `generic_transport ψ₁.isoOpensRange a₁ g₁`. Establish `G₂` using `generic_transport ψ₂.isoOpensRange a₂ g₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range (pullback.fst ψ₁ ψ₂ ≫ ψ₁) = Set.range (ψ₁.opensRange ⊓ ψ₂.opensRange).ι`. Rewrite using `[IsOpenImmersion.range_pullback_to_base_of_left, Scheme.Opens.range_ι]`. Simplify using the standard rewrite rules. Set `e₀ : X₀ ≅ (ψ₁.opensRange ⊓ ψ₂.opensRange).toScheme` to `sq.isoPullback ≪≫ IsOpenImmersion.isoOfRangeEq _ _ hr`. Establish `he₀ : e₀.hom ≫ (ψ₁.opensRange ⊓ ψ₂.opensRange).ι = φ₁ ≫ ψ₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[e₀]`. Take `⟨t₀', ⟨a₀⟩, -⟩` from `exists_transport e₀ t₀`. Take `⟨c₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m₁ a₀`. Take `⟨d₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp b₁ c₁`. Take `⟨c₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m₂ a₀`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp b₂ c₂`. Establish `k₁ : (e₀.inv ≫ φ₁) ≫ ψ₁.isoOpensRange.hom = X.homOfLE (inf_le_left : ψ₁.opensRange ⊓ ψ₂.opensRange ≤ ψ₁.opensRange)`. Rewrite using `[← cancel_mono ψ₁.opensRange.ι]`. Simplify using `only [Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, Scheme.homOfLE_ι]`. Rewrite using `[← he₀, Iso.inv_hom_id_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `k₂ : (e₀.inv ≫ φ₂) ≫ ψ₂.isoOpensRange.hom = X.homOfLE (inf_le_right : ψ₁.opensRange ⊓ ψ₂.opensRange ≤ ψ₂.opensRange)`. Rewrite using `[← cancel_mono ψ₂.opensRange.ι]`. Simplify using `only [Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, Scheme.homOfLE_ι]`. Rewrite using `[← sq.w, ← he₀, Iso.inv_hom_id_assoc]`. Take `⟨M₁⟩` from `nonempty_cast k₁ d₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M₂⟩` from `nonempty_cast k₂ d₂`. Establish `hUV : ψ₁.opensRange ⊔ ψ₂.opensRange = ⊤`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_sup, TopologicalSpace.Opens.coe_top, Set.mem_union, Scheme.Hom.coe_opensRange, Set.mem_univ, iff_true]`. Conclude with `hcov x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨t, n₁, n₂, -⟩` from `GlobalTheory.TripleGlue.exists_sab_glue E H X _ _ t₁' t₂' t₀' M₁ M₂ hUV G₁ G₂`. Take `⟨p₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n₁ b₁`. Take `⟨p₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n₂ b₂`. Conclude with `⟨t, nonempty_cast (Scheme.Hom.isoOpensRange_hom_ι ψ₁) p₁, nonempty_cast (Scheme.Hom.isoOpensRange_hom_ι ψ₂) p₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sab_glue_of_isPullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X₀ X₁ X₂ : Scheme.{0}) (ψ₁ : X₁ ⟶ X) (ψ₂ : X₂ ⟶ X) (φ₁ : X₀ ⟶ X₁) (φ₂ : X₀ ⟶ X₂) (t₀ : SAB H X₀) (t₁ : SAB H X₁) (t₂ : SAB H X₂) (_ : SABMap t₀ t₁ φ₁) (_ : SABMap t₀ t₂ φ₂), IsOpenImmersion ψ₁ → IsOpenImmersion ψ₂ → IsPullback φ₁ φ₂ ψ₁ ψ₂ → (∀ x : X, x ∈ Set.range ψ₁ ∨ x ∈ Set.range ψ₂) → (IsReduced X₁ ∧ genericPoints X₁ ⊆ abLocus t₁.G) → (IsReduced X₂ ∧ genericPoints X₂ ⊆ abLocus t₂.G) → ∃ t : SAB H X, Nonempty (SABMap t₁ t ψ₁) ∧ Nonempty (SABMap t₂ t ψ₂) := by
   intro E _ _ _ H X X₀ X₁ X₂ ψ₁ ψ₂ φ₁ φ₂ t₀ t₁ t₂ m₁ m₂ h₁ h₂ sq hcov g₁ g₂

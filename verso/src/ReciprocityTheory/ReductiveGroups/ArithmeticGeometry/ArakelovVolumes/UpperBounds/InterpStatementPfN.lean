@@ -11,7 +11,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Unfold `muF`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul_non_measurable _ (densF_meas X x0).ennreal_ofReal (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem muF_lintegral (x0 : Frame X.Ψ r) (g : V (nd X) → ℝ≥0∞) :
     ∫⁻ z, g z ∂muF X x0 = ∫⁻ z in OmF X x0, ENNReal.ofReal (densF X x0 z) * g z := by
@@ -21,7 +21,7 @@ theorem muF_lintegral (x0 : Frame X.Ψ r) (g : V (nd X) → ℝ≥0∞) :
   rfl
 
 /- English proof (translation)
-Unfold `rhoF kaF`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_log (densF_pos X x0 hz), div_eq_mul_inv, ← Real.exp_neg, show -(-bb * rhF X x0 z) = bb * rhF X x0 z by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoF_split (x0 : Frame X.Ψ r) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (bb : ℝ) {z : V (nd X)}
     (hz : z ∈ OmF X x0) :
@@ -33,11 +33,11 @@ theorem rhoF_split (x0 : Frame X.Ψ r) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → �
   ring
 
 /- English proof (translation)
-Establish `hmeas : MeasurableSet (OmF X x0)` using `(ExF.isOpen_OmF X x0).measurableSet`. Unfold `InAt`. Rewrite using `[muF_lintegral]`. Use `lt_of_le_of_lt (lintegral_mono_ae ?_) hint` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hmeas] with z hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd` using `(densF_pos X x0 hz).le`. Establish `hz' : cpt X x0 z ∈ X.dom` using `hz`. Establish `hW : Wpsi X Fp ψ (cpt X x0 z) = ENNReal.ofReal (Real.exp (-(phla X Fp (cpt X x0 z) + ψ (cpt X x0 z))))`. Unfold `Wpsi`. Rewrite using `[if_pos hz']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : 0 < kaF X x0 bb z` using `Real.exp_pos _`. Rewrite using `[hW, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hd, rhoF_split X x0 Fp ψ bb hz]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inAt_of (x0 : Frame X.Ψ r) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (bb : ℝ) (F : V (nd X) → ℂ)
     (hint : ∫⁻ z in OmF X x0, ENNReal.ofReal (‖F z‖ ^ 2 * rhoF X x0 Fp ψ bb z) < ⊤) :
@@ -60,15 +60,15 @@ theorem inAt_of (x0 : Frame X.Ψ r) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ)
   ring
 
 /- English proof (translation)
-Introduce `C _ _`. Establish `hmeas : MeasurableSet (OmF X x0)` using `(ExF.isOpen_OmF X x0).measurableSet`. Use `lt_of_le_of_lt (setLIntegral_le_lintegral _ _) ?_` and prove the remaining obligations. Rewrite using `[muF_lintegral]`. Establish `hfin : ∫⁻ z in OmF X x0, ENNReal.ofReal (Real.exp C0) * ENNReal.ofReal (‖F z‖ ^ 2 * rhoF X x0 Fp ψ bb z) < ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint`. Use `lt_of_le_of_lt (lintegral_mono_ae ?_) hfin` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hmeas] with z hz`. Establish `hd` using `(densF_pos X x0 hz).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ` using `hψb _ hz`. Establish `hrh` using `ExF.rhF_nonneg X x0 ho hz`. Rewrite using `[← ENNReal.ofReal_mul hd, ← ENNReal.ofReal_mul (Real.exp_pos _).le, rhoF_split X x0 Fp ψ bb hz]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `key : 1 ≤ Real.exp C0 * (Real.exp (-(phla X Fp (cpt X x0 z) + ψ (cpt X x0 z))) / kaF X x0 bb z) * Real.exp (phla X Fp (cpt X x0 z))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `kaF`. Rewrite using `[div_eq_mul_inv, ← Real.exp_neg, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Apply `Real.one_le_exp` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hbb hrh]`. Establish `he : Real.exp (phla X Fp (cpt X x0 z)) * Real.exp (-phla X Fp (cpt X x0 z)) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `hA : 0 ≤ ‖F z‖ ^ 2` using `by positivity`. Establish `hE : 0 ≤ Real.exp (-phla X Fp (cpt X x0 z))` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem extF_hyp (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ)
     (C0 : ℝ) (hψb : ∀ x ∈ X.dom, ψ x ≤ C0) (bb : ℝ) (hbb : 0 ≤ bb) (F : V (nd X) → ℂ)
@@ -112,23 +112,21 @@ theorem extF_hyp (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (Fp : Wt X.Ψ r) (ψ : F
     _ = _ := by rw [he, mul_one]
 
 /- English proof (translation)
-Establish `hn : 0 < nd X` using `by have := Xa.n_ge; omega`. Establish `h0 : cpt X x0 0 ∈ X.dom` using `hball (mem_closedBall_self (by linarith))`. Establish `hx0 : x0 ∈ X.dom` using `by rwa [cpt_zero] at h0`. Establish `hsub2 : closedBall (0 : V (nd X)) ε ⊆ OmF X x0` using `fun z hz => hball (closedBall_subset_closedBall (by linarith) hz)`. Establish `hsub : ball (0 : V (nd X)) ε ⊆ OmF X x0` using `fun z hz => hsub2 (ball_subset_closedBall hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : DifferentiableOn ℂ (fun z => (fun x => P x - 1) (cpt X x0 z)) (ball 0 ε)` using `((hFd.mono hsub).sub_const 1).congr fun z hz => by show P (cpt X x0 z) - 1 = F z - 1`. Rewrite using `[hPF z (hsub hz)]`. Establish `hsd : ∀ k, DifferentiableOn ℂ (fun z => Fl.s k (cpt X x0 z)) (ball 0 ε)` using `fun k => (comp_cpt_diffOn X (Fl.s_van k).1.1.1.1 x0).mono hsub`. Establish `hwd : DifferentiableOn ℂ (fun z => Fl.w0 (cpt X x0 z)) (ball 0 ε)` using `(comp_cpt_diffOn X Fl.weightForm_vanishes.1.1.1.1 x0).mono hsub`. Establish `hcont : ContinuousOn (psie X x0 Xa.Fp Xa.L ψ bb) (closedBall 0 ε)` using `fun z hz => (psie_cdAt X x0 ho Xa.Fp Xa.L ψ hψs bb (hsub2 hz)).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `(isCompact_closedBall (0 : V (nd X)) ε).bddAbove_image hcont`. Establish `hmeasB : MeasurableSet (ball (0 : V (nd X)) ε)` using `measurableSet_ball`. Establish `hint : ∫⁻ z in ball (0 : V (nd X)) ε, ENNReal.ofReal (‖(fun x => P x - 1) (cpt X x0 z)‖ ^ 2 * (∑ k, ‖Fl.s k (cpt X x0 z)‖ ^ 2) ^ (-(nd X : ℝ))) < ⊤`. Establish `hfin : ∫⁻ y in OmF X x0, ENNReal.ofReal (Real.exp M) * ENNReal.ofReal (‖HE.cut ε hε y - F y‖ ^ 2 * Real.exp (-psie X x0 Xa.Fp Xa.L ψ bb y) * HE.nsq (fun k z => Fl.s k (cpt X x0 z)) y ^ (-(nd X : ℝ))) < ⊤`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI`. Use `lt_of_le_of_lt ?_ hfin` and prove the remaining obligations. Use `le_trans ?_ (lintegral_mono_set hsub)` and prove the remaining obligations. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hmeasB] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc : z ∈ closedBall (0 : V (nd X)) ε` using `ball_subset_closedBall hz`. Establish `hcut : HE.cut ε hε z = 1`. Unfold `HE.cut`. Rewrite using `[(HE.bumpE ε hε).one_of_mem_closedBall hzc]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hnsq : HE.nsq (fun k z => Fl.s k (cpt X x0 z)) z = ∑ k, ‖Fl.s k (cpt X x0 z)‖ ^ 2`. Unfold `HE.nsq`. Simplify using `[Complex.normSq_eq_norm_sq]`. Establish `hpe : 1 ≤ Real.exp M * Real.exp (-psie X x0 Xa.Fp Xa.L ψ bb z)`. Rewrite using `[← Real.exp_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Real.one_le_exp` to reduce the goal to its premises. Use `hM ⟨z, hzc, rfl⟩` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `beta_reduce`. Rewrite using `[hcut, hnsq, hPF z (hsub hz), ← ENNReal.ofReal_mul (Real.exp_pos _).le, norm_sub_rev (1 : ℂ) (F z)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hN : 0 ≤ (∑ k, ‖Fl.s k (cpt X x0 z)‖ ^ 2) ^ (-(nd X : ℝ))` using `Real.rpow_nonneg (Finset.sum_nonneg fun _ _ => by positivity) _`. Establish `hA : 0 ≤ ‖F z - 1‖ ^ 2` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hpe (mul_nonneg hA hN)]`. Establish `key` using `hV r X x0 hn ho hx0 (fun x => P x - 1) Fl.w0 Fl.s ε hε hu hsd hwd hw hs0 hdet hint`.
-
-Simplify `key` using `[sub_eq_zero]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem value_base (hV : VanishAtSStatement (E := E)) (x0 : Frame X.Ψ r) (ho : IsOrth X x0)
     (Xa : ArchInM X) (Fl : FlatM X Xa) (ψ : Frame X.Ψ r → ℝ)

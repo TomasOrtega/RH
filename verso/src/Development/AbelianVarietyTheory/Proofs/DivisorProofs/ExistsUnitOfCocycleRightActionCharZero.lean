@@ -13,25 +13,25 @@ open GlobalTheory.OrbitSep
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ Γ _ _ σ hσ c hc htriv`. Use `haveI := Fintype.ofFinite Γ`. Establish `h1 : ∀ a, σ 1 a = a`. Introduce `a`. Establish `e` using `hσ 1 1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[mul_one]`. Conclude with `(σ 1).injective e.symm`. Establish `key : ∀ γ δ, (σ δ (c γ : K))⁻¹ = (c δ : K) * ((c (γ * δ) : K))⁻¹`. Introduce `γ δ`. Rewrite using `[hc γ δ, mul_inv, mul_left_comm, mul_inv_cancel₀ (Units.ne_zero _), mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : K → K` to `fun b => ∑ γ, ((c γ : K))⁻¹ * σ γ b`. Establish `hF : ∀ b δ, σ δ (F b) = c δ * F b`. Introduce `b δ`. Simplify using `only [F, map_sum, map_mul, map_inv₀, Finset.mul_sum]`. Apply `Fintype.sum_equiv (Equiv.mulRight δ)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[key γ δ, hσ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hex : ∃ b, F b ≠ 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Set `φ : Γ → (K →* K)` to `fun γ => (σ γ : K →* K)`. Set `s : Finset (K →* K)` to `Finset.univ.image φ`. Set `g : (K →* K) → K` to `fun ψ => ∑ γ ∈ Finset.univ.filter (fun γ => φ γ = ψ), ((c γ : K))⁻¹`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hli` using `linearIndependent_monoidHom K K`. Establish `hsum : ∑ ψ ∈ s, g ψ • (ψ : K → K) = 0`. Use function extensionality and compare the values at `b`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← hno b]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, g, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hterm : ∀ ψ ∈ s, ∑ i ∈ Finset.univ.filter (fun γ => φ γ = ψ), ((c i : K))⁻¹ * ψ b = ∑ i ∈ Finset.univ.filter (fun γ => φ γ = ψ), ((c i : K))⁻¹ * σ i b` using `fun ψ _ => Finset.sum_congr rfl fun γ hγ => by rw [← (Finset.mem_filter.mp hγ).2]; rfl`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_fiberwise_of_maps_to (fun γ _ => Finset.mem_image_of_mem φ (Finset.mem_univ γ))]`. Establish `hz` using `linearIndependent_iff'.mp hli s g hsum (φ 1) (Finset.mem_image_of_mem φ (Finset.mem_univ 1))`. Establish `hterm : ∀ γ ∈ Finset.univ.filter (fun γ => φ γ = φ 1), ((c γ : K))⁻¹ = 1`. Introduce `γ hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hγ` using `[Finset.mem_filter]`. Establish `hid : ∀ a, σ γ a = a` using `fun a => (DFunLike.congr_fun hγ.2 a).trans (h1 a)`. Rewrite using `[htriv γ hid]`. Simplify using the standard rewrite rules. Establish `hcard : g (φ 1) = ((Finset.univ.filter (fun γ => φ γ = φ 1)).card : K)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [g]`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul, mul_one]`. Rewrite `hz` using `[hcard, Nat.cast_eq_zero, Finset.card_eq_zero]`. Establish `hmem : (1 : Γ) ∈ Finset.univ.filter (fun γ => φ γ = φ 1)` using `by simp`. Rewrite `hmem` using `[hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `at hmem`. Take `⟨b, hb⟩` from `hex`. Use `⟨Units.mk0 (F b) hb, fun γ => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mk0]`. Conclude with `hF b γ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_cocycle_rightAction_charZero :
     ∀ (K : Type) [Field K] [CharZero K] (Γ : Type) [Group Γ] [Finite Γ] (σ : Γ → K →+* K),

@@ -4,7 +4,7 @@ namespace ReciprocityTheory.ChartRestriction.G.FD.TelescopingWeightedSums
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `n, hp using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ k hk ih`. Rewrite using `[Finset.sum_Ico_succ_top hk, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_tele (f : ℕ → ℝ) {p n : ℕ} (hp : p ≤ n) :
     ∑ i ∈ Ico p n, (f (i + 1) - f i) = f n - f p := by
@@ -15,7 +15,7 @@ theorem sum_tele (f : ℕ → ℝ) {p n : ℕ} (hp : p ≤ n) :
     ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `Finset.sum_nonneg fun i hi' => mul_nonneg (by linarith [(ha i hi').1]) (hd i hi')`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun i hi' => mul_le_mul_of_nonneg_right (by linarith [(ha i hi').2]) (hd i hi')`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_sub_lo_mul_bounds_of_nonneg (S : Finset ℕ) (a d : ℕ → ℝ) (lo hi : ℝ)
     (hd : ∀ i ∈ S, 0 ≤ d i) (ha : ∀ i ∈ S, lo ≤ a i ∧ a i ≤ hi) :
@@ -27,7 +27,7 @@ private lemma sum_sub_lo_mul_bounds_of_nonneg (S : Finset ℕ) (a d : ℕ → �
       mul_le_mul_of_nonneg_right (by linarith [(ha i hi').2]) (hd i hi')
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun i hi' => mul_le_mul_of_nonpos_right (by linarith [(ha i hi').2]) (hd i hi')`. Conclude with `Finset.sum_nonpos fun i hi' => mul_nonpos_of_nonneg_of_nonpos (by linarith [(ha i hi').1]) (hd i hi')`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_sub_lo_mul_bounds_of_nonpos (S : Finset ℕ) (a d : ℕ → ℝ) (lo hi : ℝ)
     (hd : ∀ i ∈ S, d i ≤ 0) (ha : ∀ i ∈ S, lo ≤ a i ∧ a i ≤ hi) :
@@ -40,7 +40,7 @@ private lemma sum_sub_lo_mul_bounds_of_nonpos (S : Finset ℕ) (a d : ℕ → �
       mul_nonpos_of_nonneg_of_nonpos (by linarith [(ha i hi').1]) (hd i hi')
 
 /- English proof (translation)
-The claim follows from `|∑ i ∈ range n, a i * (Real.log (ρ (i + 1)) - Real.log (ρ i))| ≤ (hi - lo) * |Real.log (ρ p)| := by have hsplit : ∑ i ∈ range n, a i * (Real.log (ρ (i + 1)) - Real.log (ρ i)) = ∑ i ∈ range p, (a i - lo) * (Real.log (ρ (i + 1)) - Real.log (ρ i)) + ∑ i ∈ Ico p n, (a i - lo) * (Real …`.
+A detailed English derivation is pending.
 -/
 theorem wsum_bound {n p : ℕ} (hp : p ≤ n) (ρ : ℕ → ℝ) (hρ : ∀ i ≤ n, 0 < ρ i) (h0 : ρ 0 = 1)
     (hn : ρ n = 1)

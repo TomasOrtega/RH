@@ -23,7 +23,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.FibreTransfer
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K S x⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_residueField_factor (S : Scheme.{0}) (p : S) (K : Type) [Field K] (x : Sp K ⟶ S)
     (hx : x (closedPoint K) = p) :
@@ -32,7 +32,7 @@ theorem exists_residueField_factor (S : Scheme.{0}) (p : S) (K : Type) [Field K]
   exact ⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K S x⟩
 
 /- English proof (translation)
-Use `(isGrpPullback_pullback G (S.fromSpecResidueField p)).cancel ((isGrpPullback_pullback G (Spec.map θ ≫ S.fromSpecResidueField p)).congr rfl (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isGrpPullback_fibre {S : Scheme.{0}} (G : Over S) [GrpObj G] (p : S) (K : Type) [Field K]
     (θ : S.residueField p ⟶ CommRingCat.of K) :
@@ -45,7 +45,7 @@ theorem isGrpPullback_fibre {S : Scheme.{0}} (G : Over S) [GrpObj G] (p : S) (K 
       (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.FibreAmple.lbIso_pull_pull hL (pullback.lift (pullback.fst G.hom (Spec.map θ ≫ S.fromSpecResidueField p)) (pullback.snd G.hom _ ≫ Spec.map θ) (by rw [pullback.condition, Category.assoc])) (pullback.fst G.hom (S.fromSpecResidueField p))`. Rewrite `e` using `[pullback.lift_fst]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_fibre {S : Scheme.{0}} (G : Over S) {L : LB G.left} (hL : L.IsLB) (p : S) (K : Type) [Field K]
     (θ : S.residueField p ⟶ CommRingCat.of K) :
@@ -65,13 +65,11 @@ end GlobalTheory.FibreTransfer
 open GlobalTheory.FibreTransfer in
 
 /- English proof (translation)
-Introduce `S G _ hqc hsep hsm L hL K₁ _ z hP hA hK K _ x hx`. Generalize the expression as in `hy : z (closedPoint K₁) = y at hx`. Take `⟨θ₁, hz⟩` from `exists_residueField_factor S y K₁ z hy`. Take `⟨θ, rfl⟩` from `exists_residueField_factor S y K x hx`. Use `clear hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `hz` using the available equality. Use `haveI := hqc`. Use `haveI := hsep`. Use `haveI := hsm`. Establish `hLy` using `pull_isLB hL (pullback.fst G.hom (S.fromSpecResidueField y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₁ : QuasiCompact ((Over.pullback (S.fromSpecResidueField y)).obj G).hom` using `show QuasiCompact (pullback.snd G.hom _) from inferInstance`. Establish `i₂ : IsSeparated ((Over.pullback (S.fromSpecResidueField y)).obj G).hom` using `show IsSeparated (pullback.snd G.hom _) from inferInstance`. Establish `i₃ : Smooth ((Over.pullback (S.fromSpecResidueField y)).obj G).hom` using `show Smooth (pullback.snd G.hom _) from inferInstance`. Establish `hd` using `GlobalTheory.AmpleDescent.proper_relAmple_kTriv_of_fieldExtension (S.residueField y) K₁ θ₁.hom ((Over.pullback (S.fromSpecResidueField y)).obj G) ((Over.pullback (Spec.map θ₁ ≫ S.fromSpecResidueField y)).obj G) _ (isGrpPullback_fibre G y K₁ θ₁) _ _ hLy (pull_isLB hL _) (lbIso_fib …`. Establish `h₂` using `isGrpPullback_fibre G y K θ`.
-
-Take `⟨w, hw⟩` from `lbIso_fibre G hL y K θ`. Conclude with `⟨relAmple_pull h₂.1 hLy (pull_isLB hL _) ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) hd.2.1, kTriv_pull h₂ hLy (pull_isLB hL _) ((isGen_iff w).1 hw) hd.2.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FibreTransfer.relAmple_kTriv_of_same_point : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], QuasiCompact G.hom → IsSeparated G.hom → Smooth G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (K₁ : Type) [Field K₁] (z : Sp K₁ ⟶ S), IsProper (pullback.snd G.hom z) → RelAmple ((Over.pullback z).obj G) (L.pull (pullback.fst G.hom z)) → KTriv ((Over.pullback z).obj G) (L.pull (pullback.fst G.hom z)) → ∀ (K : Type) [Field K] (x : Sp K ⟶ S), x (closedPoint K) = z (closedPoint K₁) → RelAmple ((Over.pullback x).obj G) (L.pull (pullback.fst G.hom x)) ∧ KTriv ((Over.pullback x).obj G) (L.pull (pullback.fst G.hom x)) := by
   intro S G _ hqc hsep hsm L hL K₁ _ z hP hA hK K _ x hx

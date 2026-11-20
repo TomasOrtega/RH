@@ -16,27 +16,27 @@ open PositivityTheory.RgBcC.LfSt.ChainPf PositivityTheory.RgBcC.LfSt.ChainPf.Eq 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hWE _hWS hG hKZ n lam E Fr ε ι S Γ T hC _ _ μ _ k val τ hk`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Establish `hDW : DCwave` using `PositivityTheory.RgBcC.LfSt.ChainOf2.dCwave_of hDC`. Establish `hZ : ZopDC` using `PositivityTheory.RgBcC.LfSt.ChainOf2.zopDC`. Take `⟨m, c, w, g, ks, hks, hsum, -⟩` from `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hks1 : ∀ i, ContDiffOn ℝ ∞ (ks i) (GLs n)` using `fun i => (hks i).2.1`. Establish `hkc1 : ∀ i, Cpt (ks i)` using `fun i => (hks i).2.2.1`. Establish `hke1 : ∀ i, ∀ y ∈ GLs n, ∀ k₂ : Matrix.unitaryGroup (Fin n) ℂ, ks i (y * k₂.1) = ks i y * E.ρ k₂`. Introduce `i y hy k₂`. Use `(hks i).2.2.2.1 y hy 1 k₂` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hsm : ContDiffOn ℝ ∞ k (GLs n)` using `(ContDiffOn.sum fun i _ => (hks1 i).const_smul (c i)).congr fun y hy => hsum y hy`. Establish `hcp : Cpt k` using `by choose R hR using hkc1`. Use `⟨∑ i, max (R i) 0, fun y hy hlt => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum y hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hle : R i ≤ ∑ j, max (R j) 0` using `(le_max_left _ _).trans (Finset.single_le_sum (f := fun j => max (R j) 0) (fun j _ => le_max_right _ _) (Finset.mem_univ i))`. Rewrite using `[hR i y hy (lt_of_le_of_lt hle hlt), smul_zero]`. Establish `hke : ∀ y ∈ GLs n, ∀ k₂ : Matrix.unitaryGroup (Fin n) ℂ, k (y * k₂.1) = k y * E.ρ k₂`. Introduce `y hy k₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum _ (mul_mem_GLs hy (unitary_mem_GLs k₂)), hsum y hy, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hke1 i y hy k₂, smul_mul_assoc]`. Establish `hcont : ∀ i, ContinuousOn (ks i) (GLs n)` using `fun i => (hks1 i).continuousOn`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ΓE : E.V ≃L[ℂ] E.V` to `ContinuousLinearEquiv.equivOfInverse Γ Γ (fun v => by rw [← ContinuousLinearMap.mul_apply, hC.Γsq]; rfl) (fun v => by rw [← ContinuousLinearMap.mul_apply, hC.Γsq]; rfl)`. Establish `hΓρ : ∀ k₀ : Matrix.unitaryGroup (Fin n) ℂ, Γ * E.ρ k₀ = E.ρ k₀ * Γ`. Introduce `k₀`. Use `hC.ΓFr k₀.1 (unitary_mem_GLs k₀)` as an intermediate fact. Rewrite `this` using `[hC.onK]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hA' : ∀ (k₀ : Matrix.unitaryGroup (Fin n) ℂ) v, ΓE (E.ρ k₀ v) = E.ρ k₀ (ΓE v)`. Introduce `k₀ v`. Use `show Γ (E.ρ k₀ v) = E.ρ k₀ (Γ v)`. Rewrite using `[← ContinuousLinearMap.mul_apply, hΓρ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΓc : ∀ f ∈ CE E, act μ E k (fun x => Γ (f x)) 1 = Γ (act μ E k f 1)`. Introduce `f hf`. Establish `hfΓ : ContinuousOn (fun x => Γ (f x)) (GLs n)` using `continuousOn_const.clm_apply hf.1.continuousOn`. Rewrite using `[act_sum hL μ E c ks k hsum hcont hkc1 _ hfΓ 1 h1, act_sum hL μ E c ks k hsum hcont hkc1 _ hf.1.continuousOn 1 h1, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_smul]`. Use `congr 1`. Conclude with `act_equiv hWE μ E ΓE hA' (w i) (g i) (ks i) (hks i).2 f hf`. Establish `hDc : ∀ f ∈ CE E, act μ E k (DC ε Fr f) 1 = DC ε Fr (act μ E k f) 1`. Introduce `f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDf` using `hDC n lam E Fr ε ι S Γ T hC f hf`. Establish `hsmooth : ∀ i, ContDiffOn ℝ ∞ (act μ E (ks i) f) (GLs n)` using `fun i => (hA hU n μ E (ks i) f (hks1 i) (hkc1 i) hf.1).1`. Establish `eqk : Set.EqOn (act μ E k f) (fun x => ∑ i, c i • act μ E (ks i) f x) (GLs n)` using `fun x hx => act_sum hL μ E c ks k hsum hcont hkc1 f hf.1.continuousOn x hx`. Rewrite using `[act_sum hL μ E c ks k hsum hcont hkc1 _ hDf.1.continuousOn 1 h1, dc_congr ε Fr (isOpen_GLs n) eqk h1, dc_sum ε Fr c _ fun i => ((hsmooth i).differentiableOn (by simp)).differentiableAt ((isOpen_GLs n).mem_nhds h1)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[act_dc hDW hP hZ hG hWE hC μ (w i) (g i) τ (hks i).1 (ks i) (hks i).2 f hf]`. Introduce `y hy`. Use `⟨gamma_of_comm hKZ hL Γ hΓρ μ k hsm.continuousOn hke hΓc y hy, ?_⟩` and prove the remaining obligations. Conclude with `dc_of_comm hA hI hK hKZ hU hR hL hC μ k hsm hcp hke hDc y hy`.
+A detailed English derivation is pending.
 -/
 theorem chainOf'_of (hDC : DCinCE) (hP : ParamInt) (hA : ActDer) (hI : IBPAct) (hK : KapEquiv) (hU : Unimod)
     (hR : RCalc) (hL : LgFacts) : ChainOf' := by

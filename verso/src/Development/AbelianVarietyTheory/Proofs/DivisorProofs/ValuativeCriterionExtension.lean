@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.FlagCls.ExtLoc
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of W) q⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_stalk_hom_of_closedPoint (Y : Scheme.{0}) (y : Y) (W : Type) [CommRing W] [IsLocalRing W]
     (q : Sp W ⟶ Y) (hy : q (IsLocalRing.closedPoint W) = y) :
@@ -22,13 +22,11 @@ theorem exists_stalk_hom_of_closedPoint (Y : Scheme.{0}) (y : Y) (W : Type) [Com
   exact ⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of W) q⟩
 
 /- English proof (translation)
-Use `haveI : IsIntegrallyClosedIn (LocalSubring.range (algebraMap R K)).toSubring K := by`. Rewrite using `[Subring.isIntegrallyClosedIn_iff]`. Introduce `s hs`. Use `set A := (LocalSubring.range (algebraMap R K)).toSubring`. Use `letI : Algebra R A := ((algebraMap R K).codRestrict A (fun y => show algebraMap R K y ∈ Set.range (algebraMap R K) from ⟨y, rfl⟩)).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `haveI : IsScalarTower R A K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.IsIntegral R A := by`. Use `Algebra.IsIntegral.of_surjective (Algebra.ofId R A) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, y, rfl⟩`. Conclude with `⟨y, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hs' : _root_.IsIntegral R s` using `isIntegral_trans s hs`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hs'`. Simplify using `only [A, LocalSubring.range_toSubring]`. Conclude with `⟨y, hy⟩`. Assume the negation of the conclusion as `hs`.
-
-Take `⟨V, hle, hsV⟩` from `LocalSubring.exists_le_valuationSubring_of_isIntegrallyClosedIn (R := LocalSubring.range (algebraMap R K)) (x := s) (fun h' => hs (by rwa [LocalSubring.range_toSubring] at h'))`. Conclude with `hsV (h V hle)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_range_of_forall_dominating (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R]
     (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (s : K)
@@ -58,17 +56,15 @@ theorem mem_range_of_forall_dominating (R : Type) [CommRing R] [IsDomain R] [IsL
   exact hsV (h V hle)
 
 /- English proof (translation)
-Introduce `R _ _ _ _ K _ _ _ Y p y h`. Establish `key : ∀ V : ValuationSubring K, LocalSubring.range (algebraMap R K) ≤ V.toLocalSubring → ∃ φ : Y.presheaf.stalk y ⟶ CommRingCat.of V, Spec.map (φ ≫ CommRingCat.ofHom V.subtype) ≫ Y.fromSpecStalk y = p`. Introduce `V hV`. Take `⟨h1, h2⟩` from `(GlobalTheory.localSubring_range_le_valuationSubring_iff_isLocalHom _ V).1 hV`. Take `⟨q, hq, hy⟩` from `h V ((algebraMap R K).codRestrict V h1) h2 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `exists_stalk_hom_of_closedPoint Y y V q hy`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Rewrite using `[Spec.map_comp, Category.assoc, hφ]`. Conclude with `hq`. Take `⟨V₀, hV₀⟩` from `(LocalSubring.range (algebraMap R K)).exists_le_valuationSubring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₀, hφ₀⟩` from `key V₀ hV₀`. Use `set θ : Y.presheaf.stalk y ⟶ CommRingCat.of K := φ₀ ≫ CommRingCat.ofHom V₀.subtype with hθ`. Establish `hmem : ∀ s, θ.hom s ∈ (algebraMap R K).range`. Introduce `s`. Use `mem_range_of_forall_dominating R K _ fun V hV => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `key V hV`. Establish `e : θ = φ ≫ CommRingCat.ofHom V.subtype` using `Spec.map_injective ((cancel_mono (Y.fromSpecStalk y)).1 (hφ₀.trans hφ.symm))`. Rewrite using `[e]`. Conclude with `(φ.hom s).2`. Set `e : R ≃+* (algebraMap R K).range` to `RingEquiv.ofBijective (algebraMap R K).rangeRestrict ⟨fun a b hab => IsFractionRing.injective R K (congrArg Subtype.val hab), (algebraMap R K).rangeRestrict_surjective⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `θ' : Y.presheaf.stalk y ⟶ CommRingCat.of R` to `CommRingCat.ofHom (e.symm.toRingHom.comp (θ.hom.codRestrict _ hmem))`. Establish `hθ' : θ' ≫ CommRingCat.ofHom (algebraMap R K) = θ`. Use extensionality with `s`. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨θ.hom s, hmem s⟩)`. Use `⟨Spec.map θ' ≫ Y.fromSpecStalk y, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc, ← Spec.map_comp, hθ']`. Conclude with `hφ₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_of_forall_dominating : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (Y : Scheme.{0}) (p : Sp K ⟶ Y) (y : Y), (∀ (V : ValuationSubring K) (ρ : R →+* V), IsLocalHom ρ → V.subtype.comp ρ = algebraMap R K → ∃ q : Sp V ⟶ Y, spMap V.subtype ≫ q = p ∧ q (IsLocalRing.closedPoint V) = y) → ∃ q : Sp R ⟶ Y, spMap (algebraMap R K) ≫ q = p := by
   intro R _ _ _ _ K _ _ _ Y p y h

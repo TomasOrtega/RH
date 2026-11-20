@@ -20,7 +20,7 @@ section General
 variable {S S' : Scheme.{0}} {j : S' ⟶ S}
 
 /- English proof (translation)
-Establish `e : pullback.fst G.hom w ≫ G.hom = (pullback.snd _ _ ≫ j) ≫ x`. Rewrite using `[Category.assoc, ← h, pullback.condition]`. Conclude with `⟨pullback.lift _ _ e, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, (isGrpPullback_pullback G _).cancel ((isGrpPullback_pullback G _).congr h (pullback.lift_fst _ _ e).symm) (pullback.lift_snd _ _ _)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_proj {X : Scheme.{0}} (G : Over X) [GrpObj G] (x : S ⟶ X) (w : S' ⟶ X) (h : w = j ≫ x) :
     ∃ π : pullback G.hom w ⟶ pullback G.hom x, π ≫ pullback.fst _ _ = pullback.fst _ _ ∧
@@ -32,7 +32,7 @@ theorem exists_proj {X : Scheme.{0}} (G : Over X) [GrpObj G] (x : S ⟶ X) (w : 
     ((isGrpPullback_pullback G _).congr h (pullback.lift_fst _ _ e).symm) (pullback.lift_snd _ _ _)⟩
 
 /- English proof (translation)
-Set `U : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk π h.1.w`. Establish `e : pushHom h G' (𝟙 G') = U` using `Over.OverMorphism.ext (Category.id_comp π)`. Establish `e' : pushHom h G' (𝟙 G' ^ N) = U ≫ 𝟙 G ^ N`. Rewrite using `[map_pow, e, MonObj.comp_pow, Category.comp_id]`. Conclude with `congrArg (fun u => u.left) e'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem id_pow_left {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {π : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G j π) (N : ℕ) : (𝟙 G' ^ N).left ≫ π = π ≫ (𝟙 G ^ N).left := by
@@ -43,9 +43,9 @@ theorem id_pow_left {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {π : G'.
   exact congrArg (fun u => u.left) e'
 
 /- English proof (translation)
-Establish `: Flat α` using `MorphismProperty.of_isPullback (P := @Flat) hα.flip ‹_›`. Establish `: Surjective α` using `MorphismProperty.of_isPullback (P := @Surjective) hα.flip ‹_›`. Establish `: Epi α` using `Flat.epi_of_flat_of_surjective α`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Over.OverMorphism.ext (hβ.hom_ext (hu.trans hv.symm) (by rw [Over.w, Over.w]))`. Introduce and unpack `rfl`. Conclude with `Over.OverMorphism.ext ((cancel_epi α).1 (hu.symm.trans hv))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eq_iff [Flat j] [Surjective j] {A B : Over S} {A' B' : Over S'} {α : A'.left ⟶ A.left}
     {β : B'.left ⟶ B.left} (hα : IsPullback α A'.hom A.hom j) (hβ : IsPullback β B'.hom B.hom j)
@@ -61,7 +61,7 @@ theorem eq_iff [Flat j] [Surjective j] {A B : Over S} {A' B' : Over S'} {α : A'
     exact Over.OverMorphism.ext ((cancel_epi α).1 (hu.symm.trans hv))
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hv, reassoc_of% hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_sq {A B C : Over S} {A' B' C' : Over S'} {α : A'.left ⟶ A.left} {β : B'.left ⟶ B.left}
     {δ : C'.left ⟶ C.left} {u : A ⟶ B} {v : B ⟶ C} {u' : A' ⟶ B'} {v' : B' ⟶ C'}
@@ -70,7 +70,7 @@ theorem comp_sq {A B C : Over S} {A' B' C' : Over S'} {α : A'.left ⟶ A.left} 
   rw [Over.comp_left, Over.comp_left, Category.assoc, hv, reassoc_of% hu]
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `[h₁, h₂, reassoc_of% h₁, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem map_sq {X : Scheme.{0}} {G : Over X} {x : S ⟶ X} {w : S' ⟶ X} (π : pullback G.hom w ⟶ pullback G.hom x)
     (h₁ : π ≫ pullback.fst _ _ = pullback.fst _ _) (h₂ : π ≫ pullback.snd _ _ = pullback.snd _ _ ≫ j) (a : G ⟶ G) :
@@ -81,13 +81,13 @@ theorem map_sq {X : Scheme.{0}} {G : Over X} {x : S ⟶ X} {w : S' ⟶ X} (π : 
 end General
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo K L _ _ φ x x' w w'`. Use `⟨fun hw hw' f => ?_, fun f f' g g' N hf hf' => ?_⟩` and prove the remaining obligations. Take `⟨π, p₁, p₂, hπ⟩` from `exists_proj Xo.univ.t.G x w hw`. Take `⟨π', p₁', p₂', hπ'⟩` from `exists_proj Xo.univ.t.G x' w' hw'`. Establish `e : (π ≫ f.left) ≫ (Fib Xo x').hom = (Fib Xo w).hom ≫ spMap φ` using `(Category.assoc _ _ _).trans ((congrArg (π ≫ ·) (Over.w f)).trans hπ.1.w)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Over.homMk (hπ'.1.lift _ _ e) (hπ'.1.lift_snd _ _ e), hw, hw', fun ρ ρ' q₁ q₂ q₁' q₂' => ?_⟩` and prove the remaining obligations. Take `rfl : ρ = π` from `pullback.hom_ext (q₁.trans p₁.symm) (q₂.trans p₂.symm)`. Take `rfl : ρ' = π'` from `pullback.hom_ext (q₁'.trans p₁'.symm) (q₂'.trans p₂'.symm)`. Conclude with `hπ'.1.lift_fst _ _ e`. Use `FieldBaseChange.flat_spMap φ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `FieldBaseChange.surjective_spMap φ` as an intermediate fact. Take `⟨π, p₁, p₂, hπ⟩` from `exists_proj Xo.univ.t.G x w hf.1`. Take `⟨π', p₁', p₂', hπ'⟩` from `exists_proj Xo.univ.t.G x' w' hf.2.1`. Establish `e` using `hf.2.2 π π' p₁ p₂ p₁' p₂'`. Establish `e'` using `hf'.2.2 π' π p₁' p₂' p₁ p₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr (FieldBaseChange.isMonHom_iff_of_isGrpPullback hπ hπ' g f e.symm).symm (and_congr (FieldBaseChange.isMonHom_iff_of_isGrpPullback hπ' hπ g' f' e'.symm).symm (and_congr (eq_iff hπ.1 hπ.1 (comp_sq e e') (id_pow_left hπ N)) (and_congr (eq_iff hπ'.1 hπ'.1 (comp_sq e' e) (id_ …` and prove the remaining obligations. Conclude with `eq_iff hπ.1 hπ'.1 (comp_sq (map_sq π p₁ p₂ _) e) (comp_sq (u := f) (u' := g) (v := (Over.pullback x').map _) (v' := (Over.pullback w').map _) e (map_sq π' p₁' p₂' _))`. Conclude with `eq_iff hπ'.1 hπ.1 (comp_sq (map_sq π' p₁' p₂' _) e') (comp_sq (u := f') (u' := g') (v := (Over.pullback x).map _) (v' := (Over.pullback w).map _) e' (map_sq π p₁ p₂ _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_isBC_and_isPair_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (K L : Type) [Field K] [Field L] (φ : K →+* L) (x x' : Sp K ⟶ Xo.X) (w w' : Sp L ⟶ Xo.X), (w = spMap φ ≫ x → w' = spMap φ ≫ x' → ∀ f : Fib Xo x ⟶ Fib Xo x', ∃ g : Fib Xo w ⟶ Fib Xo w', IsBC φ f g) ∧ ∀ (f : Fib Xo x ⟶ Fib Xo x') (f' : Fib Xo x' ⟶ Fib Xo x) (g : Fib Xo w ⟶ Fib Xo w') (g' : Fib Xo w' ⟶ Fib Xo w) (N : ℕ), IsBC φ f g → IsBC φ f' g' → (IsPair N f f' ↔ IsPair N g g') := by
   intro E _ _ _ H Dw l Xo K L _ _ φ x x' w w'

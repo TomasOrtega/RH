@@ -14,7 +14,7 @@ namespace GlobalTheory.FactorDegreeZero
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [per, Pi.add_apply, Complex.ofReal_add, Matrix.vecMul, dotProduct, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_add' (t : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) :
     per t (x + y) = per t x + per t y := by
@@ -24,7 +24,7 @@ theorem per_add' (t : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) :
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `[per, Matrix.vecMul, dotProduct, Pi.single_apply]`. Simplify using `[per, Matrix.vecMul, dotProduct, Pi.single_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem per_single_inr (t : Matrix (Fin g) (Fin g) ℂ) (k : Fin g) :
     per t (Pi.single (Sum.inr k) 1) = Pi.single k 1 := by
@@ -34,14 +34,14 @@ theorem per_single_inr (t : Matrix (Fin g) (Fin g) ℂ) (k : Fin g) :
   · simp [per, Matrix.vecMul, dotProduct, Pi.single_apply, h]
 
 /- English proof (translation)
-Simplify using `[transl, per_single_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transl_inr (τ : E → Matrix (Fin g) (Fin g) ℂ) (k : Fin g) (P : Pt E g) :
     transl τ (Pi.single (Sum.inr k) 1) P = (P.1, P.2 + Pi.single k 1) := by
   simp [transl, per_single_inr]
 
 /- English proof (translation)
-Simplify using `only [transl, per_add']`. Apply the tactic sequence `ext <;> simp [add_assoc, add_comm]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transl_transl (τ : E → Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) (P : Pt E g) :
     transl τ x (transl τ y P) = transl τ (x + y) P := by
@@ -49,14 +49,14 @@ theorem transl_transl (τ : E → Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) (P : 
   ext <;> simp [add_assoc, add_comm]
 
 /- English proof (translation)
-Rewrite using `[transl_transl, transl_transl, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_comm (τ : E → Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) (P : Pt E g) :
     transl τ x (transl τ y P) = transl τ y (transl τ x P) := by
   rw [transl_transl, transl_transl, add_comm]
 
 /- English proof (translation)
-Simplify using `only [transl]`. Apply the tactic sequence `ext <;> simp [add_right_comm]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transl_shift (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (P : Pt E g) (v : Fin g → ℂ) :
     transl τ x (P.1, P.2 + v) = ((transl τ x P).1, (transl τ x P).2 + v) := by
@@ -64,20 +64,20 @@ theorem transl_shift (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (P : Pt 
   ext <;> simp [add_right_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hP.1, Set.mem_univ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem transl_mem {U : Set E} (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) {P : Pt E g}
     (hP : P ∈ cov U g) : transl τ x P ∈ cov U g :=
   ⟨hP.1, Set.mem_univ _⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨i, by simp [Pi.basisFun_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_stdLat (i : Fin g ⊕ Fin g) : (Pi.single i 1 : Fl g) ∈ stdLat g :=
   Submodule.subset_span ⟨i, by simp [Pi.basisFun_apply]⟩
 
 /- English proof (translation)
-Establish `hper : DifferentiableOn ℂ (fun b => per (τ b) x) U`. Use `differentiableOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [per, Pi.add_apply, Matrix.vecMul, dotProduct]`. Conclude with `(DifferentiableOn.fun_sum fun j _ => (hτ j i).const_mul _).add_const _`. Conclude with `differentiableOn_fst.prodMk (differentiableOn_snd.add (hper.comp differentiableOn_fst fun P hP => hP.1))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_transl {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : ∀ i j, DifferentiableOn ℂ (fun b => τ b i j) U) (x : Fl g) :
@@ -90,17 +90,17 @@ theorem differentiableOn_transl {U : Set E} {τ : E → Matrix (Fin g) (Fin g) �
     (hper.comp differentiableOn_fst fun P hP => hP.1))
 
 /- English proof (translation)
-Establish `hzero : ∀ (k : Fl g → Pt E g → ℂ), (∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ P ∈ cov U g, k (l + l') P = k l (transl τ l' P) * k l' P) → (∀ l ∈ stdLat g, ∀ P ∈ cov U g, k l P ≠ 0) → ∀ P ∈ cov U g, k 0 P = 1`. Introduce `k hk hk0 P hP`. Establish `h` using `hk 0 (zero_mem _) 0 (zero_mem _) P hP`. Establish `ht : transl τ 0 P = P`. Establish `: per (τ P.1) 0 = 0` using `by simpa using per_add' (τ P.1) 0 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[transl, this]`. Rewrite `h` using `[add_zero, ht]`. Establish `h0` using `hk0 0 (zero_mem _) P hP`. Conclude with `(mul_left_eq_self₀.1 h.symm).resolve_right h0`. Establish `hneg : ∀ (k : Fl g → Pt E g → ℂ), (∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ P ∈ cov U g, k (l + l') P = k l (transl τ l' P) * k l' P) → (∀ l ∈ stdLat g, ∀ P ∈ cov U g, k l P ≠ 0) → ∀ l ∈ stdLat g, ∀ P ∈ cov U g, k (-l) P = (k l (transl τ (-l) P))⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk hk0 l hl P hP`. Establish `h` using `hk l hl (-l) (neg_mem hl) P hP`. Rewrite `h` using `[add_neg_cancel, hzero k hk hk0 P hP]`. Conclude with `eq_inv_of_mul_eq_one_right h.symm`. Establish `key : ∀ l ∈ (stdLat g).toAddSubgroup, l ∈ stdLat g ∧ ∀ P ∈ cov U g, j l P = j' l P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `l hl`. Rewrite `hl` using `[stdLat, Submodule.span_int_eq_addSubgroupClosure]`. Proceed by induction on `hl using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Submodule.subset_span ⟨i, rfl⟩, fun P hP => ?_⟩` and prove the remaining obligations. Simplify `hgen i P hP` using `[Pi.basisFun_apply]`. Consider the case `zero => exact ⟨zero_mem _, fun P hP => by rw [hzero j hj hj0 P hP, hzero j' hj' hj0' P hP]⟩`. Consider the case `add x y _ _ hx hy`. Use `⟨add_mem hx.1 hy.1, fun P hP => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hj x hx.1 y hy.1 P hP, hj' x hx.1 y hy.1 P hP, hx.2 _ (transl_mem τ y hP), hy.2 P hP]`. Consider the case `neg x _ hx`. Use `⟨neg_mem hx.1, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[hneg j hj hj0 x hx.1 P hP, hneg j' hj' hj0' x hx.1 P hP, hx.2 _ (transl_mem τ _ hP)]`. Conclude with `fun l hl P hP => (key l hl).2 P hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem eq_of_eq_on_basis {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (j j' : Fl g → Pt E g → ℂ)
@@ -147,51 +147,49 @@ theorem eq_of_eq_on_basis {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
   exact fun l hl P hP => (key l hl).2 P hP
 
 /- English proof (translation)
-Introduce `g E _ _ _ B τ hτ u hu hdeg b₀ hb₀`. Take `⟨r₀, hr₀, hball⟩` from `Metric.isOpen_iff.1 hτ.1 b₀ hb₀`. Establish `hcov0 : cov (Metric.ball b₀ r₀) g ⊆ cov B g` using `Set.prod_mono hball le_rfl`. Establish `hV : IsOpen (cov (Metric.ball b₀ r₀) g)` using `Metric.isOpen_ball.prod isOpen_univ`. Establish `hVc : Convex ℝ (cov (Metric.ball b₀ r₀) g)` using `(convex_ball b₀ r₀).prod convex_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ∀ i : Fin g ⊕ Fin g, ∃ A : Pt E g → ℂ, DifferentiableOn ℂ A (cov (Metric.ball b₀ r₀) g) ∧ ∀ P ∈ cov (Metric.ball b₀ r₀) g, u (Pi.single i 1) P = Complex.exp (A P)` using `fun i => GlobalTheory.T.nonvanishing_holomorphic_exp_log_convex hV hVc _ ((hu.1 _ (single_mem_stdLat i)).1.mono hcov0) (fun P hP => (hu.1 _ (single_mem_stdLat i)).2 P (hcov0 hP))`. Use `choose A hAd hAe using hlog`. Establish `hc : (2 * π * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Take `⟨a, ha_def⟩ : ∃ a : Fin g ⊕ Fin g → Pt E g → ℂ, a = fun i P => A i P * (2 * π * Complex.I)⁻¹` from `⟨_, rfl⟩`. Establish `hae : ∀ i, ∀ P ∈ cov (Metric.ball b₀ r₀) g, u (Pi.single i 1) P = Complex.exp (2 * π * Complex.I * a i P)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i P hP`. Rewrite using `[hAe i P hP, ha_def]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `had : ∀ i, DifferentiableOn ℂ (a i) (cov (Metric.ball b₀ r₀) g)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha_def]`. Conclude with `(hAd i).mul_const _`. Establish `hcomm` using `GlobalTheory.T.multiplier_exponential_holomorphic_local (τ := τ) u a hae (fun i => (had i).continuousOn) (fun b hb => hdeg b (hball hb))`. Take `⟨r₁, hr₁, hb1, ψ₁, hψ₁d, hψ₁⟩` from `GlobalTheory.T.cocycle_holomorphic_coboundary_local (U := Metric.ball b₀ r₀) Metric.isOpen_ball (fun k => a (Sum.inr k)) (fun k => had _) (fun k j P hP => by simpa only [transl_inr] using hcomm (Sum.inr k) (Sum.inr j) P hP) b₀ (Metric.mem_ball_self hr₀)`. Establish `h10 : cov (Metric.ball b₀ r₁) g ⊆ cov (Metric.ball b₀ r₀) g` using `Set.prod_mono hb1 le_rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hτ1 : IsPeriodMap (Metric.ball b₀ r₁) τ` using `⟨Metric.isOpen_ball, fun i j => (hτ.2.1 i j).mono (hb1.trans hball), fun b hb => hτ.2.2 b (hball (hb1 hb))⟩`. Take `⟨a', ha'⟩ : ∃ a' : Fin g → Pt E g → ℂ, a' = fun k P => a (Sum.inl k) P - (ψ₁ (transl τ (Pi.single (Sum.inl k) 1) P) - ψ₁ P)` from `⟨_, rfl⟩`. Establish `ha'd : ∀ k, DifferentiableOn ℂ (a' k) (cov (Metric.ball b₀ r₁) g)` using `fun k => by`. Rewrite using `[ha']`. Conclude with `((had _).mono h10).sub ((hψ₁d.comp (differentiableOn_transl hτ1.2.1 _) (fun P hP => transl_mem τ _ hP)).sub hψ₁d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha'per : ∀ k j, ∀ P ∈ cov (Metric.ball b₀ r₁) g, a' k (P.1, P.2 + Pi.single j 1) = a' k P`. Introduce `k j P hP`. Establish `h1` using `hcomm (Sum.inl k) (Sum.inr j) P (h10 hP)`. Rewrite `h1` using `[transl_inr]`. Establish `h2` using `hψ₁ j (transl τ (Pi.single (Sum.inl k) 1) P) (transl_mem τ _ hP)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hψ₁ j P hP`. Establish `h4` using `transl_shift τ (Pi.single (Sum.inl k) 1) P (Pi.single j 1)`. Rewrite using `[ha']`. Simplify using `only`. Rewrite using `[h4]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `h1 - h2 + h3`. Establish `ha'comm : ∀ k j, ∀ P ∈ cov (Metric.ball b₀ r₁) g, a' k (transl τ (Pi.single (Sum.inl j) 1) P) + a' j P = a' j (transl τ (Pi.single (Sum.inl k) 1) P) + a' k P`. Introduce `k j P hP`. Establish `h1` using `hcomm (Sum.inl k) (Sum.inl j) P (h10 hP)`. Establish `h2` using `transl_comm τ (Pi.single (Sum.inl k) 1) (Pi.single (Sum.inl j) 1) P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha']`. Simplify using `only`. Rewrite using `[h2]`. Take the linear combination `h1`. Take `⟨r₂, hr₂, hb2, ψ₂, s', hψ₂d, hψ₂per, hs'c, hψ₂⟩` from `GlobalTheory.T.periodic_cocycle_translation_coboundary hτ1 a' ha'd ha'per ha'comm b₀ (Metric.mem_ball_self hr₁)`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h21 : cov (Metric.ball b₀ r₂) g ⊆ cov (Metric.ball b₀ r₁) g` using `Set.prod_mono hb2 le_rfl`. Take `⟨s, hs⟩ : ∃ s : Fl g → E → ℂ, s = fun l b => ∑ k, (l (Sum.inl k) : ℂ) * s' k b` from `⟨_, rfl⟩`. Establish `hsadd : ∀ l l' b, s (l + l') b = s l b + s l' b`. Introduce `l l' b`. Simplify using `only [hs, Pi.add_apply, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, hφ⟩ : ∃ φ : Pt E g → ℂ, φ = fun P => Complex.exp (2 * π * Complex.I * (ψ₁ P + ψ₂ P))` from `⟨_, rfl⟩`. Establish `hφd : DifferentiableOn ℂ φ (cov (Metric.ball b₀ r₂) g)`. Rewrite using `[hφ]`. Conclude with `(((hψ₁d.mono h21).add hψ₂d).const_mul _).cexp`. Establish `hφ0 : ∀ P, φ P ≠ 0` using `fun P => by rw [hφ]; exact Complex.exp_ne_zero _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Metric.ball b₀ r₂, Metric.isOpen_ball, Metric.mem_ball_self hr₂, (hb2.trans hb1).trans hball, (convex_ball b₀ r₂).isPreconnected, s, ?_, ?_, φ, hφd, fun P _ => hφ0 P, ?_⟩` and prove the remaining obligations. Introduce `l _`. Rewrite using `[hs]`. Conclude with `continuousOn_finset_sum _ fun k _ => continuousOn_const.mul (hs'c k)`. Introduce `l _ l' _ b _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Conclude with `hsadd l l' b`. Take `⟨j, hj⟩ : ∃ j : Fl g → Pt E g → ℂ, j = fun l P => φ (transl τ l P) * Complex.exp (2 * π * Complex.I * s l P.1) * (φ P)⁻¹` from `⟨_, rfl⟩`. Establish `hjc : ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ P ∈ cov (Metric.ball b₀ r₂) g, j (l + l') P = j l (transl τ l' P) * j l' P`. Introduce `l _ l' _ P _`. Rewrite using `[hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[transl_transl, hsadd, mul_add, Complex.exp_add]`. Establish `: (transl τ l' P).1 = P.1` using `rfl`. Rewrite using `[this]`. Clear denominators, using `[hφ0]` for the nonvanishing conditions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hj0 : ∀ l ∈ stdLat g, ∀ P ∈ cov (Metric.ball b₀ r₂) g, j l P ≠ 0`. Introduce `l _ P _`. Rewrite using `[hj]`. Conclude with `mul_ne_zero (mul_ne_zero (hφ0 _) (Complex.exp_ne_zero _)) (inv_ne_zero (hφ0 _))`. Establish `hgen : ∀ i, ∀ P ∈ cov (Metric.ball b₀ r₂) g, j (Pi.single i 1) P = u (Pi.single i 1) P`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i P hP`. Rewrite using `[hae i P (h10 (h21 hP)), hj]`. Simplify using `only`. Rewrite using `[mul_inv_eq_iff_eq_mul₀ (hφ0 P)]`. Break down `i with k | k` into its components or cases.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsk : s (Pi.single (Sum.inl k) 1) P.1 = s' k P.1`. Rewrite using `[hs]`. Simplify using `only`. Rewrite using `[Finset.sum_eq_single k (fun m _ hm => by simp [Pi.single_apply, hm]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `hψ₂ k P hP`. Rewrite `h2` using `[ha']`. Simplify using `only at h2`. Rewrite using `[hsk, hφ]`. Simplify using `only`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Take the linear combination `(2 * π * Complex.I) * h2`. Establish `hsk : s (Pi.single (Sum.inr k) 1) P.1 = 0`. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[hsk, transl_inr]`. Establish `h1` using `hψ₁ k P (h21 hP)`. Establish `h2` using `hψ₂per k P hP`. Rewrite using `[hφ]`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Take the linear combination `(2 * π * Complex.I) * (h1 + h2)`. Establish `hu' : ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ P ∈ cov (Metric.ball b₀ r₂) g, u (l + l') P = u l (transl τ l' P) * u l' P` using `fun l hl l' hl' P hP => hu.2 l hl l' hl' P (hcov0 (h10 (h21 hP)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hu0 : ∀ l ∈ stdLat g, ∀ P ∈ cov (Metric.ball b₀ r₂) g, u l P ≠ 0` using `fun l hl P hP => (hu.1 l hl).2 P (hcov0 (h10 (h21 hP)))`. Establish `heq` using `eq_of_eq_on_basis j u hjc hj0 hu' hu0 hgen`. Introduce `l hl P hP`. Establish `h` using `heq l hl P hP`. Rewrite `h` using `[hj]`.
-
-Simplify using `only at h`. Rewrite using `[← h]`. Clear denominators, using `[hφ0]` for the nonvanishing conditions.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem factor_degree_zero_normal_form : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (u : Fl g → Pt E g → ℂ), IsFactor B τ (stdLat g) u → (∀ b ∈ B, ∃ f : Fl g → (Fin g → ℂ) → ℂ, (∀ l ∈ stdLat g, Differentiable ℂ (f l) ∧ ∀ z, u l (b, z) = Complex.exp (2 * π * Complex.I * f l z)) ∧ ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ z, f l (z + per (τ b) l') + f l' z - f l' (z + per (τ b) l) - f l z = 0) → ∀ b₀ ∈ B, ∃ U : Set E, IsOpen U ∧ b₀ ∈ U ∧ U ⊆ B ∧ IsPreconnected U ∧ ∃ s : Fl g → E → ℂ, (∀ l ∈ stdLat g, ContinuousOn (s l) U) ∧ (∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ b ∈ U, s (l + l') b = s l b + s l' b) ∧ ∃ φ : Pt E g → ℂ, IsBundleIso U τ (stdLat g) (fun l P => Complex.exp (2 * π * Complex.I * s l P.1)) u φ := by
   intro g E _ _ _ B τ hτ u hu hdeg b₀ hb₀

@@ -12,9 +12,9 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ N a H ν _ hν hinv hray e f hec hei hfc hfi hee hef x hcont`. Establish `hKe : Kills μ N a e` using `kills_of_idem G μ N a H e hray hec hei hee`. Establish `hKf : Kills μ N a f`. Introduce `s C h hh z`. Rewrite using `[conv_assoc G μ e f h C hec hei hfc hfi hh.1 hh.2.1 hef z]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hKe s _ _ (conv_isEig G μ N a f h s C hfi hh) z`. Use `eq_zero_of_test G μ (fun y => ∫ m, f (x * m * y) ∂ν) hcont ?_` and prove the remaining obligations. Introduce `ψ hψ hψc`. Rewrite using `[← conv_average G μ N a H ν hν hinv hray f ψ hfc hfi hψ hψc x]`. Conclude with `conv_band G μ N a H f _ hray hfc hfi hKf (isBand_of_compact G N a H ν hν hinv hray ψ hψ hψc).1 x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.average_eq_zero :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

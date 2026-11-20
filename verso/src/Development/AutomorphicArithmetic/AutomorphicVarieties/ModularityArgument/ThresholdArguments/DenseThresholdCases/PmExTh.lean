@@ -13,7 +13,7 @@ section
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 /- English proof (translation)
-Introduce `U hA` and use `_root_.UpperTheory.Gal.projectedFormsSystemPart.promodular_existence_of_local_zero U (_root_.UpperTheory.V.Th.local_zero_of_modular_p U hA)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.projectedFormsSystemPart.pm_exists_of_unramified_adjoint_lifting :
     _root_.UpperTheory.V.Ws.UnramifiedInputs → _root_.UpperTheory.V.Th.AdjointLiftingTheorem → _root_.UpperTheory.V.Ws.PMExAlt := fun U hA => _root_.UpperTheory.Gal.projectedFormsSystemPart.promodular_existence_of_local_zero U (_root_.UpperTheory.V.Th.local_zero_of_modular_p U hA)

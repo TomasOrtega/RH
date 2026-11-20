@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lid_baseChange_self {K M N : Type} [Field K] [AddCommGroup M] [Module K M] [AddCommGroup N]
     [Module K N] (f : M →ₗ[K] N) (x : K ⊗[K] M) :
@@ -27,19 +27,17 @@ theorem lid_baseChange_self {K M N : Type} [Field K] [AddCommGroup M] [Module K 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hmem : ∀ x : LinearMap.ker S.g.hom, (TensorProduct.lid K S.X₂).symm x.1 ∈ LinearMap.ker (S.g.hom.baseChange K)`. Introduce `x`. Rewrite using `[LinearMap.mem_ker]`. Apply `(TensorProduct.lid K S.X₃).injective` to reduce the goal to its premises. Rewrite using `[lid_baseChange_self, LinearEquiv.apply_symm_apply, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `x.2`. Set `q : LinearMap.ker S.g.hom →ₗ[K] H` to `θ ∘ₗ ((((TensorProduct.lid K S.X₂).symm : S.X₂ →ₗ[K] K ⊗[K] S.X₂) ∘ₗ (LinearMap.ker S.g.hom).subtype).codRestrict _ hmem)`. Establish `hq : ∀ x, q x = θ ⟨(TensorProduct.lid K S.X₂).symm x.1, hmem x⟩` using `fun x => rfl`. Establish `hsurj : Function.Surjective q`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hs h`. Establish `hz : TensorProduct.lid K S.X₂ z.1 ∈ LinearMap.ker S.g.hom`. Rewrite using `[LinearMap.mem_ker, ← lid_baseChange_self, z.2, map_zero]`. Use `⟨⟨_, hz⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext (LinearEquiv.symm_apply_apply _ _)`. Establish `hker : LinearMap.range S.moduleCatToCycles = LinearMap.ker q`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, hq, hk]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨(TensorProduct.lid K S.X₁).symm y, ?_⟩` and prove the remaining obligations. Apply `(TensorProduct.lid K S.X₂).injective` to reduce the goal to its premises. Rewrite using `[lid_baseChange_self, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨y, hy⟩`. Use `⟨TensorProduct.lid K S.X₁ y, Subtype.ext ?_⟩` and prove the remaining obligations. Use `congrArg (TensorProduct.lid K S.X₂) hy` as an intermediate fact. Rewrite `this` using `[lid_baseChange_self, LinearEquiv.apply_symm_apply]`.
-
-Conclude with `this`. Conclude with `⟨((q.quotKerEquivOfSurjective hsurj).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker.symm ≪≫ₗ S.moduleCatHomologyIso.toLinearEquiv.symm)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_homology_of_baseChange_self {K : Type} [Field K]
     (S : ShortComplex (ModuleCat.{0} K)) {H : Type} [AddCommGroup H] [Module K H]
@@ -84,11 +82,11 @@ theorem nonempty_equiv_homology_of_baseChange_self {K : Type} [Field K]
     S.moduleCatHomologyIso.toLinearEquiv.symm)⟩
 
 /- English proof (translation)
-Introduce `K _ X s κ _ _ D hsep haff hcov`. Take `⟨M⟩` from `GlobalTheory.T.orderedCech_finiteAffineCover_models_structureSheafCohomology K X s κ D hsep haff hcov`. Establish `hsp : spMap (algebraMap K K) = 𝟙 (Sp K)`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : IsPullback (𝟙 X) s s (spMap (algebraMap K K))`. Rewrite using `[hsp]`. Conclude with `IsPullback.id_horiz s`. Take `⟨h1s, h1k, h2s, h2k⟩` from `M.exact hP`. Take `⟨e1⟩` from `nonempty_equiv_homology_of_baseChange_self ((cechLB s (LB.triv X) D).sc' 0 1 2) (M.θ1 hP) h1s h1k`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e2⟩` from `nonempty_equiv_homology_of_baseChange_self ((cechLB s (LB.triv X) D).sc' 1 2 3) (M.θ2 hP) h2s h2k`. Conclude with `⟨⟨e1 ≪≫ₗ ((cechLB s (LB.triv X) D).homologyIsoSc' 0 1 2 (by simp) (by simp)).toLinearEquiv.symm⟩, ⟨e2 ≪≫ₗ ((cechLB s (LB.triv X) D).homologyIsoSc' 1 2 3 (by simp) (by simp)).toLinearEquiv.symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem hO_equiv_cech : ∀ (K : Type) [Field K] (X : Scheme.{0}) (s : X ⟶ Sp K) (κ : Type) [LinearOrder κ]
     [Fintype κ] (D : κ → X.Opens), IsSeparated s → (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ →

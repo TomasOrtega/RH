@@ -25,9 +25,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace PositivityTheory.PrwZar
 
 /- English proof (translation)
-Take `⟨m, mu, hm, hmu, h₁, h₂⟩` from `hq`. Take `⟨α, hα, hα'⟩` from `exists_quat (4 * m ^ 2 - 1)`. Use `hpol.1` as an intermediate fact. Use `⟨zc hD.isLB l mu α, (zc_rigid hD l mu α).1, (zc_rigid hD l mu α).2, fun Ω _ _ s => ?_⟩` and prove the remaining obligations. Take `⟨L, hL, ha, e⟩` from `hpol.2 Ω s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨zb mu α s P L, isLB_zb mu α s hD.isLB hL, relAmple_zb hA hB hD hD' l mu α Ω s L hL e ha g hgA hgB m hm h₁ h₂ hα hα', kTriv_zb hA hB hD hD' l mu α Ω s L hL e m hm h₁ h₂ hα hα', lam_zb hA hB hD hD' l mu α Ω s L hL e⟩`.
+Supply the required witnesses or components.
 -/
 theorem principal_of_quasiInverse {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left)
     (l : A ⟶ B) (g : ℕ) (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hgA : SmoothOfRelativeDimension g A.hom)
@@ -48,13 +48,13 @@ theorem principal_of_quasiInverse {S : Scheme.{0}} (A B : Over S) [GrpObj A] [Gr
 open GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin in
 
 /- English proof (translation)
-Introduce `C _ _ v R _ _ hv A _ L hA hL ha`. Use `isLocalRing_integers hv` as an intermediate fact. Establish `hΛ : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Take `⟨a₁, a₂⟩` from `GlobalTheory.CubeDual.isAdditive_lam hC hA hL hΛ`. Take `⟨B, _, P, hB, hdim, h₁, h₂⟩` from `hD _ A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, -⟩` from `h₁.univ A (abelian₂ A L) hΛ a₁`. Establish `hm` using `isMonHom_of_classifying _ A A B (abelian₂ A L) P h₁ h₂.additive hΛ a₂ x hx`. Take `⟨g, hgA⟩` from `GlobalTheory.AbelianDim.exists_relDim R A hA`. Establish `hpol` using `isPolarisation_of_relAmple h₁.isLB hm hL ha hx`. Take `⟨c, hc⟩` from `principal_of_quasiInverse A B P x g hA hB hgA (hdim g hgA) h₁ h₂ hpol (hQ C v R hv A B P x g hA hB hgA (hdim g hgA) h₁ h₂ hpol)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `h4 : IsAbelianScheme (G4 (A ⊗ B))` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB hAB))`. Take `⟨M, hM, m₁, m₂, m₃, m₄, -⟩` from `SymB.symmetricBundle hD hC C v R hv _ h4 c hc`. Take `⟨g', hg'⟩` from `GlobalTheory.AbelianDim.exists_relDim R _ h4`. Use `hA.comm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hB.comm` as an intermediate fact. Use `⟨⟨G4 (A ⊗ B), h4, g', hg', M, hM, m₁, m₂, m₃, m₄⟩, lift (lift (𝟙 A) 1) 1, fst _ _ ≫ fst _ _, inferInstance, inferInstance, by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem zarhinStatement_of_dual_cube_qiR (hD : GlobalTheory.Published.DualAbelianScheme) (hC : GlobalTheory.Published.CubeTheorem)
     (hQ : QuasiInverseR) : GlobalTheory.CompanionTheory.Ar.GR.ZarhinStatement := by
@@ -80,7 +80,7 @@ theorem zarhinStatement_of_dual_cube_qiR (hD : GlobalTheory.Published.DualAbelia
     inferInstance, inferInstance, by simp⟩
 
 /- English proof (translation)
-The claim follows from `zarhinStatement_of_dual_cube_qiR hD hC quasiInverseR`.
+A detailed English derivation is pending.
 -/
 theorem zarhinStatement_of_dual_cube (hD : GlobalTheory.Published.DualAbelianScheme) (hC : GlobalTheory.Published.CubeTheorem) :
     GlobalTheory.CompanionTheory.Ar.GR.ZarhinStatement :=

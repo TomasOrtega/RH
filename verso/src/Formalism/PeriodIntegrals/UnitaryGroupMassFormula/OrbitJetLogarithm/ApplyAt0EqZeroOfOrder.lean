@@ -12,28 +12,28 @@ section Lin
 variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] {N0 N1 : ℕ} (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Simplify using `[applyTerm, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem applyTerm_addT (T1 T2 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (μ : XZ Lt N0 N1 →₀ ℕ) (c : ℤ) :
     applyTerm l (T1 + T2) μ c = applyTerm l T1 μ c + applyTerm l T2 μ c := by
   simp [applyTerm, mul_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [applyAt0_eq_sum, applyTerm_addT, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem applyAt0_addT (T1 T2 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (T1 + T2) P = applyAt0 N0 N1 l T1 P + applyAt0 N0 N1 l T2 P := by
   simp only [applyAt0_eq_sum, applyTerm_addT, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[applyAt0_eq_sum, applyTerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem applyAt0_zeroT (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (0 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) P = 0 := by
   simp [applyAt0_eq_sum, applyTerm]
 
 /- English proof (translation)
-Simplify using `only [applyAt0_eq_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Simplify using `only [applyTerm, MvPolynomial.smul_monomial, map_smul, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem applyAt0_smulT (a : ℂ_[l]) (T : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
@@ -45,7 +45,7 @@ theorem applyAt0_smulT (a : ℂ_[l]) (T : MvPowerSeries (Lt × Fin N0 × Fin N1)
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [applyAt0_zeroT]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, applyAt0_addT, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem applyAt0_sumT {ι : Type*} (s : Finset ι) (T : ι → MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
@@ -55,11 +55,11 @@ theorem applyAt0_sumT {ι : Type*} (s : Finset ι) (T : ι → MvPowerSeries (Lt
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, applyAt0_addT, ih]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_apply, Finsupp.degree_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finsupp.snd_sumFinsuppEquivProdFinsupp]`. Use `_ = ∑ i ∈ (Finsupp.sumFinsuppEquivProdFinsupp μ).2.support.map Function.Embedding.inr, μ i := by`. Rewrite using `[Finset.sum_map]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `_ ≤ ∑ i ∈ μ.support, μ i := by`. Use `Finset.sum_le_sum_of_subset ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.mem_map, Finsupp.mem_support_iff, Finsupp.snd_sumFinsuppEquivProdFinsupp] at hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨j, hj, rfl⟩` from `hi`. Simplify using `using hj`.
+A detailed English derivation is pending.
 -/
 theorem degree_snd_le (μ : XZ Lt N0 N1 →₀ ℕ) :
     Finsupp.degree (Finsupp.sumFinsuppEquivProdFinsupp μ).2 ≤ Finsupp.degree μ := by
@@ -77,9 +77,9 @@ theorem degree_snd_le (μ : XZ Lt N0 N1 →₀ ℕ) :
         simpa using hj
 
 /- English proof (translation)
-Rewrite using `[applyAt0_eq_sum]`. Use `Finset.sum_eq_zero fun μ hμ => ?_` and prove the remaining obligations. Establish `hd : Finsupp.degree (Finsupp.sumFinsuppEquivProdFinsupp μ).2 ≤ P.totalDegree` using `(degree_snd_le μ).trans (by rw [Finsupp.degree_apply]; exact MvPolynomial.le_totalDegree hμ)`. Establish `: MvPowerSeries.coeff (Finsupp.sumFinsuppEquivProdFinsupp μ).2 T = 0` using `MvPowerSeries.coeff_of_lt_order (lt_of_le_of_lt (by exact_mod_cast hd) h)`. Unfold `applyTerm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[this, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_eq_zero_of_order (T : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (XZ Lt N0 N1) ℤ)
     (h : (P.totalDegree : ℕ∞) < T.order) : applyAt0 N0 N1 l T P = 0 := by
@@ -99,13 +99,11 @@ section Trunc
 variable {σ : Type*} [Finite σ] {K : Type*} [Field K]
 
 /- English proof (translation)
-Set `Q` to `MvPowerSeries.truncTotal (n + 1) U`. Use `⟨Q.support, U - (Q : MvPowerSeries σ K), ?_, ?_⟩` and prove the remaining obligations. Establish `hQ : (Q : MvPowerSeries σ K) = ∑ k ∈ Q.support, MvPowerSeries.monomial k (MvPowerSeries.coeff k U)` using `by conv_lhs => rw [Q.as_sum]`. Rewrite using `[show ((∑ k ∈ Q.support, MvPolynomial.monomial k (MvPolynomial.coeff k Q) : MvPolynomial σ K) : MvPowerSeries σ K) = ∑ k ∈ Q.support, ((MvPolynomial.monomial k (MvPolynomial.coeff k Q) : MvPolynomial σ K) : MvPowerSeries σ K) from map_sum (MvPolynomial.coeToMvPowerSeries.ringHom) …`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.coe_monomial]`. Use `congr 1`. Rewrite using `[MvPowerSeries.coeff_truncTotal_eq_ite]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hk (by rw [MvPolynomial.mem_support_iff, MvPowerSeries.coeff_truncTotal_eq_ite, if_neg h]; simp)`. Rewrite using `[← hQ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ((n + 1 : ℕ) : ℕ∞) ≤ (U - (Q : MvPowerSeries σ K)).order`. Use `MvPowerSeries.le_order fun d hd => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_sub, MvPolynomial.coeff_coe, MvPowerSeries.coeff_truncTotal_eq_ite, if_pos, sub_self]`. Conclude with `hd` after adjusting the coercions. Conclude with `lt_of_lt_of_le (by exact_mod_cast Nat.lt_succ_self n) h1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trunc_split (n : ℕ) (U : MvPowerSeries σ K) :
     ∃ (S : Finset (σ →₀ ℕ)) (V : MvPowerSeries σ K),

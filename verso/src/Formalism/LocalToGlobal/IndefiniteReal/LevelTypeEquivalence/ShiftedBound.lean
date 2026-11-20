@@ -13,33 +13,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
 /- English proof (translation)
-Take `⟨Λ, hΛ, hψΛ⟩` from `psi_real ψ hψ`. Establish `hψu : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Establish `hs : ∀ x, ContDiff ℝ ∞ (Gf ψ M f x)` using `Gf_smooth hΛ hψΛ hM hf`. Establish `hbd : ∀ (m : ℕ) (l : Fin m → Fin k), ∃ C, ∀ x, ‖dH ψ M l f x‖ ≤ C` using `fun m l => dH_bdd hψu hf hs l (cont_dH hψ hf hM hPc hMP l)`. Use `choose Cb hCb using hbd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Bd : ℝ := ∑ m ∈ Finset.range (n + 1), ∑ l : Fin m → Fin k, Cb m l`. Use `set b : Fin k → Fin k → ℂ := fun i j => Λ (symplOH S T (M (ev i)) (M (ev j))).1`. Use `set Bb : ℝ := ∑ i, ∑ j, ‖b i j‖`. Establish `hBb : 0 ≤ Bb` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (Bb * R) ^ i * Bd, fun y t ht => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `c : (Fin k → ℝ) →+ ℂ` to `AddMonoidHom.mk' (fun u => -Λ (symplOH S T (M t) (M u)).1) (fun a a' => by`. Simplify using `only [map_add, symplOH_add_right]`. Rewrite using `[show ∀ p q : AF D.host.F, (p + q).1 = p.1 + q.1 from fun _ _ => rfl, map_add]`. Use the proof step `ring)`. Establish `hc : Continuous c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Continuous fun u => symplOH S T (M t) (M u)` using `(continuous_symplOH_right _).comp hM.1`. Conclude with `(hΛ.comp (continuous_fst.comp h1)).neg`. Use `set ℓ := AddMonoidHom.toRealLinearMap c hc`. Establish `hℓ : ‖ℓ‖ ≤ Bb * R`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun u => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ‖-Λ (symplOH S T (M t) (M u)).1‖ ≤ Bb * R * ‖u‖`. Rewrite using `[norm_neg, beta_poly Λ hΛ M hM.1 t u]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real]`. Use `gcongr`. Conclude with `norm_le_pi_norm t i`. Conclude with `norm_le_pi_norm u j`. Use `_ = ‖t‖ * ‖u‖ * Bb := by simp only [Bb, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `_ = ‖t‖ * (‖u‖ * Bb) := by ring`. Use `_ ≤ R * (‖u‖ * Bb) := mul_le_mul_of_nonneg_right ht (mul_nonneg (norm_nonneg u) hBb)`. Use `_ = Bb * R * ‖u‖ := by ring`. Establish `hid : (fun u => Gf ψ M f y (u + t)) = fun u => ψ (symplOH S T y (M t)) • (Complex.exp (ℓ u) * Gf ψ M f (y + M t) u)`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hru : eInf D • M u = M u` using `(wo_real_iff _).mp (hM.2.1 u)`. Establish `hneg : ψ (-(symplOH S T (M t) (M u))) = Complex.exp (ℓ u)`. Rewrite using `[hψΛ _ (by show -(symplOH S T (M t) (M u)).2 = 0; rw [symplOH_snd _ _ hru, neg_zero])]`. Rewrite using `[show (-(symplOH S T (M t) (M u))).1 = -(symplOH S T (M t) (M u)).1 from rfl, map_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Gf, heisO, smul_eq_mul, map_add]`. Rewrite using `[← hneg, symplOH_add_right, symplOH_add_left, show y + (M u + M t) = y + M t + M u by abel]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : iteratedFDeriv ℝ n (Gf ψ M f y) t = iteratedFDeriv ℝ n (fun u => Gf ψ M f y (u + t)) 0`. Rewrite using `[iteratedFDeriv_comp_add_right, zero_add]`. Rewrite using `[e1, hid]`. Establish `h2 : ContDiff ℝ ∞ fun u => Complex.exp (ℓ u) * Gf ψ M f (y + M t) u` using `((Complex.contDiff_exp (𝕜 := ℝ)).comp ℓ.contDiff).mul (hs _)`. Establish `e2 : (fun u => ψ (symplOH S T y (M t)) • (Complex.exp (ℓ u) * Gf ψ M f (y + M t) u)) = ψ (symplOH S T y (M t)) • fun u => Complex.exp (ℓ u) * Gf ψ M f (y + M t) u` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2' : ContDiff ℝ n fun u => Complex.exp (ℓ u) * Gf ψ M f (y + M t) u` using `h2.of_le (natCast_lt_inf n).le`. Rewrite using `[e2]`. Use `first`. Consider the case `rw [iteratedFDeriv_const_smul_apply h2']`. Consider the case `rw [iteratedFDeriv_const_smul_apply h2'.contDiffAt]`.
-
-Rewrite using `[norm_smul, hψu, one_mul]`. Establish `h1 : ContDiff ℝ ∞ fun u => Complex.exp (ℓ u)` using `(Complex.contDiff_exp (𝕜 := ℝ)).comp ℓ.contDiff`. Use `(norm_iteratedFDeriv_mul_le h1 (hs _) 0 (natCast_lt_inf n).le).trans (Finset.sum_le_sum fun i hi => ?_)` and prove the remaining obligations. Establish `he : ‖iteratedFDeriv ℝ i (fun u => Complex.exp (ℓ u)) 0‖ ≤ (Bb * R) ^ i`. Use `(norm_iter_exp ℓ i 0).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[map_zero, Complex.exp_zero, norm_one, one_mul]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hℓ i`. Establish `hg : ‖iteratedFDeriv ℝ (n - i) (Gf ψ M f (y + M t)) 0‖ ≤ Bd`. Use `(mlin_norm_le _).trans ?_` and prove the remaining obligations. Establish `hmi : n - i ∈ Finset.range (n + 1)` using `Finset.mem_range.mpr (by omega)`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hc0 : (0 : ℝ) ≤ n.choose i` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem shifted_bound {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) {M : (Fin k → ℝ) →+ WO S T} {P : WO S T →+ (Fin k → ℝ)} (hM : IsRealFrame M)

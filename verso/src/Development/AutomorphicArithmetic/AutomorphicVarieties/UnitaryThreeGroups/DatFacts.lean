@@ -11,16 +11,16 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h`.
+A detailed English derivation is pending.
 -/
 private theorem locConst {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
     (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℚ K`. Establish `e : (galOf ℚ K Ω : Set (G ℚ Ω)) = ⋂ i, {σ : G ℚ Ω | σ (algebraMap K Ω (b i)) = algebraMap K Ω (b i)}`. Use extensionality with `σ`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq, SetLike.mem_coe, mem_galOf]`. Use `⟨fun h i => h _, fun h x => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.ext (f₁ := σ.toLinearMap ∘ₗ (IsScalarTower.toAlgHom ℚ K Ω).toLinearMap) (f₂ := (IsScalarTower.toAlgHom ℚ K Ω).toLinearMap) h` as an intermediate fact. Conclude with `LinearMap.congr_fun this x`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_setOf_apply (F := ℚ) _ (fun t => t = algebraMap K Ω (b i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem open_galOf (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K]
     [Algebra K Ω] : IsOpen (galOf ℚ K Ω : Set (G ℚ Ω)) := by
@@ -36,13 +36,13 @@ private theorem open_galOf (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact isOpen_iInter_of_finite fun i => isOpen_setOf_apply (F := ℚ) _ (fun t => t = algebraMap K Ω (b i))
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Use `show cyclotomicCharacter Ω l σ.toRingEquiv = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN0 : l ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `: NeZero (l ^ n)` using `⟨hN0⟩`. Establish `hspec` using `cyclotomicCharacter.spec (L := Ω) l σ.toRingEquiv ζ hζ.pow_eq_one`. Establish `hv : ¬ A.valuation ((l ^ n : ℕ) : Ω) < 1`. Rewrite using `[Nat.cast_pow, map_pow, not_lt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_le_pow₀ (not_lt.1 hA)`. Establish `h1 : Chr.cls ℚ Ω (l ^ n) σ = 1` using `(Chr.clsFacts ℚ Ω (l ^ n)).2.2.2.2 A hv hσ`. Establish `h2` using `Chr.cls_spec (l ^ n) σ ζ hζ.pow_eq_one`. Rewrite `h2` using `[h1]`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (hspec.symm.trans h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ZMod.val_injective _ h3]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem cyc_ine (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (A : ValuationSubring Ω) (hA : ¬ A.valuation (l : Ω) < 1) {σ : G ℚ Ω} (hσ : σ ∈ Ine (F := ℚ) A) :
@@ -66,7 +66,7 @@ private theorem cyc_ine (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   simp
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun x : GL (Fin 3) R => (x : Matrix (Fin 3) (Fin 3) R) 0 0) h`. Apply `Units.ext` to reduce the goal to its premises. Simplify `h1` using `[tor_val, wt1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem tor_eq_one {R : Type} [CommRing R] {t : Rˣ} (h : tor R t = 1) : t = 1 := by
   have h1 := congrArg (fun x : GL (Fin 3) R => (x : Matrix (Fin 3) (Fin 3) R) 0 0) h
@@ -74,7 +74,7 @@ private theorem tor_eq_one {R : Type} [CommRing R] {t : Rˣ} (h : tor R t = 1) :
   simpa [tor_val, wt1] using h1
 
 /- English proof (translation)
-Use `⟨fun h => ⟨congrArg SemidirectProduct.right h, tor_eq_one (congrArg SemidirectProduct.left h)⟩, fun h => ?_⟩` and prove the remaining obligations. Use `SemidirectProduct.ext ?_ h.1` and prove the remaining obligations. Rewrite using `[unitaryThreeReflection_left, h.2, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem diagonal_rep_eq_one_iff {Γ R : Type} [Group Γ] [CommRing R] (η : Γ →* ℤˣ) (Ψ : Γ →* Rˣ) (g : Γ) :
     r0 η Ψ g = 1 ↔ η g = 1 ∧ Ψ g = 1 := by
@@ -84,7 +84,7 @@ private theorem diagonal_rep_eq_one_iff {Γ R : Type} [Group Γ] [CommRing R] (�
   rfl
 
 /- English proof (translation)
-Use `IsLocallyConstant.desc _ Units.val ?_ Units.val_injective` and prove the remaining obligations. Establish `h` using `(hΨ 1 1).comp (Ideal.Quotient.factor (pow_one (maximalIdeal O)).le)`. Simplify using `only [zpow_one] at h`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bar_lc {O Γ : Type} [CommRing O] [IsLocalRing O] [Group Γ] [TopologicalSpace Γ] (Ψ : Γ →* Oˣ)
     (hΨ : CharCont Ψ) : IsLocallyConstant (barChar O Ψ) := by
@@ -94,27 +94,23 @@ private theorem bar_lc {O Γ : Type} [CommRing O] [IsLocalRing O] [Group Γ] [To
   exact h
 
 /- English proof (translation)
-Introduce `Ω _ _ _ K _ _ _ l hl c N _ e ψ D`. Take `⟨w, η', a, hlit⟩` from `(gdIff Ω K l c e N ψ).1.1 D.gd`. Establish `himag` using `D.gd.imag`. Establish `hΨ : ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F` using `ℚ) A, D.Ψ g = Chr.dirG ℚ Ω ψ g := fun A hA g hg => by show (chiO ℚ Ω l c.O g) ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g = _`. Establish `: chiO ℚ Ω l c.O g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `chiO`. Rewrite using `[MonoidHom.comp_apply, cyc_ine Ω l A hA hg, map_one]`. Rewrite using `[this, _root_.one_zpow, one_mul]`. Establish `hkill : ∀ g, g ∈ D.Kill ↔ ∃ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 ∧ g ∈ Ine (F` using `ℚ) A ∧ D.η g = 1 ∧ Chr.dirG ℚ Ω ψ g = 1 := fun g => by`. Use `exists_congr fun A => and_congr_right fun hA => and_congr_right fun hg => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `rbar`. Rewrite using `[diagonal_rep_eq_one_iff]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Unfold `barChar`. Rewrite using `[MonoidHom.comp_apply, hΨ A hA g hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => ?_, fun h => by rw [h, map_one]⟩` and prove the remaining obligations. Use `(congrFacts Ω l c).2.2.2.1 _ 1 _ hlit.ord ?_ (one_pow _) ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.pow_apply, pow_orderOf_eq_one, MonoidHom.one_apply]`. Rewrite using `[← residue_eq_zero_iff, map_sub, sub_eq_zero, Units.val_one, map_one]`. Conclude with `congrArg Units.val h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `D.conj`. Use `⟨?_, ?_, hlit.par D.cc ⟨φ, hφ⟩, ?_, ?_, fun g hg => ?_, ?_, ?_, ?_, hkill, fun A hA => ?_⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun x => φ.injective ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hφ, hφ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Int.units_eq_one_or _).resolve_left fun h => ?_` and prove the remaining obligations. Establish `h1 : D.cc ∈ galOf ℚ K Ω` using `D.η_ker ▸ h`. Use `IsTotallyComplex.complexEmbedding_not_isReal (φ.comp (algebraMap K Ω)) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hφ, h1 x]`. Conclude with `locConst _ (D.η_ker ▸ open_galOf Ω K)`. Conclude with `bar_lc _ D.Ψ_cont`. Take `⟨A, hA, hg, h1, h2⟩` from `(hkill g).1 hg`. Conclude with `(diagonal_rep_eq_one_iff _ _ _).2 ⟨h1, (hΨ A hA g hg).trans h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(dvrFacts l c.O).2.2.2.2.2.2.2.2 2 fun h => D.gd.l_odd ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 h)` as an intermediate fact. Simplify using `using this`. Establish `: Algebra.IsQuadraticExtension ℚ K` using `⟨D.gd.quad⟩`. Conclude with `IsCMField.ofCMExtension ℚ K`. Establish `hf : Continuous (algebraMap ℤ_[l] (PadicAlgCl l)).toMonoidHom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val).congr fun x => ?_` and prove the remaining obligations. Conclude with `(IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l) x).symm`. Establish `h1` using `((hf.units_map _).comp (continuous_cycZ ℚ Ω l)).zpow (e : ℤ)`. Establish `h2` using `(((locConst _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom).comp (Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom)).continuous`. Use `(h1.mul h2).congr fun g => ?_` and prove the remaining obligations.
-
-Use `show _ = Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (chiO ℚ Ω l c.O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g)`. Rewrite using `[map_mul, map_zpow]`. Both sides reduce to the same expression. Take `⟨h1, s, hs, h2⟩` from `(gdLoc Ω K l c e N ψ w η' a hlit).1 A hA`. Use `⟨D.η_ker ▸ h1, s, hs, ?_⟩` and prove the remaining obligations.
-
-Rewrite `h2` using `[Units.val_pow_eq_pow_val]`. Conclude with `not_not.1 h2`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.dat_facts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

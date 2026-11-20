@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.StageSmallNz
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ Pf, φ y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hy ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 hc)`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg ((TensorProduct.rid ℂ Pr).toLinearMap ∘ₗ LinearMap.lTensor Pr φ) h0` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, map_zero] at this`. Conclude with `hx ((smul_eq_zero.1 this).resolve_left hφ)`.
+A detailed English derivation is pending.
 -/
 theorem tmul_ne_zero {Pr Pf : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pf] [Module ℂ Pf] {x : Pr} {y : Pf}
     (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 := by
@@ -47,9 +47,9 @@ theorem tmul_ne_zero {Pr Pf : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGr
   exact hx ((smul_eq_zero.1 this).resolve_left hφ)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hP0`. Rewrite `hP0` using `[not_nontrivial_iff_subsingleton]`. Establish `hz : ∀ z : Pr ⊗[ℂ] Pf, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => rw [Subsingleton.elim x 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Take `⟨u, v, huv⟩` from `exists_pair_ne Pi`. Conclude with `huv (by rw [← e.apply_symm_apply u, ← e.apply_symm_apply v, hz (e.symm u), hz (e.symm v)])`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nontrivial_left {Pr Pf Pi : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pf] [Module ℂ Pf]
     [AddCommGroup Pi] [Module ℂ Pi] [Nontrivial Pi] (e : Pr ⊗[ℂ] Pf ≃ₗ[ℂ] Pi) : Nontrivial Pr := by
@@ -64,21 +64,19 @@ theorem nontrivial_left {Pr Pf Pi : Type} [AddCommGroup Pr] [Module ℂ Pr] [Add
   exact huv (by rw [← e.apply_symm_apply u, ← e.apply_symm_apply v, hz (e.symm u), hz (e.symm v)])
 
 /- English proof (translation)
-Introduce `hP hK hL`. Establish `hH` using `hP.howeDualityReal`. Establish `hLM` using `GlobalTheory.T.local_matching_of_howe_duality hH hP hK hL`. Take `⟨c, hc⟩` from `GlobalTheory.SqTop.Model.gBig_and GlobalTheory.T.towerStage_seesawDictionary_framesSignatures (GlobalTheory.T.square_tower_stage_finite_compat hP hK hL)`. Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ hLc G W S hW hN i j p A A' WW X hX hint => ?_⟩` and prove the remaining obligations. Take `⟨hd, h3⟩` from `h C hC D large₂ a b r T Lc μ hLc G`. Take `⟨FA, FA', FW, ea, eb, -, hsA', -, hD⟩` from `hd W i j p 0 A A' WW X hX`. Establish `hdef : ∀ τ, Formalism.UG.HasSignature (gramAt D A' τ) A'.rank 0` using `fun τ => by simpa using hsA' τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIs` using `hX.2.2.2.2.2.2.2`. Take `⟨Pr, q, q', hq, hq', hLMt⟩` from `hLM D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW ea eb`. Establish `key : ∀ t, ∃ (Pi : ModuleCat.{0} ℂ) (rf : GA D WW → Module.End ℂ Pi) (rl : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ → Module.End ℂ Pi) (pm : (WO A WW → ℂ) →ₗ[ℂ] Pi) (pm' : (WO A' WW → ℂ) →ₗ[ℂ] Pi), GlobalTheory.SquareComm.IsMatch W.ψ W.θ FA FA' FW (Lc.mu t (j + 1) * Lc. …`. Introduce `t`. Take `⟨hTr, hInf, hf, hf', -, -⟩` from `hD t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hex, hfac⟩` from `hLMt _ _ hTr hInf`. Take `⟨Pm, rf, rl, pm, pm', hm⟩` from `GlobalTheory.T.triple_match_existence hH hP hK hL D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hex (X.ω t) (X.ω' t) (hIs.weil t) (hIs.weil' t)`. Take `⟨Pf, rr, rr', e, -, -, hr, hr'⟩` from `hfac _ _ _ _ _ _ _ hm`. Establish `hy` using `h3 W i j p 0 A A' WW X hX FA FA' FW t hf hf' Pm rf rl pm pm' hm Pr Pf q q' rr rr' e hq hq' hr hr'`. Use `haveI : Nontrivial Pm := hm.irred.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Pm, rf, rl, pm, pm', hm, nontrivial_left e, fun P' hP' => ?_⟩` and prove the remaining obligations. Rewrite using `[hr' _ hf']`. Conclude with `e.map_ne_zero_iff.2 (tmul_ne_zero hP' hy)`. Distinguish the cases in `hT : Nonempty T`. Take `⟨t0⟩` from `hT haveI : Nontrivial Pr := (key t0).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_ne (0 : Pr)`. Take `⟨P0, rfl⟩` from `hq' x`. Use `⟨P0, fun t h0 => ?_⟩` and prove the remaining obligations. Take `⟨hTr, -, -, hf', -, hk'⟩` from `hD t`. Take `⟨Pm, rf, rl, pm, pm', hm, -, hne⟩` from `key t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memF : ∀ P', GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P' ∈ GlobalTheory.SquareComm.algF W.ψ W.θ false FA' FW` using `fun P' => Submodule.subset_span ⟨_, P', hf', rfl⟩`. Establish `eI' : GlobalTheory.SquareComm.thetaInt (X.ω' t) X.m' X.fd' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P0) = X.I' W.ψ W.θ t P0`. Use function extensionality and compare the values at `h`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, Tri.I', hk']`. Take `⟨Φ, hΦ, hΦ0⟩` from `GlobalTheory.T.chain_frame_triple_haar_identity_two hP hK hL D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hdef X.m' X.fd' hIs.meas' _ _ _ _ _ _ _ hm`.
-
-Conclude with `hΦ0 (GlobalTheory.T.chain_frame_triple_haar_identity hP hK hL D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hdef X.m X.fd X.m' X.fd' hIs.meas hIs.meas' _ _ _ _ _ _ _ hm _ (memF P0) (hne P0 hx) (by rw [eI']; exact h0) Φ hΦ)`. Conclude with `⟨0, fun t => (hT ⟨t⟩).elim⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stage_small_nonzero_zero : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

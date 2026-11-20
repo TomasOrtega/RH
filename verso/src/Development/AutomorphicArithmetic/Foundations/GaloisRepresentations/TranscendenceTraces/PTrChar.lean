@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hFL hOp hTS hPI q _ i Z S p _ w hw hq`. Establish `hOver : (trFam p w q i).Over (tr0 p w q i)`. Unfold `trFam`. Conclude with `GlobalTheory.EtC.pick_spec (hFL q p (tw q i) (tw q i) (tr0 p w q i)).1`. Use `⟨hOver, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A a`. Conclude with `⟨(tr0 p w q i).app A a, hOver A a, hTS q i p w hw hq A a⟩`. Introduce `τ hτ n`. Establish `hτo : τ.Over (tr0 p w q i)`. Introduce `A a`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hs⟩` from `hτ A a`. Establish `hbe : b = (tr0 p w q i).app A a`. Apply `hPI q i A.U` to reduce the goal to its premises. Introduce `Ω _ _ x`. Rewrite using `[hs Ω x, hTS q i p w hw hq A a Ω x]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, hbe]`. Conclude with `hOp q p (tw q i) (tw q i) (tr0 p w q i) (trFam p w q i) τ hOver hτo n`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trChar_of :
     FL → OpEq → TrSum → PtInj → TrChar := by

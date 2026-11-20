@@ -33,7 +33,7 @@ def contMaps (X : Type*) [TopologicalSpace X] : Submodule R (X → M) where
 variable {R M}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_contMaps {X : Type*} [TopologicalSpace X] (f : X → M) :
     f ∈ contMaps R M X ↔ Continuous f := Iff.rfl
@@ -48,7 +48,7 @@ variable (rho : Representation R G M)
 def H0 : Submodule R M := rho.invariants
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_riemannRochSpace_iff_regularAt_everywhere (m : M) : m ∈ H0 rho ↔ ∀ g, rho g m = m := Iff.rfl
 
@@ -61,7 +61,7 @@ def Z1 : Submodule R (G → M) where
     simp only [Pi.smul_apply, hf.2, map_smul, smul_add]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Z1_iff_cocycle (f : G → M) :
     f ∈ Z1 rho ↔ Continuous f ∧ ∀ g h, f (g * h) = f g + rho g (f h) := Iff.rfl
@@ -76,7 +76,7 @@ Both sides reduce to the same expression.
 def Bd1 : Submodule R (G → M) := LinearMap.range (d0 rho)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨m, fun g => rfl⟩`. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, funext fun g => (hm g).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_contCoboundaries1 (f : G → M) : f ∈ Bd1 rho ↔ ∃ m, ∀ g, f g = rho g m - m := by
   constructor
@@ -101,7 +101,7 @@ def Z2 : Submodule R (G × G → M) where
     rw [← smul_sub, ← smul_add, ← smul_sub, e, smul_zero]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cocycles2 (f : G × G → M) :
     f ∈ Z2 rho ↔ Continuous f ∧
@@ -123,7 +123,7 @@ Both sides reduce to the same expression.
 def Bd2 : Submodule R (G × G → M) := (contMaps R M G).map (d1 rho)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_contCoboundaries2 (f : G × G → M) :
     f ∈ Bd2 rho ↔ ∃ c : G → M, Continuous c ∧ d1 rho c = f := Iff.rfl
@@ -311,7 +311,7 @@ def compatiblePairH2 : H2 rho →ₗ[R] H2 rho' :=
 end Pair
 
 /- English proof (translation)
-The claim follows from `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem resH1_eq_compatiblePairH1 {H : Type*} [Group H] [TopologicalSpace H] (phi : H →* G)
     (hphi : Continuous phi) :
@@ -320,7 +320,7 @@ theorem resH1_eq_compatiblePairH1 {H : Type*} [Group H] [TopologicalSpace H] (ph
   Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem resH2_eq_compatiblePairH2 {H : Type*} [Group H] [TopologicalSpace H] (phi : H →* G)
     (hphi : Continuous phi) :
@@ -336,7 +336,7 @@ variable {M' : Type*} [AddCommGroup M'] [Module R M'] [TopologicalSpace M']
   (hequiv : ∀ g m, u (rho g m) = rho' g (u m))
 
 /- English proof (translation)
-The claim follows from `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mapH1_eq_compatiblePairH1 :
     mapH1 rho rho' u hu hequiv =
@@ -344,7 +344,7 @@ theorem mapH1_eq_compatiblePairH1 :
   Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mapH2_eq_compatiblePairH2 :
     mapH2 rho rho' u hu hequiv =
@@ -358,7 +358,7 @@ section RestrictionN
 variable {H : Type*} [Group H] [TopologicalSpace H] (phi : H →* G)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Break down `lt_trichotomy (k : ℕ) j with h | h | h` into its components or cases. Simplify using `only [Fin.contractNth_apply_of_lt _ _ _ _ h]`. Simplify using `only [Fin.contractNth_apply_of_eq _ _ _ _ h, map_mul]`. Simplify using `only [Fin.contractNth_apply_of_gt _ _ _ _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem contractNth_map {n : ℕ} (j : Fin (n + 1)) (g : Fin (n + 1) → H) :
     (fun k => phi (Fin.contractNth j (· * ·) g k)) =
@@ -370,7 +370,7 @@ theorem contractNth_map {n : ℕ} (j : Fin (n + 1)) (g : Fin (n + 1) → H) :
   · simp only [Fin.contractNth_apply_of_gt _ _ _ _ h]
 
 /- English proof (translation)
-Simplify using `only [dn_apply, MonoidHom.coe_comp, Function.comp_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[contractNth_map]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dn_comp (n : ℕ) (f : (Fin n → G) → M) (g : Fin (n + 1) → H) :
     dn (rho.comp phi) n (fun x => f fun i => phi (x i)) g = dn rho n f (fun i => phi (g i)) := by
@@ -383,7 +383,7 @@ variable (hphi : Continuous phi)
 include hphi
 
 /- English proof (translation)
-The claim follows from `hf.comp (continuous_pi fun i => hphi.comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_comp_tuple (n : ℕ) {f : (Fin n → G) → M} (hf : Continuous f) :
     Continuous (fun x : Fin n → H => f fun i => phi (x i)) :=
@@ -431,15 +431,15 @@ section Tate
 def normEnd [Finite G] : Module.End R M := ∑ᶠ g : G, rho g
 
 /- English proof (translation)
-Rewrite using `[normEnd, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normEnd_apply [Finite G] [Fintype G] (m : M) : normEnd rho m = ∑ g : G, rho g m := by
   rw [normEnd, finsum_eq_sum_of_fintype, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite G`. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere]`. Introduce `g`. Rewrite using `[normEnd_apply, map_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun h => by`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.coe_mulLeft, map_mul, Module.End.mul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem norm_mem_invariants [Finite G] (m : M) : normEnd rho m ∈ H0 rho := by
   classical
@@ -455,7 +455,7 @@ def normSub [Finite G] : Submodule R (H0 rho) := (LinearMap.range (normEnd rho))
 abbrev tateH0 [Finite G] := H0 rho ⧸ normSub rho
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite G`. Use `eq_top_iff.2 fun x _ => Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨x.1, ?_⟩)` and prove the remaining obligations. Rewrite using `[normEnd_apply, Fintype.sum_subsingleton _ 1, map_one, Module.End.one_apply]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normSub_eq_top [Finite G] [Subsingleton G] : normSub rho = ⊤ := by
   classical
@@ -467,7 +467,7 @@ theorem normSub_eq_top [Finite G] [Subsingleton G] : normSub rho = ⊤ := by
 end Tate
 
 /- English proof (translation)
-Introduce and unpack `f ⟨m, rfl⟩`. Use `⟨(h.comp (continuous_id.prodMk continuous_const)).sub continuous_const, fun g g' => ?_⟩` and prove the remaining obligations. Simplify using `only [amitsur_d0_apply, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem contCoboundaries1_le_cocycles1 (h : ContAction rho) : Bd1 rho ≤ Z1 rho := by
   rintro f ⟨m, rfl⟩
@@ -476,7 +476,7 @@ theorem contCoboundaries1_le_cocycles1 (h : ContAction rho) : Bd1 rho ≤ Z1 rho
   abel
 
 /- English proof (translation)
-Introduce and unpack `f ⟨c, hc, rfl⟩`. Establish `hc' : Continuous c` using `hc`. Use `⟨((h.comp (continuous_fst.prodMk (hc'.comp continuous_snd))).sub (hc'.comp continuous_mul)).add (hc'.comp continuous_fst), fun g g' k => ?_⟩` and prove the remaining obligations. Simplify using `only [d1_apply, map_add, map_sub, map_mul, Module.End.mul_apply, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem contCoboundaries2_le_cocycles2 [ContinuousMul G] (h : ContAction rho) : Bd2 rho ≤ Z2 rho := by
   rintro f ⟨c, hc, rfl⟩
@@ -487,14 +487,14 @@ theorem contCoboundaries2_le_cocycles2 [ContinuousMul G] (h : ContAction rho) : 
   abel
 
 /- English proof (translation)
-Simplify using `[mem_Z1_iff_cocycle]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cocycles1_trivial (f : G → M) :
     f ∈ Z1 (Representation.trivial R G M) ↔ Continuous f ∧ ∀ g h, f (g * h) = f g + f h := by
   simp [mem_Z1_iff_cocycle]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `f ⟨m, rfl⟩`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Bd1_trivial : Bd1 (Representation.trivial R G M) = ⊥ := by
   rw [eq_bot_iff]
@@ -678,7 +678,7 @@ def Sel (L : LocCond rho phi) : Submodule R (H1 rho) :=
   ⨅ i, (L i).comap (resH1 rho (phi i) (hphi i))
 
 /- English proof (translation)
-Simplify using `[Sel, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Sel (L : LocCond rho phi) (x : H1 rho) :
     x ∈ Sel rho phi hphi L ↔ ∀ i, resH1 rho (phi i) (hphi i) x ∈ L i := by
@@ -715,7 +715,7 @@ variable {R : Type*} [CommRing R] {G : Type*} [Group G] [TopologicalSpace G]
   (hequiv : ∀ g m, u (rho g m) = rho' g (u m))
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem resH1_comp_mapH1 {H : Type*} [Group H] [TopologicalSpace H] (phi : H →* G)
     (hphi : Continuous phi) (x : H1 rho) :
@@ -726,7 +726,7 @@ theorem resH1_comp_mapH1 {H : Type*} [Group H] [TopologicalSpace H] (phi : H →
   | H f => rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem resH2_comp_mapH2 {H : Type*} [Group H] [TopologicalSpace H] (phi : H →* G)
     (hphi : Continuous phi) (x : H2 rho) :
@@ -801,7 +801,7 @@ Both sides reduce to the same expression.
 @[simp] theorem TDual.smul_apply (c : R) (φ : TDual R M) (m : M) : (c • φ) m = c * φ m := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem TDual.ext {φ ψ : TDual R M} (h : ∀ m, φ m = ψ m) : φ = ψ := LinearMap.ext h
 
@@ -837,7 +837,7 @@ Both sides reduce to the same expression.
 @[simp] theorem evalPair_apply (m : M) (φ : TDual R M) : evalPair m φ = φ m := rfl
 
 /- English proof (translation)
-Simplify using `only [evalPair_apply, twDual_apply, charRep_apply]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalPair_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : Γ) (m : M)
     (φ : TDual R M) : evalPair (rho g m) (twDual χ rho g φ) = charRep χ g (evalPair m φ) := by
@@ -855,7 +855,7 @@ Both sides reduce to the same expression.
     (φ : TDual R M') (m : M) : tdualMap u φ m = φ (u m) := rfl
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [tdualMap_apply, twDual_apply, hequiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tdualMap_equiv (χ : Γ →* Rˣ) {M' : Type*} [AddCommGroup M'] [Module R M']
     (rho : Representation R Γ M) (rho' : Representation R Γ M') (u : M →ₗ[R] M')
@@ -873,7 +873,7 @@ variable {R : Type*} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
   [TopologicalSpace M] [DiscreteTopology M]
 
 /- English proof (translation)
-The claim follows from `h.comp ((hφ.comp continuous_fst).prodMk continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem ContAction.comp' [TopologicalSpace Γ] {D : Type*} [Group D] [TopologicalSpace D]
     {rho : Representation R Γ M} (h : ContAction rho) {φ : D →* Γ} (hφ : Continuous φ) :
@@ -903,7 +903,7 @@ def perpCond {I : Type*} {D : I → Type*} [∀ i, Group (D i)] [∀ i, Topologi
   fun i => ⨅ x ∈ L i, LinearMap.ker ((cupH1H1TwistedDual χ rho (phi i) (hrho i)).flip x)
 
 /- English proof (translation)
-Simplify using `[perpCond, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_perpCond {I : Type*} {D : I → Type*} [∀ i, Group (D i)] [∀ i, TopologicalSpace (D i)]
     (phi : ∀ i, D i →* Γ) (hrho : ∀ i, ContAction (rho.comp (phi i)))
@@ -947,7 +947,7 @@ def natSha2d : Sha2 (twDual χ rho') phis hphis →ₗ[R] Sha2 (twDual χ rho) p
 end NatMaps
 
 /- English proof (translation)
-Introduce `g m`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem equivariant_smul {R Γ M : Type*} [CommRing R] [Group Γ] [AddCommGroup M] [Module R M]
     (rho : Representation R Γ M) (c : R) :
@@ -956,7 +956,7 @@ theorem equivariant_smul {R Γ M : Type*} [CommRing R] [Group Γ] [AddCommGroup 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`. Conclude with `Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)`.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem mapH1_mapH2_id {R Γ M : Type*} [CommRing R] [TopologicalSpace R] [DiscreteTopology R] [Group Γ]
     [TopologicalSpace Γ] [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M]
@@ -979,9 +979,9 @@ def cycN : (L ≃ₐ[K] L) →* (ZMod n)ˣ :=
 variable {K L n} in
 
 /- English proof (translation)
-Establish `hz : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[NeZero.ne n] at h`. Establish `ht : Units.mk0 ζ hz ∈ rootsOfUnity n L`. Rewrite using `[mem_rootsOfUnity]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[h]`. Use `modularCyclotomicCharacter.spec L (HasEnoughRootsOfUnity.natCard_rootsOfUnity L n) (MulSemiringAction.toRingAut (L ≃ₐ[K] L) L σ) ht` as an intermediate fact. Simplify `this` using `[cycN]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cycN_spec (σ : L ≃ₐ[K] L) (ζ : L) (h : ζ ^ n = 1) :
     σ ζ = ζ ^ ((cycN K L n σ : ZMod n)).val := by
@@ -1123,7 +1123,7 @@ def DecInf (j : Ω →+* ℂ) : Subgroup (G F Ω) where
       rw [this, Complex.conj_conj]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_DecInf (j : Ω →+* ℂ) (σ : G F Ω) :
     σ ∈ DecInf F j ↔ (∀ x, j (σ x) = j x) ∨ ∀ x, j (σ x) = starRingEnd ℂ (j x) := Iff.rfl
@@ -1168,7 +1168,7 @@ def toGS : G F Ω →* GS Ω S := QuotientGroup.mk' (NS Ω S)
 
 variable (Ω) in
 /- English proof (translation)
-The claim follows from `QuotientGroup.continuous_mk`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toGS : Continuous (toGS Ω S) := QuotientGroup.continuous_mk
 
@@ -1204,7 +1204,7 @@ def locHom (D : GData F Ω S n) (i : S ⊕ InfinitePlace F) :
   (toGS Ω _).comp (locGrp D i).subtype
 
 /- English proof (translation)
-The claim follows from `(continuous_toGS Ω _).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locHom (D : GData F Ω S n) (i : S ⊕ InfinitePlace F) :
     Continuous (locHom D i) :=
@@ -1213,7 +1213,7 @@ theorem continuous_locHom (D : GData F Ω S n) (i : S ⊕ InfinitePlace F) :
 abbrev locF (D : GData F Ω S n) (v : S) := locHom D (Sum.inl v)
 
 /- English proof (translation)
-The claim follows from `continuous_locHom D _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locF (D : GData F Ω S n) (v : S) : Continuous (locF D v) :=
   continuous_locHom D _
@@ -1650,7 +1650,7 @@ def IsAlgHecke (χ : Ideles K →* ℂˣ) (n : (K →+* ℂ) → ℤ) : Prop :=
       (χ x : ℂ) = ∏ σ : K →+* ℂ, (embC σ (infComp x (InfinitePlace.mk σ))) ^ n σ
 
 /- English proof (translation)
-Use `⟨continuous_const, fun _ => rfl, fun x _ _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isAlgHecke_one : IsAlgHecke (1 : Ideles K →* ℂˣ) (fun _ => 0) := by
   refine ⟨continuous_const, fun _ => rfl, fun x _ _ => ?_⟩
@@ -1669,7 +1669,7 @@ def AlgebraicHeckeCharacterPAdic : Prop := ∀ (K : Type) [Field K] [NumberField
             ∃ h : (χ x : ℂ) ∈ E, (ψ x : PadicAlgCl l) = ι ⟨(χ x : ℂ), h⟩
 
 /- English proof (translation)
-The claim follows from `continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem contAction_trivial {R G M : Type*} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] :
@@ -1677,25 +1677,25 @@ theorem contAction_trivial {R G M : Type*} [CommRing R] [Group G] [TopologicalSp
   continuous_snd
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : FiniteDimensional ℚ_[p] (⊥ : IntermediateField ℚ_[p] (PadicAlgCl p)) :=
   inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (j : Ω →+* ℂ) : Finite (DecInf F j) ∧ DiscreteTopology (DecInf F j) :=
   ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `Or.inl odd_one`.
+Prove the first alternative.
 -/
 example (F : Type) [Field F] [NumberField F] : PTCase F 1 := Or.inl odd_one
 
 /- English proof (translation)
-The claim follows from `contAction_trivial`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n : ℕ) [NeZero n] :
     ContAction (Representation.trivial (ZMod n) (GK p K) (ZMod n)) :=

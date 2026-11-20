@@ -16,14 +16,14 @@ open scoped Classical
 namespace GlobalTheory.GLq.GenericCount
 
 /- English proof (translation)
-Take `⟨V, -, hV⟩` from `h`. Conclude with `⟨V, hV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
   obtain ⟨V, -, hV⟩ := h
   exact ⟨V, hV⟩
 
 /- English proof (translation)
-Unfold `ip`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun x => by simp [mul_comm])`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ip_comm {G : Type} [Group G] [Fintype G] (α β : G → ℂ) : ip α β = ip β α := by
   unfold ip
@@ -31,7 +31,7 @@ theorem ip_comm {G : Type} [Group G] [Fintype G] (α β : G → ℂ) : ip α β 
   exact Fintype.sum_equiv (Equiv.inv G) _ _ (fun x => by simp [mul_comm])
 
 /- English proof (translation)
-Unfold `tr`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun x _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tr_finset_sum {G : Type} [Group G] [Fintype G] (a : MonoidAlgebra ℂ G) (S : Finset (G → ℂ))
     (c : (G → ℂ) → ℂ) : tr a (∑ ρ ∈ S, c ρ • ρ) = ∑ ρ ∈ S, c ρ * tr a ρ := by
@@ -41,9 +41,9 @@ theorem tr_finset_sum {G : Type} [Group G] [Fintype G] (a : MonoidAlgebra ℂ G)
   refine Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun x _ => by ring
 
 /- English proof (translation)
-Introduce `x z`. Simplify using `only [gg]`. Use `congr 1`. Use `symm`. Use `Fintype.sum_equiv (Equiv.mulLeft z) _ _ (fun y => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (z * y)⁻¹ * (z * x * z⁻¹) * (z * y) = y⁻¹ * x * y` using `by group`. Simplify using `only [Equiv.coe_mulLeft, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gg_isClass {g : ℕ} [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (n : ℕ) : IsClass (gg ψ n) := by
   intro x z
@@ -61,19 +61,19 @@ namespace GlobalTheory.GLq
 open GlobalTheory.GLq.GenericCount in
 
 /- English proof (translation)
-Introduce `g _ ψ hψ n hn`. Take `⟨hfin, -⟩` from `GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)`. Use `set S := hfin.toFinset with hS`. Establish `hmemS : ∀ ρ, ρ ∈ S ↔ IsIrr ρ` using `fun ρ => by rw [hS, Set.Finite.mem_toFinset]; rfl`. Establish `hnorm` using `GlobalTheory.T.gelfandGraevCharacterGLn_norm_and_reciprocity g ψ hψ n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec` using `(GlobalTheory.T.character_decomposition_and_classFunction_expansion (Gn g n) (gg ψ n)).2.1 (gg_isClass ψ n)`. Rewrite `hdec` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hirrC : ∀ ρ : Gn g n → ℂ, IsIrr ρ → IsClass ρ` using `fun ρ h => (GlobalTheory.T.character_decomposition_and_classFunction_expansion (Gn g n) ρ).2.2.1 (isChar_of_isIrr h)`. Establish `hnat : ∀ ρ : Gn g n → ℂ, IsIrr ρ → ∃ m : ℕ, wh ψ ρ = m` using `fun ρ h => (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g n) (eU g n ψ) ρ).1 (GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField g n 0 0 ψ).1 (isChar_of_isIrr h)`. Use `choose! m hm using hnat`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ((∑ ρ ∈ S, m ρ ^ 2 : ℕ) : ℂ) = ((g ^ n - g ^ (n - 1) : ℕ) : ℂ)`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right (Nat.Prime.pos Fact.out) (Nat.sub_le n 1))]`. Use `push_cast`. Rewrite using `[← hnorm.1]`. Establish `hw : wh ψ (gg ψ n) = ∑ ρ ∈ S, ip (gg ψ n) ρ * wh ψ ρ` using `by conv_lhs => rw [hdec]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `wh`. Conclude with `tr_finset_sum _ _ _`. Rewrite using `[hw]`. Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Establish `hI` using `(hmemS ρ).1 hρ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[ip_comm, hnorm.2 ρ (hirrC ρ hI), hm ρ hI]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsumN : ∑ ρ ∈ S, m ρ ^ 2 = g ^ n - g ^ (n - 1)` using `by exact_mod_cast hsum`. Establish `hset : {ρ : Gn g n → ℂ | IsIrr ρ ∧ wh ψ ρ ≠ 0} = ↑(S.filter fun ρ => m ρ ≠ 0)`. Use extensionality with `ρ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq, Finset.coe_filter, hmemS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun h0 => h2 (by rw [hm ρ h1, h0, Nat.cast_zero])⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `⟨h1, fun h0 => h2 (by rw [hm ρ h1] at h0; exact_mod_cast h0)⟩`. Rewrite using `[hset, Set.ncard_coe_finset, ← hsumN, Finset.card_eq_sum_ones]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem card_generic_irr_le : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ n : ℕ, 0 < n →
     Set.ncard {ρ : Gn g n → ℂ | IsIrr ρ ∧ wh ψ ρ ≠ 0} ≤ g ^ n - g ^ (n - 1) := by

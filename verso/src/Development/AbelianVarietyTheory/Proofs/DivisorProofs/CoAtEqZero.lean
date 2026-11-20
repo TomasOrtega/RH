@@ -16,7 +16,7 @@ def coAt (G : Geo σ a a') {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTens
     (1 : GL (Fin (a + a')) (Fv F v)).1)
 
 /- English proof (translation)
-Unfold `coAt`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coAt_eq_zero (G : Geo σ a a') {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (u : Matrix (Fin a') (Fin (a + a')) (AE F E))
     (h : u.map (piW (t.comp σ)) = 0) : coAt G t u = 0 := by

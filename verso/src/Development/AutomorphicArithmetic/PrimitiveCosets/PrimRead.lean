@@ -4,7 +4,7 @@ open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
 /- English proof (translation)
-Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[H.dir_unit, dirChar_unit]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.Comparison₂.prim_read_dir (φ : Frame) (H : HostRaw φ) (ψ : AddChar (E0 × φ.A) ℂ) :
     H.dir (chr φ ψ) = dirChar (recH H) ψ := by
@@ -13,11 +13,11 @@ private theorem UpperTheory.Comparison₂.prim_read_dir (φ : Frame) (H : HostRa
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ a : ZMod 2, ∃ s : ℤˣ, Multiplicative.toAdd (LFunctionChainParameters.LHost.sgn2 s) = a`. Introduce `a`. Use `fin_cases a`. Apply the tactic sequence `exact ⟨1, by simp [LFunctionChainParameters.LHost.sgn2] <;> rfl⟩`. Apply the tactic sequence `exact ⟨-1, by simp [LFunctionChainParameters.LHost.sgn2] <;> rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨s1, hs1⟩` from `key (Multiplicative.toAdd x).1.1`. Take `⟨s2, hs2⟩` from `key (Multiplicative.toAdd x).1.2`. Use `⟨((s2, s1), Multiplicative.ofAdd (Multiplicative.toAdd x).2), ?_⟩` and prove the remaining obligations. Simplify using `only [toE, MonoidHom.coe_mk, OneHom.coe_mk, hs1, hs2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Comparison₂.prim_read_surj (φ : Frame) : Function.Surjective (toE φ) := by
   have key : ∀ a : ZMod 2, ∃ s : ℤˣ, Multiplicative.toAdd (LFunctionChainParameters.LHost.sgn2 s) = a := by
@@ -33,9 +33,9 @@ private theorem UpperTheory.Comparison₂.prim_read_surj (φ : Frame) : Function
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Finset.mem_Icc.mp hn`. Establish `hpos : (0 : ℝ) < n` using `by exact_mod_cast h1`. Establish `hfl : 0 < ⌊y⌋₊` using `by omega`. Establish `hy : 1 ≤ y` using `Nat.floor_pos.mp hfl`. Establish `hny : (n : ℝ) ≤ y` using `(Nat.cast_le.mpr h2).trans (Nat.floor_le (by linarith))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1y : 1 ≤ y / n` using `(one_le_div hpos).mpr hny`. Conclude with `max_eq_left (by linarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Comparison₂.prim_read_max (y : ℝ) (n : ℕ) (hn : n ∈ Finset.Icc 1 ⌊y⌋₊) :
     max (y / n - 1) 0 = y / n - 1 := by
@@ -48,7 +48,7 @@ private theorem UpperTheory.Comparison₂.prim_read_max (y : ℝ) (n : ℕ) (hn 
   exact max_eq_left (by linarith)
 
 /- English proof (translation)
-Unfold `Gz Sz An.G`. Rewrite using `[Finset.sum_congr rfl fun n hn => congrArg (fun t => An.abelian₂ n * t) (UpperTheory.Comparison₂.prim_read_max y n hn)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem UpperTheory.Comparison₂.prim_read_Gz (y : ℝ) : Gz y = An.G y := by
   unfold Gz Sz An.G
@@ -56,7 +56,7 @@ private theorem UpperTheory.Comparison₂.prim_read_Gz (y : ℝ) : Gz y = An.G y
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← DirichletCharacter.changeLevel_primitiveCharacter χ, h, map_one]`. Introduce and unpack `rfl`. Conclude with `DirichletCharacter.primitiveCharacter_one`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Comparison₂.prim_read_one {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     χ.primitiveCharacter = 1 ↔ χ = 1 := by
@@ -67,23 +67,21 @@ private theorem UpperTheory.Comparison₂.prim_read_one {N : ℕ} [NeZero N] (χ
     exact DirichletCharacter.primitiveCharacter_one
 
 /- English proof (translation)
-Introduce `φ H ell hell ψ`. Unfold `HostAddCharCompatible at hell`. Use `set R := H.toHostRaw with hR`. Establish `hdir : R.dir (chr φ ψ) = dirChar (recH R) ψ` using `prim_read_dir φ R ψ`. Establish `hval : ∀ n : ℕ, n ≠ 0 → (R.prim (chr φ ψ)).χ n = primVal (arith R) ψ n`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Use `show (R.dir (chr φ ψ)).primitiveCharacter n = _`. Rewrite using `[hdir]`. Conclude with `(primitive_value_primitive (H := φ.A) R.condN R.q R.d (recH R) ψ n (HostRaw.condN_pos R).ne' hn).symm`. Establish `h1 : ψ ≠ 0 → ell ψ = An.logDerivativeAtOne (R.prim (chr φ ψ)).χ` using `fun hψ => @hell ψ hψ _ (R.prim (chr φ ψ)).ne _ (R.prim (chr φ ψ)).prim hval`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hone : (R.prim (chr φ ψ)).χ = 1 ↔ ψ = 0` using `by show (R.dir (chr φ ψ)).primitiveCharacter = 1 ↔ ψ = 0`. Rewrite using `[prim_read_one, hdir]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[AddChar.eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨g, hg⟩` from `prim_read_surj φ (Multiplicative.ofAdd x)`. Take `⟨u, hu⟩` from `HostDer.art_surj H.der g`. Establish `hu1 : (dirChar (recH R) ψ) u = 1`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MulChar.one_apply_coe u`. Rewrite `hu1` using `[dirChar_unit]`. Establish `e : recH R u = Multiplicative.ofAdd x` using `by show toE φ (R.art u) = _`. Rewrite using `[hu, hg]`. Rewrite `hu1` using `[e, toAdd_ofAdd]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[dirChar_unit, AddChar.zero_apply, MulChar.one_apply_coe]`. Use `⟨h1, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hψ : ψ = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hχ : (R.prim (chr φ ψ)).χ = 1` using `hone.mpr hψ`. Unfold `GPsi An.gChi`. Rewrite using `[if_pos hψ, if_pos hχ, prim_read_Gz]`. Establish `hχ : (R.prim (chr φ ψ)).χ ≠ 1` using `fun h => hψ (hone.mp h)`. Unfold `GPsi An.gChi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[if_neg hψ, if_neg hχ, ← h1 hψ, An.sumLamChi]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hn0 : n ≠ 0`. Use `(Finset.mem_Icc.mp hn).1` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hval n hn0, prim_read_max y n hn]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Comparison₂.prim_read :
     ∀ (φ : Frame) (H : HostAx φ) (ell : AddChar (E0 × φ.A) ℂ → ℂ), HostAddCharCompatible H.toHostRaw ell → ∀ ψ : AddChar (E0 × φ.A) ℂ,

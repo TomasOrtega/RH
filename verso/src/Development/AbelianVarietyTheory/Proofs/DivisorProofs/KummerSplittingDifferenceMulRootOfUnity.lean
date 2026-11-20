@@ -9,14 +9,14 @@ noncomputable section
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-The claim follows from `map_add ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom (ULift.up (Additive.ofMul u) : (Scheme.Γ ⋙ unitsF).obj (op U)) (ULift.up (Additive.ofMul v))`.
+A detailed English derivation is pending.
 -/
 theorem unitSec_mul_kd {U : Scheme.{0}} (u v : (Γ(U, ⊤))ˣ) : unitSec (u * v) = unitSec u + unitSec v :=
   map_add ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom
     (ULift.up (Additive.ofMul u) : (Scheme.Γ ⋙ unitsF).obj (op U)) (ULift.up (Additive.ofMul v))
 
 /- English proof (translation)
-Unfold `unitSec ofRings.sec`. Use `congrArg (fun f => f.hom (ULift.up (Additive.ofMul u) : (Scheme.Γ ⋙ unitsF).obj (op U))) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitSec_res_kd {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Sec.res g (unitSec u) = unitSec (Units.map g.appTop.hom.toMonoidHom u) := by
@@ -26,7 +26,7 @@ theorem unitSec_res_kd {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
   exact this.symm
 
 /- English proof (translation)
-Use `congrArg (fun f => f.hom x) (φ.hom.naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Sec.res_map_kd {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -34,19 +34,19 @@ theorem Sec.res_map_kd {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U
   exact this.symm
 
 /- English proof (translation)
-The claim follows from `map_add _ x y`.
+A detailed English derivation is pending.
 -/
 theorem Sec.map_add_kd {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) :
     Sec.map φ (x + y) = Sec.map φ x + Sec.map φ y := map_add _ x y
 
 /- English proof (translation)
-The claim follows from `map_sub _ x y`.
+A detailed English derivation is pending.
 -/
 theorem Sec.res_sub_kd {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) :
     Sec.res g (x - y) = Sec.res g x - Sec.res g y := map_sub _ x y
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hg`. Rewrite `h` using `[map_mul, ζ.2.2, zero_mul]`. Simplify `h` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Prim.pow_eq_one_kd {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   obtain ⟨g, hg⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -59,7 +59,7 @@ def kumDiff (q : ℕ) (φ : Gm ⟶ (res ℤ ((restr (Int.castRingHom (ZMod q))).
   Sec.map φ (unitSec v) - (restrMap (Int.castRingHom (ZMod q)) (tw q 1)).app U 0 (kumT q U v)
 
 /- English proof (translation)
-Unfold `kumDiff`. Rewrite using `[Sec.res_sub_kd, Sec.res_map_kd, unitSec_res_kd, (restrMap (Int.castRingHom (ZMod q)) (tw q 1)).nat g 0, (kumT_spec q).1 V U g v hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kumDiff_res (q : ℕ) (φ : Gm ⟶ (res ℤ ((restr (Int.castRingHom (ZMod q))).obj (tw q 1))).X 0)
     {V U : Scheme.{0}} (g : V ⟶ U) (hq : IsUnit (q : Γ(U, ⊤))) (v : (Γ(U, ⊤))ˣ) :
@@ -69,9 +69,9 @@ theorem kumDiff_res (q : ℕ) (φ : Gm ⟶ (res ℤ ((restr (Int.castRingHom (ZM
     (kumT_spec q).1 V U g v hq]
 
 /- English proof (translation)
-Unfold `kumDiff`. Establish `h1 : Sec.map φ (unitSec z) = Sec.map (resι ℤ ((restr (Int.castRingHom (ZMod q))).obj (tw q 1))) (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) V from twGen 1 ζ)`. Rewrite using `[← hκ V ζ z hz, ← hφ]`. Both sides reduce to the same expression. Establish `h2` using `(kumT_spec q).2 V ζ w (z * w) (by rw [Units.val_mul, hz])`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h3` using `restrMap_spec (Int.castRingHom (ZMod q)) (tw q 1) V (twGen 1 ζ)`. Rewrite using `[unitSec_mul_kd, Sec.map_add_kd, h2, map_add, h1]`. Unfold `resGen`. Rewrite using `[h3]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem kumDiff_mul_root (q : ℕ) (κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ Gm)
     (hκ : ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 →
@@ -97,7 +97,7 @@ end GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => rw [pow_zero, one_mul]`. Consider the case `succ a ih => rw [pow_succ', mul_assoc, kumDiff_mul_root q κ hκ φ hφ ζ z _ hz, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kumDiff_pow_root (q : ℕ) (κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ Gm)
     (hκ : ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 →
@@ -111,11 +111,11 @@ theorem kumDiff_pow_root (q : ℕ) (κ : (restr (Int.castRingHom (ZMod q))).obj 
   | succ a ih => rw [pow_succ', mul_assoc, kumDiff_mul_root q κ hκ φ hφ ζ z _ hz, ih]
 
 /- English proof (translation)
-Introduce `q _ κ hκ φ hφ U hq v ω hω`. Express the relevant statement in the definitionally equal form `kumDiff q φ U (ω * v) = kumDiff q φ U v`. Take `⟨S, hS, hP⟩` from `GlobalTheory.T.rootOfUnity_etaleLocally_pow_primitiveRoot q U hq ω hω`. Use `Sheaf.isSeparated _ U S hS _ _ ?_` and prove the remaining obligations. Introduce `V g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ζ, a, ha⟩` from `hP V g hg`. Express the relevant statement in the definitionally equal form `Sec.res g _ = Sec.res g _`. Rewrite using `[kumDiff_res q φ g hq, kumDiff_res q φ g hq, map_mul]`. Establish `hz` using `Units.val_ofPowEqOne ζ.1 q ζ.pow_eq_one_kd (NeZero.ne q)`. Establish `e : Units.map g.appTop.hom.toMonoidHom ω = Units.ofPowEqOne ζ.1 q ζ.pow_eq_one_kd (NeZero.ne q) ^ a` using `Units.ext (by rw [ha, Units.val_pow_eq_pow_val, hz])`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `kumDiff_pow_root q κ hκ φ hφ ζ _ hz a _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kumDiff_mul_rootOfUnity : ∀ (q : ℕ) [NeZero q] (κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ Gm),
     (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 →

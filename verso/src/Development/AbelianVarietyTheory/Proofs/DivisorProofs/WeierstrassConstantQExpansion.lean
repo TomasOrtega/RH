@@ -7,7 +7,7 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam
 
 /- English proof (translation)
-Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [gN, EisensteinSeries.E2, Pi.smul_apply, smul_eq_mul, riemannZeta_two, mul_pow, Complex.I_sq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weierstrass_constant_eq_E2 (τ : ℍ) : gN τ = (-1 / 12) * EisensteinSeries.E2 τ := by
   have hπ : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
@@ -16,15 +16,15 @@ theorem weierstrass_constant_eq_E2 (τ : ℍ) : gN τ = (-1 / 12) * EisensteinSe
   ring
 
 /- English proof (translation)
-Introduce `N _ τ`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hNc : (N : ℂ) ≠ 0` using `by exact_mod_cast hN`. Establish `hinj : Function.Injective (fun m : ℕ => N * m)` using `fun a b h => Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hN) h`. Rewrite using `[← hinj.hasSum_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(EisensteinSeries.hasSum_qExpansion_E2 (z := τ)).mul_left (-1 / 12 : ℂ)`. Rewrite using `[weierstrass_constant_eq_E2]`. Use `convert! h using 1`. Use function extensionality and compare the values at `m`. Establish `he : Complex.exp (2 * Real.pi * Complex.I * ((N * m : ℕ) : ℂ) * τ / N) = Complex.exp (2 * Real.pi * Complex.I * τ) ^ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Function.comp, he, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : m = 0`. Simplify using `[hm, cG]`. Establish `h1 : N * m ≠ 0` using `mul_ne_zero hN hm`. Simplify using `only [cG, if_neg h1, if_neg hm, if_pos (dvd_mul_right N m), Nat.mul_div_cancel_left m (Nat.pos_of_ne_zero hN)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Establish `hd : ¬ N ∣ k` using `fun ⟨m, hm⟩ => hk ⟨m, hm.symm⟩`. Establish `h0 : k ≠ 0` using `fun h => hd (h ▸ dvd_zero N)`. Simplify using `[cG, hd, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasQ_gN : ∀ (N : ℕ) [NeZero N], HasQ N gN (cG N) := by
   intro N _ τ

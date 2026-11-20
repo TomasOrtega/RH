@@ -6,29 +6,27 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.ValIntClosed
 
 /- English proof (translation)
-Introduce `S _ ϖ hϖ hV x hx`. Take `⟨P, hm, hP⟩` from `hx`. Take `⟨N, f, hf⟩` from `IsLocalization.Away.surj ϖ x`. Use `set a := algebraMap S (Localization.Away ϖ) with ha`. Establish `hinj : Function.Injective a` using `IsLocalization.injective (Localization.Away ϖ) (Submonoid.powers_le.2 hϖ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwnz : ϖ ^ N ∈ nonZeroDivisors S` using `pow_mem hϖ N`. Establish `hwu : IsUnit (a (ϖ ^ N))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit ϖ).pow N`. Take `⟨e, he, ⟨b, hb⟩, ⟨h, hh⟩⟩` from `(by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, he, h1, h2⟩` from `hV f (ϖ ^ N) ⟨N, Ideal.subset_span (by simp)⟩`. Conclude with `⟨e, he, Ideal.mem_span_singleton.1 h1, Ideal.mem_span_singleton.1 h2⟩ : ∃ e : S, IsIdempotentElem e ∧ ϖ ^ N ∣ e * f ∧ f ∣ (1 - e) * ϖ ^ N)`. Use `set u := 1 - e with hu`. Establish `hui : IsIdempotentElem u` using `he.one_sub`. Use `set d := P.natDegree with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hhx : a h * x = a u`. Apply `hwu.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hUi : a u * a u = a u` using `by rw [← map_mul, hui.eq]`. Establish `hUp : ∀ i : ℕ, a u * a u ^ i = a u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ← mul_assoc, ih, hUi]`. Use `set k : S := ∑ i ∈ Finset.range d, P.coeff i * h ^ (d - 1 - i) with hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrel : a (u * (1 + h * k)) = 0`. Establish `h0 : a u * a h ^ d * Polynomial.eval₂ a x P = 0`. Establish `: Polynomial.eval₂ a x P = 0` using `hP`. Rewrite using `[this, mul_zero]`. Rewrite `h0` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, mul_add, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlead : P.coeff d = 1` using `hm`. Establish `t1 : a u * a h ^ d * (a (P.coeff d) * x ^ d) = a u`. Rewrite using `[hlead, map_one, one_mul, mul_assoc, ← mul_pow, hhx, hUp]`. Establish `t2 : ∀ i ∈ Finset.range d, a u * a h ^ d * (a (P.coeff i) * x ^ i) = a u * (a h * a (P.coeff i * h ^ (d - 1 - i)))`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hi' : i < d` using `Finset.mem_range.1 hi`. Establish `hd' : d = i + (1 + (d - 1 - i))` using `by omega`. Establish `: a h ^ d = a h ^ i * (a h * a h ^ (d - 1 - i))` using `by conv_lhs => rw [hd', pow_add, pow_add, pow_one]`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = a u * (a h * a (P.coeff i * h ^ (d - 1 - i))) := by`. Rewrite using `[hhx, hUp, map_mul, map_pow]`. Rewrite `h0` using `[t1, Finset.sum_congr rfl t2, ← Finset.mul_sum, ← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_add, map_one, map_mul, hk, map_sum]`. Rewrite using `[mul_add, mul_one, add_comm]`. Conclude with `h0`. Establish `hrel' : u * (1 + h * k) = 0` using `hinj (by rw [hrel, map_zero])`. Establish `hu' : u = - (u * h * k)` using `by linear_combination hrel'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiv : ϖ ^ N ∣ f`. Establish `hfe : f = e * f + u * f` using `by rw [hu]; ring`. Establish `huf : u * f = ϖ ^ N * (-(k * u))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨b + -(k * u), by rw [hfe, hb, huf]; ring⟩`.
-
-Take `⟨y, hy⟩` from `hdiv`. Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `hwu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ← hy, ← hf, map_pow, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_isIntegral : ∀ {S : Type} [CommRing S] (ϖ : S), ϖ ∈ nonZeroDivisors S → Val ϖ →
     ∀ x : Localization.Away ϖ, IsIntegral S x → ∃ y : S, algebraMap S (Localization.Away ϖ) y = x := by

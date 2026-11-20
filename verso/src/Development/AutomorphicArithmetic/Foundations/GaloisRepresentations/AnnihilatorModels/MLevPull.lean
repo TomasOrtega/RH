@@ -10,7 +10,7 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `_ p _ D R _ b N S S' s s' f o o₁ m 𝔞 ρ lv h`. Conclude with `GlobalTheory.UPel.HT.EtLev.isEtLev_exists_pull m h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.levPull_of :
     PullKer → LevPull := by

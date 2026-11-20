@@ -13,27 +13,25 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.MassOrbit
 
 /- English proof (translation)
-Establish `act` using `@GlobalTheory.FrameAct.stabiliser_acts_on_terms F _ _ _ _ _ E _ _ _ L r k S`. Establish `trm` using `@GlobalTheory.HL.TermBasic.term_basic F _ _ _ _ _ E _ _ _ L r k S`. Establish `vol` using `(@GlobalTheory.HL.volSt F _ _ _ _ _ E _ _ _ L r k S).2`. Establish `hT : ∀ d Λ, S.IsTerm d Λ → ∀ h ∈ S.St, S.IsTerm d (h • Λ)` using `fun d Λ H h hh => (act d Λ H h hh).1`. Establish `hF : ∀ d Λ, S.IsTerm d Λ → ∀ h ∈ S.St, S.Fr d (h • Λ) = h • S.Fr d Λ` using `fun d Λ H h hh => (act d Λ H h hh).2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ d Λ, S.IsTerm d Λ → ∀ h ∈ S.St, (S.BBzero d (h • Λ) ↔ S.BBzero d Λ)` using `fun d Λ H h hh => (act d Λ H h hh).2.2.2.2.2.2.2.1`. Establish `hI : ∀ d Λ, S.IsTerm d Λ → S.IsIntCls (S.Fr d Λ)` using `fun d Λ H => (trm d Λ H).2.2.2.2.2.2.1`. Rewrite using `[GlobalTheory.HL.mass_eq_sumCls L r k S d _ (by`. Introduce and unpack `h hh Λ H ⟨hb, s, hs, e⟩`. Use `⟨(hB d Λ H h hh).2 hb, h * s, S.St.mul_mem hh hs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF d Λ H h hh, e, mul_smul])]`. Use `set C₁ := S.Fr d₁ Λ₁ with hC`. Unfold `Frames.sumCls`. Rewrite using `[tsum_eq_single (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₁)]`. Establish `hrel : (MulAction.orbitRel S.St (Set S.FrP)) (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₁).out C₁` using `Quotient.mk_out C₁`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨h, hh⟩, e⟩` from `MulAction.orbitRel_apply.1 hrel`. Establish `e' : (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₁).out = h • C₁` using `e.symm`. Establish `hint : S.IsIntCls (h • C₁)`. Rewrite using `[hC, ← hF d₁ Λ₁ h₁ h hh]`. Conclude with `hI _ _ (hT _ _ h₁ h hh)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(if S.IsIntCls (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₁).out then ENNReal.ofReal (S.wC (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₁).out) * S.nT d (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₁).out _ else 0) = _`. Rewrite using `[e', if_pos hint, (vol C₁ (hI _ _ h₁).1).2.2.2 h hh]`. Use `congr 1`. Unfold `Frames.nT`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hset : {Λ : Submodule L.O S.V | S.IsTerm d Λ ∧ (S.BBzero d Λ ∧ ∃ s ∈ S.St, S.Fr d Λ = s • C₁) ∧ S.Fr d Λ = h • C₁} = (fun Λ : Submodule L.O S.V => h • Λ) '' {Λ | S.IsTerm d Λ ∧ S.BBzero d Λ ∧ S.Fr d Λ = C₁}`. Use extensionality with `Λ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨H, ⟨hb, -⟩, e⟩`. Establish `hi` using `S.St.inv_mem hh`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h⁻¹ • Λ, ⟨hT _ _ H _ hi, (hB _ _ H _ hi).2 hb, ?_⟩, smul_inv_smul h Λ⟩` and prove the remaining obligations. Rewrite using `[hF _ _ H _ hi, e, inv_smul_smul]`. Introduce and unpack `⟨Λ', ⟨H, hb, e⟩, rfl⟩`. Establish `e2 : S.Fr d (h • Λ') = h • C₁` using `by rw [hF _ _ H _ hh, e]`. Conclude with `⟨hT _ _ H _ hh, ⟨(hB _ _ H _ hh).2 hb, h, hh, e2⟩, e2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hset]`. Conclude with `(MulAction.injective h).encard_image _`. Introduce `o ho`. Establish `h0 : S.nT d o.out (fun Λ => S.BBzero d Λ ∧ ∃ s ∈ S.St, S.Fr d Λ = s • C₁) = 0`. Unfold `Frames.nT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: {Λ : Submodule L.O S.V | S.IsTerm d Λ ∧ (S.BBzero d Λ ∧ ∃ s ∈ S.St, S.Fr d Λ = s • C₁) ∧ S.Fr d Λ = o.out} = ∅`. Use extensionality with `Λ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨-, ⟨-, s, hs, e⟩, e2⟩`. Apply `ho` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Quotient.out_eq o]`. Apply `Quotient.sound` to reduce the goal to its premises. Conclude with `MulAction.orbitRel_apply.2 ⟨⟨s, hs⟩, by rw [← e2, e]; rfl⟩`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
-
-Simplify using `only [h0, mul_zero, ite_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mass_orbit_class {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]

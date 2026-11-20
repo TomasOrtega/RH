@@ -50,23 +50,23 @@ def EvalInjT : Prop :=
 end Pieces
 
 /- English proof (translation)
-Use `choose Φ hΦ using fun T : E => hI T T.2`. Establish `key : ∀ (T : E) (F : EEC X G), ((F : L2X X) =ᵐ[muX X] fun x => ev M v₀ (T : MMap M) (ι.symm x * t)) → Φ T = F`. Introduce `T F hF`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Lp.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Conclude with `(hΦ T).1.trans hF.symm`. Set `L : E →ₗ[ℂ] EEC X G` to `{ toFun := Φ map_add' := fun T T' => by`. Apply `key` to reduce the goal to its premises. Establish `h1` using `(hΦ T).1`. Establish `h2` using `(hΦ T').1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `Lp.coeFn_add ((Φ T : EEC X G) : L2X X) ((Φ T' : EEC X G) : L2X X)`. Use `(Filter.EventuallyEq.trans ?_ (h3.trans (h1.add h2))).trans ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_add]`. Both sides reduce to the same expression. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ev_apply]`. Use the proof step `map_smul' := fun a T => by`. Rewrite using `[RingHom.id_apply]`. Apply `key` to reduce the goal to its premises. Establish `h1` using `(hΦ T).1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h3` using `Lp.coeFn_smul a ((Φ T : EEC X G) : L2X X)`. Use `(Filter.EventuallyEq.trans ?_ (h3.trans (h1.const_smul a))).trans ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul]`. Both sides reduce to the same expression. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ev_apply] }`. Establish `hinj : Function.Injective L`. Introduce `T T' h`. Establish `hd : L (T - T') = 0` using `by rw [map_sub, h, sub_self]`. Establish `h1` using `(hΦ (T - T')).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ((fun x => ev M v₀ ((T - T' : E) : MMap M) (ι.symm x * t)) =ᵐ[muX X] 0)`. Establish `hz : ((Φ (T - T') : EEC X G) : L2X X) = 0`. Establish `: Φ (T - T') = 0` using `hd`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Lp.coeFn_zero ℂ 2 (muX X)` as an intermediate fact. Rewrite `this` using `[← hz]`. Conclude with `h1.symm.trans this`. Use `hJ ((T - T' : E) : MMap M) (T - T').2 h0` as an intermediate fact. Conclude with `sub_eq_zero.mp (Subtype.ext this)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hsurj : Function.Surjective L`. Introduce `F`. Take `⟨T, hT, hF⟩` from `hO F`. Conclude with `⟨⟨T, hT⟩, key ⟨T, hT⟩ F hF⟩`. Conclude with `⟨v₀, hv, LinearEquiv.ofBijective L ⟨hinj, hsurj⟩, fun T => hΦ T⟩`.
+A detailed English derivation is pending.
 -/
 theorem evalTieT_of (M : DSModel (D.sp.Y 0) S) (μ : Measure (GA D (D.sp.Y 0))) (𝓕 : Set (GA D (D.sp.Y 0)))
     (E : Submodule ℂ (MMap M)) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (G : GoodOp X) (ι : GA D (D.sp.Y 0) ≃* X.B.I.GA)
@@ -127,11 +127,11 @@ variable {M : DSModel (D.sp.Y 0) S} {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set
   {t : GA D (D.sp.Y 0)} {c : ℝ} {v₀ : M.Vec}
 
 /- English proof (translation)
-Rewrite using `[@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def]`. Establish `h1 : (fun a => ⟪(hf.toLp f : L2X X) a, (hf.toLp f : L2X X) a⟫_ℂ) = fun a => (((‖(hf.toLp f : L2X X) a‖ ^ 2 : ℝ)) : ℂ)`. Use function extensionality and compare the values at `a`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[h1, integral_complex_ofReal]`. Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp] with a ha`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_toLp {f : X.B.I.GA → ℂ} (hf : MemLp f 2 (muX X)) :
     ‖(hf.toLp f : L2X X)‖ ^ 2 = ∫ x, ‖f x‖ ^ 2 ∂(muX X) := by
@@ -146,11 +146,11 @@ theorem norm_sq_toLp {f : X.B.I.GA → ℂ} (hf : MemLp f 2 (muX X)) :
   rw [ha]
 
 /- English proof (translation)
-Unfold `ipM`. Rewrite using `[dif_pos hT]`. Take `⟨-, heq⟩` from `hT.choose_spec v₀ v₀`. Establish `hprod : ∏ τ, ⟪(v₀ τ : M.H τ), (v₀ τ : M.H τ)⟫_ℂ = 1`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hv τ]`. Simplify using the standard rewrite rules. Rewrite `heq` using `[hprod, mul_one]`. Rewrite using `[← heq]`. Establish `hpt : ∀ g, star (T v₀ g) * T v₀ g = ((‖T v₀ g‖ ^ 2 : ℝ) : ℂ)` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_complex_ofReal]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -174,11 +174,11 @@ theorem re_ipM_eq {T : MMap M} (hT : ∃ c', IsMultIP M μ 𝓕 T T c') (hv : �
   simp
 
 /- English proof (translation)
-Introduce `T hT`. Establish `hc` using `Formalism.IndefR.PeterssonHilbertSpace.mult_cont_left (θ := θ) (J := J) (χ := χ) (M := M) (hE hT) v₀`. Take `⟨hmem, hnorm⟩` from `hL (T v₀) hc.1 hc.2 (hL2 T hT)`. Establish `hmem' : MemLp (fun x => ev M v₀ T (ι.symm x * t)) 2 (muX X)` using `hmem`. Establish `hstar : star (hmem'.toLp _) ∈ goodSub X G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.mem_inf.mpr ⟨LinearMap.mem_range.mpr ⟨star (hmem'.toLp _), ?_⟩, LinearMap.mem_ker.mpr ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply]`. Rewrite using `[hRph T hT hmem', hRe T hT hmem']`. Simplify using `only [LinearMap.sub_apply, ContinuousLinearMap.coe_coe, LinearMap.id_apply]`. Rewrite using `[hRg T hT hmem', sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hmem'.toLp _, hstar⟩, hmem'.coeFn_toLp, ?_⟩` and prove the remaining obligations. Use `show ‖(hmem'.toLp _ : L2X X)‖ ^ 2 = _`. Rewrite using `[norm_sq_toLp hmem', re_ipM_eq (hS T hT) hv]`. Conclude with `hnorm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalIntoT_of (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (J : Set (GA D (D.sp.Y 0)))
     (χ : GA D (D.sp.Y 0) → ℂ) (hE : E ≤ Mult θ M J χ)
@@ -202,13 +202,13 @@ theorem evalIntoT_of (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host
   exact hnorm
 
 /- English proof (translation)
-Introduce `T hT h0`. Establish `hc` using `Formalism.IndefR.PeterssonHilbertSpace.mult_cont_left (θ := θ) (J := J) (χ := χ) (M := M) (hE hT) v₀`. Take `⟨-, hnorm⟩` from `hL (T v₀) hc.1 hc.2 (hL2 T hT)`. Establish `hz : ∫ x, ‖T v₀ (ι.symm x * t)‖ ^ 2 ∂(muX X) = 0`. Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h0] with x hx`. Establish `: T v₀ (ι.symm x * t) = 0` using `hx`. Simplify using `[this]`. Rewrite `hnorm` using `[hz]`. Establish `hI : ∫ x in 𝓕, ‖T v₀ x‖ ^ 2 ∂μ = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp hnorm.symm with h | h` into its components or cases. Conclude with `absurd h hcpos.ne'`. Conclude with `h`. Use `hR T hT v₀ hv0 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hint : IntegrableOn (fun x => ‖T v₀ x‖ ^ 2) 𝓕 μ` using `(memLp_two_iff_integrable_sq_norm (hL2 T hT).1).1 (hL2 T hT)`. Use `Formalism.IndefR.PeterssonHilbertSpace.petPos (D.sp.Y 0) μ 𝓕 hH hF (T v₀) hc.1 hc.2 hne hint` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem evalInjT_of (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (J : Set (GA D (D.sp.Y 0)))
     (χ : GA D (D.sp.Y 0) → ℂ) (hE : E ≤ Mult θ M J χ) (hH : μ.IsHaarMeasure)

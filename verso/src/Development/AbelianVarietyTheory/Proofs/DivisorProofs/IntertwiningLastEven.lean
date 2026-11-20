@@ -16,7 +16,7 @@ open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeB
 namespace GlobalTheory.WeylCell.RankOneUnitary
 
 /- English proof (translation)
-Unfold `chiDeltaU`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem chiDeltaU_congr {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n m : ℕ}
     (q : ℕ) (α : Fin m → ℂ) (b c : GU σ n)
@@ -30,9 +30,9 @@ end GlobalTheory.WeylCell.RankOneUnitary
 namespace GlobalTheory.WeylCell.RankOneUnitary
 
 /- English proof (translation)
-Unfold `ordL`. Establish `h0 : Valued.v x ≠ 0` using `by rw [hx]; exact WithZero.coe_ne_zero`. Rewrite using `[dif_neg h0]`. Establish `: WithZero.unzero h0 = Multiplicative.ofAdd z`. Apply `WithZero.coe_injective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[WithZero.coe_unzero, hx]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ordL_of_v_eq {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (x : L) (z : ℤ)
     (hx : Valued.v x = ((Multiplicative.ofAdd z : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) : ordL x = -z := by

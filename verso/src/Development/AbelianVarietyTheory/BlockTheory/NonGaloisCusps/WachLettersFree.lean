@@ -38,19 +38,19 @@ def FreeLetters : Prop :=
     ∃ M₀ h₀ : ℕ, FrobBounds W T M₀ h₀
 
 /- English proof (translation)
-Take `⟨hli, hsp, -, -⟩` from `hb`. Establish `hmul : ∀ a : PowerSeries O, (Pi.single i a : LetA O n) * letE i = Pi.single i a`. Introduce `a`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`. Establish `hmul' : ∀ a : LetA O n, (letE i : LetA O n) * a = Pi.single i (a i)`. Introduce `a`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun k => ⟨b k, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsp]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Introduce and unpack `x ⟨y, hy, rfl⟩`. Establish `hy' : y ∈ Submodule.span (LetA O n) (Set.range b)` using `by rw [hsp]; exact hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hy'`. Establish `key : (letE i : LetA O n) • (∑ k, a k • b k) = ∑ k, (Pi.single i (a k i) : LetA O n) • b k`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, hmul']`. Use `⟨fun k => a k i, ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (∑ k, a k • b k) = _`. Rewrite using `[key]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, hmul]`. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (∑ k, a k • b k) = _ at hc`. Rewrite `hc` using `[key]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [smul_smul, hmul] at hc`. Use function extensionality and compare the values at `k`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli (fun k => (Pi.single i (c k) : LetA O n) - Pi.single i (a k i)) (by simp only [sub_smul, Finset.sum_sub_distrib, hc, sub_self]) k`. Establish `h1` using `congrFun h0 i`. Simplify `h1` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsWachBasis.letter {r : ℕ} {b : Fin r → W.DD T} (hb : IsWachBasis W T b) (i : ZMod n) :
     IsLetterBasis W T i (fun k => (letE i : LetA O n) • b k) := by
@@ -92,9 +92,9 @@ theorem IsWachBasis.letter {r : ℕ} {b : Fin r → W.DD T} (hb : IsWachBasis W 
       simpa [sub_eq_zero] using h1
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨z, hz, rfl⟩ := hx`. Conclude with `hF.1 z hz`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `(W.N T).add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `(W.N T).smul_mem a hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem FrobBounds.pull {M₀ h₀ : ℕ} (hF : FrobBounds W T M₀ h₀) :
     ∀ y ∈ W.φpull T, W.Q ^ M₀ • y ∈ W.N T := by

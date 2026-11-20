@@ -24,13 +24,11 @@ noncomputable section
 namespace GlobalTheory.CurveSecDeg
 
 /- English proof (translation)
-Introduce `k _ X p e hX Z i _ _ κ _ _ _ hd M hM s ⟨z, hz⟩ ⟨y, hy⟩`. Use `hX.finite` as an intermediate fact. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver hX.isProjOver`. Establish `hA` using `hH.pull_of_isClosedImmersion i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e' : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))` using `by rw [e']; infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Establish `hg : genericPoint Z ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s` using `((genericPoint_spec Z).mem_open_set_iff (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s).isOpen).2 ⟨z, trivial, hz⟩`. Establish `h` using `(interNum_one_nonneg_of_sec (k := κ) hA hd hM s hg).2 (fun ht => hy (ht ▸ trivial))`. Use `h.trans_eq (congrArg _ (funext fun j => ?_))` and prove the remaining obligations. Use `fin_cases j`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem topSelf_pos_of_sec : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (e : ℕ), IsArithVar p e →
     ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] (κ : Type) [Field κ] [Finite κ]

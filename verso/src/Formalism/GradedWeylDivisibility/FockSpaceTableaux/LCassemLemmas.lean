@@ -7,9 +7,9 @@ namespace Formalism.GradedWeylDivisibility
 open scoped MonomialOrder
 
 /- English proof (translation)
-Establish `hle : o.toSyn (o.degree (f - o.leadingCoeff f • g)) ≤ o.toSyn (o.degree f)`. Use `(MonomialOrder.degree_sub_le (m := o)).trans (sup_le le_rfl ?_)` and prove the remaining obligations. Rewrite using `[← hdeg]`. Conclude with `MonomialOrder.degree_smul_le (m := o)`. Use `lt_of_le_of_ne hle fun heq => hne ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : o.degree (f - o.leadingCoeff f • g) = o.degree f` using `o.toSyn.injective heq`. Establish `h1 : f.coeff (o.degree f) = o.leadingCoeff f` using `rfl`. Establish `h2 : g.coeff (o.degree f) = 1` using `by rw [← hdeg]; exact hlc`. Rewrite using `[← o.coeff_degree_eq_zero_iff, hd, MvPolynomial.coeff_sub, MvPolynomial.coeff_smul, h1, h2, smul_eq_mul, mul_one, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lcassem_sub_lt {σ R : Type*} [CommRing R] (o : MonomialOrder σ) {f g : MvPolynomial σ R}
     (hdeg : o.degree g = o.degree f) (hlc : o.leadingCoeff g = 1)

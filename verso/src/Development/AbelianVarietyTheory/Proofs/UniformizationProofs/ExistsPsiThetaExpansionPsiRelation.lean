@@ -23,7 +23,7 @@ namespace GlobalTheory.PsiExists
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 
 /- English proof (translation)
-Establish `h` using `DVR.cPoint_add D T 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cT_zero (T : Over (Spec (CommRingCat.of R))) : cT D T 0 = 1 := by
   have h := DVR.cPoint_add D T 0 0
@@ -31,9 +31,7 @@ theorem cT_zero (T : Over (Spec (CommRingCat.of R))) : cT D T 0 = 1 := by
   exact mul_eq_left.1 h.symm
 
 /- English proof (translation)
-Establish `c : r ≫ cT D _ α = cT D T α` using `by rw [← Category.assoc, comp_toUnit]`. Use `fin_cases k`. Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.left) ((MonObj.comp_mul r (snd T₀ D.P.A) (cT D _ α)).trans (congrArg _ c))`. Conclude with `congrArg (fun q => q.left) c`.
-
-Conclude with `congrArg (fun q => q.left) (MonObj.comp_one (M := D.P.A) r)`.
+Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comp_famφT {T T₀ : Over (Spec (CommRingCat.of R))} (r : T ⟶ T₀ ⊗ D.P.A) (α : D.X) (k : Fin 4) :
     r.left ≫ famφT D T₀ α k = ![(r ≫ snd T₀ D.P.A).left, ((r ≫ snd T₀ D.P.A) * cT D T α).left, (cT D T α).left,
@@ -53,7 +51,7 @@ theorem famφT_eq (T₀ : Over (Spec (CommRingCat.of R))) (α : D.X) :
       (1 : T₀ ⊗ D.P.A ⟶ D.P.A).left] := rfl
 
 /- English proof (translation)
-Introduce `_ _` and use `(map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oneGen_isGen {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGen := fun _ _ =>
   (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
@@ -61,11 +59,11 @@ theorem oneGen_isGen {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGe
 variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `H : ∀ α, FormEq (Sum.elim (fun i => (φ ▷ D.P.A).left ≫ famφT D T α i) (fun e : PEmpty => (e.elim : (DegPre.BF D F).left ⟶ D.P.A.left))) (Sum.elim (DegPre.famε k) fun e => e.elim) (DegPre.famφ D F α) (DegPre.famε k)`. Introduce `α U _ h`. Establish `e : (fun i => (φ ▷ D.P.A).left ≫ famφT D T α i) = DegPre.famφ D F α`. Use function extensionality and compare the values at `i`. Rewrite using `[comp_famφT, whiskerRight_snd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, Fintype.prod_sum_type]`. Simplify using the standard rewrite rules. Use `choose s hs using fun α => exists_sec D.P.isLB (H α) (pullMulSec (f α) (φ ▷ D.P.A).left (LB.oneGen D.P.L) (oneGen_isGen _))`. Use `⟨s, fun α z J hJ => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hs α _ _ z J hJ).trans ((sval_pullMulSec _ _ _ _ _ _ hJ).trans ?_)` and prove the remaining obligations. Rewrite using `[val_one, Units.val_one, _root_.mul_one, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pullB {T : Over (Spec (CommRingCat.of R))} (φ : TF (R := R) F ⟶ T) (k : ℕ) (f : ∀ α, SecBT D T k α) :
     ∃ s : Raw D F k, PullB D F φ k f s := by
@@ -85,11 +83,11 @@ theorem exists_pullB {T : Over (Spec (CommRingCat.of R))} (φ : TF (R := R) F �
   rw [val_one, Units.val_one, _root_.mul_one, Category.id_comp]
 
 /- English proof (translation)
-Establish `key : ∀ a b : D.X, a + b = 0 → DegPre.trF D F a ≫ DegPre.trF D F b = 𝟙 _`. Introduce `a b hab`. Establish `c : DegPre.trF D F a ≫ cT D _ b = cT D _ b` using `by rw [← Category.assoc, comp_toUnit]`. Establish `e : DegPre.trF D F a ≫ (snd (TF (R` using `R) F) D.P.A * cT D _ b) = snd _ _ := by`. Rewrite using `[MonObj.comp_mul, c, show DegPre.trF D F a ≫ snd _ _ = snd (TF (R := R) F) D.P.A * cT D _ a from lift_snd _ _, _root_.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `(DVR.cPoint_add D (DegPre.BF D F) a b).symm` as an intermediate fact. Rewrite `this` using `[hab]`. Rewrite using `[show cT D (DegPre.BF D F) a * cT D _ b = 1 from this.trans (cT_zero D _), _root_.mul_one]`. Establish `e' : DegPre.trF D F a ≫ fst _ _ = fst _ _` using `lift_fst _ _`. Conclude with `(comp_lift _ _ _).trans ((congrArg₂ lift e' e).trans lift_fst_snd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨DegPre.trF D F (-χ), key _ _ (add_neg_cancel χ), key _ _ (neg_add_cancel χ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIso_trF (χ : D.X) : IsIso (DegPre.trF D F χ) := by
   have key : ∀ a b : D.X, a + b = 0 → DegPre.trF D F a ≫ DegPre.trF D F b = 𝟙 _ := by
@@ -106,11 +104,11 @@ theorem isIso_trF (χ : D.X) : IsIso (DegPre.trF D F χ) := by
   exact ⟨DegPre.trF D F (-χ), key _ _ (add_neg_cancel χ), key _ _ (neg_add_cancel χ)⟩
 
 /- English proof (translation)
-Set `κ : DegPre.BF D F ⟶ TK R` to `Over.homMk ((fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F) ((Category.assoc _ _ _).trans (Over.w (fst (TF (R := R) F) D.P.A)))`. Establish `H : FormEq (Sum.elim (fun i => (DegPre.trF D F χ).left ≫ DegPre.famφ D F 0 i) (Sum.elim (fun _ : PUnit => κ.left ≫ ptK (D.c χ)) (fun _ : PUnit => (DegPre.BF D F).hom ≫ eSec D.P.A))) (Sum.elim (DegPre.famε 1) (Sum.elim (fun _ => -1) (fun _ => 1))) (DegPre.famφ D F χ) (DegPre.famε …`. Introduce `U _ h`. Establish `e₁ : (fun i => (DegPre.trF D F χ).left ≫ DegPre.famφ D F 0 i) = ![(snd (TF (R` using `R) F) D.P.A * cT D _ χ).left, (snd (TF (R := R) F) D.P.A * cT D _ χ).left, (1 : DegPre.BF D F ⟶ D.P.A).left, (1 : DegPre.BF D F ⟶ D.P.A).left] := by`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(comp_famφT D (DegPre.trF D F χ) 0 i).trans ?_` and prove the remaining obligations. Rewrite using `[cT_zero, _root_.mul_one, show DegPre.trF D F χ ≫ snd _ _ = snd (TF (R := R) F) D.P.A * cT D _ χ from lift_snd _ _]`. Establish `e₂ : κ.left ≫ ptK (D.c χ) = (cT D (DegPre.BF D F) χ).left` using `congrArg (fun q => q.left) (show κ ≫ cT D _ χ = cT D _ χ by rw [← Category.assoc, comp_toUnit])`. Establish `e₃ : (DegPre.BF D F).hom ≫ eSec D.P.A = (1 : DegPre.BF D F ⟶ D.P.A).left` using `rfl`. Rewrite using `[e₁, e₂, e₃, show DegPre.famφ D F χ = _ from famφT_eq D (TF (R := R) F) χ, Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.prod_univ_four, DegPre.famε, _root_.mul_assoc]`. Take `⟨h, hh⟩` from `exists_sec D.P.isLB H (pullMulSec s₀ (DegPre.trF D F χ).left (LB.mulGen D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (D.psi χ) κ.left) (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig (DegPre.BF D F).hom)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ (D.psi …`. Use `⟨h, fun Z r z J hJ => (hh Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ _ _ hJ).trans ?_)⟩` and prove the remaining obligations. Conclude with `congrArg (fun u : (Z.presheaf.stalk z)ˣ => sval s₀ (r ≫ (DegPre.trF D F χ).left) z J * u.val) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ _ _ _) (val_pull hJ _ _ _)))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_translate (χ : D.X) (s₀ : LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F 0) (DegPre.famε 1))) :
     ∃ h : LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F χ) (DegPre.famε 1)),
@@ -150,17 +148,17 @@ def constVal {F : Type} [Field F] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.
   (Z.presheaf.germ (p ⁻¹ᵁ ⊤) z trivial).hom.comp ((p.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom)
 
 /- English proof (translation)
-The claim follows from `(gs_eq p z ⊤ trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem constVal_eq {F : Type} [Field F] {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of F)) (z : Z) (c : F) :
     constVal p z c = gs p z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) := (gs_eq p z ⊤ trivial _).symm
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_basis_twist_field h₁ h₂ R D F 1 le_rfl χ`. Establish `: Subsingleton (Fin (1 ^ D.P.g))` using `by rw [one_pow]; infer_instance`. Set `i₀ : Fin (1 ^ D.P.g)` to `⟨0, by simp⟩`. Establish `key : ∀ s : LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F χ) (DegPre.famε 1)), (∃ j, s.f j ≠ 0) → ∃ c : F, c ≠ 0 ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (DegPre.BF D F).left) (z : Z) (J), Good D.P.L z J → sval s r z J = constVal (r ≫ (fst (TF (R` using `R) F) D.P.A).left) z c * sval (b i₀) r z J := by`. Introduce and unpack `s ⟨j, hj⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, -⟩` from `hb s`. Establish `hc' : ∀ j, s.f j = DegPre.constBF D F (c i₀) _ * (b i₀).f j` using `fun j => (hc j).trans (Fintype.sum_subsingleton _ i₀)`. Use `⟨c i₀, fun h0 => hj ?_, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc', h0, DegPre.constBF, map_zero, map_zero, map_zero, zero_mul]`. Rewrite using `[constVal_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (gs r z _) (hc' _)).trans ((gs_mul r z _ (hJ.mem _ r) _ _).trans (congrArg₂ (· * ·) ((gs_res r z le_top (hJ.mem _ r) _).trans (gs_pull r (fst (TF (R := R) F) D.P.A).left z ⊤ trivial _)) rfl))`. Take `⟨c, hc0, hc⟩` from `key s hs`. Take `⟨d, hd0, hd⟩` from `key t ht`. Use `⟨Units.mk0 (c / d) (div_ne_zero hc0 hd0), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc Z r z J hJ, hd Z r z J hJ, ← _root_.mul_assoc, ← map_mul, Units.val_mk0, div_mul_cancel₀ c hd0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio (h₁ : Laws) (h₂ : Laws2) (χ : D.X)
     (s t : LB.Sec (LB.LinComb D.P.L (DegPre.famφ D F χ) (DegPre.famε 1))) (hs : ∃ j, s.f j ≠ 0) (ht : ∃ j, t.f j ≠ 0) :
@@ -187,23 +185,21 @@ theorem exists_ratio (h₁ : Laws) (h₂ : Laws2) (χ : D.X)
   rw [hc Z r z J hJ, hd Z r z J hJ, ← _root_.mul_assoc, ← map_mul, Units.val_mk0, div_mul_cancel₀ c hd0]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_pullB D F (toUnit _) 1 f`. Establish `hs0` using `fun α => (pullB_ne_zero_iff R D F 1 f s hs α).2 (hf α)`. Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.geomConnected` as an intermediate fact. Establish `: IsIntegral (TF (R` using `R) F).left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of F)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral (DegPre.BF D F).left` using `isIntegral_tensor_left_of_smooth_grpObj _ D.P.A (TF (R := R) F)`. Use `choose h hh using fun χ => exists_translate D F χ (s 0)`. Establish `hh0 : ∀ χ, ∃ j, (h χ).f j ≠ 0` using `fun χ => by`. Take `⟨J, hJ⟩` from `exists_good_pt (Z := (DegPre.BF D F).left) D.P.isLB (genericPoint _)`. Use `isIso_trF D F χ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (DegPre.trF D F χ).left` using `inferInstanceAs (IsIso ((Over.forget _).map (DegPre.trF D F χ)))`. Rewrite using `[exists_ne_zero_iff_sval_ne_zero _ hJ, hh χ _ _ _ J hJ, Category.id_comp]`. Conclude with `mul_ne_zero (sval_ne_zero_of_isIso _ _ D.P.L D.P.isLB _ _ _ (s 0) (hs0 0) _ _ _ J hJ) (Units.ne_zero _)`. Use `choose a ha using fun χ => exists_ratio D F h₁ h₂ χ (s χ) (h χ) (hs0 χ) (hh0 χ)`. Set `u : D.X → Γ((TK R).left, ⊤)ˣ` to `fun χ => Units.map (i.app ⊤).hom.toMonoidHom (unitOn (a χ))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun χ => GlobalTheory.UU.scaleGen (u χ) (D.psi χ), fun χ => GlobalTheory.UU.scaleGen_isGen _ (D.psi_gen χ), ?_⟩` and prove the remaining obligations. Introduce `χ T ρ κ y z J hJ`. Establish `hκ : (κ.left ≫ i) ≫ jFK (R` using `R) F = κ.left := by rw [Category.assoc, hi, Category.comp_id]`. Set `κ' : T ⟶ TF (R` to `R) F := Over.homMk (κ.left ≫ i) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ jK R) hκ).trans (Over.w κ)))`. Establish `hρ : κ' ≫ toUnit _ = ρ` using `toUnit_unique _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `v₁` using `pullB_values R D _ _ _ 1 f s hs χ T κ' y z J hJ`. Establish `v₂` using `pullB_values R D _ _ _ 1 f s hs 0 T κ' (y * cT D T χ) z J hJ`. Rewrite `v₁`, `v₂` using `[hρ]`. Establish `a₁ : (lift κ' y).left ≫ (fst (TF (R` using `R) F) D.P.A).left = κ.left ≫ i := congrArg (fun q => q.left) (lift_fst κ' y)`. Establish `a₂ : (lift κ' y).left ≫ (DegPre.trF D F χ).left = (lift κ' (y * cT D T χ)).left`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun q => q.left) (?_ : lift κ' y ≫ DegPre.trF D F χ = _)` and prove the remaining obligations. Use `(comp_lift _ _ _).trans (congrArg₂ lift (lift_fst _ _) ?_)` and prove the remaining obligations. Use `(MonObj.comp_mul (lift κ' y) (snd _ D.P.A) (cT D _ χ)).trans ?_` and prove the remaining obligations. Rewrite using `[lift_snd, ← Category.assoc, comp_toUnit]`. Establish `a₃ : (lift κ' y).left ≫ (DegPre.BF D F).hom = T.hom` using `Over.w _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₄ : (lift κ' y).left ≫ (fst (TF (R` using `R) F) D.P.A).left ≫ jFK (R := R) F = κ.left := (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ jFK (R := R) F) a₁).trans hκ)`. Establish `w₁` using `ha χ _ (lift κ' y).left z J hJ`. Establish `w₂` using `hh χ _ (lift κ' y).left z J hJ`. Rewrite `w₂` using `[a₂, a₃, a₄]`. Rewrite `w₁` using `[a₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w₃` using `GlobalTheory.UU.val_scaleGen (u χ) (D.psi χ) κ.left hJ`. Establish `w₄ : (gm κ.left z ⊤ (u χ)).val = constVal (κ.left ≫ i) z (a χ).val` using `(gs_unit κ.left z ⊤ trivial _).symm.trans ((gs_pull κ.left i z ⊤ trivial _).trans (constVal_eq _ _ _).symm)`. Establish `alg : ∀ (A : Type) [CommRing A] (x₁ x₂ s₁ s₂ t c : A) (p q u v : Aˣ), s₁ = x₁ → s₂ = x₂ → s₁ = c * t → t = s₂ * (p * q).val → v = u * p → u.val = c → x₁ = (v * q).val * x₂`. Introduce `A _ x₁ x₂ s₁ s₂ t c p q u v e₁ e₂ e₃ e₄ e₅ e₆`. Rewrite using `[← e₁, ← e₂, e₃, e₄, e₅, ← e₆]`.
-
-Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `alg _ _ _ _ _ _ _ _ _ _ _ v₁ v₂ w₁ w₂ w₃ w₄`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_psi_of_section (h₁ : Laws) (h₂ : Laws2) (i : (TK R).left ⟶ Spec (CommRingCat.of F))
     (hi : i ≫ jFK (R := R) F = 𝟙 _) (f : ∀ α, SecBT D (𝟙_ _) 1 α) (hf : ∀ α, ∃ j, (f α).f j ≠ 0) :
@@ -265,7 +261,7 @@ end GlobalTheory.PsiExists
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂ R _ _ D f hf`. Take `⟨ψ, h, H⟩` from `PsiExists.exists_psi_of_section D (FractionRing R) h₁ h₂ (𝟙 _) ((Category.id_comp _).trans (Spec.map_id _)) f hf`. Conclude with `⟨ψ, h, H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_psi_psiRel : Laws → Laws2 → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (f : ∀ α, SecBT D (𝟙_ _) 1 α), (∀ α, ∃ j, (f α).f j ≠ 0) → ∃ ψ h, PsiRel (setPsi D ψ h) (𝟙_ _) f := by
   intro h₁ h₂ R _ _ D f hf

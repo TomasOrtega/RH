@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.RegAlteration
 
 /- English proof (translation)
-Introduce `H k _ Y _ q e h`. Take `⟨Z, _, ρ, hZ, hr, hg, hd⟩` from `H Y _ e (ShFam.Pad.isArithVar_toSpZ h)`. Conclude with `⟨Z, inferInstance, ρ, ⟨RegCoverExists.isArithVar_of_toSpZ h.isDomain h.finite _ hZ, hr⟩, hg, hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_regular_alteration : Published.RegularAlteration → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ), IsArithVar q e → ∃ (Y' : Scheme.{0}) (_ : IsIntegral Y') (ρ : Y' ⟶ Y), CxForm.IsRegVar (ρ ≫ q) e ∧ ρ (genericPoint Y') = genericPoint Y ∧ ρ.residueDegree (genericPoint Y') ≠ 0 := by
   intro H k _ Y _ q e h

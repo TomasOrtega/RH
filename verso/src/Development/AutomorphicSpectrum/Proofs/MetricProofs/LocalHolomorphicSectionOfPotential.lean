@@ -19,9 +19,9 @@ section General
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨j, hj⟩` from `A.cover z`. Establish `h1 : (A.chart j).symm (A.chart j z) = z` using `(A.chart j).left_inv hj`. Establish `hu : A.chart j z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' W` using `⟨(A.chart j).map_source hj, by rw [Set.mem_preimage, h1]; exact hz⟩`. Establish `hc : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j z)` using `(h j _ hu).continuousAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ (A.chart j)) z` using `ContinuousAt.comp hc ((A.chart j).continuousAt hj)`. Establish `hev : ((f ∘ (A.chart j).symm) ∘ (A.chart j)) =ᶠ[𝓝 z] f` using `by filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`. Conclude with `(hc2.congr hev).continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoOn_continuousOn' {A : FinHolAtlas e X} {W : Set X} {f : X → ℂ} (h : A.HoloOn W f) :
     ContinuousOn f W := by
@@ -50,7 +50,7 @@ structure LocSec (M : CxModel P d) (U : Set M.Xc) (s : M.Xc → (Σ k, ι k) →
   holo : ∀ p, M.atlas.HoloOn U fun y => s y p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(M.sections x).choose_spec.1, (M.sections x).choose_spec.2.2.choose_spec.1, (M.sections x).choose_spec.2.2.choose_spec.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem locSec_sections (M : CxModel P d) (x : M.Xc) :
     LocSec M (M.sections x).choose (M.sections x).choose_spec.2.2.choose :=
@@ -58,9 +58,9 @@ theorem locSec_sections (M : CxModel P d) (x : M.Xc) :
     (M.sections x).choose_spec.2.2.choose_spec.2⟩
 
 /- English proof (translation)
-Introduce `j y hy`. Establish `hσ : ContDiffAt ℝ ∞ (fun y' => s ((M.atlas.chart j).symm y')) y` using `contDiffAt_pi.2 fun p => ((hs.holo p j y hy).contDiffAt (n := ∞)).restrict_scalars ℝ`. Establish `hm` using `(hs.sec _ hy.2).1.1`. Establish `hn : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} ∈ 𝓝 (s ((M.atlas.chart j).symm y))`. Use `IsOpen.mem_nhds ?_ hm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.setOf_forall, Set.setOf_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`. Establish `h1 : ContDiffAt ℝ ∞ (fun y' => Real.log (B.h (s ((M.atlas.chart j).symm y')))) y` using `((hB.contDiffAt hn).comp y hσ).log (B.pos _ hm).ne'`. Conclude with `h1.contDiffWithinAt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOn_log_sec {M : CxModel P d} {U : Set M.Xc} {s : M.Xc → (Σ k, ι k) → ℂ}
     (hs : LocSec M U s) {B : HermLine ι} (hB : IsSmoothHerm B) :
@@ -79,27 +79,25 @@ theorem smoothOn_log_sec {M : CxModel P d} {U : Set M.Xc} {s : M.Xc → (Σ k, �
   exact h1.contDiffWithinAt
 
 /- English proof (translation)
-Establish `hz` using `(hs.sec y₀ hy).1`. Establish `hz'` using `(hs'.sec y₀ hy').1`. Use `choose i hi using hz'.1`. Take `⟨c₀, hc₀, hcz⟩` from `(M.fibre _ hz' _ hz).1 (by rw [(hs.sec y₀ hy).2, (hs'.sec y₀ hy').2])`. Establish `hn0 : ∀ k, s y₀ ⟨k, i k⟩ ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcz]`. Conclude with `mul_ne_zero (hc₀ k) (hi k)`. Set `r : K → ℂ` to `fun k => s y₀ ⟨k, i k⟩ / s' y₀ ⟨k, i k⟩`. Establish `hr : ∀ k, r k ≠ 0` using `fun k => div_ne_zero (hn0 k) (hi k)`. Set `q : K → M.Xc → ℂ` to `fun k z => s z ⟨k, i k⟩ / s' z ⟨k, i k⟩ / r k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hO : IsOpen (U ∩ U')` using `hs.isOpen.inter hs'.isOpen`. Set `W : Set M.Xc` to `{z | z ∈ U ∩ U' ∧ ∀ k, s' z ⟨k, i k⟩ ≠ 0 ∧ q k z ∈ Complex.slitPlane}`. Establish `hW : IsOpen W`. Use `isOpen_iff_mem_nhds.mpr fun z hz => ?_` and prove the remaining obligations. Establish `hn : ∀ k, ContinuousAt (fun z => s z ⟨k, i k⟩) z` using `fun k => ((holoOn_continuousOn' (hs.holo _)).mono Set.inter_subset_left).continuousAt (hO.mem_nhds hz.1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hd : ∀ k, ContinuousAt (fun z => s' z ⟨k, i k⟩) z` using `fun k => ((holoOn_continuousOn' (hs'.holo _)).mono Set.inter_subset_right).continuousAt (hO.mem_nhds hz.1)`. Use `filter_upwards [hO.mem_nhds hz.1, eventually_all.mpr fun k => (hd k).eventually_ne (hz.2 k).1, eventually_all.mpr fun k => (((hn k).div (hd k) (hz.2 k).1).div_const _).eventually_mem (Complex.isOpen_slitPlane.mem_nhds (hz.2 k).2)] with w h1 h2 h3`. Conclude with `⟨h1, fun k => ⟨h2 k, h3 k⟩⟩`. Establish `hyW : y₀ ∈ W`. Use `⟨⟨hy, hy'⟩, fun k => ⟨hi k, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: q k y₀ = 1` using `div_self (hr k)`. Rewrite using `[this]`. Conclude with `Complex.one_mem_slitPlane`. Set `G : M.Xc → ℂ` to `fun z => ∑ k, ((B.a k : ℝ) : ℂ) * (Complex.log (q k z) + ((Real.log ‖r k‖ : ℝ) : ℂ))`. Use `⟨W, hW, hyW, G, fun j u hu => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzW : (M.atlas.chart j).symm u ∈ W` using `hu.2`. Establish `hterm : ∀ k, AnalyticAt ℂ (fun u' => ((B.a k : ℝ) : ℂ) * (Complex.log (q k ((M.atlas.chart j).symm u')) + ((Real.log ‖r k‖ : ℝ) : ℂ))) u`. Introduce `k`. Establish `hn : AnalyticAt ℂ (fun u' => s ((M.atlas.chart j).symm u') ⟨k, i k⟩) u` using `hs.holo _ j u ⟨hu.1, hzW.1.1⟩`. Establish `hd : AnalyticAt ℂ (fun u' => s' ((M.atlas.chart j).symm u') ⟨k, i k⟩) u` using `hs'.holo _ j u ⟨hu.1, hzW.1.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : AnalyticAt ℂ (fun u' => q k ((M.atlas.chart j).symm u')) u` using `(hn.div hd (hzW.2 k).1).div analyticAt_const (hr k)`. Establish `hl : AnalyticAt ℂ (Complex.log ∘ fun u' => q k ((M.atlas.chart j).symm u')) u` using `AnalyticAt.comp (f := fun u' => q k ((M.atlas.chart j).symm u')) (analyticAt_clog (hzW.2 k).2) hq`. Conclude with `analyticAt_const.mul (hl.add analyticAt_const)`. Conclude with `Finset.analyticAt_fun_sum _ fun k _ => hterm k`. Establish `hzW : z ∈ W` using `hz.1.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `(hs.sec z hzW.1.1).1`. Establish `hm'` using `(hs'.sec z hzW.1.2).1`. Take `⟨c, hc, hcy⟩` from `(M.fibre _ hm' _ hm).1 (by rw [(hs.sec z hzW.1.1).2, (hs'.sec z hzW.1.2).2])`. Establish `hpos : 0 < B.h (s' z)` using `B.pos _ hm'.1`. Establish `hprod : (∏ k, ‖c k‖ ^ B.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ k, Real.log ‖q k z‖ + Real.log ‖r k‖ = Real.log ‖c k‖`. Introduce `k`. Establish `hck : s z ⟨k, i k⟩ = c k * s' z ⟨k, i k⟩` using `by rw [hcy]; rfl`. Establish `hqz : q k z = c k / r k`. Simplify using `only [q]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hck, mul_div_assoc, div_self (hzW.2 k).1, mul_one]`. Rewrite using `[hqz, norm_div, Real.log_div (norm_ne_zero_iff.mpr (hc k)) (norm_ne_zero_iff.mpr (hr k))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsm : B.h (s z) = (∏ k, ‖c k‖ ^ B.a k) * B.h (s' z)`. Rewrite using `[hcy]`.
-
-Conclude with `B.smul c _ hc`. Rewrite using `[hsm, Real.log_mul hprod hpos.ne', add_sub_cancel_right, Real.log_prod fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))]`. Simplify using `only [G, Complex.re_sum, Complex.re_ofReal_mul, Complex.add_re, Complex.log_re, Complex.ofReal_re]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hterm k, Real.log_zpow]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_re_holo_sections {M : CxModel P d} {U U' : Set M.Xc} {s s' : M.Xc → (Σ k, ι k) → ℂ}
     (hs : LocSec M U s) (hs' : LocSec M U' s') (B : HermLine ι) {y₀ : M.Xc} (hy : y₀ ∈ U)
@@ -192,9 +190,9 @@ end SecPot
 open SecPot in
 
 /- English proof (translation)
-Introduce `K _ ι _ P n M B hB`. Use `⟨potOfSections M B, ⟨fun x => smoothOn_log_sec (locSec_sections M x) hB, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x x' y hy`. Conclude with `exists_re_holo_sections (locSec_sections M x) (locSec_sections M x') B hy.1 hy.2`. Introduce `x y₀ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs` using `locSec_sections M x`. Use `⟨_, hs.isOpen, hy.1, fun z hz => ⟨hz, Set.mem_univ _⟩, _, hs.sec, hs.holo, fun _ => 0, fun j u _ => analyticAt_const, fun y' _ => ?_⟩` and prove the remaining obligations. Simplify using `[potOfSections]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_potential_of_smoothHerm :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (n : ℕ) (M : CxModel P n) (B : HermLine ι), IsSmoothHerm B → ∃ Φ : LocPot M.Xc, IsPotential M.atlas Φ ∧ ∀ x, ∀ y₀ ∈ (Φ).U x ∩ Set.univ, ∃ U : Set M.Xc, IsOpen U ∧ y₀ ∈ U ∧ U ⊆ (Φ).U x ∩ Set.univ ∧ ∃ s : M.Xc → (Σ k, ι k) → ℂ, (∀ y' ∈ U, s y' ∈ mcPts (P) ∧ M.proj (s y') = y') ∧ (∀ p, M.atlas.HoloOn U fun y' => s y' p) ∧ ∃ G : M.Xc → ℂ, M.atlas.HoloOn U G ∧ ∀ y' ∈ U, (Φ).φ x y' - (fun z => Real.log (B.h z)) (s y') = (G y').re := by

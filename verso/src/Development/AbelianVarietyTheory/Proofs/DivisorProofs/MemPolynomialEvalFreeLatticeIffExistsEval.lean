@@ -24,7 +24,7 @@ def toV {C : Type} [Field C] {w : Valuation C ℝ≥0} {v : AddValuation C (With
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[AdjoinRoot.liftAlgHom_mk]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_mk {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {S : Type} [Fintype S]
     [DecidableEq S] (b : S → Int0 v) (s : S) (g : Polynomial (Int0 v)) :
@@ -34,13 +34,13 @@ theorem ev_mk {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {S : Type}
   rfl
 
 /- English proof (translation)
-Introduce `C _ w v hv S _ _ a N y`. Prove the components needed by the constructor for the conclusion. Introduce `hy choose f hf using hy`. Use `⟨fun i => AdjoinRoot.mk _ ((f i).map (toV hv)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s i`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [evalVec]`. Rewrite using `[ev_mk, Polynomial.eval_map, hf i s]`. Establish `: liftA hv a s = toV hv (a s)` using `rfl`. Rewrite using `[this, Polynomial.eval₂_hom]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨x, rfl⟩ i`. Take `⟨g, hg⟩` from `AdjoinRoot.mk_surjective (x i)`. Use `⟨g.map (toW hv), fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [evalVec]`. Rewrite using `[← hg, ev_mk, Polynomial.eval_map]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: a s = toW hv (liftA hv a s)` using `rfl`. Rewrite using `[this, Polynomial.eval₂_hom]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalVec_range : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ))
     (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S]

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.NormSum.MovedLattice
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h]`. Simplify using `at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem halfDifferent_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   intro h
@@ -20,7 +20,7 @@ theorem halfDifferent_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   simp at h2
 
 /- English proof (translation)
-Unfold `Host.AA0`. Conclude with `inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 (halfDifferent_ne_bot D))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inverseHalfDifferent_ne_zero (D : D7) : D.host.AA0 ≠ 0 := by
   unfold Host.AA0
@@ -31,7 +31,7 @@ def ext (D : D7) (cc : Ideal (𝓞 D.host.K)) : FractionalIdeal (nonZeroDivisors
     FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
 
 /- English proof (translation)
-Unfold `ext`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero, Ne, Ideal.map_eq_bot_iff_of_injective]`. Conclude with `h`. Conclude with `FaithfulSMul.algebraMap_injective _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_ne_zero (D : D7) {cc : Ideal (𝓞 D.host.K)} (h : cc ≠ ⊥) : ext D cc ≠ 0 := by
   unfold ext
@@ -47,7 +47,7 @@ theorem coe_alg (D : D7) (c : 𝓞 D.host.K) :
       ((c : D.host.K) : D.host.E) := rfl
 
 /- English proof (translation)
-Rewrite using `[← coe_alg]`. Conclude with `FractionalIdeal.mem_coeIdeal_of_mem _ (Ideal.mem_map_of_mem _ h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ext (D : D7) {cc : Ideal (𝓞 D.host.K)} {c : 𝓞 D.host.K} (h : c ∈ cc) :
     ((c : D.host.K) : D.host.E) ∈ ext D cc := by
@@ -55,11 +55,11 @@ theorem mem_ext (D : D7) {cc : Ideal (𝓞 D.host.K)} {c : 𝓞 D.host.K} (h : c
   exact FractionalIdeal.mem_coeIdeal_of_mem _ (Ideal.mem_map_of_mem _ h)
 
 /- English proof (translation)
-Establish `hJ : ext D cc * D.host.AA0 ≠ 0` using `mul_ne_zero (ext_ne_zero D h) (inverseHalfDifferent_ne_zero D)`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, a, ha, s, hs, rfl⟩` from `hy`. Rewrite using `[← mul_assoc, ← map_mul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem ?_ hs` and prove the remaining obligations. Establish `h1` using `FractionalIdeal.mul_mem_mul hj (FractionalIdeal.mul_mem_mul (mem_ext D hc) ha)`. Rewrite `h1` using `[inv_mul_cancel₀ hJ, FractionalIdeal.mem_one_iff]`. Conclude with `(AdLattice.incl_mem_iff (F := ℚ) _).2 h1`. Consider the case `zero => rw [mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inc_mul_mem (D : D7) {cc : Ideal (𝓞 D.host.K)} (h : cc ≠ ⊥) {j : D.host.E}
     (hj : j ∈ (ext D cc * D.host.AA0)⁻¹) {y : AE D} (hy : y ∈ IhE D cc) : inc D j * y ∈ OhE D := by
@@ -77,11 +77,11 @@ theorem inc_mul_mem (D : D7) {cc : Ideal (𝓞 D.host.K)} (h : cc ≠ ⊥) {j : 
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `Submodule.subset_span fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[h]`. Rewrite using `[h']`. Introduce `i`. Establish `key : ((g'⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)).mulVec (fun k => inc D ((j • z).mulVec x k)) = (inc D j • (((g'⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * z.map (inc D) * (g : Matrix (Fin N) (Fin N) (AE D)))).mulVec (((g⁻¹ : GL (Fin N) (AE …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul _ (inc D j)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[key]`. Simplify using `only [Matrix.mulVec, dotProduct] at hx ⊢`. Conclude with `sum_mem fun k _ => mul_mem (hz i k) (hx k)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_mem_homL (D : D7) {N N' : ℕ} (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D))
     {L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -109,7 +109,7 @@ theorem smul_mem_homL (D : D7) {N N' : ℕ} (g : GL (Fin N) (AE D)) (g' : GL (Fi
   exact sum_mem fun k _ => mul_mem (hz i k) (hx k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a b`. Simplify using `[pt, embV, tor0, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pt_add (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ}
     (y y' : Matrix (Fin N') (Fin N) D.host.E) :
@@ -118,15 +118,13 @@ theorem pt_add (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ}
   simp [pt, embV, tor0, mul_add]
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hm`. Use `clear hm`. Proceed by induction on `hb using Submodule.span_induction generalizing y with`. Consider the case `mem b hb`. Take `⟨c, hc, rfl⟩` from `hb`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.subset_closure ⟨δ * D.host.φ₀ ((c : D.host.K) : D.host.E), AddSubgroup.subset_closure ⟨c, hc, rfl⟩, y, hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ a b`. Rewrite using `[coe_alg]`. Simplify using `only [pt, embV, tor0, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hD τ, mul_assoc]`. Consider the case `zero`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `: pt D (tor0 D cc δ) δ (algebraMap (𝓞 D.host.E) D.host.E 0 • y) = 0`. Use function extensionality and compare the values at `τ a b`. Simplify using `[pt, embV, tor0]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add b b' _ _ hb hb'`. Rewrite using `[map_add, add_smul, pt_add]`. Conclude with `add_mem (hb hy) (hb' hy)`. Consider the case `smul r b _ hb`. Use `hb ((YYl D L₁ L₁').smul_mem r hy)` as an intermediate fact.
-
-Rewrite `this` using `[← algebraMap_smul D.host.E r y, smul_smul, ← map_mul, mul_comm]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pt_smul_mem (D : D7) (hD : GL3Theta.InducedCMType D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ}
     (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -159,13 +157,13 @@ end GlobalTheory.NormSum.MovedLattice
 open GlobalTheory.NormSum.MovedLattice in
 
 /- English proof (translation)
-Introduce `D hD cc δ hcc N N' g g' L₁ L₁' h h' z hz`. Establish `hJ : ext D cc * D.host.AA0 ≠ 0` using `mul_ne_zero (ext_ne_zero D hcc) (inverseHalfDifferent_ne_zero D)`. Establish `hY : ∀ n ∈ D.host.AA0 * (ext D cc * D.host.AA0)⁻¹, n • z ∈ YYl D L₁ L₁'`. Introduce `n hn`. Use `FractionalIdeal.mul_induction_on hn (fun a ha j hj => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨a, ha, j • z, ?_, mul_smul _ _ _⟩` and prove the remaining obligations. Conclude with `smul_mem_homL D _ _ h h' z j fun a b => inc_mul_mem D hcc hj (hz a b)`. Rewrite using `[add_smul]`. Conclude with `add_mem hx hy`. Establish `h1 : (1 : D.host.E) ∈ ext D cc * (D.host.AA0 * (ext D cc * D.host.AA0)⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, mul_inv_cancel₀ hJ]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `h2 : ∀ e ∈ ext D cc * (D.host.AA0 * (ext D cc * D.host.AA0)⁻¹), pt D (tor0 D cc δ) δ (e • z) ∈ La D (tor0 D cc δ) L₁ L₁'`. Introduce `e he`. Use `FractionalIdeal.mul_induction_on he (fun m hm n hn => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mul_smul]`. Conclude with `pt_smul_mem D hD.1 cc δ L₁ L₁' hm (hY n hn)`. Rewrite using `[add_smul, pt_add]`. Conclude with `add_mem hx hy`. Simplify using `using h2 1 h1`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormSum.pt_mem_La_of_adelic : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → ∀ (N N' : ℕ) (g : GA D N) (g' : GA D N') (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), Moves D (g : GL (Fin N) (AE D)) L₁ → Moves D (g' : GL (Fin N') (AE D)) L₁' → ∀ z : Matrix (Fin N') (Fin N) D.host.E, (∀ i j, ((((g' : GL (Fin N') (AE D))⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * z.map (inc D) * ((g : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))) i j ∈ IhE D cc) → pt D (tor0 D cc δ) δ z ∈ La D (tor0 D cc δ) L₁ L₁' := by
   intro D hD cc δ hcc N N' g g' L₁ L₁' h h' z hz

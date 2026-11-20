@@ -25,7 +25,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 omit [NeZero n] in
 
 /- English proof (translation)
-The claim follows from `((DFunLike.congr_fun (localInvU_eq v) x).trans ((AddMonoidHom.comp_apply _ _ _).trans (congrArg _ (AddMonoidHom.comp_apply _ _ _)))).trans ((brauerInvZOfIsSepClosure_cohomologyMap_uliftInt_base _ (𝟙 _) (galUnitsToZ _ _) (fun _ => rfl) x).trans (congrArg _ (congrArg (fun f => Modu …`.
+A detailed English derivation is pending.
 -/
 theorem localInvU_eq_brauerInvOfIsSepClosure (v : HeightOneSpectrum (𝓞 K.1))
     (x : cohomology (galUnits.{0} (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))) 2) :
@@ -38,7 +38,7 @@ theorem localInvU_eq_brauerInvOfIsSepClosure (v : HeightOneSpectrum (𝓞 K.1))
 omit [NeZero n] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun ζ => ?_))` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(restrictRootsOfUnity_coe_apply _ _).trans (gsRootsLocalMor_hom_apply S ιs n v ζ).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gsRootsOmegaMor_eq_gsRootsLocalMor (v : S) : gsRootsOmegaMor S ιs n v = gsRootsLocalMor S ιs n v := by
   refine Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun ζ => ?_))
@@ -48,7 +48,7 @@ theorem gsRootsOmegaMor_eq_gsRootsLocalMor (v : S) : gsRootsOmegaMor S ιs n v =
   exact (restrictRootsOfUnity_coe_apply _ _).trans (gsRootsLocalMor_hom_apply S ιs n v ζ).symm
 
 /- English proof (translation)
-Conclude with `(zmodToQZ_gsLocalInvRoots S ιs n v z).trans ((gsLocalInvRootsQZ_eq_brauerInv_base S ιs n v z).trans ((congrArg (fun f => brauerInvOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) ((cohomolo …`.
+A detailed English derivation is pending.
 -/
 theorem zmodToQZ_gsLocalInvRoots_eq_localInvU (v : S)
     (z : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
@@ -62,7 +62,7 @@ theorem zmodToQZ_gsLocalInvRoots_eq_localInvU (v : S)
       (gsRootsOmegaMor_eq_gsRootsLocalMor S ιs n v).symm).trans (localInvU_eq_brauerInvOfIsSepClosure _ _).symm))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : μ₁ᵥ = μ₂ᵥ` from `funext eᵥ`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem compactCup_congr {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {ι : Type u} {H : ι → Type u} [∀ v, Group (H v)] [∀ v, TopologicalSpace (H v)] [∀ v, IsTopologicalGroup (H v)]
@@ -79,7 +79,7 @@ theorem compactCup_congr {k G : Type u} [CommRing k] [Group G] [TopologicalSpace
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : μ₁ᵥ = μ₂ᵥ` from `funext eᵥ`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem compactCup_congr_apply {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {ι : Type u} {H : ι → Type u} [∀ v, Group (H v)] [∀ v, TopologicalSpace (H v)] [∀ v, IsTopologicalGroup (H v)]
@@ -103,7 +103,7 @@ variable {H : Type} [Group H]
 omit [NeZero n] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (d : D) (z : Z') => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f.hom ((zmodActPairing n D Z' hD e hZ).hom (d ⊗ₜ[ULift.{0} ℤ] z)) = (zmodActPairing n D' Z' hD' e hZ).hom (f.hom d ⊗ₜ[ULift.{0} ℤ] z)`. Rewrite using `[zmodActPairing_tmul, zmodActPairing_tmul, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmodActPairing_comp (D D' Z' : Rep.{0} (ULift.{0} ℤ) H) (hD : ∀ d : D, n • d = 0)
     (hD' : ∀ d : D', n • d = 0) (e : Z' →+ ZMod n) (hZ : ∀ (g : H) (z : Z'), Z'.ρ g z = z) (f : D ⟶ D') :
@@ -118,7 +118,7 @@ end ActNatural
 omit [NeZero n] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (ζ : gsRoots S n) (a : zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(zmodMulPairing n (gsRoots S n) (nsmul_gsRoots S n)).hom (a ⊗ₜ[ULift.{0} ℤ] ζ) = (zmodActPairing n (gsRoots S n) (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) (nsmul_gsRoots S n) (AddEquiv.ulift : ULift.{0} (ZMod n) ≃+ ZMod n).toAddMonoidHom (fun _ _ => rfl)).hom (ζ ⊗ₜ[ULift.{0 …`. Conclude with `(zmodMulPairing_tmul n _ _ a.down ζ).trans (zmodActPairing_tmul n (gsRoots S n) (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) (nsmul_gsRoots S n) (AddEquiv.ulift : ULift.{0} (ZMod n) ≃+ ZMod n).toAddMonoidHom (fun _ _ => rfl) ζ a).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem zmodMulPairingRight_gsRoots_eq :
     zmodMulPairingRight n (gsRoots S n) (nsmul_gsRoots S n) =
@@ -138,7 +138,7 @@ section ResPairing
 variable {k G H : Type u} [CommRing k] [Group G] [Group H] (ψ : H →* G) {A B C : Rep.{u} k G} {C' : Rep.{u} k H}
 
 /- English proof (translation)
-The claim follows from `(congrArg (· ≫ g) ((congrArg (Rep.resFunctor ψ).map (Category.comp_id μ)).trans ((Category.comp_id _).symm.trans (resFunctor_map_comp_id ψ μ)))).trans (Category.assoc _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem resFunctor_map_comp_id_comp (μ : A ⊗ B ⟶ C) (g : Rep.res ψ C ⟶ C') :
     (Rep.resFunctor ψ).map (μ ≫ 𝟙 C) ≫ g =
@@ -147,7 +147,7 @@ theorem resFunctor_map_comp_id_comp (μ : A ⊗ B ⟶ C) (g : Rep.res ψ C ⟶ C
     ((Category.comp_id _).symm.trans (resFunctor_map_comp_id ψ μ)))).trans (Category.assoc _ _ _)
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => (Rep.resFunctor ψ).map f ≫ g) (((congrArg (· ≫ μ) (MonoidalCategory.id_tensorHom_id A B)).trans (Category.id_comp μ)).trans (Category.comp_id μ).symm)).trans ((resFunctor_map_comp_id_comp ψ μ g).trans (congrArg (resTensorHom ψ (𝟙 _) (𝟙 _) ≫ ·) e))`.
+A detailed English derivation is pending.
 -/
 theorem resFunctor_map_id_tensor_comp (μ : A ⊗ B ⟶ C) (g : Rep.res ψ C ⟶ C')
     (ν : Rep.res ψ A ⊗ Rep.res ψ B ⟶ C') (e : (Rep.resFunctor ψ).map μ ≫ g = ν) :
@@ -175,7 +175,7 @@ abbrev gsZmodPairingᵥ (v : S) :
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun _ _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem resFunctor_map_gsZmodPairing (v : S) :
     (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (gsZmodPairing S n) =
@@ -186,7 +186,7 @@ theorem resFunctor_map_gsZmodPairing (v : S) :
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `(congrArg (· ≫ gsRootsOmegaMor S ιs n v) (resFunctor_map_gsZmodPairing S ιs n v)).trans (zmodActPairing_comp n (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) (galRootsOfUnity.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSp …`.
+A detailed English derivation is pending.
 -/
 theorem gsZmodPairing_hμ (v : S) :
     (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (gsZmodPairing S n) ≫ gsRootsOmegaMor S ιs n v =
@@ -202,9 +202,9 @@ theorem gsZmodPairing_hμ (v : S) :
 omit [NeZero n] in
 
 /- English proof (translation)
-Establish `hg : ∀ v, 𝟙 (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) ≫ gsRootsOmegaMor S ιs n v = (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (𝟙 (gsRoots S n)) ≫ gsRootsOmegaMor S ιs n v` using `fun _ => Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))`. Establish `e1` using `compactCohomologyMap_compactCup (gsFinFamily S ιs) (A := gsRoots S n) (B := zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) (C := gsRoots S n) (C' := gsRoots S n) (Aᵥ := fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) (Cᵥ := fun v => Rep.res (gsFinFamily S ιs v).t …`. Establish `e2` using `compactCup_compactCohomologyMap (gsFinFamily S ιs) (A := gsRoots S n) (A' := gsRoots S n) (B := zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) (C := gsRoots S n) (Aᵥ := fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) (A'ᵥ := fun v => galRootsOfUnity.{0, 0} ((v : …`. Establish `eμ : zmodMulPairingRight n (gsRoots S n) (nsmul_gsRoots S n) ≫ 𝟙 (gsRoots S n) = (𝟙 (gsRoots S n) ⊗ₘ 𝟙 (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n)) ≫ gsZmodPairing S n` using `((Category.comp_id _).trans (zmodMulPairingRight_gsRoots_eq S n)).trans ((congrArg (· ≫ gsZmodPairing S n) (MonoidalCategory.id_tensorHom_id _ _)).trans (Category.id_comp _)).symm`. Establish `eμᵥ : ∀ v, (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (zmodMulPairingRight n (gsRoots S n) (nsmul_gsRoots S n)) ≫ gsRootsOmegaMor S ιs n v = (gsRootsOmegaMor S ιs n v ⊗ₘ 𝟙 _) ≫ gsZmodPairingᵥ S ιs n v` using `fun v => (congrArg (fun f => (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map f ≫ gsRootsOmegaMor S ιs n v) (zmodMulPairingRight_gsRoots_eq S n)).trans (gsZmodPairing_hμ S ιs n v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Conclude with `compactCup_congr_apply (gsFinFamily S ιs) _ _ eμ eμᵥ (show 2 + 1 = 3 from rfl) y x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsRootsComparison_compactCupRes (y : compactCohomologyRes (gsFinFamily S ιs) (gsRoots S n) 2)
     (x : cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1) :

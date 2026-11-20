@@ -12,11 +12,9 @@ open scoped ENNReal NNReal
 noncomputable section
 
 /- English proof (translation)
-Break down `hs.exists_measurable_subset_ae_eq with ⟨t, ts, ht, t_eq_s⟩` into its components or cases. Establish `himg : f '' t =ᵐ[μ] f '' s`. Establish `hst : s = t ∪ (s \ t)` using `by simp [union_eq_self_of_subset_left ts]`. Rewrite using `[hst, image_union]`. Use `(union_ae_eq_left_of_ae_eq_empty (ae_eq_empty.mpr ?_)).symm` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero _ (fun x hx ↦ ?_) (ae_eq_set.1 t_eq_s).2` and prove the remaining obligations. Conclude with `(hf' x hx.1).differentiableWithinAt.mono sdiff_subset`. Rewrite using `[setLIntegral_congr t_eq_s.symm, ← setLIntegral_congr himg, lintegral_image_eq_lintegral_abs_det_fderiv_mul μ ht (fun x hx => (hf' x (ts hx)).mono ts) (hf.mono ts)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Conclude with `mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem AreaMultiplicityWeight.setLIntegral_comp_mul_abs_det₀ {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
@@ -40,47 +38,41 @@ theorem AreaMultiplicityWeight.setLIntegral_comp_mul_abs_det₀ {E : Type*} [Nor
   exact mul_comm _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ μ _ A f f' hA hf'`. Use `set B : Set E := {x ∈ A | (f' x).det ≠ 0} with hBdef`. Establish `hBA : B ⊆ A` using `sep_subset _ _`. Establish `hB : NullMeasurableSet B μ`. Take `⟨d, hdm, hfd⟩ : AEMeasurable (fun x => (f' x).det) (μ.restrict A)` from `ContinuousLinearMap.continuous_det.measurable.comp_aemeasurable (aemeasurable_fderivWithin μ hA hf')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hA.inter (hdm (measurableSet_singleton 0).compl)).nullMeasurableSet.congr ?_` and prove the remaining obligations. Use `filter_upwards [(ae_restrict_iff' hA).1 hfd] with x hx`. Express the relevant statement in the definitionally equal form `(x ∈ A ∩ d ⁻¹' {0}ᶜ) = (x ∈ B)`. Rewrite using `[eq_iff_iff]`. Distinguish the cases in `hxA : x ∈ A`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[B, hxA, hx hxA]`. Simplify using `[B, hxA]`. Establish `hZ : μ (f '' {x ∈ A | (f' x).det = 0}) = 0` using `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero μ (fun x hx => (hf' x hx.1).mono (sep_subset _ _)) (fun x hx => hx.2)`. Set `r : (E →L[ℝ] E) → ℝ≥0` to `fun L => (‖L.inverse‖₊ + 1)⁻¹`. Take `⟨t, L, htd, htm, hcov, happ, hL⟩` from `exists_partition_approximatesLinearOn_of_hasFDerivWithinAt f B f' (fun x hx => (hf' x hx.1).mono hBA) r (fun _ => inv_ne_zero (by positivity))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : ℕ → Set E := fun n => B ∩ t n with hPdef`. Establish `hPm : ∀ n, NullMeasurableSet (P n) μ` using `fun n => hB.inter (htm n).nullMeasurableSet`. Establish `hPd : Pairwise (Disjoint on P)` using `fun m n hmn => (htd hmn).mono inter_subset_right inter_subset_right`. Establish `hPA : ∀ n, P n ⊆ A` using `fun n => inter_subset_left.trans hBA`. Establish `hderP : ∀ n, ∀ x ∈ P n, HasFDerivWithinAt f (f' x) (P n) x` using `fun n x hx => (hf' x (hPA n hx)).mono (hPA n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hinj : ∀ n, InjOn f (P n)`. Introduce `n`. Break down `(P n).eq_empty_or_nonempty with h | ⟨x, hx⟩` into its components or cases. Rewrite using `[h]`. Conclude with `injOn_empty f`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy, hLy⟩` from `hL ⟨x, hx.1⟩ n`. Use `set e := (f' y).toContinuousLinearEquivOfDetNeZero hy.2`. Establish `he : (e : E →L[ℝ] E) = L n`. Rewrite using `[hLy]`. Conclude with `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact.
 
-Establish `ha` using `happ n`. Rewrite `ha` using `[← he]`. Use `ha.injOn ?_` and prove the remaining obligations. Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Conclude with `Or.inl hE`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Establish `hr : r (e : E →L[ℝ] E) = (‖(e.symm : E →L[ℝ] E)‖₊ + 1)⁻¹`. Simplify using `only [r, ContinuousLinearMap.inverse_equiv]`. Rewrite using `[hr]`. Establish `hpos : 0 < ‖(e.symm : E →L[ℝ] E)‖₊`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pos_iff_ne_zero, ne_eq, nnnorm_eq_zero]`. Introduce `h0`. Take `⟨z, hz⟩` from `exists_ne (0 : E)`. Apply `hz` to reduce the goal to its premises. Simplify using `using congrArg (fun T : E →L[ℝ] E => T (e z)) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(inv_lt_inv₀ (by positivity) hpos).2 (lt_add_one _)`. Establish `hBU : B = ⋃ n, P n`. Rewrite using `[← inter_iUnion]`. Conclude with `(inter_eq_left.2 hcov).symm`. Establish `himg : ∀ n, NullMeasurableSet (f '' P n) μ` using `fun n => nullMeasurable_image_of_fderivWithin μ (hPm n) (hderP n) (hinj n)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hNae : ∀ᵐ y ∂μ, ∑' n, (f '' P n).indicator (1 : E → ℝ≥0∞) y = (({x ∈ A | f x = y}.encard : ℕ∞) : ℝ≥0∞)` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hZ] with y hy`. Establish `hU : {x ∈ A | f x = y} = ⋃ n, {x ∈ P n | f x = y}`. Use extensionality with `x`. Simplify using `only [mem_ofPred_eq, mem_iUnion]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨hxA, hxy⟩`. Establish `hxB : x ∈ B` using `⟨hxA, fun hd => hy ⟨x, ⟨hxA, hd⟩, hxy⟩⟩`. Take `⟨n, hn⟩` from `mem_iUnion.1 (hcov hxB)`. Conclude with `⟨n, ⟨hxB, hn⟩, hxy⟩`. Introduce and unpack `⟨n, hxP, hxy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨hPA n hxP, hxy⟩`. Rewrite using `[hU, encard_iUnion_nat_eq_tsum _ (fun m n hmn => (hPd hmn).mono (sep_subset _ _) (sep_subset _ _))]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Distinguish the cases in `hyn : y ∈ f '' P n`. Take `⟨x, hx, rfl⟩` from `hyn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hs : {z ∈ P n | f z = f x} = {x}`. Use extensionality with `z`. Simplify using `only [mem_ofPred_eq, mem_singleton_iff]`. Conclude with `⟨fun h => hinj n h.1 hx h.2, fun h => by subst h; exact ⟨hx, rfl⟩⟩`. Rewrite using `[hs, encard_singleton, indicator_of_mem (mem_image_of_mem f hx)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Establish `hs : {z ∈ P n | f z = y} = ∅`. Use extensionality with `z`. Simplify using `only [mem_ofPred_eq, mem_empty_iff_false, iff_false, not_and]`. Conclude with `fun hz e => hyn ⟨z, hz, e⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hs, encard_empty]`. Simplify using `[hyn]`. Use `⟨(AEMeasurable.tsum fun n => aemeasurable_one.indicator₀ (himg n)).congr hNae, fun g hg => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hA, ← lintegral_indicator₀ hB]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Distinguish the cases in `hx : x ∈ A`. Distinguish the cases in `hd : (f' x).det = 0`. Simplify using `[indicator, hx, hd, B]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[indicator, hx, hd, B]`. Establish `: x ∉ B` using `fun h => hx h.1`. Simplify using `[hx, this]`. Use `_ = ∑' n, ∫⁻ x in P n, g (f x) * ENNReal.ofReal |(f' x).det| ∂μ := by`. Rewrite using `[hBU]`.
-
-Conclude with `lintegral_iUnion₀ hPm (fun m n hmn => (hPd hmn).aedisjoint) _`. Use `_ = ∑' n, ∫⁻ y in f '' P n, g y ∂μ := tsum_congr fun n => AreaMultiplicityWeight.setLIntegral_comp_mul_abs_det₀ μ (hPm n) (hderP n) (hinj n) g`. Use `_ = ∑' n, ∫⁻ y, (f '' P n).indicator g y ∂μ := tsum_congr fun n => (lintegral_indicator₀ (himg n) g).symm`. Use `_ = ∫⁻ y, ∑' n, (f '' P n).indicator g y ∂μ := (lintegral_tsum fun n => hg.aemeasurable.indicator₀ (himg n)).symm`. Use `_ = ∫⁻ y, (∑' n, (f '' P n).indicator (1 : E → ℝ≥0∞) y) * g y ∂μ := by`.
-
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← ENNReal.tsum_mul_right]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : y ∈ f '' P n <;> simp [h]`.
-
-Use `_ = ∫⁻ y, (({x ∈ A | f x = y}.encard : ℕ∞) : ℝ≥0∞) * g y ∂μ := by`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hNae] with y hy`. Rewrite using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AreaMultiplicityWeight.proof : AreaMultiplicityWeight.Statement := by
   intro E _ _ _ _ _ μ _ A f f' hA hf'

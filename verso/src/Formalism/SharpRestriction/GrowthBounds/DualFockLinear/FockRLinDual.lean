@@ -24,16 +24,16 @@ Both sides reduce to the same expression.
 theorem fock_eq_fockR {τ : Type} (F G : MvPolynomial τ R) : fock F G = fockR F G := rfl
 
 /- English proof (translation)
-Simplify using `[Lin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Lin_X (N : S → Matrix (Fin k) (Fin k) R) (v : S × Fin k) :
     Lin N (X v) = ∑ b : Fin k, C (N v.1 v.2 b) * X (v.1, b) := by
   simp [Lin]
 
 /- English proof (translation)
-Establish `h1 : (MvPolynomial.constantCoeff : MvPolynomial (S × Fin k) R →+* R).comp (Lin N).toRingHom = MvPolynomial.constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Lin]`. Conclude with `congrArg (fun φ : MvPolynomial (S × Fin k) R →+* R => φ h) h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lin_coeff_zero (N : S → Matrix (Fin k) (Fin k) R) (h : MvPolynomial (S × Fin k) R) :
     coeff 0 (Lin N h) = coeff 0 h := by
@@ -47,15 +47,15 @@ theorem Lin_coeff_zero (N : S → Matrix (Fin k) (Fin k) R) (h : MvPolynomial (S
   exact congrArg (fun φ : MvPolynomial (S × Fin k) R →+* R => φ h) h1
 
 /- English proof (translation)
-Establish `hX : ∀ v : S × Fin k, pderiv (s, b) (Lin N (X v)) = ∑ a : Fin k, N s a b • Lin N (pderiv (s, a) (X v))`. Introduce and unpack `⟨t, c⟩`. Rewrite using `[Lin_X]`. Simplify using `only [map_sum, Derivation.leibniz, MvPolynomial.pderiv_X, MvPolynomial.pderiv_C, smul_zero, add_zero, Pi.single_apply, Prod.mk.injEq, smul_eq_mul]`. Distinguish the cases in `ht : t = s`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using `[Finset.sum_ite_eq', Finset.sum_ite_eq, MvPolynomial.smul_eq_C_mul]`. Simplify using `[ht]`. Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C r`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Establish `h1 : Lin N (C r) = C r` using `(Lin N).commutes r`. Simplify using `[h1]`. Consider the case `add p q hp hq`. Simplify using `only [map_add, hp, hq, smul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p v hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_mul, Derivation.leibniz, hp, hX v]`. Simplify using `only [Derivation.leibniz, map_add, map_mul, smul_add, Finset.sum_add_distrib, smul_eq_mul, Finset.mul_sum, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : MvPolynomial (S × Fin k) R) :
     pderiv (s, b) (Lin N h) = ∑ a : Fin k, N s a b • Lin N (pderiv (s, a) h) := by
@@ -87,13 +87,13 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
       ring
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `Q`. Establish `h1 : Lin N (C a : MvPolynomial (S × Fin k) R) = C a` using `by simp [Lin]`. Rewrite using `[h1, C_apply, tsact_monomial_left, tsact_monomial_left, Lin_coeff_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Introduce `Q`. Rewrite using `[map_add, tsact_add_left, tsact_add_left, hp, hq]`. Consider the case `mul_X p v hp`. Introduce `Q`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, Lin_X, Finset.mul_sum, tsact_sum_left, tsact_X_mul, Lin_chain, tsact_sum_right]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e : Lin N p * (C (N v.1 v.2 b) * X (v.1, b)) = N v.1 v.2 b • (Lin N p * X (v.1, b))`. Rewrite using `[smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, tsact_smul_left, tsact_X_mul, hp, tsact_smul_right, Matrix.transpose_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockR_Lin (N : S → Matrix (Fin k) (Fin k) R) (P : MvPolynomial (S × Fin k) R) :
     ∀ Q : MvPolynomial (S × Fin k) R, fockR (Lin N P) Q = fockR P (Lin (fun s => (N s).transpose) Q) := by
@@ -114,7 +114,7 @@ theorem fockR_Lin (N : S → Matrix (Fin k) (Fin k) R) (P : MvPolynomial (S × F
     rw [e, tsact_smul_left, tsact_X_mul, hp, tsact_smul_right, Matrix.transpose_apply]
 
 /- English proof (translation)
-Rewrite using `[fockR_Lin, Lin_comp]`. Simplify using `only [h]`. Rewrite using `[Lin_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockR_Lin_dual (A B : S → Matrix (Fin k) (Fin k) R) (h : ∀ s, B s * (A s).transpose = 1)
     (P Q : MvPolynomial (S × Fin k) R) : fockR (Lin A P) (Lin B Q) = fockR P Q := by
@@ -125,9 +125,9 @@ theorem fockR_Lin_dual (A B : S → Matrix (Fin k) (Fin k) R) (h : ∀ s, B s * 
 end Contra
 
 /- English proof (translation)
-Establish `h1 : IsUnit (M⁻¹).det` using `Matrix.isUnit_nonsing_inv_det M hM`. Establish `h2 : IsUnit ((M⁻¹).transpose).det` using `by rwa [Matrix.det_transpose]`. Consider the cases of `vec`. Simplify using `only [Aa, Bool.false_eq_true, if_false]`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ h2, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.nonsing_inv_nonsing_inv _ hM, Matrix.nonsing_inv_mul _ hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Aa, if_true]`. Conclude with `Matrix.nonsing_inv_mul _ h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Aa_dual {K : Type} [Field K] {m : ℕ} (vec : Bool) (M : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hM : IsUnit M.det) : Aa vec ((M⁻¹).transpose)⁻¹ * (Aa vec M⁻¹).transpose = 1 := by
@@ -141,29 +141,27 @@ theorem Aa_dual {K : Type} [Field K] {m : ℕ} (vec : Bool) (M : Matrix (Fin (m 
     exact Matrix.nonsing_inv_mul _ h2
 
 /- English proof (translation)
-Introduce `α hα`. Establish `h1 : ∀ s, (d s).factorial = Nat.multinomial Finset.univ (fun c : Fin k => α (s, c)) * ∏ c : Fin k, (α (s, c)).factorial`. Introduce `s`. Rewrite using `[mul_comm, Nat.multinomial_spec, ← hα s]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : expFact α = ∏ s : Fin n', ∏ c : Fin k, (α (s, c)).factorial`. Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => rfl), Fintype.prod_prod_type]`. Use `set Mn : ℕ := ∏ s : Fin n', Nat.multinomial Finset.univ (fun c : Fin k => α (s, c)) with hMn`. Establish `h3 : (∏ s, (d s).factorial) = Mn * expFact α`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hMn, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => h1 s`. Establish `hMn0 : Mn ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => (Nat.multinomial_pos _ _).ne'`. Establish `h4 : padicValNat p Mn ≤ kapFl p k d`. Rewrite using `[hMn, Formalism.CountingSumsFrames.fock_val_prod p _ _ (fun s _ => (Nat.multinomial_pos _ _).ne')]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `kapFl`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Use `Formalism.CountingSumsFrames.fock_mult_val_le p (fun c : Fin k => α (s, c)) Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Establish `e : ∑ c : Fin k, α (s, c) = d s` using `hα s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Establish `hdv : p ^ padicValNat p Mn ∣ Mn` using `pow_padicValNat_dvd`. Establish `hnd : ¬ p ^ (padicValNat p Mn + 1) ∣ Mn` using `pow_succ_padicValNat_not_dvd hMn0`. Generalize the expression as in `padicValNat p Mn = v at h4 hdv hnd`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `hdv`. Establish `hpu : ¬ p ∣ u`. Introduce `hd`. Apply `hnd` to reduce the goal to its premises. Rewrite using `[hu, pow_succ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Nat.mul_dvd_mul_left _ hd`. Establish `huO : IsUnit ((u : ℕ) : O)`. Establish `hco : Nat.Coprime u p` using `((Nat.Prime.coprime_iff_not_dvd hp.out).2 hpu).symm`. Assume the negation of the conclusion as `hnu`. Establish `hm : ((u : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hnu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `Nat.gcd_eq_gcd_ab u p`. Rewrite `hb` using `[hco]`. Establish `h5 : (1 : O) = (u : O) * ((Nat.gcdA u p : ℤ) : O) + (p : O) * ((Nat.gcdB u p : ℤ) : O)`. Use `congrArg (fun z : ℤ => (z : O)) hb` as an intermediate fact. Move the coercions through the operations in `at this`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `h6 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[h5]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hm) (Ideal.mul_mem_right _ _ hpO)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h6)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨uu, huu⟩` from `huO`. Use `⟨(p : O) ^ (kapFl p k d - v) * (↑uu⁻¹ : O), ?_⟩` and prove the remaining obligations. Rewrite using `[h3, hu]`. Use `push_cast`. Rewrite using `[← huu]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e1 : (p : O) ^ kapFl p k d = (p : O) ^ v * (p : O) ^ (kapFl p k d - v)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`.
-
-Establish `e2 : (uu : O) * (↑uu⁻¹ : O) = 1` using `Units.mul_inv uu`. Take the linear combination `(-(p : O) ^ v * (p : O) ^ (kapFl p k d - v) * (expFact α : O)) * e2`.
+A detailed English derivation is pending.
 -/
 theorem multDiv_kapFl (O : Type) [CommRing O] [IsLocalRing O] (p : ℕ) [hp : Fact p.Prime]
     (hpO : (p : O) ∈ IsLocalRing.maximalIdeal O) {n' k : ℕ} (d : Fin n' → ℕ) :

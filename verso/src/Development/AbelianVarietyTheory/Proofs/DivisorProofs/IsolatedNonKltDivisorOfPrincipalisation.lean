@@ -15,9 +15,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hP X _ _ _ p n hproj hdim hn Δ r N₀ x c hΔ hklt hr hnef hbig hx hc hvol hsum`. Use `letI := algebraΓOfHom p`. Establish `hLB : N₀.IsLB` using `hnef.isLB`. Take `⟨A, hA, hj⟩` from `GlobalTheory.T.exists_logCanonical_cut_angehrnSiu_induction hP X p n hproj hdim hn Δ r N₀ x c hΔ hklt hr hLB hnef hbig hx hc hvol`. Take `⟨j', lam, μ, m', D₀, hj', hm', hD₀, hμ, hlam, hnum, hcut⟩` from `hj 0 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : j' = 0` from `Nat.le_zero.mp hj'`. Conclude with `GlobalTheory.T.exists_isolated_lcCentre_of_zero_lcThreshold hP X p n hproj hdim hn Δ r N₀ x c hΔ hklt hr hLB hnef hbig hx hc hvol hsum A lam μ m' D₀ hA hm' hD₀ hμ (by simpa using hlam) hnum hcut`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isolatedNonKltDivisor_of_principalisation :
     GlobalTheory.Published.Principalisation → GlobalTheory.Published.IsolatedNonKltDivisor := by

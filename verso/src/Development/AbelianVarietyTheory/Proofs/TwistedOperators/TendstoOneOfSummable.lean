@@ -34,13 +34,13 @@ open GlobalTheory.LGrp (bcParam)
 section Analysis
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨z.re, h.2, Complex.ext rfl (by simpa using h.1)⟩, by rintro ⟨r, hr, rfl⟩; exact ⟨rfl, hr⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPosReal_iff {z : ℂ} : IsPosReal z ↔ ∃ r : ℝ, 0 < r ∧ z = r :=
   ⟨fun h => ⟨z.re, h.2, Complex.ext rfl (by simpa using h.1)⟩, by rintro ⟨r, hr, rfl⟩; exact ⟨rfl, hr⟩⟩
 
 /- English proof (translation)
-Use `Finset.prod_induction f IsPosReal (fun a b ha hb => ?_) ⟨rfl, one_pos⟩ h` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `isPosReal_iff.1 ha`. Take `⟨y, hy, rfl⟩` from `isPosReal_iff.1 hb`. Conclude with `isPosReal_iff.2 ⟨x * y, mul_pos hx hy, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPosReal_prod {ι : Type} (s : Finset ι) {f : ι → ℂ} (h : ∀ i ∈ s, IsPosReal (f i)) :
     IsPosReal (∏ i ∈ s, f i) := by
@@ -50,7 +50,7 @@ theorem isPosReal_prod {ι : Type} (s : Finset ι) {f : ι → ℂ} (h : ∀ i �
   exact isPosReal_iff.2 ⟨x * y, mul_pos hx hy, by simp⟩
 
 /- English proof (translation)
-Establish `hc : IsClosed {z : ℂ | z.im = 0 ∧ 0 ≤ z.re}` using `(isClosed_eq Complex.continuous_im continuous_const).inter (isClosed_le continuous_const Complex.continuous_re)`. Use `hc.mem_of_tendsto ha (Eventually.of_forall fun s => ⟨(isPosReal_prod s fun i _ => h i).1, (isPosReal_prod s fun i _ => h i).2.le⟩)` as an intermediate fact. Conclude with `⟨this.1, this.2.lt_of_ne fun e => h0 (Complex.ext e.symm this.1)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isPosReal_of_hasProd {ι : Type} {f : ι → ℂ} {a : ℂ} (ha : HasProd f a) (h0 : a ≠ 0)
     (h : ∀ i, IsPosReal (f i)) : IsPosReal a := by
@@ -61,13 +61,13 @@ theorem isPosReal_of_hasProd {ι : Type} {f : ι → ℂ} {a : ℂ} (ha : HasPro
   exact ⟨this.1, this.2.lt_of_ne fun e => h0 (Complex.ext e.symm this.1)⟩
 
 /- English proof (translation)
-Establish `hre : ∀ b ∈ B, 0 < (1 - (b : ℂ) * x).re` using `fun b hb => by`. Use `(Complex.re_le_norm _).trans_lt (h b hb)` as an intermediate fact. Rewrite using `[Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set u : ℂ := (B.map fun b : ℂˣ => Complex.log (1 - (b : ℂ) * x)).sum with hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : eulerPoly B x = Complex.exp u`. Rewrite using `[hu, Complex.exp_multiset_sum, Multiset.map_map, eulerPoly]`. Use `congrArg _ (Multiset.map_congr rfl fun b hb => (Complex.exp_log fun e => ?_).symm)` and prove the remaining obligations. Simplify `hre b hb` using `[e]`. Establish `h2 : starRingEnd ℂ u = u` using `by conv_rhs => rw [hu, ← hB, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, map_multiset_sum, Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun b hb => ?_)` and prove the remaining obligations. Establish `h3 : (1 - (b : ℂ) * x).arg ≠ Real.pi` using `fun e => by`. Use `(Complex.arg_eq_pi_iff.1 e).1` as an intermediate fact. Combine the linear relations using `[hre b hb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Units.coe_star]`. Rewrite using `[← Complex.log_conj _ h3, map_sub, map_one, map_mul, show starRingEnd ℂ x = x from hx]`. Both sides reduce to the same expression. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h2`. Conclude with `isPosReal_iff.2 ⟨(Real.exp r)⁻¹, by positivity, by rw [eulerFac, h1, hr]; simp⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPosReal_eulerFac {B : Multiset ℂˣ} {x : ℂ} (hB : B.map star = B) (hx : star x = x)
     (h : ∀ b ∈ B, ‖(b : ℂ) * x‖ < 1) : IsPosReal (eulerFac B x) := by
@@ -96,14 +96,14 @@ theorem isPosReal_eulerFac {B : Multiset ℂˣ} {x : ℂ} (hB : B.map star = B) 
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[npow, ← Complex.ofReal_neg, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Conclude with `Complex.conj_ofReal _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_npow (w : HeightOneSpectrum (𝓞 K)) (s : ℝ) : star (npow w (-(s : ℂ))) = npow w (-(s : ℂ)) := by
   rw [npow, ← Complex.ofReal_neg, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _)]
   exact Complex.conj_ofReal _
 
 /- English proof (translation)
-Introduce `_ hb` and use `(h.norm_le le_rfl hw hb).trans_lt (Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm w) (by linarith))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_lt_one_of_bounded {T : Set (HeightOneSpectrum (𝓞 K))} {c : Fam K} {r : ℕ} {κ : ℝ} (h : Bounded T c r κ)
     {s : ℂ} (hs : κ < s.re) {w : HeightOneSpectrum (𝓞 K)} (hw : w ∉ T) :
@@ -112,7 +112,7 @@ theorem norm_lt_one_of_bounded {T : Set (HeightOneSpectrum (𝓞 K))} {c : Fam K
     (Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm w) (by linarith))
 
 /- English proof (translation)
-Use `summable_of_isBigO ha ?_` and prove the remaining obligations. Simplify using `using ((Asymptotics.isBigO_refl a cofinite).mul (hg.isBigO_one ℂ)).norm_norm`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem summable_norm_mul {ι : Type} {a g : ι → ℂ} {c : ℂ} (ha : Summable fun i => ‖a i‖)
     (hg : Tendsto g cofinite (𝓝 c)) : Summable fun i => ‖a i * g i‖ := by
@@ -120,13 +120,13 @@ theorem summable_norm_mul {ι : Type} {a g : ι → ℂ} {c : ℂ} (ha : Summabl
   simpa using ((Asymptotics.isBigO_refl a cofinite).mul (hg.isBigO_one ℂ)).norm_norm
 
 /- English proof (translation)
-The claim follows from `tendsto_iff_norm_sub_tendsto_zero.2 hg.tendsto_cofinite_zero`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_one_of_summable {ι : Type} {g : ι → ℂ} (hg : Summable fun i => ‖g i - 1‖) :
     Tendsto g cofinite (𝓝 1) := tendsto_iff_norm_sub_tendsto_zero.2 hg.tendsto_cofinite_zero
 
 /- English proof (translation)
-Use `(summable_norm_mul h.2 ((tendsto_one_of_summable h.2).inv₀ one_ne_zero)).congr fun w => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, mul_inv_cancel₀ (h.1 w w.2), one_mul, norm_sub_rev]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem summable_locL {T : Set (HeightOneSpectrum (𝓞 K))} {c : Fam K} {s : ℂ} (h : Converges T c s) :
     Summable fun w : {w // w ∉ T} => ‖locL c w s - 1‖ := by
@@ -135,9 +135,9 @@ theorem summable_locL {T : Set (HeightOneSpectrum (𝓞 K))} {c : Fam K} {s : �
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [summable_zero]`. Consider the case `insert k s hk ih`. Establish `h1` using `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`. Establish `h2` using `h k (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun i => ?_) ((summable_norm_mul h2 (tendsto_one_of_summable h1)).add h1)` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hk]`. Conclude with `(congrArg _ (by ring)).trans_le (norm_add_le _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_prod {ι κ : Type} (s : Finset κ) {f : κ → ι → ℂ} (h : ∀ k ∈ s, Summable fun i => ‖f k i - 1‖) :
     Summable fun i => ‖∏ k ∈ s, f k i - 1‖ := by
@@ -159,7 +159,7 @@ section Normalising
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hc : Converges S (etaFam E k) s` using `converges_etaFam S k hs`. Use `isPosReal_of_hasProd hc.hasProd hc.ne_zero fun v => isPosReal_eulerFac ?_ (star_npow _ _) (norm_lt_one_of_bounded (bounded_etaFam S k) (zero_lt_one.trans hs) v.2)` and prove the remaining obligations. Unfold `etaFam etaU`. Establish `: star (-1 : ℂˣ) = -1` using `Units.ext (by simp)`. Apply the tactic sequence `split_ifs <;> simp [this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isPosReal_etaL (S : Set (HeightOneSpectrum (𝓞 F))) (k : ℕ) {s : ℝ} (hs : 1 < s) :
     IsPosReal (etaL E S k s) := by
@@ -171,11 +171,9 @@ theorem isPosReal_etaL (S : Set (HeightOneSpectrum (𝓞 F))) (k : ℕ) {s : ℝ
   split_ifs <;> simp [this]
 
 /- English proof (translation)
-Introduce `S a t ht`. Establish `ht' : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hc : ∀ i < a, Converges (S : Set (HeightOneSpectrum (𝓞 D.host.F))) (etaFam D.host.E (a + t + i)) (2 * ((((a + t : ℕ) : ℂ) - a) / 2) + a - i)` using `fun i hi => converges_etaFam _ _ (by`. Establish `: (i : ℝ) + 1 ≤ a` using `by exact_mod_cast hi`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `linarith)`. Use `⟨hc, summable_prod _ fun i hi => summable_locL (hc i (Finset.mem_range.1 hi)), ?_⟩` and prove the remaining obligations. Rewrite using `[(dS_eq _ a ht).1]`. Use `isPosReal_prod _ fun k hk => ?_` and prove the remaining obligations. Use `(Finset.mem_Icc.1 hk).1` as an intermediate fact.
-
-Conclude with `isPosReal_etaL _ k (s := k) (by exact_mod_cast (by omega : 1 < k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dPositive (D : Formalism.BasicNotions.D7) : DPositive D := by
   intro S a t ht
@@ -198,7 +196,7 @@ section Transport
 variable {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
 /- English proof (translation)
-Set `f : Subrepresentation (ρ.comp e.symm.toMonoidHom) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g x hx => by simpa using S.apply_mem_toSubmodule (e g) hx⟩ invFun := fun S => ⟨S.toSubmodule, fun g x hx => S.apply_mem_toSubmodule (e.symm g) hx⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_rel_iff' := Iff.rfl }`. Conclude with `f.isSimpleOrder`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem irreducible_comp (e : G ≃* H) (h : ρ.IsIrreducible) :
     Representation.IsIrreducible (ρ.comp e.symm.toMonoidHom) := by
@@ -211,26 +209,26 @@ theorem irreducible_comp (e : G ≃* H) (h : ρ.IsIrreducible) :
   exact f.isSimpleOrder
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ hB => ⟨hB.1, hB.2.1, fun g => hB.2.2 (e.symm g)⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitarisable_comp (e : G ≃* H) (h : GlobalTheory.LGrp.IsUnitarisable ρ) :
     GlobalTheory.LGrp.IsUnitarisable (ρ.comp e.symm.toMonoidHom) :=
   h.imp fun _ hB => ⟨hB.1, hB.2.1, fun g => hB.2.2 (e.symm g)⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.ext fun _ => mem_fixed_comp_symm e hK`.
+A detailed English derivation is pending.
 -/
 theorem fixed_comp (e : G ≃* H) {K : Subgroup G} {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K') :
     fixed (ρ.comp e.symm.toMonoidHom) K' = fixed ρ K := Submodule.ext fun _ => mem_fixed_comp_symm e hK
 
 /- English proof (translation)
-Introduce `x` and use `(h x).preimage he`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_comp [TopologicalSpace G] [TopologicalSpace H] (e : G ≃* H) (he : Continuous e.symm)
     (h : IsSmooth ρ) : IsSmooth (ρ.comp e.symm.toMonoidHom) := fun x => (h x).preimage he
 
 /- English proof (translation)
-Use `⟨smooth_comp e he' h.1, fun K ho hk => ?_⟩` and prove the remaining obligations. Rewrite using `[fixed_comp e (K := K.comap e.toMonoidHom) fun _ => Iff.rfl]`. Use `h.2 _ (ho.preimage he) ?_` and prove the remaining obligations. Use `hk.image he' using 1` and compare the differences between its conclusion and the goal. Conclude with `(e.toEquiv.image_symm_eq_preimage _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem admissible_comp [TopologicalSpace G] [TopologicalSpace H] (e : G ≃* H) (he : Continuous e)
     (he' : Continuous e.symm) (h : IsAdmissible ρ) : IsAdmissible (ρ.comp e.symm.toMonoidHom) := by
@@ -253,7 +251,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 include hc hJ hL hd
 
 /- English proof (translation)
-Take `⟨-, ⟨c, hcj, -⟩, -, -, H⟩` from `(exists_isInertChart σ hc v).2 w h hv`. Take `⟨⟨ϖ, hU⟩, H⟩` from `H c hcj`. Take `⟨e, he⟩` from `H n J L hJ hL.fg hL.span_eq_top hd`. Conclude with `⟨c, ϖ, e, hU, he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_inert_chart (h : w.under (𝓞 F) = v) (hv : IsInertAt F E v w) :
     ∃ c ϖ e, IsUnramInv ϖ c (qV F v) ∧ IsInertChart σ J L h c e ∧ Continuous e ∧ Continuous e.symm := by
@@ -263,9 +261,9 @@ theorem exists_inert_chart (h : w.under (𝓞 F) = v) (hv : IsInertAt F E v w) :
   exact ⟨c, ϖ, e, hU, he⟩
 
 /- English proof (translation)
-Establish `hf` using `ha.2 _ (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v)`. Break down `hv with hv | hv` into its components or cases. Take `⟨e, he, -⟩` from `SplitChart.exists_isSplitChart hc hJ hL.fg hL.span_eq_top h hv hd`. Take `⟨B, hB⟩` from `GlobalTheory.T.satake_parameter_of_spherical E w n V (ρ.comp e.symm.toMonoidHom) (fun e0 => hs ((fixed_comp e he.2).symm.trans e0)) (GlobalTheory.T.hecke_acts_by_scalar_commutative _ _ (Final.GLintComm E w n) (Final.HeckeCommGL E w n ℂ) V _ (irreducible_comp e hi) (by rw [fixed_c …`. Conclude with `⟨B, Or.inl ⟨hv, e, he, hB⟩⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, ϖ, e, hU, he, h1, h2⟩` from `exists_inert_chart hc hJ hL hd h hv`. Take `⟨α, hα⟩` from `GlobalTheory.T.exists_satake_parameter_spherical_unramifiedUnitary E w ϖ c _ n hU V (ρ.comp e.symm.toMonoidHom) (irreducible_comp e hi) (admissible_comp e h1 h2 ha) fun e0 => hs ((fixed_comp e he.2.2).symm.trans e0)`. Conclude with `⟨_, Or.inr ⟨hv, c, ϖ, e, α, hU, he, hα, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasParam (h : w.under (𝓞 F) = v) (hv : IsSplit (E := E) v ∨ IsInertAt F E v w)
     (hi : ρ.IsIrreducible) (ha : IsAdmissible ρ) (hs : GlobalTheory.LGrp.IsSpherical ρ (stabLoc σ J L v)) :
@@ -284,15 +282,13 @@ theorem exists_hasParam (h : w.under (𝓞 F) = v) (hv : IsSplit (E := E) v ∨ 
     exact ⟨_, Or.inr ⟨hv, c, ϖ, e, α, hU, he, hα, rfl⟩⟩
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Break down `hB' with ⟨hv, -⟩ | ⟨hv, c', ϖ, e', α, hU, he', hα, rfl⟩` into its components or cases. Take `⟨e, he, -, hce⟩` from `SplitChart.exists_isSplitChart hc hJ hL.fg hL.span_eq_top h hv hd`. Use `GlobalTheory.T.norm_satake_le_of_unitary_spherical_GL h1 E w n V (ρ.comp e.symm.toMonoidHom) B ⟨smooth_comp e hce ha, irreducible_comp e hi⟩ (unitarisable_comp e hu) ⟨fun e0 => hB.isSpherical ((fixed_comp e he.2).symm.trans e0), fun x hx h0 => ?_⟩` and prove the remaining obligations. Conclude with `(hB.isParamVec ((mem_fixed_comp_symm e he.2).1 hx) h0).isSatVecGL hv he`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, e, -, he, -, hce⟩` from `exists_inert_chart hc hJ hL hd h hv`. Take `rfl : c = c'` from `he.1.unique he'.1`. Establish `hb` using `h2 _ ϖ c _ n hU V (ρ.comp e.symm.toMonoidHom) α ⟨smooth_comp e hce ha, irreducible_comp e hi⟩ (unitarisable_comp e hu) ⟨fun e0 => hB.isSpherical ((fixed_comp e he.2.2).symm.trans e0), fun x hx h0 => IsSatVecU.of_chart he' he (hα.2 x ((mem_fixed_comp_symm e' he'.2.2).2 ((mem_fixed …`. Establish `hN : Ideal.absNorm w.asIdeal = qV F v ^ 2` using `InertChart.absNorm_eq hc.2.2.1 hv`. Establish `hq : (1 : ℝ) ≤ (qV F v : ℝ) ^ 2` using `one_le_pow₀ (by exact_mod_cast (one_lt_absNorm v).le)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, Nat.cast_pow]`. Introduce `b hb'`. Simplify using `only [bcParam, Multiset.mem_add, Multiset.mem_map, Multiset.mem_replicate] at hb'`. Break down `hb' with (⟨i, -, rfl⟩ | ⟨i, -, rfl⟩) | ⟨hn, rfl⟩` into its components or cases. Conclude with `(hb i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hb i).1` as an intermediate fact. Rewrite `this` using `[Real.rpow_neg (by positivity)]`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv]`. Conclude with `inv_le_of_inv_le₀ (by positivity) this`. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast (by omega : 1 ≤ n)`.
-
-Simplify using `using Real.one_le_rpow hq (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_le_of_hasParam (h1 : GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.SatakeTrivialBound) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.SatakeBoundInert)
     (hi : ρ.IsIrreducible) (ha : IsSmooth ρ) (hu : GlobalTheory.LGrp.IsUnitarisable ρ) (hB : HasParam σ J L h ρ B) :
@@ -324,7 +320,7 @@ theorem norm_le_of_hasParam (h1 : GlobalTheory.IndefiniteRowSideFullHecke.Satake
       simpa using Real.one_le_rpow hq (by linarith)
 
 /- English proof (translation)
-Establish `hv : IsSplit (E` using `E) v := ⟨w, w', hne, congrArg (·.asIdeal) h, congrArg (·.asIdeal) h'⟩`. Take `⟨x, hx⟩` from `hB.exists_vec`. Take `⟨e, he, -⟩` from `SplitChart.exists_isSplitChart hc hJ hL.fg hL.span_eq_top h hv hd`. Rewrite using `[GlobalTheory.T.satakeParameterGL_star_eq_inv_of_unitarisable E w n V _ x B (unitarisable_comp e hu) (hx.isSatVecGL hv he)]`. Conclude with `ConjPlace.eq_map_inv_of_hasParam hc hJ hd hne hB hB'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem param_conj_place {w' : HeightOneSpectrum (𝓞 E)} {h' : w'.under (𝓞 F) = v} (hne : w ≠ w') {B' : Multiset ℂˣ}
     (hu : GlobalTheory.LGrp.IsUnitarisable ρ) (hB : HasParam σ J L h ρ B) (hB' : HasParam σ J L h' ρ B') :
@@ -338,7 +334,7 @@ theorem param_conj_place {w' : HeightOneSpectrum (𝓞 E)} {h' : w'.under (𝓞 
 omit hc hJ hL hd in
 
 /- English proof (translation)
-Break down `hB with ⟨hv', -⟩ | ⟨-, c, ϖ, e, α, hU, he, hα, rfl⟩` into its components or cases. Conclude with `absurd hv' (not_isSplit_of_isInertAt hv)`. Take `⟨x, hx⟩` from `hα.exists_vec conv_rhs => rw [← bcParam_eq_of_satU_eq (α := fun i => star (α i)) hU (GlobalTheory.T.unitarySatakeTransform_star_parameter_eq_of_unitarisable _ ϖ c _ n hU V _ x α (unitarisable_comp e hu) hx)]`. Simplify using `[bcParam, star_inv, Function.comp_def]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem param_star_of_inert (hv : IsInertAt F E v w) (hu : GlobalTheory.LGrp.IsUnitarisable ρ) (hB : HasParam σ J L h ρ B) :
     B.map star = B := by
@@ -358,11 +354,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Use `haveI := GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm`. Use `set v := w.under (𝓞 D.host.F) with hv`. Break down `(GlobalTheory.quadratic_unramified_iff_inert_or_split D.host.F D.host.E (isCMExt_host D).2.2.1 v).1 (fun u _ => Algebra.unramified_iff_forall.1 inferInstance ⟨u.asIdeal, u.isPrime⟩) with h | h` into its components or cases. Conclude with `Or.inr ((h.isMaximal (Ideal.map_ne_bot_of_ne_bot v.ne_bot)).eq_of_le w.isPrime.ne_top Ideal.map_comap_le)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, Q, hne, e⟩` from `Set.ncard_eq_two.1 h`. Establish `hP : P ∈ v.asIdeal.primesOver (𝓞 D.host.E)` using `by simp [e]`. Establish `hQ : Q ∈ v.asIdeal.primesOver (𝓞 D.host.E)` using `by simp [e]`. Use `hP.2` as an intermediate fact. Use `hQ.2` as an intermediate fact.
-
-Conclude with `Or.inl ⟨⟨P, hP.1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, ⟨Q, hQ.1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, fun e => hne (congrArg (·.asIdeal) e), hP.2.over.symm, hQ.2.over.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem split_or_inert (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     IsSplit (E := D.host.E) (w.under (𝓞 D.host.F)) ∨ IsInertAt D.host.F D.host.E (w.under (𝓞 D.host.F)) w := by
@@ -384,7 +378,7 @@ theorem split_or_inert (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E)) :
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Use `SelfDual.isLattice_frameLat V` as an intermediate fact. Take `⟨φ, h1, h2⟩` from `GlobalTheory.T.admissible_unitary_conjugate_dual _ (Kv V v) (isOpen_stabLoc _ _ _ v) (isCompact_stabLoc _ _ _ v) X ρ h.adm h.unitary`. Take `⟨a, b, c, d⟩` from `GlobalTheory.T.semilinear_equiv_preserves_properties _ (Kv V v) X _ ρ _ φ h1 h2`. Conclude with `⟨a h.irred, b h.adm, c h.unitary, d h.sph⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnitarySph_smoothDual {v : HeightOneSpectrum (𝓞 D.host.F)} {X : Type} [AddCommGroup X] [Module ℂ X]
     {ρ : Representation ℂ (Gv V v) X} (h : IsUnitarySph V v ρ) : IsUnitarySph V v (GlobalTheory.LGrp.smoothDual ρ) := by
@@ -394,27 +388,27 @@ theorem isUnitarySph_smoothDual {v : HeightOneSpectrum (𝓞 D.host.F)} {X : Typ
   exact ⟨a h.irred, b h.adm, c h.unitary, d h.sph⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simpa using (Complex.inv_eq_conj h).symm)`.
+A detailed English derivation is pending.
 -/
 theorem star_eq_inv {z : ℂˣ} (h : ‖(z : ℂ)‖ = 1) : star z = z⁻¹ :=
   Units.ext (by simpa using (Complex.inv_eq_conj h).symm)
 
 /- English proof (translation)
-Establish `hc` using `isCMExt_host D`. Establish `hJ` using `GlobalTheory.Mem.VolExists.isHermND D.sp.cm V`. Establish `hL` using `SelfDual.isLattice_frameLat V`. Establish `hd` using `SelfDual.isSelfDualAt_frameLat D V`. Use `⟨⟨paramFam D.sp.cm.sig V.gram (frameLat V) π, fun v hv w h => ?_⟩, fun c hπc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h` using the available equality. Take `⟨B, hB⟩` from `exists_hasParam hc hJ hL (hd _) rfl (split_or_inert D w) (hπ _ hv).irred (hπ _ hv).adm (hπ _ hv).sph`. Conclude with `hB.hasParam_paramOf`. Establish `hbd : Bounded (above D.host.E (S : Set (HeightOneSpectrum (𝓞 D.host.F)))) c V.rank (((V.rank : ℝ) - 1) / 2)` using `fun w hw => ⟨(hπc.card hw).le, norm_le_of_hasParam hc hJ hL (hd _) h1 h2 (hπ _ hw).irred (hπ _ hw).adm.1 (hπ _ hw).unitary (hπc _ hw w rfl)⟩`. Establish `hcv : ∀ s : ℂ, ((V.rank : ℝ) + 1) / 2 < s.re → Converges (above D.host.E (S : Set (HeightOneSpectrum (𝓞 D.host.F)))) (twist c (val μ)⁻¹) s` using `fun s hs => hbd.converges_twist_val μ (by linarith)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hcv, fun s hs => isPosReal_of_hasProd (hasProd_Lv (hcv s hs)) (hcv s hs).ne_zero fun v => ?_⟩` and prove the remaining obligations. Establish `hlt : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v.1 → ∀ x ∈ twist c (val μ)⁻¹ w, ‖(x : ℂ) * npow w (-(s : ℂ))‖ < 1` using `fun w hw => norm_lt_one_of_bounded (hbd.twist fun u _ => by simp [norm_val]) (by rw [Complex.ofReal_re]; linarith) (fun e => v.2 (hw ▸ e))`. Establish `hun : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v.1 → UnrAt μ w` using `fun w hw => hμ w fun e => v.2 (hw ▸ e)`. Distinguish the cases in `hv : IsSplit (E := D.host.E) v.1`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v.1 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, -, -, hP, -⟩` from `hv`. Conclude with `⟨P, HeightOneSpectrum.ext hP⟩`. Take `⟨w', hne, hall, hN, hN', -⟩` from `SplitChart.exists_conj_place hc hw hv`. Establish `hw'` using `(hall w').2 (Or.inr rfl)`. Establish `e : Formalism.L2.Host.aboveF (L` using `D.host.E) D.host.F v.1 = {w, w'} := by ext u; simp [mem_aboveF, hall]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : npow w' (-(s : ℂ)) = npow w (-(s : ℂ))` using `by rw [npow, npow, hN, hN']`. Establish `e3 : twist c (val μ)⁻¹ w' = (twist c (val μ)⁻¹ w).map star`. Establish `hm` using `GlobalTheory.T.quadraticPowerCharacter_splitPlaces_values_inverse _ _ _ hc μ b hb w w' (hw.trans hw'.symm) hne (hun w hw) (hun w' hw')`. Establish `hs : (val μ w')⁻¹ = star (val μ w)⁻¹`. Rewrite using `[star_inv, star_eq_inv (norm_val μ w), inv_inv, eq_comm, eq_inv_iff_mul_eq_one, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [twist, Pi.inv_apply, hs, Multiset.map_map, Function.comp_def, star_mul', param_conj_place hc hJ hL (hd _) hne (hπ _ v.2).unitary (hπc _ v.2 w hw) (hπc _ v.2 w' hw')]`. Rewrite using `[Lv, e, Finset.prod_pair hne, locL, locL, e2, ← eulerFac_add]`. Use `isPosReal_eulerFac (by` and prove the remaining obligations. Rewrite using `[e3, Multiset.map_add, Multiset.map_map, add_comm]`. Simplify using `only [Function.comp_def, star_star, Multiset.map_id']) (star_npow _ _) fun x hx => ?_`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Multiset.mem_add.1 hx).elim (hlt w hw x) (e2 ▸ hlt w' hw' x)`. Use `isPosReal_prod _ fun w hw => ?_` and prove the remaining obligations. Establish `hw` using `mem_aboveF.1 hw`. Establish `hi : IsInertAt D.host.F D.host.E v.1 w` using `hw ▸ (split_or_inert D w).resolve_left (hw ▸ hv)`. Use `isPosReal_eulerFac ?_ (star_npow _ _) (hlt w hw)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : star (val μ w)⁻¹ = (val μ w)⁻¹`. Rewrite using `[star_inv, star_eq_inv (norm_val μ w), inv_inv, eq_inv_iff_mul_eq_one, ← sq, GlobalTheory.T.sq_value_eq_one_at_inert_place_of_restrictsToQuadratic _ _ _ hc μ b hb _ w hi (hun w hw)]`. Use `conv_rhs => rw [twist, ← param_star_of_inert hi (hπ _ v.2).unitary (hπc _ v.2 w hw)]`. Simplify using `only [twist, Pi.inv_apply, hs, Multiset.map_map, Function.comp_def, star_mul']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lConvPos (h1 : GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.SatakeTrivialBound) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.SatakeBoundInert)
     {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {X : HeightOneSpectrum (𝓞 D.host.F) → Type}
@@ -477,7 +471,7 @@ theorem lConvPos (h1 : GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRang
 end Global
 
 /- English proof (translation)
-Introduce `D` and use `⟨fun _ _ _ _ _ _ _ hπ _ hμ ⟨_, hb⟩ => ⟨lConvPos h1 h2 hπ hμ hb, lConvPos h1 h2 (fun v hv => isUnitarySph_smoothDual (hπ v hv)) hμ hb⟩, dPositive D⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem statement_of_bounds (h1 : GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.SatakeTrivialBound) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.SatakeBoundInert) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitarySphericalReps.Statement := fun D =>

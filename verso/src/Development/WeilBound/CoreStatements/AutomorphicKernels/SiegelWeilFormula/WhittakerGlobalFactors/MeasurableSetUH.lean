@@ -23,7 +23,7 @@ def UH (σ : E →ₐ[F] E) {d : ℕ} (bs : Module.Basis (Fin d) F E) (n : ℕ) 
   {b | hermFin σ b ∈ intH σ bs n S}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.measurableSet_intH σ bs S`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_UH (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (bs : Module.Basis (Fin d) F E) (n : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 F))) : MeasurableSet (UH σ bs n S) :=

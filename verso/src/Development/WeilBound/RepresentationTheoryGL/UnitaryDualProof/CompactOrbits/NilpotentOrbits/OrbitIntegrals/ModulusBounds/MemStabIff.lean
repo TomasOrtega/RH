@@ -13,19 +13,19 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, mul_sub, sub_mul, mul_one, Units.inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_sub_one (g u : GL (Fin n) k) : (g⁻¹ * u * g).val - 1 = g⁻¹.val * (u.val - 1) * g.val := by
   simp only [Units.val_mul, mul_sub, sub_mul, mul_one, Units.inv_mul]
 
 /- English proof (translation)
-Establish `e : (u.val - 1) * (p.1 - c) - (p.1 - c) * (u.val - 1) = (u.val * p.1 - p.1 * u.val) - (u.val * c - c * u.val)` using `by noncomm_ring`. Rewrite `e` using `[hcu, sub_self, sub_zero]`. Establish `e1 : (u.val - 1) * (p.1 - c) = (p.1 - c) * (u.val - 1) ↔ u.val * p.1 = p.1 * u.val`. Rewrite using `[← sub_eq_zero, e, sub_eq_zero]`. Establish `e2 : u.val * p.1 * u⁻¹.val = p.1 ↔ u.val * p.1 = p.1 * u.val`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Rewrite using `[h, mul_assoc, Units.mul_inv, mul_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : u.val *ᵥ p.2 = p.2 ↔ (u.val - 1) *ᵥ p.2 = 0`. Rewrite using `[sub_mulVec, one_mulVec, sub_eq_zero]`. Use `show (u ∈ Gz Z ∧ act u p = p) ↔ _`. Rewrite using `[mem_Gz_iff]`. Simplify using `only [act, Prod.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h1, h2⟩`. Conclude with `⟨⟨hu, e1.2 (e2.1 h1)⟩, e3.1 h2⟩`. Introduce and unpack `⟨⟨-, h1⟩, h2⟩`. Conclude with `⟨hu, e2.2 (e1.1 h1), e3.2 h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stab_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (c : Matrix (Fin n) (Fin n) k)
     (p : Sp k n) (u : GL (Fin n) k) (hcu : u.val * c = c * u.val) (hu : u.val - 1 ∈ Bz Z) :

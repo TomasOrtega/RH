@@ -18,9 +18,9 @@ section
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
 
 /- English proof (translation)
-Take `⟨x, u, hu, rfl⟩` from `GlobalTheory.RootEx.Radical.exists_of_mem_R hr`. Use `⟨x, GlobalTheory.RootEx.Radical.toBlocks₁₁_embX_mul x hu, ?_⟩` and prove the remaining obligations. Establish `e : (embX c x * u)⁻¹ = embX c x⁻¹ * (embX c x * u⁻¹ * (embX c x)⁻¹)`. Rewrite using `[map_inv]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.RootEx.Radical.toBlocks₁₁_embX_mul x⁻¹ (GlobalTheory.RootEx.Radical.conj_mem x (inv_mem hu))`.
+A detailed English derivation is pending.
 -/
 theorem blocks_of_mem_R {r : GL (n ⊕ Fin c) k} (hr : r ∈ R k n c p) :
     ∃ x : GL n k, r.val.toBlocks₁₁ = x.val ∧ (r⁻¹).val.toBlocks₁₁ = (x⁻¹).val := by
@@ -37,15 +37,15 @@ def gpart (r : R k n c p) : GL n k :=
     by obtain ⟨x, h1, h2⟩ := blocks_of_mem_R r.2; rw [h1, h2, Units.inv_mul]⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (GlobalTheory.RootEx.Radical.toBlocks₁₁_embX_mul q.1 q.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem gpart_prodR (q : GL n k × N k n c p) : gpart (prodR p q) = q.1 :=
   Units.ext (GlobalTheory.RootEx.Radical.toBlocks₁₁_embX_mul q.1 q.2.2)
 
 /- English proof (translation)
-Take `⟨x, u, hu, e⟩` from `GlobalTheory.RootEx.Radical.exists_of_mem_R r.2`. Establish `: gpart r = x` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(r : GL (n ⊕ Fin c) k).val.toBlocks₁₁ = _`. Rewrite using `[e]`. Conclude with `GlobalTheory.RootEx.Radical.toBlocks₁₁_embX_mul x hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, e, inv_mul_cancel_left]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem mem_N_of_mem_R (r : R k n c p) : (embX c (gpart r))⁻¹ * (r : GL (n ⊕ Fin c) k) ∈ N k n c p := by
   obtain ⟨x, u, hu, e⟩ := GlobalTheory.RootEx.Radical.exists_of_mem_R r.2
@@ -64,7 +64,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `exact (GlobalTheory.RootEx.VolN.continuous_entry (Sum.inl i) (Sum.inl j)).comp continuous_subtype_val`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `exact (GlobalTheory.RootEx.VolN.continuous_entry (Sum.inl i) (Sum.inl j)).comp (continuous_subtype_val.inv)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_gpart (p : ℕ) : Continuous (gpart (k := k) (n := n) (c := c) (p := p)) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -95,11 +95,7 @@ end RDecomp
 open RDecomp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c p _ _ ν hν m hm`. Use `haveI := hν`. Use `haveI := hm`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI : BorelSpace (GL n k) := GlobalTheory.SplitFlip.borel_GL`.
-
-Use `haveI : BorelSpace (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.borel_GL`. Use `haveI : SecondCountableTopology (GL n k) := GlobalTheory.SplitFlip.secondCountable_GL`. Use `haveI : SecondCountableTopology (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.secondCountable_GL`. Use `haveI : LocallyCompactSpace (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.locallyCompact_GL`. Use `haveI : (volN ν n c p).IsHaarMeasure := GlobalTheory.RootEx.VolN.isHaarMeasure_volN ν p`.
-
-Use `haveI : LocallyCompactSpace (N k n c p) := (GlobalTheory.RootEx.VolN.isClosed_N p).locallyCompactSpace`. Use `haveI : SecondCountableTopology (N k n c p) := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `e : ⇑(prodRHomeo (k` using `k) (n := n) (c := c) p) = prodR p := rfl`. Rewrite using `[← e]`. Conclude with `Measure.IsFiniteMeasureOnCompacts.map _ (prodRHomeo p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_r : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (ν : Measure k), ν.IsAddHaarMeasure → ∀ m : Measure (GL n k), m.IsHaarMeasure → IsFiniteMeasureOnCompacts ((m.prod (volN ν n c p)).map (prodR p)) := by
   intro k _ _ _ _ _ _ n _ _ c p _ _ ν hν m hm

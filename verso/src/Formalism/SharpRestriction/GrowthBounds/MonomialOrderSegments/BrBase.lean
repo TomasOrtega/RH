@@ -12,7 +12,7 @@ namespace Formalism.MainNotions.PlaneGram
 section Gen
 
 /- English proof (translation)
-Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp [Formalism.MainNotions.PlaneGramData.geQ]`. Consider the case `coe q => simp [Formalism.MainNotions.PlaneGramData.geQ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem geQ_gen (y : WithTop ℚ) (t : ℝ) :
     Formalism.MainNotions.PlaneGramData.geQ y t ↔ ((t : ℝ) : WithTop ℝ) ≤ y.map (fun q : ℚ => (q : ℝ)) := by
@@ -21,7 +21,7 @@ theorem geQ_gen (y : WithTop ℚ) (t : ℝ) :
   | coe q => simp [Formalism.MainNotions.PlaneGramData.geQ]
 
 /- English proof (translation)
-Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp [Formalism.MainNotions.PlaneGramData.leQ]`. Consider the case `coe q => simp [Formalism.MainNotions.PlaneGramData.leQ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem leQ_gen (y : WithTop ℚ) (t : ℝ) :
     Formalism.MainNotions.PlaneGramData.leQ y t ↔ y.map (fun q : ℚ => (q : ℝ)) ≤ ((t : ℝ) : WithTop ℝ) := by
@@ -30,7 +30,7 @@ theorem leQ_gen (y : WithTop ℚ) (t : ℝ) :
   | coe q => simp [Formalism.MainNotions.PlaneGramData.leQ]
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Rewrite using `[← WithTop.coe_add, WithTop.map_coe, WithTop.map_coe, ← WithTop.coe_add]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -44,11 +44,11 @@ theorem map_cast_add (a : WithTop ℚ) (q : ℚ) :
     rfl
 
 /- English proof (translation)
-Introduce `a b h`. Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top`. Rewrite `h` using `[top_le_iff]`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `le_rfl`. Consider the case `coe a`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe b`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [WithTop.map_coe, WithTop.coe_le_coe] at h ⊢`. Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem map_cast_mono : Monotone (fun y : WithTop ℚ => y.map (fun q : ℚ => (q : ℝ))) := by
   intro a b h
@@ -65,7 +65,7 @@ theorem map_cast_mono : Monotone (fun y : WithTop ℚ => y.map (fun q : ℚ => (
       exact_mod_cast h
 
 /- English proof (translation)
-Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe q`. Rewrite using `[WithTop.map_coe, ← WithTop.coe_zero, ← WithTop.coe_zero, WithTop.coe_inj, WithTop.coe_inj]`. Conclude with `Iff.rfl` after adjusting the coercions.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_cast_eq_zero (y : WithTop ℚ) : y = 0 ↔ y.map (fun q : ℚ => (q : ℝ)) = 0 := by
   induction y using WithTop.recTopCoe with
@@ -83,7 +83,7 @@ open Formalism.MainNotions.G.GLWeightTheory
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `h` using `valuation_algebraMap_eq_alt (O := O) p 1 one_ne_zero`. Rewrite `h` using `[map_one]`. Rewrite using `[h, dvr_order_unit_eq_zero isUnit_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vK_one' (p : ℕ) : Formalism.MainNotions.G.vK p (1 : Formalism.MainNotions.G.KK O) = 0 := by
   have h := valuation_algebraMap_eq_alt (O := O) p 1 one_ne_zero
@@ -101,7 +101,7 @@ Both sides reduce to the same expression.
 theorem vQ_apply (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Formalism.MainNotions.G.KK O) : vQ p S x = Formalism.MainNotions.G.vK p x := rfl
 
 /- English proof (translation)
-Rewrite using `[vQ_apply]`. Conclude with `valuation_natCast_padicVal hp S n hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vQ_nat (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p O) (n : ℕ) (hn : n ≠ 0) :
     vQ p S (n : Formalism.MainNotions.G.KK O) = ((padicValNat p n : ℚ) : WithTop ℚ) := by
@@ -109,7 +109,7 @@ theorem vQ_nat (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p O) (
   exact valuation_natCast_padicVal hp S n hn
 
 /- English proof (translation)
-Use `haveI := Fact.mk hG.prime`. Use `⟨hG.prime, hG.five_le, ?_⟩` and prove the remaining obligations. Rewrite using `[vQ_nat hG.prime S p hG.prime.ne_zero, padicValNat_self]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvrHyp (S : Formalism.MainNotions.G.UniformizedDVR p O) {n' : ℕ} (hG : Formalism.MainNotions.G.AdmissibleDVR p n' O) : DVRHyp (vQ p S) p := by
   haveI := Fact.mk hG.prime
@@ -118,7 +118,7 @@ theorem dvrHyp (S : Formalism.MainNotions.G.UniformizedDVR p O) {n' : ℕ} (hG :
   simp
 
 /- English proof (translation)
-Rewrite using `[vQ_apply]`. Conclude with `valuation_nonneg_iff_integral S x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vQ_nonneg_iff (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Formalism.MainNotions.G.KK O) :
     0 ≤ vQ p S x ↔ ∃ o : O, x = algebraMap O (Formalism.MainNotions.G.KK O) o := by
@@ -126,21 +126,21 @@ theorem vQ_nonneg_iff (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Form
   exact valuation_nonneg_iff_integral S x
 
 /- English proof (translation)
-The claim follows from `geQ_gen _ t`.
+A detailed English derivation is pending.
 -/
 theorem geQ_iff (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Formalism.MainNotions.G.KK O) (t : ℝ) :
     Formalism.MainNotions.PlaneGramData.geQ (Formalism.MainNotions.G.vK p x) t ↔ ((t : ℝ) : WithTop ℝ) ≤ vR (vQ p S) x := geQ_gen _ t
 
 /- English proof (translation)
-The claim follows from `leQ_gen _ t`.
+A detailed English derivation is pending.
 -/
 theorem leQ_iff (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Formalism.MainNotions.G.KK O) (t : ℝ) :
     Formalism.MainNotions.PlaneGramData.leQ (Formalism.MainNotions.G.vK p x) t ↔ vR (vQ p S) x ≤ ((t : ℝ) : WithTop ℝ) := leQ_gen _ t
 
 /- English proof (translation)
-Rewrite using `[geQ_gen, vQ_apply]`. Generalize the expression as in `Formalism.MainNotions.G.vK p x = y`. Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe q`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[WithTop.map_coe, ← WithTop.coe_natCast, WithTop.coe_le_coe, WithTop.coe_le_coe]`. Apply the tactic sequence `constructor <;> intro h <;> exact_mod_cast h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem geQ_nat_iff (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Formalism.MainNotions.G.KK O) (c : ℕ) :
     Formalism.MainNotions.PlaneGramData.geQ (Formalism.MainNotions.G.vK p x) (c : ℝ) ↔ ((c : ℕ) : WithTop ℚ) ≤ vQ p S x := by
@@ -153,7 +153,7 @@ theorem geQ_nat_iff (S : Formalism.MainNotions.G.UniformizedDVR p O) (x : Formal
     constructor <;> intro h <;> exact_mod_cast h
 
 /- English proof (translation)
-Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp [Formalism.MainNotions.PlaneGramData.geZ, toR]`. Consider the case `coe k => simp [Formalism.MainNotions.PlaneGramData.geZ, toR]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem geZ_iff (x : WithTop ℤ) (t : ℝ) : Formalism.MainNotions.PlaneGramData.geZ x t ↔ ((t : ℝ) : WithTop ℝ) ≤ toR x := by
   induction x using WithTop.recTopCoe with
@@ -161,16 +161,16 @@ theorem geZ_iff (x : WithTop ℤ) (t : ℝ) : Formalism.MainNotions.PlaneGramDat
   | coe k => simp [Formalism.MainNotions.PlaneGramData.geZ, toR]
 
 /- English proof (translation)
-Unfold `fact Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fact_ne_zero' {σ : Type} (α : σ →₀ ℕ) : fact α ≠ 0 := by
   unfold fact Finsupp.prod
   exact Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _
 
 /- English proof (translation)
-Unfold `vBB Formalism.MainNotions.G.vBB`. Rewrite using `[Finset.comp_inf_eq_inf_comp (fun y : WithTop ℚ => y.map (fun q : ℚ => (q : ℝ))) (fun x y => map_cast_mono.map_min) (by simp)]`. Use `Finset.inf_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[map_cast_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : vQ p S (fact α : Formalism.MainNotions.G.KK O) = ((padicValNat p (Formalism.MainNotions.G.expFact α) : ℚ) : WithTop ℚ)` using `vQ_nat hp S _ (fact_ne_zero' α)`. Rewrite using `[hf, WithTop.untopD_coe]`. Simplify using `only [vR, vQ_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem vBB_eq (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p O) {σ : Type} (F : MvPolynomial σ (Formalism.MainNotions.G.KK O)) :
     vBB (vQ p S) F = (Formalism.MainNotions.G.vBB (O := O) p F).map (fun q : ℚ => (q : ℝ)) := by
@@ -188,7 +188,7 @@ theorem vBB_eq (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p O) {
   rfl
 
 /- English proof (translation)
-Rewrite using `[vBB_eq hp S]`. Conclude with `geQ_gen _ t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_vBB_iff (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p O) {σ : Type} (F : MvPolynomial σ (Formalism.MainNotions.G.KK O))
     (t : ℝ) : Formalism.MainNotions.PlaneGramData.geQ (Formalism.MainNotions.G.vBB (O := O) p F) t ↔ ((t : ℝ) : WithTop ℝ) ≤ vBB (vQ p S) F := by
@@ -196,7 +196,7 @@ theorem geQ_vBB_iff (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p
   exact geQ_gen _ t
 
 /- English proof (translation)
-Rewrite using `[vBB_eq hp S]`. Conclude with `map_cast_eq_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vBB_zero_iff (hp : p.Prime) (S : Formalism.MainNotions.G.UniformizedDVR p O) {σ : Type} (F : MvPolynomial σ (Formalism.MainNotions.G.KK O)) :
     Formalism.MainNotions.G.vBB (O := O) p F = 0 ↔ vBB (vQ p S) F = 0 := by
@@ -210,9 +210,9 @@ section Pol
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `key : ∀ a : Fin r, (a.val + 1 = r) ↔ a = Formalism.MainNotions.G.lastIdx r`. Introduce `a`. Rewrite using `[Fin.ext_iff]`. Simplify using `only [Formalism.MainNotions.G.lastIdx]`. Use `a.isLt` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Unfold `sDiag`. Simplify using `only [key]`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem sDiag_eq (r : ℕ) [NeZero r] (n : ℤ) :
     sDiag K r n = Matrix.diagonal (fun a => if a = Formalism.MainNotions.G.lastIdx r then (LaurentPolynomial.T n : LauF K r) else 1) := by
@@ -226,9 +226,9 @@ theorem sDiag_eq (r : ℕ) [NeZero r] (n : ℤ) :
   simp only [key]
 
 /- English proof (translation)
-Unfold `substS Formalism.MainNotions.G.twistSub hMat hInvT Formalism.MainNotions.G.twistMat lauι`. Rewrite using `[sDiag_eq, sDiag_eq]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x.1 ∈ S`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hx' : x.1 ∈ (↑S : Set L)` using `hx`. Rewrite using `[if_pos hx, if_pos hx']`. Both sides reduce to the same expression. Establish `hx' : x.1 ∉ (↑S : Set L)` using `hx`. Rewrite using `[if_neg hx, if_neg hx']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem substS_eq_twistSub {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → Bool) (S : Finset L) :
     substS (lauι K r) sg S (hMat K r) (hInvT K r) =
@@ -245,9 +245,9 @@ theorem substS_eq_twistSub {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg :
     rw [if_neg hx, if_neg hx']
 
 /- English proof (translation)
-Unfold `valS Formalism.MainNotions.G.valS Formalism.MainNotions.G.sDegs`. Simplify using `only []`. Rewrite using `[substS_eq_twistSub, Finset.inf_biUnion]`. Use `Finset.inf_congr rfl fun β _ => ?_` and prove the remaining obligations. Unfold `lord`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.min_eq_inf_withTop _`.
+A detailed English derivation is pending.
 -/
 theorem valS_eq {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → Bool) (S : Finset L)
     (F : MvPolynomial (L × Fin r) K) :
@@ -270,9 +270,9 @@ Both sides reduce to the same expression.
 theorem fock_eq {σ : Type} (F G : MvPolynomial σ K) : fock F G = Formalism.MainNotions.G.fock F G := rfl
 
 /- English proof (translation)
-Unfold `ddiv Formalism.MainNotions.G.divDer`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `e : ((M.prod fun k j => (α k).choose j : ℕ) : K) = α.prod fun x k => ((k.choose (M x) : ℕ) : K)`. Rewrite using `[Finsupp.prod_of_support_subset M (Finsupp.support_mono h) (fun k j => (α k).choose j) (fun k _ => Nat.choose_zero_right _), Nat.cast_prod]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ddiv_eq_divDer {σ : Type} (M : σ →₀ ℕ) (F : MvPolynomial σ K) : ddiv M F = Formalism.MainNotions.G.divDer M F := by
   unfold ddiv Formalism.MainNotions.G.divDer

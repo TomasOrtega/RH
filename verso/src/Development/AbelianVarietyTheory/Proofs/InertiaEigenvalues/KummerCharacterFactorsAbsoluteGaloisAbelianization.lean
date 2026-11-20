@@ -6,21 +6,19 @@ open NumberField IsDedekindDomain Polynomial Neutral.B1 ReciprocityTheory.Neutra
 namespace GlobalTheory.KummerAb
 
 /- English proof (translation)
-Introduce `E' Ω _ _ _ _ _ m hm ζ hζ c hc y hy σ τ he`. Establish `hc' : algebraMap E' Ω c ≠ 0` using `(map_ne_zero_iff _ (algebraMap E' Ω).injective).mpr hc`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[zero_pow hm.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc' hy.symm`. Use `haveI : NeZero m := ⟨hm.ne'⟩`. Establish `hζ' : IsPrimitiveRoot (algebraMap E' Ω ζ) m` using `hζ.map_of_injective (algebraMap E' Ω).injective`. Establish `key : ∀ ρ : G E' Ω, ∃ e : E', ρ y = algebraMap E' Ω e * y`. Introduce `ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (ρ y / y) ^ m = 1`. Rewrite using `[div_pow, ← map_pow, hy, AlgEquiv.commutes, div_self hc']`. Take `⟨i, -, hi⟩` from `hζ'.eq_pow_of_pow_eq_one h1`. Use `⟨ζ ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hi, div_mul_cancel₀ _ hy0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : G E' Ω →* Ωˣ` to `MonoidHom.mk' (fun ρ => Units.mk0 (ρ y / y) (div_ne_zero ((map_ne_zero_iff _ ρ.injective).mpr hy0) hy0)) (by`. Introduce `a b`. Use `ext`. Take `⟨e, he⟩` from `key b`. Simplify using `only [Units.val_mul, Units.val_mk0, AlgEquiv.mul_apply, he, map_mul, AlgEquiv.commutes]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `field_simp)`. Establish `hφ : ∀ ρ, (φ ρ : Ω) = ρ y / y` using `fun ρ => rfl`. Establish `hint : IsIntegral E' y` using `Algebra.IsIntegral.isIntegral y`. Use `haveI : FiniteDimensional E' (IntermediateField.adjoin E' {y}) := IntermediateField.adjoin.finiteDimensional hint`. Establish `hopen : IsOpen (φ.ker : Set (G E' Ω))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin E' {y}).fixingSubgroup) ?_ (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations. Introduce `ρ hρ`. Establish `: ρ y = y` using `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hρ y (IntermediateField.subset_adjoin E' {y} rfl)`. Rewrite using `[MonoidHom.mem_ker]`. Use `ext`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ, this, div_self hy0, Units.val_one]`. Establish `hclosed : IsClosed (φ.ker : Set (G E' Ω))` using `Subgroup.isClosed_of_isOpen _ hopen`. Establish `hle : (commutator (G E' Ω)).topologicalClosure ≤ φ.ker` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker φ) hclosed`. Establish `hmem : σ⁻¹ * τ ∈ (commutator (G E' Ω)).topologicalClosure` using `QuotientGroup.eq.mp he`. Establish `h2` using `hle hmem`.
-
-Rewrite `h2` using `[MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[← hφ, ← hφ, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_char_eq_of_toAb_eq : ∀ (E' Ω : Type) [Field E'] [NumberField E'] [Field Ω] [Algebra E' Ω] [IsAlgClosure E' Ω]
     (m : ℕ) (hm : 0 < m) (ζ : E') (hζ : IsPrimitiveRoot ζ m) (c : E') (hc : c ≠ 0) (y : Ω)

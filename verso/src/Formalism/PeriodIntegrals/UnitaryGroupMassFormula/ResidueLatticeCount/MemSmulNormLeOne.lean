@@ -14,12 +14,12 @@ variable (K : Type) [Field K] [NumberField K]
 def cHalf : ℝ := (1 / 2 : ℝ) ^ ((1 : ℝ) / Module.finrank ℚ K)
 
 /- English proof (translation)
-The claim follows from `Real.rpow_pos_of_pos (by norm_num) _`.
+A detailed English derivation is pending.
 -/
 theorem cHalf_pos : 0 < cHalf K := Real.rpow_pos_of_pos (by norm_num) _
 
 /- English proof (translation)
-Establish `hm : (Module.finrank ℚ K : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := K)).ne'` after adjusting the coercions. Rewrite using `[cHalf, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), one_div_mul_cancel hm, Real.rpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cHalf_pow : cHalf K ^ Module.finrank ℚ K = 1 / 2 := by
   have hm : (Module.finrank ℚ K : ℝ) ≠ 0 := by
@@ -28,7 +28,7 @@ theorem cHalf_pow : cHalf K ^ Module.finrank ℚ K = 1 / 2 := by
     Real.rpow_one]
 
 /- English proof (translation)
-Establish `hc` using `cHalf_pos K`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ hc.ne', mem_normLeOne, smul_mem_iff_mem (inv_ne_zero hc.ne'), mixedEmbedding.norm_smul, abs_of_pos (inv_pos.2 hc), inv_pow, cHalf_pow]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_smul_normLeOne (y : mixedSpace K) :
     y ∈ cHalf K • normLeOne K ↔ y ∈ fundamentalCone K ∧ mixedEmbedding.norm y ≤ 1 / 2 := by
@@ -40,9 +40,9 @@ theorem mem_smul_normLeOne (y : mixedSpace K) :
   constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Set.mem_sdiff, mem_smul_normLeOne, mem_normLeOne]`. Simplify using `only [shell, Set.mem_ofPred_eq, not_and, not_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, h3⟩, fun _ => h2⟩`. Introduce and unpack `⟨⟨h1, h3⟩, h2⟩`. Conclude with `⟨h1, h2 h1, h3⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem shell_eq : shell K = normLeOne K \ (cHalf K • normLeOne K) := by
   ext y
@@ -53,7 +53,7 @@ theorem shell_eq : shell K = normLeOne K \ (cHalf K • normLeOne K) := by
   · rintro ⟨⟨h1, h3⟩, h2⟩; exact ⟨h1, h2 h1, h3⟩
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[mem_smul_normLeOne]`. Conclude with `mem_normLeOne.2 ⟨hy.1, hy.2.trans (by norm_num)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_subset : cHalf K • normLeOne K ⊆ normLeOne K := by
   intro y hy
@@ -61,11 +61,11 @@ theorem smul_subset : cHalf K • normLeOne K ⊆ normLeOne K := by
   exact mem_normLeOne.2 ⟨hy.1, hy.2.trans (by norm_num)⟩
 
 /- English proof (translation)
-Introduce `K _ _`. Establish `hc` using `cHalf_pos K`. Establish `hV : volume (normLeOne K) = vfac K * ENNReal.ofReal (regulator K)`. Rewrite using `[volume_normLeOne, vfac]`. Establish `hfin : volume (normLeOne K) ≠ ⊤` using `(isBounded_normLeOne K).measure_lt_top.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : volume (cHalf K • normLeOne K) = volume (normLeOne K) / 2`. Rewrite using `[Measure.addHaar_smul, mixedEmbedding.finrank, cHalf_pow, abs_of_pos (by norm_num), ENNReal.div_eq_inv_mul]`. Use `congr 1`. Rewrite using `[one_div, ENNReal.ofReal_inv_of_pos (by norm_num)]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hm : MeasurableSet (cHalf K • normLeOne K)` using `(measurableSet_normLeOne K).const_smul₀ _`. Rewrite using `[shell_eq, measure_sdiff (smul_subset K) hm.nullMeasurableSet (ne_top_of_le_ne_top hfin (measure_mono (smul_subset K))), hs, ← hV]`. Conclude with `ENNReal.sub_half hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shellVolume : ShellVolume := by
   intro K _ _

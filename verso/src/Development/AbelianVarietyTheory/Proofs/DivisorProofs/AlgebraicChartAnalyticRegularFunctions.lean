@@ -17,13 +17,13 @@ open scoped GlobalTheory.AffinePoints
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X p σ D R C _ _ d' ι hι hev O g hO hg e he z hz`. Take `⟨hzt, hzO⟩` from `hz`. Take `⟨i, hi⟩` from `R.cover (ι (e.symm z))`. Establish `hN : e.target ∩ e.symm ⁻¹' (ι ⁻¹' ((R.chart i).e.source ∩ O)) ∈ 𝓝 z` using `(e.continuousOn_symm.isOpen_inter_preimage e.open_target (((R.chart i).e.open_source.inter hO).preimage hι)).mem_nhds ⟨hzt, hi, hzO⟩`. Establish `hcoord : ∀ a, AnalyticAt ℂ (fun w => GlobalTheory.CxPts.ev p σ (R.chart i).U ((R.chart i).x a) (ι (e.symm w))) z` using `fun a => hev (R.chart i).U ((R.chart i).x a) e he z ⟨hzt, (R.chart i).source_subset hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : AnalyticAt ℂ (fun w => (EuclideanSpace.equiv (Fin D) ℂ).symm (fun a => GlobalTheory.CxPts.ev p σ (R.chart i).U ((R.chart i).x a) (ι (e.symm w)))) z` using `((EuclideanSpace.equiv (Fin D) ℂ).symm.analyticAt _).comp (analyticAt_pi_iff.2 hcoord)`. Establish `hce : ∀ y ∈ (R.chart i).e.source, (EuclideanSpace.equiv (Fin D) ℂ).symm (fun a => GlobalTheory.CxPts.ev p σ (R.chart i).U ((R.chart i).x a) y) = (R.chart i).e y`. Introduce `y hy`. Use extensionality with `a`. Simplify using `[(R.chart i).apply_eq y hy a]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hg' : AnalyticAt ℂ (g ∘ (R.chart i).e.symm) ((R.chart i).e (ι (e.symm z)))` using `ReciprocityTheory.MultiplicativeHeights.analyticOnNhd_V_of_differentiableOn (GlobalTheory.ChartGlue.isOpen_over (R.chart i).e hO) (hg i) _ (GlobalTheory.ChartGlue.mem_over (R.chart i).e hi hzO)`. Establish `hc` using `hg'.comp_of_eq hφ (hce _ hi)`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [hN] with w hw`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hce _ hw.2.1, (R.chart i).e.left_inv hw.2.1]`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_comp_algChart : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (R : AnRead p σ D) (C : Type) [CommRing C] [Algebra ℂ C] (d' : ℕ) (ι : (C →ₐ[ℂ] ℂ) → CxPts p σ), Continuous ι → (∀ (U : X.Opens) (f : Γ(X, U)) (e : OpenPartialHomeomorph (C →ₐ[ℂ] ℂ) (Fin d' → ℂ)), GlobalTheory.AffinePoints.IsAlgebraicChart e → AnalyticOnNhd ℂ (GlobalTheory.CxPts.ev p σ U f ∘ ι ∘ e.symm) (e.target ∩ e.symm ⁻¹' (ι ⁻¹' GlobalTheory.CxPts.ptsIn p σ U))) → ∀ (O : Set (CxPts p σ)) (g : CxPts p σ → ℂ), IsOpen O → R.HoloOn O g → ∀ e : OpenPartialHomeomorph (C →ₐ[ℂ] ℂ) (Fin d' → ℂ), GlobalTheory.AffinePoints.IsAlgebraicChart e → AnalyticOnNhd ℂ (g ∘ ι ∘ e.symm) (e.target ∩ e.symm ⁻¹' (ι ⁻¹' O)) := by
   intro k _ X p σ D R C _ _ d' ι hι hev O g hO hg e he z hz

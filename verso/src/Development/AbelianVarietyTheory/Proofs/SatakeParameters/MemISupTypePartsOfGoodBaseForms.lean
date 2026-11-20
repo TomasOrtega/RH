@@ -19,9 +19,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < Real.sqrt (RealDat.nP F.lv2 false)` using `Real.sqrt_pos.mpr (RealDat.nP_pos (F := F.lv2) false)`. Use `⟨Pi.single k ((((Real.sqrt (RealDat.nP F.lv2 false))⁻¹ : ℝ) : ℂ)), ?_⟩` and prove the remaining obligations. Simplify using `only [CxData.w0C, CxData.wC, lin, LinearMap.comp_apply, Fintype.linearCombination_apply_single]`. Rewrite using `[LinearMap.map_smul]`. Use `show Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW j (sg0 D A3.A)).H) (_ • _) = Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW j (sg0 D A3.A)).H) (Tw.mk _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [Tw.out_smul, cj_ofReal]`. Use `show ((((Real.sqrt (RealDat.nP F.lv2 false))⁻¹ : ℝ) : ℂ)) • ((((Real.sqrt (RealDat.nP F.lv2 false)) : ℝ) : ℂ) • R.toRealDat.bC F.lv2 false j (sg0 D A3.A) k) = R.toRealDat.bC F.lv2 false j (sg0 D A3.A) k`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hpos.ne', Complex.ofReal_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem mk_bC_mem_range (R : RealDat3 D A3 Ks) (F : Face3 D A3) (j : Fin D.R.m)
     (k : Fin ((R.toCx3 F).dW false j)) :
@@ -40,11 +40,11 @@ end GlobalTheory.TwParts
 
 open GlobalTheory.TwParts in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hP j w hw`. Take `⟨-, hsup⟩` from `hP j`. Use `Submodule.span_le.mpr ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `mk_bC_mem_range R F j k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hk` using `[← hsup]`. Establish `hk' : Tw.mk (twAt D.what₂.embLL A3.A.v0) (R.toRealDat.bC F.lv2 false j (sg0 D A3.A) k) ∈ ⨆ p, (R.toCx3 F).Wp j p`. Establish `hle : (⨆ p, (R.toCx3 F).Wp j p ⊓ LinearMap.range ((R.toCx3 F).w0C false j)) ≤ ⨆ p, (R.toCx3 F).Wp j p` using `iSup_mono fun p => inf_le_left`. Conclude with `hle hk`. Use `Submodule.iSup_induction (fun p => (R.toCx3 F).Wp j p) (motive := fun x => Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW j (sg0 D A3.A)).H) x ∈ ⨆ p, R.Wp3 j p) hk' ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p x hx`. Conclude with `Submodule.mem_iSup_of_mem p hx`. Conclude with `Submodule.zero_mem _`. Introduce `x y hx hy`. Conclude with `Submodule.add_mem _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwParts.mem_iSup_Wp3_of_mem_WS : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), (R.toCx3 F).PartsW false → ∀ j (w : (R.HW j (sg0 D A3.A)).H), w ∈ R.toRealDat.WS F.lv2 false j (sg0 D A3.A) → w ∈ ⨆ p, R.Wp3 j p := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hP j w hw

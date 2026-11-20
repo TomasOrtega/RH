@@ -16,21 +16,21 @@ def pidx (m : ℕ) (i : Fin (m + 1)) (c : ℕ) (h : c < m + 1 ∧ c ≠ i.val) :
   ⟨if c < i.val then c else c - 1, by split_ifs <;> omega⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rw [succAbove_val]; unfold pidx; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem succAbove_pidx (m : ℕ) (i : Fin (m + 1)) (c : ℕ) (h : c < m + 1 ∧ c ≠ i.val) :
     (i.succAbove (pidx m i c h)).val = c := by
   rw [succAbove_val]; unfold pidx; simp only; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `ext; unfold pidx; simp only; rw [succAbove_val]; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pidx_succAbove (m : ℕ) (i : Fin (m + 1)) (b : Fin m) (h : (i.succAbove b).val < m + 1 ∧ (i.succAbove b).val ≠ i.val) :
     pidx m i (i.succAbove b).val h = b := by
   ext; unfold pidx; simp only; rw [succAbove_val]; split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `herm`. Simplify using `[star_add, star_smul, add_dotProduct, smul_dotProduct]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem herm_add_smul_right {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w1 w2 : Fin n → ℂ) (a b : ℂ) :
     herm H v (a • w1 + b • w2) = star a * herm H v w1 + star b * herm H v w2 := by
@@ -44,15 +44,15 @@ def ViF (m : ℕ) (i : Fin (m + 1)) (Vc : Fin m → Fin (2 * (m + 1) + k + 1) �
 variable (m : ℕ) (i : Fin (m + 1)) (Vc : Fin m → Fin (2 * (m + 1) + k + 1) → ℂ)
 
 /- English proof (translation)
-Unfold `ViF; rw [if_neg hne, dif_neg (by omega)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem insertion_vector_zero_off_index (p : Fin (2 * (m + 1) + k + 1)) (hp : m + 1 ≤ p.val) (hne : p ≠ esI k (m + 1) i) : ViF m i Vc p = 0 := by
   unfold ViF; rw [if_neg hne, dif_neg (by omega)]
 
 /- English proof (translation)
-Unfold `ViF`. Rewrite using `[if_neg, dif_neg]`. Simplify using `[eI]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[eI, esI] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ViF_eI : ViF m i Vc (eI k (m + 1) i) = 0 := by
   unfold ViF
@@ -61,14 +61,14 @@ theorem ViF_eI : ViF m i Vc (eI k (m + 1) i) = 0 := by
   · intro h; have := congrArg Fin.val h; simp [eI, esI] at this; omega
 
 /- English proof (translation)
-Use `c.isLt` as an intermediate fact. Use the proof step `ext; rw [tau_val, if_pos (by left; simp only [eI]; omega)]; simp only [eI, esI]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tau_eI (c : Fin (m + 1)) : WeylGroupFacts.tau k (m + 1) (eI k (m + 1) c) = esI k (m + 1) c := by
   have := c.isLt
   ext; rw [tau_val, if_pos (by left; simp only [eI]; omega)]; simp only [eI, esI]
 
 /- English proof (translation)
-Use `c.isLt` as an intermediate fact. Use the proof step `ext; rw [tau_val, if_pos (by right; simp only [esI]; omega)]; simp only [esI, eI]; omega`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tau_esI (c : Fin (m + 1)) : WeylGroupFacts.tau k (m + 1) (esI k (m + 1) c) = eI k (m + 1) c := by
   have := c.isLt
@@ -86,13 +86,11 @@ Both sides reduce to the same expression.
 theorem sg_val' (q : Fin (2 * (m + 1) + k + 1)) : (NFOne.sg k (m + 1) q).val = 2 * (m + 1) + k - q.val := rfl
 
 /- English proof (translation)
-Distinguish the cases in `h1 : l = esI k (m + 1) i`. Use `right`. Rewrite using `[h1, tau_esI]`. Conclude with `ViF_eI m i Vc`. Distinguish the cases in `h2 : l = eI k (m + 1) i`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `left`. Rewrite using `[h2]`. Conclude with `ViF_eI m i Vc`. Distinguish the cases in `h3 : m + 1 ≤ l.val`. Use `left`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `insertion_vector_zero_off_index m i Vc l h3 h1`. Use `right`. Apply `insertion_vector_zero_off_index` to reduce the goal to its premises. Apply the tactic sequence `rw [tau_val]; split_ifs <;> omega`. Introduce `h`.
-
-Apply `h2` to reduce the goal to its premises. Use `congrArg (WeylGroupFacts.tau k (m + 1)) h` as an intermediate fact. Rewrite `this` using `[WeylGroupFacts.tau_tau, tau_esI]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ViF_alt (l : Fin (2 * (m + 1) + k + 1)) : ViF m i Vc l = 0 ∨ ViF m i Vc (WeylGroupFacts.tau k (m + 1) l) = 0 := by
   by_cases h1 : l = esI k (m + 1) i
@@ -109,7 +107,7 @@ theorem ViF_alt (l : Fin (2 * (m + 1) + k + 1)) : ViF m i Vc l = 0 ∨ ViF m i V
       rw [WeylGroupFacts.tau_tau, tau_esI] at this; exact this
 
 /- English proof (translation)
-Rewrite using `[herm_expand]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Apply the tactic sequence `rcases ViF_alt m i Vc l with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ViF_iso : herm (Hpk k (m + 1)) (ViF m i Vc) (ViF m i Vc) = 0 := by
   rw [herm_expand]
@@ -118,9 +116,9 @@ theorem ViF_iso : herm (Hpk k (m + 1)) (ViF m i Vc) (ViF m i Vc) = 0 := by
   rcases ViF_alt m i Vc l with h | h <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[herm_expand]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hW : m + 1 ≤ l.val ∧ l.val ≤ m + 1 + k`. Rewrite using `[insertion_vector_zero_off_index m i Vc l hW.1 (by intro h; rw [h] at hW; simp [esI] at hW; omega)]; simp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rw [hz (WeylGroupFacts.tau k (m + 1) l) (by rw [tau_val]; split_ifs <;> omega)]; simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hermitian_insertion_vector_orthogonal (z' : Fin (2 * (m + 1) + k + 1) → ℂ) (hz : inWb k (m + 1) z') :
     herm (Hpk k (m + 1)) z' (ViF m i Vc) = 0 := by
@@ -132,9 +130,9 @@ theorem hermitian_insertion_vector_orthogonal (z' : Fin (2 * (m + 1) + k + 1) �
   · rw [hz (WeylGroupFacts.tau k (m + 1) l) (by rw [tau_val]; split_ifs <;> omega)]; simp
 
 /- English proof (translation)
-Distinguish the cases in `h : q = esI k (m + 1) i`. Rewrite using `[if_pos (by rw [sg_val', h]; simp [esI]; omega)]`. Unfold `ViF`. Rewrite using `[if_pos h]`. Rewrite using `[insertion_vector_zero_off_index m i Vc q (by omega) h, if_neg]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `ext`. Rewrite `h'` using `[sg_val']`. Simplify using `[esI]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -147,23 +145,23 @@ theorem ViF_star (q : Fin (2 * (m + 1) + k + 1)) (hq : m + 1 + k < q.val) :
     intro h'; apply h; ext; rw [sg_val'] at h'; simp [esI]; omega
 
 /- English proof (translation)
-Establish `hs` using `(i.succAbove c').isLt`. Establish `hsi : (i.succAbove c').val ≠ i.val` using `fun h' => Fin.succAbove_ne i c' (Fin.ext h')`. Rewrite using `[herm_expand, Finset.sum_eq_add (eI k (m + 1) i) (esI k (m + 1) (i.succAbove c'))]`. Rewrite using `[tau_eI, tau_esI]`. Establish `e1 : ViF m i Vc (esI k (m + 1) i) = 1` using `by unfold ViF; rw [if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ViF m i Vc (eI k (m + 1) (i.succAbove c')) = -star (Vc c' (eI k (m + 1) i))`. Unfold `ViF`. Rewrite using `[if_neg (by intro h; have := congrArg Fin.val h; simp [eI, esI] at this; omega), dif_pos ⟨by simp only [eI]; omega, by simpa [eI] using hsi⟩]`. Use `congr 3`. Use `pidx_succAbove m i c' ⟨hs, hsi⟩` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify `this` using `[eI]`. Establish `e3 : Vc c' (esI k (m + 1) (i.succAbove c')) = 1`. Rewrite using `[hVs c' _ (by simp [esI]; omega), if_pos (by rw [sg_val']; simp [esI]; omega)]`. Rewrite using `[e1, e2, e3, sgn_one _ (by simp [eI]; omega), sgn_one _ (by simp [esI]; omega)]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI, esI] at this`. Use linear arithmetic over natural numbers and integers. Introduce `l _ hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hS : m + 1 + k < l.val`. Rewrite using `[hVs c' l hS, if_neg]`. Simplify using the standard rewrite rules. Introduce `h'`. Apply `hl.2` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ext`. Rewrite `h'` using `[sg_val']`. Simplify using `[esI]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hX : l.val < m + 1`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `rw [insertion_vector_zero_off_index m i Vc (WeylGroupFacts.tau k (m + 1) l) (by rw [tau_val]; split_ifs <;> omega)]`. Simplify using the standard rewrite rules. Introduce `h`. Apply `hl.1` to reduce the goal to its premises. Use `congrArg (WeylGroupFacts.tau k (m + 1)) h` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[WeylGroupFacts.tau_tau, tau_esI]`. Conclude with `this`. Apply the tactic sequence `have ht : WeylGroupFacts.tau k (m + 1) l = l := by ext; rw [tau_val]; split_ifs <;> omega`. Rewrite using `[ht, insertion_vector_zero_off_index m i Vc l (by omega) (by intro h; rw [h] at hS; simp [esI] at hS; omega)]; simp`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ViF_Vc (hVs : ∀ (b : Fin m) (q : Fin (2 * (m + 1) + k + 1)), m + 1 + k < q.val →
       Vc b q = if (NFOne.sg k (m + 1) q).val = (i.succAbove b).val then 1 else 0) (c' : Fin m) :

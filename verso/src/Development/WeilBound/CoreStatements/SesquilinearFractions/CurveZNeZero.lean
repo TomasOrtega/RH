@@ -10,13 +10,13 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Introduce `E _ _ _ H ρ Z hz`. Take `⟨Hm, χ, Ef, -, -, hT2, -⟩` from `Z.theta`. Establish `hd : Z.u.IsDiff 0 Z.C'.v`. Establish `h` using `Z.diff`. Rewrite `h` using `[hz, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `ht : IsTangent Z.C'.v` using `Z.C'.basis.1 0`. Establish `h1 : IsTangent (1 : epsR ℂ ⟶ Z.C'.P.A)` using `(ReciprocityTheory.ChartRestriction.G.Chart.isTan_iff _).1 ReciprocityTheory.ChartRestriction.G.Chart.isTan_one`. Establish `hd1 : Z.u.IsDiff 0 (1 : epsR ℂ ⟶ Z.C'.P.A)` using `GlobalTheory.UnifDifferential.isDiff_one Z.u`. Establish `e : Z.C'.v = 1` using `(hT2 0).unique ⟨ht, hd⟩ ⟨h1, hd1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `Z.C'.basis.2 Z.C'.v ht`. Establish `c0 : IsLieComb ![(0 : ℂ)] ![Z.C'.v] Z.C'.v`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.isLieComb_iff, ReciprocityTheory.ChartRestriction.G.Chart.prodPts, e]`. Simplify using the standard rewrite rules. Establish `c1 : IsLieComb ![(1 : ℂ)] ![Z.C'.v] Z.C'.v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.isLieComb_iff, ReciprocityTheory.ChartRestriction.G.Chart.prodPts]`. Simplify using `only [Matrix.cons_val_fin_one, ReciprocityTheory.ChartRestriction.G.Chart.scaleD_one, ReciprocityTheory.ChartRestriction.G.Chart.spMap_id, Category.id_comp, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil]`. Conclude with `(_root_.mul_one _).symm`. Establish `h01` using `congrFun (hb.unique c0 c1) 0`. Simplify using `at h01`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curve_z_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : ℂ) (Z : Curve0 H ρ), Z.z ≠ 0 := by
   intro E _ _ _ H ρ Z hz

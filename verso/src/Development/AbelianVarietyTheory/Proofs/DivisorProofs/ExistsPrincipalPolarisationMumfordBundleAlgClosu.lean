@@ -24,9 +24,9 @@ namespace GlobalTheory.PrincipalBaseChange
 variable {S S' : Scheme.{0}} {A : Over S} [GrpObj A] {f : S' ⟶ S}
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ (fst A A).left = _ ≫ (fst A A).left`. Rewrite using `[← Over.comp_left, lift_fst, ← Over.comp_left, lift_fst]`. Use `show (lift a b).left ≫ ((fst ((Over.pullback f).obj A) ((Over.pullback f).obj A)).left ≫ pullback.fst A.hom f) = a.left ≫ pullback.fst A.hom f`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ (snd A A).left = _ ≫ (snd A A).left`. Rewrite using `[← Over.comp_left, lift_snd, ← Over.comp_left, lift_snd]`. Use `show (lift a b).left ≫ ((snd ((Over.pullback f).obj A) ((Over.pullback f).obj A)).left ≫ pullback.fst A.hom f) = b.left ≫ pullback.fst A.hom f`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_comp_sq (w : pullback.fst A.hom f ≫ A.hom = ((Over.pullback f).obj A).hom ≫ f)
     {X : Over S'} (a b : X ⟶ (Over.pullback f).obj A) :
@@ -44,7 +44,7 @@ theorem lift_comp_sq (w : pullback.fst A.hom f ≫ A.hom = ((Over.pullback f).ob
     rw [← Category.assoc, ← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[lift_comp_sq, ← Over.comp_left, comp_lift, ha, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comp_sq' (w : pullback.fst A.hom f ≫ A.hom = ((Over.pullback f).obj A).hom ≫ f)
     {X : Over S'} {Y : Over S} (U : Over.mk (X.hom ≫ f) ⟶ Y) (a b : X ⟶ (Over.pullback f).obj A) (c d : Y ⟶ A)
@@ -59,37 +59,31 @@ end GlobalTheory.PrincipalBaseChange
 namespace GlobalTheory.PrincipalBaseChange
 
 /- English proof (translation)
-Introduce `K _ _ A _ _ hA PP hP hs hb ha hk Ω _ _ _ κ hκ`. Use `set f := spMap (algebraMap K Ω) with hf`. Use `set AΩ := (Over.pullback f).obj A with hAΩ`. Establish `h` using `isGrpPullback_pullback A f`. Establish `w` using `h.1.w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl` from `GlobalTheory.LamPull.isSquare_unique hκ (GlobalTheory.LamPull.exists_isSquare w)`. Establish `hAΩab : IsAbelianScheme AΩ` using `GlobalTheory.isAbelianScheme_pullback_obj f A hA`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Establish `hP'` using `pull_isLB hP (lift (pushPt w (fst AΩ AΩ)) (pushPt w (snd AΩ AΩ))).left`. Establish `pmul : ∀ {T : Over (Sp Ω)} (x y : T ⟶ AΩ), pushPt w (x * y) = pushPt w x * pushPt w y` using `fun x y => map_mul (pushHom h _) x y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PrincipalOfPairing.exists_principal Ω AΩ hAΩab _ hP' ?_ ?_ ?_ ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hs`. Use `gen_chartPull (chartPullLinComb PP _ _ _ _ (lift (pushPt w (fst AΩ AΩ)) (pushPt w (snd AΩ AΩ))).left fun k => ?_) u hu` and prove the remaining obligations. Use `fin_cases k`. Conclude with `lift_comp_sq' w _ (snd AΩ AΩ) (fst AΩ AΩ) (snd A A) (fst A A) (lift_snd _ _).symm (lift_fst _ _).symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨u, hu⟩` from `hb`. Set `U3 : Over.mk ((AΩ ⊗ (AΩ ⊗ AΩ)).hom ≫ f) ⟶ A ⊗ (A ⊗ A)` to `lift (pushPt w (fst AΩ (AΩ ⊗ AΩ))) (lift (pushPt w (snd AΩ (AΩ ⊗ AΩ) ≫ fst AΩ AΩ)) (pushPt w (snd AΩ (AΩ ⊗ AΩ) ≫ snd AΩ AΩ)))`. Use `gen_chartPull (chartPullLinComb PP _ _ _ _ U3.left fun k => ?_) u hu` and prove the remaining obligations. Use `fin_cases k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lift_comp_sq' w U3 _ _ _ _ ?_ (by simp [U3])` and prove the remaining obligations. Rewrite using `[comp_mul, pmul]`. Simplify using `[U3]`. Conclude with `lift_comp_sq' w U3 _ _ _ _ (by simp [U3]) (by simp [U3])`. Establish `e1 : snd AΩ (AΩ ⊗ AΩ) = lift (snd AΩ (AΩ ⊗ AΩ) ≫ fst AΩ AΩ) (snd AΩ (AΩ ⊗ AΩ) ≫ snd AΩ AΩ)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : snd A (A ⊗ A) = lift (snd A (A ⊗ A) ≫ fst A A) (snd A (A ⊗ A) ≫ snd A A)` using `by simp`. Use `show (snd AΩ (AΩ ⊗ AΩ)).left ≫ _ = U3.left ≫ (snd A (A ⊗ A)).left`. Rewrite using `[e1, e2]`. Conclude with `lift_comp_sq' w U3 _ _ _ _ (by simp [U3]) (by simp [U3])`. Establish `e : (lift (𝟙 AΩ) (𝟙 AΩ)).left ≫ (lift (pushPt w (fst AΩ AΩ)) (pushPt w (snd AΩ AΩ))).left = pullback.fst A.hom f ≫ (lift (𝟙 A) (𝟙 A)).left`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lift_comp_sq' w (pushPt w (𝟙 AΩ)) _ _ (𝟙 A) (𝟙 A) (by simp) (by simp)]`. Simplify using `[pushPt]`. Use `GlobalTheory.AmpleLocalBase.relAmple_baseChange h.1 (pull_isLB hP _) (pull_isLB hP' _) ?_ ha` and prove the remaining obligations. Use `LBIso.trans (pull_isLB hP' _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) (GlobalTheory.Mum.lbIso_pull_pull_comp hP _ _) ?_` and prove the remaining obligations. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.Mum.lbIso_pull_pull_comp hP _ _).symm`. Introduce `T x ⟨t, ht⟩`. Set `T₀ : Over (Sp K)` to `Over.mk (T.hom ≫ f)`. Set `x₀ : T₀ ⟶ A` to `pushPt w x`. Set `sT : Over.mk ((AΩ ⊗ T).hom ≫ f) ⟶ T₀` to `Over.homMk (snd AΩ T).left (by show (snd AΩ T).left ≫ T.hom ≫ f = (AΩ ⊗ T).hom ≫ f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Category.assoc, Over.w (snd AΩ T)])`. Set `V0 : Over.mk ((AΩ ⊗ T).hom ≫ f) ⟶ A ⊗ T₀` to `lift (pushPt w (fst AΩ T)) sT`. Establish `e : (lift (snd AΩ T ≫ x) (fst AΩ T)).left ≫ (lift (pushPt w (fst AΩ AΩ)) (pushPt w (snd AΩ AΩ))).left = V0.left ≫ (lift (snd A T₀ ≫ x₀) (fst A T₀)).left`. Use `lift_comp_sq' w V0 _ _ _ _ ?_ (by simp [V0])` and prove the remaining obligations. Rewrite using `[lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Over.OverMorphism.ext (by simp [pushPt, sT, x₀])`. Establish `hV : IsIso V0.left`. Establish `e3 : V0.left = (pullbackLeftPullbackSndIso A.hom f T.hom).hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `V0.left ≫ pullback.fst A.hom (T.hom ≫ f) = (pullbackLeftPullbackSndIso A.hom f T.hom).hom ≫ pullback.fst A.hom (T.hom ≫ f)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pullbackLeftPullbackSndIso_hom_fst]`. Express the relevant statement in the definitionally equal form `V0.left ≫ (fst A T₀).left = _`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `V0.left ≫ pullback.snd A.hom (T.hom ≫ f) = (pullbackLeftPullbackSndIso A.hom f T.hom).hom ≫ pullback.snd A.hom (T.hom ≫ f)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pullbackLeftPullbackSndIso_hom_snd]`. Express the relevant statement in the definitionally equal form `V0.left ≫ (snd A T₀).left = _`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Establish `g1` using `(exists_gen_pull_pull_iff hP _ _).1 ⟨t, ht⟩`. Rewrite `g1` using `[e]`. Take `⟨t1, ht1⟩` from `g1`. Take `⟨t2, ht2⟩` from `gen_chartPull (chartPullPull (PP.pull (V0.left ≫ (lift (snd A T₀ ≫ x₀) (fst A T₀)).left)) (inv V0.left)) t1 ht1`.
-
-Establish `g3` using `(exists_gen_pull_pull_iff hP _ (inv V0.left)).1 ⟨t2, ht2⟩`. Rewrite `g3` using `[IsIso.inv_hom_id_assoc]`. Establish `hx0 : x₀ = toUnit T₀ ≫ η[A]` using `hk T₀ x₀ g3`. Establish `e1 : pushPt w (toUnit T ≫ η[AΩ]) = toUnit T₀ ≫ η[A]`. Rewrite using `[← Hom.one_def, ← Hom.one_def]`.
-
-Conclude with `map_one (pushHom h T)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x₀.left = (pushPt w (toUnit T ≫ η[AΩ])).left`. Rewrite using `[hx0, e1]`.
-
-Rewrite using `[Over.w x, Over.w (toUnit T ≫ η[AΩ])]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_principal_algClosure : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ PP : LB (G2 A).left, PP.IsLB → (∃ u : LB.Gen (LB.LinComb PP (K := Fin 2) ![(lift (snd A A) (fst A A) : G2 A ⟶ G2 A).left, 𝟙 (G2 A).left] ![1, -1]), u.IsGen) → (∃ u : LB.Gen (LB.LinComb PP (K := Fin 3) ![(lift (fst A (A ⊗ A) * (snd A (A ⊗ A) ≫ fst A A)) (snd A (A ⊗ A) ≫ snd A A) : A ⊗ (A ⊗ A) ⟶ G2 A).left, (lift (fst A (A ⊗ A)) (snd A (A ⊗ A) ≫ snd A A) : A ⊗ (A ⊗ A) ⟶ G2 A).left, (snd A (A ⊗ A) : A ⊗ (A ⊗ A) ⟶ G2 A).left] ![1, -1, -1]), u.IsGen) → Out.RelAmple A (PP.pull (lift (𝟙 A) (𝟙 A) : A ⟶ G2 A).left) → (∀ (T : Over (Sp K)) (x : T ⟶ A), (∃ t : LB.Gen (PP.pull (lift (snd A T ≫ x) (fst A T) : A ⊗ T ⟶ G2 A).left), t.IsGen) → x = toUnit T ≫ η[A]) → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosed Ω] (κ : (G2 ((Over.pullback (spMap (algebraMap K Ω))).obj A)).left ⟶ (G2 A).left), Geo.Tor.IsSquare (pullback.fst A.hom (spMap (algebraMap K Ω))) κ → ∃ L : LB ((Over.pullback (spMap (algebraMap K Ω))).obj A).left, L.IsLB ∧ Out.Sym ((Over.pullback (spMap (algebraMap K Ω))).obj A) L ∧ LBIso (abelian₂ ((Over.pullback (spMap (algebraMap K Ω))).obj A) L) (PP.pull κ) ∧ Out.RelAmple ((Over.pullback (spMap (algebraMap K Ω))).obj A) L ∧ Out.KTriv ((Over.pullback (spMap (algebraMap K Ω))).obj A) L := by
   intro K _ _ A _ _ hA PP hP hs hb ha hk Ω _ _ _ κ hκ

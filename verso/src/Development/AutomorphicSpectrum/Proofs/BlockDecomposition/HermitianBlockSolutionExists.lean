@@ -15,11 +15,11 @@ def selE (K : Type) [Field K] (r n : ℕ) : Matrix (Fin r) (Fin n) K :=
   fun i j => if (j : ℕ) = i then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, selE, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single ⟨i, lt_of_lt_of_le i.2 hr⟩]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hne : (i : ℕ) ≠ k` using `fun h => hik (Fin.ext h)`. Simplify using `[hik, hne]`. Introduce `j _ hj`. Establish `hne : (j : ℕ) ≠ i` using `fun h => hj (Fin.ext h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem selE_mul_transpose {r n : ℕ} (hr : r ≤ n) :
     selE K r n * (selE K r n)ᵀ = 1 := by
@@ -36,13 +36,13 @@ theorem selE_mul_transpose {r n : ℕ} (hr : r ≤ n) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, selE, eId, Matrix.diagonal_apply]`. Distinguish the cases in `hj : (j : ℕ) < r`. Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`. Distinguish the cases in `hjk : j = k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hjk` using the available equality. Simplify using `[hj]`. Establish `hne : (k : ℕ) ≠ j` using `fun h => hjk (Fin.ext h.symm)`. Simplify using `[hjk, hne]`. Introduce `i _ hi`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : (j : ℕ) ≠ i` using `fun h => hi (Fin.ext h.symm)`. Simplify using `[hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hj]`. Introduce `i _`. Establish `hne : (j : ℕ) ≠ i` using `fun h => hj (h ▸ i.2)`. Simplify using `[hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transpose_selE_mul {r n : ℕ} (hr : r ≤ n) :
     (selE K r n)ᵀ * selE K r n = eId K n r := by
@@ -65,7 +65,7 @@ theorem transpose_selE_mul {r n : ℕ} (hr : r ≤ n) :
       simp [hne]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, selE]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_selE (σ : K →+* K) {r n : ℕ} : cT σ (selE K r n) = (selE K r n)ᵀ := by
   ext i j
@@ -73,21 +73,19 @@ theorem cT_selE (σ : K →+* K) {r n : ℕ} : cT σ (selE K r n) = (selE K r n)
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [extB, Matrix.mul_apply, Matrix.transpose_apply, selE]`. Distinguish the cases in `hi : (i : ℕ) < r`. Distinguish the cases in `hj : (j : ℕ) < r`. Rewrite using `[dif_pos ⟨hi, hj⟩]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ l : Fin r, (∑ k : Fin r, (if (i : ℕ) = k then (1 : K) else 0) * b k l) = b ⟨i, hi⟩ l`. Introduce `l`. Rewrite using `[Finset.sum_eq_single ⟨i, hi⟩]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : (i : ℕ) ≠ k` using `fun h => hk (Fin.ext h.symm)`. Simplify using `[hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Establish `hne : (j : ℕ) ≠ l` using `fun h => hl (Fin.ext h.symm)`. Simplify using `[hne]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[dif_neg (fun h => hj h.2)]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l _`. Establish `hne : (j : ℕ) ≠ l` using `fun h => hj (h ▸ l.2)`. Simplify using `[hne]`. Rewrite using `[dif_neg (fun h => hi h.1)]`. Use `symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[Finset.sum_eq_zero, zero_mul]`. Introduce `k _`. Establish `hne : (i : ℕ) ≠ k` using `fun h => hi (h ▸ k.2)`.
-
-Simplify using `[hne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extB_eq_selE {r n : ℕ} (hr : r ≤ n) (b : Matrix (Fin r) (Fin r) K) :
     extB (n := n) b = (selE K r n)ᵀ * b * selE K r n := by
@@ -127,9 +125,9 @@ theorem extB_eq_selE {r n : ℕ} (hr : r ≤ n) (b : Matrix (Fin r) (Fin r) K) :
     simp [hne]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, selE]`. Rewrite using `[Finset.sum_eq_single ⟨i, lt_of_lt_of_le i.2 hr⟩]`. Establish `key` using `congrFun (h.2 ⟨i, lt_of_lt_of_le i.2 hr⟩ i.2) j`. Simplify using `using key`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `k _ hk`. Establish `hne : (k : ℕ) ≠ i` using `fun h' => hk (Fin.ext h')`. Simplify using `[hne]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem selE_mul_of_isCompl {r n : ℕ} (hr : r ≤ n) {c : Matrix (Fin r) (Fin n) K}
     {a : Matrix (Fin n) (Fin n) K} (h : IsCompl c a) : selE K r n * a = c := by
@@ -146,17 +144,15 @@ theorem selE_mul_of_isCompl {r n : ℕ} (hr : r ≤ n) {c : Matrix (Fin r) (Fin 
 end Sel
 
 /- English proof (translation)
-Introduce `K _ σ hσ n r hr c a C D T L hc hC hLT hH`. Establish `hca : c = selE K r n * a` using `(selE_mul_of_isCompl hr hc).symm`. Establish `ha : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv a hc.1`. Establish `hcTc : cT σ c = cT σ a * (selE K r n)ᵀ` using `by rw [hca, cT_mul, cT_selE]`. Establish `hcTT : cT σ T * cT σ L = 1` using `by rw [← cT_mul, hLT, cT_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : T * c * cT σ D = D * cT σ a * (selE K r n)ᵀ * cT σ T`. Rewrite using `[← hC, hH, hC, cT_mul, hcTc]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hM : D * cT σ a * (selE K r n)ᵀ = T * (c * cT σ D * cT σ L)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hcTT, Matrix.mul_one]`. Use `_ = T * c * cT σ D * cT σ L := by rw [← Matrix.mul_assoc, ← h1]`. Use `_ = T * (c * cT σ D * cT σ L) := by simp only [Matrix.mul_assoc]`. Use `⟨c * cT σ D * cT σ L, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cT_mul, cT_mul, cT_cT σ hσ, cT_cT σ hσ, hcTc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hM]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = c * cT σ D * cT σ L := by rw [← Matrix.mul_assoc, hLT, Matrix.one_mul]`. Establish `hSP : selE K r n * eId K n r = selE K r n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← transpose_selE_mul hr, ← Matrix.mul_assoc, selE_mul_transpose hr, Matrix.one_mul]`. Establish `hSB : selE K r n * extB (n` using `n) (c * cT σ D * cT σ L) = (c * cT σ D * cT σ L) * selE K r n := by`. Rewrite using `[extB_eq_selE hr, ← Matrix.mul_assoc, ← Matrix.mul_assoc, selE_mul_transpose hr, Matrix.one_mul]`. Establish `hCa : C * a⁻¹ = T * selE K r n`. Rewrite using `[hC, hca, Matrix.mul_assoc T, Matrix.mul_assoc, ha, Matrix.mul_one]`.
-
-Rewrite using `[hCa, Matrix.mul_assoc T (selE K r n), Matrix.mul_sub (selE K r n), Matrix.mul_sub (selE K r n), Matrix.mul_one, hSP, hSB, sub_self, zero_sub, Matrix.mul_neg, ← transpose_selE_mul hr, ← Matrix.mul_assoc (D * cT σ a), hM]`. Simplify using `only [Matrix.mul_assoc, neg_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hermitian_lowerLeft :
     ∀ {K : Type} [Field K] (σ : K →+* K), (∀ x, σ (σ x) = x) → ∀ {n r : ℕ}, r ≤ n →

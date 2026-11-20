@@ -11,11 +11,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Introduce `h`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Establish `hb : (b : ℂ) ≠ 0` using `b.ne_zero`. Establish `ha : (a : ℂ) = q * b`. Rewrite using `[← h, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖(a : ℂ)‖ = q * ‖(b : ℂ)‖`. Rewrite using `[ha, norm_mul, Complex.norm_natCast]`. Establish `hsplit : (q : ℝ) ^ (t + 1 / 2) = q * (q : ℝ) ^ (t - 1 / 2)`. Rewrite using `[show t + 1 / 2 = 1 + (t - 1 / 2) by ring, Real.rpow_add hq0, Real.rpow_one]`. Rewrite `h1` using `[hn, hsplit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (lt_of_mul_lt_mul_left h1 hq0.le) (not_lt.mpr h2.le)`.
+A detailed English derivation is pending.
 -/
 private lemma quot_ne (q : ℕ) (hq : q ≠ 0) (t : ℝ) (a b : ℂˣ)
     (h1 : ‖(a : ℂ)‖ < (q : ℝ) ^ (t + 1 / 2)) (h2 : (q : ℝ) ^ (t - 1 / 2) < ‖(b : ℂ)‖) :
@@ -33,7 +33,7 @@ private lemma quot_ne (q : ℕ) (hq : q ≠ 0) (t : ℝ) (a b : ℂˣ)
   exact absurd (lt_of_mul_lt_mul_left h1 hq0.le) (not_lt.mpr h2.le)
 
 /- English proof (translation)
-Introduce `K _ _ _ n π t v hw s hs ξ hξ ξ' hξ' _`. Establish `hq : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `quot_ne _ hq t _ _ (hw.2 s hs ξ hξ).2 (hw.2 s hs ξ' hξ').1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem winUnl : WinUnl := by
   intro K _ _ _ n π t v hw s hs ξ hξ ξ' hξ' _

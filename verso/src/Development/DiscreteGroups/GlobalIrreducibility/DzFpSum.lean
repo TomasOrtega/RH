@@ -11,17 +11,15 @@ namespace DiscreteGroups.sglob.DzFp
 variable {k : Type} [Field k] [Fintype k] [DecidableEq k] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card]`. Establish `hinj : Function.Injective (fun p : unipB k (Fin m) × lowB k m => (p.1 : GL (Fin m) k) * p.2)`. Introduce and unpack `⟨u, b⟩ ⟨u', b'⟩ h`. Simplify using `only at h`. Establish `h3 : ((u' : GL (Fin m) k)⁻¹ * u : GL (Fin m) k) = b' * (b : GL (Fin m) k)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, h, inv_mul_cancel_left]`. Establish `h4 : ((u' : GL (Fin m) k)⁻¹ * u : GL (Fin m) k) = 1` using `eq_one_of_unip_lower (mul_mem (inv_mem u'.2) u.2) (by rw [h3]; exact mem_lowB.1 (mul_mem b'.2 (inv_mem b.2)))`. Establish `hu : u = u'` using `Subtype.ext (inv_mul_eq_one.1 h4).symm`. Substitute `hu` using the available equality. Establish `hb : b = b'` using `Subtype.ext (mul_left_cancel h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_subset (Finset.subset_univ _) fun x _ hx => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hW : W x ≠ 0` using `fun h => hne (by rw [h, mul_zero])`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨u, hu, b, hb, rfl⟩` from `supp ψ hψ W h1 h2 x hW`. Conclude with `hx (Finset.mem_image.2 ⟨(⟨u, hu⟩, ⟨b, hb⟩), Finset.mem_univ _, rfl⟩)`. Use `_ = ∑ p : unipB k (Fin m) × lowB k m, L (p.1 * p.2) * W (p.1 * p.2) := Finset.sum_image (fun p _ q _ h => hinj h)`. Use `_ = ∑ p : unipB k (Fin m) × lowB k m, L p.2 * W 1 := by`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW1 : W p.2 = W 1` using `by simpa using h2 _ p.2.2 1`. Establish `hz` using `Circle.coe_ne_zero (ψ (superDiag (p.1 : GL (Fin m) k)))`. Rewrite using `[hL _ p.1.2, h1 _ p.1.2, hW1, Circle.coe_inv]`. Clear the denominators using the available nonvanishing facts. Use `_ = _ := by`.
-
-Simplify using `only [Fintype.sum_prod_type, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_cell {m : ℕ} {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (W : GL (Fin m) k → ℂ)
     (h1 : ∀ u ∈ unipB k (Fin m), ∀ x, W (u * x) = (((ψ (superDiag u))⁻¹ : Circle) : ℂ) * W x)
@@ -61,9 +59,9 @@ theorem sum_cell {m : ℕ} {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (W : GL (Fin
         ring
 
 /- English proof (translation)
-Introduce `r c hrc`. Proceed by induction on `r using Fin.lastCases with`. Consider the case `last => exact absurd hrc (not_lt.2 (Fin.le_last _))`. Consider the case `cast r`. Proceed by induction on `c using Fin.lastCases with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `last => exact corner_cs_last b r`. Consider the case `cast c => rw [corner_cs_cs]`. Conclude with `mem_lowB.1 hb r c (Fin.castSucc_lt_castSucc_iff.1 hrc)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem corner_lower {m : ℕ} {b : GL (Fin m) k} (hb : b ∈ lowB k m) :
     ∀ r c : Fin (m + 1), r < c → (corner b : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r c = 0 := by
@@ -76,7 +74,7 @@ theorem corner_lower {m : ℕ} {b : GL (Fin m) k} (hb : b ∈ lowB k m) :
     | cast c => rw [corner_cs_cs]; exact mem_lowB.1 hb r c (Fin.castSucc_lt_castSucc_iff.1 hrc)
 
 /- English proof (translation)
-Proceed by induction on `c using Fin.lastCases with`. Consider the case `last => rw [corner_last_last, Matrix.one_apply_eq]`. Consider the case `cast c => rw [corner_last_cs, Matrix.one_apply_ne (Fin.castSucc_lt_last c).ne']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem corner_last_row {m : ℕ} (b : GL (Fin m) k) (c : Fin (m + 1)) :
     (corner b : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) c =
@@ -86,9 +84,9 @@ theorem corner_last_row {m : ℕ} (b : GL (Fin m) k) (c : Fin (m + 1)) :
   | cast c => rw [corner_last_cs, Matrix.one_apply_ne (Fin.castSucc_lt_last c).ne']
 
 /- English proof (translation)
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrArg (fun z : GL (Fin (m + 1)) k => (z : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i.castSucc j.castSucc) h` as an intermediate fact. Simplify using `only [corner_cs_cs, Units.val_one, Matrix.one_apply, Fin.castSucc_inj] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Units.val_one, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_ne_one {m : ℕ} {b : GL (Fin m) k} (hb : b ≠ 1) : corner b ≠ 1 := by
   intro h
@@ -99,7 +97,7 @@ theorem corner_ne_one {m : ℕ} {b : GL (Fin m) k} (hb : b ≠ 1) : corner b ≠
   rw [this, Units.val_one, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_eq_single (1 : lowB k m)]`. Simplify using `[corner_one]`. Introduce `b _ hb`. Conclude with `vanish_lower hψ hl hv _ (corner_lower b.2) (corner_last_row _) (corner_ne_one fun h => hb (Subtype.ext h))`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_lower_corner {m : ℕ} {ψ : AddChar k Circle} (hψ : ψ ≠ 1) {ρ : Representation ℂ (GL (Fin (m + 1)) k) V}
     {l : Module.Dual ℂ V} (hl : IsFunctional ψ ρ l) {v : V}
@@ -114,7 +112,7 @@ theorem sum_lower_corner {m : ℕ} {ψ : AddChar k Circle} (hψ : ψ ≠ 1) {ρ 
   · simp
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft (⟨b', hb'⟩ : lowB k m)) _ _ fun b => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul, corner_mul, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem corner_fixed {m : ℕ} (ρ : Representation ℂ (GL (Fin (m + 1)) k) V) (v : V) (b' : GL (Fin m) k)
     (hb' : b' ∈ lowB k m) :
@@ -125,14 +123,14 @@ theorem corner_fixed {m : ℕ} (ρ : Representation ℂ (GL (Fin (m + 1)) k) V) 
   simp only [Equiv.coe_mulLeft, Subgroup.coe_mul, corner_mul, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_finsum_lower {m : ℕ} (f : V →ₗ[ℂ] ℂ) (F : lowB k m → V) : f (∑ᶠ b, F b) = ∑ᶠ b, f (F b) := by
   classical
   rw [finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_finsum_lower' {m : ℕ} (f : V →ₗ[ℂ] V) (F : lowB k m → V) : f (∑ᶠ b, F b) = ∑ᶠ b, f (F b) := by
   classical

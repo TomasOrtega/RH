@@ -12,13 +12,13 @@ namespace GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc
 variable {R : Type} [CommRing R] {P : Type} [SemilatticeInf P]
 
 /- English proof (translation)
-The claim follows from `CategoryTheory.Functor.ext h (fun _ _ _ => Quiver.Hom.unop_inj (Subsingleton.elim _ _))`.
+A detailed English derivation is pending.
 -/
 theorem chain_ext {n : ℕ} {c c' : Fin (n + 1) ⥤ Pᵒᵖ} (h : ∀ i, c.obj i = c'.obj i) : c = c' :=
   CategoryTheory.Functor.ext h (fun _ _ _ => Quiver.Hom.unop_inj (Subsingleton.elim _ _))
 
 /- English proof (translation)
-The claim follows from `leOfHom (c.map (homOfLE h)).unop`.
+A detailed English derivation is pending.
 -/
 theorem chain_anti {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) {i j : Fin (n + 1)} (h : i ≤ j) :
     (c.obj j).unop ≤ (c.obj i).unop :=
@@ -28,25 +28,25 @@ def snocObj {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) (b : P) : Fin (n + 2) → P�
   Fin.snoc (α := fun _ ↦ Pᵒᵖ) (fun i ↦ c.obj i) (op b)
 
 /- English proof (translation)
-The claim follows from `Fin.snoc_last (α := fun _ ↦ Pᵒᵖ) _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem snocObj_last {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) (b : P) :
     snocObj c b (Fin.last _) = op b :=
   Fin.snoc_last (α := fun _ ↦ Pᵒᵖ) _ _
 
 /- English proof (translation)
-The claim follows from `Fin.snoc_castSucc (α := fun _ ↦ Pᵒᵖ) _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem snocObj_castSucc {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) (b : P) (i : Fin (n + 1)) :
     snocObj c b i.castSucc = c.obj i :=
   Fin.snoc_castSucc (α := fun _ ↦ Pᵒᵖ) _ _ _
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Rewrite using `[GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_last]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact le_of_eq (by rw [GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_last])`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i`. Rewrite using `[GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_castSucc]`. Conclude with `hb.trans (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.chain_anti c (Fin.le_last i))`. Consider the case `cast j`. Rewrite using `[GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_castSucc]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact absurd h (not_le.mpr (Fin.castSucc_lt_last j))`. Consider the case `cast i`. Rewrite using `[GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_castSucc]`. Conclude with `GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.chain_anti c (Fin.castSucc_le_castSucc_iff.mp h)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snocObj_anti {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) {b : P} (hb : b ≤ (c.obj (Fin.last n)).unop)
     {i j : Fin (n + 2)} (h : i ≤ j) : (snocObj c b j).unop ≤ (snocObj c b i).unop := by
@@ -74,7 +74,7 @@ def snoc {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) (b : P) (hb : b ≤ (c.obj (Fin
   map_comp _ _ := Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
 /- English proof (translation)
-The claim follows from `le_of_eq (congrArg Opposite.unop (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_last c b)).symm`.
+A detailed English derivation is pending.
 -/
 theorem snoc_last_le {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) (b : P) (hb : b ≤ (c.obj (Fin.last n)).unop) :
     b ≤ ((snoc c b hb).obj (Fin.last _)).unop :=
@@ -84,16 +84,16 @@ abbrev face {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ Pᵒᵖ) : Fin (n +
   (Fin.succAboveOrderEmb i).toOrderHom.monotone.functor ⋙ c
 
 /- English proof (translation)
-The claim follows from `hb.trans (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.chain_anti c (Fin.le_last _))`.
+A detailed English derivation is pending.
 -/
 theorem face_le {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ Pᵒᵖ) {b : P}
     (hb : b ≤ (c.obj (Fin.last _)).unop) : b ≤ ((face i c).obj (Fin.last _)).unop :=
   hb.trans (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.chain_anti c (Fin.le_last _))
 
 /- English proof (translation)
-Apply `GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.chain_ext` to reduce the goal to its premises. Introduce `k`. Proceed by induction on `k using Fin.lastCases with`. Consider the case `last => show GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj c b ((Fin.castSucc i).succAbove (Fin.last _)) = GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.face i c) b (Fin.last _)`. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (Fin.castSucc_le_castSucc_iff.mpr (Fin.le_last i)), Fin.succ_last, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_last, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_last]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cast k => show GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj c b ((Fin.castSucc i).succAbove (Fin.castSucc k)) = GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.face i c) b (Fin.castSucc k)`. Rewrite using `[Fin.castSucc_succAbove_castSucc, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_castSucc, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_castSucc]`. Apply the tactic sequence `all_goals rfl`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem face_castSucc_snoc {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ Pᵒᵖ) {b : P}
     (hb : b ≤ (c.obj (Fin.last _)).unop) :
@@ -113,7 +113,7 @@ theorem face_castSucc_snoc {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ Pᵒ
     all_goals rfl
 
 /- English proof (translation)
-Apply `GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.chain_ext` to reduce the goal to its premises. Introduce `k`. Use `show GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj c b ((Fin.last _).succAbove k) = c.obj k`. Rewrite using `[Fin.succAbove_last_apply, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snocObj_castSucc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem face_last_snoc {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) {b : P}
     (hb : b ≤ (c.obj (Fin.last _)).unop) : face (Fin.last _) (snoc c b hb) = c := by
@@ -129,7 +129,7 @@ def valL (M : P → ModuleCat.{0} R) {n : ℕ} (c : Fin (n + 1) ⥤ Pᵒᵖ) (b 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem valL_congr (M : P → ModuleCat.{0} R) {n : ℕ} {c c' : Fin (n + 1) ⥤ Pᵒᵖ} (h : c = c') (b : P)
     (hb : b ≤ (c.obj (Fin.last n)).unop) (hb' : b ≤ (c'.obj (Fin.last n)).unop) (f : NC (coind M) n) :
@@ -138,7 +138,7 @@ theorem valL_congr (M : P → ModuleCat.{0} R) {n : ℕ} {c c' : Fin (n + 1) ⥤
   rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [GlobalTheory.CompanionTheory.Hodge.Nerve.dNC, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]; all_goals exact Finset.sum_congr rfl fun i _ => rfl)`. Consider the case `(rw [GlobalTheory.CompanionTheory.Hodge.Nerve.dNC, LinearMap.sum_apply, map_sum];`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [LinearMap.smul_apply, map_smul]; rfl)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valL_dNC (M : P → ModuleCat.{0} R) {n : ℕ} (c : Fin (n + 2) ⥤ Pᵒᵖ) (b : P)
     (hb : b ≤ (c.obj (Fin.last _)).unop) (f : NC (coind M) n) :
@@ -161,7 +161,7 @@ theorem valL_contr (M : P → ModuleCat.{0} R) {n : ℕ} (f : NC (coind M) (n + 
     valL M c b hb (contr M f) = valL M (snoc c b hb) b (snoc_last_le c b hb) f := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c b`. Conclude with `h c b.1 b.2`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem NC_ext (M : P → ModuleCat.{0} R) {n : ℕ} {f g : NC (coind M) n}
     (h : ∀ c b hb, valL M c b hb f = valL M c b hb g) : f = g := by
@@ -169,13 +169,11 @@ theorem NC_ext (M : P → ModuleCat.{0} R) {n : ℕ} {f g : NC (coind M) n}
   exact h c b.1 b.2
 
 /- English proof (translation)
-Apply `GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.NC_ext` to reduce the goal to its premises. Introduce `c b hb`. Establish `hcoc : GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL M (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snoc c b hb) b (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.snoc_last_le c b hb) (GlobalTheory.CompanionTheory.Hodge.Nerve.dNC (GlobalTheory.CompanionTheory.Hodge.Nerve.co …`. Rewrite using `[hf, map_zero]`. Rewrite `hcoc` using `[GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL_dNC, Fin.sum_univ_castSucc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : ∑ i : Fin (n + 2), (-1 : R) ^ (i : ℕ) • GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL M (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.face i c) b (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.face_le i c hb) (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.contr M f) …`. Rewrite using `[eq_neg_iff_add_eq_zero, ← hcoc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_castSucc, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL_contr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg ((-1 : R) ^ (i : ℕ) • ·) (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL_congr M (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.face_castSucc_snoc i c hb).symm b _ _ f)`. Rewrite using `[Fin.val_last]`. Conclude with `congrArg ((-1 : R) ^ (n + 1 + 1) • ·) (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL_congr M (GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.face_last_snoc c hb).symm b _ _ f)`. Establish `hp : (-1 : R) ^ (n + 1) * (-1 : R) ^ (n + 1) = 1`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
-
-Rewrite using `[map_smul, map_smul, GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.valL_dNC, hsum, smul_neg, smul_smul, pow_succ (-1 : R) (n + 1), ← mul_assoc, hp, one_mul, neg_smul, one_smul, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dNC_contr (M : P → ModuleCat.{0} R) {n : ℕ} (f : NC (coind M) (n + 1))
     (hf : dNC (coind M) (n + 1) f = 0) :
@@ -209,9 +207,9 @@ end GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc
 open GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc in
 
 /- English proof (translation)
-Rewrite using `[← HomologicalComplex.exactAt_iff_isZero_homology, HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 1 + 1) (by simp) (by simp), ShortComplex.moduleCat_exact_iff]`. Introduce `x hx`. Establish `hx' : GlobalTheory.CompanionTheory.Hodge.Nerve.dNC (GlobalTheory.CompanionTheory.Hodge.Nerve.coind M) (n + 1) x = 0`. Express the relevant statement in the definitionally equal form `((GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx.obj (GlobalTheory.CompanionTheory.Hodge.Nerve.coind M)).d (n + 1) (n + 1 + 1)).hom x = 0 at hx`. Rewrite `hx` using `[GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx_d]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`. Use `⟨((-1 : R) ^ (n + 1)) • GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.contr M x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx.obj (GlobalTheory.CompanionTheory.Hodge.Nerve.coind M)).d n (n + 1)).hom (((-1 : R) ^ (n + 1)) • GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.contr M x) = x`. Rewrite using `[GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx_d]`. Conclude with `GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc.dNC_contr M x hx'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Hodge.Nerve.isZero_homology_coind {R : Type} [CommRing R] {P : Type} [SemilatticeInf P]
     (M : P → ModuleCat.{0} R) (n : ℕ) : IsZero ((nerveCx.obj (coind M)).homology (n + 1)) := by

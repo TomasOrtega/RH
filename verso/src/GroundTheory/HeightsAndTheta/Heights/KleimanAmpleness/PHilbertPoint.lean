@@ -34,7 +34,7 @@ def affPiece (y : Fin (N + 1) → Ω) (j : Fin (N + 1)) (n : ℕ) : Submodule k 
 variable {y : Fin (N + 1) → Ω} {j : Fin (N + 1)}
 
 /- English proof (translation)
-Rewrite using `[← sum_homogeneousComponent f, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[aff_def, aeval_div_of_isHomogeneous (homogeneousComponent_isHomogeneous d f), (mem_primeOf_of_isHomogeneous y (homogeneousComponent_isHomogeneous d f)).mp (homogeneousComponent_mem_primeOf y hf d), zero_div]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_aff_of_mem_primeOf {f : Poly k N} (hf : f ∈ primeOf (S := k) y) :
     aeval (aff y j) f = 0 := by
@@ -45,9 +45,9 @@ theorem aeval_aff_of_mem_primeOf {f : Poly k N} (hf : f ∈ primeOf (S := k) y) 
       (homogeneousComponent_mem_primeOf y hf d), zero_div]
 
 /- English proof (translation)
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe e`. Establish `h' : e + 1 ≤ 1` using `by exact_mod_cast h`. Proceed by induction on `e using ENat.recTopCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `top => simp at h'`. Consider the case `coe m`. Establish `: m + 1 ≤ 1` using `by exact_mod_cast h'`. Establish `hm : m = 0` using `by omega`. Substitute `hm` using the available equality.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
 Simplify using the standard rewrite rules.
 -/
@@ -65,17 +65,17 @@ theorem le_zero_of_add_one_le_one {d : WithBot ℕ∞} (h : d + 1 ≤ 1) : d ≤
       simp
 
 /- English proof (translation)
-Set `φ : Poly k N →ₐ[k] affRing k y j` to `(aeval (aff y j)).rangeRestrict`. Establish `hφ : Function.Surjective φ` using `AlgHom.rangeRestrict_surjective _`. Establish `hker : ∀ f ∈ primeOf (S` using `k) y, φ.toRingHom f = 0 := fun f hf => Subtype.ext (aeval_aff_of_mem_primeOf hf)`. Set `ψ : Poly k N ⧸ primeOf (S` to `k) y →+* affRing k y j := Ideal.Quotient.lift (primeOf (S := k) y) φ.toRingHom hker`. Establish `hψ : Function.Surjective ψ` using `Ideal.Quotient.lift_surjective_of_surjective _ hker hφ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : Poly k N ⧸ primeOf (S` to `k) y := Ideal.Quotient.mk _ (X j - 1)`. Establish `hr : r ≠ 0`. Introduce `h`. Establish `hmem : (X j - 1 : Poly k N) ∈ primeOf (S` using `k) y := Ideal.Quotient.eq_zero_iff_mem.mp h`. Establish `h0` using `homogeneousComponent_mem_primeOf y hmem 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[homogeneousComponent_zero]`. Use `(mem_primeOf_of_isHomogeneous y (isHomogeneous_C _ _)).mp h0` as an intermediate fact. Simplify using `at this`. Establish `hr' : r ∈ nonZeroDivisors (Poly k N ⧸ primeOf (S` using `k) y) := mem_nonZeroDivisors_of_ne_zero hr`. Establish `hψr : ψ r = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `aeval (aff y j) (X j - 1 : Poly k N) = 0`. Simplify using `[aff, hj]`. Establish `hrψ : ∀ a ∈ Ideal.span {r}, ψ a = 0`. Introduce `a ha`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[map_mul, hψr, mul_zero]`. Establish `hχ : Function.Surjective (Ideal.Quotient.lift (Ideal.span {r}) ψ hrψ)` using `Ideal.Quotient.lift_surjective_of_surjective _ hrψ hψ`. Establish `h1 : ringKrullDim (affRing k y j) ≤ ringKrullDim ((Poly k N ⧸ primeOf (S` using `k) y) ⧸ Ideal.span {r}) := by`. Conclude with `ringKrullDim_le_of_surjective _ hχ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor hr'`. Rewrite `h2` using `[hy.dim]`. Establish `h3 : ringKrullDim (affRing k y j) ≤ 0` using `le_zero_of_add_one_le_one ((add_le_add h1 (le_refl (1 : WithBot ℕ∞))).trans (by simpa using h2))`. Establish `: Ring.KrullDimLE 0 (affRing k y j)` using `Ring.krullDimLE_iff.mpr (by simpa using h3)`. Conclude with `Ring.KrullDimLE.isField_of_isDomain`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isField_affRing (hy : IsSubvar y (primeOf (S := k) y) 0) (hj : y j ≠ 0) :
     IsField (affRing k y j) := by
@@ -116,11 +116,11 @@ theorem isField_affRing (hy : IsSubvar y (primeOf (S := k) y) 0) (hj : y j ≠ 0
   exact Ring.KrullDimLE.isField_of_isDomain
 
 /- English proof (translation)
-Establish `haff : ∀ l, aff y j l ∈ (affRing k y j).toIntermediateField' hF` using `fun l => show aff y j l ∈ affRing k y j from ⟨X l, by simp⟩`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[funField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, l, hi, rfl⟩`. Establish `: y l / y i = aff y j l * (aff y j i)⁻¹`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [aff]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `mul_mem (haff l) (inv_mem (haff i))`. Introduce `z hz`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `z ∈ affRing k y j at hz`. Rewrite `hz` using `[affRing, ← Algebra.adjoin_range_eq_range_aeval]`. Use `Algebra.adjoin_le (S := (funField (k := k) y).toSubalgebra) ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨j, l, hj, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem funField_eq (hj : y j ≠ 0) (hF : IsField (affRing k y j)) :
     funField (k := k) y = (affRing k y j).toIntermediateField' hF := by
@@ -141,9 +141,9 @@ theorem funField_eq (hj : y j ≠ 0) (hF : IsField (affRing k y j)) :
     exact IntermediateField.subset_adjoin _ _ ⟨j, l, hj, rfl⟩
 
 /- English proof (translation)
-Use `set E := (affRing k y j).toIntermediateField' (isField_affRing hy hj)`. Set `g : Poly k N →ₐ[k] E` to `AlgHom.codRestrict (aeval (aff y j) : Poly k N →ₐ[k] Ω) E.toSubalgebra (fun f => show _ ∈ affRing k y j from ⟨f, rfl⟩)`. Establish `hg : Function.Surjective g`. Introduce and unpack `⟨z, f, rfl⟩`. Conclude with `⟨f, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType k E` using `Algebra.FiniteType.of_surjective g hg`. Conclude with `finite_of_finite_type_of_isJacobsonRing k E`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_affField (hy : IsSubvar y (primeOf (S := k) y) 0) (hj : y j ≠ 0) :
     FiniteDimensional k ((affRing k y j).toIntermediateField' (isField_affRing hy hj)) := by
@@ -158,15 +158,15 @@ theorem finiteDimensional_affField (hy : IsSubvar y (primeOf (S := k) y) 0) (hj 
   exact finite_of_finite_type_of_isJacobsonRing k E
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.mpr (by rintro _ ⟨f, _, rfl⟩; exact ⟨f, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem affPiece_le (n : ℕ) : affPiece k y j n ≤ Subalgebra.toSubmodule (affRing k y j) :=
   Submodule.span_le.mpr (by rintro _ ⟨f, _, rfl⟩; exact ⟨f, rfl⟩)
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `Submodule.subset_span ⟨X j ^ (n - m) * f, ?_, ?_⟩` and prove the remaining obligations. Use `(isHomogeneous_X_pow (R := k) j (n - m)).mul hf` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel h]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `[aff, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem affPiece_mono (hj : y j ≠ 0) {m n : ℕ} (h : m ≤ n) :
     affPiece k y j m ≤ affPiece k y j n := by
@@ -178,7 +178,7 @@ theorem affPiece_mono (hj : y j ≠ 0) {m n : ℕ} (h : m ≤ n) :
   · simp [aff, hj]
 
 /- English proof (translation)
-Rewrite using `[show aeval (aff y j) f = ∑ d ∈ Finset.range (f.totalDegree + 1), aeval (aff y j) (homogeneousComponent d f) by rw [← map_sum, sum_homogeneousComponent]]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hd' : d ≤ f.totalDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hd)`. Conclude with `affPiece_mono hj hd' (Submodule.subset_span ⟨_, homogeneousComponent_isHomogeneous d f, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeval_mem_affPiece (hj : y j ≠ 0) (f : Poly k N) :
     aeval (aff y j) f ∈ affPiece k y j f.totalDegree := by
@@ -189,13 +189,11 @@ theorem aeval_mem_affPiece (hj : y j ≠ 0) (f : Poly k N) :
   exact affPiece_mono hj hd' (Submodule.subset_span ⟨_, homogeneousComponent_isHomogeneous d f, rfl⟩)
 
 /- English proof (translation)
-Use `finiteDimensional_affField hy hj` as an intermediate fact. Establish `hfin : (Subalgebra.toSubmodule (affRing k y j)).FG`. Rewrite using `[← Module.Finite.iff_fg]`. Conclude with `inferInstanceAs (Module.Finite k ((affRing k y j).toIntermediateField' (isField_affRing hy hj)))`. Take `⟨s, hs⟩` from `hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∀ z ∈ s, ∃ n, z ∈ affPiece k y j n` using `fun z hz => by`. Establish `: z ∈ affRing k y j`. Rewrite using `[← Subalgebra.mem_toSubmodule, ← hs]`. Conclude with `Submodule.subset_span hz`. Take `⟨f, rfl⟩` from `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, aeval_mem_affPiece hj f⟩`. Use `choose! m hm using hex`. Use `eventually_atTop.mpr ⟨s.sup m, fun n hn => le_antisymm (affPiece_le n) ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, Submodule.span_le]`. Introduce `z hz`.
-
-Conclude with `affPiece_mono hj ((Finset.le_sup hz).trans hn) (hm z hz)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eventually_affPiece_eq (hy : IsSubvar y (primeOf (S := k) y) 0) (hj : y j ≠ 0) :
     ∀ᶠ n : ℕ in atTop, affPiece k y j n = Subalgebra.toSubmodule (affRing k y j) := by
@@ -216,11 +214,11 @@ theorem eventually_affPiece_eq (hy : IsSubvar y (primeOf (S := k) y) 0) (hj : y 
   exact affPiece_mono hj ((Finset.le_sup hz).trans hn) (hm z hz)
 
 /- English proof (translation)
-Rewrite using `[show (coordGraded k y).piece (n : ℤ) = Submodule.span k {z | ∃ (f : Poly k N) (e : ℕ), f.IsHomogeneous e ∧ (e : ℤ) = n ∧ z = aeval y f} from rfl, affPiece, Submodule.map_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, e, hf, he, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hen : e = n` using `by exact_mod_cast he`. Substitute `hen` using the available equality. Use `⟨aeval (aff y j) f, ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply, aff_def, aeval_div_of_isHomogeneous hf]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Use `⟨f, n, hf, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply, aff_def, aeval_div_of_isHomogeneous hf]`. Clear the denominators using the available nonvanishing facts.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem coordGraded_piece_eq (hj : y j ≠ 0) (n : ℕ) :
     (coordGraded k y).piece (n : ℤ) = (affPiece k y j n).map (LinearMap.mulLeft k (y j ^ n)) := by
@@ -241,7 +239,7 @@ theorem coordGraded_piece_eq (hj : y j ≠ 0) (n : ℕ) :
     field_simp
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, e, hf, he, rfl⟩`. Use `(Submodule.mem_iInf _).mpr fun I => ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨f, 1, 0, e, one_mem _, hf, isHomogeneous_one _ _, by simp [he], by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coordGraded_le_secs (n : ℕ) :
     (coordGraded k y).piece (n : ℤ) ≤ (twistSys k y (n : ℤ)).secs := by
@@ -252,22 +250,22 @@ theorem coordGraded_le_secs (n : ℕ) :
     by simp⟩
 
 /- English proof (translation)
-Rewrite using `[affRing, ampleBase, Algebra.adjoin_range_eq_range_aeval]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem affRing_eq_ampleBase : affRing k y j = ampleBase (S := k) y j := by
   rw [affRing, ampleBase, Algebra.adjoin_range_eq_range_aeval]
   rfl
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun z _ => z / y j ^ n ∈ affRing k y j) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, e', hs, hf, hse, hc, rfl⟩`. Establish `hs' : s ∈ Submonoid.closure {(X j : Poly k N)}`. Establish `: ((fun i => (X i : Poly k N)) '' ((({j} : Finset (Fin (N + 1))) : Set (Fin (N + 1))))) = {X j}` using `by simp`. Rewrite using `[← this]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Take `⟨m, rfl⟩` from `Submonoid.mem_closure_singleton.mp hs'`. Establish `hme : e = m` using `hse.inj_right (isHomogeneous_X_pow j m) (by`. Rewrite using `[X_pow_eq_monomial, Ne, monomial_eq_zero]`. Conclude with `one_ne_zero)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hme` using the available equality. Establish `he' : e' = e + n` using `by omega`. Substitute `he'` using the available equality. Use `⟨f, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval (aff y j) f = _`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[aff_def, aeval_div_of_isHomogeneous hf, map_pow, aeval_X, pow_add, div_div]`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Rewrite using `[add_div]`. Conclude with `add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c z _ hz`. Rewrite using `[chartRing_smul_def, mul_div_assoc]`. Use `mul_mem ?_ hz` and prove the remaining obligations. Rewrite using `[affRing_eq_ampleBase]`. Conclude with `mem_ampleBase_of_mem_chartRing (S := k) hj c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_affRing_of_mem_twistMod (hj : y j ≠ 0) (n : ℕ) {z : Ω}
     (hz : z ∈ twistMod k y (n : ℤ) (singleChart hj)) : z / y j ^ n ∈ affRing k y j := by
@@ -296,13 +294,13 @@ theorem div_mem_affRing_of_mem_twistMod (hj : y j ≠ 0) (n : ℕ) {z : Ω}
     exact mem_ampleBase_of_mem_chartRing (S := k) hj c.2
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N y hy`. Take `⟨j, hjX⟩` from `hy.relevant`. Establish `hj : y j ≠ 0` using `fun h => hjX ((mem_primeOf_of_isHomogeneous y (isHomogeneous_X k j)).mpr (by simp [h]))`. Establish `hF` using `isField_affRing hy hj`. Establish `hfun` using `funField_eq hj hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd` using `finiteDimensional_affField hy hj`. Establish `hev` using `eventually_affPiece_eq hy hj`. Use `⟨hfun ▸ hfd, hev.mono fun n hn => ?_, hev.mono fun n hn => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (LinearMap.mulLeft k (y j ^ n))` using `mul_right_injective₀ (pow_ne_zero n hj)`. Rewrite using `[coordGraded_piece_eq hj n, ← LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj _), hn, Subalgebra.finrank_toSubmodule, hfun, ← IntermediateField.finrank_eq_finrank_subalgebra]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `le_antisymm ?_ (coordGraded_le_secs n)` and prove the remaining obligations. Introduce `z hz`. Establish `hz1 : z ∈ twistMod k y (n : ℤ) (singleChart hj)` using `(Submodule.mem_iInf _).mp hz (singleChart hj)`. Establish `hd` using `div_mem_affRing_of_mem_twistMod hj n hz1`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coordGraded_piece_eq hj n, hn]`. Use `⟨z / y j ^ n, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem proof : HilbertPoint.Statement.{u, w} := by
   intro k _ Ω _ _ N y hy

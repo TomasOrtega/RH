@@ -19,9 +19,9 @@ namespace GlobalTheory.CompanionTheory.FexTheta.FieldNormOne
 open Ad3.K.GL2LocalData
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hd hc σ hσ η hη c Φ hΦ g u hu y`. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`. Establish `hS` using `(GlobalTheory.CompanionTheory.WeilPiRep.wPiRep F χ hχ hχ1 E hd hc σ hσ η hη c Φ hΦ 1 g h).2`. Rewrite using `[hS.2.2 u hu y]`. Establish `hcu : (((c u)⁻¹ : ℂˣ) : ℂ) * ((c u : ℂˣ) : ℂ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Take the linear combination `(piE E χ σ η c g Φ y) * hcu`. Use `show piG _ _ _ _ _ _ _ _ * _ = piG _ _ _ _ _ _ _ _`. Rewrite using `[piG, piG, dif_neg h, zero_mul, dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piE_norm_one : ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η =>
     ∀ (c : Eˣ →* ℂˣ), ∀ Φ ∈ SBc F E c, ∀ (g : GL (Fin 2) F) (u : Eˣ), Algebra.norm F (u : E) = 1 →
@@ -37,17 +37,15 @@ theorem piE_norm_one : ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η =>
     rw [piG, piG, dif_neg h, zero_mul, dif_neg h]
 
 /- English proof (translation)
-Introduce `K _ _ h2 c v L hok hsp g ξ κ hκ x`. Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `: (((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) : Qv v → Circle) = fun x => (GP.psiF v x)⁻¹`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `AddChar.inv_apply' _ _`. Rewrite using `[this]`. Conclude with `hstd.1.inv`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.mpr hstd.2.1`. Consider the cases of `L with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `@sp w₁ w₂ i₁ i₂ Φ => exact absurd trivial hsp`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `⟨huq, hσ, hη, hΦ⟩` from `hok`. Establish `hκ1 : Algebra.norm ℚ (κ : K) = 1`. Establish `h` using `congrArg Units.val (MonoidHom.mem_ker.mp hκ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hN : Algebra.norm (Qv v) ((atW w κ : (Kv K w)ˣ) : Kv K w) = 1`. Establish `h` using `GlobalTheory.T.local_norm_at_inert_place K h2 v w huq (κ : K)`. Rewrite `h` using `[hκ1]`. Simplify `h` using `[atW]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `piE_norm_one (Qv v) _ hχc hχ1 (Kv K w) (GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl K h2 v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ η hη _ Φ hΦ g (atW w κ) hN (algebraMap K (Kv K w) ξ)`. Establish `e : algebraMap K (Kv K w) (ξ * (κ : K)) = algebraMap K (Kv K w) ξ * ((atW w κ : (Kv K w)ˣ) : Kv K w)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Use `show (1 : ℂ) * LM.val (LM.ns w σ η Φ) g (ξ * (κ : K)) * cK c w κ = (1 : ℂ) * LM.val (LM.ns w σ η Φ) g ξ`.
-
-Simplify using `only [one_mul]`. Use `show piG _ _ _ _ _ _ _ (algebraMap K (Kv K w) (ξ * (κ : K))) * _ = piG _ _ _ _ _ _ _ _`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fL_field : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),

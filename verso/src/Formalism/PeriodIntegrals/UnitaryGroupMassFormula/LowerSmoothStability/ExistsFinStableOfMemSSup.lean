@@ -19,7 +19,7 @@ def FinStable (G : Set ι) (ρ : ι → H →L[ℂ] H) : Set (Submodule ℂ H) :
   {S | FiniteDimensional ℂ S ∧ ∀ g ∈ G, ∀ x ∈ S, ρ g x ∈ S}
 
 /- English proof (translation)
-Use `⟨inferInstance, fun g _ x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finStable_bot (G : Set ι) (ρ : ι → H →L[ℂ] H) : (⊥ : Submodule ℂ H) ∈ FinStable G ρ := by
   refine ⟨inferInstance, fun g _ x hx => ?_⟩
@@ -27,9 +27,9 @@ theorem finStable_bot (G : Set ι) (ρ : ι → H →L[ℂ] H) : (⊥ : Submodul
   rw [hx, map_zero]
 
 /- English proof (translation)
-Introduce `S hS T hT`. Use `⟨S ⊔ T, ⟨?_, ?_⟩, le_sup_left, le_sup_right⟩` and prove the remaining obligations. Use `haveI := hS.1 haveI := hT.1 infer_instance`. Introduce `g hg x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hS.2 g hg y hy) (hT.2 g hg z hz)`.
+A detailed English derivation is pending.
 -/
 theorem finStable_directed (G : Set ι) (ρ : ι → H →L[ℂ] H) :
     DirectedOn (· ≤ ·) (FinStable G ρ) := by
@@ -44,7 +44,7 @@ theorem finStable_directed (G : Set ι) (ρ : ι → H →L[ℂ] H) :
     exact Submodule.add_mem_sup (hS.2 g hg y hy) (hT.2 g hg z hz)
 
 /- English proof (translation)
-Establish `hx' : x ∈ sSup (FinStable G ρ)` using `sSup_le_sSup hF hx`. Conclude with `(Submodule.mem_sSup_of_directed ⟨⊥, finStable_bot G ρ⟩ (finStable_directed G ρ)).mp hx'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finStable_of_mem_sSup (G : Set ι) (ρ : ι → H →L[ℂ] H) {F : Set (Submodule ℂ H)}
     (hF : F ⊆ FinStable G ρ) {x : H} (hx : x ∈ sSup F) : ∃ S ∈ FinStable G ρ, x ∈ S := by
@@ -58,21 +58,19 @@ section Transport
 variable {k r : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨_, hJ⟩, hPu⟩` from `hP`. Take `⟨hgH, hgu⟩` from `hg`. Establish `hPs : P * Pᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.mp hPu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hsP : Pᴴ * P = 1`. Use `Matrix.mem_unitaryGroup_iff'.mp hPu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hgs : g * gᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.mp hgu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hinv : P⁻¹ = Pᴴ` using `Matrix.inv_eq_left_inv hsP`. Establish `hgH' : gᴴ * Hpk k r * g = Hpk k r` using `hgH`. Establish `hcomm : g * Hpk k r = Hpk k r * g`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hJm : Jm ε = P * Hpk k r * Pᴴ`. Rewrite using `[← hJ]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hPs, Matrix.one_mul, Matrix.mul_assoc, hPs, Matrix.mul_one]`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hPs' : Pᴴ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `hsP`. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ hPu hgu) hPs'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hJm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * (g * Hpk k r) * Pᴴ := by`. Rewrite using `[hsP, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * (Hpk k r * g) * Pᴴ := by rw [hcomm]`. Use `_ = P * Hpk k r * (Pᴴ * P) * g * Pᴴ := by`. Rewrite using `[hsP, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = P * Hpk k r * Pᴴ * (P * g * Pᴴ) := by simp only [Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem conj_mem_Kset {ε : Fin (2 * r + k + 1) → Bool} {P g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : IsCayleyU k r ε P)
@@ -123,9 +121,9 @@ theorem conj_mem_Kset {ε : Fin (2 * r + k + 1) → Bool} {P g : Matrix (Fin (2 
 end Transport
 
 /- English proof (translation)
-Take `⟨P, hP, -, hw⟩` from `hlow`. Take `⟨S, ⟨hfin, hst⟩, hwS⟩` from `exists_finStable_of_mem_sSup (Kset ε) (fun h => σ (P⁻¹ * h * P)) (F := {S | IsKTypeOf ε (fun h => σ (P⁻¹ * h * P)) (lowK ε lam) S}) (fun S hS => ⟨hS.1, hS.2.1⟩) hw`. Use `⟨S, hfin, hwS, fun g hg x hx => ?_⟩` and prove the remaining obligations. Take `⟨hK, hback⟩` from `conj_mem_Kset hP hg`. Use `hst _ hK x hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `beta_reduce at this`. Rewrite `this` using `[hback]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isKFinHpk_of_lowUnit {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -142,7 +140,7 @@ theorem isKFinHpk_of_lowUnit {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {la
   rwa [hback] at this
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ w hHC hDS hlow`. Conclude with `hK k r ε lam H σ hHC hDS w (isKFinHpk_of_lowUnit hlow)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowSmooth_of_kFinSmooth (hK : PI.KFinSmooth) : PI.LowSmooth := by
   intro k r ε lam H _ _ _ σ w hHC hDS hlow

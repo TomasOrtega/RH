@@ -28,7 +28,7 @@ private theorem resLE_appTop_eq {X' Y' : Scheme.{u}} (h : Y' ⟶ X') (W' : X'.Op
   simp
 
 /- English proof (translation)
-Rewrite using `[resLE_appTop_eq]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem resLE_appTop_conj_topIso_eq_appLE {X' Y' : Scheme.{u}} (h : Y' ⟶ X') (W' : X'.Opens) (V' : Y'.Opens)
     (e : V' ≤ h ⁻¹ᵁ W') :
@@ -37,7 +37,7 @@ private theorem resLE_appTop_conj_topIso_eq_appLE {X' Y' : Scheme.{u}} (h : Y' �
   simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Establish `key : chartCoeffHom g = (h.appLE W V e).hom`. Simplify using `only [chartCoeffHom, hg, resLE_appTop_conj_topIso_eq_appLE]`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `h1 : chartEvalHom hW g (MvPolynomial.C a) = chartCoeffHom g a` using `by simp [chartEvalHom]`. Rewrite using `[RingHom.comp_apply, h1, key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartEvalHom_comp_C (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻¹ᵁ W)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme)
@@ -51,7 +51,7 @@ theorem chartEvalHom_comp_C (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻
   rw [RingHom.comp_apply, h1, key]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (chartEvalHom_comp_C hW h e g hg) a @[reducible]`.
+A detailed English derivation is pending.
 -/
 theorem chartEvalHom_C (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻¹ᵁ W)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme)
@@ -66,7 +66,7 @@ noncomputable def chartAlgebra (hW : IsAffineOpen W)
   (chartEvalHom hW g).toAlgebra
 
 /- English proof (translation)
-Set `: Algebra Γ(X, W) Γ(Y, V)` to `(h.appLE W V e).hom.toAlgebra`. Set `: Algebra (MvPolynomial n Γ(X, W)) Γ(Y, V)` to `chartAlgebra hW g`. Use `IsScalarTower.of_algebraMap_eq fun a => ?_` and prove the remaining obligations. Use `show (h.appLE W V e).hom a = chartEvalHom hW g (algebraMap Γ(X, W) (MvPolynomial n Γ(X, W)) a)`. Rewrite using `[MvPolynomial.algebraMap_eq, chartEvalHom_C hW h e g hg]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartAlgebra_isScalarTower (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻¹ᵁ W)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme)
@@ -81,7 +81,7 @@ theorem chartAlgebra_isScalarTower (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V �
   rw [MvPolynomial.algebraMap_eq, chartEvalHom_C hW h e g hg]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hf`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem algebraEtale_congr {R S : Type u} [CommRing R] [CommRing S] {f f' : R →+* S}
     (h : f = f') (hf : @Algebra.Etale R S _ _ f.toAlgebra) :
@@ -90,15 +90,15 @@ private theorem algebraEtale_congr {R S : Type u} [CommRing R] [CommRing S] {f f
   exact hf
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 private theorem algebraEtale_of_ringHomEtale {R S : Type u} [CommRing R] [CommRing S] (f : R →+* S)
     (h : RingHom.Etale f) : @Algebra.Etale R S _ _ f.toAlgebra := h
 
 /- English proof (translation)
-Set `: Algebra R S` to `f.toAlgebra`. Establish `: Algebra.Etale R S` using `hf`. Set `: Algebra R' R` to `(eR : R' →+* R).toAlgebra`. Set `: Algebra R S'` to `((eS : S →+* S').comp f).toAlgebra`. Set `: Algebra R' S'` to `((eS : S →+* S').comp (f.comp (eR : R' →+* R))).toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower R' R S'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: Algebra.Etale R' R'` using `inferInstance`. Establish `: Algebra.Etale R' R` using `Algebra.Etale.of_equiv (R := R') (A := R') (AlgEquiv.ofRingEquiv (f := eR) fun _ => rfl)`. Establish `: Algebra.Etale R S'` using `Algebra.Etale.of_equiv (R := R) (A := S) (AlgEquiv.ofRingEquiv (f := eS) fun _ => rfl)`. Conclude with `Algebra.Etale.comp R' R S'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem algebraEtale_comp_equiv {R R' S S' : Type u} [CommRing R] [CommRing R']
     [CommRing S] [CommRing S'] (eR : R' ≃+* R) (f : R →+* S) (eS : S ≃+* S')
@@ -118,14 +118,14 @@ private theorem algebraEtale_comp_equiv {R R' S S' : Type u} [CommRing R] [CommR
   exact Algebra.Etale.comp R' R S'
 
 /- English proof (translation)
-The claim follows from `congrArg (fun m : Γ(C, ⊤) ⟶ Γ(A, ⊤) => CommRingCat.Hom.hom m z) (Scheme.Hom.comp_appTop f k)`.
+A detailed English derivation is pending.
 -/
 private theorem comp_appTop_apply {A B C : Scheme.{u}} (f : A ⟶ B) (k : B ⟶ C) (z : Γ(C, ⊤)) :
     (f ≫ k).appTop.hom z = f.appTop.hom (k.appTop.hom z) :=
   congrArg (fun m : Γ(C, ⊤) ⟶ Γ(A, ⊤) => CommRingCat.Hom.hom m z) (Scheme.Hom.comp_appTop f k)
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun m : R ⟶ Γ(Spec S, ⊤) => CommRingCat.Hom.hom m a) (Scheme.ΓSpecIso_inv_naturality u)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem specMap_appTop_apply {R S : CommRingCat.{u}} (u : R ⟶ S) (a : R) :
     (Spec.map u).appTop.hom ((Scheme.ΓSpecIso R).inv.hom a) =
@@ -134,7 +134,7 @@ private theorem specMap_appTop_apply {R S : CommRingCat.{u}} (u : R ⟶ S) (a : 
     (Scheme.ΓSpecIso_inv_naturality u)).symm
 
 /- English proof (translation)
-Rewrite using `[Scheme.isoSpec_hom, Scheme.toSpecΓ_appTop]`. Conclude with `congrArg (fun m : Γ(Z, ⊤) ⟶ Γ(Z, ⊤) => CommRingCat.Hom.hom m a) (Scheme.ΓSpecIso Γ(Z, ⊤)).inv_hom_id`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isoSpec_hom_appTop_apply (Z : Scheme.{u}) [IsAffine Z] (a : Γ(Z, ⊤)) :
     Z.isoSpec.hom.appTop.hom ((Scheme.ΓSpecIso Γ(Z, ⊤)).inv.hom a) = a := by
@@ -148,7 +148,7 @@ private noncomputable def affineOpenIsoSpec {X' : Scheme.{u}} {W' : X'.Opens} (h
   W'.toScheme.isoSpec ≪≫ Scheme.Spec.mapIso W'.topIso.symm.op
 
 /- English proof (translation)
-Establish `: IsAffine W'.toScheme` using `hW`. Use `show (W'.toScheme.isoSpec.hom ≫ Spec.map W'.topIso.symm.hom).appTop.hom ((Scheme.ΓSpecIso Γ(X', W')).inv.hom a) = W'.topIso.inv.hom a`. Rewrite using `[comp_appTop_apply, specMap_appTop_apply, isoSpec_hom_appTop_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem affineOpenIsoSpec_hom_appTop_apply {X' : Scheme.{u}} {W' : X'.Opens}
     (hW : IsAffineOpen W') (a : Γ(X', W')) :
@@ -167,7 +167,7 @@ private noncomputable def affineSpaceOpenIsoSpecMvPolynomial {X' : Scheme.{u}} {
     AffineSpace.SpecIso m Γ(X', W')
 
 /- English proof (translation)
-Establish `key : (AffineSpace.SpecIso m Γ(X', W')).hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial m Γ(X', W')))).inv.hom (MvPolynomial.X j)) = AffineSpace.coord (Spec Γ(X', W')) j`. Rewrite using `[← AffineSpace.SpecIso_inv_appTop_coord, ← comp_appTop_apply, Iso.hom_inv_id]`. Simplify using the standard rewrite rules. Use `show ((AffineSpace.map m (affineOpenIsoSpec hW).hom) ≫ (AffineSpace.SpecIso m Γ(X', W')).hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial m Γ(X', W')))).inv.hom (MvPolynomial.X j)) = AffineSpace.coord W'.toScheme j`. Rewrite using `[comp_appTop_apply, key, AffineSpace.map_appTop_coord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_X {X' : Scheme.{u}} {W' : X'.Opens} (hW : IsAffineOpen W')
     (m : Type u) (j : m) :
@@ -187,7 +187,7 @@ private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_X {X' : Scheme.{u}
   rw [comp_appTop_apply, key, AffineSpace.map_appTop_coord]
 
 /- English proof (translation)
-Establish `h1 : (Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(X', W') →+* MvPolynomial m Γ(X', W')))).appTop.hom ((Scheme.ΓSpecIso Γ(X', W')).inv.hom a) = (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial m Γ(X', W')))).inv.hom (MvPolynomial.C a)` using `specMap_appTop_apply _ a`. Establish `key : (AffineSpace.SpecIso m Γ(X', W')).hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial m Γ(X', W')))).inv.hom (MvPolynomial.C a)) = (AffineSpace m (Spec Γ(X', W')) ↘ Spec Γ(X', W')).appTop.hom ((Scheme.ΓSpecIso Γ(X', W')).inv.hom a)`. Rewrite using `[← h1, ← comp_appTop_apply, ← AffineSpace.SpecIso_inv_over, ← Category.assoc, Iso.hom_inv_id, Category.id_comp]`. Use `show ((AffineSpace.map m (affineOpenIsoSpec hW).hom) ≫ (AffineSpace.SpecIso m Γ(X', W')).hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial m Γ(X', W')))).inv.hom (MvPolynomial.C a)) = (AffineSpace m W'.toScheme ↘ W'.toScheme).appTop.hom (W'.topIso.inv.hom a)`. Rewrite using `[comp_appTop_apply, key, ← comp_appTop_apply, AffineSpace.map_over, comp_appTop_apply, affineOpenIsoSpec_hom_appTop_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_C {X' : Scheme.{u}} {W' : X'.Opens} (hW : IsAffineOpen W')
     (m : Type u) (a : Γ(X', W')) :
@@ -217,11 +217,11 @@ private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_C {X' : Scheme.{u}
     affineOpenIsoSpec_hom_appTop_apply]
 
 /- English proof (translation)
-Set `: Algebra (MvPolynomial n Γ(X, W)) Γ(Y, V)` to `chartAlgebra hW g`. Establish `: IsAffine V.toScheme` using `hV`. Establish `: IsAffine W.toScheme` using `hW`. Establish `hEt : Etale (g ≫ (affineSpaceOpenIsoSpecMvPolynomial hW n).hom)` using `inferInstance`. Establish `hr : RingHom.Etale (g ≫ (affineSpaceOpenIsoSpecMvPolynomial hW n).hom).appTop.hom` using `(HasRingHomProperty.iff_of_isAffine (P := @Etale)).mp hEt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAlg` using `algebraEtale_of_ringHomEtale _ hr`. Establish `h2` using `algebraEtale_comp_equiv (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial n Γ(X, W)))).symm.commRingCatIsoToRingEquiv (g ≫ (affineSpaceOpenIsoSpecMvPolynomial hW n).hom).appTop.hom V.topIso.commRingCatIsoToRingEquiv hAlg`. Use `algebraEtale_congr ?_ h2` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Establish `hC : chartEvalHom hW g (MvPolynomial.C a) = chartCoeffHom g a` using `by simp [chartEvalHom] show V.topIso.hom.hom ((g ≫ (affineSpaceOpenIsoSpecMvPolynomial hW n).hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial n Γ(X, W)))).inv.hom (MvPolynomial.C a))) = chartEvalHom hW g (MvPolynomial.C a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[comp_appTop_apply, affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_C, ← comp_appTop_apply, hC]`. Both sides reduce to the same expression. Use `show V.topIso.hom.hom ((g ≫ (affineSpaceOpenIsoSpecMvPolynomial hW n).hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial n Γ(X, W)))).inv.hom (MvPolynomial.X j))) = chartEvalHom hW g (MvPolynomial.X j)`. Rewrite using `[comp_appTop_apply, affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_X]`. Simplify using `[chartEvalHom, chartVar]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartAlgebra_etale (hW : IsAffineOpen W) (hV : IsAffineOpen V)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme) [Etale g] :
@@ -252,7 +252,7 @@ theorem chartAlgebra_etale (hW : IsAffineOpen W) (hV : IsAffineOpen V)
     simp [chartEvalHom, chartVar]
 
 /- English proof (translation)
-Set `: Algebra (MvPolynomial n Γ(X, W)) Γ(Y, V)` to `chartAlgebra hW g`. Establish `: Algebra.Etale (MvPolynomial n Γ(X, W)) Γ(Y, V)` using `chartAlgebra_etale hW hV g`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartAlgebra_formallyEtale (hW : IsAffineOpen W) (hV : IsAffineOpen V)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme) [Etale g] :

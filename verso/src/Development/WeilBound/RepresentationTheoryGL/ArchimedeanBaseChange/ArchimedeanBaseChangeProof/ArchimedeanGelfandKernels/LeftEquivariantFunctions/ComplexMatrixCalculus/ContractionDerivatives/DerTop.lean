@@ -14,14 +14,14 @@ variable {n : ℕ}
 def Gpi (g : X n) : Finset (Md n) → Finset (Md n) → ℂ := fun B' A => F (fb n A) g B'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g B' A`. Simplify using `only [gamM, matL, Gpi, F, LinearMap.toMatrix_apply, AlgHom.toLinearMap_apply, Module.Basis.equivFun_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem gamM_fun : (fun g : X n => (gamM (n := n) (Matrix.of g) : Finset (Md n) → Finset (Md n) → ℂ)) = Gpi := by
   funext g B' A
   simp only [gamM, matL, Gpi, F, LinearMap.toMatrix_apply, AlgHom.toLinearMap_apply, Module.Basis.equivFun_apply]
 
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun B' => contDiff_pi.2 fun A => contDiff_pi.1 (key (fb n A)).1 B'`.
+A detailed English derivation is pending.
 -/
 theorem Gpi_contDiff : ContDiff ℂ ∞ (Gpi (n := n)) :=
   contDiff_pi.2 fun B' => contDiff_pi.2 fun A => contDiff_pi.1 (key (fb n A)).1 B'
@@ -31,7 +31,7 @@ def Lpi (n : ℕ) : X n →L[ℂ] (Finset (Md n) → Finset (Md n) → ℂ) :=
     (ContinuousLinearMap.proj B').comp (Classical.choose (key (n := n) (fb n A)).2)
 
 /- English proof (translation)
-Use `hasFDerivAt_pi.2 fun B' => ?_` and prove the remaining obligations. Use `hasFDerivAt_pi.2 fun A => ?_` and prove the remaining obligations. Establish `h` using `(Classical.choose_spec (key (n := n) (fb n A)).2).1`. Conclude with `(hasFDerivAt_pi'.1 h) B'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Gpi_hasFDerivAt : HasFDerivAt (Gpi (n := n)) (Lpi n) (one' n) := by
   refine hasFDerivAt_pi.2 fun B' => ?_
@@ -40,7 +40,7 @@ theorem Gpi_hasFDerivAt : HasFDerivAt (Gpi (n := n)) (Lpi n) (one' n) := by
   exact (hasFDerivAt_pi'.1 h) B'
 
 /- English proof (translation)
-Simplify using `only [Lpi, ContinuousLinearMap.pi_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply]`. Rewrite using `[(Classical.choose_spec (key (n := n) (fb n A)).2).2 B]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lpi_apply (B : X n) (B' A : Finset (Md n)) :
     Lpi n B B' A = (fb n).equivFun (Dop B (fb n A)) B' := by
@@ -48,7 +48,7 @@ theorem Lpi_apply (B : X n) (B' A : Finset (Md n)) :
   rw [(Classical.choose_spec (key (n := n) (fb n A)).2).2 B]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `B' A`. Simplify using `only [matL, LinearMap.toMatrix_apply, Module.Basis.equivFun_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matL_Dop (B : X n) : (matL n (Dop B) : Finset (Md n) → Finset (Md n) → ℂ) =
     fun B' A => (fb n).equivFun (Dop B (fb n A)) B' := by
@@ -56,7 +56,7 @@ theorem matL_Dop (B : X n) : (matL n (Dop B) : Finset (Md n) → Finset (Md n) �
   simp only [matL, LinearMap.toMatrix_apply, Module.Basis.equivFun_apply]
 
 /- English proof (translation)
-Simplify using `only [Ers, matL, creL, annL, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `LinearMap.toMatrix_mul _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matL_Ers (r s : Md n) : matL n (Ers r s) = creL n (Pi.single r 1) * annL n (Pi.single s 1) := by
   simp only [Ers, matL, creL, annL, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.coe_mk,
@@ -64,7 +64,7 @@ theorem matL_Ers (r s : Md n) : matL n (Ers r s) = creL n (Pi.single r 1) * annL
   exact LinearMap.toMatrix_mul _ _ _
 
 /- English proof (translation)
-Simplify using `only [Dop, map_sum, map_smul, matL_Ers]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matL_Dop_sum (B : X n) : matL n (Dop B) = ∑ r, ∑ s, B r s • (creL n (Pi.single r 1) * annL n (Pi.single s 1)) := by
   simp only [Dop, map_sum, map_smul, matL_Ers]
@@ -80,16 +80,16 @@ section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Conclude with `(funext fun B' => funext fun A => Lpi_apply B B' A).trans ((matL_Dop B).symm.trans (matL_Dop_sum B))`.
+A detailed English derivation is pending.
 -/
 theorem Lpi_eq {n : ℕ} (B : Matrix (Md n) (Md n) ℂ) :
     (Lpi n B : Finset (Md n) → Finset (Md n) → ℂ) = ∑ r, ∑ s, B r s • (creL n (Pi.single r 1) * annL n (Pi.single s 1)) := by
   exact (funext fun B' => funext fun A => Lpi_apply B B' A).trans ((matL_Dop B).symm.trans (matL_Dop_sum B))
 
 /- English proof (translation)
-Use `⟨Lpi n, ?_, Lpi_eq⟩` and prove the remaining obligations. Establish `h` using `Gpi_hasFDerivAt (n := n)`. Rewrite `h` using `[← gamM_fun]`. Establish `h1 : (1 : Matrix (Md n) (Md n) ℂ) = one' n`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[one', Matrix.one_apply]`. Rewrite using `[h1]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamM_hasFDerivAt (n : ℕ) : ∃ L : type_of% (fderiv ℂ (gamM (n := n)) 1), HasFDerivAt (gamM (n := n)) L 1 ∧
     ∀ B : Matrix (Md n) (Md n) ℂ, L B = ∑ r, ∑ s, B r s • (creL n (Pi.single r 1) * annL n (Pi.single s 1)) := by
@@ -103,7 +103,7 @@ theorem gamM_hasFDerivAt (n : ℕ) : ∃ L : type_of% (fderiv ℂ (gamM (n := n)
   exact h
 
 /- English proof (translation)
-Establish `h` using `Gpi_contDiff (n := n)`. Rewrite `h` using `[← gamM_fun]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamM_contDiff (n : ℕ) : ContDiff ℂ ∞ (gamM (n := n)) := by
   have h := Gpi_contDiff (n := n)
@@ -111,7 +111,7 @@ theorem gamM_contDiff (n : ℕ) : ContDiff ℂ ∞ (gamM (n := n)) := by
   exact h
 
 /- English proof (translation)
-Introduce `n`. Take `⟨L, hL, hv⟩` from `gamM_hasFDerivAt n`. Use `⟨gamM_contDiff n, fun B => ?_⟩` and prove the remaining obligations. Rewrite using `[hL.fderiv, hv B]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamDer : GamDer := by
   intro n

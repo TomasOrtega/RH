@@ -7,7 +7,7 @@ open scoped TensorProduct
 open GlobalTheory.LKInvGood
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LocAzumaya.locOrder_isAzumaya) | (exact GlobalTheory.LocAzumaya.locOrder_isAzumaya) | (intros; apply GlobalTheory.LocAzumaya.locOrder_isAzumaya <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.localOrderTensorPadic_isAzumaya_almost_all : ∀ (F B : Type) [Field F] [NumberField F] [Ring B] [Algebra F B] [Algebra ℚ B]
     [IsScalarTower ℚ F B] [Algebra.IsCentral F B] [IsSimpleRing B] [FiniteDimensional F B]

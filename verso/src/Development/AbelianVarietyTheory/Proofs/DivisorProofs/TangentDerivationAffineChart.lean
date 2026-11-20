@@ -23,7 +23,7 @@ namespace GlobalTheory.KSPkg
 open GlobalTheory.DeRham GlobalTheory.Cris
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R')
     (g : R' →+* R'') : spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -31,27 +31,27 @@ theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing 
   rfl
 
 /- English proof (translation)
-Introduce `PP E _ _ _ H Dw l Xo c TF U δ K _ _ P hU y' hU' hs hev`. Establish `hred : spMap (GlobalTheory.FlagTan.red c K).toRingHom ≫ y' = frX P`. Apply `GlobalTheory.FlagMod.xF_ext (Y := TF.Y)` to reduce the goal to its premises. Rewrite using `[Category.assoc, hs, spMap_comp_spMap]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `GlobalTheory.FlagMod.frX_snd P`. Establish `h1 : ⊤ ≤ (spMap (GlobalTheory.FlagTan.red c K).toRingHom ≫ (y' ≫ TF.Y.j)) ⁻¹ᵁ U.1` using `GlobalTheory.FlagMod.le_preimage_comp _ hU'`. Rewrite using `[Category.assoc, ← GlobalTheory.FlagMod.spMap_ev _ U.2 h1, ← GlobalTheory.FlagMod.spMap_ev _ U.2 hU, GlobalTheory.FlagMod.ev_spMap _ _ _ hU' h1]`. Use `congrArg (fun f => spMap f ≫ (U.2 : IsAffineOpen U.1).fromSpec) ?_` and prove the remaining obligations. Use extensionality with `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, hev r]`. Simplify using `[GlobalTheory.FlagTan.red]`. Establish `hx : GlobalTheory.FlagTan.IsTanX P (y' ≫ pullback.fst _ _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, spMap_comp_spMap]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← Category.assoc, hred, GlobalTheory.FlagMod.frX_fst]`. Establish `P5` using `PP.p5`. Take `⟨A', _, π', hπ'⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback Xo.univ.t.G (y' ≫ pullback.fst _ _)`. Take `⟨A, _, j, hj⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A' (GlobalTheory.DeRham.epsRed K)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ : IsGrpPullback A Xo.univ.t.G P.x (j ≫ π')`. Use `hj.comp hπ'` as an intermediate fact. Rewrite using `[← hx.2]`. Conclude with `this`. Establish `hUn` using `GlobalTheory.ObjDim.isAbelianScheme Xo.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `GlobalTheory.ObjDim.smoothOfRelativeDimension Xo.univ`. Establish `hA` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hUn hπ`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 hg`. Establish `hA'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hUn hπ'`. Establish `gA'` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ'.1 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsCommMonObj A` using `hA.comm`. Take `⟨a', ha'⟩` from `GlobalTheory.T.exists_ringAction_of_isGrpPullback Xo.univ.t.act hπ'`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_ringAction_of_isGrpPullback Xo.univ.t.act hπ`. Establish `hc : ∀ z, (a.act z).left ≫ j = j ≫ (a'.act z).left` using `fun z => by`. Apply `hπ'.1.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, ha' z, ← Category.assoc j π', ← ha z]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hj.1.w, ← Category.assoc, Over.w]`. Take `⟨ψ, hpol, hiso, hperf, hlag⟩` from `GlobalTheory.T.exists_polarizationCrystalForm_perfect_selfAnnihilating P5 Xo hπ`. Establish `hadj` using `GlobalTheory.T.polarizationCrystalForm_adjoint_conj_action P5 Xo hπ a ha hpol`. Establish `hK` using `GlobalTheory.T.kodairaSpencerUniqueValue_abelianScheme_field P5 hj hA' gA'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ub, hu, ht, he, hbasis⟩` from `GlobalTheory.T.exists_frame_tangentVectors_of_isGrpPullback P hπ a ha`. Establish `hL` using `(P5.2.1 K A _ hA gA).1`. Use `choose hb hbl using fun k : (Σ σ : E →+* ℂ, Fin (Dw.mult σ)) => hL.2 (ub k.1 k.2) (ht k.1 k.2)`. Take `⟨hspan, hind⟩` from `GlobalTheory.T.frameLifts_basis_deRhamHomology_mod_hodgeFiltration P5 P hπ ub hu hb hbl`. Set `χ : (E →+* ℂ) → 𝓞 E →+* K` to `fun σ => (algebraMap c.F K).comp (embK c σ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heig : ∀ k (z : 𝓞 E), act (dp0 K) (𝟙 _) a z (hb k) - χ k.1 z • hb k ∈ Fil A` using `fun k z => by`. Use `a.hom z` as an intermediate fact. Rewrite using `[act_apply]`. Establish `h1` using `(hbl k).push (a.act z)`. Rewrite `h1` using `[he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h1.sub_mem ((hbl k).smul _)`. Establish `hrow : ∀ (τ : GlobalTheory.FlagTan.psiSet H) (a₀ : Fin (Dw.mult (conjEmb τ.1))), ∃ w, GlobalTheory.FlagTan.IsKSRow hj ψ hb ⟨conjEmb τ.1, a₀⟩ w` using `fun τ a₀ => by`. Take `⟨_, w, -, hw⟩` from `GlobalTheory.T.kodairaSpencerRow_dual_eigenvector_mem_span_field hj a (fun z => H.bar z) ψ hiso hlag hperf hadj hK (fun z f w hw => GlobalTheory.T.isKodairaSpencerValue_endomorphism_lift hj a a' hc z hw) χ ub hb hspan hind heig hbasis τ.1 (conjEmb τ.1) (fun z => by simp only [χ, …`. Conclude with `⟨w, hw⟩`. Conclude with `⟨A, inferInstance, A', inferInstance, j ≫ π', π', j, hj, ψ, ub, hb, _, hπ, hπ', rfl, hpol, hu, fun σ k => hbl ⟨σ, k⟩, hrow, hA, gA, hA', gA', LB.isLB_pull Xo.univ.t.PP.isLB _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ksPackage : GlobalTheory.CovTop.Hypotheses₂ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) (δ : Γ(TF.Y.X, U.1) → Γ(TF.Y.X, U.1)) (K : Type) [Field K] [Algebra c.F K] (P : FrPt Xo c K) (hU : ⊤ ≤ (frX P ≫ TF.Y.j) ⁻¹ᵁ U.1) (y' : Sp (DualNumber K) ⟶ Xo.XF c) (hU' : ⊤ ≤ (y' ≫ TF.Y.j) ⁻¹ᵁ U.1), y' ≫ pullback.snd _ _ = spMap (algebraMap c.F (DualNumber K)) → (∀ r, ev (y' ≫ TF.Y.j) U.1 hU' r = TrivSqZeroExt.inl (ev (frX P ≫ TF.Y.j) U.1 hU r) + TrivSqZeroExt.inr (ev (frX P ≫ TF.Y.j) U.1 hU (δ r))) → ∃ (A : Over (Sp K)) (_ : GrpObj A) (A' : Over (Sp (DualNumber K))) (_ : GrpObj A') (π : A.left ⟶ Xo.univ.t.G.left) (π' : A'.left ⟶ Xo.univ.t.G.left) (i : A.left ⟶ A'.left) (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i) (ψ : LinearMap.BilinForm K (GlobalTheory.DeRham.HdR A)) (ub : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → (epsR K ⟶ A)) (hb : (Σ σ : E →+* ℂ, Fin (Dw.mult σ)) → GlobalTheory.DeRham.HdR A) (g : ℕ), IsGrpPullback A Xo.univ.t.G P.x π ∧ IsGrpPullback A' Xo.univ.t.G (y' ≫ pullback.fst _ _) π' ∧ i ≫ π' = π ∧ GlobalTheory.DeRham.IsPolForm (GlobalTheory.Cris.dp0 K) (𝟙 _) A (Xo.univ.t.PP.L.pull π) ψ ∧ (∀ σ k, (ub σ k).left ≫ π = P.u σ k) ∧ (∀ σ k, GlobalTheory.DeRham.IsLieImage (hb ⟨σ, k⟩) (ub σ k)) ∧ (∀ (τ : GlobalTheory.FlagTan.psiSet H) (a : Fin (Dw.mult (conjEmb τ.1))), ∃ w, GlobalTheory.FlagTan.IsKSRow h ψ hb ⟨conjEmb τ.1, a⟩ w) ∧ IsAbelianScheme A ∧ SmoothOfRelativeDimension g A.hom ∧ IsAbelianScheme A' ∧ SmoothOfRelativeDimension g A'.hom ∧ (Xo.univ.t.PP.L.pull π).IsLB := by
   intro PP E _ _ _ H Dw l Xo c TF U δ K _ _ P hU y' hU' hs hev

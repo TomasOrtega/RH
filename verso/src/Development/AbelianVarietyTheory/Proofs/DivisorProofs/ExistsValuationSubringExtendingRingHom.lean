@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.ValExt
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨by simp, fun J a hJ ha haJ => ?_⟩` and prove the remaining obligations. Establish `ha' : h a ≠ 0` using `fun e => ha (RingHom.mem_ker.2 e)`. Establish `hinv` using `hloc a ha'`. Establish `ha0 : (a : Ω) ≠ 0` using `fun e => ha' (by rw [show a = 0 from Subtype.ext e, map_zero])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : A) = ⟨(a : Ω)⁻¹, hinv⟩ * a` using `Subtype.ext (by simp [inv_mul_cancel₀ ha0])`. Rewrite using `[this]`. Conclude with `J.mul_mem_left _ haJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_isMaximal (Ω k : Type) [Field Ω] [Field k] (A : Subring Ω) (h : A →+* k)
     (hloc : ∀ a : A, h a ≠ 0 → (a : Ω)⁻¹ ∈ A) : (RingHom.ker h).IsMaximal := by
@@ -19,29 +19,27 @@ theorem ker_isMaximal (Ω k : Type) [Field Ω] [Field k] (A : Subring Ω) (h : A
   exact J.mul_mem_left _ haJ
 
 /- English proof (translation)
-Set `p` to `RingHom.ker h`. Use `haveI : p.IsPrime := RingHom.ker_isPrime h`. Set `L` to `Localization.AtPrime p`. Establish `hs : ∀ s : p.primeCompl, h s ≠ 0` using `fun s e => s.2 (RingHom.mem_ker.2 e)`. Establish `hs' : ∀ s : p.primeCompl, ((s : A) : Ω) ≠ 0` using `fun s e => hs s (by rw [show (s : A) = 0 from Subtype.ext e, map_zero])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ι : L →+* Ω` to `IsLocalization.lift (M := p.primeCompl) (g := A.subtype) (fun s => (hs' s).isUnit)`. Set `hL : L →+* k` to `IsLocalization.lift (M := p.primeCompl) (g := h) (fun s => (hs s).isUnit)`. Establish `hι : ∀ a : A, ι (algebraMap A L a) = a` using `fun a => IsLocalization.lift_eq _ _`. Establish `hhL : ∀ a : A, hL (algebraMap A L a) = h a` using `fun a => IsLocalization.lift_eq _ _`. Establish `hmk : ∀ (a : A) (s : p.primeCompl), ι (IsLocalization.mk' L a s) * ((s : A) : Ω) = a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a s`. Rewrite using `[← hι, ← map_mul, IsLocalization.mk'_spec, hι]`. Establish `hmkL : ∀ (a : A) (s : p.primeCompl), hL (IsLocalization.mk' L a s) * h s = h a`. Introduce `a s`. Rewrite using `[← hhL, ← map_mul, IsLocalization.mk'_spec, hhL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ι`. Introduce `z z' e`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl z`. Take `⟨⟨a', s'⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl z'`. Rewrite using `[IsLocalization.mk'_eq_iff_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `hmk a s`. Establish `h2` using `hmk a' s'`. Simplify using `only [Subring.coe_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2, e]`. Expand and normalize the polynomial expressions, which then agree. Set `B : Subring Ω` to `ι.range`. Set `e : L ≃+* B` to `RingEquiv.ofBijective ι.rangeRestrict ⟨fun a b e' => hinj (congrArg Subtype.val e'), ι.rangeRestrict_surjective⟩`. Establish `hAB : A ≤ B` using `fun a ha => ⟨algebraMap A L ⟨a, ha⟩, hι _⟩`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, hAB, hL.comp e.symm.toRingHom, fun b hb => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩ : ∃ z, e z = b` from `e.surjective b`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.symm_apply_apply] at hb`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl z`. Establish `ha : h a ≠ 0` using `fun e0 => hb (by`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hmkL a s` as an intermediate fact. Rewrite `this` using `[e0]`. Conclude with `(mul_eq_zero.1 this).resolve_right (hs s))`. Set `t : p.primeCompl` to `⟨a, fun e0 => ha (RingHom.mem_ker.1 e0)⟩`. Use `⟨IsLocalization.mk' L (s : A) t, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ι _ = (ι (IsLocalization.mk' L a s))⁻¹`. Establish `h1` using `hmk a s`. Establish `h2` using `hmk (s : A) t`. Establish `ha0 : ((a : A) : Ω) ≠ 0` using `hs' t`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `: ι (IsLocalization.mk' L (s : A) t) * ι (IsLocalization.mk' L a s) * (((a : A) : Ω) * ((s : A) : Ω)) = 1 * (((a : A) : Ω) * ((s : A) : Ω))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [t]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h1, h2]; ring`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_right_cancel₀ (mul_ne_zero ha0 (hs' s)) this`. Establish `: e.symm (Subring.inclusion hAB a) = algebraMap A L a`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `Subtype.ext (hι a).symm`.
-
-Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, this, hhL]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext_local (Ω k : Type) [Field Ω] [Field k] (A : Subring Ω) (h : A →+* k) :
     ∃ (B : Subring Ω) (hAB : A ≤ B) (h' : B →+* k), (∀ b : B, h' b ≠ 0 → (b : Ω)⁻¹ ∈ B) ∧
@@ -107,15 +105,11 @@ theorem exists_ext_local (Ω k : Type) [Field Ω] [Field k] (A : Subring Ω) (h 
     simp only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, this, hhL]
 
 /- English proof (translation)
-Use `haveI := ker_isMaximal Ω k A h hloc`. Set `K₀` to `A ⧸ RingHom.ker h`. Set `K₁` to `(Algebra.adjoin A {y}) ⧸ M`. Use `letI : Field K₁ := Ideal.Quotient.field M`. Use `letI : Field K₀ := Ideal.Quotient.field _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `f₀ : K₀ →+* K₁` to `Ideal.quotientMap M (algebraMap A (Algebra.adjoin A {y})) hM`. Use `letI : Algebra K₀ K₁ := f₀.toAlgebra`. Set `hb : K₀ →+* k` to `Ideal.Quotient.lift (RingHom.ker h) h (fun a ha => ha)`. Use `letI : Algebra K₀ k := hb.toAlgebra`. Use `haveI : IsScalarTower A K₀ K₁ := IsScalarTower.of_algebraMap_eq (fun a => rfl)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.FiniteType A (Algebra.adjoin A {y}) := .adjoin_of_finite (Set.finite_singleton y)`. Use `haveI : Algebra.FiniteType A K₁ := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ A M) Ideal.Quotient.mk_surjective`. Use `haveI : Algebra.FiniteType K₀ K₁ := Algebra.FiniteType.of_restrictScalars_finiteType A K₀ K₁`. Use `haveI : Module.Finite K₀ K₁ := finite_of_finite_type_of_isJacobsonRing K₀ K₁`. Use `haveI : Algebra.IsIntegral K₀ K₁ := Algebra.IsIntegral.of_finite K₀ K₁`.
-
-Use `haveI : Module.IsTorsionFree K₀ K₁ := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : Module.IsTorsionFree K₀ k := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : Algebra.IsAlgebraic K₀ K₁ := Algebra.IsIntegral.isAlgebraic`. Set `L : K₁ →ₐ[K₀] k` to `IsAlgClosed.lift`. Use `⟨L.toRingHom.comp (Ideal.Quotient.mk M), fun a => ?_⟩` and prove the remaining obligations.
-
-Establish `e1 : Ideal.Quotient.mk M (algebraMap A (Algebra.adjoin A {y}) a) = algebraMap K₀ K₁ (Ideal.Quotient.mk _ a)` using `rfl`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, e1, L.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ext_adjoin (Ω k : Type) [Field Ω] [Field k] [IsAlgClosed k] (A : Subring Ω) (h : A →+* k)
     (hloc : ∀ a : A, h a ≠ 0 → (a : Ω)⁻¹ ∈ A) (y : Ω) (M : Ideal (Algebra.adjoin A {y})) [M.IsMaximal]
@@ -147,21 +141,19 @@ theorem exists_ext_adjoin (Ω k : Type) [Field Ω] [Field k] [IsAlgClosed k] (A 
   rfl
 
 /- English proof (translation)
-Establish `hmax : (RingHom.ker h).IsMaximal`. Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨by simp, fun J a hJ ha haJ => ?_⟩` and prove the remaining obligations. Establish `ha' : h a ≠ 0` using `fun e => ha (RingHom.mem_ker.2 e)`. Establish `hinv` using `hloc a ha'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : (a : Ω) ≠ 0` using `fun e => ha' (by rw [show a = 0 from Subtype.ext e, map_zero])`. Establish `: (1 : A) = ⟨(a : Ω)⁻¹, hinv⟩ * a` using `Subtype.ext (by simp [inv_mul_cancel₀ ha0])`. Rewrite using `[this]`. Conclude with `J.mul_mem_left _ haJ`. Distinguish the cases in `hT : (RingHom.ker h).map (algebraMap A (Algebra.adjoin A {x})) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Equip the data with the indicated structure.
 
-Use `letI := invertibleOfNonzero hx`. Establish `htop : (RingHom.ker h).map (algebraMap A (Algebra.adjoin A {x})) ⊔ Ideal.span {⟨x, Algebra.subset_adjoin rfl⟩} = ⊤` using `by rw [hT]; exact top_sup_eq _`. Take `⟨p, hp, hpx⟩` from `Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top x _ hmax.ne_top htop`. Establish `hlc : h p.leadingCoeff ≠ 0`. Introduce `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `sub_mem (RingHom.mem_ker.2 e) hp`. Simplify using `only [sub_sub_cancel] at h1`. Conclude with `hmax.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hu : IsUnit p.leadingCoeff`. Establish `hinv` using `hloc _ hlc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (p.leadingCoeff : Ω) ≠ 0` using `fun e => hlc (by`. Rewrite using `[show p.leadingCoeff = 0 from Subtype.ext e, map_zero])`. Conclude with `IsUnit.of_mul_eq_one (⟨_, hinv⟩ : A) (Subtype.ext (by simp [mul_inv_cancel₀ h0]))`. Establish `hint : IsIntegral A x⁻¹`. Use `⟨Polynomial.C (hu.unit⁻¹ : Aˣ).1 * p, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one (by simp)`. Rewrite using `[← Polynomial.aeval_def, map_mul]`. Rewrite `hpx` using `[invOf_eq_inv]`. Rewrite using `[hpx, mul_zero]`. Use `haveI : Algebra.IsIntegral A (Algebra.adjoin A {x⁻¹}) := Algebra.IsIntegral.adjoin (by simpa using hint)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker (algebraMap A (Algebra.adjoin A {x⁻¹})) ≤ RingHom.ker h`. Introduce `a ha`. Establish `e` using `congrArg Subtype.val (RingHom.mem_ker.1 ha)`. Establish `: a = 0` using `Subtype.ext (by simpa using e)`. Rewrite using `[this]`.
-
-Conclude with `zero_mem _`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (RingHom.ker h) hker`. Conclude with `⟨x⁻¹, Or.inr rfl, Q, hQ, hQc.ge⟩`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hT`. Conclude with `⟨x, Or.inl rfl, M, hM, Ideal.map_le_iff_le_comap.1 hle⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dichotomy (Ω k : Type) [Field Ω] [Field k] (A : Subring Ω) (h : A →+* k)
     (hloc : ∀ a : A, h a ≠ 0 → (a : Ω)⁻¹ ∈ A) (x : Ω) (hx : x ≠ 0) :
@@ -210,35 +202,33 @@ theorem dichotomy (Ω k : Type) [Field Ω] [Field k] (A : Subring Ω) (h : A →
     exact ⟨x, Or.inl rfl, M, hM, Ideal.map_le_iff_le_comap.1 hle⟩
 
 /- English proof (translation)
-Introduce `W Ω k _ _ _ _ j hj g`. Set `S : Set (Subring (Ω × k))` to `{G | (∀ a ∈ G, ∀ b ∈ G, a.1 = b.1 → a.2 = b.2) ∧ ∀ w, (j w, g w) ∈ G}`. Establish `G0 : (RingHom.prod j g).range ∈ S`. Use `⟨?_, fun w => ⟨w, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩ _ ⟨w', rfl⟩ e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: w = w'` using `hj e`. Substitute `this` using the available equality. Both sides reduce to the same expression. Take `⟨G, -, hG⟩` from `zorn_le_nonempty₀ S (fun c hcS hc y hy => by`. Establish `hne : c.Nonempty` using `⟨y, hy⟩`.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : DirectedOn (· ≤ ·) c` using `hc.directedOn`. Use `⟨sSup c, ⟨?_, fun w => le_sSup hy ((hcS hy).2 w)⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Introduce `a ha b hb e`. Take `⟨s₁, hs₁, ha₁⟩` from `(Subring.mem_sSup_of_directedOn hne hd).1 ha`. Take `⟨s₂, hs₂, hb₂⟩` from `(Subring.mem_sSup_of_directedOn hne hd).1 hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₃, hs₃, h13, h23⟩` from `hd s₁ hs₁ s₂ hs₂`. Conclude with `(hcS hs₃).1 a (h13 ha₁) b (h23 hb₂) e) _ G0`. Take `⟨⟨hGf, hGb⟩, hGm⟩` from `hG`. Set `π : G →+* Ω` to `(RingHom.fst Ω k).comp G.subtype`. Establish `hπ : Function.Injective π` using `fun p q e => Subtype.ext (Prod.ext e (hGf p.1 p.2 q.1 q.2 e))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A : Subring Ω` to `π.range`. Set `e : G ≃+* A` to `RingEquiv.ofBijective π.rangeRestrict ⟨fun a b e' => hπ (congrArg Subtype.val e'), π.rangeRestrict_surjective⟩`. Set `h : A →+* k` to `((RingHom.snd Ω k).comp G.subtype).comp e.symm.toRingHom`. Establish `hA : ∀ a : A, ((a : Ω), h a) ∈ G` using `fun a => by`. Establish `e1 : π (e.symm a) = a` using `congrArg Subtype.val (e.apply_symm_apply a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((a : Ω), h a) = ((e.symm a : G) : Ω × k)` using `Prod.ext e1.symm rfl`. Rewrite using `[this]`. Conclude with `(e.symm a).2`. Establish `hG2 : ∀ p ∈ G, ∃ a : A, (a : Ω) = p.1 ∧ h a = p.2` using `fun p hp => ⟨π.rangeRestrict ⟨p, hp⟩, rfl, by show ((e.symm (e ⟨p, hp⟩) : G) : Ω × k).2 = p.2`. Rewrite using `[e.symm_apply_apply]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ext_le : ∀ (B : Subring Ω) (hAB : A ≤ B) (h' : B →+* k), (∀ a : A, h' (Subring.inclusion hAB a) = h a) → B ≤ A`. Introduce `B hAB h' hh' b hb`. Set `G' : Subring (Ω × k)` to `(RingHom.prod B.subtype h').range`. Establish `hG' : G' ∈ S`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨b₁, rfl⟩ _ ⟨b₂, rfl⟩ e'`. Establish `: b₁ = b₂` using `Subtype.ext e'`. Substitute `this` using the available equality. Both sides reduce to the same expression. Take `⟨a, ha1, ha2⟩` from `hG2 _ (hGb w)`.
+Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Subring.inclusion hAB a, ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext ha1 ((hh' a).trans ha2)`. Establish `hle : G ≤ G'` using `fun p hp => by`. Take `⟨a, ha1, ha2⟩` from `hG2 p hp`. Conclude with `⟨Subring.inclusion hAB a, Prod.ext ha1 ((hh' a).trans ha2)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmem : ((b : Ω), h' ⟨b, hb⟩) ∈ G` using `hGm hG' hle ⟨⟨b, hb⟩, rfl⟩`. Conclude with `⟨⟨_, hmem⟩, rfl⟩`. Establish `hloc : ∀ a : A, h a ≠ 0 → (a : Ω)⁻¹ ∈ A`. Introduce `a ha`. Take `⟨B, hAB, h', hB, hh'⟩` from `exists_ext_local Ω k A h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hB (Subring.inclusion hAB a) (by rw [hh']; exact ha)` as an intermediate fact. Conclude with `ext_le B hAB h' hh' this`. Establish `hval : ∀ x : Ω, x ∈ A ∨ x⁻¹ ∈ A`. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `Or.inl (hx ▸ zero_mem A)`. Take `⟨y, hy, M, hM, hMc⟩` from `dichotomy Ω k A h hloc x hx`. Take `⟨h', hh'⟩` from `exists_ext_adjoin Ω k A h hloc y M hMc`. Set `B : Subring Ω` to `(Algebra.adjoin A {y}).toSubring`. Establish `hAB : A ≤ B` using `fun a ha => (Algebra.adjoin A {y}).algebraMap_mem (⟨a, ha⟩ : A)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Establish `hyA : y ∈ A` using `ext_le B hAB h' hh' (Algebra.subset_adjoin rfl)`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `Or.inl hyA`. Conclude with `Or.inr hyA`. Set `U : ValuationSubring Ω` to `{ A with mem_or_inv_mem' := hval }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU : ∀ w, j w ∈ U` using `fun w => by`. Take `⟨a, ha1, -⟩` from `hG2 _ (hGb w)`. Use `show j w ∈ A`. Rewrite using `[← show (a : Ω) = j w from ha1]`. Conclude with `a.2`.
-
-Use `⟨U, hU, h.comp (Subring.inclusion (le_refl A)), fun w => ?_⟩` and prove the remaining obligations. Establish `m1` using `hA ⟨j w, hU w⟩`. Conclude with `hGf _ m1 _ (hGb w) rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_ext : ∀ (W Ω k : Type) [CommRing W] [Field Ω] [Field k] [IsAlgClosed k]
     (j : W →+* Ω), Function.Injective j → ∀ g : W →+* k, ∃ (U : ValuationSubring Ω) (hU : ∀ w, j w ∈ U)

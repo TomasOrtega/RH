@@ -17,7 +17,7 @@ def twistedJump (y : ℤ) : ℤ :=
   if s then -(⌊P.e j⌋ + y + ((R.t : ℤ) + 1) / 2) else ⌊P.e j⌋ + y - ((R.t : ℤ) + 1) / 2
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `R.t_odd`. Apply the tactic sequence `cases s <;>`. Apply the tactic sequence `simp only [jT2, jW, cloud, lows, twistedJump, Multiset.map_add, Multiset.map_map, Function.comp_def, ↓reduceIte, Bool.false_eq_true] <;>`. Apply the tactic sequence `congr 1 <;>`. Apply the tactic sequence `refine Multiset.map_congr rfl fun i _ => ?_ <;>`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -33,7 +33,7 @@ theorem twistedDualJumps_eq_hodgeTateJump_images : jT2 P j s =
     omega
 
 /- English proof (translation)
-The claim follows from `|twistedJump P j s (-⌊P.b i⌋)| ≤ ((⌊η⌋₊ + R.t + 2 : ℕ) : ℤ) := by obtain ⟨zb, hzb⟩ := P.b_int i obtain ⟨ze, hze⟩ := P.e_int j obtain ⟨q, hq⟩ := R.t_odd have hb : ⌊P.b i⌋ = zb := by rw [hzb]; exact Int.floor_intCast zb have he : ⌊P.e j⌋ = ze := by rw [hze]; exact Int.floor_intCast …`.
+A detailed English derivation is pending.
 -/
 theorem twistedJump_low_small (η : ℝ) (h : ∀ i, |((P.b i - P.e j : ℚ) : ℝ)| ≤ η) (i : Fin R.m) :
     |twistedJump P j s (-⌊P.b i⌋)| ≤ ((⌊η⌋₊ + R.t + 2 : ℕ) : ℤ) := by
@@ -56,9 +56,9 @@ theorem twistedJump_low_small (η : ℝ) (h : ∀ i, |((P.b i - P.e j : ℚ) : �
   cases s <;> simp only [↓reduceIte, Bool.false_eq_true] <;> push_cast <;> constructor <;> omega
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `R.t_odd`. Establish `hV : 0 ≤ ⌊P.v i⌋` using `Int.floor_nonneg.mpr (hv i)`. Unfold `twistedJump`. Unfold `szT at h`. Rewrite using `[abs_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases s <;> simp only [↓reduceIte, Bool.false_eq_true] at h ⊢ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem twistedJump_cloud_large (n : ℕ) (hv : ∀ i, 0 ≤ P.v i) (h : (n : ℤ) < szT P j s)
     (i : Fin (R.k - 1)) : ¬ |twistedJump P j s ⌊P.v i⌋| ≤ (n : ℤ) := by
@@ -72,11 +72,11 @@ theorem twistedJump_cloud_large (n : ℕ) (hv : ∀ i, 0 ≤ P.v i) (h : (n : �
 end Count
 
 /- English proof (translation)
-Rewrite using `[twistedDualJumps_eq_hodgeTateJump_images, Multiset.filter_add, Multiset.card_add]`. Establish `hc : ((Finset.univ : Finset (Fin (R.k - 1))).val.map (fun i => twistedJump P j s ⌊P.v i⌋)).filter (fun u : ℤ => |u| ≤ ((⌊η⌋₊ + R.t + 2 : ℕ) : ℤ)) = 0`. Rewrite using `[Multiset.filter_eq_nil]`. Introduce `u hu`. Take `⟨i, _, rfl⟩` from `Multiset.mem_map.mp hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `twistedJump_cloud_large P j s _ hv hs i`. Establish `hl : ((Finset.univ : Finset (Fin R.m)).val.map (fun i => twistedJump P j s (-⌊P.b i⌋))).filter (fun u : ℤ => |u| ≤ ((⌊η⌋₊ + R.t + 2 : ℕ) : ℤ)) = (Finset.univ : Finset (Fin R.m)).val.map (fun i => twistedJump P j s (-⌊P.b i⌋))`. Rewrite using `[Multiset.filter_eq_self]`. Introduce `u hu`. Take `⟨i, _, rfl⟩` from `Multiset.mem_map.mp hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `twistedJump_low_small P j s η hb i`. Rewrite using `[hc, hl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_small_twistedDualJumps_eq_rank {R : Ranks} (P : HCParam R) (j : Fin R.m) (s : Bool) (η : ℝ)
     (hv : ∀ i, 0 ≤ P.v i) (hb : ∀ i, |((P.b i - P.e j : ℚ) : ℝ)| ≤ η)

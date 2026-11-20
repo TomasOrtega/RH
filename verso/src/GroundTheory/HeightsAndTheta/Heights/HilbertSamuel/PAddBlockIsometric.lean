@@ -21,7 +21,7 @@ section Cycle
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Rewrite using `[if_neg]`. Introduce `hW`. Simplify using `only [divSupp, Set.mem_ofPred_eq] at hW`. Conclude with `h ⟨hW.1.1.1, hW.2, le_sup_left.trans hW.1.1.2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divCycle_eq_zero_of_not {P W : Ideal (MRing ι)} (f : MRing ι)
     (h : ¬ (W.IsPrime ∧ IsRelevant W ∧ P ≤ W)) : divCycle P f W = 0 := by
@@ -32,21 +32,19 @@ theorem divCycle_eq_zero_of_not {P W : Ideal (MRing ι)} (f : MRing ι)
   exact h ⟨hW.1.1.1, hW.2, le_sup_left.trans hW.1.1.2⟩
 
 /- English proof (translation)
-Use `set J := P ⊔ Ideal.span {f * g'} with hJdef`. Establish `hfg : f * g' ∈ J` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hIJ : P ≤ J` using `le_sup_left`. Establish `hf'g : f' * g ∈ J`. Establish `h` using `J.sub_mem hfg (hIJ hrel)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h1 : J ≤ P ⊔ Ideal.span {f}` using `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr (Ideal.mem_sup_right (Ideal.mul_mem_right g' _ (Ideal.mem_span_singleton_self f))))`. Establish `h2 : J ≤ P ⊔ Ideal.span {g}`. Use `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations. Establish `h` using `Ideal.add_mem _ (Ideal.mem_sup_left hrel : _ ∈ P ⊔ Ideal.span {g}) (Ideal.mem_sup_right (Ideal.mul_mem_left _ f' (Ideal.mem_span_singleton_self g)) : _ ∈ P ⊔ Ideal.span {g})`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hm1 : ∀ x ∈ P ⊔ Ideal.span {f}, g' * x ∈ J`. Introduce `x hx`. Take `⟨i, hi, y, hy, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, show g' * (r * f) = r * (f * g') by ring]`. Conclude with `J.add_mem (hIJ (P.mul_mem_left _ hi)) (J.mul_mem_left _ hfg)`. Establish `hm2 : ∀ x ∈ P ⊔ Ideal.span {g}, f' * x ∈ J`. Introduce `x hx`. Take `⟨i, hi, y, hy, rfl⟩` from `Submodule.mem_sup.mp hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[mul_add, show f' * (r * g) = r * (f' * g) by ring]`. Conclude with `J.add_mem (hIJ (P.mul_mem_left _ hi)) (J.mul_mem_left _ hf'g)`. Establish `e1` using `SectionCycle.mem_minimalPrimes_iff h1 hg' hm1`. Establish `e2` using `SectionCycle.mem_minimalPrimes_iff h2 hf' hm2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `l1` using `SectionCycle.length_localized_eq h1 hg' hm1`. Establish `l2` using `SectionCycle.length_localized_eq h2 hf' hm2`. Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `hc : W ∈ divSupp P f`. Establish `hc' : W ∈ divSupp P g`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [divSupp, Set.mem_ofPred_eq] at hc ⊢`. Conclude with `⟨e2.mp (e1.mpr hc.1), hc.2⟩`. Rewrite using `[if_pos hc, if_pos hc', multAt, multAt, dif_pos hW, dif_pos hW]`. Conclude with `congrArg ENat.toNat (l1.symm.trans l2)`. Establish `hc' : W ∉ divSupp P g`.
-
-Introduce `h`. Simplify using `only [divSupp, Set.mem_ofPred_eq] at hc h`. Conclude with `hc ⟨e1.mp (e2.mpr h.1), h.2⟩`. Rewrite using `[if_neg hc, if_neg hc']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_apply_eq_of_cross (P : Ideal (MRing ι)) {f g f' g' : MRing ι} {W : Ideal (MRing ι)} [hW : W.IsPrime]
     (hf' : f' ∉ W) (hg' : g' ∉ W) (hrel : f * g' - f' * g ∈ P) : divCycle P f W = divCycle P g W := by
@@ -94,9 +92,9 @@ theorem divCycle_apply_eq_of_cross (P : Ideal (MRing ι)) {f g f' g' : MRing ι}
     rw [if_neg hc, if_neg hc']
 
 /- English proof (translation)
-Use extensionality with `W`. Distinguish the cases in `hW : W.IsPrime ∧ IsRelevant W ∧ P ≤ W`. Take `⟨hp, hr, hle⟩` from `hW`. Take `⟨f', g', hf', hg', hrel⟩` from `h W hp hr hle`. Conclude with `divCycle_apply_eq_of_cross P hf' hg' hrel`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[divCycle_eq_zero_of_not f hW, divCycle_eq_zero_of_not g hW]`.
+A detailed English derivation is pending.
 -/
 theorem divCycle_eq_of_forall_cross (P : Ideal (MRing ι)) {f g : MRing ι}
     (h : ∀ W : Ideal (MRing ι), W.IsPrime → IsRelevant W → P ≤ W →
@@ -110,9 +108,9 @@ theorem divCycle_eq_of_forall_cross (P : Ideal (MRing ι)) {f g : MRing ι}
   · rw [divCycle_eq_zero_of_not f hW, divCycle_eq_zero_of_not g hW]
 
 /- English proof (translation)
-Use `show F ∈ RingHom.ker (mConeMap y) ↔ _`. Rewrite using `[RingHom.mem_ker]`. Use `erw [mConeMap_homog y hF]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM : (∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k)`. Conclude with `MvPolynomial.C_eq_zero.mp ((mul_eq_zero.mp h).resolve_right hM)`. Introduce `h`. Rewrite using `[h, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {F : MRing ι} {d : K → ℕ} (hF : IsMultiHomog F d) :
     F ∈ mCoordIdeal y ↔ aeval y F = 0 := by
@@ -134,21 +132,21 @@ section Block
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-The claim follows from `Function.extend_apply' _ _ _ fun ⟨_, h⟩ => Option.some_ne_none _ h`.
+A detailed English derivation is pending.
 -/
 theorem extend_some_none {α : Type} [Zero α] (a : K → α) :
     Function.extend (some : K → Option K) a 0 none = 0 :=
   Function.extend_apply' _ _ _ fun ⟨_, h⟩ => Option.some_ne_none _ h
 
 /- English proof (translation)
-The claim follows from `(Option.some_injective K).extend_apply a 0 k`.
+A detailed English derivation is pending.
 -/
 theorem extend_some_some {α : Type} [Zero α] (a : K → α) (k : K) :
     Function.extend (some : K → Option K) a 0 (some k) = a k :=
   (Option.some_injective K).extend_apply a 0 k
 
 /- English proof (translation)
-Use `show _ ∈ RingHom.ker (mConeMap (addBlock y v))`. Rewrite using `[RingHom.mem_ker, Targets.ImageCoord.mConeMap_rename some (oldV N) (fun _ => rfl)]`. Establish `h0 : mConeMap (addBlock y v ∘ oldV N) F = 0` using `RingHom.mem_ker.mp hF`. Rewrite using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_mem {N : ℕ} {y : (Σ k, ι k) → Ω} (v : Fin N → Ω) {F : MRing ι} (hF : F ∈ mCoordIdeal y) :
     rename (oldV (ι := ι) N) F ∈ mCoordIdeal (addBlock y v) := by
@@ -158,7 +156,7 @@ theorem rename_mem {N : ℕ} {y : (Σ k, ι k) → Ω} (v : Fin N → Ω) {F : M
   rw [h0, map_zero]
 
 /- English proof (translation)
-Rewrite using `[aeval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_rename_old {N : ℕ} (y : (Σ k, ι k) → Ω) (v : Fin N → Ω) (F : MRing ι) :
     aeval (addBlock y v) (rename (oldV (ι := ι) N) F) = aeval y F := by
@@ -166,7 +164,7 @@ theorem aeval_rename_old {N : ℕ} (y : (Σ k, ι k) → Ω) (v : Fin N → Ω) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_rename_old {N : ℕ} (z : (Σ k, addIdx ι N k) → ℂ) (F : MRing ι) :
     eval z (map (Int.castRingHom ℂ) (rename (oldV (ι := ι) N) F)) = eval (basePart₂ z) (map (Int.castRingHom ℂ) F) := by
@@ -174,7 +172,7 @@ theorem eval_rename_old {N : ℕ} (z : (Σ k, addIdx ι N k) → ℂ) (F : MRing
   rfl
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[chartMon, map_prod]`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff).mp h`. Rewrite `hk` using `[map_pow, rename_X]`. Conclude with `hc k (hW.mem_of_pow_mem _ hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_rename_chartMon {N : ℕ} {W : Ideal (MRing (addIdx ι N))} [hW : W.IsPrime] {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨some k, c k⟩ : MRing (addIdx ι N)) ∉ W) (e : K → ℕ) :
@@ -186,11 +184,11 @@ theorem not_mem_rename_chartMon {N : ℕ} {W : Ideal (MRing (addIdx ι N))} [hW 
   exact hc k (hW.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-Take `⟨dg, dh, hg, hh, hd, hy⟩` from `r`. Take `⟨dg', dh', hg', hh', hd', hy'⟩` from `r'`. Establish `hb` using `isBlockMap_oldV (ι := ι) N`. Use `(mem_iff _ (homog_sub (homog_mul (homog_mul (homog_X _) (Inter.rename_isMultiHomog hb hh)) (Inter.rename_isMultiHomog hb hg')) (homog_congr (homog_mul (homog_mul (homog_X _) (Inter.rename_isMultiHomog hb hh')) (Inter.rename_isMultiHomog hb hg)) fun k => ?_))).mpr ?_` and prove the remaining obligations. Consider the cases of `k with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => simp only [Pi.add_apply, extend_some_none]`. Consider the case `some k`. Simplify using `only [Pi.add_apply, extend_some_some]`. Establish `e1` using `hd k`. Establish `e2` using `hd' k`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[map_sub, map_mul, map_mul, map_mul, map_mul, aeval_X, aeval_X, aeval_rename_old, aeval_rename_old, aeval_rename_old, aeval_rename_old, hy, hy'] show v i * _ * (v i' * _) - v i' * _ * (v i * _) = 0`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cross_mem {N : ℕ} {y : (Σ k, ι k) → Ω} {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} {m : ℕ} {v : Fin N → Ω} {i i' : Fin N}
     {G H G' H' : MRing ι} (r : IsRep y A.a m (v i) G H) (r' : IsRep y A.a m (v i') G' H') :
@@ -222,47 +220,41 @@ end AddBlockIsometric
 open AddBlockIsometric in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ _ y D A m N v B L hY hm hv hgen hBa hLa hLh hBh`. Establish `hrel : IsRelevant (mCoordIdeal y)` using `hY.2.1.2.2`. Take `⟨c₀, hc₀⟩` from `SectionPointValue.exists_chart hrel`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, v j ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_exists, not_not] at h`. Take `⟨u, -, hu⟩` from `hgen c₀ hc₀`. Simplify using `[h] at hu`. Take `⟨e₀, δ₀, G₀, hG₀, hδ₀, hG₀v⟩` from `exists_chartForm y c₀ hc₀ (fun k => (m : ℤ) * A.a k) (hv j c₀ hc₀)`. Establish `hrep₀ : IsRep y A.a m (v j) G₀ (chartMon c₀ e₀)` using `⟨δ₀, e₀, hG₀, homog_chartMon c₀ e₀, fun k => by linear_combination hδ₀ k, by rw [aeval_chartMon]; exact hG₀v⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `isBlockMap_oldV (ι := ι) N`. Establish `hprod₀ : ∏ k, y ⟨k, c₀ k⟩ ^ e₀ k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc₀ k)`. Use `⟨X ⟨none, j⟩ * rename (oldV N) (chartMon c₀ e₀), rename (oldV N) G₀, Pi.single none 1 + Function.extend some e₀ 0, Function.extend some δ₀ 0, homog_mul (homog_X _) (Inter.rename_isMultiHomog hb (homog_chartMon c₀ e₀)), Inter.rename_isMultiHomog hb hG₀, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_iff _ (homog_mul (homog_X _) (Inter.rename_isMultiHomog hb (homog_chartMon c₀ e₀))), map_mul, aeval_X, aeval_rename_old, aeval_chartMon]`. Conclude with `mul_ne_zero hj hprod₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_iff _ (Inter.rename_isMultiHomog hb hG₀), aeval_rename_old, hG₀v]`. Conclude with `mul_ne_zero hj hprod₀`. Introduce `k`. Rewrite using `[hBa, hLa]`. Consider the cases of `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `none`. Simplify using `[ReciprocityTheory.ChartRestriction.G.AI.I1.pullDeg, unitDeg]`. Consider the case `some k`. Simplify using `only [Pi.add_apply, extend_some_some, ReciprocityTheory.ChartRestriction.G.AI.I1.pullDeg]`. Use `hδ₀ k` as an intermediate fact.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[unitDeg]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `divCycle_eq_of_forall_cross _ fun W hWp hWr hPW => ?_` and prove the remaining obligations. Establish `hWr' : ∀ k : K, ∃ i : ι k, (X ⟨some k, i⟩ : MRing (addIdx ι N)) ∉ W` using `fun k => hWr (some k)`. Use `choose c hc using hWr'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i₀, hi₀⟩ : ∃ i : Fin N, (X ⟨none, i⟩ : MRing (addIdx ι N)) ∉ W` from `hWr none`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Introduce `k h0`. Apply `hc k` to reduce the goal to its premises. Apply `hPW` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hX : (X ⟨k, c k⟩ : MRing ι) ∈ mCoordIdeal y` using `(mem_iff y (homog_X _)).mpr (by rw [aeval_X]; exact h0)`. Use `rename_mem v hX` as an intermediate fact. Rewrite `this` using `[rename_X]`. Then use the resulting hypothesis. Use `choose Ns δs Gs hGs hδs hGsv using fun i => exists_chartForm y c hyc (fun k => (m : ℤ) * A.a k) (hv i c hyc)`. Establish `hrep : ∀ i, IsRep y A.a m (v i) (Gs i) (chartMon c (Ns i))` using `fun i => ⟨δs i, Ns i, hGs i, homog_chartMon c _, fun k => by linear_combination hδs i k, by rw [aeval_chartMon]; exact hGsv i⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨X ⟨none, i₀⟩ * rename (oldV N) (chartMon c (Ns i₀)), rename (oldV N) (Gs i₀), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `hWp.mem_or_mem h with h | h` into its components or cases. Conclude with `hi₀ h`. Conclude with `not_mem_rename_chartMon hc _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hG`. Establish `hall : ∀ i, rename (oldV N) (Gs i) ∈ W`. Introduce `i`. Establish `hr` using `hPW (cross_mem (hrep i₀) (hrep i))`. Establish `h2 : (X ⟨none, i⟩ : MRing (addIdx ι N)) * rename (oldV N) (chartMon c (Ns i)) * rename (oldV N) (Gs i₀) ∈ W` using `W.mul_mem_left _ hG`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `W.add_mem hr h2`. Rewrite `h3` using `[sub_add_cancel]`. Break down `hWp.mem_or_mem h3 with h4 | h4` into its components or cases. Break down `hWp.mem_or_mem h4 with h5 | h5` into its components or cases. Conclude with `absurd h5 hi₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd h5 (not_mem_rename_chartMon hc _)`. Conclude with `h4`. Take `⟨u, hu, hsum⟩` from `hgen c hyc`. Establish `hsum' : ∑ i, u i * (v i * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * A.a k))) = 1` using `hsum`. Use `choose ε U hU hUv using fun i => exists_form_of_mem_chartRingZ y c hyc (hu i)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take `⟨Dt, hle⟩ : ∃ Dt : K → ℕ, ∀ i k, ε i k + δs i k ≤ Dt k` from `⟨fun k => ∑ i, (ε i k + δs i k), fun i k => Finset.single_le_sum (f := fun i => ε i k + δs i k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)⟩`. Establish `key : ∀ i, (∏ k, y ⟨k, c k⟩ ^ ε i k) * (∏ k, y ⟨k, c k⟩ ^ Ns i k) * (∏ k, y ⟨k, c k⟩ ^ (Dt k - (ε i k + δs i k))) = (∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * A.a k))) * ∏ k, y ⟨k, c k⟩ ^ Dt k`. Introduce `i`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← zpow_natCast, ← zpow_add₀ (hyc k)]`. Use `congr 1`. Establish `h1` using `hδs i k`. Establish `h2` using `hle i k`. Move the coercions through the operations in `[Nat.cast_sub h2]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΦ : (∑ i, U i * Gs i * chartMon c (fun k => Dt k - (ε i k + δs i k))) - chartMon c Dt ∈ mCoordIdeal y`. Use `(mem_iff y (homog_sub (homog_sum _ fun i _ => homog_congr (homog_mul (homog_mul (hU i) (hGs i)) (homog_chartMon c _)) fun k => ?_) (homog_chartMon c Dt))).mpr ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Use `hle i k` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[map_sub, map_sum, aeval_chartMon, sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hUv i, hGsv i, aeval_chartMon]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = ∏ k, y ⟨k, c k⟩ ^ Dt k := by rw [← Finset.sum_mul, hsum', one_mul]`. Establish `hΦW` using `hPW (rename_mem v hΦ)`. Establish `hS : rename (oldV N) (∑ i, U i * Gs i * chartMon c (fun k => Dt k - (ε i k + δs i k))) ∈ W`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `W.sum_mem fun i _ => by`. Rewrite using `[map_mul, map_mul]`. Conclude with `W.mul_mem_right _ (W.mul_mem_left _ (hall i))`. Establish `hT` using `W.sub_mem hS hΦW`. Rewrite `hT` using `[map_sub, sub_sub_cancel]`.
-
-Conclude with `not_mem_rename_chartMon hc Dt hT`. Conclude with `cross_mem hrep₀ (hrep i₀)`. Introduce `z hz`. Establish `hzo : basePart₂ z ∈ mcPts (mCoordIdeal y)`. Use `⟨fun k => hz.1 (some k), fun F hF => ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `hz.2 _ (rename_mem v hF)`. Rewrite `h1` using `[eval_rename_old]`. Then use the resulting hypothesis. Establish `hval` using `val_spec (hv j) hzo hrep₀`. Establish `hsec` using `secNormAt_eq (hv j) hzo`. Establish `hB` using `hBh z hz j`.
-
-Establish `hA` using `A.pos _ hzo.1`. Rewrite using `[hLh z, map_mul, map_mul, eval_rename_old, eval_rename_old, hval, map_X, eval_X]`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hA.le, ← hsec, ← hB]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem AddBlockIsometric.proof : AddBlockIsometric.Statement := by
   intro K _ _ ι _ Ω _ _ y D A m N v B L hY hm hv hgen hBa hLa hLh hBh

@@ -19,9 +19,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.MixRec
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Establish `hker : RingHom.ker σ = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker, eq_intCast, map_intCast, Int.cast_eq_zero]`. Simplify using `[hn]`. Introduce `a ha`. Establish `: a ∈ RingHom.ker σ` using `ha`. Rewrite `this` using `[hker, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem injective_of_finite_int {k : Type} [CommRing k] [IsDomain k] [Module.Finite ℤ k]
     (σ : k →+* ℂ) : Function.Injective σ := by
@@ -37,7 +37,7 @@ theorem injective_of_finite_int {k : Type} [CommRing k] [IsDomain k] [Module.Fin
   rwa [hker, Ideal.mem_bot] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsFractionRing.lift (A := k) (K := K) (injective_of_finite_int σ), RingHom.ext fun x => (IsFractionRing.lift_algebraMap (K := K) (injective_of_finite_int σ) x).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_extension {k : Type} [CommRing k] [IsDomain k] [Module.Finite ℤ k]
     (K : Type) [Field K] [Algebra k K] [IsFractionRing k K] (σ : k →+* ℂ) :
@@ -46,15 +46,13 @@ theorem exists_extension {k : Type} [CommRing k] [IsDomain k] [Module.Finite ℤ
     RingHom.ext fun x => (IsFractionRing.lift_algebraMap (K := K) (injective_of_finite_int σ) x).symm⟩
 
 /- English proof (translation)
-Introduce `hP k _ X _ _ p e h σ`. Use `haveI := h.isDomain`. Use `haveI := h.finite`. Take `⟨K, _, _, _⟩ : ∃ (K : Type) (_ : Field K) (_ : Algebra k K), IsFractionRing k K` from `⟨FractionRing k, inferInstance, inferInstance, inferInstance⟩`. Take `⟨τ, hτ⟩` from `exists_extension K σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hτ` using the available equality. Introduce `L M N s hs t ht hcod`. Take `⟨G, j, q, hp⟩ : ∃ (G : Scheme.{0}) (j : G ⟶ X) (q : G ⟶ Sp K), IsPullback j q p (spMap (algebraMap k K))` from `⟨_, _, _, IsPullback.of_hasPullback _ _⟩`. Take `⟨hGi, hGn, hproj, hdim, hgen, -, hstalk, hcoh, -⟩` from `GlobalTheory.T.generic_fiber_arithmetic_variety_integral_projective k K X G p q j hp (e + 1) h`. Take `⟨s', hs', hsl, hsm, hslog⟩` from `GlobalTheory.T.exists_section_generic_fiber_pullback_local_iso k K X G p q j hp τ hstalk M s hs hgen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t', ht', htl, htm, htlog⟩` from `GlobalTheory.T.exists_section_generic_fiber_pullback_local_iso k K X G p q j hp τ hstalk N t ht hgen`. Establish `hcod' : ∀ z : G, Order.coheight z = 1 → z ∈ nonzeroLocus s' ∨ z ∈ nonzeroLocus t'`. Introduce `z hz`. Rewrite using `[hsl, htl]`. Conclude with `hcod (j z) ((hcoh z).trans hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrec` using `GlobalTheory.T.arithReciprocity_noCommonDivisor_projective hP K G q τ e hproj hdim (fun i => (L i).bc hp.w τ) (M.bc hp.w τ) (N.bc hp.w τ) s' hs' t' ht' hcod'`. Establish `e1` using `GlobalTheory.T.reciprocitySide_eq_genericFibre_pullback k K X G p q j hp τ e h _ _ hsm N L (M.logSec s) (N.logSec t)`. Establish `e2` using `GlobalTheory.T.reciprocitySide_eq_genericFibre_pullback k K X G p q j hp τ e h _ _ htm M L (N.logSec t) (M.logSec s)`. Establish `hsf : (M.bc hp.w τ).logSec s' = fun y => M.logSec s (bcPt hp.w τ y)` using `funext hslog`. Establish `htf : (N.bc hp.w τ).logSec t' = fun y => N.logSec t (bcPt hp.w τ y)` using `funext htlog`.
-
-Rewrite `hrec` using `[hsf, htf]`. Conclude with `e1.symm.trans (hrec.trans e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem side_symm : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (e : ℕ), IsArithVar p (e + 1) → ∀ (σ : k →+* ℂ) (L : Fin e → MLine p σ) (M N : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (t : N.B.Sec) (ht : genericPoint X ∈ nonzeroLocus t), (∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) = side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht) := by
   intro hP k _ X _ _ p e h σ

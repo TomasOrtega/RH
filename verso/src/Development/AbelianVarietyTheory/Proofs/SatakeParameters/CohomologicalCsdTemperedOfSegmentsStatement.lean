@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.EssS
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.IsTemperedGLOfIsUnitaryLSeg
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered | exact GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered | (intros; apply GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cohomological_csd_tempered_of_segments : GlobalTheory.Published.CaraianiTempered → GlobalTheory.Published.TemperedProductOfSquareIntegrable → GlobalTheory.Published.EssSquareIntegrableSegments → GlobalTheory.Published.CohomologicalCsdTempered := by
   first | exact @GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered | exact GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered | (intros; apply GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered <;> assumption)

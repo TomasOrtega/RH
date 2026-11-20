@@ -7,35 +7,31 @@ open Matrix
 namespace GlobalTheory.Hk3.HoweG
 
 /- English proof (translation)
-Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP s hvac a hSD Z hZform hZdist hZcov u hu`. Take `⟨hU, hodd, hSint, hTint, -, -, hδ, hpsi, -, -, hρ, -, -, -⟩` from `hP`. Establish `hσσ` using `hU.1`. Establish `hσv` using `hU.2.1`. Establish `h2 : Valued.v (2 : L) = 1` using `GlobalTheory.Hk3.Inh.v_two hU hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : Matrix (Fin n) (Fin n) L := ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hA`. Use `set P : Matrix (Fin n) (Fin n) L := ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hPdef`. Establish `hloc : ∀ w w' : Matrix (Fin n') (Fin n) L, (∀ i j, w i j ∈ Formalism.UG.intL L) → (∀ i j, w' i j ∈ Formalism.UG.intL L) → locH σ δ JS JT (w * A) (w' * A) ∈ Formalism.UG.intL L`. Introduce `w w' hw hw'`. Establish `hw'σ : ∀ i j, (w'.map σ)ᵀ i j ∈ Formalism.UG.intL L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Use `show Valued.v (σ (w' j i)) ≤ 1`. Rewrite using `[hσv]`. Conclude with `hw' j i`. Apply the tactic sequence `have hJT : ∀ i j, (JT : Matrix (Fin n') (Fin n') L) i j ∈ Formalism.UG.intL L := fun i j => glint_entry hTint i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hB : ∀ i j, (A * P * (A.map σ)ᵀ) i j ∈ Formalism.UG.intL L` using `hSD.2`. Establish `hC : ∀ i j, ((w'.map σ)ᵀ * (JT : Matrix (Fin n') (Fin n') L) * w) i j ∈ Formalism.UG.intL L` using `matMul_int (matMul_int hw'σ hJT) hw`. Establish `e : locH σ δ JS JT (w * A) (w' * A) = δ * Matrix.trace ((A * P * (A.map σ)ᵀ) * ((w'.map σ)ᵀ * (JT : Matrix (Fin n') (Fin n') L) * w))`. Unfold `locH`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace (A * (P * (A.map σ)ᵀ * (w'.map σ)ᵀ * (JT : Matrix (Fin n') (Fin n') L) * w)) := Matrix.trace_mul_comm _ _`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `(Formalism.UG.intL L).mul_mem (le_of_eq hδ.1) ?_` and prove the remaining obligations. Unfold `Matrix.trace`. Conclude with `(Formalism.UG.intL L).sum_mem fun i _ => matMul_int hB hC i i`. Establish `hpair : ∀ w w' : Matrix (Fin n') (Fin n) L, (∀ i j, w i j ∈ Formalism.UG.intL L) → (∀ i j, w' i j ∈ Formalism.UG.intL L) → ψ ((locH σ δ JS JT (w * A) (w' * A) + σ (locH σ δ JS JT (w * A) (w' * A))) / 2) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w w' hw hw'`. Establish `hcI` using `hloc w w' hw hw'`. Establish `hσc : σ (locH σ δ JS JT (w * A) (w' * A)) ∈ Formalism.UG.intL L` using `by show Valued.v (σ _) ≤ 1`. Rewrite using `[hσv]`. Conclude with `hcI`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hpsi` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Hk3.mem_intL_iff, map_div₀, h2, div_one]`. Conclude with `(Formalism.UG.intL L).add_mem hcI hσc`. Rewrite using `[map_div₀, map_add, hσσ, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomb : ∀ w w' : Matrix (Fin n') (Fin n) L, (∀ i j, w i j ∈ Formalism.UG.intL L) → (∀ i j, w' i j ∈ Formalism.UG.intL L) → ∀ t : M, ρ (w * A) (ρ (w' * A) t) = ρ (w * A + w' * A) t`. Introduce `w w' hw hw' t`. Use `congrArg (fun f => f t) (hρ (w * A) (w' * A))` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at this`. Rewrite using `[this, hpair w w' hw hw', one_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ z ∈ Z, ∃ z' ∈ Z, ρ (u * A) (ρ z s) = ρ z' s ∧ (u * A + z) - z' ∈ GlobalTheory.Hk3.HoweDuality.intMat L n' n`. Introduce `z hz`. Take `⟨v, hv, rfl⟩` from `hZform z hz`. Establish `huv : ∀ i j, (u + v) i j ∈ Formalism.UG.intL L` using `fun i j => (Formalism.UG.intL L).add_mem (hu i j) (hv i j)`. Take `⟨z', hz', hdiff⟩` from `hZcov (u + v) huv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨v', hv', rfl⟩` from `hZform z' hz'`. Use `⟨v' * A, hz', ?_, by rwa [← Matrix.add_mul]⟩` and prove the remaining obligations. Establish `hw : ∀ i j, (u + v - v') i j ∈ Formalism.UG.intL L` using `fun i j => (Formalism.UG.intL L).sub_mem (huv i j) (hv' i j)`. Establish `hl : ρ ((u + v - v') * A) s = s`. Apply `hvac` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.sub_mul]`. Conclude with `hdiff`. Rewrite using `[hcomb u v hu hv]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Matrix.sub_mul, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Use `_ = ρ (v' * A) (ρ ((u + v - v') * A) s) := (hcomb v' _ hv' hw s).symm`. Use `_ = ρ (v' * A) s := by rw [hl]`. Use `choose! f hfZ hf hfd using key`.
-
-Rewrite using `[map_sum, Finset.sum_congr rfl hf]`. Establish `hinj : ∀ x ∈ Z, ∀ y ∈ Z, f x = f y → x = y`. Introduce `z1 h1 z2 h2 he`. Apply `hZdist z1 h1 z2 h2` to reduce the goal to its premises. Use `sub_mem (hfd z1 h1) (hfd z2 h2)` as an intermediate fact.
-
-Rewrite `this` using `[he]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `himg : Z.image f = Z` using `Finset.eq_of_subset_of_card_le (fun x hx => by obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hx; exact hfZ z hz) (by rw [Finset.card_image_of_injOn (fun x hx y hy h => hinj x hx y hy h)])`. Rewrite using `[← Finset.sum_image (f := fun z => ρ z s) hinj, himg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacuum_sum_selfDual_fixed : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]

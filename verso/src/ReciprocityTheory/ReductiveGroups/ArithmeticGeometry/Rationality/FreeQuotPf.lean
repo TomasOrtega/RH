@@ -10,18 +10,18 @@ variable {R F X : Type} [CommRing R] [IsDomain R] [Field F] [Algebra R F]
     [IsFractionRing R F] [AddCommGroup X] [Module F X] [Module R X] [IsScalarTower R F X]
 
 /- English proof (translation)
-Conclude with `Bl.SecondBlockLemmaK.goal1 S hx`.
+A detailed English derivation is pending.
 -/
 theorem freeQuot_exists_smul_mem (S : Submodule R X) {x : X}
     (hx : x ∈ Submodule.span F (S : Set X)) : ∃ d : R, d ≠ 0 ∧ d • x ∈ S := by
   exact Bl.SecondBlockLemmaK.goal1 S hx
 
 /- English proof (translation)
-Use `set T := Submodule.span F (S : Set X)`. Establish `hST : S ≤ T.restrictScalars R` using `fun x hx => Submodule.subset_span hx`. Set `S' : Submodule R (T.restrictScalars R)` to `S.comap (T.restrictScalars R).subtype`. Establish `h0 : Module.rank R ((T.restrictScalars R) ⧸ S') = 0`. Rewrite using `[rank_eq_zero_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective S' q`. Take `⟨d, hd, hd'⟩` from `freeQuot_exists_smul_mem S (y.2 : (y : X) ∈ T)`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd'`. Establish `h1` using `rank_quotient_add_rank_of_isDomain S'`. Rewrite `h1` using `[h0, zero_add, (Submodule.comapSubtypeEquivOfLe hST).rank_eq]`. Rewrite using `[h1, IsLocalization.rank_eq (N := T) F (nonZeroDivisors R) le_rfl]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem freeQuot_rank_span (S : Submodule R X) :
     Module.rank R S = Module.rank F (Submodule.span F (S : Set X)) := by
@@ -44,23 +44,21 @@ theorem freeQuot_rank_span (S : Submodule R X) :
 end
 
 /- English proof (translation)
-Introduce `R F X _ _ _ _ _ _ _ _ _ _ M₁ hM₁ N`. Establish `: Module.Finite R M₁` using `Module.Finite.iff_fg.mpr hM₁`. Establish `ne : ∀ r : R, r ≠ 0 → algebraMap R F r ≠ 0` using `fun r hr => (map_ne_zero_iff _ (IsFractionRing.injective R F)).mpr hr`. Establish `htf : Module.IsTorsionFree R (M₁ ⧸ (N.restrictScalars R).comap M₁.subtype)`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r q hq`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `hq' : algebraMap R F r • (m : X) ∈ N`. Rewrite using `[algebraMap_smul]`. Simplify using `using hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `show (m : X) ∈ N`. Establish `h2` using `N.smul_mem (algebraMap R F r)⁻¹ hq'`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ (ne r hr), one_smul]`. Then use the resulting hypothesis. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `hspan : Submodule.span F ((M₁ ⊓ N.restrictScalars R : Submodule R X) : Set X) = Submodule.span F (M₁ : Set X) ⊓ N`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Conclude with `Submodule.mem_inf.mpr ⟨Submodule.subset_span hx1, hx2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Take `⟨d, hd, hd'⟩` from `freeQuot_exists_smul_mem M₁ hx1`. Establish `hN : d • x ∈ N`. Rewrite using `[← algebraMap_smul F d x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `N.smul_mem _ hx2`. Establish `hmem : d • x ∈ Submodule.span F ((M₁ ⊓ N.restrictScalars R : Submodule R X) : Set X)` using `Submodule.subset_span (Submodule.mem_inf.mpr ⟨hd', hN⟩)`. Rewrite `hmem` using `[← algebraMap_smul F d x]`. Establish `h2` using `Submodule.smul_mem _ (algebraMap R F d)⁻¹ hmem`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ (ne d hd), one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrn` using `Submodule.finrank_quotient_add_finrank ((N.restrictScalars R).comap M₁.subtype)`. Establish `hM : finrank R M₁ = finrank F (Submodule.span F (M₁ : Set X))` using `congrArg Cardinal.toNat (freeQuot_rank_span M₁)`. Establish `hP : finrank R ((N.restrictScalars R).comap M₁.subtype) = finrank F ↥(Submodule.span F (M₁ : Set X) ⊓ N)`. Rewrite using `[(Submodule.equivMapOfInjective M₁.subtype M₁.injective_subtype ((N.restrictScalars R).comap M₁.subtype)).finrank_eq, Submodule.map_comap_subtype, ← hspan]`. Conclude with `congrArg Cardinal.toNat (freeQuot_rank_span _)`.
-
-Rewrite using `[← hP, ← hM]`. Conclude with `hrn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeQuot_holds : FreeQuotStatement := by
   intro R F X _ _ _ _ _ _ _ _ _ _ M₁ hM₁ N

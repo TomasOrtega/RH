@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.SchurPairingInvariant
 
 /- English proof (translation)
-Unfold `principalLevelFrame.Minf at hx`. Use `Submodule.iSup_induction _ (motive := fun z : MMap M => ∀ γ ∈ GQ V, ∀ g, z v (γ * g) = z v g) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `N z hz`. Conclude with `(PeterssonHilbertSpace.mult_cont_left M θ _ _ hz v).2`. Introduce `γ _ g`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `z w hz hw γ hγ g`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hz γ hγ g, hw γ hγ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_inv_of_mem_Minf {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {n : ℕ}
     {P : principalLevelFrame.RowPsi V n} {x : MMap M} (hx : x ∈ principalLevelFrame.Minf θ P M) (v : M.Vec) :
@@ -32,7 +32,7 @@ theorem left_inv_of_mem_Minf {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {
     simp only [MultilinearMap.add_apply, Pi.add_apply, hz γ hγ g, hw γ hγ g]
 
 /- English proof (translation)
-Establish `e : IsMultIP M μ 𝓕 T T' = IsMultIP M μ 𝓕 U U'` using `funext fun c => propext (h c)`. Unfold `ipM`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ipM_congr_of_iff {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} {T T' U U' : MMap M} (h : ∀ c, IsMultIP M μ 𝓕 T T' c ↔ IsMultIP M μ 𝓕 U U' c) :
@@ -42,13 +42,13 @@ theorem ipM_congr_of_iff {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : 
   rw [e]
 
 /- English proof (translation)
-Introduce `D V S θ M n P μ 𝓕 _ _ _ hμ h𝓕 h x hx y hy`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: Countable (GQ V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ` as an intermediate fact. Apply `ipM_congr_of_iff` to reduce the goal to its premises. Introduce `c`. Establish `key : ∀ v v' : M.Vec, _` using `fun v v' => GlobalTheory.fundamentalDomain_integral_mul_right μ (GQ V) 𝓕 (fun g => star (x v g) * y v' g) (P.ψ h) h𝓕 (fun γ hγ g => by simp only [left_inv_of_mem_Minf hx v γ hγ g, left_inv_of_mem_Minf hy v' γ hγ g])`. Unfold `IsMultIP`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [principalLevelFrame.actM_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `H v v'`. Take `⟨k1, k2⟩` from `key v v'`. Conclude with `⟨k1.2 (H v v').1, k2 ▸ (H v v').2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `H v v'`. Take `⟨k1, k2⟩` from `key v v'`. Conclude with `⟨k1.1 (H v v').1, k2.trans (H v v').2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ipM_actM : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (θ : InfFam D) (M : DSModel V S) (n : ℕ) (P : principalLevelFrame.RowPsi V n) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), SchurAll D → V.SigOK → IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → ∀ (h : Formalism.AUTREP.GAf D.host.E n), ∀ x ∈ principalLevelFrame.Minf θ P M, ∀ y ∈ principalLevelFrame.Minf θ P M, ipM M μ 𝓕 (principalLevelFrame.actM P M h x) (principalLevelFrame.actM P M h y) = ipM M μ 𝓕 x y := by
   intro D V S θ M n P μ 𝓕 _ _ _ hμ h𝓕 h x hx y hy

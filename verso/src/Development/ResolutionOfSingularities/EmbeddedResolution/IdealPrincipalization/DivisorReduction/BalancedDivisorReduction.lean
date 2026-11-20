@@ -40,7 +40,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use `show T.ideal.comap (CategoryTheory.CategoryStruct.id T.scheme) = T.ideal`. Conclude with `Scheme.IdealSheafData.comap_id _`.
+A detailed English derivation is pending.
 -/
 private theorem lowerIdealWithoutBlowup_eq_ideal (T : MarkedIdealWithBoundary.{u}) :
     DivisorReduction.lowerIdealWithoutBlowup T = T.ideal := by
@@ -48,13 +48,13 @@ private theorem lowerIdealWithoutBlowup_eq_ideal (T : MarkedIdealWithBoundary.{u
   exact Scheme.IdealSheafData.comap_id _
 
 /- English proof (translation)
-The claim follows from `hOB`.
+A detailed English derivation is pending.
 -/
 private theorem orderAt_le_mult_of_isOrderBoundedByMult (T : MarkedIdealWithBoundary.{u}) (hOB : T.IsOrderBoundedByMult) :
     ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞) := hOB
 
 /- English proof (translation)
-Introduce `_`. Conclude with `hbal`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isDerivBalanced_of_isBalanced (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hbal : T.IsBalanced hV.locallyOfFiniteType) :
@@ -64,13 +64,11 @@ private theorem isDerivBalanced_of_isBalanced (T : MarkedIdealWithBoundary.{u}) 
   exact hbal
 
 /- English proof (translation)
-Establish `hbalLower : IsDerivBalanced T.base T.structMap (DivisorReduction.lowerIdealWithoutBlowup T) T.mult`. Rewrite using `[lowerIdealWithoutBlowup_eq_ideal]`. Conclude with `hbal`. Establish `hE₀ : InStrictNormalCrossingPosition T.structMap (DivisorReduction.lowerBoundaryWithoutBlowup T)`. Rewrite using `[DivisorReduction.lowerBoundaryWithoutBlowup_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hV.snc`. Establish `hjE : j < (DivisorReduction.lowerBoundaryWithoutBlowup T).length`. Rewrite using `[DivisorReduction.lowerBoundaryWithoutBlowup_eq]`. Conclude with `hj`. Establish `hget : (DivisorReduction.lowerBoundaryWithoutBlowup T)[j]'hjE = T.boundary[j]'hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[DivisorReduction.lowerBoundaryWithoutBlowup_eq T]`. Establish `hlen : ((DivisorReduction.lowerBoundaryWithoutBlowup T).eraseIdx j).length = T.boundary.length - 1`. Rewrite using `[DivisorReduction.lowerBoundaryWithoutBlowup_eq]`. Simplify using `[List.length_eraseIdx, hj]`. Establish `htrunc : List.take (T.boundary.length - 1) ((DivisorReduction.lowerBoundaryWithoutBlowup T).eraseIdx j) = (DivisorReduction.lowerBoundaryWithoutBlowup T).eraseIdx j`.
-
-Rewrite using `[← hlen, List.take_length]`. Conclude with `DivisorReduction.goingUpInvariant_of_le hres hno T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr hbalLower hV.one_le_mult hVlow hlift hE₀ hjE hget htrunc s.length le_rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem goingUpInvariant_length_of_isBalanced (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})
@@ -107,31 +105,21 @@ private theorem goingUpInvariant_length_of_isBalanced (hres : FunctorialResoluti
     htrunc s.length le_rfl
 
 /- English proof (translation)
-Establish `hlift : StrictNormalCrossingsLiftFromDivisor.{u}` using `hasStrictNormalCrossingsWith_ker_cons_of_comap`. Conclude with `{ isMarked_pushedTop := by`. Introduce `T hV hOB hbal j hj hZ hVlow inst s hpr`. Use `inst` as an intermediate fact. Conclude with `DivisorReduction.isMarked_ambientBlowupSeq_of_containedComponentsIdeal_eq_top hres hno hlift T hV (orderAt_le_mult_of_isOrderBoundedByMult T hOB) (isDerivBalanced_of_isBalanced T hV hbal) j hj hZ hVlow s hpr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `isMarked_pushedPre := by`. Introduce `T hV hOB hbal j hj hZ hb hVlow inst s hpr`. Use `inst` as an intermediate fact. Conclude with `DivisorReduction.isMarked_prepend_ambientBlowupSeq hres hno hlift T hV (orderAt_le_mult_of_isOrderBoundedByMult T hOB) (isDerivBalanced_of_isBalanced T hV hbal) j hj hZ hb hVlow s hpr (smooth_subschemeι_containedComponentsIdeal_comp T hV j hj) (hasStrictNormalCrossingsWith_contai …`. Use `valid_lowerPre := by`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hV hOB hbal j hj hZ`. Conclude with `DivisorReduction.isAdmissible_restrictTwistedToDivisor T hV hOB hbal j hj hZ`. Use `orderAt_ctrlIdeal_le_top := by`. Introduce `T hV hOB hbal j hj hZ hVlow inst s hpr i hi x`. Use `inst` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Conclude with `orderAt_controlledTransform_le_of_isMarked T.base T.structMap T.ideal T.mult T.boundary (DivisorReduction.ambientBlowupSeq hres hno T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr) (DivisorReduction.isMarked_ambientBlowupS …`. Use `orderAt_ctrlIdeal_le_pre := by`. Introduce `T hV hOB hbal j hj hZ hb hVlow inst s hpr i hi x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `inst` as an intermediate fact. Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Conclude with `orderAt_controlledTransform_le_of_isMarked T.base T.structMap T.ideal T.mult T.boundary (BlowupSequenceData.prepend (DivisorReduction.containedComponentsIdeal T j hj) hb (DivisorReduction.ambientBlowupSeq hres hno T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorRed …`. Use `coSupport_inter_ker_eq_empty_top := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hV hOB hbal j hj hZ hVlow inst s hpr hempty`. Use `inst` as an intermediate fact. Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgoingUp` using `goingUpInvariant_length_of_isBalanced hres hno hlift T hV hbal j hj hVlow s hpr`. Conclude with `DivisorReduction.orderAtLeastLocus_inter_support_ker_eq_empty hres hno T j hj s hpr (fun i hi => hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform i hi) hempty`. Use `coSupport_inter_ker_eq_empty_pre := by`. Introduce `T hV hOB hbal j hj hZ hb hVlow inst s hpr hempty`. Use `inst` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Take `⟨U₀, hU, hsupp, hbalPre, hinv⟩` from `DivisorReduction.exists_isClosed_opens_goingUpInvariantOnOpen hres hno hlift T hV (orderAt_le_mult_of_isOrderBoundedByMult T hOB) (isDerivBalanced_of_isBalanced T hV hbal) j hj hZ hb hVlow s hpr (smooth_subschemeι_containedComponentsIdeal_comp T hV j hj) (hasStrictNormalCrossings …`. Conclude with `DivisorReduction.orderAtLeastLocus_controlledTransform_inter_ker_support_eq_empty hres hno T j hj hb s hpr (fun i hi => (hinv s.length le_rfl).exists_pow_mul_eq_comap_controlledTransform i hi) (DivisorReduction.controlledTransform_prepend_ambientBlowupSeq_one hres hno T j hj hb s …`.
-
-Use `isPullbackSeq_ambientTower := by`. Introduce `X Y S S' σ σ' φ ψ _ _ _ _ _ hsq d d' hc hc' hpb`. Conclude with `isPullbackBlowupSequence_ambientBlowupSequence_of_flat hres hno σ σ' φ ψ hsq d d' hc hc' hpb`. Use `isStrictPullbackSeq_ambientTower := by`. Introduce `X Y S S' σ σ' φ ψ _ _ _ _ _ hsq d d' hc hc' hpb`.
-
-Conclude with `isStrictPullbackBlowupSeq_ambientBlowupSequence_of_flat hres hno σ σ' φ ψ hsq d d' hc hc' hpb`. Use `comap_ctrlIdeal_top := by`. Introduce `T hV hOB hbal j hj hZ hVlow inst s hpr i hi`. Use `inst` as an intermediate fact. Conclude with `DivisorReduction.comap_controlledTransform_of_containedComponentsIdeal_eq_top hres hno hlift T hV (orderAt_le_mult_of_isOrderBoundedByMult T hOB) (isDerivBalanced_of_isBalanced T hV hbal) j hj hZ hVlow s hpr i hi`.
-
-Use `comap_ctrlIdeal_pre := by`. Introduce `T hV hOB hbal j hj hZ hb hVlow inst s hpr i hi`. Use `inst` as an intermediate fact. Conclude with `DivisorReduction.comap_controlledTransform_prepend_ambientBlowupSeq hres hno hlift T hV (orderAt_le_mult_of_isOrderBoundedByMult T hOB) (isDerivBalanced_of_isBalanced T hV hbal) j hj hZ hb hVlow s hpr (smooth_subschemeι_containedComponentsIdeal_comp T hV j hj) (hasStrictNormalCro …`. Use `preIdeal_baseChange := by`.
-
-Introduce `T hV L _ _ f hV' j hj hj'`. Conclude with `containedComponentsIdeal_baseChange T hV L f hV' j hj hj'`. Use `preIdeal_pullbackAlong := by`. Introduce `T hV Y q h _ hq hV' j hj hj'`. Conclude with `containedComponentsIdeal_pullbackAlong_of_smooth T hV Y q h hq hV' j hj hj'`.
-
-Use `preIdeal_eq_top_of_imageIdeal := by`. Introduce `T hV j hj J hm hlow hpush`. Conclude with `DivisorReduction.containedComponentsIdeal_eq_top_of_eq_imageIdealSheaf T hV j hj J hm hlow hpush }`.
+A detailed English derivation is pending.
 -/
 theorem divisorReductionProperties_of_blowupPreservesNoetherian (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) : DivisorReductionProperties hres hno := by

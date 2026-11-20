@@ -15,14 +15,14 @@ namespace GlobalTheory.DetEqv.Pairing
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.ThK.DetProd.twoDet, detChar, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, mul_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twoDet_inv_apply (x x' : ℕ) (α β : kˣ →* ℂˣ) (g : Levi k (fun a : Fin 2 => Fin (![x, x'] a))) :
     GlobalTheory.ThK.DetProd.twoDet x x' α⁻¹ β⁻¹ g = (GlobalTheory.ThK.DetProd.twoDet x x' α β g)⁻¹ := by
   simp only [GlobalTheory.ThK.DetProd.twoDet, detChar, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, mul_inv]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_transpose`. Conclude with `Units.continuous_val.matrix_transpose`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_invT {d : ℕ} : Continuous (GlobalTheory.SplitFlip.invT (k := k) (D := Fin d)) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -30,15 +30,15 @@ theorem continuous_invT {d : ℕ} : Continuous (GlobalTheory.SplitFlip.invT (k :
   · exact Units.continuous_val.matrix_transpose
 
 /- English proof (translation)
-Simplify using `[nabs, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_inv (t : kˣ) : nabs k t⁻¹ = (nabs k t)⁻¹ := by
   simp [nabs, map_inv]
 
 /- English proof (translation)
-Establish `hd : Matrix.GeneralLinearGroup.det (GlobalTheory.SplitFlip.invT h) = (Matrix.GeneralLinearGroup.det h)⁻¹` using `GlobalTheory.SplitFlip.gdet_invT h`. Establish `hv : ((GlobalTheory.SplitFlip.invT h : GL (Fin d) k) : Matrix (Fin d) (Fin d) k) = ((h⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).transpose` using `rfl`. Establish `hpos` using `nabs_pos' k (Matrix.GeneralLinearGroup.det h)`. Establish `hr : (nabs k (Matrix.GeneralLinearGroup.det h))⁻¹ ^ ((n : ℝ) / 2) = nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(n : ℝ) / 2)`. Rewrite using `[Real.inv_rpow hpos.le, neg_div, Real.rpow_neg hpos.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : nabs k (1 : kˣ) = 1` using `by simp [nabs]`. Simplify using `only [om, hd, h1, map_inv, map_one, inv_one, Units.val_one, mul_one, Fintype.card_fin, hv, Matrix.one_mul, nabs_inv, hr, Real.one_rpow, Complex.ofReal_one, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem om_invT (α : kˣ →* ℂˣ) {n d : ℕ} (h : GL (Fin d) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ)
     (X : Matrix (Fin n) (Fin d) k) :
@@ -59,9 +59,9 @@ theorem om_invT (α : kˣ →* ℂˣ) {n d : ℕ} (h : GL (Fin d) k) (Φ : Matri
     nabs_inv, hr, Real.one_rpow, Complex.ofReal_one, mul_one]
 
 /- English proof (translation)
-Establish `hO` using `(om_isSmoothRepresentation k (Fin d) (Fin n) α hα).2.2.2.2 Φ.1 Φ.2`. Establish `hc : Continuous (fun h : GL (Fin d) k => (GlobalTheory.SplitFlip.invT h, (1 : GL (Fin n) k)))` using `continuous_invT.prodMk continuous_const`. Use `Filter.mem_of_superset ((hO.preimage hc).mem_nhds ?_) ?_` and prove the remaining obligations. Use `show om α (GlobalTheory.SplitFlip.invT 1) 1 Φ.1 = Φ.1`. Rewrite using `[map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(om_isSmoothRepresentation k (Fin d) (Fin n) α hα).1 _`. Introduce `h hh X`. Use `congrFun (show om α (GlobalTheory.SplitFlip.invT h) 1 Φ.1 = Φ.1 from hh) X` as an intermediate fact. Rewrite `this` using `[om_invT]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_mem_nhds (α : kˣ →* ℂˣ) (hα : IsSmoothChar α) {n d : ℕ} (Φ : SB (Matrix (Fin n) (Fin d) k)) :
     {h : GL (Fin d) k | ∀ X, (Φ : Matrix (Fin n) (Fin d) k → ℂ) X =
@@ -96,7 +96,7 @@ def evOne {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (χ �
     rw [hs, smul_eq_mul]
 
 /- English proof (translation)
-Use `Subtype.ext (LinearMap.ext fun c => ?_)` and prove the remaining obligations. Rewrite using `[show c = c • (1 : ℂ) by rw [smul_eq_mul, mul_one], map_smul, hl, smul_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_zero_of_apply_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (χ : G →* ℂˣ)
     (l : smoothPart (ofChar χ).dual) (hl : (l : Module.Dual ℂ ℂ) 1 = 0) : l = 0 := by
@@ -111,27 +111,23 @@ namespace GlobalTheory.DetEqv
 open GlobalTheory.DetEqv.Pairing
 
 /- English proof (translation)
-Introduce `k _ _ _ _ x x' n hn α β hα hβ hαβ P hP`. Set `e` to `GlobalTheory.ThK.MidJac.e2 x x'`. Set `ρ` to `ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α β)`. Establish `hρ : IsSmooth ρ` using `(isSmooth_ofChar_iff _).2 (GlobalTheory.ThK.DetProd.isSmoothChar_twoDet x x' hα hβ)`. Take `⟨Ψ⟩` from `InductionContragredient.nonempty_equiv (IndDual.inductionContragredient k) e hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcancel : ∀ (h : GL (Fin (x + x')) k) (u : IndSp e ρ), parInd e ρ h (parInd e ρ h⁻¹ u) = u`. Introduce `h u`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hsm : ∀ Φ : SB (Matrix (Fin n) (Fin (x + x')) k), (P.flip Φ : Module.Dual ℂ (IndSp e ρ)) ∈ smoothPart (parInd e ρ).dual`. Introduce `Φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (stab_mem_nhds α hα Φ) ?_)` and prove the remaining obligations. Introduce `h hh`. Use `show (parInd e ρ).dual h (P.flip Φ) = P.flip Φ`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Use `show P (parInd e ρ h⁻¹ u) Φ = P u Φ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hP h (parInd e ρ h⁻¹ u) Φ Φ hh` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congrArg (fun v => P v Φ) (hcancel h u)`. Set `L : SB (Matrix (Fin n) (Fin (x + x')) k) →ₗ[ℂ] smoothPart (parInd e ρ).dual` to `{ toFun := fun Φ => ⟨P.flip Φ, hsm Φ⟩ map_add' := fun a b => Subtype.ext (map_add P.flip a b) map_smul' := fun c a => Subtype.ext (map_smul P.flip c a) }`. Set `ev` to `evOne (GlobalTheory.ThK.DetProd.twoDet x x' α β) (GlobalTheory.ThK.DetProd.twoDet x x' α⁻¹ β⁻¹) (twoDet_inv_apply x x' α β)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : SB (Matrix (Fin n) (Fin (x + x')) k) →ₗ[ℂ] IndSp e (ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α⁻¹ β⁻¹))` to `(parIndMap e ev).toLinearMap ∘ₗ Ψ.symm.toIntertwiningMap.toLinearMap ∘ₗ L`. Establish `hne : ∀ t : ℝ, α⁻¹ * β⁻¹⁻¹ ≠ absPow k (t : ℂ)`. Introduce `t ht`. Apply `hαβ (-t)` to reduce the goal to its premises. Rewrite using `[show (((-t : ℝ)) : ℂ) = -(t : ℂ) by push_cast; ring, absPow_neg, ← ht]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mul_inv, inv_inv]`. Establish `hT : ∀ (h : GL (Fin (x + x')) k) (Φ Φ' : SB (Matrix (Fin n) (Fin (x + x')) k)), (∀ X, (Φ' : Matrix (Fin n) (Fin (x + x')) k → ℂ) X = ((α⁻¹ (Matrix.GeneralLinearGroup.det h) : ℂˣ) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(n : ℝ) / 2) : ℝ) : ℂ) * (Φ : Matrix (Fin n) (F …`. Introduce `h Φ Φ' hΦ'`. Establish `hL : L Φ' = contra (parInd e ρ) h (L Φ)`. Use `Subtype.ext (LinearMap.ext fun u => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show P u Φ' = P (parInd e ρ h⁻¹ u) Φ`. Use `hP h (parInd e ρ h⁻¹ u) Φ Φ' (fun X => by rw [hΦ' X, MonoidHom.inv_apply])` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congrArg (fun v => P v Φ') (hcancel h u).symm`. Establish `i1 : Ψ.symm.toIntertwiningMap.toLinearMap (contra (parInd e ρ) h (L Φ)) = parInd e (contra ρ) h (Ψ.symm.toIntertwiningMap.toLinearMap (L Φ))` using `LinearMap.congr_fun (Ψ.symm.toIntertwiningMap.isIntertwining' h) (L Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : (parIndMap e ev).toLinearMap (parInd e (contra ρ) h (Ψ.symm.toIntertwiningMap.toLinearMap (L Φ))) = parInd e (ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α⁻¹ β⁻¹)) h ((parIndMap e ev).toLinearMap (Ψ.symm.toIntertwiningMap.toLinearMap (L Φ)))` using `LinearMap.congr_fun ((parIndMap e ev).isIntertwining' h) (Ψ.symm.toIntertwiningMap.toLinearMap (L Φ))`. Use `show (parIndMap e ev).toLinearMap (Ψ.symm.toIntertwiningMap.toLinearMap (L Φ')) = parInd e (ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α⁻¹ β⁻¹)) h ((parIndMap e ev).toLinearMap (Ψ.symm.toIntertwiningMap.toLinearMap (L Φ)))`. Conclude with `(congrArg (fun l => (parIndMap e ev).toLinearMap (Ψ.symm.toIntertwiningMap.toLinearMap l)) hL).trans ((congrArg (parIndMap e ev).toLinearMap i1).trans i2)`. Establish `hT0` using `no_map_of_lt k x x' n hn α⁻¹ β⁻¹ hα.inv hβ.inv hne T hT`. Use `LinearMap.ext fun u => LinearMap.ext fun Φ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : T Φ = 0` using `by rw [hT0]; rfl`. Establish `h1 : Ψ.symm.toIntertwiningMap.toLinearMap (L Φ) = 0`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Establish `hg` using `congrArg (fun f : IndSp e (ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α⁻¹ β⁻¹)) => f.1.1 g) h0`. Express the relevant statement in the definitionally equal form `(((Ψ.symm.toIntertwiningMap.toLinearMap (L Φ)).1.1 g : smoothPart (ofChar (GlobalTheory.ThK.DetProd.twoDet x x' α β)).dual) : Module.Dual ℂ ℂ) 1 = 0 at hg`.
-
-Conclude with `eq_zero_of_apply_one _ _ hg`. Establish `h2 : L Φ = 0`. Establish `h1' : Ψ.symm.toLinearEquiv (L Φ) = 0` using `h1`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h1'`. Establish `h3` using `congrArg (fun l : smoothPart (parInd e ρ).dual => (l : Module.Dual ℂ (IndSp e ρ)) u) h2`.
-
-Conclude with `h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem no_pairing_of_lt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x x' n : ℕ), n < x' → ∀ (α β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar α → GlobalTheory.SmGL.IsSmoothChar β → (∀ t : ℝ, α * β⁻¹ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) →

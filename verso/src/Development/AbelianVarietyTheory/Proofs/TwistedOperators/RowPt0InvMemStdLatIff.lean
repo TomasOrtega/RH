@@ -20,7 +20,7 @@ namespace GlobalTheory.FirstRowLat
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Express the relevant statement in the definitionally equal form `g ∈ (stepGroup L t w (j + 1)).map (GlobalTheory.StepData.reGL (ixFin G t w (j + 1))).toMonoidHom at hg`. Distinguish the cases in `hP : w ∈ L.Pg`. Conclude with `((GlobalTheory.Adopt.thetaGridBlockCongruence_typePrime_description G t w hP (j + 1) g).1 hg).1`. Conclude with `((GlobalTheory.Adopt.thetaGridBlockCongruence_offTypePrime_description G t w hP (j + 1) g).1 hg).1`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem givenLevel_zero_le_KO {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E)
     (k : ℕ) (hk : 1 ≤ k) (g : GL (Fin ((locGrid G t w).rank (0, k))) (Kw w)) (hg : g ∈ givenLevel G t w (0, k)) :
@@ -34,11 +34,11 @@ theorem givenLevel_zero_le_KO {T : Type} {L : LevCh D T} {sc : Consts} (G : Grid
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Establish `hβ : IsFrame (S.B.β 0 D.R.m) (G.Λ (.grid 0 D.R.m))` using `S.B.isFrame_β hL (Nat.zero_le _) le_rfl`. Establish `hsd : IsSelfDualC (G.V (.grid 0 D.R.m)) (G.Λ (.grid 0 D.R.m))`. Establish `key : ∀ X : LSp D, X = ⟨D.sp.X', L.ΛX⟩ → IsSelfDualC X.sp X.lat`. Introduce and unpack `X rfl`. Conclude with `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hL.βX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `key _ (colY_m L)`. Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `e` using `GlobalTheory.FunObj.LevRowSucc.prodLev_inf_UA hβ hsd (locPl G t) (fun w => rank_vertex G t w (X := (0, D.R.m)) ⟨Nat.zero_le _, le_rfl⟩) (fun w => GlobalTheory.SplitWeil.KO (Kw w.1) _) (fun _ => rfl)`. Establish `hle : S.levRow t 0 (Nat.zero_le _) ≤ prodLev (S.B.β 0 D.R.m) (locPl G t) (fun w => rank_vertex G t w (X` using `(0, D.R.m)) ⟨Nat.zero_le _, le_rfl⟩) (fun w => GlobalTheory.SplitWeil.KO (Kw w.1) _) := by`. Use `inf_le_inf_right _ (iInf_mono fun w => Subgroup.comap_mono ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Conclude with `givenLevel_zero_le_KO G t w.1 D.R.m hm g hg`. Establish `hmem : finG (G.V (.grid 0 D.R.m)) k ∈ prodLev (S.B.β 0 D.R.m) (locPl G t) (fun w => rank_vertex G t w (X` using `(0, D.R.m)) ⟨Nat.zero_le _, le_rfl⟩) (fun w => GlobalTheory.SplitWeil.KO (Kw w.1) _) ⊓ UA D.sp.cm (G.V (.grid 0 D.R.m)).gram := Subgroup.mem_inf.2 ⟨hle hk, GlobalTheory.LevSplit.finE_mem_UA _ _⟩`. Rewrite `hmem` using `[e, congLev_top]`. Conclude with `(Subgroup.mem_inf.1 hmem).2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levRow_zero_stab (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) (t : T) (k : FinPt G (.grid 0 D.R.m))
     (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _)) :
@@ -67,9 +67,9 @@ theorem levRow_zero_stab (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) (t :
 end GlobalTheory.FirstRowLat
 
 /- English proof (translation)
-Introduce `D T L sc G W U S μ₀ hL t _ k hk x`. Establish `h1` using `GlobalTheory.FirstRowLat.levRow_zero_stab S hL t k hk`. Establish `h2` using `GlobalTheory.LastColLat.conj_stab S.N (X := .grid 0 D.R.m) (by simp [DefNode]) k h1`. Establish `e : G.toPair (.chi (firstIx D) D.R.m : Pair T) ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1 1 = (1, ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1)` using `by show (negGA _ 1, _) = _`. Rewrite using `[map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `GlobalTheory.LastColLat.actO_inv_mem_latO_iff _ _ _ _ _ h2 x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FirstRowLat.rowPt0_inv_mem_stdLat_iff : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ₀ : T}, L.Is μ₀ → ∀ {t : T}, t ∈ U → ∀ k : FinPt G (.grid 0 D.R.m), finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _) →
     ∀ x : WO (G.pS (.chi (firstIx D) D.R.m : Pair T)) (G.pT (.chi (firstIx D) D.R.m : Pair T)),

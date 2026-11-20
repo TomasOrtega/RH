@@ -12,28 +12,28 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-The claim follows from `sdVolW_of_top σ J ψ v Λ a hC (topW_holds v Λ a) hD hI`.
+A detailed English derivation is pending.
 -/
 theorem sdVolW_of (a : ℕ) (hC : CondV σ J ψ v) (hD : DualW σ J ψ v Λ a) (hI : IdxW v Λ a) :
     SdVolW σ J ψ v Λ a :=
   sdVolW_of_top σ J ψ v Λ a hC (topW_holds v Λ a) hD hI
 
 /- English proof (translation)
-The claim follows from `sdVolH_of_top σ J ψ v a hC (topH_holds v σ a) hD hI`.
+A detailed English derivation is pending.
 -/
 theorem sdVolH_of (a : ℕ) (hC : CondV σ J ψ v) (hD : DualH σ J ψ v a) (hI : IdxHO σ v a) :
     SdVolH σ J ψ v a :=
   sdVolH_of_top σ J ψ v a hC (topH_holds v σ a) hD hI
 
 /- English proof (translation)
-The claim follows from `sdVolW_of σ J ψ v Λ a hC hD (idxW_of v Λ a hI)`.
+A detailed English derivation is pending.
 -/
 theorem sdVolW_of_pi (a : ℕ) (hC : CondV σ J ψ v) (hD : DualW σ J ψ v Λ a) (hI : IdxPiW v Λ a) :
     SdVolW σ J ψ v Λ a :=
   sdVolW_of σ J ψ v Λ a hC hD (idxW_of v Λ a hI)
 
 /- English proof (translation)
-The claim follows from `sdVolH_of σ J ψ v a hC hD (idxHO_of σ v a hI)`.
+A detailed English derivation is pending.
 -/
 theorem sdVolH_of_pi (a : ℕ) (hC : CondV σ J ψ v) (hD : DualH σ J ψ v a) (hI : IdxPiH σ v a) :
     SdVolH σ J ψ v a :=

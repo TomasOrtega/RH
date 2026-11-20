@@ -19,9 +19,7 @@ noncomputable section
 namespace MainStatements.Tam.A
 
 /- English proof (translation)
-Use `choose K hK hKn using fun i => exists_compact_mem_nhds (1 : X i)`. Use `⟨Set.univ.pi K, MeasurableSet.univ_pi fun i => (hK i).measurableSet, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => (Measure.measure_pos_of_mem_nhds (μ := m i) (hKn i)).ne'`. Rewrite using `[Measure.pi_pi]`.
-
-Conclude with `ENNReal.prod_ne_top fun i _ => (hK i).measure_lt_top.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, TopologicalSpace (X i)] [∀ i, MeasurableSpace (X i)]
     [∀ i, BorelSpace (X i)] [∀ i, Group (X i)] [∀ i, IsTopologicalGroup (X i)] [∀ i, LocallyCompactSpace (X i)]
@@ -35,7 +33,7 @@ theorem exists_box {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, Topologica
     exact ENNReal.prod_ne_top fun i _ => (hK i).measure_lt_top.ne
 
 /- English proof (translation)
-Establish `e1` using `Real.exp_one_gt_d9`. Establish `h : Real.exp 3 = Real.exp 1 ^ 3` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_exp_three : (13 : ℝ) ≤ Real.exp 3 := by
   have e1 := Real.exp_one_gt_d9
@@ -45,19 +43,19 @@ theorem le_exp_three : (13 : ℝ) ≤ Real.exp 3 := by
     _ ≤ Real.exp 1 ^ 3 := pow_le_pow_left₀ (by norm_num) (by linarith) 3
 
 /- English proof (translation)
-Establish `ha : 0 ≤ (f : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Establish `hn' : n ≤ Real.exp (60 * (f * (r : ℝ) ^ 2 * L))`. Rewrite using `[← Real.exp_log (by linarith : (0 : ℝ) < n)]; exact Real.exp_le_exp.2 hn`. Establish `h13` using `le_exp_three`. Establish `hv' : v ^ f ≤ Real.exp (3 * (f * (r : ℝ) ^ 2 * L))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hrd : rd ≤ Real.exp (2 * L)` using `(Real.log_le_iff_le_exp (by linarith)).1 hrdL`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hX : 3 * ((d : ℝ) ^ 2 * (r : ℝ) ^ 4 * rd ^ 2) ≤ Real.exp (9 * L)`. Establish `e1 : ((f : ℝ) * (r : ℝ) ^ 2) ^ 2 ≤ Real.exp L ^ 2` using `pow_le_pow_left₀ ha hfr 2`. Establish `e2 : rd ^ 2 ≤ Real.exp (2 * L) ^ 2` using `pow_le_pow_left₀ (by linarith) hrd 2`. Establish `e3 : Real.exp (9 * L) = Real.exp 3 * Real.exp L ^ 2 * Real.exp (2 * L) ^ 2 * Real.exp (3 * L - 3)`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : 1 ≤ Real.exp (3 * L - 3)` using `Real.one_le_exp (by linarith)`. Establish `e5 : 3 * ((d : ℝ) ^ 2 * (r : ℝ) ^ 4 * rd ^ 2) = 12 * (((f : ℝ) * (r : ℝ) ^ 2) ^ 2 * rd ^ 2)` using `by rw [hd]; ring`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e3, e5]`. Establish `p1 : 0 ≤ ((f : ℝ) * (r : ℝ) ^ 2) ^ 2 * rd ^ 2` using `by positivity`. Establish `p2 : ((f : ℝ) * (r : ℝ) ^ 2) ^ 2 * rd ^ 2 ≤ Real.exp L ^ 2 * Real.exp (2 * L) ^ 2` using `mul_le_mul e1 e2 (by positivity) (by positivity)`. Establish `p3 : 0 ≤ Real.exp L ^ 2 * Real.exp (2 * L) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hM' : M ≤ Real.exp (54 * (f * (r : ℝ) ^ 2 * L))`. Use `hM.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Break down `le_or_gt M 0 with hM0 | hM0` into its components or cases. Establish `: n * (v ^ f * M) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by linarith) (mul_nonpos_of_nonneg_of_nonpos (pow_nonneg hv0 _) hM0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `this.trans (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound (f r d : ℕ) (L n v M rd : ℝ) (hd : (d : ℝ) = 2 * f) (hL : 1 ≤ L)
     (hfr : (f : ℝ) * (r : ℝ) ^ 2 ≤ Real.exp L) (hrd1 : 1 ≤ rd) (hrdL : Real.log rd ≤ 2 * L) (hn1 : 1 ≤ n)
@@ -112,37 +110,31 @@ theorem bound (f r d : ℕ) (L n v M rd : ℝ) (hd : (d : ℝ) = 2 * f) (hL : 1 
 open GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes in
 
 /- English proof (translation)
-Take `⟨hn, hnl⟩` from `hIB`. Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hr : 2 ≤ D.R.r` using `Formalism.L2.Geo.two_le_r D`. Establish `hSig` using `D.sp.W_sig ((i : ℕ) + 1)`. Use `haveI := hF.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨θ, hθ⟩, H1⟩` from `hF.1.2`. Take `⟨⟨A, hA⟩, H2⟩` from `H1 θ hθ`. Take `⟨⟨m, hm⟩, -⟩` from `H2 A hA`. Take `⟨rp, hrpc, hrp⟩` from `GlobalTheory.T.exists_continuous_realComponentHom_unitaryAdelic D (Wc D i) θ A (D.sp.W_sig _) hθ hA`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`. Use `haveI : ∀ ρ, (m ρ).IsHaarMeasure := fun ρ => (hm ρ).1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨B, hBm, hB0, hBt⟩` from `MainStatements.Tam.A.exists_box m`. Establish `hvol` using `hV D (Wc D i) _ _ (D.sp.W_sig _) (D.sp.W_sigval _ (Nat.le_add_left _ _) i.2) μ 𝓕 hF.2 θ A m rp hθ hA hm hrpc hrp B hBm`. Use `set K₀ := levW C i (Formalism.L2.DIV.LevelP.full _ _ _) with hK₀`. Use `set n := (levW C i P).relIndex K₀ with hndef`. Establish `hsub : {h | h ∈ Stab (Wc D i) ∧ rp h ∈ B} ⊆ {h | finE (Wc D i) (1⁻¹ * h) ∈ K₀ ∧ rp h ∈ B}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce and unpack `h ⟨hh, hb⟩`. Use `⟨?_, hb⟩` and prove the remaining obligations. Rewrite using `[inv_one, one_mul]`. Establish `hk : h ∈ KM (Wc D i) 1` using `(hS.1 D (Wc D i)).1 ▸ hh`. Conclude with `GlobalTheory.T.finitePart_mem_fullLevel_of_keeps_selfDualLattice D (Wc D i) (C.βW i) (C.ΛW i) _ (hC.βW i) hrk.le rfl h hk`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h44` using `GlobalTheory.T.measure_translateLevel_realBox_le_index_mul D (Wc D i) θ A m rp (levW C i P) K₀ μ (D.sp.W_sig _) hθ hA hm hrpc hrp (fun k hk => ⟨hk.1, Subgroup.mem_top _⟩) hn (GlobalTheory.ParahoricCompact.isOpen_comap_lev _ _ _) hF.1 1 (GfC _).one_mem B hBm`. Use `set c := ReciprocityTheory.ChartRestriction.DS.volU (Wc D i).rank ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D (Wc D i).rank with hc`. Establish `hkey : μ 𝓕 * Measure.pi m B ≤ ((n : ℝ≥0∞) * ENNReal.ofReal c) * Measure.pi m B`. Rewrite using `[hvol]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hμ` using `(ENNReal.mul_le_mul_iff_left hB0 hBt).1 hkey`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hfin : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[show Module.finrank ℚ D.host.E = 4 * D.R.ord from D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hu : Formalism.MainNotions.StandardLattice.massI D D.R.r ≤ (3 * ((Module.finrank ℚ D.host.E : ℝ) ^ 2 * (D.R.r : ℝ) ^ 4 * D.host.rdE ^ 2)) ^ (3 * Module.finrank ℚ D.host.E * D.R.r ^ 2)` using `GlobalTheory.mass_stdLat_le D.host.E (fun _ => rfl) D.R.r`. Take `⟨hN1, hN2⟩` from `hN D.R.r hr`. Establish `hnV : D.R.r ≤ D.R.nV` using `Nat.le_add_right _ _`. Take `⟨h1, -, h3, h4⟩` from `hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hfr : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 ≤ Real.exp L`. Use `le_trans ?_ h1` and prove the remaining obligations. Establish `hnR : (D.R.r : ℝ) ≤ D.R.nV` using `by exact_mod_cast hnV`. Rewrite using `[sq, ← mul_assoc]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : 1 ≤ L`. Establish `hf : 2 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hfR : (2 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `hrR : (2 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr`. Establish `: Real.exp 1 ≤ Real.exp L`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Real.exp_le_exp.1 this`. Establish `hd1 : (1 : ℝ) ≤ |(discr D.host.E : ℝ)|`. Use `Int.one_le_abs (discr_ne_zero D.host.E)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hrd1 : 1 ≤ D.host.rdE` using `Real.one_le_rpow hd1 (by positivity)`. Establish `hrdL : Real.log D.host.rdE ≤ 2 * L` using `by linarith [abs_nonneg (dlogL D 1)]`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hn`. Establish `hgL : Real.log (n : ℝ) ≤ 60 * (D.R.f * (D.R.r : ℝ) ^ 2 * L)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `ha : 0 ≤ 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hv0 : 0 ≤ ReciprocityTheory.ChartRestriction.DS.volU D.R.r` using `le_trans (by positivity) hN1`. Establish `hb` using `MainStatements.Tam.A.bound D.R.f D.R.r (Module.finrank ℚ D.host.E) L n _ _ D.host.rdE (by rw [hfin]; push_cast; ring) hL1 hfr hrd1 hrdL hn1 hgL hv0 hN2 hu`. Establish `hc' : (n : ℝ) * c ≤ Real.exp (117 * (D.R.f * (D.R.r : ℝ) ^ 2 * L))`.
-
-Rewrite using `[hc, hrk]`. Conclude with `hb`. Establish `hle : (μ 𝓕).toReal ≤ Real.exp (117 * (D.R.f * (D.R.r : ℝ) ^ 2 * L))`. Use `ENNReal.toReal_le_of_le_ofReal (Real.exp_pos _).le (hμ.trans ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity)]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal hc'`. Establish `h0 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log ((D.R.r : ℝ) + 3)` using `mul_nonneg (by positivity) (Real.log_nonneg (by linarith))`. Establish `h5 : Real.log (μ 𝓕).toReal ≤ 117 * (D.R.f * (D.R.r : ℝ) ^ 2 * L)`. Break down `(ENNReal.toReal_nonneg (a := μ 𝓕)).eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, Real.log_zero]`.
-
-Check the signs of the components of the expression. Conclude with `(Real.log_le_iff_le_exp h).2 hle`. Establish `h6 : 0 ≤ D.R.f * (D.R.r : ℝ) ^ 2 * L` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem up_core (hV : VolSt) (hS : StabSt) (hN : NumSt) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0)
     (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i)))
@@ -239,7 +231,7 @@ end MainStatements.Tam.A
 namespace MainStatements.Tam
 
 /- English proof (translation)
-Introduce `hV hS hN hP D Tu C t0 hC i P μ 𝓕 hF L hL` and use `MainStatements.Tam.A.up_core hV hS hN D Tu C t0 hC i P μ 𝓕 hF L hL (GlobalTheory.T.level_index_bound_of_classicalTheorems hP D Tu C t0 hC i P)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem up : VolSt → StabSt → NumSt → UpSt := fun hV hS hN hP D Tu C t0 hC i P μ 𝓕 hF L hL =>
   MainStatements.Tam.A.up_core hV hS hN D Tu C t0 hC i P μ 𝓕 hF L hL (GlobalTheory.T.level_index_bound_of_classicalTheorems hP D Tu C t0 hC i P)

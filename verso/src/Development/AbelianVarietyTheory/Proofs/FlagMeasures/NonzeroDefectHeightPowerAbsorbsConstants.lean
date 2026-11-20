@@ -14,7 +14,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.NonzeroDefect
 
 /- English proof (translation)
-Establish `h1 : q ^ (-((k : ℤ) - 1)) ≤ q ^ (-((k : ℤ) - 2 * r - 5))` using `zpow_le_zpow_right₀ (by linarith) (by omega)`. Establish `hq0 : 0 < q` using `by linarith`. Use `gcongr`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem num_first (H q : ℝ) (hq : 2 ≤ q) (hH : 0 ≤ H) (r k : ℕ) :
     2 * H ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (4 * H ^ (4 * (r + 1))) * q ^ (-((k : ℤ) - 1)) ≤
@@ -26,7 +26,7 @@ theorem num_first (H q : ℝ) (hq : 2 ≤ q) (hH : 0 ≤ H) (r k : ℕ) :
   norm_num
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Establish `h1 : (q ^ (1 - ((k : ℤ) - 2 * r - 3))) ^ 2 ≤ q ^ (-((k : ℤ) - 2 * r - 5))`. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Conclude with `zpow_le_zpow_right₀ (by linarith) (by push_cast; omega)`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem num_second (H q : ℝ) (hq : 2 ≤ q) (hH : 0 ≤ H) (r k : ℕ) (hk : 4 * r + 7 ≤ k) :
     98 * H ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (4 * H ^ (4 * (r + 1))) *
@@ -39,9 +39,9 @@ theorem num_second (H q : ℝ) (hq : 2 ≤ q) (hH : 0 ≤ H) (r k : ℕ) (hk : 4
   gcongr
 
 /- English proof (translation)
-Establish `h0 : 0 < H` using `by linarith`. Establish `h9 : (392 : ℝ) ≤ H ^ 9`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [pow_add H]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ ≤ H ^ (39 * (r + 1) ^ 2) := pow_le_pow_right₀ (by linarith) (by nlinarith [Nat.zero_le r])`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroDefect_height_power_absorbs_constants (H : ℝ) (hH : 2 ≤ H) (r : ℕ) :
     H ^ (2 * (r + 2)) * (98 * H ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (4 * H ^ (4 * (r + 1)))) ≤
@@ -58,15 +58,15 @@ theorem nonzeroDefect_height_power_absorbs_constants (H : ℝ) (hH : 2 ≤ H) (r
     _ ≤ H ^ (39 * (r + 1) ^ 2) := pow_le_pow_right₀ (by linarith) (by nlinarith [Nat.zero_le r])
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk`. Distinguish the cases in `hex : ∃ d Λ, S.IsTerm d Λ ∧ ¬ S.BBzero d Λ`. Take `⟨d, Λ, hT, hB⟩` from `hex`. Establish `hq : (2 : ℝ) ≤ (S.q : ℝ)`. Use `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hqH : (S.q : ℝ) ≤ S.Hp` using `(GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ hT).2.2.2.2.2.2.2.1 hB`. Establish `hH : (2 : ℝ) ≤ S.Hp` using `hq.trans hqH`. Establish `hH0 : (0 : ℝ) ≤ S.Hp` using `by linarith`. Establish `hq0 : (0 : ℝ) < (S.q : ℝ)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.ampSq_le_of_hermitianTermTypes_cauchySchwarz L r k S hk (ENNReal.ofReal (98 * S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (4 * S.Hp ^ (4 * (r + 1))) * (S.q : ℝ) ^ (-((k : ℤ) - 2 * r - 5))) * S.nn) (fun β => (GlobalTheory.T.hermitianFrames_firstType_ampSq_bound L r k …`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← mul_assoc]`. Use `mul_le_mul_left (ENNReal.ofReal_le_ofReal ?_) _` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (nonzeroDefect_height_power_absorbs_constants _ hH r) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (S.ampSq fun d Λ => ¬ S.BBzero d Λ) = 0`. Establish `ha : ∀ d, S.amp d (fun Λ => ¬ S.BBzero d Λ) = 0`. Introduce `d`. Unfold `Frames.amp`. Establish `: ∀ Λ, ¬ (S.IsTerm d Λ ∧ ¬ S.BBzero d Λ)` using `fun Λ h => hex ⟨d, Λ, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [this, if_false, tsum_zero]`. Unfold `Frames.ampSq Frames.sumData`. Simplify using `[ha]`. Rewrite using `[h0]`. Conclude with `zero_le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampSq_nonzero_defect : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → (S.ampSq fun d Λ => ¬ S.BBzero d Λ) ≤ ENNReal.ofReal (S.Hp ^ (39 * (r + 1) ^ 2) * (S.q : ℝ) ^ (-((k : ℤ) - 2 * r - 5))) * S.nn := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk

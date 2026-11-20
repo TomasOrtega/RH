@@ -14,17 +14,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShFam.Cell
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ V hV φV f₀ hstr w i t t' hle hIn`. Take `⟨R, _, _, _, _, _, χR, hχ, hker⟩` from `GlobalTheory.T.valuation_ring_dominates_point t t' hle`. Establish `hIn' : Lands Φ hV f₀ w i ((algebraMap R (GeoF t)).comp (χR.comp MvPolynomial.C)) (algebraMap R (GeoF t) ∘ (fun j => χR (MvPolynomial.X j)))`. Establish `h1 : (algebraMap R (GeoF t)).comp (χR.comp MvPolynomial.C) = (geoHom t).comp MvPolynomial.C`. Rewrite using `[← hχ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : (algebraMap R (GeoF t) ∘ (fun j => χR (MvPolynomial.X j))) = (fun j => geoHom t (MvPolynomial.X j))`. Rewrite using `[← hχ]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hIn`. Establish `hk` using `GlobalTheory.T.flag_torus_frame_smooth Φ hV f₀ w i R (GeoF t) (χR.comp MvPolynomial.C) (fun j => χR (MvPolynomial.X j)) hIn'`. Use `set k := IsLocalRing.ResidueField R`. Use `set em := algebraMap k (AlgebraicClosure k)`. Establish `hΩ` using `GlobalTheory.T.flag_torus_eigen_frame_compat Φ hV f₀ w i em _ _ hk`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `GlobalTheory.T.geometric_point_extends_character t' (AlgebraicClosure k) (em.comp ((IsLocalRing.residue R).comp χR)) (by`. Rewrite using `[RingHom.ker_comp_of_injective _ em.injective, hker])`. Take `⟨j, hj⟩` from `GlobalTheory.T.exists_cell_lands_of_eigFrame Φ hV f₀ hstr w (GeoF t') ((geoHom t').comp MvPolynomial.C) (fun j => geoHom t' (MvPolynomial.X j))`. Establish `hj'` using `GlobalTheory.T.flag_torus_eigen_frame_compat Φ hV f₀ w j κ _ _ hj`. Establish `e1 : κ.comp ((geoHom t').comp MvPolynomial.C) = em.comp ((IsLocalRing.residue R).comp (χR.comp MvPolynomial.C))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.comp_assoc, hκ]`. Both sides reduce to the same expression. Establish `e2 : (κ ∘ fun j => geoHom t' (MvPolynomial.X j)) = em ∘ (IsLocalRing.residue R ∘ fun j => χR (MvPolynomial.X j))`. Use function extensionality and compare the values at `x`. Conclude with `congrArg (fun f => f (MvPolynomial.X x)) hκ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `hj'` using `[e1, e2]`. Take `⟨g, hg, p, hp, hc⟩` from `hj'`. Establish `hji` using `GlobalTheory.T.flag_torus_frame_transition Φ hV f₀ hstr w i _ _ _ hΩ _ rfl g hg j p hp hc`. Substitute `hji` using the available equality. Conclude with `hj`.
+A detailed English derivation is pending.
 -/
 theorem inComp_of_le : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}, ∀ (Φ : FlagTor Z e U) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)} (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)), hV.fromSpec ≫ genStr Z = spMap φV → ∀ (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) (i : U.Comp) (t t' : PrimeSpectrum (MvPolynomial (Cell.Coord Dw) Γ(gen Z, V))), t ≤ t' → Cell.InComp Φ hV f₀ w i t → Cell.InComp Φ hV f₀ w i t' := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ V hV φV f₀ hstr w i t t' hle hIn

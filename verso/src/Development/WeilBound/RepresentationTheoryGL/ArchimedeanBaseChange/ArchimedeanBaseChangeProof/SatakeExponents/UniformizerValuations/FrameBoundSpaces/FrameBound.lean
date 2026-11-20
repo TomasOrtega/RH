@@ -42,9 +42,9 @@ def FrameRead : Prop := ∀ (hR : Rd.ReadLimit) (hD : DiagAlg) (E : Type) [Field
     (h : F.Struct), (F.toGenIn hD h).Read
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨F₀⟩` from `h0 hR E hE n hn π hπ S hS`. Use `⟨F₀.K, F₀.W, F₀.hK, F₀.hW, fun T => ?_⟩` and prove the remaining obligations. Take `⟨F⟩` from `h1 hR E hE n hn π hπ S F₀ T`. Establish `h` using `h2 hR E hE n hn π S T F₀ F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨F.toGenIn hD h, h3 hR hD E hE n hn π hπ S T F₀ F h, h4 hR hD E hE n hn π hπ S T F₀ F h⟩`.
+Supply the required witnesses or components.
 -/
 theorem genEx_of (hR : Rd.ReadLimit) (hD : DiagAlg) (h0 : FrameEx0) (h1 : FrameEx) (h2 : FrameOk) (h3 : FrameBound)
     (h4 : FrameRead) : GenEx := by

@@ -9,15 +9,15 @@ open Module
 noncomputable section
 
 /- English proof (translation)
-Take `⟨Q, hQdef⟩ : ∃ Q : E →L[ℂ] E, Q = T.starProjection ∘L A.adjoint ∘L A ∘L T.starProjection + (1 - T.starProjection)` from `⟨_, rfl⟩`. Rewrite using `[← hQdef]`. Establish `hQx : ∀ x : E, Q x = T.starProjection (A.adjoint (A (T.starProjection x))) + (x - T.starProjection x)`. Introduce `x`. Substitute `hQdef` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hQT : T ≤ T.comap (Q : E →ₗ[ℂ] E)`. Introduce `x hx`. Simplify using `only [Submodule.mem_comap, ContinuousLinearMap.coe_coe, hQx, Submodule.starProjection_eq_self_iff.mpr hx, sub_self, add_zero]`. Conclude with `T.starProjection_apply_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hres : (Q : E →ₗ[ℂ] E).restrict hQT = LinearMap.adjoint ((A : E →ₗ[ℂ] F) ∘ₗ T.subtype) ∘ₗ ((A : E →ₗ[ℂ] F) ∘ₗ T.subtype)` using `by ext1 x`. Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `z`. Rewrite using `[LinearMap.comp_apply, LinearMap.adjoint_inner_left, Submodule.coe_inner, LinearMap.coe_restrict_apply, ContinuousLinearMap.coe_coe, hQx, Submodule.starProjection_eq_self_iff.mpr x.2, sub_self, add_zero, Submodule.inner_starProjection_left_eq_right, Submodule.starProjection_eq_se …`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hquot : T.mapQ T (Q : E →ₗ[ℂ] E) hQT = LinearMap.id`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.mapQ_apply, LinearMap.id_comp, ContinuousLinearMap.coe_coe]`. Rewrite using `[Submodule.Quotient.eq, hQx]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : T.starProjection (A.adjoint (A (T.starProjection x))) + (x - T.starProjection x) - x = T.starProjection (A.adjoint (A (T.starProjection x))) - T.starProjection x` using `by abel`. Rewrite using `[h]`. Conclude with `T.sub_mem (T.starProjection_apply_mem _) (T.starProjection_apply_mem _)`. Rewrite using `[ContinuousLinearMap.det, LinearMap.det_eq_det_mul_det T _ hQT, hres, hquot, LinearMap.det_id, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_starProjection_compress {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
@@ -60,7 +60,7 @@ theorem det_starProjection_compress {E F : Type*} [NormedAddCommGroup E] [InnerP
     mul_one]
 
 /- English proof (translation)
-Introduce `n m π T`. Unfold `tangentJac`. Establish `h` using `LinearMap.normDet_sq (𝕜 := ℂ) (U := T) (V := EuclideanSpace ℂ (Fin m)) ((linProjₗ π).comp T.subtype)`. Conclude with `h.trans (det_starProjection_compress (LinearMap.toContinuousLinearMap (linProjₗ π)) T).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TangentJacCompress.proof : TangentJacCompress.Statement := by
   intro n m π T

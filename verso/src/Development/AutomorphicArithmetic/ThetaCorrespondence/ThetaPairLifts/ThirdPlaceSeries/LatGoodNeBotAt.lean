@@ -10,9 +10,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p hp _ i`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hp.ok hp.sep p.charW hp.prim`. Establish `hD : (p.S false).dW i = (p.S false).D` using `(primRows3 hp.ok hp.sep p.R p.F p.charW hp.prim).dW_eq (hR.wf false) i`. Establish `hpos : 0 < (p.S false).D` using `(primRows3 hp.ok hp.sep p.R p.F p.charW hp.prim).D_pos`. Establish `hli : LinearIndependent D.what₂.LL (p.R.toRealDat.bL p.F.lv2 false i)` using `(Module.finBasis D.what₂.LL (p.R.toRealDat.WL p.F.lv2 false i)).linearIndependent.map' (p.R.toRealDat.WL p.F.lv2 false i).subtype (Submodule.ker_subtype _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CovTop.ne_bot_of_isLattice_coords (latGood p.R.toRealDat p.F.lv2 i) (show 0 < (p.S false).dW i from hD.symm ▸ hpos) (p.R.toRealDat.bL p.F.lv2 false i) hli (hp.prim.mLat i)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovTop.good_lattice_ne_bot_at_point : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L}
     {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}

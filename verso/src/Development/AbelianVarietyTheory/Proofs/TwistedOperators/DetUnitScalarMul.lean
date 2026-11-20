@@ -15,9 +15,9 @@ variable {n : ℕ} (ε : Fin n → Bool)
 def detRoot (x : UJ ε) : Circle := Circle.exp (Complex.arg (umat x).det / n)
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.SqIntSU.norm_det_umat ε x`. Rewrite using `[detRoot, Circle.coe_exp, ← Complex.exp_nat_mul]`. Establish `e : (n : ℂ) * (((Complex.arg (umat x).det / n : ℝ)) * Complex.I) = (Complex.arg (umat x).det : ℂ) * Complex.I`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Use `conv_rhs => rw [← Complex.norm_mul_exp_arg_mul_I (umat x).det, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detRoot_pow (hn : n ≠ 0) (x : UJ ε) : ((detRoot ε x : Circle) : ℂ) ^ n = (umat x).det := by
   have h1 := GlobalTheory.SqIntSU.norm_det_umat ε x
@@ -31,13 +31,13 @@ theorem detRoot_pow (hn : n ≠ 0) (x : UJ ε) : ((detRoot ε x : Circle) : ℂ)
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_comm, ← mul_eq_one_iff_eq_inv, ← GlobalTheory.SqIntSU.unitScalar_mul, inv_mul_cancel, GlobalTheory.SqIntSU.unitScalar_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitScalar_inv (z : Circle) : (unitScalar ε z)⁻¹ = unitScalar ε z⁻¹ := by
   rw [eq_comm, ← mul_eq_one_iff_eq_inv, ← GlobalTheory.SqIntSU.unitScalar_mul, inv_mul_cancel, GlobalTheory.SqIntSU.unitScalar_one]
 
 /- English proof (translation)
-Use `show ((z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) * umat x).det = _`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, Matrix.det_smul, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unitScalar_mul (z : Circle) (x : UJ ε) :
     (umat (unitScalar ε z * x)).det = (z : ℂ) ^ n * (umat x).det := by
@@ -49,7 +49,7 @@ variable [NeZero n]
 def root (x : UJ ε) (j : ZMod n) : Circle := detRoot ε x * ZMod.toCircle j
 
 /- English proof (translation)
-Establish `h : (ZMod.toCircle j : Circle) ^ n = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, ZMod.natCast_self, zero_mul, AddChar.map_zero_eq_one]`. Rewrite using `[← Circle.coe_pow, h, Circle.coe_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toCircle_pow (j : ZMod n) : ((ZMod.toCircle j : Circle) : ℂ) ^ n = 1 := by
   have h : (ZMod.toCircle j : Circle) ^ n = 1 := by
@@ -57,7 +57,7 @@ theorem toCircle_pow (j : ZMod n) : ((ZMod.toCircle j : Circle) : ℂ) ^ n = 1 :
   rw [← Circle.coe_pow, h, Circle.coe_one]
 
 /- English proof (translation)
-Rewrite using `[root, Circle.coe_mul, mul_pow, detRoot_pow ε (NeZero.ne n), toCircle_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem root_pow (x : UJ ε) (j : ZMod n) : ((root ε x j : Circle) : ℂ) ^ n = (umat x).det := by
   rw [root, Circle.coe_mul, mul_pow, detRoot_pow ε (NeZero.ne n), toCircle_pow, mul_one]
@@ -98,9 +98,9 @@ namespace GlobalTheory.ExtChar
 variable {n : ℕ} (ε : Fin n → Bool) [NeZero n]
 
 /- English proof (translation)
-Establish `hu : (toUnits w : Circleˣ) ∈ rootsOfUnity n Circle`. Rewrite using `[mem_rootsOfUnity, ← map_pow, hw, map_one]`. Take `⟨i, hi⟩` from `(bijective_rootsOfUnityAddChar n).2 ⟨_, hu⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun u : rootsOfUnity n Circle => ((u : Circleˣ) : Circle)) hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_toCircle_eq (w : Circle) (hw : w ^ n = 1) : ∃ i : ZMod n, ZMod.toCircle i = w := by
   have hu : (toUnits w : Circleˣ) ∈ rootsOfUnity n Circle := by
@@ -111,9 +111,9 @@ theorem exists_toCircle_eq (w : Circle) (hw : w ^ n = 1) : ∃ i : ZMod n, ZMod.
   simpa using h
 
 /- English proof (translation)
-Establish `hdet : (umat (scalarMul ε (z, g))).det = (z : ℂ) ^ n`. Rewrite using `[GlobalTheory.SqIntSU.scalarMul_apply, det_unitScalar_mul]`. Establish `: (umat (g : UJ ε)).det = 1` using `g.2`. Rewrite using `[this, mul_one]`. Establish `hd : detRoot ε (scalarMul ε (z, g)) ^ n = z ^ n` using `Circle.ext (by rw [Circle.coe_pow, Circle.coe_pow, detRoot_pow ε (NeZero.ne n), hdet])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : (detRoot ε (scalarMul ε (z, g)) * z⁻¹) ^ n = 1`. Rewrite using `[mul_pow, hd, inv_pow, mul_inv_cancel]`. Take `⟨i, hi⟩` from `exists_toCircle_eq (n := n) _ hw`. Use `⟨i, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[root, AddChar.map_add_eq_mul, hi, mul_comm (detRoot ε _) z⁻¹, mul_assoc, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_scalarMul (z : Circle) (g : SUJ ε) :
     ∃ i : ZMod n, ∀ j, root ε (scalarMul ε (z, g)) j = z * ZMod.toCircle (i + j) := by
@@ -130,7 +130,7 @@ theorem root_scalarMul (z : Circle) (g : SUJ ε) :
   rw [root, AddChar.map_add_eq_mul, hi, mul_comm (detRoot ε _) z⁻¹, mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show unitScalar ε (root ε (scalarMul ε (z, g)) j)⁻¹ * (unitScalar ε z * (g : UJ ε)) = unitScalar ε (ZMod.toCircle (i + j))⁻¹ * (g : UJ ε)`. Establish `e : (z * ZMod.toCircle (i + j))⁻¹ * z = (ZMod.toCircle (i + j))⁻¹`. Rewrite using `[mul_inv, mul_comm z⁻¹, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[h, ← mul_assoc, ← GlobalTheory.SqIntSU.unitScalar_mul, e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_scalarMul (z : Circle) (g : SUJ ε) (i : ZMod n)
     (h : ∀ j, root ε (scalarMul ε (z, g)) j = z * ZMod.toCircle (i + j)) (j : ZMod n) :
@@ -143,7 +143,7 @@ theorem part_scalarMul (z : Circle) (g : SUJ ε) (i : ZMod n)
   rw [h, ← mul_assoc, ← GlobalTheory.SqIntSU.unitScalar_mul, e]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `root_scalarMul ε z g`. Rewrite using `[extChar, avgChar]`. Simplify using `only [hi, part_scalarMul ε z g i hi, Circle.coe_mul, mul_zpow, Finset.mul_sum]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft i) _ _ fun j => by simp only [Equiv.coe_addLeft]; ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extChar_scalarMul (m : ℤ) (Θ' : SUJ ε → ℂ) (z : Circle) (g : SUJ ε) :
     extChar ε m Θ' (scalarMul ε (z, g)) = (z : ℂ) ^ m * avgChar ε m Θ' g := by

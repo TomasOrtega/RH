@@ -12,9 +12,9 @@ section
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (Set.range (KaehlerDifferential.D ℤ K))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Conclude with `hD a`. Consider the case `zero => exact h0`. Consider the case `add x y _ _ hx hy => exact hadd x y hx hy`. Consider the case `smul c x _ hx => exact hsmul c x hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kaehlerZ_span_induction {P : Ω[K⁄ℤ] → Prop} (v : Ω[K⁄ℤ]) (hD : ∀ a, P (KaehlerDifferential.D ℤ K a))
     (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y)) (hsmul : ∀ (c : K) x, P x → P (c • x)) : P v := by
@@ -29,13 +29,13 @@ theorem kaehlerZ_span_induction {P : Ω[K⁄ℤ] → Prop} (v : Ω[K⁄ℤ]) (hD
 variable (p : ℕ) [Fact p.Prime] [CharP K p]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul K, CharP.cast_eq_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kaehlerZ_D_pow_char (c : K) : KaehlerDifferential.D ℤ K (c ^ p) = 0 := by
   rw [Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul K, CharP.cast_eq_zero, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[hd.mul, hd.alg, kaehlerZ_D_pow_char p, map_zero, zero_mul, zero_add]`. Use `congr 1`. Conclude with `AlgHom.commutes _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem extD_algebraMap_pow_char_mul {d : ExteriorAlgebra K Ω[K⁄ℤ] →+ ExteriorAlgebra K Ω[K⁄ℤ]} (hd : IsExtD ℤ K d)
     (c : K) (x : ExteriorAlgebra K Ω[K⁄ℤ]) :
@@ -51,25 +51,25 @@ end GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Establish `hw : ∀ i z, ∃ w, F i z = z ^ p + p * w`. Introduce `i z`. Take `⟨w, hw⟩` from `(hπ.ker (F i z - z ^ p)).1 (by rw [map_sub, hF i, map_pow, sub_self])`. Conclude with `⟨w, by rw [← hw]; ring⟩`. Establish `hsm : ∀ (c : K) (x : ExteriorAlgebra K Ω[K⁄ℤ]), d (c ^ p • x) = c ^ p • d x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `c x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, extD_algebraMap_pow_char_mul p hd]`. Establish `hfD : ∀ i z w, F i z = z ^ p + p * w → ExteriorAlgebra.ι K (f i (KaehlerDifferential.D ℤ K (π z))) = algebraMap K _ (π z ^ (p - 1)) * ExteriorAlgebra.ι K (KaehlerDifferential.D ℤ K (π z)) + d (algebraMap K _ (π w))`. Introduce `i z w hz`. Rewrite using `[(hf i).2 z w hz, map_add, map_smul, Algebra.smul_def, hd.alg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i c v => (hf i).1 c v, fun i j c v => (hh i j).1 c v, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i v`. Proceed by induction on `v using kaehlerZ_span_induction with`. Consider the case `hD a`. Take `⟨z, rfl⟩` from `hπ.surj a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hz⟩` from `hw i z`. Establish `h2 : d (ExteriorAlgebra.ι K (KaehlerDifferential.D ℤ K (π z))) = 0`. Rewrite using `[← hd.alg, hd.sq]`. Rewrite using `[hfD i z w hz, map_add, hd.sq, add_zero, hd.mul, h2, mul_zero, add_zero, hd.alg, Derivation.leibniz_pow, map_nsmul, map_smul, smul_mul_assoc, smul_mul_assoc, ExteriorAlgebra.ι_sq_zero, smul_zero, smul_zero]`. Consider the case `h0 => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `hadd x y hx hy => rw [map_add, map_add, map_add, hx, hy, add_zero]`. Consider the case `hsmul c x hx => rw [(hf i).1, map_smul, hsm, hx, smul_zero]`. Introduce `i j v`. Proceed by induction on `v using kaehlerZ_span_induction with`. Consider the case `hD a`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨z, rfl⟩` from `hπ.surj a`. Take `⟨wi, hzi⟩` from `hw i z`. Take `⟨wj, hzj⟩` from `hw j z`. Rewrite using `[(hh i j).2 z (wj - wi) (by rw [hzi, hzj]; ring), hfD i z wi hzi, hfD j z wj hzj, map_sub, map_sub, map_sub]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Consider the case `h0 => simp`. Consider the case `hadd x y hx hy => rw [map_add, map_add, map_add, hx, hy, map_add, map_add, map_add, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `hsmul c x hx`. Rewrite using `[(hh i j).1, (hf i).1, (hf j).1, map_mul, ← Algebra.smul_def, hsm, hx, map_smul, map_smul, smul_sub]`.
+Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j l v`. Proceed by induction on `v using kaehlerZ_span_induction with`. Consider the case `hD a`. Take `⟨z, rfl⟩` from `hπ.surj a`. Take `⟨wi, hzi⟩` from `hw i z`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨wj, hzj⟩` from `hw j z`. Take `⟨wl, hzl⟩` from `hw l z`. Rewrite using `[(hh i j).2 z (wj - wi) (by rw [hzi, hzj]; ring), (hh j l).2 z (wl - wj) (by rw [hzj, hzl]; ring), (hh i l).2 z (wl - wi) (by rw [hzi, hzl]; ring), map_sub, map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `h0 => simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `hadd x y hx hy => rw [map_add, map_add, map_add, ← hx, ← hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `hsmul c x hx => rw [(hh i j).1, (hh j l).1, (hh i l).1, ← hx]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isDatum_of_frobenius_lifts {K Kt : Type} [CommRing K] [CommRing Kt] (p : ℕ) [Fact p.Prime] [CharP K p]
     (π : Kt →+* K) {ι : Type} (F : ι → Kt →+* Kt) (d : ExteriorAlgebra K Ω[K⁄ℤ] →+ ExteriorAlgebra K Ω[K⁄ℤ])

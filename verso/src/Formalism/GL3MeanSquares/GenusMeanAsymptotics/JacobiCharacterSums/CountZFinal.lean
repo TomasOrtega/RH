@@ -8,47 +8,43 @@ namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD
 
 attribute [local irreducible] q0 pY pJ pN in
 /- English proof (translation)
-Introduce and unpack `⟨C, hC0, hC⟩ hDet hBC hNum`. Take `⟨Q₀, C', hQ₀, hN⟩` from `hNum C hC0`. Set `F : Finset PC` to `(range ⌈Q₀⌉₊).sigma (fun N => @Finset.univ (DirichletCharacter ℂ (N + 1)) (Fintype.ofFinite _))`. Use `⟨max C' ((F.card : ℝ) + 1), fun Q S hQ hS => ?_⟩` and prove the remaining obligations. Establish `hQ14 : (1 : ℝ) ≤ Q ^ (1 / 4 : ℝ)` using `Real.one_le_rpow (by linarith) (by norm_num)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hQ14' : (0 : ℝ) ≤ Q ^ (1 / 4 : ℝ)` using `by linarith`. Break down `lt_or_ge Q Q₀ with hQQ | hQQ` into its components or cases. Establish `hsub : S ⊆ F`. Introduce `p hp`. Take `⟨-, hpQ, -⟩` from `hS p hp`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [F, mem_sigma, mem_range, mem_univ, and_true]`. Establish `h1 : ((p.1 : ℕ) : ℝ) < Q₀` using `by push_cast at hpQ; linarith`. Establish `h2 : (Q₀ : ℝ) ≤ (⌈Q₀⌉₊ : ℝ)` using `Nat.le_ceil Q₀`. Conclude with `h1.trans_le h2` after adjusting the coercions. Establish `hc : (S.card : ℝ) ≤ F.card` using `by exact_mod_cast card_le_card hsub`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨hsm, hfin⟩` from `hN Q hQQ`. Establish `hQ20 : (20 : ℝ) ≤ Q` using `le_trans hQ₀ hQQ`. Use `set J := pJ Q with hJdef`. Establish `hJ1 : 1 ≤ J` using `by rw [hJdef]; unfold pJ; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hY1 : 1 ≤ pY Q`. Unfold `pY`. Establish `: 1 ≤ q0 Q` using `by unfold q0; exact Nat.one_le_iff_ne_zero.mpr (by`. Introduce `h`. Rewrite `h` using `[Nat.ceil_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Conclude with `Nat.one_le_pow _ _ (by omega)`. Establish `hcard` using `Finset.card_filter_add_card_filter_not (s := S) (fun p : PC => p.1 = 0)`. Use `set S' := S.filter (fun p : PC => ¬ p.1 = 0) with hS'`. Establish `h0 : (S.filter (fun p : PC => p.1 = 0)).card ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Finset.card_le_one.mpr (fun a ha b hb => ?_)` and prove the remaining obligations. Take `⟨Na, χa⟩` from `a`. Take `⟨Nb, χb⟩` from `b`. Simplify using `only [mem_filter] at ha hb`. Take `⟨-, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨-, rfl⟩` from `hb`. Establish `e1 : χa = 1` using `DirichletCharacter.level_one' _ rfl`. Establish `e2 : χb = 1` using `DirichletCharacter.level_one' _ rfl`. Rewrite using `[e1, e2]`. Set `ρ : PC → ℂ` to `fun p => if h : (∃ s : ℂ, 1 - 1 / 400 < s.re ∧ |s.im| ≤ Q ∧ DirichletCharacter.LFunction p.2 s = 0) then h.choose else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hρ : ∀ p ∈ S, 1 - 1 / 400 < (ρ p).re ∧ |(ρ p).im| ≤ Q ∧ DirichletCharacter.LFunction p.2 (ρ p) = 0`. Introduce `p hp`. Establish `h` using `(hS p hp).2.2`. Simplify using `only [ρ, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `jf : PC → ℕ` to `fun p => if h : (∃ j ∈ range J, 1 / (2 * (J : ℝ)) ≤ ‖blk (pY Q) (pN Q) (pY Q * 2 ^ j) p (ρ p)‖) then h.choose else 0`. Establish `hne1 : ∀ p ∈ S', p.2 ≠ 1`. Introduce `p hp h`. Simplify using `only [hS', mem_filter] at hp`. Establish `hc : p.2.conductor = p.1 + 1` using `(hS p hp.1).1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[h, DirichletCharacter.conductor_one]`. Use linear arithmetic over natural numbers and integers. Establish `hjf : ∀ p ∈ S', jf p ∈ range J ∧ 1 / (2 * (J : ℝ)) ≤ ‖blk (pY Q) (pN Q) (pY Q * 2 ^ (jf p)) p (ρ p)‖`. Introduce `p hp`. Establish `hpS : p ∈ S` using `(mem_filter.1 hp).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hp0 : p.1 ≠ 0` using `(mem_filter.1 hp).2`. Take `⟨hprim, hlev, -⟩` from `hS p hpS`. Take `⟨h1, h2, h3⟩` from `hρ p hpS`. Establish `h` using `hDet Q hQ20 p hprim hp0 hlev (ρ p) (by unfold s0; exact h1) h2 h3`. Rewrite `h` using `[← hJdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [jf, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hre1 : ∀ p ∈ S', (ρ p).re < 1`. Introduce `p hp`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hc`. Establish `hpS : p ∈ S` using `(mem_filter.1 hp).1`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re p.2 (Or.inl (hne1 p hp)) hc (hρ p hpS).2.2`. Establish `hfib` using `Finset.card_eq_sum_card_fiberwise (f := jf) (s := S') (t := range J) (fun p hp => (hjf p hp).1)`. Use `set K : ℕ := pY Q * 2 ^ J with hK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hKpos : (0 : ℝ) ≤ K` using `Nat.cast_nonneg _`. Establish `hblock : ∀ j ∈ range J, ((S'.filter (fun p => jf p = j)).card : ℝ) ≤ 8 * (J : ℝ) ^ 2 * C * (K : ℝ) ^ (3 / 200 : ℝ)`. Introduce `j hj`. Establish `hU : 1 ≤ pY Q * 2 ^ j` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by positivity))`. Establish `h` using `hBC C hC0 hC Q (by linarith) (pY Q) (pN Q) (pY Q * 2 ^ j) J hU hJ1 (hsm j hj) (S'.filter (fun p => jf p = j)) ρ (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p hp`. Take `⟨hpS', hpj⟩` from `mem_filter.1 hp`. Establish `hpS : p ∈ S` using `(mem_filter.1 hpS').1`. Take `⟨hprim, hlev, -⟩` from `hS p hpS`. Take `⟨h1, h2, -⟩` from `hρ p hpS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hprim, hlev, by unfold s0; exact h1, hre1 p hpS', h2, ?_⟩` and prove the remaining obligations. Use `(hjf p hpS').2` as an intermediate fact. Rewrite `this` using `[hpj]`. Conclude with `this)`. Use `h.trans ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUK : ((pY Q * 2 ^ j : ℕ) : ℝ) ≤ K`. Establish `: 2 ^ j ≤ 2 ^ J` using `Nat.pow_le_pow_right (by norm_num) (mem_range.1 hj).le`. Conclude with `Nat.mul_le_mul_left _ this` after adjusting the coercions. Establish `hrp : ((pY Q * 2 ^ j : ℕ) : ℝ) ^ (3 / 200 : ℝ) ≤ (K : ℝ) ^ (3 / 200 : ℝ)` using `Real.rpow_le_rpow (Nat.cast_nonneg _) hUK (by norm_num)`. Establish `: (0 : ℝ) ≤ 8 * (J : ℝ) ^ 2 * C` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hrp this`. Establish `hS'card : (S'.card : ℝ) ≤ (J : ℝ) * (8 * (J : ℝ) ^ 2 * C * (K : ℝ) ^ (3 / 200 : ℝ))`. Rewrite using `[hfib]`. Use `push_cast`. Use `(sum_le_sum hblock).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[sum_const, card_range, nsmul_eq_mul]`. Establish `htot : (S.card : ℝ) ≤ 1 + (J : ℝ) * (8 * (J : ℝ) ^ 2 * C * (K : ℝ) ^ (3 / 200 : ℝ))`. Establish `: (S.card : ℝ) = (S.filter (fun p : PC => p.1 = 0)).card + S'.card`. Rewrite using `[← hcard]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Establish `: ((S.filter (fun p : PC => p.1 = 0)).card : ℝ) ≤ 1` using `by exact_mod_cast h0`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem final_bound_of_assembly : FinalOf := by
   rintro ⟨C, hC0, hC⟩ hDet hBC hNum

@@ -13,11 +13,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.CoordDatum
 
 /- English proof (translation)
-Distinguish the cases in `hc : K'.relIndex K0 ≠ 0 ∧ K0.relIndex K' ≠ 0`. Use `⟨invVol K' K0, ?_, fun K hK hK' => ?_⟩` and prove the remaining obligations. Unfold `invVol`. Check the signs of the components of the expression. Conclude with `(invVol_mul_pos_le_conj K' K0 K hc.1 hc.2 (Subgroup.relIndex_ne_zero_trans hc.1 hK) (Subgroup.relIndex_ne_zero_trans hK' hc.2)).1`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, le_rfl, fun K hK hK' => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul]`. Unfold `invVol`. Distinguish the cases in `h1 : K.relIndex K' = 0`. Simplify using `[h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : K'.relIndex K = 0`. Assume the negation of the conclusion as `h2`. Conclude with `hc ⟨Subgroup.relIndex_ne_zero_trans h2 hK', Subgroup.relIndex_ne_zero_trans hK h1⟩`. Simplify using `[h2]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_invVol_eq_mul {G : Type} [Group G] (K' K0 : Subgroup G) :
     ∃ κ : ℝ, 0 ≤ κ ∧ ∀ K : Subgroup G, K0.relIndex K ≠ 0 → K.relIndex K0 ≠ 0 →
@@ -40,9 +40,9 @@ theorem exists_invVol_eq_mul {G : Type} [Group G] (K' K0 : Subgroup G) :
       simp [h2]
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c d0`. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact. Take `⟨κ, hκ, hK⟩` from `exists_invVol_eq_mul (S.H0 ⊓ MulAction.stabilizer S.GLV (c.dat d0)) S.complementReferenceCompactSubgroup`. Use `⟨κ, hκ, fun d Λ hT => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `(Frames.stab_commensurable_invVol_smul M.L r k S).2 (c.dat d) Λ hT`. Rewrite using `[(transport M hM H r k P S c).2.2.2.2 d0 d]`. Conclude with `hK _ h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_wt_eq_mul_nu : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), ∀ (S : Frames M.L r k) (c : Coord P S), ∀ d0 : LocNG.Datum P, ∃ κ : ℝ, 0 ≤ κ ∧ ∀ (d : LocNG.Datum P) Λ, S.IsTerm (c.dat d) Λ → LocNG.Datum.wt d0 d = κ * S.nu (c.dat d) := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c d0

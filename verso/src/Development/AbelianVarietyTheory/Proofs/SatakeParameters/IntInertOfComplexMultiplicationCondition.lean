@@ -9,7 +9,7 @@ import Formalism.LocalToGlobal.InertKernelTheory.KernelsIntegralInert
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h` and use `by haveI : Fact Formalism.L2.Th1.CM.CM2 := ⟨h⟩ exact Formalism.L2.KerInert.kernels_integral_inert`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intInert_of_complexMultiplication_condition : Formalism.L2.Th1.CM.CM2 → Formalism.L2.KerInert.IntInert :=
   fun h => by

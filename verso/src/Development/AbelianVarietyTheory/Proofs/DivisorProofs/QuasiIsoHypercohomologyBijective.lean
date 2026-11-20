@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ K L f _ F n`. Use `haveI : (res R F).IsKInjective := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).1`. Conclude with `GlobalTheory.T.hypercohomologyPullback_bijective_of_quasiIso R f (res R F) n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem quasiIso_hypercohomology_bijective' : A1 := by
   intro R _ K L f _ F n

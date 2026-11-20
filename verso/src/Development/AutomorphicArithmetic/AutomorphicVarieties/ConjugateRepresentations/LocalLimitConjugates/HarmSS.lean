@@ -8,9 +8,9 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Use extensionality with `X`. Establish `hle : Submodule.span ℂ {x : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ) | ∃ φ v, IsLevelFn U Ξ φ ∧ x = φ ⊗ₜ[ℂ] v} ≤ LinearMap.eqLocus ((act (.fin u) : Module.End ℂ (Sm E a)).rTensor (Fin Ξ.d → ℂ)) LinearMap.id`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, v, hφ, rfl⟩`. Use `show LinearMap.rTensor _ _ (φ ⊗ₜ[ℂ] v) = φ ⊗ₜ[ℂ] v`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.rTensor_tmul, hφ.2.1 u hu]`. Conclude with `hle (h.val X)`.
+A detailed English derivation is pending.
 -/
 private theorem harmSS_fix {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {Ξ : AlgRep E a} {q : ℕ}
     {U : Subgroup (GL (Fin a) (Af E))} {ω : Co Ξ q} (h : IsLev U Ξ ω) {u : GL (Fin a) (Af E)} (hu : u ∈ U) :
@@ -25,13 +25,11 @@ private theorem harmSS_fix {E : Type} [Field E] [NumberField E] [IsTotallyComple
   exact hle (h.val X)
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha Ξ r m q M hM hT N hNM hN`. Take `⟨ρ, B, hρ, hpos, hc⟩` from `UpperTheory.V.Cj.H.coForm E a ha Ξ r q`. Establish `hsq : ∀ ω ∈ M, Val (sqSub E a r) ω` using `fun ω h => ((hM ω).1 h).sq`. Take `⟨N', h1, h2, h3, h4⟩` from `UpperTheory.V.Cj.H.absSS (GL (Fin a) (Af E)) (Co Ξ q) ρ M B (hpos M hsq) (fun g v hv => by rw [hρ]; exact hT g v hv) (fun g => by`. Take `⟨c, h⟩` from `hc g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, fun v hv w hw => by rw [hρ, hρ]; exact h v w (hsq v hv) (hsq w hw)⟩)`. Use the proof step `(fun v hv => by`. Take `⟨U, hUo, hUc, hU⟩` from `((hM v).1 hv).lev`. Conclude with `⟨U, hUo, hUc, fun u hu => by rw [hρ]; exact harmSS_fix hU hu⟩)`. Use the proof step `(fun U hU => by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `UpperTheory.V.Cj.H.harmFin E a Ξ r m q U hU`. Establish `e : {v : Co Ξ q | v ∈ M ∧ ∀ u ∈ U, ρ u v = v} = {ω : Co Ξ q | IsH r m ω ∧ ∀ u ∈ U, trans u ω = ω}`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, hM, hρ]`. Rewrite using `[e]`.
-
-Conclude with `h)`. Use `N hNM (fun g v hv => by rw [hρ]; exact hN g v hv)`. Conclude with `⟨N', h1, fun x ω h => by rw [← hρ]; exact h2 x ω h, h3, h4⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.harmSS :
     UpperTheory.V.Cj.H.HarmSS := by

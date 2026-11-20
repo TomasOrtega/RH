@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.CompanionTheory.WedgeOf
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `H1.mk_surjective F a`. Take `⟨b', rfl⟩` from `H1.mk_surjective F b`. Rewrite using `[cup_mk, cup_mk, ← map_add, H2.mk_eq_zero]`. Use `⟨-(fun T T' φ => a'.1 T T' φ * b'.1 T T' φ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [map_neg, Pi.neg_apply, d1_apply, Submodule.coe_add, Pi.add_apply, cupZ_apply, Z1.comp, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cup_add_cup_swap {R : Type} [CommRing R] {C : Type} [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (a b : H1 F) : cup F a b + cup F b a = 0 := by
@@ -26,11 +26,11 @@ theorem cup_add_cup_swap {R : Type} [CommRing R] {C : Type} [Category.{0} C]
   ring
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[TensorProduct.lift.tmul, CoefMap.pullCohomologyTwo_cup m a b, hm a, hm b, ← CoefMap.pullCohomologyTwo_cup π _ _]`. Use `congrArg (fun x => π.pull2 x) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CoefMap.pullCohomologyTwo_cup (boxL F) a b, CoefMap.pullCohomologyTwo_cup (boxR F) a b, TensorProduct.comm_tmul, map_sub, TensorProduct.lift.tmul, TensorProduct.lift.tmul, crossB_apply, crossB_apply]`. Simplify using `only [map_add, LinearMap.add_apply]`. Establish `h` using `cup_add_cup_swap (box F) ((boxL F).pull1 b) ((boxR F).pull1 a)`. Establish `h3 : cup (box F) ((boxR F).pull1 a) ((boxL F).pull1 b) = -cup (box F) ((boxL F).pull1 b) ((boxR F).pull1 a)` using `eq_neg_iff_add_eq_zero.2 (by rw [add_comm]; exact h)`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Consider the case `add x y hx hy`. Simplify using `only [map_add, map_sub, hx, hy]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem hopf_pull_lift_cup {R : Type} [CommRing R] {C : Type} [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) {D : Type} [Category.{0} D] (G : D ⥤ CommAlgCat.{0} R)
@@ -60,9 +60,9 @@ theorem hopf_pull_lift_cup {R : Type} [CommRing R] {C : Type} [Category.{0} C]
     abel
 
 /- English proof (translation)
-Introduce `hLow R _ C _ F hH t ht`. Take `⟨D, _, G, π, m, hq, hm, -⟩` from `hH`. Establish `h2` using `hopf_pull_lift_cup F G π m hm t`. Simplify using `only [ht, map_zero, zero_add] at h2`. Take `⟨-, hinj, -⟩` from `hLow R (C × C) D (box F) G π hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Apply `hinj.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hopf_cross_antisymm : LowSt → ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R), Hopf F False → ∀ t : H1 F ⊗[R] H1 F,

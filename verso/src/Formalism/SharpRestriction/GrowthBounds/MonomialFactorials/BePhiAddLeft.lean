@@ -36,7 +36,7 @@ section Lin
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-Establish `hs` using `bePhi_sum_left p (r := r) G j jp (Finset.univ : Finset (Fin 2)) ![u, u'] v`. Simplify `hs` using `[Fin.sum_univ_two]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bePhi_add_left (j : Fin G.T.t → ℕ) (jp : ℕ) (u u' v : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]) :
     bePhi p (r := r) G j jp (u + u') v = bePhi p (r := r) G j jp u v + bePhi p (r := r) G j jp u' v := by
@@ -48,7 +48,7 @@ end Lin
 variable {C0 CE1 CE2 X}
 
 /- English proof (translation)
-Introduce `dl hdl aTop ha x hx`. Take `⟨hfg, W, hW, hLW⟩` from `hF dl hdl aTop ha x hx`. Conclude with `hO X.p _ _ _ W _ hp2 hW hLW hfg (fun c u v => bePhi_smul_left _ _ _ _ c u v) (fun u u' v => bePhi_add_left _ _ _ _ u u' v) (hS dl hdl aTop ha x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem restOrth_of (CM : ℝ) (hp2 : X.p ≠ 2) (hO : OrthLat) (hS : RestSymm C0 CE1 CE2 X)
     (hF : RestLjjFin C0 CE1 CE2 X) : RestOrth C0 CE1 CE2 X CM := by

@@ -14,19 +14,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D O W φ Y hY g h t`. Take `⟨hOne, hDer⟩` from `dLDer F E D O W Y hY`. Take `⟨-, hcont, -⟩` from `exPar E Y`. Take `⟨-, -, -, -, hinf, -⟩` from `actCont F E D`. Establish `hnu : ∀ s, nu F (h * infGL E 2 (ex Y s)) = nu F h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s`. Establish `h1 : nu F (infGL E 2 (ex Y s)) = 1` using `hOne s`. Establish `h2 : nu F (h * infGL E 2 (ex Y s)) = nu F h * nu F (infGL E 2 (ex Y s))`. Simplify using `only [nu, map_mul]`. Rewrite using `[h2, h1, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : Der (fun s => W.L (h * infGL E 2 (ex Y s)) φ) (fun s => W.L (h * infGL E 2 (ex Y s)) (O.dL D Y φ))`. Introduce `s v`. Establish `key` using `(hDer φ s (D.act h⁻¹ v)).const_mul (((ab (nu F h))⁻¹ : ℝ) : ℂ)`. Establish `e : ∀ (χ : S4 F) (r : ℝ), (W.L (h * infGL E 2 (ex Y r)) χ).1 v = (((ab (nu F h))⁻¹ : ℝ) : ℂ) * (W.L (infGL E 2 (ex Y r)) χ).1 (D.act h⁻¹ v)`. Introduce `χ r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[W.L.map_mul, Module.End.mul_apply, W.L_apply]`. Simplify using `only [e]`. Conclude with `key`. Establish `hDom : ∀ (g : G1 F) (t : ℝ), Dom (Metric.ball t 1) fun s => (W.Om g (W.L (h * infGL E 2 (ex Y s)) (O.dL D Y φ))).1`. Introduce `g t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : cD (nu F h) (cD (nu F h)⁻¹ g) = g`. Rewrite using `[← cD_mul_left, mul_inv_cancel, cD_one_left]`. Establish `hsw : ∀ s, W.Om g (W.L (h * infGL E 2 (ex Y s)) (O.dL D Y φ)) = W.L (h * infGL E 2 (ex Y s)) (W.Om (cD (nu F h)⁻¹ g) (O.dL D Y φ))`. Introduce `s`. Establish `hcomm` using `W.comm (h * infGL E 2 (ex Y s)) (cD (nu F h)⁻¹ g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcomm` using `[hnu s, hc]`. Conclude with `(LinearMap.congr_fun hcomm (O.dL D Y φ)).symm`. Establish `hC : IsCompact ((fun s => h * infGL E 2 (ex Y s)) '' Metric.closedBall t 1)` using `(isCompact_closedBall t 1).image (continuous_const.mul (hinf.comp hcont))`. Take `⟨K, hK, hB⟩` from `lDom F E D W Unit Set.univ (fun _ => W.Om (cD (nu F h)⁻¹ g) (O.dL D Y φ)) (wtBound F _).2 _ hC`. Use `⟨K, hK, fun N => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB⟩` from `hB N`. Use `⟨B, fun s hs v => ?_⟩` and prove the remaining obligations. Simplify using `only [hsw s]`. Conclude with `hB (h * infGL E 2 (ex Y s), ()) ⟨⟨s, Metric.ball_subset_closedBall hs, rfl⟩, Set.mem_univ _⟩ v`. Conclude with `thDer F _ _ (omDer F E D W _ _ hD hDom g) t (hDom g t)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thDerL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D), ThDerL O W := by

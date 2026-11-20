@@ -15,11 +15,11 @@ theorem Con_apply {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤
       (fun a ↦ B a b) := rfl
 
 /- English proof (translation)
-Proceed by induction on `u using pure_induction with`. Consider the case `h0`. Establish `h : (fun i ↦ LinearMap.lTensor (V i) φ ((0 : ∀ i, V i ⊗[R] M) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Consider the case `hp f m`. Simplify using `only [LinearMap.lTensor_tmul]`. Rewrite using `[con_pure, con_pure, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `ha u v hu hv`. Establish `h : (fun i ↦ LinearMap.lTensor (V i) φ ((u + v) i)) = (fun i ↦ LinearMap.lTensor (V i) φ (u i)) + (fun i ↦ LinearMap.lTensor (V i) φ (v i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h, map_add, map_add, map_add, hu, hv]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem con_lTensor {R : Type} [CommRing R] {I : Type} [Finite I] (V : I → Type) [∀ i, AddCommGroup (V i)]
     [∀ i, Module R (V i)] {M M' : Type} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
@@ -40,7 +40,7 @@ theorem con_lTensor {R : Type} [CommRing R] {I : Type} [Finite I] (V : I → Typ
     rw [h, map_add, map_add, map_add, hu, hv]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tmap_id_eq {R : Type} [CommRing R] {A B B' : Type} [CommRing A] [CommRing B] [CommRing B']
     [Algebra R A] [Algebra R B] [Algebra R B'] (g : B →ₐ[R] B') (t : A ⊗[R] B) :
@@ -51,7 +51,7 @@ theorem tmap_id_eq {R : Type} [CommRing R] {A B B' : Type} [CommRing A] [CommRin
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Rewrite using `[pr_apply, Con_apply, Con_apply]`. Simplify using `only [prB_apply, tmap_id_eq]`. Conclude with `con_lTensor (fun a : Fin (p + 1) ⥤ C ↦ F.obj (a.obj (Fin.last p))) Ξ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Con_prB {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {p q q' : ℕ}
     [Finite (Fin (p + 1) ⥤ C)] (Ξ : Cn F p →ₗ[R] R) (e : Fin (q + 1) →o Fin (q' + 1)) (B : Bi F p q) :
@@ -62,13 +62,11 @@ theorem Con_prB {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ C
   exact con_lTensor (fun a : Fin (p + 1) ⥤ C ↦ F.obj (a.obj (Fin.last p))) Ξ _ _
 
 /- English proof (translation)
-Proceed by induction on `u using pure_induction with`. Consider the case `h0`. Establish `h : (fun a : Fin (p' + 1) ⥤ C ↦ LinearMap.rTensor M (mp F (a.map (homOfLE (Fin.le_last (e (Fin.last p)))))).toLinearMap ((0 : ∀ a : Fin (p + 1) ⥤ C, F.obj (a.obj (Fin.last p)) ⊗[R] M) (e.monotone.functor ⋙ a))) = 0`. Use function extensionality and compare the values at `a`. Conclude with `map_zero _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Consider the case `hp f m`. Simplify using `only [LinearMap.rTensor_tmul]`. Rewrite using `[con_pure (V := fun a : Fin (p + 1) ⥤ C ↦ F.obj (a.obj (Fin.last p)))]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `con_pure (fun a : Fin (p' + 1) ⥤ C ↦ F.obj (a.obj (Fin.last p'))) M Ξ' (pr F e f) m`. Consider the case `ha u v hu hv`. Rewrite using `[map_add, ← hu, ← hv, ← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
-
-Conclude with `map_add _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem con_prA {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {p p' : ℕ}
     [Finite (Fin (p + 1) ⥤ C)] [Finite (Fin (p' + 1) ⥤ C)] (Ξ' : Cn F p' →ₗ[R] R)
@@ -95,7 +93,7 @@ theorem con_prA {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ C
     exact map_add _ _ _
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tmap_id_eq' {R : Type} [CommRing R] {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B]
     [Algebra R A] [Algebra R A'] [Algebra R B] (g : A →ₐ[R] A') (t : A ⊗[R] B) :
@@ -106,7 +104,7 @@ theorem tmap_id_eq' {R : Type} [CommRing R] {A A' B : Type} [CommRing A] [CommRi
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Rewrite using `[Con_apply, Con_apply]`. Simplify using `only [prA_apply, tmap_id_eq']`. Conclude with `con_prA F Ξ' e _ (fun a ↦ B a b)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Con_prA {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {p p' q : ℕ}
     [Finite (Fin (p + 1) ⥤ C)] [Finite (Fin (p' + 1) ⥤ C)] (Ξ' : Cn F p' →ₗ[R] R)
@@ -118,7 +116,7 @@ theorem Con_prA {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ C
   exact con_prA F Ξ' e _ (fun a ↦ B a b)
 
 /- English proof (translation)
-The claim follows from `fun F _ _ _ _ _ _ Ξ Ξ' e e' ↦ ⟨Con_prB F Ξ e, Con_prA F Ξ' e'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem con_pr : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {p p' q q' : ℕ} [Finite (Fin (p + 1) ⥤ C)] [Finite (Fin (p' + 1) ⥤ C)] (Ξ : Cn F p →ₗ[R] R) (Ξ' : Cn F p' →ₗ[R] R) (e : Fin (q + 1) →o Fin (q' + 1)) (e' : Fin (p + 1) →o Fin (p' + 1)), (∀ B : Bi F p q, Con F Ξ q' (prB F e B) = pr F e (Con F Ξ q B)) ∧ (∀ B : Bi F p q, Con F Ξ' q (prA F e' B) = Con F (Ξ' ∘ₗ (pr F e').toLinearMap) q B) :=
   fun F _ _ _ _ _ _ Ξ Ξ' e e' ↦ ⟨Con_prB F Ξ e, Con_prA F Ξ' e'⟩

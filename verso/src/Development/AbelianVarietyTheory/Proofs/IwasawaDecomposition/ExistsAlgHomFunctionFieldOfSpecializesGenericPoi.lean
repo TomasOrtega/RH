@@ -10,15 +10,13 @@ noncomputable section
 namespace GlobalTheory.FlagBundle
 
 /- English proof (translation)
-Introduce `F _ Y K _ _ q h hq`. Set `ψ₀ : Y.Fn →+* K` to `(Y.X.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (R := .of K) q).hom`. Establish `e : spMap ψ₀ ≫ (ratOf Y).pt = q`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom ψ₀) ≫ Y.X.fromSpecStalk (genericPoint Y.X) = q`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `spMap_stalkClosedPointTo q`. Establish `hc : ψ₀.comp (algebraMap F Y.Fn) = algebraMap F K`. Establish `h1 : spMap (ψ₀.comp (algebraMap F Y.Fn)) = spMap (algebraMap F K)`. Establish `hs` using `(ratOf Y).pt_s`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (ψ₀.comp (algebraMap F Y.Fn))) = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Use `_ = spMap ψ₀ ≫ ((ratOf Y).pt ≫ (ratOf Y).s) := by rw [hs]`. Use `_ = (spMap ψ₀ ≫ (ratOf Y).pt) ≫ (ratOf Y).s := (Category.assoc _ _ _).symm`. Use `_ = q ≫ Y.str := by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(spMap ψ₀ ≫ (ratOf Y).pt) ≫ Y.str = q ≫ Y.str`. Rewrite using `[e]`. Both sides reduce to the same expression. Use `_ = spMap (algebraMap F K) := hq`. Establish `h2` using `Spec.map_injective h1`.
-
-Conclude with `congrArg CommRingCat.Hom.hom h2`. Use `⟨{ ψ₀ with commutes' := fun a => congrArg (fun g : F →+* K => g a) hc }, ?_⟩` and prove the remaining obligations. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_algHom_of_specializes_genericPoint :
     ∀ (F : Type) [Field F] (Y : Var F) (K : Type) [Field K] [Algebra F K] (q : Sp K ⟶ Y.X),

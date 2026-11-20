@@ -6,13 +6,11 @@ namespace GlobalTheory
 
 open NumberField IsDedekindDomain Polynomial in
 /- English proof (translation)
-Establish `hz : ζ ≠ 0` using `hζ.ne_zero hpos.ne'`. Establish `h1 : q ^ k - 1 ∣ q ^ m - 1`. Apply `hζ.dvd_of_pow_eq_one` to reduce the goal to its premises. Establish `h0 : ζ ^ (q ^ m - 1) * ζ = 1 * ζ`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_pow _ _ (by omega)), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Conclude with `mul_right_cancel₀ hz h0`. Establish `h2` using `Nat.pow_sub_one_gcd_pow_sub_one q k m`. Rewrite `h2` using `[Nat.gcd_eq_left h1]`. Establish `h3 : q ^ k = q ^ Nat.gcd k m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.one_le_pow (Nat.gcd k m) q (by omega)` as an intermediate fact. Use `Nat.one_le_pow k q (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h4` using `Nat.pow_right_injective hq h3`. Rewrite using `[h4]`.
-
-Conclude with `Nat.gcd_dvd_right k m`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dvd_of_primitiveRoot_pow_pow_eq_self {Ω : Type} [Field Ω] {q k m : ℕ} (hq : 1 < q)
     {ζ : Ω} (hζ : IsPrimitiveRoot ζ (q ^ k - 1)) (hpos : 0 < q ^ k - 1) (hm : ζ ^ q ^ m = ζ) :
@@ -37,21 +35,19 @@ private theorem dvd_of_primitiveRoot_pow_pow_eq_self {Ω : Type} [Field Ω] {q k
 open NumberField IsDedekindDomain Polynomial in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h k hk`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `hq1 : 1 < _root_.Formalism.ConjugateSelfDual.normV w` using `_root_.GlobalTheory.WeilDeligne.one_lt_normV w`. Establish `hpos : 0 < _root_.Formalism.ConjugateSelfDual.normV w ^ k - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow hk.ne' hq1)`. Use `haveI : NeZero ((_root_.Formalism.ConjugateSelfDual.normV w ^ k - 1 : ℕ) : Ω) := ⟨by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_natCast (algebraMap E Ω)]`. Conclude with `(_root_.map_ne_zero _).2 (Nat.cast_ne_zero.2 hpos.ne')⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (_root_.Formalism.ConjugateSelfDual.normV w ^ k - 1)`. Establish `hvN : ¬ A.valuation ((_root_.Formalism.ConjugateSelfDual.normV w ^ k - 1 : ℕ) : Ω) < 1`. Establish `hmem : ((_root_.Formalism.ConjugateSelfDual.normV w ^ k - 1 : ℕ) : 𝓞 E) ∉ w.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hN`. Establish `h1 : ((_root_.Formalism.ConjugateSelfDual.normV w : ℕ) : 𝓞 E) ∈ w.asIdeal` using `Ideal.absNorm_mem w.asIdeal`. Establish `h2 : ((_root_.Formalism.ConjugateSelfDual.normV w : ℕ) : 𝓞 E) ^ k ∈ w.asIdeal` using `Ideal.pow_mem_of_mem _ h1 _ hk`. Establish `h3 : ((_root_.Formalism.ConjugateSelfDual.normV w : ℕ) : 𝓞 E) ^ k - ((_root_.Formalism.ConjugateSelfDual.normV w ^ k - 1 : ℕ) : 𝓞 E) = 1`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega)), Nat.cast_pow, Nat.cast_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (h3 ▸ sub_mem h2 hN))`. Simplify using `using _root_.ReciprocityTheory.Gal.not_valuation_lt_one_of_isPlaceOver hmem h 1`. Establish `hζv : A.valuation ζ ≤ 1` using `le_of_eq (_root_.ReciprocityTheory.Gal.valuation_eq_one_of_pow_eq_one A hpos.ne' hζ.pow_eq_one)`. Establish `hroot : ∀ m : ℕ, (ζ ^ _root_.Formalism.ConjugateSelfDual.normV w ^ m) ^ (_root_.Formalism.ConjugateSelfDual.normV w ^ k - 1) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `m`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Use `⟨ζ, fun σ hσ => ?_⟩` and prove the remaining obligations. Break down `le_or_gt 0 (_root_.GlobalTheory.WeilDeligne.deg σ) with hd | hd` into its components or cases. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hact` using `_root_.GlobalTheory.WeilDeligne.actsAs_of_deg (σ := σ) (a := m) (b := 0) (by rw [hm]; simp)`. Establish `hv` using `hact.2 ζ hζv`. Rewrite `hv` using `[pow_zero, pow_one, hσ]`. Establish `heq` using `_root_.ReciprocityTheory.Gal.eq_of_pow_eq_one A hvN hζ.pow_eq_one (hroot m) hv`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Int.natCast_dvd_natCast.2 (dvd_of_primitiveRoot_pow_pow_eq_self hq1 hζ hpos heq.symm)`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (neg_nonneg.2 hd.le)`. Establish `hact` using `_root_.GlobalTheory.WeilDeligne.actsAs_of_deg (σ := σ) (a := 0) (b := m) (by rw [← hm]; simp)`. Establish `hv` using `hact.2 ζ hζv`. Rewrite `hv` using `[pow_zero, pow_one, hσ]`.
-
-Establish `heq` using `_root_.ReciprocityTheory.Gal.eq_of_pow_eq_one A hvN (hroot m) hζ.pow_eq_one hv`. Rewrite using `[← neg_neg (_root_.GlobalTheory.WeilDeligne.deg σ), hm, dvd_neg]`. Conclude with `Int.natCast_dvd_natCast.2 (dvd_of_primitiveRoot_pow_pow_eq_self hq1 hζ hpos heq)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_fixed_dvd_deg : ∀ (E Ω : Type) [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)

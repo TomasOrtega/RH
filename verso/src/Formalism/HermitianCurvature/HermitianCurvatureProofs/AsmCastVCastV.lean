@@ -26,23 +26,23 @@ def PointStepT : Prop :=
         ∂((U.muRC P.k 1 (P.r - (j + 1))).prod (U.muRC P.k 1 (P.r - (j + 1))))
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem asm_castV_castV {k a b d : ℕ} (h1 : a = b) (h2 : b = d) (v : Fin (2 * a + k + 1) → ℂ) :
     D.castV h2 (D.castV h1 v) = D.castV (h1.trans h2) v := by
   subst h1; subst h2; rfl
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castM_castM' {k a b d : ℕ} (h1 : a = b) (h2 : b = d) (g : B.Mat k a) :
     D.castM h2 (D.castM h1 g) = D.castM (h1.trans h2) g := by
   subst h1; subst h2; rfl
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj h c hh hc hF γ hγ hΩ`. Establish `e : P.r - (j + 1) + 1 = P.r - j` using `by omega`. Establish `hc0 : c ≠ 0` using `(hc.1 (1, c) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Establish `hT` using `p.hT`. Establish `key` using `hJ P.k (P.r - (j + 1)) (P.r - j) e Wp Wq (p.T.bs j) (p.T.bs (j + 1)) (by rw [levTower_bs_z_eq_castV_liftVec p.T j hj, asm_castV_castV]) (by rw [levTower_bs_z'_eq_castV_liftVec p.T j hj, asm_castV_castV]) (fun y => by rw [tower_π p.T j hj, lev1, castM_castM']) (fun y => by rw [tow …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key, mc, castM_castM']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sliceStep_of (hJ : JFStep) (hP : PointStepT) : KB.SliceStep := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj h c hh hc hF γ hγ hΩ

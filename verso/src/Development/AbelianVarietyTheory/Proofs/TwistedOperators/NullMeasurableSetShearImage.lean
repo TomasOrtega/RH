@@ -46,7 +46,7 @@ Both sides reduce to the same expression.
 theorem shear_eq (N : Subgroup H) : shear N = shearEquiv ∘ Prod.map Subtype.val id := rfl
 
 /- English proof (translation)
-Rewrite using `[shear_eq]`. Conclude with `shearEquiv.measurableEmbedding.comp ((MeasurableEmbedding.subtype_coe hN.measurableSet).prodMap MeasurableEmbedding.id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_shear {N : Subgroup H} (hN : IsClosed (N : Set H)) :
     MeasurableEmbedding (shear N) := by
@@ -55,9 +55,9 @@ theorem measurableEmbedding_shear {N : Subgroup H} (hN : IsClosed (N : Set H)) :
     ((MeasurableEmbedding.subtype_coe hN.measurableSet).prodMap MeasurableEmbedding.id)
 
 /- English proof (translation)
-Establish `he` using `measurableEmbedding_shear hN`. Establish `hAB : NullMeasurableSet (A ×ˢ B) (κ.prod ν)` using `hA.prod hB`. Use `(he.measurableSet_image.2 (measurableSet_toMeasurable (κ.prod ν) (A ×ˢ B))).nullMeasurableSet.congr ?_` and prove the remaining obligations. Use `(he.ae_map_iff (p := fun y => (shear N '' toMeasurable (κ.prod ν) (A ×ˢ B)) y = (shear N '' (A ×ˢ B)) y)).2 ?_` and prove the remaining obligations. Use `filter_upwards [hAB.toMeasurable_ae_eq] with x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : (shear N '' toMeasurable (κ.prod ν) (A ×ˢ B)) (shear N x) = toMeasurable (κ.prod ν) (A ×ˢ B) x` using `propext he.injective.mem_set_image`. Establish `e2 : (shear N '' (A ×ˢ B)) (shear N x) = (A ×ˢ B) x` using `propext he.injective.mem_set_image`. Rewrite using `[e1, e2]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nullMeasurableSet_shear_image {N : Subgroup H} (hN : IsClosed (N : Set H)) (κ : Measure N)
     (ν : Measure H) {A : Set N} {B : Set H} (hA : NullMeasurableSet A κ) (hB : NullMeasurableSet B ν) :

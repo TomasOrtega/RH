@@ -14,29 +14,25 @@ namespace GlobalTheory.FrameProj
 set_option maxHeartbeats 1600000 in
 open GlobalTheory.ThetaMove.CommonRef in
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hZ hG Z FP hB hRel Λ₀ hΛ₀`. Establish `hU : ∀ y ∈ Xplus F ⊔ Xplus F', y ∈ orth (VS D) (Xplus F ⊔ Xplus F') → y = 0`. Introduce `y hyU hyW`. Assume the negation of the conclusion as `hy`. Establish `hpos` using `GlobalTheory.T.totallyPositive_orthogonal_of_two_flagExtendedSpaces D X Y u u' F F' w hZ hG y hyW hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : (VS D).hT y y = 0` using `(mem_orth_iff _ y).1 hyW y hyU`. Rewrite `hpos` using `[h0, map_zero]`. Conclude with `lt_irrefl _ hpos`. Establish `hdet` using `gram_det_isUnit _ hU`. Establish `hcomm : ∀ p : PlF D, ∀ h ∈ (FP p).UW0, ∀ y, projP Z p (Xplus F ⊔ Xplus F') (h y) = h (projP Z p (Xplus F ⊔ Xplus F') y)` using `fun p h hh y => localOrthogonalProj_comm_complementUnitary Z p F F' (FP p) (hB p).1 (hB p).2.1 h hh y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Xplus F ⊔ Xplus F' = U at hU hdet hcomm ⊢`. Take `⟨N, hN, hNmem⟩` from `exists_nat_smul_le (full_of_span hΛ₀.span_eq_top) (hΛ₀.fg.map ((proj U).restrictScalars (𝓞 D.host.E)))`. Establish `hcast : ∀ v : (VS D).V, (N : D.host.E) • v = (N : 𝓞 D.host.E) • v` using `fun v => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Take `⟨Q, hQ⟩ : ∃ Q : (VS D).V →ₗ[D.host.E] (VS D).V, Q = (N : D.host.E) • proj U` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQx : ∀ x, Q x = (N : D.host.E) • proj U x` using `fun x => by rw [hQ]; rfl`. Establish `hQ₀ : Λ₀.map (Q.restrictScalars (𝓞 D.host.E)) ≤ Λ₀`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show Q x ∈ Λ₀`. Rewrite using `[hQx, hcast]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hNmem _ ⟨x, hx, rfl⟩`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ hloc`. Establish `hQp : ∀ p : PlF D, ∀ x, baseChange₂ D p (Q x) = ((N : (D.s.atP p).Ep) • projP Z p U) (baseChange₂ D p x)`. Introduce `p x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hQx, LinearMap.smul_apply, baseChange_smul₂, baseChangeAt_proj Z p, map_natCast]`. Establish `hlat' : Submodule.IsLattice D.host.E (Λ ⊔ Λ.map (Q.restrictScalars (𝓞 D.host.E)))` using `⟨hΛ.fg.sup (hΛ.fg.map _), top_le_iff.1 (hΛ.span_eq_top ▸ Submodule.span_mono (by`. Introduce `y hy`. Conclude with `Submodule.mem_sup_left hy))⟩`. Establish `heq : Λ ⊔ Λ.map (Q.restrictScalars (𝓞 D.host.E)) = Λ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `((GlobalTheory.Unfold.LatLoc.lattices_local_global D Z).1 _ Λ hlat' hΛ).2 fun p => ?_` and prove the remaining obligations. Rewrite using `[localLattice_sup, sup_eq_left, localLattice_map Z p Q _ (hQp p)]`. Take `⟨h, hh, himg⟩` from `hloc p`. Take `⟨Qp, hQpdef⟩ : ∃ Qp : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p, Qp = (N : (D.s.atP p).Ep) • projP Z p U` from `⟨_, rfl⟩`. Rewrite using `[← hQpdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ y, Qp (h y) = h (Qp y)`. Introduce `y`. Rewrite using `[hQpdef, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, hcomm p h hh y]`. Establish `hL : (lattice₂ D Z.M p Λ₀).map (Qp.restrictScalars (Z.M p).L.O) ≤ lattice₂ D Z.M p Λ₀`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `img_map_le Z p Qp h hc _ hL` as an intermediate fact. Rewrite `this` using `[himg]`. Then use the resulting hypothesis. Establish `key : ∀ y ∈ Λ, Q y ∈ Λ` using `fun y hy => by`. Rewrite using `[← heq]`. Conclude with `Submodule.mem_sup_right ⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `Submodule.mem_sup.2 ⟨Q x, ⟨key x hx, ?_⟩, (N : D.host.E) • x - Q x, ⟨?_, ?_⟩, add_sub_cancel _ _⟩` and prove the remaining obligations. Use `show Q x ∈ U`. Rewrite using `[hQx]`. Conclude with `U.smul_mem _ (proj_mem U x)`.
-
-Use `Λ.sub_mem ?_ (key x hx)` and prove the remaining obligations. Rewrite using `[hcast]`. Conclude with `Λ.smul_mem _ hx`. Use `show (N : D.host.E) • x - Q x ∈ orth (VS D) U`. Rewrite using `[hQx, ← smul_sub]`.
-
-Conclude with `Submodule.smul_mem _ _ (sub_proj_mem_orth U hdet x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_between_parts : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ Λ₀ : LV D, Submodule.IsLattice D.host.E Λ₀ → ∃ N : ℕ, 0 < N ∧ ∀ Λ : LV D, Submodule.IsLattice D.host.E Λ → (∀ p, ∃ h ∈ (FP p).UW0, LocNG.img h (lattice₂ D Z.M p Λ₀) = lattice₂ D Z.M p Λ) → ∀ x ∈ Λ, (N : D.host.E) • x ∈ Λ ⊓ toO (VS D) (Xplus F ⊔ Xplus F') ⊔ Λ ⊓ toO (VS D) (orth (VS D) (Xplus F ⊔ Xplus F')) := by
   intro D X Y u u' F F' w hZ hG Z FP hB hRel Λ₀ hΛ₀

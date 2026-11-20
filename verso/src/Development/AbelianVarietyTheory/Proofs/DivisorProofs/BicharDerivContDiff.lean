@@ -6,31 +6,29 @@ namespace GlobalTheory
 open intervalIntegral Filter Topology
 
 /- English proof (translation)
-Establish `hQt : ∀ t, Continuous (Q t)` using `fun t => hQ.comp (continuous_const.prodMk continuous_id : Continuous fun s : ℝ => (t, s))`. Use `set g : (Fin k → ℝ) → ℝ → ℂ := fun t δ => ∫ r in (0:ℝ)..δ, Q t r with hgdef`. Establish `hg : ∀ t x, HasDerivAt (g t) (Q t x) x` using `fun t x => ((hQt t).integral_hasStrictDerivAt 0 x).hasDerivAt`. Establish `hid : ∀ t s δ, Q t s * g t δ = g t (s + δ) - g t s`. Introduce `t s δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hint : ∀ a b : ℝ, IntervalIntegrable (Q t) MeasureTheory.volume a b` using `fun a b => (hQt t).intervalIntegrable a b`. Simplify using `only [hgdef]`. Rewrite using `[integral_interval_sub_left (hint _ _) (hint _ _)]`. Establish `h1 : ∫ x in (0:ℝ)..δ, Q t (x + s) = ∫ x in s..s + δ, Q t x`. Rewrite using `[intervalIntegral.integral_comp_add_right (fun x => Q t x) s]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[add_comm]`. Rewrite using `[← h1]`. Repeatedly rewrite using `[hs, intervalIntegral.integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree. Establish `hder : ∀ t δ, g t δ ≠ 0 → ∀ s, HasDerivAt (Q t) ((Q t (s + δ) - Q t s) / g t δ) s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t δ hδ s`. Establish `heq : Q t = fun u => (g t (u + δ) - g t u) / g t δ`. Use function extensionality and compare the values at `u`. Rewrite using `[← hid t u δ, mul_div_cancel_right₀ _ hδ]`. Establish `ha : HasDerivAt (fun u => g t (u + δ)) (Q t (s + δ)) s` using `HasDerivAt.comp_add_const s δ (hg t (s + δ))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun u => (g t (u + δ) - g t u) / g t δ) ((Q t (s + δ) - Q t s) / g t δ) s` using `(ha.sub (hg t s)).div_const _`. Rewrite `h1` using `[← heq]`. Then use the resulting hypothesis. Establish `hex : ∀ t, ∃ δ, g t δ ≠ 0`. Introduce `t`. Establish `h` using `(hg t 0).eventually_ne (c := 0) (by rw [h0]; exact one_ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `h.exists`. Use `⟨z, ?_⟩` and prove the remaining obligations. Simplify `hz` using `[hgdef]`. Establish `hd : ∀ t, HasDerivAt (Q t) (deriv (Q t) 0) 0`. Introduce `t`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩` from `hex t`. Conclude with `(hder t δ hδ 0).differentiableAt.hasDerivAt`. Establish `hadd : ∀ t t', deriv (Q (t + t')) 0 = deriv (Q t) 0 + deriv (Q t') 0`. Introduce `t t'`. Establish `e : Q (t + t') = Q t * Q t'` using `funext fun s => by rw [Pi.mul_apply, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm` using `(hd t).mul (hd t')`. Rewrite `hm` using `[← e]`. Rewrite using `[hm.deriv, h0, h0]`. Expand and normalize the polynomial expressions, which then agree. Set `c : (Fin k → ℝ) →+ ℂ` to `AddMonoidHom.mk' (fun t => deriv (Q t) 0) hadd`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ0 : ∀ s, Q 0 s = 1`. Introduce `s`. Establish `h1 : Q 0 s = Q 0 s * Q 0 s` using `by simpa using ht 0 0 s`. Establish `h2 : Q 0 s * Q 0 (-s) = 1` using `by rw [← hs, add_neg_cancel, h0]`. Establish `hne : Q 0 s ≠ 0` using `left_ne_zero_of_mul_eq_one h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_left_cancel₀ hne (h1.symm.trans (mul_one _).symm)` as an intermediate fact. Conclude with `this`. Establish `hgc : Continuous fun t => g t 1` using `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hQ 0 1`. Establish `hg01 : g 0 1 = 1` using `by simp [hgdef, hQ0]`. Establish `hne : ∀ᶠ t in 𝓝 (0 : Fin k → ℝ), g t 1 ≠ 0` using `hgc.continuousAt.eventually_ne (by rw [hg01]; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : ContinuousAt c 0`. Establish `hQ1 : Continuous fun t => Q t 1` using `hQ.comp (continuous_id.prodMk continuous_const : Continuous fun t => (t, (1:ℝ)))`. Establish `hf : ContinuousAt (fun t => (Q t 1 - 1) / g t 1) 0` using `((hQ1.sub continuous_const).continuousAt).div hgc.continuousAt (by rw [hg01]; exact one_ne_zero)`. Use `hf.congr ?_` and prove the remaining obligations. Use `filter_upwards [hne] with t htne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hder t 1 htne 0).deriv` as an intermediate fact. Simplify using `only [zero_add, h0] at this`. Simplify using `[c, this]`. Establish `hcc : Continuous c` using `continuous_of_continuousAt_zero c hc0`. Establish `: (fun t => deriv (Q t) 0) = ⇑(c.toRealLinearMap hcc)`.
-
-Use function extensionality and compare the values at `t`. Simplify using `[c]`. Rewrite using `[this]`. Conclude with `(c.toRealLinearMap hcc).contDiff`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bichar_deriv_contDiff (k : ℕ) (Q : (Fin k → ℝ) → ℝ → ℂ)
     (hQ : Continuous (Function.uncurry Q))

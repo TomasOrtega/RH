@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n _ _ μ _ z a ha`. Establish `hm : MeasurableSet (dco F a)`. Establish `h` using `((dcoShape F n a ha).2.2.1.1.isOpen_fiber 1).measurableSet`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hg : g ∈ dco F a <;> simp [uFn, hg]`. Establish `hI : (μ.real (iwahori F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (HeckeAlgebra.measureReal_compactOpen_pos μ (isCompact_iwahori F n) (isOpen_iwahori F n)).ne'`. Establish `e : (fun g => th μ a g * zonalSpherical μ z g) = (dco F a).indicator fun _ => halfModulus F a / (μ.real (iwahori F n : Set (GL (Fin n) F)) : ℂ) * zonalSpherical μ z (torusPow F n a)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ dco F a`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hg, th, Pi.smul_apply, uFn, Set.indicator_of_mem hg]`. Take `⟨x, hx, y, hy, rfl⟩` from `hg`. Rewrite using `[zonalSpherical_mul_right z _ (iwahori_le_integralGL F n hy), zonalSpherical_mul_left z (iwahori_le_integralGL F n hx)]`. Simplify using the standard rewrite rules. Simplify using `[th, uFn, hg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, integral_indicator_const _ hm, Complex.real_smul]`. Establish `h1` using `macdonald_formula_hlR (μ := μ) z ha`. Establish `h2` using `dcoVol F n μ a ha`. Apply `mul_right_cancel₀ hI` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.ConvolutionTheory.H.mac :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)

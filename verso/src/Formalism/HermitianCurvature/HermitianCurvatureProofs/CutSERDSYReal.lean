@@ -5,15 +5,15 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _`. Set `T : Finset ℝ` to `Finset.univ.biUnion fun τ : M.Ty P => (Finset.Icc 1 (P.k - 1)).image fun i => -(M.rho P τ i)`. Take `⟨y, hy⟩` from `Infinite.exists_notMem_finset (T ∪ T.image (fun t => t - 1) ∪ T.image (fun t => t + 1))`. Establish `hinv` using `hD.2.2.2.2.2.1`. Establish `good : ∀ t : ℝ, t ∉ T → (t : ℂ) ∈ st.inv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[hinv]`. Introduce `τ`. Unfold `M.xC`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi h0`. Apply `ht` to reduce the goal to its premises. Use `Finset.mem_biUnion.2 ⟨τ, Finset.mem_univ _, Finset.mem_image.2 ⟨i, hi, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : ((t + M.rho P τ i : ℝ) : ℂ) = 0` using `by push_cast; exact h0`. Establish `h2` using `Complex.ofReal_eq_zero.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(y : ℂ), by rw [Complex.star_def, Complex.conj_ofReal], ?_, good y fun h => hy (Finset.mem_union_left _ (Finset.mem_union_left _ h)), ?_⟩` and prove the remaining obligations. Establish `e : ((y : ℂ) - 1) = ((y - 1 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `good (y - 1) fun h => hy (Finset.mem_union_right _ (Finset.mem_image.2 ⟨y - 1, h, by ring⟩))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((y : ℂ) + 1) = ((y + 1 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `good (y + 1) fun h => hy (Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨y + 1, h, by ring⟩)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spectral_Y_real : RDSYReal := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ _

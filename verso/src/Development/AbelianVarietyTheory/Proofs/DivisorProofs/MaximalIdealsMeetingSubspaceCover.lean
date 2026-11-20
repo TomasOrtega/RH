@@ -14,9 +14,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ExpCover
 
 /- English proof (translation)
-Take `⟨x, ⟨z, rfl⟩, rfl⟩` from `h`. Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r m`. Rewrite using `[LinearMap.map_smul, PiTensorProduct.map_tprod, LinearMap.map_smulₛₗ, GlobalTheory.LatBC.bc_tprod]`. Conclude with `AddSubgroup.subset_closure ⟨r, fun τ => GlobalTheory.LatBC.dwMap F.emb N _ (m τ), fun τ => ⟨((m τ : Formalism.GradedWeylDivisibility.dualWeyl F.O N N (res N (lam τ))) : MvPolynomial (Fin N × Fin N) F.O), (m τ).2, rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem latD_of {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F : Frame l ι N)
     (lam : ι → ℕ → ℕ) (y : NablaT (PadicAlgCl l) N lam)
@@ -41,18 +41,16 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G0 : Type} [Group G0
   (B : BlockDat K G0 Pl0) (ℓ : Lvl K G0) (Z : Submodule K B.S.Forms)
 
 /- English proof (translation)
-Simplify using `[BlockDat.toF, BlockDat.fE, CSD.I, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem toF_coe (z : Fin (B.dZ ℓ Z) → K) :
     ((B.toF ℓ Z z : B.S.Forms) : B.S.Cl → B.S.V) = B.S.I ((B.fE ℓ Z).mulVec z) := by
   simp [BlockDat.toF, BlockDat.fE, CSD.I, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `h1 : (B.zE ℓ Z).mulVec z ∈ B.Z0 ℓ Z`. Rewrite using `[BlockDat.zE, subE_mulVec]`. Conclude with `Submodule.coe_mem _`. Establish `h2 : (B.vE ℓ).mulVec ((B.zE ℓ Z).mulVec z) ∈ B.coord Z` using `h1`. Take `⟨f, hf, hfe⟩` from `Submodule.mem_map.1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: B.toF ℓ Z z = f`. Simplify using `only [BlockDat.toF, LinearMap.coe_comp, Function.comp_apply, Matrix.mulVecLin_apply]`. Rewrite using `[← hfe]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
-
-Conclude with `hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem toF_mem (z : Fin (B.dZ ℓ Z) → K) : B.toF ℓ Z z ∈ Z := by
   have h1 : (B.zE ℓ Z).mulVec z ∈ B.Z0 ℓ Z := by
@@ -65,7 +63,7 @@ private theorem toF_mem (z : Fin (B.dZ ℓ Z) → K) : B.toF ℓ Z z ∈ Z := by
   rw [this]; exact hf
 
 /- English proof (translation)
-Rewrite using `[toF_coe]`. Simplify using `[BlockDat.cutZ, Formalism.DivisionValues.cutLat, CSD.nabLat, Formalism.DivisionValues.valLatF, Submodule.mem_pi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mem_cutZ (z : Fin (B.dZ ℓ Z) → K) :
     z ∈ B.cutZ ℓ Z ↔ ∀ c, ((B.toF ℓ Z z : B.S.Forms) : B.S.Cl → B.S.V) c ∈ B.S.Nab c := by
@@ -73,7 +71,7 @@ private theorem mem_cutZ (z : Fin (B.dZ ℓ Z) → K) :
   simp [BlockDat.cutZ, Formalism.DivisionValues.cutLat, CSD.nabLat, Formalism.DivisionValues.valLatF, Submodule.mem_pi]
 
 /- English proof (translation)
-Rewrite using `[toF_coe]`. Simplify using `[BlockDat.delZ, Formalism.DivisionValues.cutLat, CSD.delLat, Formalism.DivisionValues.valLatF, Submodule.mem_pi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mem_delZ (z : Fin (B.dZ ℓ Z) → K) :
     z ∈ B.delZ ℓ Z ↔ ∀ c, ((B.toF ℓ Z z : B.S.Forms) : B.S.Cl → B.S.V) c ∈ B.S.Del c := by
@@ -81,9 +79,9 @@ private theorem mem_delZ (z : Fin (B.dZ ℓ Z) → K) :
   simp [BlockDat.delZ, Formalism.DivisionValues.cutLat, CSD.delLat, Formalism.DivisionValues.valLatF, Submodule.mem_pi]
 
 /- English proof (translation)
-Take `⟨s, hs, hc⟩` from `h`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_delZ]`. Introduce `c`. Establish `e : B.toF ℓ Z (s • L • z) = (algebraMap (𝓞 K) K s) • (algebraMap (𝓞 K) K L) • B.toF ℓ Z z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_smul, ← map_smul, algebraMap_smul, algebraMap_smul]`. Rewrite using `[e]`. Simplify `hc c` using `[algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem final_step (w : HeightOneSpectrum (𝓞 K)) (L : 𝓞 K) (z : Fin (B.dZ ℓ Z) → K)
     (h : ∃ s : 𝓞 K, s ∉ w.asIdeal ∧
@@ -105,9 +103,9 @@ end GlobalTheory.ExpCover
 namespace GlobalTheory.ExpCover
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => exact hA f hf`. Consider the case `zero => exact ⟨fun _ _ _ => rfl, fun κ g => by rw [Pi.zero_apply, Pi.zero_apply, map_zero, smul_zero]⟩`. Consider the case `add f f' _ _ h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨fun γ hγ g => by rw [Pi.add_apply, Pi.add_apply, h.1 γ hγ, h'.1 γ hγ], fun κ g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.add_apply, map_add, smul_add, h.2, h'.2]`. Consider the case `smul a f _ h`. Use `⟨fun γ hγ g => by rw [Pi.smul_apply, Pi.smul_apply, h.1 γ hγ], fun κ g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, map_smul, smul_comm, h.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isForm_of_span {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ} (F : Frame l ι N) (lam : ι → ℕ → ℕ)
     (A : Set (F.G → NablaT (PadicAlgCl l) N lam)) (hA : ∀ f ∈ A, F.IsForm lam f) :
@@ -124,11 +122,9 @@ private theorem isForm_of_span {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq
     rw [Pi.smul_apply, Pi.smul_apply, map_smul, smul_comm, h.2]
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨f, hf, rfl⟩` from `hu`. Conclude with `Submodule.subset_span ⟨B.op (R.ix i) f, hZ (R.ix i) hf, funext fun g => R.hecke i f g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add _ _ _ _ h h' => rw [map_add]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul a _ _ h => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ a h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem span_stable {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ} {F : Frame l ι N} {lam : ι → ℕ → ℕ}
     {K : Type} [Field K] [NumberField K] [StarRing K] {G0 : Type} [Group G0] [Fintype G0] {Pl0 : Type} {B : BlockDat K G0 Pl0}
@@ -145,11 +141,9 @@ private theorem span_stable {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι
   | smul a _ _ h => rw [map_smul]; exact Submodule.smul_mem _ a h
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F lam jK hF`. Use `haveI : Module.Finite F.O (NablaT F.O N lam) := GlobalTheory.NablaFin.nablaT_finite F.O N ι lam`. Take `⟨S, hS⟩` from `hF.classes`. Use `haveI : Finite (Formalism.UG.ClassSet F.Γ F.K) := by`. Use `Finite.of_surjective (fun s : S => (DoubleCoset.mk F.Γ F.K (s : F.G) : Formalism.UG.ClassSet F.Γ F.K)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨γ, hγ, s, hs, κ, hκ, e⟩` from `hS (Quotient.out c)`. Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk F.Γ F.K s = c`. Rewrite using `[← DoubleCoset.out_eq' F.Γ F.K c]`.
-
-Conclude with `(DoubleCoset.eq F.Γ F.K s _).2 ⟨γ, hγ, κ, hκ, e⟩`. Conclude with `Formalism.UG.P.automorphic_forms_level_finite_holds F.G F.Γ F.K F.O (NablaT F.O N lam) _ ‹_›`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem forms_fin : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ)
     (jK : F.K →* alg F.O N lam), F.Ok → Module.Finite F.O (Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam)) := by
@@ -167,13 +161,13 @@ private theorem forms_fin : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι
   exact Formalism.UG.P.automorphic_forms_level_finite_holds F.G F.Γ F.K F.O (NablaT F.O N lam) _ ‹_›
 
 /- English proof (translation)
-Introduce `l _ ι N F hF`. Take `⟨hinj, L, _, hL⟩` from `hF.ring`. Establish `hmem : ∀ c, F.emb c ∈ L ∧ ‖F.emb c‖ ≤ 1`. Introduce `c`. Establish `: F.emb c ∈ Set.range F.emb` using `⟨c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hL]`. Conclude with `this`. Use `⟨fun c => (hmem c).2, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hne : F.emb c ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[h, norm_zero]`. Conclude with `zero_ne_one hc`. Establish `hinvL : (F.emb c)⁻¹ ∈ L` using `inv_mem (hmem c).1`. Establish `hinvn : ‖(F.emb c)⁻¹‖ ≤ 1` using `by rw [norm_inv, hc, inv_one]`. Establish `: (F.emb c)⁻¹ ∈ Set.range F.emb` using `by rw [hL]; exact ⟨hinvL, hinvn⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `this`. Establish `hcd : c * d = 1` using `hinj (by rw [map_mul, map_one, hd, mul_inv_cancel₀ hne])`. Conclude with `IsUnit.of_mul_eq_one d hcd`.
+A detailed English derivation is pending.
 -/
 private theorem emb_norm : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) (N : ℕ) (F : Frame l ι N), F.Ok →
     (∀ c, ‖F.emb c‖ ≤ 1) ∧ ∀ c, ‖F.emb c‖ = 1 → IsUnit c := by
@@ -195,11 +189,11 @@ private theorem emb_norm : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) (N : ℕ) (F
   exact IsUnit.of_mul_eq_one d hcd
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F lam jK b hb hgrp hJ f hf hex`. Use `choose x hx using hex`. Use `⟨⟨x, ?_⟩, hx⟩` and prove the remaining obligations. Introduce `γ g κ`. Apply `hb` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `f _ = b ((jK κ⁻¹ : alg F.O N lam) • x g)`. Establish `e1 : (jK κ⁻¹ : alg F.O N lam) • x g = ((F.chi κ⁻¹ : F.Oˣ) : F.O) • grp F.O N lam (F.kap κ⁻¹) (x g)`. Rewrite using `[hJ κ⁻¹, smul_assoc]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, LinearMap.map_smulₛₗ, hgrp, hx]`. Establish `h2` using `hf.2 κ⁻¹ (g * κ)`. Simplify using `only [Subgroup.coe_inv, mul_inv_cancel_right] at h2`. Rewrite using `[h2, mul_assoc, hf.1 γ γ.2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_lift : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ) (jK : F.K →* alg F.O N lam) (b : NablaT F.O N lam →ₛₗ[F.emb] NablaT (PadicAlgCl l) N lam), Function.Injective b → (∀ g x, b (grp F.O N lam g x) = grp (PadicAlgCl l) N lam (fun τ => Matrix.GeneralLinearGroup.map F.emb (g τ)) (b x)) → F.IsJ lam jK → ∀ f : F.G → NablaT (PadicAlgCl l) N lam, F.IsForm lam f → (∀ g, ∃ y, b y = f g) → ∃ x : Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam), ∀ g, b ((x : F.G → NablaT F.O N lam) g) = f g := by
   intro l _ ι _ _ N F lam jK b hb hgrp hJ f hf hex
@@ -223,7 +217,7 @@ open GlobalTheory.ExpCover in
 set_option maxHeartbeats 600000 in
 
 /- English proof (translation)
-The claim follows from `m.1.isMaximal.isPrime; F.setting lam jK m.1.asIdeal := by intro K _ _ _ G0 _ _ Pl0 B w _ ι _ _ N F lam jK hm hst hOk hJ hH R ℓ Z hZ J hInc z hz have hfZ : B.toF ℓ Z z ∈ Z := toF_mem B ℓ Z z have hfN := (mem_cutZ B ℓ Z z).1 hz apply final_step apply R.del obtain ⟨hbinj, hbli, -⟩ : …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.maximalIdeals_meeting_subspace_cover : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (G0 : Type) [Group G0] [Fintype G0] (Pl0 : Type) (B : BlockDat K G0 Pl0) (w : HeightOneSpectrum (𝓞 K)) [Fact (Formalism.EigenvalueLevelCeiling.plc w).Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame (Formalism.EigenvalueLevelCeiling.plc w) ι N) (lam : ι → ℕ → ℕ) (jK : F.K →* alg F.O N lam) [hm : Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam))] [@IsScalarTower F.O F.T (Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam)) _ hm.toSMul _], F.Ok → F.IsJ lam jK → F.IsHecke lam jK (NablaT F.O N lam) → ∀ (R : Reads F lam B w) (ℓ : Lvl K G0) (Z : Submodule K B.S.Forms), (∀ i, Z ≤ Z.comap (B.op i)) → Covers B ℓ Z w fun m : {m : MaximalSpectrum F.T // ∃ θ, R.Occurs Z θ ∧ F.Over θ m.asIdeal} => haveI := m.1.isMaximal.isPrime; F.setting lam jK m.1.asIdeal := by
   intro K _ _ _ G0 _ _ Pl0 B w _ ι _ _ N F lam jK hm hst hOk hJ hH R ℓ Z hZ J hInc z hz

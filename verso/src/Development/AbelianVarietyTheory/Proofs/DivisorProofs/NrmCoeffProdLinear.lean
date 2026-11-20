@@ -11,23 +11,21 @@ namespace GlobalTheory.Nef
 open Polynomial in
 
 /- English proof (translation)
-Establish `c0 : ((C α + C β * X) * p).coeff 0 = α * p.coeff 0`. Simplify using `[add_mul, mul_assoc]`. Establish `cs : ∀ i, ((C α + C β * X) * p).coeff (i + 1) = α * p.coeff (i + 1) + β * p.coeff i`. Introduce `i`. Simplify using `[add_mul, mul_assoc, coeff_X_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hle : ∀ i, v (((C α + C β * X) * p).coeff i) ≤ max (v α) (v β) * N`. Introduce `i`. Consider the cases of `i with`. Consider the case `zero`. Rewrite using `[c0, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul' (le_max_left _ _) (h1 _)`. Consider the case `succ i`. Rewrite using `[cs]`. Use `v.map_add_le ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul' (le_max_left _ _) (h1 _)`. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (le_max_right _ _) (h1 _)`. Use `⟨hle, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : max (v α) (v β) * N = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨0, le_antisymm (hle 0) (hz ▸ zero_le')⟩`. Establish `hM : max (v α) (v β) ≠ 0` using `left_ne_zero_of_mul hz`. Establish `hN : N ≠ 0` using `right_ne_zero_of_mul hz`. Break down `le_or_gt (v β) (v α) with h | h` into its components or cases. Rewrite `hM`, the goal using `[max_eq_left h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `Nat.find_spec h2`. Establish `hm` using `fun j => @Nat.find_min _ _ h2 j`. Use `⟨Nat.find h2, ?_⟩` and prove the remaining obligations. Generalize the expression as in `Nat.find h2 = i at hs hm`. Consider the cases of `i with`.
+Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => rw [c0, map_mul, hs]`. Consider the case `succ i`. Establish `hlt : v (p.coeff i) < N` using `lt_of_le_of_ne (h1 i) (hm i (Nat.lt_succ_self i))`. Rewrite using `[cs, v.map_add_eq_of_lt_left, map_mul, hs]`. Rewrite using `[map_mul, map_mul, hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[max_eq_right h.le]`. Take `⟨i, hi⟩` from `h2`. Use `⟨i + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[cs, v.map_add_eq_of_lt_right, map_mul, hi]`.
-
-Rewrite using `[map_mul, map_mul, hi]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coeff_max_mul_linear {F Γ : Type} [Field F] [LinearOrderedCommGroupWithZero Γ] (v : Valuation F Γ)
     (p : F[X]) (N : Γ) (α β : F) (h1 : ∀ i, v (p.coeff i) ≤ N) (h2 : ∃ i, v (p.coeff i) = N) :
@@ -80,9 +78,9 @@ theorem coeff_max_mul_linear {F Γ : Type} [Field F] [LinearOrderedCommGroupWith
 open Polynomial in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun i => ?_, 0, by simp⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = 0 <;> simp [coeff_one, h]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `coeff_max_mul_linear v _ _ _ _ ih.1 ih.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_max_prod_linear {F Γ ι : Type} [Field F] [LinearOrderedCommGroupWithZero Γ] (v : Valuation F Γ)
     (α β : ι → F) (s : Finset ι) :
@@ -98,11 +96,11 @@ theorem coeff_max_prod_linear {F Γ ι : Type} [Field F] [LinearOrderedCommGroup
     exact coeff_max_mul_linear v _ _ _ _ ih.1 ih.2
 
 /- English proof (translation)
-Introduce `k F _ _ _ v m α β`. Take `⟨h1, i, hi⟩` from `coeff_max_prod_linear v.1 α β Finset.univ`. Establish `hdeg : (∏ j, (Polynomial.C (α j) + Polynomial.C (β j) * Polynomial.X)).natDegree ≤ m`. Use `(Polynomial.natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[add_comm]`. Conclude with `Polynomial.natDegree_linear_le`. Use `_ = m := by simp`. Use `le_antisymm (Finset.sup_le fun a _ => h1 a) ?_` and prove the remaining obligations. Rewrite using `[← hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `him : i < m + 1`. Conclude with `Finset.le_sup (f := fun a : Fin (m + 1) => v.1 ((∏ j, (Polynomial.C (α j) + Polynomial.C (β j) * Polynomial.X)).coeff a)) (Finset.mem_univ (⟨i, him⟩ : Fin (m + 1)))`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero]`. Conclude with `zero_le'`.
+A detailed English derivation is pending.
 -/
 theorem nrm_coeff_prod_linear : ∀ (k F : Type) [Field k] [Field F] [Algebra k F], ∀ (v : Place k F) (m : ℕ) (α β : Fin m → F), nrm v (fun a : Fin (m + 1) => (∏ j, (Polynomial.C (α j) + Polynomial.C (β j) * Polynomial.X)).coeff a) = ∏ j, max (v.1 (α j)) (v.1 (β j)) := by
   intro k F _ _ _ v m α β

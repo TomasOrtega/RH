@@ -17,7 +17,7 @@ set_option autoImplicit false
 namespace GlobalTheory.ArchIntegClosing
 
 /- English proof (translation)
-Introduce `hP k _ Y _ q e hY M N r hr` and use `GlobalTheory.ArchIntGenSmooth.archIntegrable hP k Y q e hY M N r hr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem archInteg : GlobalTheory.Published.Principalisation → GlobalTheory.MixHt.ArchInteg :=
   fun hP k _ Y _ q e hY M N r hr => GlobalTheory.ArchIntGenSmooth.archIntegrable hP k Y q e hY M N r hr

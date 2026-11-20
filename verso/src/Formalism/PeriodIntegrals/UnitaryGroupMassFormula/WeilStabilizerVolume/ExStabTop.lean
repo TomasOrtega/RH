@@ -14,7 +14,7 @@ variable {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loc
   [MulAction G X] [TopologicalSpace X] [MeasurableSpace X]
 
 /- English proof (translation)
-Rewrite using `[(QuotientGroup.isQuotientMap_mk (MulAction.stabilizer G x0)).continuous_iff]`. Establish `: ((fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) ∘ QuotientGroup.mk) = fun g => g • x0` using `funext (orb_mk x0)`. Rewrite using `[this]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orb_cont (x0 : X) (hc : Continuous fun g : G => g • x0) :
     Continuous (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) := by
@@ -25,7 +25,7 @@ theorem orb_cont (x0 : X) (hc : Continuous fun g : G => g • x0) :
   exact hc
 
 /- English proof (translation)
-Introduce `q q' h`. Simplify using `only at h`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, MulAction.mem_stabilizer_iff, mul_smul, ← h, inv_smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem orb_inj (x0 : X) :
     Function.Injective (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) := by
@@ -44,9 +44,9 @@ def SecCtblW : Prop := InCtx fun F E _ _ _ _ _ _σ _M _J _a _X0 _hT =>
   SecondCountableTopology (AF F ⊗[F] E)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hmat : Continuous (fun g : HA (AF F) σ J => ((HA.mat (AF F) σ J g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hcont : Continuous (fun g : HA (AF F) σ J => g • ratTup (F` using `F) (AF F) X0) := by show Continuous (fun g : HA (AF F) σ J => actTup (AF F) (HA.mat (AF F) σ J g) (ratTup (F := F) (AF F) X0))`. Unfold `actTup`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_pi fun i => hmat.matrix_mulVec continuous_const`. Conclude with `isClosed_eq hcont continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem stabClosed_holds : StabClosed := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet
@@ -61,7 +61,7 @@ theorem stabClosed_holds : StabClosed := by
   exact isClosed_eq hcont continuous_const
 
 /- English proof (translation)
-Establish `hmat : Continuous (fun g : HA (AF F) σ J => ((HA.mat (AF F) σ J g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)))` using `Units.continuous_val.comp continuous_subtype_val`. Use `show Continuous (fun g : HA (AF F) σ J => actTup (AF F) (HA.mat (AF F) σ J g) (ratTup (F := F) (AF F) X0))`. Unfold `actTup`. Conclude with `continuous_pi fun i => hmat.matrix_mulVec continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem smul_ratTup_cont (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) {a : ℕ}
@@ -75,9 +75,9 @@ theorem smul_ratTup_cont (F E : Type) [Field F] [NumberField F] [Field E] [Algeb
   exact continuous_pi fun i => hmat.matrix_mulVec continuous_const
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `hW F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet` as an intermediate fact. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin M → Fin M → AF F ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.secondCountableTopology`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (GL (Fin M) (AF F ⊗[F] E))` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `h2 : SecondCountableTopology (HR (AF F) σ J)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secCtblG_of (hW : SecCtblW) : SecCtblG := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet
@@ -94,11 +94,11 @@ theorem secCtblG_of (hW : SecCtblW) : SecCtblG := by
   exact h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `hW F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet` as an intermediate fact. Use `secCtblG_of hW F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet` as an intermediate fact. Establish `: T2Space (HA (AF F) σ J)` using `inferInstanceAs (T2Space (HR (AF F) σ J))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosed ((MulAction.stabilizer (HA (AF F) σ J) (ratTup (F` using `F) (AF F) X0) : Subgroup (HA (AF F) σ J)) : Set (HA (AF F) σ J)) := stabClosed_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `: PolishSpace (HA (AF F) σ J)` using `hP _`. Establish `: PolishSpace (HA (AF F) σ J ⧸ MulAction.stabilizer (HA (AF F) σ J) (ratTup (F` using `F) (AF F) X0)) := hP _`. Establish `: BorelSpace (HA (AF F) σ J ⧸ MulAction.stabilizer (HA (AF F) σ J) (ratTup (F` using `F) (AF F) X0)) := CosetSpace.borelSpace`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont` using `orb_cont (G := HA (AF F) σ J) (ratTup (F := F) (AF F) X0) (smul_ratTup_cont F E σ M J X0)`. Conclude with `⟨hcont.measurableEmbedding (orb_inj _), hcont⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem orbEmb_of (hW : SecCtblW) (hP : LCSCPolish) : OrbEmb := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet
@@ -117,7 +117,7 @@ theorem orbEmb_of (hW : SecCtblW) (hP : LCSCPolish) : OrbEmb := by
   exact ⟨hcont.measurableEmbedding (orb_inj _), hcont⟩
 
 /- English proof (translation)
-The claim follows from `exStab_of (secCtblG_of hW) hO stabClosed_holds hH hI hF hN (orbEmb_of hW hP) hU`.
+A detailed English derivation is pending.
 -/
 theorem exStab_of_alt (hW : SecCtblW) (hP : LCSCPolish) (hO : OrbTup) (hH : StabUni) (hI : NuInv)
     (hF : NuFin) (hN : NuNeZero) (hU : Unimod) : ExStab :=

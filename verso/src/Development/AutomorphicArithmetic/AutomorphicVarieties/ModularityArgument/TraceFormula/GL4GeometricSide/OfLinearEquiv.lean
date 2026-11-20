@@ -15,9 +15,9 @@ private def WC {W : Type} [AddCommGroup W] [Module ℂ W] (f : G → W) : Prop :
   ∀ φ : Module.Dual ℂ W, Continuous fun g => φ (f g)
 
 /- English proof (translation)
-Introduce `φ`. Establish `e : (fun g => φ (f g)) = fun g => ∑ i, b.repr (f g) i * φ (b i)`. Use function extensionality and compare the values at `g`. Use `conv_lhs => rw [← b.sum_repr (f g), map_sum]`. Simplify using `only [map_smul, smul_eq_mul, Module.Basis.coord_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => (h i).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem wc_of_basis {W ι : Type} [AddCommGroup W] [Module ℂ W] [Fintype ι] (b : Module.Basis ι ℂ W) {f : G → W}
     (h : ∀ i, Continuous fun g => b.repr (f g) i) : WC f := by
@@ -30,7 +30,7 @@ private theorem wc_of_basis {W ι : Type} [AddCommGroup W] [Module ℂ W] [Finty
   exact continuous_finset_sum _ fun i _ => (h i).mul continuous_const
 
 /- English proof (translation)
-Use `wc_of_basis ((Module.finBasis ℂ X).linearMap (Module.finBasis ℂ Y)) fun i => ?_` and prove the remaining obligations. Use `h (Module.finBasis ℂ X i.2) ((Module.finBasis ℂ Y).coord i.1)` as an intermediate fact. Use `this.congr fun g => ?_` and prove the remaining obligations. Simplify using `[Module.Basis.linearMap, Matrix.stdBasis, Matrix.ofLinearEquiv, LinearMap.toMatrix_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem wc_hom {X Y : Type} [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] [AddCommGroup Y] [Module ℂ Y]
     [FiniteDimensional ℂ Y] {f : G → (X →ₗ[ℂ] Y)} (h : ∀ x, WC fun g => f g x) : WC f := by
@@ -41,9 +41,9 @@ private theorem wc_hom {X Y : Type} [AddCommGroup X] [Module ℂ X] [FiniteDimen
   simp [Module.Basis.linearMap, Matrix.stdBasis, Matrix.ofLinearEquiv, LinearMap.toMatrix_apply]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Use `⟨∑ i, (∫ g, b.coord i (f g) ∂ν) • b i, fun φ => ?_⟩` and prove the remaining obligations. Establish `e : ∀ g, φ (f g) = ∑ i, b.coord i (f g) * φ (b i)`. Introduce `g`. Use `conv_lhs => rw [← b.sum_repr (f g), map_sum]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, smul_eq_mul, Module.Basis.coord_apply]`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_finset_sum _ fun i _ => ((hf (b.coord i)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)).mul_const _, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, map_smul, smul_eq_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_wint [CompactSpace G] [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [IsFiniteMeasure ν]
     {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] {f : G → W} (hf : WC f) :
@@ -61,7 +61,7 @@ private theorem exists_wint [CompactSpace G] [MeasurableSpace G] [BorelSpace G] 
   rw [integral_mul_const, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Rewrite using `[map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dual_ext {W : Type} [AddCommGroup W] [Module ℂ W] {x y : W}
     (h : ∀ φ : Module.Dual ℂ W, φ x = φ y) : x = y := by
@@ -70,13 +70,13 @@ private theorem dual_ext {W : Type} [AddCommGroup W] [Module ℂ W] {x y : W}
   rw [map_sub, h, sub_self]
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `exists_wint ν hc`. Establish `h1 : ∀ g, τ g * Q = Q` using `fun g => dual_ext fun φ => by`. Use `hQ (φ ∘ₗ LinearMap.mulLeft ℂ (τ g))` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, ← hτ] at this`. Rewrite using `[this, hQ φ, integral_mul_left_eq_self (fun h => φ (τ h)) g]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ t ∈ I, Q t = t` using `fun t ht => dual_ext fun φ => by`. Use `hQ (φ ∘ₗ LinearMap.applyₗ t)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.applyₗ_apply_apply, (hI t).1 ht] at this`. Simplify using `using this`. Establish `h3 : ∀ t, (Q * F) t ∈ I` using `fun t => (hI _).2 fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun (h1 g) (F t)` as an intermediate fact. Simplify using `using this`. Establish `h4` using `hQ (LinearMap.trace ℂ M ∘ₗ LinearMap.mulRight ℂ F)`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply] at h4`. Rewrite using `[← h4, ← LinearMap.trace_restrict_eq_of_forall_mem I (Q * F) h3]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `trOn`. Rewrite using `[dif_pos hF]`. Use `congr 1`. Use `LinearMap.ext fun t => Subtype.ext ?_` and prove the remaining obligations. Conclude with `(h2 _ (hF t t.2)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem tr_inv [Group G] [IsTopologicalGroup G] [CompactSpace G] [MeasurableSpace G] [BorelSpace G] (ν : Measure G)
     [IsProbabilityMeasure ν] [ν.IsMulLeftInvariant] {M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M]
@@ -105,9 +105,9 @@ private theorem tr_inv [Group G] [IsTopologicalGroup G] [CompactSpace G] [Measur
   exact (h2 _ (hF t t.2)).symm
 
 /- English proof (translation)
-Establish `hg : ∀ y ∈ S.map j, g y ∈ S.map j`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨f x, hf x hx, (h x).symm⟩`. Unfold `trOn`. Rewrite using `[dif_pos hg, dif_pos hf, ← LinearMap.trace_conj' (f.restrict hf) (Submodule.equivMapOfInjective j hj S)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(Submodule.equivMapOfInjective j hj S).surjective y`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `Subtype.ext (h x)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trOn_map' {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (j : M →ₗ[ℂ] N)
     (hj : Function.Injective j) (S : Submodule ℂ M) (f : Module.End ℂ M) (g : Module.End ℂ N) (hf : ∀ x ∈ S, f x ∈ S)
@@ -130,7 +130,7 @@ section Fin
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Set `e : (E.V →ₗ[ℂ] ℂ) ≃ₗ[ℂ] (E.V →L[ℂ] ℂ)` to `LinearMap.toContinuousLinearMap`. Rewrite using `[← LinearMap.trace_transpose' (T : E.V →ₗ[ℂ] E.V), ← LinearMap.trace_conj' _ e]`. Use `congr 1`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem tr_dualT (E : KMod n) (T : E.V →L[ℂ] E.V) :
     LinearMap.trace ℂ (E.V →L[ℂ] ℂ) (dualT E T).toLinearMap = LinearMap.trace ℂ E.V (T : E.V →ₗ[ℂ] E.V) := by
@@ -139,11 +139,11 @@ private theorem tr_dualT (E : KMod n) (T : E.V →L[ℂ] E.V) :
   congr 1
 
 /- English proof (translation)
-Set `e` to `dualTensorHomEquiv ℂ (E.V →L[ℂ] ℂ) V`. Rewrite using `[← tr_dualT, ← LinearMap.trace_transpose' (dualT E T).toLinearMap, ← LinearMap.trace_tensorProduct', ← LinearMap.trace_conj' _ e]`. Use `congr 1`. Use `LinearMap.ext fun t => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `e.surjective t`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `LinearMap.ext fun ξ => ?_` and prove the remaining obligations. Simplify using `[e, flipA, Module.Dual.transpose_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem tr_flipA [FiniteDimensional ℂ V] (E : KMod n) (A : Module.End ℂ V) (T : E.V →L[ℂ] E.V) :
     LinearMap.trace ℂ _ (flipA E A T) = LinearMap.trace ℂ E.V (T : E.V →ₗ[ℂ] E.V) * LinearMap.trace ℂ V A := by
@@ -162,11 +162,11 @@ private theorem tr_flipA [FiniteDimensional ℂ V] (E : KMod n) (A : Module.End 
     simp [e, flipA, Module.Dual.transpose_apply]
 
 /- English proof (translation)
-Establish `e : ∀ (g : Un n) (ξ : E.V →L[ℂ] ℂ), (ξ ∘L E.ρ g) ∘L E.ρ g⁻¹ = ξ` using `fun g ξ => by`. Rewrite using `[ContinuousLinearMap.comp_assoc, ← ContinuousLinearMap.mul_def, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `ht g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun ξ => ?_` and prove the remaining obligations. Use `show σ g (t (ξ ∘L E.ρ g)) = t ξ`. Rewrite using `[← ht g, e]`. Introduce `ht g ξ`. Establish `h : σ g (t ((ξ ∘L E.ρ g⁻¹) ∘L E.ρ g)) = t (ξ ∘L E.ρ g⁻¹)` using `LinearMap.congr_fun (ht g) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `e g⁻¹ ξ`. Rewrite `e'` using `[inv_inv]`. Rewrite using `[← h, e']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_invA (σ : Un n →* (V →ₗ[ℂ] V)) (E : KMod n) (t : (E.V →L[ℂ] ℂ) →ₗ[ℂ] V) :
     t ∈ invA σ E ↔ ∀ g, flipA E (σ g) (E.ρ g) t = t := by
@@ -191,7 +191,7 @@ private theorem flipA_mul (E : KMod n) (A B : Module.End ℂ V) (T U : E.V →L[
     flipA E A T * flipA E B U = flipA E (A * B) (T * U) := rfl
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite `ht`, the goal using `[mem_invA]`. Introduce `g`. Rewrite using `[← Module.End.mul_apply, flipA_mul, ← hT, ← hA, ← flipA_mul, Module.End.mul_apply, ht g]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem flip_mem (σ : Un n →* (V →ₗ[ℂ] V)) (E : KMod n) {T : E.V →L[ℂ] E.V} {A : Module.End ℂ V}
     (hT : ∀ k, T * E.ρ k = E.ρ k * T) (hA : ∀ k, A * σ k = σ k * A) :
@@ -202,11 +202,9 @@ private theorem flip_mem (σ : Un n →* (V →ₗ[ℂ] V)) (E : KMod n) {T : E.
   rw [← Module.End.mul_apply, flipA_mul, ← hT, ← hA, ← flipA_mul, Module.End.mul_apply, ht g]
 
 /- English proof (translation)
-Set `b` to `stdOrthonormalBasis ℂ V`. Use `wc_hom fun t => wc_hom fun ξ => wc_of_basis b.toBasis fun i => ?_` and prove the remaining obligations. Establish `hv : Continuous fun g : Un n => t (ξ ∘L E.ρ g)` using `t.continuous_of_finiteDimensional.comp (continuous_const.clm_comp E.cont)`. Establish `e : ∀ g : Un n, b.toBasis.repr (flipA E (σ g) (E.ρ g) t ξ) i = ∑ j, ⟪b j, t (ξ ∘L E.ρ g)⟫_ℂ * ⟪b i, σ g (b j)⟫_ℂ`. Introduce `g`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`. Use `show ⟪b i, σ g (t (ξ ∘L E.ρ g))⟫_ℂ = _`. Use `conv_lhs => rw [← b.sum_repr' (t (ξ ∘L E.ρ g))]`. Simplify using `only [map_sum, map_smul, inner_sum, inner_smul_right]`. Repeatedly rewrite using `[e]`.
-
-Conclude with `continuous_finset_sum _ fun j _ => (continuous_const.inner hv).mul (hσ _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wc_flip [FiniteDimensional ℂ V] (σ : Un n →* (V →ₗ[ℂ] V))
     (hσ : ∀ v w : V, Continuous fun k => ⟪w, σ k v⟫_ℂ) (E : KMod n) : WC fun g => flipA E (σ g) (E.ρ g) := by
@@ -225,9 +223,9 @@ private theorem wc_flip [FiniteDimensional ℂ V] (σ : Un n →* (V →ₗ[ℂ]
   exact continuous_finset_sum _ fun j _ => (continuous_const.inner hv).mul (hσ _ _)
 
 /- English proof (translation)
-Use `haveI : CompactSpace (Un n) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ`. Rewrite using `[tr_inv ν (fun g => flipA E (σ g) (E.ρ g)) (fun g h => by simp only [flipA_mul, map_mul]) (wc_flip σ hσ E) (invA σ E) (mem_invA σ E) _ (flip_mem σ E hT hA)]`. Simplify using `only [flipA_mul, tr_flipA]`. Set `b` to `stdOrthonormalBasis ℂ V`. Establish `hc : Continuous fun κ : Un n => LinearMap.trace ℂ E.V ((E.ρ κ * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V)` using `((LinearMap.trace ℂ E.V).comp (ContinuousLinearMap.coeLM ℂ)).continuous_of_finiteDimensional.comp (E.cont.mul continuous_const)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[LinearMap.trace_eq_sum_inner _ b, Finset.mul_sum, Module.End.mul_apply, hP _ _]`. Conclude with `(integral_finset_sum _ fun i _ => (hc.mul (hσ _ _)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem fin_case [FiniteDimensional ℂ V] [MeasurableSpace (Un n)] [BorelSpace (Un n)] (ν : Measure (Un n))
     [IsProbabilityMeasure ν] [ν.IsMulLeftInvariant] (σ : Un n →* (V →ₗ[ℂ] V))
@@ -247,9 +245,9 @@ private theorem fin_case [FiniteDimensional ℂ V] [MeasurableSpace (Un n)] [Bor
     (hc.mul (hσ _ _)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)).symm
 
 /- English proof (translation)
-Introduce `x hx`. Establish `: isoSp σ E ≤ (isoSp σ E).comap A`. Use `iSup_le ?_` and prove the remaining obligations. Introduce and unpack `t _ ⟨ξ, rfl⟩`. Take `⟨t', ht', ξ', h⟩` from `hA t.1 t.2 ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(le_iSup (fun s : invA σ E => LinearMap.range s.1) ⟨t', ht'⟩) ⟨ξ', h.symm⟩`. Conclude with `this hx`.
+A detailed English derivation is pending.
 -/
 private theorem iso_stable (σ : Un n →* (V →ₗ[ℂ] V)) (E : KMod n) {A : Module.End ℂ V}
     (hA : ∀ t ∈ invA σ E, ∀ ξ, ∃ t' ∈ invA σ E, ∃ ξ', A (t ξ) = t' ξ') : ∀ x ∈ isoSp σ E, A x ∈ isoSp σ E := by
@@ -266,17 +264,15 @@ end Fin
 end UpperTheory.V.Z.GSp4Splitting
 
 /- English proof (translation)
-Introduce `hF n _ _ ν _ hν V _ _ σ hσ E T P A hT hP hA hfd`. Use `haveI : IsProbabilityMeasure ν := ⟨hν⟩`. Use `set S := isoSp σ E with hS`. Establish `hPS : ∀ x, P x ∈ S` using `(hF n ν V σ hσ E T P hT hP).1`. Establish `hσS : ∀ k, ∀ x ∈ S, σ k x ∈ S` using `fun k => iso_stable σ E fun t ht ξ => ⟨t, ht, _, (ht k ξ).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hAS : ∀ x ∈ S, A x ∈ S` using `iso_stable σ E fun t ht ξ => ⟨_, flip_mem σ E (T := 1) (fun k => by simp) hA t ht, ξ, rfl⟩`. Set `σ' : Un n →* (S →ₗ[ℂ] S)` to `{ toFun := fun k => (σ k).restrict (hσS k) map_one' := LinearMap.ext fun x => Subtype.ext (by simp) map_mul' := fun a b => LinearMap.ext fun x => Subtype.ext (by simp) }`. Set `j : ((E.V →L[ℂ] ℂ) →ₗ[ℂ] S) →ₗ[ℂ] ((E.V →L[ℂ] ℂ) →ₗ[ℂ] V)` to `LinearMap.llcomp ℂ _ S V S.subtype`. Establish `hj : Function.Injective j` using `fun a b h => LinearMap.ext fun ξ => Subtype.ext (LinearMap.congr_fun h ξ)`. Establish `hmap : invA σ E = (invA σ' E).map j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm (fun t ht => ?_) ?_` and prove the remaining obligations. Establish `hm : ∀ ξ, t ξ ∈ S` using `fun ξ => (le_iSup (fun s : invA σ E => LinearMap.range s.1) ⟨t, ht⟩) ⟨ξ, rfl⟩`. Conclude with `⟨t.codRestrict S hm, fun k ξ => Subtype.ext (ht k ξ), rfl⟩`. Introduce and unpack `_ ⟨t, ht, rfl⟩ k ξ`. Conclude with `congrArg Subtype.val (ht k ξ)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hA' : ∀ k, A.restrict hAS * σ' k = σ' k * A.restrict hAS` using `fun k => LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (hA k) x.1)`. Use `⟨?_, fun hne hb => hne ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap] infer_instance`. Use `iSup_eq_bot.2 fun t => ?_` and prove the remaining obligations. Establish `ht : t.1 ∈ (⊥ : Submodule ℂ ((E.V →L[ℂ] ℂ) →ₗ[ℂ] V))` using `hb ▸ t.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Submodule.mem_bot ℂ).1 ht, LinearMap.range_zero]`. Establish `hPA : ∀ x ∈ S, (P * A) x ∈ S` using `fun x _ => hPS _`. Rewrite using `[hmap, trOn_map' j hj _ (flipA E (A.restrict hAS) T) _ (flip_mem σ' E hT hA') (fun _ => rfl), ← fin_case ν σ' (fun v w => hσ.cont v.1 w.1) E T (P.restrict fun x _ => hPS x) (A.restrict hAS) hT (fun v w => hP v.1 w.1) hA']`. Unfold `trOn`. Rewrite using `[dif_pos hPA]`.
-
-Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.avgTr :
     AvgFacts → AvgTr := by

@@ -23,7 +23,7 @@ open Formalism.L2.SG.Pf.LatDict
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂.Word}
 
 /- English proof (translation)
-Apply `X.bas.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `h2 : X.crd y i = X.crd y' i` using `Formalism.L2.SG.Pf.inclInj_holds X (congrFun h i)`. Establish `h3 : X.ιE.symm (X.bas.repr y i) = X.ιE.symm (X.bas.repr y' i)` using `h2`. Conclude with `X.ιE.symm.injective h3`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inclCrd_inj {y y' : (VS D).V} (h : incl X.B.I (X.crd y) = incl X.B.I (X.crd y')) : y = y' := by
   apply X.bas.repr.injective
@@ -33,7 +33,7 @@ theorem inclCrd_inj {y y' : (VS D).V} (h : incl X.B.I (X.crd y) = incl X.B.I (X.
   exact X.ιE.symm.injective h3
 
 /- English proof (translation)
-Establish `h` using `pX_of_mem (e := X.eX) (f := X.fY) X.ef x hx`. Rewrite `h` using `[pX_apply]`. Simplify using `only [hf, zero_smul, Finset.sum_const_zero] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_Xs {x : (VS D).V} (hx : x ∈ Xs X) (hf : ∀ a, (VS D).hT (X.fY a) x = 0) : x = 0 := by
   have h := pX_of_mem (e := X.eX) (f := X.fY) X.ef x hx
@@ -42,9 +42,9 @@ theorem eq_zero_of_Xs {x : (VS D).V} (hx : x ∈ Xs X) (hf : ∀ a, (VS D).hT (X
   exact h.symm
 
 /- English proof (translation)
-Establish `hX : (X.Fu u).X = (X.Fu u).Xa D.R.rS`. Unfold `Formalism.MainNotions.S.FlagG.X Formalism.MainNotions.S.FlagG.Xa`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_range, Set.mem_image, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun ⟨i, hi⟩ => ⟨i, i.2, hi⟩, fun ⟨i, _, hi⟩ => ⟨i, hi⟩⟩`. Rewrite using `[hX]`. Conclude with `hβ.2.1 D.R.rS`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_X_eq_of_mem_stabF {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hβ : β ∈ stabF D (X.Fu u)) :
     (X.Fu u).X.map (β : (VS D).V →ₗ[D.host.E] (VS D).V) = (X.Fu u).X := by
@@ -58,9 +58,7 @@ private theorem map_X_eq_of_mem_stabF {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} 
   exact hβ.2.1 D.R.rS
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hw' : w ∈ (X.Fu u).X.map (β : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[map_X_eq_of_mem_stabF hβ]`. Conclude with `hw`. Take `⟨w', hw'X, rfl⟩` from `hw'`.
-
-Conclude with `(hβ.1 w' x).trans (hx w' hw'X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stab_perpS {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hβ : β ∈ stabF D (X.Fu u)) {x : (VS D).V}
     (hx : x ∈ perpS (VS D) (X.Fu u).X) : β x ∈ perpS (VS D) (X.Fu u).X := by
@@ -72,7 +70,7 @@ theorem stab_perpS {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hβ : β ∈ stabF
   exact (hβ.1 w' x).trans (hx w' hw'X)
 
 /- English proof (translation)
-Rewrite using `[← map_X_eq_of_mem_stabF hβ]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_X {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hβ : β ∈ stabF D (X.Fu u)) {x : (VS D).V}
     (hx : x ∈ (X.Fu u).X) : β x ∈ (X.Fu u).X := by
@@ -92,7 +90,7 @@ theorem indW_mk (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hβ : β ∈ stabF D 
     indW β hβ (Submodule.Quotient.mk x) = Submodule.Quotient.mk ⟨β x.1, stab_perpS hβ x.2⟩ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨β, hβ, hΛ, by intros; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem indW_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V) (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hβ : β ∈ stabF D (X.Fu u)) (hΛ : Formalism.HermitianLatticesTheory.gmap β Λ = Λ) :
@@ -100,17 +98,17 @@ theorem indW_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V) (β : (VS D).V ≃ₗ
   ⟨β, hβ, hΛ, by intros; rfl⟩
 
 /- English proof (translation)
-Establish `hXs : (X.Fu u).X = Xs X` using `by show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e u]`. Both sides reduce to the same expression. Use extensionality with `y`. Establish `hdec : y = (y - prV X y) + prV X y` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1 : β (y - prV X y) = y - prV X y`. Rewrite using `[sub_prV_eq, map_add, map_sum, map_sum]`. Simplify using `only [map_smul, he, hf]`. Establish `h1' : β' (y - prV X y) = y - prV X y`. Rewrite using `[sub_prV_eq, map_add, map_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, he', hf']`. Establish `hw : prV X y ∈ perpS (VS D) (X.Fu u).X` using `fun x hx => by`. Rewrite `hx` using `[hXs]`. Conclude with `hT_Xs_prV X hx y`. Establish `h2` using `LinearMap.congr_fun h (Submodule.Quotient.mk ⟨prV X y, hw⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[indW_mk, indW_mk, Submodule.Quotient.eq]`. Establish `hd : β (prV X y) - β' (prV X y) ∈ Xs X`. Rewrite using `[← hXs]`. Conclude with `h2`. Establish `hz : β (prV X y) - β' (prV X y) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_zero_of_Xs hd fun a => ?_` and prove the remaining obligations. Establish `ha` using `Formalism.L2.SG.Saturated.isom_apply hβ.1 (X.fY a) (prV X y)`. Establish `ha'` using `Formalism.L2.SG.Saturated.isom_apply hβ'.1 (X.fY a) (prV X y)`. Rewrite `ha` using `[hf]`. Rewrite `ha'` using `[hf']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, ha, ha', sub_self]`. Rewrite using `[hdec, map_add, map_add, h1, h1', sub_eq_zero.1 hz]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_indW {β β' : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hβ : β ∈ stabF D (X.Fu u))
     (hβ' : β' ∈ stabF D (X.Fu u)) (he : ∀ a, β (X.eX a) = X.eX a) (he' : ∀ a, β' (X.eX a) = X.eX a)
@@ -149,9 +147,9 @@ def GamL (q : {Λ // Λ ∈ what₂}) : Type :=
   {g : Gam X u // colD (cs.h (cs.base q.1)) (iotaF X u g * cs.h (cs.base q.1)) ∈ X.B.I.Kset}
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(simp only [colD, Subgroup.coe_mul]; group)`. Consider the case `(simp only [colD, Subgroup.coe_mul, Submonoid.coe_mul]; group)`. Consider the case `(unfold colD; group)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [colD, mul_assoc])`.
+A detailed English derivation is pending.
 -/
 theorem aK_eq (hb : Hfin X u) (γ : Gam X u) :
     ((hb : X.B.I.Gf) * X.xu u)⁻¹ * (iotaF X u γ : X.B.I.Gf) * ((hb : X.B.I.Gf) * X.xu u) =
@@ -168,7 +166,7 @@ def gamL_levi (TR : TypedRed X) (q : {Λ // Λ ∈ what₂}) (g : GamL cs q) : A
     g.1, by rw [aK_eq]; exact g.2, by rw [aK_eq]⟩
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.GGMirabolic.IsUni`. Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply, ne_of_gt hij]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isUni_one (TR : TypedRed X) (v : TR.Pl) : Formalism.L2.SG.GGMirabolic.IsUni D.R.k ((1 : Iof TR) v) := by
   unfold Formalism.L2.SG.GGMirabolic.IsUni
@@ -177,17 +175,15 @@ theorem isUni_one (TR : TypedRed X) (v : TR.Pl) : Formalism.L2.SG.GGMirabolic.Is
   · simp [Matrix.one_apply, ne_of_gt hij]
 
 /- English proof (translation)
-Use `set hb : Hfin X u := cs.h (cs.base q.1) with hhb`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g1, hP1⟩ ⟨g2, hP2⟩ heq`. Establish `heq' : levi TR (colD hb (iotaF X u g1 * hb)) = levi TR (colD hb (iotaF X u g2 * hb))` using `congrArg Subtype.val heq`. Establish `hmK : colD (iotaF X u g1 * hb) (iotaF X u g2 * hb) ∈ X.B.I.Kset`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← colD_mul _ hb, ← colD_inv]`. Conclude with `K_mul X.B.I (K_inv X.B.I hP1) hP2`. Establish `hlm : levi TR (colD (iotaF X u g1 * hb) (iotaF X u g2 * hb)) = 1`. Rewrite using `[← colD_mul _ hb, ← colD_inv, levi_mul TR (good_inv X (good_colD hP1)) (good_colD hP2), levi_inv TR (good_colD hP1), heq', inv_mul_cancel]`. Establish `hmU : ∀ v, Formalism.L2.SG.GGMirabolic.IsUni D.R.k (levi TR (colD (iotaF X u g1 * hb) (iotaF X u g2 * hb)) v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlm]`. Conclude with `isUni_one TR`. Establish `hm2` using `mem_level_of_unitriangular TR (good_colD hmK) (ncong_colDiff u _ _ hmK) hmU`. Establish `hku` using `colD_ku hK hm2`. Establish `h0 : g1⁻¹ * g2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hN hb (g1⁻¹ * g2) ?_` and prove the remaining obligations. Establish `e : (hb : Hfin X u)⁻¹ * iotaF X u (g1⁻¹ * g2) * hb = (iotaF X u g1 * hb)⁻¹ * (iotaF X u g2 * hb)`. Simplify using `only [map_mul, map_inv]`. Use `group`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Conclude with `hku`. Rewrite `h0` using `[inv_mul_eq_one]`. Substitute `h0` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨x, γ, hγK, hx⟩`.
-
-Use `⟨⟨γ, by rw [← aK_eq]; exact hγK⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show levi TR _ = x`. Rewrite using `[hx]`. Conclude with `congrArg (levi TR) (aK_eq _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamL_levi_bij (TR : TypedRed X) (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u hK)
     (q : {Λ // Λ ∈ what₂}) : Function.Bijective (gamL_levi cs TR q) := by
@@ -237,12 +233,12 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂
 def isoG (g : Gam X u) : (VS D).V ≃ₗ[D.host.E] (VS D).V := (gamIsom_of X (inclInj_holds X) u g).choose
 
 /- English proof (translation)
-The claim follows from `(gamIsom_of X (inclInj_holds X) u g).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem isoG_stab (g : Gam X u) : isoG g ∈ stabF D (X.Fu u) := (gamIsom_of X (inclInj_holds X) u g).choose_spec.1
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2 y`. Consider the case `exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2.1 y`. Consider the case `exact ((gamIsom_of X (inclInj_holds X) u g).choose_spec.2 y).1`. Consider the case `exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2.1 y`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isoG_spec (g : Gam X u) (y : (VS D).V) :
     incl X.B.I (X.crd (isoG g y)) = X.B.I.fmat (g : X.B.I.GA).2 *ᵥ incl X.B.I (X.crd y) := by
@@ -253,7 +249,7 @@ theorem isoG_spec (g : Gam X u) (y : (VS D).V) :
     | exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2.1 y
 
 /- English proof (translation)
-Apply `inclCrd_inj` to reduce the goal to its premises. Rewrite using `[isoG_spec]`. Conclude with `Formalism.L2.SG.PoincareInHH.Cut.hfin_fix (h := iotaF X u g) (v := X.crd y) (hv := hy)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoG_fix (g : Gam X u) (y : (VS D).V) (hy : X.crd y ∈ fixSet X u) : isoG g y = y := by
   apply inclCrd_inj
@@ -261,23 +257,23 @@ theorem isoG_fix (g : Gam X u) (y : (VS D).V) (hy : X.crd y ∈ fixSet X u) : is
   exact Formalism.L2.SG.PoincareInHH.Cut.hfin_fix (h := iotaF X u g) (v := X.crd y) (hv := hy)
 
 /- English proof (translation)
-The claim follows from `isoG_fix g _ (Formalism.L2.SG.PoincareInHH.Cut.eR_mem_fix (X := X) (u := u) (a := a))`.
+A detailed English derivation is pending.
 -/
 theorem isoG_e (g : Gam X u) (a : Fin D.R.rS) : isoG g (X.eX a) = X.eX a :=
   isoG_fix g _ (Formalism.L2.SG.PoincareInHH.Cut.eR_mem_fix (X := X) (u := u) (a := a))
 
 /- English proof (translation)
-The claim follows from `isoG_fix g _ (Formalism.L2.SG.PoincareInHH.Cut.fR_mem_fix (X := X) (u := u) (a := a))`.
+A detailed English derivation is pending.
 -/
 theorem isoG_f (g : Gam X u) (a : Fin D.R.rS) : isoG g (X.fY a) = X.fY a :=
   isoG_fix g _ (Formalism.L2.SG.PoincareInHH.Cut.fR_mem_fix (X := X) (u := u) (a := a))
 
 /- English proof (translation)
-Establish `hm : X.B.I.fmat x = X.B.I.fmat x'`. Use extensionality with `i j`. Establish `hj` using `congrFun (h (X.bas j)) i`. Establish `hc : incl X.B.I (X.crd (X.bas j)) = Pi.single j 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[Formalism.L2.SG.HidaSetting.incl, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf]`. Simplify using `[Formalism.L2.SG.HidaSetting.incl, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, hk, Ne.symm hk, Finsupp.single_apply]`. Rewrite `hj` using `[hc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_single_one, Matrix.transpose_apply] at hj`. Conclude with `hj`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hm`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gf_eq {x x' : X.B.I.Gf} (h : ∀ y : (VS D).V,
     X.B.I.fmat x *ᵥ incl X.B.I (X.crd y) = X.B.I.fmat x' *ᵥ incl X.B.I (X.crd y)) : x = x' := by
@@ -301,7 +297,7 @@ theorem gf_eq {x x' : X.B.I.Gf} (h : ∀ y : (VS D).V,
 variable {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (cs : ColSys X u what₂)
 
 /- English proof (translation)
-Use `cs.lat_eq (cs.base q.1) y` as an intermediate fact. Rewrite `this` using `[cs.base_lam q.1 q.2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lam_iff (q : {Λ // Λ ∈ what₂}) (y : (VS D).V) :
     y ∈ q.1 ↔ X.B.I.fmat (((cs.h (cs.base q.1) : X.B.I.Gf) * X.xu u)⁻¹) *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf := by
@@ -309,7 +305,7 @@ theorem lam_iff (q : {Λ // Λ ∈ what₂}) (y : (VS D).V) :
   rwa [cs.base_lam q.1 q.2] at this
 
 /- English proof (translation)
-Use extensionality with `y`. Use `first`. Consider the case `exact lam_iff cs q y`. Consider the case `(rw [SetLike.mem_coe, lam_iff cs q y]; rfl)`. Consider the case `simp [latOf, lam_iff cs q y]`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lam_latOf (q : {Λ // Λ ∈ what₂}) : ((q.1 : Submodule (𝓞 D.host.E) (VS D).V) : Set (VS D).V) =
     latOf X u (cs.h (cs.base q.1)) := by
@@ -320,15 +316,13 @@ theorem lam_latOf (q : {Λ // Λ ∈ what₂}) : ((q.1 : Submodule (𝓞 D.host.
     | simp [latOf, lam_iff cs q y]
 
 /- English proof (translation)
-Use `set hb := cs.h (cs.base q.1)`. Establish `hκ` using `g.2`. Use `set κ := colD hb (iotaF X u g.1 * hb) with hκdef`. Establish `hcomm : ((hb : X.B.I.Gf) * X.xu u)⁻¹ * (g.1 : X.B.I.GA).2 = κ * ((hb : X.B.I.Gf) * X.xu u)⁻¹`. Rewrite using `[hκdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `colD`. Use `show _ = (((hb : X.B.I.Gf) * X.xu u)⁻¹ * (((iotaF X u g.1 : Hfin X u) : X.B.I.Gf) * hb * X.xu u)) * _`. Use `show _ = (((hb : X.B.I.Gf) * X.xu u)⁻¹ * ((g.1 : X.B.I.GA).2 * hb * X.xu u)) * _`. Use `group`. Establish `key : ∀ y, isoG g.1 y ∈ q.1 ↔ y ∈ q.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[lam_iff, lam_iff, isoG_spec, mulVec_mulVec]`. Establish `e : X.B.I.fmat (((hb : X.B.I.Gf) * X.xu u)⁻¹) * X.B.I.fmat (g.1 : X.B.I.GA).2 = X.B.I.fmat κ * X.B.I.fmat (((hb : X.B.I.Gf) * X.xu u)⁻¹)`. Rewrite using `[← fmatK_mul, ← fmatK_mul, hcomm]`. Rewrite using `[e, ← mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `kset_iff X (K_inv X.B.I hκ) (X.B.I.fmat (((hb : X.B.I.Gf) * X.xu u)⁻¹) *ᵥ incl X.B.I (X.crd y))` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Use extensionality with `x`. Rewrite using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Use `(key _).2 h` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h; exact (key _).1 (by rwa [LinearEquiv.apply_symm_apply])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isoG_lat (q : {Λ // Λ ∈ what₂}) (g : GamL cs q) : Formalism.HermitianLatticesTheory.gmap (isoG g.1) q.1 = q.1 := by
   set hb := cs.h (cs.base q.1)
@@ -358,45 +352,39 @@ def gamL_autLz (q : {Λ // Λ ∈ what₂}) (g : GamL cs q) : autLz D (X.Fu u) q
   ⟨indW (isoG g.1) (isoG_stab g.1), indW_mem q.1 _ _ (isoG_lat cs q g)⟩
 
 /- English proof (translation)
-Establish `hXs : (X.Fu u).X = Xs X` using `by show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e u]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g1, hg1⟩ ⟨g2, hg2⟩ heq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hf : (indW (isoG g1) (isoG_stab g1) : WbQ D (X.Fu u) → WbQ D (X.Fu u)) = indW (isoG g2) (isoG_stab g2)` using `congrArg Subtype.val heq`. Establish `hi` using `eq_of_indW (isoG_stab g1) (isoG_stab g2) (isoG_e g1) (isoG_e g2) (isoG_f g1) (isoG_f g2) (LinearMap.coe_injective hf)`. Establish `h2 : (g1 : X.B.I.GA).2 = (g2 : X.B.I.GA).2` using `gf_eq fun y => by`. Rewrite using `[← isoG_spec, ← isoG_spec, hi]`. Establish `h0 : g1⁻¹ * g2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hN 1 (g1⁻¹ * g2) ?_` and prove the remaining obligations. Establish `e : (1 : Hfin X u)⁻¹ * iotaF X u (g1⁻¹ * g2) * 1 = 1`. Establish `: iotaF X u g1 = iotaF X u g2` using `Subtype.ext h2`. Simplify using `only [inv_one, one_mul, mul_one, map_mul, map_inv, this, inv_mul_cancel]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ku X u hK).one_mem`. Rewrite `h0` using `[inv_mul_eq_one]`. Substitute `h0` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨φ, γ0, hγ0, hγ0Λ, hφ⟩ set hb := cs.h (cs.base q.1) with hhb`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hγ0'` using `stab_symm X u hγ0`. Establish `h1 : gW X γ0 ∘ₗ gW X γ0.symm = LinearMap.id` using `LinearMap.ext fun y => gW_gW X u hγ0 hγ0' (fun w => γ0.apply_symm_apply w) y`. Establish `h2 : gW X γ0.symm ∘ₗ gW X γ0 = LinearMap.id` using `LinearMap.ext fun y => gW_gW X u hγ0' hγ0 (fun w => γ0.symm_apply_apply w) y`. Establish `hM` using `ratGL_UJ X (gW X γ0) (gW X γ0.symm) h1 h2 (gW_isom X u hγ0)`. Establish `hfix : ∀ y ∈ fixSet X u, ((ratGL X (gW X γ0) (gW X γ0.symm) h1 h2 : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y = y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ((⟨a, rfl⟩ | ⟨a, rfl⟩) | hy)`. Use `show ratMat X (gW X γ0) *ᵥ X.crd (X.eX a) = X.crd (X.eX a)`. Rewrite using `[ratMat_crd, gW_e]`. Use `show ratMat X (gW X γ0) *ᵥ X.crd (X.fY a) = X.crd (X.fY a)`. Rewrite using `[ratMat_crd, gW_f]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Use `show ratMat X (gW X γ0) *ᵥ X.crd (X.zu u) = X.crd (X.zu u)`. Rewrite using `[ratMat_crd, stabilizer_fix_anisotropic X u hγ0]`. Use `set c := ratGam X u _ hM hfix with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hspec : ∀ y, X.B.I.fmat (rfinU X _ hM) *ᵥ incl X.B.I (X.crd y) = incl X.B.I (X.crd (gW X γ0 y))`. Introduce `y`. Rewrite using `[fmat_rfinU]`. Establish `h4 : incl X.B.I (ratMat X (gW X γ0) *ᵥ X.crd y) = (ratMat X (gW X γ0)).map (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F)) *ᵥ incl X.B.I (X.crd y) := by`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `RingHom.map_mulVec (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (ratMat X (gW X γ0)) (X.crd y) i`. Use `show (ratMat X (gW X γ0)).map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) *ᵥ incl X.B.I (X.crd y) = _`. Rewrite using `[← h4, ratMat_crd]`. Establish `e2 : ∀ y, X.B.I.fmat (rfinU X _ hM)⁻¹ *ᵥ incl X.B.I (X.crd y) = incl X.B.I (X.crd (gW X γ0.symm y))`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h3` using `hspec (gW X γ0.symm y)`. Rewrite `h3` using `[gW_gW X u hγ0 hγ0' (fun w => γ0.apply_symm_apply w) y]`. Rewrite using `[← h3, mulVec_mulVec, unitaryCongruence.fmat_inv_mul X.B.I, one_mulVec]`. Establish `hlat` using `lam_latOf cs q`. Establish `hmap : ∀ y ∈ latOf X u hb, γ0 y ∈ latOf X u hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite `hy`, the goal using `[← hlat]`. Rewrite using `[← hγ0Λ]`. Conclude with `(gmap_apply_mem γ0 _ y).2 hy`. Establish `hmap' : ∀ y ∈ latOf X u hb, γ0.symm y ∈ latOf X u hb`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y hy`. Rewrite `hy`, the goal using `[← hlat]`. Establish `: y ∈ Formalism.HermitianLatticesTheory.gmap γ0 q.1` using `by rw [hγ0Λ]; exact hy`. Rewrite `this` using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`. Then use the resulting hypothesis. Establish `hgW : ∀ y, gW X γ0.symm y ∈ q.1 ↔ y ∈ q.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← SetLike.mem_coe, ← SetLike.mem_coe, hlat]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `gW_mem X u hb hb hmap hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[gW_gW X u hγ0 hγ0' (fun w => γ0.apply_symm_apply w) y]`. Then use the resulting hypothesis. Introduce `hy`. Conclude with `gW_mem X u hb hb hmap' hy`. Establish `hK0 : colD hb (iotaF X u c * hb) ∈ X.B.I.Kset`. Establish `hd` using `dict_K X ((hb : X.B.I.Gf) * X.xu u) (((iotaF X u c * hb : Hfin X u) : X.B.I.Gf) * X.xu u) (q.1 : Set (VS D).V) (fun y => lam_iff cs q y) (fun y => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Establish `e : (((iotaF X u c * hb : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ = ((hb : X.B.I.Gf) * X.xu u)⁻¹ * (rfinU X _ hM)⁻¹`. Rewrite using `[Subgroup.coe_mul, hc, iotaF_ratGam]`. Use `group`. Use `show y ∈ q.1 ↔ _`. Rewrite using `[e, fmatK_mul, ← mulVec_mulVec, e2, ← lam_iff cs q]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hgW y).symm)`. Conclude with `hd`. Use `⟨⟨c, hK0⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hiso : ∀ y, isoG c y = gW X γ0 y` using `fun y => by`. Apply `inclCrd_inj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[isoG_spec]`. Conclude with `hspec y`. Use function extensionality and compare the values at `w`. Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H x => show indW (isoG c) (isoG_stab c) (Submodule.Quotient.mk x) = φ (Submodule.Quotient.mk x)`.
-
-Rewrite using `[indW_mk, hφ x (stab_perpS hγ0 x.2), Submodule.Quotient.eq]`. Use `show isoG c x.1 - γ0 x.1 ∈ (X.Fu u).X`. Rewrite using `[hiso]`. Use `hXs.ge ?_` and prove the remaining obligations. Rewrite using `[gW_apply]`.
-
-Establish `hx : ∀ a, (VS D).hT (X.eX a) x.1 = 0` using `fun a => x.2 _ (by rw [hXs]; exact eX_mem_Xs X a)`. Establish `hA` using `sub_prV_mem_Xs X hx`. Establish `hB` using `stab_Xs X u hγ0 hA`. Establish `hC` using `stab_perp X u hγ0 x.1`. Establish `e : x.1 - prV X x.1 + prV X (γ0 (prV X x.1)) - γ0 x.1 = (x.1 - prV X x.1) - γ0 (x.1 - prV X x.1) - (γ0 (prV X x.1) - prV X (γ0 (prV X x.1)))`.
-
-Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ hA hB) hC`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamL_autLz_bij (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u hK) (q : {Λ // Λ ∈ what₂}) :
     Function.Bijective (gamL_autLz cs q) := by
@@ -509,16 +497,16 @@ theorem gamL_autLz_bij (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.Poi
       exact Submodule.sub_mem _ (Submodule.sub_mem _ hA hB) hC
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (Equiv.ofBijective _ (gamL_autLz_bij cs hK hN q))).symm.trans (Nat.card_congr (Equiv.ofBijective _ (gamL_levi_bij cs TR hK hN q)))`.
+A detailed English derivation is pending.
 -/
 theorem card_autLz_eq (TR : TypedRed X) (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u hK)
     (q : {Λ // Λ ∈ what₂}) : Nat.card (autLz D (X.Fu u) q.1) = Nat.card (Aset TR cs q) := (Nat.card_congr (Equiv.ofBijective _ (gamL_autLz_bij cs hK hN q))).symm.trans
     (Nat.card_congr (Equiv.ofBijective _ (gamL_levi_bij cs TR hK hN q)))
 
 /- English proof (translation)
-Introduce `q`. Rewrite using `[← card_autLz_eq cs TR hK hN q]`. Use `first`. Consider the case `rfl`. Consider the case `simp [wRow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Formalism.L2.SG.NormCut.wRow]`.
+A detailed English derivation is pending.
 -/
 theorem massA_of (TR : TypedRed X) (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u hK) :
     MassA TR (X.Fu u) cs := by
@@ -536,7 +524,7 @@ end Formalism.L2.SG.Pf.Act
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-Introduce `D X Y u` and use `Formalism.L2.SG.Pf.Act.massA_of (Y.cs u) Y.TR Y.hK (hN D X Y u)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem massAC_of (hN : ∀ (D : Formalism.BasicNotions.D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X)
     (u : D.what₂.Word), Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u Y.hK) : Formalism.L2.SG.NormCut.MassAC := fun D X Y u => Formalism.L2.SG.Pf.Act.massA_of (Y.cs u) Y.TR Y.hK (hN D X Y u)

@@ -8,21 +8,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TopLawG
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 hX hPr _hsel hL b P hP g z hmid`. Establish `hgC : g ∈ prCat (Pr` using `Pr) cst.sharp (m2 + 1) P.1 (L.h (m2 + 1) b P) := (exists_midLev_iff Ch sel mu cst (m2 + 1) P (L.h (m2 + 1) b P) g).1 ⟨z, hmid⟩`. Establish `hgI : g ∈ GLint X.E (R.N (m2 + 1)) P.1` using `hL.int (m2 + 1) b P hgC`. Use `⟨⟨g, hgI⟩, rfl, ?_⟩` and prove the remaining obligations. Introduce `k hk y y' y'' hy' hky`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr, hrg, hz⟩` from `hmid`. Establish `hred : ∀ x ∈ stdAt X.E (R.N (m2 + 1)) P.1, redV P.1 (g x) = (redGL _ P.1 k).1.mulVec (redV P.1 x)`. Introduce `x hx`. Rewrite using `[hk]`. Conclude with `redV_redGL (⟨g, hgI⟩ : GLint X.E (R.N (m2 + 1)) P.1) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : redGL _ P.1 k ∈ (L.levG (m2 + 1) b ⟨P.1, hP⟩).H` using `(hL.grpG (m2 + 1) b ⟨P.1, hP⟩ (redGL _ P.1 k)).2 ⟨g, hgC, hred⟩`. Use `set c : X.Kˣ := (L.levG (m2 + 1) b ⟨P.1, hP⟩).lam ⟨redGL _ P.1 k, hmem⟩ with hcdef`. Establish `hcz : (c : X.K) = z`. Rewrite using `[hz]`. Conclude with `hL.chrG (m2 + 1) b ⟨P.1, hP⟩ ⟨redGL _ P.1 k, hmem⟩ g r hr hrg hred`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hlev : GlobalTheory.TopLaw.LevAt (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) P k c` using `⟨fun _ => ⟨hmem, rfl⟩, fun _ h => absurd hP h⟩`. Establish `hrho : rhoS Ch sel mu (m2 + 1) P ((LinearEquiv.det g : X.Eˣ) : X.E) = rhoS Ch sel mu (m2 + 1) P ((LinearEquiv.det k.1 : X.Eˣ) : X.E)`. Unfold `rhoS`. Use `unitV_congr _ ?_` and prove the remaining obligations. Rewrite using `[(det_glint k).2, ← redGL_val, hk, redGL_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(det_glint (⟨g, hgI⟩ : GLint X.E (R.N (m2 + 1)) P.1)).2`. Rewrite using `[hrho, ← hcz]`. Establish `hm` using `hL.hm`. Establish `key` using `GlobalTheory.TopLaw.locTop_source hX hPr hL hlev`. Use `clear_value c`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear hcdef hcz hrho hred hz hrg hr hmem`. Use `revert key y`. Consider the cases of `R with`. Consider the case `mk e k0 m t h1 h2 h3 h4 h5 h6 h7 h8 h9 h10`. Express the relevant statement in the definitionally equal form `m = m2 + 2 at hm`.
-
-Substitute `hm` using the available equality. Introduce `y key`. Use `key y (fun _ => hy') (fun h => absurd hP h) (fun _ => hky) (fun h => absurd hP h)` as an intermediate fact. Unfold `locTop at this`. Rewrite using `[PhiTopG_eq]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locTopG_source : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
   {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))}

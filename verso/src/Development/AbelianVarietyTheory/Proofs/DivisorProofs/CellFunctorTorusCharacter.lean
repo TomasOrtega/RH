@@ -14,14 +14,14 @@ open scoped TensorProduct
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scalar_apply {n : Type} [Fintype n] [DecidableEq n] (t : kˣ) (p q : n) :
     ((Matrix.GeneralLinearGroup.scalar n t : GL n k) : Matrix n n k) p q = if p = q then (t : k) else 0 := by
   simp [Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem scalar_comm {n : Type} [Fintype n] [DecidableEq n] (t : kˣ) (x : GL n k) :
     x * Matrix.GeneralLinearGroup.scalar n t = Matrix.GeneralLinearGroup.scalar n t * x := by
@@ -29,23 +29,23 @@ theorem scalar_comm {n : Type} [Fintype n] [DecidableEq n] (t : kˣ) (x : GL n k
   simp [Matrix.GeneralLinearGroup.scalar, Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_three_zero (d : Fin 3 → ℕ) :
     modExp (fun j : Fin 3 => Fin (d j)) 0 = ((d 1 + d 2 : ℕ) : ℤ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_three]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_three_two (d : Fin 3 → ℕ) :
     modExp (fun j : Fin 3 => Fin (d j)) 2 = -((d 0 + d 1 : ℕ) : ℤ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_three]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u w`. Rewrite using `[extTensor_tmul]`. Simplify using `only [detRep, ofChar_apply, detChar_apply, Units.val_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← smul_eq_mul, ← smul_eq_mul (a := ((ψ _ : ℂˣ) : ℂ)), TensorProduct.smul_tmul_smul]`. Consider the case `add u w hu hw => rw [map_add, hu, hw, smul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem extTensor_detRep_apply {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
     (χ ψ : kˣ →* ℂˣ) (x : GL n k × GL n' k) (v : ℂ ⊗[ℂ] ℂ) :
@@ -60,15 +60,15 @@ theorem extTensor_detRep_apply {n n' : Type} [Fintype n] [DecidableEq n] [Fintyp
   | add u w hu hw => rw [map_add, hu, hw, smul_add]
 
 /- English proof (translation)
-Establish `k0 : b0 = 1 → absPow k ((1 - (n : ℂ)) / 2) = (absPow k ((e0 : ℂ) / 2))⁻¹`. Introduce `h`. Rewrite using `[← absPow_neg]`. Use `congr 1`. Substitute `he0` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality.
 
-Rewrite using `[← hn, h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `k2 : b2 = 1 → absPow k (((n : ℂ) - 1) / 2) = (absPow k ((e2 : ℂ) / 2))⁻¹`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← absPow_neg]`. Use `congr 1`. Substitute `he2` using the available equality. Rewrite using `[← hn, h]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `interval_cases b0 <;> interval_cases b2`. Simplify using the standard rewrite rules. Rewrite using `[k2 rfl]`. Simplify using `[mul_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[k0 rfl]`. Simplify using `[mul_comm]`. Rewrite using `[k0 rfl, k2 rfl]`. Simplify using `[mul_comm, mul_left_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem row_scalar (χ : kˣ →* ℂˣ) (n b0 b1 b2 : ℕ) (hn : b0 + b1 + b2 = n) (h0 : b0 ≤ 1) (h2 : b2 ≤ 1)
     (e0 e1 e2 : ℤ) (he0 : e0 = ((b1 + b2 : ℕ) : ℤ)) (he2 : e2 = -((b0 + b1 : ℕ) : ℤ)) (t₁ t₂ : kˣ) :
@@ -108,9 +108,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {m : ℕ} {b : Bool → Fin 3 → ℕ}
 
 /- English proof (translation)
-Use `(Subgroup.mem_pi _).2 fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = 1`. Substitute `hj` using the available equality. Rewrite using `[torusPt_one]`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Subsingleton (Fin (blk3 m j))` using `by fin_cases j`. Conclude with `show Subsingleton (Fin 1) from inferInstance`. Conclude with `absurd rfl hj`. Conclude with `show Subsingleton (Fin 1) from inferInstance`. Conclude with `mem_parab.2 fun p q hpq => by rw [Subsingleton.elim p q] at hpq; exact absurd hpq (lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 theorem torusPt_mem (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) (t₁ t₂ : kˣ) :
     torusPt k m t₁ t₂ ∈ relParab k g := by
@@ -125,9 +125,7 @@ theorem torusPt_mem (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) (t₁ t�
     exact mem_parab.2 fun p q hpq => by rw [Subsingleton.elim p q] at hpq; exact absurd hpq (lt_irrefl _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Pi.mul_apply]`. Use `fin_cases j`. Conclude with `(torusPt_zero m t₁ t₂).symm ▸ scalar_comm t₁ (x 0)`. Use `show x 1 * torusPt k m t₁ t₂ 1 = torusPt k m t₁ t₂ 1 * x 1`.
-
-Rewrite using `[torusPt_one, mul_one, one_mul]`. Conclude with `(torusPt_two m t₁ t₂).symm ▸ scalar_comm t₂ (x 2)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusPt_central (t₁ t₂ : kˣ) (x : Levi k fun i : Fin 3 => Fin (blk3 m i)) :
     x * torusPt k m t₁ t₂ = torusPt k m t₁ t₂ * x := by
@@ -150,9 +148,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {m : ℕ} {b : Bool → Fin 3 → ℕ}
 
 /- English proof (translation)
-Use extensionality with `p q`. Use `show ((torusPt k m t₁ t₂ 0 : GL _ k) : Matrix _ _ k) (g 0 ⟨i, p⟩) (g 0 ⟨i, q⟩) = _`. Establish `hs : Subsingleton (Fin (blk3 m 0))` using `show Subsingleton (Fin 1) from inferInstance`. Establish `hpq : p = q`. Establish `h` using `(g 0).injective (Subsingleton.elim (g 0 ⟨i, p⟩) (g 0 ⟨i, q⟩))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h).2`. Substitute `hpq` using the available equality. Rewrite using `[torusPt_zero, scalar_apply, scalar_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relProj_torusPt_zero (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) (t₁ t₂ : kˣ) (i : Bool) :
     relProj k g ⟨torusPt k m t₁ t₂, torusPt_mem g t₁ t₂⟩ 0 i =
@@ -168,7 +166,7 @@ theorem relProj_torusPt_zero (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j))
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use extensionality with `p q`. Use `show ((torusPt k m t₁ t₂ 1 : GL _ k) : Matrix _ _ k) (g 1 ⟨i, p⟩) (g 1 ⟨i, q⟩) = _`. Rewrite using `[torusPt_one]`. Simplify using `only [Units.val_one, Matrix.one_apply, (g 1).injective.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and, Pi.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relProj_torusPt_one (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) (t₁ t₂ : kˣ) :
     relProj k g ⟨torusPt k m t₁ t₂, torusPt_mem g t₁ t₂⟩ 1 = 1 := by
@@ -180,9 +178,9 @@ theorem relProj_torusPt_one (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) 
     Pi.one_apply]
 
 /- English proof (translation)
-Use extensionality with `p q`. Use `show ((torusPt k m t₁ t₂ 2 : GL _ k) : Matrix _ _ k) (g 2 ⟨i, p⟩) (g 2 ⟨i, q⟩) = _`. Establish `hs : Subsingleton (Fin (blk3 m 2))` using `show Subsingleton (Fin 1) from inferInstance`. Establish `hpq : p = q`. Establish `h` using `(g 2).injective (Subsingleton.elim (g 2 ⟨i, p⟩) (g 2 ⟨i, q⟩))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h).2`. Substitute `hpq` using the available equality. Rewrite using `[torusPt_two, scalar_apply, scalar_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relProj_torusPt_two (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) (t₁ t₂ : kˣ) (i : Bool) :
     relProj k g ⟨torusPt k m t₁ t₂, torusPt_mem g t₁ t₂⟩ 2 i =
@@ -198,11 +196,9 @@ theorem relProj_torusPt_two (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) 
   simp
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos x with hx | hx` into its components or cases. Apply the tactic sequence `cases i <;> cases i'`. Conclude with `absurd rfl hii`. Conclude with `Or.inl (by simp [hx]; infer_instance)`. Conclude with `Or.inr (by simp [hx]; infer_instance)`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `absurd rfl hii`. Establish `hy : y = 0` using `by omega`. Apply the tactic sequence `cases i <;> cases i'`. Conclude with `absurd rfl hii`. Conclude with `Or.inr (by simp [hy]; infer_instance)`.
-
-Conclude with `Or.inl (by simp [hy]; infer_instance)`. Conclude with `absurd rfl hii`.
+Apply the first step, then apply the next step to every resulting obligation. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem isEmpty_of_sum_one {x y : ℕ} (h : x + y = 1) (i i' : Bool) (hii : i ≠ i') :
     IsEmpty (Fin (cond i y x)) ∨ IsEmpty (Fin (cond i' y x)) := by
@@ -220,9 +216,9 @@ theorem isEmpty_of_sum_one {x y : ℕ} (h : x + y = 1) (i i' : Bool) (hii : i �
     · exact absurd rfl hii
 
 /- English proof (translation)
-Rewrite using `[relDeltaHalf_apply, Fin.prod_univ_three, relProj_torusPt_one, map_one, mul_one]`. Rewrite using `[GlobalTheory.CellCentral.deltaHalf_eq_one _ (fun i i' hii => ?_) _, GlobalTheory.CellCentral.deltaHalf_eq_one _ (fun i i' hii => ?_) _, mul_one]`. Use `isEmpty_of_sum_one h2 i i' hii` as an intermediate fact. Apply the tactic sequence `cases i <;> cases i' <;> simpa using this`. Use `isEmpty_of_sum_one h0 i i' hii` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `cases i <;> cases i' <;> simpa using this`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem relDeltaHalf_cols_torusPt (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (blk3 m j)) (t₁ t₂ : kˣ)
     (h0 : b false 0 + b true 0 = 1) (h2 : b false 2 + b true 2 = 1) :
@@ -245,7 +241,7 @@ open scoped TensorProduct
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, det_leviEmb, Fin.prod_univ_three, Fin.prod_univ_three, hQ0, hQ1, hQ2, Matrix.GeneralLinearGroup.det_scalar, Matrix.GeneralLinearGroup.det_scalar, map_one, Fintype.card_fin, Fintype.card_fin]`. Conclude with `row_scalar χ n (d 0) (d 1) (d 2) hn h0 h2 _ _ _ (modExp_three_zero d) (modExp_three_two d) t₁ t₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_block (χ : kˣ →* ℂˣ) (n : ℕ) (d : Fin 3 → ℕ) {X : Type} [Fintype X] [DecidableEq X]
     (e : (Σ j, Fin (d j)) ≃ X) (t₁ t₂ : kˣ) (Q : Levi k fun j : Fin 3 => Fin (d j))
@@ -267,23 +263,21 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a a' m α₀ β₀ b f g t₁ t₂ y`. Establish `hc0 : b.1 false 0 + b.1 true 0 = 1`. Use `b.2.2 0` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool, Fintype.card_fin]`. Rewrite using `[add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hc2 : b.1 false 2 + b.1 true 2 = 1`. Use `b.2.2 2` as an intermediate fact. Rewrite `this` using `[Fintype.sum_bool, Fintype.card_fin]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hrf : b.1 false 0 + b.1 false 1 + b.1 false 2 = a`. Use `b.2.1 false` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_three]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Fintype.card_fin a`. Establish `hrt : b.1 true 0 + b.1 true 1 + b.1 true 2 = a'`. Use `b.2.1 true` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_three]`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `Fintype.card_fin a'`. Use `GlobalTheory.CellCentral.smInd_central _ _ _ (torusPt_mem g t₁ t₂) (torusPt_central t₁ t₂) _ (fun w => ?_) y` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Simplify using `only [MonoidHom.comp_apply, twist_apply, relJac_mk]`. Rewrite using `[relDeltaHalf_cols_torusPt g t₁ t₂ hc0 hc2, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdp : ∀ (x : Levi k (Two (Fin a) (Fin a'))) (v : ℂ ⊗[ℂ] ℂ), detPair k a a' α₀ β₀ x v = ((α₀ (Matrix.GeneralLinearGroup.det (x false)) * β₀ (Matrix.GeneralLinearGroup.det (x true)) : ℂˣ) : ℂ) • v` using `fun x v => extTensor_detRep_apply α₀ β₀ _ v`. Rewrite using `[hdp, Submodule.Quotient.mk_smul, smul_smul, ← Units.val_mul]`. Use `congrArg (· • _) (congrArg Units.val ?_)` and prove the remaining obligations. Establish `hrow : ∀ (i : Bool) (χ : kˣ →* ℂˣ) (n : ℕ), b.1 i 0 + b.1 i 1 + b.1 i 2 = n → (deltaHalf k (fun j => Fin (b.1 i j)) (swapBlocks k (fun i j => Fin (b.1 i j)) (relProj k g ⟨torusPt k m t₁ t₂, torusPt_mem g t₁ t₂⟩) i))⁻¹ * χ (Matrix.GeneralLinearGroup.det (relEmb k f (swapBlocks k ( …`. Introduce `i χ n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[relEmb_apply]`. Apply the tactic sequence `refine row_block χ n (b.1 i) (f i) t₁ t₂ _ (relProj_torusPt_zero g t₁ t₂ i) ?_ (relProj_torusPt_two g t₁ t₂ i) hn (by cases i <;> omega) (by cases i <;> omega)`. Use `show relProj k g ⟨torusPt k m t₁ t₂, torusPt_mem g t₁ t₂⟩ 1 i = 1`. Rewrite using `[relProj_torusPt_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[relDeltaHalf_apply, Fintype.prod_bool, cellChar, Fintype.prod_bool]`. Establish `h1` using `hrow true β₀ a' hrt`. Establish `h2` using `hrow false α₀ a hrf`. Simplify using `only [cond_true, cond_false]`. Rewrite using `[← h1, ← h2, mul_inv]`.
-
-The two sides agree by associativity and commutativity.
+The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem cellFunctor_torusPt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (b : SizeMatrix (Two (Fin a) (Fin a')) fun j : Fin 3 => Fin (blk3 m j))

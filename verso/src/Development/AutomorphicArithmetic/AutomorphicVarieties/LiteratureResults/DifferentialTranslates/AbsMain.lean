@@ -15,11 +15,11 @@ private def UpperTheory.V.Lit.Dr.kerRep {Γ A B : Type} [Group Γ] [AddCommGroup
   map_mul' γ δ := by ext x; simp
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero`. Introduce `Γ M Ω _ _ _ _ _ ρM ρ ι d hι hd hinj hex0 hex hav n w hw hdw hind`. Set `π : Ω 0 →ₗ[ℂ] LinearMap.ker (d 1)` to `(d 0).codRestrict _ (fun x => (hex 0).apply_apply_eq_zero x)`. Use `shiftOne Γ M (Ω 0) (LinearMap.ker (d 1)) ρM (ρ 0) (kerRep (ρ 1) (ρ 2) (d 1) (hd 1)) ι π hι (fun γ x => Subtype.ext (hd 0 γ x)) hinj (fun z => by obtain ⟨y, hy⟩ := (hex 0 z.1).1 z.2; exact ⟨y, Subtype.ext hy⟩) (fun x => by rw [← hex0 x, Subtype.ext_iff]; rfl) n (fun i => ⟨w i, hdw …` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `c ⟨y, hy, hy'⟩`. Use `hind c ⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `h : (π y).1 = ∑ i, c i • w i` using `by rw [hy']; simp`. Conclude with `h`. Consider the case `succ q ih`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Γ M Ω _ _ _ _ _ ρM ρ ι d hι hd hinj hex0 hex hav n w hw hdw hind`. Set `π : Ω 0 →ₗ[ℂ] LinearMap.ker (d 1)` to `(d 0).codRestrict _ (fun x => (hex 0).apply_apply_eq_zero x)`. Use `le_trans (ih Γ (LinearMap.ker (d 1)) (fun k => Ω (k + 1)) (kerRep (ρ 1) (ρ 2) (d 1) (hd 1)) (fun k => ρ (k + 1)) (LinearMap.ker (d 1)).subtype (fun k => d (k + 1)) (fun γ m => rfl) (fun k => hd (k + 1)) Subtype.val_injective (LinearMap.exact_subtype_ker_map _) (fun k => hex (k + …` and prove the remaining obligations. Conclude with `shiftUp Γ M (Ω 0) (LinearMap.ker (d 1)) ρM (ρ 0) (kerRep (ρ 1) (ρ 2) (d 1) (hd 1)) ι π hι (fun γ x => Subtype.ext (hd 0 γ x)) hinj (fun z => by obtain ⟨y, hy⟩ := (hex 0 z.1).1 z.2; exact ⟨y, Subtype.ext hy⟩) (fun x => by rw [← hex0 x, Subtype.ext_iff]; rfl) (acyclic Γ (Ω 0) (ρ 0) …`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Lit.Dr.absPos (q : ℕ) :
     ∀ (Γ M : Type) (Ω : ℕ → Type) [Group Γ] [AddCommGroup M] [Module ℂ M] [∀ q, AddCommGroup (Ω q)] [∀ q, Module ℂ (Ω q)]
@@ -55,9 +55,9 @@ private theorem UpperTheory.V.Lit.Dr.absPos (q : ℕ) :
       (fun x => by rw [← hex0 x, Subtype.ext_iff]; rfl) (acyclic Γ (Ω 0) (ρ 0) (hav 0)) q
 
 /- English proof (translation)
-Introduce `q Γ M Ω _ _ _ _ _ ρM ρ ι d hι hd hinj hex0 hex hav n w hw hdw hind`. Consider the cases of `q with`. Consider the case `zero => choose m hm using fun i => (hex0 (w i)).1 (hdw i)`. Use `shiftZero Γ M ρM n m (fun i γ => hinj (by rw [hι, hm, hw])) (fun c hc => hind c ?_)` and prove the remaining obligations. Use `congrArg ι hc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[InvExact, hm]`. Consider the case `succ q => exact absPos q Γ M Ω ρM ρ ι d hι hd hinj hex0 hex hav n w hw hdw hind`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem UpperTheory.V.Lit.Dr.absMain :
     AbsMain := by

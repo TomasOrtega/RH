@@ -7,17 +7,15 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.W2.Seed.QuadraticExtensions
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Establish `hg0 : (g : ℚ_[q]) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `hd' : (d : ℚ_[q]) = (g : ℚ_[q]) ^ 2 * d0` using `by rw [← hd]; push_cast; ring`. Rewrite `hy` using `[hd']`. Establish `hx : (y / g) ^ 2 = -(d0 : ℚ_[q])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_pow, div_eq_iff (pow_ne_zero 2 hg0)]`. Take the linear combination `-hy`. Establish `hxn : ‖y / (g : ℚ_[q])‖ ≤ 1`. Establish `h1 : ‖y / (g : ℚ_[q])‖ ^ 2 ≤ 1`. Rewrite using `[← norm_pow, hx, norm_neg]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖((d0 : ℤ_[q]) : ℚ_[q])‖ ≤ 1` using `PadicInt.norm_le_one _`. Simplify using `using this`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression.
 
-Set `z : ℤ_[q]` to `⟨y / g, hxn⟩`. Establish `hzc : (z : ℚ_[q]) = y / g` using `rfl`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hc : ((z ^ 2 : ℤ_[q]) : ℚ_[q]) = ((-(d0 : ℤ_[q]) : ℤ_[q]) : ℚ_[q])`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzc]`. Conclude with `hx`. Use `first`. Consider the case `exact PadicInt.ext hc`. Consider the case `exact Subtype.ext hc`.
-
-Consider the case `exact PadicInt.coe_injective hc`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma sq_in_Zq (q : ℕ) [Fact q.Prime] (d g d0 : ℕ) (hg : 0 < g) (hd : g ^ 2 * d0 = d)
     (h : IsSquare (-(d : ℚ_[q]))) : ∃ z : ℤ_[q], z ^ 2 = -(d0 : ℤ_[q]) := by
@@ -49,13 +47,13 @@ private lemma sq_in_Zq (q : ℕ) [Fact q.Prime] (d g d0 : ℕ) (hg : 0 < g) (hd 
     | exact PadicInt.coe_injective hc
 
 /- English proof (translation)
-Introduce `hdvd`. Establish `hnorm : ‖z‖ ^ 2 = ‖((d0 : ℤ) : ℤ_[q])‖`. Rewrite using `[← norm_pow, hz, norm_neg, Int.cast_natCast]`. Establish `hd1 : ‖((d0 : ℤ) : ℤ_[q])‖ < 1` using `(PadicInt.norm_int_lt_one_iff_dvd _).mpr (by exact_mod_cast hdvd)`. Establish `hz1 : ‖z‖ < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use polynomial arithmetic with `[norm_nonneg z]`. Take `⟨w, rfl⟩` from `(PadicInt.norm_lt_one_iff_dvd z).mp hz1`. Establish `hle : ‖((d0 : ℤ) : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(2 : ℕ) : ℤ)`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hnorm, norm_mul, PadicInt.norm_p, mul_pow]`. Establish `hw` using `PadicInt.norm_le_one w`. Establish `he : (q : ℝ) ^ (-(2 : ℕ) : ℤ) = ((q : ℝ)⁻¹) ^ 2`. Rewrite using `[_root_.zpow_neg, zpow_natCast, inv_pow]`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_right (by positivity) (pow_le_one₀ (norm_nonneg w) hw)`. Establish `h2` using `PadicInt.norm_int_le_pow_iff_dvd.mp hle`. Establish `h3 : q ^ 2 ∣ d0` using `by exact_mod_cast h2`. Rewrite `h3` using `[sq]`. Conclude with `(Nat.Prime.one_lt hq.out).ne' (Nat.isUnit_iff.mp (hsq q h3))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma not_dvd (q : ℕ) [hq : Fact q.Prime] (d0 : ℕ) (hsq : Squarefree d0) (z : ℤ_[q])
     (hz : z ^ 2 = -(d0 : ℤ_[q])) : ¬ q ∣ d0 := by
@@ -82,9 +80,9 @@ private lemma not_dvd (q : ℕ) [hq : Fact q.Prime] (d0 : ℕ) (hsq : Squarefree
   exact (Nat.Prime.one_lt hq.out).ne' (Nat.isUnit_iff.mp (hsq q h3))
 
 /- English proof (translation)
-Use `⟨((PadicInt.toZMod z).val : ℤ), ?_⟩` and prove the remaining obligations. Apply `(ZMod.intCast_zmod_eq_zero_iff_dvd _ q).1` to reduce the goal to its premises. Establish `h` using `congrArg (PadicInt.toZMod (p := q)) hz`. Simplify using `only [map_pow, map_neg, map_natCast] at h`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ZMod.natCast_zmod_val, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma root_mod (q : ℕ) [Fact q.Prime] (d0 : ℕ) (z : ℤ_[q])
     (hz : z ^ 2 = -(d0 : ℤ_[q])) : ∃ r : ℤ, (q : ℤ) ∣ r ^ 2 + d0 := by
@@ -97,9 +95,9 @@ private lemma root_mod (q : ℕ) [Fact q.Prime] (d0 : ℕ) (z : ℤ_[q])
   ring
 
 /- English proof (translation)
-Establish `h` using `congrArg (PadicInt.toZModPow 3 : ℤ_[2] →+* ZMod (2 ^ 3)) hz`. Rewrite `h` using `[map_pow, map_neg, map_natCast]`. Generalize the expression as in `(PadicInt.toZModPow 3 : ℤ_[2] →+* ZMod (2 ^ 3)) z = a at h`. Use `revert a`. Use `show ∀ a : ZMod 8, a ^ 2 = -((d0 : ZMod 8)) → d0 % 8 = 7`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.natCast_mod d0 8]`. Establish `hlt` using `Nat.mod_lt d0 (by norm_num : 8 > 0)`. Establish `hodd : d0 % 2 = 1` using `by omega`. Use `interval_cases h8 : d0 % 8`. Apply the tactic sequence `all_goals first | omega | decide`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma two_case [Fact (Nat.Prime 2)] (d0 : ℕ) (hodd : ¬ 2 ∣ d0) (z : ℤ_[2])
     (hz : z ^ 2 = -(d0 : ℤ_[2])) : d0 % 8 = 7 := by
@@ -115,7 +113,7 @@ private lemma two_case [Fact (Nat.Prime 2)] (d0 : ℕ) (hodd : ¬ 2 ∣ d0) (z :
   all_goals first | omega | decide
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : q ∣ 2 ^ 2` using `by exact_mod_cast h`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hq Nat.prime_two).mp (hq.dvd_of_dvd_pow h'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma not_dvd_four (q : ℕ) (hq : q.Prime) (h2 : q ≠ 2) : ¬ (q : ℤ) ∣ 4 := by
   intro h
@@ -123,11 +121,11 @@ private lemma not_dvd_four (q : ℕ) (hq : q.Prime) (h2 : q ≠ 2) : ¬ (q : ℤ
   exact h2 ((Nat.prime_dvd_prime_iff_eq hq Nat.prime_two).mp (hq.dvd_of_dvd_pow h'))
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, q + 1 = 2 * k := by`. Break down `hq.eq_two_or_odd' with h | ⟨j, hj⟩` into its components or cases. Conclude with `absurd h h2`. Conclude with `⟨j + 1, by omega⟩`. Use `⟨(r0 + 1) * k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpz : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.mp hq`. Establish `h4 : (q : ℤ) ∣ 4 * (((r0 + 1) * k) ^ 2 - 1 * ((r0 + 1) * k) + m)`. Take `⟨c, hc⟩` from `hr`. Establish `hk' : (2 * k : ℤ) = q + 1` using `by exact_mod_cast hk.symm`. Establish `hm' : (4 * m : ℤ) = d0 + 1` using `by exact_mod_cast hm.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c + (r0 + 1) * (2 * r0 + (r0 + 1) * q), ?_⟩` and prove the remaining obligations. Take the linear combination `((r0 + 1) ^ 2 * (2 * (k : ℤ) + q + 1) - 2 * (r0 + 1)) * hk' + hm' + hc`. Break down `hpz.dvd_or_dvd h4 with h | h` into its components or cases. Conclude with `absurd h (not_dvd_four q hq h2)`. Conclude with `h`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma root_odd (q : ℕ) (hq : q.Prime) (h2 : q ≠ 2) (d0 m : ℕ) (hm : d0 + 1 = 4 * m) (r0 : ℤ)
     (hr : (q : ℤ) ∣ r0 ^ 2 + d0) : ∃ r : ℤ, (q : ℤ) ∣ r ^ 2 - 1 * r + m := by
@@ -151,33 +149,31 @@ end UpperTheory.Gal.W2.Seed.QuadraticExtensions
 
 open UpperTheory.Gal.W2.Seed.QuadraticExtensions in
 /- English proof (translation)
-Introduce `d hd`. Take `⟨d0, g, hgd, hsq⟩` from `Nat.sq_mul_squarefree d`. Establish `hg : 0 < g`. Break down `Nat.eq_zero_or_pos g with h | h` into its components or cases. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `at hgd`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hd0 : 0 < d0`. Break down `Nat.eq_zero_or_pos d0 with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `at hgd`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hgq : (g : ℚ) ≠ 0` using `by exact_mod_cast hg.ne'`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hdq : (d : ℚ) = (g : ℚ) ^ 2 * d0` using `by rw [← hgd]; push_cast; ring`. Distinguish the cases in `h43 : d0 % 4 = 3`. Take `⟨m, hm⟩ : ∃ m : ℕ, d0 + 1 = 4 * m` from `⟨(d0 + 1) / 4, by omega⟩`. Establish `hdisc : (1 : ℤ) ^ 2 - 4 * (m : ℤ) = -(d0 : ℤ)`. Establish `: ((d0 : ℤ) + 1) = 4 * (m : ℤ)` using `by exact_mod_cast hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨1, m, 1 / (g : ℚ), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdisc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdisc, hdq]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `q _ hsqr`. Take `⟨z, hz⟩` from `sq_in_Zq q d g d0 hg hgd hsqr`. Establish `hnd` using `not_dvd q d0 hsq z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdisc, dvd_neg]`. Introduce `h`. Conclude with `hnd (by exact_mod_cast h)`. Distinguish the cases in `hq2 : q = 2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hq2` using the available equality. Establish `h7` using `two_case d0 hnd z hz`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (m : ℤ) % 2 = 0` using `by omega`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨r0, hr0⟩` from `root_mod q d0 z hz`. Conclude with `root_odd q (Fact.out) hq2 d0 m hm r0 hr0`. Use `⟨0, d0, 2 / (g : ℚ), ?_, ?_, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hdq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `q _ hsqr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨z, hz⟩` from `sq_in_Zq q d g d0 hg hgd hsqr`. Establish `hnd` using `not_dvd q d0 hsq z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq2 : q = 2`. Substitute `hq2` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `two_case d0 hnd z hz`. Use linear arithmetic over natural numbers and integers. Establish `hq : q.Prime` using `Fact.out`. Establish `hpz : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.mp hq`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h' : (q : ℤ) ∣ 4 * (d0 : ℤ)`. Establish `: (0 : ℤ) ^ 2 - 4 * (d0 : ℤ) = -(4 * (d0 : ℤ))` using `by ring`. Rewrite `h` using `[this, dvd_neg]`. Conclude with `h`. Break down `hpz.dvd_or_dvd h' with h4 | h4` into its components or cases.
-
-Conclude with `not_dvd_four q hq hq2 h4`. Conclude with `hnd (by exact_mod_cast h4)`. Take `⟨r0, hr0⟩` from `root_mod q d0 z hz`. Conclude with `⟨r0, by simpa using hr0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pQuadEx :
     QuadEx := by

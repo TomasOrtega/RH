@@ -15,13 +15,13 @@ namespace GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, fun _ large₂ _ _ h => GlobalTheory.RowSizes.sizes_of_sizeRows large₂ h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sizeGap_of_sizes : SizeGap :=
   fun _ => ⟨0, fun _ large₂ _ _ h => GlobalTheory.RowSizes.sizes_of_sizeRows large₂ h⟩
 
 /- English proof (translation)
-The claim follows from `sizeGap_of_sizes`.
+A detailed English derivation is pending.
 -/
 example : SizeGap := sizeGap_of_sizes
 

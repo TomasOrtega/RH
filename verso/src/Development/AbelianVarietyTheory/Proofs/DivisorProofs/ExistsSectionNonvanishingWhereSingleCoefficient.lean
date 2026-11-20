@@ -6,17 +6,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X L κ _ r σ`. Establish `hres : ∀ {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (a : Γ(X, U)), (X.presheaf.map (homOfLE h2).op).hom ((X.presheaf.map (homOfLE h1).op).hom a) = (X.presheaf.map (homOfLE (h2.trans h1)).op).hom a`. Introduce `U V W h1 h2 a`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `s : LB.Sec L` to `{ f := fun m => ∑ j, (X.presheaf.map (homOfLE (le_top : L.U m ≤ ⊤)).op).hom (r j) * (σ j).f m compat := fun m n => by`. Simplify using `only [map_sum, map_mul, Finset.mul_sum, hres]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(σ j).compat m n]`. Use `ring }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨s, fun z i hri hσi hrj => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `TopologicalSpace.Opens.mem_iSup.1 hσi`. Establish `hzm : z ∈ L.U m` using `X.basicOpen_le _ hm`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm`, the goal using `[Scheme.mem_basicOpen X _ z hzm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hgerm : ∀ j, (X.presheaf.germ (L.U m) z hzm).hom ((X.presheaf.map (homOfLE (le_top : L.U m ≤ ⊤)).op).hom (r j)) = (X.presheaf.germ ⊤ z trivial).hom (r j)` using `fun j => TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Simplify using `only [s, map_sum, map_mul, hgerm]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Establish `hu : IsUnit ((X.presheaf.germ ⊤ z trivial).hom (r i) * (X.presheaf.germ (L.U m) z hzm).hom ((σ i).f m))` using `((Scheme.mem_basicOpen_top X _ z).1 hri).mul hm`. Establish `hmax : ∑ j ∈ Finset.univ.erase i, (X.presheaf.germ ⊤ z trivial).hom (r j) * (X.presheaf.germ (L.U m) z hzm).hom ((σ j).f m) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk z)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.sum_mem _ fun j hj => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← Scheme.mem_basicOpen_top]`. Conclude with `hrj j (Finset.ne_of_mem_erase hj)`. Assume the negation of the conclusion as `hn`. Establish `: (X.presheaf.germ ⊤ z trivial).hom (r i) * (X.presheaf.germ (L.U m) z hzm).hom ((σ i).f m) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : _ ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk z)` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Simplify using `using Ideal.sub_mem _ h2 hmax`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this hu`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sec_sum_nonzero :
     ∀ (X : Scheme.{0}) (L : LB X) (κ : Type) [Fintype κ] (r : κ → Γ(X, ⊤)) (σ : κ → LB.Sec L),

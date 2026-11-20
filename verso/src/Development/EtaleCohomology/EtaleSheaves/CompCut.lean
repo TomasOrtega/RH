@@ -18,7 +18,7 @@ def Sys : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P] 
       Nonempty (c.pt ≅ (Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal))) ≫ w).normalization)
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW y`. Take `⟨q, J, _, _, D, c, ι, hc, ⟨e⟩⟩` from `hS W w hW y`. Take `⟨hF, hA⟩` from `hL W hW q`. Use `⟨J, inferInstance, inferInstance, D, c.extend e.inv, ι, ⟨⟨IsLimit.ofIsoLimit hc.1.some (Cone.extendIso c e)⟩, hc.2.1, hc.2.2⟩, ?_⟩` and prove the remaining obligations. Conclude with `hN _ hF hA _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goal_of (hS : Sys) (hL : LocAC) (hN : NormAC) : Comp := by
   intro P _ _ W _ w hW y

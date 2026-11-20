@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory.BadCount
 
 /- English proof (translation)
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Establish `hinj : Function.Injective ((LinearMap.mulRight K d).lTensor L)` using `Module.Flat.lTensor_preserves_injective_linearMap _ (fun a b hab => by`. Establish `: (a - b) * d = 0` using `by simpa [sub_mul, sub_eq_zero] using hab`. Conclude with `sub_eq_zero.1 ((mem_nonZeroDivisors_iff_right.1 hd) _ this))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ∀ y : L ⊗[K] R, (LinearMap.mulRight K d).lTensor L y = y * ((1 : L) ⊗ₜ[K] d)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l r => simp [Algebra.TensorProduct.tmul_mul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp [map_add, add_mul, ha, hb]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[heq, hx, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_one_mem_nonZeroDivisors_of_field {K L R : Type} [Field K] [Field L] [Algebra K L]
     [CommRing R] [Algebra K R] (d : R) (hd : d ∈ nonZeroDivisors R) :
@@ -33,41 +33,39 @@ theorem tmul_one_mem_nonZeroDivisors_of_field {K L R : Type} [Field K] [Field L]
   rw [heq, hx, map_zero]
 
 /- English proof (translation)
-Introduce `K L Γ R W _ _ _ _ _ _ _ act H _ _ u hdet Vm V _ ρ hρ hVm _ _ _ _ f hf ρ' hρ' lam`. Set `actL : Γ → (L ⊗[K] R →ₐ[L] L ⊗[K] R)` to `fun g => Algebra.TensorProduct.map (AlgHom.id L L) (act g)`. Establish `actL_tmul : ∀ g (l : L) (r : R), actL g (l ⊗ₜ r) = l ⊗ₜ act g r` using `fun g l r => by`. Simplify using `[actL, Algebra.TensorProduct.map_tmul]`. Establish `actL_mul : ∀ g g' x, actL (g * g') x = actL g (actL g' x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g g' x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l r => simp only [actL_tmul, map_mul, AlgHom.mul_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `actL_one : ∀ x, actL 1 x = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l r => simp only [actL_tmul, map_one, AlgHom.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `inj_of : ∀ {M : Type} [AddCommGroup M] [Module K M] (g : M →ₗ[K] R), Function.Injective g → Function.Injective (g.baseChange L)`. Introduce `M _ _ g hg`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap g hg`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ιV : L ⊗[K] V →ₗ[L] L ⊗[K] R` to `V.subtype.baseChange L`. Set `ιm : L ⊗[K] Vm →ₗ[L] L ⊗[K] R` to `Vm.subtype.baseChange L`. Set `A : H → (Vm →ₗ[K] V)` to `fun h => { toFun := fun x => ⟨(x : R) * act h u, hVm h x x.2⟩ map_add' := by intro x y; ext; simp [add_mul] map_smul' := by intro c x; ext; simp [smul_mul_assoc] }`. Establish `hA : ∀ h y, ιV ((A h).baseChange L y) = ιm y * ((1 : L) ⊗ₜ act h u)`. Introduce `h y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l x => simp [ιV, ιm, A, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, add_mul, hx, hy]`. Set `e` to `hf.equiv`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j : W →ₗ[L] L ⊗[K] R` to `ιV ∘ₗ e.symm.toLinearMap`. Establish `hj : ∀ (g : Γ) w, j (ρ' g w) = actL g (j w)`. Introduce `g w`. Take `⟨z, rfl⟩` from `e.surjective w`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul l v`. Establish `h1 : e (l ⊗ₜ v) = l • f v` using `hf.equiv_tmul l v`. Establish `h2 : e (l ⊗ₜ ρ g v) = l • f (ρ g v)` using `hf.equiv_tmul l _`. Simplify using `only [j, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_smul, hρ', ← h2, ← h1, e.symm_apply_apply, e.symm_apply_apply]`. Simplify using `[ιV, actL_tmul, hρ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hje : ∀ z, j (e z) = ιV z` using `fun z => by simp [j]`. Set `T : W →ₗ[L] W` to `∑ g : H, (((lam g)⁻¹ : Lˣ) : L) • ρ' g`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ w, T w ∈ eig ρ' H lam`. Introduce `w`. Rewrite using `[mem_eig]`. Introduce `k`. Simplify using `only [T, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft k) _ _ (fun g => ?_)` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft, Subgroup.coe_mul, map_mul ρ', Module.End.mul_apply, smul_smul, map_mul lam]`. Use `congr 1`. Rewrite using `[← Units.val_mul, mul_inv, mul_inv_cancel_left]`. Establish `hjT : ∀ w, j (T w) = ∑ g : H, (((lam g)⁻¹ : Lˣ) : L) • actL g (j w)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Simplify using `only [T, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hj]`. Set `Ψ : L ⊗[K] Vm →ₗ[L] (H → eig ρ' H lam)` to `LinearMap.pi fun h => LinearMap.codRestrict (eig ρ' H lam) (T ∘ₗ e.toLinearMap ∘ₗ (A h).baseChange L) (fun y => hT _)`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[injective_iff_map_eq_zero]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `P : ∀ h : H, ∑ g : H, (((lam g)⁻¹ : Lˣ) : L) • actL g (ιm y * ((1 : L) ⊗ₜ act h u)) = 0`. Introduce `h`. Establish `h0` using `congrArg Subtype.val (congrFun hy h)`. Simplify using `only [Ψ, LinearMap.pi_apply, LinearMap.codRestrict_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, Pi.zero_apply, ZeroMemClass.coe_zero] at h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `congrArg j h0`. Rewrite `h1` using `[hjT, hje, hA, map_zero]`. Conclude with `h1`. Establish `key` using `GlobalTheory.twistedTrace_equivariant_and_injective_of_groupDet H L (L ⊗[K] R) (fun h => actL ((h : Γ)⁻¹)) (fun x => by simp [actL_one]) (fun h h' x => by simp [mul_inv_rev, actL_mul]) lam⁻¹ ((1 : L) ⊗ₜ u) ?_`. Establish `hy0 : ιm y = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `key.2.1 (ιm y) (fun h' => ?_)` and prove the remaining obligations. Rewrite using `[← P h'⁻¹]`. Use `Fintype.sum_equiv (Equiv.inv H) _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `[actL_tmul]`. Conclude with `inj_of _ Vm.injective_subtype (by rw [hy0, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hM : (Matrix.of fun h g : H => actL (((h * g : H) : Γ)⁻¹) ((1 : L) ⊗ₜ[K] u)) = (Algebra.TensorProduct.includeRight : R →ₐ[K] L ⊗[K] R).mapMatrix ((Matrix.transpose (Matrix.of fun h g : H => act ((h : Γ) * g) u)).submatrix (Equiv.inv H) (Equiv.inv H))`. Use extensionality with `h g`. Simplify using `[actL_tmul, mul_inv_rev]`. Use `show (Matrix.of fun h g : H => actL (((h * g : H) : Γ)⁻¹) ((1 : L) ⊗ₜ[K] u)).det ∈ _`. Rewrite using `[hM, ← AlgHom.map_det, Matrix.det_submatrix_equiv_self, Matrix.det_transpose, Algebra.TensorProduct.includeRight_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `tmul_one_mem_nonZeroDivisors_of_field _ hdet`. Establish `hfinW : Module.Finite L W` using `Module.Finite.equiv e`. Establish `h1 : finrank K Vm = finrank L (L ⊗[K] Vm)` using `(Module.finrank_baseChange).symm`. Rewrite using `[h1]`. Use `(LinearMap.finrank_le_finrank_of_injective hΨ).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_card_mul_finrank_eig_baseChange : ∀ (K L Γ R W : Type) [Field K] [Field L] [Algebra K L] [Group Γ] [Finite Γ] [CommRing R] [Algebra K R] (act : Γ →* (R →ₐ[K] R)) (H : Subgroup Γ) [Fintype H] [DecidableEq H] (u : R), (Matrix.of fun h g : H => act ((h : Γ) * g) u).det ∈ nonZeroDivisors R → ∀ (Vm V : Submodule K R) [FiniteDimensional K V] (ρ : Representation K Γ V), (∀ g x, (ρ g x : R) = act g x) → (∀ h : H, ∀ x ∈ Vm, x * act h u ∈ V) → ∀ [AddCommGroup W] [Module K W] [Module L W] [IsScalarTower K L W] (f : V →ₗ[K] W), IsBaseChange L f → ∀ (ρ' : Representation L Γ W), (∀ g v, ρ' g (f v) = f (ρ g v)) → ∀ lam : H →* Lˣ, finrank K Vm ≤ Nat.card H * finrank L (eig ρ' H lam) := by
   intro K L Γ R W _ _ _ _ _ _ _ act H _ _ u hdet Vm V _ ρ hρ hVm _ _ _ _ f hf ρ' hρ' lam

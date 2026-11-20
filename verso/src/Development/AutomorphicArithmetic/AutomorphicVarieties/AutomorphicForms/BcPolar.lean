@@ -27,15 +27,15 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 
 /- English proof (translation)
-Introduce `K _ _ _ hK n _ hn l _ Ω _ _ _ _ _ ι r wt θ π hreg hr hatt hθ hd hirr`. Take `⟨P, hBC⟩` from `(Br.quadBCw hP ℚ K hK n hn π hreg).resolve_left fun ⟨η, hη, ht⟩ => h1 ℚ K Ω l ι hK n r π hr hatt hirr η hη ht`. Establish `hC` using `(h2 ℚ K Ω l ι n r π P hBC.toIsBC0).2 hatt ((h9.1 _ Unit _ n _).2.1 hirr)`. Use `haveI : IsScalarTower ℚ (maximalRealSubfield K) Ω := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hθ' : IsCycWt l (wt + ((n : ℤ) - 1)) (θ.comp (res ℚ Ω (maximalRealSubfield K)) * cycBar (maximalRealSubfield K) Ω l ^ ((n : ℤ) - 1))`. Take `⟨M, χ, hM, hχ, rfl⟩` from `hθ`. Use `⟨M, χ.comp (res ℚ Ω (maximalRealSubfield K)), hM, fun s hs => hχ _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_add, mul_right_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hc, χ, art, a, ha⟩` from `h6 hP.litN.aut.art _ Ω l ι _ _ hθ'`. Establish `hL : IsLAdicCharOf ι χ _` using `⟨hc, art, a, ha⟩`. Take `⟨χ', μ', hL', hN, hres, hs⟩` from `h7 K Ω hK l ι χ _ hL n`. Establish `hres' : μ'.comp (res (maximalRealSubfield K) Ω K) = θ.comp (res ℚ Ω K) * cycBar K Ω l ^ ((n : ℤ) - 1)` using `hres.trans rfl`. Use `⟨P, χ', μ', hBC, hC, ⟨hs, h8 hP.litN.aut.js.1 hP.litN.aut.gk K n hn P _ ?_⟩, hL', hres'⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : DualTw (r.comp (res ℚ Ω K)) (θ.comp (res ℚ Ω K))` using `let ⟨Q, hQ⟩ := hd`. Use the proof step `⟨Q, fun s => hQ _⟩`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Use `filter_upwards [h5 K Ω l ι χ' μ' hL', h3 ℚ K n π P hBC.toIsBC0, hC.2, hl] with w ⟨hu, he⟩ ⟨B, hB, hB'⟩ ⟨B₁, hB₁, hF⟩ hw`. Take `rfl` from `hB.unique hB₁`. Rewrite `he` using `[hres']`. Conclude with `⟨hu, B, B, hB, hB', h4 K Ω l ι n _ _ hd' w hw B _ hF he⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Bc.bcPolar_of (hP : Hypotheses₂) (h1 : NoTwist) (h2 : Br.BcAtt0) (h3 : Br.BcConj0) (h4 : FrobDual) (h5 : NormGal)
     (h6 : CycHecke) (h7 : SignFix) (h8 : PolOfSat) (h9 : IrrBasic) : Br.BcPolarW := by
@@ -69,28 +69,28 @@ theorem UpperTheory.V.Af.Bc.bcPolar_of (hP : Hypotheses₂) (h1 : NoTwist) (h2 :
   exact ⟨hu, B, B, hB, hB', h4 K Ω l ι n _ _ hd' w hw B _ hF he⟩
 
 /- English proof (translation)
-The claim follows from `UpperTheory.baseChange_attached_of_frobenius_restriction UpperTheory.frobenius_power_compatibility`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Bc.bcAtt : BcAtt := UpperTheory.baseChange_attached_of_frobenius_restriction UpperTheory.frobenius_power_compatibility
 
 /- English proof (translation)
-The claim follows from `UpperTheory.galoisRep_irreducibility_criterion`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Bc.irrBasic : IrrBasic := UpperTheory.galoisRep_irreducibility_criterion
 
 /- English proof (translation)
-The claim follows from `UpperTheory.baseChange_noSelfTwist_of_frobenius_sign_irreducible (isoOfFrob hP) UpperTheory.frobenius_eigenvalues_twist UpperTheory.exists_quadratic_sign_character UpperTheory.frobenius_sign_compatibility UpperTheory.schur_twist_holds UpperTheory.galoisRep_irreducibility_criterio …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Bc.noTwist (hP : Hypotheses₂) : NoTwist :=
   UpperTheory.baseChange_noSelfTwist_of_frobenius_sign_irreducible (isoOfFrob hP) UpperTheory.frobenius_eigenvalues_twist UpperTheory.exists_quadratic_sign_character UpperTheory.frobenius_sign_compatibility UpperTheory.schur_twist_holds UpperTheory.galoisRep_irreducibility_criterion
 
 /- English proof (translation)
-The claim follows from `UpperTheory.galois_norm_compatibility_of_frobenius_restriction UpperTheory.frobenius_power_compatibility (UpperTheory.ideleNorm_valuation_of_local_compatibility UpperTheory.ideleNorm_local_compatibility)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Bc.normGal : NormGal := UpperTheory.galois_norm_compatibility_of_frobenius_restriction UpperTheory.frobenius_power_compatibility (UpperTheory.ideleNorm_valuation_of_local_compatibility UpperTheory.ideleNorm_local_compatibility)
 
 /- English proof (translation)
-The claim follows from `Bc.bcPolar_of hP (Bc.noTwist hP) Br.bcAtt0 Br.bcConj0 UpperTheory.frobenius_eigenvalues_dual Bc.normGal UpperTheory.exists_algebraic_heckeChar_cyclotomic UpperTheory.heckeChar_sign_fixed (UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse) Bc.irrBasic`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Bc.bcPolar (hP : Hypotheses₂) : Br.BcPolarW :=
   Bc.bcPolar_of hP (Bc.noTwist hP) Br.bcAtt0 Br.bcConj0 UpperTheory.frobenius_eigenvalues_dual Bc.normGal UpperTheory.exists_algebraic_heckeChar_cyclotomic UpperTheory.heckeChar_sign_fixed

@@ -5,7 +5,7 @@ open MvPolynomial Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M Rec
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Metric.Rigid.analyticAt_of_comp_immersion` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FAnalyticOfImmersionComposition.lean&line=6#L6)
 -/

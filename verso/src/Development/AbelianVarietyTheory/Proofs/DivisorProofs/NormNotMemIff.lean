@@ -10,11 +10,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `set g : B →ₗ[A] B := Algebra.lmul A B f with hg`. Use `set p := g.charpoly`. Take `⟨q, hq⟩` from `Polynomial.X_dvd_sub_C (p := p)`. Establish `h0 : Polynomial.aeval f p = 0`. Establish `h1 : Polynomial.aeval g p = 0` using `LinearMap.aeval_self_charpoly g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hg, Polynomial.aeval_algHom_apply]`. Establish `h2` using `congrArg (fun u : B →ₗ[A] B => u 1) h1`. Simplify using `using h2`. Establish `h3` using `congrArg (Polynomial.aeval f) hq`. Simplify using `only [map_sub, Polynomial.aeval_C, map_mul, Polynomial.aeval_X, h0, zero_sub] at h3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.norm_apply, LinearMap.det_eq_sign_charpoly_coeff, map_mul, show algebraMap A B (g.charpoly.coeff 0) = -(f * Polynomial.aeval f q) by`. Rewrite using `[← h3, neg_neg]]`. Conclude with `Ideal.mul_mem_left _ _ (neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f)))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_mem_span_singleton (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
     [Module.Finite A B] [Module.Free A B] (f : B) :
@@ -35,13 +35,13 @@ theorem algebraMap_norm_mem_span_singleton (A B : Type) [CommRing A] [CommRing B
   exact Ideal.mul_mem_left _ _ (neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hN Q hQ hf`. Apply `hN` to reduce the goal to its premises. Rewrite using `[← hQ, Ideal.mem_comap]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).mpr hf (algebraMap_norm_mem_span_singleton A B f)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hN`. Set `Rₘ` to `Localization.AtPrime P.asIdeal`. Set `Sₘ` to `Localization (Algebra.algebraMapSubmonoid B P.asIdeal.primeCompl)`. Establish `hnu : ¬ IsUnit (algebraMap B Sₘ f)`. Introduce `hu`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hu.map (Algebra.norm Rₘ (S := Sₘ))`. Rewrite `h1` using `[Algebra.norm_localization A P.asIdeal.primeCompl]`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff Rₘ P.asIdeal _).mp h1 hN`. Take `⟨M, hM, hfM⟩` from `exists_max_ideal_of_mem_nonunits hnu`. Use `haveI : Module.Finite Rₘ Sₘ := Module.Finite.of_basis ((Module.Free.chooseBasis A B).localizationLocalization Rₘ P.asIdeal.primeCompl Sₘ)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hMc : M.comap (algebraMap Rₘ Sₘ) = IsLocalRing.maximalIdeal Rₘ` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)`. Use `h ⟨M.comap (algebraMap B Sₘ), hM.isPrime.comap _⟩ ?_ hfM` and prove the remaining obligations. Use `show (M.comap (algebraMap B Sₘ)).comap (algebraMap A B) = P.asIdeal`. Rewrite using `[Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, IsScalarTower.algebraMap_eq A Rₘ Sₘ, ← Ideal.comap_comap, hMc]`. Conclude with `Localization.AtPrime.comap_maximalIdeal`.
+A detailed English derivation is pending.
 -/
 theorem norm_not_mem_iff (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
     [Module.Finite A B] [Module.Free A B] (f : B) (P : PrimeSpectrum A) :

@@ -9,15 +9,15 @@ namespace GlobalTheory.CompanionTheory.FrobFixed
 open Polynomial in
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : l - 1 ≠ 0`. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero' _ Finset.univ (fun a _ => ?_) ?_` and prove the remaining obligations. Establish `key : ∀ c : ZMod l, (1 - (a - c) ^ (l - 1) : ZMod l) = if a = c then 1 else 0` using `fun c => by split_ifs with h`. Rewrite using `[h, sub_self, zero_pow hl1, sub_zero]`. Rewrite using `[ZMod.pow_card_sub_one_eq_one (sub_ne_zero.2 h), sub_self]`. Simplify using `only [eval_sub, eval_finset_sum, eval_one, eval_pow, eval_X, eval_C, key]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hdeg : ∀ c : ZMod l, natDegree (1 - (X - C c) ^ (l - 1) : (ZMod l)[X]) ≤ l - 1` using `fun c => by`. Use `(natDegree_sub_le _ _).trans (max_le (by simp) ?_)` and prove the remaining obligations. Use `natDegree_pow_le.trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_X_sub_C, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : natDegree (∑ c : ZMod l, (1 - (X - C c) ^ (l - 1) : (ZMod l)[X]) - 1) ≤ l - 1`. Use `(natDegree_sub_le _ _).trans (max_le ?_ (by simp))` and prove the remaining obligations. Conclude with `natDegree_sum_le_of_forall_le _ _ fun c _ => hdeg c`. Rewrite using `[Finset.card_univ, ZMod.card]`. Use `hl.two_le` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem sum_one_sub_pow {l : ℕ} [Fact l.Prime] [NeZero l] :
     ∑ c : ZMod l, (1 - (X - C c) ^ (l - 1) : (ZMod l)[X]) = 1 := by
@@ -45,21 +45,21 @@ theorem sum_one_sub_pow {l : ℕ} [Fact l.Prime] [NeZero l] :
     omega
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial R with h | h` into its components or cases. Conclude with `⟨0, ⟨⟨fun _ => Subsingleton.elim _ _, fun _ _ _ => Subsingleton.elim _ _⟩, Subsingleton.elim _ _⟩, fun _ => Subsingleton.elim _ _⟩`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : l - 1 ≠ 0`. Use `hl.two_le` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : CharP R l := (CharP.charP_iff_prime_eq_zero hl).2 hR`. Use `letI : Algebra (ZMod l) R := ZMod.algebra R l`. Establish `hφ : ∀ c : ZMod l, (c.val : R) = algebraMap (ZMod l) R c` using `fun c => by`. Rewrite using `[← map_natCast (algebraMap (ZMod l) R), ZMod.natCast_zmod_val]`.
+Use linear arithmetic over natural numbers and integers. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : ∀ c : ZMod l, (x - algebraMap (ZMod l) R c) ^ l = x - algebraMap (ZMod l) R c` using `fun c => by`. Rewrite using `[sub_pow_char, hx, ← map_pow, ZMod.pow_card]`. Take `⟨e, he⟩ : ∃ e : ZMod l → R, ∀ c, e c = 1 - (x - algebraMap (ZMod l) R c) ^ (l - 1)` from `⟨_, fun _ => rfl⟩`. Establish `hann : ∀ c, e c * (x - algebraMap (ZMod l) R c) = 0` using `fun c => by`. Establish `h1 : (x - algebraMap (ZMod l) R c) ^ (l - 1) * (x - algebraMap (ZMod l) R c) = x - algebraMap (ZMod l) R c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel hl.one_le, hpow]`. Rewrite using `[he, sub_mul, one_mul, h1, sub_self]`. Establish `hlin : ∀ c d, e c * (x - algebraMap (ZMod l) R d) = e c * algebraMap (ZMod l) R (c - d)` using `fun c d => by`. Establish `h1 : x - algebraMap (ZMod l) R d = (x - algebraMap (ZMod l) R c) + algebraMap (ZMod l) R (c - d)`. Rewrite using `[map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, mul_add, hann, zero_add]`. Establish `hmul : ∀ c d k, e c * (x - algebraMap (ZMod l) R d) ^ k = e c * algebraMap (ZMod l) R ((c - d) ^ k)` using `fun c d k => by`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ, ← mul_assoc, ih, mul_right_comm, hlin, mul_assoc, ← map_mul, pow_succ']`. Use `⟨e, ⟨⟨fun c => ?_, fun c d hcd => ?_⟩, ?_⟩, fun c => by rw [hφ, hann]⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e c * e c = e c`. Establish `h1 : e c * e c = e c * (1 - (x - algebraMap (ZMod l) R c) ^ (l - 1))` using `congrArg (e c * ·) (he c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, mul_sub, mul_one, hmul, sub_self, zero_pow hl1, map_zero, mul_zero, sub_zero]`. Express the relevant statement in the definitionally equal form `e c * e d = 0`. Rewrite using `[he d, mul_sub, mul_one, hmul, ZMod.pow_card_sub_one_eq_one (sub_ne_zero.2 hcd), map_one, mul_one, sub_self]`. Establish `h1` using `congrArg (Polynomial.aeval x) (sum_one_sub_pow (l := l))`. Simplify using `only [map_sum, map_sub, map_one, map_pow, Polynomial.aeval_X, Polynomial.aeval_C] at h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun c _ => he c`.
+A detailed English derivation is pending.
 -/
 theorem exists_idempotents {R : Type*} [CommRing R] {l : ℕ} [Fact l.Prime] [NeZero l]
     (hR : (l : R) = 0) (x : R) (hx : x ^ l = x) :
@@ -107,7 +107,7 @@ theorem exists_idempotents {R : Type*} [CommRing R] {l : ℕ} [Fact l.Prime] [Ne
     exact Finset.sum_congr rfl fun c _ => he c
 
 /- English proof (translation)
-Introduce `l _ A x hx`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Conclude with `exists_idempotents A.natCast_l x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fix_one : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (x : A.A), x ^ l = x → ∃ e : ZMod l → A.A, (haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩; CompleteOrthogonalIdempotents e ∧ ∀ c, e c * (x - (c.val : A.A)) = 0) := by
   intro l _ A x hx

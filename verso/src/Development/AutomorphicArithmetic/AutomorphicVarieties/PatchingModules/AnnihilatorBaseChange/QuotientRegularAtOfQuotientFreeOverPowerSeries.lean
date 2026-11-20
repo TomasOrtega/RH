@@ -7,23 +7,21 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `Λ R σ _ _ _ _ s M _ _ a j r e he c hc α`. Rewrite `hc` using `[← kjMap Λ R σ s (a + 1) j]`. Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := kjIdeal Λ σ (a + 1) j)`. Use `choose t ht using fun β i => hsurj (e (Submodule.Quotient.mk (c β)) i)`. Establish `hmono : ∀ β : σ →₀ ℕ, GlobalTheory.monoVal (fun a => s (MvPowerSeries.X a)) β = s (GlobalTheory.monoVal MvPowerSeries.X β)` using `fun β => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.monoVal, Finsupp.prod, map_prod, map_pow]`. Establish `h0` using `congrArg e ((Submodule.Quotient.mk_eq_zero _).2 hc)`. Rewrite `h0` using `[map_zero, ← Submodule.mkQ_apply, map_sum, map_sum]`. Simplify using `only [map_smul, hmono, he, Submodule.mkQ_apply] at h0`. Establish `hL : ∀ i, t α i ∈ kjIdeal Λ σ 1 j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h1` using `congrFun h0 i`. Rewrite `h1` using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, ← ht, Pi.zero_apply] at h1`. Establish `h2 : (∑ β : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal (MvPowerSeries.X : σ → MvPowerSeries σ Λ) β.1 * t β i) ∈ kjIdeal Λ σ (a + 1) j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sum, ← h1]`. Both sides reduce to the same expression. Establish `h3` using `qRegAt_mvPowerSeries Λ σ (maximalIdeal Λ ^ j) a (fun β => t β i) (by simpa [kjIdeal, Ideal.map_pow] using h2) α`. Simplify `h3` using `[kjIdeal, Ideal.map_pow]`. Establish `hs` using `Submodule.Quotient.mk_surjective ((kjIdeal Λ σ (a + 1) j).map s • ⊤ : Submodule R M)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose m hm using fun i : Fin r => hs (e.symm (Pi.single i 1))`. Establish `h4 : c α - ∑ i, s (t α i) • m i ∈ ((kjIdeal Λ σ (a + 1) j).map s • ⊤ : Submodule R M)`. Rewrite using `[← Submodule.Quotient.eq]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← Submodule.mkQ_apply _ (∑ i, _), map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [map_smul, he, Submodule.mkQ_apply, hm, AddEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k]`. Rewrite using `[← ht, Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb.symm]`. Simplify using the standard rewrite rules. Establish `hle : kjIdeal Λ σ (a + 1) j ≤ kjIdeal Λ σ 1 j`. Unfold `kjIdeal`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sup_le_sup_right (Ideal.pow_le_pow_right (by omega)) _`. Establish `h5 : c α ∈ ((kjIdeal Λ σ 1 j).map s • ⊤ : Submodule R M)`. Rewrite using `[← sub_add_cancel (c α) (∑ i, s (t α i) • m i)]`. Use `add_mem (Submodule.smul_mono_left (Ideal.map_mono hle) h4) (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ (hL i)) Submodule.mem_top`.
-
-Rewrite `h5` using `[kjMap, pow_one]`. Conclude with `h5`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.quotientRegularAt_of_quotient_free_over_powerSeries :
     ∀ (Λ R σ : Type) [CommRing Λ] [IsLocalRing Λ] [CommRing R] [Fintype σ] (s : MvPowerSeries σ Λ →+* R) (M : Type) [AddCommGroup M] [Module R M] (a j r : ℕ) (e : (M ⧸ ((kjIdeal Λ σ (a + 1) j).map s • ⊤ : Submodule R M)) ≃+ (Fin r → MvPowerSeries σ Λ ⧸ kjIdeal Λ σ (a + 1) j)), (∀ z m, e (s z • m) = z • e m) → QRegAt M (fun a => s (MvPowerSeries.X a)) (((maximalIdeal Λ).map (s.comp MvPowerSeries.C)) ^ j) a := by

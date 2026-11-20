@@ -22,9 +22,9 @@ namespace GlobalTheory.CompanionTheory.HodgeAssembly
 variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}}
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun ω h ↦ ?_` and prove the remaining obligations. Take `⟨g, hg, hD⟩` from `ofForm_eq_zero.1 h`. Establish `h0 : d0 (OAff s) g = 0`. Use function extensionality and compare the values at `T T' φ`. Conclude with `sub_eq_zero.2 (hg φ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `(hS.1 g).1 h0`. Use `Subtype.ext (Subtype.ext (funext fun T ↦ ?_))` and prove the remaining obligations. Use `(hD T).symm.trans ?_` and prove the remaining obligations. Conclude with `Derivation.map_algebraMap _ r`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem clForm_injective (s : X ⟶ Sp R) (hS : Stein (OAff s)) : Function.Injective (clForm s) := by
   refine (injective_iff_map_eq_zero _).2 fun ω h ↦ ?_
@@ -38,9 +38,9 @@ theorem clForm_injective (s : X ⟶ Sp R) (hS : Stein (OAff s)) : Function.Injec
   exact Derivation.map_algebraMap _ r
 
 /- English proof (translation)
-Take `⟨f1, f2, f3⟩` from `hM`. Take `⟨g1, g2, g3⟩` from `hP`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property q LinearMap.id hq`. Set `e : N ≃ₗ[R] M × P` to `(hex.splitSurjectiveEquiv hi ⟨σ, hσ⟩).1`. Use `⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm, fun p ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.rankAtStalk_eq_of_equiv e, Module.rankAtStalk_prod, Pi.add_apply, f3, g3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vb_middle {M N P : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] [AddCommGroup P]
     [Module R P] (i : M →ₗ[R] N) (q : N →ₗ[R] P) (hi : Function.Injective i) (hq : Function.Surjective q)
@@ -53,7 +53,7 @@ theorem vb_middle {M N P : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] 
   rw [Module.rankAtStalk_eq_of_equiv e, Module.rankAtStalk_prod, Pi.add_apply, f3, g3]
 
 /- English proof (translation)
-Set `e : Over.mk s' ≅ (Over.pullback f).obj A` to `Over.isoMk h.isoPullback h.isoPullback_hom_snd`. Set `I : GrpObj (Over.mk s')` to `GrpObj.ofIso e.symm`. Establish `: IsMonHom e.symm.hom` using `CategoryTheory.isMonHom_ofIso e.symm`. Establish `: IsMonHom e.hom` using `inferInstanceAs (IsMonHom e.symm.inv)`. Conclude with `⟨I, GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback A f))⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_abelian {S S' : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) {s' : X' ⟶ S'}
     {φ : X' ⟶ A.left} {f : S' ⟶ S} (h : IsPullback φ s' A.hom f) :
@@ -66,11 +66,11 @@ theorem exists_abelian {S S' : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbeli
     ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback A f))⟩
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun z hz ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : q z = 0`. Apply `eP.injective` to reduce the goal to its premises. Rewrite using `[← s₂, hz, map_zero, map_zero]`. Take `⟨m, rfl⟩` from `(hex z).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : eM m = 0` using `hi' (by rw [← s₁, hz, map_zero])`. Rewrite using `[(map_eq_zero_iff eM eM.injective).1 h2, map_zero]`. Take `⟨z, hz⟩` from `hq (eP.symm (q' x))`. Establish `h1 : q' (x - L z) = 0`. Rewrite using `[map_sub, s₂, hz, LinearEquiv.apply_symm_apply, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m', hm'⟩` from `(hex' _).1 h1`. Use `⟨z + i (eM.symm m'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, s₁, LinearEquiv.apply_symm_apply, hm']`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem bijective_middle {M N P M' N' P' : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [AddCommGroup P] [Module R P] [AddCommGroup M'] [Module R M'] [AddCommGroup N'] [Module R N']
@@ -107,16 +107,16 @@ theorem clG_apply (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) (ω : GlobForm s) 
     clG s hcl ω = clForm s ⟨ω, hcl ▸ trivial⟩ := rfl
 
 /- English proof (translation)
-The claim follows from `hi.comp (LinearEquiv.ofTop _ hcl).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem clG_injective (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) (hi : Function.Injective (clForm s)) :
     Function.Injective (clG s hcl) :=
   hi.comp (LinearEquiv.ofTop _ hcl).symm.injective
 
 /- English proof (translation)
-Introduce `c`. Express the relevant statement in the definitionally equal form `c ∈ CechHodgeFiltration s ↔ _`. Rewrite using `[cechHodgeFiltration_eq_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ω, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ω.1, congrArg (clForm s) (Subtype.ext rfl)⟩`. Introduce and unpack `⟨ω, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exact_clG (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) : Function.Exact (clG s hcl) (toHO1 s) := by
   intro c
@@ -129,19 +129,19 @@ theorem exact_clG (s : X ⟶ Sp R) (hcl : ClosedForm s = ⊤) : Function.Exact (
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Set `L : R' ⊗[R] HH1 s →ₗ[R'] HH1 s'` to `GlobalTheory.DeRham.liftSemi (pullHH1 w)`. Establish `hL : ∀ c, L (1 ⊗ₜ c) = pullHH1 w c` using `fun c ↦ by`. Rewrite using `[show L (1 ⊗ₜ c) = (1 : R') • pullHH1 w c from rfl, one_smul]`. Establish `k₁ : ∀ ω, pullHH1 w (clG s hcl ω) = clG s' hcl' (eF (1 ⊗ₜ ω))` using `fun ω ↦ (IsPull1.eq_pullHH1 w (IsPullForm.cl (ω := ⟨ω, hcl ▸ trivial⟩) (ω' := ⟨eF (1 ⊗ₜ ω), hcl' ▸ trivial⟩) (hF ω))).symm`. Establish `k₂ : ∀ c, toHO1 s' (pullHH1 w c) = eO (1 ⊗ₜ toHO1 s c)` using `fun c ↦ (IsPullO.eq_pullHO1 w (IsPull1.toO (isPull1_pullHH1 w c))).trans (IsPullO.eq_pullHO1 w (hO (toHO1 s c))).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : Function.Exact ((clG s hcl).baseChange R') ((toHO1 s).baseChange R')`. Use `lTensor_exact R' (exact_clG s hcl) hsurj` as an intermediate fact. Simplify `this` using `only [LinearMap.baseChange_eq_ltensor]`. Establish `hq : Function.Surjective ((toHO1 s).baseChange R')`. Use `LinearMap.lTensor_surjective R' hsurj` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [LinearMap.baseChange_eq_ltensor]`. Establish `hb : Function.Bijective L`. Use `bijective_middle ((clG s hcl).baseChange R') ((toHO1 s).baseChange R') (clG s' hcl') (toHO1 s') L eF eO hex hq (exact_clG s' hcl') (clG_injective s' hcl' hinj') (fun m ↦ ?_) fun n ↦ ?_` and prove the remaining obligations. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x ω`. Establish `e : x ⊗ₜ[R] ω = x • ((1 : R') ⊗ₜ[R] ω)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[LinearMap.baseChange_tmul, e, map_smul, map_smul, ← k₁]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show L (x ⊗ₜ clG s hcl ω) = x • pullHH1 w (clG s hcl ω) from rfl]`. Proceed by induction on `n using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x c`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `e : x ⊗ₜ[R] toHO1 s c = x • ((1 : R') ⊗ₜ[R] toHO1 s c)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[LinearMap.baseChange_tmul, e, map_smul, ← k₂]`. Rewrite using `[show L (x ⊗ₜ c) = x • pullHH1 w c from rfl, map_smul]`. Use `⟨LinearEquiv.ofBijective L hb, fun c ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearEquiv.ofBijective_apply, hL]`. Conclude with `isPull1_pullHH1 w c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_hypercohomology_base_change (w : φ ≫ s = s' ≫ spMap (algebraMap R R')) (hcl : ClosedForm s = ⊤)
     (hcl' : ClosedForm s' = ⊤) (hsurj : Function.Surjective (toHO1 s))
@@ -190,11 +190,11 @@ theorem first_hypercohomology_base_change (w : φ ≫ s = s' ≫ spMap (algebraM
 end BaseChange
 
 /- English proof (translation)
-Introduce `hS hP hH hD hW hO hF R _ A _ g hA hg`. Establish `s₀ : Stein (OAff A.hom)` using `hS R A g hA hg`. Establish `p₀ : VB R (GlobForm A.hom) g` using `(hP R A g hA hg).2`. Establish `h₀ : VB R (HO1 A.hom) g` using `hH R A g hA hg`. Take `⟨hcl, hsurj⟩ : ClosedForm A.hom = ⊤ ∧ Function.Surjective (toHO1 A.hom)` from `hD R A g hA hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinj` using `clForm_injective A.hom s₀`. Establish `v : VB R (HH1 A.hom) (g + g)` using `vb_middle (clG A.hom hcl) (toHO1 A.hom) (clG_injective A.hom hcl hinj) hsurj (exact_clG A.hom hcl) p₀ h₀`. Use `⟨⟨v.1, v.2.1, fun p ↦ by rw [two_mul]; exact v.2.2 p⟩, hW R A g hA hg, p₀, h₀, ⟨hcl, hinj, hsurj⟩, fun R' _ _ X' s' φ h ↦ ?_⟩` and prove the remaining obligations. Take `⟨eO, heO⟩` from `hO R A g hA hg R' X' s' φ h`. Take `⟨eF, heF⟩` from `hF R A g hA hg R' X' s' φ h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hA'⟩` from `exists_abelian A hA h`. Establish `hg' : SmoothOfRelativeDimension g (Over.mk s').hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback h hg`. Establish `s₁ : Stein (OAff s')` using `hS R' (Over.mk s') g hA' hg'`. Establish `hcl' : ClosedForm s' = ⊤` using `(hD R' (Over.mk s') g hA' hg').1`. Conclude with `⟨first_hypercohomology_base_change h.w hcl hcl' hsurj (clForm_injective s' s₁) eF heF eO heO, ⟨eF, heF⟩, ⟨eO, heO⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem abelianHodgeDeRham_of_statements : SteinSt → ParSt → H1StructureBundle → DegenSt → WedgeHypSt → OBCSt → FormBCSt →
     GlobalTheory.Published.AbelianHodgeDeRham := by

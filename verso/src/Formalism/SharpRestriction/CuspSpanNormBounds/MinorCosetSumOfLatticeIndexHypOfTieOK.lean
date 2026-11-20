@@ -13,9 +13,7 @@ section G
 def ccOf (CH Cl : ℝ) : ℝ := 17 + 4 / Cl + 4 * |CH|
 
 /- English proof (translation)
-Unfold `frameExp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mem_Icc] at ha`. Use linear arithmetic over natural numbers and integers. Use `_ = l * r := by simp`.
-
-Use `_ ≤ r * r := Nat.mul_le_mul_right r hl`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem frameExp_le {r l : ℕ} (hl : l ≤ r) : frameExp r l ≤ r * r := by
   unfold frameExp
@@ -27,17 +25,17 @@ theorem frameExp_le {r l : ℕ} (hl : l ≤ r) : frameExp r l ≤ r * r := by
     _ ≤ r * r := Nat.mul_le_mul_right r hl
 
 /- English proof (translation)
-Establish `hR0 : 0 ≤ R` using `by linarith`. Establish `hM1 : 1 ≤ M` using `le_trans hR hRM`. Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hF0 : 0 ≤ F` using `by linarith`. Establish `hRM2 : R ≤ M ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 1 ≤ 17 + 4 * x + 4 * a` using `by linarith`. Establish `hA : 6 + x * (2 * (R * R)) + (1 + a * M) * (2 * R) ≤ (8 + 2 * x + 2 * a) * M ^ 2`. Establish `h1 : R * R ≤ M ^ 2` using `by nlinarith`. Establish `h3 : a * M * R ≤ a * M ^ 2`. Establish `h5 : M * R ≤ M ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (1 : ℝ) ≤ M ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hx]`. Establish `hB : 2 * Nn * J ≤ 2 * F * R` using `by nlinarith`. Establish `hApos : 0 ≤ 6 + x * (2 * (R * R)) + (1 + a * M) * (2 * R)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ x * (2 * (R * R))` using `mul_nonneg hx (by nlinarith)`. Establish `h2 : 0 ≤ (1 + a * M) * (2 * R)` using `mul_nonneg (by nlinarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hstep : (6 + x * (2 * (R * R)) + (1 + a * M) * (2 * R)) * (2 * Nn * J) ≤ (8 + 2 * x + 2 * a) * M ^ 2 * (2 * F * R)` using `mul_le_mul hA hB (by nlinarith) (by nlinarith)`. Establish `hMF : 1 ≤ M ^ 2 * F` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ2 : J ≤ M ^ 2 * F * R` using `by nlinarith`. Establish `hQ : 0 ≤ (17 + 4 * x + 4 * a) * M ^ 2 * F * R`. Establish `: 0 ≤ M ^ 2 * F * R` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hc2 : (17 + 4 * x + 4 * a) * M ^ 2 * F * R ≤ (17 + 4 * x + 4 * a) * M ^ 2 * F * ((17 + 4 * x + 4 * a) * R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hc hQ]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem expo_le {x a J R M F Nn : ℝ} (hx : 0 ≤ x) (ha : 0 ≤ a) (hJ : 0 ≤ J) (hJR : J ≤ R) (hNn : 0 ≤ Nn) (hNF : Nn ≤ F)
     (hR : 1 ≤ R) (hRM : R ≤ M) (hF : 1 ≤ F) :
@@ -75,27 +73,23 @@ theorem expo_le {x a J R M F Nn : ℝ} (hx : 0 ≤ x) (ha : 0 ≤ a) (hJ : 0 ≤
   nlinarith
 
 /- English proof (translation)
-Establish `hL0 : 0 < L` using `by linarith`. Establish `h2 : (2:ℝ) ≤ Real.exp L` using `by have := Real.add_one_le_exp L; linarith`. Establish `hrdpos : 0 < rd` using `by linarith`. Establish `hrd : rd ≤ Real.exp (L / Cl)`. Rewrite using `[← Real.exp_log hrdpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.exp_le_exp.2 hrdL`. Establish `hx : 0 ≤ 1 / Cl` using `by positivity`. Establish `ha : 0 ≤ |CH|` using `abs_nonneg _`. Establish `hM : max 1 (2 * Real.exp L ^ (CH * (m:ℝ))) ≤ Real.exp (L * (1 + |CH| * m))`. Establish `e1 : Real.exp L ^ (CH * (m:ℝ)) ≤ Real.exp (L * (|CH| * m))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ hL0.le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self CH) (Nat.cast_nonneg m)`. Establish `e2 : (1:ℝ) ≤ Real.exp (L * (|CH| * m))` using `Real.one_le_exp (by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : Real.exp (L * (1 + |CH| * m)) = Real.exp L * Real.exp (L * (|CH| * m))`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[e3]`. Apply `max_le` to reduce the goal to its premises.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hrdp : rd ^ (((2 * (r * r) : ℕ)) : ℝ) ≤ Real.exp (L * (1 / Cl * (2 * ((r:ℝ) * r))))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h64 : (64:ℝ) ≤ Real.exp (L * 6)`. Rewrite using `[show L * 6 = ((6 : ℕ) : ℝ) * L by push_cast; ring, Real.exp_nat_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA : 64 * (rd ^ (((2 * (r * r) : ℕ)) : ℝ) * (max 1 (2 * Real.exp L ^ (CH * (m : ℝ)))) ^ (2 * r)) ≤ Real.exp (L * 6) * (Real.exp (L * (1 / Cl * (2 * ((r:ℝ) * r)))) * Real.exp (L * (1 + |CH| * m)) ^ (2 * r))`. Establish `hmax0 : 0 ≤ max 1 (2 * Real.exp L ^ (CH * (m : ℝ)))` using `le_trans zero_le_one (le_max_left _ _)`. Use `gcongr`. Establish `h2j : (2:ℝ) ^ j ≤ Real.exp L ^ j` using `pow_le_pow_left₀ (by norm_num) h2 j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hexpo` using `expo_le (x := 1 / Cl) (a := |CH|) (J := (j:ℝ)) (R := (r:ℝ)) (M := (m:ℝ)) (F := (f:ℝ)) (Nn := (n:ℝ)) hx ha (Nat.cast_nonneg j) (by exact_mod_cast hjr) (Nat.cast_nonneg n) (by exact_mod_cast hnf) (by exact_mod_cast hr) (by exact_mod_cast hrm) (by exact_mod_cast hf)`. Establish `hcc : ccOf CH Cl = 17 + 4 * (1 / Cl) + 4 * |CH|` using `by unfold ccOf; ring`. Combine the equalities or inequalities in the displayed calculation. Establish `hA0 : 0 ≤ 64 * (rd ^ (((2 * (r * r) : ℕ)) : ℝ) * (max 1 (2 * Real.exp L ^ (CH * (m : ℝ)))) ^ (2 * r))`. Establish `hmax0 : 0 ≤ max 1 (2 * Real.exp L ^ (CH * (m : ℝ)))` using `le_trans zero_le_one (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Establish `hB` using `pow_le_pow_left₀ (pow_nonneg hA0 _) (pow_le_pow_left₀ hA0 hA (2 * n)) j`. Conclude with `mul_le_mul h2j hB (pow_nonneg (pow_nonneg hA0 _) _) (by positivity)`. Use `_ = Real.exp (L * ((j:ℝ) + (6 + 1 / Cl * (2 * ((r:ℝ) * r)) + (1 + |CH| * m) * (2 * r)) * (2 * n * j))) := by`. Simplify using `only [← Real.exp_nat_mul, ← Real.exp_add]`.
-
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (L * ((17 + 4 * (1 / Cl) + 4 * |CH|) * (m:ℝ) ^ 2 * f * ((17 + 4 * (1 / Cl) + 4 * |CH|) * r))) := Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left hexpo hL0.le)`. Use `_ = (Real.exp L ^ (ccOf CH Cl * (m : ℝ) ^ 2 * f)) ^ (ccOf CH Cl * (r : ℝ)) := by`.
-
-Rewrite using `[← Real.rpow_mul (Real.exp_pos L).le, ← Real.exp_mul, hcc]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem final_arith {L Cl CH rd : ℝ} {r m f n j : ℕ} (hL : 1 < L) (hCl : 0 < Cl) (hrd1 : 1 ≤ rd)
     (hrdL : Real.log rd ≤ L / Cl) (hr : 1 ≤ r) (hrm : r ≤ m) (hjr : j ≤ r) (hnf : n ≤ f) (hf : 1 ≤ f) :
@@ -169,15 +163,15 @@ section H
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨⟨h0, -, -⟩, -⟩` from `hH`. Take `⟨-, -, hmf, -, -, -, -, -, -, -, hrdL, -, -, -, -, -, -, -, hv, -, -, -, -, -, hCl⟩` from `h0`. Introduce `j hj T hTm`. Establish `hjI` using `Finset.mem_Icc.1 hj`. Establish `hrd2 : 2 ≤ D.host.rdE` using `by unfold Formalism.BasicNotions.Host.v at hv; linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2` using `D.R.two_le_m`. Establish `hf1 : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hmf`. Establish `: Nonempty D.what₂.Tau` using `Fintype.card_pos_iff.1 (by rw [D.what₂.card_Tau]; omega)`. Establish `hb2` using `KappaEndpoints.two_le_scale_b D large₂`. Use `set H1 : ℝ := large₂.sc.b ^ (CH * (D.R.m : ℝ)) with hH1def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1 : 0 < H1` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hsum` using `cosets_sum hNT hLS hMI (by linarith) X hT hH1 hjI.2 T hTm`. Use `set B : ℝ := D.host.rdE ^ (((2 * (D.R.rS * D.R.rS) : ℕ)) : ℝ) * (max 1 (2 * H1)) ^ (2 * D.R.rS) with hB`. Establish `hB1 : 1 ≤ B` using `one_le_mul_of_one_le_of_one_le (Real.one_le_rpow (by linarith) (Nat.cast_nonneg _)) (one_le_pow₀ (le_max_left _ _))`. Establish `hRl : ∀ l ∈ Finset.Icc 1 j, Rl (D` using `D) H1 l ≤ B := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `hlr : l ≤ D.R.rS` using `(Finset.mem_Icc.1 hl).2.trans hjI.2`. Establish `hfe` using `frameExp_le hlr`. Use `max_le hB1 (mul_le_mul ?_ (pow_le_pow_left₀ (by positivity) (le_max_right _ _) _) (by positivity) (Real.rpow_nonneg (by linarith) _))` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by exact_mod_cast (by omega : 2 * frameExp D.R.rS l ≤ 2 * (D.R.rS * D.R.rS)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hprod : ∏ l ∈ Finset.Icc 1 j, (64 * Rl (D` using `D) H1 l) ^ (2 * Fintype.card D.what₂.Tau) ≤ ((64 * B) ^ (2 * Fintype.card D.what₂.Tau)) ^ j := by`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin` using `final_arith (L := large₂.sc.L) (CH := CH) (rd := D.host.rdE) (r := D.R.rS) (m := D.R.m) (f := D.R.f) (n := Fintype.card D.what₂.Tau) (j := j) (KappaEndpoints.one_lt_scale_L D large₂) hCl (by linarith) hrdL (by omega) (by have := KappaEndpoints.two_rank_add_two_eq_m D; omega) hjI. …`. Unfold `Hb`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem minorCosetSum_of_latticeIndexHyp_of_tieOK (hNT : KTwoMinorIntegrality.NormLB) (hLS : KTwoMinorIntegrality.LatSum) (hMI : KTwoMinorIntegrality.MinorInt) (large₂ : SizeData₂ D)
     (X : TermTie D) {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : LatticeIndexAndWeightTheory.Hyp D large₂ C' Cl Cg cb Cu cT CT C0) (CH : ℝ) {u : D.what₂.Word}

@@ -13,35 +13,35 @@ open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 variable {φ : Frame} (H : HostRaw φ)
 
 /- English proof (translation)
-The claim follows from `splitK H`.
+A detailed English derivation is pending.
 -/
 example (D : HostDer H) : type_of% D.splitK := splitK H
 /- English proof (translation)
-The claim follows from `ordinary H C`.
+A detailed English derivation is pending.
 -/
 example (C : HostCore H) (D : HostDer H) : type_of% D.ordinary := ordinary H C
 /- English proof (translation)
-The claim follows from `eta H C`.
+A detailed English derivation is pending.
 -/
 example (C : HostCore H) (D : HostDer H) : type_of% D.eta := eta H C
 /- English proof (translation)
-The claim follows from `diffSupport H C`.
+A detailed English derivation is pending.
 -/
 example (C : HostCore H) (D : HostDer H) : type_of% D.diffSupport := diffSupport H C
 /- English proof (translation)
-The claim follows from `principal H C`.
+A detailed English derivation is pending.
 -/
 example (C : HostCore H) (D : HostDer H) : type_of% D.principal := principal H C
 /- English proof (translation)
-The claim follows from `unimodular H`.
+A detailed English derivation is pending.
 -/
 example (D : HostDer H) : type_of% D.unimodular := unimodular H
 /- English proof (translation)
-The claim follows from `discr_sq H C`.
+A detailed English derivation is pending.
 -/
 example (C : HostCore H) (D : HostDer H) : type_of% D.discr_sq := discr_sq H C
 /- English proof (translation)
-The claim follows from `norm_mu H C`.
+A detailed English derivation is pending.
 -/
 example (C : HostCore H) (D : HostDer H) : type_of% D.norm_mu := norm_mu H C
 

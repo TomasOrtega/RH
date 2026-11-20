@@ -8,15 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TwistFlat
 
 /- English proof (translation)
-Introduce `R _ A T V _ φ H h hh`. Establish `hP : IsPullback (fst A T).left (snd A T).left A.hom T.hom`. Simplify `IsPullback.of_hasPullback A.hom T.hom` using `only [Over.fst_left, Over.snd_left]`. Establish `w : pullback.fst A.hom (φ ≫ T.hom) ≫ A.hom = (pullback.snd A.hom (φ ≫ T.hom) ≫ φ) ≫ T.hom`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.condition`. Set `g : pullback A.hom (φ ≫ T.hom) ⟶ (A ⊗ T).left` to `hP.lift (pullback.fst A.hom (φ ≫ T.hom)) (pullback.snd A.hom (φ ≫ T.hom) ≫ φ) w`. Establish `hg1 : g ≫ (fst A T).left = pullback.fst A.hom (φ ≫ T.hom)` using `hP.lift_fst _ _ _`. Establish `hg2 : g ≫ (snd A T).left = pullback.snd A.hom (φ ≫ T.hom) ≫ φ` using `hP.lift_snd _ _ _`. Establish `ht : IsPullback g (pullback.snd A.hom (φ ≫ T.hom)) (snd A T).left φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_right (h₁₂ := (fst A T).left) (h₂₂ := T.hom) ?_ hg2 hP` and prove the remaining obligations. Rewrite using `[hg1]`. Conclude with `IsPullback.of_hasPullback A.hom (φ ≫ T.hom)`. Establish `hs : IsPullback (pullback.fst (h ≫ snd A T).left φ) ((kerι A φ h).left ≫ pullback.snd A.hom (φ ≫ T.hom)) (h.left ≫ (snd A T).left) φ`. Establish `e1 : (kerι A φ h).left ≫ pullback.snd A.hom (φ ≫ T.hom) = pullback.snd (h ≫ snd A T).left φ` using `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, ← Over.comp_left]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `hsq : pullback.fst (h ≫ snd A T).left φ ≫ h.left = (kerι A φ h).left ≫ g`. Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hg1]`.
-
-Conclude with `(pullback.lift_fst _ _ _).symm`. Rewrite using `[Category.assoc, Category.assoc, hg2, ← Over.comp_left, pullback.condition]`. Conclude with `congrArg (· ≫ φ) (pullback.lift_snd _ _ _).symm`. Establish `hpb : IsPullback (pullback.fst (h ≫ snd A T).left φ) (kerι A φ h).left h.left g` using `IsPullback.of_bot hs hsq ht`. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb hh`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_kerι : ∀ {R : Type} [CommRing R] (A : Over (Sp R)) {T : Over (Sp R)} {V : Type} [CommRing V] (φ : Sp V ⟶ T.left) {H : Over (Sp R)} (h : H ⟶ A ⊗ T), IsClosedImmersion h.left → IsClosedImmersion (GlobalTheory.TwistFlat.kerι A φ h).left := by
   intro R _ A T V _ φ H h hh

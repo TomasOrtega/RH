@@ -15,37 +15,35 @@ open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ S hP _ hS`. Use `set PC : Ideal (MvPolynomial (Σ k, ι k) ℂ) := P.map (MvPolynomial.map (Int.castRingHom ℂ)) with hPC`. Establish `hdimW : ∀ W ∈ PC.minimalPrimes, ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ W) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)` using `by set PQ : Ideal (MvPolynomial (Σ k, ι k) ℚ) := P.map (MvPolynomial.map (Int.castRingHom ℚ)) with hPQ`. Establish `hvar` using `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.isProjVarQ_of_isArithVar hP`. Establish `: PQ.IsPrime` using `hvar.1.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : ReciprocityTheory.AnForm.R.extC PQ = PC`. Rewrite using `[ReciprocityTheory.AnForm.R.extC, hPQ, hPC, Ideal.map_map]`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun q => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Introduce `W hW`. Rewrite `hW` using `[← hext]`. Rewrite using `[ReciprocityTheory.AnForm.R.ringKrullDim_of_mem_minimalPrimes_extC PQ W hW]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hvar.2`. Establish `hPCh : IsMultiHomogIdeal PC`. Take `⟨T, hT, hPT⟩` from `hP.2.1.2.1`. Use `⟨MvPolynomial.map (Int.castRingHom ℂ) '' T, ?_, by rw [hPC, hPT, Ideal.map_span]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `hT f hf`. Conclude with `⟨a, fun d hd k => ha d (MvPolynomial.support_map_subset _ _ hd) k⟩`. Establish `hWh : ∀ W ∈ PC.minimalPrimes, IsMultiHomogIdeal W` using `fun W hW => (GroundTheory.Heights₂.Heights.NumbersDVR.Objects.isMultiHomogIdeal_iff W).mp (GroundTheory.Heights₂.Heights.NumbersDVR.MinimalPrimeMultiHomog.proof ℂ K ι PC W ((GroundTheory.Heights₂.Heights.NumbersDVR.Objects.isMultiHomogIdeal_iff PC).mpr hPCh) hW)`. Establish `hsuph : ∀ W ∈ PC.minimalPrimes, ∀ W' ∈ PC.minimalPrimes, IsMultiHomogIdeal (W ⊔ W')`. Introduce `W hW W' hW'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, rfl⟩` from `hWh W hW`. Take `⟨T', hT', rfl⟩` from `hWh W' hW'`. Conclude with `⟨T ∪ T', fun f hf => hf.elim (hT f) (hT' f), (Ideal.span_union T T').symm⟩`. Establish `hsup : ∀ W ∈ PC.minimalPrimes, ∀ W' ∈ PC.minimalPrimes, W ≠ W' → ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ (W ⊔ W')) < ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Introduce `W hW W' hW' hne`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: W.IsPrime` using `hW.1.1`. Choose the witnesses or unpack the hypotheses as in `⟨g, hgW', hgW⟩ : ∃ g ∈ W', g ∉ W := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (le_antisymm (hW.2 hW'.1 hcon) hcon)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg0 : Ideal.Quotient.mk W g ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hg0)`. Establish `eqv : ((MvPolynomial (Σ k, ι k) ℂ ⧸ W) ⧸ Ideal.span {Ideal.Quotient.mk W g}) ≃+* MvPolynomial (Σ k, ι k) ℂ ⧸ (W ⊔ Ideal.span {g})` using `(Ideal.quotEquivOfEq (by rw [Ideal.map_span, Set.image_singleton])).trans (DoubleQuot.quotQuotEquivQuotSup W (Ideal.span {g}))`. Rewrite `h1` using `[ringKrullDim_eq_of_ringEquiv eqv, hdimW W hW]`. Establish `hle : W ⊔ Ideal.span {g} ≤ W ⊔ W'` using `sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr hgW') W`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective hle)`. Generalize the expression as in `ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ (W ⊔ Ideal.span {g})) = a at h1 h2`. Generalize the expression as in `ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ (W ⊔ W')) = b at h2 ⊢`. Use `lt_of_le_of_lt h2 ?_` and prove the remaining obligations. Proceed by induction on `a using WithBot.recBotCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact absurd h1 (by exact_mod_cast (show ¬ ((⊤ : ℕ∞) + 1 ≤ ((e + Fintype.card K : ℕ) : ℕ∞)) by simp))`. Consider the case `coe a`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `: a + 1 ≤ e + Fintype.card K` using `by exact_mod_cast h1`. Conclude with `(show a < e + Fintype.card K by omega)` after adjusting the coercions. Use `measure_mono_null (t := ⋃ W ∈ (S : Set _), ⋃ W' ∈ (S : Set _), ⋃ (_ : W ≠ W'), ⋃ p : (k : K) → ι k, {y : Fin e → ℂ | ∃ z ∈ zeroLocus ℂ (ReciprocityTheory.AnForm.R.chartIdeal (W ⊔ W') p), Ψ (segre z) 0 ≠ 0 ∧ (Fin.cons 1 y : Fin (e + 1) → ℂ) = (Ψ (segre z) 0)⁻¹ • Ψ (segre z)}) ?_ ? …` and prove the remaining obligations. Introduce and unpack `y ⟨z, hz, hzy, W, hWS, W', hW'S, hne, hzW, hzW'⟩ choose p hp using hz.1`. Simplify using `only [Set.mem_iUnion, Finset.mem_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨W, hWS, W', hW'S, hne, p, ReciprocityTheory.AnForm.R.affCoord p z, ?_, ?_⟩` and prove the remaining obligations. Establish `hcone : z ∈ ReciprocityTheory.AnForm.R.conePts (W ⊔ W')`. Use `⟨hz.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hker : W ⊔ W' ≤ RingHom.ker (eval z)` using `sup_le (fun f hf => RingHom.mem_ker.mpr (by simpa [MvPolynomial.coe_aeval_eq_eval] using hzW f hf)) (fun f hf => RingHom.mem_ker.mpr (by simpa [MvPolynomial.coe_aeval_eq_eval] using hzW' f hf))`. Conclude with `RingHom.mem_ker.mp (hker hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(ReciprocityTheory.AnForm.R.mem_conePts_iff_chartIdeal (hsuph W (hS W hWS) W' (hS W' hW'S)) p z hp).1 hcone`. Introduce `f hf`. Establish `hf'` using `h f hf`. Rewrite `hf'` using `[← MvPolynomial.coe_aeval_eq_eval]`. Then use the resulting hypothesis. Establish `hc : (∏ k, z ⟨k, p k⟩)⁻¹ ≠ 0` using `inv_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ => hp k)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hseg : segre (ReciprocityTheory.AnForm.R.affCoord p z) = (∏ k, z ⟨k, p k⟩)⁻¹ • segre z`. Use function extensionality and compare the values at `i`. Simplify using `only [segre, ReciprocityTheory.AnForm.R.affCoord, Pi.smul_apply, smul_eq_mul, Finset.prod_div_distrib]`. Rewrite using `[div_eq_inv_mul]`. Establish `hΨ : Ψ (segre (ReciprocityTheory.AnForm.R.affCoord p z)) = (∏ k, z ⟨k, p k⟩)⁻¹ • (Fin.cons 1 y : Fin (e + 1) → ℂ)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hseg, map_smul, hzy]`. Rewrite using `[hΨ, Pi.smul_apply, Fin.cons_zero, smul_eq_mul, mul_one, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Conclude with `⟨hc, rfl⟩`. Use `(measure_biUnion_null_iff S.countable_toSet).2 fun W hW => ?_` and prove the remaining obligations. Use `(measure_biUnion_null_iff S.countable_toSet).2 fun W' hW' => ?_` and prove the remaining obligations.
-
-Use `measure_iUnion_null fun hne => measure_iUnion_null fun p => ?_` and prove the remaining obligations. Conclude with `hB K ι _ e Ψ (hA K ι (W ⊔ W') e p (hsuph W (hS W hW) W' (hS W' hW')) (hsup W (hS W hW) W' (hS W' hW') hne))`.
+A detailed English derivation is pending.
 -/
 theorem ComponentsMeetNull.proof (hA : ChartDimLt.Statement) (hB : ChartRatioImageNull.Statement) :
     ComponentsMeetNull.Statement := by

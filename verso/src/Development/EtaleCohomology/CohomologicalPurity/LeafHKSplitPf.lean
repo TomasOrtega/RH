@@ -29,9 +29,9 @@ def hsCokDeg' {r : B ⟶ D} {p : D ⟶ Q} (hr : r ≫ p = 0) (hc : IsColimit (Co
   hsCokDeg hr hc k
 
 /- English proof (translation)
-Establish `key : ∀ a b (h : a + m = b), r.f a ≫ z.v a b h = 0` using `fun a b h => by`. Use `congrArg (fun w => w.v a b h) hz` as an intermediate fact. Simplify `this` using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Use `⟨Cochain.mk (fun a b h => (CokernelCofork.IsColimit.desc' (hsCokDeg' hr hc a) (z.v a b h) (key a b h)).1), ?_⟩` and prove the remaining obligations. Use extensionality with `a b h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.mk_v]`. Conclude with `(CokernelCofork.IsColimit.desc' (hsCokDeg' hr hc a) (z.v a b h) (key a b h)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsFac {r : B ⟶ D} {p : D ⟶ Q} (hr : r ≫ p = 0) (hc : IsColimit (CokernelCofork.ofπ p hr)) {m : ℤ}
     (z : Cochain D I m) (hz : (Cochain.ofHom r).comp z (zero_add m) = 0) :
@@ -45,7 +45,7 @@ theorem hsFac {r : B ⟶ D} {p : D ⟶ Q} (hr : r ≫ p = 0) (hc : IsColimit (Co
   exact (CokernelCofork.IsColimit.desc' (hsCokDeg' hr hc a) (z.v a b h) (key a b h)).2
 
 /- English proof (translation)
-Use extensionality with `a b hab`. Use `congrArg (fun w => w.v a b hab) h` as an intermediate fact. Simplify using `only [Cochain.zero_cochain_comp_v, Cochain.ofHom_v] at this`. Establish `: Epi (p.f a)` using `epi_of_isColimit_cofork (hsCokDeg' hr hc a)`. Conclude with `(cancel_epi (p.f a)).1 ‹_›`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hsCancel {r : B ⟶ D} {p : D ⟶ Q} (hr : r ≫ p = 0) (hc : IsColimit (CokernelCofork.ofπ p hr)) {m : ℤ}
     (y₁ y₂ : Cochain Q I m) (h : (Cochain.ofHom p).comp y₁ (zero_add m) = (Cochain.ofHom p).comp y₂ (zero_add m)) :
@@ -57,7 +57,7 @@ theorem hsCancel {r : B ⟶ D} {p : D ⟶ Q} (hr : r ≫ p = 0) (hc : IsColimit 
   exact (cancel_epi (p.f a)).1 ‹_›
 
 /- English proof (translation)
-Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, hrs]`. Use extensionality with `a b h`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsRS {r : B ⟶ D} {s : D ⟶ B} (hrs : r ≫ s = 𝟙 _) {m : ℤ} (z : Cochain B I m) :
     (Cochain.ofHom r).comp ((Cochain.ofHom s).comp z (zero_add m)) (zero_add m) = z := by
@@ -66,18 +66,18 @@ theorem hsRS {r : B ⟶ D} {s : D ⟶ B} (hrs : r ≫ s = 𝟙 _) {m : ℤ} (z :
   simp
 
 /- English proof (translation)
-Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, hr, Cochain.ofHom_zero, Cochain.zero_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hsRP {r : B ⟶ D} {p : D ⟶ Q} (hr : r ≫ p = 0) {m : ℤ} (z : Cochain Q I m) :
     (Cochain.ofHom r).comp ((Cochain.ofHom p).comp z (zero_add m)) (zero_add m) = 0 := by
   rw [← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, hr, Cochain.ofHom_zero, Cochain.zero_comp]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = 0 at hx`. Rewrite `hx` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨β, hβ⟩` from `hx`. Express the relevant statement in the definitionally equal form `δ (n - 1) n β = (Cochain.ofHom p).comp x.1 (zero_add n) at hβ`. Take `⟨γ, hγ⟩` from `hsFac hr hc (β - (Cochain.ofHom s).comp ((Cochain.ofHom r).comp β (zero_add _)) (zero_add _)) (by rw [Cochain.comp_sub, hsRS hrs, sub_self])`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨γ, hsCancel hr hc _ _ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← δ_ofHom_comp, hγ, δ_sub, δ_ofHom_comp, δ_ofHom_comp, hβ, hsRP hr, Cochain.comp_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hsInj {r : B ⟶ D} {s : D ⟶ B} {p : D ⟶ Q} (hrs : r ≫ s = 𝟙 _) (hr : r ≫ p = 0)
     (hc : IsColimit (CokernelCofork.ofπ p hr)) (n : ℤ) :
@@ -96,11 +96,11 @@ theorem hsInj {r : B ⟶ D} {s : D ⟶ B} {p : D ⟶ Q} (hrs : r ≫ s = 𝟙 _)
   rw [← δ_ofHom_comp, hγ, δ_sub, δ_ofHom_comp, δ_ofHom_comp, hβ, hsRP hr, Cochain.comp_zero, sub_zero]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = 0 at hx`. Rewrite `hx` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Take `⟨β, hβ⟩` from `hx`. Express the relevant statement in the definitionally equal form `δ (n - 1) n β = (Cochain.ofHom r).comp x.1 (zero_add n) at hβ`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨y, hy⟩` from `hsFac hr hc (x.1 - δ (n - 1) n ((Cochain.ofHom s).comp β (zero_add _))) (by rw [Cochain.comp_sub, δ_ofHom_comp, hsRS hrs, hβ, sub_self])`. Establish `hδ : δ n (n + 1) y = 0`. Apply `hsCancel hr hc` to reduce the goal to its premises. Rewrite using `[← δ_ofHom_comp, hy, δ_sub, δ_δ, Cocycle.δ_eq_zero, sub_zero, Cochain.comp_zero]`. Use `⟨CohomologyClass.mk (Cocycle.mk y (n + 1) rfl hδ), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = _`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨-((Cochain.ofHom s).comp β (zero_add _)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (Cochain.ofHom p).comp y (zero_add n) - x.1`. Rewrite using `[hy, δ_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -129,7 +129,7 @@ theorem hsExact {r : B ⟶ D} {s : D ⟶ B} {p : D ⟶ Q} (hrs : r ≫ s = 𝟙 
 end Gen
 
 /- English proof (translation)
-Introduce `R _ F n A B D f l r s hpo hrs p hl hr`. Establish `hc` using `hsCok f l r hpo p hl hr`. Conclude with `⟨hsInj hrs hr hc n, fun x hx => hsExact hrs hr hc n x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LeafHKSplit_of : LeafHKSplit := by
   intro R _ F n A B D f l r s hpo hrs p hl hr

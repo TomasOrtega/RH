@@ -11,15 +11,13 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Conclude with `(EuclideanSpace.proj (𝕜 := ℂ) i).differentiable`.
+A detailed English derivation is pending.
 -/
 theorem diff_coord {n : ℕ} (i : Fin n) : Differentiable ℂ fun v : V n => v i := by
   exact (EuclideanSpace.proj (𝕜 := ℂ) i).differentiable
 
 /- English proof (translation)
-Unfold `nmat`. Distinguish the cases in `h : b < a`. Simplify using `only [h, dif_pos]`. Conclude with `diff_coord _`. Simplify using `only [h, dif_neg, not_false_eq_true]`.
-
-Conclude with `differentiable_const _`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diff_nmat (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     Differentiable ℂ fun z : V (nd X) => nmat X z τ a b := by
@@ -31,7 +29,7 @@ theorem diff_nmat (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     exact differentiable_const _
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Use `show Differentiable ℂ fun z => (mat x0 τ * mat (nmat X z) τ) a b`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Differentiable.fun_sum fun c _ => (diff_nmat X τ c b).const_mul _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diff_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X x0) := by
   refine differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_
@@ -40,7 +38,7 @@ theorem diff_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X 
   exact Differentiable.fun_sum fun c _ => (diff_nmat X τ c b).const_mul _
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(diff_nmat X τ a b).continuous`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_nmatm (X : Data E r) (τ : X.Ψ) : Continuous fun w : V (nd X) => mat (nmat X w) τ := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -52,7 +50,7 @@ def Gw (X : Data E r) (w : V (nd X)) (τ : X.Ψ) : Matrix (Fin r) (Fin r) ℂ :=
   (mat (nmat X w) τ)ᵀ * Jd X * (mat (nmat X w) τ).map (starRingEnd ℂ)
 
 /- English proof (translation)
-Unfold `dmin`. Use `show lminor (gram τ.1 X.Gm (mat x τ * mat (nmat X w) τ)) i = _`. Rewrite using `[FrameDegreeData.gram_mul, hx τ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dmin_cpt_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V (nd X)) (τ : X.Ψ)
     (i : Fin (r + 1)) : dmin X.Gm (cpt X x w) τ i = lminor (Gw X w τ) i := by
@@ -62,7 +60,7 @@ theorem dmin_cpt_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V
   rfl
 
 /- English proof (translation)
-Unfold `Gw`. Conclude with `((cont_nmatm X τ).matrix_transpose.matrix_mul continuous_const).matrix_mul ((cont_nmatm X τ).matrix_map Complex.continuous_conj)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_Gw (X : Data E r) (τ : X.Ψ) : Continuous fun w : V (nd X) => Gw X w τ := by
   unfold Gw
@@ -70,7 +68,7 @@ theorem cont_Gw (X : Data E r) (τ : X.Ψ) : Continuous fun w : V (nd X) => Gw X
     ((cont_nmatm X τ).matrix_map Complex.continuous_conj)
 
 /- English proof (translation)
-Unfold `lminor`. Conclude with `((cont_Gw X τ).matrix_submatrix _ _).matrix_det`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_lminor (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun w : V (nd X) => lminor (Gw X w τ) i := by
@@ -78,9 +76,9 @@ theorem cont_lminor (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
   exact ((cont_Gw X τ).matrix_submatrix _ _).matrix_det
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [mat, nmat, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : b < a`. Rewrite using `[dif_pos h, if_neg (ne_of_gt h)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nmat_zero (X : Data E r) (τ : X.Ψ) : mat (nmat X 0) τ = 1 := by
   ext a b
@@ -91,7 +89,7 @@ theorem nmat_zero (X : Data E r) (τ : X.Ψ) : mat (nmat X 0) τ = 1 := by
   · rw [dif_neg h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (mat x τ * mat (nmat X 0) τ : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[nmat_zero, Matrix.mul_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cpt_zero (X : Data E r) (x : Frame X.Ψ r) : cpt X x 0 = x := by
   funext τ
@@ -100,28 +98,28 @@ theorem cpt_zero (X : Data E r) (x : Frame X.Ψ r) : cpt X x 0 = x := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[Gw, nmat_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Gw_zero (X : Data E r) (τ : X.Ψ) : Gw X 0 τ = Jd X := by
   rw [Gw, nmat_zero]
   simp
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_ne (p0 a : ℕ) : sgn p0 a ≠ 0 := by
   unfold sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_sgn (p0 a : ℕ) : |sgn p0 a| = 1 := by
   unfold sgn
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `lminor Jd psgn`. Rewrite using `[Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Simplify using `only [Function.comp_apply, Fin.coe_castLE]`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem lminor_Jd (X : Data E r) (i : Fin (r + 1)) : lminor (Jd X) i = ((psgn X.p0 i : ℝ) : ℂ) := by
   unfold lminor Jd psgn
@@ -131,14 +129,14 @@ theorem lminor_Jd (X : Data E r) (i : Fin (r + 1)) : lminor (Jd X) i = ((psgn X.
   exact Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) i
 
 /- English proof (translation)
-Unfold `psgn`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => sgn_ne _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psgn_ne (p0 i : ℕ) : psgn p0 i ≠ 0 := by
   unfold psgn
   exact Finset.prod_ne_zero_iff.2 fun a _ => sgn_ne _ _
 
 /- English proof (translation)
-Unfold `psgn`. Rewrite using `[Finset.abs_prod]`. Conclude with `Finset.prod_eq_one fun a _ => abs_sgn _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_psgn (p0 i : ℕ) : |psgn p0 i| = 1 := by
   unfold psgn
@@ -149,7 +147,7 @@ def nfw (X : Data E r) (la : Wt X.Ψ r) (w : V (nd X)) : ℝ :=
   ∏ τ, ∏ i : Fin r, ‖lminor (Gw X w τ) i.succ / lminor (Gw X w τ) i.castSucc‖ ^ (-(la τ i : ℝ) / 2)
 
 /- English proof (translation)
-Unfold `Data.nfac nfw`. Simplify using `only [dmin_cpt_orth X hx w]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem nfac_cpt_orth (X : Data E r) (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : IsOrth X x)
     (w : V (nd X)) : X.nfac la (cpt X x w) = nfw X la w := by
@@ -157,20 +155,20 @@ theorem nfac_cpt_orth (X : Data E r) (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : I
   simp only [dmin_cpt_orth X hx w]
 
 /- English proof (translation)
-Rewrite using `[Gw_zero, lminor_Jd, Complex.norm_real, Real.norm_eq_abs, abs_psgn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lminor_zero (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) : ‖lminor (Gw X 0 τ) i‖ = 1 := by
   rw [Gw_zero, lminor_Jd, Complex.norm_real, Real.norm_eq_abs, abs_psgn]
 
 /- English proof (translation)
-Unfold `nfw`. Simplify using `only [norm_div, norm_lminor_zero, div_one, Real.one_rpow, Finset.prod_const_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem nfw_zero (X : Data E r) (la : Wt X.Ψ r) : nfw X la 0 = 1 := by
   unfold nfw
   simp only [norm_div, norm_lminor_zero, div_one, Real.one_rpow, Finset.prod_const_one]
 
 /- English proof (translation)
-Unfold `nfw`. Use `tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ContinuousAt (fun w => lminor (Gw X w τ) i.succ / lminor (Gw X w τ) i.castSucc) 0` using `((cont_lminor X τ i.succ).continuousAt).div ((cont_lminor X τ i.castSucc).continuousAt) (by rw [← norm_ne_zero_iff, norm_lminor_zero]; exact one_ne_zero)`. Conclude with `h1.norm.rpow_const (Or.inl (by simp only [norm_div, norm_lminor_zero, div_one]; exact one_ne_zero))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nfw_contAt (X : Data E r) (la : Wt X.Ψ r) : ContinuousAt (nfw X la) 0 := by
   unfold nfw
@@ -181,7 +179,7 @@ theorem nfw_contAt (X : Data E r) (la : Wt X.Ψ r) : ContinuousAt (nfw X la) 0 :
   exact h1.norm.rpow_const (Or.inl (by simp only [norm_div, norm_lminor_zero, div_one]; exact one_ne_zero))
 
 /- English proof (translation)
-Unfold `phla`. Rewrite using `[neg_mul, neg_neg, mul_comm, Real.exp_mul, Real.exp_log h, Real.rpow_two]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_neg_phla (X : Data E r) (la : Wt X.Ψ r) {y : Frame X.Ψ r} (h : 0 < X.nfac la y) :
     Real.exp (-phla X la y) = X.nfac la y ^ 2 := by
@@ -202,7 +200,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce `τ` and use `⟨by show (mat x τ * mat (nmat X w) τ).det ≠ 0 rw [Matrix.det_mul]; exact mul_ne_zero (hx τ).1 (h1 τ), fun i => by rw [dmin_cpt_orth X hxo]; exact h2 τ i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cpt_mem_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (hxo : IsOrth X x) {w : V (nd X)}
     (h1 : ∀ τ, (mat (nmat X w) τ).det ≠ 0)
@@ -214,13 +212,11 @@ theorem cpt_mem_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (hxo : 
    fun i => by rw [dmin_cpt_orth X hxo]; exact h2 τ i⟩
 
 /- English proof (translation)
-Establish `hdet : ∀ τ, ∀ᶠ w in 𝓝 (0 : V (nd X)), (mat (nmat X w) τ).det ≠ 0` using `fun τ => by`. Establish `hc : ContinuousAt (fun w : V (nd X) => (mat (nmat X w) τ).det) 0` using `(cont_nmatm X τ).matrix_det.continuousAt`. Establish `h0 : (mat (nmat X 0) τ).det ≠ 0`. Rewrite using `[nmat_zero, Matrix.det_one]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc.eventually_ne h0`. Establish `hmin : ∀ τ, ∀ i : Fin (r + 1), ∀ᶠ w in 𝓝 (0 : V (nd X)), 0 < psgn X.p0 i * (lminor (Gw X w τ) i).re` using `fun τ i => by`. Establish `hc : ContinuousAt (fun w => psgn X.p0 i * (lminor (Gw X w τ) i).re) 0` using `(continuous_const.mul (Complex.continuous_re.comp (cont_lminor X τ i))).continuousAt`. Establish `h0 : 0 < psgn X.p0 i * (lminor (Gw X 0 τ) i).re`. Rewrite using `[Gw_zero, lminor_Jd, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_self_pos.2 (psgn_ne _ _)`. Conclude with `hc.eventually (lt_mem_nhds h0)`. Establish `hnf : ∀ᶠ w in 𝓝 (0 : V (nd X)), 1 / 2 < nfw X la w` using `(nfw_contAt X la).eventually (lt_mem_nhds (by rw [nfw_zero]; norm_num))`. Establish `hall : ∀ᶠ w in 𝓝 (0 : V (nd X)), (∀ τ, (mat (nmat X w) τ).det ≠ 0) ∧ (∀ τ, ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (lminor (Gw X w τ) i).re) ∧ 1 / 2 < nfw X la w` using `(Filter.eventually_all.2 hdet).and ((Filter.eventually_all.2 fun τ => Filter.eventually_all.2 (hmin τ)).and hnf)`. Take `⟨R, hR, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hall`.
-
-Conclude with `⟨R, hR, hball⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_ball (X : Data E r) (la : Wt X.Ψ r) : ∃ R > 0, ∀ w ∈ Metric.ball (0 : V (nd X)) R,
     (∀ τ, (mat (nmat X w) τ).det ≠ 0) ∧
@@ -250,17 +246,17 @@ theorem good_ball (X : Data E r) (la : Wt X.Ψ r) : ∃ R > 0, ∀ w ∈ Metric.
   exact ⟨R, hR, hball⟩
 
 /- English proof (translation)
-Introduce `r X la ρ hρ hρ1`. Take `⟨R0, hR0, hgood⟩` from `good_ball X la`. Use `set R := min R0 ρ with hR`. Establish `hR0' : 0 < R` using `lt_min hR0 hρ`. Establish `hvpos : volume (Metric.ball (0 : V (nd X)) R) ≠ 0` using `(Metric.measure_ball_pos volume _ hR0').ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvtop : volume (Metric.ball (0 : V (nd X)) R) ≠ ⊤` using `measure_ball_lt_top.ne`. Use `⟨(volume (Metric.ball (0 : V (nd X)) R))⁻¹ * ENNReal.ofReal 4, ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (pos_iff_ne_zero.2 hvpos)) ENNReal.ofReal_lt_top, fun P hP x hx hxo => ?_⟩` and prove the remaining obligations. Establish `hgoodR` using `fun w (hw : w ∈ Metric.ball (0 : V (nd X)) R) => hgood w (Metric.ball_subset_ball (min_le_left _ _) hw)`. Establish `hmem : Metric.ball (0 : V (nd X)) R ⊆ Bset X x ρ` using `fun w hw => by`. Take `⟨h1, h2, -⟩` from `hgoodR w hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨lt_of_lt_of_le (mem_ball_zero_iff.1 hw) (min_le_right _ _), cpt_mem_dom X hx hxo h1 h2⟩`. Establish `hu : DifferentiableOn ℂ (fun w => P (cpt X x w)) (Metric.ball 0 R)` using `hP.comp (diff_cpt X x).differentiableOn fun w hw => (hmem hw).2`. Establish `hmv` using `ReciprocityTheory.L2DbarEstimates.C.mv (nd X) 0 R (fun w => P (cpt X x w)) (fun _ => 1) hu measurable_const`. Simplify using `only [mul_one, one_mul, lintegral_const, Measure.restrict_apply_univ, cpt_zero] at hmv`. Establish `hpt : ∀ w ∈ Metric.ball (0 : V (nd X)) R, ‖P (cpt X x w)‖ₑ ^ 2 ≤ ENNReal.ofReal 4 * (‖P (cpt X x w)‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x w))))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨-, -, h3⟩` from `hgoodR w hw`. Establish `hn : X.nfac la (cpt X x w) = nfw X la w` using `nfac_cpt_orth X la hxo w`. Establish `he : 1 ≤ ENNReal.ofReal 4 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x w)))`. Rewrite using `[exp_neg_phla X la (by rw [hn]; linarith), hn, ← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ENNReal.ofReal_le_ofReal (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : ∫⁻ z in Metric.ball (0 : V (nd X)) R, ‖P (cpt X x z)‖ₑ ^ 2 ≤ ENNReal.ofReal 4 * ∫⁻ w in Bset X x ρ, ‖P (cpt X x w)‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x w)))`. Combine the equalities or inequalities in the displayed calculation. Establish `hle : ‖P x‖ₑ ^ 2 ≤ (volume (Metric.ball (0 : V (nd X)) R))⁻¹ * ∫⁻ z in Metric.ball (0 : V (nd X)) R, ‖P (cpt X x z)‖ₑ ^ 2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← ENNReal.div_eq_inv_mul, ENNReal.le_div_iff_mul_le (Or.inl hvpos) (Or.inl hvtop)]`. Conclude with `hmv`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem subMean_holds : SubMeanStatement (E := E) := by
   intro r X la ρ hρ hρ1

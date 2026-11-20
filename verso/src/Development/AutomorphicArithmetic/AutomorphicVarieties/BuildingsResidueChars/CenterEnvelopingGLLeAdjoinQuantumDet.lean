@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open GroundTheory.Automorphic.HarishChandra in
 /- English proof (translation)
-Establish `hgl : Formalism.REAL.GlRel (fun i j : Fin n => e (i, j))`. Introduce `i j k l`. Conclude with `e_mul_sub_mul (i, j) (k, l)`. Use `mem_center_of_commute_e fun a => ?_` and prove the remaining obligations. Conclude with `(Formalism.REAL.qDetCentral (U n) n _ hgl u a.1 a.2).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem qdet_mem_center (n : ℕ) (u : ℂ) :
     Formalism.REAL.qdet (fun i j : Fin n => e (i, j)) u ∈ Subalgebra.center ℂ (U n) := by
@@ -16,9 +16,9 @@ private theorem qdet_mem_center (n : ℕ) (u : ℂ) :
 
 open GroundTheory.Automorphic.HarishChandra in
 /- English proof (translation)
-Rewrite using `[harishChandraHom_apply]`. Simplify using `only`. Rewrite using `[UpperTheory.harishChandraProj_quantumDet_eq_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `GroundTheory.Automorphic.HarishChandra.translate`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_add, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, add_comm (MvPolynomial.X k), ← add_assoc, ← map_add]`. Use `congr 2`. Simplify using `only [rhoVec, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hc_qdet (n : ℕ) (u : ℂ) :
     harishChandraHom (⟨_, qdet_mem_center n (u + ((n : ℂ) - 1) / 2)⟩ : Subalgebra.center ℂ (U n)) =
@@ -35,11 +35,11 @@ private theorem hc_qdet (n : ℕ) (u : ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `n z hz`. Use `open GroundTheory.Automorphic.HarishChandra in`. Set `A : Subalgebra ℂ (Subalgebra.center ℂ (U n))` to `Algebra.adjoin ℂ (Set.range fun u : ℂ => ⟨_, qdet_mem_center n u⟩)`. Establish `hle : MvPolynomial.symmetricSubalgebra (Fin n) ℂ ≤ A.map GroundTheory.Automorphic.HarishChandra.harishChandraHom`. Use `(UpperTheory.symmetricSubalgebra_le_adjoin_range_prod_C_add_X_complex n).trans (Algebra.adjoin_le ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨_, Algebra.subset_adjoin ⟨_, rfl⟩, hc_qdet n u⟩`. Take `⟨a, ha, hae⟩` from `hle (GroundTheory.Automorphic.HarishChandra.harishChandraHom_mem_symmetricSubalgebra ⟨z, hz⟩)`. Establish `haz : a = ⟨z, hz⟩` using `GroundTheory.Automorphic.HarishChandra.harishChandraHom_injective hae`. Establish `hval : A.map (Subalgebra.center ℂ (GroundTheory.Automorphic.HarishChandra.U n)).val = Algebra.adjoin ℂ (Set.range fun u : ℂ => Formalism.REAL.qdet (fun i j : Fin n => GroundTheory.Automorphic.HarishChandra.e (i, j)) u)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.map_adjoin, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[← hval]`. Conclude with `⟨a, ha, by rw [haz]; rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.center_envelopingGL_le_adjoin_quantumDet :
     ∀ n : ℕ, Subalgebra.center ℂ (GroundTheory.Automorphic.HarishChandra.U n) ≤ Algebra.adjoin ℂ (Set.range fun u : ℂ => Formalism.REAL.qdet (fun i j : Fin n => GroundTheory.Automorphic.HarishChandra.e (i, j)) u) := by

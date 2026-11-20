@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.SlopeExt
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `of_subsingleton => simp`. Consider the case `@of_simple_quotient M _ _ N hs _ ih`. Establish `hinj : Function.Injective (N.subtype.lTensor (𝓞 K'))` using `Module.Flat.lTensor_preserves_injective_linearMap _ N.injective_subtype`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range (N.subtype.lTensor (𝓞 K')))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Nat.card (LinearMap.range (N.subtype.lTensor (𝓞 K'))) = Nat.card (𝓞 K' ⊗[𝓞 K] N)` using `(Nat.card_congr (LinearEquiv.ofInjective _ hinj).toEquiv).symm`. Establish `h3 : Nat.card ((𝓞 K' ⊗[𝓞 K] M) ⧸ LinearMap.range (N.subtype.lTensor (𝓞 K'))) = Nat.card (𝓞 K' ⊗[𝓞 K] (M ⧸ N))` using `(Nat.card_congr (TensorProduct.tensorQuotientEquiv (𝓞 K') N).toEquiv).symm`. Take `⟨p, -, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 hs`. Establish `h4 : Nat.card (𝓞 K' ⊗[𝓞 K] (M ⧸ N)) = Nat.card (M ⧸ N) ^ finrank K K'`. Rewrite using `[Nat.card_congr (LinearEquiv.lTensor (𝓞 K') e).toEquiv, Nat.card_congr e.toEquiv, ← Nat.card_congr (Algebra.TensorProduct.quotIdealMapEquivTensorQuot (𝓞 K') p).toEquiv, ← Submodule.cardQuot_apply, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, ← Ideal.absNorm_apply, Ideal.abs …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3, h4, ih, Submodule.card_eq_card_quotient_mul_card N, mul_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_tensor (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     {M : Type} [AddCommGroup M] [Module (𝓞 K) M] (h : IsFiniteLength (𝓞 K) M) :
@@ -41,21 +41,19 @@ theorem card_tensor (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberFi
     rw [h1, h2, h3, h4, ih, Submodule.card_eq_card_quotient_mul_card N, mul_pow]
 
 /- English proof (translation)
-Use `set N := Submodule.span R (Set.range e) with hN`. Use `set θ := l.liftBaseChange S with hθ`. Establish `hP : N.baseChange S = Submodule.span S (Set.range fun k => (1 : S) ⊗ₜ[R] e k)`. Rewrite using `[hN, Submodule.baseChange_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction.
 
-Establish `hmz : ∀ z : S ⊗[R] M, m • z ∈ N.baseChange S` using `fun z => by`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [← tmul_smul]`. Conclude with `Submodule.tmul_mem_baseChange_of_mem a (hme x)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Establish `hinj : Function.Injective θ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hmz z`. Rewrite `h1` using `[hP, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨a, ha⟩` from `h1`. Establish `h2 : ∑ k, a k • l (e k) = 0`. Use `congrArg θ ha` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.map_smul_of_tower, hz, smul_zero, map_sum]`. Simplify `this` using `[hθ]`. Establish `h3` using `Fintype.linearIndependent_iff.1 he a h2`. Establish `h4 : m • z = 0` using `by rw [← ha]; simp [h3]`. Establish `h5 : Function.Injective ((m • LinearMap.id : M →ₗ[R] M).lTensor S)` using `Module.Flat.lTensor_preserves_injective_linearMap _ ((injective_iff_map_eq_zero _).2 hm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `h5` to reduce the goal to its premises. Simplify using `using h4`. Establish `e1 : (Submodule.span S (Set.range fun k => l (e k))).toAddSubgroup = (N.baseChange S).toAddSubgroup.map (θ : S ⊗[R] M →+ W)`. Rewrite using `[← Submodule.map_toAddSubgroup, hP, Submodule.map_span, ← Set.range_comp]`. Use `congr 3`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Simplify using `[hθ]`. Establish `e2 : (Submodule.span S (Set.range l)).toAddSubgroup = (⊤ : AddSubgroup (S ⊗[R] M)).map (θ : S ⊗[R] M →+ W)`. Rewrite using `[← Submodule.top_toAddSubgroup (R := S), ← Submodule.map_toAddSubgroup, Submodule.map_top, hθ, LinearMap.range_liftBaseChange]`. Both sides reduce to the same expression.
-
-Rewrite using `[e1, e2, AddSubgroup.relIndex_map_map_of_injective (f := (θ : S ⊗[R] M →+ W)) _ _ hinj, AddSubgroup.relIndex_top_right, Nat.card_congr (TensorProduct.tensorQuotientEquiv S N).toEquiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relIndex_span {R S M W : Type} [CommRing R] [CommRing S] [Algebra R S] [Module.Flat R S]
     [AddCommGroup M] [Module R M] [AddCommGroup W] [Module R W] [Module S W] [IsScalarTower R S W]
@@ -106,15 +104,13 @@ theorem relIndex_span {R S M W : Type} [CommRing R] [CommRing S] [Algebra R S] [
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hd : DenseRange (fun (x : Fin j → K) (k : Fin j) => σ (x k))` using `DenseRange.piMap fun _ => hσ`. Establish `h1 : ∀ y : Fin j → ℂ, Formalism.HermitianLatticesTheory.cnorm (A *ᵥ y) ≤ t * Formalism.HermitianLatticesTheory.cnorm (B *ᵥ y)` using `fun y => by`. Use `hd.induction_on y (isClosed_le ?_ ?_) h` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.cnorm Matrix.mulVec dotProduct`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.cnorm Matrix.mulVec dotProduct`. Use `fun_prop`. Establish `hq : ∀ {μ : Type} [Fintype μ] (C : Matrix μ (Fin j) ℂ) (y : Fin j → ℂ), star y ⬝ᵥ ((Cᴴ * C) *ᵥ y) = ((Formalism.HermitianLatticesTheory.cnorm (C *ᵥ y) ^ 2 : ℝ) : ℂ)` using `fun C y => by`. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `[dotProduct, Complex.conj_mul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `Matrix.posSemidef_conjTranspose_mul_self A`. Establish `hB` using `Matrix.posSemidef_conjTranspose_mul_self B`. Establish `hY : (((t ^ 2 : ℝ) : ℂ) • (Bᴴ * B) - Aᴴ * A).PosSemidef`. Use `PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun y => ?_` and prove the remaining obligations. Use `IsHermitian.sub ?_ hA.isHermitian` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hB.smul (Complex.zero_le_real.2 (sq_nonneg t))).isHermitian`. Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, dotProduct_smul, hq, hq, smul_eq_mul, ← Complex.ofReal_mul, ← Complex.ofReal_sub, Complex.zero_le_real, ← mul_pow, sub_nonneg]`. Conclude with `pow_le_pow_left₀ (Real.sqrt_nonneg _) (h1 y) 2`. Establish `h2` using `Formalism.DivisionValues.det_le_det_add hA hY`. Rewrite `h2` using `[add_sub_cancel, det_smul, Fintype.card_fin, ← Complex.ofReal_pow, ← pow_mul]`.
-
-Establish `h3` using `(Complex.le_def.1 h2).1`. Rewrite `h3` using `[Complex.re_ofReal_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem det_le_of_dense {K ι κ : Type} [Field K] [Fintype ι] [Fintype κ] {j : ℕ} (σ : K →+* ℂ) (hσ : DenseRange σ)
     (A : Matrix ι (Fin j) ℂ) (B : Matrix κ (Fin j) ℂ) (t : ℝ)
@@ -145,9 +141,9 @@ theorem det_le_of_dense {K ι κ : Type} [Field K] [Fintype ι] [Fintype κ] {j 
   rwa [Complex.re_ofReal_mul] at h3
 
 /- English proof (translation)
-Break down `Complex.subfield_eq_of_closed (Subfield.isClosed_topologicalClosure σ.fieldRange) with h | h` into its components or cases. Use `absurd (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)) hσ` and prove the remaining obligations. Take `⟨r, hr⟩` from `h.le (Subfield.le_topologicalClosure _ ⟨x, rfl⟩)`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hr]`. Conclude with `Complex.conj_ofReal r`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[denseRange_iff_closure_range, ← RingHom.coe_fieldRange]`. Conclude with `congrArg (fun s : Subfield ℂ => (s : Set ℂ)) h`.
+A detailed English derivation is pending.
 -/
 theorem denseRange_of_not_isReal {K : Type} [Field K] {σ : K →+* ℂ} (hσ : ¬ComplexEmbedding.IsReal σ) :
     DenseRange σ := by
@@ -160,7 +156,7 @@ theorem denseRange_of_not_isReal {K : Type} [Field K] {σ : K →+* ℂ} (hσ : 
     exact congrArg (fun s : Subfield ℂ => (s : Set ℂ)) h
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun σ : K →+* ℂ => InfinitePlace.mk σ), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => g v) (fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2]), Finset.sum_const, nsmul_eq_mul, InfinitePlace.card_filter_mk_eq, (IsTotallyComplex.isComplex v).mult_eq_two]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_mk (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (g : InfinitePlace K → ℝ) :
     ∑ σ : K →+* ℂ, g (InfinitePlace.mk σ) = 2 * ∑ v, g v := by
@@ -172,11 +168,11 @@ theorem sum_mk (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (g : In
   rfl
 
 /- English proof (translation)
-Use `haveI : IsTotallyComplex K' := isTotallyComplex_of_algebra K K'`. Establish `h0 : ∀ τ : K →+* ℂ, Nat.card {σ : K' →+* ℂ // σ.comp (algebraMap K K') = τ} = finrank K K'` using `fun τ => by`. Use `letI : Algebra K ℂ := τ.toAlgebra`. Use `haveI : Module.Finite K K' := Module.Finite.of_restrictScalars_finite ℚ K K'`. Rewrite using `[← AlgHom.card K K' ℂ, ← Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr ⟨fun σ => { σ.1 with commutes' := fun x => RingHom.congr_fun σ.2 x }, fun φ => ⟨φ.toRingHom, RingHom.ext fun x => φ.commutes x⟩, fun σ => rfl, fun φ => rfl⟩`. Establish `h1 : ∑ σ : K' →+* ℂ, g (InfinitePlace.mk (σ.comp (algebraMap K K'))) = (finrank K K' : ℝ) * ∑ σ : K →+* ℂ, g (InfinitePlace.mk σ)`. Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun σ : K' →+* ℂ => σ.comp (algebraMap K K')), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => g (InfinitePlace.mk τ)) (fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2]), Finset.sum_const, nsmul_eq_mul, ← h0 τ, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `sum_mk K' fun w => g (w.comap (algebraMap K K'))`. Simplify using `only [InfinitePlace.comap_mk] at h2`. Rewrite `h2` using `[h1, sum_mk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_comap (K K' : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field K'] [NumberField K']
     [Algebra K K'] (g : InfinitePlace K → ℝ) :
@@ -210,16 +206,16 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
 def cols : Matrix ι (Fin j) ℂ := Matrix.of fun i a => Formalism.HermitianLatticesTheory.fcoord b X v (e a) i
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `[Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, cols, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramPl_eq : Formalism.HN.gramPl b X v e = (cols b X v e)ᴴ * cols b X v e := by
   ext a c
   simp [Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, cols, Matrix.mul_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.normAt`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, cols, Matrix.mulVec, dotProduct, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem normAt_sum (x : Fin j → K) :
     Formalism.HermitianLatticesTheory.normAt b X v (∑ k, x k • e k) = Formalism.HermitianLatticesTheory.cnorm (cols b X v e *ᵥ fun k => v.embedding (x k)) := by
@@ -234,19 +230,19 @@ theorem normAt_sum (x : Fin j → K) :
 end Frames
 
 /- English proof (translation)
-Use `set σ := w.embedding.comp (algebraMap K K') with hσ`. Establish `hv : w.comap (algebraMap K K') = InfinitePlace.mk σ`. Rewrite using `[← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`. Establish `hd : DenseRange σ` using `denseRange_of_not_isReal (IsTotallyComplex.complexEmbedding_not_isReal σ)`. Establish `h1 : ∀ x : Fin j → K, Formalism.HermitianLatticesTheory.cnorm (cols b' X' w (fun k => φ (e k)) *ᵥ fun k => σ (x k)) ≤ t * N σ (∑ k, x k • e k)` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `ht w.embedding (∑ k, x k • e k)`. Rewrite `h` using `[← (hG' w).2, map_sum]`. Simplify using `only [map_smulₛₗ] at h`. Rewrite `h` using `[normAt_sum]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hv, gramPl_eq, gramPl_eq]`. Break down `InfinitePlace.embedding_mk_eq σ with h | h` into its components or cases. Use `det_le_of_dense σ hd _ _ t fun x => (h1 x).trans (le_of_eq ?_)` and prove the remaining obligations. Use `normAt_sum b X (InfinitePlace.mk σ) e x` as an intermediate fact. Rewrite `this` using `[(hG _).2, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `set B := cols b X (InfinitePlace.mk σ) e with hB`. Establish `h2 : ((B.map (starRingEnd ℂ))ᴴ * B.map (starRingEnd ℂ)).det.re = (Bᴴ * B).det.re`. Establish `: (B.map (starRingEnd ℂ))ᴴ * B.map (starRingEnd ℂ) = (starRingEnd ℂ).mapMatrix (Bᴴ * B)`. Use extensionality with `a c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, ← RingHom.map_det, Complex.conj_re]`. Rewrite using `[← h2]`. Use `det_le_of_dense σ hd _ _ t fun x => (h1 x).trans (le_of_eq ?_)` and prove the remaining obligations. Use `normAt_sum b X (InfinitePlace.mk σ) e x` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[(hG _).2, h]`. Rewrite using `[← hc]`. Use `congrArg (t * ·) (this.trans ?_)` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.cnorm`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.norm_conj]`. Simplify using `[Matrix.mulVec, dotProduct, hB]`.
+A detailed English derivation is pending.
 -/
 theorem gram_le {K K' V V' ι κ : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [Field K']
     [NumberField K'] [StarRing K'] [Algebra K K'] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K' V']
@@ -293,13 +289,13 @@ theorem gram_le {K K' V V' ι κ : Type} [Field K] [NumberField K] [StarRing K] 
     simp [Matrix.mulVec, dotProduct, hB]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Formalism.HN.htGram K V ι b X hX j e he`. Establish `h3` using `h2 L hL hle hj`. Establish `p1` using `(Formalism.HN.plLat K V ι b X hX L hL).2.2`. Establish `p2` using `(Formalism.HN.plLat K V ι b X hX _ (Submodule.fg_span (Set.finite_range e))).2.2`. Establish `hi : ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex L.toAddSubgroup : ℝ) ≠ 0` using `fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h, mul_zero]`. Conclude with `p2.ne h3`. Establish `hne : ∀ v ∈ Finset.univ, (Formalism.HN.gramPl b X v e).det.re ≠ 0` using `Finset.prod_ne_zero_iff.1 (h1 ▸ p2.ne')`. Use `⟨by exact_mod_cast hi, fun v => lt_of_le_of_ne ?_ (hne v (Finset.mem_univ v)).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Formalism.HN.HeightGram.norm_det_gramPl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_nonneg _`. Establish `h4` using `congrArg Real.log (h3.trans h1)`. Rewrite `h4` using `[Real.log_mul p1.ne' hi, Real.log_prod hne]`. Establish `h5` using `Formalism.ExtensionFiltration.HermitianIdempotentFrameLemmas.rk_mul_mu b X hX L hL`. Rewrite `h5` using `[hj]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[h5, mul_div_cancel₀ _ Formalism.ExtensionFiltration.HermitianIdempotentFrameLemmas.nPl_ne_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem rk_mul_mu_eq {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
@@ -330,39 +326,35 @@ theorem rk_mul_mu_eq {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsT
     linarith
 
 /- English proof (translation)
-Introduce `K K' V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ N N' ι L c ⟨⟨n, ⟨b, X⟩, hG⟩⟩ ⟨⟨n', ⟨b', X'⟩, hG'⟩⟩ hc hli hL h0 hN`. Use `letI : StarRing K := starRingOfComm`. Use `letI : StarRing K' := starRingOfComm`. Use `haveI : IsTotallyComplex K' := isTotallyComplex_of_algebra K K'`. Use `haveI : Module.Finite K V := Module.Finite.of_basis b`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Module (𝓞 K) V' := Module.compHom V' (algebraMap (𝓞 K) (𝓞 K'))`. Use `haveI : IsScalarTower (𝓞 K) (𝓞 K') V' := ⟨fun a s x => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Set `l : L →ₗ[𝓞 K] V'` to `{ toFun := fun x => ι x map_add' := fun x y => by simp map_smul' := fun a x => by show ι (a • (x : V)) = algebraMap (𝓞 K) (𝓞 K') a • ι x`. Rewrite using `[← algebraMap_smul K a, map_smulₛₗ, ← algebraMap_smul K' (algebraMap (𝓞 K) (𝓞 K') a)]`. Use `rfl }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hr : Set.range l = ι '' (L : Set V)`. Use extensionality with `y`. Simplify using `[l]`. Use `set L' := Submodule.span (𝓞 K') (ι '' (L : Set V)) with hL'`. Establish `hL'fg : L'.FG` using `by haveI : Module.Finite (𝓞 K) L := Module.Finite.iff_fg.2 hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := 𝓞 K) (M := L)`. Use `⟨(s.finite_toSet.image l).toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset, ← Submodule.span_span_of_tower (𝓞 K), ← Submodule.map_span, hs, Submodule.map_top, LinearMap.coe_range, hr]`. Take `⟨e, heL, hsp, he⟩` from `Submodule.exists_fun_fin_finrank_span_eq K (L : Set V)`. Establish `hj0` using `Formalism.ExtensionFiltration.HermitianIdempotentFrameLemmas.rkK_ne_zero b L h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hj : Formalism.HN.rkK L = finrank K (Submodule.span K (L : Set V))` using `rfl`. Rewrite `hj0` using `[hj]`. Generalize the expression as in `finrank K (Submodule.span K (L : Set V)) = j at e heL hsp he hj hj0`. Establish `he'` using `hli j e he`. Establish `hj' : Formalism.HN.rkK L' = j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: Submodule.span K' (L' : Set V') = Submodule.span K' (Set.range fun k => ι (e k))`. Rewrite using `[hL', Submodule.span_span_of_tower]`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hsp ▸ Submodule.subset_span hx)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[map_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => by`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨e k, heL k, rfl⟩`. Rewrite using `[Formalism.HN.rkK, this, finrank_span_eq_card he', Fintype.card_fin]`. Take `⟨i1, g1, m1⟩` from `rk_mul_mu_eq b X (fun v => (hG v).1) e he L hL (Submodule.span_le.2 (Set.range_subset_iff.2 heL)) hj`. Take `⟨-, g2, m2⟩` from `rk_mul_mu_eq b' X' (fun v => (hG' v).1) _ he' L' hL'fg (Submodule.span_mono (by rintro _ ⟨k, rfl⟩; exact ⟨e k, heL k, rfl⟩)) hj'`. Set `eL : Fin j → L` to `fun k => ⟨e k, heL k⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : (Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.addSubgroupOf L.toAddSubgroup = (Submodule.span (𝓞 K) (Set.range eL)).toAddSubgroup`. Establish `: Submodule.span (𝓞 K) (Set.range e) = (Submodule.span (𝓞 K) (Set.range eL)).map L.subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Use extensionality with `x`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `⟨fun ⟨y, hy, h⟩ => (Subtype.ext h : y = x) ▸ hy, fun h => ⟨x, h, rfl⟩⟩`. Establish `hidx : (Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex L.toAddSubgroup = Nat.card (L ⧸ Submodule.span (𝓞 K) (Set.range eL))`. Rewrite using `[AddSubgroup.relIndex, hsub]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `i1`, `m1` using `[hidx]`. Use `haveI : Finite (L ⧸ Submodule.span (𝓞 K) (Set.range eL)) := Nat.finite_of_card_ne_zero i1`. Establish `hidx'` using `relIndex_span (S := 𝓞 K') l eL (he'.restrict_scalars' (𝓞 K')) (Nat.card (L ⧸ Submodule.span (𝓞 K) (Set.range eL)) : 𝓞 K) (fun x hx => by`. Establish `h1 : ((Nat.card (L ⧸ Submodule.span (𝓞 K) (Set.range eL)) : ℕ) : K) • (x : V) = 0`. Use `congrArg Subtype.val hx` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this`, the goal using `[Nat.cast_smul_eq_nsmul]`. Conclude with `this`. Conclude with `Subtype.ext ((smul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 i1)))`. Use the proof step `(fun x => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.span (𝓞 K) (Set.range eL)).toAddSubgroup.nsmul_index_mem x)`. Rewrite `hidx'` using `[card_tensor K K' (isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩), hr]`. Establish `m3` using `m2`. Rewrite `m3` using `[show (Submodule.span (𝓞 K') (Set.range fun k => ι (e k))).toAddSubgroup.relIndex L'.toAddSubgroup = _ from hidx', Nat.cast_pow, Real.log_pow]`. Establish `hs : ∑ w, Real.log (Formalism.HN.gramPl b' X' w fun k => ι (e k)).det.re ≤ ∑ w : InfinitePlace K', (2 * j * c + Real.log (Formalism.HN.gramPl b X (w.comap (algebraMap K K')) e).det.re)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun w _ => (Real.log_le_log (g2 w) (gram_le hG hG' hc ι hN e w)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (g1 _).ne', Real.log_pow, Real.log_exp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hs` using `[sum_comap K K' fun v => 2 * j * c + Real.log (Formalism.HN.gramPl b X v e).det.re, Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Finset.card_univ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hf : (Formalism.HN.nPl K' : ℝ) = finrank K K' * Formalism.HN.nPl K`. Simplify `sum_comap K K' fun _ => 1` using `[Formalism.HN.nPl]`. Establish `hf' : (0 : ℝ) < Formalism.HN.nPl K'` using `lt_of_le_of_ne (Nat.cast_nonneg _) Formalism.ExtensionFiltration.HermitianIdempotentFrameLemmas.nPl_ne_zero.symm`. Establish `hjp : (0 : ℝ) < j` using `by exact_mod_cast Nat.pos_of_ne_zero hj0`. Rewrite using `[slope_sq_eq hG hL, slope_sq_eq hG' hL'fg]`.
-
-Use `le_of_mul_le_mul_left (le_of_mul_le_mul_left ?_ hf') hjp` and prove the remaining obligations. Establish `hc' : (Fintype.card (InfinitePlace K) : ℝ) = Formalism.HN.nPl K` using `rfl`. Rewrite `hs` using `[hc']`. Establish `m4` using `congrArg ((finrank K K' : ℝ) * ·) m1`. Rewrite using `[m3, hf]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem slope_sq_sub_le_slope_sq_span : ∀ (K K' V V' : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field K'] [NumberField K'] [Algebra K K'] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K' V'] [Module (𝓞 K') V'] [IsScalarTower (𝓞 K') K' V'] (N : (K →+* ℂ) → V → ℝ) (N' : (K' →+* ℂ) → V' → ℝ) (ι : V →ₛₗ[algebraMap K K'] V') (L : Submodule (𝓞 K) V) (c : ℝ), HasGram N → HasGram N' → (∀ σ x, N ((starRingEnd ℂ).comp σ) x = N σ x) → (∀ (n : ℕ) (b : Fin n → V), LinearIndependent K b → LinearIndependent K' (fun k => ι (b k))) → L.FG → L ≠ ⊥ → (∀ σ' x, N' σ' (ι x) ≤ Real.exp c * N (σ'.comp (algebraMap K K')) x) → slope_sq N L - 2 * c ≤ slope_sq N' (Submodule.span (𝓞 K') (ι '' (L : Set V))) := by
   intro K K' V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ N N' ι L c ⟨⟨n, ⟨b, X⟩, hG⟩⟩ ⟨⟨n', ⟨b', X'⟩, hG'⟩⟩ hc hli hL h0 hN

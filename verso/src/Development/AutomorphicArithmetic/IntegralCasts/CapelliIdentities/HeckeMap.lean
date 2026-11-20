@@ -8,7 +8,7 @@ noncomputable def UpperTheory.Reformulated.B.Qf17.heckePol :
           Polynomial.X ^ (n - j)
 
 /- English proof (translation)
-Introduce `A B _ _ f n q a`. Unfold `UpperTheory.Reformulated.B.Qf17.heckePol`. Rewrite using `[Polynomial.map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C, map_mul f, map_mul f, map_pow f, map_pow f, map_neg f, map_one f, map_natCast f]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qf17.hecke_map :
     ∀ {A B : Type} [inst : CommRing A] [inst_1 : CommRing B] (f : A →+* B) (n q : ℕ) (a : ℕ → A),

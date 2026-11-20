@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult.Obj
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 X c hc u`. Take `⟨u', Hm, χ, hex, hH, hχ, hfr⟩` from `GlobalTheory.T.exists_hermitian_theta_factor X.A X.ab (X.diag c) (pull_isLB (X.isLB c) _) _ u`. Conclude with `⟨u', Hm, χ, hex, hH, GlobalTheory.T.appell_humbert_factor_of_hermitian X.A X.ab (X.diag c) (pull_isLB (X.isLB c) _) (X.pos c hc) _ u' Hm χ hH hχ hfr, hχ, hfr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isAH_diag : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt),
     IsTotPos (c : F) → ∀ u : HolUnif X.A (X.diag c) (Module.finrank ℚ F),

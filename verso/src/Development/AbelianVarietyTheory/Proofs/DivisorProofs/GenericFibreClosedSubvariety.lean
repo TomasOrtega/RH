@@ -11,21 +11,19 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRe
 namespace GlobalTheory.FibreClosure
 
 /- English proof (translation)
-Introduce `B Y _ f G j s hG x Z i _ _ hx G' j' s' hG' ι _ P hP`. Take `⟨hj, hrj, -, -⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Y f G j s hG`. Take `⟨-, hrj', -, hint'⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Z (i ≫ f) G' j' s' hG'`. Set `u : G' ⟶ G` to `hG.lift (j' ≫ i) s' (by rw [Category.assoc]; exact hG'.w)`. Establish `hu₁ : u ≫ j = j' ≫ i` using `hG.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu₂ : u ≫ s = s'` using `hG.lift_snd _ _ _`. Establish `hsq : IsPullback j' u i j` using `IsPullback.of_bot (by rw [hu₂]; exact hG') hu₁.symm hG`. Establish `: IsClosedImmersion u` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hsq ‹_›`. Establish `hη : (i ≫ f) (genericPoint Z) = genericPoint B`. Establish `: j x ∈ Set.range j` using `⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hrj]`. Rewrite using `[Scheme.Hom.comp_apply, hx]`. Conclude with `this`. Establish `hne : Nonempty G'`. Establish `: genericPoint Z ∈ (i ≫ f) ⁻¹' {genericPoint B}` using `hη`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hrj']`. Take `⟨y, -⟩` from `this`. Conclude with `⟨y⟩`. Take `⟨_, hgen⟩` from `hint' hne`. Establish `hux : u (genericPoint G') = x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(Scheme.Hom.isEmbedding j).injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hu₁, Scheme.Hom.comp_apply, hgen, hx]`. Establish `hrange : Set.range u = closure {x}`. Apply `subset_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hy : y ∈ closure {genericPoint G'}`. Rewrite using `[(genericPoint_spec G').def]`. Discharge the goal by the elementary cases of `trivial`. Use `image_closure_subset_closure_image (f := u) u.continuous ⟨y, hy, rfl⟩` as an intermediate fact. Rewrite `this` using `[Set.image_singleton, hux]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure.
 
-Conclude with `(Scheme.Hom.isClosedEmbedding u).isClosed_range.closure_subset_iff.2 (Set.singleton_subset_iff.2 ⟨_, hux⟩)`. Use `letI := algebraΓOfHom s'`. Use `letI := algebraΓOfHom s`. Rewrite using `[GlobalTheory.InterModel.interNumRed_eq_interNumOn _ u _ hrange, interNumOn_eq_interNum_pull (appTop_algebraΓOfHom u s hu₂) (fun a => pull_isLB (hP a) j)]`. Use `interNum_congr_lbIso _ _ (fun a => pull_isLB (pull_isLB (hP a) i) j') (fun a => pull_isLB (pull_isLB (hP a) j) u) fun a => ?_` and prove the remaining obligations.
-
-Conclude with `LBIso.trans (pull_isLB (pull_isLB (hP a) i) j') (pull_isLB (hP a) (u ≫ j)) (pull_isLB (pull_isLB (hP a) j) u) (GlobalTheory.GenSpread.lbIso_pull_pull (hP a) j' hu₁).symm (GlobalTheory.GenSpread.lbIso_pull_pull (hP a) u rfl)`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem interNum_genericFibre_eq_interNumRed : ∀ (B Y : Scheme.{0}) [IsIntegral B] (f : Y ⟶ B) (G : Scheme.{0}) (j : G ⟶ Y) (s : G ⟶ Sp B.functionField), IsPullback j s f (B.fromSpecStalk (genericPoint B)) → ∀ (x : G) (Z : Scheme.{0}) (i : Z ⟶ Y) [IsClosedImmersion i] [IsIntegral Z], i (genericPoint Z) = j x → ∀ (G' : Scheme.{0}) (j' : G' ⟶ Z) (s' : G' ⟶ Sp B.functionField), IsPullback j' s' (i ≫ f) (B.fromSpecStalk (genericPoint B)) → ∀ (ι : Type) [Fintype ι] (P : ι → LB Y), (∀ a, (P a).IsLB) → (letI := algebraΓOfHom s'; interNum B.functionField (structureModule G') (fun a => ((P a).pull i).pull j')) = (letI := algebraΓOfHom s; interNumRed B.functionField (⟨closure {x}, isClosed_closure⟩ : Closeds _) (fun a => (P a).pull j)) := by
   intro B Y _ f G j s hG x Z i _ _ hx G' j' s' hG' ι _ P hP

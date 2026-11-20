@@ -9,13 +9,13 @@ open Formalism.LogVandermondeBounds.flipTwoThree (Interlace B0 len)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `K _ _ x hx`. Establish `hx' : (x : K) ≠ 0` using `by simpa using hx`. Establish `hN : (1:ℝ) ≤ ∏ φ : K →+* ℂ, ‖φ (x:K)‖`. Establish `h1 : (algebraMap ℚ ℂ) (Algebra.norm ℚ (x:K)) = ∏ σ : K →ₐ[ℚ] ℂ, σ (x:K)` using `Algebra.norm_eq_prod_embeddings ℚ ℂ (x:K)`. Establish `h2 : ∏ φ : K →+* ℂ, ‖φ (x:K)‖ = ‖(algebraMap ℚ ℂ) (Algebra.norm ℚ (x:K))‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, norm_prod]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun φ => rfl)`. Rewrite using `[h2, ← Algebra.coe_norm_int x]`. Establish `h3 : Algebra.norm ℤ x ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hx`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Int.one_le_abs h3` after adjusting the coercions. Establish `hpos : ∀ φ : K →+* ℂ, 0 < ‖φ (x:K)‖` using `fun φ => norm_pos_iff.mpr ((map_ne_zero φ).mpr hx')`. Establish `hlog : 0 ≤ ∑ φ : K →+* ℂ, Real.log (‖φ (x:K)‖ ^ 2)`. Rewrite using `[← Real.log_prod (fun φ _ => (pow_pos (hpos φ) 2).ne'), Finset.prod_pow]`. Conclude with `Real.log_nonneg (one_le_pow₀ hN)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ∑ φ : K →+* ℂ, (1 + Real.log (‖φ (x:K)‖ ^ 2)) ≤ ∑ φ : K →+* ℂ, ‖φ (x:K)‖ ^ 2` using `Finset.sum_le_sum fun φ _ => by`. Combine the linear relations using `[Real.add_one_le_exp (Real.log (‖φ (x:K)‖ ^ 2)), Real.exp_log (pow_pos (hpos φ) 2)]`. Rewrite `this` using `[Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, mul_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem moduli_minimum_bound : Ms_min := by
   intro K _ _ x hx
@@ -42,7 +42,7 @@ theorem moduli_minimum_bound : Ms_min := by
   linarith
 
 /- English proof (translation)
-Introduce `f p q z R2 hp hq hz hP hQ`. Establish `h0 : 0 ≤ ∑ τ, p τ` using `Finset.sum_nonneg fun τ _ => hp τ`. Establish `h0' : 0 ≤ ∑ τ, q τ` using `Finset.sum_nonneg fun τ _ => hq τ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem moduli_entry_bound : Ms_entry := by
   intro f p q z R2 hp hq hz hP hQ
@@ -56,13 +56,13 @@ theorem moduli_entry_bound : Ms_entry := by
     _ = R2 ^ 2 := by ring
 
 /- English proof (translation)
-Establish `hh` using `hH.isHermitian`. Establish `hdet` using `hh.det_eq_prod_eigenvalues`. Establish `htr` using `hh.trace_eq_sum_eigenvalues`. Establish `hnn` using `hH.eigenvalues_nonneg`. Establish `htr' : ∑ i, hh.eigenvalues i = N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (H.trace) = (N : ℂ)` using `by simp [Matrix.trace, hd]`. Rewrite `htr` using `[h1]`. Establish `h2 : ((N : ℝ) : ℂ) = ((∑ i, hh.eigenvalues i : ℝ) : ℂ)` using `by push_cast; simpa using htr`. Conclude with `h2.symm` after adjusting the coercions. Rewrite using `[hdet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (∏ i, ((hh.eigenvalues i : ℝ) : ℂ)).re = ∏ i, hh.eigenvalues i`. Rewrite using `[← Complex.ofReal_prod, Complex.ofReal_re]`. Establish `h4 : (∏ i, (RCLike.ofReal (hh.eigenvalues i) : ℂ)).re = ∏ i, hh.eigenvalues i`. Simplify using `using h3`. Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem hadamard_unit_diagonal_det_le_one (N : ℕ) (H : Matrix (Fin N) (Fin N) ℂ) (hH : H.PosSemidef) (hd : ∀ c, H c c = 1) :
     H.det.re ≤ 1 := by
@@ -89,25 +89,25 @@ theorem hadamard_unit_diagonal_det_le_one (N : ℕ) (H : Matrix (Fin N) (Fin N) 
     _ = 1 := by rw [Finset.sum_sub_distrib, htr']; simp
 
 /- English proof (translation)
-Introduce `N G hG`. Establish `hdiag : ∀ c, 0 ≤ (G c c).re ∧ (G c c).im = 0`. Introduce `c`. Use `hG.diag_nonneg (i := c)` as an intermediate fact. Rewrite `this` using `[Complex.le_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨by simpa using this.1, by simpa using this.2.symm⟩`. Distinguish the cases in `h0 : ∃ c, (G c c).re = 0`. Take `⟨c, hc⟩` from `h0`. Establish `hGc : G c c = 0` using `Complex.ext hc (hdiag c).2`. Establish `hv : G *ᵥ (Pi.single c 1) = 0`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(hG.dotProduct_mulVec_zero_iff _).mp` to reduce the goal to its premises. Simplify using `[hGc]`. Establish `hdet : G.det = 0` using `Matrix.exists_mulVec_eq_zero_iff.mp ⟨Pi.single c 1, by simp, hv⟩`. Rewrite using `[hdet, Finset.prod_eq_zero (mem_univ c) hc]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push Not at h0`. Establish `hpos : ∀ c, 0 < (G c c).re` using `fun c => lt_of_le_of_ne (hdiag c).1 (Ne.symm (h0 c))`. Set `s : Fin N → ℝ` to `fun c => (Real.sqrt (G c c).re)⁻¹`. Establish `hs2 : ∀ c, s c * s c = ((G c c).re)⁻¹`. Introduce `c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [s]`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (hpos c).le]`. Set `Dg : Matrix (Fin N) (Fin N) ℂ` to `Matrix.diagonal (fun c => (s c : ℂ))`. Establish `hDg : Dgᴴ = Dg`. Simplify using `[Dg, Matrix.diagonal_conjTranspose, Pi.star_def]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hH : (Dgᴴ * G * Dg).PosSemidef` using `hG.conjTranspose_mul_mul_same Dg`. Rewrite `hH` using `[hDg]`. Establish `hGre : ∀ c, G c c = (((G c c).re : ℝ) : ℂ)` using `fun c => Complex.ext (by simp) (by simp [(hdiag c).2])`. Establish `hHd : ∀ c, (Dg * G * Dg) c c = 1`. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dg, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[hGre c]`. Establish `: (s c : ℂ) * (((G c c).re : ℝ) : ℂ) * (s c : ℂ) = ((s c * s c * (G c c).re : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, hs2 c, inv_mul_cancel₀ (hpos c).ne']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hadamard_unit_diagonal_det_le_one N _ hH hHd`. Establish `hdetD : Dg.det = ((∏ c, s c : ℝ) : ℂ)` using `by simp [Dg, Matrix.det_diagonal]`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, hdetD]`. Establish `h2 : (((∏ c, s c : ℝ) : ℂ) * G.det * ((∏ c, s c : ℝ) : ℂ)).re = ((∏ c, s c) * (∏ c, s c)) * G.det.re`. Rewrite using `[Complex.re_mul_ofReal, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2, ← Finset.prod_mul_distrib]`. Simplify using `only [hs2] at h1`. Rewrite `h1` using `[Finset.prod_inv_distrib]`. Establish `hP : 0 < ∏ c, (G c c).re` using `Finset.prod_pos (fun c _ => hpos c)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[inv_mul_le_iff₀ hP, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem hadamard_inequality_bound : Ms_hadamard := by
   intro N G hG
@@ -157,9 +157,9 @@ theorem hadamard_inequality_bound : Ms_hadamard := by
     rwa [inv_mul_le_iff₀ hP, mul_one] at h1
 
 /- English proof (translation)
-Introduce `R G _ _ _ _ r`. Establish `: Nat.card (Fin r → G) = Nat.card G ^ r` using `by simp [Nat.card_fun]`. Rewrite using `[← this]`. Apply `Nat.card_le_card_of_surjective (fun s : Fin r → G => (⟨Submodule.span R (Set.range s), s, rfl⟩ : {H : Submodule R G // ∃ s : Fin r → G, Submodule.span R (Set.range s) = H}))` to reduce the goal to its premises. Introduce and unpack `⟨H, s, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem moduli_intermediate_bound : Ms_between := by
   intro R G _ _ _ _ r
@@ -172,25 +172,23 @@ theorem moduli_intermediate_bound : Ms_between := by
   exact ⟨s, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ μ _ F hF hinv hint`. Set `f : ℝ → E → ℝ` to `fun θ w => ‖F (Complex.exp (θ * Complex.I) • w)‖ ^ 2`. Establish `hFc : Continuous F` using `hF.continuous`. Establish `hcont : Continuous (Function.uncurry f)`. Establish `: Function.uncurry f = fun p : ℝ × E => ‖F (Complex.exp (p.1 * Complex.I) • p.2)‖ ^ 2` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `fun_prop`. Establish `h2pi : (0:ℝ) ≤ 2 * π` using `by positivity`. Establish `hpt : ∀ w : E, ‖F 0‖ ^ 2 ≤ (2 * π)⁻¹ * (∫ θ in (0:ℝ)..2 * π, f θ w)`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `G : ℂ → ℂ` to `fun ζ => (F (ζ • w)) ^ 2`. Establish `hG : Differentiable ℂ G`. Establish `h1 : Differentiable ℂ (fun ζ : ℂ => ζ • w)` using `by fun_prop`. Conclude with `(hF.comp h1).pow 2`. Establish `hmv : Real.circleAverage G 0 1 = G 0` using `(hG.diffContOnCl).circleAverage`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG0 : ‖G 0‖ = ‖F 0‖ ^ 2` using `by simp [G]`. Rewrite using `[← hG0, ← hmv, Real.circleAverage_def, norm_smul, Real.norm_of_nonneg (by positivity)]`. Use `gcongr`. Use `(intervalIntegral.norm_integral_le_integral_norm h2pi).trans (le_of_eq ?_)` and prove the remaining obligations. Use `intervalIntegral.integral_congr fun θ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[G, f, circleMap]`. Establish `hmeas : ∀ θ : ℝ, Measurable (fun w : E => Complex.exp (θ * Complex.I) • w)` using `fun θ => (continuous_const_smul _).measurable`. Establish `hsm : AEStronglyMeasurable (fun w => ‖F w‖ ^ 2) μ` using `hint.1`. Establish `hslice_int : ∀ θ, Integrable (f θ) μ`. Introduce `θ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hint`. Rewrite `h1` using `[← hinv θ]`. Conclude with `(integrable_map_measure (by rw [hinv θ]; exact hsm) (hmeas θ).aemeasurable).mp h1`. Establish `hslice : ∀ θ, ∫ w, f θ w ∂μ = ∫ w, ‖F w‖ ^ 2 ∂μ`. Introduce `θ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← hinv θ]`. Rewrite using `[integral_map (hmeas θ).aemeasurable (by rw [hinv θ]; exact hsm)]`. Establish `hprod : Integrable (Function.uncurry f) ((volume.restrict (Set.uIoc 0 (2 * π))).prod μ)`. Rewrite using `[integrable_prod_iff hcont.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall fun θ => hslice_int θ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : (fun θ => ∫ w, ‖Function.uncurry f (θ, w)‖ ∂μ) = fun _ => ∫ w, ‖F w‖ ^ 2 ∂μ`. Use function extensionality and compare the values at `θ`. Rewrite using `[← hslice θ]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `[f]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h1, Set.uIoc_of_le h2pi]`. Conclude with `integrable_const _`. Establish `hswap` using `intervalIntegral_integral_swap hprod`. Establish `hI : Integrable (fun w => ∫ θ in (0:ℝ)..2 * π, f θ w) μ`. Establish `h` using `hprod.integral_prod_right`.
-
-Simplify `h` using `[intervalIntegral.integral_of_le h2pi, Set.uIoc_of_le h2pi, Function.uncurry]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[intervalIntegral.integral_const, sub_zero, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (by positivity), one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_value_inequality_radial : MeanValueInequalityRadial := by
   intro E _ _ _ _ _ μ _ F hF hinv hint
@@ -251,13 +249,13 @@ theorem mean_value_inequality_radial : MeanValueInequalityRadial := by
           inv_mul_cancel₀ (by positivity), one_mul]
 
 /- English proof (translation)
-Introduce `ι _ w q c O hw hO`. Establish `h1 : ‖∑ e, q e * (w e : ℂ) * c e‖ ≤ ∑ e, (‖q e‖ * Real.sqrt (w e)) * (‖c e‖ * Real.sqrt (w e))`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun e _ => ?_))` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (hw e).le]`. Use `nth_rewrite 1 [← Real.mul_self_sqrt (hw e).le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun e => ‖q e‖ * Real.sqrt (w e)) (fun e => ‖c e‖ * Real.sqrt (w e))`. Establish `h3 : ∀ (x : ι → ℂ) e, (‖x e‖ * Real.sqrt (w e)) ^ 2 = ‖x e‖ ^ 2 * w e`. Introduce `x e`. Rewrite using `[mul_pow, Real.sq_sqrt (hw e).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h3] at h2`. Establish `h4 : (∑ e, ‖q e‖ ^ 2 * w e) * O⁻¹ * ∑ e, ‖c e‖ ^ 2 * w e * O = (∑ e, ‖q e‖ ^ 2 * w e) * ∑ e, ‖c e‖ ^ 2 * w e`. Rewrite using `[← Finset.sum_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem block_cauchy_schwarz : WeightedCauchySchwarz := by
   intro ι _ w q c O hw hO
@@ -279,7 +277,7 @@ theorem block_cauchy_schwarz : WeightedCauchySchwarz := by
     _ ≤ _ := h2
 
 /- English proof (translation)
-Introduce `ι _ c h`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Use `sq_sum_le_card_mul_sum_sq (s := (univ : Finset ι)) (f := fun e => ‖c e‖)` as an intermediate fact. Simplify using `only [Finset.card_univ] at this`. Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) (Fintype.card ι)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem L1LeSqrtCardOfL2_statement : L1LeSqrtCardOfL2 := by
   intro ι _ c h
@@ -289,23 +287,21 @@ theorem L1LeSqrtCardOfL2_statement : L1LeSqrtCardOfL2 := by
   nlinarith [Nat.cast_nonneg (α := ℝ) (Fintype.card ι)]
 
 /- English proof (translation)
-Introduce `n r U e e' hU`. Distinguish the cases in `he : Function.Injective e`. Establish `hG : ((U.submatrix e e')ᴴ * (U.submatrix e e')).PosSemidef` using `Matrix.posSemidef_conjTranspose_mul_self _`. Establish `h1` using `hadamard_inequality_bound r _ hG`. Establish `hdet : ((U.submatrix e e')ᴴ * (U.submatrix e e')).det.re = ‖(U.submatrix e e').det‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_conjTranspose, Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, Complex.ofReal_re]`. Apply the tactic sequence `have hentry : ∀ c, (((U.submatrix e e')ᴴ * (U.submatrix e e')) c c).re = ∑ a, ‖U (e a) (e' c)‖ ^ 2 := by`. Introduce `c`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.submatrix_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, Complex.ofReal_re]`. Establish `hUU : ∀ j, ∑ i, ‖U i j‖ ^ 2 = 1`. Introduce `j`. Establish `h3 : (Uᴴ * U) j j = 1`. Use `(Matrix.mem_unitaryGroup_iff').mp hU` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h4 : ((Uᴴ * U) j j).re = ∑ i, ‖U i j‖ ^ 2`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, Complex.ofReal_re]`. Rewrite using `[← h4, h3]`. Simplify using the standard rewrite rules. Establish `hcol : ∀ c, (((U.submatrix e e')ᴴ * (U.submatrix e e')) c c).re ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c`. Apply the tactic sequence `rw [hentry c, ← hUU (e' c)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image (fun a _ b _ h => he h)]`. Use `_ ≤ ∑ i, ‖U i (e' c)‖ ^ 2 := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcol0 : ∀ c, 0 ≤ (((U.submatrix e e')ᴴ * (U.submatrix e e')) c c).re`. Introduce `c`. Apply the tactic sequence `rw [hentry c]`. Check the signs of the components of the expression. Establish `h5 : ‖(U.submatrix e e').det‖ ^ 2 ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdet]`. Conclude with `h1.trans (Finset.prod_le_one (fun c _ => hcol0 c) (fun c _ => hcol c))`. Conclude with `(sq_le_one_iff₀ (norm_nonneg _)).mp h5`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hne⟩ : ∃ a b, e a = e b ∧ a ≠ b := by`. Simplify `he` using `[Function.Injective]`.
-
-Establish `: (U.submatrix e e').det = 0` using `Matrix.det_zero_of_row_eq hne (by ext j; simp [hab])`. Simplify using `[this]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem third_zeta_minor_bound : UnitaryMinorNormLeOne := by
   intro n r U e e' hU
@@ -352,11 +348,11 @@ theorem third_zeta_minor_bound : UnitaryMinorNormLeOne := by
     simp [this]
 
 /- English proof (translation)
-Introduce `V _ _ x φ z hz h`. Establish `h1 : (1:ℝ) ≤ ‖inner ℂ x φ‖`. Rewrite using `[h, Complex.norm_intCast]`. Conclude with `Int.one_le_abs hz` after adjusting the coercions. Establish `h2` using `norm_inner_le_norm (𝕜 := ℂ) x φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : 0 < ‖x‖`. Break down `(norm_nonneg x).lt_or_eq with h' | h'` into its components or cases. Conclude with `h'`. Rewrite `h2` using `[← h']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[div_le_iff₀ hx]`. Combine the linear relations using `[mul_comm ‖x‖ ‖φ‖]`.
+A detailed English derivation is pending.
 -/
 theorem inverse_norm_le_of_integer_inner : InverseNormLeOfIntegerInner := by
   intro V _ _ x φ z hz h
@@ -370,17 +366,17 @@ theorem inverse_norm_le_of_integer_inner : InverseNormLeOfIntegerInner := by
   rw [div_le_iff₀ hx]; linarith [mul_comm ‖x‖ ‖φ‖]
 
 /- English proof (translation)
-Introduce `n lam nu T c rho hI hT hc hcb hr hrb`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hz : 0 < T ^ (-(degZ lam nu))` using `zpow_pos hT0 _`. Establish `hd : 0 < weylDim lam` using `(mul_pos_iff_of_pos_left hz).1 (lt_of_lt_of_le (by positivity) hrb)`. Establish `hmin : ∀ i, 0 ≤ min (len lam i) (B0 lam nu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `le_min ?_ ?_` and prove the remaining obligations. Unfold `len`. Use `hI.1 (Fin.castSucc_le_succ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `B0; exact Finset.sum_nonneg fun j _ => by have := (hI.2 j).1; linarith`. Establish `hsum : ((∑ i, (min (len lam i) (B0 lam nu)).toNat : ℕ) : ℝ) = ∑ i, ((min (len lam i) (B0 lam nu) : ℤ) : ℝ)`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Int.toNat_of_nonneg (hmin i)` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `e1 : Real.log ((c * rho) ^ 2) = 2 * Real.log |c| + Real.log (rho ^ 2)`. Rewrite using `[mul_pow, Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_abs]; push_cast; ring`. Establish `e2 : Real.log |c| ≤ ((n * ∑ i, (min (len lam i) (B0 lam nu)).toNat : ℕ) : ℝ) * Real.log (Wnum lam : ℝ)`. Use `Real.log_le_log (abs_pos.2 hc) hcb` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `e3 : Real.log (rho ^ 2) ≤ -(degZ lam nu : ℝ) * Real.log T + Real.log (weylDim lam)`. Use `Real.log_le_log (by positivity) hrb` as an intermediate fact. Rewrite `this` using `[Real.log_mul hz.ne' hd.ne', Real.log_zpow]`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite `e2` using `[Nat.cast_mul, hsum]`. Unfold `MeanSquareTwistBound`. Rewrite using `[e1]`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem third_zeta_arithmetic_bound : InterlacingLogSquareBound := by
   intro n lam nu T c rho hI hT hc hcb hr hrb
@@ -412,20 +408,20 @@ theorem third_zeta_arithmetic_bound : InterlacingLogSquareBound := by
   rw [e1]; nlinarith
 
 /- English proof (translation)
-Unfold `wt plus`. Conclude with `Finset.sum_nonneg fun i _ => by have := h (Fin.le_last i); linarith`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem weight_positive_part_nonneg {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) : 0 ≤ wt (plus lam) := by
   unfold wt plus
   exact Finset.sum_nonneg fun i _ => by have := h (Fin.le_last i); linarith
 
 /- English proof (translation)
-Introduce `κ lam muMax dmin cc hA hcc hd hdm hc hmu`. Establish `hk : (0:ℝ) < (κ : ℝ) + 1` using `by positivity`. Establish `hw` using `weight_positive_part_nonneg lam hA`. Establish `e1 : -Real.log dmin ≤ (wt (plus lam) : ℝ) * Real.log ((κ : ℝ) + 1)`. Use `Real.log_le_log (by positivity) hdm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_inv, Real.log_pow]`. Establish `h2 : (((wt (plus lam)).toNat : ℕ) : ℝ) = (wt (plus lam) : ℝ)`. Conclude with `Int.toNat_of_nonneg hw` after adjusting the coercions. Rewrite `this` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : Real.log cc ≤ ((κ : ℝ) + 1) ^ 2 * Real.log ((plus lam 0 : ℝ) + (κ : ℝ) + 1)`. Use `Real.log_le_log hcc hc` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `MeanSquareWeightBound`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem fourth_zeta_arithmetic_bound : MuMaxBoundOfAntitoneWeight := by
   intro κ lam muMax dmin cc hA hcc hd hdm hc hmu
@@ -444,21 +440,21 @@ theorem fourth_zeta_arithmetic_bound : MuMaxBoundOfAntitoneWeight := by
   unfold MeanSquareWeightBound; linarith
 
 /- English proof (translation)
-Introduce `C₀ hC`. Use `⟨Real.log C₀ / Real.log 2 + 4, ?_⟩` and prove the remaining obligations. Introduce `κ lam v logT logNorm muStd mu hv hT hA hN hS hmu`. Break down `Nat.eq_zero_or_pos κ with rfl | hκ` into its components or cases. Establish `w0 : wt (plus lam) = 0` using `by simp [wt, plus]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `p0 : plus lam 0 = 0` using `by simp [plus]`. Establish `z0 : MeanSquareWeightBound lam = 0` using `by simp [MeanSquareWeightBound, w0, p0]`. Rewrite `hmu`, the goal using `[w0]`. Rewrite using `[p0]`. Rewrite `hS` using `[z0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: -(lam (Fin.last 0) : ℝ) * logT ≤ |(lam (Fin.last 0) : ℝ)| * logT` using `mul_le_mul_of_nonneg_right (neg_le_abs _) hT`. Simplify using `at hmu this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκ' : (1:ℝ) ≤ κ` using `by exact_mod_cast hκ`. Establish `hk : (2:ℝ) ≤ (κ : ℝ) + 1` using `by linarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (0:ℝ) ≤ (wt (plus lam) : ℝ)` using `by exact_mod_cast weight_positive_part_nonneg lam hA`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlk : Real.log 2 ≤ Real.log ((κ : ℝ) + 1)` using `Real.log_le_log (by norm_num) hk`. Establish `hlv : 0 ≤ Real.log v` using `Real.log_nonneg hv`. Establish `hlC : 0 ≤ Real.log C₀` using `Real.log_nonneg hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ekv : Real.log (((κ : ℝ) + 1) * v) = Real.log ((κ : ℝ) + 1) + Real.log v` using `Real.log_mul (by positivity) (by positivity)`. Establish `eN : Real.log (C₀ * ((κ : ℝ) + 1) ^ 3 * v ^ 2) = Real.log C₀ + 3 * Real.log ((κ : ℝ) + 1) + 2 * Real.log v`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow]; push_cast; ring`. Establish `h1 : Real.log C₀ ≤ Real.log C₀ / Real.log 2 * Real.log (((κ : ℝ) + 1) * v)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hl2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (by rw [ekv]; linarith) hlC`. Establish `h2 : logNorm + Real.log ((κ : ℝ) + 1) ≤ (Real.log C₀ / Real.log 2 + 4) * Real.log (((κ : ℝ) + 1) * v)`. Rewrite `hN` using `[eN]`. Establish `: (Real.log C₀ / Real.log 2 + 4) * Real.log (((κ : ℝ) + 1) * v) = Real.log C₀ / Real.log 2 * Real.log (((κ : ℝ) + 1) * v) + 4 * (Real.log ((κ : ℝ) + 1) + Real.log v)`. Rewrite using `[← ekv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hw`. Establish `h4 : -(lam (Fin.last κ) : ℝ) * logT ≤ |(lam (Fin.last κ) : ℝ)| * logT` using `mul_le_mul_of_nonneg_right (neg_le_abs _) hT`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `MeanSquareWeightBound at hS`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem fifth_zeta_arithmetic_bound : AntitoneWeightLogBoundExists := by
   intro C₀ hC
@@ -504,7 +500,7 @@ theorem fifth_zeta_arithmetic_bound : AntitoneWeightLogBoundExists := by
     nlinarith
 
 /- English proof (translation)
-Introduce `κ lam S hS hl h0 hm`. Unfold `wt plus`. Rewrite using `[Fin.sum_univ_succ]`. Establish `: ∑ i : Fin κ, (lam i.succ - lam (Fin.last κ)) ≤ ∑ _i : Fin κ, (S + 1)` using `Finset.sum_le_sum fun i _ => hm _ (Fin.succ_ne_zero i)`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

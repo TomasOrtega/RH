@@ -5,9 +5,9 @@ import GroundTheory.AutomorphicForms.SmoothRepSchur
 open UpperTheory.V.Z.J.D
 
 /- English proof (translation)
-Introduce `L _ _ n w τ`. Use `letI := τ.acg`. Use `letI := τ.mod`. Use `haveI : τ.ρ.IsIrreducible := τ.irred`. Establish `hsm : GroundTheory.Automorphic.IsSmooth τ.ρ` using `τ.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨τ.irred, fun f hf => ?_⟩` and prove the remaining obligations. Set `φ : Representation.IntertwiningMap τ.ρ τ.ρ` to `{ toLinearMap := f, isIntertwining' := fun g => LinearMap.ext fun v => hf g v }`. Take `⟨c, hc⟩` from `(GroundTheory.Automorphic.algebraMap_intertwiningMap_bijective_of_isSmooth hsm).2 φ`. Conclude with `⟨c, LinearMap.ext fun v => (congrArg (fun h : Representation.IntertwiningMap τ.ρ τ.ρ => h v) hc).symm⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.schurGL :
     SchurGL := by

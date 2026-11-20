@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PiSpanV
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_variables_of_coeff {O σ : Type} [CommRing O] (s : Finset σ) :
     ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → MvPowerSeries.coeff n f = 0) →
@@ -15,21 +15,21 @@ private theorem mem_span_variables_of_coeff {O σ : Type} [CommRing O] (s : Fins
   _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ σ _`. Establish `hreg : IsRegularLocalRing (MvPowerSeries σ O)` using `GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries O σ`. Establish `hdim : ringKrullDim (MvPowerSeries σ O) = ((Fintype.card σ + 1 : ℕ) : WithBot ℕ∞)`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one, Nat.card_eq_fintype_card, add_comm]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `hm : maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Use `⟨hreg, hdim, cotInd_of_span _ _ _ ?_ ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨o, rfl⟩`. Use `GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => simpa using hϖ.not_isUnit`. Consider the case `some i => simp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Introduce `f hf`. Establish `h0` using `GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.1 hf`. Rewrite `h0` using `[hm, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h0`. Establish `h1 : f - MvPowerSeries.C (ϖ * c) ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mem_span_variables_of_coeff Finset.univ _ fun n hn => ?_` and prove the remaining obligations. Establish `: n = 0` using `Finsupp.ext fun i => hn i (Finset.mem_univ i)`. Substitute `this` using the available equality. Simplify using `[hc]`. Establish `h2 : f = (f - MvPowerSeries.C (ϖ * c)) + MvPowerSeries.C ϖ * MvPowerSeries.C c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use `add_mem (Ideal.span_mono ?_ h1) (Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨none, rfl⟩))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨some i, rfl⟩`. Establish `h` using `hreg.spanFinrank_maximalIdeal`. Rewrite `h` using `[hdim]`. Rewrite using `[Fintype.card_option]`. Establish `h' : (maximalIdeal (MvPowerSeries σ O)).spanFinrank = Fintype.card σ + 1`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Conclude with `h'.ge`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.mvPowerSeries_cotInd :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →

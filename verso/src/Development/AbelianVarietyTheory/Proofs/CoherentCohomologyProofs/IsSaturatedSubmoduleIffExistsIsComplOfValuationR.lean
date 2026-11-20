@@ -10,11 +10,11 @@ section General
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Establish `hs' (y : M ⧸ N) : N.mkQ (s y) = y` using `LinearMap.congr_fun hs y`. Use `⟨LinearMap.range s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ hx ⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hy : y = 0`. Rewrite using `[← hs' y, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Rewrite using `[hy, map_zero]`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Use `Submodule.mem_sup.2 ⟨x - s (N.mkQ x), ?_, s (N.mkQ x), ⟨_, rfl⟩, sub_add_cancel _ _⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub, hs', sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompl_of_projective_quotient (N : Submodule R M) [Module.Projective R (M ⧸ N)] :
     ∃ N' : Submodule R M, IsCompl N N' := by
@@ -33,16 +33,16 @@ theorem exists_isCompl_of_projective_quotient (N : Submodule R M) [Module.Projec
     rw [← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub, hs', sub_self]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.equiv (Submodule.quotientEquivOfIsCompl N' N h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_isCompl [Module.Finite R M] {N N' : Submodule R M} (h : IsCompl N N') :
     Module.Finite R N :=
   Module.Finite.equiv (Submodule.quotientEquivOfIsCompl N' N h.symm)
 
 /- English proof (translation)
-Establish `hN : (N.submoduleOf P).map P.subtype = N`. Rewrite using `[Submodule.submoduleOf, Submodule.map_comap_subtype, inf_eq_right.2 hle]`. Use `⟨Q.map P.subtype, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hN, disjoint_iff, ← Submodule.map_inf _ P.injective_subtype, h.inf_eq_bot, Submodule.map_bot]`. Use `conv_lhs => rw [← hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.map_sup, h.sup_eq_top, Submodule.map_top, Submodule.range_subtype]`.
+A detailed English derivation is pending.
 -/
 theorem exists_disjoint_sup_eq_of_isCompl_submoduleOf {P N : Submodule R M} (hle : N ≤ P)
     {Q : Submodule R P} (h : IsCompl (N.submoduleOf P) Q) :
@@ -64,7 +64,7 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {M : Type*} [AddCommGroup
 variable (R M) in
 
 /- English proof (translation)
-The claim follows from `haveI : Module.FinitePresentation R M := Module.finitePresentation_of_finite R M Module.Flat.projective_of_finitePresentation`.
+A detailed English derivation is pending.
 -/
 theorem projective_of_finite_of_isTorsionFree [Module.Finite R M] [Module.IsTorsionFree R M] :
     Module.Projective R M :=
@@ -72,7 +72,7 @@ theorem projective_of_finite_of_isTorsionFree [Module.Finite R M] [Module.IsTors
   Module.Flat.projective_of_finitePresentation
 
 /- English proof (translation)
-The claim follows from `haveI := h.isTorsionFree_quotient projective_of_finite_of_isTorsionFree R (M ⧸ N)`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedSubmodule.projective_quotient [Module.Finite R M] {N : Submodule R M}
     (h : IsSaturatedSubmodule N) : Module.Projective R (M ⧸ N) :=
@@ -80,7 +80,7 @@ theorem IsSaturatedSubmodule.projective_quotient [Module.Finite R M] {N : Submod
   projective_of_finite_of_isTorsionFree R (M ⧸ N)
 
 /- English proof (translation)
-The claim follows from `haveI := h.projective_quotient exists_isCompl_of_projective_quotient N`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedSubmodule.exists_isCompl [Module.Finite R M] {N : Submodule R M}
     (h : IsSaturatedSubmodule N) : ∃ N' : Submodule R M, IsCompl N N' :=
@@ -88,7 +88,7 @@ theorem IsSaturatedSubmodule.exists_isCompl [Module.Finite R M] {N : Submodule R
   exists_isCompl_of_projective_quotient N
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `(isSaturatedIn_iff.1 h).2.exists_isCompl`. Conclude with `exists_disjoint_sup_eq_of_isCompl_submoduleOf h.le hQ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSaturatedIn.exists_disjoint_sup_eq {P N : Submodule R M} [Module.Finite R P]
     (h : IsSaturatedIn P N) : ∃ N' : Submodule R M, Disjoint N N' ∧ N ⊔ N' = P := by
@@ -112,7 +112,7 @@ variable {R : Type*} [CommRing R] [IsDomain R] [ValuationRing R]
 variable (R M) in
 
 /- English proof (translation)
-The claim follows from `haveI : Module.Flat R M := Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 ‹_›) Module.free_of_flat_of_isLocalRing`.
+A detailed English derivation is pending.
 -/
 theorem free_of_finite_of_isTorsionFree_of_valuationRing [Module.Finite R M]
     [Module.IsTorsionFree R M] : Module.Free R M :=
@@ -121,7 +121,7 @@ theorem free_of_finite_of_isTorsionFree_of_valuationRing [Module.Finite R M]
   Module.free_of_flat_of_isLocalRing
 
 /- English proof (translation)
-The claim follows from `haveI := h.isTorsionFree_quotient free_of_finite_of_isTorsionFree_of_valuationRing R (M ⧸ N)`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedSubmodule.free_quotient_of_valuationRing [Module.Finite R M]
     {N : Submodule R M} (h : IsSaturatedSubmodule N) : Module.Free R (M ⧸ N) :=
@@ -129,7 +129,7 @@ theorem IsSaturatedSubmodule.free_quotient_of_valuationRing [Module.Finite R M]
   free_of_finite_of_isTorsionFree_of_valuationRing R (M ⧸ N)
 
 /- English proof (translation)
-The claim follows from `haveI := h.free_quotient_of_valuationRing exists_isCompl_of_projective_quotient N`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedSubmodule.exists_isCompl_of_valuationRing [Module.Finite R M]
     {N : Submodule R M} (h : IsSaturatedSubmodule N) : ∃ N' : Submodule R M, IsCompl N N' :=
@@ -137,7 +137,7 @@ theorem IsSaturatedSubmodule.exists_isCompl_of_valuationRing [Module.Finite R M]
   exists_isCompl_of_projective_quotient N
 
 /- English proof (translation)
-The claim follows from `let ⟨_, h'⟩ := h.exists_isCompl_of_valuationRing finite_of_isCompl h'`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedSubmodule.finite_of_valuationRing [Module.Finite R M]
     {N : Submodule R M} (h : IsSaturatedSubmodule N) : Module.Finite R N :=
@@ -145,7 +145,7 @@ theorem IsSaturatedSubmodule.finite_of_valuationRing [Module.Finite R M]
   finite_of_isCompl h'
 
 /- English proof (translation)
-The claim follows from `haveI := h.finite_of_valuationRing free_of_finite_of_isTorsionFree_of_valuationRing R N`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedSubmodule.free_of_valuationRing [Module.Finite R M] [Module.IsTorsionFree R M]
     {N : Submodule R M} (h : IsSaturatedSubmodule N) : Module.Free R N :=
@@ -153,7 +153,7 @@ theorem IsSaturatedSubmodule.free_of_valuationRing [Module.Finite R M] [Module.I
   free_of_finite_of_isTorsionFree_of_valuationRing R N
 
 /- English proof (translation)
-The claim follows from `haveI := (isSaturatedIn_iff.1 h).2.finite_of_valuationRing Module.Finite.equiv (Submodule.submoduleOfEquivOfLe h.le)`.
+A detailed English derivation is pending.
 -/
 theorem IsSaturatedIn.finite_of_valuationRing {P N : Submodule R M} [Module.Finite R P]
     (h : IsSaturatedIn P N) : Module.Finite R N :=
@@ -165,7 +165,7 @@ end Valuation
 universe u
 
 /- English proof (translation)
-The claim follows from `isSaturatedSubmodule_span_one_two.exists_isCompl`.
+A detailed English derivation is pending.
 -/
 example : ∃ N' : Submodule ℤ (ℤ × ℤ), IsCompl (Submodule.span ℤ {((1, 2) : ℤ × ℤ)}) N' :=
   isSaturatedSubmodule_span_one_two.exists_isCompl

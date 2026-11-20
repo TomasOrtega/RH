@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DualCon
 
 /- English proof (translation)
-Introduce `κ _ B hB F`. Establish `hfin : ∀ i, {y : B i | Sigma.ι B i y ∈ F}.Finite` using `fun i => (F.finite_toSet).preimage (Sigma.ι B i).isOpenEmbedding.injective.injOn`. Use `choose V hV hFV using fun i => hB i (hfin i).toFinset`. Use `⟨⨆ i, Sigma.ι B i ''ᵁ V i, IsAffineOpen.iSup_of_disjoint (fun i => (hV i).image_of_isOpenImmersion _) fun i j hij => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(disjoint_opensRange_sigmaι B i j hij).mono (Scheme.Hom.image_le_opensRange _ _) (Scheme.Hom.image_le_opensRange _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, y, rfl⟩` from `(sigmaOpenCover B).exists_eq x`. Establish `hy : y ∈ V i` using `hFV i y ((Set.Finite.mem_toFinset _).2 hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, ⟨y, hy, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem finAff_sigma : ∀ {κ : Type} [Finite κ] (B : κ → Scheme.{0}), (∀ i, FinAff (B i)) → FinAff (∐ B) := by
   intro κ _ B hB F

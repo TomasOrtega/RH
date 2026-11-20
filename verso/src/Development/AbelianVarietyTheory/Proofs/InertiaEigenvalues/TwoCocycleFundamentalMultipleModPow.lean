@@ -12,7 +12,7 @@ namespace GlobalTheory.UnifSpan
 open GlobalTheory.TateTop
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[quotRep_mk, twist_apply, Submodule.Quotient.mk_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem quotRep_twist_apply {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {G : Type} [Group G] (ε : G →* Oˣ) (ϖ : O) (n : ℕ) (g : G) (q : O ⧸ powSub (M := O) ϖ n) :
@@ -21,7 +21,7 @@ private theorem quotRep_twist_apply {O : Type} [CommRing O] [IsDomain O] [IsDisc
   rw [quotRep_mk, twist_apply, Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Rewrite using `[quotRep_twist_apply, quotRep_twist_apply]`. Conclude with `map_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem factor_quotRep_of_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {G : Type} [Group G] (ε : G →* Oˣ) (ϖ : O) {m n : ℕ} (hmn : m ≤ n) (g : G)
@@ -32,31 +32,31 @@ private theorem factor_quotRep_of_le {O : Type} [CommRing O] [IsDomain O] [IsDis
   exact map_smul _ _ _
 
 /- English proof (translation)
-Establish `hwZ` using `(mem_cocycles2 (twist ε O) w).mp hw`. Establish `hp'` using `hp`. Rewrite `hp'` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `hp'`. Establish `hdisc : ∀ n : ℕ, DiscreteTopology (O ⧸ powSub (M` using `O) ϖ n) := fun n => QuotientAddGroup.discreteTopology (N := (powSub (M := O) ϖ n).toAddSubgroup) (hopen n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `S : ℕ → Set O` to `fun n => {a | ∃ b : G → O ⧸ powSub (M := O) ϖ n, Continuous b ∧ ∀ g h : G, d1 (quotRep (twist ε O) ϖ n) b (g, h) = Submodule.Quotient.mk (w (g, h) - a * φ (c (g, h)))}`. Establish `hne : ∀ n, (S n).Nonempty`. Introduce `n`. Use `hdisc n` as an intermediate fact. Use `letI : Module ℤ_[p] (O ⧸ powSub (M := O) ϖ n) := Module.compHom _ φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hsm : ∀ (s : ℤ_[p]) (q : O ⧸ powSub (M` using `O) ϖ n), s • q = φ s • q := fun _ _ => rfl`. Establish `: CompactSpace (O ⧸ powSub (M` using `O) ϖ n) := by`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← (Submodule.mkQ_surjective (powSub (M := O) ϖ n)).range_eq]`. Conclude with `isCompact_range (Submodule.continuous_mkQ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Finite (O ⧸ powSub (M` using `O) ϖ n) := finite_of_compact_of_discrete`. Establish `hkill : ∀ m : O ⧸ powSub (M` using `O) ϖ n, ((p : ℤ_[p]) ^ n) • m = 0 := by`. Introduce `m`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[hsm, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, mem_powSub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t ^ n * x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_natCast, ht, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨-, hex, -⟩` from `hgen n (O ⧸ powSub (M := O) ϖ n) hkill`. Establish `hz : IsCoc χ (fun q : G × G => (Submodule.Quotient.mk (w q) : O ⧸ powSub (M` using `O) ϖ n)) := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(IsLocallyConstant.iff_continuous _).mpr ((Submodule.continuous_mkQ _).comp hwZ.1), fun g h k => ?_⟩` and prove the remaining obligations. Establish `e` using `hwZ.2 g h k`. Rewrite `e` using `[twist_apply, hε g]`. Rewrite using `[hsm, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, ← Submodule.Quotient.mk_sub, e, Submodule.Quotient.mk_zero]`. Take `⟨x, b, hb, hzb⟩` from `hex _ hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `⟨a, b, hb.continuous, fun g h => ?_⟩` and prove the remaining obligations. Establish `e` using `hzb (g, h)`. Simplify using `only [cob, hsm] at e`. Rewrite using `[d1_apply, quotRep_twist_apply, hε g, Submodule.Quotient.mk_sub, e, show a * φ (c (g, h)) = φ (c (g, h)) • a from mul_comm _ _, Submodule.Quotient.mk_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hanti : ∀ n, S (n + 1) ⊆ S n`. Introduce `n a ha`. Take `⟨b, hb, hd⟩` from `ha`. Use `⟨fun g => Submodule.factor (powSub_anti (M := O) ϖ (Nat.le_succ n)) (b g), (continuous_factor ϖ (Nat.le_succ n)).comp hb, fun g h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `hd g h`. Rewrite `e` using `[d1_apply]`. Rewrite using `[d1_apply, ← factor_quotRep_of_le ε ϖ (Nat.le_succ n), ← map_sub, ← map_add, e]`. Conclude with `Submodule.factor_mk _ _`. Establish `hclosed : ∀ n, IsClosed (S n)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Use `hdisc n` as an intermediate fact. Establish `hpre : S n = (powSub (M` using `O) ϖ n).mkQ ⁻¹' ((powSub (M := O) ϖ n).mkQ '' S n) := by`. Use `(Set.subset_preimage_image _ _).antisymm ?_` and prove the remaining obligations. Introduce and unpack `a' ⟨a, ⟨b, hb, hd⟩, hmk⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, hb, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[hd g h, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_sub]`. Use `congr 1`. Rewrite using `[Submodule.Quotient.eq]`. Establish `hmk' : Submodule.Quotient.mk (p` using `powSub (M := O) ϖ n) a = Submodule.Quotient.mk a' := hmk`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd'` using `Submodule.smul_mem _ (φ (c (g, h))) ((Submodule.Quotient.eq _).mp hmk')`. Rewrite `hd'` using `[smul_eq_mul]`. Use `hd' using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpre]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(isClosed_discrete _).preimage (Submodule.continuous_mkQ _)`. Take `⟨a, ha⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S hanti hne (hclosed 0).isCompact hclosed`. Conclude with `⟨a, fun n => Set.mem_iInter.mp ha n⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_mod_pow {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O] [CompactSpace O]

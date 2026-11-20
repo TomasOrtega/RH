@@ -42,7 +42,7 @@ def frameMulLinA (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
   LinearMap.pi fun i ↦ (Matrix.toLin' gᵀ).comp (LinearMap.proj i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [frameMulLinA, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Matrix.toLin'_apply]`. Rewrite using `[← Matrix.vecMul_transpose, Matrix.transpose_transpose]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frameMulLinA_apply (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (X : ι → Fin n → R ⊗[K] E) :
     frameMulLinA K E R ι n g X = (Matrix.of X * g : Matrix ι (Fin n) (R ⊗[K] E)) := by
@@ -53,7 +53,7 @@ theorem frameMulLinA_apply (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (X : ι →
   rfl
 
 /- English proof (translation)
-Rewrite using `[frameMulLinA, LinearMap.det_pi, LinearMap.det_toLin', Matrix.det_transpose, Finset.prod_const, Finset.card_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_frameMulLinA (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
     LinearMap.det (frameMulLinA K E R ι n g) = g.det ^ Fintype.card ι := by
@@ -67,14 +67,14 @@ def frameMulLin (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
   (frameMulLinA K E R ι n g).restrictScalars R
 
 /- English proof (translation)
-The claim follows from `frameMulLinA_apply g X`.
+A detailed English derivation is pending.
 -/
 theorem frameMulLin_apply (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (X : FrameSp K E R ι n) :
     frameMulLin K E R ι n g X = frameMul X g :=
   frameMulLinA_apply g X
 
 /- English proof (translation)
-Establish `h` using `LinearMap.det_restrictScalars (R := R) (S := R ⊗[K] E) (f := frameMulLinA K E R ι n g)`. Rewrite `h` using `[det_frameMulLinA, map_pow]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_frameMulLin (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
     LinearMap.det (frameMulLin K E R ι n g) = Algebra.norm R g.det ^ Fintype.card ι := by
@@ -90,9 +90,9 @@ section Modulus
 variable {F : Type*} [Field F] [TopologicalSpace F] [IsTopologicalRing F] [LocallyCompactSpace F]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[IndefiniteRowSideFullHecke.WmSys.absF, ha]`. Distinguish the cases in `hb : b = 0`. Simplify using `[IndefiniteRowSideFullHecke.WmSys.absF, hb]`. Establish `hab : a * b ≠ 0` using `mul_ne_zero ha hb`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [IndefiniteRowSideFullHecke.WmSys.absF, dif_neg ha, dif_neg hb, dif_neg hab]`. Rewrite using `[show Units.mk0 (a * b) hab = Units.mk0 a ha * Units.mk0 b hb from Units.ext rfl, map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem absF_mul (a b : F) :
     IndefiniteRowSideFullHecke.WmSys.absF (a * b) = IndefiniteRowSideFullHecke.WmSys.absF a * IndefiniteRowSideFullHecke.WmSys.absF b := by
@@ -105,14 +105,14 @@ theorem absF_mul (a b : F) :
   rw [show Units.mk0 (a * b) hab = Units.mk0 a ha * Units.mk0 b hb from Units.ext rfl, map_mul]
 
 /- English proof (translation)
-Simplify using `only [IndefiniteRowSideFullHecke.WmSys.absF, dif_neg (one_ne_zero (α := F))]`. Rewrite using `[show Units.mk0 (1 : F) one_ne_zero = 1 from Units.ext rfl, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem absF_one : IndefiniteRowSideFullHecke.WmSys.absF (1 : F) = 1 := by
   simp only [IndefiniteRowSideFullHecke.WmSys.absF, dif_neg (one_ne_zero (α := F))]
   rw [show Units.mk0 (1 : F) one_ne_zero = 1 from Units.ext rfl, map_one]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, absF_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, absF_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem absF_pow (a : F) (k : ℕ) : IndefiniteRowSideFullHecke.WmSys.absF (a ^ k) = IndefiniteRowSideFullHecke.WmSys.absF a ^ k := by
   induction k with
@@ -123,7 +123,7 @@ variable {K E : Type*} [Field K] [Field E] [Algebra K E] [Algebra.IsQuadraticExt
 variable [Algebra K F]
 
 /- English proof (translation)
-Establish `hz : Algebra.norm F (z : F ⊗[K] E) ≠ 0` using `(Units.map (Algebra.norm F : F ⊗[K] E →* F) z).ne_zero`. Simplify using `only [IndefiniteRowSideFullHecke.WmSys.absF, dif_neg hz, modE]`. Use `congr 1`. Conclude with `Units.ext rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem modE_eq_absF (z : (F ⊗[K] E)ˣ) :
     modE F z = IndefiniteRowSideFullHecke.WmSys.absF (Algebra.norm F (z : F ⊗[K] E)) := by
@@ -134,19 +134,19 @@ theorem modE_eq_absF (z : (F ⊗[K] E)ˣ) :
   exact Units.ext rfl
 
 /- English proof (translation)
-Simplify using `only [modE, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modE_mul (z w : (F ⊗[K] E)ˣ) : modE F (z * w) = modE F z * modE F w := by
   simp only [modE, map_mul]
 
 /- English proof (translation)
-Simplify using `only [modE, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modE_one : modE F (1 : (F ⊗[K] E)ˣ) = 1 := by
   simp only [modE, map_one]
 
 /- English proof (translation)
-Rewrite using `[modE_eq_absF]`. Establish `hz : Algebra.norm F (z : F ⊗[K] E) ≠ 0` using `(Units.map (Algebra.norm F : F ⊗[K] E →* F) z).ne_zero`. Simplify using `only [IndefiniteRowSideFullHecke.WmSys.absF, dif_neg hz]`. Conclude with `distribHaarChar_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modE_pos (z : (F ⊗[K] E)ˣ) : 0 < modE F z := by
   rw [modE_eq_absF]
@@ -164,14 +164,14 @@ variable {R : Type*} [Field R] [Algebra K R] [TopologicalSpace R] [IsTopological
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_assoc (X : Matrix ι (Fin n) (R ⊗[K] E)) g h`.
+A detailed English derivation is pending.
 -/
 theorem frameMul_frameMul (X : FrameSp K E R ι n) (g h : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
     frameMul (frameMul X g) h = frameMul X (g * h) :=
   Matrix.mul_assoc (X : Matrix ι (Fin n) (R ⊗[K] E)) g h
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_one (X : Matrix ι (Fin n) (R ⊗[K] E))`.
+A detailed English derivation is pending.
 -/
 theorem frameMul_one (X : FrameSp K E R ι n) : frameMul X 1 = X :=
   Matrix.mul_one (X : Matrix ι (Fin n) (R ⊗[K] E))
@@ -199,7 +199,7 @@ def frameMulHom (g : GL (Fin n) (R ⊗[K] E)) : FrameSp K E R ι n ≃ₜ+ Frame
 
 @[simp]
 /- English proof (translation)
-The claim follows from `frameMulLin_apply _ X`.
+A detailed English derivation is pending.
 -/
 theorem frameMulHom_apply (g : GL (Fin n) (R ⊗[K] E)) (X : FrameSp K E R ι n) :
     frameMulHom K E R ι n g X = frameMul X (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :=
@@ -208,7 +208,7 @@ theorem frameMulHom_apply (g : GL (Fin n) (R ⊗[K] E)) (X : FrameSp K E R ι n)
 variable [LocallyCompactSpace R] [T2Space R] [SecondCountableTopology R]
 
 /- English proof (translation)
-Rewrite using `[WmSysEquiv.addEquivAddHaarChar_eq_absF_det hR (frameMulLinEquiv K E R ι n g) (frameMulHom K E R ι n g) (fun _ ↦ rfl)]`. Rewrite using `[show ((frameMulLinEquiv K E R ι n g : FrameSp K E R ι n ≃ₗ[R] FrameSp K E R ι n) : FrameSp K E R ι n →ₗ[R] FrameSp K E R ι n) = frameMulLin K E R ι n (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) from rfl, det_frameMulLin, absF_pow, modE_eq_absF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem addEquivAddHaarChar_frameMulHom (hR : ¬ DiscreteTopology R) (g : GL (Fin n) (R ⊗[K] E)) :
     addEquivAddHaarChar (frameMulHom K E R ι n g) =
@@ -243,7 +243,7 @@ def rowMulLinA {S : Type*} [CommRing S] (m : Type*) {κ : Type*} [Fintype m] [Fi
   LinearMap.pi fun i ↦ (Matrix.toLin' gᵀ).comp (LinearMap.proj i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [rowMulLinA, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Matrix.toLin'_apply]`. Rewrite using `[← Matrix.vecMul_transpose, Matrix.transpose_transpose]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowMulLinA_apply {S : Type*} [CommRing S] {m κ : Type*} [Fintype m] [Fintype κ]
     [DecidableEq κ] (g : Matrix κ κ S) (X : m → κ → S) :
@@ -255,7 +255,7 @@ theorem rowMulLinA_apply {S : Type*} [CommRing S] {m κ : Type*} [Fintype m] [Fi
   rfl
 
 /- English proof (translation)
-Rewrite using `[rowMulLinA, LinearMap.det_pi, LinearMap.det_toLin', Matrix.det_transpose, Finset.prod_const, Finset.card_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_rowMulLinA {S : Type*} [CommRing S] {m κ : Type*} [Fintype m] [DecidableEq m]
     [Fintype κ] [DecidableEq κ] (g : Matrix κ κ S) :
@@ -269,7 +269,7 @@ def colMulLinA {S : Type*} [CommRing S] {m : Type*} (κ : Type*) [Fintype m] [De
     (transposePi S m κ).toLinearMap
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [colMulLinA, LinearMap.comp_apply, LinearEquiv.coe_coe, rowMulLinA_apply]`. Use `show (Matrix.of (fun j i ↦ X i j) * hᵀ) j i = (h * Matrix.of X) i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colMulLinA_apply {S : Type*} [CommRing S] {m κ : Type*} [Fintype m] [DecidableEq m]
     [Fintype κ] (h : Matrix m m S) (X : m → κ → S) :
@@ -281,7 +281,7 @@ theorem colMulLinA_apply {S : Type*} [CommRing S] {m κ : Type*} [Fintype m] [De
   exact Finset.sum_congr rfl fun k _ ↦ mul_comm _ _
 
 /- English proof (translation)
-Establish `hc` using `LinearMap.det_conj (rowMulLinA κ hᵀ) (transposePi S m κ).symm`. Rewrite `hc` using `[LinearEquiv.symm_symm, det_rowMulLinA, Matrix.det_transpose]`. Rewrite using `[colMulLinA, LinearMap.comp_assoc]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_colMulLinA {S : Type*} [CommRing S] {m κ : Type*} [Fintype m] [DecidableEq m]
     [Fintype κ] [DecidableEq κ] (h : Matrix m m S) :
@@ -297,14 +297,14 @@ def frameSMulLin (h : Matrix ι ι (R ⊗[K] E)) : FrameSp K E R ι n →ₗ[R] 
   (colMulLinA (Fin n) h).restrictScalars R
 
 /- English proof (translation)
-The claim follows from `colMulLinA_apply h X`.
+A detailed English derivation is pending.
 -/
 theorem frameSMulLin_apply (h : Matrix ι ι (R ⊗[K] E)) (X : FrameSp K E R ι n) :
     frameSMulLin K E R ι n h X = frameSMul h X :=
   colMulLinA_apply h X
 
 /- English proof (translation)
-Establish `hd` using `LinearMap.det_restrictScalars (R := R) (S := R ⊗[K] E) (f := colMulLinA (m := ι) (Fin n) h)`. Rewrite `hd` using `[det_colMulLinA, map_pow, Fintype.card_fin]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_frameSMulLin (h : Matrix ι ι (R ⊗[K] E)) :
     LinearMap.det (frameSMulLin K E R ι n h) = Algebra.norm R h.det ^ n := by
@@ -314,14 +314,14 @@ theorem det_frameSMulLin (h : Matrix ι ι (R ⊗[K] E)) :
   exact hd
 
 /- English proof (translation)
-The claim follows from `(Matrix.mul_assoc h h' (X : Matrix ι (Fin n) (R ⊗[K] E))).symm`.
+A detailed English derivation is pending.
 -/
 theorem frameSMul_frameSMul (h h' : Matrix ι ι (R ⊗[K] E)) (X : FrameSp K E R ι n) :
     frameSMul h (frameSMul h' X) = frameSMul (h * h') X :=
   (Matrix.mul_assoc h h' (X : Matrix ι (Fin n) (R ⊗[K] E))).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.one_mul (X : Matrix ι (Fin n) (R ⊗[K] E))`.
+A detailed English derivation is pending.
 -/
 theorem frameSMul_one (X : FrameSp K E R ι n) : frameSMul (1 : Matrix ι ι (R ⊗[K] E)) X = X :=
   Matrix.one_mul (X : Matrix ι (Fin n) (R ⊗[K] E))
@@ -349,7 +349,7 @@ def frameSMulHom (h : GL ι (R ⊗[K] E)) : FrameSp K E R ι n ≃ₜ+ FrameSp K
 
 @[simp]
 /- English proof (translation)
-The claim follows from `frameSMulLin_apply _ X`.
+A detailed English derivation is pending.
 -/
 theorem frameSMulHom_apply (h : GL ι (R ⊗[K] E)) (X : FrameSp K E R ι n) :
     frameSMulHom K E R ι n h X = frameSMul (h : Matrix ι ι (R ⊗[K] E)) X :=
@@ -358,7 +358,7 @@ theorem frameSMulHom_apply (h : GL ι (R ⊗[K] E)) (X : FrameSp K E R ι n) :
 variable [LocallyCompactSpace R] [T2Space R] [SecondCountableTopology R]
 
 /- English proof (translation)
-Rewrite using `[WmSysEquiv.addEquivAddHaarChar_eq_absF_det hR (frameSMulLinEquiv K E R ι n h) (frameSMulHom K E R ι n h) (fun _ ↦ rfl)]`. Rewrite using `[show ((frameSMulLinEquiv K E R ι n h : FrameSp K E R ι n ≃ₗ[R] FrameSp K E R ι n) : FrameSp K E R ι n →ₗ[R] FrameSp K E R ι n) = frameSMulLin K E R ι n (h : Matrix ι ι (R ⊗[K] E)) from rfl, det_frameSMulLin, absF_pow, modE_eq_absF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem addEquivAddHaarChar_frameSMulHom_eq (hR : ¬ DiscreteTopology R) (h : GL ι (R ⊗[K] E)) :
     addEquivAddHaarChar (frameSMulHom K E R ι n h) =
@@ -385,7 +385,7 @@ def conjBaseAlgEquiv : (R ⊗[K] E) ≃ₐ[R] (R ⊗[K] E) :=
   Algebra.TensorProduct.congr (AlgEquiv.refl : R ≃ₐ[R] R) (conj K E)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjBaseAlgEquiv_apply (z : R ⊗[K] E) : conjBaseAlgEquiv K E R z = conjBase K E R z := by
   induction z using TensorProduct.induction_on with
@@ -394,16 +394,16 @@ theorem conjBaseAlgEquiv_apply (z : R ⊗[K] E) : conjBaseAlgEquiv K E R z = con
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[← conjBaseAlgEquiv_apply, Algebra.norm_eq_of_algEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_conjBase (z : R ⊗[K] E) :
     Algebra.norm R (conjBase K E R z) = Algebra.norm R z := by
   rw [← conjBaseAlgEquiv_apply, Algebra.norm_eq_of_algEquiv]
 
 /- English proof (translation)
-Establish `hm` using `congrArg Matrix.det (mem_unitaryPoints.1 hh)`. Rewrite `hm` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hu : IsUnit (Q.map (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E)).det`. Rewrite using `[show Q.map (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E) = (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E).toRingHom.mapMatrix Q from rfl, ← RingHom.map_det]`. Conclude with `hQ.map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm' : (conjBase K E R (h : Matrix ι ι (R ⊗[K] E)).det * (h : Matrix ι ι (R ⊗[K] E)).det) * (Q.map (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E)).det = 1 * (Q.map (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E)).det`. Take the linear combination `hm`. Conclude with `hu.mul_right_cancel hm'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem conjBase_det_mul_det_eq_one {Q : Matrix ι ι E} (hQ : IsUnit Q.det)
     (h : GL ι (R ⊗[K] E)) (hh : h ∈ unitaryPoints K E Q R) :
@@ -425,16 +425,16 @@ theorem conjBase_det_mul_det_eq_one {Q : Matrix ι ι E} (hQ : IsUnit Q.det)
 variable [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R]
 
 /- English proof (translation)
-Rewrite using `[modE_eq_absF, modE_eq_absF, hw, norm_conjBase]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modE_conj (z w : (R ⊗[K] E)ˣ) (hw : (w : R ⊗[K] E) = conjBase K E R z) :
     modE R w = modE R z := by
   rw [modE_eq_absF, modE_eq_absF, hw, norm_conjBase]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (Algebra.norm R) (conjBase_det_mul_det_eq_one hQ h hh)`. Rewrite `h1` using `[map_mul, norm_conjBase, map_one]`. Establish `h2` using `congrArg IndefiniteRowSideFullHecke.WmSys.absF h1`. Rewrite `h2` using `[absF_mul, absF_one]`. Rewrite using `[modE_eq_absF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set x := IndefiniteRowSideFullHecke.WmSys.absF (Algebra.norm R (h : Matrix ι ι (R ⊗[K] E)).det)`. Establish `h3 : (x : ℝ) * x = 1` using `by exact_mod_cast h2`. Establish `h4 : (x : ℝ) = 1` using `by nlinarith [x.2]`. Conclude with `NNReal.eq h4`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modE_det_unitary {Q : Matrix ι ι E} (hQ : IsUnit Q.det) (h : GL ι (R ⊗[K] E))
     (hh : h ∈ unitaryPoints K E Q R) : modE R (Matrix.GeneralLinearGroup.det h) = 1 := by
@@ -457,7 +457,7 @@ variable {R : Type*} [CommRing R] [Algebra K R]
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsoFrames.gram, IsoFrames.gram, Chart.framePair_mul_left, Chart.framePair_mul_right, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_mul_right (Q : Matrix ι ι E) (X : Matrix ι (Fin n) (R ⊗[K] E))
     (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
@@ -467,7 +467,7 @@ theorem gram_mul_right (Q : Matrix ι ι E) (X : Matrix ι (Fin n) (R ⊗[K] E))
   rfl
 
 /- English proof (translation)
-Establish `hm` using `mem_unitaryPoints.1 hh`. Rewrite using `[IsoFrames.gram, IsoFrames.gram, Chart.framePair_eq, Chart.framePair_eq, Chart.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show Chart.cT K E R (h : Matrix ι ι (R ⊗[K] E)) * Chart.Hm K R Q * (h : Matrix ι ι (R ⊗[K] E)) = Chart.Hm K R Q from hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem gram_mul_left_unitary {Q : Matrix ι ι E} (h : GL ι (R ⊗[K] E))
     (hh : h ∈ unitaryPoints K E Q R) (X : Matrix ι (Fin n) (R ⊗[K] E)) :
@@ -483,7 +483,7 @@ theorem gram_mul_left_unitary {Q : Matrix ι ι E} (h : GL ι (R ⊗[K] E))
           (h : Matrix ι ι (R ⊗[K] E)) = Chart.Hm K R Q from hm]
 
 /- English proof (translation)
-The claim follows from `gram_mul_right Q X g`.
+A detailed English derivation is pending.
 -/
 theorem gram_frameMul (Q : Matrix ι ι E) (X : FrameSp K E R ι n)
     (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
@@ -492,7 +492,7 @@ theorem gram_frameMul (Q : Matrix ι ι E) (X : FrameSp K E R ι n)
   gram_mul_right Q X g
 
 /- English proof (translation)
-The claim follows from `gram_mul_left_unitary h hh X`.
+A detailed English derivation is pending.
 -/
 theorem gram_frameSMul {Q : Matrix ι ι E} (h : GL ι (R ⊗[K] E))
     (hh : h ∈ unitaryPoints K E Q R) (X : FrameSp K E R ι n) :
@@ -510,7 +510,7 @@ variable {R : Type*} [Field R] [Algebra K R] [TopologicalSpace R] [IsTopological
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[addEquivAddHaarChar_frameSMulHom_eq hR, modE_det_unitary hQ h hh, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addEquivAddHaarChar_frameSMulHom (hR : ¬ DiscreteTopology R) {Q : Matrix ι ι E}
     (hQ : IsUnit Q.det) (h : GL ι (R ⊗[K] E)) (hh : h ∈ unitaryPoints K E Q R) :
@@ -526,36 +526,36 @@ variable {R : Type*} [Field R] [Algebra K R] [TopologicalSpace R] [IsTopological
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Chart.cT_mul M N`.
+A detailed English derivation is pending.
 -/
 theorem cTr_mul {l m k : Type*} [Fintype m] (M : Matrix l m (R ⊗[K] E)) (N : Matrix m k (R ⊗[K] E)) :
     cTr K E R (M * N) = cTr K E R N * cTr K E R M :=
   Chart.cT_mul M N
 
 /- English proof (translation)
-The claim follows from `Chart.cT_cT M`.
+A detailed English derivation is pending.
 -/
 theorem cTr_cTr {l m : Type*} (M : Matrix l m (R ⊗[K] E)) : cTr K E R (cTr K E R M) = M :=
   Chart.cT_cT M
 
 /- English proof (translation)
-The claim follows from `Chart.cT_one`.
+A detailed English derivation is pending.
 -/
 theorem cTr_one {m : Type*} [DecidableEq m] : cTr K E R (1 : Matrix m m (R ⊗[K] E)) = 1 :=
   Chart.cT_one
 
 /- English proof (translation)
-The claim follows from `S.2`.
+A detailed English derivation is pending.
 -/
 theorem HermSp.cTr_mat (S : HermSp K E R n) : cTr K E R S.mat = S.mat := S.2
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem HermSp.ext' {S S' : HermSp K E R n} (h : S.mat = S'.mat) : S = S' := Subtype.ext h
 
 /- English proof (translation)
-Use `show cTr K E R (cTr K E R g * S.mat * g) = cTr K E R g * S.mat * g`. Rewrite using `[cTr_mul, cTr_mul, cTr_cTr, HermSp.cTr_mat, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congr_mem (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (S : HermSp K E R n) :
     cTr K E R g * S.mat * g ∈ hermSub K E R n := by
@@ -573,7 +573,7 @@ theorem congrPt_mat (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (S : HermSp K E R 
     (congrPt g S).mat = cTr K E R g * S.mat * g := rfl
 
 /- English proof (translation)
-Use `HermSp.ext' ?_` and prove the remaining obligations. Simplify using `only [congrPt_mat, cTr_mul, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem congrPt_congrPt (g h : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (S : HermSp K E R n) :
     congrPt g (congrPt h S) = congrPt (h * g) S := by
@@ -581,14 +581,14 @@ theorem congrPt_congrPt (g h : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (S : HermSp 
   simp only [congrPt_mat, cTr_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `HermSp.ext' ?_` and prove the remaining obligations. Simplify using `only [congrPt_mat, cTr_one, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem congrPt_one (S : HermSp K E R n) : congrPt 1 S = S := by
   refine HermSp.ext' ?_
   simp only [congrPt_mat, cTr_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `HermSp.ext' ?_` and prove the remaining obligations. Use `show cTr K E R g * (S.mat + S'.mat) * g = cTr K E R g * S.mat * g + cTr K E R g * S'.mat * g`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congrPt_add (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (S S' : HermSp K E R n) :
     congrPt g (S + S') = congrPt g S + congrPt g S' := by
@@ -597,7 +597,7 @@ theorem congrPt_add (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) (S S' : HermSp K E
   rw [Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-The claim follows from `have hc : Continuous (fun S : HermSp K E R n ↦ S.mat) := continuous_induced_dom continuous_induced_rng.2 ((continuous_const.matrix_mul hc).matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_congrPt (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
     Continuous (congrPt (K := K) (E := E) (R := R) g) :=
@@ -636,7 +636,7 @@ def congrAll (g : GL (Fin n) (R ⊗[K] E)) :
   (frameSMulHom K E R (Fin n) n (ctGL K E R n g)).trans (frameMulHom K E R (Fin n) n g)
 
 /- English proof (translation)
-Use `show Chart.toM (frameMulHom K E R (Fin n) n g (frameSMulHom K E R (Fin n) n (ctGL K E R n g) X)) = _`. Rewrite using `[frameMulHom_apply, frameSMulHom_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem congrAll_apply (g : GL (Fin n) (R ⊗[K] E)) (X : FrameSp K E R (Fin n) n) :
     Chart.toM (congrAll g X) =
@@ -649,7 +649,7 @@ theorem congrAll_apply (g : GL (Fin n) (R ⊗[K] E)) (X : FrameSp K E R (Fin n) 
 variable [LocallyCompactSpace R] [T2Space R] [SecondCountableTopology R]
 
 /- English proof (translation)
-Rewrite using `[congrAll, addEquivAddHaarChar_trans, addEquivAddHaarChar_frameSMulHom_eq hR, addEquivAddHaarChar_frameMulHom hR, Fintype.card_fin]`. Use `congr 2`. Use `modE_conj _ _ ?_` and prove the remaining obligations. Use `show (cTr K E R (g : Matrix (Fin n) (Fin n) (R ⊗[K] E))).det = _`. Conclude with `Chart.det_cT _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_congrAll (hR : ¬ DiscreteTopology R) (g : GL (Fin n) (R ⊗[K] E)) :
     addEquivAddHaarChar (congrAll g) =
@@ -671,13 +671,13 @@ variable {R : Type*} [Field R] [Algebra K R] [TopologicalSpace R] [IsTopological
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hx : ∃ x : E, x ∉ Set.range (algebraMap K E)`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hbij : Function.Bijective (Algebra.linearMap K E)` using `⟨(algebraMap K E).injective, fun y ↦ h y⟩`. Establish `h1` using `(LinearEquiv.ofBijective (Algebra.linearMap K E) hbij).finrank_eq`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Module.finrank_self, Algebra.IsQuadraticExtension.finrank_eq_two]`. Evaluate the numerical expressions using `at h1`. Take `⟨x, hx⟩` from `hx`. Use `⟨x - conj K E x, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Use `⟨(2 : K)⁻¹ * Algebra.trace K E x, ?_⟩` and prove the remaining obligations. Establish `h1` using `add_conj (F := K) x`. Establish `h2 : conj K E x = x` using `(sub_eq_zero.1 h0).symm`. Rewrite `h1` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← h1, ← two_mul, ← mul_assoc, ← map_ofNat (algebraMap K E) 2, ← map_mul, inv_mul_cancel₀ (two_ne_zero' K), map_one, one_mul]`. Rewrite using `[map_sub, conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_conj_eq_neg_swm : ∃ δ : E, δ ≠ 0 ∧ conj K E δ = -δ := by
   have hx : ∃ x : E, x ∉ Set.range (algebraMap K E) := by
@@ -709,7 +709,7 @@ def epsU : (R ⊗[K] E)ˣ :=
       (exists_conj_eq_neg_swm (K := K) (E := E)).choose_spec.1)
 
 /- English proof (translation)
-Use `show conjBase K E R ((1 : R) ⊗ₜ[K] (exists_conj_eq_neg_swm (K := K) (E := E)).choose) = -((1 : R) ⊗ₜ[K] (exists_conj_eq_neg_swm (K := K) (E := E)).choose)`. Rewrite using `[conjBase_tmul, (exists_conj_eq_neg_swm (K := K) (E := E)).choose_spec.2, TensorProduct.tmul_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjBase_epsU : conjBase K E R (epsU K E R : R ⊗[K] E) = -(epsU K E R : R ⊗[K] E) := by
   show conjBase K E R ((1 : R) ⊗ₜ[K] (exists_conj_eq_neg_swm (K := K) (E := E)).choose) =
@@ -717,7 +717,7 @@ theorem conjBase_epsU : conjBase K E R (epsU K E R : R ⊗[K] E) = -(epsU K E R 
   rw [conjBase_tmul, (exists_conj_eq_neg_swm (K := K) (E := E)).choose_spec.2, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (conjBase K E R) (Units.inv_mul (epsU K E R))`. Rewrite `h1` using `[map_mul, conjBase_epsU, map_one]`. Establish `h2` using `Units.mul_inv (epsU K E R)`. Take the linear combination `(-(conjBase K E R ((epsU K E R)⁻¹ : (R ⊗[K] E)ˣ))) * h2 - ((epsU K E R)⁻¹ : (R ⊗[K] E)ˣ) * h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conjBase_epsU_inv :
     conjBase K E R ((epsU K E R)⁻¹ : (R ⊗[K] E)ˣ) = -((epsU K E R)⁻¹ : (R ⊗[K] E)ˣ) := by
@@ -731,14 +731,14 @@ abbrev halfA (K E R : Type*) [Field K] [Field E] [Algebra K E] [CommRing R] [Alg
     R ⊗[K] E := algebraMap K (R ⊗[K] E) (2 : K)⁻¹
 
 /- English proof (translation)
-Rewrite using `[halfA, ← map_ofNat (algebraMap K (R ⊗[K] E)) 2, ← map_mul, mul_inv_cancel₀ (two_ne_zero' K), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_mul_halfA : (2 : R ⊗[K] E) * halfA K E R = 1 := by
   rw [halfA, ← map_ofNat (algebraMap K (R ⊗[K] E)) 2, ← map_mul,
     mul_inv_cancel₀ (two_ne_zero' K), map_one]
 
 /- English proof (translation)
-Rewrite using `[halfA, Algebra.algebraMap_eq_smul_one, Chart.conjBase_smul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjBase_halfA : conjBase K E R (halfA K E R) = halfA K E R := by
   rw [halfA, Algebra.algebraMap_eq_smul_one, Chart.conjBase_smul, map_one]
@@ -750,7 +750,7 @@ theorem cTr_apply {l m : Type*} (M : Matrix l m (R ⊗[K] E)) (i : m) (j : l) :
     cTr K E R M i j = conjBase K E R (M j i) := rfl
 
 /- English proof (translation)
-Use `congrFun (congrFun (HermSp.cTr_mat S) i) j` as an intermediate fact. Rewrite `this` using `[cTr_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem HermSp.mat_apply_swap (S : HermSp K E R n) (i j : Fin n) :
     conjBase K E R (S.mat j i) = S.mat i j := by
@@ -764,7 +764,7 @@ def sPartM (X : Matrix (Fin n) (Fin n) (R ⊗[K] E)) : Matrix (Fin n) (Fin n) (R
   (halfA K E R * ((epsU K E R)⁻¹ : (R ⊗[K] E)ˣ)) • (X - cTr K E R X)
 
 /- English proof (translation)
-Use `show cTr K E R (hPartM X) = hPartM X`. Use extensionality with `i j`. Simplify using `only [hPartM, cTr_apply, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, map_mul, map_add, conjBase_halfA, Chart.conjBase_conjBase]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hPartM_mem (X : Matrix (Fin n) (Fin n) (R ⊗[K] E)) : hPartM X ∈ hermSub K E R n := by
   show cTr K E R (hPartM X) = hPartM X
@@ -774,7 +774,7 @@ theorem hPartM_mem (X : Matrix (Fin n) (Fin n) (R ⊗[K] E)) : hPartM X ∈ herm
   ring
 
 /- English proof (translation)
-Use `show cTr K E R (sPartM X) = sPartM X`. Use extensionality with `i j`. Simplify using `only [sPartM, cTr_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_sub, conjBase_halfA, conjBase_epsU_inv, Chart.conjBase_conjBase]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sPartM_mem (X : Matrix (Fin n) (Fin n) (R ⊗[K] E)) : sPartM X ∈ hermSub K E R n := by
   show cTr K E R (sPartM X) = sPartM X
@@ -843,7 +843,7 @@ theorem splitHom_apply (p : HermSp K E R n × HermSp K E R n) :
     Chart.toM (splitHom K E R n p) = p.1.mat + (epsU K E R : R ⊗[K] E) • p.2.mat := rfl
 
 /- English proof (translation)
-Apply `(show Function.Injective (Chart.toM : FrameSp K E R (Fin n) n → _) from fun _ _ h ↦ h)` to reduce the goal to its premises. Rewrite using `[congrAll_apply, splitHom_apply, splitHom_apply]`. Simplify using `only`. Rewrite using `[congrHom_mat, congrHom_mat, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitHom_congr (g : GL (Fin n) (R ⊗[K] E)) (p : HermSp K E R n × HermSp K E R n) :
     splitHom K E R n (congrHom K E R n g p.1, congrHom K E R n g p.2) =
@@ -870,15 +870,13 @@ variable [LocallyCompactSpace R] [T2Space R] [SecondCountableTopology R]
 
 open Measure in
 /- English proof (translation)
-Use `set φ := congrHom K E R n g`. Set `μ : Measure (HermSp K E R n)` to `addHaar`. Set `P : Measure (HermSp K E R n × HermSp K E R n)` to `μ.prod μ`. Take `⟨U, hUc, hU0⟩ : ∃ U : Set (HermSp K E R n), IsCompact U ∧ U ∈ 𝓝 (0 : HermSp K E R n)` from `exists_compact_mem_nhds 0`. Establish `hφU0 : φ ⁻¹' U ∈ 𝓝 (0 : HermSp K E R n)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Tendsto (fun x ↦ φ x) (𝓝 0) (𝓝 (φ 0))` using `φ.continuous.tendsto 0`. Rewrite `hc` using `[map_zero]`. Conclude with `hc hU0`. Establish `hφUc : IsCompact (φ ⁻¹' U)` using `φ.toHomeomorph.isCompact_preimage.2 hUc`. Establish `hpre : ⇑(congrPair K E R n g) ⁻¹' (U ×ˢ U) = (φ ⁻¹' U) ×ˢ (φ ⁻¹' U)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `p`. Both sides reduce to the same expression. Establish `hpos : μ (φ ⁻¹' U) ≠ 0` using `(measure_pos_of_mem_nhds μ hφU0).ne'`. Establish `hfin : μ (φ ⁻¹' U) ≠ ∞` using `hφUc.measure_lt_top.ne`. Establish `hs` using `addEquivAddHaarChar_smul_preimage μ (X := U) φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[ENNReal.smul_def, smul_eq_mul]`. Use `WmSysEquiv.addEquivAddHaarChar_eq_of_preimage P _ (S := U ×ˢ U) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hpre, Measure.prod_prod]`. Conclude with `mul_ne_zero hpos hpos`. Rewrite using `[hpre, Measure.prod_prod]`.
-
-Conclude with `ENNReal.mul_ne_top hfin hfin`. Rewrite using `[hpre, Measure.prod_prod, Measure.prod_prod, ← hs, ENNReal.coe_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_congrPair (g : GL (Fin n) (R ⊗[K] E)) :
     addEquivAddHaarChar (congrPair K E R n g) = addEquivAddHaarChar (congrHom K E R n g) ^ 2 := by
@@ -907,9 +905,9 @@ theorem addEquivAddHaarChar_congrPair (g : GL (Fin n) (R ⊗[K] E)) :
     ring
 
 /- English proof (translation)
-Establish `hconj : ((splitHom K E R n).symm.trans (congrPair K E R n g)).trans (splitHom K E R n) = congrAll g`. Use extensionality with `X`. Use `show splitHom K E R n (congrPair K E R n g ((splitHom K E R n).symm X)) = congrAll g X`. Rewrite using `[show congrPair K E R n g ((splitHom K E R n).symm X) = (congrHom K E R n g ((splitHom K E R n).symm X).1, congrHom K E R n g ((splitHom K E R n).symm X).2) from rfl, splitHom_congr, ContinuousAddEquiv.apply_symm_apply]`. Establish `h1` using `WmSysEquiv.addEquivAddHaarChar_conj (splitHom K E R n) (congrPair K E R n g)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hconj, addEquivAddHaarChar_congrAll hR, addEquivAddHaarChar_congrPair]`. Establish `h2` using `congrArg NNReal.sqrt h1`. Rewrite `h2` using `[← pow_two, NNReal.sqrt_sq, NNReal.sqrt_sq]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_congrHom (hR : ¬ DiscreteTopology R) (g : GL (Fin n) (R ⊗[K] E)) :
     addEquivAddHaarChar (congrHom K E R n g) = modE R (Matrix.GeneralLinearGroup.det g) ^ n := by
@@ -936,7 +934,7 @@ variable {R : Type*} [Field R] [Algebra K R] [TopologicalSpace R] [IsTopological
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(show Continuous (fun p : Matrix (Fin n) (Fin n) (R ⊗[K] E) × FrameSp K E R ι n ↦ (p.2 : Matrix ι (Fin n) (R ⊗[K] E))) from continuous_snd).matrix_mul continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_frameMul_joint :
     Continuous (fun p : Matrix (Fin n) (Fin n) (R ⊗[K] E) × FrameSp K E R ι n ↦ frameMul p.2 p.1) :=
@@ -944,7 +942,7 @@ theorem continuous_frameMul_joint :
     (p.2 : Matrix ι (Fin n) (R ⊗[K] E))) from continuous_snd).matrix_mul continuous_fst
 
 /- English proof (translation)
-The claim follows from `continuous_fst.matrix_mul (show Continuous (fun p : Matrix ι ι (R ⊗[K] E) × FrameSp K E R ι n ↦ (p.2 : Matrix ι (Fin n) (R ⊗[K] E))) from continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_frameSMul_joint :
     Continuous (fun p : Matrix ι ι (R ⊗[K] E) × FrameSp K E R ι n ↦ frameSMul p.1 p.2) :=
@@ -953,7 +951,7 @@ theorem continuous_frameSMul_joint :
       (p.2 : Matrix ι (Fin n) (R ⊗[K] E))) from continuous_snd)
 
 /- English proof (translation)
-Establish `hc : Continuous (fun S : HermSp K E R n ↦ S.mat)` using `continuous_induced_dom`. Establish `hct : Continuous (fun g : Matrix (Fin n) (Fin n) (R ⊗[K] E) ↦ cTr K E R g)` using `(continuous_id.matrix_map (continuous_conjBase R)).matrix_transpose`. Conclude with `continuous_induced_rng.2 (((hct.comp continuous_fst).matrix_mul (hc.comp continuous_snd)).matrix_mul continuous_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_congrPt_joint :
     Continuous (fun p : Matrix (Fin n) (Fin n) (R ⊗[K] E) × HermSp K E R n ↦ congrPt p.1 p.2) := by
@@ -966,7 +964,7 @@ theorem continuous_congrPt_joint :
 variable [LocallyCompactSpace R] [T2Space R] [SecondCountableTopology R]
 
 /- English proof (translation)
-The claim follows from `HermSp.ext' (gram_mul_right Q (Chart.toM X) g)`.
+A detailed English derivation is pending.
 -/
 theorem gramH_frameMul {Q : Matrix ι ι E} (hQ : IsHermitianFor (conjHom K E) Q)
     (X : FrameSp K E R ι n) (g : Matrix (Fin n) (Fin n) (R ⊗[K] E)) :
@@ -974,7 +972,7 @@ theorem gramH_frameMul {Q : Matrix ι ι E} (hQ : IsHermitianFor (conjHom K E) Q
   HermSp.ext' (gram_mul_right Q (Chart.toM X) g)
 
 /- English proof (translation)
-The claim follows from `HermSp.ext' (gram_mul_left_unitary h hh (Chart.toM X))`.
+A detailed English derivation is pending.
 -/
 theorem gramH_frameSMul {Q : Matrix ι ι E} (hQ : IsHermitianFor (conjHom K E) Q)
     (h : GL ι (R ⊗[K] E)) (hh : h ∈ unitaryPoints K E Q R) (X : FrameSp K E R ι n) :
@@ -988,9 +986,9 @@ section Places
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `hd`. Establish `ho : IsOpen ({0} : Set F)` using `isOpen_discrete _`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 ho 0 rfl`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε hx1`. Establish `hmem : x ^ k ∈ Metric.ball (0 : F) ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Metric.mem_ball, dist_zero_right, norm_pow]`. Conclude with `hk`. Conclude with `pow_ne_zero k hx0 (hball hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_discreteTopology_of_norm_lt_one {F : Type*} [NormedField F] {x : F} (hx0 : x ≠ 0)
     (hx1 : ‖x‖ < 1) : ¬ DiscreteTopology F := by
@@ -1006,9 +1004,9 @@ theorem not_discreteTopology_of_norm_lt_one {F : Type*} [NormedField F] {x : F} 
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : w.Completion)‖ = 2`. Use `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) 2` as an intermediate fact. Rewrite using `[← this, map_ofNat]`. Evaluate the numerical expressions. Establish `h20 : (2 : w.Completion) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h2` using `[h0, norm_zero]`. Evaluate the numerical expressions using `at h2`. Use `not_discreteTopology_of_norm_lt_one (x := (2 : w.Completion)⁻¹) (inv_ne_zero h20) ?_` and prove the remaining obligations. Rewrite using `[norm_inv, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -1027,9 +1025,9 @@ theorem not_discreteTopology_infinitePlace (w : InfinitePlace K) : ¬ DiscreteTo
   norm_num
 
 /- English proof (translation)
-Introduce `hd`. Establish `hfin` using `(GroundTheory.Global.isCompact_adicCompletionIntegers v).finite_of_discrete`. Establish `hinj : Function.Injective (fun k : ℕ ↦ (k : v.adicCompletion K))`. Introduce `a b hab`. Establish `: algebraMap K (v.adicCompletion K) (a : K) = algebraMap K (v.adicCompletion K) (b : K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `hab` using `[map_natCast]`. Conclude with `(algebraMap K (v.adicCompletion K)).injective this` after adjusting the coercions. Conclude with `Set.infinite_of_injective_forall_mem hinj (fun k ↦ natCast_mem (v.adicCompletionIntegers K) k) hfin`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem not_discreteTopology_adicCompletion (v : HeightOneSpectrum (𝓞 K)) :
     ¬ DiscreteTopology (v.adicCompletion K) := by
@@ -1044,14 +1042,14 @@ theorem not_discreteTopology_adicCompletion (v : HeightOneSpectrum (𝓞 K)) :
     (fun k ↦ natCast_mem (v.adicCompletionIntegers K) k) hfin
 
 /- English proof (translation)
-The claim follows from `locField_secondCountable (not_discreteTopology_infinitePlace w)`.
+A detailed English derivation is pending.
 -/
 theorem secondCountableTopology_infinitePlace (w : InfinitePlace K) :
     SecondCountableTopology w.Completion :=
   locField_secondCountable (not_discreteTopology_infinitePlace w)
 
 /- English proof (translation)
-The claim follows from `locField_secondCountable (not_discreteTopology_adicCompletion v)`.
+A detailed English derivation is pending.
 -/
 theorem secondCountableTopology_adicCompletion (v : HeightOneSpectrum (𝓞 K)) :
     SecondCountableTopology (v.adicCompletion K) :=

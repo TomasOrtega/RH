@@ -48,9 +48,9 @@ def KillsAll {D₁ : BKDat O K l e a ι η H} {D₂ : BKDat O K l e a κ η H} (
 omit [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨x, hx, hxy⟩` from `h y y.2`. Rewrite using `[← Submodule.mkQ_apply, ← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, hxy⟩`. Introduce `h y hy`. Establish `h1` using `h (Submodule.Quotient.mk ⟨y, hy⟩)`. Rewrite `h1` using `[← Submodule.mkQ_apply, ← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killsCoker_M_iff {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q) (n : ℕ) :
     KillsCoker F.app n P.M Q.M ↔ ∀ q : F.coker, n • q = 0 := by
@@ -78,7 +78,7 @@ def Stmt : Prop :=
         KillsAll F (l ^ rho l Sig N)
 
 /- English proof (translation)
-Simplify using `[rho, maxPeriod, frobPeriod, Function.minimalPeriod_eq_one_iff_isFixedPt.2 (show Function.IsFixedPt (fun x => (l : ZMod e) * x) 0 from mul_zero _)]`.
+Simplify using the standard rewrite rules.
 -/
 example (l e N : ℕ) : rho l ({0} : Finset (ZMod e)) N = 2 * (N - 1) := by
   simp [rho, maxPeriod, frobPeriod, Function.minimalPeriod_eq_one_iff_isFixedPt.2

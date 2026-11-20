@@ -10,7 +10,7 @@ namespace GlobalTheory.WhitHered
 variable {N c : ℕ} (m : Fin c → ℕ) (hN : ∑ a, m a = N)
 
 /- English proof (translation)
-Rewrite using `[← hN]`. Conclude with `Equiv.sum_comp Fin.revPerm m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_rev_eq (hN : ∑ a, m a = N) : ∑ b, m (Fin.revPerm b) = N := by
   rw [← hN]
@@ -21,7 +21,7 @@ def revPlace : Fin N ≃ Fin N :=
     ((Equiv.sigmaCongrLeft (β := fun a => Fin (m a)) Fin.revPerm).trans (stdBlocks m hN))
 
 /- English proof (translation)
-Rewrite using `[revPlace, Equiv.trans_apply, Equiv.symm_apply_apply, Equiv.trans_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem revPlace_apply (b : Fin c) (j : Fin (m (Fin.revPerm b))) :
     revPlace m hN (stdBlocks (fun b => m (Fin.revPerm b)) (sum_rev_eq m hN) ⟨b, j⟩) = stdBlocks m hN ⟨Fin.revPerm b, j⟩ := by
@@ -33,7 +33,7 @@ variable (k : Type) [Field k]
 def longW : GL (Fin N) k := (Matrix.permMatrixHom (R := k)).toHomUnits (revPlace m hN)
 
 /- English proof (translation)
-Simplify using `only [longW, MonoidHom.coe_toHomUnits, Matrix.permMatrixHom_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Equiv.Perm.inv_def, Option.mem_def, Option.some.injEq]`. Distinguish the cases in `h : i = revPlace m hN j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]; intro h'; exact h (by rw [← h']; simp)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem longW_apply (i j : Fin N) :
     ((longW m hN k : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j = if i = revPlace m hN j then 1 else 0 := by
@@ -44,11 +44,11 @@ theorem longW_apply (i j : Fin N) :
   · rw [if_neg h, if_neg]; intro h'; exact h (by rw [← h']; simp)
 
 /- English proof (translation)
-Establish `hinv : ∀ i j, (((longW m hN k)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j = if j = revPlace m hN i then 1 else 0`. Introduce `i j`. Simplify using `only [longW, ← map_inv, MonoidHom.coe_toHomUnits, Matrix.permMatrixHom_apply, inv_inv, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, eq_comm]`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (revPlace m hN j)]`. Rewrite using `[longW_apply, if_pos rfl, mul_one, Matrix.mul_apply, Finset.sum_eq_single (revPlace m hN i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, if_pos rfl, one_mul]`. Introduce `b _ hb`. Rewrite using `[hinv, if_neg hb, zero_mul]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[longW_apply, if_neg hb, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem longW_conj_apply (A : GL (Fin N) k) (i j : Fin N) :
     (((longW m hN k)⁻¹ * A * longW m hN k : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j =

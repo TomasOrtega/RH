@@ -7,13 +7,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdmSelf
 
 /- English proof (translation)
-Introduce `hl`. Establish `hmem : ((normV P : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `Ideal.absNorm_mem P.asIdeal`. Establish `hl' : ((l : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `hl`. Establish `hdm` using `Nat.div_add_mod (normV P) (2 * l ^ M)`. Rewrite `hdm` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : ((2 * l ^ M * (normV P / (2 * l ^ M)) : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Use `push_cast`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_lt hM`. Rewrite using `[hk, pow_succ]`. Conclude with `P.asIdeal.mul_mem_right _ (P.asIdeal.mul_mem_left _ (P.asIdeal.mul_mem_left _ hl'))`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `: (1 : 𝓞 D.host.E) = ((normV P : ℕ) : 𝓞 D.host.E) - ((2 * l ^ M * (normV P / (2 * l ^ M)) : ℕ) : 𝓞 D.host.E)`. Generalize the expression as in `normV P / (2 * l ^ M) = q at hdm ⊢`. Rewrite using `[← hdm]`. Use `push_cast`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `P.asIdeal.sub_mem hmem hx`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_placesOver_of_normV {D : D7} {l M : ℕ} (hM : 0 < M) {P : Pl D.host.E}
     (h : normV P % (2 * l ^ M) = 1) : P ∉ placesOver D.host.E l := by
@@ -41,13 +41,13 @@ end GlobalTheory.AdmSelf
 namespace GlobalTheory.AdmSelf
 
 /- English proof (translation)
-Introduce `D N X i M Q d hs hc hg hl`. Establish `hnl : ∀ P ∈ Q, P ∉ placesOver D.host.E (X.l i)` using `fun P hP => hl.elim (fun hM => not_mem_placesOver_of_normV hM (hg P hP).2) fun h => h P hP`. Establish `hchar : ∀ P ∈ Q, ∃ χ : G D.host.E N.Om →* Multiplicative (ZMod (X.l i ^ M)), IsOpen (χ.ker : Set (G D.host.E N.Om)) ∧ AntiHom X.cc χ ∧ (∀ w ∈ placesOver D.host.E (X.l i), ∀ A : ValuationSubring N.Om, IsPlaceOver A w → ∀ σ ∈ Dec (F` using `D.host.E) A, χ σ = 1) ∧ (∀ w : PlE D.host, w ≠ P → ¬ IsConjPl D.host P w → ∀ A : ValuationSubring N.Om, IsPlaceOver A w → ∀ σ ∈ Ine (F := D.host.E) A, χ σ = 1) ∧ ∀ A : ValuationSubring N.Om, IsPlaceOver A P → Function.Surjective fun σ : Ine (F := D.host.E) A => Multiplicative.toA …`. Take `⟨⟨h1, h2, h3, h4, h5⟩, -⟩` from `hg P hP`. Use `⟨d P, h1, h2, h3, fun w a c => h4 w (fun t => t.elim a c), fun A hA x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, hσ, hx⟩` from `h5 P (Or.inl rfl) A hA (Multiplicative.ofAdd x)`. Conclude with `⟨⟨σ, hσ⟩, congrArg Multiplicative.toAdd hx⟩`. Use `Finset.Subset.antisymm (admissibleConjugatePairPlaces_subset i Q M) fun P hP => ?_` and prove the remaining obligations. Take `⟨P', hPP'⟩` from `GlobalTheory.TwistDet.exists_isConjPl P`. Establish `hP' : P' ∈ Q` using `hc P hP P' hPP'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mem_admissibleConjugatePairPlaces_iff.2 ⟨hP, P', hP', hPP', fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Conclude with `⟨hs _ hP, hnl _ hP⟩`. Take `rfl` from `Finset.mem_singleton.1 hw`. Conclude with `⟨hs _ hP', hnl _ hP'⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Conclude with `⟨⟨P', by simp, hPP'⟩, hchar _ hP⟩`. Take `rfl` from `Finset.mem_singleton.1 hw`. Conclude with `⟨⟨P, by simp, GlobalTheory.GalChar.isConjPl_symm hPP'⟩, hchar _ hP'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissibleConjugatePairPlaces_eq_self_of_goodChar : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) (M : ℕ)
     (Q : Finset (Pl D.host.E)) (d : PlE D.host → (G D.host.E N.Om →* Multiplicative (ZMod (X.l i ^ M)))),

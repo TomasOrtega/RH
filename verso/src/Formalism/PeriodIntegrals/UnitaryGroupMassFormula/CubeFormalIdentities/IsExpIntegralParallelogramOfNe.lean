@@ -13,14 +13,14 @@ open PI.FglGram MvPowerSeries
 variable {p : ℕ} [Fact p.Prime] {σ τ : Type*}
 
 /- English proof (translation)
-The claim follows from `coeff_embDomain_rename e F α`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_embDomain_rename' (e : σ ↪ τ) (F : MvPowerSeries σ ℂ_[p]) (α : σ →₀ ℕ) :
     coeff (α.embDomain e) (rename e F) = coeff α F :=
   coeff_embDomain_rename e F α
 
 /- English proof (translation)
-Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨α, rfl⟩`. Conclude with `hβ ⟨α, Finsupp.embDomain_eq_mapDomain _ _⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem coeff_rename_eq_zero_of_not_mem_range_embDomain_cube_formal_identities (e : σ ↪ τ) (F : MvPowerSeries σ ℂ_[p]) {β : τ →₀ ℕ}
     (hβ : ¬ ∃ α : σ →₀ ℕ, α.embDomain e = β) : coeff β (rename e F) = 0 := by
@@ -29,20 +29,20 @@ private theorem coeff_rename_eq_zero_of_not_mem_range_embDomain_cube_formal_iden
   exact hβ ⟨α, Finsupp.embDomain_eq_mapDomain _ _⟩
 
 /- English proof (translation)
-The claim follows from `constantCoeff_rename e F`.
+A detailed English derivation is pending.
 -/
 private theorem constantCoeff_rename_embedding (e : σ ↪ τ) (F : MvPowerSeries σ ℂ_[p]) :
     constantCoeff (rename e F) = constantCoeff F :=
   constantCoeff_rename e F
 
 /- English proof (translation)
-Take `⟨h0, hI⟩` from `hD`. Establish `h0' : constantCoeff (rename e D) = 0` using `by rw [constantCoeff_rename_embedding]; exact h0`. Use `show constantCoeff (rename e D) = 0 ∧ PI.FglGram.IntegralMv (PI.FglGram.expMv (rename e D))`. Use `⟨h0', ?_⟩` and prove the remaining obligations. Introduce `β`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hβ : ∃ α : σ →₀ ℕ, α.embDomain e = β`. Take `⟨α, rfl⟩` from `hβ`. Establish `hα` using `hI α`. Rewrite `hα` using `[coeff_expMv_of_le h0 (α.degree + (α.embDomain e).degree) (Nat.le_add_right _ _)]`. Rewrite using `[coeff_expMv_of_le h0' (α.degree + (α.embDomain e).degree) (Nat.le_add_left _ _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ n, coeff (α.embDomain e) (rename e D ^ n) = coeff α (D ^ n)` using `fun n => by`. Rewrite using `[← map_pow, coeff_embDomain_rename']`. Simplify using `only [hc]`. Conclude with `hα`. Rewrite using `[coeff_expMv (rename e D) β]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ n, coeff β (rename e D ^ n) = 0` using `fun n => by`. Rewrite using `[← map_pow]`. Conclude with `coeff_rename_eq_zero_of_not_mem_range_embDomain_cube_formal_identities e _ hβ`. Simplify using `only [hz, zero_div, Finset.sum_const_zero]`. Simplify using `[PI.FglGram.IsIntP]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_rename (e : σ ↪ τ) {D : MvPowerSeries σ ℂ_[p]} (hD : Good D) : Good (rename e D) := by
   obtain ⟨h0, hI⟩ := hD
@@ -68,11 +68,11 @@ theorem good_rename (e : σ ↪ τ) {D : MvPowerSeries σ ℂ_[p]} (hD : Good D)
     simp [PI.FglGram.IsIntP]
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[PowerSeries.coeff_subst hs]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (N + 1)) ?_]`. Simplify using `only [smul_eq_mul]`. Introduce `n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Apply `hn` to reduce the goal to its premises. Establish `h0 : coeff β (a ^ n) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `coeff_mul_pow_eq_zero ha (1 : MvPowerSeries τ ℂ_[p]) (n := n) (α := β) (by omega)` as an intermediate fact. Simplify using `using this`. Rewrite using `[h0, smul_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_subst_eq_sum_range_of_degree_le {a : MvPowerSeries τ ℂ_[p]} (ha : constantCoeff a = 0)
     (g : PowerSeries ℂ_[p]) (β : τ →₀ ℕ) (N : ℕ) (hN : β.degree ≤ N) :
@@ -94,11 +94,11 @@ private theorem coeff_subst_eq_sum_range_of_degree_le {a : MvPowerSeries τ ℂ_
     rw [h0, smul_zero]
 
 /- English proof (translation)
-Establish `ha' : constantCoeff (rename e a) = 0` using `by rw [constantCoeff_rename_embedding]; exact ha`. Use extensionality with `β`. Distinguish the cases in `hβ : ∃ α : σ →₀ ℕ, α.embDomain e = β`. Take `⟨α, rfl⟩` from `hβ`. Rewrite using `[coeff_embDomain_rename', coeff_subst_eq_sum_range_of_degree_le ha g α (α.degree + (α.embDomain e).degree) (Nat.le_add_right _ _), coeff_subst_eq_sum_range_of_degree_le ha' g _ (α.degree + (α.embDomain e).degree) (Nat.le_add_left _ _)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ n, coeff (α.embDomain e) (rename e a ^ n) = coeff α (a ^ n)` using `fun n => by`. Rewrite using `[← map_pow, coeff_embDomain_rename']`. Simplify using `only [hc]`. Rewrite using `[coeff_rename_eq_zero_of_not_mem_range_embDomain_cube_formal_identities e _ hβ, coeff_subst_eq_sum_range_of_degree_le ha' g β β.degree le_rfl]`. Establish `hz : ∀ n, coeff β (rename e a ^ n) = 0` using `fun n => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow]`. Conclude with `coeff_rename_eq_zero_of_not_mem_range_embDomain_cube_formal_identities e _ hβ`. Simplify using `only [hz, mul_zero, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_psubst (e : σ ↪ τ) {a : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0)
     (g : PowerSeries ℂ_[p]) :
@@ -119,7 +119,7 @@ theorem rename_psubst (e : σ ↪ τ) {a : MvPowerSeries σ ℂ_[p]} (ha : const
     simp only [hz, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Establish `h` using `coeff_subst_eq_sum_range_of_degree_le ha g 0 0 (by simp)`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem constantCoeff_subst_of_zero_lemma_2 {a : MvPowerSeries τ ℂ_[p]} (ha : constantCoeff a = 0)
     (g : PowerSeries ℂ_[p]) :
@@ -129,7 +129,7 @@ private theorem constantCoeff_subst_of_zero_lemma_2 {a : MvPowerSeries τ ℂ_[p
   simp
 
 /- English proof (translation)
-Establish `h1` using `constantCoeff_subst_of_zero_lemma_2 (τ := Unit) (a := ex) hex l`. Rewrite `h1` using `[h]`. Rewrite using `[← h1]`. Conclude with `PowerSeries.constantCoeff_X`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_log_eq_zero {l ex : PowerSeries ℂ_[p]}
     (hex : PowerSeries.constantCoeff ex = 0) (h : PowerSeries.subst ex l = PowerSeries.X) :
@@ -146,7 +146,7 @@ variable {l ex : PowerSeries ℂ_[p]} (ph : PowerSeries ℂ_[p])
 
 include hl in
 /- English proof (translation)
-Simplify using `only [PI.FglGram.lg]`. Rewrite using `[map_add, constantCoeff_subst_of_zero_lemma_2 ha, constantCoeff_subst_of_zero_lemma_2 hb, hl, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_lg_add (a b : MvPowerSeries σ ℂ_[p]) (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) :
     constantCoeff (lg l a + lg l b) = 0 := by
@@ -155,7 +155,7 @@ theorem cc_lg_add (a b : MvPowerSeries σ ℂ_[p]) (ha : constantCoeff a = 0) (h
 
 include hl in
 /- English proof (translation)
-Simplify using `only [PI.FglGram.lg]`. Rewrite using `[map_sub, constantCoeff_subst_of_zero_lemma_2 ha, constantCoeff_subst_of_zero_lemma_2 hb, hl, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_lg_sub (a b : MvPowerSeries σ ℂ_[p]) (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) :
     constantCoeff (lg l a - lg l b) = 0 := by
@@ -164,11 +164,11 @@ theorem cc_lg_sub (a b : MvPowerSeries σ ℂ_[p]) (ha : constantCoeff a = 0) (h
 
 include hex hl in
 /- English proof (translation)
-Establish `hsum` using `cc_lg_add hl a b ha hb`. Establish `hF : constantCoeff (PI.FglGram.add l ex a b) = 0`. Simplify using `only [PI.FglGram.add, PI.FglGram.pt]`. Rewrite using `[constantCoeff_subst_of_zero_lemma_2 hsum]`. Conclude with `hex`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [PI.FglGram.phAt]`. Rewrite using `[rename_psubst e hF]`. Use `congr 1`. Simplify using `only [PI.FglGram.add, PI.FglGram.pt]`. Rewrite using `[rename_psubst e hsum, map_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [PI.FglGram.lg]`. Rewrite using `[rename_psubst e ha, rename_psubst e hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_phAt_add (e : σ ↪ τ) (a b : MvPowerSeries σ ℂ_[p]) (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) :
@@ -188,11 +188,11 @@ theorem rename_phAt_add (e : σ ↪ τ) (a b : MvPowerSeries σ ℂ_[p]) (ha : c
 
 include hex hl in
 /- English proof (translation)
-Establish `hdif` using `cc_lg_sub hl a b ha hb`. Establish `hF : constantCoeff (PI.FglGram.sub l ex a b) = 0`. Simplify using `only [PI.FglGram.sub, PI.FglGram.pt]`. Rewrite using `[constantCoeff_subst_of_zero_lemma_2 hdif]`. Conclude with `hex`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [PI.FglGram.phAt]`. Rewrite using `[rename_psubst e hF]`. Use `congr 1`. Simplify using `only [PI.FglGram.sub, PI.FglGram.pt]`. Rewrite using `[rename_psubst e hdif, map_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [PI.FglGram.lg]`. Rewrite using `[rename_psubst e ha, rename_psubst e hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_phAt_sub (e : σ ↪ τ) (a b : MvPowerSeries σ ℂ_[p]) (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) :
@@ -211,14 +211,14 @@ theorem rename_phAt_sub (e : σ ↪ τ) (a b : MvPowerSeries σ ℂ_[p]) (ha : c
   rw [rename_psubst e ha, rename_psubst e hb]
 
 /- English proof (translation)
-The claim follows from `rename_X e i`.
+A detailed English derivation is pending.
 -/
 private theorem rename_embedding_X (e : σ ↪ τ) (i : σ) :
     rename e (X i : MvPowerSeries σ ℂ_[p]) = X (e i) :=
   rename_X e i
 
 /- English proof (translation)
-Establish `h0 : constantCoeff (PI.FglGram.Xv (p` using `p) i) = 0 := constantCoeff_X i`. Establish `h1 : rename e (PI.FglGram.Xv (p` using `p) i) = PI.FglGram.Xv (e i) := rename_embedding_X e i`. Simplify using `only [PI.FglGram.phAt]`. Rewrite using `[rename_psubst e h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_phAt_X (e : σ ↪ τ) (i : σ) :
     rename e (phAt ph (Xv (p := p) i)) = phAt ph (Xv (e i)) := by
@@ -230,13 +230,13 @@ theorem rename_phAt_X (e : σ ↪ τ) (i : σ) :
 include hex hl in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ![i, j]`. Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first`. Consider the case `rfl`. Consider the case `simp_all`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Set `e : Fin 2 ↪ Fin 3` to `⟨![i, j], hinj⟩`. Establish `c0 : constantCoeff (PI.FglGram.Xv (p` using `p) (0 : Fin 2)) = 0 := constantCoeff_X _`. Establish `c1 : constantCoeff (PI.FglGram.Xv (p` using `p) (1 : Fin 2)) = 0 := constantCoeff_X _`. Establish `r0 : rename e (PI.FglGram.Xv (p` using `p) (0 : Fin 2)) = PI.FglGram.Xv i := rename_embedding_X e 0`. Establish `r1 : rename e (PI.FglGram.Xv (p` using `p) (1 : Fin 2)) = PI.FglGram.Xv j := rename_embedding_X e 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qa : rename e (PI.FglGram.phAt ph (PI.FglGram.add l ex (PI.FglGram.Xv (p` using `p) (0 : Fin 2)) (PI.FglGram.Xv 1))) = PI.FglGram.phAt ph (PI.FglGram.add l ex (PI.FglGram.Xv i) (PI.FglGram.Xv j)) := by`. Rewrite using `[rename_phAt_add ph hex hl e _ _ c0 c1, r0, r1]`. Establish `qs : rename e (PI.FglGram.phAt ph (PI.FglGram.sub l ex (PI.FglGram.Xv (p` using `p) (0 : Fin 2)) (PI.FglGram.Xv 1))) = PI.FglGram.phAt ph (PI.FglGram.sub l ex (PI.FglGram.Xv i) (PI.FglGram.Xv j)) := by`. Rewrite using `[rename_phAt_sub ph hex hl e _ _ c0 c1, r0, r1]`. Establish `q0 : rename e (PI.FglGram.phAt ph (PI.FglGram.Xv (p` using `p) (0 : Fin 2))) = PI.FglGram.phAt ph (PI.FglGram.Xv i) := rename_phAt_X ph e 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `q1 : rename e (PI.FglGram.phAt ph (PI.FglGram.Xv (p` using `p) (1 : Fin 2))) = PI.FglGram.phAt ph (PI.FglGram.Xv j) := rename_phAt_X ph e 1`. Establish `h2` using `good_rename e ((simeq_iff_good _ _).1 hE1)`. Simplify using `only [map_sub, map_add, map_mul, map_ofNat, qa, qs, q0, q1] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isExpIntegral_parallelogram_of_ne (i j : Fin 3) (hij : i ≠ j)
     (hE1 : Simeq (phAt ph (add l ex (Xv 0) (Xv 1)) + phAt ph (sub l ex (Xv 0) (Xv 1)) :
@@ -271,11 +271,11 @@ theorem isExpIntegral_parallelogram_of_ne (i j : Fin 3) (hij : i ≠ j)
 end
 
 /- English proof (translation)
-Unfold `PI.FglGram.CubeRelationOfParallelogram`. Introduce `p _ l ex ph hlep hE1 hE3`. Take `⟨hex, hX, -⟩` from `hlep`. Establish `hl` using `constantCoeff_log_eq_zero hex hX`. Establish `product_zeroth_first_parts` using `isExpIntegral_parallelogram_of_ne ph hex hl 0 1 (by decide) hE1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sizeConstantAtParamsWeight` using `isExpIntegral_parallelogram_of_ne ph hex hl 1 2 (by decide) hE1`. Establish `InnerProductFormulaField` using `isExpIntegral_parallelogram_of_ne ph hex hl 2 0 (by decide) hE1`. Establish `H3` using `(simeq_iff_good _ _).1 hE3`. Rewrite using `[simeq_iff_good]`. Establish `key` using `(good_sub ((good_sub ((good_sub H3) product_zeroth_first_parts)) sizeConstantAtParamsWeight)) InnerProductFormulaField`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cubeRelationOfParallelogram : CubeRelationOfParallelogram := by
   unfold PI.FglGram.CubeRelationOfParallelogram

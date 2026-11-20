@@ -23,7 +23,7 @@ def constHom (p : X ⟶ Sp K) : K →+* Γ(X, ⊤) :=
   RingHom.comp (p.appLE ⊤ ⊤ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom
 
 /- English proof (translation)
-Conclude with `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) (p.appLE_map (U := ⊤) (V := ⊤) (V' := U) (by simp) (homOfLE le_top).op)`.
+A detailed English derivation is pending.
 -/
 theorem resG_constHom (p : X ⟶ Sp K) (U : X.Opens) (a : K) :
     resG X (le_top : U ≤ ⊤) (constHom p a) = constFn p U a := by
@@ -31,7 +31,7 @@ theorem resG_constHom (p : X ⟶ Sp K) (U : X.Opens) (a : K) :
     (p.appLE_map (U := ⊤) (V := ⊤) (V' := U) (by simp) (homOfLE le_top).op)
 
 /- English proof (translation)
-Conclude with `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE φ p ⊤ U W (by simp) e)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_constFn (p : X ⟶ Sp K) (φ : Y ⟶ X) {U : X.Opens} {W : Y.Opens} (e : W ≤ φ ⁻¹ᵁ U) (a : K) :
     (φ.appLE U W e).hom (constFn p U a) = constFn (φ ≫ p) W a := by
@@ -41,7 +41,7 @@ theorem appLE_constFn (p : X ⟶ Sp K) (φ : Y ⟶ X) {U : X.Opens} {W : Y.Opens
 abbrev secModule (p : X ⟶ Sp K) (M : LB X) : Module K M.Sec := Module.compHom M.Sec (constHom p)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem sum_f {M : LB X} {T : Type} (S : Finset T) (s : T → M.Sec) (j : M.ι) :
     (∑ i ∈ S, s i).f j = ∑ i ∈ S, (s i).f j := by
@@ -51,7 +51,7 @@ theorem sum_f {M : LB X} {T : Type} (S : Finset T) (s : T → M.Sec) (j : M.ι) 
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]; rfl
 
 /- English proof (translation)
-Set `_ : Module K M.Sec` to `secModule p M`. Rewrite using `[sum_f]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show resG X le_top (constHom p (a i)) * (s i).f j = _`. Rewrite using `[resG_constHom]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_constHom_smul_sec_apply (p : X ⟶ Sp K) (M : LB X) {r : ℕ} (s : Fin r → M.Sec) (a : Fin r → K)
     (j : M.ι) :
@@ -63,17 +63,15 @@ private theorem sum_constHom_smul_sec_apply (p : X ⟶ Sp K) (M : LB X) {r : ℕ
   rw [resG_constHom]
 
 /- English proof (translation)
-Set `_ : Module K M.Sec` to `secModule p M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Set `Φ : (Fin r → K) →ₗ[K] M.Sec` to `{ toFun := fun a => ∑ i, a i • s i map_add' := fun a b => by simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib] map_smul' := fun c a => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum, RingHom.id_apply] }`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Take `⟨c, -, hc⟩` from `hs (Φ a)`. Establish `ha : ∀ j, (Φ a).f j = ∑ i, constFn p _ (a i) * (s i).f j` using `fun j => sum_constHom_smul_sec_apply p M s a j`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : ∀ j, (Φ a).f j = ∑ i, constFn p _ (b i) * (s i).f j` using `fun j => by`. Rewrite using `[hab]`. Conclude with `sum_constHom_smul_sec_apply p M s b j`. Conclude with `(hc a ha).trans (hc b hb).symm`. Introduce `t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha, -⟩` from `hs t`. Conclude with `⟨a, DVR.SecOps.sec_ext fun j => (sum_constHom_smul_sec_apply p M s a j).trans (ha j).symm⟩`. Conclude with `⟨LinearEquiv.ofBijective Φ hΦ⟩`. Introduce and unpack `⟨e⟩ set s : Fin r → M.Sec := fun i => e (fun j => if i = j then 1 else 0) with hs_def`. Establish `key : ∀ a : Fin r → K, e a = ∑ i, a i • s i` using `fun a => LinearMap.pi_apply_eq_sum_univ (e : (Fin r → K) →ₗ[K] M.Sec) a`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, fun t => ⟨e.symm t, fun j => ?_, fun a ha => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (∑ i, e.symm t i • s i) = t` using `(key (e.symm t)).symm.trans (e.apply_symm_apply t)`. Conclude with `(congrArg (fun x : M.Sec => x.f j) h1).symm.trans (sum_constHom_smul_sec_apply p M s (e.symm t) j)`. Establish `h2 : e a = t` using `DVR.SecOps.sec_ext fun j => by`. Rewrite using `[key a]`.
-
-Conclude with `(sum_constHom_smul_sec_apply p M s a j).trans (ha j).symm`. Rewrite using `[← h2, e.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineBundle_global_sections_functionField_iff (p : X ⟶ Sp K) (M : LB X) (r : ℕ) :
     SectionsHaveFiniteDimension p M r ↔ letI := secModule p M; Nonempty ((Fin r → K) ≃ₗ[K] M.Sec) := by
@@ -109,7 +107,7 @@ theorem lineBundle_global_sections_functionField_iff (p : X ⟶ Sp K) (M : LB X)
       rw [← h2, e.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨e⟩` from `(lineBundle_global_sections_functionField_iff p M r).1 h`. Take `⟨e'⟩` from `(lineBundle_global_sections_functionField_iff p M r').1 h'`. Set `_ : Module K M.Sec` to `secModule p M`. Establish `h2` using `(e.trans e'.symm).finrank_eq`. Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sectionsHaveFiniteDimension_unique (p : X ⟶ Sp K) (M : LB X) {r r' : ℕ} (h : SectionsHaveFiniteDimension p M r) (h' : SectionsHaveFiniteDimension p M r') : r = r' := by
   obtain ⟨e⟩ := (lineBundle_global_sections_functionField_iff p M r).1 h
@@ -119,7 +117,7 @@ theorem sectionsHaveFiniteDimension_unique (p : X ⟶ Sp K) (M : LB X) {r r' : �
   simpa using h2
 
 /- English proof (translation)
-Set `_ : Module K M.Sec` to `secModule p M`. Set `_ : Module K N.Sec` to `secModule q N`. Set `E' : M.Sec ≃ₗ[K] N.Sec` to `E.toLinearEquiv fun a s => hE a s`. Rewrite using `[lineBundle_global_sections_functionField_iff, lineBundle_global_sections_functionField_iff]`. Conclude with `⟨fun ⟨e⟩ => ⟨e.trans E'⟩, fun ⟨e⟩ => ⟨e.trans E'.symm⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sectionsHaveFiniteDimension_congr_addEquiv (p : X ⟶ Sp K) (q : Y ⟶ Sp K) {M : LB X} {N : LB Y} (E : M.Sec ≃+ N.Sec)
     (hE : ∀ (a : K) (s : M.Sec), E (constHom p a • s) = constHom q a • E s) (r : ℕ) :
@@ -131,14 +129,14 @@ theorem sectionsHaveFiniteDimension_congr_addEquiv (p : X ⟶ Sp K) (q : Y ⟶ S
   exact ⟨fun ⟨e⟩ => ⟨e.trans E'⟩, fun ⟨e⟩ => ⟨e.trans E'.symm⟩⟩
 
 /- English proof (translation)
-The claim follows from `X.sheaf.eq_of_locally_eq' V U (fun i => homOfLE (hV i)) hc x y h`.
+A detailed English derivation is pending.
 -/
 private theorem sep_lemma' {U : X.Opens} {J : Type} (V : J → X.Opens) (hV : ∀ i, V i ≤ U) (hc : U ≤ ⨆ i, V i)
     (x y : Γ(X, U)) (h : ∀ i, DVR.rs (hV i) x = DVR.rs (hV i) y) : x = y :=
   X.sheaf.eq_of_locally_eq' V U (fun i => homOfLE (hV i)) hc x y h
 
 /- English proof (translation)
-Simplify using `only [DVR.rs, resG]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Functor.map_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rs_resG_global_eq_rs_resG_global {U U' V : X.Opens} (h1 : V ≤ U) (h2 : V ≤ U') (c : Γ(X, ⊤)) :
     DVR.rs h1 (resG X le_top c) = DVR.rs h2 (resG X le_top c) := by
@@ -147,21 +145,19 @@ private theorem rs_resG_global_eq_rs_resG_global {U U' V : X.Opens} (h1 : V ≤ 
   rfl
 
 /- English proof (translation)
-Set `_ : Module K A.Sec` to `secModule p A`. Set `_ : Module K B.Sec` to `secModule p B`. Take `⟨u, hu⟩` from `H`. Establish `sepA : ∀ a (x y : Γ(X, A.U a)), (∀ b, DVR.rs (inf_le_left : A.U a ⊓ B.U b ≤ A.U a) x = DVR.rs inf_le_left y) → x = y` using `fun a x y h => sep_lemma' (fun b => A.U a ⊓ B.U b) (fun b => inf_le_left) (DVR.cover_inf hB a) x y h`. Establish `sepB : ∀ b (x y : Γ(X, B.U b)), (∀ a, DVR.rs (inf_le_right : A.U a ⊓ B.U b ≤ B.U b) x = DVR.rs inf_le_right y) → x = y` using `fun b x y h => sep_lemma' (fun a => A.U a ⊓ B.U b) (fun a => inf_le_right) (by simpa only [inf_comm] using DVR.cover_inf (A := B) (B := A) hA b) x y h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{ toFun := fun t => DVR.secOfIso t hu hA hB, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `t t'`. Use `DVR.SecOps.sec_ext fun a => sepA a _ _ fun b => ?_` and prove the remaining obligations. Use `show DVR.rs _ ((DVR.secOfIso (t + t') hu hA hB).f a) = DVR.rs _ ((DVR.secOfIso t hu hA hB).f a + (DVR.secOfIso t' hu hA hB).f a)`. Establish `e1` using `DVR.secOfIso_spec (t + t') hu hA hB a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `DVR.secOfIso_spec t hu hA hB a b`. Establish `e3` using `DVR.secOfIso_spec t' hu hA hB a b`. Simplify using `only [DVR.rs] at e1 e2 e3 ⊢`. Rewrite using `[map_add, e1, e2, e3]`. Simplify using `only [DVR.isoCand, DVR.rs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_add, ← map_add]`. Both sides reduce to the same expression. Introduce `k t`. Use `DVR.SecOps.sec_ext fun a => sepA a _ _ fun b => ?_` and prove the remaining obligations. Use `show DVR.rs _ ((DVR.secOfIso (constHom p k • t) hu hA hB).f a) = DVR.rs _ (resG X le_top (constHom p k) * (DVR.secOfIso t hu hA hB).f a)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `DVR.secOfIso_spec (constHom p k • t) hu hA hB a b`. Establish `e2` using `DVR.secOfIso_spec t hu hA hB a b`. Establish `r1` using `rs_resG_global_eq_rs_resG_global (inf_le_right : A.U a ⊓ B.U b ≤ B.U b) (inf_le_left : A.U a ⊓ B.U b ≤ A.U a) (constHom p k)`. Establish `hsm : (constHom p k • t).f b = resG X le_top (constHom p k) * t.f b` using `rfl`. Simplify using `only [DVR.rs] at e1 e2 r1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, e1, e2]`. Simplify using `only [DVR.isoCand, DVR.rs]`. Rewrite using `[hsm, map_mul, r1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t t' htt`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `DVR.SecOps.sec_ext fun b => sepB b _ _ fun a => ?_` and prove the remaining obligations. Establish `h3 : DVR.isoCand u t a b = DVR.isoCand u t' a b`. Rewrite using `[← DVR.secOfIso_spec t hu hA hB a b, ← DVR.secOfIso_spec t' hu hA hB a b]`. Conclude with `congrArg (fun s => DVR.rs (inf_le_left : A.U a ⊓ B.U b ≤ A.U a) (s.f a)) htt`. Simplify using `only [DVR.isoCand] at h3`.
-
-Conclude with `(Units.mul_right_inj _).1 h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_sections_map_of_lbIso (p : X ⟶ Sp K) {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) (H : LBIso A B) :
     ∃ T : (letI := secModule p A; letI := secModule p B; B.Sec →ₗ[K] A.Sec), Function.Injective T := by
@@ -211,9 +207,9 @@ private theorem exists_sections_map_of_lbIso (p : X ⟶ Sp K) {A B : LB X} (hA :
     exact (Units.mul_right_inj _).1 h3
 
 /- English proof (translation)
-Introduce and unpack `⟨e⟩`. Establish `: FiniteDimensional K V` using `LinearEquiv.finiteDimensional e`. Establish `: FiniteDimensional K W` using `Module.Finite.of_injective g hg`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hf`. Establish `h2` using `LinearMap.finrank_le_finrank_of_injective hg`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Module.finrank K V = r` using `by rw [← e.finrank_eq]; simp`. Conclude with `⟨LinearEquiv.ofFinrankEq _ _ (by rw [Module.finrank_fin_fun]; omega)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem finiteDimensional_of_lbIso_sections {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     (f : V →ₗ[K] W) (g : W →ₗ[K] V) (hf : Function.Injective f) (hg : Function.Injective g) (r : ℕ) :
@@ -227,9 +223,9 @@ private theorem finiteDimensional_of_lbIso_sections {V W : Type} [AddCommGroup V
   exact ⟨LinearEquiv.ofFinrankEq _ _ (by rw [Module.finrank_fin_fun]; omega)⟩
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_sections_map_of_lbIso p hM hM' h`. Take `⟨T', hT'⟩` from `exists_sections_map_of_lbIso p hM' hM (LBIso.symm h)`. Rewrite using `[lineBundle_global_sections_functionField_iff, lineBundle_global_sections_functionField_iff]`. Set `_ : Module K M.Sec` to `secModule p M`. Set `_ : Module K M'.Sec` to `secModule p M'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `⟨finiteDimensional_of_lbIso_sections T' T hT' hT r, finiteDimensional_of_lbIso_sections T T' hT hT' r⟩`.
+Supply the required witnesses or components.
 -/
 theorem sectionsHaveFiniteDimension_iff_of_lineBundleIso (p : X ⟶ Sp K) {M M' : LB X} (hM : M.IsLB) (hM' : M'.IsLB) (h : LBIso M M') (r : ℕ) :
     SectionsHaveFiniteDimension p M r ↔ SectionsHaveFiniteDimension p M' r := by
@@ -241,7 +237,7 @@ theorem sectionsHaveFiniteDimension_iff_of_lineBundleIso (p : X ⟶ Sp K) {M M' 
   exact ⟨finiteDimensional_of_lbIso_sections T' T hT' hT r, finiteDimensional_of_lbIso_sections T T' hT hT' r⟩
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem presheaf_map_homOfLE_map_homOfLE_apply {Z : Scheme.{0}} {U V W : Z.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Z, U)) :
     (Z.presheaf.map (homOfLE h2).op).hom ((Z.presheaf.map (homOfLE h1).op).hom x) =
@@ -250,7 +246,7 @@ private theorem presheaf_map_homOfLE_map_homOfLE_apply {Z : Scheme.{0}} {U V W :
   rfl
 
 /- English proof (translation)
-Rewrite using `[show (homOfLE h).op = 𝟙 (Opposite.op U) from rfl, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem presheaf_map_homOfLE_refl_apply {Z : Scheme.{0}} {U : Z.Opens} (h : U ≤ U) (x : Γ(Z, U)) :
     (Z.presheaf.map (homOfLE h).op).hom x = x := by
@@ -258,23 +254,21 @@ private theorem presheaf_map_homOfLE_refl_apply {Z : Scheme.{0}} {U : Z.Opens} (
   rfl
 
 /- English proof (translation)
-Establish `hle : ∀ j : M.ι, φ ⁻¹ᵁ M.U j ≤ (M.pull φ).U (fun _ => j)` using `fun j y hy => mem_pull.2 hy`. Establish `hP : ∀ (s : M.Sec) (J : PUnit → M.ι), (secPull s φ).f J = (φ.appLE _ _ ((chartPullPull M φ).le J)).hom (s.f (J PUnit.unit))` using `fun s J => chartSec_f (chartPullPull M φ) s J`. Set `P : M.Sec →+ (M.pull φ).Sec` to `{ toFun := fun s => secPull s φ map_zero' := DVR.SecOps.sec_ext fun (J : PUnit → M.ι) => (hP 0 J).trans (map_zero _) map_add' := fun s t => DVR.SecOps.sec_ext fun (J : PUnit → M.ι) => by show (secPull (s + t) φ).f J = (secPull s φ).f J + (secPull t φ).f J`. Conclude with `(hP (s + t) J).trans ((map_add _ _ _).trans (congrArg₂ (· + ·) (hP s J).symm (hP t J).symm)) }`. Establish `inj : Function.Injective P` using `fun s t hst => DVR.SecOps.sec_ext fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun u : (M.pull φ).Sec => u.f (fun _ => j)) hst`. Express the relevant statement in the definitionally equal form `(secPull s φ).f _ = (secPull t φ).f _ at h1`. Rewrite `h1` using `[hP, hP]`. Apply `(hφ (M.U j)).1` to reduce the goal to its premises. Establish `h2` using `congrArg (Y.presheaf.map (homOfLE (hle j)).op).hom h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(presheaf_map_homOfLE_refl_apply _ _).symm.trans ((presheaf_map_homOfLE_map_homOfLE_apply _ _ _).symm.trans (h2.trans ((presheaf_map_homOfLE_map_homOfLE_apply _ _ _).trans (presheaf_map_homOfLE_refl_apply _ _))))`. Establish `surj : Function.Surjective P` using `fun t => by`. Set `e` to `fun j : M.ι => Equiv.ofBijective _ (hφ (M.U j))`. Establish `a1 : ∀ j x, (φ.app (M.U j)).hom ((e j).symm x) = x` using `fun j x => (e j).apply_symm_apply x`. Set `s : M.Sec` to `{ f := fun j => (e j).symm ((Y.presheaf.map (homOfLE (hle j)).op).hom (t.f (fun _ => j))) compat := fun i j => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(hφ (M.U i ⊓ M.U j)).1` to reduce the goal to its premises. Rewrite using `[map_mul]`. Establish `n1` using `DVR.app_rs φ (inf_le_left : M.U i ⊓ M.U j ≤ M.U i) ((e i).symm ((Y.presheaf.map (homOfLE (hle i)).op).hom (t.f (fun _ => i))))`. Establish `n2` using `DVR.app_rs φ (inf_le_right : M.U i ⊓ M.U j ≤ M.U j) ((e j).symm ((Y.presheaf.map (homOfLE (hle j)).op).hom (t.f (fun _ => j))))`. Simplify using `only [DVR.rs] at n1 n2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[n1, n2, a1, a1, presheaf_map_homOfLE_map_homOfLE_apply, presheaf_map_homOfLE_map_homOfLE_apply]`. Establish `hij : φ ⁻¹ᵁ (M.U i ⊓ M.U j) ≤ (M.pull φ).U (fun _ => i) ⊓ (M.pull φ).U (fun _ => j)` using `le_inf (((TopologicalSpace.Opens.map φ.base).monotone inf_le_left).trans (hle i)) (((TopologicalSpace.Opens.map φ.base).monotone inf_le_right).trans (hle j))`. Establish `tc` using `congrArg (Y.presheaf.map (homOfLE hij).op).hom (t.compat (fun _ => i) (fun _ => j))`. Rewrite `tc` using `[map_mul, presheaf_map_homOfLE_map_homOfLE_apply, presheaf_map_homOfLE_map_homOfLE_apply]`. Rewrite using `[tc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Unfold `res pullU`. Conclude with `(presheaf_map_homOfLE_map_homOfLE_apply _ _ _).trans (presheaf_map_homOfLE_refl_apply _ _) }`. Use `⟨s, DVR.SecOps.sec_ext fun (J : PUnit → M.ι) => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(secPull s φ).f J = t.f J`. Use `(hP s J).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Y.presheaf.map _).hom ((φ.app _).hom ((e (J PUnit.unit)).symm _)) = _`. Rewrite using `[a1]`. Conclude with `(presheaf_map_homOfLE_map_homOfLE_apply _ _ _).trans (presheaf_map_homOfLE_refl_apply _ _)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨AddEquiv.ofBijective P ⟨inj, surj⟩, fun a s => DVR.SecOps.sec_ext fun (J : PUnit → M.ι) => by`. Express the relevant statement in the definitionally equal form `(secPull (constHom p a • s) φ).f J = resG Y le_top (constHom (φ ≫ p) a) * (secPull s φ).f J`. Use `(hP _ J).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (resG Y le_top (constHom (φ ≫ p) a) * ·) (hP s J)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ.appLE _ _ _).hom (resG X le_top (constHom p a) * s.f (J PUnit.unit)) = _`.
-
-Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(congrArg (φ.appLE _ _ _).hom (resG_constHom p _ a)).trans ((appLE_constFn p φ _ a).trans (resG_constHom (φ ≫ p) _ a).symm)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem exists_sec_addEquiv_pull_of_bijective_app (p : X ⟶ Sp K) (M : LB X) (φ : Y ⟶ X)
     (hφ : ∀ V, Function.Bijective (φ.app V).hom) :
@@ -337,7 +331,7 @@ private theorem exists_sec_addEquiv_pull_of_bijective_app (p : X ⟶ Sp K) (M : 
       ((appLE_constFn p φ _ a).trans (resG_constHom (φ ≫ p) _ a).symm)⟩
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `exists_sec_addEquiv_pull_of_bijective_app p M φ hφ`. Conclude with `sectionsHaveFiniteDimension_congr_addEquiv p (φ ≫ p) E hE r`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sectionsHaveFiniteDimension_iff_pull_bijective (p : X ⟶ Sp K) (M : LB X) (φ : Y ⟶ X) (hφ : ∀ V, Function.Bijective (φ.app V).hom)
     (r : ℕ) : SectionsHaveFiniteDimension p M r ↔ SectionsHaveFiniteDimension (φ ≫ p) (M.pull φ) r := by
@@ -345,7 +339,7 @@ theorem sectionsHaveFiniteDimension_iff_pull_bijective (p : X ⟶ Sp K) (M : LB 
   exact sectionsHaveFiniteDimension_congr_addEquiv p (φ ≫ p) E hE r
 
 /- English proof (translation)
-Introduce `K _ X p M hM`. Use `⟨fun r r' h h' => sectionsHaveFiniteDimension_unique p M h h', fun M' hM' hMM' => ⟨fun r h => (sectionsHaveFiniteDimension_iff_of_lineBundleIso p hM hM' hMM' r).1 h, fun e => lbIso_lbPow hMM' e⟩, fun a e => lbIso_lbPow_lbPow hM a e, lbIso_lbPow_one hM, fun Y φ e => lbIso_lbPow_pu …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant : ∀ (K : Type) [Field K] (X : Scheme.{0}) (p : X ⟶ Sp K) (M : LB X), M.IsLB → (∀ r r', SectionsHaveFiniteDimension p M r → SectionsHaveFiniteDimension p M r' → r = r') ∧ (∀ M' : LB X, M'.IsLB → LBIso M M' → (∀ r, SectionsHaveFiniteDimension p M r → SectionsHaveFiniteDimension p M' r) ∧ ∀ e, LBIso (lbPow M e) (lbPow M' e)) ∧ (∀ a e, LBIso (lbPow (lbPow M a) e) (lbPow M (a * e))) ∧ LBIso (lbPow M 1) M ∧ (∀ (Y : Scheme.{0}) (φ : Y ⟶ X) (e : ℕ), LBIso (lbPow (M.pull φ) e) ((lbPow M e).pull φ)) ∧ ∀ (Y : Scheme.{0}) (φ : Y ≅ X) (r : ℕ), SectionsHaveFiniteDimension p M r ↔ SectionsHaveFiniteDimension (φ.hom ≫ p) (M.pull φ.hom) r := by
   intro K _ X p M hM

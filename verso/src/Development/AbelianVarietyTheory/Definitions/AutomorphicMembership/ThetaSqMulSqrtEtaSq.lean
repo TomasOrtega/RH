@@ -59,20 +59,20 @@ def Frame (z : NgC g) (x : KeyIn ℂ) : Prop :=
 def Lies (z : NgC g) (x : KeyIn ℂ) : Prop := KeyEq.Nrm x z.τ z.a z.b
 
 /- English proof (translation)
-Take `⟨e, h⟩` from `h`. Conclude with `⟨e, 1, 1, one_ne_zero, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Frame.lies {z : NgC g} {x : KeyIn ℂ} (h : z.Frame x) : z.Lies x := by
   obtain ⟨e, h⟩ := h
   exact ⟨e, 1, 1, one_ne_zero, h⟩
 
 /- English proof (translation)
-The claim follows from `KeyOfPeriod.exists_keyIn_normalAt thetaUnifAV_all torusAlgebraic_holds g z.τ z.a z.b hg z.symm z.pos z.half`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame (hg : 1 ≤ g) (z : NgC g) : ∃ x : KeyIn ℂ, z.Frame x :=
   KeyOfPeriod.exists_keyIn_normalAt thetaUnifAV_all torusAlgebraic_holds g z.τ z.a z.b hg z.symm z.pos z.half
 
 /- English proof (translation)
-Take `⟨⟨τ, M, a, b, c, hab, hc, -, hN⟩, -⟩` from `KeyNormalExists.exists_normalAt thetaUnifAV_all x`. Conclude with `⟨⟨τ, hN.mem_siegelH.1, hN.mem_siegelH.2, a, b, hab⟩, rfl, M, c, hc, hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_keyIn (x : KeyIn ℂ) : ∃ z : NgC x.P.g, z.Lies x := by
   obtain ⟨⟨τ, M, a, b, c, hab, hc, -, hN⟩, -⟩ := KeyNormalExists.exists_normalAt thetaUnifAV_all x
@@ -93,14 +93,14 @@ def lieGram (z : NgC g) : Matrix (Fin g) (Fin g) ℂ :=
 def etaSq (z : NgC g) : ℝ := (z.lieGram.det.re)⁻¹
 
 /- English proof (translation)
-The claim follows from `z.pos.det_pos`.
+A detailed English derivation is pending.
 -/
 theorem det_Y_pos (z : NgC g) : 0 < z.Y.det := z.pos.det_pos
 
 /- English proof (translation)
-Establish `ha : z.a = fun i => (((z.a i).re : ℝ) : ℂ)` using `(TorusAlg.ofRealVec_re z.half.1).symm`. Establish `hb : z.b = fun i => (((z.b i).re : ℝ) : ℂ)` using `(TorusAlg.ofRealVec_re z.half.2).symm`. Use `Eq.trans ?_ (ThetaNorm.integral_norm_sq_thetaChar g z.τ (fun i => (z.a i).re) (fun i => (z.b i).re) z.symm z.pos)` and prove the remaining obligations. Rewrite using `[← ha, ← hb, thetaSq]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Establish `e : (fun i => (((fun i => (p (.inl i) : ℂ)) + z.τ.mulVec (fun i => (p (.inr i) : ℂ))) i).im) = z.Y.mulVec fun i => p (.inr i)`. Use function extensionality and compare the values at `i`. Simplify using `[Y, Matrix.mulVec, dotProduct]`. Rewrite using `[cubSq, e, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ z.det_Y_pos.ne'.isUnit, Matrix.one_mulVec, dotProduct_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -121,9 +121,9 @@ theorem thetaSq_eq (z : NgC g) : z.thetaSq = (Real.sqrt (2 ^ g * z.Y.det))⁻¹ 
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Establish `e : star (Pi.single j (2 * Real.pi * Complex.I : ℂ)⁻¹ : Fin g → ℂ) = Pi.single j (-(2 * Real.pi * Complex.I : ℂ)⁻¹)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Simplify using `only [lieGram, Matrix.of_apply, hermForm, e, single_dotProduct, Matrix.mulVec_single, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -145,7 +145,7 @@ theorem lieGram_eq (z : NgC g) :
   ring
 
 /- English proof (translation)
-Establish `e : z.lieGram.det = ((((4 * Real.pi)⁻¹ • (z.Y)⁻¹ : Matrix (Fin g) (Fin g) ℝ)).det : ℝ)`. Rewrite using `[lieGram_eq]`. Conclude with `(RingHom.map_det Complex.ofRealHom _).symm`. Rewrite using `[etaSq, e, Complex.ofReal_re, Matrix.det_smul, Matrix.det_nonsing_inv, Fintype.card_fin, Ring.inverse_eq_inv', mul_inv, inv_inv, inv_pow, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaSq_eq (z : NgC g) : z.etaSq = (4 * Real.pi) ^ g * z.Y.det := by
   have e : z.lieGram.det = ((((4 * Real.pi)⁻¹ • (z.Y)⁻¹ : Matrix (Fin g) (Fin g) ℝ)).det : ℝ) := by
@@ -155,14 +155,14 @@ theorem etaSq_eq (z : NgC g) : z.etaSq = (4 * Real.pi) ^ g * z.Y.det := by
     mul_inv, inv_inv, inv_pow, inv_inv]
 
 /- English proof (translation)
-Use `z.det_Y_pos` as an intermediate fact. Rewrite using `[thetaSq_eq]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem thetaSq_pos (z : NgC g) : 0 < z.thetaSq := by
   have := z.det_Y_pos
   rw [thetaSq_eq]; positivity
 
 /- English proof (translation)
-Use `z.det_Y_pos` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Rewrite using `[etaSq_eq]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem etaSq_pos (z : NgC g) : 0 < z.etaSq := by
   have := z.det_Y_pos
@@ -170,7 +170,7 @@ theorem etaSq_pos (z : NgC g) : 0 < z.etaSq := by
   rw [etaSq_eq]; positivity
 
 /- English proof (translation)
-Use `z.det_Y_pos` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Rewrite using `[thetaSq_eq, etaSq_eq, ← Real.sqrt_inv, ← Real.sqrt_mul (by positivity)]`. Use `congr 1`. Rewrite using `[show (4 * Real.pi) ^ g = 2 ^ g * (2 * Real.pi) ^ g by rw [← mul_pow]; congr 1; ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -198,17 +198,17 @@ namespace IsKF
 variable {g c : ℕ} {κ κ' : Rule}
 
 /- English proof (translation)
-The claim follows from `KeyFamUnit.famUnit κ h.funct h.unitSp`.
+A detailed English derivation is pending.
 -/
 theorem famUnit (h : IsKF g c κ) : FamUnit κ := KeyFamUnit.famUnit κ h.funct h.unitSp
 
 /- English proof (translation)
-The claim follows from `KeyValUnit.valUnit κ h.funct h.unitSp`.
+A detailed English derivation is pending.
 -/
 theorem valUnit (h : IsKF g c κ) : ValUnit κ := KeyValUnit.valUnit κ h.funct h.unitSp
 
 /- English proof (translation)
-Take `⟨Q, hg₁, rig₁, hr₁, th₁, hth₁, v₁, hv₁, th₁', hth₁', v₁', hv₁', M₁, h₁, h₂, ha₁, hN, hd⟩` from `KeyGalDesc.exists_keyPB_pair (algebraMap S (FractionRing S)) P hg rig hr th hth v hv th' hth' v' hv' a M ha hM`. Establish `e` using `h.homog _ Q hg₁ rig₁ hr₁ th₁ hth₁ v₁ hv₁ th₁' hth₁' v₁' hv₁' _ M₁ ((KeyGalDesc.g_eq h₁).trans hP) ha₁ hN`. Rewrite `e` using `[hu _ _ _ h₁, hu' _ _ _ h₂, hd]`. Apply `IsFractionRing.injective S (FractionRing S)` to reduce the goal to its premises. Simplify `e` using `only [map_mul, map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem famHomog (h : IsKF g c κ) (S : Type) [CommRing S] [IsDomain S] [CharZero S] (P : Out.PolAV (Sp S))
     (hg rig hr th hth v hv th' hth' v' hv') (a : S) (M : Matrix (Fin P.g) (Fin P.g) S) (u u' : S) (hP : P.g = g)
@@ -223,7 +223,7 @@ theorem famHomog (h : IsKF g c κ) (S : Type) [CommRing S] [IsDomain S] [CharZer
   simpa only [map_mul, map_pow] using e
 
 /- English proof (translation)
-Take `⟨P, hg, rig, hr, th, hth, v, hv⟩` from `x`. Take `⟨th₀, hth₀, v₀, hv₀, hN₀, e₁, hMv⟩` from `KeyConst.exists_rescale P hg rig hr th hth v hv τ M _ _ c₀ hc hM hN`. Rewrite using `[← ht ⟨P, hg, rig, hr, th₀, hth₀, v₀, hv₀⟩ rfl hN₀]`. Conclude with `h.homog ℂ P hg rig hr _ hth₀ v₀ hv₀ th hth v hv c₀ M hx e₁ hMv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_normalAt (h : IsKF g c κ) (x : KeyIn ℂ) (hx : x.P.g = g) {τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ}
     {a b : Fin x.P.g → ℂ} {c₀ : ℂ} (hc : c₀ ≠ 0) (hM : M.det ≠ 0) (hN : NormalAt x τ M a b c₀) (t : ℂ)
@@ -236,13 +236,13 @@ theorem value_normalAt (h : IsKF g c κ) (x : KeyIn ℂ) (hx : x.P.g = g) {τ M 
   exact h.homog ℂ P hg rig hr _ hth₀ v₀ hv₀ th hth v hv c₀ M hx e₁ hMv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `K _ _ x`. Distinguish the cases in `hx : x.P.g = g`. Use `swap`. Rewrite using `[h.off K x hx, h'.off K x hx]`. Take `⟨K₀, x₀, hK₀, hx₀⟩` from `(KeyCountableDescent.keyIn_descends_countable firstFiveLaws.1).2 K x`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ⟩` from `KeyRuleUnique.nonempty_ringHom_complex K₀`. Take `⟨y, hy⟩` from `exists_keyPB_ring x₀ σ`. Establish `hyg : y.P.g = g` using `(KeyGalDesc.g_eq hy).trans ((KeyGalDesc.g_eq hx₀).symm.trans hx)`. Substitute `hyg` using the available equality. Take `⟨⟨τ, M, a, b, c₀, hab, hc, hM, hN⟩, -⟩` from `KeyNormalExists.exists_normalAt thetaUnifAV_all y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `z : NgC y.P.g` to `⟨τ, hN.mem_siegelH.1, hN.mem_siegelH.2, a, b, hab⟩`. Establish `e : (κ ℂ y : ℂ) = κ' ℂ y`. Use `mul_left_cancel₀ (pow_ne_zero (2 * c) hc) ?_` and prove the remaining obligations. Rewrite using `[h.value_normalAt y rfl hc hM hN (f z) fun w e hw => congrArg Units.val (hf z w ⟨e, hw⟩), h'.value_normalAt y rfl hc hM hN (f z) fun w e hw => congrArg Units.val (hf' z w ⟨e, hw⟩)]`. Rewrite `e` using `[h.funct K₀ ℂ σ x₀ y hy, h'.funct K₀ ℂ σ x₀ y hy]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h.funct K₀ K _ x₀ x hx₀, h'.funct K₀ K _ x₀ x hx₀, σ.injective e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext (h : IsKF g c κ) (h' : IsKF g c κ') (f : NgC g → ℂˣ)
     (hf : ∀ (z : NgC g) x, z.Frame x → κ ℂ x = f z) (hf' : ∀ (z : NgC g) x, z.Frame x → κ' ℂ x = f z) : κ = κ' := by
@@ -266,7 +266,7 @@ theorem ext (h : IsKF g c κ) (h' : IsKF g c κ') (f : NgC g → ℂˣ)
   rw [h.funct K₀ K _ x₀ x hx₀, h'.funct K₀ K _ x₀ x hx₀, σ.injective e]
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨z⟩ : Nonempty (NgC g) := inferInstance obtain ⟨x, hx, -⟩ := z.exists_frame hg choose M hM using fun i => (x.basis.2 (x.v i) (x.basis.1 i)).exists obtain ⟨t, -, e, hle⟩ := exists_sec_div x.P.A.hom (mul_inv_cancel₀ (two_ne_zero (α := ℂ))) x.th have e₁ := h.homog ℂ x.P x. …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_one (hg : 1 ≤ g) (hc : 1 ≤ c) : ¬ IsKF g c (fun _ _ _ _ => 1) := fun h => by
   obtain ⟨z⟩ : Nonempty (NgC g) := inferInstance
@@ -291,11 +291,11 @@ def cutRule (g : ℕ) (s : ℤˣ) (κ : Rule) : Rule := fun K _ _ x =>
   if x.P.g = g then Units.map (Int.castRingHom K).toMonoidHom s * κ K x else 1
 
 /- English proof (translation)
-Simplify using `only [cutRule, if_pos hP, Units.val_mul]`. Rewrite using `[mul_left_comm, hH K P hg rig hr th hth v hv th' hth' v' hv' a M hP h₁ h₂, mul_left_comm]`. Use `funct K K' _ _ _ _ f x x' h := by`. Simplify using `only [cutRule, KeyGalDesc.g_eq h]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hF K K' f x x' h]`. Simplify using the standard rewrite rules. Use `unitSp R K _ _ _ _ _ _ _ x xK h := by`. Distinguish the cases in `hx : x.P.g = g`. Take `⟨u, hu, hk⟩` from `hU R K x xK h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨Units.map (Int.castRingHom R).toMonoidHom s * u, ?_, fun k _ _ r xk hr hxk => ?_⟩` and prove the remaining obligations. Simplify using `[cutRule, KeyGalDesc.g_eq h, hx, hu]`. Simplify using `[cutRule, KeyGalDesc.g_eq hxk, hx, hk k r xk hr hxk]`. Conclude with `⟨1, by simp [cutRule, KeyGalDesc.g_eq h, hx], fun k _ _ r xk hr hxk => by simp [cutRule, KeyGalDesc.g_eq hxk, hx]⟩`. Use `off K _ _ x hx := if_neg hx`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isKF_cutRule {g c : ℕ} (s : ℤˣ) {κ : Rule}
     (hH : ∀ (K : Type) [Field K] [CharZero K] (P : Out.PolAV (Sp K)) (hg rig hr th hth v hv th' hth' v' hv') (a : K)
@@ -334,31 +334,31 @@ variable {g c : ℕ} (kf : KF g c)
 def rule : Rule := kf.ex.choose
 
 /- English proof (translation)
-The claim follows from `kf.ex.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem isKF : IsKF g c kf.rule := kf.ex.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `kf.ex.choose_spec.2 z x h`.
+A detailed English derivation is pending.
 -/
 theorem rule_frame {z : NgC g} {x : KeyIn ℂ} (h : z.Frame x) : kf.rule ℂ x = (kf.val z)⁻¹ :=
   kf.ex.choose_spec.2 z x h
 
 /- English proof (translation)
-The claim follows from `h.ext kf.isKF _ hv fun _ _ => kf.rule_frame`.
+A detailed English derivation is pending.
 -/
 theorem rule_unique {κ : Rule} (h : IsKF g c κ) (hv : ∀ (z : NgC g) (x : KeyIn ℂ), z.Frame x → κ ℂ x = (kf.val z)⁻¹) :
     κ = kf.rule :=
   h.ext kf.isKF _ hv fun _ _ => kf.rule_frame
 
 /- English proof (translation)
-Consider the cases of `kf`. Consider the cases of `kf'`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 @[ext] theorem ext {kf kf' : KF g c} (h : kf.val = kf'.val) : kf = kf' := by
   cases kf; cases kf'; cases h; rfl
 
 /- English proof (translation)
-Introduce `kf kf' h` and use `ext (funext fun z => by obtain ⟨x, hx⟩ := z.exists_frame hg exact inv_injective ((kf.rule_frame hx).symm.trans (h ▸ kf'.rule_frame hx)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rule_injective (hg : 1 ≤ g) : Function.Injective (rule : KF g c → Rule) := fun kf kf' h =>
   ext (funext fun z => by
@@ -368,13 +368,13 @@ theorem rule_injective (hg : 1 ≤ g) : Function.Injective (rule : KF g c → Ru
 def coef (K : Type) [Field K] [CharZero K] (x : KeyIn K) : Kˣ := (kf.rule K x)⁻¹
 
 /- English proof (translation)
-Rewrite using `[coef, kf.rule_frame h, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_frame {z : NgC g} {x : KeyIn ℂ} (h : z.Frame x) : kf.coef ℂ x = kf.val z := by
   rw [coef, kf.rule_frame h, inv_inv]
 
 /- English proof (translation)
-Establish `e` using `kf.isKF.homog K P hg rig hr th hth v hv th' hth' v' hv' a M hP ha hM`. Simplify using `only [coef, Units.val_inv_eq_inv_val]`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff (Units.ne_zero _) (Units.ne_zero _), e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_homog (K : Type) [Field K] [CharZero K] (P : Out.PolAV (Sp K)) (hg rig hr th hth v hv th' hth' v' hv')
     (a : K) (M : Matrix (Fin P.g) (Fin P.g) K) (hP : P.g = g)
@@ -386,14 +386,14 @@ theorem coef_homog (K : Type) [Field K] [CharZero K] (P : Out.PolAV (Sp K)) (hg 
   rw [← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff (Units.ne_zero _) (Units.ne_zero _), e]
 
 /- English proof (translation)
-Simplify using `only [coef, Units.val_inv_eq_inv_val, map_inv₀, kf.isKF.funct K K' f x x' h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coef_funct {K K' : Type} [Field K] [CharZero K] [Field K'] [CharZero K'] (f : K →+* K') {x : KeyIn K}
     {x' : KeyIn K'} (h : KeyPB x' x f) : (kf.coef K' x' : K') = f (kf.coef K x) := by
   simp only [coef, Units.val_inv_eq_inv_val, map_inv₀, kf.isKF.funct K K' f x x' h]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `kf.isKF.famUnit S y`. Use `⟨u⁻¹, fun K _ _ f x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[coef, Units.val_inv_eq_inv_val, hu K f x hx]`. Conclude with `inv_eq_of_mul_eq_one_right (by rw [← map_mul, Units.mul_inv, map_one])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_coef (S : Type) [CommRing S] [IsDomain S] [IsNoetherianRing S] [IsIntegrallyClosed S] [CharZero S]
     (y : KeyIn S) : ∃ u : Sˣ, IsValue kf.coef y (u : S) := by
@@ -403,7 +403,7 @@ theorem exists_unit_coef (S : Type) [CommRing S] [IsDomain S] [IsNoetherianRing 
   exact inv_eq_of_mul_eq_one_right (by rw [← map_mul, Units.mul_inv, map_one])
 
 /- English proof (translation)
-Introduce `S V K _ _ _ _ _ _ _ _ _ f y x hx` and use `by obtain ⟨u, hu⟩ := kf.isKF.valUnit S V K f y x hx refine ⟨u⁻¹, ?_⟩ rw [coef, Units.val_inv_eq_inv_val, hu] exact inv_eq_of_mul_eq_one_right (by rw [← map_mul, Units.mul_inv, map_one])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valUnit_coef : ValUnit kf.coef := fun S V K _ _ _ _ _ _ _ _ _ f y x hx => by
   obtain ⟨u, hu⟩ := kf.isKF.valUnit S V K f y x hx
@@ -414,7 +414,7 @@ theorem valUnit_coef : ValUnit kf.coef := fun S V K _ _ _ _ _ _ _ _ _ f y x hx =
 def norm (z : NgC g) : ℝ := ‖(kf.val z : ℂ)‖ / (z.thetaSq ^ c * Real.sqrt z.etaSq ^ c)
 
 /- English proof (translation)
-Use `z.thetaSq_pos` as an intermediate fact. Use `z.etaSq_pos` as an intermediate fact. Conclude with `div_pos (norm_pos_iff.2 (kf.val z).ne_zero) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_pos (z : NgC g) : 0 < kf.norm z := by
   have := z.thetaSq_pos
@@ -422,13 +422,13 @@ theorem norm_pos (z : NgC g) : 0 < kf.norm z := by
   exact div_pos (norm_pos_iff.2 (kf.val z).ne_zero) (by positivity)
 
 /- English proof (translation)
-Rewrite using `[norm, ← mul_pow, z.thetaSq_mul_sqrt_etaSq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_div (z : NgC g) : kf.norm z = ‖(kf.val z : ℂ)‖ / Real.sqrt ((2 * Real.pi) ^ g) ^ c := by
   rw [norm, ← mul_pow, z.thetaSq_mul_sqrt_etaSq]
 
 /- English proof (translation)
-Establish `hp : 0 < 2 * Real.pi` using `by have := Real.pi_pos; positivity`. Rewrite using `[norm_eq_div, div_eq_mul_inv]`. Use `congr 1`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hp.le, ← Real.rpow_mul hp.le, ← Real.rpow_neg hp.le, Real.rpow_def_of_pos hp]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -443,17 +443,17 @@ theorem norm_eq (z : NgC g) :
   ring
 
 /- English proof (translation)
-Take `⟨hx, M, c₀, hc, hN⟩` from `hz`. Substitute `hx` using the available equality. Take `⟨u, Hm, W, χ, θ, Fd, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `hn`. Take `⟨u', τ', M', a', b', c', k₁, k₂, ha, hb, k₃, k₄, hc', k₅, hM', k₆, e⟩` from `keyIn_normal_form_and_archimedean_constant thetaUnifAV_all x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Establish `p₁ : 0 ≤ nth` using `h₆ ▸ div_nonneg (integral_nonneg fun z => by positivity) ENNReal.toReal_nonneg`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p₂ : 0 ≤ nη` using `h₇ ▸ by positivity`. Establish `hv : M.det ^ 4 / c₀ ^ 8 = M'.det ^ 4 / c' ^ 8` using `NormalUnique.thetaFrame_value_unique thetaUnifAV_all ThetaInversion.inversion x _ _ ⟨z.τ, M, z.a, z.b, c₀, z.half, hc, hN, rfl⟩ ⟨τ', M', a', b', c', ⟨ha, hb⟩, hc', ⟨u', k₁, k₂, k₃, k₄, k₅, k₆⟩, rfl⟩`. Establish `hM : M.det ≠ 0` using `fun h0 => by`. Rewrite `hv` using `[h0]`. Conclude with `div_ne_zero (pow_ne_zero 4 hM') (pow_ne_zero 8 hc') (by rw [← hv]; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ` using `kf.isKF.value_normalAt x rfl hc hM hN ((kf.val z)⁻¹ : ℂˣ) fun w e hw => congrArg Units.val (kf.rule_frame ⟨e, hw⟩)`. Rewrite `e` using `[← hv, norm_div, norm_pow, norm_pow]`. Establish `q₁ : 0 < ‖M.det‖` using `norm_pos_iff.2 hM`. Establish `q₂ : 0 < ‖c₀‖` using `norm_pos_iff.2 hc`. Establish `hp` using `Real.pi_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : ‖M.det‖ / ‖c₀‖ ^ 2 * (nth * Real.sqrt nη) = Real.sqrt ((2 * Real.pi) ^ x.P.g)`. Use `(pow_left_inj₀ (by positivity) (by positivity) (show 4 ≠ 0 by norm_num)).1 ?_` and prove the remaining obligations. Establish `s : ∀ t : ℝ, 0 ≤ t → Real.sqrt t ^ 4 = t ^ 2` using `fun t ht => by`. Rewrite using `[show 4 = 2 * 2 from rfl, pow_mul, Real.sq_sqrt ht]`. Rewrite using `[mul_pow, mul_pow, s _ p₂, s _ (by positivity), ← pow_mul, mul_comm x.P.g 2, ← e, div_pow, ← pow_mul, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ'` using `congrArg (‖·‖) hκ`. Simplify using `only [norm_mul, norm_pow, Units.val_inv_eq_inv_val, norm_inv] at hκ'`. Establish `q₃ : 0 < ‖(kf.val z : ℂ)‖` using `norm_pos_iff.2 (kf.val z).ne_zero`. Establish `q₄ : 0 < ‖(kf.rule ℂ x : ℂ)‖` using `norm_pos_iff.2 (kf.rule ℂ x).ne_zero`. Establish `e₂ : ‖(kf.coef ℂ x : ℂ)‖ = ‖(kf.val z : ℂ)‖ / (‖M.det‖ / ‖c₀‖ ^ 2) ^ c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coef, Units.val_inv_eq_inv_val, norm_inv, div_pow, ← pow_mul]`. Clear denominators, using `at hκ' ⊢` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_eq_div, ← e', e₂, div_div, ← mul_pow, ← mul_pow]`.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_of_isArchNorm {z : NgC g} {x : KeyIn ℂ} (hz : z.Lies x) {nth nη : ℝ} (hn : IsArchNorm x nth nη) :
     kf.norm z = ‖(kf.coef ℂ x : ℂ)‖ / (nth ^ c * Real.sqrt nη ^ c) := by
@@ -502,7 +502,7 @@ def sign (s : ℤˣ) : KF g c where
       [left; right; right; left] <;> ext <;> simp
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨z⟩ : Nonempty (NgC g) := inferInstance have e : (-1 : ℂ) * kf.val z = kf.val z := by simpa [sign] using congrArg (fun k : KF g c => (k.val z : ℂ)) h exact (kf.val z).ne_zero (by linear_combination (-1 / 2 : ℂ) * e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sign_neg_one_ne : kf.sign (-1) ≠ kf := fun h => by
   obtain ⟨z⟩ : Nonempty (NgC g) := inferInstance
@@ -523,7 +523,7 @@ def ofRule (N : ℕ → ℕ) (κ : Rule) (hH : Homog N κ) (hF : Funct κ) (hU :
   zero _ _ := Or.inl rfl
 
 /- English proof (translation)
-Use `choose x hx using fun z : NgC g => z.exists_frame hg`. Establish `hv : ∀ (z : NgC g) (y : KeyIn ℂ), z.Frame y → κ ℂ y = ((κ ℂ (x z))⁻¹)⁻¹` using `fun z y hy => by`. Rewrite using `[inv_inv]`. Conclude with `Units.ext (h.funct ℂ ℂ _ _ _ (H z _ _ (hx z) hy))`. Conclude with `⟨⟨fun z => (κ ℂ (x z))⁻¹, ⟨κ, h, hv⟩, fun h0 => by omega⟩, (rule_unique _ h hv).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rule_eq (hg : 1 ≤ g)
     (H : ∀ (z : NgC g) (x x' : KeyIn ℂ), z.Frame x → z.Frame x' → KeyPB x' x (RingHom.id ℂ))
@@ -558,14 +558,14 @@ Both sides reduce to the same expression.
 theorem ngTrue_kfNorm {g c : ℕ} (kf : KF g c) (z : NgC g) : ngTrue.kfNorm (g := g) (c := c) kf z = kf.norm z := rfl
 
 /- English proof (translation)
-Take `⟨κ, h₁, h₂, h₃, h₄, -⟩` from `keyFormula_iff.1 keyFormula_and_keyCore.1`. Conclude with `⟨KF.ofRule (fun _ => 1) κ h₁ h₂ h₃ h₄ g, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_kf_four (g : ℕ) : ∃ kf : KF g 4, ∀ z, kf.val z = 1 := by
   obtain ⟨κ, h₁, h₂, h₃, h₄, -⟩ := keyFormula_iff.1 keyFormula_and_keyCore.1
   exact ⟨KF.ofRule (fun _ => 1) κ h₁ h₂ h₃ h₄ g, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨kf, h⟩` from `exists_kf_four g`. Use `⟨4, by norm_num, dvd_rfl, kf, fun z => (kf.norm_eq z).trans ?_⟩` and prove the remaining obligations. Rewrite using `[h z, Units.val_one, norm_one, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ngTrue_keyFormula (g : ℕ) : ∃ c : ℕ, 1 ≤ c ∧ 4 ∣ c ∧ ∃ kf : ngTrue.KF g c,
     ∀ z, ngTrue.kfNorm kf z = Real.exp (c * g * (-(1 / 2) * Real.log (2 * Real.pi))) := by
@@ -574,20 +574,20 @@ theorem ngTrue_keyFormula (g : ℕ) : ∃ c : ℕ, 1 ≤ c ∧ 4 ∣ c ∧ ∃ k
   rw [h z, Units.val_one, norm_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `h` and use `by simpa [NgC.base] using congrFun (congrArg NgC.a h) 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : NgC.base 1 0 0 ⟨fun _ => Or.inl rfl, fun _ => Or.inl rfl⟩ ≠
     NgC.base 1 (fun _ => 1 / 2) (fun _ => 1 / 2) ⟨fun _ => Or.inr rfl, fun _ => Or.inr rfl⟩ := fun h => by
   simpa [NgC.base] using congrFun (congrArg NgC.a h) 0
 
 /- English proof (translation)
-Simplify using `[NgC.etaSq_eq, NgC.Y, NgC.base]`.
+Simplify using the standard rewrite rules.
 -/
 example (a b : Fin 1 → ℂ) (h : charHalf 1 a b) : (NgC.base 1 a b h).etaSq = 4 * Real.pi := by
   simp [NgC.etaSq_eq, NgC.Y, NgC.base]
 
 /- English proof (translation)
-Take `⟨kf, h⟩` from `exists_kf_four g`. Use `⟨kf, kf.sign (-1), kf.sign_neg_one_ne.symm, fun z => ?_⟩` and prove the remaining obligations. Use `Real.pi_pos` as an intermediate fact. Rewrite using `[kf.norm_eq_div, h z, Units.val_one, norm_one, one_div, show 4 = 2 * 2 from rfl, pow_mul, Real.sq_sqrt (by positivity), ← pow_mul, mul_comm g 2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 example (g : ℕ) : ∃ kf kf' : KF g 4, kf ≠ kf' ∧ ∀ z, kf.norm z = ((2 * Real.pi) ^ (2 * g))⁻¹ := by
   obtain ⟨kf, h⟩ := exists_kf_four g

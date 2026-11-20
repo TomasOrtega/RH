@@ -119,7 +119,7 @@ def baseM (t : T) (w : Pl D.host.E) (j : ℕ) : GL (Fin ((locGrid G t w).rank (D
 open Classical in
 
 /- English proof (translation)
-Unfold `epsV`. Conclude with `onColumn_apply (G := locGrid G t w) _ j`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem epsV_apply (t : T) (w : Pl D.host.E) (j : ℕ) :
     epsV G t w (D.R.m, j) = if j ∈ idx D then sgnAt G t (-1) w j else 1 := by
@@ -127,7 +127,7 @@ theorem epsV_apply (t : T) (w : Pl D.host.E) (j : ℕ) :
   exact onColumn_apply (G := locGrid G t w) _ j
 
 /- English proof (translation)
-Unfold `idx`. Rewrite using `[List.mem_range'_1]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_idx {j : ℕ} : j ∈ idx D ↔ 1 ≤ j ∧ j + 2 ≤ D.R.m := by
   unfold idx
@@ -135,15 +135,13 @@ theorem mem_idx {j : ℕ} : j ∈ idx D ↔ 1 ≤ j ∧ j + 2 ≤ D.R.m := by
   omega
 
 /- English proof (translation)
-Take `⟨a, j⟩` from `X`. Distinguish the cases in `ha : a = D.R.m`. Substitute `ha` using the available equality. Rewrite using `[epsV_apply]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `u : Fin ((locGrid G t w).rank (D.R.m, j)) → (Valuation.integer (ValuativeRel.valuation (Kw w)))ˣ` to `fun b => if Odd j ∧ topRank (locGrid G t w) j + (D.R.m - 1 - j) / 2 ≤ b.1 then -1 else 1`. Use `⟨⟨diagonal fun b => (u b : Valuation.integer (ValuativeRel.valuation (Kw w))), diagonal fun b => ((u b)⁻¹ : (Valuation.integer (ValuativeRel.valuation (Kw w)))ˣ), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Rewrite using `[diagonal_mul_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use extensionality with `r q`. Distinguish the cases in `hrq : r = q`. Substitute `hrq` using the available equality. Simplify using `[sgnAt, u]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[sgnAt, diagonal_apply_ne _ hrq]`. Conclude with `one_mem _`. Establish `h1 : epsV G t w (a, j) = 1`. Unfold `epsV onColumn`.
-
-Conclude with `dif_neg ha`. Rewrite using `[h1]`. Conclude with `one_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsV_mem (t : T) (w : Pl D.host.E) (X : ℕ × ℕ) : epsV G t w X ∈ GlobalTheory.SplitWeil.KO (Kw w) _ := by
   obtain ⟨a, j⟩ := X
@@ -171,9 +169,9 @@ theorem epsV_mem (t : T) (w : Pl D.host.E) (X : ℕ × ℕ) : epsV G t w X ∈ G
     exact one_mem _
 
 /- English proof (translation)
-Establish `h2` using `D.R.two_le_m`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Unfold `Reps.elt`. Use `(onColumn_apply (G := locGrid G t w) _ (i + 1)).trans ?_` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Establish `hi : ¬ i < (locGrid G t w).m - 2` using `by show ¬ i < D.R.m - 2`. Use linear arithmetic over natural numbers and integers. Conclude with `dif_neg hi`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem elt_eq_one (t : T) (w : Pl D.host.E) (β : Cosets (G := locGrid G t w) one_le_sLen (givenLevel G t w)) {j : ℕ}
     (hj : D.R.m ≤ j + 1) : (repsAt G t w).elt β (D.R.m, j) = 1 := by
@@ -188,7 +186,7 @@ theorem elt_eq_one (t : T) (w : Pl D.host.E) (β : Cosets (G := locGrid G t w) o
   exact dif_neg hi
 
 /- English proof (translation)
-Rewrite using `[epsV_apply, if_neg]`. Rewrite using `[mem_idx]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem epsV_eq_one (t : T) (w : Pl D.host.E) {j : ℕ} (hj : D.R.m ≤ j + 1) : epsV G t w (D.R.m, j) = 1 := by
   rw [epsV_apply, if_neg]

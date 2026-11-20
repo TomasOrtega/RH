@@ -88,9 +88,9 @@ variable {D : D7} (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
   (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Introduce `j`. Establish `e : X.B.I.fmat (1 : X.B.I.Gf) = 1` using `by simp [AutInst.fmat]`. Rewrite using `[e, Matrix.one_mulVec, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.one_apply, hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem repF_one : RepF X wt ιA 1 (1 : unitaryGroupFiniteAdeles D) := by
   intro j
@@ -104,11 +104,11 @@ theorem repF_one : RepF X wt ιA 1 (1 : unitaryGroupFiniteAdeles D) := by
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `j`. Use `show X.B.I.fmat (h * h') *ᵥ qA X wt j = ∑ i, ιA.symm ((y.1.1 * y'.1.1) i j) • qA X wt i`. Establish `hy2 : ∀ i, X.B.I.fmat h *ᵥ qA X wt i = ∑ k, ιA.symm (y.1.1 k i) • qA X wt k` using `hy`. Establish `e1 : X.B.I.fmat (h * h') = X.B.I.fmat h * X.B.I.fmat h'` using `by simp [AutInst.fmat]`. Rewrite using `[e1, ← Matrix.mulVec_mulVec, hy' j, Matrix.mulVec_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[Matrix.mulVec_smul, hy2, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, Matrix.mul_apply, map_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repF_mul {h h' : X.B.I.Gf} {y y' : unitaryGroupFiniteAdeles D} (hy : RepF X wt ιA h y) (hy' : RepF X wt ιA h' y') :
     RepF X wt ιA (h * h') (y * y') := by
@@ -135,12 +135,12 @@ variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word} {F : Formalism.L2.For
 def phi (h : Hfin X u) : unitaryGroupFiniteAdeles D := (G.tot h).choose
 
 /- English proof (translation)
-The claim follows from `(G.tot h).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem phi_spec (h : Hfin X u) : RepF X Tr.wt Tr.ιA (h : X.B.I.Gf) (phi G h) := (G.tot h).choose_spec
 
 /- English proof (translation)
-The claim follows from `G.uniq _ _ _ (phi_spec G h) hy`.
+A detailed English derivation is pending.
 -/
 theorem phi_eq {h : Hfin X u} {y : unitaryGroupFiniteAdeles D} (hy : RepF X Tr.wt Tr.ιA (h : X.B.I.Gf) y) : phi G h = y := G.uniq _ _ _ (phi_spec G h) hy
 
@@ -165,15 +165,15 @@ section Sharp
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
 
 /- English proof (translation)
-The claim follows from `(X.piU_rep u).2.2.1 _ (hinf_le_sinf X u _ s.2) a b`.
+A detailed English derivation is pending.
 -/
 theorem piU_inner (s : Hinf X u) (a b : X.Vpi u) :
     ⟪X.piU u (s : X.B.I.Ginf) a, X.piU u (s : X.B.I.Ginf) b⟫_ℂ = ⟪a, b⟫_ℂ := (X.piU_rep u).2.2.1 _ (hinf_le_sinf X u _ s.2) a b
 
 /- English proof (translation)
-Establish `hs` using `hinf_le_sinf X u _ s.2`. Establish `hs'` using `hinf_le_sinf X u _ (s⁻¹ : Hinf X u).2`. Establish `hm` using `(X.piU_rep u).2.1 _ hs _ hs'`. Establish `e : X.piU u (s : X.B.I.Ginf) (X.piU u ((s⁻¹ : Hinf X u) : X.B.I.Ginf) b) = b`. Establish `h1 : (s : X.B.I.Ginf) * ((s⁻¹ : Hinf X u) : X.B.I.Ginf) = 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← hm, h1, (X.piU_rep u).1, ContinuousLinearMap.one_apply]`. Use `conv_lhs => rw [← e]`. Conclude with `(X.piU_rep u).2.2.1 _ hs _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piU_adj (s : Hinf X u) (a b : X.Vpi u) :
     ⟪X.piU u (s : X.B.I.Ginf) a, b⟫_ℂ = ⟪a, X.piU u ((s⁻¹ : Hinf X u) : X.B.I.Ginf) b⟫_ℂ := by
@@ -187,18 +187,18 @@ theorem piU_adj (s : Hinf X u) (a b : X.Vpi u) :
   exact (X.piU_rep u).2.2.1 _ hs _ _
 
 /- English proof (translation)
-Use `show ‖X.chi2 ((X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u)‖ = 1`. Conclude with `hK.2.2.2.2 _ κ.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_psiK (κ : Ku X u hK) : ‖((psiK X u hK κ : ℂˣ) : ℂ)‖ = 1 := by
   show ‖X.chi2 ((X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u)‖ = 1
   exact hK.2.2.2.2 _ κ.2
 
 /- English proof (translation)
-Take `⟨hT1, hT2⟩` from `T.2`. Establish `hsh : ∀ (g : Hfin X u) (ξ : X.Vpi u), ⟪shP X u T.1 g, ξ⟫_ℂ = T.1 ξ (1, g)`. Introduce `g ξ`. Simplify using `[shP, InnerProductSpace.toDual_symm_apply]`. Apply `ext_inner_right ℂ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `ξ`. Take `⟨hf1, hf2⟩` from `hT1 ξ`. Rewrite using `[hsh, inner_smul_left, Complex.conj_conj, piU_adj X u (iotaI X u γ), hsh]`. Establish `e1 : ((1 : Hinf X u), iotaF X u γ * h * (κ : Hfin X u)) = ((1 : Hinf X u), iotaF X u γ * h) * (1, (κ : Hfin X u))` using `by simp`. Establish `e2 : ((1 : Hinf X u), iotaF X u γ * h) = (iotaI X u γ, iotaF X u γ) * ((iotaI X u γ)⁻¹, h)` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, hf2, e2, hf1]`. Rewrite using `[show T.1 (X.piU u (((iotaI X u γ)⁻¹ : Hinf X u) : X.B.I.Ginf) ξ) (1, h) = T.1 ξ ((1, h) * ((iotaI X u γ)⁻¹, 1)) from hT2 _ ξ _]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rieszVector_rat (T : Cu X u hK) (γ : Gam X u) (h : Hfin X u) (κ : Ku X u hK) :
     shP X u T.1 (iotaF X u γ * h * (κ : Hfin X u)) =
@@ -220,7 +220,7 @@ theorem rieszVector_rat (T : Cu X u hK) (γ : Gam X u) (h : Hfin X u) (κ : Ku X
   simp
 
 /- English proof (translation)
-Unfold `shP`. Use `congr 1`. Use extensionality with `ξ`. Simplify using `[rtr]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rieszVector_rightTranslate (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (δ h : Hfin X u) :
     shP X u (rtr X δ T) h = shP X u T (h * δ) := by
@@ -230,11 +230,11 @@ theorem rieszVector_rightTranslate (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X 
   simp [rtr]
 
 /- English proof (translation)
-Establish `inv_rel : ∀ (a b : Hfin X u) (γ : Gam X u) (κ : K), a = iotaF X u γ * b * (κ : Hfin X u) → b = iotaF X u γ⁻¹ * a * ((κ⁻¹ : K) : Hfin X u)`. Introduce `a b γ κ h`. Substitute `h` using the available equality. Simplify using `[mul_assoc]`. Set `f : ι → ι'` to `fun i => (hs' (s i)).exists.choose`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `g : ι' → ι` to `fun i' => (hs (s' i')).exists.choose`. Establish `hf : ∀ i, ∃ (γ : Gam X u) (κ : K), s i = iotaF X u γ * s' (f i) * (κ : Hfin X u)` using `fun i => (hs' (s i)).exists.choose_spec`. Establish `hg : ∀ i', ∃ (γ : Gam X u) (κ : K), s' i' = iotaF X u γ * s (g i') * (κ : Hfin X u)` using `fun i' => (hs (s' i')).exists.choose_spec`. Use `⟨⟨f, g, fun i => ?_, fun i' => ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨γ, κ, h⟩` from `hf i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hs (s' (f i))).unique (hg (f i)) ⟨γ⁻¹, κ⁻¹, inv_rel _ _ _ _ h⟩`. Take `⟨γ, κ, h⟩` from `hg i'`. Conclude with `(hs' (s (g i'))).unique (hf (g i')) ⟨γ⁻¹, κ⁻¹, inv_rel _ _ _ _ h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem reps_equiv {ι ι' : Type} (s : ι → Hfin X u) (s' : ι' → Hfin X u) (K : Subgroup (Hfin X u))
     (hs : ∀ h, ∃! i, ∃ (γ : Gam X u) (κ : K), h = iotaF X u γ * s i * (κ : Hfin X u))
@@ -259,7 +259,7 @@ theorem reps_equiv {ι ι' : Type} (s : ι → Hfin X u) (s' : ι' → Hfin X u)
     exact (hs' (s (g i'))).unique (hf (g i')) ⟨γ⁻¹, κ⁻¹, inv_rel _ _ _ _ h⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `reps_equiv X u s s' K hs hs'`. Combine the equalities or inequalities in the displayed calculation. Take `⟨γ, κ, h⟩` from `he i`. Rewrite using `[h, hQ]`. Use `_ = ∑ i', Q (s' i') := Equiv.sum_comp e (fun i' => Q (s' i'))`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_reps {ι ι' : Type} [Fintype ι] [Fintype ι'] (s : ι → Hfin X u) (s' : ι' → Hfin X u)
     (K : Subgroup (Hfin X u))
@@ -274,7 +274,7 @@ theorem sum_reps {ι ι' : Type} [Fintype ι] [Fintype ι'] (s : ι → Hfin X u
     _ = ∑ i', Q (s' i') := Equiv.sum_comp e (fun i' => Q (s' i'))
 
 /- English proof (translation)
-Rewrite using `[rieszVector_rat X u hK T γ h κ, rieszVector_rat X u hK T' γ h κ, inner_smul_left, inner_smul_right, piU_inner X u (iotaI X u γ), Complex.conj_conj, ← mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_psiK X u hK κ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_shP_rat (T T' : Cu X u hK) (γ : Gam X u) (h : Hfin X u) (κ : Ku X u hK) :
     ⟪shP X u T'.1 (iotaF X u γ * h * (κ : Hfin X u)), shP X u T.1 (iotaF X u γ * h * (κ : Hfin X u))⟫_ℂ =
@@ -316,9 +316,9 @@ variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word} {F : Formalism.L2.For
   (G : TrFacts X Tr)
 
 /- English proof (translation)
-Establish `hloc : ∀ v, ∃ x : X.Vloc u v, x ≠ 0` using `fun v => by`. Use `(X.piLoc_type u v).1` as an intermediate fact. Conclude with `exists_ne 0`. Use `choose x hx using hloc`. Use `⟨⟨X.tensU u x, 0, fun h => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `X.tensU_inner u x x`. Rewrite `h1` using `[h, inner_zero_left]`. Conclude with `(Finset.prod_ne_zero_iff.2 (fun v _ => inner_self_ne_zero.2 (hx v))) h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem vpi_nontrivial (X : HidaSetting D) (u : D.what₂.Word) : Nontrivial (X.Vpi u) := by
   have hloc : ∀ v, ∃ x : X.Vloc u v, x ≠ 0 := fun v => by

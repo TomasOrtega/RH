@@ -13,7 +13,7 @@ def eigPart (op : I → Module.End ℂ A) (c : I → ℂ) : Submodule ℂ A :=
   ⨅ i, LinearMap.ker (op i - c i • (1 : Module.End ℂ A))
 
 /- English proof (translation)
-Simplify using `only [eigPart, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigPart {op : I → Module.End ℂ A} {c : I → ℂ} {x : A} :
     x ∈ eigPart op c ↔ ∀ i, op i x = c i • x := by
@@ -56,7 +56,7 @@ variable {θ : A →ₗ[ℂ] B} {θa : B →ₗ[ℂ] A} {op : I → Module.End �
   {good : Submodule ℂ A} {goodB : Submodule ℂ B} {Ix : Set (I → ℂ)}
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_eigPart]`. Introduce `i`. Rewrite using `[← hI, hx i, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eigPart (hI : Intw θ op opB) {c : I → ℂ} {x : A} (hx : x ∈ eigPart op c) : θ x ∈ eigPart opB c := by
   rw [mem_eigPart] at hx ⊢
@@ -64,9 +64,9 @@ theorem map_eigPart (hI : Intw θ op opB) {c : I → ℂ} {x : A} (hx : x ∈ ei
   rw [← hI, hx i, map_smul]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h0 : eigPart opB c ⊓ goodB = ⊥`. Assume the negation of the conclusion as `h`. Conclude with `hn ⟨hc, h⟩`. Establish `hm : θ x ∈ eigPart opB c ⊓ goodB` using `⟨map_eigPart hI hx.1, hG x hx.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[h0, Submodule.mem_bot]`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem notLifted_le_ker (hI : Intw θ op opB) (hG : GoodIn θ good goodB) {c : I → ℂ} (hc : c ∈ Ix)
     (hn : c ∉ Lifted opB goodB Ix) : eigPart op c ⊓ good ≤ LinearMap.ker θ := by
@@ -79,7 +79,7 @@ theorem notLifted_le_ker (hI : Intw θ op opB) (hG : GoodIn θ good goodB) {c : 
   exact hm
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← hA, LinearMap.mem_ker.mp hu, inner_zero_left]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_adj_le (hA : IsAdj θ θa) : LinearMap.range θa ≤ (LinearMap.ker θ)ᗮ := by
   rintro _ ⟨y, rfl⟩
@@ -88,19 +88,15 @@ theorem range_adj_le (hA : IsAdj θ θa) : LinearMap.range θa ≤ (LinearMap.ke
   rw [← hA, LinearMap.mem_ker.mp hu, inner_zero_left]
 
 /- English proof (translation)
-Use `set L : Submodule ℂ A := ⨆ c ∈ Lifted opB goodB Ix, eigPart op c ⊓ good with hL`. Use `set M : Submodule ℂ A := ⨆ c ∈ {c | c ∈ Ix ∧ c ∉ Lifted opB goodB Ix}, eigPart op c ⊓ good with hM`. Establish `hMker : M ≤ LinearMap.ker θ` using `iSup₂_le fun c hc => notLifted_le_ker hI hG hc.1 hc.2`. Establish `hgood : good ≤ L ⊔ M`. Use `hD.span.trans (iSup₂_le fun c hc => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h : c ∈ Lifted opB goodB Ix`. Conclude with `le_sup_of_le_left (le_iSup₂_of_le (f := fun c (_ : c ∈ Lifted opB goodB Ix) => eigPart op c ⊓ good) c h le_rfl)`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le (f := fun c (_ : c ∈ {c | c ∈ Ix ∧ c ∉ Lifted opB goodB Ix}) => eigPart op c ⊓ good) c ⟨hc, h⟩ le_rfl)`. Establish `hOrth : M ⟂ L`. Rewrite using `[hM, Submodule.isOrtho_iSup_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[Submodule.isOrtho_iSup_left]`. Introduce `hc`. Rewrite using `[hL, Submodule.isOrtho_iSup_right]`. Introduce `c'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.isOrtho_iSup_right]`. Introduce `hc'`. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`. Introduce `u hu v hv`. Establish `hne : c ≠ c'` using `fun h => hc.2 (h ▸ hc')`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hD.orth c hc.1 c' hc'.1 hne u hu v hv`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hxk, hxg⟩`. Take `⟨l, hl, m, hm, rfl⟩` from `Submodule.mem_sup.mp (hgood hxg)`. Establish `h1 : ⟪m, l + m⟫_ℂ = 0` using `(Submodule.mem_orthogonal _ _).mp hxk m (hMker hm)`.
-
-Establish `h2 : ⟪m, l⟫_ℂ = 0` using `Submodule.isOrtho_iff_inner_eq.mp hOrth m hm l hl`. Establish `h3 : ⟪m, m⟫_ℂ = 0` using `by rw [inner_add_right, h2, zero_add] at h1; exact h1`. Rewrite `h3` using `[inner_self_eq_zero]`. Rewrite using `[h3, add_zero]`. Conclude with `hl`.
-
-Conclude with `iSup₂_le fun c hc => le_inf ((hO c hc).trans (range_adj_le hA)) inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftsFull_of (hD : OrthDecomp op good Ix) (hI : Intw θ op opB) (hG : GoodIn θ good goodB)
     (hA : IsAdj θ θa) (hO : OntoParts θa op opB good goodB Ix) : LiftsFull θ op opB good goodB Ix := by
@@ -144,7 +140,7 @@ section FD
 variable [FiniteDimensional ℂ A] [FiniteDimensional ℂ B]
 
 /- English proof (translation)
-Introduce `x y` and use `(LinearMap.adjoint_inner_right θ x y).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdj_adjoint (θ : A →ₗ[ℂ] B) : IsAdj θ (LinearMap.adjoint θ) :=
   fun x y => (LinearMap.adjoint_inner_right θ x y).symm
@@ -156,7 +152,7 @@ def PairCommF (op : I → Module.End ℂ A) : Prop := ∀ i j, Commute (op i) (o
 def Occ (op : I → Module.End ℂ A) (good : Submodule ℂ A) : Set (I → ℂ) := {c | eigPart op c ⊓ good ≠ ⊥}
 
 /- English proof (translation)
-The claim follows from `liftsFull_of hD hI hG (isAdj_adjoint θ) hO`.
+A detailed English derivation is pending.
 -/
 theorem liftsFull_adj {θ : A →ₗ[ℂ] B} {op : I → Module.End ℂ A} {opB : I → Module.End ℂ B}
     {good : Submodule ℂ A} {goodB : Submodule ℂ B} {Ix : Set (I → ℂ)}

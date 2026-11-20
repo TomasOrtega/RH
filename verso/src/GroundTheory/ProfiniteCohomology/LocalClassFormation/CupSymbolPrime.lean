@@ -18,11 +18,11 @@ variable (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2).surjective x`. Rewrite using `[brauerInvZ_cohomologyULiftIntAddEquiv, localClassFormationZ_inv]`. Establish `e` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong (galUnits.{0} K Ω) (((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))).subtype (continuous_subgroup_subtype _) (𝟙 (Rep.res (((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))).subtype (galUnits.{0} K Ω))) (𝟙 (Rep.res (((⊤ : OpenSubgrou …`. Use `Eq.trans ?_ (congrArg (localInv K Ω ⊤) ((congrArg (cohomologyULiftIntAddEquiv (Rep.res (((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))).subtype (galUnits.{0} K Ω)) 2).symm e.symm).trans (AddEquiv.symm_apply_apply _ _))).symm` and prove the remaining obligations. Rewrite using `[localInv_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsSepClosure (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω` using `⟨IsSepClosure.sep_closed K, Algebra.isSeparable_tower_top_of_isSeparable K _ Ω⟩`. Establish `: IsGalois (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω` using `IsGalois.tower_top_of_isGalois K _ Ω`. Establish `hres : (openCohomologyIso (⊤ : OpenSubgroup Gal(Ω/K)) 2).hom.hom ((cohomologyMapAlong (((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))).subtype (continuous_subgroup_subtype _) (𝟙 _) 2).hom y) = (brauerRes K (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω).hom y`. Rewrite using `[openCohomologyIso_hom, ← ModuleCat.comp_apply, ← cohomologyMapAlong_comp, brauerRes_eq]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hrank : Module.finrank K (fixedField ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) = 1`. Rewrite using `[← index_openSubgroup]`. Conclude with `Subgroup.index_top`. Rewrite using `[hres, brauerInv_brauerRes, hrank, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInvZ_eq_inv_top (x : cohomology (galUnitsZ K Ω) 2) :
     brauerInvZ K Ω x = (localClassFormationZ K Ω).inv ⊤
@@ -83,11 +83,9 @@ theorem fixedToInvariants_mul (H : Subgroup Gal(Ω/K)) (u v : Abstract.fixedModu
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_invariantsNormLE]`. Express the relevant statement in the definitionally equal form `Additive.ofMul (Abstract.normFun Ωˣ _ _ x) = _`. Set `_` to `Fintype.ofFinite (((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) ⧸ (S : Subgroup Gal(Ω/K)).subgroupOf ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)))`. Rewrite using `[Abstract.normFun, finprod_eq_prod_of_fintype, ofMul_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← QuotientGroup.out_eq' c]`. Rewrite using `[Abstract.cosetSMul_mk]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
-
-Conclude with `(coe_galUnitsHom_apply K Ω _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fixedToInvariants_norm (S : OpenSubgroup Gal(Ω/K)) (x : Abstract.fixedModule Ωˣ (S : Subgroup Gal(Ω/K))) :
     fixedToInvariants ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))
@@ -116,7 +114,7 @@ variable {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ord_eq_of_eq {E₁ E₂ : IntermediateField K Ω} [FiniteDimensional K E₁] [FiniteDimensional K E₂]
     (h : E₁ = E₂) (y : Ω) (h₁ : y ∈ E₁) (h₂ : y ∈ E₂) :
@@ -125,7 +123,7 @@ theorem ord_eq_of_eq {E₁ E₂ : IntermediateField K Ω} [FiniteDimensional K E
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `congr 1`. Conclude with `AlgEquiv.ext hg`.
+Substitute using the available equality. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unramifiedDegree_eq_of_eq {E₁ E₂ : IntermediateField K Ω} [FiniteDimensional K E₁]
     [FiniteDimensional K E₂] (h : E₁ = E₂) (g₁ : Gal(Ω/E₁)) (g₂ : Gal(Ω/E₂)) (hg : ∀ y, g₁ y = g₂ y) :
@@ -149,7 +147,7 @@ noncomputable def galUnitsZOpenHom (U : OpenSubgroup Gal(Ω/K)) :
     rfl⟩
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (galFixedFieldEquivOpen U).apply_symm_apply σ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem galFixedFieldEquivOpen_symm_apply (U : OpenSubgroup Gal(Ω/K)) (σ : (U : Subgroup Gal(Ω/K)))
     (x : Ω) : ((galFixedFieldEquivOpen U).symm σ) x = (σ : Gal(Ω/K)) x := by
@@ -165,21 +163,19 @@ variable {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-Establish `hSig : fixedField ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) = E`. Rewrite using `[coe_fixingOpenSubgroup]`. Conclude with `InfiniteGalois.fixedField_fixingSubgroup E`. Establish `hπmem : ((π : Ωˣ) : Ω) ∈ fixedField ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))` using `(mem_fixedField_iff _ _).2 fun g hg => (mem_fixedModule_units_iff' _ _).1 π.2 g hg`. Set `π' : (fixedField ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)))ˣ` to `Units.mk0 ⟨_, hπmem⟩ (fun h => (π : Ωˣ).ne_zero (congrArg Subtype.val h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `χS : Additive Gal(Ω/fixedField ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) →ₜ+ QZ` to `contCharComp χ (AlgEquiv.restrictScalarsHom K) (continuous_restrictScalarsHom_of_tower _ _ _)`. Set `σ'` to `(galFixedFieldEquivOpen (fixingOpenSubgroup E)).symm σ`. Establish `hcup : (cohomologyMapAlong (galFixedFieldEquivOpen (fixingOpenSubgroup E)).toMonoidHom (continuous_galFixedFieldEquivOpen _) (galUnitsZOpenHom (fixingOpenSubgroup E)) 2).hom ((cupCharClassProf (Rep.res ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)).subtype ( …`. Establish `hab : ((unitsInvariant _ Ω π' : (galUnitsZ _ Ω).ρ.invariants) : galUnitsZ _ Ω) = (galUnitsZOpenHom (fixingOpenSubgroup E)).hom (fixedToInvariants _ π : _)`. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Rewrite using `[cohomologyMapAlong_cupCharClassProf _ _ _ _ _ (unitsInvariant _ Ω π') hab]`. Both sides reduce to the same expression. Establish `e` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong (Rep.res ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)).subtype (galUnits.{0} K Ω)) (galFixedFieldEquivOpen (fixingOpenSubgroup E)).toMonoidHom (continuous_galFixedFieldEquivOpen _) (galUnitsOpenHom (fixingOpenSu …`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[localClassFormationZ_inv, localInv_apply, openCohomologyIso_hom, ← brauerInvZ_cohomologyULiftIntAddEquiv]`. Use `(congrArg (brauerInvZ _ Ω) ((e _).trans ((congrArg _ (AddEquiv.apply_symm_apply _ _)).trans hcup))).trans ?_` and prove the remaining obligations. Establish `hord : ord ((π' : fixedField ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)))) = 1`. Establish `h` using `valuation_fixingOpenSubgroup E π`. Rewrite `h` using `[hπ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : ((ord ((unitsEquivFixingOpen K E π : Eˣ) : E) : ℤ) : ℤ̂) = ((1 : ℤ) : ℤ̂)`. Rewrite using `[Int.cast_one]`. Conclude with `(Multiplicative.ofAdd.injective h).symm`. Rewrite using `[← Int.cast_injective h']`. Conclude with `ord_eq_of_eq hSig _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσ' : unramifiedDegree _ Ω σ' = Multiplicative.ofAdd 1`. Rewrite using `[← hσ, relDeg_fixingOpenSubgroup E σ]`. Conclude with `unramifiedDegree_eq_of_eq hSig _ _ (fun y => galFixedFieldEquivOpen_symm_apply _ σ y)`. Establish `hψ : ∀ g ∈ (unramifiedDegree (fixedField ((fixingOpenSubgroup E : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) Ω).ker, χS (Additive.ofMul g) = 0`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set g₀ := galFixedFieldEquivOpen (fixingOpenSubgroup E) g`. Establish `h1 : (localClassFieldData K Ω).relDeg (fixingOpenSubgroup E) g₀ = 1`. Rewrite using `[relDeg_fixingOpenSubgroup E g₀]`. Use `(unramifiedDegree_eq_of_eq hSig.symm _ g (fun y => rfl)).trans hg` and prove the remaining obligations. Rewrite `h1` using `[ClassFieldData.relDeg_eq_iff, one_pow]`.
-
-Conclude with `hχ (g₀ : Gal(Ω/K)) ⟨g₀.2, h1⟩`. Rewrite using `[brauerInvZ_galCupClass_of_unramified χS hψ hσ' π', hord, one_smul]`. Express the relevant statement in the definitionally equal form `χ (Additive.ofMul (AlgEquiv.restrictScalarsHom K σ')) = _`. Use `congr 2`. Conclude with `AlgEquiv.ext fun y => galFixedFieldEquivOpen_symm_apply _ σ y`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem localClassFormationZ_inv_cupCharClassProf_of_prime (E : IntermediateField K Ω)
     [FiniteDimensional K E] (χ : Additive Gal(Ω/K) →ₜ+ QZ)

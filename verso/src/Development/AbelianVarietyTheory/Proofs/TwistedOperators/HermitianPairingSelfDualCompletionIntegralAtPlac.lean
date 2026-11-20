@@ -25,33 +25,33 @@ theorem cA_tmul (p : AF D.host.F) (t : D.host.E) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_zero (P : GlobalTheory.FinPl.Pl D → Prop) : (0 : AE D) ∈ intAt D P :=
   ⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, by rw [map_add]; exact add_mem ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_add {P : GlobalTheory.FinPl.Pl D → Prop} {a b : AE D} (ha : a ∈ intAt D P) (hb : b ∈ intAt D P) :
     a + b ∈ intAt D P :=
   ⟨add_mem ha.1 hb.1, by rw [map_add]; exact add_mem ha.2 hb.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neg_mem ha.1, by rw [map_neg]; exact neg_mem ha.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_neg {P : GlobalTheory.FinPl.Pl D → Prop} {a : AE D} (ha : a ∈ intAt D P) : -a ∈ intAt D P :=
   ⟨neg_mem ha.1, by rw [map_neg]; exact neg_mem ha.2⟩
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [zero_mul]) rfl`.
+A detailed English derivation is pending.
 -/
 theorem pair_mul (α β : Af D.host.F) :
     pairA D.host.F 0 α * pairA D.host.F 0 β = pairA D.host.F 0 (α * β) :=
   Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [zero_mul]) rfl
 
 /- English proof (translation)
-Rewrite using `[cA_tmul]`. Express the relevant statement in the definitionally equal form `(p ⊗ₜ[D.host.F] star a) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] g) * (q ⊗ₜ[D.host.F] b) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_eq (p q : AF D.host.F) (a g b : D.host.E) :
     cA D (p ⊗ₜ[D.host.F] a) * incA D g * (q ⊗ₜ[D.host.F] b) = (p * q) ⊗ₜ[D.host.F] (star a * g * b) := by
@@ -60,21 +60,19 @@ theorem term_eq (p q : AF D.host.F) (a g b : D.host.E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hz`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨β, hβi, hβ, a', ha', x', hx', rfl⟩` from `hw`. Rewrite `ha`, `ha'` using `[Set.mem_singleton_iff]`. Substitute `ha ha'` using the available equality. Take `⟨b, hb⟩` from `(hL.2 x).1 hx x' hx'`. Establish `e : (∑ k, ∑ l, cA D (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x' k)) * incA D (S.gram k l) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x l))) = pairA D.host.F 0 (β * α) ⊗ₜ[D.host.F] (b : D.host.E)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hb, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[term_eq, pair_mul, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (∑ k, ∑ l, cA D (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x' k)) * incA D (S.gram k l) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x l))) ∈ intAt D P`. Rewrite using `[e]`. Use `⟨GlobalTheory.FinPlLoc.pair_mem_idAt P _ (fun v hv => by rw [map_mul, hα v hv, mul_zero]) _, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinPlLoc.finPart_pair]`. Use `AddSubgroup.subset_closure ⟨β * α, fun v => ?_, b, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `mul_mem (hβi v) (hαi v)`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]`. Conclude with `intAt_zero P`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add w₁ w₂ _ _ h₁ h₂`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`. Conclude with `intAt_add h₁ h₂`. Consider the case `neg w _ h`. Simplify using `only [Pi.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `intAt_neg h`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero]`. Conclude with `intAt_zero P`. Consider the case `add z₁ z₂ _ _ h₁ h₂`.
-
-Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Conclude with `intAt_add h₁ h₂`. Consider the case `neg z _ h`. Simplify using `only [Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`. Conclude with `intAt_neg h`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairing_mem (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (hL : IsSelfDualC S L) (P : GlobalTheory.FinPl.Pl D → Prop)
     (z w : Fin S.rank → AE D) (hz : z ∈ latV S L P) (hw : w ∈ latV S L P) :
@@ -123,7 +121,7 @@ theorem pairing_mem (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (hL : IsSelfDualC
     exact intAt_neg h
 
 /- English proof (translation)
-Introduce `_ S L hL v z w hz hw` and use `pairing_mem S L hL (· = v) z w hz hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pairing_mem_at : ∀ (D : D7) (S : HSp D) (L : GlobalTheory.FinPl.Lat S), IsSelfDualC S L → ∀ (v : GlobalTheory.FinPl.Pl D) (z w : Fin S.rank → AE D), z ∈ latV S L (· = v) → w ∈ latV S L (· = v) → (∑ k, ∑ l, cA D (w k) * incA D (S.gram k l) * z l) ∈ intAt D (· = v) :=
   fun _ S L hL v z w hz hw => pairing_mem S L hL (· = v) z w hz hw

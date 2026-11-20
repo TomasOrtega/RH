@@ -21,15 +21,15 @@ namespace BwdCut
 def liftF {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') : LFlag (VS D) D.R.rS T' := ⟨F'.fl, F'.fl.z⟩
 
 /- English proof (translation)
-The claim follows from `hn.1`.
+A detailed English derivation is pending.
 -/
 theorem isom_of_N0F {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0) : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT :=
   hn.1
 
 /- English proof (translation)
-Apply `mapL_eq_self` to reduce the goal to its premises. Introduce `a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify `hn.2.2.2.2` using `[frame, FlagG.fvec, lf]`. Simplify `hn.2.2.2.1 i` using `[frame, FlagG.fvec, lf]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hn.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem mapL_lf {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0) :
     mapL n (isom_of_N0F hn) (lf D F0) = lf D F0 := by
@@ -41,7 +41,7 @@ theorem mapL_lf {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFr
   · exact hn.2.2.2.2
 
 /- English proof (translation)
-Use `conv_lhs => rw [← mapL_lf hn]`. Conclude with `zhat_mapL n (isom_of_N0F hn) (lf D F0) F'`.
+A detailed English derivation is pending.
 -/
 theorem zhatL_mapL_N0F {T' : D.host.E} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0)
     (F' : LFlag (VS D) D.R.rS T') : ZhatL (lf D F0) (mapL n (isom_of_N0F hn) F') = ZhatL (lf D F0) F' := by
@@ -49,13 +49,11 @@ theorem zhatL_mapL_N0F {T' : D.host.E} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} 
   exact zhat_mapL n (isom_of_N0F hn) (lf D F0) F'
 
 /- English proof (translation)
-Establish `hβ` using `isom_of_N0F hn`. Establish `hF` using `mapL_lf hn`. Substitute `hΛ` using the available equality. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(IsLift_mapL n hβ Λ₂ F'₂).2 hT.1, (IsAdmissible_mapL n hβ _ Λ₂ _ F'₂).2 hT.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[gval_mapL n hβ]`. Conclude with `hT.2.2`. Rewrite using `[← hF]`. Conclude with `(AdmWit_mapL n hβ _ Λ₂ _ F'₂ 1).2 hA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hF]`. Conclude with `(generic_isomorphism_holds (S := VS D) (r := D.R.rS) (gS D) _ _ n hβ Λ₂ (lf D F0) F'₂).2 hG`. Establish `h` using `(positive_definite_isomorphism D u' n hβ Λ₂ (lf D F0) F'₂).2 ⟨hT.1, hT.2.1, hO⟩`. Conclude with `h.2.2`. Rewrite using `[zhatL_mapL_N0F hn]`.
-
-Conclude with `hZ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_EZ_of {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotentFrameFixers F0)
     (Λ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Formalism.HermitianLatticesTheory.gmap n Λ₂ = Λ)
@@ -81,7 +79,7 @@ theorem mem_EZ_of {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ unipotent
     exact hZ
 
 /- English proof (translation)
-Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_gmap]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_eq_of_image {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} {Λ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V}
     (h : (n : (VS D).V → (VS D).V) '' (Λ₂ : Set (VS D).V) = (Λ : Set (VS D).V)) : Formalism.HermitianLatticesTheory.gmap n Λ₂ = Λ := by
@@ -146,7 +144,7 @@ def BwdBeta : Prop :=
 variable {u u' F0 what₂}
 
 /- English proof (translation)
-Introduce `γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨n, hn, himg⟩` from `h1 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨hT, hA, hG, hO⟩` from `h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Use `⟨mapL n (isom_of_N0F hn) (liftF F'₂), ⟨?_, h3 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg⟩, n, hn, ⟨fun a => rfl, rfl⟩, himg⟩` and prove the remaining obligations. Conclude with `mem_EZ_of hn γ.lam Λ₂ (gmap_eq_of_image himg) (liftF F'₂) Z hT hA hG hO hS.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bwdC_of (hC : CtxP u u' F0 what₂) (h1 : BwdN Zd u u' F0 what₂) (h2 : BwdTerm Zd u u' F0 what₂)
     (h3 : BwdPair Zd u u' F0 what₂) : BwdC Zd u u' F0 what₂ := by

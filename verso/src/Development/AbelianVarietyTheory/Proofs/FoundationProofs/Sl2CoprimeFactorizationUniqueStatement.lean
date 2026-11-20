@@ -7,7 +7,7 @@ open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.sl2_right_factor_of_coprime_factorizations` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FSl2CoprimeFactorizationUnique.lean&line=9#L9)
 -/

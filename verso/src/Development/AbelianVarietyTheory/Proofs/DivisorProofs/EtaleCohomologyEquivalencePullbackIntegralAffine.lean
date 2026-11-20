@@ -7,13 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ F A C _ _ _ hB Z Z' h h' φ hh hP`. Establish `E` using `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F`. Use `haveI : IsAffine Z := isAffine_of_isAffineHom h`. Use `set f : CommRingCat.of A ⟶ Γ(Z, ⊤) := Spec.preimage (Z.isoSpec.inv ≫ h) with hf`. Establish `hfh : Z.isoSpec.hom ≫ Spec.map f = h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, Spec.map_preimage, Iso.hom_inv_id_assoc]`. Establish `hint : IsIntegralHom (Spec.map f)`. Establish `: Spec.map f = Z.isoSpec.inv ≫ h` using `by rw [hf, Spec.map_preimage]`. Rewrite using `[this]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Algebra A Γ(Z, ⊤) := f.hom.toAlgebra`. Use `haveI : Algebra.IsIntegral A Γ(Z, ⊤) := ⟨IsIntegralHom.SpecMap_iff.mp hint⟩`. Establish `hsq` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct A C Γ(Z, ⊤))).flip`. Establish `hsq' : IsPullback (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : Γ(Z, ⊤) →ₐ[A] C ⊗[A] Γ(Z, ⊤)).toRingHom) ≫ Z.isoSpec.inv) (Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom)) h (Spec.map (CommRingCat.ofHom (algebraMap A C)))`. Establish `hr : IsPullback Z.isoSpec.inv (Spec.map f) h (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [← hfh, Iso.inv_hom_id_assoc, Category.comp_id]⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using IsPullback.paste_horiz hsq hr`. Set `e` to `IsPullback.isoIsPullback _ _ hP hsq'`. Establish `he : φ = e.hom ≫ (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : Γ(Z, ⊤) →ₐ[A] C ⊗[A] Γ(Z, ⊤)).toRingHom) ≫ Z.isoSpec.inv)` using `(IsPullback.isoIsPullback_hom_fst _ _ hP hsq').symm`. Rewrite using `[he, Functor.map_comp, Functor.map_comp]`. Use `(E.2.1 _ _ _ _ _).1 (E.1 _ _ _ inferInstance) ((E.2.1 _ _ _ _ _).1 (hB Γ(Z, ⊤)) (E.1 _ _ _ inferInstance))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eqv_pullback_integral_affine : ∀ (R : Type) [CommRing R] (F : Shv R) (A C : Type) [CommRing A] [CommRing C] [Algebra A C],
     (∀ (B : Type) [CommRing B] [Algebra A B] [Algebra.IsIntegral A B],

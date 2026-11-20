@@ -23,7 +23,7 @@ def MixedTwistShift.Statement : Prop :=
         if IsSubvar x qq n then interNum qq (fun i => (L i).toSubSystem) else 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSubvar_genericPt k 1).isPrime, (isSubvar_genericPt k 1).homog, le_rfl, (isSubvar_genericPt k 1).dim.le, ⟨![twistBundle k (genericPt k 1) 1]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mixedTwistShift_hyps (k : Type u) [Field k] :
     (primeOf (S := k) (genericPt k 1)).IsPrime ∧

@@ -13,9 +13,9 @@ section V2
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe j`. Establish `h1 : (k : ℝ) ≤ (j : ℝ)` using `h j rfl`. Establish `h2 : k ≤ j` using `by exact_mod_cast h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem br_geZ_int (x : WithTop ℤ) (k : ℤ) (h : Formalism.MainNotions.PlaneGramData.geZ x (k : ℝ)) : ((k : ℤ) : WithTop ℤ) ≤ x := by
   induction x using WithTop.recTopCoe with
@@ -26,7 +26,7 @@ theorem br_geZ_int (x : WithTop ℤ) (k : ℤ) (h : Formalism.MainNotions.PlaneG
     exact_mod_cast h2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem br_wt_sub (a b : WithTop ℤ) (n : ℤ) (h : a ≤ b + ((n : ℤ) : WithTop ℤ)) :
     a + ((-n : ℤ) : WithTop ℤ) ≤ b := by
@@ -34,13 +34,13 @@ theorem br_wt_sub (a b : WithTop ℤ) (n : ℤ) (h : a ≤ b + ((n : ℤ) : With
     _ = b := by rw [add_assoc, ← WithTop.coe_add, add_neg_cancel, WithTop.coe_zero, add_zero]
 
 /- English proof (translation)
-Use extensionality with `⟨j, b⟩`. Unfold `onLetter Formalism.MainNotions.PlaneGramData.atLetter`. Rewrite using `[Finsupp.coe_finset_sum, Finset.sum_apply]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Finsupp.mapDomain_apply (fun a a' h => by simpa using h)]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `a _ hab`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hab (congrArg Prod.snd h)`. Simplify using the standard rewrite rules. Rewrite using `[Finsupp.mapDomain_notin_range]`. Use `(Finset.sum_eq_zero fun a _ => ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hj (congrArg Prod.fst h).symm`. Introduce and unpack `⟨a, ha⟩`. Conclude with `hj (congrArg Prod.fst ha).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem br_onLetter {L : Type} {r : ℕ} (i : L) (β : Fin r →₀ ℕ) :
     onLetter i β = Formalism.MainNotions.PlaneGramData.atLetter i (fun a => β a) := by
@@ -67,30 +67,30 @@ theorem br_onLetter {L : Type} {r : ℕ} (i : L) (β : Fin r →₀ ℕ) :
       exact hj (congrArg Prod.fst ha).symm
 
 /- English proof (translation)
-Unfold `absE`. Conclude with `Finsupp.sum_fintype _ _ (fun _ => rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem br_absE {r : ℕ} (β : Fin r →₀ ℕ) : absE β = ∑ a, β a := by
   unfold absE
   exact Finsupp.sum_fintype _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Introduce `L _ _ sg r _ S`. Take `⟨ha, hb⟩` from `h`. Take `⟨ha1, ha2⟩` from `ha r L (⟨sg⟩ : Letters L) (↑S : Set L)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[valS_eq]`. Consider the cases of `hs : sg i with`. Consider the case `true`. Use `(ha1 i a).1 hs` as an intermediate fact. Simplify `this)` using `using br_geZ_int _ 0 (by simpa`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `false`. Use `(ha1 i a).2 hs` as an intermediate fact. Simplify `this)` using `using br_geZ_int _ (-1) (by simpa`. Introduce `i β F`. Rewrite using `[valS_eq, valS_eq, ddiv_eq_divDer, br_onLetter]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `hs : sg i with`. Consider the case `true`. Use `(ha2 i (fun a => β a) F).1 hs` as an intermediate fact. Simplify using `only [if_true]`. Rewrite using `[br_absE]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `br_wt_sub _ _ _ this`. Consider the case `false`. Use `(ha2 i (fun a => β a) F).2 hs` as an intermediate fact. Simplify using `using this`. Introduce `S' hsub hvec F`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valS_eq, valS_eq]`. Establish `e : (↑S' : Set L) = (↑S : Set L) ∪ (↑(S' \ S) : Set L)`. Rewrite using `[← Finset.coe_union, Finset.union_sdiff_of_subset hsub]`. Rewrite using `[e]`. Use `(hb r L (⟨sg⟩ : Letters L) (↑S : Set L)).1 _ ?_ F` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hi'` using `Finset.mem_sdiff.mp (Finset.mem_coe.mp hi)`. Conclude with `hvec i hi'.1 hi'.2`. Introduce `d S' hsub hvec F hF`. Rewrite using `[valS_eq, valS_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (↑S' : Set L) = (↑S : Set L) \ (↑(S \ S') : Set L)`. Rewrite using `[← Finset.coe_sdiff, Finset.sdiff_sdiff_eq_self hsub]`. Rewrite using `[e]`. Use `br_wt_sub _ _ _ ?_` and prove the remaining obligations. Use `(hb r L (⟨sg⟩ : Letters L) (↑S : Set L)).2 (S \ S') d ?_ ?_ F hF` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.coe_subset.mpr Finset.sdiff_subset`. Introduce `i hi`. Establish `hi'` using `Finset.mem_sdiff.mp hi`. Conclude with `hvec i hi'.1 hi'.2`.
+A detailed English derivation is pending.
 -/
 theorem second_valuation_of_admitted [CharZero (KK O)] (h : Formalism.MainNotions.PlaneGramData.ValuationStabilityAtRing O) : V2 (KK O) := by
   classical
@@ -146,7 +146,7 @@ section Fock
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.fock`. Conclude with `Finset.sum_subset hS (fun m _ hm => by`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Rewrite using `[hm]`. Use the proof step `ring)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fock_eq_sum_coeff_mul_expFact_of_support_subset {σ : Type} (F G : MvPolynomial σ K) (S : Finset (σ →₀ ℕ))
     (hS : F.support ⊆ S) : Formalism.MainNotions.G.fock F G = ∑ m ∈ S, F.coeff m * G.coeff m * (expFact m : K) := by
@@ -157,7 +157,7 @@ private theorem fock_eq_sum_coeff_mul_expFact_of_support_subset {σ : Type} (F G
     ring)
 
 /- English proof (translation)
-Rewrite using `[fock_eq_sum_coeff_mul_expFact_of_support_subset F G (F.support ∪ G.support) Finset.subset_union_left, fock_eq_sum_coeff_mul_expFact_of_support_subset G F (F.support ∪ G.support) Finset.subset_union_right]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_fock_comm {σ : Type} (F G : MvPolynomial σ K) : Formalism.MainNotions.G.fock F G = Formalism.MainNotions.G.fock G F := by
   classical
@@ -166,7 +166,7 @@ theorem br_fock_comm {σ : Type} (F G : MvPolynomial σ K) : Formalism.MainNotio
   exact Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Establish `hsub : (F - F').support ⊆ F.support ∪ F'.support` using `MvPolynomial.support_sub σ F F'`. Rewrite using `[fock_eq_sum_coeff_mul_expFact_of_support_subset (F - F') G (F.support ∪ F'.support) hsub, fock_eq_sum_coeff_mul_expFact_of_support_subset F G (F.support ∪ F'.support) Finset.subset_union_left, fock_eq_sum_coeff_mul_expFact_of_support_subset F' G (F.support ∪ F'.support) Finset.s …`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [MvPolynomial.coeff_sub]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_fock_sub_left {σ : Type} (F F' G : MvPolynomial σ K) :
     Formalism.MainNotions.G.fock (F - F') G = Formalism.MainNotions.G.fock F G - Formalism.MainNotions.G.fock F' G := by
@@ -178,7 +178,7 @@ theorem br_fock_sub_left {σ : Type} (F F' G : MvPolynomial σ K) :
   exact Finset.sum_congr rfl fun m _ => by rw [MvPolynomial.coeff_sub]; ring
 
 /- English proof (translation)
-Use extensionality with `F`. Use `show ((th : ℤ) : WithTop ℤ) ≤ valS sg S F ↔ ((th : ℤ) : WithTop ℤ) ≤ Formalism.MainNotions.G.valS (⟨sg⟩ : Letters L) (↑S : Set L) F`. Rewrite using `[valS_eq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_Aset_eq {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → Bool) (S : Finset L) (th : ℤ) :
     (Aset sg S th : Set (MvPolynomial (L × Fin r) K)) = ASet (⟨sg⟩ : Letters L) (↑S : Set L) th := by
@@ -187,11 +187,11 @@ theorem br_Aset_eq {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → B
   rw [valS_eq]
 
 /- English proof (translation)
-Rewrite using `[br_Aset_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun F hF => ⟨(h F hF).1, (h F hF).1, (h F hF).2.1⟩, fun F hF hU => (h F hF).2.2.1 hU.2, ?_⟩` and prove the remaining obligations. Introduce `F hF G hG`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Formalism.MainNotions.G.fock (G - π G) (π F) = 0` using `(h G hG).2.2.2 (π F) (h F hF).1 (h F hF).2.1`. Establish `h2 : Formalism.MainNotions.G.fock (F - π F) (π G) = 0` using `(h F hF).2.2.2 (π G) (h G hG).1 (h G hG).2.1`. Rewrite `h1`, `h2` using `[br_fock_sub_left, sub_eq_zero]`. Rewrite using `[br_fock_comm (π F) G, h1, br_fock_comm (π G) (π F), h2]`. Introduce `h F hF`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(h.1 F hF).1, (h.1 F hF).2.2, fun hU => h.2.1 F hF ⟨hF, hU⟩, fun G hG hGU => ?_⟩` and prove the remaining obligations. Use `show Formalism.MainNotions.G.fock (F - π F) G = 0`. Rewrite using `[br_fock_sub_left, h.2.2 F hF G hG, h.2.1 G hG ⟨hG, hGU⟩, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_proj_iff {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → Bool) (S : Finset L) (d : L → ℕ)
     (th : ℤ) (π : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K) :
@@ -212,7 +212,7 @@ theorem br_proj_iff {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → 
     rw [br_fock_sub_left, h.2.2 F hF G hG, h.2.1 G hG ⟨hG, hGU⟩, sub_self]
 
 /- English proof (translation)
-Unfold `glAct`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single i]`. Simplify using `[hi]`. Introduce `l _ hl`. Simplify using `[hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -234,9 +234,9 @@ section BB
 variable {K : Type} [Field K] (v : AddValuation K (WithTop ℚ))
 
 /- English proof (translation)
-Unfold `vR`. Rewrite using `[AddValuation.map_mul]`. Generalize the expression as in `v x = a`. Generalize the expression as in `v y = b`. Apply the tactic sequence `induction a using WithTop.recTopCoe <;> induction b using WithTop.recTopCoe <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem br_vR_mul (x y : K) : vR v (x * y) = vR v x + vR v y := by
   unfold vR
@@ -247,9 +247,9 @@ theorem br_vR_mul (x y : K) : vR v (x * y) = vR v x + vR v y := by
   norm_cast
 
 /- English proof (translation)
-Unfold `vBB`. Rewrite using `[Finset.le_inf_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h α`. Distinguish the cases in `hα : α ∈ F.support`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h α hα`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hα]`. Simplify using `[vR]`. Introduce `h α _`. Conclude with `h α`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem br_le_vBB_iff {σ : Type} (t : ℝ) (F : MvPolynomial σ K) :
     ((t : ℝ) : WithTop ℝ) ≤ vBB v F ↔ ∀ α, ((t : ℝ) : WithTop ℝ) ≤
@@ -266,11 +266,11 @@ theorem br_le_vBB_iff {σ : Type} (t : ℝ) (F : MvPolynomial σ K) :
     exact h α
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[br_le_vBB_iff]`. Introduce `α`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, br_vR_mul]`. Establish `hvc : vR v c = ((n : ℝ) : WithTop ℝ)`. Unfold `vR`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hc]`. Both sides reduce to the same expression. Rewrite using `[hvc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`. Use `_ ≤ ((n : ℝ) : WithTop ℝ) + (vR v (F.coeff α) + ((((v (fact α : K)).untopD 0 : ℚ) : ℝ) / 2 : ℝ)) := add_le_add le_rfl (h α)`. Use `_ = _ := by rw [add_assoc]`.
+Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem br_le_vBB_smul {σ : Type} (c : K) (n : ℚ) (hc : v c = ((n : ℚ) : WithTop ℚ)) (t : ℝ)
     (F : MvPolynomial σ K) (h : ((t : ℝ) : WithTop ℝ) ≤ vBB v F) :
@@ -291,14 +291,14 @@ theorem br_le_vBB_smul {σ : Type} (c : K) (n : ℚ) (hc : v c = ((n : ℚ) : Wi
     _ = _ := by rw [add_assoc]
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_inv, hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem br_v_inv (c : K) (n : ℚ) (hc : v c = ((n : ℚ) : WithTop ℚ)) : v c⁻¹ = (((-n : ℚ)) : WithTop ℚ) := by
   rw [AddValuation.map_inv, hc]
   rfl
 
 /- English proof (translation)
-Use `⟨(p : K) ^ N, ?_⟩` and prove the remaining obligations. Break down `Int.eq_nat_or_neg N with ⟨n, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast, AddValuation.map_pow, hvp]`. Simplify using the standard rewrite rules. Rewrite using `[zpow_neg, zpow_natCast, AddValuation.map_inv, AddValuation.map_pow, hvp]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -311,13 +311,13 @@ theorem br_exists_v {p : ℕ} (hvp : v (p : K) = 1) (N : ℤ) : ∃ c : K, v c =
     simp
 
 /- English proof (translation)
-Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top`. Establish `hz : z = ⊤`. Assume the negation of the conclusion as `hz`. Take `⟨z0, rfl⟩` from `WithTop.ne_top_iff_exists.mp hz`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `h (z0 + e + 1) le_top`. Normalize the coercions in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hz]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Put the expressions in a common number system so they can be compared. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `coe y0`. Establish `h1` using `h y0 le_rfl`. Proceed by induction on `z using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe z0`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Normalize the coercions in `at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Put the expressions in a common number system so they can be compared. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem br_le_add_of_forall (y z : WithTop ℝ) (e : ℝ)
     (h : ∀ t : ℝ, ((t : ℝ) : WithTop ℝ) ≤ y → ((t - e : ℝ) : WithTop ℝ) ≤ z) : y ≤ z + ((e : ℝ) : WithTop ℝ) := by
@@ -344,13 +344,13 @@ end BB
 section Num
 
 /- English proof (translation)
-Unfold `lg`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `ha0 : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `hpos : (0 : ℝ) < 2 * (a : ℝ) + r` using `by linarith`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog0 : 0 ≤ Real.logb p (2 * (a : ℝ) + r)` using `Real.logb_nonneg hp1 (by linarith)`. Establish `hmono : Real.logb p (2 * (a : ℝ) + r) ≤ Real.logb p (((2 * b : ℕ) : ℝ) + r)`. Apply `Real.logb_le_logb_of_le hp1 hpos` to reduce the goal to its premises. Use `push_cast`. Establish `: (a : ℝ) ≤ b` using `by exact_mod_cast hab`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hch : ((r.choose 2 : ℕ) : ℝ) ≤ (r : ℝ) ^ 2`. Establish `: r.choose 2 ≤ r ^ 2` using `Nat.choose_le_pow r 2`. Conclude with `this` after adjusting the coercions. Establish `hr2 : (1 : ℝ) ≤ (r : ℝ) ^ 2` using `by nlinarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod` using `mul_le_mul hch hmono hlog0 (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem br_exp_le {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) (a b : ℕ) (hab : a ≤ b) :
     ((r.choose 2 : ℕ) : ℝ) * Real.logb p (2 * (a : ℝ) + r) + 1 ≤ (r : ℝ) ^ 2 * lg p r (2 * b) := by
@@ -379,31 +379,27 @@ section PROJ
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Introduce `hD L _ _ sg r _ d S th`. Establish `hp : p.Prime` using `hD.prime`. Take `⟨⟨π0, hπ0⟩, hall⟩` from `h4 r L (⟨sg⟩ : Letters L) d (↑S : Set L) th`. Use `⟨⟨π0, (br_proj_iff sg S d th π0).mpr hπ0⟩, fun π hπ => ?_⟩` and prove the remaining obligations. Take `⟨hcomm, hBB⟩` from `hall π ((br_proj_iff sg S d th π).mp hπ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi hiS a F hF`. Establish `hdis : Disjoint (↑S : Set L) ({i} : Set L)`. Rewrite using `[Set.disjoint_singleton_right]`. Conclude with `fun h => hiS (Finset.mem_coe.mp h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `(hcomm {i} (Or.inr hdis)).1 a a F hF` as an intermediate fact. Rewrite `this` using `[br_glAct_single (⟨sg⟩ : Letters L) i hi, br_glAct_single (⟨sg⟩ : Letters L) i hi]`. Conclude with `this`. Introduce `S' hS' th' π' hπ' F hF`. Establish `hS'' : (↑S : Set L) ⊆ (↑S' : Set L) ∨ Disjoint (↑S : Set L) (↑S' : Set L)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hS' with h | h` into its components or cases. Conclude with `Or.inl (Finset.coe_subset.mpr h)`. Conclude with `Or.inr (Finset.disjoint_coe.mpr h)`. Conclude with `(hcomm _ hS'').2 th' π' ((br_proj_iff sg S' d th' π').mp hπ') F hF`. Introduce `F hF`.
+Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `br_le_add_of_forall _ _ _ fun t ht => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `br_exists_v (vQ p S0) hD.vp ⌈-t⌉`. Establish `hcF : c • F ∈ Pol (KK O) r d` using `Submodule.smul_mem _ _ hF`. Establish `h1` using `br_le_vBB_smul (vQ p S0) c _ hc t F ht`. Establish `hN1 : -t ≤ (⌈-t⌉ : ℝ)` using `Int.le_ceil _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN2 : (⌈-t⌉ : ℝ) < -t + 1` using `Int.ceil_lt_add_one _`. Establish `hin : InBB (O` using `O) p (c • F) := by`. Establish `h2 : Formalism.MainNotions.PlaneGramData.geQ (Formalism.MainNotions.G.vBB (O` using `O) p (c • F)) 0 := by`. Rewrite using `[geQ_vBB_iff hp S0]`. Use `le_trans ?_ h1` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[WithTop.coe_le_coe]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `InBB`. Generalize the expression as in `Formalism.MainNotions.G.vBB (O := O) p (c • F) = y at h2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe q`. Use `h2 q rfl` as an intermediate fact. Establish `e0 : (0 : WithTop ℚ) = ((0 : ℚ) : WithTop ℚ)` using `rfl`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e0, WithTop.coe_le_coe]`. Conclude with `this` after adjusting the coercions. Establish `h3` using `hBB (c • F) hcF hin`. Rewrite `h3` using `[geQ_vBB_iff hp S0, map_smul]`. Establish `h4'` using `br_le_vBB_smul (vQ p S0) c⁻¹ _ (br_v_inv _ c _ hc) _ _ h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[AddValuation.map_zero]`. Conclude with `WithTop.coe_ne_top hc.symm`. Rewrite `h4'` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `le_trans ?_ h4'` and prove the remaining obligations. Rewrite using `[WithTop.coe_le_coe]`. Establish `hdeg : degIn d (↑S : Set L) ≤ ∑ i, d i`. Unfold `degIn`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `le_rfl`. Conclude with `Nat.zero_le _`. Establish `hnum` using `br_exp_le hp.two_le (NeZero.one_le (n := r)) _ _ hdeg`. Use `push_cast`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem brPROJ (S0 : UniformizedDVR p O) [CharZero (KK O)] (h4 : Formalism.MainNotions.PlaneGramData.FockProjectorAtRing p O) :
     PROJ (KK O) (vQ p S0) p 1 := by

@@ -17,9 +17,7 @@ set_option synthInstance.maxHeartbeats 160000
 namespace GlobalTheory.BoundedDen
 
 /- English proof (translation)
-Take `⟨e, he, hc, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `: (finPart D : AE D → Af D.host.F ⊗[D.host.F] D.host.E) = fun z => (e z).2`. Use function extensionality and compare the values at `z`. Conclude with `((he z).2).symm`. Rewrite using `[this]`.
-
-Conclude with `continuous_snd.comp hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_finPart (D : D7) : Continuous (finPart D) := by
   obtain ⟨e, he, hc, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -31,11 +29,11 @@ theorem continuous_finPart (D : D7) : Continuous (finPart D) := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D K hK`. Set `U : AddSubgroup (AE D)` to `(intAE D).comap (finPart D).toAddMonoidHom`. Establish `hU : IsOpen (U : Set (AE D))` using `(GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage (continuous_finPart D)`. Take `⟨n, hn⟩` from `GlobalTheory.CondBound.exists_small D K hK U hU`. Use `⟨n.factorial, Nat.factorial_pos n, fun k hk x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hn k hk`. Establish `h2 : finPart D (incA D (((n.factorial : ℕ) : D.host.E) * x)) ∈ intAE D`. Establish `e : finPart D (incA D (((n.factorial : ℕ) : D.host.E) * x)) = finPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 ((n.factorial : ℕ) : Af D.host.F)) * k)`. Rewrite using `[map_mul (incA D), map_mul (finPart D), map_mul (finPart D), hx, GlobalTheory.CondBound.finPart_r]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Take `⟨y, hy⟩` from `GlobalTheory.FinalJoin.CondTest.integral_of_mem_intAE h2`. Establish `e2 : (((n.factorial : ℕ) : D.host.E) * x) = (y : D.host.E)` using `hy.symm`. Rewrite using `[e2]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_den : ∀ (D : D7) (K : Set (AE D)), IsCompact K → ∃ L : ℕ, 0 < L ∧ ∀ k ∈ K, ∀ x : D.host.E,
     finPart D (incA D x) = finPart D k → IsIntegral ℤ ((L : D.host.E) * x) := by

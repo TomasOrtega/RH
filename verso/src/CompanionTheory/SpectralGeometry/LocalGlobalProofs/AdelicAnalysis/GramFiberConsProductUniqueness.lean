@@ -19,7 +19,7 @@ def tl {K : Type} {M n : ℕ} (Y : Fin (n + 1) → Fin (M + 1) → K) : Fin n �
   fun j i => Y j.succ i.succ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j i`. Simplify using `[tl, vec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tl_vec {K : Type} [Zero K] {M n : ℕ} (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) :
     tl (vec α c X) = X := by
@@ -27,7 +27,7 @@ theorem tl_vec {K : Type} [Zero K] {M n : ℕ} (α : K) (c : Fin n → K) (X : F
   simp [tl, vec]
 
 /- English proof (translation)
-Use `continuous_pi fun j => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i.succ).comp (continuous_apply j.succ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_tl {K : Type} [TopologicalSpace K] {M n : ℕ} :
     Continuous (tl : (Fin (n + 1) → Fin (M + 1) → K) → Fin n → Fin M → K) := by
@@ -35,11 +35,11 @@ theorem continuous_tl {K : Type} [TopologicalSpace K] {M n : ℕ} :
   exact (continuous_apply i.succ).comp (continuous_apply j.succ)
 
 /- English proof (translation)
-Use `continuous_pi fun a => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) a` and prove the remaining obligations. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify `continuous_fst` using `[vec]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `continuous_const` using `[vec]`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Establish `h : Continuous (fun p : K × (Fin n → K) × (Fin n → Fin M → K) => p.2.1 j)` using `(continuous_apply j).comp (continuous_fst.comp continuous_snd)`. Simplify `h` using `[vec]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h : Continuous (fun p : K × (Fin n → K) × (Fin n → Fin M → K) => p.2.2 j k)` using `(continuous_apply k).comp ((continuous_apply j).comp (continuous_snd.comp continuous_snd))`. Simplify `h` using `[vec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_vec {K : Type} [Zero K] [TopologicalSpace K] {M n : ℕ} :
     Continuous (fun p : K × (Fin n → K) × (Fin n → Fin M → K) => vec p.1 p.2.1 p.2.2) := by
@@ -59,9 +59,9 @@ theorem continuous_vec {K : Type} [Zero K] [TopologicalSpace K] {M n : ℕ} :
       simpa [vec] using h
 
 /- English proof (translation)
-Establish `hv : (Fin.cons A (fun _ => 0) : Fin (N + 1) → R ⊗[F] E) = A • Fin.cons 1 (fun _ => 0)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp`. Simplify using `only [actW, actTup, vec, Fin.cons_zero]`. Rewrite using `[hv, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actW_vec_zero {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {N n : ℕ}
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] (J' : Matrix (Fin (N + 1)) (Fin (N + 1)) E)
@@ -76,7 +76,7 @@ theorem actW_vec_zero {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →
   simp [mul_comm]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R (R ⊗[F] E)`. Establish `h : Continuous (fun α : R => α • (1 : R ⊗[F] E))` using `continuous_smul.comp (continuous_id.prodMk continuous_const)`. Use `h using 2 with α` and compare the differences between its conclusion and the goal. Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tmul_one {F E : Type} [Field F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] :
@@ -89,57 +89,45 @@ theorem continuous_tmul_one {F E : Type} [Field F] [Field E] [Algebra F E]
   rw [Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ hφc`. Use `haveI iTR : IsTopologicalRing R := D.hR.1`. Use `haveI iLC : LocallyCompactSpace R := D.hR.2.1`. Use `haveI iSC : SecondCountableTopology R := D.hR.2.2.1`. Use `haveI iT2 : T2Space R := D.hR.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hval : IsOpenEmbedding (Units.val : Rˣ → R)` using `D.hR.2.2.2.2.2.2.1`. Establish `hJ'` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht`. Take `⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`. Use `haveI := kTR`. Use `haveI := kLC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := kSC`. Use `haveI := kT2`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Take `⟨eLC, eSC, eT2, eB, hlift⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R n`. Use `haveI := eLC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `haveI := eSC`. Use `haveI := eT2`. Use `haveI := eB`. Take `⟨g, hgc, hg⟩` from `hlift M J D.hJ`. Take `⟨gTG, gLC, gSC, gT2, gB, hactall⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJ' R`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := gTG`. Use `haveI := gLC`. Use `haveI := gSC`. Use `haveI := gT2`. Use `haveI := gB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hact, hact1, hactm, -⟩` from `hactall (n + 1)`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ D.hCM R d b lam D.hlam`. Use `haveI := hW n M`. Use `haveI := hH n`. Take `⟨hUo, -, -, -, hbd', -⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hloc₁, -, -, -, hgram₁⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁`. Use `haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := kB n M`. Use `haveI : BorelSpace (Fin 1 → Fin (M + 1) → R ⊗[F] E) := kB 1 (M + 1)`. Establish `hfam : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily (coordW R b lam n M) (gramR R σ J) Subtype.val (g ⁻¹' Unt σ R n) (coordHerm R σ b lam n) (Unt σ R n) m'`. Establish `he : g ⁻¹' Unt σ R n = {X | IsUnit (gramR R σ J X).det}`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `X`. Simplify using `only [Set.mem_preimage, Unt, Set.mem_setOf_eq, hg X]`. Rewrite using `[he]`. Conclude with `D.hm'`. Establish `hCt : ∀ L : Set (HA R σ (blockOne (algebraMap F E t) J)), IsCompact L → ∃ C : Set (Fin n → Fin M → R ⊗[F] E), IsCompact C ∧ ∀ h ∈ L, ∀ A c X, φ (actW R σ _ h (vec A c X)) ≠ 0 → X ∈ C`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `L hL`. Use `⟨(fun p : HA R σ (blockOne (algebraMap F E t) J) × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => tl (actW R σ _ p.1⁻¹ p.2)) '' (L ×ˢ tsupport φ), ?_, ?_⟩` and prove the remaining obligations. Use `(hL.prod hφc).image ?_` and prove the remaining obligations. Conclude with `continuous_tl.comp (hact.comp ((continuous_inv.comp continuous_fst).prodMk continuous_snd))`. Introduce `h hh A c X hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨(h, actW R σ _ h (vec A c X)), ⟨hh, subset_tsupport _ hne⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hactm, inv_mul_cancel, hact1, tl_vec]`. Establish `cT` using `continuous_tmul_one (F := F) (E := E) R`. Set `G : (HA R σ (blockOne (algebraMap F E t) J) × R × (Fin n → R ⊗[F] E)) × HermR R σ n → ℝ` to `fun q => ∫ X, φ (actW R σ _ q.1.1 (vec (q.1.2.1 ⊗ₜ[F] (1 : E)) q.1.2.2 X)) ∂(m' q.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ∀ q, q.2 ∈ Unt σ R n → ContinuousAt G q`. Introduce `q hq`. Take `⟨L, hLc, hLn⟩` from `exists_compact_mem_nhds q.1.1`. Take `⟨C, hC, hCv⟩` from `hCt L hLc`. Establish `hWo : IsOpen (interior L ×ˢ (Set.univ : Set (R × (Fin n → R ⊗[F] E))))` using `isOpen_interior.prod isOpen_univ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcΦ : Continuous (fun p : (HA R σ (blockOne (algebraMap F E t) J) × R × (Fin n → R ⊗[F] E)) × (Fin n → Fin M → R ⊗[F] E) => φ (actW R σ _ p.1.1 (vec (p.1.2.1 ⊗ₜ[F] (1 : E)) p.1.2.2 p.2)))`. Use `hφ.comp (hact.comp ((continuous_fst.comp continuous_fst).prodMk ?_))` and prove the remaining obligations. Conclude with `continuous_vec.comp ((cT.comp (continuous_fst.comp (continuous_snd.comp continuous_fst))).prodMk ((continuous_snd.comp (continuous_snd.comp continuous_fst)).prodMk continuous_snd))`. Establish `hj` using `GlobalTheory.CompanionTheory.SW.FibreJointCont.continuousOn_fibre_integral (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) _ (coordW R b lam n M) (coordHerm R σ b lam n) (gramR R σ J) g Subtype.val Subtype.val_injective hgc hg (Unt σ R n) hUo m' hfam (HA R σ (blockOne (algebraMap F E t) …`. Introduce `p hp v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hv (hCv p.1 (interior_subset hp.1) _ _ _ hne))`. Establish `hmem : ((interior L ×ˢ Set.univ) ×ˢ Unt σ R n) ∈ 𝓝 q` using `(hWo.prod hUo).mem_nhds ⟨⟨mem_interior_iff_mem_nhds.2 hLn, trivial⟩, hq⟩`. Conclude with `hj.continuousAt hmem`. Introduce and unpack `⟨α₀, c₀, S₀⟩ ⟨hα₀, -, hS₀⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Take `⟨N, hNn, hNs, hNc⟩` from `local_compact_nhds (hval.isOpen_range.mem_nhds hα₀)`. Establish `hUc : IsCompact ((Units.val : Rˣ → R) ⁻¹' N)`. Rewrite using `[hval.isInducing.isCompact_iff, Set.image_preimage_eq_of_subset hNs]`. Conclude with `hNc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNi : IsCompact ((Units.val : Rˣ → R) '' ((Units.val : Rˣ → R) ⁻¹' N)⁻¹)` using `hUc.inv.image Units.continuous_val`. Take `⟨Dc, hDn, hDs, hDc⟩` from `local_compact_nhds (hUo.mem_nhds hS₀)`. Set `C₁ : Set (Fin 1 → Fin (M + 1) → R ⊗[F] E)` to `(fun p : R × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => scl (p.1 ⊗ₜ[F] (1 : E)) (fun _ : Fin 1 => p.2 0)) '' (((Units.val : Rˣ → R) '' ((Units.val : Rˣ → R) ⁻¹' N)⁻¹) ×ˢ tsupport φ)`. Establish `hC₁c : IsCompact C₁`. Use `(hNi.prod hφc).image ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality.
 
-Use `continuous_pi fun _ => continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h1 : Continuous (fun p : R × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => p.2 0 i)` using `(continuous_apply i).comp ((continuous_apply 0).comp continuous_snd)`. Establish `h2 : Continuous (fun p : R × (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => p.1 ⊗ₜ[F] (1 : E))` using `cT.comp continuous_fst`. Conclude with `h1.mul h2`. Take `⟨C', hC'c, hC'⟩` from `D.hcpt C₁ hC₁c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C₂, hC₂c, hC₂⟩` from `hCt C' hC'c`. Take `⟨cD, hcD⟩` from `hbd' C₂ Dc hC₂c hDc hDs`. Take `⟨Bd, hBd⟩` from `hφ.bounded_above_of_compact_support hφc`. Establish `hBd0 : 0 ≤ Bd` using `(norm_nonneg _).trans (hBd 0)`. Use `haveI := hloc₁ (hermScal R σ (algebraMap F R t))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eU : ∀ᶠ z : R × (Fin n → R ⊗[F] E) × HermR R σ n in 𝓝 (α₀, c₀, S₀), z.2.2 ∈ Unt σ R n` using `(continuous_snd.comp continuous_snd).continuousAt (hUo.mem_nhds hS₀)`. Establish `eD : ∀ᶠ z : R × (Fin n → R ⊗[F] E) × HermR R σ n in 𝓝 (α₀, c₀, S₀), z.2.2 ∈ Dc` using `(continuous_snd.comp continuous_snd).continuousAt hDn`. Establish `eN : ∀ᶠ z : R × (Fin n → R ⊗[F] E) × HermR R σ n in 𝓝 (α₀, c₀, S₀), z.1 ∈ N` using `continuous_fst.continuousAt hNn`. Establish `hmeas : ∀ᶠ z : R × (Fin n → R ⊗[F] E) × HermR R σ n in 𝓝 (α₀, c₀, S₀), AEStronglyMeasurable (fun y₀ => G ((s y₀, z.1, z.2.1), z.2.2)) (m₁ (hermScal R σ (algebraMap F R t)))` using `by filter_upwards [eU] with z hz`. Establish `hc : Continuous (fun h : HA R σ (blockOne (algebraMap F E t) J) => G ((h, z.1, z.2.1), z.2.2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `continuous_iff_continuousAt.2 fun h => ?_` and prove the remaining obligations. Use `ContinuousAt.comp (g := G) (f := fun h => ((h, z.1, z.2.1), z.2.2)) (hG _ hz) ?_` and prove the remaining obligations. Conclude with `(((continuous_id.prodMk continuous_const)).prodMk continuous_const).continuousAt`. Conclude with `(hc.measurable.comp D.hs).aestronglyMeasurable`. Establish `hcont : ∀ᵐ y₀ ∂(m₁ (hermScal R σ (algebraMap F R t))), ContinuousAt (fun z : R × (Fin n → R ⊗[F] E) × HermR R σ n => G ((s y₀, z.1, z.2.1), z.2.2)) (α₀, c₀, S₀)`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Filter.Eventually.of_forall fun y₀ => ?_` and prove the remaining obligations. Use `ContinuousAt.comp (g := G) (f := fun z : R × (Fin n → R ⊗[F] E) × HermR R σ n => ((s y₀, z.1, z.2.1), z.2.2)) (hG _ hS₀) ?_` and prove the remaining obligations. Conclude with `((continuous_const.prodMk (continuous_fst.prodMk (continuous_fst.comp continuous_snd))).prodMk (continuous_snd.comp continuous_snd)).continuousAt`. Establish `hbound : ∀ᶠ z : R × (Fin n → R ⊗[F] E) × HermR R σ n in 𝓝 (α₀, c₀, S₀), ∀ᵐ y₀ ∂(m₁ (hermScal R σ (algebraMap F R t))), ‖G ((s y₀, z.1, z.2.1), z.2.2)‖ ≤ C₁.indicator (fun _ => Bd * (cD : ℝ)) y₀` using `by filter_upwards [eN, eD] with z hzN hzD filter_upwards [hgram₁ (hermScal R σ (algebraMap F R t))] with y₀ hy₀`. Take `⟨u, hu⟩` from `hNs hzN`.
-
-Establish `hsec` using `D.hsec y₀ hy₀`. Establish `hvan : ∀ X, φ (actW R σ _ (s y₀) (vec (z.1 ⊗ₜ[F] (1 : E)) z.2.1 X)) ≠ 0 → y₀ ∈ C₁`. Introduce `X hne`. Use `⟨(((u⁻¹ : Rˣ) : R), actW R σ _ (s y₀) (vec (z.1 ⊗ₜ[F] (1 : E)) z.2.1 X)), ⟨⟨u⁻¹, ?_, rfl⟩, subset_tsupport _ hne⟩, ?_⟩` and prove the remaining obligations. Simplify `hzN` using `[Set.mem_inv, hu]`.
-
-Use function extensionality and compare the values at `a i`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality. Simplify using `only [scl]`. Rewrite using `[actW_vec_zero, hsec, ← hu, mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Units.mul_inv, mul_one, ← Algebra.TensorProduct.one_def, mul_one]`.
-
-Distinguish the cases in `hy : y₀ ∈ C₁`. Establish `h2 : s y₀ ∈ C'` using `hC' y₀ hy hy₀`. Establish `hvanX : ∀ X, X ∉ C₂ → φ (actW R σ _ (s y₀) (vec (z.1 ⊗ₜ[F] (1 : E)) z.2.1 X)) = 0` using `fun X hX => by_contra fun hne => hX (hC₂ _ h2 _ _ _ hne)`. Rewrite using `[Set.indicator_of_mem hy]`. Express the relevant statement in the definitionally equal form `‖∫ X, φ (actW R σ _ (s y₀) (vec (z.1 ⊗ₜ[F] (1 : E)) z.2.1 X)) ∂(m' z.2.2)‖ ≤ _`.
-
-Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hvanX]`. Establish `hfin : m' z.2.2 C₂ < ∞` using `(hcD _ hzD).trans_lt ENNReal.coe_lt_top`. Use `(norm_setIntegral_le_of_norm_le_const hfin (fun X _ => hBd _)).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ hBd0` and prove the remaining obligations. Use `ENNReal.toReal_mono ENNReal.coe_ne_top (hcD _ hzD)` as an intermediate fact.
-
-Simplify `this` using `[Measure.real]`. Rewrite using `[Set.indicator_of_notMem hy]`. Establish `h0 : (fun X => φ (actW R σ _ (s y₀) (vec (z.1 ⊗ₜ[F] (1 : E)) z.2.1 X))) = 0`. Use function extensionality and compare the values at `fun X => by_contra fun hne => hy (hvan X hne)`. Express the relevant statement in the definitionally equal form `‖∫ X, φ (actW R σ _ (s y₀) (vec (z.1 ⊗ₜ[F] (1 : E)) z.2.1 X)) ∂(m' z.2.2)‖ ≤ _`.
-
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hint : Integrable (C₁.indicator (fun _ => Bd * (cD : ℝ))) (m₁ (hermScal R σ (algebraMap F R t)))` using `(integrable_indicator_iff hC₁c.isClosed.measurableSet).2 (integrableOn_const hC₁c.measure_lt_top.ne)`. Conclude with `continuousAt_of_dominated hmeas hbound hint hcont`.
+A detailed English derivation is pending.
 -/
 theorem cont_double : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ φ : (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) → ℝ, Continuous φ → HasCompactSupport φ → ContinuousOn (fun z : R × (Fin n → R ⊗[F] E) × HermR R σ n => Preal σ J t m₁ m' s φ z.1 z.2.1 z.2.2) ({α : R | IsUnit α} ×ˢ (Set.univ ×ˢ Unt σ R n)) := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D φ hφ hφc

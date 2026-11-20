@@ -12,11 +12,11 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [hp : Fact p.Prime] {X : Sys p}
 
 /- English proof (translation)
-Introduce `hmem`. Establish `hinj` using `algebraMap_inj Y he`. Establish `hpO : (p : X.G.O) ≠ 0` using `fun h0 => pow_ne_zero _ X.unif.ne_zero (X.eO_spec.eq_zero_iff.mp h0)`. Establish `hpK : (p : X.G.Kf) ≠ 0`. Use `(map_ne_zero_iff _ hinj).mpr hpO` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1 : algebraMap X.G.Kf Y.Kc ((p : X.G.Kf)⁻¹) ∈ Y.Oc`. Rewrite using `[map_inv₀, map_natCast]` and apply the resulting hypothesis. Take `⟨a, ha⟩` from `(mem_intK (X := X)).mp ((Y.Oc_K _).mp h1)`. Establish `h1eq : (p : X.G.O) * a = 1` using `hinj (by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ha, map_natCast, mul_inv_cancel₀ hpK, map_one])`. Establish `hpu : IsUnit (p : X.G.O)` using `IsUnit.of_mul_eq_one _ h1eq`. Conclude with `X.unif.not_isUnit ((isUnit_pow_iff (Nat.pos_iff_ne_zero.mp he)).mp (X.eO_spec.isUnit_iff.mp hpu))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nm_pinv_of_eO (Y : Pend X) (he : 0 < X.eO) : (p : Y.Kc)⁻¹ ∉ Y.Oc := by
   intro hmem
@@ -37,25 +37,23 @@ theorem nm_pinv_of_eO (Y : Pend X) (he : 0 < X.eO) : (p : Y.Kc)⁻¹ ∉ Y.Oc :=
     ((isUnit_pow_iff (Nat.pos_iff_ne_zero.mp he)).mp (X.eO_spec.isUnit_iff.mp hpu))
 
 /- English proof (translation)
-The claim follows from `nm_pinv_of_eO Y (eO_pos X v)`.
+A detailed English derivation is pending.
 -/
 theorem nm_pinv_of_place (Y : Pend X) (v : X.Pl) : (p : Y.Kc)⁻¹ ∉ Y.Oc :=
   nm_pinv_of_eO Y (eO_pos X v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp.out.one_lt, Y.Oc_val, Y.Oc_rank1, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem nm_hyp (Y : Pend X) (h : (p : Y.Kc)⁻¹ ∉ Y.Oc) : nm_Hyp Y.Oc p :=
   ⟨hp.out.one_lt, Y.Oc_val, Y.Oc_rank1, h⟩
 
 /- English proof (translation)
-Establish `hH` using `nm_hyp Y h`. Establish `hc : 1 < nm_abs hH ((p : Y.Kc)⁻¹)`. Rewrite using `[map_inv₀]`. Use `show 1 < (nm_N Y.Oc p (p : Y.Kc))⁻¹`. Rewrite using `[nm_N_p hH, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `nm_pR hH`. Take `⟨K', i1, i2, hu, hac, hn⟩` from `nm_extG (nm_abs hH) (fun x y => nm_N_add hH x y) ((p : Y.Kc)⁻¹) hc`. Use `⟨K', i1, i2, hu, hac, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hn (p : Y.Kc)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.trans (nm_N_p hH)`. Introduce `x`. Rewrite using `[hn x]`. Conclude with `nm_N_le_one hH x`. Establish `h2 : 2 ≤ p` using `hp.out.two_le`.
-
-Establish `hpos : 0 < p ^ 2 - 1`. Establish `: 4 ≤ p ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Conclude with `IsAlgClosed.exists_pow_nat_eq (p : K') hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem nm_ext (Y : Pend X) (h : (p : Y.Kc)⁻¹ ∉ Y.Oc) :
     ∃ (K' : Type) (_ : NormedField K') (_ : Algebra Y.Kc K'), IsUltrametricDist K' ∧ IsAlgClosed K' ∧

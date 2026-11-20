@@ -14,11 +14,11 @@ namespace GlobalTheory.ArchTraceNondeg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply, Matrix.submatrix, Matrix.transpose_apply, Matrix.map_apply]`. Establish `h2 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hM`. Apply `h2` to reduce the goal to its premises. Simplify using `[Matrix.det_mul, hM]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -36,9 +36,9 @@ theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : 
   simp [Matrix.det_mul, hM]
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `RingHom.map_det (B.emb w).1 X.J` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_J_ne_zero {σ : E →ₐ[F] E} (B : Base F E) {n : ℕ} {X : Spc F E n} {r s : ℕ} (hX : X.IsHerm σ B r s) :
     X.J.det ≠ 0 := by
@@ -51,7 +51,7 @@ theorem det_J_ne_zero {σ : E →ₐ[F] E} (B : Base F E) {n : ℕ} {X : Spc F E
   exact this.symm
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((σ : E →+* E).toRatAlgHom.toLinearMap)` using `(σ : E →+* E).injective`. Conclude with `LinearMap.injective_iff_surjective.1 hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigma_surjective (σ : E →ₐ[F] E) : Function.Surjective σ := by
   have hinj : Function.Injective ((σ : E →+* E).toRatAlgHom.toLinearMap) := (σ : E →+* E).injective
@@ -62,9 +62,9 @@ def cAinv (σ : E →ₐ[F] E) : AE F E →ₐ[AF F] AE F E :=
     (AlgEquiv.ofBijective σ ⟨(σ : E →+* E).injective, sigma_surjective σ⟩).symm.toAlgHom
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Simplify using `only [cAinv, cA, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `AlgEquiv.apply_symm_apply (AlgEquiv.ofBijective σ ⟨(σ : E →+* E).injective, sigma_surjective σ⟩) y`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cA_cAinv (σ : E →ₐ[F] E) (x : AE F E) : cA σ (cAinv σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -76,16 +76,16 @@ theorem cA_cAinv (σ : E →ₐ[F] E) (x : AE F E) : cA σ (cAinv σ x) = x := b
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[← map_smul, ht u hu, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_cAinv (σ : E →ₐ[F] E) {t : AE F E} (ht : At (evI F) t) : At (evI F) (cAinv σ t) := by
   intro u hu
   rw [← map_smul, ht u hu, map_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[ht u hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem at_single {n : ℕ} (k : Fin n) {t : AE F E} (ht : At (evI F) t) :
     At (evI F) (Pi.single k t : Fin n → AE F E) := by
@@ -96,9 +96,9 @@ theorem at_single {n : ℕ} (k : Fin n) {t : AE F E} (ht : At (evI F) t) :
   · simp [Pi.single_apply, hj]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `hb u hu`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.smul_sum, smul_mul_assoc]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: u • b i = 0` using `by simpa using congrFun h i`. Rewrite using `[this, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_vecMul {n : ℕ} {b : Fin n → AE F E} (hb : At (evI F) b) (A : Matrix (Fin n) (Fin n) (AE F E)) (k : Fin n) :
     At (evI F) ((b ᵥ* A) k) := by
@@ -111,15 +111,15 @@ theorem at_vecMul {n : ℕ} {b : Fin n → AE F E} (hb : At (evI F) b) (A : Matr
   rw [this, zero_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hβ hX b hb hc`. Establish `hdet : IsUnit (incM F X.J).det`. Establish `h : (incM F X.J).det = inclR (F` using `F) (AF F) X.J.det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h]`. Conclude with `(isUnit_iff_ne_zero.2 (det_J_ne_zero B hX)).map _`. Establish `hv : b ᵥ* incM F X.J = 0`. Use function extensionality and compare the values at `k`. Apply `hβ _ (at_vecMul hb _ k)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `h` using `hc (Pi.single k (cAinv σ t)) (at_single k (at_cAinv σ ht))`. Rewrite `h` using `[Matrix.dotProduct_mulVec]`. Establish `hw : (fun j => cA σ ((Pi.single k (cAinv σ t) : Fin n → AE F E) j)) = Pi.single k t`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[cA_cAinv]`. Simplify using `[Pi.single_apply, hj]`. Rewrite `h` using `[hw, dotProduct_single]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace_orth : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n : ℕ} (X : Spc F E n) (r s : ℕ),

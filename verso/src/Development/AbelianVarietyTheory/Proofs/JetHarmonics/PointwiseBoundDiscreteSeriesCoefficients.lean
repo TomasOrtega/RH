@@ -18,7 +18,7 @@ open BpJoin Formalism.FourierDecayAlt
 namespace GlobalTheory.BpDiscreteSeriesTwoInputs
 
 /- English proof (translation)
-Introduce `γ hγ hG`. Use `(h γ hγ hG).trans ?_` and prove the remaining obligations. Use `gcongr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thmBpAt_mono {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -29,23 +29,21 @@ theorem thmBpAt_mono {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPr
   gcongr
 
 /- English proof (translation)
-Introduce `hXi hP Ch C₀ hC₀`. Establish `hC : 0 ≤ 2 * |Ch|` using `by positivity`. Take `⟨C₄, Cc, heig⟩` from `GlobalTheory.T.pointwiseBound_capelli_eigenfunction hXi hP (2 * |Ch|) (2 * |Ch| / 2 + 6) C₀ hC (by positivity) hC₀`. Take `⟨G₁, hnum⟩` from `GlobalTheory.BpStdNum.num_of_stdHyp (C₀ + 10) (by positivity)`. Take `⟨G₂, hgrid⟩` from `GlobalTheory.StdGrid.std_grid`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G₃, -, hmar⟩` from `GlobalTheory.margin_arith_closing Cc C₀ hC₀`. Use `⟨max C₄ 0, max G₁ (max G₂ G₃), le_max_right _ _, ?_⟩` and prove the remaining obligations. Introduce `Cg hCg P Wp Wq _ _ _ _ _ _ p lam lam' ka b n₀ p₀ R f hstd hgaps hDS hf hn1 hn2 hp1 hp2`. Establish `hG₁ : G₁ ≤ Cg` using `(le_max_left _ _).trans hCg`. Establish `hG₂ : G₂ ≤ Cg` using `((le_max_left _ _).trans (le_max_right _ _)).trans hCg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG₃ : G₃ ≤ Cg` using `((le_max_right _ _).trans (le_max_right _ _)).trans hCg`. Establish `hk : 2 ≤ P.k` using `p.hl.2.2`. Take `⟨hOK, hz, hz', hT, hT', hty, hty'⟩` from `p.hP`. Establish `hka : 0 < ka` using `hstd.2.2.2.1`. Establish `hkp : 0 < (1 / ka) ^ (2 * P.r)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : 0 < P.T` using `(mul_pos_iff_of_pos_right hkp).1 (lt_of_lt_of_le one_pos hstd.2.2.2.2.2.2.1)`. Establish `hT0' : 0 < P.T'` using `(mul_pos_iff_of_pos_right hkp).1 (lt_of_lt_of_le one_pos hstd.2.2.2.2.2.2.2.1)`. Establish `hint : ∀ i ∈ Finset.Icc 1 P.k, (∃ a : ℤ, P.u i = (a : ℝ) + ((P.k : ℝ) - 1) / 2) ∧ ∃ a : ℤ, P.u' i = (a : ℝ) + ((P.k : ℝ) - 1) / 2` using `fun i hi => ⟨GlobalTheory.capelliParam_mem_int_add_half P.k P.r Wp _ _ P.u hz (hT ▸ hT0) hty i hi, GlobalTheory.capelliParam_mem_int_add_half P.k P.r Wq _ _ P.u' hz' (hT' ▸ hT0') hty' i hi⟩`. Take `⟨ν₀, hν, hn, habs⟩` from `GlobalTheory.hcParam_sub_integral _ lam lam' hstd.1 hDS.1`. Use `set d := Formalism.MainNotions.S.ThB.l1 lam' lam with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd0 : 0 ≤ d` using `by rw [← hn]; positivity`. Take `⟨hSN, hTb, hTb', hcases⟩` from `hgrid Ch Cg hG₂ P lam ka b (200 * d) hk hstd hint hgaps`. Establish `hn₀ : n₀ ≤ 30 * (P.r + 1) ^ 2 + 6`. Distinguish the cases in `h : ∀ i ∈ Finset.Icc 1 P.k, P.u i = P.u' i`. Conclude with `(hn1 h).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn2 h]`. Conclude with `Nat.zero_le _`. Establish `hq : ((BranchingSupport.n1 ν₀ + (P.r + 1) * (2 * p₀ + n₀) + (P.r + 1) * (P.r + 2) : ℕ) : ℝ) ≤ d + (C₀ + 10) * ((2 * P.r + 2 : ℕ) : ℝ) ^ 3`. Use `(hmar Cg hG₃ P.k P.r n₀ p₀ _ d (by omega) hn₀ hp2 le_rfl hd0).2.2` as an intermediate fact. Rewrite using `[add_assoc, Nat.cast_add, hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨bv, ga, h, hN, hN', hh⟩` from `hnum Ch Cg hG₁ P lam _ _ ka b d _ hk hstd hint hd0 hgaps hq`. Take `⟨hm1, hm2, -⟩` from `hmar Cg hG₃ P.k P.r n₀ p₀ h d (by omega) hn₀ hp2 hh hd0`. Take `⟨⟨hb1, hb2, -, -, hgok⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hN`. Establish `hb : 1 ≤ b` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgap` using `(hfam ν₀ (by omega)).2.2.1`. Rewrite `hgap` using `[← hν]`. Establish `hE` using `GlobalTheory.T.discreteSeries_KFinite_coeff_capelli_eigen_decay P.k P.r _ lam' (h / 2) R Wp Wq f hDS hgap hgok hf`. Establish `hexp` using `GlobalTheory.T.discreteSeries_coefficient_expansion_bound_ball' (2 * |Ch|) hC P Wp Wq p lam b bv ga h _ (2 * p₀ + n₀) ν₀ R f hN hN' hTb hTb' le_rfl (hν ▸ hDS) hf`. Establish `hreg` using `Formalism.FourierDecayAlt.P.regularity_at_place p f b _ _ (by linarith) hexp`.
-
-Use `thmBpAt_mono hb (le_max_left _ _) ?_` and prove the remaining obligations. Conclude with `heig P Wp Wq p f b _ _ n₀ p₀ lam lam' hSN (hcases n₀ hn1 hn2) hp1 hp2 hE hm1 (fun s => by linarith [habs s]) hreg`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pointwise_bound_discreteSeries : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → ThmBpDS := by
   intro hXi hP Ch C₀ hC₀

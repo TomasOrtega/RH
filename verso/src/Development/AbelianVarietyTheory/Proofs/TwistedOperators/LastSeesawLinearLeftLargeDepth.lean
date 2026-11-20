@@ -15,13 +15,13 @@ namespace GlobalTheory.LastPositionLin
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {M : Vol G} {t : T}
 
 /- English proof (translation)
-Use `set s := (lastAt G W t hM j hj vN).s with hs`. Establish `hw` using `s.weil`. Establish `h1` using `hw.om_pres (g, 1) Φ hΦ`. Establish `h2` using `hw.om_pres (g, 1) Φ' hΦ'`. Establish `h3 : IsThetaFunO W.ψ _ _ (c • s.om (g, 1) Φ)` using `GlobalTheory.LocMod.LinSpace.isThetaFunO_smul c h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (s.om (g, 1)) (c • Φ + Φ') = c • (s.om (g, 1)) Φ + (s.om (g, 1)) Φ'`. Use `(s.om (g, 1)).map_add (c • Φ) Φ'` as an intermediate fact. Establish `h'` using `(s.om (g, 1)).map_smul c Φ`. Conclude with `this.trans (congrArg (· + (s.om (g, 1)) Φ') h')`. Establish `key : GlobalTheory.Unf.flatBF s (s.om (g, 1) (c • Φ + Φ')) = c • GlobalTheory.Unf.flatBF s (s.om (g, 1) Φ) + GlobalTheory.Unf.flatBF s (s.om (g, 1) Φ')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, (GlobalTheory.FlatLin.flatBF_linear D (GlobalTheory.Unf.Flat.flatLaw D) _ _ _ _ s _ _ c h3 h2).1, (GlobalTheory.FlatLin.flatBF_linear D (GlobalTheory.Unf.Flat.flatLaw D) _ _ _ _ s _ _ c h1 h1).2]`. Establish `keyx : ∀ x, GlobalTheory.Unf.flatBF s (s.om (g, 1) (c • Φ + Φ')) x = c * GlobalTheory.Unf.flatBF s (s.om (g, 1) Φ) x + GlobalTheory.Unf.flatBF s (s.om (g, 1) Φ') x` using `fun x => by`. Rewrite using `[key]`. Both sides reduce to the same expression. Unfold `lastDat GlobalTheory.FinPl.lastBi GlobalTheory.MixModel.OrthDec.boxT`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hs]`. Use `beta_reduce`. Use `erw [keyx]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lastDat_lin (hM : M.Is t) (j : ℕ) (hj : j + 2 * 0 + 2 = D.R.m) (vN : GlobalTheory.Unf.VolN (besDecAt G j 0 hj))
     (g : GA D (G.V (.grid D.R.m j)))
@@ -53,11 +53,11 @@ theorem lastDat_lin (hM : M.Is t) (j : ℕ) (hj : j + 2 * 0 + 2 = D.R.m) (vN : G
   ring
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `a`. Simplify using `only [add_zero] at ha`. Substitute `ha` using the available equality. Establish `h0 : k + 2 * 0 + 2 = D.R.m` using `by omega`. Unfold `conAt`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos h0, dif_pos h0, dif_pos h0]`. Establish `hne : (⟨k + 1, by omega⟩ : Fin D.R.m) ≠ ⟨k, hk⟩` using `fun e => by simp at e`. Simplify using `only [fockD, Function.update_self, Function.update_of_ne hne]`. Establish `hf : W.fock (.mu t D.R.m k) (c • φ + φ') (P ⟨k, hk⟩) = c • W.fock (.mu t D.R.m k) φ (P ⟨k, hk⟩) + W.fock (.mu t D.R.m k) φ' (P ⟨k, hk⟩)` using `GlobalTheory.FockFiniteHeis.pureTensorO_lin W.ψ W.θ _ _ W.ψ_std W.θ_is _ _ _ _ c hφ hφ' _`. Establish `th : ∀ f : Sch G (.down t D.R.m (⟨k, hk⟩ : Fin D.R.m)), IsThetaFunO W.ψ _ _ f → IsThetaFunO W.ψ (G.V (.grid D.R.m k)) (G.V (.grid D.R.m (k + 1))) (W.fock (.mu t D.R.m k) f (P ⟨k, hk⟩))` using `fun f hf => Formalism.IndefR.Fin.ptStable D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ _ _ f _ hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [hf]`. Conclude with `lastDat_lin W hM k h0 _ _ _ _ c (th φ hφ) (th φ' hφ') _ u v`.
+A detailed English derivation is pending.
 -/
 theorem conAt_last_lin (hM : M.Is t) (P : PolDown G) (h : Pts G) (Φ : SchDown G t) (j : ℕ) (hj : j + 2 = D.R.m)
     (a : Fin D.R.m) (ha : (a : ℕ) = j + 0) (φ φ' : Sch G (.down t D.R.m a)) (c : ℂ)
@@ -87,7 +87,7 @@ end GlobalTheory.LastPositionLin
 open GlobalTheory.RowClaim GlobalTheory.ConnectionLinear in
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _`. Introduce `j _ hj t M hM P h Φ a ha φ φ' c _ hφ hφ' u v`. Conclude with `GlobalTheory.LastPositionLin.conAt_last_lin ch.W hM P h Φ j hj a ha φ φ' c hφ hφ' u v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LastPositionLin.lastLin_zero : Big fun ch => GlobalTheory.ConnectionLinear.LastLin ch 0 := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩

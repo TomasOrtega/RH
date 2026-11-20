@@ -24,7 +24,7 @@ open GlobalTheory.LN
 namespace GlobalTheory.LN.UnifPrime
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨t.act.act H.w0, t.act.act (H.bar H.w0), t.act.hom _, t.act.hom _, by rw [← t.act.add, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel, t.act.one], t.prim, t.adj _⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypW_of_triple {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} (t : SAB H S) :
     HypW t.G t.PP.L :=
@@ -32,9 +32,9 @@ theorem hypW_of_triple {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
     by rw [← t.act.add, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel, t.act.one], t.prim, t.adj _⟩
 
 /- English proof (translation)
-Introduce `h1 h2 h3 _ _ hE hU hP E _ _ _ H R _ _ _ I hA hpi t hpol hs hth`. Take `⟨A, -, gen, hgen, hL, -⟩` from `GlobalTheory.T.exists_polAV_generic_fibre_of_triple h1 h2 E H R t hpol`. Use `hA.1.1` as an intermediate fact. Use `hA.2.2.1` as an intermediate fact. Take `⟨P, hPL, -⟩` from `GlobalTheory.T.exists_cubical_bundle_of_symmetric_semiAbelian h1 R A t.G t.semi gen hgen t.PP t.cub t.sym`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, U, hUL, -⟩` from `GlobalTheory.T.exists_uniformisation_completeLocalDomain_prime h1 h2 h3 hE hU R I hA hpi t.G P t.semi (hPL ▸ hypW_of_triple t) hs (hPL ▸ hth) A gen hgen (hPL ▸ hL)`. Take `⟨Q, -, -, -, hQ⟩` from `hP E H R I hA.1 t D A U (hUL.trans hPL)`. Conclude with `⟨Q, hQ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pelUnif : Laws → Laws2 → Laws3 → Laws4 → Laws5 → Ega → USt → PelSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → IsPrincipalIdealRing (R ⧸ I) → ∀ (t : SAB H (Sp R)), PolAt t (jK R) → SplitOver t.G I → ThetaNZ t.G t.PP.L → ∃ P : PELUnif I t, P.TorsionIso := by
   intro h1 h2 h3 _ _ hE hU hP E _ _ _ H R _ _ _ I hA hpi t hpol hs hth

@@ -16,7 +16,7 @@ namespace LateralTheory.E.LeafSurj0WPf
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut LateralTheory.E.E8.TwSec
 
 /- English proof (translation)
-Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hq : q < 0`. Conclude with `(LateralTheory.E.LeafNegPf.res_isZero R F q hq).eq_of_tgt _ _`. Conclude with `(LateralTheory.E.LeafNegPf.chains_isZero R E p (by omega)).eq_of_src _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem neg_cochain (R : Type) [CommRing R] (E : Spc) (F : Shv R) (m : ℤ) (hm : m < 0)
     (z : Cochain ((chains R).obj E) (res R F) m) : z = 0 := by
@@ -27,11 +27,11 @@ theorem neg_cochain (R : Type) [CommRing R] (E : Spc) (F : Shv R) (m : ℤ) (hm 
   · exact (LateralTheory.E.LeafNegPf.chains_isZero R E p (by omega)).eq_of_src _ _
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom (mappingCone.inr ((chains R).map f))) z (zero_add 0)) = 0 at h`. Rewrite `h` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, β, hβ⟩` from `h`. Rewrite `hβ` using `[neg_cochain R E F m (by omega) β, δ_zero]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : z = 0`. Apply `Cocycle.ext` to reduce the goal to its premises. Rewrite using `[mappingCone.ext_cochain_from_iff _ (-1) 0 (by omega)]`. Use `⟨(neg_cochain R U F _ (by omega) _).trans (neg_cochain R U F _ (by omega) _).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Cocycle.coe_zero, Cochain.comp_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hβ.symm`. Rewrite using `[hz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fgt_zero (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (F : Shv R) (y : Hrel R f F 0)
     (h : fgt R f F 0 y = 0) : y = 0 := by
@@ -50,7 +50,7 @@ theorem fgt_zero (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (F : Shv R) (
   rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `y.mk_surjective`. Conclude with `LateralTheory.E.LeafConeExactPf.pre_inr_eq_zero _ n z`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pull_fgt (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (F : Shv R) (n : ℤ) (y : Hrel R f F n) :
     pull R f F n (fgt R f F n y) = 0 := by
@@ -58,16 +58,16 @@ theorem pull_fgt (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) (F : Shv R) (
   exact LateralTheory.E.LeafConeExactPf.pre_inr_eq_zero _ n z
 
 /- English proof (translation)
-The claim follows from `LeafTwPt_of LeafTwAdj_of LeafTwGen_of LeafTwFieldZ_of`.
+A detailed English derivation is pending.
 -/
 theorem twPt : LeafTwPt := LeafTwPt_of LeafTwAdj_of LeafTwGen_of LeafTwFieldZ_of
 
 /- English proof (translation)
-Take `⟨U, w, hw, ⟨u, hu⟩, t, ht⟩` from `LateralTheory.E.LeafOfRingsLocSurjPf.LeafOfRingsLocSurj_of (ZMod q) (twF q j) X s (ι z)`. Take `⟨p, hp1, hp2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := w) (g := ι) u z hu`. Establish `e2 : Sec.res (F` using `tw q j) (pullback.fst w ι) (Sec.res w s) = 0 := by`. Rewrite using `[← res_comp, pullback.condition, res_comp, hs]`. Conclude with `map_zero _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ofRings.sec (twF q j) _ (((twF q j).map (Scheme.Γ.map (pullback.fst w ι).op)).hom t) = 0`. Rewrite using `[← sec_res, ← ht]`. Conclude with `e2`. Take `⟨V, v, -, ⟨v0, hv0⟩, hV⟩` from `LeafOfRingsLocInj_of (ZMod q) (twF q j) _ _ hP p`. Take `⟨W, w', hw', ⟨a, ha⟩, hW⟩` from `twPt q j U u t V (v ≫ pullback.fst w ι) v0 (by simp [hv0, hp1]) ((twF_res_comp j _ _ t).trans hV)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨W, w' ≫ w, inferInstance, ⟨a, by simp [ha, hu]⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[res_comp]`. Establish `e` using `sec_res (twF q j) w' t`. Rewrite `e` using `[hW]`. Conclude with `(congrArg (Sec.res w') ht).trans (e.trans (sec_zero _ _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secKill (q : ℕ) [NeZero q] {X Z : Scheme.{0}} (ι : Z ⟶ X) (j : ℤ) (s : Sec (tw q j) X) (hs : Sec.res ι s = 0)
     (z : Z) : ∃ (W : Scheme.{0}) (w : W ⟶ X), Etale w ∧ ι z ∈ Set.range w ∧ Sec.res w s = 0 := by
@@ -92,7 +92,7 @@ def zeroLocus {R : Type} [CommRing R] {F : Shv R} {X : Scheme.{0}} (s : Sec F X)
   {x | ∃ (W : Scheme.{0}) (w : W ⟶ X), Etale w ∧ x ∈ Set.range w ∧ Sec.res w s = 0}
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `x ⟨W, w, hw, hx, h0⟩`. Conclude with `⟨Set.range w, fun y hy => ⟨W, w, hw, hy, h0⟩, w.isOpenMap.isOpen_range, hx⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isOpen_zeroLocus {R : Type} [CommRing R] {F : Shv R} {X : Scheme.{0}} (s : Sec F X) : IsOpen (zeroLocus s) := by
   rw [isOpen_iff_forall_mem_open]
@@ -100,9 +100,9 @@ theorem isOpen_zeroLocus {R : Type} [CommRing R] {F : Shv R} {X : Scheme.{0}} (s
   exact ⟨Set.range w, fun y hy => ⟨W, w, hw, hy, h0⟩, w.isOpenMap.isOpen_range, hx⟩
 
 /- English proof (translation)
-Apply `LateralTheory.E.PointDetect0Pf.etSep R F T` to reduce the goal to its premises. Introduce `t`. Take `⟨W, w, hw, ⟨u, hu⟩, h0⟩` from `hg t`. Take `⟨p, hp1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := g) (g := w) t u hu.symm`. Use `⟨_, pullback.fst g w, inferInstance, ⟨p, hp1⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← res_comp, pullback.condition, res_comp, h0]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_zero_of_range {R : Type} [CommRing R] {F : Shv R} {X T : Scheme.{0}} (s : Sec F X) (g : T ⟶ X)
     (hg : ∀ t, g t ∈ zeroLocus s) : Sec.res g s = 0 := by
@@ -115,19 +115,17 @@ theorem res_zero_of_range {R : Type} [CommRing R] {F : Shv R} {X T : Scheme.{0}}
   exact map_zero _
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `(h9 (ZMod q) (tw q i)).2`. Take `⟨s, hs⟩` from `(e (YU P U)).surjective (fgt (ZMod q) (sch.map (prU P ι U)) (tw q i) 0 y)`. Establish `hZ : Sec.res (prU P ι U) s = 0`. Apply `(e _).injective` to reduce the goal to its premises. Rewrite using `[← he, hs, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pull_fgt _ _ _ _ _`. Establish `hcl : IsClosed ((toBY P U) '' (zeroLocus s)ᶜ)` using `(toBY P U).isClosedMap _ (isOpen_zeroLocus s).isClosed_compl`. Set `O : U.left.Opens` to `⟨_, hcl.isOpen_compl⟩`. Establish `hxO : x ∈ O`. Introduce and unpack `⟨t, ht, htx⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw0⟩` from `hx`. Take `⟨p, hp1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.snd P U.hom ≫ U.hom) (g := ι) t w0 (by rw [hw0, ← htx]; rfl)`. Apply `ht` to reduce the goal to its premises. Rewrite using `[← hp1]`. Conclude with `secKill q (prU P ι U) i s hZ p`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU : Etale U.hom` using `U.prop`. Set `U' : B.Etale` to `MorphismProperty.Over.mk ⊤ (O.ι ≫ U.hom) (inferInstanceAs (Etale (O.ι ≫ U.hom)))`. Set `a : U' ⟶ U` to `MorphismProperty.Over.homMk O.ι rfl`. Use `⟨U', a, ⟨⟨x, hxO⟩, rfl⟩, fun U'' b => ?_⟩` and prove the remaining obligations. Apply `fgt_zero` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(relNat _ _ _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hs, he, res_zero_of_range s _ ?_, map_zero]`. Introduce `t`. Assume the negation of the conclusion as `hn`. Establish `h1 : resY P (b ≫ a) ≫ toBY P U = (toBY P U'' ≫ b.left) ≫ O.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [resY, toBY, pullback.lift_snd]`. Both sides reduce to the same expression. Establish `h2 : toBY P U (resY P (b ≫ a) t) ∈ O`. Rewrite using `[← Scheme.Hom.comp_apply, h1]`. Conclude with `((toBY P U'' ≫ b.left) t).2`.
-
-Conclude with `h2 ⟨_, hn, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (h9 : A9) (q : ℕ) [NeZero q] (i : ℤ) {B W Y : Scheme.{0}} (ι : W ⟶ B) (P : Y ⟶ B) [IsProper P]
     (U : B.Etale) (y : Hrel (ZMod q) (sch.map (prU P ι U)) (tw q i) 0) (x : U.left) (hx : U.hom x ∈ Set.range ι) :
@@ -168,7 +166,7 @@ theorem core (h9 : A9) (q : ℕ) [NeZero q] (i : ℤ) {B W Y : Scheme.{0}} (ι :
   exact h2 ⟨_, hn, rfl⟩
 
 /- English proof (translation)
-Introduce `hy q _ k _ _ i B W Y0 Y1 Y2 _ ι _ V _ p g1 g2 _ _ h2 _ U y x hx`. Conclude with `core hy.2.2.2.2.2.2.2.1 q i ι (g2 ≫ g1 ≫ p) U y x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafSurj0W_of : LateralTheory.E.LeafSurj0Pf.LeafSurj0W := by
   intro hy q _ k _ _ i B W Y0 Y1 Y2 _ ι _ V _ p g1 g2 _ _ h2 _ U y x hx

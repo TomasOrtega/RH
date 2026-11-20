@@ -9,7 +9,7 @@ namespace KStar.Ram
 open NumberField IsDedekindDomain IsLocalRing
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cy_mem_span_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (a : R) (n : ℕ) (x : M) :
@@ -19,13 +19,13 @@ private theorem cy_mem_span_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Mo
   simp
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Use `h.prec' (fun n => f n i) ?_` and prove the remaining obligations. Introduce `m n hmn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `hf hmn`. Rewrite `hm`, the goal using `[SModEq.sub_mem, cy_mem_span_smul]`. Take `⟨y, hy⟩` from `hm`. Conclude with `⟨y i, by simpa using congrFun hy i⟩`. Use `choose L hL using hc`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, cy_mem_span_smul]`. Establish `hy : ∀ i, ∃ y : R, a ^ n • y = f n i - L i`. Introduce `i`. Establish `hi` using `hL i n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[SModEq.sub_mem, cy_mem_span_smul]`. Conclude with `hi`. Use `choose y hy using hy`. Conclude with `⟨y, funext fun i => by simpa using hy i⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cy_precomplete_pi {R ι : Type*} [CommRing R] (a : R)
     [h : IsPrecomplete (Ideal.span {a}) R] : IsPrecomplete (Ideal.span {a}) (ι → R) := by
@@ -53,17 +53,15 @@ variable {E : Type*} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
   (l : ℕ) [Fact l.Prime] [w.asIdeal.LiesOver (Ideal.span {(l : ℤ)})]
 
 /- English proof (translation)
-Establish `hPp : P.IsPrime`. Rewrite using `[← (hτ : Ideal.comap τ (maximalIdeal R) = P)]`. Conclude with `Ideal.comap_isPrime _ _`. Establish `hprime : Prime P` using `Ideal.prime_of_isPrime hP hPp`. Establish `hl0 : Ideal.span {(l : B)} ≠ ⊥` using `by simp [hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : FiniteMultiplicity P (Ideal.span {(l : B)})` using `FiniteMultiplicity.of_not_isUnit hprime.not_unit hl0`. Take `⟨J, hJ⟩` from `pow_multiplicity_dvd P (Ideal.span {(l : B)})`. Use `set e := multiplicity P (Ideal.span {(l : B)}) with he`. Establish `hJP : ¬ J ≤ P`. Introduce `hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPJ : P ∣ J` using `Ideal.dvd_iff_le.mpr hle`. Establish `hd : P ^ (e + 1) ∣ P ^ e * J`. Rewrite using `[pow_succ]`. Conclude with `mul_dvd_mul_left (P ^ e) hPJ`. Rewrite `hd` using `[← hJ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hfin.not_pow_dvd_of_multiplicity_lt (Nat.lt_succ_self e) hd`. Take `⟨j, hjJ, hjP⟩` from `Set.not_subset.1 hJP`. Establish `hJtop : J.map τ = ⊤`. Apply `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem τ hjJ)` to reduce the goal to its premises. Assume the negation of the conclusion as `hu`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hjP` to reduce the goal to its premises. Establish `hc : Ideal.comap τ (maximalIdeal R) = P` using `hτ`. Use `show j ∈ P`. Rewrite using `[← hc, Ideal.mem_comap]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hu`.
-
-Establish `hm` using `congrArg (Ideal.map τ) hJ`. Rewrite `hm` using `[Ideal.map_mul, hJtop, Ideal.mul_top, Ideal.map_span, Set.image_singleton, map_natCast]`. Conclude with `hm.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cy_pow_map {B R : Type*} [CommRing B] [IsDedekindDomain B] [CharZero B] [CommRing R]
     [IsLocalRing R] {P : Ideal B} (hP : P ≠ ⊥) {τ : B →+* R} (hτ : τ ∈ embOver R P) {l : ℕ}
@@ -102,7 +100,7 @@ private theorem cy_pow_map {B R : Type*} [CommRing B] [IsDedekindDomain B] [Char
 
 omit l in
 /- English proof (translation)
-Simplify `(complIntegers_quotient w 1).2.1` using `[embOver]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cy_emb : algebraMap (𝓞 E) (w.adicCompletionIntegers E) ∈
     embOver (w.adicCompletionIntegers E) w.asIdeal := by
@@ -110,7 +108,7 @@ private theorem cy_emb : algebraMap (𝓞 E) (w.adicCompletionIntegers E) ∈
 
 omit [NumberField E] [Fact (Nat.Prime l)] in
 /- English proof (translation)
-Establish `h : ((l : ℤ)) ∈ Ideal.span {(l : ℤ)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h` using `[Ideal.mem_of_liesOver w.asIdeal (Ideal.span {(l : ℤ)})]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cy_l_mem' : (l : 𝓞 E) ∈ w.asIdeal := by
   have h : ((l : ℤ)) ∈ Ideal.span {(l : ℤ)} := Ideal.mem_span_singleton_self _
@@ -118,7 +116,7 @@ private theorem cy_l_mem' : (l : 𝓞 E) ∈ w.asIdeal := by
   simpa using h
 
 /- English proof (translation)
-Establish `h : (maximalIdeal (w.adicCompletionIntegers E)).comap (algebraMap (𝓞 E) _) = w.asIdeal` using `cy_emb w`. Use `cy_l_mem' w l` as an intermediate fact. Rewrite `this` using `[← h, Ideal.mem_comap, map_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cy_l_mem : (l : w.adicCompletionIntegers E) ∈
     maximalIdeal (w.adicCompletionIntegers E) := by
@@ -130,7 +128,7 @@ private theorem cy_l_mem : (l : w.adicCompletionIntegers E) ∈
 
 omit [w.asIdeal.LiesOver (Ideal.span {(l : ℤ)})] in
 /- English proof (translation)
-Rewrite using `[pow_mul, ← (complIntegers_quotient w _).1, cy_pow_map w.ne_bot (cy_emb w) (Fact.out : l.Prime).ne_zero, Ideal.span_singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cy_max_pow (n : ℕ) : maximalIdeal (w.adicCompletionIntegers E) ^
     (multiplicity w.asIdeal (Ideal.span {(l : 𝓞 E)}) * n) =
@@ -140,7 +138,7 @@ private theorem cy_max_pow (n : ℕ) : maximalIdeal (w.adicCompletionIntegers E)
 
 omit [w.asIdeal.LiesOver (Ideal.span {(l : ℤ)})] in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `(complIntegers_quotient w (multiplicity w.asIdeal (Ideal.span {(l : 𝓞 E)}) * n)).2.2 y`. Rewrite `hx` using `[cy_max_pow, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `hx`. Conclude with `⟨x, z, by rw [← hz]; ring⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cy_approx (n : ℕ) (y : w.adicCompletionIntegers E) :
     ∃ (x : 𝓞 E) (z : w.adicCompletionIntegers E), y = algebraMap _ _ x + (l : _) ^ n * z := by
@@ -151,7 +149,7 @@ private theorem cy_approx (n : ℕ) (y : w.adicCompletionIntegers E) :
   exact ⟨x, z, by rw [← hz]; ring⟩
 
 /- English proof (translation)
-Take `⟨f, F, h1, -, -, h2, -⟩` from `existsUnique_padic_hom w l`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective, h2 (algebraMap _ _)]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cy_tf [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
     Module.IsTorsionFree ℤ_[l] (w.adicCompletionIntegers E) := by
@@ -160,21 +158,19 @@ private theorem cy_tf [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
   exact h1
 
 /- English proof (translation)
-Establish `hIc : IsPrecomplete (Ideal.span {(l : ℤ_[l])}) ℤ_[l]`. Rewrite using `[← PadicInt.maximalIdeal_eq_span_p]`. Use `infer_instance`. Use `haveI := cy_precomplete_pi (ι := Module.Free.ChooseBasisIndex ℤ (𝓞 E)) (l : ℤ_[l])`. Establish `halg : algebraMap ℤ_[l] (w.adicCompletionIntegers E) (l : ℤ_[l]) = (l : w.adicCompletionIntegers E)` using `map_natCast _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `he : 1 ≤ multiplicity w.asIdeal (Ideal.span {(l : 𝓞 E)})`. Assume the negation of the conclusion as `h0`. Establish `h1` using `cy_max_pow w l 1`. Rewrite `h1` using `[show multiplicity w.asIdeal (Ideal.span {(l : 𝓞 E)}) = 0 by omega, zero_mul, pow_zero, pow_one, eq_comm, Ideal.one_eq_top, Ideal.span_singleton_eq_top]`. Conclude with `(maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_of_isUnit_mem _ (cy_l_mem w l) h1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsHausdorff (Ideal.span {(l : ℤ_[l])}) (w.adicCompletionIntegers E) := by`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ n, x ∈ maximalIdeal (w.adicCompletionIntegers E) ^ (multiplicity w.asIdeal (Ideal.span {(l : 𝓞 E)}) * n)`. Introduce `n`. Establish `h` using `hx n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h` using `[SModEq.zero]`. Take `⟨y, hy⟩` from `(cy_mem_span_smul _ n x).1 h`. Rewrite using `[cy_max_pow, Ideal.mem_span_singleton']`. Conclude with `⟨y, by rw [← hy, Algebra.smul_def, map_pow, halg, mul_comm]⟩`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (w.adicCompletionIntegers E)) (maximalIdeal.isMaximal _).ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← Ideal.mem_bot, ← hbot, Ideal.mem_iInf]`. Introduce `k`. Conclude with `Ideal.pow_le_pow_right (Nat.le_mul_of_pos_left k he) (hmem k)`. Set `b` to `NumberField.RingOfIntegers.basis E`. Set `φ` to `Fintype.linearCombination ℤ_[l] (fun i => algebraMap (𝓞 E) (w.adicCompletionIntegers E) (b i))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hφ : Function.Surjective φ`. Apply `surjective_of_mkQ_comp_surjective (I := Ideal.span {(l : ℤ_[l])})` to reduce the goal to its premises. Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨x, z, hxz⟩` from `cy_approx w l 1 y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => ((b.repr x i : ℤ) : ℤ_[l]), ?_⟩` and prove the remaining obligations. Establish `hx : φ (fun i => ((b.repr x i : ℤ) : ℤ_[l])) = algebraMap (𝓞 E) (w.adicCompletionIntegers E) x` using `by conv_rhs => rw [← b.sum_repr x]`. Simplify using `[φ, Fintype.linearCombination_apply, map_sum, Int.cast_smul_eq_zsmul]`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, hx]`. Rewrite using `[Submodule.Quotient.eq, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
-
-Use `⟨-z, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[hxz, Algebra.smul_def, halg, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Module.Finite.of_surjective φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem cy_fin [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
     Module.Finite ℤ_[l] (w.adicCompletionIntegers E) := by
@@ -228,9 +224,7 @@ private theorem cy_fin [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
   exact Module.Finite.of_surjective φ hφ
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.under_def, ← PadicInt.maximalIdeal_eq_span_p]`. Use `(maximalIdeal.isMaximal _).eq_of_le ?_ ?_` and prove the remaining obligations. Conclude with `Ideal.comap_ne_top _ (maximalIdeal.isMaximal _).ne_top`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`.
-
-Conclude with `cy_l_mem w l`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cy_lies [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
     (maximalIdeal (w.adicCompletionIntegers E)).LiesOver (Ideal.span {(l : ℤ_[l])}) := by
@@ -243,13 +237,13 @@ private theorem cy_lies [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
     exact cy_l_mem w l
 
 /- English proof (translation)
-Use `haveI := cy_fin w l`. Use `haveI := cy_lies w l`. Establish `hl : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out)`. Establish `hf : algebraMap ℤ ℤ_[l] (l : ℤ) = (l : ℤ_[l])` using `by simp`. Use `haveI : (maximalIdeal (w.adicCompletionIntegers E)).LiesOver (Ideal.span {algebraMap ℤ ℤ_[l] (l : ℤ)}) := by rw [hf]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `multiplicity_differentIdeal_eq_of_quotient (algebraMap ℤ ℤ_[l]) (algebraMap (𝓞 E) (w.adicCompletionIntegers E)) (RingHom.ext_int _ _) hl (by rw [hf]; exact PadicInt.prime_p) w.asIdeal (maximalIdeal _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n y`. Use `⟨(PadicInt.appr y n : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[hf, ← Ideal.mem_span_singleton]`. Simplify using `using PadicInt.appr_spec n y`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `n x hx`. Rewrite `hx` using `[hf, ← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Establish `: ((x : ZMod (l ^ n))) = 0` using `by simpa using hx`. Rewrite `this` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n y`. Take `⟨x, hx⟩` from `(complIntegers_quotient w n).2.2 y`. Conclude with `⟨x, hx⟩`. Introduce `n`. Conclude with `(complIntegers_quotient w n).2.1`.
+A detailed English derivation is pending.
 -/
 private theorem cy_efd [Algebra ℤ_[l] (w.adicCompletionIntegers E)]
     [Module.IsTorsionFree ℤ_[l] (w.adicCompletionIntegers E)] :
@@ -284,15 +278,11 @@ private theorem cy_efd [Algebra ℤ_[l] (w.adicCompletionIntegers E)]
     exact (complIntegers_quotient w n).2.1
 
 /- English proof (translation)
-Use `haveI := cy_tf w l`. Use `haveI := cy_fin w l`. Use `haveI : Module.Free ℤ_[l] (w.adicCompletionIntegers E) := Module.free_of_finite_type_torsion_free'`. Use `⟨‹_›, ‹_›, ‹_›, ?_⟩` and prove the remaining obligations. Take `⟨he, hf, -⟩` from `cy_efd w l`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he, hf]`. Use `haveI := cy_lies w l`. Use `haveI hmax : (Ideal.span {(l : ℤ_[l])}).IsMaximal := by`. Rewrite using `[← PadicInt.maximalIdeal_eq_span_p]`. Use `infer_instance`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : maximalIdeal (w.adicCompletionIntegers E) ∈ (Ideal.span {(l : ℤ_[l])}).primesOver (w.adicCompletionIntegers E)` using `⟨inferInstance, inferInstance⟩`. Use `haveI : Unique ((Ideal.span {(l : ℤ_[l])}).primesOver (w.adicCompletionIntegers E)) := { default := ⟨_, hmem⟩ uniq := by`. Introduce and unpack `⟨q, hq1, hq2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: q.IsMaximal`.
-
-Apply `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[l])` to reduce the goal to its premises. Rewrite using `[← Ideal.under_def, ← hq2.over]`. Conclude with `hmax`. Conclude with `IsLocalRing.eq_maximalIdeal this }`. Use `haveI : Fintype ((Ideal.span {(l : ℤ_[l])}).primesOver (w.adicCompletionIntegers E)) := Fintype.ofFinite _`.
-
-Establish `h` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(l : ℤ_[l])}) (w.adicCompletionIntegers E)`. Rewrite `h` using `[Fintype.sum_unique]`. Establish `hd : ((default : (Ideal.span {(l : ℤ_[l])}).primesOver (w.adicCompletionIntegers E)) : Ideal (w.adicCompletionIntegers E)) = maximalIdeal (w.adicCompletionIntegers E)` using `congrArg Subtype.val (Unique.eq_default (⟨_, hmem⟩ : (Ideal.span {(l : ℤ_[l])}).primesOver (w.adicCompletionIntegers E))).symm`. Rewrite `h` using `[hd]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_complIntegers [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
     Module.IsTorsionFree ℤ_[l] (w.adicCompletionIntegers E) ∧
@@ -336,13 +326,11 @@ theorem finrank_complIntegers [Algebra ℤ_[l] (w.adicCompletionIntegers E)] :
   exact h.symm
 
 /- English proof (translation)
-Establish `hl : (l : ℕ).Prime` using `Fact.out`. Use `haveI hp : (Ideal.span {(l : ℤ)}).IsPrime := (Ideal.span_singleton_prime (by exact_mod_cast hl.ne_zero)).2 (Nat.prime_iff_prime_int.1 hl)`. Use `haveI : Fintype ((Ideal.span {(l : ℤ)}).primesOver (𝓞 E)) := Fintype.ofFinite _`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(l : ℤ)}) (𝓞 E)`. Rewrite `hsum` using `[NumberField.RingOfIntegers.rank]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Fintype.card ((Ideal.span {(l : ℤ)}).primesOver (𝓞 E)) = Module.finrank ℚ E`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_coe_set_eq]`. Conclude with `hs`. Establish `hge : ∀ q : (Ideal.span {(l : ℤ)}).primesOver (𝓞 E), 1 ≤ q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `haveI : q.1.IsPrime := q.2.1`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (Ideal.ramificationIdx_pos q.1 ℤ).ne' (Ideal.inertiaDeg_pos q.1 ℤ).ne')`. Set `q0 : (Ideal.span {(l : ℤ)}).primesOver (𝓞 E)` to `⟨w.asIdeal, w.isPrime, inferInstance⟩`. Assume the negation of the conclusion as `hne`. Establish `hlt : ∑ _q : (Ideal.span {(l : ℤ)}).primesOver (𝓞 E), (1 : ℕ) < ∑ q : (Ideal.span {(l : ℤ)}).primesOver (𝓞 E), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ` using `Finset.sum_lt_sum (fun q _ => hge q) ⟨q0, Finset.mem_univ _, lt_of_le_of_ne (hge q0) (Ne.symm hne)⟩`.
-
-Rewrite `hlt` using `[hsum, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one, hcard]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ramificationIdx_mul_inertiaDeg_eq_one_of_splitsIn (hs : SplitsIn l E) :
     w.asIdeal.ramificationIdx ℤ * w.asIdeal.inertiaDeg ℤ = 1 := by
@@ -371,15 +359,13 @@ private theorem ramificationIdx_mul_inertiaDeg_eq_one_of_splitsIn (hs : SplitsIn
   exact lt_irrefl _ hlt
 
 /- English proof (translation)
-Take `⟨f, F, -, -, hFf, -, huF⟩` from `existsUnique_padic_hom w l`. Establish `hF : algebraMap ℚ_[l] (w.adicCompletion E) = F` using `huF _ (continuous_algebraMap ℚ_[l] (w.adicCompletion E))`. Use `letI : Algebra ℤ_[l] (w.adicCompletionIntegers E) := f.toAlgebra`. Use `letI : Algebra ℤ_[l] (w.adicCompletion E) := ((algebraMap ℚ_[l] (w.adicCompletion E)).comp (algebraMap ℤ_[l] ℚ_[l])).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] (w.adicCompletion E) := IsScalarTower.of_algebraMap_eq' rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower ℤ_[l] (w.adicCompletionIntegers E) (w.adicCompletion E) := IsScalarTower.of_algebraMap_eq fun x => by show algebraMap ℚ_[l] (w.adicCompletion E) (x : ℚ_[l]) = ((f x : w.adicCompletionIntegers E) : w.adicCompletion E)`. Rewrite using `[hF, hFf]`. Take `⟨-, -, -, hrank⟩` from `finrank_complIntegers w l`. Establish `hK : Module.finrank ℚ_[l] (w.adicCompletion E) = Module.finrank ℤ_[l] (w.adicCompletionIntegers E)` using `IsFractionRing.finrank_eq ℤ_[l] ℚ_[l] (w.adicCompletionIntegers E) (w.adicCompletion E)`. Establish `hpos : 0 < Module.finrank ℚ_[l] (w.adicCompletion E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hK, hrank]`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos w.asIdeal ℤ) (Ideal.inertiaDeg_pos w.asIdeal ℤ)`. Use `haveI : Module.Finite ℚ_[l] (w.adicCompletion E) := Module.finite_of_finrank_pos hpos`. Use `⟨inferInstance, hK.trans hrank, fun hs => ?_⟩` and prove the remaining obligations. Establish `h1 : Module.finrank ℚ_[l] (w.adicCompletion E) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hK, hrank, ramificationIdx_mul_inertiaDeg_eq_one_of_splitsIn w l hs]`. Use `⟨(algebraMap ℚ_[l] (w.adicCompletion E)).injective, fun x => ?_⟩` and prove the remaining obligations. Establish `htop` using `Subalgebra.bot_eq_top_of_finrank_eq_one h1`. Establish `hx : x ∈ (⊥ : Subalgebra ℚ_[l] (w.adicCompletion E))`. Rewrite using `[htop]`.
-
-Discharge the goal by the elementary cases of `trivial`. Take `⟨q, hq⟩` from `Algebra.mem_bot.1 hx`. Conclude with `⟨q, hq⟩`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_compl [Algebra ℚ_[l] (w.adicCompletion E)]
     [ContinuousSMul ℚ_[l] (w.adicCompletion E)] :

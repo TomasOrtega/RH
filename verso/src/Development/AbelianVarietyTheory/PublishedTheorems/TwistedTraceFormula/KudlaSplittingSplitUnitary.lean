@@ -21,21 +21,21 @@ def stdJ (ν E : Type) [DecidableEq ν] [Field E] : Matrix (ν ⊕ ν) (ν ⊕ �
 variable {α ν : Type} [Fintype α] [DecidableEq α] [Fintype ν] [DecidableEq ν]
 
 /- English proof (translation)
-Simplify using `[stdJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdJ_mul_stdJ : stdJ ν E * stdJ ν E = -1 := by
   simp [stdJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]
 
 /- English proof (translation)
-Establish `hT : (stdJ ν E)ᵀ = -stdJ ν E` using `by simp [stdJ, fromBlocks_transpose, fromBlocks_neg]`. Establish `key : ∀ A B : Matrix (ν ⊕ ν) (ν ⊕ ν) E, A * stdJ ν E * B = stdJ ν E → B * stdJ ν E * A = stdJ ν E`. Introduce `A B h`. Establish `h1 : A * (stdJ ν E * B * -stdJ ν E) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.mul_neg, stdJ_mul_stdJ, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `mul_eq_one_comm.mp h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[stdJ_mul_stdJ]`. Simplify using the standard rewrite rules. Use `_ = stdJ ν E * (stdJ ν E * B * -stdJ ν E * A) := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = stdJ ν E := by rw [h2, Matrix.mul_one]`. Establish `tr : ∀ A B : Matrix (ν ⊕ ν) (ν ⊕ ν) E, A * stdJ ν E * B = stdJ ν E → Bᵀ * stdJ ν E * Aᵀ = stdJ ν E`. Introduce `A B h`. Establish `h1` using `congrArg Matrix.transpose h`. Rewrite `h1` using `[transpose_mul, transpose_mul, hT, ← Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `neg_injective h1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `tr _ _ (show (g : Matrix (ν ⊕ ν) (ν ⊕ ν) E)ᵀ * stdJ ν E * (g : Matrix (ν ⊕ ν) (ν ⊕ ν) E).map c = _ from h)`. Rewrite `h1` using `[transpose_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key _ _ h1`. Introduce `h`. Establish `h1` using `tr _ _ (key _ _ h)`. Rewrite `h1` using `[transpose_transpose]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem mem_UG_iff (g : GL (ν ⊕ ν) E) :
     g ∈ UG c (stdJ ν E) ↔
@@ -99,9 +99,9 @@ def heisFun (ψ : AddChar F ℂ) (Q : Matrix α α E) (w : Matrix α (ν ⊕ ν)
 
 omit [DecidableEq α] in
 /- English proof (translation)
-Simplify using `only [hTens, mul_apply, transpose_apply, map_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem hTens_eq (Q : Matrix α α E) (w w' : Matrix α (ν ⊕ ν) E) :
     hTens c Q (stdJ ν E) w w' = ∑ i, ∑ k, Q i k * (w * stdJ ν E * (w'.map c)ᵀ) i k := by
@@ -115,7 +115,7 @@ theorem hTens_eq (Q : Matrix α α E) (w w' : Matrix α (ν ⊕ ν) E) :
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Establish `h` using `(mem_UG_iff c _).mp g.2`. Rewrite using `[form, form, hTens_eq, hTens_eq, Matrix.map_mul (f := c), transpose_mul]`. Use `conv_rhs => rw [← h]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_mul (Q : Matrix α α E) (g : UG c (stdJ ν E)) (w w' : Matrix α (ν ⊕ ν) E) :
     form c Q (w * ((g : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E)) (w' * ((g : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E)) =
@@ -127,7 +127,7 @@ theorem form_mul (Q : Matrix α α E) (g : UG c (stdJ ν E)) (w w' : Matrix α (
 
 omit [DecidableEq α] in
 /- English proof (translation)
-Simplify using `only [form, hTens, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (Q : Matrix α α E) (w₁ w₂ w' : Matrix α (ν ⊕ ν) E) :
     form c Q (w₁ + w₂) w' = form c Q w₁ w' + form c Q w₂ w' := by
@@ -135,16 +135,16 @@ theorem form_add_left (Q : Matrix α α E) (w₁ w₂ w' : Matrix α (ν ⊕ ν)
 
 omit [DecidableEq α] in
 /- English proof (translation)
-Simplify using `only [form, hTens, Matrix.add_apply, Finset.sum_add_distrib, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_right (Q : Matrix α α E) (w w₁ w₂ : Matrix α (ν ⊕ ν) E) :
     form c Q w (w₁ + w₂) = form c Q w w₁ + form c Q w w₂ := by
   simp only [form, hTens, Matrix.add_apply, Finset.sum_add_distrib, map_add, mul_add]
 
 /- English proof (translation)
-Establish `hJ : ∀ j l, c (stdJ ν E j l) = -stdJ ν E l j`. Apply the tactic sequence `rintro (j | j) (l | l) <;> simp [stdJ, one_apply, eq_comm]`. Establish `h : hTens c Q (stdJ ν E) w' w = -c (hTens c Q (stdJ ν E) w w')`. Simplify using `only [hTens, map_sum, map_mul, hc, hJ, hQ.1, ← Finset.sum_neg_distrib]`. Simplify using `only [← Finset.sum_product', Finset.univ_product_univ]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Fintype.sum_equiv ⟨fun p => (p.2.2.1, p.2.2.2, p.1, p.2.1), fun p => (p.2.2.1, p.2.2.2, p.1, p.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun p => by simp only [Equiv.coe_fn_mk]; ring`. Establish `ht : ∀ z, Algebra.trace F E (c z) = Algebra.trace F E z` using `fun z => Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom c c (AlgHom.ext hc) (AlgHom.ext hc)) z`. Rewrite using `[form, form, h, map_neg, ht, mul_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_swap (hc : ∀ z, c (c z) = z) {Q : Matrix α α E} (hQ : IsHerm c Q) (w w' : Matrix α (ν ⊕ ν) E) :
     form c Q w' w = -form c Q w w' := by
@@ -162,7 +162,7 @@ theorem form_swap (hc : ∀ z, c (c z) = z) {Q : Matrix α α E} (hQ : IsHerm c 
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Simplify using `[form, hTens, stdJ, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_left_left (Q : Matrix α α E) (x x' : Matrix α ν E) : form c Q (fromCols x 0) (fromCols x' 0) = 0 := by
   simp [form, hTens, stdJ, Fintype.sum_sum_type]
@@ -170,17 +170,17 @@ theorem form_left_left (Q : Matrix α α E) (x x' : Matrix α ν E) : form c Q (
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Simplify using `[form, hTens, stdJ, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_right_right (Q : Matrix α α E) (y y' : Matrix α ν E) : form c Q (fromCols 0 y) (fromCols 0 y') = 0 := by
   simp [form, hTens, stdJ, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `e1 : ∀ x x' : Matrix α ν E, fromCols (x + x') (0 : Matrix α ν E) = fromCols x 0 + fromCols x' 0` using `fun x x' => by`. Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `e2 : ∀ y y' : Matrix α ν E, fromCols (0 : Matrix α ν E) (y + y') = fromCols 0 y + fromCols 0 y'` using `fun x x' => by`. Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `e3 : ∀ u : Matrix α (ν ⊕ ν) E, u = fromCols u.toCols₁ 0 + fromCols 0 u.toCols₂` using `fun u => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `e4 : form c Q w w' = form c Q (fromCols w.toCols₁ 0) (fromCols 0 w'.toCols₂) - form c Q (fromCols w'.toCols₁ 0) (fromCols 0 w.toCols₂)` using `by conv_lhs => rw [e3 w, e3 w']`. Rewrite using `[form_add_left, form_add_right, form_add_right, form_left_left, form_right_right, form_swap c hc hQ (fromCols w'.toCols₁ 0)]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `x`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, heisFun, heisFun, heisFun, show (w + w').toCols₁ = w.toCols₁ + w'.toCols₁ from rfl, show (w + w').toCols₂ = w.toCols₂ + w'.toCols₂ from rfl, smul_eq_mul, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x, e4]`. Use `congr 2`. Simplify using `only [e1, e2, form_add_left, form_add_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisFun_heisFun [CharZero F] (hc : ∀ z, c (c z) = z) (ψ : AddChar F ℂ) {Q : Matrix α α E} (hQ : IsHerm c Q)
     (w w' : Matrix α (ν ⊕ ν) E) (φ : Matrix α ν E → ℂ) :
@@ -208,9 +208,9 @@ theorem heisFun_heisFun [CharZero F] (hc : ∀ z, c (c z) = z) (ψ : AddChar F �
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Establish `e : ∀ x y : Matrix α ν E, fromCols x y * ((levi c hc a : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) = fromCols (x * (a : Matrix ν ν E)) (y * (((a⁻¹ : GL ν E) : Matrix ν ν E).map c)ᵀ)` using `fun x y => by`. Rewrite using `[levi_val, fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules. Establish `f : ∀ x y : Matrix α ν E, form c Q (fromCols (x * (a : Matrix ν ν E)) 0) (fromCols 0 (y * (((a⁻¹ : GL ν E) : Matrix ν ν E).map c)ᵀ)) = form c Q (fromCols x 0) (fromCols 0 y)` using `fun x y => by`. Rewrite using `[← form_mul c Q (levi c hc a) (fromCols x 0), e, e, Matrix.zero_mul, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Use `conv_rhs => rw [← fromCols_toCols w, e]`. Simplify using `only [heisFun, toCols₁_fromCols, toCols₂_fromCols, f, Matrix.add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisFun_levi (hc : ∀ z, c (c z) = z) (ψ : AddChar F ℂ) (Q : Matrix α α E) (a : GL ν E) (w : Matrix α (ν ⊕ ν) E)
     (φ : Matrix α ν E → ℂ) :
@@ -235,9 +235,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {α ν : Type} [Fintype α] [DecidableEq α] [Fintype ν] [DecidableEq ν]
 
 /- English proof (translation)
-Establish `h : ∀ e : E, Continuous fun z : E => Algebra.trace F E (z * e)` using `fun e => IsModuleTopology.continuous_of_linearMap ((Algebra.trace F E).comp (LinearMap.mulRight F e))`. Simplify using `only [form, hTens, map_sum, mul_assoc]`. Use `continuous_const.mul (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun k _ => continuous_finset_sum _ fun l _ => (h _).comp ?_)` and prove the remaining obligations. Break down `j with j | j` into its components or cases. Conclude with `continuous_id.matrix_elem i j`.
-
-Conclude with `continuous_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_form_left (Q : Matrix α α E) (w' : Matrix α (ν ⊕ ν) E) :
     Continuous fun x : Matrix α ν E => form c Q (fromCols x 0) w' := by
@@ -251,7 +249,7 @@ theorem continuous_form_left (Q : Matrix α α E) (w' : Matrix α (ν ⊕ ν) E)
   · exact continuous_const
 
 /- English proof (translation)
-Use `haveI := IsModuleTopology.topologicalAddGroup F E`. Use `haveI := GlobalTheory.WeilM.nonarch_field F`. Establish `h1` using `(GlobalTheory.WeilM.isLocallyConstant_addChar ψ hψ).comp_continuous ((continuous_form_left c Q (fromCols 0 w.toCols₂)).add (continuous_const (y := 2⁻¹ * form c Q (fromCols w.toCols₁ 0) (fromCols 0 w.toCols₂))))`. Conclude with `⟨h1.mul (hφ.1.comp_continuous (continuous_id.add continuous_const)), (hφ.2.comp_homeomorph (Homeomorph.addRight w.toCols₁)).mul_left⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heisFun_mem {ψ : AddChar F ℂ} (hψ : Continuous ψ) (Q : Matrix α α E) (w : Matrix α (ν ⊕ ν) E)
     {φ : Matrix α ν E → ℂ} (hφ : φ ∈ SB (Matrix α ν E)) : heisFun c ψ Q w φ ∈ SB (Matrix α ν E) := by

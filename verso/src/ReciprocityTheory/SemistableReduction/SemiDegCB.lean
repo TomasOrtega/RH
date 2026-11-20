@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
     consZero K k y i.succ = y i := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h i.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem consZero_injective (K : Type) [Field K] (k : ℕ) : Function.Injective (consZero K k) := by
   intro x y h
@@ -37,7 +37,7 @@ theorem consZero_injective (K : Type) [Field K] (k : ℕ) : Function.Injective (
   simpa using congrFun h i.succ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[hx]`. Simplify using `[Fin.tail]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem consZero_tail (K : Type) [Field K] {k : ℕ} (x : Fin (k + 1) → K) (hx : x 0 = 0) :
     consZero K k (Fin.tail x) = x := by
@@ -47,9 +47,9 @@ theorem consZero_tail (K : Type) [Field K] {k : ℕ} (x : Fin (k + 1) → K) (hx
   · simp [Fin.tail]
 
 /- English proof (translation)
-Simplify using `only [intVec, Submodule.mem_pi, Set.mem_univ, forall_const]`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using ha`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Pi.single_apply, h, Submodule.zero_mem]`.
+Simplify using the standard rewrite rules.
 -/
 theorem single_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} (i : Fin k) {a : K}
     (ha : a ∈ (1 : Submodule (𝓞 K) K)) : Pi.single i a ∈ intVec K k := by
@@ -62,9 +62,9 @@ theorem single_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} (i : Fi
   · simp [Pi.single_apply, h, Submodule.zero_mem]
 
 /- English proof (translation)
-Simplify using `only [intVec, Submodule.mem_pi, Set.mem_univ, forall_const]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Simplify using `using h i.succ`. Introduce `h i`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Submodule.zero_mem]`. Simplify using `using h j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem consZero_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} {y : Fin k → K} :
     consZero K k y ∈ intVec K (k + 1) ↔ y ∈ intVec K k := by
@@ -78,7 +78,7 @@ theorem consZero_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} {y : 
     · simpa using h j
 
 /- English proof (translation)
-The claim follows from `| 0, X, _, _ => by refine ⟨Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun j => j.elim0, fun j => j.elim0, fun t _ => ?_, fun x _ => ⟨Fin.elim0, fun i => i.elim0, ?_⟩, ?_⟩ · convert X.zero_mem using 1 · ext i exact i.elim0 · simp only [Finset.univ_eq_empty, Finset.p …`.
+A detailed English derivation is pending.
 -/
 theorem lattice_split (K : Type) [Field K] [NumberField K] : ∀ (k : ℕ)
     (X : Submodule (𝓞 K) (Fin k → K)), X.FG → intVec K k ≤ X →

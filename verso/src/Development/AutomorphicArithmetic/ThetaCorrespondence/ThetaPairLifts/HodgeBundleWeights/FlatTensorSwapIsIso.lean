@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Hodg
 
 section
 /- English proof (translation)
-Introduce `_ _ _` and use `FlatDegreeResidue.flatDegreeSt_of_resK PositivityTheory.ResPlug.FromRes.resK`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Flat.flat_tensor_swap_isIso : _root_.GlobalTheory.T.FlatDegreeHypotheses :=
   fun _ _ _ => FlatDegreeResidue.flatDegreeSt_of_resK PositivityTheory.ResPlug.FromRes.resK

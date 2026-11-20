@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -23,13 +23,11 @@ theorem conj_conj (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Use `haveI := Subalgebra.isSimpleOrder_of_finrank h.2.2.1`. Break down `eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with h0 | h0` into its components or cases. Establish `: e ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `he`. Rewrite `this` using `[h0, Algebra.mem_bot]`. Conclude with `this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `haveI := h.2.1`. Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `hx : x ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `h0 ▸ Algebra.mem_top`. Establish `hx' : σ x = x` using `hx`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hx']`.
-
-Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_conj_eq (h : IsCMExt F E σ) (e : E) (he : σ e = e) :
     ∃ f, algebraMap F E f = e := by
@@ -51,9 +49,9 @@ theorem exists_of_conj_eq (h : IsCMExt F E σ) (e : E) (he : σ e = e) :
     exact this.symm
 
 /- English proof (translation)
-Establish `hσ` using `conj_conj h`. Take `⟨a, ha⟩` from `exists_of_conj_eq h (e + σ e) (by rw [map_add, hσ, add_comm])`. Establish `h1 : Algebra.trace F E (σ e) = Algebra.trace F E e` using `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)) e`. Establish `h3` using `congrArg (Algebra.trace F E) ha`. Rewrite `h3` using `[Algebra.trace_algebraMap, h.2.2.1, map_add, h1, two_smul, ← two_mul, ← two_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ha, mul_left_cancel₀ two_ne_zero h3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_field (h : IsCMExt F E σ) (e : E) :
     algebraMap F E (Algebra.trace F E e) = e + σ e := by
@@ -68,11 +66,11 @@ theorem trace_field (h : IsCMExt F E σ) (e : E) :
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul a e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h3 : Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e)`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`. Establish `h4 : sigR R σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, h4, ← TensorProduct.tmul_add, ← trace_field h, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tensor (h : IsCMExt F E σ) (z : R ⊗[F] E) :
     algebraMap R (R ⊗[F] E) (Algebra.trace R (R ⊗[F] E) z) = z + sigR R σ z := by
@@ -92,7 +90,7 @@ theorem trace_tensor (h : IsCMExt F E σ) (z : R ⊗[F] E) :
       TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = _`. Rewrite using `[conj_conj h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_sigR (h : IsCMExt F E σ) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -103,11 +101,11 @@ theorem sigR_sigR (h : IsCMExt F E σ) (z : R ⊗[F] E) : sigR R σ (sigR R σ z
     rw [conj_conj h]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i j, sigR R σ (JR R J j i) = JR R J i j`. Introduce `i j`. Use `show (1 : R) ⊗ₜ[F] σ (J j i) = (1 : R) ⊗ₜ[F] J i j`. Rewrite using `[hJ.1]`. Establish `hs : sigR R σ (hR R σ J x x) = hR R σ J x x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, sigR_sigR R h]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : algebraMap R (R ⊗[F] E) (algebraMap F R (1 / 2)) * 2 = 1`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← map_ofNat (algebraMap F (R ⊗[F] E)) 2, ← map_mul, show (1 / 2 * 2 : F) = 1 by norm_num, map_one]`. Rewrite using `[qR, map_mul, trace_tensor R h, hs, ← two_mul, ← mul_assoc, h2, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hR_self (h : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J)
     (x : Fin M → R ⊗[F] E) : hR R σ J x x = algebraMap R (R ⊗[F] E) (qR R σ J x) := by
@@ -127,7 +125,7 @@ theorem hR_self (h : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (h
   rw [qR, map_mul, trace_tensor R h, hs, ← two_mul, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hR_smul_right {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → R ⊗[F] E)
     (c : R ⊗[F] E) : hR R σ J x (c • y) = c * hR R σ J x y := by
@@ -144,7 +142,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `forall_congr' fun w => forall_congr' fun hw => ?_` and prove the remaining obligations. Use `haveI := w.isPrime`. Use `haveI := w.isMaximal`. Conclude with `Ideal.ramificationIdx_eq_one_iff`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unram_iff : UnitaryLatticeOrthogonal.UnramAt F E v ↔ SelfDualLatticeActions.UnramifiedOrSplit E v := by
   refine forall_congr' fun w => forall_congr' fun hw => ?_
@@ -174,14 +172,14 @@ theorem perpLat_eq (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatt
     UnitaryLatticeOrthogonal.perpLat σ J v L x = SelfDualLatticeActions.perpLat v σ J x L := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSDLatIn_iff (P : Submodule (SelfDualLatticeActions.Ev E v) (SelfDualLatticeActions.Wv E v M))
     (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
     UnitaryLatticeOrthogonal.IsSDLatIn σ J v P L ↔ SelfDualLatticeActions.IsSelfDualIn v σ J P L := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSDLat_iff (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
     UnitaryLatticeOrthogonal.IsSDLat σ J v L ↔ SelfDualLatticeActions.IsSelfDualLat v σ J L := Iff.rfl
@@ -217,7 +215,7 @@ theorem sL_eq (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeAc
     UnitaryLatticeOrthogonal.SL σ J v L β = SelfDualLatticeActions.sphere v σ J L β := rfl
 
 /- English proof (translation)
-Use `exists_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hasONB_iff (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
     UnitaryLatticeOrthogonal.HasONB σ J v L ↔ SelfDualLatticeActions.HasOrthonormalBasis v σ J L := by
@@ -228,9 +226,9 @@ theorem hasONB_iff (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatt
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy hy'`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `h0 : hR (Fv F v) σ J x ((c : SelfDualLatticeActions.Ev E v) • x) = 0` using `hy'.1`. Rewrite `h0` using `[hR_smul_right, hR_self _ h hJ, (hx.map _).mul_left_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show (c : SelfDualLatticeActions.Ev E v) • x = 0`. Rewrite using `[h0, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_span_perpLat (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) (x : SelfDualLatticeActions.Wv E v M)
@@ -245,9 +243,9 @@ theorem disjoint_span_perpLat (h : IsCMExt F E σ) (hJ : IsHermND σ J)
   rw [h0, zero_smul]
 
 /- English proof (translation)
-Use `and_congr Iff.rfl (and_congr ?_ Iff.rfl)` and prove the remaining obligations. Use `forall_congr' fun x => forall_congr' fun hx => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1.symm, disjoint_span_perpLat σ J v h hJ L x (hx.2 ▸ hβ), h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1.symm, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem unitVectors_iff (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) (β : Fv F v) (hβ : IsUnit β) :
@@ -261,7 +259,7 @@ theorem unitVectors_iff (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     exact ⟨h1.symm, h2⟩
 
 /- English proof (translation)
-The claim follows from `and_congr (hasONB_iff σ J v L) (and_congr Iff.rfl (forall_congr' fun β => unitVectors_iff σ J v h hJ L _ (β.isUnit.map (v.adicCompletionIntegers F).subtype)))`.
+A detailed English derivation is pending.
 -/
 theorem conclusion_iff (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) :
@@ -281,7 +279,7 @@ theorem conclusion_iff (h : IsCMExt F E σ) (hJ : IsHermND σ J)
 end Clauses
 
 /- English proof (translation)
-Use `forall_congr' fun F => forall_congr' fun E => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun σ => forall_congr' fun h => forall_congr' fun M => forall_congr' fun J => ?_` and prove the remaining obligations. Rewrite using `[imp.swap]`. Use `forall_congr' fun _ => forall_congr' fun hJ => forall_congr' fun v => ?_` and prove the remaining obligations. Use `imp_congr (unram_iff v) (forall_congr' fun L => ?_)` and prove the remaining obligations. Conclude with `imp_congr (isSDLat_iff σ J v L) (conclusion_iff σ J v h hJ L)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem selfDualLattices_iff :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.SelfDualLattices ↔ GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.SelfDualLatticeLemmas := by

@@ -15,7 +15,7 @@ open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_UW' (z : Fin (2 * r + k + 1) → ℂ) :
     (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r z := by
@@ -24,7 +24,7 @@ theorem one_mem_UW' (z : Fin (2 * r + k + 1) → ℂ) :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem_UW' z, n, hn, (one_mul n).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_S_of_N (z : Fin (2 * r + k + 1) → ℂ) {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hn : n ∈ Nset k r) : n ∈ Sset k r z := ⟨1, one_mem_UW' z, n, hn, (one_mul n).symm⟩
@@ -32,7 +32,7 @@ theorem mem_S_of_N (z : Fin (2 * r + k + 1) → ℂ) {n : Matrix (Fin (2 * r + k
 def Ds (r : ℕ) : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ := Matrix.diagonal fun b => (-1 : ℂ) ^ (r - b.val)
 
 /- English proof (translation)
-Unfold `Ds`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← mul_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -45,7 +45,7 @@ theorem Ds_mul_Ds : Ds r * Ds r = 1 := by
   norm_num
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Ds]`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [ZhatO]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zhatO_eq (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     ZhatO k r z z' g = Zhat k r z z' g * Ds r := by
@@ -56,15 +56,15 @@ theorem zhatO_eq (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + 
   ring
 
 /- English proof (translation)
-Establish `hni : n⁻¹ ∈ Nset k r` using `WeylGroupFacts.mem_n_inv hn`. Establish `hE` using `Formalism.FourierDecayAlt.P.zhat_equivalence k r z z' ⟨hz, hT⟩ ⟨hz', hT'⟩ n⁻¹ (mem_S_of_N z hni) n' (mem_S_of_N z' hn') g₀`. Establish `hnn : (n⁻¹)⁻¹ = n` using `Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hn.1)`. Rewrite `hE` using `[hnn]`. Establish `hu` using `((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z ⟨hz, hT⟩).1 n⁻¹ (mem_S_of_N z hni)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu'` using `((Formalism.FourierDecayAlt.P.unipotent_map_frame k r z' ⟨hz', hT'⟩).1 n' (mem_S_of_N z' hn')).2.1`. Use `⟨(Formalism.FourierDecayAlt.C2.uMap k r z n⁻¹)ᴴ, Ds r * Formalism.FourierDecayAlt.C2.uMap k r z' n' * Ds r, fun i j => ⟨fun hij => ?_, fun hij => ?_⟩, fun i j => ⟨fun hij => ?_, fun hij => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, hu.1 j i hij, star_zero]`. Substitute `hij` using the available equality. Rewrite using `[Matrix.conjTranspose_apply, hu.2 i, star_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ds`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, hu'.1 i j hij]`. Expand and normalize the polynomial expressions, which then agree. Substitute `hij` using the available equality. Unfold `Ds`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, hu'.2 i, mul_one, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Rewrite using `[zhatO_eq, hE, ← hZ, zhatO_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ds_mul_Ds, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem inCell_of_rep {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z)
     (hT' : 0 < Tz k r z') {n n' g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r)
@@ -91,13 +91,13 @@ theorem inCell_of_rep {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz
       _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive (Formalism.L2.SG.PtCell.pinv p)` using `Formalism.L2.SG.PtCell.pinv_pinv p`. Use `⟨hinv.toPerm _, fun a => (-1 : ℂ) ^ (r - a.val) * Formalism.L2.SG.PtCell.pval p.1 (Formalism.L2.SG.PtCell.pinv p a).val, fun a => mul_ne_zero (pow_ne_zero _ (by norm_num)) (Formalism.L2.SG.PtCell.pval_ne p.1 (fun b hb => (p.2.1 b hb).1) _ (by rw [p.2.2]; exact (Formalism.L2.SG.Pt …` and prove the remaining obligations. Establish `hZ' : Zhat k r z z' g₀ = ptMat p * Ds r`. Rewrite using `[← hZ, zhatO_eq, Matrix.mul_assoc, Ds_mul_Ds, Matrix.mul_one]`. Rewrite using `[hZ', Formalism.L2.SG.PtCell.ptMat_eq_mono]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i a`. Rewrite using `[show Ds r = Matrix.diagonal (fun b : Fin (r + 1) => (-1 : ℂ) ^ (r - b.val)) from rfl, Matrix.mul_diagonal]`. Simplify using `only [Formalism.L2.SG.PtCell.mono, Formalism.FourierDecayAlt.C2.monoP, Matrix.of_apply, Function.Involutive.coe_toPerm]`. Distinguish the cases in `h : a = Formalism.L2.SG.PtCell.pinv p i`. Establish `h2 : i = Formalism.L2.SG.PtCell.pinv p a` using `by rw [h, hinv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h]`. Simplify using `only [h2, if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ¬ i = Formalism.L2.SG.PtCell.pinv p a` using `fun e => h (by rw [e, hinv])`. Rewrite using `[if_neg h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zhat_monomial {z z' : Fin (2 * r + k + 1) → ℂ} {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {p : Point ℂ (r + 1)} (hZ : ZhatO k r z z' g₀ = ptMat p) :
@@ -124,17 +124,15 @@ theorem zhat_monomial {z z' : Fin (2 * r + k + 1) → ℂ} {g₀ : Matrix (Fin (
     ring
 
 /- English proof (translation)
-Introduce `D W γ p θ' νR hz hz' hT hT' hRel hνR`. Take `⟨p', μR, ⟨n, hn, n', hn', g₀, hγ, hZ', μ₀, h0, h1, hμR⟩, hq⟩` from `hνR`. Establish `hcell` using `inCell_of_rep hz hz' hT hT' hn hn' hZ'`. Rewrite `hcell` using `[← hγ]`. Establish `hpp : p = p'` using `Formalism.L2.SG.PtCell.isInCell_uniq hRel.2.1 hcell`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `hpp` using the available equality. Establish `hnU : n ∈ UH (Hpk D.R.k D.R.rS)` using `hn.1`. Establish `hn'U : n' ∈ UH (Hpk D.R.k D.R.rS)` using `hn'.1`. Establish `hu` using `WeylGroupFacts.isUnit_of_uh hnU`. Establish `hu'` using `WeylGroupFacts.isUnit_of_uh hn'U`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg₀ : g₀ = n⁻¹ * γ * n'⁻¹`. Rewrite using `[hγ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hu, Matrix.mul_nonsing_inv _ hu', Matrix.one_mul, Matrix.mul_one]`. Use `_ = n⁻¹ * (n * g₀ * n') * n'⁻¹ := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg₀U : g₀ ∈ UH (Hpk D.R.k D.R.rS)`. Rewrite using `[hg₀]`. Conclude with `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hnU) hRel.1) (WeylGroupFacts.uh_inv hn'U)`. Establish `hGeq : Gf D.R.k D.R.rS W.z W.z' γ = Gf D.R.k D.R.rS W.z W.z' g₀`. Rewrite using `[hγ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Formalism.QuantumDeterminants.gInv _ _ _ _ hz hz' n (mem_S_of_N _ hn) n' (mem_S_of_N _ hn') g₀`. Establish `hG : 0 < Gf D.R.k D.R.rS W.z W.z' g₀`. Use `lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg _ _ _ _ hz hz' hT hT' g₀ hg₀U) (fun e => hRel.2.2 ?_)` and prove the remaining obligations. Rewrite using `[hGeq, ← e]`. Use `⟨n, hn, n', hn', g₀, hγ, hg₀U, hZ', hG, zhat_monomial hZ', μ₀, h0, h1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hμR]`. Conclude with `hq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_representation : Formalism.MainNotions.S.Pv.LemmaJ.CellRep := by
   intro D W γ p θ' νR hz hz' hT hT' hRel hνR

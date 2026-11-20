@@ -15,7 +15,7 @@ namespace PositivityTheory.SiegelWeilFormula.Tauto
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 def tr_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (g : UA σ d.A.J) (X : Matrix (Fin d.m) (Fin d.n) E) : Mx F E d.m d.n := mat g⁻¹ * incM F X
 /- English proof (translation)
-Establish `h1 : Continuous (f ∘ d.cmb)` using `PositivityTheory.ThKEst.continuous_schA (Φ := f ∘ d.cmb) hf`. Establish `e : ∀ Y, f Y = (f ∘ d.cmb) (d.crd Y)` using `fun Y => by simp [_root_.PositivityTheory.SiegelWeilFormula.Kdil.Tb.cmb_crd_k]`. Establish `h2 : Continuous fun h : UA σ d.A.J => (((h : GL (Fin d.m) (AE F E))⁻¹ : GL (Fin d.m) (AE F E)) : Matrix (Fin d.m) (Fin d.m) (AE F E))` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Tauto.tr_k, e, _root_.PositivityTheory.SiegelWeilFormula.Kdil.Tb.crd_mul_k]`. Conclude with `h1.comp (((_root_.PositivityTheory.SiegelWeilFormula.Kdil.Tb.continuous_mh_k d).comp h2).matrix_mulVec continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_tr_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {f : Mx F E d.m d.n → ℂ} (hf : f ∈ d.schM) (X : Matrix (Fin d.m) (Fin d.n) E) :
     Continuous fun g : UA σ d.A.J => f (_root_.PositivityTheory.SiegelWeilFormula.Tauto.tr_k d g X) := by
@@ -27,7 +27,7 @@ theorem cont_tr_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {f : M
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Tauto.tr_k, e, _root_.PositivityTheory.SiegelWeilFormula.Kdil.Tb.crd_mul_k]
   exact h1.comp (((_root_.PositivityTheory.SiegelWeilFormula.Kdil.Tb.continuous_mh_k d).comp h2).matrix_mulVec continuous_const)
 /- English proof (translation)
-Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, add_mul, Matrix.trace_add, smul_mul_assoc, Matrix.trace_smul, map_add, map_smul, smul_eq_mul, Matrix.trace_mul_comm G β]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chr_comb_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (β G T : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
     d.B.ψ (-(⅟(2 : AF F) * d.tt (β * G))) * d.B.ψ (-(d.tt (T * β))) =
@@ -38,11 +38,11 @@ theorem chr_comb_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (β G
     Matrix.trace_mul_comm G β]
   ring
 /- English proof (translation)
-Establish `h2 : algebraMap (AF F) (AE F E) ⅟(2 : AF F) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap (AF F) (AE F E)) 2, ← map_mul, invOf_mul_self, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, Matrix.smul_apply, Matrix.zero_apply, Algebra.smul_def]`. Rewrite using `[Matrix.smul_apply, zsmul_eq_mul]`. Use `push_cast`. Take the linear combination `2 * this - G i j * h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce and unpack `rfl`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.zero_apply, Algebra.smul_def, Matrix.smul_apply, zsmul_eq_mul]`. Use `push_cast`. Take the linear combination `(-T i j) * h2`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem half_eq_iff_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (G T : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
     ⅟(2 : AF F) • G + T = 0 ↔ G = (-2 : ℤ) • T := by

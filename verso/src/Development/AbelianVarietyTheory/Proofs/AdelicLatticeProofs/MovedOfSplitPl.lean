@@ -17,9 +17,9 @@ namespace GlobalTheory.UnRep.FullReps
 open GlobalTheory.AdLat.Translate GlobalTheory.UnRep.SmallMat
 
 /- English proof (translation)
-Set `s : Setoid (Fin m₀)` to `⟨fun i j => r (f i) (f j), ⟨fun _ => hr.refl _, hr.symm, hr.trans⟩⟩`. Use `haveI : Fintype (Quotient s) := Fintype.ofFinite _`. Set `e` to `Fintype.equivFin (Quotient s)`. Use `⟨_, fun j => (e.symm j).out, fun g i hg => ⟨e (Quotient.mk s i), ?_, fun j hj => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hr.trans hg (hr.symm (Quotient.mk_out (s := s) i))`. Establish `: Quotient.mk s (e.symm j).out = Quotient.mk s i` using `Quotient.sound (hr.trans (hr.symm hj) hg)`. Rewrite using `[← this, Quotient.out_eq, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subfamily {α : Type} (r : α → α → Prop) (hr : Equivalence r) {m₀ : ℕ} (f : Fin m₀ → α) :
     ∃ (m : ℕ) (ι : Fin m → Fin m₀), ∀ g i, r g (f i) → ∃! j, r g (f (ι j)) := by
@@ -38,14 +38,14 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E).toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem fm_mul (A B : Matrix (Fin n) (Fin n) E) : fm F (A * B) = fm F A * fm F B :=
   Matrix.map_mul (f := (Algebra.TensorProduct.includeRight :
     E →ₐ[F] RA F E).toRingHom)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (by simp) rfl`.
+A detailed English derivation is pending.
 -/
 theorem fm_one : fm F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (by simp) rfl
@@ -63,7 +63,7 @@ def Bd (L : Submodule (𝓞 E) (Fin n → E)) (a : 𝓞 E) (M : Matrix (Fin n) (
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `z hz` and use `by have := hat_smul_ring L b (h z hz) rw [smul_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul] at this simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mul {L : Submodule (𝓞 E) (Fin n → E)} {a : 𝓞 E} {M : Matrix (Fin n) (Fin n) (RA F E)}
     (h : Bd L a M) (b : 𝓞 E) : Bd L (b * a) M := fun z hz => by
@@ -73,7 +73,7 @@ theorem Bd.mul {L : Submodule (𝓞 E) (Fin n → E)} {a : 𝓞 E} {M : Matrix (
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `z hz` and use `by have := add_mem (h z hz) (hat_smul_ring L a hz) rwa [← smul_add, Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.of_sub_one {L : Submodule (𝓞 E) (Fin n → E)} {a : 𝓞 E} {M : Matrix (Fin n) (Fin n) (RA F E)}
     (h : Bd L a (M - 1)) : Bd L a M := fun z hz => by
@@ -82,7 +82,7 @@ theorem Bd.of_sub_one {L : Submodule (𝓞 E) (Fin n → E)} {a : 𝓞 E} {M : M
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `: (h⁻¹).1 - 1 = -((h⁻¹).1 * (h.1 - 1))`. Rewrite using `[mul_sub, Units.inv_mul, mul_one, neg_sub]`. Rewrite using `[this, smul_neg, ← Matrix.mul_smul, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cut_inv (h : GL (Fin n) (RA F E)) (e : RA F E) (he : e • (h.1 - 1) = h.1 - 1) :
     e • ((h⁻¹).1 - 1) = (h⁻¹).1 - 1 := by
@@ -91,9 +91,9 @@ theorem cut_inv (h : GL (Fin n) (RA F E)) (e : RA F E) (he : e • (h.1 - 1) = h
   rw [this, smul_neg, ← Matrix.mul_smul, he]
 
 /- English proof (translation)
-Take `⟨t, ht, h⟩` from `(idempotent_adeles_small_matrices F E n L hL hsp).2.2.2.1 N 1 e (M - 1) one_pos he`. Use `⟨t, ht, Bd.of_sub_one fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, h⟩` from `h z hz`. Rewrite `h` using `[hM, one_smul]`. Establish `: ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((t : 𝓞 E) : E) : RA F E) = (t : RA F E)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ((t : 𝓞 E) : E) = (t : E) from map_natCast (algebraMap (𝓞 E) E) t]`. Conclude with `map_natCast (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) t`. Rewrite using `[this, Nat.cast_smul_eq_nsmul, h]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_bd (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (N : ℕ) (e : FiniteAdeleRing (𝓞 F) F)
@@ -111,21 +111,19 @@ theorem exists_nat_bd (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
   exact hw
 
 /- English proof (translation)
-Take `⟨d, hd, hb⟩` from `(idempotent_adeles_small_matrices F E n L hL hsp).2.1 (M - 1)`. Establish `hK : (d : F) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Use `set b : FiniteAdeleRing (𝓞 F) F := algebraMap F (FiniteAdeleRing (𝓞 F) F) (d : F)⁻¹ * e with hbdef`. Establish `hbe : e = d • b`. Rewrite using `[hbdef, nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)), ← map_mul, mul_inv_cancel₀ hK, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : ∀ v, e v = 0 → b v = 0` using `fun v hv => by`. Express the relevant statement in the definitionally equal form `_ * e v = 0`. Rewrite using `[hv, mul_zero]`. Use `clear_value b`. Take `⟨x, a, ha, hx⟩` from `exists_eq_algebraMap_add_nsmul F 1 one_pos b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[one_smul]`. Take `⟨s, hs0, hs, hsx⟩` from `exists_denominator_primes_prescribed F (fun P => ∀ v : HeightOneSpectrum (𝓞 F), v.asIdeal = P → e v ≠ 0) Unit (fun _ => x) (by`. Introduce `_ v hv`. Establish `hv' : e v = 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv fun w hw => by rwa [HeightOneSpectrum.ext hw]`. Establish `h1 : algebraMap F (FiniteAdeleRing (𝓞 F) F) x v + a v = 0`. Rewrite using `[← hb0 v hv', hx]`. Both sides reduce to the same expression. Establish `h2 : algebraMap F (FiniteAdeleRing (𝓞 F) F) x v ∈ v.adicCompletionIntegers F`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_neg_of_add_eq_zero_left h1]`. Conclude with `neg_mem (ha v)`. Simplify `h2)` using `only [FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Take `⟨y, hy⟩` from `hsx ()`. Use `⟨s, hs0, fun v hv => hs _ v.isPrime hv v rfl, Bd.of_sub_one fun z hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ v, (algebraMap F (FiniteAdeleRing (𝓞 F) F) (s : F) * b) v ∈ v.adicCompletionIntegers F`. Introduce `v`. Rewrite using `[hx, mul_add, ← map_mul, hy]`. Conclude with `adele_add_integral F ((mem_range_iff_adele_integral F _).1 ⟨y, rfl⟩ v) (adele_mul_integral F ((mem_range_iff_adele_integral F _).1 ⟨s, rfl⟩ v) (ha v))`. Use `hat_smul_int hint (hb z hz)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [← hM, hbe, nsmul_tmul_one, Matrix.smul_mulVec, smul_assoc, ← smul_comm d]`. Rewrite using `[← smul_comm d, smul_smul]`. Use `congr 2`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_supp_bd (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (e : FiniteAdeleRing (𝓞 F) F)
@@ -173,11 +171,11 @@ theorem exists_supp_bd (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `v hv`. Take `⟨z, hz, e⟩ : v ∈ latOf F h.1 L` from `hΛ ▸ hv`. Rewrite using `[← (hat_rational_points_and_approx F E n L hL hsp).1]`. Establish `: a • v = (a : E) • v` using `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, fv_smul, ← e]`. Conclude with `h1 z hz`. Introduce `v hv`. Establish `: a • v ∈ latOf F h.1 L`. Use `⟨_, h2 _ (fv_mem_hat hv), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: a • v = (a : E) • v` using `rfl`. Rewrite using `[this, fv_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite `this` using `[← hΛ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_bd {L Λ : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) {h : GL (Fin n) (RA F E)}
@@ -221,13 +219,13 @@ noncomputable def conjLat (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host
        rw [map_mul, H.bar_eq] }⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjLat (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E) :
     v ∈ (conjLat H Λ).La ↔ (fun j => IsCMField.complexConj E (v j)) ∈ Λ := Iff.rfl
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_one.1 hx`. Conclude with `Submodule.mem_one.2 ⟨H.bar a, H.bar_eq a⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conj_mem_range (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {x : E} (hx : x ∈ (1 : Submodule (𝓞 E) E)) :
     IsCMField.complexConj E x ∈ (1 : Submodule (𝓞 E) E) := by
@@ -235,17 +233,17 @@ theorem conj_mem_range (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   exact Submodule.mem_one.2 ⟨H.bar a, H.bar_eq a⟩
 
 /- English proof (translation)
-Introduce `j _` and use `conj_mem_range H (hv j trivial)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_mem_std (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {v : Fin n → E} (hv : v ∈ stdLat E n) :
     (fun j => IsCMField.complexConj E (v j)) ∈ stdLat E n := fun j _ => conj_mem_range H (hv j trivial)
 
 /- English proof (translation)
-Simplify using `only [Submodule.ideal_span_singleton_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `conj_mem_std H (h.1 _ hv)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `(a : E) * v j = IsCMField.complexConj E ((a : E) * IsCMField.complexConj E (v j))`. Rewrite using `[map_mul, ha, IsCMField.complexConj_apply_apply]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `h.2 _ (conj_mem_std H hv)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[mem_conjLat]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E ((a : E) * v j) = (a : E) * IsCMField.complexConj E (v j)`. Rewrite using `[map_mul, ha]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjLat_le (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {Λ : Submodule (𝓞 E) (Fin n → E)} {a : 𝓞 E}
     (ha : IsCMField.complexConj E (a : E) = a)
@@ -268,24 +266,24 @@ theorem conjLat_le (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {Λ
     rw [map_mul, ha]
 
 /- English proof (translation)
-The claim follows from `StdInhab.hermE_one _ x y`.
+A detailed English derivation is pending.
 -/
 theorem sum_one (x y : Fin n → E) :
     ∑ a, ∑ b, x a * (1 : Matrix (Fin n) (Fin n) E) a b * IsCMField.complexConj E (y b) =
       ∑ a, x a * IsCMField.complexConj E (y a) := StdInhab.hermE_one _ x y
 
 /- English proof (translation)
-Take `⟨⟨h1, -, h2, h3⟩, -, hfg, hsp, -⟩` from `StdInhab.main E H n`. Establish `key` using `latOf_selfDual (maximalRealSubfield E) E n (stdLat E n) (IsCMField.complexConj E) 1 1 h hfg hsp h1 h2 h3 one_ne_zero (fun v => by`. Simplify using `only [sum_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hv j _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hv _ (StdInhab.single_mem n j)` as an intermediate fact. Establish `e : ∑ a, v a * IsCMField.complexConj E ((Pi.single j (1 : E) : Fin n → E) a) = v j`. Simplify using `[Pi.single_apply, apply_ite]`. Rewrite `this` using `[e]`. Conclude with `Submodule.mem_one.2 ((FractionalIdeal.mem_one_iff _).1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv y hy`. Use `(FractionalIdeal.mem_one_iff _).2 (Submodule.mem_one.1 ?_)` and prove the remaining obligations. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Use `Submodule.mul_mem_mul (hv a trivial) (conj_mem_range H (hy a trivial))` as an intermediate fact. Rewrite using `[mul_one] at this) hh` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[mem_conjLat, ← SetLike.mem_coe, hΛ, ← key, ← hΛ]`. Simplify using `only [sum_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hv _ hw` as an intermediate fact. Simplify using `only [IsCMField.complexConj_apply_apply] at this`. Conclude with `(FractionalIdeal.mem_one_iff _).1 this`. Introduce `hv y hy`. Use `(FractionalIdeal.mem_one_iff _).2 (hv (fun j => IsCMField.complexConj E (y j)) ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_conjLat]`. Simplify using `only [IsCMField.complexConj_apply_apply]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem conjLat_unimod (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {Λ : Submodule (𝓞 E) (Fin n → E)}
     {h : GL (Fin n) (RA (maximalRealSubfield E) E)} (hh : IsUnA (IsCMField.complexConj E) 1 h.1)
@@ -321,17 +319,15 @@ theorem conjLat_unimod (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     exact hy
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQv, hm⟩` from `hv`. Assume the negation of the conclusion as `hn`. Establish `key : ∀ a ∈ P, H.bar a ∈ P`. Introduce `a ha`. Assume the negation of the conclusion as `hb`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hn ⟨a, ha, H.bar a, H.bar_eq a, hb⟩`. Establish `hle : Q ≤ P`. Introduce `a ha`. Establish `hfix : IsCMField.complexConj E ((a * H.bar a : 𝓞 E) : E) = ((a * H.bar a : 𝓞 E) : E)`. Rewrite using `[← H.bar_eq, map_mul, StdInhab.bar_bar, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem` using `(IsCMField.complexConj_eq_self_iff E _).1 hfix`. Establish `hint : IsIntegral ℤ (⟨_, hmem⟩ : maximalRealSubfield E)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E) (algebraMap (maximalRealSubfield E) E).injective).1 (a * H.bar a).2`. Take `⟨x, e⟩ : ∃ x : 𝓞 (maximalRealSubfield E), algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) x = a * H.bar a` from `⟨⟨_, hint⟩, rfl⟩`. Establish `h1 : x ∈ v.asIdeal`. Rewrite using `[← hQv, Ideal.mem_comap, e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Q.mul_mem_right _ ha`. Rewrite `h1` using `[← hPv, Ideal.mem_comap, e]`. Break down `hP.mem_or_mem h1 with h | h` into its components or cases. Conclude with `h`. Rewrite using `[← StdInhab.bar_bar H a]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `key _ h`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQv]`.
-
-Conclude with `Ideal.comap_bot_of_injective _ (RingOfIntegers.algebraMap.injective _ _)`. Conclude with `hn ((hQ.isMaximal hQ0).eq_of_le hP.ne_top hle ▸ hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moved_of_splitPl (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (hv : SplitPl (IsCMField.complexConj E) v) (P : Ideal (𝓞 E)) (hP : P.IsPrime)
@@ -368,19 +364,17 @@ theorem moved_of_splitPl (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host 
   exact hn ((hQ.isMaximal hQ0).eq_of_le hP.ne_top hle ▸ hm)
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `StdInhab.main E H n`. Take `⟨Λ, hΛ, -⟩` from `exists_lattice_latOf (maximalRealSubfield E) E n (stdLat E n) h hfg hsp`. Take `⟨e, -, -, he, hcut⟩` from `hs`. Establish `hcut'` using `cut_inv h _ hcut`. Establish `he' : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ((bad * l.M : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal → e v = 0` using `fun v hv => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `(he v h0).2 hv`. Take `⟨t, ht, hb⟩` from `exists_nat_bd _ hfg hsp _ e he' _ hcut`. Take `⟨t', ht', hb'⟩` from `exists_nat_bd _ hfg hsp _ e he' _ hcut'`. Take `⟨s, hs0, hs, hc⟩` from `exists_supp_bd _ hfg hsp e _ hcut`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs0', hs', hc'⟩` from `exists_supp_bd _ hfg hsp e _ hcut'`. Establish `hk : (t' * t).Coprime (bad * l.M)` using `Nat.Coprime.mul_left ht' ht`. Establish `hnat : ∀ u : ℕ, Ideal.span {((u * (t' * t) : ℕ) : 𝓞 E)} • (conjLat H Λ).La ≤ stdLat E n ∧ Ideal.span {((u * (t' * t) : ℕ) : 𝓞 E)} • stdLat E n ≤ (conjLat H Λ).La` using `fun u => by`. Use `conjLat_le H (by rw [← H.bar_eq, map_natCast]) (smul_mem_of_bd hfg hsp hΛ ?_ ?_)` and prove the remaining obligations. Use `hb.mul ((u * t' : ℕ) : 𝓞 E)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← Nat.cast_mul, mul_assoc]`. Then use the resulting hypothesis. Use `hb'.mul ((u * t : ℕ) : 𝓞 E)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_mul, mul_assoc, mul_comm t]`. Then use the resulting hypothesis. Establish `h1` using `hnat 1`. Rewrite `h1` using `[one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Λ, l.M * (t' * t), hΛ, conjLat_unimod H hh hΛ, ⟨_, hk.coprime_mul_right_right, h1⟩, ⟨_, hk.coprime_mul_left_right, h1⟩, ⟨l.odd.mul ?_, dvd_mul_right _ _, le_inf (hnat _).2 Submodule.smul_le_right⟩, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (s' * s), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.Coprime.odd_of_right (hk.coprime_mul_right_right.coprime_dvd_right h2)`. Conclude with `(map_ne_zero_iff _ (RingOfIntegers.algebraMap.injective _ _)).2 (mul_ne_zero hs0' hs0)`. Rewrite using `[← and_assoc]`. Use `⟨conjLat_le H ?_ (smul_mem_of_bd hfg hsp hΛ ?_ ?_), fun P hP hm => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsCMField.complexConj E).commutes ((s' * s : 𝓞 (maximalRealSubfield E)) : maximalRealSubfield E)`. Rewrite using `[map_mul]`. Conclude with `hc.mul _`. Rewrite using `[mul_comm, map_mul]`. Conclude with `hc'.mul _`.
-
-Rewrite using `[← StdInhab.moved_iff]`. Set `v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))` to `⟨P.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)), Ideal.comap_isPrime _ _, fun h0 => mul_ne_zero hs0' hs0 (by rw [← Ideal.mem_bot, ← h0]; exact hm)⟩`. Establish `hv : e v ≠ 0` using `(v.isPrime.mem_or_mem (show s' * s ∈ v.asIdeal from hm)).elim (hs' v) (hs v)`. Conclude with `moved_of_splitPl H v (he v hv).1 P hP rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lat (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (bad : ℕ) (h2 : 2 ∣ bad)
     (h : GL (Fin n) (RA (maximalRealSubfield E) E)) (hh : IsUnA (IsCMField.complexConj E) 1 h.1)

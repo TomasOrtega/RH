@@ -6,17 +6,15 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `S : Set (Ideal A)` to `{I | ∃ e : A, e * e = e ∧ φ e = 1 ∧ I = Ideal.span {1 - e}}`. Establish `hS : S.Nonempty` using `⟨_, 1, by simp, by simp, rfl⟩`. Take `⟨I, ⟨e, he, hφe, rfl⟩, hmax⟩` from `(set_has_maximal_iff_noetherian.2 (inferInstance : IsNoetherian A A)) S hS`. Establish `key : ∀ f : A, f * f = f → f * e = f → φ f = 1 → f = e`. Introduce `f hf hfe hφf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Ideal.span {1 - e} ≤ Ideal.span {1 - f}`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_span_singleton']`. Conclude with `⟨1 - e, by linear_combination hfe⟩`. Establish `heq : Ideal.span {1 - e} = Ideal.span {1 - f}`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hmax _ ⟨f, hf, hφf, rfl⟩ (lt_of_le_of_ne hle hne)`. Establish `hmem : 1 - f ∈ Ideal.span {1 - e}` using `heq ▸ Ideal.mem_span_singleton_self _`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmem`. Take the linear combination `e * hc - hfe + c * he`. Use `⟨e, he, ?_, ?_, hφe⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hφe`. Introduce `f hf hfe`. Establish `hid : IsIdempotentElem (φ f)`. Express the relevant statement in the definitionally equal form `φ f * φ f = φ f`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, hf]`. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 hid with h | h` into its components or cases. Use `left`. Use `key (e - f) (by linear_combination he + hf - 2 * hfe) (by linear_combination he - hfe) (by rw [map_sub, h, hφe, sub_zero])` as an intermediate fact. Take the linear combination `-this`.
-
-Conclude with `Or.inr (key f hf hfe h)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem exists_primitive_idempotent_map_eq_one {A R : Type*} [CommRing A] [IsNoetherianRing A]
     [CommRing R] [IsDomain R] (φ : A →+* R) :
@@ -51,7 +49,7 @@ theorem exists_primitive_idempotent_map_eq_one {A R : Type*} [CommRing A] [IsNoe
     · exact Or.inr (key f hf hfe h)
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing (ℤ_[p] ⊗[ℤ] OE) := IsNoetherianRing.of_finite ℤ_[p] _`. Take `⟨e, h1, h2, h3, h4⟩` from `exists_primitive_idempotent_map_eq_one (ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.tauExt (p := p) σ).toRingHom`. Conclude with `⟨⟨e, h1, h2, h3⟩, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_placeU_mem_emb (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE]
     [Module.Finite ℤ OE] (R : Type) [CommRing R] [IsDomain R] [Algebra ℤ_[p] R] (σ : OE →+* R) :

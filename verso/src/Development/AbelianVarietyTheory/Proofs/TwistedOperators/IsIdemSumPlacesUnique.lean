@@ -17,13 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.IdemSumSet
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨⟨es, hes, he⟩, -⟩` from `h`. Take `⟨⟨fs, hfs, hf⟩, -⟩` from `h'`. Establish `hw'` using `hes w hw`. Establish `hpick : es w * e = es w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, Finset.mul_sum, Finset.sum_eq_single w]`. Conclude with `hw'.1.1`. Introduce `v hv hvw`. Conclude with `(GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ w v hw' (hes v hv)).2 (Ne.symm hvw)`. Introduce `hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `absurd hw hn`. Assume the negation of the conclusion as `hout`. Apply `GlobalTheory.LevelPlaces.ne_zero_of_isIdemAt hw'` to reduce the goal to its premises. Rewrite using `[← hpick, hf, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun v hv => ?_` and prove the remaining obligations.
-
-Use `(GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ w v hw' (hfs v hv)).2 ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hout hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem subset_of_isIdemSum {D : D7} {e : Formalism.L2.Theta.AE D} {P P' : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (h : Formalism.IndefR.Datum.IsIdemSum e P) (h' : Formalism.IndefR.Datum.IsIdemSum e P') : P ⊆ P' := by
@@ -49,7 +47,7 @@ theorem subset_of_isIdemSum {D : D7} {e : Formalism.L2.Theta.AE D} {P P' : Finse
   exact hout hv
 
 /- English proof (translation)
-Introduce `D e P P' h h'`. Use extensionality with `w`. Conclude with `⟨fun hw => subset_of_isIdemSum h h' hw, fun hw => subset_of_isIdemSum h' h hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem places_eq_of_isIdemSum : ∀ (D : D7) (e : AE D) (P P' : Finset (Pl D.host.E)), IsIdemSum e P → IsIdemSum e P' → P = P' := by
   intro D e P P' h h'

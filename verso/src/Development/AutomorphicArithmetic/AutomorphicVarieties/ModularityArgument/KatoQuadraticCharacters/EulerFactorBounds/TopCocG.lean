@@ -13,15 +13,15 @@ open scoped MatrixGroups Matrix Classical
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Take `⟨c, hc, htc⟩` from `ht`. Use `choose f _ hf using hc`. Use `choose Ec hEc using fun i => GlobalTheory.KZ.GalCont.fix_fin X (f i : X.K)`. Take `⟨Ez, hEz⟩` from `GlobalTheory.KZ.GalCont.cyc_sub_one_mem (Ω := Ω) l n`. Take `⟨-, -, -, -, hmap, -⟩` from `sCls Ω ε X l n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, -, -, hsm, -⟩` from `sApi Ω ε X l n`. Use `⟨Ez ∪ Finset.univ.biUnion Ec, fun s hs u => ?_⟩` and prove the remaining obligations. Establish `hχ` using `hEz s fun x hx => hs x (Finset.mem_union_left _ hx)`. Rewrite `hχ` using `[idl, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `hk : ∀ i, AdicCompletion.eval (idl l) (X.Kl l) n (X.kmap l (X.gal s) (c i)) = AdicCompletion.eval (idl l) (X.Kl l) n (c i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1` using `hmap (X.gal s) _ _ (hf i)`. Establish `h2 : Units.map (X.gal s : X.K →* X.K) (f i) = f i` using `Units.ext (hEc i s fun x hx => hs x (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hx⟩)))`. Rewrite `h1` using `[h2]`. Conclude with `(show _ = _ from h1).trans (show _ = _ from hf i).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgal : X.galB l s t u = X.kmap l (X.gal s) (t ![u 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * u 1])` using `rfl`. Rewrite using `[hgal, htc, htc, map_sum, ← Finset.sum_sub_distrib, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[map_smul, map_sub, map_smul, hk, ← map_smul, ← map_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsm _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← mul_sub]`. Use `Dvd.dvd.mul_left (Dvd.dvd.trans ?_ (sub_dvd_pow_sub_pow _ _ _)) _` and prove the remaining obligations. Rewrite using `[← sub_one_mul]`. Conclude with `hχ.mul_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pol_cont {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ)
     [Fact l.Prime] (w n : ℕ) (t : X.Fn l) (ht : PolMod X l w n t) :
@@ -56,19 +56,19 @@ private theorem pol_cont {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   exact hχ.mul_right _
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL hW x y hxy u hu z β hβ hz`. Take `⟨hE, hadd, -, -, -, -, hgal, -, -, hmul, -⟩` from `sApi Ω ε X l n`. Take `⟨-, iadd, -, icg, -⟩` from `sInvApi Ω ε X l N w n`. Take `⟨m1, m2, -⟩` from `sXiMul Ω ε X l n N M₀ M w g hL x y hxy (fun z => z = 1)`. Take `⟨-, -, -, -, -, -, -, hcy⟩` from `sSlD Ω ε X N (NeZero.pos N)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun σ hσ => ?_, fun σ hσ τ hτ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `icg _ _ (hz σ hσ) (iadd _ _ (sXiInv Ω ε X l n N M₀ M w g hL hW x y hxy _ _ (hu.eqv σ)) (iadd _ _ (sGalAct Ω ε X l N w n (NeZero.pos N) σ β hβ).1 hβ).2).1`. Establish `h0` using `m2 (u σ) 0`. Rewrite `h0` using `[Nat.cast_zero, zero_smul]`. Establish `h1` using `m1 (u (σ * τ)) (u σ) (tw X (l ^ n) M₀ σ (u τ)) (fun x y => u σ x y ^ 0) fun x y h => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hu.coc σ τ x y h`. Establish `h2` using `sXiTw Ω ε X l n N M₀ M w g hL x y (fun z => z = 1) (u τ) σ`. Rewrite `h2` using `[(hcy M σ).2.2.2.1.1 hσ]`. Simplify using `only [mul_one] at h2`. Establish `h3` using `hE.trans h1 (hadd _ _ _ _ (hE.refl _) (hadd _ _ _ _ h2 h0).2).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hE.trans (hz _ (mul_mem hσ hτ)) (hadd _ _ _ _ h3 (hE.refl _)).1`. Establish `h5` using `(hadd _ _ _ _ (hz σ hσ) (hgal σ _ _ (hz τ hτ))).1`. Use `hE.trans h4 (hE.symm ?_)` and prove the remaining obligations. Use `h5 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hmul, map_add, map_sub]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Take `⟨T, hT⟩` from `hu.loc`. Take `⟨⟨t, ht, hβt⟩, -⟩` from `hβ`. Take `⟨E, hEt⟩` from `pol_cont X l w n t ht`. Use `⟨T ∪ E, fun σ hσ τ hτ h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `m1 (u σ) (u τ) (u τ) (u τ) fun x y hh => by`. Simplify using `using hT σ τ (fun a ha => h a (Finset.mem_union_left _ ha)) x y hh`. Rewrite `h1` using `[sub_self, add_zero]`. Establish `h2` using `hEt (τ⁻¹ * σ) fun a ha => by`. Rewrite using `[AlgEquiv.mul_apply, h a (Finset.mem_union_right _ ha), ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hgal τ _ _ (hE.trans (hgal _ _ _ hβt) (hE.trans h2 (hE.symm hβt)))`. Rewrite `h3` using `[← hmul, mul_inv_cancel_left]`. Conclude with `hE.trans (hz σ hσ) (hE.trans (hadd _ _ _ _ h1 (hadd _ _ _ _ h3 (hE.refl β)).2).1 (hE.symm (hz τ hτ)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sTopCocG :
     UpperTheory.V.Z.Kato.Nb.STopCocG := by

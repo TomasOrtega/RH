@@ -26,7 +26,7 @@ theorem kerModRangeEquivOfSurjective_mk {f g : A →+ A} (φ : f.ker →+ B)
   rfl
 
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Simplify using `only [AddEquiv.coe_toAddMonoidHom, AddEquiv.apply_symm_apply, hf]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem addEquiv_symm_apply_comm {f : A →+ A} {f' : B →+ B} (e : A ≃+ B)
     (hf : ∀ a, e (f a) = f' (e a)) (b : B) :
@@ -119,9 +119,9 @@ theorem cycSubOne_apply (ρ : Representation k G V) (σ : G) (x : V) :
   rfl
 
 /- English proof (translation)
-Use `hσ g` as an intermediate fact. Rewrite `this` using `[Subgroup.zpowers_eq_closure]`. Proceed by induction on `this using Subgroup.closure_induction with`. Consider the case `mem y hy => rw [Set.mem_singleton_iff.1 hy, hx]`. Consider the case `one => simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb => rw [map_mul, Module.End.mul_apply, hb, ha]`. Consider the case `inv a _ ha => conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_self_of_generator (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) {x : V} (hx : ρ σ x = x) (g : G) : ρ g x = x := by
@@ -136,7 +136,7 @@ theorem apply_eq_self_of_generator (ρ : Representation k G V) {σ : G}
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.mem_ker, cycSubOne_apply, sub_eq_zero]`. Conclude with `⟨fun h => apply_eq_self_of_generator ρ hσ h, fun h => h σ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_ker_cycSubOne_iff (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (x : V) :
@@ -145,13 +145,13 @@ theorem mem_ker_cycSubOne_iff (ρ : Representation k G V) {σ : G}
   exact ⟨fun h => apply_eq_self_of_generator ρ hσ h, fun h => h σ⟩
 
 /- English proof (translation)
-Use `hσ g` as an intermediate fact. Rewrite `this` using `[Subgroup.zpowers_eq_closure]`. Proceed by induction on `this using Subgroup.closure_induction generalizing x with`. Consider the case `mem y hy`. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, rfl⟩`. Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb`. Establish `: ρ (a * b) x - x = (ρ a (ρ b x) - ρ b x) + (ρ b x - x)`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem (ha _) (hb _)`. Consider the case `inv a _ ha`. Establish `: ρ a⁻¹ x - x = -(ρ a (ρ a⁻¹ x) - ρ a⁻¹ x)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `neg_mem (ha _)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_sub_self_mem_range_cycSubOne (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (g : G) (x : V) :
@@ -176,9 +176,7 @@ theorem apply_sub_self_mem_range_cycSubOne (ρ : Representation k G V) {σ : G}
     exact neg_mem (ha _)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨σ, x, rfl⟩`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨g, x, rfl⟩`.
-
-Conclude with `apply_sub_self_mem_range_cycSubOne ρ hσ g x`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_cycSubOne_eq_closure (ρ : Representation k G V) {σ : G}
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
@@ -196,13 +194,13 @@ def cycNorm (ρ : Representation k G V) : V →+ V :=
   ρ.norm.toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[cycNorm, Representation.norm, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycNorm_apply (ρ : Representation k G V) (x : V) : cycNorm ρ x = ∑ g : G, ρ g x := by
   simp [cycNorm, Representation.norm, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[cycSubOne_apply, sub_eq_zero]`. Conclude with `ρ.self_norm_apply σ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycSubOne_cycNorm (ρ : Representation k G V) (σ : G) (x : V) :
     cycSubOne ρ σ (cycNorm ρ x) = 0 := by
@@ -210,7 +208,7 @@ theorem cycSubOne_cycNorm (ρ : Representation k G V) (σ : G) (x : V) :
   exact ρ.self_norm_apply σ x
 
 /- English proof (translation)
-Rewrite using `[cycSubOne_apply, map_sub, sub_eq_zero]`. Conclude with `ρ.norm_self_apply σ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycNorm_cycSubOne (ρ : Representation k G V) (σ : G) (x : V) :
     cycNorm ρ (cycSubOne ρ σ x) = 0 := by
@@ -253,7 +251,7 @@ noncomputable def cycTateNegOneCongr {ρ : Representation k G V} {ρ' : Represen
     (fun v => by simp [cycSubOne_apply, he])
 
 /- English proof (translation)
-Rewrite using `[cycHerbrand_eq, cycHerbrand_eq, Nat.card_congr (cycTateZeroCongr e he σ).toEquiv, Nat.card_congr (cycTateNegOneCongr e he σ).toEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_congr {ρ : Representation k G V} {ρ' : Representation k G W}
     (e : V ≃+ W) (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (σ : G) :
@@ -291,7 +289,7 @@ theorem cycSubOne_piRep_apply (ρ : ∀ i, Representation k G (V i)) (σ : G) (x
 variable [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[cycNorm_apply, cycNorm_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cycNorm_piRep_apply (ρ : ∀ i, Representation k G (V i)) (x : ∀ i, V i) (i : ι) :
     cycNorm (piRep ρ) x i = cycNorm (ρ i) (x i) := by
@@ -307,7 +305,7 @@ noncomputable def cycTateNegOnePiEquiv (ρ : ∀ i, Representation k G (V i)) (�
   kerModRangePiEquiv _ _ _ _ (cycNorm_piRep_apply ρ) (cycSubOne_piRep_apply ρ σ)
 
 /- English proof (translation)
-Simplify using `only [cycHerbrand_eq]`. Rewrite using `[Nat.card_congr (cycTateZeroPiEquiv ρ σ).toEquiv, Nat.card_congr (cycTateNegOnePiEquiv ρ σ).toEquiv, Nat.card_pi, Nat.card_pi, Nat.cast_prod, Nat.cast_prod, Finset.prod_div_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_pi [Fintype ι] (ρ : ∀ i, Representation k G (V i)) (σ : G) :
     cycHerbrand (piRep ρ) σ = ∏ i, cycHerbrand (ρ i) σ := by

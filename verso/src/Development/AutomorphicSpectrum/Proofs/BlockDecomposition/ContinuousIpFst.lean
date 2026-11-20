@@ -23,13 +23,11 @@ namespace GlobalTheory.CompanionTheory.OrbExist
 variable {D : D7} {a n r t : ℕ}
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `hip : ∀ {X : Type} [TopologicalSpace X] {a c : ℕ} {f : X → Mx D V.rank a} {g : X → Mx D V.rank c}, Continuous f → Continuous g → Continuous (fun x => ip V (f x) (g x))`. Introduce `X _ a c f g hf hg`. Unfold `ip`. Conclude with `(continuous_adj.comp hf).matrix_mul (continuous_const.matrix_mul hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hyv : Continuous (fun z : Mx D V.rank r × Mx D V.rank t => yv V b₀ z)`. Unfold `yv`. Conclude with `continuous_const.matrix_mul (hip continuous_fst continuous_snd)`. Establish `hpr : Continuous (fun x : Mx D V.rank r × Mx D V.rank t => pr b₀ (yv V b₀ x) (yv V b₀ x))`. Unfold `pr`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `(continuous_adj.comp hyv).matrix_mul (continuous_const.matrix_mul hyv)`. Unfold `qv`. Establish `h1 : Continuous (fun z : Mx D V.rank r × Mx D V.rank t => ip V z.2 z.2)` using `hip continuous_snd continuous_snd`. Establish `hn : ContinuousNeg (AE D)` using `IsTopologicalRing.toContinuousNeg`. Establish `ha : ContinuousAdd (AE D)` using `IsTopologicalSemiring.toContinuousAdd`.
-
-Conclude with `continuous_matrix fun i j => (h1.matrix_elem i j).add (hpr.matrix_elem i j).neg |>.congr fun z => (sub_eq_add_neg _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_qv (V : HSp D) (b₀ : HermE D r) :
     Continuous (fun z : Mx D V.rank r × Mx D V.rank t => qv V b₀ z) := by
@@ -52,7 +50,7 @@ theorem continuous_qv (V : HSp D) (b₀ : HermE D r) :
   exact continuous_matrix fun i j => (h1.matrix_elem i j).add (hpr.matrix_elem i j).neg |>.congr fun z => (sub_eq_add_neg _ _).symm
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Unfold `ip`. Conclude with `(continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_fst)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ip_fst (V : HSp D) :
     Continuous (fun z : Mx D V.rank r × Mx D V.rank t => ip V z.1 z.1) := by
@@ -61,9 +59,9 @@ theorem continuous_ip_fst (V : HSp D) :
   exact (continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_fst)
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `htr : Continuous (trA : AE D → AF D.host.F)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Establish `hhalf : Continuous (halfTr : AE D → AF D.host.F)`. Unfold `halfTr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_const.mul htr`. Unfold `pch`. Conclude with `hψ.1.comp (hhalf.comp (hf.matrix_mul hg).matrix_trace)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_pch₂ {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {X : Type} [TopologicalSpace X]
     {f g : X → Mx D t t} (hf : Continuous f) (hg : Continuous g) : Continuous (fun x => pch ψ (f x) (g x)) := by
@@ -78,9 +76,9 @@ theorem continuous_pch₂ {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.hos
   exact hψ.1.comp (hhalf.comp (hf.matrix_mul hg).matrix_trace)
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Take `⟨-, -, -, h1, -⟩` from `GlobalTheory.CompanionTheory.ColumnSplitting.top_mx (D := D) a r`. Take `⟨-, -, -, h2, -⟩` from `GlobalTheory.CompanionTheory.ColumnSplitting.top_mx (D := D) a t`. Establish `c1 : Continuous fun x : Mx D a r => e • x` using `continuous_const_smul e`. Establish `c2 : Continuous fun x : Mx D a t => e • x` using `continuous_const_smul e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isClosed_eq (c1.comp continuous_fst) continuous_fst).inter (isClosed_eq (c2.comp continuous_snd) continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_fixed (e : AE D) :
     IsClosed {z : Mx D a r × Mx D a t | e • z.1 = z.1 ∧ e • z.2 = z.2} := by
@@ -92,9 +90,9 @@ theorem isClosed_fixed (e : AE D) :
   exact (isClosed_eq (c1.comp continuous_fst) continuous_fst).inter (isClosed_eq (c2.comp continuous_snd) continuous_snd)
 
 /- English proof (translation)
-Establish `h1 : g.1 * (g⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : (adj (g⁻¹).1 * adj g.1 : Mx D t t) = 1`. Use `adj_mul (D := D) g.1 (g⁻¹).1` as an intermediate fact. Rewrite using `[← this, h1, adj_one_r]`. Simplify using `only [mm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_cancel (g : GL (Fin t) (AE D)) (q : Mx D t t) :
     mm (mm (adj (g⁻¹).1) (mm (mm (adj g.1) q) g.1)) (g⁻¹).1 = q := by
@@ -107,7 +105,7 @@ theorem conj_cancel (g : GL (Fin t) (AE D)) (q : Mx D t t) :
     _ = q := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨Φ, h1, h2, h3, rfl⟩` from `hR f hf`. Take `⟨m1, m2, m3⟩` from `hSt D θ hθ a n S e hS h g hh hg Φ h1 h2 h3`. Use `Submodule.subset_span ⟨_, m1, m2, m3, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp, hΘ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comp_mem {θ : InfFam D} (hθ : IsInfFam θ) {hn : r + t = n} {S : Finset (Pl D)} {e : AE D} (hS : IsIdem S e)
     (hR : ∀ f ∈ algA (a := a) θ hn S e,
@@ -123,7 +121,7 @@ theorem comp_mem {θ : InfFam D} (hθ : IsInfFam θ) {hn : r + t = n} {S : Finse
   simp only [Function.comp, hΘ]
 
 /- English proof (translation)
-Use `trans_int σ lam k f Θ (Homeomorph.refl N) 1 1 (by rw [one_smul]; exact h₁) (by simp) hk` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trans_int₁ {X N : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [TopologicalSpace N] [MeasurableSpace N]
     [BorelSpace N] (σ : Measure X) (lam : Measure N) (k : N → X → ℂ) (f : X → ℂ) (Θ : X ≃ₜ X)
@@ -133,21 +131,21 @@ theorem trans_int₁ {X N : Type} [TopologicalSpace X] [MeasurableSpace X] [Bore
   simpa using this
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Rewrite using `[inv_inv, two_mul, ← add_assoc, pow_add, mul_assoc, ← mul_pow, inv_mul_cancel₀ hA, one_pow, mul_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap (A : ℝ≥0) (hA : A ≠ 0) (N r t : ℕ) (hN : N = r + 2 * t) : (A⁻¹) ^ N * ((A⁻¹)⁻¹) ^ t = (A⁻¹) ^ (r + t) := by
   subst hN
   rw [inv_inv, two_mul, ← add_assoc, pow_add, mul_assoc, ← mul_pow, inv_mul_cancel₀ hA, one_pow, mul_one]
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem absA_inv (D : D7) (u : (AE D)ˣ) : absA D u⁻¹ = (absA D u)⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
   rw [← map_mul, inv_mul_cancel, map_one]
 
 /- English proof (translation)
-Establish `h1 : absA D u * absA D u⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Introduce `h`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absA_ne (D : D7) (u : (AE D)ˣ) : absA D u ≠ 0 := by
   have h1 : absA D u * absA D u⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]

@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.LtrFourier.Hd
 open MeasureTheory in
 
 /- English proof (translation)
-Establish `hm : Measurable (fun x : ι → α ↦ x ∘ e)` using `measurable_pi_lambda _ fun k ↦ measurable_pi_apply (e k)`. Use `⟨hm, (Measure.pi_eq fun s hs ↦ ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun x : ι → α ↦ x ∘ e) ⁻¹' Set.pi Set.univ s = Set.pi Set.univ (fun i ↦ s (e.symm i))`. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Function.comp_apply]`. Conclude with `⟨fun h i ↦ by simpa using h (e.symm i), fun h k ↦ by simpa using h (e k)⟩`. Rewrite using `[hpre, Measure.pi_pi]`. Conclude with `Fintype.prod_equiv e.symm _ _ fun _ ↦ rfl`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_comp_equiv {ι κ : Type} [Fintype ι] [Fintype κ] {α : Type*} [MeasurableSpace α] (μ : Measure α)
     [SigmaFinite μ] (e : κ ≃ ι) :
@@ -34,11 +34,11 @@ theorem measurePreserving_comp_equiv {ι κ : Type} [Fintype ι] [Fintype κ] {�
 noncomputable section
 
 /- English proof (translation)
-Establish `hmap` using `GroundTheory.Automorphic.GJGlobal.Modulus.map_vecMul_adeleMeasurePi (tInv (A⁻¹))`. Establish `hdet : Matrix.GeneralLinearGroup.det (tInv (A⁻¹)) = Matrix.GeneralLinearGroup.det A`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Express the relevant statement in the definitionally equal form `(((A⁻¹)⁻¹ : GL (Fin n) 𝔸[k]) : Matrix (Fin n) (Fin n) 𝔸[k])ᵀ.det = _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.det_transpose, inv_inv]`. Establish `hfun : (fun x : Fin n → 𝔸[k] => x ᵥ* ((tInv (A⁻¹) : GL (Fin n) 𝔸[k]) : Matrix (Fin n) (Fin n) 𝔸[k])) = fun x => (A : Matrix (Fin n) (Fin n) 𝔸[k]) *ᵥ x`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `x ᵥ* (((A⁻¹)⁻¹ : GL (Fin n) 𝔸[k]) : Matrix (Fin n) (Fin n) 𝔸[k])ᵀ = _`. Rewrite using `[inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.vecMul_transpose _ x`. Rewrite `hmap` using `[hdet, hfun]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_mulVec_fin {k : Type} [Field k] [NumberField k] {n : ℕ} (A : GL (Fin n) 𝔸[k]) :
     (adeleMeasurePi k).map (fun x : Fin n → 𝔸[k] => (A : Matrix (Fin n) (Fin n) 𝔸[k]) *ᵥ x) =
@@ -60,13 +60,13 @@ theorem map_mulVec_fin {k : Type} [Field k] [NumberField k] {n : ℕ} (A : GL (F
   rwa [hdet, hfun] at hmap
 
 /- English proof (translation)
-Use `set e : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι`. Set `P : GL (Fin (Fintype.card ι)) 𝔸[k]` to `⟨(A : Matrix ι ι 𝔸[k]).submatrix e.symm e.symm, ((A⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]).submatrix e.symm e.symm, by rw [Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv], by rw [Matrix.submatrix_mul_equiv, Units.inv_mul, Matrix.submatrix_one_equiv]⟩`. Establish `hdet : Matrix.GeneralLinearGroup.det P = Matrix.GeneralLinearGroup.det A`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.det_submatrix_equiv_self _ _`. Establish `h1 : MeasurePreserving (fun x : ι → 𝔸[k] => x ∘ e.symm) (adeleMeasurePi k) (adeleMeasurePi k)` using `measurePreserving_comp_equiv (adeleMeasure k) e.symm`. Establish `h3 : MeasurePreserving (fun x : Fin (Fintype.card ι) → 𝔸[k] => x ∘ e) (adeleMeasurePi k) (adeleMeasurePi k)` using `measurePreserving_comp_equiv (adeleMeasure k) e`. Establish `hP : Measurable fun x : Fin (Fintype.card ι) → 𝔸[k] => (P : Matrix (Fin (Fintype.card ι)) (Fin (Fintype.card ι)) 𝔸[k]) *ᵥ x` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Establish `hfun : (fun x : ι → 𝔸[k] => (A : Matrix ι ι 𝔸[k]) *ᵥ x) = (fun x => x ∘ e) ∘ (fun x => (P : Matrix (Fin (Fintype.card ι)) (Fin (Fintype.card ι)) 𝔸[k]) *ᵥ x) ∘ (fun x => x ∘ e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = ((A : Matrix ι ι 𝔸[k]).submatrix e.symm e.symm *ᵥ (x ∘ e.symm)) ∘ e`. Establish `hx : (x ∘ e.symm) ∘ e = x`. Use function extensionality and compare the values at `j`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_mulVec_equiv, Equiv.symm_symm, hx]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hfun, ← Measure.map_map h3.measurable (hP.comp h1.measurable), ← Measure.map_map hP h1.measurable, h1.map_eq, map_mulVec_fin P, hdet, Measure.map_smul, h3.map_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mulVec {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : GL ι 𝔸[k]) :
@@ -119,7 +119,7 @@ def mulVecHomeo {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [D
   continuous_invFun := continuous_const.matrix_mulVec continuous_id
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (fun x : ι → 𝔸[k] => (A : Matrix ι ι 𝔸[k]) *ᵥ x)` using `(mulVecHomeo A).measurableEmbedding`. Rewrite using `[← hemb.integral_map, map_mulVec, integral_smul_measure, ENNReal.toReal_ofReal (inv_nonneg.2 (ideleModule k (Matrix.GeneralLinearGroup.det A)).2.le), Complex.real_smul, Complex.ofReal_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_comp_mulVec {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι]
     [DecidableEq ι] (A : GL ι 𝔸[k]) (f : (ι → 𝔸[k]) → ℂ) :
@@ -133,9 +133,9 @@ theorem integral_comp_mulVec {k : Type} [Field k] [NumberField k] {ι : Type} [F
     Complex.real_smul, Complex.ofReal_inv]
 
 /- English proof (translation)
-Introduce `k _ _ ι _ _ A F`. Use function extensionality and compare the values at `y`. Establish `h` using `integral_comp_mulVec A (fun z => F z * (adelicChar k (∑ i, (((A⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ z) i * y i) : ℂ))`. Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at h`. Establish `hp : ∀ z : ι → 𝔸[k], ∑ i, (((A⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ z) i * y i = ∑ i, z i * (((tInv A : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ y) i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `z`. Express the relevant statement in the definitionally equal form `(((A⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ z) ⬝ᵥ y = z ⬝ᵥ ((((A⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]))ᵀ *ᵥ y)`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm _ y, Matrix.dotProduct_mulVec, dotProduct_comm]`. Simplify using `only [hp] at h`. Simplify `h` using `only [adelicFourierPi, ltr, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adelicFourierPi_ltr : ∀ {k : Type} [Field k] [NumberField k], ∀ {ι : Type} [Fintype ι] [DecidableEq ι], ∀ (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ), adelicFourierPi k (ltr A F) =
       (((ideleModule k (Matrix.GeneralLinearGroup.det A) : ℝ))⁻¹ : ℂ) •

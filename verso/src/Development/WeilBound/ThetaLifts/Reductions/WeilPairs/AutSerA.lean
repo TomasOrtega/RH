@@ -24,7 +24,7 @@ open scoped ContDiff
 namespace SerA
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig' (hB : B.IsGood σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
@@ -32,7 +32,7 @@ theorem sig_sig' (hB : B.IsGood σ) (x : E) : σ (σ x) = x := by
   rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h : infPartF F E (u p.1.1 p.1.2) = 0` using `congrFun (congrFun hu p.1.1) p.1.2`. Use `show θ p.2 (infPartF F E (u p.1.1 p.1.2)) = 0`. Rewrite using `[h, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piWF_fin {u : WOF F E nS nT} (hu : u.map (infPartF F E) = 0) : piWF θ u = 0 := by
   funext p
@@ -41,13 +41,13 @@ theorem piWF_fin {u : WOF F E nS nT} (hu : u.map (infPartF F E) = 0) : piWF θ u
   rw [h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[two_nsmul, GlobalTheory.HeisLineF.symplOHF_add_right, symplOHF_add_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOHF_two' (x y : WOF F E nS nT) : symplOHF σ JS JT ξ₀ x (2 • y) = symplOF σ JS JT ξ₀ x y := by
   rw [two_nsmul, GlobalTheory.HeisLineF.symplOHF_add_right, symplOHF_add_self]
 
 /- English proof (translation)
-Establish `h : ψ (symplOF σ JS JT ξ₀ (intAF F w • ((2 • u : XFF F E nS nT) : WOF F E nS nT)) u) = 1` using `(hA _).1 ((latF F E nS nT Λ).smul_mem w (nsmul_mem hu 2)) u hu`. Establish `h2` using `AddChar.map_add_eq_mul ψ (-symplOF σ JS JT ξ₀ (intAF F w • ((2 • u : XFF F E nS nT) : WOF F E nS nT)) u) (symplOF σ JS JT ξ₀ (intAF F w • ((2 • u : XFF F E nS nT) : WOF F E nS nT)) u)`. Rewrite `h2` using `[neg_add_cancel, AddChar.map_zero_eq_one, h, mul_one]`. Rewrite using `[phaseF, h2, ← symplOHF_two']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phase_two' {ψ : AddChar (AF F) ℂ} (hA : SelfDual (gamFF σ JS JT ξ₀ ψ) (latF F E nS nT Λ)) (w : 𝓞 E)
     {u : XFF F E nS nT} (hu : u ∈ latF F E nS nT Λ) : phaseF σ JS JT ξ₀ ψ w (2 • u) = 1 := by
@@ -60,9 +60,9 @@ theorem phase_two' {ψ : AddChar (AF F) ℂ} (hA : SelfDual (gamFF σ JS JT ξ�
   rfl
 
 /- English proof (translation)
-Establish `h1 : intAF F w • y + cAF σ (intAF F w) • y = y`. Rewrite using `[← add_smul, cAF_intAF, ← map_add, hw, map_one, one_smul]`. Establish `h2` using `congrArg (fun z => symplOHF σ JS JT ξ₀ z u) h1`. Simplify using `only [GlobalTheory.HeisLineF.symplOHF_add_left] at h2`. Establish `h3` using `symplOHF_smul σ JS JT hσ ξ₀ (intAF F w) u y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[symplOHF_skew σ JS JT hσ hS hT ξ₀ hξ u (cAF σ (intAF F w) • y)]`. Rewrite using `[smul_add (intAF F w) y u]`. Simplify using `only [GlobalTheory.HeisLineF.symplOHF_add_left, GlobalTheory.HeisLineF.symplOHF_add_right]`. Rewrite using `[← symplOHF_add_self]`. Take the linear combination `h3 - h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quad (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : σ ξ₀ = -ξ₀)
     {w : 𝓞 E} (hw : w + sgOF σ w = 1) (y u : WOF F E nS nT) :
@@ -81,15 +81,15 @@ theorem quad (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND �
   linear_combination h3 - h2
 
 /- English proof (translation)
-Establish `hσ` using `sig_sig' C.good`. Establish `e : finIdem F E • (x + (u : WOF F E nS nT)) = finIdem F E • x + u`. Rewrite using `[smul_add, finIdem_smul_of_fin u.fin]`. Establish `e2 : B.ψ (symplOHF σ JS JT ξ₀ x u) = B.ψ (symplOHF σ JS JT ξ₀ (finIdem F E • x) u)`. Establish `hx` using `finIdem_add_iota C.chart x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `beta_iota_left C (piWF θ x) (u : WOF F E nS nT)`. Rewrite `h3` using `[piWF_fin u.fin, map_zero, Complex.ofReal_zero, mul_zero, Complex.exp_zero]`. Use `conv_lhs => rw [hx]`. Rewrite using `[GlobalTheory.HeisLineF.symplOHF_add_left, AddChar.map_add_eq_mul, h3, mul_one]`. Unfold `chiLatF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e2]`. Establish `hy` using `finIdem_smul_fin (F := F) (E := E) x`. Generalize the expression as in `finIdem F E • x = y at hy ⊢`. Distinguish the cases in `h : y ∈ latOF F E nS nT Λ`. Rewrite using `[if_pos h, if_pos (add_mem h hu)]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : B.ψ (symplOF σ JS JT ξ₀ (intAF F w • y) u) = 1` using `(hA _).1 ((latF F E nS nT Λ).smul_mem w (show XFF.mk y hy ∈ latF F E nS nT Λ from h)) u hu`. Rewrite using `[phaseF, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, quad hσ C.hS C.hT C.hξ hw, AddChar.map_add_eq_mul, h0, mul_one]`. Establish `h2 : y + (u : WOF F E nS nT) ∉ latOF F E nS nT Λ` using `fun h' => h (by`. Establish `h3` using `sub_mem h' (mem_latF.1 hu)`. Rewrite using `[add_sub_cancel_right] at h3)` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h2, mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem chi_add_lat (C : Ctx σ B JS JT ξ₀ θ ι) (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ))
     (hw : w + sgOF σ w = 1) {u : XFF F E nS nT} (hu : u ∈ latF F E nS nT Λ) (x : WOF F E nS nT) :
@@ -120,35 +120,29 @@ theorem chi_add_lat (C : Ctx σ B JS JT ξ₀ θ ι) (hA : SelfDual (gamFF σ JS
     rw [if_neg h, if_neg h2, mul_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hσ` using `sig_sig' C.good`. Establish `hψ : IsCharAF F B.ψ` using `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B C.good).1`. Establish `hA` using `hO.sd`. Establish `hw` using `hO.hw`. Take `⟨-, hJ, hsym, hpos⟩` from `omV_laws (PositivityTheory.ThKW.hermitian_majorant_selfAdjoint_posDef F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ).1 hs.sq hs.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : ∀ x y z : WOF F E nS nT, B.ψ (symplOHF σ JS JT ξ₀ (x + y) z) = B.ψ (symplOHF σ JS JT ξ₀ x z) * B.ψ (symplOHF σ JS JT ξ₀ y z)` using `fun x y z => by rw [GlobalTheory.HeisLineF.symplOHF_add_left, AddChar.map_add_eq_mul]`. Establish `hr : ∀ x y z : WOF F E nS nT, B.ψ (symplOHF σ JS JT ξ₀ x (y + z)) = B.ψ (symplOHF σ JS JT ξ₀ x y) * B.ψ (symplOHF σ JS JT ξ₀ x z)` using `fun x y z => by rw [GlobalTheory.HeisLineF.symplOHF_add_right, AddChar.map_add_eq_mul]`. Establish `hd : ∀ x : WOF F E nS nT, B.ψ (symplOHF σ JS JT ξ₀ x x) = 1` using `fun x => by`. Rewrite using `[symplOHF, GlobalTheory.HeisLineF.symplOF_self σ JS JT hσ C.hS C.hT ξ₀ C.hξ, mul_zero, AddChar.map_zero_eq_one]`. Establish `hβ : ∀ (x : WOF F E nS nT) (v : IxF F nS nT → ℂ), B.ψ (symplOHF σ JS JT ξ₀ x (iotaA ι v)) = Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (piWA θ x) v : ℝ))` using `fun x v => beta_iota_right C x v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `fl : ∀ u ∈ latF F E nS nT Λ, ∀ x : WOF F E nS nT, phaseF σ JS JT ξ₀ B.ψ w u * (B.ψ (symplOHF σ JS JT ξ₀ x u) * serF σ JS JT ξ₀ B θ ι s Λ w a (x + u)) = serF σ JS JT ξ₀ B θ ι s Λ w a x` using `fun u hu x => GlobalTheory.GaussSeriesVacuum.series_inv_scalar (G := WOF F E nS nT) (β := fun x y => B.ψ (symplOHF σ JS JT ξ₀ x y)) hl hr hd hβ a u (piWF_fin u.fin) _ (chi_add_lat C hA hw hu) x`. Take `⟨U, hUo, hlev⟩` from `exists_level (F := F) (E := E) (nS := nS) (nT := nT) hG 2 two_pos`. Set `U₀ : AddSubgroup (WOF F E nS nT)` to `(latOF F E nS nT Λ).comap (DistribSMul.toAddMonoidHom (WOF F E nS nT) (finIdem F E))`. Take `⟨fc, fs, fv⟩` from `GlobalTheory.GaussSeriesVacuum.series_regular (piWA θ) (iotaA ι) (fun x y => B.ψ (symplOHF σ JS JT ξ₀ x y)) (omV (HMF JS JT ξ₀ (tauB B))) (jV s) (ratLF F E nS nT) U₀ U (chiLatF σ JS JT ξ₀ B.ψ Λ w) (continuous_piWF C) (continuous_iotaVF C.chart) (piWF_iotaVF C.chart) hl hr hd (fun …`. Introduce and unpack `_ ⟨y, rfl⟩ h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Establish `e : piWF θ (ratWF (F` using `F) y) = 0 := h`. Rewrite `e` using `[piWF_ratWF C]`. Establish `: y = 0` using `infRatF_injective B (by rw [e, map_zero])`. Substitute `this` using the available equality. Conclude with `map_zero _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun R => by`. Use `((finite_lat C.good hG R).image (fun y => ratWF (F := F) y)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y, rfl⟩, h1, h2⟩`. Use `⟨y, ⟨(finRatF_mem_iff C hG hR hA y).1 h1, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : piWF θ (ratWF (F` using `F) y) = infRatF (tauB B) y := piWF_ratWF C y`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← e]`. Conclude with `h2)`. Use the proof step `(fun x hx => by unfold chiLatF; exact if_neg hx)`. Use the proof step `(fun x => by`. Unfold `chiLatF`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `(hψ.2.1 _).le`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one)`. Use the proof step `(fun x v => by show chiLatF σ JS JT ξ₀ B.ψ Λ w (x + iotaVF ι v) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `chiLatF`. Rewrite using `[smul_add, finIdem_smul_of_real (real_iotaVF C.chart v), add_zero])`. Use `hUo`. Use the proof step `(fun u hu x => by`. Take `⟨l, hl', e⟩` from `hlev u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e3 : u - iotaA ι (piWA θ u) = ((2 • l : XFF F E nS nT) : WOF F E nS nT)` using `(sub_eq_of_eq_add (finIdem_add_iota C.chart u)).trans e`. Rewrite using `[e3]`. Establish `e2` using `chi_add_lat C hA hw (nsmul_mem hl' 2) x`. Rewrite `e2` using `[phase_two' hA w hl', one_mul]`. Conclude with `e2) a`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hquasi : ∀ (γ : Matrix (Fin nT) (Fin nS) E) (x : WOF F E nS nT), serF σ JS JT ξ₀ B θ ι s Λ w a (ratWF γ + x) = B.ψ (-(symplOHF σ JS JT ξ₀ (ratWF γ) x)) * serF σ JS JT ξ₀ B θ ι s Λ w a x`. Introduce `γ x`. Establish `e : B.ψ (symplOHF σ JS JT ξ₀ (ratWF γ) x) * serF σ JS JT ξ₀ B θ ι s Λ w a (ratWF γ + x) = serF σ JS JT ξ₀ B θ ι s Λ w a x` using `GlobalTheory.HeisenbergGaussianSeries.series_quasi (G := WOF F E nS nT) (p := piWA θ) (ι := iotaA ι) (β := fun x y => B.ψ (symplOHF σ JS JT ξ₀ x y)) (om := omV (HMF JS JT ξ₀ (tauB B))) (J := jV s) (Γ := ratLF F E nS nT) (χ := chiLatF σ JS JT ξ₀ B.ψ Λ w) hl hr (by rintro _ ⟨y, rfl …`. Rewrite using `[← e, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Establish `hlevel : ∀ u ∈ U, u.map (infPartF F E) = 0 → heisOF σ JS JT ξ₀ B.ψ u (serF σ JS JT ξ₀ B θ ι s Λ w a) = serF σ JS JT ξ₀ B θ ι s Λ w a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu h`. Take `⟨l, hl', e⟩` from `hlev u hu`. Rewrite `e` using `[finIdem_smul_of_fin h]`. Substitute `e` using the available equality. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `fl _ (nsmul_mem hl' 2) x`. Rewrite `e2` using `[phase_two' hA w hl', one_mul]`. Conclude with `e2`. Establish `hsm : ∀ (k : ℕ) (L : (Fin k → ℝ) →+ WOF F E nS nT), Continuous L → (∀ t, (L t).map (finPartF F E) = 0) → ∀ x, ContDiff ℝ ∞ fun t => serF σ JS JT ξ₀ B θ ι s Λ w a (x + L t)`. Introduce `k L hL hL0 x`.
-
-Set `c : (Fin k → ℝ) →+ (IxF F nS nT → ℂ)` to `(piWA θ).comp L`. Establish `hc : Continuous c` using `(continuous_piWF C).comp hL`. Establish `hLc : ∀ t, L t = iotaA ι (c t)` using `fun t => by`. Use `finIdem_add_iota C.chart (L t)` as an intermediate fact. Rewrite `this` using `[finIdem_smul_of_real (hL0 t), zero_add]`.
-
-Conclude with `this`. Establish `h` using `(fs x).comp (c.toRealLinearMap hc).contDiff`. Use `(congrArg (ContDiff ℝ ∞) (funext fun t => ?_)).mp h` and prove the remaining obligations. Use `show _ = serF σ JS JT ξ₀ B θ ι s Λ w a (x + L t)`. Rewrite using `[hLc t]`.
-
-Both sides reduce to the same expression. Use `⟨⟨hquasi, ⟨U, hUo, hlevel⟩, fc, hsm⟩, fun u hu => Subtype.ext (funext fun x => ?_), fun x z => fv x z⟩` and prove the remaining obligations. Rewrite using `[coe_opFF]`. Conclude with `fl u hu x`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) (a : IxF F nS nT → ℂ) :

@@ -8,9 +8,9 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Set `t : Over.mk (𝟙 X) ⟶ GlobalTheory.KS.pow A 0` to `Pi.lift fun i => Fin.elim0 i`. Set `u : GlobalTheory.KS.pow A 0 ⟶ Over.mk (𝟙 X)` to `Over.homMk (GlobalTheory.KS.pow A 0).hom`. Establish `h1 : u ≫ t = 𝟙 _` using `Pi.hom_ext _ _ fun i => Fin.elim0 i`. Use `⟨⟨t.left, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h2` using `congrArg Over.Hom.left h1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h2` using `[u]`. Simplify using `using Over.w t`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pow_zero_hom_isIso {X : Scheme.{0}} (A : Over X) : IsIso (GlobalTheory.KS.pow A 0).hom := by
   let t : Over.mk (𝟙 X) ⟶ GlobalTheory.KS.pow A 0 := Pi.lift fun i => Fin.elim0 i
@@ -25,7 +25,7 @@ private noncomputable def tailMap {X : Scheme.{0}} (A : Over X) (k : ℕ) : Glob
   Pi.lift fun j => GlobalTheory.KS.pr A j.succ
 
 /- English proof (translation)
-Simplify using `[tailMap, GlobalTheory.KS.pr]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tailMap_pr {X : Scheme.{0}} (A : Over X) (k : ℕ) (j : Fin k) :
     tailMap A k ≫ GlobalTheory.KS.pr A j = GlobalTheory.KS.pr A j.succ := by
@@ -33,11 +33,11 @@ private theorem tailMap_pr {X : Scheme.{0}} (A : Over X) (k : ℕ) (j : Fin k) :
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Use `Over.isPullback_of_binaryFan_isLimit (BinaryFan.mk (GlobalTheory.KS.pr A (0 : Fin (k + 1))) (tailMap A k)) ?_` and prove the remaining obligations. Use `BinaryFan.IsLimit.mk _ (fun f g => Pi.lift (Fin.cases f (fun j => g ≫ GlobalTheory.KS.pr A j))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `T f g`. Simplify using `[GlobalTheory.KS.pr]`. Introduce `T f g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Pi.hom_ext _ _ fun j => ?_` and prove the remaining obligations. Simplify using `[tailMap, GlobalTheory.KS.pr]`. Introduce `T f g m h1 h2`. Simplify using `only [BinaryFan.mk_fst, BinaryFan.mk_snd] at h1 h2`. Use `Pi.hom_ext (f := fun _ : Fin (k + 1) => A) (m : T ⟶ ∏ᶜ fun _ : Fin (k + 1) => A) _ fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[← h1, GlobalTheory.KS.pr]`. Rewrite using `[← h2]`. Simplify using `[tailMap, GlobalTheory.KS.pr]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pow_succ_isPullback {X : Scheme.{0}} (A : Over X) (k : ℕ) :
     IsPullback (GlobalTheory.KS.pr A (0 : Fin (k + 1))).left (tailMap A k).left A.hom (GlobalTheory.KS.pow A k).hom := by
@@ -57,13 +57,13 @@ private theorem pow_succ_isPullback {X : Scheme.{0}} (A : Over X) (k : ℕ) :
       simp [tailMap, GlobalTheory.KS.pr]
 
 /- English proof (translation)
-Introduce `V _ _ X A k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `B s hB h0 _`. Use `haveI := pow_zero_hom_isIso A`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.CompanionTheory.Ar.Flat.ExpLoc.isHolTo_congr (ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp h0 (inv (GlobalTheory.KS.pow A 0).hom)) ?_` and prove the remaining obligations. Introduce `b _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `B s hB h0 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.HolPullback.isHolTo_of_components V B _ _ _ _ _ _ _ _ s (pow_succ_isPullback A k) hB (hj 0) ?_` and prove the remaining obligations. Apply `ih B (fun v => s v ≫ (tailMap A k).left) hB` to reduce the goal to its premises. Use `GlobalTheory.CompanionTheory.Ar.Flat.ExpLoc.isHolTo_congr h0 ?_` and prove the remaining obligations. Introduce `b _`. Simplify using `only [Category.assoc, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `GlobalTheory.CompanionTheory.Ar.Flat.ExpLoc.isHolTo_congr (hj j.succ) ?_` and prove the remaining obligations. Introduce `b _`. Simplify using `only [Category.assoc]`. Rewrite using `[← Over.comp_left, tailMap_pr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.holPi_of :
     UpperTheory.Gal.W2.HolPi := by

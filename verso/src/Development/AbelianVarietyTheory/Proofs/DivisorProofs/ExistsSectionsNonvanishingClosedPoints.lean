@@ -27,9 +27,9 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Use `choose a ha using fun i => exists_unit_fnOf_eq (hu i)`. Use `⟨⟨fun i => (a i : Γ(Z, N.U i)), fun i j => GlobalTheory.Cartier.fn_ext fun h => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul] erw [fnOf_resG, fnOf_resG]`. Rewrite using `[ha, ha, hr i j h]`. Take `⟨i, hi⟩` from `exists_chart hN x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩` and prove the remaining obligations. Use `show x ∈ Z.basicOpen (a i : Γ(Z, N.U i))`. Rewrite using `[Scheme.basicOpen_of_isUnit _ (a i).isUnit]`. Conclude with `hi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_unit_ratSec {Z : Scheme.{0}} [IsIntegral Z] {N : LB Z} (hN : N.IsLB)
     {r : N.ι → Z.functionFieldˣ} (hr : IsRatSec N r) (hu : ∀ i, ∀ x ∈ N.U i, UnitAt x (r i)) :
@@ -46,13 +46,13 @@ theorem exists_sec_of_unit_ratSec {Z : Scheme.{0}} [IsIntegral Z] {N : LB Z} (hN
     exact hi
 
 /- English proof (translation)
-Take `⟨N, ι, _, hι⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) N` as an intermediate fact. Establish `: IsProper V.p` using `hι ▸ inferInstance`. Establish `: CompactSpace V.X` using `QuasiCompact.compactSpace_of_compactSpace V.p`. Establish `hB'` using `LB.isLB_pull hB V.j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, s, hs⟩` from `exists_extend (nonZeroDivisors (𝓞 F)) V.pb hB hB' ((isGen_iff (idIso _)).1 (idIso_isGen hB')) τ`. Use `⟨s, fun w => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hB (V.j w)`. Take `⟨k, hk⟩` from `exists_chart hB' w`. Use `(mem_nonzeroLocus_iff_isUnit s hj).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `u : IsUnit (gs V.j w _ (s.f j))`. Rewrite using `[hs w j k hj hk]`. Use `IsUnit.mul ?_ ((Units.isUnit _).mul ((mem_nonzeroLocus_iff_isUnit τ hk).1 (hτ w)))` and prove the remaining obligations. Rewrite using `[V.pb.w, cst_comp]`. Establish `h0 : algebraMap (𝓞 F) F a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsUnit.of_mul_eq_one (cst (V.π ≫ Y.str) w (algebraMap (𝓞 F) F a)⁻¹) ?_` and prove the remaining obligations. Rewrite using `[← H1.cst_mul, mul_inv_cancel₀ h0, H1.cst_one]`. Rewrite `u` using `[gs_stalkMap V.j w _ hj]`. Conclude with `isUnit_of_map_unit _ _ u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_generic {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y)
     {B : LB V.X} (hB : B.IsLB) (τ : (B.pull V.j).Sec) (hτ : ∀ w, w ∈ nonzeroLocus τ) :
@@ -79,7 +79,7 @@ theorem exists_sec_of_generic {F : Type} [Field F] [NumberField F] {Y : Var F} (
   exact isUnit_of_map_unit _ _ u
 
 /- English proof (translation)
-Simplify using `[LB.pull, LB.LinComb, dual, map_inv]`. Conclude with `map_inv (res _) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem g_pull_dual {X Z : Scheme.{0}} (B : LB X) (f : Z ⟶ X) (i j : (B.pull f).ι) :
     ((dual B).pull f).g i j = ((B.pull f).g i j)⁻¹ := by
@@ -87,7 +87,7 @@ theorem g_pull_dual {X Z : Scheme.{0}} (B : LB X) (f : Z ⟶ X) (i j : (B.pull f
   exact map_inv (res _) _
 
 /- English proof (translation)
-Introduce `i j h` and use `by have e := g_pull_dual B f i j erw [e, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_units_inv, hr i j h, mul_inv] rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatSec_dual_pull {X Z : Scheme.{0}} [IsIntegral Z] {B : LB X} {f : Z ⟶ X}
     {r : (B.pull f).ι → Z.functionFieldˣ} (hr : IsRatSec (B.pull f) r) :
@@ -97,11 +97,11 @@ theorem isRatSec_dual_pull {X Z : Scheme.{0}} [IsIntegral Z] {B : LB X} {f : Z �
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ Y V L r hr hu`. Establish `hN` using `LB.isLB_pull L.isLB V.j`. Take `⟨τ, hτ⟩` from `exists_sec_of_unit_ratSec hN hr hu`. Take `⟨s, hs⟩` from `exists_sec_of_generic V L.isLB τ hτ`. Establish `hN'` using `LB.isLB_pull L.dual.isLB V.j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : ∀ i, ∀ x ∈ (L.dual.B.pull V.j).U i, UnitAt x (((fun i => (r i)⁻¹) i : V.G.functionFieldˣ) : V.G.functionField)` using `fun i x hx => by`. Simplify using `only [Units.val_inv_eq_inv_val]`. Conclude with `(hu i x hx).inv`. Take `⟨τ', hτ'⟩` from `exists_sec_of_unit_ratSec hN' (isRatSec_dual_pull hr) hu'`. Take `⟨s', hs'⟩` from `exists_sec_of_generic V L.dual.isLB τ' hτ'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, s', fun w _ => ⟨hs w, hs' w⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_secs_nonvanishing : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (L : GlobalTheory.HermLB V.p) (r : (L.B.pull V.j).ι → V.G.functionFieldˣ), GlobalTheory.Cartier.IsRatSec (L.B.pull V.j) r → (∀ i, ∀ x ∈ (L.B.pull V.j).U i, UnitAt x (r i : V.G.functionField)) → ∃ (s : L.B.Sec) (s' : L.dual.B.Sec), ∀ w : V.G, IsClosed ({w} : Set V.G) → V.j w ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s ∧ V.j w ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s' := by
   intro F _ _ Y V L r hr hu

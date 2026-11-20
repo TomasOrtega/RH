@@ -10,7 +10,7 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `R _ K _ _ ι S hfin hS`. Take `⟨e, L, hL, he, hLS⟩` from `exists_form_avoid_primes hfin.toFinset (fun W hW => hS W (hfin.mem_toFinset.mp hW)) (fun _ => 1)`. Conclude with `⟨e, L, hL, fun k => he k, fun Q hQ => hLS Q (hfin.mem_toFinset.mpr hQ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem MultiHomogPrimeAvoid.proof : MultiHomogPrimeAvoid.Statement.{u} := by
   intro R _ K _ _ ι S hfin hS

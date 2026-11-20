@@ -25,9 +25,9 @@ def dilHomeo {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] 
     continuous_const.mul ((continuous_apply k).comp (continuous_apply p))
 
 /- English proof (translation)
-Rewrite `hX`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h0 : ∑ i, (g i * (u : A)) • X i = 0`. Use function extensionality and compare the values at `k`. Use `congrFun hg k` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `h1` using `hX (fun i => g i * (u : A)) h0 i`. Conclude with `(Units.mul_left_eq_zero u).1 h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_dil {A : Type} [CommRing A] {M : ℕ} (u : Aˣ) (X : Fin 1 → Fin M → A)
     (hX : LinearIndependent A X) :
@@ -44,9 +44,7 @@ theorem linearIndependent_dil {A : Type} [CommRing A] {M : ℕ} (u : Aˣ) (X : F
   exact (Units.mul_left_eq_zero u).1 h1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M v u P hc ho hP`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := TopK.isTopRing (Fv F v)`. Use `⟨hc.image (dilHomeo M u).continuous, (dilHomeo M u).isOpenMap _ ho, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨X, hX, rfl⟩`.
-
-Conclude with `linearIndependent_dil u X (hP hX)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dil_set : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v ⊗[F] E)ˣ) (P : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)), IsCompact P → IsOpen P → P ⊆ {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} → IsCompact ((fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P) ∧ IsOpen ((fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P) ∧ (fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P ⊆ {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} := by
   intro F E _ _ _ _ _ σ _ M v u P hc ho hP

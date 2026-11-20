@@ -17,7 +17,7 @@ private def coord {T : Scheme.{0}} (f : T ⟶ Pbf.A1) : Γ(T, ⊤) :=
   f.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv.hom X)
 
 /- English proof (translation)
-Simplify using `[coord]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem coord_comp {T' T : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ Pbf.A1) :
     coord (g ≫ f) = g.appTop.hom (coord f) := by
@@ -25,9 +25,9 @@ private theorem coord_comp {T' T : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ Pbf.A1)
   rfl
 
 /- English proof (translation)
-Establish `h` using `Scheme.toSpecΓ_naturality f`. Establish `h2 : (Spec (CommRingCat.of ℤ[X])).toSpecΓ ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv = 𝟙 _`. Rewrite using `[← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2, Category.comp_id]`. Use `_ = _ := by`. Rewrite using `[← Category.assoc, h, Category.assoc, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_appTop {T : Scheme.{0}} (f : T ⟶ Pbf.A1) :
     f = T.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv ≫ f.appTop) := by
@@ -41,9 +41,9 @@ private theorem eq_of_appTop {T : Scheme.{0}} (f : T ⟶ Pbf.A1) :
         rw [← Category.assoc, h, Category.assoc, ← Spec.map_comp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Rewrite using `[eq_of_appTop f, eq_of_appTop g]`. Use `congr 2`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Polynomial.ringHom_ext' (RingHom.ext_int _ _) ?_` and prove the remaining obligations. Conclude with `h`. Introduce `a`. Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (eval₂RingHom (Int.castRingHom _) a)), ?_⟩` and prove the remaining obligations. Simplify using `[coord, Scheme.toSpecΓ_appTop]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coord_bij (T : Scheme.{0}) : Function.Bijective (coord (T := T)) := by
   constructor
@@ -58,9 +58,9 @@ private theorem coord_bij (T : Scheme.{0}) : Function.Bijective (coord (T := T))
     simp [coord, Scheme.toSpecΓ_appTop]
 
 /- English proof (translation)
-Establish `ho : ∀ i, x.obj i = y.obj i` using `fun i => by`. Use `h i` as an intermediate fact. Consider the cases of `hx : x.obj i`. Consider the cases of `hy : y.obj i`. Simplify the hypotheses and the goal together.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify the hypotheses and the goal together.
 
-Use `CategoryTheory.Functor.ext ho (fun i j f => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (Subsingleton.elim (α := PUnit) _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem chain_ext {A : CommRingCat.{0}} {n : ℕ} (x y : Fin (n + 1) ⥤ Ob affC A)
     (h : ∀ i, (x.obj i).pt = (y.obj i).pt) : x = y := by
@@ -73,7 +73,7 @@ private theorem chain_ext {A : CommRingCat.{0}} {n : ℕ} (x y : Fin (n + 1) ⥤
   exact Subtype.ext (Subsingleton.elim (α := PUnit) _ _)
 
 /- English proof (translation)
-The claim follows from `((x.map (homOfLE (Fin.zero_le i))).2).symm`.
+A detailed English derivation is pending.
 -/
 private theorem chain_pt {A : CommRingCat.{0}} {n : ℕ} (x : Fin (n + 1) ⥤ Ob affC A) (i : Fin (n + 1)) :
     (x.obj i).pt = (x.obj 0).pt :=
@@ -93,9 +93,9 @@ private def lineMap : sch.obj Pbf.A1 ⟶ spc affC where
     rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Use `(coord_bij T).1 ?_` and prove the remaining obligations. Conclude with `congrArg (fun c : Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) => (c.obj 0).pt) h`. Introduce `y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `(coord_bij T).2 ((show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y).obj 0).pt`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `chain_ext _ _ fun i => ?_` and prove the remaining obligations. Conclude with `hf.trans (chain_pt (show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y) i).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem lineMap_bij (k : ℕ) (T : Scheme.{0}) :
     Function.Bijective (fun x : Sx (sch.obj Pbf.A1) k T => x.map lineMap) := by
@@ -110,7 +110,7 @@ private theorem lineMap_bij (k : ℕ) (T : Scheme.{0}) :
     exact hf.trans (chain_pt (show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y) i).symm
 
 /- English proof (translation)
-Use extensionality with `k T x`. Establish `a` using `ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app h1 k) T) x`. Establish `b` using `ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app h2 k) T) x`. Conclude with `Prod.ext a b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mulS_hom_ext {X E Z : Spc} {f g : X ⟶ mulS E Z}
     (h1 : f ≫ mulS.fst E Z = g ≫ mulS.fst E Z) (h2 : f ≫ mulS.snd E Z = g ≫ mulS.snd E Z) : f = g := by
@@ -125,17 +125,15 @@ end
 
 open UpperTheory.LineAct in
 /- English proof (translation)
-Introduce `q _ S i hS`. Use `haveI : IsIso lineMap := UpperTheory.isIso_of_bijective_on_simplices lineMap lineMap_bij`. Set `u : sch.obj Pbf.A1 ⨯ S ⟶ Sp S affC` to `mulS.lift prod.snd (prod.fst ≫ lineMap)`. Set `v : Sp S affC ⟶ sch.obj Pbf.A1 ⨯ S` to `prod.lift (Sp.snd S affC ≫ inv lineMap) (Sp.fst S affC)`. Establish `hu1 : u ≫ mulS.fst _ _ = prod.snd` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : u ≫ mulS.snd _ _ = prod.fst ≫ lineMap` using `rfl`. Establish `huv : u ≫ v = 𝟙 _`. Apply `Limits.prod.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prod.lift_fst, ← Category.assoc, hu2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, prod.lift_snd, Category.id_comp]`. Conclude with `hu1`. Establish `hvu : v ≫ u = 𝟙 _`. Apply `mulS_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hu1, prod.lift_snd, Category.id_comp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, hu2, ← Category.assoc, prod.lift_fst]`. Simplify using the standard rewrite rules. Establish `hpu : ∀ n, Function.Bijective (pull (ZMod q) u (tw q i) n)` using `fun n => Function.bijective_iff_has_inverse.2 ⟨pull _ v (tw q i) n, fun x => by`. Rewrite using `[← pull_comp, hvu, pull_id], fun x => by`. Rewrite using `[← pull_comp, huv, pull_id]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `h` using `UpperTheory.tateTwist_affineLine_projection_equiv q S i hS n`. Establish `e : (⇑(pull (ZMod q) (prod.snd : sch.obj Pbf.A1 ⨯ S ⟶ S) (tw q i) n)) = (pull (ZMod q) u (tw q i) n) ∘ (pull (ZMod q) (Sp.fst S affC) (tw q i) n)`. Use function extensionality and compare the values at `x`. Rewrite using `[← hu1]`.
-
-Conclude with `pull_comp _ u _ _ n x`. Rewrite `h` using `[e]`. Conclude with `(Function.Bijective.of_comp_iff' (hpu n) _).1 h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.affineLineAction_fst_twistEquiv :
     ∀ (q : ℕ) [NeZero q] (S : Spc) (i : ℤ), Inv q S → Eqv _ (Sp.fst S affC) (tw q i) := by

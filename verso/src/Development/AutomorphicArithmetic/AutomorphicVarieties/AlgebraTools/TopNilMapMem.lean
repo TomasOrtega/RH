@@ -6,11 +6,11 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_topNil]`. Introduce `i j`. Establish `hpow : ∀ r : ℕ, f ((T i ^ r) x) = (T' i ^ r) (f x)`. Introduce `r`. Proceed by induction on `r with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, hf, ih]`. Establish `hle : Submodule.map f (I ^ j • (⊤ : Submodule R M)) ≤ I ^ j • (⊤ : Submodule R M')`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hx i j] with r hr`. Rewrite using `[← hpow]`. Conclude with `hle ⟨_, hr, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem topNil_map_mem {R M M' κ : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] (I : Ideal R) (T : κ → Module.End R M)
@@ -31,25 +31,25 @@ private theorem topNil_map_mem {R M M' κ : Type} [CommRing R] [AddCommGroup M] 
   exact hle ⟨_, hr, rfl⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ _ κ M _ _ M' _ _ _ _ T T' hT hT' f hf`. Take `⟨_, hsmul, -, -⟩` from `topNil_free R κ M T hT`. Use `⟨le_antisymm ?_ ?_, fun I hI => by rw [hI]; exact hsmul I⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨topNil_map_mem _ T T' f hf hx, x, rfl⟩`. Introduce and unpack `y ⟨hy, x, rfl⟩`. Establish `hTx : ∀ i j x, T i (T j x) = T j (T i x)` using `fun i j x => by`. Rewrite using `[← Module.End.mul_apply, (hT i j).eq, Module.End.mul_apply]`. Establish `hT'x : ∀ i j x, T' i (T' j x) = T' j (T' i x)` using `fun i j x => by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, (hT' i j).eq, Module.End.mul_apply]`. Set `S : κ → Module.End R (M × M')` to `fun i => (T i).prodMap (T' i)`. Establish `hS : ∀ i j, Commute (S i) (S j)`. Introduce `i j`. Use `show S i * S j = S j * S i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[S, Module.End.mul_apply, hTx i j, hT'x i j]`. Take `⟨⟨C, hC, hstab⟩, -⟩` from `topNil_free R κ (M × M') S hS`. Set `φ : Module.End R (M × M')` to `(LinearMap.inr R M M').comp (f.comp (LinearMap.fst R M M'))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ i, Commute φ (S i)`. Introduce `i`. Use `show φ * S i = S i * φ`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[φ, S, Module.End.mul_apply, hf]`. Establish `hmem : ((x, 0) : M × M') ∈ topNil (IsLocalRing.maximalIdeal R) S ⊔ C`. Rewrite using `[hC.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨n, hn, c, hc, hnc⟩` from `Submodule.mem_sup.mp hmem`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : n.1 ∈ topNil (IsLocalRing.maximalIdeal R) T` using `topNil_map_mem _ S T (LinearMap.fst R M M') (fun i p => rfl) hn`. Establish `hφc : φ c ∈ C` using `(hstab φ hφ).2 c hc`. Establish `hx : x = n.1 + c.1`. Use `congrArg Prod.fst hnc` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfc : f c.1 ∈ topNil (IsLocalRing.maximalIdeal R) T'`. Establish `: f c.1 = f x - f n.1`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Submodule.sub_mem _ hy (topNil_map_mem _ T T' f hf hn1)`. Establish `hφn : φ c ∈ topNil (IsLocalRing.maximalIdeal R) S`. Use `topNil_map_mem _ T' S (LinearMap.inr R M M') (fun i y => by simp [S]) hfc` as an intermediate fact. Simplify `this` using `[φ]`. Establish `h0 : φ c = 0` using `(Submodule.disjoint_def.mp hC.disjoint) _ hφn hφc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfc0 : f c.1 = 0`. Use `congrArg Prod.snd h0` as an intermediate fact. Simplify `this` using `[φ]`. Use `⟨n.1, hn1, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_add, hfc0, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.topNil_map :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (κ : Type) (M : Type) [AddCommGroup M] [Module R M] (M' : Type) [AddCommGroup M'] [Module R M'] [Module.Finite R M] [Module.Finite R M'] (T : κ → Module.End R M) (T' : κ → Module.End R M'),

@@ -24,9 +24,9 @@ theorem sum_cons' {R : Type} [CommRing R] (t : Rˣ) (s : ℕ+) (bs : List (Rˣ �
   simp
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a with`. Consider the case `nil => simp at ha`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Rewrite `ha`, the goal using `[sum_cons']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [rhoL]`. Use `split_ifs with h`. Use linear arithmetic over natural numbers and integers. Use `ih (a - s) (by omega); omega` as an intermediate fact.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rhoL_lt {R : Type} [CommRing R] (bs : List (Rˣ × ℕ+)) (a : ℕ)
     (ha : a < (bs.map (fun b => (b.2 : ℕ))).sum) : rhoL bs a < (bs.map (fun b => (b.2 : ℕ))).sum := by
@@ -41,11 +41,11 @@ theorem rhoL_lt {R : Type} [CommRing R] (bs : List (Rˣ × ℕ+)) (a : ℕ)
     · have := ih (a - s) (by omega); omega
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Rewrite `ha` using `[sum_cons']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h : a < (s : ℕ)`. Establish `e : rhoL ((t, s) :: bs) a = (s : ℕ) - 1 - a` using `by simp [rhoL, h]`. Rewrite using `[e]; simp only [rhoL]; rw [if_pos (by omega)]; omega`. Establish `e : rhoL ((t, s) :: bs) a = (s : ℕ) + rhoL bs (a - s)` using `by simp [rhoL, h]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rhoL]`. Rewrite using `[if_neg (by omega), Nat.add_sub_cancel_left, ih (a - s) (by omega)]; omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoL_rhoL {R : Type} [CommRing R] (bs : List (Rˣ × ℕ+)) (a : ℕ)
     (ha : a < (bs.map (fun b => (b.2 : ℕ))).sum) : rhoL bs (rhoL bs a) = a := by
@@ -62,15 +62,15 @@ theorem rhoL_rhoL {R : Type} [CommRing R] (bs : List (Rˣ × ℕ+)) (a : ℕ)
       rw [if_neg (by omega), Nat.add_sub_cancel_left, ih (a - s) (by omega)]; omega
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a b with`. Consider the case `nil => simp at ha`. Consider the case `cons c bs ih`. Take `⟨t, s⟩` from `c`. Rewrite `ha` using `[sum_cons']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ptEntryL, rhoL]`. Distinguish the cases in `h1 : a < (s : ℕ)`. Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : b < (s : ℕ)`. Rewrite using `[if_pos ⟨h1, h2⟩] split_ifs with h3`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ne_eq, Units.ne_zero, not_false_eq_true, true_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [ne_eq, not_true_eq_false, false_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (fun h => h2 h.2), if_neg (fun h => by omega)]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ne_eq, not_true_eq_false, false_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`. Distinguish the cases in `h2 : (s : ℕ) ≤ b`. Rewrite using `[if_pos ⟨by omega, h2⟩, ih (a - s) (b - s) (by omega)]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (fun h => h2 h.2)]`. Simplify using `only [ne_eq, not_true_eq_false, false_iff]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem entry_ne_zero_iff {R : Type} [CommRing R] [Nontrivial R] (bs : List (Rˣ × ℕ+)) (a b : ℕ)
     (ha : a < (bs.map (fun b => (b.2 : ℕ))).sum) :
@@ -98,13 +98,13 @@ theorem entry_ne_zero_iff {R : Type} [CommRing R] [Nontrivial R] (bs : List (Rˣ
         simp only [ne_eq, not_true_eq_false, false_iff]; omega
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing x y with`. Consider the case `nil => simp at hy`. Consider the case `cons c bs ih`. Take `⟨t, s⟩` from `c`. Rewrite `hy` using `[sum_cons']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [rhoL] at hB ⊢`. Distinguish the cases in `h1 : y < (s : ℕ)`. Rewrite using `[if_pos h1, if_pos (by omega)]; omega`. Distinguish the cases in `h2 : x < (s : ℕ)`. It suffices to derive a contradiction.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Use `hB s h2 (by omega) fun a ha => ?_` and prove the remaining obligations. Rewrite using `[if_pos ha]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h2]`. Use `ih (x - s) (y - s) (by omega) (by omega) fun l hl1 hl2 hcl => by` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hB (s + l) (by omega) (by omega) fun a ha => ?_` and prove the remaining obligations. Distinguish the cases in `h : a < (s : ℕ)`. Rewrite using `[if_pos h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h]; have := hcl (a - s) (by omega); omega`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -132,9 +132,9 @@ theorem rhoL_rev {R : Type} [CommRing R] (bs : List (Rˣ × ℕ+)) (x y : ℕ) (
         omega
 
 /- English proof (translation)
-Establish `hn : ∀ a : Fin n, (a : ℕ) < (w.blocks.map (fun b => (b.2 : ℕ))).sum` using `fun a => by rw [w.size]; exact a.2`. Set `ρ : Fin n → Fin n` to `fun a => ⟨rhoL w.blocks a, by have := rhoL_lt _ _ (hn a); rwa [w.size] at this⟩`. Use `⟨ρ, fun a => Fin.ext (rhoL_rhoL _ _ (hn a)), fun a b => ?_, fun x y hxy hB => ?_⟩` and prove the remaining obligations. Use `show ptEntryL w.blocks a b ≠ 0 ↔ b = ρ a`. Rewrite using `[entry_ne_zero_iff _ _ _ (hn a), Fin.ext_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show rhoL w.blocks y < rhoL w.blocks x`. Use `rhoL_rev _ _ _ hxy (hn y) fun l h1 h2 hcl => hB l h1 h2 fun a ha => hcl a ha` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem pt_shape {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (w : Pt R n) :
     ∃ ρ : Fin n → Fin n, Function.Involutive ρ ∧ (∀ a b, w.mat a b ≠ 0 ↔ b = ρ a) ∧
@@ -153,15 +153,13 @@ end GlobalTheory.HL.RatPat
 namespace GlobalTheory.HL.RatPat
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply, Finset.sum_eq_single σ⁻¹]`. Establish `hp : ∏ i, M ((σ⁻¹ : Equiv.Perm (Fin m)) i) i ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ⁻¹) with h | h <;> rw [h] <;> simpa using hp`. Introduce `τ _ hτ`. Establish `: ∃ i, σ (τ i) ≠ i`. Assume the negation of the conclusion as `h`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Apply `hτ` to reduce the goal to its premises. Use `Equiv.ext fun i => ?_` and prove the remaining obligations. Use `show τ i = σ⁻¹ i`. Rewrite using `[Equiv.Perm.eq_inv_iff_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i`. Take `⟨i, hi⟩` from `this`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i), smul_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hi ((hM _ _).1 h).symm`.
-
-Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_monomial {K : Type} [Field K] {m : ℕ} (M : Matrix (Fin m) (Fin m) K)
     (σ : Equiv.Perm (Fin m)) (hM : ∀ a b, M a b ≠ 0 ↔ b = σ a) : M.det ≠ 0 := by
@@ -188,25 +186,23 @@ theorem det_ne_zero_of_monomial {K : Type} [Field K] {m : ℕ} (M : Matrix (Fin 
   · simp
 
 /- English proof (translation)
-Establish `hZd : ∀ a, Z a (ρ a) ≠ 0` using `fun a => (hZ a _).2 rfl`. Establish `hZd' : ∀ b, Z (ρ b) b ≠ 0` using `fun b => (hZ _ _).2 (hρ b).symm`. Set `M : Matrix (Fin n) (Fin n) K` to `fun a b => u (ρ a) (ρ b) * Z (ρ b) b / Z (ρ a) a`. Establish `hMup : M.BlockTriangular id`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [id] at hij`. Use `show u (ρ i) (ρ j) * Z (ρ j) j / Z (ρ i) i = 0`. Rewrite using `[hu0 (ρ i) (ρ j) (fun h => (ne_of_gt hij) (hρ.injective h)) ?_]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hB _ _ h1 h2` as an intermediate fact. Rewrite `this` using `[hρ, hρ]`. Conclude with `absurd hij (not_lt.2 this.le)`. Establish `hMd : ∀ i, M i i = 1`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show u (ρ i) (ρ i) * Z (ρ i) i / Z (ρ i) i = 1`. Rewrite using `[hu1, one_mul, div_self (hZd' i)]`. Establish `hdet : M.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hMup]`. Simplify using `[hMd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hZM : Z * M = u * Z`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single (ρ a), Finset.sum_eq_single (ρ b)]`. Use `show Z a (ρ a) * (u (ρ (ρ a)) (ρ b) * Z (ρ b) b / Z (ρ (ρ a)) (ρ a)) = u a (ρ b) * Z (ρ b) b`. Rewrite using `[hρ a]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Clear denominators, using `[hZd a]` for the nonvanishing conditions. Introduce `c _ hc`. Establish `: Z c b = 0`. Assume the negation of the conclusion as `h`. Apply `hc` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hZ c b).1 h, hρ]`. Rewrite using `[this, mul_zero]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Establish `: Z a c = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Conclude with `hc ((hZ a c).1 h)`. Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules. Use `haveI : Invertible M := Matrix.invertibleOfIsUnitDet M (by rw [hdet]; exact isUnit_one)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨M⁻¹, ⟨fun i j hij => Matrix.blockTriangular_inv_of_blockTriangular hMup hij, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (M⁻¹ * M) i i = 1` using `by rw [Matrix.inv_mul_of_invertible]; simp`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite `h1` using `[hMd, mul_one]`. Then use the resulting hypothesis. Introduce `c _ hc`.
-
-Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[Matrix.blockTriangular_inv_of_blockTriangular hMup h, zero_mul]`. Rewrite using `[hMup h, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[← hZM, Matrix.mul_assoc, Matrix.mul_inv_of_invertible, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_upper {K : Type} [Field K] {n : ℕ} (Z u : Matrix (Fin n) (Fin n) K) (ρ : Fin n → Fin n)
     (B : Fin n → Fin n → Prop) (hρ : Function.Involutive ρ) (hZ : ∀ a b, Z a b ≠ 0 ↔ b = ρ a)
@@ -269,7 +265,7 @@ end GlobalTheory.HL.RatPat
 namespace GlobalTheory.HL.RatPat
 
 /- English proof (translation)
-Unfold `hf`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, AlgEquiv.commutes, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_smul {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (α β : F) (x y : Fin n → E) :
@@ -281,28 +277,28 @@ theorem hf_smul {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [Co
   ring
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField F)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_places (F : Type) [Field F] [NumberField F] : Nonempty (HeightOneSpectrum (𝓞 F)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 F)
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField F)⟩⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G t ht`. Take `⟨p⟩` from `nonempty_places F`. Use `haveI : Nontrivial (A.loc p).Ep := Module.nontrivial_of_finrank_pos (R := (A.loc p).Fp) (by rw [(A.loc p).rank]; norm_num)`. Establish `hinj : Function.Injective (A.loc p).ιE` using `(A.loc p).ιE.injective`. Establish `hZ : ∀ a b, (A.loc p).ιE (G.Zh a b) = algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp)) ^ (r - (b : ℕ))) * algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp)) ^ (r - (a : ℕ))) * ((G.S p).w.mat a b * (-1) ^ (r - (b : ℕ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `hform` using `(GlobalTheory.HL.RatExt.rational_extend A (k + 2 * r + 1) p).2.2.2.2.1 G.Hm (G.f' b) (G.f a)`. Establish `e1 : G.Zh a b = ∑ i, ∑ j, G.f' b i * G.Hm i j * sig (G.f a j)` using `rfl`. Rewrite using `[e1, ← hform, ← G.Hm_eq p, ← G.f_eq p a, ← G.f'_eq p b, hf_smul, ← (G.S p).relevant]`. Establish `hne : ∀ a b, G.Zh a b ≠ 0 ↔ (G.S p).w.mat a b ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `hu : IsUnit (algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp)) ^ (r - (b : ℕ))) * algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp)) ^ (r - (a : ℕ))))` using `(((G.c p).isUnit.pow _).map _).mul (((G.c p).isUnit.pow _).map _)`. Establish `hs : IsUnit ((-1 : (A.loc p).Ep) ^ (r - (b : ℕ)))` using `(isUnit_one.neg).pow _`. Rewrite using `[ne_eq, ne_eq, ← map_eq_zero_iff _ hinj, hZ, hu.mul_right_eq_zero, hs.mul_left_eq_zero]`. Take `⟨ρ, hρ, hρw, hρB⟩` from `pt_shape (G.S p).w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZρ : ∀ a b, G.Zh a b ≠ 0 ↔ b = ρ a` using `fun a b => (hne a b).trans (hρw a b)`. Establish `hD : ∀ l : Fin (r + 2), (∀ a : Fin (r + 1), (a : ℕ) < l → ((ρ a : Fin (r + 1)) : ℕ) < l) → G.D l ≠ 0`. Introduce `l hl`. Set `e : Fin l → Fin (r + 1)` to `Fin.castLE (Nat.lt_succ_iff.mp l.2)`. Set `σ' : Fin l → Fin l` to `fun i => ⟨ρ (e i), hl (e i) i.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ i, ρ (e (σ' i)) = e i` using `fun i => by show ρ (ρ (e i)) = e i`. Conclude with `hρ _`. Establish `hσ : Function.Involutive σ'` using `fun i => Fin.ext (by show ((ρ (e (σ' i)) : Fin (r + 1)) : ℕ) = i`. Rewrite using `[he]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `det_ne_zero_of_monomial _ hσ.toPerm fun a b => ?_` and prove the remaining obligations. Use `show G.Zh (e a) (e b) ≠ 0 ↔ b = σ' a`. Rewrite using `[hZρ]`. Prove the components needed by the constructor for the conclusion. Introduce `h; exact Fin.ext (by rw [show (b : ℕ) = (e b : ℕ) from rfl, h])`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Take `⟨s', hs'up, hs'⟩` from `exists_upper G.Zh (t.map sig).transpose ρ (fun x y => ∀ l : Fin (r + 2), (x : ℕ) < l → (l : ℕ) ≤ (y : ℕ) → G.D l = 0) hρ hZρ (fun x y hxy hB => hρB x y hxy fun l h1 h2 hcl => hD ⟨l, by have := y.2; omega⟩ hcl (hB ⟨l, by have := y.2; omega⟩ h1 h2)) (fun a => by simp [ht a a (fun h …`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[ht b a hB, if_neg (Ne.symm hab), map_zero])`. Establish `htup : (∀ i j, j < i → t i j = 0) ∧ ∀ i, t i i = 1` using `⟨fun i j hij => by rw [ht i j (fun h => lt_asymm h.1 hij), if_neg (ne_of_gt hij)], fun i => by rw [ht i i (fun h => lt_irrefl _ h.1), if_pos rfl]⟩`. Take `⟨h, hh, hf1, -⟩` from `(GlobalTheory.T.hermitianStabiliser_rational_unitriangular_pairs A r k G t s' htup hs'up).1 hs'`. Conclude with `⟨h, hh, hf1⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
     (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), ∀ t : Matrix (Fin (r + 1)) (Fin (r + 1)) E,

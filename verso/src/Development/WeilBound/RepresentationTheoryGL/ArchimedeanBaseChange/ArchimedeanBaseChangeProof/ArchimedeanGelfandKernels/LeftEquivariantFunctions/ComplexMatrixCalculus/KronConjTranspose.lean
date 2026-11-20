@@ -15,13 +15,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} {lam : Fin n → ℤ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[kroneckerMap_apply, conjTranspose_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem kron_conjTranspose' {ι₁ ι₂ : Type*} (A : Matrix ι₁ ι₁ ℂ) (B : Matrix ι₂ ι₂ ℂ) : (A ⊗ₖ B)ᴴ = Aᴴ ⊗ₖ Bᴴ := by
   ext i j; simp [kroneckerMap_apply, conjTranspose_apply, mul_comm]
 
 /- English proof (translation)
-Establish `h` using `(hS n lam).2.1`. Rewrite `h`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[Matrix.star_eq_conjTranspose, kron_conjTranspose', conjTranspose_one, ← mul_kronecker_mul, mul_one, ← Matrix.star_eq_conjTranspose, h, one_kronecker_one]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem U_mem (hS : SwapLaws) :
     ((1 : Matrix (Finset (Md n)) (Finset (Md n)) ℂ) ⊗ₖ swapJ lam) ∈ Matrix.unitaryGroup (Ix n lam) ℂ := by
@@ -31,11 +31,11 @@ theorem U_mem (hS : SwapLaws) :
     ← Matrix.star_eq_conjTranspose, h, one_kronecker_one]
 
 /- English proof (translation)
-Use `set U := (1 : Matrix (Finset (Md n)) (Finset (Md n)) ℂ) ⊗ₖ swapJ lam`. Establish `hU` using `U_mem (lam := lam) hS`. Establish `hc : ∀ k : Matrix.unitaryGroup (Fin n) ℂ, U * fr0 lam k.1 = fr0 lam k.1 * U`. Introduce `k`. Rewrite using `[frame_zero_apply, ← mul_kronecker_mul, ← mul_kronecker_mul, one_mul, mul_one, swap_rhoW_k hu hS k]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomm` using `(hA n lam).2.2.2.2 U hU hc`. Establish `e : lefT n lam = clm lam U`. Rewrite using `[lefT_apply, cjL_apply, ← hcomm, mul_assoc, Ring.mul_inverse_cancel _ hu, mul_one]`. Rewrite using `[e]`. Apply `ContinuousLinearMap.norm_map_of_mem_unitary` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Unitary.mem_iff]`. Establish `hs : star (clm lam U) = clm lam (star U)` using `(map_star _ U).symm`. Rewrite using `[hs, ← clm_mul', ← clm_mul', Unitary.star_mul_self_of_mem hU, Unitary.mul_star_self_of_mem hU, clm_one']`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Tiso_f (hu : IsUnit (sqQ lam)) (hA : Avg) (hS : SwapLaws) (v : EV n lam) : ‖lefT n lam v‖ = ‖v‖ := by
   set U := (1 : Matrix (Finset (Md n)) (Finset (Md n)) ℂ) ⊗ₖ swapJ lam
@@ -54,20 +54,20 @@ theorem Tiso_f (hu : IsUnit (sqQ lam)) (hA : Avg) (hS : SwapLaws) (v : EV n lam)
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `((cjL lam).restrictScalars ℝ).toContinuousLinearMap.contDiff.comp_contDiffOn (hF n lam).2.2`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_f (hF : MatrixFrechetDerivativeAtZeroLaws) : ContDiffOn ℝ ∞ (lefFr n lam) (GLs n) := by
   have h := ((cjL lam).restrictScalars ℝ).toContinuousLinearMap.contDiff.comp_contDiffOn (hF n lam).2.2
   exact h
 
 /- English proof (translation)
-Rewrite using `[lefFr_apply, (hF n lam).1, cj_one hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_f (hu : IsUnit (sqQ lam)) (hF : MatrixFrechetDerivativeAtZeroLaws) : lefFr n lam 1 = 1 := by
   rw [lefFr_apply, (hF n lam).1, cj_one hu]
 
 /- English proof (translation)
-Rewrite using `[lefFr_apply, lefFr_apply, lefFr_apply, cj_mul hu, (hF n lam).2.1 x y (isUnit_iff_ne_zero.mpr hx) (isUnit_iff_ne_zero.mpr hy)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_f (hu : IsUnit (sqQ lam)) (hF : MatrixFrechetDerivativeAtZeroLaws) (x : Mat n) (hx : x ∈ GLs n) (y : Mat n) (hy : y ∈ GLs n) :
     lefFr n lam (x * y) = lefFr n lam x * lefFr n lam y := by
@@ -75,18 +75,18 @@ theorem mul_f (hu : IsUnit (sqQ lam)) (hF : MatrixFrechetDerivativeAtZeroLaws) (
     (hF n lam).2.1 x y (isUnit_iff_ne_zero.mpr hx) (isUnit_iff_ne_zero.mpr hy)]
 
 /- English proof (translation)
-Rewrite using `[lefS_apply, hScal n]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lefS_diag (hScal : GamScal) (s : ℝ) : lefS n lam s =
     cjL lam (krL n lam (Matrix.diagonal fun A : Finset (Md n) => (s : ℂ) ^ A.card)) := by
   rw [lefS_apply, hScal n]; rfl
 
 /- English proof (translation)
-Establish `e : lefS n lam = fun s : ℝ => (((cjL lam ∘ₗ krL n lam).restrictScalars ℝ).toContinuousLinearMap) (Matrix.diagonal fun A : Finset (Md n) => (s : ℂ) ^ A.card)`. Use function extensionality and compare the values at `s`. Rewrite using `[lefS_diag hScal]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousLinearMap.contDiff _ |>.comp ?_` and prove the remaining obligations. Use `contDiff_pi.2 fun A => contDiff_pi.2 fun B => ?_` and prove the remaining obligations. Distinguish the cases in `h : A = B`. Substitute `h` using the available equality. Simplify using `only [diagonal_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `(Complex.ofRealCLM.contDiff).pow _`. Simplify using `only [diagonal_apply_ne _ h]`. Conclude with `contDiff_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ssmooth_f (hScal : GamScal) : ContDiff ℝ ∞ (lefS n lam) := by
   have e : lefS n lam = fun s : ℝ => (((cjL lam ∘ₗ krL n lam).restrictScalars ℝ).toContinuousLinearMap)
@@ -100,9 +100,9 @@ theorem Ssmooth_f (hScal : GamScal) : ContDiff ℝ ∞ (lefS n lam) := by
   · simp only [diagonal_apply_ne _ h]; exact contDiff_const
 
 /- English proof (translation)
-Use `hasDerivAt_pi.2 fun A => hasDerivAt_pi.2 fun B => ?_` and prove the remaining obligations. Distinguish the cases in `h : A = B`. Substitute `h` using the available equality. Simplify using `only [diagonal_apply_eq]`. Conclude with `(hasDerivAt_pow A.card (s : ℂ)).comp_ofReal`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [diagonal_apply_ne _ h]`. Conclude with `hasDerivAt_const _ _`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_diagPow (s : ℝ) : HasDerivAt (fun s : ℝ => (Matrix.diagonal fun A : Finset (Md n) => (s : ℂ) ^ A.card))
     (Matrix.diagonal fun A : Finset (Md n) => (A.card : ℂ) * (s : ℂ) ^ (A.card - 1)) s := by
@@ -113,13 +113,13 @@ theorem hasDerivAt_diagPow (s : ℝ) : HasDerivAt (fun s : ℝ => (Matrix.diagon
   · simp only [diagonal_apply_ne _ h]; exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Use `set L := (((cjL lam ∘ₗ krL n lam).restrictScalars ℝ).toContinuousLinearMap)`. Establish `e : lefS n lam = fun s : ℝ => L (Matrix.diagonal fun A : Finset (Md n) => (s : ℂ) ^ A.card)`. Use function extensionality and compare the values at `s`. Rewrite using `[lefS_diag hScal]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd : HasDerivAt (lefS n lam) (L (Matrix.diagonal fun A : Finset (Md n) => (A.card : ℂ) * (s : ℂ) ^ (A.card - 1))) s`. Rewrite using `[e]`. Conclude with `L.hasFDerivAt.comp_hasDerivAt s (hasDerivAt_diagPow s)`. Rewrite using `[hd.deriv]`. Establish `hcf : ∀ p : Fin n × Fin n, cf n (hb p) = Pi.single (finProdFinEquiv p) 1` using `fun p => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Cxa.cf_hbM (n := n) (finProdFinEquiv p)` as an intermediate fact. Simplify `this` using `[hbM]`. Establish `key : ∑ p : Fin n × Fin n, creL n (cf n (hb p)) * gamM ((s : ℂ) • (1 : Matrix (Md n) (Md n) ℂ)) * annL n (cf n (hb p)) = Matrix.diagonal fun A : Finset (Md n) => (A.card : ℂ) * (s : ℂ) ^ (A.card - 1)`. Rewrite using `[← hN n (s : ℂ)]`. Conclude with `Fintype.sum_equiv finProdFinEquiv _ _ (fun p => by rw [hcf p])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[lefε_apply, lefι_apply, lefS_apply, cj_mul hu, cj_mul hu, ← mul_kronecker_mul, ← mul_kronecker_mul, mul_one, mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Sder_f (hu : IsUnit (sqQ lam)) (hScal : GamScal) (hN : Number) (s : ℝ) :
     deriv (lefS n lam) s = ∑ p, lefε n lam (hb p) * lefS n lam s * lefι n lam (hb p) := by

@@ -20,17 +20,17 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r k : ℕ}
 
 /- English proof (translation)
-Establish `hfam : ∀ i, g (H.MMfam (⟨Λ, f, f', T, T'⟩ : Term V M r) i) = H.MMfam (⟨Λ, f, f', T, T'⟩ : Term V M r) i`. Introduce `i`. Unfold `HermSp.MMfam`. Apply the tactic sequence `rcases hs : M.split with _ | gg <;> rcases i with i | i <;>`. Simplify using `[map_smul, map_sub, (hfix i).1, (hfix i).2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hspan : ∀ v ∈ Submodule.span E (Set.range (H.MMfam (⟨Λ, f, f', T, T'⟩ : Term V M r))), g v = v`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `hfam i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul s x _ hx => rw [map_smul, hx]`. Establish `e : H.MMfam (⟨LocNG.img g Λ, f, f', T, T'⟩ : Term V M r) = H.MMfam (⟨Λ, f, f', T, T'⟩ : Term V M r)` using `rfl`. Unfold `LocNG.BBne`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hs, hns⟩`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hv`. Establish `ew : g w = w` using `g.injective (hspan _ hs)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g w ∈ _ at hs`. Express the relevant statement in the definitionally equal form `g w ∉ _ at hns`. Rewrite `hs`, `hns` using `[ew]`. Conclude with `⟨w, hw, hs, hns⟩`. Introduce and unpack `⟨v, hv, hs, hns⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨v, Submodule.mem_map.2 ⟨v, hv, hspan v hs⟩, hs, hns⟩`.
+A detailed English derivation is pending.
 -/
 lemma bbne_img (g : V ≃ₗ[E] V) (f f' : Fin (r + 1) → V) (hfix : ∀ b, g (f b) = f b ∧ g (f' b) = f' b)
     (Λ : Submodule M.L.O V) (T T' : F) :
@@ -63,17 +63,15 @@ lemma bbne_img (g : V ≃ₗ[E] V) (f f' : Fin (r + 1) → V) (hfix : ∀ b, g (
     exact ⟨v, Submodule.mem_map.2 ⟨v, hv, hspan v hs⟩, hs, hns⟩
 
 /- English proof (translation)
-Use `letI := hM.loc`. Use `haveI := hM.char0`. Establish `hT0` using `hT`. Take `⟨-, -, ⟨n, hn, hf, hΛn⟩, ⟨n', hn', hf', hΛn'⟩, -⟩` from `hT`. Express the relevant statement in the definitionally equal form `f = _ at hf`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f' = _ at hf'`. Express the relevant statement in the definitionally equal form `Λ = _ at hΛn`. Express the relevant statement in the definitionally equal form `Λ = _ at hΛn'`. Substitute `hf hf'` using the available equality. Establish `hW` using `(GlobalTheory.T.term_over_frame_coordinates M hM H r k P S c d n n' Λ).1 ⟨hT0, hn, hn', hΛn, hΛn'⟩`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, m', hW', hm, hm'⟩` from `GlobalTheory.HL.ComplAct.termW S hW hg`. Rewrite `hW'` using `[hmv, ← GlobalTheory.HL.CoordTerm.lat_img c]`. Establish `e1 : c.grp (c.grp.symm m) = m` using `c.grp.apply_symm_apply m`. Establish `e2 : c.grp (c.grp.symm m') = m'` using `c.grp.apply_symm_apply m'`. Rewrite `hW'` using `[← e1, ← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hR` using `((GlobalTheory.T.term_over_frame_coordinates M hM H r k P S c d' (c.grp.symm m) (c.grp.symm m') (LocNG.img g Λ)).2 hW').1`. Establish `k1 : (fun b => c.grp.symm m (P.A.f b)) = fun b => n (P.A.f b)`. Use function extensionality and compare the values at `b`. Apply `c.e.injective` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.HL.CoordTerm.grp_e c, ← GlobalTheory.HL.CoordTerm.grp_e c, ← c.f_eq, e1, hm b]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k2 : (fun b => c.grp.symm m' (P.B.f b)) = fun b => n' (P.B.f b)`. Use function extensionality and compare the values at `b`. Apply `c.e.injective` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.HL.CoordTerm.grp_e c, ← GlobalTheory.HL.CoordTerm.grp_e c, ← c.f'_eq, e2, hm' b]`. Rewrite `hR` using `[k1, k2]`.
-
-Conclude with `hR`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fwd (hM : M.OK) (P : LocNG.FPair H r) (S : Frames M.L r k) (c : Coord P S) (g : V ≃ₗ[E] V)
     (hg : c.grp g ∈ S.H0) (d d' : LocNG.Datum P) (hmv : c.grp g • c.dat d = c.dat d')
@@ -108,19 +106,19 @@ lemma fwd (hM : M.OK) (P : LocNG.FPair H r) (S : Frames M.L r k) (c : Coord P S)
   exact hR
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P hk hP f f' ⟨n, hn, hf⟩ ⟨n', hn', hf'⟩ g hg d d' hmv`. Take `⟨S, ⟨c⟩⟩` from `GlobalTheory.HL.CoordExist.exists_coord M hM H r k P hk hP`. Take `⟨hU, -⟩` from `GlobalTheory.T.framePairCoordinates_transport_unitary_mass M hM H r k P S c`. Take `⟨-, hMv, -⟩` from `GlobalTheory.T.hermitianFramePairCoordinates_transport_innerData M hM H r k P S c`. Take `⟨-, hNA, hNB, -⟩` from `GlobalTheory.HL.CoordUnip.transport M hM H r k P S c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hh` using `(hU g).1 hg`. Establish `hmv'` using `(hMv g hg d d').1 hmv`. Establish `fixv : ∀ x : V, c.e x ∈ S.ME → g x = x`. Introduce `x hx`. Apply `c.e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← GlobalTheory.HL.CoordTerm.grp_e c]`. Conclude with `GlobalTheory.HL.ComplAct.hermitianFrames_complementUnitary_fixes_ME S hh _ hx`. Establish `hfix : ∀ b, g (f b) = f b ∧ g (f' b) = f' b`. Introduce `b`. Substitute `hf hf'` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fixv _ ?_, fixv _ ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HL.CoordTerm.grp_e c, ← c.f_eq]`. Conclude with `Submodule.mem_sup_left (GlobalTheory.HL.ComplAct.nof_mem S (Or.inl ⟨rfl, rfl⟩) ((hNA n).1 hn) (GlobalTheory.HL.ComplAct.mem_spanTo S S.f b))`. Rewrite using `[← GlobalTheory.HL.CoordTerm.grp_e c, ← c.f'_eq]`. Conclude with `Submodule.mem_sup_right (GlobalTheory.HL.ComplAct.nof_mem S (Or.inr ⟨rfl, rfl⟩) ((hNB n').1 hn') (GlobalTheory.HL.ComplAct.mem_spanTo S S.f' b))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hginv : c.grp g⁻¹ ∈ S.H0` using `by rw [map_inv]; exact S.H0.inv_mem hh`. Establish `hmvinv : c.grp g⁻¹ • c.dat d' = c.dat d`. Rewrite using `[← hmv', map_inv, inv_smul_smul]`. Establish `hback : ∀ Λ : Submodule M.L.O V, LocNG.img g (LocNG.img g⁻¹ Λ) = Λ`. Introduce `Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[← GlobalTheory.HL.CoordTerm.lat_inj c, GlobalTheory.HL.CoordTerm.lat_img, GlobalTheory.HL.CoordTerm.lat_img, map_inv, smul_inv_smul]`. Use `⟨hfix, ?_⟩` and prove the remaining obligations. Use extensionality with `Λ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Λ0, ⟨hT, hB⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fwd hM P S c g hh d d' hmv' f f' Λ0 hT, by rwa [bbne_img g f f' hfix]⟩`. Introduce and unpack `⟨hT, hB⟩`. Use `⟨LocNG.img g⁻¹ Λ, ⟨fwd hM P S c g⁻¹ hginv d' d hmvinv f f' Λ hT, ?_⟩, hback Λ⟩` and prove the remaining obligations. Rewrite using `[← bbne_img g f f' hfix, hback Λ]`. Conclude with `hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (LocNG.theta M) → ∀ (f f' : Fin (r + 1) → V), (∃ n ∈ P.A.N, f = fun b => n (P.A.f b)) → (∃ n' ∈ P.B.N, f' = fun b => n' (P.B.f b)) → ∀ g ∈ P.UW0, ∀ d d' : LocNG.Datum P, LocNG.Datum.Moves g d d' → (∀ b, g (f b) = f b ∧ g (f' b) = f' b) ∧ LocNG.img g '' {Λ | LocNG.IsTermOver P d (⟨Λ, f, f', P.A.T, P.B.T⟩ : Term V M r) ∧ ¬ LocNG.BBne (H := H) (⟨Λ, f, f', P.A.T, P.B.T⟩ : Term V M r)} = {Λ | LocNG.IsTermOver P d' (⟨Λ, f, f', P.A.T, P.B.T⟩ : Term V M r) ∧ ¬ LocNG.BBne (H := H) (⟨Λ, f, f', P.A.T, P.B.T⟩ : Term V M r)} := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P hk hP f f' ⟨n, hn, hf⟩ ⟨n', hn', hf'⟩ g hg d d' hmv

@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N UpperTheory.V UpperTheory.V.Sd
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r m ψ κ hm H v hv`. Establish `hp : UpperTheory.V.Z.Win.PotUnl r v`. Use `UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.potOfFlag F Ω l n r m hm v hv fun A hA => ?_` and prove the remaining obligations. Establish `hAl : A.valuation (l : Ω) < 1`. Establish `h1` using `(hA ((l : ℕ) : 𝓞 F)).2 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h1`. Take `⟨c, hflag, hc, -⟩` from `H A hAl`. Conclude with `⟨c, 1, one_pos, hflag, fun i s hs => by rw [pow_one, pow_one]; exact hc i s hs⟩`. Conclude with `((((UpperTheory.V.Z.Win.flagLaws F Ω l n r).2.1 κ).2.2 v).2).1 hp`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Birth.potOrd :
     UpperTheory.V.Z.Win.Birth.PotOrd := by

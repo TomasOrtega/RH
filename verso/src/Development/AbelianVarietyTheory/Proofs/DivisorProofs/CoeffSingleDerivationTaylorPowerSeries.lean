@@ -6,11 +6,11 @@ open IsLocalRing GlobalTheory.FormalOrigin GlobalTheory.FormalOrigin.Extend
 namespace GlobalTheory.FormalOrigin.Extend
 
 /- English proof (translation)
-Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Rewrite `hl` using `[List.nodup_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[List.foldr_cons, ih hl.2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hl.1]`. Establish `hji : j ≠ i` using `fun h => hij h.symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Finsupp.single_apply, hij, hji]`.
+Simplify using the standard rewrite rules.
 -/
 theorem list_foldr_iterate_single_of_nodup {A : Type} {n : ℕ} (d : Fin n → A → A) (j : Fin n) (f : A) :
     ∀ l : List (Fin n), l.Nodup →
@@ -28,11 +28,11 @@ theorem list_foldr_iterate_single_of_nodup {A : Type} {n : ℕ} (d : Fin n → A
       simp [Finsupp.single_apply, hij, hji]
 
 /- English proof (translation)
-Establish `hit : iterOp (fun i => ⇑(ds i)) (Finsupp.single j 1) f = ds j f`. Unfold `iterOp`. Rewrite using `[list_foldr_iterate_single_of_nodup _ j f _ (List.nodup_finRange n)]`. Simplify using `[List.mem_finRange]`. Establish `hprod : (∏ i, (((Finsupp.single j 1 : Fin n →₀ ℕ) i).factorial : ℚ)) = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show (∏ i, (((Finsupp.single j 1 : Fin n →₀ ℕ) i).factorial : ℚ))⁻¹ • ev (iterOp (fun i => ⇑(ds i)) (Finsupp.single j 1) f) = _`. Rewrite using `[hit, hprod, inv_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_coeff_single (A B : Type) [CommRing A] [CommRing B] [Algebra ℚ B] (n : ℕ) (ev : A →+* B)
     (ds : Fin n → Derivation ℤ A A) (j : Fin n) (f : A) :

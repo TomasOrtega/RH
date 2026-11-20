@@ -23,7 +23,7 @@ open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinLocSelf.finE_locFin_map_prV | exact GlobalTheory.FinLocSelf.finE_locFin_map_prV | (intros; apply GlobalTheory.FinLocSelf.finE_locFin_map_prV <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finitePart_localToFiniteAdelic_component_self : ∀ {D : D7} (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : Gv V v), (Formalism.IndefR.Lev.finE V (locFin V v g : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) v) = (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram g).val.map (Algebra.TensorProduct.comm D.host.F (Fv D.host.F v) D.host.E) := by
   first | exact @GlobalTheory.FinLocSelf.finE_locFin_map_prV | exact GlobalTheory.FinLocSelf.finE_locFin_map_prV | (intros; apply GlobalTheory.FinLocSelf.finE_locFin_map_prV <;> assumption)

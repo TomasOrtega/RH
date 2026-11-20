@@ -50,7 +50,7 @@ def imF (w : K) (hw : star w = -w) (x : K) : cmF K :=
     rw [star_div₀, star_sub, star_star, star_mul', hw, star_ofNat]; ring)⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x + y + star (x + y)) / 2 = (x + star x) / 2 + (y + star y) / 2`. Rewrite using `[star_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reF_add (x y : K) : reF (x + y) = reF x + reF y := by
   apply Subtype.ext
@@ -58,7 +58,7 @@ theorem reF_add (x y : K) : reF (x + y) = reF x + reF y := by
   rw [star_add]; ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x + y - star (x + y)) / (2 * w) = (x - star x) / (2 * w) + (y - star y) / (2 * w)`. Rewrite using `[star_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem imF_add (w : K) (hw : star w = -w) (x y : K) :
     imF w hw (x + y) = imF w hw x + imF w hw y := by
@@ -67,7 +67,7 @@ theorem imF_add (w : K) (hw : star w = -w) (x y : K) :
   rw [star_add]; ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((a : K) + star (a : K)) / 2 = a`. Rewrite using `[star_coe_cmF]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reF_coe (a : cmF K) : reF (a : K) = a := by
   apply Subtype.ext
@@ -75,7 +75,7 @@ theorem reF_coe (a : cmF K) : reF (a : K) = a := by
   rw [star_coe_cmF]; ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((a : K) - star (a : K)) / (2 * w) = 0`. Rewrite using `[star_coe_cmF, sub_self, zero_div]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imF_coe (w : K) (hw : star w = -w) (a : cmF K) : imF w hw (a : K) = 0 := by
   apply Subtype.ext
@@ -83,7 +83,7 @@ theorem imF_coe (w : K) (hw : star w = -w) (a : cmF K) : imF w hw (a : K) = 0 :=
   rw [star_coe_cmF, sub_self, zero_div]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (star x + star (star x)) / 2 = (x + star x) / 2`. Rewrite using `[star_star, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reF_star (x : K) : reF (star x) = reF x := by
   apply Subtype.ext
@@ -91,7 +91,7 @@ theorem reF_star (x : K) : reF (star x) = reF x := by
   rw [star_star, add_comm]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (star x - star (star x)) / (2 * w) = -((x - star x) / (2 * w))`. Rewrite using `[star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem imF_star (w : K) (hw : star w = -w) (x : K) : imF w hw (star x) = -imF w hw x := by
   apply Subtype.ext
@@ -99,7 +99,7 @@ theorem imF_star (w : K) (hw : star w = -w) (x : K) : imF w hw (star x) = -imF w
   rw [star_star]; ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x * y + star (x * y)) / 2 = (x + star x) / 2 * ((y + star y) / 2) + w * w * ((x - star x) / (2 * w) * ((y - star y) / (2 * w)))`. Rewrite using `[star_mul']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
     reF (x * y) = reF x * reF y + skewSq w hw * (imF w hw x * imF w hw y) := by
@@ -111,7 +111,7 @@ theorem reF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
   ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x * y - star (x * y)) / (2 * w) = (x + star x) / 2 * ((y - star y) / (2 * w)) + (x - star x) / (2 * w) * ((y + star y) / 2)`. Rewrite using `[star_mul']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem imF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
     imF w hw (x * y) = reF x * imF w hw y + imF w hw x * reF y := by
@@ -123,9 +123,9 @@ theorem imF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
   ring
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `hr` using `QuadAdj.root_mul_root (algebraMap (cmF K) (Ed d) (skewSq 0 hw))`. Establish `h0 : skewSq (0 : K) hw = 0` using `Subtype.ext (mul_zero _)`. Establish `hz : algebraMap (cmF K) (Ed d) (skewSq 0 hw) = 0` using `by rw [h0, map_zero]`. Establish `hr0` using `mul_self_eq_zero.1 (hr.trans ((congrArg (AdjoinRoot.of _) hz).trans (map_zero _)))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `QuadAdj.rep_eq_zero (algebraMap (cmF K) (Ed d) (skewSq 0 hw)) (a := 0) (b := 1) (by` as an intermediate fact. Rewrite using `[map_zero, map_one, hr0]`. Use the proof step `ring)`. Conclude with `one_ne_zero this.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew_ne_zero_of_irreducible (w : K) (hw : star w = -w) (d : cmF K)
     [Fact (Irreducible (polE d))] [Fact (Irreducible (polKE d (skewSq w hw)))] : w ≠ 0 := by
@@ -198,14 +198,14 @@ theorem ιK_apply (x : K) : ιK w hw d x = algebraMap (cmF K) (KEd d (skewSq w h
       AdjoinRoot.root (polKE d (skewSq w hw)) := rfl
 
 /- English proof (translation)
-The claim follows from `τ.commutes (algebraMap (cmF K) (Ed d) a)`.
+A detailed English derivation is pending.
 -/
 theorem gal_KEd_algebraMap (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw)) (a : cmF K) :
     τ (algebraMap (cmF K) (KEd d (skewSq w hw)) a) = algebraMap (cmF K) (KEd d (skewSq w hw)) a :=
   τ.commutes (algebraMap (cmF K) (Ed d) a)
 
 /- English proof (translation)
-Rewrite using `[ιK_apply, ιK_apply, map_add, map_mul, gal_KEd_algebraMap, gal_KEd_algebraMap, h, reF_star, imF_star, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gal_KEd_ιK_of_neg (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw))
     (h : τ (AdjoinRoot.root (polKE d (skewSq w hw))) = -AdjoinRoot.root (polKE d (skewSq w hw)))
@@ -215,9 +215,7 @@ theorem gal_KEd_ιK_of_neg (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq 
   ring
 
 /- English proof (translation)
-Break down `QuadAdj.gal_root (algebraMap (cmF K) (Ed d) (skewSq w hw)) τ with h | h` into its components or cases. Use `left`. Introduce `x`. Rewrite using `[ιK_apply, map_add, map_mul, gal_KEd_algebraMap, gal_KEd_algebraMap, h]`. Use `right`.
-
-Conclude with `gal_KEd_ιK_of_neg w hw d τ h`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_KEd_ιK (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw)) :
     (∀ x : K, τ (ιK w hw d x) = ιK w hw d x) ∨ ∀ x : K, τ (ιK w hw d x) = ιK w hw d (star x) := by

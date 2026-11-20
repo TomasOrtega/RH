@@ -288,16 +288,12 @@ def DomAt (D : D7) (large₂ : SizeData₂ D) (j nW : ℕ) (CP : ℝ) : Prop :=
 def DomHyp (D : D7) (large₂ : SizeData₂ D) (j nW : ℕ) : Prop := ∃ CP : ℝ, DomAt D large₂ j nW CP
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨CP, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem DomAt.domHyp {D : D7} {large₂ : SizeData₂ D} {j nW : ℕ} {CP : ℝ} (h : DomAt D large₂ j nW CP) : DomHyp D large₂ j nW := ⟨CP, h⟩
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4, h5, h6, h7, h8, h9, h10⟩` from `h`. Establish `hC2 : 0 ≤ C2` using `by linarith`. Establish `hZ0 : 0 ≤ Zb D large₂` using `le_trans (pow_nonneg hC2 20) hZ`. Use `⟨by linarith, hZ, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h3.trans (mul_le_mul_of_nonneg_right hle hZ0)`.
-
-Conclude with `h4.trans (mul_le_mul_of_nonneg_right hle hZ0)`. Conclude with `h5.trans (mul_le_mul_of_nonneg_right hle hZ0)`. Conclude with `h6.trans (mul_le_mul_of_nonneg_right hle hZ0)`. Conclude with `h7.trans (mul_le_mul_of_nonneg_right hle (pow_nonneg hZ0 2))`. Conclude with `h8.trans (mul_le_mul_of_nonneg_right hle (pow_nonneg hZ0 3))`.
-
-Conclude with `h9.trans (mul_le_mul_of_nonneg_right hle (pow_nonneg hZ0 4))`. Conclude with `h10.trans (mul_le_mul_of_nonneg_right hle (pow_nonneg hZ0 10))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem DomAt.mono {D : D7} {large₂ : SizeData₂ D} {j nW : ℕ} {CP C2 : ℝ} (h : DomAt D large₂ j nW CP) (hle : CP ≤ C2)
     (hZ : C2 ^ 20 ≤ Zb D large₂) : DomAt D large₂ j nW C2 := by
@@ -380,11 +376,11 @@ def ScalB (large₂ : SizeData₂ D) (X : PJ D B P j) (_C1 _A1 : ℝ) (S : Scal 
     ∃ PLam : ℝ, PLam ≤ 1009 * Zb D large₂ ∧ S4 X S ka wL wF (Gc large₂ B PLam po)
 
 /- English proof (translation)
-Take `⟨hW, -, -, -, hl, -⟩` from `h`. Take `⟨h1, h2⟩` from `hl σ`. Establish `hne : (S.sW : B.KO) ≠ 0` using `by exact_mod_cast hW`. Establish `hpos : 0 < ‖σ (S.sW : B.KO)‖` using `norm_pos_iff.mpr ((map_ne_zero σ).mpr hne)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc push_neg at hc`. Use `Real.log_neg hpos hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq' : (0 : ℝ) < (qq D : ℝ)` using `by exact_mod_cast hq`. Rewrite using `[Real.rpow_def_of_pos hq']`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[mul_comm]`. Conclude with `h2`. Use `_ = ‖σ (S.sW : B.KO)‖ := Real.exp_log hpos`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ScalB.lower {large₂ : SizeData₂ D} {X : PJ D B P j} {C1 A1 : ℝ} {S : Scal B} {ka wL wF : WeightFamilies.Wt D j} {T : ℕ}
     (h : ScalB large₂ X C1 A1 S ka wL wF T) (hq : 0 < qq D) (σ : B.KO →+* ℂ) :
@@ -451,9 +447,9 @@ def Concl (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : 
         (e : ℝ) * (Module.finrank (X.Kl la) V' : ℝ) + r la
 
 /- English proof (translation)
-Take `⟨r, hr0, hrs, hrb, hr⟩` from `h`. Use `⟨r, hr0, hrs, hrb, fun la V' hV' => hr la (X.eLa T nus la) ?_ V' hV'⟩` and prove the remaining obligations. Unfold `PJ.eLa`. Use `le_trans ?_ (Int.le_ceil _)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg T)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `split_ifs <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Concl.at_eLa {X : PJ D B P j} {S : Scal B} {ka wL wF : WeightFamilies.Wt D j} {T : ℕ}
     {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} {β : ℝ} (h : Concl X S ka wL wF T nus β) :
@@ -481,11 +477,11 @@ def Hyp (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR Bx CT :
 end J
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hm⟩` from `h`. Establish `hn : WeightFamilies.dP D j ≤ 2 * D.R.f * D.R.m`. Unfold `WeightFamilies.dP WeightFamilies.rho`. Conclude with `Nat.mul_le_mul le_rfl (Nat.sub_le D.R.m j)`. Establish `hcast : ((WeightFamilies.dP D j : ℕ) : ℝ) ≤ 2 * (D.R.f : ℝ) * D.R.m` using `by exact_mod_cast hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ((WeightFamilies.dP D j : ℕ) : ℝ) ≤ D.host.rdE` using `hcast.trans hm`. Establish `h0r : (0 : ℝ) ≤ D.host.rdE` using `(Nat.cast_nonneg _).trans hle`. Unfold `WeightFamilies.RRv`. Break down `Nat.eq_zero_or_pos (WeightFamilies.dP D j) with h0 | hpos` into its components or cases. Rewrite using `[h0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : ℝ) ≤ D.host.rdE` using `le_trans (by exact_mod_cast hpos) hle`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dP_sq_le {large₂ : SizeData₂ D} {CA CRm : ℝ} (h : ParA large₂ CA) (hC : 2 ≤ CRm) (j : ℕ) :
     ((WeightFamilies.dP D j : ℕ) : ℝ) ^ 2 ≤ WeightFamilies.RRv D CRm := by
@@ -629,9 +625,9 @@ def ClosedFixedPowerForm (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClas
       (s.Bx K.deg H.deg Aq) A Fm CH)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Unfold `Formalism.MainNotions.Closed at hs`. Take `⟨ε1, hε1, hc⟩` from `hs`. Use `⟨s.Ch K H, s.Ah K.deg H.deg, fun Cq Aq => ⟨s.C2 K H Cq Aq, s.A2 K.deg H.deg Aq, s.CR K.deg H.deg Aq, ?_⟩⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.Closed`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨ε1, hε1, fun eps he1 he2 => ?_⟩` and prove the remaining obligations. Take `⟨Kt, hKt⟩` from `hc eps he1 he2`. Conclude with `⟨Kt, fun Fm CH hC hL => hKt Fm CH hC hL K H Cq Aq hK⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ClosedSupNormFirstForm.fixed {𝒪 : ObjClass} {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedSupNormFirstForm 𝒪 𝒞) (K : KAdm) (H : KHyp)
     (hK : 2 ≤ K.CRm) : ∃ Ch Ah : ℝ, ∀ Cq Aq : ℝ, ∃ C2 A2 CR : ℝ,
@@ -646,9 +642,9 @@ theorem ClosedSupNormFirstForm.fixed {𝒪 : ObjClass} {𝒞 : Formalism.MainNot
   exact ⟨Kt, fun Fm CH hC hL => hKt Fm CH hC hL K H Cq Aq hK⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h A`. Unfold `Formalism.MainNotions.Closed at hs`. Take `⟨ε1, hε1, hc⟩` from `hs`. Use `⟨s.Ch K H, s.Ah K.deg H.deg, fun Cq Aq => ⟨s.C2 K H Cq Aq, s.A2 K.deg H.deg Aq, s.CR K.deg H.deg Aq, s.Bx K.deg H.deg Aq, ?_⟩⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.Closed`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨ε1, hε1, fun eps he1 he2 => ?_⟩` and prove the remaining obligations. Take `⟨Kt, hKt⟩` from `hc eps he1 he2`. Conclude with `⟨Kt, fun Fm CH hC hL => hKt Fm CH hC hL K H Cq Aq hK⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ClosedFixedPowerForm.fixed {𝒪 : ObjClass} {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedFixedPowerForm 𝒪 𝒞) (K : KAdm) (H : KHyp) (A : ℝ)
     (hK : 2 ≤ K.CRm) : ∃ Ch Ah : ℝ, ∀ Cq Aq : ℝ, ∃ C2 A2 CR Bx : ℝ,
@@ -664,9 +660,9 @@ theorem ClosedFixedPowerForm.fixed {𝒪 : ObjClass} {𝒞 : Formalism.MainNotio
   exact ⟨Kt, fun Fm CH hC hL => hKt Fm CH hC hL K H Cq Aq hK⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Use `⟨s, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.Closed`. Use `⟨1 / 53, by norm_num, fun eps he1 he2 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `K H Cq Aq hK BF PF XF hO hAd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x0, hx0⟩` from `hs K H Cq Aq hK (Fm.Ct + 1) eps he1 (by linarith)`. Take `⟨x0', hx0'⟩` from `hAd`. Use `⟨max x0 x0', fun x hx hxx i => ?_⟩` and prove the remaining obligations. Conclude with `hx0 (Fm.D x i) (Fm.L x i) (BF x hx i) (PF x hx i) (XF x hx i) (hO x hx i) (Fm.L_eps x i) (by rw [Fm.L_x x i hx]; exact le_trans (le_max_left _ _) hxx) (hx0' x hx (le_trans (le_max_right _ _) hxx) i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem closed_first_form_of_uniform {𝒪 : ObjClass} (h : UniformClosedFormStatement 𝒪) (𝒞 : Formalism.MainNotions.FamClass) :
     ClosedSupNormFirstForm 𝒪 𝒞 := by
@@ -683,9 +679,9 @@ theorem closed_first_form_of_uniform {𝒪 : ObjClass} (h : UniformClosedFormSta
     (hx0' x hx (le_trans (le_max_right _ _) hxx) i)
 
 /- English proof (translation)
-Introduce `A`. Take `⟨s, hs⟩` from `h A`. Use `⟨s, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.Closed`. Use `⟨1 / 53, by norm_num, fun eps he1 he2 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K H Cq Aq hK BF PF XF hO hAd`. Take `⟨x0, hx0⟩` from `hs K H Cq Aq hK (Fm.Ct + 1) eps he1 (by linarith)`. Take `⟨x0', hx0'⟩` from `hAd`. Use `⟨max x0 x0', fun x hx hxx i => ?_⟩` and prove the remaining obligations. Conclude with `hx0 (Fm.D x i) (Fm.L x i) (BF x hx i) (PF x hx i) (XF x hx i) (hO x hx i) (Fm.L_eps x i) (by rw [Fm.L_x x i hx]; exact le_trans (le_max_left _ _) hxx) (hx0' x hx (le_trans (le_max_right _ _) hxx) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem closed_fixed_power_of_uniform {𝒪 : ObjClass} (h : ClosedFormProjectorBound 𝒪) (𝒞 : Formalism.MainNotions.FamClass) :
     ClosedFixedPowerForm 𝒪 𝒞 := by
@@ -710,14 +706,14 @@ def TieC (K : KAdm) (H : KHyp) (Ch Ah _Cq Aq C2 A2 CR : ℝ) : Prop :=
     K.AG ≤ 2 ∧ K.Af ≤ 2 ∧ K.AW ≤ 2 ∧ K.AL ≤ 4 ∧ 1 ≤ Ch ∧ 4 ≤ Ah ∧ Aq ≤ 11
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, h, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tieC_inhabited (CK CA CG Cf CW CL Cq C2 A2 : ℝ) (h : 12 ≤ A2) :
     TieC ⟨CG, 2, Cf, 2, CW, 2, CL, 4, 7⟩ ⟨CK, CA, C2, A2, C2, A2, 7⟩ 1 4 Cq 11 C2 A2 7 :=
   ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, h, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩
 
 /- English proof (translation)
-Take `⟨-, -, h1, h2, h3, h4, -⟩` from `ht`. Simplify using `only [cc, h1, h2, h3, h4]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem cc_tie {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} (ht : TieC K H Ch Ah Cq Aq C2 A2 CR) (large₂ : SizeData₂ D) {j : ℕ}
     (wL : WeightFamilies.Wt D j) :
@@ -726,7 +722,7 @@ theorem cc_tie {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} (ht : TieC K H
   simp only [cc, h1, h2, h3, h4]
 
 /- English proof (translation)
-Take `⟨Q, PT, -, hC, hA⟩` from `h`. Use `⟨Q, PT, ?_⟩` and prove the remaining obligations. Unfold `WeightFamilies.PPv`. Rewrite using `[PT.PP_eq, hC, hA]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pageAt_PP {large₂ : SizeData₂ D} {C2 A2 : ℝ} (h : PageAt large₂ C2 A2) :
     ∃ (Q : ParameterChoice' D large₂) (PT : ParamsT D large₂ Q), WeightFamilies.PPv D large₂ C2 A2 = PT.PP := by
@@ -736,9 +732,9 @@ theorem pageAt_PP {large₂ : SizeData₂ D} {C2 A2 : ℝ} (h : PageAt large₂ 
   rw [PT.PP_eq, hC, hA]
 
 /- English proof (translation)
-Use `⟨Fm.params x hx i, Fm.parT x hx i, Fm.sizes x hx i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hC]`. Unfold `Formalism.MainNotions.FamP.CP`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hA]`. Unfold `Formalism.MainNotions.FamP.eP`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pageAt_fam {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {C2 A2 : ℝ} (hC : Fm.CP = C2) (hA : Fm.eP = A2) (x : ℝ) (hx : Fm.x1 < x)
     (i : Fm.Ix x) : PageAt (Fm.L x i) C2 A2 := by
@@ -760,7 +756,7 @@ def RankScaledBoundOfParametersCondition (large₂ : SizeData₂ D) (X : Prov D 
       ((X j h1 h2).rk ka (B.Mlat j ka) * D.R.f * D.R.m * large₂.sc.b * large₂.de2)
 
 /- English proof (translation)
-Introduce `j h1 h2 S ka wL wF T nP nW h0 nus hH _`. Conclude with `h j h1 h2 S ka wL wF T nP nW h0 nus hH`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem page_form_of_theorem_zero {large₂ : SizeData₂ D} {X : Prov D B P} {H : KHyp} {C2 A2 CR CT : ℝ}
     (h : Conclusion1 large₂ X H C2 A2 CR CT) : RankScaledBoundOfParametersCondition large₂ X H C2 A2 CR CT := by
@@ -768,7 +764,7 @@ theorem page_form_of_theorem_zero {large₂ : SizeData₂ D} {X : Prov D B P} {H
   exact h j h1 h2 S ka wL wF T nP nW h0 nus hH
 
 /- English proof (translation)
-Introduce `j h1 h2 S ka wL wF T nP nW h0 nus hH`. Conclude with `h j h1 h2 S ka wL wF T nP nW h0 nus hH hp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_zero_of_page_form {large₂ : SizeData₂ D} {X : Prov D B P} {H : KHyp} {C2 A2 CR CT : ℝ} (hp : PageAt large₂ C2 A2)
     (h : RankScaledBoundOfParametersCondition large₂ X H C2 A2 CR CT) : Conclusion1 large₂ X H C2 A2 CR CT := by
@@ -785,7 +781,7 @@ def RankScaledBoundFamily (H : KHyp) (C2 A2 CR : ℝ) : Prop :=
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, RankScaledBoundOfParametersCondition (Fm.L x i) (XF x hx i) H C2 A2 CR (Fm.Ct + 1)
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hxx i => page_form_of_theorem_zero (hx0 x hx hxx i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem page_form_family_of_theorem_zero (H : KHyp) (C2 A2 CR : ℝ) (h : ConclusionF1 Fm BF PF XF H C2 A2 CR) :
     RankScaledBoundFamily Fm BF PF XF H C2 A2 CR := by
@@ -793,7 +789,7 @@ theorem page_form_family_of_theorem_zero (H : KHyp) (C2 A2 CR : ℝ) (h : Conclu
   exact ⟨x0, fun x hx hxx i => page_form_of_theorem_zero (hx0 x hx hxx i)⟩
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hxx i => theorem_zero_of_page_form (pageAt_fam Fm hC hA x hx i) (hx0 x hx hxx i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theorem_zero_family_of_page_form (H : KHyp) {C2 A2 : ℝ} (CR : ℝ) (hC : Fm.CP = C2) (hA : Fm.eP = A2)
     (h : RankScaledBoundFamily Fm BF PF XF H C2 A2 CR) : ConclusionF1 Fm BF PF XF H C2 A2 CR := by
@@ -811,7 +807,7 @@ def RankScaledBoundConstrainedFamily (𝒪 : ObjClass) (K : KAdm) (H : KHyp) (Ch
     AdmF Fm BF PF XF K H Ch Ah Cq Aq → RankScaledBoundFamily Fm BF PF XF H C2 A2 CR
 
 /- English proof (translation)
-Introduce `_ BF PF XF hO hAd`. Conclude with `page_form_family_of_theorem_zero Fm BF PF XF H C2 A2 CR (h BF PF XF hO hAd)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem constrained_family_of_theorem_zero {𝒪 : ObjClass} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} {eps : ℝ}
     {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ} (h : PeriodFamilyStatement 𝒪 K H Ch Ah Cq Aq C2 A2 CR Fm CH) :
@@ -820,7 +816,7 @@ theorem constrained_family_of_theorem_zero {𝒪 : ObjClass} {K : KAdm} {H : KHy
   exact page_form_family_of_theorem_zero Fm BF PF XF H C2 A2 CR (h BF PF XF hO hAd)
 
 /- English proof (translation)
-Introduce `BF PF XF hO hAd`. Conclude with `theorem_zero_family_of_page_form Fm BF PF XF H CR hC hA (h ht BF PF XF hO hAd)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_zero_family_of_constrained {𝒪 : ObjClass} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} {eps : ℝ}
     {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ} (ht : TieC K H Ch Ah Cq Aq C2 A2 CR) (hC : Fm.CP = C2) (hA : Fm.eP = A2)
@@ -833,9 +829,9 @@ def ClosedConstrainedRankScaledBound (𝒪 : ObjClass) (𝒞 : Formalism.MainNot
     RankScaledBoundConstrainedFamily 𝒪 K H Ch Ah Cq Aq Fm.CP Fm.eP 7 Fm CH)
 
 /- English proof (translation)
-Unfold `ClosedConstrainedRankScaledBound at h`. Unfold `Formalism.MainNotions.Closed at h ⊢`. Take `⟨ε1, hε1, hc⟩` from `h`. Use `⟨ε1, hε1, fun eps he1 he2 => ?_⟩` and prove the remaining obligations. Take `⟨Kt, hKt⟩` from `hc eps he1 he2`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Kt, fun Fm CH hC hL K H Ch Ah Cq Aq ht => theorem_zero_family_of_constrained ht rfl rfl (hKt Fm CH hC hL K H Ch Ah Cq Aq)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ClosedConstrainedRankScaledBound.closed_constrained_gives_family {𝒪 : ObjClass} {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedConstrainedRankScaledBound 𝒪 𝒞) :
     Formalism.MainNotions.Closed 𝒞 (fun Fm CH => ∀ (K : KAdm) (H : KHyp) (Ch Ah Cq Aq : ℝ), TieC K H Ch Ah Cq Aq Fm.CP Fm.eP 7 →

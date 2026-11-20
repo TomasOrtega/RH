@@ -55,9 +55,9 @@ section HadExamples
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h` using `norm_fibreVec_sq (HermitianMetric.standard K (Fin n)) σ (Pi.single i 1)`. Rewrite `h` using `[HermitianMetric.standard_inner_single, Complex.one_re]`. Establish `h0` using `norm_nonneg (fibreVec (HermitianMetric.standard K (Fin n)) σ (Pi.single i 1))`. Establish `h1 : ‖fibreVec (HermitianMetric.standard K (Fin n)) σ (Pi.single i 1)‖ = 1`. Use polynomial arithmetic with `[sq_nonneg (‖fibreVec (HermitianMetric.standard K (Fin n)) σ (Pi.single i 1)‖ - 1)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem fibreNorm_standard_single (n : ℕ) (σ : K →+* ℂ) (i : Fin n) :
     fibreNorm (HermitianBundle.standard K n) σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] Pi.single i 1) = 1 := by
@@ -69,7 +69,7 @@ theorem fibreNorm_standard_single (n : ℕ) (σ : K →+* ℂ) (i : Fin n) :
   exact h1
 
 /- English proof (translation)
-The claim follows from `Module.finrank_fin_fun (𝓞 K)`.
+A detailed English derivation is pending.
 -/
 theorem bundleRank_standard (n : ℕ) : bundleRank (HermitianBundle.standard K n) = n :=
   Module.finrank_fin_fun (𝓞 K)
@@ -90,26 +90,26 @@ def BoundedInjection.id (E : HermitianBundle K) : BoundedInjection E E (fun _ �
   norm_le σ x := by rw [LinearMap.lTensor_id, LinearMap.id_apply, one_mul]
 
 /- English proof (translation)
-The claim follows from `BoundedInjection.id _`.
+A detailed English derivation is pending.
 -/
 example : BoundedInjection (ratStandard 2) (ratStandard 2) (fun _ ↦ 1) := BoundedInjection.id _
 /- English proof (translation)
-The claim follows from `ShortFamily.standard ℚ 2`.
+A detailed English derivation is pending.
 -/
 example : ShortFamily (ratStandard 2) (fun _ ↦ 1) := ShortFamily.standard ℚ 2
 
 /- English proof (translation)
-The claim follows from `BoundedInjection.id _`.
+A detailed English derivation is pending.
 -/
 example : BoundedInjection (gaussianStandard 2) (gaussianStandard 2) (fun _ ↦ 1) :=
   BoundedInjection.id _
 /- English proof (translation)
-The claim follows from `ShortFamily.standard GaussianField 2`.
+A detailed English derivation is pending.
 -/
 example : ShortFamily (gaussianStandard 2) (fun _ ↦ 1) := ShortFamily.standard GaussianField 2
 
 /- English proof (translation)
-The claim follows from `bundleRank_standard GaussianField 2`.
+A detailed English derivation is pending.
 -/
 example : bundleRank (gaussianStandard 2) = 2 := bundleRank_standard GaussianField 2
 
@@ -122,9 +122,9 @@ def LogDetDerivative.Statement : Prop :=
       (-(1 / 2) * ((G t)⁻¹ * G' t).trace.re) t
 
 /- English proof (translation)
-Use `⟨fun t ↦ PosDef.diagonal fun _ ↦ Complex.zero_lt_real.mpr (Real.exp_pos t), fun t i j ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [diagonal_apply_eq]`. Conclude with `(Real.hasDerivAt_exp t).ofReal_comp`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [diagonal_apply_ne _ hij]`. Conclude with `hasDerivAt_const t 0`.
+A detailed English derivation is pending.
 -/
 theorem logDet_example :
     (∀ t : ℝ, (diagonal fun _ : Fin 2 ↦ ((Real.exp t : ℝ) : ℂ)).PosDef) ∧
@@ -161,9 +161,9 @@ def Halving.Statement : Prop :=
     Tendsto (fun n ↦ a (n + 1) - a n) atTop (𝓝 0) → Tendsto a atTop (𝓝 0)
 
 /- English proof (translation)
-Establish `h0 : Tendsto (fun n : ℕ ↦ 1 / ((n : ℝ) + 1)) atTop (𝓝 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat`. Use `⟨⟨1, fun n ↦ ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Rewrite using `[abs_of_pos (by positivity), div_le_one hn]`. Combine the linear relations using `[(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `h0.comp (tendsto_id.const_mul_atTop' (by norm_num : 0 < 2))`. Simplify using `using h2.sub (h0.div_const 2)`. Establish `h1` using `h0.comp (tendsto_add_atTop_nat 1)`. Simplify using `using h1.sub h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem halving_example :
     (∃ C : ℝ, ∀ n : ℕ, |1 / ((n : ℝ) + 1)| ≤ C) ∧
@@ -238,15 +238,13 @@ def ShortLatticeBasis.standard : ShortLatticeBasis standardLattice 1 where
   norm_le i := ((EuclideanSpace.basisFun (Fin 2) ℝ).orthonormal.1 _).le
 
 /- English proof (translation)
-Establish `hn : ‖EuclideanSpace.basisFun (Fin 2) ℝ 0‖ = 1` using `(EuclideanSpace.basisFun (Fin 2) ℝ).orthonormal.1 0`. Establish `hne : (0 : EuclideanSpace ℝ (Fin 2)) ≠ EuclideanSpace.basisFun (Fin 2) ℝ 0`. Introduce `h`. Rewrite `hn` using `[← h, norm_zero]`. Conclude with `zero_ne_one hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : EuclideanSpace.basisFun (Fin 2) ℝ 0 ∈ standardLattice` using `Submodule.subset_span ⟨0, by simp⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Break down `Finset.mem_insert.mp hs with rfl | hs` into its components or cases. Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mem_singleton.mp hs]`. Conclude with `hmem`. Introduce `s hs`. Break down `Finset.mem_insert.mp hs with rfl | hs` into its components or cases. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_singleton.mp hs, hn]`. Introduce `s hs t ht hst`. Rewrite using `[neg_zero, Real.exp_zero]`. Apply the tactic sequence `rcases Finset.mem_insert.mp hs with rfl | hs <;> rcases Finset.mem_insert.mp ht with rfl | ht`. Conclude with `absurd rfl hst`.
-
-Rewrite using `[Finset.mem_singleton.mp ht, zero_sub, norm_neg, hn]`. Rewrite using `[Finset.mem_singleton.mp hs, sub_zero, hn]`. Rewrite `hst` using `[Finset.mem_singleton.mp hs, Finset.mem_singleton.mp ht]`. Conclude with `absurd rfl hst`. Conclude with `Finset.card_pair hne`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem packing_example :
     let S : Finset (EuclideanSpace ℝ (Fin 2)) := {0, EuclideanSpace.basisFun (Fin 2) ℝ 0}

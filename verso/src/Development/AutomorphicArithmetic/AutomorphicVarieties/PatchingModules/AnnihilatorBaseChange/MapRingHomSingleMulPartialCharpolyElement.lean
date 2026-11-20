@@ -7,9 +7,9 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hs : ∀ (g : G) (c : R), MonoidAlgebra.mapDomainRingHom R φ (MonoidAlgebra.single g c) = MonoidAlgebra.single (φ g) c` using `fun g c => by simp`. Simplify using `only [q2El, map_mul, map_sub, map_one, map_list_prod, List.map_ofFn, hs]`. Use `congr 4`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Function.comp_apply, if_pos hk, map_one]`. Simplify using `only [Function.comp_apply, if_neg hk, map_sub, hs, map_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mapDomain_partial_charpoly_power_zero {n : ℕ} {R G H : Type} [CommRing R] [Group G] [Group H] (φ : G →* H) (h ph ta : G)
     (u : Fin n → R) (i : Fin n) (y : R) :
@@ -25,9 +25,9 @@ private theorem mapDomain_partial_charpoly_power_zero {n : ℕ} {R G H : Type} [
   · simp only [Function.comp_apply, if_neg hk, map_sub, hs, map_one]
 
 /- English proof (translation)
-Establish `hs : ∀ (g : G) (c : R), MonoidAlgebra.mapRingHom G f (MonoidAlgebra.single g c) = MonoidAlgebra.single g (f c)` using `fun g c => by simp`. Simplify using `only [q2El, map_mul, map_sub, map_one, map_list_prod, List.map_ofFn, hs]`. Use `congr 4`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Function.comp_apply, if_pos hk, map_one]`. Simplify using `only [Function.comp_apply, if_neg hk, map_sub, hs, map_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mapRingHom_single_mul_partial_charpoly_element {n : ℕ} {R S G : Type} [CommRing R] [CommRing S] [Group G] (f : R →+* S) (h ph ta : G)
     (u : Fin n → R) (i : Fin n) (y : R) :
@@ -43,11 +43,11 @@ private theorem mapRingHom_single_mul_partial_charpoly_element {n : ℕ} {R S G 
   · simp only [Function.comp_apply, if_neg hk, map_sub, hs, map_one]
 
 /- English proof (translation)
-Establish `hc : (D.comap φ).chi z = D.chi (MonoidAlgebra.mapDomainRingHom R φ z)`. Express the relevant statement in the definitionally equal form `D.D _ (MonoidAlgebra.mapDomainRingHom (Polynomial R) φ _) = D.D _ _`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [GDet.tr, GDet.lam, hc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem comap_tr {n : ℕ} {R G H : Type} [CommRing R] [Group G] [Group H] (D : GDet n R H) (φ : G →* H)
     (z : MonoidAlgebra R G) : (D.comap φ).tr z = D.tr (MonoidAlgebra.mapDomainRingHom R φ z) := by
@@ -64,15 +64,15 @@ private theorem comap_tr {n : ℕ} {R G H : Type} [CommRing R] [Group G] [Group 
   simp only [GDet.tr, GDet.lam, hc]
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m _ a i ph ta h hph hta j`. Take `⟨V, hV0, hV⟩` from `UpperTheory.V.Pa.Core.phSees l L G0 T Λ n O r B u J D A W j`. Use `filter_upwards [Λ.ker_lim V, Λ.ph_lim V, Λ.ta_lim V] with N hk h1 h2`. Establish `lift : ∀ (g : Ph0 Λ) (x : (T.GN N).G₀) (b : Λ.G.G₀), Close (Λ.π N) Λ.πo V.toSubgroup (x : (T.GN N).Γ) (b : Λ.G.Γ) → πo0 Λ g = b → ∃ g' : Ph0 Λ, πN0 Λ N g' = x ∧ QuotientGroup.mk' (V.toSubgroup.subgroupOf (Ph0 Λ)) g = QuotientGroup.mk' (V.toSubgroup.subgroupOf (Ph0 Λ)) g'`. Introduce `g x b hc hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g', e, hv⟩` from `(UpperTheory.V.Pa.Core.closeLift _ _ _ (Λ.π N) Λ.πo V.toSubgroup hk).1 _ _ (g : Λ.Ph) hc (congrArg Subtype.val hg)`. Establish `hm : g' ∈ Ph0 Λ`. Use `(Ph0 Λ).mul_mem g.2 (hV0 hv)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Conclude with `⟨⟨g', hm⟩, Subtype.ext e, QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 hv)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨ph', e1, q1⟩` from `lift ph _ _ (h1 a) hph`. Take `⟨ta', e2, q2⟩` from `lift ta _ _ (h2 a) hta`. Use `⟨W.t.D.tr (MonoidAlgebra.single h 1 * q2El ph' ta' (W.t.U a) i (W.t.y a i)), ?_, Or.inr fun x => ?_⟩` and prove the remaining obligations. Apply `hV 1` to reduce the goal to its premises. Rewrite using `[mapDomain_partial_charpoly_power_zero, mapDomain_partial_charpoly_power_zero, q1, q2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, -, -, hU, hy⟩` from `m.ρ_maps N`. Establish `key : m.ρ N (W.t.D.tr (MonoidAlgebra.single h 1 * q2El ph' ta' (W.t.U a) i (W.t.y a i))) = (A.A N).p.D.tr (MonoidAlgebra.single (πN0 Λ N h) 1 * q2El (T.ph N a) (T.ta N a) ((A.A N).U a) i ((A.A N).s (MvPowerSeries.X (a, i))))`. Establish `h3` using `((UpperTheory.V.CA.d_gmap W.t.D).2.2.1 (m.ρ N).toRingHom (MonoidAlgebra.single h 1 * q2El ph' ta' (W.t.U a) i (W.t.y a i))).2 1`. Use `h3.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hD, mapRingHom_single_mul_partial_charpoly_element, hy a i, funext (hU a)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(comap_tr _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mapDomain_partial_charpoly_power_zero, e1, e2]`. Rewrite using `[key]`. Conclude with `(A.m N).rel2 a i _ x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.t3Q2 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W), Adapted T (r := r) → ∀ (a : Fin T.q) (i : Fin n) (ph ta h : Ph0 Λ), πo0 Λ ph = Λ.ph a → πo0 Λ ta = Λ.ta a → ∀ j : ℕ, ∀ᶠ N in (Λ.U : Filter ℕ), ∃ a' : W.R, W.t.D.tr (MonoidAlgebra.single h 1 * q2El ph ta (W.t.U a) i (W.t.y a i)) - a' ∈ maximalIdeal W.R ^ j ∧ (m.ρ N a' = 0 ∨ ∀ x : (A.A N).M, (fEl (T.Nq N) (A.A N).U * m.ρ N a') ^ A.ex • x = 0) := by

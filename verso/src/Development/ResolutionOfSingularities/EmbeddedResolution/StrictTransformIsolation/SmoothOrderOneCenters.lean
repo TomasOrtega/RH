@@ -55,7 +55,7 @@ def SmoothOrderOneCentersIsolated (V : VanishingAssignment.{u}) {k : Type u} [Fi
     C.pt ∈ (Z.support : Set ↥W) → False
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_support_iff_of_agreeNear hV (hagree x hx), hV.support_vanishing W ⟨T, hT⟩]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subset_support_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (N : W.IdealSheafData) (T : Set ↥W) (hT : IsClosed T)
@@ -66,21 +66,19 @@ theorem subset_support_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealShe
   exact hx
 
 /- English proof (translation)
-Introduce `E hE hsub`. Establish `hEirr : IsIrreducible E` using `hE.1`. Establish `hrange` using `hV.range_ι W U`. Establish `hcont : Continuous ⇑U.ι.base` using `(hV.isEmbedding_ι W U).continuous`. Establish `hmemU : ∀ y : ↥(U.toScheme), U.ι.base y ∈ (U : Set ↥W)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← hrange]`. Conclude with `Set.mem_range_self y`. Take `⟨y0, hy0⟩` from `hEirr.nonempty`. Establish `himg : IsIrreducible (U.ι.base '' E)` using `hEirr.image _ hcont.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Zc, hZpre, hAZ, hZmax⟩` from `exists_preirreducible (closure (U.ι.base '' E)) himg.closure.2`. Establish `hZirr : IsIrreducible Zc` using `⟨himg.closure.1.mono hAZ, hZpre⟩`. Establish `hZmem : Zc ∈ irreducibleComponents ↥W` using `⟨hZirr, fun u hu hZu => (hZmax u hu.2 hZu).le⟩`. Establish `hEZ : E ⊆ U.ι.base ⁻¹' Zc`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hAZ (subset_closure ⟨y, hy, rfl⟩)`. Establish `hZU : (Zc ∩ (U : Set ↥W)).Nonempty` using `⟨U.ι.base y0, hEZ hy0, hmemU y0⟩`. Establish `hZUirr : IsIrreducible (Zc ∩ (U : Set ↥W))` using `FunctorialResolution.EmbeddedResolution.isIrreducible_inter_open hZirr (hV.isOpen_opens W U) hZU`. Establish `hsubr : (Zc ∩ (U : Set ↥W)) ⊆ Set.range ⇑U.ι.base`. Rewrite using `[hrange]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.inter_subset_right`. Establish `hPirr : IsIrreducible (U.ι.base ⁻¹' (Zc ∩ (U : Set ↥W)))` using `FunctorialResolution.EmbeddedResolution.isIrreducible_preimage_of_isEmbedding (hV.isEmbedding_ι W U) hZUirr hsubr`. Establish `hPeq : U.ι.base ⁻¹' (Zc ∩ (U : Set ↥W)) = U.ι.base ⁻¹' Zc`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hy`. Conclude with `hy.1`. Introduce `hy`. Conclude with `⟨hy, hmemU y⟩`. Rewrite `hPirr` using `[hPeq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpreimageSub : U.ι.base ⁻¹' Zc ⊆ E` using `hE.2 hPirr hEZ`. Establish `hZT : Zc ∩ (U : Set ↥W) ⊆ T`. Introduce and unpack `x ⟨hxZ, hxU⟩`. Rewrite `hxU` using `[← hrange]`. Take `⟨y, rfl⟩` from `hxU`.
-
-Conclude with `hsub (hpreimageSub hxZ)`. Establish `hZcl : IsClosed Zc` using `isClosed_of_mem_irreducibleComponents Zc hZmem`. Use `hcomp Zc hZmem ?_` and prove the remaining obligations. Rewrite using `[← FunctorialResolution.EmbeddedResolution.closure_inter_open_eq hZcl hZirr (hV.isOpen_opens W U) hZU]`. Conclude with `closure_minimal hZT hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irreducibleComponents_opens_not_subset_preimage {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (T : Set ↥W) (hT : IsClosed T)
@@ -132,7 +130,7 @@ private theorem irreducibleComponents_opens_not_subset_preimage {V : VanishingAs
   exact closure_minimal hZT hT
 
 /- English proof (translation)
-Rewrite using `[hV.orderAt_congr W I (V W ⟨C.S, C.closedS⟩) x (hagree x hx)]`. Conclude with `hG.orderAt_vanishing_eq_one k W p hp ⟨C.S, C.closedS⟩ C.irredS hsm hcomp x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAt_eq_one_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
@@ -146,19 +144,17 @@ private theorem orderAt_eq_one_of_agreeNear {V : VanishingAssignment.{u}} (hV : 
   exact hG.orderAt_vanishing_eq_one k W p hp ⟨C.S, C.closedS⟩ C.irredS hsm hcomp x hx
 
 /- English proof (translation)
-Establish `hcont : Continuous ⇑U.ι.base` using `(hV.isEmbedding_ι W U).continuous`. Establish `hrange` using `hV.range_ι W U`. Establish `hxiU : C.xi ∈ (U : Set ↥W)` using `(C.genericXi.mem_open_set_iff (hV.isOpen_opens W U)).mpr ⟨C.pt, C.memPt, hptU⟩`. Establish `hxiR : C.xi ∈ Set.range ⇑U.ι.base`. Rewrite using `[hrange]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxiU`. Establish `hptR : C.pt ∈ Set.range ⇑U.ι.base`. Rewrite using `[hrange]`. Conclude with `hptU`. Take `⟨y0, hy0⟩` from `hxiR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y1, hy1⟩` from `hptR`. Establish `hS'closed : IsClosed (U.ι.base ⁻¹' C.S)` using `C.closedS.preimage hcont`. Establish `hgen' : IsGenericPoint y0 (U.ι.base ⁻¹' C.S)` using `FunctorialResolution.EmbeddedResolution.isGenericPoint_preimage_of_isInducing (hV.isEmbedding_ι W U).toIsInducing C.genericXi hy0`. Establish `hirr' : IsIrreducible (U.ι.base ⁻¹' C.S)`. Rewrite using `[← hgen']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIrreducible_singleton.closure`. Establish `hmemPt : y1 ∈ U.ι.base ⁻¹' C.S` using `by show U.ι.base y1 ∈ C.S`. Rewrite using `[hy1]`. Conclude with `C.memPt`. Use `hIso ⟨U.ι.base ⁻¹' C.S, y0, y1, hS'closed, hirr', hgen', hmemPt⟩ (hG.smooth_opens_ι_comp k W p U hp) hm (hG.smooth_vanishing_opens k W p U ⟨C.S, C.closedS⟩ ⟨U.ι.base ⁻¹' C.S, hS'closed⟩ rfl hsm) (irreducibleComponents_opens_not_subset_preimage hV W U C.S C.closedS hcomp) ?_ ?_ ?_ …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hmem`. Apply `hxi` to reduce the goal to its premises. Establish `h1 : (1 : ℕ∞) ≤ orderAt (Z.comap U.ι) y0` using `(one_le_orderAt_iff_mem_support (Z.comap U.ι) y0).mpr hmem`. Rewrite `h1` using `[hV.orderAt_comap W U Z y0, hy0]`. Conclude with `(one_le_orderAt_iff_mem_support Z C.xi).mp h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Set.disjoint_left]`. Introduce `y hy hy2`. Conclude with `(Set.disjoint_left.mp hdisj hy) hy2`. Introduce `y hy`. Establish `h1` using `hV.agreeNear_comap W U I (V W ⟨C.S, C.closedS⟩) y (hagree _ hy)`.
-
-Rewrite `h1` using `[hV.comap_vanishing W ⟨C.S, C.closedS⟩ U ⟨U.ι.base ⁻¹' C.S, hS'closed⟩ rfl]`. Conclude with `h1`. Establish `h1 : (1 : ℕ∞) ≤ orderAt Z C.pt` using `(one_le_orderAt_iff_mem_support Z C.pt).mpr hpt`. Rewrite `h1` using `[← hy1, ← hV.orderAt_comap W U Z y1]`. Conclude with `(one_le_orderAt_iff_mem_support (Z.comap U.ι) y1).mp h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem false_of_smoothOrderOneCentersIsolated_opens {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
@@ -218,33 +214,29 @@ theorem false_of_smoothOrderOneCentersIsolated_opens {V : VanishingAssignment.{u
     exact (one_le_orderAt_iff_mem_support (Z.comap U.ι) y1).mp h1
 
 /- English proof (translation)
-Establish `hxiS : C.xi ∈ C.S` using `C.genericXi.mem`. Establish `hordxi : orderAt N C.xi = 1` using `orderAt_eq_one_of_agreeNear hV hG C hp hsm hcomp hagree hxiS`. Establish `hxiN : C.xi ∈ (N.support : Set ↥W)` using `(one_le_orderAt_iff_mem_support N C.xi).mp (le_of_eq hordxi.symm)`. Consider the cases of `hJ : J with`. Consider the case `none`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `false_of_isOpen_preimage_support hV W N Z ⟨C.S, C.S, C.xi, C.xi, C.pt, C.closedS, C.closedS, C.irredS, C.irredS, C.genericXi, C.genericXi, C.memPt, C.memPt⟩ U H hptU hpt hZH hNsubH (hJnone hJ) hxi hxiN`. Consider the case `some Jz`. Establish `hIH` using `ih Jz hJ`. Establish `hxiU : C.xi ∈ (U : Set ↥W)` using `(C.genericXi.mem_open_set_iff (hV.isOpen_opens W U)).mpr ⟨C.pt, C.memPt, hptU⟩`. Establish `hCsubN : C.S ⊆ (N.support : Set ↥W)` using `subset_support_of_agreeNear hV W N C.S C.closedS hagree`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsubH : (U.ι.base ⁻¹' C.S) ⊆ (H.support : Set ↥(U.toScheme))`. Introduce `y hy`. Apply `hNsubH` to reduce the goal to its premises. Rewrite using `[FunctorialResolution.EmbeddedResolution.support_comap_eq]`. Conclude with `hCsubN hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y0, hy0⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U H C.S hsubH C.xi hxiU hxiS`. Take `⟨y1, hy1⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U H C.S hsubH C.pt hptU C.memPt`. Establish `hS'closed : IsClosed ((H.subschemeι ≫ U.ι).base ⁻¹' C.S)` using `isClosed_preimage_subschemeι_comp_ι hV W U H C.S C.closedS`. Establish `hgen' : IsGenericPoint y0 ((H.subschemeι ≫ U.ι).base ⁻¹' C.S)` using `isGenericPoint_preimage_subschemeι_comp_ι hV W U H C.S C.xi C.genericXi y0 hy0`. Establish `hirr' : IsIrreducible ((H.subschemeι ≫ U.ι).base ⁻¹' C.S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hgen']`. Conclude with `isIrreducible_singleton.closure`. Establish `hmemPt : y1 ∈ (H.subschemeι ≫ U.ι).base ⁻¹' C.S` using `by show (H.subschemeι ≫ U.ι).base y1 ∈ C.S`. Rewrite using `[hy1]`. Conclude with `C.memPt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hagree' : ∀ x ∈ (H.subschemeι ≫ U.ι).base ⁻¹' C.S, AgreeNear Jz (V H.subscheme ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, hS'closed⟩) x`. Introduce `x hx`. Establish `h1 : AgreeNear ((N.comap U.ι).comap H.subschemeι) (V H.subscheme ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, hS'closed⟩) x` using `hV.agreeNear_vanishing_restrict W N U H ⟨C.S, C.closedS⟩ ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, hS'closed⟩ x rfl hsubH (hagree _ hx)`. Establish `h2 : AgreeNear Jz ((N.comap U.ι).comap H.subschemeι) x` using `hJloc Jz hJ x (Set.disjoint_left.mp hdisj hx)`. Conclude with `hV.agreeNear_trans H.subscheme Jz ((N.comap U.ι).comap H.subschemeι) (V H.subscheme ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, hS'closed⟩) x h2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS'J : ((H.subschemeι ≫ U.ι).base ⁻¹' C.S) ⊆ (Jz.support : Set ↥(H.subscheme))` using `subset_support_of_agreeNear hV H.subscheme Jz ((H.subschemeι ≫ U.ι).base ⁻¹' C.S) hS'closed hagree'`. Establish `hcomp' : ∀ E ∈ irreducibleComponents ↥(H.subscheme), ¬ E ⊆ (H.subschemeι ≫ U.ι).base ⁻¹' C.S`. Introduce `E hE hEsub`. Conclude with `hV.not_subset_support_of_nonzeroOnComponents H.subscheme Jz (hJcomp Jz hJ) E hE (hEsub.trans hS'J)`. Establish `hsupp : ∀ x : ↥(H.subscheme), x ∈ ((((Z.comap U.ι).comap H.subschemeι)).support : Set ↥(H.subscheme)) ↔ (H.subschemeι ≫ U.ι).base x ∈ (Z.support : Set ↥W)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : (H.subschemeι.base x) ∈ ((Z.comap U.ι).support : Set ↥(U.toScheme))`. Rewrite `hx` using `[FunctorialResolution.EmbeddedResolution.support_comap_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `h2 : (U.ι.base (H.subschemeι.base x)) ∈ (Z.support : Set ↥W)`. Rewrite `h1` using `[FunctorialResolution.EmbeddedResolution.support_comap_eq]`. Conclude with `h1`. Rewrite using `[hV.base_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h2`. Introduce `hx`. Rewrite `hx` using `[hV.base_comp]`. Establish `h1 : (H.subschemeι.base x) ∈ ((Z.comap U.ι).support : Set ↥(U.toScheme))`. Rewrite using `[FunctorialResolution.EmbeddedResolution.support_comap_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[FunctorialResolution.EmbeddedResolution.support_comap_eq]`. Conclude with `h1`. Establish `hxi' : y0 ∉ ((((Z.comap U.ι).comap H.subschemeι)).support : Set ↥(H.subscheme))`. Introduce `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hxi` to reduce the goal to its premises. Establish `h1` using `(hsupp y0).mp hmem`. Rewrite `h1` using `[hy0]`. Conclude with `h1`. Establish `hpt' : y1 ∈ ((((Z.comap U.ι).comap H.subschemeι)).support : Set ↥(H.subscheme))`.
-
-Use `(hsupp y1).mpr ?_` and prove the remaining obligations. Rewrite using `[hy1]`. Conclude with `hpt`. Establish `hdisj' : Disjoint ((H.subschemeι ≫ U.ι).base ⁻¹' C.S) ((H.subschemeι ≫ U.ι).base ⁻¹' Mem)`. Rewrite using `[Set.disjoint_left]`.
-
-Introduce `x hx hx2`. Conclude with `(Set.disjoint_left.mp hdisj hx) hx2`. Establish `hsmooth : Smooth (H.subschemeι ≫ (U.ι ≫ p))` using `((isSmoothDivisor_iff (U.ι ≫ p) H).mp hH).2`. Establish `hsmV : Smooth ((V H.subscheme ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, hS'closed⟩).subschemeι ≫ (H.subschemeι ≫ (U.ι ≫ p)))` using `hG.smooth_vanishing_hypersurface k W p U H hH ⟨C.S, C.closedS⟩ ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, hS'closed⟩ rfl hsubH hsm`. Conclude with `hIH ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, y0, y1, hS'closed, hirr', hgen', hmemPt⟩ hsmooth hm hsmV hcomp' hxi' hdisj' hagree' hpt'`.
+A detailed English derivation is pending.
 -/
 private theorem false_of_isSmoothDivisor_of_smoothOrderOneCentersIsolated {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
@@ -372,19 +364,17 @@ private theorem false_of_isSmoothDivisor_of_smoothOrderOneCentersIsolated {V : V
       hsmooth hm hsmV hcomp' hxi' hdisj' hagree' hpt'
 
 /- English proof (translation)
-Use `PrincipalizationCertificate.rec (motive_1 := fun W p I m Mem Z _ => SmoothOrderOneCentersIsolated V W p I m Mem Z) (motive_2 := fun W p N μ Mem Z _ => SmoothOrderOneCentersIsolated V W p N μ Mem Z) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Introduce `W p I m Mem Z hZM C hp hm hsm hcomp hxi hdisj hagree hpt`. Conclude with `(Set.disjoint_left.mp hdisj C.memPt) (hZM hpt)`. Introduce `W p I m Mem Z hm2 C hp hm hsm hcomp hxi hdisj hagree hpt`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W p I m Mem Z M N μ hI hM hmu hZc hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt`. Establish `hIN : ∀ x ∈ C.S, AgreeNear I N x`. Introduce `x hx`. Establish `hxM : x ∉ (M.support : Set ↥W)` using `fun hmm => (Set.disjoint_left.mp hdisj hx) (hM hmm)`. Take `⟨Uc, hUcx, hUcdisj⟩ : ∃ Uc : W.Opens, x ∈ Uc ∧ Disjoint ((Uc : Set ↥W)) (M.support : Set ↥W)` from `⟨⟨(M.support : Set ↥W)ᶜ, (hV.isClosed_support W M).isOpen_compl⟩, hxM, disjoint_compl_left⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Uc, hUcx, ?_⟩` and prove the remaining obligations. Establish `hMtop : M.comap Uc.ι = ⊤` using `FunctorialResolution.EmbeddedResolution.comap_ι_eq_top_of_disjoint M Uc hUcdisj`. Rewrite using `[hI, hV.comap_mul W Uc.toScheme Uc.ι M N, hMtop, hV.top_mul]`. Establish `hagreeN : ∀ x ∈ C.S, AgreeNear N (V W ⟨C.S, C.closedS⟩) x` using `fun x hx => hV.agreeNear_trans W N I (V W ⟨C.S, C.closedS⟩) x (agreeNear_symm (hIN x hx)) (hagree x hx)`. Break down `Nat.lt_or_ge μ 2 with h2 | h2` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hmu1 : μ = 1` using `by omega`. Conclude with `ih C hp hmu1 hsm hcomp hxi hdisj hagreeN hpt`. Establish `hord : orderAt N C.pt = 1` using `orderAt_eq_one_of_agreeNear hV hG C hp hsm hcomp hagreeN C.memPt`. Establish `hmem : C.pt ∈ orderAtLeastLocus N μ` using `hZc hpt`. Rewrite `hmem` using `[FunctorialResolution.EmbeddedResolution.mem_orderAtLeastLocus_iff, hord]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hle : μ ≤ 1` using `by exact_mod_cast hmem`. Use linear arithmetic over natural numbers and integers. Introduce `W p I m Mem Z U hU hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt`. Establish `hz : C.pt ∈ Z.support` using `hpt`. Conclude with `false_of_smoothOrderOneCentersIsolated_opens hV hG p I Z m Mem C (U C.pt hz) (hU C.pt hz) (ih C.pt hz) hp hm hsm hcomp hxi hdisj hagree hpt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Introduce `W p N μ Mem Z hZM C hp hm hsm hcomp hxi hdisj hagree hpt`. Conclude with `(Set.disjoint_left.mp hdisj C.memPt) (hZM hpt)`. Introduce `W p N μ Mem Z hmu2 C hp hm hsm hcomp hxi hdisj hagree hpt`. Use linear arithmetic over natural numbers and integers. Introduce `W p N μ Mem Z U hU hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt`.
-
-Establish `hz : C.pt ∈ Z.support` using `hpt`. Conclude with `false_of_smoothOrderOneCentersIsolated_opens hV hG p N Z μ Mem C (U C.pt hz) (hU C.pt hz) (ih C.pt hz) hp hm hsm hcomp hxi hdisj hagree hpt`. Introduce `W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ih C hp hm hsm hcomp hxi hdisj hagree hpt`. Establish `hz : C.pt ∈ Z.support` using `hpt`. Conclude with `false_of_isSmoothDivisor_of_smoothOrderOneCentersIsolated hV hG p N Z μ Mem C (U C.pt hz) (H C.pt hz) (hU C.pt hz) (hH C.pt hz) (hNsubH C.pt hz) (hZH C.pt hz) (J C.pt hz) (hJnone C.pt hz) (hJcomp C.pt hz) (hJloc C.pt hz) (fun Jz hJ => ih C.pt hz Jz hJ) hp hm hsm hcomp hxi hdisj h …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOrderOneCentersIsolated_of_principalizationCertificate {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}

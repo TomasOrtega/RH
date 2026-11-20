@@ -3,25 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `G R _ _ _ _ _ n ρ hfg h1 hmul hρ`. Take `⟨s, hs, hden⟩` from `hfg`. Use `haveI : Finite s := hs.to_subtype`. Establish `hinv : ∀ g, ρ g⁻¹ * ρ g = 1` using `fun g => by rw [← hmul, inv_mul_cancel, h1]`. Establish `hinv' : ∀ g, ρ g * ρ g⁻¹ = 1` using `fun g => by rw [← hmul, mul_inv_cancel, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1 : ∀ z : G → Matrix (Fin n) (Fin n) R, (∀ g h, z (g * h) = z g + ρ g * z h * ρ g⁻¹) → z 1 = 0`. Introduce `z hz`. Use `hz 1 1` as an intermediate fact. Simplify `this` using `[h1]`. Establish `hzinv : ∀ z : G → Matrix (Fin n) (Fin n) R, (∀ g h, z (g * h) = z g + ρ g * z h * ρ g⁻¹) → ∀ g, z g⁻¹ = ρ g⁻¹ * (-z g) * ρ g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz g`. Establish `e` using `hz g g⁻¹`. Rewrite `e` using `[mul_inv_cancel, hz1 z hz]`. Establish `e2 : ρ g * z g⁻¹ * ρ g⁻¹ = -z g` using `eq_neg_of_add_eq_zero_right e.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hinv, Matrix.mul_one, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Use `_ = ρ g⁻¹ * (-z g) * ρ g := by rw [e2]`. Apply `Set.Finite.of_finite_image (f := fun z : G → Matrix (Fin n) (Fin n) R => fun x : s => z x) (Set.toFinite _)` to reduce the goal to its premises. Introduce and unpack `z ⟨hzl, hz⟩ z' ⟨hzl', hz'⟩ he`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Set `H : Subgroup G` to `{ carrier := {g | z g = z' g} mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `z (a * b) = z' (a * b)`. Express the relevant statement in the definitionally equal form `z a = z' a at ha`. Express the relevant statement in the definitionally equal form `z b = z' b at hb`. Rewrite using `[hz, hz', ha, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `one_mem' := by`. Express the relevant statement in the definitionally equal form `z 1 = z' 1`. Rewrite using `[hz1 z hz, hz1 z' hz']`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `z a = z' a at ha`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `z a⁻¹ = z' a⁻¹`. Rewrite using `[hzinv z hz, hzinv z' hz', ha] }`. Establish `hsH : Subgroup.closure s ≤ H` using `(Subgroup.closure_le H).2 fun x hx => congrFun he ⟨x, hx⟩`. Establish `hcl : IsClosed (H : Set G)`. Establish `hd` using `hzl.comp₂ hzl' (fun a b => a - b)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hc` using `hd.isClosed_fiber 0`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `sub_eq_zero.symm`. Establish `hU : (H : Set G) = Set.univ`.
-
-Apply `Set.eq_univ_of_univ_subset` to reduce the goal to its premises. Rewrite using `[← hden.closure_eq]`. Conclude with `closure_minimal (fun x hx => hsH hx) hcl`. Use function extensionality and compare the values at `g`. Establish `hg : g ∈ (H : Set G)` using `hU ▸ Set.mem_univ g`.
-
-Conclude with `hg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.coc_fin :
     ∀ (G R : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CommRing R] [Finite R] (n : ℕ) (ρ : G → Matrix (Fin n) (Fin n) R), TopFG G → ρ 1 = 1 → (∀ g h, ρ (g * h) = ρ g * ρ h) → IsLocallyConstant ρ → {z : G → Matrix (Fin n) (Fin n) R | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ρ g * z h * ρ g⁻¹}.Finite := by

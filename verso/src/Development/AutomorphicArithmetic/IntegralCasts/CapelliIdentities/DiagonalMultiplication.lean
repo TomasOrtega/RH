@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R _ X Y hX hY a`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single a (fun b _ hb => ?_) (fun h => absurd (Finset.mem_univ a) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[hX a b h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY b a h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.UpperTriangularThreeDiagonalOfMul.diag_mul :
     ∀ {R : Type} [inst : CommRing R]

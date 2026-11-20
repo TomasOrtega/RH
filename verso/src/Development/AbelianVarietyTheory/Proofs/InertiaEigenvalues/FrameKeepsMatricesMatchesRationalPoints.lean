@@ -22,7 +22,7 @@ namespace GlobalTheory.MtReadRat
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Establish `: Formalism.UG.cT σB (g.map φ) = (Formalism.UG.cT σA g).map φ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hc]`. Rewrite using `[this, Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (σA : A →+* A) (σB : B →+* B)
     (hc : ∀ x, φ (σA x) = σB (φ x)) {m : Type} [Fintype m] [DecidableEq m] (J g : Matrix m m A) :
@@ -34,7 +34,7 @@ theorem cT_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (σA : A 
 variable {D : D7}
 
 /- English proof (translation)
-Establish `: (finHom V h).1 a b = Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((matHom V h).1 a b)` using `rfl`. Rewrite using `[this, hX]`. Simplify using `[Formalism.UG.bc, inclR, incA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finHom_entry (V : HSp D) (h : GA D V) (X : GL (Fin V.rank) D.host.E) (hX : matHom V h = Formalism.UG.bc (incA D) X)
     (a b : Fin V.rank) : (finHom V h).1 a b = inclR (F := D.host.F) (Af D.host.F) (X.1 a b) := by
@@ -43,9 +43,9 @@ theorem finHom_entry (V : HSp D) (h : GA D V) (X : GL (Fin V.rank) D.host.E) (hX
   simp [Formalism.UG.bc, inclR, incA]
 
 /- English proof (translation)
-Establish `e' : finHom V γ'.1 = finHom V (P.ψ κ)` using `congrArg Subtype.val e`. Establish `h1` using `hId κ a c`. Establish `h2 : finMat D.sp.cm.sig V.gram (P.ψ κ) a c = inclR (F` using `D.host.F) (Af D.host.F) (γE.val a c) := by show (finHom V (P.ψ κ)).1 a c = _`. Rewrite using `[← e']`. Apply the tactic sequence `exact finHom_entry V γ'.1 γE hR a c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Rewrite using `[← (RingEquiv.eq_symm_apply _).1 h1]`. Conclude with `GlobalTheory.Mem.R3.DatApi.swapCast_one_tmul hF _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_of_ratF {V : HSp D} (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V V.rank)
     (hId : ∀ κ a b, finMat D.sp.cm.sig V.gram (P.ψ κ) a b =
@@ -65,21 +65,19 @@ theorem entry_of_ratF {V : HSp D} (hF : D.host.F = maximalRealSubfield D.host.E)
   exact GlobalTheory.Mem.R3.DatApi.swapCast_one_tmul hF _
 
 /- English proof (translation)
-Establish `key` using `entry_of_ratF hF P hId`. Use `haveI : Nontrivial (Af D.host.F) := Formalism.L2.DIV.af_nontrivial D.host.F`. Use `haveI : Nontrivial (ReciprocityTheory.Aut.AFplus D.host.E) := Formalism.L2.DIV.af_nontrivial (maximalRealSubfield D.host.E)`. Establish `hinjR : Function.Injective (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) := Algebra.TensorProduct.includeRight_injective (RingHom.injective _)`. Establish `hinjL : Function.Injective (Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E)` using `Algebra.TensorProduct.includeLeft_injective (S := maximalRealSubfield D.host.E) (RingHom.injective _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ0, hγ0, e0⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)`. Establish `hγent : ∀ a b, (γ.1.1 : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)) a b = Algebra.TensorProduct.includeLeftRingHom ((γ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b)` using `fun a b => by`. Rewrite using `[← e0]`. Conclude with `Matrix.GeneralLinearGroup.map_apply _ _ _ _`. Establish `hfin : ∀ a b, (finHom V (P.ψ γ.1)).1 a b = inclR (F` using `D.host.F) (Af D.host.F) ((γ0 : Matrix _ _ D.host.E) a b) := fun a b => by show finMat D.sp.cm.sig V.gram (P.ψ γ.1) a b = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hId]`. Simplify using `only [Fin.cast_eq_self]`. Rewrite using `[hγent, RingEquiv.symm_apply_eq]`. Conclude with `(GlobalTheory.Mem.R3.DatApi.swapCast_one_tmul hF _).symm`. Establish `hsnd : ∀ x : AF D.host.F ⊗[D.host.F] D.host.E, (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Af D.host.F) D.sp.cm.sig ((Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRing …` using `fun x => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Establish `hUA` using `(P.ψ γ.1).2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((P.ψ γ.1).1.1) * JR (AF D.host.F) V.gram * (P.ψ γ.1).1.1 = JR (AF D.host.F) V.gram at hUA`. Establish `hUf` using `congrArg (fun M => M.map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom) hUA`. Rewrite `hUf` using `[← cT_map _ _ _ hsnd]`. Establish `hM : ((P.ψ γ.1).1.1 : Matrix (Fin V.rank) (Fin V.rank) _).map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = (γ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F` using `D.host.F) (Af D.host.F)) := by`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hfin a b`. Establish `hJ : (JR (AF D.host.F) V.gram).map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = V.gram.map (inclR (F` using `D.host.F) (Af D.host.F)) := by`. Use extensionality with `a b`. Simplify using `[JR, inclR]`. Establish `hci : ∀ (R : Type) [CommRing R] [Algebra D.host.F R] (x : D.host.E), inclR (F` using `D.host.F) R (D.sp.cm.sig x) = sigR R D.sp.cm.sig (inclR (F := D.host.F) R x) := fun R _ _ x => by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sigR, inclR, Algebra.TensorProduct.map_tmul]`. Rewrite `hUf` using `[hM, hJ, cT_map _ _ _ (hci (Af D.host.F))]`. Establish `hγ0' : γ0 ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram` using `Matrix.map_injective hinjR hUf`. Establish `hHR : Formalism.UG.bc (inclR (F` using `D.host.F) (AF D.host.F)) γ0 ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by show Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((γ0 : Matrix _ _ D.host.E).map (inclR (F := D.host.F) (AF D.host.F))) * JR (AF D.host.F) V.gram * (γ0 : Matrix _ _ D.host.E).map (inclR (F := D.host.F) ( …`. Rewrite using `[JR, cT_map _ _ _ (hci (AF D.host.F))]`.
-
-Conclude with `congrArg (fun M => Matrix.map M (inclR (F := D.host.F) (AF D.host.F))) hγ0'`. Use `⟨⟨⟨_, hHR⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨γ0, hγ0', rfl⟩)⟩, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Use extensionality with `a b`. Apply the tactic sequence `refine (finHom_entry V ⟨_, hHR⟩ γ0 rfl a b).trans ?_`. Conclude with `(hfin a b).symm`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ratMatch_fwd {V : HSp D} (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V V.rank)
     (hId : ∀ κ a b, finMat D.sp.cm.sig V.gram (P.ψ κ) a b =
@@ -143,17 +141,15 @@ theorem ratMatch_fwd {V : HSp D} (hF : D.host.F = maximalRealSubfield D.host.E) 
   exact (hfin a b).symm
 
 /- English proof (translation)
-Establish `key` using `entry_of_ratF hF P hId`. Use `haveI : Nontrivial (Af D.host.F) := Formalism.L2.DIV.af_nontrivial D.host.F`. Use `haveI : Nontrivial (ReciprocityTheory.Aut.AFplus D.host.E) := Formalism.L2.DIV.af_nontrivial (maximalRealSubfield D.host.E)`. Establish `hinjR : Function.Injective (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) := Algebra.TensorProduct.includeRight_injective (RingHom.injective _)`. Establish `hinjL : Function.Injective (Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E)` using `Algebra.TensorProduct.includeLeft_injective (S := maximalRealSubfield D.host.E) (RingHom.injective _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γE, hγE, eE⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ'.2)`. Establish `hR : Bridge.IsRatMat V γ' γE` using `eE.symm`. Use `set κ := (frameEquiv P).symm (Bridge.ratF V γ') with hκ`. Establish `he : Bridge.ratF V γ' = frameEquiv P κ` using `((frameEquiv P).apply_symm_apply _).symm`. Establish `hent` using `key κ γ' γE he hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hmat : ((κ : GL (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)) : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)) = (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map Algebra.TensorProduct.includeLeftRingHom`. Use extensionality with `a c`. Conclude with `hent a c`. Establish `hU` using `κ.2`. Simplify using `only [ReciprocityTheory.Aut.GA, ReciprocityTheory.Aut.UGroup, Subgroup.mem_mk, Set.mem_ofPred_eq] at hU`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc : ∀ x : D.host.E, (Algebra.TensorProduct.includeLeftRingHom : D.host.E →+* ReciprocityTheory.Aut.AL D.host.E) ((IsCMField.complexConj D.host.E : D.host.E →+* D.host.E) x) = ReciprocityTheory.Aut.conjAL D.host.E (Algebra.TensorProduct.includeLeftRingHom x)` using `fun x => by`. Simplify using `[ReciprocityTheory.Aut.conjAL, Algebra.TensorProduct.map_tmul]`. Establish `hcT : ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map Algebra.TensorProduct.includeLeftRingHom) = (ReciprocityTheory.Aut.conjT (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E) (γE : Matrix _ _ _)).m …`. Use extensionality with `i j`. Simplify using `only [ReciprocityTheory.Aut.conjT, Matrix.transpose_apply, Matrix.map_apply, hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : γE ∈ ReciprocityTheory.Aut.GQ0 D.host.E V.rank` using `by show (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * ReciprocityTheory.Aut.conjT (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E) γE = 1`. Apply `Matrix.map_injective hinjL` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, ← hcT, ← hmat, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hU`.
-
-Use `⟨⟨κ, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨γE, h0, Units.ext ?_⟩)⟩, he⟩` and prove the remaining obligations. Rewrite using `[hmat]`. Use extensionality with `a c`. Conclude with `Matrix.GeneralLinearGroup.map_apply _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ratMatch_bwd {V : HSp D} (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V V.rank)
     (hId : ∀ κ a b, finMat D.sp.cm.sig V.gram (P.ψ κ) a b =
@@ -206,7 +202,7 @@ namespace GlobalTheory.MtRead
 open GlobalTheory.MtReadRat Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Introduce `D V n hF P ⟨hn, hId⟩`. Substitute `hn` using the available equality. Use `⟨⟨ratMatch_fwd hF P hId, ratMatch_bwd hF P hId⟩, fun hn γ γ' γE e hR a c => ?_⟩` and prove the remaining obligations. Simplify `entry_of_ratF hF P hId γ.1 γ' γE e hR a c` using `only [Fin.cast_eq_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratMatch_of_idFrame : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n), IdFrame hF P → RatMatch (frameEquiv P) ∧ ∀ (hn : V.rank = n) (γ : ReciprocityTheory.Aut.GQ D.host.E n) (γ' : Formalism.L2.Theta.GQ V) (γE : GL (Fin V.rank) D.host.E), Bridge.ratF V γ' = frameEquiv P γ → Bridge.IsRatMat V γ' γE → ∀ a c, (((γ : GAf D.host.E n) : GL (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) (Fin.cast hn a) (Fin.cast hn c) = Algebra.TensorProduct.includeLeftRingHom (γE.val a c) := by
   intro D V n hF P ⟨hn, hId⟩

@@ -20,9 +20,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h : cT (σ : E →+* E) (γ : Matrix (Fin n) (Fin n) E) * J * (γ : Matrix (Fin n) (Fin n) E) = J` using `hγ`. Establish `e : (atInf emb (γ : Matrix (Fin n) (Fin n) E) τ)ᴴ = (cT (σ : E →+* E) (γ : Matrix (Fin n) (Fin n) E)).map (emb τ)`. Use extensionality with `a b`. Simplify using `[atInf, cT, conjTranspose_apply, hc]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [gramC, atInf]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_infinity_unitary (emb : ι → E →+* ℂ) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
     (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J) (τ : ι) :
@@ -43,7 +43,7 @@ def frameTranslate (emb : ι → E →+* ℂ) (hc : ∀ τ x, emb τ (σ x) = st
     rw [det_mul]; exact (isUnit_det_atInf emb γ τ).mul (y.2 τ)⟩
 
 /- English proof (translation)
-Introduce `τ` and use `by have e : (atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * y.1 τ)ᴴ * gramC J emb τ * (atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * y.1 τ) = (y.1 τ)ᴴ * ((atInf emb (γ : Matrix (Fin n) (Fin n) E) τ)ᴴ * gramC J emb τ * atInf emb (γ : Matrix (Fin n) (Fin n) E) τ) * y.1 τ := by rw [con …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frame_translate_is_orthonormal (emb : ι → E →+* ℂ) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
     (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J) (y : Frames (gramC J emb)) (hy : y.IsON) :
@@ -61,7 +61,7 @@ theorem frame_translate_is_orthonormal (emb : ι → E →+* ℂ) (hc : ∀ τ x
   exact hy τ
 
 /- English proof (translation)
-Simplify using `only [atInf]`. Rewrite using `[← Matrix.map_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem at_infinity_mul_inv (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) :
     atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ = 1 := by
@@ -70,7 +70,7 @@ theorem at_infinity_mul_inv (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ :
   simp
 
 /- English proof (translation)
-Apply `hg γ hγ x x' κ hx` to reduce the goal to its premises. Introduce `τ`. Use `show y.1 τ = atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * (atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ)`. Rewrite using `[← Matrix.mul_assoc, at_infinity_mul_inv, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_value_translate (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
@@ -89,16 +89,16 @@ end Gen
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-The claim follows from `D.sp.cm.cmUnram.2.1 (embT D τ) x`.
+A detailed English derivation is pending.
 -/
 theorem embedding_conj_compat (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     embT D τ (sigD D x) = starRingEnd ℂ (embT D τ x) :=
   D.sp.cm.cmUnram.2.1 (embT D τ) x
 
 /- English proof (translation)
-Take `⟨g, hg, hgφ⟩` from `((Tf.val i hi h0).Fi φ).1 hφ`. Use `⟨g, hg, fun c => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Use `congrFun (congrFun hgφ c) ((Tf.val i hi h0).eY z)` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem forms_from_adelic_function (Tf : Forms0 D u) (i : ℕ) (hi : i ≤ D.R.m) (h0 : i = 0) (φ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ)
     (hφ : φ ∈ (D.fm u).Fi i) :

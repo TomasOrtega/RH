@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.Mum.SecEmb.Fib
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_completeTrait_over_closedPoint_modification R hR M x₀ hx`.
+A detailed English derivation is pending.
 -/
 theorem trait (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : Base R) (M : Modif R) (x₀ : M.S)
     (hx : M.π x₀ = closedPoint R) :
@@ -26,7 +26,7 @@ theorem trait (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : Base R)
   GlobalTheory.T.exists_completeTrait_over_closedPoint_modification R hR M x₀ hx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_common_field_of_fieldPoints_same_point X K₁ K₂ a b h`.
+A detailed English derivation is pending.
 -/
 theorem compositum (X : Scheme.{0}) (K₁ K₂ : Type) [Field K₁] [Field K₂] (a : Sp K₁ ⟶ X) (b : Sp K₂ ⟶ X)
     (h : a (closedPoint K₁) = b (closedPoint K₂)) :
@@ -34,7 +34,7 @@ theorem compositum (X : Scheme.{0}) (K₁ K₂ : Type) [Field K₁] [Field K₂]
   GlobalTheory.T.exists_common_field_of_fieldPoints_same_point X K₁ K₂ a b h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.groupFibre_baseChange_common_field_iso S G W' G' ξ' β hβ k Y κ' e' he' Ω x κ Ω' io i₂ hc hκ`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeIso (S : Scheme.{0}) (G : Over S) [GrpObj G] (W' : Type) [CommRing W'] [IsLocalRing W']
     (G' : Over (Sp W')) [GrpObj G'] (ξ' : Sp W' ⟶ S) (β : G'.left ⟶ G.left) (hβ : IsGrpPullback G' G ξ' β)
@@ -50,7 +50,7 @@ theorem baseChangeIso (S : Scheme.{0}) (G : Over S) [GrpObj G] (W' : Type) [Comm
   GlobalTheory.T.groupFibre_baseChange_common_field_iso S G W' G' ξ' β hβ k Y κ' e' he' Ω x κ Ω' io i₂ hc hκ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.morphismToProjSpace_sectionPullback_comp R N X Y Z L s h g f hs₁ hs₂`.
+A detailed English derivation is pending.
 -/
 theorem toProj_secPull_secPull (R : Type) [CommRing R] (N : ℕ) (X Y Z : Scheme.{0}) (L : LB X)
     (s : Fin (N + 1) → L.Sec) (h : Y ⟶ X) (g : Z ⟶ Y) (f : Z ⟶ Sp R)
@@ -61,7 +61,7 @@ theorem toProj_secPull_secPull (R : Type) [CommRing R] (N : ℕ) (X Y Z : Scheme
   GlobalTheory.T.morphismToProjSpace_sectionPullback_comp R N X Y Z L s h g f hs₁ hs₂
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem toProj_congr {R : Type} [CommRing R] {N : ℕ} {X Z : Scheme.{0}} {L : LB X} (s : Fin (N + 1) → L.Sec)
     {a b : Z ⟶ X} (hab : a = b) {f g : Z ⟶ Sp R} (hfg : f = g)
@@ -70,38 +70,36 @@ theorem toProj_congr {R : Type} [CommRing R] {N : ℕ} {X Z : Scheme.{0}} {L : L
   subst hab; subst hfg; rfl
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `R _ _ _ hR M G _ hG B L hB hL N s θ Y _ hY j hj hji O hT hH Ω _ x κ hx`. Establish `hcl : ∀ q : Sp Ω, M.π (x q) = closedPoint R` using `fun q => by`. Rewrite using `[← Scheme.Hom.comp_apply, hx, Subsingleton.elim q (closedPoint Ω)]`. Conclude with `IsLocalRing.comap_closedPoint (κ.comp (residue R))`. Take `⟨W, _, _, _, φ, ξ, hW, hφi, hφl, hξ, hξ0⟩` from `trait R hR M _ (hcl (closedPoint Ω))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', _, _, _, io', G', _, β, κ', e', hW', hio', hiof, hβ, hκ', he', hptw⟩` from `hT W hW φ ξ hφi hφl hξ`. Establish `hio0 : (spMap io') (closedPoint W') = closedPoint W`. Use `letI := io'.toAlgebra`. Establish `: Algebra.IsIntegral W W'` using `⟨fun a => hiof.to_isIntegral a⟩`. Conclude with `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal W')))`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres0 : (spMap (residue W')) (closedPoint (ResidueField W')) = closedPoint W'` using `IsLocalRing.comap_closedPoint (residue W')`. Establish `hpt0 : (spMap (residue W') ≫ spMap io' ≫ ξ) (closedPoint (ResidueField W')) = x (closedPoint Ω)` using `by show ξ (spMap io' (spMap (residue W') (closedPoint _))) = _`. Rewrite using `[hres0, hio0, hξ0]`. Take `⟨Ω', _, io, i₂, hc⟩` from `compositum M.S Ω (ResidueField W') x _ hpt0.symm`. Establish `hκ : io.comp κ = i₂.comp κ'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : spMap ((io.comp κ).comp (residue R)) = spMap ((i₂.comp κ').comp (residue R))`. Rewrite using `[RingHom.comp_assoc, spMap_comp', ← hx, RingHom.comp_assoc, hκ', spMap_comp', spMap_comp', spMap_comp', ← hξ, ← Category.assoc, hc]`. Simplify using `only [Category.assoc]`. Establish `e2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e1)`. Use extensionality with `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `residue_surjective a`. Conclude with `congrArg (fun f : R →+* Ω' => f r) e2`. Take `⟨e, τ, he, hτ, heτ⟩` from `baseChangeIso M.S G W' G' (spMap io' ≫ ξ) β hβ (ResidueField R) Y κ' e' he' Ω x κ Ω' io i₂ hc hκ`. Establish `hrange : Set.range (pullback.fst G.hom (spMap io ≫ x)) ⊆ Set.range (GlobalTheory.Mum.SecEmb.embH s).ι`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Apply `hH` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition_assoc, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Conclude with `hcl _`. Set `l` to `IsOpenImmersion.lift (GlobalTheory.Mum.SecEmb.embH s).ι (pullback.fst G.hom (spMap io ≫ x)) hrange`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : l ≫ (GlobalTheory.Mum.SecEmb.embH s).ι = pullback.fst G.hom (spMap io ≫ x)` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨Ω', inferInstance, io, e, l, he, hl, ?_⟩` and prove the remaining obligations. Establish `: IsReduced ((Over.pullback (spMap (io.comp κ))).obj Y).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd Y.hom (spMap (io.comp κ)))`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Establish `: IsReduced ((Over.pullback (spMap io ≫ x)).obj G).left` using `isReduced_of_isOpenImmersion e.hom.left`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : IsSeparated (PSpace.str R N)` using `by unfold PSpace.str; infer_instance`. Use `GlobalTheory.hom_ext_of_geometricPoints_dense (PSpace.str R N) _ _ ?_ Set.univ dense_univ ?_` and prove the remaining obligations. Establish `a1 : GlobalTheory.Mum.SecEmb.embF (G.hom ≫ M.π) s ≫ PSpace.str R N = (GlobalTheory.Mum.SecEmb.embH s).ι ≫ G.hom ≫ M.π` using `GlobalTheory.ProjSpace.toProj_str _ _ _`. Establish `eo : e.hom.left ≫ pullback.snd Y.hom (spMap (io.comp κ)) = pullback.snd G.hom (spMap io ≫ x)` using `Over.w e.hom`. Establish `a2 : (l ≫ GlobalTheory.Mum.SecEmb.embF (G.hom ≫ M.π) s) ≫ PSpace.str R N = pullback.snd G.hom (spMap io ≫ x) ≫ spMap io ≫ x ≫ M.π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, a1, reassoc_of% hl, pullback.condition_assoc, Category.assoc]`. Establish `a3 : (e.hom.left ≫ pullback.fst Y.hom (spMap (io.comp κ)) ≫ j) ≫ PSpace.str R N = pullback.snd G.hom (spMap io ≫ x) ≫ spMap (io.comp κ) ≫ spMap (residue R)`. Rewrite using `[Category.assoc, Category.assoc, hj, pullback.condition_assoc, reassoc_of% eo]`. Rewrite using `[a2, a3, hx, spMap_comp', spMap_comp']`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `K _ _ q _`. Take `⟨⟨hs, hproj⟩, -⟩` from `hptw K (q ≫ τ) (q ≫ τ ≫ pullback.fst G'.hom (spMap (residue W'))) (q ≫ τ ≫ e'.hom.left ≫ pullback.fst Y.hom (spMap κ')) (by simp) (by simp)`. Establish `e3 : q ≫ τ ≫ e'.hom.left ≫ pullback.fst Y.hom (spMap κ') ≫ j = (q ≫ τ ≫ e'.hom.left ≫ pullback.fst Y.hom (spMap κ')) ≫ j` using `by simp only [Category.assoc]`. Rewrite using `[reassoc_of% heτ, e3, ← hproj]`. Establish `hqb : (q ≫ l) ≫ (GlobalTheory.Mum.SecEmb.embH s).ι = (q ≫ τ ≫ pullback.fst G'.hom (spMap (residue W'))) ≫ β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hl, ← hτ]`. Simplify using `only [Category.assoc]`. Establish `hbase : (q ≫ l) ≫ (GlobalTheory.Mum.SecEmb.embH s).ι ≫ G.hom ≫ M.π = (q ≫ τ ≫ pullback.fst G'.hom (spMap (residue W'))) ≫ G'.hom ≫ spMap (io'.comp φ)`. Establish `hqb' : q ≫ l ≫ (GlobalTheory.Mum.SecEmb.embH s).ι = q ≫ τ ≫ pullback.fst G'.hom (spMap (residue W')) ≫ β`. Simplify using `only [Category.assoc] at hqb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hqb`. Rewrite using `[Category.assoc q l, reassoc_of% hqb', hβ.1.w_assoc, Category.assoc (spMap io'), hξ, spMap_comp']`. Simplify using `only [Category.assoc]`. Establish `hs₂ : ⨆ i, nonzeroLocus (GlobalTheory.secPull (s i) ((q ≫ l) ≫ (GlobalTheory.Mum.SecEmb.embH s).ι)) = ⊤`. Rewrite using `[hqb]`.
-
-Conclude with `hs`. Rewrite using `[← Category.assoc]`. Use `show (q ≫ l) ≫ GlobalTheory.ProjSpace.toProj ((GlobalTheory.Mum.SecEmb.embH s).ι ≫ G.hom ≫ M.π) (fun i => GlobalTheory.secPull (s i) (GlobalTheory.Mum.SecEmb.embH s).ι) (GlobalTheory.Mum.SecEmb.iSup_nonzeroLocus_embH s) = _`. Rewrite using `[← GlobalTheory.ProjSpace.toProj_secPull]`. Conclude with `(toProj_secPull_secPull R N _ _ _ B s _ (q ≫ l) _ _ hs₂).trans (toProj_congr s hqb hbase _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (M : Modif R) (G : Over M.S) [GrpObj G],
     IsSemiAbelian G → ∀ (B L : LB G.left), B.IsLB → L.IsLB → ∀ (N : ℕ) (s : Fin (N + 1) → B.Sec) (θ : L.Sec)

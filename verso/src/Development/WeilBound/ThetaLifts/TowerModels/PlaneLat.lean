@@ -11,27 +11,27 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Apply the tactic sequence `have hεε : ε * ε = 1 := by rcases hε with rfl | rfl <;> simp`. Apply the tactic sequence `have hσε : σ ε = ε := by rcases hε with rfl | rfl <;> simp`. Establish `hεD : ∀ a ∈ D, ε * a ∈ D` using `fun a ha => by`. Break down `hε with rfl | rfl` into its components or cases. Simplify using `using ha`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ha`. Establish `hεL : ∀ a ∈ L, ε • a ∈ L` using `fun a ha => by`. Break down `hε with rfl | rfl` into its components or cases. Simplify using `using ha`. Simplify using `using ha`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `sw : ∀ a b, form σ J b a = ε * σ (form σ J a b)` using `fun a b => by`. Rewrite using `[form_swap h hJ, ← mul_assoc, hεε, one_mul]`. Set `C₀ : Submodule (𝓞 E) E` to `L.map ((formL (σ := σ) J x).restrictScalars (𝓞 E))`. Set `C : FractionalIdeal (𝓞 E)⁰ E` to `⟨C₀, FractionalIdeal.isFractional_of_fg (hfg.map _)⟩`. Establish `hC : ∀ z ∈ L, form σ J z x ∈ C` using `fun z hz => ⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hC0 : C ≠ 0` using `fun e => hz₀x (by simpa [e] using hC z₀ hz₀)`. Establish `hinv : C * C⁻¹ = 1` using `mul_inv_cancel₀ hC0`. Establish `key : ∀ t ∈ C * C⁻¹, ∃ y, form σ J y x = t ∧ ∀ c ∈ C, c • y ∈ L` using `fun t ht => by`. Use `FractionalIdeal.mul_induction_on ht (fun a ha b hb => ?_) ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨b • z, by rw [form_smul_left, mul_comm]; rfl, fun c hc => ?_⟩` and prove the remaining obligations. Use `FractionalIdeal.mul_mem_mul hc hb` as an intermediate fact. Rewrite `this` using `[hinv, FractionalIdeal.mem_one_iff]`. Take `⟨o, ho⟩` from `this`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.smul_mem o hz`. Introduce and unpack `_ _ ⟨y, rfl, hy⟩ ⟨y', rfl, hy'⟩`. Conclude with `⟨y + y', form_add_left _ _ _ _, fun c hc => by rw [smul_add]; exact L.add_mem (hy c hc) (hy' c hc)⟩`. Take `⟨y₁, hy₁, hy₁L⟩` from `key 1 (by rw [hinv]; exact FractionalIdeal.one_mem_one _)`. Take `⟨y₀, hy₀x, hy₀L⟩ : ∃ y₀, form σ J y₀ x = ε ∧ ∀ c ∈ C, c • y₀ ∈ L` from `⟨ε • y₁, by rw [form_smul_left, hy₁, mul_one], fun c hc => by rw [smul_comm]; exact hεL _ (hy₁L c hc)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy₀ : form σ J x y₀ = 1` using `by rw [sw, hy₀x, hσε, hεε]`. Establish `crit : ∀ y, (∀ c ∈ C, c • y ∈ L) → ∀ z ∈ L, form σ J z y • x ∈ L` using `fun y hy z hz => by`. Use `(hd _).2 fun z' hz' => ?_` and prove the remaining obligations. Use `hεD _ ((hd z).1 hz _ (hy _ (hC z' hz')))` as an intermediate fact. Rewrite `this` using `[form_smul_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_smul_left, sw z' x]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `set q := form σ J y₀ y₀ with hq`. Establish `hqq : ε * σ q = q` using `(sw y₀ y₀).symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyL : ∀ c ∈ C, c • (y₀ - ((θ : E) * q) • x) ∈ L` using `fun c hc => by`. Use `L.smul_mem θ (crit y₀ hy₀L _ (hy₀L c hc))` as an intermediate fact. Rewrite `this` using `[form_smul_left, ← algebraMap_smul E θ, smul_smul]`. Rewrite using `[smul_sub, smul_smul]`. Use `L.sub_mem (hy₀L c hc) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = (θ : E) * _`. Expand and normalize the polynomial expressions, which then agree. Use `⟨y₀ - ((θ : E) * q) • x, ?_, ?_, fun z hz => ⟨hyL _ (hC z hz), crit _ hyL z hz⟩⟩` and prove the remaining obligations. Rewrite using `[form_sub_left, form_sub_right, form_sub_right, form_smul_left, form_smul_left, form_smul_right, form_smul_right, hxx, hxy₀, hy₀x, ← hq, map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-q * hθ - σ θ * hqq`. Rewrite using `[form_sub_right, form_smul_right, hxx, hxy₀]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_partner (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : E} (hε : ε = 1 ∨ ε = -1)
     (hJ : ∀ i j, σ (J j i) = ε * J i j) (D : Submodule (𝓞 E) E) (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
@@ -94,25 +94,23 @@ theorem exists_partner (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n
   · rw [form_sub_right, form_smul_right, hxx, hxy₀]; ring
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with rfl | ⟨w₀, hw₀⟩` into its components or cases. Take `⟨z, hz, hz0⟩` from `hf`. Conclude with `⟨z, hz, hz0, by simp⟩`. Establish `h1 : ∀ w : HeightOneSpectrum (𝓞 E), ∃ c ∈ L, ∀ z ∈ L, w.valuation E (f z) ≤ w.valuation E (f c)` using `fun w => by`. Take `⟨G, rfl⟩` from `hfg`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hmax⟩` from `(insert 0 G).exists_max_image (fun z => w.valuation E (f z)) (by simp)`. Use `⟨c, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hc with rfl | hc` into its components or cases. Conclude with `zero_mem _`. Conclude with `Submodule.subset_span hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact hmax x (Finset.mem_insert_of_mem hx)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hx hy)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul E a, map_smul, smul_eq_mul, map_mul]`. Conclude with `(mul_le_of_le_one_left' (w.valuation_le_one a)).trans hx`. Use `choose c hcL hc using h1`. Establish `hc0 : ∀ w : HeightOneSpectrum (𝓞 E), 0 < w.valuation E (f (c w))` using `fun w => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨z, hz, hz0⟩` from `hf`. Conclude with `lt_of_lt_of_le (zero_lt_iff.2 ((map_ne_zero _).2 hz0)) (hc w z hz)`. Establish `h2 : ∀ w w' : HeightOneSpectrum (𝓞 E), ∃ p : 𝓞 E, p ∉ w.asIdeal ∧ (w' ≠ w → p ∈ w'.asIdeal)` using `fun w w' => by`. Distinguish the cases in `e : w' = w`. Conclude with `⟨1, (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top, fun h => absurd e h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ¬ w'.asIdeal ≤ w.asIdeal` using `fun hle => e (HeightOneSpectrum.ext (w'.isMaximal.eq_of_le w.isPrime.ne_top hle))`. Take `⟨p, hp, hp'⟩` from `Set.not_subset.1 this`. Conclude with `⟨p, hp', fun _ => hp⟩`. Use `choose p hp hp' using h2`. Set `e : HeightOneSpectrum (𝓞 E) → 𝓞 E` to `fun w => ∏ w' ∈ S, p w w'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ w : HeightOneSpectrum (𝓞 E), w.valuation E (algebraMap _ E (e w)) = 1` using `fun w => by`. Simplify using `only [e, map_prod]`. Conclude with `Finset.prod_eq_one fun w' _ => (w.valuation_eq_one_iff_notMem (K := E)).2 (hp w w')`. Establish `he' : ∀ w, ∀ w' ∈ S, w' ≠ w → w'.valuation E (algebraMap _ E (e w)) < 1` using `fun w w' hw' hne => (w'.valuation_lt_one_iff_mem (K := E) _).2 (Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ hw') (hp' w w' hne))`. Establish `hval : ∀ w ∈ S, w.valuation E (f (∑ w' ∈ S, e w' • c w')) = w.valuation E (f (c w))` using `fun w hw => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `t : ∀ w', f (e w' • c w') = algebraMap _ E (e w') * f (c w')` using `fun w' => by`. Rewrite using `[← algebraMap_smul E (e w'), map_smul, smul_eq_mul]`. Rewrite using `[← Finset.add_sum_erase S _ hw, map_add, map_sum]`. Establish `a1 : w.valuation E (f (e w • c w)) = w.valuation E (f (c w))` using `by rw [t, map_mul, he, one_mul]`. Rewrite using `[Valuation.map_add_eq_of_lt_left, a1]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a1]`. Use `Valuation.map_sum_lt _ (hc0 w).ne' fun w' hw' => ?_` and prove the remaining obligations. Rewrite using `[t, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨∑ w' ∈ S, e w' • c w', L.sum_mem fun w _ => L.smul_mem _ (hcL w), fun h0 => ?_, fun w hw z hz => ?_⟩` and prove the remaining obligations.
-
-Use `hval w₀ hw₀` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `(hc0 w₀).ne this`. Rewrite using `[hval w hw]`. Conclude with `hc w z hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_max_val {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
     (L : Submodule (𝓞 E) V) (hfg : L.FG) (f : V →ₗ[E] E) (hf : ∃ z ∈ L, f z ≠ 0)
@@ -173,17 +171,17 @@ theorem exists_max_val {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E)
   · rw [hval w hw]; exact hc w z hz
 
 /- English proof (translation)
-Take `⟨G, rfl⟩` from `hfg`. Establish `h1 : ∀ c : E, ∃ d : 𝓞 E, d ∉ w.asIdeal ∧ (w.valuation E c ≤ 1 → ∃ o : 𝓞 E, (d : E) * c = o)` using `fun c => by`. Distinguish the cases in `hc : w.valuation E c ≤ 1`. Take `⟨o, ⟨d, hd⟩, e⟩` from `w.exists_primeCompl_mul_eq_of_integer c hc`. Conclude with `⟨d, hd, fun _ => ⟨o, by rw [mul_comm]; exact e⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top, fun h => absurd h hc⟩`. Use `choose d hd hd' using h1`. Use `⟨∏ c ∈ G, d c, fun hm => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨c, -, hc⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := w.isPrime)).1 hm`. Conclude with `hd c hc`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨o, ho⟩` from `hd' x (hC x (Submodule.subset_span hx))`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem d hx`. Use `⟨k * o, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hk]`. Use `push_cast`. Take the linear combination `(k : E) * ho`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by push_cast; rw [mul_add]; push_cast at ha hb; rw [ha, hb]⟩`. Consider the case `smul a x _ hx`. Take `⟨b, hb⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨a * b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * ((a : E) * x) = (a : E) * (b : E)`. Rewrite using `[← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_denom (C : Submodule (𝓞 E) E) (hfg : C.FG) (w : HeightOneSpectrum (𝓞 E))
     (hC : ∀ c ∈ C, w.valuation E c ≤ 1) : ∃ d : 𝓞 E, d ∉ w.asIdeal ∧ ∀ c ∈ C, ∃ o : 𝓞 E, (d : E) * c = o := by

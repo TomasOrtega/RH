@@ -19,17 +19,17 @@ namespace GlobalTheory.Mum.TensPow
 open GlobalTheory.CechPic GlobalTheory.SiegelOfPolarised GlobalTheory.PrimNorm GlobalTheory.PrimNormPol GlobalTheory.SiegelPower GlobalTheory.MumFam GlobalTheory.MumFam.TensPol
 
 /- English proof (translation)
-Introduce `R _ _ _ _ Q r W hpd hdet`. Take `⟨L₁, -⟩` from `abelianSchemeLaws_all`. Establish `hG` using `L₁.globalFns`. Set `c` to `siegLamData hG Q`. Establish `hP : c.P.IsLB` using `c.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD : c.diag.IsLB` using `pull_isLB hP _`. Establish `hamp : RelAmple c.A c.diag` using `relAmple_diag Q hD`. Set `G` to `Out.powObj Q.B r`. Set `pr : Fin r → (G ⟶ Q.B)` to `Out.powPr Q.B`. Establish `hpr : ∀ u, IsMonHom (pr u)` using `fun u => inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : ∀ (T : Over (Sp R)) (y : Fin r → (T ⟶ Q.B)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u` using `fun T y => ⟨(Out.powIsLimit Q.B r).lift (Fan.mk T y), fun u => (Out.powIsLimit Q.B r).fac (Fan.mk T y) ⟨u⟩, fun x hx => (Out.powIsLimit Q.B r).uniq (Fan.mk T y) x fun u => hx u.as⟩`. Establish `hB : ∀ (T : Over (Sp R)) (x x' y : T ⟶ c.A), bi hP (x * x') y = bi hP x y + bi hP x' y` using `fun T x x' y => by`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (GlobalTheory.T.biadditive_of_trivial_on_axes hG (Sp R) c.A c.diag c.ab hD hamp c.P hP c.rig₁ c.rig₂ T x x' y).1`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sub_eq_zero, ← e]`. Simplify using `only [bi]`. Normalize the expressions using the abelian group laws. Establish `hs : ∀ (T : Over (Sp R)) (x y : T ⟶ c.A), bi hP x y = bi hP y x` using `fun T x y => by`. Establish `e : cls c.P hP = bi hP (snd c.A c.A) (fst c.A c.A)` using `(cls_eq_iff hP (pull_isLB hP _)).2 c.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[bi, e, pull_bi, lift_fst, lift_snd]`. Establish `hLB : (sharp c.P pr W).IsLB` using `LB.isLB_linComb hP _ _`. Use `⟨{ A := G isAb := isAbelianScheme_powObj_of_isAbelianScheme Q.B Q.isAb r g := r * Q.g smoothDim := powObj_smoothOfRelativeDimension_mul _ _ _ r Q.smoothDim L := sharp c.P pr W isLB := hLB rigid := rigidified_sharp hP pr W hpr hB sym := sym_sharp hP pr W hpr hB hs ample := GlobalT …` and prove the remaining obligations. Use `lbIso_nested Q.M.isLB _ _ (fun uv : Fin r × Fin r => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2) _ _ ?_` and prove the remaining obligations. Simplify using `only [prod_lam (pr _) (pr _) (PrimNorm.cls Q.M.L)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.prod_prod_type (f := fun k : (Fin r × Fin r) × Fin 4 => PrimNorm.cls Q.M.L (tensφ pr k) ^ tensε W k)]`. Use `Finset.prod_congr rfl fun uv _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_four, tensφ, tensε, GlobalTheory.PolDeg.lamPts, Oε, diff₂, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, zpow_mul]`. Simplify using `only [zpow_one, zpow_neg, mul_zpow, inv_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_pow_data_polAV : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (Q : Data R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∃ (P' : PolAV (Sp R)) (pr : Fin r → (P'.A ⟶ Q.B)), (∀ i, IsMonHom (pr i)) ∧ Nonempty (IsLimit (Fan.mk P'.A pr)) ∧ LBIso P'.L (LB.LinComb Q.M.L (tensφ pr) (tensε W)) := by
   intro R _ _ _ _ Q r W hpd hdet

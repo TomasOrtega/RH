@@ -19,9 +19,9 @@ section General
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A}
 
 /- English proof (translation)
-Take `⟨β, hβ, hc⟩` from `DVR.exists_normalized_to L.isLB _ _ t ht (fst (Over.mk x) A).left (ptSecT A (1 : Over.mk x ⟶ A)).left ThetaReal.NormMul.ptSec_fst _ _ (LB.mulGen L.L (Y := Y) _ _ _ _ (rigT A L.L L.rig (Over.mk x) k) (rigT A L.L L.rig (Over.mk x') (-1))) (DVR.mulGen_isGen _ _ _ _ _ _ _ (ThetaReal. …`. Rewrite using `[DVR.fsum_sumElim, DVR.fsum, DVR.fsum, DVR.fsum, Fin.sum_univ_two, Fin.sum_univ_one, Fin.sum_univ_one]`. Use `congrArg₂ (· + ·) (congrArg (Finsupp.single · k) ThetaReal.NormMul.ptSec_snd) (congrArg (Finsupp.single · (-1 : ℤ)) ?_)` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hΨ.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ThetaReal.NormMul.ptSec_snd)`. Conclude with `⟨β, hΨ, hβ, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isRigIso_of_gen {Y : Scheme.{0}} {x x' : Y ⟶ S} {Ψ : (Over.mk x ⊗ A).left ⟶ (Over.mk x' ⊗ A).left}
     {k : ℤ} (hΨ : IsPointed A Ψ) (t : LB.Gen (isoLB A L Ψ k)) (ht : t.IsGen) : ∃ β, IsRigIso A L Ψ k β := by
@@ -39,9 +39,9 @@ theorem exists_isRigIso_of_gen {Y : Scheme.{0}} {x x' : Y ⟶ S} {Ψ : (Over.mk 
   exact ⟨β, hΨ, hβ, hc⟩
 
 /- English proof (translation)
-Use `hA.proper` as an intermediate fact. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Set `p : (Over.mk x ⊗ A).left ⟶ Sp K` to `(fst (Over.mk x) A).left`. Establish `H₀ : IsPullback (snd (Over.mk x) A).left p A.hom x` using `(IsPullback.of_hasPullback x A.hom).flip`. Establish `H₁ : IsPullback (snd (Over.mk w) A).left (fst (Over.mk w) A).left A.hom w` using `(IsPullback.of_hasPullback w A.hom).flip`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper p` using `MorphismProperty.of_isPullback (P := @IsProper) H₀ inferInstance`. Establish `: GeometricallyIntegral p` using `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) H₀ inferInstance`. Establish `H : IsPullback π (fst (Over.mk w) A).left p (spMap φ)` using `IsPullback.of_right (by rw [h₂, ← hw]; exact H₁) h₁ H₀`. Take `⟨c, hc⟩` from `gen_chartPull (chartPullOut L.L (isoφ A Ψ) ![k, -1] π (isoφ A Ψ') fun i => by fin_cases i exacts [h₂.symm, h₃.symm]) t ht`. Conclude with `FieldTriv.exists_gen_of_isPullback φ p π _ H (LB.isLB_linComb L.isLB _ _) c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_field (hA : IsAbelianScheme A) {K K' : Type} [Field K] [Field K'] (φ : K →+* K')
     {x x' : Sp K ⟶ S} {w w' : Sp K' ⟶ S} {Ψ : (Over.mk x ⊗ A).left ⟶ (Over.mk x' ⊗ A).left}
@@ -69,7 +69,7 @@ theorem exists_gen_of_field (hA : IsAbelianScheme A) {K K' : Type} [Field K] [Fi
 end General
 
 /- English proof (translation)
-Rewrite using `[eSec, eSec, Functor.obj.η_def, Over.comp_left, Over.ε_pullback_left, Category.assoc, IsIso.inv_comp_eq, ← pullback.condition_assoc]`. Conclude with `(pullback.lift_fst _ _ _).trans (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_fst {B B' : Scheme.{0}} (u : B' ⟶ B) (A : Over B) [GrpObj A] :
     eSec ((Over.pullback u).obj A) ≫ pullback.fst A.hom u = u ≫ eSec A := by
@@ -81,7 +81,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (swap_hom_fst x)).trans (ThetaReal.NormMul.ptSec_snd.trans (eSec_fst x _).symm))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (swap_hom_snd x)).trans (ThetaReal.NormMul.ptSec_fst.trans (Over.w η[Fib Xo x]).symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ptSec_swap {K : Type} [CommRing K] (x : Sp K ⟶ Xo.X) :
     (ptSecT Xo.univ.t.G (1 : Over.mk x ⟶ Xo.univ.t.G)).left ≫ (swap x).hom = eSec (Fib Xo x) := by
@@ -92,7 +92,7 @@ theorem ptSec_swap {K : Type} [CommRing K] (x : Sp K ⟶ Xo.X) :
       (ThetaReal.NormMul.ptSec_fst.trans (Over.w η[Fib Xo x]).symm))
 
 /- English proof (translation)
-Use `⟨(over_iff _).2 (Over.w f), ?_⟩` and prove the remaining obligations. Establish `e : eSec (Fib Xo x) ≫ f.left = eSec (Fib Xo x')` using `congrArg (fun q => q.left) hf.one_hom`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (ptSec_swap x)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e).trans ?_)))` and prove the remaining obligations. Conclude with `(Iso.comp_inv_eq _).2 (ptSec_swap x').symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPointed_of_isMonHom {K : Type} [CommRing K] {x x' : Sp K ⟶ Xo.X} (f : Fib Xo x ⟶ Fib Xo x')
     (hf : IsMonHom f) : IsPointed Xo.univ.t.G (conj x x' f.left) := by
@@ -103,9 +103,9 @@ theorem isPointed_of_isMonHom {K : Type} [CommRing K] {x x' : Sp K ⟶ Xo.X} (f 
   exact (Iso.comp_inv_eq _).2 (ptSec_swap x').symm
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ H Dw l Xo K L _ _ φ x x' w w' f g k ⟨hw, hw', hbc⟩ hf ⟨β, -, hβ, -⟩`. Establish `mk : ∀ {y : Sp K ⟶ Xo.X} {v : Sp L ⟶ Xo.X}, v = spMap φ ≫ y → ∃ π : pullback Xo.univ.t.G.hom v ⟶ pullback Xo.univ.t.G.hom y, π ≫ pullback.fst _ _ = pullback.fst _ _ ∧ π ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap φ` using `fun h => ⟨pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap φ) (by rw [Category.assoc, ← h, pullback.condition]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Take `⟨π, a₁, a₂⟩` from `mk hw`. Take `⟨π', b₁, b₂⟩` from `mk hw'`. Establish `e` using `hbc π π' a₁ a₂ b₁ b₂`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `isPointed_of_isMonHom f hf`. Take `⟨u, hu⟩` from `exists_gen_of_field (L := Xo.univ.t.PP) (Ψ := conj x x' f.left) (UnivPol.pol Xo).isAb φ hw ((swap w).hom ≫ π ≫ (swap x).inv) (by rw [Category.assoc, Category.assoc, swap_inv_fst, a₂, swap_hom_snd_assoc]) (by rw [Category.assoc, Category.assoc, swap_inv_snd, a₁, swap_hom_fst]) (by`. Simplify using `only [conj_apply, Category.assoc, Iso.inv_hom_id_assoc, swap_inv_snd]`. Rewrite using `[← reassoc_of% e, b₁]) β hβ`. Conclude with `exists_isRigIso_of_gen hp u hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRigIso_of_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (K L : Type) [Field K] [Field L] (φ : K →+* L) (x x' : Sp K ⟶ Xo.X) (w w' : Sp L ⟶ Xo.X) (f : Fib Xo x ⟶ Fib Xo x') (g : Fib Xo w ⟶ Fib Xo w') (k : ℤ), IsBC φ f g → IsMonHom f → (∃ β, IsRigIso Xo.univ.t.G Xo.univ.t.PP (conj w w' g.left) k β) → ∃ β, IsRigIso Xo.univ.t.G Xo.univ.t.PP (conj x x' f.left) k β := by
   rintro E _ _ _ H Dw l Xo K L _ _ φ x x' w w' f g k ⟨hw, hw', hbc⟩ hf ⟨β, -, hβ, -⟩

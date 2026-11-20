@@ -12,9 +12,9 @@ namespace Formalism.L2.Pj
 open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Gaps.EtaleWeightGaps NumberField IsDedekindDomain Finset
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero, nval_zero]`. Conclude with `le_top`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.1 (mt (IsDiscreteValuationRing.addVal_eq_top_iff).1 hx)`. Establish `h0 : algebraMap T.V T.Fr x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nval_of_ne h0, vV_alg_of_addVal hk.symm]`. Conclude with `EReal.coe_nonneg.2 (by positivity)`.
+A detailed English derivation is pending.
 -/
 lemma nval_alg_nonneg {T : CDVR} (x : T.V) : 0 ≤ nval T.V 1 (algebraMap T.V T.Fr x) := by
   by_cases hx : x = 0
@@ -25,15 +25,15 @@ lemma nval_alg_nonneg {T : CDVR} (x : T.V) : 0 ≤ nval T.V 1 (algebraMap T.V T.
     exact EReal.coe_nonneg.2 (by positivity)
 
 /- English proof (translation)
-Rewrite using `[nval_of_ne (inv_ne_zero hx), vV_inv' hx, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma nval_inv_nonneg {T : CDVR} {x : T.Fr} (hx : x ≠ 0) (h0 : vV T.V x = 0) : 0 ≤ nval T.V 1 x⁻¹ := by
   rw [nval_of_ne (inv_ne_zero hx), vV_inv' hx, h0]; simp
 
 /- English proof (translation)
-Consider the cases of `w with`. Consider the case `top => simp [toE]`. Consider the case `coe n`. Simplify using `only [toE]`. Establish `: (0 : ℤ) ≤ n` using `by exact_mod_cast h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma toE_nonneg' {w : WithTop ℤ} (h : 0 ≤ w) : 0 ≤ toE w := by
   cases w with
@@ -57,9 +57,9 @@ def RGW : Subring (LamL (hsW hw)) :=
     appSub (ιW (hsW hw)) (Frac0 (xplus X E hM) la G.w).toSubring (IW hw)
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [ZeroMemClass.coe_zero, map_zero]`. Conclude with `Ideal.zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz => rw [Subalgebra.coe_add, map_add]`. Conclude with `Ideal.add_mem _ hx hz`. Consider the case `smul a x _ hx => rw [smul_eq_mul, Subalgebra.coe_mul, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem ιW_Jid {z : ↥(Frac0 (xplus X E hM) la G.w)} (hz : z ∈ Jid (xplus X E hM) la G.w) :
     ιW (hsW hw) (z : Lw (xplus X E hM) la G.w) ∈ IW hw := by
@@ -70,7 +70,7 @@ theorem ιW_Jid {z : ↥(Frac0 (xplus X E hM) la G.w)} (hz : z ∈ Jid (xplus X 
   | smul a x _ hx => rw [smul_eq_mul, Subalgebra.coe_mul, map_mul]; exact Ideal.mul_mem_left _ _ hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stabSub_hd _ _ _ β hr.1, appSub_hd (hdL_zero (hsW hw)) (hdW_mul (hsW hw)) (ιW (hsW hw)) _ _ (fun β x => hasse (xplus X E hM) la G.w β x) (hdW_ι (hsW hw)) (fun β f hf => (mem_Frac0 _ _ _).2 (hasse_mem_Hfr _ _ _ ((mem_Frac0 _ _ _).1 hf) β)) β hr.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem RGW_hd (β : Idx D j G.N →₀ ℕ) (r : LamL (hsW hw)) (hr : r ∈ RGW hw) : hdL (hsW hw) β r ∈ RGW hw :=
   ⟨stabSub_hd _ _ _ β hr.1, appSub_hd (hdL_zero (hsW hw)) (hdW_mul (hsW hw)) (ιW (hsW hw)) _ _
@@ -78,14 +78,14 @@ theorem RGW_hd (β : Idx D j G.N →₀ ℕ) (r : LamL (hsW hw)) (hr : r ∈ RGW
     (fun β f hf => (mem_Frac0 _ _ _).2 (hasse_mem_Hfr _ _ _ ((mem_Frac0 _ _ _).1 hf) β)) β hr.2⟩
 
 /- English proof (translation)
-The claim follows from `stabSub_le _ _ _ hr.1 ζ`.
+A detailed English derivation is pending.
 -/
 theorem RGW_int (ζ : PtsG G la) (r : LamL (hsW hw)) (hr : r ∈ RGW hw) :
     0 ≤ nval (hsW hw ζ).T.V 1 (evL (hsW hw) ζ r) :=
   stabSub_le _ _ _ hr.1 ζ
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons β l ih => rw [iterHd_cons, ih, hdW_ι]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem iterHd_ιW (l : List (Idx D j G.N →₀ ℕ)) (x : Lw (xplus X E hM) la G.w) :
     iterHd (hdL (hsW hw)) l (ιW (hsW hw) x) =
@@ -95,7 +95,7 @@ theorem iterHd_ιW (l : List (Idx D j G.N →₀ ℕ)) (x : Lw (xplus X E hM) la
   | cons β l ih => rw [iterHd_cons, ih, hdW_ι]; rfl
 
 /- English proof (translation)
-Introduce `l ζ` and use `by show 0 ≤ nval (hsW hw ζ).T.V 1 (evL (hsW hw) ζ (iterHd (hdL (hsW hw)) l (ιW (hsW hw) x))) rw [iterHd_ιW, evW_ι] exact hx l ζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stab_of_hdInt {x : Lw (xplus X E hM) la G.w} (hx : HdIntAt (hsW hw) x) :
     ιW (hsW hw) x ∈ stabSub (hdL_zero (hsW hw)) (hdW_mul (hsW hw))
@@ -105,7 +105,7 @@ theorem stab_of_hdInt {x : Lw (xplus X E hM) la G.w} (hx : HdIntAt (hsW hw) x) :
   exact hx l ζ
 
 /- English proof (translation)
-Introduce `n` and use `⟨f, f.2, by rw [sub_self]; exact Ideal.zero_mem _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem app_of_mem (f : ↥(Frac0 (xplus X E hM) la G.w)) :
     ιW (hsW hw) (f : Lw (xplus X E hM) la G.w) ∈
@@ -113,7 +113,7 @@ theorem app_of_mem (f : ↥(Frac0 (xplus X E hM) la G.w)) :
   fun n => ⟨f, f.2, by rw [sub_self]; exact Ideal.zero_mem _⟩
 
 /- English proof (translation)
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, hu.val_inv_mul, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem evL_inv (ζ : PtsG G la) {u : LamL (hsW hw)} (hu : IsUnit u) :
     evL (hsW hw) ζ ↑hu.unit⁻¹ = (evL (hsW hw) ζ u)⁻¹ := by
@@ -121,9 +121,9 @@ theorem evL_inv (ζ : PtsG G la) {u : LamL (hsW hw)} (hu : IsUnit u) :
   rw [← map_mul, hu.val_inv_mul, map_one]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(isUnit_toOsK_of_lift hw C d hd).exists_right_inv`. Take `⟨v, rfl⟩` from `toOsK_surjective (xplus X E hM) la G.w b`. Establish `hz : (1 - d * v : ↥(Frac0 (xplus X E hM) la G.w)) ∈ Jid (xplus X E hM) la G.w`. Rewrite using `[← toOsK_eq_zero_iff, map_sub, map_one, map_mul, hb, sub_self]`. Establish `h` using `ιW_Jid hw hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h`. Conclude with `appSub_inv _ _ _ d.2 v.2 h _`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem inv_app {g0 : B.Cusp j wF} (C : CurveModel G la g0) (d : ↥(Frac0 (xplus X E hM) la G.w))
     (hd : ∀ ζ, (hsW hw ζ).lift (d : Lw (xplus X E hM) la G.w) ≠ 0) :
@@ -138,7 +138,7 @@ theorem inv_app {g0 : B.Cusp j wF} (C : CurveModel G la g0) (d : ↥(Frac0 (xplu
   exact appSub_inv _ _ _ d.2 v.2 h _
 
 /- English proof (translation)
-Use `⟨stabSub_inv _ _ _ _ (stab_of_hdInt hw hdi) (fun ζ => ?_), inv_app hw C d (fun ζ => (hd ζ).1)⟩` and prove the remaining obligations. Use `show 0 ≤ nval (hsW hw ζ).T.V 1 (evL (hsW hw) ζ _)`. Rewrite using `[evL_inv, evW_ι]`. Conclude with `nval_inv_nonneg (hd ζ).1 (hd ζ).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_RG {g0 : B.Cusp j wF} (C : CurveModel G la g0) (d : ↥(Frac0 (xplus X E hM) la G.w))
     (hd : ∀ ζ, (hsW hw ζ).lift (d : Lw (xplus X E hM) la G.w) ≠ 0 ∧
@@ -151,7 +151,7 @@ theorem inv_RG {g0 : B.Cusp j wF} (C : CurveModel G la g0) (d : ↥(Frac0 (xplus
   exact nval_inv_nonneg (hd ζ).1 (hd ζ).2
 
 /- English proof (translation)
-The claim follows from `(RGW hw).mul_mem ⟨stab_of_hdInt hw hfi, app_of_mem hw f⟩ (inv_RG hw C d hd hdi)`.
+A detailed English derivation is pending.
 -/
 theorem mem_RG_of {g0 : B.Cusp j wF} (C : CurveModel G la g0) (f d : ↥(Frac0 (xplus X E hM) la G.w))
     (hd : ∀ ζ, (hsW hw ζ).lift (d : Lw (xplus X E hM) la G.w) ≠ 0 ∧

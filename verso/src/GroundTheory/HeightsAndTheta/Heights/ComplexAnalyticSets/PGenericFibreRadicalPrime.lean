@@ -11,9 +11,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[Polynomial.hom_eval₂, Polynomial.eval₂_map]`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `s`. Simplify using `[MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem fibreMap_eval₂_aeval {σ ι : Type*} {d : ℕ} (t : σ → ℂ)
     (y : Fin d → MvPolynomial ι (MvPolynomial σ ℂ)) (θ : MvPolynomial ι (MvPolynomial σ ℂ))
@@ -30,15 +30,13 @@ theorem fibreMap_eval₂_aeval {σ ι : Type*} {d : ℕ} (t : σ → ℂ)
     simp
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C s`. Use `⟨0, Polynomial.C (C s), ?_⟩` and prove the remaining obligations. Simplify using `[MvPolynomial.algebraMap_eq]`. Consider the case `add p₁ p₂ h₁ h₂`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨e₁, H₁, h₁⟩` from `h₁`. Take `⟨e₂, H₂, h₂⟩` from `h₂`. Use `⟨e₁ + e₂, Polynomial.C (D ^ e₂) * H₁ + Polynomial.C (D ^ e₁) * H₂, ?_⟩` and prove the remaining obligations. Establish `e : aeval y D ^ (e₁ + e₂) * (p₁ + p₂) - Polynomial.eval₂ (aeval y).toRingHom θ (Polynomial.C (D ^ e₂) * H₁ + Polynomial.C (D ^ e₁) * H₂) = aeval y D ^ e₂ * (aeval y D ^ e₁ * p₁ - Polynomial.eval₂ (aeval y).toRingHom θ H₁) + aeval y D ^ e₁ * (aeval y D ^ e₂ * p₂ - Polynomial.eval₂ …`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_pow, map_pow, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `K.add_mem (K.mul_mem_left _ h₁) (K.mul_mem_left _ h₂)`. Consider the case `mul_X p i h`. Take `⟨e, H, h⟩` from `h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e + 1, H * q i, ?_⟩` and prove the remaining obligations. Establish `e' : aeval y D ^ (e + 1) * (p * X i) - Polynomial.eval₂ (aeval y).toRingHom θ (H * q i) = (aeval y D ^ e * p - Polynomial.eval₂ (aeval y).toRingHom θ H) * (aeval y D * X i) + Polynomial.eval₂ (aeval y).toRingHom θ H * (aeval y D * X i - Polynomial.eval₂ (aeval y).toRingHom θ (q i …`. Rewrite using `[Polynomial.eval₂_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`.
-
-Conclude with `K.add_mem (K.mul_mem_right _ h) (K.mul_mem_left _ (hq i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_sub_eval₂_mem {σ ι : Type*} {d : ℕ} (K : Ideal (MvPolynomial ι (MvPolynomial σ ℂ)))
     (y : Fin d → MvPolynomial ι (MvPolynomial σ ℂ)) (θ : MvPolynomial ι (MvPolynomial σ ℂ))
@@ -77,17 +75,15 @@ theorem exists_pow_mul_sub_eval₂_mem {σ ι : Type*} {d : ℕ} (K : Ideal (MvP
     exact K.add_mem (K.mul_mem_right _ h) (K.mul_mem_left _ (hq i))
 
 /- English proof (translation)
-Use `set δ : MvPolynomial ι (MvPolynomial σ ℂ) := aeval y D`. Use `set ev : Polynomial (MvPolynomial (Fin d) (MvPolynomial σ ℂ)) → MvPolynomial ι (MvPolynomial σ ℂ) := Polynomial.eval₂ (aeval y).toRingHom θ`. Set `J : Ideal (MvPolynomial ι (MvPolynomial σ ℂ))` to `{ carrier := {w | ∃ (e : ℕ) (W : Polynomial (MvPolynomial (Fin d) (MvPolynomial σ ℂ))), W.map (MvPolynomial.map (eval t)) = 0 ∧ δ ^ e * w - ev W ∈ K} add_mem' := by`. Introduce and unpack `a b ⟨e₁, W₁, hW₁, h₁⟩ ⟨e₂, W₂, hW₂, h₂⟩`. Use `⟨e₁ + e₂, Polynomial.C (D ^ e₂) * W₁ + Polynomial.C (D ^ e₁) * W₂, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Polynomial.map_add, Polynomial.map_mul, hW₁, hW₂]`. Establish `e : δ ^ (e₁ + e₂) * (a + b) - ev (Polynomial.C (D ^ e₂) * W₁ + Polynomial.C (D ^ e₁) * W₂) = δ ^ e₂ * (δ ^ e₁ * a - ev W₁) + δ ^ e₁ * (δ ^ e₂ * b - ev W₂)`. Simplify using `only [ev, δ, Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_pow, map_pow, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `K.add_mem (K.mul_mem_left _ h₁) (K.mul_mem_left _ h₂)`. Use the proof step `zero_mem' := ⟨0, 0, by simp, by simp [ev]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r a ⟨e, W, hW, h⟩`. Take `⟨e', H, hH⟩` from `exists_pow_mul_sub_eval₂_mem K y θ D q hq r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e' + e, H * W, by simp [Polynomial.map_mul, hW], ?_⟩` and prove the remaining obligations. Establish `e'' : δ ^ (e' + e) * (r • a) - ev (H * W) = δ ^ e * a * (δ ^ e' * r - ev H) + ev H * (δ ^ e * a - ev W)`. Simplify using `only [ev, Polynomial.eval₂_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e'']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `K.add_mem (K.mul_mem_left _ hH) (K.mul_mem_left _ h) }`. Establish `hle : RingHom.ker (MvPolynomial.map (eval t) : MvPolynomial ι (MvPolynomial σ ℂ) →+* MvPolynomial ι ℂ) ≤ J`. Rewrite using `[ker_fibreMap, Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Use `⟨0, Polynomial.C (C c), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hc` using `[RingHom.mem_ker]`. Simplify using `[hc]`. Simplify using `[ev, MvPolynomial.algebraMap_eq]`. Conclude with `hle hw`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_ker_fibreMap {σ ι : Type*} {d : ℕ} (K : Ideal (MvPolynomial ι (MvPolynomial σ ℂ)))
     (y : Fin d → MvPolynomial ι (MvPolynomial σ ℂ)) (θ : MvPolynomial ι (MvPolynomial σ ℂ))
@@ -138,13 +134,13 @@ theorem exists_of_mem_ker_fibreMap {σ ι : Type*} {d : ℕ} (K : Ideal (MvPolyn
   exact hle hw
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (eval t : MvPolynomial σ ℂ →+* ℂ)` using `fun c => ⟨C c, eval_C c⟩`. Take `⟨H, rfl⟩` from `Polynomial.map_surjective _ (MvPolynomial.map_surjective _ hs) h`. Rewrite `hh` using `[← fibreMap_eval₂_aeval]`. Take `⟨κ, hκ, hκH⟩` from `(Ideal.mem_map_iff_of_surjective _ (MvPolynomial.map_surjective _ hs)).1 hh`. Establish `hw : Polynomial.eval₂ (aeval y).toRingHom θ H - κ ∈ RingHom.ker (MvPolynomial.map (eval t) : MvPolynomial ι (MvPolynomial σ ℂ) →+* MvPolynomial ι ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, hκH, sub_self]`. Take `⟨e, W, hW, hWK⟩` from `exists_of_mem_ker_fibreMap K y θ D q hq t _ hw`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `hmem : Polynomial.eval₂ (aeval y).toRingHom θ (Polynomial.C D ^ e * H - W) ∈ K`. Establish `e' : Polynomial.eval₂ (aeval y).toRingHom θ (Polynomial.C D ^ e * H - W) = (aeval y D ^ e * (Polynomial.eval₂ (aeval y).toRingHom θ H - κ) - Polynomial.eval₂ (aeval y).toRingHom θ W) + aeval y D ^ e * κ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Conclude with `K.add_mem hWK (K.mul_mem_left _ hκ)`. Establish `hd` using `Polynomial.map_dvd (MvPolynomial.map (eval t)) ((hker _).1 hmem)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hd` using `[Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_pow, hW]`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_eval₂_mem_fibre {σ ι : Type*} {d : ℕ} (K : Ideal (MvPolynomial ι (MvPolynomial σ ℂ)))
     (y : Fin d → MvPolynomial ι (MvPolynomial σ ℂ)) (θ : MvPolynomial ι (MvPolynomial σ ℂ))
@@ -180,13 +176,13 @@ theorem dvd_of_eval₂_mem_fibre {σ ι : Type*} {d : ℕ} (K : Ideal (MvPolynom
   simpa [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_pow, hW] using hd
 
 /- English proof (translation)
-Establish `hf : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R (FractionRing R)`. Establish `hfc : algebraMap R (FractionRing R) c ≠ 0` using `(map_ne_zero_iff _ hf).2 hc`. Establish `hsep : (m.map (algebraMap R (FractionRing R))).Separable`. Rewrite using `[Polynomial.separable_def']`. Use `⟨Polynomial.C (algebraMap R (FractionRing R) c)⁻¹ * u.map (algebraMap R (FractionRing R)), Polynomial.C (algebraMap R (FractionRing R) c)⁻¹ * v.map (algebraMap R (FractionRing R)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (Polynomial.map (algebraMap R (FractionRing R))) huv`. Rewrite `h1` using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, Polynomial.map_C, ← Polynomial.derivative_map]`. Rewrite using `[mul_assoc, mul_assoc, ← mul_add, h1, ← Polynomial.C_mul, inv_mul_cancel₀ hfc, Polynomial.C_1]`. Establish `hd' : m.map (algebraMap R (FractionRing R)) ∣ Polynomial.C (algebraMap R (FractionRing R) c) ^ e * (h.map (algebraMap R (FractionRing R))) ^ N`. Use `Polynomial.map_dvd (algebraMap R (FractionRing R)) hd` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_pow, Polynomial.map_C]`. Then use the resulting hypothesis. Establish `hu : IsUnit (Polynomial.C (algebraMap R (FractionRing R) c) ^ e)` using `(Polynomial.isUnit_C.2 (Ne.isUnit hfc)).pow e`. Establish `h2 : m.map (algebraMap R (FractionRing R)) ∣ h.map (algebraMap R (FractionRing R))` using `(hsep.squarefree.dvd_pow_iff_dvd hN).1 ((hu.dvd_mul_left).1 hd')`. Rewrite `h2` using `[← Polynomial.modByMonic_eq_zero_iff_dvd (hm.map _), ← Polynomial.map_modByMonic _ hm]`. Rewrite using `[← Polynomial.modByMonic_eq_zero_iff_dvd hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.map_injective _ hf (by rw [h2, Polynomial.map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem Monic.dvd_of_dvd_C_pow_mul_pow {R : Type*} [CommRing R] [IsDomain R] {m u v h : Polynomial R} {c : R}
     (hm : m.Monic) (hc : c ≠ 0) (huv : u * m + v * Polynomial.derivative m = Polynomial.C c) {e N : ℕ}
@@ -215,13 +211,13 @@ theorem Monic.dvd_of_dvd_C_pow_mul_pow {R : Type*} [CommRing R] [IsDomain R] {m 
   exact Polynomial.map_injective _ hf (by rw [h2, Polynomial.map_zero])
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hφ g`. Rewrite `hg` using `[← map_mul]`. Take `⟨κ, hκ, hκa⟩` from `(Ideal.mem_map_iff_of_surjective φ hφ).1 hg`. Establish `hμ : b * a - κ ∈ (K ⊔ Ideal.span {b}) ⊓ RingHom.ker φ` using `⟨Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self b))) (Ideal.mem_sup_left hκ), RingHom.mem_ker.2 (by rw [map_sub, hκa, sub_self])⟩`. Establish `h2` using `h hμ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.mul_sup]`. Take `⟨κ', hκ', w, hw, hsum⟩` from `Submodule.mem_sup.1 h2`. Take `⟨ν, hν, hνw⟩` from `(Ideal.mem_mul_span_singleton (I := RingHom.ker φ)).1 hw`. Establish `hκ'K : κ' ∈ K` using `(Ideal.mul_le_inf hκ').2`. Establish `hb' : b * (a - ν) ∈ K`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : b * (a - ν) = κ + κ'` using `by linear_combination -hsum - hνw`. Rewrite using `[e]`. Conclude with `K.add_mem hκ hκ'K`. Establish `haν : a - ν ∈ K` using `(hK.mem_or_mem hb').resolve_left hb`. Establish `: φ a = φ (a - ν)` using `by rw [map_sub, RingHom.mem_ker.1 hν, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mem_map_of_mem φ haν`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_of_mul_mem_map {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R')
     (hφ : Function.Surjective φ) (K : Ideal R) (hK : K.IsPrime) (b : R) (hb : b ∉ K)
@@ -248,37 +244,33 @@ theorem mem_map_of_mul_mem_map {R R' : Type*} [CommRing R] [CommRing R'] (φ : R
   exact Ideal.mem_map_of_mem φ haν
 
 /- English proof (translation)
-Introduce `σ _ ι _ K hK`. Establish `hs : ∀ t : σ → ℂ, Function.Surjective (eval t : MvPolynomial σ ℂ →+* ℂ)` using `fun t c => ⟨C c, eval_C c⟩`. Distinguish the cases in `h0 : ∃ s : MvPolynomial σ ℂ, C s ∈ K ∧ s ≠ 0`. Take `⟨s, hsK, hs0⟩` from `h0`. Use `⟨s, hs0, fun t ht => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit (MvPolynomial.map (eval t) (C s : MvPolynomial ι (MvPolynomial σ ℂ)))`. Rewrite using `[MvPolynomial.map_C]`. Conclude with `(Ne.isUnit ht).map C`. Rewrite using `[Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hsK) hu]`. Conclude with `fun _ _ => Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Use `push Not at h0`. Take `⟨d, y, θ, m, D, q, u, v, hm, hD, huv, hker, hq⟩` from `hP σ ι K hK h0`. Establish `hb : aeval y D ∉ K`. Introduce `hb`. Establish `hdvd : m ∣ Polynomial.C D` using `(hker _).1 (by simpa using hb)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : m.natDegree = 0`. Use `Polynomial.natDegree_le_of_dvd hdvd (by simpa using hD)` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_C]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : m = 1` using `hm.natDegree_eq_zero.1 hdeg`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hK.ne_top ((Ideal.eq_top_iff_one K).2 (by simpa using (hker 1).2 (by rw [h1])))`. Take `⟨F₁, hF₁, hF₁t⟩` from `hT σ ι (K ⊔ Ideal.span {aeval y D})`. Take `⟨μ, hμ⟩` from `MvPolynomial.ne_zero_iff.1 hD`. Use `⟨F₁ * D.coeff μ, mul_ne_zero hF₁ hμ, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[map_mul, mul_ne_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ht₁, ht₂⟩` from `ht`. Use `set φ : MvPolynomial ι (MvPolynomial σ ℂ) →+* MvPolynomial ι ℂ := MvPolynomial.map (eval t)`. Use `set ψ : MvPolynomial (Fin d) (MvPolynomial σ ℂ) →+* MvPolynomial (Fin d) ℂ := MvPolynomial.map (eval t)`. Establish `hφ : Function.Surjective φ` using `MvPolynomial.map_surjective _ (hs t)`. Establish `hψD : ψ D ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h0'`. Apply `ht₂` to reduce the goal to its premises. Use `congrArg (MvPolynomial.coeff μ) h0'` as an intermediate fact. Simplify `this` using `[ψ, MvPolynomial.coeff_map]`. Establish `hnzd : ∀ (k : ℕ) (g : MvPolynomial ι ℂ), φ (aeval y D) ^ k * g ∈ K.map φ → g ∈ K.map φ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro g hg`. Simplify using `using hg`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `ih g (mem_map_of_mul_mem_map φ hφ K hK _ hb (hF₁t t ht₁) _ ?_)` and prove the remaining obligations. Rewrite `hg` using `[pow_succ]`. Simplify `hg` using `[mul_assoc, mul_comm, mul_left_comm]`. Introduce `g ⟨N, hgN⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Rewrite using `[(Ideal.eq_top_iff_one (K.map φ)).2 (by simpa using hgN)]`. Conclude with `Submodule.mem_top`. Take `⟨G, rfl⟩` from `hφ g`. Take `⟨e, H, hH⟩` from `exists_pow_mul_sub_eval₂_mem K y θ D q hq G`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set evt := Polynomial.eval₂ (aeval (R := ℂ) fun j => φ (y j)).toRingHom (φ θ)`. Establish `h1 : φ (aeval y D) ^ e * φ G - evt (H.map ψ) ∈ K.map φ`. Use `Ideal.mem_map_of_mem φ hH` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, fibreMap_eval₂_aeval]`. Then use the resulting hypothesis. Establish `h2 : evt (H.map ψ ^ N) ∈ K.map φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdv` using `sub_dvd_pow_sub_pow (φ (aeval y D) ^ e * φ G) (evt (H.map ψ)) N`. Establish `h3 : (φ (aeval y D) ^ e * φ G) ^ N - evt (H.map ψ) ^ N ∈ K.map φ` using `Ideal.mem_of_dvd _ hdv h1`. Establish `h4 : (φ (aeval y D) ^ e * φ G) ^ N ∈ K.map φ`. Rewrite using `[mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ hgN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h5` using `Ideal.sub_mem _ h4 h3`. Rewrite `h5` using `[sub_sub_cancel]`. Simplify `h5` using `[evt, Polynomial.eval₂_pow]`. Take `⟨e', he'⟩` from `dvd_of_eval₂_mem_fibre K y θ m D q hker hq t _ h2`. Establish `huv' : u.map ψ * m.map ψ + v.map ψ * Polynomial.derivative (m.map ψ) = Polynomial.C (ψ D)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg (Polynomial.map ψ) huv` as an intermediate fact. Simplify `this` using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.derivative_map]`. Establish `hmh : m.map ψ ∣ H.map ψ` using `Monic.dvd_of_dvd_C_pow_mul_pow (hm.map ψ) hψD huv' hN.ne' he'`. Take `⟨s, hs'⟩` from `hmh`. Establish `hmK : evt (m.map ψ) ∈ K.map φ`.
-
-Use `Ideal.mem_map_of_mem φ ((hker m).2 dvd_rfl)` as an intermediate fact. Rewrite `this` using `[fibreMap_eval₂_aeval]`. Then use the resulting hypothesis. Establish `h6 : evt (H.map ψ) ∈ K.map φ`. Rewrite using `[hs']`. Simplify using `only [evt, Polynomial.eval₂_mul]`.
-
-Conclude with `Ideal.mul_mem_right _ _ hmK`. Conclude with `hnzd e _ (by simpa using Ideal.add_mem _ h1 h6)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GenericFibreRadicalPrime.proof (hT : GenericFibreTor.Statement)
     (hP : HypersurfacePresentation.Statement) : GenericFibreRadicalPrime.Statement := by

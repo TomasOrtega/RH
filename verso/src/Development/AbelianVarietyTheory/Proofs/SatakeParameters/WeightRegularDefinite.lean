@@ -7,7 +7,7 @@ namespace GlobalTheory.LocalInv
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `D` and use `weightRegular_of_ext D.nd D.naut D.nbc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightRegular_definite : ∀ (D : D7), GlobalTheory.LocalInv.WeightRegular D.nd D.naut :=
   fun D => weightRegular_of_ext D.nd D.naut D.nbc

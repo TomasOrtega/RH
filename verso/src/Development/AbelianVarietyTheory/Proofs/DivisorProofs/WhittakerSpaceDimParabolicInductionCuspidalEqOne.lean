@@ -8,9 +8,9 @@ open GlobalTheory.FinGL Formalism.L2.DIV Module
 namespace GlobalTheory.FinGL
 
 /- English proof (translation)
-Establish `h : ∀ g : GL (Fin r) F, edgeSum (cutEdge 0) g = edgeSum supEdge g`. Introduce `g`. Unfold `edgeSum`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => if_congr (by simp [cutEdge, supEdge]) rfl rfl`. Unfold `whCut whDim`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun g : GL (Fin r) F => ψ (edgeSum (cutEdge 0) g)) = fun g => ψ (edgeSum supEdge g) from`. Use function extensionality and compare the values at `fun g => by rw [h]]`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem degenerateWhittakerDim_zero_eq_whittakerDim {F : Type} [Field F] {r : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ψ : AddChar F ℂ) (τ : Representation ℂ (GL (Fin r) F) V) : whCut ψ τ 0 = whDim ψ τ := by
@@ -24,11 +24,11 @@ theorem degenerateWhittakerDim_zero_eq_whittakerDim {F : Type} [Field F] {r : �
     funext fun g => by rw [h]]
 
 /- English proof (translation)
-Unfold `splitDoublingNBlock`. Rewrite using `[Finset.card_eq_one]`. Use `⟨∅, ?_⟩` and prove the remaining obligations. Use extensionality with `J`. Simplify using `only [Finset.mem_filter, Finset.mem_powerset, Finset.card_eq_zero, Finset.mem_singleton]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 (h1 hx)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: i ∈ Finset.univ.filter fun i => b i ∈ J` using `by simp [hx]`. Rewrite `this` using `[h2]`. Simplify using `at this`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem numBlockSetsOfTotalSize_zero_eq_one {r : ℕ} (b : Fin r → ℕ) : splitDoublingNBlock b 0 = 1 := by
   unfold splitDoublingNBlock
@@ -48,7 +48,7 @@ theorem numBlockSetsOfTotalSize_zero_eq_one {r : ℕ} (b : Fin r → ℕ) : spli
     simp
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ r V _ _ _ b σ hσ`. Rewrite using `[← degenerateWhittakerDim_zero_eq_whittakerDim, GlobalTheory.T.degenerateWhittakerDim_parabolicInduction_cuspidal F ψ hψ r V b σ hσ 0 (Or.inr rfl), numBlockSetsOfTotalSize_zero_eq_one, GlobalTheory.T.levi_whittaker_eq_one_of_cuspidal F ψ hψ r V b σ hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem whDim_parInd_eq_one : ∀ (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ), ψ ≠ 1 → ∀ (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V), IsCuspDatum b σ → whDim ψ (parInd b σ) = 1 := by
   intro F _ _ ψ hψ r V _ _ _ b σ hσ

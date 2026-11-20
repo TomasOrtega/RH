@@ -5,21 +5,19 @@ open Formalism.L2.DIV
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, ρ, -, hch⟩` from `hχ`. Use `set N := Fintype.card G with hN`. Use `haveI : NeZero N := ⟨Fintype.card_ne_zero⟩`. Use `set f := ρ g with hf`. Establish `hfN : f ^ N = 1` using `by rw [hf, ← map_pow, pow_card_eq_one, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : LinearMap.trace (AlgebraicClosure K) _ f = (LinearMap.charpoly f).roots.sum`. Rewrite using `[LinearMap.trace_eq_matrix_trace (AlgebraicClosure K) (Pi.basisFun (AlgebraicClosure K) (Fin n)), Matrix.trace_eq_sum_roots_charpoly, LinearMap.charpoly_toMatrix]`. Establish `hz' : IsPrimitiveRoot (algebraMap K (AlgebraicClosure K) z) N` using `hz.map_of_injective (algebraMap K (AlgebraicClosure K)).injective`. Establish `hroot : ∀ μ ∈ (LinearMap.charpoly f).roots, ∃ k : ℕ, μ = algebraMap K (AlgebraicClosure K) (z ^ k)`. Introduce `μ hμ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly f μ).mpr (Polynomial.isRoot_of_mem_roots hμ)`. Take `⟨v, hv⟩` from `hev.exists_hasEigenvector`. Establish `h1` using `hv.pow_apply N`. Rewrite `h1` using `[hfN]`. Establish `hμN : μ ^ N = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (μ ^ N - 1) • v = 0`. Rewrite using `[sub_smul, ← h1, one_smul]`. Simplify using the standard rewrite rules. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h hv.2`. Take `⟨k, -, hk⟩` from `hz'.eq_pow_of_pow_eq_one hμN`. Conclude with `⟨k, by rw [map_pow, hk]⟩`. Establish `hsum : ∀ m : Multiset (AlgebraicClosure K), (∀ μ ∈ m, ∃ k : ℕ, μ = algebraMap K (AlgebraicClosure K) (z ^ k)) → ∃ y ∈ Subring.closure ({z} : Set K), algebraMap K (AlgebraicClosure K) y = m.sum`. Introduce `m`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => intro _; exact ⟨0, zero_mem _, by simp⟩`. Consider the case `cons a m ih`. Introduce `h`. Take `⟨y, hy, hy'⟩` from `ih (fun μ hμ => h μ (Multiset.mem_cons_of_mem hμ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `h a (Multiset.mem_cons_self a m)`. Use `⟨z ^ k + y, add_mem (pow_mem (Subring.subset_closure (Set.mem_singleton z)) k) hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.sum_cons, map_add, hy', hk]`. Take `⟨y, hy, hy'⟩` from `hsum _ hroot`. Establish `hχg : algebraMap K (AlgebraicClosure K) (χ g) = algebraMap K (AlgebraicClosure K) y`.
-
-Rewrite using `[← hch g, hy', ← htr]`. Both sides reduce to the same expression. Rewrite using `[(algebraMap K (AlgebraicClosure K)).injective hχg]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absIrrChar_mem_closure_primitiveRoot {G : Type} [Group G] [Fintype G] {K : Type} [Field K]
     [CharZero K] (z : K) (hz : IsPrimitiveRoot z (Fintype.card G)) (χ : G → K) (hχ : IsAbsIrrChar χ)

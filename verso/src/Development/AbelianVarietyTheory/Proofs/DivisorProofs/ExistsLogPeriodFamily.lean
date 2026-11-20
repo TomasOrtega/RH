@@ -5,51 +5,43 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `A B _ _ j Λ R r e h0 h1 hadd hneg hmul hR0 hR1 hRadd hRneg hRmul hrep hmem hE hden hsq X hX`. Break down `r with _ | n` into its components or cases. Establish `hall : ∀ a : A, a = 0` using `fun a => by`. Take `⟨β, hβ, -⟩` from `hrep a`. Simplify using `using hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key : ∀ a : A, a ∈ Λ` using `fun a => by rw [hall a]; exact h0`. Conclude with `⟨1, key _, key _⟩`. Establish `hL : ∀ ρ ∈ R, ∀ x : A, (X : A) * x ∈ Λ → (X : A) * (j ρ * x) ∈ Λ`. Introduce `ρ hρ x hx`. Establish `: (X : A) * (j ρ * x) = ((X : A) * j ρ * ↑X⁻¹) * ((X : A) * x)`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `hmul _ (hX ρ hρ) _ hx`. Establish `hRt : ∀ μ ∈ Λ, ∀ x : A, (X : A) * x ∈ Λ → (X : A) * (x * μ) ∈ Λ`. Introduce `μ hμ x hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc]`. Conclude with `hmul _ hx _ hμ`. Establish `hS : ∀ (N : ℕ) (f : Fin N → A), (∀ k, (X : A) * f k ∈ Λ) → (X : A) * ∑ k, f k ∈ Λ`. Introduce `N f hf`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_induction _ (· ∈ Λ) (fun a b ha hb => hadd a ha b hb) h0 (fun k _ => hf k)`. Establish `hsingle : ∀ b : B, ∑ i'', j ((Pi.single (0 : Fin (n+1)) b : Fin (n+1) → B) i'') * e i'' = j b * e 0`. Introduce `b`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi, map_zero, zero_mul]`. Simplify using the standard rewrite rules. Establish `hsingleR : ∀ b : B, j b * e 0 ∈ Λ ↔ b ∈ R`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hsingle, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h 0`. Introduce `hb i`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `using hb`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `hR0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `he0 : e 0 ∈ Λ`. Use `(hsingleR 1).2 hR1` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`. Then use the resulting hypothesis. Establish `hA : ∀ β : Fin (n+1) → B, (X : A) * (∑ i, j (β i) * e i) ∈ Λ → ∀ i', (X : A) * (j (β i') * e 0) ∈ Λ`. Introduce `β hx i'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, ρ, μ, hρ, hμ, hf⟩` from `hE 0 i'`. Rewrite using `[← hf β]`. Conclude with `hS N _ (fun k => hRt (μ k) (hμ k) _ (hL _ (hρ k) _ hx))`. Establish `hB : ∀ b : B, (X : A) * (j b * e 0) ∈ Λ → ∀ i, (X : A) * (j b * e i) ∈ Λ`. Introduce `b hb i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨N, ρ, μ, hρ, hμ, hf⟩` from `hE i 0`. Establish `h` using `hf (Pi.single 0 b)`. Rewrite `h` using `[hsingle, Pi.single_eq_same]`. Rewrite using `[← h]`. Conclude with `hS N _ (fun k => hRt (μ k) (hμ k) _ (hL _ (hρ k) _ hb))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hsum : ∀ β : Fin (n+1) → B, (∀ i, (X : A) * (j (β i) * e 0) ∈ Λ) → (X : A) * (∑ i, j (β i) * e i) ∈ Λ` using `fun β hβ => hS _ _ (fun i => hB _ (hβ i) i)`. Establish `hRint : ∀ z : ℤ, (z : B) ∈ R`. Introduce `z`. Proceed by induction on `z using Int.induction_on with`. Consider the case `zero => simpa using hR0`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `succ i ih => rw [Int.cast_add, Int.cast_one]`. Conclude with `hRadd _ ih _ hR1`. Consider the case `pred i ih`. Establish `: ((-(i : ℤ) - 1 : ℤ) : B) = ((-(i : ℤ) : ℤ) : B) + -1` using `by push_cast; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hRadd _ ih _ (hRneg _ hR1)`. Take `⟨D₁, hD₁, hD₁m⟩` from `hden (X : A)`. Take `⟨D₂, hD₂, hD₂m⟩` from `hden (↑X⁻¹ : A)`. Establish `hDR : ∀ ρ ∈ R, (X : A) * (j (ρ * D₁) * e 0) ∈ Λ`. Introduce `ρ hρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_intCast, mul_assoc]`. Apply `hL ρ hρ` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← (Int.cast_commute D₁ (X : A)).eq]`. Conclude with `hmul _ hD₁m _ he0`. Establish `hDI : ∀ β : B, (X : A) * (j β * e 0) ∈ Λ → β * D₂ ∈ R`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `β hβ`. Rewrite using `[← hsingleR]`. Establish `: j (β * D₂) * e 0 = ((D₂ : A) * ↑X⁻¹) * ((X : A) * (j β * e 0))`. Rewrite using `[map_mul, map_intCast, ← (Int.cast_commute D₂ (j β)).eq, mul_assoc, mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hmul _ hD₂m _ hβ`. Take `⟨m, hm⟩` from `hsq {β | (X : A) * (j β * e 0) ∈ Λ} (by show (X : A) * (j 0 * e 0) ∈ Λ; simpa using h0) (fun x hx y hy => by show (X : A) * (j (x + y) * e 0) ∈ Λ`. Rewrite using `[map_add, add_mul, mul_add]`. Conclude with `hadd _ hx _ hy)`. Use the proof step `(fun ρ hρ x hx => by show (X : A) * (j (ρ * x) * e 0) ∈ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_assoc]`. Conclude with `hL ρ hρ _ hx)`. Use the proof step `⟨D₁ * D₂, mul_ne_zero hD₁ hD₂, fun x hx => by show (X : A) * (j (((D₁ * D₂ : ℤ) : B) * x) * e 0) ∈ Λ`. Establish `: ((D₁ * D₂ : ℤ) : B) * x = (D₂ : B) * (x * D₁)` using `by push_cast; ring`. Rewrite using `[this, map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hL _ (hRint D₂) _ (hDR x hx),`. Use `fun x hx => by`. Establish `: ((D₁ * D₂ : ℤ) : B) * x = (D₁ : B) * (x * D₂)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `hRmul _ (hRint D₁) _ (hDI x hx)⟩`.
-
-Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, -⟩` from `hrep 1`. Establish `hγR : ∀ i, γ i ∈ R` using `(hmem γ).1 (hγ ▸ h1)`. Establish `hjm : j (m : B) = ∑ i, j ((m : B) * γ i) * e i` using `by conv_lhs => rw [← mul_one (j (m : B)), hγ]`. Rewrite using `[Finset.mul_sum]`.
-
-Simplify using `only [map_mul, mul_assoc]`. Rewrite using `[hjm]`. Conclude with `hsum _ (fun i => (hm _).2 ⟨γ i, hγR i, rfl⟩)`. Take `⟨β, hβ, -⟩` from `hrep (↑X⁻¹ : A)`. Establish `hXinv : (X : A) * (∑ i, j (β i) * e i) ∈ Λ`.
-
-Rewrite using `[← hβ, Units.mul_inv]`. Conclude with `h1`. Establish `hc : ∀ i, ∃ ρ ∈ R, β i = (m : B) * ρ` using `fun i => (hm _).1 (hA β hXinv i)`. Use `choose ρ hρR hρeq using hc`. Establish `: j (↑m⁻¹ : B) * (↑X⁻¹ : A) = ∑ i, j (ρ i) * e i`.
-
-Rewrite using `[hβ, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, hρeq, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[this]`. Conclude with `(hmem ρ).2 hρR`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbsLattice.exists_unit_of_conj_stable : ∀ {A B : Type} [Ring A] [CommRing B] (j : B →+* A) (Λ : Set A) (R : Set B) (r : ℕ) (e : Fin r → A),
     (0 : A) ∈ Λ → (1 : A) ∈ Λ → (∀ x ∈ Λ, ∀ y ∈ Λ, x + y ∈ Λ) → (∀ x ∈ Λ, -x ∈ Λ) →

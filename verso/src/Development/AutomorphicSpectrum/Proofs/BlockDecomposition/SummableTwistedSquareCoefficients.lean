@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.LSeriesBound
 
 /- English proof (translation)
-Establish `hre : (s + (k : ℂ) - 1).re = s.re + (k : ℝ) - 1` using `by simp`. Establish `hsum : Summable (fun n : ℕ => 2 * (n : ℝ) ^ (1 - s.re))` using `(Real.summable_nat_rpow.mpr (by linarith)).mul_left 2`. Use `Summable.of_norm_bounded hsum (fun n => ?_)` and prove the remaining obligations. Rewrite using `[LSeries.norm_term_eq]`. Use `split_ifs with hn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Establish `hf : ‖DirichletCharacter.changeLevel hM χ⁻¹ (n : ZMod M) * a (n ^ 2)‖ ≤ 2 * (n : ℝ) ^ k`. Distinguish the cases in `hu : IsUnit (n : ZMod M)`. Establish `hcop : Nat.Coprime n M` using `(ZMod.isUnit_iff_coprime n M).mp hu`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcopN : Nat.Coprime n N` using `Nat.Coprime.coprime_dvd_right hM hcop`. Establish `h1 : ‖DirichletCharacter.changeLevel hM χ⁻¹ (n : ZMod M)‖ ≤ 1` using `DirichletCharacter.norm_le_one _ _`. Establish `h2` using `hb n hcopN`. Establish `h3 : 2 * (n : ℝ) * (n : ℝ) ^ (k - 1) = 2 * (n : ℝ) ^ k`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MulChar.map_nonunit _ hu]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_mul, norm_zero]`. Check the signs of the components of the expression. Rewrite using `[hre, div_le_iff₀ (Real.rpow_pos_of_pos hn0 _)]`. Establish `hpow : (n : ℝ) ^ (1 - s.re) * (n : ℝ) ^ (s.re + (k : ℝ) - 1) = (n : ℝ) ^ k`. Rewrite using `[← Real.rpow_add hn0, ← Real.rpow_natCast]`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lseriesSummable_twist_squares (M N k : ℕ) [NeZero M] (hM : N ∣ M)
     (χ : DirichletCharacter ℂ N) (a : ℕ → ℂ) (hk : 1 ≤ k)

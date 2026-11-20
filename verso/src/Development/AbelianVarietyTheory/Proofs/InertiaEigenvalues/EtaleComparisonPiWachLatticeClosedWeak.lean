@@ -22,31 +22,25 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 
 /- English proof (translation)
-Use `letI := cbValued l`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem hausdorff_tilt_witt : letI := cbTop l; T2Space (Cb l) := by
   letI := cbValued l
   infer_instance
 
 /- English proof (translation)
-Use `letI := cbValued l`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem ring_cb : letI := cbTop l; IsTopologicalRing (Cb l) := by
   letI := cbValued l
   infer_instance
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h T _`. Use `haveI := LL.2`. Use `haveI : Module.Free ℤ_[l] ↥(OL LL) := (GlobalTheory.Per.integers_completeDVR l LL).elim fun _ h => h.2.2.2.1`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL) := (GlobalTheory.Per.integers_completeDVR l LL).elim fun _ h => h.2.2.2.2.1`. Take `⟨d, ⟨b⟩⟩ : ∃ d : ℕ, Nonempty (LatB T d)` from `GlobalTheory.Cyc.exists_basis_lat (R := ℤ_[l]) T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Set `bO` to `Module.finBasis ℤ_[l] ↥(OL LL)`. Use `letI τ := twTop T b`. Use `letI tW : TopologicalSpace (WCb l) := wTop l`. Use `letI := cbTop l`. Use `haveI := hausdorff_tilt_witt (l := l)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI := ring_cb (l := l)`. Use `haveI : T2Space (WCb l) := GlobalTheory.WeakTop.t2Space_wittVector_product`. Use `haveI : IsTopologicalRing (WCb l) := GlobalTheory.WeakTop.isTopologicalRing_witt`. Use `letI := zlMod T`. Use `haveI := zlTower T`.
-
-Establish `hc : Continuous (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b)` using `continuous_induced_dom`. Use `haveI hT2 : T2Space (TW (RW LL) T) := T2Space.of_injective_continuous (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b).injective hc`. Use `haveI hAG : IsTopologicalAddGroup (TW (RW LL) T) := Topology.IsInducing.topologicalAddGroup (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b) ⟨rfl⟩`. Use `⟨τ, hT2, hAG, GlobalTheory.T.continuous_galois_orbit_wittTensorLatticeWeakTopology (D.locA l) T b, GlobalTheory.T.continuous_one_tmul_latB T b, ?_⟩` and prove the remaining obligations. Take `⟨r, y, hy⟩` from `GlobalTheory.T.exists_image_aN_eq_range_sum ((F l).E K s LL h) T`.
-
-Rewrite using `[hy]`. Use `letI := aTop (K := K) bO`. Use `haveI := GlobalTheory.T.compactSpace_aTop' (K := K) bO`. Use `(isCompact_range ?_).isClosed` and prove the remaining obligations. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations.
-
-Conclude with `(GlobalTheory.T.continuous_wittCbInclusion_smul_weakTopology ((F l).E K s LL h) T b bO (y i)).comp (continuous_apply i)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jD_piN_closed : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (T : Lt K LL), IsCrys ((D.loc l).PD K) T.ρ → ∃ τ : TopologicalSpace (TW (RW LL) T), letI := τ; T2Space (TW (RW LL) T) ∧ IsTopologicalAddGroup (TW (RW LL) T) ∧ (∀ b : TW (RW LL) T, Continuous (fun g : ↥(GK K) => TWact ((D.locA l).gRW LL (g : GQ l)) T g b)) ∧ Continuous (fun t : ↥T.L.T => (1 : RW LL) ⊗ₜ[↥(OL LL)] t) ∧ IsClosed (((F l).E K s LL h).tie.jD T '' (aN ((HW l).W K s LL h) T letπ : Set (((HW l).W K s LL h).DD T))) := by
   intro D HW F l _ K s LL h T _

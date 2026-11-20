@@ -9,7 +9,7 @@ noncomputable def GlobalTheory.PRep.IsSmooth :
   fun {k G V : Type} {inst_f0 : Field k} {inst_f1 : Group G} {inst_f2 : AddCommGroup V} {inst_f3 : _root_.Module k V} {inst_f4 : TopologicalSpace G} (ρ : Representation k G V) ↦ ∀ (v : V), IsOpen (X := G) {g : G | DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h5 : V) ↦ V) (DFunLike.coe (β := fun (x_h6 : G) ↦ V →ₗ[k] V) ρ g : V →ₗ[k] V) v = v}
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H χ a b ha hb h`. Simplify using `only [Set.mem_setOf_eq] at ha hb`. Rewrite using `[map_add, ha h, hb h, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.PRep.eig_obl_1 :
     ∀ {k G V : Type} [inst_h0 : Field k] [inst_h1 : Group G] [inst_h2 : AddCommGroup V] [inst_h3 : _root_.Module k V] (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) {a b : V}, Membership.mem (γ := Set V) {v : V | ∀ (h : ↥H), DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h4 : V) ↦ V) (DFunLike.coe (β := fun (x_h5 : G) ↦ V →ₗ[k] V) ρ (h.val (p := fun (x : G) ↦ x ∈ H)) : V →ₗ[k] V) v = HSMul.hSMul (α := k) (Units.val (DFunLike.coe (β := fun (x_h6 : ↥H) ↦ kˣ) χ h)) v} a → Membership.mem (γ := Set V) {v : V | ∀ (h : ↥H), DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h7 : V) ↦ V) (DFunLike.coe (β := fun (x_h8 : G) ↦ V →ₗ[k] V) ρ (h.val (p := fun (x : G) ↦ x ∈ H)) : V →ₗ[k] V) v = HSMul.hSMul (α := k) (Units.val (DFunLike.coe (β := fun (x_h9 : ↥H) ↦ kˣ) χ h)) v} b → ∀ (h : ↥H), DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h10 : V) ↦ V) (DFunLike.coe (β := fun (x_h11 : G) ↦ V →ₗ[k] V) ρ (h.val (p := fun (x : G) ↦ x ∈ H)) : V →ₗ[k] V) (a + b) = HSMul.hSMul (α := k) (Units.val (DFunLike.coe (β := fun (x_h12 : ↥H) ↦ kˣ) χ h)) (a + b) := by
@@ -18,7 +18,7 @@ theorem GlobalTheory.PRep.eig_obl_1 :
   rw [map_add, ha h, hb h, smul_add]
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H χ h`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.PRep.eig_obl_2 :
     ∀ {k G V : Type} [inst_h0 : Field k] [inst_h1 : Group G] [inst_h2 : AddCommGroup V] [inst_h3 : _root_.Module k V] (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) (h : ↥H), DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h4 : V) ↦ V) (DFunLike.coe (β := fun (x_h5 : G) ↦ V →ₗ[k] V) ρ (h.val (p := fun (x : G) ↦ x ∈ H)) : V →ₗ[k] V) (OfNat.ofNat (nat_lit 0)) = HSMul.hSMul (α := k) (β := V) (Units.val (DFunLike.coe (β := fun (x_h6 : ↥H) ↦ kˣ) χ h)) (OfNat.ofNat (nat_lit 0)) := by
@@ -26,7 +26,7 @@ theorem GlobalTheory.PRep.eig_obl_2 :
   simp
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H χ c v hv h`. Simplify using `only [Set.mem_setOf_eq] at hv`. Rewrite using `[map_smul, hv h, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.PRep.eig_obl_3 :
     ∀ {k G V : Type} [inst_h0 : Field k] [inst_h1 : Group G] [inst_h2 : AddCommGroup V] [inst_h3 : _root_.Module k V] (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) (c : k) {v : V}, Membership.mem (γ := Set V) {v : V | ∀ (h : ↥H), DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h4 : V) ↦ V) (DFunLike.coe (β := fun (x_h5 : G) ↦ V →ₗ[k] V) ρ (h.val (p := fun (x : G) ↦ x ∈ H)) : V →ₗ[k] V) v = HSMul.hSMul (α := k) (Units.val (DFunLike.coe (β := fun (x_h6 : ↥H) ↦ kˣ) χ h)) v} v → ∀ (h : ↥H), DFunLike.coe (F := V →ₗ[k] V) (β := fun (x_h7 : V) ↦ V) (DFunLike.coe (β := fun (x_h8 : G) ↦ V →ₗ[k] V) ρ (h.val (p := fun (x : G) ↦ x ∈ H)) : V →ₗ[k] V) (c • v) = HSMul.hSMul (α := k) (Units.val (DFunLike.coe (β := fun (x_h9 : ↥H) ↦ kˣ) χ h)) (c • v) := by
@@ -43,7 +43,7 @@ noncomputable def GlobalTheory.PRep.fixed :
   fun {k G V : Type} {inst_f5 : Field k} {inst_f6 : Group G} {inst_f7 : AddCommGroup V} {inst_f8 : _root_.Module k V} (ρ : Representation k G V) (H : Subgroup G) ↦ GlobalTheory.PRep.eig ρ H (OfNat.ofNat (nat_lit 1))
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Conclude with `IsDiscreteValuationRing.exists_irreducible _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Zls.unif_obl_1 :
     ∀ (k : Type) [inst_h0 : Field k] [inst_h1 : ValuativeRel k] [inst_h2 : TopologicalSpace k] [inst_h3 : IsNonarchimedeanLocalField k], ∃ (ϖ : ↥(Valuation.integer (Γ₀ := ValuativeRel.ValueGroupWithZero k) (ValuativeRel.valuation k))), Irreducible ϖ := by
@@ -63,7 +63,7 @@ noncomputable def Zls.IsHeckeOp :
   fun {k : Type} {inst_f17 : Field k} {inst_f18 : ValuativeRel k} {inst_f19 : TopologicalSpace k} {inst_f20 : IsNonarchimedeanLocalField k} {N : ℕ} {V : Type} {inst_f21 : AddCommGroup V} {inst_f22 : _root_.Module ℂ V} (π : Representation ℂ (GL (Fin N) k) V) (m : ℕ) (g : GL (Fin N) k) (T : Module.End ℂ ↥(GlobalTheory.PRep.fixed π (Zls.Km k N m))) ↦ ∀ (v : ↥(GlobalTheory.PRep.fixed π (Zls.Km k N m))) (l : Module.Dual ℂ V), (∀ (x : GL (Fin N) k), Membership.mem (γ := Subgroup (GL (Fin N) k)) (Zls.Km k N m) x → l ∘ₗ DFunLike.coe (β := fun (x_h8 : GL (Fin N) k) ↦ V →ₗ[ℂ] V) π x = l) → Eq (α := ℂ) (DFunLike.coe (α := V) (β := fun (x_h9 : V) ↦ ℂ) l (DFunLike.coe (F := V →ₗ[ℂ] V) (β := fun (x_h10 : V) ↦ V) (DFunLike.coe (β := fun (x_h11 : GL (Fin N) k) ↦ V →ₗ[ℂ] V) π g : V →ₗ[ℂ] V) (v.val (p := fun (x : V) ↦ x ∈ GlobalTheory.PRep.fixed π (Zls.Km k N m))) : V) : ℂ) (DFunLike.coe (β := fun (x_h12 : V) ↦ ℂ) l (Subtype.val (p := fun (x : V) ↦ x ∈ GlobalTheory.PRep.fixed π (Zls.Km k N m)) (DFunLike.coe (β := fun (x_h13 : ↥(GlobalTheory.PRep.fixed π (Zls.Km k N m))) ↦ ↥(GlobalTheory.PRep.fixed π (Zls.Km k N m))) T v)) : ℂ)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h`. Apply `(Classical.choose_spec (Zls.unif_obl_1 k)).ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem Zls.unifU_obl_2 :
     ∀ (k : Type) [inst_h0 : Field k] [inst_h1 : ValuativeRel k] [inst_h2 : TopologicalSpace k] [inst_h3 : IsNonarchimedeanLocalField k], Ne (α := k) (DFunLike.coe (F := ↥(Valuation.integer (Γ₀ := ValuativeRel.ValueGroupWithZero k) (ValuativeRel.valuation k)) →+* k) (β := fun (x_h4 : ↥(Valuation.integer (Γ₀ := ValuativeRel.ValueGroupWithZero k) (ValuativeRel.valuation k))) ↦ k) (Algebra.algebraMap (↥(Valuation.integer (Γ₀ := ValuativeRel.ValueGroupWithZero k) (ValuativeRel.valuation k))) k) (Zls.unif k) : k) (OfNat.ofNat (nat_lit 0) : k) := by

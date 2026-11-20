@@ -15,11 +15,9 @@ section Form
 variable {K V ι : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [Fintype ι]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← e.sum_repr x]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← e.sum_repr y]`. Rewrite using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Introduce `l _ hl`. Rewrite using `[map_smul, he i l hl.symm, smul_zero]`.
-
-Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem form_eq_sum (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Module.Basis ι K V)
     (he : ∀ i l, i ≠ l → h (e i) (e l) = 0) (x y : V) :
@@ -38,11 +36,11 @@ theorem form_eq_sum (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Module.Basis ι K V)
     exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Establish `hT : IsUnit (e.toMatrix b).det`. Use `letI := e.invertibleToMatrix b`. Conclude with `Matrix.isUnit_det_of_invertible _`. Use `⟨(e.toMatrix b).det, hT.ne_zero, ?_⟩` and prove the remaining obligations. Establish `: (Matrix.of fun i l => h (b i) (b l)) = (e.toMatrix b)ᴴ * Matrix.diagonal (fun i => h (e i) (e i)) * e.toMatrix b`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i l`. Rewrite using `[Matrix.of_apply, form_eq_sum h e he, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, Matrix.conjTranspose_apply, Module.Basis.toMatrix_apply, Module.Basis.toMatrix_apply]`. Rewrite using `[this, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem det_gram [DecidableEq ι] (h : V →ₗ⋆[K] V →ₗ[K] K) (e b : Module.Basis ι K V)
     (he : ∀ i l, i ≠ l → h (e i) (e l) = 0) :
@@ -68,7 +66,7 @@ section Val
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use `⟨fun hk => ((GlobalTheory.MassOrth.mem_locR_iff w k).1 hk).1, fun hk => ?_⟩` and prove the remaining obligations. Take `⟨n, d, hnd⟩` from `w.exists_primeCompl_mul_eq_of_integer k hk`. Use `(locDual_mem_locR _ _).2 ⟨d, locBasic_mem_hcompl _ _ d.2 (by rw [hw]; exact d.2), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, hnd]`. Conclude with `locDual_alg_mem _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locR_iff_le (w : HeightOneSpectrum (𝓞 K)) (hw : conjIdeal (K := K) w.asIdeal = w.asIdeal)
     (k : K) : k ∈ locR (K := K) w.asIdeal ↔ w.valuation K k ≤ 1 := by
@@ -79,11 +77,11 @@ theorem mem_locR_iff_le (w : HeightOneSpectrum (𝓞 K)) (hw : conjIdeal (K := K
   exact locDual_alg_mem _
 
 /- English proof (translation)
-Establish `h1 : ∀ k : K, w.valuation K k ≤ 1 → w.valuation K (star k) ≤ 1` using `fun k hk => ((GlobalTheory.MassOrth.mem_locR_iff w k).1 ((mem_locR_iff_le w hw k).2 hk)).2`. Establish `h2 : ∀ k : K, k ≠ 0 → w.valuation K (star k) ≤ w.valuation K k → w.valuation K k ≤ w.valuation K (star k)`. Introduce `k hk hle`. Establish `p1 : 0 < w.valuation K k` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hk)`. Establish `p2 : 0 < w.valuation K (star k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (star_ne_zero.2 hk))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 (star k / k) (by rw [map_div₀, div_le_one₀ p1]; exact hle)` as an intermediate fact. Rewrite `this` using `[star_div₀, star_star, map_div₀, div_le_one₀ p2]`. Then use the resulting hypothesis. Distinguish the cases in `hk : k = 0`. Rewrite using `[hk, star_zero]`. Break down `le_total (w.valuation K (star k)) (w.valuation K k) with hle | hle` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `le_antisymm hle (h2 k hk hle)`. Use `le_antisymm ?_ hle` and prove the remaining obligations. Use `h2 (star k) (star_ne_zero.2 hk) (by rwa [star_star])` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_star (w : HeightOneSpectrum (𝓞 K)) (hw : conjIdeal (K := K) w.asIdeal = w.asIdeal)
     (k : K) : w.valuation K (star k) = w.valuation K k := by
@@ -107,9 +105,9 @@ theorem val_star (w : HeightOneSpectrum (𝓞 K)) (hw : conjIdeal (K := K) w.asI
 omit [StarRing K] in
 
 /- English proof (translation)
-Rewrite using `[w.valuation_of_algebraMap]`. Establish `a0 : a ≠ 0` using `fun e => h2 (e ▸ Submodule.zero_mem _)`. Establish `e1` using `(w.intValuation_le_pow_iff_mem a 1).2 (by rwa [pow_one])`. Establish `e2` using `mt (w.intValuation_le_pow_iff_mem a 2).1 h2`. Establish `n0` using `w.intValuation_ne_zero a a0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[← WithZero.exp_log n0, WithZero.exp_le_exp]`. Rewrite using `[← WithZero.exp_log n0, WithZero.exp_inj]`. Move the coercions through the operations in `at e1 e2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem val_unif (w : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K} (h1 : a ∈ w.asIdeal) (h2 : a ∉ w.asIdeal ^ 2) :
     w.valuation K (algebraMap (𝓞 K) K a) = WithZero.exp (-1 : ℤ) := by
@@ -126,61 +124,57 @@ theorem val_unif (w : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K} (h1 : a ∈ w.asI
 end Val
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hK hs hnd M hM j b P hP`. Establish `hstruct` using `(GlobalTheory.MaxLatStruct.main K V h hK hs hnd M hM).2.2.2 P`. Distinguish the cases in `hc : conjIdeal (K := K) P = P`. Use `swap`. Conclude with `⟨fun hb => absurd (hstruct hb).1 hc, fun hb => absurd hb.1 hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `w : HeightOneSpectrum (𝓞 K)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)⟩`. Establish `hloc : ∀ k, k ∈ locR (K` using `K) P ↔ w.valuation K k ≤ 1 := mem_locR_iff_le w hc`. Establish `hvs : ∀ k, w.valuation K (star k) = w.valuation K k` using `val_star w hc`. Establish `hunif : ∀ a : 𝓞 K, a ∈ P → a ∉ P ^ 2 → w.valuation K (algebraMap (𝓞 K) K a) = WithZero.exp (-1 : ℤ)` using `fun a => val_unif w`. Generalize the expression as in `w.valuation K = v at hloc hvs hunif`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, heM⟩` from `GlobalTheory.MassOrth.main K V h hK hs hnd M hM.1.1 P hP`. Simplify using `only [hloc] at heM ⊢`. Establish `hj : j = Module.finrank K V`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hdet⟩` from `det_gram h e b he`. Rewrite using `[hdet]`. Establish `hform` using `form_eq_sum h e he`. Establish `hrow : ∀ i y, h (e i) y = h (e i) (e i) * e.repr y i`. Introduce `i y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[Finsupp.single_apply, hl.symm]`. Introduce `hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ i) hi`. Establish `hd0 : ∀ i, h (e i) (e i) ≠ 0` using `fun i h0 => e.ne_zero i (hnd.1 _ fun y => by rw [hrow, h0, zero_mul])`. Establish `hv0 : ∀ i, v (h (e i) (e i)) ≠ 0` using `fun i => (Valuation.ne_zero_iff _).2 (hd0 i)`. Establish `heloc : ∀ i, e i ∈ loc (K` using `K) P M := fun i => (heM _).2 fun l => by`. Rewrite using `[e.repr_self, Finsupp.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hdual : ∀ y, y ∈ dualAt h P (loc (K` using `K) P M) ↔ ∀ i, v (h (e i) (e i) * e.repr y i) ≤ 1 := by`. Introduce `y`. Rewrite using `[locDual_mem_dualAt]`. Simplify using `only [hloc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hy i => by rw [← hrow]; exact hy _ (heloc i), fun hy x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hform]`. Use `v.map_sum_le fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, map_mul, hvs]`. Conclude with `mul_le_one' ((heM x).1 hx i) (hy i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `GlobalTheory.MaxLatStruct.star_int (K := K)`. Establish `hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K)` using `fun r => ⟨σ r, hσ r⟩`. Establish `hLD : loc (K` using `K) P (dual h M) = dualAt h P (loc (K := K) P M) := by`. Rewrite using `[locDual_dualAt_loc h (IsFractionRing.injective _ _) hstar]`. Conclude with `le_antisymm (locDual_loc_dual_le h P M) (locDual_dualAt_le h hstar P M hM.1.1.fg)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hMd : M ≤ dual h M` using `fun x hx => (dualBasic_mem_dual h M x).2 fun y hy => hM.1.2 y hy x hx`. Establish `hd1 : ∀ i, v (h (e i) (e i)) ≤ 1` using `fun i => by`. Establish `h1 : e i ∈ loc (K` using `K) P (dual h M) := locBasic_locS_mono _ hMd (heloc i)`. Rewrite `h1` using `[hLD, hdual]`. Simplify using `using h1 i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdy : ∀ i, (h (e i) (e i))⁻¹ • e i ∈ dualAt h P (loc (K` using `K) P M) := fun i => by`. Rewrite using `[hdual]`. Introduce `l`. Rewrite using `[map_smul, e.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Use `split_ifs with hil`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Substitute `hil` using the available equality. Rewrite using `[smul_eq_mul, mul_one, mul_inv_cancel₀ (hd0 i), map_one]`. Simplify using the standard rewrite rules. Establish `hU : IsUnimodularAt h P M ↔ ∀ i, v (h (e i) (e i)) = 1`. Unfold `IsUnimodularAt`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu i`. Establish `h1` using `hdy i`. Rewrite `h1` using `[hu, heM]`. Establish `h2` using `h1 i`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[map_smul, e.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one, map_inv₀, inv_le_one₀ (zero_lt_iff.2 (hv0 i))]`. Conclude with `le_antisymm (hd1 i) h2`. Introduce `hu`. Use extensionality with `y`. Rewrite using `[hdual, heM]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_mul, hu, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, x, hx, ⟨a, ha, ha1, ha2⟩, hgen⟩` from `hstruct hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxx : v (h x x) = WithZero.exp (-1 : ℤ)` using `by rw [← ha]; exact hunif a ha1 ha2`. Establish `hx1 : ∀ i, v (e.repr x i) ≤ 1` using `(heM x).1 (locBasic_le_locS _ _ hx)`. Establish `key : ∀ i, v (h (e i) (e i)) ≠ 1 → v (h (e i) (e i)) = WithZero.exp (-1 : ℤ) ∧ v (e.repr x i) = 1 ∧ ∀ l, l ≠ i → v (e.repr x l) ≠ 1`. Introduce `i hi`. Take `⟨c, hc1, hc2⟩` from `hgen _ (hLD ▸ hdy i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hc1` using `[hloc]`. Rewrite `hc2` using `[heM]`. Establish `hco : ∀ l, v ((h (e i) (e i))⁻¹ * (if i = l then 1 else 0) - c * (h x x)⁻¹ * e.repr x l) ≤ 1`. Introduce `l`. Use `hc2 l` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, map_smul, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, Finsupp.smul_apply, e.repr_self, Finsupp.single_apply, smul_eq_mul, smul_eq_mul]`. Then use the resulting hypothesis. Establish `h1` using `hco i`. Rewrite `h1` using `[if_pos rfl, mul_one]`. Establish `h2 : 1 < v (h (e i) (e i))⁻¹`. Rewrite using `[map_inv₀, one_lt_inv₀ (zero_lt_iff.2 (hv0 i))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_ne (hd1 i) hi`. Establish `h3 : v (c * (h x x)⁻¹ * e.repr x i) = v (h (e i) (e i))⁻¹` using `v.map_eq_of_sub_lt (by rw [v.map_sub_swap]; exact h1.trans_lt h2)`. Establish `hc0 : v c ≠ 0` using `fun h0 => by`. Rewrite `h2` using `[← h3, map_mul, map_mul, h0, zero_mul, zero_mul]`. Conclude with `not_lt_zero h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : v (e.repr x i) ≠ 0` using `fun h0 => by`. Rewrite `h2` using `[← h3, map_mul, h0, mul_zero]`. Conclude with `not_lt_zero h2`. Establish `h4` using `hx1 i`. Rewrite `h3` using `[map_mul, map_mul, map_inv₀, map_inv₀, hxx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[map_inv₀]`. Take `⟨n1, hn1⟩ : ∃ n : ℤ, v c = WithZero.exp n` from `⟨_, (WithZero.exp_log hc0).symm⟩`. Take `⟨n2, hn2⟩ : ∃ n : ℤ, v (e.repr x i) = WithZero.exp n` from `⟨_, (WithZero.exp_log hx0).symm⟩`. Take `⟨n3, hn3⟩ : ∃ n : ℤ, v (h (e i) (e i)) = WithZero.exp n` from `⟨_, (WithZero.exp_log (hv0 i)).symm⟩`. Rewrite `h3` using `[hn1, hn2, hn3, ← WithZero.exp_neg, ← WithZero.exp_neg, ← WithZero.exp_add, ← WithZero.exp_add, WithZero.exp_inj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[hn3, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `h4` using `[hn2, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hc1` using `[hn1, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use `⟨by rw [hn3, WithZero.exp_inj]; omega, by rw [hn2, ← WithZero.exp_zero, WithZero.exp_inj]; omega, fun l hl hl1 => ?_⟩` and prove the remaining obligations. Establish `h5` using `hco l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Rewrite `h5` using `[if_neg hl.symm, mul_zero, zero_sub, Valuation.map_neg, map_mul, map_mul, map_inv₀, hxx, hl1, mul_one, hn1, ← WithZero.exp_neg, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `not_forall.1 (mt hU.2 hb.2)`. Establish `hprod : v (∏ l, h (e l) (e l)) = WithZero.exp (-1 : ℤ)`. Rewrite using `[map_prod, Finset.prod_eq_single i, (key i hi).1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Assume the negation of the conclusion as `hl1`. Conclude with `(key i hi).2.2 l hl (key l hl1).2.1`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, hc0, h1, h2⟩`. Take `⟨n1, hn1⟩ : ∃ n : ℤ, v c = WithZero.exp n` from `⟨_, (WithZero.exp_log ((Valuation.ne_zero_iff _).2 hc0)).symm⟩`. Take `⟨n2, hn2⟩ : ∃ n : ℤ, v δ = WithZero.exp n` from `⟨_, (WithZero.exp_log ((Valuation.ne_zero_iff _).2 hδ)).symm⟩`. Establish `hval : v (star c * c * (star δ * δ * ∏ l, h (e l) (e l))) = WithZero.exp (n1 + n1 + (n2 + n2 + -1))`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, hvs, hvs, hprod, hn1, hn2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only [WithZero.exp_add]`. Rewrite `h2` using `[map_inv₀, hval, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `h1` using `[hval, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨-, hn⟩`.
-
-Use `⟨hP, fun hu => hn ⟨δ⁻¹, inv_ne_zero hδ, ?_⟩⟩` and prove the remaining obligations. Establish `hsδ : star δ ≠ 0` using `star_ne_zero.2 hδ`. Establish `e1 : star δ⁻¹ * δ⁻¹ * (star δ * δ * ∏ l, h (e l) (e l)) = ∏ l, h (e l) (e l)`. Rewrite using `[star_inv₀]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `e2 : v (∏ l, h (e l) (e l)) = 1`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun l _ => hU.1 hu l`. Rewrite using `[e1, map_inv₀, e2, inv_one]`. Conclude with `⟨le_rfl, le_rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ M : Submodule (𝓞 K) V, IsMaxLat h M → ∀ (j : ℕ) (b : Module.Basis (Fin j) K V) (P : Ideal (𝓞 K)), P.IsMaximal → (P ∈ badP h M ↔ conjIdeal (K := K) P = P ∧ ¬ ∃ c : K, c ≠ 0 ∧ star c * c * (Matrix.of fun i l => h (b i) (b l)).det ∈ locR (K := K) P ∧ (star c * c * (Matrix.of fun i l => h (b i) (b l)).det)⁻¹ ∈ locR (K := K) P) := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hnd M hM j b P hP

@@ -15,7 +15,7 @@ section Mixed
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   change Continuous fun x : InfiniteAdeleRing F =>
@@ -38,7 +38,7 @@ def archParts (y : (κ → AF F) × (κ → AF F)) :
 local notation "toM" => InfiniteAdeleRing.ringEquiv_mixedSpace F
 
 /- English proof (translation)
-Use `show (((toM).symm (z + z'), 0) : AF F) = (((toM).symm z + (toM).symm z', 0 + 0) : AF F)`. Rewrite using `[map_add, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archimedean_map_add (z z' : mixedEmbedding.mixedSpace F) :
     GlobalTheory.WeilL2Words.arch1 F (z + z') = GlobalTheory.WeilL2Words.arch1 F z + GlobalTheory.WeilL2Words.arch1 F z' := by
@@ -46,7 +46,7 @@ theorem archimedean_map_add (z z' : mixedEmbedding.mixedSpace F) :
   rw [map_add, add_zero]
 
 /- English proof (translation)
-Use `show (((toM).symm (t • z), 0) : AF F) = (((toM).symm (algebraMap ℝ _ t) * (toM).symm z, 0 * 0) : AF F)`. Rewrite using `[Algebra.smul_def, map_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_projection_real_smul (t : ℝ) (z : mixedEmbedding.mixedSpace F) :
     GlobalTheory.WeilL2Words.arch1 F (t • z) = rInf F t * GlobalTheory.WeilL2Words.arch1 F z := by
@@ -54,28 +54,26 @@ theorem arch_projection_real_smul (t : ℝ) (z : mixedEmbedding.mixedSpace F) :
   rw [Algebra.smul_def, map_mul, mul_zero]
 
 /- English proof (translation)
-Use `show (((toM).symm z, 0) : AF F) = ((1 * (toM).symm z, 0 * 0) : AF F)`. Rewrite using `[one_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_projection_idempotent (z : mixedEmbedding.mixedSpace F) : GlobalTheory.WeilL2Words.arch1 F z = eInf F * GlobalTheory.WeilL2Words.arch1 F z := by
   show (((toM).symm z, 0) : AF F) = ((1 * (toM).symm z, 0 * 0) : AF F)
   rw [one_mul, mul_zero]
 
 /- English proof (translation)
-The claim follows from `map_add (toM) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem toM_add (a b : AF F) : toM (a + b).1 = toM a.1 + toM b.1 := map_add (toM) a.1 b.1
 
 /- English proof (translation)
-Use `show toM ((toM).symm (algebraMap ℝ _ t) * a.1) = _`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toM_rInf (t : ℝ) (a : AF F) : toM (rInf F t * a).1 = t • toM a.1 := by
   show toM ((toM).symm (algebraMap ℝ _ t) * a.1) = _
   rw [map_mul, RingEquiv.apply_symm_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `h2 : a.2 = 0`. Rewrite using `[← ha]`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) * a.2 = 0`. Conclude with `zero_mul _`. Use `show (((toM).symm (toM a.1), 0) : AF F) = a`.
-
-Rewrite using `[RingEquiv.symm_apply_apply]`. Use `show ((a.1, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = a`. Conclude with `Prod.ext rfl h2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_projection_to_mixed_space {a : AF F} (ha : eInf F * a = a) : GlobalTheory.WeilL2Words.arch1 F (toM a.1) = a := by
   have h2 : a.2 = 0 := by
@@ -88,40 +86,40 @@ theorem arch_projection_to_mixed_space {a : AF F} (ha : eInf F * a = a) : Global
   exact Prod.ext rfl h2.symm
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun i => archimedean_map_add (h.1 i) (h'.1 i)) (funext fun i => archimedean_map_add (h.2 i) (h'.2 i))`.
+A detailed English derivation is pending.
 -/
 theorem archPair_add (h h' : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     GlobalTheory.WeilL2Words.archPair F (h + h') = GlobalTheory.WeilL2Words.archPair F h + GlobalTheory.WeilL2Words.archPair F h' :=
   Prod.ext (funext fun i => archimedean_map_add (h.1 i) (h'.1 i)) (funext fun i => archimedean_map_add (h.2 i) (h'.2 i))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun i => arch_projection_real_smul t (h.1 i)) (funext fun i => arch_projection_real_smul t (h.2 i))`.
+A detailed English derivation is pending.
 -/
 theorem archPair_smul (t : ℝ) (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     GlobalTheory.WeilL2Words.archPair F (t • h) = rInf F t • GlobalTheory.WeilL2Words.archPair F h :=
   Prod.ext (funext fun i => arch_projection_real_smul t (h.1 i)) (funext fun i => arch_projection_real_smul t (h.2 i))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun i => arch_projection_idempotent (h.1 i)) (funext fun i => arch_projection_idempotent (h.2 i))`.
+A detailed English derivation is pending.
 -/
 theorem archPair_eInf (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) :
     GlobalTheory.WeilL2Words.archPair F h = eInf F • GlobalTheory.WeilL2Words.archPair F h :=
   Prod.ext (funext fun i => arch_projection_idempotent (h.1 i)) (funext fun i => arch_projection_idempotent (h.2 i))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun i => toM_add (y.1 i) (y'.1 i)) (funext fun i => toM_add (y.2 i) (y'.2 i))`.
+A detailed English derivation is pending.
 -/
 theorem archParts_add (y y' : (κ → AF F) × (κ → AF F)) : archParts (y + y') = archParts y + archParts y' :=
   Prod.ext (funext fun i => toM_add (y.1 i) (y'.1 i)) (funext fun i => toM_add (y.2 i) (y'.2 i))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun i => toM_rInf t (y.1 i)) (funext fun i => toM_rInf t (y.2 i))`.
+A detailed English derivation is pending.
 -/
 theorem archParts_smul (t : ℝ) (y : (κ → AF F) × (κ → AF F)) : archParts (rInf F t • y) = t • archParts y :=
   Prod.ext (funext fun i => toM_rInf t (y.1 i)) (funext fun i => toM_rInf t (y.2 i))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun i => arch_projection_to_mixed_space (congrFun (congrArg Prod.fst hy) i)) (funext fun i => arch_projection_to_mixed_space (congrFun (congrArg Prod.snd hy) i))`.
+A detailed English derivation is pending.
 -/
 theorem archPair_archParts {y : (κ → AF F) × (κ → AF F)} (hy : eInf F • y = y) :
     GlobalTheory.WeilL2Words.archPair F (archParts y) = y :=
@@ -129,7 +127,7 @@ theorem archPair_archParts {y : (κ → AF F) × (κ → AF F)} (hy : eInf F •
     (funext fun i => arch_projection_to_mixed_space (congrFun (congrArg Prod.snd hy) i))
 
 /- English proof (translation)
-Use `Continuous.prodMk (continuous_pi fun i => ?_) (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `(continuous_toMixed F).comp (continuous_fst.comp ((continuous_apply i).comp continuous_fst))`. Conclude with `(continuous_toMixed F).comp (continuous_fst.comp ((continuous_apply i).comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_archParts : Continuous (archParts (F := F) (κ := κ)) := by
   refine Continuous.prodMk (continuous_pi fun i => ?_) (continuous_pi fun i => ?_)
@@ -150,19 +148,17 @@ def mulMulT (P : Matrix α α R') (Q : Matrix β β R') : Matrix α β R' →ₗ
 end Lin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ ψ m n JA JB ξ κ _ co om hom`. Set `L : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) → ((κ → AF F) × (κ → AF F)) →ₗ[AF F] ((κ → AF F) × (κ → AF F))` to `fun p => co.e.toLinearMap ∘ₗ mulMulT (S := AF F) (((p⁻¹).1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)) (((p⁻¹).2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) ∘ₗ co.e.symm.toLinearMap`. Establish `hL : ∀ p x, L p x = co.e (actAB (cA σ) p⁻¹ (co.e.symm x))` using `fun p x => rfl`. Establish `hfix : ∀ p h, eInf F • L p (GlobalTheory.WeilL2Words.archPair F h) = L p (GlobalTheory.WeilL2Words.archPair F h)`. Introduce `p h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_rhs => rw [archPair_eInf h, map_smul]`. Establish `hact : ∀ (p : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) (x : Matrix (Fin m) (Fin n) (AE F E)), actAB (cA σ) p (actAB (cA σ) p⁻¹ x) = x`. Introduce `p x`. Establish `h1 : ((p.1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)) * (((p⁻¹).1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)) = 1`. Rewrite using `[Prod.fst_inv, Subgroup.coe_inv, Units.mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (((p⁻¹).2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))ᵀ * ((p.2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Prod.snd_inv, Subgroup.coe_inv, Units.mul_inv, Matrix.transpose_one]`. Simplify using `only [actAB, Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Use `⟨fun p => { toFun := fun h => archParts (L p (GlobalTheory.WeilL2Words.archPair F h)), map_add' := ?_, map_smul' := ?_ }, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h h'`. Rewrite using `[archPair_add, map_add, archParts_add]`. Introduce `t h`. Rewrite using `[RingHom.id_apply, archPair_smul, map_smul, archParts_smul]`. Introduce `p h φ hφ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key` using `hom p (actAB (cA σ) p⁻¹ (co.e.symm (GlobalTheory.WeilL2Words.archPair F h))) φ hφ`. Use `show om p (schr ψ (GlobalTheory.WeilL2Words.archPair F (archParts (L p (GlobalTheory.WeilL2Words.archPair F h)))) φ) = _`. Rewrite using `[archPair_archParts (hfix p h), hL]`. Simplify using `only [Darboux.rho] at key`. Rewrite `key` using `[hact, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `key`. Introduce `h haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E) haveI : IsModuleTopology (AF F) (Matrix (Fin m) (Fin n) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin m → Fin n → AE F E))`. Establish `hce : Continuous co.e` using `IsModuleTopology.continuous_of_linearMap co.e.toLinearMap`. Establish `hP : Continuous fun p : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) => (((p⁻¹).1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E))` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_fst.comp continuous_inv))`. Establish `hQ : Continuous fun p : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) => (((p⁻¹).2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_snd.comp continuous_inv))`.
-
-Conclude with `continuous_archParts.comp (hce.comp ((hP.matrix_mul continuous_const).matrix_mul hQ.matrix_transpose))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem archDir_transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) (m n : ℕ) (JA : Matrix (Fin m) (Fin m) E) (JB : Matrix (Fin n) (Fin n) E) (ξ : AF F ⊗[F] E) (κ : Type) [Fintype κ]
     (co : Darboux (symp (cA σ) ξ (incM F JA) (incM F JB)) κ)

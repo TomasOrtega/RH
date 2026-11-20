@@ -12,13 +12,13 @@ attribute [local instance] neZero_g fact_g Classical.propDecidable
 variable {R : Ranks} (H : Host R) (Lb : Lbl H) (what₂ : Rows.Data R) (h : NHyp H what₂)
 
 /- English proof (translation)
-Introduce `e1`. Set `b : ∀ kv : Ix (ndG H Lb what₂ h), Fin R.r → ZMod (H.g kv.1)` to `fun kv => fun i => (Lb.fA kv.1).coeff i`. Establish `hm : ∀ k, Formalism.CyclotomicNorms.monicOf (fun i : Fin R.r => (Lb.fA k).coeff i) = Lb.fA k` using `fun k => Formalism.CyclotomicNorms.Sqf.monicOf_coeffs _ (Lb.okA k).1 (Lb.okA k).2.1`. Establish `hS : ¬ GoodT (ndG H Lb what₂ h) (fun k v => Formalism.CyclotomicNorms.monicOf (b ⟨k, v⟩))`. Introduce `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hg 0).1` as an intermediate fact. Simplify using `only [b, hm] at this`. Conclude with `ND.not_isGood_const _ _ this`. Establish `hmul` using `eSum_mul_tens (I := Ix (ndG H Lb what₂ h)) (G := fun kv => GL (Fin R.r) (ZMod (H.g kv.1))) (L := fun kv => Fin R.r → ZMod (H.g kv.1)) (fun kv a => esL Lb ℂ kv.1 (Formalism.CyclotomicNorms.monicOf a)) (fun a => GoodT (ndG H Lb what₂ h) fun k v => Formalism.CyclotomicNorms.monicOf …`. Rewrite `hmul` using `[if_neg hS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : tens (fun kv : Ix (ndG H Lb what₂ h) => esL Lb ℂ kv.1 (Formalism.CyclotomicNorms.monicOf (b kv))) ≠ 0` using `tens_ne_zero _ fun kv => by show esZ ℂ _ (Lb.fA kv.1) (Lb.fB kv.1) (Formalism.CyclotomicNorms.monicOf fun i : Fin R.r => (Lb.fA kv.1).coeff i) ≠ 0`. Rewrite using `[hm]`. Unfold `esZ`. Rewrite using `[if_pos rfl]`. Conclude with `one_sub_eT_ne_zero (zL H kv.1) (zL_ne_one H ht kv.1)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Establish `: e0L H Lb what₂ h ℂ = eSum (I` using `Ix (ndG H Lb what₂ h)) (G := fun kv => GL (Fin R.r) (ZMod (H.g kv.1))) (L := fun kv => Fin R.r → ZMod (H.g kv.1)) (fun kv a => esL Lb ℂ kv.1 (Formalism.CyclotomicNorms.monicOf a)) (fun a => GoodT (ndG H Lb what₂ h) fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)) := rfl`. Rewrite `hmul` using `[← this, e1, one_mul]`. Conclude with `hmul`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labelIdempotent_ne_one (ht : THyp H) : e0L H Lb what₂ h ℂ ≠ 1 := by
   intro e1
@@ -50,7 +50,7 @@ theorem labelIdempotent_ne_one (ht : THyp H) : e0L H Lb what₂ h ℂ ≠ 1 := b
   exact hmul
 
 /- English proof (translation)
-The claim follows from `Subalgebra.sub_mem _ (Subalgebra.one_mem _) (labelIdempotent_mem_center H Lb what₂ h)`.
+A detailed English derivation is pending.
 -/
 theorem one_sub_e0L_mem_center :
     1 - e0L H Lb what₂ h ℂ ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (ndG H Lb what₂ h))) :=
@@ -62,7 +62,7 @@ def labelComplementCharacter (ht : THyp H) : Subalgebra.center ℂ (MonoidAlgebr
     (sub_ne_zero.mpr (labelIdempotent_ne_one H Lb what₂ h ht).symm)).choose
 
 /- English proof (translation)
-Establish `h1 : labelComplementCharacter H Lb what₂ h ht ⟨1 - e0L H Lb what₂ h ℂ, one_sub_e0L_mem_center H Lb what₂ h⟩ = 1` using `(exists_char _ (one_sub_e0L_mem_center H Lb what₂ h) (by rw [sub_mul, mul_sub, mul_sub, labelIdempotent_idem, one_mul, one_mul, mul_one, sub_self, sub_zero]) (sub_ne_zero.mpr (labelIdempotent_ne_one H Lb what₂ h ht).symm)).choose_spec`. Establish `e : (⟨1 - e0L H Lb what₂ h ℂ, one_sub_e0L_mem_center H Lb what₂ h⟩ : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (ndG H Lb what₂ h)))) = 1 - ⟨_, labelIdempotent_mem_center H Lb what₂ h⟩` using `rfl`. Rewrite `h1` using `[e, map_sub, map_one]`. Take the linear combination `-h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem labelComplementCharacter_idempotent_zero (ht : THyp H) : labelComplementCharacter H Lb what₂ h ht ⟨e0L H Lb what₂ h ℂ, labelIdempotent_mem_center H Lb what₂ h⟩ = 0 := by
   have h1 : labelComplementCharacter H Lb what₂ h ht ⟨1 - e0L H Lb what₂ h ℂ, one_sub_e0L_mem_center H Lb what₂ h⟩ = 1 :=

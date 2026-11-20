@@ -109,13 +109,13 @@ def rs {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) : Γ(X, U) →+* Γ(X, V) 
 def capO {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) : X.Opens := ⨅ a, U (i a)
 
 /- English proof (translation)
-The claim follows from `iInf_le (fun a => U (i a)) a`.
+A detailed English derivation is pending.
 -/
 theorem capO_le {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) (a : Fin n) : capO U i ≤ U (i a) :=
   iInf_le (fun a => U (i a)) a
 
 /- English proof (translation)
-The claim follows from `le_iInf fun b => capO_le U i (θ b)`.
+A detailed English derivation is pending.
 -/
 theorem capO_comp {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {m n : ℕ} (i : Fin n → ι) (θ : Fin m → Fin n) :
     capO U i ≤ capO U (i ∘ θ) := le_iInf fun b => capO_le U i (θ b)

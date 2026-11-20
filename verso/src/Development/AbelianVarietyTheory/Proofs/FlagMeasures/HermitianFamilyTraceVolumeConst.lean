@@ -14,11 +14,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.FamilyVol
 
 /- English proof (translation)
-Establish `e1 : (B ⊓ B').relIndex A = B'.relIndex B * β`. Rewrite using `[← h, ← AddSubgroup.relIndex_mul_relIndex (B ⊓ B') B A inf_le_left hA, AddSubgroup.inf_relIndex_left]`. Establish `e2 : (B ⊓ B').relIndex A' = B.relIndex B' * β`. Rewrite using `[← h', ← AddSubgroup.relIndex_mul_relIndex (B ⊓ B') B' A' inf_le_right hA', AddSubgroup.inf_relIndex_right]`. Establish `hle : B ⊓ B' ≤ A ⊓ A'` using `inf_le_inf hA hA'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3` using `AddSubgroup.relIndex_mul_relIndex (B ⊓ B') (A ⊓ A') A hle inf_le_left`. Establish `e4` using `AddSubgroup.relIndex_mul_relIndex (B ⊓ B') (A ⊓ A') A' hle inf_le_right`. Rewrite `e3` using `[AddSubgroup.inf_relIndex_left]`. Rewrite `e4` using `[AddSubgroup.inf_relIndex_right]`. Establish `hne : (B ⊓ B').relIndex (A ⊓ A') ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `e4` using `[h0, zero_mul, e2]`. Conclude with `mul_ne_zero hB0 hβ e4.symm`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hne)` to reduce the goal to its premises. Rewrite using `[e3, e4, e1, e2, hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_symm_of_sub {G : Type*} [AddGroup G] {A A' B B' : AddSubgroup G} {β : ℕ} (hβ : β ≠ 0)
     (hA : B ≤ A) (hA' : B' ≤ A') (h : B.relIndex A = β) (h' : B'.relIndex A' = β)
@@ -45,7 +45,7 @@ theorem relIndex_symm_of_sub {G : Type*} [AddGroup G] {A A' B B' : AddSubgroup G
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `e : Ideal.span {ϖ} = IsLocalRing.maximalIdeal 𝒪[F]` using `h.maximalIdeal_eq.symm`. Unfold `resQ`. Rewrite using `[e]`. Establish `: Finite (𝒪[F] ⧸ IsLocalRing.maximalIdeal 𝒪[F])` using `inferInstanceAs (Finite 𝓀[F])`. Conclude with `Nat.card_pos.ne'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resQ_ne_zero (ϖ : 𝒪[F]) (h : Irreducible ϖ) : resQ ϖ ≠ 0 := by
   have e : Ideal.span {ϖ} = IsLocalRing.maximalIdeal 𝒪[F] := h.maximalIdeal_eq.symm
@@ -57,13 +57,13 @@ theorem resQ_ne_zero (ϖ : 𝒪[F]) (h : Irreducible ϖ) : resQ ϖ ≠ 0 := by
 variable [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : LocE F E} {r k : ℕ}
 
 /- English proof (translation)
-Establish `hli` using `(GlobalTheory.FrameBasic.main L r k S).1`. Set `I` to `{i : Fin (r + 1) // (i : ℕ) < J}`. Set `φ : I ⊕ I → Fin (r + 1) ⊕ Fin (r + 1)` to `Sum.map Subtype.val Subtype.val`. Establish `hφ : Function.Injective φ` using `Subtype.val_injective.sumMap Subtype.val_injective`. Set `e` to `(Fintype.equivFin (I ⊕ I)).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨_, (Sum.elim S.f S.f' ∘ φ) ∘ e, (hli.comp φ hφ).comp e e.injective, ?_⟩` and prove the remaining obligations. Rewrite using `[e.surjective.range_comp, Frames.spanTo, Frames.spanTo, ← Submodule.span_union]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i | i, rfl⟩`. Conclude with `Or.inl ⟨i.1, i.2, rfl⟩`. Conclude with `Or.inr ⟨i.1, i.2, rfl⟩`. Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)`. Conclude with `⟨Sum.inl ⟨i, hi⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.inr ⟨i, hi⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_basis (S : Frames L r k) (J : ℕ) :
     ∃ (m : ℕ) (y : Fin m → S.V), LinearIndependent E y ∧
@@ -86,20 +86,20 @@ theorem exists_basis (S : Frames L r k) (J : ℕ) :
     · exact ⟨Sum.inr ⟨i, hi⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)`.
+A detailed English derivation is pending.
 -/
 theorem spanTo_mono (S : Frames L r k) (g : Fin (r + 1) → S.V) {i j : ℕ} (h : i ≤ j) :
     S.spanTo g i ≤ S.spanTo g j :=
   Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)
 
 /- English proof (translation)
-Establish `hM : S.M d Λ ≤ S.sat Λ` using `(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).2.2.1`. Establish `hlev` using `(GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).2.2.2.2.2.2.2.2.2.2`. Use `set Y := (S.spanTo S.f J ⊔ S.spanTo S.f' J).restrictScalars L.O with hY`. Establish `h1 : (S.sat Λ).toAddSubgroup = (Λ ⊓ Y).toAddSubgroup ⊔ (S.M d Λ).toAddSubgroup`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨y₁, hy₁, hm⟩` from `(hlev y hy J).1 (hl y hy)`. Establish `hy₁Λ : y₁ ∈ Λ`. Use `Λ.sub_mem hy.1 (hM hm).1` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: y = y₁ + (y - y₁)` using `by abel`. Rewrite using `[this]`. Conclude with `AddSubgroup.add_mem_sup (S := (Λ ⊓ Y).toAddSubgroup) ⟨hy₁Λ, hy₁⟩ hm`. Use `sup_le ?_ hM` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hy.1, sup_le_sup (spanTo_mono S S.f hJ) (spanTo_mono S S.f' hJ) hy.2⟩`. Establish `h2 : (S.M d Λ ⊓ Y).toAddSubgroup = (S.M d Λ).toAddSubgroup ⊓ (Λ ⊓ Y).toAddSubgroup`. Use extensionality with `y`. Conclude with `⟨fun h => ⟨h.1, (hM h.1).1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩`. Rewrite using `[h2, AddSubgroup.inf_relIndex_right, Frames.be, h1, AddSubgroup.relIndex_sup_right]`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_trace (S : Frames L r k) (J : ℕ) (hJ : J ≤ r + 1) (d : S.Datum) (Λ : Submodule L.O S.V)
     (hT : S.IsTerm d Λ) (hl : ∀ y ∈ S.sat Λ, S.levC d Λ y ≤ J) :
@@ -127,15 +127,15 @@ theorem relIndex_trace (S : Frames L r k) (J : ℕ) (hJ : J ≤ r + 1) (d : S.Da
   rw [h2, AddSubgroup.inf_relIndex_right, Frames.be, h1, AddSubgroup.relIndex_sup_right]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF Λ' hT' hF' Yy hYy`. Establish `hJ : (j : ℕ) + 1 ≤ r + 1` using `by have := j.2; omega`. Establish `b1` using `relIndex_trace S (j + 1) hJ d Λ hT hF.2.2.1`. Establish `b2` using `relIndex_trace S (j + 1) hJ d Λ' hT' hF'.2.2.1`. Establish `hβ : β ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, -, hi⟩` from `(GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).2.2.2.2.2.1`. Rewrite using `[← hF.2.1, hi]`. Conclude with `pow_ne_zero _ (resQ_ne_zero _ S.ϖ_irr)`. Rewrite `b1` using `[hF.2.1]`. Rewrite `b2` using `[hF'.2.1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hS, -, hM, -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT`. Take `⟨hS', -, hM', -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d Λ' hT'`. Take `⟨v1, v2⟩` from `GlobalTheory.T.frameLattice_trace_initialSpan_volume_eq L r k S d Λ hT d Λ' hT' (j + 1) _ hJ rfl`. Establish `hY` using `relIndex_symm_of_sub hβ (Submodule.toAddSubgroup_mono (inf_le_inf_right _ (hM.trans inf_le_left))) (Submodule.toAddSubgroup_mono (inf_le_inf_right _ (hM'.trans inf_le_left))) b1 b2 v1 v2`. Take `⟨m, y, hy, hsp⟩` from `exists_basis S (j + 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p2, p3⟩` from `GlobalTheory.T.selfDualHermitianLattice_trace_orthogonal_volume_ratio L S.Hm S.herm Λ Λ' hS hS' m y hy _ _ rfl rfl`. Rewrite `p1`, `p2`, `p3` using `[hsp]`. Break down `hYy with rfl | rfl` into its components or cases. Conclude with `⟨hY, p2, b1⟩`. Use `⟨?_, p1, b1⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p3` using `[← hY]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero p2) p3`.
+A detailed English derivation is pending.
 -/
 theorem family_vol : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → ∀ Λ', S.IsTerm d Λ' → S.InFF β (j + 1) βJ d Λ' → ∀ Yy : Submodule L.O S.V, (Yy = (S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1)).restrictScalars L.O ∨ Yy = (perp L S.Hm (S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1))).restrictScalars L.O) → (Λ ⊓ Yy).toAddSubgroup.relIndex (Λ' ⊓ Yy).toAddSubgroup = (Λ' ⊓ Yy).toAddSubgroup.relIndex (Λ ⊓ Yy).toAddSubgroup ∧ (Λ ⊓ Yy).toAddSubgroup.relIndex (Λ' ⊓ Yy).toAddSubgroup ≠ 0 ∧ (S.M d Λ ⊓ (S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1)).restrictScalars L.O).toAddSubgroup.relIndex (Λ ⊓ (S.spanTo S.f (j + 1) ⊔ S.spanTo S.f' (j + 1)).restrictScalars L.O).toAddSubgroup = β := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF Λ' hT' hF' Yy hYy

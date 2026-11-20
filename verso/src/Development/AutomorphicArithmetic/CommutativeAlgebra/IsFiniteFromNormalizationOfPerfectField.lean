@@ -6,21 +6,17 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIntegralCl
 open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4
 
 /- English proof (translation)
-Introduce `k _ _ D T t _ f _ _ _ _`. Rewrite using `[isFinite_iff]`. Use `⟨inferInstance, fun U hU => ?_⟩` and prove the remaining obligations. Rewrite using `[f.fromNormalization_app hU]`. Use `letI := (f.app U).hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `h : Module.Finite Γ(T, U) (integralClosure Γ(T, U) Γ(D, f ⁻¹ᵁ U))`. Break down `(f ⁻¹ᵁ U).1.eq_empty_or_nonempty with hE | hN` into its components or cases. Establish `hb : f ⁻¹ᵁ U = ⊥` using `SetLike.ext' hE haveI : Subsingleton Γ(D, f ⁻¹ᵁ U) := CommRingCat.subsingleton_of_isTerminal (D.sheaf.isTerminalOfEqEmpty hb) infer_instance`. Take `⟨x, hx⟩` from `hN`. Take `⟨V, hV, hxV, hVle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp D.isBasis_affineOpens) hx`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nonempty V := ⟨⟨x, hxV⟩⟩`. Use `haveI : Nonempty (f ⁻¹ᵁ U) := ⟨⟨x, hx⟩⟩`. Establish `hkt : (t.appLE ⊤ U (by simp)).hom.FiniteType` using `LocallyOfFiniteType.finiteType_of_affine_subset t (isAffineOpen_top _) hU (by simp)`. Set `kA : k →+* Γ(T, U)` to `(t.appLE ⊤ U (by simp)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Establish `hkA : kA.FiniteType` using `hkt.comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.symm.surjective)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra k Γ(T, U) := kA.toAlgebra`. Use `haveI : Algebra.FiniteType k Γ(T, U) := hkA`. Use `haveI : IsNoetherianRing Γ(T, U) := Algebra.FiniteType.isNoetherianRing k Γ(T, U)`. Establish `heq : (D.germToFunctionField (f ⁻¹ᵁ U)).hom.comp (f.app U).hom = (D.germToFunctionField V).hom.comp (f.appLE U V hVle).hom`. Rewrite using `[← CommRingCat.hom_comp, ← CommRingCat.hom_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `congr 1`. Simplify using `[Scheme.Hom.appLE]`. Set `φ : Γ(T, U) →+* D.functionField` to `(D.germToFunctionField V).hom.comp (f.appLE U V hVle).hom`. Use `letI : Algebra Γ(T, U) D.functionField := φ.toAlgebra`. Establish `h1 : (D.germToFunctionField V).hom.EssFiniteType` using `GlobalTheory.essFiniteType_germ hV _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (f.appLE U V hVle).hom.EssFiniteType` using `(LocallyOfFiniteType.finiteType_of_affine_subset f hU hV hVle).essFiniteType`. Use `haveI : Algebra.EssFiniteType Γ(T, U) D.functionField := h2.comp h1`. Use `haveI := UpperTheory.module_finite_integralClosure_of_finiteType_perfect k Γ(T, U) D.functionField`. Set `ψ : Γ(D, f ⁻¹ᵁ U) →ₐ[Γ(T, U)] D.functionField` to `{ (D.germToFunctionField (f ⁻¹ᵁ U)).hom with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `(D.germToFunctionField (f ⁻¹ᵁ U)).hom ((f.app U).hom a) = φ a`.
-
-Conclude with `congrArg (fun g => g a) heq }`. Conclude with `GlobalTheory.finite_integralClosure_of_family (ι := Unit) (L := fun _ => D.functionField) (fun _ => ψ) (fun b hb => D.germToFunctionField_injective (f ⁻¹ᵁ U) (by rw [map_zero]; exact hb ()))`. Rewrite using `[CommRingCat.hom_comp]`. Use `RingHom.Finite.comp ?_ ?_` and prove the remaining obligations. Conclude with `RingHom.Finite.of_surjective _ (f.normalizationObjIso hU).commRingCatIsoToRingEquiv.symm.surjective`.
-
-Conclude with `(RingHom.finite_algebraMap).mpr h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isFinite_fromNormalization_of_perfectField :
     ∀ (k : Type) [Field k] [PerfectField k] {D T : Scheme.{0}} (t : T ⟶ Sp k) [LocallyOfFiniteType t] (f : D ⟶ T) [LocallyOfFiniteType f] [QuasiCompact f] [QuasiSeparated f] [IsIntegral D], IsFinite f.fromNormalization := by

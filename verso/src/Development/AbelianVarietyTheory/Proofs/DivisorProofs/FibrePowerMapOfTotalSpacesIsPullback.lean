@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.KS.PowPB
 
 /- English proof (translation)
-Unfold `powMap`. Rewrite using `[← Over.comp_left, Pi.lift_π]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem powMap_pr {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} (f : S' ⟶ S) (φ : A'.left ⟶ A.left)
     (hφ : φ ≫ A.hom = A'.hom ≫ f) (m : ℕ) (i : Fin m) :
@@ -16,7 +16,7 @@ theorem powMap_pr {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} (f : S' ⟶ S)
   rfl
 
 /- English proof (translation)
-Unfold `powMap`. Conclude with `Over.w _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem powMap_w {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} (f : S' ⟶ S) (φ : A'.left ⟶ A.left)
     (hφ : φ ≫ A.hom = A'.hom ≫ f) (m : ℕ) :
@@ -25,9 +25,9 @@ theorem powMap_w {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} (f : S' ⟶ S) 
   exact Over.w _
 
 /- English proof (translation)
-Set `u₁ : Over.mk (g₁ ≫ (pow A m).hom) ⟶ pow A m` to `Over.homMk g₁ rfl`. Set `u₂ : Over.mk (g₁ ≫ (pow A m).hom) ⟶ pow A m` to `Over.homMk g₂ (by simpa using hh.symm)`. Establish `: u₁ = u₂` using `Pi.hom_ext _ _ (fun i => by`. Use `ext`. Simplify `hi i)` using `[u₁, u₂]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `congrArg CommaMorphism.left this`.
+A detailed English derivation is pending.
 -/
 theorem pow_left_hom_ext {S : Scheme.{0}} {A : Over S} {m : ℕ} {T : Scheme.{0}} (g₁ g₂ : T ⟶ (pow A m).left)
     (hh : g₁ ≫ (pow A m).hom = g₂ ≫ (pow A m).hom) (hi : ∀ i, g₁ ≫ (pr A i).left = g₂ ≫ (pr A i).left) :
@@ -46,7 +46,7 @@ noncomputable def liftPow {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f : S
     (H.lift_snd _ _ _) : Over.mk b ⟶ A')) : Over.mk b ⟶ pow A' m).left
 
 /- English proof (translation)
-Unfold `liftPow`. Conclude with `Over.w _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem liftPow_w {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
     (H : IsPullback φ A'.hom A.hom f) (m : ℕ) {T : Scheme.{0}} (a : T ⟶ (pow A m).left) (b : T ⟶ S')
@@ -55,7 +55,7 @@ theorem liftPow_w {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f : S' ⟶ S}
   exact Over.w _
 
 /- English proof (translation)
-Unfold `liftPow`. Rewrite using `[← Over.comp_left, Pi.lift_π]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftPow_pr {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
     (H : IsPullback φ A'.hom A.hom f) (m : ℕ) {T : Scheme.{0}} (a : T ⟶ (pow A m).left) (b : T ⟶ S')
@@ -66,13 +66,13 @@ theorem liftPow_pr {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f : S' ⟶ S
   rfl
 
 /- English proof (translation)
-Introduce `S S' A A' f φ hφ H m`. Use `⟨⟨powMap_w f φ hφ m⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => liftPow H m s.fst s.snd s.condition) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Apply `pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, powMap_w, ← Category.assoc, liftPow_w, s.condition]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Category.assoc, powMap_pr, ← Category.assoc, liftPow_pr, H.lift_fst]`. Introduce `s`. Conclude with `liftPow_w H m _ _ _`. Introduce `s u h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[h₂, liftPow_w]`. Introduce `i`. Rewrite using `[liftPow_pr]`. Apply `H.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.lift_fst, Category.assoc, ← powMap_pr f φ hφ, ← Category.assoc, h₁]`. Rewrite using `[H.lift_snd, Category.assoc, Over.w, h₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powMap_isPullback : ∀ (S S' : Scheme.{0}) (A : Over S) (A' : Over S') (f : S' ⟶ S) (φ : A'.left ⟶ A.left)
     (hφ : φ ≫ A.hom = A'.hom ≫ f), IsPullback φ A'.hom A.hom f →

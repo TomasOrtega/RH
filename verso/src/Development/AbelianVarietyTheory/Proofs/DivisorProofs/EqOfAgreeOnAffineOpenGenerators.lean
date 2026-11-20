@@ -5,11 +5,11 @@ open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory.AffineOpenAgree
 
 /- English proof (translation)
-Establish `h0 : (⊤ : N.toScheme.Opens) ≤ N.ι ⁻¹ᵁ N` using `by simp`. Establish `e1 : N.topIso.inv = N.ι.app N ≫ N.toScheme.presheaf.map (homOfLE h0).op`. Rewrite using `[Scheme.Opens.topIso_inv, Scheme.Opens.ι_app]`. Express the relevant statement in the definitionally equal form `_ = X.presheaf.map _ ≫ X.presheaf.map _`. Conclude with `(congrArg X.presheaf.map (Subsingleton.elim _ _)).trans (X.presheaf.map_comp _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e2` using `c.naturality (homOfLE h0).op`. Rewrite using `[e1, Scheme.Hom.comp_app]`. Use `(Category.assoc _ _ _).trans ((Category.assoc _ _ _).trans ?_).symm |>.symm` and prove the remaining obligations. Use `congrArg (N.ι.app N ≫ ·) ?_` and prove the remaining obligations. Use `Eq.trans ?_ e2.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem app_restrict_eq (X W : Scheme.{0}) (N : X.Opens) (c : W ⟶ N.toScheme) (hc : ⊤ ≤ (c ≫ N.ι) ⁻¹ᵁ N) :
     (c ≫ N.ι).app N ≫ W.presheaf.map (homOfLE hc).op = N.topIso.inv ≫ c.appTop := by
@@ -26,9 +26,9 @@ theorem app_restrict_eq (X W : Scheme.{0}) (N : X.Opens) (c : W ⟶ N.toScheme) 
   rfl
 
 /- English proof (translation)
-Establish `e` using `c.naturality (homOfLE (le_top : N ≤ ⊤)).op`. Establish `e'` using `congrArg (fun f => (f ≫ W.presheaf.map (homOfLE hc).op).hom (sm.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x))) e`. Simplify using `only [Category.assoc, ← Functor.map_comp] at e'`. Simplify using `only [GlobalTheory.AbLaw.cst, GlobalTheory.AbLaw.rs, RingHom.comp_apply]`. Use `(e'.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Hom.comp_appTop]`. Establish `: ((TopologicalSpace.Opens.map c.base).map (homOfLE (le_top : N ≤ ⊤)).op.unop).op ≫ (homOfLE hc).op = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Use `erw [W.presheaf.map_id, Category.comp_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cst_pull {R : Type} [CommRing R] {X W : Scheme.{0}} (sm : X ⟶ Spec (CommRingCat.of R)) (N : X.Opens)
     (c : W ⟶ X) (hc : ⊤ ≤ c ⁻¹ᵁ N) (x : R) :
@@ -51,21 +51,21 @@ namespace GlobalTheory
 open AffineOpenAgree
 
 /- English proof (translation)
-Establish `hφ : ∀ g : Γ(X, N), (W.presheaf.map (homOfLE ha).op).hom ((a.app N).hom g) = (W.presheaf.map (homOfLE hb).op).hom ((b.app N).hom g)`. Set `φa : Γ(X, N) →+* Γ(W, ⊤)` to `(W.presheaf.map (homOfLE ha).op).hom.comp (a.app N).hom`. Set `φb : Γ(X, N) →+* Γ(W, ⊤)` to `(W.presheaf.map (homOfLE hb).op).hom.comp (b.app N).hom`. Establish `hc : φa.comp (GlobalTheory.AbLaw.cst sm N) = φb.comp (GlobalTheory.AbLaw.cst sm N)`. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [RingHom.comp_apply, φa, φb]`. Rewrite using `[cst_pull sm N a ha, cst_pull sm N b hb, hab]`. Establish `hrr : (⇑φa ∘ r) = (⇑φb ∘ r)` using `funext hr`. Establish `hev : ∀ P : MvPolynomial (Fin m) R, φa (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst sm N) r P) = φb (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst sm N) r P)`. Introduce `P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.eval₂_comp_left, MvPolynomial.eval₂_comp_left, hc, hrr]`. Introduce `g`. Take `⟨P, Q, hQ, hg⟩` from `hgen g`. Establish `h1` using `congrArg φa hg`. Establish `h2` using `congrArg φb hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[map_mul]`. Establish `hu : IsUnit (φa (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst sm N) r Q))` using `hQ.map φa`. Express the relevant statement in the definitionally equal form `φa g = φb g`. Use `hu.mul_left_injective ?_` and prove the remaining obligations. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hev P, ← h2, ← hev Q]`. Use `haveI : IsAffine N := hN`. Establish `hra : Set.range a ⊆ Set.range N.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `ha trivial`. Establish `hrb : Set.range b ⊆ Set.range N.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hb trivial`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a', rfl⟩ : ∃ a', a' ≫ N.ι = a` from `⟨_, IsOpenImmersion.lift_fac N.ι a hra⟩`. Take `⟨b', rfl⟩ : ∃ b', b' ≫ N.ι = b` from `⟨_, IsOpenImmersion.lift_fac N.ι b hrb⟩`. Use `congrArg (· ≫ N.ι) (ext_of_isAffine ?_)` and prove the remaining obligations. Use extensionality with `x`. Establish `ea` using `congrArg (fun f => f.hom (N.topIso.hom.hom x)) (app_restrict_eq X W N a' ha)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `eb` using `congrArg (fun f => f.hom (N.topIso.hom.hom x)) (app_restrict_eq X W N b' hb)`. Establish `key` using `ea.symm.trans ((hφ _).trans eb)`. Simplify using `only [CommRingCat.comp_apply, Iso.hom_inv_id_apply] at key`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_agree_on_generators (R : Type) [CommRing R] (X W : Scheme.{0}) (sm : X ⟶ Spec (CommRingCat.of R))
     (N : X.Opens) (hN : IsAffineOpen N) (m : ℕ) (r : Fin m → Γ(X, N))

@@ -25,9 +25,7 @@ structure Cls0 (M : Model σ X W) (om : Rep σ X W) (𝓒 : Submodule ℂ (Fn F 
     ∀ h, Continuous fun f : SInf F (Fin n × Fin d) => M.I om (pureA F f ψ) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hp.weil.isUSplitting.pres _ _ (hc.sch hΦ)) (hp.weil.isUSplitting.pres _ _ (hc.sch hΨ))`. Simplify using `only [Model.I, e, Pi.add_apply]`.
-
-Conclude with `integral_add (hc.conv _ hΦ h) (hc.conv _ hΨ h)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inj_add (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls0 M om 𝓒) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ 𝓒) (hΨ : Ψ ∈ 𝓒) :
     M.I om (Φ + Ψ) = M.I om Φ + M.I om Ψ := by
@@ -39,24 +37,24 @@ theorem inj_add (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls0 M om �
   exact integral_add (hc.conv _ hΦ h) (hc.conv _ hΨ h)
 
 /- English proof (translation)
-The claim follows from `funext fun h => PositivityTheory.ThKG.I_smul M om c Φ h`.
+A detailed English derivation is pending.
 -/
 theorem inj_smul (c : ℂ) (Φ : Fn F n d) : M.I om (c • Φ) = c • M.I om Φ := funext fun h => PositivityTheory.ThKG.I_smul M om c Φ h
 
 /- English proof (translation)
-Simplify using `only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inj_right (Φ : Fn F n d) (h₀ h : UA σ W.J) : M.I om (om (1, h₀) Φ) h = M.I om Φ (h * h₀) := by
   simp only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Introduce `u _` and use `by simp [mat]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_at {m : ℕ} {Y : Spc F E m} {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ Y.J) ∈ UAt σ Y ev :=
   fun u _ => by simp [mat]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inj_at _, fun w => by have : (mat (1 : UA σ Y.J)).map (piInf (τ w)) = 1 := by simp [mat] rw [this]; exact Commute.one_left _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inj_kinf {m : ℕ} {Y : Spc F E m} (τ) : (1 : UA σ Y.J) ∈ KInf σ Y τ :=
   ⟨inj_at _, fun w => by
@@ -64,13 +62,13 @@ theorem inj_kinf {m : ℕ} {Y : Spc F E m} (τ) : (1 : UA σ Y.J) ∈ KInf σ Y 
     rw [this]; exact Commute.one_left _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ => inj_at _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inj_line {m : ℕ} {Y : Spc F E m} : (1 : Multiplicative ℝ →* UA σ Y.J) ∈ Lines σ Y :=
   ⟨continuous_const, fun _ => inj_at _⟩
 
 /- English proof (translation)
-Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `h u`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upd_mem {κ : Type} {S : ∀ v : Pl F, Submodule ℂ ((κ → Fv F v) → ℂ)} {φ : ∀ u : Pl F, (κ → Fv F u) → ℂ}
     (h : ∀ u, φ u ∈ S u) {v : Pl F} {x} (hx : x ∈ S v) (u) : Function.update φ v x u ∈ S u := by
@@ -79,7 +77,7 @@ theorem upd_mem {κ : Type} {S : ∀ v : Pl F, Submodule ℂ ((κ → Fv F v) �
   · rw [Function.update_of_ne e]; exact h u
 
 /- English proof (translation)
-The claim follows from `(h.and (Filter.eventually_cofinite_ne v)).mono fun _ hu => (Function.update_of_ne hu.2 ..).trans hu.1`.
+A detailed English derivation is pending.
 -/
 theorem upd_ev {κ : Type} {φ ψ : ∀ u : Pl F, (κ → Fv F u) → ℂ} (h : ∀ᶠ u in cofinite, φ u = ψ u) (v : Pl F) (x) :
     ∀ᶠ u in cofinite, Function.update φ v x u = ψ u :=
@@ -89,7 +87,7 @@ def kerIn {A P : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup P] [Module 
     (K : Submodule ℂ A) : Submodule ℂ P := (K ⊓ S).map p
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨x, ⟨h, hx⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, e⟩`. Use `K.add_mem hy.1 (hk _ (S.sub_mem hx hy.2) (by rw [map_sub, e, sub_self]))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_kerIn {A P : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup P] [Module ℂ P] {S : Submodule ℂ A} {p : A →ₗ[ℂ] P}
     {K : Submodule ℂ A} (hk : ∀ x ∈ S, p x = 0 → x ∈ K) {x : A} (hx : x ∈ S) : p x ∈ kerIn S p K ↔ x ∈ K := by
@@ -99,39 +97,33 @@ theorem mem_kerIn {A P : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup P] 
   rwa [add_sub_cancel] at this
 
 /- English proof (translation)
-Establish `stepF : ∀ χ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ, (∀ v, χ v ∈ S v) → (∀ᶠ v in cofinite, χ v = M.vac v) → ∀ v, pf v (χ v) ≠ 0 → M.I om (pure f χ) = 0 → ∀ x ∈ S v, M.I om (pure f (Function.update χ v x)) = 0`. Introduce `χ c1 c2 v c3 c0`. Establish `c4` using `(c2.and hp.good.std).mono fun _ h => h.1.trans h.2`. Establish `l : ∀ x y (a : ℂ), pure f (Function.update χ v (x + a • y)) = pure f (Function.update χ v x) + a • pure f (Function.update χ v y)` using `(pureAct F _ v id f χ (fun u => hS u (c1 u)) c4).2.1`. Establish `mem : ∀ x ∈ S v, pure f (Function.update χ v x) ∈ 𝓒` using `fun x hx => h𝓒 _ _ (upd_mem c1 hx) (upd_ev c2 v x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kl : ∀ x ∈ S v, pf v x = 0 → M.I om (pure f (Function.update χ v x)) = 0` using `fun x hx e => kill f hf _ (upd_mem c1 hx) (upd_ev c2 v x) (Or.inr ⟨v, by rwa [Function.update_self]⟩)`. Set `K : Submodule ℂ ((Fin n × Fin d → Fv F v) → ℂ)` to `{ carrier := {x | x ∈ S v ∧ M.I om (pure f (Function.update χ v x)) = 0} zero_mem' := ⟨zero_mem _, kl 0 (zero_mem _) (map_zero _)⟩ add_mem' := fun {x y} hx hy => ⟨add_mem hx.1 hy.1, by`. Use `l x y 1` as an intermediate fact. Simplify using `only [one_smul] at this`. Rewrite using `[this, inj_add hp hc (mem x hx.1) (mem y hy.1), hx.2, hy.2, add_zero]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := fun a x hx => ⟨(S v).smul_mem a hx.1, by`. Use `l 0 x a` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this, inj_add hp hc (mem 0 (zero_mem _)) (𝓒.smul_mem a (mem x hx.1)), inj_smul, hx.2, kl 0 (zero_mem _) (map_zero _), smul_zero, add_zero]⟩ }`. Establish `hk : ∀ x ∈ S v, pf v x = 0 → x ∈ K` using `fun x hx e => ⟨hx, kl x hx e⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `irrF v (kerIn (S v) (pf v) K) (fun h hh x hx x₁ hx₁ ha hN => (mem_kerIn hk hx₁).2 ⟨hx₁, by` into its components or cases. Establish `e` using `(pureAct F _ v (om (1, h)) f (Function.update χ v x) (fun u => hS u (upd_mem c1 hx u)) (upd_ev c4 v x)).2.2 x₁ (by rwa [Function.update_self])`. Establish `e' : om (1, h) (pure f (Function.update χ v x)) = pure f (Function.update χ v x₁)` using `e.trans (congrArg (pure f) (Function.update_idem ..))`. Use function extensionality and compare the values at `g`. Rewrite using `[← e', inj_right, ((mem_kerIn hk hx).1 hN).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Use the proof step `rfl⟩) with hb | hb`. It suffices to derive a contradiction. Establish `: pf v (χ v) ∈ kerIn (S v) (pf v) K` using `(mem_kerIn hk (c1 v)).2 ⟨c1 v, by rwa [Function.update_eq_self]⟩`. Rewrite `this` using `[hb]`. Conclude with `c3 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `fun x hx => ((mem_kerIn hk hx).1 (hb ▸ Submodule.mem_top)).2`. Introduce `g hg ψ k1 k2`. Establish `fin : ∀ T : Finset (Pl F), M.I om (pure f (T.piecewise ψ φ)) = 0` using `fun T => by`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rwa [Finset.piecewise_empty]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `insert v T hv ih`. Rewrite using `[Finset.piecewise_insert]`. Use `stepF _ (fun u => ?_) ?_ v (by rw [Finset.piecewise_eq_of_notMem _ _ _ hv]; exact pφ v) ih _ (k1 v)` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ T`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hu]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `k1 u`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hu]`. Conclude with `h1 u`. Use `filter_upwards [h2, T.eventually_cofinite_notMem] with u e hu`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hu]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ0 : M.I om (pure f ψ) = 0`. Establish `hfin : {v | ¬ (φ v = ψ v)}.Finite` using `Filter.eventually_cofinite.1 ((h2.and k2).mono fun _ h => h.1.trans h.2.symm)`. Use `fin hfin.toFinset` as an intermediate fact. Rewrite using `[show hfin.toFinset.piecewise ψ φ = ψ from funext fun u => by` and apply the resulting hypothesis. Distinguish the cases in `hu : u ∈ hfin.toFinset`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.piecewise_eq_of_mem _ _ _ hu`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hu]`. Simplify using `using hu] at this`. Take `⟨ξ, hξ, eξ⟩` from `PositivityTheory.ThKG.pure_eq_pureA hp.good ψ (fun u => hS u (k1 u)) k2`. Establish `mem : ∀ x : SInf F (Fin n × Fin d), pureA F x ξ ∈ 𝓒` using `fun x => eξ x ▸ h𝓒 x ψ k1 k2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `L : UA σ W.J → SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `fun h => { toFun := fun f => M.I om (pureA F f ξ) h map_add' := fun f g => by`. Establish `: pureA F ⇑(f + g) ξ = pureA F f ξ + pureA F g ξ` using `by funext x; simp [pureA, add_mul]`. Rewrite using `[this, inj_add hp hc (mem f) (mem g)]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c f => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: pureA F ⇑(c • f) ξ = c • pureA F f ξ` using `by funext x; simp [pureA, mul_assoc]`. Rewrite using `[this, PositivityTheory.ThKG.I_smul]`. Both sides reduce to the same expression. Use `cont := hc.contf ξ hξ mem h }`. Establish `hL : ∀ h x, L h x = M.I om (pureA F x ξ) h` using `fun _ _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `K : Submodule ℂ (SInf F (Fin n × Fin d))` to `⨅ h, LinearMap.ker (L h : _ →ₗ[ℂ] ℂ)`. Establish `mK : ∀ x, x ∈ K ↔ ∀ h, L h x = 0` using `fun x => by simp [K, Submodule.mem_iInf]`. Establish `mK' : ∀ x, x ∈ K ↔ M.I om (pure x ψ) = 0` using `fun x => by rw [mK, eξ]; exact ⟨fun h => funext h, fun h g => congrFun h g⟩`. Establish `hk : ∀ x ∈ M.Pol B.ψ B.emb, p x = 0 → x ∈ K` using `fun x hx e => (mK' x).2 (kill x hx ψ k1 k2 (Or.inl e))`. Use `choose op hop hopP using hO F E σ B n d X W M χX χW om r s r' s' hp 1 (inj_at _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `LW : ∀ h hh g x, L g (op h hh x) = L (g * h) x` using `fun h hh g x => by`. Rewrite using `[hL, hL, ← (hop h hh).1 x ξ hξ, inj_right]`. Break down `irrI (kerIn (M.Pol B.ψ B.emb) p K) (fun γ hγ x hx x₁ ha hN => by` into its components or cases. Take `⟨y, h3, h4, h5⟩` from `hLie F E σ B n d X W M χX χW om r s r' s' hp 1 inj_line γ hγ (fun t => op _ (hγ.2 _)) (fun t => hop _ _) x hx`. Take `rfl : x₁ = y` from `(hQ F _ x x₁ y).2 _ ha h4`.
-
-Use `(mem_kerIn hk h3).2 ((mK _).2 fun g => (h5 (L g)).unique ?_)` and prove the remaining obligations. Simplify using `only [LW, (mK x).1 ((mem_kerIn hk hx).1 hN)]`. Conclude with `hasDerivAt_const _ _) (fun k hk' x hx x₁ ha hN => by`. Take `rfl : x₁ = op k hk'.1 x` from `(hQ F _ x x₁ _).1 _ ha ((hop k _).2 x)`. Use `(mem_kerIn hk (hopP k _ (inj_kinf _) hk' x hx)).2 ((mK _).2 fun g => ?_)` and prove the remaining obligations.
-
-Rewrite using `[LW]`. Conclude with `(mK x).1 ((mem_kerIn hk hx).1 hN) _) with hb | hb`. It suffices to derive a contradiction. Establish `: p f ∈ kerIn (M.Pol B.ψ B.emb) p K` using `(mem_kerIn hk hf).2 ((mK' f).2 hψ0)`. Rewrite `this` using `[hb]`.
-
-Conclude with `pf0 this`. Conclude with `(mK' g).1 ((mem_kerIn hk hg).1 (hb ▸ Submodule.mem_top))`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injGen (hO : ArchOp) (hLie : ArchLie) (hQ : ArchUniq) (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls0 M om 𝓒)
     (S : ∀ v : Pl F, Submodule ℂ ((Fin n × Fin d → Fv F v) → ℂ)) (hS : ∀ v, S v ≤ SB _)
@@ -239,7 +231,7 @@ theorem injGen (hO : ArchOp) (hLie : ArchLie) (hQ : ArchUniq) (hp : IsPair B M �
   · exact (mK' g).1 ((mem_kerIn hk hg).1 (hb ▸ Submodule.mem_top))
 
 /- English proof (translation)
-Introduce `Φ hΦ` and use `by induction hΦ using Submodule.span_induction with | mem x hx => exact h x hx | zero => exact ⟨zero_mem _, PositivityTheory.ThKG.I_zero M om⟩ | add x y _ _ hx hy => exact ⟨add_mem hx.1 hy.1, by rw [inj_add hp hc hx.1 hy.1, hx.2, hy.2, add_zero]⟩ | smul a x _ hx => exact ⟨𝓒.smul_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem I_span (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls0 M om 𝓒) {s₀ : Set (Fn F n d)}
     (h : ∀ Φ ∈ s₀, Φ ∈ 𝓒 ∧ M.I om Φ = 0) : ∀ Φ ∈ Submodule.span ℂ s₀, Φ ∈ 𝓒 ∧ M.I om Φ = 0 := fun Φ hΦ => by
@@ -250,7 +242,7 @@ theorem I_span (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls0 M om �
   | smul a x _ hx => exact ⟨𝓒.smul_mem a hx.1, by rw [inj_smul, hx.2, smul_zero]⟩
 
 /- English proof (translation)
-The claim follows from `have := hW F E σ B n d X W M χX χW om r s r' s' hp h ⟨le_rfl, fun Φ hΦ => (this.1 Φ hΦ).1, fun ψ hψ _ g => this.2 ψ hψ g⟩`.
+A detailed English derivation is pending.
 -/
 theorem cuspidal_class_of_weil_convergence (hW : WeilConv) (hp : IsPair B M χX χW om r s r' s') (h : d + 2 * min r s < 2 * n ∨ min r s = 0) :
     Cls0 M om (schA F _) :=
@@ -258,13 +250,13 @@ theorem cuspidal_class_of_weil_convergence (hW : WeilConv) (hp : IsPair B M χX 
   ⟨le_rfl, fun Φ hΦ => (this.1 Φ hΦ).1, fun ψ hψ _ g => this.2 ψ hψ g⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem soLoc_leI {v : Pl F} (t : E →ₐ[F] Fv F v) : Submodule.span ℂ (M.SoLoc B.ψ t) ≤ SB _ :=
   Submodule.span_le.2 fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨f, φ, h1, h2, -, rfl⟩ obtain ⟨g, hg, e⟩ := PositivityTheory.ThKG.pure_eq_pureA hp.good φ h1 h2 rw [e]; exact PositivityTheory.ThKG.pureA_mem f hg)`.
+A detailed English derivation is pending.
 -/
 theorem so_leI (hp : IsPair B M χX χW om r s r' s') : M.So B.ψ B.τ₁ ≤ schA F _ := Submodule.span_le.2 (by
   rintro _ ⟨f, φ, h1, h2, -, rfl⟩
@@ -272,13 +264,11 @@ theorem so_leI (hp : IsPair B M χX χW om r s r' s') : M.So B.ψ B.τ₁ ≤ sc
   rw [e]; exact PositivityTheory.ThKG.pureA_mem f hg)
 
 /- English proof (translation)
-Establish `c4` using `(h2.and hp.good.std).mono fun _ h => h.1.trans h.2`. Establish `l : ∀ x y (a : ℂ), pure f (Function.update φ B.v₁ (x + a • y)) = pure f (Function.update φ B.v₁ x) + a • pure f (Function.update φ B.v₁ y)` using `(pureAct F _ B.v₁ id f φ h1 c4).2.1`. Establish `z : pure f (Function.update φ B.v₁ 0) = 0`. Use `l 0 0 1` as an intermediate fact. Simplify using `only [one_smul, add_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `left_eq_add.1 this`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨f, _, upd_mem (S := fun _ => SB _) h1 hx.1, upd_ev h2 _ _, by rwa [Function.update_self], rfl⟩`. Consider the case `zero => rw [z]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy => have := l x y 1`. Simplify using `only [one_smul] at this`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => have := l 0 x a`.
-
-Rewrite `this` using `[zero_add, z, zero_add]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_so (hp : IsPair B M χX χW om r s r' s') (f : SInf F (Fin n × Fin d)) {φ} (h1 : ∀ v, φ v ∈ SB _)
     (h2 : ∀ᶠ v in cofinite, φ v = M.vac v) {x} (hx : x ∈ Submodule.span ℂ (M.SoLoc B.ψ B.τ₁)) :
@@ -298,11 +288,11 @@ theorem pure_so (hp : IsPair B M χX χW om r s r' s') (f : SInf F (Fin n × Fin
   | smul a x _ hx => have := l 0 x a; rw [zero_add, z, zero_add] at this; rw [this]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Take `⟨π₀, hπ⟩` from `LinearMap.exists_extend (LinearMap.id : Submodule.span ℂ (M.SoLoc B.ψ B.τ₁) →ₗ[ℂ] _)`. Take `⟨O, hO⟩` from `exists_factorOp B.v₁ ((Submodule.span ℂ (M.SoLoc B.ψ B.τ₁)).subtype ∘ₗ π₀)`. Establish `hO'` using `fun (f : SInf F (Fin n × Fin d)) φ (h : ∀ᶠ v in cofinite, φ v = M.vac v) => hO f φ (Std.congr hp.good.std h)`. Use `⟨_, O, fun x => (π₀ x).2, fun Φ hΦ => ?_, hO'⟩` and prove the remaining obligations. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨f, φ, -, h2, h3, rfl⟩` from `hx`. Establish `: π₀ (φ B.v₁) = ⟨φ B.v₁, Submodule.subset_span h3⟩` using `LinearMap.congr_fun hπ ⟨φ B.v₁, Submodule.subset_span h3⟩`. Rewrite using `[hO' f φ h2, LinearMap.comp_apply, this]`. Conclude with `congrArg (pure f) (Function.update_eq_self ..)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul a x _ hx => rw [map_smul, hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_proj (hp : IsPair B M χX χW om r s r' s') :
     ∃ (π : Module.End ℂ ((Fin n × Fin d → Fv F B.v₁) → ℂ)) (O : Module.End ℂ (Fn F n d)),
@@ -323,13 +313,11 @@ theorem exists_proj (hp : IsPair B M χX χW om r s r' s') :
   | smul a x _ hx => rw [map_smul, hx]
 
 /- English proof (translation)
-Establish `off : ∀ z, ∀ u ∉ ({v} : Finset (Pl F)), Function.update M.vac v z u = M.vac u` using `fun z u hu => Function.update_of_ne (by simpa using hu) ..`. Establish `e` using `tens_eq (fun u => (hp.good.vac u).2.1) hp.good.std {v} (ι := Unit) (ι' := Unit) (fun _ => f) (fun _ => Function.update M.vac v x) (fun _ => f) (fun _ => Function.update M.vac v y) (fun _ => off x) (fun _ => off y) (by simpa using h)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, f a ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hf (SchwartzMap.ext hn)`. Use function extensionality and compare the values at `b`. Set `pt : ∀ u : ({v} : Finset (Pl F)), Fin n × Fin d → Fv F u` to `fun u => (Finset.mem_singleton.1 u.2).symm ▸ b`. Set `l₁ : SInf F (Fin n × Fin d) →ₗ[ℂ] ℂ` to `{ toFun := fun g => g a, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Set `l₂` to `PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ({v} : Finset (Pl F)) ℂ).compLinearMap fun u => (LinearMap.proj (pt u) : ((Fin n × Fin d → Fv F u) → ℂ) →ₗ[ℂ] ℂ))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `congrArg (fun z => LinearMap.mul' ℂ ℂ (TensorProduct.map l₁ l₂ z)) e`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, TensorProduct.map_tmul, LinearMap.mul'_apply, l₂, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Finset.prod_singleton, LinearMap.proj_apply] at e2`. Establish `e3` using `mul_left_cancel₀ (show l₁ f ≠ 0 from ha) e2`. Establish `dflt : (default : ({v} : Finset (Pl F))) = ⟨v, Finset.mem_singleton_self v⟩` using `Subsingleton.elim _ _`. Rewrite `e3` using `[dflt]`.
-
-Simplify `e3` using `[pt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pure_inj (hp : IsPair B M χX χW om r s r' s') {f : SInf F (Fin n × Fin d)} (hf : f ≠ 0) (v : Pl F) {x y}
     (h : pure f (Function.update M.vac v x) = pure f (Function.update M.vac v y)) : x = y := by
@@ -359,43 +347,39 @@ theorem pure_inj (hp : IsPair B M χX χW om r s r' s') {f : SInf F (Fin n × Fi
 end Pair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf hm hnz`. Establish `t` using `hm.triple`. Establish `hp` using `PositivityTheory.ThKG.pairV t`. Establish `hp'` using `PositivityTheory.ThKG.pairV' t`. Take `⟨k1, k2⟩` from `hK F E σ B a a' G X om om' R Rf hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `sch : ∀ {n d} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W}, M.IsGood B.ψ → ∀ (f : SInf F (Fin n × Fin d)) φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = M.vac v) → pure f φ ∈ schA F _` using `fun hM f φ h1 h2 => by`. Take `⟨g, hg, e⟩` from `PositivityTheory.ThKG.pure_eq_pureA hM φ h1 h2`. Rewrite using `[e]`. Conclude with `PositivityTheory.ThKG.pureA_mem f hg`. Use `⟨fun f hf φ h1 h2 p0 pφ h0 => ?_, fun f hf φ h1 h2 hq p0 pφ h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ, hne⟩` from `hnz.1`. Establish `hc` using `cuspidal_class_of_weil_convergence hW hp (PositivityTheory.ThKG.weilCondV t)`. Establish `key` using `injGen hO hLie hQ hp hc (fun _ => SB _) (fun _ => le_rfl) (sch hp.good) R.p Rf.p k1 hm.fin.irred hm.real.irred hf h1 h2 p0 pφ h0`. Use `hne (I_span hp hc ?_ Φ hΦ).2` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, ψ, c1, c2, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨sch hp.good g ψ c1 c2, key g hg ψ c1 c2⟩`. Take `⟨Φ, hΦ, hne⟩` from `hnz.2`. Establish `ex` using `fun v => (hA F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hp' v).1 1 (inj_at _)`. Use `choose op hop hopP using hO F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hp' 1 (inj_at _)`. Establish `irrI : ∀ N : Submodule ℂ R.Pi, (∀ γ ∈ Lines σ G.W, ∀ f ∈ G.M'.Pol B.ψ B.emb, ∀ f₁ : SInf F _, ActsD (evI F) (fun t => om' (1, γ (Multiplicative.ofAdd t))) f f₁ → R.p' f ∈ N → R.p' f₁ ∈ N) → (∀ k ∈ KInf σ G.W B.emb, ∀ f ∈ G.M'.Pol B.ψ B.emb, ∀ f₁ : SInf F _, Acts (evI F) (om' (1, …` using `fun N n1 n2 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `on : ∀ y, ∃ x ∈ G.M'.Pol B.ψ B.emb, R.p' x = y` using `fun y => (hm.real.quot'.onto ▸ Submodule.mem_top : y ∈ (G.M'.Pol B.ψ B.emb).map R.p')`. Use `hm.real.irred N (fun γ hγ x hx x₁ ha hN => ?_) fun k hk x hx x₁ ha hN => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `on (R.p x)`. Take `⟨y₁, -, h4, -⟩` from `hLie F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hp' 1 inj_line γ hγ (fun t => op _ (hγ.2 _)) (fun t => hop _ _) y hy`. Rewrite using `[hm.real.lie γ hγ x hx y hy x₁ y₁ ha h4 e.symm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `n1 γ hγ y hy y₁ h4 (e ▸ hN)`. Take `⟨y, hy, e⟩` from `on (R.p x)`. Rewrite using `[hm.real.cpt k hk x hx y hy x₁ _ ha ((hop k hk.1).2 y) e.symm]`. Conclude with `n2 k hk y hy _ ((hop k hk.1).2 y) (e ▸ hN)`. Establish `irrF : ∀ S : ∀ v : Pl F, Submodule ℂ ((Fin a' × Fin (a + a') → Fv F v) → ℂ), (∀ v, S v ≤ SB _) → (∀ v y, ∃ x ∈ S v, Rf.p' v x = y) → (∀ v, ∀ h ∈ UAt σ G.W (evFin F v), ∀ x ∈ S v, ∀ x₁ ∈ SB _, Acts (evFin F v) (om' (1, h)) x x₁ → x₁ ∈ S v) → ∀ v, ∀ N : Submodule ℂ (Rf.Pi v), (∀ h …` using `fun S hS on st v N n1 => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hm.fin.irred v N fun h hh x hx x₁ hx₁ ha hN => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `on v (Rf.p v x)`. Take `⟨y₁, ⟨h3, h4⟩, -⟩` from `ex v h hh y (hS v hy)`. Rewrite using `[hm.fin.equiv v h hh x hx y (hS v hy) x₁ hx₁ y₁ h3 ha h4 e.symm]`. Conclude with `n1 h hh y hy y₁ (st v h hh y hy y₁ h3 h4) h4 (e ▸ hN)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `onF : ∀ v y, ∃ x ∈ SB (Fin a' × Fin (a + a') → Fv F v), Rf.p' v x = y` using `fun v y => (hm.fin.onto' v ▸ Submodule.mem_top : y ∈ (SB _).map (Rf.p' v))`. Break down `hq with hq | hq` into its components or cases. Establish `hc` using `cuspidal_class_of_weil_convergence hW hp' (Or.inr (by rw [hq]; simp))`. Establish `key` using `injGen hO hLie hQ hp' hc (fun _ => SB _) (fun _ => le_rfl) (sch hp'.good) R.p' Rf.p' (hK0 F E σ B a a' G X om om' R Rf hm hq) (irrF _ (fun _ => le_rfl) onF fun _ _ _ _ _ _ h _ => h) irrI hf h1 h2 p0 pφ h0`. Use `hne (I_span hp' hc ?_ Φ hΦ.1).2` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, hg, ψ, c1, c2, rfl⟩`. Conclude with `⟨sch hp'.good g ψ c1 c2, key g hg ψ c1 c2⟩`. Take `⟨co1, co2⟩` from `hCo F E σ B a a' G X om om' R Rf hm`. Take `⟨π, O, hπ, hOs, hOp⟩` from `exists_proj hp'`. Establish `hc : Cls0 G.M' om' (G.M'.So B.ψ B.τ₁)` using `⟨so_leI hp', fun Ψ hΨ => ((hD F E σ B a a' G X om om' t).2 Ψ hΨ).2.1, fun ψ hψ hm' g => continuous_iff_seqContinuous.2 fun u x hu => by`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hSC F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hp' 1 (fun _ => ψ) (fun _ => x) (fun k _ => u k) (fun _ => ⟨hψ, hu⟩) (fun k => by simpa using hm' (u k)) (by simpa using hm' x) g⟩` using `[Function.comp_def]`. Set `S : ∀ v : Pl F, Submodule ℂ ((Fin a' × Fin (a + a') → Fv F v) → ℂ)` to `Function.update (fun _ => SB _) B.v₁ (Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁))`. Establish `S1 : S B.v₁ = Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁)` using `Function.update_self ..`. Establish `S2 : ∀ v, v ≠ B.v₁ → S v = SB _` using `fun v h => Function.update_of_ne h ..`. Establish `hS : ∀ v, S v ≤ SB _` using `fun v => by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `e : v = B.v₁`. Substitute `e` using the available equality. Rewrite using `[S1]`. Conclude with `soLoc_leI _`. Rewrite using `[S2 v e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `mS : ∀ ψ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ v, ψ v ∈ SB _) → ψ B.v₁ ∈ Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁) → ∀ v, ψ v ∈ S v` using `fun ψ c1 c2 v => by`. Distinguish the cases in `e : v = B.v₁`. Substitute `e` using the available equality. Rewrite using `[S1]` and apply the resulting hypothesis. Rewrite using `[S2 v e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `c1 v`. Establish `inSo : ∀ (g : SInf F _) ψ, (∀ v, ψ v ∈ S v) → (∀ᶠ v in cofinite, ψ v = G.M'.vac v) → pure g ψ ∈ G.M'.So B.ψ B.τ₁` using `fun g ψ c1 c2 => by`. Use `pure_so hp' g (fun v => hS v (c1 v)) c2 (S1 ▸ c1 B.v₁)` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Establish `f0 : f ≠ 0` using `fun e => p0 (by rw [e, map_zero])`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `vsb : ∀ v, G.M'.vac v ∈ SB _` using `fun v => (hp'.good.vac v).1`. Establish `key` using `injGen hO hLie hQ hp' hc S hS inSo R.p' Rf.p' (fun g hg ψ c1 c2 => k2 g hg ψ (fun v => hS v (c1 v)) c2 (S1 ▸ c1 B.v₁)) (irrF S hS (fun v y => by`. Distinguish the cases in `e : v = B.v₁`. Substitute `e` using the available equality. Take `⟨x, hx, ex⟩` from `(co1 _ t.chars.good).2.2.1 B.τ₁ y`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x, S1 ▸ Submodule.subset_span hx, ex⟩`. Rewrite using `[S2 v e]; exact onF v y) fun v h hh x hx x₁ hx₁ ha => by`. Distinguish the cases in `e : v = B.v₁`. Substitute `e` using the available equality. Rewrite `hx`, the goal using `[S1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `ev : ∀ z, ∀ᶠ u in cofinite, Function.update G.M'.vac B.v₁ z u = G.M'.vac u` using `fun z => upd_ev (Filter.Eventually.of_forall fun _ => rfl) _ z`. Establish `e1` using `(pureAct F _ B.v₁ (om' (1, h)) f (Function.update G.M'.vac B.v₁ x) (upd_mem (S := fun _ => SB _) vsb (soLoc_leI _ hx)) (upd_ev hp'.good.std _ x)).2.2 x₁ (by rwa [Function.update_self])`. Establish `e2 : om' (1, h) (pure f (Function.update G.M'.vac B.v₁ x)) = pure f (Function.update G.M'.vac B.v₁ x₁)` using `e1.trans (congrArg (pure f) (Function.update_idem ..))`. Establish `e3` using `hOs _ (e2 ▸ co2 (1, h) _ (pure_so hp' f vsb (Filter.Eventually.of_forall fun _ => rfl) hx))`. Rewrite `e3` using `[hOp f _ (ev x₁), Function.update_idem, Function.update_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pure_inj hp' f0 _ e3]`. Conclude with `hπ x₁`. Rewrite using `[S2 v e]) irrI hf (mS φ h1 hq) h2 p0 pφ h0` and apply the resulting hypothesis. Establish `: O Φ ∈ Submodule.span ℂ (O '' {Φ | ∃ f ∈ G.M'.Pol B.ψ B.emb, ∃ φ, (∀ v, φ v ∈ SB _) ∧ (∀ᶠ v in cofinite, φ v = G.M'.vac v) ∧ Φ = pure f φ})`. Rewrite using `[← Submodule.map_span]`.
-
-Conclude with `⟨Φ, hΦ.1, rfl⟩`. Rewrite `this` using `[hOs Φ hΦ.2]`. Use `hne (I_span hp' hc ?_ Φ this).2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, hg, ψ, c1, c2, rfl⟩, rfl⟩`. Rewrite using `[hOp g ψ c2]`.
-
-Establish `c3` using `mS _ (upd_mem (S := fun _ => SB _) c1 (soLoc_leI _ (hπ (ψ B.v₁)))) (by rw [Function.update_self]; exact hπ _)`. Conclude with `⟨inSo g _ c3 (upd_ev c2 _ _), key g hg _ c3 (upd_ev c2 _ _)⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem injPure_of (hO : ArchOp) (hLie : ArchLie) (hQ : ArchUniq) (hA : ActsEx) (hW : WeilConv) (hSC : SoCont)
     (hD : KDecay) (hCo : KCoinv) (hK : Kills) (hK0 : PositivityTheory.ThKG.Loc.Kills0) : PositivityTheory.ThKG.Loc.InjPure := by

@@ -18,15 +18,15 @@ section Prim
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Take `⟨a, b, hab, ha, hb⟩` from `Nat.exists_coprime k k'`. Establish `hg : 0 < Nat.gcd k k'` using `Nat.gcd_pos_of_pos_left _ hk`. Establish `e : ∀ y z, (a : ℤ) * β y z = (b : ℤ) * β' y z` using `fun y z => by`. Establish `h1` using `LinearMap.congr_fun₂ h y z`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((a * Nat.gcd k k' : ℕ) : ℤ) * β y z = ((b * Nat.gcd k k' : ℕ) : ℤ) * β' y z`. Rewrite using `[← ha, ← hb]`. Conclude with `h1`. Move the coercions through the operations in `at h2`. Establish `hg' : ((Nat.gcd k k' : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast hg.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_left_cancel₀ hg' ?_` and prove the remaining obligations. Take the linear combination `h2`. Establish `bez : (a : ℤ) * Nat.gcdA a b + (b : ℤ) * Nat.gcdB a b = 1`. Rewrite using `[← Nat.gcd_eq_gcd_ab, hab.gcd_eq_one]`. Both sides reduce to the same expression.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set γ : LinearMap.BilinForm ℤ X := Nat.gcdA a b • β' + Nat.gcdB a b • β with hγ`. Establish `h1 : (b : ℤ) • γ = β` using `LinearMap.ext₂ fun y z => by`. Simplify using `only [hγ, LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul]`. Take the linear combination `(-(Nat.gcdA a b)) * e y z + β y z * bez`. Establish `h2 : (a : ℤ) • γ = β'` using `LinearMap.ext₂ fun y z => by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hγ, LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul]`. Take the linear combination `(Nat.gcdB a b) * e y z + β' y z * bez`. Establish `hb1` using `hp b γ h1`. Establish `ha1` using `hp' a γ h2`. Rewrite using `[← h1, ← h2, hb1, ha1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_primitive_of_smul_eq {β β' : LinearMap.BilinForm ℤ X}
     (hp : ∀ (k : ℕ) (γ : LinearMap.BilinForm ℤ X), (k : ℤ) • γ = β → k = 1)
@@ -69,20 +69,20 @@ section Cone
 variable {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp [toReal_apply]`.
+A detailed English derivation is pending.
 -/
 theorem toReal_add' (β x : LinearMap.BilinForm ℤ X) : toReal (β + x) = toReal β + toReal x :=
   LinearMap.ext₂ fun a b => by simp [toReal_apply]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp [toReal_apply, LinearMap.sum_apply]`.
+A detailed English derivation is pending.
 -/
 theorem toReal_sum' {m : ℕ} (v : Fin m → LinearMap.BilinForm ℤ X) :
     toReal (∑ j, v j) = ∑ j, (1 : ℝ) • toReal (v j) :=
   LinearMap.ext₂ fun a b => by simp [toReal_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hβ`. Take `⟨d, hd, f⟩` from `hx`. Conclude with `⟨c + d, fun i => add_nonneg (hc i) (hd i), by`. Rewrite using `[toReal_add', e, f, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Pi.add_apply, add_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inRCone_add' {m : ℕ} {v : Fin m → LinearMap.BilinForm ℤ X} {β x : LinearMap.BilinForm ℤ X}
     (hβ : InRCone v β) (hx : InRCone v x) : InRCone v (β + x) := by
@@ -93,7 +93,7 @@ theorem inRCone_add' {m : ℕ} {v : Fin m → LinearMap.BilinForm ℤ X} {β x :
     exact Finset.sum_congr rfl fun i _ => by rw [Pi.add_apply, add_smul]⟩
 
 /- English proof (translation)
-Take `⟨c, -, e⟩` from `hx`. Establish `h` using `LinearMap.congr_fun₂ e y y`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, hv, Int.cast_zero, smul_zero, Finset.sum_const_zero] at h`. Conclude with `h` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inRCone_apply_self_eq_zero {m : ℕ} {v : Fin m → LinearMap.BilinForm ℤ X} {x : LinearMap.BilinForm ℤ X}
     (hx : InRCone v x) (y : X) (hv : ∀ j, v j y y = 0) : x y y = 0 := by
@@ -114,13 +114,13 @@ namespace GlobalTheory.PolFan.Mark
 section Uniq
 
 /- English proof (translation)
-Use `set σ := ∑ j, v j with hσ`. Establish `hσ1 : σ ∈ balForms H.bar X` using `Submodule.sum_mem _ fun j _ => hv.mem j`. Establish `hσ2 : ∀ y, 0 ≤ σ y y` using `fun y => by`. Simplify using `only [hσ, LinearMap.sum_apply]`. Conclude with `Finset.sum_nonneg fun j _ => hv.nonneg j y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσv : InRCone v σ` using `⟨fun _ => 1, fun _ => zero_le_one, toReal_sum' v⟩`. Establish `hl` using `hb σ hσ1 hσ2 hσv`. Rewrite `hl` using `[hlab X hX σ hσ1 hσ2]`. Establish `hS : ({k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ σ ∧ genRank γ = k}).Nonempty` using `⟨_, m, v, hv, hσv, rfl⟩`. Take `⟨m', γ, hγ, hσγ, hrk⟩` from `Nat.sInf_mem hS`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψσ : ψ.evalZ σ = ∑ j, ψ.evalZ (v j)`. Use `(linearOn_iff ψ v).1 hv.linear (fun _ => 1) fun _ => zero_le_one` as an intermediate fact. Rewrite `this` using `[← toReal_sum', evalR_toReal]`. Simplify using `using this`. Establish `hin` using `GlobalTheory.T.inRealCone_summands_of_evalZ_additive_cell (𝓞 E) H.bar ψ X m' γ hγ m v hv.mem hv.nonneg hσγ hψσ.le`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.spanRank_le_of_inRealCone_polyhedralCell (𝓞 E) H.bar ψ X m' m γ v hγ hv.mem hv.nonneg hin`. Establish `h2 : sInf {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ σ ∧ genRank γ = k} ≤ i + 1` using `by exact_mod_cast hl`. Rewrite `hr` using `[hrk]`. Conclude with `hr.trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genRank_le_of_label_le {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (ψ lab : InvFun (𝓞 E)) (i : ℕ) (hlab : IsCarrierDim H.bar q ψ lab)
@@ -150,13 +150,11 @@ theorem genRank_le_of_label_le {E : Type} [Field E] [NumberField E] [IsCMField E
   exact hr.trans h2
 
 /- English proof (translation)
-Take `⟨hβ1, hβ2, -, hβl, -⟩` from `hβ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2, -, hx4, hx5⟩`. Conclude with `⟨hx1, hx2, GlobalTheory.T.inRealCone_cell_of_inFace_of_cellForm_CMField E H q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv x hx1 hx2 hx4 hx5⟩`. Introduce and unpack `⟨hx1, hx2, hxv⟩`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hrk` using `genRank_le_of_label_le H q ψ lab i hlab X hX v hv hb`. Establish `hvan` using `GlobalTheory.T.cell_leastDim_vanishes_where_form_vanishes_diagonal E H q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv (by rw [hβl]; exact_mod_cast hrk)`. Establish `hsum` using `inRCone_add' hβv hxv`. Establish `hs1 : β + x ∈ balForms H.bar X` using `add_mem hβ1 hx1`. Establish `hs2 : ∀ y, 0 ≤ (β + x) y y` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.add_apply]`. Conclude with `add_nonneg (hβ2 y) (hx2 y)`. Use `⟨hx1, hx2, fun y hy => inRCone_apply_self_eq_zero hxv y fun j => hvan j y hy, GlobalTheory.T.invFun_evalZ_add_of_linearOn_realCone (𝓞 E) ψ X m v hv.linear β x hβv hxv, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hβl]`. Conclude with `hb _ hs1 hs2 hsum`.
-
-Take `⟨c, hc, e⟩` from `hxv`. Conclude with `carrierDim_le_of_add_cell (𝓞 E) H.bar q ψ lab hlab X hX m v hv β hβ1 hβ2 (β + x) hs1 hs2 hβv 1 c one_pos hc (by rw [toReal_add', e, one_smul])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inFace_iff_of_isMarked {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (ψ lab : InvFun (𝓞 E)) (i : ℕ) (hψ : IsPolyFan H.bar q ψ) (hlab : IsCarrierDim H.bar q ψ lab)
@@ -185,9 +183,9 @@ theorem inFace_iff_of_isMarked {E : Type} [Field E] [NumberField E] [IsCMField E
         (by rw [toReal_add', e, one_smul])
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ lab i hDom hψ hlab X _ _ _ _ hX m v hv hb β β' hβ hβ' hβv hβ'v`. Establish `hiff : ∀ x, InFace H.bar ψ lab β x ↔ InFace H.bar ψ lab β' x` using `fun x => by`. Rewrite using `[inFace_iff_of_isMarked H q ψ lab i hψ hlab X hX (hDom X) v hv hb hβ hβv x, inFace_iff_of_isMarked H q ψ lab i hψ hlab X hX (hDom X) v hv hb hβ' hβ'v x]`. Establish `hind : ∀ x, IsIndec H.bar ψ lab β x ↔ IsIndec H.bar ψ lab β' x` using `fun x => by`. Simplify using `only [IsIndec, hiff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨-, -, hp, -, S, hS, k, hk, hkS⟩` from `hβ`. Take `⟨-, -, hp', -, S', hS', k', -, hkS'⟩` from `hβ'`. Establish `hSS : S = S'` using `Finset.ext fun x => by rw [hS, hS', hind]`. Conclude with `eq_of_primitive_of_smul_eq hp hp' hk (by rw [hkS, hkS', hSS])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_isMarked_of_inRCone : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ lab : InvFun (𝓞 E)) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsCarrierDim H.bar q ψ lab → ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ v → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone v β → lab.evalZ β ≤ ((i + 1 : ℕ) : ℝ)) → ∀ β β' : LinearMap.BilinForm ℤ X, IsMarked H.bar ψ lab i X β → IsMarked H.bar ψ lab i X β' → InRCone v β → InRCone v β' → β = β' := by
   intro E _ _ _ H q ψ lab i hDom hψ hlab X _ _ _ _ hX m v hv hb β β' hβ hβ' hβv hβ'v

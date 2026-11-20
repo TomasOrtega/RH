@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.OneAddPowBound
 
 /- English proof (translation)
-Introduce `t ht k`. Establish `htk : 0 ≤ t ^ k` using `pow_nonneg ht k`. Establish `h2 : (0 : ℝ) ≤ 2 ^ k` using `pow_nonneg (by norm_num) k`. Establish `h1 : (0 : ℝ) ≤ 1 + t` using `by linarith`. Break down `le_total t 1 with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `ha : (1 + t) ^ k ≤ (2 : ℝ) ^ k` using `pow_le_pow_left₀ h1 (by linarith) k`. Establish `hb : (2 : ℝ) ^ k * 1 ≤ 2 ^ k * (1 + t ^ k)` using `mul_le_mul_of_nonneg_left (by linarith) h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha : (1 + t) ^ k ≤ (2 * t) ^ k` using `pow_le_pow_left₀ h1 (by linarith) k`. Rewrite `ha` using `[mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : (2 : ℝ) ^ k * t ^ k ≤ 2 ^ k * (1 + t ^ k)` using `mul_le_mul_of_nonneg_left (by linarith) h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_add_pow_le : ∀ {t : ℝ}, (0 : ℝ) ≤ t → ∀ (k : ℕ),
     ((1 : ℝ) + t) ^ k ≤ (2 : ℝ) ^ k * ((1 : ℝ) + t ^ k) := by

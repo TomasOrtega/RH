@@ -16,15 +16,13 @@ namespace GlobalTheory.PeriodicSecAlg
 open GlobalTheory.CxPts GlobalTheory.HolUnifSec
 
 /- English proof (translation)
-Introduce `A _ g L u hA M hM σ hσ hper hcomp`. Use `hA.comm` as an intermediate fact. Establish `hp : IsProjOver A.hom` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver A.hom).1 (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme ℂ A hA)`. Take `⟨D, hD⟩` from `AbelianDim.exists_relDim ℂ A hA`. Set `r` to `Function.surjInv (pt_surjective u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hr : ∀ y, pt u (r y) = y` using `Function.surjInv_eq (pt_surjective u)`. Set `s : M.ι → CxPts A.hom (RingHom.id ℂ) → ℂ` to `fun i y => if y ∈ ptsIn _ _ (M.U i) then σ i (r y) else 0`. Establish `hs : ∀ i z, pt u z ∈ ptsIn _ _ (M.U i) → s i (pt u z) = σ i z` using `fun i z hz => by`. Use `hper i ⟨_, sub_mem_of_pt_eq u (hr (pt u z))⟩ z hz` as an intermediate fact. Simplify using `only [add_sub_cancel] at this`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(if_pos hz).trans this`. Establish `hmem : s ∈ (AnRead.all A.hom (RingHom.id ℂ) D).holSec M`. Use `⟨⟨fun i j y hi hj => ?_, fun i y h => if_neg h⟩, fun i => holoOn_of_comp u _ (isOpen_ptsIn _) ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `pt_surjective u y`. Establish `hij : pt u z ∈ ptsIn _ _ (M.U i ⊓ M.U j)` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : σ i z = gv _ _ M i j (pt u z) * σ j z` using `hcomp i j z hij`. Rewrite using `[hs i z hi, hs j z hj, e]`. Conclude with `(hσ i).congr fun z hz => hs i z hz`. Take `⟨τ, hτ⟩` from `(GlobalTheory.Published.serreHolomorphicSections_holds A.left A.hom D hD hp _ M hM).2 ⟨s, hmem⟩`. Introduce `i`.
-
-Conclude with `⟨τ.f i, fun z hz => ((congrFun₂ (congrArg Subtype.val hτ) i (pt u z)).trans (hs i z hz)).symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A →
     ∀ (M : LB A.left), M.IsLB → ∀ σ : M.ι → (Fin g → ℂ) → ℂ, (∀ i, DifferentiableOn ℂ (σ i) (pre u.ex (M.U i))) →

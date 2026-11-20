@@ -4,19 +4,17 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hIC hLC E _ _ _ n S Kw w hw hcw y`. Take `⟨-, hap, -, -, hcc, -⟩` from `hLC E n w hw`. Establish `hsim : sim (loc hw y) ∈ ZU`. Rewrite using `[sim_loc]`. Conclude with `ZU.one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : ∀ u, u ≠ w → u ≠ cj w → comp u (loc hw y) = 1` using `fun u h1 h2 => comp_loc_of_apart hw ((hap u).2 ⟨h1, h2⟩) y`. Use `⟨fun hwS hy => mem_lev.2 ⟨hsim, ?_, ?_⟩, fun hwS hy => mem_lev.2 ⟨hsim, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `u hu`. Distinguish the cases in `h1 : u = w`. Substitute `h1` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_loc]`. Conclude with `hy`. Establish `h2 : u ≠ cj w` using `fun h => hcw (h ▸ hu)`. Rewrite using `[hone u h1 h2]`. Conclude with `(Kw u).one_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu hcu`. Establish `h1 : u ≠ w` using `fun h => hu (h ▸ hwS)`. Establish `h2 : u ≠ cj w` using `fun h => hcu (by rw [h, hcc]; exact hwS)`. Rewrite using `[hone u h1 h2]`. Conclude with `(GlobalTheory.LFun.KGL u n).one_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Establish `h1 : u ≠ w` using `fun h => hwS (h ▸ hu)`. Establish `h2 : u ≠ cj w` using `fun h => hcw (h ▸ hu)`. Rewrite using `[hone u h1 h2]`. Conclude with `(Kw u).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `u hu hcu`. Distinguish the cases in `h1 : u = w`. Substitute `h1` using the available equality. Rewrite using `[comp_loc]`. Conclude with `hy`.
-
-Distinguish the cases in `h2 : u = cj w`. Substitute `h2` using the available equality. Conclude with `hIC E n (loc hw y) w hsim (by rw [comp_loc]; exact hy)`. Rewrite using `[hone u h1 h2]`. Conclude with `(GlobalTheory.LFun.KGL u n).one_mem`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pLocMem_of :
     UpperTheory.Gal.CertificateRingHomMap.IntConj → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.LocMem := by

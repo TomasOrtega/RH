@@ -16,7 +16,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
@@ -24,11 +24,11 @@ private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Number
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
 /- English proof (translation)
-Use `⟨fun i hi γ g => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h` using `hF.1 i hi γ (g * (1, b))`. Rewrite `h` using `[← mul_assoc]`. Conclude with `h`. Use function extensionality and compare the values at `i g k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun (congrFun (hF.2 u hu) i) (g * (1, b))) k`. Establish `e : g * (1, b) * ((u : Ga), 1) = g * ((u : Ga), 1) * (1, b)`. Rewrite using `[mul_assoc, mul_assoc]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(Matrix.mulVec (τ u : Matrix (Fin m) (Fin m) ℂ) fun j => F j (g * (1, b) * ((u : Ga), 1)) k) i = F i (g * (1, b)) k at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem frame_stab {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {d m : ℕ}
     (ξ : Gp →* GL (Fin d) ℂ) (τ : X.Ub →* GL (Fin m) ℂ) (U : Subgroup X.Ub) (b : Gp) (F : Fin m → X.Fn ℂ d)
@@ -48,7 +48,7 @@ private theorem frame_stab {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X
     exact h
 
 /- English proof (translation)
-The claim follows from `frame_stab H.X ξ (H.τC ι) H.UQ _ F hF`.
+A detailed English derivation is pending.
 -/
 private theorem big_stab {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (ι : Qbar l ≃+* ℂ) {d : ℕ} (ξ : GV n H.Sl →* GL (Fin d) ℂ) (v : H.V)
@@ -56,9 +56,9 @@ private theorem big_stab {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Alg
   frame_stab H.X ξ (H.τC ι) H.UQ _ F hF
 
 /- English proof (translation)
-Set `b` to `(Pi.basisFun ℂ (Fin d)).map e`. Use `UpperTheory.isoSum_of_injective_equivariant_family H _ N ρ ρ' Y Z τ (Fin m × Fin d) (fun x => T.flip (b.coord x.2) ∘ₗ LinearMap.proj x.1) hZ hY (fun x y hy => hm y hy x.1 _) (fun x g y _ => he y g x.1 _) fun y hy h => funext fun i => hi y hy i fun ℓ => ?_` and prove the remaining obligations. Establish `h0 : T (y i) = 0` using `b.dualBasis.ext fun k => by`. Rewrite using `[Module.Basis.coe_dualBasis]`. Conclude with `h (i, k)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem iso_of {H P N W : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup N] [Module ℂ N]
     [AddCommGroup W] [Module ℂ W] {m d : ℕ} (e : (Fin d → ℂ) ≃ₗ[ℂ] W)
@@ -90,9 +90,9 @@ private noncomputable def formLin {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field 
     (fun _ _ _ => rfl) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c ι m τ₀ lam d e ξ hξ σ hσ v τ hτ`. Establish `hsp : IsSplitAt (s.w v.1)` using `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω (s.A v.1) v.1 (s.hA v.1) (s.split v.1 (Or.inl v.2)) _ (w_under s v.1)`. Take `⟨j, hj1, hj2, -, hj3⟩` from `(secU l L Ω s n hn (s.w v.1) hsp).1`. Establish `hZ` using `UpperTheory.isoSum_restriction_of_local_component_unitary L n σ hσ (s.w v.1) j hj1 hj2 hj3 τ hτ`. Establish `hM` using `partUR2Mem l L Ω s n hn V Q c ι m τ₀ lam d e ξ σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `partUR2AtV l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ v j hj1 hj2`. Establish `hI` using `(formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl).1`. Establish `hY : ∀ g, ∀ y ∈ YOf Q ι τ₀ e ξ σ, (hset Q τ₀).atV d v g y ∈ YOf Q ι τ₀ e ξ σ` using `fun g y hy => (hM _).2 ⟨big_stab (hset Q τ₀) ι ξ v g y ((hM y).1 hy).1, fun i ℓ => (hA y g i ℓ).symm ▸ hσ.stable (j g) _ (((hM y).1 hy).2 i ℓ)⟩`. Conclude with `iso_of (H := GLw n (s.w v.1)) (m := m) e (formLin ι e) ((hset Q τ₀).atV d v) ((RU L n).comp j) (YOf Q ι τ₀ e ξ σ) σ τ hZ hY (fun y hy => ((hM y).1 hy).2) hA fun y hy i h => hI (y i) (((hM y).1 hy).1.1 i trivial) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.partUR2IsoL :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

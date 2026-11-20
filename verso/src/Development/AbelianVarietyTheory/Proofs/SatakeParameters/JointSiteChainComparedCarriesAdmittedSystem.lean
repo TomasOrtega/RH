@@ -27,21 +27,19 @@ namespace GlobalTheory.TwV
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hA D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hU hS0`. Establish `hDict` using `GlobalTheory.T.latticeTuple_joint_dictionary t std J`. Establish `hPair` using `GlobalTheory.T.kernelSite_latticeTuplePairs_admissible S hDict`. Establish `hPos` using `GlobalTheory.T.site_place_induces_position_embeddings S`. Establish `hMove` using `GlobalTheory.T.kernelSite_arithmeticGroup_moves_frames S hDict`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAway` using `GlobalTheory.T.kernelSite_series_independent_away_from_place_over_p S hDict`. Establish `hScal` using `GlobalTheory.T.kernelSite_seriesScalar_pow_integral S hDict`. Establish `hK1` using `GlobalTheory.T.allSites_k1_of_dict_pair_pos_scal S hDict hPair hPos hScal`. Take `⟨hLaw, hLawIn, hXi⟩` from `GlobalTheory.T.kernelSite_law_and_fixedCoordinateStabiliserLaw S hPair hPos hMove hAway`. Take `⟨ι, hι⟩` from `GlobalTheory.ThLoc.place_extends_to_iso _ S.lam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := Lt.fracAt Gl u w hg`. Establish `key` using `hA D L hT Gi Gl Kc Dx cX ex t u μ w hg (Gl.Fl u w hg) Lv (chainAt H hT) (kaAt X H hT) std (vpOf (D.gat u w hg)) (vpOf_irreducible (D.gat u w hg)) (eOOf (D.gat u w hg) (p_ne_zero_of_place (D.gat u w hg) (Gl.vOf u w hg 0))) (eOOf_spec (D.gat u w hg) (p_ne_zero_of_place (D.gat u w h …`. Establish `k2` using `key S.curve hK1 hXi hLawIn`. Use `k2 ⟨ι.toRingHom, Formalism.L2.KerInert.SecondKernelProjection.rdJ I X.onCh ι.toRingHom, Formalism.L2.KerInert.SecondKernelSeries.srOf S.Y, fun j hj => ⟨J.sharp j hj, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `tieStab_kaAtAny X H hT (chainAt H hT) (chainMu_cmp_K _) std (vpOf (D.gat u w hg)) (vpOf_irreducible (D.gat u w hg)) (eOOf (D.gat u w hg) (p_ne_zero_of_place (D.gat u w hg) (Gl.vOf u w hg 0))) (eOOf_spec (D.gat u w hg) (p_ne_zero_of_place (D.gat u w hg) (Gl.vOf u w hg 0))) (Lt.dGT …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[kaAtAny_cls]`. Rewrite using `[kaAt_cls]`. Conclude with `h1`. Use `Formalism.L2.KerInert.SecondKernelProjection.series_reading_entries D L hT Gi Gl Kc Dx cX ex u μ w hg (Gl.Fl u w hg) Lv (chainAt H hT) (labAt X H) I H Formalism.L2.G.RelativeIndexFlags.blockRationality_holds hT (chainMu_cmp_K _) X.onCh std (vpOf (D.gat u w hg)) (vpOf_irreducible …` and prove the remaining obligations. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : D.what₂.embLL r ∈ algebraicClosure ℚ ℂ`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic r).algHom D.what₂.embLL.toRatAlgHom`. Use `show ι (D.what₂.embLL r) = S.E.iK (ex.cmp.embW u w hg r)`. Rewrite using `[S.hK r hz, ← hι]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `Formalism.L2.KerInert.SecondKernelSeries.series_compatibility_of (D.what₂.places.resChar w) _ S.Y j`. Establish `hD : S.Del j`. Break down `Nat.eq_zero_or_pos j with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Conclude with `GlobalTheory.T.kernelSite_frameValues_step_zero S hDict hPair hPos hLaw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.T.kernelSite_frameValues_positive_steps S hDict hPair hPos hLaw j hpos hj`. Take `⟨cK, hn, hd⟩` from `hD ι.toRingHom (fun z => hι z)`. Use `⟨cK, ?_, ?_, ?_, hd⟩` and prove the remaining obligations. Use `show ‖cK‖ ≤ 1`. Rewrite using `[hn]`.
-
-Use `show ‖cK⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, hn, inv_one]`. Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`.
+A detailed English derivation is pending.
 -/
 private theorem admissible_at_each_site : Lt.AdmAtEnt2 → AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => DV.Used D μ → OrbitPlaces.Stab0 D → admitted D (sysS H X std) S.Y) := by
   intro hA D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hU hS0
@@ -92,9 +90,9 @@ private theorem admissible_at_each_site : Lt.AdmAtEnt2 → AllSites (fun {D L hT
       exact zero_ne_one hn
 
 /- English proof (translation)
-Introduce `hAdm hCur D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X J hU hS hk`. Use `haveI : Fact (D.what₂.places.resChar w).Prime := ⟨hg.1⟩`. Use `⟨⟨(kaAt X H hT).cmp, (kaAt X H hT).cmp_zero, (kaAt X H hT).cmp_K, (kaAt X H hT).rat, (kaAt X H hT).val⟩, ?_⟩` and prove the remaining obligations. Establish `std : Lt.StdAtW D Gl u w hg` using `GlobalTheory.TwU.std_at_served D u w hg L hT Gi Gl J.tied hk`. Take `⟨S⟩` from `GlobalTheory.T.jointData_at_p_and_adelicDatum_nonempty hCur t std J`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : admitted D (sysS H X std) S.Y` using `admissible_at_each_site hAdm S hU hS`. Use `⟨inferInstance, std, vpOf (D.gat u w hg), vpOf_irreducible (D.gat u w hg), eOOf (D.gat u w hg) (p_ne_zero_of_place (D.gat u w hg) (Gl.vOf u w hg 0)), eOOf_spec (D.gat u w hg) (p_ne_zero_of_place (D.gat u w hg) (Gl.vOf u w hg 0)), Lt.dGT D u (D.what₂.places.resChar w), Lt.dGT_spec …` and prove the remaining obligations. Unfold `Lt.dGT`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem site_cmpLite_siteAdm : Lt.AdmAtEnt2 → Lt.CurveEx → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I}, Joint t H X → DV.Used D μ → OrbitPlaces.Stab0 D → 2 * rG L.sc ≤ D.R.k → GlobalTheory.TwU.CmpLite D ex.cmp ex.tw u μ w hg (chainAt H hT) ∧ GlobalTheory.TwU.SiteAdm D u w hg (Gl.Fl u w hg) Lv (chainAt H hT) := by
   intro hAdm hCur D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X J hU hS hk

@@ -35,7 +35,7 @@ def ratVec (F : Type) [Field F] [NumberField F] [Algebra F E] (x : Fin M → E) 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `show ((1 : GL (Fin M) (Af F ⊗[F] E)) : Matrix (Fin M) (Fin M) _).mulVec y = y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actVec_one (y : Fin M → Af F ⊗[F] E) : actVec σ J 1 y = y := by
   show ((1 : GL (Fin M) (Af F ⊗[F] E)) : Matrix (Fin M) (Fin M) _).mulVec y = y
@@ -43,7 +43,7 @@ theorem actVec_one (y : Fin M → Af F ⊗[F] E) : actVec σ J 1 y = y := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `show (((HA.mat (Af F) σ J g) * (HA.mat (Af F) σ J k) : GL (Fin M) (Af F ⊗[F] E)) : Matrix (Fin M) (Fin M) _).mulVec y = _`. Unfold `actVec`. Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actVec_mul (g k : HA (Af F) σ J) (y : Fin M → Af F ⊗[F] E) :
     actVec σ J (g * k) y = actVec σ J g (actVec σ J k y) := by
@@ -93,7 +93,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrFun (MulAction.mem_stabilizer_iff.1 h) 0`. Introduce `h`. Conclude with `MulAction.mem_stabilizer_iff.2 (funext fun _ => h)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_stabVec (x : Fin M → E) (k : HA (Af F) σ J) :
     k ∈ stabVec σ J x ↔ actVec σ J k (ratVec F x) = ratVec F x := by

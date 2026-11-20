@@ -9,15 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FockCompare
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.HermDiag.exists_orthogonal_basis_fin h2 _ (B.domRestrict₁₂ P P) (fun y z => hB y z) rfl`. Take `⟨v, hv⟩` from `GlobalTheory.HermDiag.exists_orthogonal_basis_fin h2 _ (B.domRestrict₁₂ N N) (fun y z => hB y z) rfl`. Set `w` to `(u.prod v).map (Submodule.prodEquivOfIsCompl P N hc)`. Establish `hl : ∀ i, w (Sum.inl i) = u i` using `fun i => by`. Simplify using `[w, Module.Basis.prod_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr : ∀ i, w (Sum.inr i) = v i` using `fun i => by`. Simplify using `[w, Module.Basis.prod_apply]`. Establish `hcard : Fintype.card (Fin (Module.finrank E P) ⊕ Fin (Module.finrank E N)) = n`. Rewrite using `[← hn, Module.finrank_eq_card_basis w]`. Establish `hw : ∀ i j, i ≠ j → B (w i) (w j) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `(i | i) (j | j) hij`. Rewrite using `[hl, hl]; exact hu i j fun h => hij (by rw [h])`. Rewrite using `[hl, hr, ← hB, ho _ (u i).2 _ (v j).2, map_zero]`. Rewrite using `[hl, hr]`. Conclude with `ho _ (u j).2 _ (v i).2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, hr]; exact hv i j fun h => hij (by rw [h])`. Use `⟨w.reindex (Fintype.equivFinOfCardEq hcard), fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.reindex_apply]`. Conclude with `hw _ _ fun h => hij (Equiv.injective _ h)`. Rewrite using `[Module.Basis.reindex_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `(Fintype.equivFinOfCardEq hcard).symm i with k | k` into its components or cases. Rewrite using `[hl]`. Conclude with `Or.inl (u k).2`. Rewrite using `[hr]`. Conclude with `Or.inr (v k).2`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem exists_orthogonal_basis_mem_or_mem {E V : Type} [Field E] {c : E →+* E} [AddCommGroup V]
     [Module E V] [FiniteDimensional E V] (h2 : (2 : E) ≠ 0) (B : V →ₗ[E] V →ₛₗ[c] E)
@@ -50,7 +50,7 @@ theorem exists_orthogonal_basis_mem_or_mem {E V : Type} [Field E] {c : E →+* E
     · rw [hr]; exact Or.inr (v k).2
 
 /- English proof (translation)
-Introduce `D V s P N τ₀ h hs`. Take `⟨b, hb, hm⟩` from `exists_orthogonal_basis_mem_or_mem two_ne_zero V.hT.flip (fun x y => V.herm.eq y x) h.compl (fun x hx y hy => h.orth x hx y hy) V.rank_eq`. Use `⟨b, fun i j hij => hb j i hij.symm, fun τ i => ?_⟩` and prove the remaining obligations. Conclude with `(hm i).imp ((hs τ).1 _) ((hs τ).2 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_adapted_of_isOrthDec : ∀ (D : D7) (V : HSp D) (s : InvFam V) (P N : Submodule D.host.E V.V) (τ₀ : D.what₂.Tau), IsOrthDec V τ₀ P N → (∀ τ, (∀ x ∈ P, s τ x = x) ∧ ∀ x ∈ N, s τ x = -x) → ∃ b : Module.Basis (Fin V.rank) D.host.E V.V, Adapted V b s := by
   intro D V s P N τ₀ h hs

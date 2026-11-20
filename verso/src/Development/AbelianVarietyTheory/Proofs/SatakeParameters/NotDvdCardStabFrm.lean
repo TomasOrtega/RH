@@ -26,11 +26,11 @@ def WtUnit (S : GSD K) : Prop := ∀ d : S.D, w.valuation K ((Nat.card (MulActio
 variable {w}
 
 /- English proof (translation)
-Substitute `hM hM' hk` using the available equality. Introduce and unpack `v ⟨s, hs, hv⟩`. Take `⟨t, ht, y, hy, e⟩` from `h (S.ρ g v) ⟨s, hs, s • v, hv, by simp⟩`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `e1 : S.ρ g⁻¹ (S.ρ g v) = v`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `e2 : y = t • c • k v`. Establish `h2` using `congrArg (S'.ρ g'⁻¹) e`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.comp_apply, e1, LinearMap.map_smul_of_tower, map_smul] at h2`. Rewrite `h2` using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Conclude with `e2 ▸ hy`.
+A detailed English derivation is pending.
 -/
 theorem Bd.transfer {S S' : GSD K} (g : S.G) (g' : S'.G) {M M₂ : Submodule (𝓞 K) S.V} {M' M₂' : Submodule (𝓞 K) S'.V}
     (hM : M₂ = M.map ((S.ρ g).restrictScalars (𝓞 K))) (hM' : M₂' = M'.map ((S'.ρ g').restrictScalars (𝓞 K)))
@@ -49,9 +49,9 @@ theorem Bd.transfer {S S' : GSD K} (g : S.G) (g' : S'.G) {M M₂ : Submodule (�
   exact e2 ▸ hy
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(c * c₀) • A.appOf h s φ d' ∈ _`. Unfold `ClsKer.appOf`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, wt_eq_card]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `smul_mem_localizationAt_of_le w _ (hw _) ?_` and prove the remaining obligations. Rewrite using `[mul_smul, ← map_smul]`. Conclude with `hk _ _ _ (hφ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opOf_bound {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec) (hw : WtUnit w S) {c : K}
     (hk : ∀ d d', Bd w c (S.Del d) (S'.Del d') (A.k d d')) {c₀ : K} (φ : S.EqFun)
@@ -67,11 +67,11 @@ theorem opOf_bound {S S' : GSD K} (A : ClsKer S S') (h : S.Ok) (s : S.Sec) (hw :
   exact hk _ _ _ (hφ _)
 
 /- English proof (translation)
-Introduce `v hv`. Simplify using `only [CplKer.comp, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, wt_eq_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `smul_mem_localizationAt_of_le w _ (hw _) ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun y hy => ?_` and prove the remaining obligations. Establish `hy' : y ∈ Y.ys (s.rep x)` using `by simpa using hy`. Rewrite using `[mul_smul, ← map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 _ _ y hy' _ (h1 _ _ y hy' v hv)`.
+A detailed English derivation is pending.
 -/
 theorem comp_bound {S₀ S S₁ : GSD K} {Y : Cpl S} (A : CplKer S₀ S S₁ Y) (h : S.Ok) (s : S.Sec) (hw : WtUnit w S) {c₁ c₂ : K}
     (h1 : ∀ d₀ d, ∀ y ∈ Y.ys d, Bd w c₁ (S₀.Del d₀) (S.Del d) (A.k1 d₀ d y))
@@ -90,9 +90,9 @@ theorem comp_bound {S₀ S S₁ : GSD K} {Y : Cpl S} (A : CplKer S₀ S S₁ Y) 
   exact h2 _ _ y hy' _ (h1 _ _ y hy' v hv)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Finset.prod_range_zero, one_smul]`. Conclude with `hφ b d`. Consider the case `succ n ih`. Establish `e : (kk.colTo hF (n + 1) φ b).1 d = ∑ al, ((kk n al b).opOf (hF n al) ((F n).mem al).outSec (kk.colTo hF n φ al)).1 d`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(KerFam.step kk hF n (kk.colTo hF n φ) b).1 d = _`. Simplify using `only [KerFam.step, GFam.Mat.opOf, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Submodule.coe_sum, Finset.sum_apply]`. Rewrite using `[e, Finset.smul_sum, Finset.prod_range_succ, mul_comm]`. Conclude with `Submodule.sum_mem _ fun al _ => opOf_bound _ _ _ (hw n (Nat.lt_succ_self n) al) (hk n (Nat.lt_succ_self n) al b) _ (ih (fun j hj => hw j (Nat.lt_succ_of_lt hj)) (fun j hj => hk j (Nat.lt_succ_of_lt hj)) al) d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colTo_bound {F : ℕ → GFam K} (kk : KerFam F) (hF : ∀ j, (F j).Ok) (c : ℕ → K)
     (φ : (F 0).Forms) (hφ : ∀ b d, (φ b).1 d ∈ localization₂ w.asIdeal (((F 0).mem b).Del d)) (n : ℕ)
@@ -113,9 +113,9 @@ theorem colTo_bound {F : ℕ → GFam K} (kk : KerFam F) (hF : ∀ j, (F j).Ok) 
       (ih (fun j hj => hw j (Nat.lt_succ_of_lt hj)) (fun j hj => hk j (Nat.lt_succ_of_lt hj)) al) d
 
 /- English proof (translation)
-Establish `e : (colCpl kk hF n A h φ).1 d = ∑ b, (((A b).comp h S.outSec).opOf (hF n b) ((F n).mem b).outSec (kk.colTo hF n φ b)).1 d`. Simplify using `only [colCpl, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Submodule.coe_sum, Finset.sum_apply]`. Establish `e2 : ∏ j ∈ Finset.range (n + 2), c j = (c (n + 1) * c n) * ∏ j ∈ Finset.range n, c j`. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Finset.smul_sum, e2]`. Conclude with `Submodule.sum_mem _ fun b _ => opOf_bound _ _ _ (hw n le_rfl b) (comp_bound (A b) h _ hS (h1 b) (h2 b)) _ (colTo_bound kk hF c φ hφ n (fun j hj => hw j hj.le) hk b) d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colCpl_bound {F : ℕ → GFam K} (kk : KerFam F) (hF : ∀ j, (F j).Ok) {n : ℕ} (hw : ∀ j ≤ n, ∀ b, WtUnit w ((F j).mem b))
     (c : ℕ → K) {S S₁ : GSD K} {Y : Cpl S} (A : ∀ b : (F n).β, CplKer ((F n).mem b) S S₁ Y) (h : S.Ok) (hS : WtUnit w S)
@@ -137,11 +137,11 @@ theorem colCpl_bound {F : ℕ → GFam K} (kk : KerFam F) (hF : ∀ j, (F j).Ok)
 end Generic
 
 /- English proof (translation)
-Use `not_dvd_card_of_injective (((UF X.E n).subtype.comp (MonoidHom.fst _ _)).comp (Subgroup.subtype _)) ?_ hp hb` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨⟨γ, h, c⟩, hs⟩ h1`. Establish `h2 : γ = 1` using `Subtype.ext h1`. Substitute `h2` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h3 : h.1 = 1` using `glg_eq_one_of_fix d.1.1 h.1 (congrArg (fun x : DecoF X.E n ST SG Q => x.1.1.1) hs)`. Establish `h4 : c.1 = 1`. Use function extensionality and compare the values at `P`. Establish `h5 : (1 : Sp X.E n ≃ₗ[X.E] Sp X.E n) * d.1.2 P * ((c.1 P)⁻¹).1 = d.1.2 P` using `congrArg (fun x : DecoF X.E n ST SG Q => x.1.2 P) hs`. Rewrite `h5` using `[one_mul, mul_eq_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `inv_eq_one.1 (Subtype.ext h5)`. Conclude with `Subtype.ext (Prod.ext rfl (Prod.ext (Subtype.ext h3) (Subtype.ext h4)))`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_card_stab_frm {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
     (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (d : DecoF X.E n ST SG Q)
@@ -162,9 +162,9 @@ theorem not_dvd_card_stab_frm {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOn
   exact Subtype.ext (Prod.ext rfl (Prod.ext (Subtype.ext h3) (Subtype.ext h4)))
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Express the relevant statement in the definitionally equal form `StdOver p (DecoSet.til (ST := ST) pi d).1.N`. Rewrite using `[DecoSet.til_val d hT hG]`. Introduce `P hP`. Use extensionality with `x`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `x ∈ localization₂ P.asIdeal (tilN d.1.N) ↔ _`. Rewrite using `[mem_localization_tilN, h P hP, GlobalTheory.TopStep.mem_stdAt, GlobalTheory.TopStep.mem_stdAt, Fin.forall_fin_succ']`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stdOver_tilH {E : Type} [Field E] [NumberField E] [StarRing E] {N n : ℕ} (hN : N = n + 1)
     {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ v : SG, pi ∉ v.1.asIdeal)
@@ -185,7 +185,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (A : Amb X)
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `hM X Pr hPr i _ (DecoF.deco p).1.N ⟨(DecoF.deco p).2.lat, (DecoF.deco p).2.uni⟩`. Conclude with `⟨(γ, 1, 1), hγ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_std_pt (hM : StdMove) (hPr : Pr.Ok) (i : Fin 2) (u : Pr.Word) (j : ℕ) (b : L.β j)
     (p : ((chF W sel mu L u j).mem b).D) : ∃ g : ((chF W sel mu L u j).mem b).G, StdOver (Pr.g i) (DecoF.deco (g • p)).1.N := by
@@ -193,9 +193,9 @@ theorem exists_std_pt (hM : StdMove) (hPr : Pr.Ok) (i : Fin 2) (u : Pr.Word) (j 
   exact ⟨(γ, 1, 1), hγ⟩
 
 /- English proof (translation)
-Establish `h1` using `DecoSet.tilH_smul (ST := Pr.vT u) (N_m_succ R) (γ, (1 : GLG X.E _ (rowSG Pr sel mu))) d (conj_piT_notMem hPr u) (piT_notMem_rowSG sel mu hPr hsel u hS)`. Establish `h2 : (evGSD W Ch sel mu P u).ρ (γ, 1) = (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).rho (extUH (N_m_succ R) γ)`. Express the relevant statement in the definitionally equal form `((((rowTy Ch sel mu P).inv.chr 1)⁻¹ : X.Kˣ) : X.K) • (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).rho (extUH (N_m_succ R) γ) = _`. Rewrite using `[map_one, inv_one, Units.val_one, one_smul]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (colVal_del_smul W u R.m (extUH (N_m_succ R) γ, extGH (N_m_succ R) 1) (tilQ sel mu u d))` and prove the remaining obligations. Conclude with `congrArg (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).Del h1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem evGSD_del_smul (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hS : Pr.T u ∈ S) (P : LevFam X.E X.K R.r Pr.vGs)
     (γ : UF X.E (R.N R.m - 1)) (d : (evGSD W Ch sel mu P u).D) :
@@ -212,9 +212,9 @@ theorem evGSD_del_smul (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hS : Pr
   exact congrArg (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).Del h1
 
 /- English proof (translation)
-Introduce `d`. Establish `hE : Module.finrank ℚ X.E = 2 * X.f`. Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, ← hX.card_Tau, mul_comm]`. Both sides reduce to the same expression. Use `(hF j b).fin_stab d` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hN : R.N j ≤ R.N R.m` using `Examples₂.N_mono hj`. Conclude with `(valuation_inv_natCast w hp hw (not_dvd_card_stab_frm (L.levG j b) (L.levQ j b) d hp (lt_of_le_of_lt (by rw [hE]; gcongr) hb))).le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wtUnit_chF (hX : X.Ok) (u : Pr.Word) (hF : ∀ j, (chF W sel mu L u j).Ok) {p : ℕ} (hp : p.Prime)
     (hb : 2 * X.f * R.N R.m + 1 < p) (w : HeightOneSpectrum (𝓞 X.K)) (hw : ((p : ℕ) : 𝓞 X.K) ∈ w.asIdeal) {j : ℕ} (hj : j ≤ R.m)

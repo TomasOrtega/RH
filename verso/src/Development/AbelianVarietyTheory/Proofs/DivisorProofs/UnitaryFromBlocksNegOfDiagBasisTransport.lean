@@ -6,17 +6,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Introduce `A O _ _ ι γ c n P K JL hinj hγ hP M G hM hG`. Establish `hmul : ∀ {m : Type} [Fintype m] (X Y : Matrix m m O), (X * Y).map ι = X.map ι * Y.map ι`. Introduce `m _ X Y`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hneg : (-JL).map ι = -(JL.map ι)` using `by ext i j; simp`. Establish `hD : (Matrix.fromBlocks P 0 0 P)ᵀ * Matrix.fromBlocks K 0 0 (-K) * (Matrix.fromBlocks P 0 0 P).map γ = (Matrix.fromBlocks JL 0 0 (-JL)).map ι`. Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map, hneg, ← hP]`. Simplify using `[Matrix.mul_neg, Matrix.neg_mul]`. Establish `hc : (G.map c).map ι = (G.map ι).map γ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[hγ]`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `show (Gᵀ * Matrix.fromBlocks JL 0 0 (-JL) * G.map c).map ι = (Matrix.fromBlocks JL 0 0 (-JL)).map ι`. Rewrite using `[hmul, hmul, Matrix.transpose_map, hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← hD]`. Establish `hG' : (Matrix.fromBlocks P 0 0 P * G.map ι).map γ = (Matrix.fromBlocks P 0 0 P).map γ * (G.map ι).map γ`. Rewrite using `[Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG', Matrix.transpose_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M * Matrix.fromBlocks P 0 0 P)ᵀ * Matrix.fromBlocks K 0 0 (-K) * (M * Matrix.fromBlocks P 0 0 P).map γ := by rw [hG]`. Use `_ = (Matrix.fromBlocks P 0 0 P)ᵀ * (Mᵀ * Matrix.fromBlocks K 0 0 (-K) * M.map γ) * (Matrix.fromBlocks P 0 0 P).map γ := by`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [hM, hD]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.fromBlocks_unitary_transfer : ∀ (A O : Type) [CommRing A] [CommRing O] (ι : O →ₙ+* A) (γ : A →+* A) (c : O →+* O) (n : ℕ)
     (P K : Matrix (Fin n) (Fin n) A) (JL : Matrix (Fin n) (Fin n) O),

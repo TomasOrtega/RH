@@ -5,21 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Introduce `l _ X _ _ g a ha hg`. Take `⟨N, hN⟩` from `hg`. Take `⟨c, hc⟩` from `ha`. Establish `left : ∀ f h : Module.End ℤ_[l] X, InPow 1 f → InPow 1 (h * f)`. Introduce `f h hf v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw⟩` from `hf v`. Conclude with `⟨h w, by rw [Module.End.mul_apply, hw, map_smul]⟩`. Establish `right : ∀ f h : Module.End ℤ_[l] X, InPow 1 f → InPow 1 (f * h)`. Introduce `f h hf v`. Conclude with `hf (h v)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `zero : InPow 1 (0 : Module.End ℤ_[l] X)` using `fun v => ⟨0, by simp⟩`. Establish `add : ∀ f h : Module.End ℤ_[l] X, InPow 1 f → InPow 1 h → InPow 1 (f + h)`. Introduce `f h hf hh v`. Take `⟨w, hw⟩` from `hf v`. Take `⟨u, hu⟩` from `hh v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨w + u, by rw [LinearMap.add_apply, hw, hu, smul_add]⟩`. Establish `hB : InPow 1 ((a - 1) • g)`. Introduce `v`. Use `⟨c • g v, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hc, mul_smul, pow_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomm : Commute (g - 1) ((a - 1) • g)` using `((Commute.refl g).sub_left (Commute.one_left g)).smul_right (a - 1)`. Establish `hsplit : a • g - 1 = (g - 1) + (a - 1) • g`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Use `⟨N, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, hcomm.add_pow]`. Use `Finset.sum_induction _ (InPow 1) add zero ?_` and prove the remaining obligations. Introduce `m hm`. Break down `Nat.lt_or_ge m N with hlt | hge` into its components or cases. Take `⟨k, hk⟩ : ∃ k, N - m = k + 1` from `⟨N - m - 1, by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, pow_succ']`. Apply `right` to reduce the goal to its premises. Rewrite using `[← mul_assoc]`. Apply `right` to reduce the goal to its premises. Conclude with `left _ _ hB`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmN : m = N`. Simplify using `only [Finset.mem_range] at hm`. Use linear arithmetic over natural numbers and integers. Substitute `hmN` using the available equality. Conclude with `right _ _ (right _ _ hN)`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.twist :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (g : Module.End ℤ_[l] X) (a : ℤ_[l]), (l : ℤ_[l]) ∣ a - 1 →

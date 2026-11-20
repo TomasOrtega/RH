@@ -7,9 +7,9 @@ open NumberField Formalism.FrobeniusOrbits Formalism.BasicNotions
 namespace Formalism.MainNotions.G
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `: (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).mpr hpZ`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Establish `: IsGaloisGroup (D.host.E ≃ₐ[ℚ] D.host.E) ℤ (𝓞 D.host.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ D.host.E`. Take `⟨P, hP, hlo⟩` from `(inferInstance : Nonempty (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.host.E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot (p := Ideal.span {(p : ℤ)}) (by simpa using hpZ.ne_zero) P`. Establish `: Finite (𝓞 D.host.E ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot P hne`. Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ (D.host.E ≃ₐ[ℚ] D.host.E) P`. Conclude with `⟨_, P, hP, hlo, σ, hσ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frobSet_ne' (D : D7) {p : ℕ} (hp : p.Prime) : ∃ g, g ∈ frobSet D p := by
   have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp
@@ -23,7 +23,7 @@ theorem frobSet_ne' (D : D7) {p : ℕ} (hp : p.Prime) : ∃ g, g ∈ frobSet D p
   exact ⟨_, P, hP, hlo, σ, hσ, rfl⟩
 
 /- English proof (translation)
-Take `⟨P, hP', hL, σ, hσ, hg⟩` from `Classical.epsilon_spec (frobSet_ne' D hp)`. Establish `h1` using `@hN P hP' hL σ hσ`. Rewrite `h1` using `[hg]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hEv_of_hNeZero {D : D7} {p : ℕ} (hp : p.Prime) (hN : HNeZero D.host p) : HEv D p := by
   obtain ⟨P, hP', hL, σ, hσ, hg⟩ := Classical.epsilon_spec (frobSet_ne' D hp)

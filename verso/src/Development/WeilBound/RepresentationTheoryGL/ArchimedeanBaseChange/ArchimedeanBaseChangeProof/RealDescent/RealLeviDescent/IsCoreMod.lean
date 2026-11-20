@@ -134,7 +134,7 @@ def harmSet (lam : Fin n → ℤ) : Finset (Fin n → ℝ) :=
 def m0 (lam : Fin n → ℤ) : Fin n → ℝ := fun a => 2 * (lam a : ℝ) + ((n : ℝ) - 1) - 2 * (a : ℕ)
 
 /- English proof (translation)
-Unfold `trOn`. Use `split_ifs with h`. Rewrite using `[show f.restrict h = 0 from LinearMap.ext fun x => Subsingleton.elim _ _, map_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trOn_bot {M : Type*} [AddCommGroup M] [Module ℂ M] (f : M →ₗ[ℂ] M) : trOn ⊥ f = 0 := by
   unfold trOn

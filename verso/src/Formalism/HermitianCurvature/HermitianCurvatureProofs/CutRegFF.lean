@@ -75,7 +75,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `Gf`. Rewrite using `[dInv k r Bs.z Bs.z' Bs.z_mem Bs.z'_mem s hs s' hs' g, dInv k r Bs.z Bs.z' Bs.z_mem Bs.z'_mem s hs s' hs' g]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gf_SgS (Bs : B.RealPlaceData k r Wp Wq) {s s' : Q.Mx k r} (hs : s ∈ Sset k r Bs.z) (hs' : s' ∈ Sset k r Bs.z')
     (g : Q.Mx k r) : Gf k r Bs.z Bs.z' (s * g * s') = Gf k r Bs.z Bs.z' g := by
@@ -84,33 +84,33 @@ theorem gf_SgS (Bs : B.RealPlaceData k r Wp Wq) {s s' : Q.Mx k r} (hs : s ∈ Ss
     dInv k r Bs.z Bs.z' Bs.z_mem Bs.z'_mem s hs s' hs' g]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r z, 1, (nSubgroup k r).1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Sset (z : Fin (2 * r + k + 1) → ℂ) : (1 : Q.Mx k r) ∈ Sset k r z :=
   ⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r z, 1, (nSubgroup k r).1, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r z, n, hn.1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem n_mem_Sset (z : Fin (2 * r + k + 1) → ℂ) {n : Q.Mx k r} (hn : n ∈ Q.Nlev k r 0) : n ∈ Sset k r z :=
   ⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r z, n, hn.1, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, hh, 1, (nSubgroup k r).1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem h_mem_Sset (z : Fin (2 * r + k + 1) → ℂ) {h : Q.Mx k r} (hh : h ∈ UWset k r z) : h ∈ Sset k r z :=
   ⟨h, hh, 1, (nSubgroup k r).1, by simp⟩
 
 /- English proof (translation)
-Take `⟨hS, hL, hR, hU⟩` from `hJ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hFJ⟩` from `hS g₀ hg₀`. Use `⟨U, fun g => ((χ (Gf k r Bs.z Bs.z' g / ε) : ℝ) : ℂ) • F g, hU, hgU, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun g : Q.Mx k r => ((χ (Gf k r Bs.z Bs.z' g / ε) : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (hχ.comp ((Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z').div_const ε))`. Conclude with `hc.contDiffOn.smul hF`. Introduce `g hgU hgG`. Simplify using `only [hFJ g hgU hgG]`. Introduce `g hg n hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Gf k r Bs.z Bs.z' (n * g) = Gf k r Bs.z Bs.z' g`. Use `gf_SgS Bs (n_mem_Sset Bs.z hn) (one_mem_Sset Bs.z') g` as an intermediate fact. Simplify using `using this`. Simplify using `only [e, hL g hg n hn]`. Rewrite using `[smul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg n hn`. Establish `e : Gf k r Bs.z Bs.z' (g * n) = Gf k r Bs.z Bs.z' g`. Use `gf_SgS Bs (one_mem_Sset Bs.z) (n_mem_Sset Bs.z' hn) g` as an intermediate fact. Simplify using `using this`. Simplify using `only [e, hR g hg n hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm]`. Introduce `g hg h hh h' hh'`. Establish `e : Gf k r Bs.z Bs.z' (h * g * h') = Gf k r Bs.z Bs.z' g` using `gf_SgS Bs (h_mem_Sset Bs.z hh) (h_mem_Sset Bs.z' hh') g`. Simplify using `only [e, hU g hg h hh h' hh']`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut_mem_FFl (Bs : B.RealPlaceData k r Wp Wq) {χ : ℝ → ℝ} (hχ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) χ) (ε : ℝ)
     {Dm : Set (Q.Mx k r)} {J : Q.Mx k r → (Wq →L[ℂ] Wp)}
@@ -147,9 +147,9 @@ theorem cut_mem_FFl (Bs : B.RealPlaceData k r Wp Wq) {χ : ℝ → ℝ} (hχ : C
 end proofs
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB hJ v`. Use `⟨hJ v, fun ε _ => ?_⟩` and prove the remaining obligations. Establish `hχ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) χ` using `hB.1.2.2.2.1.1.1`. Establish `e : B.JF (T v).base (D.cutF (T v).base χ (f v) ε) = fun g => ((χ (Gf S.G.k S.G.r (T v).base.z (T v).base.z' g / ε) : ℝ) : ℂ) • B.JF (T v).base (f v) g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun g => Formalism.FourierDecayAlt.P.JCTx2.JF_cutF (T v).base χ (f v) ε g`. Rewrite using `[e]`. Conclude with `cut_mem_FFl (T v).base hχ ε (hJ v)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularity_smooth_forms_holds : RegFF3 := by
   refine ⟨0, ?_⟩
@@ -169,9 +169,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `hB`. Use `⟨h1, h2, h3, h4, h5, h6, h7, ?_, le_trans h h9, h10, h11, ?_, h13⟩` and prove the remaining obligations. Introduce `v`. Establish `hv` using `h8 v`. Establish `hX : 0 ≤ (S.G.k : ℝ) * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 2 * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 3` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h hX]`. Establish `hX : 0 ≤ ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3)` using `by positivity`. Use `mul_le_mul_of_nonneg_right h hX` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isBuiltPlace_mono3 {Cc₁ Cc₂ : ℝ} (h : Cc₁ ≤ Cc₂) {S : C.HidaSetting E Wp Wq}
     {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
@@ -194,7 +194,7 @@ theorem isBuiltPlace_mono3 {Cc₁ Cc₂ : ℝ} (h : Cc₁ ≤ Cc₂) {S : C.Hida
 end bridge
 
 /- English proof (translation)
-Take `⟨C₁, hC₁⟩` from `hJ`. Take `⟨C₂, hC₂⟩` from `h3`. Use `⟨max C₁ C₂, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB`. Conclude with `hC₂ E Wp Wq S T f χ ν' m₀ top A₀ (isBuiltPlace_mono3 (le_max_right _ _) hB) (hC₁ E Wp Wq S T f χ ν' m₀ top A₀ (isBuiltPlace_mono3 (le_max_left _ _) hB))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt2_of_3 (hJ : JfSmoothDS) (h3 : ModelPlaceBuilt3) : JCT.ModelPlaceBuilt2 := by
   obtain ⟨C₁, hC₁⟩ := hJ

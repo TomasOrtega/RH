@@ -9,11 +9,9 @@ open Formalism.NG (KO)
 namespace GlobalTheory.LocDualInt
 
 /- English proof (translation)
-Use `haveI : ∀ i : ℕ, HasEnoughRootsOfUnity (PadicAlgCl p) (p ^ i) := fun i => by haveI : NeZero ((p ^ i : ℕ) : PadicAlgCl p) := ⟨by exact_mod_cast pow_ne_zero i (Fact.out : p.Prime).ne_zero⟩ infer_instance`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (PadicAlgCl p) (p ^ k)`. Use `⟨ζ, hζ.pow_eq_one, fun a ha => ?_⟩` and prove the remaining obligations. Use `set c : ZMod (p ^ k) := PadicInt.toZModPow k ((cyclotomicCharacter (PadicAlgCl p) p (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK p K) (PadicAlgCl p) g) : ℤ_[p]ˣ) : ℤ_[p]) with hc`. Establish `hspec` using `cyclotomicCharacter.spec (L := PadicAlgCl p) p (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK p K) (PadicAlgCl p) g) ζ hζ.pow_eq_one`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK p K) (PadicAlgCl p) g) ζ = g ζ` using `rfl`. Rewrite `hspec` using `[hg, ha]`. Establish `hpos : 0 < p ^ k` using `pow_pos (Fact.out : p.Prime).pos k`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.mpr ⟨p ^ k, hpos, hζ.pow_eq_one⟩`. Establish `hmod : a ≡ c.val [MOD orderOf ζ]` using `hfin.pow_eq_pow_iff_modEq.mp hspec`.
-
-Rewrite `hmod` using `[← hζ.eq_orderOf]`. Conclude with `((ZMod.natCast_eq_natCast_iff _ _ _).mpr hmod).trans (ZMod.natCast_zmod_val c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_pow_cyclotomicCharacter_congr {p : ℕ} [Fact p.Prime]
     (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (g : Formalism.GaloisCohomology.GK p K) (k : ℕ) :

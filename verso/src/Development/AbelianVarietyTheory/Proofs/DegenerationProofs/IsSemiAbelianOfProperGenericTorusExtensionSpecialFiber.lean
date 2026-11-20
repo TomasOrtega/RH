@@ -16,9 +16,7 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Use `IsPullback.of_bot (h₃₁ := f) (v₂₁ := pullback.snd Y.hom f) (v₂₂ := Y.hom) ?_ ?_ (IsPullback.of_hasPullback Y.hom f)` and prove the remaining obligations. Establish `h₁ : ((Over.pullback f).map q).left ≫ pullback.snd Y.hom f = pullback.snd X.hom f` using `Over.w ((Over.pullback f).map q)`. Establish `h₂ : q.left ≫ Y.hom = X.hom` using `Over.w q`. Rewrite using `[h₁, h₂]`. Conclude with `IsPullback.of_hasPullback X.hom f`.
-
-Conclude with `(pullback.lift_fst _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_overPullback_map_left {S S' : Scheme.{0}} (f : S' ⟶ S) {X Y : Over S} (q : X ⟶ Y) :
     IsPullback (pullback.fst X.hom f) ((Over.pullback f).map q).left q.left (pullback.fst Y.hom f) := by
@@ -32,11 +30,11 @@ theorem isPullback_overPullback_map_left {S S' : Scheme.{0}} (f : S' ⟶ S) {X Y
   · exact (pullback.lift_fst _ _ _).symm
 
 /- English proof (translation)
-Take `⟨T⟩` from `h`. Use `letI := T.grpB`. Use `letI := T.addCommGroup`. Use `haveI := T.q_hom`. Use `haveI := T.i_hom`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he, -⟩` from `GlobalTheory.splitTorus_baseChange (Sp k) (Sp Ω) f T.X`. Establish `hq` using `isPullback_overPullback_map_left f T.q`. Use `⟨{ X := T.X addCommGroup := T.addCommGroup free := T.free finite := T.finite B := (Over.pullback f).obj T.B grpB := inferInstance isAbelian := GlobalTheory.isAbelianScheme_pullback_obj f T.B T.isAbelian q := (Over.pullback f).map T.q q_hom := inferInstance q_flat := MorphismPrope …` and prove the remaining obligations. Establish `hk` using `T.isKernel.map (Over.pullback f)`. Use `IsPullback.of_iso hk e.symm (Iso.refl _) (Functor.Monoidal.εIso (Over.pullback f)).symm (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `toUnit_unique _ _`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonempty_torusExtension_pullback {k Ω : Type} [Field k] [Field Ω] (f : Sp Ω ⟶ Sp k)
     (G : Over (Sp k)) [GrpObj G] (h : Nonempty (TorusExtension G)) :
@@ -72,9 +70,9 @@ theorem nonempty_torusExtension_pullback {k Ω : Type} [Field k] [Field Ω] (f :
   · simp
 
 /- English proof (translation)
-Set `ρ' : IsLocalRing.ResidueField W →+* k` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal W) ρ fun a ha => (RingHom.mem_ker).1 (hρ ▸ ha)`. Set `φ' : IsLocalRing.ResidueField W →+* Ω` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal W) φ fun a ha => (RingHom.mem_ker).1 (hφ ▸ ha)`. Use `letI := ρ'.toAlgebra`. Use `letI := φ'.toAlgebra`. Establish `hi' : ρ'.IsIntegral` using `RingHom.IsIntegral.tower_top (IsLocalRing.residue W) ρ' hi`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsIntegral (IsLocalRing.ResidueField W) k := ⟨hi'⟩`. Set `ψ : k →ₐ[IsLocalRing.ResidueField W] Ω` to `IsAlgClosed.lift`. Use `⟨ψ.toRingHom, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `ψ.commutes (IsLocalRing.residue W x)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_comp_eq_of_isIntegral {W k Ω : Type} [CommRing W] [IsLocalRing W] [Field k] [Field Ω]
     [IsAlgClosed Ω] (ρ : W →+* k) (hρ : RingHom.ker ρ = IsLocalRing.maximalIdeal W) (hi : ρ.IsIntegral)
@@ -92,15 +90,15 @@ theorem exists_ringHom_comp_eq_of_isIntegral {W k Ω : Type} [CommRing W] [IsLoc
   exact ψ.commutes (IsLocalRing.residue W x)
 
 /- English proof (translation)
-Introduce `W L _ _ _ _ _ _ G _ hG hp k _ ρ hρ hi hT`. Take `⟨hc, hs, hsep, hqc, hgc⟩` from `hG`. Establish `key : ∀ (Ω F : Type) [Field Ω] [Field F] (a : W →+* F) (ψ : F →+* Ω), Nonempty (TorusExtension ((Over.pullback (spMap a)).obj G)) → Nonempty (TorusExtension ((Over.pullback (spMap (ψ.comp a))).obj G))`. Introduce `Ω F _ _ a ψ h`. Take `⟨E⟩` from `nonempty_torusExtension_pullback (spMap ψ) _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : spMap (ψ.comp a) = spMap ψ ≫ spMap a`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[e]`. Establish `: IsMonHom (pullCompIso (spMap ψ) (spMap a) G).symm.hom` using `inferInstanceAs (IsMonHom (pullCompIso (spMap ψ) (spMap a) G).inv)`. Conclude with `⟨torusExtOfIso (pullCompIso (spMap ψ) (spMap a) G).symm E⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hA : IsAbelianScheme ((Over.pullback (spMap (algebraMap W L))).obj G)` using `{ comm := inferInstance smooth := by change Smooth (pullback.snd G.hom _); infer_instance proper := hp geomConnected := by change GeometricallyConnected (pullback.snd G.hom _); infer_instance }`. Use `⟨hc, hs, hsep, hqc, hgc, fun Ω _ _ q => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `Spec.map_surjective q`. Express the relevant statement in the definitionally equal form `Nonempty (TorusExtension ((Over.pullback (spMap φ.hom)).obj G))`. Distinguish the cases in `h : RingHom.ker φ.hom = ⊥`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Establish `hinj` using `(RingHom.injective_iff_ker_eq_bot _).2 h`. Establish `e : (IsFractionRing.lift (K` using `L) hinj).comp (algebraMap W L) = φ.hom := RingHom.ext fun x => IsFractionRing.lift_algebraMap hinj x`. Rewrite using `[← e]`. Conclude with `key Ω L _ _ ⟨GlobalTheory.torusExtensionOfAbelian _ hA⟩`. Establish `hm : RingHom.ker φ.hom = IsLocalRing.maximalIdeal W` using `IsLocalRing.eq_maximalIdeal ((RingHom.ker_isPrime φ.hom).isMaximal h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, e⟩` from `exists_ringHom_comp_eq_of_isIntegral ρ hρ hi φ.hom hm`. Rewrite using `[← e]`. Conclude with `key Ω k _ _ hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_proper_generic_of_torusExtension : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G], SmConn G → IsProper ((Over.pullback (spMap (algebraMap W L))).obj G).hom → ∀ (k : Type) [Field k] (ρ : W →+* k), RingHom.ker ρ = IsLocalRing.maximalIdeal W → ρ.IsIntegral → Nonempty (TorusExtension ((Over.pullback (spMap ρ)).obj G)) → IsSemiAbelian G := by
   intro W L _ _ _ _ _ _ G _ hG hp k _ ρ hρ hi hT

@@ -19,23 +19,19 @@ noncomputable section
 namespace GlobalTheory.XTermConv
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ m hm e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Establish `hKeq : K = GlobalTheory.StabHaar.stabK (σ` using `σ) B G.V := Subgroup.ext fun g => (hK g).trans (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B G.V g).symm`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`. Establish `hX` using `hT.geo.hV`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hKeq]`. Conclude with `hCc.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.T.isClosed_adelic_lattice_closure F E (b + 2) G.V hX.lat)) hsub`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Establish `hμKfin : μK Set.univ < ⊤` using `isCompact_univ.measure_lt_top`. Establish `hab : a' + 2 ≤ b` using `by have := hT.geo.eBig; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : ℝ := ((b : ℝ) + 2 - a') / 2 with hs_def`. Establish `hs : 1 < s`. Establish `: ((a' : ℝ) + 2) ≤ b` using `by exact_mod_cast hab`. Rewrite using `[hs_def]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hN⟩` from `GlobalTheory.T.config_a_stabilizer_evaluation_theta hKP F E σ B b a' G G₁ H H' hC K hK e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Take `⟨N, hN'⟩` from `GlobalTheory.T.lintegral_idele_majorant_finite F E μ hμ s hs U hU`. Take `⟨C, hCt, hCb⟩` from `hN N`. Establish `key : ∀ (k : K) (l : (AE F E)ˣ), ∫⁻ g₀ in G₁.M.dom, ‖thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (m l g₀ * k.1, h) Φ)))‖ₑ * ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - ((b + 2 : ℕ) : ℝ))) ∂G₁.M.μ ≤ C * (GlobalTheory.XTermMaj.maj F E N U ((l⁻¹ : (AE F E)ˣ) : AE F E) * ENNReal.of …`. Introduce `k l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 < (absE F E l : ℝ)`. Establish `h1 : absE F E l * absE F E l⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h2 : absE F E l ≠ 0` using `fun h0 => by simp [h0] at h1`. Conclude with `NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr h2)`. Establish `hpt : ∀ g₀, ‖thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (m l g₀ * k.1, h) Φ)))‖ₑ * ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - ((b + 2 : ℕ) : ℝ))) = ‖thetaSum F (om₁ (g₀, 1) (e (G.M.co.rho B.ψ (shiftA H H' l⁻¹) (om (k.1, h) Φ))))‖ₑ * ENNReal.ofReal ((absE F E l : ℝ) ^ (-s))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `g₀`. Rewrite using `[GlobalTheory.T.doubling_eigen_intertwiner_unramified hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h l g₀ (m l g₀) (hm l g₀) k.1]`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul (norm_nonneg _)]`. Use `congr 1`. Rewrite using `[norm_mul, norm_mul, norm_inv, Circle.norm_coe, inv_one, one_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hA.le _), mul_comm (_ ^ _) ‖_‖, mul_assoc, ← Real.rpow_add hA]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 2`. Rewrite using `[hs_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `lintegral_const_mul' C _ hCt`. Use `_ = (C * ∫⁻ l, GlobalTheory.XTermMaj.maj F E N U ((l⁻¹ : (AE F E)ˣ) : AE F E) * ENNReal.ofReal ((absE F E l : ℝ) ^ (-s)) ∂μ) * μK Set.univ := lintegral_const _`.
-
-Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top hCt.lt_top hN') hμKfin`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem conv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ m : (AE F E)ˣ → UA σ G₁.V.J → UA σ G.V.J, (∀ l g₀, IsLevi H l g₀ (m l g₀)) → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

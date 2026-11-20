@@ -46,9 +46,9 @@ def teBC {k k₂ : Type} [Field k] [Field k₂] (f : Sp k₂ ⟶ Sp k) {G : Over
     isKernel := Out.GtBCPf.iB_isKernel f T.X T.q T.i T.isKernel }
 
 /- English proof (translation)
-Use `⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res _ y _ hy _)).trans ?_` and prove the remaining obligations. Establish `a` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2`. Establish `b` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show _ * _ * gm (𝟙 X) y (L.U q.1 ⊓ L.U q.2) (L.g q.1 q.2) = gm (𝟙 X) y (L.U p.1 ⊓ L.U p.2) (L.g p.1 p.2)`. Rewrite using `[mul_right_comm, a, ← b, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_refl {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
   refine ⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
@@ -60,7 +60,7 @@ theorem lbIso_refl {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
   rw [mul_right_comm, a, ← b, mul_inv_cancel_right]
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullId _) (chartPullLinComb L F (fun _ : PUnit => g) (fun _ => h) (fun _ => 1) (𝟙 Z) fun _ => e.trans (Category.id_comp _).symm) (lbIso_refl (pull_isLB hL h))`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_pull {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (F : Y ⟶ X) (g : Z ⟶ Y) (h : Z ⟶ X)
     (e : g ≫ F = h) : LBIso (L.pull h) ((L.pull F).pull g) :=
@@ -68,9 +68,9 @@ theorem lbIso_pull_pull {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (F : Y ⟶
     fun _ => e.trans (Category.id_comp _).symm) (lbIso_refl (pull_isLB hL h))
 
 /- English proof (translation)
-Take `⟨T, M, hM, hK, hi⟩` from `H`. Set `` to `T.grpB`. Take `⟨e, he, hφ⟩` from `grpPullback_iso (isGrpPullback_pullback G f) h`. Establish `hM₂` using `pull_isLB hM (pullback.fst T.B.hom f)`. Take `⟨u, hu⟩` from `lbIso_refl hM₂`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK₂` using `kTriv_pull (isGrpPullback_pullback T.B f) hM hM₂ ((isGen_iff u).1 hu) hK`. Use `⟨torusExtOfIso e (teBC f T), M.pull (pullback.fst T.B.hom f), hM₂, hK₂, ?_⟩` and prove the remaining obligations. Establish `hc : (e.inv ≫ Out.GtBCPf.qB f T.q).left ≫ pullback.fst T.B.hom f = φ ≫ T.q.left`. Rewrite using `[Over.comp_left, Category.assoc, Out.GtBCPf.qB_h, ← hφ, ← Category.assoc, ← Category.assoc, ← Over.comp_left, e.inv_hom_id, Over.id_left, Category.id_comp]`. Conclude with `LBIso.trans hL₂ (pull_isLB hL φ) (pull_isLB hM₂ _) w (LBIso.chartPull (chartPullPull L φ φ rfl) (chartPullLinComb M (pullback.fst T.B.hom f) (fun _ : PUnit => (e.inv ≫ Out.GtBCPf.qB f T.q).left) (fun _ => T.q.left) (fun _ => 1) φ fun _ => hc) hi)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_pull {k k₂ : Type} [Field k] [Field k₂] (f : Sp k₂ ⟶ Sp k) {G : Over (Sp k)} [GrpObj G]
     {G₂ : Over (Sp k₂)} [GrpObj G₂] {φ : G₂.left ⟶ G.left} (h : IsGrpPullback G₂ G f φ) {L : LB G.left}
@@ -90,15 +90,15 @@ theorem pf_pull {k k₂ : Type} [Field k] [Field k₂] (f : Sp k₂ ⟶ Sp k) {G
       (fun _ : PUnit => (e.inv ≫ Out.GtBCPf.qB f T.q).left) (fun _ => T.q.left) (fun _ => 1) φ fun _ => hc) hi)
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t`. Establish `hL` using `t.PP.isLB`. Use `⟨fun k k₂ _ _ f x h => ?_, fun X₂ t₂ f m k _ x => ?_⟩` and prove the remaining obligations. Set `φ : pullback t.G.hom (spMap f ≫ x) ⟶ pullback t.G.hom x` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap f) (by rw [Category.assoc, pullback.condition])`. Establish `e : φ ≫ pullback.fst t.G.hom x = pullback.fst _ _` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : IsGrpPullback ((Over.pullback (spMap f ≫ x)).obj t.G) ((Over.pullback x).obj t.G) (spMap f) φ` using `(isGrpPullback_pullback t.G x).cancel ((isGrpPullback_pullback t.G _).congr rfl e.symm) (pullback.lift_snd _ _ _)`. Conclude with `pf_pull (spMap f) hg (pull_isLB hL _) (pull_isLB hL _) (lbIso_pull_pull hL _ φ _ e) h`. Establish `hL₂` using `t₂.PP.isLB`. Establish `h₁` using `(isGrpPullback_pullback t₂.G x).comp m.cart`. Establish `h₂` using `isGrpPullback_pullback t.G (x ≫ f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, -⟩` from `m.lin`. Establish `w₁ : LBIso (t₂.PP.L.pull (pullback.fst t₂.G.hom x)) ((t.PP.L.pull m.cm.F).pull (pullback.fst t₂.G.hom x))` using `LBIso.chartPull (chartPullPull _ _ _ rfl) (chartPullPull _ _ _ rfl) ⟨w, hw⟩`. Establish `w₂` using `LBIso.trans (pull_isLB hL₂ _) (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) w₁ (lbIso_pull_pull hL m.cm.F (pullback.fst t₂.G.hom x) _ rfl).symm`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hφ⟩` from `grpPullback_iso h₂ h₁`. Use `pf_pull (𝟙 _) (isGrpPullback_of_iso e) (pull_isLB hL₂ _) (pull_isLB hL _) ?_ h` and prove the remaining obligations. Use `LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) (pull_isLB (pull_isLB hL₂ _) _) (lbIso_pull_pull hL _ e.hom.left _ hφ) ?_` and prove the remaining obligations. Conclude with `LBIso.chartPull (chartPullPull _ _ _ rfl) (chartPullPull _ _ _ rfl) w₂.symm`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he, hφ⟩` from `grpPullback_iso h₁ h₂`. Use `pf_pull (𝟙 _) (isGrpPullback_of_iso e) (pull_isLB hL _) (pull_isLB hL₂ _) ?_ h` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB hL₂ _) (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) w₂ (lbIso_pull_pull hL _ e.hom.left _ hφ)`.
+A detailed English derivation is pending.
 -/
 theorem geompf_bc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0), (∀ (k k₂ : Type) [Field k] [Field k₂] (f : k →+* k₂) (x : Sp k ⟶ X0), GeomPF t x → GeomPF t (spMap f ≫ x)) ∧ ∀ (X₂ : Scheme.{0}) (t₂ : SAB H X₂) (f : X₂ ⟶ X0) (_ : SABMap t₂ t f) (k : Type) [Field k] (x : Sp k ⟶ X₂), GeomPF t₂ x ↔ GeomPF t (x ≫ f) := by
   intro E _ _ _ H X0 t
@@ -132,9 +132,9 @@ theorem geompf_bc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
         (lbIso_pull_pull hL _ e.hom.left _ hφ)
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := x) z _ hx.symm`. Set `P` to `pullback f x`. Set `Ω` to `AlgebraicClosure (P.residueField s)`. Set `r : Sp Ω ⟶ P` to `spMap (algebraMap (P.residueField s) Ω) ≫ P.fromSpecResidueField s`. Establish `hr : r (IsLocalRing.closedPoint Ω) = s` using `Scheme.fromSpecResidueField_apply s _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Ω, inferInstance, inferInstance, r ≫ pullback.fst f x, (Spec.preimage (r ≫ pullback.snd f x)).hom, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg (pullback.fst f x) hr).trans hs)`. Use `show _ = Spec.map (Spec.preimage (r ≫ pullback.snd f x)) ≫ x`. Rewrite using `[Spec.map_preimage, Category.assoc r, Category.assoc r, pullback.condition]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common {X₂ X0 : Scheme.{0}} (f : X₂ ⟶ X0) (z : X₂) {k : Type} [Field k] (x : Sp k ⟶ X0)
     (hx : x (IsLocalRing.closedPoint k) = f z) :
@@ -151,9 +151,9 @@ theorem exists_common {X₂ X0 : Scheme.{0}} (f : X₂ ⟶ X0) (z : X₂) {k : T
     rw [Spec.map_preimage, Category.assoc r, Category.assoc r, pullback.condition]
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t X₂ t₂ f m z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, _, _, x, rfl, h⟩`. Conclude with `⟨k, _, inferInstance, x ≫ f, Scheme.Hom.comp_apply _ _ _, ((geompf_bc E H X0 t).2 X₂ t₂ f m k x).1 h⟩`. Introduce and unpack `⟨k, _, _, x, hx, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨Ω, _, _, y, a, hy, e⟩` from `exists_common f z x hx`. Conclude with `⟨Ω, _, inferInstance, y, hy, ((geompf_bc E H X0 t).2 X₂ t₂ f m Ω y).2 (e ▸ (geompf_bc E H X0 t).1 k Ω a x h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fibpf_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (X₂ : Scheme.{0}) (t₂ : SAB H X₂) (f : X₂ ⟶ X0) (_ : SABMap t₂ t f) (z : X₂), FibPF t₂ z ↔ FibPF t (f z) := by
   intro E _ _ _ H X0 t X₂ t₂ f m z

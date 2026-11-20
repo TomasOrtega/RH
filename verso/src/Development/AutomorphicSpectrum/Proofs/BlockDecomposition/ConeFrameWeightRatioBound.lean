@@ -14,18 +14,18 @@ namespace GlobalTheory.CompanionTheory.RapidDecay
 variable {r : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ht.1, fun i j h => (mul_le_mul_of_nonneg_right hcc (ht.1 j).le).trans (ht.2.1 i j h), fun i h => hcc.trans (ht.2.2 i h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem cone_anti {c c' : ℝ} (hcc : c' ≤ c) {t : Fin r → ℝ} (ht : t ∈ cone r c) : t ∈ cone r c' :=
   ⟨ht.1, fun i j h => (mul_le_mul_of_nonneg_right hcc (ht.1 j).le).trans (ht.2.1 i j h),
     fun i h => hcc.trans (ht.2.2 i h)⟩
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `a b h`. Establish `e : b = a` using `Fin.ext (by simpa using h)`. Substitute `e` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `a b h`. Establish `hm : a.val + d < r`. Use `b.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `ih a ⟨a.val + d, hm⟩ rfl`. Establish `h2` using `ht.2.1 ⟨a.val + d, hm⟩ b (by simp only []; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cone_step {c : ℝ} (hc0 : 0 < c) {t : Fin r → ℝ} (ht : t ∈ cone r c) (d : ℕ) :
     ∀ a b : Fin r, b.val = a.val + d → c ^ d * t b ≤ t a := by
@@ -47,7 +47,7 @@ theorem cone_step {c : ℝ} (hc0 : 0 < c) {t : Fin r → ℝ} (ht : t ∈ cone r
       _ ≤ t a := h1
 
 /- English proof (translation)
-Establish `hab' : a.val ≤ b.val` using `hab`. Establish `h1` using `cone_step hc0 ht (b.val - a.val) a b (by omega)`. Establish `hle : c ^ r ≤ c ^ (b.val - a.val)` using `pow_le_pow_of_le_one hc0.le hc1 (by have := b.2; omega)`. Conclude with `(mul_le_mul_of_nonneg_right hle (ht.1 b).le).trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cone_pow_mul_le {c : ℝ} (hc0 : 0 < c) (hc1 : c ≤ 1) {t : Fin r → ℝ} (ht : t ∈ cone r c)
     {a b : Fin r} (hab : a ≤ b) : c ^ r * t b ≤ t a := by
@@ -58,7 +58,7 @@ theorem cone_pow_mul_le {c : ℝ} (hc0 : 0 < c) (hc1 : c ≤ 1) {t : Fin r → �
   exact (mul_le_mul_of_nonneg_right hle (ht.1 b).le).trans h1
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hl : r - 1 < r` using `by omega`. Establish `h1` using `cone_step hc0 ht (r - 1 - i.val) i ⟨r - 1, hl⟩ (by simp only []; omega)`. Establish `h2` using `ht.2.2 ⟨r - 1, hl⟩ (by simp only []; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cone_pow_le {c : ℝ} (hc0 : 0 < c) (hc1 : c ≤ 1) {t : Fin r → ℝ} (ht : t ∈ cone r c)
     (i : Fin r) : c ^ r ≤ t i := by
@@ -72,11 +72,11 @@ theorem cone_pow_le {c : ℝ} (hc0 : 0 < c) (hc1 : c ≤ 1) {t : Fin r → ℝ} 
     _ ≤ t i := h1
 
 /- English proof (translation)
-Establish `hA0 : 0 < A` using `he0.trans_le heA`. Establish `hT0 : 0 < T` using `he0.trans_le heT`. Establish `hee : e * e ^ 2 ≤ e ^ 2`. Establish `: 0 ≤ e ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Break down `h with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Establish `h3 : e * (e * A) ≤ wa`. Establish `: 0 ≤ e * A` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : e * e ^ 2 ≤ T * wa`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem weights_across_levels {e A T wa wb : ℝ} (he0 : 0 < e) (he1 : e ≤ 1) (heA : e ≤ A) (heT : e ≤ T)
     (h : (e * A ≤ wa ∧ wb * e ^ 2 ≤ T) ∨ (e ^ 2 ≤ wa * T ∧ e * A * wb ≤ 1) ∨ (e * A ≤ wa ∧ e * A * wb ≤ 1)) :
@@ -107,43 +107,41 @@ theorem weights_across_levels {e A T wa wb : ℝ} (he0 : 0 < e) (he1 : e ≤ 1) 
       _ ≤ T * wa := h3
 
 /- English proof (translation)
-Introduce `r c hc`. Establish `hc0 : 0 < min c 1` using `lt_min hc one_pos`. Establish `hc1 : min c 1 ≤ 1` using `min_le_right _ _`. Use `set c' := min c 1 with hc'`. Use `set e := c' ^ r with he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : 0 < e` using `by positivity`. Establish `he1 : e ≤ 1` using `pow_le_one₀ hc0.le hc1`. Use `⟨(e ^ 4)⁻¹, by positivity, fun s t ht0 α β hlev => ?_⟩` and prove the remaining obligations. Establish `ht : t ∈ cone r c'` using `cone_anti (min_le_left _ _) ht0`. Establish `hpos` using `ht.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge : ∀ i, e ≤ t i` using `cone_pow_le hc0 hc1 ht`. Establish `hle : ∀ {a b : Fin r}, a ≤ b → e * t b ≤ t a` using `fun h => cone_pow_mul_le hc0 hc1 ht h`. Establish `hsq : e ^ 2 ≤ e` using `by nlinarith`. Choose the witnesses or unpack the hypotheses as in `⟨T, heT, hrat, hTb⟩ : ∃ T, e ≤ T ∧ ratio t s = t s / T ∧ ∀ b : Fin r, s < b → e * t b ≤ T := by`. Distinguish the cases in `h : s.val + 1 < r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t ⟨s.val + 1, h⟩, hge _, by simp [ratio, h], fun b hb => hle ?_⟩` and prove the remaining obligations. Establish `hb' : s.val < b.val` using `hb`. Conclude with `Fin.le_def.2 (by simp only []; omega)`. Use `⟨1, he1, by simp [ratio, h], fun b hb => ?_⟩` and prove the remaining obligations. Establish `hb' : s.val < b.val` using `hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hT0 : 0 < T` using `he0.trans_le heT`. Establish `lev2 : ∀ γ, frameLev s γ = 2 → e * t s ≤ frameWt t γ`. Introduce `γ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `γ with _ | a | a` into its components or cases. Simplify using `[frameLev] at h`. Establish `ha : a ≤ s`. Assume the negation of the conclusion as `hn`. Simplify using `[frameLev, hn] at h`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify `hle ha` using `[frameWt]`. It suffices to derive a contradiction. Simplify using `only [frameLev] at h`. Apply the tactic sequence `split_ifs at h <;> omega`. Establish `lev0 : ∀ γ, frameLev s γ = 0 → e * t s * frameWt t γ ≤ 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Introduce `γ h`. Break down `γ with _ | a | a` into its components or cases. Simplify using `[frameLev] at h`. It suffices to derive a contradiction. Simplify using `only [frameLev] at h`.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply the tactic sequence `split_ifs at h <;> omega`. Establish `ha : a ≤ s`. Assume the negation of the conclusion as `hn`. Simplify using `[frameLev, hn] at h`. Simplify using `only [frameWt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← div_eq_mul_inv]`. Conclude with `(div_le_one (hpos a)).2 (hle ha)`. Establish `lev1 : ∀ γ, frameLev s γ = 1 → e ^ 2 ≤ frameWt t γ * T ∧ frameWt t γ * e ^ 2 ≤ T`. Introduce `γ h`. Establish `key : ∀ b : Fin r, s < b → e ^ 2 ≤ t b * T ∧ t b * e ^ 2 ≤ T` using `fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hTb b hb`. Establish `h2` using `hge b`. Prove the components needed by the constructor for the conclusion. Rewrite using `[sq]`. Conclude with `mul_le_mul h2 heT he0.le (hpos b).le`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `: 0 ≤ e * t b` using `(mul_pos he0 (hpos b)).le`. Use the polynomial consequences of the given equalities and inequalities. Break down `γ with _ | a | a` into its components or cases. Simplify using `only [frameWt, one_mul]`. Conclude with `⟨hsq.trans heT, hsq.trans heT⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ha : s < a`. Assume the negation of the conclusion as `hn`. Simplify using `[frameLev, not_lt.1 hn] at h`. Simplify `key a ha` using `[frameWt]`. Establish `ha : s < a`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hn`. Simplify using `[frameLev, not_lt.1 hn] at h`. Establish `h1` using `hTb a ha`. Establish `h2` using `hge a`. Simplify using `only [frameWt]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_eq_div, inv_mul_eq_div, le_div_iff₀ (hpos a), div_le_iff₀ (hpos a)]`. Prove the components needed by the constructor for the conclusion. Establish `: 0 ≤ e * t a` using `(mul_pos he0 (hpos a)).le`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[sq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `mul_le_mul heT h2 he0.le hT0.le |>.trans_eq' (by ring) |>.trans_eq (by ring)`. Establish `lvl : ∀ γ, frameLev s γ = 0 ∨ frameLev s γ = 1 ∨ frameLev s γ = 2`. Introduce `γ`. Apply the tactic sequence `rcases γ with _ | a | a <;> simp only [frameLev] <;> (try split_ifs) <;> simp`. Establish `hcases : (e * t s ≤ frameWt t α ∧ frameWt t β * e ^ 2 ≤ T) ∨ (e ^ 2 ≤ frameWt t α * T ∧ e * t s * frameWt t β ≤ 1) ∨ (e * t s ≤ frameWt t α ∧ e * t s * frameWt t β ≤ 1)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases lvl α with a | a | a <;> rcases lvl β with b | b | b <;> rw [a, b] at hlev <;> first`. Consider the case `exact Or.inl ⟨lev2 α a, (lev1 β b).2⟩`. Consider the case `exact Or.inr (Or.inl ⟨(lev1 α a).1, lev0 β b⟩)`. Consider the case `exact Or.inr (Or.inr ⟨lev2 α a, lev0 β b⟩)`. Consider the case `(exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `key` using `weights_across_levels he0 he1 (hge s) heT hcases`. Establish `hwa : 0 < frameWt t α` using `frameWt_pos hpos α`. Establish `hA0 : 0 < t s` using `hpos s`. Establish `hK : (e ^ 4)⁻¹ / ratio t s = T / (e ^ 4 * t s)`. Rewrite using `[hrat]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hK, div_le_div_iff₀ hwa (by positivity)]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameWt_div_le_div_ratio : ∀ (r : ℕ) (c : ℝ), 0 < c → ∃ K : ℝ, 0 ≤ K ∧ ∀ (s : Fin r), ∀ t ∈ cone r c,
     ∀ α β : FrameIx r, frameLev s β < frameLev s α → frameWt t β / frameWt t α ≤ K / ratio t s := by

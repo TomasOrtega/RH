@@ -24,17 +24,17 @@ namespace PositivityTheory.SiegelWeilFormula.Avac
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 open GlobalTheory.Doubling (absE)
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d L x`. Take `⟨p, k, lam, hk, rfl, hp⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Avac.line_fix'_k L.i₀ x`. Take `⟨ε, hd, hL⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Avac.eps_eq_k L`. Take `⟨g, hq⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Avac.q_split'_k L ε hd hL p lam hp`. Use `set q := p * (L.j g)⁻¹ with hqdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Avac.q_T'_k hT L.i₀ hq`. Use `⟨q, g, k, (absE F E lam : ℝ), c, hk, by simp [hqdef, mul_assoc], absE_pos lam, fun g' => ?_, fun Φ hΦ g' X hX => ?_⟩` and prove the remaining obligations. Establish `e : L.j g' * (p * k) = (L.j g' * q * (L.j g')⁻¹) * L.j (g' * g) * k`. Simplify using `only [hqdef, map_mul, mul_assoc, inv_mul_cancel_left]`. Rewrite using `[e, _root_.PositivityTheory.SiegelWeilFormula.KWhit.a_mul_K_k d _ k hk, _root_.PositivityTheory.SiegelWeilFormula.Avac.q_ht'_k L (_root_.PositivityTheory.SiegelWeilFormula.Avac.q_conj'_k L hq g') (g' * g)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Ψ := d.om q Φ - c • Φ with hΨ`. Establish `hΨs : Ψ ∈ d.sch` using `sub_mem (_root_.PositivityTheory.SiegelWeilFormula.KWhit.om_mem_sch_k d q hΦ) (Submodule.smul_mem _ c hΦ)`. Establish `hTΨ : ∀ X : Mx F E d.m d.n, (∀ a, X a L.i₀ = 0) → d.T Ψ X = 0`. Introduce `X hX`. Use `(_root_.PositivityTheory.SiegelWeilFormula.Avac.Tl_k d).map_sub (d.om q Φ) (c • Φ)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs` using `(_root_.PositivityTheory.SiegelWeilFormula.Avac.Tl_k d).map_smul c Φ`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Avac.Tl_k, LinearMap.coe_mk, AddHom.coe_mk] at this hs`. Rewrite using `[hΨ, this, hs, Pi.sub_apply, Pi.smul_apply, hc Φ hΦ X hX, smul_eq_mul, sub_self]`. Establish `key` using `L.res Ψ hΨs 0 (zero_mem _) (fun X hX => by rw [_root_.PositivityTheory.SiegelWeilFormula.Avac.T_zero_k, hTΨ X hX]; rfl) g' X hX`. Rewrite `key` using `[map_zero, _root_.PositivityTheory.SiegelWeilFormula.Avac.T_zero_k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : d.om (L.j g') Ψ = d.om (L.j g') (d.om q Φ) - c • d.om (L.j g') Φ`. Rewrite using `[hΨ, map_sub, map_smul]`. Establish `e2` using `congrFun ((_root_.PositivityTheory.SiegelWeilFormula.Avac.Tl_k d).map_sub (d.om (L.j g') (d.om q Φ)) (c • d.om (L.j g') Φ)) X`. Establish `e3` using `congrFun ((_root_.PositivityTheory.SiegelWeilFormula.Avac.Tl_k d).map_smul c (d.om (L.j g') Φ)) X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Avac.Tl_k, LinearMap.coe_mk, AddHom.coe_mk, Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at e2 e3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Module.End.mul_apply]`. Establish `: d.T (d.om (L.j g') Ψ) X = 0` using `key.symm`. Rewrite `this` using `[e1, e2, e3]`. Conclude with `sub_eq_zero.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwaQ_of'_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : _root_.PositivityTheory.SiegelWeilFormula.IwaQ_k := by
   intro F E _ _ _ _ _ σ d L x

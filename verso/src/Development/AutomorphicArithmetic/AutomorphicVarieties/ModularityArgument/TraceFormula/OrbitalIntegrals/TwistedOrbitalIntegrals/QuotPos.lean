@@ -4,25 +4,21 @@ open MeasureTheory PositivityTheory.Rg.Tf.Loc
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `_ hInt hMass G _ _ _ _ _ _ _ _ μG hμG H hH μ hμ hinv hex F hF hFH hC hnn hne`. Establish `hρ` using `hex.choose_spec`. Rewrite using `[quotIntegral, dif_pos hex]`. Generalize the expression as in `hex.choose = ρ at hρ`. Establish `hI` using `hInt G μG hμG H hH μ hμ hinv F hF hFH hC ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hfin` using `(hMass G μG hμG H hH μ hμ hinv ρ hρ).1`. Use `haveI : LocallyCompactSpace H := hH.locallyCompactSpace`. Use `haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology (H : Set G)`. Use `haveI : SFinite μ := inferInstance`. Establish `hre : (∫ g, F g * ((ρ g).toReal : ℂ) ∂μG).re = ∫ g, (F g).re * (ρ g).toReal ∂μG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `integral_re hI` as an intermediate fact. Simplify using `using this.symm`. Establish `hI' : Integrable (fun g => (F g).re * (ρ g).toReal) μG`. Simplify using `using hI.re`. Rewrite using `[hre]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ fun g => (F g).re * (ρ g).toReal` using `fun g => mul_nonneg (hnn g) ENNReal.toReal_nonneg`. Use `lt_of_le_of_ne (integral_nonneg h0) fun hz => ?_` and prove the remaining obligations. Establish `hae` using `(integral_eq_zero_iff_of_nonneg h0 hI').1 hz.symm`. Use `set Φ : G → ℝ≥0∞ := fun g => ENNReal.ofReal (F g).re with hΦ`. Establish `hΦc : Continuous Φ` using `ENNReal.continuous_ofReal.comp (Complex.continuous_re.comp hF)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hΦm : Measurable Φ` using `hΦc.measurable`. Establish `h1 : ∫⁻ g, Φ g * ρ g ∂μG = 0`. Use `(lintegral_eq_zero_iff (f := fun g => Φ g * ρ g) (hΦm.mul hρ.1)).2 ?_` and prove the remaining obligations. Use `filter_upwards [hae, hfin] with g hg hg'`. Simplify using `only [Pi.zero_apply, mul_eq_zero, ENNReal.toReal_eq_zero_iff] at hg ⊢`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Break down `hg with hg | hg | hg` into its components or cases. Use `left`. Simplify using `[hΦ, hg]`. Use `right`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd hg hg'`. Establish `hmul : Measurable fun p : G × H => (p.2 : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd).mul measurable_fst`. Establish `h2 : ∫⁻ g, Φ g ∂μG = 0`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[lintegral_const_mul, hρ.2 g, mul_one]`. Conclude with `hρ.1.comp (measurable_subtype_coe.mul_const g)`. Use `_ = ∫⁻ h : H, ∫⁻ g, Φ g * ρ ((h : G) * g) ∂μG ∂μ := lintegral_lintegral_swap ((hΦm.comp measurable_fst).mul (hρ.1.comp hmul)).aemeasurable`. Use `_ = ∫⁻ _h : H, 0 ∂μ := by`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations.
-
-Rewrite using `[← h1, ← lintegral_mul_left_eq_self (fun g => Φ g * ρ g) (h : G)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Simplify using `only [hΦ, hFH _ h.2]`. Use `_ = 0 := lintegral_zero`. Rewrite `h2` using `[lintegral_eq_zero_iff hΦm]`.
-
-Establish `h3 : Φ = 0` using `(Continuous.ae_eq_iff_eq μG hΦc continuous_zero).1 h2`. Take `⟨g, hg⟩` from `hne`. Establish `h4` using `congrFun h3 g`. Simplify using `only [hΦ, Pi.zero_apply, ENNReal.ofReal_eq_zero] at h4`. Conclude with `hg (le_antisymm h4 (hnn g))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.quotPos :
     UpperTheory.V.Z.Tf.Orb.QuotIndep → UpperTheory.V.Z.Tf.Orb.QuotInt → UpperTheory.V.Z.Tf.Orb.QuotMass → UpperTheory.V.Z.Tf.Orb.QuotPos := by

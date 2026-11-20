@@ -11,14 +11,14 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.CompanionTheory.CotLift
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (h : B →+* C) :
     spMap h ≫ spMap g = spMap (h.comp g) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g := by
   have := Spec.map_injective h
@@ -48,7 +48,7 @@ variable {α ε}
 def KerW.val (w : KerW α ε) : P := Subtype.val (p := fun x ↦ x ∈ RingHom.ker ε) w
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem KerW.ext' {v w : KerW α ε} (h : v.val = w.val) : v = w := Subtype.ext h
 
@@ -73,7 +73,7 @@ Both sides reduce to the same expression.
 @[simp] theorem KerW.val_zero : (0 : KerW α ε).val = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `w.2`.
+A detailed English derivation is pending.
 -/
 theorem KerW.eps_val (w : KerW α ε) : ε w.val = 0 := w.2
 
@@ -88,7 +88,7 @@ Both sides reduce to the same expression.
 @[simp] theorem pr_val (h : ε.comp α = RingHom.id R) (a : P) : (pr h a).val = a - α (ε a) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun f ↦ f r) h`.
+A detailed English derivation is pending.
 -/
 theorem eps_alpha (h : ε.comp α = RingHom.id R) (r : R) : ε (α r) = r := congrArg (fun f ↦ f r) h
 
@@ -116,13 +116,13 @@ def theta (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a = 0 → ε b 
       linear_combination e
 
 /- English proof (translation)
-Simplify using `[theta]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem theta_fst (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a = 0 → ε b = 0 → a * b = 0) (a : P) :
     (theta h hsq a).fst = ε a := by simp [theta]
 
 /- English proof (translation)
-Simplify using `[theta]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem theta_snd (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a = 0 → ε b = 0 → a * b = 0) (a : P) :
     (theta h hsq a).snd = pr h a := by simp [theta]
@@ -135,7 +135,7 @@ variable {R P B M : Type} [CommRing R] [CommRing P] [CommRing B] [Algebra R B] [
   [Module Bᵐᵒᵖ M] [IsCentralScalar B M] [Module R M] [IsScalarTower R B M] {α : R →+* P} {ε : P →+* R}
 
 /- English proof (translation)
-The claim follows from `KerW.ext' (by simp [KerW.eps_val])`.
+A detailed English derivation is pending.
 -/
 theorem pr_val_self (h : ε.comp α = RingHom.id R) (w : KerW α ε) : pr h w.val = w :=
   KerW.ext' (by simp [KerW.eps_val])
@@ -151,9 +151,9 @@ def uOf (φ : P →+* TrivSqZeroExt B M) (hα : φ.comp α = (TrivSqZeroExt.inlH
       TrivSqZeroExt.snd_inl, smul_zero, add_zero, algebraMap_smul]
 
 /- English proof (translation)
-Use `RingHom.ext fun a ↦ ?_` and prove the remaining obligations. Establish `e : φ (α (ε a)) = TrivSqZeroExt.inl (algebraMap R B (ε a))` using `congrArg (fun f ↦ f (ε a)) hα`. Establish `s : (uOf φ hα hf) (pr h a) = (φ a).snd`. Express the relevant statement in the definitionally equal form `(φ (a - α (ε a))).snd = _`. Simplify using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (algebraMap R B (theta h hsq a).fst) + TrivSqZeroExt.inr ((uOf φ hα hf) (theta h hsq a).snd) : TrivSqZeroExt B M).fst = _`. Simplify using `[hf]`. Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (algebraMap R B (theta h hsq a).fst) + TrivSqZeroExt.inr ((uOf φ hα hf) (theta h hsq a).snd) : TrivSqZeroExt B M).snd = _`. Simplify using `[s]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem tsz_theta (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a = 0 → ε b = 0 → a * b = 0)
     (φ : P →+* TrivSqZeroExt B M) (hα : φ.comp α = (TrivSqZeroExt.inlHom B M).comp (algebraMap R B))
@@ -173,7 +173,7 @@ theorem tsz_theta (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a = 0 �
     simp [s]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (algebraMap R B (theta h hsq w.val).fst) + TrivSqZeroExt.inr (u (theta h hsq w.val).snd) : TrivSqZeroExt B M).snd = _`. Simplify using `[pr_val_self]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem snd_tsz_theta (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a = 0 → ε b = 0 → a * b = 0)
     (u : KerW α ε →ₗ[R] M) (w : KerW α ε) : ((tsz (B := B) u).comp (theta h hsq) w.val).snd = u w := by
@@ -184,19 +184,19 @@ theorem snd_tsz_theta (h : ε.comp α = RingHom.id R) (hsq : ∀ a b : P, ε a =
 end Main
 
 /- English proof (translation)
-Introduce `R _ X s e P _ α ε j h hsq hj hje hm hlift`. Use `haveI := hm`. Use `⟨KerW α ε, inferInstance, inferInstance, inferInstance, inferInstance, spMap (theta h hsq) ≫ j, ?_⟩` and prove the remaining obligations. Unfold `IsCot`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : (theta h hsq).comp α = TrivSqZeroExt.inlHom R (KerW α ε)`. Use `RingHom.ext fun r ↦ TrivSqZeroExt.ext ?_ (KerW.ext' ?_)` and prove the remaining obligations. Simplify using `[eps_alpha h]`. Simplify using `[eps_alpha h]`. Rewrite using `[Category.assoc, hj, spMap_comp_spMap, e1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (TrivSqZeroExt.fstHom R R (KerW α ε)).toRingHom.comp (theta h hsq) = ε` using `RingHom.ext fun a ↦ theta_fst h hsq a`. Rewrite using `[← Category.assoc, spMap_comp_spMap, e1, hje]`. Introduce `B _ _ M _ _ _ _ _ _ y hy1 hy2`. Take `⟨φ, hφ⟩` from `hlift (TrivSqZeroExt B M) B (TrivSqZeroExt.fstHom B B M).toRingHom (algebraMap R B) y (fun b ↦ ⟨TrivSqZeroExt.inl b, rfl⟩) (fun a b ha hb ↦ by`. Establish `ha' : a.fst = 0` using `ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : b.fst = 0` using `hb`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [ha', hb']) hy2`. Establish `hα : φ.comp α = (TrivSqZeroExt.inlHom B M).comp (algebraMap R B)` using `spMap_inj (by`. Rewrite using `[← spMap_comp_spMap, ← hj, ← Category.assoc, hφ, hy1])`. Establish `hf : (TrivSqZeroExt.fstHom B B M).toRingHom.comp φ = (algebraMap R B).comp ε` using `spMap_inj ((cancel_mono j).1 (by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp_spMap, Category.assoc, hφ, hy2, ← spMap_comp_spMap, Category.assoc, hje]))`. Establish `hf' : ∀ a, (φ a).fst = algebraMap R B (ε a)` using `fun a ↦ congrArg (fun f ↦ f a) hf`. Use `⟨uOf φ hα hf', ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y = spMap (tsz (uOf φ hα hf')) ≫ spMap (theta h hsq) ≫ j`. Rewrite using `[← Category.assoc, spMap_comp_spMap, tsz_theta, hφ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u' hu'`. Establish `e1 : (tsz u').comp (theta h hsq) = φ` using `spMap_inj ((cancel_mono j).1 (by`. Rewrite using `[← spMap_comp_spMap, Category.assoc, hφ]`. Conclude with `hu'.symm))`. Use `LinearMap.ext fun w ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← snd_tsz_theta (B := B) h hsq u' w, e1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isCot_of_lifting : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (e : Sp R ⟶ X) (P : Type) [CommRing P] (α : R →+* P) (ε : P →+* R) (j : Sp P ⟶ X), ε.comp α = RingHom.id R → (∀ a b : P, ε a = 0 → ε b = 0 → a * b = 0) → j ≫ s = spMap α → spMap ε ≫ j = e → Mono j → (∀ (Q B : Type) [CommRing Q] [CommRing B] (q : Q →+* B) (ρ : R →+* B) (y : Sp Q ⟶ X), Function.Surjective q → (∀ a b : Q, q a = 0 → q b = 0 → a * b = 0) → spMap q ≫ y = spMap ρ ≫ e → ∃ φ : P →+* Q, spMap φ ≫ j = y) → ∃ (W : Type) (_ : AddCommGroup W) (_ : Module R W) (_ : Module Rᵐᵒᵖ W) (_ : IsCentralScalar R W) (y₀ : Sp (TrivSqZeroExt R W) ⟶ X), IsCot s e W y₀ := by
   intro R _ X s e P _ α ε j h hsq hj hje hm hlift

@@ -25,7 +25,7 @@ abbrev tm (E : Type) [Field E] [Algebra F E] (f : R →ₐ[F] R') : R ⊗[F] E �
   Algebra.TensorProduct.map f (AlgHom.id F E)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_tm (f : R →ₐ[F] R') {d : ℕ} (b : Module.Basis (Fin d) F E) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R' b).repr (tm E f y) k =
@@ -37,7 +37,7 @@ theorem repr_tm (f : R →ₐ[F] R') {d : ℕ} (b : Module.Basis (Fin d) F E) (y
   | add x y hx hy => simp [hx, hy]
 
 /- English proof (translation)
-Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tm_sig (f : R →ₐ[F] R') (σ : E →ₐ[F] E) (y : R ⊗[F] E) :
     tm E f (sigR R σ y) = sigR R' σ (tm E f y) := by
@@ -59,7 +59,7 @@ def joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F] E) (y : Af
         ((Algebra.TensorProduct.basis (Af F) b).repr y k))
 
 /- English proof (translation)
-Simplify using `[joinT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr_joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F] E) (y : Af F ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis (AF F) b).repr (joinT b x y) k =
@@ -68,7 +68,7 @@ theorem repr_joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F] E
   simp [joinT]
 
 /- English proof (translation)
-Apply `(Algebra.TensorProduct.basis (Ainf F) b).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[repr_tm, repr_joinT]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tm_fst_joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F] E) (y : Af F ⊗[F] E) :
     tm E (fstA F) (joinT b x y) = x := by
@@ -78,7 +78,7 @@ theorem tm_fst_joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F]
   rfl
 
 /- English proof (translation)
-Apply `(Algebra.TensorProduct.basis (Af F) b).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[repr_tm, repr_joinT]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tm_snd_joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F] E) (y : Af F ⊗[F] E) :
     tm E (sndA F) (joinT b x y) = y := by
@@ -88,9 +88,9 @@ theorem tm_snd_joinT {d : ℕ} (b : Module.Basis (Fin d) F E) (x : Ainf F ⊗[F]
   rfl
 
 /- English proof (translation)
-Apply `(Algebra.TensorProduct.basis (AF F) b).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Establish `e1` using `congrArg (fun w => (Algebra.TensorProduct.basis (Ainf F) b).repr w k) h1`. Establish `e2` using `congrArg (fun w => (Algebra.TensorProduct.basis (Af F) b).repr w k) h2`. Simplify using `only [repr_tm] at e1 e2`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext e1 e2`.
+A detailed English derivation is pending.
 -/
 theorem tm_ext {d : ℕ} (b : Module.Basis (Fin d) F E) {u v : AF F ⊗[F] E}
     (h1 : tm E (fstA F) u = tm E (fstA F) v) (h2 : tm E (sndA F) u = tm E (sndA F) v) : u = v := by
@@ -144,15 +144,15 @@ section Top
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_cm {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) : Module.Finite F E :=
   Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
 
 /- English proof (translation)
-Use `haveI := finite_of_cm hCM`. Establish `h1` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R).2.2.2.2.2.2.1 _ (Module.finBasis F E)`. Establish `h2` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R').2.2.2.2.2.2.1 _ (Module.finBasis F E)`. Rewrite using `[h2.isEmbedding.continuous_iff]`. Use `continuous_pi fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_def, repr_tm]`. Conclude with `hf.comp ((continuous_apply k).comp h1.continuous)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tm {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {R R' : Type} [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R]
@@ -168,9 +168,9 @@ theorem continuous_tm {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {R R' : Type} 
   exact hf.comp ((continuous_apply k).comp h1.continuous)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Establish `h0` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)).2.2.2.2.2.2.1 _ b`. Establish `h1` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)).2.2.2.2.2.2.1 _ b`. Establish `h2` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)).2.2.2.2.2.2.1 _ b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0.isEmbedding.continuous_iff]`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, repr_joinT]`. Conclude with `(((continuous_apply k).comp h1.continuous).comp hf).prodMk (((continuous_apply k).comp h2.continuous).comp hg)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_joinT {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     {X : Type} [TopologicalSpace X] {f : X → Ainf F ⊗[F] E} {g : X → Af F ⊗[F] E}
@@ -187,9 +187,7 @@ theorem continuous_joinT {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {d : ℕ} (
     (((continuous_apply k).comp h2.continuous).comp hg)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -, -, -, -, h9, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := h1`. Use `haveI : LocallyCompactSpace (R ⊗[F] E) := h2`. Use `haveI : SecondCountableTopology (R ⊗[F] E) := h3`. Use `haveI : T2Space (R ⊗[F] E) := h4`.
-
-Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (R ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (R ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R ⊗[F] E))`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) (R ⊗[F] E)) := inferInstanceAs (T2Space (Fin n → Fin n → R ⊗[F] E))`. Establish `hc : IsClosed (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E)))` using `h9 n`. Conclude with `⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace, hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem herm_facts {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] :
@@ -211,7 +209,7 @@ theorem herm_facts {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ) (R : Ty
     hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstance⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `c1` using `continuous_tm (E := E) hCM (fstA F) continuous_fst`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : HermR (AF F) σ n => (x : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)).map (tm E (fstA F))`. Conclude with `Continuous.matrix_map continuous_subtype_val c1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_hermInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ) :
     Continuous (hermInf σ : HermR (AF F) σ n → HermR (Ainf F) σ n) := by
@@ -223,9 +221,7 @@ theorem continuous_hermInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ)
   exact Continuous.matrix_map continuous_subtype_val c1
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Establish `c1` using `continuous_tm (E := E) hCM (sndA F) continuous_snd`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : HermR (AF F) σ n => (x : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)).map (tm E (sndA F))`.
-
-Conclude with `Continuous.matrix_map continuous_subtype_val c1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_hermFin {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ) :
     Continuous (hermFin σ : HermR (AF F) σ n → HermR (Af F) σ n) := by
@@ -238,9 +234,9 @@ theorem continuous_hermFin {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ)
   exact Continuous.matrix_map continuous_subtype_val c1
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun p : HermR (Ainf F) σ n × HermR (Af F) σ n => joinT b ((p.1 : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j) ((p.2 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j)`. Establish `g1 : Continuous fun p : HermR (Ainf F) σ n × HermR (Af F) σ n => (p.1 : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j` using `(continuous_id.matrix_elem i j).comp (continuous_subtype_val.comp continuous_fst)`. Establish `g2 : Continuous fun p : HermR (Ainf F) σ n × HermR (Af F) σ n => (p.2 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j` using `(continuous_id.matrix_elem i j).comp (continuous_subtype_val.comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_joinT hCM b g1 g2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hermJoin {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) :
     Continuous (hermJoin b σ : HermR (Ainf F) σ n × HermR (Af F) σ n → HermR (AF F) σ n) := by
@@ -265,13 +261,11 @@ def hermHomeo {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.
 end Top
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n db hdb`. Use `haveI := finite_of_cm hCM`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Take `⟨a1, a2, a3, a4⟩` from `herm_facts hCM n (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨b1, b2, b3, b4⟩` from `herm_facts hCM n (Ainf F)`. Take `⟨c1, c2, c3, c4⟩` from `herm_facts hCM n (Af F)`. Set `b` to `Module.finBasis F E`. Set `e` to `hermHomeo hCM b n`. Establish `he : (e : HermR (AF F) σ n → _) = fun b => (hermInf σ b, hermFin σ b)` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hmap : (db.map e).IsAddHaarMeasure := (hermSplit b σ n).isAddHaarMeasure_map db e.continuous e.symm.continuous`. Set `ν₁ : Measure (HermR (Ainf F) σ n)` to `Measure.addHaar`. Set `ν₂ : Measure (HermR (Af F) σ n)` to `Measure.addHaar`. Use `haveI : SFinite ν₁ := inferInstance`. Use `haveI : SFinite ν₂ := inferInstance`.
-
-Use `⟨ν₁, ν₂, ((db.map e).addHaarScalarFactor (ν₁.prod ν₂) : ℝ≥0), inferInstance, inferInstance, inferInstance, inferInstance, ENNReal.coe_ne_top, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Conclude with `e.measurableEmbedding`. Rewrite using `[← he]`. Conclude with `Measure.isAddLeftInvariant_eq_smul (db.map e) (ν₁.prod ν₂)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_smul_prod : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (n : ℕ) (db : Measure (HermR (AF F) σ n)), db.IsAddHaarMeasure →

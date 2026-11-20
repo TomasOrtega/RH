@@ -19,7 +19,7 @@ open ValuativeRel
 namespace GlobalTheory.CompanionTheory.KapChi
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_add, ← pow_add]`. Use `conv_rhs => rw [← Nat.div_add_mod (a.val + b.val) N, pow_add, pow_mul, hζ, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_add {Ω : Type} [Field Ω] {N : ℕ} [NeZero N] {ζ : Ω} (hζ : ζ ^ N = 1) (a b : ZMod N) :
     ζ ^ (a + b).val = ζ ^ a.val * ζ ^ b.val := by
@@ -31,9 +31,9 @@ def addHom {D : Type} [Group D] {N : ℕ} (χ : D → ZMod N) (h : ∀ g k, χ (
   MonoidHom.mk' (fun g => Multiplicative.ofAdd (χ g)) (fun g k => by rw [h]; rfl)
 
 /- English proof (translation)
-Establish `hp : ∀ (x : D) (n : ℕ), χ (x ^ n) = n * χ x` using `fun x n => by`. Use `map_pow (addHom χ h) x n` as an intermediate fact. Establish `e : Multiplicative.toAdd (addHom χ h (x ^ n)) = χ (x ^ n)` using `rfl`. Rewrite using `[← e, this, toAdd_pow]`. Simplify using `[addHom]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, h, hi, hp, hp, hφ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_decomp {D : Type} [Group D] {N : ℕ} (χ : D → ZMod N) (h : ∀ g k, χ (g * k) = χ g + χ k)
     (φ t i : D) (a : ℕ) (hφ : χ φ = 1) (hi : χ i = 0) : χ (φ ^ a * t ^ N * i) = a := by
@@ -51,7 +51,7 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} {N : ℕ}
 
 /- English proof (translation)
-Take `⟨φ₁, hφ₁⟩` from `exists_isFrob hA`. Set `φ : Dec (F` to `F) A := ⟨φ₁, hφ₁.1⟩`. Use function extensionality and compare the values at `g`. Take `⟨a, -, t, i, hi, rfl⟩` from `GlobalTheory.T.decomposition_group_frobenius_factor F Ω A v hA φ hφ₁ N hN g`. Rewrite using `[chi_decomp χ ha φ t i a (hF φ hφ₁) (hI i hi), chi_decomp χ' ha' φ t i a (hF' φ hφ₁) (hI' i hi)]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_unique (hA : IsPlaceOver A v) (hN : 0 < N) {χ χ' : Dec (F := F) A → ZMod N}
     (ha : ∀ g h, χ (g * h) = χ g + χ h)
@@ -68,7 +68,7 @@ theorem chi_unique (hA : IsPlaceOver A v) (hN : 0 < N) {χ χ' : Dec (F := F) A 
   rw [chi_decomp χ ha φ t i a (hF φ hφ₁) (hI i hi), chi_decomp χ' ha' φ t i a (hF' φ hφ₁) (hI' i hi)]
 
 /- English proof (translation)
-Take `⟨φ₁, hφ₁⟩` from `exists_isFrob hA`. Set `φ : Dec (F` to `F) A := ⟨φ₁, hφ₁.1⟩`. Take `⟨a, haN, t, i, hi, rfl⟩` from `GlobalTheory.T.decomposition_group_frobenius_factor F Ω A v hA φ hφ₁ N hN g`. Establish `h0` using `GlobalTheory.T.frobenius_power_fixes_root_unique F Ω A v hA φ hφ₁ N hN ξ hξ a t i haN hi hg`. Rewrite using `[chi_decomp χ ha φ t i a (hF φ hφ₁) (hI i hi), h0, Nat.cast_zero]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_eq_zero_of_fix (hA : IsPlaceOver A v) (hN : 0 < N) {χ : Dec (F := F) A → ZMod N}
     (ha : ∀ g h, χ (g * h) = χ g + χ h)
@@ -89,7 +89,7 @@ section Core
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Conclude with `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G F Ω) Ω g) ζ hζ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem apply_eq_pow_cycMod (l : ℕ) [Fact l.Prime] (r : ℕ) (g : G F Ω) {ζ : Ω} (hζ : ζ ^ l ^ r = 1) :
     g ζ = ζ ^ ((cycMod F Ω l r g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)).val := by
@@ -98,31 +98,29 @@ theorem apply_eq_pow_cycMod (l : ℕ) [Fact l.Prime] (r : ℕ) (g : G F Ω) {ζ 
   exact cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G F Ω) Ω g) ζ hζ
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hN : 0 < l ^ r` using `pow_pos hl r`. Establish `: NeZero (l ^ r)` using `⟨hN.ne'⟩`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ι, hι⟩` from `GlobalTheory.LocDict.exists_isLocEmb F Ω A v hA`. Take `⟨θ, hθ, hθ', hlift⟩` from `GlobalTheory.LocDec.decomposition_mulEquiv_galLoc F Ω A v hA ι hι`. Establish `hlift' : ∀ (σ : GlobalTheory.LocDict.GalLoc v) (x : Ω), σ (ι x) = ι ((θ.symm σ : G F Ω) x)` using `fun σ x => by`. Use `hlift (θ.symm σ) x` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hq : 1 < normV v` using `ReciprocityTheory.Gal.one_lt_normV v`. Take `⟨n, hn⟩ : ∃ n, n = normV v ^ l ^ r - 1` from `⟨_, rfl⟩`. Establish `hn0 : n ≠ 0`. Use `one_lt_pow₀ hq hN.ne'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: NeZero n` using `⟨hn0⟩`. Establish `: NeZero (n : Ω)` using `⟨Nat.cast_ne_zero.2 hn0⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω n`. Rewrite `hξ` using `[hn]`. Establish `hξv : IsPrimitiveRoot (ι ξ) (Nat.card 𝓀[v.adicCompletion F] ^ l ^ r - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.residue_field_card_eq_norm F v]`. Conclude with `hξ.map_of_injective ι.toRingHom.injective`. Set `ψ : GlobalTheory.LocDict.GalLoc v →* Multiplicative (ZMod (l ^ r))` to `(addHom χ ha).comp θ.symm.toMonoidHom`. Establish `hfix : ∀ σ : GlobalTheory.LocDict.GalLoc v, σ (ι ξ) = ι ξ → ψ σ = 1` using `fun σ hσ => by`. Rewrite `hσ` using `[hlift']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `chi_eq_zero_of_fix hA hN ha hI hF hξ (θ.symm σ) (ι.toRingHom.injective hσ)`. Use `show Multiplicative.ofAdd (χ (θ.symm σ)) = 1`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `ho : IsOpen (ψ.ker : Set (GlobalTheory.LocDict.GalLoc v))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: FiniteDimensional (v.adicCompletion F) (IntermediateField.adjoin (v.adicCompletion F) {ι ξ})` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)`. Use `Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin (v.adicCompletion F) {ι ξ}).fixingSubgroup) (fun σ hσ => hfix σ ?_) (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations. Conclude with `hσ ⟨ι ξ, IntermediateField.mem_adjoin_simple_self _ _⟩`. Establish `hϖ0 : algebraMap F (v.adicCompletion F) (ϖ : F) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (ϖ : F) = 0` using `(map_eq_zero _).1 h`. Establish `h0' : ϖ = 0` using `by exact_mod_cast h0`. Conclude with `h2 (h0' ▸ Ideal.zero_mem _)`. Establish `hϖ0' : algebraMap F (v.adicCompletion F) (ϖ' : F) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : (ϖ' : F) = 0` using `(map_eq_zero _).1 h`. Establish `h0' : ϖ' = 0` using `by exact_mod_cast h0`. Conclude with `h2' (h0' ▸ Ideal.zero_mem _)`. Set `U : (v.adicCompletion F)ˣ` to `Units.mk0 (algebraMap F (v.adicCompletion F) (ϖ' : F) / algebraMap F (v.adicCompletion F) (ϖ : F)) (div_ne_zero hϖ0' hϖ0)`. Establish `hU : (U : v.adicCompletion F) * algebraMap F (v.adicCompletion F) (ϖ : F) = algebraMap F (v.adicCompletion F) (ϖ' : F)` using `div_mul_cancel₀ _ hϖ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hord` using `GlobalTheory.T.uniformizer_ratio_valuation_zero F v ϖ ϖ' h1 h2 h1' h2' U hU`. Establish `hnorm` using `GlobalTheory.T.norm_from_kummer_unramified_unit (K := v.adicCompletion F) (Ω := GlobalTheory.LocDict.Kbar v) (l ^ r) hN.ne' (ι ξ) hξv ψ ho hfix U hord`. Establish `hcomm : ∀ x : F, ι (algebraMap F Ω x) = algebraMap (v.adicCompletion F) (GlobalTheory.LocDict.Kbar v) (algebraMap F (v.adicCompletion F) x)` using `fun x => by`. Rewrite using `[ι.commutes, ← IsScalarTower.algebraMap_apply]`. Establish `hT : ι t ^ l ^ r = algebraMap (v.adicCompletion F) (GlobalTheory.LocDict.Kbar v) (U : v.adicCompletion F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg ι ht`. Rewrite `e` using `[map_mul, map_pow, hcomm, hcomm, ← hU, map_mul]`. Conclude with `mul_right_cancel₀ ((map_ne_zero _).2 hϖ0) e`. Establish `hc0 : ∀ σ : GlobalTheory.LocDict.GalLoc v, σ (ι ζ) = ι ζ ^ ((cycMod F Ω l r (θ.symm σ : G F Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)).val` using `fun σ => by`. Rewrite using `[hlift', apply_eq_pow_cycMod l r _ hζ.pow_eq_one, map_pow]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ' : ∀ σ : GlobalTheory.LocDict.GalLoc v, σ (ι t) = ι ζ ^ (κt (θ.symm σ)).val * ι t` using `fun σ => by`. Rewrite using `[hlift', hκ, map_mul, map_pow]`. Take `⟨c, hc, hc2⟩` from `GlobalTheory.T.kummer_cocycle_norm_criterion (K := v.adicCompletion F) (Ω := GlobalTheory.LocDict.Kbar v) (l ^ r) hN (ι ζ) (hζ.map_of_injective ι.toRingHom.injective) _ hc0 ψ ho U hnorm (ι t) (fun σ => κt (θ.symm σ)) hT hκ'`. Use `⟨fun g => c (θ g), hc.continuous.comp hθ, fun g h => ?_⟩` and prove the remaining obligations. Establish `e` using `hc2 (θ g) (θ h)`.
-
-Establish `hψ : Multiplicative.toAdd (ψ (θ h)) = χ h` using `by show χ (θ.symm (θ h)) = χ h`. Rewrite using `[MulEquiv.symm_apply_apply]`. Simplify using `only [MulEquiv.symm_apply_apply, ← map_mul] at e`. Rewrite `e` using `[hψ]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cochain_cup (l : ℕ) [Fact l.Prime] (r : ℕ) (hr : 0 < r) {ζ : Ω}
     (hζ : IsPrimitiveRoot ζ (l ^ r)) {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
@@ -218,17 +216,17 @@ theorem exists_cochain_cup (l : ℕ) [Fact l.Prime] (r : ℕ) (hr : 0 < r) {ζ :
 end Core
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r hr ζ hζ A v hA ϖ y κ χ z h1 h2 hy hκ hχa hχI hχF hz ϖ' y' κ' χ' z' h1' h2' hy' hκ' hχa' hχI' hχF' hz'`. Establish `hN : 0 < l ^ r` using `pow_pos (Fact.out : l.Prime).pos r`. Establish `: NeZero (l ^ r)` using `⟨hN.ne'⟩`. Take `rfl : χ = χ'` from `chi_unique hA hN hχa hχI hχF hχa' hχI' hχF'`. Establish `hϖ0 : algebraMap F Ω (ϖ : F) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Establish `h0 : (ϖ : F) = 0` using `(map_eq_zero _).1 h`. Establish `h0' : ϖ = 0` using `by exact_mod_cast h0`. Conclude with `h2 (h0' ▸ Ideal.zero_mem _)`. Establish `hy0 : y ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hy` using `[zero_pow hN.ne']`. Conclude with `hϖ0 hy.symm`. Establish `ht : (y' / y) ^ l ^ r * algebraMap F Ω (ϖ : F) = algebraMap F Ω (ϖ' : F)`. Rewrite using `[div_pow, hy, hy', div_mul_cancel₀ _ hϖ0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκt : ∀ g : Dec (F` using `F) A, (g : G F Ω) (y' / y) = ζ ^ (κ' g - κ g).val * (y' / y) := fun g => by`. Establish `e` using `pow_val_add hζ.pow_eq_one (κ' g - κ g) (κ g)`. Rewrite `e` using `[sub_add_cancel]`. Establish `hgy : ζ ^ (κ g).val ≠ 0` using `pow_ne_zero _ (hζ.ne_zero hN.ne')`. Rewrite using `[map_div₀, hκ, hκ', e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨c, hc, hc2⟩` from `exists_cochain_cup l r hr hζ hA h1 h2 h1' h2' ht hκt hχa hχI hχF`. Use `((Submodule.Quotient.eq _).2 ?_).symm` and prove the remaining obligations. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨c, hc, funext fun p => ?_⟩` and prove the remaining obligations. Take `⟨g, h⟩` from `p`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hc2 g h`. Rewrite `e` using `[sub_mul]`. Use `show _ = z'.1 (g, h) - z.1 (g, h)`. Rewrite using `[hz, hz', ← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cup_class_eq : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ), 0 < r → ∀ ζ : Ω, IsPrimitiveRoot ζ (l ^ r) → ∀ (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ (ϖ : 𝓞 F) (y : Ω) (κ χ : Dec (F := F) A → ZMod (l ^ r)) (z : Z2 (muLoc F l r A)), ϖ ∈ v.asIdeal → ϖ ∉ v.asIdeal ^ 2 → y ^ (l ^ r) = algebraMap F Ω (ϖ : F) → (∀ g : Dec (F := F) A, (g : G F Ω) y = ζ ^ (κ g).val * y) → (∀ g h, χ (g * h) = χ g + χ h) → (∀ g : Dec (F := F) A, (g : G F Ω) ∈ Ine (F := F) A → χ g = 0) → (∀ g : Dec (F := F) A, IsFrob (F := F) A (normV v) (g : G F Ω) → χ g = 1) → (∀ g h, z.1 (g, h) = κ g * χ h) → ∀ (ϖ' : 𝓞 F) (y' : Ω) (κ' χ' : Dec (F := F) A → ZMod (l ^ r)) (z' : Z2 (muLoc F l r A)), ϖ' ∈ v.asIdeal → ϖ' ∉ v.asIdeal ^ 2 → y' ^ (l ^ r) = algebraMap F Ω (ϖ' : F) → (∀ g : Dec (F := F) A, (g : G F Ω) y' = ζ ^ (κ' g).val * y') → (∀ g h, χ' (g * h) = χ' g + χ' h) → (∀ g : Dec (F := F) A, (g : G F Ω) ∈ Ine (F := F) A → χ' g = 0) → (∀ g : Dec (F := F) A, IsFrob (F := F) A (normV v) (g : G F Ω) → χ' g = 1) → (∀ g h, z'.1 (g, h) = κ' g * χ' h) → (Submodule.Quotient.mk z : H2 (muLoc F l r A)) = Submodule.Quotient.mk z' := by
   intro F Ω _ _ _ _ _ l _ r hr ζ hζ A v hA ϖ y κ χ z h1 h2 hy hκ hχa hχI hχF hz ϖ' y' κ' χ' z' h1' h2' hy'

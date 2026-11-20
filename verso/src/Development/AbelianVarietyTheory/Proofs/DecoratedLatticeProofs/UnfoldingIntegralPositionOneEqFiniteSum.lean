@@ -10,9 +10,9 @@ namespace GlobalTheory.UnfoldSumBd
 open GlobalTheory.SymChain GlobalTheory.SymBridge GlobalTheory.UnfoldSum
 
 /- English proof (translation)
-Establish `e : (((ϖ ^ N)⁻¹ : kˣ) : k) = (ϖ : k) ^ (A - N) * (((ϖ ^ A)⁻¹ : kˣ) : k)`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Establish `h0 : (ϖ : k) ≠ 0` using `ϖ.ne_zero`. Rewrite using `[show A = (A - N) + N from (Nat.sub_add_cancel h).symm, pow_add]`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_left zero_le' (pow_le_one' hv.le _)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_inv_pow_le {k : Type} [Field k] [ValuativeRel k] (ϖ : kˣ) (hv : valuation k (ϖ : k) < 1)
     {N A : ℕ} (h : N ≤ A) :
@@ -27,7 +27,7 @@ theorem val_inv_pow_le {k : Type} [Field k] [ValuativeRel k] (ϖ : kˣ) (hv : va
   exact mul_le_of_le_one_left zero_le' (pow_le_one' hv.le _)
 
 /- English proof (translation)
-Rewrite using `[show B = N + (B - N) by omega, pow_add, map_mul]`. Conclude with `mul_le_of_le_one_right zero_le' (by rw [map_pow]; exact pow_le_one' hv.le _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pow_le {k : Type} [Field k] [ValuativeRel k] (ϖ : kˣ) (hv : valuation k (ϖ : k) < 1)
     {N B : ℕ} (h : N ≤ B) : valuation k ((ϖ : k) ^ B) ≤ valuation k ((ϖ : k) ^ N) := by
@@ -35,49 +35,45 @@ theorem val_pow_le {k : Type} [Field k] [ValuativeRel k] (ϖ : kˣ) (hv : valuat
   exact mul_le_of_le_one_right zero_le' (by rw [map_pow]; exact pow_le_one' hv.le _)
 
 /- English proof (translation)
-Introduce `E K k _ _ _ _ _ _ _ _ _ _ P q ι ϖ σ₀ ψ ν psi N hC hU hψ hν hpsi U' U _ _ _ _ c n' c' n c₂ A B hc hc' hc₂ hA hB d' d e' e hoe' hoe Φ ΦE C hΦ hsupp hper x₀`. Substitute `c' c₂` using the available equality. Establish `hq : ι (q : E) = (ϖ : k)` using `hC.unif.symm`. Take `⟨-, -, -, -, -, -, hres, hrep⟩` from `GlobalTheory.SymBridge.ComplRes.residues E k P q ι ϖ hC hU`. Establish `hv : valuation k (ϖ : k) < 1` using `(hU ϖ).2 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψ1 : ∀ b : k, valuation k b ≤ 1 → ψ b = 1` using `fun b hb => (hψ 1).2 le_rfl b (by simpa using hb)`. Establish `hA0 : ((ϖ : k) ^ A) ≠ 0` using `pow_ne_zero _ ϖ.ne_zero`. Establish `hinv : (((ϖ ^ A)⁻¹ : kˣ) : k) = ((ϖ : k) ^ A)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Establish `hιv : ∀ i : ℕ, ι ((i : E) / (q : E) ^ A) = (i : k) * ((ϖ : k) ^ A)⁻¹` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_pow, map_natCast, hq, div_eq_mul_inv]`. Use `set T : Finset k := (LocE.valsQ E q A B).image ι with hTdef`. Establish `hmemT : ∀ t, t ∈ T ↔ ∃ i : ℕ, i < q ^ (A + B) ∧ (i : k) * ((ϖ : k) ^ A)⁻¹ = t` using `fun t => by`. Simplify using `only [hTdef, LocE.valsQ, Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨i, hi, rfl⟩, rfl⟩`. Conclude with `⟨i, hi, (hιv i).symm⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨_, ⟨i, hi, rfl⟩, hιv i⟩`. Establish `hnat : ∀ i : ℕ, valuation k (i : k) ≤ 1` using `fun i => by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Valuation.mem_integer_iff]`. Conclude with `natCast_mem _ i`. Establish `hT1 : ∀ t ∈ T, valuation k t ≤ valuation k (((ϖ ^ A)⁻¹ : kˣ) : k)`. Introduce `t ht`. Take `⟨i, -, rfl⟩` from `(hmemT t).1 ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hinv, map_mul]`. Conclude with `mul_le_of_le_one_left zero_le' (hnat i)`. Establish `hT2 : ∀ x : k, valuation k x ≤ valuation k (((ϖ ^ A)⁻¹ : kˣ) : k) → ∃! t, t ∈ T ∧ valuation k (x - t) ≤ valuation k ((ϖ : k) ^ B)`. Introduce `x hx`. Establish `hz : x * (ϖ : k) ^ A ∈ 𝒪[k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.mem_integer_iff, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hinv]`. Use `gcongr`. Use `_ = 1 := by rw [← map_mul, inv_mul_cancel₀ hA0, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, ⟨hi, hzi⟩, huniq⟩` from `hrep (A + B) _ hz`. Establish `key : ∀ j : ℕ, valuation k (x - (j : k) * ((ϖ : k) ^ A)⁻¹) ≤ valuation k ((ϖ : k) ^ B) ↔ valuation k (x * (ϖ : k) ^ A - (j : k)) ≤ valuation k ((ϖ : k) ^ (A + B))` using `fun j => by`. Establish `e1 : x * (ϖ : k) ^ A - (j : k) = (x - (j : k) * ((ϖ : k) ^ A)⁻¹) * (ϖ : k) ^ A`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, pow_add, mul_comm ((ϖ : k) ^ A) ((ϖ : k) ^ B), map_mul, map_mul (valuation k) ((ϖ : k) ^ B)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: valuation k ((ϖ : k) ^ A) ≠ 0` using `by simpa using hA0`. Conclude with `(mul_le_mul_iff_of_pos_right (zero_lt_iff.2 this)).symm`. Use `⟨(i : k) * ((ϖ : k) ^ A)⁻¹, ⟨(hmemT _).2 ⟨i, hi, rfl⟩, (key i).2 hzi⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, htx⟩`. Take `⟨j, hj, rfl⟩` from `(hmemT t).1 ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[huniq j ⟨hj, (key j).1 htx⟩]`. Use `set X₀ := toLoc ι d d' x₀ with hX₀`. Set `F : ({rs : (U ⊕ Fin c) × (U' ⊕ Fin (c + 1)) // Free 1 rs} → k) → ℂ` to `fun u => Φ (affPt 1 X₀ u) * (ψ (-ch (affPt 1 X₀ u)) : ℂ)`. Establish `hF1 : ∀ u, F u ≠ 0 → ∀ i, valuation k (u i) ≤ valuation k (((ϖ ^ A)⁻¹ : kˣ) : k)`. Introduce `u hu i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Φ (affPt 1 X₀ u) ≠ 0` using `left_ne_zero_of_mul hu`. Use `hsupp _ h1 i.1.1 i.1.2` as an intermediate fact. Rewrite `this` using `[affPt_free]`. Conclude with `this.trans (val_inv_pow_le ϖ hv hA)`. Establish `hF2 : ∀ u y, (∀ i, valuation k (y i) ≤ valuation k ((ϖ : k) ^ B)) → F (u + y) = F u`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `u y hy`. Simplify using `only [F, affPt_add, ch_add]`. Establish `hy' : ∀ r s, valuation k (freeMat y r s) ≤ valuation k ((ϖ : k) ^ N)`. Introduce `r s`. Simplify using `only [freeMat, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Conclude with `(hy _).trans (val_pow_le ϖ hv hB)`. Rewrite using `[map_zero]`. Conclude with `zero_le'`. Rewrite using `[hper _ _ hy']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[neg_add, AddChar.map_add_eq_mul, hψ1 (-ch (freeMat y)) (by rw [Valuation.map_neg]; exact ch_freeMat_int ϖ hv y hy), mul_one]`. Establish `key` using `GlobalTheory.PeriodicIntegral.integral_eq_sum k ν hν ϖ hU A B T hT1 hT2 _ F hF1 hF2`. Establish `hL : opE ψ ν 1 Φ X₀ = ∫ u, F u ∂(Measure.pi fun _ => ν)` using `rfl`. Rewrite using `[hL, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Loc.E1, map_mul, map_pow, map_inv₀, map_natCast, map_sum, hres]`. Rewrite using `[Fintype.card_congr (freeEquiv hc hoe hoe'), mul_left_comm C]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nbij (fun t rs => ι (t (freeEquiv hc hoe hoe' rs))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Rewrite `ht`, the goal using `[Fintype.mem_piFinset]`. Conclude with `fun rs => Finset.mem_image_of_mem ι (ht _)`. Introduce `a _ b _ hab`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Use `congrFun hab ((freeEquiv hc hoe hoe').symm p)` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `ι.injective this`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `hu` using `[Finset.mem_coe, Fintype.mem_piFinset]`. Use `choose g hg1 hg2 using fun a => Finset.mem_image.1 (hu a)`. Use `⟨fun p => g ((freeEquiv hc hoe hoe').symm p), ?_, funext fun rs => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Conclude with `fun p => hg1 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.symm_apply_apply, hg2]`. Introduce `t _`. Simplify using `only [F]`. Rewrite using `[affPt_eq ι hc hoe hoe' x₀ t, hΦ, ch_eq ι hoe hoe']`. Use `set X := Loc.xx1 x₀ t`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Distinguish the cases in `h0 : C * σ₀ (ΦE X) = 0`. Rewrite using `[h0, zero_mul, zero_mul]`. Use `congr 1`. Establish `hnz : Φ (toLoc ι e e' X) ≠ 0` using `by rw [hΦ]; exact h0`.
-
-Establish `hI` using `hsupp _ hnz`. Establish `hint : ι ((q : E) ^ N * Loc.chArg X) ∈ 𝒪[k]`. Rewrite using `[map_mul, map_pow, hq, ← ch_eq ι hoe hoe', ch, Finset.mul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, mul_inv_cancel₀ (pow_ne_zero _ ϖ.ne_zero), map_one]`. Establish `hIA : IntAt P ((q : E) ^ N * -Loc.chArg X)` using `(hC.int _).1 (by rw [mul_neg, map_neg]; exact neg_mem hint)`. Establish `h2` using `hpsi _ hIA`. Rewrite using `[← h2, map_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumAgreeBd : ∀ (E K k : Type) [Field E] [NumberField E] [StarRing E] [Field K]
     [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]

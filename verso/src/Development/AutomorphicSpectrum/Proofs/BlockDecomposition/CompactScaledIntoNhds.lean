@@ -6,13 +6,11 @@ open Filter Topology
 namespace GlobalTheory.CompanionTheory.CompactScaling
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n K hK U hU ϖ hϖ`. Establish `hpow : Tendsto (fun l : ℕ => ϖ ^ l) atTop (𝓝 (0 : k))`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero k).tendsto_right_iff]`. Introduce `γ _`. Take `⟨m, hm⟩` from `exists_pow_lt₀ hϖ γ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eventually_atTop]`. Use `⟨m, fun l hl => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hϖ.le hl) hm`. Establish `hnear : ∀ᶠ c in 𝓝 (0 : k), ∀ x ∈ K, c • x ∈ U`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK.eventually_forall_of_forall_eventually (fun x _ => ?_)` and prove the remaining obligations. Establish `hcont : Continuous (fun p : k × (Fin n → k) => p.1 • p.2)` using `continuous_fst.smul continuous_snd`. Establish `hlim : Tendsto (fun p : k × (Fin n → k) => p.1 • p.2) (𝓝 (0, x)) (𝓝 0)`. Simplify using `using hcont.tendsto (0, x)`. Conclude with `hlim hU`.
-
-Conclude with `(hpow.eventually hnear).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (K : Set (Fin n → k)), IsCompact K → ∀ U ∈ nhds (0 : Fin n → k), ∀ ϖ : k, valuation k ϖ < 1 → ∃ l : ℕ, ∀ x ∈ K, ϖ ^ l • x ∈ U := by
   intro k _ _ _ _ n K hK U hU ϖ hϖ

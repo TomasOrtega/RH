@@ -9,11 +9,11 @@ namespace Formalism.MainNotions.Gaps.T0
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Introduce `large₂ X H S ka wL wF T nus β r hH1 hT hc hle hr hs hb hL`. Use `⟨r, hr, hs, hb, ?_⟩` and prove the remaining obligations. Introduce `la e he V' hV`. Establish `h0 : (0 : ℝ) ≤ (T : ℝ) * nus la` using `mul_nonneg (Nat.cast_nonneg _) (hH1.1 la)`. Establish `he0 : (0 : ℤ) ≤ e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ (e : ℝ)` using `h0.trans he`. Conclude with `this` after adjusting the coercions. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le he0`. Establish `he' : (T : ℝ) * nus la ≤ (n : ℝ)` using `by simpa using he`. Take `⟨L, hOk, herr⟩` from `hL la n he'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `h large₂ X H S ka wL wF T nus la n hH1 hT hc hle he' L hOk V' hV`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h3 : (((n : ℤ) : ℝ)) = (n : ℝ)` using `by simp`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thm0Concl_of (h : Thm0Local (D := D) (B := B) (P := P) (j := j)) :
     Thm0Concl (D := D) (B := B) (P := P) (j := j) := by

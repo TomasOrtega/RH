@@ -13,23 +13,23 @@ def InertPrime : Prop :=
     jacobiSym (-(d : ℤ)) p = -1 → (Ideal.span {(p : 𝓞 K)}).IsPrime
 
 /- English proof (translation)
-Introduce `p _ lam h2 hin`. Use `Formalism.MainNotions.UnusedSlot33.HK.isGalK D.host` as an intermediate fact. Take `⟨b, hb, -⟩` from `exists_gen_K D.host`. Establish `hb' : b ^ 2 = -(D.host.d : D.host.K)` using `by rw [hb]; push_cast; rfl`. Establish `hpr` using `HI D.host.K (finrank_K D.host) b D.host.d p hb' (Fact.out) hin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φK : D.host.K →+* Qbar` to `(D.host.φ₀.comp (algebraMap D.host.K D.host.E)).codRestrict Qbar.toSubring (fun x => test_vector_mem_schwartz_bruhat D _)`. Set `c : D.host.K →+* D.host.K` to `(AlgEquiv.restrictNormal D.host.conj D.host.K : D.host.K →+* D.host.K)`. Establish `hc : ∀ x : D.host.K, ((c x : D.host.K) : D.host.E) = D.host.conj (x : D.host.E)` using `fun x => AlgEquiv.restrictNormal_commutes D.host.conj D.host.K x`. Establish `hne : ∃ x, c x ≠ x`. Use `⟨b, fun h => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbE : ((b : D.host.K) : D.host.E) ^ 2 = -(D.host.d : D.host.E)`. Use `congrArg (fun z : D.host.K => (z : D.host.E)) hb'` as an intermediate fact. Simplify using `using this`. Establish `h1` using `hc b`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `Formalism.BasicNotions.Examples₂.emb_conj D.host D.host.φ₀ (b : D.host.E)`. Rewrite `h3` using `[← h1]`. Establish `h4 : (D.host.φ₀ (b : D.host.E)) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[← map_pow, hbE]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h3.symm`. Rewrite `h4` using `[hr]`. Establish `h5 : ((r ^ 2 : ℝ) : ℂ) = ((-(D.host.d : ℝ) : ℝ) : ℂ)` using `by push_cast; exact h4`. Establish `h6 : r ^ 2 = -(D.host.d : ℝ)` using `by exact_mod_cast h5`. Establish `h7 : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg r]`. Establish `key` using `HO D.host.K c p (lam.comp φK) (finrank_K D.host) hne h2 hpr`. Rewrite using `[← key]`. Unfold `OKp`. Use `congr 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [tauK, tauKc, RingHom.comp_apply]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[lamC_mem' lam (test_vector_mem_schwartz_bruhat D _), lamC_mem' lam (test_vector_mem_schwartz_bruhat D _)]`. Use `congr 2`. Conclude with `Subtype.ext (congrArg D.host.φ₀ (hc _))`. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [tauK, tauKc, RingHom.comp_apply]`. Rewrite using `[lamC_mem' lam (test_vector_mem_schwartz_bruhat D _), lamC_mem' lam (test_vector_mem_schwartz_bruhat D _)]`. Use `congr 2`. Conclude with `Subtype.ext (congrArg D.host.φ₀ (hc _)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem okpInert_of (HO : OkpInertG) (HI : InertPrime) (D : D7) : okpInert D := by
   intro p _ lam h2 hin

@@ -4,12 +4,12 @@ import Development.WeilBound.ThetaLifts.LatticeBasics.CartanBound2
 namespace GlobalTheory.ThK.Dbl
 
 /- English proof (translation)
-The claim follows from `hgtEx_of stab2Cpt`.
+A detailed English derivation is pending.
 -/
 theorem hgtEx : HgtEx := hgtEx_of stab2Cpt
 
 /- English proof (translation)
-The claim follows from `hgtInt_of stab2Cpt`.
+A detailed English derivation is pending.
 -/
 theorem hgtInt : HgtInt := hgtInt_of stab2Cpt
 

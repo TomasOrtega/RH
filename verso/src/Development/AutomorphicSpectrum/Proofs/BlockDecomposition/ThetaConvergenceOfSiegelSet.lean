@@ -20,19 +20,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.WeilTheta
 
 /- English proof (translation)
-Introduce `D n V _hn hV θ hθ ν hν Φ`. Take `⟨hcontΦ, -⟩` from `GlobalTheory.T.schwartz_bound_finite_infinite D θ hθ V.rank n Φ.1 Φ.2`. Take `⟨r, Xf, Yf, hW⟩` from `GlobalTheory.SiegelSet.exists_isWittFrame (GlobalTheory.AdelicU.isCMExt_host D) (isHermND_gram V)`. Take `⟨K, Ω, c, hK, hΩ, -, hc, -, hcl, hcov, ⟨C₀, hC₀, hconj⟩, hmeas, -, -⟩` from `hRT D.host.F D.host.E D.sp.cm.sig (GlobalTheory.AdelicU.isCMExt_host D) V.rank V.gram (isHermND_gram V) r Xf Yf hW`. Take `⟨-, C₁, hC₁⟩` from `hmeas ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.siegel_set_compact_reduction D θ hθ V n Φ.1 Φ.2 Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hconj`. Use `set S := GlobalTheory.SiegelSet.siegelSet D.sp.cm.sig V.gram Xf Yf Ω c K with hSdef`. Establish `hSm : MeasurableSet S` using `hcl.measurableSet`. Establish `hScov : ∀ g, ∃ γ ∈ GQ V, γ * g ∈ S` using `fun g => by`. Take `⟨γ, hγ, s, hs, e⟩` from `hcov g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ⁻¹, inv_mem hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[e, inv_mul_cancel_left]`. Conclude with `hs`. Establish `hI : ∫⁻ t in GlobalTheory.SiegelSet.cone r c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus D.host.F V.rank t * ∏ i, t i)⁻¹) < ⊤`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hr` using the available equality. Conclude with `GlobalTheory.CompanionTheory.SiegelCone.cone_integral_zero_vars_lt_top D.host.F V.rank (2 * n) c`. Establish `hw` using `GlobalTheory.T.witt_frame_rank_le_witt_index D V Xf Yf hW`. Establish `h2 : n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank` using `hV.resolve_left (by omega)`. Conclude with `GlobalTheory.T.lintegral_siegelCone_inv_modulus_lt_top_weil D.host.F V.rank r (2 * n) hc (by omega)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `hC₁ (absTheta V Φ.1) _ (by fun_prop) fun p hp t ht a ha k hk => ?_` and prove the remaining obligations. Establish `ht0 : ∀ i, 0 < t i` using `ht.1`. Establish `hP : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))` using `Finset.prod_nonneg fun i _ => pow_nonneg (ht0 i).le _`. Use `(hC p hp t ht a ha k hk).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations.
-
-Use `gcongr`. Conclude with `le_max_left _ _`. Use `_ = C₁ * (ENNReal.ofReal (max C 0) * ∫⁻ t in GlobalTheory.SiegelSet.cone r c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus D.host.F V.rank t * ∏ i, t i)⁻¹)) := by`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`.
-
-Conclude with `lintegral_congr fun t => by rw [ENNReal.ofReal_mul (le_max_right _ _), mul_assoc]`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem weilThetaConvergence_of_siegelSet (hRT : GlobalTheory.Published.SiegelSetUnitary) : GlobalTheory.Published.WeilThetaConvergence := by
   intro D n V _hn hV θ hθ ν hν Φ

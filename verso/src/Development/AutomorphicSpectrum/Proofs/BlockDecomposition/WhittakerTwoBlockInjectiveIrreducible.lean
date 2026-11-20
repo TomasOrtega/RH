@@ -14,15 +14,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.Compani
 namespace GlobalTheory.CompanionTheory.BZNuPair.WhitSub
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Establish `hle : (⊥ : Subrepresentation ρ).toSubmodule.comap A.toSubmodule.subtype ≤ LinearMap.ker A.toSubmodule.subtype` using `fun v hv => by`. Establish `: (v : V) ∈ (⊥ : Subrepresentation ρ).toSubmodule` using `hv`. Conclude with `this`. Set `p : (subQuot A ⊥).IntertwiningMap ρ` to `.mk (Submodule.liftQ _ A.toSubmodule.subtype hle) (fun g => by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Use the proof step `rfl)`. Establish `hp : Function.Injective p`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hx`. Establish `hi : Function.Injective (p.comp f)`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Break down `eq_bot_or_eq_top (p.comp f).ker with h | h` into its components or cases. Establish `: x ∈ (p.comp f).ker` using `hx`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h]`. Conclude with `this`. It suffices to derive a contradiction. Use `hf (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Establish `hy : y ∈ (p.comp f).ker` using `by rw [h]; trivial`.
-
-Conclude with `hp (by simpa using hy)`. Conclude with `⟨p.comp f, hi⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_injective_of_subQuot_bot {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G W} (hσ : σ.IsIrreducible) {ρ : Representation ℂ G V}
@@ -54,23 +52,21 @@ theorem exists_injective_of_subQuot_bot {G V W : Type} [Group G] [AddCommGroup V
   exact ⟨p.comp f, hi⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ _ d X _ _ J hs hfl hnt`. Take `⟨hgt, hlt⟩` from `(hasFiniteLength_iff_wellFounded J).1 hfl`. Establish `hbotImg : whitImg ψ d J ⊥ = ⊥`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Conclude with `Submodule.map_bot _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `htop : whitImg ψ d J ⊤ ≠ ⊥`. Introduce `h`. Establish `h1 : (whitImg ψ d J ⊤).toSubmodule = ⊤` using `by show (⊤ : Subrepresentation J).toSubmodule.map (whitKer ψ d J).mkQ = ⊤`. Conclude with `(Submodule.map_top _).trans (Submodule.range_mkQ _)`. Rewrite `h1` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_ne (0 : X ⧸ whitKer ψ d J)`. Establish `: x ∈ (⊥ : Subrepresentation (whit2 ψ d J)).toSubmodule` using `by rw [h1]; trivial`. Conclude with `hx this`. Take `⟨T, hT, hmin⟩` from `(wellFounded_lt (α := Subrepresentation J)).has_min {T | whitImg ψ d J T ≠ ⊥} ⟨⊤, htop⟩`. Establish `hbot : (⊥ : Subrepresentation J) < T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `bot_lt_iff_ne_bot.2 fun h => hT ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `hbotImg`. Take `⟨T', hT', hmax⟩` from `(wellFounded_gt (α := Subrepresentation J)).has_min {B | B < T} ⟨⊥, hbot⟩`. Establish `hcov : T' ⋖ T` using `⟨hT', fun C hBC hCA => hmax C hCA hBC⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hImg' : whitImg ψ d J T' = ⊥`. Assume the negation of the conclusion as `h`. Conclude with `hmin T' h hT'`. Set `τ : IrrRep (Levi k fun a => Fin (d a))` to `⟨_, subQuot T T', IsSubquotient.isSmooth ⟨T, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.mkQ_surjective _⟩ hs, isIrreducible_subQuot hcov⟩`. Take `⟨s, ⟨Φ⟩⟩` from `GlobalTheory.LeviFactor.exists_equiv_piTensor_levi GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k (Fin 2) (fun a => Fin (d a)) τ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspan` using `GlobalTheory.T.whittaker_subquotient_equiv k ψ d X J T T' (fun a => (s a).V) (fun a => (s a).ρ) hT'.le Φ`. Establish `hQ : Nontrivial ((whitImg ψ d J T).toSubmodule ⧸ (whitImg ψ d J T').toSubmodule.comap (whitImg ψ d J T).toSubmodule.subtype)`. Use `Submodule.Quotient.nontrivial_iff.2 fun h => hT ?_` and prove the remaining obligations. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `le_antisymm (fun x hx => ?_) bot_le` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx' : (⟨x, hx⟩ : (whitImg ψ d J T).toSubmodule) ∈ (whitImg ψ d J T').toSubmodule.comap (whitImg ψ d J T).toSubmodule.subtype`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hx'` using `[Submodule.mem_comap, hImg']`. Conclude with `hx'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : (s 0).ρ.IntertwiningMap (subQuot (whitImg ψ d J T) (whitImg ψ d J T')), f.toLinearMap ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `: (⨆ f : (s 0).ρ.IntertwiningMap (subQuot (whitImg ψ d J T) (whitImg ψ d J T')), LinearMap.range f.toLinearMap) = ⊥`. Use `le_antisymm (iSup_le fun f => ?_) bot_le` and prove the remaining obligations.
-
-Rewrite using `[hno f, LinearMap.range_zero]`. Rewrite `hspan` using `[this]`. Conclude with `bot_ne_top hspan`. Take `⟨g, hg⟩` from `exists_injective_of_subQuot_bot (s 0).irr _ _ hImg' f hf`. Conclude with `⟨s 0, g, hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_irr_sub : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (d : Fin 2 → ℕ) (X : Type) [AddCommGroup X] [Module ℂ X]
     (J : Representation ℂ (Levi k fun a => Fin (d a)) X), IsSmooth J → HasFiniteLength J → Nontrivial (X ⧸ whitKer ψ d J) →

@@ -14,11 +14,11 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 variable {p K L}
 
 /- English proof (translation)
-Establish `hsec : ∀ x : A, ∃ c : C, g c = x - Function.invFun f (f x)` using `fun x => by`. Apply `hg` to reduce the goal to its premises. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `(Function.invFun_eq (f := f) ⟨x, rfl⟩).symm`. Use `choose σ hσ using hsec`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Injective fun x : A => (σ x, f x)` using `fun x y hxy => by`. Establish `h1 : σ x = σ y` using `congrArg Prod.fst hxy`. Establish `h2 : f x = f y` using `congrArg Prod.snd hxy`. Establish `e1` using `hσ x`. Establish `e2` using `hσ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e1` using `[h1, h2]`. Conclude with `sub_left_injective (e1.symm.trans e2)`. Use `⟨Finite.of_injective _ hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_le_card_of_injective _ hinj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_mul_of_ker {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [Finite B] [Finite C] (f : A →+ B)
     (g : C → A) (hg : ∀ a, f a = 0 → ∃ c, g c = a) : Finite A ∧ Nat.card A ≤ Nat.card C * Nat.card B := by
@@ -40,9 +40,7 @@ theorem card_le_mul_of_ker {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [Fi
   exact Nat.card_le_card_of_injective _ hinj
 
 /- English proof (translation)
-Set `f : BrKer (h.trans h') →+ BrKer h'` to `{ toFun := fun x => ⟨(resPair h).hom.H 2 x.1, by show (resPair h').hom.H 2 _ = 0`. Rewrite using `[← resPair_trans]`. Conclude with `x.2⟩`. Use the proof step `map_zero' := Subtype.ext (map_zero _)`. Use the proof step `map_add' := fun x y => Subtype.ext (map_add _ _ _) }`.
-
-Use `card_le_mul_of_ker f (fun c : BrKer h => ⟨c.1, ?_⟩) (fun a ha => ⟨⟨a.1, congrArg Subtype.val ha⟩, rfl⟩)` and prove the remaining obligations. Use `show (resPair (h.trans h')).hom.H 2 c.1 = 0`. Rewrite using `[resPair_trans h h', show (resPair h).hom.H 2 c.1 = 0 from c.2, map_zero]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_BrKer_le_mul {K' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ K') (h' : K' ≤ L)
     (h1 : Finite (BrKer h)) (h2 : Finite (BrKer h')) :
@@ -58,7 +56,7 @@ theorem card_BrKer_le_mul {K' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K
   rw [resPair_trans h h', show (resPair h).hom.H 2 c.1 = 0 from c.2, map_zero]
 
 /- English proof (translation)
-Rewrite using `[BrKer_eq_BrLK hL h, card_BrLK, card_h2_cyclic_layer hK hL h g₀ hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_BrKer_cyclic (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] (g₀ : GalLK p K L) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) :
@@ -66,7 +64,7 @@ theorem card_BrKer_cyclic (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensi
   rw [BrKer_eq_BrLK hL h, card_BrLK, card_h2_cyclic_layer hK hL h g₀ hg]
 
 /- English proof (translation)
-Establish `: Fact (degLK p K L).Prime` using `⟨hp⟩`. Establish `hc : IsCyclic (GalLK p K L)` using `isCyclic_of_prime_card (p := degLK p K L) card_GalLK`. Take `⟨g₀, hg⟩` from `hc.exists_generator`. Conclude with `card_BrKer_cyclic hK hL h g₀ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_BrKer_prime (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] (hp : (degLK p K L).Prime) : Nat.card (BrKer h) = degLK p K L := by
@@ -76,11 +74,9 @@ theorem card_BrKer_prime (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensio
   exact card_BrKer_cyclic hK hL h g₀ hg
 
 /- English proof (translation)
-Establish `hle : subG p K L ≤ N.comap (QuotientGroup.mk' (subG p K L))` using `fun σ hσ => by`. Rewrite using `[Subgroup.mem_comap]`. Establish `: QuotientGroup.mk' (subG p K L) σ = 1` using `(QuotientGroup.eq_one_iff σ).2 hσ`. Rewrite using `[this]`. Conclude with `N.one_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨K', h1, h2, h3⟩` from `exists_subG_eq_of_isOpen hK (N.comap (QuotientGroup.mk' (subG p K L))) (Subgroup.isOpen_mono hle (isOpen_subG hL))`. Use `⟨K', h1, ?_, h2, h3, ?_⟩` and prove the remaining obligations. Use `(subG_le_iff (L' := L) h1).1 (h3 ▸ hle)` as an intermediate fact. Rewrite `this` using `[sup_eq_right.2 h]`. Then use the resulting hypothesis. Use `show (subG p K K').index = _`.
-
-Rewrite using `[h3, Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field_of_quotient (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] (N : Subgroup (GalLK p K L)) :
@@ -99,19 +95,19 @@ theorem exists_field_of_quotient (hK : FiniteDimensional ℚ_[p] K) (hL : Finite
     rw [h3, Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective _)]
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `K L hK hL h hn hd`. Establish `hs : Subsingleton (BrKer h)` using `⟨fun x y => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ∀ z : BrKer h, z = 0` using `fun z => Subtype.ext (by`. Use `degLK_smul_eq_zero hL h z.1 z.2` as an intermediate fact. Rewrite using `[hd, pow_zero, one_smul] at this)` and apply the resulting hypothesis. Rewrite using `[h0 x, h0 y]⟩`. Conclude with `⟨inferInstance, by rw [Nat.card_unique]; simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `K L hK hL h hn hd`. Establish `hfin` using `finite_GalLK (K := K) hL`. Establish `hcard : Nat.card (GalLK p K L) = l ^ (k + 1)` using `hd`. Establish `hnt : Nontrivial (GalLK p K L)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finite.one_lt_card_iff_nontrivial, hcard]`. Conclude with `Nat.one_lt_pow (Nat.succ_ne_zero k) hl.one_lt`. Take `⟨N, hN, hNi⟩` from `exists_normal_index_eq_prime l (IsPGroup.of_card hcard)`. Take `⟨K', h1, h2, h3, h4, h5⟩` from `exists_field_of_quotient hK hL h N`. Establish `hn1 : (subG p K K').Normal` using `by rw [h4]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn2 : (subG p K' L).Normal` using `subG_normal_of_le h1 h hn`. Establish `hd1 : degLK p K K' = l` using `h5.trans hNi`. Establish `hd2 : degLK p K' L = l ^ k`. Use `degLK_mul h1 h2` as an intermediate fact. Rewrite `this` using `[hd, hd1, pow_succ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_left hl.pos this).symm`. Establish `hc1 : Nat.card (BrKer h1) = l`. Rewrite using `[card_BrKer_prime hK h3 h1 (hd1 ▸ hl), hd1]`. Establish `hf1 : Finite (BrKer h1)` using `Nat.finite_of_card_ne_zero (hc1 ▸ hl.ne_zero)`. Take `⟨hf2, hc2⟩` from `ih K' L h3 hL h2 hn2 hd2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hf, hc⟩` from `card_BrKer_le_mul h1 h2 hf1 hf2`. Use `⟨hf, hc.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hc1, pow_succ']`. Conclude with `Nat.mul_le_mul_left _ hc2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_BrKer_le_of_prime_pow (l : ℕ) (hl : l.Prime) (k : ℕ) :
     ∀ (K L : IntermediateField ℚ_[p] (PadicAlgCl p)), FiniteDimensional ℚ_[p] K → FiniteDimensional ℚ_[p] L →
@@ -153,15 +149,13 @@ theorem card_BrKer_le_of_prime_pow (l : ℕ) (hl : l.Prime) (k : ℕ) :
     exact Nat.mul_le_mul_left _ hc2
 
 /- English proof (translation)
-Set `T : n.primeFactors → Type _` to `fun l => {a : A // ∃ k : ℕ, l.1 ^ k • a = 0}`. Establish `hfin : ∀ l, Finite (T l)` using `fun l => (h l.1 (Nat.prime_of_mem_primeFactors l.2)).1`. Set `F : A → ∀ l, T l` to `fun a l => ⟨(n / l.1 ^ n.factorization l.1) • a, n.factorization l.1, by`. Rewrite using `[smul_smul, Nat.mul_div_cancel' (Nat.ordProj_dvd n l.1)]`. Conclude with `hA a⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF0 : ∀ a : A, (∀ l : n.primeFactors, (n / l.1 ^ n.factorization l.1) • a = 0) → a = 0` using `fun a ha => by`. Rewrite using `[← AddMonoid.addOrderOf_eq_one_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd hne`. Establish `hqn : q ∣ n` using `hqd.trans (addOrderOf_dvd_of_nsmul_eq_zero (hA a))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : q ∈ n.primeFactors` using `Nat.mem_primeFactors.2 ⟨hq, hqn, hn.ne'⟩`. Conclude with `Nat.not_dvd_ordCompl hq hn.ne' (hqd.trans (addOrderOf_dvd_of_nsmul_eq_zero (ha ⟨q, hmem⟩)))`. Establish `hinj : Injective F` using `fun a b hab => by`. Rewrite using `[← sub_eq_zero]`. Use `hF0 _ fun l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val (congrFun hab l)`. Use `⟨Finite.of_injective F hinj, (Nat.card_le_card_of_injective F hinj).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_pi]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.prod_coe_sort n.primeFactors (fun l => l ^ n.factorization l)]`. Conclude with `Nat.prod_factorization_pow_eq_self hn.ne'`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_of_primary {A : Type*} [AddCommGroup A] (n : ℕ) (hn : 0 < n) (hA : ∀ a : A, n • a = 0)
     (h : ∀ l : ℕ, l.Prime → Finite {a : A // ∃ k : ℕ, l ^ k • a = 0} ∧
@@ -193,9 +187,9 @@ theorem card_le_of_primary {A : Type*} [AddCommGroup A] (n : ℕ) (hn : 0 < n) (
         exact Nat.prod_factorization_pow_eq_self hn.ne'
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hfin` using `finite_GalLK (K := K) hL`. Take `⟨S⟩ : Nonempty (Sylow l (GalLK p K L))` from `inferInstance`. Take `⟨K', h1, h2, h3, h4, h5⟩` from `exists_field_of_quotient hK hL h (S : Subgroup (GalLK p K L))`. Use `⟨K', h1, h2, ?_, h5 ▸ S.not_dvd_index⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `degLK_mul h1 h2`. Establish `e2 : (S : Subgroup (GalLK p K L)).index * Nat.card (S : Subgroup (GalLK p K L)) = degLK p K L` using `(S : Subgroup (GalLK p K L)).index_mul_card`. Rewrite `e1` using `[h5, ← e2]`. Establish `e3` using `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero (Subgroup.index_ne_zero_of_finite)) e1`. Rewrite using `[← e3, S.card_eq_multiplicity]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -217,14 +211,14 @@ theorem exists_sylow_field (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimens
   rfl
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.of_injective (IntermediateField.inclusion h).toLinearMap (IntermediateField.inclusion h).injective`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_le' {K' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K' ≤ L)
     (hL : FiniteDimensional ℚ_[p] L) : FiniteDimensional ℚ_[p] K' :=
   FiniteDimensional.of_injective (IntermediateField.inclusion h).toLinearMap (IntermediateField.inclusion h).injective
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_mem_BrKer_of_coprime hK' h _ ?_ (l ^ (kx + ky)) ?_ (Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hl).2 hd))` and prove the remaining obligations. Conclude with `(map_sub ((resPair h).hom.H 2) x y).trans (sub_eq_zero.2 hxy)`. Rewrite using `[smul_sub, pow_add, mul_comm, mul_smul, hx, smul_zero, mul_comm, mul_smul, hy, smul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_resPair_eq_of_coprime {K' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hK' : FiniteDimensional ℚ_[p] K')
     (h : K ≤ K') (l : ℕ) (hl : l.Prime) (hd : ¬ l ∣ degLK p K K') (x y : Br p K) (kx ky : ℕ) (hx : l ^ kx • x = 0)
@@ -236,11 +230,11 @@ theorem eq_of_resPair_eq_of_coprime {K' : IntermediateField ℚ_[p] (PadicAlgCl 
   · rw [smul_sub, pow_add, mul_comm, mul_smul, hx, smul_zero, mul_comm, mul_smul, hy, smul_zero, sub_zero]
 
 /- English proof (translation)
-Use `card_le_of_primary (degLK p K L) (degLK_pos hL) (fun a => Subtype.ext (degLK_smul_eq_zero hL h a.1 a.2)) fun l hl => ?_` and prove the remaining obligations. Take `⟨K', h1, h2, h3, h4⟩` from `exists_sylow_field hK hL h l hl`. Establish `hK'` using `finiteDimensional_of_le' h2 hL`. Take `⟨hf, hc⟩` from `card_BrKer_le_of_prime_pow l hl _ K' L hK' hL h2 (subG_normal_of_le h1 h inferInstance) h3`. Set `F : {a : BrKer h // ∃ k : ℕ, l ^ k • a = 0} → BrKer h2` to `fun a => ⟨(resPair h1).hom.H 2 a.1.1, by show (resPair h2).hom.H 2 _ = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← resPair_trans h1 h2]`. Conclude with `a.1.2⟩`. Establish `hinj : Injective F` using `fun a b hab => by`. Take `⟨ka, hka⟩` from `a.2`. Take `⟨kb, hkb⟩` from `b.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Subtype.ext (Subtype.ext (eq_of_resPair_eq_of_coprime hK' h1 l hl h4 a.1.1 b.1.1 ka kb (congrArg Subtype.val hka) (congrArg Subtype.val hkb) (congrArg Subtype.val hab)))`. Conclude with `⟨Finite.of_injective F hinj, (Nat.card_le_card_of_injective F hinj).trans hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_BrKer_le (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
     [(subG p K L).Normal] : Finite (BrKer h) ∧ Nat.card (BrKer h) ≤ degLK p K L := by

@@ -26,14 +26,14 @@ noncomputable section
 namespace GlobalTheory.UMin.PrimModel
 
 /- English proof (translation)
-Simplify using `[spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp [spMap, ← Spec.map_comp]
 
 /- English proof (translation)
-Simplify using `[spMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := by
   simp [spMap]
@@ -42,7 +42,7 @@ section
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : f₁ = f₂` from `Over.OverMorphism.ext hf`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem heq_pullS {R : Type} [CommRing R] {x₁ x₂ : Sp R ⟶ S} (h : x₁ = x₂) {T : Over S}
     (f₁ : Over.mk x₁ ⟶ T) (f₂ : Over.mk x₂ ⟶ T) (hf : f₁.left = f₂.left)
@@ -53,7 +53,7 @@ theorem heq_pullS {R : Type} [CommRing R] {x₁ x₂ : Sp R ⟶ S} (h : x₁ = x
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hθ`. Conclude with `⟨pt, fun _ => rfl, H⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem thList_of_eq (ρ : LB.Gen (L.pull (eSec G))) (m : ℕ) {K : Type} [Field K] {x₁ x₂ : Sp K ⟶ S}
     (h : x₁ = x₂) {θ₁ : SecAt G L x₁} {θ₂ : SecAt G L x₂} (hθ : HEq θ₁ θ₂) {N : ℕ}
@@ -64,7 +64,7 @@ theorem thList_of_eq (ρ : LB.Gen (L.pull (eSec G))) (m : ℕ) {K : Type} [Field
   exact ⟨pt, fun _ => rfl, H⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨p, rfl, fun _ h => h⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem pt_of_eq {R : Type} [CommRing R] {x₁ x₂ : Sp R ⟶ S} (h : x₁ = x₂) (p : Over.mk x₁ ⟶ G) :
     ∃ p₂ : Over.mk x₂ ⟶ G, p₂.left = p.left ∧ ∀ n : ℕ, p ^ n = 1 → p₂ ^ n = 1 := by
@@ -72,7 +72,7 @@ theorem pt_of_eq {R : Type} [CommRing R] {x₁ x₂ : Sp R ⟶ S} (h : x₁ = x�
   exact ⟨p, rfl, fun _ h => h⟩
 
 /- English proof (translation)
-Use `(GlobalTheory.UMin.thG_smul_iff S G L ρ hL hρ g m K x θ θ p 1 c c' hm hm0 hP (by simp) h₁).1 h₂` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thG_unique [IsCommMonObj G] (ρ : LB.Gen (L.pull (eSec G))) (hL : L.IsLB) (hρ : ρ.IsGen) {g m : ℕ}
     {K : Type} [Field K] {x : Sp K ⟶ S} (θ : SecAt G L x) (p : Over.mk x ⟶ G) {c c' : K} (hm : Odd m)
@@ -83,7 +83,7 @@ theorem thG_unique [IsCommMonObj G] (ρ : LB.Gen (L.pull (eSec G))) (hL : L.IsLB
 end
 
 /- English proof (translation)
-Take `⟨p, hp, hp0⟩` from `hz`. Use `⟨p, hp, i'.injective ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.hom_eval₂, ← h, hsq, ← Polynomial.hom_eval₂, hp0, map_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntegralElem_of_sq {V F K Kb : Type} [CommRing V] [Field F] [Field K] [Field Kb] (φ : V →+* F) (i : V →+* K)
     (i' : K →+* Kb) (j : F →+* Kb) (hsq : i'.comp i = j.comp φ) {z : F} {w : K} (h : j z = i' w)
@@ -93,11 +93,11 @@ theorem isIntegralElem_of_sq {V F K Kb : Type} [CommRing V] [Field F] [Field K] 
   rw [Polynomial.hom_eval₂, ← h, hsq, ← Polynomial.hom_eval₂, hp0, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `hα : IsGrpPullback A.A G (jK W) (U.gen.inv.left ≫ pullback.fst G.hom (jK W))` using `GlobalTheory.NeutralLevel.isGrpPullback_of_iso_inv (jK W) G U.gen U.gen_hom`. Establish `hA` using `A.isLB`. Establish `hLG : U.LG.L.IsLB` using `RigLB.isLB _`. Establish `hLα : LBIso A.L (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G.hom (jK W)))`. Take `⟨w, hw⟩` from `U.ext`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hB : LBIso A.L ((A.L.pull U.gen.hom.left).pull U.gen.inv.left)`. Establish `e : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, U.gen.inv_hom_id, Over.id_left]`. Establish `h1` using `GlobalTheory.UMin.FibMove.lbIso_pull_comp hA U.gen.hom.left U.gen.inv.left`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LBIso.trans hA (pull_isLB hA _) (pull_isLB (pull_isLB hA _) _) (GlobalTheory.ThetaAffineGlue.lbIso_pull_id hA) h1`. Conclude with `GlobalTheory.ThetaAffineGlue.lbIso_comp hA (pull_isLB hA _) hLG hB ⟨w, hw⟩`. Conclude with `(GlobalTheory.UMin.FibMove.polFib_move (Sp W) (Sp (FractionRing W)) G U.LG.L A.A A.L (jK W) _ hLG hA hα hLα A.g R y).1.mp (GlobalTheory.UMin.FibExist.polFib_of_point _ A R y)`.
+A detailed English derivation is pending.
 -/
 theorem polFib_unif {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] {D : DegData W (IsLocalRing.maximalIdeal W)}
     {A : PolAV (Sp (FractionRing W))} {G : Over (Sp W)} [GrpObj G] [IsCommMonObj G]
@@ -121,39 +121,35 @@ theorem polFib_unif {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] {D : De
     y).1.mp (GlobalTheory.UMin.FibExist.polFib_of_point _ A R y)
 
 /- English proof (translation)
-Introduce `W _ _ _ _ hc D A G _ _ hG U σ hσ m N hodd h3 hmu K _ _ i pt c hi hL`. Establish `hV : GlobalTheory.LN.CDvr W` using `⟨inferInstance, hc, inferInstance⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Set `F` to `AlgebraicClosure (FractionRing W)`. Take `⟨v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.exists_valOver hϖ F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `choose Q hQ using ReciprocityTheory.ChartRestriction.G.DVR.QForm.exists_QVal hϖ D`. Set `g` to `A.g`. Use `set x' : Sp F ⟶ Sp W := jFK (R := W) F ≫ jK W with hx'`. Set `ξ : Over.mk x' ⟶ Over.mk (𝟙 (Sp W))` to `Over.homMk x' (Category.comp_id _)`. Use `set θF : SecAt G U.LG.L x' := VVRank.pullS G _ ξ σ with hθF`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hA, x0, c0, hx0, hv0⟩` from `(GlobalTheory.Ex.OnModel.theta_on_model GlobalTheory.lawsAndExpansions W hc ϖ hϖ D Q hQ F v hv A G hG U σ hσ).2 m hodd hmu h3 ξ`. Set `φF : W →+* F` to `(algebraMap (FractionRing W) F).comp (algebraMap W (FractionRing W))`. Establish `hPF : PolFib G U.LG.L g x'` using `polFib_unif U F (jFK (R := W) F)`. Establish `hmF : (m : F) ≠ 0`. Use `hmu.map φF` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨ptF, cF, hLF⟩` from `GlobalTheory.UMin.exists_thList (Sp W) G U.LG.L U.LG.rig U.LG.isLB U.LG.rigGen g m (m ^ (4 * g)) F x' θF hodd hmF rfl hPF`. Set `Kb` to `AlgebraicClosure K`. Set `i' : K →+* Kb` to `algebraMap K Kb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hii : Function.Injective (i'.comp i)` using `i'.injective.comp hi`. Set `e : FractionRing W →+* Kb` to `IsFractionRing.lift hii`. Use `letI : Algebra (FractionRing W) Kb := e.toAlgebra`. Set `j : F →+* Kb` to `(IsAlgClosed.lift : F →ₐ[FractionRing W] Kb).toRingHom`. Establish `hsq : i'.comp i = j.comp φF`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `r`. Express the relevant statement in the definitionally equal form `_ = (IsAlgClosed.lift : F →ₐ[FractionRing W] Kb) (algebraMap (FractionRing W) F _)`. Rewrite using `[AlgHom.commutes]`. Conclude with `(IsFractionRing.lift_algebraMap hii r).symm`. Establish `hy : spMap i' ≫ spMap i ≫ 𝟙 (Sp W) = spMap j ≫ x'`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.comp_id]`. Express the relevant statement in the definitionally equal form `_ = spMap j ≫ (spMap (algebraMap (FractionRing W) F) ≫ spMap (algebraMap W (FractionRing W)))`. Rewrite using `[← Category.assoc, spMap_comp', spMap_comp', spMap_comp', hsq]`. Establish `hPy : PolFib G U.LG.L g (spMap j ≫ x')`. Use `polFib_unif U Kb (spMap j ≫ jFK (R := W) F)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `only [hx', Category.assoc]`. Establish `hmKb : (m : Kb) ≠ 0`. Use `hmu.map (i'.comp i)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨pt1, hpt1, hL1⟩` from `GlobalTheory.UMin.ThPull.thList_pull (Sp W) G U.LG.L U.LG.rig U.LG.isLB U.LG.rigGen m N K Kb i' (spMap i ≫ 𝟙 (Sp W)) (SecAt.pull G U.LG.L σ i) pt c hL`. Establish `hθ : HEq (SecAt.pull G U.LG.L (SecAt.pull G U.LG.L σ i) i') (SecAt.pull G U.LG.L θF j)`. Simplify using `only [SecAt.pull, hθF, GlobalTheory.ThetaRuleCompare.pullS_comp]`. Use `heq_pullS hy _ _ ?_ σ` and prove the remaining obligations. Simplify using `only [Over.comp_left, Over.homMk_left]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `spMap i' ≫ spMap i = spMap j ≫ (spMap (algebraMap (FractionRing W) F) ≫ spMap (algebraMap W (FractionRing W)))`. Rewrite using `[spMap_comp', spMap_comp', spMap_comp', hsq]`. Take `⟨ptK, hptK, hLK⟩` from `thList_of_eq U.LG.rig m hy hθ hL1`. Take `⟨ptF', hptF', hLF'⟩` from `GlobalTheory.UMin.ThPull.thList_pull (Sp W) G U.LG.L U.LG.rig U.LG.isLB U.LG.rigGen m (m ^ (4 * g)) F Kb j x' θF ptF cF hLF`. Establish `hint : ∀ b, φF.IsIntegralElem (cF b)` using `fun b => GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR W hV ϖ hϖ F v hv (cF b) (hA (ptF b) (cF b) (hLF.2.1 b))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hLF.2.2 Kb j (ptK a) (hLK.2.1 a).1`. Establish `heq : ptK a = ptF' b` using `Over.OverMorphism.ext (hb.trans (hptF' b).symm)`. Establish `h1` using `hLK.2.1 a`. Rewrite `h1` using `[heq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hab : j (cF b) = i' (c a)` using `thG_unique U.LG.rig U.LG.isLB U.LG.rigGen _ (ptF' b) hodd hmKb hPy h1 (hLF'.2.1 b)`. Conclude with `isIntegralElem_of_sq φF i i' j hsq hab (hint b)`. Take `⟨x0', hx0'l, hx0't⟩` from `pt_of_eq (show x' = spMap (RingHom.id F) ≫ x' by rw [spMap_id', Category.id_comp]) x0`. Take `⟨b0, hb0⟩` from `hLF.2.2 F (RingHom.id F) x0' (hx0't _ hx0.1)`. Establish `hx0b : x0 = ptF b0` using `Over.OverMorphism.ext (by rw [← hx0'l, hb0, spMap_id', Category.id_comp])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hx0b` using the available equality. Establish `hc0b : cF b0 = c0` using `thG_unique U.LG.rig U.LG.isLB U.LG.rigGen θF (ptF b0) hodd hmF hPF hx0 (hLF.2.1 b0)`. Take `⟨q, hql, hqt⟩` from `pt_of_eq hy.symm (ptF' b0)`. Take `⟨a0, ha0⟩` from `hL.2.2 Kb i' q (hqt _ (hLF'.2.1 b0).1)`. Establish `heq : ptK a0 = ptF' b0` using `Over.OverMorphism.ext (by rw [hptK, hpt1, ← ha0, hql])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hLK.2.1 a0`. Rewrite `h1` using `[heq]`. Establish `hab : j c0 = i' (c a0)`. Rewrite using `[← hc0b]`. Conclude with `thG_unique U.LG.rig U.LG.isLB U.LG.rigGen _ (ptF' b0) hodd hmKb hPy h1 (hLF'.2.1 b0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc0 : c0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hv0`. Establish `hca : c a0 ≠ 0`. Introduce `h`.
-
-Rewrite `hab` using `[h, map_zero]`. Conclude with `hc0 (j.injective (hab.trans (map_zero j).symm))`. Use `⟨a0, hca, isIntegralElem_of_sq φF i i' j hsq (z := c0⁻¹) (by rw [map_inv₀, map_inv₀, hab]) ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR W hV ϖ hϖ F v hv _ ?_` and prove the remaining obligations. Establish `h01 : v c0 + v c0⁻¹ = 0`.
-
-Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hc0, AddValuation.map_one]`. Rewrite `h01` using `[hv0, zero_add]`. Rewrite using `[h01]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CharZero W], IsAdicComplete (IsLocalRing.maximalIdeal W) W → ∀ (D : DegData W (IsLocalRing.maximalIdeal W)) (A : PolAV (Sp (FractionRing W))) (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (IsLocalRing.maximalIdeal W) D A G) (σ : SecAt G U.LG.L (𝟙 (Sp W))), NZ G U.LG.L (𝟙 (Sp W)) σ → ∀ (m N : ℕ), Odd m → 3 ≤ m → IsUnit (m : W) → ∀ (K : Type) [Field K] [IsAlgClosed K] (i : W →+* K) (pt : Fin N → (Over.mk (spMap i ≫ 𝟙 (Sp W)) ⟶ G)) (c : Fin N → K), Function.Injective i → ThList G U.LG.L U.LG.rig m (spMap i ≫ 𝟙 (Sp W)) (SecAt.pull G U.LG.L σ i) pt c → Prim i c := by
   intro W _ _ _ _ hc D A G _ _ hG U σ hσ m N hodd h3 hmu K _ _ i pt c hi hL

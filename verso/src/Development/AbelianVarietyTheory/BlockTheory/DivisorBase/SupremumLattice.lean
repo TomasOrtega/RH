@@ -17,11 +17,11 @@ variable {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K
 def supIn : Submodule (𝓞 K) R := (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
 /- English proof (translation)
-Establish `h1 : (supIn C Vs hV).FG ↔ (latOf C Vs hV).FG` using `⟨Submodule.fg_of_fg_map_injective (C.subtype.restrictScalars (𝓞 K)) C.injective_subtype, fun h => h.map _⟩`. Establish `h2 : Submodule.span K (supIn C Vs hV : Set R) = (Submodule.span K (latOf C Vs hV : Set C)).map C.subtype`. Rewrite using `[← Submodule.span_image]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Use `⟨a, Submodule.map_injective_of_injective C.injective_subtype ?_⟩` and prove the remaining obligations. Rewrite using `[b, Submodule.map_subtype_top]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h.fg, by rw [h.span_eq_top, Submodule.map_subtype_top]⟩`.
+Supply the required witnesses or components.
 -/
 theorem supIn_full_iff :
     ((supIn C Vs hV).FG ∧ Submodule.span K (supIn C Vs hV : Set R) = C) ↔
@@ -57,7 +57,7 @@ def IntegralCuspFormsFullLattice : Prop :=
     SupLatticeFullAt T j (kappaExp D hK hn j) D.R.nV
 
 /- English proof (translation)
-Take `⟨V, io, e, ho, y, hy⟩` from `h.ptNe j hj la`. Conclude with `⟨⟨_, PtV.mk la ho y hy () trivial, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (T : Core D) (h : LawsM T) (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) :
     Nonempty (T.PtM j la) := by

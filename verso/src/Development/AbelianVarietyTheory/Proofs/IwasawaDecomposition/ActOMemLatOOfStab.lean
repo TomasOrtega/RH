@@ -40,9 +40,9 @@ def swapF (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →+* EAf D :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toAlgHom.toRingHom
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `pure_mem_hatL Λ a ha x hx`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => simp only [Pi.add_apply, map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `neg a _ ha => simp only [Pi.neg_apply, map_neg]`. Conclude with `Submodule.neg_mem _ ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem swap_mem_hatL {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (y : Fin n → Af D.host.F ⊗[D.host.F] D.host.E)
@@ -57,9 +57,9 @@ theorem swap_mem_hatL {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.hos
   | neg a _ ha => simp only [Pi.neg_apply, map_neg]; exact Submodule.neg_mem _ ha
 
 /- English proof (translation)
-Establish `h1 : (fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] x i) ∈ latHat D.host.F D.host.E (L0c D V)` using `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, x, hx, rfl⟩`. Establish `h2` using `swap_mem_hatL (latCoord V) _ ((hg.2.1 _).1 h1)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mulVec_pure_mem (V : HSp D) (g : GA D V) (hg : g ∈ KsphC V ∅) (x : Fin V.rank → D.host.E)
     (hx : x ∈ L0c D V) :
@@ -76,7 +76,7 @@ theorem mulVec_pure_mem (V : HSp D) (g : GA D V) (hg : g ∈ KsphC V ∅) (x : F
 variable {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (_ ⊗ₜ _) = _ ⊗ₜ _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) rfl`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem fin_smul_gen (β α : Af D.host.F) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β) •
@@ -89,11 +89,9 @@ theorem fin_smul_gen (β α : Af D.host.F) (M : Matrix (Fin T.rank) (Fin S.rank)
   exact Prod.ext (mul_zero _) rfl
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨β * α, fun w => ?_, fun w hw => ?_, a, ha, s, hs, t, ht, fin_smul_gen β α (fun i j => a * t i * ∑ k, star (s k) * S.gram k j)⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (hβ w) (hα w)`. Rewrite using `[map_mul, h0 w hw, zero_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ h h' => rw [smul_add]`.
-
-Conclude with `add_mem h h'`. Consider the case `neg x _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fin_smul_mem {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {β : Af D.host.F} (hβ : β ∈ intAf D.host.F)
     (h0 : ∀ v, ¬ P v → evalV D.host.F v β = 0) {u : WO S T} (hu : u ∈ latO S T LS LT fun _ => True) :
@@ -110,13 +108,11 @@ theorem fin_smul_mem {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {β : Af D
   | neg x _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Introduce `D S T g hg h hh P u hu`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩` from `hu`. Establish `e` using `rankOne_pure S T a s t 1 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `fin_smul_gen (S := S) (T := T) α (1 * 1) (fun i j => a * t i * ∑ k, star (s k) * S.gram k j)`. Rewrite `e2` using `[← e, mul_one, mul_one]`. Establish `e3 : ∀ (c : AE D) (x : WO S T), actO S T g h (c • x) = c • actO S T g h x` using `fun c x => by`. Simplify using `only [actO, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← e2, e3, actO_rankOne]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fin_smul_mem hα h0 (rankOne_mem_latO S T (latCoord S) (latCoord T) a ha _ (mulVec_pure_mem S g hg s hs) _ (mulVec_pure_mem T h hh t ht))`. Consider the case `zero => simp only [actO, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => simp only [actO, Matrix.mul_add, Matrix.add_mul] at hy hz ⊢`. Conclude with `add_mem hy hz`.
-
-Consider the case `neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢`. Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actO_mem_latO_of_stab : ∀ (D : D7) (S T : HSp D), ∀ g ∈ KsphC S ∅, ∀ h ∈ KsphC T ∅, ∀ (P : HeightOneSpectrum (𝓞 D.host.F) → Prop), ∀ u ∈ latO S T (L0c D S) (L0c D T) P, actO S T g h u ∈ latO S T (L0c D S) (L0c D T) P := by
   intro D S T g hg h hh P u hu

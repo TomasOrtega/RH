@@ -14,13 +14,13 @@ namespace GlobalTheory.GeomFrobChar
 open GlobalTheory.WeilDeligne Polynomial in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι a r hr w hl B h rc hrc σ S hS t hw g hg`. Take `⟨α, rfl, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ S).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hS⟩)`. Establish `e` using `ParLaws.rec_eq_diag hrc (σ := ParLaws.toRep σ) hα`. Set `φ : Weil h` to `⟨g, mem_Weil_of_isFrob h hg⟩`. Establish `hφ : deg φ = 1` using `deg_eq_one_iff.mpr hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `charPol_wdOf hl ι (Units.continuous_val.comp hr) φ⁻¹`. Establish `e' : rc (GlobalTheory.LocGL.IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `e`. Establish `h2 : ((WDRep.diag h fun i => (α i)⁻¹).tw t).ρ φ⁻¹ = diagEnd fun i => (α i : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ ((-t : ℝ) : ℂ)`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Rewrite using `[WDRep.tw_ρ, WDRep.diag_ρ, deg_inv, hφ, Complex.ofReal_neg, Complex.cpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply, mul_assoc, mul_left_comm]`. Rewrite `h1` using `[hw, e', WD.lpTw_mk, WD.charPol_mk, h2, charpoly_diagEnd]`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[zpow_neg_one]`. Use `(show _ = _ from h1.symm).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.map_multiset_prod, Multiset.map_map, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Use `congr 1`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem charpoly_geomFrob : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (a : ℕ) (r : G E Ω →* GL (Fin a) (Qbar l)), Continuous r →

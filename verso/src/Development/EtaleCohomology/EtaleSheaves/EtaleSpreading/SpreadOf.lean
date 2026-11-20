@@ -3,7 +3,7 @@ import Development.EtaleCohomology.EtaleSheaves.EtaleSpreading.FPProof
 namespace LateralTheory.E.SpreadPf.Main
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.SpreadPf.Cut.Spread_of LateralTheory.E.SpreadPf.FPProof.finite_presentation_ring_maps_pre_ind_spread hS`.
+A detailed English derivation is pending.
 -/
 theorem Spread_of (hS : LateralTheory.E.SpreadPf.Cut.EtStage) : LateralTheory.E.DescendPf.Spread :=
   LateralTheory.E.SpreadPf.Cut.Spread_of LateralTheory.E.SpreadPf.FPProof.finite_presentation_ring_maps_pre_ind_spread hS

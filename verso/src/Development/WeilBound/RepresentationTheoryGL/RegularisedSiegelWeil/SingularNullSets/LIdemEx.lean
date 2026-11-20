@@ -17,7 +17,7 @@ namespace PositivityTheory.Rg.Rsw.L.LIdemEx
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_map' {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R']
     [Algebra F R'] (φ : R →ₐ[F] R') (b : Module.Basis ι F E) (z : R ⊗[F] E) (k : ι) :
@@ -29,11 +29,11 @@ theorem repr_map' {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRi
   | tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace D.host.F D.host.E`. Apply `(Algebra.TensorProduct.basis (AF D.host.F) b).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h1` using `repr_map' (evInf D.host.F w) b z k`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `repr_map' (evInf D.host.F w) b z' k`. Establish `h : Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z'` using `hi w`. Rewrite `h1` using `[h, h2]`. Conclude with `h1.symm`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `repr_map' (evFin D.host.F v) b z k`. Establish `h2` using `repr_map' (evFin D.host.F v) b z' k`. Establish `h : Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) z'` using `hf v`. Rewrite `h1` using `[h, h2]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_ext (z z' : AE D) (hi : ∀ w, compInf D.host.F D.host.E w z = compInf D.host.F D.host.E w z')
     (hf : ∀ v, cv D v z = cv D v z') : z = z' := by
@@ -66,9 +66,9 @@ def indS (S : Finset (Pl D)) : Af D.host.F :=
 def eS (S : Finset (Pl D)) : AE D := ((1, indS S) : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)
 
 /- English proof (translation)
-Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(evInf D.host.F w (1, indS S)) ⊗ₜ[D.host.F] (1 : D.host.E) = 1`. Rewrite using `[show evInf D.host.F w (1, indS S) = 1 from rfl]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(evFin D.host.F v (1, indS S)) ⊗ₜ[D.host.F] (1 : D.host.E) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show evFin D.host.F v (1, indS S) = if v ∈ S then 1 else 0 from rfl]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `TensorProduct.zero_tmul _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isIdem_eS (S : Finset (Pl D)) : IsIdem S (eS S) := by
   classical
@@ -83,7 +83,7 @@ theorem isIdem_eS (S : Finset (Pl D)) : IsIdem S (eS S) := by
     · exact TensorProduct.zero_tmul _ _
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy, RingHom.map_add]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compInf_cA (w : InfinitePlace D.host.F) (z : AE D) :
     compInf D.host.F D.host.E w (cA D z) =
@@ -94,7 +94,7 @@ theorem compInf_cA (w : InfinitePlace D.host.F) (z : AE D) :
   | tmul a x => rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy, RingHom.map_add]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cv_cA (v : Pl D) (z : AE D) :
     cv D v (cA D z) =
@@ -105,7 +105,7 @@ theorem cv_cA (v : Pl D) (z : AE D) :
   | tmul a x => rfl
 
 /- English proof (translation)
-Use `⟨ae_ext _ _ (fun w => ?_) (fun v => ?_), ae_ext _ _ (fun w => ?_) (fun v => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul, he.1 w, one_mul]`. Apply the tactic sequence `rw [map_mul, he.2 v] split_ifs <;> simp`. Rewrite using `[compInf_cA, he.1 w, RingHom.map_one]`. Apply the tactic sequence `rw [cv_cA, he.2 v] split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idem_props (S : Finset (Pl D)) (e : AE D) (he : IsIdem S e) : e * e = e ∧ cA D e = e := by
   classical
@@ -122,7 +122,7 @@ end PositivityTheory.Rg.Rsw.L.LIdemEx
 namespace PositivityTheory.Rg.Rsw.L
 
 /- English proof (translation)
-Introduce `_ S` and use `⟨⟨_, LIdemEx.isIdem_eS S⟩, fun e he => LIdemEx.idem_props S e he⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem idemEx : IdemEx := fun _ S =>
   ⟨⟨_, LIdemEx.isIdem_eS S⟩, fun e he => LIdemEx.idem_props S e he⟩

@@ -20,7 +20,7 @@ section Comb
 variable {Q L : Type} [AddCommGroup L] {n : ℕ}
 
 /- English proof (translation)
-Use `hf 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_zero' [Group Q] {f : L → Q} (hf : ∀ x y, f (x + y) = f x * f y) : f 0 = 1 := by
   have := hf 0 0
@@ -28,7 +28,7 @@ theorem add_zero' [Group Q] {f : L → Q} (hf : ∀ x y, f (x + y) = f x * f y) 
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero, add_zero' hf]`. Consider the case `succ m ih => rw [succ_nsmul, hf, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem add_nsmul' [Group Q] {f : L → Q} (hf : ∀ x y, f (x + y) = f x * f y) (m : ℕ) (x : L) :
     f (m • x) = f x ^ m := by
@@ -37,9 +37,9 @@ theorem add_nsmul' [Group Q] {f : L → Q} (hf : ∀ x y, f (x + y) = f x * f y)
   | succ m ih => rw [succ_nsmul, hf, ih, pow_succ]
 
 /- English proof (translation)
-Set `F : L →+ Additive Q` to `AddMonoidHom.mk' (fun x => Additive.ofMul (f x)) fun x y => by rw [hf]; rfl`. Set `F' : L →+ Additive Q` to `AddMonoidHom.mk' (fun x => Additive.ofMul (f' x)) fun x y => by rw [hf']; rfl`. Establish `: F.toIntLinearMap ∘ₗ bas.toLinearMap = F'.toIntLinearMap ∘ₗ bas.toLinearMap`. Use `(Pi.basisFun ℤ (Fin n)).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Additive.ofMul (h i)`. Establish `e` using `LinearMap.congr_fun this (bas.symm x)`. Simplify `e` using `[F, F']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ext_basis [CommGroup Q] (bas : (Fin n → ℤ) ≃ₗ[ℤ] L) {f f' : L → Q} (hf : ∀ x y, f (x + y) = f x * f y)
     (hf' : ∀ x y, f' (x + y) = f' x * f' y) (h : ∀ i, f (bas (Pi.single i 1)) = f' (bas (Pi.single i 1))) (x : L) :
@@ -54,11 +54,11 @@ theorem ext_basis [CommGroup Q] (bas : (Fin n → ℤ) ≃ₗ[ℤ] L) {f f' : L 
   simpa [F, F'] using e
 
 /- English proof (translation)
-Establish `hf : ∀ x y : L, ∏ i, p i ^ bas.symm (x + y) i = (∏ i, p i ^ bas.symm x i) * ∏ i, p i ^ bas.symm y i`. Introduce `x y`. Simplify using `only [map_add, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`. Use `⟨fun x => ∏ i, p i ^ bas.symm x i, hf, fun x => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_nsmul, Pi.smul_apply, nsmul_eq_mul, zpow_mul, zpow_natCast, hp, one_zpow]`. Use `beta_reduce`. Rewrite using `[LinearEquiv.symm_apply_apply, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb [CommGroup Q] (bas : (Fin n → ℤ) ≃ₗ[ℤ] L) (p : Fin n → Q) (k : ℕ) (hp : ∀ i, p i ^ k = 1) :
     ∃ f : L → Q, (∀ x y, f (x + y) = f x * f y) ∧ (∀ x, f (k • x) = 1) ∧ ∀ i, f (bas (Pi.single i 1)) = p i := by
@@ -78,9 +78,9 @@ theorem exists_comb [CommGroup Q] (bas : (Fin n → ℤ) ≃ₗ[ℤ] L) (p : Fin
 end Comb
 
 /- English proof (translation)
-Establish `h1 : u • x ∈ (I * J) • (⊤ : Submodule O L)`. Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hu hx`. Rewrite `h1` using `[h, Submodule.ideal_span_singleton_smul]`. Take `⟨y, -, hy⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [← hy, Nat.cast_smul_eq_nsmul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_of_mul {O L : Type} [CommRing O] [AddCommGroup L] [Module O L] {I J : Ideal O} {M : ℕ}
     (h : I * J = Ideal.span {(M : O)}) {u : O} (hu : u ∈ I) {x : L} (hx : x ∈ J • (⊤ : Submodule O L)) :
@@ -93,9 +93,9 @@ theorem smul_mem_of_mul {O L : Type} [CommRing O] [AddCommGroup L] [Module O L] 
   exact ⟨y, by rw [← hy, Nat.cast_smul_eq_nsmul]⟩
 
 /- English proof (translation)
-Establish `: IsIso φ.hom.left` using `inferInstanceAs (IsIso ((Over.forget S).map φ.hom))`. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `j : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `e₁ : x₀ = j ≫ x ≫ φ.hom` using `Over.OverMorphism.ext (by simp [hx, j])`. Establish `e₂ : y₀ = j ≫ y ≫ φ.hom` using `Over.OverMorphism.ext (by simp [hy, j])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂, ← MonObj.comp_mul, ← MonObj.mul_comp]`. Simplify using `[j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isGrpPullback_of_iso {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [GrpObj G'] (φ : G' ≅ G) [IsMonHom φ.hom] :
     IsGrpPullback G' G (𝟙 S) φ.hom.left := by
@@ -108,21 +108,19 @@ theorem isGrpPullback_of_iso {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [GrpObj
   simp [j]
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H D g J a bas l o _ _ b ρ S s t τ hMA _ _ hρ hζ _ hP`. Take `⟨φ, hmon, hL, hact, hgeo⟩` from `hP`. Take `⟨r, hr⟩` from `hMA`. Establish `hrpos : 0 < r` using `Nat.pos_of_ne_zero fun h => by`. Use `l.A_pos` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hr, h]`. Simplify using `at this`. Establish `hMpos : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨hab, hamp, hk⟩` from `PolPull.pol_pull_of_relAmple_local AmpleLocal.relAmple_of_locally S S t.A τ.G (𝟙 S) φ.hom.left t.L τ.PP.L t.isLB τ.PP.isLB t.ab (isGrpPullback_of_iso φ) hL`. Set `j : 𝟙_ (Over S) ⟶ Out.baseOver S` to `Over.homMk (𝟙 S) (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨f, fadd, fker, fbas⟩` from `exists_comb (Q := 𝟙_ (Over S) ⟶ τ.G) bas (fun i => j ≫ t.pt i ≫ φ.inv) l.A fun i => by`. Rewrite using `[← MonObj.comp_pow, ← MonObj.pow_comp, t.torsion, MonObj.one_comp, MonObj.comp_one]`. Take `⟨e', he', e, he, hee⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ _ from l.coprime ▸ Submodule.mem_top)`. Use `⟨⟨τ, hab.proper, hamp t.ample, hk t.ktriv, fun x => f (r • e • x), fun x y => ?_, fun x hx => ?_, f, fadd, fker, fun K _ _ x β hβ => ?_⟩, φ, hmon, hL, hact, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_add, fadd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `smul_mem_of_mul ((mul_comm _ _).trans l.prod) he hx`. Rewrite using `[hy, smul_smul, mul_comm, ← hr, fker]`. Establish `: CharZero K` using `RingHom.charZero_iff β.injective |>.1 inferInstance`. Take `⟨hd, I, hI, hev⟩` from `hgeo K x (β.comp (algebraMap o (KA l))) (by`. Rewrite using `[← Category.assoc, hβ, ← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `hA : ∀ y, toUnit (Over.mk x) ≫ f y = I.ev l.A y`. Use `ext_basis (Q := Over.mk x ⟶ τ.G) bas (fun y z => ?_) (I.add _) fun i => ?_` and prove the remaining obligations. Rewrite using `[fadd, MonObj.comp_mul]`. Rewrite using `[fbas, ← cancel_mono φ.hom, hev]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Use `⟨by rw [← hρ]; exact hd, I, by rw [← hζ]; exact hI, hA, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `smul_mem_of_mul l.prod he' hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : y = e • y + l.M • z` using `by rw [← hz, ← add_smul, add_comm, hee, one_smul]`. Rewrite using `[hA, add_nsmul' (I.add _), hr, I.tower _ _ hMpos hrpos]`. Use `conv_rhs => rw [h1, I.add, (I.ker _ hMpos _).2 ⟨z, rfl⟩, _root_.mul_one]`. Use `show (f _ ≫ φ.hom).left = _`. Rewrite using `[fbas]`.
-
-Simplify using `[j]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_obj_under : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (J : Type) (a : J → 𝓞 E) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La) (l : Level H) (o : Type) [CommRing o] [Algebra o (KA l)] (b : TBase o l.A) (ρ : o) (S : Scheme.{0}) (s : S ⟶ Sp (KA l)) (t : TObj g l.A J b (s ≫ spMap (algebraMap o (KA l)))) (τ : SAB H S), l.M ∣ l.A → IsSympBasis D bas → IsFractionRing o (KA l) → algebraMap o (KA l) ρ = (baseKA l).ρ → algebraMap o (KA l) (b.ζ : o) = (baseKA l).ζ → (IsReduced S ∨ IsLocallyNoetherian S) → IsPEL D a bas ρ t τ → ∃ ob : Obj D l (baseKA l) s, ObjUnder ob a bas t := by
   intro _ _ E _ _ _ H D g J a bas l o _ _ b ρ S s t τ hMA _ _ hρ hζ _ hP

@@ -8,7 +8,7 @@ set_option autoImplicit false
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Simplify using `only [defect, ← coe_substAlgHom (hasSubst_up_nmul (Q := E) hμ m), map_sum, map_smul, Finset.smul_sum, smul_sub, Finset.sum_sub_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem defect_sum {O E : Type} [CommRing O] [CommRing E] [Algebra O E] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0) (m : ℕ)
@@ -20,7 +20,7 @@ theorem defect_sum {O E : Type} [CommRing O] [CommRing E] [Algebra O E] {d : ℕ
   exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use extensionality with `α`. Rewrite using `[coeff_map, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_smul, coeff_map]`. Simplify using `only [smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_sum_smul {O E : Type} [CommRing O] [CommRing E] [Algebra O E] {σ : Type}
     {ι : Type} [Fintype ι] (b : ι → O) (s : ι → MvPowerSeries σ O) :
@@ -32,11 +32,9 @@ theorem map_sum_smul {O E : Type} [CommRing O] [CommRing E] [Algebra O E] {σ : 
   simp only [smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Introduce `p _ O E _ _ _ hF G d c ι _ e l b _ hl`. Establish `hinj : Function.Injective (algebraMap O E)` using `hF.inj`. Rewrite using `[c.isLie_iff hinj]`. Introduce `n`. Use `choose s hs hc using fun i => (c.isLie_iff hinj _ _).1 (hl i) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, b i • s i, ?_, fun w φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum_smul, comb, defect_sum c.isLaw.const]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hs i]`. Establish `: (∑ i, b i • l i) w - φ (c.ev n (∑ i, b i • s i)) = ∑ i, b i * (l i w - φ (c.ev n (s i)))`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, smul_eq_mul, mul_sub, Finset.sum_sub_distrib]`.
-
-Rewrite using `[this]`. Conclude with `Finset.dvd_sum fun i _ => dvd_mul_of_dvd_right (hc i w φ hφ) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Chart.isLie_comb : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (ι : Type) [Fintype ι] (e : ι → MvPowerSeries (Fin d) E) (l : ι → G.dual.Lie) (b : ι → O), (∀ i, QL c.μ ⊤ (e i)) → (∀ i, c.IsLie (e i) (l i)) → c.IsLie (comb b e) (∑ i, b i • l i) := by
   intro p _ O E _ _ _ hF G d c ι _ e l b _ hl

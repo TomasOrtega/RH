@@ -25,7 +25,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Rewrite using `[IrrGL.nu, H.twist, H.one, lpChar_lpOfChar, WD.lpTw]`. Use `congr 1`. Conclude with `ha.absPow_comp s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem LawsLit.nu_eq_lpTw (H : LawsLit a ha e rc) (x : IrrGL (w.adicCompletion E)) (s : ℝ) :
     rc (x.nu s) = (rc x).lpTw s := by
@@ -38,11 +38,11 @@ end GlobalTheory.LocLanglands
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hSC E Ω _ _ _ _ _ A w h a ha e rc H t χ hχ`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Establish `hL` using `GlobalTheory.T.isLanglandsClassification_detCharacter hSC (w.adicCompletion E) t χ hχ`. Take `⟨φ⟩` from `(IrrRep.det (Fin t) χ hχ).nonempty_equiv_rep`. Establish `hL'` using `hL.of_equiv φ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.langlands _ (cls (IrrRep.det (Fin t) χ hχ)) hL', segSum, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `show ((rc ((IrrGL.ofChar χ hχ).nu ((((t : ℝ) - 1) / 2 - j : ℝ) : ℂ))).lpTw ((((1 : ℕ) : ℝ) - 1) / 2)).lpChar (WD.lpSp h 1) = _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ((((1 : ℕ) : ℝ) - 1) / 2) = 0` using `by norm_num`. Rewrite using `[h0, (GlobalTheory.T.weilDeligne_charpoly_twist_special E Ω A w h _).1, H.nu_eq_lpTw]`.
+A detailed English derivation is pending.
 -/
 theorem lawsLit_det : StandardCosocleGL → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ) (rc : IrrGL (w.adicCompletion E) → WD h), LawsLit a ha e rc → ∀ (t : ℕ) χ hχ, rc (cls (IrrRep.det (Fin t) χ hχ)) = sumList ((List.range t).map fun j : ℕ => (rc (.ofChar χ hχ)).lpTw (((t : ℝ) - 1) / 2 - j)) := by
   intro hSC E Ω _ _ _ _ _ A w h a ha e rc H t χ hχ

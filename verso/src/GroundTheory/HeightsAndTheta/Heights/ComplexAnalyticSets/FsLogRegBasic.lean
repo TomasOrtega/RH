@@ -21,33 +21,33 @@ def regMat (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) : Matrix (Fin (n + 1)
   Matrix.of (Fin.cons u fun i => ((√ε : ℝ) : ℂ) • (h.matᵀ)⁻¹ i)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sqDual_nonneg (h : HermNorm n) (y : Fin n → ℂ) : 0 ≤ sqDual h y :=
   Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (sqDual_nonneg h y)`.
+A detailed English derivation is pending.
 -/
 theorem dualNorm_sq (h : HermNorm n) (y : Fin n → ℂ) : h.dualNorm y ^ 2 = sqDual h y :=
   Real.sq_sqrt (sqDual_nonneg h y)
 
 /- English proof (translation)
-Rewrite using `[← dualNorm_sq]`. Conclude with `pow_pos (h.dualNorm_pos hy) 2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqDual_pos (h : HermNorm n) {y : Fin n → ℂ} (hy : y ≠ 0) : 0 < sqDual h y := by
   rw [← dualNorm_sq]
   exact pow_pos (h.dualNorm_pos hy) 2
 
 /- English proof (translation)
-Rewrite using `[fsLogReg, dualNorm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fsLogReg_eq (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) (y : Fin n → ℂ) :
     fsLogReg h u ε y = Real.log ((‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y) / sqDual h y) / 2 := by
   rw [fsLogReg, dualNorm_sq]
 
 /- English proof (translation)
-Unfold `sqDual`. Use `ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_sqDual (h : HermNorm n) : ContDiff ℝ ∞ (sqDual h) := by
   unfold sqDual
@@ -56,15 +56,15 @@ theorem contDiff_sqDual (h : HermNorm n) : ContDiff ℝ ∞ (sqDual h) := by
   exact ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j)
 
 /- English proof (translation)
-The claim follows from `(contDiff_norm_sq ℝ).comp (ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_lin (u : Fin n → ℂ) : ContDiff ℝ ∞ fun y : Fin n → ℂ => ‖∑ j, u j * y j‖ ^ 2 :=
   (contDiff_norm_sq ℝ).comp (ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j))
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hS` using `sqDual_pos h hy`. Establish `hQ : 0 ≤ ‖∑ j, u j * y j‖ ^ 2` using `sq_nonneg _`. Establish `hN : 0 < ‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y` using `by positivity`. Establish `hD : ContDiffAt ℝ ∞ (fun y => (‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y) / sqDual h y) y` using `(((contDiff_lin u).add (contDiff_const.mul (contDiff_sqDual h))).contDiffAt).div (contDiff_sqDual h).contDiffAt hS.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : fsLogReg h u ε = fun y => Real.log ((‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y) / sqDual h y) / 2`. Use function extensionality and compare the values at `(fsLogReg_eq h u ε)`. Rewrite using `[hf]`. Conclude with `((hD.log (div_pos hN hS).ne').div_const 2).contDiffWithinAt`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_fsLogReg (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) :
     ContDiffOn ℝ ∞ (fsLogReg h u ε) {x | x ≠ 0} := by
@@ -82,9 +82,9 @@ theorem contDiffOn_fsLogReg (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε
   exact ((hD.log (div_pos hN hS).ne').div_const 2).contDiffWithinAt
 
 /- English proof (translation)
-Establish `hu : ‖∑ j, u j * (t • y) j‖ = ‖t‖ * ‖∑ j, u j * y j‖`. Rewrite using `[← norm_mul, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Pi.smul_apply, smul_eq_mul]; ring`. Establish `ht2 : ‖t‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.mpr ht)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `fsLogReg`. Rewrite using `[hu, h.dualNorm_smul, mul_pow, mul_pow, ← mul_assoc, mul_comm ε, mul_assoc, ← mul_add, mul_div_mul_left _ _ ht2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsLogReg_smul (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) {t : ℂ} (ht : t ≠ 0)
     (y : Fin n → ℂ) : fsLogReg h u ε (t • y) = fsLogReg h u ε y := by
@@ -98,9 +98,9 @@ theorem fsLogReg_smul (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) {t : ℂ} 
     mul_div_mul_left _ _ ht2]
 
 /- English proof (translation)
-Rewrite using `[fsLogReg_eq, fsLogReg_eq]`. Break down `(sqDual_nonneg h y).eq_or_lt with hS | hS` into its components or cases. Rewrite using `[← hS]`. Simplify using the standard rewrite rules. Establish `hQ : 0 ≤ ‖∑ j, u j * y j‖ ^ 2` using `sq_nonneg _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : 0 < (‖∑ j, u j * y j‖ ^ 2 + δ * sqDual h y) / sqDual h y` using `by positivity`. Establish `h2 : (‖∑ j, u j * y j‖ ^ 2 + δ * sqDual h y) / sqDual h y ≤ (‖∑ j, u j * y j‖ ^ 2 + δ' * sqDual h y) / sqDual h y` using `div_le_div_of_nonneg_right (by nlinarith) hS.le`. Conclude with `div_le_div_of_nonneg_right (Real.log_le_log h1 h2) zero_le_two`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fsLogReg_mono (h : HermNorm n) (u : Fin n → ℂ) {δ δ' : ℝ} (hδ : 0 < δ) (hδδ' : δ ≤ δ')
     (y : Fin n → ℂ) : fsLogReg h u δ y ≤ fsLogReg h u δ' y := by
@@ -116,7 +116,7 @@ theorem fsLogReg_mono (h : HermNorm n) (u : Fin n → ℂ) {δ δ' : ℝ} (hδ :
   exact div_le_div_of_nonneg_right (Real.log_le_log h1 h2) zero_le_two
 
 /- English proof (translation)
-Establish `hf : fsLogReg h u ε = fun y => Real.log ((‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y) / sqDual h y) / 2`. Use function extensionality and compare the values at `(fsLogReg_eq h u ε)`. Rewrite using `[hf]`. Conclude with `((Real.measurable_log.comp (((contDiff_lin u).continuous.measurable.add (measurable_const.mul (contDiff_sqDual h).continuous.measurable)).div (contDiff_sqDual h).continuous.measurable)).div_const 2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_fsLogReg (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) :
     Measurable (fsLogReg h u ε) := by
@@ -129,9 +129,9 @@ theorem measurable_fsLogReg (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) :
       (contDiff_sqDual h).continuous.measurable)).div_const 2)
 
 /- English proof (translation)
-Establish `h0 : (regMat h u ε *ᵥ y) 0 = ∑ j, u j * y j`. Simplify using `[regMat, Matrix.mulVec, dotProduct]`. Rewrite using `[Fin.sum_univ_succ, sqDual, Finset.mul_sum, h0, add_right_inj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (regMat h u ε *ᵥ y) i.succ = ((√ε : ℝ) : ℂ) * ((h.matᵀ)⁻¹ *ᵥ y) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [regMat, Matrix.mulVec, dotProduct, Matrix.of_apply, Fin.cons_succ, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[this, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hε]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_regMat (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 ≤ ε) (y : Fin n → ℂ) :
     ∑ i, ‖(regMat h u ε *ᵥ y) i‖ ^ 2 = ‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y := by
@@ -145,9 +145,9 @@ theorem sum_regMat (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 ≤ 
   rw [this, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hε]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hs` using `sum_regMat h u hε.le y`. Rewrite `hs` using `[h0]`. Establish `hS` using `sqDual_pos h hy`. Establish `hQ : 0 ≤ ‖∑ j, u j * y j‖ ^ 2` using `sq_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at hs`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem regMat_mulVec_ne_zero (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) {y : Fin n → ℂ}
     (hy : y ≠ 0) : regMat h u ε *ᵥ y ≠ 0 := by
@@ -161,7 +161,7 @@ theorem regMat_mulVec_ne_zero (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (h
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[sum_regMat h 0 zero_le_one]`. Simplify using `[HermNorm.dualNorm, sqDual]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_dualNorm_eq (h : HermNorm n) (y : Fin n → ℂ) :
     Real.log (h.dualNorm y) = Real.log √(∑ i, ‖(regMat h 0 1 *ᵥ y) i‖ ^ 2) := by
@@ -169,9 +169,9 @@ theorem log_dualNorm_eq (h : HermNorm n) (y : Fin n → ℂ) :
   simp [HermNorm.dualNorm, sqDual]
 
 /- English proof (translation)
-Rewrite using `[sum_regMat h u hε.le, fsLogReg_eq]`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using `[HermNorm.dualNorm, sqDual]`. Establish `hS` using `sqDual_pos h hy`. Establish `hQ : 0 ≤ ‖∑ j, u j * y j‖ ^ 2` using `sq_nonneg _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 0 < ‖∑ j, u j * y j‖ ^ 2 + ε * sqDual h y` using `by positivity`. Rewrite using `[Real.log_div hN.ne' hS.ne', Real.log_sqrt hN.le, HermNorm.dualNorm, show ∑ i, ‖((h.matᵀ)⁻¹ *ᵥ y) i‖ ^ 2 = sqDual h y from rfl, Real.log_sqrt hS.le]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsLogReg_add_log (h : HermNorm n) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) (y : Fin n → ℂ) :
     fsLogReg h u ε y + Real.log (h.dualNorm y) = Real.log √(∑ i, ‖(regMat h u ε *ᵥ y) i‖ ^ 2) := by

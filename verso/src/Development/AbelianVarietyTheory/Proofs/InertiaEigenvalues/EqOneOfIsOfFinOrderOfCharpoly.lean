@@ -16,9 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepO
 open GlobalTheory.TripleGal (UnrRho HkFrob)
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hA`. Establish `h1 : minpoly K (A : Matrix (Fin n) (Fin n) K) ∣ X ^ m - C 1` using `minpoly.dvd _ _ (by`. Rewrite using `[map_sub, map_pow, aeval_X, map_one, map_one, ← Units.val_pow_eq_pow_val, h, Units.val_one, sub_self])`. Establish `h2` using `((separable_X_pow_sub_C (1 : K) (Nat.cast_ne_zero.2 hm.ne') one_ne_zero).squarefree.squarefree_of_dvd h1).isRadical n _ (hc ▸ Matrix.minpoly_dvd_charpoly _)`. Establish `h3` using `aeval_eq_zero_of_dvd_aeval_eq_zero h2 (minpoly.aeval K _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_sub, aeval_X, map_one, sub_eq_zero]`. Conclude with `Units.ext h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_isOfFinOrder_of_charpoly {K : Type} [Field K] [CharZero K] {n : ℕ} {A : GL (Fin n) K}
     (hA : IsOfFinOrder A) (hc : (A : Matrix (Fin n) (Fin n) K).charpoly = (X - 1) ^ n) : A = 1 := by
@@ -32,7 +32,7 @@ theorem eq_one_of_isOfFinOrder_of_charpoly {K : Type} [Field K] [CharZero K] {n 
   exact Units.ext h3
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpolyRev, Matrix.charpolyRev, ← coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 2`. Apply the tactic sequence `by_cases h : a = b <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpolyRev_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n : ℕ} (M : Matrix (Fin n) (Fin n) R) :
     M.charpolyRev.map f = (M.map f).charpolyRev := by
@@ -42,7 +42,7 @@ theorem charpolyRev_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {
   by_cases h : a = b <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpolyRev, ← coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 2`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, mul_comm z]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_charpolyRev {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (z : R) :
     M.charpolyRev.eval z = (1 - z • M).det := by
@@ -52,13 +52,13 @@ theorem eval_charpolyRev {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (
   by_cases h : a = b <;> simp [h, mul_comm z]
 
 /- English proof (translation)
-Establish `e : ∀ z : ℂ, (Matrix.scalar (Fin n) z - B).det = (m.map fun a => z - a).prod` using `fun z => by`. Rewrite using `[← Matrix.eval_charpoly, hB, eval_multiset_prod, Multiset.map_map]`. Simplify using the standard rewrite rules. Establish `h0 : (Matrix.scalar (Fin n) 0 - B).det ≠ 0`. Rewrite using `[map_zero, zero_sub, Matrix.det_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (by simp) (Matrix.isUnit_det_of_left_inverse h).ne_zero`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `z`. Use `mul_right_cancel₀ h0 ?_` and prove the remaining obligations. Establish `e1 : (1 - z • A) * (Matrix.scalar (Fin n) 0 - B) = Matrix.scalar (Fin n) z - B`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, zero_sub, mul_neg, sub_mul, one_mul, smul_mul_assoc, h, neg_sub, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]`. Rewrite using `[eval_charpolyRev, ← Matrix.det_mul, e1, e, e, eval_multiset_prod, Multiset.map_map, ← Multiset.prod_map_mul]`. Use `congrArg _ (Multiset.map_congr rfl fun a ha => ?_)` and prove the remaining obligations. Establish `ha0 : a ≠ 0` using `fun h1 => h0 (by`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨a, ha, by rw [h1, sub_self]⟩))`. Simplify using `only [Function.comp_apply, eval_sub, eval_one, eval_mul, eval_C, eval_X]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem charpolyRev_of_inv {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : A * B = 1) {m : Multiset ℂ}
     (hB : B.charpoly = (m.map fun a => X - C a).prod) : A.charpolyRev = (m.map fun a => 1 - C a⁻¹ * X).prod := by
@@ -84,9 +84,7 @@ theorem charpolyRev_of_inv {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : A *
   ring
 
 /- English proof (translation)
-Establish `h : M.charpolyRev.natDegree < n + 1`. Rewrite using `[← Matrix.reverse_charpoly, Nat.lt_succ_iff]`. Conclude with `(reverse_natDegree_le _).trans (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin])`. Use `eval_eq_sum_range' h 1` as an intermediate fact. Simplify using `only [one_pow, mul_one, eval_charpolyRev, one_smul] at this`.
-
-Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_coeff_charpolyRev {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) :
     ∑ k ∈ Finset.range (n + 1), M.charpolyRev.coeff k = (1 - M).det := by
@@ -100,9 +98,9 @@ theorem sum_coeff_charpolyRev {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (
 variable {D : D7} {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : X.Tw}
 
 /- English proof (translation)
-Use `GlobalTheory.PointIrredCompare.Ine_le_of_normal (D.nd.plOm.2 w) hA r.ker (fun τ hτ => ?_) hσ` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `h.2.2 w hl`. Take `⟨h3, h4⟩` from `(D.naut.unr_iff_ine _).1 ((D.naut.unr_tw _ ((1 - (a : ℝ)) / 2)).2 hu)`. Use `eq_one_of_isOfFinOrder_of_charpoly (finite_zpowers.1 ((h2.1 h3).subset ?_)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨τ ^ n, zpow_mem hτ n, map_zpow r τ n⟩`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[h1 τ hτ, h4 τ hτ, D.naut.lpDim_tw, D.naut.locG_dim]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unramified_of_isGaloisRepOf {a : ℕ} {π : D.naut.CG a} {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {r : GalE D →* GL (Fin a) (Qbar l)} (h : IsGaloisRepOf D π l ι r) {w : PlE D.host} (hl : w ∉ placesOver D.host.E l)
@@ -119,7 +117,7 @@ theorem unramified_of_isGaloisRepOf {a : ℕ} {π : D.naut.CG a} {l : ℕ} [Fact
     simp
 
 /- English proof (translation)
-Establish `h1 : cycZ D.host.E D.nd.Om (X.l i) σ = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hv hA (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]`. Simplify using the standard rewrite rules. Rewrite using `[eps0, MonoidHom.comp_apply, h1, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclotomicEps_eq_one_on_inertia {v : PlE D.host} (hv : v ∉ placesOver D.host.E (X.l i)) {A : ValuationSubring D.nd.Om}
     (hA : IsPlaceOver (F := D.host.E) A v) {σ : GalE D} (hσ : σ ∈ Ine (F := D.host.E) A) : eps0 X i σ = 1 := by
@@ -130,7 +128,7 @@ theorem cyclotomicEps_eq_one_on_inertia {v : PlE D.host} (hv : v ∉ placesOver 
   rw [eps0, MonoidHom.comp_apply, h1, map_one]
 
 /- English proof (translation)
-Use `show algebraMap ℤ_[X.l i] (X.O0 i) ((cycZ D.host.E D.nd.Om (X.l i) σ : ℤ_[X.l i]ˣ) : ℤ_[X.l i]) = _`. Rewrite using `[cycZ_of_isFrob hv hA hσ, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclotomicEps_frobenius_eq_norm {v : PlE D.host} (hv : v ∉ placesOver D.host.E (X.l i)) {A : ValuationSubring D.nd.Om}
     (hA : IsPlaceOver (F := D.host.E) A v) {σ : GalE D} (hσ : IsFrob (F := D.host.E) A (normV v) σ) :
@@ -144,7 +142,7 @@ def matW (s : X.Sig i) (g : GalE D) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i) :=
   ((twistW s g : (X.O0 i)ˣ) : X.O0 i) • ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i))
 
 /- English proof (translation)
-Rewrite using `[matW, Tmat, smul_smul, twistW, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_pow_eq_pow_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matW_eq (s : X.Sig i) (g : GalE D) :
     matW s g = (((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) ^ D.R.t) • Tmat i s g := by
@@ -152,7 +150,7 @@ theorem matW_eq (s : X.Sig i) (g : GalE D) :
     Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Rewrite using `[matW, matW, smul_mul_smul_comm, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, Units.val_one, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matW_mul_inv (s : X.Sig i) (g : GalE D) : matW s g * matW s g⁻¹ = 1 := by
   rw [matW, matW, smul_mul_smul_comm, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, mul_inv_cancel, map_one,
@@ -166,9 +164,9 @@ variable {σ : D.what₂.FT} {π : D.naut.CG D.R.r} {r : GalE D →* GL (Fin D.R
   {w : D.what₂.places.Pl} {red : Zbar (X.l i) →+* FbAt D w}
 
 /- English proof (translation)
-Introduce `v hl hg A hA g hgI`. Take `⟨n, hn⟩` from `h.shift`. Establish `e` using `h.rho g`. Rewrite `e` using `[unramified_of_isGaloisRepOf h.gal hl (h.param.unr v hg) hA hgI, (hn.unr_iff ha (Or.inl hl) hA).2 (shiftChar_unr C v) g hgI, Units.val_one, map_one, one_smul, Units.val_one]`. Use `Units.ext (Matrix.map_injective (GlobalTheory.GalChar.toQ_injective ρ.κ) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using e`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsTripleWith.unrRho {b : Bool} {ρ : Reading X i b} (ha : IsGlobalArtin art)
     (h : IsTripleWith C art ρ s σ π r ν w red) : UnrRho i s := by
@@ -181,13 +179,13 @@ theorem IsTripleWith.unrRho {b : Bool} {ρ : Reading X i b} (ha : IsGlobalArtin 
   simpa using e
 
 /- English proof (translation)
-Establish `hl : P ∉ placesOver D.host.E (X.l i)` using `fun hk => hS (X.twistExcludedPlaces_contains_residueChar i hk)`. Establish `hg : ∀ k, P ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hS (X.placesOver_subset_exceptional i k hk)`. Take `⟨n, hn⟩` from `hC.chiS`. Establish `hu` using `(hn.unr_iff ha (Or.inl hl) hB).1 (X.twistCharacterFamily_unramified i _ _ P hl hg (fun hk => hS (X.primes_subset_exceptional i hk)) B hB)`. Establish `e1` using `h.charpoly_frob ha hl hg hB hF`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ρ.toC ((twistW s g⁻¹ : (X.O0 i)ˣ) : X.O0 i) = (((blockChar C (X.l i) (jIdx s)).val P : ℂˣ) : ℂ) * ((normV P : ℕ) : ℂ) ^ D.R.t`. Rewrite using `[twistW, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_pow_eq_pow_val, cyclotomicEps_frobenius_eq_norm hl hB hF, map_mul, map_pow, map_natCast, map_units_inv, ρ.toC_apply, hn.frob ha (Or.inl hl) hu hB hF, inv_inv, mul_comm]`. Rewrite `e1` using `[← Matrix.charpoly_map, ← Function.comp_def (fun a => Polynomial.X - Polynomial.C a), ← Multiset.map_map]`. Establish `e3` using `charpoly_smul_of_prod _ _ (ρ.toC ((twistW s g⁻¹ : (X.O0 i)ˣ) : X.O0 i)) e1`. Establish `e4 : (matW s g⁻¹).map ρ.toC = ρ.toC ((twistW s g⁻¹ : (X.O0 i)ˣ) : X.O0 i) • ((X.rhoS i s g⁻¹ : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map ρ.toC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x y`. Simplify using `[matW]`. Rewrite `e3` using `[← e4, ← Function.comp_def (fun a => Polynomial.X - Polynomial.C a), ← Multiset.map_map]`. Establish `e5 : (matW s g).map ρ.toC * (matW s g⁻¹).map ρ.toC = 1`. Rewrite using `[← Matrix.map_mul, matW_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[charpolyRev_map, charpolyRev_of_inv e5 e3, satake, Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← geometric_eigenvalue, e2, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTripleWith.charpolyRev_matW {ρ : Reading X i (X.side i s)} (ha : IsGlobalArtin art) (hC : IsChars C art ρ)
     (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host} (hS : P ∉ X.S0 i) {B : ValuationSubring D.nd.Om}
@@ -219,9 +217,9 @@ theorem IsTripleWith.charpolyRev_matW {ρ : Reading X i (X.side i s)} (ha : IsGl
   rw [← geometric_eigenvalue, e2, ← mul_assoc]
 
 /- English proof (translation)
-Introduce `P hS hP g hF k hk`. Take `⟨x, h1, h2⟩` from `h.hecke k P hk hP hS`. Establish `e` using `congrArg (fun p => coeff p k) (h.charpolyRev_matW ha hC hS (D.nd.plOm.2 P) hF)`. Simplify using `only [coeff_map, GlobalTheory.coeff_prod_one_sub_C_mul_X] at e`. Establish `e2 : ((normV P : ℕ) : ℂ) ^ (k * (k - 1) / 2) * heckeVal (muBase C (X.l i) (jIdx s)) π k P = (((normV P : ℕ) : ℂ) ^ ((D.R.r - 1) / 2)) ^ k * (satake (muBase C (X.l i) (jIdx s)) π P).esymm k` using `(pow_mul_heckeVal _ π P hk).trans (Multiset.pow_smul_esymm (((normV P : ℕ) : ℂ) ^ ((D.R.r - 1) / 2)) k (satake (muBase C (X.l i) (jIdx s)) π P)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : (-1) ^ k * ((normV P : ℕ) : X.O0 i) ^ (k * (k - 1) / 2) * x = (matW s g).charpolyRev.coeff k`. Apply `ρ.toC_injective` to reduce the goal to its premises. Rewrite using `[e, map_mul, map_mul, map_pow, map_pow, map_neg, map_one, map_natCast, h2, mul_assoc, e2, mul_assoc]`. Rewrite using `[← matW_eq, ← e3, ← h1, map_mul, map_mul, map_pow, map_pow, map_neg, map_one, map_natCast]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTripleWith.hkFrob {ρ : Reading X i (X.side i s)} (ha : IsGlobalArtin art) (hC : IsChars C art ρ)
     (h : IsTripleWith C art ρ s σ π r ν w red) : HkFrob i s := by
@@ -241,7 +239,7 @@ theorem IsTripleWith.hkFrob {ρ : Reading X i (X.side i s)} (ha : IsGlobalArtin 
 end With
 
 /- English proof (translation)
-Establish `h : v ∈ placesOver D.host.E (if X.l i = D.host.pde then D.host.pde' else D.host.pde)` using `X.pD_eq i ▸ Finset.mem_coe.2 hv`. Establish `hl : (X.l i).Prime` using `(X.lPrime i).out`. Use `split_ifs at h with e`. Conclude with `⟨GlobalTheory.GalChar.notMem_of_ne D.host.pde'_prime hl (e ▸ D.host.pde_ne.symm) h, fun k => GlobalTheory.GalChar.notMem_of_ne D.host.pde'_prime (D.host.g_prime k) (D.host.pde_ne_g k).2 h⟩`. Conclude with `⟨GlobalTheory.GalChar.notMem_of_ne D.host.pde_prime hl (Ne.symm e) h, fun k => GlobalTheory.GalChar.notMem_of_ne D.host.pde_prime (D.host.g_prime k) (D.host.pde_ne_g k).1 h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem notMem_of_mem_pD {v : PlE D.host} (hv : v ∈ X.pD i) :
     v ∉ placesOver D.host.E (X.l i) ∧ ∀ k, v ∉ placesOver D.host.E (D.host.g k) := by
@@ -255,7 +253,7 @@ theorem notMem_of_mem_pD {v : PlE D.host} (hv : v ∈ X.pD i) :
       fun k => GlobalTheory.GalChar.notMem_of_ne D.host.pde_prime (D.host.g_prime k) (D.host.pde_ne_g k).1 h⟩
 
 /- English proof (translation)
-Rewrite using `[matW_eq, Tmat, cyclotomicEps_eq_one_on_inertia hl hA hI, hu v hl hg A hA g hI, Units.val_one, Units.val_one, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matW_of_mem_Ine (hu : UnrRho i s) {v : PlE D.host} (hl : v ∉ placesOver D.host.E (X.l i))
     (hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)) {A : ValuationSubring D.nd.Om}
@@ -266,7 +264,7 @@ theorem matW_of_mem_Ine (hu : UnrRho i s) {v : PlE D.host} (hl : v ∉ placesOve
 variable {Y : NExp D.R D.host D.what₂ D.LL0 D.nd X}
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, h⟩ := h let ⟨_, _, _, _, _, _, _, _, h2⟩ := h.triple hi s h2.unrRho h.artin`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleOf.unrRho (h : IsTripleOf Y) (hi : X.NonzeroIndexPlace i) (s : X.Sig i) : UnrRho i s :=
   let ⟨_, _, h⟩ := h
@@ -274,7 +272,7 @@ theorem IsTripleOf.unrRho (h : IsTripleOf Y) (hi : X.NonzeroIndexPlace i) (s : X
   h2.unrRho h.artin
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, h⟩ := h let ⟨_, h1, _, _, _, _, _, _, h2⟩ := h.triple hi s h2.hkFrob h.artin h1`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleOf.hkFrob (h : IsTripleOf Y) (hi : X.NonzeroIndexPlace i) (s : X.Sig i) : HkFrob i s :=
   let ⟨_, _, h⟩ := h
@@ -282,9 +280,9 @@ theorem IsTripleOf.hkFrob (h : IsTripleOf Y) (hi : X.NonzeroIndexPlace i) (s : X
   h2.hkFrob h.artin h1
 
 /- English proof (translation)
-Establish `hd : ((matW s g).charpolyRev.map (algebraMap (X.O0 i) (X.O i))).natDegree < D.R.r + 1`. Rewrite using `[← Matrix.reverse_charpoly, Nat.lt_succ_iff]`. Conclude with `natDegree_map_le.trans ((reverse_natDegree_le _).trans (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]))`. Rewrite using `[as_sum_range' _ _ hd]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.hkFrob hi s P hS hP g hF k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)), coeff_map, matW_eq]`.
+A detailed English derivation is pending.
 -/
 theorem IsTripleOf.hecke_polynomial (h : IsTripleOf Y) (hi : X.NonzeroIndexPlace i) (s : X.Sig i) {P : PlE D.host} (hS : P ∉ X.S0 i)
     (hP : IsSplitPl D.host P) {g : GalE D} (hF : IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) g⁻¹) :
@@ -299,13 +297,13 @@ theorem IsTripleOf.hecke_polynomial (h : IsTripleOf Y) (hi : X.NonzeroIndexPlace
   rw [h.hkFrob hi s P hS hP g hF k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)), coeff_map, matW_eq]
 
 /- English proof (translation)
-Introduce `i hi s _`. Establish `hu` using `h.unrRho hi s`. Use `⟨twistW s, ?_, fun P hS _ A hA g hI => ?_, fun v hv A hA => ?_, fun P hS hP g hF => ?_⟩` and prove the remaining obligations. Take `⟨ρ⟩` from `Reading.nonempty i true`. Conclude with `Units.continuous_val.comp (((GlobalTheory.GalChar.continuous_units _ (GlobalTheory.GalChar.continuous_cyc (X.twistBaseCoefficientRing_isAdic i) ρ.κ_alg)).pow D.R.t).mul (GlobalTheory.GalChar.continuous_units _ (X.twistCharacterFamily_continuous i _ _)).inv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl : P ∉ placesOver D.host.E (X.l i)` using `fun hk => hS (X.twistExcludedPlaces_contains_residueChar i hk)`. Establish `hg : ∀ k, P ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hS (X.placesOver_subset_exceptional i k hk)`. Use `(matW_of_mem_Ine hu hl hg hA hI).trans ?_` and prove the remaining obligations. Rewrite using `[chiS, X.twistCharacterFamily_unramified i _ _ P hl hg (fun hk => hS (X.primes_subset_exceptional i hk)) A hA g hI, inv_one, Units.val_one, one_smul]`. Take `⟨hl, hg⟩` from `notMem_of_mem_pD hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hb : X.side i s`. Use `Or.inl fun g hI => (matW_of_mem_Ine hu hl hg hA hI).trans ?_` and prove the remaining obligations. Rewrite using `[chiS, X.twistCharacterFamily_at_auxiliaryPlaces i _ _ v hv A hA g hI, hb, if_neg Bool.false_ne_true, inv_inv]`. Use `Or.inr fun g hI => (matW_of_mem_Ine hu hl hg hA hI).trans ?_` and prove the remaining obligations. Rewrite using `[chiS, X.twistCharacterFamily_at_auxiliaryPlaces i _ _ v hv A hA g hI, hb, if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = algebraMap (X.O0 i) (X.O i) (1 - matW s g).det`. Rewrite using `[← sum_coeff_charpolyRev, map_sum, matW_eq]`. Conclude with `Finset.sum_congr rfl fun k hk => h.hkFrob hi s P hS hP g hF k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTripleOf.adm8 (h : IsTripleOf Y) : adm8 X Y := by
   intro i hi s _
@@ -330,7 +328,7 @@ theorem IsTripleOf.adm8 (h : IsTripleOf Y) : adm8 X Y := by
     exact Finset.sum_congr rfl fun k hk => h.hkFrob hi s P hS hP g hF k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsTripleOf.adm8 h, IsTripleOf.allGood h, IsTripleOf.sig_all h⟩`.
+Supply the required witnesses or components.
 -/
 theorem satake_identity_of_isTriple (D : D7) (h : IsTriple D) :
     Formalism.MainNotions.BlochKatoReduction.Gen.adm8 D.ntw D.nexp ∧ GlobalTheory.TwSys.AllGood D.nexp ∧ D.nexp.sig_all :=

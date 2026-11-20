@@ -10,7 +10,7 @@ open GlobalTheory.BigTop GlobalTheory.BigOn
 namespace GlobalTheory.BigOn
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p hr hw`. Take `⟨hU, hB, hR⟩` from `GlobalTheory.T.split_rows_uniform_links_rank D L hT Gi Gl Kc Y cX ex Csz p hr`. Take `⟨hBar, hPin, hPh⟩` from `GlobalTheory.T.split_rows_bar_phase_compatibility D L hT Gi Gl Kc Y cX ex Csz p hr`. Conclude with `⟨GlobalTheory.T.char_R2_of_exAt_of_singleIndexPlacesTwisted D L hT Gi Gl Kc Y cX ex Csz p hr.exAt hw, hr.ok.ok2, hU, hB, hR, hBar, hPin, hPh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem links2_of_rows : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D)
     (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz),

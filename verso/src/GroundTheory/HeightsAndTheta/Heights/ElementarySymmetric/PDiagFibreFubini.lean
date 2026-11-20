@@ -19,9 +19,9 @@ def topCoef : ℕ → Fin 2 → ℝ := fun n => if n = 0 then ![1, 0] else ![0, 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j z`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `h0 : (0 : ℕ) < 2 * k` using `by omega`. Simplify using `[wwLinPot, wordCoef, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Apply the tactic sequence `simp only [Fin.cons_succ, pot, word, wwLinPot, wordCoef, Fin.val_succ] split_ifs <;> first | contradiction | omega | simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_pot_word (D k i : ℕ) (hik : i < k) (X₀ X₁ A₀ : HermLine ι) :
     (Fin.cons (α := fun _ => ((Σ k, ι k) → ℂ) → ℝ) (fun z => Real.log (X₀.h z) - Real.log (X₁.h z))
@@ -36,11 +36,11 @@ theorem cons_pot_word (D k i : ℕ) (hik : i < k) (X₀ X₁ A₀ : HermLine ι)
     split_ifs <;> first | contradiction | omega | simp
 
 /- English proof (translation)
-Take `⟨r, hr⟩ : ∃ r, 2 * k = 2 + 2 * i + r` from `⟨2 * k - 2 - 2 * i, by omega⟩`. Rewrite using `[wwLinProd, hr, Finset.prod_range_add, Finset.prod_range_add]`. Establish `h1 : ∏ x ∈ Finset.range 2, (C (wordCoef i x 0) * X 0 + C (wordCoef i x 1) * X 1 : MvPolynomial (Fin 2) ℝ) = (X 0 - X 1) * X 1`. Simplify using `[Finset.prod_range_succ, wordCoef]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ∏ x ∈ Finset.range (2 * i), (C (wordCoef i (2 + x) 0) * X 0 + C (wordCoef i (2 + x) 1) * X 1 : MvPolynomial (Fin 2) ℝ) = X 0 ^ (2 * i)`. Rewrite using `[← Finset.card_range (2 * i), ← Finset.prod_const]`. Use `Finset.prod_congr (by rw [Finset.card_range]) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x < 2 * i` using `Finset.mem_range.1 hx`. Simplify using `[wordCoef, show 2 + x ≠ 1 by omega, show 2 + x < 2 + 2 * i by omega]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∏ x ∈ Finset.range r, (C (wordCoef i (2 + 2 * i + x) 0) * X 0 + C (wordCoef i (2 + 2 * i + x) 1) * X 1 : MvPolynomial (Fin 2) ℝ) = X 1 ^ r`. Rewrite using `[← Finset.card_range r, ← Finset.prod_const]`. Use `Finset.prod_congr (by rw [Finset.card_range]) fun x _ => ?_` and prove the remaining obligations. Simplify using `[wordCoef, show 2 + 2 * i + x ≠ 1 by omega, show ¬ 2 + 2 * i + x < 2 + 2 * i by omega]`. Rewrite using `[h1, h2, h3, show 2 + 2 * i + r - 1 - 2 * i = r + 1 by omega, pow_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,7 +69,7 @@ theorem linProd_word (k i : ℕ) (hik : i < k) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j z`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `h0 : (0 : ℕ) < 2 * k` using `by omega`. Simplify using `[pot, wwLinPot, topCoef, h0]`. Apply the tactic sequence `simp only [pot, Fin.cons_succ, mix, wwLinPot, topCoef, Fin.val_succ] split_ifs <;> first | contradiction | omega | simp`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_pot_top (D k : ℕ) (hk : 1 ≤ k) (X₀ X₁ A₀ : HermLine ι) :
     pot (Fin.cons X₀ (mix (2 * k - 1) X₁ A₀ : Fin D → HermLine ι) : Fin (D + 1) → HermLine ι) =
@@ -82,9 +82,9 @@ theorem cons_pot_top (D k : ℕ) (hk : 1 ≤ k) (X₀ X₁ A₀ : HermLine ι) :
     split_ifs <;> first | contradiction | omega | simp
 
 /- English proof (translation)
-Take `⟨r, hr⟩ : ∃ r, 2 * k = 1 + r` from `⟨2 * k - 1, by omega⟩`. Rewrite using `[wwLinProd, hr, Finset.prod_range_add, show 1 + r - 1 = r by omega]`. Establish `h1 : ∏ x ∈ Finset.range 1, (C (topCoef x 0) * X 0 + C (topCoef x 1) * X 1 : MvPolynomial (Fin 2) ℝ) = X 0`. Simplify using `[topCoef]`. Establish `h2 : ∏ x ∈ Finset.range r, (C (topCoef (1 + x) 0) * X 0 + C (topCoef (1 + x) 1) * X 1 : MvPolynomial (Fin 2) ℝ) = X 1 ^ r`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Finset.card_range r, ← Finset.prod_const]`. Use `Finset.prod_congr (by rw [Finset.card_range]) fun x _ => ?_` and prove the remaining obligations. Simplify using `[topCoef]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem linProd_top (k : ℕ) (hk : 1 ≤ k) : wwLinProd k topCoef = X 0 * X 1 ^ (2 * k - 1) := by
   obtain ⟨r, hr⟩ : ∃ r, 2 * k = 1 + r := ⟨2 * k - 1, by omega⟩
@@ -99,7 +99,7 @@ theorem linProd_top (k : ℕ) (hk : 1 ≤ k) : wwLinProd k topCoef = X 0 * X 1 ^
   rw [h1, h2]
 
 /- English proof (translation)
-Simplify using `[Derivation.leibniz, Derivation.leibniz_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_top (N : ℕ) :
     pderiv 0 (pderiv 1 (X 0 * X 1 ^ (N + 1) : MvPolynomial (Fin 2) ℝ)) = C ((N + 1 : ℕ) : ℝ) * X 1 ^ N := by
@@ -109,20 +109,20 @@ def sndHom : (S2 → ℝ) →+* (S2 × S2 → ℝ) :=
   RingHom.pi fun p => Pi.evalRingHom (fun _ : S2 => ℝ) p.2
 
 /- English proof (translation)
-Simplify using `only [dotPoly, map_sum, map_mul, map_X, map_C]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dotPoly_snd : dotPoly (Prod.snd : S2 × S2 → S2) = map sndHom (dotPoly (id : S2 → S2)) := by
   simp only [dotPoly, map_sum, map_mul, map_X, map_C]
   rfl
 
 /- English proof (translation)
-Use `FibreLocal.isProbabilityMeasure_sphere` as an intermediate fact. Take `⟨N, hN⟩ : ∃ N, 2 * k - 1 = N + 1` from `⟨2 * k - 2, by omega⟩`. Establish `hN2 : 2 * k - 2 = N` using `by omega`. Establish `hc : ((N + 1 : ℕ) : ℝ) = 2 * (k : ℝ) - 1`. Establish `h2 : ((N + 1 + 1 : ℕ) : ℝ) = ((2 * k : ℕ) : ℝ)` using `by rw [show N + 1 + 1 = 2 * k by omega]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[wwFibreMoment, hN, pderiv_top, pushMomentPoly, hN2]`. Use extensionality with `m`. Rewrite using `[DiagFibreMoment.coeff_momentPoly, coeff_neg, coeff_smul, DiagFibreMoment.coeff_momentPoly]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ p : S2 × S2, coeff m (aeval ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] (C ((N + 1 : ℕ) : ℝ) * X 1 ^ N : MvPolynomial (Fin 2) ℝ)) p = ((N + 1 : ℕ) : ℝ) * coeff m (dotPoly (id : S2 → S2) ^ N) p.2`. Introduce `p`. Rewrite using `[map_mul, aeval_C, map_pow, aeval_X, Matrix.cons_val_one, Matrix.cons_val_fin_one, dotPoly_snd, ← map_pow, MvPolynomial.algebraMap_apply, coeff_C_mul, coeff_map]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hpt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hsnd` using `integral_fun_snd (μ := sphereMeasure) (ν := sphereMeasure) (fun y : S2 => (1 : ℝ) * (((N + 1 : ℕ) : ℝ) * coeff m (dotPoly (id : S2 → S2) ^ N) y))`. Rewrite using `[hsnd, probReal_univ, one_smul]`. Simplify using `only [one_mul, smul_eq_mul]`. Rewrite using `[integral_const_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem moment_top (k : ℕ) (hk : 1 ≤ k) :
     wwFibreMoment (fun _ => 1) (X 0 * X 1 ^ (2 * k - 1)) = -pushMomentPoly k := by
@@ -157,9 +157,9 @@ end DiagonalFibreFubini
 open DiagonalFibreFubini in
 
 /- English proof (translation)
-Introduce `D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD`. Take `⟨Λ, hΛ⟩` from `h D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD`. Use `⟨Λ, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[diagInt, cons_pot_word D k i hi, (hΛ _).1, linProd_word k i hi]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[cons_pot_top D k hk, (hΛ _).2, linProd_top k hk, moment_top k hk, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem DiagFibreFubini.proof (h : WWFibrePoly.Statement) : DiagFibreFubini.Statement := by
   intro D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD

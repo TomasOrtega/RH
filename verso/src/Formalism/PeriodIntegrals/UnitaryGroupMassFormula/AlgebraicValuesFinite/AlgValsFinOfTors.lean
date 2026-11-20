@@ -9,7 +9,7 @@ noncomputable section
 namespace PI.AlgValsFin.W
 
 /- English proof (translation)
-The claim follows from `assemble hT (keyIdOf decomp locVal prodNorm) classPow classSame`.
+A detailed English derivation is pending.
 -/
 theorem algValsFin_of_tors (L : Type) [Field L] [NumberField L] (hT : TorsUnits L) : AlgValsFin L :=
   assemble hT (keyIdOf decomp locVal prodNorm) classPow classSame

@@ -11,23 +11,23 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical ENNReal
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, k = g * h⁻¹` from `⟨_, rfl⟩`. Establish `hdet : h.1 0 0 * h.1 1 1 - h.1 0 1 * h.1 1 0 = 1`. Establish `hd` using `h.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `hg0 : g.1 1 0 = t * h.1 1 0` using `by simpa using congrFun hrow 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hg1 : g.1 1 1 = t * h.1 1 1` using `by simpa using congrFun hrow 1`. Establish `e0 : k.1 1 0 = 0`. Rewrite using `[hk]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `[hg0, hg1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : k.1 1 1 = t`. Rewrite using `[hk]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `[hg0, hg1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(t : E) * hdet`. Establish `e2 : k.1 0 0 = ((t⁻¹ : Eˣ) : E)`. Establish `hd` using `k.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two, e0, e1]`. Establish `ht : (t : E) ≠ 0` using `t.ne_zero`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hd`. Establish `d2 : (((IdeleGroup.diagonal E t⁻¹)⁻¹ : (A E)ˣ) : A E) = UpperTheory.ConvolutionTheory.R2.rt (t : E)`. Rewrite using `[← map_inv, inv_inv]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `d3 : (((IdeleGroup.diagonal E t)⁻¹ : (A E)ˣ) : A E) = algebraMap E (A E) (t : E)⁻¹`. Rewrite using `[← map_inv]`. Conclude with `congrArg (algebraMap E (A E)) (Units.val_inv_eq_inv_val t)`. Use `⟨UpperTheory.ConvolutionTheory.R2.rt (k.1 0 1 * ((t⁻¹ : Eˣ) : E)), ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hkm : ratS E k = nU (UpperTheory.ConvolutionTheory.R2.rt (k.1 0 1 * ((t⁻¹ : Eˣ) : E))) * mD (IdeleGroup.diagonal E t⁻¹)`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[M.val_mul, M.val_ratS]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[nU, mD, Matrix.mul_apply, Fin.sum_univ_two, d3, e2]`. Simplify using `only [nU, mD, Matrix.mul_apply, Fin.sum_univ_two, d2]`. Simplify using `[← map_mul]`. Simplify using `[nU, mD, Matrix.mul_apply, Fin.sum_univ_two, e0]`. Simplify using `[nU, mD, Matrix.mul_apply, Fin.sum_univ_two, d2, e1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgk : g = k * h` using `by rw [hk, inv_mul_cancel_right]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem tri {E : Type} [Field E] [NumberField E] (g h : Matrix.SpecialLinearGroup (Fin 2) E) (t : Eˣ)
     (hrow : g.1 1 = (t : E) • h.1 1) :
@@ -77,25 +77,21 @@ private theorem tri {E : Type} [Field E] [NumberField E] (g h : Matrix.SpecialLi
     _ = _ := by rw [map_mul, hkm]
 
 /- English proof (translation)
-Introduce `hT E _ _`. Take `⟨α, hm, hu, hd⟩` from `hT E`. Take `⟨Tq, hTq⟩ : ∃ Tq : Subgroup (IdeleGroup E), Tq = (IdeleGroup.diagonal E).range` from `⟨_, rfl⟩`. Establish `hmem : ∀ g : Tq, mD g.1 ∈ Gam E`. Introduce and unpack `⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hg` using `[hTq]`. Take `⟨t, rfl⟩` from `hg`. Conclude with `M.mD_diag_mem t`. Use `haveI : DiscreteTopology Tq := by`. Use `DiscreteTopology.of_continuous_injective (f := fun g : Tq => (⟨mD g.1, hmem g⟩ : Gam E)) ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(M.continuous_mD.comp continuous_subtype_val).subtype_mk _`. Introduce `a b hab`. Establish `h1 : mD a.1 = mD b.1` using `congrArg (·.1) hab`. Establish `h2` using `congrArg (fun g : G1 E => g.1 0 0) h1`. Conclude with `Subtype.ext (Units.ext (by simpa [mD] using h2))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨F, hF, huniq, -⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup Tq`. Establish `hdiag : Function.Injective (IdeleGroup.diagonal E)`. Introduce `a b hab`. Establish `h1 : ((IdeleGroup.diagonal E a : (A E)ˣ) : A E) = ((IdeleGroup.diagonal E b : (A E)ˣ) : A E)` using `by rw [hab]`. Conclude with `Units.ext (AdeleRing.algebraMap_injective (𝓞 E) E h1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨α ⁻¹' F, hm hF, fun b x => by simp [hu], ?_⟩` and prove the remaining obligations. Introduce `σ hσ x r`. Establish `key : ∀ (t : Eˣ) (r' : {r : Fin 2 → E // r ≠ 0}), r'.1 = (t : E) • r.1 → α (ratS E (σ r') * x) = IdeleGroup.diagonal E t⁻¹ * α (ratS E (σ r) * x)`. Introduce `t r' hr`. Take `⟨β, hβ⟩` from `tri (σ r') (σ r) t (by rw [hσ r', hσ r, hr])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hβ, mul_assoc, mul_assoc, hu, hd]`. Take `⟨⟨g, hg⟩, hgF, hgU⟩` from `huniq (α (ratS E (σ r) * x))`. Establish `hg'` using `hg`. Rewrite `hg'` using `[hTq]`. Take `⟨s, rfl⟩` from `hg'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hne : ((s⁻¹ : Eˣ) : E) • r.1 ≠ 0`. Introduce `h0`. Conclude with `r.2 ((smul_eq_zero.mp h0).resolve_left (Units.ne_zero _))`. Use `⟨s⁻¹, ⟨⟨_, hne⟩, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show α (ratS E (σ _) * x) ∈ F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[key s⁻¹ _ rfl, inv_inv]`. Conclude with `hgF`. Introduce and unpack `t ⟨r', hr'T, hr'⟩`. Establish `hin : IdeleGroup.diagonal E t⁻¹ * α (ratS E (σ r) * x) ∈ F`. Rewrite using `[← key t r' hr']`.
-
-Conclude with `hr'T`. Establish `hmemt : IdeleGroup.diagonal E t⁻¹ ∈ Tq`. Rewrite using `[hTq]`. Conclude with `⟨_, rfl⟩`. Use `hgU ⟨_, hmemt⟩ hin` as an intermediate fact.
-
-Establish `h2 : IdeleGroup.diagonal E t⁻¹ = IdeleGroup.diagonal E s` using `congrArg Subtype.val this`. Rewrite using `[← inv_inv t, hdiag h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_unipotentInvariant_set_unique_row_scaling :
     TorCo → ∀ (E : Type) [Field E] [NumberField E], ∃ T : Set (G1 E), MeasurableSet T ∧ (∀ b x, nU b * x ∈ T ↔ x ∈ T) ∧ ∀ σ : {r : Fin 2 → E // r ≠ 0} → Matrix.SpecialLinearGroup (Fin 2) E, M.RowSec σ → ∀ (x : G1 E) (r : {r : Fin 2 → E // r ≠ 0}), ∃! t : Eˣ, ∃ r' ∈ {r' : {r : Fin 2 → E // r ≠ 0} | ratS E (σ r') * x ∈ T}, r'.1 = (t : E) • r.1 := by

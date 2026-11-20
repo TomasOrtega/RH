@@ -18,13 +18,13 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] {p : ℕ}
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hres : ∀ z : 𝒪[F], residue 𝒪[F] z = 0 ↔ nrm K ((z : F) : Ω) < 1`. Introduce `z`. Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Rewrite using `[← map_one (valuation F), ← not_le, ← not_le, valuation_le_iff_nrm_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `haveI : CharP 𝓀[F] p := by`. Use `(CharP.charP_iff_prime_eq_zero hp).mpr ?_` and prove the remaining obligations. Use `(hres (p : 𝒪[F])).mpr (by simpa using hp1)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Finite 𝓀[F] := inferInstance`. Take `⟨z, rfl⟩ : ∃ z : F, (z : Ω) = y` from `⟨⟨y, hy⟩, rfl⟩`. Establish `hz : z ∈ 𝒪[F]` using `(mem_integer_iff_nrm_le_one F z).mpr hy1`. Take `⟨β, hβ⟩` from `((surjective_frobenius 𝓀[F] p).iterate j) (residue 𝒪[F] ⟨z, hz⟩)`. Take `⟨b, rfl⟩` from `residue_surjective β`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨((b : F) : Ω), (b : F).2, (mem_integer_iff_nrm_le_one F _).mp b.2, ?_⟩` and prove the remaining obligations. Rewrite `hβ` using `[iterate_frobenius, ← map_pow, ← sub_eq_zero, ← map_sub]`. Use `(hres _).mp hβ` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_sub_lt_one (F : IntermediateField K Ω) [FiniteDimensional K F] (hp : p.Prime)
     (hp1 : nrm K (p : Ω) < 1) {y : Ω} (hy : y ∈ F) (hy1 : nrm K y ≤ 1) (j : ℕ) :
@@ -55,23 +55,19 @@ namespace NormTower
 variable (t : NormTower K Ω p)
 
 /- English proof (translation)
-Use `haveI := t.finiteDimensional n`. Use `set d := p ^ t.k n`. Take `⟨w, hw, hw1, hwN⟩` from `exists_pow_sub_lt_one (t.E n) t.prime t.nrm_p_lt_one (t.N_mem n hz.1) (t.nrm_N_le_one n hz.2) (t.k n)`. Use `⟨w, ⟨hw, hw1⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : nrm K (z ^ d - w ^ d) < 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z ^ d - w ^ d = (z ^ d - t.N n z) + -(w ^ d - t.N n z)` using `by ring`. Rewrite using `[e]`. Use `lt_of_le_of_lt (nrm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[nrm_sub_comm]`. Conclude with `(t.nrm_N_sub_pow_le n hz.1 hz.2).trans_lt t.c_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nrm_neg]`. Conclude with `hwN`. Establish `h2 : nrm K ((z - w) ^ d - (z ^ d - w ^ d)) < 1`. Establish `hm1 : nrm K (-w) ≤ 1` using `by rw [nrm_neg]; exact hw1`. Establish `h3` using `nrm_add_pow_prime_pow_sub_le t.prime hz.2 hm1 (t.k n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (z - w) ^ d - (z ^ d - w ^ d) = ((z + -w) ^ d - z ^ d - (-w) ^ d) + ((-w) ^ d + w ^ d)`. Rewrite using `[sub_eq_add_neg z w]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `lt_of_le_of_lt (nrm_add_le_max _ _) (max_lt (h3.trans_lt t.nrm_p_lt_one) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `t.prime.eq_two_or_odd' with hp2 | hodd` into its components or cases. Break down `Nat.eq_zero_or_pos (t.k n) with hk | hk` into its components or cases. Simplify using `only [d, hk, pow_zero, pow_one, neg_add_cancel, nrm_zero]`. Conclude with `one_pos`. Establish `hev : Even d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [d, hp2]`. Conclude with `(Nat.even_pow.mpr ⟨even_two, hk.ne'⟩)`. Rewrite using `[hev.neg_pow, ← two_mul, nrm_mul]`. Establish `h2' : nrm K (2 : Ω) < 1`. Use `t.nrm_p_lt_one` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hp2]`. Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `hodd' : Odd d` using `hodd.pow`. Rewrite using `[hodd'.neg_pow, neg_add_cancel, nrm_zero]`.
-
-Conclude with `one_pos`. Establish `h4 : nrm K ((z - w) ^ d) < 1`. Establish `e : (z - w) ^ d = ((z - w) ^ d - (z ^ d - w ^ d)) + (z ^ d - w ^ d)` using `by ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (nrm_add_le_max _ _) (max_lt h2 h1)`.
-
-Rewrite `h4` using `[nrm_pow]`. Conclude with `(pow_lt_one_iff_of_nonneg (nrm_nonneg _) (pow_pos t.prime.pos _).ne').mp h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nrm_sub_lt_one (n : ℕ) {z : Ω} (hz : z ∈ t.intSet (n + 1)) :
     ∃ w ∈ t.intSet n, nrm K (z - w) < 1 := by
@@ -118,9 +114,9 @@ theorem exists_nrm_sub_lt_one (n : ℕ) {z : Ω} (hz : z ∈ t.intSet (n + 1)) :
   exact (pow_lt_one_iff_of_nonneg (nrm_nonneg _) (pow_pos t.prime.pos _).ne').mp h4
 
 /- English proof (translation)
-Proceed by induction on `n generalizing z with`. Consider the case `zero => exact ⟨z, hz, by simp⟩`. Consider the case `succ n ih`. Take `⟨w, hw, hzw⟩` from `t.exists_nrm_sub_lt_one n hz`. Take `⟨w', hw', hww'⟩` from `ih hw`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨w', hw', ?_⟩` and prove the remaining obligations. Establish `e : z - w' = (z - w) + (w - w')` using `by ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (nrm_add_le_max _ _) (max_lt hzw hww')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nrm_sub_lt_one_zero (n : ℕ) {z : Ω} (hz : z ∈ t.intSet n) :
     ∃ w ∈ t.intSet 0, nrm K (z - w) < 1 := by
@@ -135,11 +131,9 @@ theorem exists_nrm_sub_lt_one_zero (n : ℕ) {z : Ω} (hz : z ∈ t.intSet n) :
     exact lt_of_le_of_lt (nrm_add_le_max _ _) (max_lt hzw hww')
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Rewrite using `[nrm_zero]`. Conclude with `(t.value_pos n).le`. Take `⟨j, hj⟩` from `t.value_zpow n y hy hy0`. Rewrite `h`, the goal using `[hj]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj1 : 1 ≤ j`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: 1 ≤ t.value n ^ j` using `one_le_zpow_of_nonpos₀ (t.value_pos n) (t.value_lt_one n).le (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nrm_le_value_of_lt_one (n : ℕ) {y : Ω} (hy : y ∈ t.E n) (h : nrm K y < 1) :
     nrm K y ≤ t.value n := by
@@ -158,19 +152,17 @@ theorem nrm_le_value_of_lt_one (n : ℕ) {y : Ω} (hy : y ∈ t.E n) (h : nrm K 
     _ = t.value n := zpow_one _
 
 /- English proof (translation)
-Set `C : ℕ → Set Ω` to `fun n ↦ {z | nrm K (z ^ t.D 0 n - y) ≤ t.value n}`. Establish `hcl : ∀ n, IsClosed (C n)` using `fun n ↦ isClosed_le ((continuous_nrm K Ω).comp ((continuous_pow _).sub continuous_const)) continuous_const`. Establish `hne : ∀ n, (t.intSet n ∩ C n).Nonempty`. Introduce `n`. Use `haveI := t.finiteDimensional 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : ∃ j, t.D 0 n = p ^ j` using `⟨∑ m ∈ Finset.range n, t.k (0 + m), by`. Rewrite using `[D, Finset.prod_pow_eq_pow_sum]⟩`. Take `⟨j, hj⟩` from `hD`. Take `⟨b, hb, hb1, hby⟩` from `exists_pow_sub_lt_one (t.E 0) t.prime t.nrm_p_lt_one hy.1 hy.2 j`. Use `⟨b, ⟨t.E_mono (Nat.zero_le n) hb, hb1⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show nrm K (b ^ t.D 0 n - y) ≤ t.value n`. Rewrite using `[hj]`. Establish `hmem : b ^ p ^ j - y ∈ t.E n` using `sub_mem (pow_mem (t.E_mono (Nat.zero_le n) hb) _) (t.E_mono (Nat.zero_le n) hy.1)`. Conclude with `t.nrm_le_value_of_lt_one n hmem hby`. Establish `hN : ∀ n, ∀ z ∈ t.intSet (n + 1) ∩ C (n + 1), t.N n z ∈ C n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `n z hz`. Take `⟨⟨hzE, hz1⟩, hzy⟩` from `hz`. Express the relevant statement in the definitionally equal form `nrm K (z ^ t.D 0 (n + 1) - y) ≤ t.value (n + 1) at hzy`. Use `show nrm K (t.N n z ^ t.D 0 n - y) ≤ t.value n`. Establish `hD : t.D 0 (n + 1) = t.D 0 n * p ^ t.k n` using `by rw [D_succ, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : nrm K (t.N n z ^ t.D 0 n - z ^ t.D 0 (n + 1)) ≤ t.c`. Rewrite using `[hD, pow_mul']`. Conclude with `(nrm_pow_sub_pow_le (t.nrm_N_le_one n hz1) (nrm_le_one_of_pow hz1 _) _).trans (t.nrm_N_sub_pow_le n hzE hz1)`. Establish `h2 : nrm K (t.N n z ^ t.D 0 n - y) < 1`. Establish `e : t.N n z ^ t.D 0 n - y = (t.N n z ^ t.D 0 n - z ^ t.D 0 (n + 1)) + (z ^ t.D 0 (n + 1) - y)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (nrm_add_le_max _ _) (max_lt (h1.trans_lt t.c_lt_one) (hzy.trans_lt (t.value_lt_one _)))`. Conclude with `t.nrm_le_value_of_lt_one n (sub_mem (pow_mem (t.N_mem n hzE) _) (t.E_mono (Nat.zero_le n) hy.1)) h2`. Take `⟨z, hz, hzC⟩` from `t.exists_intFam_mem hcl hne hN`. Use `⟨⟨z, hz⟩, ?_⟩` and prove the remaining obligations.
-
-Use `hzC 0` as an intermediate fact. Express the relevant statement in the definitionally equal form `nrm K (z 0 ^ t.D 0 0 - y) ≤ t.value 0 at this`. Establish `hD : t.D 0 0 = 1` using `by simp [D]`. Rewrite `this` using `[hD, pow_one]`. Conclude with `this.trans_lt (t.value_lt_one 0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_plus_nrm_sub_lt_one {y : Ω} (hy : y ∈ t.intSet 0) :
     ∃ x : t.Plus, nrm K (x.1 0 - y) < 1 := by
@@ -236,7 +228,7 @@ instance isLocalRing_integer_L : IsLocalRing 𝒪[L] :=
   inferInstanceAs (IsLocalRing (valuation L).valuationSubring)
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation L), ← (valuation L).vle_iff_le, ← IntermediateField.coe_vle_coe_iff, ← nrm_le_nrm_iff (K := K)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_integer_L_iff (z : L) : z ∈ 𝒪[L] ↔ nrm K (z : Ω) ≤ 1 := by
   rw [Valuation.mem_integer_iff, ← map_one (valuation L), ← (valuation L).vle_iff_le,
@@ -244,7 +236,7 @@ theorem mem_integer_L_iff (z : L) : z ∈ 𝒪[L] ↔ nrm K (z : Ω) ≤ 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, ← map_one (valuation L), ← not_le, ← not_le, ← (valuation L).vle_iff_le, ← IntermediateField.coe_vle_coe_iff, ← nrm_le_nrm_iff (K := K)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_maximalIdeal_L_iff (z : 𝒪[L]) : z ∈ maximalIdeal 𝒪[L] ↔ nrm K ((z : L) : Ω) < 1 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one,
@@ -253,14 +245,14 @@ theorem mem_maximalIdeal_L_iff (z : 𝒪[L]) : z ∈ maximalIdeal 𝒪[L] ↔ nr
   simp
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation _), ← (valuation _).vle_iff_le, vle_iff_norm_le, norm_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_integer_iff (x : FieldOfNorms K Ω L) : x ∈ 𝒪[FieldOfNorms K Ω L] ↔ ‖x‖ ≤ 1 := by
   rw [Valuation.mem_integer_iff, ← map_one (valuation _), ← (valuation _).vle_iff_le,
     vle_iff_norm_le, norm_one]
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, ← map_one (valuation _), ← not_le, ← not_le, ← (valuation _).vle_iff_le, vle_iff_norm_le, norm_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_maximalIdeal_iff (x : 𝒪[FieldOfNorms K Ω L]) :
     x ∈ maximalIdeal 𝒪[FieldOfNorms K Ω L] ↔ ‖(x : FieldOfNorms K Ω L)‖ < 1 := by
@@ -278,7 +270,7 @@ Both sides reduce to the same expression.
 theorem nrm_toL (x : FieldOfNorms K Ω L) : nrm K ((toL x : L) : Ω) = ‖x‖ := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_integer_L_iff, nrm_toL, ← mem_integer_iff]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL_mem (x : 𝒪[FieldOfNorms K Ω L]) : toL (x : FieldOfNorms K Ω L) ∈ 𝒪[L] := by
   rw [mem_integer_L_iff, nrm_toL, ← mem_integer_iff]; exact x.2
@@ -296,9 +288,9 @@ theorem equivFam_eq_toPlus (x : 𝒪[FieldOfNorms K Ω L]) :
     equivFam K Ω L (x : FieldOfNorms K Ω L) = (toPlus x).toFam := rfl
 
 /- English proof (translation)
-Establish `h : equivFam K Ω L ((x : FieldOfNorms K Ω L) + y) = (toPlus x + toPlus y).toFam`. Rewrite using `[equivFam_add, equivFam_eq_toPlus, equivFam_eq_toPlus, NormTower.Fam.toFam_add]`. Establish `h2` using `NormTower.Plus.add_cong (toPlus x) (toPlus y) 0`. Establish `e : ((x : FieldOfNorms K Ω L) + y).1 E₀ = (toPlus x + toPlus y).1 0`. Rewrite using `[← equivFam_val, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h2.trans_lt (tower K Ω L).ρ_lt_one`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_val_cong (x y : 𝒪[FieldOfNorms K Ω L]) :
     nrm K (((x : FieldOfNorms K Ω L) + y).1 E₀ - (x.1.1 E₀ + y.1.1 E₀)) < 1 := by
@@ -335,7 +327,7 @@ def reduction : 𝒪[FieldOfNorms K Ω L] →+* 𝓀[L] where
     exact add_val_cong x y
 
 /- English proof (translation)
-Use `show residue 𝒪[L] ⟨toL (x : FieldOfNorms K Ω L), toL_mem x⟩ = 0 ↔ _`. Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal_L_iff, mem_maximalIdeal_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reduction_eq_zero_iff (x : 𝒪[FieldOfNorms K Ω L]) :
     reduction (K := K) (Ω := Ω) (L := L) x = 0 ↔ x ∈ maximalIdeal 𝒪[FieldOfNorms K Ω L] := by
@@ -344,15 +336,13 @@ theorem reduction_eq_zero_iff (x : 𝒪[FieldOfNorms K Ω L]) :
   rfl
 
 /- English proof (translation)
-Introduce `r`. Take `⟨⟨z, hz⟩, rfl⟩` from `residue_surjective r`. Establish `hz1` using `(mem_integer_L_iff z).mp hz`. Take `⟨n, hn⟩` from `(isTowerFor (L := L)).exists_mem (z : Ω) z.2`. Take `⟨w, hw, hzw⟩` from `(tower K Ω L).exists_nrm_sub_lt_one_zero n ⟨hn, hz1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(tower K Ω L).exists_plus_nrm_sub_lt_one hw`. Set `x : FieldOfNorms K Ω L` to `(equivFam K Ω L).symm a.toFam`. Establish `hx : equivFam K Ω L x = a.toFam` using `(equivFam K Ω L).apply_symm_apply _`. Establish `hxval : x.1 E₀ = a.1 0`. Rewrite using `[← equivFam_val, hx]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hxint : x ∈ 𝒪[FieldOfNorms K Ω L]`. Rewrite using `[mem_integer_iff, norm_def, hx, NormTower.Fam.norm_def]`. Conclude with `a.nrm_le 0`. Use `⟨⟨x, hxint⟩, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show residue 𝒪[L] _ = residue 𝒪[L] _`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_maximalIdeal_L_iff]`. Use `show nrm K (x.1 E₀ - (z : Ω)) < 1`. Rewrite using `[hxval]`. Establish `e : a.1 0 - (z : Ω) = (a.1 0 - w) - ((z : Ω) - w)` using `by ring`.
-
-Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (nrm_sub_le_max _ _) (max_lt ha hzw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_surjective : Function.Surjective (reduction (K := K) (Ω := Ω) (L := L)) := by
   intro r
@@ -377,7 +367,7 @@ theorem reduction_surjective : Function.Surjective (reduction (K := K) (Ω := Ω
   exact lt_of_le_of_lt (nrm_sub_le_max _ _) (max_lt ha hzw)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, reduction_eq_zero_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_reduction : RingHom.ker (reduction (K := K) (Ω := Ω) (L := L)) =
     maximalIdeal 𝒪[FieldOfNorms K Ω L] := by

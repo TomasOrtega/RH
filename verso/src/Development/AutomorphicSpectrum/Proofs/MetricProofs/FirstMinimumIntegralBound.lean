@@ -15,15 +15,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 open GroundTheory.Automorphic
 
 /- English proof (translation)
-Use `set ν : Measure X := (μ S)⁻¹ • μ.restrict S with hν`. Establish `hprob : IsProbabilityMeasure ν` using `⟨by simp [hν, ENNReal.inv_mul_cancel h0 hT]⟩`. Establish `hlin : ∀ f : X → ℝ≥0∞, ∫⁻ x, f x ∂ν = (μ S)⁻¹ * ∫⁻ x in S, f x ∂μ` using `fun f => by`. Rewrite using `[hν, lintegral_smul_measure]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hfin : ∀ t, 0 < t → ∫⁻ x, c t x ∂ν ≠ ⊤` using `fun t ht => by`. Rewrite using `[hlin]`. Conclude with `ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 h0) (fin t ht)`. Establish `hmean : ∀ t, 0 < t → GroundTheory.Heights₂.Heights.LowerBound.meanCount ν (fun t z => (c t z).toReal) t = (∫⁻ x, c t x ∂ν).toReal` using `fun t ht => integral_toReal (c_meas t).aemeasurable (ae_lt_top (c_meas t) (hfin t ht))`. Establish `H : GroundTheory.Heights₂.Heights.LowerBound.MeanCount.Hyp ν lam (fun t z => (c t z).toReal) a ka r` using `{ isProbability := hprob lam_meas := lam_meas lam_pos := lam_pos cnt_meas := fun t => (c_meas t).ennreal_toReal cnt_nonneg := fun _ _ => ENNReal.toReal_nonneg one_le_a := ha three_a_le_ka := hka r_pos := hr integrable := fun t ht => integrable_toReal_of_lintegral_ne_top (c_meas t …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hmean _ (mul_pos hθ ht), hmean t ht, hlin, hlin, scal θ t hθ ht, mul_left_comm, ENNReal.toReal_mul, ENNReal.toReal_ofReal (Real.rpow_nonneg hθ.le _)] }`. Take `⟨hint, hle⟩` from `GroundTheory.Heights₂.Heights.LowerBound.MeanLogPlus.full X ν lam _ a ka r H`. Establish `e1 : ∫⁻ x, ENNReal.ofReal (Real.log (r / lam x)) ∂ν = ENNReal.ofReal (∫ z, max 0 (Real.log (r / lam z)) ∂ν)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun _ => le_max_left _ _)]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total 0 (Real.log (r / lam z)) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Rewrite using `[max_eq_left h, ENNReal.ofReal_of_nonpos h, ENNReal.ofReal_zero]`. Establish `e2 : ∫⁻ x, ENNReal.ofReal (Real.log (r / lam x)) ∂ν ≤ 3`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(ENNReal.ofReal_le_ofReal hle).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite `e2` using `[hlin]`. Rewrite using `[mul_comm]`. Conclude with `(ENNReal.inv_mul_le_iff h0 hT).1 e2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_logPlus_le_of_mass {X : Type} [MeasurableSpace X] (μ : Measure X) (S : Set X)
     (h0 : μ S ≠ 0) (hT : μ S ≠ ⊤) (lam : X → ℝ) (c : ℝ → X → ℝ≥0∞) (a : ℕ) (ka r : ℝ)
@@ -85,11 +85,11 @@ section Card
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Establish `hk : RingHom.ker s = ⊥`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : s (algebraMap ℤ (𝓞 E) m) = 0` using `hm`. Establish `h2 : ((m : ℤ) : ℂ) = 0` using `by simpa using h1`. Simplify using `using (Int.cast_eq_zero.1 h2)`. Introduce `a ha`. Establish `: a ∈ RingHom.ker s` using `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hk]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ringOfIntegers_hom_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   rw [injective_iff_map_eq_zero]
@@ -106,17 +106,15 @@ theorem ringOfIntegers_hom_injective (s : 𝓞 E →+* ℂ) : Function.Injective
   simpa using this
 
 /- English proof (translation)
-Set `e : (E →+* ℂ) ≃ (𝓞 E →+* ℂ)` to `{ toFun := fun φ => φ.comp (algebraMap (𝓞 E) E) invFun := fun s => IsFractionRing.lift (ringOfIntegers_hom_injective s) left_inv := fun φ => by`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use extensionality with `x`. Simplify using the standard rewrite rules. Use `right_inv := fun s => by`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `}`. Use `haveI : Fintype (𝓞 E →+* ℂ) := Fintype.ofEquiv _ e`. Establish `hc : Fintype.card (𝓞 E →+* ℂ) = Module.finrank ℚ E`. Rewrite using `[← Fintype.card_congr e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `NumberField.Embeddings.card E ℂ`. Set `P : (𝓞 E →+* ℂ) → Prop` to `fun s => ∃ τ, σ τ = s`. Set `c : (𝓞 E →+* ℂ) → (𝓞 E →+* ℂ)` to `fun s => (starRingEnd ℂ).comp s`. Establish `hcc : ∀ s, c (c s) = s` using `fun s => by`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[c]`. Establish `hP : ∀ s, P s ↔ ¬ P (c s)` using `hσ.2`. Establish `e1 : {s // P s} ≃ Ψ` using `(Equiv.ofInjective σ hσ.1).symm`. Establish `e2 : {s // ¬ P s} ≃ {s // P s}` using `{ toFun := fun s => ⟨c s.1, by`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `s.2 ((hP s.1).2 hn)⟩`. Use `invFun := fun s => ⟨c s.1, (hP s.1).1 s.2⟩`. Use `left_inv := fun s => Subtype.ext (hcc s.1)`. Use `right_inv := fun s => Subtype.ext (hcc s.1) }`. Use `Fintype.card_congr (Equiv.sumCompl P)` as an intermediate fact.
-
-Rewrite `this` using `[Fintype.card_sum, Fintype.card_congr e2, Fintype.card_congr e1, hc]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_two_mul_card {Ψ : Type} [Fintype Ψ] {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) :
     Module.finrank ℚ E = 2 * Fintype.card Ψ := by
@@ -154,7 +152,7 @@ theorem finrank_eq_two_mul_card {Ψ : Type} [Fintype Ψ] {σ : Ψ → (𝓞 E �
   omega
 
 /- English proof (translation)
-Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h1` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, finrank_eq_two_mul_card hσ]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_real_eq_card {Ψ : Type} [Fintype Ψ] {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) :
     Module.finrank ℚ (maximalRealSubfield E) = Fintype.card Ψ := by
@@ -168,13 +166,13 @@ end Card
 section Count
 
 /- English proof (translation)
-Establish `e : (fun a => countBelow M VV a t) = fun a => ∑' x : W, ({y ∈ VV | M.len (invApply a (vecAt v y)) < t}).indicator (1 : W → ℝ≥0∞) x`. Use function extensionality and compare the values at `a`. Rewrite using `[countBelow, ← ENNReal.tsum_set_one, tsum_subtype _ (fun _ => (1 : ℝ≥0∞))]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Measurable.ennreal_tsum fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ VV`. Establish `e2 : (fun a => ({y ∈ VV | M.len (invApply a (vecAt v y)) < t}).indicator (1 : W → ℝ≥0∞) x) = ({a | M.len (invApply a (vecAt v x)) < t}).indicator (1 : archUnitary h v → ℝ≥0∞)`. Use function extensionality and compare the values at `a`. Simplify using `[Set.indicator, hx]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Establish `hopen : IsOpen {a : archUnitary h v | M.len (invApply a (vecAt v x)) < t}` using `isOpen_lt (continuous_len_invApply M (vecAt v x)) continuous_const`. Conclude with `measurable_one.indicator hopen.measurableSet`. Establish `e2 : (fun a : archUnitary h v => ({y ∈ VV | M.len (invApply a (vecAt v y)) < t}).indicator (1 : W → ℝ≥0∞) x) = fun _ => 0`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, hx]`. Rewrite using `[e2]`. Conclude with `measurable_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_countBelow {K L : Type} [Field K] [Field L] [NumberField K] [NumberField L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L] [IsTotallyReal K] [IsTotallyComplex L] {W : Type} [AddCommGroup W]
@@ -206,7 +204,7 @@ theorem measurable_countBelow {K L : Type} [Field K] [Field L] [NumberField K] [
     exact measurable_const
 
 /- English proof (translation)
-Rewrite using `[← hs.cast_ncard_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toReal_encard_of_finite {α : Type} {s : Set α} (hs : s.Finite) :
     (((s.encard : ℕ∞) : ℝ≥0∞)).toReal = s.ncard := by
@@ -221,14 +219,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type
   [Module (𝓞 E) Λ] {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} {F : UnivFam E Ψ j j' n g Λ}
 
 /- English proof (translation)
-Rewrite using `[← Δ.π_range]`. Conclude with `⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GroupDict.π_mem (Δ : GroupDict F) (a) : Δ.π a ∈ ballDom F.q := by
   rw [← Δ.π_range]
   exact ⟨a, rfl⟩
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) (Δ.e x)))` using `Real.sqrt_nonneg _`. Rewrite using `[Δ.len, Real.sqrt_mul Δ.κ_pos.le, Real.sqrt_sq h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem GroupDict.sqrt_normSq (Δ : GroupDict F) (a) (x : Λ) :
     Real.sqrt ((F.R (Δ.π a)).normSq x) = Real.sqrt Δ.κ *
@@ -237,7 +235,7 @@ theorem GroupDict.sqrt_normSq (Δ : GroupDict F) (a) (x : Λ) :
   rw [Δ.len, Real.sqrt_mul Δ.κ_pos.le, Real.sqrt_sq h0]
 
 /- English proof (translation)
-Use `csInf_le ⟨0, ?_⟩ ⟨y, hy, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, -, rfl⟩`. Conclude with `Real.sqrt_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem firstMinimum_le_sqrt_normSq (R : RiemLat E g Λ) {y : Λ} (hy : y ≠ 0) : R.lam1 ≤ Real.sqrt (R.normSq y) := by
   refine csInf_le ⟨0, ?_⟩ ⟨y, hy, rfl⟩
@@ -249,9 +247,9 @@ def GroupDict.shortSet (Δ : GroupDict F) (C : ℕ) : Set (Fin (j + j') → E) :
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce and unpack `γ hγ x ⟨hx, hx0, hiso, hC⟩`. Establish `hs : γ • Δ.e.range = Δ.e.range` using `MulAction.mem_stabilizer_iff.1 hγ`. Use `⟨?_, fun h => hx0 ((smul_eq_zero_iff_eq γ).1 h), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : γ • x ∈ γ • Δ.e.range` using `AddSubgroup.smul_mem_pointwise_smul _ _ _ hx`. Rewrite `h1` using `[hs]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← hiso]`. Conclude with `HermitianForm.mem_unitaryGroup.1 γ.2 x x`. Rewrite using `[GroundTheory.Heights₂.Heights.FiniteCovolume.GaussianPlane.lineIndex_smul hs]`. Conclude with `hC`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GroupDict.shortSet_stable (Δ : GroupDict F) (C : ℕ) :
     ∀ γ ∈ latticeStab Δ.h Δ.e.range, ∀ x ∈ Δ.shortSet C, γ • x ∈ Δ.shortSet C := by
@@ -266,7 +264,7 @@ theorem GroupDict.shortSet_stable (Δ : GroupDict F) (C : ℕ) :
     exact hC
 
 /- English proof (translation)
-Establish `hk : 0 < Real.sqrt Δ.κ` using `Real.sqrt_pos.2 Δ.κ_pos`. Introduce and unpack `x ⟨⟨⟨y, rfl⟩, hx0, -, -⟩, hlt⟩`. Use `⟨y, ⟨fun h => hx0 (by rw [h, map_zero]), ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Δ.sqrt_normSq]`. Conclude with `(lt_div_iff₀' hk).1 hlt`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GroupDict.below_subset (Δ : GroupDict F) (C : ℕ) (a) (t : ℝ) :
     {x ∈ Δ.shortSet C | Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) x)) < t / Real.sqrt Δ.κ} ⊆
@@ -282,47 +280,39 @@ end Group
 section Main
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F Δ μ _ vr hj' hN hvr hfam`. Establish `hEc : Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Establish `hcard : Module.finrank ℚ (maximalRealSubfield E) = Fintype.card Ψ` using `finrank_real_eq_card F.cm`. Establish `hdeg : Module.finrank ℚ E = 2 * Module.finrank ℚ (maximalRealSubfield E)`. Rewrite using `[hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finrank_eq_two_mul_card F.cm`. Establish `hfam' : ∃ a : Fin (2 * Module.finrank ℚ (maximalRealSubfield E)) → 𝓞 E, LinearIndependent ℚ (fun i => (a i : E)) ∧ ∀ i (s : E →+* ℂ), ‖s (a i)‖ ≤ vr`. Take `⟨a, hli, hb⟩` from `hfam`. Use `⟨a ∘ Fin.cast hdeg.symm, hli.comp _ (Fin.cast_injective _), fun i s => hb _ s⟩` and prove the remaining obligations. Use `set r : ℝ := vr ^ (-(1 / 2 : ℝ)) with hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrpos : 0 < r` using `Real.rpow_pos_of_pos hvr _`. Establish `hk : 0 < Real.sqrt Δ.κ` using `Real.sqrt_pos.2 Δ.κ_pos`. Use `set C : ℕ := ⌊(vr * Real.sqrt (2 * Module.finrank ℚ (maximalRealSubfield E))) ^ (2 * Module.finrank ℚ (maximalRealSubfield E))⌋₊ with hC`. Use `set VV := Δ.shortSet C with hVV`. Establish `hI` using `fun a => GlobalTheory.T.first_minimum_attained_with_bounds E Ψ j j' n g Λ (F.R (Δ.π a)) F.σ vr F.cm (F.sig _ (Δ.π_mem a)) hj' hvr hfam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨FD, hFD, hm⟩` from `ScalingLaw.full Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.M μ Δ.Dn Δ.e.range VV Δ.integral (fun x hx => hx.1) (fun x hx => ⟨hx.2.1, hx.2.2.1⟩) (Δ.shortSet_stable C) ⟨C, fun x hx => hx.2.2.2⟩`. Take `⟨FD₂, hFD₂, hlt⟩` from `ArithmeticCovolumeFinite.full Δ.h (Pi.basisFun E (Fin (j + j'))) μ Δ.Dn Δ.e.range Δ.integral`. Establish `hcount : Countable (archLatticeGroup Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.e.range)`. Establish `: Countable Δ.h.unitaryGroup` using `countable_unitaryGroup Δ.h (Pi.basisFun E (Fin (j + j')))`. Establish `h1 : ((archLatticeGroup Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.e.range : Subgroup _) : Set (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))).Countable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[archLatticeGroup, Subgroup.coe_map]`. Conclude with `(Set.to_countable _).image _`. Conclude with `h1.to_subtype`. Establish `hT : μ FD ≠ ⊤`. Rewrite using `[hFD.measure_eq hFD₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hlt.ne`. Establish `h0 : μ FD ≠ 0`. Introduce `hz`. Establish `h1 : μ Set.univ = 0`. Rewrite using `[hFD.measure_eq_tsum Set.univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `ENNReal.tsum_eq_zero.2 fun γ => ?_` and prove the remaining obligations. Conclude with `measure_mono_null Set.inter_subset_right hz`. Conclude with `(isOpen_univ.measure_ne_zero μ Set.univ_nonempty) h1`. Use `⟨FD, hFD, h0, hT, ?_⟩` and prove the remaining obligations. Establish `hcont` using `(GlobalTheory.T.first_minimum_continuous_cusp_weight_measurable E Ψ j j' n g Λ F hj').1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlamc : Continuous fun a => (F.R (Δ.π a)).lam1` using `hcont.comp_continuous Δ.π_cont Δ.π_mem`. Establish `hfinS : ∀ a t, (F.R (Δ.π a)).lam1 < t → t ≤ r → {x ∈ VV | Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) x)) < t / Real.sqrt Δ.κ}.Finite ∧ ({x ∈ VV | Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) x)) < t / Real.sqrt Δ.κ}.ncard : ℝ) ≤ (3 * t / (F.R (Δ.π a)). …`. Introduce `a t h1 h2`. Take `⟨-, -, -, h4⟩` from `hI a`. Take `⟨hf, hb⟩` from `h4 t h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hsub` using `Δ.below_subset C a t`. Establish `hfi` using `hf.image Δ.e`. Use `⟨hfi.subset hsub, le_trans ?_ hb⟩` and prove the remaining obligations. Use `(Set.ncard_le_ncard hsub hfi).trans (Set.ncard_image_le hf)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lintegral_logPlus_le_of_mass μ FD h0 hT (fun a => (F.R (Δ.π a)).lam1) (fun t a => countBelow Δ.M VV a (t / Real.sqrt Δ.κ)) (2 * Fintype.card Ψ * j') ((2 * Module.finrank ℚ (maximalRealSubfield E) * (Module.finrank E (Fin (j + j') → E) - 1) : ℕ) : ℝ) r hlamc.measurable (fun a => ( …` and prove the remaining obligations. Establish `hc : 0 < Fintype.card Ψ`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `: 1 ≤ 2 * Fintype.card Ψ` using `by omega`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `Nat.mul_le_mul this hj'`. Rewrite using `[hcard]`. Establish `e1 : Module.finrank E (Fin (j + j') → E) = j + j'` using `by simp`. Rewrite using `[e1]`. Establish `e2 : 3 * j' ≤ j + j' - 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e3 : 3 * (2 * Fintype.card Ψ * j') ≤ 2 * Fintype.card Ψ * (j + j' - 1)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `e3` after adjusting the coercions. Introduce `t ht`. Conclude with `((hm _ (div_pos ht hk)).1).ne`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht ht' a ha`. Take `⟨hf, hb⟩` from `hfinS a t ha ht'`. Simplify using `only [countBelow]`. Rewrite using `[toReal_encard_of_finite hf]`. Conclude with `hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht a ha`. Establish `hemp : {x ∈ VV | Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) x)) < t / Real.sqrt Δ.κ} = ∅`. Use `Set.eq_empty_of_forall_notMem fun x hx => ?_` and prove the remaining obligations. Take `⟨y, ⟨hy0, hy⟩, -⟩` from `Δ.below_subset C a t hx`. Conclude with `absurd (ha.trans (firstMinimum_le_sqrt_normSq _ hy0)) (not_le.2 hy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `[countBelow, hemp]`. Introduce `t ht ht' a ha`. Take `⟨hf, -⟩` from `hfinS a t ha ht'`. Simplify using `only [countBelow]`. Rewrite using `[toReal_encard_of_finite hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, ⟨x, hx0, hxl⟩, horth, -⟩` from `hI a`. Establish `hxr : Real.sqrt ((F.R (Δ.π a)).normSq x) < r`. Rewrite using `[hxl]`. Conclude with `ha.trans_le ht'`. Establish `hex0 : Δ.e x ≠ 0` using `fun h => hx0 (Δ.e_inj (by rw [h, map_zero]))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hiso : Δ.h.toSesq (Δ.e x) (Δ.e x) = 0`. Use `(Δ.orth x x).2 fun c => ?_` and prove the remaining obligations. Use `horth x x hxr hxr c` as an intermediate fact. Rewrite `this` using `[(F.form_eq _)]`. Then use the resulting hypothesis. Establish `hmin : ∀ y ∈ Δ.e.range, y ≠ 0 → Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) (Δ.e x))) ≤ Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) y))`.
-
-Introduce and unpack `_ ⟨y, rfl⟩ hy`. Establish `hy0 : y ≠ 0` using `fun h => hy (by rw [h, map_zero])`. Establish `h1` using `firstMinimum_le_sqrt_normSq (F.R (Δ.π a)) hy0`. Rewrite `h1` using `[← hxl, Δ.sqrt_normSq, Δ.sqrt_normSq]`. Conclude with `le_of_mul_le_mul_left h1 hk`.
-
-Establish `hidx` using `ShortestVectorIndex.full Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.M vr hfam' Δ.Dn Δ.e.range a (Δ.e x) Δ.integral ⟨x, rfl⟩ hex0 hmin`. Establish `hmem : Δ.e x ∈ {x ∈ VV | Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) x)) < t / Real.sqrt Δ.κ}`. Use `⟨⟨⟨x, rfl⟩, hex0, hiso, Nat.le_floor hidx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[lt_div_iff₀' hk, ← Δ.sqrt_normSq, hxl]`. Conclude with `ha`.
-
-Establish `: 0 < {x ∈ VV | Δ.M.len (invApply a (vecAt (Pi.basisFun E (Fin (j + j'))) x)) < t / Real.sqrt Δ.κ}.ncard` using `(Set.ncard_pos hf).2 ⟨_, hmem⟩`. Conclude with `this` after adjusting the coercions. Introduce `θ t hθ ht`. Establish `h1` using `((hm _ (div_pos ht hk)).2 θ hθ)`. Simplify using `only [massBelow] at h1`.
-
-Rewrite using `[Real.rpow_natCast, ← h1]`. Simplify using `only [mul_div_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem group_mean_logPlus_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (Δ : GroupDict F) (μ : Measure (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))) [μ.IsHaarMeasure] (vr : ℝ), 1 ≤ j' → 3 * j' + 1 ≤ j + j' → 0 < vr → (∃ a : Fin (Module.finrank ℚ E) → 𝓞 E, LinearIndependent ℚ (fun i => (a i : E)) ∧ ∀ i (s : E →+* ℂ), ‖s (a i)‖ ≤ vr) → ∃ FD : Set (archUnitary Δ.h (Pi.basisFun E (Fin (j + j')))), IsFundamentalDomain (archLatticeGroup Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.e.range) FD μ ∧ μ FD ≠ 0 ∧ μ FD ≠ ⊤ ∧ ∫⁻ a in FD, ENNReal.ofReal (Real.log (vr ^ (-(1 / 2 : ℝ)) / (F.R (Δ.π a)).lam1)) ∂μ ≤ 3 * μ FD := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F Δ μ _ vr hj' hN hvr hfam

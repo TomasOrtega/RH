@@ -13,41 +13,41 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 namespace GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Establish `hp : ∀ x y z, θ x y z = θ y x z ∧ θ x y z = θ x z y ∧ θ x y z = θ z x y ∧ θ x y z = θ y z x ∧ θ x y z = θ z y x` using `fun x y z => ⟨h.s01 x y z, h.s12 x y z, (h.s12 x y z).trans (h.s01 x z y), (h.s01 x y z).trans (h.s12 y x z), ((h.s01 x y z).trans (h.s12 y x z)).trans (h.s01 y z x)⟩`. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `c0` using `E (show θ (xi * xj) (yi * yj) (ui * uj) * θ xi xj (ui * uj) = θ xi (xj * yi * yj) (ui * uj) * θ xj (yi * yj) (ui * uj) by`. Simplify `h.coc xi xj (yi * yj) (ui * uj))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c1` using `E (show θ (xj * ui) uj (yi * yj) * θ xj ui (yi * yj) = θ xj (ui * uj) (yi * yj) * θ ui uj (yi * yj) by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h.coc xj ui uj (yi * yj))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c2` using `E (show θ (xj * ui) (yi * yj) uj * θ xj ui uj = θ xj (yi * yj * ui) uj * θ ui (yi * yj) uj by`. Simplify `h.coc xj ui (yi * yj) uj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c3` using `E (show θ (xj * yj) uj (yi * ui) * θ xj yj (yi * ui) = θ xj (yj * uj) (yi * ui) * θ yj uj (yi * ui) by`. Simplify `h.coc xj yj uj (yi * ui))` using `only [mul_comm, mul_assoc, mul_left_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c4` using `E (show θ (xj * yj) (yi * ui) uj * θ xj yj uj = θ xj (yi * yj * ui) uj * θ yj (yi * ui) uj by`. Simplify `h.coc xj yj (yi * ui) uj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c5` using `E (show θ (xj * yi) ui yj * θ xj yi yj = θ xj (yi * ui) yj * θ yi ui yj by`. Simplify `h.coc xj yi ui yj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c6` using `E (show θ (xj * yi) yj ui * θ xj yi ui = θ xj (yi * yj) ui * θ yi yj ui by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h.coc xj yi yj ui)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c7` using `E (show θ (xi * xj) (yj * uj) (yi * ui) * θ xi xj (yi * ui) = θ xi (xj * yj * uj) (yi * ui) * θ xj (yj * uj) (yi * ui) by`. Simplify `h.coc xi xj (yj * uj) (yi * ui))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c8` using `E (show θ (xi * xj) (yi * ui) (yj * uj) * θ xi xj (yj * uj) = θ xi (xj * yi * ui) (yj * uj) * θ xj (yi * ui) (yj * uj) by`. Simplify `h.coc xi xj (yi * ui) (yj * uj))` using `only [mul_comm, mul_assoc, mul_left_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c9` using `E (show θ (xi * ui) uj (xj * yi * yj) * θ xi ui (xj * yi * yj) = θ xi (ui * uj) (xj * yi * yj) * θ ui uj (xj * yi * yj) by`. Simplify `h.coc xi ui uj (xj * yi * yj))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c10` using `E (show θ (xi * ui) (xj * yi * yj) uj * θ xi ui uj = θ xi (xj * yi * yj * ui) uj * θ ui (xj * yi * yj) uj by`. Simplify `h.coc xi ui (xj * yi * yj) uj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c11` using `E (show θ (xi * yj) uj (xj * yi * ui) * θ xi yj (xj * yi * ui) = θ xi (yj * uj) (xj * yi * ui) * θ yj uj (xj * yi * ui) by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h.coc xi yj uj (xj * yi * ui))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c12` using `E (show θ (xi * yj) (xj * yi * ui) uj * θ xi yj uj = θ xi (xj * yi * yj * ui) uj * θ yj (xj * yi * ui) uj by`. Simplify `h.coc xi yj (xj * yi * ui) uj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c13` using `E (show θ (xi * ui) uj xj * θ xi ui xj = θ xi (ui * uj) xj * θ ui uj xj by`. Simplify `h.coc xi ui uj xj)` using `only [mul_comm, mul_assoc, mul_left_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c14` using `E (show θ (xi * ui) xj uj * θ xi ui uj = θ xi (xj * ui) uj * θ ui xj uj by`. Simplify `h.coc xi ui xj uj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c15` using `E (show θ (xi * xj) uj ui * θ xi xj ui = θ xi (xj * uj) ui * θ xj uj ui by`. Simplify `h.coc xi xj uj ui)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c16` using `E (show θ (xi * xj) ui uj * θ xi xj uj = θ xi (xj * ui) uj * θ xj ui uj by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h.coc xi xj ui uj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c17` using `E (show θ (xi * yi) ui (xj * yj) * θ xi yi (xj * yj) = θ xi (yi * ui) (xj * yj) * θ yi ui (xj * yj) by`. Simplify `h.coc xi yi ui (xj * yj))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c18` using `E (show θ (xi * yi) (xj * yj) ui * θ xi yi ui = θ xi (xj * yi * yj) ui * θ yi (xj * yj) ui by`. Simplify `h.coc xi yi (xj * yj) ui)` using `only [mul_comm, mul_assoc, mul_left_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c19` using `E (show θ (xi * xj) (yi * ui) yj * θ xi xj yj = θ xi (xj * yi * ui) yj * θ xj (yi * ui) yj by`. Simplify `h.coc xi xj (yi * ui) yj)` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `c20` using `E (show θ (xi * xj) yj (yi * ui) * θ xi xj (yi * ui) = θ xi (xj * yj) (yi * ui) * θ xj yj (yi * ui) by`. Simplify `h.coc xi xj yj (yi * ui))` using `only [mul_comm, mul_assoc, mul_left_comm]`. Establish `p0` using `E (hp xj (yj * uj) xi).2.2.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `p1` using `E (hp xj yj xi).2.2.1`. Establish `p2` using `E (hp xj yj yi).2.1`. Establish `p3` using `E (hp xj uj xi).2.2.1`. Establish `p4` using `E (hp (xj * ui) uj (yi * yj)).2.2.1`. Establish `p5` using `E (hp xj ui (yi * yj)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p6` using `E (hp xj (ui * uj) (yi * yj)).2.1`. Establish `p7` using `E (hp ui uj (yi * yj)).2.2.1`. Establish `p8` using `E (hp (xj * ui) (yi * yj) uj).1`. Establish `p9` using `E (hp ui (yi * yj) uj).1`. Establish `p10` using `E (hp (xj * yj) uj (yi * ui)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p11` using `E (hp yj uj (yi * ui)).2.1`. Establish `p12` using `E (hp (xj * yi) ui yj).2.1`. Establish `p13` using `E (hp xj (yi * ui) yj).2.1`. Establish `p14` using `E (hp yi ui yj).2.1`. Establish `p15` using `E (hp (xi * xj) (yj * uj) (yi * ui)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p16` using `E (hp xi (xj * yj * uj) (yi * ui)).2.1`. Establish `p17` using `E (hp xj (yj * uj) (yi * ui)).2.1`. Establish `p18` using `E (hp (xi * ui) uj (xj * yi * yj)).2.2.1`. Establish `p19` using `E (hp xi ui (xj * yi * yj)).2.1`. Establish `p20` using `E (hp xi (ui * uj) (xj * yi * yj)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p21` using `E (hp ui uj (xj * yi * yj)).2.2.1`. Establish `p22` using `E (hp (xi * ui) (xj * yi * yj) uj).1`. Establish `p23` using `E (hp ui (xj * yi * yj) uj).1`. Establish `p24` using `E (hp (xi * yj) uj (xj * yi * ui)).2.1`. Establish `p25` using `E (hp xi (yj * uj) (xj * yi * ui)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p26` using `E (hp yj uj (xj * yi * ui)).2.1`. Establish `p27` using `E (hp (xi * ui) uj xj).2.2.1`. Establish `p28` using `E (hp xi ui xj).2.1`. Establish `p29` using `E (hp xi (ui * uj) xj).2.1`. Establish `p30` using `E (hp ui uj xj).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p31` using `E (hp (xi * ui) xj uj).1`. Establish `p32` using `E (hp ui xj uj).1`. Establish `p33` using `E (hp (xi * xj) uj ui).2.1`. Establish `p34` using `E (hp xi (xj * uj) ui).2.1`. Establish `p35` using `E (hp (xi * yi) ui (xj * yj)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p36` using `E (hp xi (yi * ui) (xj * yj)).2.1`. Establish `p37` using `E (hp yi ui (xj * yj)).2.1`. Establish `p38` using `E (hp (xi * xj) (yi * ui) yj).2.1`. Establish `p39` using `E (hp xi (xj * yi * ui) yj).2.1`. Rewrite using `[← mul_assoc xj yj uj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at *`. Take the linear combination `(norm := abel) c0 - c1 + c2 + c3 - c4 + c5 - c6 + c7 - c8 - c9 + c10 + c11 - c12 + c13 - c14 - c15 + c16 + c17 - c18 + c19 - c20 - p0 + p1 + p2 + p3 + p4 + p5 - p6 - p7 - p8 + p9 - p10 + p11 - p12 + 2 • p13 + p14 - p15 + p16 + p17 + p18 + p19 - p20 - p21 - p22 + p23 - p24 + p25 + …`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cube_corr {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (h : IsCub θ)
     (xi xj yi yj ui uj : A) (sji sij tji tij : U) :
@@ -153,9 +153,9 @@ end GlobalTheory.Mum.TensTor
 namespace GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `a1` using `E h1`. Establish `a2` using `E h2`. Establish `a3` using `E h3`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4` using `E h4`. Simplify using `only [ofMul_mul, ofMul_div] at *`. Take the linear combination `(norm := abel) a1 + a2 - a3 - a4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vmul_comb {U : Type} [CommGroup U] (s1 s2 t P1 P2 P Q wc wb wb' wcb wcb' wbb' wcbb' w1 : U)
     (h1 : s1 * wc * wb = P1 * wcb * w1) (h2 : s2 * wc * wb' = P2 * wcb' * w1)
@@ -168,15 +168,15 @@ theorem vmul_comb {U : Type} [CommGroup U] (s1 s2 t P1 P2 P Q wc wb wb' wcb wcb'
   linear_combination (norm := abel) a1 + a2 - a3 - a4
 
 /- English proof (translation)
-Introduce `F _ N N' r W φ e wv hT v' u' vs us hv hu`. Take `⟨hφ, -, -, -, hφc, hw0, hcub, -⟩` from `hT`. Use `⟨fun j => ?_, fun χ' => ?_⟩` and prove the remaining obligations. Use `show φ (v'.b * u'.b) j = (vs j).b * (us j).b`. Rewrite using `[hφ, hv.1, hu.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `w : N'.A → Fˣ` to `fun x => Units.mk0 (wv x) (hw0 x)`. Set `Pf : (Fin r → N.Gt) → Fˣ` to `fun g => ∏ i, ∏ j, ((g j).s (e χ' i) * (g i).s (e χ' j) / (N.θ (N.c (e χ' j)) (g j).b (N.c (e χ' i)) * N.θ (N.c (e χ' j)) (g j).b (g i).b * N.θ (N.c (e χ' i)) (g i).b (N.c (e χ' j) * (g j).b))) ^ W i j`. Set `Qf : Fˣ` to `∏ i, ∏ j, (N.θ (N.c (e χ' i) * N.c (e χ' j)) ((vs i).b * (vs j).b) ((us i).b * (us j).b) / (N.θ (N.c (e χ' i)) (vs i).b (us i).b * N.θ (N.c (e χ' j)) (vs j).b (us j).b)) ^ W i j`. Establish `h1 : v'.s χ' * w (N'.c χ') * w v'.b = Pf vs * w (N'.c χ' * v'.b) * w 1` using `Units.ext (hv.2 χ')`. Establish `h2 : u'.s χ' * w (N'.c χ') * w u'.b = Pf us * w (N'.c χ' * u'.b) * w 1` using `Units.ext (hu.2 χ')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hcub (N'.c χ') v'.b u'.b`. Rewrite `h3` using `[mul_assoc (N'.c χ') v'.b u'.b]`. Simplify using `only [hφc, hv.1, hu.1] at h3`. Establish `h3' : N'.θ (N'.c χ') v'.b u'.b * w (N'.c χ' * (v'.b * u'.b)) * w (N'.c χ') * w v'.b * w u'.b = Qf * w (N'.c χ' * v'.b) * w (N'.c χ' * u'.b) * w (v'.b * u'.b) * w 1` using `Units.ext h3`. Establish `h4 : Pf (vs * us) * Qf = Pf vs * Pf us`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pf, Qf]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_zpow, ← mul_zpow]`. Conclude with `congrArg (· ^ W i j) (cube_corr N.cub (N.c (e χ' i)) (N.c (e χ' j)) (vs i).b (vs j).b (us i).b (us j).b ((vs j).s (e χ' i)) ((vs i).s (e χ' j)) ((us j).s (e χ' i)) ((us i).s (e χ' j)))`. Conclude with `congrArg Units.val (vmul_comb _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h1 h2 h3' h4)`.
+A detailed English derivation is pending.
 -/
 theorem gtRelV_mul : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F), TensFacts W φ e wv →

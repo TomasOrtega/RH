@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC Opposite CochainCo
 namespace LateralTheory.EDual
 
 /- English proof (translation)
-Establish `hS` using `(G.property (ModuleCat.of (ULift.{1} R) (ULift.{1} R))) (⊥ : Sieve U) (Scheme.bot_mem_grothendieckTopology U)`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `e` using `hS.isSeparatedFor (fun _ _ h => h.elim) (ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ x)) (ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ y)) (fun _ _ h => h.elim) (fun _ _ h => h.elim)`. Use `congrArg (fun φ => φ.hom (1 : ULift.{1} R)) e` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sec_empty_sub {R : Type} [CommRing R] (G : Shv R) (U : Scheme.{0}) [IsEmpty U] :
     Subsingleton (G.obj.obj (op U)) := by

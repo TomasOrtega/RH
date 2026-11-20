@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.PtExt.CocExt
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Use `⟨i, fun z _ ↦ ?_⟩` and prove the remaining obligations. Use `hi (Set.mem_univ ((spOver ψ).left.base z))` as an intermediate fact. Simplify `this` using `[Over.comp_left, Scheme.Hom.comp_base, Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sm_comp {R : Type} [CommRing R] {X : Over (Sp R)} {K : Type} {W : K → X.left.Opens}
     {D E : Type} [CommRing D] [Algebra R D] [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E) (x : Pt X D)
@@ -25,23 +25,21 @@ theorem sm_comp {R : Type} [CommRing R] {X : Over (Sp R)} {K : Type} {W : K → 
   simpa [Over.comp_left, Scheme.Hom.comp_base, Scheme.Hom.comp_apply] using this
 
 /- English proof (translation)
-Introduce `R _ X K W hW u hu`. Establish `hB : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D), ∃ σ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), Sm W (spOver ψ ≫ x) → σ E' (θ.comp ψ) - θ …` using `fun D _ _ x ↦ GlobalTheory.T.exists_section_pointwiseOneCocycle_openCover R X K W hW u hu D x`. Use `choose σ hσ using hB`. Establish `uniq : ∀ (D : Type) [CommRing D] [Algebra R D] (y : Pt X D) (d d' : D), (∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), Sm W (spOver ψ ≫ y) → ψ d = ψ d') → d = d'`. Introduce `D _ _ y d d' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -, he⟩` from `GlobalTheory.T.existsUnique_elem_of_natural_family_openCoverPoints R X K W hW D y (fun E _ _ ψ ↦ ψ d) (fun _ _ _ _ _ _ _ _ _ ↦ rfl)`. Conclude with `(he d (fun _ _ _ _ _ ↦ rfl)).trans (he d' (fun E _ _ ψ hψ ↦ h E ψ hψ)).symm`. Establish `hA : ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt X D), ∃ d : D', ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D' →ₐ[R] E), Sm W (spOver ψ ≫ spOver φ ≫ x) → σ D x E (ψ.comp φ) - σ D' (spOver φ ≫ x) E ψ = ψ d`. Introduce `D _ _ D' _ _ φ x`. Use `(GlobalTheory.T.existsUnique_elem_of_natural_family_openCoverPoints R X K W hW D' (spOver φ ≫ x) (fun E _ _ ψ ↦ σ D x E (ψ.comp φ) - σ D' (spOver φ ≫ x) E ψ) ?_).exists` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `E _ _ E' _ _ ψ θ hψ`. Establish `e : spOver ψ ≫ spOver φ ≫ x = spOver (ψ.comp φ) ≫ x` using `by rw [← Category.assoc, spOver_comp]`. Establish `h1` using `hσ D x E E' (ψ.comp φ) θ (by rw [← e]; exact hψ)`. Establish `h2` using `hσ D' (spOver φ ≫ x) E E' ψ θ hψ`. Rewrite `h1` using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub]`. Rewrite using `[show (θ.comp ψ).comp φ = θ.comp (ψ.comp φ) from rfl]`. Take the linear combination `h1 - h2`. Use `choose u' hu' using hA`. Use `⟨u', ?_, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `D _ _ D' _ _ D'' _ _ φ ψ x _`. Establish `e : spOver ψ ≫ spOver φ ≫ x = spOver (ψ.comp φ) ≫ x` using `by rw [← Category.assoc, spOver_comp]`. Apply `uniq D'' (spOver (ψ.comp φ) ≫ x)` to reduce the goal to its premises. Introduce `E _ _ ρ hρ`. Establish `h2 : Sm W (spOver (ρ.comp ψ) ≫ spOver φ ≫ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spOver_comp, Category.assoc, e]`. Conclude with `hρ`. Establish `h3 : Sm W (spOver ρ ≫ spOver ψ ≫ spOver φ ≫ x)` using `by rw [e]; exact hρ`. Rewrite using `[map_add, ← AlgHom.comp_apply, ← hu' D D'' (ψ.comp φ) x E ρ hρ, ← hu' D D' φ x E (ρ.comp ψ) h2, ← hu' D' D'' ψ (spOver φ ≫ x) E ρ h3, e]`. Rewrite using `[show (ρ.comp ψ).comp φ = ρ.comp (ψ.comp φ) from rfl]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun D _ _ x ↦ σ D x D (AlgHom.id R D), ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x hx`. Establish `hx' : Sm W (spOver (AlgHom.id R D) ≫ x)` using `by rw [spOver_id, Category.id_comp]; exact hx`. Establish `h1` using `hσ D x D D' (AlgHom.id R D) φ hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[spOver_id, Category.id_comp, AlgHom.comp_id]`. Establish `hφx : Sm W (spOver (AlgHom.id R D') ≫ spOver φ ≫ x)`. Rewrite using `[spOver_id, Category.id_comp]`. Conclude with `sm_comp φ x hx`. Establish `h2` using `hu' D D' φ x D' (AlgHom.id R D') hφx`.
-
-Rewrite `h2` using `[AlgHom.id_comp, AlgHom.id_apply]`. Use `show u D D' φ x + -u' D D' φ x = _`. Take the linear combination `h2 - h1`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cocycle_extends : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → ∀ u : Fn1 X, IsCoc W u → ∃ u' : Fn1 X, IsCoc (whole X) u' ∧ Cohom W u u' := by
   intro R _ X K W hW u hu

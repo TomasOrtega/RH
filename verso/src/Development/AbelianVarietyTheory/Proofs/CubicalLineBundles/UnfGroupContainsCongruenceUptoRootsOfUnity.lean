@@ -11,7 +11,7 @@ namespace GlobalTheory
 open NumberField in
 open scoped Matrix in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma isUStab_one_cubical_line_bundles {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
     {G : Matrix (Fin r) (Fin r) E} {L : Submodule (NumberField.RingOfIntegers E) (Fin r → E)} :
@@ -22,7 +22,7 @@ private lemma isUStab_one_cubical_line_bundles {E : Type} [Field E] [NumberField
 open NumberField in
 open scoped Matrix in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab at *`. Use `⟨fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hg.1, hh.1]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `(hh.2 x).trans (hg.2 _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isUStab_mul_cubical_line_bundles {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
     {G : Matrix (Fin r) (Fin r) E} {L : Submodule (NumberField.RingOfIntegers E) (Fin r → E)}
@@ -36,7 +36,7 @@ private lemma isUStab_mul_cubical_line_bundles {E : Type} [Field E] [NumberField
 open NumberField in
 open scoped Matrix in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using isUStab_one_cubical_line_bundles`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `isUStab_mul_cubical_line_bundles ih hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma isUStab_pow' {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
     {G : Matrix (Fin r) (Fin r) E} {L : Submodule (NumberField.RingOfIntegers E) (Fin r → E)}
@@ -49,27 +49,25 @@ open NumberField in
 open scoped Matrix in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hU hA hr k γ hγ hcong`. Take `⟨γ', hγ'Γ, u, hu⟩` from `_root_.GlobalTheory.OrbitScalar.exists_smul_of_orbits E r (U.X k) γ (_root_.GlobalTheory.congr_lact_mem_orbit E H Dw l Xo c σ r U hU hA k γ hγ hcong)`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Establish `h1` using `congrArg (fun M : Matrix (Fin r) (Fin r) E => M ⟨0, hr⟩ ⟨0, hr⟩) γ'.mul_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[hu] at h1`. Set `cu : GL (Fin r) E` to `Units.map (algebraMap E (Matrix (Fin r) (Fin r) E)).toMonoidHom (Units.mk0 u hu0)`. Establish `hcu : (cu : Matrix (Fin r) (Fin r) E) = u • 1`. Simplify using `[cu, Algebra.algebraMap_eq_smul_one]`. Establish `hcomm : ∀ g : GL (Fin r) E, cu * g = g * cu` using `fun g => Units.ext (by simp [hcu, Matrix.smul_mul, Matrix.mul_smul])`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hγ' : γ' = cu * γ` using `Units.ext (by rw [hu, Units.val_mul, hcu, Matrix.smul_mul, one_mul])`. Take `⟨S, hS⟩` from `(U.X k).Γ_index`. Establish `hpow : ∀ j : ℕ, ∃ s ∈ S, s⁻¹ * γ ^ j ∈ (U.X k).Γ` using `fun j => hS _ (isUStab_pow' hγ j)`. Use `choose f hfS hfΓ using hpow`. Establish `hmem : ∀ j, cu ^ j * f j ∈ (U.X k).Γ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `h` using `(U.X k).Γ.mul_mem ((U.X k).Γ.pow_mem hγ'Γ j) ((U.X k).Γ.inv_mem (hfΓ j))`. Establish `e : γ' ^ j * ((f j)⁻¹ * γ ^ j)⁻¹ = cu ^ j * f j`. Rewrite using `[hγ', (show Commute cu γ from hcomm γ).mul_pow, mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left]`. Conclude with `e ▸ h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ a b : ℕ, a < b → f a = f b → ∃ γ' ∈ (U.X k).Γ, ∃ (u : E) (n : ℕ), 0 < n ∧ u ^ n = 1 ∧ (γ' : Matrix (Fin r) (Fin r) E) = u • (γ : Matrix (Fin r) (Fin r) E)`. Introduce `a b hab heq`. Establish `hm : cu ^ (b - a) ∈ (U.X k).Γ`. Establish `h` using `(U.X k).Γ.mul_mem (hmem b) ((U.X k).Γ.inv_mem (hmem a))`. Rewrite `h` using `[heq, mul_inv_rev, mul_assoc, mul_inv_cancel_left, ← pow_sub cu hab.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcm : ((cu ^ (b - a) : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = u ^ (b - a) • 1`. Rewrite using `[Units.val_pow_eq_pow_val, hcu, smul_pow, one_pow]`. Establish `h1 : cu ^ (b - a) = 1`. Take `⟨x, hx⟩` from `_root_.GlobalTheory.OrbitScalar.exists_mem_dom (U.X k)`. Set `β : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k).Ψ r` to `fun τ => (((τ : E →+* ℂ) (u ^ (b - a))) • (1 : Matrix (Fin r) (Fin r) ℂ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hβ : ∀ τ, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat β τ = ((τ : E →+* ℂ) (u ^ (b - a))) • (1 : Matrix (Fin r) (Fin r) ℂ)`. Introduce `τ`. Both sides reduce to the same expression. Use `(U.X k).Γ_free _ hm x hx β ?_ ?_` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Bor`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ`. Use `⟨?_, fun p q hpq => ?_⟩` and prove the remaining obligations. Rewrite using `[hβ, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ ((map_ne_zero _).2 (pow_ne_zero _ hu0))`. Simplify using `[β, Matrix.one_apply, (ne_of_gt hpq)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.lact _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul`. Use function extensionality and compare the values at `τ`. Rewrite using `[hβ, hcm]`. Use extensionality with `p q`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, apply_ite, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hn : u ^ (b - a) = 1`. Establish `h2` using `congrArg (fun g : GL (Fin r) E => (g : Matrix (Fin r) (Fin r) E) ⟨0, hr⟩ ⟨0, hr⟩) h1`. Simplify `h2` using `[hcm]`. Conclude with `⟨γ', hγ'Γ, u, b - a, Nat.sub_pos_of_lt hab, hn, hu⟩`. Take `⟨i, j, hij, hfij⟩` from `Finite.exists_ne_map_eq_of_infinite (fun j : ℕ => (⟨f j, hfS j⟩ : S))`.
-
-Establish `hfij' : f i = f j` using `congrArg Subtype.val hfij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `key i j h hfij'`. Conclude with `key j i h hfij'.symm`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : _root_.Formalism.L2.PjFree.Unf Xo c σ r), _root_.Formalism.L2.PjFree.IsUnf U → l.A = 1 → 0 < r → ∀ k (γ : GL (Fin r) E), _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab (U.X k).Gm (U.X k).Λ γ → (∀ x ∈ (U.X k).Λ, ∃ y ∈ (U.X k).Λ, Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) x - x = (l.M : E) • y) → ∃ γ' ∈ (U.X k).Γ, ∃ (u : E) (n : ℕ), 0 < n ∧ u ^ n = 1 ∧ (γ' : Matrix (Fin r) (Fin r) E) = u • (γ : Matrix (Fin r) (Fin r) E) := by
   intro E _ _ _ H Dw l Xo c σ r U hU hA hr k γ hγ hcong

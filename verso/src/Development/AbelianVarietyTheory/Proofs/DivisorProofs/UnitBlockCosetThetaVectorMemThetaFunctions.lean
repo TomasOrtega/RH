@@ -19,13 +19,13 @@ namespace GlobalTheory.FunObj.CosetTT
 variable {D : D7}
 
 /- English proof (translation)
-Use `set 𝔫 : Ideal (𝓞 D.host.E) := D.host.conj • 𝔪`. Distinguish the cases in `h : 𝔫 = ⊥`. Use `⟨1, one_pos, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h0 : ((𝔫 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = 0`. Rewrite using `[h]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `FractionalIdeal.coeIdeal_bot`. Rewrite `hy` using `[h0, div_zero, FractionalIdeal.coe_zero, Submodule.mem_bot]`. Rewrite using `[hy, mul_zero]`. Conclude with `Submodule.zero_mem _`. Use `⟨Ideal.absNorm 𝔫, Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff]), fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hM : ((Ideal.absNorm 𝔫 : ℕ) : D.host.E) ∈ ((𝔫 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Conclude with `⟨(Ideal.absNorm 𝔫 : 𝓞 D.host.E), Ideal.absNorm_mem 𝔫, by simp⟩`. Establish `hne : ((𝔫 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm` using `FractionalIdeal.mul_mem_mul hy hM`. Rewrite `hm` using `[div_mul_cancel₀ _ hne]`. Establish `h1` using `FractionalIdeal.coeIdeal_le_one (I := 𝔪) (P := D.host.E) hm`. Rewrite using `[mul_comm]`. Rewrite `h1` using `[FractionalIdeal.mem_one_iff, ← Submodule.mem_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_one (𝔪 : Ideal (𝓞 D.host.E)) : ∃ M : ℕ, 0 < M ∧ ∀ y : D.host.E,
     y ∈ ((((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) /
@@ -58,9 +58,9 @@ namespace GlobalTheory.FunObj.CosetTT
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨M, hM, h⟩` from `exists_nat_mul_mem_one (D := D) 𝔪`. Use `⟨M, hM, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [skewLat, stdL, Submodule.mem_pi, Set.mem_univ, true_implies] at hv ⊢`. Introduce `i`. Use `h _ (hv i)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Pi.smul_apply, Algebra.smul_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem skewLat_smul (𝔪 : Ideal (𝓞 D.host.E)) (d : ℕ) :
     ∃ M : ℕ, 0 < M ∧ ∀ v ∈ skewLat D 𝔪 d, (M : 𝓞 D.host.E) • v ∈ stdL D d := by
@@ -72,9 +72,9 @@ theorem skewLat_smul (𝔪 : Ideal (𝓞 D.host.E)) (d : ℕ) :
   simpa [Pi.smul_apply, Algebra.smul_def] using this
 
 /- English proof (translation)
-Use `Submodule.span_le.2 fun A hA => ?_` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.lsmul_apply]`. Use `Submodule.subset_span fun x hx => ?_` and prove the remaining obligations. Establish `e : ((M : 𝓞 D.host.E) • A).mulVec x = (M : 𝓞 D.host.E) • A.mulVec x`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc]`. Rewrite using `[e]`. Conclude with `hM _ (hA x hx)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homL_smul {𝔪 : Ideal (𝓞 D.host.E)} {a d M : ℕ}
     (hM : ∀ v ∈ skewLat D 𝔪 d, (M : 𝓞 D.host.E) • v ∈ stdL D d) :
@@ -89,9 +89,9 @@ theorem homL_smul {𝔪 : Ideal (𝓞 D.host.E)} {a d M : ℕ}
   exact hM _ (hA x hx)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 fun B hB => ?_` and prove the remaining obligations. Take `⟨c, hc, A, hA, rfl⟩` from `hB`. Establish `hA'` using `homL_smul (a := a) hM hA`. Simplify using `only [Submodule.mem_comap, LinearMap.lsmul_apply] at hA'`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.lsmul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `hA'`, the goal using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[smul_comm]`. Conclude with `Submodule.subset_span ⟨c, hc, _, hA', rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem YYl_smul {𝔪 : Ideal (𝓞 D.host.E)} {a d M : ℕ}
     (hM : ∀ v ∈ skewLat D 𝔪 d, (M : 𝓞 D.host.E) • v ∈ stdL D d) :
@@ -107,11 +107,11 @@ theorem YYl_smul {𝔪 : Ideal (𝓞 D.host.E)} {a d M : ℕ}
   exact Submodule.subset_span ⟨c, hc, _, hA', rfl⟩
 
 /- English proof (translation)
-Take `⟨M, hM0, hM⟩` from `skewLat_smul (D := D) 𝔪 d`. Use `⟨M, hM0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : La D (tor0 D cc δ) (stdL D a) (skewLat D 𝔪 d) ≤ (La0 D (tor0 D cc δ) a d).comap (DistribMulAction.toAddMonoidHom (VC D a d) M)`. Use `(AddSubgroup.closure_le _).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨w, hw, A, hA, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hA'` using `YYl_smul (a := a) hM hA`. Simplify using `only [Submodule.mem_comap, LinearMap.lsmul_apply] at hA'`. Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_comap, DistribMulAction.toAddMonoidHom_apply]`. Use `AddSubgroup.subset_closure ⟨w, hw, _, hA', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[embV, tor0, Algebra.smul_def, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key hx`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem la_skew_nsmul (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (𝔪 : Ideal (𝓞 D.host.E)) (a d : ℕ) :
     ∃ M : ℕ, 0 < M ∧ ∀ x ∈ La D (tor0 D cc δ) (stdL D a) (skewLat D 𝔪 d), M • x ∈ La0 D (tor0 D cc δ) a d := by
@@ -137,20 +137,18 @@ namespace GlobalTheory.FunObj.CosetTT
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨Lt, h1, h2, -⟩` from `exists_lattice_of_adelic_point D n`. Rewrite using `[← h2]`. Conclude with `(h1 _).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_stdL (n : ℕ) : SD D (stdL D n) := by
   obtain ⟨Lt, h1, h2, -⟩ := exists_lattice_of_adelic_point D n
   rw [← h2]; exact (h1 _).2
 
 /- English proof (translation)
-Establish `k : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) a d)` using `Or.inr ⟨_, _, sd_stdL a, sd_stdL d, rfl⟩`. Establish `n0` using `GlobalTheory.ThetaTriple.nice_of_klat hc k`. Take `⟨hd, m, hm, hF⟩` from `hF`. Use `⟨GlobalTheory.ThetaLevels.wd_entire D _ _ hd, m * M, Nat.mul_pos hm hM, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hmy` using `AddSubgroup.nsmul_mem _ hy m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : bc D (tor0 D cc δ) ((m * M) • y) x = 1`. Rewrite using `[mul_comm, mul_smul, GlobalTheory.ThetaLevels.bc_nsmul_left, ← GlobalTheory.ThetaLevels.bc_nsmul_right]`. Conclude with `n0.2.1 _ hmy _ hx`. Establish `h2 : bc D (tor0 D cc δ) x ((m * M) • y) = 1`. Rewrite using `[mul_comm, mul_smul, GlobalTheory.ThetaLevels.bc_nsmul_right, ← GlobalTheory.ThetaLevels.bc_nsmul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `n0.2.1 _ hx _ hmy`. Establish `h3 : Wd D (tor0 D cc δ) ((m * M) • y) F = F`. Rewrite using `[mul_smul]`. Conclude with `hF _ (AddSubgroup.nsmul_mem _ hy M)`. Establish `h4` using `Wd_Wd D (tor0 D cc δ) x ((m * M) • y) F`.
-
-Rewrite `h4` using `[h3, h2, add_comm]`. Rewrite using `[Wd_Wd, h1, h4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wd_mem_TT_of_nsmul {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {a d : ℕ} {x : VC D a d}
     {M : ℕ} (hM : 0 < M) (hx : M • x ∈ La0 D (tor0 D cc δ) a d) {F : VC D a d → ℂ}
@@ -173,15 +171,13 @@ theorem wd_mem_TT_of_nsmul {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D c
   rw [Wd_Wd, h1, h4]
 
 /- English proof (translation)
-Use `set T := tor0 D cc δ`. Use `set A := La0 D T a d`. Distinguish the cases in `hn : (A.addSubgroupOf B).index = 0`. Establish `h0 : Iop D T A B F = 0` using `by funext z; simp [Iop, hn]`. Rewrite using `[h0]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.FinWeil.TTs D T a d).zero_mem`. Use `haveI : Finite (B ⧸ A.addSubgroupOf B) := Nat.finite_of_card_ne_zero hn`. Use `letI : Fintype (B ⧸ A.addSubgroupOf B) := Fintype.ofFinite _`. Establish `hI : Iop D T A B F = ((Real.sqrt ((A.addSubgroupOf B).index : ℝ))⁻¹ : ℂ) • ∑ q : B ⧸ A.addSubgroupOf B, (al D T ((Quotient.out q : B) : VC D a d) * (wdPh D T ((Quotient.out q : B) : VC D a d))⁻¹) • Wd D T ((Quotient.out q : B) : VC D a d) F`. Use function extensionality and compare the values at `z`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Iop, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `h0 : wdPh D T ((Quotient.out q : B) : VC D a d) ≠ 0` using `Complex.exp_ne_zero _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Wd]`. Rewrite using `[mul_assoc, inv_mul_cancel_left₀ h0]`. Rewrite using `[hI]`. Use `(GlobalTheory.FinWeil.TTs D T a d).smul_mem _ (Submodule.sum_mem _ fun q _ => (GlobalTheory.FinWeil.TTs D T a d).smul_mem _ ?_)` and prove the remaining obligations. Take `⟨M, hM, hx⟩` from `hB _ (Quotient.out q : B).2`.
-
-Conclude with `wd_mem_TT_of_nsmul hc hM hx hF`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iop_mem_TT {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {a d : ℕ}
     (B : AddSubgroup (VC D a d)) (hB : ∀ x ∈ B, ∃ M : ℕ, 0 < M ∧ M • x ∈ La0 D (tor0 D cc δ) a d)
@@ -211,9 +207,9 @@ theorem iop_mem_TT {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {a
     exact wd_mem_TT_of_nsmul hc hM hx hF
 
 /- English proof (translation)
-Introduce `D δ hc 𝔪 _ o a d e0 he`. Establish `hT` using `GlobalTheory.ThetaLevels.levels_closed D ⊤ δ hc a d`. Establish `he' : e0 ∈ TT D (tor0 D ⊤ δ) a d` using `hT.1 _ _ (sd_stdL a) (sd_stdL d) e0 he`. Take `⟨M, hM, hx⟩` from `la_skew_nsmul (D := D) ⊤ δ 𝔪 a d`. Establish `hI` using `iop_mem_TT hc (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) (fun x hx' => ⟨M, hM, hx x hx'⟩) he'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hT.2.2.2 _ _ (hT.2.1 _ _ hI)`.
+A detailed English derivation is pending.
 -/
 theorem cosetV_mem_TT : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ →
     ∀ (o a d : ℕ) (e0 : VC D a d → ℂ), e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) →

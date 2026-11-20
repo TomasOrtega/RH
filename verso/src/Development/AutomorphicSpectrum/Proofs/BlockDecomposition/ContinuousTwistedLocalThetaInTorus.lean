@@ -14,11 +14,11 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.TwistCont
 
 /- English proof (translation)
-Introduce `K _ _ _ c v L hL g₀ _ ξ`. Consider the cases of `L with`. Consider the case `ns w σ η Φ => exact continuous_const`. Consider the case `sp w₁ w₂ Φ`. Take `⟨-, hlc, hcs⟩` from `hL`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Take `⟨hχc, hχ1, -⟩` from `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Establish `hf` using `(GlobalTheory.CompanionTheory.SplitPi.piS_mem hχc hχ1 (cAt c v w₁) (show Φ ∈ GL2LocalData.SBE (Qv v × Qv v) from ⟨hlc, hcs⟩) g₀).1`. Establish `hτ : Continuous (fun τ : (Qv v)ˣ => (dg1 v w₁ ξ, dg1 v w₂ ξ) * ((τ : Qv v), ((τ⁻¹ : (Qv v)ˣ) : Qv v)))` using `continuous_const.mul (Units.continuous_val.prodMk (Units.continuous_val.comp continuous_inv))`. Establish `e : (fun τ : (Qv v)ˣ => ((LM.sp w₁ w₂ Φ : LM c v).tw τ).val g₀ ξ) = fun τ : (Qv v)ˣ => GL2LocalData.piS (GP.psiF v)⁻¹ (cAt c v w₁) g₀ Φ ((dg1 v w₁ ξ, dg1 v w₂ ξ) * ((τ : Qv v), ((τ⁻¹ : (Qv v)ˣ) : Qv v)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Conclude with `GlobalTheory.CompanionTheory.SplitTorus.piS_torus (Qv v) _ hχc hχ1 (cAt c v w₁) g₀ Φ τ _`. Rewrite using `[e]`. Conclude with `hf.continuous.comp hτ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_tw_continuous : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),

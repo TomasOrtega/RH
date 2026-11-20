@@ -7,9 +7,9 @@ namespace GlobalTheory
 open IsLocalRing Polynomial TensorProduct
 
 /- English proof (translation)
-Establish `hu : IsUnit ((a - b) * (-(a - b)) + 1)` using `Ideal.mem_jacobson_bot.1 h _`. Establish `h0 : ((a - b) * (-(a - b)) + 1) * (a - b) = 0`. Establish `h1` using `ha.eq`. Establish `h2` using `hb.eq`. Take the linear combination `(-a - 1 + 3 * b) * h1 + (b + 1 - 3 * a) * h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `sub_eq_zero.1 ((hu.mul_right_eq_zero).1 h0)`.
+A detailed English derivation is pending.
 -/
 theorem idempotent_eq_of_sub_mem_jacobson {S : Type*} [CommRing S] {a b : S}
     (ha : IsIdempotentElem a) (hb : IsIdempotentElem b) (h : a - b ∈ (⊥ : Ideal S).jacobson) :
@@ -22,7 +22,7 @@ theorem idempotent_eq_of_sub_mem_jacobson {S : Type*} [CommRing S] {a b : S}
   exact sub_eq_zero.1 ((hu.mul_right_eq_zero).1 h0)
 
 /- English proof (translation)
-The claim follows from `have := isLocalHom_of_le_jacobson_bot J hJ IsUnit.of_map (Ideal.Quotient.mk J) x hx`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_mk_of_le_jacobson {S : Type*} [CommRing S] {J : Ideal S}
     (hJ : J ≤ (⊥ : Ideal S).jacobson) {x : S} (hx : IsUnit (Ideal.Quotient.mk J x)) : IsUnit x :=
@@ -30,15 +30,15 @@ theorem isUnit_of_isUnit_mk_of_le_jacobson {S : Type*} [CommRing S] {J : Ideal S
   IsUnit.of_map (Ideal.Quotient.mk J) x hx
 
 /- English proof (translation)
-Take `⟨t, ht, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := R) (S := A)).1 inferInstance`. Set `φ : A ⊗[R] A →ₐ[R] B` to `Algebra.TensorProduct.lift f g fun _ _ ↦ .all _ _`. Establish `key : ∀ x : A ⊗[R] A, f (Algebra.TensorProduct.lmul' R x) - φ x ∈ (⊥ : Ideal B).jacobson`. Introduce `x`. Proceed by induction on `x with`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `: f (Algebra.TensorProduct.lmul' R (a ⊗ₜ b)) - φ (a ⊗ₜ b) = f a * (f b - g b)`. Simplify using `[φ, mul_sub]`. Rewrite using `[this]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (h b)`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, map_add, add_sub_add_comm]`. Conclude with `add_mem hx hy`. Establish `hu : IsUnit (φ t)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `key t`. Rewrite `h1` using `[ht1, map_one]`. Use `Ideal.mem_jacobson_bot.1 h1 (-1)` as an intermediate fact. Simplify using `using this`. Use extensionality with `a`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr(φ $(ht a))` as an intermediate fact. Simplify using `only [map_mul, map_sub, map_zero, φ, Algebra.TensorProduct.lift_tmul, map_one, one_mul, mul_one] at this`. Conclude with `(sub_eq_zero.1 ((hu.mul_left_eq_zero).1 this)).symm`.
+A detailed English derivation is pending.
 -/
 theorem algHom_ext_of_sub_mem_jacobson {R A B : Type*} [CommRing R] [CommRing A] [CommRing B]
     [Algebra R A] [Algebra R B] [Algebra.EssFiniteType R A] [Algebra.FormallyUnramified R A]
@@ -71,21 +71,19 @@ theorem algHom_ext_of_sub_mem_jacobson {R A B : Type*} [CommRing R] [CommRing A]
   exact (sub_eq_zero.1 ((hu.mul_left_eq_zero).1 this)).symm
 
 /- English proof (translation)
-Establish `hJ : J ≤ (⊥ : Ideal S).jacobson` using `HenselianRing.jac`. Establish `hJtop : J ≠ ⊤`. Introduce and unpack `rfl`. Rewrite `hJ` using `[IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top]`. Conclude with `(maximalIdeal.isMaximal S).ne_top (top_le_iff.1 hJ)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nontrivial (S ⧸ J)` using `Ideal.Quotient.nontrivial_iff.2 hJtop`. Establish `: IsLocalRing (S ⧸ J)` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Set `Q : Ideal A` to `(maximalIdeal (S ⧸ J)).comap φ`. Take `⟨f, hfQ, ⟨⟨P⟩⟩⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := R) Q`. Establish `hf : IsUnit (φ f)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hfQ` using `[Q]`. Set `φ' : Localization.Away f →ₐ[R] S ⧸ J` to `IsLocalization.Away.liftAlgHom f hf`. Establish `hφ' : ∀ a, φ' (algebraMap _ _ a) = φ a` using `fun a ↦ by simp [φ']`. Take `⟨x₀, hx₀⟩` from `Ideal.Quotient.mk_surjective (φ' P.x)`. Establish `hm : P.HasMap (Ideal.Quotient.mkₐ R J x₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P.hasMap.map φ'` as an intermediate fact. Rewrite `this` using `[← hx₀]`. Then use the resulting hypothesis. Take `⟨x, hx, hxx⟩` from `HenselianRing.is_henselian (I := J) (P.f.map (algebraMap R S)) (P.monic_f.map _) x₀ (by`. Rewrite using `[eval_map_algebraMap, ← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.mkₐ_eq_mk R, ← aeval_algHom_apply]`. Conclude with `hm.1) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[derivative_map, eval_map_algebraMap, ← Ideal.Quotient.mkₐ_eq_mk R, ← aeval_algHom_apply]`. Conclude with `hm.isUnit_derivative_f)`. Establish `hxx' : Ideal.Quotient.mkₐ R J x = Ideal.Quotient.mkₐ R J x₀` using `Ideal.Quotient.eq.2 hxx`. Establish `hmx : P.HasMap x`. Use `⟨by simpa [eval_map_algebraMap] using hx.eq_zero, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `isUnit_of_isUnit_mk_of_le_jacobson hJ` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk R, ← aeval_algHom_apply, hxx']`. Conclude with `hm.2`. Set `ψ' : Localization.Away f →ₐ[R] S` to `(P.lift x hmx).comp P.equivRing.toAlgHom`. Establish `hψ' : (Ideal.Quotient.mkₐ R J).comp ψ' = φ'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `P.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mkₐ R J (P.lift x hmx (P.equivRing P.x)) = _`. Rewrite using `[StandardEtalePresentation.equivRing_x, StandardEtalePair.lift_X, hxx']`. Conclude with `hx₀`. Use `⟨ψ'.comp (IsScalarTower.toAlgHom R A _), fun a ↦ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hφ', ← hψ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_algHom_lift_of_etale_of_isLocalRing {R A S : Type*} [CommRing R] [CommRing A]
     [CommRing S] [Algebra R A] [Algebra R S] [Algebra.Etale R A] [IsLocalRing S] (J : Ideal S)
@@ -133,7 +131,7 @@ theorem exists_algHom_lift_of_etale_of_isLocalRing {R A S : Type*} [CommRing R] 
   rfl
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n)`.
+A detailed English derivation is pending.
 -/
 theorem comap_eq_maximalIdeal_of_finite {R S : Type*} [CommRing R] [IsLocalRing R] [CommRing S]
     [Algebra R S] [Module.Finite R S] (n : Ideal S) [n.IsMaximal] :
@@ -141,7 +139,7 @@ theorem comap_eq_maximalIdeal_of_finite {R S : Type*} [CommRing R] [IsLocalRing 
   IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n)
 
 /- English proof (translation)
-Rewrite using `[Ideal.jacobson, le_sInf_iff]`. Introduce and unpack `n ⟨-, hn⟩`. Rewrite using `[Ideal.map_le_iff_le_comap, comap_eq_maximalIdeal_of_finite]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_maximalIdeal_le_jacobson_of_finite (R S : Type*) [CommRing R] [IsLocalRing R]
     [CommRing S] [Algebra R S] [Module.Finite R S] :
@@ -151,7 +149,7 @@ theorem map_maximalIdeal_le_jacobson_of_finite (R S : Type*) [CommRing R] [IsLoc
   rw [Ideal.map_le_iff_le_comap, comap_eq_maximalIdeal_of_finite]
 
 /- English proof (translation)
-Establish `hfin` using `(Algebra.QuasiFinite.finite_primesOver (R := R) (S := S) (maximalIdeal R)).to_subtype`. Use `Finite.of_injective (β := (maximalIdeal R).primesOver S) (fun n ↦ ⟨n.asIdeal, n.isMaximal.isPrime, ⟨(have := n.isMaximal; (comap_eq_maximalIdeal_of_finite n.asIdeal).symm)⟩⟩) fun a b h ↦ MaximalSpectrum.ext congr(($h).1)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem finite_maximalSpectrum_of_finite_of_isLocalRing (R S : Type*) [CommRing R] [IsLocalRing R]
     [CommRing S] [Algebra R S] [Module.Finite R S] : Finite (MaximalSpectrum S) := by
@@ -162,15 +160,15 @@ theorem finite_maximalSpectrum_of_finite_of_isLocalRing (R S : Type*) [CommRing 
     fun a b h ↦ MaximalSpectrum.ext congr(($h).1)
 
 /- English proof (translation)
-Establish `: q.LiesOver (maximalIdeal R)` using `⟨(comap_eq_maximalIdeal_of_finite q).symm⟩`. Take `⟨R', _, _, _, P, _, _, e, he, P', _, _, hP'q, heP', hbij, -, H⟩` from `Algebra.exists_etale_isIdempotentElem_forall_liesOver_eq (maximalIdeal R) q`. Set `ε : (maximalIdeal R).ResidueField ≃ₐ[R] P.ResidueField` to `.ofBijective _ hbij`. Set `ε' : (R ⧸ maximalIdeal R) ≃ₐ[R] (maximalIdeal R).ResidueField` to `.ofBijective (IsScalarTower.toAlgHom _ _ _) (Ideal.bijective_algebraMap_quotient_residueField _)`. Take `⟨σ, hσ⟩` from `exists_algHom_lift_of_etale_of_isLocalRing (maximalIdeal R) ((ε'.trans ε).symm.toAlgHom.comp (IsScalarTower.toAlgHom R R' P.ResidueField))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hσP : ∀ a, σ a ∈ maximalIdeal R ↔ a ∈ P` using `fun a ↦ by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hσ, ← Ideal.algebraMap_residueField_eq_zero (I := P)]`. Simplify using the standard rewrite rules. Set `τ : R' ⊗[R] S →ₐ[R] S` to `Algebra.TensorProduct.lift ((Algebra.ofId R S).comp σ) (.id R S) fun _ _ ↦ .all _ _`. Establish `hlies : ∀ n : Ideal S, n.IsMaximal → (n.comap τ).LiesOver P` using `fun n hn ↦ ⟨by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `a`. Rewrite using `[← hσP, ← comap_eq_maximalIdeal_of_finite n]`. Simplify using `[τ, Ideal.under, Algebra.TensorProduct.algebraMap_apply]⟩`. Establish `hcomap : ∀ n : Ideal S, (n.comap τ).comap Algebra.TensorProduct.includeRight.toRingHom = n` using `fun n ↦ by`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[τ]`. Use `⟨τ e, he.map τ, fun n hn ↦ ⟨fun h ↦ ?_, ?_⟩⟩` and prove the remaining obligations. Use `H (n.comap τ) inferInstance (hlies n hn) h` as an intermediate fact. Rewrite using `[← hcomap n, this, hP'q]`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `hlies n hn` as an intermediate fact. Establish `: n.comap τ = P'` using `Ideal.eq_of_comap_eq_comap_of_bijective_residueFieldMap hbij _ _ (by rw [hcomap, hP'q])`. Rewrite `heP'` using `[← this]`. Conclude with `heP'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idempotent_notMem_iff_of_henselian (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -209,7 +207,7 @@ theorem exists_idempotent_notMem_iff_of_henselian (R : Type*) {S : Type*} [CommR
     exact heP'
 
 /- English proof (translation)
-Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `n ⟨-, hn⟩`. Conclude with `h n hn`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_jacobson_bot_of_forall_isMaximal {S : Type*} [CommRing S] {x : S}
     (h : ∀ n : Ideal S, n.IsMaximal → x ∈ n) : x ∈ (⊥ : Ideal S).jacobson := by
@@ -218,7 +216,7 @@ theorem mem_jacobson_bot_of_forall_isMaximal {S : Type*} [CommRing S] {x : S}
   exact h n hn
 
 /- English proof (translation)
-Use `⟨fun h h' ↦ hn.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using add_mem h h')), fun h ↦ ?_⟩` and prove the remaining obligations. Establish `: e * (1 - e) ∈ n` using `by rw [mul_sub, mul_one, he.eq, sub_self]; exact zero_mem _`. Conclude with `(hn.mem_or_mem this).resolve_left h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_sub_mem_iff_notMem_of_isIdempotentElem {S : Type*} [CommRing S] {e : S}
     (he : IsIdempotentElem e) (n : Ideal S) [hn : n.IsPrime] : 1 - e ∈ n ↔ e ∉ n := by
@@ -228,9 +226,9 @@ theorem one_sub_mem_iff_notMem_of_isIdempotentElem {S : Type*} [CommRing S] {e :
   exact (hn.mem_or_mem this).resolve_left h
 
 /- English proof (translation)
-Use `idempotent_eq_of_sub_mem_jacobson ha hb (mem_jacobson_bot_of_forall_isMaximal fun n hn ↦ ?_)` and prove the remaining obligations. Distinguish the cases in `han : a ∈ n`. Conclude with `sub_mem han ((h n hn).1 han)`. Establish `h1` using `(one_sub_mem_iff_notMem_of_isIdempotentElem ha n).2 han`. Establish `h2` using `(one_sub_mem_iff_notMem_of_isIdempotentElem hb n).2 (mt (h n hn).2 han)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using sub_mem h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem idempotent_eq_of_forall_isMaximal {S : Type*} [CommRing S] {a b : S}
     (ha : IsIdempotentElem a) (hb : IsIdempotentElem b)
@@ -244,9 +242,9 @@ theorem idempotent_eq_of_forall_isMaximal {S : Type*} [CommRing S] {a b : S}
     simpa using sub_mem h2 h1
 
 /- English proof (translation)
-Use `finite_maximalSpectrum_of_finite_of_isLocalRing R S` as an intermediate fact. Proceed by induction on `T, T.toFinite using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨0, .zero, by simp⟩`. Consider the case `@insert q T hq _ ih`. Take `⟨e, he, H⟩` from `ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `q.isMaximal` as an intermediate fact. Take `⟨d, hd, H'⟩` from `exists_idempotent_notMem_iff_of_henselian R q.asIdeal`. Use `⟨1 - (1 - d) * (1 - e), (hd.one_sub.mul he.one_sub).one_sub, fun n ↦ ?_⟩` and prove the remaining obligations. Use `n.isMaximal` as an intermediate fact. Rewrite using `[one_sub_mem_iff_notMem_of_isIdempotentElem (hd.one_sub.mul he.one_sub), not_not, Ideal.IsPrime.mul_mem_iff_mem_or_mem inferInstance, one_sub_mem_iff_notMem_of_isIdempotentElem hd, one_sub_mem_iff_notMem_of_isIdempotentElem he, H, H' _ this, Set.mem_insert_iff, MaximalSpectrum.ex …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_idempotent_notMem_iff_mem_of_henselian (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -267,9 +265,9 @@ theorem exists_idempotent_notMem_iff_mem_of_henselian (R : Type*) {S : Type*} [C
       H, H' _ this, Set.mem_insert_iff, MaximalSpectrum.ext_iff]
 
 /- English proof (translation)
-Take `⟨e, he, H⟩` from `exists_idempotent_notMem_iff_mem_of_henselian R (S := S) {n | ∃ m : Ideal C, m.IsMaximal ∧ m.comap π = n.asIdeal ∧ c ∉ m}`. Use `⟨e, he, idempotent_eq_of_forall_isMaximal (he.map π) hc fun m hm ↦ ?_⟩` and prove the remaining obligations. Use `H ⟨m.comap π, Ideal.comap_isMaximal_of_surjective π hπ⟩` as an intermediate fact. Rewrite using `[← not_iff_not]`. Use `this.trans ⟨?_, fun h ↦ ⟨m, hm, rfl, h⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨m', -, h1, h2⟩`. Rewrite using `[← Ideal.comap_injective_of_surjective π hπ h1]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_idempotent_lift_of_henselian (R : Type*) {S C : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S] [CommRing C]
@@ -285,7 +283,7 @@ theorem exists_idempotent_lift_of_henselian (R : Type*) {S C : Type*} [CommRing 
   rwa [← Ideal.comap_injective_of_surjective π hπ h1]
 
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `exists_idempotent_lift_of_henselian R π hπ hc`. Use `⟨e, ⟨he, h⟩, fun e' ⟨he', h'⟩ ↦ idempotent_eq_of_sub_mem_jacobson he' he (hker ?_)⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, h, h', sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_idempotent_lift_of_henselian (R : Type*) {S C : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S] [CommRing C]
@@ -297,7 +295,7 @@ theorem existsUnique_idempotent_lift_of_henselian (R : Type*) {S C : Type*} [Com
   rw [RingHom.mem_ker, map_sub, h, h', sub_self]
 
 /- English proof (translation)
-The claim follows from `hJ is_henselian f hf a₀ h₁ h₂ := by nontriviality S using Subsingleton.elim _ (0 : S) obtain ⟨u, hu⟩ := (isUnit_of_isUnit_mk_of_le_jacobson hJ h₂).exists_left_inv set g := f /ₘ (X - C a₀) with hg have hfg : (X - C a₀) * g = f - C (f.eval a₀) := by rw [hg, X_sub_C_mul_divByMonic_e …`.
+A detailed English derivation is pending.
 -/
 theorem henselianRing_of_finite (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S] (J : Ideal S)
@@ -399,14 +397,14 @@ theorem henselianRing_of_finite (R : Type*) {S : Type*} [CommRing R]
       exact (Ideal.mul_unit_mem_iff_mem _ hle).1 this
 
 /- English proof (translation)
-The claim follows from `HenselianRing.is_henselian f hf a₀ h₁ (h₂.map _)`.
+A detailed English derivation is pending.
 -/
 theorem henselianLocalRing_of_henselianRing (S : Type*) [CommRing S] [IsLocalRing S]
     [HenselianRing S (maximalIdeal S)] : HenselianLocalRing S where
   is_henselian f hf a₀ h₁ h₂ := HenselianRing.is_henselian f hf a₀ h₁ (h₂.map _)
 
 /- English proof (translation)
-The claim follows from `have := henselianRing_of_finite R (maximalIdeal S) (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge henselianLocalRing_of_henselianRing S`.
+A detailed English derivation is pending.
 -/
 theorem henselianLocalRing_of_finite (R S : Type*) [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S] [IsLocalRing S] :
@@ -416,9 +414,9 @@ theorem henselianLocalRing_of_finite (R S : Type*) [CommRing R]
   henselianLocalRing_of_henselianRing S
 
 /- English proof (translation)
-Establish `hle : Ideal.span {1 - e} ≤ q`. Rewrite using `[Ideal.span_singleton_le_iff_mem, one_sub_mem_iff_notMem_of_isIdempotentElem he, H q hq]`. Use `.of_unique_max_ideal ⟨q.map (Ideal.Quotient.mk _), Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by simpa using hle), fun m hm ↦ ?_⟩` and prove the remaining obligations. Use `Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective (K := m)` as an intermediate fact. Establish `h : m.comap (Ideal.Quotient.mk _) = q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← H _ this, ← one_sub_mem_iff_notMem_of_isIdempotentElem he, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)]`. Conclude with `zero_mem _`. Rewrite using `[← h, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing_quotient_one_sub {S : Type*} [CommRing S] {e : S} (he : IsIdempotentElem e)
     (q : Ideal S) [hq : q.IsMaximal] (H : ∀ n : Ideal S, n.IsMaximal → (e ∉ n ↔ n = q)) :
@@ -436,11 +434,11 @@ theorem isLocalRing_quotient_one_sub {S : Type*} [CommRing S] {e : S} (he : IsId
   rw [← h, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]
 
 /- English proof (translation)
-Use `choose e he H using fun q : MaximalSpectrum S ↦`. Use `q.isMaximal` as an intermediate fact. Use `exists_idempotent_notMem_iff_of_henselian R q.asIdeal`. Establish `horth : OrthogonalIdempotents e`. Use `⟨he, fun i j hij ↦ idempotent_eq_of_forall_isMaximal ((he i).mul (he j)) .zero fun n hn ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [zero_mem, iff_true, hn.isPrime.mul_mem_iff_mem_or_mem]`. Use `by_contra! h`. Conclude with `hij (MaximalSpectrum.ext (((H i n hn).1 h.1).symm.trans ((H j n hn).1 h.2)))`. Use `⟨e, ⟨horth, idempotent_eq_of_forall_isMaximal horth.isIdempotentElem_sum .one fun n hn ↦ ?_⟩, H⟩` and prove the remaining obligations. Establish `h1 : (1 : S) ∉ n` using `(Ideal.ne_top_iff_one _).1 hn.ne_top`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [h1, iff_false]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ ⟨n, hn⟩), Submodule.add_mem_iff_left, H _ n hn]`. Use `Submodule.sum_mem _ fun i hi ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `(Finset.mem_erase.1 hi).1 (MaximalSpectrum.ext ((H i n hn).1 h).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_completeOrthogonalIdempotents_of_henselian (R S : Type*) [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -467,13 +465,13 @@ theorem exists_completeOrthogonalIdempotents_of_henselian (R S : Type*) [CommRin
   exact (Finset.mem_erase.1 hi).1 (MaximalSpectrum.ext ((H i n hn).1 h).symm)
 
 /- English proof (translation)
-Take `⟨e, he, H⟩` from `exists_idempotent_notMem_iff_of_henselian R q`. Establish `heq : e ∉ q` using `(H q hq).2 rfl`. Establish `he1 : algebraMap S (Localization.AtPrime q) e = 1` using `(IsIdempotentElem.iff_eq_one_of_isUnit (IsLocalization.map_units _ (⟨e, heq⟩ : q.primeCompl))).1 (he.map _)`. Introduce `y`. Take `⟨a, s, rfl⟩` from `IsLocalization.exists_mk'_eq q.primeCompl y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (e * s + (1 - e))`. Assume the negation of the conclusion as `h`. Take `⟨n, hn, hmem⟩` from `exists_max_ideal_of_mem_nonunits h`. Distinguish the cases in `hen : e ∈ n`. Rewrite `hmem` using `[Submodule.add_mem_iff_right _ (Ideal.mul_mem_right _ _ hen), one_sub_mem_iff_notMem_of_isIdempotentElem he]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmem hen`. Rewrite `hmem` using `[Submodule.add_mem_iff_left _ ((one_sub_mem_iff_notMem_of_isIdempotentElem he n).2 hen), (H n hn).1 hen]`. Conclude with `(hq.isPrime.mem_or_mem hmem).elim heq s.2`. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Use `⟨a * v, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsLocalization.eq_mk'_iff_mul_eq]`. Use `congr(algebraMap S (Localization.AtPrime q) $hv)` as an intermediate fact. Simplify using `only [map_mul, map_add, map_sub, map_one, he1, one_mul, sub_self, add_zero] at this`. Rewrite using `[map_mul, mul_assoc, this, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_algebraMap_localization_of_henselian (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -504,7 +502,7 @@ theorem surjective_algebraMap_localization_of_henselian (R : Type*) {S : Type*} 
   rw [map_mul, mul_assoc, this, mul_one]
 
 /- English proof (translation)
-The claim follows from `.of_surjective (IsScalarTower.toAlgHom R S _).toLinearMap (surjective_algebraMap_localization_of_henselian R q)`.
+A detailed English derivation is pending.
 -/
 theorem finite_localization_of_henselian (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -513,7 +511,7 @@ theorem finite_localization_of_henselian (R : Type*) {S : Type*} [CommRing R]
     (surjective_algebraMap_localization_of_henselian R q)
 
 /- English proof (translation)
-The claim follows from `have := finite_localization_of_henselian R q henselianLocalRing_of_finite R _`.
+A detailed English derivation is pending.
 -/
 theorem henselianLocalRing_localization_of_henselian (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -522,13 +520,11 @@ theorem henselianLocalRing_localization_of_henselian (R : Type*) {S : Type*} [Co
   henselianLocalRing_of_finite R _
 
 /- English proof (translation)
-Use `⟨MaximalSpectrum.toPiLocalization_injective S, fun y ↦ ?_⟩` and prove the remaining obligations. Use `finite_maximalSpectrum_of_finite_of_isLocalRing R S` as an intermediate fact. Use `Fintype.ofFinite (MaximalSpectrum S)` as an intermediate fact. Take `⟨e, he, H⟩` from `exists_completeOrthogonalIdempotents_of_henselian R S`. Use `choose a ha using fun q : MaximalSpectrum S ↦`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `q.isMaximal` as an intermediate fact. Use `surjective_algebraMap_localization_of_henselian R q.asIdeal (y q)`. Establish `h1 : ∀ q : MaximalSpectrum S, algebraMap S (Localization.AtPrime q.asIdeal) (e q) = 1` using `fun q ↦ (IsIdempotentElem.iff_eq_one_of_isUnit (IsLocalization.map_units _ (⟨e q, (H q _ q.isMaximal).2 rfl⟩ : q.asIdeal.primeCompl))).1 ((he.idem q).map _)`. Use `⟨∑ q, e q * a q, funext fun q ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[MaximalSpectrum.toPiLocalization_apply_apply, map_sum, Finset.sum_eq_single q]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, h1, one_mul, ha]`. Introduce `p _ hpq`. Use `congr(algebraMap S (Localization.AtPrime q.asIdeal) $(he.ortho hpq))` as an intermediate fact. Rewrite `this` using `[map_mul, h1, mul_one, map_zero]`. Rewrite using `[map_mul, this, zero_mul]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_toPiLocalization_of_henselian (R S : Type*) [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S] :
@@ -553,7 +549,7 @@ theorem bijective_toPiLocalization_of_henselian (R S : Type*) [CommRing R]
   · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MaximalSpectrum S, finite_maximalSpectrum_of_finite_of_isLocalRing R S, fun q ↦ Localization.AtPrime q.asIdeal, inferInstance, inferInstance, .ofBijective ((MaximalSpectrum.toPiLocalization S).restrictScalars R) (bijective_toPiLocalization_of_henselian R S), fun q ↦ have := q.is …`.
+Supply the required witnesses or components.
 -/
 theorem exists_algEquiv_pi_henselianLocalRing.{v} (R : Type*) (S : Type v) [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S] :
@@ -568,19 +564,17 @@ theorem exists_algEquiv_pi_henselianLocalRing.{v} (R : Type*) (S : Type v) [Comm
       ⟨henselianLocalRing_localization_of_henselian R _, finite_localization_of_henselian R _⟩⟩
 
 /- English proof (translation)
-Use `finite_maximalSpectrum_of_finite_of_isLocalRing R B` as an intermediate fact. Use `Fintype.ofFinite (MaximalSpectrum B)` as an intermediate fact. Take `⟨e, he, H⟩` from `exists_completeOrthogonalIdempotents_of_henselian R B`. Establish `key : ∀ q : MaximalSpectrum B, ∃ ψ : A →ₐ[k] B ⧸ Ideal.span {1 - e q}, ∀ a b, Ideal.Quotient.mk J b = φ a → ψ a - Ideal.Quotient.mk _ b ∈ J.map (Ideal.Quotient.mk _)` using `fun q ↦ by`. Use `q.isMaximal` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isLocalRing_quotient_one_sub (he.idem q) q.asIdeal (H q)` as an intermediate fact. Set `J'` to `J.map (Ideal.Quotient.mk (Ideal.span {1 - e q}))`. Establish `: HenselianRing _ J'` using `henselianRing_of_finite R J' <| by`. Use `Ideal.map_le_iff_le_comap.2 (hJ.trans ?_)` and prove the remaining obligations. Rewrite using `[Ideal.comap_jacobson_of_surjective Ideal.Quotient.mk_surjective]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.jacobson_mono bot_le`. Take `⟨ψ, hψ⟩` from `exists_algHom_lift_of_etale_of_isLocalRing J' ((Ideal.quotientMapₐ J' (Ideal.Quotient.mkₐ k _) Ideal.le_comap_map).comp φ)`. Use `⟨ψ, fun a b hb ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, hψ, AlgHom.comp_apply, ← hb]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `choose ψ hψ using key`. Set `ε : B ≃ₐ[k] Π q, B ⧸ Ideal.span {1 - e q}` to `.ofBijective (AlgHom.pi fun q ↦ Ideal.Quotient.mkₐ k _) he.bijective_pi`. Use `⟨ε.symm.toAlgHom.comp (AlgHom.pi ψ), fun a ↦ ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (φ a)`. Rewrite using `[← hb, Ideal.Quotient.eq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c := (ε.symm.toAlgHom.comp (AlgHom.pi ψ)) a`. Establish `hc : ∀ q, Ideal.Quotient.mk _ c = ψ q a` using `fun q ↦ congr($(ε.apply_symm_apply (AlgHom.pi ψ a)) q)`. Rewrite using `[← one_mul (c - b), ← he.complete, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun q _ ↦ ?_` and prove the remaining obligations. Use `hψ q a b hb` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← hc, ← map_sub, Ideal.mem_quotient_iff_mem_sup]`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 this`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Establish `: e q * (c - b) = e q * y`. Rewrite using `[← hyz]`.
-
-Take the linear combination `(-w) * (he.idem q).eq`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_lift_of_etale_of_henselian (R : Type*) {k A B : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing k] [CommRing A] [CommRing B] [Algebra R B]
@@ -628,9 +622,9 @@ theorem exists_algHom_lift_of_etale_of_henselian (R : Type*) {k A B : Type*} [Co
   exact Ideal.mul_mem_left _ _ hy
 
 /- English proof (translation)
-Use `⟨fun f g h ↦ algHom_ext_of_sub_mem_jacobson fun a ↦ hker ?_, fun φ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `congr($h a)`. Set `ε` to `Ideal.quotientKerAlgEquivOfSurjective hπ`. Take `⟨ψ, hψ⟩` from `exists_algHom_lift_of_etale_of_henselian R _ hker (ε.symm.toAlgHom.comp φ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, AlgHom.ext fun a ↦ ?_⟩` and prove the remaining obligations. Use `congr(ε $(hψ a))` as an intermediate fact. Simplify `this` using `[ε]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bijective_algHom_comp_of_etale_of_henselian (R : Type*) {k A B C : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing k] [CommRing A] [CommRing B] [CommRing C] [Algebra R B]

@@ -9,7 +9,7 @@ open scoped Classical
 namespace UpperTheory.Gal.CertificateRingHomMap
 
 /- English proof (translation)
-Unfold `rop`. Rewrite using `[Finsupp.sum_single_index (by simp), one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rop_single {H V : Type} [Group H] [AddCommGroup V] [Module ℂ V] (u : H) (Φ : H → V) (g : H) :
     rop (Finsupp.single u 1) Φ g = Φ (g * u) := by
@@ -17,7 +17,7 @@ private theorem rop_single {H V : Type} [Group H] [AddCommGroup V] [Module ℂ V
   rw [Finsupp.sum_single_index (by simp), one_smul]
 
 /- English proof (translation)
-Unfold `rop`. Rewrite using `[← Finsupp.sum_finset_sum_index (by simp) (by simp [add_smul])]`. Conclude with `Finset.sum_congr rfl fun y _ => by rw [Finsupp.sum_single_index (by simp), one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rop_sum {H V Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] (R : Finset Y) (e : Y → H) (Φ : H → V) (g : H) :
     rop (∑ y ∈ R, Finsupp.single (e y) 1) Φ g = ∑ y ∈ R, Φ (g * e y) := by
@@ -39,53 +39,45 @@ private structure HI {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `E _ _ _ n x ζ hζ π W j Up w₀ hw₀ S Kw hS χ hχ f hf hf0 hfix`. Take `⟨-, hap, -, -, hcc, -⟩` from `hComm E n w₀ hw₀`. Establish `hc0 : cj w₀ ∉ S` using `(hS.up w₀ hS.mem hw₀).2`. Set `Kw'` to `Function.update Kw w₀ (χ.ker.map (Kw w₀).subtype)`. Establish `mem' : ∀ k : GUf E n, k ∈ lev S Kw' ↔ k ∈ lev S Kw ∧ ∃ h : comp w₀ k ∈ Kw w₀, χ ⟨_, h⟩ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k`. Establish `e0 : comp w₀ k ∈ Kw' w₀ ↔ ∃ h : comp w₀ k ∈ Kw w₀, χ ⟨_, h⟩ = 1`. Simplify using `only [Kw', Function.update_self, Subgroup.mem_map, MonoidHom.mem_ker]`. Conclude with `⟨fun ⟨y, hy, e⟩ => ⟨e ▸ y.2, by rw [← hy]; congr 1; exact Subtype.ext e.symm⟩, fun ⟨h, e⟩ => ⟨⟨_, h⟩, e, rfl⟩⟩`. Establish `e1 : ∀ w, w ≠ w₀ → Kw' w = Kw w` using `fun w hw => Function.update_of_ne hw _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[mem_lev, mem_lev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, c⟩`. Take `⟨h, hh⟩` from `e0.1 (b _ hS.mem)`. Use `⟨⟨a, fun w hw => ?_, c⟩, h, hh⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : w = w₀`. Substitute `e` using the available equality. Conclude with `h`. Rewrite using `[← e1 w e]`. Conclude with `b w hw`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨a, b, c⟩, h⟩`. Use `⟨a, fun w hw => ?_, c⟩` and prove the remaining obligations. Distinguish the cases in `e : w = w₀`. Substitute `e` using the available equality. Conclude with `e0.2 h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1 w e]`. Conclude with `b w hw`. Establish `hopen : IsOpen (lev S Kw' : Set (GUf E n))`. Use `hOp E n S Kw' fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `e : w = w₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Simplify using `only [Kw', Function.update_self]`. Conclude with `(hS.opn w hw).isOpenMap_subtype_val _ hχ`. Simplify using `only [Kw', Function.update_of_ne e]`. Conclude with `hS.opn w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix' : ∀ u : finU E n, ofU u ∈ lev S Kw' → algRep W u f = f` using `fun u hu => by`. Take `⟨a, h, e⟩` from `(mem' _).1 hu`. Use `hfix u a h` as an intermediate fact. Rewrite `this` using `[show χ ⟨cLoc w₀ u.1, h⟩ = 1 from e, Units.val_one, one_smul]`. Then use the resulting hypothesis. Take `⟨φ, hφ, hφu, hφ0⟩` from `hKer E n W j f hf0 (lev S Kw') (fun k hk => (mem_lev.1 hk).1) hfix'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hloc : ∀ y : Kw w₀, loc hw₀ y.1 ∈ lev S Kw` using `fun y => (hMem E n S Kw w₀ hw₀ hc0 y.1).1 hS.mem y.2`. Use `choose R hR1 hR2 using fun a : HI π.V S => hHk E n a.w a.hw a.p a.hp a.i`. Establish `hsv : ∀ (w : Plc E) (hw : IsSplitAt w), w ∉ S → cj w ∉ S → ∀ B, SatU π.V w B → IsSatVecGL w ((algRep W).comp (locF hw)) f B` using `fun w hw h1 h2 B hB => hSat E n π W f hf hf0 w hw (fun k hk => hfix' _ ((hMem E n S Kw' w hw h2 k).2 h1 hk)) B hB`. Take `⟨Φ, hΦ, hΦ0, heig, ψ, hψ⟩` from `hExt (Gam0 E n) (GUf E n) AfQˣ (Af E)ˣ _ rat (lev S Kw') (xi0 W j) sim ζ hζ.central (by`. Take `⟨s, hs⟩` from `hCl E ((lev S Kw').comap ζ) (hopen.preimage hζ.cont)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Use `⟨s, fun z => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, o, ho, k, e⟩` from `hs z`. Take `⟨γ, h1, h2⟩` from `hXi E n W j x ζ hζ k`. Conclude with `⟨t, ht, o, _, e, ho, γ, _, h1, h2⟩)`. Use `φ hφ hφ0 (Kw w₀ ⊕ HI π.V S)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use the proof step `(Sum.elim (fun y => Finsupp.single (loc hw₀ y.1) 1) fun a => ∑ y ∈ R a, Finsupp.single (loc a.hw y) 1)`. Use the proof step `(Sum.elim (fun y => (χ y : ℂ)) fun a => satEig (Formalism.UG.qV E a.w) n a.B a.i)`. Use the proof step `(by`. Introduce and unpack `(y | a) u hu`. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hu)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨y, -, hy⟩` from `Finsupp.mem_support_finset_sum u hu`. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hy)`. Use the proof step `rfl)`. Use the proof step `(by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `(y | a) Ψ hΨ`. Use `⟨fun γ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, rop_single, mul_assoc, hΨ.1]`. Simplify using `only [Sum.elim_inl, rop_single]`. Take `⟨a, h, e⟩` from `(mem' _).1 hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components.
 
-Establish `hk' : (loc hw₀ y.1)⁻¹ * k * loc hw₀ y.1 ∈ lev S Kw'`. Establish `h' : comp w₀ ((loc hw₀ y.1)⁻¹ * k * loc hw₀ y.1) = (y⁻¹ * ⟨_, h⟩ * y : Kw w₀)`. Rewrite using `[map_mul, map_mul, map_inv, comp_loc]`. Both sides reduce to the same expression. Establish `h'' : comp w₀ ((loc hw₀ y.1)⁻¹ * k * loc hw₀ y.1) ∈ Kw w₀` using `by rw [h']; exact Subtype.property _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mem' _).2 ⟨mul_mem (mul_mem (inv_mem (hloc y)) a) (hloc y), h'', ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨_, h''⟩ : Kw w₀) = y⁻¹ * ⟨_, h⟩ * y from Subtype.ext h', map_mul, map_mul, e, map_inv, mul_one, inv_mul_cancel]`. Rewrite using `[← hΨ.2 _ hk' (g * loc hw₀ y.1)]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Use `hR2 a S Kw' a.h1 a.h2 _ (xi0 W j) Ψ hΨ` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `rop_sum _ _ _ _)`. Use the proof step `(by`. Introduce and unpack `(y | a) g hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨u, rfl⟩` from `(hU E n).2 g hg`. Simplify using `only [Sum.elim_inl, rop_single]`. Establish `h : cLoc w₀ (locF hw₀ y.1).1 ∈ Kw w₀` using `by rw [cLoc_locF]; exact y.2`. Establish `e` using `hfix (locF hw₀ y.1) (hloc y) h`. Rewrite `e` using `[show (⟨_, h⟩ : Kw w₀) = y from Subtype.ext (cLoc_locF _ _)]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ofU u * loc hw₀ y.1 = ofU (u * locF hw₀ y.1) from (map_mul ofU _ _).symm, hφu, hφu]`. Rewrite using `[Subgroup.coe_mul, ← algForms.val_algRep, e]`. Both sides reduce to the same expression. Take `⟨u, rfl⟩` from `(hU E n).2 g hg`. Simplify using `only [Sum.elim_inr, rop_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(hsv a.w a.hw a.h1 a.h2 a.B a.hB).2.2.2 a.p a.hp a.i a.hi`. Rewrite `e` using `[hR1 a]`. Establish `e2 : ∀ y, φ (ofU u * loc a.hw y) = algForms.val (((algRep W).comp (locF a.hw)) y f) u.1` using `fun y => by`. Rewrite using `[show ofU u * loc a.hw y = ofU (u * locF a.hw y) from (map_mul ofU _ _).symm, hφu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [e2]`. Set `L : algForms W →ₗ[ℂ] Module.Dual ℂ W.Sp` to `{ toFun := fun F => algForms.val F u.1, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `e3` using `congrArg L e`. Rewrite `e3` using `[map_sum, map_smul]`. Rewrite using `[hφu]`.
-
-Conclude with `e3)`. Use `⟨Φ, ψ, ⟨hΦ0, hΦ.1, fun k hk h g => ?_, fun w hw h1 h2 B hB => ⟨hΦ0, ?_, (hsv w hw h1 h2 B hB).2.2.1, fun p hp i hi => ?_⟩⟩, hψ.1⟩` and prove the remaining obligations. Establish `h1` using `congrFun (heig (Sum.inl ⟨_, h⟩)) g`. Simplify using `only [Sum.elim_inl, rop_single, Pi.smul_apply] at h1`. Establish `h' : comp w₀ ((loc hw₀ (comp w₀ k))⁻¹ * k) = 1` using `by rw [map_mul, map_inv, comp_loc, inv_mul_cancel]`.
-
-Establish `h'' : comp w₀ ((loc hw₀ (comp w₀ k))⁻¹ * k) ∈ Kw w₀` using `by rw [h']; exact one_mem _`. Establish `hk' : (loc hw₀ (comp w₀ k))⁻¹ * k ∈ lev S Kw'` using `(mem' _).2 ⟨mul_mem (inv_mem (hloc ⟨_, h⟩)) hk, h'', by`. Rewrite using `[show (⟨_, h''⟩ : Kw w₀) = 1 from Subtype.ext h', map_one]⟩`. Rewrite using `[← h1, ← hΦ.2 _ hk' (g * loc hw₀ (comp w₀ k)), mul_assoc, mul_inv_cancel_left]`. Conclude with `GlobalTheory.LGrp.mem_fixed.2 fun k hk => funext fun g => hΦ.2 _ ((hMem E n S Kw' w hw h2 k).2 h1 hk) g`.
-
-Set `a : HI π.V S` to `⟨w, hw, h1, h2, B, hB, p, hp, i, hi⟩`. Establish `h3` using `heig (Sum.inr a)`. Rewrite using `[show heckeVec _ _ _ Φ = _ from hR1 a _ _ Φ]`. Use `Eq.trans ?_ h3` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
-
-Rewrite using `[Finset.sum_apply]`. Conclude with `(rop_sum _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pFormGU_of (hExt : ExtEig2) (hCl : ClassFin) (hXi : XiZeta) (hKer : KerFormU) (hHk : HeckePres) (hSat : SatVal)
     (hMem : LocMem) (hComm : LocComm) (hOp : LevOpen) (hU : OfUBij) : FormGU := by

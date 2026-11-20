@@ -13,13 +13,13 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => T.w_wt a, fun a b hab he => T.w_hw a b hab he⟩`.
+Supply the required witnesses or components.
 -/
 theorem KType.kHighest_w {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) :
     Formalism.REAL.KHighest ε (kunits T) Λ T.w := ⟨fun a => T.w_wt a, fun a b hab he => T.w_hw a b hab he⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KType.w_ne_zero {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) : T.w ≠ 0 := by
   intro h
@@ -28,9 +28,7 @@ theorem KType.w_ne_zero {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε
   exact zero_ne_one h1
 
 /- English proof (translation)
-Break down `KType.dτ_irred T (Formalism.REAL.kSpan ε (kunits T) T.w) (fun a b hab v hv => Formalism.REAL.compact_span_stable T.w a b hab v hv) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hw` using `Formalism.REAL.mem_compact_span_self (ε := ε) (F := kunits T) T.w`. Rewrite `hw` using `[h, Submodule.mem_bot]`. Conclude with `(KType.w_ne_zero T) hw`.
-
-Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KType.kSpan_eq_top {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) :
     Formalism.REAL.kSpan ε (kunits T) T.w = ⊤ := by
@@ -43,7 +41,7 @@ theorem KType.kSpan_eq_top {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType
   · exact h
 
 /- English proof (translation)
-Establish `hmem : v ∈ Formalism.REAL.kSpan ε (kunits T) T.w` using `by rw [KType.kSpan_eq_top T]; trivial`. Break down `Formalism.REAL.kHiUniq T.V n ε (kunits T) Λ ν T.w v (KType.kRel T) (KType.kUnit T) (KType.kHighest_w T) hmem h with h0 | h1` into its components or cases. Conclude with `absurd h0 hv`. Conclude with `h1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem KType.hw_unique {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) {ν : Fin n → ℝ} {v : T.V}
     (hv : v ≠ 0) (h : IsKHWVec ε (kunits T) ν v) : ν = Λ ∧ ∃ c : ℂ, v = c • T.w := by
@@ -53,17 +51,17 @@ theorem KType.hw_unique {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε
   · exact h1
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨fun _ _ => 0, fun a b h => absurd rfl h, by simp [Formalism.REAL.wordWeightShift]⟩`. Consider the case `cons p w ih`. Take `⟨c, hc, heq⟩` from `ih`. Use `⟨fun a b => c a b + if a = p.2 ∧ b = p.1 then 1 else 0, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Express the relevant statement in the definitionally equal form `c a b + (if a = p.2 ∧ b = p.1 then 1 else 0) ≠ 0 at hab`. Distinguish the cases in `h : c a b = 0`. Rewrite `hab`, `with`, `h2` using `[h, zero_add] at hab split_ifs`. Take `⟨rfl, rfl⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hab`. Conclude with `List.mem_cons_of_mem _ (hc a b h)`. Establish `hs : ∑ a, ∑ b, (((if a = p.2 ∧ b = p.1 then 1 else 0 : ℕ)) : ℝ) • root a b = root p.2 p.1`. Rewrite using `[Finset.sum_eq_single p.2, Finset.sum_eq_single p.1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[ha]`. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `e : ∀ a b, (((c a b + if a = p.2 ∧ b = p.1 then 1 else 0 : ℕ)) : ℝ) • root a b = (c a b : ℝ) • root a b + (((if a = p.2 ∧ b = p.1 then 1 else 0 : ℕ)) : ℝ) • root a b` using `fun a b => by rw [Nat.cast_add, add_smul]`. Simplify using `only [e, Finset.sum_add_distrib, hs, ← heq]`. Simplify using `only [Formalism.REAL.wordWeightShift, root]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem wtw_eq_sum (w : List (Fin n × Fin n)) :
     ∃ c : Fin n → Fin n → ℕ, (∀ a b, c a b ≠ 0 → (b, a) ∈ w) ∧
@@ -103,15 +101,15 @@ theorem wtw_eq_sum (w : List (Fin n × Fin n)) :
       abel
 
 /- English proof (translation)
-Establish `hmem : v ∈ Formalism.REAL.lowSpan ε (kunits T) T.w`. Rewrite using `[← Formalism.REAL.compact_span_eq_lowering (KType.kRel T) (KType.kHighest_w T), KType.kSpan_eq_top T]`. Discharge the goal by the elementary cases of `trivial`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hwμ⟩ : ∃ w : List (Fin n × Fin n), (∀ p ∈ w, ε p.1 = ε p.2 ∧ p.2 < p.1) ∧ Λ + Formalism.REAL.wordWeightShift w = μ := by`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hne`. Apply `hv` to reduce the goal to its premises. Establish `horth : ∀ y ∈ Formalism.REAL.lowSpan ε (kunits T) T.w, inner ℂ v y = 0`. Introduce `y hy`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hy` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z ⟨w, hw, rfl⟩`. Establish `hwt` using `Formalism.REAL.word_action_weight (KType.kRel T) (KType.kHighest_w T).1 w (fun q hq => (hw q hq).1)`. Conclude with `Formalism.REAL.kWtOrth T.V n ε (kunits T) μ _ v _ (KType.kUnit T) (fun a => hμ a) hwt (fun h => hne w hw h.symm)`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inner_add_right, hx, hy, add_zero]`. Introduce `a x _ hx`. Rewrite using `[inner_smul_right, hx, mul_zero]`. Conclude with `inner_self_eq_zero.mp (horth v hmem)`. Take `⟨c, hc, he⟩` from `wtw_eq_sum (n := n) w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨c, fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Use `hw _ (hc a b hab)` as an intermediate fact. Conclude with `⟨this.2, this.1.symm⟩`. Rewrite using `[← he, ← hwμ]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem KType.weight_le {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) {μ : Fin n → ℝ} {v : T.V}
     (hv : v ≠ 0) (hμ : ∀ a, T.dτ (Matrix.single a a 1) v = ((μ a : ℝ) : ℂ) • v) :

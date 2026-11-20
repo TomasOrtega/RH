@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.DegZ.GermFam
 
 /- English proof (translation)
-Introduce `i` and use `by rw [h'.F, h.F, MvPowerSeries.map_comp]; rfl act := fun a i => by rw [h'.act, h.act, MvPowerSeries.map_comp]; rfl ph1 := by rw [h'.ph1, h.ph1, MvPowerSeries.map_comp]; rfl ph2 := by rw [h'.ph2, h.ph2, MvPowerSeries.map_comp]; rfl sy := by rw [h'.sy, h.sy, MvPowerSeries.map_comp …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMapOf_cancel {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] {d : ℕ} {O : Type} [CommRing O]
     [StarRing O] {f : R →+* R₁} {g : R₁ →+* R₂} {B : Germ.FB R d O} {B₁ : Germ.FB R₁ d O} {B₂ : Germ.FB R₂ d O}
@@ -33,11 +33,11 @@ section Lat
 variable {Ω : Type} [Field Ω] {A : Subring Ω} {d : ℕ}
 
 /- English proof (translation)
-Unfold `stdLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, fun i => ⟨A.zero_mem, A.zero_mem⟩, (map_zero T).symm⟩`. Consider the case `add x x' _ _ h h'`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨y, hy, rfl⟩` from `h`. Take `⟨y', hy', rfl⟩` from `h'`. Conclude with `⟨y + y', fun i => ⟨A.add_mem (hy i).1 (hy' i).1, A.add_mem (hy i).2 (hy' i).2⟩, (map_add T y y').symm⟩`. Consider the case `smul c x _ h`. Take `⟨y, hy, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨(c : Ω) • y, fun i => ⟨A.mul_mem c.2 (hy i).1, A.mul_mem c.2 (hy i).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_stdLat {T : ((Fin d → Ω) × (Fin d → Ω)) →ₗ[Ω] (Fin d → Ω) × (Fin d → Ω)}
     {x : (Fin d → Ω) × (Fin d → Ω)} (hx : x ∈ stdLat A T) :
@@ -57,7 +57,7 @@ theorem mem_stdLat {T : ((Fin d → Ω) × (Fin d → Ω)) →ₗ[Ω] (Fin d →
     rfl
 
 /- English proof (translation)
-Establish `h1 : T y ∈ stdLat A T` using `Submodule.subset_span ⟨y, hy, rfl⟩`. Rewrite `h1` using `[← hl]`. Take `⟨y₁, hy₁, e⟩` from `mem_stdLat h1`. Establish `h2 : T' y = y₁` using `h0 (by rw [← e, he]; rfl)`. Rewrite using `[h2]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem trans_integral {T₀ T T' : ((Fin d → Ω) × (Fin d → Ω)) →ₗ[Ω] (Fin d → Ω) × (Fin d → Ω)}
     (he : T = T₀ ∘ₗ T') (h0 : Function.Injective T₀) (hl : stdLat A T₀ = stdLat A T)
@@ -70,15 +70,15 @@ theorem trans_integral {T₀ T T' : ((Fin d → Ω) × (Fin d → Ω)) →ₗ[Ω
   rwa [h2]
 
 /- English proof (translation)
-Establish `hs : ∀ (l : Fin d) (i : Fin d), (Pi.single l 1 : Fin d → Ω) i ∈ A` using `fun l i => by`. Distinguish the cases in `e : i = l`. Substitute `e` using the available equality. Simplify using `using A.one_mem`. Simplify `A.zero_mem` using `[Pi.single_apply, e]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : ∀ a b, lin φ 1 a b ∈ A` using `fun a b => by`. Use `(h (Pi.single b 1, 0) (fun i => ⟨hs b i, A.zero_mem⟩) a).1` as an intermediate fact. Simplify `this` using `[transH_apply]`. Establish `h2 : ∀ a b, lin ψ 1 a b ∈ A` using `fun a b => by`. Use `(h (0, Pi.single a 1) (fun i => ⟨A.zero_mem, hs a i⟩) b).2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[transH_apply]`. Establish `h3 : ∀ a b, ((lin ψ 1).transpose * (bil lam 1 1).transpose) a b ∈ A` using `fun a b => by`. Establish `h0` using `(h (Pi.single b 1, 0) (fun i => ⟨hs b i, A.zero_mem⟩) a).2`. Establish `e : (transH φ ψ lam (Pi.single b 1, 0)).2 a = ((lin ψ 1).transpose * (bil lam 1 1).transpose) a b`. Simplify using `[transH_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[e]`. Then use the resulting hypothesis. Establish `h4 : (bil lam 1 1).transpose = (lin φ 1).transpose * ((lin ψ 1).transpose * (bil lam 1 1).transpose)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, hψφ, Matrix.transpose_one, Matrix.one_mul]`. Use `⟨h1 a b, h2 a b, ?_⟩` and prove the remaining obligations. Establish `h5 : bil lam 1 1 a b = (bil lam 1 1).transpose b a` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h5, h4, Matrix.mul_apply]`. Conclude with `A.sum_mem fun c _ => A.mul_mem (h1 c b) (h3 c a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_mem (φ ψ : Germ.Pt Ω 1 d) (lam : Germ.PS Ω 2 d) (hψφ : lin ψ 1 * lin φ 1 = 1)
     (h : ∀ y : (Fin d → Ω) × (Fin d → Ω), (∀ i, y.1 i ∈ A ∧ y.2 i ∈ A) →
@@ -116,7 +116,7 @@ section Curve
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ϖ : Ω}
 
 /- English proof (translation)
-Establish `key` using `ProjectiveLinePlaces.stalk_square (Γ.generic_centre_specializes i) (Scheme.stalkClosedPointTo (Γ.z i)) (Scheme.stalkClosedPointTo Γ.η) (CommRingCat.ofHom (Γ.C.v i).valuationSubring.subtype) ((Scheme.Spec_stalkClosedPointTo_fromSpecStalk Γ.η).trans ((Γ.z_gen i).symm.trans (congrAr …`. Conclude with `(congrArg CommRingCat.Hom.hom key).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalk_sq (Γ : FibreCurve ξ ϖ) (i : Γ.C.I) :
     (Γ.C.v i).valuationSubring.subtype.comp (Scheme.stalkClosedPointTo (Γ.z i)).hom =
@@ -129,9 +129,9 @@ theorem stalk_sq (Γ : FibreCurve ξ ϖ) (i : Γ.C.I) :
   exact (congrArg CommRingCat.Hom.hom key).symm
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `ha`. Establish `h1 : (X.presheaf.stalkSpecializes (Γ.generic_centre_specializes i)).hom c = a` using `hξ.inj ⟨centre Γ.η, Γ.η_spec⟩ ((ProjectiveLinePlaces.genMap_specializes (Γ.generic_centre_specializes i) Γ.η_spec (Γ.z_spec i) c).trans hc)`. Establish `h2 : ((Scheme.stalkClosedPointTo (Γ.z i)).hom c : Γ.κ) = (Scheme.stalkClosedPointTo Γ.η).hom ((X.presheaf.stalkSpecializes (Γ.generic_centre_specializes i)).hom c)` using `DFunLike.congr_fun (stalk_sq Γ i) c`. Rewrite `h2` using `[h1]`. Rewrite using `[← h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Scheme.stalkClosedPointTo (Γ.z i)).hom c).2`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one (hξ : IsCptGen ξ) (Γ : FibreCurve ξ ϖ) (i : Γ.C.I) (a : X.presheaf.stalk (centre Γ.η))
     (ha : genMap ξ ⟨centre Γ.η, Γ.η_spec⟩ a ∈ regAt ξ ⟨centre (Γ.z i), Γ.z_spec i⟩) :
@@ -153,9 +153,9 @@ section Point
 variable {X : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Establish `hnu : ¬ IsUnit ((p : ℕ) : X.presheaf.stalk (centre z))` using `fun h => by`. Establish `h1` using `h.map (Scheme.stalkClosedPointTo z).hom`. Establish `e : (Scheme.stalkClosedPointTo z).hom (p : X.presheaf.stalk (centre z)) = (0 : R)` using `(map_natCast (Scheme.stalkClosedPointTo z).hom p).trans hp`. Conclude with `not_isUnit_zero (M₀ := R) ((congrArg IsUnit e).mp h1)`. Establish `h2` using `(IsLocalRing.residue_eq_zero_iff _).2 hnu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_natCast]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem natCast_residueField (z : Sp R ⟶ X) (p : ℕ) (hp : (p : R) = 0) :
     (p : X.residueField (centre z)) = 0 := by
@@ -169,7 +169,7 @@ theorem natCast_residueField (z : Sp R ⟶ X) (p : ℕ) (hp : (p : R) = 0) :
   exact h2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `z ((Spec.map (CommRingCat.ofHom f)) (IsLocalRing.closedPoint S)) = z (IsLocalRing.closedPoint R)`. Use `congr 1`. Conclude with `IsLocalRing.comap_closedPoint f`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem centre_spMap {S : Type} [CommRing S] [IsLocalRing S] (f : R →+* S) [IsLocalHom f] (z : Sp R ⟶ X) :
     centre (Spec.map (CommRingCat.ofHom f) ≫ z) = centre z := by
@@ -182,9 +182,9 @@ end Point
 section Main
 
 /- English proof (translation)
-Take `⟨g₂, hm, -⟩` from `GlobalTheory.T.formal_germ_base_change E H hbar X t R (IsLocalRing.ResidueField R) (IsLocalRing.residue R) x d g`. Use `haveI : CharP (IsLocalRing.ResidueField R) p := (CharP.charP_iff_prime_eq_zero Fact.out).2 (by rw [← map_natCast (IsLocalRing.residue R), hp, map_zero])`. Use `⟨g₂.B, hm, GlobalTheory.T.fibre_power_free_conj_injective E H hbar X t hpow _ p _ d g₂ ?_⟩` and prove the remaining obligations. Establish `e` using `centre_spMap (IsLocalRing.residue R) x`. Express the relevant statement in the definitionally equal form `FibPF t (centre (Spec.map (CommRingCat.ofHom (IsLocalRing.residue R)) ≫ x))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_residue_germ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)]
     (hbar : ∀ a : 𝓞 E, star a = H.bar a) (X : Scheme.{0}) (t : SAB H X) (hpow : PowFns t)
@@ -208,13 +208,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRi
   {t : SAB H X} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {d : ℕ} {M : LieModel t.G ξ (Fin d → Ω)}
 
 /- English proof (translation)
-Establish `h0` using `(GlobalTheory.T.formal_isomorphism_transport Ω d (𝓞 E) S.g₀.B (S.BK ⟨centre Γ.η, Γ.η_spec⟩) _ _ _ (S.iso ⟨centre Γ.η, Γ.η_spec⟩)).2.2.1.1`. Establish `h1` using `(GlobalTheory.T.formal_isomorphism_transport _ d (𝓞 E) _ _ _ _ _ hiso).2.1`. Establish `h2 : lin (fun l => MvPowerSeries.map (genMap ξ ⟨centre Γ.η, Γ.η_spec⟩) (ψ' l)) 1 * lin (fun l => MvPowerSeries.map (genMap ξ ⟨centre Γ.η, Γ.η_spec⟩) (φ' l)) 1 = 1`. Rewrite using `[lin_map, lin_map, ← Matrix.map_mul]`. Conclude with `(congrArg (fun m => Matrix.map m (genMap ξ ⟨centre Γ.η, Γ.η_spec⟩)) h1).trans (Matrix.map_one _ (map_zero _) (map_one _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2, e3⟩` from `entries_mem (A := regAt ξ ⟨centre (Γ.z i), Γ.z_spec i⟩) _ _ _ h2 (fun y hy => trans_integral he h0 hl y hy) a b`. Rewrite `e1`, `e2` using `[lin_map, Matrix.map_apply]`. Rewrite `e3` using `[bil_map, Matrix.map_apply]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (lin (fun l => MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom (φ' l)) 1 a b : Γ.κ) = (Scheme.stalkClosedPointTo Γ.η).hom (lin φ' 1 a b)` using `congrFun (congrFun (lin_map (Scheme.stalkClosedPointTo Γ.η).hom φ' 1) a) b`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `val_le_one hξ Γ i _ e1`. Establish `e : (lin (fun l => MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom (ψ' l)) 1 a b : Γ.κ) = (Scheme.stalkClosedPointTo Γ.η).hom (lin ψ' 1 a b)` using `congrFun (congrFun (lin_map (Scheme.stalkClosedPointTo Γ.η).hom ψ' 1) a) b`. Rewrite using `[e]`. Conclude with `val_le_one hξ Γ i _ e2`.
-
-Establish `e : (bil (MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom lam') 1 1 a b : Γ.κ) = (Scheme.stalkClosedPointTo Γ.η).hom (bil lam' 1 1 a b)` using `congrFun (congrFun (bil_map (Scheme.stalkClosedPointTo Γ.η).hom lam' 1 1) a) b`. Rewrite using `[e]`. Conclude with `val_le_one hξ Γ i _ e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_at (S : GermSys t ξ M) {ϖ : Ω} (Γ : FibreCurve ξ ϖ) (hξ : IsCptGen ξ) (i : Γ.C.I)
     {B' : Germ.FB (X.presheaf.stalk (centre Γ.η)) d (𝓞 E)} {φ' ψ' : Germ.Pt (X.presheaf.stalk (centre Γ.η)) 1 d}
@@ -267,13 +265,13 @@ theorem integral_at (S : GermSys t ξ M) {ϖ : Ω} (Γ : FibreCurve ξ ϖ) (hξ 
 end Integral
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ hbar X t Ω _ ξ d M S O _ s _ _ ϖ p _ Γ _ hξ hpow hfib`. Establish `hκ : ((p : ℕ) : Γ.κ) = 0` using `CharP.cast_eq_zero Γ.κ p`. Take `⟨g0, m0, -⟩` from `GlobalTheory.T.formal_germ_base_change E H hbar X t _ _ (Scheme.stalkClosedPointTo Γ.η).hom (X.fromSpecStalk (centre Γ.η)) d (S.g ⟨centre Γ.η, Γ.η_spec⟩)`. Establish `place : ∀ i : Γ.C.I, ∃ (Bi : Germ.FB (Γ.C.v i).valuationSubring d (𝓞 E)) (BK : Germ.FB Γ.κ d (𝓞 E)) (Bk : Germ.FB (IsLocalRing.ResidueField (Γ.C.v i).valuationSubring) d (𝓞 E)) (φ' ψ' : Germ.Pt (X.presheaf.stalk (centre Γ.η)) 1 d) (lam' : Germ.PS (X.presheaf.stalk (centre Γ.η)) 2 …`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨gi, mi, -⟩` from `GlobalTheory.T.formal_germ_base_change E H hbar X t _ (Γ.C.v i).valuationSubring (Scheme.stalkClosedPointTo (Γ.z i)).hom (X.fromSpecStalk (centre (Γ.z i))) d (S.g ⟨centre (Γ.z i), Γ.z_spec i⟩)`. Take `⟨gK, mK, -⟩` from `GlobalTheory.T.formal_germ_base_change E H hbar X t _ Γ.κ (Γ.C.v i).valuationSubring.subtype _ d gi`. Establish `hp : ((p : ℕ) : (Γ.C.v i).valuationSubring) = 0` using `Subtype.ext (by simpa using hκ)`. Establish `ex : spMap (Scheme.stalkClosedPointTo (Γ.z i)).hom ≫ X.fromSpecStalk (centre (Γ.z i)) = Γ.z i` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (Γ.z i)`. Establish `hf : FibPF t (centre (Γ.z i))` using `hfib ⟨_, Γ.z_spec i⟩ (natCast_residueField (Γ.z i) p hp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Bk, mk, hk⟩` from `exists_residue_germ E H hbar X t hpow _ d gi p hp (by rw [ex]; exact hf)`. Take `⟨B', φ', ψ', lam', hm', hiso, he⟩` from `S.gen ⟨centre (Γ.z i), Γ.z_spec i⟩ ⟨centre Γ.η, Γ.η_spec⟩ (Γ.generic_centre_specializes i)`. Establish `hK : IsMapOf (Scheme.stalkClosedPointTo Γ.η).hom B' gK.B` using `isMapOf_cancel hm' (by rw [← stalk_sq Γ i]; exact mi.trans mK)`. Conclude with `⟨gi.B, gK.B, Bk, φ', ψ', lam', mi, mK, mk, hk, GlobalTheory.T.intersection_first _ _ _ d _ _ _ _ _ _ _ _ m0 hK hiso, he, fun hl a b => integral_at S Γ hξ i hiso he hl a b⟩`. Use `choose Bi BK Bk φ' ψ' lam' mi mK mk hk hiso he hint using place`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY, -⟩` from `GlobalTheory.T.fibre_curve_degree_compare X Ω ξ O s ϖ Γ hξ`. Take `⟨U, hU, hloc⟩` from `S.loc ⟨centre Γ.η, Γ.η_spec⟩`. Establish `hfin` using `Y.ae U hU`. Rewrite `hfin` using `[hY]`. Conclude with `⟨{ B := g0.B, Bi := Bi, BK := BK, Bk := Bk, mapK := mK, mapk := mk, inj := hk φ := fun i l => MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom (φ' i l) ψ := fun i l => MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom (ψ' i l) lam := fun i => MvPowerSeries.map (Scheme.st …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germ_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (d : ℕ) (M : LieModel t.G ξ (Fin d → Ω)) (S : GermSys t ξ M) (O : Type) [CommRing O] (s : X ⟶ Sp O) [IsSeparated s] [LocallyOfFiniteType s] (ϖ : Ω) (p : ℕ) [Fact p.Prime] (Γ : FibreCurve ξ ϖ) [CharP Γ.κ p], IsCptGen ξ → PowFns t → (∀ q : Cpt ξ, (p : X.residueField q.1) = 0 → FibPF t q.1) → ∃ F : Family Γ.C p d (𝓞 E), IsMapOf (Scheme.stalkClosedPointTo Γ.η).hom (S.g ⟨centre Γ.η, Γ.η_spec⟩).B F.B ∧ ∀ i, IsMapOf (Scheme.stalkClosedPointTo (Γ.z i)).hom (S.g ⟨centre (Γ.z i), Γ.z_spec i⟩).B (F.Bi i) ∧ ∃ (φ' ψ' : Germ.Pt (X.presheaf.stalk (centre Γ.η)) 1 d) (lam' : Germ.PS (X.presheaf.stalk (centre Γ.η)) 2 d), transH (S.φ ⟨centre (Γ.z i), Γ.z_spec i⟩) (S.ψ ⟨centre (Γ.z i), Γ.z_spec i⟩) (S.lam ⟨centre (Γ.z i), Γ.z_spec i⟩) = transH (S.φ ⟨centre Γ.η, Γ.η_spec⟩) (S.ψ ⟨centre Γ.η, Γ.η_spec⟩) (S.lam ⟨centre Γ.η, Γ.η_spec⟩) ∘ₗ transH (fun l => MvPowerSeries.map (genMap ξ ⟨centre Γ.η, Γ.η_spec⟩) (φ' l)) (fun l => MvPowerSeries.map (genMap ξ ⟨centre Γ.η, Γ.η_spec⟩) (ψ' l)) (MvPowerSeries.map (genMap ξ ⟨centre Γ.η, Γ.η_spec⟩) lam') ∧ F.φ i = (fun l => MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom (φ' l)) ∧ F.ψ i = (fun l => MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom (ψ' l)) ∧ F.lam i = MvPowerSeries.map (Scheme.stalkClosedPointTo Γ.η).hom lam' := by
   intro E _ _ _ H _ hbar X t Ω _ ξ d M S O _ s _ _ ϖ p _ Γ _ hξ hpow hfib

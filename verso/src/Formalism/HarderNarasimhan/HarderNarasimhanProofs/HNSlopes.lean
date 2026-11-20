@@ -15,9 +15,9 @@ noncomputable section
 namespace Formalism.HN
 
 /- English proof (translation)
-Establish `h : (Finset.univ.filter (fun j : Fin n => (j : ℕ) < m)).map Fin.valEmbedding = Finset.range m`. Use extensionality with `k`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hj`. Introduce `hk`. Conclude with `⟨⟨k, lt_of_lt_of_le hk hm⟩, hk, rfl⟩`. Rewrite using `[← Finset.card_map, h, Finset.card_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_filter_val_lt_alt (n m : ℕ) (hm : m ≤ n) :
     (Finset.univ.filter (fun j : Fin n => (j : ℕ) < m)).card = m := by
@@ -34,7 +34,7 @@ theorem card_filter_val_lt_alt (n m : ℕ) (hm : m ≤ n) :
   rw [← Finset.card_map, h, Finset.card_range]
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_boole]`. Conclude with `card_filter_val_lt_alt n m hm` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_ite_val_lt_one (n m : ℕ) (hm : m ≤ n) :
     (∑ j : Fin n, if (j : ℕ) < m then (1 : ℝ) else 0) = m := by
@@ -42,7 +42,7 @@ theorem sum_ite_val_lt_one (n m : ℕ) (hm : m ≤ n) :
   exact_mod_cast card_filter_val_lt_alt n m hm
 
 /- English proof (translation)
-Establish `h : ∀ j : Fin n, (if (j : ℕ) < m then x j - a else 0) = (if (j : ℕ) < m then x j else 0) - a * (if (j : ℕ) < m then (1 : ℝ) else 0)`. Introduce `j`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[Finset.sum_congr rfl (fun j _ => h j), Finset.sum_sub_distrib, ← Finset.mul_sum, sum_ite_val_lt_one n m hm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ite_val_lt_sub_mul (n m : ℕ) (hm : m ≤ n) (x : Fin n → ℝ) (a : ℝ) :
     (∑ j : Fin n, if (j : ℕ) < m then x j else 0) - a * m =
@@ -55,9 +55,9 @@ theorem sum_ite_val_lt_sub_mul (n m : ℕ) (hm : m ≤ n) (x : Fin n → ℝ) (a
     sum_ite_val_lt_one n m hm]
 
 /- English proof (translation)
-Rewrite using `[sum_ite_val_lt_sub_mul n m₁ (le_trans h₁₂ h₂) x a, sum_ite_val_lt_sub_mul n m₂ h₂ x a]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `h1 : (j : ℕ) < m₁`. Simplify using `only [if_pos h1, if_pos (lt_of_lt_of_le h1 h₁₂), le_refl]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : (j : ℕ) < m₂`. Rewrite using `[if_neg h1, if_pos h2]`. Combine the linear relations using `[hx j (not_lt.mp h1) h2]`. Simplify using `only [if_neg h1, if_neg h2, le_refl]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem sum_ite_val_lt_sub_mul_mono (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂) (h₂ : m₂ ≤ n) (x : Fin n → ℝ) (a : ℝ)
     (hx : ∀ j : Fin n, m₁ ≤ (j : ℕ) → (j : ℕ) < m₂ → a ≤ x j) :
@@ -74,9 +74,9 @@ theorem sum_ite_val_lt_sub_mul_mono (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂
     · simp only [if_neg h1, if_neg h2, le_refl]
 
 /- English proof (translation)
-Rewrite using `[sum_ite_val_lt_sub_mul n m₁ (le_trans h₁₂ h₂) x a, sum_ite_val_lt_sub_mul n m₂ h₂ x a]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `h1 : (j : ℕ) < m₁`. Simplify using `only [if_pos h1, if_pos (lt_of_lt_of_le h1 h₁₂), le_refl]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : (j : ℕ) < m₂`. Rewrite using `[if_neg h1, if_pos h2]`. Combine the linear relations using `[hx j (not_lt.mp h1) h2]`. Simplify using `only [if_neg h1, if_neg h2, le_refl]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem sum_ite_val_lt_sub_mul_anti (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂) (h₂ : m₂ ≤ n) (x : Fin n → ℝ) (a : ℝ)
     (hx : ∀ j : Fin n, m₁ ≤ (j : ℕ) → (j : ℕ) < m₂ → x j ≤ a) :
@@ -93,9 +93,9 @@ theorem sum_ite_val_lt_sub_mul_anti (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂
     · simp only [if_neg h1, if_neg h2, le_refl]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Establish `hpos : 0 < |a|` using `abs_pos.mpr ha`. Take `⟨t, ht⟩ : ∃ t, t = |a| / (2 * ((n : ℝ) + 1))` from `⟨_, rfl⟩`. Establish `htpos : 0 < t` using `by rw [ht]; positivity`. Establish `h1` using `h t htpos`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : t * (2 * ((n : ℝ) + 1)) = |a|`. Rewrite using `[ht]`. Conclude with `div_mul_cancel₀ _ (by positivity)`. Use polynomial arithmetic with `[mul_nonneg htpos.le (Nat.cast_nonneg n)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_abs_le_mul (a : ℝ) (n : ℕ) (h : ∀ t : ℝ, 0 < t → |a| ≤ t * n) : a = 0 := by
   by_contra ha
@@ -111,79 +111,73 @@ theorem eq_zero_of_abs_le_mul (a : ℝ) (n : ℕ) (h : ∀ t : ℝ, 0 < t → |a
 universe u v w in
 
 /- English proof (translation)
-Introduce `R V E _ _ _ _ _ _ ρ L hL`. Take `⟨hSubLat, hMono, hSatEq, hRk0, hDeg0, -, -, -⟩` from `h4 R V E ρ L hL`. Establish `hstep` using `h1 R V E ρ L hL`. Establish `hHL : ∀ θ, hnStep ρ L θ ≤ L` using `fun θ => by`. Unfold `hnStep`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `sSup_le fun N hN => hN.1`. Establish `hHanti : ∀ θ θ' : ℝ, θ ≤ θ' → hnStep ρ L θ' ≤ hnStep ρ L θ` using `fun θ θ' h => by`. Unfold `hnStep`. Conclude with `sSup_le_sSup fun N hN => ⟨hN.1, hN.2.1, le_trans h hN.2.2⟩`. Establish `hr_anti : ∀ θ θ' : ℝ, θ ≤ θ' → rk ρ (hnStep ρ L θ') ≤ rk ρ (hnStep ρ L θ)` using `fun θ θ' h => (hMono _ _ (hHanti θ θ' h) (hHL θ)).1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr_le : ∀ θ, rk ρ (hnStep ρ L θ) ≤ rk ρ L` using `fun θ => (hMono _ _ (hHL θ) le_rfl).1`. Establish `hrk_bot : rk ρ (⊥ : Submodule R V) = 0` using `(hRk0 ⊥ bot_le).mpr rfl`. Establish `hne_of : ∀ θ, 0 < rk ρ (hnStep ρ L θ) → hnStep ρ L θ ≠ ⊥` using `fun θ h he => by`. Rewrite `h` using `[he, hrk_bot]`. Conclude with `lt_irrefl 0 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLne_of : ∀ θ, hnStep ρ L θ ≠ ⊥ → L ≠ ⊥` using `fun θ h hL0 => h (le_bot_iff.mp (le_trans (hHL θ) (le_of_eq hL0)))`. Establish `hbdd : ∀ j : ℕ, BddAbove {θ : ℝ | j < rk ρ (hnStep ρ L θ)}`. Introduce `j`. Use `⟨muMax ρ L, fun θ hθ => ?_⟩` and prove the remaining obligations. Establish `hθ' : j < rk ρ (hnStep ρ L θ)` using `hθ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : hnStep ρ L θ ≠ ⊥` using `hne_of θ (lt_of_le_of_lt (Nat.zero_le j) hθ')`. Establish `hLne` using `hLne_of θ hne`. Establish `hMH` using `h2 R V E ρ (hnStep ρ L θ) (hSubLat _ (hHL θ)) hne`. Establish `hML` using `h2 R V E ρ L hL hLne`. Establish `hmax : muMax ρ (hnStep ρ L θ) ≤ muMax ρ L` using `(hMH.1 (muMax ρ L)).mpr fun N hN => (hML.1 (muMax ρ L)).mp le_rfl N (le_trans hN (hHL θ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_trans ((hstep θ).2.1 hne) (le_trans hMH.2.2.2.1 (le_trans hMH.2.2.2.2 hmax))`. Establish `hatt : ∀ j : ℕ, j < rk ρ L → j < rk ρ (hnStep ρ L (sSup {θ : ℝ | j < rk ρ (hnStep ρ L θ)}))`. Introduce `j hj`. Establish `hLne : L ≠ ⊥` using `fun h0 => by`. Rewrite `hj` using `[h0, hrk_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.not_lt_zero _ hj`. Establish `hSne : ({θ : ℝ | j < rk ρ (hnStep ρ L θ)}).Nonempty`. Use `⟨muMin ρ L, ?_⟩` and prove the remaining obligations. Establish `hLH : L ≤ hnStep ρ L (muMin ρ L)` using `(hstep _).2.2.1 L le_rfl hLne le_rfl`. Conclude with `lt_of_lt_of_le hj (hMono _ _ hLH (hHL _)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbelow : ∀ θ, θ < sSup {θ : ℝ | j < rk ρ (hnStep ρ L θ)} → j < rk ρ (hnStep ρ L θ)`. Introduce `θ hθ`. Take `⟨θ₂, hθ₂, hlt⟩` from `exists_lt_of_lt_csSup hSne hθ`. Conclude with `lt_of_lt_of_le hθ₂ (hr_anti θ θ₂ hlt.le)`. Take `⟨s, hs⟩ : ∃ s, s = sSup {θ : ℝ | j < rk ρ (hnStep ρ L θ)}` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hbelow`, the goal using `[← hs]`. Establish `hex : ∃ c : ℕ, ∃ θ : ℝ, θ < s ∧ rk ρ (hnStep ρ L θ) = c` using `⟨_, s - 1, by linarith, rfl⟩`. Take `⟨θ₀, hθ₀s, hθ₀c⟩` from `Nat.find_spec hex`. Establish `hconst : ∀ θ, θ₀ ≤ θ → θ < s → hnStep ρ L θ₀ = hnStep ρ L θ`. Introduce `θ h0 hθs`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : rk ρ (hnStep ρ L θ) ≤ rk ρ (hnStep ρ L θ₀)` using `hr_anti θ₀ θ h0`. Establish `hge : Nat.find hex ≤ rk ρ (hnStep ρ L θ)` using `Nat.find_min' hex ⟨θ, hθs, rfl⟩`. Conclude with `hSatEq _ _ (hstep θ).1 (hHanti θ₀ θ h0) (hHL θ₀) (by omega)`. Establish `hne0 : hnStep ρ L θ₀ ≠ ⊥` using `hne_of θ₀ (lt_of_le_of_lt (Nat.zero_le j) (hbelow θ₀ hθ₀s))`. Establish `hμ : s ≤ muMin ρ (hnStep ρ L θ₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨θ, hθdef⟩ : ∃ θ, θ = max θ₀ ((muMin ρ (hnStep ρ L θ₀) + s) / 2)` from `⟨_, rfl⟩`. Establish `h1' : θ₀ ≤ θ` using `by rw [hθdef]; exact le_max_left _ _`. Establish `h2' : θ < s` using `by rw [hθdef]; exact max_lt hθ₀s (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4' : (muMin ρ (hnStep ρ L θ₀) + s) / 2 ≤ θ` using `by rw [hθdef]; exact le_max_right _ _`. Establish `heq` using `hconst θ h1' h2'`. Establish `hneθ : hnStep ρ L θ ≠ ⊥` using `heq ▸ hne0`. Establish `h3'` using `(hstep θ).2.1 hneθ`. Rewrite `h3'` using `[← heq]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : hnStep ρ L θ₀ ≤ hnStep ρ L s` using `(hstep s).2.2.1 _ (hHL θ₀) hne0 hμ`. Conclude with `lt_of_lt_of_le (hbelow θ₀ hθ₀s) (hMono _ _ hsub (hHL s)).1`. Establish `hiff : ∀ j : Fin (rk ρ L), ∀ θ : ℝ, ((j : ℕ) < rk ρ (hnStep ρ L θ) ↔ θ ≤ slopeList ρ L j)`. Introduce `j θ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `le_csSup (hbdd j) h`. Introduce `h`. Conclude with `lt_of_lt_of_le (hatt j j.2) (hr_anti θ (sSup {θ : ℝ | (j : ℕ) < rk ρ (hnStep ρ L θ)}) h)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hanti : Antitone (slopeList ρ L)`. Introduce `i j hij`. Conclude with `(hiff i _).mp (lt_of_le_of_lt (show (i : ℕ) ≤ j from hij) ((hiff j _).mpr le_rfl))`. Establish `hP : ∀ k, hnPoly ρ L k = ∑ j : Fin (rk ρ L), if (j : ℕ) < k then slopeList ρ L j else 0` using `fun k => rfl`. Establish `hpoly : ∀ θ, deg ρ (hnStep ρ L θ) = hnPoly ρ L (rk ρ (hnStep ρ L θ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to establish `H : ∀ c : ℕ, ∀ θ, rk ρ (hnStep ρ L θ) = c → deg ρ (hnStep ρ L θ) = hnPoly ρ L c from fun θ => H _ θ rfl`. Introduce `c`. Proceed by induction on `c using Nat.strong_induction_on with`. Consider the case `_ c ih`. Introduce `θ hθc`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos c with hc0 | hcpos` into its components or cases. Establish `hb : hnStep ρ L θ = ⊥` using `(hRk0 _ (hHL θ)).mp (hθc.trans hc0)`. Rewrite using `[hb, hDeg0, hc0, hP]`. Simplify using the standard rewrite rules. Establish `hcn : c ≤ rk ρ L` using `hθc ▸ hr_le θ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `jj : Fin (rk ρ L)` to `⟨c - 1, by omega⟩`. Establish `hθt : θ ≤ slopeList ρ L jj` using `(hiff jj θ).mp (by show c - 1 < rk ρ (hnStep ρ L θ); omega)`. Establish `htj : c - 1 < rk ρ (hnStep ρ L (slopeList ρ L jj))` using `(hiff jj _).mpr le_rfl`. Establish `hrt : rk ρ (hnStep ρ L (slopeList ρ L jj)) = c`. Use `hr_anti _ _ hθt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hHt : hnStep ρ L θ = hnStep ρ L (slopeList ρ L jj)` using `hSatEq _ _ (hstep _).1 (hHanti _ _ hθt) (hHL θ) (by omega)`. Establish `hneθ : hnStep ρ L θ ≠ ⊥` using `hne_of θ (by omega)`. Establish `hMC` using `h2 R V E ρ (hnStep ρ L θ) (hSubLat _ (hHL θ)) hneθ`. Establish `htmu : slopeList ρ L jj ≤ muMin ρ (hnStep ρ L θ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[hHt]`. Conclude with `(hstep _).2.1 (hHt ▸ hneθ)`. Establish `hz : deg ρ (hnStep ρ L θ) - hnPoly ρ L c = 0`. Apply `eq_zero_of_abs_le_mul _ (rk ρ L)` to reduce the goal to its premises. Introduce `ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩ : ∃ t, t = slopeList ρ L jj` from `⟨_, rfl⟩`. Rewrite `hHt`, `htmu`, `hrt` using `[← ht]`. Establish `hc' : rk ρ (hnStep ρ L (t + ε)) < c`. Establish `: ¬ (c - 1 < rk ρ (hnStep ρ L (t + ε)))` using `fun h => by`. Establish `h'` using `(hiff jj _).mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[← ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Establish `ih'` using `ih _ hc' (t + ε) rfl`. Establish `hle' : hnStep ρ L (t + ε) ≤ hnStep ρ L θ` using `(hHanti t (t + ε) (by linarith)).trans hHt.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hlt' : hnStep ρ L (t + ε) < hnStep ρ L θ` using `lt_of_le_of_ne hle' (fun h => by`. Rewrite `hc'` using `[h]`. Use the proof step `omega)`. Establish `hD` using `(hstep (t + ε)).2.2.2 _ hlt' (hHL θ)`. Establish `hD2` using `(hMC.2.1 t).mp htmu _ hle'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hP1 : hnPoly ρ L (rk ρ (hnStep ρ L (t + ε))) - t * (rk ρ (hnStep ρ L (t + ε)) : ℕ) ≤ hnPoly ρ L c - t * (c : ℕ)` using `sum_ite_val_lt_sub_mul_mono (rk ρ L) _ c hc'.le hcn (slopeList ρ L) t (fun j _ h2 => (hiff j t).mp (by omega))`. Establish `hP2 : hnPoly ρ L c - (t + ε) * (c : ℕ) ≤ hnPoly ρ L (rk ρ (hnStep ρ L (t + ε))) - (t + ε) * (rk ρ (hnStep ρ L (t + ε)) : ℕ)` using `sum_ite_val_lt_sub_mul_anti (rk ρ L) _ c hc'.le hcn (slopeList ρ L) (t + ε) (fun j h1 _ => le_of_lt (not_le.mp fun h => by`. Use `(hiff j _).mpr h` as an intermediate fact. Use the proof step `omega))`. Rewrite `hD`, `hD2` using `[hθc]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hcL : (c : ℝ) ≤ rk ρ L` using `by exact_mod_cast hcn`. Establish `hr0 : (0 : ℝ) ≤ (rk ρ (hnStep ρ L (t + ε)) : ℝ)` using `Nat.cast_nonneg _`. Establish `hεΔ : ε * ((c : ℝ) - rk ρ (hnStep ρ L (t + ε))) ≤ ε * rk ρ L` using `mul_le_mul_of_nonneg_left (by linarith) hε.le`. Establish `e1 : (t + ε) * ((c : ℝ) - rk ρ (hnStep ρ L (t + ε))) = t * c - t * rk ρ (hnStep ρ L (t + ε)) + ε * c - ε * rk ρ (hnStep ρ L (t + ε))`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : t * ((c : ℝ) - rk ρ (hnStep ρ L (t + ε))) = t * c - t * rk ρ (hnStep ρ L (t + ε))` using `by ring`. Establish `e3 : (t + ε) * (c : ℝ) = t * c + ε * c` using `by ring`. Establish `e4 : (t + ε) * (rk ρ (hnStep ρ L (t + ε)) : ℝ) = t * rk ρ (hnStep ρ L (t + ε)) + ε * rk ρ (hnStep ρ L (t + ε))` using `by ring`. Establish `e5 : ε * ((c : ℝ) - rk ρ (hnStep ρ L (t + ε))) = ε * c - ε * rk ρ (hnStep ρ L (t + ε))` using `by ring`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> linarith`. Conclude with `sub_eq_zero.mp hz`. Establish `hfull : ∃ θ, hnStep ρ L θ = L`. Distinguish the cases in `hL0 : L = ⊥`. Use `⟨0, le_antisymm (hHL 0) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hL0]`. Conclude with `bot_le`. Conclude with `⟨muMin ρ L, le_antisymm (hHL _) ((hstep _).2.2.1 L le_rfl hL0 le_rfl)⟩`. Establish `hsum : ∑ j, slopeList ρ L j = deg ρ L`. Take `⟨θ, hθ⟩` from `hfull`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hpoly θ`. Rewrite `h` using `[hθ]`. Rewrite using `[h, hP]`. Conclude with `Finset.sum_congr rfl fun j _ => (if_pos j.2).symm`. Establish `hsubmax : ∀ θ (M : Submodule R V), M ≤ hnStep ρ L θ → deg ρ M - θ * rk ρ M ≤ deg ρ (hnStep ρ L θ) - θ * rk ρ (hnStep ρ L θ)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `θ M hM`. Distinguish the cases in `hH : hnStep ρ L θ = ⊥`. Establish `hM0 : M = ⊥` using `le_bot_iff.mp (hM.trans hH.le)`. Simplify using `only [hM0, hH, le_refl]`. Establish `hMC` using `h2 R V E ρ _ (hSubLat _ (hHL θ)) hH`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(hMC.2.1 θ).mp ((hstep θ).2.1 hH) M hM` as an intermediate fact. Rewrite `this` using `[mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmax : ∀ θ (N : Submodule R V), N ≤ L → deg ρ N - θ * rk ρ N ≤ deg ρ (hnStep ρ L θ) - θ * rk ρ (hnStep ρ L θ)`. Introduce `θ N hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨hrk, hdeg⟩` from `h3 R V E ρ L N (hnStep ρ L θ) hL hN (hHL θ)`. Establish `hrk' : ((rk ρ (N ⊔ hnStep ρ L θ) : ℕ) : ℝ) + rk ρ (N ⊓ hnStep ρ L θ) = rk ρ N + rk ρ (hnStep ρ L θ)` using `by exact_mod_cast hrk`. Establish `hinf` using `hsubmax θ _ (inf_le_right : N ⊓ hnStep ρ L θ ≤ _)`. Establish `hsup : deg ρ (N ⊔ hnStep ρ L θ) - θ * rk ρ (N ⊔ hnStep ρ L θ) ≤ deg ρ (hnStep ρ L θ) - θ * rk ρ (hnStep ρ L θ)`. Distinguish the cases in `heq : N ⊔ hnStep ρ L θ = hnStep ρ L θ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [heq, le_refl]`. Use `(hstep θ).2.2.2 _ (lt_of_le_of_ne le_sup_right (Ne.symm heq)) (sup_le hN (hHL θ))` as an intermediate fact. Rewrite `this` using `[mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : θ * (rk ρ (N ⊔ hnStep ρ L θ) : ℝ) + θ * rk ρ (N ⊓ hnStep ρ L θ) = θ * rk ρ N + θ * rk ρ (hnStep ρ L θ)` using `by rw [← mul_add, ← mul_add, hrk']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpolyle : ∀ N : Submodule R V, N ≤ L → deg ρ N ≤ hnPoly ρ L (rk ρ N)`. Introduce `N hN`. Break down `Nat.eq_zero_or_pos (rk ρ N) with hk0 | hkpos` into its components or cases. Establish `hN0 : N = ⊥` using `(hRk0 N hN).mp hk0`.
-
-Rewrite using `[hk0, hN0, hDeg0, hP]`. Simplify using the standard rewrite rules. Establish `hkn : rk ρ N ≤ rk ρ L` using `(hMono _ _ hN le_rfl).1`. Set `jj : Fin (rk ρ L)` to `⟨rk ρ N - 1, by omega⟩`. Establish `hr : rk ρ N - 1 < rk ρ (hnStep ρ L (slopeList ρ L jj))` using `(hiff jj _).mpr le_rfl`.
-
-Establish `hm` using `hmax (slopeList ρ L jj) N hN`. Rewrite `hm` using `[hpoly]`. Establish `hA : hnPoly ρ L (rk ρ (hnStep ρ L (slopeList ρ L jj))) - slopeList ρ L jj * (rk ρ (hnStep ρ L (slopeList ρ L jj)) : ℕ) ≤ hnPoly ρ L (rk ρ N) - slopeList ρ L jj * (rk ρ N : ℕ)` using `sum_ite_val_lt_sub_mul_anti _ _ _ (by omega) (hr_le _) (slopeList ρ L) _ (fun j h1 _ => hanti (show jj ≤ j from (show rk ρ N - 1 ≤ (j : ℕ) by omega)))`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hanti, ?_, hsum, hpolyle, hpoly⟩` and prove the remaining obligations.
-
-Introduce `θ`. Use `card_filter_val_lt_alt _ _ (hr_le θ) using 2` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `(hiff j θ).symm`.
+A detailed English derivation is pending.
 -/
 theorem hnSlopes_of (h1 : HNStep.{u, v, w}) (h2 : MuChar.{u, v, w})
     (h3 : DegSupermod.{u, v, w}) (h4 : SatBasic.{u, v, w}) : HNSlopes.{u, v, w} := by
@@ -415,7 +409,7 @@ theorem hnSlopes_of (h1 : HNStep.{u, v, w}) (h2 : MuChar.{u, v, w})
   exact (hiff j θ).symm
 
 /- English proof (translation)
-The claim follows from `hnSlopes_of (hnStep_of degree_supermodular slope_characterization maximal_slope_ratio finite_supremum_slopes real_saturation_property saturation_basic_properties) slope_characterization degree_supermodular saturation_basic_properties`.
+A detailed English derivation is pending.
 -/
 theorem polygon_slopes_characterization : HNSlopes :=
   hnSlopes_of (hnStep_of degree_supermodular slope_characterization maximal_slope_ratio finite_supremum_slopes real_saturation_property

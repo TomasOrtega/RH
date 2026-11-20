@@ -8,15 +8,15 @@ namespace GlobalTheory.CompanionTheory.CartGL
 variable {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L] {n : ℕ}
 
 /- English proof (translation)
-Establish `hex : ∃ i : ℕ, i = n ∨ ∃ h : i < n, b ⟨i, h⟩ ≤ 0` using `⟨n, Or.inl rfl⟩`. Establish `hle : Nat.find hex ≤ n` using `Nat.find_min' hex (Or.inl rfl)`. Use `⟨⟨Nat.find hex, by omega⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `hne : Nat.find hex ≠ n + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [tExp, hne, if_false]`. Distinguish the cases in `hj : (j : ℕ) < Nat.find hex`. Establish `hnot` using `Nat.find_min hex hj`. Establish `hpos : 0 < b j`. Assume the negation of the conclusion as `hcon`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hnot (Or.inr ⟨j.2, not_lt.mp hcon⟩)`. Rewrite using `[if_pos hj, if_pos hpos]`. Establish `hspec` using `Nat.find_spec hex`. Establish `hnpos : ¬ 0 < b j`. Break down `hspec with h | ⟨h, h'⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmono : b j ≤ b ⟨Nat.find hex, h⟩` using `hb (by`. Rewrite using `[Fin.le_def]`. Conclude with `not_lt.mp hj)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hj, if_neg hnpos]`.
+A detailed English derivation is pending.
 -/
 theorem exists_tExp_eq_indicator (b : Fin n → ℤ) (hb : Antitone b) :
     ∃ i : Fin (n + 2), tExp n i = fun j => if 0 < b j then 1 else 0 := by
@@ -45,21 +45,19 @@ theorem exists_tExp_eq_indicator (b : Fin n → ℤ) (hb : Antitone b) :
     rw [if_neg hj, if_neg hnpos]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `b _ h0 hN`. Establish `hb : b = 0`. Use function extensionality and compare the values at `j`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `h0 j`. Establish `h2` using `hN j`. Simplify using `only [Nat.cast_zero] at h2`. Simplify using `only [Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hb, dPow_zero]`. Conclude with `Submonoid.one_mem _`. Consider the case `succ N ih`. Introduce `b hb h0 hN`. Take `⟨i, hi⟩` from `exists_tExp_eq_indicator b hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdecomp : b = (fun j => b j - if 0 < b j then 1 else 0) + tExp n i`. Rewrite using `[hi]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[hdecomp, dPow_add]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submonoid.mul_mem _ (ih _ ?_ ?_ ?_) (Submonoid.subset_closure ⟨i, rfl⟩)` and prove the remaining obligations. Introduce `x y hxy`. Establish `hm` using `hb hxy`. Establish `hx` using `h0 x`. Establish `hy` using `h0 y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show (b y - if 0 < b y then 1 else 0) ≤ (b x - if 0 < b x then 1 else 0)`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `j`. Establish `h1` using `h0 j`. Use `show 0 ≤ (b j - if 0 < b j then 1 else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> omega`. Introduce `j`. Establish `h1` using `h0 j`. Establish `h2` using `hN j`. Move the coercions through the operations in `at h2`.
-
-Use `show (b j - if 0 < b j then 1 else 0) ≤ (N : ℤ)`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dPow_mem_closure_of_nonneg (p : Lˣ) (N : ℕ) :
     ∀ b : Fin n → ℤ, Antitone b → (∀ j, 0 ≤ b j) → (∀ j, b j ≤ N) →
@@ -103,17 +101,17 @@ theorem dPow_mem_closure_of_nonneg (p : Lˣ) (N : ℕ) :
       split_ifs <;> omega
 
 /- English proof (translation)
-Proceed by induction on `C with`. Consider the case `zero`. Introduce `a ha h0`. Establish `hbd : ∀ j, a j ≤ ((∑ k, (a k).natAbs : ℕ) : ℤ)`. Introduce `j`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (a j).natAbs ≤ ∑ k, (a k).natAbs` using `Finset.single_le_sum (f := fun k => (a k).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use linear arithmetic over natural numbers and integers. Use `dPow_mem_closure_of_nonneg p _ a ha (fun j => ?_) hbd` and prove the remaining obligations. Use `h0 j` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ C ih`. Introduce `a ha h0`. Establish `hlast : tExp n (Fin.last (n + 1)) = fun _ => -1`. Use function extensionality and compare the values at `j`. Simplify using `[tExp]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hdecomp : a = (fun j => a j + 1) + tExp n (Fin.last (n + 1))`. Rewrite using `[hlast]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[hdecomp, dPow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submonoid.mul_mem _ (ih _ ?_ ?_) (Submonoid.subset_closure ⟨Fin.last (n + 1), rfl⟩)` and prove the remaining obligations. Introduce `x y hxy`. Use `ha hxy` as an intermediate fact. Use `show a y + 1 ≤ a x + 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `h0 j` as an intermediate fact. Move the coercions through the operations in `at this`. Use `show -(C : ℤ) ≤ a j + 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dPow_mem_closure_of_ge (p : Lˣ) (C : ℕ) :
     ∀ a : Fin n → ℤ, Antitone a → (∀ j, -(C : ℤ) ≤ a j) →
@@ -153,7 +151,7 @@ theorem dPow_mem_closure_of_ge (p : Lˣ) (C : ℕ) :
       omega
 
 /- English proof (translation)
-Use `dPow_mem_closure_of_ge p (∑ k, (a k).natAbs) a ha (fun j => ?_)` and prove the remaining obligations. Establish `h1 : (a j).natAbs ≤ ∑ k, (a k).natAbs` using `Finset.single_le_sum (f := fun k => (a k).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dPow_antitone_mem_closure (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L]
     (n : ℕ) (p : Lˣ) (a : Fin n → ℤ) (ha : Antitone a) :

@@ -53,7 +53,7 @@ def chainVecs {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Represe
   smul_mem' := fun c v hv h y h1 h2 h3 => by rw [map_smul, hv h y h1 h2 h3, smul_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `cases h <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem InInd.irr {π : GLRep g} {S : List (GLRep g)} (h : InInd π S) : IsIrrRep π.2.ρ := by
   cases h <;> assumption

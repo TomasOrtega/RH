@@ -20,9 +20,9 @@ section Abstract
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `htors : IsAddTorsion M` using `fun m => isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨n, Nat.pos_of_ne_zero hn, hM m⟩`. It suffices to establish `h : ∀ x : cohomology M r, x = 0 from ⟨fun x y => (h x).trans (h y).symm⟩`. Introduce `x`. Use `eq_zero_of_primaryComponent_eq_bot n hn (fun ℓ hℓ hℓn => ?_) x (nsmul_cohomology_eq_zero M hM r x)` and prove the remaining obligations. Use `primaryComponent_cohomology_eq_bot_of_cdp_lt (p := ℓ) M htors ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem subsingleton_cohomology_of_cdp_le_two {n : ℕ} (hn : n ≠ 0)
     (hcd : ∀ ℓ : ℕ, ℓ.Prime → ℓ ∣ n → cdp ℓ G ≤ 2) (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
@@ -52,13 +52,13 @@ instance isDiscreteRep_res_galRootsOfUnity_gs (m : ℕ) (U : Subgroup (galUnrami
   isDiscreteRep_res_subtype _ U
 
 /- English proof (translation)
-Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ ℓ`. Establish `hmem : ζ ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `mem_maxUnramifiedOutside_of_pow_eq_one S hℓ.ne_zero (fun v hv h => hv (hS v h)) hζ.pow_eq_one`. Establish `hζ' : IsPrimitiveRoot (⟨ζ, hmem⟩ : maxUnramifiedOutside K.1 ℚ̄ S) ℓ` using `IsPrimitiveRoot.of_map_of_injective (f := (maxUnramifiedOutside K.1 ℚ̄ S).val) hζ (maxUnramifiedOutside K.1 ℚ̄ S).val.toRingHom.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard` using `hζ'.card_rootsOfUnity`. Establish `: Finite (rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S))` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact hℓ.ne_zero)`. Establish `: Nontrivial (rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S))` using `Finite.one_lt_card_iff_nontrivial.1 (by rw [hcard]; exact hℓ.one_lt)`. Take `⟨η, hη⟩` from `exists_ne (1 : rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S))`. Establish `hη0 : Additive.ofMul η ≠ 0` using `hη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hηp : ℓ • Additive.ofMul η = 0`. Establish `h` using `pow_card_eq_one' (G := rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S)) (x := η)`. Rewrite `h` using `[hcard]`. Rewrite using `[← ofMul_pow, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨AddEquiv.ofBijective _ ((zmod_lift_zmultiplesHom_injective hη0 hηp).bijective_of_nat_card_le (by rw [Nat.card_zmod, Nat.card_congr Additive.ofMul.symm, hcard]))⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_zmod_addEquiv_rootsOfUnity_gs {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) :
@@ -92,7 +92,7 @@ variable {ℓ : ℕ} (hℓ : ℓ.Prime)
 include hℓ hS in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => (eq_zero_h3_rootsOfUnity_of_h3_sUnits K S ℓ hℓ hS hK (fun z hz => eq_zero_of_h3_sUnits K S ℓ hℓ hS z 1 (by rwa [pow_one])) x).trans (eq_zero_h3_rootsOfUnity_of_h3_sUnits K S ℓ hℓ hS hK (fun z hz => eq_zero_of_h3_sUnits K S ℓ hℓ hS z 1 (by rwa [pow_one])) y).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_h3_rootsOfUnity (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1) :
     Subsingleton (cohomology (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) 3) :=
@@ -104,9 +104,9 @@ theorem subsingleton_h3_rootsOfUnity (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1) :
 include hℓ hS in
 
 /- English proof (translation)
-Take `⟨L, hKL, hL, rfl⟩` from `exists_gsOpenSubgroup_eq K S U`. Establish `hSL : ∀ w : HeightOneSpectrum (𝓞 L.1), ((ℓ : ℕ) : 𝓞 L.1) ∈ w.asIdeal → w ∈ placesOver S` using `fun w hw => mem_placesOver_of_natCast_mem hS hw`. Establish `hKL' : ℓ ≠ 2 ∨ IsTotallyComplex L.1` using `hK.imp id fun h => by`. Use `h` as an intermediate fact. Conclude with `isTotallyComplex_of_algebra K.1 L.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `subsingleton_h3_rootsOfUnity L (placesOver S) hℓ hSL hKL'` as an intermediate fact. Conclude with `((gsRootsOfUnityCohomologyIso S hL ℓ 3).toLinearEquiv.toEquiv.symm).subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_h3_res_rootsOfUnity (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1)
     (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)) :
@@ -125,7 +125,7 @@ theorem subsingleton_h3_res_rootsOfUnity (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.
 include hℓ hS in
 
 /- English proof (translation)
-Take `⟨e⟩` from `nonempty_zmod_addEquiv_rootsOfUnity_gs K S hℓ hS`. Conclude with `cdp_le_of_forall_openSubgroup hℓ (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) e 2 (subsingleton_h3_res_rootsOfUnity K S hℓ hS hK)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cdp_galUnramifiedOutside_le_two (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1) :
     cdp ℓ (galUnramifiedOutside K.1 ℚ̄ S) ≤ 2 := by
@@ -144,9 +144,9 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) {n : ℕ}
 include hn hS hK in
 
 /- English proof (translation)
-Use `cdp_galUnramifiedOutside_le_two K S hℓ (fun v hv => hS v ?_) ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hℓn`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hv`. Use `hK.imp (fun ho h2 => ?_) id` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hℓn` using `[h2]`. Conclude with `(Nat.not_even_iff_odd.2 ho) (even_iff_two_dvd.2 hℓn)`.
+A detailed English derivation is pending.
 -/
 theorem cdp_galUnramifiedOutside_le_two_of_dvd {ℓ : ℕ} (hℓ : ℓ.Prime) (hℓn : ℓ ∣ n) :
     cdp ℓ (galUnramifiedOutside K.1 ℚ̄ S) ≤ 2 := by
@@ -161,7 +161,7 @@ theorem cdp_galUnramifiedOutside_le_two_of_dvd {ℓ : ℕ} (hℓ : ℓ.Prime) (h
 include hn hS hK in
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_of_cdp_le_two hn (fun ℓ hℓ hℓn => (cdp_openSubgroup_le ℓ U).trans (cdp_galUnramifiedOutside_le_two_of_dvd K S hn hS hK hℓ hℓn)) M hM hr`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_gs_of_three_le (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (M : Rep.{0} (ULift.{0} ℤ) (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) [IsDiscreteRep M]
@@ -172,7 +172,7 @@ theorem subsingleton_cohomology_gs_of_three_le (U : OpenSubgroup (galUnramifiedO
 include hn hS hK in
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_gs_of_three_le K S hn hS hK U _ (fun m => nsmul_rootsOfUnity_eq_zero (E := maxUnramifiedOutside K.1 ℚ̄ S) n m) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_h3_res_rootsOfUnity_of_odd (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)) :
     Subsingleton (cohomology (Rep.res (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype
@@ -186,11 +186,11 @@ set_option maxHeartbeats 2000000 in
 include hn hS hK in
 
 /- English proof (translation)
-It suffices to establish `h : ∀ x : compactCohomologyRes (gsFinFamily S ιs) M 4, x = 0 from ⟨fun x y => (h x).trans (h y).symm⟩`. Introduce `x`. Establish `hglob : Subsingleton (cohomology M 4)` using `subsingleton_cohomology_of_cdp_le_two hn (fun ℓ hℓ hℓn => cdp_galUnramifiedOutside_le_two_of_dvd K S hn hS hK hℓ hℓn) M hM (by norm_num)`. Establish `hloc : ∀ v : S, Subsingleton (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom M) 3)`. Introduce `v`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `subsingleton_cohomology_of_cdp_le_two hn (fun ℓ hℓ _ => ?_) (Rep.res (gsFinFamily S ιs v).toMonoidHom M) (fun m => hM m) le_rfl` and prove the remaining obligations. Use `cdp_galois_le_two _ _ hℓ ?_` and prove the remaining obligations. Conclude with `hℓ.ne_zero` after adjusting the coercions. Take `⟨y, rfl⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (compactCohomology_exact_compact (gsFinFamily S ιs) M _ (fun _ => 𝟙 _) 3) x (Subsingleton.elim _ _)`. Establish `: Subsingleton (∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom M) 3)` using `Pi.instSubsingleton`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_compactCohomology_four (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S))
     [IsDiscreteRep M] (hM : ∀ m : M, n • m = 0) :

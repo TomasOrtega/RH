@@ -17,7 +17,7 @@ def UnivLinkStep : Prop :=
     u2R D HW → DownSlotProposition D HW → UpSlotProposition D HW → MixedSlotProposition D HW → univR D HW
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA` and use `hL D HW F hA.2.2.2.2.1 hd (hR D HW F Cm CA CB CK hA) (hC D HW F Cm CA CB CK hA) (hH D HW F Cm CA CB CK hA) (hM D HW F Cm CA CB CK hA) (hU1 D HW F Cm CA CB CK hA) (hk D HW F Cm CA CB CK hA) (hU2 D HW F Cm CA CB CK hA) (hD D HW F Cm CA CB CK hA) (hUp D HW F Cm CA CB CK hA) (hMx D H …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem univStep_of (hL : UnivLinkStep) (hd : DvdStep) (hR : InvLiftStep) (hC : ClassMapStep)
     (hH : FrameStep) (hM : ModelFStep) (hU1 : FirstFrameHypothesis) (hk : KapPiStep) (hU2 : SecondPropositionHypothesis)
@@ -29,7 +29,7 @@ theorem univStep_of (hL : UnivLinkStep) (hd : DvdStep) (hR : InvLiftStep) (hC : 
       (hUp D HW F Cm CA CB CK hA) (hMx D HW F Cm CA CB CK hA)
 
 /- English proof (translation)
-The claim follows from `local_theorem_of_lemma_properties hG hL hd hq hn h9 he hw hk hl hg hf hγ ho (univStep_of hUL hd hR hC hH hM hU1 hkp hU2 hD hUp hMx)`.
+A detailed English derivation is pending.
 -/
 theorem local_theorem_of_all_lemmas (hG : GenStep) (hL : LiftStep) (hd : DvdStep) (hq : QuotStep)
     (hn : NormStep) (h9 : DeltaInvariantUniformizer) (he : ExtStep) (hw : WStep) (hk : KerLamStep) (hl : NinLamStep)

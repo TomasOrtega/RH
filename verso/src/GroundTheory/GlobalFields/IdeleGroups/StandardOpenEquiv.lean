@@ -9,7 +9,7 @@ open scoped NumberField.AdeleRing
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `h.symm.continuous.congr fun y ↦ e.injective (by rw [e.apply_symm_apply, he, h.apply_symm_apply])`.
+A detailed English derivation is pending.
 -/
 theorem continuous_equiv_symm_of_eq {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     (e : X ≃ Y) (h : X ≃ₜ Y) (he : ∀ x, e x = h x) : Continuous e.symm :=
@@ -88,7 +88,7 @@ theorem coe_localIntegerUnit (v : HeightOneSpectrum (𝓞 K)) (x : standardOpenS
   rfl
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `((Units.continuous_val.comp (continuous_finiteProj v)).comp continuous_subtype_val).subtype_mk _`. Conclude with `((Units.continuous_coe_inv.comp (continuous_finiteProj v)).comp continuous_subtype_val).subtype_mk _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_localIntegerUnit (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (localIntegerUnit (K := K) v) := by
@@ -110,7 +110,7 @@ def ofIntegerUnits (a : (InfiniteAdeleRing K)ˣ)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_ofIntegerUnits_fst (a : (InfiniteAdeleRing K)ˣ)
     (u : Π v : HeightOneSpectrum (𝓞 K), (v.adicCompletionIntegers K)ˣ) :
@@ -129,7 +129,7 @@ theorem coe_ofIntegerUnits_snd (a : (InfiniteAdeleRing K)ˣ)
   rfl
 
 /- English proof (translation)
-The claim follows from `(mem_standardOpenSubgroup K).2 fun v ↦ ⟨(u v : v.adicCompletionIntegers K).2, (((u v)⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem ofIntegerUnits_mem (a : (InfiniteAdeleRing K)ˣ)
     (u : Π v : HeightOneSpectrum (𝓞 K), (v.adicCompletionIntegers K)ˣ) :
@@ -139,7 +139,7 @@ theorem ofIntegerUnits_mem (a : (InfiniteAdeleRing K)ˣ)
       v.adicCompletionIntegers K).2⟩
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `(Units.continuous_val.comp continuous_fst).prodMk (_root_.RestrictedProduct.isEmbedding_structureMap.continuous.comp (continuous_pi fun v ↦ Units.continuous_val.comp ((continuous_apply v).comp continuous_snd)))`. Conclude with `(Units.continuous_coe_inv.comp continuous_fst).prodMk (_root_.RestrictedProduct.isEmbedding_structureMap.continuous.comp (continuous_pi fun v ↦ Units.continuous_coe_inv.comp ((continuous_apply v).comp continuous_snd)))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_ofIntegerUnits :
     Continuous (fun p : (InfiniteAdeleRing K)ˣ ×
@@ -172,7 +172,7 @@ def standardOpenSubgroupEquiv :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem standardOpenSubgroupEquiv_apply_fst (x : standardOpenSubgroup K) :
     (standardOpenSubgroupEquiv K x).1 = toInfinite K (x : IdeleGroup K) :=
@@ -180,7 +180,7 @@ theorem standardOpenSubgroupEquiv_apply_fst (x : standardOpenSubgroup K) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem standardOpenSubgroupEquiv_apply_snd (x : standardOpenSubgroup K)
     (v : HeightOneSpectrum (𝓞 K)) :

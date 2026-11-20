@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.NadelVanishing.To
 namespace NadelVanishingSeparation.NSI
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨nadelVanishingPair, isolatedNonKltDivisor⟩`.
+Supply the required witnesses or components.
 -/
 theorem nadelVanishingAndNonKltDivisor : GlobalTheory.Published.NadelVanishingAndNonKltDivisor :=
   ⟨nadelVanishingPair, isolatedNonKltDivisor⟩

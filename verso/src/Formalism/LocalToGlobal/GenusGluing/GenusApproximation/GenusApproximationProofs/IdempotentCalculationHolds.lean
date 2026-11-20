@@ -12,7 +12,7 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adele_sum_apply {ι : Type} (T : Finset ι) (f : ι → Formalism.L2.Herm.Af F) (w : HeightOneSpectrum (𝓞 F)) :
     (∑ v ∈ T, f v) w = ∑ v ∈ T, f v w := by
@@ -24,14 +24,14 @@ theorem adele_sum_apply {ι : Type} (T : Finset ι) (f : ι → Formalism.L2.Her
     rfl
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.DIV.adS F E ⟨a, h⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_mem (a : Formalism.L2.Herm.Af F) (h : a ∈ Formalism.UG.intAd F) :
     (1 : E) ⊗ₜ[F] a ∈ Formalism.L2.Herm.intAf F E :=
   (Formalism.L2.DIV.adS F E ⟨a, h⟩).2
 
 /- English proof (translation)
-Use `Formalism.UG.P.csGlob_tmul_int (F := F) (E := E) (1 : E) r` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iA_algebraMap (r : 𝓞 F) :
     iA F E (algebraMap (𝓞 F) E r) = (1 : E) ⊗ₜ[F] algebraMap (𝓞 F) (Formalism.L2.Herm.Af F) r := by
@@ -40,26 +40,24 @@ theorem iA_algebraMap (r : 𝓞 F) :
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[iA_algebraMap]`. Conclude with `one_tmul_mem _ (Formalism.UG.P.levelaf_int_mem r)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iA_algebraMap_mem (r : 𝓞 F) : iA F E (algebraMap (𝓞 F) E r) ∈ Formalism.L2.Herm.intAf F E := by
   rw [iA_algebraMap]
   exact one_tmul_mem _ (Formalism.UG.P.levelaf_int_mem r)
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.DIV.adS F E (Formalism.L2.DIV.idemAd P)).2`.
+A detailed English derivation is pending.
 -/
 theorem eP_mem (P : HeightOneSpectrum (𝓞 F) → Prop) : eP E P ∈ Formalism.L2.Herm.intAf F E :=
   (Formalism.L2.DIV.adS F E (Formalism.L2.DIV.idemAd P)).2
 
 /- English proof (translation)
-Establish `hw : ∀ w : HeightOneSpectrum (𝓞 F), (if P w then (algebraMap (𝓞 F) (w.adicCompletion F) c)⁻¹ else 0) ∈ w.adicCompletionIntegers F`. Introduce `w`. Use `split_ifs with h`. Conclude with `Formalism.L2.DIV.fr_inv_int w c (hc w h)`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `set wA : Formalism.UG.intAd F := Formalism.L2.DIV.mkAd _ hw with hwA`. Establish `hprod : algebraMap (𝓞 F) (Formalism.L2.Herm.Af F) c * (wA : Formalism.L2.Herm.Af F) = ((Formalism.L2.DIV.idemAd P : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F)` using `by ext1 w show algebraMap (𝓞 F) (w.adicCompletion F) c * ((wA : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) w = ((Formalism.L2.DIV.idemAd P : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) w`. Rewrite using `[hwA, Formalism.L2.DIV.mkAd_apply]`. Distinguish the cases in `h : P w`. Rewrite using `[if_pos h, Formalism.L2.DIV.idemAd_pos h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_inv_cancel₀ (Formalism.UG.P.levelaf_algebraMap_ne_zero w c ?_)` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hc w h (Ideal.zero_mem _)`. Rewrite using `[if_neg h, Formalism.L2.DIV.idemAd_neg h, mul_zero]`. Establish `key : eP E P = (1 : E) ⊗ₜ[F] (wA : Formalism.L2.Herm.Af F) * iA F E (algebraMap (𝓞 F) E c)`.
-
-Rewrite using `[iA_algebraMap, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm, hprod]`. Both sides reduce to the same expression. Rewrite using `[key, mul_assoc]`. Conclude with `mul_mem (one_tmul_mem _ wA.2) hu`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eP_mul_mem (P : HeightOneSpectrum (𝓞 F) → Prop) (c : 𝓞 F) (hc : ∀ w, P w → c ∉ w.asIdeal)
     (u : E ⊗[F] Formalism.L2.Herm.Af F) (hu : iA F E (algebraMap (𝓞 F) E c) * u ∈ Formalism.L2.Herm.intAf F E) :
@@ -93,17 +91,13 @@ theorem eP_mul_mem (P : HeightOneSpectrum (𝓞 F) → Prop) (c : 𝓞 F) (hc : 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Use `⟨fun P => eP_mem P, fun P Q => ?_, fun T => ?_⟩` and prove the remaining obligations. Use `show (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd P : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) * (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd Q : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) = (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd (fun v => P v ∧ Q v) : Formalism.UG.intAd F) : …`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Use `ext1 w`. Use `show ((Formalism.L2.DIV.idemAd P : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) w * ((Formalism.L2.DIV.idemAd Q : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) w = ((Formalism.L2.DIV.idemAd (fun v => P v ∧ Q v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) w`. Distinguish the cases in `hP : P w`. Distinguish the cases in `hQ : Q w`. Rewrite using `[Formalism.L2.DIV.idemAd_pos hP, Formalism.L2.DIV.idemAd_pos hQ, Formalism.L2.DIV.idemAd_pos (P := fun v => P v ∧ Q v) ⟨hP, hQ⟩, one_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.DIV.idemAd_neg hQ, Formalism.L2.DIV.idemAd_neg (P := fun v => P v ∧ Q v) (fun h => hQ h.2), mul_zero]`. Rewrite using `[Formalism.L2.DIV.idemAd_neg hP, Formalism.L2.DIV.idemAd_neg (P := fun v => P v ∧ Q v) (fun h => hP h.1), zero_mul]`. Use `show ∑ v ∈ T, (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) + (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd (fun v => v ∉ T) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) = 1`. Rewrite using `[← TensorProduct.tmul_sum, ← TensorProduct.tmul_add, Algebra.TensorProduct.one_def]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext1 w`. Use `show (∑ v ∈ T, ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F)) w + ((Formalism.L2.DIV.idemAd (fun v => v ∉ T) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) w = 1`. Rewrite using `[adele_sum_apply]`. Distinguish the cases in `hw : w ∈ T`. Rewrite using `[Finset.sum_eq_single w, Formalism.L2.DIV.idemAd_pos (P := fun x => x = w) rfl, Formalism.L2.DIV.idemAd_neg (P := fun x => x ∉ T) (not_not.2 hw), add_zero]`.
-
-Introduce `b _ hb`. Conclude with `Formalism.L2.DIV.idemAd_neg (P := fun x => x = b) (v := w) (fun h => hb h.symm)`. Introduce `h`. Conclude with `absurd hw h`. Rewrite using `[Finset.sum_eq_zero, Formalism.L2.DIV.idemAd_pos (P := fun x => x ∉ T) hw, zero_add]`.
-
-Introduce `b hb`. Conclude with `Formalism.L2.DIV.idemAd_neg (P := fun x => x = b) (v := w) (fun h => hw (by subst h; exact hb))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idempotentCalculation_holds : IdemCalc := by
   intro F E _ _ _ _ _
@@ -145,33 +139,31 @@ theorem idempotentCalculation_holds : IdemCalc := by
       exact Formalism.L2.DIV.idemAd_neg (P := fun x => x = b) (v := w) (fun h => hw (by subst h; exact hb))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v r hr u hu`. Conclude with `eP_mul_mem _ r (fun w hw => by subst hw; exact hr) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idempotentIntegral_holds : IdemInt := by
   intro F E _ _ _ _ _ v r hr u hu
   exact eP_mul_mem _ r (fun w hw => by subst hw; exact hr) u hu
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D _ u hu`. Conclude with `eP_mul_mem _ D (fun _ h => h) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idempotentCofinite_holds : IdemCof := by
   intro F E _ _ _ _ _ D _ u hu
   exact eP_mul_mem _ D (fun _ h => h) u hu
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v u hu`. Take `⟨d, hd0, hd⟩` from `Formalism.UG.P.levelaf_denom (F := F) (E := E) u`. Rewrite `hd` using `[Formalism.L2.DIV.levelafC_eq_incl]`. Take `⟨π, hπv, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hD : d * π ≠ 0` using `mul_ne_zero hd0 hπ0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, y, hy, e⟩` from `Formalism.UG.P.integral_adele_approximation_holds F (d * π) hD ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) (Formalism.L2.DIV.idemAd _).2`. Use `⟨r, fun hr => ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) v = algebraMap (𝓞 F) (v.adicCompletion F) r + algebraMap (𝓞 F) (v.adicCompletion F) (d * π) * y v` using `congrArg (fun z : Formalism.L2.Herm.Af F => z v) e`. Rewrite `h2` using `[Formalism.L2.DIV.idemAd_pos (P := fun w => w = v) (v := v) rfl]`. Establish `hrv : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) r) < 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.UG.P.csApprox_val_int]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v r).2 hr`. Establish `hDv : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) (d * π)) < 1`. Rewrite using `[Formalism.UG.P.csApprox_val_int]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v _).2 (Ideal.mul_mem_left _ d hπv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyv : Valued.v (y v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hy v)`. Establish `h1 : Valued.v (1 : v.adicCompletion F) < 1`. Rewrite using `[h2]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hrv ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_lt_one_of_lt_of_le hDv hyv`. Rewrite `h1` using `[map_one]`. Conclude with `lt_irrefl _ h1`. Establish `hid : eAt E v = iA F E (algebraMap (𝓞 F) E r) + iA F E (algebraMap (𝓞 F) E π) * (1 : E) ⊗ₜ[F] y * iA F E (algebraMap (𝓞 F) E d)` using `by show (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) = _`. Rewrite using `[e, iA_algebraMap, iA_algebraMap, iA_algebraMap, TensorProduct.tmul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub : iA F E (algebraMap (𝓞 F) E r) * u = eAt E v * u - iA F E (algebraMap (𝓞 F) E π) * (1 : E) ⊗ₜ[F] y * (iA F E (algebraMap (𝓞 F) E d) * u)`. Rewrite using `[hid]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsub]`. Conclude with `sub_mem hu (mul_mem (mul_mem (iA_algebraMap_mem π) (one_tmul_mem y hy)) hd)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotentDenominator_holds : IdemDenom := by
   intro F E _ _ _ _ _ v u hu
@@ -214,17 +206,17 @@ theorem idempotentDenominator_holds : IdemDenom := by
     exact sub_mem hu (mul_mem (mul_mem (iA_algebraMap_mem π) (one_tmul_mem y hy)) hd)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n v z`. Establish `halg : ∀ r : 𝓞 F, algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r) = algebraMap (𝓞 F) E r` using `fun r => (IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E r).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsz⟩`. Take `⟨r, hr, rfl⟩` from `Submonoid.mem_map.1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hr' : r ∉ v.asIdeal` using `hr`. Introduce `i`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 ((Submodule.mem_pi.1 hsz) i (Set.mem_univ i))`. Use `idempotentIntegral_holds F E v r hr' _ ?_` and prove the remaining obligations. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: algebraMap (𝓞 F) E r * z i = algebraMap (𝓞 E) E b`. Rewrite using `[hb, ← halg]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Formalism.UG.CS.incl_int b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : ∀ i, ∃ r : 𝓞 F, r ∉ v.asIdeal ∧ IsIntegral ℤ (algebraMap (𝓞 F) E r * z i)`. Introduce `i`. Take `⟨r, hr, hm⟩` from `idempotentDenominator_holds F E v _ (h i)`. Rewrite `hm` using `[← map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨r, hr, Formalism.UG.P.csGlob_int _ hm⟩`. Use `choose r hr hint using h'`. Use `⟨algebraMap (𝓞 F) (𝓞 E) (∏ i, r i), Submonoid.mem_map_of_mem _ (Submonoid.prod_mem _ (fun i _ => (hr i : r i ∈ v.asIdeal.primeCompl))), ?_⟩` and prove the remaining obligations. Use `Submodule.mem_pi.2 (fun i _ => Submodule.mem_one.2 ?_)` and prove the remaining obligations. Take `⟨b, hb⟩ : ∃ b : 𝓞 E, algebraMap (𝓞 E) E b = algebraMap (𝓞 F) E (r i) * z i` from `⟨⟨_, hint i⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨algebraMap (𝓞 F) (𝓞 E) (∏ j ∈ Finset.univ.erase i, r j) * b, ?_⟩` and prove the remaining obligations. Use `show _ = algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) (∏ i, r i)) * z i`. Rewrite using `[map_mul, hb, halg, halg, ← Finset.mul_prod_erase Finset.univ r (Finset.mem_univ i), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem memLocalizedStd_holds : MemLocFStd := by
   intro F E _ _ _ _ _ n v z

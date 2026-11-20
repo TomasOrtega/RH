@@ -27,9 +27,9 @@ def reorderE : ((X × Y) × (X' × Y')) × (A × A') ≃ᵐ (X × (A × Y)) × (
     fun_prop
 
 /- English proof (translation)
-Establish `h1` using `Dx2.SplitM.middle_four_swap_measure_preserving (μX.prod μY) (μX'.prod μY') μA μA'`. Establish `h2` using `((MeasurePreserving.id μX).prod (Measure.measurePreserving_swap (μ := μY) (ν := μA))).comp (measurePreserving_prodAssoc μX μY μA)`. Establish `h2'` using `((MeasurePreserving.id μX').prod (Measure.measurePreserving_swap (μ := μY') (ν := μA'))).comp (measurePreserving_prodAssoc μX' μY' μA')`. Establish `hall` using `(h2.prod h2').comp h1`. Use `hall using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `⟨⟨⟨x, y⟩, ⟨x', y'⟩⟩, ⟨a, a'⟩⟩`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem reorder_mp (μX : Measure X) (μY : Measure Y) (μA : Measure A) (μX' : Measure X') (μY' : Measure Y')
     (μA' : Measure A') [SigmaFinite μX] [SigmaFinite μY] [SigmaFinite μA] [SigmaFinite μX'] [SigmaFinite μY']
@@ -58,60 +58,50 @@ def MCOm : Prop :=
         JF.Om k (ρ + 1) (D.castV (Nat.add_comm 1 ρ) (liftVec k 1 ρ z0)) (D.castV (Nat.add_comm 1 ρ) (liftVec k 1 ρ z0'))
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Conclude with `h.conc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_mem_of_haar {r : ℕ} {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ) :
     ∀ᵐ x ∂μ, Matrix.of x ∈ U := by
   rw [ae_iff]; exact h.conc
 
 /- English proof (translation)
-Introduce `k ρ m e Wp Wq _ _ _ _ _ _ B1 B0 hz hz' hπ hπ' hW1 hW1' hW0 hW0' hN1 hN0 f1 f0 c hc hf1 hstep γ hγ hγO`. Substitute `e` using the available equality. Rewrite `hz`, `hz'` using `[Dx2.Tower.castV_rfl]`. Use `set κ : 1 + ρ = ρ + 1 := Nat.add_comm 1 ρ with hκ`. Establish `hπ1 : ∀ y : B.Mat k ρ, B0.π y = B1.π (D.castM κ (ιLev k 1 ρ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[hπ y]`. Unfold `lev1`. Rewrite using `[Dx2.MN.castM_rfl]`. Establish `hπ1' : ∀ y : B.Mat k ρ, B0.π' y = B1.π' (D.castM κ (ιLev k 1 ρ y))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[hπ' y]`. Unfold `lev1`. Rewrite using `[Dx2.MN.castM_rfl]`. Establish `hmc : mc rfl c γ = D.castM κ (U.mMap k 1 ρ (Matrix.of fun _ _ => c) γ)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `mc`. Rewrite using `[Dx2.MN.castM_rfl]`. Establish `hμW : B1.μW = B0.μW.map (levA ρ)` using `muW_lev B0.z B0.μW B1.μW B0.haarW (by rw [← hz]; exact B1.haarW) hW0 hW1`. Establish `hμW' : B1.μW' = B0.μW'.map (levA ρ)` using `muW_lev B0.z' B0.μW' B1.μW' B0.haarW' (by rw [← hz']; exact B1.haarW') hW0' hW1'`. Establish `hμN : B1.μN = ((B2.μHeis k ρ).prod (D.muN k ρ)).map (Qm ρ)` using `by rw [hN1, muN_succ']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOm` using `hO k ρ B0.z B0.z' B0.z_mem B0.z'_mem c hc γ hγ hγO`. Rewrite `hOm` using `[← hz, ← hz', ← hmc]`. Establish `hInt` using `rhs_int B1 f1 hf1 _ hOm`. Establish `hsH` using `sf_heis (k := k) ρ`. Establish `hsN` using `sf_muN (k := k) ρ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfW : IsFiniteMeasure B0.μW` using `⟨by rw [hW0]; exact ENNReal.one_lt_top⟩`. Establish `hfW' : IsFiniteMeasure B0.μW'` using `⟨by rw [hW0']; exact ENNReal.one_lt_top⟩`. Use `set T : (Mt k ρ × (Mt k (1 + ρ) × Mt k ρ)) × (Mt k ρ × (Mt k (1 + ρ) × Mt k ρ)) → B.SS k (ρ + 1) := Prod.map (Prod.map (levA ρ) (Qm ρ)) (Prod.map (levA ρ) (Qm ρ)) with hT`. Establish `hTm : Measurable T` using `((levA_cont ρ).measurable.prodMap (Qm_cont ρ).measurable).prodMap ((levA_cont ρ).measurable.prodMap (Qm_cont ρ).measurable)`. Use `set big := (B0.μW.prod ((B2.μHeis k ρ).prod (D.muN k ρ))).prod (B0.μW'.prod ((B2.μHeis k ρ).prod (D.muN k ρ))) with hbig`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hμSS : B1.μSS = big.map T`. Unfold `B.RealPlaceData.μSS`. Rewrite using `[hμW, hμW', hμN, Measure.map_prod_map _ _ (levA_cont ρ).measurable (Qm_cont ρ).measurable, Measure.map_prod_map _ _ (levA_cont ρ).measurable (Qm_cont ρ).measurable, Measure.map_prod_map _ _ ((levA_cont ρ).measurable.prodMap (Qm_cont ρ).measurable) ((levA_cont ρ).measurable.prodMa …`. Use `set FI := JF.integrand B1 f1 (mc rfl c γ) with hFI`. Establish `hR : B.JF B1 f1 (mc rfl c γ) = ∫ p, FI p ∂B1.μSS` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hL : B.JF B0 f0 γ = ∫ p, JF.integrand B0 f0 γ p ∂((B0.μW.prod (D.muN k ρ)).prod (B0.μW'.prod (D.muN k ρ)))`. Rewrite using `[← hN0]`. Both sides reduce to the same expression. Establish `hAE : AEStronglyMeasurable FI (big.map T)` using `by rw [← hμSS]; exact hInt.aestronglyMeasurable`. Establish `hInt2 : Integrable (FI ∘ T) big` using `(integrable_map_measure hAE hTm.aemeasurable).1 (by rw [← hμSS]; exact hInt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hRmp` using `reorder_mp B0.μW (D.muN k ρ) (B2.μHeis k ρ) B0.μW' (D.muN k ρ) (B2.μHeis k ρ)`. Establish `hInt3 : Integrable (FI ∘ T ∘ reorderE) (((B0.μW.prod (D.muN k ρ)).prod (B0.μW'.prod (D.muN k ρ))).prod ((B2.μHeis k ρ).prod (B2.μHeis k ρ)))` using `(hRmp.integrable_comp_emb reorderE.measurableEmbedding).2 hInt2`. Rewrite using `[hR, hμSS, integral_map hTm.aemeasurable hAE, ← hRmp.integral_comp reorderE.measurableEmbedding]`. Express the relevant statement in the definitionally equal form `B.JF B0 f0 γ = ∫ x, (FI ∘ T ∘ reorderE) x ∂_`. Rewrite using `[integral_prod _ hInt3, hL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w1 : ∀ᵐ x ∂B0.μW, Matrix.of x ∈ UWset k ρ B0.z` using `ae_mem_of_haar B0.haarW`. Establish `w1' : ∀ᵐ x ∂B0.μW', Matrix.of x ∈ UWset k ρ B0.z'` using `ae_mem_of_haar B0.haarW'`. Establish `w2 : ∀ᵐ x ∂(D.muN k ρ), Matrix.of x ∈ Nset k ρ` using `ae_mem_of_haar (Dx2.MN.haar ρ)`. Establish `wH : ∀ᵐ x ∂(B2.μHeis k ρ), Matrix.of x ∈ Nset k (1 + ρ)` using `by filter_upwards [ae_mem_of_haar (Formalism.FourierDecayAlt.P.heisenberg_haar_measure k ρ)] with x hx`. Take `⟨p, hp⟩` from `hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hp]`. Conclude with `Formalism.FourierDecayAlt.P.heisenberg_mem_unipotent k ρ p`. Use `set μO := (B0.μW.prod (D.muN k ρ)).prod (B0.μW'.prod (D.muN k ρ)) with hμO`. Establish `o1 : ∀ᵐ o ∂μO, Matrix.of o.1.1 ∈ UWset k ρ B0.z` using `Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae w1)`. Establish `o2 : ∀ᵐ o ∂μO, Matrix.of o.1.2 ∈ Nset k ρ` using `Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `o3 : ∀ᵐ o ∂μO, Matrix.of o.2.1 ∈ UWset k ρ B0.z'` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_fst.ae w1')`. Establish `o4 : ∀ᵐ o ∂μO, Matrix.of o.2.2 ∈ Nset k ρ` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_snd.ae w2)`. Establish `i1 : ∀ᵐ i ∂((B2.μHeis k ρ).prod (B2.μHeis k ρ)), Matrix.of i.1 ∈ Nset k (1 + ρ)` using `Measure.quasiMeasurePreserving_fst.ae wH`. Establish `i2 : ∀ᵐ i ∂((B2.μHeis k ρ).prod (B2.μHeis k ρ)), Matrix.of i.2 ∈ Nset k (1 + ρ)` using `Measure.quasiMeasurePreserving_snd.ae wH`. Apply `integral_congr_ae` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [o1, o2, o3, o4] with o ho1 ho2 ho3 ho4`. Take `⟨⟨h0, y⟩, ⟨h0', y'⟩⟩` from `o`. Simplify using `only at ho1 ho2 ho3 ho4`. Establish `hH` using `Ux3.hpk_det k ρ`. Establish `hgG : Matrix.of y * Matrix.of h0 ∈ B.GV k ρ` using `HermitianFormFactor.UH_mul ho2.1 ho1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgG' : Matrix.of y' * Matrix.of h0' ∈ B.GV k ρ` using `HermitianFormFactor.UH_mul ho4.1 ho3.1`. Use `set γh := (Matrix.of y * Matrix.of h0)⁻¹ * γ * (Matrix.of y' * Matrix.of h0') with hγhd`. Establish `hγh : γh ∈ B.GV k ρ` using `HermitianFormFactor.UH_mul (HermitianFormFactor.UH_mul (HermitianFormFactor.UH_inv hH hgG) hγ) hgG'`. Establish `hrep` using `B0.π_rep`. Establish `hrep'` using `B0.π'_rep`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hi0 : (Matrix.of h0)⁻¹ ∈ UWset k ρ B0.z` using `WeylGroupFacts.uw_inv ho1`. Establish `hi0' : (Matrix.of h0')⁻¹ ∈ UWset k ρ B0.z'` using `WeylGroupFacts.uw_inv ho3`. Establish `hu0 : IsUnit (Matrix.of h0).det` using `HermitianFormFactor.UH_unit hH ho1.1`. Establish `hu0' : IsUnit (Matrix.of h0').det` using `HermitianFormFactor.UH_unit hH ho3.1`. Set `eA : Wp ≃L[ℂ] Wp` to `ContinuousLinearEquiv.equivOfInverse (B0.π (Matrix.of h0)) (B0.π (Matrix.of h0)⁻¹) (fun v => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.2 _ hi0 _ ho1, Matrix.nonsing_inv_mul _ hu0, hrep.1]`. Use the proof step `rfl)`. Use the proof step `(fun v => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.2 _ ho1 _ hi0, Matrix.mul_nonsing_inv _ hu0, hrep.1]`. Use the proof step `rfl)`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Set `eB : Wq ≃L[ℂ] Wq` to `ContinuousLinearEquiv.equivOfInverse (B0.π' (Matrix.of h0')) (B0.π' (Matrix.of h0')⁻¹) (fun v => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep'.2 _ hi0' _ ho3, Matrix.nonsing_inv_mul _ hu0', hrep'.1]`. Use the proof step `rfl)`. Use the proof step `(fun v => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep'.2 _ ho3 _ hi0', Matrix.mul_nonsing_inv _ hu0', hrep'.1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Set `Λ : (Wq →L[ℂ] Wp) ≃L[ℂ] (Wq →L[ℂ] Wp)` to `eB.arrowCongr eA`. Establish `hΛ : ∀ Tm : Wq →L[ℂ] Wp, Λ Tm = (B0.π (Matrix.of h0)).comp (Tm.comp (B0.π' (Matrix.of h0')⁻¹))`. Introduce `Tm`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Use `set K : ℂ := psi k ρ B0.z cStd (Matrix.of y) * star (psi k ρ B0.z' cStd (Matrix.of y')) with hK`. Use `set Ψ : Mt k (1 + ρ) × Mt k (1 + ρ) → (Wq →L[ℂ] Wp) := fun p => psiInt B1 f1 c γh (Matrix.of p.1) (Matrix.of p.2) with hΨ`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [i1, i2] with i hi1 hi2`. Rewrite using `[hΛ]`. Use `show JF.integrand B1 f1 (mc rfl c γ) ((levA ρ h0, Qm ρ (i.1, y)), (levA ρ h0', Qm ρ (i.2, y'))) = _`. Rewrite using `[hmc, pt_eq B1 B0 hz hz' hπ1 hπ1' f1 c γ h0 y h0' y' i.1 i.2 ho1 ho2 ho3 ho4 hi1 hi2]`.
-
-Use `_ = K • Λ (∫ i, Ψ (conjM ((ιLev k 1 ρ (Matrix.of y * Matrix.of h0))⁻¹) i.1, conjM ((ιLev k 1 ρ (Matrix.of y' * Matrix.of h0'))⁻¹) i.2) ∂((B2.μHeis k ρ).prod (B2.μHeis k ρ))) := by`. Rewrite using `[integral_smul, Λ.integral_comp_comm]`. Use `_ = K • Λ (∫ i, Ψ i ∂((B2.μHeis k ρ).prod (B2.μHeis k ρ))) := by`. Rewrite using `[heis_conj_int ρ hgG hgG' Ψ]`. Use `_ = K • Λ (∫ xx : U.RC k 1 ρ × U.RC k 1 ρ, psiInt B1 f1 c γh (U.Rn k 1 ρ xx.1) (U.Rn k 1 ρ xx.2) ∂((U.muRC k 1 ρ).prod (U.muRC k 1 ρ))) := by`.
-
-Rewrite using `[← heis_int ρ (fun b b' => psiInt B1 f1 c γh b b')]`. Use `_ = K • Λ (f0 γh) := by`. Rewrite using `[hstep γh hγh]`. Both sides reduce to the same expression. Use `_ = JF.integrand B0 f0 γ ((h0, y), (h0', y')) := by`.
-
-Rewrite using `[hΛ]`. Unfold `JF.integrand JF.xiP B.rho B.sgs`. Use `congr 3`. Use `show f0 γh = f0 ((Matrix.of h0)⁻¹ * (Matrix.of y)⁻¹ * γ * Matrix.of y' * Matrix.of h0')`. Rewrite using `[hγhd, Matrix.mul_inv_rev]`.
-
-Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jfStep_of (hO : MCOm) : JFStep := by
   intro k ρ m e Wp Wq _ _ _ _ _ _ B1 B0 hz hz' hπ hπ' hW1 hW1' hW0 hW0' hN1 hN0 f1 f0 c hc hf1 hstep γ hγ hγO

@@ -16,9 +16,9 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 variable (Y : FBChart C V O dd)
 
 /- English proof (translation)
-Unfold `actAt`. Unfold `comp1`. Use function extensionality and compare the values at `i`. Unfold `ev`. Use `first`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(congr 1; funext q; simp)`. Consider the case `(congr 1; funext q; skip)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coordinateChange_comp1_intertwines_action {n : ℕ} (x : O) (a : Pt C n dd) : comp1 (Y.B.A.act x) a = actAt Y x a := by
   unfold actAt
@@ -31,9 +31,9 @@ theorem coordinateChange_comp1_intertwines_action {n : ℕ} (x : O) (a : Pt C n 
   | (congr 1; funext q; skip)
 
 /- English proof (translation)
-Unfold `addAt`. Unfold `addOf`. Use function extensionality and compare the values at `i`. Unfold `ev`. Use `first`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(congr 1; funext q; unfold P2; rfl)`. Consider the case `(congr 1; funext q; unfold P2; obtain ⟨j, k⟩ := q; fin_cases j <;> simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem addOf_eq' {n : ℕ} (a b : Pt C n dd) : addOf Y.B.G.F a b = addAt Y a b := by
   unfold addAt
@@ -46,15 +46,15 @@ theorem addOf_eq' {n : ℕ} (a b : Pt C n dd) : addOf Y.B.G.F a b = addAt Y a b 
   | (congr 1; funext q; unfold P2; obtain ⟨j, k⟩ := q; fin_cases j <;> simp)
 
 /- English proof (translation)
-Establish `h` using `Y.B.A.hom x`. Rewrite `h` using `[show Y.B.G.add (pt C (n := 2) dd 0) (pt C (n := 2) dd 1) = addAt Y (pt C dd 0) (pt C dd 1) from addOf_eq' Y _ _, show Y.B.G.add (comp1 (Y.B.A.act x) (pt C (n := 2) dd 0)) (comp1 (Y.B.A.act x) (pt C (n := 2) dd 1)) = addAt Y (comp1 (Y.B.A.act x) (pt C dd 0)) (comp1 (Y.B.A.act x) …`. Establish `k0` using `cc_pt (C := C) (dd := dd) (0 : Fin 2)`. Establish `k1` using `cc_pt (C := C) (dd := dd) (1 : Fin 2)`. Establish `hP` using `constantCoeff_pair_substitution ha hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : (fun i => MvPowerSeries.subst (P2 a b) (pt C dd (0 : Fin 2) i)) = a` using `funext fun i => pair_subst_coordinate ha hb 0 i`. Establish `e1 : (fun i => MvPowerSeries.subst (P2 a b) (pt C dd (1 : Fin 2) i)) = b` using `funext fun i => pair_subst_coordinate ha hb 1 i`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (MvPowerSeries.subst (P2 a b)) (congrFun h i)`. Rewrite `h2` using `[actAt_subst Y hP (cc_addAt Y k0 k1), addAt_subst Y hP (cc_actAt Y x k0) (cc_actAt Y x k1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (fun i => MvPowerSeries.subst (P2 a b) (addAt Y (pt C dd (0 : Fin 2)) (pt C dd (1 : Fin 2)) i)) = addAt Y a b`. Use function extensionality and compare the values at `j`. Rewrite using `[addAt_subst Y hP k0 k1, e0, e1]`. Establish `e3 : (fun i => MvPowerSeries.subst (P2 a b) (actAt Y x (pt C dd (0 : Fin 2)) i)) = actAt Y x a`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[actAt_subst Y hP k0, e0]`. Establish `e4 : (fun i => MvPowerSeries.subst (P2 a b) (actAt Y x (pt C dd (1 : Fin 2)) i)) = actAt Y x b`. Use function extensionality and compare the values at `j`. Rewrite using `[actAt_subst Y hP k1, e1]`. Rewrite `h2` using `[e2, e3, e4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem actAt_addAt (x : O) {a b : Fin dd → MvPowerSeries τ C} (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
     (hb : ∀ i, MvPowerSeries.constantCoeff (b i) = 0) :
@@ -86,7 +86,7 @@ theorem actAt_addAt (x : O) {a b : Fin dd → MvPowerSeries τ C} (ha : ∀ i, M
   exact h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `actAt`. Rewrite using `[subst_zeroPt, Y.B.A.const, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actAt_zero (x : O) : actAt Y x (fun _ : Fin dd => (0 : MvPowerSeries τ C)) = fun _ => 0 := by
   funext i
@@ -94,7 +94,7 @@ theorem actAt_zero (x : O) : actAt Y x (fun _ : Fin dd => (0 : MvPowerSeries τ 
   rw [subst_zeroPt, Y.B.A.const, map_zero]
 
 /- English proof (translation)
-The claim follows from `| [], _ => actAt_zero Y x | a :: l, h => by show actAt Y x (addAt Y a (sumL Y l)) = addAt Y (actAt Y x a) (sumL Y (l.map (actAt Y x))) rw [actAt_addAt Y x (h a List.mem_cons_self).1 (good_sumL Y l fun b hb => h b (List.mem_cons_of_mem _ hb)).1, actAt_sumL x l fun b hb => h b (Lis …`.
+A detailed English derivation is pending.
 -/
 theorem actAt_sumL (x : O) : ∀ l : List (Fin dd → MvPowerSeries τ C), (∀ a ∈ l, GoodPt V a) →
     actAt Y x (sumL Y l) = sumL Y (l.map (actAt Y x))
@@ -106,7 +106,7 @@ theorem actAt_sumL (x : O) : ∀ l : List (Fin dd → MvPowerSeries τ C), (∀ 
         actAt_sumL x l fun b hb => h b (List.mem_cons_of_mem _ hb)]
 
 /- English proof (translation)
-The claim follows from `| [], _ => ⟨1, IsIU.one, by simp⟩ | a :: l1, h => by obtain ⟨U, hU, e⟩ := biadd_right_list l2 h2 l1 fun b hb => h b (List.mem_cons_of_mem _ hb) obtain ⟨U', hU', e'⟩ := biadd_right Y (h a List.mem_cons_self) l2 h2 refine ⟨U' * U, hU'.mul hU, ?_⟩ rw [List.map_cons, List.prod_cons, …`.
+A detailed English derivation is pending.
 -/
 theorem biadd_right_list (l2 : List (Fin dd → MvPowerSeries τ C)) (h2 : ∀ a ∈ l2, GoodPt V a) :
     ∀ l1 : List (Fin dd → MvPowerSeries τ C), (∀ a ∈ l1, GoodPt V a) →
@@ -121,9 +121,9 @@ theorem biadd_right_list (l2 : List (Fin dd → MvPowerSeries τ C)) (h2 : ∀ a
       ring
 
 /- English proof (translation)
-Establish `hx : ∀ a ∈ l.map (actAt Y x), GoodPt V a`. Introduce `a ha`. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 ha`. Conclude with `(h b hb).act Y x`. Take `⟨U, hU, e⟩` from `biadd_left Y (good_sumL Y _ hx) l h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U', hU', e'⟩` from `biadd_right_list Y (l.map (actAt Y x)) hx l h`. Use `⟨U * U', hU.mul hU', ?_⟩` and prove the remaining obligations. Rewrite using `[actAt_sumL Y x l h, ← mul_assoc, e, e']`. Simplify using `only [List.map_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem biadd_both (x : O) (l : List (Fin dd → MvPowerSeries τ C)) (h : ∀ a ∈ l, GoodPt V a) :
     ∃ U : MvPowerSeries τ C, IsIU V U ∧ mvExp (hAt Y (sumL Y l) (actAt Y x (sumL Y l))) * U =
@@ -151,25 +151,23 @@ def SumProjSt (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : Prop :=
   PairsSep Y p → ∀ π, IsProj Y p π → ∀ i, pull1 Y p (pt C dd (0 : Fin 1) i) = pull1 Y p (VP.sumL Y (projList π) i)
 
 /- English proof (translation)
-Introduce `hs π hπ`. Establish `hgood : ∀ a ∈ projList π, VP.GoodPt V a`. Introduce `a ha`. Take `⟨s, -, rfl⟩` from `List.mem_map.1 ha`. Conclude with `⟨hπ.cc s.1 s.2, hπ.int s.1 s.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hσ` using `VP.good_sumL Y _ hgood`. Take `⟨U, hU, e⟩` from `VP.biadd_both Y Y.w0 (projList π) hgood`. Take `⟨U', hU'i, hUU⟩` from `VP.intInv (hU.1.pow Y.k) (by rw [map_pow, V.v.map_pow, hU.2, smul_zero])`. Establish `hU'0 : V.v (MvPowerSeries.constantCoeff U') = 0`. Establish `h1` using `congrArg (fun x => V.v (MvPowerSeries.constantCoeff x)) hUU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_pow, map_one, V.v.map_mul, V.v.map_pow, V.v.map_one, hU.2, smul_zero, add_zero] at h1`. Conclude with `h1`. Use `⟨U', ⟨hU'i, hU'0⟩, ?_⟩` and prove the remaining obligations. Use `set σ := VP.sumL Y (projList π) with hσd`. Establish `cσ` using `VP.cc_hAt Y hσ.1 (VP.cc_actAt Y Y.w0 hσ.1)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : mvExp ((Y.k : C) • VP.hAt Y σ (VP.actAt Y Y.w0 σ)) = U' * ∏ s : Orb × Fin 2, ∏ s' : Orb × Fin 2, Aterm Y π s s'`. Establish `e2 : (∏ s : Orb × Fin 2, ∏ s' : Orb × Fin 2, Aterm Y π s s') = (mvExp (VP.hAt Y σ (VP.actAt Y Y.w0 σ)) * U) ^ Y.k`. Rewrite using `[e]`. Unfold `projList`. Simplify using `only [List.map_map]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_map_toList, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `show _ = ((((Finset.univ : Finset (Orb × Fin 2)).toList.map _).prod) ^ Y.k)`. Rewrite using `[Finset.prod_map_toList, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun s' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VP.Aterm_eq Y π hπ.cc, VP.exp_nsmul (VP.cc_hAt Y (hπ.cc _ _) (VP.cc_actAt Y _ (hπ.cc _ _)))]`. Both sides reduce to the same expression. Rewrite using `[e2, mul_pow, ← VP.exp_nsmul cσ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA` using `VP.cc_pull1Pt Y p`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `k0` using `VP.cc_pt (C := C) (dd := dd) (0 : Fin 1)`. Establish `hLeq : Y.B.hL C Y.h Y.w0 = VP.hAt Y (pt C dd (0 : Fin 1)) (VP.actAt Y Y.w0 (pt C dd (0 : Fin 1)))`. Unfold `FB.hL`. Rewrite using `[VP.eval_two_points_eq_subst _ _ _ rfl, VP.compose_one_action_eq_actAt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (pt C dd (0 : Fin 1) i)) = fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (σ i)` using `funext fun i => hS hs π hπ i`. Establish `e3 : pull1 Y p (FB.expS C ((Y.k : C) • Y.B.hL C Y.h Y.w0)) = pull1 Y p (mvExp ((Y.k : C) • VP.hAt Y σ (VP.actAt Y Y.w0 σ)))`. Rewrite using `[VP.expS_eq _ (VP.cc_smul _ (VP.cc_hL Y)), hLeq]`. Unfold `pull1`. Rewrite using `[VP.subst_exp hA (VP.cc_smul _ (VP.cc_hAt Y k0 (VP.cc_actAt Y _ k0))), VP.subst_exp hA (VP.cc_smul _ cσ), VP.subst_smul hA, VP.subst_smul hA, VP.hAt_subst Y hA k0 (VP.cc_actAt Y _ k0), VP.hAt_subst Y hA hσ.1 (VP.cc_actAt Y _ hσ.1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : (fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (VP.actAt Y Y.w0 (pt C dd (0 : Fin 1)) i)) = fun i => MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) (VP.actAt Y Y.w0 σ i)`. Use function extensionality and compare the values at `i`. Rewrite using `[VP.actAt_subst Y hA k0, VP.actAt_subst Y hA hσ.1, hpt]`. Rewrite using `[a1, hpt]`. Rewrite using `[e3, e1, VP.pullback_one_var_mul, VP.pullback_one_var_prod]`.
-
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s _ => VP.pullback_one_var_prod Y p _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem biadd_of_sum (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (hS : SumProjSt Y p) : BiaddSt Y p := by
   intro hs π hπ

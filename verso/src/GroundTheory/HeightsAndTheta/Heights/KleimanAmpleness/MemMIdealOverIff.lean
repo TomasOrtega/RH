@@ -16,9 +16,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Establish `hb : ∀ e ∈ g.support, ∀ k, ∑ i, e ⟨k, i⟩ = b k`. Introduce `e he k`. Rewrite using `[sum_block_eq_blockWeight, hg (mem_support_iff.mp he)]`. Establish `h2 : ((MvPolynomial.aeval c : MvPolynomial K Ω →ₐ[Ω] Ω).restrictScalars S).comp (mConeMapOver S v) = aeval fun p => v p * c p.1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Simplify using `[mConeMapOver]`. Rewrite using `[← h2, AlgHom.comp_apply, AlgHom.restrictScalars_apply, mConeMapOver_eq_of_block v hb, map_mul, map_prod, aeval_C, Algebra.algebraMap_self, RingHom.id_apply]`. Simplify using `only [map_pow, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_mul_block (v : (Σ k, ι k) → Ω) (c : K → Ω) (b : K → ℕ) (g : MvPolynomial (Σ k, ι k) S)
     (hg : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) g b) :
@@ -36,9 +36,9 @@ theorem aeval_mul_block (v : (Σ k, ι k) → Ω) (c : K → Ω) (b : K → ℕ)
   simp only [map_pow, aeval_X]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf b`. Rewrite using `[← coeff_mConeMapOver, RingHom.mem_ker.mp hf, coeff_zero]`. Introduce `h`. Use `RingHom.mem_ker.mpr (MvPolynomial.ext _ _ fun d => ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `coeff_mConeMapOver (S := S) y (⇑d) f` as an intermediate fact. Rewrite `this` using `[Finsupp.equivFunOnFinite_symm_coe]`. Rewrite using `[this, h, coeff_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mIdealOver_iff (y : (Σ k, ι k) → Ω) (f : MvPolynomial (Σ k, ι k) S) :
     f ∈ mIdealOver S y ↔
@@ -55,47 +55,43 @@ theorem mem_mIdealOver_iff (y : (Σ k, ι k) → Ω) (f : MvPolynomial (Σ k, ι
 end Homog
 
 /- English proof (translation)
-Introduce `k _ N Ω _ _ x Q n m s _hx hgen pp e hW`. Establish `hpp` using `hW.isPrime`. Take `⟨i, hXi⟩` from `hW.relevant`. Establish `hi : x i ≠ 0` using `fun h0 => hXi (hW.le (by`. Rewrite using `[Kleiman.mem_primeOf_of_isHomogeneous x (isHomogeneous_X k i), aeval_X, h0]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPt` using `Kleiman.PrimeFiltration.Point.proof k Ω N x pp hpp hW.homog hW.le i hi hXi`. Choose the witnesses or unpack the hypotheses as in `⟨K', _, _, ψ, hker⟩ : ∃ (K' : Type) (_ : Field K') (_ : Algebra k K') (ψ : Kleiman.chartRing k x (Kleiman.singleChart hi) →ₐ[k] K'), RingHom.ker ψ = Kleiman.chartPrime pp hi := by`. Establish `: (Kleiman.chartPrime pp hi).IsPrime` using `hPt.1`. Use `⟨FractionRing (Kleiman.chartRing k x (Kleiman.singleChart hi) ⧸ Kleiman.chartPrime pp hi), inferInstance, inferInstance, (IsScalarTower.toAlgHom k _ _).comp (Ideal.Quotient.mkₐ k (Kleiman.chartPrime pp hi)), ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `algebraMap _ (FractionRing (Kleiman.chartRing k x (Kleiman.singleChart hi) ⧸ Kleiman.chartPrime pp hi)) (Ideal.Quotient.mk (Kleiman.chartPrime pp hi) a) = 0 ↔ _`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hy : Kleiman.primeOf (S` using `k) (fun a => ψ (Kleiman.ratio hi a)) = pp := hPt.2 K' ψ hker`. Establish `hiI : i ∈ (Kleiman.singleChart hi).1` using `Finset.mem_singleton_self i`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : Fin m → Ω` to `fun b => x i ^ (-n) * s b`. Establish `hgQ : Submodule.span (Kleiman.chartRing k x (Kleiman.singleChart hi)) (Set.range g) = Q.sub (Kleiman.singleChart hi)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hb : s b ∈ (Q.twist (Kleiman.twistSys k x n)).sub (Kleiman.singleChart hi)`. Rewrite using `[← hgen]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Take `⟨y, hy, hyb⟩` from `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n _ hiI (s b)).mp hb`. Establish `: g b = y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, hyb, smul_eq_mul, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `hy`. Introduce `y hy`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : x i ^ n * y ∈ Submodule.span (Kleiman.chartRing k x (Kleiman.singleChart hi)) (Set.range s)`. Rewrite using `[hgen]`. Conclude with `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n _ hiI _).mpr ⟨y, hy, rfl⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hy'`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [g, Subalgebra.smul_def, smul_eq_mul] at ha ⊢`. Establish `: ∑ b, (a b : Ω) * (x i ^ (-n) * s b) = x i ^ (-n) * ∑ b, (a b : Ω) * s b`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[this, ha, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨Q', hQQ⟩` from `Q.invertible (Kleiman.singleChart hi)`. Rewrite `hQQ` using `[← hgQ]`. Establish `hone : (1 : Ω) ∈ Submodule.span (Kleiman.chartRing k x (Kleiman.singleChart hi)) (Set.range g) * Q'`. Rewrite using `[hQQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨w, hwQ, hsum⟩ : ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = 1 := by`. Use `Submodule.mul_induction_on (C := fun z => ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = z) hone ?_ ?_` and prove the remaining obligations. Introduce `q hq q' hq'`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun b => (a b : Ω) * q', fun b => Q'.smul_mem (a b) hq', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ _ ⟨w, hw, rfl⟩ ⟨w', hw', rfl⟩`. Use `⟨w + w', fun b => Q'.add_mem (hw b) (hw' b), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by simp [mul_add]`. Establish `hgA : ∀ a b, g a * w b ∈ Kleiman.chartRing k x (Kleiman.singleChart hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Establish `h` using `Submodule.mul_mem_mul (Submodule.subset_span ⟨a, rfl⟩ : g a ∈ Submodule.span (Kleiman.chartRing k x (Kleiman.singleChart hi)) (Set.range g)) (hwQ b)`. Rewrite `h` using `[hQQ, Submodule.mem_one]`. Take `⟨z, hz⟩` from `h`. Rewrite using `[← hz]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `z.2`. Choose the witnesses or unpack the hypotheses as in `⟨j0, hj0⟩ : ∃ j0, ψ ⟨g j0 * w j0, hgA j0 j0⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h1 : (1 : Kleiman.chartRing k x (Kleiman.singleChart hi)) = ∑ j, ⟨g j * w j, hgA j j⟩` using `Subtype.ext (by simp [hsum])`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg ψ h1`. Rewrite `h2` using `[map_one, map_sum]`. Simplify using `[hcon] at h2`. Set `t : Fin m → K'` to `fun b => ψ ⟨g b * w j0, hgA b j0⟩`. Use `⟨mIdealOver k (graphVec (fun a => ψ (Kleiman.ratio hi a)) t), isMultiProjPrime_mIdealOver_graph _ _ ⟨i, ?_⟩ ⟨j0, hj0⟩, ?_, by rw [comap_mIdealOver_graph, hy]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Kleiman.ratio (S` using `k) hi i = 1 := Subtype.ext (div_self hi)`. Rewrite using `[this, map_one]`. Conclude with `one_ne_zero`. Introduce `f hf`. Rewrite `hf`, the goal using `[mem_mIdealOver_iff]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `b`. Establish `hfb` using `weightedHomogeneousComponent_isWeightedHomogeneous (w := NumbersDVR.blockWeight (graphIdx N m)) b f`. Set `u : (Σ c, graphIdx N m c) → Kleiman.chartRing k x (Kleiman.singleChart hi)` to `fun p => match p with`. Consider the case `⟨Sum.inl (), a⟩ => Kleiman.ratio hi a`. Consider the case `⟨Sum.inr (), c⟩ => ⟨g c * w j0, hgA c j0⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hu : (fun p => (u p : Ω)) = fun p => graphVec x s p * (Sum.elim (fun _ : Unit => (x i)⁻¹) (fun _ : Unit => x i ^ (-n) * w j0)) p.1`. Use function extensionality and compare the values at `p`. Break down `p with ⟨⟨⟩ | ⟨⟩, a⟩` into its components or cases. Express the relevant statement in the definitionally equal form `x a / x i = x a * (x i)⁻¹`. Rewrite using `[div_eq_mul_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `x i ^ (-n) * s a * w j0 = s a * (x i ^ (-n) * w j0)`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : aeval u (weightedHomogeneousComponent (NumbersDVR.blockWeight (graphIdx N m)) b f) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Kleiman.chartRing k x (Kleiman.singleChart hi)).val (aeval u _) = 0`.
-
-Rewrite using `[comp_aeval_apply]`. Express the relevant statement in the definitionally equal form `aeval (fun p => (u p : Ω)) _ = 0`. Rewrite using `[hu, aeval_mul_block _ _ b _ hfb, hf b, zero_mul]`. Establish `hψu : (fun p => ψ (u p)) = graphVec (fun a => ψ (Kleiman.ratio hi a)) t`. Use function extensionality and compare the values at `p`.
-
-Apply the tactic sequence `rcases p with ⟨⟨⟩ | ⟨⟩, a⟩ <;> rfl`. Rewrite using `[← hψu, ← comp_aeval_apply, h0, map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveLift.full : CurveLift.Statement := by
   intro k _ N Ω _ _ x Q n m s _hx hgen pp e hW

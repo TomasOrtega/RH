@@ -15,30 +15,28 @@ namespace GlobalTheory.HilbertThetaSeries.Reps
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aff_mul_aff {R : Type} [CommRing R] (a b : Rˣ) : aff a 0 * aff b 0 = aff (a * b) (0 : R) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [toFin, aff]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toFin_aff (η : Fˣ) : toFin (aff η 0) = aff (Units.map (algebraMap F (Af F)).toMonoidHom η) 0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [toFin, aff]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[aff, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_aff' {R : Type} [CommRing R] (y : Rˣ) (x : R) : Matrix.GeneralLinearGroup.det (aff y x) = y := by
   ext
   simp [aff, Matrix.det_fin_two]
 
 /- English proof (translation)
-Use `set y := Matrix.GeneralLinearGroup.det g with hy`. Establish `hs : g * (aff y 0)⁻¹ ∈ GroundTheory.Automorphic.AdelicGLn.finiteSL F 2`. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.mem_finiteSL, map_mul, map_inv, det_aff', hy, mul_inv_cancel]`. Establish `hcl` using `GroundTheory.Automorphic.AdelicGLn.finiteSL_le_topologicalClosure F 2 hs`. Rewrite `hcl` using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ho : IsOpen {s : GL (Fin 2) (Af F) | (aff y 0)⁻¹ * s⁻¹ * g ∈ K}` using `hK.preimage (f := fun s : GL (Fin 2) (Af F) => (aff y 0)⁻¹ * s⁻¹ * g) ((continuous_const.mul continuous_inv).mul continuous_const)`. Take `⟨_, hu, σ, hσ, rfl⟩` from `mem_closure_iff.1 hcl _ ho (by`. Rewrite using `[Set.mem_setOf_eq, _root_.mul_inv_rev, inv_inv, inv_mul_cancel_left, inv_mul_cancel]`. Conclude with `one_mem K)`. Use `⟨σ, y, _, hu, hσ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc, mul_inv_cancel_left]`. Conclude with `(mul_inv_cancel_left _ g).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sl_aff (K : Subgroup (GL (Fin 2) (Af F)))
     (hK : IsOpen (K : Set (GL (Fin 2) (Af F)))) (g : GL (Fin 2) (Af F)) :
@@ -60,21 +58,21 @@ theorem exists_sl_aff (K : Subgroup (GL (Fin 2) (Af F)))
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reAt_eq (v : InfinitePlace F) (x : F) :
     reAt v x = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `v` and use `by have := mul_pos (hx v) (hy v) rw [reAt_eq, reAt_eq] at this; rw [reAt_eq, map_mul]; exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TP_mul {x y : F} (hx : TP x) (hy : TP y) : TP (x * y) := fun v => by
   have := mul_pos (hx v) (hy v)
   rw [reAt_eq, reAt_eq] at this; rw [reAt_eq, map_mul]; exact this
 
 /- English proof (translation)
-Introduce `v` and use `by have := inv_pos.2 (hx v) rw [reAt_eq] at this; rw [reAt_eq, map_inv₀]; exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TP_inv {x : F} (hx : TP x) : TP x⁻¹ := fun v => by
   have := inv_pos.2 (hx v)
@@ -84,15 +82,13 @@ end GlobalTheory.HilbertThetaSeries.Reps
 
 open GlobalTheory.HilbertThetaSeries.Reps in
 /- English proof (translation)
-Introduce `F _ _ _ p hp δ hδ`. Take `⟨Y0, hY0⟩` from `(GlobalTheory.T.finite_narrowIdeleClasses_and_units_mod_squares F).1`. Use `choose ξf hξf using (GlobalTheory.T.exists_different_generator_totallyPositive_translate F p hp).2 δ hδ`. Use `set ι := Units.map (algebraMap F (Af F)).toMonoidHom with hι`. Use `⟨Y0.image (fun y => ι (ξf y) * y), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `(hξf y).2`. Introduce `g`. Take `⟨σ, y, u, hu, hσ, e⟩` from `exists_sl_aff (KLev F 2 1) (isOpen_KLev le_rfl) g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y0, hy0, ξ, u0, hξ, hu0, hy⟩` from `hY0 y`. Establish `hK` using `(GlobalTheory.T.maximalCompactGL2_finiteAdele_characterization F).2.1 u0 0 hu0 (fun w => by simp)`. Use `⟨aff (ξ⁻¹ * ξf y0) 0 * σ⁻¹, ?_, ι (ξf y0) * y0, Finset.mem_image_of_mem _ hy0, aff u0 0 * u, mul_mem hK.1 hu, ?_⟩` and prove the remaining obligations. Establish `hd : (aff (ξ⁻¹ * ξf y0) 0 * σ⁻¹ : GL (Fin 2) F).val.det = ((ξ⁻¹ * ξf y0 : Fˣ) : F)`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, map_mul, map_inv, hσ, det_aff', inv_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hd, Units.val_mul]`. Conclude with `TP_mul (by simpa using TP_inv hξ) (hξf y0).1`. Rewrite using `[e, map_mul, map_inv, ← mul_assoc, ← mul_assoc, inv_mul_cancel_right, toFin_aff, ← mul_assoc, aff_mul_aff, aff_mul_aff, hy]`. Use `congr 2`. Simplify using `only [map_mul, map_inv, hι]`.
-
-Generalize the expression as in `(Units.map (algebraMap F (Af F)).toMonoidHom) ξ = a`. Generalize the expression as in `(Units.map (algebraMap F (Af F)).toMonoidHom) (ξf y0) = b`. Rewrite using `[mul_comm a⁻¹ b, mul_assoc b, ← mul_assoc a⁻¹, ← mul_assoc a⁻¹, inv_mul_cancel, one_mul, ← mul_assoc]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbertThetaSeries.finite_reps : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ), p.Prime → ∀ δ : F, IsDel p δ → ∃ Y : Finset (Af F)ˣ, (∀ y ∈ Y, AtP p δ y) ∧ ∀ g : GL (Fin 2) (Af F), ∃ γ : GL (Fin 2) F, TP γ.val.det ∧ ∃ y ∈ Y, ∃ u ∈ KLev F 2 1, toFin γ * g = aff y 0 * u := by
   intro F _ _ _ p hp δ hδ
@@ -124,7 +120,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.finite_reps | exact GlobalTheory.HilbertThetaSeries.finite_reps | (intros; apply GlobalTheory.HilbertThetaSeries.finite_reps <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.gl2_adelic_double_coset_decomposition_totally_real : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ), p.Prime → ∀ δ : F, IsDel p δ → ∃ Y : Finset (Af F)ˣ, (∀ y ∈ Y, AtP p δ y) ∧ ∀ g : GL (Fin 2) (Af F), ∃ γ : GL (Fin 2) F, TP γ.val.det ∧ ∃ y ∈ Y, ∃ u ∈ KLev F 2 1, toFin γ * g = aff y 0 * u := by
   first | exact @GlobalTheory.HilbertThetaSeries.finite_reps | exact GlobalTheory.HilbertThetaSeries.finite_reps | (intros; apply GlobalTheory.HilbertThetaSeries.finite_reps <;> assumption)

@@ -24,7 +24,7 @@ variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE 
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {f : WO S T → ℂ}
 
 /- English proof (translation)
-Introduce `γ hγ g h` and use `by have e : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h) := by simp unfold thetaKO rw [e, map_mul] exact hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hf)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaKO_left_fst (hω : IsWeilDatumO ψ S T χS χT om) (hf : IsThetaFunO ψ S T f) :
     ∀ γ ∈ GQ S, ∀ g h, thetaKO om (γ * g) h f = thetaKO om g h f := fun γ hγ g h => by
@@ -34,11 +34,11 @@ theorem thetaKO_left_fst (hω : IsWeilDatumO ψ S T χS χT om) (hf : IsThetaFun
   exact hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hf)
 
 /- English proof (translation)
-Take `⟨A, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D S.rank T.rank`. Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne S T`. Take `⟨C, hC0, hC⟩` from `(H S T rfl rfl).real ψ hθ hU`. Establish `hb` using `(hC χS χT om hω μ 𝓕 hμ f hl).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK : 0 ≤ C * (sobO ψ θ μ 𝓕 d f).toReal * 4 ^ A` using `by positivity`. Use `⟨_, A, hK, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h1⟩` from `exists_height_le_two_mul_quotHeight S g`. Take `⟨γ', hγ', h2⟩` from `exists_height_le_two_mul_quotHeight T h`. Rewrite using `[← thetaKO_left_fst hω hf γ hγ g h, ← GlobalTheory.Chain.LiftConv.thetaKO_left hω hf (γ * g) γ' hγ' h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `(hb _ _).trans ?_` and prove the remaining obligations. Establish `e : C * (sobO ψ θ μ 𝓕 d f).toReal * 4 ^ A * (quotHeight S g * quotHeight T h) ^ A = C * (sobO ψ θ μ 𝓕 d f).toReal * (2 * quotHeight S g * (2 * quotHeight T h)) ^ A` using `by ring`. Rewrite using `[e]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (mul_pos (height_pos S _) (height_pos T _)).le (mul_le_mul h1 h2 (height_pos T _).le (by linarith [quotHeight_pos S g])) A) (by positivity)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem thetaKO_le_quotHeight {θ : InfFam D} (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT om)
     (hf : IsThetaFunO ψ S T f) :
@@ -67,13 +67,13 @@ namespace GlobalTheory.ChainOnto.ThetaSwap
 open GlobalTheory.Grow GlobalTheory.Size
 
 /- English proof (translation)
-Take `⟨-, -, -, hS2, hSB⟩` from `Formalism.IndefR.Eqv.ga_facts D S`. Take `⟨-, -, -, hT2, hTB⟩` from `Formalism.IndefR.Eqv.ga_facts D T`. Establish `: IsFiniteMeasure (ν.restrict X)` using `isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol S ν X hν hX).ne`. Establish `: IsFiniteMeasure (ν'.restrict X')` using `isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol T ν' X' hν' hX').ne`. Take `⟨K, A, hK, hb⟩` from `thetaKO_le_quotHeight hθ hω hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hG.decay A`. Take `⟨B', hB'⟩` from `hF.decay A`. Establish `hc : Continuous (Function.uncurry fun (h : GA D T) (g : GA D S) => thetaKO om g h f * F h * conj (G g))`. Establish `h1 : Continuous fun p : GA D T × GA D S => thetaKO om p.2 p.1 f` using `(hω.om_cont f hf 0).comp (continuous_snd.prodMk continuous_fst)`. Conclude with `(h1.mul (hF.continuous.comp continuous_fst)).mul (Complex.continuous_conj.comp (hG.continuous.comp continuous_snd))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.of_bound hc.aestronglyMeasurable (K * B * B') (.of_forall fun p => ?_)` and prove the remaining obligations. Take `⟨h, g⟩` from `p`. Establish `hq` using `(pow_pos (quotHeight_pos S g) A).le`. Establish `hq'` using `(pow_pos (quotHeight_pos T h) A).le`. Establish `hB0 : 0 ≤ B` using `(mul_nonneg (norm_nonneg _) hq).trans (hB g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hB g`. Conclude with `hB' h`.
+A detailed English derivation is pending.
 -/
 theorem integrable_prod {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT om)
@@ -112,7 +112,7 @@ theorem integrable_prod {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D
         · exact hB' h
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hθ hω f hf ν X ν' X' hν hX hν' hX' G F hG hF`. Establish `: IsFiniteMeasure (ν.restrict X)` using `isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol S ν X hν hX).ne`. Establish `: IsFiniteMeasure (ν'.restrict X')` using `isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol T ν' X' hν' hX').ne`. Conclude with `integral_integral_swap (integrable_prod hθ hω hf hν hX hν' hX' hG hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_swap : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsInfFam θ →
@@ -132,7 +132,7 @@ theorem integral_swap : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
 end GlobalTheory.ChainOnto.ThetaSwap
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChainOnto.ThetaSwap.integral_swap`.
+A detailed English derivation is pending.
 -/
 example : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∀ (ν : Measure (GA D S)) (X : Set (GA D S)) (ν' : Measure (GA D T)) (X' : Set (GA D T)), ν.IsHaarMeasure → IsFundamentalDomain (GQ S) X ν → ν'.IsHaarMeasure → IsFundamentalDomain (GQ T) X' ν' → ∀ (G : GA D S → ℂ) (F : GA D T → ℂ), GlobalTheory.Grow.RapidDec S G → GlobalTheory.Grow.RapidDec T F → ∫ h in X', ∫ g in X, thetaKO om g h f * F h * conj (G g) ∂ν ∂ν' = ∫ g in X, ∫ h in X', thetaKO om g h f * F h * conj (G g) ∂ν' ∂ν :=
   GlobalTheory.ChainOnto.ThetaSwap.integral_swap

@@ -2,7 +2,7 @@ import Mathlib
 
 open Polynomial in
 /- English proof (translation)
-Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congrArg _ (congrArg _ (funext fun k => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.V.Th.product_factors_aeval {S : Type} [CommRing S] {n : ℕ}
     (Q : Matrix (Fin n) (Fin n) S) (V : Fin n → S) (i : Fin n) :
@@ -15,19 +15,17 @@ private theorem UpperTheory.V.Th.product_factors_aeval {S : Type} [CommRing S] {
 
 open Polynomial in
 /- English proof (translation)
-Introduce `K S _ _ f n N E P T α β U i hN hU h`. Establish `hsm : ∀ a : K, (a • (1 : Matrix (Fin n) (Fin n) K)).map f = f a • (1 : Matrix (Fin n) (Fin n) S)`. Introduce `a`. Use extensionality with `p q`. Apply the tactic sequence `by_cases hpq : p = q <;> simp [Matrix.one_apply, hpq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e1 : (⇑f.mapMatrix ∘ fun k => if k = i then 1 else P - α k • (1 : Matrix (Fin n) (Fin n) K)) = fun k => if k = i then 1 else P.map f - f (α k) • (1 : Matrix (Fin n) (Fin n) S)`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.map_sub, hsm]`. Establish `hL : (List.ofFn fun k => if k = i then 1 else P.map f - f (α k) • (1 : Matrix (Fin n) (Fin n) S)).prod * (T.map f - f β • (1 : Matrix (Fin n) (Fin n) S)) = 0`. Establish `h2` using `congrArg f.mapMatrix h`. Rewrite `h2` using `[map_mul, map_list_prod, List.map_ofFn, map_zero, e1]`. Establish `e2 : f.mapMatrix (T - β • (1 : Matrix (Fin n) (Fin n) K)) = T.map f - f β • (1 : Matrix (Fin n) (Fin n) S)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.map_sub, hsm]`. Rewrite `h2` using `[e2]`. Conclude with `h2`. Establish `hdvd : (∏ k, if k = i then (1 : S[X]) else X - C (f (α k))) ∣ (∏ k, if k = i then (1 : S[X]) else X - C (U k)) ^ (E + 1)`. Rewrite using `[← Finset.prod_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_dvd_prod_of_dvd` to reduce the goal to its premises. Introduce `k _`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.dvd_iff_isRoot, Polynomial.IsRoot, Polynomial.eval_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Establish `: (f (α k) - U k) ^ N = 0`. Rewrite using `[← neg_sub, neg_pow, hU k, mul_zero]`. Conclude with `pow_eq_zero_of_le hN this`. Take `⟨G, hG⟩` from `hdvd`.
-
-Rewrite using `[UpperTheory.V.Th.product_factors_aeval, ← map_pow, hG, mul_comm, map_mul, mul_assoc, ← UpperTheory.V.Th.product_factors_aeval (P.map f) (fun k => f (α k)) i, hL, mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.powRel :
     ∀ (K S : Type) [CommRing K] [CommRing S] (f : K →+* S) (n N E : ℕ) (P T : Matrix (Fin n) (Fin n) K) (α : Fin n → K) (β : K) (U : Fin n → S) (i : Fin n), N ≤ E + 1 → (∀ k, (U k - f (α k)) ^ N = 0) → (List.ofFn fun k => if k = i then 1 else P - α k • (1 : Matrix (Fin n) (Fin n) K)).prod * (T - β • (1 : Matrix (Fin n) (Fin n) K)) = 0 → (List.ofFn fun k => if k = i then 1 else P.map f - U k • (1 : Matrix (Fin n) (Fin n) S)).prod ^ (E + 1) * (T.map f - f β • (1 : Matrix (Fin n) (Fin n) S)) = 0 := by

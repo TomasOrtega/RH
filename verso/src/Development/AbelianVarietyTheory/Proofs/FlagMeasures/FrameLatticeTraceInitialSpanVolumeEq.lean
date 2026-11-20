@@ -24,7 +24,7 @@ end
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Rewrite using `[show (∑ i : Fin J, s (Fin.castLE hJ i) (Fin.castLE hJ j) • b (Fin.castLE hJ i)) = ∑ i ∈ Finset.univ.map (Fin.castLEEmb hJ), s i (Fin.castLE hJ j) • b i from by rw [Finset.sum_map]; rfl]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun i _ hi => ?_` and prove the remaining obligations. Establish `hiJ : ¬ (i : ℕ) < J` using `fun h => hi (Finset.mem_map.2 ⟨⟨i, h⟩, Finset.mem_univ _, rfl⟩)`. Rewrite using `[hs i _ (by rw [Fin.lt_def]; simp; omega), zero_smul]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unitriangular_sum_castLE_eq {E V : Type} [CommRing E] [AddCommGroup V] [Module E V]
     {m J : ℕ} (hJ : J ≤ m) (b : Fin m → V) (s : Fin m → Fin m → E)
@@ -42,17 +42,17 @@ private theorem unitriangular_sum_castLE_eq {E V : Type} [CommRing E] [AddCommGr
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Establish `hpt : ∀ a : Fin J ⊕ Fin J, (∑ i, Matrix.fromBlocks (s.submatrix (Fin.castLE hJ) (Fin.castLE hJ)) (-(θ • s.submatrix (Fin.castLE hJ) (Fin.castLE hJ))) 0 (θ • s'.submatrix (Fin.castLE hJ) (Fin.castLE hJ)) i a • Sum.elim (fun i => f (Fin.castLE hJ i)) (fun i => f' (Fin.castLE hJ i)) …`. Introduce `a`. Break down `a with j | j` into its components or cases. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.submatrix_apply, Sum.elim_inl, Sum.elim_inr, Matrix.zero_apply, zero_smul, Finset.sum_const_zero, add_zero, _root_.GlobalTheory.HL.TraceVol.dfam, Sum.map_inl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[unitriangular_sum_castLE_eq hJ f s hs j]`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.submatrix_apply, Sum.elim_inl, Sum.elim_inr, _root_.GlobalTheory.HL.TraceVol.dfam, Sum.map_inr]`. Rewrite using `[unitriangular_sum_castLE_eq hJ f s hs j, unitriangular_sum_castLE_eq hJ f' s' hs' j]`. Simplify using `only [Matrix.neg_apply, Matrix.smul_apply, Matrix.submatrix_apply, neg_smul, smul_sub, Finset.smul_sum, smul_smul, smul_eq_mul, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `hset : _root_.GlobalTheory.HL.TraceVol.dfam θ (fun j => ∑ i, s i j • f i) (fun j => ∑ i, s' i j • f' i) '' {a | Sum.elim (fun i : Fin m => (i : ℕ)) (fun i : Fin m => (i : ℕ)) a < J} = Set.range fun a : Fin J ⊕ Fin J => _root_.GlobalTheory.HL.TraceVol.dfam θ (fun j => ∑ i, s i j • …`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Break down `a with i | i` into its components or cases. Conclude with `⟨Sum.inl ⟨i, ha⟩, rfl⟩`. Conclude with `⟨Sum.inr ⟨i, ha⟩, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Break down `a with i | i` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨Sum.inl (Fin.castLE hJ i), by simp, rfl⟩`. Conclude with `⟨Sum.inr (Fin.castLE hJ i), by simp, rfl⟩`. Rewrite using `[hset]`. Use `congr 2`. Use function extensionality and compare the values at `a`.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hpt a).symm`.
+A detailed English derivation is pending.
 -/
 private theorem span_image_frameScaledDifferenceFamily_eq_lemma_3 {E V : Type} [CommRing E] [AddCommGroup V]
     [Module E V] (O : Subring E) {m J : ℕ} (hJ : J ≤ m) (f f' : Fin m → V)
@@ -108,11 +108,11 @@ private theorem span_image_frameScaledDifferenceFamily_eq_lemma_3 {E V : Type} [
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Establish `hf : ∀ j : Fin m, (j : ℕ) < J → g j ∈ Submodule.span E (f '' {i | (i : ℕ) < J})`. Introduce `j hj`. Establish `h1 : f j ∈ Submodule.span E (f '' {i | (i : ℕ) < J})` using `Submodule.subset_span ⟨j, hj, rfl⟩`. Establish `h2 : g j - f j ∈ Submodule.span E (f '' {i | (i : ℕ) < J})` using `Submodule.span_mono (Set.image_mono fun i (hi : i < j) => lt_trans (Fin.lt_def.1 hi) hj) (hg j)`. Simplify using `using Submodule.add_mem _ h2 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hf' : ∀ j : Fin m, (j : ℕ) < J → g' j ∈ Submodule.span E (f' '' {i | (i : ℕ) < J})`. Introduce `j hj`. Establish `h1 : f' j ∈ Submodule.span E (f' '' {i | (i : ℕ) < J})` using `Submodule.subset_span ⟨j, hj, rfl⟩`. Establish `h2 : g' j - f' j ∈ Submodule.span E (f' '' {i | (i : ℕ) < J})` using `Submodule.span_mono (Set.image_mono fun i (hi : i < j) => lt_trans (Fin.lt_def.1 hi) hj) (hg' j)`. Simplify using `using Submodule.add_mem _ h2 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `a with j | j` into its components or cases. Conclude with `Submodule.mem_sup_left (hf j ha)`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.mem_sup_right (hf' j ha)) (Submodule.mem_sup_left (hf j ha)))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem dfam_mem_lower_span {E V : Type} [CommRing E] [AddCommGroup V]
     [Module E V] {m : ℕ} (f f' g g' : Fin m → V) (t : E)
@@ -143,13 +143,13 @@ private theorem dfam_mem_lower_span {E V : Type} [CommRing E] [AddCommGroup V]
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Establish `hsup : Submodule.span E (f '' {i | i < J}) ⊔ Submodule.span E (f' '' {i | i < J}) = Submodule.span E (Sum.elim f f' '' (Sum.inl '' {i | i < J} ∪ Sum.inr '' {i | i < J}))`. Rewrite using `[Set.image_union, Submodule.span_union, Set.image_image, Set.image_image]`. Both sides reduce to the same expression. Establish `hpair : α • f J + β • f' J ∈ Submodule.span E (Sum.elim f f' '' {Sum.inl J, Sum.inr J})`. Rewrite using `[Set.image_pair]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp))) (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`. Establish `hdisj` using `hB.disjoint_span_image (s := {Sum.inl J, Sum.inr J}) (t := Sum.inl '' {i | i < J} ∪ Sum.inr '' {i | i < J}) (by`. Rewrite using `[Set.disjoint_left]`. Introduce `a ha hb`. Apply the tactic sequence `rcases ha with rfl | rfl <;> rcases hb with ⟨i, hi, h⟩ | ⟨i, hi, h⟩ <;>`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Set.mem_setOf_eq] at h hi <;>`. Apply the tactic sequence `subst h <;> exact lt_irrefl _ hi)`. Rewrite `h` using `[hsup]`. Establish `h0 : α • f J + β • f' J = 0` using `(Submodule.disjoint_def.1 hdisj) _ hpair h`. Establish `hli` using `hB.comp (fun b : Bool => if b then Sum.inl J else Sum.inr J) (by`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro a b hab; cases a <;> cases b <;> simp_all)`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `hli (fun b => if b then α else β) (by simpa [add_comm] using h0)` as an intermediate fact. Conclude with `⟨this true, this false⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem coeff_eq_zero_of_mem_span_lower_indices {E V : Type} [CommRing E] [AddCommGroup V] [Module E V]
     {m : ℕ} (f f' : Fin m → V) (hB : LinearIndependent E (Sum.elim f f')) (J : Fin m) (α β : E)
@@ -182,25 +182,25 @@ private theorem coeff_eq_zero_of_mem_span_lower_indices {E V : Type} [CommRing E
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Establish `hle : ∀ J : ℕ, Submodule.span O (_root_.GlobalTheory.HL.TraceVol.dfam t g g' '' {a | Sum.elim (fun i : Fin m => (i : ℕ)) (fun i : Fin m => (i : ℕ)) a < J}) ≤ (Submodule.span E (f '' {i | (i : ℕ) < J}) ⊔ Submodule.span E (f' '' {i | (i : ℕ) < J})).restrictScalars O`. Introduce `J`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `dfam_mem_lower_span f f' g g' t hg hg' J a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun ⟨hx, hY⟩ => ?_, fun hx => ⟨Submodule.span_mono (Set.image_subset_range _ _) hx, hle J hx⟩⟩` and prove the remaining obligations. It suffices to establish `H : ∀ d J, m ≤ J + d → ∀ x, x ∈ Submodule.span O (Set.range (_root_.GlobalTheory.HL.TraceVol.dfam t g g')) → x ∈ Submodule.span E (f '' {i | (i : ℕ) < J}) ⊔ Submodule.span E (f' '' {i | (i : ℕ) < J}) → x ∈ Submodule.span O (_root_.GlobalTheory.HL.TraceVol.dfam t g g' '' {a | Sum. …`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J hJ x hx _`. Establish `huniv : {a : Fin m ⊕ Fin m | Sum.elim (fun i : Fin m => (i : ℕ)) (fun i : Fin m => (i : ℕ)) a < J} = Set.univ` using `Set.eq_univ_of_forall fun a => by`. Apply the tactic sequence `rcases a with i | i <;> exact lt_of_lt_of_le i.isLt (by omega)`. Rewrite using `[huniv, Set.image_univ]` and apply the resulting hypothesis. Consider the case `succ d ih`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J hJ x hx hY`. Distinguish the cases in `hJm : m ≤ J + d`. Conclude with `ih J hJm x hx hY`. Establish `hJlt : J < m` using `by omega`. Use `set j0 : Fin m := ⟨J, hJlt⟩ with hj0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYmono : Submodule.span E (f '' {i | (i : ℕ) < J}) ⊔ Submodule.span E (f' '' {i | (i : ℕ) < J}) ≤ Submodule.span E (f '' {i | (i : ℕ) < J + 1}) ⊔ Submodule.span E (f' '' {i | (i : ℕ) < J + 1})` using `sup_le_sup (Submodule.span_mono (Set.image_mono fun i (hi : (i : ℕ) < J) => by show (i : ℕ) < J + 1; omega)) (Submodule.span_mono (Set.image_mono fun i (hi : (i : ℕ) < J) => by show (i : ℕ) < J + 1; omega))`. Establish `hx1` using `ih (J + 1) (by omega) x hx (hYmono hY)`. Establish `hset : _root_.GlobalTheory.HL.TraceVol.dfam t g g' '' {a | Sum.elim (fun i : Fin m => (i : ℕ)) (fun i : Fin m => (i : ℕ)) a < J + 1} = {_root_.GlobalTheory.HL.TraceVol.dfam t g g' (Sum.inl j0), _root_.GlobalTheory.HL.TraceVol.dfam t g g' (Sum.inr j0)} ∪ _root_.GlobalTheory.HL.Tra …`. Rewrite using `[← Set.image_pair, ← Set.image_union]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `a`. Apply the tactic sequence `rcases a with i | i <;>`. Apply the tactic sequence `simp only [Set.mem_setOf_eq, Sum.elim_inl, Sum.elim_inr, Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, false_or, or_false, Fin.ext_iff, hj0] <;> omega`. Rewrite `hx1` using `[hset, Submodule.span_union, Submodule.mem_sup]`. Take `⟨z, hz, y, hy, rfl⟩` from `hx1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hz` using `[Submodule.mem_span_pair]`. Take `⟨a, b, rfl⟩` from `hz`. Establish `hyY` using `hle J hy`. Establish `hzY : a • _root_.GlobalTheory.HL.TraceVol.dfam t g g' (Sum.inl j0) + b • _root_.GlobalTheory.HL.TraceVol.dfam t g g' (Sum.inr j0) ∈ Submodule.span E (f '' {i | (i : ℕ) < J}) ⊔ Submodule.span E (f' '' {i | (i : ℕ) < J})`. Use `Submodule.sub_mem _ hY hyY` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `using this`. Establish `hsets : ∀ h : Fin m → V, h '' {i | i < j0} = h '' {i | (i : ℕ) < J}` using `fun h => by`. Use `congr 1`. Establish `hrest : ((a : E) - b * t) • (g j0 - f j0) + ((b : E) * t) • (g' j0 - f' j0) ∈ Submodule.span E (f '' {i | (i : ℕ) < J}) ⊔ Submodule.span E (f' '' {i | (i : ℕ) < J})` using `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.smul_mem _ _ (by rw [← hsets]; exact hg j0))) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (by rw [← hsets]; exact hg' j0)))`. Establish `hmain : ((a : E) - b * t) • f j0 + ((b : E) * t) • f' j0 ∈ Submodule.span (E) (f '' {i | i < j0}) ⊔ Submodule.span E (f' '' {i | i < j0})`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hsets, hsets]`. Use `Submodule.sub_mem _ hzY hrest` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [_root_.GlobalTheory.HL.TraceVol.dfam, Sum.elim_inl, Sum.elim_inr, Subring.smul_def, smul_sub, sub_smul, smul_smul]`. Use `module`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨h1, h2⟩` from `coeff_eq_zero_of_mem_span_lower_indices f f' hB j0 _ _ hmain`. Establish `hb : b = 0` using `Subtype.ext (by simpa using (ht.mul_left_eq_zero).1 h2)`. Establish `ha : a = 0` using `Subtype.ext (by simpa [hb] using h1)`. Simplify `hy` using `[ha, hb]`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_dfam_inf_iff {E V : Type} [CommRing E]
     [AddCommGroup V] [Module E V] (O : Subring E) {m : ℕ} (f f' g g' : Fin m → V)
@@ -290,11 +290,9 @@ private theorem mem_span_dfam_inf_iff {E V : Type} [CommRing E]
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Establish `key : ∀ i, s i j • b i = (if i < j then s i j • b i else 0) + (if i = j then b i else 0)`. Introduce `i`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[h, h.ne]`. Simplify using `[hs.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hs.1 i j h, not_lt.2 h.le, h.ne']`. Rewrite using `[Finset.sum_congr rfl (fun i _ => key i), Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true, add_sub_cancel_right]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, h, rfl⟩)`. Conclude with `Submodule.zero_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unitriangular_sum_sub_mem_span_lower {E V : Type} [CommRing E] [AddCommGroup V] [Module E V]
     {m : ℕ} (b : Fin m → V) (s : Fin m → Fin m → E)
@@ -316,15 +314,15 @@ private theorem unitriangular_sum_sub_mem_span_lower {E V : Type} [CommRing E] [
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Take `⟨-, hW, -⟩` from `_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT`. Unfold `_root_.GlobalTheory.HL.Frames.IsTermW at hW`. Take `⟨-, -, hp, hq, -⟩` from `hW`. Take `⟨hB, -, -, -, -, hth, -⟩` from `_root_.GlobalTheory.FrameBasic.main L r k S`. Take `⟨-, hN⟩` from `_root_.GlobalTheory.HL.frame_unipotent_unitriangular L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hN'⟩` from `_root_.GlobalTheory.HL.frame_unipotent_unitriangular L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩)`. Take `⟨⟨s, hs, hsf⟩, -⟩` from `hN _ hp`. Take `⟨⟨s', hs', hsf'⟩, -⟩` from `hN' _ hq`. Use `⟨s, s', hs, hs', ?_⟩` and prove the remaining obligations. Establish `hθ : IsUnit (algebraMap F E S.th⁻¹)` using `(isUnit_iff_ne_zero.2 (inv_ne_zero hth)).map _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hM : S.M d Λ = Submodule.span L.O (Set.range (_root_.GlobalTheory.HL.TraceVol.dfam (algebraMap F E S.th⁻¹) (fun j => ∑ i, s i j • S.f i) (fun j => ∑ i, s' i j • S.f' i)))`. Unfold `_root_.GlobalTheory.HL.Frames.M _root_.GlobalTheory.HL.Frames.Mof _root_.GlobalTheory.HL.Frames.fr _root_.GlobalTheory.HL.Frames.fr' _root_.GlobalTheory.HL.TraceVol.dfam`. Rewrite using `[Set.Sum.elim_range]`. Use `congr 3`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hsf j`. Use function extensionality and compare the values at `j`. Rewrite using `[hsf j, hsf' j]`. Rewrite using `[← span_image_frameScaledDifferenceFamily_eq_lemma_3 L.O hJ S.f S.f' s s' hs.1 hs'.1]`. Use extensionality with `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_inf, hM, Submodule.restrictScalars_mem]`. Conclude with `mem_span_dfam_inf_iff L.O S.f S.f' _ _ hB _ hθ (unitriangular_sum_sub_mem_span_lower S.f s hs) (unitriangular_sum_sub_mem_span_lower S.f' s' hs') J x`.
+A detailed English derivation is pending.
 -/
 private theorem termFrameLattice_inf_initialSpan_eq_lemma {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E]
@@ -368,7 +366,7 @@ private theorem termFrameLattice_inf_initialSpan_eq_lemma {F : Type} [Field F] [
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_smul, Matrix.det_of_upperTriangular (fun i j h => hs.1 i j h), Matrix.det_of_upperTriangular (fun i j h => hs'.1 i j h)]`. Simplify using `[hs.2, hs'.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem det_fromBlocks_unitriangular_eq_pow {E : Type} [CommRing E] {m : ℕ} (θ : E)
     (s s' : Matrix (Fin m) (Fin m) E)
@@ -382,11 +380,11 @@ private theorem det_fromBlocks_unitriangular_eq_pow {E : Type} [CommRing E] {m :
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Rewrite `hb`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1 : ∀ i, M.mulVec c i = 0`. Use `hb _ ?_` and prove the remaining obligations. Rewrite using `[← hc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `h2 : M.mulVec c = 0` using `funext h1`. Establish `: c = M⁻¹.mulVec (M.mulVec c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul M hM, Matrix.one_mulVec]`. Introduce `i`. Rewrite using `[this, h2, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem linearIndependent_comb_of_isUnit_det {E V ι : Type} [CommRing E] [AddCommGroup V] [Module E V]
     [Fintype ι] [DecidableEq ι] (b : ι → V) (hb : LinearIndependent E b) (M : Matrix ι ι E)
@@ -409,7 +407,7 @@ private theorem linearIndependent_comb_of_isUnit_det {E V ι : Type} [CommRing E
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem sum_smul_sum_smul_eq_sum_mul_smul' {E V ι : Type} [CommRing E] [AddCommGroup V] [Module E V] [Fintype ι]
     (b : ι → V) (M N : Matrix ι ι E) (j : ι) :
@@ -421,19 +419,17 @@ private theorem sum_smul_sum_smul_eq_sum_mul_smul' {E V ι : Type} [CommRing E] 
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Use `set T1 := Matrix.fromBlocks s (-(θ • s)) 0 (θ • s') with hT1`. Use `set T2 := Matrix.fromBlocks u (-(θ • u)) 0 (θ • u') with hT2`. Establish `hd1 : T1.det = θ ^ m` using `det_fromBlocks_unitriangular_eq_pow θ s s' hs hs'`. Establish `hd2 : T2.det = θ ^ m` using `det_fromBlocks_unitriangular_eq_pow θ u u' hu hu'`. Establish `hU1 : IsUnit T1.det` using `hd1 ▸ hθ.pow m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Fin (m + m) ≃ Fin m ⊕ Fin m` to `finSumFinEquiv.symm`. Set `A` to `T1⁻¹ * T2`. Establish `hA : T1 * A = T2` using `by rw [← mul_assoc, Matrix.mul_nonsing_inv T1 hU1, one_mul]`. Establish `hdetA : A.det = 1`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, hd1, hd2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ring.inverse_mul_cancel _ (hθ.pow m)`. Set `b : Fin (m + m) → (Fin N → E)` to `fun j => ∑ i, T1 i (e j) • B i`. Establish `hb : LinearIndependent E b` using `(linearIndependent_comb_of_isUnit_det B hB T1 hU1).comp e e.injective`. Set `A' : Matrix (Fin (m + m)) (Fin (m + m)) E` to `Matrix.reindex e.symm e.symm A`. Establish `hdetA' : A'.det = 1` using `by rw [Matrix.det_reindex_self, hdetA]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange1 : Set.range b = Set.range fun j => ∑ i, T1 i j • B i`. Establish `: b = (fun j => ∑ i, T1 i j • B i) ∘ e` using `rfl`. Rewrite using `[this, Set.range_comp, e.range_eq_univ, Set.image_univ]`. Establish `hrange2 : (Set.range fun j => ∑ i, A' i j • b i) = Set.range fun j => ∑ i, T2 i j • B i`. Establish `: (fun j => ∑ i, A' i j • b i) = (fun j => ∑ i, T2 i j • B i) ∘ e`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, A', b, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Rewrite using `[Equiv.sum_comp e (fun i => A i (e j) • ∑ l, T1 l i • B l), sum_smul_sum_smul_eq_sum_mul_smul', hA]`. Rewrite using `[this, Set.range_comp, e.range_eq_univ, Set.image_univ]`. Establish `hcj : A'.det * L.cj A'.det = algebraMap F E 1` using `by simp [hdetA']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `_root_.GlobalTheory.HL.FrameIndex.relIndex_span_matrix L ϖ hϖ b hb A' 1 one_ne_zero hcj (Submodule.span L.O (Set.range b)) (Submodule.span L.O (Set.range fun j => ∑ i, A' i j • b i))`. Use `rfl rfl`. Rewrite `h1`, `h2`, `h3` using `[hrange1, hrange2]`. Establish `hv : _root_.GlobalTheory.HL.vE L ϖ (algebraMap F E 1) = 0`. Simplify using `using _root_.GlobalTheory.UnramVal.vE_zpow_mul_unit L hϖ 0 1`.
-
-Rewrite `h3` using `[hv, zpow_zero, one_mul]`. Conclude with `⟨by exact_mod_cast h3.symm, h2⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem relIndex_symm_of_blockFrameMatrix_lemma_2 {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E]
@@ -490,11 +486,11 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d Λ hT d' Λ' hT' J Yy hJ hYy`. Substitute `hYy` using the available equality. Take `⟨s, s', hs, hs', h1⟩` from `termFrameLattice_inf_initialSpan_eq_lemma L r k S d Λ hT J hJ`. Take `⟨u, u', hu, hu', h2⟩` from `termFrameLattice_inf_initialSpan_eq_lemma L r k S d' Λ' hT' J hJ`. Take `⟨hB, -, -, -, -, hth, -⟩` from `_root_.GlobalTheory.FrameBasic.main L r k S`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hθ : IsUnit (algebraMap F E S.th⁻¹)` using `(isUnit_iff_ne_zero.2 (inv_ne_zero hth)).map _`. Establish `hBJ : LinearIndependent E (Sum.elim (fun i : Fin J => S.f (Fin.castLE hJ i)) (fun i => S.f' (Fin.castLE hJ i)))`. Use `hB.comp (Sum.map (Fin.castLE hJ) (Fin.castLE hJ)) (Sum.map_injective.2 ⟨Fin.castLE_injective hJ, Fin.castLE_injective hJ⟩)` as an intermediate fact. Rewrite `this` using `[Sum.elim_comp_map]`. Then use the resulting hypothesis. Establish `htri : ∀ t : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → t i j = 0) ∧ ∀ i, t i i = 1) → ((∀ i j, j < i → t.submatrix (Fin.castLE hJ) (Fin.castLE hJ) i j = 0) ∧ ∀ i, t.submatrix (Fin.castLE hJ) (Fin.castLE hJ) i i = 1)` using `fun t ht => ⟨fun i j hij => ht.1 _ _ ((Fin.castLE_lt_castLE_iff hJ).2 hij), fun i => ht.2 _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Conclude with `relIndex_symm_of_blockFrameMatrix_lemma_2 L S.ϖ S.ϖ_irr _ hBJ _ hθ _ _ _ _ (htri s hs) (htri s' hs') (htri u hu) (htri u' hu')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.TraceVol.trace_volume : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∀ (r k : ℕ) (S : _root_.GlobalTheory.HL.Frames L r k), ∀ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → ∀ d' Λ', S.IsTerm d' Λ' → ∀ (J : ℕ) (Yy : Submodule L.O S.V), J ≤ r + 1 → Yy = (S.spanTo S.f J ⊔ S.spanTo S.f' J).restrictScalars L.O → (S.M d Λ ⊓ Yy).toAddSubgroup.relIndex (S.M d' Λ' ⊓ Yy).toAddSubgroup = (S.M d' Λ' ⊓ Yy).toAddSubgroup.relIndex (S.M d Λ ⊓ Yy).toAddSubgroup ∧ (S.M d Λ ⊓ Yy).toAddSubgroup.relIndex (S.M d' Λ' ⊓ Yy).toAddSubgroup ≠ 0 := by
   intro F _ _ _ _ _ E _ _ _ L r k S d Λ hT d' Λ' hT' J Yy hJ hYy

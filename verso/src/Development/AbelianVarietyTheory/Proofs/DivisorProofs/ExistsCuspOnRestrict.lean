@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← secZ_nat]`. Establish `: (fun i => (ex Dw (0 : (E →+* ℂ) × ℕ → ℕ) 0 i : ℤ)) = 0`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with _ | ⟨τ, i⟩ <;> simp [ex]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `idem_mem_secZ Z`.
+A detailed English derivation is pending.
 -/
 theorem idem_mem_sec (Z : Comp Xo c) : idem Z ∈ sec Xo c 0 0 := by
   rw [← secZ_nat]
@@ -26,13 +26,13 @@ theorem idem_mem_sec (Z : Comp Xo c) : idem Z ∈ sec Xo c 0 0 := by
   exact idem_mem_secZ Z
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_cuspW]`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `mul_mem_secZ (idem_mem_secZ Z) hf.1` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Rewrite using `[AllWt.rdU_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `IdemCusp.mul_mem_holSub (U σ).X (modelWt (U σ) G) (rdU (U σ) (idem Z)) (fun k => ?_) (hf.2 σ hσ)` and prove the remaining obligations. Establish `hD : Dom (E` using `E) 0 0 := ⟨fun τ _ _ _ => le_rfl, Even.zero⟩`. Establish `hs` using `(hU σ hσ).2.2.2.2.1 0 0 hD (idem Z) (idem_mem_sec Z) k`. Establish `h0 : laU (U σ) 0 0 k = 0`. Use function extensionality and compare the values at `τ j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[laU]`. Rewrite `hs` using `[h0]`. Use `IdemCusp.isIdemFn_of_isSec _ hs ?_` and prove the remaining obligations. Use `congrFun (AllWt.rdU_mul (U σ) (idem Z) (idem Z)) k` as an intermediate fact. Rewrite `this` using `[idem_mul_idem]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_mem_cuspW {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (Z : Comp Xo c) {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspW Xo c U G) : idem Z * f ∈ cuspW Xo c U G := by
@@ -54,11 +54,11 @@ theorem idem_mul_mem_cuspW {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀
     exact this.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU Z G f`. Establish `hs : idem Z * (f : Rul Xo c) ∈ suppOn Z`. Rewrite using `[mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`. Use `⟨⟨idem Z * (f : Rul Xo c), idem_mul_mem_cuspW hU Z f.2, hs⟩, fun S _ _ y hy => ?_, fun hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `show evR Xo c (idem Z * (f : Rul Xo c)) y = evR Xo c f y`. Distinguish the cases in `ht : Tested y`. Establish `e : evR Xo c (idem Z * (f : Rul Xo c)) y = evR Xo c (idem Z) y * evR Xo c f y` using `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (idem Z) f y`. Rewrite using `[e, evR_idem hy ht, one_mul]`. Unfold `evR evalAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_neg ht, dif_neg ht]`. Use `(mem_supLat_iff (Z := Z) hs).2 fun la v hv => ?_ show 0 ≤ v (idem Z * (f : Rul Xo c))` and prove the remaining obligations. Rewrite using `[(isVal_valOn hv).mul, val_idem hv, zero_add]`. Conclude with `hf la v (valOn_subset Z la hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cuspOn_restrict : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (Z : Comp Xo c) (G : WTZ E) (f : cuspW Xo c U G), ∃ g : cuspOn U Z G, (∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y → evR Xo c g y = evR Xo c f y) ∧ (f ∈ latW U G → g ∈ latOn U Z G) := by
   intro E _ _ _ H Dw l Xo c r U hU Z G f

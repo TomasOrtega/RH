@@ -12,17 +12,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-Simplify using `[chiP, monoNormSq, Finset.Nat.antidiagonalTuple_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiP_zero_dim (n : ℕ) : chiP 0 n = 0 := by
   simp [chiP, monoNormSq, Finset.Nat.antidiagonalTuple_one]
 
 /- English proof (translation)
-Introduce `D I hI`. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Establish `hh` using `h0 I hI`. Use `(isLittleO_zero (fun n : ℕ => (n : ℝ) ^ (0 + 1)) atTop).congr' ?_ EventuallyEq.rfl` and prove the remaining obligations. Use `Eventually.of_forall fun n => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hsDefect, hh, chiP_zero_dim]`. Take `⟨Ω, _, _, κ, _, d, hchi, htop, hdeg⟩` from `hV D hD`. Establish `h2` using `(hR D Ω κ I d hI).2`. Establish `hfun : resChi d = fun m => chiP D (2 * m)` using `funext hchi`. Rewrite `h2` using `[hfun, htop I hI, hdeg]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h2`. Conclude with `hilbertSamuelDefect_projectiveSpace_isLittleO D (hhOf I D) h2`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem HilbertSamuelProjective.proof (hR : ReductionToProjective.Statement) (hV : SecondVeronese.Statement)
     (h0 : PointHeightFS.Statement) : HilbertSamuelProjective.Statement := by

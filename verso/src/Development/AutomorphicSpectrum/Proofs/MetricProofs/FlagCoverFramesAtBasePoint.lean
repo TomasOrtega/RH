@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 
 /- English proof (translation)
-Take `⟨h0, -, v0, -, hst⟩` from `GlobalTheory.CompanionTheory.Ar.PB.ValRing.regAt_valAt_ring K ι Ω x z hz`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ⟨h0, v0⟩`. Consider the case `insert a s ha ih`. Take `⟨ih1, ih2⟩` from `ih fun b hb => hf b (Finset.mem_insert_of_mem hb)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hfa` using `hf a (Finset.mem_insert_self a s)`. Take `⟨-, r, -, v⟩` from `hst _ _ hfa ih1`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `⟨r, v.trans (by rw [ih2])⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem regAt_valAt_sum {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x)) {α : Type} (s : Finset α)
@@ -30,13 +30,13 @@ theorem regAt_valAt_sum {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
     exact ⟨r, v.trans (by rw [ih2])⟩
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv zb F' F hz hF' hF hG' hG p q r`. Take `⟨-, -, -, -, hst⟩` from `GlobalTheory.CompanionTheory.Ar.PB.ValRing.regAt_valAt_ring _ _ _ M'.x zb hz`. Establish `hT : ∀ a b, RegAt M'.x (mCoordIdeal zb) (trMat Cv F' F p.1 a b)` using `fun a b => (Cv.agree zb hz F' F hF' hF hG' hG p.1 a b).1`. Establish `hmin` using `fun I I' => GlobalTheory.T.minor_of_regular_matrix_value _ _ _ M'.x zb N (trMat Cv F' F p.1) hz hT I I'`. Establish `hu` using `fun I => GlobalTheory.T.flag_cover_base_point_regular K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv zb (F.u q I) hz (hG.2.1 q I).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'` using `fun I' => (hG'.2.1 r I').2`. Establish `hterm : ∀ I I', RegAt M'.x (mCoordIdeal zb) (Cv.φ (F.u q I) * minorIJ (trMat Cv F' F p.1) I I' * F'.u' I' r) ∧ valAt M'.x (Cv.φ (F.u q I) * minorIJ (trMat Cv F' F p.1) I I' * F'.u' I' r) zb = valAt M.x (F.u q I) (zb ∘ Cv.v) * minorIJ (Cv.trans F' F zb p.1) I I' * valAt M'.x (F'.u …`. Introduce `I I'`. Take `⟨r1, -, v1, -⟩` from `hst _ _ (hu I).1 (hmin I I').1`. Take `⟨r2, -, v2, -⟩` from `hst _ _ r1 (hu' I')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r2, v2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[v1, (hu I).2, (hmin I I').2]`. Both sides reduce to the same expression. Establish `hin` using `fun I => regAt_valAt_sum hz (Finset.univ.filter (IsStepRows N j p.2)) _ fun I' _ => (hterm I I').1`. Establish `hout` using `regAt_valAt_sum hz Finset.univ _ fun I _ => (hin I).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hout.1, ?_⟩` and prove the remaining obligations. Use `hout.2.trans (Finset.sum_congr rfl fun I _ => ?_)` and prove the remaining obligations. Rewrite using `[(hin I).2]`. Conclude with `Finset.sum_congr rfl fun I' _ => (hterm I I').2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coE_regAt_valAt : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (zb : (Σ k, baseIdx ι' M'.blk k) → ℂ) (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk), zb ∈ mcPts (mCoordIdeal M'.x) → M'.IsFrame F' → M.IsFrame F → M'.GoodAt F' (mCoordIdeal zb) → M.GoodAt F (mCoordIdeal (zb ∘ Cv.v)) → ∀ (p : Ψ × Fin N) (q : Σ k, ι k) (r : Σ k, ι' k), RegAt M'.x (mCoordIdeal zb) (coE Cv F' F p q r) ∧ valAt M'.x (coE Cv F' F p q r) zb = ∑ I, ∑ I' ∈ Finset.univ.filter (IsStepRows N j p.2), valAt M.x (F.u q I) (zb ∘ Cv.v) * minorIJ (Cv.trans F' F zb p.1) I I' * valAt M'.x (F'.u' I' r) zb := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv zb F' F hz hF' hF hG' hG p q r

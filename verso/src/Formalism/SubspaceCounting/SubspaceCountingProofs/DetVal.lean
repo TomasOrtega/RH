@@ -9,7 +9,7 @@ open Formalism.G0
 variable {K ι : Type} [Field K] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `detLetters`. Rewrite using `[AlgHom.map_det, RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma substS_det {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (g : GL (Fin r) L) (A : Fin r → ι) {R : Type} [CommRing R]
@@ -21,7 +21,7 @@ lemma substS_det {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool
   congr 1
 
 /- English proof (translation)
-Simplify using `[substS]`.
+Simplify using the standard rewrite rules.
 -/
 lemma substS_X {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (g : GL (Fin r) L) (p : ι × Fin r) :
@@ -33,7 +33,7 @@ lemma substS_X {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool) 
   simp [substS]
 
 /- English proof (translation)
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_filter]`. Establish `: i ∉ Set.range A` using `by rintro ⟨l, rfl⟩; simp [hv l] at hi`. Simplify using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma sum_cov_zero {r : ℕ} (vec : ι → Bool) (S : Finset ι) (A : Fin r → ι)
     (hv : ∀ l, vec (A l) = true) :
@@ -45,7 +45,7 @@ lemma sum_cov_zero {r : ℕ} (vec : ι → Bool) (S : Finset ι) (A : Fin r → 
   simp [this]
 
 /- English proof (translation)
-Simplify using `[msMat]`.
+Simplify using the standard rewrite rules.
 -/
 lemma msMat_one {L : Type} [Field L] {r : ℕ} :
     msMat (1 : GL (Fin r) L) =
@@ -60,11 +60,11 @@ open Formalism.G0
 variable {K ι : Type} [Field K] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single (⟨r - 1, by omega⟩ : Fin r)]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `b _ hb`. Establish `: b.val + 1 ≠ r`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma prod_last {L : Type} [Field L] {r : ℕ} (hr : 1 ≤ r) :
     ∏ a : Fin r, (if a.val + 1 = r then (Polynomial.X : Polynomial L) else 1) = Polynomial.X := by
@@ -77,13 +77,13 @@ lemma prod_last {L : Type} [Field L] {r : ℕ} (hr : 1 ≤ r) :
   · simp
 
 /- English proof (translation)
-Establish `h1 : substS (K` using `K) vec S g (detLetters A) = Matrix.det ((Matrix.of fun (l b : Fin r) => (MvPolynomial.X (A l, b) : MvPolynomial (ι × Fin r) (Polynomial L))) * ((msMat g).map MvPolynomial.C).transpose) := by`. Use `substS_det (K := K) vec S g A (RingHom.id _)` as an intermediate fact. Simplify using `only [RingHom.id_apply] at this`. Rewrite using `[this]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Matrix.ext fun l a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, substS_X]`. Simplify using `only [hS l, hv l, if_true, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun b _ => mul_comm _ _` and prove the remaining obligations. Establish `hC` using `RingHom.map_det (MvPolynomial.C : Polynomial L →+* MvPolynomial (ι × Fin r) (Polynomial L)) (msMat g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hC` using `[RingHom.mapMatrix_apply]`. Rewrite using `[h1, Matrix.det_mul, Matrix.det_transpose, ← hC]`. Apply `dvd_mul_of_dvd_right` to reduce the goal to its premises. Apply `map_dvd` to reduce the goal to its premises. Unfold `msMat`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, prod_last hr]`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_left _ _) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma part1a {L : Type} [Field L] [Algebra K L] {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
     (S : Finset ι) (A : Fin r → ι) (hv : ∀ l, vec (A l) = true) (hS : ∀ l, A l ∈ S)
@@ -119,9 +119,9 @@ open Formalism.G0
 variable {K ι : Type} [Field K] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[substS_X]`. Simplify using `only [hi, hvi, if_true, msMat_one, map_sum, map_mul, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X', Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma entry_one_mem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (φ : Polynomial K →+* R) (v : ι × Fin r → R) (i : ι) (hi : i ∈ S) (hvi : vec i = true)
@@ -137,7 +137,7 @@ lemma entry_one_mem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : F
   · simp
 
 /- English proof (translation)
-Rewrite using `[substS_X]`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma entry_one_nmem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (φ : Polynomial K →+* R) (v : ι × Fin r → R) (i : ι) (hi : i ∉ S) (a : Fin r) :
@@ -147,11 +147,11 @@ lemma entry_one_nmem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : 
   simp [hi]
 
 /- English proof (translation)
-Introduce `h`. Set `v : ι × Fin r → Polynomial K` to `fun p => if p.1 = A p.2 then 1 else 0`. Establish `h2` using `map_dvd (MvPolynomial.eval₂Hom (RingHom.id (Polynomial K)) v) h`. Rewrite `h2` using `[MvPolynomial.eval₂Hom_C, RingHom.id_apply, substS_det]`. Establish `hM : (Matrix.of fun l a => MvPolynomial.eval₂Hom (RingHom.id (Polynomial K)) v (substS (K` using `K) vec S (1 : GL (Fin r) K) (MvPolynomial.X (A l, a)))) = Matrix.diagonal (fun a : Fin r => if a.val + 1 = r then Polynomial.X else 1) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Matrix.ext fun l a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, entry_one_mem vec S _ v (A l) (hS l) (hv l) a, Matrix.diagonal_apply]`. Distinguish the cases in `hla : l = a`. Substitute `hla` using the available equality. Simplify using `[v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: A l ≠ A a` using `fun e => hla (hA e)`. Simplify using `[v, this, hla]`. Rewrite `h2` using `[hM, Matrix.det_diagonal, prod_last hr]`. Use `Polynomial.natDegree_le_of_dvd h2 Polynomial.X_ne_zero` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma part1b {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
     (S : Finset ι) (A : Fin r → ι) (hA : Function.Injective A) (hv : ∀ l, vec (A l) = true)
@@ -176,19 +176,19 @@ lemma part1b {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
   simp at this
 
 /- English proof (translation)
-Introduce `h`. Take `⟨l₀, hl₀⟩` from `not_forall.mp hS`. Set `last : Fin r` to `⟨r - 1, by omega⟩`. Set `τ : Equiv.Perm (Fin r)` to `Equiv.swap l₀ last`. Set `v : ι × Fin r → K` to `fun p => if p.1 = A (τ p.2) then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h2` using `map_dvd (MvPolynomial.eval₂Hom (Polynomial.evalRingHom (0 : K)) v) h`. Rewrite `h2` using `[MvPolynomial.eval₂Hom_C, substS_det]`. Simplify using `only [Polynomial.coe_evalRingHom, pow_one, Polynomial.eval_X, zero_dvd_iff] at h2`. Establish `hM : (Matrix.of fun l a => MvPolynomial.eval₂Hom (Polynomial.evalRingHom (0 : K)) v (substS (K` using `K) vec S (1 : GL (Fin r) K) (MvPolynomial.X (A l, a)))) = (1 : Matrix (Fin r) (Fin r) K).submatrix id τ := by`. Use `Matrix.ext fun l a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.one_apply]`. Establish `hvv : v (A l, a) = if l = τ a then 1 else 0`. Simplify using `only [v]`. Distinguish the cases in `e : l = τ a`. Simplify using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: A l ≠ A (τ a)` using `fun x => e (hA x)`. Simplify using `[e, this]`. Distinguish the cases in `hl : A l ∈ S`. Rewrite using `[entry_one_mem vec S _ v (A l) hl (hv l) a, hvv]`. Distinguish the cases in `e : l = τ a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `ha : a.val + 1 ≠ r`. Introduce `ha`. Establish `: a = last` using `by ext; simp [last]; omega`. Apply `hl₀` to reduce the goal to its premises. Establish `hll : l = l₀` using `by rw [e, this]; exact Equiv.swap_apply_right l₀ last`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← hll]`. Conclude with `hl`. Simplify using `[e, ha]`. Simplify using `[e]`. Rewrite using `[entry_one_nmem vec S _ v (A l) hl a, hvv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hM, Matrix.det_permute', Matrix.det_one, mul_one]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with e | e <;> simp [e] at h2`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma part2 {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
     (S : Finset ι) (A : Fin r → ι) (hA : Function.Injective A) (hv : ∀ l, vec (A l) = true)
@@ -233,11 +233,11 @@ end Formalism.G0.DetValP
 
 open Formalism.G0.DetValP in
 /- English proof (translation)
-Introduce `K ι _ _ _ r vec S' A hr hA hv`. Simplify using `only`. Establish `hsum` using `sum_cov_zero vec S' A hv`. Use `⟨fun hS => ⟨?_, ?_⟩, fun hS => ?_⟩` and prove the remaining obligations. Introduce `L _ _ g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsum]`. Simplify using `using part1a (K := K) hr vec S' A hv hS g`. Introduce `hval`. Use `hval K (1 : GL (Fin r) K)` as an intermediate fact. Rewrite `this` using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `part1b hr vec S' A hA hv hS this`. Introduce `hval`. Use `hval K (1 : GL (Fin r) K)` as an intermediate fact. Rewrite `this` using `[hsum]`. Conclude with `part2 hr vec S' A hA hv hS this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Formalism.G0.det_valuation : Formalism.G0.DetVal := by
   intro K ι _ _ _ r vec S' A hr hA hv

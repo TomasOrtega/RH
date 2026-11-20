@@ -24,17 +24,17 @@ noncomputable section
 namespace GlobalTheory.GSep.TermsLabel
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act x₀ V _ _ _ ev X _ t δ 𝔪 C lab T hT c`. Take `⟨x, fr, th, w₀, s, g', w, hx, hfr, -, hw₀, -, hg, -⟩` from `hT`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `𝔪.D.tau_bimult`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Use `X₁.S.r_pos` as an intermediate fact. Use `X₁.S.N_ge` as an intermediate fact. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨⟨o, ho₁, ho₂⟩, hwc, hov⟩` from `hg c`. Use `letI := GlobalTheory.TorusExt.gtGroup 𝔪.D.toPre (FractionRing V)`. Use `letI := GlobalTheory.TorusExt.gtGroup 𝔪.D.toPre (AlgebraicClosure (FractionRing V))`. Establish `hkg : (X₁.S.r * X₁.S.N) • g' c = 0` using `((GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 ho₁).symm.trans ((GlobalTheory.TorusExt.isZero_iff_eq _).1 ho₂)`. Use `set gb := GlobalTheory.TorusExt.gtExt 𝔪.D.toPre (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))) (RingHom.comp_id _) (g' c) with hgb`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hkgb : (X₁.S.r * X₁.S.N) • gb = GlobalTheory.TorusExt.iota hB (AlgebraicClosure (FractionRing V)) 0`. Rewrite using `[hgb, ← map_nsmul, hkg, map_zero, map_zero]`. Set `p` to `GlobalTheory.TorusExt.qkMk hB 0 gb hkgb`. Set `xb : TFK (R` to `V) (AlgebraicClosure (FractionRing V)) ⟶ 𝔪.A.A := GlobalTheory.TorsionExt.fieldMap (FractionRing V) (AlgebraicClosure (FractionRing V)) ≫ x (lab c)`. Take `⟨wb, frb, hwb, hfrb, hlb⟩` from `GlobalTheory.T.torusExtension_point_liesOver_after_field_extension V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) w₀ hw₀ (g' c) (w c) (x (lab c)) (fr (lab c)) hwc (hfr _).1 hov xb rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f', f₁, -⟩` from `GlobalTheory.TorsionIso.torsion_eq hL V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N) hk`. Establish `hq` using `(f₁ p (f' p)).2 rfl`. Take `⟨w', fr', hw', hfr', hl'⟩` from `GlobalTheory.Poinc.Tors.ValPair.liesOver_of_qkToAkU V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) w₀ hw₀ _ hk p (f' p) rfl hq`. Establish `e` using `GlobalTheory.Poinc.Tors.OneOver.eq_of_liesOver hL V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) w₀ hw₀ p.g wb w' xb (f' p) frb fr' hwb hw' hfrb hfr' hlb hl'`. Use `⟨p, xb, (map_zero 𝔪.e₈).symm, e ▸ hq, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₁ : spMap (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))) ≫ spMap 𝔪.yK = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK)` using `(Spec.map_comp (CommRingCat.ofHom 𝔪.yK) (CommRingCat.ofHom (algebraMap _ _))).symm`. Rewrite using `[← e₁, Category.assoc, ← hx (lab c)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem yy_zero_of_terms : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (C : Type) (lab : C → X₁.S.Gam) (T : X → C → V), 𝔪.Terms x₀ lab T → ∀ c, 𝔪.YY (lab c) 0 := by
   intro I X₁ z₁ act x₀ V _ _ _ ev X _ t δ 𝔪 C lab T hT c

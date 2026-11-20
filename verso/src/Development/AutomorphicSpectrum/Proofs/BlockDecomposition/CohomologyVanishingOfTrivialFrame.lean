@@ -6,13 +6,13 @@ open CategoryTheory CrystallineSemistableComparison CrystallineSemistableCompari
 namespace GlobalTheory.CompanionTheory.FramedSite
 
 /- English proof (translation)
-Take `⟨-, -, hex0, hex⟩` from `CrystallineSemistableComparison.P.initial F E.D (Frame.initial E)`. Establish `key : ∀ x : CH.H F n, x = 0`. Introduce `x`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F) n).1 x`. Use `((CrystallineSemistableComparison.P.cls_surj (CH.cx F) n).2.1 a ha).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `n with`. Consider the case `zero`. Take `⟨m, hm⟩` from `hex0 a ha`. Rewrite `hm` using `[one_smul]`. Establish `hm0 : m = 0` using `Subsingleton.elim _ _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[hm0, map_zero]`. Conclude with `hm.symm`. Consider the case `succ n`. Take `⟨y, hy⟩` from `hex n a ha`. Rewrite `hy` using `[one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy⟩`. Conclude with `⟨fun x y => by rw [key x, key y]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cohomology_subsingleton_of_frame_zero {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
     (E : Frame Φ 0) (F : C ⥤ ModuleCat.{0} R) (hD : Subsingleton (F.obj E.D)) (n : ℕ) :

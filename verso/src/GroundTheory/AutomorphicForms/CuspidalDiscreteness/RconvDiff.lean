@@ -28,7 +28,7 @@ def ccTranslate (g : normOneGL K n) (f : CompactlySupportedContinuousMap (normOn
     f.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft g⁻¹)⟩
 
 /- English proof (translation)
-Unfold `rconv`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ((x * g)⁻¹ * z) * _ = f (g⁻¹ * (x⁻¹ * z)) * _`. Rewrite using `[mul_inv_rev, mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rconv_mul_eq (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (x g : normOneGL K n) :
@@ -39,9 +39,9 @@ theorem rconv_mul_eq (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
   rw [mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Repeatedly rewrite using `[rconv_mul_eq μ f φ x]`. Unfold `rconv`. Repeatedly rewrite using `[← integral_const_mul]`. Rewrite using `[← integral_finsetSum _ fun ε _ => (integrable_rconv Γ₁ μ _ φ x).const_mul _]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Simplify using `only [ccTranslate]`. Express the relevant statement in the definitionally equal form `_ * (f ((archProj K n (C ε))⁻¹ * (x⁻¹ * z)) * _) = _`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_altSign_rconv_eq (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (x : normOneGL K n) {k : ℕ}
@@ -60,17 +60,15 @@ theorem sum_altSign_rconv_eq (f : CompactlySupportedContinuousMap (normOneGL K n
   ring
 
 /- English proof (translation)
-Use `set Q := archProj K n '' 𝒞 * tsupport (f : normOneGL K n → ℂ)`. Establish `hQ : IsCompact Q` using `(h𝒞.image continuous_archProj).mul f.hasCompactSupport`. Establish `hsupp : ∀ w ∉ Q, ∑ ε, (altSign ε : ℂ) * f ((archProj K n (C ε))⁻¹ * w) = 0`. Introduce `w hw`. Use `Finset.sum_eq_zero fun ε _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (archProj K n (C ε))⁻¹ * w ∉ tsupport (f : normOneGL K n → ℂ)` using `fun h' => hw ⟨archProj K n (C ε), ⟨C ε, hC ε, rfl⟩, _, h', mul_inv_cancel_left _ _⟩`. Rewrite using `[image_eq_zero_of_notMem_tsupport this, mul_zero]`. Use `set Ψ : CompactlySupportedContinuousMap (normOneGL K n) ℂ := ⟨⟨fun w => ∑ ε, (altSign ε : ℂ) * f ((archProj K n (C ε))⁻¹ * w), continuous_finsetSum _ fun ε _ => continuous_const.mul (f.continuous.comp (continuous_const_mul _))⟩, HasCompactSupport.intro hQ hsupp⟩`. Rewrite using `[sum_altSign_rconv_eq μ f φ x C]`. Establish `hS : MeasurableSet ((fun y => x * y) '' Q)` using `(hQ.image (continuous_const_mul x)).measurableSet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `enorm_rconv_sq_le Γ₁ μ Ψ φ x hS (fun y hy => hsupp _ fun hq => hy ⟨_, hq, by simp⟩) hm`. Use `h1.trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hQ.measurableSet]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ Q`. Rewrite using `[indicator_of_mem hy]`. Rewrite using `[indicator_of_notMem hy]`. Express the relevant statement in the definitionally equal form `‖∑ ε, (altSign ε : ℂ) * f ((archProj K n (C ε))⁻¹ * y)‖ₑ ^ 2 = 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsupp y hy]`. Simplify using the standard rewrite rules. Use `_ ≤ ∫⁻ _ in Q, ENNReal.ofReal b ^ 2 ∂μ := by`. Use `setLIntegral_mono' hQ.measurableSet fun y _ => ?_` and prove the remaining obligations. Use `gcongr`.
-
-Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hb y)`. Use `_ = ENNReal.ofReal b ^ 2 * μ Q := by rw [setLIntegral_const]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_sum_altSign_rconv_sq_le (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (x : normOneGL K n) {k : ℕ} {𝒞 : Set (ArchUnits K n)}

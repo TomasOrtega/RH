@@ -6,7 +6,7 @@ namespace ReciprocityTheory.Coh
 universe u
 
 /- English proof (translation)
-Take `⟨-, ⟨e₀, h₀⟩, ⟨e₁, h₁⟩, e₂, h₂⟩` from `low_holds R G M`. Conclude with `⟨e₀, e₁, e₂, h₀, h₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLow {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (M : TRep R G) : ∃ e₀ e₁ e₂, IsLow M e₀ e₁ e₂ := by

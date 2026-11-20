@@ -6,12 +6,12 @@ noncomputable section
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `iotaDictAllC_of iotaBridgeRAC_holds`.
+A detailed English derivation is pending.
 -/
 theorem iotaDictAllC_holds : IotaDictAllC := iotaDictAllC_of iotaBridgeRAC_holds
 
 /- English proof (translation)
-The claim follows from `iotaDictC_holds_of iotaBridgeRAC_holds`.
+A detailed English derivation is pending.
 -/
 theorem iotaDictC_holds : IotaDictC := iotaDictC_holds_of iotaBridgeRAC_holds
 

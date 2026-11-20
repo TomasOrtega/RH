@@ -84,15 +84,15 @@ Both sides reduce to the same expression.
 @[simp] theorem symm_g (c : L) : G.symm.g c = G.g.symm c := rfl
 
 /- English proof (translation)
-The claim follows from `T.map_teich G.ψ.toRingHom G.g.toRingHom (fun x => G.red_ψ x) c`.
+A detailed English derivation is pending.
 -/
 theorem ψ_teich (c : L) : G.ψ (T.teich c) = T.teich (G.g c) :=
   T.map_teich G.ψ.toRingHom G.g.toRingHom (fun x => G.red_ψ x) c
 
 /- English proof (translation)
-Establish `hπ : G.ψ.toRingHom T.π = T.π * 1` using `by rw [mul_one]; exact G.ψ_π`. Establish `h1` using `T.map_partialSum G.ψ.toRingHom G.g.toRingHom (fun y => G.red_ψ y) hπ x (n + 1)`. Establish `h2` using `T.map_sub_map_partialSum_mem G.ψ.toRingHom hπ x (n + 1)`. Use `T.coeff_eq_of_mem (a := fun m => G.g (T.coeff x m)) ?_ n le_rfl` and prove the remaining obligations. Establish `e : T.finSum (fun m => G.g (T.coeff x m)) (n + 1) = G.ψ.toRingHom (T.partialSum x (n + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Simplify using `[finSum]`. Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_map (x : Γ) (n : ℕ) : T.coeff (G.ψ x) n = G.g (T.coeff x n) := by
   have hπ : G.ψ.toRingHom T.π = T.π * 1 := by rw [mul_one]; exact G.ψ_π
@@ -105,7 +105,7 @@ theorem coeff_map (x : Γ) (n : ℕ) : T.coeff (G.ψ x) n = G.g (T.coeff x n) :=
   rw [e]; exact h2
 
 /- English proof (translation)
-Unfold `zcoeff`. Use `split_ifs`. Conclude with `G.coeff_map x _`. Conclude with `(map_zero G.g).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zcoeff_map (x : Γ) (n : ℤ) : T.zcoeff (G.ψ x) n = G.g (T.zcoeff x n) := by
   unfold zcoeff
@@ -114,27 +114,27 @@ theorem zcoeff_map (x : Γ) (n : ℤ) : T.zcoeff (G.ψ x) n = G.g (T.zcoeff x n)
   · exact (map_zero G.g).symm
 
 /- English proof (translation)
-Rewrite using `[zcoeff_map, norm_g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_zcoeff_map (x : Γ) (n : ℤ) : ‖T.zcoeff (G.ψ x) n‖ = ‖T.zcoeff x n‖ := by
   rw [zcoeff_map, norm_g]
 
 /- English proof (translation)
-Simplify using `only [ConvergesAt, G.norm_zcoeff_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem convergesAt_zcoeff_map_iff {x : Γ} {ρ : ℝ} :
     ConvergesAt (T.zcoeff (G.ψ x)) ρ ↔ ConvergesAt (T.zcoeff x) ρ := by
   simp only [ConvergesAt, G.norm_zcoeff_map]
 
 /- English proof (translation)
-Simplify using `only [gaussNorm, G.norm_zcoeff_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussNorm_zcoeff_map (x : Γ) (ρ : ℝ) :
     gaussNorm (T.zcoeff (G.ψ x)) ρ = gaussNorm (T.zcoeff x) ρ := by
   simp only [gaussNorm, G.norm_zcoeff_map]
 
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `IsUnit (algebraMap Γ T.B (G.ψ T.π))`. Rewrite using `[G.ψ_π]`. Conclude with `IsLocalization.Away.algebraMap_isUnit T.π`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_map_π : IsUnit ((algebraMap Γ T.B).comp G.ψ.toRingHom T.π) := by
   rw [RingHom.comp_apply]
@@ -145,14 +145,14 @@ theorem isUnit_map_π : IsUnit ((algebraMap Γ T.B).comp G.ψ.toRingHom T.π) :=
 def toBHom : T.B →+* T.B := IsLocalization.Away.lift T.π G.isUnit_map_π
 
 /- English proof (translation)
-Rewrite using `[toBHom, IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toBHom_algebraMap (x : Γ) :
     G.toBHom (algebraMap Γ T.B x) = algebraMap Γ T.B (G.ψ x) := by
   rw [toBHom, IsLocalization.Away.lift_eq]; rfl
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by simp [toBHom_algebraMap])`.
+A detailed English derivation is pending.
 -/
 theorem toBHom_comp (G₁ G₂ : T.TeichIso) : (G₁.comp G₂).toBHom = G₁.toBHom.comp G₂.toBHom :=
   IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by
@@ -171,19 +171,19 @@ Both sides reduce to the same expression.
 theorem toB_apply (b : T.B) : G.toB b = G.toBHom b := rfl
 
 /- English proof (translation)
-The claim follows from `G.toBHom_algebraMap x`.
+A detailed English derivation is pending.
 -/
 theorem toB_algebraMap (x : Γ) : G.toB (algebraMap Γ T.B x) = algebraMap Γ T.B (G.ψ x) :=
   G.toBHom_algebraMap x
 
 /- English proof (translation)
-Rewrite using `[toB_apply, toB_apply, toB_apply, toBHom_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toB_comp (G₁ G₂ : T.TeichIso) (b : T.B) : (G₁.comp G₂).toB b = G₁.toB (G₂.toB b) := by
   rw [toB_apply, toB_apply, toB_apply, toBHom_comp]; rfl
 
 /- English proof (translation)
-Establish `: (G.toB : T.B →+* T.B) = RingHom.id _` using `IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by`. Simplify using `[toB_algebraMap, h])`. Conclude with `congrArg (fun f : T.B →+* T.B => f b) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toB_eq_self (h : ∀ x, G.ψ x = x) (b : T.B) : G.toB b = b := by
   have : (G.toB : T.B →+* T.B) = RingHom.id _ :=
@@ -197,9 +197,9 @@ Both sides reduce to the same expression.
 theorem toB_symm_apply (b : T.B) : G.toB.symm b = G.symm.toB b := rfl
 
 /- English proof (translation)
-Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj T.π b`. Establish `h' : G.toB b * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (G.ψ x)`. Use `congrArg G.toB hx` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, toB_algebraMap, toB_algebraMap, G.ψ_π]`. Then use the resulting hypothesis. Rewrite using `[T.coeffB_eq h', T.coeffB_eq hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `G.zcoeff_map x _`.
+A detailed English derivation is pending.
 -/
 theorem coeffB_toB (b : T.B) (k : ℤ) : T.coeffB (G.toB b) k = G.g (T.coeffB b k) := by
   obtain ⟨N, x, hx⟩ := IsLocalization.Away.surj T.π b
@@ -210,40 +210,40 @@ theorem coeffB_toB (b : T.B) (k : ℤ) : T.coeffB (G.toB b) k = G.g (T.coeffB b 
   exact G.zcoeff_map x _
 
 /- English proof (translation)
-Rewrite using `[coeffB_toB, norm_g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_coeffB_toB (b : T.B) (k : ℤ) : ‖T.coeffB (G.toB b) k‖ = ‖T.coeffB b k‖ := by
   rw [coeffB_toB, norm_g]
 
 /- English proof (translation)
-Simplify using `only [ConvergesAt, G.norm_coeffB_toB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem convergesAt_coeffB_toB_iff {b : T.B} {ρ : ℝ} :
     ConvergesAt (T.coeffB (G.toB b)) ρ ↔ ConvergesAt (T.coeffB b) ρ := by
   simp only [ConvergesAt, G.norm_coeffB_toB]
 
 /- English proof (translation)
-Simplify using `only [gaussNorm, G.norm_coeffB_toB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussNorm_coeffB_toB (b : T.B) (ρ : ℝ) :
     gaussNorm (T.coeffB (G.toB b)) ρ = gaussNorm (T.coeffB b) ρ := by
   simp only [gaussNorm, G.norm_coeffB_toB]
 
 /- English proof (translation)
-The claim follows from `G.convergesAt_coeffB_toB_iff`.
+A detailed English derivation is pending.
 -/
 theorem toB_mem_Econ_iff {ρ : Set.Ioo (0 : ℝ) 1} {b : T.B} :
     G.toB b ∈ T.Econ ρ ↔ b ∈ T.Econ ρ :=
   G.convergesAt_coeffB_toB_iff
 
 /- English proof (translation)
-Simplify using `only [mem_Edag, G.toB_mem_Econ_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toB_mem_Edag_iff {b : T.B} : G.toB b ∈ T.Edag ↔ b ∈ T.Edag := by
   simp only [mem_Edag, G.toB_mem_Econ_iff]
 
 /- English proof (translation)
-Simplify using `only [ordB, coeffB_toB, ne_eq, EmbeddingLike.map_eq_zero_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ordB_toB (b : T.B) : T.ordB (G.toB b) = T.ordB b := by
   simp only [ordB, coeffB_toB, ne_eq, EmbeddingLike.map_eq_zero_iff]
@@ -274,9 +274,9 @@ Both sides reduce to the same expression.
 theorem coe_econMap (b : T.Econ ρ0) : (G.econMap ρ0 b : T.B) = G.toB b := rfl
 
 /- English proof (translation)
-Use `uniformContinuous_iInf_rng.2 fun τ => ?_` and prove the remaining obligations. Use `uniformContinuous_iInf_dom (i := τ) ?_` and prove the remaining obligations. Use `(@Metric.uniformContinuous_iff _ _ (T.gaussSeminorm ρ0 τ).toSeminormedRing.toPseudoMetricSpace (T.gaussSeminorm ρ0 τ).toSeminormedRing.toPseudoMetricSpace _).2 fun ε hε => ⟨ε, hε, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Rewrite `hab`, the goal using `[dist_uniformAt']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[coe_econMap, coe_econMap, ← map_sub, G.gaussNorm_coeffB_toB]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem uniformContinuous_econMap : UniformContinuous (G.econMap ρ0) := by
   refine uniformContinuous_iInf_rng.2 fun τ => ?_
@@ -294,19 +294,19 @@ def extMap : T.RobbaExt ρ0 →+* T.RobbaExt ρ0 :=
 variable {ρ0}
 
 /- English proof (translation)
-The claim follows from `Completion.mapRingHom_coe _ b`.
+A detailed English derivation is pending.
 -/
 theorem extMap_coe (b : T.Econ ρ0) :
     G.extMap ρ0 (b : T.RobbaExt ρ0) = ((G.econMap ρ0 b : T.Econ ρ0) : T.RobbaExt ρ0) :=
   Completion.mapRingHom_coe _ b
 
 /- English proof (translation)
-The claim follows from `Completion.continuous_map`.
+A detailed English derivation is pending.
 -/
 theorem continuous_extMap : Continuous (G.extMap ρ0) := Completion.continuous_map
 
 /- English proof (translation)
-The claim follows from `Completion.induction_on x (isClosed_eq ((T.continuous_extNorm ρ).comp G.continuous_extMap) (T.continuous_extNorm ρ)) fun b => by rw [extMap_coe, extNorm_coe, extNorm_coe, coe_econMap, gaussNorm_coeffB_toB]`.
+A detailed English derivation is pending.
 -/
 theorem extNorm_extMap (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ (G.extMap ρ0 x) = T.extNorm ρ0 ρ x :=
@@ -315,7 +315,7 @@ theorem extNorm_extMap (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) :
     fun b => by rw [extMap_coe, extNorm_coe, extNorm_coe, coe_econMap, gaussNorm_coeffB_toB]
 
 /- English proof (translation)
-The claim follows from `Completion.induction_on x (isClosed_eq ((T.continuous_res _).comp Completion.continuous_map) (Completion.continuous_map.comp (T.continuous_res _))) fun b => by rw [extMap_coe, res_coe, res_coe, extMap_coe]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem res_extMap {ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (x : T.RobbaExt ρ0) :
     T.res h (G.extMap ρ0 x) = G.extMap ρ1 (T.res h x) :=
@@ -325,7 +325,7 @@ theorem res_extMap {ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (x : T.
     fun b => by rw [extMap_coe, res_coe, res_coe, extMap_coe]; rfl
 
 /- English proof (translation)
-The claim follows from `Completion.induction_on x (isClosed_eq Completion.continuous_map (Completion.continuous_map.comp Completion.continuous_map)) fun b => by rw [extMap_coe, extMap_coe, extMap_coe] congr 1 exact Subtype.ext (toB_comp G₁ G₂ (b : T.B))`.
+A detailed English derivation is pending.
 -/
 theorem extMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaExt ρ0) :
     (G₁.comp G₂).extMap ρ0 x = G₁.extMap ρ0 (G₂.extMap ρ0 x) :=
@@ -337,7 +337,7 @@ theorem extMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaExt ρ0) :
       exact Subtype.ext (toB_comp G₁ G₂ (b : T.B))
 
 /- English proof (translation)
-The claim follows from `Completion.induction_on y (isClosed_eq Completion.continuous_map continuous_id) fun b => by rw [extMap_coe] congr 1 exact Subtype.ext (G.toB_eq_self h (b : T.B))`.
+A detailed English derivation is pending.
 -/
 theorem extMap_eq_self (h : ∀ x, G.ψ x = x) (y : T.RobbaExt ρ0) : G.extMap ρ0 y = y :=
   Completion.induction_on y (isClosed_eq Completion.continuous_map continuous_id) fun b => by
@@ -354,14 +354,14 @@ def tildeMap : T.RobbaTilde →+* T.RobbaTilde :=
       rw [← G.res_extMap, T.ofRad_res]
 
 /- English proof (translation)
-Conclude with `Ring.DirectLimit.lift_of ..`.
+A detailed English derivation is pending.
 -/
 theorem tildeMap_ofRad (σ : Set.Ioo (0 : ℝ) 1) (x : T.RobbaExt σ) :
     G.tildeMap (T.ofRad σ x) = T.ofRad σ (G.extMap σ x) := by
   exact Ring.DirectLimit.lift_of ..
 
 /- English proof (translation)
-Take `⟨σ, y, rfl⟩` from `T.exists_ofRad x`. Rewrite using `[tildeMap_ofRad, tildeMap_ofRad, tildeMap_ofRad, extMap_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tildeMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaTilde) :
     (G₁.comp G₂).tildeMap x = G₁.tildeMap (G₂.tildeMap x) := by
@@ -369,27 +369,27 @@ theorem tildeMap_comp (G₁ G₂ : T.TeichIso) (x : T.RobbaTilde) :
   rw [tildeMap_ofRad, tildeMap_ofRad, tildeMap_ofRad, extMap_comp]
 
 /- English proof (translation)
-Take `⟨σ, y, rfl⟩` from `T.exists_ofRad x`. Rewrite using `[tildeMap_ofRad, G.extMap_eq_self h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tildeMap_eq_self (h : ∀ x, G.ψ x = x) (x : T.RobbaTilde) : G.tildeMap x = x := by
   obtain ⟨σ, y, rfl⟩ := T.exists_ofRad x
   rw [tildeMap_ofRad, G.extMap_eq_self h]
 
 /- English proof (translation)
-The claim follows from `tildeMap_eq_self _ (fun _ => rfl) x`.
+A detailed English derivation is pending.
 -/
 theorem tildeMap_refl (x : T.RobbaTilde) : (refl : T.TeichIso).tildeMap x = x :=
   tildeMap_eq_self _ (fun _ => rfl) x
 
 /- English proof (translation)
-Rewrite using `[← tildeMap_comp]`. Conclude with `tildeMap_eq_self _ (fun y => by simp) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tildeMap_symm_tildeMap (x : T.RobbaTilde) : G.symm.tildeMap (G.tildeMap x) = x := by
   rw [← tildeMap_comp]
   exact tildeMap_eq_self _ (fun y => by simp) x
 
 /- English proof (translation)
-Rewrite using `[← tildeMap_comp]`. Conclude with `tildeMap_eq_self _ (fun y => by simp) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tildeMap_tildeMap_symm (x : T.RobbaTilde) : G.tildeMap (G.symm.tildeMap x) = x := by
   rw [← tildeMap_comp]
@@ -405,9 +405,9 @@ Both sides reduce to the same expression.
 theorem tildeEquiv_apply (x : T.RobbaTilde) : G.tildeEquiv x = G.tildeMap x := rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `T.mem_Edag.1 b.2`. Establish `hb : T.edagToTilde b = T.econToTilde σ ⟨b, hσ⟩` using `T.edagFun_eq b hσ`. Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `_ = T.edagFun (G.edagEquiv b)`. Rewrite using `[T.edagFun_eq (G.edagEquiv b) (G.toB_mem_Econ_iff.2 hσ)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [econToTilde, RingHom.comp_apply]`. Rewrite using `[tildeMap_ofRad]`. Use `congr 1`. Conclude with `G.extMap_coe ⟨b, hσ⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tildeMap_edagToTilde (b : T.Edag) :
     G.tildeMap (T.edagToTilde b) = T.edagToTilde (G.edagEquiv b) := by
@@ -422,7 +422,7 @@ theorem tildeMap_edagToTilde (b : T.Edag) :
   exact G.extMap_coe ⟨b, hσ⟩
 
 /- English proof (translation)
-Simplify using `only [econToTilde, RingHom.comp_apply]`. Rewrite using `[tildeMap_ofRad]`. Use `congr 1`. Conclude with `G.extMap_coe b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tildeMap_econToTilde (σ : Set.Ioo (0 : ℝ) 1) (b : T.Econ σ) :
     G.tildeMap (T.econToTilde σ b) = T.econToTilde σ (G.econMap σ b) := by
@@ -432,7 +432,7 @@ theorem tildeMap_econToTilde (σ : Set.Ioo (0 : ℝ) 1) (b : T.Econ σ) :
   exact G.extMap_coe b
 
 /- English proof (translation)
-Rewrite using `[T.tildeOrd_eq (b := G.edagEquiv (T.unitPre x)) (by`. Rewrite using `[← G.tildeMap_edagToTilde, T.unitPre_spec]`. Use the proof step `rfl), G.edagEquiv_apply, G.ordB_toB]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tildeOrd_map [CompleteSpace L] (x : T.RobbaTildeˣ) :
     T.tildeOrd (Units.map (G.tildeMap : T.RobbaTilde →* T.RobbaTilde) x) = T.tildeOrd x := by
@@ -443,7 +443,7 @@ theorem tildeOrd_map [CompleteSpace L] (x : T.RobbaTildeˣ) :
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-Establish `: (G.toB : T.B →+* T.B).comp (F.toB : T.B →+* T.B) = (F.toB : T.B →+* T.B).comp (G.toB : T.B →+* T.B)` using `IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by`. Simplify using `[TeichIso.toB_algebraMap, TeichFrob.toB_algebraMap, h])`. Conclude with `congrArg (fun f : T.B →+* T.B => f b) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toB_frob_comm (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (b : T.B) :
     G.toB (F.toB b) = F.toB (G.toB b) := by
@@ -454,7 +454,7 @@ theorem toB_frob_comm (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (b : T.B) :
   exact congrArg (fun f : T.B →+* T.B => f b) this
 
 /- English proof (translation)
-The claim follows from `Completion.induction_on x (isClosed_eq (Completion.continuous_map.comp Completion.continuous_map) (Completion.continuous_map.comp Completion.continuous_map)) fun b => by rw [TeichFrob.extFrob_coe, extMap_coe, extMap_coe, TeichFrob.extFrob_coe] congr 1 exact Subtype.ext (G.toB_fro …`.
+A detailed English derivation is pending.
 -/
 theorem extMap_extFrob (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (σ : Set.Ioo (0 : ℝ) 1)
     (x : T.RobbaExt σ) :
@@ -468,7 +468,7 @@ theorem extMap_extFrob (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (σ : Set.Ioo 
       exact Subtype.ext (G.toB_frob_comm F h (b : T.B))
 
 /- English proof (translation)
-Take `⟨σ, y, rfl⟩` from `T.exists_ofRad x`. Rewrite using `[F.tildeFrob_ofRad, tildeMap_ofRad, tildeMap_ofRad, F.tildeFrob_ofRad, G.extMap_extFrob F h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tildeMap_tildeFrob (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (x : T.RobbaTilde) :
     G.tildeMap (F.tildeFrob x) = F.tildeFrob (G.tildeMap x) := by

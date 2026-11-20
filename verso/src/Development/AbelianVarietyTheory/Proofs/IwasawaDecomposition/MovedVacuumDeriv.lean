@@ -32,21 +32,21 @@ Both sides reduce to the same expression.
 theorem omL_apply (x y : V) : omL J x y = omJ J x y := rfl
 
 /- English proof (translation)
-Use `omJ_skew hJ x x` as an intermediate fact. Rewrite using `[omL_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem omL_self (hJ : ∀ x, J (J x) = -x) (x : V) : omL J x x = 0 := by
   have := omJ_skew hJ x x
   rw [omL_apply]; linarith
 
 /- English proof (translation)
-Use `abs_real_inner_le_norm x (J y)` as an intermediate fact. Rewrite `this` using `[J.norm_map]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem abs_omJ_le (x y : V) : |omJ J x y| ≤ ‖x‖ * ‖y‖ := by
   have := abs_real_inner_le_norm x (J y)
   rwa [J.norm_map] at this
 
 /- English proof (translation)
-The claim follows from `have := DCalc.dH_calculus V B (omL J) ρ (omL_self hJ) h f hf ⟨this.1, this.2.1, this.2.2.1, this.2.2.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem calc' (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) :
     (∀ v, Sm ρ (dH ρ v f)) ∧ (∀ w, Sm ρ (ρ w f)) ∧
@@ -56,11 +56,11 @@ theorem calc' (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : S
   ⟨this.1, this.2.1, this.2.2.1, this.2.2.2.1⟩
 
 /- English proof (translation)
-Establish `hd : ∀ s : ℝ, HasDerivAt (fun s : ℝ => ρ (u + s • z) f) (fderiv ℝ (fun u => ρ u f) (u + s • z) z) s`. Introduce `s`. Establish `h2 : HasDerivAt (fun s : ℝ => u + s • z) z s`. Simplify using `using ((hasDerivAt_id s).smul_const z).const_add u`. Conclude with `(ContDiff.differentiable hf (by simp) _).hasFDerivAt.comp_hasDerivAt s h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `norm_image_sub_le_of_norm_deriv_le_segment_01' (f := fun s : ℝ => ρ (u + s • z) f) (C := ‖dH ρ z f‖ + π * (‖u‖ * ‖z‖) * ‖f‖) (fun s _ => (hd s).hasDerivWithinAt) (fun s _ => ?_)` as an intermediate fact. Simplify using `using this`. Establish `e : omJ J (u + s • z) z = omJ J u z`. Rewrite using `[← omL_apply, map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, omL_self hJ, smul_zero, add_zero, omL_apply]`. Rewrite using `[(calc' hJ h hf).2.2.1, e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(_root_.norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[h.2.2.1, norm_smul, h.2.2.1]`. Simplify using `only [norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Use `abs_omJ_le (J := J) u z` as an intermediate fact. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_sub_le (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (u z : V) :
     ‖ρ (u + z) f - ρ u f‖ ≤ ‖dH ρ z f‖ + π * (‖u‖ * ‖z‖) * ‖f‖ := by
@@ -83,7 +83,7 @@ theorem norm_sub_le (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (
     gcongr
 
 /- English proof (translation)
-Use `Integrable.mono' (((Osc.integrable_pow_gau (V := V) n).const_mul K).mul_const ‖f‖) (continuous_gau.smul (hφ.smul (h.2.2.2 f))).aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_smul, h.2.2.1]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem integrable_coef (h : IsHeis (omJ J) ρ) (f : B) {φ : V → ℂ} (hφ : Continuous φ) (K : ℝ) (n : ℕ)
     (hb : ∀ u, ‖φ u‖ ≤ K * ‖u‖ ^ n) : Integrable fun u => gau u • φ u • ρ u f := by
@@ -94,13 +94,13 @@ theorem integrable_coef (h : IsHeis (omJ J) ρ) (f : B) {φ : V → ℂ} (hφ : 
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul (Complex.continuous_ofReal.comp (omL J v).continuous)`.
+A detailed English derivation is pending.
 -/
 theorem cont_coef (v : V) : Continuous fun u : V => (2 * π * I * (omJ J v u : ℂ)) :=
   continuous_const.mul (Complex.continuous_ofReal.comp (omL J v).continuous)
 
 /- English proof (translation)
-Simplify using `only [norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos, Complex.norm_ofNat]`. Rewrite using `[mul_assoc (2 * π)]`. Use `abs_omJ_le (J := J) v u` as an intermediate fact. Use `gcongr`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_coef (v u : V) : ‖(2 * π * I * (omJ J v u : ℂ))‖ ≤ (2 * π * ‖v‖) * ‖u‖ := by
   simp only [norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos,
@@ -110,7 +110,7 @@ theorem norm_coef (v u : V) : ‖(2 * π * I * (omJ J v u : ℂ))‖ ≤ (2 * π
   gcongr
 
 /- English proof (translation)
-Simplify using `only [(calc' hJ h hf).2.2.2, smul_add]`. Conclude with `(h.integrable _).add (integrable_coef h f (cont_coef v) (2 * π * ‖v‖) 1 fun u => by`. Rewrite using `[pow_one]`. Conclude with `norm_coef v u)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_dH (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (v : V) :
     Integrable fun u => gau u • dH ρ v (ρ u f) := by
@@ -119,11 +119,11 @@ theorem integrable_dH (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B}
     rw [pow_one]; exact norm_coef v u)
 
 /- English proof (translation)
-Establish `c1` using `calc' hJ h hf`. Establish `c2` using `calc' hJ h (c1.1 q)`. Establish `e : ∀ u, gau u • dH ρ p (dH ρ q (ρ u f)) = gau u • dH ρ p (ρ u (dH ρ q f)) + (gau u • (2 * π * I * (omJ J q u : ℂ)) • ρ u (dH ρ p f) + gau u • ((2 * π * I * (omJ J q u : ℂ)) * (2 * π * I * (omJ J p u : ℂ))) • ρ u f)`. Introduce `u`. Rewrite using `[c1.2.2.2 q, dH_add _ (c2.2.1 u) (Osc.sm_smul _ (c1.2.1 u)), dH_smul _ _ (c1.2.1 u), c1.2.2.2 p, smul_add, smul_add, smul_add, smul_smul _ _ (ρ u f)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Use `(integrable_dH hJ h (c1.1 q) p).add ((integrable_coef h _ (cont_coef q) (2 * π * ‖q‖) 1 fun u => by` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `norm_coef q u).add (integrable_coef h _ ((cont_coef q).mul (cont_coef p)) ((2 * π * ‖q‖) * (2 * π * ‖p‖)) 2 fun u => ?_))`. Rewrite using `[norm_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem integrable_dH_dH (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (p q : V) :
     Integrable fun u => gau u • dH ρ p (dH ρ q (ρ u f)) := by
@@ -145,9 +145,9 @@ theorem integrable_dH_dH (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f :
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `c1` using `calc' hJ h hf`. Establish `sP : Sm ρ (proj h f)` using `(Osc.good_proj hJ h f).sm hJ`. Establish `e1 : dH ρ q (proj h f) = ∫ u, gau u • dH ρ q (ρ u f)`. Use `dH_integral V B (omL J) ρ (omL_self hJ) h V volume (fun u => gau u • ρ u f) (fun u => Osc.sm_smul _ (c1.2.1 u)) (h.integrable f) sP q (by simp only [dH_smul _ _ (c1.2.1 _)]; exact integrable_dH hJ h hf q)` as an intermediate fact. Simplify `this` using `only [dH_smul _ _ (c1.2.1 _), proj_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `s2 : ∀ u, Sm ρ (dH ρ q (ρ u f))` using `fun u => (calc' hJ h (c1.2.1 u)).1 q`. Use `dH_integral V B (omL J) ρ (omL_self hJ) h V volume (fun u => gau u • dH ρ q (ρ u f)) (fun u => Osc.sm_smul _ (s2 u)) (integrable_dH hJ h hf q) (e1 ▸ (calc' hJ h sP).1 q) p (by simp only [dH_smul _ _ (s2 _)]; exact integrable_dH_dH hJ h hf p q)` as an intermediate fact. Rewrite using `[e1, this]`. Simplify using `only [dH_smul _ _ (s2 _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_dH_dH (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (p q : V) :
     ∫ u, gau u • dH ρ p (dH ρ q (ρ u f)) = dH ρ p (dH ρ q (proj h f)) := by
@@ -166,7 +166,7 @@ theorem integral_dH_dH (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B
   simp only [dH_smul _ _ (s2 _)]
 
 /- English proof (translation)
-Establish `hi : ∀ i ∈ Finset.univ, Integrable fun u => c i • gau u • dH ρ (p i) (dH ρ (q i) (ρ u f))` using `fun i _ => (integrable_dH_dH hJ h hf (p i) (q i)).smul (c i)`. Simplify using `only [quad, Finset.smul_sum, smul_comm (gau _) (c _)]`. Use `⟨integrable_finset_sum _ hi, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ hi]`. Simplify using `only [integral_smul, integral_dH_dH hJ h hf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_quad (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f)
     {κ : Type} [Fintype κ] (c : κ → ℂ) (p q : κ → V) :
@@ -180,27 +180,23 @@ theorem integral_quad (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) {f : B}
   simp only [integral_smul, integral_dH_dH hJ h hf]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ B _ _ _ J ρ hJ h a X a0 ha hom κ _ c p q hq`. Take `⟨⟨C, hC⟩, -, hl⟩` from `VacBd.vacuum_bound V B J ρ hJ h`. Establish `sP : ∀ x, Sm ρ (proj h x)` using `fun x => (Osc.good_proj hJ h x).sm hJ`. Take `⟨K, hK0, hK⟩` from `ha.hasFDerivAt.isBigO_sub.exists_nonneg`. Establish `hK` using `hK.bound`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [a0, sub_zero, Real.norm_eq_abs] at hK`. Use `set b : V → ℝ := fun u => |C| * K * (‖u‖ ^ 1 * ‖gau u‖) + π * K * ‖proj h‖ * (‖u‖ ^ 2 * ‖gau u‖) with hb`. Establish `bi : Integrable b` using `((Osc.integrable_pow_gau 1).const_mul _).add ((Osc.integrable_pow_gau 2).const_mul _)`. Establish `key : ∀ t, ‖a t - 1‖ ≤ K * |t| → ∀ x u, ‖gau u • ρ (a t u) (proj h x) - gau u • ρ u (proj h x)‖ ≤ b u * ‖x‖ * |t|`. Introduce `t ht x u`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : ‖a t u - u‖ ≤ K * |t| * ‖u‖`. Use `(a t - 1).le_opNorm u` as an intermediate fact. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply] at this`. Conclude with `this.trans (by gcongr)`. Establish `h1` using `norm_sub_le hJ h (sP x) u (a t u - u)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[add_sub_cancel]`. Establish `h2 : ‖dH ρ (a t u - u) (proj h x)‖ ≤ |C| * (K * |t| * ‖u‖) * ‖x‖` using `(hC _ _).trans (by gcongr; exact le_abs_self C)`. Establish `h3 : π * (‖u‖ * ‖a t u - u‖) * ‖proj h x‖ ≤ π * (‖u‖ * (K * |t| * ‖u‖)) * (‖proj h‖ * ‖x‖)` using `by gcongr; exact (proj h).le_opNorm x`. Rewrite using `[← smul_sub, norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨∫ u, b u, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hK] with t ht x`. Establish `i1 : Integrable fun u => gau u • ρ (a t u) (proj h x)` using `(h.twist (a t) (hom t)).integrable _`. Establish `e : proj h x = ∫ u, gau u • ρ u (proj h x)` using `(Osc.proj_proj hJ h x).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[integral_sub i1 (h.integrable _), ← e]`. Use `_ ≤ ∫ u, b u * ‖x‖ * |t| := norm_integral_le_of_norm_le ((bi.mul_const _).mul_const _) (Filter.Eventually.of_forall (key t ht x))`. Use `_ = _ := by rw [integral_mul_const, integral_mul_const]; ring`. Use `choose l hl using hl`. Use `⟨-∑ i, c i * l (p i) (q i), fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hG : ∀ u, fderiv ℝ (fun u => ρ u (proj h x)) u (X u) = quad ρ c p q (ρ u (proj h x)) - ρ u (quad ρ c p q (proj h x))` using `GlobalTheory.Mem.Lift.fderiv_eq_quad_comm V B (omL J) ρ (omL_self hJ) h X κ c p q hq _ (sP x)`. Take `⟨i1, e1⟩` from `integral_quad hJ h (sP x) c p q`. Establish `i2` using `h.integrable (quad ρ c p q (proj h x))`. Establish `i3 : Integrable fun u => gau u • fderiv ℝ (fun u => ρ u (proj h x)) u (X u)`. Simplify using `only [hG, smul_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `i1.sub i2`. Establish `e3 : ∫ u, gau u • fderiv ℝ (fun u => ρ u (proj h x)) u (X u) = quad ρ c p q (proj h x) + (-∑ i, c i * l (p i) (q i)) • proj h x`. Simplify using `only [hG, smul_sub]`. Rewrite using `[integral_sub i1 i2, e1, Osc.proj_proj hJ, ← proj_apply h, neg_smul, sub_eq_add_neg, Finset.sum_smul]`. Simplify using `only [quad, map_sum, map_smul, hl, smul_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← e3]`. Establish `i4 : Integrable fun u => ContinuousLinearMap.toSpanSingleton ℝ (gau u • fderiv ℝ (fun u => ρ u (proj h x)) u (X u))` using `((ContinuousLinearMap.smulRightL ℝ ℝ B 1).integrable_comp i3)`. Use `(hasFDerivAt_integral_of_dominated_loc_of_lip' (𝕜 := ℝ) (μ := volume) (F := fun (t : ℝ) (u : V) => gau u • ρ (a t u) (proj h x)) (x₀ := 0) (F' := fun u => ContinuousLinearMap.toSpanSingleton ℝ (gau u • fderiv ℝ (fun u => ρ u (proj h x)) u (X u))) (bound := fun u => b u * ‖x‖) (s …` as an intermediate fact. Simplify `key t ht x u)` using `only [a0, ContinuousLinearMap.one_apply, sub_zero, Real.norm_eq_abs]`. Use the proof step `(bi.mul_const _) (Filter.Eventually.of_forall fun u => ?_)).2.hasDerivAt`.
-
-Rewrite `this` using `[ContinuousLinearMap.integral_apply i4]`. Simplify `this` using `only [ContinuousLinearMap.toSpanSingleton_apply, one_smul]`. Establish `h2 : HasDerivAt (fun t => a t u) (X u) 0`. Simplify using `using ha.clm_apply (hasDerivAt_const (0 : ℝ) u)`. Establish `h3` using `(ContDiff.differentiable (sP x) (by simp) u).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h2 (by simp [a0])`.
-
-Conclude with `(h3.const_smul (gau u)).hasFDerivAt`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem moved_vacuum_deriv : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (J : V ≃ₗᵢ[ℝ] V) (ρ : V → B →L[ℂ] B), (∀ x, J (J x) = -x) → ∀ h : IsHeis (omJ J) ρ, ∀ (a : ℝ → V →L[ℝ] V) (X : V →L[ℝ] V), a 0 = 1 → HasDerivAt a X 0 → (∀ t x y, omJ J (a t x) (a t y) = omJ J x y) → ∀ (κ : Type) [Fintype κ] (c : κ → ℂ) (p q : κ → V), IsQuadOf (omJ J) X c p q → (∃ C : ℝ, ∀ᶠ t in 𝓝 (0 : ℝ), ∀ x, ‖(∫ u, gau u • ρ (a t u) (proj h x)) - proj h x‖ ≤ C * |t| * ‖x‖) ∧ ∃ lam : ℂ, ∀ x, HasDerivAt (fun t : ℝ => ∫ u, gau u • ρ (a t u) (proj h x)) (quad ρ c p q (proj h x) + lam • proj h x) 0 := by
   intro V _ _ _ _ _ B _ _ _ J ρ hJ h a X a0 ha hom κ _ c p q hq

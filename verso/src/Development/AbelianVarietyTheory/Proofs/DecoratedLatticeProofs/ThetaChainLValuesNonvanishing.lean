@@ -18,7 +18,7 @@ section General
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.LFun.locL]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, GlobalTheory.LFun.locL_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem locL_finsetSum {ι : Type} (s : Finset ι) (d : ι → GlobalTheory.LFun.Fam K) (w : HeightOneSpectrum (𝓞 K)) (x : ℂ) :
     GlobalTheory.LFun.locL (∑ i ∈ s, d i) w x = ∏ i ∈ s, GlobalTheory.LFun.locL (d i) w x := by
@@ -29,16 +29,16 @@ theorem locL_finsetSum {ι : Type} (s : Finset ι) (d : ι → GlobalTheory.LFun
     rw [Finset.sum_insert ha, Finset.prod_insert ha, GlobalTheory.LFun.locL_add, ih]
 
 /- English proof (translation)
-Introduce `w _` and use `⟨by simp, fun b hb => by rw [Multiset.mem_singleton.1 hb, Real.rpow_zero, hz]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bounded_single (T : Set (HeightOneSpectrum (𝓞 K))) (z : HeightOneSpectrum (𝓞 K) → ℂˣ)
     (hz : ∀ w, ‖(z w : ℂ)‖ = 1) : GlobalTheory.LFun.Bounded T (fun w => {z w}) 1 0 := fun w _ =>
   ⟨by simp, fun b hb => by rw [Multiset.mem_singleton.1 hb, Real.rpow_zero, hz]⟩
 
 /- English proof (translation)
-Establish `h1 : HasProd (fun w : {w // w ∉ T} => ∏ i ∈ s, ∏ l ∈ Finset.range t, GlobalTheory.LFun.locL (fun u => {z i u}) w (x + ((t : ℂ) - 1) / 2 - l)) (∏ i ∈ s, ∏ l ∈ Finset.range t, GlobalTheory.LFun.eulerProd T (fun w => {z i w}) (x + ((t : ℂ) - 1) / 2 - l))` using `hasProd_prod fun i hi => hasProd_prod fun l hl => (hz i hi l (Finset.mem_range.1 hl)).hasProd`. Establish `h2` using `hA.hasProd.mul h1`. Use `show ∏' w : {w // w ∉ T}, _ = _`. Use `HasProd.tprod_eq ?_` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[GlobalTheory.LFun.locL_add, locL_finsetSum]`. Simplify using `only [GlobalTheory.LFun.locL_segFam']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eulerProd_add_segFam {ι : Type} (T : Set (HeightOneSpectrum (𝓞 K))) (A : GlobalTheory.LFun.Fam K) (s : Finset ι)
     (z : ι → HeightOneSpectrum (𝓞 K) → ℂˣ) (t : ℕ) (x : ℂ) (hA : GlobalTheory.LFun.Converges T A x)
@@ -60,27 +60,25 @@ theorem eulerProd_add_segFam {ι : Type} (T : Set (HeightOneSpectrum (𝓞 K))) 
 end General
 
 /- English proof (translation)
-Introduce `D c hc B hB k hk`. Use `set T := GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) with hT`. Establish `hrt : D.R.r + 5 ≤ D.R.t` using `D.R.rank_add_five_le`. Establish `hrt' : (D.R.r : ℝ) + 5 ≤ D.R.t` using `by exact_mod_cast hrt`. Establish `hΛ : ∀ i : ℕ, ∃ Λ : ℂ → ℂ, i ∈ Finset.Icc 1 k → Differentiable ℂ Λ ∧ (∀ z : ℂ, 1 < z.re → Λ z = GlobalTheory.LFun.eulerProd T (fun w => {GlobalTheory.LFun.val (F` using `D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) w}) z) ∧ ∀ n : ℕ, 1 ≤ n → n ≤ D.R.t → Λ n ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Distinguish the cases in `hi : i ∈ Finset.Icc 1 k`. Establish `h1` using `(Finset.mem_Icc.1 hi).1`. Establish `h2` using `(Finset.mem_Icc.1 hi).2`. Take `⟨Λ, h⟩` from `GlobalTheory.T.thetaChain_char_quotient_LFunction_entire_ne_zero D c hc i (k + 1) h1 (by omega) (by omega)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Λ, fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose Λ hΛ using hΛ`. Use `set A := GlobalTheory.LFun.twist B (GlobalTheory.LFun.val (F := D.host.F) (c.μ (k + 1)))⁻¹ with hA`. Establish `hAb : GlobalTheory.LFun.Bounded T A D.R.r ((D.R.r : ℝ) / 2)` using `hB.twist fun w _ => by simp [GlobalTheory.LFun.norm_val]`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `z : ℕ → HeightOneSpectrum (𝓞 D.host.E) → ℂˣ` to `fun i => GlobalTheory.LFun.val (F := D.host.F) (c.μ i * (c.μ (k + 1))⁻¹)`. Establish `hzc : ∀ i, ∀ y : ℂ, 1 < y.re → GlobalTheory.LFun.Converges T (fun w => {z i w}) y` using `fun i y hy => (bounded_single T (z i) fun w => GlobalTheory.LFun.norm_val _ _).converges (by simpa using hy)`. Set `H : ℂ → ℂ` to `fun x => GlobalTheory.LFun.eulerProd T A (x + 1 / 2) * ∏ i ∈ Finset.Icc 1 k, ∏ l ∈ Finset.range D.R.t, Λ i (x + 1 / 2 + ((D.R.t : ℂ) - 1) / 2 - l)`. Establish `hEq : ∀ x : ℂ, ((D.R.r : ℝ) + D.R.t + 2) < x.re → H x = GlobalTheory.LFun.LSD D c.S (chainPar c B k) (c.chT (k + 1)) (x + 1 / 2)`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hre : ∀ l : ℕ, l < D.R.t → 1 < (x + 1 / 2 + ((D.R.t : ℂ) - 1) / 2 - l).re`. Introduce `l hl`. Establish `: (l : ℝ) + 1 ≤ D.R.t` using `by exact_mod_cast hl`. Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show _ = GlobalTheory.LFun.eulerProd T (GlobalTheory.LFun.twist (chainPar c B k) (GlobalTheory.LFun.val (F := D.host.F) (c.chT (k + 1)))⁻¹) (x + 1 / 2)`. Rewrite using `[GlobalTheory.T.thetaLiftChainHeckeParameter_twist_next_target_char D c B k, ← hA, eulerProd_add_segFam T A (Finset.Icc 1 k) z D.R.t (x + 1 / 2) (hAb.converges (by have hr0 : (0 : ℝ) ≤ D.R.r := Nat.cast_nonneg _; simp; linarith)) (fun i _ l hl => hzc i _ (hre l hl))]`. Use `congrArg (GlobalTheory.LFun.eulerProd T A (x + 1 / 2) * ·) (Finset.prod_congr rfl fun i hi => Finset.prod_congr rfl fun l hl => ?_)` and prove the remaining obligations. Conclude with `(hΛ i hi).2.1 _ (hre l (Finset.mem_range.1 hl))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hU : IsOpen (GlobalTheory.Cont.rightOf (((D.R.r : ℝ) + 1) / 2))` using `GlobalTheory.Cont.isOpen_rightOf _`. Establish `hD : DifferentiableOn ℂ H (GlobalTheory.Cont.rightOf (((D.R.r : ℝ) + 1) / 2))`. Use `DifferentiableOn.mul ?_ (Differentiable.differentiableOn ?_)` and prove the remaining obligations. Use `hAb.differentiableOn.comp (differentiableOn_id.add_const _) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.Cont.mem_rightOf] at hx`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Differentiable.fun_finsetProd fun i hi => Differentiable.fun_finsetProd fun l _ => (hΛ i hi).1.comp (by fun_prop)`. Establish `hAn` using `hD.analyticOnNhd hU`. Establish `hmem : ((D.R.t : ℂ) / 2) ∈ GlobalTheory.Cont.rightOf (((D.R.r : ℝ) + 1) / 2)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.Cont.mem_rightOf]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨H ((D.R.t : ℂ) / 2), ?_, H, ⟨_, hmem, GlobalTheory.Cont.isRightDomain_rightOf _, hAn.meromorphicOn, (D.R.r : ℝ) + D.R.t + 2, fun x hx => hEq x hx⟩, hAn _ hmem, rfl⟩` and prove the remaining obligations. Use `mul_ne_zero ((hAb.converges ?_).ne_zero) ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Use `Finset.prod_ne_zero_iff.2 fun i hi => Finset.prod_ne_zero_iff.2 fun l hl => ?_` and prove the remaining obligations. Establish `hl'` using `Finset.mem_range.1 hl`. Establish `e : (D.R.t : ℂ) / 2 + 1 / 2 + ((D.R.t : ℂ) - 1) / 2 - l = ((D.R.t - l : ℕ) : ℂ)`.
-
-Rewrite using `[Nat.cast_sub hl'.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hΛ i hi).2.2 _ (by omega) (by omega)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainLW_holds : ∀ D : D7, ChainLW D := by
   intro D c hc B hB k hk

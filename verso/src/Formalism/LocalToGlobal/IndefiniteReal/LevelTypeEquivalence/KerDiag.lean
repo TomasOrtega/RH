@@ -27,11 +27,11 @@ section Gen
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Datum.dRho`. Use function extensionality and compare the values at `x`. Establish `hx : ∀ t, heisO ψ S T ((lineAt θ τ z) t) (c • g) x = c * heisO ψ S T ((lineAt θ τ z) t) g x`. Introduce `t`. Use `first`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `(rw [map_smul]; rfl)`. Consider the case `(simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring)`. Consider the case `(unfold heisO; simp only [Pi.smul_apply, smul_eq_mul]; ring)`. Consider the case `simp [heisO, mul_left_comm]`. Simplify using `only [hx, Pi.smul_apply, smul_eq_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `first`. Consider the case `exact congrFun (deriv_const_mul_field' c) 0`. Consider the case `rw [deriv_const_mul_field']`. Consider the case `done`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dRho_smul (θ : InfFam D) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (c : ℂ)
     (g : WO S T → ℂ) : Datum.dRho (heisO ψ S T) θ τ z (c • g) = c • Datum.dRho (heisO ψ S T) θ τ z g := by
@@ -51,27 +51,25 @@ theorem dRho_smul (θ : InfFam D) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) 
     | done
 
 /- English proof (translation)
-Establish `hs` using `Formalism.IndefR.Fin.dRhoStable D ψ θ hψ hθ S T`. Establish `hsub : ∀ u w : WO S T → ℂ, IsThetaFunO ψ S T u → IsThetaFunO ψ S T w → IsThetaFunO ψ S T (u - Complex.I • w)`. Introduce `u w hu hw`. Establish `h2` using `Formalism.IndefR.Fock.CCR.theta_function_linear_combination hu hw 1 (-Complex.I)`. Rewrite `h2` using `[one_smul, neg_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hsm : ∀ (r : ℂ) (u : WO S T → ℂ), IsThetaFunO ψ S T u → IsThetaFunO ψ S T (r • u)`. Introduce `r u hu`. Establish `h2` using `Formalism.IndefR.Fock.CCR.theta_function_linear_combination hu hu r 0`. Rewrite `h2` using `[zero_smul, add_zero]`. Then use the resulting hypothesis. Establish `hsmR : ∀ (r : ℝ) (u : WO S T → ℂ), IsThetaFunO ψ S T u → IsThetaFunO ψ S T (r • u)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `r u hu`. Establish `h2` using `hsm (r : ℂ) u hu`. Rewrite `h2` using `[Complex.coe_smul]`. Then use the resulting hypothesis. Establish `hAθ : ∀ x g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT x g)`. Introduce `x g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `aPlusAll aPlus crea`. Use `first`. Consider the case `exact hsm _ _ (hsub _ _ (hs _ _ _ hg) (hs _ _ _ hg))`. Consider the case `exact hsmR _ _ (hsub _ _ (hs _ _ _ hg) (hs _ _ _ hg))`. Establish `hAW : ∀ x g, IsThetaFunO ψ S T g → W (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT x g) = aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT x (W g)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x g hg`. Unfold `aPlusAll aPlus crea`. Use `first`. Consider the case `rw [map_smul, map_sub, map_smul, hW _ _ _ hg, hW _ _ _ hg]`. Consider the case `rw [LinearMap.map_smul_of_tower, map_sub, map_smul, hW _ _ _ hg, hW _ _ _ hg]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Unfold `Formalism.IndefR.Datum.pureTensorO`. Generalize the expression as in `aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT = A at hAθ hAW ⊢`. Unfold `pureTensorL`. Establish `hL : ∀ L : List (FVar D T.rank S.rank), IsThetaFunO ψ S T (List.foldr (fun i g => A i g) f L) ∧ W (List.foldr (fun i g => A i g) f L) = List.foldr (fun i g => A i g) (W f) L`. Introduce `L`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨hf, rfl⟩`. Consider the case `cons i L ih`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hAθ _ _ ih.1`. Simplify using `only [List.foldr_cons]`. Rewrite using `[hAW _ _ ih.1, ih.2]`. Establish `hO : ∀ m, W (opPow A m f) = opPow A m (W f)`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Unfold `opPow`. Conclude with `(hL _).2`. Use `first`. Consider the case `(rw [show (fun m => opPow A m (W f)) = W ∘ (fun m => opPow A m f) from funext fun m => (hO m).symm] first`. Consider the case `(rw [Module.Basis.constr_comp] <;> rfl)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Basis.constr_comp] <;> rfl))`. Consider the case `(simp only [← hO]`. Rewrite using `[show (fun m => W (opPow A m f)) = W ∘ (fun m => opPow A m f) from rfl]`. Use `first`. Consider the case `(rw [Module.Basis.constr_comp] <;> rfl)`.
-
-Consider the case `(rw [Basis.constr_comp] <;> rfl))`.
+A detailed English derivation is pending.
 -/
 theorem comm_pureTensorO (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (hθ : IsInfFam θ)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -136,15 +134,15 @@ theorem comm_pureTensorO (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (hθ : IsIn
          | (rw [Basis.constr_comp] <;> rfl))
 
 /- English proof (translation)
-Establish `hA : ∀ x (g : WO S T → ℂ), aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT x (c • g) = c • aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT x g`. Introduce `x g`. Unfold `aPlusAll aPlus crea`. Rewrite using `[dRho_smul, dRho_smul]`. Use `first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `module`. Consider the case `rw [smul_comm Complex.I c, ← smul_sub, smul_comm]`. Consider the case `(simp only [smul_sub, smul_smul]; ring_nf)`. Unfold `Formalism.IndefR.Datum.pureTensorO`. Generalize the expression as in `aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT = A at hA ⊢`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions.
 
-Unfold `pureTensorL`. Establish `hO : ∀ m, opPow A m (c • f) = c • opPow A m f`. Introduce `m`. Unfold `opPow`. Generalize the expression as in `(Finsupp.toMultiset m).toList = L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih => simp only [List.foldr_cons, ih, hA]`. Use `first`. Consider the case `rw [show (fun m => opPow A m (c • f)) = c • (fun m => opPow A m f) from funext fun m => hO m, map_smul, LinearMap.smul_apply]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(simp only [hO]`. Rewrite using `[show (fun m => c • opPow A m f) = c • (fun m => opPow A m f) from rfl, map_smul, LinearMap.smul_apply])`.
+A detailed English derivation is pending.
 -/
 theorem pureTensorO_smul (θ : InfFam D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)

@@ -5,19 +5,17 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set A : FractionalIdeal (nonZeroDivisors (𝓞 K)) K := ⟨I, FractionalIdeal.isFractional_of_fg hI⟩ with hA`. Use `set C : FractionalIdeal (nonZeroDivisors (𝓞 K)) K := FractionalIdeal.spanSingleton _ c with hC`. Establish `hle : C ≤ A` using `FractionalIdeal.spanSingleton_le_iff_mem.2 hcI`. Establish `hC0 : C ≠ 0`. Rewrite using `[hC, Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc`. Establish `h` using `Formalism.L2.LamCM.Dx.absNorm_eq_relIndex_mul A C hC0 hle`. Establish `hCsub : (C : Submodule (𝓞 K) K) = Submodule.span (𝓞 K) {c}` using `FractionalIdeal.coe_spanSingleton _ c`. Establish `hAsub : (A : Submodule (𝓞 K) K) = I` using `rfl`. Rewrite `h` using `[hCsub, hAsub, hC, FractionalIdeal.absNorm_span_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r : ℕ := (Submodule.span (𝓞 K) {c}).toAddSubgroup.relIndex I.toAddSubgroup with hr`. Establish `hprod : ∏ σ : K →+* ℂ, ‖σ c‖ = |Algebra.norm ℚ c|`. Establish `e` using `Algebra.norm_eq_prod_embeddings ℚ ℂ c`. Establish `e2 : ∏ σ : K →+* ℂ, σ c = ∏ σ : K →ₐ[ℚ] ℂ, σ c` using `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ => rfl)`. Rewrite using `[← norm_prod, e2, ← e, eq_ratCast, Complex.norm_ratCast]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hN0 : Algebra.norm ℚ c ≠ 0` using `(Algebra.norm_ne_zero_iff).2 hc`. Establish `hσ : ∀ σ ∈ (Finset.univ : Finset (K →+* ℂ)), ‖σ c‖ ≠ 0` using `fun σ _ => by`. Simplify using `using (map_ne_zero σ).2 hc`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ σ : K →+* ℂ, Real.log ‖σ c‖ = Real.log ((|Algebra.norm ℚ c| : ℚ) : ℝ)`. Rewrite using `[← Real.log_prod hσ, hprod]`. Establish `hR : ((|Algebra.norm ℚ c| : ℚ) : ℝ) = (r : ℝ) * ((FractionalIdeal.absNorm A : ℚ) : ℝ)`. Rewrite using `[h]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hne : ((|Algebra.norm ℚ c| : ℚ) : ℝ) ≠ 0`. Simplify using `using hN0`. Establish `hr0 : (r : ℝ) ≠ 0` using `by intro h0; rw [hR, h0, zero_mul] at hne; exact hne rfl`. Establish `hA0 : ((FractionalIdeal.absNorm A : ℚ) : ℝ) ≠ 0` using `by intro h0; rw [hR, h0, mul_zero] at hne; exact hne rfl`.
-
-Rewrite using `[hsum, hR, Real.log_mul hr0 hA0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_relIndex_span_sub_sum_log_eq_neg_log_absNorm (K : Type) [Field K] [NumberField K]
     (I : Submodule (𝓞 K) K) (hI : I.FG) (c : K) (hcI : c ∈ I) (hc : c ≠ 0) :

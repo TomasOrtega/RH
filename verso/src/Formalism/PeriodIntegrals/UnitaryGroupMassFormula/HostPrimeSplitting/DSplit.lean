@@ -10,7 +10,7 @@ namespace PI.UnitaryGroupMassFormula.HostPrimeFacts
 variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.sqrtMinusD`. Rewrite using `[H.sqd_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem sqrt_sq : H.sqrtMinusD ^ 2 = -((H.d : ℤ) : H.E) := by
   unfold Formalism.BasicNotions.Host.sqrtMinusD
@@ -19,7 +19,7 @@ theorem sqrt_sq : H.sqrtMinusD ^ 2 = -((H.d : ℤ) : H.E) := by
   rfl
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[sqrt_sq]`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := H.E) (x := (H.d : ℤ))).neg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sqrt_isIntegral : IsIntegral ℤ H.sqrtMinusD := by
   refine IsIntegral.of_pow (n := 2) (by norm_num) ?_
@@ -29,9 +29,9 @@ theorem sqrt_isIntegral : IsIntegral ℤ H.sqrtMinusD := by
 def sqrtO : 𝓞 H.E := ⟨H.sqrtMinusD, sqrt_isIntegral H⟩
 
 /- English proof (translation)
-Establish `hd : (H.d).Prime` using `H.hyp.2.1`. Establish `hmax : (span {((H.d : ℕ) : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hd).irreducible`. Prove the components needed by the constructor for the conclusion. Use `hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap ℤ (𝓞 H.E) _ ∈ P.asIdeal`. Simplify using `using hP`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem liesOver_d (P : HeightOneSpectrum (𝓞 H.E)) (hP : ((H.d : ℤ) : 𝓞 H.E) ∈ P.asIdeal) :
     P.asIdeal.LiesOver (span {((H.d : ℕ) : ℤ)}) := by
@@ -47,7 +47,7 @@ theorem liesOver_d (P : HeightOneSpectrum (𝓞 H.E)) (hP : ((H.d : ℤ) : 𝓞 
 abbrev cE : H.E ≃ₐ[ℚ] H.E := H.conj
 
 /- English proof (translation)
-Establish `hfix : H.conj ((x : H.F) : H.E) = ((x : H.F) : H.E)` using `(H.der.mem_F _).mp (x : H.F).2`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show (cE H)⁻¹ ((x : H.F) : H.E) = ((x : H.F) : H.E)`. Rewrite using `[AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Conclude with `hfix.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cE_inv_fix (x : 𝓞 H.F) :
     (cE H)⁻¹ • algebraMap (𝓞 H.F) (𝓞 H.E) x = algebraMap (𝓞 H.F) (𝓞 H.E) x := by
@@ -66,7 +66,7 @@ def conjPrime (P : HeightOneSpectrum (𝓞 H.E)) : HeightOneSpectrum (𝓞 H.E) 
     rw [← inv_smul_smul (cE H) P.asIdeal, h, Ideal.smul_bot]
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `show algebraMap (𝓞 H.F) (𝓞 H.E) x ∈ cE H • P.asIdeal ↔ algebraMap (𝓞 H.F) (𝓞 H.E) x ∈ P.asIdeal`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, cE_inv_fix]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPrime_under (P : HeightOneSpectrum (𝓞 H.E)) :
     (conjPrime H P).under (𝓞 H.F) = P.under (𝓞 H.F) := by

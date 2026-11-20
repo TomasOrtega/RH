@@ -25,11 +25,9 @@ def splitVec (F : Type) [Field F] [NumberField F] (ι : Type) :
     · exact (continuous_apply i).comp continuous_snd
 
 /- English proof (translation)
-Introduce `F _ _ ι _ m μ₁ μ₂ hm h₁ h₂`. Use `haveI : SecondCountableTopology (Af F) := Formalism.IndefR.Eqv.G5.af_secondCountable`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (AF F) := inferInstanceAs (SecondCountableTopology (Ainf F × Af F))`. Establish `hH : (m.map (splitVec F ι)).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map m (splitVec F ι)`. Establish `hc` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (m.map (splitVec F ι)) (μ₁.prod μ₂)`. Use `⟨(Measure.addHaarScalarFactor (m.map (splitVec F ι)) (μ₁.prod μ₂) : ENNReal), ?_, ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Conclude with `hc.ne'` after adjusting the coercions.
-
-Establish `h` using `Measure.isAddLeftInvariant_eq_smul (m.map (splitVec F ι)) (μ₁.prod μ₂)`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem map_split_eq_smul_prod : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     (m : Measure (ι → AF F)) (μ₁ : Measure (ι → Ainf F)) (μ₂ : Measure (ι → Af F)),

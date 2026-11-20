@@ -14,11 +14,11 @@ variable {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l))
 omit [FiniteDimensional ℚ_[l] K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `hy` using `(GlobalTheory.mem_integralClosure_padicInt_iff K y).mp y.2`. Use `push_cast`. Rewrite using `[norm_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) hy`. Introduce `h`. Establish `h0 : (a : K) ≠ 0` using `fun h0 => ha (Subtype.ext h0)`. Establish `h1 : ((a : K) : PadicAlgCl l) ≠ 0` using `fun h1 => h0 (Subtype.ext h1)`. Establish `hm : (x : K) / (a : K) ∈ integralClosure ℤ_[l] K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.mem_integralClosure_padicInt_iff, IntermediateField.coe_div, norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Conclude with `⟨⟨_, hm⟩, Subtype.ext (mul_div_cancel₀ _ h0).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_iff_norm_le {a : integralClosure ℤ_[l] K} (ha : a ≠ 0) (x : integralClosure ℤ_[l] K) :
     a ∣ x ↔ ‖((x : K) : PadicAlgCl l)‖ ≤ ‖((a : K) : PadicAlgCl l)‖ := by
@@ -37,13 +37,13 @@ theorem dvd_iff_norm_le {a : integralClosure ℤ_[l] K} (ha : a ≠ 0) (x : inte
     exact ⟨⟨_, hm⟩, Subtype.ext (mul_div_cancel₀ _ h0).symm⟩
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible (integralClosure ℤ_[l] K)`. Establish `hind : IsInducing (fun x : integralClosure ℤ_[l] K => ((x : K) : PadicAlgCl l))` using `IsInducing.subtypeVal.comp IsInducing.subtypeVal`. Establish `hlt : ‖((π : K) : PadicAlgCl l)‖ < 1` using `(GlobalTheory.mem_maximalIdeal_integralClosure_iff K π).1 hπ.not_isUnit`. Establish `hpos : 0 < ‖((π : K) : PadicAlgCl l)‖` using `norm_pos_iff.2 fun h => hπ.ne_zero (Subtype.ext (Subtype.ext h))`. Establish `hmem : ∀ (n : ℕ) (x : integralClosure ℤ_[l] K), x ∈ maximalIdeal (integralClosure ℤ_[l] K) ^ n ↔ ‖((x : K) : PadicAlgCl l)‖ ≤ ‖((π : K) : PadicAlgCl l)‖ ^ n` using `fun n x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hπ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, dvd_iff_norm_le K (pow_ne_zero n hπ.ne_zero)]`. Use `push_cast`. Rewrite using `[norm_pow]`. Establish `hn : ∀ s : Set (integralClosure ℤ_[l] K), s ∈ 𝓝 (0 : integralClosure ℤ_[l] K) ↔ ∃ ε > 0, ∀ x : integralClosure ℤ_[l] K, ‖((x : K) : PadicAlgCl l)‖ < ε → x ∈ s` using `fun s => by`. Rewrite using `[hind.nhds_eq_comap, ((Metric.nhds_basis_ball).comap _).mem_iff]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun ε => and_congr_right fun _ => ?_` and prove the remaining obligations. Simplify using `[Set.subset_def]`. Rewrite using `[isAdic_iff]`. Use `⟨fun n => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `AddSubgroup.isOpen_of_mem_nhds (maximalIdeal (integralClosure ℤ_[l] K) ^ n).toAddSubgroup (g := 0) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hn _).2 ⟨_, pow_pos hpos n, fun x hx => (hmem n x).2 hx.le⟩`. Take `⟨ε, hε, h⟩` from `(hn s).1 hs`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hlt`. Conclude with `⟨n, fun x hx => h x (((hmem n x).1 hx).trans_lt hn)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAdic_maximalIdeal : IsAdic (maximalIdeal (integralClosure ℤ_[l] K)) := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible (integralClosure ℤ_[l] K)
@@ -75,7 +75,7 @@ theorem isAdic_maximalIdeal : IsAdic (maximalIdeal (integralClosure ℤ_[l] K)) 
     exact ⟨n, fun x hx => h x (((hmem n x).1 hx).trans_lt hn)⟩
 
 /- English proof (translation)
-Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful ℤ_[l] ℚ_[l] K` as an intermediate fact. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalHom ℤ_[l] K` as an intermediate fact. Establish `: Finite (ResidueField ℤ_[l])` using `Finite.of_equiv _ (PadicInt.residueField).symm.toEquiv`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_residueField : Finite (ResidueField (integralClosure ℤ_[l] K)) := by
   have := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful ℤ_[l] ℚ_[l] K
@@ -84,7 +84,7 @@ theorem finite_residueField : Finite (ResidueField (integralClosure ℤ_[l] K)) 
   exact Module.finite_of_finite (ResidueField ℤ_[l])
 
 /- English proof (translation)
-Introduce `l _ LL`. Use `LL.2` as an intermediate fact. Conclude with `⟨GlobalTheory.isDiscreteValuationRing_integralClosure_padicInt l LL.1, GlobalTheory.finite_integralClosure_padicInt l LL.1, isAdic_maximalIdeal LL.1, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local ℤ_[l] (integralClosure ℤ_[l] LL.1), finite_residueField LL.1, …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem integers_laws : ∀ (l : ℕ) [Fact l.Prime] (LL : Loc.FinExt l), ∃ (_ : IsDiscreteValuationRing ↥(Loc.OL LL)), Module.Finite ℤ_[l] ↥(Loc.OL LL) ∧ IsAdic (IsLocalRing.maximalIdeal ↥(Loc.OL LL)) ∧ IsAdicComplete (IsLocalRing.maximalIdeal ↥(Loc.OL LL)) ↥(Loc.OL LL) ∧ Finite (IsLocalRing.ResidueField ↥(Loc.OL LL)) ∧ IsFractionRing ↥(Loc.OL LL) ↥LL.1 := by
   intro l _ LL

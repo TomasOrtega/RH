@@ -24,19 +24,19 @@ def Good (lo hi tot : ℤ) (A B : Finset ℚ) : Prop :=
   Disjoint A B ∧ (A.card : ℤ) - B.card = tot ∧ ∀ p, IsUp p → lo ≤ cnt p A B ∧ cnt p A B ≤ hi
 
 /- English proof (translation)
-Take `⟨d1, c1, b1⟩` from `h1`. Take `⟨d2, c2, b2⟩` from `h2`. Establish `sAA : Disjoint A1 A2` using `disjoint_left.2 fun x hx hx' => lt_irrefl x (hsep x (mem_union_left _ hx) x (mem_union_left _ hx'))`. Establish `sBB : Disjoint B1 B2` using `disjoint_left.2 fun x hx hx' => lt_irrefl x (hsep x (mem_union_right _ hx) x (mem_union_right _ hx'))`. Establish `sAB : Disjoint A1 B2` using `disjoint_left.2 fun x hx hx' => lt_irrefl x (hsep x (mem_union_left _ hx) x (mem_union_right _ hx'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sBA : Disjoint A2 B1` using `disjoint_left.2 fun x hx hx' => lt_irrefl x (hsep x (mem_union_right _ hx') x (mem_union_left _ hx))`. Use `⟨?_, ?_, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[disjoint_union_left, disjoint_union_right, disjoint_union_right]`. Conclude with `⟨⟨d1, sAB⟩, ⟨sBA, d2⟩⟩`. Rewrite using `[card_union_of_disjoint sAA, card_union_of_disjoint sBB]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : cnt p (A1 ∪ A2) (B1 ∪ B2) = cnt p A1 B1 + cnt p A2 B2`. Simplify using `only [cnt, filter_union]`. Rewrite using `[card_union_of_disjoint (disjoint_filter_filter sAA), card_union_of_disjoint (disjoint_filter_filter sBB)]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Distinguish the cases in `hY : ∃ y ∈ A2 ∪ B2, p y = true`. Take `⟨y, hy, hpy⟩` from `hY`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hX : ∀ x ∈ A1 ∪ B1, p x = true` using `fun x hx => hp y x (hsep x hx y hy).le hpy`. Establish `e1 : cnt p A1 B1 = t1`. Rewrite using `[cnt, filter_true_of_mem fun x hx => hX x (mem_union_left _ hx), filter_true_of_mem fun x hx => hX x (mem_union_right _ hx), c1]`. Rewrite using `[e1]`. Use `b2 p hp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Use `push_neg at hY`. Establish `e2 : cnt p A2 B2 = 0`. Rewrite using `[cnt, filter_false_of_mem fun x hx => by simpa using hY x (mem_union_left _ hx), filter_false_of_mem fun x hx => by simpa using hY x (mem_union_right _ hx)]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, add_zero]`. Use `b1 p hp` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Good.union {lo1 hi1 t1 lo2 hi2 t2 lo hi : ℤ} {A1 B1 A2 B2 : Finset ℚ} (h1 : Good lo1 hi1 t1 A1 B1)
     (h2 : Good lo2 hi2 t2 A2 B2) (hsep : ∀ x ∈ A1 ∪ B1, ∀ y ∈ A2 ∪ B2, y < x) (hl1 : lo ≤ lo1) (hh1 : hi1 ≤ hi)
@@ -82,9 +82,9 @@ theorem Good.union {lo1 hi1 t1 lo2 hi2 t2 lo hi : ℤ} {A1 B1 A2 B2 : Finset ℚ
       constructor <;> linarith [this.1, this.2]
 
 /- English proof (translation)
-Use `⟨disjoint_singleton.2 h.ne, by simp, fun p hp => ?_⟩` and prove the remaining obligations. Simplify using `only [cnt, filter_singleton]`. Distinguish the cases in `hx : p x = true`. Establish `hy` using `hp x y h.le hx`. Simplify using `[hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hy : p y = true <;> simp [hx, hy]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem good_pair {x y : ℚ} (h : x < y) : Good (-1) 0 0 {x} {y} := by
   refine ⟨disjoint_singleton.2 h.ne, by simp, fun p hp => ?_⟩
@@ -95,7 +95,7 @@ theorem good_pair {x y : ℚ} (h : x < y) : Good (-1) 0 0 {x} {y} := by
   · by_cases hy : p y = true <;> simp [hx, hy]
 
 /- English proof (translation)
-Use `⟨disjoint_empty_right _, by simp, fun p _ => ?_⟩` and prove the remaining obligations. Simplify using `only [cnt, filter_singleton, filter_empty, card_empty]`. Apply the tactic sequence `by_cases hx : p x = true <;> simp [hx]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem good_single (x : ℚ) : Good 0 1 1 {x} ∅ := by
   refine ⟨disjoint_empty_right _, by simp, fun p _ => ?_⟩
@@ -103,17 +103,17 @@ theorem good_single (x : ℚ) : Good 0 1 1 {x} ∅ := by
   by_cases hx : p x = true <;> simp [hx]
 
 /- English proof (translation)
-The claim follows from `hA ▸ hB ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem good_congr {lo hi t : ℤ} {A B A' B' : Finset ℚ} (h : Good lo hi t A B) (hA : A = A') (hB : B = B') :
     Good lo hi t A' B' := hA ▸ hB ▸ h
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_union, mem_singleton, mem_block]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Break down `Nat.eq_zero_or_pos a with rfl | h` into its components or cases.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `right; exact ⟨a - 1, by omega, by rw [Nat.cast_sub h]; push_cast; ring⟩`. Introduce and unpack `(rfl | ⟨a, ha, rfl⟩)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, by omega, by push_cast; ring⟩`. Conclude with `⟨a + 1, by omega, by push_cast; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem block_succ_top (c : ℚ) (n : ℕ) : TPar.block c (n + 1) = {c + (n : ℚ) / 2} ∪ TPar.block (c - 1 / 2) n := by
   ext x
@@ -128,11 +128,11 @@ theorem block_succ_top (c : ℚ) (n : ℕ) : TPar.block c (n + 1) = {c + (n : �
     · exact ⟨a + 1, by omega, by push_cast; ring⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_union, mem_singleton, mem_block]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Break down `(Nat.lt_succ_iff.1 ha).eq_or_lt with rfl | h` into its components or cases.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Use `right`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `left; exact ⟨a, h, by push_cast; ring⟩`. Introduce and unpack `(⟨a, ha, rfl⟩ | rfl)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨a, by omega, by push_cast; ring⟩`. Conclude with `⟨n, by omega, by push_cast; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem block_succ_bot (c : ℚ) (n : ℕ) : TPar.block c (n + 1) = TPar.block (c + 1 / 2) n ∪ {c - (n : ℚ) / 2} := by
   ext x
@@ -147,7 +147,7 @@ theorem block_succ_bot (c : ℚ) (n : ℕ) : TPar.block c (n + 1) = TPar.block (
     · exact ⟨n, by omega, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨a, -, rfl⟩` from `mem_block.1 h`. Establish `: (0 : ℚ) ≤ a` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_le {c x : ℚ} {n : ℕ} (h : x ∈ TPar.block c n) : x ≤ c + ((n : ℚ) - 1) / 2 := by
   obtain ⟨a, -, rfl⟩ := mem_block.1 h
@@ -155,7 +155,7 @@ theorem block_le {c x : ℚ} {n : ℕ} (h : x ∈ TPar.block c n) : x ≤ c + ((
   linarith
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `mem_block.1 h`. Establish `: (a : ℚ) + 1 ≤ n` using `by exact_mod_cast ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_ge {c x : ℚ} {n : ℕ} (h : x ∈ TPar.block c n) : c - ((n : ℚ) - 1) / 2 ≤ x := by
   obtain ⟨a, ha, rfl⟩ := mem_block.1 h
@@ -163,15 +163,15 @@ theorem block_ge {c x : ℚ} {n : ℕ} (h : x ∈ TPar.block c n) : c - ((n : �
   linarith
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro c; exact ⟨by simp [TPar.block], by simp [TPar.block], fun p _ => by simp [cnt, TPar.block]⟩`. Consider the case `succ n ih`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `ih (c - 1 / 2)`. Rewrite `h` using `[sub_add_cancel]`. Establish `e1` using `block_succ_top c n`. Establish `e2` using `block_succ_top (c + 1 / 2) n`. Rewrite `e2` using `[add_sub_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, e2]`. Use `(good_pair (x := c + (n : ℚ) / 2) (y := c + 1 / 2 + (n : ℚ) / 2) (by linarith)).union h ?_ (le_refl _) (le_refl _) (by norm_num) (by norm_num)` as an intermediate fact. Simplify using `using this`. Introduce `x hx y hy`. Simplify using `only [mem_union, mem_singleton] at hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hy' : y ≤ c + ((n : ℚ) - 1) / 2`. Break down `mem_union.1 hy with hy | hy` into its components or cases. Use `block_le hy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `block_le hy`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hx with rfl | rfl <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem good_blocks : ∀ (n : ℕ) (c : ℚ), Good (-1) 0 0 (TPar.block c n) (TPar.block (c + 1 / 2) n) := by
   intro n
@@ -203,20 +203,20 @@ namespace GlobalTheory.WtInterlace
 open Finset GlobalTheory.SignedHC
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨disjoint_empty_left _, by simp, fun p _ => by simp [cnt]⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_empty : Good (-1) 0 0 ∅ ∅ := ⟨disjoint_empty_left _, by simp, fun p _ => by simp [cnt]⟩
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _ _`. Simplify using `using good_empty`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `hg hsep`. Establish `e : Ico lo (lo + (n + 1)) = insert (lo + n) (Ico lo (lo + n))`. Use extensionality with `i`. Simplify using `only [mem_insert, mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e, biUnion_insert, biUnion_insert, union_comm (A (lo + n)), union_comm (B (lo + n))]`. Establish `h1` using `ih (fun i h1 h2 => hg i h1 (by omega)) (fun i j h1 h2 h3 => hsep i j h1 h2 (by omega))`. Establish `h2` using `hg (lo + n) (by omega) (by omega)`. Use `h1.union h2 ?_ (le_refl _) (le_refl _) (by norm_num) (by norm_num)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx y hy`. Establish `hx' : x ∈ (Ico lo (lo + n)).biUnion (fun i => A i ∪ B i)`. Rewrite using `[biUnion_union]`. Conclude with `hx`. Take `⟨i, hi, hx''⟩` from `mem_biUnion.1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[mem_Ico]`. Conclude with `hsep i (lo + n) hi.1 hi.2 (by omega) x hx'' y hy`.
+A detailed English derivation is pending.
 -/
 theorem good_family (A B : ℕ → Finset ℚ) (lo : ℕ) : ∀ n : ℕ,
     (∀ i, lo ≤ i → i < lo + n → Good (-1) 0 0 (A i) (B i)) →
@@ -242,56 +242,54 @@ theorem good_family (A B : ℕ → Finset ℚ) (lo : ℕ) : ∀ n : ℕ,
       exact hsep i (lo + n) hi.1 hi.2 (by omega) x hx'' y hy
 
 /- English proof (translation)
-Simplify using `[cnt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cnt_decide (P : ℚ → Prop) [DecidablePred P] (A B : Finset ℚ) :
     cnt (fun z => decide (P z)) A B = ((A.filter P).card : ℤ) - (B.filter P).card := by
   simp [cnt]
 
 /- English proof (translation)
-Introduce `a b h ha` and use `by simp only [decide_eq_true_eq] at ha ⊢; linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUp_le (q : ℚ) : IsUp (fun z => decide (q ≤ z)) := fun a b h ha => by
   simp only [decide_eq_true_eq] at ha ⊢; linarith
 
 /- English proof (translation)
-Introduce `a b h ha` and use `by simp only [decide_eq_true_eq] at ha ⊢; linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUp_lt (q : ℚ) : IsUp (fun z => decide (q < z)) := fun a b h ha => by
   simp only [decide_eq_true_eq] at ha ⊢; linarith
 
 /- English proof (translation)
-Take `⟨hd, hc, hb⟩` from `h`. Rewrite using `[strictInterlace_iff]`. Use `⟨hd, card_pos.1 (by omega), fun y hy => ?_, fun y hy => ?_, fun x hx y hy hxy hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne push_neg at hne`. Establish `h1 : 0 ≤ ((A.filter fun z => y ≤ z).card : ℤ) - (B.filter fun z => y ≤ z).card`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `(hb _ (isUp_le y)).1` as an intermediate fact. Rewrite `this` using `[cnt_decide]`. Conclude with `this`. Establish `e1 : A.filter (fun z => y ≤ z) = ∅` using `filter_eq_empty_iff.2 fun z hz h' => disjoint_left.1 hd (le_antisymm (hne z hz) h' ▸ hz) hy`. Establish `e2 : 1 ≤ (B.filter (fun z => y ≤ z)).card` using `card_pos.2 ⟨y, mem_filter.2 ⟨hy, le_rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1, card_empty]`. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hne push_neg at hne`. Establish `h1 : ((A.filter fun z => y < z).card : ℤ) - (B.filter fun z => y < z).card ≤ 1`. Use `(hb _ (isUp_lt y)).2` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[cnt_decide]`. Conclude with `this`. Establish `e1 : A.filter (fun z => y < z) = A` using `filter_true_of_mem fun z hz => lt_of_le_of_ne (hne z hz) fun e => disjoint_left.1 hd (e ▸ hz) hy`. Establish `e2 : B.filter (fun z => y < z) ⊆ B.erase y` using `fun z hz => by`. Rewrite `hz` using `[mem_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_erase.2 ⟨hz.2.ne', hz.1⟩`. Establish `e3` using `card_le_card e2`. Rewrite `e3` using `[card_erase_of_mem hy]`. Rewrite `h1` using `[e1]`. Establish `: 1 ≤ B.card` using `card_pos.2 ⟨y, hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne : x ≠ y` using `hxy.ne'`. Establish `split : ∀ S : Finset ℚ, S ⊆ A ∪ B → ((S.filter fun z => y ≤ z).card : ℤ) = (S.filter fun z => x < z).card + (if x ∈ S then 1 else 0) + (if y ∈ S then 1 else 0)`. Introduce `S hS`. Establish `e : S.filter (fun z => y ≤ z) = (S.filter fun z => x < z) ∪ ((S.filter fun z => z = x) ∪ S.filter fun z => z = y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `z`. Simplify using `only [mem_filter, mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzS, hyz⟩`. Break down `hyz.eq_or_lt with rfl | hyz` into its components or cases.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr (Or.inr ⟨hzS, rfl⟩)`. Establish `: ¬ z < x` using `fun h' => hz z (hS hzS) ⟨hyz, h'⟩`. Break down `(not_lt.1 this).eq_or_lt with rfl | h'` into its components or cases. Conclude with `Or.inr (Or.inl ⟨hzS, rfl⟩)`. Conclude with `Or.inl ⟨hzS, h'⟩`.
+Prove the second alternative. Prove the first alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `(⟨hzS, h'⟩ | ⟨hzS, rfl⟩ | ⟨hzS, rfl⟩)`. Conclude with `⟨hzS, by linarith⟩`. Conclude with `⟨hzS, hxy.le⟩`. Conclude with `⟨hzS, le_rfl⟩`. Establish `d1 : Disjoint (S.filter fun z => z = x) (S.filter fun z => z = y)` using `disjoint_filter.2 fun z _ h1 h2 => hne (h1 ▸ h2 ▸ rfl)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `d2 : Disjoint (S.filter fun z => x < z) ((S.filter fun z => z = x) ∪ S.filter fun z => z = y)`. Rewrite using `[disjoint_union_right]`. Conclude with `⟨disjoint_filter.2 fun z _ h1 h2 => by rw [h2] at h1; exact lt_irrefl _ h1, disjoint_filter.2 fun z _ h1 h2 => by rw [h2] at h1; linarith⟩`. Rewrite using `[e, card_union_of_disjoint d2, card_union_of_disjoint d1, filter_eq' S x, filter_eq' S y]`. Apply the tactic sequence `split_ifs <;> simp only [card_singleton, card_empty] <;> push_cast <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `split A subset_union_left`. Establish `hB` using `split B subset_union_right`. Establish `h1 : 0 ≤ ((A.filter fun z => y ≤ z).card : ℤ) - (B.filter fun z => y ≤ z).card ∧ ((A.filter fun z => y ≤ z).card : ℤ) - (B.filter fun z => y ≤ z).card ≤ 1`. Use `hb _ (isUp_le y)` as an intermediate fact. Rewrite `this` using `[cnt_decide]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h2 : 0 ≤ ((A.filter fun z => x < z).card : ℤ) - (B.filter fun z => x < z).card ∧ ((A.filter fun z => x < z).card : ℤ) - (B.filter fun z => x < z).card ≤ 1`. Use `hb _ (isUp_lt x)` as an intermediate fact. Rewrite `this` using `[cnt_decide]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxAB` using `mem_union.1 hx`. Establish `hyAB` using `mem_union.1 hy`. Prove the components needed by the constructor for the conclusion. Introduce `hxA hyA`. Establish `hxB : x ∉ B` using `disjoint_left.1 hd hxA`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyB : y ∉ B` using `disjoint_left.1 hd hyA`. Rewrite `hA` using `[if_pos hxA, if_pos hyA]`. Rewrite `hB` using `[if_neg hxB, if_neg hyB]`. Use linear arithmetic over natural numbers and integers. Introduce `hyA`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hxA`. Establish `hxB : x ∈ B` using `hxAB.resolve_left hxA`. Establish `hyB : y ∈ B` using `hyAB.resolve_left hyA`. Rewrite `hA` using `[if_neg hxA, if_neg hyA]`. Rewrite `hB` using `[if_pos hxB, if_pos hyB]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem strictInterlace_of_good {A B : Finset ℚ} (h : Good 0 1 1 A B) : StrictInterlace A B := by
   obtain ⟨hd, hc, hb⟩ := h
@@ -378,11 +376,11 @@ namespace GlobalTheory.WtInterlace
 open Finset GlobalTheory.SignedHC
 
 /- English proof (translation)
-Rewrite using `[block_succ_bot]`. Establish `h` using `(good_blocks n c).union (good_pair ha) ?_ (le_refl _) (le_refl _) (by norm_num) (by norm_num)`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis. Introduce `x hx y hy`. Simplify using `only [mem_union, mem_singleton] at hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `: c - (n : ℚ) / 2 < x`. Break down `mem_union.1 hx with hx | hx` into its components or cases. Use `block_ge hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `block_ge hx` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `rcases hy with rfl | rfl <;> linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem good_CB (c a : ℚ) (n : ℕ) (ha : a < c - (n : ℚ) / 2) :
     Good (-1) 0 0 (TPar.block c n ∪ {a}) (TPar.block c (n + 1)) := by
@@ -398,11 +396,11 @@ theorem good_CB (c a : ℚ) (n : ℕ) (ha : a < c - (n : ℚ) / 2) :
     rcases hy with rfl | rfl <;> linarith
 
 /- English proof (translation)
-Rewrite using `[block_succ_top]`. Establish `h2` using `good_blocks t (e - 1 / 2)`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h` using `(good_pair hb).union h2 ?_ (le_refl _) (le_refl _) (by norm_num) (by norm_num)`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `x hx y hy`. Simplify using `only [mem_union, mem_singleton] at hx`. Establish `: y ≤ e + ((t : ℚ) - 1) / 2`. Break down `mem_union.1 hy with hy | hy` into its components or cases. Use `block_le hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `block_le hy`. Apply the tactic sequence `rcases hx with rfl | rfl <;> linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem good_MB (e b : ℚ) (t : ℕ) (hb : e + (t : ℚ) / 2 < b) :
     Good (-1) 0 0 (TPar.block e (t + 1)) ({b} ∪ TPar.block e t) := by
@@ -432,9 +430,9 @@ variable (D : D7) (C : ℝ) (τ : D.what₂.Tau)
 local notation "Γ" => num D C τ
 
 /- English proof (translation)
-Establish `hs : 1 ≤ (Γ).s` using `(odd_sLen D).pos`. Establish `key` using `good_CB ((Γ).cen i : ℚ) ((Γ).a i) ((Γ).s - 1) ?_`. Rewrite `key` using `[Nat.sub_add_cancel hs]`. Conclude with `key`. Establish `hmem : ((Γ).cen i : ℚ) - (((Γ).s - 1 : ℕ) : ℚ) / 2 ∈ (Γ).blockC i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_block.2 ⟨(Γ).s - 1, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_sub hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(blockC_bd D C τ h1 h2 hmem).1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem good_U {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) :
     Good (-1) 0 0 ((Γ).blockC' i ∪ {(Γ).a i}) ((Γ).blockC i) := by
@@ -448,7 +446,7 @@ theorem good_U {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) :
     exact (blockC_bd D C τ h1 h2 hmem).1
 
 /- English proof (translation)
-Use `good_MB (-((Γ).e l : ℚ)) (-((Γ).b l : ℚ)) (Γ).t ?_` and prove the remaining obligations. Use `num_be D C τ h1 h2` as an intermediate fact. Establish `e : ((Γ).t : ℚ) = D.R.t` using `rfl`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_pow_not_mem_height_one_asIdeal {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) :
     Good (-1) 0 0 ((Γ).blockMPlus l) ({-((Γ).b l : ℚ)} ∪ (Γ).blockM l) := by
@@ -458,7 +456,7 @@ theorem one_pow_not_mem_height_one_asIdeal {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ 
   rw [e]; linarith
 
 /- English proof (translation)
-Break down `mem_union.1 hx with hx | hx` into its components or cases. Break down `mem_union.1 hx with hx | hx` into its components or cases. Conclude with `(blockC'_between (num_nearMid D C τ) (odd_sLen D).pos (sLen_lt_gap D C) h1 h2 hx).1.le`. Rewrite using `[mem_singleton.1 hx]`. Conclude with `(blockC_bd D C τ h1 h2 hx).1.le`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lb_U {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) {x : ℚ} (hx : x ∈ ((Γ).blockC' i ∪ {(Γ).a i}) ∪ (Γ).blockC i) :
     (Γ).a i ≤ x := by
@@ -469,9 +467,9 @@ theorem lb_U {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) {x : ℚ} (hx : x ∈ (
   · exact (blockC_bd D C τ h1 h2 hx).1.le
 
 /- English proof (translation)
-Establish `hga : (0 : ℚ) < (Γ).ga`. Establish `: 0 < (Γ).ga` using `lt_of_le_of_lt (Nat.zero_le _) (sLen_lt_gap D C)`. Conclude with `this` after adjusting the coercions. Break down `mem_union.1 hx with hx | hx` into its components or cases. Break down `mem_union.1 hx with hx | hx` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(blockC'_between (num_nearMid D C τ) (odd_sLen D).pos (sLen_lt_gap D C) h1 h2 hx).2`. Rewrite using `[mem_singleton.1 hx]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(blockC_bd D C τ h1 h2 hx).2`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ub_U {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) {x : ℚ} (hx : x ∈ ((Γ).blockC' i ∪ {(Γ).a i}) ∪ (Γ).blockC i) :
     x < (Γ).a i + (Γ).ga := by
@@ -485,9 +483,9 @@ theorem ub_U {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) {x : ℚ} (hx : x ∈ (
   · exact (blockC_bd D C τ h1 h2 hx).2
 
 /- English proof (translation)
-Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`. Break down `mem_union.1 hx with hx | hx` into its components or cases. Conclude with `(blockMPlus_bd D C τ hx).1`. Break down `mem_union.1 hx with hx | hx` into its components or cases. Rewrite using `[mem_singleton.1 hx]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[num_be D C τ h1 h2]`. Combine the linear relations using `[(blockM_bd D C τ hx).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chiGrid_row_entries_lower_bound {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) {x : ℚ} (hx : x ∈ (Γ).blockMPlus l ∪ ({-((Γ).b l : ℚ)} ∪ (Γ).blockM l)) :
     -((Γ).e l : ℚ) - (D.R.t : ℚ) / 2 ≤ x := by
@@ -499,9 +497,9 @@ theorem chiGrid_row_entries_lower_bound {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R
     · linarith [(blockM_bd D C τ hx).1]
 
 /- English proof (translation)
-Establish `hbe` using `num_be D C τ h1 h2`. Break down `mem_union.1 hx with hx | hx` into its components or cases. Combine the linear relations using `[(blockMPlus_bd D C τ hx).2]`. Break down `mem_union.1 hx with hx | hx` into its components or cases. Rewrite using `[mem_singleton.1 hx]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[(blockM_bd D C τ hx).2]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chiGrid_row_entries_upper_bound {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) {x : ℚ} (hx : x ∈ (Γ).blockMPlus l ∪ ({-((Γ).b l : ℚ)} ∪ (Γ).blockM l)) :
     x ≤ -((Γ).b l : ℚ) := by
@@ -513,53 +511,49 @@ theorem chiGrid_row_entries_upper_bound {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R
     · linarith [(blockM_bd D C τ hx).2]
 
 /- English proof (translation)
-Establish `hm : (Γ).m = D.R.m` using `rfl`. Establish `hk : (Γ).k = D.R.k` using `rfl`. Establish `hk2 : 2 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `FU` using `good_family (fun i => (Γ).blockC' i ∪ {(Γ).a i}) (fun i => (Γ).blockC i) 1 D.R.m (fun i h1 h2 => good_U D C τ h1 (by omega)) fun i j h1 h2 h3 x hx y hy => lt_of_lt_of_le (ub_U D C τ (by omega) (by omega) hy) ((a_add_le (G := Γ) h2).trans (lb_U D C τ h1 (by omega) hx))`. Establish `FV` using `good_family (fun j => {(Γ).vHalf j}) (fun j => {((Γ).v j : ℚ)}) 2 (D.R.k - 1) (fun j _ _ => good_pair (by unfold GridData.vHalf; linarith)) fun i j h1 h2 h3 x hx y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (Γ).v j < (Γ).v i` using `(Γ).v_anti i j h1 h2 (by rw [hk]; omega)`. Establish `hv' : ((Γ).v j : ℚ) + 1 ≤ (Γ).v i` using `by exact_mod_cast hv`. Simplify using `only [mem_union, mem_singleton, GridData.vHalf] at hx hy`. Apply the tactic sequence `rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;> linarith`. Establish `FW` using `good_family (fun l => (Γ).blockMPlus l) (fun l => {-((Γ).b l : ℚ)} ∪ (Γ).blockM l) 1 D.R.m (fun l h1 h2 => one_pow_not_mem_height_one_asIdeal D C τ h1 (by omega)) fun i j h1 h2 h3 x hx y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e1` using `num_eb D C τ (l := i) h1 (by omega)`. Establish `e2` using `num_b_le D C τ (i := i + 1) (j := j) (by omega) h2 (by omega)`. Establish `e3` using `chiGrid_row_entries_lower_bound D C τ h1 (by omega) hx`. Establish `e4` using `chiGrid_row_entries_upper_bound D C τ (by omega) (by omega) hy`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `memU : ∀ y ∈ (Ico 1 (1 + D.R.m)).biUnion (fun i => (Γ).blockC' i ∪ {(Γ).a i}) ∪ (Ico 1 (1 + D.R.m)).biUnion (fun i => (Γ).blockC i), ∃ i, 1 ≤ i ∧ i ≤ D.R.m ∧ y ∈ ((Γ).blockC' i ∪ {(Γ).a i}) ∪ (Γ).blockC i`. Introduce `y hy`. Rewrite `hy` using `[← biUnion_union]`. Take `⟨i, hi, hy⟩` from `mem_biUnion.1 hy`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hi` using `[mem_Ico]`. Conclude with `⟨i, hi.1, by omega, hy⟩`. Establish `memV : ∀ y ∈ (Ico 2 (2 + (D.R.k - 1))).biUnion (fun j => ({(Γ).vHalf j} : Finset ℚ)) ∪ (Ico 2 (2 + (D.R.k - 1))).biUnion (fun j => ({((Γ).v j : ℚ)} : Finset ℚ)), ∃ j, 2 ≤ j ∧ j ≤ D.R.k ∧ (y = (Γ).vHalf j ∨ y = (Γ).v j)`. Introduce `y hy`. Rewrite `hy` using `[← biUnion_union]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, hj, hy⟩` from `mem_biUnion.1 hy`. Rewrite `hj` using `[mem_Ico]`. Simplify using `only [mem_union, mem_singleton] at hy`. Conclude with `⟨j, hj.1, by omega, hy⟩`. Establish `memW : ∀ y ∈ (Ico 1 (1 + D.R.m)).biUnion (fun l => (Γ).blockMPlus l) ∪ (Ico 1 (1 + D.R.m)).biUnion (fun l => {-((Γ).b l : ℚ)} ∪ (Γ).blockM l), ∃ l, 1 ≤ l ∧ l ≤ D.R.m ∧ y ∈ (Γ).blockMPlus l ∪ ({-((Γ).b l : ℚ)} ∪ (Γ).blockM l)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite `hy` using `[← biUnion_union]`. Take `⟨l, hl, hy⟩` from `mem_biUnion.1 hy`. Rewrite `hl` using `[mem_Ico]`. Conclude with `⟨l, hl.1, by omega, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `T1` using `(good_single ((Γ).a 0)).union FU (fun x hx y hy => by`. Take `⟨i, h1, h2, hy⟩` from `memU y hy`. Establish `hx' : x = (Γ).a 0` using `by simpa using hx`. Rewrite using `[hx']`. Conclude with `lt_of_lt_of_le (ub_U D C τ h1 h2 hy) (a_add_le (G := Γ) (by omega)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(le_refl _) (le_refl _) (by norm_num) (by norm_num)`. Establish `lb1 : ∀ x ∈ ({(Γ).a 0} ∪ (Ico 1 (1 + D.R.m)).biUnion (fun i => (Γ).blockC' i ∪ {(Γ).a i})) ∪ (∅ ∪ (Ico 1 (1 + D.R.m)).biUnion (fun i => (Γ).blockC i)), (Γ).a (Γ).m ≤ x`. Introduce `x hx`. Simplify using `only [empty_union] at hx`. Break down `mem_union.1 hx with hx | hx` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `mem_union.1 hx with hx | hx` into its components or cases. Rewrite using `[mem_singleton.1 hx]`. Conclude with `a_le D C τ (Nat.zero_le _)`. Take `⟨i, h1, h2, hx⟩` from `memU x (mem_union_left _ hx)`. Conclude with `(a_le D C τ (by rw [hm]; exact h2)).trans (lb_U D C τ h1 h2 hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, h1, h2, hx⟩` from `memU x (mem_union_right _ hx)`. Conclude with `(a_le D C τ (by rw [hm]; exact h2)).trans (lb_U D C τ h1 h2 hx)`. Establish `T2` using `T1.union FV (fun x hx y hy => by`. Take `⟨j, h1, h2, hy⟩` from `memV y hy`. Use `v_lt_a D C τ h1 h2` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `lb1 x hx` as an intermediate fact. Break down `hy with rfl | rfl` into its components or cases. Unfold `GridData.vHalf`. Combine the linear equalities and inequalities to obtain the conclusion. Use the proof step `linarith)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(le_refl _) (le_refl _) (by norm_num) (by norm_num)`. Establish `hb1 : -((Γ).b 1 : ℚ) < (Γ).a (Γ).m` using `low_lt_a D C τ le_rfl`. Establish `T3` using `T2.union FW (fun x hx y hy => by`. Take `⟨l, h1, h2, hy⟩` from `memW y hy`. Establish `e1` using `chiGrid_row_entries_upper_bound D C τ h1 h2 hy`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `num_b_le D C τ (i := 1) (j := l) le_rfl h1 h2`. Establish `lx : -((Γ).b 1 : ℚ) < x`. Break down `mem_union.1 hx with hx | hx` into its components or cases. Break down `mem_union.1 hx with hx | hx` into its components or cases. Combine the linear relations using `[lb1 x (mem_union_left _ hx)]`.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨j, h1, h2, hx⟩` from `memV x (mem_union_left _ hx)`. Use `num_cloud D C τ h1 h2` as an intermediate fact. Break down `hx with rfl | rfl` into its components or cases. Unfold `GridData.vHalf`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Break down `mem_union.1 hx with hx | hx` into its components or cases. Combine the linear relations using `[lb1 x (mem_union_right _ hx)]`. Take `⟨j, h1, h2, hx⟩` from `memV x (mem_union_right _ hx)`. Use `num_cloud D C τ h1 h2` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Break down `hx with rfl | rfl` into its components or cases. Unfold `GridData.vHalf`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use the proof step `linarith)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Prove the first alternative.
 
-Use the proof step `(le_refl _) (le_refl _) (by norm_num) (by norm_num)`. Establish `hA : {(Γ).a 0} ∪ (Ico 1 (1 + D.R.m)).biUnion (fun i => (Γ).blockC' i ∪ {(Γ).a i}) ∪ (Ico 2 (2 + (D.R.k - 1))).biUnion (fun j => ({(Γ).vHalf j} : Finset ℚ)) ∪ (Ico 1 (1 + D.R.m)).biUnion (fun l => (Γ).blockMPlus l) = (Γ).weightX D.R.m`. Use extensionality with `x`. Simplify using `only [mem_union, mem_singleton, mem_biUnion, mem_Ico, GridData.mem_weightX, GridData.mem_tops, GridData.mem_cloudHalf, hm, hk]`. Prove the components needed by the constructor for the conclusion.
+Prove the second alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Introduce and unpack `(((hx | ⟨i, ⟨h1, h2⟩, hx | hx⟩) | ⟨j, ⟨h1, h2⟩, hx⟩) | ⟨l, ⟨h1, h2⟩, hx⟩)`. Conclude with `Or.inl ⟨0, Nat.zero_le _, hx⟩`. Conclude with `Or.inr (Or.inr (Or.inl ⟨i, h1, by omega, hx⟩))`. Conclude with `Or.inl ⟨i, by omega, hx⟩`. Conclude with `Or.inr (Or.inl ⟨j, h1, by omega, hx⟩)`.
+Prove the first alternative. Prove the first alternative. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `Or.inr (Or.inr (Or.inr ⟨l, h1, by omega, hx⟩))`. Introduce and unpack `(⟨i, hi, hx⟩ | ⟨j, h1, h2, hx⟩ | ⟨i, h1, h2, hx⟩ | ⟨l, h1, h2, hx⟩)`. Break down `Nat.eq_zero_or_pos i with rfl | h` into its components or cases. Conclude with `Or.inl (Or.inl (Or.inl hx))`. Conclude with `Or.inl (Or.inl (Or.inr ⟨i, ⟨h, by omega⟩, Or.inr hx⟩))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl (Or.inr ⟨j, ⟨h1, by omega⟩, hx⟩)`. Conclude with `Or.inl (Or.inl (Or.inr ⟨i, ⟨h1, by omega⟩, Or.inl hx⟩))`. Conclude with `Or.inr ⟨l, ⟨h1, by omega⟩, hx⟩`. Establish `hB : ∅ ∪ (Ico 1 (1 + D.R.m)).biUnion (fun i => (Γ).blockC i) ∪ (Ico 2 (2 + (D.R.k - 1))).biUnion (fun j => ({((Γ).v j : ℚ)} : Finset ℚ)) ∪ (Ico 1 (1 + D.R.m)).biUnion (fun l => {-((Γ).b l : ℚ)} ∪ (Γ).blockM l) = entries ((Γ).parD D.R.m D.R.m)`. Use extensionality with `x`.
+Prove the second alternative. Prove the first alternative. Prove the first alternative. Prove the first alternative. Assume the hypotheses and unpack their components.
 
-Rewrite using `[GridData.entries_parD]`. Simplify using `only [empty_union, mem_union, mem_singleton, mem_biUnion, mem_Ico, mem_Icc, GridData.mem_cloud, GridData.mem_lows, hm, hk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `((⟨i, ⟨h1, h2⟩, hx⟩ | ⟨j, ⟨h1, h2⟩, hx⟩) | ⟨l, ⟨h1, h2⟩, hx | hx⟩)`. Conclude with `Or.inr ⟨i, ⟨by omega, by omega⟩, hx⟩`.
-
-Conclude with `Or.inl (Or.inl (Or.inl ⟨j, h1, by omega, hx⟩))`. Conclude with `Or.inl (Or.inl (Or.inr ⟨l, h1, by omega, hx⟩))`. Conclude with `Or.inl (Or.inr ⟨l, ⟨h1, by omega⟩, hx⟩)`. Introduce and unpack `(((⟨j, h1, h2, hx⟩ | ⟨l, h1, h2, hx⟩) | ⟨l, ⟨h1, h2⟩, hx⟩) | ⟨i, ⟨h1, h2⟩, hx⟩)`. Conclude with `Or.inl (Or.inr ⟨j, ⟨h1, by omega⟩, hx⟩)`.
-
-Conclude with `Or.inr ⟨l, ⟨h1, by omega⟩, Or.inl hx⟩`. Conclude with `Or.inr ⟨l, ⟨h1, by omega⟩, Or.inr hx⟩`. Conclude with `Or.inl (Or.inl ⟨i, ⟨by omega, by omega⟩, hx⟩)`. Conclude with `good_congr T3 hA hB`.
+Prove the first alternative. Prove the second alternative. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem good_top_grid : Good 0 1 1 ((Γ).weightX D.R.m) (entries ((Γ).parD D.R.m D.R.m)) := by
   have hm : (Γ).m = D.R.m := rfl
@@ -705,15 +699,15 @@ namespace GlobalTheory.WtInterlace
 open Finset GlobalTheory.SignedHC GlobalTheory.FunObj GlobalTheory.ChiGrid
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `key` using `(strictInterlace_iff_descEnum hA hB).1 hSI`. Introduce `i`. Establish `eA : ∀ j, ((wtOf (n + 1) A).w j : ℚ) = descEnum A hA j - ((((n + 1 : ℕ) : ℚ) - 1) / 2 - ((j : ℕ) : ℚ))` using `fun j => wtOf_cast hA hAc j`. Establish `eB : ∀ j, ((wtOf n B).w j : ℚ) = descEnum B hB j - (((n : ℚ) - 1) / 2 - ((j : ℕ) : ℚ))` using `fun j => wtOf_cast hB hBc j`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : Formalism.L2.Col.Br.iS (rfl : n + 1 = n + 1) i = i.succ` using `Fin.ext rfl`. Establish `s2 : Formalism.L2.Col.Br.iC (rfl : n + 1 = n + 1) i = i.castSucc` using `Fin.ext rfl`. Establish `h1` using `eA i.succ`. Establish `h2` using `eA i.castSucc`. Establish `h3` using `eB i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k1, k2⟩` from `key i`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at h1 h2`. Move the coercions through the operations in `at h1 h2`. Unfold `Formalism.L2.Col.Br.aBr Formalism.L2.Col.Br.bBr`. Rewrite using `[s1, s2]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Establish `: (-1 : ℚ) < (((wtOf n B).w i - (wtOf (n + 1) A).w i.succ : ℤ) : ℚ)` using `by push_cast; rw [h1, h3]; linarith`. Establish `: (-1 : ℤ) < (wtOf n B).w i - (wtOf (n + 1) A).w i.succ` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Establish `: (-1 : ℚ) < (((wtOf (n + 1) A).w i.castSucc - (wtOf n B).w i : ℤ) : ℚ)` using `by push_cast; rw [h2, h3]; linarith`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: (-1 : ℤ) < (wtOf (n + 1) A).w i.castSucc - (wtOf n B).w i` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem interlace_wtOf {N n : ℕ} (hN : N = n + 1) {A B : Finset ℚ} (hA : A.card = N) (hB : B.card = n)
     (hAc : InCoset (((N : ℚ) - 1) / 2) A) (hBc : InCoset (((n : ℚ) - 1) / 2) B) (hSI : StrictInterlace A B) :
@@ -746,9 +740,7 @@ theorem interlace_wtOf {N n : ℕ} (hN : N = n + 1) {A B : Finset ℚ} (hA : A.c
     omega
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite `hz` using `[← image_descEnum E h]`. Take `⟨j, -, hj⟩` from `mem_image.1 hz`. Rewrite using `[← hj]`. Conclude with `(strictAnti_descEnum E h).antitone (Fin.mk_le_mk.2 (by have := j.2; omega))`.
-
-Conclude with `hmin _ (descEnum_mem E h _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descEnum_last {m : ℕ} {E : Finset ℚ} (h : E.card = m) (hm : 0 < m) {z : ℚ} (hz : z ∈ E)
     (hmin : ∀ y ∈ E, z ≤ y) : descEnum E h ⟨m - 1, by omega⟩ = z := by
@@ -760,11 +752,11 @@ theorem descEnum_last {m : ℕ} {E : Finset ℚ} (h : E.card = m) (hm : 0 < m) {
   · exact hmin _ (descEnum_mem E h _)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Unfold `Formalism.L2.Col.Br.SameShift DomWeight.detShift`. Rewrite using `[dif_pos hn, dif_pos (Nat.succ_pos n)]`. Establish `e1` using `wtOf_cast hB hBc ⟨n - 1, by omega⟩`. Establish `e2` using `wtOf_cast hA hAc ⟨n + 1 - 1, by omega⟩`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [highestWeight] at e1 e2`. Rewrite `e1` using `[descEnum_last hB hn hxB hBm]`. Rewrite `e2` using `[descEnum_last hA (Nat.succ_pos n) hxA hAm]`. Establish `: (((wtOf n B).w ⟨n - 1, by omega⟩ : ℤ) : ℚ) = (((wtOf (n + 1) A).w ⟨n + 1 - 1, by omega⟩ : ℤ) : ℚ)`. Rewrite using `[e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sub hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sameShift_wtOf {N n : ℕ} (hN : N = n + 1) (hn : 0 < n) {A B : Finset ℚ} (hA : A.card = N) (hB : B.card = n)
     (hAc : InCoset (((N : ℚ) - 1) / 2) A) (hBc : InCoset (((n : ℚ) - 1) / 2) B) {x : ℚ} (hxA : x ∈ A)
@@ -798,7 +790,7 @@ variable (D : D7) (C : ℝ) (τ : D.what₂.Tau)
 local notation "Γ" => num D C τ
 
 /- English proof (translation)
-Establish `hm2` using `D.R.two_le_m`. Establish `et : ((Γ).t : ℚ) = D.R.t` using `rfl`. Use `GridData.mem_weightX.2 (Or.inr (Or.inr (Or.inr ⟨D.R.m, by omega, le_rfl, mem_block.2 ⟨(Γ).t, by omega, ?_⟩⟩)))` and prove the remaining obligations. Use `push_cast`. Rewrite using `[et]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -811,11 +803,11 @@ theorem low_mem_weightX : -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 ∈ (Γ).wei
   ring
 
 /- English proof (translation)
-Establish `hm2` using `D.R.two_le_m`. Establish `hz` using `low_mem_weightX D C τ`. Take `⟨j, hj⟩ : ∃ j, D.R.m = j + 1` from `⟨D.R.m - 1, by omega⟩`. Establish `hz' : -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 ∈ (Γ).blockMPlus D.R.m`. Establish `et : ((Γ).t : ℚ) = D.R.t` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mem_block.2 ⟨(Γ).t, by omega, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[et]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hy`, `hz'`, the goal using `[hj]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hy` using `[GridData.weightX_succ]`. Break down `mem_union.1 hy with hy | hy` into its components or cases. Conclude with `(weightX_above D C τ (j := j) (by omega) hy hz').le`. Conclude with `(blockMPlus_bd D C τ hy).1`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem min_weightX {y : ℚ} (hy : y ∈ (Γ).weightX D.R.m) : -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 ≤ y := by
   have hm2 := D.R.two_le_m
@@ -834,9 +826,9 @@ theorem min_weightX {y : ℚ} (hy : y ∈ (Γ).weightX D.R.m) : -((Γ).e D.R.m :
   · exact (blockMPlus_bd D C τ hy).1
 
 /- English proof (translation)
-Establish `hm2` using `D.R.two_le_m`. Establish `ht` using `D.R.t_odd.pos`. Establish `et : ((Γ).t : ℚ) = D.R.t` using `rfl`. Establish `hmem : -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 + 1 / 2 ∈ (Γ).blockM D.R.m`. Use `mem_block.2 ⟨(Γ).t - 1, by show D.R.t - 1 < D.R.t; omega, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_sub (show 1 ≤ (Γ).t from ht), et]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GridData.entries_parD]`. Conclude with `mem_union_left _ (mem_union_right _ (mem_biUnion.2 ⟨D.R.m, mem_Icc.2 ⟨by omega, le_rfl⟩, hmem⟩))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_mem_parD : -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 + 1 / 2 ∈ entries ((Γ).parD D.R.m D.R.m) := by
   have hm2 := D.R.two_le_m
@@ -850,17 +842,17 @@ theorem half_mem_parD : -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 + 1 / 2 ∈ en
   exact mem_union_left _ (mem_union_right _ (mem_biUnion.2 ⟨D.R.m, mem_Icc.2 ⟨by omega, le_rfl⟩, hmem⟩))
 
 /- English proof (translation)
-Establish `hm2` using `D.R.two_le_m`. Establish `hm : (Γ).m = D.R.m` using `rfl`. Establish `hbe` using `num_be D C τ (l := D.R.m) (by omega) le_rfl`. Establish `hbm` using `num_b_le D C τ (i := 1) (j := D.R.m) le_rfl (by omega) le_rfl`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[GridData.entries_parD]`. Break down `mem_union.1 hy with hy | hy` into its components or cases. Break down `mem_union.1 hy with hy | hy` into its components or cases. Break down `mem_union.1 hy with hy | hy` into its components or cases. Use `(cloud_gt D C τ hy).1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨l, h1, h2, rfl⟩` from `GridData.mem_lows.1 hy`. Use `num_b_le D C τ (i := l) (j := D.R.m) h1 (by rw [← hm]; exact h2) le_rfl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨l, hl, hy⟩` from `mem_biUnion.1 hy`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mem_Icc, hm] at hl`. Establish `e1` using `(blockM_bd D C τ hy).1`. Establish `e2 : ((Γ).e l : ℚ) ≤ (Γ).e D.R.m`. Break down `hl.2.eq_or_lt with h | h` into its components or cases. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[num_e_lt D C τ hl.1 h le_rfl]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨l, hl, hy⟩` from `mem_biUnion.1 hy`. Simplify using `only [mem_Icc, hm] at hl`. Establish `e1` using `(blockC_bd D C τ (by omega) hl.2 hy).1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2` using `a_le D C τ (i := l) (j := (Γ).m) (by rw [hm]; exact hl.2)`. Establish `e3 : -((Γ).b 1 : ℚ) < (Γ).a (Γ).m` using `low_lt_a D C τ le_rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem min_parD {y : ℚ} (hy : y ∈ entries ((Γ).parD D.R.m D.R.m)) :
     -((Γ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2 + 1 / 2 ≤ y := by
@@ -896,15 +888,15 @@ theorem min_parD {y : ℚ} (hy : y ∈ entries ((Γ).parD D.R.m D.R.m)) :
 end Min
 
 /- English proof (translation)
-Introduce `D T L sc G τ`. Establish `r0` using `rank_top G (j := D.R.m) le_rfl`. Establish `r1` using `rank_grid G (i := D.R.m) le_rfl`. Establish `h0` using `isHC_top D sc.cGap τ (j := D.R.m) le_rfl r0`. Establish `h1` using `isHC_grid D sc.cGap τ (i := D.R.m) le_rfl r1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `h0.1.card_entries.trans h0.2.1`. Establish `hB` using `h1.1.card_entries.trans h1.2.1`. Establish `eA : entries (Node.par D sc.cGap (.top D.R.m) τ) = (num D sc.cGap τ).weightX D.R.m` using `entries_plus _`. Establish `eB : entries (Node.par D sc.cGap (.grid D.R.m D.R.m) τ) = entries ((num D sc.cGap τ).parD D.R.m D.R.m)`. Establish `: entries (Node.par D sc.cGap (.grid D.R.m D.R.m) τ) = entries (shift (if Odd (D.R.m + D.R.m) then -(1 / 2) else 0) ((num D sc.cGap τ).parD D.R.m (num D sc.cGap τ).m))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, if_neg (by rw [Nat.odd_iff]; omega), shift_zero]`. Both sides reduce to the same expression. Establish `hSI : StrictInterlace (entries (Node.par D sc.cGap (.top D.R.m) τ)) (entries (Node.par D sc.cGap (.grid D.R.m D.R.m) τ))`. Rewrite using `[eA, eB]`. Conclude with `strictInterlace_of_good (good_top_grid D sc.cGap τ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : 0 < (G.V (.grid D.R.m D.R.m)).rank` using `by rw [r1]; exact rankV_pos D _ _`. Use `⟨interlace_wtOf G.sp.topDec.rank.symm hA hB h0.2.2 h1.2.2 hSI, sameShift_wtOf G.sp.topDec.rank.symm hn hA hB h0.2.2 h1.2.2 (x := -((num D sc.cGap τ).e D.R.m : ℚ) - (D.R.t : ℚ) / 2) ?_ ?_ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[eA]`. Conclude with `low_mem_weightX D sc.cGap τ`. Rewrite using `[eA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun y hy => min_weightX D sc.cGap τ hy`. Rewrite using `[eB]`. Conclude with `half_mem_parD D sc.cGap τ`. Rewrite using `[eB]`. Conclude with `fun y hy => min_parD D sc.cGap τ hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem weights_top_grid : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (τ : D.what₂.Tau),
     Formalism.L2.Col.Br.Interlace G.sp.topDec.rank.symm (wt G (.top D.R.m) τ) (listedWt G (.grid D.R.m D.R.m) τ) ∧

@@ -6,7 +6,7 @@ noncomputable section
 namespace GlobalTheory.ScalConj
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_and]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem single_conj_apply {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) (a b i j : Fin n) :
     (A * (Matrix.single a b (1 : K) : Matrix (Fin n) (Fin n) K) * B) i j = A i a * B b j := by
@@ -39,7 +39,7 @@ def conjInt {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (m : GL (Fin
     rw [h, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Units.mul_inv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_map_subtype {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (a b : Fin n) :
     (Matrix.single a b (1 : O)).map O.subtype = (Matrix.single a b (1 : K) : Matrix (Fin n) (Fin n) K) := by
@@ -48,11 +48,11 @@ theorem single_map_subtype {K : Type} [Field K] (O : ValuationSubring K) {n : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hle : Algebra.adjoin O ((fun x : GL (Fin n) O => (x : Matrix (Fin n) (Fin n) O)) '' T) ≤ conjInt O m`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨x', hx'⟩` from `hc x hx`. Conclude with `⟨x', congrArg (fun g : GL (Fin n) K => (g : Matrix (Fin n) (Fin n) K)) hx'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hle` using `[hT]`. Take `⟨Y, hY⟩` from `hle (Algebra.mem_top : Matrix.single a b (1 : O) ∈ (⊤ : Subalgebra O (Matrix (Fin n) (Fin n) O)))`. Establish `h` using `congrFun (congrFun hY i) j`. Rewrite `h` using `[single_map_subtype, single_conj_apply]`. Rewrite using `[← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Y i j).2`.
+A detailed English derivation is pending.
 -/
 theorem entry_mul_inv_entry_mem {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (m : GL (Fin n) K)
     (T : Set (GL (Fin n) O))
@@ -72,21 +72,19 @@ theorem entry_mul_inv_entry_mem {K : Type} [Field K] (O : ValuationSubring K) {n
   exact (Y i j).2
 
 /- English proof (translation)
-Establish `H` using `entry_mul_inv_entry_mem O m T hT hc`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, 1, Subsingleton.elim _ _⟩`. Use `set M : Matrix (Fin n) (Fin n) K := (m : Matrix (Fin n) (Fin n) K) with hM`. Use `set N : Matrix (Fin n) (Fin n) K := ((m⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) with hN`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hMN : M * N = 1` using `Units.mul_inv m`. Take `⟨⟨i0, a0⟩, -, hmax⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin n × Fin n)) (fun p => O.valuation (M p.1 p.2)) ⟨(⟨0, hn⟩, ⟨0, hn⟩), Finset.mem_univ _⟩`. Use `set c := M i0 a0 with hcdef`. Establish `hc0 : c ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz : ∀ i a, M i a = 0` using `fun i a => by`. Establish `h1` using `hmax (i, a) (Finset.mem_univ _)`. Simplify using `only [h0, map_zero] at h1`. Conclude with `(Valuation.zero_iff _).1 (le_antisymm h1 zero_le')`. Establish `h1` using `congrFun (congrFun hMN ⟨0, hn⟩) ⟨0, hn⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, hz] at h1`. Establish `hv : 0 < O.valuation c` using `(Valuation.pos_iff _).2 hc0`. Establish `hy : ∀ i a, c⁻¹ * M i a ∈ O` using `fun i a => by`. Rewrite using `[← O.valuation_le_one_iff, map_mul, map_inv₀]`. Conclude with `(inv_mul_le_one₀ hv).2 (hmax (i, a) (Finset.mem_univ _))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ b j, c * N b j ∈ O` using `fun b j => H i0 a0 b j`. Set `Y : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨_, hy i j⟩`. Set `Z : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨_, hz i j⟩`. Establish `hYm : Y.map O.subtype = c⁻¹ • M` using `by ext i j; rfl`. Establish `hZm : Z.map O.subtype = c • N` using `by ext i j; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj : Function.Injective fun X : Matrix (Fin n) (Fin n) O => X.map O.subtype` using `Matrix.map_injective (Subtype.val_injective)`. Establish `key : ∀ {A B : Matrix (Fin n) (Fin n) K}, A * B = 1 → (c⁻¹ • A) * (c • B) = 1` using `fun {A B} h => by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc0, one_smul, h]`. Establish `hNM : N * M = 1` using `Units.inv_mul m`. Establish `e1 : Y * Z = 1` using `inj (by show (Y * Z).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hYm, hZm, key hMN])`. Establish `e2 : Z * Y = 1` using `inj (by show (Z * Y).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hYm, hZm, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc0, one_smul, hNM])`. Use `⟨Units.mk0 c hc0, ⟨Y, Z, e1, e2⟩, ?_⟩` and prove the remaining obligations. Use `show M = c • (Y.map O.subtype)`.
-
-Rewrite using `[hYm, smul_smul, mul_inv_cancel₀ hc0, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isScal_of_conj (K : Type) [Field K] (O : ValuationSubring K) (n : ℕ) (m : GL (Fin n) K)
     (T : Set (GL (Fin n) O))

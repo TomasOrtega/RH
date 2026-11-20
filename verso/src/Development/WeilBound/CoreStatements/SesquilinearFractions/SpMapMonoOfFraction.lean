@@ -15,9 +15,9 @@ section Comb
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] {x : Sp R ⟶ S}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Use `congrArg (fun f => (List.ofFn f).prod) (funext fun i => ?_)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu i]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `hw`. Conclude with `⟨_, fun i => rfl, hw⟩`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isComb_iff {n : ℕ} (c : Fin n → R) (v : Fin n → (epsAt x ⟶ G)) (w : epsAt x ⟶ G) :
     IsComb c v w ↔ w = (List.ofFn fun i => LieTangent.epsScale x (c i) ≫ v i).prod := by
@@ -31,7 +31,7 @@ theorem isComb_iff {n : ℕ} (c : Fin n → R) (v : Fin n → (epsAt x ⟶ G)) (
     exact ⟨_, fun i => rfl, hw⟩
 
 /- English proof (translation)
-The claim follows from `| 0, c, z => by simp [LieModel.pt_zero] | n + 1, c, z => by rw [List.ofFn_succ, List.prod_cons, prod_pt M (fun i => c i.succ) (fun i => z i.succ), Fin.sum_univ_succ, M.add, LieModel.pt_smul]`.
+A detailed English derivation is pending.
 -/
 theorem prod_pt {E : Type} [AddCommGroup E] [Module R E] (M : LieModel G x E) :
     ∀ {n : ℕ} (c : Fin n → R) (z : Fin n → E),
@@ -49,7 +49,7 @@ variable {V K : Type} [CommRing V] [CommRing K] (VK : V →+* K) {G : Over (Sp V
   [GrpObj G'] {φ' : G'.left ⟶ G.left} (h : IsGrpPullback G' G (spMap VK) φ')
 
 /- English proof (translation)
-Simplify using `only [epsAt, Over.mk_hom, Category.comp_id, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem bc_cond_lemma :
     spMap (dualMap VK) ≫ (epsAt (𝟙 (Sp V))).hom = (epsAt (𝟙 (Sp K))).hom ≫ spMap VK := by
@@ -60,7 +60,7 @@ private theorem bc_cond_lemma :
   · simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Over.w]`. Conclude with `bc_cond_lemma VK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_cond (w : epsAt (𝟙 (Sp V)) ⟶ G) :
     (spMap (dualMap VK) ≫ w.left) ≫ G.hom = (epsAt (𝟙 (Sp K))).hom ≫ spMap VK := by
@@ -71,13 +71,13 @@ def bcTan (w : epsAt (𝟙 (Sp V)) ⟶ G) : epsAt (𝟙 (Sp K)) ⟶ G' :=
   Over.homMk (h.1.lift (spMap (dualMap VK) ≫ w.left) (epsAt (𝟙 (Sp K))).hom (bc_cond VK w)) (h.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `h.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcTan_left (w : epsAt (𝟙 (Sp V)) ⟶ G) : (bcTan VK h w).left ≫ φ' = spMap (dualMap VK) ≫ w.left :=
   h.1.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hs, bcTan_left]`. Rewrite using `[Over.w s, Over.w (bcTan VK h w)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcTan_unique (w : epsAt (𝟙 (Sp V)) ⟶ G) (s : epsAt (𝟙 (Sp K)) ⟶ G')
     (hs : s.left ≫ φ' = spMap (dualMap VK) ≫ w.left) : s = bcTan VK h w := by
@@ -87,7 +87,7 @@ theorem bcTan_unique (w : epsAt (𝟙 (Sp V)) ⟶ G) (s : epsAt (𝟙 (Sp K)) �
   · rw [Over.w s, Over.w (bcTan VK h w)]
 
 /- English proof (translation)
-Use `symm`. Apply `bcTan_unique` to reduce the goal to its premises. Set `g : Over.mk ((epsAt (𝟙 (Sp K))).hom ≫ spMap VK) ⟶ epsAt (𝟙 (Sp V))` to `Over.homMk (spMap (dualMap VK)) (bc_cond_lemma VK)`. Use `h.2 (epsAt (𝟙 (Sp K))) (bcTan VK h w) (bcTan VK h w') (g ≫ w) (g ≫ w') (bcTan_left VK h w).symm (bcTan_left VK h w').symm` as an intermediate fact. Rewrite using `[← this, ← MonObj.comp_mul]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -103,7 +103,7 @@ theorem bcTan_mul (w w' : epsAt (𝟙 (Sp V)) ⟶ G) :
   rfl
 
 /- English proof (translation)
-Use `bcTan_mul VK h 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcTan_one : bcTan VK h (1 : epsAt (𝟙 (Sp V)) ⟶ G) = 1 := by
   have := bcTan_mul VK h 1 1
@@ -116,7 +116,7 @@ def bcHom : (epsAt (𝟙 (Sp V)) ⟶ G) →* (epsAt (𝟙 (Sp K)) ⟶ G') where
   map_mul' := bcTan_mul VK h
 
 /- English proof (translation)
-Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, GlobalTheory.CompanionTheory.Ar.epsMul]`. Simplify using `[dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, smul_eq_mul, map_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem scale_lemma (c : V) :
     (GlobalTheory.CompanionTheory.Ar.epsMul (VK c)).comp (dualMap VK) = (dualMap VK).comp (GlobalTheory.CompanionTheory.Ar.epsMul c) := by
@@ -125,7 +125,7 @@ private theorem scale_lemma (c : V) :
   · simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, smul_eq_mul, map_mul, mul_comm]
 
 /- English proof (translation)
-Use `symm`. Apply `bcTan_unique` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, bcTan_left]`. Simplify using `only [LieTangent.epsScale, Over.homMk_left, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, scale_lemma]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bcTan_scale (c : V) (w : epsAt (𝟙 (Sp V)) ⟶ G) :
     bcTan VK h (LieTangent.epsScale _ c ≫ w) = LieTangent.epsScale _ (VK c) ≫ bcTan VK h w := by
@@ -136,9 +136,9 @@ theorem bcTan_scale (c : V) (w : epsAt (𝟙 (Sp V)) ⟶ G) :
     ← CommRingCat.ofHom_comp, scale_lemma]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [List.ofFn_zero, List.prod_nil]`. Conclude with `bcTan_one VK h`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[bcTan_mul, bcTan_scale, ih (fun i => c i.succ) (fun i => w i.succ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcTan_comb {n : ℕ} (c : Fin n → V) (w : Fin n → (epsAt (𝟙 (Sp V)) ⟶ G)) :
     bcTan VK h (List.ofFn fun i => LieTangent.epsScale _ (c i) ≫ w i).prod =
@@ -152,11 +152,11 @@ theorem bcTan_comb {n : ℕ} (c : Fin n → V) (w : Fin n → (epsAt (𝟙 (Sp V
     rw [bcTan_mul, bcTan_scale, ih (fun i => c i.succ) (fun i => w i.succ)]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Use `show algebraMap R (DualNumber R) x.fst ∈ p.asIdeal ↔ x ∈ p.asIdeal`. Establish `hn : (x - algebraMap R (DualNumber R) x.fst) ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.algebraMap_eq_inl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hmem : x - algebraMap R (DualNumber R) x.fst ∈ p.asIdeal` using `p.isPrime.mem_of_pow_mem 2 (by rw [hn]; exact p.asIdeal.zero_mem)`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify using `using p.asIdeal.add_mem hmem hx`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using p.asIdeal.sub_mem hx hmem`.
+A detailed English derivation is pending.
 -/
 private theorem prime_lemma_2 {R : Type} [CommRing R] (p : PrimeSpectrum (DualNumber R)) :
     PrimeSpectrum.comap (TrivSqZeroExt.fstHom R R R).toRingHom
@@ -175,15 +175,13 @@ private theorem prime_lemma_2 {R : Type} [CommRing R] (p : PrimeSpectrum (DualNu
     simpa using p.asIdeal.sub_mem hx hmem
 
 /- English proof (translation)
-Take `⟨U, hU, hcU, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens (show a c ∈ (⊤ : X.Opens) from trivial)`. Use `haveI : IsAffine U := hU`. Establish `ha : Set.range a ⊆ Set.range (Scheme.Opens.ι U)`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `((hsp p).map a.continuous).mem_open U.isOpen hcU`. Establish `hb : Set.range b ⊆ Set.range (Scheme.Opens.ι U)`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `((hsp p).map b.continuous).mem_open U.isOpen (hc ▸ hcU)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← IsOpenImmersion.lift_fac (Scheme.Opens.ι U) a ha, ← IsOpenImmersion.lift_fac (Scheme.Opens.ι U) b hb]`. Use `congr 1`. Apply `ext_of_isAffine` to reduce the goal to its premises. Establish `e' : Spec.map (CommRingCat.ofHom j) ≫ IsOpenImmersion.lift (Scheme.Opens.ι U) a ha = Spec.map (CommRingCat.ofHom j) ≫ IsOpenImmersion.lift (Scheme.Opens.ι U) b hb`. Rewrite using `[← cancel_mono (Scheme.Opens.ι U), Category.assoc, Category.assoc, IsOpenImmersion.lift_fac, IsOpenImmersion.lift_fac, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Mono (CommRingCat.ofHom j) := ConcreteCategory.mono_of_injective _ hj`. Establish `hnat` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom j)`. Use `haveI : Mono ((Spec.map (CommRingCat.ofHom j)).appTop ≫ (Scheme.ΓSpecIso _).hom) := by`. Rewrite using `[hnat]`. Use `infer_instance`.
-
-Use `haveI : Mono (Spec.map (CommRingCat.ofHom j)).appTop := mono_of_mono _ (Scheme.ΓSpecIso _).hom`. Rewrite using `[← cancel_mono (Spec.map (CommRingCat.ofHom j)).appTop]`. Use `congrArg Scheme.Hom.appTop e'` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem cancel_lemma {R B : Type} [CommRing R] [CommRing B] {X : Scheme.{0}} (j : R →+* B)
     (hj : Function.Injective j) (a b : Spec (CommRingCat.of R) ⟶ X) (c : Spec (CommRingCat.of R))
@@ -218,9 +216,9 @@ private theorem cancel_lemma {R B : Type} [CommRing R] [CommRing B] {X : Scheme.
   simpa using this
 
 /- English proof (translation)
-Establish `hl : spMap (dualMap VK) ≫ w.left = spMap (dualMap VK) ≫ w'.left`. Rewrite using `[← bcTan_left VK h w, ← bcTan_left VK h w', e]`. Establish `ht` using `hw.trans hw'.symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `cancel_lemma (dualMap VK) (LieTangent.dualMap_injective hVK) w.left w'.left (PrimeSpectrum.comap (TrivSqZeroExt.fstHom V V V).toRingHom (IsLocalRing.closedPoint V)) ?_ ?_ hl` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun f => f.base (IsLocalRing.closedPoint V)) ht`. Introduce `p`. Rewrite using `[← prime_lemma_2 p]`. Conclude with `(IsLocalRing.specializes_closedPoint _).map (PrimeSpectrum.continuous_comap _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcTan_inj [IsLocalRing V] (hVK : Function.Injective VK) {w w' : epsAt (𝟙 (Sp V)) ⟶ G}
     (hw : IsTanAt G _ w) (hw' : IsTanAt G _ w') (e : bcTan VK h w = bcTan VK h w') : w = w' := by
@@ -236,7 +234,7 @@ theorem bcTan_inj [IsLocalRing V] (hVK : Function.Injective VK) {w w' : epsAt (�
     exact (IsLocalRing.specializes_closedPoint _).map (PrimeSpectrum.continuous_comap _)
 
 /- English proof (translation)
-Use `symm`. Apply `bcTan_unique` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, hα]`. Rewrite using `[← Category.assoc, bcTan_left, Category.assoc]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcTan_act (α' : G' ⟶ G') (α : G ⟶ G) (hα : α'.left ≫ φ' = φ' ≫ α.left) (w : epsAt (𝟙 (Sp V)) ⟶ G) :
     bcTan VK h (w ≫ α) = bcTan VK h w ≫ α' := by
@@ -247,7 +245,7 @@ theorem bcTan_act (α' : G' ⟶ G') (α : G ⟶ G) (hα : α'.left ≫ φ' = φ'
 
 omit [GrpObj G] [GrpObj G'] in
 /- English proof (translation)
-Substitute `hVK` using the available equality. Use `haveI : Epi (CommRingCat.ofHom (algebraMap V K)) := IsLocalization.epi (nonZeroDivisors V) K`. Use `haveI : Mono (Scheme.Spec.map (CommRingCat.ofHom (algebraMap V K)).op) := inferInstance`. Conclude with `(cancel_mono (Scheme.Spec.map (CommRingCat.ofHom (algebraMap V K)).op)).1 e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem spMap_mono_of_fraction [IsDomain V] [Algebra V K] [IsFractionRing V K] (hVK : VK = algebraMap V K)
     {A : Type} [CommRing A] (f₁ f₂ : Sp A ⟶ Sp K) (e : f₁ ≫ spMap VK = f₂ ≫ spMap VK) : f₁ = f₂ := by
@@ -257,7 +255,7 @@ theorem spMap_mono_of_fraction [IsDomain V] [Algebra V K] [IsFractionRing V K] (
   exact (cancel_mono (Scheme.Spec.map (CommRingCat.ofHom (algebraMap V K)).op)).1 e
 
 /- English proof (translation)
-Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hs, bcTan_left]`. Apply `spMap_mono_of_fraction VK hVK` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← h.1.w, ← Category.assoc, hs, bc_cond, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_bcTan_left [IsDomain V] [Algebra V K] [IsFractionRing V K] (hVK : VK = algebraMap V K)
     (w : epsAt (𝟙 (Sp V)) ⟶ G) (s : Sp (DualNumber K) ⟶ G'.left)
@@ -277,7 +275,7 @@ variable {S : Scheme.{0}} {K : Type} [CommRing K] {G : Over S} [GrpObj G] {G' : 
 include hp
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, hp.1.w, ← Category.assoc, Over.w s]`. Use `show (Spec.map (CommRingCat.ofHom (algebraMap K (DualNumber K))) ≫ 𝟙 _) ≫ y₀ = _`. Rewrite using `[Category.comp_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem push_cond (s : epsAt (𝟙 (Sp K)) ⟶ G') : (s.left ≫ φ) ≫ G.hom = (epsAt y₀).hom := by
   rw [Category.assoc, hp.1.w, ← Category.assoc, Over.w s]
@@ -293,9 +291,9 @@ Both sides reduce to the same expression.
 theorem push_left (s : epsAt (𝟙 (Sp K)) ⟶ G') : (push hp s).left = s.left ≫ φ := rfl
 
 /- English proof (translation)
-Set `g : Over.mk ((epsAt (𝟙 (Sp K))).hom ≫ y₀) ⟶ epsAt y₀` to `Over.homMk (𝟙 _) (by simp [epsAt])`. Use `hp.2 (epsAt (𝟙 (Sp K))) s s' (g ≫ push hp s) (g ≫ push hp s') (by simp [g, push_left]) (by simp [g, push_left])` as an intermediate fact. Rewrite `this` using `[← MonObj.comp_mul]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[push_left, ← this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[g]`.
+Simplify using the standard rewrite rules.
 -/
 theorem push_mul (s s' : epsAt (𝟙 (Sp K)) ⟶ G') : push hp (s * s') = push hp s * push hp s' := by
   let g : Over.mk ((epsAt (𝟙 (Sp K))).hom ≫ y₀) ⟶ epsAt y₀ := Over.homMk (𝟙 _) (by simp [epsAt])
@@ -307,7 +305,7 @@ theorem push_mul (s s' : epsAt (𝟙 (Sp K)) ⟶ G') : push hp (s * s') = push h
   simp [g]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hp.1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (·.left) e`. Rewrite using `[Over.w s, Over.w s']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_inj {s s' : epsAt (𝟙 (Sp K)) ⟶ G'} (e : push hp s = push hp s') : s = s' := by
   apply Over.OverMorphism.ext
@@ -316,7 +314,7 @@ theorem push_inj {s s' : epsAt (𝟙 (Sp K)) ⟶ G'} (e : push hp s = push hp s'
   · rw [Over.w s, Over.w s']
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[push_left, Over.comp_left, Over.comp_left, push_left, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_scale (c : K) (s : epsAt (𝟙 (Sp K)) ⟶ G') :
     push hp (LieTangent.epsScale _ c ≫ s) = LieTangent.epsScale _ c ≫ push hp s := by
@@ -325,7 +323,7 @@ theorem push_scale (c : K) (s : epsAt (𝟙 (Sp K)) ⟶ G') :
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[push_left, Over.comp_left, Over.comp_left, push_left, Category.assoc, hα, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem push_act (α' : G' ⟶ G') (α : G ⟶ G) (hα : α'.left ≫ φ = φ ≫ α.left) (s : epsAt (𝟙 (Sp K)) ⟶ G') :
     push hp (s ≫ α') = push hp s ≫ α := by
@@ -341,9 +339,9 @@ def pushHom : (epsAt (𝟙 (Sp K)) ⟶ G') →* (epsAt y₀ ⟶ G) where
   map_mul' := push_mul hp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [List.ofFn_zero, List.prod_nil]`. Conclude with `(pushHom hp).map_one`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[push_mul, push_scale, ih (fun i => c i.succ) (fun i => w i.succ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_comb {n : ℕ} (c : Fin n → K) (w : Fin n → (epsAt (𝟙 (Sp K)) ⟶ G')) :
     push hp (List.ofFn fun i => LieTangent.epsScale _ (c i) ≫ w i).prod =

@@ -19,7 +19,7 @@ open PositivityTheory.SiegelWeilFormula.KFP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
 /- English proof (translation)
-Establish `h` using `_root_.PositivityTheory.SiegelWeilFormula.Place.continuous_cw_k d w (p := Fin d.m) (q := Fin d.n)`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Use `continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Conclude with `continuous_star.comp (continuous_finsetSum _ fun i _ => continuous_const.mul ((continuous_apply j).comp ((continuous_apply i).comp h)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_loc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) : Continuous (fun X : Mx F E d.m d.n => R.loc w X) := by
   have h := _root_.PositivityTheory.SiegelWeilFormula.Place.continuous_cw_k d w (p := Fin d.m) (q := Fin d.n)
@@ -29,9 +29,7 @@ theorem continuous_loc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) 
   exact continuous_star.comp (continuous_finsetSum _ fun i _ =>
     continuous_const.mul ((continuous_apply j).comp ((continuous_apply i).comp h)))
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k`. Use `(EuclideanSpace.equiv (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d) ℝ).symm.continuous.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Establish `h : Continuous fun X : Mx F E d.m d.n => R.loc i.1 X i.2.1 i.2.2.1` using `(continuous_apply _).comp ((continuous_apply _).comp (_root_.PositivityTheory.SiegelWeilFormula.KFPB.continuous_loc_k R i.1))`. Use `split_ifs`. Conclude with `Complex.continuous_re.comp h`.
-
-Conclude with `Complex.continuous_im.comp h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_arc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : Continuous (_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k R) := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k
@@ -42,15 +40,15 @@ theorem continuous_arc_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) 
   · exact Complex.continuous_re.comp h
   · exact Complex.continuous_im.comp h
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.fin_k`. Conclude with `continuous_pi fun k => continuous_snd.comp ((continuous_apply k).comp (_root_.PositivityTheory.SiegelWeilFormula.KFock.continuous_crd_k d))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_fin_k : Continuous (_root_.PositivityTheory.SiegelWeilFormula.KFP.fin_k d) := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.KFP.fin_k
   exact continuous_pi fun k => continuous_snd.comp ((continuous_apply k).comp (_root_.PositivityTheory.SiegelWeilFormula.KFock.continuous_crd_k d))
 /- English proof (translation)
-Use `continuous_pi fun w => continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: (fun u : _root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d → ℝ => _root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k u w a j) = fun u => Complex.equivRealProdCLM.symm (u (w, a, j, true), u (w, a, j, false))`. Use function extensionality and compare the values at `u`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.equivRealProdCLM.symm.continuous.comp ((continuous_apply _).prodMk (continuous_apply _))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_zOf_k : Continuous (fun u : _root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d → ℝ => _root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k u) := by
   refine continuous_pi fun w => continuous_pi fun a => continuous_pi fun j => ?_
@@ -61,23 +59,21 @@ theorem continuous_zOf_k : Continuous (fun u : _root_.PositivityTheory.SiegelWei
   rw [this]
   exact Complex.equivRealProdCLM.symm.continuous.comp ((continuous_apply _).prodMk (continuous_apply _))
 /- English proof (translation)
-Use function extensionality and compare the values at `w a j`. Apply the tactic sequence `apply Complex.ext <;> simp [_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zOf_add_k (u v : _root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d → ℝ) : _root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k (u + v) = _root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k u + _root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k v := by
   funext w a j
   apply Complex.ext <;> simp [_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k]
 /- English proof (translation)
-Take `⟨L, hL⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFock.archEquiv_k d R`. Set `cF : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d × _root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d → (Fin d.m × Fin d.n × Fin 2 → AF F)` to `fun p k => (Prod.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k (EuclideanSpace.equiv (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d) ℝ p.1)) k)) (p.2 k) : AF F)`. Use `⟨cF, ?_, fun p q => ?_, fun p => ?_⟩` and prove the remaining obligations. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Establish `e : (fun p : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d × _root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d => cF p k) = fun p => (Prod.mk ((GroundTheory.Global.homeomorphMixedSpace F).symm (L.symm (_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k (EuclideanSpace. …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [cF]`. Rewrite using `[homeo_symm_eq]`. Rewrite using `[e]`. Conclude with `Continuous.prodMk ((GroundTheory.Global.homeomorphMixedSpace F).symm.continuous.comp ((continuous_apply k).comp (L.symm.continuous.comp (_root_.PositivityTheory.SiegelWeilFormula.KFPB.continuous_zOf_k.comp ((EuclideanSpace.equiv (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k …`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k (EuclideanSpace.equiv (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d) ℝ (p + q).1)) k) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (_root_.Positi …`. Rewrite using `[← map_add, Prod.fst_add, map_add, _root_.PositivityTheory.SiegelWeilFormula.KFPB.zOf_add_k, map_add]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `(_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_jn_k R p.1 p.2).unique ⟨_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_jn_k R p.1 p.2, _root_.PositivityTheory.SiegelWeilFormula.KFP.fin_jn_k R p.1 p.2⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_eq_iff_k]`. Introduce `w`. Rewrite using `[← hL (cF p) w]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (cF p k).1) = L.symm (_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k (EuclideanSpace.equiv (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d) ℝ p.1))`. Use function extensionality and compare the values at `k`. Conclude with `RingEquiv.apply_symm_apply _ _`. Rewrite using `[this, ContinuousLinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k show (d.crd (d.cmb (cF p)) k).2 = p.2 k`.
-
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb'_k]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jn_eq_cmb_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) :
     ∃ cF : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d × _root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d → (Fin d.m × Fin d.n × Fin 2 → AF F), Continuous cF ∧

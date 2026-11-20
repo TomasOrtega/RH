@@ -9,7 +9,7 @@ variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F₁ F₂ F₃ :
   {T₁ : Res.{1} F₁} {T₂ : Res.{1} F₂} {T₃ : Res.{1} F₃} {P : Pairing F₁ F₂ F₃}
 
 /- English proof (translation)
-Use `delta CrystallineSemistableComparison.CH.term CrystallineSemistableComparison.E.Res.dvC`. Conclude with `(hT.dv_nat s _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem term_dvC {F : C ⥤ ModuleCat.{0} R} {T : Res.{1} F} (hT : T.Good) {s p n : ℕ}
     (σ : ComposableArrows C n) (a : Cn (T.K s) p) (g : Fin (p + 1) → Fin (n + 1)) (hg : Monotone g) :
@@ -18,9 +18,9 @@ theorem term_dvC {F : C ⥤ ModuleCat.{0} R} {T : Res.{1} F} (hT : T.Good) {s p 
   exact (hT.dv_nat s _ _).symm
 
 /- English proof (translation)
-Use `delta CrystallineSemistableComparison.E.Res.dvC CrystallineSemistableComparison.CH.Pairing.cupC`. Use function extensionality and compare the values at `σ`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, LinearMap.mk₂_apply]`. Establish `hz : ∀ (g : Fin (0 + 1) → Fin (k + 1)) (hg : Monotone g), CrystallineSemistableComparison.CH.term (T₂.K (t + 1)) σ (0 : Cn (T₂.K (t + 1)) 0) g hg = 0` using `fun g hg => by delta CrystallineSemistableComparison.CH.term`. Conclude with `map_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[μ.leib, ← term_dvC h₂ σ y, hy, hz, map_zero, smul_zero, add_zero, ← term_dvC h₁ σ a]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dvC_cupC (μ : ResPair T₁ T₂ T₃ P) (h₁ : T₁.Good) (h₂ : T₂.Good) {s t r k : ℕ} (h : s + t = r)
     (a : Cn (T₁.K s) k) (y : Cn (T₂.K t) 0) (hy : T₂.dvC t 0 y = 0) :
@@ -37,13 +37,11 @@ theorem dvC_cupC (μ : ResPair T₁ T₂ T₃ P) (h₁ : T₁.Good) (h₂ : T₂
   rfl
 
 /- English proof (translation)
-Introduce `hL R _ C _ F₁ F₂ F₃ T₁ T₂ T₃ P μ h₁ h₂ i t n z y u hy hdy hst s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `k r h x hx`. Take `⟨hik, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `hik` using the available equality. Take `rfl : r = t` from `by omega`. Conclude with `hst`. Consider the case `succ s ih`. Introduce `k r h x hx`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl, hsa⟩` from `hx`. Take `rfl : r = s + t + 1` from `by omega`. Use `show ∃ a', T₃.dvC (s + t) k a' = _ ∧ T₃.St u (s + t) (k + 1) ((-1) ^ k • CrystallineSemistableComparison.CH.d (T₃.K (s + t)) k a')`. Use `⟨(μ.μ s t (s + t) rfl).cupC (add_zero k) a y, dvC_cupC μ h₁ h₂ rfl a y hy, ?_⟩` and prove the remaining obligations. Establish `hcup` using `hL R C (T₁.K s) (T₂.K t) (T₃.K (s + t)) (μ.μ s t (s + t) rfl) k 0 k (add_zero k) a y`.
-
-Rewrite using `[hcup, hdy, map_zero, smul_zero, add_zero, ← LinearMap.smul_apply, ← map_zsmul]`. Conclude with `ih (k + 1) (s + t) rfl _ hsa`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stCupA : CrystallineSemistableComparison.E.CupLeib.{1} → CrystallineSemistableComparison.E.StCupA := by
   intro hL R _ C _ F₁ F₂ F₃ T₁ T₂ T₃ P μ h₁ h₂ i t n z y u hy hdy hst s

@@ -16,15 +16,15 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 def annZ (ψ : Sm E N) : Set (Module.End ℂ (Sm E N)) := {z | z ∈ Zalg E N ∧ z ψ = 0}
 
 /- English proof (translation)
-Use `⟨fun z hz => hz.1, ?_⟩` and prove the remaining obligations. Set `Z : Submodule ℂ (Module.End ℂ (Sm E N))` to `Subalgebra.toSubmodule (Zalg E N)`. Set `ev : Module.End ℂ (Sm E N) →ₗ[ℂ] Sm E N` to `LinearMap.applyₗ ψ`. Set `M` to `Z.map ev`. Establish `: FiniteDimensional ℂ M`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hψ.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E N) => z ψ) '' Zalg E N)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `Submodule.subset_span ⟨z, hz, rfl⟩`. Set `f : Z →ₗ[ℂ] M` to `(ev.comp Z.subtype).codRestrict M (fun z => ⟨z.1, z.2, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : LinearMap.range f = ⊤` using `LinearMap.range_eq_top.2 (by`. Introduce and unpack `⟨_, z, hz, rfl⟩`. Conclude with `⟨⟨z, hz⟩, rfl⟩)`. Take `⟨g, hg⟩` from `f.exists_rightInverse_of_surjective hf`. Use `⟨(LinearMap.range g).map Z.subtype, inferInstance, fun z hz => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `zz : Z` to `⟨z, hz⟩`. Use `set v : Z := g (f zz) with hv`. Establish `hfg : f v = f zz` using `LinearMap.congr_fun hg (f zz)`. Establish `hk : (z - v.1) ψ = 0`. Use `congrArg Subtype.val hfg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `v.1 ψ = z ψ at this`. Rewrite using `[LinearMap.sub_apply, this, sub_self]`. Establish `hmem : z - v.1 ∈ annZ ψ` using `⟨(Zalg E N).sub_mem hz v.2, hk⟩`. Use `Submodule.mem_sup.2 ⟨v.1, ⟨v, ⟨f zz, hv.symm⟩, rfl⟩, 1 * (z - v.1), Submodule.subset_span ⟨1, (Zalg E N).one_mem, z - v.1, hmem, rfl⟩, by rw [one_mul, add_sub_cancel]⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cofin_annZ {ψ : Sm E N} (hψ : IsAutForm ψ) : PositivityTheory.Affgl.Cofin (annZ ψ) := by
   refine ⟨fun z hz => hz.1, ?_⟩
@@ -55,7 +55,7 @@ theorem cofin_annZ {ψ : Sm E N} (hψ : IsAutForm ψ) : PositivityTheory.Affgl.C
     Submodule.subset_span ⟨1, (Zalg E N).one_mem, z - v.1, hmem, rfl⟩, by rw [one_mul, add_sub_cancel]⟩
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k => exact GlobalTheory.CuspStab.zalg_comm_fin k hz`. Consider the case `cpt k => exact GlobalTheory.ZalgCpt.zalg_comm_cptRep E N k z hz`. Consider the case `lie X => exact GlobalTheory.CuspRep.Zalg_mul_lie E N X z hz`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem zalg_comm_act {z : Module.End ℂ (Sm E N)} (hz : z ∈ Zalg E N) (o : Op E N) : z * act o = act o * z := by
   cases o with
@@ -70,17 +70,17 @@ def SupSpansPsiPart (W : Submodule ℂ (Sm E N)) (ψ : Sm E N) : Submodule ℂ (
   smul_mem' := fun c φ h => ⟨W.smul_mem c h.1, fun z hz => by rw [map_smul, h.2 z hz, smul_zero]⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem admissible_span_le (W : Submodule ℂ (Sm E N)) (ψ : Sm E N) : SupSpansPsiPart W ψ ≤ W := fun _ h => h.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, fun _ hz => hz.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_admissible_span_self {W : Submodule ℂ (Sm E N)} {ψ : Sm E N} (h : ψ ∈ W) : ψ ∈ SupSpansPsiPart W ψ := ⟨h, fun _ hz => hz.2⟩
 
 /- English proof (translation)
-Introduce `o φ hφ`. Use `⟨hW o φ hφ.1, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, zalg_comm_act hz.1 o, Module.End.mul_apply, hφ.2 z hz, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStable_admissible_span {W : Submodule ℂ (Sm E N)} (hW : IsStable W) (ψ : Sm E N) : IsStable (SupSpansPsiPart W ψ) := by
   intro o φ hφ
@@ -88,7 +88,7 @@ theorem isStable_admissible_span {W : Submodule ℂ (Sm E N)} (hW : IsStable W) 
   rw [← Module.End.mul_apply, zalg_comm_act hz.1 o, Module.End.mul_apply, hφ.2 z hz, map_zero]
 
 /- English proof (translation)
-Use `PositivityTheory.Rg.HF.GL.genFin E N L hL U ρ hρ (annZ ψ) (cofin_annZ hψ)` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (PositivityTheory.Affgl.genSpace L ρ (annZ ψ))) fun φ hφ => Submodule.subset_span (show φ ∈ PositivityTheory.Affgl.genSpace L ρ (annZ ψ) from ⟨hA φ hφ.1.1, hφ.2.1, hφ.2.2, hφ.1.2⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_admissible_isotypic {W : Submodule ℂ (Sm E N)} (hA : ∀ φ ∈ W, IsAutForm φ) {ψ : Sm E N} (hψ : IsAutForm ψ)
     {L : Subgroup (GL (Fin N) (Af E))} (hL : IsOpen (L : Set (GL (Fin N) (Af E)))) {U : Type} [AddCommGroup U]
@@ -100,7 +100,7 @@ theorem finiteDimensional_admissible_isotypic {W : Submodule ℂ (Sm E N)} (hA :
       (show φ ∈ PositivityTheory.Affgl.genSpace L ρ (annZ ψ) from ⟨hA φ hφ.1.1, hφ.2.1, hφ.2.2, hφ.1.2⟩)
 
 /- English proof (translation)
-Take `⟨U0, hU0o, hU0c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E N`. Set `L : Subgroup (GL (Fin N) (Af E))` to `U0 ⊓ GlobalTheory.DiscClosure.stabSub χ`. Establish `hLo : IsOpen (L : Set (GL (Fin N) (Af E)))` using `hU0o.inter hχ.level`. Use `⟨L, hLo, hU0c.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hLo) Set.inter_subset_left, fun k hk => hk.2, fun g => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Published.AutFinGL.type_of_map _ (orbSpan χ).subtype (fun _ _ => rfl) ⟨χ, Submodule.subset_span ⟨1, by simp⟩⟩ g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_type {χ : Sm E N} (hχ : IsAutForm χ) : ∃ L : Subgroup (GL (Fin N) (Af E)),
     IsOpen (L : Set (GL (Fin N) (Af E))) ∧ IsCompact (L : Set (GL (Fin N) (Af E))) ∧
@@ -119,11 +119,11 @@ variable {μ : Measure (GA E N)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {W 
   (h : ∀ φ ∈ W, MemL2Quotient (latticeGL E N) μ φ.1)
 
 /- English proof (translation)
-Establish `hF : Function.Injective (toL2ₗ μ W h)` using `(injective_iff_map_eq_zero _).2 fun x e => Subtype.ext (hinj x.1 x.2 (by rw [cls_mk h x.2]; exact e))`. Take `⟨p, hpS, hp⟩` from `exists_proj h hF (V ⊓ typePart L ρ) (inf_le_left.trans hVW)`. Set `χW : W` to `⟨χ, hχ⟩`. Use `⟨(p χW).1, hpS χW, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨w', hw'V, hw'L, hw'T, hinner⟩` from `exists_levelType_part E N μ W V h hW hA hV hVW L hLo hLc U ρ hρ ⟨w, hVW hw⟩ hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hdT : (χW - p χW).1 ∈ typePart L ρ` using `sub_mem hχT (hpS χW).2`. Establish `e` using `hinner (χW - p χW) hdT.1 hdT.2`. Rewrite using `[cls_sub h hχ (p χW).2, cls_mk h hχ, cls_mk h (p χW).2, cls_mk h (hVW hw)]`. Express the relevant statement in the definitionally equal form `inner ℂ (toL2ₗ μ W h χW - toL2ₗ μ W h (p χW)) (toL2ₗ μ W h ⟨w, hVW hw⟩) = 0`. Rewrite using `[← map_sub, e, map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp χW w' ⟨hw'V, hw'L, hw'T⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_orth (hW : IsStable W) (hA : ∀ φ ∈ W, IsAutForm φ) (hinj : ∀ x ∈ W, cls h x = 0 → x = 0)
     {V : Submodule ℂ (Sm E N)} (hV : IsStable V) (hVW : V ≤ W) {χ : Sm E N} (hχ : χ ∈ W)
@@ -149,9 +149,9 @@ theorem exists_orth (hW : IsStable W) (hA : ∀ φ ∈ W, IsAutForm φ) (hinj : 
 omit [μ.IsHaarMeasure] [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Establish `hm : v' - v ∈ V` using `V.sub_mem hv' hv`. Establish `e : cls h (v' - v) = cls h (χ - v) - cls h (χ - v')`. Rewrite using `[cls_sub h (hVW hv') (hVW hv), cls_sub h hχ (hVW hv), cls_sub h hχ (hVW hv')]`. Normalize the expressions using the abelian group laws. Establish `h0 : inner ℂ (cls h (v' - v)) (cls h (v' - v)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[e, inner_sub_left, ← e, h1 _ hm, h2 _ hm, sub_zero]`. Conclude with `(sub_eq_zero.1 (hinj _ (hVW hm) (inner_self_eq_zero.1 h0))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_unique (hinj : ∀ x ∈ W, cls h x = 0 → x = 0) {V : Submodule ℂ (Sm E N)} (hVW : V ≤ W)
     {χ v v' : Sm E N} (hχ : χ ∈ W) (hv : v ∈ V) (hv' : v' ∈ V)

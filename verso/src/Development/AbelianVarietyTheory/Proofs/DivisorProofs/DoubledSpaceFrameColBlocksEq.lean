@@ -9,7 +9,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.RealLift.Dbl.ColBlocks
 
 /- English proof (translation)
-Use extensionality with `a i`. Simplify using `only [Matrix.toCols₁, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id, dblM, Fintype.sum_sum_type, Fin.sum_univ_add, dblCol, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, mul_z …`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_transpose_doubledSpaceFrame_toCols1 {α β : Type} [Fintype β] {R S : ℕ} (M : Matrix α (Ix (R + S) (S + R)) ℂ) (C : Matrix β (Ix R S) ℂ) :
     (M * (dblM C)ᵀ).toCols₁ =
@@ -21,7 +21,7 @@ theorem mul_transpose_doubledSpaceFrame_toCols1 {α β : Type} [Fintype β] {R S
     add_zero, zero_add]
 
 /- English proof (translation)
-Use extensionality with `a i`. Simplify using `only [Matrix.toCols₂, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id, dblM, Fintype.sum_sum_type, Fin.sum_univ_add, dblCol, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, mul_z …`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_transpose_doubledSpaceFrame_toCols2 {α β : Type} [Fintype β] {R S : ℕ} (M : Matrix α (Ix (R + S) (S + R)) ℂ) (C : Matrix β (Ix R S) ℂ) :
     (M * (dblM C)ᵀ).toCols₂ =
@@ -40,7 +40,7 @@ theorem mul_submatrix_right {α γ δ ε : Type} [Fintype γ] (A : Matrix α γ 
     A * c.submatrix id e = (A * c).submatrix id e := rfl
 
 /- English proof (translation)
-Use extensionality with `a k`. Apply the tactic sequence `rcases k with r | s <;>`. Simplify using `[Jm, Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem jm_right_L {γ : Type} {R S : ℕ} (X : Matrix γ (Ix (R + S) (S + R)) ℂ) :
     (X * Jm (R + S) (S + R)).submatrix id
@@ -51,7 +51,7 @@ theorem jm_right_L {γ : Type} {R S : ℕ} (X : Matrix γ (Ix (R + S) (S + R)) �
   simp [Jm, Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `a k`. Apply the tactic sequence `rcases k with r | s <;>`. Simplify using `[Jm, Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem jm_right_R {γ : Type} {R S : ℕ} (X : Matrix γ (Ix (R + S) (S + R)) ℂ) :
     (X * Jm (R + S) (S + R)).submatrix id
@@ -68,9 +68,9 @@ namespace GlobalTheory.RealLift.Dbl
 open GlobalTheory.RealLift.Dbl.ColBlocks in
 
 /- English proof (translation)
-Introduce `α β _ P Q R S A C c`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_transpose_doubledSpaceFrame_toCols1, mul_submatrix_right]`. Rewrite using `[mul_transpose_doubledSpaceFrame_toCols2, mul_submatrix_right]`. Rewrite using `[jm_right_L, mul_submatrix_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jm_right_R, mul_submatrix_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dblM_colBlocks : ∀ (α β : Type) [Fintype β] (P Q R S : ℕ) (A : Matrix α (Ix P Q) ℂ) (C : Matrix β (Ix R S) ℂ)
     (c : Matrix (Ix P Q) (Ix (R + S) (S + R)) ℂ),

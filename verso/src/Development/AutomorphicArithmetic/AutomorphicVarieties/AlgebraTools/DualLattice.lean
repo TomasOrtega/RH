@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DualLat
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsSmulMemOfIsLattice₂.dual_lattice_denom Y hY z`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.dual_lattice_denom {A : Type} [CommRing A] [IsDomain A]
     {F V : Type} [Field F] [Algebra A F] [IsFractionRing A F] [AddCommGroup V] [Module F V]
@@ -13,7 +13,7 @@ private theorem UpperTheory.V.AlgebraTools.dual_lattice_denom {A : Type} [CommRi
   _root_.UpperTheory.Reformulated.B.ExistsSmulMemOfIsLattice₂.dual_lattice_denom Y hY z
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_le_span_singleton]`. Conclude with `(Units.isUnit u).mul_left_dvd.mpr dvd_rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.dual_lattice_pow {A : Type} [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A] (a : A) (ha : a ≠ 0) :
@@ -25,21 +25,19 @@ private theorem UpperTheory.V.AlgebraTools.dual_lattice_pow {A : Type} [CommRing
   exact (Units.isUnit u).mul_left_dvd.mpr dvd_rfl
 
 /- English proof (translation)
-Introduce `A _ _ _ F V _ _ _ _ _ _ _ _ Bf hs hn Y hY`. Use `haveI : Module.Free A Y := Submodule.IsLattice.free F Y`. Use `haveI : Module.Finite A Y := Submodule.IsLattice.finite F Y`. Set `b0` to `Module.Free.chooseBasis A Y`. Set `b` to `b0.extendOfIsLattice F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Submodule.span A (Set.range b) = Y`. Establish `: (b : _ → V) = Y.subtype ∘ b0`. Use function extensionality and compare the values at `i`. Simplify using `[b]`. Rewrite using `[this, Set.range_comp, ← Submodule.map_span, b0.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, LinearMap.BilinForm.dualSubmodule_span_of_basis Bf hn b]`. Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_span_of_tower, Module.Basis.span_eq]`. Rewrite using `[← hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis Bf hn hs b`. Introduce `Z hZ`. Establish `hfg` using `hZ.fg`. Use `clear hZ`. Proceed by induction on `Z, hfg using Submodule.fg_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `singleton x`. Take `⟨a, ha, hax⟩` from `UpperTheory.V.AlgebraTools.dual_lattice_denom Y hY x`. Take `⟨s, hs⟩` from `UpperTheory.V.AlgebraTools.dual_lattice_pow a ha`. Use `⟨s, (Submodule.smul_mono_left hs).trans ?_⟩` and prove the remaining obligations. Use `Submodule.smul_le.mpr fun r hr y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Rewrite using `[mul_smul, smul_comm a c]`. Conclude with `Y.smul_mem _ (Y.smul_mem _ hax)`. Consider the case `sup M N _ _ hM hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs⟩` from `hM`. Take `⟨t, ht⟩` from `hN`. Use `⟨s + t, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.smul_sup]`. Use `sup_le ?_ ?_` and prove the remaining obligations.
-
-Conclude with `(Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_add_right s t))).trans hs`. Conclude with `(Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_add_left t s))).trans ht`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.dual_lattice :
     ∀ {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {F V : Type} [Field F] [Algebra A F] [IsFractionRing A F] [AddCommGroup V] [Module F V] [Module A V] [IsScalarTower A F V] [Module.Finite F V] (Bf : LinearMap.BilinForm F V), Bf.IsSymm → Bf.Nondegenerate → ∀ Y : Submodule A V, Submodule.IsLattice F Y → Submodule.IsLattice F (Bf.dualSubmodule Y) ∧ Bf.dualSubmodule (Bf.dualSubmodule Y) = Y ∧ ∀ Z : Submodule A V, Submodule.IsLattice F Z → ∃ s : ℕ, maximalIdeal A ^ s • Z ≤ Y := by

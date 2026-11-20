@@ -20,7 +20,7 @@ namespace UpperTheory.V.Z.Sym.W
 open UpperTheory.V.Z.Win UpperTheory.GalN.V
 
 /- English proof (translation)
-Use `⟨Units.map e.symm.toRingHom.toMonoidHom a, Units.map e.symm.toRingHom.toMonoidHom b, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply `Polynomial.map_injective e.toRingHom e.injective` to reduce the goal to its premises. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -36,7 +36,7 @@ private theorem split_of_map {K K' : Type} [Field K] [Field K'] (e : K ≃+* K')
     simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem roots3 {K : Type} [Field K] {p : Polynomial K} {a b c : K}
     (h : p = (Polynomial.X - Polynomial.C a) * (Polynomial.X - Polynomial.C b) * (Polynomial.X - Polynomial.C c)) :
@@ -45,11 +45,9 @@ private theorem roots3 {K : Type} [Field K] {p : Polynomial K} {a b c : K}
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hj with rfl | rfl <;> rcases hQ with e | e`. Conclude with `hn _ _ r0 r1 1 le_rfl (by simpa using e)`. Conclude with `hn _ _ r1 r0 1 le_rfl (by`. Simplify using `only [pow_one] at e ⊢`. Rewrite using `[mul_comm (Q : Qbar l), e])`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn _ _ r0 r2 1 le_rfl (by`. Rewrite using `[pow_one, pow_one, ← e]`. Use the proof step `field_simp)`. Conclude with `hn _ _ r2 r0 1 le_rfl (by`. Rewrite using `[pow_one, pow_one]`.
-
-Conclude with `inv_eq_of_mul_eq_one_right (by linear_combination e))`.
+A detailed English derivation is pending.
 -/
 private theorem link_false {l : ℕ} [Fact l.Prime] {x : Matrix.GeneralLinearGroup (Fin 3) (Qbar l)} {Q : ℕ} (hn : NoLink x Q) (c : Qbar l) (h0 : c ≠ 0)
     (r0 : x.val.charpoly.IsRoot c)
@@ -73,13 +71,11 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A w} {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hw` using `hx.wdOf_eq hl`. Take `⟨t, ht, φ, hφ, N, a, hN, -⟩` from `hx`. Establish `hN0 : N = 0` using `(hN.weilDeligneParam_monodromy_eq_zero_iff hl ht ι).1 (hw ▸ hy)`. Substitute `hN0` using the available equality. Take `⟨-, U, hU, H⟩` from `hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hu : ∀ σ ∈ U, ad0 r (σ : G L Ω) = 1` using `fun σ hσ => by`. Establish `h1 : r (σ : G L Ω) = 1` using `Units.ext (by rw [H σ hσ]; simp)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ad0, tw_val, MonoidHom.inv_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI := compactSpace_Ine (E := L) A`. Set `f` to `(ad0 r).comp (Ine (F := L) A).subtype`. Use `haveI : Finite (Ine (F := L) A ⧸ f.ker) := Subgroup.quotient_finite_of_isOpen _ (Subgroup.isOpen_mono (H₁ := U) (fun x hx => hu x hx) hU)`. Use `haveI : Finite f.range := Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange f).toEquiv`. Use `(Set.toFinite (f.range : Set (GL (Fin 3) (Qbar l)))).subset ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨⟨s, hs⟩, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem adjoint_inertia_image_finite (hl : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) {ι : Qbar l ≃+* ℂ} {r : G L Ω →* GL (Fin 2) (Qbar l)}
     {y : WD h} (hx : IsWDOf ι r y) (hy : y.mono0) : (ad0 r '' (Ine (F := L) A : Set (G L Ω))).Finite := by
@@ -107,25 +103,25 @@ end UpperTheory.V.Z.Sym.W
 
 open UpperTheory.V.Z.Win UpperTheory.GalN.V in
 /- English proof (translation)
-Introduce `P L Ω _ _ _ _ _ l _ ι r hr hU w hl τ hg hT`. Take `⟨ψ, hψ, ⟨e⟩, -⟩` from `psOf P.litN L 2 w τ hT`. Use `⟨ψ, hψ, ⟨e⟩, ?_⟩` and prove the remaining obligations. Introduce `j hj ε hε hlk`. Take `⟨A, h⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver Ω w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨rc, hrc⟩` from `exRec' P.litN h`. Establish `gd : Gd (rc (algNorm τ))` using `Gu.plainGd L Ω A w h rc hrc 2 τ hT`. Establish `hx : IsWDOf ι r (rc (algNorm τ))` using `((hg A h rc hrc).1 hl).isWDOf gd`. Take `⟨a, ha, -⟩` from `id hrc`. Take `⟨s, j', hj', hs, hn⟩` from `hU w hl A h (adjoint_inertia_image_finite hl hx gd.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hact : ActsAs A (normV w) s j' 0`. Simplify using `only [ActsAs, pow_zero, pow_one]`. Conclude with `hs`. Set `S : Weil h` to `⟨s, j', 0, hact⟩`. Establish `hd : deg S = (j' : ℤ)` using `by simpa using deg_eq (σ := S) hact`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp` using `eigW P L Ω l ι 2 r w hl A h a ha τ hg hT ψ hψ (.of_injective e.toIntertwiningMap e.toLinearEquiv.injective) S`. Rewrite `hcp` using `[psPol, Fin.prod_univ_two]`. Take `⟨a', b', ea, eb, hab⟩` from `split_of_map ι _ _ hcp`. Establish `hc` using `(ad0Facts l (G L Ω) r).2.2.2.2.1 s a' b' hab`. Take `⟨r0, r1, r2⟩` from `roots3 hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hci : ((b' / a' : (Qbar l)ˣ) : Qbar l) = (((a' / b' : (Qbar l)ˣ) : Qbar l))⁻¹`. Rewrite using `[← Units.val_inv_eq_inv_val, inv_div]`. Rewrite `r2` using `[hci]`. Use `link_false hn _ (Units.ne_zero _) r0 r1 r2 hj ?_` and prove the remaining obligations. Establish `hc' : ι ((a' / b' : (Qbar l)ˣ) : Qbar l) = ((ψ 0 (a S) / ψ 1 (a S) : ℂˣ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_div_eq_div_val, map_div₀, ea, eb, ← Units.val_div_eq_div_val, mul_div_mul_right_eq_div]`. Establish `hv : (ψ 0 (a S) / ψ 1 (a S)) ^ j = absPow (w.adicCompletion L) (ε : ℂ) (a S)`. Rewrite using `[← hlk]`. Both sides reduce to the same expression. Establish `hz : ι (((a' / b' : (Qbar l)ˣ) : Qbar l) ^ j) = ((absPow (w.adicCompletion L) (ε : ℂ) (a S) : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hc', ← Units.val_pow_eq_pow_val, hv]`. Break down `hε with rfl | rfl` into its components or cases. Use `left`. Apply `ι.injective` to reduce the goal to its premises. Establish `h1` using `GlobalTheory.SatChar.absPow_art ha (1 : ℝ) S`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hd]`. Rewrite using `[hz, map_natCast]`. Simplify using `using h1`. Use `right`. Apply `ι.injective` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.SatChar.absPow_art ha (-1 : ℝ) S`. Rewrite `h1` using `[hd]`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0`. Conclude with `(zero_lt_one.trans (one_lt_normV w)).ne'` after adjusting the coercions. Rewrite using `[map_mul, hz, map_natCast, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h2 : ((absPow (w.adicCompletion L) (((-1 : ℤ) : ℂ)) (a S) : ℂˣ) : ℂ) = (((normV w : ℕ) : ℂ)⁻¹) ^ j'`. Simplify `h1` using `[Complex.cpow_neg_one]`. Rewrite using `[h2]`. Use `push_cast`. Rewrite using `[inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hq)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.awayW :
     UpperTheory.V.Z.Sym.W.AwayW := by

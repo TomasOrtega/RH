@@ -18,7 +18,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsVec_zero' : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
   unfold B.hsVec
@@ -26,9 +26,9 @@ theorem hsVec_zero' : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
   simp
 
 /- English proof (translation)
-Establish `hs : ∀ A : Wq →L[ℂ] Wp, B.hsVec (a • A) = a • B.hsVec A`. Introduce `A`. Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [rawR, Pi.smul_apply, hs, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rawR_smul (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (a : ℂ) (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (ρ : M.Ty P) (q : MA.Qp P.r P.TT) :
@@ -42,7 +42,7 @@ theorem rawR_smul (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k 
   ring
 
 /- English proof (translation)
-Simplify using `only [rawR, Pi.zero_apply, hsVec_zero', inner_zero_right, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rawR_zero (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (ρ : M.Ty P) (q : MA.Qp P.r P.TT) :
@@ -50,7 +50,7 @@ theorem rawR_zero (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k 
   simp only [rawR, Pi.zero_apply, hsVec_zero', inner_zero_right, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smQ_sum_apply (P : M.Par) (x : M.Ty P → MA.SmQ P.r P.TT) (q : MA.Qp P.r P.TT) :
     ((∑ σ, x σ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = ∑ σ, ((x σ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q := by
@@ -62,7 +62,7 @@ variable (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.
 include hpl hk2 he
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x : M.Ty P → MA.SmQ P.r P.TT => ((x σ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q) (hk f Z)`. Simplify using `only [actA_kap] at h`. Rewrite using `[← SSTr.trR_apply P Bs hpl hk2 e he, h, ← SSTr.trR_apply P Bs hpl hk2 e he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kap_pt (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (hk : KapF P Bs d e)
     (f : M.Ty P → ℂ) (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (σ : M.Ty P) (q : MA.Qp P.r P.TT) :
@@ -74,9 +74,9 @@ theorem kap_pt (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')))
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hL l hl Z ρ'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← SSTr.trR_apply P Bs hpl hk2 e he, h1, smQ_sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul, Pi.mul_apply, fnZ_val P (hst l ρ' σ).1, SSTr.trR_apply P Bs hpl hk2 e he]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SSTr.trR_apply P Bs hpl hk2 e he, h2, smQ_sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul, Pi.mul_apply, fnZ_val P (hst l ρ' σ).2, SSTr.trR_apply P Bs hpl hk2 e he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ss_pt (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (s t : ℕ → M.Ty P → M.Ty P → ℂ → ℂ)
     (hst : SmST P s t) (hL : SSLoc P Bs d e s t) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1))
@@ -95,11 +95,11 @@ theorem ss_pt (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) 
     rw [Subalgebra.coe_mul, Pi.mul_apply, fnZ_val P (hst l ρ' σ).2, SSTr.trR_apply P Bs hpl hk2 e he]
 
 /- English proof (translation)
-Establish `hq : (q.1 : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `(SSTr.qr_iff P Bs hpl _).2 q.2`. Establish `hmem` using `Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' (SSTr.radBase P Bs hpl) (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) Z.2`. Establish `hF` using `hmem.2.1 _ hq`. Simplify using `only [NF.radR, Set.indicator_of_mem hq] at hF`. Establish `hζ : P.TT < Complex.normSq q.1.2` using `q.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨-, -, hexp⟩` from `he.2 q.1.2 hζ`. Use `conv_lhs => rw [hexp _ hF]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hw` using `SSTr.wR_pos P hζ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rawR]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hw.ne', Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_expand (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
     (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 (NF.muZ P.k P.r Bs.μsec q.1.2) =
@@ -120,9 +120,9 @@ theorem sec_expand (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r 
   rw [← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hw.ne', Complex.ofReal_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[sec_expand P Bs hpl hk2 e he W q, SSTr.hsVec_sum, inner_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hw` using `(SSTr.wR_pos P (q.2.2 : P.TT < Complex.normSq q.1.2)).ne'`. Rewrite using `[hsVec_smul, inner_smul_right]`. Establish `hc : star (rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) σ q) = ((wR P.k P.TT q.1.2 : ℝ) : ℂ) * inner ℂ (B.hsVec ((Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 (NF.muZ P.k P.r Bs.μsec q.1.2))) (B.hsVec (e σ q.1.2))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [rawR]`. Rewrite using `[star_mul', Complex.star_def, Complex.conj_ofReal, inner_conj_symm]`. Rewrite using `[hc]`. Establish `hw' : ((wR P.k P.TT q.1.2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hw`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -147,9 +147,7 @@ theorem hs_pair (Z W : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P
   field_simp
 
 /- English proof (translation)
-Take `⟨Φ0, hΦ0, -⟩` from `SSTr.exists_tr P Bs hpl hk2 e he (fun _ => fnZ P f)`. Use `⟨(NO.Pj d ρ).1 Φ0, fun σ q => ?_, ?_⟩` and prove the remaining obligations. Use `show rawR P Bs.μsec e (((d.κ (fun ρ' => if ρ' = ρ then (1 : ℂ) else 0)).1 Φ0 : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) σ q = _`. Rewrite using `[kap_pt P Bs hpl hk2 e he d hk, ← SSTr.trR_apply P Bs hpl hk2 e he, hΦ0, fnZ_val P hf]`. Use `show ((NO.Pj d ρ) * (NO.Pj d ρ)).1 Φ0 = _`.
-
-Rewrite using `[NO.Pj_idem]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_proj (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (hk : KapF P Bs d e)
     (f : ℂ → ℂ) (hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f (Ann P)) (ρ : M.Ty P) :
@@ -168,11 +166,11 @@ theorem exists_proj (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.�
 end pt
 
 /- English proof (translation)
-Establish `hae` using `hU.ae_eq_zero_of_integral_contDiff_smul_eq_zero (μ := volume) (hH.locallyIntegrableOn hU.measurableSet) h`. Introduce `ζ0 hζ0`. Assume the negation of the conclusion as `hne`. Establish `hc : ContinuousAt H ζ0` using `hH.continuousAt (hU.mem_nhds hζ0)`. Establish `hev : ∀ᶠ x in nhds ζ0, H x ≠ 0 ∧ x ∈ U` using `(hc.eventually_ne hne).and (hU.mem_nhds hζ0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `hpos` using `Metric.measure_ball_pos (volume : Measure ℂ) ζ0 hδ`. Rewrite `hae` using `[ae_iff]`. Apply `hpos.ne'` to reduce the goal to its premises. Apply `measure_mono_null _ hae` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Use `hball x hx` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, not_forall, exists_prop]`. Conclude with `⟨this.2, this.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem pt_of_tests {U : Set ℂ} (hU : IsOpen U) {H : ℂ → ℂ} (hH : ContinuousOn H U)
     (h : ∀ φ : ℂ → ℝ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ → HasCompactSupport φ → tsupport φ ⊆ U →

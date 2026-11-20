@@ -10,31 +10,27 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights�
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ D τ bfr b' R R' Rz R'z z hz hbfr hb' hF hR hR' hRz hR'z`. Establish `hj : (jIdx D : ℕ) + 1 = D.j`. Use `D.one_le_j` as an intermediate fact. Simplify using `only [jIdx]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hRR : ∀ k i, ∑ q, R' k q * R q i = if k = i then 1 else 0`. Introduce `k i`. Use `Fintype.linearIndependent_iffₛ.mp hb' (fun k => ∑ q, R' k q * R q i) (fun k => if k = i then 1 else 0) ?_ k` and prove the remaining obligations. Simplify using `only [ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hR i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hR', Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, he, c, rfl, hcv⟩`. Rewrite `he` using `[← hF, Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, hle⟩` from `he`. Rewrite `hle` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ∀ q, c q = ∑ i, R q i * l i`. Introduce `q`. Use `Fintype.linearIndependent_iffₛ.mp hbfr c (fun q => ∑ i, R q i * l i) ?_ q` and prove the remaining obligations. Rewrite using `[← hle]`. Repeatedly rewrite using `[hR, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `hl' : ∀ k, l k = ∑ q, R' k q * c q`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[hc, Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, hRR]`. Simplify using the standard rewrite rules. Use `set w : Fin D.N → ℂ := fun k => ∑ q, R'z k q * v q with hwdef`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : ∀ k, IsValueAt D.y (l k) z (w k)` using `fun k => by`. Rewrite using `[hl' k]`. Conclude with `LineFlag.isValueAt_sum _ _ fun q => LineFlag.isValueAt_mul (hR'z k q) (hcv q)`. Establish `hw0 : ∀ k : Fin D.N, ¬ ((k : ℕ) < D.j) → w k = 0` using `fun k hk => by`. Establish `h0` using `hw k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[(Finsupp.mem_supported' _ _).mp hl k hk]`. Conclude with `LineFlag.isValueAt_unique hz h0 (LineFlag.isValueAt_zero' _ _)`. Establish `hv : v = ∑ i, w i • fun p => Rz p i`. Use function extensionality and compare the values at `p`. Establish `h1 : IsValueAt D.y (c p) z (∑ i, Rz p i * w i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc p]`. Conclude with `LineFlag.isValueAt_sum _ _ fun i => LineFlag.isValueAt_mul (hRz p i) (hw i)`. Rewrite using `[LineFlag.isValueAt_unique hz (hcv p) h1]`. Simplify using `[Finset.sum_apply, mul_comm]`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < D.j`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨i, by omega⟩, rfl⟩)`. Rewrite using `[hw0 i hi, zero_smul]`. Conclude with `Submodule.zero_mem _`.
-
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨b' (Fin.castLE (jIdx D).isLt a), ?_, fun q => R q (Fin.castLE (jIdx D).isLt a), hR _, fun q => hRz q _⟩` and prove the remaining obligations. Rewrite using `[← hF]`.
-
-Conclude with `Submodule.subset_span ⟨_, by simp only [Set.mem_ofPred_eq, Fin.val_castLE]; omega, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HodgeFibreSpan.proof : HodgeFibreSpan.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ D τ bfr b' R R' Rz R'z z hz hbfr hb' hF hR hR' hRz hR'z

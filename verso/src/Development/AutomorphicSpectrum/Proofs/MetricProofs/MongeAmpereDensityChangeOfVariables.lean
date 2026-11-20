@@ -11,7 +11,7 @@ open scoped ENNReal InnerProductSpace
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Introduce `n φ ψ A G t hA hG hφ hψ`. Establish `h` using `GroundTheory.Heights₂.Heights.ChartEnergySwapHessian.maDensity_comp_holo (fun (_ : Fin n) => ψ) (fun (_ : Fin n) => φ) A G t (fun _ => hφ) hA.contDiffAt hG.contDiffAt (fun _ => hψ)`. Rewrite using `[h, LinearMap.det_toMatrix', Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem maDensity_const_eq_normSq_jacobian_mul :
     ∀ (n : ℕ) (φ ψ : (Fin n → ℂ) → ℝ) (A : (Fin n → ℂ) → Fin n → ℂ) (G : (Fin n → ℂ) → ℂ)

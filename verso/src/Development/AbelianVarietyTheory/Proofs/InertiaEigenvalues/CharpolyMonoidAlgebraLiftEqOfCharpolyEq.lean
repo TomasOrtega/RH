@@ -7,7 +7,7 @@ namespace GlobalTheory
 open scoped BigOperators in
 open Polynomial in
 /- English proof (translation)
-Use extensionality with `d`. Set `T : Subalgebra k (Bool → k)` to `AlgHom.equalizer (Pi.evalAlgHom k (fun _ : Bool => k) true) (Pi.evalAlgHom k (fun _ : Bool => k) false)`. Establish `key` using `_root_.GlobalTheory.coeff_det_generic_sum_mem_of_charpoly_coeff_mem T n (fun b => if b then ρ else σ) (by intro g j; simp [T, AlgHom.mem_equalizer, h]) m g d`. Simplify `key` using `[T, AlgHom.mem_equalizer]`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma det_generic_sum_eq_of_charpoly_eq {k G : Type} [Field k] [Monoid G] (n : ℕ)
     (ρ σ : G →* Matrix (Fin n) (Fin n) k) (h : ∀ g, (ρ g).charpoly = (σ g).charpoly)
@@ -24,9 +24,9 @@ private lemma det_generic_sum_eq_of_charpoly_eq {k G : Type} [Field k] [Monoid G
 open scoped BigOperators in
 open Polynomial in
 /- English proof (translation)
-Establish `hd` using `det_generic_sum_eq_of_charpoly_eq n ρ σ h (m + 1) (Fin.cons 1 g)`. Establish `key : ∀ τ : G →* Matrix (Fin n) (Fin n) k, (∑ i, c i • τ (g i)).charpoly = MvPolynomial.aeval (Fin.cons (X : k[X]) (fun i => -C (c i)) : Fin (m + 1) → k[X]) (∑ i, (MvPolynomial.X i : MvPolynomial (Fin (m + 1)) k) • (τ ((Fin.cons 1 g : Fin (m + 1) → G) i)).map (MvPolynomial.C : k …`. Introduce `τ`. Rewrite using `[AlgHom.map_det]`. Unfold `Matrix.charpoly`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[Fin.sum_univ_succ, Matrix.charmatrix_apply, Matrix.sum_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp [sub_eq_add_neg]`. Rewrite using `[key ρ, key σ, hd]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private lemma charpoly_sum_smul_eq_of_charpoly_eq {k G : Type} [Field k] [Monoid G] (n : ℕ)
     (ρ σ : G →* Matrix (Fin n) (Fin n) k) (h : ∀ g, (ρ g).charpoly = (σ g).charpoly)
@@ -50,9 +50,9 @@ private lemma charpoly_sum_smul_eq_of_charpoly_eq {k G : Type} [Field k] [Monoid
 open scoped BigOperators in
 open Polynomial in
 /- English proof (translation)
-Introduce `k G _ _ n ρ σ h a`. Establish `hsum : ∀ τ : G →* Matrix (Fin n) (Fin n) k, MonoidAlgebra.lift k (Matrix (Fin n) (Fin n) k) G τ a = ∑ i, a.coeff (a.coeff.support.equivFin.symm i) • τ (a.coeff.support.equivFin.symm i)`. Introduce `τ`. Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum, ← Finset.sum_coe_sort a.coeff.support]`. Conclude with `(Equiv.sum_comp a.coeff.support.equivFin.symm (fun x : a.coeff.support => a.coeff x • τ x)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum ρ, hsum σ]`. Conclude with `charpoly_sum_smul_eq_of_charpoly_eq n ρ σ h _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.charpoly_lift_eq_of_charpoly_eq : ∀ {k G : Type} [Field k] [Monoid G] (n : ℕ)
     (ρ σ : G →* Matrix (Fin n) (Fin n) k), (∀ g, (ρ g).charpoly = (σ g).charpoly) →

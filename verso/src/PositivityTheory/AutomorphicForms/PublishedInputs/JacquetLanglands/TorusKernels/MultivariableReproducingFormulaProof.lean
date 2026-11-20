@@ -8,7 +8,7 @@ open scoped ENNReal NNReal ComplexConjugate
 namespace UpperTheory.Esk.MultivariableReproducingLemmas
 
 /- English proof (translation)
-Unfold `kap`. Use `split_ifs with h`. Conclude with `div_nonneg (by linarith) (sq_nonneg _)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kap_nonneg (z w : P) : 0 ≤ kap z w := by
   unfold kap
@@ -17,19 +17,19 @@ theorem kap_nonneg (z w : P) : 0 ≤ kap z w := by
   · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun v _ => Real.rpow_pos_of_pos (abs_pos.2 (z v).2) _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_pos {I : Type} [Fintype I] (k : I → ℕ) (z : X I) : 0 < nrm k z :=
   Finset.prod_pos fun v _ => Real.rpow_pos_of_pos (abs_pos.2 (z v).2) _
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (kap_nonneg _ _) _`.
+A detailed English derivation is pending.
 -/
 theorem Kap_nonneg {I : Type} [Fintype I] (k : I → ℕ) (z w : X I) : 0 ≤ Kap k z w :=
   Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (kap_nonneg _ _) _
 
 /- English proof (translation)
-Simplify using `only [qq, nrm, Kap, norm_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => hb.2.2.2.2.2.1 (k v) (z v) (w v) (hk v)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_qq {I : Type} [Fintype I] (hb : B1b) (k : I → ℕ) (hk : ∀ v, 1 ≤ k v) (z w : X I) :
     ‖qq k z w‖ * nrm k z = (∏ v, (((k v : ℝ) - 1) / (4 * Real.pi))) * Kap k z w * nrm k w := by
@@ -37,7 +37,7 @@ theorem norm_qq {I : Type} [Fintype I] (hb : B1b) (k : I → ℕ) (hk : ∀ v, 1
   exact Finset.prod_congr rfl fun v _ => hb.2.2.2.2.2.1 (k v) (z v) (w v) (hk v)
 
 /- English proof (translation)
-Unfold `qq`. Conclude with `continuous_finsetProd _ fun v _ => (hb.2.2.2.2.2.2.2.1 (k v)).comp (continuous_const.prodMk (continuous_apply v))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_qq {I : Type} [Fintype I] (hb : B1b) (k : I → ℕ) (z : X I) : Continuous (qq k z) := by
   unfold qq
@@ -45,13 +45,13 @@ theorem cont_qq {I : Type} [Fintype I] (hb : B1b) (k : I → ℕ) (z : X I) : Co
     (hb.2.2.2.2.2.2.2.1 (k v)).comp (continuous_const.prodMk (continuous_apply v))
 
 /- English proof (translation)
-Take `⟨C1, A, h⟩` from `hK I k hk`. Take `⟨hm, hl, -⟩` from `h z`. Establish `hKi : Integrable (Kap k z)`. Use `⟨hm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `Real.enorm_eq_ofReal (Kap_nonneg k z w)`. Use `_ ≤ C1 := hl`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ < ⊤ := ENNReal.coe_lt_top`. Establish `hc : 0 ≤ ∏ v, (((k v : ℝ) - 1) / (4 * Real.pi))` using `Finset.prod_nonneg fun v _ => by`. Establish `h4 : (4 : ℝ) ≤ k v` using `by exact_mod_cast hk v`. Conclude with `div_nonneg (by linarith) (by positivity)`. Use `(hKi.const_mul ((∏ v, (((k v : ℝ) - 1) / (4 * Real.pi))) * C / nrm k z)).mono' ((cont_qq hb k z).mul hf).aestronglyMeasurable (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `norm_qq hb k (fun v => le_trans (by norm_num) (hk v)) z w`. Establish `hn` using `nrm_pos k z`. Rewrite using `[norm_mul, div_mul_eq_mul_div, le_div_iff₀ hn]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem integrable {I : Type} [Fintype I] (hb : B1b) (hK : KapInt) (k : I → ℕ)
     (hk : ∀ v, 4 ≤ k v) (f : X I → ℂ) (hf : Continuous f) (C : ℝ) (hC : ∀ z, ‖f z‖ * nrm k z ≤ C)
@@ -80,7 +80,7 @@ theorem integrable {I : Type} [Fintype I] (hb : B1b) (hK : KapInt) (k : I → �
     _ = (∏ v, (((k v : ℝ) - 1) / (4 * Real.pi))) * C * Kap k z w := by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.cases <;> simp [MeasurableEquiv.piFinSuccAbove_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symm_eq (n : ℕ) (p : P × (Fin n → P)) :
     (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => P) 0).symm p = Fin.cons p.1 p.2 := by
@@ -88,45 +88,43 @@ theorem symm_eq (n : ℕ) (p : P × (Fin n → P)) :
   induction j using Fin.cases <;> simp [MeasurableEquiv.piFinSuccAbove_symm_apply]
 
 /- English proof (translation)
-Simplify using `only [qq, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qq_cons {n : ℕ} (k : Fin (n + 1) → ℕ) (z : X (Fin (n + 1))) (t : P) (w : Fin n → P) :
     qq k z (Fin.cons t w) = q1 (k 0) (z 0) t * qq (fun j => k j.succ) (fun j => z j.succ) w := by
   simp only [qq, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
 
 /- English proof (translation)
-Simplify using `only [nrm, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_cons {n : ℕ} (k : Fin (n + 1) → ℕ) (t : P) (w : Fin n → P) :
     nrm k (Fin.cons t w : X (Fin (n + 1))) = |t.1.im| ^ ((k 0 : ℝ) / 2) * nrm (fun j => k j.succ) w := by
   simp only [nrm, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
 
 /- English proof (translation)
-Establish `: SigmaFinite (volume : Measure P)` using `ha.1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `k hk f hf C hC z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : (fun w => qq k z w * f w) = fun _ => f z` using `funext fun w => by`. Rewrite using `[Subsingleton.elim w z]`. Simplify using `[qq]`. Rewrite using `[hF, show (volume : Measure (X (Fin 0))) = Measure.dirac z from Measure.pi_of_empty _ z, integral_const]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `k hk f hf C hC z`. Establish `hmp` using `measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => (volume : Measure P)) 0`. Establish `hI` using `integrable hb hK k hk f hf.1 C hC z`. Establish `hG : Integrable (fun p : P × (Fin n → P) => q1 (k 0) (z 0) p.1 * qq (fun j => k j.succ) (fun j => z j.succ) p.2 * f (Fin.cons p.1 p.2)) ((volume : Measure P).prod (Measure.pi fun _ : Fin n => (volume : Measure P)))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hmp.symm.integrable_comp_emb (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => P) 0).symm.measurableEmbedding).2 hI` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, symm_eq, qq_cons]`. Establish `hin : ∀ w : Fin n → P, ∫ t, q1 (k 0) (z 0) t * qq (fun j => k j.succ) (fun j => z j.succ) w * f (Fin.cons t w) = qq (fun j => k j.succ) (fun j => z j.succ) w * f (Fin.cons (z 0) w)`. Introduce `w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hol : Hol1 fun t => f (Fin.cons t w)`. Establish `h` using `hf.2 (Fin.cons (z 0) w) 0`. Use `h using 3 with t` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.cases <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hbd : ∃ C', ∀ t : P, ‖f (Fin.cons t w)‖ * |t.1.im| ^ ((k 0 : ℝ) / 2) ≤ C'`. Use `⟨C / nrm (fun j => k j.succ) w, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (nrm_pos _ _), mul_assoc, ← nrm_cons]`. Conclude with `hC _`. Establish `h` using `(h3 (k 0) (hk 0) (fun t => f (Fin.cons t w)) hol hbd (z 0)).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [integral_const_mul, h]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsep : SepHol fun w : X (Fin n) => f (Fin.cons (z 0) w)`. Use `⟨hf.1.comp (continuous_pi fun j => ?_), fun w v => ?_⟩` and prove the remaining obligations. Proceed by induction on `j using Fin.cases`. Simplify using `using continuous_const`. Simplify using `using continuous_apply _`.
+Proceed by induction. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h` using `hf.2 (Fin.cons (z 0) w) v.succ`. Use `h using 3 with t` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [(Fin.succ_ne_zero v).symm]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ j`. Simplify using `only [Fin.cons_succ, Function.update_apply, Fin.succ_inj]`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hbd : ∀ w : X (Fin n), ‖f (Fin.cons (z 0) w)‖ * nrm (fun j => k j.succ) w ≤ C / |(z 0).1.im| ^ ((k 0 : ℝ) / 2)`. Introduce `w`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[le_div_iff₀ (Real.rpow_pos_of_pos (abs_pos.2 (z 0).2) _), mul_assoc, mul_comm (nrm _ _), ← nrm_cons]`. Conclude with `hC _`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [symm_eq, qq_cons]`. Use `_ = ∫ w : Fin n → P, (∫ t : P, q1 (k 0) (z 0) t * qq (fun j => k j.succ) (fun j => z j.succ) w * f (Fin.cons t w)) ∂(Measure.pi fun _ : Fin n => (volume : Measure P)) := integral_prod_symm _ hG`. Use `_ = ∫ w : X (Fin n), qq (fun j => k j.succ) (fun j => z j.succ) w * f (Fin.cons (z 0) w) := by`. Use `congr 1`. Use function extensionality and compare the values at `w`.
-
-Conclude with `hin w`. Use `_ = f (Fin.cons (z 0) (fun j => z j.succ)) := ih _ (fun v => hk _) _ hsep _ hbd _`. Use `_ = f z := congrArg f (Fin.cons_self_tail z)`.
+A detailed English derivation is pending.
 -/
 theorem fin_case (ha : B1a) (hb : B1b) (h3 : B3) (hK : KapInt) : ∀ (n : ℕ) (k : Fin n → ℕ), (∀ v, 4 ≤ k v) →
     ∀ f : X (Fin n) → ℂ, SepHol f → ∀ C, (∀ z, ‖f z‖ * nrm k z ≤ C) → ∀ z, ∫ w, qq k z w * f w = f z := by
@@ -202,19 +200,17 @@ theorem fin_case (ha : B1a) (hb : B1b) (h3 : B3) (hK : KapInt) : ∀ (n : ℕ) (
       _ = f z := congrArg f (Fin.cons_self_tail z)
 
 /- English proof (translation)
-Establish `: SigmaFinite (volume : Measure P)` using `ha.1`. Set `σ` to `Fintype.equivFin I`. Set `φ` to `MeasurableEquiv.piCongrLeft (fun _ : Fin (Fintype.card I) => P) σ`. Establish `hφ : ∀ (w : X I) j, φ w j = w (σ.symm j)`. Introduce `w j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Equiv.piCongrLeft_apply_apply (fun _ : Fin (Fintype.card I) => P) σ w (σ.symm j)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Rewrite using `[MeasurableEquiv.coe_piCongrLeft]`. Conclude with `this`. Establish `hmp : MeasurePreserving φ (volume : Measure (X I)) (volume : Measure (X (Fin (Fintype.card I))))` using `measurePreserving_piCongrLeft (fun _ : Fin (Fintype.card I) => (volume : Measure P)) σ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : SepHol fun w' : X (Fin (Fintype.card I)) => f fun i => w' (σ i)`. Use `⟨hf.1.comp (continuous_pi fun i => continuous_apply _), fun w' j => ?_⟩` and prove the remaining obligations. Establish `h` using `hf.2 (fun i => w' (σ i)) (σ.symm j)`. Use `h using 3 with t` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.update_apply, Equiv.eq_symm_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hnrm : ∀ w' : X (Fin (Fintype.card I)), nrm (fun j => k (σ.symm j)) w' = nrm k fun i => w' (σ i)`. Introduce `w'`. Conclude with `Fintype.prod_equiv σ.symm _ _ fun j => by simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbd : ∀ w' : X (Fin (Fintype.card I)), ‖f fun i => w' (σ i)‖ * nrm (fun j => k (σ.symm j)) w' ≤ C`. Introduce `w'`. Rewrite using `[hnrm]`. Conclude with `hC _`. Establish `hqq : ∀ w : X I, qq (fun j => k (σ.symm j)) (fun j => z (σ.symm j)) (φ w) = qq k z w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Introduce `w`. Simplify using `only [qq, hφ]`. Conclude with `Fintype.prod_equiv σ.symm _ _ fun _ => rfl`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
-
-Use function extensionality and compare the values at `w`. Simplify using `only [hqq, hφ, Equiv.symm_apply_apply]`. Use `_ = ∫ w', qq (fun j => k (σ.symm j)) (fun j => z (σ.symm j)) w' * f fun i => w' (σ i) := hmp.integral_comp' (fun w' : X (Fin (Fintype.card I)) => qq (fun j => k (σ.symm j)) (fun j => z (σ.symm j)) w' * f fun i => w' (σ i))`. Use `_ = f fun i => z (σ.symm (σ i)) := fin_case ha hb h3 hK _ _ (fun v => hk _) _ hsep C hbd _`. Use `_ = f z := by simp only [Equiv.symm_apply_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main (ha : B1a) (hb : B1b) (h3 : B3) (hK : KapInt) (I : Type) [Fintype I] (k : I → ℕ)
     (hk : ∀ v, 4 ≤ k v) (f : X I → ℂ) (hf : SepHol f) (C : ℝ) (hC : ∀ z, ‖f z‖ * nrm k z ≤ C) (z : X I) :
@@ -260,7 +256,7 @@ end UpperTheory.Esk.MultivariableReproducingLemmas
 
 open UpperTheory.Esk.MultivariableReproducingLemmas in
 /- English proof (translation)
-Introduce `ha hb h3 hK I _ k hk f hf hC z`. Take `⟨C, hC⟩` from `hC`. Conclude with `⟨integrable hb hK k hk f hf.1 C hC z, main ha hb h3 hK I k hk f hf C hC z⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Esk.multivariable_reproducing_formula_proof : UpperTheory.Esk.B1a → UpperTheory.Esk.B1b → UpperTheory.Esk.B3 → UpperTheory.Esk.KapInt → UpperTheory.Esk.MultivariableReproducingFormula := by
   intro ha hb h3 hK I _ k hk f hf hC z

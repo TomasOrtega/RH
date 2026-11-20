@@ -25,7 +25,7 @@ variable {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (
   {om : UD D (-V.gram) × UD D J₂ →* Module.End ℂ ((Fin V.rank × Fin n × Fin d → AF D.host.F) → ℂ)}
 
 /- English proof (translation)
-Take `⟨q, x, rfl⟩` from `exists_pt T u`. Rewrite using `[(pt_anti_iff hT q x).1 hu]`. Conclude with `⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_pt_anti (hT : IsWittBasis D.sp.cm.sig J 1 T) {m : ℕ} {u : Mx D m (n + n)}
     (hu : ∀ i, u i ∈ antiSub (AE D) finSumFinEquiv) : ∃ x, u = pt T 0 x := by
@@ -34,7 +34,7 @@ theorem exists_pt_anti (hT : IsWittBasis D.sp.cm.sig J 1 T) {m : ℕ} {u : Mx D 
   exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[hom.2 1 g φ hφ Φ h, map_one, inv_one, mt_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTrans.right (hom : IsTrans ε ι κ ω om) (g : UD D J₂) {φ : (Fin V.rank × Fin n × Fin d → AF D.host.F) → ℂ}
     (hφ : φ ∈ schA D.host.F (Fin V.rank × Fin n × Fin d)) (Φ : schwartzA θ V.rank n) (h : φ ∘ coord ε = Φ.1)
@@ -42,7 +42,7 @@ theorem IsTrans.right (hom : IsTrans ε ι κ ω om) (g : UD D J₂) {φ : (Fin 
   rw [hom.2 1 g φ hφ Φ h, map_one, inv_one, mt_one, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[StdUnn.halfTr]`. Use `congr 1`. Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem invOf_two_mul (z : AE D) : ⅟(2 : AF D.host.F) * StdUnn.trA z = StdUnn.halfTr z := by
   rw [StdUnn.halfTr]
@@ -51,9 +51,9 @@ theorem invOf_two_mul (z : AE D) : ⅟(2 : AF D.host.F) * StdUnn.trA z = StdUnn.
   rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]
 
 /- English proof (translation)
-Establish `h1 : StdUnn.mat w⁻¹ * StdUnn.mat w = 1`. Rewrite using `[← StdUnn.LeftInvSect.mat_mul, inv_mul_cancel, StdUnn.LeftInvSect.mat_one]`. Establish `h2 : (StdUnn.blk4 0 1 (-1) 0 : Mx D (n + n) (n + n)) * StdUnn.blk4 0 (-1) 1 0 = 1`. Rewrite using `[StdUnn.Model.submatrix_fromBlocks_mul, ← StdUnn.Model.block_matrix_one]`. Simplify using `only [mul_zero, zero_mul, mul_one, add_zero, zero_add, mul_neg, neg_zero, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_one (StdUnn.mat w⁻¹), ← h2, ← hw, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_weyl {w : StdUnn.G D n} (hw : StdUnn.mat w = StdUnn.blk4 0 1 (-1) 0) :
     StdUnn.mat w⁻¹ = StdUnn.blk4 0 (-1) 1 0 := by
@@ -65,22 +65,22 @@ theorem mat_inv_weyl {w : StdUnn.G D n} (hw : StdUnn.mat w = StdUnn.blk4 0 1 (-1
   rw [← Matrix.mul_one (StdUnn.mat w⁻¹), ← h2, ← hw, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `Matrix.zero_mul y`.
+A detailed English derivation is pending.
 -/
 theorem zmul {a b c : ℕ} (y : Mx D b c) : ((0 : Mx D a b) ⬝ y : Mx D a c) = 0 := Matrix.zero_mul y
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_zero y`.
+A detailed English derivation is pending.
 -/
 theorem mulz {a b c : ℕ} (y : Mx D a b) : (y ⬝ (0 : Mx D b c) : Mx D a c) = 0 := Matrix.mul_zero y
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_one y`.
+A detailed English derivation is pending.
 -/
 theorem mulo {a b : ℕ} (y : Mx D a b) : (y ⬝ (1 : Mx D b b) : Mx D a b) = y := Matrix.mul_one y
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.SchwartzCoord.mem_schwartzA_comp_coord D θ hθ V.rank n d ε ⟨φ, hφ⟩`. Rewrite using `[mul_pt, (hco _ _).1, (hco _ _).1, hom.2 h 1 φ hφ ⟨_, hS⟩ rfl, map_one, map_one, ← map_inv, hι]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem formula_lin (hθ : IsInfFam θ) (hι : IsConjV V ι) (hco : IsCoord V T ε co) (hom : IsTrans ε ι κ ω om)
     (h : UD D (-V.gram)) {φ : (Fin V.rank × Fin n × Fin d → AF D.host.F) → ℂ}
@@ -91,7 +91,7 @@ theorem formula_lin (hθ : IsInfFam θ) (hι : IsConjV V ι) (hco : IsCoord V T 
   rfl
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.SchwartzCoord.mem_schwartzA_comp_coord D θ hθ V.rank n d ε ⟨φ, hφ⟩`. Rewrite using `[hκ.pt_mul h2, (hco _ _).1, (hco _ _).1, hom.right _ hφ ⟨_, hS⟩ rfl, hω.levi _ _ h1, zmul, zero_add, adj_adj]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem formula_levi (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ ω) (hκ : IsChartW T κ) (hco : IsCoord V T ε co)
     (hom : IsTrans ε ι κ ω om) {p : UD D J₂} {a : GL (Fin n) (AE D)}
@@ -105,9 +105,9 @@ theorem formula_levi (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ �
   rfl
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.SchwartzCoord.mem_schwartzA_comp_coord D θ hθ V.rank n d ε ⟨φ, hφ⟩`. Establish `e1 : StdUnn.inner V (x ⬝ adj β : Mx D V.rank n) x = β ⬝ StdUnn.inner V x x`. Rewrite using `[StdUnn.inner, StdUnn.inner, adj_mul, adj_adj, Matrix.mul_assoc]`. Establish `e2 : ∀ y, StdUnn.inner V y (0 : Mx D V.rank n) = 0` using `fun y => by rw [StdUnn.inner, mulz, mulz]`. Rewrite using `[hκ.pt_mul hβ, (hco _ _).1, hom.right _ hφ ⟨_, hS⟩ rfl, hω.unip _ _ hβ, symp_pt V hG, e2, zmul, zero_add, e1, Matrix.trace_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : StdUnn.trA (0 : AE D) = 0` using `map_zero _`. Rewrite using `[e3, sub_zero, invOf_two_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem formula_unip (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ ω)
     (hG : T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = StdUnn.Jst D n) (hκ : IsChartW T κ) (hco : IsCoord V T ε co)
@@ -128,11 +128,11 @@ theorem formula_unip (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ �
   rfl
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.SchwartzCoord.mem_schwartzA_comp_coord D θ hθ V.rank n d ε ⟨φ, hφ⟩`. Establish `h2 : StdUnn.mat (κ w⁻¹) = StdUnn.blk4 0 (-1) 1 0` using `by rw [map_inv]; exact mat_inv_weyl hw`. Establish `e0 : ((0 : Mx D V.rank n) ⬝ adj (0 : Mx D n n) + x ⬝ adj (-1 : Mx D n n) : Mx D V.rank n) = -x`. Rewrite using `[zmul, zero_add, adj_neg, adj_one, Matrix.mul_neg, mulo]`. Rewrite using `[hκ.pt_mul h2, e0, (hco _ _).1, hom.right _ hφ ⟨_, hS⟩ rfl, hω.weyl _ hw, one_mul, hμ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e1 : StdUnn.inner V y (-x) = -StdUnn.inner V y x`. Rewrite using `[StdUnn.inner, StdUnn.inner, Matrix.mul_neg, Matrix.mul_neg]`. Establish `e3 : ∀ z : AE D, StdUnn.trA (-z) = -StdUnn.trA z` using `fun z => map_neg _ z`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hco _ _).2, e1, Matrix.trace_neg, e3, neg_neg, trA_inner_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem formula_weyl (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ ω) (hκ : IsChartW T κ) (hco : IsCoord V T ε co)
     [MeasurableSpace (Fin V.rank × Fin n × Fin d → AF D.host.F)] {μ' : Measure (Fin V.rank × Fin n × Fin d → AF D.host.F)}
@@ -155,9 +155,9 @@ theorem formula_weyl (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ �
   rfl
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.levi_chart_block_diagonal_adjoint D n J₂ T κ hκ J hT).1 ⟨p, hs⟩ hp`. Use `⟨leviOf finSumFinEquiv (uinc D J₂) ⟨p, hs⟩, rfl, h1, ?_⟩` and prove the remaining obligations. Generalize the expression as in `leviOf finSumFinEquiv (uinc D J₂) ⟨p, hs⟩ = a at h1 ⊢`. Establish `h2 : StdUnn.mat (κ p⁻¹) * StdUnn.mat (κ p) = 1`. Rewrite using `[← StdUnn.LeftInvSect.mat_mul, ← map_mul, inv_mul_cancel, map_one, StdUnn.LeftInvSect.mat_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_one (StdUnn.mat (κ p⁻¹)), ← StdUnn.LeftInvSect.levi_mul_inv a, ← h1, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_pair (hT : IsWittBasis D.sp.cm.sig J 1 T) (hκ : IsChartW T κ) {p : UD D J₂}
     (hs : p ∈ siegelOf finSumFinEquiv (uinc D J₂)) (hp : p ∈ leviSubOf finSumFinEquiv (uinc D J₂)) :
@@ -173,13 +173,11 @@ theorem levi_pair (hT : IsWittBasis D.sp.cm.sig J 1 T) (hκ : IsChartW T κ) {p 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `⟨hom.1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h φ hφ u hu`. Take `⟨x, rfl⟩` from `exists_pt_anti hT hu`. Conclude with `formula_lin hθ hι hco hom h hφ x`. Introduce and unpack `⟨p, hs⟩ hp φ hφ u hu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `exists_pt_anti hT hu`. Take `⟨a, ha, h1, h2⟩` from `levi_pair hT hκ hs hp`. Rewrite using `[ha]`. Conclude with `formula_levi hθ hω hκ hco hom h1 h2 hφ x`. Introduce `b hb φ hφ u hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `exists_pt_anti hT hu`. Take `⟨β, hβ⟩` from `(GlobalTheory.T.levi_chart_block_diagonal_adjoint D n J₂ T κ hκ J hT).2 b hb`. Conclude with `formula_unip hθ hω hG hκ hco hom hβ hφ x`. Introduce `w hw`. Use `⟨1, 1, one_pos, one_pow _, fun φ hφ u hu => ?_⟩` and prove the remaining obligations.
-
-Take `⟨x, rfl⟩` from `exists_pt_anti hT hu`. Conclude with `formula_weyl hθ hω hκ hco hμ hom ((hκ w).trans hw) hφ x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem formulas (hθ : IsInfFam θ) (hω : StdUnn.IsWeilSch ψ χ θ V μ ω) (hT : IsWittBasis D.sp.cm.sig J 1 T)
     (hG : T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = StdUnn.Jst D n) (hκ : IsChartW T κ) (hι : IsConjV V ι) (hco : IsCoord V T ε co)

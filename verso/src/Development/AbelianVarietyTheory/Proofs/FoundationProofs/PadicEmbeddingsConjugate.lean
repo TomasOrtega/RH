@@ -7,17 +7,17 @@ namespace GlobalTheory.EmbUnitBallConj
 variable {l : ℕ} [Fact l.Prime] {E : Type} [Field E]
 
 /- English proof (translation)
-Use `haveI : CharZero E := a.charZero`. Establish `hd : DenseRange (Pi.map fun _ : ι => (Rat.cast : ℚ → ℚ_[l]))` using `DenseRange.piMap fun _ => Padic.denseRange_ratCast l`. Establish `hcl : ∀ f : E →+* PadicAlgCl l, IsClopen {c : ι → ℚ_[l] | ‖∑ k, c k • f (y k)‖ < 1}`. Introduce `f`. Use `(IsUltrametricDist.isClopen_ball (0 : PadicAlgCl l) 1).preimage (f := fun c : ι → ℚ_[l] => ∑ k, c k • f (y k)) (by fun_prop)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `c`. Simplify using the standard rewrite rules. Establish `key : ∀ c : ι → ℚ_[l], ‖∑ k, c k • a (y k)‖ < 1 → ‖∑ k, c k • b (y k)‖ < 1`. Introduce `c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hd.induction_on c ?_ fun q => ?_` and prove the remaining obligations. Use `(hcl a).compl.isClosed.union (hcl b).isClosed` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Set.mem_compl_iff]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `imp_iff_not_or`. Establish `e : ∀ f : E →+* PadicAlgCl l, ∑ k, (Pi.map (fun _ : ι => (Rat.cast : ℚ → ℚ_[l])) q) k • f (y k) = f (∑ k, (q k : E) * y k)`. Introduce `f`. Simplify using `[Algebra.smul_def]`. Rewrite using `[e a, e b]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(h _).1`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖∑ k, c k • b (y k)‖` using `norm_pos_iff.2 hne`. Take `⟨r, hr⟩` from `NormedField.exists_lt_norm ℚ_[l] ‖∑ k, c k • b (y k)‖⁻¹`. Establish `h1` using `key (r • c) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_assoc, ← Finset.smul_sum, hc, smul_zero, norm_zero, zero_lt_one])`. Simplify using `only [Pi.smul_apply, smul_assoc, ← Finset.smul_sum, norm_smul] at h1`. Rewrite `hr` using `[inv_lt_iff_one_lt_mul₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_eq_zero (a b : E →+* PadicAlgCl l) (h : ∀ x, ‖a x‖ < 1 ↔ ‖b x‖ < 1) {ι : Type}
     [Fintype ι] (y : ι → E) (c : ι → ℚ_[l]) (hc : ∑ k, c k • a (y k) = 0) :
@@ -57,11 +57,11 @@ theorem sum_eq_zero (a b : E →+* PadicAlgCl l) (h : ∀ x, ‖a x‖ < 1 ↔ �
   linarith
 
 /- English proof (translation)
-Set `S : IntermediateField F K` to `Subalgebra.IsAlgebraic.toIntermediateField (S := f.range) (fun x _ => Algebra.IsAlgebraic.isAlgebraic x)`. Set `φ : f.range →ₐ[F] K` to `(Ideal.Quotient.liftₐ (RingHom.ker f) g (fun a ha => h ha)).comp (Ideal.quotientKerEquivRange f).symm.toAlgHom`. Establish `hφ : ∀ x, φ ⟨f x, x, rfl⟩ = g x`. Introduce `x`. Establish `: (Ideal.quotientKerEquivRange f).symm ⟨f x, x, rfl⟩ = Ideal.Quotient.mk _ x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Ideal.Quotient.liftₐ (RingHom.ker f) g (fun a ha => h ha) ((Ideal.quotientKerEquivRange f).symm ⟨f x, x, rfl⟩) = g x`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `φ' : S →ₐ[F] K` to `φ`. Take `⟨ψ, hψ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := F) (L := S) (M := K) (E := K) φ'`. Use `⟨AlgEquiv.ofBijective ψ (Algebra.IsAlgebraic.algHom_bijective ψ), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ x]`. Conclude with `DFunLike.congr_fun hψ (⟨f x, x, rfl⟩ : S)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_ker_le {F T K : Type} [Field F] [CommRing T] [Algebra F T] [Field K]
     [Algebra F K] [IsAlgClosed K] [Algebra.IsAlgebraic F K] (f g : T →ₐ[F] K)
@@ -92,19 +92,19 @@ noncomputable def ext (a : E →+* PadicAlgCl l) : ℚ_[l] ⊗[ℤ] E →ₐ[ℚ
   Algebra.TensorProduct.lift (Algebra.ofId _ _) a.toIntAlgHom (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[ext, Algebra.smul_def, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext_tmul (a : E →+* PadicAlgCl l) (c : ℚ_[l]) (x : E) : ext a (c ⊗ₜ x) = c • a x := by
   simp [ext, Algebra.smul_def, Algebra.ofId_apply]
 
 /- English proof (translation)
-Introduce `l _ Ω _ a b h`. Establish `h' : ∀ x, ‖a x‖ < 1 ↔ ‖b x‖ < 1`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `ha : 0 < ‖a x‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hx)`. Establish `hb : 0 < ‖b x‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hx)`. Use `h x⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv₀, map_inv₀, norm_inv, norm_inv, inv_le_one₀ ha, inv_le_one₀ hb]`. Rewrite using `[← not_le, ← not_le, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, hσ⟩` from `exists_equiv_of_ker_le (ext a) (ext b) (by`. Introduce `t ht`. Take `⟨s, rfl⟩` from `TensorProduct.exists_finset t`. Rewrite `ht`, the goal using `[RingHom.mem_ker, map_sum]`. Simplify using `only [ext_tmul] at ht ⊢`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `ht`, the goal using `[← Finset.sum_coe_sort]`. Conclude with `sum_eq_zero a b h' _ _ ht)`. Use `⟨σ, fun x => ?_⟩` and prove the remaining obligations. Simplify `hσ (1 ⊗ₜ x)` using `[ext_tmul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_conj : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] (j₁ j₂ : Ω →+* PadicAlgCl l), (∀ x, ‖j₁ x‖ ≤ 1 ↔ ‖j₂ x‖ ≤ 1) → ∃ σ : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l, ∀ x, σ (j₁ x) = j₂ x := by
   intro l _ Ω _ a b h

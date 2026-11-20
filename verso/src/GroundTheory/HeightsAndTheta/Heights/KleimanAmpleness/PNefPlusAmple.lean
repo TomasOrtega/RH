@@ -18,9 +18,9 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_eq_span_mul_set]`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨q, hq, y, hy, rfl⟩`. Conclude with `⟨y, hy, q, hq, by rw [smul_eq_mul, mul_comm]⟩`. Introduce and unpack `⟨y, hy, q, hq, rfl⟩`. Conclude with `⟨q, hq, y, hy, by rw [smul_eq_mul, mul_comm]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem SubSystem.twist_sub_eq_mul (F Q : SubSystem k x Ω) (I : Chart x) :
     (F.twist Q).sub I = F.sub I * Q.sub I := by
@@ -35,14 +35,14 @@ theorem SubSystem.twist_sub_eq_mul (F Q : SubSystem k x Ω) (I : Chart x) :
     exact ⟨q, hq, y, hy, by rw [smul_eq_mul, mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Rewrite using `[twistMod_eq_span 0 I hi, zpow_zero, Submodule.one_eq_span]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistMod_zero_eq_one (I : Chart x) : twistMod k x 0 I = 1 := by
   obtain ⟨i, hi⟩ := I.2.1
   rw [twistMod_eq_span 0 I hi, zpow_zero, Submodule.one_eq_span]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Rewrite using `[twistMod_eq_span a I hi, twistMod_eq_span b I hi, twistMod_eq_span (a + b) I hi, Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistMod_mul_twistMod (a b : ℤ) (I : Chart x) :
     twistMod k x a I * twistMod k x b I = twistMod k x (a + b) I := by
@@ -52,7 +52,7 @@ theorem twistMod_mul_twistMod (a b : ℤ) (I : Chart x) :
     Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, Nat.cast_zero, zero_mul, twistMod_zero_eq_one]`. Consider the case `succ n ih => rw [pow_succ, ih, twistMod_mul_twistMod]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem twistMod_pow_eq (c : ℤ) (n : ℕ) (I : Chart x) :
     twistMod k x c I ^ n = twistMod k x (n * c) I := by
@@ -61,7 +61,7 @@ theorem twistMod_pow_eq (c : ℤ) (n : ℕ) (I : Chart x) :
   | succ n ih => rw [pow_succ, ih, twistMod_mul_twistMod]; push_cast; ring_nf
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `twistMod_zero_eq_one I`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Conclude with `SubSystem.twist_sub_eq_mul _ _ I`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SubSystem.pow_sub_eq_pow (Q : SubSystem k x Ω) (n : ℕ) (I : Chart x) :
     (Q.pow n).sub I = Q.sub I ^ n := by
@@ -70,7 +70,7 @@ theorem SubSystem.pow_sub_eq_pow (Q : SubSystem k x Ω) (n : ℕ) (I : Chart x) 
   | succ n ih => rw [pow_succ, ← ih]; exact SubSystem.twist_sub_eq_mul _ _ I
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Conclude with `(Submodule.mem_iInf _).mp hz I`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SubSystem.span_secs_le (F : SubSystem k x Ω) (I : Chart x) :
     Submodule.span (chartRing k x I) (F.secs : Set Ω) ≤ F.sub I := by
@@ -79,9 +79,9 @@ theorem SubSystem.span_secs_le (F : SubSystem k x Ω) (I : Chart x) :
   exact (Submodule.mem_iInf _).mp hz I
 
 /- English proof (translation)
-Introduce `I`. Apply `le_antisymm (SubSystem.span_secs_le _ I)` to reduce the goal to its premises. Rewrite using `[SubSystem.twist_sub_eq_mul, ← hF I, ← hQ I, Submodule.span_mul_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Use `(Submodule.mem_iInf _).mpr fun J => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a * b ∈ (F.twist Q).sub J`. Rewrite using `[SubSystem.twist_sub_eq_mul]`. Conclude with `Submodule.mul_mem_mul ((Submodule.mem_iInf _).mp ha J) ((Submodule.mem_iInf _).mp hb J)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SubSystem.generated_twist {F Q : SubSystem k x Ω} (hF : F.Generated) (hQ : Q.Generated) :
     (F.twist Q).Generated := by
@@ -96,9 +96,9 @@ theorem SubSystem.generated_twist {F Q : SubSystem k x Ω} (hF : F.Generated) (h
   exact Submodule.mul_mem_mul ((Submodule.mem_iInf _).mp ha J) ((Submodule.mem_iInf _).mp hb J)
 
 /- English proof (translation)
-Introduce `I`. Apply `le_antisymm (SubSystem.span_secs_le _ I)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `twistMod k x 0 I ≤ _`. Rewrite using `[twistMod_zero_eq_one, Submodule.one_eq_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ rfl`. Conclude with `(Submodule.mem_iInf _).mpr fun J => one_mem_twistMod_zero J`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem generated_twistSys_zero : (twistSys k x 0).Generated := by
   intro I
@@ -110,7 +110,7 @@ theorem generated_twistSys_zero : (twistSys k x 0).Generated := by
   exact (Submodule.mem_iInf _).mpr fun J => one_mem_twistMod_zero J
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact generated_twistSys_zero`. Consider the case `succ n ih => exact SubSystem.generated_twist ih hQ`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem SubSystem.generated_pow {Q : SubSystem k x Ω} (hQ : Q.Generated) (n : ℕ) :
     (Q.pow n).Generated := by
@@ -119,23 +119,23 @@ theorem SubSystem.generated_pow {Q : SubSystem k x Ω} (hQ : Q.Generated) (n : �
   | succ n ih => exact SubSystem.generated_twist ih hQ
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one (twistMod k x (-c) I) (by rw [twistMod_mul_twistMod, add_neg_cancel, twistMod_zero_eq_one])`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_twistMod (c : ℤ) (I : Chart x) : IsUnit (twistMod k x c I) :=
   IsUnit.of_mul_eq_one (twistMod k x (-c) I) (by
     rw [twistMod_mul_twistMod, add_neg_cancel, twistMod_zero_eq_one])
 
 /- English proof (translation)
-Take `⟨Q', h⟩` from `Q.invertible I`. Conclude with `IsUnit.of_mul_eq_one _ h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LineBundle.isUnit_sub (Q : LineBundle k x) (I : Chart x) : IsUnit (Q.sub I) := by
   obtain ⟨Q', h⟩ := Q.invertible I
   exact IsUnit.of_mul_eq_one _ h
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Simplify using `only [twistMul, SubSystem.twist_sub_eq_mul, SubSystem.pow_sub_eq_pow, hT]`. Express the relevant statement in the definitionally equal form `_ = _ * twistMod k x (m : ℤ) I * _`. Establish `key : twistMod k x (m : ℤ) I * twistMod k x (-1) I ^ m = 1`. Rewrite using `[twistMod_pow_eq, twistMod_mul_twistMod, mul_neg_one, add_neg_cancel, twistMod_zero_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, mul_one]`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_pow_eq_twistMul_twist (M H T : SubSystem k x Ω)
     (hT : ∀ I, T.sub I = twistMod k x (-1) I) (q c m : ℕ) :
@@ -152,23 +152,21 @@ theorem twist_pow_eq_twistMul_twist (M H T : SubSystem k x Ω)
     _ = _ := by ring
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hx (funext h)`. Establish `hXi : (X i : Poly k N) ∉ primeOf (S` using `k) x := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_primeOf_of_isHomogeneous x (isHomogeneous_X k i), aeval_X]`. Conclude with `hi`. Establish `hle : ringKrullDim (Poly k N ⧸ primeOf (S` using `k) x) ≤ ((N + 1 : ℕ) : WithBot ℕ∞) := by`. Use `(ringKrullDim_quotient_le _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : ¬ ringKrullDim (Poly k N ⧸ primeOf (S` using `k) x) ≤ 0 := by`. Introduce `h0`. Establish `: Ring.KrullDimLE 0 (Poly k N ⧸ primeOf (S` using `k) x) := Ring.krullDimLE_iff.mpr (by simpa using h0)`. Establish `hF : IsField (Poly k N ⧸ primeOf (S` using `k) x) := Ring.KrullDimLE.isField_of_isDomain`. Establish `hne : Ideal.Quotient.mk (primeOf (S` using `k) x) (X i) ≠ 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨b, hb⟩` from `hF.mul_inv_cancel hne`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hmem : X i * g - 1 ∈ primeOf (S` using `k) x := by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hb, map_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0'` using `homogeneousComponent_mem_primeOf x hmem 0`. Establish `hc : coeff 0 (X i * g - 1 : Poly k N) = -1`. Rewrite using `[← congrFun constantCoeff_eq]`. Simplify using the standard rewrite rules. Rewrite `h0'` using `[homogeneousComponent_zero, hc]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Ideal.IsPrime.ne_top inferInstance) (Ideal.eq_top_of_isUnit_mem _ h0' ((isUnit_one.neg).map (C : k →+* Poly k N)))`. Establish `hbot : ringKrullDim (Poly k N ⧸ primeOf (S` using `k) x) ≠ ⊥ := fun h => hpos (h ▸ bot_le)`. Take `⟨e, he⟩` from `WithBot.ne_bot_iff_exists.mp hbot`. Establish `htop : e ≠ ⊤`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hle` using `[← he]`. Establish `h' : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ (((N + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `hle`. Conclude with `ENat.natCast_ne_top (N + 1) (top_le_iff.mp (WithBot.coe_le_coe.mp h'))`. Take `⟨n, rfl⟩` from `ENat.ne_top_iff_exists.mp htop`. Establish `hn1 : 1 ≤ n`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hpos` to reduce the goal to its premises. Rewrite using `[← he]`. Use `interval_cases n`.
-
-Simplify using the standard rewrite rules. Use `⟨n - 1, ⟨inferInstance, fun f hf d => homogeneousComponent_mem_primeOf x hf d, le_rfl, ⟨i, hXi⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← he, Nat.sub_add_cancel hn1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isSubvar_primeOf (hx : x ≠ 0) : ∃ d : ℕ, IsSubvar x (primeOf (S := k) x) d := by
   obtain ⟨i, hi⟩ : ∃ i, x i ≠ 0 := by
@@ -220,7 +218,7 @@ theorem exists_isSubvar_primeOf (hx : x ≠ 0) : ∃ d : ℕ, IsSubvar x (primeO
   rfl
 
 /- English proof (translation)
-Establish `hI : IsEmpty (Chart x)` using `⟨fun I => by`. Take `⟨i, hi⟩` from `I.2.1`. Conclude with `(mem_support x).mp (I.2.2 hi) (by rw [hx]; rfl)⟩`. Conclude with `⟨0, fun _ => 0, ⟨fun _ => zero_mem _, fun I => (hI.false I).elim, fun _ h => (h rfl).elim, fun _ h => (h rfl).elim⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVeryAmple_of_eq_zero (hx : x = 0) (F : SubSystem k x Ω) : IsVeryAmple F := by
   have hI : IsEmpty (Chart x) := ⟨fun I => by
@@ -232,17 +230,15 @@ theorem isVeryAmple_of_eq_zero (hx : x = 0) (F : SubSystem k x Ω) : IsVeryAmple
 end Lemmas
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x M H hH hM ε hε`. Distinguish the cases in `hx : x = 0`. Use `⟨ε.den, ε.num.toNat, ε.den_pos, ?_, isVeryAmple_of_eq_zero hx _⟩` and prove the remaining obligations. Rewrite using `[Rat.den_mul_eq_num, ← Int.cast_natCast, Int.toNat_of_nonneg (Rat.num_pos.mpr hε).le]`. Take `⟨d, hd⟩` from `exists_isSubvar_primeOf (k := k) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc₀⟩` from `hGA k Ω N x H hH (twistBundle k x (-1))`. Establish `hc : 1 ≤ max c₀ 1` using `le_max_right _ _`. Establish `hgen` using `hc₀ (max c₀ 1) (le_max_left _ _)`. Establish `hcq : (0 : ℚ) < (max c₀ 1 : ℕ)` using `by exact_mod_cast hc`. Take `⟨q, m, hq, hm, hVA⟩` from `hK k d Ω N x M hd hM (ε / (max c₀ 1 : ℕ)) (div_pos hε hcq)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : 0 ≤ m`. Establish `: (0 : ℚ) ≤ m` using `by rw [hm]; positivity`. Conclude with `this` after adjusting the coercions. Establish `hmq : ((m.toNat : ℕ) : ℚ) = m`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hm0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, max c₀ 1 * m.toNat, hq, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, hmq, hm]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[twist_pow_eq_twistMul_twist M.toSubSystem H.toSubSystem (twistBundle k x (-1)).toSubSystem (fun _ => rfl)]`. Use `hJ k Ω N x _ _ (fun I => ?_) (fun I => ?_) ?_ (SubSystem.generated_pow hgen _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.exists_right_inv ?_` and prove the remaining obligations. Simplify using `only [twistMul, SubSystem.twist_sub_eq_mul, SubSystem.pow_sub_eq_pow]`. Conclude with `((M.isUnit_sub I).pow q).mul (isUnit_twistMod _ I)`. Use `IsUnit.exists_right_inv ?_` and prove the remaining obligations. Simplify using `only [SubSystem.twist_sub_eq_mul, SubSystem.pow_sub_eq_pow]`.
-
-Conclude with `((isUnit_twistMod (-1) I).mul ((H.isUnit_sub I).pow _)).pow _`. Rewrite using `[Int.toNat_of_nonneg hm0]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem NefPlusAmple.proof (hGA : GeneratedAmple.Statement.{u, w})
     (hK : VeryAmpleNefPlusAmple.Statement.{u, w}) (hJ : VeryAmpleTwistGenerated.Statement.{u, w}) :

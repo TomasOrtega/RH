@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SandwichMaps
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 /- English proof (translation)
-Introduce `C _ O _ _ V _ _ _ _ h N g`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨x, hx, rfl⟩`. Establish `hc : ∀ i, ∃ c : Fin h → O, ∑ j, c j • g j = x i` using `fun i => (Submodule.mem_span_range_iff_exists_fun O).1 (hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `choose c hc using hc`. Establish `hx' : x = fun i => ∑ j, (algebraMap O C (c i j)) • g j`. Use function extensionality and compare the values at `i`. Rewrite using `[← hc i]`. Simplify using `[algebraMap_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Use `show (exteriorPower.ιMulti C N).toMultilinearMap (fun i => ∑ j, (algebraMap O C (c i j)) • g j) ∈ _`. Rewrite using `[MultilinearMap.map_sum]`. Use `Submodule.sum_mem _ (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, ← map_prod, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨s, rfl⟩`. Conclude with `⟨g ∘ s, fun i => Submodule.subset_span ⟨s i, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.span_ιMulti_span_range_eq : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (h N : ℕ) (g : Fin h → V), Submodule.span O {w : ⋀[C]^N V | ∃ x : Fin N → V, (∀ i, x i ∈ (Submodule.span O (Set.range g) : Set V)) ∧ w = exteriorPower.ιMulti C N x} = Submodule.span O (Set.range (fun s : Fin N → Fin h => exteriorPower.ιMulti C N (g ∘ s))) := by
   intro C _ O _ _ V _ _ _ _ h N g

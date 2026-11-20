@@ -10,13 +10,13 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q
 noncomputable def cN (r : ℕ) (c : Fin r → ℂ) (j : ℕ) : ℂ := if h : j < r then c ⟨j, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[cN, a.isLt]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem cN_val (r : ℕ) (c : Fin r → ℂ) (a : Fin r) : cN r c a.val = c a := by
   simp [cN, a.isLt]
 
 /- English proof (translation)
-Unfold `cN`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cN_mk (r : ℕ) (c : Fin r → ℂ) (j : ℕ) (h : j < r) : c ⟨j, h⟩ = cN r c j := by
   unfold cN
@@ -26,7 +26,7 @@ def swp (k r : ℕ) (p : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if r ≤ p.val ∧ p.val ≤ r + k then p else ⟨2 * r + k - p.val, by omega⟩
 
 /- English proof (translation)
-Unfold `swp`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swp_val (k r : ℕ) (p : Fin (2 * r + k + 1)) :
     (swp k r p).val = if r ≤ p.val ∧ p.val ≤ r + k then p.val else 2 * r + k - p.val := by
@@ -34,7 +34,7 @@ theorem swp_val (k r : ℕ) (p : Fin (2 * r + k + 1)) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[swp_val, swp_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swp_swp (k r : ℕ) (p : Fin (2 * r + k + 1)) : swp k r (swp k r p) = p := by
   have hp := p.isLt
@@ -47,7 +47,7 @@ noncomputable def cf (k r : ℕ) (c : Fin r → ℂ) (p : Fin (2 * r + k + 1)) :
   else if p.val ≤ r + k then 1 else cN r c (2 * r + k - p.val)
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Simplify using `only [cf, cN]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cf_one (k r : ℕ) (p : Fin (2 * r + k + 1)) : cf k r (fun _ => 1) p = 1 := by
   have hp := p.isLt
@@ -64,7 +64,7 @@ noncomputable def Wm (k r : ℕ) (S : Finset ℕ) (c : Fin r → ℂ) : Mx k r :
   else if p.val = q.val then 1 else 0
 
 /- English proof (translation)
-Introduce `h`. Establish `hl` using `l.isLt`. Rewrite `h` using `[Fin.ext_iff]`. Express the relevant statement in the definitionally equal form `l.val = 2 * r + k - l.val at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eI_ne_esI (k r : ℕ) (l : Fin r) : eI k r l ≠ esI k r l := by
   intro h
@@ -74,15 +74,15 @@ theorem eI_ne_esI (k r : ℕ) (l : Fin r) : eI k r l ≠ esI k r l := by
   omega
 
 /- English proof (translation)
-Establish `hne` using `eI_ne_esI k r l`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `h1 : p = esI k r l`. Substitute `h1` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single (eI k r l)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[w1]`. Introduce `x _ hx`. Simplify using `[w1, hx, Ne.symm hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : p = eI k r l`. Substitute `h2` using the available equality. Rewrite using `[if_neg h1, if_pos rfl, Finset.sum_eq_single (esI k r l)]`. Simplify using `[w1, hne]`. Introduce `x _ hx`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[w1, hx, hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg h1, if_neg h2, Finset.sum_eq_single p]`. Simplify using `[w1, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x _ hx`. Simplify using `[w1, h1, h2, Ne.symm hx]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weyl_cell_mul_apply (k r : ℕ) (l : Fin r) (d : ℂ) (M : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (w1 k r l d * M) p q =
@@ -111,7 +111,7 @@ theorem weyl_cell_mul_apply (k r : ℕ) (l : Fin r) (d : ℂ) (M : Mx k r) (p q 
       · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `[Wm, Matrix.one_apply, Fin.val_inj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Wm_empty (k r : ℕ) (c : Fin r → ℂ) : Wm k r ∅ c = 1 := by
   ext p q
@@ -120,13 +120,13 @@ theorem Wm_empty (k r : ℕ) (c : Fin r → ℂ) : Wm k r ∅ c = 1 := by
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[weyl_cell_mul_apply]`. Establish `hA` using `a.isLt`. Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vE : (eI k r a).val = a.val` using `rfl`. Establish `vS : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Simplify using `only [Wm, Finset.mem_insert]`. Distinguish the cases in `h1 : q.val = a.val`. Apply the tactic sequence `simp only [h1, ha, eq_self_iff_true, true_or, or_false, if_true, if_false] split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `h2 : q.val = 2 * r + k - a.val`. Establish `e2 : 2 * r + k - (2 * r + k - a.val) = a.val` using `by omega`. Simplify using `only [h2, e2, ha, eq_self_iff_true, true_or, or_false, if_true, if_false]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)`. Establish `h3 : 2 * r + k - q.val ≠ a.val` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [h1, h3, false_or]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reflection_mul_weyl_cell (k r : ℕ) (S : Finset ℕ) (c : Fin r → ℂ) (a : Fin r) (ha : a.val ∉ S) :
     w1 k r a (c a) * Wm k r S c = Wm k r (insert a.val S) c := by
@@ -150,7 +150,7 @@ theorem reflection_mul_weyl_cell (k r : ℕ) (S : Finset ℕ) (c : Fin r → ℂ
       split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simpa using (Wm_empty k r c).symm | a :: L, h => by rw [List.map_cons, List.prod_cons, prod_eq_Wm k r c L (List.nodup_cons.1 h).2, List.map_cons, List.toFinset_cons] apply reflection_mul_weyl_cell intro hm simp only [List.mem_toFinset, List.mem_map] at hm obtain ⟨b, …`.
+A detailed English derivation is pending.
 -/
 theorem prod_eq_Wm (k r : ℕ) (c : Fin r → ℂ) : ∀ L : List (Fin r), L.Nodup →
     (L.map fun a => w1 k r a (c a)).prod = Wm k r (L.map Fin.val).toFinset c
@@ -167,9 +167,9 @@ theorem prod_eq_Wm (k r : ℕ) (c : Fin r → ℂ) : ∀ L : List (Fin r), L.Nod
       exact (List.nodup_cons.1 h).1 hb
 
 /- English proof (translation)
-Unfold `wCell`. Rewrite using `[List.filter_eq_self.mpr (fun a _ => by simp [a.isLt]), prod_eq_Wm k r c _ (List.nodup_finRange r)]`. Use `congr 1`. Use extensionality with `j`. Simplify using `only [List.mem_toFinset, List.mem_map, List.mem_finRange, true_and, Finset.mem_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `a.isLt`. Introduce `hj`. Conclude with `⟨⟨j, hj⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wCell_last (k r : ℕ) (c : Fin r → ℂ) : wCell k r (Fin.last r) c = Wm k r (Finset.range r) c := by
   unfold wCell
@@ -186,7 +186,7 @@ theorem wCell_last (k r : ℕ) (c : Fin r → ℂ) : wCell k r (Fin.last r) c = 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Establish `hx` using `x.isLt`. Simplify using `only [Wm, Finset.mem_range, cf, Fin.ext_iff, swp_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega) | (simp only [star_one, inv_one, mul_one, one_mul, mul_zero, zero_mul, star_zero, _root_.inv_zero] <;> first | rfl | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> con …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Wm_range_apply (k r : ℕ) (c : Fin r → ℂ) (p x : Fin (2 * r + k + 1)) :
     Wm k r (Finset.range r) c p x = if x = swp k r p then cf k r c p else 0 := by
@@ -196,7 +196,7 @@ theorem Wm_range_apply (k r : ℕ) (c : Fin r → ℂ) (p x : Fin (2 * r + k + 1
   split_ifs <;> first | rfl | (exfalso; omega) | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega) | (simp only [star_one, inv_one, mul_one, one_mul, mul_zero, zero_mul, star_zero, _root_.inv_zero] <;> first | rfl | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega))
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[Wm_range_apply]`. Simplify using `[ite_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Wm_mul_apply (k r : ℕ) (c : Fin r → ℂ) (M : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (Wm k r (Finset.range r) c * M) p q = cf k r c p * M (swp k r p) q := by
@@ -205,11 +205,11 @@ theorem Wm_mul_apply (k r : ℕ) (c : Fin r → ℂ) (M : Mx k r) (p q : Fin (2 
   simp [ite_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Establish `e : ∀ x, Wm k r (Finset.range r) c x q = if x = swp k r q then cf k r c x else 0`. Introduce `x`. Rewrite using `[Wm_range_apply]`. Distinguish the cases in `h : x = swp k r q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[swp_swp]`. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h', swp_swp]`. Repeatedly rewrite using `[e]`. Simplify using `[mul_ite]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_Wm_apply (k r : ℕ) (c : Fin r → ℂ) (M : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (M * Wm k r (Finset.range r) c) p q = M p (swp k r q) * cf k r c (swp k r q) := by
@@ -231,7 +231,7 @@ def μE {k : ℕ} (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : ℕ) : �
   if h : i < k + 1 ∧ j < k + 1 then μ ⟨i, h.1⟩ ⟨j, h.2⟩ else 0
 
 /- English proof (translation)
-Unfold `μE`. Rewrite using `[dif_pos ⟨hi, hj⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem μE_mk {k : ℕ} (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : ℕ) (hi : i < k + 1) (hj : j < k + 1) :
     μ ⟨i, hi⟩ ⟨j, hj⟩ = μE μ i j := by
@@ -239,13 +239,13 @@ theorem μE_mk {k : ℕ} (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : �
   rw [dif_pos ⟨hi, hj⟩]
 
 /- English proof (translation)
-Establish `hq` using `q.isLt`. Simplify using `only [bigCell]`. Distinguish the cases in `h1 : q.val < r`. Rewrite using `[dif_pos h1, if_pos h1, cN_mk r c q.val h1]`. Establish `e : (p = esI k r ⟨q.val, h1⟩) ↔ p.val = 2 * r + k - q.val`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.ext_iff]`. Both sides reduce to the same expression. Distinguish the cases in `h : p.val = 2 * r + k - q.val`. Rewrite using `[if_pos (e.mpr h), if_pos h]`. Rewrite using `[if_neg (mt e.mp h), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h1, if_neg h1]`. Distinguish the cases in `h2 : q.val ≤ r + k`. Rewrite using `[dif_pos h2, if_pos h2]`. Distinguish the cases in `h3 : r ≤ p.val ∧ p.val ≤ r + k`. Rewrite using `[dif_pos h3, if_pos h3]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `μE_mk μ _ _ _ _`. Rewrite using `[dif_neg h3, if_neg h3]`. Rewrite using `[dif_neg h2, if_neg h2]`. Establish `h4 : 2 * r + k - q.val < r` using `by omega`. Rewrite using `[cN_mk r c _ h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigCell_apply (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (p q : Fin (2 * r + k + 1)) :
@@ -276,7 +276,7 @@ theorem bigCell_apply (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1))
       rw [cN_mk r c _ h4]
 
 /- English proof (translation)
-Unfold `cN`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cN_one (r j : ℕ) : cN r (fun _ => 1) j = if j < r then 1 else 0 := by
   unfold cN
@@ -284,9 +284,9 @@ theorem cN_one (r j : ℕ) : cN r (fun _ => 1) j = if j < r then 1 else 0 := by
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Rewrite using `[wCell_last, wCell_last]`. Use extensionality with `p q`. Rewrite using `[mul_Wm_apply, Wm_mul_apply, cf_one, mul_one, bigCell_apply, bigCell_apply]`. Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [cf, cN_one, swp_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega) | (simp only [star_one, inv_one, mul_one, one_mul, mul_zero, zero_mul, star_zero, _root_.inv_zero] <;> first | rfl | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> con …`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem main (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     bigCell k r c μ =

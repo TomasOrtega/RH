@@ -29,7 +29,7 @@ def U (p q : R) : Subgroup Rˣ where
       rw [e, neg_mul, mul_assoc, a2]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_U {p q : R} {u : Rˣ} : u ∈ U p q ↔ p * (u.val - 1) = u.val - 1 ∧ (u.val - 1) * q = u.val - 1 := Iff.rfl
 
@@ -42,15 +42,15 @@ Both sides reduce to the same expression.
 @[simp] theorem un_val (x : R) (h : x * x = 0) : (un x h).val = 1 + x := rfl
 
 /- English proof (translation)
-Simplify `⟨h1, h2⟩` using `[mem_U]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem un_mem {p q x : R} (h : x * x = 0) (h1 : p * x = x) (h2 : x * q = x) : un x h ∈ U p q := by
   simpa [mem_U] using ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `e : (w * u * w⁻¹).val - 1 = w.val * (u.val - 1) * (w⁻¹).val`. Rewrite using `[mul_sub, sub_mul, mul_one, Units.mul_inv]`. Both sides reduce to the same expression. Establish `hq' : (w⁻¹).val * q = q' * (w⁻¹).val`. Rewrite using `[Units.inv_mul_eq_iff_eq_mul, ← mul_assoc, hq, Units.mul_inv_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_U, e]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← mul_assoc, ← mul_assoc, ← hp, mul_assoc w.val, hu.1]`. Rewrite using `[mul_assoc _ _ q, hq', ← mul_assoc, mul_assoc w.val, hu.2]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem {p q p' q' : R} {w u : Rˣ} (hp : w.val * p' = p * w.val) (hq : w.val * q' = q * w.val)
     (hu : u ∈ U p' q') : w * u * w⁻¹ ∈ U p q := by
@@ -64,13 +64,13 @@ theorem conj_mem {p q p' q' : R} {w u : Rˣ} (hp : w.val * p' = p * w.val) (hq :
   · rw [mul_assoc _ _ q, hq', ← mul_assoc, mul_assoc w.val, hu.2]
 
 /- English proof (translation)
-Rewrite using `[Units.inv_mul_eq_iff_eq_mul, ← mul_assoc, hp, Units.mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_rel {p p' : R} {w : Rˣ} (hp : w.val * p' = p * w.val) : (w⁻¹).val * p = p' * (w⁻¹).val := by
   rw [Units.inv_mul_eq_iff_eq_mul, ← mul_assoc, hp, Units.mul_inv_cancel_right]
 
 /- English proof (translation)
-Establish `k : ∀ {u v : Rˣ}, u ∈ U p q → v ∈ U p q → (u * v).val = u.val + v.val - 1` using `fun {u v} hu hv => by`. Establish `: (u.val - 1) * (v.val - 1) = 0` using `by rw [← hu.2, ← hv.1, mul_assoc, ← mul_assoc q, h]; simp`. Rewrite using `[Units.val_mul, ← sub_zero (u.val * v.val), ← this]`. Use `noncomm_ring`. Conclude with `Units.ext (by rw [k hu hv, k hv hu, add_comm])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem U_comm {p q : R} (h : q * p = 0) {u v : Rˣ} (hu : u ∈ U p q) (hv : v ∈ U p q) : u * v = v * u := by
   have k : ∀ {u v : Rˣ}, u ∈ U p q → v ∈ U p q → (u * v).val = u.val + v.val - 1 := fun {u v} hu hv => by
@@ -87,7 +87,7 @@ variable {G V : Type} [Group G] [Finite G] [AddCommGroup V] [Module ℂ V] (π :
 def S (H : Subgroup G) : V →ₗ[ℂ] V := haveI := Fintype.ofFinite H; ∑ h : H, π h
 
 /- English proof (translation)
-Rewrite using `[S, LinearMap.sum_apply]`. Use `congr!`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_apply (H : Subgroup G) [Fintype H] (v : V) : S π H v = ∑ h : H, π h v := by
   rw [S, LinearMap.sum_apply]
@@ -96,7 +96,7 @@ theorem S_apply (H : Subgroup G) [Fintype H] (v : V) : S π H v = ∑ h : H, π 
 variable {π}
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite H`. Use `haveI := Fintype.ofFinite K`. Rewrite using `[S_apply, S_apply, map_sum]`. Use `Fintype.sum_equiv ⟨fun u => ⟨_, h1 u u.2⟩, fun u => ⟨_, h2 u u.2⟩, fun u => Subtype.ext (by simp [mul_assoc]), fun u => Subtype.ext (by simp [mul_assoc])⟩ _ _ fun u => ?_` and prove the remaining obligations. Simplify using `[← Module.End.mul_apply, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem S_conj {H K : Subgroup G} {w : G} (h1 : ∀ u ∈ H, w * u * w⁻¹ ∈ K) (h2 : ∀ u ∈ K, w⁻¹ * u * w⁻¹⁻¹ ∈ H)
     (v : V) : π w (S π H v) = S π K (π w v) := by
@@ -108,7 +108,7 @@ theorem S_conj {H K : Subgroup G} {w : G} (h1 : ∀ u ∈ H, w * u * w⁻¹ ∈ 
   simp [← Module.End.mul_apply, ← map_mul]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite H`. Rewrite using `[S_apply, S_apply]`. Use `Fintype.sum_equiv (Equiv.mulRight (⟨h, hh⟩ : H)) _ _ fun u => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem S_right {H : Subgroup G} {h : G} (hh : h ∈ H) (v : V) : S π H (π h v) = S π H v := by
   haveI := Fintype.ofFinite H
@@ -117,14 +117,14 @@ theorem S_right {H : Subgroup G} {h : G} (hh : h ∈ H) (v : V) : S π H (π h v
   simp
 
 /- English proof (translation)
-Rewrite using `[S_conj (K := H) (fun u hu => mul_mem (mul_mem hh hu) (inv_mem hh)) (fun u hu => mul_mem (mul_mem (inv_mem hh) hu) (inv_mem (inv_mem hh))), S_right hh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem S_left {H : Subgroup G} {h : G} (hh : h ∈ H) (v : V) : π h (S π H v) = S π H v := by
   rw [S_conj (K := H) (fun u hu => mul_mem (mul_mem hh hu) (inv_mem hh))
     (fun u hu => mul_mem (mul_mem (inv_mem hh) hu) (inv_mem (inv_mem hh))), S_right hh]
 
 /- English proof (translation)
-The claim follows from `S_conj (fun u hu => by rwa [hh u hu, mul_inv_cancel_right]) (fun u hu => by rwa [inv_inv, mul_assoc, ← hh u hu, inv_mul_cancel_left]) v`.
+A detailed English derivation is pending.
 -/
 theorem S_comm {H : Subgroup G} {h : G} (hh : ∀ u ∈ H, h * u = u * h) (v : V) :
     π h (S π H v) = S π H (π h v) :=
@@ -132,7 +132,7 @@ theorem S_comm {H : Subgroup G} {h : G} (hh : ∀ u ∈ H, h * u = u * h) (v : V
     (fun u hu => by rwa [inv_inv, mul_assoc, ← hh u hu, inv_mul_cancel_left]) v
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite H`. Rewrite using `[S_apply π H, map_sum]`. Conclude with `Finset.sum_eq_zero fun u _ => by rw [S_right (hle u.2), hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_S {H K : Subgroup G} (hle : H ≤ K) {v : V} (hv : S π K v = 0) : S π K (S π H v) = 0 := by
   haveI := Fintype.ofFinite H
@@ -140,7 +140,7 @@ theorem S_S {H K : Subgroup G} (hle : H ≤ K) {v : V} (hv : S π K v = 0) : S �
   exact Finset.sum_eq_zero fun u _ => by rw [S_right (hle u.2), hv]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite H`. Rewrite `h0` using `[S_apply, Finset.sum_congr rfl fun (u : H) _ => hv u u.2, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(smul_eq_zero.1 h0).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_S {H : Subgroup G} {v : V} (hv : ∀ h ∈ H, π h v = v) (h0 : S π H v = 0) : v = 0 := by
   haveI := Fintype.ofFinite H
@@ -152,7 +152,7 @@ end Sum
 variable {R V : Type} [Ring R] [Finite R] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ Rˣ V}
 
 /- English proof (translation)
-The claim follows from `S_conj (fun _ => conj_mem hp hq) (fun _ => conj_mem (inv_rel hp) (inv_rel hq)) v`.
+A detailed English derivation is pending.
 -/
 theorem S_U {p q p' q' : R} {w : Rˣ} (hp : w.val * p' = p * w.val) (hq : w.val * q' = q * w.val) (v : V) :
     π w (S π (U p' q') v) = S π (U p q) (π w v) :=
@@ -163,23 +163,23 @@ variable (π) in
 def OppInj (p q : R) : Prop := ∀ v : V, (∀ u ∈ U p q, π u v = v) → S π (U q p) v = 0 → v = 0
 
 /- English proof (translation)
-Establish `t : ∀ {x y z : R}, x * y = z → ∀ r, x * (y * r) = z * r` using `fun h r => by rw [← mul_assoc, h]`. Establish `dec : ∀ {p q : R} {u : Rˣ}, u ∈ U p q → ∃ x, u.val = 1 + p * (x * q)` using `fun {p q u} hu => ⟨u.val - 1, by rw [hu.2, hu.1, add_sub_cancel]⟩`. Establish `H` using `And.intro (And.intro (And.intro (And.intro aa (t aa)) (And.intro bb (t bb))) (And.intro (And.intro cc (t cc)) (And.intro dd (t dd)))) (And.intro (And.intro (And.intro (And.intro (And.intro ab (t ab)) (And.intro ac (t ac))) (And.intro (And.intro ad (t ad)) (And.intro ba (t ba)))) …`. Use `set z := S π (U (a + c) (b + d)) v with hz`. Establish `k1 : ∀ u ∈ U a c, π u z = z` using `fun u hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `dec hu`. Apply the tactic sequence `rw [hz, S_U (p := a + c) (q := b + d), hv u] <;>`. Apply the tactic sequence `simp [mem_U, hx, mul_add, add_mul, mul_assoc, H] <;> abel`. Establish `k2 : ∀ u ∈ U (a + b + c) d, π u z = z` using `fun u hu => by`. Take `⟨x, hx⟩` from `dec hu`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : u = un (b * (x * d)) (by simp [mul_assoc, H]) * un ((a + c) * (x * d)) (by simp [mul_add, add_mul, mul_assoc, H])` using `Units.ext (by simp [hx, mul_add, add_mul, mul_assoc, H]; abel)`. Apply the tactic sequence `rw [e, map_mul, Module.End.mul_apply, hz, S_left, S_U (p := a + c) (q := b + d), hv] <;>`. Apply the tactic sequence `simp [mem_U, mul_add, add_mul, mul_assoc, H] <;> abel`. Establish `k3 : S π (U (c + d) (a + b)) z = 0` using `by haveI := Fintype.ofFinite (U (a + c) (b + d))`. Rewrite using `[hz, S_apply π (U (a + c) (b + d)), map_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `dec u.2`. Establish `e : u.1 = un (c * (x * b)) (by simp [mul_assoc, H]) * (un (a * (x * b) + c * (x * d)) (by simp [mul_add, add_mul, mul_assoc, H]) * un (a * (x * d)) (by simp [mul_assoc, H]))` using `Units.ext (by simp [hx, mul_add, add_mul, mul_assoc, H]; abel)`. Apply the tactic sequence `rw [e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, S_right, hv, ← S_U (p' := c + d) (q' := a + b), h0, map_zero] <;>`. Apply the tactic sequence `simp [mem_U, mul_add, add_mul, mul_assoc, H] <;> abel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hqp : (a + b) * (c + d) = 0` using `by simp [mul_add, add_mul, H]`. Establish `l1 : U c a ≤ U (c + d) (a + b)` using `fun u hu => by`. Take `⟨x, hx⟩` from `dec hu`. Simplify using `[mem_U, hx, mul_add, add_mul, mul_assoc, H]`. Establish `l2 : U d (a + b) ≤ U (c + d) (a + b)` using `fun u hu => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `dec hu`. Simplify using `[mem_U, hx, mul_add, add_mul, mul_assoc, H]`. Use `h1 z k1 (h2 _ (fun u hu => ?_) (eq_zero_of_S (fun u hu => ?_) (S_S l2 (S_S l1 k3))))` and prove the remaining obligations. Use `haveI := Fintype.ofFinite (U c a)`. Rewrite using `[S_apply, map_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `dec hu`. Take `⟨y, hy⟩` from `dec (inv_mem k.2)`. Establish `: k.1⁻¹ * u * k.1⁻¹⁻¹ ∈ U (a + b + c) d`. Apply the tactic sequence `refine conj_mem (p' := a + b + c) (q' := d) ?_ ?_ ?_ <;>`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp [mem_U, hx, hy, mul_add, add_mul, mul_assoc, H] <;> abel`. Use `conv_rhs => rw [← k2 _ this]`. Simplify using `[← Module.End.mul_apply, ← map_mul, mul_assoc]`. Take `⟨x, hx⟩` from `dec hu`. Establish `e : u = un (d * (x * (a + b))) (by simp [mul_add, add_mul, mul_assoc, H]) * (un (c * (x * a)) (by simp [mul_assoc, H]) * un (c * (x * b)) (by simp [mul_assoc, H]))` using `Units.ext (by simp [hx, mul_add, add_mul, mul_assoc, H]; abel)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `m1 : un (c * (x * a)) (by simp [mul_assoc, H]) ∈ U c a` using `by simp [mem_U, mul_assoc, H]`. Establish `m2 : un (c * (x * b)) (by simp [mul_assoc, H]) ∈ U (c + d) (a + b)`. Simplify using `[mem_U, mul_add, add_mul, mul_assoc, H]`. Apply the tactic sequence `rw [e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, S_comm fun w hw => U_comm hqp m2 (l2 hw), S_comm fun w hw => U_comm hqp m2 (l1 hw), S_comm fun w hw => U_comm hqp (l1 m1) (l2 hw), S_left m1, hz, S_left, S_left] <;>`. Simplify using `[mem_U, mul_add, add_mul, mul_assoc, H]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step {a b c d : R} (aa : a * a = a) (bb : b * b = b) (cc : c * c = c) (dd : d * d = d)
     (ab : a * b = 0) (ac : a * c = 0) (ad : a * d = 0) (ba : b * a = 0) (bc : b * c = 0) (bd : b * d = 0)
@@ -252,25 +252,23 @@ theorem step {a b c d : R} (aa : a * a = a) (bb : b * b = b) (cc : c * c = c) (d
       simp [mem_U, mul_add, add_mul, mul_assoc, H]
 
 /- English proof (translation)
-Generalize the expression as in `hn : {x : R | (p + q) * x = x}.ncard = n`. Proceed by induction on `n using Nat.strong_induction_on generalizing p q with`. Consider the case `_ n ih`. Introduce `v hv h0`. Use `haveI := Fintype.ofFinite (U q p)`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : S π (U p q) (S π (U q p) v) = 0` using `by rw [h0, map_zero]`. Rewrite `h1` using `[S_apply π (U q p), map_sum, Finset.sum_eq_single 1 (fun u _ hu => ?_) (by simp)]`. Conclude with `eq_zero_of_S hv (by simpa using h1)`. Take `⟨X, hX⟩ : ∃ X, u.1.val = 1 + X` from `⟨u.1.val - 1, by simp⟩`. Establish `X0 : X ≠ 0` using `fun e => hu (Subtype.ext (Units.ext (by simpa [e] using hX)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qX : q * X = X` using `by simpa [hX] using u.2.1`. Establish `Xp : X * p = X` using `by simpa [hX] using u.2.2`. Take `⟨y, hy⟩` from `hreg X`. Establish `t : ∀ {x y z : R}, x * y = z → ∀ r, x * (y * r) = z * r` using `fun h r => by rw [← mul_assoc, h]`. Choose the witnesses or unpack the hypotheses as in `⟨Y, pY, Yq, XYX, YXY⟩ : ∃ Y, p * Y = Y ∧ Y * q = Y ∧ X * (Y * X) = X ∧ Y * (X * Y) = Y := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : ∀ r, X * (y * (X * r)) = X * r` using `fun r => by rw [← mul_assoc, ← mul_assoc, hy]`. Establish `hy'' : X * (y * X) = X` using `by rw [← mul_assoc, hy]`. Apply the tactic sequence `refine ⟨p * (y * (X * (y * q))), ?_, ?_, ?_, ?_⟩ <;> simp [mul_assoc, t pp, qq, qX, t qX, t Xp, hy', hy'']`. Establish `pX : p * X = 0` using `by rw [← qX, t pq, zero_mul]`. Establish `Xq : X * q = 0` using `by rw [← Xp, mul_assoc, pq, mul_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qY : q * Y = 0` using `by rw [← pY, t qp, zero_mul]`. Establish `Yp : Y * p = 0` using `by rw [← Yq, mul_assoc, qp, mul_zero]`. Establish `XX : X * X = 0` using `by rw [← t Xp X, pX, mul_zero]`. Establish `YY : Y * Y = 0` using `by rw [← t Yq Y, qY, mul_zero]`. Establish `XYX' : ∀ r, X * (Y * (X * r)) = X * r` using `fun r => by rw [← mul_assoc Y, t XYX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `YXY' : ∀ r, Y * (X * (Y * r)) = Y * r` using `fun r => by rw [← mul_assoc X, t YXY]`. Establish `H` using `And.intro (And.intro (And.intro (And.intro pp (t pp)) (And.intro qq (t qq))) (And.intro (And.intro pq (t pq)) (And.intro qp (t qp)))) (And.intro (And.intro (And.intro (And.intro (And.intro qX (t qX)) (And.intro Xp (t Xp))) (And.intro (And.intro pY (t pY)) (And.intro Yq (t Yq)))) …`. Establish `lt : ∀ {r s : R}, (p + q) * r = r → (p + q) * s = s → r * s = 0 → s ≠ 0 → {x : R | r * x = x}.ncard < n` using `fun {r s} a1 a2 a3 a4 => by`. Rewrite using `[← hn]`. Use `Set.ncard_lt_ncard ⟨fun x (hx : r * x = x) => ?_, fun h => a4 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (p + q) * x = x`. Rewrite using `[← hx, t a1]`. Conclude with `(h (show s ∈ {x | (p + q) * x = x} from a2)).symm.trans a3`. Establish `e1 : p - Y * X + Y * X = p` using `sub_add_cancel _ _`. Establish `e2 : X * Y + (q - X * Y) = q` using `add_sub_cancel _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `step (π := π) (a := p - Y * X) (b := Y * X) (c := X * Y) (d := q - X * Y) (v := v) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ (ih _ (lt (s := Y * X) ?_ ?_ ?_ fun e => X0 (by rw [← XYX, e, mul_zero])) ?_ ?_ ?_ ?_ rfl) (ih _ (lt (s := X * Y) ?_ ?_ ?_ fun e => X0 (by rw [← XYX, …`. Establish `m : un Y YY ∈ U p q` using `un_mem YY pY Yq`. Establish `e : u.1 = un Y YY * (((un Y YY)⁻¹ * u.1 * (un Y YY)⁻¹) * un Y YY)` using `by group`. Establish `hw : ((un Y YY)⁻¹ * u.1 * (un Y YY)⁻¹).val = (1 - Y) * (1 + X) * (1 - Y)`. Rewrite using `[Units.val_mul, Units.val_mul, hX]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Apply the tactic sequence `rw [e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, S_right m, hv _ m, ← S_U (p' := p - Y * X + X * Y) (q' := Y * X + (q - X * Y)), key, map_zero] <;>`. Rewrite using `[hw]`. Simplify using `[mul_add, add_mul, mul_sub, sub_mul, mul_assoc, H]`. Apply the tactic sequence `try abel`.
-
-Apply the tactic sequence `all_goals simp [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, H]`.
+A detailed English derivation is pending.
 -/
 theorem oppInj (hreg : ∀ x : R, ∃ y, x * y * x = x) {p q : R} (pp : p * p = p) (qq : q * q = q)
     (pq : p * q = 0) (qp : q * p = 0) : OppInj π p q := by
@@ -334,11 +332,11 @@ theorem oppInj (hreg : ∀ x : R, ∃ y, x * y * x = x) {p q : R} (pp : p * p = 
   all_goals simp [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, H]
 
 /- English proof (translation)
-Set `f` to `Matrix.toLinAlgEquiv' x`. Take `⟨s, hs⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict`. Take `⟨r, hr⟩` from `(LinearMap.range f).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Use `⟨Matrix.toLinAlgEquiv'.symm (s ∘ₗ r), Matrix.toLinAlgEquiv'.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, AlgEquiv.apply_symm_apply]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h1 : r (f w) = f.rangeRestrict w` using `LinearMap.congr_fun hr (f.rangeRestrict w)`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hs (f.rangeRestrict w))`. Express the relevant statement in the definitionally equal form `f (s (r (f w))) = f w`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem matrix_regular {F n : Type} [Field F] [Fintype n] [DecidableEq n] (x : Matrix n n F) :
     ∃ y, x * y * x = x := by

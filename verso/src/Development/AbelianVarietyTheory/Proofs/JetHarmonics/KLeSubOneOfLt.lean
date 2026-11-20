@@ -15,9 +15,9 @@ open GlobalTheory.RunDepth GlobalTheory.CharDepth
 namespace GlobalTheory.RunDepth
 
 /- English proof (translation)
-Establish `h1 : R.k ≤ R.r` using `by have := R.two_le_m; unfold Ranks.r; omega`. Establish `h2 : 1 ≤ R.t` using `by have := R.three_m_lt_t; omega`. Establish `h3 : R.r ≤ 4 * R.t * R.r` using `Nat.le_mul_of_pos_left _ (by omega)`. Establish `h4 : R.k + 1 ≤ l` using `by omega`. Establish `h5 : ((R.k + 1 : ℕ) : ℝ) ≤ (l : ℝ)` using `by exact_mod_cast h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem k_le_sub_one_of_lt (R : Ranks) (l : ℕ) (h : 4 * R.t * R.r + 1 < l) : (R.k : ℝ) ≤ (l : ℝ) - 1 := by
   have h1 : R.k ≤ R.r := by have := R.two_le_m; unfold Ranks.r; omega
@@ -29,15 +29,15 @@ theorem k_le_sub_one_of_lt (R : Ranks) (l : ℕ) (h : 4 * R.t * R.r + 1 < l) : (
   linarith
 
 /- English proof (translation)
-Introduce `D L Pm Tp hK T EX _ K _ _ _ _ _ _ Bs Df S P _ _ oc O ι N hM hR hPg hSz hx hb tF`. Take `⟨hPi, hDep, -⟩` from `laws_and_nuFinAt D L Pm Tp hK T EX hM hR.star_eq`. Take `⟨-, hW⟩` from `sizes_le_two_mul D L Pm hx hb`. Use `DepthTie.leafDepthRam_core_sat T (depOf T EX Tp hK) O ι N (numOf D L) hPi hM.pins hR.inR hR.E_eq hR.σ_eq hR.T_eq ⟨hR.jets_eq_fact, hR.g2_eq, hR.cmQuadraticForm_eq_alternatingForm, hR.dd_eq, hR.sm_eq⟩ hR.star_eq (fun j => hDep.chartEx _ (hR.inR j)) hPg hSz tF ⟨hR.jets_eq_fact, hR. …` and prove the remaining obligations. Rewrite using `[hR.f_eq] show ((2 * D.R.n : ℕ) : ℝ) = 2 * ((D.R.n : ℕ) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `j`. Establish `h1` using `(GlobalTheory.WeightExponents.weight_exponents D T.Q hM.pins (ι j) (hR.inR j) (lR Tp hK (ι j))).1`. Establish `h2` using `(mul_rows_lR_le_kaR D L Pm Tp hK (ι j) (plOf D (false, 0))).2.2`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show O.T * ((DF (T.Q.Dw (ι j)) (wtA (lR Tp hK (ι j))) : ℕ) : ℝ) ≤ (WeightAlgebra.DF (kaR Tp hK (ι j)) : ℝ)`. Rewrite using `[h1, hR.T_eq]`. Conclude with `h2` after adjusting the coercions. Introduce `j`. Establish `h1` using `(DF_kaR_le D L Pm Tp hK hx hb (ι j) (hR.inR j)).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `OnObj.sB OnObj.Se`. Rewrite using `[one_mul, hR.k_eq, hR.wt_eq, hR.f_eq, hR.Sc_eq, hR.eta_eq]`. Conclude with `h1`. Unfold `PageRam`. Rewrite using `[one_mul, hR.k_eq, hR.cmQuadraticForm_eq_alternatingForm, hR.dd_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k_le_sub_one_of_lt D.R _ D.host.qd_big.1, k_le_sub_one_of_lt D.R _ D.host.qd_big.2⟩`. Introduce `j t`. Take `⟨h1, h2, h3⟩` from `hW (ι j) (hR.inR j)`. Rewrite using `[h3, h3, hR.bp_eq]`. Conclude with `⟨(h1 _).1, (h1 _).1, (min_le_left _ _).trans (h2 t)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem leafDepthRam_run : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Core D) (EX : ErrX D) [StarRing (𝓞 D.host.E)] (K : Type) [Field K] [NumberField K] [StarRing K] [Algebra (𝓞 T.Q.c.F) (𝓞 K)] [Algebra.IsIntegral (𝓞 T.Q.c.F) (𝓞 K)] [Algebra (𝓞 D.host.E) K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (oc : OnConst) (O : OnObj S P oc) (ι : Bs.J → ℕ) (N : IndefNum Bs), LawsM T → RunTie T EX Tp hK O ι → LeafPage O → LeafSizes O → 3 ≤ L.sc.x → (D.R.k : ℝ) * L.sc.b' ≤ L.sc.b → ContentEqualsDatumContent N (numOf D L) ι → LeafDepthRam N O := by
   intro D L Pm Tp hK T EX _ K _ _ _ _ _ _ Bs Df S P _ _ oc O ι N hM hR hPg hSz hx hb tF

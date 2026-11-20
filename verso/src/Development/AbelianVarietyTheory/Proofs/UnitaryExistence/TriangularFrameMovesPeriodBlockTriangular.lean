@@ -18,13 +18,13 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.PerBor
 
 /- English proof (translation)
-Use `letI := Matrix.invertibleOfIsUnitDet h hu`. Establish `key : ∀ ι : α → ℤ, h⁻¹.BlockTriangular (fun j => toLex (ι (t j), w j))`. Introduce `ι`. Use `Matrix.blockTriangular_inv_of_blockTriangular ?_` and prove the remaining obligations. Introduce `j j' hlt`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `hs j j' hne`. Simplify using `only [h1, Prod.Lex.toLex_lt_toLex, lt_self_iff_false, true_and, false_or] at hlt`. Use linear arithmetic over natural numbers and integers. Introduce `j j' hne`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ¬ _` using `fun hlt => hne (key (fun a => (Fintype.equivFin α a : ℕ)) (i := j) (j := j') hlt)`. Establish `h2 : ¬ _` using `fun hlt => hne (key (fun a => -((Fintype.equivFin α a : ℕ) : ℤ)) (i := j) (j := j') hlt)`. Simplify using `only [Prod.Lex.toLex_lt_toLex, not_or, not_and, not_lt] at h1 h2`. Establish `h3 : ((Fintype.equivFin α (t j) : ℕ)) = (Fintype.equivFin α (t j') : ℕ)` using `by omega`. Establish `h4 : t j = t j'` using `(Fintype.equivFin α).injective (Fin.ext h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h4, h1.2 (by rw [h4])⟩`.
+Supply the required witnesses or components.
 -/
 lemma inv_support {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n → α) (w : n → ℕ)
     (h : Matrix n n ℂ) (hu : IsUnit h.det) (hs : ∀ j j', h j j' ≠ 0 → t j = t j' ∧ w j ≤ w j') :
@@ -47,9 +47,9 @@ lemma inv_support {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n
   exact ⟨h4, h1.2 (by rw [h4])⟩
 
 /- English proof (translation)
-Use `PerMove.det_of_triangular (fun j => toLex (Fintype.equivFin α (t j), w j)) ?_ _ fun k l hkl => ?_` and prove the remaining obligations. Introduce `k l hkl`. Establish `h'` using `toLex.injective hkl`. Rewrite `h'` using `[Prod.mk.injEq]`. Conclude with `hinj _ _ ((Fintype.equivFin α).injective h'.1) h'.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `hs k l hne`. Simplify using `only [h1, Prod.Lex.toLex_lt_toLex, lt_self_iff_false, true_and, false_or] at hkl`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma det_of_support {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n → α) (w : n → ℕ)
     (hinj : ∀ j j', t j = t j' → w j = w j' → j = j')
@@ -66,9 +66,9 @@ lemma det_of_support {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t 
     omega
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun (Matrix.nonsing_inv_mul h hu) a) a`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single a, Matrix.one_apply_eq]`. Conclude with `eq_inv_of_mul_eq_one_left e`. Introduce `c _ hc`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 hne`. Take `⟨h3, h4⟩` from `inv_support t w h hu hs _ _ h1`. Take `⟨_, h6⟩` from `hs _ _ h2`. Conclude with `hc (hinj _ _ h3.symm (by omega))`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma inv_diag {n α : Type*} [Fintype n] [DecidableEq n] [Fintype α] (t : n → α) (w : n → ℕ)
     (hinj : ∀ j j', t j = t j' → w j = w j' → j = j')
@@ -98,7 +98,7 @@ variable {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r g : ℕ} (q : ℕ) 
     {b : Frame Ψ r}
 
 /- English proof (translation)
-Simplify using `only [moveMat, Matrix.of_apply, if_true]`. Use `split_ifs with hk`. Both sides reduce to the same expression. Conclude with `PerMove.bor_inv_diag hb _ _`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma moveMat_diag (hb : b ∈ Bor Ψ r) (k : Fin g) : moveMat q idx b k k =
     if ((idx k).2 : ℕ) < q then b (idx k).1 (idx k).2 (idx k).2 else (b (idx k).1 (idx k).2 (idx k).2)⁻¹ := by
@@ -108,11 +108,9 @@ lemma moveMat_diag (hb : b ∈ Bor Ψ r) (k : Fin g) : moveMat q idx b k k =
   · exact PerMove.bor_inv_diag hb _ _
 
 /- English proof (translation)
-Simplify using `only [moveMat, Matrix.of_apply] at h`. Distinguish the cases in `hτ : (idx l).1 = (idx k).1`. Rewrite `h` using `[if_pos hτ]`. Use `⟨hτ, ?_⟩` and prove the remaining obligations. Use `split_ifs at h ⊢ with hk`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Conclude with `h (PerMove.bor_tri hb _ (show (idx k).2 < (idx l).2 by rw [Fin.lt_def]; omega))`. Assume the negation of the conclusion as `hlt`. Conclude with `h (PerMove.bor_inv_tri hb _ (show (idx l).2 < (idx k).2 by rw [Fin.lt_def]; omega))`. Rewrite `h` using `[if_neg hτ]`.
-
-Conclude with `absurd rfl h`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma moveMat_support (hb : b ∈ Bor Ψ r) (k l : Fin g) (h : moveMat q idx b k l ≠ 0) :
     (idx l).1 = (idx k).1 ∧ (if ((idx k).2 : ℕ) < q then ((idx l).2 : ℕ) ≤ (idx k).2
@@ -130,13 +128,13 @@ lemma moveMat_support (hb : b ∈ Bor Ψ r) (k l : Fin g) (h : moveMat q idx b k
     exact absurd rfl h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Establish `hm : FD.mat (FD.rmul x b) (idx k).1 = FD.mat x (idx k).1 * FD.mat b (idx k).1` using `rfl`. Rewrite using `[hP', hm]`. Simplify using `only [moveMat, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[← idx.symm.sum_comp, Fintype.sum_prod_type, Finset.sum_eq_single (idx k).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.apply_symm_apply, if_true, hP] split_ifs with hk`. Rewrite using `[PerMove.hermC_col_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PerMove.bor_tri hb (idx k).1 (show (idx k).2 < c by rw [Fin.lt_def]; omega), zero_mul, zero_mul]`. Express the relevant statement in the definitionally equal form `((FD.mat x (idx k).1 * FD.mat b (idx k).1)⁻¹ *ᵥ FD.Data.emb (idx k).1.1 v) (idx k).2 = _`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[PerMove.bor_inv_tri hb (idx k).1 (show c < (idx k).2 by rw [Fin.lt_def]; omega), zero_mul, zero_mul]`. Both sides reduce to the same expression. Introduce `τ _ hτ`. Simplify using `[hτ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma moveMat_mulVec (hb : b ∈ Bor Ψ r) (Gm : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (v : Fin r → E)
     (P P' : Fin g → ℂ)
@@ -177,39 +175,37 @@ end
 end GlobalTheory.PerBor
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ g e F r M hG hB hN k Pf hPf x hx b hb`. Take `⟨⟨idx, hty, hcol, hper⟩, hp0, -⟩` from `GlobalTheory.T.cmType_letter_frame_column_dictionary E H Dw l Xo c σ g e F r M hG hB hN k`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hG`. Establish `hq : (F.Di k).q = Dw.q` using `hp0.symm.trans (hB.type k).1`. Establish `hlt : ∀ j, ((idx j).2 : ℕ) < (F.Di k).q → ((e j).2 : ℕ) < (F.Di k).q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `h1` using `hty j`. Rewrite `h1` using `[if_pos hj]`. Establish `h2` using `((M.X k).cmType _).1 (idx j).1.2`. Rewrite `h2` using `[← h1, (hB.type k).2, hrt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : Dw.mult (e j).1 = Dw.q` using `if_neg h2`. Use `(e j).2.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hinj : ∀ j j', (e j).1 = (e j').1 → ((e j).2 : ℕ) = (e j').2 → j = j'`. Introduce `j j' h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `e.injective` to reduce the goal to its premises. Use `Sigma.ext h1 ((Fin.heq_ext_iff (by rw [h1])).2 h2)` and prove the remaining obligations. Establish `hs : ∀ j j', PerBor.moveMat (F.Di k).q idx b j j' ≠ 0 → (e j).1 = (e j').1 ∧ ((e j).2 : ℕ) ≤ (e j').2`. Introduce `j j' hne`. Take `⟨h1, h2⟩` from `PerBor.moveMat_support _ idx hb j j' hne`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `c1` using `hcol j`. Establish `c2` using `hcol j'`. Establish `l1` using `hlt j`. Establish `l2` using `hlt j'`. Establish `t1` using `hty j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2` using `hty j'`. Distinguish the cases in `hj : ((idx j).2 : ℕ) < (F.Di k).q`. Rewrite `h2`, `c1`, `t1` using `[if_pos hj]`. Establish `hj' : ((idx j').2 : ℕ) < (F.Di k).q` using `by omega`. Rewrite `c2`, `t2` using `[if_pos hj']`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hbij.1 (by rw [t1, t2, h1]), ?_⟩` and prove the remaining obligations. Use `l1 hj` as an intermediate fact. Use `l2 hj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h2`, `c1`, `t1` using `[if_neg hj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj' : ¬ ((idx j').2 : ℕ) < (F.Di k).q` using `by omega`. Rewrite `c2`, `t2` using `[if_neg hj']`. Use `⟨hbij.1 (by rw [t1, t2, h1]), ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `hdet` using `PerBor.det_of_support _ _ hinj _ hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hdiag` using `PerBor.moveMat_diag (F.Di k).q idx hb`. Establish `hbne : ∀ τ i, b τ i i ≠ 0` using `fun τ i => PerMove.bor_diag_ne hb τ i`. Establish `hu : IsUnit (PerBor.moveMat (F.Di k).q idx b).det`. Rewrite using `[hdet, isUnit_iff_ne_zero]`. Use `Finset.prod_ne_zero_iff.2 fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdiag]`. Use `split_ifs`. Conclude with `hbne _ _`. Conclude with `inv_ne_zero (hbne _ _)`. Use `⟨PerBor.moveMat (F.Di k).q idx b, hu, fun a => ?_, PerBor.inv_support _ _ _ hu hs, by rw [hdet, norm_prod], fun h1 => ?_, fun un a n t₀ hn ht => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PerBor.moveMat_mulVec _ idx hb (M.X k).Gm x (M.φ k a : Fin r → E) _ _ (fun j => by rw [hPf, hper]) (fun j => by rw [hPf, hper])`. Rewrite using `[hdet, norm_prod]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hdiag]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ _`. Rewrite using `[norm_inv, h1, inv_one]`. Take `⟨m, rfl⟩` from `hn`. Establish `ht2 : t₀ ^ 2 = ∏ j, (PerBor.moveMat (F.Di k).q idx b j j)⁻¹`. Rewrite using `[Finset.prod_inv_distrib, ← hdet]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_left ht`. Rewrite using `[← two_mul, pow_mul, ht2, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Unfold `bchar`. Use `Eq.trans ?_ (Fintype.prod_prod_type' (fun (τ : (M.X k).Ψ) (i : Fin r) => b τ i i ^ laU (unfOf e F M un) a (2 * m) k τ i))` and prove the remaining obligations. Rewrite using `[← idx.prod_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[PerBor.inv_diag _ _ hinj _ hu hs, ← pow_add, hdiag]`. Establish `hm' : 2 * m / 2 = m` using `by omega`. Establish `hp : ((unfOf e F M un).X k).p0 = (F.Di k).q` using `hp0`. Establish `c1` using `hcol j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `t1` using `hty j`. Establish `hinv` using `Function.leftInverse_invFun hbij.1 (e j).1`. Unfold `laU`. Rewrite using `[hp, hm']`. Distinguish the cases in `hj : ((idx j).2 : ℕ) < (F.Di k).q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `c1`, `t1` using `[if_pos hj]`. Use `hlt j hj` as an intermediate fact. Establish `t2 : conjEmb (idx j).1.1 = relab c σ (e j).1` using `t1.symm`. Rewrite using `[if_pos hj, if_neg (by omega), t2, hinv, show (F.Di k).q - 1 - ((idx j).2 : ℕ) = (e j).2 by omega, inv_pow, ← zpow_natCast, ← zpow_neg]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `c1`, `t1` using `[if_neg hj]`. Rewrite using `[if_neg hj, if_pos (by omega), ← t1, hinv, show ((idx j).2 : ℕ) - (F.Di k).q = (e j).2 by omega, inv_inv, ← zpow_natCast]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.per_bor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r), GoodEmb c σ → ModelBase M → NegXi M → ∀ k Pf, IsPerFr e F M k Pf → ∀ x ∈ (M.X k).dom, ∀ b ∈ Bor (M.X k).Ψ r, ∃ h₀ : Matrix (Fin g) (Fin g) ℂ, IsUnit h₀.det ∧ (∀ a, Pf (rmul x b) a = h₀ *ᵥ Pf x a) ∧ (∀ j j', h₀⁻¹ j j' ≠ 0 → (e j).1 = (e j').1 ∧ ((e j).2 : ℕ) ≤ (e j').2) ∧ ‖h₀.det‖ = ∏ j, ‖h₀ j j‖ ∧ ((∀ τ i, ‖b τ i i‖ = 1) → ‖h₀.det‖ = 1) ∧ ∀ (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (t₀ : ℂ), Even n → t₀ ^ 2 * h₀.det = 1 → (∏ j, h₀⁻¹ j j ^ a ((e j).1, (e j).2)) * t₀ ^ n = bchar (laU (unfOf e F M un) a n k) b := by
   intro E _ _ _ H Dw l Xo c σ g e F r M hG hB hN k Pf hPf x hx b hb

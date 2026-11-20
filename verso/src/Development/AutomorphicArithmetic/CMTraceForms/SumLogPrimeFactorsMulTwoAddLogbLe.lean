@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Q y hQ hy hlog`. Establish `hQ1 : (1 : ℝ) ≤ Q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hQ`. Establish `hl0 : 0 ≤ Real.log Q` using `Real.log_nonneg hQ1`. Establish `hpos : ∀ p ∈ Q.primeFactors, (0 : ℝ) < p` using `fun p hp => by`. Conclude with `(Nat.prime_of_mem_primeFactors hp).pos` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (∑ p ∈ Q.primeFactors, Real.log (p : ℝ)) ≤ y`. Rewrite using `[← Real.log_prod (fun p hp => (hpos p hp).ne')]`. Use `le_trans (Real.log_le_log (Finset.prod_pos hpos) ?_) hlog` and prove the remaining obligations. Use `Nat.le_of_dvd (Nat.pos_of_ne_zero hQ) (Nat.prod_primeFactors_dvd Q)` as an intermediate fact. Rewrite using `[← Nat.cast_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.cast_le.mpr this`. Establish `h2 : Real.logb 2 Q ≤ 2 * y`. Establish `hl2 : (1 / 2 : ℝ) < Real.log 2`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Real.logb, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 0 ≤ Real.logb 2 Q` using `Real.logb_nonneg (by norm_num) hQ1`. Establish `h4 : y ^ 2 ≤ y ^ 4` using `pow_le_pow_right₀ hy (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.sum_log_primeFactors_mul_two_add_logb_le :
     ∀ (Q : ℕ) (y : ℝ), Q ≠ 0 → 1 ≤ y → Real.log Q ≤ y →

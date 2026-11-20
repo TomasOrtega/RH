@@ -10,34 +10,34 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [q4, B4, Pi.single_apply] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem quadraticForm_add_expand (δ : F) (v : V4 F) (i : Fin 4) (a : A F) :
     q4 δ (v + Pi.single i a) = q4 δ v + a * (B4 δ v (Pi.single i 1) + a * q4 δ (Pi.single i 1)) := by
   fin_cases i <;> simp [q4, B4, Pi.single_apply] <;> ring
 
 /- English proof (translation)
-Simplify using `[ψ, (adelicChar F).map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem psi_add (x y : A F) : ψ (x + y) = ψ x * ψ y := by
   simp [ψ, (adelicChar F).map_add_eq_mul]
 
 /- English proof (translation)
-Simplify using `[cw, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cw_mul (w : InfinitePlace F) (a b : A F) : cw w (a * b) = cw w a * cw w b := by
   simp [cw, map_mul]
 
 /- English proof (translation)
-Take `⟨hψ, -, hp, -, -, hm, -, -⟩` from `atLaws F w`. Take `⟨β, hβ⟩ : ∃ β : ℝ, β = TR.pInf F b w * TR.pInf F (B4 δ v (Pi.single i 1)) w` from `⟨_, rfl⟩`. Take `⟨κ, hκ⟩ : ∃ κ : ℝ, κ = TR.pInf F b w * TR.pInf F (q4 δ (Pi.single i 1)) w` from `⟨_, rfl⟩`. Use `⟨fun t => Complex.exp (cc * ((t * (β + t * κ) : ℝ) : ℂ)), ?_, by simp, ?_⟩` and prove the remaining obligations. Introduce `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : at1 w t * (b * (B4 δ v (Pi.single i 1) + at1 w t * q4 δ (Pi.single i 1))) = at1 w (t * (β + t * κ))`. Rewrite using `[hm]`. Use `congr 2`. Establish `: TR.pInf F (at1 w t) w = t` using `by rw [hp]; simp`. Simplify using `only [map_mul, map_add, Pi.mul_apply, Pi.add_apply, this, hβ, hκ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : b * q4 δ (v + Pi.single i (at1 w t)) = b * q4 δ v + at1 w (t * (β + t * κ))`. Rewrite using `[quadraticForm_add_expand, ← h0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, psi_add, hψ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : HasDerivAt (fun t : ℝ => t * (β + t * κ)) β 0`. Use `(hasDerivAt_id' (0 : ℝ)).fun_mul (((hasDerivAt_id' (0 : ℝ)).mul_const κ).const_add β)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `(hu.ofReal_comp.const_mul cc).cexp`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[hβ, cw]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem psi_curve (w : InfinitePlace F) (b : A F) (δ : F) (i : Fin 4) (v : V4 F) :
     ∃ g : ℝ → ℂ, (∀ t, ψ (b * q4 δ (v + Pi.single i (at1 w t))) = ψ (b * q4 δ v) * g t) ∧ g 0 = 1 ∧
@@ -66,15 +66,15 @@ private theorem psi_curve (w : InfinitePlace F) (b : A F) (δ : F) (i : Fin 4) (
     simp [hβ, cw]
 
 /- English proof (translation)
-Establish `hs : ∀ (c : ℂ) (T : Module.End ℂ (S4 F)), ((c • T) φ).1 v = c * (T φ).1 v` using `fun _ _ => rfl`. Establish `hn : ∀ a : A F, cw w (-a) = -cw w a` using `fun a => by simp [cw]`. Establish `h2 : cw w (2 : A F) = 2`. Establish `: TR.pInf F (2 : A F) = 2` using `map_ofNat _ 2`. Simplify using `[cw, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Establish `: B4 δ v (Pi.single 0 1) = -v 1` using `by simp [B4, Pi.single_apply]`. Simplify using `only [Fin.zero_eta, this, hn, Ops.p]`. Simplify using `[hs, O.x_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: B4 δ v (Pi.single 1 1) = -v 0` using `by simp [B4, Pi.single_apply]`. Simplify using `only [Fin.mk_one, this, hn, Ops.p]`. Simplify using `[hs, O.x_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `: B4 δ v (Pi.single 2 1) = 2 * v 2` using `by simp [B4, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.reduceFinMk, this, cw_mul, h2, Ops.p]`. Simplify using `[hs, O.x_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `: B4 δ v (Pi.single 3 1) = (-2 * rt δ) * v 3` using `by simp [B4, Pi.single_apply]; ring`. Simplify using `only [Fin.reduceFinMk, this, cw_mul, hn, h2, Ops.p]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hs, O.x_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem p_apply (O : Ops F) (δ : F) (w : InfinitePlace F) (i : Fin 4) (φ : S4 F) (v : V4 F) :
     (O.p δ w i φ).1 v = cc * cw w (B4 δ v (Pi.single i 1)) * φ.1 v := by
@@ -104,15 +104,15 @@ private theorem p_apply (O : Ops F) (δ : F) (w : InfinitePlace F) (i : Fin 4) (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W O w i b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Take `⟨g, hg, hg0, hgd⟩` from `psi_curve w b D.δ i v`. Establish `hφ` using `O.d_spec w i φ v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `O.d_spec w i (W.Om (nU b) φ) v`. Establish `hz : v + Pi.single i (at1 w 0) = v`. Rewrite using `[(atLaws F w).2.2.2.2.1]`. Simplify using the standard rewrite rules. Establish `hfun : (fun t : ℝ => (W.Om (nU b) φ).1 (v + Pi.single i (at1 w t))) = fun t => (ψ (b * q4 D.δ v) * g t) * φ.1 (v + Pi.single i (at1 w t))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[W.Om_n, hg]`. Rewrite `h1` using `[hfun]`. Establish `h2` using `(hgd.const_mul (ψ (b * q4 D.δ v))).mul hφ`. Establish `h3` using `h1.unique h2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(O.d w i (W.Om (nU b) φ)).1 v = (W.Om (nU b) ((O.d w i + cw w b • O.p D.δ w i) φ)).1 v`. Rewrite using `[h3, W.Om_n]`. Express the relevant statement in the definitionally equal form `_ = _ * ((O.d w i φ).1 v + cw w b * (O.p D.δ w i φ).1 v)`. Rewrite using `[p_apply, hg0, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(O.x w i (W.Om (nU b) φ)).1 v = (W.Om (nU b) (O.x w i φ)).1 v`. Rewrite using `[O.x_apply, W.Om_n, W.Om_n, O.x_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.dN :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) w i b, O.d w i * W.Om (nU b) = W.Om (nU b) * (O.d w i + cw w b • O.p D.δ w i) ∧

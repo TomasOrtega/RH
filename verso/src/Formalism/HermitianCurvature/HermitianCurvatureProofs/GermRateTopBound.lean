@@ -10,11 +10,11 @@ open scoped ComplexConjugate InnerProductSpace
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_insertNone, hbs, sub_eq_add_neg]`. Establish `hz : ∀ z ∈ G.rootSet s D, z ≠ 0`. Introduce `z hz h0`. Unfold `G.rootSet at hz`. Rewrite `hz` using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[h0, zero_pow (by omega)]`. Conclude with `hD hz.symm`. Use `congr 1`. Simplify using `only [utOf, vOf, ptX, coJ, ptJ, smul_smul, List.append_assoc, List.singleton_append]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Unfold `mainD`. Rewrite using `[one_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun z hzm => ?_` and prove the remaining obligations. Simplify using `only [btOf, if_neg (hz z hzm), one_smul, coJ, ptJ, smul_smul, neg_smul, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_sum {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
@@ -50,19 +50,17 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PBK Formalism.Fourier
 open scoped ComplexConjugate InnerProductSpace
 
 /- English proof (translation)
-Introduce `hA Cb`. Take `⟨c1, hc1⟩` from `GermFibreKernels.cutSeq_cpt Cb`. Use `⟨c1, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v`. Establish `hF` using `hc1 c1 le_rfl E Wp Wq S p f χ A₀ hB n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ε hε b s hb hs hbs a ha H _ _ _ Vec hVec`. Use `⟨1, fun _ => 1, by simp, fun _ => by simp, continuousOn_const, ?_⟩` and prove the remaining obligations. Introduce `h hsz K hK hK0`. Establish `hbs' : b + s = S.G.r + 2` using `hbs`. Establish `hb1 : b + s - 1 = S.G.r + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨I, hI, c, Fi, L, hc, hFi, hgram⟩` from `gN_top_gram hB (PBASM.cutSeq S p f χ n) (fun v ε hε => hF v ε hε) v ε hε a ha`. Use `choose Ci hCi using fun i => top_core hB v (Fi i) (hFi i) a.length b s hb hs hbs' h hsz K hK hK0`. Use `⟨∑ i, √(c i) * ‖L i‖ * Ci i, fun x hx D hD => ?_⟩` and prove the remaining obligations. Establish `hD0 : D ≠ 0` using `fun h0 => hK0 (h0 ▸ hD)`. Rewrite using `[germ_sum (PBL.setC S p (PBASM.cutSeq S p f χ n)) Vec b s hs hb1 h x D hD0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ j ∈ Finset.insertNone (G.rootSet s D), ∀ l ∈ Finset.insertNone (G.rootSet s D), KB.gN (PBL.setC S p (PBASM.cutSeq S p f χ n)) v ε (b + s - 1) a (ptJ s h x D j) (ptJ s h x D l) = ∑ i, (c i : ℂ) * ⟪(omN S a.length (ptJ s h x D l) : ℂ) • L i ((p v).V (Fi i) (PBL.stdS S (ptJ s …`. Introduce `j _ l _`. Rewrite using `[hb1]`. Conclude with `hgram _ _`. Establish `h2` using `norm_sum_le_of_gram (fun P Q => KB.gN (PBL.setC S p (PBASM.cutSeq S p f χ n)) v ε (b + s - 1) a P Q) Vec hVec c hc (fun i P => (omN S a.length P : ℂ) • L i ((p v).V (Fi i) (PBL.stdS S P))) (Finset.insertNone (G.rootSet s D)) (ptJ s h x D) hk (coJ S b s x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `e : ∑ j ∈ Finset.insertNone (G.rootSet s D), conj (coJ S b s x j) • ((omN S a.length (ptJ s h x D j) : ℂ) • L i ((p v).V (Fi i) (PBL.stdS S (ptJ s h x D j)))) = L i (∑ j ∈ Finset.insertNone (G.rootSet s D), (conj (coJ S b s x j) * (omN S a.length (ptJ s h x D j) : ℂ)) • (p v).V ( …`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_smul]`. Rewrite using `[e]`. Establish `h3` using `hCi i x hx D hD`. Establish `hsq` using `Real.sqrt_nonneg (c i)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem germ_rate_top_bound : Formalism.FourierDecayAlt.P.GermRateSplit.GermRateTopB := by
   intro hA Cb

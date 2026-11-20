@@ -30,7 +30,7 @@ def LX (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.host.
   Quotient ((QuotientGroup.leftRel (levW R i)).comap (Subtype.val : locSet R i v → GA D (Wc D i)))
 
 /- English proof (translation)
-Use `⟨(GfC (Wc D i)).one_mem, ?_⟩` and prove the remaining obligations. Establish `: Formalism.L2.Theta.mt (Wc D i) 1 = 1` using `rfl`. Introduce `a b`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_locSet (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     (1 : GA D (Wc D i)) ∈ locSet R i v := by
@@ -75,9 +75,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `h6 : ∀ x y, trPair R i 1 x y = ⟪x, y⟫_ℂ` using `hTL.2.2.2.2.2`. Establish `hex : ∃ B : (R.HW i (sg0 D A)).H →L[ℂ] (R.HW i (sg0 D A)).H, ‖B‖ ≤ 1 ∧ ∀ x y, trPair R i 1 x y = ⟪x, B y⟫_ℂ` using `⟨1, ContinuousLinearMap.norm_id_le, fun x y => by rw [h6]; rfl⟩`. Unfold `Eu.Bop`. Rewrite using `[dif_pos hex]`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← hex.choose_spec.2 x y, h6]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bop_one {R : RealDat D A Ks} {i : Fin D.R.m} (hTL : TransLaws R i) : Eu.Bop R i 1 = 1 := by
   have h6 : ∀ x y, trPair R i 1 x y = ⟪x, y⟫_ℂ := hTL.2.2.2.2.2
@@ -94,7 +94,7 @@ theorem bop_one {R : RealDat D A Ks} {i : Fin D.R.m} (hTL : TransLaws R i) : Eu.
   rfl
 
 /- English proof (translation)
-Unfold `Eu.Bop`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bop_norm (R : RealDat D A Ks) (i : Fin D.R.m) (γ : GA D (Wc D i)) : ‖Eu.Bop R i γ‖ ≤ 1 := by
   unfold Eu.Bop
@@ -103,7 +103,7 @@ theorem bop_norm (R : RealDat D A Ks) (i : Fin D.R.m) (γ : GA D (Wc D i)) : ‖
   · simp
 
 /- English proof (translation)
-Establish `h` using `Quotient.mk_out (s := (QuotientGroup.leftRel (levW R i)).comap (Subtype.val : Eu.locSet R i v → GA D (Wc D i))) ⟨1, Eu.one_mem_locSet R i v⟩`. Rewrite `h` using `[Setoid.comap_rel, QuotientGroup.leftRel_apply]`. Establish `h2` using `h`. Establish `h3` using `(levW R i).inv_mem h2`. Simplify `h3` using `[Eu.rep, Eu.lx0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trivial_level_coset_representative_mem_level (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     Eu.rep (Eu.lx0 R i v) ∈ levW R i := by
@@ -115,7 +115,7 @@ theorem trivial_level_coset_representative_mem_level (R : RealDat D A Ks) (i : F
   simpa [Eu.rep, Eu.lx0] using h3
 
 /- English proof (translation)
-Unfold `Eu.acoef`. Use `Model.coef_mul_lev R i t hLF μ 𝓕 1 _ (trivial_level_coset_representative_mem_level R i v)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[this, Model.coef_one R i t hVN μ 𝓕 hμ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_coefficient_trivial_level_coset {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} (hLF : LevFix R i t) (hVN : VecNe R i t) {μ 𝓕}
     (hμ : IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕) (v : HeightOneSpectrum (𝓞 D.host.F)) :
@@ -126,7 +126,7 @@ theorem local_coefficient_trivial_level_coset {R : RealDat D A Ks} {i : Fin D.R.
   rw [this, Model.coef_one R i t hVN μ 𝓕 hμ]
 
 /- English proof (translation)
-Unfold `Eu.famProd`. Establish `hf : {w | Eu.lx0 R i w ≠ Eu.lx0 R i w}.Finite` using `by simp`. Rewrite using `[dif_pos hf]`. Establish `: hf.toFinset = ∅` using `by simp`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

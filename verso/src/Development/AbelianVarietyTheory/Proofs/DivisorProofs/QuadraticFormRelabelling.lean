@@ -9,7 +9,7 @@ namespace GlobalTheory.RelabDR
 variable {D : D7} (O : Setup D)
 
 /- English proof (translation)
-Establish `hnd` using `GlobalTheory.Proof.LetterConjugation.nodup_letters O.S.Dw`. Establish `h1 : Function.Bijective (letters O.S.Dw).get` using `⟨List.nodup_iff_injective_get.1 hnd, fun x => List.get_of_mem (GlobalTheory.Proof.LetterConjugation.mem_letters O.S.Dw x)⟩`. Conclude with `h1.comp (finCongr (GlobalTheory.ShFam.Pad.length_letters O.S).symm).bijective`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wholeL_bijective_sqs : Function.Bijective (wholeL O) := by
   have hnd := GlobalTheory.Proof.LetterConjugation.nodup_letters O.S.Dw
@@ -18,7 +18,7 @@ theorem wholeL_bijective_sqs : Function.Bijective (wholeL O) := by
   exact h1.comp (finCongr (GlobalTheory.ShFam.Pad.length_letters O.S).symm).bijective
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨GlobalTheory.ShFam.Pad.LieGen.rootLetter_injective O.S, (Fintype.card_of_bijective (GlobalTheory.ShFam.Pad.LieGen.rootIdx_bijective O.S)).trans (Fintype.card_of_bijective (wholeL_bijective_sqs O))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rootL_bijective_sqs : Function.Bijective (rootL O) := by
   rw [Fintype.bijective_iff_injective_and_card]
@@ -27,7 +27,7 @@ theorem rootL_bijective_sqs : Function.Bijective (rootL O) := by
       (Fintype.card_of_bijective (wholeL_bijective_sqs O))⟩
 
 /- English proof (translation)
-Break down `i with x | k | k` into its components or cases. Apply the tactic sequence `simp only [sg, rootSg]; split_ifs <;> norm_num`. Simplify using `[sg]`. Simplify using `[sg]`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sg_sq_real (i : GlobalTheory.EigWhole.Var O) : ((sg O i : ℝ)) ^ 2 = 1 := by
   rcases i with x | k | k
@@ -36,11 +36,11 @@ theorem sg_sq_real (i : GlobalTheory.EigWhole.Var O) : ((sg O i : ℝ)) ^ 2 = 1 
   · simp [sg]
 
 /- English proof (translation)
-Introduce `D O`. Establish `hsq : ∀ i, (C (GlobalTheory.RelabDR.sg O i : ℝ) * X (GlobalTheory.RelabDR.ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2 = X (GlobalTheory.RelabDR.ix O i) ^ 2`. Introduce `i`. Rewrite using `[mul_pow, ← C_pow, GlobalTheory.RelabDR.sg_sq_real, C_1, one_mul]`. Simplify using `only [map_sub, map_mul, map_sum, map_pow, aeval_X, aeval_C, hsq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hW : ∑ k, (X (Sum.inr (GlobalTheory.RelabDR.wholeL O k)) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2 = ∑ z, X (Sum.inr z) ^ 2` using `Fintype.sum_bijective _ (GlobalTheory.RelabDR.wholeL_bijective_sqs O) _ _ (fun _ => rfl)`. Establish `hR : ∑ x, (X (Sum.inl (GlobalTheory.RelabDR.rootL O x)) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2 = ∑ z, X (Sum.inl z) ^ 2` using `Fintype.sum_bijective _ (GlobalTheory.RelabDR.rootL_bijective_sqs O) _ _ (fun _ => rfl)`. Establish `hRev : ∑ k : Fin (D.R.f * O.N), (X (Sum.inr (GlobalTheory.RelabDR.wholeL O (Fin.rev k))) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2 = ∑ k, X (Sum.inr (GlobalTheory.RelabDR.wholeL O k)) ^ 2` using `Equiv.sum_comp Fin.revPerm (fun k => (X (Sum.inr (GlobalTheory.RelabDR.wholeL O k)) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2)`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [GlobalTheory.RelabDR.ix]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (C (1/2 : ℝ) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) * 2 = 1`. Rewrite using `[show (2 : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) = C 2 from (map_ofNat C 2).symm, ← C_mul]`. Evaluate the numerical expressions. Rewrite using `[hRev, hW, hR, algebraMap_eq, ← two_mul, ← mul_assoc, h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_halfWholeSq_sub_rootSq : ∀ (D : D7) (O : Setup D), aeval (fun i => (C (GlobalTheory.RelabDR.sg O i : ℝ) * X (GlobalTheory.RelabDR.ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) (C (1 / 2 : ℝ) * ∑ l, X (Sum.inr l) ^ 2 - ∑ x, X (Sum.inl x) ^ 2 : MvPolynomial (GlobalTheory.EigWhole.Var O) ℝ) = ∑ z, X (Sum.inr z) ^ 2 - ∑ z, X (Sum.inl z) ^ 2 := by
   intro D O

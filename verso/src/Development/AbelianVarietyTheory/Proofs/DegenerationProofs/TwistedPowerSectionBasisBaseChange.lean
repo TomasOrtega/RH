@@ -21,17 +21,17 @@ variable {R R' M M' : Type} [CommRing R] [CommRing R'] [AddCommGroup M] [Module 
   [Module R' M']
 
 /- English proof (translation)
-Use `choose u hu _ using fun i => hb (β i)`. Use `choose w hw _ using fun j => hβ (b j)`. Establish `huw : ∀ i i', ∑ j, u i j * w j i' = if i = i' then 1 else 0` using `fun i => by`. Establish `h1 : β i = ∑ i', (∑ j, u i j * w j i') • β i'` using `by conv_lhs => rw [hu i]`. Simplify using `only [Finset.sum_smul, mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← Finset.smul_sum, ← hw j]`. Establish `h2 : β i = ∑ i', (if i = i' then (1 : R) else 0) • β i'` using `by simp`. Conclude with `congrFun ((hβ (β i)).unique h1 h2)`. Establish `fβ : ∀ a : I → R', ∑ i, a i • f (β i) = ∑ j, (∑ i, a i * φ (u i j)) • f (b j)` using `fun a => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, hu i, map_sum]`. Simplify using `only [map_smulₛₗ, ← hu i]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `fb : ∀ c : J → R', ∑ j, c j • f (b j) = ∑ i, (∑ j, c j * φ (w j i)) • f (β i)` using `fun c => by`. Simplify using `only [Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, hw j, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smulₛₗ, ← hw j]`. Establish `back : ∀ (a : I → R') i', ∑ j, (∑ i, a i * φ (u i j)) * φ (w j i') = a i'` using `fun a i' => by`. Simplify using `only [Finset.sum_mul, _root_.mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, ← map_sum, huw]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[apply_ite φ]`. Take `⟨c, hc, hcu⟩` from `hf s`. Use `⟨_, hc.trans (fb c), fun a ha => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcu _ (ha.trans (fβ a)), back]`.
+A detailed English derivation is pending.
 -/
 theorem basis_map_of_basis {φ : R →+* R'} (f : M →ₛₗ[φ] M') {I J : Type} [Fintype I] [Fintype J]
     (b : J → M) (β : I → M) (hb : ∀ s, ∃! a : J → R, s = ∑ j, a j • b j)
@@ -72,7 +72,7 @@ theorem basis_map_of_basis {φ : R →+* R'} (f : M →ₛₗ[φ] M') {I J : Typ
 end Algebra
 
 /- English proof (translation)
-Establish `e : ∀ l, chartFun p H l (∑ i, a i • s i) = ∑ i, a i • chartFun p H l (s i)` using `fun l => (map_sum (chartLin p H l) _ _).trans rfl`. Conclude with `⟨fun h => SecOver.ext _ _ fun l => (h l).trans (e l).symm, fun h l => (congrArg (chartFun p H l) h).trans (e l)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isLin_iff {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Sp R) {H : LB Y} {I : Type} [Fintype I]
     (s : I → SecOver p H) (a : I → R) (t : SecOver p H) : IsLin p s a t ↔ t = ∑ i, a i • s i := by
@@ -81,23 +81,21 @@ theorem isLin_iff {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Sp R) {H :
   exact ⟨fun h => SecOver.ext _ _ fun l => (h l).trans (e l).symm, fun h l => (congrArg (chartFun p H l) h).trans (e l)⟩
 
 /- English proof (translation)
-Set `T : Over (Sp R)` to `Over.mk (spMap φ)`. Set `p : (T ⊗ A).left ⟶ Sp R'` to `(fst T A).left`. Set `q : (T ⊗ A).left ⟶ A.left` to `(snd T A).left`. Establish `H' : IsPullback q p A.hom (spMap φ)` using `(IsPullback.of_hasPullback (spMap φ) A.hom).flip`. Set `e` to `H.isoIsPullback _ _ H'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e1 : e.hom ≫ q = π` using `H.isoIsPullback_hom_fst _ _ H'`. Establish `e2 : e.hom ≫ p = pB ≫ Spec.map (CommRingCat.ofHom (RingHom.id R'))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]`. Conclude with `H.isoIsPullback_hom_snd _ _ H'`. Establish `e3 : e.inv ≫ π = q` using `H.isoIsPullback_inv_fst _ _ H'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : e.inv ≫ pB = p ≫ Spec.map (CommRingCat.ofHom (RingHom.id R'))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]`. Conclude with `H.isoIsPullback_inv_snd _ _ H'`. Establish `f1 : ∀ k, ψ' k = e.hom ≫ (q ≫ ψ k)` using `fun k => by rw [hψ, ← e1, Category.assoc]`. Establish `f2 : ∀ k, q ≫ ψ k = e.inv ≫ ψ' k` using `fun k => by rw [hψ, ← e3, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F` to `pullOver L ε e2 (φ := fun k => q ≫ ψ k) f1`. Set `G` to `pullOver L ε e4 (φ' := fun k => q ≫ ψ k) f2`. Set `b' : Fin m → SecOver p (LB.LinComb L (fun k => q ≫ ψ k) ε)` to `fun i => DVR.pullSec L ψ ε (b i) q`. Establish `FG : ∀ t, F (G t) = t` using `fun t => sec_ext' hL fun y J hJ => by`. Rewrite using `[sval_pullOver e2 f1 _ _ hJ, sval_pullOver e4 f2 _ _ hJ, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `GF : ∀ t, G (F t) = t` using `fun t => sec_ext' hL fun y J hJ => by`. Rewrite using `[sval_pullOver e4 f2 _ _ hJ, sval_pullOver e2 f1 _ _ hJ, Category.assoc, e.inv_hom_id, Category.comp_id]`. Establish `Fb : ∀ i, F (b' i) = pullOver L ε H.w hψ (b i)` using `fun i => sec_ext' hL fun y J hJ => by`. Rewrite using `[sval_pullOver e2 f1 _ _ hJ, sval_pullOver H.w hψ _ _ hJ]`. Conclude with `(DVR.SectionScalarValuation.sval_pullSec _ _ _ _ _ y hJ).trans (by rw [Category.assoc, e1])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb' : ∀ t : SecOver p (LB.LinComb L (fun k => q ≫ ψ k) ε), ∃! a : Fin m → R', t = ∑ i, a i • b' i`. Introduce `t`. Take `⟨r, hr, hu⟩` from `hb t`. Establish `e : ∀ i, (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of R')).hom.hom (r i)) = r i` using `fun i => Iso.hom_inv_id_apply _ _`. Use `⟨fun i => (Scheme.ΓSpecIso (CommRingCat.of R')).hom.hom (r i), (isLin_iff p _ _ _).1 fun j => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `(hr j).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [constFn, e]`. Both sides reduce to the same expression. Use `hu (fun i => (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom (a i)) ((isLin_iff p _ _ _).2 ha)` as an intermediate fact. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `(Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of R')) (a i)).symm`. Establish `Fs : ∀ a : Fin m → R', F (∑ i, a i • b' i) = ∑ i, a i • pullOver L ε H.w hψ (b i)` using `fun a => by`. Simplify using `only [map_sum, map_smulₛₗ, Fb, RingHom.id_apply]`. Take `⟨a, ha, hu⟩` from `hb' (G s)`.
-
-Use `⟨a, ?_, fun a' ha' => hu a' ?_⟩` and prove the remaining obligations. Use `show s = _`. Rewrite using `[← Fs, ← ha, FG]`. Use `show G s = _`. Rewrite using `[ha', ← Fs, GF]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_of_isPullback {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {A : Over (Sp R)}
     {L : LB A.left} (hL : L.IsLB) {K : Type} [Fintype K] (ψ : K → (A.left ⟶ A.left)) (ε : K → ℤ) {m : ℕ}
@@ -154,13 +152,13 @@ theorem basis_of_isPullback {R R' : Type} [CommRing R] [CommRing R'] (φ : R →
     rw [ha', ← Fs, GF]
 
 /- English proof (translation)
-Introduce `hT R _ _ _ _ D N hN α R' _ φ B pB π H I _ β hβ s`. Establish `hL` using `D.P.isLB`. Take `⟨m, b, -, hb⟩` from `hT R D N hN α`. Establish `H₀ : IsPullback (𝟙 D.P.A.left) D.P.A.hom D.P.A.hom (spMap (RingHom.id R))`. Establish `: spMap (RingHom.id R) = 𝟙 _` using `by simp [spMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `IsPullback.id_horiz _`. Establish `hψ₀ : ∀ k, D.famφB α k = 𝟙 _ ≫ D.famφB α k` using `fun k => (Category.id_comp _).symm`. Establish `h0` using `basis_of_isPullback (RingHom.id R) hL (D.famφB α) (DegPre.famε N) b (hb R (RingHom.id R) _ fun _ _ => rfl) H₀ hψ₀`. Establish `e0 : ∀ i, pullOver D.P.L (DegPre.famε N) H₀.w hψ₀ (b i) = b i` using `fun i => sec_ext' hL fun y J hJ => (sval_pullOver H₀.w hψ₀ _ _ hJ).trans (by rw [Category.comp_id])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e0] at h0`. Establish `hψ : ∀ k, (fun i => π ≫ D.famφB α i) k = π ≫ D.famφB α k` using `fun _ => rfl`. Establish `h1` using `basis_of_isPullback φ hL (D.famφB α) (DegPre.famε N) b (hb R' φ _ fun _ _ => rfl) H hψ`. Establish `h2` using `basis_map_of_basis (pullOver D.P.L (DegPre.famε N) H.w hψ) b β h0 (fun t => (existsUnique_congr fun a => isLin_iff D.P.A.hom β a t).1 (hβ t)) h1 s`. Establish `e1 : ∀ i, pullOver D.P.L (DegPre.famε N) H.w hψ (β i) = DVR.pullSec D.P.L (D.famφB α) (DegPre.famε N) (β i) π` using `fun i => sec_ext' hL fun y J hJ => (sval_pullOver H.w hψ _ _ hJ).trans (DVR.SectionScalarValuation.sval_pullSec _ _ _ _ _ y hJ).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1] at h2`. Conclude with `(existsUnique_congr fun a => isLin_iff pB _ a s).2 h2`.
+A detailed English derivation is pending.
 -/
 theorem basis_pullback : DVR.TwistBaseChangeStatement → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D : DegPre R) (N : ℕ), 1 ≤ N → ∀ (α : D.X) (R' : Type) [CommRing R'] (φ : R →+* R') (B : Scheme.{0}) (pB : B ⟶ Sp R') (π : B ⟶ D.P.A.left), IsPullback π pB D.P.A.hom (spMap φ) → ∀ (I : Type) [Fintype I] (β : I → D.SecB N α), IsBasisB D β → ∀ b : LB.Sec (LB.LinComb D.P.L (fun i => π ≫ D.famφB α i) (DegPre.famε N)), ∃! a : I → R', IsLin pB (fun i => DVR.pullSec D.P.L (D.famφB α) (DegPre.famε N) (β i) π) a b := by
   intro hT R _ _ _ _ D N hN α R' _ φ B pB π H I _ β hβ s

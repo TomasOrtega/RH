@@ -2,6 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.MultiplicityOneBase.ArchimedeanBaseChangeFirst
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.Bc.ArchbcB.B.m1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.matchUnit : UpperTheory.V.Z.Tf.GlobalTraceComparison.MatchUnit := PositivityTheory.Rg.Bc.ArchbcB.B.m1

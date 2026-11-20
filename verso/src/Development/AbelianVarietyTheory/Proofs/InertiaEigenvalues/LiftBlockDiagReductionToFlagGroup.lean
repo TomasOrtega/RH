@@ -18,15 +18,15 @@ section Mat
 variable {k : Type} [CommRing k] {n r t : ℕ}
 
 /- English proof (translation)
-Simplify using `[rowIx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowIx_inl (h : r + t = n) (j : Fin r) : ((rowIx h) (Sum.inl j)).val = j.val := by
   simp [rowIx]
 
 /- English proof (translation)
-Break down `hx : (rowIx h).symm a with j | j` into its components or cases. It suffices to derive a contradiction. Establish `: a = rowIx h (Sum.inl j)` using `by rw [← hx, Equiv.apply_symm_apply]`. Establish `h2` using `rowIx_inl h j`. Rewrite `h2` using `[← this]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨j, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 theorem symm_lower (h : r + t = n) {a : Fin n} (ha : r ≤ a.val) : ∃ j, (rowIx h).symm a = Sum.inr j := by
   rcases hx : (rowIx h).symm a with j | j
@@ -38,7 +38,7 @@ theorem symm_lower (h : r + t = n) {a : Fin n} (ha : r ≤ a.val) : ∃ j, (rowI
   · exact ⟨j, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Rewrite using `[rowIx_inl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem symm_castLE (h : r + t = n) (hr : r ≤ n) (a : Fin r) : (rowIx h).symm (Fin.castLE hr a) = Sum.inl a := by
   rw [Equiv.symm_apply_eq]
@@ -47,9 +47,9 @@ theorem symm_castLE (h : r + t = n) (hr : r ≤ n) (a : Fin r) : (rowIx h).symm 
   rfl
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `symm_lower h ha`. Rewrite using `[Matrix.submatrix_apply, hj]`. Establish `e1 : (1 : Matrix (Fin n) (Fin n) k) a b = (1 : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k) ((rowIx h).symm a) ((rowIx h).symm b)`. Simplify using `only [Matrix.one_apply, (rowIx h).symm.injective.eq_iff]`. Rewrite using `[e1, hj]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `(rowIx h).symm b with j' | j'` into its components or cases. Simplify using `[Matrix.fromBlocks_apply₂₁, Matrix.one_apply]`. Simplify using `[Matrix.fromBlocks_apply₂₂, Matrix.one_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lower_row (h : r + t = n) (A : Matrix (Fin r) (Fin r) k) {a : Fin n} (ha : r ≤ a.val) (b : Fin n) :
     ((Matrix.fromBlocks A 0 0 (1 : Matrix (Fin t) (Fin t) k)).submatrix (rowIx h).symm (rowIx h).symm) a b =
@@ -65,9 +65,9 @@ theorem lower_row (h : r + t = n) (A : Matrix (Fin r) (Fin r) k) {a : Fin n} (ha
   · simp [Matrix.fromBlocks_apply₂₂, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hi : r ≤ i.val`. Assume the negation of the conclusion as `hc`. Rewrite `hij` using `[hb i (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `show (g : Matrix (Fin n) (Fin n) k) i j = 0`. Rewrite using `[hg, lower_row h A hi, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_blockTri_diag (h : r + t = n) (A : Matrix (Fin r) (Fin r) k) {b : Fin n → ℕ}
     (hb : ∀ a : Fin n, a.val < r → b a = 0) (g : GL (Fin n) k)
@@ -85,9 +85,9 @@ theorem mem_blockTri_diag (h : r + t = n) (A : Matrix (Fin r) (Fin r) k) {b : Fi
   exact lt_irrefl _ hij
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[diag_block_det_val c (mem_blockTri_diag h A hb g hg), Units.val_one]`. Establish `: (g : Matrix (Fin n) (Fin n) k).submatrix (Subtype.val : {a : Fin n // b a = c} → Fin n) (Subtype.val : {a : Fin n // b a = c} → Fin n) = 1`. Use extensionality with `x y`. Establish `hx : r ≤ x.1.val`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hh`. Conclude with `hc (x.2.symm.trans (hb _ (by omega)))`. Rewrite using `[Matrix.submatrix_apply, hg, lower_row h A hx]`. Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_one]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiagonalPart_blockDiagOne_reindexed_eq_one (h : r + t = n) (A : Matrix (Fin r) (Fin r) k) {b : Fin n → ℕ}
     (hb : ∀ a : Fin n, a.val < r → b a = 0) (g : GL (Fin n) k)
@@ -106,7 +106,7 @@ theorem blockDiagonalPart_blockDiagOne_reindexed_eq_one (h : r + t = n) (A : Mat
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Establish `hb : ∀ a : Fin n, a.val < r → blk2 r a = 0` using `fun a ha => by simp [blk2, ha]`. Rewrite using `[upper_block_val_submatrix hr (mem_blockTri_diag h A hb g hg), hg]`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, symm_castLE h hr, Matrix.fromBlocks_apply₁₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem topLeftBlock_blockDiagOne_reindexed_eq (h : r + t = n) (hr : r ≤ n) (A : Matrix (Fin r) (Fin r) k) (g : GL (Fin n) k)
     (hg : (g : Matrix (Fin n) (Fin n) k) =
@@ -118,12 +118,12 @@ theorem topLeftBlock_blockDiagOne_reindexed_eq (h : r + t = n) (hr : r ≤ n) (A
   simp only [Matrix.submatrix_apply, symm_castLE h hr, Matrix.fromBlocks_apply₁₁]
 
 /- English proof (translation)
-Simplify using `[blk2, ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockIndexSecond_eq_zero_of_lt (r : ℕ) (a : Fin n) (ha : a.val < r) : blk2 r a = 0 := by simp [blk2, ha]
 
 /- English proof (translation)
-Simplify using `[blkOf, ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkOf_low (r t : ℕ) (a : Fin n) (ha : a.val < r) : blkOf r t a = 0 := by simp [blkOf, ha]
 
@@ -134,21 +134,17 @@ end GlobalTheory.LiftDiag
 namespace GlobalTheory.LiftDiag
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i t PP hPP g hg κ hκ hSt hN hoth`. Establish `memb : ∀ b : Fin (Vc D i).rank → ℕ, (∀ a : Fin (Vc D i).rank, a.val < D.R.r → b a = 0) → ∀ PP', PP' ∈ R.Pg ∨ PP' ∈ R.Q t → redFn (R.βV i) PP' (finE (Vc D i) κ) ∈ blockTri b`. Introduce `b hb PP' hP'`. Distinguish the cases in `he : PP' = PP`. Substitute `he` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `mem_blockTri_diag (rank_V i) _ hb _ hN`. Rewrite using `[hoth PP' hP' he]`. Conclude with `Subgroup.one_mem _`. Establish `dB : ∀ b : Fin (Vc D i).rank → ℕ, (∀ a : Fin (Vc D i).rank, a.val < D.R.r → b a = 0) → ∀ c : ℕ, c ≠ 0 → ∀ PP', PP' ∈ R.Pg ∨ PP' ∈ R.Q t → dBlk b c (redFn (R.βV i) PP' (finE (Vc D i) κ)) = 1`. Introduce `b hb c hc PP' hP'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `he : PP' = PP`. Substitute `he` using the available equality. Conclude with `blockDiagonalPart_blockDiagOne_reindexed_eq_one (rank_V i) _ hb _ hN hc`. Rewrite using `[hoth PP' hP' he]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨hκ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `mem_parLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA _ κ, hSt, fun PP' hP' => memb _ (blkOf_low _ _) PP' (Or.inl hP'), fun PP' hP' => memb _ (blockIndexSecond_eq_zero_of_lt _) PP' (Or.inr hP')⟩`. Use function extensionality and compare the values at `PP'`. Take `⟨PP', hP'⟩` from `PP'`. Use `show upperLeftBlock _ (redFn (R.βV i) PP' (finE (Vc D i) κ)) = R.eG g ⟨PP', hP'⟩`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `he : PP' = PP`. Substitute `he` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Conclude with `topLeftBlock_blockDiagOne_reindexed_eq (rank_V i) _ _ _ hN`. Rewrite using `[hoth PP' (Or.inl hP') he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : upperLeftBlock (r_le_V i) (1 : GL (Fin (Vc D i).rank) (kP PP')) = 1` using `blockDiagonalExtendByOnePrimeField_one _ _`. Establish `h2 : R.eG g ⟨PP', hP'⟩ = 1` using `hg ⟨PP', hP'⟩ (fun h => he (congrArg Subtype.val h))`. Rewrite using `[h2]`. Conclude with `h1`. Establish `key : levFn (R.βV i) (flagL (R.datVt i t)) (finE (Vc D i) κ) = 1`.
-
-Unfold `levFn`. Rewrite using `[Finset.prod_eq_one, Finset.prod_eq_one, mul_one, mul_one]`. Conclude with `(extendOne_of_mem _ (Subgroup.mem_top _)).trans rfl`. Introduce `PP' hP'`. Conclude with `(congrArg _ (dB _ (blockIndexSecond_eq_zero_of_lt _) 1 one_ne_zero PP' (Or.inr hP'))).trans (map_one _)`.
-
-Introduce `PP' hP'`. Conclude with `Finset.prod_eq_one fun c _ => (congrArg _ (dB _ (blkOf_low _ _) (c + 1) (Nat.succ_ne_zero c) PP' (Or.inl hP'))).trans (map_one _)`. Use `show ((levFn (R.βV i) (flagL (R.datVt i t)) (finE (Vc D i) κ) : ℂˣ) : ℂ) = 1`. Rewrite using `[key, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_diag : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ (i : Fin D.R.m) (t : T) (PP : Pl D.host.E) (hPP : PP ∈ R.Pg) (g : G), (∀ PP' : R.Pg, PP' ≠ ⟨PP, hPP⟩ → R.eG g PP' = 1) → ∀ κ : GA D (Vc D i), κ ∈ GfC (Vc D i) → finE (Vc D i) κ ∈ Formalism.L2.DIV.St (R.βV i) → ((redFn (R.βV i) PP (finE (Vc D i) κ) : GL (Fin (Vc D i).rank) (kP PP)) : Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) (kP PP)) = (Matrix.fromBlocks ((R.eG g ⟨PP, hPP⟩ : GL (Fin D.R.r) (kP PP)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP)) 0 0 (1 : Matrix (Fin D.R.t) (Fin D.R.t) (kP PP))).submatrix (rowIx (rank_V i)).symm (rowIx (rank_V i)).symm → (∀ PP', PP' ∈ R.Pg ∨ PP' ∈ R.Q t → PP' ≠ PP → redFn (R.βV i) PP' (finE (Vc D i) κ) = 1) → IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ ∧ levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ = 1 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i t PP hPP g hg κ hκ hSt hN hoth

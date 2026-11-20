@@ -45,17 +45,17 @@ private def slashEquiv (N : ℕ) (x : ZMod N) (a b c d : ℤ) (hdet : a * d - b 
       linear_combination n * hdet
 
 /- English proof (translation)
-Introduce `N k _ _ a γ hγ`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((γ 1 0 : ℤ) : ZMod N) = 0` using `Gamma0_mem.mp hγ`. Use extensionality with `z`. Rewrite using `[ModularForm.SL_slash_apply]`. Establish `hden : denom (Matrix.SpecialLinearGroup.toGL ((Matrix.SpecialLinearGroup.map (Int.castRingHom ℝ)) γ)) (z : ℂ) = (γ 1 0 : ℂ) * z + (γ 1 1 : ℂ)`. Simplify using `[denom]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsm : ((γ • z : ℍ) : ℂ) = ((γ 0 0 : ℂ) * z + (γ 0 1 : ℂ)) / ((γ 1 0 : ℂ) * z + (γ 1 1 : ℂ))`. Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`. Simplify using the standard rewrite rules. Establish `hne : (γ 1 0 : ℂ) * z + (γ 1 1 : ℂ) ≠ 0`. Rewrite using `[← hden]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `denom_ne_zero _ z`. Establish `key : ((γ 0 0 : ℂ) * z + (γ 0 1 : ℂ)) / ((γ 1 0 : ℂ) * z + (γ 1 1 : ℂ)) * ((γ 1 0 : ℂ) * z + (γ 1 1 : ℂ)) = (γ 0 0 : ℂ) * z + (γ 0 1 : ℂ)` using `div_mul_cancel₀ _ hne`. Rewrite using `[hden]`. Unfold `eisFun`. Rewrite using `[hsm, mul_assoc, ← tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← (slashEquiv N a (γ 0 0) (γ 0 1) (γ 1 0) (γ 1 1) hdet hc).tsum_eq]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[← mul_zpow]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [slashEquiv, Equiv.coe_fn_mk]`. Use `push_cast`. Take the linear combination `((v : ℤ × ℤ).1 : ℂ) * key`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eisSlash : EisSlash := by
   intro N k _ _ a γ hγ

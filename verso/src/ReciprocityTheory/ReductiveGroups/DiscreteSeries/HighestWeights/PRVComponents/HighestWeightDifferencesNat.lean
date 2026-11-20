@@ -17,9 +17,9 @@ variable {M : Type*} [AddCommGroup M] [Module ℂ M] {ε : Fin n → Bool}
   {F : Fin n → Fin n → Module.End ℂ M}
 
 /- English proof (translation)
-Establish `h` using `hF a b b a he he.symm`. Rewrite `h` using `[if_pos rfl, if_pos rfl]`. Establish `h2` using `congrArg (fun T : Module.End ℂ M => T y) h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h2`. Rewrite `h2` using `[sub_eq_iff_eq_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma lie_relation_raise_lower (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (he : ε a = ε b) (y : M) :
     F a b (F b a y) = F b a (F a b y) + F a a y - F b b y := by
@@ -32,9 +32,9 @@ lemma lie_relation_raise_lower (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (he
   abel
 
 /- English proof (translation)
-Establish `h` using `hF a a b a rfl he.symm`. Rewrite `h` using `[if_neg hab, if_pos rfl, zero_sub]`. Establish `h2` using `congrArg (fun T : Module.End ℂ M => T y) h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.neg_apply] at h2`. Rewrite `h2` using `[sub_eq_iff_eq_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma lie_relation_diag_a_lower (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (hab : a ≠ b) (he : ε a = ε b) (y : M) :
     F a a (F b a y) = F b a (F a a y) - F b a y := by
@@ -47,9 +47,9 @@ lemma lie_relation_diag_a_lower (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (h
   abel
 
 /- English proof (translation)
-Establish `h` using `hF b b b a rfl he.symm`. Rewrite `h` using `[if_pos rfl, if_neg hab, sub_zero]`. Establish `h2` using `congrArg (fun T : Module.End ℂ M => T y) h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h2`. Rewrite `h2` using `[sub_eq_iff_eq_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma lie_relation_diag_b_lower (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (hab : a ≠ b) (he : ε a = ε b) (y : M) :
     F b b (F b a y) = F b a (F b b y) + F b a y := by
@@ -62,33 +62,29 @@ lemma lie_relation_diag_b_lower (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (h
   abel
 
 /- English proof (translation)
-Set `vk : ℕ → M` to `fun k => (F b a ^ k) v`. Establish `hvk0 : vk 0 = v` using `by simp [vk]`. Establish `hvk : ∀ k, vk (k + 1) = F b a (vk k)` using `fun k => by`. Simplify using `only [vk, pow_succ', Module.End.mul_apply]`. Establish `hmem : ∀ k, vk k ∈ S`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hvk0]`. Conclude with `hv`. Consider the case `succ k ih => rw [hvk]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hS _ ih`. Establish `hwa : ∀ k : ℕ, F a a (vk k) = (la - k) • vk k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hvk0, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[hvk, lie_relation_diag_a_lower hF hab he, ih, map_smul]`. Use `push_cast`. Use `module`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hwb : ∀ k : ℕ, F b b (vk k) = (lb + k) • vk k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hvk0, hb]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Consider the case `succ k ih`. Rewrite using `[hvk, lie_relation_diag_b_lower hF hab he, ih, map_smul]`. Use `push_cast`. Use `module`. Establish `hE : ∀ k : ℕ, F a b (vk (k + 1)) = (((k : ℂ) + 1) * (la - lb - k)) • vk k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[hvk, hvk0, lie_relation_raise_lower hF he, h0, map_zero, ha, hb]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `module`. Consider the case `succ k ih`. Rewrite using `[hvk (k + 1), lie_relation_raise_lower hF he, ih, map_smul, ← hvk, hwa, hwb]`. Use `push_cast`. Use `module`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hex : ∃ k, vk k = 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hli : LinearIndependent ℂ vk` using `Module.End.eigenvectors_linearIndependent' (F a a) (fun k : ℕ => la - k) (by`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (i : ℂ) = j` using `sub_right_inj.1 hij`. Conclude with `h1)` after adjusting the coercions. Use `vk (fun k => Module.End.hasEigenvector_iff.2 ⟨Module.End.mem_eigenspace_iff.2 (hwa k), hcon k⟩)`. Set `vs : ℕ → S` to `fun k => ⟨vk k, hmem k⟩`. Establish `hls : LinearIndependent ℂ vs` using `LinearIndependent.of_comp S.subtype hli`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Module.Finite.not_linearIndependent_of_infinite vs hls`. Establish `hk0 : vk (Nat.find hex) = 0` using `Nat.find_spec hex`. Establish `hpos : Nat.find hex ≠ 0`. Introduce `h`. Rewrite `hk0` using `[h, hvk0]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hv0 hk0`. Take `⟨m, hm⟩ : ∃ m, Nat.find hex = m + 1` from `⟨Nat.find hex - 1, by omega⟩`. Establish `hvm : vk m ≠ 0` using `Nat.find_min hex (by omega)`. Establish `h1` using `hE m`. Rewrite `h1` using `[← hm, hk0, map_zero]`.
-
-Establish `hcoef : ((m : ℂ) + 1) * (la - lb - m) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hvm ((smul_eq_zero.1 h1.symm).resolve_left hne)`. Establish `hm1 : (m : ℂ) + 1 ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero m`. Use `⟨m, ?_⟩` and prove the remaining obligations.
-
-Establish `h2` using `(mul_eq_zero.1 hcoef).resolve_left hm1`. Take the linear combination `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_weight_sub_eq_of_highest_vector_in_stable (hF : Formalism.REAL.KRel ε F) {a b : Fin n} (hab : a ≠ b) (he : ε a = ε b)
     (S : Submodule ℂ M) [FiniteDimensional ℂ S] (hS : ∀ y ∈ S, F b a y ∈ S)
@@ -162,9 +158,9 @@ theorem exists_nat_weight_sub_eq_of_highest_vector_in_stable (hF : Formalism.REA
   linear_combination h2
 
 /- English proof (translation)
-Introduce `a b hab he`. Take `⟨m, hm⟩` from `exists_nat_weight_sub_eq_of_highest_vector_in_stable hF (ne_of_lt hab) he S (fun y hy => hS b a he.symm y hy) hv hv0 (hw.1 a) (hw.1 b) (hw.2 a b hab he)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem highest_weight_differences_nat (hF : Formalism.REAL.KRel ε F) (S : Submodule ℂ M) [FiniteDimensional ℂ S]
     (hS : IsKStableSub ε F S) {μ : Fin n → ℝ} {v : M} (hv : v ∈ S) (hv0 : v ≠ 0)
@@ -180,9 +176,9 @@ theorem highest_weight_differences_nat (hF : Formalism.REAL.KRel ε F) (S : Subm
 end SL2
 
 /- English proof (translation)
-Introduce `a b hab he`. Establish `hR : Formalism.REAL.KRel ε (fun a b => Matrix.toLinAlgEquiv' (G a b))` using `uq_kRel_map ε G (Matrix.toLinAlgEquiv' : Matrix ι ι ℂ ≃ₐ[ℂ] _).toRingEquiv.toRingHom hG`. Establish `happ : ∀ a b (x : ι → ℂ), Matrix.toLinAlgEquiv' (G a b) x = G a b *ᵥ x` using `fun a b x => rfl`. Take `⟨m, hm⟩` from `exists_nat_weight_sub_eq_of_highest_vector_in_stable hR (ne_of_lt hab).symm he.symm (⊤ : Submodule ℂ (ι → ℂ)) (fun _ _ => Submodule.mem_top) Submodule.mem_top hf0 (la := ((ν b : ℝ) : ℂ)) (lb := ((ν a : ℝ) : ℂ)) (by rw [happ]; exact hfw b) (by rw [happ]; exact hfw a) (by rw [happ] …`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Conclude with `hm`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem lowest_weight_differences_nat {ε : Fin n → Bool} {ι : Type*} [Fintype ι] [DecidableEq ι]
     {G : Fin n → Fin n → Matrix ι ι ℂ} (hG : Formalism.REAL.KRel ε G) {ν : Fin n → ℝ} {f : ι → ℂ} (hf0 : f ≠ 0)
@@ -201,11 +197,11 @@ theorem lowest_weight_differences_nat {ε : Fin n → Bool} {ι : Type*} [Fintyp
   exact hm
 
 /- English proof (translation)
-Establish `key : ∀ a b, a < b → ε a = ε b → ∃ z : ℤ, (Λ + ν) a - (Λ + ν) b = z`. Introduce `a b hab he`. Take `⟨m1, h1⟩` from `highest_weight_differences_nat hF S hS hv hv0 hw a b hab he`. Take `⟨m2, h2⟩` from `lowest_weight_differences_nat hG hf0 hfw hfl a b hab he`. Use `⟨(m1 : ℤ) - m2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b he`. Break down `lt_trichotomy a b with h | h | h` into its components or cases.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `key a b h he`. Substitute `h` using the available equality. Conclude with `⟨0, by simp⟩`. Take `⟨z, hz⟩` from `key b a h he.symm`. Conclude with `⟨-z, by push_cast; linarith⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem block_weights_integral {ε : Fin n → Bool} {M : Type*} [AddCommGroup M] [Module ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hF : Formalism.REAL.KRel ε F) (S : Submodule ℂ M) [FiniteDimensional ℂ S]

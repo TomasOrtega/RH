@@ -18,23 +18,21 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn ψ hψ dx hdx db hdb Φ hΦ`. Take `⟨μ₁, μ₂, c, h1, h2, s1, s2, hc, hme, hmap⟩` from `GlobalTheory.T.adelic_haar_splits_as_arch_times_finite F E σ hCM M n dx hdx.1`. Take `⟨ν₁, ν₂, c', g1, g2, t1, t2, hc', hme', hmap'⟩` from `GlobalTheory.T.hermitian_haar_splits_arch_times_finite F E σ hCM n db hdb.1`. Take `⟨k, P, Q, hP, hQ, hsum⟩` from `id hΦ`. Establish `hpureSB : ∀ i, GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (fun X : Fin n → Fin M → AF F ⊗[F] E => P i (projInf X) * Q i (projFin X))` using `fun i => GlobalTheory.Published.SiegelOneVector.isSchwartzBruhat_of_prod (hP i) (hQ i) fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfac : ∀ i (b : HermR (AF F) σ n), starN σ J ψ dx (fun X => P i (projInf X) * Q i (projFin X)) b = (c.toReal : ℂ) * (starLoc (Ainf F) σ J (psiInf F ψ) μ₁ (P i) (hermInf σ b) * starLoc (Af F) σ J (psiFin F ψ) μ₂ (Q i) (hermFin σ b))`. Introduce `i b`. Set `A : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ` to `fun x => P i x * psiInf F ψ (algebraMap F (Ainf F) (1 / 2) * Algebra.trace (Ainf F) (Ainf F ⊗[F] E) (Matrix.trace (((hermInf σ b : HermR (Ainf F) σ n) : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * gramR (Ainf F) σ J x)))`. Set `B : (Fin n → Fin M → Af F ⊗[F] E) → ℂ` to `fun y => Q i y * psiFin F ψ (algebraMap F (Af F) (1 / 2) * Algebra.trace (Af F) (Af F ⊗[F] E) (Matrix.trace (((hermFin σ b : HermR (Af F) σ n) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) * gramR (Af F) σ J y)))`. Set `G : (Fin n → Fin M → Ainf F ⊗[F] E) × (Fin n → Fin M → Af F ⊗[F] E) → ℂ` to `fun z => A z.1 * B z.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1 : starN σ J ψ dx (fun X => P i (projInf X) * Q i (projFin X)) b = ∫ X, G (projInf X, projFin X) ∂dx`. Unfold `starN`. Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `show _ * _ = G _`. Rewrite using `[GlobalTheory.T.character_trace_pairing_eq_inner_psi F E σ hCM M J n ψ b X]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [G, A, B]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `hme.integral_map (μ := dx) G`. Establish `e3 : ∫ z, G z ∂μ₁.prod μ₂ = (∫ x, A x ∂μ₁) * ∫ y, B y ∂μ₂` using `integral_prod_mul A B`. Rewrite using `[e1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `e2.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hmap, integral_smul_measure, e3, Complex.real_smul]`. Both sides reduce to the same expression. Establish `hpure : ∀ i, Integrable (starN σ J ψ dx (fun X => P i (projInf X) * Q i (projFin X))) db`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA` using `GlobalTheory.T.archimedean_siegel_weil_integral_identity F E σ hCM M J hJ n hn ψ hψ μ₁ h1 ν₁ g1 (P i) (hP i)`. Establish `hB` using `GlobalTheory.T.finite_adelic_siegel_weil_integral_identity F E σ hCM M J hJ n hn ψ hψ μ₂ h2 ν₂ g2 (Q i) (hQ i)`. Establish `hAB` using `hA.mul_prod hB`. Establish `hAB' : Integrable (fun z : HermR (Ainf F) σ n × HermR (Af F) σ n => starLoc (Ainf F) σ J (psiInf F ψ) μ₁ (P i) z.1 * starLoc (Af F) σ J (psiFin F ψ) μ₂ (Q i) z.2) (db.map (fun b => (hermInf σ b, hermFin σ b)))`. Rewrite using `[hmap']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hAB.smul_measure hc'`. Use `(hme'.integrable_map_iff.1 hAB').const_mul (c.toReal : ℂ)` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Conclude with `(hfac i b).symm`. Establish `hdec : starN σ J ψ dx Φ = fun b => ∑ i, starN σ J ψ dx (fun X => P i (projInf X) * Q i (projFin X)) b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `b`. Unfold `starN`. Rewrite using `[← integral_finset_sum _ fun i _ => GlobalTheory.T.twisted_schwartz_function_integrable F E σ hCM M J n ψ hψ dx hdx.1 _ (hpureSB i) b]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `show Φ X * _ = _`.
-
-Rewrite using `[hsum, Finset.sum_mul]`. Rewrite using `[hdec]`. Conclude with `integrable_finset_sum _ fun i _ => hpure i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_starN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

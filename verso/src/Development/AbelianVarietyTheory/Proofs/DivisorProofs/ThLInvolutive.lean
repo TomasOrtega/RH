@@ -10,9 +10,9 @@ open GlobalTheory.BCT
 namespace GlobalTheory.BCT.TwistInvol
 
 /- English proof (translation)
-Unfold `cj`. Use `split_ifs with h`. Take `⟨hc, he⟩` from `h.choose_spec`. Establish `hd : DenseRange (algebraMap E (w.adicCompletion E))` using `HeightOneSpectrum.denseRange_algebraMap E w`. Use `hd.induction_on (p := fun x => h.choose (h.choose x) = x) x (isClosed_eq (hc.comp hc) continuous_id) fun y => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, he, IsCMField.complexConj_apply_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cj_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (x : w.adicCompletion E) :
     cj w (cj w x) = x := by
@@ -26,7 +26,7 @@ theorem cj_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (x :
   · rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ n w g`. Unfold `thL`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `GlobalTheory.ThetaPull.thetaGL_thetaGL _ (cj_cj w) g`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thL_involutive : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (g : GLw n w),
     thL n w (thL n w g) = g := by

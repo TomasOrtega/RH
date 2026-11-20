@@ -13,9 +13,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.MumCmp
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D₀ D hS`. Take `⟨β, xe, hβ, hc, wΛ, hwΛ, hτ⟩` from `GlobalTheory.T.exists_iso_refinements_same_polarised R D₀.toPre D.toPre hS`. Use `haveI : IsNoetherianRing R := hR.1.1`. Take `⟨b, hb, w, hw⟩` from `GlobalTheory.T.exists_translate_of_mumfordBundle_match R D₀.toPre D.toPre β hβ ⟨wΛ, hwΛ⟩`. Take `⟨g, -, h2, ht⟩` from `GlobalTheory.T.exists_order_two_point_torus_extension_translate R hR D₀ D β xe hβ hc wΛ hwΛ hτ b hb w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, h2, ht⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_twist_of_samePol : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D₀ D : DegData R (maximalIdeal R)), SamePol D₀.toPre D.toPre → ∃ g : GtPt D.toPre (𝟙_ (Over (Sp R))), (∃ z : GtPt D.toPre (𝟙_ (Over (Sp R))), z.IsZero ∧ GtPt.IsAdd g g z) ∧ GlobalTheory.MumCmp.IsTwist D₀.toPre D.toPre g := by
   intro R _ _ _ hR D₀ D hS

@@ -17,15 +17,13 @@ section Splitting
 variable {K : Type*} [Field K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
 
 /- English proof (translation)
-Establish `hαr : ι α ∈ (algebraMap F E).fieldRange`. Distinguish the cases in `hx0 : x = 0`. Establish `ha : a = 0`. Rewrite `hx` using `[hx0, zero_pow (NeZero.ne n)]`. Conclude with `(algebraMap K F).injective (by rw [← hx, map_zero])`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hα` using `[ha, map_zero, pow_eq_zero_iff (NeZero.ne n)]`. Rewrite using `[hα, map_zero]`. Conclude with `zero_mem _`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K n`. Establish `hζ' : IsPrimitiveRoot (algebraMap K E ζ) n` using `hζ.map_of_injective (algebraMap K E).injective`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0' : algebraMap F E x ≠ 0` using `(map_ne_zero _).2 hx0`. Establish `hpow : ι α ^ n = algebraMap F E x ^ n`. Rewrite using `[← map_pow, hα, ι.commutes, ← map_pow, hx, ← IsScalarTower.algebraMap_apply]`. Establish `hroot : (ι α / algebraMap F E x) ^ n = 1`. Rewrite using `[div_pow, hpow, div_self (pow_ne_zero _ hx0')]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, -, hk⟩` from `hζ'.eq_pow_of_pow_eq_one hroot`. Use `⟨algebraMap K F ζ ^ k * x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ← IsScalarTower.algebraMap_apply, hk, div_mul_cancel₀ _ hx0']`. Set `J : IntermediateField K E` to `Subfield.toIntermediateField (algebraMap F E).fieldRange fun c ↦ ⟨algebraMap K F c, (IsScalarTower.algebraMap_apply K F E c).symm⟩`. Establish `hle : K⟮α⟯ ≤ J.comap ι` using `adjoin_simple_le_iff.2 hαr`.
-
-Rewrite `hle` using `[hgen]`. Conclude with `hle (Set.mem_univ m)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_mem_fieldRange_of_pow_eq {L F E : Type*} [Field L] [Field F] [Field E]
     [Algebra K L] [Algebra K F] [Algebra F E] [Algebra K E] [IsScalarTower K F E]
@@ -60,7 +58,7 @@ theorem algHom_mem_fieldRange_of_pow_eq {L F E : Type*} [Field L] [Field F] [Fie
 variable [NumberField K] {L : Type*} [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h`. Rewrite using `[splitsCompletely_iff_forall_finrank]`. Introduce `w`. Set `g` to `(Pi.evalAlgHom (v.adicCompletion K) _ w).comp (tensorEquiv L v).toAlgHom`. Conclude with `finrank_eq_one_of_tensor_surjective g ((Function.surjective_eval w).comp (tensorEquiv L v).surjective) fun m ↦ algHom_mem_fieldRange_of_pow_eq hα hgen ((g.restrictScalars K).comp Algebra.TensorProduct.includeRight) hx m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem splitsCompletely_of_pow_eq {a : K} {α : L} (hα : α ^ n = algebraMap K L a)
     (hgen : K⟮α⟯ = ⊤) (v : HeightOneSpectrum (𝓞 K))
@@ -82,9 +80,9 @@ section LocalNorms
 variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Use `⟨fun w ↦ Units.map (algebraMap (v.adicCompletion K) (w.1.adicCompletion L) : v.adicCompletion K →* w.1.adicCompletion L) y, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_finiteLocalNorm, Units.val_pow_eq_pow_val, ← sum_finrank_eq L v, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun w _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Units.coe_map]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.norm_algebraMap (S := w.1.adicCompletion L) (y : v.adicCompletion K)`.
+A detailed English derivation is pending.
 -/
 theorem pow_finrank_mem_range_finiteLocalNorm (v : HeightOneSpectrum (𝓞 K))
     (y : (v.adicCompletion K)ˣ) : y ^ finrank K L ∈ (finiteLocalNorm L v).range := by
@@ -98,9 +96,9 @@ theorem pow_finrank_mem_range_finiteLocalNorm (v : HeightOneSpectrum (𝓞 K))
   exact Algebra.norm_algebraMap (S := w.1.adicCompletion L) (y : v.adicCompletion K)
 
 /- English proof (translation)
-Use `⟨fun w ↦ Units.map (algebraMap v.Completion (w : InfinitePlace L).Completion : v.Completion →* (w : InfinitePlace L).Completion) y, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_infiniteLocalNorm, Units.val_pow_eq_pow_val, ← GroundTheory.Global.InfinitePlace.sum_finrank_completion (L := L) v, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun w _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Units.coe_map]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.norm_algebraMap (S := (w : InfinitePlace L).Completion) (y : v.Completion)`.
+A detailed English derivation is pending.
 -/
 theorem pow_finrank_mem_range_infiniteLocalNorm (v : InfinitePlace K) (y : (v.Completion)ˣ) :
     y ^ finrank K L ∈ (infiniteLocalNorm L v).range := by
@@ -121,9 +119,9 @@ section Main
 universe u
 
 /- English proof (translation)
-Introduce `hα`. Establish `hbot : (⊤ : IntermediateField K L) = ⊥`. Rewrite using `[← hgen]`. Conclude with `adjoin_simple_eq_bot_iff.2 hα`. Use `IntermediateField.finrank_eq_one_iff.2 hbot` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[IntermediateField.finrank_top']`. Conclude with `h1 this`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_bot_of_adjoin_eq_top {K L : Type*} [Field K] [Field L] [Algebra K L] {α : L}
     (hgen : K⟮α⟯ = ⊤) (h1 : finrank K L ≠ 1) : α ∉ (⊥ : IntermediateField K L) := by
@@ -136,35 +134,31 @@ theorem not_mem_bot_of_adjoin_eq_top {K L : Type*} [Field K] [Field L] [Algebra 
   exact h1 this
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ p hp hroots hdeg`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K p`. Establish `hK : (primitiveRoots (finrank K L) K).Nonempty` using `⟨ζ, (mem_primitiveRoots finrank_pos).2 (hdeg ▸ hζ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α, ⟨a₀, ha₀⟩, hgen⟩` from `exists_root_adjoin_eq_top_of_isCyclic K L hK`. Rewrite `ha₀` using `[hdeg]`. Establish `h1 : finrank K L ≠ 1` using `by rw [hdeg]; exact hp.ne_one`. Establish `hαK` using `not_mem_bot_of_adjoin_eq_top hgen h1`. Establish `ha₀0 : a₀ ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `ha₀` using `[map_zero, eq_comm, pow_eq_zero_iff hp.ne_zero]`. Conclude with `hαK (ha₀ ▸ zero_mem _)`. Use `set a : Kˣ := Units.mk0 a₀ ha₀0 with ha_def`. Establish `hα : α ^ p = algebraMap K L (a : K)` using `by rw [Units.val_mk0, ha₀]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hap : a ∉ unitsPow K p`. Introduce `h`. Take `⟨b, hb⟩` from `mem_unitsPow.1 h`. Establish `hb0 : algebraMap K L (b : K) ≠ 0` using `(map_ne_zero _).2 b.ne_zero`. Establish `hroot : (α / algebraMap K L (b : K)) ^ p = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_pow, hα, ← map_pow, ← Units.val_pow_eq_pow_val, hb, div_self ((map_ne_zero _).2 a.ne_zero)]`. Establish `hζ' : IsPrimitiveRoot (algebraMap K L ζ) p` using `hζ.map_of_injective (algebraMap K L).injective`. Take `⟨k, -, hk⟩` from `hζ'.eq_pow_of_pow_eq_one hroot`. Use `hαK ⟨ζ ^ k * b, ?_⟩` and prove the remaining obligations. Use `show algebraMap K L (ζ ^ k * (b : K)) = α`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, hk, div_mul_cancel₀ _ hb0]`. Take `⟨S₀, hS₀⟩` from `exists_finset_sup_sIdeles_eq_top (K := K)`. Establish `hfp : {v : HeightOneSpectrum (𝓞 K) | (p : 𝓞 K) ∈ v.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {(p : 𝓞 K)}) ?_).subset fun v hv ↦ ?_` and prove the remaining obligations. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hp.ne_zero` after adjusting the coercions. Conclude with `Ideal.dvd_span_singleton.2 hv`. Establish `hfa : {v : HeightOneSpectrum (𝓞 K) | ord v (diagonal K a) ≠ 0}.Finite` using `eventually_ord_eq_zero (diagonal K a)`. Use `set S : Finset (HeightOneSpectrum (𝓞 K)) := S₀ ∪ hfp.toFinset ∪ hfa.toFinset with hS`. Establish `hpS : ∀ v, (p : 𝓞 K) ∈ v.asIdeal → v ∈ S` using `fun v hv ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Simplify using `[S, hv]`. Establish `hJ : (diagonal K).range ⊔ sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) = ⊤` using `sup_sIdeles_eq_top_of_subset (fun v hv ↦ by simp [S, Finset.mem_coe.1 hv]) hS₀`. Establish `haS : a ∈ (S : Set (HeightOneSpectrum (𝓞 K))).unit K`. Use `(diagonal_mem_sIdeles_iff _ a).1 fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv (by simp [S, h])`. Take `⟨T, hST, -, haT, hidx⟩` from `hFI.exists_places_index_map_powerSubgroup S hpS hJ haS hap`. Establish `hnorm : powerSubgroup p (S : Set (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K))) ≤ (ideleNorm K L).range`. Introduce `x hx`. Establish `hxST` using `powerSubgroup_le_sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K))) p hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hxS, hxinf, -⟩` from `(mem_localSubgroup _ _ _ _).1 hx`. Use `mem_range_ideleNorm_of_forall x (fun v ↦ ?_) (fun w ↦ ?_)` and prove the remaining obligations. Distinguish the cases in `hvS : v ∈ S`. Take `⟨y, hy⟩` from `hxS v hvS`. Rewrite using `[← hy, powMonoidHom_apply, ← hdeg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_finrank_mem_range_finiteLocalNorm v y`. Distinguish the cases in `hvT : v ∈ T`. Rewrite using `[range_finiteLocalNorm_eq_top_of_isFiniteSplit v ((splitsCompletely_iff_isFiniteSplit v).1 (splitsCompletely_of_pow_eq hα hgen v (mem_unitsPowIn.1 (haT v hvT))))]`. Conclude with `Subgroup.mem_top _`. Take `⟨w⟩` from `nonempty_placesOver L v`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `he : w.1.asIdeal.ramificationIdx (𝓞 K) = 1` using `Kummer.ramificationIdx_eq_one_of_pow_eq a hα hgen v (fun h ↦ hvS (hpS v h)) (by rw [haS v hvS, WithZero.log_one]; exact dvd_zero _) w.1.asIdeal`. Establish `hu : finiteProj v x ∈ (Submonoid.ofClass (v.adicCompletionIntegers K)).units`. Establish `h` using `(mem_sIdeles_iff _).1 hxST v (by simp [hvS, hvT])`. Rewrite using `[Submonoid.mem_units_iff, ← map_inv, coe_finiteProj, coe_finiteProj]`. Conclude with `⟨h.1, h.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hu` using `[← map_integerUnitsOver_eq_of_ramificationIdx_eq_one v w he]`. Take `⟨z, -, hz⟩` from `hu`. Conclude with `⟨z, hz⟩`. Take `⟨y, hy⟩` from `hxinf w`. Rewrite using `[← hy, powMonoidHom_apply, ← hdeg]`.
-
-Conclude with `pow_finrank_mem_range_infiniteLocalNorm w y`. Establish `hle : (powerSubgroup p (S : Set (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K)))).map (IdeleClassGroup.mk K) ≤ (ideleClassNorm K L).range`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨y, hy⟩` from `hnorm hx`. Conclude with `⟨IdeleClassGroup.mk L y, by rw [ideleClassNorm_mk, hy]⟩`.
-
-Establish `hdvd` using `Subgroup.index_dvd_of_le hle`. Rewrite `hdvd` using `[hidx]`. Use `(enatCard_quotient_le_iff _ p).2 ⟨fun h ↦ ?_, Nat.le_of_dvd hp.pos hdvd⟩` and prove the remaining obligations. Rewrite `hdvd` using `[h]`. Conclude with `hp.ne_zero (Nat.eq_zero_of_zero_dvd hdvd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FirstInequality.secondInequalityRoots (hFI : FirstInequality.{u}) :
     SecondInequalityRoots.{u} := by

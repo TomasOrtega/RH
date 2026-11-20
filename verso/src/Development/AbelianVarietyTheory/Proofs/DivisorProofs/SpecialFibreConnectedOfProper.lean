@@ -15,41 +15,33 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory.AlgConn
 
 /- English proof (translation)
-Introduce `H O _ _ _ hI Y f hP hY`. Use `open GlobalTheory.SpecialConn GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in`. Establish `hT : Set.range (specialι f) = f ⁻¹' {IsLocalRing.closedPoint O}`. Establish `h` using `Scheme.Pullback.range_fst f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))`. Rewrite `h` using `[range_residue]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Use `open GlobalTheory.SpecialConn GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in`. Establish `hTn : ∀ n, Set.range (thickι f n) = f ⁻¹' {IsLocalRing.closedPoint O}` using `fun n => by`. Establish `h` using `Scheme.Pullback.range_fst f (Spec.map (CommRingCat.ofHom (thickQ O n)))`. Rewrite `h` using `[range_thickQ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h`. Use `open GlobalTheory.SpecialConn GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in`. Establish `hne : ∃ y : Y, f y = IsLocalRing.closedPoint O`. Take `⟨y⟩` from `(inferInstance : Nonempty Y)`. Establish `hc : IsClosed (Set.range f)` using `f.isClosedMap.isClosed_range`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp : f y ⤳ IsLocalRing.closedPoint O` using `(PrimeSpectrum.le_iff_specializes _ _).1 (IsLocalRing.le_maximalIdeal (f y).2.ne_top)`. Conclude with `hsp.mem_closed hc ⟨y, rfl⟩`. Use `open GlobalTheory.SpecialConn GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in`. Take `⟨y₀, hy₀⟩` from `hne`. Use `open GlobalTheory.SpecialConn GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits in`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy₀' : y₀ ∈ Set.range (specialι f)` using `by rw [hT]; exact hy₀`. Take `⟨z₀, -⟩` from `hy₀'`. Use `haveI : Nonempty (GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialFibre f) := ⟨z₀⟩`. Use `haveI : IsClosedImmersion (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) := IsClosedImmersion.spec_of_surjective _ IsLocalRing.residue_surjective`. Use `haveI : IsClosedImmersion (GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f) := inferInstanceAs (IsClosedImmersion (pullback.fst f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))))`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : Topology.IsClosedEmbedding (GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f)` using `(GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f).isClosedEmbedding`. Use `{ toPreconnectedSpace := preconnectedSpace_iff_clopen.2 fun U hU => ?_, toNonempty := ‹_› }` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨hU0, hU1⟩` from `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hU0`. Choose the witnesses or unpack the hypotheses as in `⟨u', hu'⟩ : ∃ u', u' ∉ U := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hU1 (Set.eq_univ_of_forall h)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `A` to `GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f '' U`. Set `B` to `GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f '' Uᶜ`. Establish `hA : IsClosed A` using `hcl.isClosedMap _ hU.1`. Establish `hB : IsClosed B` using `hcl.isClosedMap _ hU.2.isClosed_compl`. Establish `hpt : ∀ n (z : GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialFibre f), ∃ x, GlobalTheory.SpecialConn.thickι f n x = GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f z` using `fun n z => by`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `: GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f z ∈ Set.range (GlobalTheory.SpecialConn.thickι f n)`. Rewrite using `[hTn, ← hT]`. Conclude with `⟨z, rfl⟩`. Conclude with `this`. Establish `hAB : ∀ n, (GlobalTheory.SpecialConn.thickι f n ⁻¹' A)ᶜ = GlobalTheory.SpecialConn.thickι f n ⁻¹' B`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Use extensionality with `x`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : GlobalTheory.SpecialConn.thickι f n x ∈ Set.range (GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.specialι f) := by`. Rewrite using `[hT, ← hTn n]`. Conclude with `⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_preimage, A, B, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨z, fun hzU => h ⟨z, hzU, hz⟩, hz⟩`. Introduce and unpack `⟨w, hw, hw'⟩ ⟨w', hw'U, hw''⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hw (hcl.injective (hw''.trans hw'.symm) ▸ hw'U)`. Establish `hclo : ∀ n, IsClopen (GlobalTheory.SpecialConn.thickι f n ⁻¹' A)` using `fun n => ⟨hA.preimage (GlobalTheory.SpecialConn.thickι f n).continuous, by rw [← isClosed_compl_iff, hAB n]; exact hB.preimage (GlobalTheory.SpecialConn.thickι f n).continuous⟩`. Use `choose h hhp hhU using fun n => GlobalTheory.T.exists_hom_specProdSelf_preimage_eq_clopen O (GlobalTheory.SpecialConn.thickFib f n) (GlobalTheory.SpecialConn.thickι f n ≫ f) _ (hclo n)`. Use `haveI : IsProper (Over.mk f).hom := hP`. Use `haveI : IsProper (Over.mk (twoπ O)).hom := isProper_twoπ O`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ∀ n, GlobalTheory.SpecialConn.thickTr f n ≫ h (n + 1) = h n`. Introduce `n`. Use `GlobalTheory.T.hom_ext_specProdSelf_of_basicOpen_preimage_eq O _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hhp, hhp, ← Category.assoc, GlobalTheory.SpecialConn.thickTr_ι]`. Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hhU n]`. Express the relevant statement in the definitionally equal form `GlobalTheory.SpecialConn.thickTr f n ⁻¹' ((h (n + 1) ⁻¹ᵁ _ : (GlobalTheory.SpecialConn.thickFib f (n+1)).Opens) : Set _) = _`. Rewrite using `[hhU (n + 1), ← Set.preimage_comp, ← GlobalTheory.SpecialConn.thickTr_ι f n]`. Both sides reduce to the same expression. Take `⟨g, hg, -⟩` from `GlobalTheory.Published.FormalAlgebraisation.Morphisms.existsUnique_thick H hI (Over.mk f) (Over.mk (twoπ O)) h (fun n => hhp n) hc`.
-
-Establish `hW : IsClopen ((g.left ⁻¹ᵁ (Spec (.of (O × O))).basicOpen (fst1 O) : Y.Opens) : Set Y)` using `(isClopen_basicOpen_specProdSelfFirstIdempotent O).preimage g.left.continuous`. Establish `h0 : GlobalTheory.SpecialConn.thickι f 0 ⁻¹' ((g.left ⁻¹ᵁ (Spec (.of (O × O))).basicOpen (fst1 O) : Y.Opens) : Set Y) = GlobalTheory.SpecialConn.thickι f 0 ⁻¹' A`. Rewrite using `[← hhU 0, ← hg 0]`. Both sides reduce to the same expression. Take `⟨x, hx⟩` from `hpt 0 u`.
-
-Take `⟨x', hx'⟩` from `hpt 0 u'`. Break down `isClopen_iff.1 hW with hW0 | hW1` into its components or cases. Establish `hxA : x ∈ GlobalTheory.SpecialConn.thickι f 0 ⁻¹' A` using `⟨u, hu, hx.symm⟩`. Rewrite `hxA` using `[← h0, hW0]`. Simplify using `at hxA`.
-
-Establish `hxA : x' ∈ GlobalTheory.SpecialConn.thickι f 0 ⁻¹' ((g.left ⁻¹ᵁ (Spec (.of (O × O))).basicOpen (fst1 O) : Y.Opens) : Set Y)`. Rewrite using `[hW1]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hxA` using `[h0]`. Take `⟨w, hw, hw'⟩` from `hxA`.
-
-Conclude with `hu' (hcl.injective (hw'.trans hx') ▸ hw)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem connectedSpace_specialFibre_of_morphisms : GlobalTheory.Published.FormalAlgebraisation.Morphisms →
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

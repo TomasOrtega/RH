@@ -15,19 +15,19 @@ section TestRings
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `(Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_tring (p : TRing K) : IsReduced p.R :=
   (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin J`. Set `v : Fin (p.n + Fintype.card J) → S` to `Fin.append (fun i => ψ (Ideal.Quotient.mk p.I (MvPolynomial.X i))) (fun k => g (e.symm k))`. Set `Φ : MvPolynomial (Fin (p.n + Fintype.card J)) K →ₐ[K] S` to `MvPolynomial.aeval v`. Establish `hrad : (RingHom.ker Φ).IsRadical`. Introduce `a ⟨n, hn⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[RingHom.mem_ker, map_pow]`. Conclude with `RingHom.mem_ker.2 (IsReduced.eq_zero _ ⟨n, hn⟩)`. Set `r : TRing K` to `⟨p.n + Fintype.card J, RingHom.ker Φ, hrad⟩`. Use `⟨r, Ideal.kerLiftAlg Φ, Ideal.kerLiftAlg_injective Φ, fun a => ?_, fun j => ?_⟩` and prove the remaining obligations. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΦ : Φ.comp (MvPolynomial.rename (Fin.castAdd (Fintype.card J))) = ψ.comp (Ideal.Quotient.mkₐ K p.I)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[Φ, v, Fin.append_left]`. Conclude with `⟨Ideal.Quotient.mk _ (MvPolynomial.rename (Fin.castAdd (Fintype.card J)) P), congrArg (fun F => F P) hΦ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Ideal.Quotient.mk _ (MvPolynomial.X (Fin.natAdd p.n (e j))), by show Φ _ = _`. Simplify using `[Φ, v, Fin.append_right]⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tring_inj {S : Type} [CommRing S] [IsReduced S] [Algebra K S] (p : TRing K) (ψ : p.R →ₐ[K] S)
     {J : Type} [Fintype J] (g : J → S) :
@@ -56,7 +56,7 @@ theorem exists_tring_inj {S : Type} [CommRing S] [IsReduced S] [Algebra K S] (p 
       simp [Φ, v, Fin.append_right]⟩
 
 /- English proof (translation)
-Use `⟨(AlgEquiv.ofInjective χ hχ).symm.toAlgHom.comp (φ.codRestrict χ.range h), fun a => ?_⟩` and prove the remaining obligations. Establish `e` using `AlgEquiv.ofInjective_apply χ hχ ((AlgEquiv.ofInjective χ hχ).symm (φ.codRestrict χ.range h a))`. Rewrite `e` using `[AlgEquiv.apply_symm_apply]`. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {S A B : Type} [CommRing S] [Algebra K S] [CommRing A] [Algebra K A] [CommRing B] [Algebra K B]
     (χ : B →ₐ[K] S) (hχ : Function.Injective χ) (φ : A →ₐ[K] S) (h : ∀ a, φ a ∈ χ.range) :
@@ -67,7 +67,7 @@ theorem exists_lift {S A B : Type} [CommRing S] [Algebra K S] [CommRing A] [Alge
   exact e.symm
 
 /- English proof (translation)
-Use `Polynomial.induction_on P hC (fun p q hp hq => ?_) (fun n a h => ?_)` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Rewrite using `[pow_succ, ← mul_assoc, map_mul]`. Conclude with `mul_mem h hX`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_mem {R L : Type} [CommRing R] [CommRing L] [Algebra K L] (ψ : Polynomial R →+* L) (Sb : Subalgebra K L)
     (hC : ∀ a, ψ (Polynomial.C a) ∈ Sb) (hX : ψ Polynomial.X ∈ Sb) (P : Polynomial R) : ψ P ∈ Sb := by
@@ -82,7 +82,7 @@ section Laurent
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P hP => Polynomial.ext fun i => by rw [Polynomial.coeff_zero] exact IsReduced.eq_zero _ (Polynomial.isNilpotent_iff.1 hP i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isReduced_poly [IsReduced R] : IsReduced (Polynomial R) :=
   ⟨fun P hP => Polynomial.ext fun i => by
@@ -90,9 +90,9 @@ theorem isReduced_poly [IsReduced R] : IsReduced (Polynomial R) :=
     exact IsReduced.eq_zero _ (Polynomial.isNilpotent_iff.1 hP i)⟩
 
 /- English proof (translation)
-Use `haveI := isReduced_poly (R := R)`. Use `⟨fun q ⟨k, hk⟩ => ?_⟩` and prove the remaining obligations. Take `⟨n, f, hf⟩` from `exists_T_pow q`. Establish `h1 : Polynomial.toLaurent (f ^ k) = 0` using `by rw [map_pow, hf, mul_pow, hk, zero_mul]`. Rewrite `h1` using `[Polynomial.toLaurent_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : f = 0` using `IsReduced.eq_zero _ ⟨k, h1⟩`. Rewrite `hf` using `[h2, map_zero]`. Establish `h3 : q = q * T (n : ℤ) * T (-(n : ℤ))` using `by rw [mul_assoc, ← T_add, add_neg_cancel, T_zero, mul_one]`. Rewrite using `[h3, ← hf, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReduced_laurent [IsReduced R] : IsReduced (LaurentPolynomial R) := by
   haveI := isReduced_poly (R := R)
@@ -106,7 +106,7 @@ theorem isReduced_laurent [IsReduced R] : IsReduced (LaurentPolynomial R) := by
   rw [h3, ← hf, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, mul_add, map_add, hp, hq, add_zero]`. Consider the case `monomial k a`. Rewrite using `[Polynomial.aeval_monomial, T_pow, ← C_eq_algebraMap, mul_left_comm, ← T_add, trunc_C_mul_T]`. Rewrite using `[if_neg (by push_cast; omega)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trunc_T_mul_aeval (m : ℤ) (hm : 0 < m) (P : Polynomial R) :
     trunc (T (-m) * Polynomial.aeval (T (-1) : LaurentPolynomial R) P) = 0 := by
@@ -117,9 +117,9 @@ theorem trunc_T_mul_aeval (m : ℤ) (hm : 0 < m) (P : Polynomial R) :
     rw [if_neg (by push_cast; omega)]
 
 /- English proof (translation)
-Establish `hinv : ((V⁻¹ : (LaurentPolynomial R)ˣ) : LaurentPolynomial R) = T (-1)`. Conclude with `Units.inv_eq_of_mul_eq_one_right (by rw [hV, ← T_add]; simp [T_zero])`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp [T_zero]`. Consider the case `succ n ih => rw [zpow_add_one, Units.val_mul, ih, hV, ← T_add]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `pred n ih => rw [zpow_sub_one, Units.val_mul, ih, hinv, ← T_add]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unit_zpow_eq_laurent_T_of_eq_T_one (V : (LaurentPolynomial R)ˣ) (hV : (V : LaurentPolynomial R) = T 1) (n : ℤ) :
     ((V ^ n : (LaurentPolynomial R)ˣ) : LaurentPolynomial R) = T n := by
@@ -150,7 +150,7 @@ def triM (x ξ : S) : Matrix (Fin n) (Fin n) S :=
 variable {i j}
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [swpM, swpInv, add_mul, mul_add, sub_mul, mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ hij, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm]`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.single_apply, Matrix.one_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> first | ring1 | (exfalso; omega) | skip`. Apply the tactic sequence `all_goals first | (simp_all; done) | (simp_all; ring1)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem swpM_mul_swpInv (hij : i ≠ j) (w : S) : swpM i j w * swpInv i j w = 1 := by
   ext k l
@@ -161,7 +161,7 @@ theorem swpM_mul_swpInv (hij : i ≠ j) (w : S) : swpM i j w * swpInv i j w = 1 
   all_goals first | (simp_all; done) | (simp_all; ring1)
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [swpM, triM, uniM, add_mul, mul_add, sub_mul, mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ hij, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm]`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.single_apply, Matrix.one_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> first | ring1 | (exfalso; omega) | skip`. Apply the tactic sequence `all_goals first | (simp_all; done) | (simp_all; ring1)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem triM_mul_swpM (hij : i ≠ j) (x ξ : S) (h : x * ξ = 1) : triM i j x ξ * swpM i j ξ = uniM i j x := by
   ext k l
@@ -172,7 +172,7 @@ theorem triM_mul_swpM (hij : i ≠ j) (x ξ : S) (h : x * ξ = 1) : triM i j x �
   all_goals first | (simp_all; done) | (simp_all; ring1)
 
 /- English proof (translation)
-Simplify using `only [uniM, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm, add_zero]`. Rewrite using `[add_assoc, ← Matrix.single_add, add_neg_cancel, Matrix.single_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uniM_mul_neg (hij : i ≠ j) (x : S) : uniM i j x * uniM i j (-x) = 1 := by
   simp only [uniM, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm,
@@ -180,12 +180,12 @@ theorem uniM_mul_neg (hij : i ≠ j) (x : S) : uniM i j x * uniM i j (-x) = 1 :=
   rw [add_assoc, ← Matrix.single_add, add_neg_cancel, Matrix.single_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `[uniM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uniM_zero : uniM i j (0 : S) = 1 := by simp [uniM]
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [uniM, Matrix.map_apply, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uniM_map {K T : Type} [CommSemiring K] [CommRing T] [Algebra K S] [Algebra K T] (φ : S →ₐ[K] T) (x : S) :
     (uniM i j x).map φ = uniM i j (φ x) := by
@@ -194,7 +194,7 @@ theorem uniM_map {K T : Type} [CommSemiring K] [CommRing T] [Algebra K S] [Algeb
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [swpM, Matrix.map_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swpM_map {K T : Type} [CommSemiring K] [CommRing T] [Algebra K S] [Algebra K T] (φ : S →ₐ[K] T) (w : S) :
     (swpM i j w).map φ = swpM i j (φ w) := by
@@ -203,16 +203,16 @@ theorem swpM_map {K T : Type} [CommSemiring K] [CommRing T] [Algebra K S] [Algeb
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [triM, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem triM_lower (hij : i < j) (x ξ : S) (k l : Fin n) (hkl : k < l) : triM i j x ξ k l = 0 := by
   simp only [triM, Matrix.add_apply, Matrix.single_apply, Matrix.one_apply]
   split_ifs <;> first | (exfalso; omega) | simp_all
 
 /- English proof (translation)
-Distinguish the cases in `h1 : k = i`. Substitute `h1` using the available equality. Simplify using `[triM, Matrix.single_apply, hij, Ne.symm hij]`. Distinguish the cases in `h2 : k = j`. Substitute `h2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[triM, Matrix.single_apply, h1, Ne.symm h1]`. Simplify using `[triM, Matrix.single_apply, h1, h2, Ne.symm h1, Ne.symm h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem triM_diag (hij : i ≠ j) (x ξ : S) (k : Fin n) :
     triM i j x ξ k k = if k = i then x else if k = j then -ξ else 1 := by
@@ -240,9 +240,9 @@ def upd {S : Type} [CommRing S] (τ : E →+* ℂ) (M : Matrix (Fin (Dw.mult τ)
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `only [upd, Function.update_self]`. Simplify using `only [upd, Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.map_one φ (map_zero φ) (map_one φ)`.
+A detailed English derivation is pending.
 -/
 theorem upd_map {K T : Type} [CommSemiring K] [CommRing T] [Algebra K S] [Algebra K T] (φ : S →ₐ[K] T)
     (τ : E →+* ℂ) (M : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) :
@@ -254,7 +254,7 @@ theorem upd_map {K T : Type} [CommSemiring K] [CommRing T] [Algebra K S] [Algebr
     exact Matrix.map_one φ (map_zero φ) (map_one φ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `only [upd, Function.update_self]`. Simplify using `only [upd, Function.update_of_ne h, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upd_mul (τ : E →+* ℂ) (M N : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) :
     (fun τ' => upd τ M τ' * upd τ N τ') = upd τ (M * N) := by
@@ -264,7 +264,7 @@ theorem upd_mul (τ : E →+* ℂ) (M N : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mul
   · simp only [upd, Function.update_of_ne h, Matrix.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `only [upd, Function.update_self]`. Simplify using `only [upd, Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upd_one (τ : E →+* ℂ) : upd τ (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) = fun _ => 1 := by
   funext τ'
@@ -273,7 +273,7 @@ theorem upd_one (τ : E →+* ℂ) : upd τ (1 : Matrix (Fin (Dw.mult τ)) (Fin 
   · simp only [upd, Function.update_of_ne h]
 
 /- English proof (translation)
-Introduce `τ'` and use `by by_cases h : τ' = τ · subst h; simpa only [upd, Function.update_self] using hM · simp only [upd, Function.update_of_ne h, Matrix.det_one, isUnit_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem upd_det (τ : E →+* ℂ) {M : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} (hM : IsUnit M.det) :
     ∀ τ', IsUnit (upd τ M τ').det := fun τ' => by
@@ -289,45 +289,39 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y0`. Use `show f p y0 = 0`. Establish `hne : i ≠ j` using `hij.ne`. Use `haveI := isReduced_tring p`. Use `haveI : IsReduced (Polynomial p.R) := isReduced_poly`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsReduced (LaurentPolynomial p.R) := isReduced_laurent`. Take `⟨r1, χ1, hχ1, hC1, hX1⟩` from `exists_tring_inj p (IsScalarTower.toAlgHom c.F p.R (Polynomial p.R)) (fun _ : Unit => Polynomial.X)`. Take `⟨α1, hα1⟩` from `exists_lift χ1 hχ1 _ hC1`. Take `⟨x1, hx1⟩` from `hX1 ()`. Use `replace hx1 : χ1 x1 = Polynomial.X := hx1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ev0 : r1.R →ₐ[c.F] p.R` to `((Polynomial.aeval (0 : p.R)).restrictScalars c.F).comp χ1`. Establish `hev0 : ∀ a, ev0 (α1 a) = a` using `fun a => by simp [ev0, hα1]`. Establish `hevx : ev0 x1 = 0` using `by simp [ev0, hx1]`. Take `⟨y1, hy1⟩` from `exists_frMap α1 y0`. Take `⟨yX, hyX⟩` from `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c r1.R (upd τ (uniM i j x1)) 1 y1).1 (upd_det τ (Matrix.isUnit_det_of_right_inverse (uniM_mul_neg hne x1))) isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : f p y0 = ev0 (f r1 yX)`. Establish `hb : FrMap ev0 y1 y0` using `frMap_of_comp hy1 (frMap_id y0) hev0`. Take `⟨z, hz⟩` from `exists_frMap ev0 yX`. Establish `hc` using `(frMap_iff_frChg hyX hb).1 hz`. Rewrite `hc` using `[upd_map, uniM_map, hevx, uniM_zero, map_one, upd_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzy : z = y0` using `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c p.R (fun _ => 1) 1 y0).2.1 z y0 hc ((frChg_calculus E H Dw l Xo c p.R).2.1 y0)`. Rewrite using `[← hzy]`. Conclude with `hf.1 r1 p ev0 yX z hz`. Take `⟨r2, χ2, hχ2, hC2, hT2⟩` from `exists_tring_inj p (IsScalarTower.toAlgHom c.F p.R (LaurentPolynomial p.R)) ![(T 1 : LaurentPolynomial p.R), T (-1)]`. Establish `hCr : ∀ a : p.R, LaurentPolynomial.C a ∈ χ2.range` using `fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[C_eq_algebraMap]`. Conclude with `hC2 a`. Take `⟨α2, hα2⟩` from `exists_lift χ2 hχ2 ((Polynomial.toLaurentAlg.restrictScalars c.F).comp χ1) (fun a => by`. Use `poly_mem (Polynomial.toLaurent) χ2.range (fun b => by rw [Polynomial.toLaurent_C]; exact hCr b) (by rw [Polynomial.toLaurent_X]; exact hT2 0) (χ1 a)` as an intermediate fact. Simplify `this)` using `[Polynomial.toLaurentAlg_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨β, hβ⟩` from `exists_lift χ2 hχ2 (((Polynomial.aeval (T (-1) : LaurentPolynomial p.R)).restrictScalars c.F).comp χ1) (fun a => by`. Use `poly_mem (Polynomial.aeval (T (-1) : LaurentPolynomial p.R)).toRingHom χ2.range (fun b => by simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Polynomial.aeval_C]; exact hC2 b) (by simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Polynomial.aeval_X]; exact hT2 1) (χ1 a)` as an intermediate fact. Simplify using `using this)`. Use `replace hα2 : ∀ a, χ2 (α2 a) = Polynomial.toLaurent (χ1 a) := fun a => by`. Rewrite using `[hα2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Simplify using `[Polynomial.toLaurentAlg_apply]`. Use `replace hβ : ∀ a, χ2 (β a) = Polynomial.aeval (T (-1) : LaurentPolynomial p.R) (χ1 a) := fun a => by`. Rewrite using `[hβ]`. Simplify using the standard rewrite rules. Use `set x2 := α2 x1 with hx2d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ξ2 := β x1 with hξ2d`. Establish `hx2 : χ2 x2 = T 1` using `by rw [hx2d, hα2, hx1, Polynomial.toLaurent_X]`. Establish `hξ2 : χ2 ξ2 = T (-1)` using `by rw [hξ2d, hβ, hx1, Polynomial.aeval_X]`. Establish `hxξ : x2 * ξ2 = 1` using `hχ2 (by rw [map_mul, hx2, hξ2, ← T_add, map_one]; simp [T_zero])`. Set `ux : (r2.R)ˣ` to `⟨x2, ξ2, hxξ, by rw [mul_comm]; exact hxξ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y2, hy2⟩` from `exists_frMap α2 y1`. Establish `hy2' : FrMap (α2.comp α1) y0 y2` using `frMap_comp hy1 hy2 fun _ => rfl`. Establish `hyβ : FrMap β y1 y2` using `frMap_of_comp hy1 hy2' fun a => hχ2 (by`. Rewrite using `[AlgHom.comp_apply, hβ, hα2, hα1, IsScalarTower.coe_toAlgHom', Polynomial.algebraMap_eq, Polynomial.aeval_C, Polynomial.toLaurent_C, C_eq_algebraMap])`. Take `⟨yX2, hyX2⟩` from `exists_frMap α2 yX`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc2` using `(frMap_iff_frChg hyX hy2).1 hyX2`. Rewrite `hc2` using `[upd_map, uniM_map, map_one]`. Take `⟨yW, hyW⟩` from `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c r1.R (upd τ (swpM i j x1)) 1 y1).1 (upd_det τ (Matrix.isUnit_det_of_right_inverse (swpM_mul_swpInv hne x1))) isUnit_one`. Take `⟨yw, hyw⟩` from `exists_frMap β yW`. Establish `hcw` using `(frMap_iff_frChg hyW hyβ).1 hyw`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `hcw` using `[upd_map, swpM_map, map_one]`. Establish `hct : FrChg (upd τ (triM i j x2 ξ2)) 1 yw yX2`. Use `((frChg_calculus E H Dw l Xo c r2.R).1 _ _ _ _ y2 yw yX2 hcw).2 ?_` and prove the remaining obligations. Rewrite using `[upd_mul, triM_mul_swpM hne _ _ hxξ, one_mul]`. Conclude with `hc2`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Set `t : Ix Dw → (r2.R)ˣ` to `fun k => if k = some ⟨τ, i⟩ then ux else if k = some ⟨τ, j⟩ then -ux⁻¹ else 1`. Establish `hbor : FrBor t yw yX2`. Use `(frBor_iff_frChg yw yX2 t).2 ⟨upd τ (triM i j x2 ξ2), fun τ' k l hkl => ?_, fun τ' k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [upd, Function.update_self]`. Conclude with `triM_lower hij _ _ k l hkl`. Simplify using `only [upd, Function.update_of_ne h]`. Conclude with `Matrix.one_apply_ne hkl.ne`. Distinguish the cases in `h : τ' = τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `only [upd, Function.update_self, triM_diag hne, t, Option.some.injEq, Sigma.mk.inj_iff, heq_eq_eq, true_and]`. Apply the tactic sequence `split_ifs <;> simp [ux]`. Simplify using `only [upd, Function.update_of_ne h, t, Option.some.injEq, Sigma.mk.inj_iff, h, false_and, if_false, Units.val_one, Matrix.one_apply_eq]`. Establish `: ((t none : (r2.R)ˣ) : r2.R) = 1` using `by simp [t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hct`. Establish `hw` using `hf.2 r2 t yw yX2 hbor`. Establish `hprod : (∏ k, t k ^ e k) = ux ^ e (some ⟨τ, i⟩) * (-ux⁻¹) ^ e (some ⟨τ, j⟩)`. Establish `hab : (some ⟨τ, i⟩ : Ix Dw) ≠ some ⟨τ, j⟩` using `by simp [hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_eq_mul _ _ hab (fun k hk => by simp [t, hk.1, hk.2])]`. Simplify using `[t, hab.symm]`. Establish `hpow : ∀ n : ℤ, χ2 ((ux ^ n : (r2.R)ˣ) : r2.R) = T n` using `fun n => by`. Establish `h1 : χ2 ((ux ^ n : (r2.R)ˣ) : r2.R) = ((Units.map (χ2 : r2.R →* LaurentPolynomial p.R) ux ^ n : (LaurentPolynomial p.R)ˣ) : LaurentPolynomial p.R)`. Rewrite using `[← map_zpow, Units.coe_map]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `unit_zpow_eq_laurent_T_of_eq_T_one _ (by rw [Units.coe_map]; simpa using hx2) n`. Establish `hX2v : f r2 yX2 = α2 (f r1 yX)` using `hf.1 r1 r2 α2 yX yX2 hyX2`. Establish `hwv : f r2 yw = β (f r1 yW)` using `hf.1 r1 r2 β yW yw hyw`.
-
-Establish `hm : 0 < e (some ⟨τ, j⟩) - e (some ⟨τ, i⟩)` using `by omega`. Establish `hψ : χ1 (f r1 yX) = 0`. Rewrite using `[← Polynomial.trunc_toLaurent (χ1 (f r1 yX)), ← hα2, ← hX2v, hw, hprod, hwv, map_mul, hβ]`. Break down `Int.even_or_odd (e (some ⟨τ, j⟩)) with hb | hb` into its components or cases. Rewrite using `[Even.neg_zpow hb, inv_zpow', ← zpow_add, ← sub_eq_add_neg, hpow, ← neg_sub]`.
-
-Conclude with `trunc_T_mul_aeval _ hm _`. Rewrite using `[Odd.neg_zpow hb, mul_neg, Units.val_neg, map_neg, neg_mul, map_neg, inv_zpow', ← zpow_add, ← sub_eq_add_neg, hpow, ← neg_sub, trunc_T_mul_aeval _ hm, neg_zero]`. Establish `hzero : f r1 yX = 0` using `hχ1 (by rw [hψ, map_zero])`. Rewrite using `[h0, hzero, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lt (Xo : Moduli Dw l) (c : Coeff l) (e : Ix Dw → ℤ) (τ : E →+* ℂ) (i j : Fin (Dw.mult τ))
     (hij : i < j) (he : e (some ⟨τ, i⟩) < e (some ⟨τ, j⟩)) (f : Rul Xo c) (hf : f ∈ secZ Xo c e) : f = 0 := by
@@ -444,7 +438,7 @@ theorem eq_zero_of_lt (Xo : Moduli Dw l) (c : Coeff l) (e : Ix Dw → ℤ) (τ :
   rw [h0, hzero, map_zero]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ Xo c e τ i j hij he f hf` and use `eq_zero_of_lt Xo c e τ i j hij he f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secZ_eq_zero_of_lt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (e : Ix Dw → ℤ) (τ : E →+* ℂ)

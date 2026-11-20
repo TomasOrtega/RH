@@ -21,23 +21,23 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.Convolut
 open UpperTheory.V.Published UpperTheory.CBC PositivityTheory.RgJS
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn π P hW v hv ⟨w, hwv, B', hB'⟩`. Set `μE : Measure (normOneGL E n)` to `Measure.haar`. Set `μF : Measure (normOneGL F n)` to `Measure.haar`. Take `⟨s, χ, χ', V, V', θ, hχ, hχ', hV, hV', hθ, hst, hW', -, hOff⟩` from `Sph.norm F E σ hσ hp n hn μE μF π P hW`. Take `⟨-, htw⟩` from `powTwist F E`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hi, -, h1⟩` from `htw s χ χ' hχ hχ'`. Take `⟨hback, -⟩` from `h1 n hn`. Take `⟨-, hAtE, hcl, -⟩` from `carryLift F E σ hσ hp n hn μE μF`. Establish `hsat : ∃ B, (Cusp.cx (P.twist χ')).sat w B`. Use `satake_twist_holds E n (CG.mk P) χ' w B' (Sph.powSat E χ' s hχ' w).1 hB'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[CG.twist_mk]`. Conclude with `⟨_, this⟩`. Take `⟨B₁, hB₁⟩` from `hsat`. Establish `hS1 : SSat μE V' w (B₁.map fun b : ℂˣ => (b : ℂ))` using `(Dp.sSatIff E n μE _ V' hV' w _).2 ⟨B₁, rfl, hB₁⟩`. Establish `hsph : ∀ u : Pl E, u.under (𝓞 F) = v → ∃ B, SSat μE V' u B` using `fun u hu => Dp.sSatEx E n μE V' hV'.summand u (Sph.sphConj F E σ hσ hp n hn μE θ hθ V' hst w u (hwv.trans hu.symm) hS1.2.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! b hb using hsph`. Take `⟨Λ, t, S, hS, hAt⟩` from `hAtE V' hV'.summand`. Set `t₁ : Pl E → Multiset ℂ` to `fun u => if u.under (𝓞 F) = v then b u else t u`. Set `S₀ : Set (Pl E)` to `S \ {u | u.under (𝓞 F) = v}`. Establish `hS₀ : S₀.Finite` using `hS.subset Set.diff_subset`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAt₁ : At μE S₀ V' Λ t₁`. Use `⟨hAt.1, fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : u.under (𝓞 F) = v`. Simplify using `only [t₁, if_pos h]`. Conclude with `hb u h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [t₁, if_neg h]`. Conclude with `hAt.2 u fun h' => hu ⟨h', h⟩`. Establish `hAE₁ : AtAE μE V' Λ t₁` using `⟨S₀, hS₀, hAt₁⟩`. Take `⟨V₀, Λ₀, t₀, hV₀, hAt₀, hΛ, ht, hv₀, -⟩` from `Sph.descAt ci Sph.gm F E σ hσ hp n hn μE μF θ hθ V' Λ t₁ S₀ hV'.summand hst hS₀ hAt₁ (hOff _ _ hAE₁) v hv (fun u hu h => h.2 hu)`. Take `⟨π₀, hπ₀, -⟩` from `Dp.exCusp F n μF V₀ hV₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl` using `hcl π₀ _ V₀ V' Λ₀ t₀ Λ t₁ hπ₀ hV' hAt₀ hAE₁ hΛ ht`. Take `⟨η, hη, hiso⟩` from `(R.fibre_holds F E hp n hn (.cx π₀) (.cx (P.twist χ')) hl.1).2 (.cx (π.twist χ)) hW'`. Establish `he : π₀.twist η = π.twist χ` using `(Dp.isoEq F n _ _).1 hiso`. Take `⟨B₀, -, hB₀⟩` from `(Dp.sSatIff F n μF π₀ V₀ hπ₀ v _).1 hv₀`. Establish `hηu : η.UnrAt v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Break down `hη with rfl | hη` into its components or cases. Introduce `x _`. Both sides reduce to the same expression. Conclude with `Sph.normUnr F E η hη v hv`. Establish `h2` using `satake_twist_holds F n (CG.mk π₀) η v B₀ hηu hB₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h2` using `[CG.twist_mk, he]`. Establish `h3` using `satake_twist_holds F n (CG.mk (π.twist χ)) χ⁻¹ v _ (Sph.powSat F χ⁻¹ (-s) hi v).1 h2`. Rewrite `h3` using `[CG.twist_mk, hback]`. Conclude with `⟨_, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.down :
     UpperTheory.ConvolutionTheory.Sph.Down := by

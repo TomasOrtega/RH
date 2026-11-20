@@ -6,9 +6,9 @@ set_option autoImplicit false
 open MvPolynomial GlobalTheory.ChowHt GlobalTheory.CompHt
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[aeval_monomial, algebraMap_eq]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totalDegree_C, zero_add, Finsupp.prod]`. Use `(totalDegree_finsetProd _ _).trans (le_trans ?_ (le_totalDegree hs))` and prove the remaining obligations. Rewrite using `[Finsupp.sum]`. Use `Finset.sum_le_sum fun i _ => (totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem totalDegree_aeval_le_of_totalDegree_le_one {K : Type} [Field K] {σ τ : Type} (L : σ → MvPolynomial τ K)
     (hL : ∀ i, (L i).totalDegree ≤ 1) (f : MvPolynomial σ K) :
@@ -26,9 +26,9 @@ private theorem totalDegree_aeval_le_of_totalDegree_le_one {K : Type} [Field K] 
     _ = s i := mul_one _
 
 /- English proof (translation)
-Unfold `linSubst`. Use `totalDegree_aeval_le_of_totalDegree_le_one _ (fun p => ?_) f` and prove the remaining obligations. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun k _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(totalDegree_X _).le`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.UnitarySelfGeneration.UnitProductCombination.totalDegree_linSubst_le {K : Type} [Field K] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) K)
     (f : MvPolynomial (Fin B × Fin N) K) : (linSubst M f).totalDegree ≤ f.totalDegree := by
@@ -40,9 +40,9 @@ theorem PositivityTheory.UnitarySelfGeneration.UnitProductCombination.totalDegre
   exact (totalDegree_X _).le
 
 /- English proof (translation)
-Unfold `linSubst`. Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem linSubst_linSubst' {K : Type} [Field K] {B N n m : ℕ} (M : Matrix (Fin N) (Fin n) K)
     (P : Matrix (Fin n) (Fin m) K) (f : MvPolynomial (Fin B × Fin N) K) :
@@ -59,9 +59,9 @@ private theorem linSubst_linSubst' {K : Type} [Field K] {B N n m : ℕ} (M : Mat
   ring
 
 /- English proof (translation)
-Unfold `linSubst`. Establish `e : (fun p : Fin B × Fin N => ∑ k, C ((1 : Matrix (Fin N) (Fin N) K) p.2 k) * X (p.1, k)) = X`. Use function extensionality and compare the values at `p`. Rewrite using `[Finset.sum_eq_single p.2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hk), C_0, zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e, aeval_X_left_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem linSubst_one' {K : Type} [Field K] {B N : ℕ} (f : MvPolynomial (Fin B × Fin N) K) :
     linSubst (1 : Matrix (Fin N) (Fin N) K) f = f := by
@@ -76,7 +76,7 @@ private theorem linSubst_one' {K : Type} [Field K] {B N : ℕ} (f : MvPolynomial
   rw [e, aeval_X_left_apply]
 
 /- English proof (translation)
-Unfold `linSubst`. Conclude with `map_mul _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem linSubst_mul' {K : Type} [Field K] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) K)
     (a b : MvPolynomial (Fin B × Fin N) K) : linSubst M (a * b) = linSubst M a * linSubst M b := by
@@ -84,7 +84,7 @@ private theorem linSubst_mul' {K : Type} [Field K] {B N n : ℕ} (M : Matrix (Fi
   exact map_mul _ _ _
 
 /- English proof (translation)
-Unfold `linSubst`. Conclude with `map_zero _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem linSubst_zero {K : Type} [Field K] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) K) :
     linSubst M (0 : MvPolynomial (Fin B × Fin N) K) = 0 := by
@@ -92,29 +92,27 @@ private theorem linSubst_zero {K : Type} [Field K] {B N n : ℕ} (M : Matrix (Fi
   exact map_zero _
 
 /- English proof (translation)
-Establish `key : ∀ q : MvPolynomial (Fin B × Fin N) K, linSubst P (linSubst M q) = q` using `fun q => by`. Rewrite using `[linSubst_linSubst', h, linSubst_one']`. Establish `hdeg : ∀ q : MvPolynomial (Fin B × Fin N) K, (linSubst M q).totalDegree = q.totalDegree` using `fun q => le_antisymm (PositivityTheory.UnitarySelfGeneration.UnitProductCombination.totalDegree_linSubst_le M q) (calc q.totalDegree = (linSubst P (linSubst M q)).totalDegree := by rw [key q] _ ≤ _ := PositivityTheory.UnitarySelfGeneration.UnitProductCombination.totalDegree_linSu …`. Establish `hu0 : ∀ {σ : Type} (u : MvPolynomial σ K), IsUnit u → u.totalDegree = 0`. Introduce `σ u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, -, rfl⟩` from `isUnit_iff_eq_C_of_isReduced.mp hu`. Conclude with `totalDegree_C r`. Establish `hunit : ∀ {σ : Type} (q : MvPolynomial σ K), q ≠ 0 → q.totalDegree = 0 → IsUnit q`. Introduce `σ q hq hd`. Rewrite `hd` using `[totalDegree_eq_zero_iff_eq_C]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isUnit_iff_eq_C_of_isReduced.mpr ⟨coeff 0 q, isUnit_iff_ne_zero.mpr ?_, hd⟩` and prove the remaining obligations. Introduce `h0`. Apply `hq` to reduce the goal to its premises. Rewrite using `[hd, h0, C_0]`. Establish `hf0 : f ≠ 0` using `hf.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMf0 : linSubst M f ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[← key f, h0, linSubst_zero]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu`. Apply `hf.not_isUnit` to reduce the goal to its premises. Apply `hunit f hf0` to reduce the goal to its premises. Use `hu0 _ hu` as an intermediate fact. Rewrite `this` using `[hdeg]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hfab : f = linSubst P a * linSubst P b` using `by rw [← linSubst_mul', ← hab, key]`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hMf0 hab`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[mul_zero]`. Conclude with `hMf0 hab`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPa0 : linSubst P a ≠ 0`. Introduce `h0`. Rewrite `hfab` using `[h0, zero_mul]`. Conclude with `hf0 hfab`. Establish `hPb0 : linSubst P b ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Rewrite `hfab` using `[h0, mul_zero]`. Conclude with `hf0 hfab`. Establish `e1 : f.totalDegree = (linSubst P a).totalDegree + (linSubst P b).totalDegree`. Rewrite using `[hfab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `totalDegree_mul_of_isDomain hPa0 hPb0`. Establish `e2 : f.totalDegree = a.totalDegree + b.totalDegree`. Rewrite using `[← hdeg f, hab]`. Conclude with `totalDegree_mul_of_isDomain ha0 hb0`. Establish `la` using `PositivityTheory.UnitarySelfGeneration.UnitProductCombination.totalDegree_linSubst_le P a`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `lb` using `PositivityTheory.UnitarySelfGeneration.UnitProductCombination.totalDegree_linSubst_le P b`. Break down `hf.isUnit_or_isUnit hfab with hPa | hPb` into its components or cases. Use `left`. Apply `hunit a ha0` to reduce the goal to its premises. Use `hu0 _ hPa` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Use `right`. Apply `hunit b hb0` to reduce the goal to its premises. Use `hu0 _ hPb` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.UnitarySelfGeneration.UnitProductCombination.irreducible_linSubst {K : Type} [Field K] {B N n : ℕ} {M : Matrix (Fin N) (Fin n) K}
     {P : Matrix (Fin n) (Fin N) K} (h : M * P = 1) {f : MvPolynomial (Fin B × Fin N) K} (hf : Irreducible f) :

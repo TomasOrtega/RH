@@ -21,9 +21,9 @@ namespace GlobalTheory.TameTieOfGood
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQ'⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 D.host.E) (P.pb k).asIdeal (by`. Establish `: RingHom.ker (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective _ _)`. Rewrite using `[this]`. Conclude with `bot_le)`. Use `⟨⟨Q, hQ, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `(P.pb k).ne_bot` to reduce the goal to its premises. Rewrite using `[← hQ']`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `HeightOneSpectrum.ext hQ'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_div (P : Formalism.L2.Host.PiBar D.host) (k : Fin 2) : ∃ w, P.Div k w := by
   obtain ⟨Q, hQ, hQ'⟩ := Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 D.host.E) (P.pb k).asIdeal (by
@@ -38,25 +38,23 @@ theorem exists_div (P : Formalism.L2.Host.PiBar D.host) (k : Fin 2) : ∃ w, P.D
   · exact HeightOneSpectrum.ext hQ'
 
 /- English proof (translation)
-Introduce `k`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Establish `hL` using `hG.core.lev`. Take `⟨L, h1, h2, h3⟩` from `hG.types k`. Use `⟨L, h1, h2, fun v j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨PP, hPP⟩` from `exists_div R.C.P k`. Take `⟨u0, hu0, -⟩` from `GlobalTheory.GLp.Model.exists_gen L`. Establish `hp` using `D.host.g_prime k`. Use `set a : ℕ := (u0 : ZMod (D.host.g k)).val with ha_def`. Establish `haz : ((a : ℕ) : ZMod (D.host.g k)) = u0` using `ZMod.natCast_zmod_val _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (a : Formalism.CyclotomicNorms.Fbar (D.host.g k)) = L.gen 1`. Rewrite using `[← hu0, ← haz, map_natCast]`. Establish `ha0 : (a : Formalism.CyclotomicNorms.Fbar (D.host.g k)) ≠ 0`. Rewrite using `[ha, ← hu0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcop : a.Coprime (D.host.g k)`. Rewrite using `[Nat.coprime_comm, hp.coprime_iff_not_dvd]`. Introduce `hd`. Conclude with `ha0 ((CharP.cast_eq_zero_iff _ (D.host.g k) a).2 hd)`. Establish `han : a ≠ 0` using `by rintro h; rw [h] at ha0; exact ha0 (by simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : (a : D.host.E) ≠ 0` using `by exact_mod_cast han`. Establish `hgPP` using `Formalism.IndefR.Fin.g_mem_of_div R.C hPP`. Establish `hk0 : IsUnit ((a : ℕ) : kP PP)`. Establish `hc : IsCoprime ((a : ℕ) : kP PP) ((D.host.g k : ℕ) : kP PP)`. Use `(Nat.isCoprime_iff_coprime.2 hcop).map (Int.castRingHom (kP PP))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hg0 : ((D.host.g k : ℕ) : kP PP) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hgPP`. Rewrite `hc` using `[hg0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isCoprime_zero_right.1 hc`. Use `set u : (kP PP)ˣ := hk0.unit with hu_def`. Establish `key` using `h3 v j PP hPP a u ha hk0.unit_spec`. Establish `h2'` using `(R.C.isMu0 j).atg k PP hPP a hcop (Units.mk0 _ hE) rfl`. Establish `h3'` using `hL.chi j PP ((hL.Pg PP).2 ⟨k, hPP⟩) (a : 𝓞 D.host.E) (Units.mk0 _ hE) u (by simp) (by rw [hu_def, hk0.unit_spec, map_natCast])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h3'` using `[h2', MonoidHom.inv_apply, _root_.inv_inj]`. Establish `hw : ZMod.unitOfCoprime a hcop = u0` using `Units.ext (by rw [ZMod.coe_unitOfCoprime, haz])`. Establish `hχ : (R.chi ((j : ℕ) + 1) PP u : ℂˣ) = GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.chiTame R.C.W.om k j u0`. Rewrite using `[h3', ← hw]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen : ∀ w : (ZMod (D.host.g k))ˣ, algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) w = L.gen 1 → w = u0` using `fun w hw' => Units.ext ((algebraMap _ _).injective (hw'.trans hu0.symm))`. Break down `key with e | e` into its components or cases. Use `⟨_, Or.inl rfl, fun b => GlobalTheory.Mem.TypePl.thetaOf_of_isCharLab L ⟨(D.nd.chiT k v j).ne_zero, fun w hw' => ?_⟩ b⟩` and prove the remaining obligations. Rewrite using `[hgen w hw', e, hχ]`. Use `⟨_, Or.inr rfl, fun b => GlobalTheory.Mem.TypePl.thetaOf_of_isCharLab L ⟨(D.nd.chiT k v j).ne_zero, fun w hw' => ?_⟩ b⟩` and prove the remaining obligations.
-
-Rewrite using `[hgen w hw', e, hχ, MonoidHom.inv_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameTie_of_given {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
@@ -108,7 +106,7 @@ theorem tameTie_of_given {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : Fa
     rw [hgen w hw', e, hχ, MonoidHom.inv_apply]
 
 /- English proof (translation)
-Introduce `R F hG` and use `⟨_, tameTie_of_given R F hG⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_tameTie_of_given : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∃ om, GlobalTheory.DimPartsCompare.TameTie D om :=
   fun R F hG => ⟨_, tameTie_of_given R F hG⟩

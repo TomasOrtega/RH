@@ -9,21 +9,19 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 variable {F K B : Type*} [Field F] [Field K] [Algebra F K] [CommRing B] [Algebra F B]
 
 /- English proof (translation)
-Set `_ : Algebra L B` to `φ.toRingHom.toAlgebra`. Establish `: IsScalarTower F L B` using `IsScalarTower.of_algebraMap_eq fun a => (φ.commutes a).symm`. Take `⟨hxp, hφx⟩` from `hgood.1 x`. Set `a : L` to `⟨x ^ p, hxp⟩`. Establish `hirr : Irreducible (X ^ p - Polynomial.C a)` using `X_pow_sub_C_irreducible_of_prime hp.out fun b hb => hx (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb' : (b : K) ^ p = x ^ p` using `congrArg Subtype.val hb`. Establish `hbx` using `frobenius_inj K p (show frobenius K p (b : K) = frobenius K p x by`. Rewrite using `[frobenius_def, frobenius_def]`. Conclude with `hb')`. Rewrite using `[← hbx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `b.2)`. Establish `hmonic : (X ^ p - Polynomial.C a).Monic` using `monic_X_pow_sub_C a hp.out.ne_zero`. Establish `hxroot : aeval x (X ^ p - Polynomial.C a) = 0` using `by simp [a]`. Establish `hmin : minpoly L x = X ^ p - Polynomial.C a` using `(minpoly.eq_of_irreducible_of_monic hirr hxroot hmonic).symm`. Establish `hint : IsIntegral L x` using `⟨_, hmonic, hxroot⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `pb` to `IntermediateField.adjoin.powerBasis hint`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective (u x)`. Establish `hroot : aeval c (minpoly L pb.gen) = 0`. Rewrite using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen, hmin, map_sub, map_pow, aeval_X, aeval_C, RingHom.algebraMap_toAlgebra]`. Use `show c ^ p - φ a = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hφx, hψ x c hc, sub_self]`. Set `σ₁` to `pb.lift c hroot`. Set `L' : IntermediateField F K` to `IntermediateField.restrictScalars F (L⟮x⟯)`. Set `σ : L' →ₐ[F] B` to `σ₁.restrictScalars F`. Establish `hLL' : L ≤ L'` using `fun y hy => (L⟮x⟯).algebraMap_mem ⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hext : ∀ y : L, σ (IntermediateField.inclusion hLL' y) = φ y` using `fun y => σ₁.commutes y`. Establish `hring : (Ideal.Quotient.mk N).comp (algebraMap L B) = (u : K →+* B ⧸ N).comp (algebraMap L K)` using `RingHom.ext fun l => hgood.2 l`. Use `⟨⟨L', σ⟩, ⟨fun z => ?_, fun y => ?_⟩, ⟨hLL', hext⟩, IntermediateField.mem_adjoin_simple_self L x⟩` and prove the remaining obligations. Take `⟨h, h'⟩` from `hgood.1 z`. Conclude with `⟨hLL' h, (hext ⟨_, h⟩).trans h'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `pb.exists_eq_aeval' ⟨y.1, y.2⟩`. Establish `hy : (y : K) = aeval x f`. Establish `h'` using `congrArg (algebraMap (L⟮x⟯) K) hf`. Rewrite `h'` using `[← Polynomial.aeval_algebraMap_apply, IntermediateField.adjoin.powerBasis_gen, IntermediateField.AdjoinSimple.algebraMap_gen]`. Conclude with `h'`.
-
-Use `show Ideal.Quotient.mk N (σ₁ ⟨y.1, y.2⟩) = u y`. Rewrite using `[hf, PowerBasis.lift_aeval, hy, aeval_def, aeval_def, Polynomial.hom_eval₂, hring, hc]`. Conclude with `(Polynomial.hom_eval₂ _ _ _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGoodPartialLift_extend (p : ℕ) [hp : Fact p.Prime] [CharP K p] {N : Ideal B}
     {u : K →ₐ[F] B ⧸ N} {ψ : K →+* B} (hψ : ∀ (z : K) (c : B), Ideal.Quotient.mk N c = u z → ψ z = c ^ p)

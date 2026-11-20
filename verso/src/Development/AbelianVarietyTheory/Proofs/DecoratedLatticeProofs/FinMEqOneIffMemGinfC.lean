@@ -8,13 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdForm
 
 /- English proof (translation)
-Introduce `D V n hn g`. Substitute `hn` using the available equality. Establish `e0 : finM V rfl g = (Formalism.L2.Theta.mt V g).map (toEAf D)` using `by simp [finM]`. Establish `e : (Formalism.L2.Theta.mt V g).map (toEAf D) = (finHom V g).val.map (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E)` using `rfl`. Rewrite using `[e0, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h show finHom V g = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `hinj` using `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (finHom V g).val.map _ = (1 : Matrix _ _ _).map _`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Introduce `hk`. Establish `h : finHom V g = 1` using `hk`. Establish `h2 : (finHom V g).val = 1` using `by rw [h]; rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+A detailed English derivation is pending.
 -/
 theorem finM_eq_one_iff_mem_GinfC :
     ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (g : GA D V), finM V hn g = 1 ↔ g ∈ GinfC V := by

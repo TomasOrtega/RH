@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem matEquiv_apply {n : ℕ} (h : HermNorm n) (v : Fin n → ℂ) : matEquiv h v = h.mat *ᵥ v := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ballH, HermNorm.norm, HermNorm.std, matEquiv_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ballH_eq_preimage {n : ℕ} (h : HermNorm n) :
     ballH h = matEquiv h ⁻¹' ballH (HermNorm.std n) := by
@@ -37,11 +37,11 @@ end BallAverageLinear
 
 open BallAverageLinear in
 /- English proof (translation)
-Introduce `n h φ`. Use `set L := matEquiv h`. Establish `hb` using `ballH_eq_preimage h`. Establish `hpre : ∀ s : Set (Fin n → ℂ), IntegrableOn (fun v => φ (h.mat *ᵥ v)) (L ⁻¹' s) ↔ IntegrableOn φ s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `he : MeasurableEmbedding L` using `L.toHomeomorph.measurableEmbedding`. Establish `hmap : (map L volume).IsAddHaarMeasure` using `L.isAddHaarMeasure_map volume`. Establish `h2 : map L (volume : Measure (Fin n → ℂ)) = addHaarScalarFactor (map L volume) volume • volume` using `isAddLeftInvariant_eq_smul _ _`. Establish `hpos` using `addHaarScalarFactor_pos_of_isAddHaarMeasure (map L (volume : Measure (Fin n → ℂ))) volume`. Rewrite using `[show (fun v => φ (h.mat *ᵥ v)) = φ ∘ L from rfl, ← he.integrableOn_map_iff, h2, show (addHaarScalarFactor (map L volume) volume • (volume : Measure (Fin n → ℂ))) = ((addHaarScalarFactor (map L volume) volume : ENNReal) • volume) from rfl, IntegrableOn, IntegrableOn, Measure.rest …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by rw [hb]; exact hpre _, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `SphereMean.setAverage_comp_linearEquiv volume volume L _ φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BallAverageLinear.proof : BallAverageLinear.Statement := by
   intro n h φ

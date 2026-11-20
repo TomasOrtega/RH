@@ -14,27 +14,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `p _ D R _ b N hN hNp hm k _ _ hk β o i w f hw hnorm hf π`. Break down `cnt p D R b N hN hNp hm k hk β o i w f hw hnorm hf π with h | ⟨v, hv1, hv2, hv3⟩` into its components or cases. Conclude with `Or.inl h`. Use `right`. Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero (R := k) (Fact.out : p.Prime)).mpr hk`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `lin p D R b N hN hNp hm k hk β o i w f hw hnorm hf π`. Take `⟨σ, ψ, hσ, m, hψ⟩` from `va p D R b N hN hNp hm k hk β o i w f hw hnorm hf π`. Establish `hH` using `hasse p D R b N hN hNp hm k hk β o i w f hw hnorm hf π σ hσ ψ m hψ v hv1 hv2 hv3`. Establish `hpow : ∀ n : ℕ, o.act.act ((n : D.O)) = 𝟙 o.A ^ n`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, pow_zero]`. Establish `h0` using `o.act.add 0 0`. Rewrite `h0` using `[add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using h0`. Consider the case `succ n ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one, pow_succ]`. Use `haveI hmon : IsMonHom (o.act.act ((p : D.O))) := o.act.hom _`. Establish `hp0 : ∀ x : ↥(primDR o.A), primPull (dp0 k) (𝟙 (Sp k)) (o.act.act ((p : D.O))) x = 0`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((p : D.O)) = (algebraMap (𝓞 D.F) D.O) (p : 𝓞 D.F)` using `by simp`. Establish `h2 : ∀ n : ℕ, coh o (n : 𝓞 D.F) = (n : k) • (1 : Module.End k ↥(primDR o.A))`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0` using `hL.add 0 0`. Simplify using `only [add_zero] at h0`. Simplify using `using h0`. Consider the case `succ n ih => rw [Nat.cast_succ, hL.add, ih, hL.one, Nat.cast_succ, add_smul, one_smul]`. Establish `h3` using `congrArg (fun φ : Module.End k ↥(primDR o.A) => φ x) (h2 p)`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk, zero_smul] at h3`. Establish `h4 : coh o (p : 𝓞 D.F) x = primPull (dp0 k) (𝟙 (Sp k)) (o.act.act ((p : D.O))) x`. Simplify using `only [coh, h1]`. Rewrite using `[← h4]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `mp : SMor o.A (RingHom.id k) (Over.Hom.left (o.act.act ((p : D.O))))`. Use `homMor (dp0 k) (𝟙 (Sp k)) (o.act.act ((p : D.O)))` as an intermediate fact. Simplify `this` using `[SMor, spMap_id]`. Take `⟨τ, V, hτ, n, hτp, hV⟩` from `root p k hk o.A o.ab (RingHom.id k) Function.bijective_id _ mp (by`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hp0 x)`. Establish `hV'` using `hV`. Rewrite `hV'` using `[hpow]`. Establish `hrel` using `rel p D R b N hN hNp hm k hk β o i w f hw hnorm hf π σ τ ψ V m n hψ hV'`. Establish `hrk` using `rankV p k hk o.A o.ab τ V n (fun x => by simpa using hτp x) hV'`.
-
-Establish `hcard : Nat.card (𝓞 D.F ⧸ w) = p ^ f`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`. Conclude with `hnorm`. Introduce `x hx`. Take `⟨z, hz⟩` from `alg1 p k (𝓞 D.F) w f hf hcard π (β.comp (b.t i)) ↥(primDR o.A) (coh o) (PrimitiveSubmodule o.A) (frobDR p k hk o.A).toAddMonoidHom hL (GrpMor.pull n).toAddMonoidHom (GrpMor.pull m).toAddMonoidHom (fun y hy => hrk y hy) (fun y => hrel y) (fun x hx => hH x hx) x hx`.
-
-Conclude with `Submodule.subset_span ⟨z, hz.symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.point :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 →

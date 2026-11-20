@@ -14,73 +14,63 @@ variable {G Y : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] [Measurab
   [MulAction G Y] [MeasurableSpace Y]
 
 /- English proof (translation)
-Use `haveI hcnt : Countable (orbS Γ y0) := by`. Establish `hsub : orbS Γ y0 ⊆ Set.range (fun γ : Γ => (γ : G) • y0)`. Introduce `x hx`. Take `⟨γ, hγ, rfl⟩` from `hx`. Conclude with `⟨⟨γ, hγ⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `((Set.countable_range _).mono hsub).to_subtype`. Establish `hr : ∀ x : orbS Γ y0, repO Γ y0 x • y0 = (x : Y)` using `fun x => by`. Unfold `repO`. Conclude with `(Classical.choose_spec x.2).2`. Take `⟨F0, hF0sub, hF0m, hF0ae⟩` from `h𝓕.nullMeasurableSet.exists_measurable_subset_ae_eq`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hc0m : Measurable (cntN Γ F0)`. Unfold `cntN`. Conclude with `Measurable.ennreal_tsum fun γ => (measurable_const.indicator hF0m).comp (measurable_const_mul (γ : G))`. Establish `hcfm : Measurable (cfun Γ F0 y0)`. Unfold `cfun`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Measurable.ennreal_tsum fun x => (measurable_const.indicator hF0m).comp ((measurable_const_mul _).comp measurable_inv)`. Establish `hc0i : ∀ γ ∈ Γ, ∀ g : G, cntN Γ F0 (γ * g) = cntN Γ F0 g`. Introduce `γ hγ g`. Unfold `cntN`. Use `Eq.trans ?_ ((Equiv.mulRight (⟨γ, hγ⟩ : Γ)).tsum_eq (fun δ : Γ => F0.indicator (fun _ => (1 : ℝ≥0∞)) ((δ : G) * g)))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `δ`. Simplify using `[mul_assoc]`. Establish `hsub_ae : ∀ᵐ g ∂μ, ∀ γ : Γ, (γ : G) * g ∈ 𝓕 → (γ : G) * g ∈ F0`. Rewrite using `[ae_all_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `γ`. Establish `h1 : ∀ᵐ x ∂μ, x ∈ 𝓕 → x ∈ F0` using `by filter_upwards [hF0ae.mem_iff] with x hx h`. Conclude with `hx.2 h`. Conclude with `(measurePreserving_mul_left μ (γ : G)).quasiMeasurePreserving.ae h1`. Establish `hcov0 : ∀ᵐ g ∂μ, ∃ γ : Γ, (γ : G) * g ∈ F0` using `by filter_upwards [h𝓕.ae_covers, hsub_ae] with g hg hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ⟩` from `hg`. Conclude with `⟨γ, hs γ hγ⟩`. Establish `hdis : ∀ᵐ g ∂μ, ∀ γ δ : Γ, γ ≠ δ → ¬ ((γ : G) * g ∈ 𝓕 ∧ (δ : G) * g ∈ 𝓕)`. Rewrite using `[ae_all_iff]`. Introduce `γ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ae_all_iff]`. Introduce `δ`. Distinguish the cases in `hγδ : γ = δ`. Conclude with `ae_of_all _ fun g h => absurd hγδ h`. Establish `h0 : μ ((γ⁻¹ • 𝓕) ∩ (δ⁻¹ • 𝓕)) = 0` using `h𝓕.aedisjoint (fun h => hγδ (inv_injective h))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ae_iff]`. Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_setOf_eq, _root_.not_imp, not_not] at hg`. Take `⟨-, h1, h2⟩` from `hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `h1`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc01 : ∀ᵐ g ∂μ, cntN Γ F0 g = 1` using `by filter_upwards [hcov0, hdis] with g hg hd`. Take `⟨γ, hγ⟩` from `hg`. Unfold `cntN`. Rewrite using `[tsum_eq_single γ]`. Simplify using `[hγ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `δ hδ`. Establish `hn : (δ : G) * g ∉ F0` using `fun h => hd δ γ hδ ⟨hF0sub h, hF0sub hγ⟩`. Simplify using `[hn]`. Establish `hc01i : ∀ᵐ g ∂μ, cntN Γ F0 g⁻¹ = 1` using `(Measure.measurePreserving_inv μ).quasiMeasurePreserving.ae hc01`. Use `set Z : Set G := {g | cntN Γ F0 g ≠ 1} with hZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZm : MeasurableSet Z` using `hc0m (measurableSet_singleton 1).compl`. Set `s : Y → G` to `fun y => if h : ∃ g : G, g • y0 = y then h.choose else 1`. Establish `hs : ∀ y, (∃ g : G, g • y0 = y) → s y • y0 = y` using `fun y h => by`. Simplify using `only [s, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsk : ∀ y, (∃ g : G, g • y0 = y) → ∀ k : H, Φ ((s y * (k : G)) • y0) = Φ y`. Introduce `y hy k`. Rewrite using `[mul_smul, (hH k).1 k.2, hs y hy]`. Establish `hsm : ∀ y, Measurable fun k : H => s y * (k : G)` using `fun y => (measurable_const_mul _).comp measurable_subtype_coe`. Establish `hyae : ∀ᵐ y ∂ν, ∃ g : G, g • y0 = y` using `ae_iff.2 hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmx : ∀ x : orbS Γ y0, Measurable fun h : G => Φ (h⁻¹ • (x : Y))`. Introduce `x`. Establish `e : (fun h : G => Φ (h⁻¹ • (x : Y))) = (fun g : G => Φ (g • y0)) ∘ (fun h => h⁻¹ * repO Γ y0 x)`. Use function extensionality and compare the values at `h`. Simplify using `[Function.comp, mul_smul, hr x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `hΨ.comp ((measurable_mul_const _).comp measurable_inv)`. Establish `key : ∀ x : orbS Γ y0, ∫⁻ g, F0.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0) ∂μ = ∫⁻ h in F0, Φ (h⁻¹ • (x : Y)) ∂μ`. Introduce `x`. Use `(lintegral_inv_eq_self (μ := μ) _).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `(lintegral_mul_left_eq_self (μ := μ) _ (repO Γ y0 x)⁻¹).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hF0m]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Establish `e2 : repO Γ y0 x * ((repO Γ y0 x)⁻¹ * h)⁻¹⁻¹ = h` using `by group`. Establish `e3 : ((repO Γ y0 x)⁻¹ * h)⁻¹ • y0 = h⁻¹ • (x : Y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_rev, inv_inv, mul_smul, hr x]`. Use `show F0.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * ((repO Γ y0 x)⁻¹ * h)⁻¹⁻¹) * Φ (((repO Γ y0 x)⁻¹ * h)⁻¹ • y0) = _`. Rewrite using `[e2, e3]`. Apply the tactic sequence `by_cases hh : h ∈ F0 <;> simp [hh]`. Establish `hL : ∫⁻ h in 𝓕, ∑' x : orbS Γ y0, Φ (h⁻¹ • (x : Y)) ∂μ = ∫⁻ g, cfun Γ F0 y0 g * Φ (g • y0) ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[setLIntegral_congr hF0ae.symm, lintegral_tsum fun x => (hmx x).aemeasurable]`. Establish `e1 : (fun g => cfun Γ F0 y0 g * Φ (g • y0)) = fun g => ∑' x : orbS Γ y0, F0.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0)`. Use function extensionality and compare the values at `g`. Unfold `cfun`. Rewrite using `[ENNReal.tsum_mul_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e1, lintegral_tsum (f := fun x g => F0.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0)) fun x => (((measurable_const.indicator hF0m).comp ((measurable_const_mul _).comp measurable_inv)).mul hΨ).aemeasurable]`. Conclude with `tsum_congr fun x => (key x).symm`. Rewrite using `[hL]`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hρm : Measurable (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞))` using `measurable_const.indicator hZm.compl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hρi : ∀ γ ∈ Γ, ∀ g, (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) (γ * g) = (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) g`. Introduce `γ hγ g`. Simplify using `only [Set.indicator, Set.mem_compl_iff, hZ, Set.mem_setOf_eq, hc0i γ hγ g]`. Establish `eq1 : ∫⁻ g, cfun Γ F0 y0 g * Φ (g • y0) ∂μ = ∫⁻ g, cfun Γ F0 y0 g * (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) g⁻¹ * Φ (g • y0) ∂μ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hc01i] with g hg`. Establish `hgZ : g⁻¹ ∈ Zᶜ` using `by simp [hZ, hg]`. Rewrite using `[Set.indicator_of_mem hgZ, mul_one]`. Rewrite using `[eq1, hcomp (fun g => cfun Γ F0 y0 g * (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) g⁻¹ * Φ (g • y0)) ((hcfm.mul (hρm.comp measurable_inv)).mul hΨ) s hs, ← lintegral_const_mul'' _ hΦ]`. Apply `lintegral_mono_ae` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hyae] with y hy`. Establish `e4 : ∫⁻ k, cfun Γ F0 y0 (s y * (k : G)) * (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹ * Φ ((s y * (k : G)) • y0) ∂μ' = (∫⁻ k, cfun Γ F0 y0 (s y * (k : G)) * (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹ ∂μ') * Φ y`. Establish `hm1 : Measurable fun k : H => cfun Γ F0 y0 (s y * (k : G)) * (Zᶜ.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹` using `(hcfm.comp (hsm y)).mul ((hρm.comp measurable_inv).comp (hsm y))`. Rewrite using `[← lintegral_mul_const _ hm1]`. Conclude with `lintegral_congr fun k => by rw [hsk y hy k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e4, lint_fibre μ' y0 hH hF0m 𝓕' h𝓕' _ hρm hρi (s y)]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : cntN Γ F0 ((k : G) * (s y)⁻¹) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : (k : G) * (s y)⁻¹ ∈ Zᶜ` using `by simp [hZ, hk]`. Rewrite using `[Set.indicator_of_mem hm, hk, mul_one]`. Establish `hm : (k : G) * (s y)⁻¹ ∉ Zᶜ` using `by simp [hZ, hk]`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero]`. Conclude with `zero_le_one`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `_ = μ' 𝓕' := by rw [setLIntegral_one]`. Establish `hιm : Measurable (Z.indicator fun _ : G => (1 : ℝ≥0∞))` using `measurable_const.indicator hZm`. Establish `eq1 : ∫⁻ g, cfun Γ F0 y0 g * Φ (g • y0) ∂μ = ∫⁻ g, (cfun Γ F0 y0 g + ∞ * (Z.indicator fun _ : G => (1 : ℝ≥0∞)) g⁻¹) * Φ (g • y0) ∂μ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hc01i] with g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgZ : g⁻¹ ∉ Z` using `by simp [hZ, hg]`. Rewrite using `[Set.indicator_of_notMem hgZ, mul_zero, add_zero]`. Establish `hfm : Measurable fun g => (cfun Γ F0 y0 g + ∞ * (Z.indicator fun _ : G => (1 : ℝ≥0∞)) g⁻¹) * Φ (g • y0)` using `(hcfm.add (measurable_const.mul (hιm.comp measurable_inv))).mul hΨ`. Rewrite using `[eq1, hcomp _ hfm s hs, ← lintegral_const_mul'' _ hΦ]`. Apply `lintegral_mono_ae` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hyae] with y hy`. Establish `hinm : Measurable fun k : H => cfun Γ F0 y0 (s y * (k : G)) + ∞ * (Z.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹` using `(hcfm.comp (hsm y)).add (measurable_const.mul ((hιm.comp measurable_inv).comp (hsm y)))`. Establish `e4 : ∫⁻ k, (cfun Γ F0 y0 (s y * (k : G)) + ∞ * (Z.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹) * Φ ((s y * (k : G)) • y0) ∂μ' = (∫⁻ k, cfun Γ F0 y0 (s y * (k : G)) + ∞ * (Z.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹ ∂μ') * Φ y`. Rewrite using `[← lintegral_mul_const _ hinm]`. Conclude with `lintegral_congr fun k => by rw [hsk y hy k]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e4]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `hfib` using `lint_fibre μ' y0 hH hF0m 𝓕' h𝓕' (fun _ => (1 : ℝ≥0∞)) measurable_const (fun _ _ _ => rfl) (s y)`. Simplify using `only [mul_one] at hfib`. Establish `hinv : ∫⁻ k, (Z.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹ ∂μ' = ∫⁻ k, (Z.indicator fun _ : G => (1 : ℝ≥0∞)) ((k : G) * (s y)⁻¹) ∂μ'`.
-
-Use `Eq.trans ?_ (lintegral_inv_eq_self (μ := μ') (fun k : H => (Z.indicator fun _ : G => (1 : ℝ≥0∞)) ((k : G) * (s y)⁻¹)))` and prove the remaining obligations. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Simplify using `[mul_inv_rev]`. Establish `hbm : Measurable fun k : H => (Z.indicator fun _ : G => (1 : ℝ≥0∞)) ((k : G) * (s y)⁻¹)` using `hιm.comp ((measurable_mul_const _).comp measurable_subtype_coe)`. Establish `hm2 : Measurable fun k : H => cfun Γ F0 y0 (s y * (k : G))` using `hcfm.comp (hsm y)`.
-
-Establish `hm3 : Measurable fun k : H => (Z.indicator fun _ : G => (1 : ℝ≥0∞)) (s y * (k : G))⁻¹` using `(hιm.comp measurable_inv).comp (hsm y)`. Establish `hm4 : Measurable fun k : H => cntN Γ F0 ((k : G) * (s y)⁻¹)` using `hc0m.comp ((measurable_mul_const _).comp measurable_subtype_coe)`. Rewrite using `[lintegral_add_left hm2, hfib, lintegral_const_mul _ hm3, hinv]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun k => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hk : (k : G) * (s y)⁻¹ ∈ Z`. Rewrite using `[Set.indicator_of_mem hk]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hk, mul_zero, add_zero]`. Establish `: cntN Γ F0 ((k : G) * (s y)⁻¹) = 1` using `by simpa [hZ] using hk`.
-
-Rewrite using `[this]`. Use `_ = (∫⁻ k in 𝓕', cntN Γ F0 ((k : G) * (s y)⁻¹) ∂μ') + ∞ * ∫⁻ k in 𝓕', (Z.indicator fun _ : G => (1 : ℝ≥0∞)) ((k : G) * (s y)⁻¹) ∂μ' := by`. Rewrite using `[lintegral_add_left hm4, lintegral_const_mul _ hbm]`. Use `_ ≤ (∫⁻ k in 𝓕', cntN Γ F0 ((k : G) * (s y)⁻¹) ∂μ') + ∞ * ∫⁻ k, (Z.indicator fun _ : G => (1 : ℝ≥0∞)) ((k : G) * (s y)⁻¹) ∂μ' := by gcongr first`. Consider the case `exact Measure.restrict_le_self`.
-
-Consider the case `exact setLIntegral_le_lintegral _ _`. Consider the case `exact le_rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unfold_abs {Γ H : Subgroup G} [Countable Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsInvInvariant]

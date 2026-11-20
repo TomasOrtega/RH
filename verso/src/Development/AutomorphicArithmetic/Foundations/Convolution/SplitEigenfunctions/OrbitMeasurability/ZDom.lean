@@ -5,9 +5,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 
 /- English proof (translation)
-Introduce `E _ _`. Use `⟨normOneMeasure_normOneFundamentalDomain_lt_top E, measurableSet_normOneFundamentalDomain E, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (fun z : ↥(IdeleGroup.normOneSubgroup E) => ((z : IdeleGroup E) : (A E)ˣ))` using `continuous_subtype_val`. Use `⟨_, (isCompact_closure_normOneFundamentalDomain E).image hc, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨z, subset_closure hz, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.zDom :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.ZDom := by

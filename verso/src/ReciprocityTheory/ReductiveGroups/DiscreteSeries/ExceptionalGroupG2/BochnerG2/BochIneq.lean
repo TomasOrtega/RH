@@ -18,17 +18,17 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `hP'` using `hP`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.ncV, Submodule.mem_iInf, Submodule.mem_comap] at hP'`. Establish `hcas : casimirK ε (mAct E k) P = ((casValK ε (lowK ε lam) : ℝ) : ℂ) • P`. Use `PiLp.ext fun κ => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.casimirK_mAct_apply, PiLp.smul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `hP' κ`. Distinguish the cases in `hκ : ∀ i, ε (κ i).1 ≠ ε (κ i).2`. Rewrite `hm` using `[if_pos hκ]`. Establish `hm' : P κ ∈ V` using `hm`. Conclude with `ReciprocityTheory.ChartRestriction.DS.casimirK_irr hE hV _ hm'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[if_neg hκ]`. Establish `hz : P κ = 0` using `(Submodule.mem_bot ℂ).1 hm`. Rewrite using `[hz, map_zero, smul_zero]`. Establish `hsplit : RCLike.re (inner ℂ (casimirK ε (bAct E k) P) P) = RCLike.re (inner ℂ (factorCasimir ε k P) P) + RCLike.re (inner ℂ (casimirK ε (mAct E k) P) P) + 2 * ∑ i, RCLike.re (inner ℂ (crossOp ε E k i P) P)`. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.casimirK_bAct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [two_nsmul, LinearMap.add_apply, LinearMap.sum_apply, inner_add_left, sum_inner, map_add, map_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : 0 ≤ RCLike.re (inner ℂ (factorCasimir ε k P) P)` using `ReciprocityTheory.ChartRestriction.DS.factorCasimir_nonneg k P`. Establish `h2 : RCLike.re (inner ℂ (casimirK ε (mAct E k) P) P) = casValK ε (lowK ε lam) * ‖P‖ ^ 2`. Rewrite using `[hcas, inner_smul_left, Complex.conj_ofReal, ← inner_self_eq_norm_sq (𝕜 := ℂ) P]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.mul_re]`. Establish `h3 : ∀ i : Fin k, 2 * (h - n + 1) * ‖P‖ ^ 2 ≤ 2 * RCLike.re (inner ℂ (crossOp ε E k i P) P)` using `fun i => ReciprocityTheory.ChartRestriction.DS.G2.crossOp_position_bound hE hU hV hmono hh hbig i (fun κ => hposition i κ)`. Establish `h4 : (k : ℝ) * (2 * (h - n + 1) * ‖P‖ ^ 2) ≤ ∑ i : Fin k, 2 * RCLike.re (inner ℂ (crossOp ε E k i P) P)`. Use `Finset.sum_le_sum (s := Finset.univ) (fun i _ => h3 i)` as an intermediate fact. Simplify `this` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `*` using `[hsplit, h2, ← Finset.mul_sum]`. Use polynomial arithmetic with `[h1, h4]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bochner_ineq (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)

@@ -13,9 +13,9 @@ namespace GlobalTheory.HTLat
 open GlobalTheory.HodgeTateCompare in
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `finite_projective_of_smooth (G := G)`. Use `haveI : Module.Free O (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.Cotangent G) := Module.free_of_flat_of_isLocalRing`. Use `⟨.of_equiv (omegaEquiv G), .equiv (omegaEquiv G), ?_⟩` and prove the remaining obligations. Use `(Function.Bijective.of_comp_iff _ (lieEquiv G).bijective).1 ?_` and prove the remaining obligations. Use `(Function.Bijective.of_comp_iff' (omegaEquiv G).dualMap.bijective _).1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Function.bijective_id` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Conclude with `LinearMap.ext fun f => ev_apply f w`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem omega_free_finite_bijective_of_smooth {O : Type} [CommRing O] [IsLocalRing O]
     (G : Over (Spec (CommRingCat.of O))) [GrpObj G] [Smooth G.hom] :
@@ -32,7 +32,7 @@ theorem omega_free_finite_bijective_of_smooth {O : Type} [CommRing O] [IsLocalRi
   exact LinearMap.ext fun f => ev_apply f w
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P`. Use `haveI := P.isLocalRing`. Use `haveI := (GlobalTheory.UnitRigidity.smooth_geometricallyConnected_of_isGt _ _ ⟨P.D⟩).1`. Conclude with `omega_free_finite_bijective_of_smooth P.Gt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Point.omega_free_finite_bijective : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), Module.Free O (omega P.Gt) ∧ Module.Finite O (omega P.Gt) ∧ Function.Bijective (fun (x : LieG P.Gt) => ((LinearMap.proj x : (LieG P.Gt → O) →ₗ[O] O) ∘ₗ (omega P.Gt).subtype : Module.Dual O (omega P.Gt))) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P

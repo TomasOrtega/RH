@@ -35,11 +35,11 @@ end Loc
 section Real
 
 /- English proof (translation)
-Use `⟨fun _ _ h => Units.ext h, comap_measurable _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨B, hB, rfl⟩`. Establish `: Units.val '' (Units.val ⁻¹' B : Set ℝˣ) = B ∩ {0}ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨hu, by simp⟩`. Introduce and unpack `⟨hx, hx0⟩`. Conclude with `⟨Units.mk0 x hx0, hx, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB.inter (measurableSet_singleton _).compl`.
+A detailed English derivation is pending.
 -/
 theorem val_measurableEmbedding_eulB : MeasurableEmbedding (Units.val : ℝˣ → ℝ) := by
   refine ⟨fun _ _ h => Units.ext h, comap_measurable _, ?_⟩
@@ -55,11 +55,11 @@ theorem val_measurableEmbedding_eulB : MeasurableEmbedding (Units.val : ℝˣ �
   exact hB.inter (measurableSet_singleton _).compl
 
 /- English proof (translation)
-Establish `h` using `val_measurableEmbedding_eulB.map_comap (volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹)`. Establish `hr : Set.range (Units.val : ℝˣ → ℝ) = {0}ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Introduce `hx`. Conclude with `⟨Units.mk0 x hx, rfl⟩`. Establish `hac : (volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹) ≪ volume` using `withDensity_absolutelyContinuous _ _`. Establish `h0 : (volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹) {0} = 0` using `hac (by simp)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹).restrict ({0}ᶜ : Set ℝ) = volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹` using `Measure.restrict_eq_self_of_ae_mem (by`. Rewrite using `[ae_iff]`. Simplify using `using h0)`. Rewrite `h` using `[hr, this]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_val_mulR_eulB : Measure.map (Units.val : ℝˣ → ℝ) mulR =
     volume.withDensity fun x : ℝ => ENNReal.ofReal |x|⁻¹ := by

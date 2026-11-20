@@ -9,15 +9,13 @@ open MvPolynomial
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ n P hP hnc`. Use `set M : Submonoid (MvPolynomial (Fin n) O) := (nonZeroDivisors O).map (C (σ := Fin n))`. Establish `: IsLocalization M (MvPolynomial (Fin n) K)` using `MvPolynomial.isLocalization (σ := Fin n) (nonZeroDivisors O) K`. Establish `hprime : (Ideal.span {P}).IsPrime` using `(Ideal.span_singleton_prime hP.ne_zero).mpr hP`. Establish `hdisj : Disjoint (M : Set (MvPolynomial (Fin n) O)) ↑(Ideal.span {P})`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨a, ha, rfl⟩ hmem`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hCa : (C a : MvPolynomial (Fin n) O) ≠ 0` using `by simpa using ha0`. Establish `hdvd : P ∣ C a` using `Ideal.mem_span_singleton.mp hmem`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : P.totalDegree = 0`. Use `totalDegree_le_of_dvd_of_isDomain hdvd hCa` as an intermediate fact. Rewrite `this` using `[totalDegree_C]`. Use linear arithmetic over natural numbers and integers. Conclude with `hnc _ (totalDegree_eq_zero_iff_eq_C.mp hdeg)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmap` using `IsLocalization.isPrime_of_isPrime_disjoint M (MvPolynomial (Fin n) K) _ hprime hdisj`. Rewrite `hmap` using `[Ideal.map_span, Set.image_singleton, MvPolynomial.algebraMap_def]`. Establish `hinj : Function.Injective (map (σ` using `Fin n) (algebraMap O K)) := map_injective _ (IsFractionRing.injective O K)`. Establish `hne : map (algebraMap O K) P ≠ 0`. Introduce `h`.
-
-Conclude with `hP.ne_zero (hinj (by rw [h, map_zero]))`. Conclude with `(Ideal.span_singleton_prime hne).mp hmap`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PrimeMapFractionRing.proof : PrimeMapFractionRing.Statement := by
   intro O K _ _ _ _ _ n P hP hnc

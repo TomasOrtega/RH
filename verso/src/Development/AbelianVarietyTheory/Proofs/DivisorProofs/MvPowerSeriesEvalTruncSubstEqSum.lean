@@ -11,11 +11,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.DivSub
 
 /- English proof (translation)
-Establish `hsub : (trunc' R n f).support ⊆ Finset.Iic n`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, coeff_trunc']`. Use `split_ifs at hm with h`. Conclude with `Finset.mem_Iic.mpr h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd rfl hm`. Rewrite using `[MvPolynomial.eval_eq, Finset.sum_subset hsub]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[coeff_trunc', if_pos (Finset.mem_Iic.mp hm)]`. Introduce `m _ hm`.
-
-Rewrite using `[MvPolynomial.notMem_support_iff.mp hm, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_trunc'_eq_sum {R σ : Type} [CommRing R] [Fintype σ] [DecidableEq σ] (w : σ → R)
     (n : σ →₀ ℕ) (f : MvPowerSeries σ R) :
@@ -33,17 +31,17 @@ theorem eval_trunc'_eq_sum {R σ : Type} [CommRing R] [Fintype σ] [DecidableEq 
     rw [MvPolynomial.notMem_support_iff.mp hm, zero_mul]
 
 /- English proof (translation)
-Introduce `B Q _ _ _ σ τ _ _ _ _ z u hu g n S hS`. Establish `ha : HasSubst (up Q u)` using `hasSubst_of_constantCoeff_zero fun j => by simp [up, constantCoeff_map, hu j]`. Establish `hP : ∀ α : τ →₀ ℕ, (α.prod fun j e => (up Q u j) ^ e) = map (algebraMap B Q) (α.prod fun j e => u j ^ e)`. Introduce `α`. Rewrite using `[map_finsuppProd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[up, map_pow]`. Establish `hcoeff : ∀ β ≤ n, coeff β (subst (up Q u) g) = ∑ α ∈ S, coeff α g * algebraMap B Q (coeff β (α.prod fun j e => u j ^ e))`. Introduce `β hβ`. Rewrite using `[coeff_subst ha]`. Repeatedly rewrite using `[hP, coeff_map, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `α hα`. Assume the negation of the conclusion as `hαS`. Apply `hα` to reduce the goal to its premises. Simplify using `only`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions.
 
-Establish `hlt : n.degree < α.degree` using `lt_of_not_ge fun h => hαS (hS α h)`. Rewrite using `[GlobalTheory.T.coeff_finsuppProd_constFree_eq_zero_of_degree_lt B σ τ u hu α β (lt_of_le_of_lt (Finsupp.degree_mono hβ) hlt), map_zero, mul_zero]`. Rewrite using `[eval_trunc'_eq_sum, Finset.sum_congr rfl fun β hβ => by`. Rewrite using `[hcoeff β (Finset.mem_Iic.mp hβ)]]`. Repeatedly rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[eval_trunc'_eq_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_trunc'_subst_eq_sum :
     ∀ (B Q : Type) [CommRing B] [CommRing Q] [Algebra B Q] (σ τ : Type) [Fintype σ] [DecidableEq σ]

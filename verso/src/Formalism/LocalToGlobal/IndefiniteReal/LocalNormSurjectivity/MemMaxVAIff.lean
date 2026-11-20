@@ -24,23 +24,23 @@ abbrev VA (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] : Valu
   (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring
 
 /- English proof (translation)
-The claim follows from `Valuation.mem_valuationSubring_iff _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_VA {x : L} : x ∈ VA L ↔ Valued.v x ≤ 1 := Valuation.mem_valuationSubring_iff _ _
 
 /- English proof (translation)
-The claim follows from `Valuation.mem_integer_iff _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_intL {x : L} : x ∈ Formalism.UG.intL L ↔ Valued.v x ≤ 1 := Valuation.mem_integer_iff _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `hmul : ((u : VA L) : L) * (((u⁻¹ : (VA L)ˣ) : VA L) : L) = 1`. Conclude with `congrArg (fun x : VA L => (x : L)) u.mul_inv`. Establish `hu : Valued.v ((u : VA L) : L) ≤ 1` using `mem_VA.1 (u : VA L).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : Valued.v (((u⁻¹ : (VA L)ˣ) : VA L) : L) ≤ 1` using `mem_VA.1 (u⁻¹ : (VA L)ˣ).1.2`. Establish `hprod` using `congrArg Valued.v hmul`. Rewrite `hprod` using `[map_mul, map_one]`. Use `le_antisymm hu ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `ha0 : (a : L) ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : (a : L)⁻¹ ∈ VA L`. Rewrite using `[mem_VA, map_inv₀, h, inv_one]`. Use `IsUnit.of_mul_eq_one (⟨(a : L)⁻¹, hinv⟩ : VA L) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel₀ ha0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isUnit_VA_iff (a : VA L) : IsUnit a ↔ Valued.v (a : L) = 1 := by
   constructor
@@ -67,7 +67,7 @@ theorem isUnit_VA_iff (a : VA L) : IsUnit a ↔ Valued.v (a : L) = 1 := by
     exact mul_inv_cancel₀ ha0
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_VA_iff]`. Conclude with `⟨fun h => lt_of_le_of_ne (mem_VA.1 a.2) h, fun h => ne_of_lt h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_max_VA_iff (a : VA L) : a ∈ IsLocalRing.maximalIdeal (VA L) ↔ Valued.v (a : L) < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_VA_iff]
@@ -86,7 +86,7 @@ Both sides reduce to the same expression.
 theorem sigA_coe (x : VA L) : ((sigA σ hv x : VA L) : L) = σ x := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hσ x`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sigA_inv (hσ : ∀ x, σ (σ x) = x) (x : VA L) : sigA σ hv (sigA σ hv x) = x := by
   apply Subtype.ext
@@ -104,17 +104,15 @@ section Norm
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hq2, hcard⟩` from `hU`. Establish `hle : Valued.v (2 : L) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `h2`. Establish `hlt` using `lt_of_le_of_ne hle h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hmem : (2 : VA L) ∈ IsLocalRing.maximalIdeal (VA L)`. Rewrite using `[mem_max_VA_iff]`. Use `first`. Consider the case `simpa using hlt`. Consider the case `exact_mod_cast hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Equip the data with the indicated structure.
 
-Use `haveI : Finite ((Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Use `letI := Fintype.ofFinite ((Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)`. Establish `h2Q : (2 : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) = 0`. Establish `h` using `Ideal.Quotient.eq_zero_iff_mem.2 hmem`. Rewrite `h` using `[map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hc0` using `Nat.cast_card_eq_zero ((Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)`. Rewrite `hc0` using `[← Nat.card_eq_fintype_card, hcard]`. Take `⟨m, hm⟩ : Odd (q ^ 2)` from `hq.pow`. Rewrite `hc0` using `[hm]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hc0`. Rewrite `hc0` using `[h2Q, zero_mul, zero_add]`. Establish `hsub` using `subsingleton_of_zero_eq_one hc0.symm`. Use `haveI : Unique ((Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) := ⟨⟨0⟩, fun _ => Subsingleton.elim _ _⟩`. Establish `hc1` using `Nat.card_unique (α := (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)`.
-
-Rewrite `hc1` using `[hcard]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem valuation_two_eq_one_of_unramInv_odd {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) :
     Valued.v (2 : L) = 1 := by
@@ -157,7 +155,7 @@ private theorem valuation_two_eq_one_of_unramInv_odd {ϖ : L} {σ : L →+* L} {
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[isUnit_VA_iff]`. Use `first`. Consider the case `simpa using valuation_two_eq_one_of_unramInv_odd hU hq`. Consider the case `exact_mod_cast valuation_two_eq_one_of_unramInv_odd hU hq`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem two_unit_VA {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) :
     IsUnit (2 : VA L) := by
@@ -167,44 +165,40 @@ theorem two_unit_VA {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnr
     | exact_mod_cast valuation_two_eq_one_of_unramInv_odd hU hq
 
 /- English proof (translation)
-Conclude with `valuation_two_eq_one_of_unramInv_odd hU hq`.
+A detailed English derivation is pending.
 -/
 theorem two_val {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) :
     Valued.v (2 : L) = 1 := by
   exact valuation_two_eq_one_of_unramInv_odd hU hq
 
 /- English proof (translation)
-Take `⟨hσσ, hv, -, -, ⟨x₀, hx₀, hx₀v⟩, hq2, hcard⟩` from `id hU`. Use `haveI : Finite (IsLocalRing.ResidueField (VA L)) := Nat.finite_of_card_ne_zero (by rw [show Nat.card (IsLocalRing.ResidueField (VA L)) = q ^ 2 from hcard]; positivity)`. Use `letI : Fintype (IsLocalRing.ResidueField (VA L)) := Fintype.ofFinite _`. Establish `hτres : ∀ a : VA L, IsLocalRing.ResidueField.map (sigA σ hU.2.1) (IsLocalRing.residue (VA L) a) = IsLocalRing.residue (VA L) (sigA σ hU.2.1 a)` using `fun a => IsLocalRing.ResidueField.map_residue _ a`. Establish `hττ : ∀ y, IsLocalRing.ResidueField.map (sigA σ hU.2.1) (IsLocalRing.ResidueField.map (sigA σ hU.2.1) y) = y`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Rewrite using `[hτres, hτres, sigA_inv σ _ hσσ]`. Establish `hne : ∃ y, IsLocalRing.ResidueField.map (sigA σ hU.2.1) y ≠ y`. Use `⟨IsLocalRing.residue (VA L) ⟨x₀, mem_VA.2 (mem_intL.1 hx₀)⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτres]`. Introduce `h`. Rewrite `h` using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, mem_max_VA_iff]`. Establish `h' : Valued.v (σ x₀ - x₀) < 1` using `h`. Rewrite `h'` using `[hx₀v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ h'`. Establish `hcfix : IsLocalRing.ResidueField.map (sigA σ hU.2.1) (IsLocalRing.residue (VA L) c) = IsLocalRing.residue (VA L) c`. Rewrite using `[hτres, hcσ]`. Establish `hc0 : IsLocalRing.residue (VA L) c ≠ 0`. Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h hc`. Take `⟨ybar, hy⟩` from `hF _ _ hττ hne _ hcfix hc0`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective ybar`. Rewrite `hy` using `[hτres, ← map_mul]`. Establish `hdiff : sigA σ hU.2.1 y * y - c ∈ IsLocalRing.maximalIdeal (VA L)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hy, sub_self]`. Rewrite `hdiff` using `[mem_max_VA_iff]`. Establish `hcv : Valued.v (c : L) = 1` using `(isUnit_VA_iff c).1 hc`. Establish `hdiff' : Valued.v (σ (y : L) * (y : L) - c) < 1` using `hdiff`. Establish `hav : Valued.v (σ (y : L) * (y : L)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : Valued.v ((c : L) + (σ (y : L) * (y : L) - c)) = Valued.v (c : L)` using `Valuation.map_add_eq_of_lt_left _ (by rw [hcv]; exact hdiff')`. Rewrite `h1` using `[add_sub_cancel, hcv]`. Then use the resulting hypothesis. Establish `ha0 : σ (y : L) * (y : L) ≠ 0` using `fun h => by`. Rewrite `hav` using `[h, map_zero]`. Conclude with `zero_ne_one hav`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : Valued.v ((c : L) * (σ (y : L) * (y : L))⁻¹ - 1) < 1`. Establish `h1 : (c : L) * (σ (y : L) * (y : L))⁻¹ - 1 = -(σ (y : L) * (y : L) - c) * (σ (y : L) * (y : L))⁻¹`. Rewrite using `[neg_sub, sub_mul, mul_inv_cancel₀ ha0]`. Rewrite using `[h1, map_mul, map_inv₀, hav, inv_one, mul_one, Valuation.map_neg]`. Conclude with `hdiff'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2v : Valued.v (2 : L) = 1` using `two_val hU hq`. Take `⟨s, hss, hs1⟩` from `hS L h2v _ hu1`. Establish `hσc : σ (c : L) = c` using `congrArg Subtype.val hcσ`. Establish `hσu : σ ((c : L) * (σ (y : L) * (y : L))⁻¹) = (c : L) * (σ (y : L) * (y : L))⁻¹`. Rewrite using `[map_mul, map_inv₀, map_mul, hσσ, hσc, mul_comm (y : L)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hvs : Valued.v s = 1`. Establish `h1 : Valued.v ((1 : L) + (s - 1)) = Valued.v (1 : L)` using `Valuation.map_add_eq_of_lt_left _ (by rw [map_one]; exact hs1)`. Rewrite `h1` using `[add_sub_cancel, map_one]`. Then use the resulting hypothesis. Establish `hσs : σ s = s`. Establish `hsq : (σ s - s) * (σ s + s) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : σ s * σ s = s * s` using `by rw [← map_mul, hss, hσu]`. Take the linear combination `h1`. Establish `hσs1 : Valued.v (σ s - 1) < 1`. Rewrite using `[← map_one σ, ← map_sub, hv]`. Conclude with `hs1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsmall : Valued.v ((σ s - 1) + (s - 1)) < 1` using `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hσs1 hs1)`. Establish `hsum : Valued.v (σ s + s) = 1`. Establish `h1 : Valued.v ((2 : L) + ((σ s - 1) + (s - 1))) = Valued.v (2 : L)` using `Valuation.map_add_eq_of_lt_left _ (by rw [h2v]; exact hsmall)`. Rewrite `h1` using `[h2v]`. Rewrite using `[← h1]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hne0 : σ s + s ≠ 0` using `fun h => by`. Rewrite `hsum` using `[h, map_zero]`. Conclude with `zero_ne_one hsum`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hsq with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hne0`. Use `⟨⟨(y : L) * s, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_VA, map_mul, hvs, mul_one]`.
-
-Conclude with `mem_VA.1 y.2`. Apply `Subtype.ext show σ ((y : L) * s) * ((y : L) * s) = (c : L)` to reduce the goal to its premises. Rewrite using `[map_mul, hσs]`. Establish `hcu : (c : L) = (c : L) * (σ (y : L) * (y : L))⁻¹ * (σ (y : L) * (y : L))`. Rewrite using `[mul_assoc, inv_mul_cancel₀ ha0, mul_one]`.
-
-Rewrite using `[hcu, ← hss]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normSurj [CompleteSpace L] (hF : FinNormSurj) (hS : HenselSqrt) {ϖ : L} {σ : L →+* L} {q : ℕ}
     (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) (c : VA L) (hcσ : sigA σ hU.2.1 c = c) (hc : IsUnit c) :

@@ -8,11 +8,11 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hP.growth`. Establish `hev : Φ =ᶠ[𝓝 s] (fun z => ∫ u in Ioi (0 : ℝ), (g u : ℂ) * cexp (-z * u))`. Establish `hopen : IsOpen {z : ℂ | 2 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hopen.mem_nhds hs] with z hz`. Conclude with `hP.laplace z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hev.iteratedDeriv_eq k, iteratedDeriv_laplace g hP.meas C hC k s hs, ← integral_const_mul, ← integral_div]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Use `push_cast`. Establish `e : ((-1 : ℂ)) ^ k * (-(u : ℂ)) ^ k = (u : ℂ) ^ k`.
+Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem landau_coeff {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set ℂ} (hP : PoleData g Φ Z) (k : ℕ) {s : ℂ} (hs : 2 < s.re) :
     (-1) ^ k * iteratedDeriv k Φ s / (k.factorial : ℂ) =

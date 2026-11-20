@@ -25,19 +25,19 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.PolIsoLift
 
 /- English proof (translation)
-Introduce `p _ D R _ b N k _ t o₀ s₁ s₂ o₁ o₂ m₁ m₂ e he hφ φ₂ hsq`. Use `haveI := he`. Establish `hκ : IsNilDP (epsDP k)` using `isDPNilpotent_squareZero _`. Establish `hπ : Function.Surjective (TrivSqZeroExt.fstHom k k k).toRingHom` using `fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim (DualNumber k) o₁.A o₁.ab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hred : m₁.φ₂ ≫ φ₂ = m₂.φ₂`. Apply `GlobalTheory.AbDual.left_ext (P := o₂.A) (Q := o₂.A)` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, m₁.sq.1, Category.assoc, hφ, m₂.sq.1]`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, m₁.sq.2, Category.assoc, hφ, m₂.sq.2]`. Establish `hP' : (o₂.P.pull φ₂).IsLB` using `pull_isLB o₂.isLB φ₂`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `axis : ∀ (u v : o₁.A ⟶ o₁.A) (u' v' : o₂.A ⟶ o₂.A), (lift u v).left ≫ φ₂ = e.hom.left ≫ (lift u' v').left → Triv (ev o₂.P u' v') → Triv (ev (o₂.P.pull φ₂) u v)`. Introduce `u v u' v' hc h`. Rewrite using `[triv_ev_iff hP', evc, cls_pull o₂.isLB φ₂ hP', ← GlobalTheory.CechPic.pull_comp, hc, GlobalTheory.CechPic.pull_comp]`. Rewrite `h` using `[triv_ev_iff o₂.isLB, evc]`. Rewrite using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t₁ : Triv (ev (o₂.P.pull φ₂) (1 : o₁.A ⟶ o₁.A) (𝟙 o₁.A))`. Use `axis _ _ (1 : o₂.A ⟶ o₂.A) (𝟙 o₂.A) ?_ o₂.rig₁` and prove the remaining obligations. Apply `GlobalTheory.AbDual.left_ext (P := o₂.A) (Q := o₂.A)` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, lift_left_fst_assoc, Category.assoc, lift_left_fst, ← Over.comp_left, ← Over.comp_left, MonObj.one_comp, MonObj.comp_one]`. Rewrite using `[Category.assoc, hsq.2, lift_left_snd_assoc, Category.assoc, lift_left_snd]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `t₂ : Triv (ev (o₂.P.pull φ₂) (𝟙 o₁.A) (1 : o₁.A ⟶ o₁.A))`. Use `axis _ _ (𝟙 o₂.A) (1 : o₂.A ⟶ o₂.A) ?_ o₂.rig₂` and prove the remaining obligations. Apply `GlobalTheory.AbDual.left_ext (P := o₂.A) (Q := o₂.A)` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, lift_left_fst_assoc, Category.assoc, lift_left_fst]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, hsq.2, lift_left_snd_assoc, Category.assoc, lift_left_snd, ← Over.comp_left, ← Over.comp_left, MonObj.one_comp, MonObj.comp_one]`. Establish `e' : LBIso ((o₂.P.pull φ₂).pull m₁.φ₂) o₀.P`. Use `(cls_eq_iff (pull_isLB hP' _) o₀.isLB).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP', cls_pull o₂.isLB φ₂ hP', ← GlobalTheory.CechPic.pull_comp, hred, ← cls_pull o₂.isLB m₂.φ₂ (pull_isLB o₂.isLB _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(cls_eq_iff _ _).2 (LBIso.symm m₂.pol)`. Establish `hL : (o₁.P.pull (lift (𝟙 o₁.A) (𝟙 o₁.A)).left).IsLB` using `pull_isLB o₁.isLB _`. Conclude with `GlobalTheory.BirigidLift.lift_unique (κ := epsDP k) (grothendieckDeformation_of_lifting GlobalTheory.T.abelianScheme_firstDeRham_structure GlobalTheory.T.print_abelianLifting) GlobalTheory.T.dualAbelianScheme_exists_biduality hκ hπ rfl o₁.ab hg o₁.ab hg m₁.cart m₁.cart m₁.sq.1 m₁ …`.
+A detailed English derivation is pending.
 -/
 theorem pol_iso : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (s₁ s₂ : Sp (DualNumber k) ⟶ Sp R) (o₁ : GlobalTheory.UPel.HT.Obj b N s₁) (o₂ : GlobalTheory.UPel.HT.Obj b N s₂) (m₁ : GlobalTheory.UPel.HT.ObjMap o₀ o₁ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)) (m₂ : GlobalTheory.UPel.HT.ObjMap o₀ o₂ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)) (e : o₁.A ≅ o₂.A), IsMonHom e.hom → m₁.φ ≫ e.hom.left = m₂.φ → ∀ φ₂ : (G2 o₁.A).left ⟶ (G2 o₂.A).left, IsSquare e.hom.left φ₂ → LBIso o₁.P (o₂.P.pull φ₂) := by
   intro p _ D R _ b N k _ t o₀ s₁ s₂ o₁ o₂ m₁ m₂ e he hφ φ₂ hsq

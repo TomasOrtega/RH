@@ -22,7 +22,7 @@ def finOrbit (τ : Representation ℂ G M) (K : Subgroup G) : Submodule ℂ M wh
     exact ⟨_, ⟨k, rfl⟩, by simp⟩)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ k : L, τ k v = ((1 : L →* ℂˣ) k : ℂ) • v) ↔ _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem mem_fixed_iff_twisted_operators {W : Type} [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ G W)
     (L : Subgroup G) (v : W) : v ∈ fixed τ L ↔ ∀ k : L, τ k v = v := by
@@ -30,19 +30,19 @@ private theorem mem_fixed_iff_twisted_operators {W : Type} [AddCommGroup W] [Mod
   simp
 
 /- English proof (translation)
-Establish `hfin : (Set.range fun k : K => τ k m).Finite` using `hm`. Apply the tactic sequence `obtain ⟨O, hO⟩ : ∃ O : Finset M, ∀ o, o ∈ O ↔ ∃ k : K, τ k m = o := ⟨hfin.toFinset, fun o => by rw [Set.Finite.mem_toFinset]; try exact Iff.rfl⟩`. Establish `hmul : ∀ (a b : K) (o : M), τ (a : G) (τ (b : G) o) = τ ((a * b : K) : G) o`. Introduce `a b o`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hperm : ∀ a : K, ∑ o ∈ O, τ (a : G) o = ∑ o ∈ O, o`. Introduce `a`. Use `Finset.sum_nbij' (fun o => τ (a : G) o) (fun o => τ ((a⁻¹ : K) : G) o) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `o ho`. Take `⟨k, rfl⟩` from `(hO o).1 ho`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hO _).2 ⟨a * k, (hmul a k m).symm⟩`. Introduce `o ho`. Take `⟨k, rfl⟩` from `(hO o).1 ho`. Conclude with `(hO _).2 ⟨a⁻¹ * k, (hmul a⁻¹ k m).symm⟩`. Introduce `o _ show τ ((a⁻¹ : K) : G) (τ (a : G) o) = o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Introduce `o _ show τ (a : G) (τ ((a⁻¹ : K) : G) o) = o`. Rewrite using `[hmul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `o _`. Both sides reduce to the same expression. Establish `hne : (O.card : ℂ) ≠ 0`. Establish `hm' : m ∈ O` using `(hO m).2 ⟨1, by simp⟩`. Conclude with `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem hm')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(O.card : ℂ)⁻¹ • ∑ o ∈ O, o, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_fixed_iff_twisted_operators]`. Introduce `a`. Rewrite using `[map_smul, map_sum, hperm a]`. Establish `hconst : ∀ o ∈ O, π o = π m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `o ho`. Take `⟨k, rfl⟩` from `(hO o).1 ho`. Rewrite using `[hπ]`. Conclude with `(mem_fixed_iff_twisted_operators ρ K (π m)).1 hy k`. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl hconst, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_preimage {τ : Representation ℂ G M} (π : M →ₗ[ℂ] V) (hπ : ∀ g m, π (τ g m) = ρ g (π m))
     {m : M} (hm : m ∈ finOrbit τ K) (hy : π m ∈ fixed ρ K) : ∃ m' ∈ fixed τ K, π m' = π m := by
@@ -94,7 +94,7 @@ def permRep (K : Subgroup G) : Representation ℂ G (G ⧸ K →₀ ℂ) where
   map_mul' g h := by ext; simp [mul_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Finsupp.mapDomain (g • ·) (Finsupp.single c a) = _`. Conclude with `Finsupp.mapDomain_single`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem permRep_single (g : G) (c : G ⧸ K) (a : ℂ) :
     permRep K g (Finsupp.single c a) = Finsupp.single (g • c) a := by
@@ -109,18 +109,18 @@ private theorem permRep_apply_eq_mapDomain (g : G) (φ : G ⧸ K →₀ ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[permRep_apply_eq_mapDomain]`. Conclude with `Finsupp.mapDomain_apply (MulAction.injective g) φ c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permRep_apply (g : G) (φ : G ⧸ K →₀ ℂ) (c : G ⧸ K) : permRep K g φ (g • c) = φ c := by
   rw [permRep_apply_eq_mapDomain]
   exact Finsupp.mapDomain_apply (MulAction.injective g) φ c
 
 /- English proof (translation)
-Establish `hpi : (Set.pi Set.univ fun c : φ.support => MulAction.orbit K (c : G ⧸ K)).Finite`. Use `Set.Finite.pi fun c => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `QuotientGroup.mk_surjective (c : G ⧸ K)`. Rewrite using `[← hs]`. Conclude with `Formalism.UG.P.orbit_coset_finite K hK s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Set.range fun k : K => permRep K k φ).Finite`. Use `(hpi.image fun t => ∑ c : φ.support, Finsupp.single (t c) (φ c)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨fun c => k • (c : G ⧸ K), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_univ_pi]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Conclude with `MulAction.mem_orbit _ k`. Use `show (∑ c : φ.support, Finsupp.single (k • (c : G ⧸ K)) (φ c)) = permRep K (k : G) φ`. Rewrite using `[permRep_apply_eq_mapDomain]`. Conclude with `Finset.sum_coe_sort φ.support fun a => Finsupp.single ((k : G) • a) (φ a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_finOrbit (hK : IsCommensurated K) (φ : G ⧸ K →₀ ℂ) : φ ∈ finOrbit (permRep K) K := by
   classical
@@ -145,7 +145,7 @@ def orbitMap (ρ : Representation ℂ G V) (K : Subgroup G) (x : V) : (G ⧸ K �
   Finsupp.linearCombination ℂ fun c => ρ c.out x
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (s := K) g`. Simplify using `only [orbitMap, Finsupp.linearCombination_single]`. Rewrite using `[hk, map_mul, Module.End.mul_apply, (mem_fixed_iff_twisted_operators ρ K x).1 hx k]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitMap_single (hx : x ∈ fixed ρ K) (g : G) (a : ℂ) :
     orbitMap ρ K x (Finsupp.single (g : G ⧸ K) a) = a • ρ g x := by
@@ -154,9 +154,9 @@ theorem orbitMap_single (hx : x ∈ fixed ρ K) (g : G) (a : ℂ) :
   rw [hk, map_mul, Module.End.mul_apply, (mem_fixed_iff_twisted_operators ρ K x).1 hx k]
 
 /- English proof (translation)
-Proceed by induction on `φ using Finsupp.induction_linear with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add φ₁ φ₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Consider the case `single c a`. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[permRep_single, MulAction.Quotient.smul_mk, smul_eq_mul, orbitMap_single hx, orbitMap_single hx, map_smul, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitMap_permRep (hx : x ∈ fixed ρ K) (g : G) (φ : G ⧸ K →₀ ℂ) :
     orbitMap ρ K x (permRep K g φ) = ρ g (orbitMap ρ K x φ) := by
@@ -169,13 +169,11 @@ theorem orbitMap_permRep (hx : x ∈ fixed ρ K) (g : G) (φ : G ⧸ K →₀ �
       map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Set `S : Subrepresentation ρ` to `⟨LinearMap.range (orbitMap ρ K x), by`. Introduce `g v hv`. Take `⟨φ, rfl⟩` from `LinearMap.mem_range.1 hv`. Conclude with `LinearMap.mem_range.2 ⟨permRep K g φ, orbitMap_permRep hx g φ⟩⟩`. Establish `hxS : x ∈ S.toSubmodule` using `by show x ∈ LinearMap.range (orbitMap ρ K x)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.mem_range.2 ⟨Finsupp.single ((1 : G) : G ⧸ K) 1, ?_⟩` and prove the remaining obligations. Rewrite using `[orbitMap_single hx, one_smul, map_one, Module.End.one_apply]`. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := hρ`. Break down `eq_bot_or_eq_top S with h | h` into its components or cases. Rewrite `hxS` using `[h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd ((Submodule.mem_bot ℂ).1 hxS) h0`. Introduce `y`. Establish `hy : y ∈ S.toSubmodule`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`.
-
-Conclude with `LinearMap.mem_range.1 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitMap_surjective (hρ : ρ.IsIrreducible) (hx : x ∈ fixed ρ K) (h0 : x ≠ 0) :
     Function.Surjective (orbitMap ρ K x) := by
@@ -199,19 +197,17 @@ theorem orbitMap_surjective (hρ : ρ.IsIrreducible) (hx : x ∈ fixed ρ K) (h0
     exact LinearMap.mem_range.1 hy
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `orbitMap_surjective hρ hx h0 y`. Take `⟨ψ, hψ, hψφ⟩` from `exists_fixed_preimage (orbitMap ρ K x) (fun g m => orbitMap_permRep hx g m) (mem_finOrbit hK φ) (by rw [hφ]; exact hy)`. Establish `hψ' : ∀ (a : K) (c : G ⧸ K), ψ ((a : G) • c) = ψ c`. Introduce `a c`. Establish `h1` using `(mem_fixed_iff_twisted_operators (permRep K) K ψ).1 hψ a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨fun g => ψ (g : G ⧸ K), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.UG.P.mem_hecke_iff]`. Unfold `Formalism.UG.IsBiInv Formalism.UG.FinDosetSupp`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b g show ψ (((a : G) * g * b : G) : G ⧸ K) = ψ (g : G ⧸ K)`. Establish `hab : (((a : G) * g * b : G) : G ⧸ K) = (a : G) • (g : G ⧸ K)`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq]`. Establish `e : ((a : G) * g * b)⁻¹ * ((a : G) * g) = (b : G)⁻¹` using `by group`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mem b.2`. Rewrite using `[hab, hψ']`. Use `⟨ψ.support.image (fun c : G ⧸ K => c.out), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (s := K) g`. Use `⟨(g : G ⧸ K).out, Finset.mem_image_of_mem _ (Finsupp.mem_support_iff.2 hg), 1, k⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Simplify using the standard rewrite rules. Unfold `heckeVec`. Simplify using `only [QuotientGroup.out_eq']`. Rewrite using `[finsum_eq_sum_of_support_subset (s := ψ.support), ← hφ, ← hψφ]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [orbitMap, Finsupp.linearCombination_apply, Finsupp.sum]`. Introduce `c hc`. Rewrite `hc` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h`.
-
-Conclude with `hc (by simp [h])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_heckeVec_eq (hK : IsCommensurated K) (hρ : ρ.IsIrreducible) (hx : x ∈ fixed ρ K) (h0 : x ≠ 0)
     {y : V} (hy : y ∈ fixed ρ K) : ∃ f ∈ Hecke ℂ K, heckeVec ρ K f x = y := by
@@ -253,15 +249,13 @@ theorem exists_heckeVec_eq (hK : IsCommensurated K) (hρ : ρ.IsIrreducible) (hx
       exact hc (by simp [h])
 
 /- English proof (translation)
-Introduce `h hh`. Distinguish the cases in `hz : ∃ v ∈ fixed ρ K, v ≠ 0`. Take `⟨v, hv, hv0⟩` from `hz`. Set `T : Module.End ℂ (fixed ρ K)` to `(heckeLin hK hh ρ).restrict (fun y hy => by`. Rewrite using `[heckeLin_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heckeVec_mem_fixed hK hh hy)`. Use `haveI : Nontrivial (fixed ρ K) := ⟨⟨⟨v, hv⟩, 0, fun e => hv0 (congrArg Subtype.val e)⟩⟩`. Take `⟨c, hev⟩` from `Module.End.exists_eigenvalue T`. Take `⟨w, hw⟩` from `hev.exists_hasEigenvector`. Establish `hw0 : (w : V) ≠ 0` using `fun e => hw.2 (Subtype.ext e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTw : heckeVec ρ K h w = c • (w : V)`. Use `congrArg Subtype.val hw.apply_eq_smul` as an intermediate fact. Simplify `this` using `[T]`. Use `⟨c, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `exists_heckeVec_eq hK hρ w.2 hw0 hy`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← heckeVec_conv hK hh hf w.2, hc h hh f hf, heckeVec_conv hK hf hh w.2, hTw, heckeVec_smul hK hf]`. Use `push_neg at hz`. Use `⟨0, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hz y hy, zero_smul]`. Use `heckeVec_smul (ρ := ρ) hK hh (0 : ℂ) (0 : V)` as an intermediate fact.
-
-Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem heckeVec_scalar (G : Type) [Group G] (K : Subgroup G) (hK : IsCommensurated K)
     (hc : ∀ f₁ ∈ Hecke ℂ K, ∀ f₂ ∈ Hecke ℂ K, conv K f₁ f₂ = conv K f₂ f₁) (V : Type) [AddCommGroup V] [Module ℂ V]

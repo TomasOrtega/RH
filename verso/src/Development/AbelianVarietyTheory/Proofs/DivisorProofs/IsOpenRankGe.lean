@@ -7,11 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMemTwistSpan
 open ValuativeRel Matrix
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ s`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `X hX`. Take `⟨H, Q, hHQ⟩` from `GlobalTheory.T.matrix_rank_normal_form k A D X`. Establish `hc : Continuous fun Y : Matrix A D k => (H * Y * Q).det` using `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_det`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hopen : IsOpen {Y : Matrix A D k | (H * Y * Q).det ≠ 0}` using `isOpen_ne_fun hc continuous_const`. Use `filter_upwards [hopen.mem_nhds (by simp [hHQ])] with Y hY`. Use `replace hY : (H * Y * Q).det ≠ 0 := hY`. Use `show s ≤ Y.rank`. Use `le_trans hX ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (H * Y * Q)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hY)`. Establish `hr : (H * Y * Q).rank = X.rank`. Rewrite using `[Matrix.rank_of_isUnit _ hu]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.isOpen_setOf_le_rank_localField : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D]

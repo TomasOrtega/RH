@@ -19,7 +19,7 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1
 variable {V : Type} [CommRing V]
 
 /- English proof (translation)
-Establish `hy : Formalism.L2.Pj.homAt (𝟙 (Sp V)) aug ≫ (Formalism.L2.Pj.homAt (𝟙 (Sp V)) ψ₁ ≫ x m) = 1`. Rewrite using `[← Category.assoc, GermD.homAt_comp, h1, hx.2.1]`. Conclude with `(hx.2.2 A aug m hk _ hy).unique ⟨h1, rfl⟩ ⟨h2, e⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq {G : Over (Sp V)} [GrpObj G] {κ : Type} {x : GlobalTheory.PowGerm.JetPts G κ} (hx : GlobalTheory.PowGerm.IsUnivJ G κ x)
     {A : Type} [CommRing A] [Algebra V A] (aug : A →ₐ[V] V) (m : ℕ) (hk : RingHom.ker aug ^ (m + 1) = ⊥)
@@ -36,13 +36,13 @@ theorem jetSubstP_trunc {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ
     jetSubstP m (fun p => psTrunc m (φ p)) = jetSubstPS (m := m) φ := rfl
 
 /- English proof (translation)
-The claim follows from `ExpUniqJet.augmentation_jet_variable m j`.
+A detailed English derivation is pending.
 -/
 theorem aug_X {κ : Type} (m : ℕ) (j : κ) :
     (jetAug : Jet V κ m →ₐ[V] V) (Ideal.Quotient.mk _ (MvPolynomial.X j)) = 0 := ExpUniqJet.augmentation_jet_variable m j
 
 /- English proof (translation)
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, ExpChartJet.jetSubstPS_mk m φ hφ, GaugeR.jetAug_psJet, hφ, aug_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem aug_comp_subst {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (m : ℕ)
     (φ : κ → MvPowerSeries κ' V) (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) :
@@ -52,13 +52,13 @@ theorem aug_comp_subst {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ
   rw [AlgHom.comp_apply, ExpChartJet.jetSubstPS_mk m φ hφ, GaugeR.jetAug_psJet, hφ, aug_X]
 
 /- English proof (translation)
-Establish `h` using `fun m => (hx.2.2 (Jet V κ' m) jetAug m (ExpUniqLoc.ker_aug_pow le_rfl) (x' m) (hx'.2.1 m)).exists`. Use `choose ψ hψa hψ using h`. Establish `hc : ∀ m, (jetTrunc : Jet V κ' (m + 1) →ₐ[V] Jet V κ' m).comp (ψ (m + 1)) = (ψ m).comp (jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m)`. Introduce `m`. Use `uniq hx (jetAug : Jet V κ' m →ₐ[V] V) (m + 1) (ExpUniqLoc.ker_aug_pow (by omega)) ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.comp_assoc, ExpUniqLoc.aug_comp_trunc, hψa]`. Rewrite using `[← AlgHom.comp_assoc, hψa, ExpUniqLoc.aug_comp_trunc]`. Rewrite using `[← GermD.homAt_comp, ← GermD.homAt_comp, Category.assoc, Category.assoc, hx.1, ← hψ, ← hψ, hx'.1]`. Establish `hs` using `fun i : κ => GaugeR.exists_ps_of_compat (fun m => ψ m (Ideal.Quotient.mk _ (MvPolynomial.X i))) (fun m => DFunLike.congr_fun (hc m) _)`. Use `choose φ hφ using hs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0`. Introduce `i`. Rewrite using `[← GaugeR.jetAug_psJet 0, hφ, ← AlgHom.comp_apply, hψa, aug_X]`. Use `⟨φ, h0, fun m => ?_⟩` and prove the remaining obligations. Establish `: jetSubstPS (m` using `m) φ = ψ m := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[ExpChartJet.jetSubstPS_mk m φ h0, hφ]`. Rewrite using `[this]`. Conclude with `hψ m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord {G : Over (Sp V)} [GrpObj G] {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ']
     {x : GlobalTheory.PowGerm.JetPts G κ} (hx : GlobalTheory.PowGerm.IsUnivJ G κ x) {x' : GlobalTheory.PowGerm.JetPts G κ'}
@@ -89,11 +89,11 @@ theorem exists_coord {G : Over (Sp V)} [GrpObj G] {κ κ' : Type} [Fintype κ] [
   exact hψ m
 
 /- English proof (translation)
-Apply `GermFun.psJet_inj` to reduce the goal to its premises. Introduce `m`. Establish `e : (jetSubstPS (m` using `m) φi).comp (jetSubstPS (m := m) φ) = AlgHom.id V _ := by`. Use `uniq hx (jetAug : Jet V κ m →ₐ[V] V) m (ExpUniqLoc.ker_aug_pow le_rfl) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, aug_comp_subst m φi h0i, aug_comp_subst m φ h0]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← GermD.homAt_comp, Category.assoc, ← hφ, ← hφi, GermD.homAt_id, Category.id_comp]`. Establish `e'` using `DFunLike.congr_fun e (Ideal.Quotient.mk _ (MvPolynomial.X i))`. Rewrite `e'` using `[AlgHom.comp_apply, ExpChartJet.jetSubstPS_mk m φ h0, ExpChartJet.jetSubstPS_psJet m φi h0i]`. Rewrite using `[e', ← MvPolynomial.coe_X]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GaugeR.psJet_eq_mk m _ _ fun e _ => (MvPolynomial.coeff_coe _ _).symm).symm`.
+A detailed English derivation is pending.
 -/
 theorem subst_eq_X {G : Over (Sp V)} [GrpObj G] {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ']
     {x : GlobalTheory.PowGerm.JetPts G κ} (hx : GlobalTheory.PowGerm.IsUnivJ G κ x) {x' : GlobalTheory.PowGerm.JetPts G κ'}
@@ -119,17 +119,15 @@ end GlobalTheory.ChartCmp.Coord
 namespace GlobalTheory.ChartCmp
 
 /- English proof (translation)
-Introduce `V _ G _ d x x' hx hx'`. Take `⟨φ, h0, hφ⟩` from `Coord.exists_coord hx hx'`. Take `⟨φi, h0i, hφi⟩` from `Coord.exists_coord hx' hx`. Establish `key : ∀ f : Fin 1 × Fin d → MvPowerSeries (Fin 1 × Fin d) V, (fun p : Fin 1 × Fin d => f (0, p.2)) = f`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[show ((0 : Fin 1), p.2) = p from Prod.ext (Subsingleton.elim _ _) rfl]`. Establish `key2 : ∀ f : Fin 1 × Fin d → MvPowerSeries (Fin 1 × Fin d) V, (fun p : Fin 1 × Fin d => (![fun j => f (0, j)] : Fin 1 → Pt V 1 d) p.1 p.2) = f`. Introduce `f`. Use function extensionality and compare the values at `p`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨a, b⟩` from `p`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Use `⟨fun j => φ (0, j), fun j => φi (0, j), ⟨fun i => h0 _, fun i => h0i _, ?_, ?_⟩, fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [comp1, ev, pt]`. Rewrite using `[key2]`. Conclude with `Coord.subst_eq_X hx h0 hφ h0i hφi _`. Use function extensionality and compare the values at `i`. Simplify using `only [comp1, ev, pt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key2]`. Conclude with `Coord.subst_eq_X hx' h0i hφi h0 hφ _`. Rewrite using `[Coord.jetSubstP_trunc m (fun p : Fin 1 × Fin d => φ (0, p.2)), key]`. Conclude with `hφ m`. Rewrite using `[Coord.jetSubstP_trunc m (fun p : Fin 1 × Fin d => φi (0, p.2)), key]`.
-
-Conclude with `hφi m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coordRel_of_isUnivJ : ∀ (V : Type) [CommRing V] (G : Over (Sp V)) [GrpObj G] (d : ℕ) (x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G), GlobalTheory.PowGerm.IsUnivJ G (Fin 1 × Fin d) x → GlobalTheory.PowGerm.IsUnivJ G (Fin 1 × Fin d) x' → ∃ φ φi : Pt V 1 d, IsInvPair φ φi ∧ CoordRel x x' φ ∧ CoordRel x' x φi := by
   intro V _ G _ d x x' hx hx'

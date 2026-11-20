@@ -49,7 +49,7 @@ def FinLemma : Prop :=
     RefInputs X cr → ContentSupport N X'' d g₁ g₂ → FinAt X cr N
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem W1_retuple (X : CxData A) (cr : Crd A fc) (N : IndefNum Bs) (μ : HeightOneSpectrum (𝓞 K) → Bs.Tup)
     (Tw : Finset (HeightOneSpectrum (𝓞 K))) (w : HeightOneSpectrum (𝓞 K)) :
@@ -60,11 +60,11 @@ def FiveSet (X : CxData A) (cr : Crd A fc) (N : IndefNum Bs) (w : HeightOneSpect
     jw ((lv (fc X.zs) false).HT j Bs.μ0) w ((lv (fc X.zs) false).Tl j Bs.μ0) ≠ 0 ∨ N.F0 w j ≠ 0 ∨ N.F0 (conjPl w) j ≠ 0
 
 /- English proof (translation)
-Unfold `CxData.W1 FiveSet`. Rewrite using `[ValuationRepresentative.conjPl_conjPl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, h | h | h | h | h | h⟩`. Conclude with `Or.inl ⟨j, Or.inl h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl ⟨j, Or.inr (Or.inl h)⟩`. Conclude with `Or.inl ⟨j, Or.inr (Or.inr (Or.inl h))⟩`. Conclude with `Or.inr ⟨j, Or.inr (Or.inr (Or.inl h))⟩`. Conclude with `Or.inl ⟨j, Or.inr (Or.inr (Or.inr (Or.inl h)))⟩`. Conclude with `Or.inl ⟨j, Or.inr (Or.inr (Or.inr (Or.inr h)))⟩`.
+Prove the first alternative. Prove the first alternative. Prove the second alternative. Prove the first alternative. Prove the first alternative.
 
-Apply the tactic sequence `rintro (⟨j, h⟩ | ⟨j, h⟩) <;> exact ⟨j, by tauto⟩`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem W1_iff_fiveSet_or_fiveSet_conjPl (X : CxData A) (cr : Crd A fc) (N : IndefNum Bs) (w : HeightOneSpectrum (𝓞 K)) :
     X.W1 cr N w ↔ FiveSet X cr N w ∨ FiveSet X cr N (conjPl w) := by
@@ -81,7 +81,7 @@ theorem W1_iff_fiveSet_or_fiveSet_conjPl (X : CxData A) (cr : Crd A fc) (N : Ind
   · rintro (⟨j, h⟩ | ⟨j, h⟩) <;> exact ⟨j, by tauto⟩
 
 /- English proof (translation)
-The claim follows from `hM T_lat j := wf.Tl_lat j _ form_nondeg j := by obtain ⟨hu, he⟩ := wf.XT_herm j Bs.μ0 intro h0 have h1 : (((lv (fc X.zs) false).HT j Bs.μ0).map Bs.v0.embedding).det = 0 := by have := (Bs.v0.embedding).map_det ((lv (fc X.zs) false).HT j Bs.μ0) rw [h0, map_zero] at this exact this. …`.
+A detailed English derivation is pending.
 -/
 theorem refInputs_of_links (X : CxData A) (cr : Crd A fc) (wf : (lv (fc X.zs) false).WF) (hM : X.MLat false)
     (hK : X.KForm false) (hE : X.EWnorm false) (hp : X.H4pos) (h5 : X.H5 cr false) (hr : X.RATth cr false) :
@@ -130,7 +130,7 @@ def stdLat : Submodule (𝓞 K) (Fin 1 → K) := Submodule.span (𝓞 K) (Set.ra
 
 omit [StarRing K] in
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _) span_eq_top := by rw [eq_top_iff, ← (Pi.basisFun K (Fin 1)).span_eq] exact Submodule.span_mono Submodule.subset_span`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_isLattice : Submodule.IsLattice K (stdLat K) where
   fg := Submodule.fg_span (Set.finite_range _)
@@ -183,7 +183,7 @@ def cx : CxData (amb K v0) where
   err0 _ _ := 0
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify `h` using `[lin, Fintype.linearCombination_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lin_one_inj : Function.Injective (lin (fun _ : Fin 1 => (1 : ℂ))) := by
   intro x y h
@@ -197,7 +197,7 @@ Both sides reduce to the same expression.
 theorem exampleTwistChoice_w0C (j : Unit) : (cx K v0).w0C false j = lin (fun _ : Fin 1 => (1 : ℂ)) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `lin (fun k : Fin 1 => v0.embedding ((Pi.single k (1 : K) : Fin 1 → K) 0)) = _`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `fin_cases k`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tC_eq (j : Unit) : (cx K v0).tC (crd K v0) false j false = lin (fun _ : Fin 1 => (1 : ℂ)) := by
   change lin (fun k : Fin 1 => v0.embedding ((Pi.single k (1 : K) : Fin 1 → K) 0)) = _
@@ -207,7 +207,7 @@ theorem tC_eq (j : Unit) : (cx K v0).tC (crd K v0) false j false = lin (fun _ : 
   simp
 
 /- English proof (translation)
-The claim follows from `stdLat_isLattice K T_lat _ := stdLat_isLattice K form_nondeg _ := by change (2 : Matrix (Fin 1) (Fin 1) K).det ≠ 0 rw [Matrix.det_unique] change ((2 : ℕ) : Matrix (Fin 1) (Fin 1) K) default default ≠ 0 simp [Matrix.natCast_apply, Matrix.ofNat_apply] w_inj j := lin_one_inj theta_i …`.
+A detailed English derivation is pending.
 -/
 theorem refInputs : RefInputs (cx K v0) (crd K v0) where
   M_lat _ := stdLat_isLattice K

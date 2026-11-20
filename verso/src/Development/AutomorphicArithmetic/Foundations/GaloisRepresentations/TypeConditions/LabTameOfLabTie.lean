@@ -14,11 +14,9 @@ namespace GlobalTheory.LabLaws
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
 /- English proof (translation)
-Use `⟨fun k v a ha σ hσ hw => ?_, fun k v a ha hs hb => ?_⟩` and prove the remaining obligations. Use `haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩`. Rewrite `ha` using `[(hT k v).2.2, ← T.dim]`. Rewrite using `[T.inePol _ a σ hσ, ← T.dim]`. Conclude with `WD.inePol_wild_of_natDegree_lab ha hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩`. Rewrite `ha` using `[(hT k v).2.2, ← T.dim]`. Rewrite `hs` using `[(hT k v).2.2]`. Use `(UpperTheory.GalS.nc_iff T a).2 (UpperTheory.GalS.SepW.ncW ⟨WD.tame_of_natDegree_lab ha, _, (hT k v).2.1.1, ?_⟩ (UpperTheory.GalS.thr_split (H.g_prime k) (A.plGw_over k v) (N.g_split k) (by rwa [T.dim])))` and prove the remaining obligations. Rewrite using `[WD.inePol_eq_of_natDegree_lab _ _ _ ha]`.
-
-Conclude with `GlobalTheory.GoodRowMono.separable_prod_teich _ (hT k v).1 hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labTameS_of_labTie {T : GlobalTheory.RowTie.WDTie N A} {τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ}
     {γ : Fin 2 → PlE H → G H.E N.Om} (hT : LabTie T τ γ) : UpperTheory.GalS.LabTameS N A := by

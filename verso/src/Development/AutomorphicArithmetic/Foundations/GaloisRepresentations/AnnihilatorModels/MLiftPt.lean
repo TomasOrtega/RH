@@ -9,33 +9,29 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `V _ _ _ _ B _ _ _ _ χ hχ`. Set `m : Ideal B` to `RingHom.ker χ`. Use `haveI : m.IsPrime := RingHom.ker_isPrime χ`. Take `⟨q, hqmin, hqm⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal B)) (J := m) bot_le`. Use `haveI : q.IsPrime := hqmin.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnzd : ∀ v : V, v ≠ 0 → algebraMap V B v ∈ nonZeroDivisors B`. Introduce `v hv`. Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(smul_eq_zero.mp hx).resolve_left hv`. Rewrite `hx` using `[← Algebra.commutes, ← Algebra.smul_def]`. Conclude with `(smul_eq_zero.mp hx).resolve_left hv`. Establish `hinj : Function.Injective (algebraMap V (B ⧸ q))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hv0`. Rewrite `hv` using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Set.disjoint_left.mp (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hqmin) hv (hnzd v hv0)`. Establish `hK : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective V (FractionRing V)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : Module.IsTorsionFree V (B ⧸ q) := by`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r x h => ?_` and prove the remaining obligations. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp_left fun h => hinj (by rw [h, map_zero])`. Use `haveI : Module.IsTorsionFree V (FractionRing V) := by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Module.IsTorsionFree.of_smul_eq_zero fun r x h => ?_` and prove the remaining obligations. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp_left fun h => hK (by rw [h, map_zero])`. Use `haveI : Algebra.IsIntegral V (B ⧸ q) := inferInstance`. Use `haveI : Algebra.IsAlgebraic V (B ⧸ q) := Algebra.IsIntegral.isAlgebraic`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `φ : (B ⧸ q) →ₐ[V] FractionRing V` to `IsAlgClosed.lift`. Establish `hker : RingHom.ker (φ : (B ⧸ q) →+* FractionRing V) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := V)` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, Ideal.mem_bot, RingHom.coe_coe, AlgHom.commutes]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `map_eq_zero_iff _ hK`. Establish `hφinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `: x ∈ RingHom.ker (φ : (B ⧸ q) →+* FractionRing V)` using `hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hker]`. Then use the resulting hypothesis. Set `ψ : B →ₐ[V] FractionRing V` to `φ.comp (Ideal.Quotient.mkₐ V q)`. Establish `hψ : ∀ b, ψ b ∈ (⊥ : Subalgebra V (FractionRing V))`. Introduce `b`. Rewrite using `[Algebra.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp ((Algebra.IsIntegral.isIntegral (R := V) (Ideal.Quotient.mkₐ V q b)).map φ)`. Conclude with `⟨y, hy⟩`. Set `e` to `Algebra.botEquivOfInjective hK`. Set `z : B →ₐ[V] V` to `e.toAlgHom.comp (ψ.codRestrict ⊥ hψ)`. Establish `hz : ∀ b, algebraMap V (FractionRing V) (z b) = ψ b`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `h1` using `e.symm_apply_apply (ψ.codRestrict ⊥ hψ b)`. Establish `h2` using `e.symm.commutes (z b)`. Establish `h3 : (algebraMap V V) (z b) = e (ψ.codRestrict ⊥ hψ b)` using `rfl`. Rewrite `h2` using `[h3, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (fun s : (⊥ : Subalgebra V (FractionRing V)) => (s : FractionRing V)) h2`. Simplify using `using h4.symm`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Establish `hc : b - algebraMap V B (z b) ∈ q`.
-
-Establish `h0 : z (b - algebraMap V B (z b)) = 0`. Rewrite using `[map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Establish `h1 : ψ (b - algebraMap V B (z b)) = 0`. Rewrite using `[← hz, h0, map_zero]`. Establish `h2 : Ideal.Quotient.mkₐ V q (b - algebraMap V B (z b)) = 0` using `hφinj (by rw [map_zero]; exact h1)`.
-
-Rewrite `h2` using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis. Establish `hm : χ (b - algebraMap V B (z b)) = 0` using `hqm hc`. Rewrite `hm` using `[map_sub, sub_eq_zero]`. Rewrite using `[hm, ← RingHom.comp_apply, hχ]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.liftPt_of :
     LiftPt := by

@@ -11,9 +11,9 @@ namespace GlobalTheory.PerDecAtRef
 open Formalism.BasicNotions in
 
 /- English proof (translation)
-Establish `h : la.valuation K (a : K) ≤ 1` using `la.valuation_le_one a`. Unfold `vAdd`. Break down `eq_or_ne (la.valuation K (a : K)) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, WithZero.log_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : WithZero.log (la.valuation K (a : K)) ≤ 0`. Rewrite using `[WithZero.log_le_iff_le_exp h0]`. Simplify using `using h`. Conclude with `neg_nonneg.mpr h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem vAdd_nonneg_of_int {K : Type} [Field K] [NumberField K] (la : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K))
     (a : NumberField.RingOfIntegers K) : 0 ≤ vAdd la (a : K) := by
@@ -31,21 +31,19 @@ end GlobalTheory.PerDecAtRef
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI l Z hZ u Ch chOf F hF`. Introduce `x hx G hG c`. Take `⟨y0, hy0, hrd⟩` from `hZ.ref u G hG c`. Establish `hpr : ∀ w, ((I.perIn u I.mu0).per B.fields.emb B.embLL (l.ch u I.mu0) (l.per u I.mu0) (B.hcW u)).period w (((I.rec7 l Z).eMt u).symm G) = (I.perIn u I.mu0).ipP B.fields.emb B.embLL (l.per u I.mu0) (F.jM (((I.rec7 l Z).eMt u).symm G)) w`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hper` using `F.per`. Unfold `Formalism.L2.Forms.PerTie at hper`. Conclude with `hper.2.2 w _`. Establish `key` using `GlobalTheory.T.classPairing_integral_form_row_isIntegral B.fields.emb B.embLL (I.perIn u I.mu0) (l.ch u I.mu0) (l.per u I.mu0) (B.hcW u) (l.fmL u I.mu0).famP (((I.rec7 l Z).eMt u).symm G) (F.jM (((I.rec7 l Z).eMt u).symm G)) hpr c y0 ?ha ?hb`. Use `case ha => clear hpr hZ hI hx hG hrd hF`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `hL : (I.perIn u I.mu0).S'.Lsh c.fst ((I.perIn u I.mu0).S'.rep c) = (((I.stX I.mu0).rep c).1.1.deco).1.N` using `GlobalTheory.PeriodOnStep.Lsh_eq_N _`. Rewrite using `[hL]`. Conclude with `hy0`. Use `case hb => clear hpr hZ hI hx hG hy0 hF`. Use `hrd using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `key x hx`. Use `⟨(a : B.fields.K), ?_, ?_⟩` and prove the remaining obligations. Establish `hw` using `hF.eW`. Establish `hsingle : ∀ (dec : ∀ c' : ((I.rec7 l Z).fm u).clsP, Decidable (c' = c)) (v : ((I.rec7 l Z).mem u).P.Wrow), F.valP.eW.symm (fun c' => @ite _ (c' = c) (dec c') (F.valP.eW v c') 0) = fun (c' : (I.perIn u I.mu0).S'.Cl) => if c' = c then v c' else 0`. Introduce `dec v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `F.valP.eW.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `c' s`. Use `erw [hw _ c' s ⟨s.1, s.2⟩ rfl]`. Distinguish the cases in `h : c' = c`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_pos h, if_pos (show @Eq (I.perIn u I.mu0).S'.Cl c' c from h)] erw [hw v c' s ⟨s.1, s.2⟩ rfl]`. Rewrite using `[if_neg h, if_neg (show ¬ @Eq (I.perIn u I.mu0).S'.Cl c' c from h)]`. Both sides reduce to the same expression. Unfold `Formalism.MainNotions.RT.PeriodPointConditions.pcL Formalism.MainNotions.RT.PeriodPointConditions.resC`. Rewrite using `[hsingle, hsingle]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear key hpr hrd hy0 hG hZ hI hx hsingle hw hF`. Use `ha.trans ?_` and prove the remaining obligations. Use `congr! 4`. Apply the tactic sequence `exact congrArg (fun f => ⇑((I.perIn u I.mu0).ipP B.fields.emb B.embLL (l.per u I.mu0) f)) (funext fun c' => by by_cases h : c' = c <;> simp [h])`. Introduce `w right`.
-
-Conclude with `GlobalTheory.PerDecAtRef.vAdd_nonneg_of_int _ a`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PerDecAtRef.perDec0At_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), GlobalTheory.PerQ.RowInt I l Z → ∀ (u : B.Word) (Ch : ℕ → Type) (chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i) (F : FormsTiedSym (I.rec7 l Z) u Ch chOf), I.StdF l Z u F → Formalism.MainNotions.RT.PeriodPointConditions.PerDec0At F := by
   intro B X I hI l Z hZ u Ch chOf F hF

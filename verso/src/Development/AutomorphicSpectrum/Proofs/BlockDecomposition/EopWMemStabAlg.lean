@@ -37,7 +37,7 @@ def kAt (w : InfinitePlace E) : UU n →* GA E n := (gAt w).comp Unitary.toUnits
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem one_apply_pi (i j : Fin n) (v : InfinitePlace E) :
     (1 : Matrix (Fin n) (Fin n) (Cinf E)) i j v = (1 : Matrix (Fin n) (Fin n) ℂ) i j := by
@@ -48,7 +48,7 @@ theorem one_apply_pi (i j : Fin n) (v : InfinitePlace E) :
 omit [NumberField E] [IsCMField E] in
 open Classical in
 /- English proof (translation)
-Establish `e : ((locInf w g : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E)) i j v = (1 : Matrix (Fin n) (Fin n) (Cinf E)) i j v - singleN w ((1 : Matrix (Fin n) (Fin n) ℂ) i j) v + singleN w ((g : Matrix (Fin n) (Fin n) ℂ) i j) v` using `rfl`. Rewrite using `[e, one_apply_pi]`. Express the relevant statement in the definitionally equal form `_ - (if v = w then _ else 0) + (if v = w then _ else 0) = _`. Apply the tactic sequence `by_cases hv : v = w <;> simp [hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locInf_apply (w : InfinitePlace E) (g : PositivityTheory.RgTw.G n) (i j : Fin n) (v : InfinitePlace E) :
     ((locInf w g : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E)) i j v =
@@ -79,7 +79,7 @@ def kInfAt (w : InfinitePlace E) (c : UU n) : Kinf E n :=
       simp [Matrix.one_apply, eq_comm]⟩
 
 /- English proof (translation)
-Unfold `kAt gAt`. Simplify using `only [MonoidHom.comp_apply]`. Use `congr 1`. Conclude with `Units.ext rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem infGL_kInfAt (w : InfinitePlace E) (c : UU n) :
     infGL E n (Unitary.toUnits (kInfAt w c)) = kAt w c := by
@@ -106,14 +106,14 @@ def stabAlg (π : CuspSub E n) : Subalgebra ℂ (Module.End ℂ (Sm E n)) where
   algebraMap_mem' c ψ hψ := π.V.smul_mem c hψ
 
 /- English proof (translation)
-Establish `hL : ∀ X, lie E n X ∈ stabAlg π` using `fun X ψ hψ => π.stable (.lie X) ψ hψ`. Conclude with `(stabAlg π).smul_mem ((stabAlg π).sub_mem (hL _) ((stabAlg π).smul_mem (hL _) _)) _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Eop_mem_stabAlg (π : CuspSub E n) (τ : E →+* ℂ) (i j : Fin n) : Eop (a := n) τ i j ∈ stabAlg π := by
   have hL : ∀ X, lie E n X ∈ stabAlg π := fun X ψ hψ => π.stable (.lie X) ψ hψ
   exact (stabAlg π).smul_mem ((stabAlg π).sub_mem (hL _) ((stabAlg π).smul_mem (hL _) _)) _
 
 /- English proof (translation)
-Consider the cases of `s`. Conclude with `Eop_mem_stabAlg π _ i j`. Conclude with `Eop_mem_stabAlg π _ i j`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem eopW_mem_stabAlg (π : CuspSub E n) (w : InfinitePlace E) (s : Bool) (i j : Fin n) :
     PositivityTheory.RgBcC.Bridge.eopW w s i j ∈ stabAlg π := by
@@ -122,7 +122,7 @@ theorem eopW_mem_stabAlg (π : CuspSub E n) (w : InfinitePlace E) (s : Bool) (i 
   · exact Eop_mem_stabAlg π _ i j
 
 /- English proof (translation)
-The claim follows from `(stabAlg π).add_mem (eopW_mem_stabAlg π w true a b) ((stabAlg π).neg_mem (eopW_mem_stabAlg π w false b a))`.
+A detailed English derivation is pending.
 -/
 theorem kG_mem_stabAlg (π : CuspSub E n) (w : InfinitePlace E) (a b : Fin n) : kG w a b ∈ stabAlg π :=
   (stabAlg π).add_mem (eopW_mem_stabAlg π w true a b)

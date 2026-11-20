@@ -10,7 +10,7 @@ open scoped ENNReal Classical
 namespace GlobalTheory.Mass
 
 /- English proof (translation)
-Establish `key` using `trace_eq_sum_embeddings (K := ℚ) (L := K) ℂ (x := z)`. Establish `hre` using `congrArg Complex.re key`. Rewrite `hre` using `[Complex.re_sum]`. Rewrite using `[← hre]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_cast_eq_sum_re {K : Type} [Field K] [NumberField K] (z : K) :
     ((Algebra.trace ℚ K z : ℚ) : ℝ) = ∑ τ : K →ₐ[ℚ] ℂ, (τ z).re := by
@@ -21,7 +21,7 @@ theorem trace_cast_eq_sum_re {K : Type} [Field K] [NumberField K] (z : K) :
   simp
 
 /- English proof (translation)
-Use `hK` as an intermediate fact. Unfold `Formalism.HermitianLatticesTheory.fDeg`. Rewrite using `[IsTotallyComplex.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_algHom_eq_two_mul_fDeg {K : Type} [Field K] [NumberField K] (hK : IsTotallyComplex K) :
     Module.finrank ℚ K = 2 * fDeg K := by
@@ -31,13 +31,13 @@ theorem card_algHom_eq_two_mul_fDeg {K : Type} [Field K] [NumberField K] (hK : I
     IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]
 
 /- English proof (translation)
-Establish `hprod : ((∏ τ : K →ₐ[ℚ] ℂ, (τ (z : K)).re : ℝ) : ℂ) = ∏ τ : K →ₐ[ℚ] ℂ, τ (z : K)`. Rewrite using `[Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `Complex.ext (by simp) (by simp [hre τ])`. Establish `hnorm` using `Algebra.norm_eq_prod_embeddings (K := ℚ) (E := ℂ) (z : K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((((Algebra.norm ℤ z : ℤ) : ℚ) : ℝ) : ℂ) = ((∏ τ : K →ₐ[ℚ] ℂ, (τ (z : K)).re : ℝ) : ℂ)`. Rewrite using `[hprod, ← hnorm, Algebra.coe_norm_int]`. Simplify using the standard rewrite rules. Establish `hN : (((Algebra.norm ℤ z : ℤ) : ℚ) : ℝ) = ∏ τ : K →ₐ[ℚ] ℂ, (τ (z : K)).re` using `Complex.ofReal_injective h2`. Establish `hP : (0 : ℝ) < ∏ τ : K →ₐ[ℚ] ℂ, (τ (z : K)).re` using `Finset.prod_pos fun τ _ => hpos τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : (1 : ℝ) ≤ ∏ τ : K →ₐ[ℚ] ℂ, (τ (z : K)).re`. Rewrite `hP`, the goal using `[← hN]`. Establish `h3 : (0 : ℤ) < Algebra.norm ℤ z` using `by exact_mod_cast hP`. Establish `h4 : (1 : ℤ) ≤ Algebra.norm ℤ z` using `h3`. Conclude with `h4` after adjusting the coercions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hL` using `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.traceLower (K →ₐ[ℚ] ℂ) (fun τ => (τ (z : K)).re) (fun τ => (hpos τ).le) hN1`. Simplify `hL` using `only [AlgHom.card]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_le_trace_of_integral {K : Type} [Field K] [NumberField K] (z : 𝓞 K)
     (hre : ∀ τ : K →ₐ[ℚ] ℂ, (τ (z : K)).im = 0) (hpos : ∀ τ : K →ₐ[ℚ] ℂ, 0 < (τ (z : K)).re) :
@@ -64,13 +64,13 @@ theorem finrank_le_trace_of_integral {K : Type} [Field K] [NumberField K] (z : �
   simpa only [AlgHom.card] using hL
 
 /- English proof (translation)
-Set `bV` to `Module.finBasis K V`. Set `bK` to `Module.finBasis ℚ K`. Set `g : Fin (Module.finrank ℚ K) × Fin (Module.finrank K V) → E` to `fun p => ι (bK p.1 • bV p.2)`. Establish `hsub : Set.range ι ⊆ Submodule.span ℝ (Set.range g)`. Introduce and unpack `_ ⟨v, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← bV.sum_repr v, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← bK.sum_repr (bV.repr v j), Finset.sum_smul, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, mul_smul, map_ratCast_smul ι K ℝ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i, j), rfl⟩)`. Establish `hEq : Submodule.span ℝ (Set.range g) = ⊤`. Use `top_le_iff.mp ?_` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Submodule.span_le.mpr hsub`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `finrank_range_le_card (R := ℝ) g`. Rewrite `hc` using `[Set.finrank, hEq, finrank_top]`. Simplify `hc` using `[Fintype.card_prod]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_le_of_span_range {K V E : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [AddCommGroup E] [Module ℝ E] (ι : V →+ E)
@@ -97,53 +97,47 @@ theorem finrank_le_of_span_range {K V E : Type} [Field K] [NumberField K] [AddCo
   simpa [Fintype.card_prod] using hc
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hK hs hPD L hL B hB`. Establish `hK'` using `hK`. Unfold `Formalism.HermitianLatticesTheory.IsCMUnram at hK'`. Take `⟨hTC, hCM, -⟩` from `hK'`. Establish `hPD'` using `hPD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `PD at hPD'`. Establish `hL'` using `hL`. Unfold `IsIntLat at hL'`. Establish `hInt` using `hL'.2`. Unfold `Formalism.HermitianLatticesTheory.IsIntegralLat at hInt`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hreal : ∀ (x : V) (τ : K →+* ℂ), (τ (h x x)).im = 0`. Introduce `x τ`. Establish `e1` using `hCM τ (h x x)`. Establish `e2 : star (h x x) = h x x`. Use `hs.eq x x` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[starRingEnd_apply]`. Rewrite `e1` using `[e2]`. Conclude with `Complex.conj_eq_iff_im.mp e1.symm`. Establish `hcard : Fintype.card (K →ₐ[ℚ] ℂ) = Module.finrank ℚ K` using `by simp`. Establish `hne : Nonempty (K →ₐ[ℚ] ℂ)` using `Fintype.card_pos_iff.mp (hcard ▸ Module.finrank_pos)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr_pos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x)`. Introduce `x hx`. Establish `e` using `trace_cast_eq_sum_re (h x x)`. Establish `hs' : (0 : ℝ) < ∑ τ : K →ₐ[ℚ] ℂ, (τ (h x x)).re` using `Finset.sum_pos (fun τ _ => hPD' τ.toRingHom x hx) Finset.univ_nonempty`. Rewrite `hs'` using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hs'` after adjusting the coercions. Take `⟨N, ι, hinner, -, -⟩` from `Formalism.HermitianLatticesTheory.final_traceReal K V h hs htr_pos`. Establish `hnorm : ∀ x : V, ‖ι x‖ ^ 2 = ∑ τ : K →ₐ[ℚ] ℂ, (τ (h x x)).re`. Introduce `x`. Rewrite using `[← real_inner_self_eq_norm_sq, hinner, trace_cast_eq_sum_re]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlong : ∀ x ∈ L, x ≠ 0 → (Module.finrank ℚ K : ℝ) ≤ ‖ι x‖ ^ 2`. Introduce `x hx hx0`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp (hInt x hx x hx)`. Establish `hr' : ((r : 𝓞 K) : K) = h x x` using `hr`. Rewrite using `[hnorm, ← hr']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finrank_le_trace_of_integral r (fun τ => ?_) (fun τ => ?_)` and prove the remaining obligations. Rewrite using `[hr']`. Conclude with `hreal x τ.toRingHom`. Rewrite using `[hr']`. Conclude with `hPD' τ.toRingHom x hx0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hshort : ∀ x : V, (∀ τ : K →+* ℂ, (τ (h x x)).re ≤ B) → ‖ι x‖ ^ 2 ≤ (Module.finrank ℚ K : ℝ) * B`. Introduce `x hx`. Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ι`. Introduce `a b hab`. Assume the negation of the conclusion as `hne'`. Establish `hd : a - b ≠ 0` using `sub_ne_zero.mpr hne'`. Establish `h0 : ι (a - b) = 0` using `by rw [map_sub, hab, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp` using `htr_pos (a - b) hd`. Establish `hq : ‖ι (a - b)‖ ^ 2 = ((Algebra.trace ℚ K (h (a - b) (a - b)) : ℚ) : ℝ)`. Rewrite using `[← real_inner_self_eq_norm_sq, hinner]`. Rewrite `hq` using `[h0, norm_zero]`. Establish `: ((Algebra.trace ℚ K (h (a - b) (a - b)) : ℚ) : ℝ) = 0` using `by rw [← hq]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.trace ℚ K (h (a - b) (a - b)) = 0` using `by exact_mod_cast this`. Conclude with `absurd this hp.ne'`. Use `set E := EuclideanSpace ℝ (Fin N)`. Use `set Es : Submodule ℝ E := Submodule.span ℝ (Set.range ι) with hEs`. Set `ι' : V →+ Es` to `AddMonoidHom.mk' (fun x => ⟨ι x, Submodule.subset_span ⟨x, rfl⟩⟩) (fun a b => Subtype.ext (map_add ι a b))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hι' : ∀ x, ((ι' x : Es) : E) = ι x` using `fun x => rfl`. Establish `hspan : Submodule.span ℝ (Set.range ι') = ⊤`. Establish `e : Set.range ι' = ((↑) : Es → E) ⁻¹' (Set.range ι)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, rfl⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, Subtype.ext hx⟩`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.span_span_coe_preimage`. Establish `hdim : Module.finrank ℝ Es ≤ 2 * Module.finrank K V * fDeg K`. Establish `h1` using `finrank_le_of_span_range (K := K) (V := V) ι' hspan`. Rewrite `h1` using `[card_algHom_eq_two_mul_fDeg hTC]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set D : ℝ := (Module.finrank ℚ K : ℝ) with hD`. Establish `hD0 : 0 < D`. Rewrite using `[hD]`. Conclude with `Module.finrank_pos` after adjusting the coercions. Use `set Λ : AddSubgroup Es := L.toAddSubgroup.map ι'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl0 : 0 < Real.sqrt D` using `Real.sqrt_pos.mpr hD0`. Establish `hmin : ∀ y ∈ Λ, y ≠ 0 → Real.sqrt D ≤ ‖y‖`. Introduce `y hy hy0`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hy`. Establish `hx0 : x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce and unpack `rfl`. Conclude with `hy0 (map_zero ι')`. Establish `e : ‖ι' x‖ = ‖ι x‖` using `rfl`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨hfin, hcount⟩` from `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.packing Es Λ (Real.sqrt D) (Real.sqrt (D * B)) hl0 (Real.sqrt_nonneg _) hmin`. Establish `hratio : 2 * Real.sqrt (D * B) / Real.sqrt D = 2 * Real.sqrt B`. Rewrite using `[Real.sqrt_mul hD0.le, mul_div_assoc, mul_div_cancel_left₀ _ hl0.ne']`. Rewrite `hcount` using `[hratio]`. Establish `hbase : (1 : ℝ) ≤ 1 + 2 * Real.sqrt B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Real.sqrt_nonneg B` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow` using `pow_le_pow_right₀ hbase hdim`. Establish `hmaps : Set.MapsTo ι' {x | x ∈ L ∧ ∀ τ : K →+* ℂ, (τ (h x x)).re ≤ B} {y : Es | y ∈ Λ ∧ ‖y‖ ≤ Real.sqrt (D * B)}`. Introduce and unpack `x ⟨hx, hxB⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨AddSubgroup.mem_map_of_mem ι' hx, ?_⟩` and prove the remaining obligations. Establish `e : ‖ι' x‖ = ‖ι x‖` using `rfl`. Rewrite using `[e]`. Use `Real.abs_le_sqrt (hshort x hxB)` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
-
-Establish `hinj' : Set.InjOn ι' {x | x ∈ L ∧ ∀ τ : K →+* ℂ, (τ (h x x)).re ≤ B}`. Introduce `a _ b _ hab`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hι' a, ← hι' b, hab]`. Establish `hle` using `Set.encard_le_encard_of_injOn hmaps hinj'`.
-
-Rewrite `hle` using `[← hfin.cast_ncard_eq]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle` after adjusting the coercions. Use `_ = ENNReal.ofReal (({y : Es | y ∈ Λ ∧ ‖y‖ ≤ Real.sqrt (D * B)}.ncard : ℝ)) := by`. Simplify using the standard rewrite rules.
-
-Use `_ ≤ ENNReal.ofReal ((1 + 2 * Real.sqrt B) ^ (2 * Module.finrank K V * fDeg K)) := ENNReal.ofReal_le_ofReal (hcount.trans hpow)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem encard_shortVectors_le : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → ∀ L : Submodule (𝓞 K) V, IsIntLat h L → ∀ B : ℝ, 0 ≤ B → (({x : V | x ∈ L ∧ ∀ τ : K →+* ℂ, (τ (h x x)).re ≤ B}.encard : ℕ∞) : ℝ≥0∞) ≤ ENNReal.ofReal ((1 + 2 * Real.sqrt B) ^ (2 * Module.finrank K V * fDeg K)) := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hPD L hL B hB

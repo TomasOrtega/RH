@@ -20,43 +20,37 @@ open ReciprocityTheory.AnForm (levi)
 
 open GroundTheory.Heights₂.Heights ReciprocityTheory.ChartRestriction.G.AI.I1 MvPolynomial in
 /- English proof (translation)
-Introduce `_ Ω Ω' _ _ _ i K K' _ _ J J' _ _ y y' bk bx a a' hbk hy hy' ha ha' hnef W hW hle hchar hdim`. Establish `hp : (charOf W).Prime` using `PB.prime_charOf_of_ne_zero hW.1 hchar`. Establish `hpW` using `Inter.C_charOf_mem W`. Generalize the expression as in `charOf W = p at hp hpW`. Establish `: Fact p.Prime` using `⟨hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Set `v : (Σ k, J k) → Σ k, J' k` to `fun x => ⟨bk x.1, bx x.1 x.2⟩`. Establish `hv : IsBlockMap bk v`. Use `⟨hbk, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, x⟩ ⟨k₁, x₁⟩ h`. Take `⟨h1, h2⟩` from `Sigma.mk.inj_iff.1 h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hbk h1`. Take `rfl` from `(bx k).injective (eq_of_heq h2)`. Both sides reduce to the same expression. Introduce and unpack `⟨_, x⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, (bx k).symm x⟩, by simp [v]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨L, _, _, w, c, hL, hc, hw⟩` from `LevelTowerAlt.exists_curve_point p hW hpW hdim`. Establish `hle' : mCoordIdeal (fun x : Σ k, J k => y' ⟨bk x.1, bx x.1 x.2⟩) ≤ mCoordIdeal w`. Simplify using `only [hy]`. Rewrite using `[hw, CoordinateConeArithVar.mCoordIdeal_comp i y]`. Conclude with `hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, L₁, _, _, σ, _, _, w₀, w', h1, h2, h3, h4⟩` from `LevelTowerAlt.exists_lift_blk y' bk bx hbk hy' w c hc hle'`. Establish `: CharP L p` using `charP_of_injective_algebraMap (algebraMap (ZMod p) L).injective p`. Establish `: CharP k₀ p` using `σ.charP σ.injective p`. Establish `: CharP L₁ p` using `charP_of_injective_algebraMap (algebraMap k₀ L₁).injective p`. Set `_ : Algebra (ZMod p) k₀` to `ZMod.algebra k₀ p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Algebra (ZMod p) L₁` to `ZMod.algebra L₁ p`. Establish `: IsScalarTower (ZMod p) k₀ L₁` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hL₁ : Algebra.trdeg (ZMod p) L₁ ≤ 1`. Rewrite using `[← trdeg_add_eq (ZMod p) k₀, trdeg_eq_zero (R := k₀), add_zero, ← hL]`. Conclude with `trdeg_le_of_injective ⟨σ, fun r => RingHom.congr_fun (Subsingleton.elim (σ.comp (algebraMap (ZMod p) k₀)) (algebraMap (ZMod p) L)) r⟩ σ.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hpW', m, hm, hmd⟩` from `LevelTowerAlt.dim_le p hL₁ w'`. Use `choose c' hc' using h3`. Establish `hW' : IsMultiProjPrime (mCoordIdeal w')` using `⟨RingHom.ker_isPrime _, CoordinateConeArithVar.isMultiHomogIdeal w', CoordinateConeArithVar.relevant w' c' hc'⟩`. Establish `himg : AI.I4.imageZ v (mCoordIdeal w') = W`. Rewrite using `[← Inter.BlockRatioAlgebraic.mCoordIdeal_comp_v hv, ← hw, ← funext h1, CoordinateConeArithVar.mCoordIdeal_comp σ w₀, ← CoordinateConeArithVar.mCoordIdeal_comp (algebraMap k₀ L₁) w₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg _ (funext h2)`. Establish `hQ'` using `LevelTowerAlt.map_red_prime p hW' hpW'`. Establish `hcm'` using `Bridge.GeoNum.comap_map_eq p (LevelTowerAlt.ker_red_le p hpW')`. Establish `hcm` using `Bridge.GeoNum.comap_map_eq p (LevelTowerAlt.ker_red_le p hpW)`. Use `set Q' := (mCoordIdeal w').map (Bridge.GeoNum.red p) with hQ'_def`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `set Q := W.map (Bridge.GeoNum.red p) with hQ_def`. Establish `hiv : imageVar (ZMod p) v Q' = Q`. Use extensionality with `f`. Take `⟨g, rfl⟩` from `Bridge.GeoNum.red_surjective p f`. Express the relevant statement in the definitionally equal form `rename v (Bridge.GeoNum.red p g) ∈ Q' ↔ g ∈ Q.comap (Bridge.GeoNum.red p)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcm, ← himg, Bridge.GeoNum.red, ← map_rename]`. Express the relevant statement in the definitionally equal form `rename v g ∈ Q'.comap (Bridge.GeoNum.red p) ↔ _`. Rewrite using `[hcm']`. Both sides reduce to the same expression. Establish `hQd : ringKrullDim (MRingOver (ZMod p) J ⧸ Q) = ((1 + Fintype.card K : ℕ) : WithBot ℕ∞)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← ringKrullDim_eq_of_ringEquiv (Bridge.GeoNum.quotEquiv p Q), hcm]`. Conclude with `hdim`. Establish `hcd : FieldNumbers.relDim (FieldNumbers.contractPrime (Targets.ProjContract.emb hv) Q') = ((1 : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[FieldNumbers.CutRegular.relDim_eq_natCast_iff, ← Targets.ProjContract.ringKrullDim_imageVar hv, hiv]`. Conclude with `hQd`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hge` using `FieldNumbers.ContractRelDimLe.proof (ZMod p) K K' (Targets.ProjContract.emb hv) J' Q' hQ'`. Establish `hrel : FieldNumbers.relDim Q' = ((((m : ℤ) - Fintype.card K' : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))`. Unfold `FieldNumbers.relDim`. Rewrite using `[hmd]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : m = 1 + Fintype.card K'`. Rewrite `hge` using `[hcd, hrel]`. Establish `h5 : ((1 : ℕ) : ℤ) ≤ (m : ℤ) - Fintype.card K'` using `WithTop.coe_le_coe.1 (WithBot.coe_le_coe.1 hge)`. Use linear arithmetic over natural numbers and integers. Substitute `hm'` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ'd` using `(FieldNumbers.CutRegular.relDim_eq_natCast_iff Q' 1).2 hmd`. Establish `hdim' : ringKrullDim (MRing J' ⧸ mCoordIdeal w') = ((1 + Fintype.card K' : ℕ) : WithBot ℕ∞)`. Rewrite using `[← hcm', ringKrullDim_eq_of_ringEquiv (Bridge.GeoNum.quotEquiv p Q')]`. Conclude with `hmd`. Establish `h6` using `hnef _ hW' h4 (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.charOf_ne_zero_of_mem hp.ne_zero (by simpa using hpW')) hdim'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite `h6` using `[← Bridge.intNum_map_eq_geoNum p 1 _ hW' hpW' hdim']`. Rewrite using `[← Bridge.intNum_map_eq_geoNum p 1 _ hW hpW hdim]`. Use `hQ'.isPrime` as an intermediate fact. Establish `h7` using `(GlobalTheory.CompanionTheory.FieldNumbers.projectionFormulaDegree (ZMod p) K K' (Targets.ProjContract.emb hv) J' Q' hQ' 1 hQ'd hcd fun _ => a).2`. Establish `h8` using `FieldNumbers.FunctionFieldFinite.proof FieldNumbers.MChartDehomog.proof (FieldNumbers.MChartTrdeg.proof FieldNumbers.MChartHomog.proof) (ZMod p) K K' (Targets.ProjContract.emb hv) J' Q' hQ' (hcd.trans hQ'd.symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h9 : FieldNumbers.pullDeg (Targets.ProjContract.emb hv) a = a'`. Use function extensionality and compare the values at `k'`. Distinguish the cases in `hk : k' ∈ Set.range bk`. Take `⟨k, rfl⟩` from `hk`. Rewrite using `[ha]`.
-
-Conclude with `hbk.extend_apply _ _ k`. Rewrite using `[ha' k' hk]`. Conclude with `Function.extend_apply' _ _ _ hk`. Establish `h10` using `FieldNumbers.RenameIntNum.full (ZMod p) K K J (fun k => J' (Targets.ProjContract.emb hv k)) (Equiv.refl K) (Targets.ProjContract.blockEquiv hv) (fun x => hbk ((congrArg Sigma.fst (Targets.ProjContract.blockIncl_blockEquiv hv x)))) (FieldNumbers.contractPrime (Targets.ProjContract …`. Establish `h11 : NumbersDVR.intNum (ZMod p) Q (fun _ : Fin 1 => a) = NumbersDVR.intNum (ZMod p) (FieldNumbers.contractPrime (Targets.ProjContract.emb hv) Q') (fun _ : Fin 1 => a)`.
-
-Rewrite using `[← hiv, Targets.ProjContract.imageVar_eq hv]`. Conclude with `h10`. Rewrite `h7` using `[h9, ← h11]`. Express the relevant statement in the definitionally equal form `0 ≤ NumbersDVR.intNum (ZMod p) Q' (fun _ : Fin 1 => a') at h6`. Rewrite `h6` using `[h7]`.
-
-Conclude with `nonneg_of_mul_nonneg_right h6 (by exact_mod_cast Nat.pos_of_ne_zero h8)`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevelTowerAlt.nef_fibres_block_embedding : PB.Inputs → ∀ (Ω Ω' : Type) [Field Ω] [Field Ω'] [CharZero Ω] (i : Ω →+* Ω') (K K' : Type) [Fintype K] [Fintype K'] (J : K → Type) (J' : K' → Type) [∀ k, Fintype (J k)] [∀ k, Fintype (J' k)] (y : (Σ k, J k) → Ω) (y' : (Σ k, J' k) → Ω') (bk : K → K') (bx : ∀ k, J k ≃ J' (bk k)) (a : K → ℤ) (a' : K' → ℤ), Function.Injective bk → (∀ k x, y' ⟨bk k, bx k x⟩ = i (y ⟨k, x⟩)) → (∀ k, ∃ x, y' ⟨k, x⟩ ≠ 0) → (∀ k, a' (bk k) = a k) → (∀ k', k' ∉ Set.range bk → a' k' = 0) → NefOnFibres (mCoordIdeal y') a' → NefOnFibres (mCoordIdeal y) a := by
   classical

@@ -25,9 +25,9 @@ open TwDet
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Use `W.smul_mem ((χ g : k)⁻¹) (h g v hv)` as an intermediate fact. Rewrite `this` using `[tw_val, Matrix.smul_mulVec, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Then use the resulting hypothesis. Introduce `h g v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tw_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInv_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ)
     (W : Submodule k (Fin n → k)) : IsInv (tw r χ) W ↔ IsInv r W := by
@@ -40,7 +40,7 @@ theorem isInv_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (F
     exact W.smul_mem _ (h g v hv)
 
 /- English proof (translation)
-Introduce `W hW`. Take `⟨W', hW', hc⟩` from `h W ((isInv_tw r χ W).2 hW)`. Conclude with `⟨W', (isInv_tw r χ W').1 hW', hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ss_of_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ)
     (h : IsSSRep (tw r χ)) : IsSSRep r := by
@@ -49,16 +49,14 @@ theorem ss_of_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (F
   exact ⟨W', (isInv_tw r χ W').1 hW', hc⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun _ _ _ => trivial, fun W' hW' hi => h.2.2 W' hW' fun g v hv => (isInv_tw r χ W').1 hi g v hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem irr_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ) (H : Subgroup Γ)
     (h : IsIrr (r.comp H.subtype)) : IsIrr (tw r χ) :=
   ⟨h.1, fun _ _ _ => trivial, fun W' hW' hi => h.2.2 W' hW' fun g v hv => (isInv_tw r χ W').1 hi g v hv⟩
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((N : ℕ) : 𝓞 ℚ)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_not] at hw`.
-
-Conclude with `Ideal.dvd_span_singleton.2 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_not_mem (N : ℕ) (hN : N ≠ 0) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 ℚ) in Filter.cofinite, ((N : ℕ) : 𝓞 ℚ) ∉ w.asIdeal := by
@@ -70,13 +68,13 @@ theorem ev_not_mem (N : ℕ) (hN : N ≠ 0) :
   exact Ideal.dvd_span_singleton.2 hw
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normV_eq (w : HeightOneSpectrum (𝓞 ℚ)) : normV w = Ideal.absNorm w.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc⟩`. Apply `hwM` to reduce the goal to its premises. Rewrite using `[hc, Nat.cast_mul, normV_eq]`. Conclude with `w.asIdeal.mul_mem_right _ (Ideal.absNorm_mem _)`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_dvd_of_not_mem {M : ℕ} {w : Pl} (hwM : ((M : ℕ) : 𝓞 ℚ) ∉ w.asIdeal) : ¬ normV w ∣ M := by
   rintro ⟨c, hc⟩
@@ -85,9 +83,7 @@ theorem not_dvd_of_not_mem {M : ℕ} {w : Pl} (hwM : ((M : ℕ) : 𝓞 ℚ) ∉ 
   exact w.asIdeal.mul_mem_right _ (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Establish `hpr : Prime (p : 𝓞 ℚ)`. Establish `e : (p : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm (p : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr (Nat.prime_iff_prime_int.1 hp)`. Establish `hm : (Ideal.span {(p : 𝓞 ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hpr.ne_zero).2 hpr).isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpr.ne_zero)`.
-
-Conclude with `(hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem asIdeal_eq {p : ℕ} (hp : p.Prime) {w : Pl} (hw : ((p : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) :
     w.asIdeal = Ideal.span {((p : ℕ) : 𝓞 ℚ)} := by
@@ -100,21 +96,21 @@ theorem asIdeal_eq {p : ℕ} (hp : p.Prime) {w : Pl} (hw : ((p : ℕ) : 𝓞 ℚ
   exact (hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)).symm
 
 /- English proof (translation)
-Rewrite using `[normV_eq, asIdeal_eq hp hw, Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normV_of_mem {p : ℕ} (hp : p.Prime) {w : Pl} (hw : ((p : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) : normV w = p := by
   rw [normV_eq, asIdeal_eq hp hw, Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]
 
 /- English proof (translation)
-Establish `hc' : φ c ≠ 0` using `by simpa using hc`. Establish `hcard : B.card = 2`. Establish `h1` using `congrArg natDegree h`. Rewrite `h1` using `[natDegree_map, Matrix.charpoly_natDegree_eq_dim]`. Establish `h2` using `natDegree_multiset_prod_X_sub_C_eq_card (B.map (φ c * ·))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Multiset.map_map]`. Simplify using `only [Function.comp_def, Multiset.card_map] at h2`. Rewrite `h1` using `[h2]`. Simplify using `using h1.symm`. Take `⟨x, y, rfl⟩` from `Multiset.card_eq_two.1 hcard`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `h`, the goal using `[Matrix.charpoly_fin_two]`. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton, Polynomial.map_add, Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_pow, map_X, map_C, Matrix.trace_smul, Matrix.det_smul, smul_eq_mul, map_mul, map_pow, …`. Establish `e0` using `congrArg (eval 0) h`. Establish `e1` using `congrArg (eval 1) h`. Simplify using `only [eval_add, eval_sub, eval_mul, eval_pow, eval_X, eval_C] at e0 e1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : φ M.det = x * y`. Apply `mul_left_cancel₀ (pow_ne_zero 2 hc')` to reduce the goal to its premises. Take the linear combination `e0`. Establish `ht : φ M.trace = x + y`. Apply `mul_left_cancel₀ hc'` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `e0 - e1`. Rewrite using `[hd, ht, C_add, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scale_charpoly {k : Type} [Field k] (φ : k →+* ℂ) (M : Matrix (Fin 2) (Fin 2) k) (c : k) (hc : c ≠ 0)
     (B : Multiset ℂ) (h : (c • M).charpoly.map φ = (B.map fun b => X - C (φ c * b)).prod) :
@@ -146,21 +142,21 @@ theorem scale_charpoly {k : Type} [Field k] (φ : k →+* ℂ) (M : Matrix (Fin 
   ring
 
 /- English proof (translation)
-Establish `hl : Fact l.Prime` using `inferInstance`. Take `⟨π, hinf, hsat⟩` from `P.newform k hk f (-j)`. Use `⟨π, fun v => ⟨_, hinf v, ?_, ?_⟩, ⟨ss_of_tw _ _ hf.1, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Multiset.insert_eq_cons, Multiset.nodup_cons, Multiset.mem_singleton, Multiset.nodup_singleton, and_true]`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (k : ℂ) = 1` using `by linear_combination h`. Establish `h2 : k = 1` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Introduce `z hz`. Simplify using `only [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton] at hz`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Break down `hz with rfl | rfl` into its components or cases. Conclude with `⟨-j, by push_cast; ring⟩`. Conclude with `⟨1 - k - j, by push_cast; ring⟩`. Use `filter_upwards [hf.2, ev_not_mem l hl.out.ne_zero, ev_not_mem f.M f.pos.ne'] with w hw hwl hwM`. Take `⟨B, hB, hpoly⟩` from `hsat w (not_dvd_of_not_mem hwM)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, hB, fun A hA => ⟨fun s hs => ?_, fun σ hσ => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(hw A hA).1 s hs`. Establish `h2 : cycZ ℚ Ω l s = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq (v := w) hwl hA (q := 1) (fun x hx => by simpa using hs.2 x hx) n]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h3 : (cycBar ℚ Ω l ^ j) s = 1`. Rewrite using `[MonoidHom.zpow_apply, cycBar, MonoidHom.comp_apply, h2, map_one, one_zpow]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h4` using `congrArg Units.val h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h4` using `[tw_val, h3, Units.val_one, one_smul]`. Then use the resulting hypothesis. Establish `h1` using `(hw A hA).2 σ hσ`. Rewrite `h1` using `[tw_val, ← hpoly]`. Use `scale_charpoly ι.toRingHom _ _ (Units.ne_zero ((cycBar ℚ Ω l ^ j) σ⁻¹)) _ ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((cycBar ℚ Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ ℚ Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[cycZ_of_isFrob hwl hA hσ, map_natCast, map_natCast]`. Establish `h3 : ι.toRingHom (((cycBar ℚ Ω l ^ j) σ⁻¹ : (Qbar l)ˣ) : Qbar l) = (normV w : ℂ) ^ (-j)`. Rewrite using `[MonoidHom.zpow_apply, map_inv, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, h2, map_zpow₀, map_inv₀, map_natCast, inv_zpow']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Use `filter_upwards [ev_not_mem f.M f.pos.ne'] with w hwM`. Conclude with `hsat w (not_dvd_of_not_mem hwM)`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep (P : Af.Hypotheses₂) [IsAlgClosure ℚ Ω] {k : ℕ} (hk : 2 ≤ k) (f : Newform k) (ι : Qbar l ≃+* ℂ) (W : R2 Ω l) (j : ℤ)
     (hf : f.Att ι (tw W (cycBar ℚ Ω l ^ j))) :
@@ -207,11 +203,9 @@ theorem exists_rep (P : Af.Hypotheses₂) [IsAlgClosure ℚ Ω] {k : ℕ} (hk : 
     exact hsat w (not_dvd_of_not_mem hwM)
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Use `⟨Fintype.card (ZMod N)ˣ, Fintype.card_pos, fun s => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_pow]`. Use `h _ fun ζ hζ => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hz.eq_pow_of_pow_eq_one hζ`. Establish `h1` using `hz.autToPow_spec ℚ (s ^ Fintype.card (ZMod N)ˣ)`. Rewrite `h1` using `[map_pow, pow_card_eq_one, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hz.pow_eq_one, pow_one]`.
-
-Rewrite using `[map_pow, ← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_kills [IsAlgClosure ℚ Ω] {C : Type} [CommGroup C] {N : ℕ} (hN : 0 < N) {φ : G ℚ Ω →* C}
     (h : KillsMu N φ) : ∃ m : ℕ, 1 ≤ m ∧ ∀ s, φ s ^ m = 1 := by
@@ -228,9 +222,9 @@ theorem pow_eq_one_of_kills [IsAlgClosure ℚ Ω] {C : Type} [CommGroup C] {N : 
   rw [map_pow, ← h1]
 
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := ℚ) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ s fun ζ hζ => hs ζ hζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_kills [IsAlgClosure ℚ Ω] {C : Type} [Group C] {M : ℕ} (hM : 0 < M) {φ : G ℚ Ω →* C} (hφ : KillsMu M φ) :
     IsOpen (φ.ker : Set (G ℚ Ω)) := by
@@ -246,7 +240,7 @@ theorem isOpen_ker_kills [IsAlgClosure ℚ Ω] {C : Type} [Group C] {M : ℕ} (h
     exact hφ s fun ζ hζ => hs ζ hζ
 
 /- English proof (translation)
-Use `Units.continuous_val.comp (continuous_of_continuousAt_one φ ?_)` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : (Qbar l)ˣ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ker_kills hM hφ).mem_nhds (Subgroup.one_mem _)] with s hs`. Conclude with `(MonoidHom.mem_ker.1 hs).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_of_kills [IsAlgClosure ℚ Ω] {M : ℕ} (hM : 0 < M) {φ : G ℚ Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) :
     Continuous fun s => (φ s : Qbar l) := by
@@ -256,18 +250,18 @@ theorem cont_of_kills [IsAlgClosure ℚ Ω] {M : ℕ} (hM : 0 < M) {φ : G ℚ �
   exact (MonoidHom.mem_ker.1 hs).symm
 
 /- English proof (translation)
-Introduce `s hs`. Simplify using `[hφ s hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem kills_inv {M : ℕ} {φ : G ℚ Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) : KillsMu M φ⁻¹ := by
   intro s hs
   simp [hφ s hs]
 
 /- English proof (translation)
-Establish `hl : Fact l.Prime` using `inferInstance`. Take `⟨v, hv, hlv⟩` from `hA`. Establish `hA : A.valuation (l : Ω) < 1` using `by simpa using (hv (l : 𝓞 ℚ)).2 hlv`. Establish `hu : IsUnit ((l + 1 : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PadicInt.norm_natCast_eq_one_iff.2 (by simp)`. Take `⟨s, hs, he⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA hu.unit`. Use `⟨s, hs, fun k hk h => ?_⟩` and prove the remaining obligations. Establish `h2 : ((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l) = (l + 1 : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l])) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, hu.unit_spec, map_natCast, map_natCast]`. Establish `h3` using `congrArg Units.val h`. Rewrite `h3` using `[Units.val_pow_eq_pow_val, h2, Units.val_one, ← Nat.cast_pow, Nat.cast_eq_one, Nat.pow_eq_one]`. Use `hl.out.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem cyc_inf [IsAlgClosure ℚ Ω] {A : ValuationSubring Ω} (hA : OverL l A) :
     ∃ s ∈ Ine (F := ℚ) A, ∀ k : ℕ, k ≠ 0 → cycBar ℚ Ω l s ^ k ≠ 1 := by
@@ -288,7 +282,7 @@ theorem cyc_inf [IsAlgClosure ℚ Ω] {A : ValuationSubring Ω} (hA : OverL l A)
   omega
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[l] (Qbar l) (((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])‖ = 1`. Rewrite using `[PadicAlgCl.norm_extends, ← PadicInt.norm_def]`. Conclude with `PadicInt.norm_units _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cyc (s : G ℚ Ω) : ‖((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l)‖ = 1 := by
   change ‖algebraMap ℚ_[l] (Qbar l) (((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])‖ = 1
@@ -296,15 +290,13 @@ theorem norm_cyc (s : G ℚ Ω) : ‖((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l)
   exact PadicInt.norm_units _
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI : CompactSpace (G ℚ Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[ℚ] Ω))`. Take `⟨g, hg⟩` from `h`. Establish `hc : Continuous fun t : G ℚ Ω => ‖(g * W t * g⁻¹ : GL (Fin 2) (Qbar l)) i i‖`. Use `Continuous.norm ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Continuous fun t : G ℚ Ω => (g * W t * g⁻¹ : GL (Fin 2) (Qbar l)).val` using `Units.continuous_val.comp ((continuous_const.mul hW).mul continuous_const)`. Conclude with `h1.matrix_elem i i`. Take `⟨C, hC⟩` from `(isCompact_range hc).bddAbove`. Establish `hb : ∀ t : ↥H, ‖(κ i t : Qbar l)‖ ≤ 1`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C hlt`. Use `hC ⟨((t ^ n : ↥H) : G ℚ Ω), rfl⟩` as an intermediate fact. Simplify using `only at this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[(hg (t ^ n)).2 i, map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hb s`. Establish `h2` using `hb s⁻¹`. Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`.
-
-Establish `h0 : 0 < ‖(κ i s : Qbar l)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Conclude with `le_antisymm h1 ((inv_le_one₀ h0).1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_flag [IsAlgClosure ℚ Ω] {W : R2 Ω l} (hW : Continuous W) {H : Subgroup (G ℚ Ω)} {κ : Fin 2 → ↥H →* (Qbar l)ˣ}
     (h : IsFlagOn W H κ) (i : Fin 2) (s : ↥H) : ‖(κ i s : Qbar l)‖ = 1 := by
@@ -333,7 +325,7 @@ theorem norm_flag [IsAlgClosure ℚ Ω] {W : R2 Ω l} (hW : Continuous W) {H : S
   exact le_antisymm h1 ((inv_le_one₀ h0).1 h2)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨g, fun s => ⟨fun i j hij => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[conj_tw, Matrix.smul_apply, (hg s).1 i j hij, smul_zero]`. Rewrite using `[conj_tw, Matrix.smul_apply, (hg s).2 i]`. Simplify using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flag_twist {W : R2 Ω l} (φ : G ℚ Ω →* (Qbar l)ˣ) {H : Subgroup (G ℚ Ω)} {κ : Fin 2 → ↥H →* (Qbar l)ˣ}
     (h : IsFlagOn W H κ) : IsFlagOn (tw W φ) H (fun i => κ i * φ.comp H.subtype) := by
@@ -344,9 +336,9 @@ theorem flag_twist {W : R2 Ω l} (φ : G ℚ Ω →* (Qbar l)ˣ) {H : Subgroup (
     simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨g, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_tw, hg s hs]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[Matrix.diagonal_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.diagonal_apply, hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem diag_twist {W : R2 Ω l} (φ : G ℚ Ω →* (Qbar l)ˣ) {H : Subgroup (G ℚ Ω)} {χ : Fin 2 → G ℚ Ω →* (Qbar l)ˣ}
     (h : IsDiagOn W H χ) : IsDiagOn (tw W φ) H (fun i => χ i * φ) := by
@@ -359,7 +351,7 @@ theorem diag_twist {W : R2 Ω l} (φ : G ℚ Ω →* (Qbar l)ˣ) {H : Subgroup (
   · simp [Matrix.diagonal_apply, hij]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `e : (mat W s).charpoly = (g * W s * g⁻¹ : GL (Fin 2) (Qbar l)).val.charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[e, Matrix.charpoly_fin_two, Matrix.trace_fin_two, Matrix.det_fin_two, (hg s).1 1 0 (by decide), (hg s).2, (hg s).2]`. Simplify using `only [mul_zero, sub_zero, C_add, C_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -374,7 +366,7 @@ theorem charpoly_flag {W : R2 Ω l} {H : Subgroup (G ℚ Ω)} {κ : Fin 2 → �
   ring
 
 /- English proof (translation)
-Simplify using `only [mat, map_mul, map_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_conj (W : R2 Ω l) (γ s : G ℚ Ω) : (mat W (γ * s * γ⁻¹)).charpoly = (mat W s).charpoly := by
   simp only [mat, map_mul, map_inv]
@@ -382,9 +374,9 @@ theorem charpoly_conj (W : R2 Ω l) (γ s : G ℚ Ω) : (mat W (γ * s * γ⁻¹
       Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨⟨s, hs⟩, t, ht⟩` from `hn`. Establish `h1` using `(h s).resolve_left hs`. Establish `h2` using `(h t).resolve_right ht`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h (s * t) with h3 | h3` into its components or cases. Rewrite `h3` using `[map_mul, map_mul, h2]`. Conclude with `hs (mul_right_cancel h3)`. Rewrite `h3` using `[map_mul, map_mul, h1]`. Conclude with `ht (mul_left_cancel h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_or_eq {H C : Type} [Group H] [CommGroup C] (a b c : H →* C) (h : ∀ s, a s = b s ∨ a s = c s) :
     (∀ s, a s = b s) ∨ ∀ s, a s = c s := by
@@ -400,13 +392,13 @@ theorem eq_or_eq {H C : Type} [Group H] [CommGroup C] (a b c : H →* C) (h : �
     exact ht (mul_left_cancel h3)
 
 /- English proof (translation)
-Take `⟨v, hv, hlv⟩` from `hA`. Take `⟨v', hv', hlv'⟩` from `hA'`. Take `rfl : v = v'` from `HeightOneSpectrum.ext ((asIdeal_eq Fact.out hlv).trans (asIdeal_eq Fact.out hlv').symm)`. Take `⟨γ, hγ⟩` from `exists_smul_eq_of_isPlaceOver hv hv'`. Use `eq_or_eq ((cycBar ℚ Ω l).comp (Dec (F := ℚ) A).subtype) (κ 0) (κ 1) fun s => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : γ * (s : G ℚ Ω) * γ⁻¹ ∈ Dec (F` using `ℚ) A' := by`. Establish `hs'` using `mem_Dec.1 s.2`. Rewrite using `[mem_Dec, mul_smul, mul_smul, ← hγ, inv_smul_smul, hs']`. Establish `h1` using `charpoly_flag h' ⟨_, hs⟩`. Rewrite `h1` using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at h1`. Establish `hc : cycBar ℚ Ω l (γ * (s : G ℚ Ω) * γ⁻¹) = cycBar ℚ Ω l s`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Rewrite `h1` using `[charpoly_conj, charpoly_flag h s, hc]`. Establish `h2` using `congrArg (eval ((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l)) h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [eval_mul, eval_sub, eval_X, eval_C, sub_self, zero_mul, mul_eq_zero, sub_eq_zero] at h2`. Conclude with `h2.imp Units.ext Units.ext`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eps_mem [IsAlgClosure ℚ Ω] {W : R2 Ω l} {A A' : ValuationSubring Ω} (hA : OverL l A) (hA' : OverL l A')
     {κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ} {κ' : Fin 2 → ↥(Dec (F := ℚ) A') →* (Qbar l)ˣ}
@@ -438,37 +430,35 @@ namespace GlobalTheory.Ord2
 open TwDet SrcForm
 
 /- English proof (translation)
-Introduce `P R l hl Ω _ _ _ ι e W hl2 he h`. Establish `hl0 : 0 < l` using `hl.out.pos`. Take `⟨N, hN, hNk⟩` from `UpperTheory.V.CF.kwAbs Ω (dt W).ker (ker_open h.cont h.det2) (Abelianization.commutator_subset_ker (dt W))`. Establish `hθN : KillsMu N (dt W)` using `fun s hs => hNk s hs`. Take `⟨A, χ, κ, hA, hχ, hfl, hine, hk⟩` from `h.flag`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set φ : G ℚ Ω →* (Qbar l)ˣ := (dt W)⁻¹ * χ⁻¹ with hφdef`. Establish `hNl : 0 < N * l` using `Nat.mul_pos hN hl0`. Establish `hφ : KillsMu (N * l) φ` using `killsMu_mul (killsMu_dvd (kills_inv hθN) (dvd_mul_right N l)) (killsMu_dvd (kills_inv hχ) (dvd_mul_left l N))`. Take `⟨g, hg⟩` from `GlobalTheory.T.newform_of_admissible_twist P R l Ω ι e W hl2 he h (N * l) φ hNl hφ`. Establish `hVc : Continuous (tw W φ)` using `tw_cont h.cont (cont_of_kills hNl hφ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVi : IsIrr (tw W φ)` using `irr_tw W φ _ h.irr`. Establish `hVa : ∃ M : ℕ, 1 ≤ M ∧ LevelAway l M (tw W φ)`. Take `⟨M, hM, hlev⟩` from `h.away`. Use `⟨M * (N * l), Nat.mul_pos hM hNl, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨B, hB, ψ, hψ, hd⟩` from `hlev w hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨B, hB, fun i => ψ i * φ, fun i => killsMu_mul (killsMu_dvd (hψ i) (dvd_mul_right _ _)) (killsMu_dvd hφ (dvd_mul_left _ _)), diag_twist φ hd⟩`. Establish `hVd : ∃ M : ℕ, 1 ≤ M ∧ KillsMu M (dt (tw W φ))`. Use `⟨N * l, hNl, ?_⟩` and prove the remaining obligations. Rewrite using `[dt_tw, pow_two]`. Conclude with `killsMu_mul (killsMu_mul hφ hφ) (killsMu_dvd hθN (dvd_mul_right N l))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVf` using `flag_twist φ hfl`. Establish `hVk : ∀ s : ↥(Dec (F` using `ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → (κ 0 * φ.comp (Dec (F := ℚ) A).subtype) s = cycBar ℚ Ω l s ^ (e : ℤ) ∧ (κ 1 * φ.comp (Dec (F := ℚ) A).subtype) s = cycBar ℚ Ω l s ^ (-(e : ℤ)) := by`. Introduce `s hs`. Establish `h1 : dt W (s : G ℚ Ω) = 1` using `hine hs`. Take `⟨h0, h1'⟩` from `hk s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hφdef, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, Subgroup.coe_subtype, h1, inv_one, one_mul, h0, h1', mul_inv_cancel_right, and_self]`. Take `⟨π, hreg, hatt, hsat⟩` from `exists_rep P.toClassicalTheorems (by omega) g ι (tw W φ) (-(e : ℤ)) hg`. Take `⟨v, hv, hlv⟩` from `id hA`. Establish `hnv : normV v = l` using `normV_of_mem hl.out hlv`. Take `⟨Bs, hBs⟩` from `GlobalTheory.T.newform_flag_local_of_irreducible P.toClassicalTheorems l Ω ι e (tw W φ) A _ g hl2 he hVc hVi hVa hVd hA hVf hVk hg π hreg hatt v hlv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlev : ¬ l ∣ g.M` using `hnv ▸ GlobalTheory.NewLevel.newLevel P.toClassicalTheorems P.ssR _ (by omega) g _ π hsat v Bs hBs`. Take `⟨σ, hσ⟩` from `exists_isFrob (Ω := Ω) hv`. Rewrite `hσ` using `[hnv]`. Take `⟨α, hroot, hα⟩` from `GlobalTheory.T.newform_flag_local_of_level P.toClassicalTheorems l Ω ι e (tw W φ) A _ g hl2 he hVc hVi hVa hVd hA hVf hVk hg hlev ⟨σ, hσ.1⟩ hσ`. Use `set u : (Qbar l)ˣ := (κ 0 * φ.comp (Dec (F := ℚ) A).subtype) ⟨σ, hσ.1⟩ * cycBar ℚ Ω l σ ^ (-(e : ℤ)) with hu`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hun : ‖(u : Qbar l)‖ = 1`. Rewrite using `[hu, Units.val_mul, norm_mul, norm_flag hVc hVf 0, Units.val_zpow_eq_zpow_val, norm_zpow, norm_cyc, one_zpow, one_mul]`. Establish `hα' : α = ι (u : Qbar l) ∨ α = (ι (u : Qbar l))⁻¹` using `hα.imp id fun h => by rw [← h, inv_inv]`. Establish `hαn : ‖ι.symm α‖ = 1`. Break down `hα' with h1 | h1` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, RingEquiv.symm_apply_apply, hun]`. Rewrite using `[h1, map_inv₀, RingEquiv.symm_apply_apply, norm_inv, hun, inv_one]`. Take `⟨hal, hpow⟩` from `GlobalTheory.T.newform_unit_root_not_root_of_unity_odd_weight l ι e g α hl2 he hlev hroot hαn`. Use `⟨⟨g, hlev, hal, χ⁻¹, kills_inv hχ, ?_⟩, fun A' κ' hA' hfl' => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[tw_tw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_assoc]`. Conclude with `hg`. Assume the negation of the conclusion as `hn push Not at hn`. Take `⟨m, hm, hχm⟩` from `pow_eq_one_of_kills hl0 hχ`. Take `⟨t, ht, htk⟩` from `cyc_inf hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨h0, h1⟩` from `hk ⟨t, Ine_le_Dec A ht⟩ ht`. Break down `eps_mem hA hA' hfl hfl' hn with hc | hc` into its components or cases. Rewrite `h0` using `[← hc]`. Simplify using `only at h0`. Establish `he1 : e = 1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨d, rfl⟩ : ∃ d, e = d + 1` from `⟨e - 1, by omega⟩`. Use `htk (d * m) (Nat.mul_ne_zero (by omega) (by omega)) ?_` and prove the remaining obligations. Establish `h2 : cycBar ℚ Ω l t ^ d * χ t = 1`. Rewrite `h0` using `[zpow_natCast, pow_succ', mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(left_eq_mul.1 h0)`. Rewrite using `[pow_mul, eq_inv_of_mul_eq_one_left h2, inv_pow, hχm, inv_one]`. Take `⟨m', hm', hφm⟩` from `pow_eq_one_of_kills hNl hφ`. Establish `hu' : u = φ σ`. Rewrite using `[hu, MonoidHom.mul_apply, ← hc, he1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[mul_inv_cancel_comm]`. Establish `hu1 : ι (u : Qbar l) ^ m' = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hu', hφm, Units.val_one, map_one]`. Use `hpow m' hm' ?_` and prove the remaining obligations. Break down `hα' with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, hu1]`. Rewrite using `[h1, inv_pow, hu1, inv_one]`. Rewrite `h1` using `[← hc]`. Simplify using `only at h1`. Use `htk ((e + 1) * m) (Nat.mul_ne_zero (by omega) (by omega)) ?_` and prove the remaining obligations.
-
-Establish `h2 : cycBar ℚ Ω l t ^ (e + 1) = χ t`. Rewrite using `[pow_succ]`. Use `nth_rewrite 2 [h1]`. Rewrite using `[zpow_neg, zpow_natCast, mul_inv_cancel_left]`. Rewrite using `[pow_mul, h2, hχm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem src_and_ne_cyc : Af.HypothesesH → Published.RepNewform → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l), l ≠ 2 → 1 ≤ e → admitted ι e W → (∃ g : Newform (2 * e + 1), FinalTheorems ι e W g) ∧ ∀ (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ), OverL l A → IsFlagOn W (Dec (F := ℚ) A) κ → ∃ s : ↥(Dec (F := ℚ) A), κ 0 s ≠ cycBar ℚ Ω l s := by
   intro P R l hl Ω _ _ _ ι e W hl2 he h

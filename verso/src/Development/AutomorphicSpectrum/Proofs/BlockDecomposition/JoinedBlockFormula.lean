@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
 /- English proof (translation)
-Introduce `D n t a r hn w v y`. Unfold `jn PositivityTheory.Rg.Rsw.L.mm`. Rewrite using `[show bl hn (1 : Mx D r r) y (0 : Mx D t r) (1 : Mx D t t) = (Matrix.fromBlocks (1 : Mx D r r) y (0 : Mx D t r) (1 : Mx D t t)).submatrix (finSumFinEquiv.trans (finCongr hn)).symm (finSumFinEquiv.trans (finCongr hn)).symm from rfl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jnBl : JnBl := by
   intro D n t a r hn w v y

@@ -7,29 +7,29 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries
 
 /- English proof (translation)
-Introduce `F _ _ _ f g a b c hf hg`. Take `⟨⟨D, hD, hfa⟩, hfs⟩` from `hf`. Take `⟨⟨E, hE, hgb⟩, hgs⟩` from `hg`. Establish `hez : ∀ z : Hn F, ez (0 : F) z = 1`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ez, reAt]`. Establish `scale : ∀ (ξ : F) (m k : ℕ), IsIntegral ℤ ((m : F) * ξ) → IsIntegral ℤ (((m * k : ℕ) : F) * ξ) ∧ IsIntegral ℤ (((k * m : ℕ) : F) * ξ)`. Introduce `ξ m k h`. Establish `e1 : ((m * k : ℕ) : F) * ξ = ((k : ℤ) : F) * ((m : F) * ξ)` using `by push_cast; ring`. Establish `e2 : ((k * m : ℕ) : F) * ξ = ((k : ℤ) : F) * ((m : F) * ξ)` using `by push_cast; ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : IsIntegral ℤ ((k : ℤ) : F)` using `isIntegral_algebraMap`. Conclude with `⟨e1 ▸ hk.mul h, e2 ▸ hk.mul h⟩`. Establish `both : ∀ ξ : F, a ξ ≠ 0 ∨ b ξ ≠ 0 → (ξ = 0 ∨ TP ξ) ∧ IsIntegral ℤ (((D * E : ℕ) : F) * ξ)`. Introduce `ξ h`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨h1, h2⟩` from `hfa ξ h`. Conclude with `⟨h1, (scale ξ D E h2).1⟩`. Take `⟨h1, h2⟩` from `hgb ξ h`. Conclude with `⟨h1, (scale ξ E D h2).2⟩`. Establish `hDE : 0 < D * E` using `Nat.mul_pos hD hE`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨⟨⟨D * E, hDE, ?_⟩, ?_⟩, ⟨⟨D, hD, ?_⟩, ?_⟩, ⟨⟨D * E, hDE, ?_⟩, ?_⟩, ⟨⟨1, one_pos, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `ξ h`. Apply `both` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Simplify using `[hc.1, hc.2]`. Introduce `z`. Simplify `(hfs z).add (hgs z)` using `[Pi.add_apply, add_mul]`. Introduce `ξ h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hfa` to reduce the goal to its premises. Introduce `h0`. Apply `h` to reduce the goal to its premises. Simplify using `[h0]`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(hfs z).mul_left c` using `[Pi.smul_apply, smul_eq_mul, mul_assoc]`. Introduce `ξ h`. Apply `both` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `h` to reduce the goal to its premises. Simplify using `[hc.1, hc.2]`. Introduce `z`. Simplify `(hfs z).sub (hgs z)` using `[Pi.sub_apply, sub_mul]`. Introduce `ξ h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : ξ = 0`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Simplify using `[hne]`. Substitute `h0` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Or.inl rfl, ?_⟩` and prove the remaining obligations. Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : F))`. Introduce `z`. Use `hasSum_single (f := fun ξ : F => (open Classical in if ξ = 0 then c else 0) * ez ξ z) (0 : F) (by` as an intermediate fact. Introduce `ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[hξ])`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[hez z]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasQ_lin : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (f g : Hn F → ℂ) (a b : F → ℂ) (c : ℂ), HasQ f a → HasQ g b → HasQ (f + g) (a + b) ∧ HasQ (c • f) (c • a) ∧ HasQ (f - g) (a - b) ∧ HasQ (fun _ : Hn F => c) (fun ξ => open Classical in if ξ = 0 then c else 0) := by
   intro F _ _ _ f g a b c hf hg
@@ -98,7 +98,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.hasQ_lin | exact GlobalTheory.HilbertThetaSeries.hasQ_lin | (intros; apply GlobalTheory.HilbertThetaSeries.hasQ_lin <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.qExpansion_linear_combination : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (f g : Hn F → ℂ) (a b : F → ℂ) (c : ℂ), HasQ f a → HasQ g b → HasQ (f + g) (a + b) ∧ HasQ (c • f) (c • a) ∧ HasQ (f - g) (a - b) ∧ HasQ (fun _ : Hn F => c) (fun ξ => open Classical in if ξ = 0 then c else 0) := by
   first | exact @GlobalTheory.HilbertThetaSeries.hasQ_lin | exact GlobalTheory.HilbertThetaSeries.hasQ_lin | (intros; apply GlobalTheory.HilbertThetaSeries.hasQ_lin <;> assumption)

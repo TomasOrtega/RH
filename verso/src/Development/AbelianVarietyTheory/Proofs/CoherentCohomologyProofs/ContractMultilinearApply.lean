@@ -11,7 +11,7 @@ variable {ι : Type*} [Fintype ι] [dι : DecidableEq ι] {R : Type*} [CommSemir
 
 omit [Fintype ι] dι in
 /- English proof (translation)
-Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem apply_update (φ : ∀ i, X i →ₗ[R] R) [inst : DecidableEq ι] (x : ∀ i, X i) (k : ι)
     (y : X k) (i : ι) :
@@ -69,7 +69,7 @@ theorem contract_def (φ : ∀ i, X i →ₗ[R] R) (j : ι) :
     contract φ j = PiTensorProduct.lift (contractMultilinear φ j) := rfl
 
 /- English proof (translation)
-Rewrite using `[contract_def, PiTensorProduct.lift.tprod, contractMultilinear_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem contract_tprod (φ : ∀ i, X i →ₗ[R] R) (j : ι) (x : ∀ i, X i) :
     contract φ j (⨂ₜ[R] i, x i) = (∏ i ∈ Finset.univ.erase j, φ i (x i)) • x j := by
@@ -101,7 +101,7 @@ theorem prodForm_def (φ : ∀ i, X i →ₗ[R] R) :
     prodForm φ = PiTensorProduct.lift (prodMultilinear φ) := rfl
 
 /- English proof (translation)
-Rewrite using `[prodForm_def, PiTensorProduct.lift.tprod, prodMultilinear_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem prodForm_tprod (φ : ∀ i, X i →ₗ[R] R) (x : ∀ i, X i) :
     prodForm φ (⨂ₜ[R] i, x i) = ∏ i, φ i (x i) := by

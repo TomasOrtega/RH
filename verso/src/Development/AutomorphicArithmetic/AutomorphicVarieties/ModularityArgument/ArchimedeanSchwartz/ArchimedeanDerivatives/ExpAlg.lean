@@ -7,9 +7,9 @@ open Polynomial
 namespace UpperTheory.V.Z.Inf
 
 /- English proof (translation)
-Use `⟨S.image t, fun r => ∑ i ∈ S.filter (fun i => t i = r), a i, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[h s]`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := t) (fun i hi => Finset.mem_image_of_mem t hi)]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Finset.mem_filter.mp hi).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem isExp_of_sum {ι : Type} (S : Finset ι) (t : ι → ℝ) (a : ι → ℂ) (f : ℂ → ℂ)
     (h : ∀ s, f s = ∑ i ∈ S, a i * Complex.exp (t i * s)) : IsExp f := by
@@ -22,17 +22,17 @@ private theorem isExp_of_sum {ι : Type} (S : Finset ι) (t : ι → ℝ) (a : �
   rw [(Finset.mem_filter.mp hi).2]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨T, a, h⟩`. Establish `: f = fun s => ∑ t ∈ T, a t * Complex.exp (t * s)` using `funext h`. Rewrite using `[this]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f g ⟨T, a, h⟩ ⟨U, b, h'⟩`. Use `isExp_of_sum (T ×ˢ U) (fun p => p.1 + p.2) (fun p => a p.1 * b p.2) _ fun s => ?_` and prove the remaining obligations. Rewrite using `[h, h', Finset.sum_mul_sum, Finset.sum_product]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c`. Conclude with `⟨{0}, fun _ => c, fun s => by simp⟩`. Introduce and unpack `f z ⟨T, a, h⟩`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, fun t => a t * Complex.exp (t * z), fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [h]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p t z`. Use `isExp_of_sum (Finset.range (p.natDegree + 1)) (fun n => n * t) (fun n => p.coeff n * Complex.exp (n * (t * z))) _ fun s => ?_` and prove the remaining obligations. Rewrite using `[eval_eq_sum_range]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.exp_nat_mul, mul_assoc, ← Complex.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem expAlg : ExpAlg := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩

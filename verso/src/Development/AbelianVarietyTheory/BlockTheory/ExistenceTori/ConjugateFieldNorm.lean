@@ -151,7 +151,7 @@ structure Nums (E : Type) [Field E] [NumberField E] where
   Os : Subring ℂ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨2, 2, ![3, 5], fun i => by fin_cases i <;> norm_num, by decide, 1, one_pos, 1, ⊥⟩`.
+Supply the required witnesses or components.
 -/
 example (E : Type) [Field E] [NumberField E] : Nums E :=
   ⟨2, 2, ![3, 5], fun i => by fin_cases i <;> norm_num, by decide, 1, one_pos, 1, ⊥⟩
@@ -196,9 +196,9 @@ def xi0 : E := -1 / ((R.Nc : E) * (Q.H.rt : E))
 def xiAbs : ℝ := 1 / ((R.Nc : ℝ) * Real.sqrt Q.H.d)
 
 /- English proof (translation)
-Establish `h : τ (Q.H.rt : E) ^ 2 = -(Q.H.d : ℂ)`. Use `congrArg (fun x : 𝓞 E => τ (x : E)) Q.H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖τ (Q.H.rt : E)‖ = Real.sqrt Q.H.d`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (τ (Q.H.rt : E))), ← norm_pow, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[xi0, xiAbs, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem norm_embedding_hostFormConstant_eq (τ : E →+* ℂ) : ‖τ Q.xi0‖ = Q.xiAbs := by
   have h : τ (Q.H.rt : E) ^ 2 = -(Q.H.d : ℂ) := by
@@ -275,7 +275,7 @@ def vAt_vw {j : R.J} {la : HeightOneSpectrum (𝓞 Q.c.F)} (y : Q.Pt j la) (f : 
 def nrm {j : R.J} {la : HeightOneSpectrum (𝓞 Q.c.F)} (y : Q.Pt j la) (f : Q.Rules j) : ℝ := nrmOf la (Q.vAt_vw y f)
 
 /- English proof (translation)
-The claim follows from `nrmOf_le_one_iff la (vAtV_ne_bot y f)`.
+A detailed English derivation is pending.
 -/
 theorem nrm_le_one_iff {j : R.J} {la : HeightOneSpectrum (𝓞 Q.c.F)} (y : Q.Pt j la) (f : Q.Rules j) :
     Q.nrm y f ≤ 1 ↔ 0 ≤ Q.vAt_vw y f := nrmOf_le_one_iff la (vAtV_ne_bot y f)
@@ -290,7 +290,7 @@ def adel0 (j : R.J) : Q.Rules j →ₛₗ[Q.sg0] (GA F (Q.V j) → ℂ) := Q.ade
 def XiAbsModels : Prop := ∀ j σ, GoodEmb Q.c σ → ∀ k (τ : E →+* ℂ), ‖τ ((Q.U j σ).X k).ξ0‖ = Q.xiAbs
 
 /- English proof (translation)
-Introduce `j σ hσ k τ`. Take `⟨_, gk, x0, th, _, h2, _⟩` from `((h.2 j).2 σ hσ).1`. Rewrite using `[(h2 k).2.1, map_neg, norm_neg, norm_embedding_hostFormConstant_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem xiAbsModels_of_pins (h : Q.Pins) : Q.XiAbsModels := by
   intro j σ hσ k τ

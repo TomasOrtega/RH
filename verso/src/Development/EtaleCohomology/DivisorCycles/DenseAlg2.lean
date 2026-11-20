@@ -8,7 +8,7 @@ open LateralTheory.DivDb
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | k + 1 => by rw [pow_succ, pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, pow_intertwine y z T h k, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem pow_intertwine {N n : ℕ} (y : Mat C N) (z : Mat C n) (T : Matrix (Fin N) (Fin n) C)
     (h : y * T = T * z) : ∀ k : ℕ, y ^ k * T = T * z ^ k
@@ -18,7 +18,7 @@ theorem pow_intertwine {N n : ℕ} (y : Mat C N) (z : Mat C n) (T : Matrix (Fin 
       Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range, aeval_eq_sum_range, Matrix.sum_mul, Matrix.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, pow_intertwine y z T h k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_intertwine {N n : ℕ} (y : Mat C N) (z : Mat C n) (T : Matrix (Fin N) (Fin n) C)
     (h : y * T = T * z) (q : C[X]) : aeval y q * T = T * aeval z q := by
@@ -27,11 +27,11 @@ theorem aeval_intertwine {N n : ℕ} (y : Mat C N) (z : Mat C n) (T : Matrix (Fi
   rw [Matrix.smul_mul, Matrix.mul_smul, pow_intertwine y z T h k]
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `hm.ne_zero`. Establish `hnd : ((Finset.univ : Finset (Fin n)).val.map l).Nodup` using `Multiset.Nodup.map hl Finset.univ.nodup`. Establish `hle : (Finset.univ : Finset (Fin n)).val.map l ≤ q.roots` using `(Multiset.le_iff_subset hnd).2 fun a ha => by`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 ha`. Conclude with `(mem_roots hq0).2 (hr j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcs : Multiset.card ((Finset.univ : Finset (Fin n)).val.map l) = n` using `by simp`. Establish `heq : (Finset.univ : Finset (Fin n)).val.map l = q.roots` using `Multiset.eq_of_le_of_card_le hle (by rw [hcs, ← hd]; exact card_roots' q)`. Establish `hcard : Multiset.card q.roots = q.natDegree` using `by rw [← heq, hcs, hd]`. Establish `hprod` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq hm hcard`. Rewrite `hprod` using `[← heq, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (∏ j, (X - Polynomial.C (l j))) = q` using `by rw [← hprod, Finset.prod_eq_multiset_prod]; rfl`. Conclude with `e ▸ separable_prod_X_sub_C_iff.2 hl`.
+A detailed English derivation is pending.
 -/
 theorem sep_of_roots {n : ℕ} (q : C[X]) (hm : q.Monic) (hd : q.natDegree = n) (l : Fin n → C)
     (hl : Function.Injective l) (hr : ∀ j, q.IsRoot (l j)) : q.Separable := by
@@ -51,7 +51,7 @@ theorem sep_of_roots {n : ℕ} (q : C[X]) (hm : q.Monic) (hd : q.natDegree = n) 
   exact e ▸ separable_prod_X_sub_C_iff.2 hl
 
 /- English proof (translation)
-Establish `h1 : l ∈ spectrum C y` using `Matrix.mem_spectrum_of_isRoot_charpoly hl`. Establish `h2` using `spectrum.subset_polynomial_aeval y q ⟨l, h1, rfl⟩`. Rewrite `h2` using `[hq, spectrum.mem_iff, sub_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `h2 ((IsUnit.mk0 (q.eval l) hne).map (algebraMap C (Mat C N)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isRoot_of_aeval {N : ℕ} (y : Mat C N) (q : C[X]) (hq : aeval y q = 0) (l : C)
     (hl : y.charpoly.IsRoot l) : q.IsRoot l := by
@@ -62,27 +62,25 @@ theorem isRoot_of_aeval {N : ℕ} (y : Mat C N) (q : C[X]) (hq : aeval y q = 0) 
   exact h2 ((IsUnit.mk0 (q.eval l) hne).map (algebraMap C (Mat C N)))
 
 /- English proof (translation)
-Introduce `Γ C _ _ _ N n ρ r A B hSub U g m hm hE`. Take `⟨hBA, hint, hspan⟩` from `hSub`. Establish `hr : ∀ h : Γ, B * (ρ h : Mat C N) * A = (r h : Mat C n)` using `fun h => by`. Rewrite using `[Matrix.mul_assoc, hint h, ← Matrix.mul_assoc, hBA, Matrix.one_mul]`. Establish `hgu : ∀ u : Γ, (ρ g : Mat C N) * (ρ u : Mat C N) = (ρ (g * u) : Mat C N)` using `fun u => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Units.val_mul]`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Take `⟨f, hf⟩` from `hSP C n`. Set `φ : Mat C N →ₗ[C] Mat C n` to `{ toFun := fun x => B * (ρ g : Mat C N) * x * A map_add' := fun x y => by simp [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c x => by simp [Matrix.mul_smul, Matrix.smul_mul] }`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf', -⟩` from `hCh C N n φ f`. Establish `hz : ¬ (φ m).charpoly.Separable`. Rewrite using `[hf, not_not, ← hf']`. Use `hm f' fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `Submonoid.mem_map.1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf']`. Establish `hφu : φ (((Units.coeHom (Mat C N)).comp ρ) u) = (r (g * u) : Mat C n)` using `by show B * (ρ g : Mat C N) * (ρ u : Mat C N) * A = _`. Rewrite using `[Matrix.mul_assoc B, hgu, hr]`. Rewrite using `[hφu]`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hno u hu ((hf _).2 h)`. Establish `hyT : ∀ T : Matrix (Fin N) (Fin n) C, (∀ h, (ρ h : Mat C N) * T = T * (r h : Mat C n)) → ((ρ g : Mat C N) * m) * T = T * φ m`. Introduce `T hT`. Set `ψ : Mat C N →ₗ[C] Mat C N` to `{ toFun := fun x => ((ρ g : Mat C N) * x * T - T * (B * (ρ g : Mat C N) * x * A)) * B map_add' := fun x y => by`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.sub_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.sub_mul, RingHom.id_apply, smul_sub] }`. Establish `hψ : ψ m = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f2, hf2, -⟩` from `hCh C N N ψ (MvPolynomial.X (i, j))`. Establish `h0 : ev m f2 = 0`. Use `hm f2 fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `Submonoid.mem_map.1 hx`. Rewrite using `[hf2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hψu : ψ (((Units.coeHom (Mat C N)).comp ρ) u) = 0` using `by show (((ρ g : Mat C N) * (ρ u : Mat C N) * T - T * (B * (ρ g : Mat C N) * (ρ u : Mat C N) * A)) * B) = 0`. Rewrite using `[Matrix.mul_assoc B, hgu, hr, hT, sub_self, Matrix.zero_mul]`. Rewrite using `[hψu]`. Simplify using `[ev]`. Rewrite `h0` using `[hf2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h0` using `[ev]`. Establish `h2 : ((ρ g : Mat C N) * m * T - T * φ m) * B * A = 0`. Establish `e : ψ m = ((ρ g : Mat C N) * m * T - T * φ m) * B` using `rfl`. Rewrite using `[← e, hψ, Matrix.zero_mul]`. Rewrite `h2` using `[Matrix.mul_assoc, hBA, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.1 h2`. Establish `hqy : aeval ((ρ g : Mat C N) * m) (φ m).charpoly = 0`. Apply `hspan` to reduce the goal to its premises. Introduce `T hT`. Rewrite using `[aeval_intertwine _ _ T (hyT T hT), Matrix.aeval_self_charpoly, Matrix.mul_zero]`.
-
-Take `⟨l, hl, hlr⟩` from `hE`. Conclude with `hz (sep_of_roots _ (Matrix.charpoly_monic _) (by simp [Matrix.charpoly_natDegree_eq_dim]) l hl fun j => isRoot_of_aeval _ _ hqy (l j) (hlr j))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem DenseAlg_of (hCh : Chain) (hSP : SepPoly) : DenseAlg := by
   intro Γ C _ _ _ N n ρ r A B hSub U g m hm hE

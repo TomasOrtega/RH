@@ -12,13 +12,13 @@ open GlobalTheory.ArchUniq
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Establish `hp : ContDiff ℝ ∞ (fun v => Complex.exp (ℓ v + c))` using `(Complex.contDiff_exp (𝕜 := ℝ)).comp (ℓ.contDiff.add contDiff_const)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro u`. Simplify using `[norm_iteratedFDeriv_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ i ih`. Introduce `u`. Rewrite using `[← norm_iteratedFDeriv_fderiv]`. Set `T : ℂ →L[ℝ] (V →L[ℝ] ℂ)` to `ContinuousLinearMap.smulRight (ContinuousLinearMap.id ℝ ℂ) ℓ`. Establish `hT : ∀ a : ℂ, T a = a • ℓ` using `fun a => rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfd : fderiv ℝ (fun v => Complex.exp (ℓ v + c)) = T ∘ (fun v => Complex.exp (ℓ v + c))`. Use function extensionality and compare the values at `v`. Rewrite using `[Function.comp_apply, hT, (((ℓ.hasFDerivAt (x := v)).add_const c).cexp).fderiv]`. Rewrite using `[hfd]`. Use `(T.norm_iteratedFDeriv_comp_left hp.contDiffAt (by exact_mod_cast le_top)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTn : ‖T‖ ≤ ‖ℓ‖`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun a => ?_` and prove the remaining obligations. Rewrite using `[hT, norm_smul, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_iteratedFDeriv_exp_affine_le (ℓ : V →L[ℝ] ℂ) (c : ℂ) :
     ∀ (i : ℕ) (u : V), ‖iteratedFDeriv ℝ i (fun v => Complex.exp (ℓ v + c)) u‖ ≤
@@ -60,7 +60,7 @@ Both sides reduce to the same expression.
 theorem pairCLM_apply {P : V → V → ℝ} (h : IsPairing P) (x y : V) : pairCLM h x y = P x y := rfl
 
 /- English proof (translation)
-The claim follows from `|P x y| ≤ ‖pairCLM h‖ * ‖x‖ * ‖y‖ := by rw [← pairCLM_apply h, ← Real.norm_eq_abs] exact (pairCLM h).le_opNorm₂ x y`.
+A detailed English derivation is pending.
 -/
 theorem abs_pair_le {P : V → V → ℝ} (h : IsPairing P) (x y : V) :
     |P x y| ≤ ‖pairCLM h‖ * ‖x‖ * ‖y‖ := by
@@ -77,9 +77,9 @@ theorem phase_apply {P : V → V → ℝ} (h : IsPairing P) (b y : V) :
     phase h b y = -(2 * Real.pi * Complex.I) * ((P y b : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun y => ?_` and prove the remaining obligations. Rewrite using `[phase_apply, norm_mul, norm_neg, Complex.norm_real, Real.norm_eq_abs]`. Establish `e : ‖(2 * (Real.pi : ℂ) * Complex.I)‖ = 2 * Real.pi`. Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_phase_le {P : V → V → ℝ} (h : IsPairing P) (b : V) :
     ‖phase h b‖ ≤ 2 * Real.pi * ‖pairCLM h‖ * ‖b‖ := by
@@ -95,7 +95,7 @@ theorem norm_phase_le {P : V → V → ℝ} (h : IsPairing P) (b : V) :
 def cst (P : V → V → ℝ) (w : V × V) : ℂ := -(2 * Real.pi * Complex.I) * ((P w.1 w.2 / 2 : ℝ) : ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [schrF, phase_apply, cst]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schrF_eq {P : V → V → ℝ} (h : IsPairing P) (w : V × V) (f : V → ℂ) :
     schrF P w f = fun y => Complex.exp (phase h w.2 y + cst P w) * f (y + w.1) := by
@@ -106,7 +106,7 @@ theorem schrF_eq {P : V → V → ℝ} (h : IsPairing P) (w : V × V) (f : V →
   ring
 
 /- English proof (translation)
-Establish `e : phase h w.2 y + cst P w = (((-(2 * Real.pi)) * (P y w.2 + P w.1 w.2 / 2) : ℝ) : ℂ) * Complex.I`. Rewrite using `[phase_apply, cst]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.norm_exp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_exp_phase {P : V → V → ℝ} (h : IsPairing P) (w : V × V) (y : V) :
     ‖Complex.exp (phase h w.2 y + cst P w)‖ = 1 := by
@@ -123,31 +123,27 @@ open GlobalTheory.ArchUniq
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Use `set K₁ := 1 + 2 * Real.pi * ‖pairCLM h‖ with hK₁`. Use `set T := 1 + ‖w‖ with hT`. Use `set S := (Finset.Iic (N, N')).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f with hS`. Establish `hB0` using `norm_nonneg (pairCLM h)`. Establish `hw0` using `norm_nonneg w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : 1 ≤ K₁` using `by rw [hK₁]; have := Real.pi_pos; nlinarith`. Establish `hT1 : 1 ≤ T` using `by rw [hT]; linarith`. Establish `hS0 : 0 ≤ S` using `apply_nonneg _ _`. Establish `hKT : 1 ≤ K₁ * T` using `by nlinarith`. Rewrite using `[schrF_eq h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set χ : V → ℂ := fun y => Complex.exp (phase h w.2 y + cst P w) with hχdef`. Establish `hχ : ContDiff ℝ ∞ χ` using `(Complex.contDiff_exp (𝕜 := ℝ)).comp ((phase h w.2).contDiff.add contDiff_const)`. Establish `hτ : ContDiff ℝ ∞ (fun y => f (y + w.1))` using `(f.smooth ⊤).comp (contDiff_id.add contDiff_const)`. Establish `hmul` using `norm_iteratedFDeriv_mul_le (N := ∞) hχ hτ y (n := m) (by exact_mod_cast le_top)`. Establish `hphase : ‖phase h w.2‖ ≤ K₁ * T`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(norm_phase_le h w.2).trans ?_` and prove the remaining obligations. Establish `hb : ‖w.2‖ ≤ T` using `by rw [hT]; have := norm_snd_le w; linarith`. Establish `: 2 * Real.pi * ‖pairCLM h‖ ≤ K₁` using `by rw [hK₁]; linarith`. Conclude with `mul_le_mul this hb (norm_nonneg _) (by linarith)`. Establish `hy : ‖y‖ ^ k ≤ (1 + ‖y + w.1‖) ^ k * T ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ha : ‖w.1‖ ≤ ‖w‖` using `norm_fst_le w`. Establish `h1 : ‖y‖ ≤ ‖y + w.1‖ + ‖w.1‖`. Use `norm_sub_le (y + w.1) w.1` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖y‖ ≤ (1 + ‖y + w.1‖) * T`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Use `norm_nonneg (y + w.1)` as an intermediate fact. Use `norm_nonneg w.1` as an intermediate fact. Rewrite using `[hT]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hterm : ∀ i ∈ Finset.range (m + 1), ‖y‖ ^ k * ((m.choose i : ℝ) * ‖iteratedFDeriv ℝ i χ y‖ * ‖iteratedFDeriv ℝ (m - i) (fun y => f (y + w.1)) y‖) ≤ (m.choose i : ℝ) * ((K₁ * T) ^ N' * T ^ N * (2 ^ N * S))`. Introduce `i hi`. Establish `hi' : i ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `e1 : ‖iteratedFDeriv ℝ i χ y‖ ≤ (K₁ * T) ^ N'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ‖iteratedFDeriv ℝ (m - i) (fun y => f (y + w.1)) y‖ = ‖iteratedFDeriv ℝ (m - i) f (y + w.1)‖`. Rewrite using `[iteratedFDeriv_comp_add_right]`. Establish `e3 : (1 + ‖y + w.1‖) ^ k * ‖iteratedFDeriv ℝ (m - i) f (y + w.1)‖ ≤ 2 ^ N * S` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (N, N')) hk ((Nat.sub_le m i).trans hm) f _`. Rewrite using `[e2]`. Establish `hc0 : (0 : ℝ) ≤ m.choose i` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hd0` using `norm_nonneg (iteratedFDeriv ℝ (m - i) f (y + w.1))`. Establish `hx0 : 0 ≤ ‖iteratedFDeriv ℝ i χ y‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (m.choose i : ℝ) * ((K₁ * T) ^ N' * ((1 + ‖y + w.1‖) ^ k * T ^ N * ‖iteratedFDeriv ℝ (m - i) f (y + w.1)‖)) := by gcongr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (m.choose i : ℝ) * ((K₁ * T) ^ N' * T ^ N * ((1 + ‖y + w.1‖) ^ k * ‖iteratedFDeriv ℝ (m - i) f (y + w.1)‖)) := by ring`. Use `_ ≤ (m.choose i : ℝ) * ((K₁ * T) ^ N' * T ^ N * (2 ^ N * S)) := by gcongr`. Establish `hfun : (fun y => Complex.exp (phase h w.2 y + cst P w) * f (y + w.1)) = fun y => χ y * (fun y => f (y + w.1)) y` using `rfl`. Rewrite using `[hfun]`. Establish `hA : 0 ≤ (K₁ * T) ^ N' * T ^ N * (2 ^ N * S)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ ∑ i ∈ Finset.range (m + 1), (m.choose i : ℝ) * ((K₁ * T) ^ N' * T ^ N * (2 ^ N * S)) := Finset.sum_le_sum hterm`. Use `_ = 2 ^ m * ((K₁ * T) ^ N' * T ^ N * (2 ^ N * S)) := by`. Rewrite using `[← Finset.sum_mul]`.
-
-Establish `: (∑ i ∈ Finset.range (m + 1), (m.choose i : ℝ)) = 2 ^ m`. Conclude with `Nat.sum_range_choose m` after adjusting the coercions. Rewrite using `[this]`. Use `_ ≤ 2 ^ N' * ((K₁ * T) ^ N' * T ^ N * (2 ^ N * S)) := by gcongr`. Evaluate the numerical expressions.
-
-Use `_ = (2 ^ N' * K₁ ^ N' * 2 ^ N) * T ^ (N + N') * S := by`. Rewrite using `[mul_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem pointwise_le {P : V → V → ℝ} (h : IsPairing P) (N N' : ℕ) (w : V × V) (f : 𝓢(V, ℂ))
     {k m : ℕ} (hk : k ≤ N) (hm : m ≤ N') (y : V) :
@@ -239,9 +235,9 @@ theorem pointwise_le {P : V → V → ℝ} (h : IsPairing P) (N N' : ℕ) (w : V
         rw [mul_pow, pow_add]; ring
 
 /- English proof (translation)
-Introduce `V _ _ _ P hP s₀`. Use `⟨s₀.sup Prod.fst + s₀.sup Prod.snd, Finset.Iic (s₀.sup Prod.fst, s₀.sup Prod.snd), 2 ^ (s₀.sup Prod.snd) * (1 + 2 * Real.pi * ‖pairCLM hP‖) ^ (s₀.sup Prod.snd) * 2 ^ (s₀.sup Prod.fst), by positivity, fun w f => ?_⟩` and prove the remaining obligations. Set `g : 𝓢(V, ℂ)` to `{ toFun := schrF P w ⇑f smooth' := by`. Rewrite using `[schrF_eq hP]`. Conclude with `((Complex.contDiff_exp (𝕜 := ℝ)).comp ((phase hP w.2).contDiff.add contDiff_const)).mul ((f.smooth ⊤).comp (contDiff_id.add contDiff_const))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `decay' := fun k n => ⟨_, fun y => pointwise_le hP k n w f le_rfl le_rfl y⟩ }`. Use `⟨g, rfl, ?_⟩` and prove the remaining obligations. Use `Seminorm.finset_sup_apply_le (by positivity) fun p hp => ?_` and prove the remaining obligations. Use `show SchwartzMap.seminorm ℂ p.1 p.2 g ≤ _`. Conclude with `SchwartzMap.seminorm_le_bound ℂ p.1 p.2 g (by positivity) fun y => pointwise_le hP _ _ w f (Finset.le_sup (f := Prod.fst) hp) (Finset.le_sup (f := Prod.snd) hp) y`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem schrF_seminorm_growth : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (P : V → V → ℝ), IsPairing P → ∀ (s₀ : Finset (ℕ × ℕ)), ∃ (M : ℕ) (s : Finset (ℕ × ℕ)) (C : ℝ), 0 ≤ C ∧

@@ -15,7 +15,7 @@ namespace GlobalTheory.TopLevelInv
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `hs` using `map_sum (infPart D).toAddMonoidHom es P`. Express the relevant statement in the definitionally equal form `(infPart D).toAddMonoidHom _ = 0`. Rewrite using `[hs]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (GlobalTheory.IdemSupport.delta_of_isIdemAt (GlobalTheory.StdFrames.comp_toAd D) (hes PP hPP)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) : infPart D e = 0 := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he
@@ -28,11 +28,11 @@ theorem infPart_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemS
 open Classical in
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `hs` using `map_sum ((GlobalTheory.StdFrames.cpt Q).comp (toEAf D)).toAddMonoidHom es P`. Express the relevant statement in the definitionally equal form `((GlobalTheory.StdFrames.cpt Q).comp (toEAf D)).toAddMonoidHom _ = _`. Rewrite using `[hs]`. Establish `h : ∀ PP ∈ P, GlobalTheory.StdFrames.cpt Q (toEAf D (es PP)) = if PP = Q then 1 else 0` using `fun PP hPP => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hQ : PP = Q`. Substitute `hQ` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes PP hPP)).1`. Rewrite using `[if_neg hQ]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes PP hPP)).2 Q (Ne.symm hQ)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem cpt_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) (Q : Pl D.host.E) :
     GlobalTheory.StdFrames.cpt Q (toEAf D e) = if Q ∈ P then 1 else 0 := by
@@ -48,7 +48,7 @@ theorem cpt_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e
     _ = _ := by rw [Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[cpt_of_isIdemSum he, if_pos hQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_one_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) {Q : Pl D.host.E} (hQ : Q ∈ P) :
     GlobalTheory.StdFrames.cpt Q (toEAf D e) = 1 := by
@@ -56,7 +56,7 @@ theorem cpt_one_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemS
   rw [cpt_of_isIdemSum he, if_pos hQ]
 
 /- English proof (translation)
-Rewrite using `[cpt_of_isIdemSum he, if_neg hQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_zero_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) {Q : Pl D.host.E} (hQ : Q ∉ P) :
     GlobalTheory.StdFrames.cpt Q (toEAf D e) = 0 := by
@@ -64,7 +64,7 @@ theorem cpt_zero_of_isIdemSum {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdem
   rw [cpt_of_isIdemSum he, if_neg hQ]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, map_sub, map_one, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_unitMix_of_zero {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (e x : R) (h : φ e = 0) :
     φ (e * x + (1 - e)) = 1 := by
@@ -72,15 +72,15 @@ theorem map_unitMix_of_zero {R S : Type*} [CommRing R] [CommRing S] (φ : R →+
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hee : e * e = e` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem`. Establish `hc : e * cA D e = 0` using `he.2`. Establish `hf` using `idem_conj_sum hee hc`. Establish `hval : (GlobalTheory.VecInv.detAt e hee V (cutPart (e + cA D e) V g) : AE D) = e * (Formalism.L2.Theta.mt V (cutPart (e + cA D e) V g)).det + (1 - e)` using `rfl`. Rewrite using `[hval]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinf` using `infPart_of_isIdemSum he`. Use `⟨?_, fun Q hQ => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, hinf, zero_mul, zero_add, sub_zero]`. Set `φ : AE D →+* Q.adicCompletion D.host.E` to `(GlobalTheory.StdFrames.cpt Q).comp (toEAf D)`. Establish `h1 : φ e = 1` using `cpt_one_of_isIdemSum he hQ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : φ (cA D e) = 0`. Use `congrArg φ hc` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, RingHom.map_zero, h1, one_mul]`. Then use the resulting hypothesis. Establish `h3 : φ (e + cA D e) = 1` using `by rw [RingHom.map_add, h1, h2, add_zero]`. Express the relevant statement in the definitionally equal form `φ _ = ((Formalism.L2.Theta.mt V g).map φ).det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, h1, one_mul, sub_self, add_zero, RingHom.map_det, mt_cutPart hf.1 hf.2]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ ((e + cA D e) * Formalism.L2.Theta.mt V g i j + (1 - (e + cA D e)) * (1 : Matrix _ _ (AE D)) i j) = φ (Formalism.L2.Theta.mt V g i j)`. Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, h3, one_mul, sub_self, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `φ : AE D →+* Q.adicCompletion D.host.E` to `(GlobalTheory.StdFrames.cpt Q).comp (toEAf D)`. Establish `h1 : φ e = 0` using `cpt_zero_of_isIdemSum he hQ`. Express the relevant statement in the definitionally equal form `φ _ = 1`. Conclude with `map_unitMix_of_zero φ e _ h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem detAt_cutPart_parts {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) (V : HSp D) (g : GA D V) :
     infPart D (GlobalTheory.VecInv.detAt e (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem V (cutPart (e + cA D e) V g) : AE D) = 1 ∧

@@ -4,15 +4,13 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `m hm`. Establish `hsupp : (Function.support fun p : ℕ => if p.Prime then (padicValNat p m : ℝ) * Real.log p else 0) ⊆ (m.primeFactors : Set ℕ)`. Introduce `p hp`. Simplify using `only [Function.mem_support, ne_eq] at hp`. Distinguish the cases in `hpp : p.Prime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite `hp` using `[if_pos hpp]`. Establish `h0 : padicValNat p m ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Simplify using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hdvd : p ∣ m`. Assume the negation of the conclusion as `hnd`. Conclude with `h0 (padicValNat.eq_zero_of_not_dvd hnd)`. Simplify using `only [Finset.mem_coe, Nat.mem_primeFactors]`. Conclude with `⟨hpp, hdvd, hm⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd (if_neg hpp) hp`. Use `⟨(Finset.finite_toSet _).subset hsupp, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Real.log_nat_eq_sum_factorization, Finsupp.sum, Nat.support_factorization]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`.
-
-Rewrite using `[if_pos hpp, Nat.factorization_def m hpp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_padicValNat_mul_log_eq_log :
     ∀ m : ℕ, m ≠ 0 → (Function.support fun p : ℕ => if p.Prime then (padicValNat p m : ℝ) * Real.log p else 0).Finite ∧ ∑ᶠ p : ℕ, (if p.Prime then (padicValNat p m : ℝ) * Real.log p else 0) = Real.log m := by

@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.GLq.HCChar
 
 /- English proof (translation)
-Establish `e` using `Finset.sum_subtype (F := (inferInstance : Fintype P)) (Finset.univ.filter (· ∈ P)) (p := (· ∈ P)) (by simp) (fun x => if h : x ∈ P then Φ ⟨x, h⟩ else 0)`. Rewrite `e` using `[Finset.sum_filter]`. Use `(Eq.trans ?_ e.symm).trans ?_` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[dif_pos a.2]`. Apply the tactic sequence `apply Finset.sum_congr rfl; intro x _; split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_subgroup {G : Type} [Group G] [Fintype G] (P : Subgroup G) (Φ : P → ℂ) :
     ∑ p : P, Φ p = ∑ x : G, if h : x ∈ P then Φ ⟨x, h⟩ else 0 := by
@@ -28,13 +28,13 @@ theorem sum_subgroup {G : Type} [Group G] [Fintype G] (P : Subgroup G) (Φ : P �
   · apply Finset.sum_congr rfl; intro x _; split_ifs <;> rfl
 
 /- English proof (translation)
-Unfold `toG`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toG_val {g m : ℕ} [Fact g.Prime] {M : Mt g m} (h : IsUnit M) : ((toG M : Gn g m) : Mt g m) = M := by
   unfold toG; rw [dif_pos h]; rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_boole, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `[MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_ker_eq_sum {P M : Type} [Group P] [Fintype P] [Group M] (π : P →* M) :
     (Nat.card π.ker : ℂ) = ∑ p : P, if π p = 1 then (1 : ℂ) else 0 := by
@@ -67,33 +67,33 @@ def blocks {g : ℕ} [Fact g.Prime] (a b n : ℕ) (P : Subgroup (Gn g n))
       rw [Units.val_mul, e1, toG_val hu, toG_val (hunit _ hp).2, toG_val (hunit _ hq).2, hm.2])
 
 /- English proof (translation)
-Introduce `g _ a b n hn`. Take `⟨⟨P, hP⟩, -, hunit, hmul, hcard, hPcard⟩` from `GlobalTheory.GLm.ParBasic.par_basic g a b n hn`. Take `⟨π, hπv⟩ : ∃ π : P →* Gn g a × Gn g b, ∀ p : P, π p = (toG (tl a ((p : Gn g n) : Mt g n)), toG (br a b ((p : Gn g n) : Mt g n)))` from `⟨blocks a b n P hP hunit hmul, fun _ => rfl⟩`. Establish `hπ : ∀ (x : Gn g n) (hx : x ∈ P) (h₁ : Gn g a) (h₂ : Gn g b), π ⟨x, hx⟩ = (h₁, h₂) ↔ (tl a (x : Mt g n) = h₁ ∧ br a b (x : Mt g n) = h₂)`. Introduce `x hx h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu` using `hunit x ((hP x).1 hx)`. Rewrite using `[hπv]`. Rewrite using `[Prod.mk.injEq, Units.ext_iff, Units.ext_iff, toG_val hu.1, toG_val hu.2]`. Establish `hsum : ∀ (f : Gn g n → ℂ) (h₁ : Gn g a) (h₂ : Gn g b), ∑ p : P, (if π p = (h₁, h₂) then f p else 0) = ∑ x : Gn g n, if InPar a (x : Mt g n) ∧ tl a (x : Mt g n) = h₁ ∧ br a b (x : Mt g n) = h₂ then f x else 0`. Introduce `f h₁ h₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sum_subgroup]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Distinguish the cases in `hx : x ∈ P`. Rewrite using `[dif_pos hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'` using `(hP x).1 hx`. Distinguish the cases in `h : tl a (x : Mt g n) = h₁ ∧ br a b (x : Mt g n) = h₂`. Rewrite using `[if_pos ((hπ x hx h₁ h₂).2 h), if_pos ⟨hx', h⟩]`. Rewrite using `[if_neg (fun e => h ((hπ x hx h₁ h₂).1 e)), if_neg (fun e => h e.2)]`. Rewrite using `[dif_neg hx, if_neg (fun e => hx ((hP x).2 e.1))]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hNP : (Nat.card P : ℂ) = ((Finset.univ.filter fun p : Gn g n => InPar a (p : Mt g n)).card : ℂ)`. Use `congr 1`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[hP]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `α β hα hβ`. Establish `hφ : IsChar (fun p : P => α (π p).1 * β (π p).2)` using `GlobalTheory.GLm.isChar_comp_hom_and_mul.2 P _ _ (GlobalTheory.GLm.isChar_comp_hom_and_mul.1 P _ ((MonoidHom.fst _ _).comp π) α hα) (GlobalTheory.GLm.isChar_comp_hom_and_mul.1 P _ ((MonoidHom.snd _ _).comp π) β hβ)`. Take `⟨V, hV⟩` from `GlobalTheory.GLm.IndChar.isChar_induced (Gn g n) P _ hφ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨V, fun x => (hV x).trans ?_⟩` and prove the remaining obligations. Unfold `hc hcT`. Simplify using `only`. Rewrite using `[hNP]`. Use `congrArg (fun t : ℂ => (((Finset.univ.filter fun p : Gn g n => InPar a (p : Mt g n)).card : ℂ)⁻¹) * t) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `y _`. Distinguish the cases in `hy : y⁻¹ * x * y ∈ P`. Rewrite using `[dif_pos hy, if_pos ((hP _).1 hy), hπv]`. Rewrite using `[dif_neg hy, if_neg (fun e => hy ((hP _).2 e))]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `χ hχ`. Establish `hsurj : Function.Surjective π`. Introduce and unpack `⟨h₁, h₂⟩`. Establish `hpos : 0 < (Finset.univ.filter fun x : Gn g n => InPar a (x : Mt g n) ∧ tl a (x : Mt g n) = (h₁ : Mt g a) ∧ br a b (x : Mt g n) = (h₂ : Mt g b)).card`. Rewrite using `[hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_pos (Fact.out : g.Prime).pos _`. Take `⟨x, hx⟩` from `Finset.card_pos.1 hpos`. Rewrite `hx` using `[Finset.mem_filter]`. Establish `hxP` using `(hP x).2 hx.2.1`. Use `⟨⟨x, hxP⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hπ x hxP h₁ h₂).2 hx.2.2`. Establish `hχP : IsChar (fun p : P => χ p)` using `GlobalTheory.GLm.isChar_comp_hom_and_mul.1 P _ P.subtype χ hχ`. Establish `hΨ` using `GlobalTheory.GLm.isChar_fibre_mean P (Gn g a × Gn g b) π _ hsurj hχP`. Take `⟨L, hL, hLs⟩` from `GlobalTheory.T.exists_irr_pairs_char_prod_eq_sum (Gn g a) (Gn g b) _ hΨ`. Use `⟨L, hL, fun x y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hLs x y]`. Establish `hker : (Nat.card π.ker : ℂ) = (g : ℂ) ^ (a * b)`. Rewrite using `[card_ker_eq_sum, Prod.one_eq_mk]`. Use `Eq.trans ?_ ((hsum (fun _ => 1) 1 1).trans ?_)` and prove the remaining obligations. Apply the tactic sequence `apply Finset.sum_congr rfl; intro p _; split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_boole, hcard 1 1]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `res`. Rewrite using `[hker]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `congrArg (fun t : ℂ => ((g : ℂ) ^ (a * b))⁻¹ * t) ?_` and prove the remaining obligations. Use `(hsum χ x y).symm using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hc_isChar_and_res_decomp : ∀ (g : ℕ) [Fact g.Prime] (a b n : ℕ), n = a + b →
     (∀ (α : Gn g a → ℂ) (β : Gn g b → ℂ), IsChar α → IsChar β → IsChar (hc a b α β n)) ∧

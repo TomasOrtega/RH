@@ -12,15 +12,13 @@ open GlobalTheory.AdicColimit
 namespace GlobalTheory.FinitePointLimit
 
 /- English proof (translation)
-Establish `hι : ∀ e : ℕ, thickι J e (Over.mk (𝟙 (Sp B))) = pullback.snd (Over.mk (𝟙 (Sp B))).hom (Out.thick B J e) ≫ Out.thick B J e`. Introduce `e`. Establish `hc` using `pullback.condition (f := (Over.mk (𝟙 (Sp B))).hom) (g := Out.thick B J e)`. Use `show pullback.fst _ _ = _`. Simplify using `using hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hiso : ∀ e : ℕ, IsIso (pullback.snd (Over.mk (𝟙 (Sp B))).hom (Out.thick B J e))`. Introduce `e`. Establish `: IsIso (Over.mk (𝟙 (Sp B))).hom` using `by show IsIso (𝟙 _) infer_instance`. Use `infer_instance`. Establish `hmap : ∀ e : ℕ, Out.thickMap B J e (Over.mk (𝟙 (Sp B))) ≫ pullback.snd (Over.mk (𝟙 (Sp B))).hom (Out.thick B J (e + 1)) = pullback.snd (Over.mk (𝟙 (Sp B))).hom (Out.thick B J e) ≫ Out.thickTrans B J e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Rewrite using `[← cancel_mono (Out.thick B J (e + 1)), Category.assoc, Category.assoc, Out.thickTrans_comp, ← hι, ← hι, thickMap_ι]`. Take `⟨g, hg, hu⟩` from `h X (fun e => pullback.snd (Over.mk (𝟙 (Sp B))).hom (Out.thick B J e) ≫ z e) (by`. Introduce `e`. Rewrite using `[← Category.assoc, hmap, Category.assoc, hz])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨g, fun e => ?_, fun x hx => hu x fun e => ?_⟩` and prove the remaining obligations. Establish `he` using `hg e`. Rewrite `he` using `[hι, Category.assoc]`. Use `hiso e` as an intermediate fact. Conclude with `(cancel_epi _).mp he`.
-
-Rewrite using `[hι, Category.assoc, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_of_isAdicColimit {B : Type} [CommRing B] (J : Ideal B)
     (h : IsAdicColimit J (Over.mk (𝟙 (Sp B)))) (X : Scheme.{0}) (z : ∀ e : ℕ, Sp (B ⧸ J ^ (e + 1)) ⟶ X)

@@ -32,7 +32,7 @@ def repOn : contSub X →ₗ[ℂ] (X.B.I.GA → ℂ) where
 def contRepL : L2X X →ₗ[ℂ] (X.B.I.GA → ℂ) := (LinearMap.exists_extend (repOn X)).choose
 
 /- English proof (translation)
-Establish `e` using `LinearMap.congr_fun (LinearMap.exists_extend (repOn X)).choose_spec ⟨f, φ, hf⟩`. Establish `e' : contRepL X f = repOn X ⟨f, φ, hf⟩` using `e`. Rewrite using `[e']`. Conclude with `contRep_unique X (Exists.choose_spec (p := fun φ => IsContRep X f φ) _) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contRepL_spec {f : L2X X} {φ : X.B.I.GA → ℂ} (hf : IsContRep X f φ) : contRepL X f = φ := by
   have e := LinearMap.congr_fun (LinearMap.exists_extend (repOn X)).choose_spec ⟨f, φ, hf⟩
@@ -41,11 +41,9 @@ theorem contRepL_spec {f : L2X X} {φ : X.B.I.GA → ℂ} (hf : IsContRep X f φ
   exact contRep_unique X (Exists.choose_spec (p := fun φ => IsContRep X f φ) _) hf
 
 /- English proof (translation)
-Set `f : X.B.Hs →L[ℂ] ℂ` to `innerSL ℂ (p - q)`. Establish `hsp : (Submodule.span ℂ (Set.range X.B.tens) : Set X.B.Hs) ⊆ {z | f z = 0}`. Use `(Submodule.span_le (p := LinearMap.ker (f : X.B.Hs →ₗ[ℂ] ℂ))).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show ⟪p - q, X.B.tens y⟫_ℂ = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_sub_left, h y, sub_self]`. Establish `hcl : closure (Submodule.span ℂ (Set.range X.B.tens) : Set X.B.Hs) ⊆ {z | f z = 0}` using `closure_minimal hsp (isClosed_eq f.continuous continuous_const)`. Rewrite `hcl` using `[X.B.tens_spec.2.2.closure_eq]`. Establish `h0 : f (p - q) = 0` using `hcl (Set.mem_univ _)`. Establish `: ⟪p - q, p - q⟫_ℂ = 0` using `h0`.
-
-Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_inner_tens {p q : X.B.Hs} (h : ∀ y, ⟪p, X.B.tens y⟫_ℂ = ⟪q, X.B.tens y⟫_ℂ) : p = q := by
   let f : X.B.Hs →L[ℂ] ℂ := innerSL ℂ (p - q)
@@ -62,7 +60,7 @@ theorem eq_of_inner_tens {p q : X.B.Hs} (h : ∀ y, ⟪p, X.B.tens y⟫_ℂ = �
   exact sub_eq_zero.1 (inner_self_eq_zero.1 this)
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hw)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_update {ι : Type} [Fintype ι] [DecidableEq ι] {H : ι → Type} [∀ i, NormedAddCommGroup (H i)]
     [∀ i, InnerProductSpace ℂ (H i)] (x y : ∀ i, H i) (v : ι) (z : H v) :
@@ -73,7 +71,7 @@ theorem prod_update {ι : Type} [Fintype ι] [DecidableEq ι] {H : ι → Type} 
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hw)]
 
 /- English proof (translation)
-Use `eq_of_inner_tens X fun y => ?_` and prove the remaining obligations. Rewrite using `[inner_add_left, X.B.tens_spec.1, X.B.tens_spec.1, X.B.tens_spec.1, prod_update, prod_update, prod_update, inner_add_left, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tens_update_add [DecidableEq (NumberField.InfinitePlace X.B.I.F)] (x : ∀ v, X.B.H v)
     (v : NumberField.InfinitePlace X.B.I.F) (a b : X.B.H v) :
@@ -84,7 +82,7 @@ theorem tens_update_add [DecidableEq (NumberField.InfinitePlace X.B.I.F)] (x : �
     inner_add_left, add_mul]
 
 /- English proof (translation)
-Use `eq_of_inner_tens X fun y => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, X.B.tens_spec.1, X.B.tens_spec.1, prod_update, prod_update, inner_smul_left, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tens_update_smul [DecidableEq (NumberField.InfinitePlace X.B.I.F)] (x : ∀ v, X.B.H v)
     (v : NumberField.InfinitePlace X.B.I.F) (a : ℂ) (b : X.B.H v) :
@@ -98,9 +96,9 @@ def vecC (c : ∀ τ, M.H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (u : M.Vec)
   Equiv.piCongrLeft X.B.H X.pl.symm (fun τ => c τ (u τ : M.H τ))
 
 /- English proof (translation)
-Apply `(Equiv.piCongrLeft P e).symm.injective` to reduce the goal to its premises. Rewrite using `[Equiv.symm_apply_apply]`. Use function extensionality and compare the values at `a'`. Rewrite using `[Equiv.piCongrLeft_symm_apply]`. Distinguish the cases in `ha : a' = a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne ha, Function.update_of_ne (e.injective.ne ha), Equiv.piCongrLeft_apply_apply]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem piCongrLeft_update {α β : Type} [DecidableEq α] [DecidableEq β] (P : β → Type) (e : α ≃ β)
     (f : ∀ a, P (e a)) (a : α) (x : P (e a)) :
@@ -115,7 +113,7 @@ theorem piCongrLeft_update {α β : Type} [DecidableEq α] [DecidableEq β] (P :
   · rw [Function.update_of_ne ha, Function.update_of_ne (e.injective.ne ha), Equiv.piCongrLeft_apply_apply]
 
 /- English proof (translation)
-Unfold `vecC`. Rewrite using `[← piCongrLeft_update]`. Use `congr 1`. Use function extensionality and compare the values at `τ'`. Conclude with `Function.apply_update (fun i (s : M.sm i) => c i (s : M.H i)) u τ w τ'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vecC_update [DecidableEq D.what₂.Tau] [DecidableEq (NumberField.InfinitePlace X.B.I.F)]
     (c : ∀ τ, M.H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (u : M.Vec) (τ : D.what₂.Tau) (w : M.sm τ) :
@@ -127,7 +125,7 @@ theorem vecC_update [DecidableEq D.what₂.Tau] [DecidableEq (NumberField.Infini
   exact Function.apply_update (fun i (s : M.sm i) => c i (s : M.H i)) u τ w τ'
 
 /- English proof (translation)
-Unfold `vecC`. Establish `: (fun τ => c τ (u τ : M.H τ)) = (Equiv.piCongrLeft X.B.H X.pl.symm).symm g`. Use function extensionality and compare the values at `τ`. Rewrite using `[Equiv.piCongrLeft_symm_apply, hg τ]`. Rewrite using `[this, Equiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecC_eq (c : ∀ τ, M.H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (u : M.Vec) (g : ∀ v, X.B.H v)
     (hg : ∀ τ, c τ (u τ : M.H τ) = g (X.pl.symm τ)) : vecC X M c u = g := by

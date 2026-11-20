@@ -17,11 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh.VecNe
 
 /- English proof (translation)
-Take `⟨hv, e, he, ⟨Tm, hTm⟩, hall⟩` from `h`. Establish `h0 : f₀ ≠ 0`. Introduce and unpack `rfl`. Take `⟨⟨p, hp⟩, h2⟩` from `hv.2.norm`. Use `h2 p hp` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[nrm2] at this`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `hinf` using `ho.conj.infPart_eq`. Rewrite using `[hall Tm hTm]`. Take `⟨x, h1, h2, h3⟩` from `GlobalTheory.AdjDatumNe.exists_datum_ne_zero D S T βS βT Pg Q _ ξ e hr he (fun PP h => Finset.mem_union_left _ h) fun PP h => Finset.mem_union_right _ h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.PlaceModelInj.placeModel_ne_zero D ψ S T ΛS ΛT _ f₀ _ Tm hv.1 hS hT ho.conj.idem (by rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, he.2]) hinf hTm h0 (GlobalTheory.PlaceVec.isSBHalf_of_red hS.1 hT.1 hinf (frMapAdj S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_add S T …` and prove the remaining obligations. Rewrite using `[GlobalTheory.PlaceVec.omegaK_congr Pg fun PP hPP => h PP (Finset.mem_union_left _ hPP), GlobalTheory.PlaceVec.omegaQ_congr Q _ ξ _ fun PP hPP => h PP (Finset.mem_union_right _ hPP)])`. Use `fun hz => h3 ?_`. Use `congrFun hz x` as an intermediate fact. Rewrite `this` using `[if_pos ⟨h1, h2⟩]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem thPVec_ne_zero {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -53,7 +53,7 @@ theorem thPVec_ne_zero {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
   rwa [if_pos ⟨h1, h2⟩] at this
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i _`. Conclude with `thPVec_ne_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βW i)) ((D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)) (hC.thP.vP i A.μ0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaVector_ne_zero : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ i, VStd D i → R.vP i A.μ0 ≠ 0 := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i _

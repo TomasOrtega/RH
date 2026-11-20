@@ -5,9 +5,9 @@ open TensorProduct nonZeroDivisors
 namespace GlobalTheory.SepIdem
 
 /- English proof (translation)
-Establish `: IsArtinianRing A` using `IsArtinianRing.of_finite K A`. Establish `: Finite (MaximalSpectrum A)` using `inferInstance`. Establish `h : Algebra.FormallyUnramified K (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal)`. Rewrite using `[Algebra.FormallyUnramified.pi_iff]`. Introduce `I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `I.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field I.asIdeal`. Conclude with `Algebra.FormallyUnramified.of_isSeparable K _`. Conclude with `Algebra.FormallyUnramified.of_equiv ((IsArtinianRing.equivPi A).restrictScalars K).symm`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_isReduced (K A : Type) [Field K] [PerfectField K] [CommRing A]
     [Algebra K A] [Module.Finite K A] [IsReduced A] : Algebra.FormallyUnramified K A := by
@@ -22,19 +22,19 @@ theorem formallyUnramified_of_isReduced (K A : Type) [Field K] [PerfectField K] 
   exact Algebra.FormallyUnramified.of_equiv ((IsArtinianRing.equivPi A).restrictScalars K).symm
 
 /- English proof (translation)
-Set `A` to `ℚ ⊗[ℤ] O`. Use `letI : Algebra O A := Algebra.TensorProduct.rightAlgebra`. Establish `hloc : IsLocalization (Algebra.algebraMapSubmonoid O ℤ⁰) A` using `IsLocalization.tensorRight ℚ ℤ⁰`. Establish `: IsReduced A` using `isReduced_localizationPreserves (Algebra.algebraMapSubmonoid O ℤ⁰) A inferInstance`. Establish `: Algebra.FormallyUnramified ℚ A` using `formallyUnramified_of_isReduced ℚ A`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FormallyUnramified ℤ ℚ` using `Algebra.FormallyUnramified.of_isLocalization ℤ⁰`. Establish `hA : Algebra.FormallyUnramified ℤ A` using `Algebra.FormallyUnramified.comp ℤ ℚ A`. Establish `: Algebra.FormallyEtale O A` using `Algebra.FormallyEtale.of_isLocalization (Algebra.algebraMapSubmonoid O ℤ⁰)`. Establish `hm` using `KaehlerDifferential.isLocalizedModule_map ℤ O A (Algebra.algebraMapSubmonoid O ℤ⁰)`. Establish `key : ∀ ω : Ω[O⁄ℤ], ∃ n : ℤ, n ≠ 0 ∧ (n : O) • ω = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ω`. Establish `h0 : KaehlerDifferential.map ℤ ℤ O A ω = 0` using `Subsingleton.elim _ _`. Take `⟨⟨s, n, hn, rfl⟩, hs⟩` from `(IsLocalizedModule.eq_zero_iff (Algebra.algebraMapSubmonoid O ℤ⁰) _).1 h0`. Conclude with `⟨n, nonZeroDivisors.ne_zero hn, by simpa using hs⟩`. Take `⟨S, hS⟩` from `Module.Finite.fg_top (R := O) (M := Ω[O⁄ℤ])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose n hn0 hn using key`. Use `⟨∏ x ∈ S, (n x).natAbs, Finset.prod_pos fun x _ => Int.natAbs_pos.2 (hn0 x), ?_⟩` and prove the remaining obligations. Introduce `ω`. Establish `hω : ω ∈ Submodule.span O (S : Set Ω[O⁄ℤ])` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hω using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun x => (n x).natAbs) hx`. Take `⟨j, hj⟩ : n x ∣ ((n x).natAbs : ℤ)` from `Int.dvd_natAbs.2 dvd_rfl`. Establish `: (((n x).natAbs : ℕ) : O) = (j : O) * (n x : O)`. Rewrite using `[← Int.cast_natCast, hj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hk, Nat.cast_mul, this, mul_comm, ← mul_assoc, mul_smul, hn, smul_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add, hx, hy, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [smul_comm, hx, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_kaehler_eq_zero (O : Type) [CommRing O] [Module.Finite ℤ O] [IsReduced O] :
     ∃ N : ℕ, 0 < N ∧ ∀ ω : Ω[O⁄ℤ], (N : O) • ω = 0 := by
@@ -72,17 +72,15 @@ theorem exists_smul_kaehler_eq_zero (O : Type) [CommRing O] [Module.Finite ℤ O
   | smul a x _ hx => rw [smul_comm, hx, smul_zero]
 
 /- English proof (translation)
-Take `⟨N, hN, hΩ⟩` from `exists_smul_kaehler_eq_zero O`. Use `set I := KaehlerDifferential.ideal ℤ O with hI`. Establish `hfg : I.FG` using `KaehlerDifferential.ideal_fg ℤ O`. Establish `: Module.Finite (O ⊗[ℤ] O) I` using `Module.Finite.iff_fg.2 hfg`. Establish `hsq : ∀ x ∈ I, (N : O ⊗[ℤ] O) * x ∈ I ^ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h` using `hΩ (I.toCotangent ⟨x, hx⟩)`. Establish `h2 : I.toCotangent ((N : O ⊗[ℤ] O) • ⟨x, hx⟩) = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul]`. Conclude with `(Nat.cast_smul_eq_nsmul O N (show Ω[O⁄ℤ] from I.toCotangent ⟨x, hx⟩)).symm.trans h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `(Ideal.toCotangent_eq_zero I _).1 h2`. Take `⟨p, hp, -, hc, h0⟩` from `LinearMap.exists_monic_and_natDegree_eq_and_coeff_mem_pow_and_aeval_eq_zero (O ⊗[ℤ] O) (algebraMap (O ⊗[ℤ] O) (Module.End (O ⊗[ℤ] O) I) (N : O ⊗[ℤ] O)) I (by`. Introduce and unpack `_ ⟨⟨x, hx⟩, rfl⟩`. Rewrite using `[Submodule.mem_smul_top_iff, smul_eq_mul, ← pow_two]`. Conclude with `hsq x hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Polynomial.aeval_algebraMap_apply]`. Use `⟨N ^ p.natDegree, Polynomial.aeval (N : O ⊗[ℤ] O) p, pow_pos hN _, ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, map_add, hp.coeff_natDegree, one_smul, map_sum, Finset.sum_eq_zero, zero_add, map_pow, map_natCast, Nat.cast_pow]`. Introduce `k hk`. Establish `: p.coeff k ∈ I` using `Ideal.pow_le_self (Nat.sub_ne_zero_of_lt (Finset.mem_range.1 hk)) (hc k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : Algebra.TensorProduct.lmul' ℤ (p.coeff k) = 0` using `this`. Rewrite using `[smul_eq_mul, map_mul, h, zero_mul]`. Establish `hm` using `KaehlerDifferential.one_smul_sub_smul_one_mem_ideal ℤ c`. Use `congrArg Subtype.val (LinearMap.congr_fun h0 ⟨_, hm⟩)` as an intermediate fact. Establish `h : Polynomial.aeval (N : O ⊗[ℤ] O) p * ((1 : O) ⊗ₜ[ℤ] c - c ⊗ₜ[ℤ] (1 : O)) = 0` using `this`.
-
-Rewrite using `[← neg_sub, neg_mul, mul_comm, h, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_separability_element (O : Type) [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O]
     [IsReduced O] :

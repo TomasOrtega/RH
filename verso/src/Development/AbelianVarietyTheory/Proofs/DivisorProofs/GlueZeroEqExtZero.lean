@@ -13,25 +13,25 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneCo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M₁ hB hX hW hH hH' hM₁ eq T hT hf μ D v`. Use `set Ma : Model σ X W := Model.mk (glueDarboux M₁.co eq T hf) (fun v => vacGlue eq (vacS σ X W H H' v) (M₁.vac v)) μ D with hMa`. Establish `hco : ∀ z, Ma.co.e z = (GlobalTheory.ThK.Adapt.glue eq (T z).1.1 (M₁.co.e (T z).2).1, GlobalTheory.ThK.Adapt.glue eq (T z).1.2 (M₁.co.e (T z).2).2)` using `fun z => by show (glueDarboux M₁.co eq T hf).e z = _`. Rewrite using `[glueDarboux_e]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hrat : ∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F, Ma.co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))`. Introduce `x`. Take `⟨⟨y, z, hyz⟩, x₁, hx₁⟩` from `GlobalTheory.T.plane_transform_rational_points σ X W H H' x`. Take `⟨y₁, z₁, h₁⟩` from `hM₁.rat x₁`. Use `⟨glue eq y y₁, glue eq z z₁, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hco, hT, hyz, hx₁, h₁]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;>`. Apply the tactic sequence `simp only [GlobalTheory.ThK.Adapt.glue, glue] <;> cases eq i <;> rfl`. Establish `hdec` using `GlobalTheory.T.lattice_invariant_plane_transform σ B X W X₁ W₁ H H' hB hX hW hH hH' v`. Establish `hpq : ∀ γ ∈ latAtV X W v, ∀ γ' ∈ latAtV X W v, B.ψ ((T γ').1.1 ⬝ᵥ (T γ).1.2) = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ γ' hγ'`. Take `⟨-, ⟨b, hb, hbT⟩, -⟩` from `hdec γ' hγ'`. Establish `h1` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W r s r' s' hB hX hW v (-1) 1 (by rw [map_one]; exact one_mem _) b hb γ hγ`. Establish `h2` using `hf b γ`. Rewrite `h2` using `[hT b, hbT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : inclR (F` using `F) (AF F) (((-1 : 𝓞 E) : E)) = -1 := by simp`. Rewrite `h1` using `[one_mul, hm, h2]`. Establish `h0 : symp (cA σ) (-1) (incM F X₁.J) (incM F W₁.J) (0 : Matrix (Fin n₁) (Fin d₁) (AE F E)) (T γ).2 = 0`. Simplify using `[symp, hTens]`. Rewrite `h1` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[hT]`. Establish `hθ : ∀ θ : 𝓞 E, (θ : E) + σ θ = 1 → ∀ γ ∈ latAtV X W v, B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ) = B.ψ (⅟(2 : AF F) * ((T γ).1.1 ⬝ᵥ (T γ).1.2)) * B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X₁.J) (incM F W₁.J) (T γ).2 (T γ).2) := by`. Introduce `θ hθ γ hγ`. Take `⟨⟨a, ha, haT⟩, ⟨b, hb, hbT⟩, -⟩` from `hdec γ hγ`. Establish `e` using `GlobalTheory.T.trace_one_lattice_plane_transform σ B X W X₁ W₁ H H' hB hX hW hH hH' (θ : E) hθ γ a b haT hbT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W r s r' s' hB hX hW v θ 1 (by rw [map_one]; exact one_mem _) b hb a ha`. Rewrite `h1` using `[one_mul]`. Simplify using `only [hT]`. Rewrite using `[e, ← AddChar.map_add_eq_mul]`. Establish `h3 : (⅟(2 : AF F)) * 2 = 1` using `invOf_mul_self _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) b a = S at h1 ⊢`. Generalize the expression as in `(planeT σ X W H H' γ).1.1 ⬝ᵥ (planeT σ X W H H' γ).1.2 = P`. Generalize the expression as in `symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X₁.J) (incM F W₁.J) (planeT σ X W H H' γ).2 (planeT σ X W H H' γ).2 = Q`. Establish `: ⅟(2 : AF F) * (P + 2 * S + Q) = (⅟(2 : AF F) * P + ⅟(2 : AF F) * Q) + S`. Take the linear combination `S * h3`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, AddChar.map_add_eq_mul, h1, mul_one]`. Establish `hΛ : ∀ y, y ∈ latS σ X W H H' v ↔ ∃ γ ∈ latAtV X W v, (fun k => evFin F v ((T γ).1.1 k)) = y`. Introduce `y`. Simplify using `only [latS, Set.mem_setOf_eq, hT]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, hγ, h⟩`. Conclude with `⟨γ, hγ, funext fun k => (h k).symm⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨γ, hγ, fun k => rfl⟩`. Conclude with `GlobalTheory.ThK.AdaptVac.isVac_box eq hX hW Ma M₁ hrat (fun z => (T z).1.1) (fun z => (T z).1.2) (fun z => (T z).2) hco v (fun γ hγ => by rw [hT]; exact (hdec γ hγ).2.2) hpq hθ (hM₁.vac v) _ hΛ`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.PlaneCo.isVac_vacGlue : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)

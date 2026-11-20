@@ -118,7 +118,7 @@ def hLf (g : Fin 2) (a a' : ZMod d) : MvPowerSeries (WV I) C :=
   fun μ => if ∀ w ∈ μ.support, X.OnLf g a a' w then MvPowerSeries.coeff μ X.hRow else 0
 
 /- English proof (translation)
-Unfold `OnLf`. Simplify using `only [sub_self, sub_zero]`. Conclude with `or_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem onLf_swap (a a' : ZMod d) (w : WV I) : X.OnLf 1 a' a w ↔ X.OnLf 0 a a' w := by
   unfold OnLf
@@ -126,7 +126,7 @@ theorem onLf_swap (a a' : ZMod d) (w : WV I) : X.OnLf 1 a' a w ↔ X.OnLf 0 a a'
   exact or_comm
 
 /- English proof (translation)
-Unfold `hLf`. Use function extensionality and compare the values at `μ`. Conclude with `if_congr (by simp only [onLf_swap]) rfl rfl`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hLf_swap (a a' : ZMod d) : X.hLf 1 a' a = X.hLf 0 a a' := by
   unfold hLf
@@ -134,7 +134,7 @@ theorem hLf_swap (a a' : ZMod d) : X.hLf 1 a' a = X.hLf 0 a a' := by
   exact if_congr (by simp only [onLf_swap]) rfl rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Use `show (if ∀ w ∈ μ.support, X.OnLf g a a' w then MvPowerSeries.coeff μ X.hRow else 0) = 0`. Rewrite using `[if_neg hn]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hLf_leaf (g : Fin 2) (a a' : ZMod d) (μ : WV I →₀ ℕ)
     (h : MvPowerSeries.coeff μ (X.hLf g a a') ≠ 0) : ∀ w ∈ μ.support, X.OnLf g a a' w := by

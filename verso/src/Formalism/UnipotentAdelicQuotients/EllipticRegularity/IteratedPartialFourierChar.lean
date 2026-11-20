@@ -9,7 +9,7 @@ noncomputable def eL {d : ℕ} (ξ : E d) : E d →L[ℝ] ℂ :=
   (-(2 * (Real.pi : ℂ) * Complex.I)) • (Complex.ofRealCLM.comp (innerSL ℝ ξ))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [eF, eL, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, innerSL_apply_apply, Complex.ofRealCLM_apply, smul_eq_mul, real_inner_comm y ξ]`. Put the polynomial expressions in normal form.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 lemma eF_eq_exp {d : ℕ} (ξ : E d) : eF ξ = fun y => Complex.exp (eL ξ y) := by
   funext y
@@ -18,7 +18,7 @@ lemma eF_eq_exp {d : ℕ} (ξ : E d) : eF ξ = fun y => Complex.exp (eL ξ y) :=
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[eF_eq_exp]`. Conclude with `(eL ξ).hasFDerivAt.cexp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_eF {d : ℕ} (ξ y : E d) :
     HasFDerivAt (eF ξ) (Complex.exp (eL ξ y) • eL ξ) y := by
@@ -26,7 +26,7 @@ lemma hasFDerivAt_eF {d : ℕ} (ξ y : E d) :
   exact (eL ξ).hasFDerivAt.cexp
 
 /- English proof (translation)
-Simplify using `only [eL, ev, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, innerSL_apply_apply, Complex.ofRealCLM_apply, smul_eq_mul, EuclideanSpace.inner_single_right]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma eL_ev {d : ℕ} (ξ : E d) (j : Fin d) : eL ξ (ev j) = -(2 * Real.pi * Complex.I * ((ξ j : ℝ) : ℂ)) := by
   simp only [eL, ev, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply,
@@ -34,11 +34,11 @@ lemma eL_ev {d : ℕ} (ξ : E d) (j : Fin d) : eL ξ (ev j) = -(2 * Real.pi * Co
   simp
 
 /- English proof (translation)
-Introduce `d ξ w`. Proceed by induction on `w with`. Consider the case `nil => funext y`. Simplify using `[dw]`. Consider the case `cons j w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use function extensionality and compare the values at `x`. Establish `hfun : dw w (eF ξ) = fun y => (w.map fun j => -(2 * Real.pi * Complex.I * ((ξ j : ℝ) : ℂ))).prod * eF ξ y` using `ih`. Use `show fderiv ℝ (dw w (eF ξ)) x (ev j) = _`. Rewrite using `[hfun, ((hasFDerivAt_eF ξ x).const_mul _).fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul, eL_ev, List.map_cons, List.prod_cons, eF_eq_exp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem iteratedPartialFourierChar : DwExp := by
   intro d ξ w

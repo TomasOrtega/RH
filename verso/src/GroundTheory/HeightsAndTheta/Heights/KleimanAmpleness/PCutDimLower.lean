@@ -19,17 +19,17 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Establish `hyU` using `mul_mem_chartRing_union L.toSubFamily I`. Use `choose G hG using fun K => L.fg K`. Establish `hgen : ∀ p : Σ K : Chart x, (G K : Set Ω), y * (p.2 : Ω) ∈ chartRing S x (chartUnion I p.1)` using `fun p => hyU p.1 y hy _ (L.mono p.1 (chartUnion I p.1) (show p.1.1 ⊆ (chartUnion I p.1).1 from Finset.subset_union_right) _ (by rw [← hG p.1]; exact Submodule.subset_span p.2.2))`. Use `choose u hu d hd hud using fun p : (Σ K : Chart x, (G K : Set Ω)) => exists_monos_mul_mem_twistMod (S := S) I p.1 (y * (p.2 : Ω)) (hgen p)`. Take `⟨U, hUdef⟩ : ∃ U : Poly S N, U = ∏ p, u p` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨dU, hdUdef⟩ : ∃ dU : ℕ, dU = ∑ p, d p` from `⟨_, rfl⟩`. Establish `hUm : U ∈ monos (S` using `S) I.1 := hUdef ▸ prod_mem fun p _ => hu p`. Establish `hUh : U.IsHomogeneous dU` using `hUdef ▸ hdUdef ▸ IsHomogeneous.prod _ _ _ fun p _ => hd p`. Establish `key : ∀ p : Σ K : Chart x, (G K : Set Ω), aeval x U * (y * (p.2 : Ω)) ∈ twistMod S x (dU : ℤ) p.1`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : U = u p * ∏ q ∈ Finset.univ.erase p, u q`. Rewrite using `[hUdef, Finset.mul_prod_erase _ _ (Finset.mem_univ p)]`. Establish `hdsplit : dU = d p + ∑ q ∈ Finset.univ.erase p, d q`. Rewrite using `[hdUdef, Finset.add_sum_erase _ _ (Finset.mem_univ p)]`. Establish `h2` using `aeval_mem_twistMod (x := x) (IsHomogeneous.prod _ _ _ fun q _ => hd q : (∏ q ∈ Finset.univ.erase p, u q).IsHomogeneous _) p.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `twistMod_mul_mem (hud p) h2`. Rewrite using `[hsplit, hdsplit, map_mul, Nat.cast_add]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨U, hUm, dU, hUh, fun K δ hδ => ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Rewrite `hδ` using `[← hG K]`. Proceed by induction on `hδ using Submodule.span_induction with`. Consider the case `mem δ hδ => exact key ⟨K, ⟨δ, hδ⟩⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add, mul_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb`. Rewrite using `[chartRing_smul_def, show aeval x U * (y * ((a : Ω) * b)) = (a : Ω) * (aeval x U * (y * b)) by ring, ← chartRing_smul_def]`. Conclude with `Submodule.smul_mem _ a hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_monos_mul_mem_twistMod_all (L : LineBundle S x) (I : Chart x) (y : Ω)
     (hy : ∀ δ ∈ L.sub I, y * δ ∈ chartRing S x I) :
@@ -76,49 +76,45 @@ theorem exists_monos_mul_mem_twistMod_all (L : LineBundle S x) (I : Chart x) (y 
 end CutDimLowerAux
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x n pp L s qq hW hs hqq hjq`. Take `⟨j, hj⟩` from `hjq`. Establish `hpp : pp.IsPrime` using `hW.isPrime`. Establish `hqp : qq.IsPrime` using `hqq.1.1`. Establish `hle : pp ⊔ zeroIdeal L.toSubSystem s ≤ qq` using `hqq.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hppq : pp ≤ qq` using `le_sup_left.trans hle`. Establish `hZq : zeroIdeal L.toSubSystem s ≤ qq` using `le_sup_right.trans hle`. Establish `hvan : ∀ {F : Poly k N} {e : ℕ}, F.IsHomogeneous e → aeval x F = 0 → F ∈ pp` using `fun hF h0 => hW.le ((mem_primeOf_of_isHomogeneous x hF).mpr h0)`. Establish `hxj : x j ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj (hppq (hvan (isHomogeneous_X k j) (by rw [aeval_X, h0])))`. Use `set J : Chart x := singleChart hxj with hJdef`. Establish `hjJ : j ∈ J.1` using `Finset.mem_singleton_self j`. Establish `hmono : ∀ {t : Poly k N}, t ∈ monos (S` using `k) J.1 → t ∉ qq := fun ht => monos_not_mem (fun i hi => by rw [Finset.mem_singleton.mp hi]; exact hj) ht`. Establish `hone : (1 : Ω) ∉ idealMod (x` using `x) qq J := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h1`. Take `⟨g, t, e, hg, ht, hge, hte, h1⟩` from `idealMod_mem_form qq J h1`. Establish `ht0` using `eval_ne_zero_of_mem_monos J ht`. Establish `hgt : aeval x g = aeval x t`. Rewrite `h1` using `[eq_div_iff ht0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.symm`. Establish `hd : g - t ∈ qq` using `hppq (hvan (hge.sub hte) (by rw [map_sub, hgt, sub_self]))`. Conclude with `hmono ht (by simpa using sub_mem hg hd)`. Take `⟨Q', hQ'⟩` from `L.invertible J`. Establish `hLQ : ∀ l ∈ L.sub J, ∀ q ∈ Q', l * q ∈ chartRing k x J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `l hl q hq`. Establish `h` using `Submodule.mul_mem_mul hl hq`. Rewrite `h` using `[hQ', Submodule.mem_one]`. Take `⟨y, hy⟩` from `h`. Rewrite using `[← hy]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `y.2`. Take `⟨l, hl, q, hq, hu⟩ : ∃ l ∈ L.sub J, ∃ q ∈ Q', l * q ∉ idealMod (x` from `x) qq J := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h1 : L.sub J * Q' ≤ idealMod (x` using `x) qq J := Submodule.mul_le.mpr fun l hl q hq => hcon l hl q hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hQ']`. Conclude with `hone (h1 (Submodule.mem_one.mpr ⟨1, map_one _⟩))`. Establish `hsJ : s ∈ L.sub J` using `(Submodule.mem_iInf _).mp hs J`. Take `⟨f, t0, e, ht0, hf, ht0e, ha⟩` from `hLQ s hsJ q hq`. Establish `ht00` using `eval_ne_zero_of_mem_monos J ht0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfz : s * q * aeval x t0 = aeval x f` using `(eq_div_iff ht00).mp ha`. Take `⟨U, hUm, dU, hUh, hUK⟩` from `exists_monos_mul_mem_twistMod_all L J q (fun δ hδ => by rw [mul_comm]; exact hLQ δ hδ q hq)`. Establish `hfU : f * U ∈ zeroIdeal L.toSubSystem s`. Use `Ideal.subset_span ⟨e + dU, hf.mul hUh, fun K δ hδ => ?_⟩` and prove the remaining obligations. Use `⟨aeval x t0 * (aeval x U * (q * δ)), ?_, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_add]`. Conclude with `twistMod_mul_mem (aeval_mem_twistMod ht0e K) (hUK K δ hδ)`. Rewrite using `[map_mul, ← hfz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfq : f ∈ qq` using `(hqp.mem_or_mem (hZq hfU)).resolve_right (hmono hUm)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨U', t2, eU, ht2, hU'h, ht2e, hUdef⟩` from `hLQ l hl q hq`. Establish `hU'q : U' ∉ qq` using `fun h => hu (hUdef ▸ Submodule.subset_span ⟨U', t2, eU, h, ht2, hU'h, ht2e, rfl⟩)`. Establish `ht20` using `eval_ne_zero_of_mem_monos J ht2`. Establish `hU'v : aeval x U' = l * q * aeval x t2` using `((eq_div_iff ht20).mp hUdef).symm`. Establish `hgen : ∀ h ∈ {f' : Poly k N | ∃ c : ℕ, f'.IsHomogeneous c ∧ ∀ (I : Chart x), ∀ δ ∈ L.toSubSystem.sub I, ∃ o ∈ twistMod k x (c : ℤ) I, aeval x f' * δ = s * o}, ∃ t : Poly k N, t ∉ qq ∧ t * h ∈ pp ⊔ Ideal.span {f}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `h ⟨c, hc, hh⟩`. Take `⟨o, ho, hho⟩` from `hh J l hl`. Rewrite `ho` using `[twistMod_eq_span (c : ℤ) J hjJ, Submodule.mem_span_singleton]`. Take `⟨b, rfl⟩` from `ho`. Take `⟨B, t1, eb, ht1, hB, ht1e, hb⟩` from `b.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ht10` using `eval_ne_zero_of_mem_monos J ht1`. Establish `hBv : aeval x B = (b : Ω) * aeval x t1` using `((eq_div_iff ht10).mp hb).symm`. Rewrite `hho` using `[chartRing_smul_def, zpow_natCast]`. Establish `hF1 : (U' * h * t0 * t1).IsHomogeneous (eU + c + e + eb)` using `((hU'h.mul hc).mul ht0e).mul ht1e`. Establish `hF2 : (f * (B * X j ^ c * t2)).IsHomogeneous (eU + c + e + eb)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hf.mul ((hB.mul (isHomogeneous_X_pow j c)).mul ht2e)` as an intermediate fact. Rewrite `this` using `[show e + (eb + c + eU) = eU + c + e + eb by ring]`. Then use the resulting hypothesis. Establish `hFv : aeval x (U' * h * t0 * t1 - f * (B * X j ^ c * t2)) = 0`. Simplify using `only [map_sub, map_mul, map_pow, aeval_X]`. Rewrite using `[hU'v, hBv, ← hfz]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(q * aeval x t2 * aeval x t0 * aeval x t1) * hho`. Use `⟨U' * t0 * t1, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Break down `hqp.mem_or_mem hmem with h1 | h1` into its components or cases. Break down `hqp.mem_or_mem h1 with h2 | h2` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hU'q h2`. Conclude with `hmono ht0 h2`. Conclude with `hmono ht1 h1`. Establish `hsplit : U' * t0 * t1 * h = (U' * h * t0 * t1 - f * (B * X j ^ c * t2)) + f * (B * X j ^ c * t2)` using `by ring`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `add_mem (Ideal.mem_sup_left (hvan (hF1.sub hF2) hFv)) (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f)))`. Establish `hmin : qq ∈ (pp ⊔ Ideal.span {f}).minimalPrimes`. Use `⟨⟨hqp, sup_le hppq ((Ideal.span_singleton_le_iff_mem qq).mpr hfq)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨hr, hfr⟩ hrq`. Use `hqq.2 ⟨hr, sup_le (le_sup_left.trans hfr) (Ideal.span_le.mpr ?_)⟩ hrq` and prove the remaining obligations.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Introduce `h hh`. Take `⟨t, htq, hth⟩` from `hgen h hh`. Conclude with `(hr.mem_or_mem (hfr hth)).resolve_left fun h' => htq (hrq h')`. Establish `hQ` using `Ideal.map_height_le_one_of_mem_minimalPrimes hmin`. Use `hpp` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately.
 
-Establish `: (qq.map (Ideal.Quotient.mk pp)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`. Establish `key` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient k (qq.map (Ideal.Quotient.mk pp))`. Rewrite `key` using `[ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hppq), hW.dim]`. Establish `hnn : (0 : WithBot ℕ∞) ≤ ringKrullDim (Poly k N ⧸ qq)` using `ringKrullDim_nonneg_of_nontrivial`. Generalize the expression as in `ringKrullDim (Poly k N ⧸ qq) = D at key hnn ⊢`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Generalize the expression as in `(qq.map (Ideal.Quotient.mk pp)).height = H at key hQ`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hnn (by simp)`. Consider the case `coe d`. Establish `key' : H + d = ((n + 1 + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast key`.
-
-It suffices to establish `((n + 1 : ℕ) : ℕ∞) ≤ d by exact_mod_cast this`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe m`. Proceed by induction on `H using ENat.recTopCoe with`.
-
-Consider the case `top => simp at hQ`. Consider the case `coe h`. Establish `h1 : h ≤ 1` using `by exact_mod_cast hQ`. Establish `h2 : h + m = n + 1 + 1` using `by exact_mod_cast key'`. Conclude with `(by omega : n + 1 ≤ m)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CutDimLower.proof : CutDimLower.Statement.{u, w} := by
   classical

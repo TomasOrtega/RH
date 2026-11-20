@@ -13,7 +13,7 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.Content
 
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `: 1 < Ideal.absNorm v.asIdeal` using `by omega`. Simplify using `only [qv, NNReal.coe_natCast]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_lt_qv {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) : 1 < (qv v : ℝ) := by
   have h1 : Ideal.absNorm v.asIdeal ≠ 1 := fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)
@@ -23,9 +23,9 @@ theorem one_lt_qv {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (�
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h0 : 0 < q` using `by linarith`. Establish `hr : (q ^ (2 * s))⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq (by omega))`. Use `hasSum_geometric_of_lt_one (r := (q ^ (2 * s))⁻¹) (by positivity) hr` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[inv_pow, inv_pow, ← pow_mul, ← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasSum_field (q : ℝ) (hq : 1 < q) (s : ℕ) (hs : 1 ≤ s) :
     HasSum (fun k : ℕ => ((q ^ (2 * k))⁻¹) ^ s) (1 - (q ^ (2 * s))⁻¹)⁻¹ := by
@@ -38,9 +38,9 @@ theorem hasSum_field (q : ℝ) (hq : 1 < q) (s : ℕ) (hs : 1 ≤ s) :
   ring
 
 /- English proof (translation)
-Establish `h0 : 0 < q` using `by linarith`. Establish `hr : (q ^ s)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq (by omega))`. Establish `hg` using `hasSum_geometric_of_lt_one (r := (q ^ s)⁻¹) (by positivity) hr`. Establish `hn : Summable fun k : ℕ => ‖((q ^ s)⁻¹) ^ k‖` using `hg.summable.norm`. Use `hg.mul hg (summable_mul_of_summable_norm hn hn)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun p : ℕ × ℕ => ((q ^ (p.1 + p.2))⁻¹) ^ s) = fun p : ℕ × ℕ => ((q ^ s)⁻¹) ^ p.1 * ((q ^ s)⁻¹) ^ p.2`. Use function extensionality and compare the values at `p`. Rewrite using `[← pow_add, inv_pow, inv_pow, ← pow_mul, ← pow_mul, mul_comm s]`. Rewrite using `[e, pow_two]`. Conclude with `this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_split (q : ℝ) (hq : 1 < q) (s : ℕ) (hs : 1 ≤ s) :
     HasSum (fun p : ℕ × ℕ => ((q ^ (p.1 + p.2))⁻¹) ^ s) (((1 - (q ^ s)⁻¹)⁻¹) ^ 2) := by
@@ -56,27 +56,23 @@ theorem hasSum_split (q : ℝ) (hq : 1 < q) (s : ℕ) (hs : 1 ≤ s) :
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h d b`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace E))`. Establish `hreal : w.IsReal`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← NumberField.InfinitePlace.mk_embedding w, NumberField.InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Express the relevant statement in the definitionally equal form `star (w.embedding x) = w.embedding x`. Rewrite using `[← h.2.2.2, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal`. Take `⟨D, b₂, hsq, hb0, hσ1, hD⟩` from `GlobalTheory.QuadNormBase.exists_basis F E σ h.2.2.1 hinv hne`. Establish `hD0 : D ≠ 0` using `fun h0 => hsq (h0 ▸ IsSquare.zero)`. Establish `I` using `GlobalTheory.T.integral_almost_all_places F E σ h`. Use `filter_upwards [(I d b).2 D hD0, (I d b).2 2 two_ne_zero, Filter.eventually_all.2 fun k => (I 2 b₂).1 (b k), Filter.eventually_all.2 fun j => (I d b).1 (b₂ j)] with v hD1 h21 hBC hCB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hq` using `one_lt_qv v`. Distinguish the cases in `hres : ∃ e : v.adicCompletionIntegers F, Valued.v ((e : Fv F v) ^ 2 - algebraMap F (Fv F v) D) < 1`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : Fv F v, e ^ 2 = algebraMap F (Fv F v) D := by`. Take `⟨e, he⟩` from `hres`. Establish `hDR : algebraMap F (Fv F v) D ∈ v.adicCompletionIntegers F` using `hD1.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2' : Valued.v (2 : Fv F v) = 1` using `by simpa [map_ofNat] using h21`. Use `GlobalTheory.QNorm.isSquare_of_isSquare_residue_odd F v h2' ⟨_, hDR⟩ hD1 ?_` as an intermediate fact. Take `⟨r, hr⟩` from `this`. Conclude with `⟨r, by rw [pow_two]; exact hr.symm⟩`. Use `⟨IsLocalRing.residue _ e, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Introduce `h1`. Establish `: Valued.v ((e : Fv F v) ^ 2 - algebraMap F (Fv F v) D) = 1`. Rewrite using `[← Valuation.map_neg]`. Simplify `h1` using `[pow_two]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd he (by rw [this]; exact lt_irrefl _)`. Take `⟨hnf, c, c1, c3, c4, c5⟩` from `GlobalTheory.T.quadratic_basis_integral_order F E σ h d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB e he`. Use `⟨ℕ × ℕ, inferInstance, c, fun i => i.1 + i.2, ⟨c1, ?_, c3, c4, c5⟩, ?_⟩` and prove the remaining obligations. Introduce `i lam hlam`. Take `⟨t, ht, hn⟩` from `c3 i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.T.local_unit_scaling_norm_measure F E σ h d b v lam hlam (c i) t _ (c1 i).1 ht hn`. Introduce `s hs`. Rewrite using `[zetaV, if_neg hnf]`. Conclude with `hasSum_split _ hq s hs`. Take `⟨hf, c, c1, c3, c4, c5⟩` from `GlobalTheory.T.quadratic_basis_integral_unramified F E σ h d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB hres`.
-
-Use `⟨ℕ, inferInstance, c, fun i => 2 * i, ⟨c1, ?_, c3, c4, c5⟩, ?_⟩` and prove the remaining obligations. Introduce `i lam hlam`. Take `⟨t, ht, hn⟩` from `c3 i`. Conclude with `GlobalTheory.T.local_unit_scaling_norm_measure F E σ h d b v lam hlam (c i) t _ (c1 i).1 ht hn`. Introduce `s hs`.
-
-Rewrite using `[zetaV, if_pos hf]`. Conclude with `hasSum_field _ hq s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem content : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∃ (ι : Type) (_ : Countable ι) (c : ι → Fv F v ⊗[F] E) (w : ι → ℕ), IsContent σ b v c w ∧ ∀ s : ℕ, 1 ≤ s → HasSum (fun i => (((qv v : ℝ) ^ w i)⁻¹) ^ s) (zetaV E v s) := by
   intro F E _ _ _ _ _ σ h d b

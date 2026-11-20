@@ -29,7 +29,7 @@ section Helpers
 variable {X : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing C] [Algebra S C]
     (f : A →ₐ[S] B) (g : B →ₐ[S] C) : Formalism.L2.Pj.homAt x0 (g.comp f) = Formalism.L2.Pj.homAt x0 g ≫ Formalism.L2.Pj.homAt x0 f := by
@@ -39,7 +39,7 @@ theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algeb
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map _ = 𝟙 _`. Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem homAt_id {A : Type} [CommRing A] [Algebra S A] : Formalism.L2.Pj.homAt x0 (AlgHom.id S A) = 𝟙 _ := by
   apply Over.OverMorphism.ext
@@ -47,7 +47,7 @@ theorem homAt_id {A : Type} [CommRing A] [Algebra S A] : Formalism.L2.Pj.homAt x
   exact Spec.map_id _
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Z) (toUnit Y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_one_gen {Y Z M : Over X} [GrpObj M] (f : Y ⟶ Z) : f ≫ (1 : Z ⟶ M) = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Z) (toUnit Y)]
@@ -66,20 +66,20 @@ variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [CommRing S] (x0 : 
   [AddCommGroup W] [Module S W] [Module Sᵐᵒᵖ W] [IsCentralScalar S W]
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun y => TrivSqZeroExt.ext (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem map_id' : TrivSqZeroExt.map (LinearMap.id : W →ₗ[S] W) = AlgHom.id S (TrivSqZeroExt S W) :=
   AlgHom.ext fun y => TrivSqZeroExt.ext (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun y => TrivSqZeroExt.ext (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem map_comp' (f : V →ₗ[S] U) (g : W →ₗ[S] V) :
     (TrivSqZeroExt.map f).comp (TrivSqZeroExt.map g) = TrivSqZeroExt.map (f.comp g) :=
   AlgHom.ext fun y => TrivSqZeroExt.ext (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun y => TrivSqZeroExt.ext (by simp [TrivSqZeroExt.algebraMap_eq_inl]) (by simp [TrivSqZeroExt.algebraMap_eq_inl])`.
+A detailed English derivation is pending.
 -/
 theorem map_zero_eq : TrivSqZeroExt.map (0 : W →ₗ[S] V) =
     (Algebra.ofId S (TrivSqZeroExt S V)).comp (TrivSqZeroExt.fstHom S S W) :=
@@ -87,7 +87,7 @@ theorem map_zero_eq : TrivSqZeroExt.map (0 : W →ₗ[S] V) =
     (by simp [TrivSqZeroExt.algebraMap_eq_inl])
 
 /- English proof (translation)
-Rewrite using `[map_zero_eq, homAt_comp, Category.assoc, hy, comp_one_gen]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_map_zero (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
     (hy : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.fstHom S S W) ≫ y = 1) :
@@ -95,7 +95,7 @@ theorem comp_map_zero (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
   rw [map_zero_eq, homAt_comp, Category.assoc, hy, comp_one_gen]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, zero_smul, pow_zero]`. Conclude with `comp_map_zero x0 y hy`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, add_smul, one_smul, GlobalTheory.T.hom_square_zero_additive x0 y hy, ih, map_id', homAt_id, Category.id_comp, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_map_nsmul (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
     (hy : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.fstHom S S W) ≫ y = 1) (n : ℕ) :
@@ -108,7 +108,7 @@ theorem comp_map_nsmul (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
 variable [IsCommMonObj G]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty]`. Conclude with `comp_map_zero x0 y hy`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, GlobalTheory.T.hom_square_zero_additive x0 y hy, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_map_sum (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
     (hy : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.fstHom S S W) ≫ y = 1) {κ : Type} (s : Finset κ)
@@ -132,9 +132,9 @@ variable {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] {S : Type} [F
   {A B : Type} [CommRing A] [Algebra S A] [IsLocalRing A] [CommRing B] [Algebra S B] [IsLocalRing B]
 
 /- English proof (translation)
-Introduce `y z hyz`. Rewrite `hyz` using `[incl_apply, incl_apply]`. Establish `h2` using `congrArg q hyz`. Rewrite `h2` using `[map_add, map_add, AlgHom.commutes, AlgHom.commutes, RingHom.mem_ker.1 y.snd.2, RingHom.mem_ker.1 z.snd.2, add_zero, add_zero]`. Establish `h3 : y.fst = z.fst` using `hB h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (y.snd : A) = z.snd` using `by rw [h3] at hyz; exact add_left_cancel hyz`. Conclude with `TrivSqZeroExt.ext h3 (Subtype.ext h4)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incl_injective (q : A →ₐ[S] B) (hB : Function.Injective (algebraMap S B))
     [Module Sᵐᵒᵖ (RingHom.ker q)] [IsCentralScalar S (RingHom.ker q)] (hJ : RingHom.ker q ^ 2 = ⊥) :
@@ -149,15 +149,13 @@ theorem incl_injective (q : A →ₐ[S] B) (hB : Function.Injective (algebraMap 
   exact TrivSqZeroExt.ext h3 (Subtype.ext h4)
 
 /- English proof (translation)
-Use `letI : Module Sᵐᵒᵖ (RingHom.ker q) := Module.compHom _ ((RingHom.id S).fromOpposite fun _ _ => Commute.all _ _)`. Use `haveI : IsCentralScalar S (RingHom.ker q) := ⟨fun s j => by show ((RingHom.id S).fromOpposite fun _ _ => Commute.all _ _) (MulOpposite.op s) • j = s • j rfl⟩`. Take `⟨ε, hε1, hεδ⟩` from `GlobalTheory.T.exists_square_zero_lift_local x0 q hq hJ δ h1`. Establish `hinj` using `incl_injective q hB hJ`. Establish `hθ : σ.comp (incl (S` using `S) (RingHom.ker q) hJ) = (incl (S := S) (RingHom.ker q) hJ).comp (TrivSqZeroExt.map ((N : S) • LinearMap.id)) := by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `AlgHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, incl_apply, incl_apply, map_add, AlgHom.commutes, hσ _ (RingHom.mem_ker.1 y.snd.2), TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]`. Both sides reduce to the same expression. Establish `hpow` using `comp_map_nsmul x0 ε hε1`. Establish `e1 : Formalism.L2.Pj.homAt x0 (incl (S` using `S) (RingHom.ker q) hJ) ≫ ε ^ N = Formalism.L2.Pj.homAt x0 (incl (S := S) (RingHom.ker q) hJ) ≫ ε ^ 2 := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpow N, ← Category.assoc, ← homAt_comp, ← hθ, homAt_comp, Category.assoc, hεδ, hsc, ← hεδ, ← MonObj.comp_mul, pow_two]`. Establish `hc` using `GlobalTheory.T.square_zero_inclusion_hom_ext x0 _ hJ hinj _ _ e1`. Establish `hN' : ε ^ (N - 2) = 1`. Establish `: ε ^ (N - 2) * ε ^ 2 = ε ^ 2` using `by rw [← pow_add, Nat.sub_add_cancel hN.le]; exact hc`. Conclude with `mul_eq_right.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : ((N - 2 : ℕ) : S) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `e2` using `(hpow (N - 2)).trans hN'`. Establish `hε : ε = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearMap.smul_comp, LinearMap.id_comp, smul_smul, inv_mul_cancel₀ hN0, one_smul, map_id', homAt_id, Category.id_comp]`.
-
-Use `_ = 1 := by rw [← map_comp', homAt_comp, Category.assoc, e2, comp_one_gen]`. Rewrite using `[← hεδ, hε, comp_one_gen]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem succ_two [CharZero S] (q : A →ₐ[S] B) (hq : Function.Surjective q) (hJ : RingHom.ker q ^ 2 = ⊥)
     (hB : Function.Injective (algebraMap S B)) (δ : overAt x0 A ⟶ G) (h1 : Formalism.L2.Pj.homAt x0 q ≫ δ = 1)
@@ -196,17 +194,15 @@ theorem succ_two [CharZero S] (q : A →ₐ[S] B) (hq : Function.Surjective q) (
   rw [← hεδ, hε, comp_one_gen]
 
 /- English proof (translation)
-Use `letI : Module Sᵐᵒᵖ (RingHom.ker q) := Module.compHom _ ((RingHom.id S).fromOpposite fun _ _ => Commute.all _ _)`. Use `haveI : IsCentralScalar S (RingHom.ker q) := ⟨fun s j => by show ((RingHom.id S).fromOpposite fun _ _ => Commute.all _ _) (MulOpposite.op s) • j = s • j rfl⟩`. Take `⟨ε, hε1, hεδ⟩` from `GlobalTheory.T.exists_square_zero_lift_local x0 q hq hJ δ h1`. Set `ℓ : κ → (RingHom.ker q →ₗ[S] S)` to `fun r => { toFun := fun p => (t r (p : A)).snd map_add' := fun p p' => by simp map_smul' := fun c p => by simp }`. Set `e : κ → (S →ₗ[S] RingHom.ker q)` to `fun r => LinearMap.toSpanSingleton S _ ⟨w r, hw r⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsum : Finset.univ.sum (fun r => (e r).comp (ℓ r)) = LinearMap.id`. Use `LinearMap.ext fun p => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, LinearMap.id_apply]`. Use `((ht p p.2).2.trans (Finset.sum_congr rfl fun r _ => ?_)).symm` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hmap : ∀ r, (t r).comp (incl (S` using `S) (RingHom.ker q) hJ) = TrivSqZeroExt.map (ℓ r) := by`. Introduce `r`. Use `AlgHom.ext fun y => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, incl_apply, map_add, AlgHom.commutes, TrivSqZeroExt.fst_add, (ht _ y.snd.2).1 r, add_zero, TrivSqZeroExt.fst_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, incl_apply, map_add, AlgHom.commutes, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_map]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, ℓ]`. Establish `hℓ : ∀ r, Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (ℓ r)) ≫ ε = 1` using `fun r => by`. Rewrite using `[← hmap r, homAt_comp, Category.assoc, hεδ]`. Conclude with `htan r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hε : ε = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum, map_id', homAt_id, Category.id_comp]`. Use `_ = Finset.univ.prod (fun r => Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map ((e r).comp (ℓ r))) ≫ ε) := comp_map_sum x0 ε hε1 _ _`. Use `_ = 1 := Finset.prod_eq_one fun r _ => by`.
-
-Rewrite using `[← map_comp', homAt_comp, Category.assoc, hℓ r, comp_one_gen]`. Rewrite using `[← hεδ, hε, comp_one_gen]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem succ_one (q : A →ₐ[S] B) (hq : Function.Surjective q) (hJ : RingHom.ker q ^ 2 = ⊥)
     (δ : overAt x0 A ⟶ G) (h1 : Formalism.L2.Pj.homAt x0 q ≫ δ = 1) {κ : Type} [Fintype κ]
@@ -255,23 +251,21 @@ end GlobalTheory.ExpUniqCh0
 namespace GlobalTheory.ExpUniqCh0
 
 /- English proof (translation)
-Introduce `X G _ _ O _ a S _ _ x0 ρ _ _ ch u x x' hx hx'`. Set `δ : ∀ m, overAt x0 (Jet S ρ m) ⟶ G` to `fun m => x' m * (x m)⁻¹`. Establish `htr : ∀ m, Formalism.L2.Pj.homAt x0 (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) ≫ δ (m + 1) = δ m` using `fun m => by`. Simplify using `only [δ, MonObj.comp_mul, GrpObj.comp_inv, hx.trunc m, hx'.trunc m]`. Establish `hlaw : ∀ m, Formalism.L2.Pj.homAt x0 (jetSum (Finset.univ : Finset (Fin 2)) : Jet S ρ m →ₐ[S] Jet S (Fin 2 × ρ) m) ≫ δ m = (Formalism.L2.Pj.homAt x0 (jetIn (0 : Fin 2) : Jet S ρ m →ₐ[S] Jet S (Fin 2 × ρ) m) ≫ δ m) * (Formalism.L2.Pj.homAt x0 (jetIn (1 : Fin 2) : Jet S ρ m →ₐ[S] J …` using `fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [δ, MonObj.comp_mul, GrpObj.comp_inv, hx.law m, hx'.law m]`. Rewrite using `[_root_.mul_inv, _root_.mul_mul_mul_comm]`. Establish `hzero : Formalism.L2.Pj.homAt x0 (jetAug : Jet S ρ 0 →ₐ[S] S) ≫ δ 0 = 1`. Simplify using `only [δ, MonObj.comp_mul, GrpObj.comp_inv, hx.zero 0, hx'.zero 0, inv_one, _root_.mul_one]`. Establish `htan : ∀ r, Formalism.L2.Pj.homAt x0 (jetTan r : Jet S ρ (0 + 1) →ₐ[S] DualNumber S) ≫ δ 1 = 1` using `fun r => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.Pj.homAt x0 (jetTan r : Jet S ρ (0 + 1) →ₐ[S] DualNumber S) ≫ x' 1 = Formalism.L2.Pj.homAt x0 (jetTan r : Jet S ρ (0 + 1) →ₐ[S] DualNumber S) ≫ x 1` using `Over.OverMorphism.ext ((hx'.tan r).trans (hx.tan r).symm)`. Simplify using `only [δ, MonObj.comp_mul, GrpObj.comp_inv, e, _root_.mul_inv_cancel]`. Establish `key : ∀ m, δ m = 1`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Establish `e` using `congrArg (fun f => Formalism.L2.Pj.homAt x0 (Algebra.ofId S (Jet S ρ 0)) ≫ f) hzero`. Simplify using `only [← Category.assoc, ← homAt_comp, (GlobalTheory.T.jet_local_trunc_ker_sq_augment (S := S) (ρ := ρ) 0).2.2, homAt_id, Category.id_comp, comp_one_gen] at e`. Conclude with `e`. Consider the case `succ m ih`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : Formalism.L2.Pj.homAt x0 (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) ≫ δ (m + 1) = 1` using `by rw [htr, ih]`. Use `haveI : IsLocalRing (Jet S ρ m) := (GlobalTheory.T.jet_local_trunc_ker_sq_augment (S := S) (ρ := ρ) m).1`. Use `haveI : IsLocalRing (Jet S ρ (m + 1)) := (GlobalTheory.T.jet_local_trunc_ker_sq_augment (S := S) (ρ := ρ) (m + 1)).1`. Establish `hJ2` using `(GlobalTheory.T.jet_local_trunc_ker_sq_augment (S := S) (ρ := ρ) m).2.1`. Establish `hq : Function.Surjective (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ p, rfl⟩`. Establish `hB : Function.Injective (algebraMap S (Jet S ρ m))` using `fun a b h => by`. Use `congrArg (jetAug : Jet S ρ m →ₐ[S] S) h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `this` using `[AlgHom.commutes, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, RingHom.id_apply]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `rfl | ⟨m', rfl⟩ : m = 0 ∨ ∃ m', m = m' + 1 := by`. Break down `m with _ | m'` into its components or cases. Conclude with `Or.inl rfl`. Conclude with `Or.inr ⟨m', rfl⟩`.
+Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hX, hp⟩` from `GlobalTheory.T.jet_order_one_tangent_decomp (S := S) (ρ := ρ)`. Conclude with `succ_one x0 _ hq hJ2 (δ (0 + 1)) h1 (fun r => jetTan r) (fun r => Ideal.Quotient.mk _ (MvPolynomial.X r)) hX hp htan`. Establish `hdiag` using `GlobalTheory.T.diagonal_jet_sum_scale_two (S := S) (ρ := ρ) (m' + 1 + 1)`. Use `succ_two x0 _ hq hJ2 hB (δ (m' + 1 + 1)) h1 (jetScale fun _ => (2 : S)) (2 ^ (m' + 1 + 1)) (lt_of_lt_of_le (by norm_num) (Nat.pow_le_pow_right (by norm_num) (by omega : 2 ≤ m' + 1 + 1))) ?_ ?_` and prove the remaining obligations. Introduce `p hp`.
-
-Rewrite using `[GlobalTheory.T.jetScale_of_trunc_eq_zero (m' + 1) (2 : S) p hp, Nat.cast_pow, Nat.cast_ofNat]`. Rewrite using `[← hdiag.1, homAt_comp, Category.assoc, hlaw, MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← homAt_comp, ← homAt_comp, hdiag.2 0, hdiag.2 1, homAt_id, Category.id_comp]`. Use function extensionality and compare the values at `m`. Conclude with `(_root_.mul_inv_eq_one.1 (key m)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem expUnique : ∀ {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] {O : Type} [CommRing O] (a : OAct O G)
     {S : Type} [Field S] [CharZero S] (x0 : Sp S ⟶ X) {ρ : Type} [Fintype ρ] [DecidableEq ρ] (ch : ρ → O →+* S)

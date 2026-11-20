@@ -14,11 +14,9 @@ def gens : Set (X → Matrix (Fin n) (Fin n) A) :=
   {a | ∃ f ∈ T, ∃ h : Γ, a = fun x => f x • mat (rep x) h}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, f, h, hf, rfl⟩`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.subset_span ⟨f k, hf k, h k, rfl⟩`. Introduce `ha`. Take `⟨m, c, g, rfl⟩` from `Submodule.mem_span_set'.1 ha`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf h hh using fun k => (g k).2`. Use `⟨m, fun k => c k • f k, h, fun k => T.smul_mem (hf k) _, ?_⟩` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hh k]`. Use function extensionality and compare the values at `x`.
-
-Simplify using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inRing_iff_mem_span (a : X → Matrix (Fin n) (Fin n) A) :
     InRing T rep a ↔ a ∈ Submodule.span A (gens T rep) := by
@@ -51,11 +49,11 @@ def ringR : Subalgebra A (X → Matrix (Fin n) (Fin n) A) :=
 variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 /- English proof (translation)
-Use `show a ∈ Submodule.span A (_root_.GlobalTheory.SpanRing.gens T rep) ↔ _`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing`. Rewrite using `[Submodule.mem_span_set']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, c, g, rfl⟩ choose F hF h hg using fun k => (g k).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, fun k => c k • F k, h, fun k => T.smul_mem (hF k) (c k), ?_⟩` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hg k]`. Use function extensionality and compare the values at `x`. Simplify using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, F, h, hF, rfl⟩`. Conclude with `⟨m, fun _ => 1, fun k => ⟨_, F k, hF k, h k, rfl⟩, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.mem_ringR (a : X → Matrix (Fin n) (Fin n) A) :
     a ∈ _root_.GlobalTheory.SpanRing.ringR T rep ↔ _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep a := by
@@ -79,7 +77,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (_root_.GlobalTheory.SpanRing.ringR T rep).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_one : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep 1 :=
   (_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (_root_.GlobalTheory.SpanRing.ringR T rep).one_mem
@@ -88,7 +86,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (add_mem ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 ha) ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 hb))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_add {a b : X → Matrix (Fin n) (Fin n) A}
     (ha : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep a) (hb : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep b) :
@@ -101,7 +99,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (sub_mem ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 ha) ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 hb))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_sub {a b : X → Matrix (Fin n) (Fin n) A}
     (ha : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep a) (hb : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep b) :
@@ -114,7 +112,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (mul_mem ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 ha) ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 hb))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_mul {a b : X → Matrix (Fin n) (Fin n) A}
     (ha : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep a) (hb : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep b) :
@@ -127,7 +125,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (Subalgebra.smul_mem _ ((_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 ha) c)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_smul (c : A) {a : X → Matrix (Fin n) (Fin n) A}
     (ha : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep a) :
@@ -139,7 +137,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (Subalgebra.sum_mem _ fun k hk => (_root_.GlobalTheory.SpanRing.mem_ringR T rep _).2 (ha k hk))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_sum {ι : Type} (s : Finset ι)
     {a : ι → X → Matrix (Fin n) (Fin n) A}
@@ -153,7 +151,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (Submodule.subset_span ⟨1, T.one_mem, h, by funext x; simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.inRing_mat (h : Γ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep (fun x => _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat (rep x) h) :=
@@ -165,7 +163,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
 variable {T rep} in
 
 /- English proof (translation)
-Take `⟨m, f, h, hf, rfl⟩` from `ha`. Simplify using `only [Finset.sum_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨h k, rfl⟩)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.eval_mem_span {a : X → Matrix (Fin n) (Fin n) A}
     (ha : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep a) (x : X) :
@@ -180,11 +178,11 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
 variable {T rep} in
 
 /- English proof (translation)
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Conclude with `⟨_, _root_.GlobalTheory.SpanRing.inRing_mat g, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨0, (_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (_root_.GlobalTheory.SpanRing.ringR T rep).zero_mem, rfl⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hax⟩` from `hy`. Take `⟨b, hb, hbx⟩` from `hz`. Conclude with `⟨a + b, _root_.GlobalTheory.SpanRing.inRing_add ha hb, by simp [hax, hbx]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c y _ hy`. Take `⟨a, ha, hax⟩` from `hy`. Conclude with `⟨c • a, _root_.GlobalTheory.SpanRing.inRing_smul c ha, by simp [hax]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.SpanRing.exists_inRing_eval (x : X) {M : Matrix (Fin n) (Fin n) A}
     (hM : M ∈ Submodule.span A (Set.range (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat (rep x)))) :
@@ -214,11 +212,11 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
 variable {T rep} in
 variable (T rep) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InMatrixCongruenceModule`. Rewrite using `[_root_.GlobalTheory.SpanRing.spanRingCornerIdealModule, Submodule.mem_span_set']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, c, g, rfl⟩ choose J hJ hJπ a ha hg using fun k => (g k).2`. Use `⟨m, fun k => c k • J k, a, fun k => ⟨T.smul_mem (hJ k) (c k), by simp [hJπ k], ha k⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hg k]`. Use function extensionality and compare the values at `x`. Simplify using `[mul_smul]`. Introduce and unpack `⟨m, J, a, h, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, fun _ => 1, fun k => ⟨_, J k, (h k).1, (h k).2.1, a k, (h k).2.2, rfl⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.SpanRing.mem_spanRingCornerIdealModule_iff (π : X) (e s : X → Matrix (Fin n) (Fin n) A) :
     s ∈ _root_.GlobalTheory.SpanRing.spanRingCornerIdealModule T rep π e ↔ _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InMatrixCongruenceModule T rep π e s := by
@@ -245,7 +243,7 @@ variable {T rep} in
 variable (T rep) in
 variable {T rep} in
 /- English proof (translation)
-Take `⟨m, j, a, h, rfl⟩` from `hs`. Simplify using `only [Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => by simp [(h k).2.1]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.InMatrixCongruenceModule.eval_eq_zero {π : X}
     {e s : X → Matrix (Fin n) (Fin n) A} (hs : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InMatrixCongruenceModule T rep π e s) :
@@ -258,7 +256,7 @@ variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in
 variable {T rep} in
 /- English proof (translation)
-Establish `h1 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep (fun x => f x • _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat (rep x) 1)` using `(_root_.GlobalTheory.SpanRing.mem_ringR T rep _).1 (Submodule.subset_span ⟨f, hf, 1, rfl⟩)`. Use `_root_.GlobalTheory.SpanRing.inRing_mul h1 hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat, smul_mul_assoc]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem inRing_pointwise_smul_of_mem {f : X → A} (hf : f ∈ T)
     {b : X → Matrix (Fin n) (Fin n) A} (hb : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep b) :
@@ -277,7 +275,7 @@ variable {T rep} in
 variable (T rep) in
 variable {T rep} in
 /- English proof (translation)
-Take `⟨m, j, a, h, rfl⟩` from `hs`. Use `_root_.GlobalTheory.SpanRing.inRing_sum Finset.univ fun k _ => ?_` and prove the remaining obligations. Conclude with `inRing_pointwise_smul_of_mem (h k).1 (_root_.GlobalTheory.SpanRing.inRing_mul (_root_.GlobalTheory.SpanRing.inRing_mul he (h k).2.2) he)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpanRing.InMatrixCongruenceModule.inRing {π : X}
     {e s : X → Matrix (Fin n) (Fin n) A} (he : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.InRing T rep e)
@@ -293,9 +291,9 @@ variable {T rep} in
 variable (T rep) in
 variable {T rep} in
 /- English proof (translation)
-Establish `hex : e x * e x = e x` using `congrFun he x`. Take `⟨m, j, a, h, rfl⟩` from `hs`. Simplify using `only [Finset.sum_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [mul_smul_comm, ← mul_assoc, hex]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [smul_mul_assoc, mul_assoc, hex]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.SpanRing.InMatrixCongruenceModule.corner {π : X}
     {e s : X → Matrix (Fin n) (Fin n) A} (he : e * e = e)

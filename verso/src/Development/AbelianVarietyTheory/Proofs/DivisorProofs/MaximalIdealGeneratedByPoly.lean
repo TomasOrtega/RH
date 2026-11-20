@@ -6,7 +6,7 @@ namespace GlobalTheory.EtaleUnif
 open Polynomial
 
 /- English proof (translation)
-Take `⟨c, hc, hP⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors k) f`. Use `⟨c, nonZeroDivisors.ne_zero hc, _, hP.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_map_eq_C_mul {k K : Type} [CommRing k] [IsDomain k] [Field K] [Algebra k K]
     [IsFractionRing k K] (f : K[X]) :
@@ -16,17 +16,15 @@ theorem exists_map_eq_C_mul {k K : Type} [CommRing k] [IsDomain k] [Field K] [Al
   rw [← smul_eq_C_mul, algebraMap_smul]
 
 /- English proof (translation)
-Use `haveI : CharZero K := (algebraMap K ℂ).charZero`. Establish `hinj : Function.Injective (Polynomial.map (algebraMap k K))` using `Polynomial.map_injective _ (IsFractionRing.injective k K)`. Distinguish the cases in `hw : IsAlgebraic K w`. Establish `hint : IsIntegral K w` using `hw.isIntegral`. Take `⟨c, hc, P, hP'⟩` from `exists_map_eq_C_mul (k := k) (minpoly K w)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, ?_, Or.inr ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hP', map_mul, minpoly.aeval, mul_zero]`. Rewrite using `[← derivative_map, hP', derivative_C_mul, map_mul, aeval_C]`. Establish `hsep : (minpoly K w).Separable` using `(minpoly.irreducible hint).separable`. Establish `hc' : algebraMap k K c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective k K)).2 hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_ne_zero ((map_ne_zero_iff _ (algebraMap K ℂ).injective).2 hc') (hsep.aeval_derivative_ne_zero (minpoly.aeval K w))`. Introduce `g hg`. Take `⟨hK, hhK⟩ : minpoly K w ∣ g.map (algebraMap k K)` from `minpoly.dvd K w hg`. Take `⟨d, hd, H, hH'⟩` from `exists_map_eq_C_mul (k := k) hK`. Use `⟨c * d, mul_ne_zero hc hd, H, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[Polynomial.map_mul, Polynomial.map_mul, hP', hH', hhK, Polynomial.map_C, map_mul, C_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨0, by simp, Or.inl rfl, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨1, one_ne_zero, 0, ?_⟩` and prove the remaining obligations. Establish `h0 : g.map (algebraMap k K) = 0`. Assume the negation of the conclusion as `hne0`. Conclude with `hw ⟨_, hne0, hg⟩`. Establish `: g = 0` using `hinj (by rw [h0, Polynomial.map_zero])`.
-
-Rewrite using `[this, mul_zero, mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly_simple_zero_dvd_vanishing {k K : Type} [CommRing k] [IsDomain k] [Field K] [Algebra k K]
     [IsFractionRing k K] [Algebra K ℂ] (w : ℂ) :
@@ -64,11 +62,11 @@ theorem exists_poly_simple_zero_dvd_vanishing {k K : Type} [CommRing k] [IsDomai
     rw [this, mul_zero, mul_zero]
 
 /- English proof (translation)
-Use `haveI : IsDomain k := hσ.isDomain σ`. Take `⟨K, _, _, _⟩ : ∃ (K : Type) (_ : Field K) (_ : Algebra k K), IsFractionRing k K` from `⟨FractionRing k, inferInstance, inferInstance, inferInstance⟩`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ : K →+* ℂ, τ.comp (algebraMap k K) = σ := by`. Use `⟨IsFractionRing.lift (A := k) (K := K) (g := σ) hσ, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Use `letI : Algebra K ℂ := τ.toAlgebra`. Establish `hτ' : (algebraMap K ℂ).comp (algebraMap k K) = σ` using `hτ`. Establish `hev : ∀ g : k[X], aeval w (g.map (algebraMap k K)) = g.eval₂ σ w`. Introduce `g`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_def, eval₂_map, hτ']`. Use `exists_poly_simple_zero_dvd_vanishing (k := k) (K := K) w` as an intermediate fact. Simplify using `only [hev] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_poly_simple_zero {k : Type} [CommRing k] (σ : k →+* ℂ)
     (hσ : Function.Injective σ) (w : ℂ) :
@@ -91,11 +89,11 @@ theorem exists_poly_simple_zero {k : Type} [CommRing k] (σ : k →+* ℂ)
   exact this
 
 /- English proof (translation)
-Set `p : Ideal B` to `q.under B`. Set `` to `Localization.AtPrime.algebraOfLiesOver p q`. Establish `hun : Algebra.IsUnramifiedAt B q` using `inferInstance`. Establish `hm` using `((Algebra.isUnramifiedAt_iff_map_eq B p q).mp hun).2`. Establish `h1 : q.map (algebraMap A (Localization.AtPrime q)) = (p.map (algebraMap B A)).map (algebraMap A (Localization.AtPrime q))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, ← IsScalarTower.algebraMap_eq, hm]`. Set `ε` to `IsLocalization.algEquiv q.primeCompl (Localization.AtPrime q) R`. Establish `hcomp : (ε : Localization.AtPrime q →+* R).comp (algebraMap A (Localization.AtPrime q)) = algebraMap A R`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (Ideal.map (ε : Localization.AtPrime q →+* R)) h1`. Rewrite `h2` using `[Ideal.map_map, Ideal.map_map, hcomp]`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal q R]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_map_under (B A R : Type) [CommRing B] [CommRing A] [CommRing R]
     [IsLocalRing R] [Algebra B A] [Algebra.Etale B A] [Algebra A R] (q : Ideal A) [q.IsPrime]
@@ -125,21 +123,21 @@ namespace GlobalTheory
 open Polynomial in
 
 /- English proof (translation)
-Take `⟨P, hP0, hPd, hP⟩` from `EtaleUnif.exists_poly_simple_zero (e.comp (φ.comp MvPolynomial.C)) he (e (φ (MvPolynomial.X 0)))`. Use `⟨P, ?_, hPd⟩` and prove the remaining obligations. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin 1) k) A := hφ`. Establish `hmax` using `EtaleUnif.maximalIdeal_eq_map_under (MvPolynomial (Fin 1) k) A R q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ (f : k[X]), e (f.eval₂ (φ.comp MvPolynomial.C) (φ (MvPolynomial.X 0))) = f.eval₂ (e.comp (φ.comp MvPolynomial.C)) (e (φ (MvPolynomial.X 0)))` using `fun f => Polynomial.hom_eval₂ f _ e _`. Establish `hkey : ∀ g : MvPolynomial (Fin 1) k, φ g = (MvPolynomial.uniqueAlgEquiv k (Fin 1) g).eval₂ (φ.comp MvPolynomial.C) (φ (MvPolynomial.X 0))`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add f g hf hg => simp [hf, hg, Polynomial.eval₂_add]`. Consider the case `mul_X f i hf`. Establish `: i = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Simplify using `[hf, Polynomial.eval₂_mul]`.
+Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hmax, Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Establish `hg' : φ g ∈ q` using `hg`. Establish `hzero : (MvPolynomial.uniqueAlgEquiv k (Fin 1) g).eval₂ (e.comp (φ.comp MvPolynomial.C)) (e (φ (MvPolynomial.X 0))) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hev, ← hkey, ← RingHom.mem_ker, ← hq]`. Conclude with `hg'`. Take `⟨d, hd, h, hh⟩` from `hP _ hzero`. Establish `hA` using `congrArg (Polynomial.eval₂ (φ.comp MvPolynomial.C) (φ (MvPolynomial.X 0))) hh`. Rewrite `hA` using `[Polynomial.eval₂_mul, Polynomial.eval₂_mul, Polynomial.eval₂_C, ← hkey]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnot : (φ.comp MvPolynomial.C) d ∈ q.primeCompl`. Introduce `hmem`. Establish `hmem' : (φ.comp MvPolynomial.C) d ∈ q` using `hmem`. Rewrite `hmem'` using `[hq, RingHom.mem_ker]`. Conclude with `hd (he (by simpa using hmem'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (algebraMap A R ((φ.comp MvPolynomial.C) d))` using `IsLocalization.map_units R (⟨_, hnot⟩ : q.primeCompl)`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Establish `hR` using `congrArg (algebraMap A R) hA`. Rewrite `hR` using `[map_mul, map_mul]`. Establish `hdv : algebraMap A R (P.eval₂ (φ.comp MvPolynomial.C) (φ (MvPolynomial.X 0))) ∣ algebraMap A R ((φ.comp MvPolynomial.C) d) * algebraMap A R (φ g)` using `⟨_, hR⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hu.dvd_mul_left).1 hdv`. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← IsLocalization.AtPrime.map_eq_maximalIdeal q R]`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Rewrite using `[hq, RingHom.mem_ker, hev]`. Conclude with `hP0`.
+A detailed English derivation is pending.
 -/
 theorem etale_maximalIdeal_span_poly (k A R : Type) [CommRing k] [CommRing A] [CommRing R]
     [IsLocalRing R] [Algebra A R] (φ : MvPolynomial (Fin 1) k →+* A) (hφ : φ.Etale)

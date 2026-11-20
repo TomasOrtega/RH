@@ -26,9 +26,9 @@ theorem shiftNegOneMapF_succ_apply (β : L ⟶ L') (n : ℕ) (y : L.X n) :
   rfl
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `shiftNegOneMapF β 0 ≫ 0 = 0 ≫ shiftNegOneMapF β 1`. Rewrite using `[comp_zero, zero_comp]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `ModuleCat.hom_ext (LinearMap.ext fun (y : L.X n) => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(L'.d n (n + 1)).hom ((β.f n).hom y) = (β.f (n + 1)).hom (-(L.d n (n + 1)).hom y)`. Rewrite using `[map_neg, hom_apply_hom_apply_eq_of_comp_eq (β.comm n (n + 1)) y]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftNegOneMapF_comm (β : L ⟶ L') (n : ℕ) :
     shiftNegOneMapF β n ≫ shiftNegOneD L' n = shiftNegOneD L n ≫ shiftNegOneMapF β (n + 1) := by
@@ -49,7 +49,7 @@ noncomputable def shiftNegOneMap (β : L ⟶ L') : shiftNegOne L ⟶ shiftNegOne
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `ModuleCat.hom_ext (LinearMap.ext fun _ => rfl) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem shiftNegOneSuccHom_shiftNegOneMap_f (β : L ⟶ L') (n : ℕ) :
     shiftNegOneSuccHom L n ≫ (shiftNegOneMap β).f (n + 1) = β.f n ≫ shiftNegOneSuccHom L' n :=
@@ -57,7 +57,7 @@ theorem shiftNegOneSuccHom_shiftNegOneMap_f (β : L ⟶ L') (n : ℕ) :
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `n : 1`. Consider the cases of `n with`. Consider the case `zero => exact ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`. Consider the case `succ n => rfl`. Use the proof step `@[reassoc]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem shiftNegOneMap_id : shiftNegOneMap (𝟙 L) = 𝟙 (shiftNegOne L) := by
   ext n : 1
@@ -67,7 +67,7 @@ theorem shiftNegOneMap_id : shiftNegOneMap (𝟙 L) = 𝟙 (shiftNegOne L) := by
 
 @[reassoc]
 /- English proof (translation)
-Use `(cancel_epi (L.homologyπ n)).1 ?_` and prove the remaining obligations. Rewrite using `[homologyπ_shiftNegOneHomologyHom_assoc, HomologicalComplex.homologyπ_naturality_assoc, HomologicalComplex.homologyπ_naturality, homologyπ_shiftNegOneHomologyHom, HomologicalComplex.liftCycles_comp_cyclesMap_assoc, HomologicalComplex.comp_liftCycles_assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono ((shiftNegOne L').iCycles (n + 1))]`. Simplify using `only [HomologicalComplex.liftCycles_i, Category.assoc, HomologicalComplex.cyclesMap_i_assoc, shiftNegOneSuccHom_shiftNegOneMap_f]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shiftNegOneHomologyHom_naturality (β : L ⟶ L') (n : ℕ) :
     shiftNegOneHomologyHom L n ≫ HomologicalComplex.homologyMap (shiftNegOneMap β) (n + 1) =
@@ -93,9 +93,9 @@ noncomputable def mapF (α : K ⟶ K') (β : L ⟶ L') (n : ℕ) :
   ModuleCat.ofHom ((α.f n).hom.prodMap (shiftNegOneMapF β n).hom)
 
 /- English proof (translation)
-Establish `wn : f.f n ≫ β.f n = α.f n ≫ f'.f n`. Rewrite using `[← HomologicalComplex.comp_f, w, HomologicalComplex.comp_f]`. Establish `hβ : ∀ y : shiftNegOneX L n, (shiftNegOneMapF β (n + 1)).hom ((shiftNegOneD L n).hom y) = (shiftNegOneD L' n).hom ((shiftNegOneMapF β n).hom y)` using `fun y => (hom_apply_hom_apply_eq_of_comp_eq (shiftNegOneMapF_comm β n) y).symm`. Rewrite using `[mappingCoconeNat_d, mappingCoconeNat_d]`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : K.X n × shiftNegOneX L n) => Prod.ext ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hom_apply_hom_apply_eq_of_comp_eq (α.comm n (n + 1)) p.1`. Express the relevant statement in the definitionally equal form `shiftNegOneSucc L' n ((f'.f n).hom ((α.f n).hom p.1)) + (shiftNegOneD L' n).hom ((shiftNegOneMapF β n).hom p.2) = (shiftNegOneMapF β (n + 1)).hom (shiftNegOneSucc L n ((f.f n).hom p.1) + (shiftNegOneD L n).hom p.2)`. Rewrite using `[map_add, shiftNegOneMapF_succ_apply, hβ, hom_apply_hom_apply_eq_of_comp_eq wn p.1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapF_comm (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') (n : ℕ) :
     mapF α β n ≫ (mappingCoconeNat f').d n (n + 1) =
@@ -120,7 +120,7 @@ noncomputable def map (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f')
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : K.X n × shiftNegOneX L n) => Prod.ext rfl ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem map_id : map (𝟙 K) (𝟙 L) (by simp) = 𝟙 (mappingCoconeNat f) := by
   ext n : 1
@@ -130,9 +130,9 @@ theorem map_id : map (𝟙 K) (𝟙 L) (by simp) = 𝟙 (mappingCoconeNat f) := 
   | succ n => rfl
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : K.X n × shiftNegOneX L n) => Prod.ext rfl ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use the proof step `@[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem map_comp (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') (α' : K' ⟶ K'')
     (β' : L' ⟶ L'') (w' : f' ≫ β' = α' ≫ f'') :
@@ -146,7 +146,7 @@ theorem map_comp (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') (α'
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl) @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem map_fst (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') :
     map α β w ≫ fst f' = fst f ≫ α :=
@@ -154,7 +154,7 @@ theorem map_fst (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun y => Prod.ext ?_ rfl)` and prove the remaining obligations. Conclude with `(α.f n).hom.map_zero`. Use the proof step `@[reassoc]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inr_map (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') :
     inr f ≫ map α β w = shiftNegOneMap β ≫ inr f' := by
@@ -164,7 +164,7 @@ theorem inr_map (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') :
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[homologyδ, homologyδ, Category.assoc, ← HomologicalComplex.homologyMap_comp, inr_map, HomologicalComplex.homologyMap_comp, shiftNegOneHomologyHom_naturality_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homologyδ_naturality (α : K ⟶ K') (β : L ⟶ L') (w : f ≫ β = α ≫ f') (n : ℕ) :
     homologyδ f n ≫ HomologicalComplex.homologyMap (map α β w) (n + 1) =
@@ -189,7 +189,7 @@ noncomputable def mapShortComplex (F : S ⟶ T) : ShortComplex (CochainComplex (
       | succ n => exact hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) T.zero) p.2)
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by have hSn := (HomologicalComplex.shortExact_iff_degreewise_shortExact S).1 hS n have hTn := (HomologicalComplex.shortExact_iff_degreewise_shortExact T).1 hT have iS := (ModuleCat.mono_iff_injective _).1 hSn.mono_ …`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_mapShortComplex (F : S ⟶ T) (hS : S.ShortExact) (hT : T.ShortExact) :
     (mapShortComplex F).ShortExact :=

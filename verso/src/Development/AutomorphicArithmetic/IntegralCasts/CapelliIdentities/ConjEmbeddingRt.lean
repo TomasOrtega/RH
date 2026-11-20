@@ -2,11 +2,11 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
 
 /- English proof (translation)
-Introduce `E _ _ _ H τ`. Establish `h1 : (H.rt : E) ^ 2 = -(H.d : E)`. Simplify using `using congrArg (algebraMap (NumberField.RingOfIntegers E) E) H.rt_sq`. Establish `h2 : (τ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow, h1, map_neg, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Generalize the expression as in `τ (H.rt : E) = z at h2 ⊢`. Establish `hre : z.re * z.re - z.im * z.im = -(H.d : ℝ)` using `by simpa [sq] using congrArg Complex.re h2`. Establish `him : z.re * z.im + z.im * z.re = 0` using `by simpa [sq] using congrArg Complex.im h2`. Establish `hz : z.im ≠ 0` using `fun h => by rw [h] at hre; nlinarith [mul_self_nonneg z.re]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : z.re = 0` using `mul_right_cancel₀ hz (by linarith)`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.Reformulated.B.Gc4.conj_embedding_rt :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E]

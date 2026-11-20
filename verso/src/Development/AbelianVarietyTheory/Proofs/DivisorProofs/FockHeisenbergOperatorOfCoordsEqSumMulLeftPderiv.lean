@@ -8,33 +8,33 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.CCRFock
 
 /- English proof (translation)
-Simplify using `[coefM, Complex.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefM_one (z : ℂ) : coefM z 1 = z := by
   simp [coefM, Complex.ext_iff]
 
 /- English proof (translation)
-Simplify using `[coefM, Complex.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefM_neg_one (z : ℂ) : coefM z (-1) = star z := by
   simp [coefM, Complex.ext_iff]
 
 /- English proof (translation)
-Simplify using `[coefD, Complex.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefD_one (z : ℂ) : coefD z 1 = -star z := by
   simp [coefD, Complex.ext_iff]
 
 /- English proof (translation)
-Simplify using `[coefD, Complex.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefD_neg_one (z : ℂ) : coefD z (-1) = -z := by
   simp [coefD, Complex.ext_iff]
 
 /- English proof (translation)
-Introduce `P Q R S c`. Unfold `heisOp`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ -`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp only [raiB, lowB, linePos, lineSign, coefM_one, coefM_neg_one, coefD_one, coefD_neg_one, if_true, Bool.false_eq_true, if_false] <;>`. Use `module`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem heisOp_eq_sum_mul_pderiv : ∀ {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ),
     heisOp c = ∑ l : Ix P Q × Ix R S,

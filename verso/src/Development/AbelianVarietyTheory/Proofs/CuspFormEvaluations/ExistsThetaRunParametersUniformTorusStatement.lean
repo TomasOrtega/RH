@@ -6,7 +6,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.I2
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThetaRunParameters.exists_par` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FExistsThetaRunParametersUniformTorus.lean&line=32#L32)
 -/

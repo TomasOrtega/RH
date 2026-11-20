@@ -20,7 +20,7 @@ def bSq {n : ℕ} (lam : DomWeight n) : Module.Basis (Formalism.GradedWeylDivisi
     (LinearEquiv.ofEq _ _ (Formalism.GradedWeylDivisibility.sSBasis ℂ n n lam.natW).choose_spec.1.2.1)
 
 /- English proof (translation)
-Simplify using `[bSq, Module.Basis.span_apply, ssB]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem bSq_coe {n : ℕ} (lam : DomWeight n) (k : Formalism.GradedWeylDivisibility.ssIdx n n lam.natW) :
     ((bSq lam k : nablaSq ℂ n lam) : MvPolynomial (Fin n × Fin n) ℂ) = ssB ℂ lam.natW k := by
@@ -28,13 +28,13 @@ theorem bSq_coe {n : ℕ} (lam : DomWeight n) (k : Formalism.GradedWeylDivisibil
   rfl
 
 /- English proof (translation)
-The claim follows from `bSq_coe lam k ▸ (bSq lam k).2`.
+A detailed English derivation is pending.
 -/
 theorem ssB_mem {n : ℕ} (lam : DomWeight n) (k : Formalism.GradedWeylDivisibility.ssIdx n n lam.natW) :
     ssB ℂ lam.natW k ∈ nablaSq ℂ n lam := bSq_coe lam k ▸ (bSq lam k).2
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (GlobalTheory.Branching.sqRep ℂ n lam).map_one ⟨f, hf⟩`. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sqAct_one_of_mem {n : ℕ} (lam : DomWeight n) {f : MvPolynomial (Fin n × Fin n) ℂ} (hf : f ∈ nablaSq ℂ n lam) :
     sqAct ℂ n lam 1 f = f := by
@@ -49,7 +49,7 @@ def tenAt {n : ℕ} (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (τ₀ : ι) 
     (Formalism.GradedWeylDivisibility.blockEmb ℂ (k := n) (n := n) τ₀).toLinearMap
 
 /- English proof (translation)
-Simplify using `only [tenAt, ten, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ₀), Function.update_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ hτ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hτ)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tenAt_apply {n : ℕ} (f : ι → MvPolynomial (Fin n × Fin n) ℂ) (τ₀ : ι) (x : MvPolynomial (Fin n × Fin n) ℂ) :
     tenAt f τ₀ x = ten (Function.update f τ₀ x) := by
@@ -63,7 +63,7 @@ def partCoord {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (j : VVIdx lam) 
   ∑ l, ((bVV ℂ lam).coord (Function.update j τ₀ l)).smulRight (bSq (lam τ₀) l)
 
 /- English proof (translation)
-Establish `: partCoord lam τ₀ j v = ∑ l, (bVV ℂ lam).repr v (Function.update j τ₀ l) • bSq (lam τ₀) l`. Simplify using `[partCoord, LinearMap.sum_apply]`. Rewrite using `[this, Module.Basis.repr_sum_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_partCoord {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (j : VVIdx lam) (v : VV ℂ lam) (l) :
     (bSq (lam τ₀)).repr (partCoord lam τ₀ j v) l = (bVV ℂ lam).repr v (Function.update j τ₀ l) := by
@@ -72,15 +72,15 @@ theorem repr_partCoord {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (j : VV
   rw [this, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Simplify using `only [partCoord, LinearMap.sum_apply, LinearMap.smulRight_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs with hc`. Establish `hj : j' = Function.update j τ₀ (j' τ₀)`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, hc τ h]`. Rewrite using `[Finset.sum_eq_single (j' τ₀)]`. Rewrite using `[← hj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `l _ hl`. Rewrite using `[if_neg, zero_smul]`. Introduce `e`. Apply `hl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrFun e τ₀` as an intermediate fact. Simplify using `using this.symm`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, zero_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Apply `hc` to reduce the goal to its premises. Introduce `τ h`. Rewrite using `[e, Function.update_of_ne h]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partCoord_bVV {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (j j' : VVIdx lam) :
     partCoord lam τ₀ j (bVV ℂ lam j') = if (∀ τ, τ ≠ τ₀ → j' τ = j τ) then bSq (lam τ₀) (j' τ₀) else 0 := by
@@ -115,15 +115,13 @@ namespace GlobalTheory.BranchMultOne
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rhoK_coe, bVV_coe, bVVfun, actTen ℂ ι n lam _ _]`. Establish `e1 : (fun τ => sqAct ℂ n (lam τ) (Function.update (1 : ι → GL (Fin n) ℂ) τ₀ g τ) (ssB ℂ (lam τ).natW (j τ))) = Function.update (fun τ => ssB ℂ (lam τ).natW (j τ)) τ₀ (sqAct ℂ n (lam τ₀) g (ssB ℂ (lam τ₀).natW (j τ₀)))`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ₀`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h]`. Conclude with `sqAct_one_of_mem _ (ssB_mem _ _)`. Rewrite using `[e1, ← tenAt_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : sqAct ℂ n (lam τ₀) g (ssB ℂ (lam τ₀).natW (j τ₀)) = ∑ l, (bSq (lam τ₀)).repr (GlobalTheory.Branching.sqRep ℂ n (lam τ₀) g (bSq (lam τ₀) (j τ₀))) l • ssB ℂ (lam τ₀).natW l`. Establish `h` using `(bSq (lam τ₀)).sum_repr (GlobalTheory.Branching.sqRep ℂ n (lam τ₀) g (bSq (lam τ₀) (j τ₀)))`. Establish `h2` using `congrArg Subtype.val h`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bSq_coe, GlobalTheory.Branching.sqRep_coe] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2, map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul, bVV_coe, bVVfun, tenAt_apply]`. Use `congr 2`. Use function extensionality and compare the values at `τ`.
-
-Conclude with `(Function.apply_update (fun τ k => ssB ℂ (lam τ).natW k) j τ₀ l τ).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rhoK_update_bVV {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (g : GL (Fin n) ℂ) (j : VVIdx lam) :
     rhoK lam (Function.update 1 τ₀ g) (bVV ℂ lam j) =
@@ -152,11 +150,11 @@ theorem rhoK_update_bVV {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (g : G
   exact (Function.apply_update (fun τ k => ssB ℂ (lam τ).natW k) j τ₀ l τ).symm
 
 /- English proof (translation)
-Establish `key : partCoord lam τ₀ j ∘ₗ rhoK lam (Function.update 1 τ₀ g) = GlobalTheory.Branching.sqRep ℂ n (lam τ₀) g ∘ₗ partCoord lam τ₀ j`. Use `(bVV ℂ lam).ext fun j' => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, rhoK_update_bVV, map_sum, map_smul, partCoord_bVV]`. Establish `hc : ∀ l, ((∀ τ, τ ≠ τ₀ → Function.update j' τ₀ l τ = j τ) ↔ (∀ τ, τ ≠ τ₀ → j' τ = j τ))` using `fun l => forall_congr' fun τ => imp_congr_right fun h => by rw [Function.update_of_ne h]`. Distinguish the cases in `h : ∀ τ, τ ≠ τ₀ → j' τ = j τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Establish `e : ∀ l, (if (∀ τ, τ ≠ τ₀ → Function.update j' τ₀ l τ = j τ) then bSq (lam τ₀) (Function.update j' τ₀ l τ₀) else 0) = bSq (lam τ₀) l` using `fun l => by`. Rewrite using `[if_pos ((hc l).2 h), Function.update_self]`. Simplify using `only [e]`. Conclude with `(bSq (lam τ₀)).sum_repr _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, map_zero]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (fun h' => h ((hc l).1 h')), smul_zero]`. Conclude with `LinearMap.congr_fun key v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partCoord_rhoK {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (j : VVIdx lam) (g : GL (Fin n) ℂ) (v : VV ℂ lam) :
     partCoord lam τ₀ j (rhoK lam (Function.update 1 τ₀ g) v) =
@@ -189,14 +187,14 @@ def factorIncl {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (i : VVIdx lam)
       · rw [Function.update_of_ne h]; exact ssB_mem _ _
 
 /- English proof (translation)
-Simplify using `[factorIncl, tenAt_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem factorIncl_coe {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (i : VVIdx lam) (x : nablaSq ℂ n (lam τ₀)) :
     (factorIncl lam τ₀ i x : Pol ℂ ι n) = ten (Function.update (fun τ => ssB ℂ (lam τ).natW (i τ)) τ₀ (x : MvPolynomial (Fin n × Fin n) ℂ)) := by
   simp [factorIncl, tenAt_apply]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[factorIncl_coe, bSq_coe, bVV_coe, bVVfun]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(Function.apply_update (fun τ k => ssB ℂ (lam τ).natW k) i τ₀ k τ).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem factorIncl_bSq {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (i : VVIdx lam) (k) :
     factorIncl lam τ₀ i (bSq (lam τ₀) k) = bVV ℂ lam (Function.update i τ₀ k) := by
@@ -207,9 +205,9 @@ theorem factorIncl_bSq {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (i : VV
   exact (Function.apply_update (fun τ k => ssB ℂ (lam τ).natW k) i τ₀ k τ).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rhoK_coe, factorIncl_coe, factorIncl_coe, actTen ℂ ι n lam _ _]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ₀`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h, Function.update_of_ne h, Pi.one_apply, sqAct_one_of_mem _ (ssB_mem _ _)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorIncl_sqRep {n : ℕ} (lam : ι → DomWeight n) (τ₀ : ι) (i : VVIdx lam) (G : GL (Fin n) ℂ) (x : nablaSq ℂ n (lam τ₀)) :
     factorIncl lam τ₀ i (GlobalTheory.Branching.sqRep ℂ n (lam τ₀) G x) = rhoK lam (Function.update 1 τ₀ G) (factorIncl lam τ₀ i x) := by
@@ -229,23 +227,23 @@ namespace GlobalTheory.BranchMultOne
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Distinguish the cases in `hz : ∃ τ, ∀ x, m τ x = 0`. Take `⟨τ, hτ⟩` from `hz`. Use `⟨0, fun ω => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h τ ω`. Use `hc (ω τ)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[Function.update_eq_self, hτ, mul_zero]`. Rewrite using `[this, zero_mul]`. Use `push_neg at hz`. Use `choose xs hxs using hz`. Establish `hP : (∏ τ, m τ (xs τ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => hxs τ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : ∀ (ω : ∀ τ, X τ) (a : ι) (y : X a), ∏ τ, m τ (Function.update ω a y τ) = m a y * ∏ τ ∈ Finset.univ.erase a, m τ (ω τ)`. Introduce `ω a y`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ a), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ hτ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hτ)]`. Use `⟨M xs / ∏ τ, m τ (xs τ), ?_⟩` and prove the remaining obligations. It suffices to establish `H : ∀ s : Finset ι, ∀ ω : (∀ τ, X τ), (∀ τ, τ ∉ s → ω τ = xs τ) → M ω = M xs / (∏ τ, m τ (xs τ)) * ∏ τ, m τ (ω τ) from fun ω => H Finset.univ ω (by simp)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ω hω`. Establish `: ω = xs` using `funext fun τ => hω τ (by simp)`. Substitute `this` using the available equality. Clear the denominators using the available nonvanishing facts. Introduce `a s ha ih ω hω`.
+Substitute using the available equality. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : M (Function.update ω a (xs a)) = M xs / (∏ τ, m τ (xs τ)) * ∏ τ, m τ (Function.update ω a (xs a) τ)` using `ih _ fun τ hτ => by`. Distinguish the cases in `e : τ = a`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne e]; exact hω τ (by simp [e, hτ])`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `h a ω`. Establish `h2 : M ω = c * m a (ω a)` using `by simpa using hc (ω a)`. Establish `h3` using `hc (xs a)`. Rewrite `h3` using `[h1, hp]`. Establish `hω_eq : ∏ τ, m τ (ω τ) = m a (ω a) * ∏ τ ∈ Finset.univ.erase a, m τ (ω τ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hp ω a (ω a)`. Establish `hc' : c = M xs / (∏ τ, m τ (xs τ)) * ∏ τ ∈ Finset.univ.erase a, m τ (ω τ)`. Apply `mul_right_cancel₀ (hxs a)` to reduce the goal to its premises. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, hω_eq, hc']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eq_mul_prod_of_slices {X : ι → Type} (m : ∀ τ, X τ → ℂ) (M : (∀ τ, X τ) → ℂ)
     (h : ∀ τ ω, ∃ c, ∀ x, M (Function.update ω τ x) = c * m τ x) :
@@ -312,9 +310,9 @@ theorem brOneRep_coe (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (hI
       GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.brOne ℂ hN lam sg f := rfl
 
 /- English proof (translation)
-Introduce `h0`. Apply `Formalism.L2.Ker.brStd_ne_zero (K := ℂ) hN (fun _ : Unit => lam) (fun _ : Unit => sg) (fun _ => hI) (fun _ => hS)` to reduce the goal to its premises. Use `LinearMap.ext fun G => Subtype.ext ?_` and prove the remaining obligations. Take `⟨f, hf, e⟩` from `GlobalTheory.BranchFormula.exists_ten_unit G.2`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.brOne ℂ hN lam sg f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `brOneRep_coe hN lam sg hI hS ⟨f, hf⟩` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this.symm`. Rewrite using `[GlobalTheory.BranchFormula.tensor ℂ Unit N n hN _ _ (fun _ => hI) (fun _ => hS) (fun _ => f) G (fun _ => hf) e, hz]`. Simplify using `[ten]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brOneRep_ne_zero (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (hI : Formalism.L2.Col.Br.Interlace hN lam sg)
     (hS : Formalism.L2.Col.Br.SameShift lam sg) : brOneRep hN lam sg hI hS ≠ 0 := by
@@ -340,11 +338,11 @@ def brEntry (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (hI : Formal
   (bSq sg).repr ((brOneRep hN lam sg hI hS).toLinearMap (bSq lam k)) l
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.BranchFormula.tensor ℂ ι N n hN Λ σ hI hS (fun τ => ssB ℂ (Λ τ).natW (i τ)) _ (fun τ => ssB_mem _ _) (by rw [bVV_coe, bVVfun])]`. Apply the tactic sequence `have e : ∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.brOne ℂ hN (Λ τ) (σ τ) (ssB ℂ (Λ τ).natW (i τ)) = ∑ l, brEntry hN (Λ τ) (σ τ) (hI τ) (hS τ) l (i τ) • ssB ℂ (σ τ).natW l := by`. Introduce `τ`. Establish `h` using `congrArg Subtype.val ((bSq (σ τ)).sum_repr ((brOneRep hN (Λ τ) (σ τ) (hI τ) (hS τ)).toLinearMap (bSq (Λ τ) (i τ))))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bSq_coe, brOneRep_coe] at h`. Rewrite using `[← h]`. Both sides reduce to the same expression. Simplify using `only [e, ten, map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, bVV_coe, bVVfun]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr (by congr 1; exact Subsingleton.elim _ _) fun x _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.smul_eq_C_mul, Finset.prod_mul_distrib, map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem brStd_bVV (hN : N = n + 1) (Λ : ι → DomWeight N) (σ : ι → DomWeight n)
     (hI : ∀ τ, Formalism.L2.Col.Br.Interlace hN (Λ τ) (σ τ)) (hS : ∀ τ, Formalism.L2.Col.Br.SameShift (Λ τ) (σ τ)) (i : VVIdx Λ) :
@@ -384,7 +382,7 @@ theorem smallRep_id_apply {n : ℕ} (sg : DomWeight n) (g : GL (Fin n) ℂ) (x :
     GlobalTheory.Branching.smallRep (MonoidHom.id (GL (Fin n) ℂ)) sg g x = GlobalTheory.Branching.sqRep ℂ n sg g x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem embGL_update {ι : Type} [DecidableEq ι] {N n : ℕ} (hN : N = n + 1) (τ₀ : ι) (g : GL (Fin n) ℂ) :
     (fun τ => Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ n N hN.symm (Function.update (1 : ι → GL (Fin n) ℂ) τ₀ g τ)) =
@@ -395,21 +393,19 @@ theorem embGL_update {ι : Type} [DecidableEq ι] {N n : ℕ} (hN : N = n + 1) (
   · simp [Function.update_of_ne h]
 
 /- English proof (translation)
-Introduce `ι _ N n hN _ Λ σ hI hS φ hφ`. Apply the tactic sequence `let B : ∀ τ, Formalism.GradedWeylDivisibility.ssIdx n n (σ τ).natW → Formalism.GradedWeylDivisibility.ssIdx N N (Λ τ).natW → ℂ := fun τ => brEntry hN (Λ τ) (σ τ) (hI τ) (hS τ)`. Set `M : VVIdx σ → VVIdx Λ → ℂ` to `fun j i => (bVV ℂ σ).repr (φ (bVV ℂ Λ i)) j`. Establish `hslice : ∀ τ₀ (j : VVIdx σ) (i : VVIdx Λ), ∃ c, ∀ l k, M (Function.update j τ₀ l) (Function.update i τ₀ k) = c * B τ₀ l k`. Introduce `τ₀ j i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ0 : nablaSq ℂ N (Λ τ₀) →ₗ[ℂ] nablaSq ℂ n (σ τ₀)` to `partCoord σ τ₀ j ∘ₗ φ ∘ₗ factorIncl Λ τ₀ i`. Establish `hψ : ∀ g, ψ0 ∘ₗ (GlobalTheory.Branching.resRep (MonoidHom.id (GL (Fin n) ℂ)) hN.symm (Λ τ₀)) g = (GlobalTheory.Branching.smallRep (MonoidHom.id (GL (Fin n) ℂ)) (σ τ₀)) g ∘ₗ ψ0` using `fun g => LinearMap.ext fun x => by`. Simplify using `only [LinearMap.comp_apply, smallRep_id_apply, ψ0]`. Rewrite using `[resRep_id_apply hN, factorIncl_sqRep, ← partCoord_rhoK, ← hφ, embGL_update hN]`. Set `ψ : (GlobalTheory.Branching.resRep (MonoidHom.id (GL (Fin n) ℂ)) hN.symm (Λ τ₀)).IntertwiningMap (GlobalTheory.Branching.smallRep (MonoidHom.id (GL (Fin n) ℂ)) (σ τ₀))` to `⟨ψ0, hψ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1` using `(GlobalTheory.Branching.comult_id n N hN.symm (Λ τ₀) (σ τ₀)).1 ((GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.interlace_iff hN _ _).1 (hI τ₀))`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' _ (brOneRep_ne_zero hN (Λ τ₀) (σ τ₀) (hI τ₀) (hS τ₀))).1 h1 ψ`. Use `⟨c, fun l k => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun F : (GlobalTheory.Branching.resRep (MonoidHom.id (GL (Fin n) ℂ)) hN.symm (Λ τ₀)).IntertwiningMap (GlobalTheory.Branching.smallRep (MonoidHom.id (GL (Fin n) ℂ)) (σ τ₀)) => (bSq (σ τ₀)).repr (F.toLinearMap (bSq (Λ τ₀) k)) l) hc`. Apply the tactic sequence `change (bVV ℂ σ).repr (φ (bVV ℂ Λ (Function.update i τ₀ k))) (Function.update j τ₀ l) = c * brEntry hN (Λ τ₀) (σ τ₀) (hI τ₀) (hS τ₀) l k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← repr_partCoord, ← factorIncl_bSq]`. Express the relevant statement in the definitionally equal form `_ = (bSq (σ τ₀)).repr (ψ.toLinearMap (bSq (Λ τ₀) k)) l at h2`. Establish `h3 : ((bSq (σ τ₀)).repr (partCoord σ τ₀ j (φ (factorIncl Λ τ₀ i (bSq (Λ τ₀) k))))) l = (bSq (σ τ₀)).repr (ψ.toLinearMap (bSq (Λ τ₀) k)) l` using `rfl`. Rewrite using `[h3, ← h2]`. Use `show (bSq (σ τ₀)).repr (c • ((brOneRep hN (Λ τ₀) (σ τ₀) (hI τ₀) (hS τ₀)).toLinearMap (bSq (Λ τ₀) k))) l = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression. Take `⟨C, hC⟩` from `eq_mul_prod_of_slices (X := fun τ => Formalism.GradedWeylDivisibility.ssIdx n n (σ τ).natW × Formalism.GradedWeylDivisibility.ssIdx N N (Λ τ).natW) (fun τ p => B τ p.1 p.2) (fun ω => M (fun τ => (ω τ).1) (fun τ => (ω τ).2)) (fun τ ω => by`. Take `⟨c, hc⟩` from `hslice τ (fun τ => (ω τ).1) (fun τ => (ω τ).2)`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : (fun τ' => (Function.update ω τ x τ').1) = Function.update (fun τ => (ω τ).1) τ x.1`. Use function extensionality and compare the values at `fun τ' => Function.apply_update (fun _ p => p.1) ω τ x τ'`. Establish `e2 : (fun τ' => (Function.update ω τ x τ').2) = Function.update (fun τ => (ω τ).2) τ x.2`. Use function extensionality and compare the values at `fun τ' => Function.apply_update (fun _ p => p.2) ω τ x τ'`. Use `show M (fun τ' => (Function.update ω τ x τ').1) (fun τ' => (Function.update ω τ x τ').2) = c * B τ x.1 x.2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Conclude with `hc x.1 x.2)`. Use `⟨C, (bVV ℂ Λ).ext fun i => (bVV ℂ σ).ext_elem fun j => ?_⟩` and prove the remaining obligations. Use `hC (fun τ => (j τ, i τ))` as an intermediate fact. Rewrite using `[LinearMap.smul_apply, map_smul, Finsupp.smul_apply, brStd_bVV hN Λ σ hI hS i, Module.Basis.repr_sum_self, smul_eq_mul]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_smul_brStd_of_equivariant : ∀ {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1), 1 ≤ n →
     ∀ (Λ : ι → DomWeight N) (σ : ι → DomWeight n), (∀ τ, Formalism.L2.Col.Br.Interlace hN (Λ τ) (σ τ)) →

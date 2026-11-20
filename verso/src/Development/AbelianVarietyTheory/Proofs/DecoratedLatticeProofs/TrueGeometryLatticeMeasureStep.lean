@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.LevProd
 
 /- English proof (translation)
-Introduce `W hW u a ha hat j hj t J hJ α i` and use `(loc_level W hW u a ha hat j hj t J hJ α i).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem H_le_KO : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) i, GlobalTheory.LevProd.H J j hj α i ≤ KO (J.G i).k _ :=
   fun W hW u a ha hat j hj t J hJ α i => (loc_level W hW u a ha hat j hj t J hJ α i).1

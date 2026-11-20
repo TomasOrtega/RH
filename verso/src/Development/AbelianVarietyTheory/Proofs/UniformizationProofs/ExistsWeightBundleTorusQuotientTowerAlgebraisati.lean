@@ -35,9 +35,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {A : PolAV (Spec (
   {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G] {s : HidaSetting V A G}
 
 /- English proof (translation)
-Establish `H : ∀ e, ∃ (N : LB (t.l e).Q.B.left) (u : LB.Gen (N.pull (t.l e).Q.q.left)), N.IsLB ∧ (t.l e).Q.GenWt N u χ ∧ Triv (abelian₂ (t.l e).Q.B N)`. Introduce `e`. Use `haveI := isLocalRing_quotient_pow V e`. Take `⟨N, u, hN, hu, g, hg⟩` from `GlobalTheory.exists_weight_bundle _ _ _ (t.l e).Q χ`. Conclude with `⟨N, u, hN, hu, g, hg⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose N u h using H`. Conclude with `⟨N, u, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_levels (t : Tower s) (χ : s.X) : ∃ (N : ∀ e, LB (t.l e).Q.B.left)
     (u : ∀ e, LB.Gen ((N e).pull (t.l e).Q.q.left)),
@@ -52,7 +52,7 @@ theorem exists_levels (t : Tower s) (χ : s.X) : ∃ (N : ∀ e, LB (t.l e).Q.B.
   exact ⟨N, u, h⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_genWt_pull (t.l (e + 1)).Q (t.l e).Q (isGrpPullback_thickMap (IsLocalRing.maximalIdeal V) G e) (t.tor e) (t.β_q e) hu'`. Conclude with `lbIso_of_genWt _ _ _ (t.l e).Q N (N'.pull (t.β e)) u v χ hN (pull_isLB hN' _) hu hv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lbIso_succ (t : Tower s) {χ : s.X} (e : ℕ) {N : LB (t.l e).Q.B.left} {N' : LB (t.l (e + 1)).Q.B.left}
     {u : LB.Gen (N.pull (t.l e).Q.q.left)} {u' : LB.Gen (N'.pull (t.l (e + 1)).Q.q.left)} (hN : N.IsLB)
@@ -63,7 +63,7 @@ theorem lbIso_succ (t : Tower s) {χ : s.X} (e : ℕ) {N : LB (t.l e).Q.B.left} 
   exact lbIso_of_genWt _ _ _ (t.l e).Q N (N'.pull (t.β e)) u v χ hN (pull_isLB hN' _) hu hv
 
 /- English proof (translation)
-Take `⟨hg, -⟩` from `h`. Conclude with `hg.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPullback_of_isCPPullback {S S' : Scheme.{0}} {B' : Over S'} {B : Over S} [GrpObj B'] [IsCommMonObj B']
     [GrpObj B] [IsCommMonObj B] {M' : CP B'} {M : CP B} {f : S' ⟶ S} {β : B'.left ⟶ B.left}
@@ -72,7 +72,7 @@ theorem isPullback_of_isCPPullback {S S' : Scheme.{0}} {B' : Over S'} {B : Over 
   exact hg.1
 
 /- English proof (translation)
-Use `haveI : IsDiscreteValuationRing V := hV.1`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal V) V := hV.2.1`. Use `choose w hw using h`. Conclude with `GlobalTheory.LBAlg.exists_lineBundle_of_thickenings V Y β hβ B b hp hf hb hc N w fun e => ⟨hN e, hw e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_alg_of_lbIso {V : Type} [CommRing V] [IsDomain V] [i : IsLocalRing V] (hV : CDVR V)
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1)))))
@@ -89,26 +89,26 @@ theorem exists_alg_of_lbIso {V : Type} [CommRing V] [IsDomain V] [i : IsLocalRin
   exact GlobalTheory.LBAlg.exists_lineBundle_of_thickenings V Y β hβ B b hp hf hb hc N w fun e => ⟨hN e, hw e⟩
 
 /- English proof (translation)
-The claim follows from `isPullback_of_isCPPullback (t.β_pb e)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_β (t : Tower s) (e : ℕ) : IsPullback (t.β e) (t.l e).Q.B.hom (t.l (e + 1)).Q.B.hom
     (thickTrans V (IsLocalRing.maximalIdeal V) e) := isPullback_of_isCPPullback (t.β_pb e)
 
 /- English proof (translation)
-The claim follows from `isPullback_of_isCPPullback (a.b_pb e)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_b {t : Tower s} (a : t.Alg) (e : ℕ) : IsPullback (a.b e) (t.l e).Q.B.hom a.B.hom
     (thick V (IsLocalRing.maximalIdeal V) e) := isPullback_of_isCPPullback (a.b_pb e)
 
 /- English proof (translation)
-Use `haveI := a.isAb.smooth`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem flat_alg {t : Tower s} (a : t.Alg) : Flat a.B.hom := by
   haveI := a.isAb.smooth
   infer_instance
 
 /- English proof (translation)
-Establish `hp : IsProjBy a.B.hom` using `isProjBy_of_relAmple a.B a.M.L.3 a.ample`. Conclude with `exists_alg_of_lbIso s.cdvr (fun e => (t.l e).Q.B) t.β (isPullback_β t) a.B a.b hp (flat_alg a) (isPullback_b a) a.b_β N hN h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_alg {t : Tower s} (a : t.Alg) (N : ∀ e, LB (t.l e).Q.B.left) (hN : ∀ e, (N e).IsLB)
     (h : ∀ e, LBIso (N e) ((N (e + 1)).pull (t.β e))) :
@@ -118,9 +118,7 @@ theorem exists_alg {t : Tower s} (a : t.Alg) (N : ∀ e, LB (t.l e).Q.B.left) (h
     (isPullback_b a) a.b_β N hN h
 
 /- English proof (translation)
-Use `haveI : IsDiscreteValuationRing V := s.cdvr.1`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal V) V := s.cdvr.2.1`. Establish `hp : IsProjBy a.B.hom` using `isProjBy_of_relAmple a.B a.M.L.3 a.ample`. Use `triv_lam_of_levels hG a.isAb hp hO fun e => ?_` and prove the remaining obligations. Take `⟨hb, -⟩` from `a.b_pb e`.
-
-Conclude with `triv_lam_pull hb hO (hN e) (hi e) (h e) (fstG (IsLocalRing.maximalIdeal V) e (a.B ⊗ a.B))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem triv_lam_alg (hG : GlobalFnsSt) {t : Tower s} (a : t.Alg) {N : ∀ e, LB (t.l e).Q.B.left}
     (hN : ∀ e, (N e).IsLB) {O : LB a.B.left} (hO : O.IsLB) (hi : ∀ e, LBIso (N e) (O.pull (a.b e)))
@@ -133,9 +131,9 @@ theorem triv_lam_alg (hG : GlobalFnsSt) {t : Tower s} (a : t.Alg) {N : ∀ e, LB
   exact triv_lam_pull hb hO (hN e) (hi e) (h e) (fstG (IsLocalRing.maximalIdeal V) e (a.B ⊗ a.B))
 
 /- English proof (translation)
-Introduce `hL V _ _ _ A G _ _ s t a χ`. Take `⟨N, u, h⟩` from `exists_levels t χ`. Establish `hiso : ∀ e, LBIso (N e) ((N (e + 1)).pull (t.β e))` using `fun e => lbIso_succ t e (h e).1 (h (e + 1)).1 (h e).2.1 (h (e + 1)).2.1`. Take `⟨O, hO, hi⟩` from `exists_alg a N (fun e => (h e).1) hiso`. Establish `hT` using `triv_lam_alg hL.globalFns a (fun e => (h e).1) hO hi (fun e => (h e).2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨O, hO, hT, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_genWt_of_lbIso (t.l e).Q (h e).1 (pull_isLB hO _) (hi e) (h e).2.1`. Conclude with `exists_gen_comp (t.l e).Q (a.b e) hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_weight_bundle_alg : Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg) (χ : s.X), ∃ O : LB a.B.left, O.IsLB ∧ (∃ u : LB.Gen (abelian₂ a.B O), u.IsGen) ∧ ∀ e, ∃ u : LB.Gen (O.pull ((t.l e).Q.q.left ≫ a.b e)), u.IsGen ∧ ∀ j, IsWt (t.l e).Q.i _ (u.s j).val χ := by
   intro hL V _ _ _ A G _ _ s t a χ

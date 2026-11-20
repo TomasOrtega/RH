@@ -10,15 +10,15 @@ namespace GlobalTheory.LabelNorm
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `Nat.sub_pos_of_lt (Nat.one_lt_pow hd.ne' (Fact.out : p.Prime).one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem sub_pos' {d : ℕ} (hd : 0 < d) : 0 < p ^ d - 1 :=
   Nat.sub_pos_of_lt (Nat.one_lt_pow hd.ne' (Fact.out : p.Prime).one_lt)
 
 /- English proof (translation)
-Establish `h : ∃ m : ℕ, L.gen d ^ n = L.gen d ^ m` using `⟨n, rfl⟩`. Unfold `GlobalTheory.GLq.thetaOf`. Rewrite using `[dif_pos h]`. Establish `hp : IsPrimitiveRoot (L.gen d) (p ^ d - 1)` using `L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _`. Establish `hfin : IsOfFinOrder (L.gen d)` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, sub_pos' hd, hp.pow_eq_one⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : n ≡ h.choose [MOD p ^ d - 1]`. Rewrite using `[← L.gen_order d hd]`. Conclude with `hfin.pow_eq_pow_iff_modEq.1 h.choose_spec`. Establish `h1 : L.teich x ^ (p ^ d - 1) = 1` using `by rw [← map_pow, hx, map_one]`. Rewrite using `[pow_eq_pow_mod h.choose h1, pow_eq_pow_mod n h1, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) {x : Fbar p} (hx : x ^ (p ^ d - 1) = 1)
     (n : ℕ) : GlobalTheory.GLq.thetaOf L d x (L.gen d ^ n) = L.teich x ^ n := by
@@ -33,7 +33,7 @@ theorem theta_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d)
   rw [pow_eq_pow_mod h.choose h1, pow_eq_pow_mod n h1, hm]
 
 /- English proof (translation)
-Use `haveI : NeZero (p ^ d - 1) := ⟨(sub_pos' hd).ne'⟩`. Establish `hprim : IsPrimitiveRoot (L.gen d) (p ^ d - 1)` using `L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _`. Take `⟨n, -, hn⟩` from `hprim.eq_pow_of_pow_eq_one hz`. Conclude with `⟨n, hn.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) {z : Fbar p} (hz : z ^ (p ^ d - 1) = 1) :
     ∃ n : ℕ, z = L.gen d ^ n := by
@@ -43,23 +43,23 @@ theorem exists_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) {z
   exact ⟨n, hn.symm⟩
 
 /- English proof (translation)
-Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 u.2, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tor_pow {d : ℕ} (u : Tor p d) : ((u : (Fbar p)ˣ) : Fbar p) ^ (p ^ d - 1) = 1 := by
   rw [← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 u.2, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `tor_pow (toTorOne p c)`.
+A detailed English derivation is pending.
 -/
 theorem base_pow (c : (ZMod p)ˣ) : algebraMap (ZMod p) (Fbar p) c ^ (p ^ 1 - 1) = 1 :=
   tor_pow (toTorOne p c)
 
 /- English proof (translation)
-Establish `hd : 0 < d` using `Nat.pos_of_dvd_of_pos h hN`. Establish `hx : (x ^ n) ^ (p ^ N - 1) = 1`. Take `⟨k, hk⟩` from `Nat.pow_sub_one_dvd_pow_sub_one p h`. Rewrite using `[hk, ← pow_mul, mul_comm n, pow_mul, pow_mul, hθ.1, one_pow, one_pow]`. Use `⟨hx, fun u => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `exists_pow L hN (tor_pow u)`. Establish `hn : (((torNorm p h u : Tor p d) : (Fbar p)ˣ) : Fbar p) = L.gen d ^ k`. Establish `e : (((torNorm p h u : Tor p d) : (Fbar p)ˣ) : Fbar p) = ((u : (Fbar p)ˣ) : Fbar p) ^ ((p ^ N - 1) / (p ^ d - 1))` using `Units.val_pow_eq_pow_val _ _`. Take `⟨e', rfl⟩` from `h`. Rewrite using `[e, hk, ← pow_mul, mul_comm k, pow_mul, L.gen_norm d e' hd (Nat.pos_of_mul_pos_left hN)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, theta_gen_pow L hN hx, MonoidHom.pow_apply, MonoidHom.comp_apply, Units.val_pow_eq_pow_val, hθ.2, hn, theta_gen_pow L hd hθ.1, map_pow, ← pow_mul, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem labels_norm_pow (L : GlobalTheory.GLq.LabelDatum p) {N : ℕ} (hN : 0 < N) (d : ℕ) (h : d ∣ N) (θ : Tor p d →* ℂˣ)
     (x : Fbar p) (n : ℕ) (hθ : LabelsChar L θ x) : LabelsChar L ((θ.comp (torNorm p h)) ^ n) (x ^ n) := by
@@ -78,9 +78,9 @@ theorem labels_norm_pow (L : GlobalTheory.GLq.LabelDatum p) {N : ℕ} (hN : 0 < 
     theta_gen_pow L hd hθ.1, map_pow, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Establish `h1 : LabelsChar L (χ.comp ((MulEquiv.ofBijective (toTorOne p) (toTorOne_bijective p)).symm : Tor p 1 →* (ZMod p)ˣ)) (algebraMap (ZMod p) (Fbar p) (a : ZMod p))`. Use `⟨base_pow a, fun u => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(MulEquiv.ofBijective (toTorOne p) (toTorOne_bijective p)).surjective u`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.coe_coe, MulEquiv.symm_apply_apply, ← h v]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `labels_norm_pow L hN 1 (one_dvd N) _ _ 1 h1`. Rewrite `h2` using `[pow_one, pow_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labels_base (L : GlobalTheory.GLq.LabelDatum p) {N : ℕ} (hN : 0 < N) (χ : (ZMod p)ˣ →* ℂˣ) (a : (ZMod p)ˣ)
     (h : LabelsTame L χ a) :
@@ -96,9 +96,9 @@ theorem labels_base (L : GlobalTheory.GLq.LabelDatum p) {N : ℕ} (hN : 0 < N) (
   exact h2
 
 /- English proof (translation)
-Introduce `u`. Take `⟨k, hk⟩` from `exists_pow L one_pos (base_pow u)`. Establish `h1` using `h u`. Rewrite `h1` using `[hk, theta_gen_pow L one_pos (base_pow a)]`. Rewrite using `[hk, theta_gen_pow L one_pos (base_pow a⁻¹), MonoidHom.inv_apply, Units.val_inv_eq_inv_val (χ u), ← h1, ← inv_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem labels_inv (L : GlobalTheory.GLq.LabelDatum p) (χ : (ZMod p)ˣ →* ℂˣ) (a : (ZMod p)ˣ)
     (h : LabelsTame L χ a) : LabelsTame L χ⁻¹ a⁻¹ := by
@@ -113,7 +113,7 @@ theorem labels_inv (L : GlobalTheory.GLq.LabelDatum p) (χ : (ZMod p)ˣ →* ℂ
   rw [← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]
 
 /- English proof (translation)
-Introduce `_ _ L _ hN` and use `⟨labels_norm_pow L hN, fun χ a h => ⟨labels_base L hN χ a h, labels_inv L χ a h⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (L : GlobalTheory.GLq.LabelDatum p) (N : ℕ), 0 < N → (∀ (d : ℕ) (h : d ∣ N) (θ : Tor p d →* ℂˣ) (x : Fbar p) (n : ℕ), LabelsChar L θ x → LabelsChar L ((θ.comp (torNorm p h)) ^ n) (x ^ n)) ∧ ∀ (χ : (ZMod p)ˣ →* ℂˣ) (a : (ZMod p)ˣ), LabelsTame L χ a → LabelsChar L (χ.comp (baseNorm p N)) (algebraMap (ZMod p) (Fbar p) (a : ZMod p)) ∧ LabelsTame L χ⁻¹ a⁻¹ :=
   fun _ _ L _ hN => ⟨labels_norm_pow L hN, fun χ a h => ⟨labels_base L hN χ a h, labels_inv L χ a h⟩⟩

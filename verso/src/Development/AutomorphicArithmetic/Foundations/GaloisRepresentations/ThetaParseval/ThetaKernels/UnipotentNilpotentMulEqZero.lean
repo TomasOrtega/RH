@@ -17,11 +17,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def unipotentNilpotentPart {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (u : Fin L.n → AE F E) : Matrix (Fin d.n) (Fin d.n) (AE F E) :=
   ∑ j, Matrix.single L.i₀ (L.em j) (u j)
 /- English proof (translation)
-The claim follows from `((L.rng (L.em j)).2 ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem em_ne_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (j : Fin L.n) : L.em j ≠ L.i₀ := ((L.rng (L.em j)).2 ⟨j, rfl⟩)
 /- English proof (translation)
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_mul_single_of_ne]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.em_ne_k L _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_nilpotent_mul_eq_zero {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (u v : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L v = 0 := by
   simp only [_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart, Finset.sum_mul, Finset.mul_sum]
@@ -29,9 +29,9 @@ theorem unipotent_nilpotent_mul_eq_zero {d : _root_.PositivityTheory.SiegelWeilF
   rw [Matrix.single_mul_single_of_ne]
   exact _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.em_ne_k L _
 /- English proof (translation)
-Use `continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Establish `: (fun u : Fin L.n → AE F E => Matrix.single L.i₀ (L.em j) (u j)) = fun u => u j • Matrix.single L.i₀ (L.em j) (1 : AE F E)`. Use function extensionality and compare the values at `u`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_apply j).smul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unipotent_nilpotent {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) : Continuous (_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L) := by
   refine continuous_finsetSum _ fun j _ => ?_
@@ -45,13 +45,13 @@ def muF_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.Po
 def muF'_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (u : Fin L.n → AE F E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E) :=
   Matrix.fromBlocks (1 - _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u) 0 0 (((1 + _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u)ᵀ).map (cA σ))
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, add_mul, one_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotent_nilpotent_mul_eq_zero, add_zero, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_add_mul_one_sub_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (u : Fin L.n → AE F E) :
     (1 + _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u) * (1 - _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u) = 1 := by
   rw [mul_sub, mul_one, add_mul, one_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotent_nilpotent_mul_eq_zero, add_zero, add_sub_cancel_right]
 /- English proof (translation)
-Establish `e1` using `_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.one_add_mul_one_sub_k L u`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF'_k, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[e1, ← kunf.map_cA_mul, ← Matrix.transpose_mul, e1, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.fromBlocks_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem muF_mul_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (u : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k L u * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF'_k L u = 1 := by
   have e1 := _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.one_add_mul_one_sub_k L u
@@ -59,13 +59,13 @@ theorem muF_mul_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _
   rw [e1, ← kunf.map_cA_mul, ← Matrix.transpose_mul, e1, Matrix.transpose_one,
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.fromBlocks_one]
 /- English proof (translation)
-Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Take `⟨a', ha⟩` from `h.1 u`. Express the relevant statement in the definitionally equal form `inFrame d.b (uM u) = Matrix.fromBlocks (1 + _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u) 0 0 a' at ha`. Establish `hf` using `kunf.frame_eq hε (uM u)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite `hf` using `[ha]`. Establish `h12` using `congrArg Matrix.toBlocks₁₂ hf`. Simplify using `only [kunf.jw, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.toBlocks_fromBlocks₁₂] at h12`. Establish `e2 : a'.map (cA σ) = (1 - _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u)ᵀ`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.transpose_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.one_add_mul_one_sub_k, Matrix.transpose_one, Matrix.one_mul]`. Use `_ = (1 - _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u)ᵀ := by rw [Matrix.mul_assoc, h12, Matrix.mul_one]`. Establish `e3 : a' = ((1 - _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.unipotentNilpotentPart L u)ᵀ).map (cA σ)`. Rewrite using `[← e2]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.map_apply, kfour.cA_cA' σ hσ]`. Rewrite using `[ha, e3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inFrame_uM_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {uM : (Fin L.n → AE F E) → d.G} {ν 𝓤} (h : L.UData uM ν 𝓤)
     (u : Fin L.n → AE F E) : inFrame d.b (uM u) = _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k L u := by
@@ -90,11 +90,11 @@ theorem inFrame_uM_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L 
   rw [ha, e3]
   rfl
 /- English proof (translation)
-Establish `hN` using `_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.continuous_unipotent_nilpotent L`. Establish `hcA : Continuous fun M : Matrix (Fin d.n) (Fin d.n) (AE F E) => M.map (cA σ)` using `continuous_id.matrix_map (GlobalTheory.EisBL.DoubledGroupTopology.continuous_cA σ)`. Establish `hc : Continuous (_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k (σ` using `σ) L) := Continuous.matrix_fromBlocks (continuous_const.add hN) continuous_const continuous_const (hcA.comp (continuous_const.sub hN).matrix_transpose)`. Establish `hc' : Continuous (_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF'_k (σ` using `σ) L) := Continuous.matrix_fromBlocks (continuous_const.sub hN) continuous_const continuous_const (hcA.comp (continuous_const.add hN).matrix_transpose)`. Establish `h1 : Continuous fun u => incM F d.b.1 * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF_k L u * incM F (d.b⁻¹).1` using `(continuous_const.matrix_mul hc).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun u => incM F d.b.1 * _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.muF'_k L u * incM F (d.b⁻¹).1` using `(continuous_const.matrix_mul hc').matrix_mul continuous_const`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Use `h1.congr fun u => ?_ show _ = mat2 (uM u)` and prove the remaining obligations. Rewrite using `[kunf.matrix_eq_inFrame_conj d.b, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.inFrame_uM_k L h]`. Use `h2.congr fun u => ?_ show _ = mat2 (uM u)⁻¹` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[kunf.matrix_eq_inFrame_conj d.b, GlobalTheory.EisBL.DoubledParabolic.inFrame_inv, _root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.inFrame_uM_k L h, Matrix.inv_eq_right_inv (_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinu …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_uM_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {uM : (Fin L.n → AE F E) → d.G} {ν 𝓤} (h : L.UData uM ν 𝓤) :
     Continuous uM := by

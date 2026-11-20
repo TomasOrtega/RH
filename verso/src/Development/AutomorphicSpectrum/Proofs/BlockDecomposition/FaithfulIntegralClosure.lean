@@ -11,9 +11,9 @@ variable {R F L : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [
 
 include F in
 /- English proof (translation)
-Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Establish `h1 : Function.Injective (algebraMap R L)`. Rewrite using `[IsScalarTower.algebraMap_eq R F L]`. Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective R F)`. Introduce `a b hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Establish `h2` using `congrArg (fun x : integralClosure R L => (x : L)) hab`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem faithful_integralClosure : FaithfulSMul R (integralClosure R L) := by
   rw [faithfulSMul_iff_algebraMap_injective]
@@ -27,19 +27,15 @@ theorem faithful_integralClosure : FaithfulSMul R (integralClosure R L) := by
 
 include F in
 /- English proof (translation)
-Establish `h1 : Function.Injective (algebraMap R L)`. Rewrite using `[IsScalarTower.algebraMap_eq R F L]`. Conclude with `(algebraMap F L).injective.comp (IsFractionRing.injective R F)`. Use `haveI : FaithfulSMul R L := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Use `haveI : Module.Finite R (integralClosure R L) := IsIntegralClosure.finite R F L (integralClosure R L)`. Use `haveI : Module.Free R (integralClosure R L) := IsIntegralClosure.module_free R F L (integralClosure R L)`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (integralClosure R L) (nonZeroDivisors R)) L := IsIntegralClosure.isLocalization R F L (integralClosure R L)`. Establish `htr : Algebra.trace F L (y : L) = algebraMap R F (Algebra.trace R (integralClosure R L) y)` using `Algebra.trace_localization (Rₘ := F) (Sₘ := L) R (nonZeroDivisors R) y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hM : Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) y ^ n = π • Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) z`. Rewrite using `[← map_pow, h, map_mul, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Establish `hπm : IsLocalRing.residue R π = 0` using `(IsLocalRing.residue_eq_zero_iff π).mpr (mem_nonunits_iff.mpr hπ.not_isUnit)`. Establish `hnil : IsNilpotent ((Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) y).map (IsLocalRing.residue R))`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `map_pow (IsLocalRing.residue R).mapMatrix (Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) y) n`. Simplify using `only [RingHom.mapMatrix_apply] at h2`. Rewrite using `[← h2, hM]`. Use extensionality with `i j`. Simplify using `[hπm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htrace0 : IsLocalRing.residue R (Matrix.trace (Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) y)) = 0`. Establish `h2` using `Matrix.isNilpotent_trace_of_isNilpotent hnil`. Establish `h3 : Matrix.trace ((Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) y).map (IsLocalRing.residue R)) = IsLocalRing.residue R (Matrix.trace (Algebra.leftMulMatrix (Module.Free.chooseBasis R (integralClosure R L)) y))`. Simplify using `[Matrix.trace, map_sum]`. Rewrite using `[← h3]`.
-
-Conclude with `h2.eq_zero`. Establish `hmem` using `(IsLocalRing.residue_eq_zero_iff _).mp htrace0`. Rewrite `hmem` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨r, hr⟩` from `hmem`. Use `⟨r, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[htr, Algebra.trace_eq_matrix_trace (Module.Free.chooseBasis R (integralClosure R L)), ← hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_radical (π : R) (hπ : Irreducible π) (y z : integralClosure R L) (n : ℕ)
     (h : y ^ n = algebraMap R _ π * z) :
@@ -87,9 +83,9 @@ theorem trace_radical (π : R) (hπ : Irreducible π) (y z : integralClosure R L
   rw [htr, Algebra.trace_eq_matrix_trace (Module.Free.chooseBasis R (integralClosure R L)), ← hr]
 
 /- English proof (translation)
-Establish `hne : P.comap (algebraMap R (integralClosure R L)) ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP`. Conclude with `Ideal.comap_ne_bot_of_integral_mem hx0 hx (Algebra.IsIntegral.isIntegral x)`. Establish `hmax : (P.comap (algebraMap R (integralClosure R L))).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hne`. Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπm : π ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal π).mpr (mem_nonunits_iff.mpr hπ.not_isUnit)`. Rewrite `hπm` using `[← heq]`. Conclude with `hπm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_prime (π : R) (hπ : Irreducible π) (P : Ideal (integralClosure R L)) [P.IsPrime] (hP : P ≠ ⊥) :
     algebraMap R _ π ∈ P := by
@@ -106,11 +102,11 @@ theorem mem_prime (π : R) (hπ : Irreducible π) (P : Ideal (integralClosure R 
 
 include F in
 /- English proof (translation)
-Use `haveI : IsDedekindDomain (integralClosure R L) := IsIntegralClosure.isDedekindDomain R F L (integralClosure R L)`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Use `haveI := faithful_integralClosure (R := R) (F := F) (L := L)`. Establish `hπ0 : algebraMap R (integralClosure R L) π ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective R (integralClosure R L))).mpr hπ.ne_zero`. Apply `IsPrincipalIdealRing.of_finite_primes` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin` using `Ideal.finite_factors (R := integralClosure R L) (I := Ideal.span {algebraMap R (integralClosure R L) π}) (Ideal.span_singleton_eq_bot.not.mpr hπ0)`. Use `((hfin.image (fun v => v.asIdeal)).insert ⊥).subset ?_` and prove the remaining obligations. Introduce `P hP`. Distinguish the cases in `hb : P = ⊥`. Conclude with `Set.mem_insert_iff.mpr (Or.inl hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Set.mem_insert_iff.mpr (Or.inr ?_) haveI : P.IsPrime := hP` and prove the remaining obligations. Use `⟨⟨P, hP, hb⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show P ∣ Ideal.span {algebraMap R (integralClosure R L) π}`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `mem_prime π hπ P hb`.
+A detailed English derivation is pending.
 -/
 theorem isPID_integralClosure : IsPrincipalIdealRing (integralClosure R L) := by
   classical
@@ -140,17 +136,17 @@ end GlobalTheory.CompanionTheory.TraceJac
 namespace GlobalTheory.CompanionTheory.TraceJac
 
 /- English proof (translation)
-Take `⟨m, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := S)`. Establish `hfrac : ∀ i, ∃ a d : S, d ≠ 0 ∧ E (algebraMap S L (s i)) = algebraMap S L a / algebraMap S L d`. Introduce `i`. Take `⟨a, d, hd, h⟩` from `IsFractionRing.div_surjective (A := S) (E (algebraMap S L (s i)))`. Conclude with `⟨a, d, nonZeroDivisors.ne_zero hd, h.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose a d hd0 hd using hfrac`. Use `⟨∏ i, d i, Finset.prod_ne_zero_iff.mpr (fun i _ => hd0 i), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span R (Set.range s)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hy`. Use `⟨(∏ j ∈ Finset.univ.erase i, d j) * a i, ?_⟩` and prove the remaining obligations. Establish `hdi : algebraMap S L (d i) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective S L)).mpr (hd0 i)`. Rewrite using `[hd i, ← Finset.mul_prod_erase Finset.univ d (Finset.mem_univ i), map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨y', hy'⟩` from `hy`. Take `⟨z', hz'⟩` from `hz`. Conclude with `⟨y' + z', by rw [map_add, map_add, mul_add, hy', hz', map_add]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul r y _ hy`. Take `⟨y', hy'⟩` from `hy`. Take `⟨r', hr'⟩` from `hE r`. Use `⟨algebraMap R S r * y' + y * (∏ i, d i) * algebraMap R S r', ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap S L (r • y) = algebraMap R L r * algebraMap S L y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[e1, Derivation.leibniz, hr', smul_eq_mul, smul_eq_mul]`. Simplify using `only [map_add, map_mul, ← IsScalarTower.algebraMap_apply, ← hy']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_den {R S L : Type*} [CommRing R] [CommRing S] [IsDomain S] [Field L] [Algebra R S]
     [Algebra S L] [IsFractionRing S L] [Algebra R L] [IsScalarTower R S L] [Module.Finite R S]
@@ -197,13 +193,11 @@ variable {R F L : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [
 open IsDedekindDomain in
 include F in
 /- English proof (translation)
-Use `haveI := faithful_integralClosure (R := R) (F := F) (L := L)`. Use `haveI : Module.Finite R (integralClosure R L) := IsIntegralClosure.finite R F L (integralClosure R L)`. Take `⟨ϖ, hϖ⟩` from `(IsPrincipalIdealRing.principal P.asIdeal).principal`. Establish `hπ0 : algebraMap R (integralClosure R L) π ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective R (integralClosure R L))).mpr hπ.ne_zero`. Establish `hmem` using `mem_prime π hπ P.asIdeal P.ne_bot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdiv : ϖ ∣ algebraMap R (integralClosure R L) π`. Rewrite `hmem` using `[hϖ]`. Conclude with `Ideal.mem_span_singleton.mp hmem`. Establish `hπ'' : ∃ s, E' (algebraMap (integralClosure R L) L (algebraMap R (integralClosure R L) π)) = algebraMap (integralClosure R L) L (algebraMap R (integralClosure R L) π * s)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hπ'`. Take `⟨δ, hδ0, hδ⟩` from `exists_den (R := R) (S := integralClosure R L) (L := L) E' hR'`. Establish `hle : ∀ x : integralClosure R L, P.valuation L (algebraMap _ L x) ≤ 1` using `fun x => P.valuation_le_one x`. Establish `hlt : ∀ x : integralClosure R L, P.valuation L (algebraMap _ L x) < 1 ↔ ϖ ∣ x`. Introduce `x`.
-
-Rewrite using `[P.valuation_lt_one_iff_mem, hϖ]`. Conclude with `Ideal.mem_span_singleton`. Establish `hc` using `core hnat (P.valuation L) ϖ hle hlt E' I hI _ hπ0 hdiv hπ'' δ hδ0 hδ`. Use `⟨hc.1, fun hIP => hc.2.2 (by rw [hϖ] at hIP; exact hIP)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valuation_bounds (hnat : ∀ n : ℕ, n ≠ 0 → IsUnit (n : R)) (π : R) (hπ : Irreducible π)
     [IsDedekindDomain (integralClosure R L)] [IsFractionRing (integralClosure R L) L]
@@ -250,15 +244,15 @@ variable {R F L : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [
   [FiniteDimensional F L] [Algebra.IsSeparable F L]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset n, j ∉ s → (Matrix.of fun k l => if k ∈ s then A k l - c k * A j l else A k l).det = A.det`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Consider the case `insert k s hks ih`. Introduce `hj`. Establish `hjk : k ≠ j` using `fun h => hj (h ▸ Finset.mem_insert_self k s)`. Establish `hjs : j ∉ s` using `fun h => hj (Finset.mem_insert_of_mem h)`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (Matrix.of fun k' l => if k' ∈ insert k s then A k' l - c k' * A j l else A k' l) = (Matrix.of fun k' l => if k' ∈ s then A k' l - c k' * A j l else A k' l).updateRow k ((Matrix.of fun k' l => if k' ∈ s then A k' l - c k' * A j l else A k' l) k + (-c k) • (Matrix.of fun k' …`. Use extensionality with `k' l`. Distinguish the cases in `hk' : k' = k`. Substitute `hk'` using the available equality. Simplify using `[hks, hjs, sub_eq_add_neg, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.updateRow_ne hk', hk']`. Rewrite using `[heq, Matrix.det_updateRow_add_smul_self _ hjk, ih hjs]`. Establish `h1` using `key (Finset.univ.erase j) (Finset.notMem_erase j _)`. Rewrite using `[← h1]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `k l`. Distinguish the cases in `hk : k = j`. Simplify using `[hk]`. Simplify using `[hk]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem det_rowop_lemma {n K : Type*} [Fintype n] [DecidableEq n] [CommRing K]
     (A : Matrix n n K) (j : n) (c : n → K) :
@@ -293,9 +287,9 @@ private theorem det_rowop_lemma {n K : Type*} [Fintype n] [DecidableEq n] [CommR
   · simp [hk]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `v.map_sum_le (fun σ _ => ?_)` and prove the remaining obligations. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul, map_prod]`. Conclude with `Finset.prod_le_one' (fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, Units.neg_smul, one_smul, Valuation.map_neg, map_prod]`. Conclude with `Finset.prod_le_one' (fun i _ => h _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem val_det_le_lemma_2 {n K Γ : Type*} [Fintype n] [DecidableEq n] [CommRing K]
     [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (A : Matrix n n K)
@@ -309,13 +303,11 @@ private theorem val_det_le_lemma_2 {n K Γ : Type*} [Fintype n] [DecidableEq n] 
     exact Finset.prod_le_one' (fun i _ => h _ _)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_eq_sum_mul_adjugate_row A j]`. Use `v.map_sum_lt one_ne_zero (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `hadj : v (A.adjugate l j) ≤ 1`. Rewrite using `[Matrix.adjugate_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `val_det_le_lemma_2 v _ (fun k m => ?_)` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Rewrite using `[Matrix.updateRow_self]`. Distinguish the cases in `hm : m = l`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hm]`. Rewrite using `[Matrix.updateRow_ne hk]`. Conclude with `h k m`.
-
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hadj) (hj l)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_det_lt_lemma_3 {n K Γ : Type*} [Fintype n] [DecidableEq n] [CommRing K]
     [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (A : Matrix n n K)
@@ -340,41 +332,37 @@ private theorem val_det_lt_lemma_3 {n K Γ : Type*} [Fintype n] [DecidableEq n] 
 open IsDedekindDomain in
 include F in
 /- English proof (translation)
-Use `haveI : IsDedekindDomain (integralClosure R L) := IsIntegralClosure.isDedekindDomain R F L (integralClosure R L)`. Use `haveI : IsFractionRing (integralClosure R L) L := IsIntegralClosure.isFractionRing_of_finite_extension R F L (integralClosure R L)`. Use `haveI : IsPrincipalIdealRing (integralClosure R L) := isPID_integralClosure (F := F)`. Use `haveI := faithful_integralClosure (R := R) (F := F) (L := L)`. Establish `hπS : algebraMap R (integralClosure R L) π ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective R (integralClosure R L))).mpr hπ.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsc : ∀ r : R, algebraMap R L r = algebraMap (integralClosure R L) L (algebraMap R _ r)` using `fun r => IsScalarTower.algebraMap_apply R (integralClosure R L) L r`. Use `choose rk hrk using fun k => hR k π`. Use `set α : n → L := fun k => algebraMap R L (rk k * ↑u⁻¹) with hα`. Establish `hE'π : ∀ k, (E k - α k • E j) (algebraMap R L π) = 0`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Derivation.sub_apply, Derivation.smul_apply, hrk k, hj, smul_eq_mul, hα, ← map_mul, mul_assoc, Units.inv_mul, mul_one, sub_self]`. Establish `hE'R : ∀ k (r : R), ∃ r' : R, (E k - α k • E j) (algebraMap R L r) = algebraMap R L r'`. Introduce `k r`. Take `⟨r1, h1⟩` from `hR k r`. Take `⟨r2, h2⟩` from `hR j r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨r1 - rk k * ↑u⁻¹ * r2, ?_⟩` and prove the remaining obligations. Rewrite using `[Derivation.sub_apply, Derivation.smul_apply, h1, h2, smul_eq_mul, hα, map_sub, map_mul]`. Establish `hE''R : ∀ r : R, ∃ r' : R, (algebraMap R L π • E j) (algebraMap R L r) = algebraMap R L r'`. Introduce `r`. Take `⟨r2, h2⟩` from `hR j r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨π * r2, by rw [Derivation.smul_apply, h2, smul_eq_mul, map_mul]⟩`. Establish `hvb : ∀ P : IsDedekindDomain.HeightOneSpectrum (integralClosure R L), (∀ k, ∀ x : integralClosure R L, P.valuation L ((E k - α k • E j) (algebraMap (integralClosure R L) L x)) ≤ 1) ∧ (∀ x : integralClosure R L, P.valuation L ((algebraMap R L π • E j) (algebraMap (integralClosure …`. Introduce `P`. Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Use `(valuation_bounds (F := F) hnat π hπ P (E k - α k • E j) ⊤ (fun r => ?_) (hE'R k) ⟨0, by rw [hE'π k, mul_zero, map_zero]⟩).1` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r', hr'⟩` from `hE'R k r`. Conclude with `⟨algebraMap R _ r', Submodule.mem_top, by rw [hr', hsc]⟩`. Use `(valuation_bounds (F := F) hnat π hπ P (algebraMap R L π • E j) (Ideal.span {algebraMap R (integralClosure R L) π}) (fun r => ?_) hE''R ⟨algebraMap R _ u, ?_⟩).2 ?_` and prove the remaining obligations. Take `⟨r2, h2⟩` from `hR j r`. Use `⟨algebraMap R _ π * algebraMap R _ r2, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Derivation.smul_apply, h2, smul_eq_mul, map_mul, hsc, hsc]`. Rewrite using `[Derivation.smul_apply, hj, smul_eq_mul, map_mul, hsc, hsc]`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `mem_prime π hπ P.asIdeal P.ne_bot`. Use `set M : Matrix n n L := Matrix.of fun k l => E k (b l) with hM`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set M2 : Matrix n n L := (Matrix.of fun k l => if k = j then M k l else M k l - α k * M j l).updateRow j (algebraMap R L π • M j) with hM2`. Establish `hdet : M2.det = algebraMap R L π * M.det`. Rewrite using `[hM2, Matrix.det_updateRow_smul, ← det_rowop_lemma M j α]`. Use `congr 2`. Use extensionality with `k l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.updateRow_ne hk]`. Establish `hent : ∀ P : IsDedekindDomain.HeightOneSpectrum (integralClosure R L), ∀ k l, (k = j → P.valuation L (M2 k l) < 1) ∧ P.valuation L (M2 k l) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `P k l`. Establish `hb' : b l = algebraMap (integralClosure R L) L ⟨b l, hb l⟩` using `rfl`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Establish `h1 : M2 k l = (algebraMap R L π • E k) (algebraMap (integralClosure R L) L ⟨b l, hb l⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hM2, Matrix.updateRow_self, Derivation.smul_apply]`. Both sides reduce to the same expression. Establish `h2` using `(hvb P).2 ⟨b l, hb l⟩`. Rewrite `h2` using `[← h1]`. Conclude with `⟨fun _ => h2, h2.le⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : M2 k l = (E k - α k • E j) (algebraMap (integralClosure R L) L ⟨b l, hb l⟩)`. Rewrite using `[hM2, Matrix.updateRow_ne hk, Derivation.sub_apply, Derivation.smul_apply]`. Simplify using `[hk, hM]`. Establish `h2` using `(hvb P).1 k ⟨b l, hb l⟩`. Rewrite `h2` using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨fun h => absurd h hk, h2⟩`. Establish `hw : ∀ P : IsDedekindDomain.HeightOneSpectrum (integralClosure R L), P.valuation L (c * M2.det) < 1`. Introduce `P`. Establish `hcS : c = algebraMap (integralClosure R L) L ⟨c, hc⟩` using `rfl`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `lt_of_le_of_lt (mul_le_of_le_one_left' ?_) ?_` and prove the remaining obligations. Rewrite using `[hcS]`. Conclude with `P.valuation_le_one _`. Conclude with `val_det_lt_lemma_3 (P.valuation L) M2 (fun k l => (hent P k l).2) j (fun l => (hent P j l).1 rfl)`. Take `⟨w0, hw0⟩ : c * M2.det ∈ (algebraMap (integralClosure R L) L).range` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one L _ (fun P => (hw P).le)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrad : w0 ∈ (Ideal.span {algebraMap R (integralClosure R L) π}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `J ⟨hJ, hJp⟩`. Establish `hJb : J ≠ ⊥`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJ` using `[h0]`. Conclude with `hπS ((Submodule.mem_bot _).mp (hJ (Ideal.mem_span_singleton_self _)))`. Establish `h1` using `hw ⟨J, hJp, hJb⟩`. Rewrite `h1` using `[← hw0]`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem ⟨J, hJp, hJb⟩ w0).mp h1`.
-
-Take `⟨N, hN⟩` from `hrad`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.mp hN`. Take `⟨r, hr⟩` from `trace_radical (F := F) π hπ w0 z N (by rw [← hz, mul_comm])`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hw0' : ((w0 : integralClosure R L) : L) = algebraMap R L π * (c * M.det)`.
-
-Rewrite using `[show ((w0 : integralClosure R L) : L) = algebraMap (integralClosure R L) L w0 from rfl, hw0, hdet]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hr` using `[hw0', IsScalarTower.algebraMap_apply R F L, ← smul_eq_mul, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, map_mul]`. Establish `hπF : algebraMap R F π ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R F)).mpr hπ.ne_zero`. Conclude with `mul_left_cancel₀ hπF hr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_jac_dvr {n : Type*} [Fintype n] [DecidableEq n]
     (hnat : ∀ m : ℕ, m ≠ 0 → IsUnit (m : R))

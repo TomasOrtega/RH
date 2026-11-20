@@ -22,16 +22,16 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {n : Type*} [Fin
   {M : V → Matrix n n ℂ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_det (h : ∀ a b, ContDiffOn ℝ ∞ (fun v => M v a b) B) : ContDiffOn ℝ ∞ (fun v => (M v).det) B := by
   simp only [Matrix.det_apply']
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)
 
 /- English proof (translation)
-Establish `e : ∀ v, (M v)⁻¹ a b = ((M v).det)⁻¹ * (M v).adjugate a b` using `fun v => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Both sides reduce to the same expression. Simplify using `only [e, Matrix.adjugate_apply]`. Use `ContDiffOn.mul ((contDiffOn_det h).inv fun v hv => (hd v hv).ne_zero) (contDiffOn_det fun c d => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `contDiffOn_const`. Conclude with `h _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inv_apply (h : ∀ a b, ContDiffOn ℝ ∞ (fun v => M v a b) B) (hd : ∀ v ∈ B, IsUnit (M v).det) (a b : n) :
     ContDiffOn ℝ ∞ (fun v => (M v)⁻¹ a b) B := by
@@ -52,17 +52,17 @@ end GlobalTheory.MetSmooth
 open GlobalTheory.MetSmooth in
 
 /- English proof (translation)
-Introduce `D A N j S κ s L k x t`. Take `⟨f, hf, hd⟩` from `GlobalTheory.T.frame_domain_coordinates_holomorphic D A N j S κ s L k`. Establish `laws` using `(GlobalTheory.T.metric_pullback_gram_and_invariance D A N j S κ s L k x).1`. Establish `hW : ∀ z ∈ DomI D.what₂.Tau j (N - j), x.metW L k z t = x.gramW L k (f z) t` using `fun z hz => by`. Establish `h` using `(laws (f z) t).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[(hf z hz).1, ((hf z hz).2 _).1]`. Simplify using `using h`. Establish `hO : ∀ z ∈ DomI D.what₂.Tau j (N - j), x.metOm L k z t = x.gramOm L k (f z) t` using `fun z hz => by`. Establish `h` using `(laws (f z) t).2`. Rewrite `h` using `[(hf z hz).1, ((hf z hz).2 _).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Set `e` to `Fintype.equivFin (D.what₂.Tau × Fin j × Fin (N - j))`. Set `R : (Fin (Fintype.card (D.what₂.Tau × Fin j × Fin (N - j))) → ℂ) ≃L[ℂ] (D.what₂.Tau × Fin j × Fin (N - j) → ℂ)` to `ContinuousLinearEquiv.piCongrLeft ℂ (fun _ => ℂ) e.symm`. Establish `hB : IsOpen (R ⁻¹' DomFlat D.what₂.Tau j (N - j))` using `ActionDeriv.isOpen_domFlat.preimage R.continuous`. Establish `hg` using `GlobalTheory.T.gram_smooth_of_holomorphic_frames D A N j S κ s L k x _ (R ⁻¹' DomFlat D.what₂.Tau j (N - j)) (fun w => f (unflat (R w))) hB fun τ a b => (hd τ a b).comp R.differentiable.differentiableOn fun _ h => h`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ τ a b, ContDiffOn ℝ ∞ (fun v => x.gram (s.framePt k (f (unflat v))) (s.lieFrame k (f (unflat v))) τ a b) (DomFlat D.what₂.Tau j (N - j))` using `fun τ a b => by`. Establish `h` using `(hg τ a b).comp (R.symm.toContinuousLinearMap.restrictScalars ℝ).contDiff.contDiffOn (s := DomFlat D.what₂.Tau j (N - j)) fun v hv => by show R (R.symm v) ∈ DomFlat D.what₂.Tau j (N - j)`. Rewrite using `[R.apply_symm_apply]` and apply the resulting hypothesis. Use `h.congr fun v _ => ?_` and prove the remaining obligations. Use `show _ = x.gram (s.framePt k (f (unflat (R (R.symm v))))) (s.lieFrame k (f (unflat (R (R.symm v))))) τ a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[R.apply_symm_apply]`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `(key (L.ψ t).1 (Fin.cast (S.mult_psi L t).symm a) (Fin.cast (S.mult_psi L t).symm b)).congr fun v hv => ?_ show x.metW L k (unflat v) t a b = _` and prove the remaining obligations. Rewrite using `[hW _ hv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hinv` using `contDiffOn_inv_apply (key (conjEmb (L.ψ t).1)) fun v _ => (Matrix.isUnit_iff_isUnit_det _).1 (x.gram_posDef _ _).isUnit`. Use `((contDiffOn_const (c := (hodgeC (s.fd k) (s.lab L k) t : ℂ) ^ 2)).mul (hinv (Fin.cast (S.mult_conj L t).symm b.rev) (Fin.cast (S.mult_conj L t).symm a.rev))).congr fun v hv => ?_` and prove the remaining obligations. Use `show x.metOm L k (unflat v) t a b = _`. Rewrite using `[hO _ hv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MetSmooth.metsmooth : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp) (x : ToroidalCompactificationData s) (t : D.what₂.Tau), (∀ a b, HodgeDomain.SmoothOn fun z : Pt D.what₂.Tau j (N - j) => x.metW L k z t a b) ∧ ∀ a b, HodgeDomain.SmoothOn fun z : Pt D.what₂.Tau j (N - j) => x.metOm L k z t a b := by
   intro D A N j S κ s L k x t

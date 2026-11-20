@@ -8,9 +8,9 @@ namespace CompanionTheory.D.Upq.QuotSetU
 open PI PI.QuotSetU PI.QuotSetU.UnitaryGroupMassFormula
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Establish `hG` using `unitary_hermitian_group k r`. Establish `hS` using `stabilizer_closed_matrix_group k r z hz hT`. Take `⟨DG, hDG, hRG⟩` from `ModEx.exists_modular_function _ _ hG`. Take `⟨DS, hDS, hRS⟩` from `ModEx.exists_modular_function _ _ hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hG, hS, siegel_set_subset k r z, hRG (unitary_group_modular_function_trivial k r DG hDG), hRS (stabilizer_modular_function_trivial k r z hz hT DS hDS)⟩`.
+Supply the required witnesses or components.
 -/
 theorem quotient_measure_unitary_group : PI.QuotSetU := by
   intro k r z hz hT

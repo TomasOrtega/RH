@@ -5,35 +5,27 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g M hM χ hn hmul`. Take `⟨hd, hz⟩` from `hM`. Use `haveI : Module.Free ℤ M := ZLattice.module_free ℝ M`. Use `haveI : Module.Finite ℤ M := ZLattice.module_finite ℝ M`. Use `set b := Module.Free.chooseBasis ℤ M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set bR := Module.Basis.ofZLatticeBasis ℝ M b`. Use `set a : Module.Free.ChooseBasisIndex ℤ M → ℝ := fun k => Complex.arg (χ (b k)) / (2 * π) with ha_def`. Establish `ha : ∀ k, χ (b k) = Complex.exp (2 * π * Complex.I * (a k : ℂ))`. Introduce `k`. Establish `h` using `Complex.norm_mul_exp_arg_mul_I (χ (b k))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h` using `[hn _ (b k).2]`. Establish `e : 2 * π * Complex.I * (a k : ℂ) = (Complex.arg (χ (b k)) : ℂ) * Complex.I`. Simplify using `only [ha_def]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `using h.symm`. Use `set f : Fl g →ₗ[ℝ] ℝ := bR.constr ℝ a`. Use `set w : Fl g := fun i => f (fun j => if i = j then 1 else 0) with hw`. Use `set x : Fl g := Sum.elim (fun i => - w (Sum.inr i)) (fun i => w (Sum.inl i)) with hx_def`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ∀ y, riem x y = f y`. Introduce `y`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f y, Fintype.sum_sum_type]`. Simplify using `only [riem, hx_def, Sum.elim_inl, Sum.elim_inr, smul_eq_mul, ← Finset.sum_add_distrib, hw]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxb : ∀ k, riem x (b k) = a k`. Introduce `k`. Rewrite using `[hx, ← Module.Basis.ofZLatticeBasis_apply ℝ M b k]`. Conclude with `bR.constr_basis ℝ a k`. Establish `h0 : χ 0 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hmul 0 M.zero_mem 0 M.zero_mem`. Rewrite `e` using `[add_zero]`. Establish `hne : χ 0 ≠ 0`. Introduce `h`. Use `hn 0 M.zero_mem` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `mul_left_cancel₀ hne (by rw [mul_one]; exact e.symm)`. Set `T : AddSubgroup (Fl g)` to `{ carrier := {l | l ∈ M ∧ χ l = Complex.exp (2 * π * Complex.I * riem x l)} add_mem' := by`. Introduce and unpack `l l' ⟨hl, el⟩ ⟨hl', el'⟩`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨M.add_mem hl hl', ?_⟩` and prove the remaining obligations. Rewrite using `[hmul l hl l' hl', el, el', ← Complex.exp_add]`. Use `congr 1`. Establish `: riem x (l + l') = riem x l + riem x l'`. Simplify using `only [riem, Pi.add_apply, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨M.zero_mem, by simp [h0, riem]⟩`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `l ⟨hl, el⟩`. Use `⟨M.neg_mem hl, ?_⟩` and prove the remaining obligations. Establish `e1` using `hmul (-l) (M.neg_mem hl) l hl`. Rewrite `e1` using `[neg_add_cancel, h0, el]`.
-
-Establish `: riem x (-l) = - riem x l`. Simplify using `only [riem, Pi.neg_apply, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `e2 : Complex.exp (2 * π * Complex.I * ((riem x (-l) : ℝ) : ℂ)) = (Complex.exp (2 * π * Complex.I * ((riem x l : ℝ) : ℂ)))⁻¹`. Rewrite using `[← Complex.exp_neg, this]`.
-
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e2]`. Conclude with `eq_inv_of_mul_eq_one_left e1.symm }`. Establish `hMT : M ≤ AddSubgroup.toIntSubmodule T`.
-
-Rewrite using `[← Module.Basis.ofZLatticeBasis_span ℝ M b, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[Module.Basis.ofZLatticeBasis_apply]`. Use `⟨(b k).2, ?_⟩` and prove the remaining obligations. Rewrite using `[ha k, hxb k]`.
-
-Conclude with `⟨x, fun l hl => (show l ∈ T from hMT hl).2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unitary_char_eq_exp_riem : ∀ {g : ℕ} {M : Submodule ℤ (Fl g)}, IsLat M → ∀ χ : Fl g → ℂ,
     (∀ l ∈ M, ‖χ l‖ = 1) → (∀ l ∈ M, ∀ l' ∈ M, χ (l + l') = χ l * χ l') →

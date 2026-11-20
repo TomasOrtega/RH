@@ -22,14 +22,14 @@ def supE (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : ENN
 def supN (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : ℝ := (supE X la P).toReal
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _`.
+A detailed English derivation is pending.
 -/
 theorem pnorm_fac_nonneg (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) :
     0 ≤ ∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2) :=
   Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _
 
 /- English proof (translation)
-Simplify using `only [Data.pnorm, Pi.add_apply]`. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (pnorm_fac_nonneg X la x)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_add_le (X : Data E r) (la : Wt X.Ψ r) (P Q : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la (P + Q) x ≤ X.pnorm la P x + X.pnorm la Q x := by
@@ -38,7 +38,7 @@ theorem pnorm_add_le (X : Data E r) (la : Wt X.Ψ r) (P Q : Frame X.Ψ r → ℂ
   exact mul_le_mul_of_nonneg_right (norm_add_le _ _) (pnorm_fac_nonneg X la x)
 
 /- English proof (translation)
-Simplify using `only [Data.pnorm, Pi.smul_apply, smul_eq_mul, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pnorm_smul (X : Data E r) (la : Wt X.Ψ r) (a : ℂ) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la (a • P) x = ‖a‖ * X.pnorm la P x := by
@@ -46,7 +46,7 @@ theorem pnorm_smul (X : Data E r) (la : Wt X.Ψ r) (a : ℂ) (P : Frame X.Ψ r �
   ring
 
 /- English proof (translation)
-Simplify using `[Data.pnorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pnorm_zero (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r) : X.pnorm la 0 x = 0 := by
   simp [Data.pnorm]
@@ -55,14 +55,14 @@ def holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) : Submodule ℂ (
   Submodule.span ℂ {P | IsHolCusp X la P}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span h`.
+A detailed English derivation is pending.
 -/
 theorem holCusp_mem_holSub (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) {P : FDSec X}
     (h : IsHolCusp X la P) : P ∈ holSub X la :=
   Submodule.subset_span h
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem supN_nonneg (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X) : 0 ≤ supN X la P :=
   ENNReal.toReal_nonneg

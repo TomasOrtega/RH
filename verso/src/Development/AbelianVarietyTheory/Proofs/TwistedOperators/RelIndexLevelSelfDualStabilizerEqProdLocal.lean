@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.ParIndex
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show (D.sp.cm.sig : D.host.E →+* D.host.E) (V.gram j i) = V.gram i j`. Conclude with `V.herm.eq (V.frame j) (V.frame i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_herm (D : D7) (V : HSp D) : Formalism.UG.IsHerm (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram := by
   refine Matrix.ext fun i j => ?_
@@ -30,21 +30,19 @@ theorem gram_herm (D : D7) (V : HSp D) : Formalism.UG.IsHerm (D.sp.cm.sig : D.ho
   exact V.herm.eq (V.frame j) (V.frame i)
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V).2`.
+A detailed English derivation is pending.
 -/
 theorem gram_det_ne (D : D7) (V : HSp D) : V.gram.det ≠ 0 :=
   ((GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V).2
 
 /- English proof (translation)
-Set `f` to `V.frame.equivFun.toLinearMap`. Set `L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map (f.restrictScalars (𝓞 D.host.E))`. Establish `hL : (L : Set (Fin V.rank → D.host.E)) = L0c D V`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `∑ i, V.frame.equivFun x i • V.frame i ∈ V.L0`. Rewrite using `[V.frame.sum_equivFun]` and apply the resulting hypothesis. Introduce `hv`. Use `⟨V.frame.equivFun.symm v, ?_, V.frame.equivFun.apply_symm_apply v⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `hv`. Rewrite using `[← hL, eq_top_iff]`. Introduce `v _`. Take `⟨x, rfl⟩` from `V.frame.equivFun.surjective v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span D.host.E (V.L0 : Set V.V)`. Rewrite using `[V.standardTuple_isLattice.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.mem_map_of_mem (f := f) hx` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitianSpace_standard_lattice_span_eq_top (D : D7) (V : HSp D) :
     Submodule.span D.host.E (L0c D V) = ⊤ := by
@@ -70,51 +68,43 @@ theorem hermitianSpace_standard_lattice_span_eq_top (D : D7) (V : HSp D) :
   exact this
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F i t P m Hl cl hC hP`. Take `⟨c, hB⟩` from `hC.lev.βV i`. Rewrite `hB` using `[one_pow]`. Establish `hK` using `GlobalTheory.T.latticeLevel_eq_unitary_inf_frame_stabilizer D (Vc D i) (R.βV i) _ hB`. Take `⟨hsplit, hdis⟩` from `GlobalTheory.T.levelPlaces_union_twistPlaces_split_disjoint R F hC t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hspan : Submodule.span D.host.E ((R.ΛV i : Submodule (𝓞 D.host.E) _) : Set (Fin (Vc D i).rank → D.host.E)) = ⊤`. Rewrite using `[eq_top_iff, ← hermitianSpace_standard_lattice_span_eq_top D (Vc D i)]`. Use `Submodule.span_mono fun x hx => ?_` and prove the remaining obligations. Use `hB.2.2.2.1 x hx` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hdual : dualSet (D.sp.cm.sig : D.host.E →+* D.host.E) (Vc D i).gram (R.ΛV i) = ((R.ΛV i : Submodule (𝓞 D.host.E) _) : Set (Fin (Vc D i).rank → D.host.E))`. Establish `e` using `Formalism.IndefR.Fin.Lifts.span_dualSet_eq (D.sp.cm.sig : D.host.E →+* D.host.E) (Vc D i).gram (R.ΛV i)`. Establish `h` using `hB.2.1`. Unfold `Formalism.L2.Herm.dualL at h`. Rewrite `e` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm`. Establish `hn : (Vc D i).rank = D.R.r + D.R.t`. Rewrite using `[D.sp.V_rank _ (Nat.le_add_left _ _) i.2]`. Both sides reduce to the same expression. Establish `hSt : ∀ x ∈ GlobalTheory.Mass.Levels.latLev (Vc D i), x ∈ Formalism.L2.DIV.St (R.βV i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[hK]`. Conclude with `hx.2`. Use `set Ts := R.Pg ∪ R.Q t with hTs`. Set `φ : GlobalTheory.Mass.Levels.latLev (Vc D i) →* (∀ PP : ↥Ts, GL (Fin (Vc D i).rank) (kP PP.1))` to `{ toFun := fun x PP => redFn (R.βV i) PP.1 x map_one' := by funext PP; exact redFn_one _ map_mul' := fun x y => by funext PP; exact redFn_mul (hSt _ x.2) (hSt _ y.2) _ }`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hφ : Function.Surjective φ`. Introduce `y`. Take `⟨x, hx, hred⟩` from `Formalism.IndefR.Fin.Lifts.redSurj_sd D.sp.cm Ts (gram_herm D (Vc D i)) (isUnit_iff_ne_zero.2 (gram_det_ne D (Vc D i))) hspan hdual hB.1 hsplit y`. Conclude with `⟨⟨x, by rw [hK]; exact hx⟩, funext hred⟩`. Set `Bl : ∀ PP : ↥Ts, Subgroup (GL (Fin (Vc D i).rank) (kP PP.1))` to `fun PP => if h : PP.1 ∈ R.Pg then parSub (r_le_V i) (Hl ⟨PP.1, h⟩) else blockTri (blk2 D.R.r)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBp : ∀ (PP : ↥Ts) (h : PP.1 ∈ R.Pg), Bl PP = parSub (r_le_V i) (Hl ⟨PP.1, h⟩)` using `fun PP h => dif_pos h`. Establish `hBn : ∀ (PP : ↥Ts), PP.1 ∉ R.Pg → Bl PP = blockTri (blk2 D.R.r)` using `fun PP h => dif_neg h`. Establish `hcomap : (GlobalTheory.AdelicScalar.levV R i t P m).subgroupOf (GlobalTheory.Mass.Levels.latLev (Vc D i)) = (Subgroup.pi Set.univ Bl).comap φ`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hxK : (x : GL (Fin (Vc D i).rank) (Lev.EAf D)) ∈ Formalism.L2.DIV.UA D.sp.cm (Vc D i).gram ⊓ Formalism.L2.DIV.St (R.βV i)`. Rewrite using `[← hK]`. Conclude with `x.2`. Substitute `hP` using the available equality. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce `hx PP _`. Establish `hx'` using `(mem_lev.1 hx)`. Take `⟨-, -, hg, hq⟩` from `mem_parLev.1 hx'.1`. Use `show redFn (R.βV i) PP.1 x ∈ Bl PP`. Distinguish the cases in `h : PP.1 ∈ R.Pg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hBp PP h]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hg PP.1 h` as an intermediate fact. Express the relevant statement in the definitionally equal form `redFn (R.βV i) PP.1 x ∈ blockTri (blkOf D.R.r D.R.t) at this`. Rewrite `this` using `[blockTri_blkOf_eq hn]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hx'.2 ⟨PP.1, h⟩ (Set.mem_univ _)`. Rewrite using `[hBn PP h]`. Establish `hQ : PP.1 ∈ R.Q t`. Break down `Finset.mem_union.1 PP.2 with h' | h'` into its components or cases. Conclude with `absurd h' h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h'`. Conclude with `hq PP.1 hQ`. Introduce `hx`. Establish `hx1 : ∀ PP (h : PP ∈ Ts), redFn (R.βV i) PP x ∈ Bl ⟨PP, h⟩` using `fun PP h => hx ⟨PP, h⟩ (Set.mem_univ _)`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨hxK.1, hxK.2, fun PP hPP => ?_, fun PP hPP => ?_⟩, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hx1 PP (Finset.mem_union_left _ hPP)` as an intermediate fact. Rewrite `this` using `[hBp ⟨PP, Finset.mem_union_left _ hPP⟩ hPP]`. Use `show _ ∈ blockTri (blkOf D.R.r D.R.t)`. Rewrite using `[blockTri_blkOf_eq hn]`. Conclude with `this.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hx1 PP (Finset.mem_union_right _ hPP)` as an intermediate fact. Distinguish the cases in `h : PP ∈ R.Pg`. Rewrite `this` using `[hBp ⟨PP, Finset.mem_union_right _ hPP⟩ h]`. Conclude with `this.1`. Rewrite `this` using `[hBn ⟨PP, Finset.mem_union_right _ hPP⟩ h]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `PP _`. Use `hx1 PP.1 (Finset.mem_union_left _ PP.2)` as an intermediate fact. Rewrite `this` using `[hBp ⟨PP.1, Finset.mem_union_left _ PP.2⟩ PP.2]`. Conclude with `this.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hidx : (((GlobalTheory.AdelicScalar.levV R i t P m).relIndex (GlobalTheory.Mass.Levels.latLev (Vc D i)) : ℕ) : ℝ) = ∏ PP : ↥Ts, (((Bl PP).index : ℕ) : ℝ)`. Rewrite using `[Subgroup.relIndex, hcomap, Subgroup.index_comap_of_surjective _ hφ, GlobalTheory.index_pi_univ_dep, Nat.cast_prod]`. Set `g : Pl D.host.E → ℝ` to `fun PP => if h : PP ∈ R.Pg then (Nat.card (GL (Fin (Vc D i).rank) (kP PP)) : ℝ) / ((Nat.card (Hl ⟨PP, h⟩) : ℝ) * (Nat.card (GL (Fin D.R.t) (kP PP)) : ℝ) * (Nat.card (kP PP) : ℝ) ^ (D.R.r * D.R.t)) else (Nat.card (GL (Fin (Vc D i).rank) (kP PP)) : ℝ) / ((Nat.card (GL (Fin D.R.r) ( …`. Establish `hloc : ∀ PP : ↥Ts, (((Bl PP).index : ℕ) : ℝ) = g PP.1`. Introduce `PP`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : PP.1.asIdeal.IsMaximal := PP.1.isMaximal`. Use `letI : Field (kP PP.1) := Ideal.Quotient.field _`. Establish `hc` using `Subgroup.card_mul_index (Bl PP)`. Establish `hpos : (Nat.card (Bl PP) : ℝ) ≠ 0`. Conclude with `(Nat.card_pos (α := Bl PP)).ne'` after adjusting the coercions.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e1 : (((Bl PP).index : ℕ) : ℝ) = (Nat.card (GL (Fin (Vc D i).rank) (kP PP.1)) : ℝ) / (Nat.card (Bl PP) : ℝ)`. Rewrite using `[eq_div_iff hpos, mul_comm]`. Conclude with `hc` after adjusting the coercions. Rewrite using `[e1]`. Distinguish the cases in `h : PP.1 ∈ R.Pg`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : Bl PP = parSub (r_le_V i) (Hl ⟨PP.1, h⟩)` using `hBp PP h`. Simplify using `only [g, dif_pos h]`. Rewrite using `[e2, GlobalTheory.T.card_blockUpperTriangularSubgroupOfTopBlock (kP PP.1) _ _ _ (r_le_V i) hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `e2 : Bl PP = parSub (r_le_V i) ⊤`. Rewrite using `[hBn PP h]`. Use extensionality with `x`. Simplify using `[mem_parSub]`. Simplify using `only [g, dif_neg h]`.
-
-Rewrite using `[e2, GlobalTheory.T.card_blockUpperTriangularSubgroupOfTopBlock (kP PP.1) _ _ _ (r_le_V i) hn, Subgroup.card_top]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hidx, Finset.prod_congr rfl (fun PP _ => hloc PP), Finset.prod_coe_sort Ts g, hTs, Finset.prod_union hdis]`. Use `congr 1`.
-
-Rewrite using `[← Finset.prod_attach R.Pg g]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [g, dif_pos PP.2]`. Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Establish `h : PP ∉ R.Pg` using `Finset.disjoint_right.1 hdis hPP`.
-
-Simplify using `only [g, dif_neg h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_levV_latLev : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (i : Fin D.R.m) (t : T) (P : LevelP R.Pg D.R.r ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Hl : ∀ PP : ↥R.Pg, Subgroup (GL (Fin D.R.r) (kP PP.1))) (cl : ∀ PP : ↥R.Pg, Hl PP →* ℂˣ), GlobalTheory.Hk3.Core R F → P = LevelP.ofLocal Hl cl → (((GlobalTheory.AdelicScalar.levV R i t P m).relIndex (GlobalTheory.Mass.Levels.latLev (Vc D i)) : ℕ) : ℝ) = (∏ PP ∈ R.Pg.attach, (Nat.card (GL (Fin (Vc D i).rank) (kP PP.1)) : ℝ) / ((Nat.card (Hl PP) : ℝ) * (Nat.card (GL (Fin D.R.t) (kP PP.1)) : ℝ) * (Nat.card (kP PP.1) : ℝ) ^ (D.R.r * D.R.t))) * ∏ PP ∈ R.Q t, (Nat.card (GL (Fin (Vc D i).rank) (kP PP)) : ℝ) / ((Nat.card (GL (Fin D.R.r) (kP PP)) : ℝ) * (Nat.card (GL (Fin D.R.t) (kP PP)) : ℝ) * (Nat.card (kP PP) : ℝ) ^ (D.R.r * D.R.t)) := by
   classical

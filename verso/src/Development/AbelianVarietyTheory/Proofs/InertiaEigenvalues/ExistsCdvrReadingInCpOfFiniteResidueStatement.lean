@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeP
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.GeoTie
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GeoTie.ReadExist.exists_isReading` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCdvrReadingInCpOfFiniteResidue.lean&line=80#L80)
 -/

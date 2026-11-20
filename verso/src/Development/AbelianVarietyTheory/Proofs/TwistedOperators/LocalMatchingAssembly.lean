@@ -31,7 +31,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldingOfCuspi
 namespace GlobalTheory.RowClaim.Join
 
 /- English proof (translation)
-Introduce `P K L s1 s2 s3`. Establish `c` using `GlobalTheory.ConstNZ.constK P K L s1 s2 s3`. Establish `cusp` using `GlobalTheory.T.lifts_cuspidal_of_functoriality P`. Establish `sum` using `GlobalTheory.T.row_sum_of_published_inputs P`. Conclude with `⟨sum, c, GlobalTheory.T.linear_independence_of_cuspidal_lifts P cusp, GlobalTheory.T.rowTestLiftFormula_principalLevel (GlobalTheory.T.projection_of_functoriality_adopted P) (GlobalTheory.T.flip_of_weil_convergence_and_theta P cusp s1 K c) (GlobalTheory.T.unfolding_of_cuspidal_li …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem fiveClaims : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK := by
   intro P K L s1 s2 s3

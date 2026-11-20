@@ -11,7 +11,7 @@ namespace GlobalTheory.EZ.Cone
 local notation "Δ" n => SimplexCategory.mk n
 
 /- English proof (translation)
-The claim follows from `SimplexCategory.Hom.ext _ _ (OrderHom.ext _ _ (funext fun j => Fin.ext (h j)))`.
+A detailed English derivation is pending.
 -/
 theorem homExt {m a : ℕ} {f g : (Δ m) ⟶ (Δ a)}
     (h : ∀ j : Fin (m + 1), (f.toOrderHom j : ℕ) = g.toOrderHom j) : f = g :=
@@ -31,7 +31,7 @@ def cv {n a : ℕ} (f : (Δ n) ⟶ (Δ a)) : (Δ (n + 1)) ⟶ (Δ a) :=
         rw [Fin.mk_le_mk]; omega)⟩
 
 /- English proof (translation)
-Simplify using `only [cv, SimplexCategory.mkHom, SimplexCategory.Hom.toOrderHom_mk, OrderHom.coe_mk]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cv_apply {n a : ℕ} (f : (Δ n) ⟶ (Δ a)) (j : Fin (n + 2)) :
     ((cv f).toOrderHom j : ℕ) = if h : (j : ℕ) = 0 then 0 else
@@ -52,9 +52,9 @@ theorem idc_apply (n m : ℕ) (j : Fin (m + 1)) :
     ((idc n m).toOrderHom j : ℕ) = min n j := rfl
 
 /- English proof (translation)
-Apply `homExt` to reduce the goal to its premises. Introduce `j`. Rewrite using `[SimplexCategory.comp_toOrderHom, OrderHom.comp_coe, Function.comp_apply, cv_apply]`. Establish `h1 : ((fc (m + 1) m 0).toOrderHom j : ℕ) = j + 1`. Apply the tactic sequence `rw [fc_apply]; unfold faceFun; have := j.2; split_ifs <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[dif_neg (by omega)]`. Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [h1]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem face_cone_identity_zero {m a : ℕ} (f : (Δ m) ⟶ (Δ a)) : fc (m + 1) m 0 ≫ cv f = f := by
   apply homExt; intro j
@@ -65,11 +65,11 @@ theorem face_cone_identity_zero {m a : ℕ} (f : (Δ m) ⟶ (Δ a)) : fc (m + 1)
   congr 2; apply Fin.ext; simp only [h1]; omega
 
 /- English proof (translation)
-Apply `homExt` to reduce the goal to its premises. Introduce `j`. Rewrite using `[SimplexCategory.comp_toOrderHom, OrderHom.comp_coe, Function.comp_apply, cv_apply, cv_apply]`. Establish `hj` using `j.2`. Distinguish the cases in `h0 : (j : ℕ) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h0]`. Establish `: ((fc (m + 2) (m + 1) (k + 1)).toOrderHom j : ℕ) = 0`. Apply the tactic sequence `rw [fc_apply]; unfold faceFun; split_ifs <;> omega`. Rewrite using `[dif_pos this]`. Establish `h1 : ((fc (m + 2) (m + 1) (k + 1)).toOrderHom j : ℕ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [fc_apply]; unfold faceFun; split_ifs <;> omega`. Rewrite using `[dif_neg h1, dif_neg h0, SimplexCategory.comp_toOrderHom, OrderHom.comp_coe, Function.comp_apply]`. Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `simp only [fc_apply]; unfold faceFun; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fcs_cv {m a : ℕ} (f : (Δ (m + 1)) ⟶ (Δ a)) (k : ℕ) :
     fc (m + 2) (m + 1) (k + 1) ≫ cv f = cv (fc (m + 1) m k ≫ f) := by
@@ -88,9 +88,9 @@ theorem fcs_cv {m a : ℕ} (f : (Δ (m + 1)) ⟶ (Δ a)) (k : ℕ) :
     simp only [fc_apply]; unfold faceFun; split_ifs <;> omega
 
 /- English proof (translation)
-Apply `homExt` to reduce the goal to its premises. Introduce `j`. Rewrite using `[SimplexCategory.comp_toOrderHom, OrderHom.comp_coe, Function.comp_apply, cv_apply, idc_apply]`. Establish `hj` using `j.2`. Establish `: ((fc 1 0 1).toOrderHom j : ℕ) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [fc_apply]; unfold faceFun; split_ifs <;> omega`. Rewrite using `[dif_pos this]`. Use linear arithmetic over natural numbers and integers.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem face_cone_identity_one {a : ℕ} (f : (Δ 0) ⟶ (Δ a)) : fc 1 0 1 ≫ cv f = idc a 0 := by
   apply homExt; intro j
@@ -101,7 +101,7 @@ theorem face_cone_identity_one {a : ℕ} (f : (Δ 0) ⟶ (Δ a)) : fc 1 0 1 ≫ 
   rw [dif_pos this]; omega
 
 /- English proof (translation)
-Establish `h` using `Free.single_comp_single ℤ (SimplexCategoryᵒᵖ × SimplexCategoryᵒᵖ) (show (op (Δ n), op (Δ m)) ⟶ (op (Δ p), op (Δ q)) from (α.op, β.op)) (show (op (Δ p), op (Δ q)) ⟶ (op (Δ r), op (Δ s)) from (α'.op, β'.op)) 1 1`. Rewrite `h` using `[mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bop_comp {n m p q r s : ℕ} (α : (Δ p) ⟶ (Δ n)) (β : (Δ q) ⟶ (Δ m)) (α' : (Δ r) ⟶ (Δ p))
     (β' : (Δ s) ⟶ (Δ q)) : bop α β ≫ bop α' β' = bop (α' ≫ α) (β' ≫ β) := by
@@ -121,20 +121,20 @@ def cone (a b n : ℕ) : (bo a b ⟶ bo n n) →+ (bo a b ⟶ bo (n + 1) (n + 1)
 def eps (a b : ℕ) : (bo a b ⟶ bo 0 0) →+ ℤ := Finsupp.liftAddHom (fun _ => AddMonoidHom.id ℤ)
 
 /- English proof (translation)
-Conclude with `Finsupp.mapDomain_single`.
+A detailed English derivation is pending.
 -/
 theorem cone_bop {a b n : ℕ} (α : (Δ n) ⟶ (Δ a)) (β : (Δ n) ⟶ (Δ b)) :
     cone a b n (bop α β) = bop (cv α) (cv β) := by
   exact Finsupp.mapDomain_single
 
 /- English proof (translation)
-Conclude with `Finsupp.liftAddHom_apply_single _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem eps_bop {a b : ℕ} (α : (Δ 0) ⟶ (Δ a)) (β : (Δ 0) ⟶ (Δ b)) : eps a b (bop α β) = 1 := by
   exact Finsupp.liftAddHom_apply_single _ _ _
 
 /- English proof (translation)
-Establish `h` using `map_zsmul (Finsupp.singleAddHom (M := ℤ) x) c (1 : ℤ)`. Rewrite `h` using `[smul_eq_mul, mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_eq {a b n p : ℕ} (x : (op (Δ a), op (Δ b)) ⟶ (op (Δ n), op (Δ p))) (c : ℤ) :
     (Finsupp.single x c : bo a b ⟶ bo n p) = c • bop x.1.unop x.2.unop := by
@@ -143,16 +143,16 @@ theorem single_eq {a b n p : ℕ} (x : (op (Δ a), op (Δ b)) ⟶ (op (Δ n), op
   exact h
 
 /- English proof (translation)
-The claim follows from `Finsupp.induction_linear r h0 hadd (fun x c => by have h := hs x.1.unop x.2.unop c; rw [← single_eq] at h; exact h)`.
+A detailed English derivation is pending.
 -/
 theorem ind {a b n p : ℕ} (P : (bo a b ⟶ bo n p) → Prop) (h0 : P 0) (hadd : ∀ f g, P f → P g → P (f + g))
     (hs : ∀ (α : (Δ n) ⟶ (Δ a)) (β : (Δ p) ⟶ (Δ b)) (c : ℤ), P (c • bop α β)) (r : bo a b ⟶ bo n p) : P r :=
   Finsupp.induction_linear r h0 hadd (fun x c => by have h := hs x.1.unop x.2.unop c; rw [← single_eq] at h; exact h)
 
 /- English proof (translation)
-Rewrite using `[cone_bop]`. Unfold `dD`. Rewrite using `[if_pos rfl, if_pos rfl]`. Simplify using `only [Preadditive.comp_sum, Preadditive.comp_zsmul, bop_comp, map_sum, map_zsmul, cone_bop]`. Rewrite using `[Finset.sum_range_succ' _ (n + 2)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : fc (n + 2) (n + 1) 0 ≫ cv α = α` using `face_cone_identity_zero α`. Establish `h0' : fc (n + 2) (n + 1) 0 ≫ cv β = β` using `face_cone_identity_zero β`. Simplify using `only [h0, h0', fcs_cv, pow_succ, pow_zero, one_smul, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem key {a b n : ℕ} (α : (Δ (n + 1)) ⟶ (Δ a)) (β : (Δ (n + 1)) ⟶ (Δ b)) :
     cone a b (n + 1) (bop α β) ≫ dD (n + 2) (n + 1) = bop α β - cone a b n (bop α β ≫ dD (n + 1) n) := by
@@ -167,9 +167,9 @@ theorem key {a b n : ℕ} (α : (Δ (n + 1)) ⟶ (Δ a)) (β : (Δ (n + 1)) ⟶ 
   abel
 
 /- English proof (translation)
-Rewrite using `[cone_bop]`. Unfold `dD`. Rewrite using `[if_pos rfl]`. Simplify using `only [Preadditive.comp_sum, Preadditive.comp_zsmul, bop_comp]`. Simplify using `only [Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty, face_cone_identity_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h0 : fc 1 0 0 ≫ cv α = α` using `face_cone_identity_zero α`. Establish `h0' : fc 1 0 0 ≫ cv β = β` using `face_cone_identity_zero β`. Simplify using `only [h0, h0', pow_zero, pow_one, one_smul, neg_smul, zero_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem key0 {a b : ℕ} (α : (Δ 0) ⟶ (Δ a)) (β : (Δ 0) ⟶ (Δ b)) :
     cone a b 0 (bop α β) ≫ dD 1 0 = bop α β - bop (idc a 0) (idc b 0) := by
@@ -184,13 +184,13 @@ theorem key0 {a b : ℕ} (α : (Δ 0) ⟶ (Δ a)) (β : (Δ 0) ⟶ (Δ b)) :
   abel
 
 /- English proof (translation)
-Use `⟨cone, eps, fun a b α β => eps_bop α β, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b r`. Use `ind (P := fun r => cone a b 0 r ≫ dD 1 0 = r - eps a b r • bop (idc a 0) (idc b 0)) ?_ ?_ ?_ r` and prove the remaining obligations. Rewrite using `[map_zero, map_zero, Limits.zero_comp, zero_smul, sub_zero]`. Introduce `f g hf hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, Preadditive.add_comp, add_smul, hf, hg]`. Normalize the expressions using the abelian group laws. Introduce `α β c`. Rewrite using `[map_zsmul, Preadditive.zsmul_comp, key0, map_zsmul, eps_bop, smul_sub, smul_eq_mul, mul_one]`. Introduce `a b n r`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ind (P := fun r => cone a b (n + 1) r ≫ dD (n + 2) (n + 1) = r - cone a b n (r ≫ dD (n + 1) n)) ?_ ?_ ?_ r` and prove the remaining obligations. Rewrite using `[map_zero, Limits.zero_comp, Limits.zero_comp, map_zero, sub_zero]`. Introduce `f g hf hg`. Simplify using `only [map_add, Preadditive.add_comp, hf, hg]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `α β c`. Rewrite using `[map_zsmul, Preadditive.zsmul_comp, key, Preadditive.zsmul_comp, map_zsmul, smul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneContraction : ∃ (cone : ∀ a b n : ℕ, (bo a b ⟶ bo n n) →+ (bo a b ⟶ bo (n + 1) (n + 1)))
     (ε : ∀ a b : ℕ, (bo a b ⟶ bo 0 0) →+ ℤ),

@@ -11,7 +11,7 @@ open scoped Matrix TensorProduct
 namespace GlobalTheory.CharInvForm
 
 /- English proof (translation)
-Take `⟨f, -, hc, hs, -, h1⟩` from `exists_contDiff_tsupport_subset (x := (0 : V)) (s := Set.univ) (n := ⊤) Filter.univ_mem`. Establish `hc' : HasCompactSupport (fun x => (f x : ℂ))` using `hc.comp_left Complex.ofReal_zero`. Establish `hs' : ContDiff ℝ (↑(⊤ : ℕ∞)) (fun x => (f x : ℂ))` using `Complex.ofRealCLM.contDiff.comp hs`. Conclude with `⟨hc'.toSchwartzMap hs', by simp [h1]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_schwartz_one (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∃ f₀ : SchwartzMap V ℂ, f₀ 0 = 1 := by
@@ -22,11 +22,11 @@ theorem exists_schwartz_one (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V
   exact ⟨hc'.toSchwartzMap hs', by simp [h1]⟩
 
 /- English proof (translation)
-Take `⟨f₀, hf₀⟩` from `exists_schwartz_one V`. Use `⟨T f₀, fun f => ?_⟩` and prove the remaining obligations. Establish `h0 : (f - f 0 • f₀) 0 = 0` using `by simp [hf₀]`. Take `⟨n, L, h, g, hg, hsum⟩` from `GlobalTheory.SchwartzDiv.hadamard V _ h0`. Establish `e : f - f 0 • f₀ = ∑ i, g i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[hsum x, SchwartzMap.sum_apply]`. Establish `: T (f - f 0 • f₀) = 0`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => GlobalTheory.CharFormDeriv.charForm_kills_linear_mul V T hT (L i) (h i) (g i) (hg i)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_sub, map_smul, sub_eq_zero]`. Rewrite using `[this, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (T : SchwartzMap V ℂ →L[ℂ] ℂ)
@@ -55,15 +55,15 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (zero_add (0 : Ainf F)).symm rfl`.
+A detailed English derivation is pending.
 -/
 theorem pairA_zero_add (a b : Af F) : pairA F 0 (a + b) = pairA F 0 a + pairA F 0 b :=
   Prod.ext (zero_add (0 : Ainf F)).symm rfl
 
 /- English proof (translation)
-Establish `h1 : (RingHom.fst (Ainf F) (Af F)) (x ⬝ᵥ fun i => pairA F 0 (y i)) = 0`. Simplify using `only [dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_eq_zero fun i _ => by show (RingHom.fst (Ainf F) (Af F)) (x i) * 0 = 0`. Conclude with `mul_zero _`. Establish `h2 : (RingHom.snd (Ainf F) (Af F)) (x ⬝ᵥ fun i => pairA F 0 (y i)) = (fun i => (x i).2) ⬝ᵥ y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression. Conclude with `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem dot_pairA_fin {κ : Type} [Fintype κ] (x : κ → AF F) (y : κ → Af F) :
     (x ⬝ᵥ fun i => pairA F 0 (y i)) = pairA F 0 ((fun i => (x i).2) ⬝ᵥ y) := by
@@ -78,9 +78,9 @@ theorem dot_pairA_fin {κ : Type} [Fintype κ] (x : κ → AF F) (y : κ → Af 
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-Establish `h1 : (RingHom.fst (Ainf F) (Af F)) (x ⬝ᵥ fun i => pairA F (y i) 0) = ∑ i, (x i).1 * y i`. Simplify using `only [dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression. Establish `h2 : (RingHom.snd (Ainf F) (Af F)) (x ⬝ᵥ fun i => pairA F (y i) 0) = 0`. Simplify using `only [dotProduct, map_sum, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_eq_zero fun i _ => by show (RingHom.snd (Ainf F) (Af F)) (x i) * 0 = 0`. Conclude with `mul_zero _`. Conclude with `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem dot_pairA_inf {κ : Type} [Fintype κ] (x : κ → AF F) (y : κ → Ainf F) :
     (x ⬝ᵥ fun i => pairA F (y i) 0) = pairA F (∑ i, (x i).1 * y i) 0 := by
@@ -95,14 +95,14 @@ theorem dot_pairA_inf {κ : Type} [Fintype κ] (x : κ → AF F) (y : κ → Ain
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_schA {κ : Type} [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [pureA]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pureA_zero {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) :
     pureA F f g 0 = f 0 * g 0 := by
@@ -118,11 +118,11 @@ namespace GlobalTheory.CharInvForm
 open scoped Classical
 
 /- English proof (translation)
-Establish `hat : At (evI F) (pairA F (∑ i, (x i).1 * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Y i)) 0)`. Introduce `u hu`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `show (u.1 * _, u.2 * 0) = ((0 : Ainf F), (0 : Af F))`. Rewrite using `[h1, zero_mul, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dot_pairA_inf, hψ.2.2 _ hat]`. Use `show Complex.exp (_ * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (InfiniteAdeleRing.ringEquiv_mixedSpace F (∑ i, (x i).1 * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Y i))) : ℝ) : ℂ)) = _`. Rewrite using `[map_sum, map_sum]`. Simplify using `only [map_mul, RingEquiv.apply_symm_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem psi_dot_inf {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {κ : Type} [Fintype κ]
     (x : κ → AF F) (Y : κ → mixedEmbedding.mixedSpace F) :
@@ -144,29 +144,27 @@ theorem psi_dot_inf {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) �
   ring
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ l hl hinv`. Establish `harch : ∀ g ∈ SB (κ → Af F), ∃ α : ℂ, ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, l (pureA F f g) = α * f 0`. Introduce `g hg`. Take `⟨T, hT⟩` from `hl g hg`. Take `⟨α, hα⟩` from `arch _ T (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `L f f' hff'`. Take `⟨Y, hY⟩` from `GlobalTheory.TraceDual.exists_trace_rep F κ L`. Rewrite using `[← hT, ← hT, ← hinv (fun i => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Y i)) 0) (pureA F f g) (mem_schA f hg)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [pureA, hff', psi_dot_inf hψ, hY]`. Use the proof step `ring)`. Conclude with `⟨α, fun f => (hT f).trans (hα f)⟩`. Take `⟨f₀, hf₀⟩` from `exists_schwartz_one (κ → mixedEmbedding.mixedSpace F)`. Set `a : ((κ → Af F) → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun g => l (pureA F f₀ g) map_add' := fun g g' => by`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun s g => by`. Rewrite using `[RingHom.id_apply, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Pi.smul_apply, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `ring }`. Take `⟨c, hc⟩` from `GlobalTheory.CharForm.exists_eq_mul_apply_zero (κ → Af F) {χ | ∃ y : κ → Af F, χ = fun x => ψ (pairA F 0 (x ⬝ᵥ y))} (by`. Introduce `N hN`. Take `⟨U, hUo, hUc, hUN, hsep⟩` from `GlobalTheory.FinSepChar.finite_chars_separate F ψ hψ κ N hN`. Use `⟨U, hUo, hUc, hUN, fun x₀ hx₀ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hyU, hy⟩` from `hsep x₀ hx₀`. Use `⟨_, ⟨y, rfl⟩, fun u hu => ?_, hy⟩` and prove the remaining obligations. Use `show ψ (pairA F 0 ((x₀ + u) ⬝ᵥ y)) = ψ (pairA F 0 (x₀ ⬝ᵥ y))`. Rewrite using `[add_dotProduct, pairA_zero_add, AddChar.map_add_eq_mul, hyU u hu, mul_one])`. Use `a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `(by`. Introduce and unpack `χ ⟨y, rfl⟩ g hg`. Use `show l (pureA F f₀ _) = l (pureA F f₀ g)`. Rewrite using `[← hinv (fun i => pairA F 0 (y i)) (pureA F f₀ g) (mem_schA f₀ hg)]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [pureA, dot_pairA_fin]`. Use the proof step `ring)`. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Take `⟨α, hα⟩` from `harch g hg`. Establish `hαc : α = c * g 0`. Establish `e1` using `hα f₀`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `e1` using `[hf₀, mul_one]`. Rewrite using `[← e1]`. Conclude with `hc g hg`. Rewrite using `[hα f, hαc, pureA_zero]`. Expand and normalize the polynomial expressions, which then agree.
-
-Consider the case `zero => simp`. Consider the case `add φ φ' _ _ h h' => rw [map_add, h, h', Pi.add_apply, mul_add]`. Consider the case `smul s φ _ h => rw [map_smul, h, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ), l ∈ (adeleClass F).adm κ →
@@ -241,6 +239,6 @@ theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ
 end GlobalTheory.CharInvForm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CharInvForm.main`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ), l ∈ (adeleClass F).adm κ → (∀ (y : κ → AF F), ∀ φ ∈ schA F κ, l (fun x => ψ (x ⬝ᵥ y) * φ x) = l φ) → ∃ c : ℂ, ∀ φ ∈ schA F κ, l φ = c * φ 0 := GlobalTheory.CharInvForm.main

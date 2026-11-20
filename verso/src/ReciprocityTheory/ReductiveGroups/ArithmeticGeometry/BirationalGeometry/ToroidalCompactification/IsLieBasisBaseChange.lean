@@ -13,19 +13,17 @@ open scoped CategoryTheory.Obj
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
 /- English proof (translation)
-Take `⟨n, x, hx⟩` from `univChartLoc G`. Establish `htan : ∀ i, IsTan (v i)` using `fun i => (isTan_iff _).mpr (hv.1 i)`. Set `M : Fin d → Fin n → R` to `fun i => tcoord hx (v i) (htan i)`. Set `L : (Fin d → R) →ₗ[R] (Fin n → R)` to `Fintype.linearCombination R M`. Establish `hL : ∀ c, L c = ∑ i, c i • M i` using `fun c => Fintype.linearCombination_apply R M c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hprod : ∀ c, ∃ h : IsTan (prodPts c v), tcoord hx _ h = L c` using `fun c => by`. Take `⟨h, e⟩` from `prodPts_tan hx c v htan`. Conclude with `⟨h, e.trans (hL c).symm⟩`. Establish `hbij : Function.Bijective L`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `c c' hcc`. Take `⟨h, e⟩` from `hprod c`. Take `⟨h', e'⟩` from `hprod c'`. Establish `hw : prodPts c v = prodPts c' v` using `tan_ext hx h h' (by rw [e, e', hcc])`. Establish `ht : IsTangent (prodPts c v)` using `(isTan_iff _).mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hv.2 _ ht).unique ((isLieComb_iff c v _).mpr rfl) ((isLieComb_iff c' v _).mpr hw)`. Introduce `t`. Establish `hw` using `isTan_dualLift hx t`. Take `⟨c, hc, -⟩` from `hv.2 _ ((isTan_iff _).mp hw)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h, e⟩` from `hprod c`. Rewrite using `[← e, ← tcoord_congr hx ((isLieComb_iff c v _).mp hc) hw h, tcoord_eq hx _ hw t rfl]`. Set `Le` to `LinearEquiv.ofBijective L hbij`. Establish `hx'` using `isUnivChart_sub hx Le`. Use `⟨fun m => spMap (jetSub Le.toLinearMap m) ≫ x m, hx', fun j => Eq.symm ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, spMap_comp, dualLift_comp_jetSub]`. Establish `: Le.toLinearMap (Pi.single j 1) = M j` using `by show L (Pi.single j 1) = M j`. Rewrite using `[hL]`. Simplify using `[Pi.single_apply]`. Rewrite using `[this]`.
-
-Conclude with `(tcoord_spec hx (v j) (htan j)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of_basis [IsLocalRing R] [Smooth G.hom] {d : ℕ} {v : Fin d → (epsR R ⟶ G)} (hv : IsLieBasis v) :
     ∃ x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin d) m) ⟶ G, IsUnivChart G d x ∧
@@ -64,13 +62,13 @@ theorem chart_of_basis [IsLocalRing R] [Smooth G.hom] {d : ℕ} {v : Fin d → (
   exact (tcoord_spec hx (v j) (htan j)).symm
 
 /- English proof (translation)
-Set `v : Fin n → (epsR R ⟶ G)` to `fun i => spMap (dualLift (Pi.single i 1)) ≫ x 1`. Establish `htan : ∀ i, IsTan (v i)` using `fun i => isTan_dualLift hx _`. Establish `hM : ∀ i, tcoord hx (v i) (htan i) = Pi.single i 1` using `fun i => tcoord_eq hx _ _ _ rfl`. Use `⟨fun i => (isTan_iff _).mp (htan i), fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : IsTan w` using `(isTan_iff _).mpr hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ c, IsLieComb c v w ↔ tcoord hx w hw' = c`. Introduce `c`. Take `⟨h, e⟩` from `prodPts_tan hx c v htan`. Establish `e2 : tcoord hx _ h = c`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hM]`. Conclude with `sum_single c`. Rewrite using `[isLieComb_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hwc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tcoord_congr hx hwc hw' h, e2]`. Introduce `hc`. Conclude with `tan_ext hx hw' h (hc.trans e2.symm)`. Conclude with `⟨tcoord hx w hw', (key _).mpr rfl, fun c hc => ((key c).mp hc).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem basis_of_chart {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G} (hx : IsUnivChart G n x) :
     IsLieBasis (G := G) (fun i : Fin n => (spMap (dualLift (Pi.single i 1)) ≫ x 1 : epsR R ⟶ G)) := by
@@ -95,11 +93,11 @@ theorem basis_of_chart {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n
   exact ⟨tcoord hx w hw', (key _).mpr rfl, fun c hc => ((key c).mp hc).symm⟩
 
 /- English proof (translation)
-Establish `tan : ∀ w : epsR R ⟶ G', IsTangent (w ≫ e.hom) ↔ IsTangent w` using `fun w => by`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Rewrite using `[IsTangent, IsTangent, ← IsMonHom.one_hom e.hom, Over.comp_left, Over.comp_left, ← Category.assoc, cancel_mono]`. Establish `pr : ∀ u : Fin n → (epsR R ⟶ G'), (List.ofFn u).prod ≫ e.hom = (List.ofFn fun i => u i ≫ e.hom).prod` using `fun u => (map_list_prod (IsMonHom.monoidHom e.hom (epsR R)) _).trans (by rw [List.map_ofFn]; rfl)`. Establish `comb : ∀ c w, IsLieComb c (fun i => v i ≫ e.hom) (w ≫ e.hom) ↔ IsLieComb c v w` using `fun c w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Use `⟨fun i => u i ≫ e.inv, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, hu, Category.assoc, ← Over.comp_left, Category.assoc, e.hom_inv_id, Category.comp_id]`. Rewrite using `[← cancel_mono e.hom, pr, hw]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨fun i => u i ≫ e.hom, fun i => by rw [Over.comp_left, hu, Category.assoc]; rfl, pr u⟩`. Use `⟨fun i => (tan _).1 (hv.1 i), fun w hw => ?_⟩` and prove the remaining obligations. Simplify `hv.2 _ ((tan w).2 hw)` using `only [comb]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLieBasis_iso {G' : Over (Spec (CommRingCat.of R))} [GrpObj G'] (e : G' ≅ G) [IsMonHom e.hom] {n : ℕ}
     {v : Fin n → (epsR R ⟶ G')} (hv : IsLieBasis fun i => v i ≫ e.hom) : IsLieBasis v := by
@@ -120,11 +118,11 @@ theorem isLieBasis_iso {G' : Over (Spec (CommRingCat.of R))} [GrpObj G'] (e : G'
   simpa only [comb] using hv.2 _ ((tan w).2 hw)
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Take `⟨x, hx, hxv⟩` from `chart_of_basis hv`. Take `⟨x', hx', e'⟩` from `tanBC_alg (R' := R') G d x hx`. Take `⟨e, he, heφ⟩` from `grpPullback_iso h (isGrpPullback_pullback G (fB R R'))`. Use `isLieBasis_iso e ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `basis_of_chart hx' using 2 with j` and compare the differences between its conclusion and the goal. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `s : (algebraMap R R' ∘ Pi.single j (1 : R) : Fin d → R') = Pi.single j 1`. Apply the tactic sequence `funext i; by_cases hij : i = j <;> simp [hij, Pi.single_apply]`. Use `e' (Pi.single j 1)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[s]`. Rewrite using `[Over.comp_left, Category.assoc, heφ, hv', hxv]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLieBasis_baseChange [IsLocalRing R] [Smooth G.hom] {R' : Type} [CommRing R'] (f : R →+* R')
     {G' : Over (Spec (CommRingCat.of R'))} [GrpObj G'] {φ : G'.left ⟶ G.left}

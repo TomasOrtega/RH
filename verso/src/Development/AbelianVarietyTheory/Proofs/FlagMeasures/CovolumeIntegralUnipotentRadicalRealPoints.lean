@@ -38,13 +38,13 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Break down `β with p | a | p | a` into its components or cases. Use `show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (eI k r p.1.1) (eI k r p.1.2) = 0`. Conclude with `Matrix.one_apply_ne (fun h => p.2.ne (by simpa [eI, Fin.ext_iff] using h))`. Use function extensionality and compare the values at `j show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (eI k r a) (wI k r j) = 0`. Use `Matrix.one_apply_ne (fun h => ?_)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h'` using `congrArg Fin.val h`. Simplify using `only [eI, wI] at h'`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (eI k r p.1.1) (esI k r p.1.2) = 0`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Matrix.one_apply_ne (fun h => ?_)` and prove the remaining obligations. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [eI, esI] at h'`. Use `p.1.1.isLt` as an intermediate fact. Use `p.1.2.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use linear arithmetic over natural numbers and integers. Use `show ((1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (eI k r a) (esI k r a)).im = 0`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem cM_one (k r : ℕ) (β : Bk r) : cM k r β (Matrix.of.symm 1) = 0 := by
   rcases β with p | a | p | a
@@ -69,7 +69,7 @@ theorem cM_one (k r : ℕ) (β : Bk r) : cM k r β (Matrix.of.symm 1) = 0 := by
     split_ifs <;> simp
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Unfold `pos`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pos_le (k r : ℕ) (i : Fin (2 * r + k + 1)) : pos k r i ≤ 2 * r := by
   have := i.isLt
@@ -77,7 +77,7 @@ theorem pos_le (k r : ℕ) (i : Fin (2 * r + k + 1)) : pos k r i ≤ 2 * r := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `h i j (by have := pos_le k r j; omega)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_one_of_dep {k r : ℕ} {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h : Dep k r (2 * r + 1) (x - 1)) : x = 1 := by
@@ -85,7 +85,7 @@ theorem eq_one_of_dep {k r : ℕ} {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r 
   exact h i j (by have := pos_le k r j; omega)
 
 /- English proof (translation)
-Use `haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Conclude with `Function.Injective.countable (f := fun u : (Matrix (Fin n) (Fin n) E)ˣ => (u : Matrix (Fin n) (Fin n) E)) Units.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem countable_units (E : Type) [Field E] [NumberField E] (n : ℕ) :
     Countable (Matrix (Fin n) (Fin n) E)ˣ := by
@@ -96,7 +96,7 @@ theorem countable_units (E : Type) [Field E] [NumberField E] (n : ℕ) :
     Units.val_injective
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal_mul ht, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_five (t u h c g : ℝ) (ht : 0 ≤ t) (hu : 0 ≤ u) (hh : 0 ≤ h) (hc : 0 ≤ c) (hg : 0 ≤ g) :
     ENNReal.ofReal (t * (u * h * c * g)) =
@@ -107,55 +107,39 @@ theorem ofReal_five (t u h c g : ℝ) (ht : 0 ≤ t) (hu : 0 ≤ u) (hh : 0 ≤ 
 abbrev MM (k r : ℕ) (E : Type) := Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s h1 h2 h3 h4 h5 h6 h7 h8 h9 h10`. Establish `hV : IsVolData σ J Λ P f T A s` using `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩`. Take `⟨⟨G, hG⟩, hGu⟩` from `GlobalTheory.T.integralUnipotentRadical_forms_unit_subgroup F E σ k r J Λ P f T A s hV`. Take `⟨ha1, ha2, ha3⟩` from `GlobalTheory.T.unipotentModelAction_isAction_and_faithful F E σ k r J Λ P f T A s hV`. Establish `hmem` using `GlobalTheory.T.integralUnipotent_mem_modelUnipotentAtPlace F E σ k r J Λ P f T A s hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose DU hDUm hDUf hDUv using fun p : UTr r => GlobalTheory.T.covolume_inverseDifferentPow_div_lattice F E σ h1 h2 (r - p.1.1.val) (r - p.1.2.val) (s p.1.1 / s p.1.2) (div_pos (h9 _) (h9 _))`. Use `choose DC hDCm hDCf hDCv using fun p : UTr r => GlobalTheory.T.covolume_inverseDifferentPow_mul_lattice F E σ h1 h2 (r - p.1.1.val) (r - p.1.2.val) (s p.1.1 * s p.1.2) (mul_pos (h9 _) (h9 _))`. Use `choose DH hDHm hDHf hDHv using GlobalTheory.T.covolume_middleLattice_homLattice_ideal F E σ k r J Λ P f T A s hV`. Use `choose DG hDGm hDGf hDGv using fun a : Fin r => GlobalTheory.T.skewLattice_inverseDifferentPow_covolume F E σ h1 h2 (r - a.val) (s a ^ 2) (pow_pos (h9 _) 2)`. Set `LB` to `blkSet (InfinitePlace E) k r (fun p => (ideLat (dInv E (r - p.1.1.val) * (dInv E (r - p.1.2.val))⁻¹) (s p.1.1 / s p.1.2) : Set _)) (fun a => homLat (σ : E →+* E) J Λ P f A (dInv E (r - a.val)) (s a)) (fun p => (ideLat (dInv E (r - p.1.1.val) * dInv E (r - p.1.2.val)) (s p.1.1 * s …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `DB` to `blkSet (InfinitePlace E) k r DU DH DC DG`. Set `NN : Set (InfinitePlace E → Mt k r)` to `{x | ∀ w, Matrix.of (x w) ∈ Nset k r}`. Set `ρ : G → (InfinitePlace E → Mt k r) → (InfinitePlace E → Mt k r)` to `fun g => actM A ((g : (MM k r E)ˣ) : MM k r E)`. Set `o : InfinitePlace E → Mt k r` to `fun _ => Matrix.of.symm 1`. Set `gm : G → InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `fun g => gM A ((g : (MM k r E)ˣ) : MM k r E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρo : ∀ g w, ρ g o w = Matrix.of.symm (gm g w)` using `fun g w => by show Matrix.of.symm (gm g w * 1) = Matrix.of.symm (gm g w)`. Rewrite using `[mul_one]`. Establish `hgm : ∀ g w, gm g w ∈ Nset k r` using `fun g => hmem _ ((hG _).1 g.2)`. Establish `hρ1 : ∀ x, ρ 1 x = x` using `fun x => by`. Establish `e : (((1 : G) : (MM k r E)ˣ) : MM k r E) = 1` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show actM A (((1 : G) : (MM k r E)ˣ) : MM k r E) x = x`. Rewrite using `[e]`. Conclude with `ha1 x`. Establish `hρm : ∀ g h x, ρ (g * h) x = ρ g (ρ h x)` using `fun g h x => by`. Establish `e : (((g * h : G) : (MM k r E)ˣ) : MM k r E) = ((g : (MM k r E)ˣ) : MM k r E) * ((h : (MM k r E)ˣ) : MM k r E)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `show actM A (((g * h : G) : (MM k r E)ˣ) : MM k r E) x = _`. Rewrite using `[e]`. Conclude with `ha2 _ _ x`. Establish `hρN : ∀ g, ∀ x ∈ NN, ρ g x ∈ NN` using `fun g x hx w => PI.AmpOrbQuot.nset_mul (hgm g w) (hx w)`. Establish `hdep : ∀ (g : G) (d : ℕ), (∀ β : Bk r, degB r β < d → (fun w => cM k r β (ρ g o w)) = 0) → ∀ w, Dep k r d (gm g w - 1)` using `fun g d hg w => GlobalTheory.T.hasFlagDepthAtLeast_of_free_entries_vanish k r _ d (hgm g w) fun β hβ => by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrFun (hg β hβ) w` as an intermediate fact. Rewrite `this` using `[hρo]`. Then use the resulting hypothesis. Establish `tw` using `GlobalTheory.T.existsUnique_layered_strictFundamentalDomain (V := fun β : Bk r => InfinitePlace E → VM k r β) ρ NN o (degB r) (fun β x w => cM k r β (x w)) LB DB (fun w => by simpa [o] using PI.AmpOrbQuot.nset_one) hρ1 hρm hρN (by`. Introduce and unpack `(p | a | p | a)`. Conclude with `(ideLat _ _).zero_mem`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨0, ⟨fun a => by simp [form], fun c _ => by simp⟩, fun w l => by`. Establish `e : (fun i => w.embedding ((0 : Fin (2 * r + k + 1) → E) i)) = 0` using `by ext; simp`. Rewrite using `[e, Matrix.mulVec_zero]`. Simplify using `[herm]`. Use the proof step `rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(ideLat _ _).zero_mem`. Conclude with `(skewLat _ _ _).zero_mem)`. Use the proof step `(by`. Introduce and unpack `(p | a | p | a) v`. Conclude with `hDUf p v`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hDHf a v`. Conclude with `hDCf p v`. Conclude with `hDGf a v)`. Use the proof step `(fun β => funext fun w => cM_one k r β)`. Use the proof step `(fun d g hg x hx β hβ => funext fun w => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.T.unipotentBlockEntries_mul_of_hasFlagDepthAtLeast k r (gm g w) (Matrix.of (x w)) d (hdep g d hg w) (GlobalTheory.T.flagUnipotent_block_upper_unitriangular k r _ (hx w)) β hβ` as an intermediate fact. Use `show cM k r β (ρ g x w) = cM k r β (x w) + cM k r β (ρ g o w)`. Rewrite using `[hρo]`. Conclude with `this)`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce `g β hβ`. Establish `hgN` using `(hG _).1 g.2`. Establish `e : (fun w => cM k r β (ρ g o w)) = fun w => cM k r β (Matrix.of.symm (gm g w))`. Use function extensionality and compare the values at `fun w => by rw [hρo]`. Use `show (fun w => cM k r β (ρ g o w)) ∈ LB β`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Break down `β with p | a | p | a` into its components or cases. Conclude with `GlobalTheory.T.integralUnipotent_entry_mem_inverseDifferentLattice F E σ k r J Λ P f T A s hV _ hgN p`. Conclude with `GlobalTheory.T.integralUnipotent_middleRow_mem_homLattice F E σ k r J Λ P f T A s hV _ hgN a`. Conclude with `GlobalTheory.T.integralUnipotent_corner_entry_mem_idealLattice F E σ k r J Λ P f T A s hV _ hgN p`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.T.integralUnipotent_antidiagonal_mem_skewLattice F E σ k r J Λ P f T A s hV _ hgN a fun w => GlobalTheory.T.re_antidiagonal_entry_eq_zero_of_flagDepth k r _ a (hgm g w) (hdep g _ hβ w))`. Use the proof step `(by`. Establish `lift : ∀ (β : Bk r) (l : InfinitePlace E → VM k r β), (∃ γ ∈ GN (σ : E →+* E) J Λ P, (∀ w, cM k r β (Matrix.of.symm (gM A γ w)) = l w) ∧ ∀ β' : Bk r, β' ≠ β → degB r β' ≤ degB r β → ∀ w, cM k r β' (Matrix.of.symm (gM A γ w)) = 0) → ∃ g : G, (fun w => cM k r β (ρ g o w)) = l ∧ ∀ β …`. Introduce and unpack `β l ⟨γ, hγ, hl, h0⟩`. Take `⟨u, rfl⟩` from `hGu γ hγ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨u, (hG u).2 hγ⟩, funext fun w => ?_, fun β' h h' => funext fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hρo]`. Conclude with `hl w`. Rewrite using `[hρo]`. Conclude with `h0 β' h h' w`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Introduce and unpack `(p | a | p | a) l hl`. Apply the tactic sequence `exact lift _ _ (GlobalTheory.T.exists_integral_unipotent_lift_entry F E σ k r J Λ P f T A s hV p l hl)`. Conclude with `lift _ _ (GlobalTheory.T.lift_row_middleSpace_integralPoint F E σ k r J Λ P f T A s hV a l hl)`. Conclude with `lift _ _ (GlobalTheory.T.exists_integral_unipotent_lift_corner F E σ k r J Λ P f T A s hV p l hl)`. Conclude with `lift _ _ (GlobalTheory.T.exists_integral_unipotent_lift_antidiagonal F E σ k r J Λ P f T A s hV a l hl))`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun g hg => by`. Establish `h1' : ∀ w, gm g w = 1` using `fun w => eq_one_of_dep (hdep g _ (fun β _ => hg β) w)`. Conclude with `Subtype.ext (Units.ext (ha3 _ h1')))`. Take `⟨hNm, hN0⟩` from `GlobalTheory.T.pi_unipotentModel_measurable_full_measure (InfinitePlace E) k r`. Take `⟨hDm, hDv⟩` from `GlobalTheory.T.measure_unipotent_tuples_free_entry_blocks (InfinitePlace E) k r DU DH DC DG hDUm hDHm hDCm hDGm`.
-
-Use `set Dset : Set (InfinitePlace E → Mt k r) := {x | (∀ w, Matrix.of (x w) ∈ Nset k r) ∧ ∀ β : Bk r, (fun w => cM k r β (x w)) ∈ blkSet (InfinitePlace E) k r DU DH DC DG β} with hDset`. Establish `hstrict : ∀ x ∈ NN, ∃! g : G, ρ g x ∈ Dset` using `fun x hx => by`. Take `⟨g, hg, hu⟩` from `tw x hx`. Conclude with `⟨g, ⟨hρN g x hx, hg⟩, fun g' hg' => hu g' hg'.2⟩`. Establish `conv : ∀ S : Set (InfinitePlace E → Mt k r), (∀ x ∈ NN, ∃! g : G, ρ g x ∈ S) ↔ ∀ x ∈ NN, ∃! γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E, (InN (σ : E →+* E) J P γ ∧ latMap γ Λ = Λ) ∧ actM A γ x ∈ S` using `fun S => by`.
-
-Use `forall₂_congr fun x hx => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hu⟩`. Use `⟨_, ⟨(hG _).1 g.2, hg⟩, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hGu γ hγ.1`.
-
-Conclude with `congrArg (fun g : G => ((g : (MM k r E)ˣ) : MM k r E)) (hu ⟨u, (hG u).2 hγ.1⟩ hγ.2)`. Introduce and unpack `⟨γ, hγ, hu⟩`. Take `⟨u, rfl⟩` from `hGu γ hγ.1`. Use `⟨⟨u, (hG u).2 hγ.1⟩, hγ.2, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Units.ext (hu _ ⟨(hG _).1 g.2, hg⟩))`.
-
-Use `haveI : Countable G := by haveI := countable_units E (2 * r + k + 1) infer_instance`. Use `⟨⟨Dset, hDm, (conv Dset).1 hstrict⟩, fun 𝓓 h𝓓 => ?_⟩` and prove the remaining obligations. Establish `hEq` using `GlobalTheory.T.strictFundamentalDomain_measure_eq (G := G) _ ρ NN 𝓓 Dset hNm hN0 h𝓓.1 hDm hρ1 hρm hρN (fun g => GlobalTheory.T.unipotentModelProductAction_measurePreserving E k r A _ (hgm g)) ((conv 𝓓).2 h𝓓.2) hstrict`. Use `beta_reduce`. Rewrite using `[hEq, hDv]`.
-
-Simplify using `only [hDUv, hDHv, hDCv, hDGv]`. Establish `hd : 0 < |(NumberField.discr F : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero F)`. Rewrite using `[← GlobalTheory.T.unipotentRadical_blockCovolumes_prod _ (Fintype.card (InfinitePlace E)) k r s hd h9]`. Establish `nnU : ∀ p : UTr r, 0 ≤ (2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * ((r - p.1.1.val : ℕ) : ℝ) + 2 * ((r - p.1.2.val : ℕ) : ℝ)) * (s p.1.1 / s p.1.2) ^ (2 * Fintype.card (InfinitePlace E))` using `fun p => by`. Use `h9 p.1.1` as an intermediate fact.
-
-Use `h9 p.1.2` as an intermediate fact. Check the signs of the components of the expression. Establish `nnC : ∀ p : UTr r, 0 ≤ (2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * ((r - p.1.1.val : ℕ) : ℝ) - 2 * ((r - p.1.2.val : ℕ) : ℝ)) * (s p.1.1 * s p.1.2) ^ (2 * Fintype.card (InfinitePlace E))` using `fun p => by`. Use `h9 p.1.1` as an intermediate fact. Use `h9 p.1.2` as an intermediate fact.
-
-Check the signs of the components of the expression. Establish `nnH : ∀ a : Fin r, 0 ≤ ((2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * ((r - a.val : ℕ) : ℝ)) * s a ^ (2 * Fintype.card (InfinitePlace E))) ^ (k + 1)` using `fun a => by`. Use `h9 a` as an intermediate fact. Check the signs of the components of the expression. Establish `nnG : ∀ a : Fin r, 0 ≤ |(NumberField.discr F : ℝ)| ^ (1 / 2 - 2 * ((r - a.val : ℕ) : ℝ)) * (s a ^ 2) ^ Fintype.card (InfinitePlace E)` using `fun a => by`.
-
-Use `h9 a` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun p _ => nnU p, ← ENNReal.ofReal_prod_of_nonneg fun a _ => nnH a, ← ENNReal.ofReal_prod_of_nonneg fun p _ => nnC p, ← ENNReal.ofReal_prod_of_nonneg fun a _ => nnG a, ofReal_five _ _ _ _ _ (by positivity) (Finset.prod_nonneg fun p _ => nnU p) (Fi …`. Simplify using the standard rewrite rules.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsCMExt F E σ → Algebra.FormallyUnramified (𝓞 F) (𝓞 E) → IsHermND σ J → GlobalTheory.SgGlob.SelfDual (σ : E →+* E) J Λ → IsFrame (σ : E →+* E) J (algebraMap F E T) P → IsDual (σ : E →+* E) J P f → tupLat (id1 E r) (sideM P f) ≤ Λ → IsModelAt J A → (∀ a, 0 < s a) → Adapted A P f s → AllSome (IsDomN (σ : E →+* E) J Λ P A) fun 𝓓 => Measure.pi (fun _ : InfinitePlace E => haarLie (Nset k r) 1) 𝓓 = ENNReal.ofReal (|(NumberField.discr F : ℝ)| ^ (-(((k : ℝ) + 1) * (r : ℝ) ^ 2) - 4 * ((r : ℝ) ^ 3 - r) / 3 - 3 * (r : ℝ) / 2) * (∏ a : Fin r, s a ^ (4 * (r - (a : ℕ)) + 2 * k)) ^ Fintype.card (InfinitePlace E)) := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s h1 h2 h3 h4 h5 h6 h7 h8 h9 h10

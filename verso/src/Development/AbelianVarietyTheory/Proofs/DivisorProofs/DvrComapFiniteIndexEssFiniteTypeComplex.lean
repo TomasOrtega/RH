@@ -14,11 +14,11 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hL0` using `GlobalTheory.T.valuationSubring_fractions_of_essFiniteType_complex`. Establish `hL1` using `GlobalTheory.T.isDVR_valuationSubring_comap_of_finiteDimensional`. Establish `hL2` using `GlobalTheory.T.dvr_eq_localization_integralClosure_comap`. Establish `hL4` using `GlobalTheory.T.fractions_unitDenominators_replace_generators`. Establish `hL3` using `GlobalTheory.T.zariski_descent_dvr_trace_localisation`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `K L _ _ φ c hfin V _ hc hV`. Establish `hE : IsDiscreteValuationRing (V.comap φ)` using `hL1 K L φ hfin V`. Use `haveI : CharZero K := RingHom.charZero_iff c.injective |>.mp inferInstance`. Take `⟨s₀, hs₀V, hs₀⟩` from `hL0 L (φ.comp c) V hc hV`. Take `⟨t, ht, htV⟩` from `hL4 L (φ.comp c) V (fun x => x ∈ V ∧ ∃ p : K[X], p.Monic ∧ (∀ i, p.coeff i ∈ V.comap φ) ∧ p.eval₂ φ x = 0) s₀ (fun x hx => hL2 K L φ hfin V hE x (hs₀V x hx)) hs₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hE, hL3 K L φ c hfin V hc t ht htV⟩`.
+A detailed English derivation is pending.
 -/
 theorem restrict_dvr_essFiniteType : ∀ (K L : Type) [Field K] [Field L] (φ : K →+* L) (c : ℂ →+* K), (letI := φ.toAlgebra; FiniteDimensional K L) → ∀ (V : ValuationSubring L) [IsDiscreteValuationRing V] (hc : ∀ a, φ (c a) ∈ V), ((φ.comp c).codRestrict V hc).EssFiniteType → IsDiscreteValuationRing (V.comap φ) ∧ (c.codRestrict (V.comap φ) hc).EssFiniteType := by
   have hL0 := GlobalTheory.T.valuationSubring_fractions_of_essFiniteType_complex

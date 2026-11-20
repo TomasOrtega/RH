@@ -9,7 +9,7 @@ section Val
 variable {F : Type*} [Field F] (v : AddValuation F (WithTop ℤ))
 
 /- English proof (translation)
-Set `w` to `AddValuation.toValuation v`. Establish `h1 : IsIntegral w.integer y` using `IsIntegral.tower_top hy`. Establish `h2` using `(Valuation.integer.integers w).mem_of_integral h1`. Conclude with `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonneg_of_isIntegral {y : F} (hy : IsIntegral ℤ y) : 0 ≤ v y := by
 
@@ -19,7 +19,7 @@ theorem nonneg_of_isIntegral {y : F} (hy : IsIntegral ℤ y) : 0 ≤ v y := by
   exact h2
 
 /- English proof (translation)
-Establish `h` using `nonneg_of_isIntegral v hy`. Rewrite `h` using `[AddValuation.map_mul, AddValuation.map_pow, hp, smul_zero, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nonneg_of_isIntegral_pow_mul {p : F} (hp : v p = 0) {y : F} {N : ℕ}
     (hy : IsIntegral ℤ (p ^ N * y)) : 0 ≤ v y := by
@@ -27,9 +27,9 @@ theorem nonneg_of_isIntegral_pow_mul {p : F} (hp : v p = 0) {y : F} {N : ℕ}
   rwa [AddValuation.map_mul, AddValuation.map_pow, hp, smul_zero, zero_add] at h
 
 /- English proof (translation)
-Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe b`. Normalize the coercions in `at hx hy ⊢`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers.
 -/
 theorem withTop_add_pos {x y : WithTop ℤ} (hx : 0 ≤ x) (hy : 0 < y) : 0 < x + y := by
   induction x using WithTop.recTopCoe with
@@ -42,13 +42,13 @@ theorem withTop_add_pos {x y : WithTop ℤ} (hx : 0 ≤ x) (hy : 0 < y) : 0 < x 
       omega
 
 /- English proof (translation)
-Establish `hI : ∀ a : ℤ, 0 ≤ v (a : F)` using `fun a => nonneg_of_isIntegral v (by simpa using (isIntegral_algebraMap (R := ℤ) (A := F) (x := a)))`. Establish `hp0 : 0 ≤ v (p : F)` using `by simpa using hI p`. Establish `hcop : IsCoprime (p : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hl).mpr hne)`. Take `⟨a, b, hab⟩` from `hcop`. Establish `hF : (a : F) * (p : F) + (b : F) * (l : F) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun z : ℤ => (z : F)) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Assume the negation of the conclusion as `hne0`. Establish `hpos : 0 < v (p : F)` using `lt_of_le_of_ne hp0 (Ne.symm hne0)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 < v ((a : F) * (p : F))`. Rewrite using `[AddValuation.map_mul]`. Conclude with `withTop_add_pos (hI a) hpos`. Establish `h2 : 0 < v ((b : F) * (l : F))`. Rewrite using `[AddValuation.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `withTop_add_pos (hI b) hvl`. Establish `h3` using `lt_of_lt_of_le (lt_min h1 h2) (v.map_add _ _)`. Rewrite `h3` using `[hF, AddValuation.map_one]`. Conclude with `lt_irrefl _ h3`.
+A detailed English derivation is pending.
 -/
 theorem val_prime_eq_zero {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠ l) (hvl : 0 < v (l : F)) :
     v (p : F) = 0 := by
@@ -74,7 +74,7 @@ theorem val_prime_eq_zero {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_pow, AddValuation.map_pow, val_prime_eq_zero v hl hp hne hvl, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_prime_pow_eq_zero {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠ l) (hvl : 0 < v (l : F))
     (f : ℕ) : v ((p ^ f : ℕ) : F) = 0 := by
@@ -87,7 +87,7 @@ section DVR
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `hlift : P ∈ Polynomial.lifts (algebraMap O (FractionRing O))` using `(Polynomial.lifts_iff_coeff_lifts P).mpr (fun n => hc n)`. Take `⟨Q, hQ, -, hQm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift hm`. Establish `hint : IsIntegral O μ` using `⟨Q, hQm, by rw [← Polynomial.eval_map, hQ]; exact hμ⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range_of_isRoot (P : (FractionRing O)[X]) (hm : P.Monic)
     (hc : ∀ i, P.coeff i ∈ (algebraMap O (FractionRing O)).range) {μ : FractionRing O} (hμ : P.IsRoot μ) :
@@ -110,12 +110,12 @@ def IntAway (q a : R) : Prop := ∃ N : ℕ, IsIntegral ℤ (q ^ N * a)
 variable {q : R}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simpa using ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem IntAway.of_isIntegral {a : R} (ha : IsIntegral ℤ a) : IntAway q a := ⟨0, by simpa using ha⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `ha`. Take `⟨M, hM⟩` from `hb`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Rewrite using `[show q ^ (N + M) * (a + b) = q ^ M * (q ^ N * a) + q ^ N * (q ^ M * b) by ring]`. Conclude with `((hq.pow M).mul hN).add ((hq.pow N).mul hM)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntAway.add (hq : IsIntegral ℤ q) {a b : R} (ha : IntAway q a) (hb : IntAway q b) :
     IntAway q (a + b) := by
@@ -126,7 +126,7 @@ theorem IntAway.add (hq : IsIntegral ℤ q) {a b : R} (ha : IntAway q a) (hb : I
   exact ((hq.pow M).mul hN).add ((hq.pow N).mul hM)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `ha`. Take `⟨M, hM⟩` from `hb`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Rewrite using `[show q ^ (N + M) * (a * b) = (q ^ N * a) * (q ^ M * b) by ring]`. Conclude with `hN.mul hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntAway.mul {a b : R} (ha : IntAway q a) (hb : IntAway q b) : IntAway q (a * b) := by
   obtain ⟨N, hN⟩ := ha
@@ -136,7 +136,7 @@ theorem IntAway.mul {a b : R} (ha : IntAway q a) (hb : IntAway q b) : IntAway q 
   exact hN.mul hM
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `ha`. Conclude with `⟨N, by rw [mul_neg]; exact hN.neg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IntAway.neg {a : R} (ha : IntAway q a) : IntAway q (-a) := by
   obtain ⟨N, hN⟩ := ha
@@ -151,11 +151,11 @@ def intAwaySubring (hq : IsIntegral ℤ q) : Subring R where
   neg_mem' := fun ha => IntAway.neg ha
 
 /- English proof (translation)
-Set `S` to `intAwaySubring hq`. Establish `hmem : (s.map fun μ => X - C μ).prod ∈ Polynomial.liftsRing S.subtype`. Use `Subring.multiset_prod_mem _ _ (fun P hP => ?_)` and prove the remaining obligations. Take `⟨μ, hμ, rfl⟩` from `Multiset.mem_map.mp hP`. Use `Subring.sub_mem _ ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Polynomial.lifts_iff_liftsRing]`. Conclude with `Polynomial.X_mem_lifts _`. Rewrite using `[← Polynomial.lifts_iff_liftsRing]`. Conclude with `Polynomial.C_mem_lifts S.subtype ⟨μ, hs μ hμ⟩`. Rewrite `hmem` using `[← Polynomial.lifts_iff_liftsRing, Polynomial.lifts_iff_coeff_lifts]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hmem n`. Rewrite using `[← hc]`. Conclude with `c.2`.
+A detailed English derivation is pending.
 -/
 theorem intAway_coeff_prod (hq : IsIntegral ℤ q) (s : Multiset R) (hs : ∀ μ ∈ s, IntAway q μ) (n : ℕ) :
     IntAway q ((s.map fun μ => X - C μ).prod.coeff n) := by

@@ -10,25 +10,21 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ _`. Establish `hfin : IsFiniteLength R R` using `isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩`. Establish `hne : Module.length R R ≠ ⊤` using `Module.length_ne_top_iff.2 hfin`. Use `⟨⟨(Module.length R R).toNat, (ENat.natCast_toNat hne).symm⟩, ?_⟩` and prove the remaining obligations. Introduce `hnf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set m := IsLocalRing.maximalIdeal R with hmdef`. Take `⟨k, hk⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := R)`. Rewrite `hk` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `hex : ∃ n : ℕ, m ^ n = ⊥` using `⟨k, hk⟩`. Establish `hn : m ^ Nat.find hex = ⊥` using `Nat.find_spec hex`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : Nat.find hex ≠ 0`. Introduce `h`. Rewrite `hn` using `[h, pow_zero, Ideal.one_eq_top]`. Conclude with `top_ne_bot hn`. Take `⟨j, hj⟩` from `Nat.exists_eq_succ_of_ne_zero hn0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hjne : m ^ j ≠ ⊥` using `Nat.find_min hex (by omega)`. Take `⟨t, htm, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hjne`. Establish `hkill : ∀ a ∈ m, a * t = 0`. Introduce `a ha`. Establish `h1 : a * t ∈ m ^ (j + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul ha htm`. Establish `hj' : Nat.find hex = j + 1` using `hj`. Rewrite `h1` using `[← hj', hn]`. Conclude with `(Submodule.mem_bot R).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨t, ht0, hkill, ?_⟩` and prove the remaining obligations. Use `set I : Ideal R := Ideal.span {t}`. Rewrite using `[Module.length_eq_of_surjective (S := R) (R := R ⧸ I) (M := R ⧸ I) Ideal.Quotient.mk_surjective |>.symm]`. Establish `hadd` using `Module.length_eq_add_of_exact (R := R) I.subtype I.mkQ I.injective_subtype I.mkQ_surjective (LinearMap.exact_subtype_mkQ I)`. Establish `hI : Module.length R I ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ne, Module.length_eq_zero_iff]`. Introduce `hs`. Establish `: (⟨t, Ideal.subset_span rfl⟩ : I) = 0` using `Subsingleton.elim _ _`. Conclude with `ht0 (congrArg Subtype.val this)`. Establish `hQ : Module.length R (R ⧸ I) ≠ ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hne` using `[hadd, h]`. Simplify using `at hne`. Rewrite using `[hadd]`. Use `lift Module.length R (R ⧸ I) to ℕ using hQ with q`.
-
-Use `lift Module.length R I to ℕ using (by`. Introduce `h`. Rewrite `hne` using `[hadd, h]`. Simplify using `at hne) with i`. Use `norm_cast`.
-
-Normalize the coercions in `at hI`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem artinianLocal_finiteLength_and_socle_element :
     ∀ (R : Type) [CommRing R] [IsArtinianRing R] [IsLocalRing R],

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.HoweNonsplit
 
 /- English proof (translation)
-Introduce `hP hHD F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv`. Establish `key` using `GlobalTheory.HoweLocal.howeDualityFor_closure hP hHD F E σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv`. Rewrite `key` using `[show Subgroup.closure (UAt σ X (evFin F v)) = GlobalTheory.HoweAdelic.UAtGrp σ X (evFin F v) from Subgroup.closure_eq (GlobalTheory.HoweAdelic.UAtGrp σ X (evFin F v)), show Subgroup.closure (UAt σ W (evFin F v)) = GlobalTheory.HoweAdelic.UAtGrp σ W (evFin F v) from Subgroup.clos …`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem howeDualityFor_locOps : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HoweDualityUnitary → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

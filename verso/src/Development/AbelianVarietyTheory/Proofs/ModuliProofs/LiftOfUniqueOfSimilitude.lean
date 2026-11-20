@@ -23,7 +23,7 @@ namespace GlobalTheory.LiftAut
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
 /- English proof (translation)
-Establish `hM` using `Ideal.mem_span_singleton_self (l.M : 𝓞 E)`. Rewrite `hM` using `[← l.prod]`. Conclude with `(Submodule.mem_inf.1 (SetLike.le_def.mp Ideal.mul_le_inf hM)).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_Mb (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   have hM := Ideal.mem_span_singleton_self (l.M : 𝓞 E)
@@ -31,7 +31,7 @@ theorem natCast_mem_Mb (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   exact (Submodule.mem_inf.1 (SetLike.le_def.mp Ideal.mul_le_inf hM)).1
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `hc : l.M • c = (l.M : 𝓞 E) • c` using `(Nat.cast_smul_eq_nsmul (𝓞 E) l.M c).symm`. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem_smul (natCast_mem_Mb l) Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_modN (l : Level H) {x : D.La} (h : D.ModN l.M x) :
     x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -45,7 +45,7 @@ section
 variable {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B}
 
 /- English proof (translation)
-Establish `hsplit : x = y + (x - y)` using `by abel`. Rewrite using `[hsplit, o.eta_add, o.eta_ker _ h, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_congr (o : Obj D l b s) {x y : D.La} (h : x - y ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) :
     o.eta x = o.eta y := by
@@ -53,7 +53,7 @@ theorem eta_congr (o : Obj D l b s) {x y : D.La} (h : x - y ∈ l.Mb • (⊤ : 
   rw [hsplit, o.eta_add, o.eta_ker _ h, _root_.mul_one]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `hsplit : x = y + l.A • c` using `by rw [← hc]; abel`. Rewrite using `[hsplit, o.etaA_add, o.etaA_ker, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaA_congr (o : Obj D l b s) {x y : D.La} (h : D.ModN l.A (x - y)) :
     o.etaA x = o.etaA y := by
@@ -62,13 +62,13 @@ theorem etaA_congr (o : Obj D l b s) {x y : D.La} (h : D.ModN l.A (x - y)) :
   rw [hsplit, o.etaA_add, o.etaA_ker, _root_.mul_one]
 
 /- English proof (translation)
-The claim follows from `o.eta_ker 0 (Submodule.zero_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem eta_zero (o : Obj D l b s) : o.eta 0 = 1 :=
   o.eta_ker 0 (Submodule.zero_mem _)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0 : o.etaA 0 = 1` using `by simpa using o.etaA_ker 0`. Simplify using `using h0`. Consider the case `succ k ih => rw [succ_nsmul, o.etaA_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem etaA_nsmul (o : Obj D l b s) (n : ℕ) (x : D.La) : o.etaA (n • x) = o.etaA x ^ n := by
   induction n with
@@ -78,13 +78,13 @@ theorem etaA_nsmul (o : Obj D l b s) (n : ℕ) (x : D.La) : o.etaA (n • x) = o
   | succ k ih => rw [succ_nsmul, o.etaA_add, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨p⟩` from `‹Nonempty S›`. Set `k` to `AlgebraicClosure (S.residueField p)`. Set `y : Sp k ⟶ S` to `Spec.map (CommRingCat.ofHom (algebraMap (S.residueField p) k)) ≫ S.fromSpecResidueField p`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβ⟩ : ∃ β : B →+* k, y ≫ s = spMap β := by`. Use `⟨(Spec.preimage (y ≫ s : Spec (CommRingCat.of k) ⟶ Spec (CommRingCat.of B))).hom, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom _)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Take `⟨-, I, -, -, hev⟩` from `o.geom k y β hβ`. Establish `hx : x ∈ (⊤ : Ideal (𝓞 E)) • (⊤ : Submodule (𝓞 E) D.La)` using `by simp`. Rewrite `hx` using `[← l.coprime, Submodule.sup_smul, Submodule.mem_sup]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, v, hv, rfl⟩` from `hx`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `hv1 : o.eta v = o.eta 0`. Rewrite using `[eta_zero, ← h, o.eta_add, o.eta_ker u hu, _root_.one_mul]`. Establish `hev1 : I.ev l.M v = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hev v hv, hv1, hev 0 (Submodule.zero_mem _), (I.ker l.M hM0 0).2 ⟨0, by simp⟩]`. Take `⟨c, hc⟩` from `(I.ker l.M hM0 v).1 hev1`. Conclude with `Submodule.add_mem _ hu (mem_of_modN l ⟨c, hc⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_eta_eq_one (o : Obj D l b s) [Nonempty S] {x : D.La} (h : o.eta x = 1) :
     x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -108,7 +108,7 @@ theorem mem_of_eta_eq_one (o : Obj D l b s) [Nonempty S] {x : D.La} (h : o.eta x
   exact Submodule.add_mem _ hu (mem_of_modN l ⟨c, hc⟩)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_sabMap_phi_eq_of_eq {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f g : S' ⟶ S}
     (e : f = g) (m : SABMap t' t f) : ∃ m' : SABMap t' t g, m'.φ = m.φ := by
@@ -116,11 +116,11 @@ private theorem exists_sabMap_phi_eq_of_eq {S S' : Scheme.{0}} {t' : SAB H S'} {
   exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `GlobalTheory.ObjMaps.exists_sab_id t`. Take `⟨i', hi'⟩` from `exists_sabMap_phi_eq_of_eq (Category.id_comp (𝟙 S)).symm i`. Take `⟨m₁, hm₁⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m i'`. Take `⟨j, hj⟩` from `GlobalTheory.ObjMaps.exists_sab_id t'`. Take `⟨j', hj'⟩` from `exists_sabMap_phi_eq_of_eq (Category.id_comp (𝟙 S)).symm j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₃, hm₃⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m₁ j'`. Establish `e1 : m₁.φ ≫ m.φ = 𝟙 _` using `by rw [← hm₁, hi', hi]`. Establish `e2 : m₃.φ ≫ m₁.φ = 𝟙 _` using `by rw [← hm₃, hj', hj]`. Establish `e3 : m.φ = m₃.φ`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `⟨m₁, by rw [e3, e2], e1⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_inverse_sabMap_id {S : Scheme.{0}} {t t' : SAB H S} (m : SABMap t' t (𝟙 S)) :
     ∃ m₁ : SABMap t t' (𝟙 S), m.φ ≫ m₁.φ = 𝟙 _ ∧ m₁.φ ≫ m.φ = 𝟙 _ := by
@@ -138,7 +138,7 @@ private theorem exists_inverse_sabMap_id {S : Scheme.{0}} {t t' : SAB H S} (m : 
   exact ⟨m₁, by rw [e3, e2], e1⟩
 
 /- English proof (translation)
-Rewrite using `[← etaA_nsmul]`. Conclude with `etaA_congr o ⟨a, sub_zero _⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem etaA_pow_A' (o : Obj D l b s) (a : D.La) : o.etaA a ^ l.A = o.etaA 0 := by
   rw [← etaA_nsmul]
@@ -147,11 +147,11 @@ private theorem etaA_pow_A' (o : Obj D l b s) (a : D.La) : o.etaA a ^ l.A = o.et
 end
 
 /- English proof (translation)
-Establish `hsm : Smooth Xo.s` using `Xo.smooth.smooth`. Establish `hred : IsReduced Xo.X` using `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ Xo.X Xo.s hsm).1`. Take `⟨o', m0, he, heA⟩` from `GlobalTheory.exists_obj_twist_by_similitude GlobalTheory.SimAlg.sim_group E H D l _ (baseKA l) Xo.X Xo.s Xo.univ ω hpq hA`. Take `⟨f, ⟨hf, ⟨mm⟩⟩, -⟩` from `Xo.rep Xo.X Xo.s hred o'`. Take `⟨m1, hinv, -⟩` from `exists_inverse_sabMap_id m0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mm.toSABMap m1`. Take `⟨c', hc'⟩` from `exists_sabMap_phi_eq_of_eq (Category.id_comp f) c`. Use `⟨f, c', hf, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hc', hc, ← he a, Category.assoc, ← Category.assoc m0.φ, hinv, Category.id_comp]`. Conclude with `mm.eta a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', hc, ← heA a, Category.assoc, ← Category.assoc m0.φ, hinv, Category.id_comp]`. Conclude with `mm.etaA a`.
+A detailed English derivation is pending.
 -/
 theorem exists_levEnd {l : Level H} (Xo : Moduli D l) (hpq : 1 ≤ D.p + D.q) (ω : Sim D)
     (hA : (l.A : ℤ) ∣ ω.ν l.A - 1) :
@@ -174,9 +174,9 @@ theorem exists_levEnd {l : Level H} (Xo : Moduli D l) (hpq : 1 ≤ D.p + D.q) (�
     exact mm.etaA a
 
 /- English proof (translation)
-Establish `hsm : Smooth Xo.s` using `Xo.smooth.smooth`. Establish `hred : IsReduced Xo.X` using `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ Xo.X Xo.s hsm).1`. Take `⟨f0, -, huniq⟩` from `Xo.rep Xo.X Xo.s hred Xo.univ`. Take `⟨mid, -⟩` from `(GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ (baseKA l) (baseKA l) (baseKA l) Xo.X Xo.X Xo.X Xo.s Xo.s Xo.s Xo.univ Xo.univ Xo.univ).1`. Establish `h1 : f = f0` using `huniq f ⟨hf, ⟨⟨m, h, hA⟩⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : 𝟙 Xo.X = f0` using `huniq (𝟙 _) ⟨Category.id_comp _, ⟨mid⟩⟩`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_id {l : Level H} (Xo : Moduli D l) (f : Xo.X ⟶ Xo.X) (m : SABMap Xo.univ.t Xo.univ.t f)
     (hf : f ≫ Xo.s = Xo.s) (h : ∀ a, (Xo.univ.eta a).left ≫ m.φ = f ≫ (Xo.univ.eta a).left)
@@ -192,9 +192,9 @@ theorem eq_id {l : Level H} (Xo : Moduli D l) (f : Xo.X ⟶ Xo.X) (m : SABMap Xo
   rw [h1, h2]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m' m`. Use `eq_id Xo (f ≫ f') n (by rw [Category.assoc, hf', hf]) (fun a => ?_) (fun a => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn, eta_congr Xo.univ (mem_of_modN l (hM a))]`. Use `_ = f ≫ (Xo.univ.eta (ω'.f l.M a)).left ≫ m'.φ := by rw [← Category.assoc, h, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = (f ≫ f') ≫ (Xo.univ.eta a).left := by rw [h', Category.assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn, etaA_congr Xo.univ (hA a)]`. Use `_ = f ≫ (Xo.univ.etaA (ω'.f l.A a)).left ≫ m'.φ := by rw [← Category.assoc, k, Category.assoc]`. Use `_ = (f ≫ f') ≫ (Xo.univ.etaA a).left := by rw [k', Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq_id {l : Level H} (Xo : Moduli D l) (ω ω' : Sim D)
     (hM : ∀ a, D.ModN l.M (ω.f l.M (ω'.f l.M a) - a)) (hA : ∀ a, D.ModN l.A (ω.f l.A (ω'.f l.A a) - a))
@@ -218,11 +218,11 @@ theorem comp_eq_id {l : Level H} (Xo : Moduli D l) (ω ω' : Sim D)
       _ = (f ≫ f') ≫ (Xo.univ.etaA a).left := by rw [k', Category.assoc]
 
 /- English proof (translation)
-Take `⟨a0, b0, hab⟩` from `GlobalTheory.SimAlg.exists_form_eq_one (D := D) hpq`. Take `⟨ω', hω'⟩` from `GlobalTheory.SimAlg.exists_inv ω hab`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `hA0 : 0 < l.A` using `l.A_pos`. Establish `hA' : (l.A : ℤ) ∣ ω'.ν l.A - 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hω' l.A hA0).2`. Establish `e : ω'.ν l.A - 1 = (ω.ν l.A * ω'.ν l.A - 1) - (ω.ν l.A - 1) * ω'.ν l.A` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub h2 (dvd_mul_of_dvd_left hA _)`. Take `⟨f, m, hf, h, k⟩` from `exists_levEnd Xo hpq ω hA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f', m', hf', h', k'⟩` from `exists_levEnd Xo hpq ω' hA'`. Establish `e1` using `comp_eq_id Xo ω ω' (fun a => ((hω' l.M hM0).1 a).2) (fun a => ((hω' l.A hA0).1 a).2) f f' m m' hf hf' h h' k k'`. Establish `e2` using `comp_eq_id Xo ω' ω (fun a => ((hω' l.M hM0).1 a).1) (fun a => ((hω' l.A hA0).1 a).1) f' f m' m hf' hf h' h k' k`. Conclude with `⟨⟨f, f', e1, e2⟩, hf, m, h, k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_levAut {l : Level H} (Xo : Moduli D l) (hpq : 1 ≤ D.p + D.q) (ω : Sim D)
     (hA : (l.A : ℤ) ∣ ω.ν l.A - 1) : ∃ ρ : Xo.X ≅ Xo.X, Xo.LevAut ω ρ := by
@@ -244,39 +244,35 @@ theorem exists_levAut {l : Level H} (Xo : Moduli D l) (hpq : 1 ≤ D.p + D.q) (�
   exact ⟨⟨f, f', e1, e2⟩, hf, m, h, k⟩
 
 /- English proof (translation)
-Introduce `hL1 hL2 hL3 E _ _ _ H D Xo hpq l₀ l₁ r ν r₀ ν₀ g hA0 hM hMb hcop hlev hk hr₀ hg`. Take `⟨kk, -, hks⟩` from `hk`. Establish `hred : ∀ l : Level H, IsReduced (Xo l).X` using `fun l => (GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ (Xo l).X (Xo l).s (Xo l).smooth.smooth).1`. Break down `isEmpty_or_nonempty (Xo l₀).X with h0 | h0` into its components or cases. Establish `h1 : IsEmpty (Xo l₁).X` using `⟨fun x => h0.false (r.base x)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hG : IsEmpty (Xo l₁).univ.t.G.left` using `⟨fun x => h1.false ((Xo l₁).univ.t.G.hom.base x)⟩`. Take `⟨i, hi⟩` from `GlobalTheory.ObjMaps.exists_sab_id (Xo l₁).univ.t`. Use `⟨Iso.refl _, i, Category.id_comp _, isInitialOfIsEmpty.hom_ext _ _, isInitialOfIsEmpty.hom_ext _ _, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hi, Iso.refl_hom, Category.comp_id, Category.id_comp]`. Establish `hM0 : 0 < l₀.M` using `by have := l₀.three_le; omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdM : l₁.M / l₀.M = 1` using `by rw [hM]; exact Nat.div_self hM0`. Establish `hdA : l₁.A / l₀.A = l₁.A` using `by rw [hA0, Nat.div_one]`. Rewrite `hlev` using `[LevComp, hdM, hdA]`. Establish `hA0one : ∀ a, (Xo l₀).univ.etaA a = (Xo l₀).univ.eta 0`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `(Xo l₀).univ.etaA_ker a`. Rewrite `e` using `[hA0, one_smul]`. Rewrite using `[e, eta_zero]`. Establish `hgmem : ∀ x, g x ∈ l₀.Mb • (⊤ : Submodule (𝓞 E) D.La) → x ∈ l₀.Mb • (⊤ : Submodule (𝓞 E) D.La)`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `mem_of_eta_eq_one (Xo l₀).univ` to reduce the goal to its premises. Establish `e1 : (Xo l₀).univ.eta (g x) = (Xo l₀).univ.eta (g 0)`. Rewrite using `[map_zero, eta_zero]`. Conclude with `(Xo l₀).univ.eta_ker _ hx`. Establish `e2 : r₀.hom ≫ ((Xo l₀).univ.eta x).left = r₀.hom ≫ ((Xo l₀).univ.eta 0).left`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg x, ← hg 0, e1]`. Rewrite using `[← eta_zero (Xo l₀).univ]`. Conclude with `Over.OverMorphism.ext ((cancel_epi r₀.hom).1 e2)`. Establish `hcop' : l₁.A.Coprime l₀.M` using `by rw [← hM]; exact hcop`. Take `⟨ω, hωM, hωA, hων⟩` from `hS E H D l₀ l₁.A g hpq l₁.A_pos hcop' hgmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρs, ν₁, hρe, hρA⟩` from `exists_levAut (Xo l₁) hpq ω hων`. Take `⟨o', m0, he, heA⟩` from `GlobalTheory.exists_obj_twist_by_similitude GlobalTheory.SimAlg.sim_group E H D l₁ _ (baseKA l₁) (Xo l₁).X (Xo l₁).s (Xo l₁).univ ω hpq hων`. Take `⟨m1, -, hinv'⟩` from `exists_inverse_sabMap_id m0`. Take `⟨a1, ha1⟩` from `GlobalTheory.ObjMaps.exists_sab_comp ν ν₁`. Take `⟨b1, hb1⟩` from `GlobalTheory.ObjMaps.exists_sab_comp a1 m0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, hc1⟩` from `exists_sabMap_phi_eq_of_eq (Category.id_comp _) b1`. Take `⟨a2, ha2⟩` from `GlobalTheory.ObjMaps.exists_sab_comp ν₀ ν`. Take `⟨b2, hb2⟩` from `GlobalTheory.ObjMaps.exists_sab_comp a2 m0`. Take `⟨c2, hc2⟩` from `exists_sabMap_phi_eq_of_eq (Category.id_comp _) b2`. Establish `hρA0` using `hρA 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hρA0` using `[map_zero]`. Establish `heA0` using `heA 0`. Rewrite `heA0` using `[map_zero]`. Establish `hpw1` using `etaA_pow_A' (Xo l₁).univ 0`. Establish `hs12 : (ρ.hom ≫ r) ≫ (Xo l₀).s = (r ≫ r₀.hom) ≫ (Xo l₀).s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, hr₀, hks, ← Category.assoc, hρs]`. Establish `lev1 : LevComp o' (Xo l₀).univ (ρ.hom ≫ r) c1`. Rewrite using `[LevComp, hdM, hdA]`. Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[he a, ← Category.assoc, hρe a, Category.assoc, _root_.pow_one]`. Use `_ = (ρ.hom ≫ r) ≫ ((Xo l₀).univ.eta a).left := by rw [hlev.1 a, Category.assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc1, hb1, ha1, etaA_pow_A', Category.assoc]`. Use `_ = ρ.hom ≫ ((Xo l₁).univ.etaA 0 ^ l₁.A).left ≫ ν.φ := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heA0, ← Category.assoc, hρA0, Category.assoc, hpw1]`. Use `_ = (ρ.hom ≫ r) ≫ ((Xo l₀).univ.etaA a).left := by`. Rewrite using `[hlev.2 0, hA0one, hA0one, Category.assoc]`. Establish `lev2 : LevComp o' (Xo l₀).univ (r ≫ r₀.hom) c2`. Rewrite using `[LevComp, hdM, hdA]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hmem : ω.f l₁.M a - g a ∈ l₁.Mb • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[hM, hMb]`. Conclude with `hωM a`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he a, eta_congr (Xo l₁).univ hmem, _root_.pow_one]`. Use `_ = (r ≫ r₀.hom) ≫ ((Xo l₀).univ.eta a).left := by`. Rewrite using `[← Category.assoc, hlev.1 (g a), Category.assoc, hg a, Category.assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc2, hb2, ha2, etaA_pow_A', Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = (((Xo l₁).univ.etaA 0 ^ l₁.A).left ≫ ν.φ) ≫ ν₀.φ := by`. Rewrite using `[heA0, hpw1, Category.assoc]`. Use `_ = r ≫ ((Xo l₀).univ.eta (g 0)).left ≫ ν₀.φ := by`. Rewrite using `[hlev.2 0, hA0one, map_zero, Category.assoc]`. Use `_ = (r ≫ r₀.hom) ≫ ((Xo l₀).univ.etaA a).left := by`.
-
-Rewrite using `[hg 0, hA0one, Category.assoc]`. Take `⟨hr, hφ⟩` from `hU hL1 hL2 hL3 E H D l₀ l₁ (Xo l₀) _ (baseKA l₁) (Xo l₁).X (Xo l₁).s o' _ _ c1 c2 (hred l₁) hs12 lev1 lev2`. Establish `hφ' : ν₁.φ ≫ ν.φ = ν.φ ≫ ν₀.φ`. Combine the equalities or inequalities in the displayed calculation. Use `⟨ρ, ν₁, hρs, hr, hφ', fun x => ?_⟩` and prove the remaining obligations.
-
-Establish `e` using `hρA x`. Rewrite `e` using `[etaA_congr (Xo l₁).univ (hωA x)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lift_of_unique_of_similitude (hU : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l₀ l : Level H) (Xo : Moduli D l₀) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s) (r r' : S ⟶ Xo.X) (ν : SABMap o.t Xo.univ.t r) (ν' : SABMap o.t Xo.univ.t r'), IsReduced S → r ≫ Xo.s = r' ≫ Xo.s → LevComp o Xo.univ r ν → LevComp o Xo.univ r' ν' → r = r' ∧ ν.φ = ν'.φ)
     (hS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (A : ℕ) (g : D.La →ₗ[𝓞 E] D.La), 1 ≤ D.p + D.q → 0 < A → A.Coprime l.M → (∀ x, g x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) → x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) → ∃ ω : Sim D, (∀ x, ω.f l.M x - g x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) ∧ (∀ x, D.ModN A (ω.f A x - x)) ∧ (A : ℤ) ∣ ω.ν A - 1) :

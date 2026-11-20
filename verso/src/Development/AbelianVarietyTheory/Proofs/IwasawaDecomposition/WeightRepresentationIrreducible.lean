@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory.DefU
 
 /- English proof (translation)
-Introduce `E _ _ _ n W`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨Formalism.L2.Col.VV_nontrivial ℂ W, fun U hU => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CoefIrred.vv_irreducible_unitary (InfinitePlace E) n W U fun g hg x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, hyg⟩` from `GlobalTheory.T.exists_definiteUnitaryInfinitePoint_of_unitary_family E n g hg`. Establish `h` using `hU ⟨y, hy⟩ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hyg]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wt.isIrreducible_rep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (W : Wt E n),
     W.rep.IsIrreducible := by

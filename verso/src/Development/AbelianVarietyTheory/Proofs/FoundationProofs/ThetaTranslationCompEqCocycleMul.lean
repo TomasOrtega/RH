@@ -15,9 +15,9 @@ open PowerSeries
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n`. Conclude with `h (Finsupp.single () n)`. Introduce `h α`. Use `h (α ())` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.unique_single α]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem integral_iff (F : PowerSeries ℂ_[p]) : IntegralMv F ↔ ∀ n, ‖coeff n F‖ ≤ 1 := by
   constructor
@@ -29,9 +29,9 @@ theorem integral_iff (F : PowerSeries ℂ_[p]) : IntegralMv F ↔ ∀ n, ‖coef
     exact this
 
 /- English proof (translation)
-Rewrite `*` using `[integral_iff]`. Introduce `n`. Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ (hF _) (norm_nonneg _) (hG _)`.
+A detailed English derivation is pending.
 -/
 theorem integral_mul {F G : PowerSeries ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) := by
@@ -43,9 +43,7 @@ theorem integral_mul {F G : PowerSeries ℂ_[p]} (hF : IntegralMv F) (hG : Integ
   exact mul_le_one₀ (hF _) (norm_nonneg _) (hG _)
 
 /- English proof (translation)
-Rewrite using `[integral_iff]`. Introduce `n`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `hc`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_C {c : ℂ_[p]} (hc : ‖c‖ ≤ 1) : IntegralMv (C c : PowerSeries ℂ_[p]) := by
   rw [integral_iff]
@@ -56,7 +54,7 @@ theorem integral_C {c : ℂ_[p]} (hc : ‖c‖ ≤ 1) : IntegralMv (C c : PowerS
   · simp
 
 /- English proof (translation)
-Rewrite using `[integral_iff]`. Introduce `n`. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_X : IntegralMv (X : PowerSeries ℂ_[p]) := by
   rw [integral_iff]
@@ -65,20 +63,20 @@ theorem integral_X : IntegralMv (X : PowerSeries ℂ_[p]) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[integral_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_zero : IntegralMv (0 : PowerSeries ℂ_[p]) := by
   rw [integral_iff]
   simp
 
 /- English proof (translation)
-Rewrite `*` using `[integral_iff]`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `e` using `congrArg (coeff n) h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `n with`. Consider the case `zero`. Simplify using `[h0] at e`. Simplify using `[e]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite `e` using `[coeff_mul, Finset.Nat.antidiagonal_succ, Finset.sum_cons, coeff_one, if_neg (Nat.succ_ne_zero n)]`. Simplify using `only [coeff_zero_eq_constantCoeff, h0, one_mul] at e`. Rewrite using `[eq_neg_of_add_eq_zero_left e, norm_neg]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: y.1 + y.2 = n` using `by simpa using hy`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hE _) (norm_nonneg _) (ih _ (by simp; omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_mul_eq_one {E F : PowerSeries ℂ_[p]} (hE : IntegralMv E)
     (h0 : constantCoeff E = 1) (h : E * F = 1) : IntegralMv F := by
@@ -103,9 +101,9 @@ theorem integral_of_mul_eq_one {E F : PowerSeries ℂ_[p]} (hE : IntegralMv E)
       exact mul_le_one₀ (hE _) (norm_nonneg _) (ih _ (by simp; omega))
 
 /- English proof (translation)
-Apply `PowerSeries.ext` to reduce the goal to its premises. Introduce `n`. Rewrite using `[expPS, coeff_mk]`. Use `show expMv F (Finsupp.single () n) = _`. Rewrite using `[expMv, Finsupp.sum_single_index rfl]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem expMv_eq (F : PowerSeries ℂ_[p]) : expMv F = expPS F := by
   apply PowerSeries.ext
@@ -116,15 +114,13 @@ theorem expMv_eq (F : PowerSeries ℂ_[p]) : expMv F = expPS F := by
   rfl
 
 /- English proof (translation)
-Establish `h1 : constantCoeff (F - 1) = 0` using `by simp [hF]`. Apply `PowerSeries.ext` to reduce the goal to its premises. Introduce `n`. Rewrite using `[logOf_eq, PowerSeries.coeff_subst' (HasSubst.of_constantCoeff_zero' h1), finsum_eq_sum_of_support_subset (s := Finset.range (n + 1))]`. Use `show GL3Theta.logMv F (Finsupp.single () n) = _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GL3Theta.logMv, Finsupp.sum_single_index rfl]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_log]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(-1) ^ (k + 1) * coeff n ((F - 1) ^ k) / _ = _`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `k hk`. Assume the negation of the conclusion as `h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hk` to reduce the goal to its premises. Establish `hlt : n < k` using `by simpa using h`. Establish `h0 : coeff n ((F - 1) ^ k) = 0`. Establish `: (X : PowerSeries ℂ_[p]) ^ k ∣ (F - 1) ^ k` using `pow_dvd_pow_of_dvd (X_dvd_iff.2 h1) k`. Conclude with `X_pow_dvd_iff.1 this n hlt`.
-
-Simplify using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem logMv_eq (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1) :
     GL3Theta.logMv F = PowerSeries.logOf F := by
@@ -152,11 +148,11 @@ theorem logMv_eq (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1) :
     simp [h0]
 
 /- English proof (translation)
-Establish `h1 : constantCoeff (F - 1) = 0` using `by simp [hF]`. Establish `hs` using `HasSubst.of_constantCoeff_zero' h1`. Establish `e : (1 + X) * d⁄dX ℂ_[p] (PowerSeries.log ℂ_[p]) = 1`. Rewrite using `[deriv_log]`. Use extensionality with `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Consider the cases of `n with`. Consider the case `zero => simp [add_mul]`. Consider the case `succ n => simp [add_mul, coeff_succ_X_mul, coeff_one, pow_succ]`. Establish `e2` using `congrArg (substAlgHom (R := ℂ_[p]) hs) e`. Rewrite `e2` using `[map_mul, map_add, map_one, substAlgHom_X, coe_substAlgHom]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[logOf_eq, derivative_subst hs, ← mul_assoc]`. Establish `e3 : F * subst (F - 1) (d⁄dX ℂ_[p] (PowerSeries.log ℂ_[p])) = 1`. Rewrite `e2` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[e3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_derivative_logOf (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1) :
     F * d⁄dX ℂ_[p] (logOf F) = d⁄dX ℂ_[p] F := by
@@ -177,16 +173,16 @@ theorem mul_derivative_logOf (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1
   simp
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, expPS, coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_expPS (F : PowerSeries ℂ_[p]) : constantCoeff (expPS F) = 1 := by
   rw [← coeff_zero_eq_constantCoeff_apply, expPS, coeff_mk]
   simp
 
 /- English proof (translation)
-Establish `h0 : constantCoeff (-logOf F) = 0` using `by simp [constantCoeff_logOf hF]`. Use `derivative.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, GlobalTheory.ExpJets.derivative_expPS _ h0, map_neg, derivative_one]`. Simplify using `only [smul_eq_mul]`. Take the linear combination `(-expPS (-logOf F)) * mul_derivative_logOf F hF`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[hF, constantCoeff_expPS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exp_neg_log_mul (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1) :
     expPS (-logOf F) * F = 1 := by
@@ -198,7 +194,7 @@ theorem exp_neg_log_mul (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1) :
   · simp [hF, constantCoeff_expPS]
 
 /- English proof (translation)
-Establish `h2` using `h.2`. Rewrite `h2` using `[sub_zero, logMv_eq F hF]`. Establish `h3 : IntegralMv (expPS (-logOf F))` using `by rw [← expMv_eq]; exact h2`. Use `integral_of_mul_eq_one h3 (constantCoeff_expPS _) (exp_neg_log_mul F hF)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem integral_of_simeq (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1)
     (h : GL3Theta.Simeq (-GL3Theta.logMv F : MvPowerSeries Unit ℂ_[p]) 0) : IntegralMv F := by
@@ -208,7 +204,7 @@ theorem integral_of_simeq (F : PowerSeries ℂ_[p]) (hF : constantCoeff F = 1)
   refine integral_of_mul_eq_one h3 (constantCoeff_expPS _) (exp_neg_log_mul F hF)
 
 /- English proof (translation)
-Establish `hs` using `HasSubst.of_constantCoeff_zero' ha`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_subst' hs, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `k hk`. Simplify using `[ha, hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_subst' {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f : PowerSeries ℂ_[p]) :
     constantCoeff (f.subst a : PowerSeries ℂ_[p]) = constantCoeff f := by
@@ -219,7 +215,7 @@ theorem constantCoeff_subst' {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0
     simp [ha, hk]
 
 /- English proof (translation)
-Establish `hs` using `HasSubst.of_constantCoeff_zero' ha`. Establish `e` using `congrArg constantCoeff (derivative_subst (f := f) hs)`. Rewrite `e` using `[map_mul, constantCoeff_subst' ha]`. Simplify `e` using `[← coeff_zero_eq_constantCoeff_apply, coeff_derivative]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_one_subst' {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f : PowerSeries ℂ_[p]) :
     coeff 1 (f.subst a : PowerSeries ℂ_[p]) = coeff 1 f * coeff 1 a := by
@@ -229,7 +225,7 @@ theorem coeff_one_subst' {a : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (f
   simpa [← coeff_zero_eq_constantCoeff_apply, coeff_derivative] using e
 
 /- English proof (translation)
-Simplify using `only [lamC, dif_pos hx, dif_pos hy, dif_pos (mul_mem hx hy)]`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_mul (lam : Qbar →+* ℂ_[p]) {x y : ℂ} (hx : x ∈ Qbar) (hy : y ∈ Qbar) :
     lamC lam (x * y) = lamC lam x * lamC lam y := by
@@ -237,28 +233,28 @@ theorem lamC_mul (lam : Qbar →+* ℂ_[p]) {x y : ℂ} (hx : x ∈ Qbar) (hy : 
   rw [← map_mul]; rfl
 
 /- English proof (translation)
-Simplify using `only [lamC, dif_pos (one_mem Qbar)]`. Conclude with `map_one lam`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamC_one (lam : Qbar →+* ℂ_[p]) : lamC lam 1 = 1 := by
   simp only [lamC, dif_pos (one_mem Qbar)]
   exact map_one lam
 
 /- English proof (translation)
-Simplify using `only [lamC, dif_pos (zero_mem Qbar)]`. Conclude with `map_zero lam`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamC_zero (lam : Qbar →+* ℂ_[p]) : lamC lam 0 = 0 := by
   simp only [lamC, dif_pos (zero_mem Qbar)]
   exact map_zero lam
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `IsAlgebraic.of_pow hm (h ▸ isAlgebraic_one)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_mem {ζ : ℂ} {m : ℕ} (hm : 0 < m) (h : ζ ^ m = 1) : ζ ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
   exact IsAlgebraic.of_pow hm (h ▸ isAlgebraic_one)
 
 /- English proof (translation)
-Establish `hζ` using `root_mem hm h`. Establish `e : (⟨ζ, hζ⟩ : Qbar) ^ m = 1` using `Subtype.ext (by simpa using h)`. Establish `e2 : ‖lam ⟨ζ, hζ⟩‖ ^ m = 1` using `by rw [← norm_pow, ← map_pow, e, map_one, norm_one]`. Simplify using `only [lamC, dif_pos hζ]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_lamC_root (lam : Qbar →+* ℂ_[p]) {ζ : ℂ} {m : ℕ} (hm : 0 < m) (h : ζ ^ m = 1) :
     ‖lamC lam ζ‖ = 1 := by
@@ -269,9 +265,9 @@ theorem norm_lamC_root (lam : Qbar →+* ℂ_[p]) {ζ : ℂ} {m : ℕ} (hm : 0 <
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 e2
 
 /- English proof (translation)
-Establish `h0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `[lamC_zero] at h`. Establish `e` using `lamC_mul lam hc (inv_mem hc)`. Rewrite `e` using `[mul_inv_cancel₀ h0, lamC_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg norm e`. Rewrite `e2` using `[norm_one, norm_mul, h, one_mul]`. Conclude with `e2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lamC_inv (lam : Qbar →+* ℂ_[p]) {c : ℂ} (hc : c ∈ Qbar) (h : ‖lamC lam c‖ = 1) :
     ‖lamC lam c⁻¹‖ = 1 := by
@@ -285,7 +281,7 @@ theorem norm_lamC_inv (lam : Qbar →+* ℂ_[p]) {c : ℂ} (hc : c ∈ Qbar) (h 
   exact e2.symm
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Establish `: constantCoeff g.l = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, GL3Theta.G1.l, flog, coeff_mk, if_pos rfl]`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_arg (g : GL3Theta.G1 p) :
     constantCoeff (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * g.l) = 0 := by
@@ -295,7 +291,7 @@ theorem constantCoeff_arg (g : GL3Theta.G1 p) :
   rw [this, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[GL3Theta.G1.atU, constantCoeff_subst' (constantCoeff_arg g), ← coeff_zero_eq_constantCoeff_apply, GL3Theta.ser1, coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_atU (g : GL3Theta.G1 p) (G : ℂ → ℂ) :
     constantCoeff (g.atU G) = lamC g.lam (G 0) := by
@@ -304,9 +300,9 @@ theorem constantCoeff_atU (g : GL3Theta.G1 p) (G : ℂ → ℂ) :
   simp
 
 /- English proof (translation)
-Establish `e : GL3Theta.ser1 g.lam (fun z => c * G z) = lamC g.lam c • GL3Theta.ser1 g.lam G`. Use extensionality with `n`. Simplify using `only [GL3Theta.ser1, coeff_mk, map_smul, smul_eq_mul]`. Rewrite using `[iteratedDeriv_const_mul_field, mul_div_assoc]`. Conclude with `lamC_mul g.lam hc (hG n)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GL3Theta.G1.atU, e, subst_smul (HasSubst.of_constantCoeff_zero' (constantCoeff_arg g)), smul_eq_C_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem atU_const_mul (g : GL3Theta.G1 p) {c : ℂ} (hc : c ∈ Qbar) {G : ℂ → ℂ}
     (hG : ∀ n, coef1 G n ∈ Qbar) :
@@ -321,14 +317,14 @@ theorem atU_const_mul (g : GL3Theta.G1 p) {c : ℂ} (hc : c ∈ Qbar) {G : ℂ �
   rfl
 
 /- English proof (translation)
-Establish `e` using `atU_const_mul g (c := 0) (zero_mem _) (G := fun _ => 0) (fun n => by simp [coef1])`. Simplify `e` using `[lamC_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem atU_zero (g : GL3Theta.G1 p) : g.atU (fun _ => 0) = 0 := by
   have e := atU_const_mul g (c := 0) (zero_mem _) (G := fun _ => 0) (fun n => by simp [coef1])
   simpa [lamC_zero] using e
 
 /- English proof (translation)
-Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [constantCoeff_atU, h0, lamC_zero]`. Consider the case `succ n`. Rewrite using `[mul_assoc, coeff_C_mul, coeff_succ_X_mul, ePhi1, coeff_mk, ← mul_assoc, mul_inv_cancel₀ (Units.ne_zero _), one_mul]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -344,11 +340,11 @@ theorem atU_sg (g : GL3Theta.G1 p) (h0 : sgStar g.abelian₂ 0 = 0) :
     rfl
 
 /- English proof (translation)
-Establish `hw0 : constantCoeff g.wq = 1`. Use `congrArg constantCoeff hw` as an intermediate fact. Simplify using `using this`. Establish `hl : coeff 1 g.l = 1`. Rewrite using `[GL3Theta.G1.l, flog, coeff_mk, if_neg one_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[omegaW, hw0, PowerSeries.constantCoeff_inv, map_ofNat]`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ePhi1, coeff_mk]`. Establish `e` using `coeff_one_subst' (constantCoeff_arg g) (sgSer g.lam g.abelian₂)`. Establish `e1 : coeff 1 (sgSer g.lam g.abelian₂) = 1`. Simplify using `[sgSer, h1, lamC_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[e1, one_mul, PowerSeries.algebraMap_apply, coeff_C_mul, hl, mul_one]`. Establish `e2 : coeff (0 + 1) (subst (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * flog (g.C • wModel g.lam g.abelian₂) g.wq) (sgSer g.lam g.abelian₂) : PowerSeries ℂ_[p]) = ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])` using `e`. Rewrite using `[e2, inv_mul_cancel₀ (Units.ne_zero _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_ePhi1 (g : GL3Theta.G1 p) (hw : IsWq g.W g.wq) (h1 : deriv (sgStar g.abelian₂) 0 = 1) :
     constantCoeff (ePhi1 g.lam g.abelian₂ g.C g.wq) = 1 := by
@@ -372,7 +368,7 @@ noncomputable def cocy (Λ : AddSubgroup ℂ) (y t : ℂ) : ℂ :=
   Complex.exp ((Real.pi : ℂ) * (t * (starRingEnd ℂ) y - y * (starRingEnd ℂ) t) / (2 * (area Λ : ℂ)))
 
 /- English proof (translation)
-Simplify using `only [U1, cocy]`. Rewrite using `[mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add, add_assoc]`. Use `congr 2`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaTranslation_comp_eq_cocycle_mul (Λ : AddSubgroup ℂ) (y t : ℂ) (G : ℂ → ℂ) (z : ℂ) :
     U1 Λ y (U1 Λ t G) z = cocy Λ y t * U1 Λ (y + t) G z := by
@@ -383,7 +379,7 @@ theorem thetaTranslation_comp_eq_cocycle_mul (Λ : AddSubgroup ℂ) (y t : ℂ) 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [U1]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaTranslation_const_mul (Λ : AddSubgroup ℂ) (y c : ℂ) (G : ℂ → ℂ) :
     U1 Λ y (fun z => c * G z) = fun z => c * U1 Λ y G z := by
@@ -392,14 +388,14 @@ theorem thetaTranslation_const_mul (Λ : AddSubgroup ℂ) (y c : ℂ) (G : ℂ �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[U1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thetaTranslation_zero (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) : U1 Λ 0 G = G := by
   funext z
   simp [U1]
 
 /- English proof (translation)
-Simplify using `only [cocy]`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Simplify using `only [map_mul, map_natCast]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -413,14 +409,14 @@ theorem cocy_pow (Λ : AddSubgroup ℂ) (y t : ℂ) (m n : ℕ) :
   ring
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem cocy_ne_zero (Λ : AddSubgroup ℂ) (y t : ℂ) : cocy Λ y t ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hG`. Establish `e` using `thetaTranslation_comp_eq_cocycle_mul Λ a b G z`. Rewrite `e` using `[show U1 Λ b G = fun z => (if b / 2 ∈ Λ then 1 else -1) * G z from funext (h b hb), thetaTranslation_const_mul, h _ (add_mem ha hb)]`. Simplify using `only [h a ha] at e`. Rewrite `e` using `[← mul_assoc, ← mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg (· ^ 2) (mul_right_cancel₀ hz e)`. Simplify using `only [mul_pow] at e2`. Apply the tactic sequence `split_ifs at e2 <;> simpa using e2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cocy_sq {Λ : AddSubgroup ℂ} {G : ℂ → ℂ} (hG : ∃ z, G z ≠ 0)
     (h : ∀ ω ∈ Λ, ∀ z, U1 Λ ω G z = (if ω / 2 ∈ Λ then 1 else -1) * G z)
@@ -436,7 +432,7 @@ theorem cocy_sq {Λ : AddSubgroup ℂ} {G : ℂ → ℂ} (hG : ∃ z, G z ≠ 0)
   split_ifs at e2 <;> simpa using e2.symm
 
 /- English proof (translation)
-Rewrite using `[pow_mul, ← cocy_pow, cocy_sq hG h ha hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cocy_root {Λ : AddSubgroup ℂ} {G : ℂ → ℂ} (hG : ∃ z, G z ≠ 0)
     (h : ∀ ω ∈ Λ, ∀ z, U1 Λ ω G z = (if ω / 2 ∈ Λ then 1 else -1) * G z)
@@ -445,58 +441,56 @@ theorem cocy_root {Λ : AddSubgroup ℂ} {G : ℂ → ℂ} (hG : ∃ z, G z ≠ 
   rw [pow_mul, ← cocy_pow, cocy_sq hG h ha hb]
 
 /- English proof (translation)
-Rewrite using `[mul_pow, pow_mul, ha, mul_comm m, pow_mul, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem root_mul {a b : ℂ} {m n : ℕ} (ha : a ^ m = 1) (hb : b ^ n = 1) : (a * b) ^ (m * n) = 1 := by
   rw [mul_pow, pow_mul, ha, mul_comm m, pow_mul, hb]
   simp
 
 /- English proof (translation)
-Introduce `D hI p hp cc δ g hAt t0 hT`. Establish `hCrv : Crv D cc δ` using `⟨hAt.1, hAt.2.2.1⟩`. Establish `hL : g.abelian₂ = lamOf D cc δ` using `hAt.2.2.2.1`. Establish `hOk` using `hAt.2.2.2.2`. Take `⟨⟨-, hd, hodd, hq⟩, -⟩` from `GlobalTheory.OddTheta.sgStar_laws g.abelian₂ (hL ▸ (GlobalTheory.CurveLattice.lattice_of_curve D hI.g1 cc δ hCrv).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `halg : ∀ x, InRationalLattice g.abelian₂ x → ∀ n, coef1 (U1 g.abelian₂ x (sgStar g.abelian₂)) n ∈ Qbar` using `hL ▸ (hI.use1 cc δ hCrv).1`. Establish `halg0 : ∀ n, coef1 (GL3Theta.th0 g.abelian₂ t0) n ∈ Qbar`. Use `(hI.use1 cc δ hCrv).2.1` as an intermediate fact. Rewrite `this` using `[← hL]`. Conclude with `this t0 hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : sgStar g.abelian₂ 0 = 0`. Use `hodd 0` as an intermediate fact. Rewrite `this` using `[neg_zero]`. Take the linear combination `this / 2`. Establish `hne : ∃ z, sgStar g.abelian₂ z ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Rewrite `hd` using `[show sgStar g.abelian₂ = fun _ => 0 from funext h]`. Simplify using `at hd`. Establish `hN0 : ∀ N : ℕ, Nat.Coprime N p → 0 < N`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `N hN`. Break down `Nat.eq_zero_or_pos N with rfl | h` into its components or cases. Conclude with `absurd (Nat.coprime_zero_left p |>.1 hN) hp.out.ne_one`. Conclude with `h`. Establish `h2 : ((2 : ℕ) : ℂ) * t0 ∈ g.abelian₂` using `by simpa using hT.1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hc : U1 g.abelian₂ t0 (sgStar g.abelian₂) 0 = 0`. Establish `e : GL3Theta.th0 g.abelian₂ t0 = fun _ => 0`. Use function extensionality and compare the values at `z`. Simplify using `[GL3Theta.th0, hc]`. Establish `e2 : ∀ y, U1 g.abelian₂ y (fun _ => 0) = fun _ => 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `y`. Use function extensionality and compare the values at `z`. Simplify using `[U1]`. Simplify using `only [e, e2, atU_zero, mul_zero]`. Conclude with `⟨fun _ => ⟨integral_zero, fun _ _ _ _ => integral_zero⟩, fun _ => ⟨integral_zero, fun _ _ _ _ => integral_zero⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `ht : t0 ∉ g.abelian₂` using `fun h => hc (by rw [hq t0 h, hs0, mul_zero])`. Use `set c := U1 g.abelian₂ t0 (sgStar g.abelian₂) 0 with hcdef`. Establish `hcQ : c ∈ Qbar`. Use `halg t0 ⟨2, two_pos, h2⟩ 0` as an intermediate fact. Simplify `this` using `[coef1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hth : GL3Theta.th0 g.abelian₂ t0 = fun z => c⁻¹ * U1 g.abelian₂ t0 (sgStar g.abelian₂) z`. Use function extensionality and compare the values at `z`. Rewrite using `[GL3Theta.th0, div_eq_inv_mul]`. Establish `hU : ∀ y, U1 g.abelian₂ y (GL3Theta.th0 g.abelian₂ t0) = fun z => (c⁻¹ * cocy g.abelian₂ y t0) * U1 g.abelian₂ (y + t0) (sgStar g.abelian₂) z`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hth, thetaTranslation_const_mul]`. Use function extensionality and compare the values at `z`. Rewrite using `[thetaTranslation_comp_eq_cocycle_mul, mul_assoc]`. Establish `he` using `constantCoeff_ePhi1 g hOk.2.1 hd`. Establish `hinv : (ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * ePhi1 g.lam g.abelian₂ g.C g.wq = 1` using `PowerSeries.inv_mul_cancel _ (by rw [he]; exact one_ne_zero)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : p ≠ 2 → ∀ (y : ℂ) (N : ℕ), Nat.Coprime N p → (N : ℂ) * y ∈ g.abelian₂ → IntegralMv ((ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * g.atU (U1 g.abelian₂ y (GL3Theta.th0 g.abelian₂ t0)))`. Introduce `hp2 y N hN hy`. Establish `hcop : Nat.Coprime 2 p` using `(Nat.coprime_primes Nat.prime_two hp.out).2 hp2.symm`. Establish `hcn : ‖lamC g.lam c‖ = 1`. Use `(hI.transl p cc δ g hAt t0 ⟨ht, 2, two_pos, hcop, h2⟩).2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[constantCoeff_atU]`. Then use the resulting hypothesis. Establish `hm : 0 < N * 2 * 2` using `by have := hN0 N hN; positivity`. Establish `hr` using `cocy_root hne hq hy h2`. Establish `hsum : ((N * 2 : ℕ) : ℂ) * (y + t0) ∈ g.abelian₂`. Use `add_mem (nsmul_mem hy 2) (nsmul_mem h2 N)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN2 : 0 < N * 2` using `by have := hN0 N hN; positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hU, atU_const_mul g (mul_mem (inv_mem hcQ) (root_mem hm hr)) (halg _ ⟨_, hN2, hsum⟩), mul_left_comm]`. Use `integral_mul (integral_C ?_) ?_` and prove the remaining obligations. Rewrite using `[lamC_mul _ (inv_mem hcQ) (root_mem hm hr), norm_mul, norm_lamC_inv _ hcQ hcn, norm_lamC_root _ hm hr, one_mul]`. Distinguish the cases in `hyt : y + t0 ∈ g.abelian₂`. Establish `hsa : ∀ n, coef1 (sgStar g.abelian₂) n ∈ Qbar`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `halg 0 ⟨1, one_pos, by simp⟩` as an intermediate fact. Rewrite `this` using `[thetaTranslation_zero]`. Then use the resulting hypothesis. Apply the tactic sequence `have hsg : (if (y + t0) / 2 ∈ g.abelian₂ then (1 : ℂ) else -1) ^ 2 = 1 := by split_ifs <;> simp`. Establish `hu : ‖((g.C.u : ℂ_[p]ˣ) : ℂ_[p])‖ = 1` using `(hI.model p g.lam cc δ hAt.1 hAt.2.1 hAt.2.2.1).2.2 g.C (hL ▸ hOk.1)`. Rewrite using `[show U1 g.abelian₂ (y + t0) (sgStar g.abelian₂) = _ from funext (hq _ hyt), atU_const_mul g (root_mem two_pos hsg) hsa, atU_sg g hs0, mul_left_comm, mul_left_comm (ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹, hinv, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `integral_mul (integral_C (norm_lamC_root _ two_pos hsg).le) (integral_mul (integral_C ?_) integral_X)` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, hu, inv_one]`. Conclude with `(hI.transl p cc δ g hAt _ ⟨hyt, N * 2, hN2, Nat.Coprime.mul_left hN hcop, hsum⟩).1`. Establish `key2 : (p = 2 ∨ jacobiSym (-(D.host.d : ℤ)) p = 1) → ∀ (y : ℂ) (N : ℕ), Nat.Coprime N p → (N : ℂ) * y ∈ g.abelian₂ → IntegralMv (g.atU (U1 g.abelian₂ y (GL3Theta.th0 g.abelian₂ t0)))`. Introduce `hsp y N hN hy`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality. Take `⟨h1, h3⟩` from `hI.two cc δ g hAt t0 hT`. Distinguish the cases in `hyL : y ∈ g.abelian₂`. Establish `h0 : IntegralMv (g.atU (GL3Theta.th0 g.abelian₂ t0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_of_simeq _ ?_ h1` and prove the remaining obligations. Rewrite using `[constantCoeff_atU, GL3Theta.th0, div_self hc, lamC_one]`. Establish `hy1 : ((1 : ℕ) : ℂ) * y ∈ g.abelian₂` using `by simpa using hyL`. Apply the tactic sequence `have hsg : (if y / 2 ∈ g.abelian₂ then (1 : ℂ) else -1) ^ 2 = 1 := by split_ifs <;> simp`. Establish `hr1` using `cocy_root hne hq hy1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hr2 : (cocy g.abelian₂ t0 y)⁻¹ ^ (2 * 1 * 2) = 1`. Rewrite using `[inv_pow, cocy_root hne hq h2 hy1, inv_one]`. Establish `hr` using `root_mul (root_mul hr1 hr2) hsg`. Establish `e : U1 g.abelian₂ y (GL3Theta.th0 g.abelian₂ t0) = fun z => (cocy g.abelian₂ y t0 * (cocy g.abelian₂ t0 y)⁻¹ * (if y / 2 ∈ g.abelian₂ then (1 : ℂ) else -1)) * GL3Theta.th0 g.abelian₂ t0 z`. Rewrite using `[hU, hth]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `z`. Establish `e1` using `thetaTranslation_comp_eq_cocycle_mul g.abelian₂ t0 y (sgStar g.abelian₂) z`. Rewrite `e1` using `[show U1 g.abelian₂ y (sgStar g.abelian₂) = _ from funext (hq _ hyL), thetaTranslation_const_mul, add_comm t0]`. Establish `e0` using `mul_inv_cancel₀ (cocy_ne_zero g.abelian₂ t0 y)`. Simplify using `only at e1 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(-(c⁻¹ * cocy g.abelian₂ y t0 * (cocy g.abelian₂ t0 y)⁻¹)) * e1 - (c⁻¹ * cocy g.abelian₂ y t0 * U1 g.abelian₂ (y + t0) (sgStar g.abelian₂) z) * e0`. Rewrite using `[e, atU_const_mul g (root_mem (by norm_num) hr) halg0]`. Conclude with `integral_mul (integral_C (norm_lamC_root _ (by norm_num) hr).le) h0`. Conclude with `(h3 y ⟨hyL, N, hN0 N hN, hN, hy⟩).1`. Establish `h1` using `(hI.split p cc δ g hAt hp2 (hsp.resolve_left hp2)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : (g.phAt (GL3Theta.Xv ()) : MvPowerSeries Unit ℂ_[p]) = g.ph` using `X_subst g.ph`. Rewrite `h1` using `[e]`. Establish `h3` using `integral_mul (integral_of_simeq _ he h1) (key hp2 y N hN hy)`. Rewrite `h3` using `[← mul_assoc, mul_comm (ePhi1 _ _ _ _), hinv, one_mul]`. Then use the resulting hypothesis. Use `⟨fun h => ⟨?_, key h⟩, fun h => ⟨?_, key2 h⟩⟩` and prove the remaining obligations.
-
-Use `key h 0 1 (Nat.coprime_one_left p) (by simp)` as an intermediate fact. Rewrite `this` using `[thetaTranslation_zero]`. Then use the resulting hypothesis. Use `key2 h 0 1 (Nat.coprime_one_left p) (by simp)` as an intermediate fact. Rewrite `this` using `[thetaTranslation_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_param_integral : ∀ (D : D7), Inp D → ∀ (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p), GL3Theta.At D cc δ g → ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D g.abelian₂ t0 → (p ≠ 2 → IntegralMv ((ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * g.atU (GL3Theta.th0 g.abelian₂ t0)) ∧ ∀ (y : ℂ) (N : ℕ), Nat.Coprime N p → (N : ℂ) * y ∈ g.abelian₂ → IntegralMv ((ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * g.atU (U1 g.abelian₂ y (GL3Theta.th0 g.abelian₂ t0)))) ∧ ((p = 2 ∨ jacobiSym (-(D.host.d : ℤ)) p = 1) → IntegralMv (g.atU (GL3Theta.th0 g.abelian₂ t0)) ∧ ∀ (y : ℂ) (N : ℕ), Nat.Coprime N p → (N : ℂ) * y ∈ g.abelian₂ → IntegralMv (g.atU (U1 g.abelian₂ y (GL3Theta.th0 g.abelian₂ t0)))) := by
   intro D hI p hp cc δ g hAt t0 hT

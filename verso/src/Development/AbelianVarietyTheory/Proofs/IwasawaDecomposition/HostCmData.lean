@@ -10,15 +10,15 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Introduce `R H`. Use `letI := H.cmStar`. Establish `hcm` using `H.isCMField_hostE`. Establish `hs : ∀ x : H.E, star x = H.conj x` using `bridge_star_holds R H`. Use `⟨⟨inferInstance, fun φ a => ?_, fun P hP => ?_⟩, inferInstance, ?_, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs]`. Conclude with `H.conjE_apply _ _`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)`. Establish `h` using `H.der.unramEF P hP.isPrime hP0`. Take `⟨x, hx⟩` from `not_forall.1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, H.conj • x, ?_, fun h' => hx ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Both sides reduce to the same expression. Use `P.neg_mem h'` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Rewrite using `[hs]`. Establish `h` using `H.conjE_mem_hostF_iff a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨a, h.2 ha⟩, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `h.1 y.2`.
+A detailed English derivation is pending.
 -/
 theorem host_cmData : ∀ (R : Ranks) (H : Host R), @CMData H.F H.E _ _ _ _ H.cmStar _ := by
   intro R H

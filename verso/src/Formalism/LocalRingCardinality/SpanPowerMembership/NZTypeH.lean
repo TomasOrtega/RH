@@ -21,9 +21,9 @@ structure Lbl where
     Formalism.CyclotomicNorms.IsGood R.r (H.g k) (fun v => if t v then fA k else fB k) (fun (_ : PP) (_ : J) => (1 : (ZMod (H.g k))ˣ))
 
 /- English proof (translation)
-Establish `hd : ∀ k, H.QS * H.q * H.d ∣ H.g k - 1` using `fun k => by`. Establish `h` using `Nat.div_add_mod (H.g k) (H.QS * H.q * H.d)`. Rewrite `h` using `[ht.cond k]`. Conclude with `⟨H.g k / (H.QS * H.q * H.d), by omega⟩`. Establish `hq2 : H.q ≠ 2` using `fun e => by have := H.hyp.2.2.1; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key` using `fun k => exists_good (g := H.g k) R.r p H.q hp h1 h2 H.hyp.1 hq2 (((((dvd_pow_self 2 (by omega)).trans H.tower_dvd : 2 ∣ H.QS).mul_right H.q).mul_right H.d).trans (hd k)) ((Dvd.intro (H.QS * H.d) (by ring)).trans (hd k))`. Use `choose fA fB h using key`. Conclude with `⟨⟨fA, fB, fun k => (h k).1, fun k => (h k).2.1, fun k => (h k).2.2.1, fun k => (h k).2.2.2⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lbl_nonempty (ht : THyp H) (p : ℕ) (hp : p.Prime) (h1 : R.r < 2 * p) (h2 : p + 3 ≤ R.r) :
     Nonempty (Lbl H) := by
@@ -43,14 +43,14 @@ variable {H} (Lb : Lbl H)
 def tupL (k : Fin 2) (v : Fin R.f) : (ZMod (H.g k))[X] := if decide (v.1 ≠ 0) then Lb.fA k else Lb.fB k
 
 /- English proof (translation)
-Establish `: 0 < R.n` using `by unfold Ranks.n; positivity`. Unfold `Ranks.f`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_f (R : Ranks) : 2 ≤ R.f := by
   have : 0 < R.n := by unfold Ranks.n; positivity
   unfold Ranks.f; omega
 
 /- English proof (translation)
-The claim follows from `Lb.good k (Fin R.f) J (fun v => decide (v.1 ≠ 0)) ⟨⟨1, two_le_f R⟩, by simp⟩ ⟨⟨0, by have := two_le_f R; omega⟩, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem tupL_good (J : Type) (k : Fin 2) :
     Formalism.CyclotomicNorms.IsGood R.r (H.g k) (tupL Lb k) (fun (_ : Fin R.f) (_ : J) => (1 : (ZMod (H.g k))ˣ)) :=
@@ -60,7 +60,7 @@ theorem tupL_good (J : Type) (k : Fin 2) :
 def labL {FT : Type} (k : Fin 2) (_ : FT) (v : Fin R.f) : (ZMod (H.g k))[X] := tupL Lb k v
 
 /- English proof (translation)
-Unfold `labL tupL`. Use `split_ifs`. Conclude with `⟨(Lb.okA k).1, (Lb.okA k).2.1⟩`. Conclude with `⟨(Lb.okB k).1, (Lb.okB k).2.1⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem labL_monic {FT : Type} (k : Fin 2) (σ : FT) (v : Fin R.f) :
     (labL Lb k σ v).Monic ∧ (labL Lb k σ v).natDegree = R.r := by
@@ -75,9 +75,9 @@ def zL (k : Fin 2) : GL (Fin R.r) (ZMod (H.g k)) := -1
 
 variable (H) in
 /- English proof (translation)
-Introduce `h`. Establish `hr : 0 < R.r` using `Nat.pos_of_ne_zero (r_ne_zero R)`. Establish `h1` using `congrArg (fun u : GL (Fin R.r) (ZMod (H.g k)) => (u : Matrix (Fin R.r) (Fin R.r) (ZMod (H.g k))) ⟨0, hr⟩ ⟨0, hr⟩) h`. Simplify using `only [zL, Units.val_neg, Units.val_one, Matrix.neg_apply, Matrix.one_apply_eq] at h1`. Establish `h2 : (2 : ZMod (H.g k)) = 0` using `by linear_combination -h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : ((2 : ℕ) : ZMod (H.g k)) = 0` using `by exact_mod_cast h2`. Rewrite `h3` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `(ht.jac k).1 ((Nat.prime_dvd_prime_iff_eq (H.g_prime k) Nat.prime_two).mp h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zL_ne_one (ht : THyp H) (k : Fin 2) : zL H k ≠ 1 := by
   intro h
@@ -97,7 +97,7 @@ variable (H) (what₂ : Rows.Data R) (h : NHyp H what₂)
 abbrev ndG : NData R H what₂ := ndL H what₂ h (labL Lb) (labL_monic Lb)
 
 /- English proof (translation)
-Introduce `k` and use `⟨tupL_good Lb _ k, by have e : (fun (v : Fin R.f) (j : Fin R.m) => ((1 : (ZMod (H.g k))ˣ))⁻¹) = fun _ _ => 1 := by funext _ _; exact inv_one show Formalism.CyclotomicNorms.IsGood R.r (H.g k) (tupL Lb k) (fun (v : Fin R.f) (j : Fin R.m) => ((1 : (ZMod (H.g k))ˣ))⁻¹) rw [e]; exact …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem goodT_tupL : GoodT (ndG H Lb what₂ h) (tupL Lb) := fun k =>
   ⟨tupL_good Lb _ k, by
@@ -107,7 +107,7 @@ theorem goodT_tupL : GoodT (ndG H Lb what₂ h) (tupL Lb) := fun k =>
     rw [e]; exact tupL_good Lb _ k⟩
 
 /- English proof (translation)
-The claim follows from `goodT_tupL H Lb what₂ h`.
+A detailed English derivation is pending.
 -/
 theorem goodRow_ndG (σ : what₂.FT) : (ndG H Lb what₂ h).goodRow σ := goodT_tupL H Lb what₂ h
 
@@ -118,19 +118,19 @@ variable (K : Type) [Field K] [CharZero K]
 def e0L : MonoidAlgebra K (G0g (ndG H Lb what₂ h)) := e0F (ndG H Lb what₂ h) (esL Lb K)
 
 /- English proof (translation)
-The claim follows from `seriesIdempotent_idem _ _ (fun k f => esZ_idem f) (fun k f f' hf => esZ_orth f f' hf)`.
+A detailed English derivation is pending.
 -/
 theorem labelIdempotent_idem : e0L H Lb what₂ h K * e0L H Lb what₂ h K = e0L H Lb what₂ h K :=
   seriesIdempotent_idem _ _ (fun k f => esZ_idem f) (fun k f f' hf => esZ_orth f f' hf)
 
 /- English proof (translation)
-The claim follows from `seriesIdempotent_central _ _ (fun k f a => esZ_central f a) a`.
+A detailed English derivation is pending.
 -/
 theorem labelIdempotent_central (a) : e0L H Lb what₂ h K * a = a * e0L H Lb what₂ h K :=
   seriesIdempotent_central _ _ (fun k f a => esZ_central f a) a
 
 /- English proof (translation)
-The claim follows from `seriesIdempotent_ne_zero _ _ (fun k f => esZ_idem f) (fun k f f' hf => esZ_orth f f' hf) (tupL Lb) (goodT_tupL H Lb what₂ h) (fun k v => by unfold esL esZ tupL by_cases hv : decide (v.1 ≠ 0) = true · rw [if_pos hv, if_pos rfl]; exact one_sub_eT_ne_zero (zL H k) (zL_ne_one H ht k) …`.
+A detailed English derivation is pending.
 -/
 theorem labelIdempotent_ne_zero (ht : THyp H) : e0L H Lb what₂ h K ≠ 0 :=
   seriesIdempotent_ne_zero _ _ (fun k f => esZ_idem f) (fun k f f' hf => esZ_orth f f' hf)
@@ -143,9 +143,9 @@ theorem labelIdempotent_ne_zero (ht : THyp H) : e0L H Lb what₂ h K ≠ 0 :=
 def qcL (g : G0g (ndG H Lb what₂ h)) : ℚ := (e0L H Lb what₂ h ℚ).coeff g
 
 /- English proof (translation)
-Unfold `qcL e0L e0F`. Rewrite using `[eSum_coeff, eSum_coeff, Rat.cast_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Rat.cast_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Use `show (esZ K _ _ _ _).coeff _ = ((esZ ℚ _ _ _ _).coeff _ : K)`. Rewrite using `[esZ_coeff, esZ_coeff, Rat.cast_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem labelIdempotent_coeff (g) : (e0L H Lb what₂ h K).coeff g = (qcL H Lb what₂ h g : K) := by
   unfold qcL e0L e0F
@@ -161,7 +161,7 @@ theorem labelIdempotent_coeff (g) : (e0L H Lb what₂ h K).coeff g = (qcL H Lb w
 end Field
 
 /- English proof (translation)
-The claim follows from `Subalgebra.mem_center_iff.mpr fun b => (labelIdempotent_central H Lb what₂ h ℂ b).symm`.
+A detailed English derivation is pending.
 -/
 theorem labelIdempotent_mem_center : e0L H Lb what₂ h ℂ ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (ndG H Lb what₂ h))) :=
   Subalgebra.mem_center_iff.mpr fun b => (labelIdempotent_central H Lb what₂ h ℂ b).symm
@@ -170,7 +170,7 @@ def omL (ht : THyp H) : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (ndG H Lb 
   (exists_char _ (labelIdempotent_mem_center H Lb what₂ h) (labelIdempotent_idem H Lb what₂ h ℂ) (labelIdempotent_ne_zero H Lb what₂ h ℂ ht)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_char _ (labelIdempotent_mem_center H Lb what₂ h) (labelIdempotent_idem H Lb what₂ h ℂ) (labelIdempotent_ne_zero H Lb what₂ h ℂ ht)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem labelCharacter_idempotent_one (ht : THyp H) : omL H Lb what₂ h ht ⟨_, labelIdempotent_mem_center H Lb what₂ h⟩ = 1 :=
   (exists_char _ (labelIdempotent_mem_center H Lb what₂ h) (labelIdempotent_idem H Lb what₂ h ℂ) (labelIdempotent_ne_zero H Lb what₂ h ℂ ht)).choose_spec
@@ -235,20 +235,20 @@ def ntypesL (ht : THyp H) (htm : TameHyp H) : NTypes (nautL H what₂ h (labL Lb
   AmbPar := fun _ σ => σ.elim
 
 /- English proof (translation)
-The claim follows from `e0_eq _`.
+A detailed English derivation is pending.
 -/
 theorem labelNewtypes_idempotent_eq (ht htm) : (ntypesL H Lb what₂ h ht htm).e0 = e0L H Lb what₂ h ℂ := e0_eq _
 
 /- English proof (translation)
-Rewrite using `[labelNewtypes_idempotent_eq]`. Conclude with `labelIdempotent_ne_zero H Lb what₂ h ℂ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labelNewtypes_idempotent_ne_zero (ht htm) : (ntypesL H Lb what₂ h ht htm).e0 ≠ 0 := by
   rw [labelNewtypes_idempotent_eq]; exact labelIdempotent_ne_zero H Lb what₂ h ℂ ht
 
 /- English proof (translation)
-Establish `key : (⟨(ntypesL H Lb what₂ h ht htm).e0, idempotent_mem_center _⟩ : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (ndG H Lb what₂ h)))) = ⟨_, labelIdempotent_mem_center H Lb what₂ h⟩` using `Subtype.ext (labelNewtypes_idempotent_eq H Lb what₂ h ht htm)`. Use `⟨fun μ => ?_, fun μ j => ?_⟩` and prove the remaining obligations. Rewrite using `[hA, ambientAction_idempotent, key] show (1 : Module.End ℂ (what₂.Amb μ)) = Algebra.ofId ℂ _ (omL H Lb what₂ h ht _)`. Rewrite using `[labelCharacter_idempotent_one, map_one]`. Rewrite using `[hM, matrixAction_idempotent, key] show (1 : Module.End ℂ (what₂.Mt μ j)) = Algebra.ofId ℂ _ (omL H Lb what₂ h ht _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[labelCharacter_idempotent_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ntypesL_E0Tie (ht htm) (hA : ∀ μ, what₂.eOp μ = 1) (hM : ∀ μ j, what₂.eMt μ j = 1) :
     (ntypesL H Lb what₂ h ht htm).IdempotentMatchesAction := by
@@ -264,7 +264,7 @@ theorem ntypesL_E0Tie (ht htm) (hA : ∀ μ, what₂.eOp μ = 1) (hM : ∀ μ j,
     rw [labelCharacter_idempotent_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[labelNewtypes_idempotent_eq, labelIdempotent_coeff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem labelIdempotent_baseField [NumberField what₂.LL] (LL0 : IntermediateField ℚ what₂.LL) (ht htm) (g) :
     what₂.embLL (((qcL H Lb what₂ h g : ℚ) : ↥LL0) : what₂.LL) = (ntypesL H Lb what₂ h ht htm).e0.coeff g := by

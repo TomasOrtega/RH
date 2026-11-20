@@ -7,9 +7,7 @@ open Complex Filter Topology
 namespace GlobalTheory.ArtinKernel
 
 /- English proof (translation)
-Use `choose k hk using hcov`. Use `⟨fun z => G (k z) z, fun z => ?_, fun j z hz => hc _ _ _ (hk z) hz⟩` and prove the remaining obligations. Establish `hU : D (k z) ∈ 𝓝 z` using `(hD (k z)).mem_nhds (hk z)`. Establish `hev : (fun w => G (k w) w) =ᶠ[𝓝 z] G (k z)` using `by filter_upwards [hU] with w hw`. Conclude with `hc _ _ _ (hk w) hw`.
-
-Conclude with `((hG (k z)).differentiableAt hU).congr_of_eventuallyEq hev`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_glue {g : ℕ} {J : Type*} (D : J → Set (Fin g → ℂ))
     (G : J → (Fin g → ℂ) → ℂ) (hD : ∀ j, IsOpen (D j)) (hcov : ∀ z, ∃ j, z ∈ D j)
@@ -25,21 +23,21 @@ theorem exists_glue {g : ℕ} {J : Type*} (D : J → Set (Fin g → ℂ))
   exact ((hG (k z)).differentiableAt hU).congr_of_eventuallyEq hev
 
 /- English proof (translation)
-The claim follows from `differentiableOn_univ.mp (GlobalTheory.SCV.differentiableOn_fderiv isOpen_univ hF.differentiableOn)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_fderiv {g : ℕ} {F : (Fin g → ℂ) → ℂ} (hF : Differentiable ℂ F) :
     Differentiable ℂ (fderiv ℂ F) := differentiableOn_univ.mp (GlobalTheory.SCV.differentiableOn_fderiv isOpen_univ hF.differentiableOn)
 
 /- English proof (translation)
-Establish `hD : Differentiable ℂ (fderiv ℂ F)` using `differentiable_fderiv hF`. Establish `hper : ∀ z, ∀ l ∈ S, fderiv ℂ F (z + l) = fderiv ℂ F z`. Introduce `z l hl`. Establish `h1 : (fun w => F (w + l)) = fun w => F w + b ⟨l, hl⟩` using `funext fun w => hb ⟨l, hl⟩ w`. Rewrite using `[← fderiv_comp_add_right (f := F) l, h1, fderiv_add_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hconst : ∀ z, fderiv ℂ F z = fderiv ℂ F 0` using `fun z => GlobalTheory.entire_apply_eq_of_periodic_of_span_real hD hS hper z 0`. Use `set L := fderiv ℂ F 0 with hL`. Establish `hlin : ∀ z, F z = F 0 + L z`. Introduce `z`. Establish `hd : Differentiable ℂ (fun w => F w - L w)` using `hF.sub L.differentiable`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ w, fderiv ℂ (fun w => F w - L w) w = 0`. Introduce `w`. Rewrite using `[fderiv_fun_sub (hF w) L.differentiableAt, L.fderiv, hconst w, sub_self]`. Use `is_const_of_fderiv_eq_zero hd h0 z 0` as an intermediate fact. Rewrite `this` using `[map_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this`. Use `⟨L.toLinearMap, fun l => ?_⟩` and prove the remaining obligations. Use `hb l 0` as an intermediate fact. Rewrite `this` using `[zero_add, hlin l.1]`. Simplify using `only [ContinuousLinearMap.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-this`.
+A detailed English derivation is pending.
 -/
 theorem exists_linear_of_add_period {g : ℕ} {F : (Fin g → ℂ) → ℂ} (hF : Differentiable ℂ F)
     {S : Set (Fin g → ℂ)} (hS : Submodule.span ℝ S = ⊤) (b : S → ℂ)
@@ -69,21 +67,19 @@ theorem exists_linear_of_add_period {g : ℕ} {F : (Fin g → ℂ) → ℂ} (hF 
   linear_combination -this
 
 /- English proof (translation)
-Establish `hb0 : ∀ l : S, b l ≠ 0`. Introduce `l hl`. Use `hb l 0` as an intermediate fact. Rewrite `this` using `[hl, zero_mul, zero_add]`. Conclude with `h0 _ this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdF : ∀ (l : S) z, fderiv ℂ F (z + l) = b l • fderiv ℂ F z`. Introduce `l z`. Establish `h1 : (fun w => F (w + l)) = fun w => b l * F w` using `funext fun w => hb l w`. Rewrite using `[← fderiv_comp_add_right (f := F) (l : Fin g → ℂ), h1, fderiv_const_mul (hF z)]`. Use `set H : (Fin g → ℂ) → ((Fin g → ℂ) →L[ℂ] ℂ) := fun z => (F z)⁻¹ • fderiv ℂ F z with hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHd : Differentiable ℂ H` using `(hF.inv h0).smul (differentiable_fderiv hF)`. Establish `hper : ∀ z, ∀ l ∈ S, H (z + l) = H z`. Introduce `z l hl`. Simplify using `only [hH]`. Rewrite using `[hb ⟨l, hl⟩ z, hdF ⟨l, hl⟩ z, smul_smul, mul_inv_rev, mul_assoc, inv_mul_cancel₀ (hb0 _), mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconst : ∀ z, H z = H 0` using `fun z => GlobalTheory.entire_apply_eq_of_periodic_of_span_real hHd hS hper z 0`. Use `set L := H 0 with hL`. Establish `hDF : ∀ w, fderiv ℂ F w = F w • L`. Introduce `w`. Rewrite using `[← hconst w, hH, smul_smul, mul_inv_cancel₀ (h0 w), one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hK : ∀ w, fderiv ℂ (fun z => F z * cexp (-L z)) w = 0`. Introduce `w`. Establish `h2 : HasFDerivAt (fun z => F z * cexp (-L z)) (F w • (cexp (-L w) • -L) + cexp (-L w) • fderiv ℂ F w) w` using `(hF w).hasFDerivAt.mul L.hasFDerivAt.neg.cexp`. Rewrite using `[h2.fderiv, hDF w]`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [add_apply, smul_apply, neg_apply, zero_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hKd : Differentiable ℂ (fun z => F z * cexp (-L z))` using `hF.mul (L.differentiable.neg.cexp)`. Use `⟨L.toLinearMap, fun l => ?_⟩` and prove the remaining obligations. Establish `e1` using `is_const_of_fderiv_eq_zero hKd hK (l : Fin g → ℂ) 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `hb l 0`. Rewrite `e2` using `[zero_add]`. Rewrite `e1` using `[e2, map_zero, neg_zero, Complex.exp_zero, mul_one, mul_right_comm]`. Establish `e3 : b l * cexp (-L l) = 1`. Use `mul_right_cancel₀ (h0 0) (e1.trans (one_mul _).symm)` as an intermediate fact.
-
-Conclude with `this`. Rewrite `e3` using `[Complex.exp_neg, mul_inv_eq_one₀ (Complex.exp_ne_zero _)]`. Simplify `e3` using `only [ContinuousLinearMap.coe_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_linear_of_mul_period {g : ℕ} {F : (Fin g → ℂ) → ℂ} (hF : Differentiable ℂ F)
     (h0 : ∀ z, F z ≠ 0) {S : Set (Fin g → ℂ)} (hS : Submodule.span ℝ S = ⊤) (b : S → ℂ)
@@ -137,9 +133,9 @@ section Artin
 variable {R : Type} [CommRing R] [Algebra ℂ R] [IsLocalRing R] [Module.Finite ℂ R]
 
 /- English proof (translation)
-Establish `hsurj` using `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ) (K := R ⧸ IsLocalRing.maximalIdeal R))`. Set `e : ℂ ≃ₐ[ℂ] R ⧸ IsLocalRing.maximalIdeal R` to `AlgEquiv.ofBijective (Algebra.ofId ℂ _) hsurj`. Use `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ _), fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1 : e.symm (Ideal.Quotient.mk _ r) = 0` using `hr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg e h1`. Rewrite `h2` using `[AlgEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_residue : ∃ ρ : R →ₐ[ℂ] ℂ, ∀ r, ρ r = 0 → r ∈ IsLocalRing.maximalIdeal R := by
   have hsurj := (IsAlgClosed.algebraMap_bijective_of_isIntegral
@@ -152,7 +148,7 @@ theorem exists_residue : ∃ ρ : R →ₐ[ℂ] ℂ, ∀ r, ρ r = 0 → r ∈ I
   rwa [AlgEquiv.apply_symm_apply, map_zero] at h2
 
 /- English proof (translation)
-Establish `: IsArtinianRing R` using `IsArtinianRing.of_finite ℂ R`. Use `⟨fun p q => PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime p.asIdeal), IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime q.asIdeal)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_primeSpectrum : Subsingleton (PrimeSpectrum R) := by
   have : IsArtinianRing R := IsArtinianRing.of_finite ℂ R
@@ -161,17 +157,13 @@ theorem subsingleton_primeSpectrum : Subsingleton (PrimeSpectrum R) := by
     IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime q.asIdeal)]
 
 /- English proof (translation)
-Use `set m := IsLocalRing.maximalIdeal R`. Use `set N : Submodule ℂ R := Submodule.span ℂ {x | ∃ r ∈ m, ∃ i, x = r * δ i} with hN`. Establish `hex : ∃ i, δ i ∉ N` using `by by_contra! hall set J : Ideal R := Ideal.span (Set.range δ) with hJ`. Establish `hNJ : ∀ x ∈ N, x ∈ m • J`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_induction (p := fun x _ => x ∈ m • J) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, i, rfl⟩`. Conclude with `Submodule.smul_mem_smul hr (Ideal.subset_span ⟨i, rfl⟩)`. Conclude with `zero_mem _`. Introduce `x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Conclude with `Submodule.smul_of_tower_mem _ c hx`. Establish `hle : J ≤ m • J`. Rewrite using `[hJ, Ideal.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hNJ _ (hall i)`. Establish `: IsArtinianRing R` using `IsArtinianRing.of_finite ℂ R`. Establish `hJ0 : J = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot m J (IsNoetherian.noetherian J) hle (le_of_eq (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).symm)`. Take `⟨i, hi⟩` from `hδ`.
-
-Apply `hi` to reduce the goal to its premises. Establish `: δ i ∈ J` using `Ideal.subset_span ⟨i, rfl⟩`. Rewrite `this` using `[hJ0]`. Conclude with `(Submodule.mem_bot R).mp this`. Take `⟨i, hi⟩` from `hex`.
-
-Take `⟨lam, hlam, hker⟩` from `Submodule.exists_le_ker_of_notMem hi`. Use `⟨lam, ⟨i, hlam⟩, fun j r hr => ?_⟩` and prove the remaining obligations. Conclude with `hker (Submodule.subset_span ⟨r, hr, j, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_functional {ι : Type*} (δ : ι → R) (hδ : ∃ i, δ i ≠ 0) :
     ∃ lam : R →ₗ[ℂ] ℂ, (∃ i, lam (δ i) ≠ 0) ∧
@@ -213,9 +205,9 @@ theorem exists_functional {ι : Type*} (δ : ι → R) (hδ : ∃ i, δ i ≠ 0)
 omit [IsLocalRing R] in
 
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis ℂ R`. Establish `key : (fun z => lam (F z * G z)) = fun z => ∑ j, ∑ i, b.coord i (F z) * b.coord j (G z) * lam (b i * b j)`. Use function extensionality and compare the values at `z`. Use `conv_lhs => rw [← b.sum_repr (F z), ← b.sum_repr (G z)]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, map_sum, map_smul, smul_eq_mul, Module.Basis.coord_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Use `DifferentiableOn.fun_sum fun j _ => DifferentiableOn.fun_sum fun i _ => ?_` and prove the remaining obligations. Conclude with `((hF (b.coord i)).mul (hG (b.coord j))).mul_const _`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E} {F G : E → R}
     (hF : ∀ lam : R →ₗ[ℂ] ℂ, DifferentiableOn ℂ (fun z => lam (F z)) S)

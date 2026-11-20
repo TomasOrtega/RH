@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.ThK.DescB.GenCont
 
 /- English proof (translation)
-Establish `h1 : mat (1 : UA σ Y.J) = 1` using `rfl`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `show At (evI F) (mat (1 : UA σ Y.J) - 1)`. Rewrite using `[h1, sub_self]`. Unfold `At`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_kInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} (Y : Spc F E n) (τ : ∀ w : InfinitePlace F, EmbOver E w) : (1 : UA σ Y.J) ∈ KInf σ Y τ := by
@@ -33,11 +33,9 @@ theorem one_mem_kInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     exact Commute.one_left _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B _ n n₁ Y Y₁ P hsk hP c hc _ fa hfa h _ _ g hg`. Establish `hd : Y₁.J.det ≠ 0`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `GlobalTheory.LeviUniqueCartan.det_ne_zero_of_isCartan _ _ _ (hP.2.2.2.2.2.2.2 w)`. Take `⟨M, hMc, hM, -⟩` from `(GlobalTheory.ThK.GLTwo.IsIsoPlane.isHypPlane hP).exists_leviHom hσ hsk hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA` using `(hfa ⊥ fun x hx => by`. Rewrite using `[Subgroup.mem_bot.1 hx, map_one]`. Conclude with `one_mem_kInf Y B.emb).cont`. Establish `hfc : Continuous fa` using `(hA.comp (GlobalTheory.ThK.GLTwo.continuous_toGAd hσ Y.J hc).1).congr fun x => by`. Simplify using `only [Function.comp_apply, MulEquiv.symm_apply_apply]`.
-
-Use `haveI := (GlobalTheory.UnipCT.topFacts σ Y.J).1`. Establish `hgc : Continuous g` using `(hfc.comp (hMc.mul continuous_const)).congr fun h₁ => (hg h₁ (M h₁) (hM h₁)).symm`. Conclude with `hgc.comp (GlobalTheory.ThK.GLTwo.continuous_toGAd hσ Y₁.J hc).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →

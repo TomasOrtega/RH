@@ -22,14 +22,14 @@ def opOf {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] (ρ : Represen
   f.sum fun g c => c • ρ g v
 
 /- English proof (translation)
-Introduce `ε hε` and use `⟨{r}, fun _ => 1, by simpa using h, fun g => by simpa using hε.le⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem linApprox_of_mem {Γ : Type} [Group Γ] {a : ℕ} {r : Γ →* GL (Fin a) k} {C : Set (Γ →* GL (Fin a) k)} (h : r ∈ C) :
     LinApprox r C := fun ε hε =>
   ⟨{r}, fun _ => 1, by simpa using h, fun g => by simpa using hε.le⟩
 
 /- English proof (translation)
-Introduce `ε hε` and use `by obtain ⟨s, c, hs, hP⟩ := h ε hε exact ⟨s, c, hs.trans hST, hP⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PolyApprox.mono [IsUltrametricDist k] {J : Type} {θ : J → k} {S T : Set (J → k)} (h : PolyApprox θ S)
     (hST : S ⊆ T) : PolyApprox θ T := fun ε hε => by
@@ -37,7 +37,7 @@ theorem PolyApprox.mono [IsUltrametricDist k] {J : Type} {θ : J → k} {S T : S
   exact ⟨s, c, hs.trans hST, hP⟩
 
 /- English proof (translation)
-Introduce `ε hε` and use `by obtain ⟨s, c, hs, hP⟩ := h ε hε exact ⟨s, c, hs.trans hCD, hP⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LinApprox.mono {Γ : Type} [Group Γ] {a : ℕ} {r : Γ →* GL (Fin a) k} {C D : Set (Γ →* GL (Fin a) k)}
     (h : LinApprox r C) (hCD : C ⊆ D) : LinApprox r D := fun ε hε => by
@@ -47,9 +47,9 @@ theorem LinApprox.mono {Γ : Type} [Group Γ] {a : ℕ} {r : Γ →* GL (Fin a) 
 variable [NormOneClass k] [IsUltrametricDist k]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le`. Consider the case `exact _root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le`. Consider the case `(apply _root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_sub_le {J : Type} {x y : J → k} {δ : ℝ} (hδ : 0 ≤ δ) (hx : ∀ j, ‖x j‖ ≤ 1) (hy : ∀ j, ‖y j‖ ≤ 1)
     (hxy : ∀ j, ‖x j - y j‖ ≤ δ) (P : MvPolynomial J ℤ) :
@@ -64,7 +64,7 @@ theorem aeval_sub_le {J : Type} {x y : J → k} {δ : ℝ} (hδ : 0 ≤ δ) (hx 
   | (intros; exact _root_.GlobalTheory.NormAevalSubBound.norm_aeval_sub_le ..)
 
 /- English proof (translation)
-Introduce `ε hε` and use `by obtain ⟨η, hηS, hη1, hθη⟩ := h ε hε refine ⟨{η}, fun _ => 1, by simpa using hηS, fun P => ?_⟩ simpa using (aeval_sub_le hε.le hθ hη1 hθη P).2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem polyApprox_of_uniform {J : Type} {θ : J → k} {S : Set (J → k)} (hθ : ∀ j, ‖θ j‖ ≤ 1)
     (h : ∀ ε : ℝ, 0 < ε → ∃ η ∈ S, (∀ j, ‖η j‖ ≤ 1) ∧ ∀ j, ‖θ j - η j‖ ≤ ε) : PolyApprox θ S := fun ε hε => by
@@ -73,11 +73,11 @@ theorem polyApprox_of_uniform {J : Type} {θ : J → k} {S : Set (J → k)} (hθ
   simpa using (aeval_sub_le hε.le hθ hη1 hθη P).2.2
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hpn : ∀ n : ℕ, ‖(p : ℚ_[p]) ^ n‖ = ((p : ℝ)⁻¹) ^ n` using `fun n => by rw [norm_pow, Padic.norm_p]`. Prove the components needed by the constructor for the conclusion. Use `polyApprox_of_uniform (fun _ => by simp) fun ε hε => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun _ => (p : ℚ_[p]) ^ (n + 1), ⟨n, rfl⟩, fun _ => ?_, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hpn]; exact pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hp.le)`. Rewrite using `[zero_sub, norm_neg, hpn]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨n, hn⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `congrFun hn ()` as an intermediate fact. Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Conclude with `pow_ne_zero (n + 1) hp0 this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polyApprox_zero_padic (p : ℕ) [Fact p.Prime] :
     PolyApprox (fun _ : Unit => (0 : ℚ_[p])) {θ | ∃ n : ℕ, θ = fun _ => (p : ℚ_[p]) ^ (n + 1)} ∧
@@ -99,13 +99,13 @@ theorem polyApprox_zero_padic (p : ℕ) [Fact p.Prime] :
     exact pow_ne_zero (n + 1) hp0 this.symm
 
 /- English proof (translation)
-Simplify using `[trc]`.
+Simplify using the standard rewrite rules.
 -/
 example {Γ : Type} [Group Γ] (a : ℕ) : trc (1 : Γ →* GL (Fin a) ℚ) 1 = a := by
   simp [trc]
 
 /- English proof (translation)
-Simplify using `[opOf]`.
+Simplify using the standard rewrite rules.
 -/
 example {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ Γ V) (g : Γ) (v : V) :
     opOf ρ (Finsupp.single g 1) v = ρ g v := by

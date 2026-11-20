@@ -17,13 +17,13 @@ namespace GlobalTheory.CoordBC
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y k k' _ _ θ φ x φ' x' p g g' n s a hφ hx hg hc`. Take `⟨y, ψ, φ₁, f, t, t', r, hp, h1, h2, h3, h4⟩` from `hc`. Use `⟨y, θ.comp ψ, φ₁, f, t, fun τ i => Units.map (θ : k →* k') (t' τ i), r, ?_, h1, ?_, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Use `⟨?_, ?_, fun τ i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx, h2.1, ← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Rewrite using `[hφ, h2.2.1]`. Both sides reduce to the same expression. Take `⟨cf, hc1, hc2, hc3⟩` from `h2.2.2 τ i`. Use `⟨fun k => θ (cf k), by show θ (cf i) = _; rw [hc1]; rfl, fun k hk => by show θ (cf k) = 0; rw [hc2 k hk, map_zero], ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.GradedPieces.comb_map θ hx.symm hc3`. Rewrite using `[hg τ i]`. Simplify `h` using `only [GlobalTheory.GradedPieces.dual_comp]`. Rewrite using `[h4, map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (∏ z : Letter Dw, Units.map (θ : k →* k') (t' z.1 z.2) ^ (-n z)) = Units.map (θ : k →* k') (∏ z : Letter Dw, t' z.1 z.2 ^ (-n z))`. Simplify using `only [map_prod, map_zpow]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isCoord_map : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {k k' : Type} [Field k] [Field k'] (θ : k →+* k') {φ : c.F →+* k} {x : Sp k ⟶ Z.X} {φ' : c.F →+* k'} {x' : Sp k' ⟶ Z.X} (p : Sp k ⟶ Y.Y.X) (g : EigFrame Z φ x) (g' : EigFrame Z φ' x') (n : Letter Dw → ℤ) (s : Y.Y.Fn) (a : k), φ' = θ.comp φ → x' = spMap θ ≫ x → g.IsMap θ g' → IsCoord Y p g n s a → IsCoord Y (spMap θ ≫ p) g' n s (θ a) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y k k' _ _ θ φ x φ' x' p g g' n s a hφ hx hg hc

@@ -18,7 +18,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepO
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[Pl.plB_eq, RingEquiv.symm_apply_apply]`. Conclude with `z.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_plB (Pl : PlSide D) (w : D.what₂.places.Pl) (z : Zbar (D.what₂.places.resChar w)) :
     Pl.ι w (z : Qbar (D.what₂.places.resChar w)) ∈ Pl.plB w := by
@@ -30,7 +30,7 @@ def plRed (Pl : PlSide D) (w : D.what₂.places.Pl) : Zbar (D.what₂.places.res
     (((Pl.ι w).toRingHom.comp (Zbar (D.what₂.places.resChar w)).subtype).codRestrict (Pl.plB w) (mem_plB Pl w))
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.NT.redThrough, dif_pos (mem_plB Pl w z)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem plRed_eq (Pl : PlSide D) (w : D.what₂.places.Pl) (z : Zbar (D.what₂.places.resChar w)) :
     plRed Pl w z = Formalism.L2.NT.redThrough (Pl.plB w) (Pl.plκ w) (Pl.ι w z) := by
@@ -38,13 +38,13 @@ theorem plRed_eq (Pl : PlSide D) (w : D.what₂.places.Pl) (z : Zbar (D.what₂.
   rfl
 
 /- English proof (translation)
-Introduce `k _ v x _ z hz` and use `by rw [plRed_eq, hz, RingEquiv.apply_symm_apply, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem teichAt_of_iotaOk {Pl : PlSide D} (h : IotaOk D Pl) (w : D.what₂.places.Pl) : TeichAt (Pl.ι w) w (plRed Pl w) :=
   fun k _ v x _ z hz => by rw [plRed_eq, hz, RingEquiv.apply_symm_apply, h]
 
 /- English proof (translation)
-Introduce `w hw l _ e`. Substitute `e` using the available equality. Conclude with `⟨Pl.ι w, plRed Pl w, Pl.ι_w w, teichAt_of_iotaOk h w, fun σ π r h1 h2 h3 h4 => ⟨(hr w hw σ π r h1 h2 h3 h4).1, (hr w hw σ π r h1 h2 h3 h4).2, teichAt_of_iotaOk h w⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem resTied_of_plSide {Rw : RowSide D} {Pl : PlSide D} (h : IotaOk D Pl)
     (hr : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∀ σ π r, D.nd.goodRow σ → OnW D σ → IsRowPar Rw σ π →

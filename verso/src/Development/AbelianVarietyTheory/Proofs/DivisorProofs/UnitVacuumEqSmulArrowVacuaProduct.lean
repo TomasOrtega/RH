@@ -28,27 +28,23 @@ set_option maxHeartbeats 1600000 in
 open GlobalTheory.VacUnique GlobalTheory.FockCompare in
 
 /- English proof (translation)
-Establish `hψ` using `hf.1`. Establish `hθ : IsInfFam θ` using `hf.2.inf`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hΛS hΛT`. Establish `hden` using `GlobalTheory.T.scaled_finite_matrix_mem_lattice D S T ΛS ΛT hΛS.1 hΛT.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlat` using `hf.2.lat`. Establish `hinf` using `fun u => latO_inf (u := u) S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True`. Generalize the expression as in `latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) = Λ at h1 h2 h3 hden hlat hlat' hinf`. Use `choose ε hε1 hε2 using h3 f hlat`. Establish `det : ∀ (g g' : WO S T → ℂ) (c : ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → IsLatVac (heisO ψ S T) Λ g → IsLatVac (heisO ψ S T) Λ g' → (∀ z, g' (iotaW σ T S z) = c * g (iotaW σ T S z)) → g' = c • g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g g' c hg hg' hl hl' hz`. Use function extensionality and compare the values at `w`. Take `⟨γ, z, u, hu, rfl⟩` from `exists_decomp h h2 w`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hg.quasi, hg'.quasi, apply_real_add h hψ (hinf u hu) (hε2 u hu g hl), apply_real_add h hψ (hinf u hu) (hε2 u hu g' hl'), hz]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`. Establish `n1 : nrm2 p.1 p.2 f = 1` using `hn p hp`. Establish `hne : (fun z : RW T S => f (iotaW σ T S z)) ≠ 0`. Introduce `h0`. Establish `e` using `det f f 0 hf.2.theta hf.2.theta hlat hlat fun z => by rw [zero_mul]; exact congrFun h0 z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `n1` using `[e]`. Simplify using `[nrm2] at n1`. Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.T.realSymplecticForm_alternating_invariant_definite D S T sS sT hS hT`. Establish `hsp : Submodule.span ℝ (Set.range (infRat S T)) = ⊤`. Use `span_piW_ratW_eq_top D θ σ h T S` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [piW_ratW hθ]`. Establish `a1` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T sS sT f hf.2.theta hf.2.fock`. Establish `a2` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T sS sT f' hth hfock`. Set `c : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ` to `fun v => if hv : finRat S T (-v) ∈ Λ then ψ (-symplOH S T (ratW T S v) (finRat S T (-v))) * ε _ hv else 1`. Establish `hc : ∀ v, ‖c v‖ = 1` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [c]`. Use `split_ifs with hv`. Rewrite using `[norm_mul, hψ.1.2.1]`. Apply the tactic sequence `rcases hε1 _ hv with e | e <;> rw [e] <;> simp`. Conclude with `norm_one`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `law : ∀ g : WO S T → ℂ, IsThetaFunO ψ S T g → IsLatVac (heisO ψ S T) Λ g → ∀ v ∈ Λ.comap (finRat S T), ∀ z, g (iotaW σ T S (z + infRat S T v)) = c v * Complex.exp (-(Real.pi * Complex.I) * (omO S T z (infRat S T v) : ℂ)) * g (iotaW σ T S z)`. Introduce `g hg hl v hv z`. Establish `hv' : finRat S T (-v) ∈ Λ` using `(Λ.comap (finRat S T)).neg_mem hv`. Rewrite using `[apply_add_infRat h hψ hg v (hε2 _ hv' g hl) z, ← j2]`. Simplify using `only [c, dif_pos hv']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hli` using `GlobalTheory.T.not_linearIndependent_alt (RW T S) (jO S T sS sT) (omO S T) j1 j2 j3 j4 (Matrix (Fin T.rank) (Fin S.rank) D.host.E) (infRat S T) (infRat_injective S T) hsp (Λ.comap (finRat S T)) (fun x => by`. Take `⟨N, hN, hx⟩` from `hden x`. Conclude with `⟨N, hN, by rwa [AddSubgroup.mem_comap, AddMonoidHom.map_nsmul]⟩)`. Use the proof step `(GlobalTheory.T.rationalPoints_finitePart_selfDual_lattice_iff D S T ψ Λ hψ hinf h1 h2 hden) c hc`. Use the proof step `![fun z => f (iotaW σ T S z), fun z => f' (iotaW σ T S z)]`.
-
-Use the proof step `(fun k => by fin_cases k; exacts [a1.1, a2.1]) (fun k => by fin_cases k; exacts [a1.2, a2.2])`. Use the proof step `(fun k => by fin_cases k; exacts [law f hf.2.theta hlat, law f' hth hlat'])`. Rewrite `hli` using `[LinearIndependent.pair_iff' hne]`. Use `push_neg at hli`. Take `⟨a, ha⟩` from `hli`.
-
-Conclude with `⟨a, det f f' a hf.2.theta hth hlat hlat' fun z => (congrFun ha z).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {S T : HSp D} {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
@@ -125,7 +121,7 @@ theorem eq_smul_of_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
   exact ⟨a, det f f' a hf.2.theta hth hlat hlat' fun z => (congrFun ha z).symm⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.RouteSeesaw.adjM GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adjM_eq (S B : HSp D) (y : WO S B) : GlobalTheory.RouteSeesaw.adjM S B y = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger S B y := by
   unfold GlobalTheory.RouteSeesaw.adjM GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger
@@ -133,7 +129,7 @@ theorem adjM_eq (S B : HSp D) (y : WO S B) : GlobalTheory.RouteSeesaw.adjM S B y
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `heisO`. Simplify using `only`. Rewrite using `[GlobalTheory.FockConj.symplOH_negSp, GlobalTheory.RouteSeesaw.adjM_add, adjM_eq, adjM_eq, GlobalTheory.AdjointPair.symplOH_dagger]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_adj (ψ : AddChar (AF D.host.F) ℂ) (S B : HSp D) (u : WO S B) (g : WO B S → ℂ) :
     heisO ψ (negSp S) B u (fun y => g (GlobalTheory.RouteSeesaw.adjM S B y)) =
@@ -144,7 +140,7 @@ theorem heisO_adj (ψ : AddChar (AF D.host.F) ℂ) (S B : HSp D) (u : WO S B) (g
   rw [GlobalTheory.FockConj.symplOH_negSp, GlobalTheory.RouteSeesaw.adjM_add, adjM_eq, adjM_eq, GlobalTheory.AdjointPair.symplOH_dagger]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.SeesawSumTarget.boxT_sumDec, GlobalTheory.MixModel.OrthDec.heisO_boxT, GlobalTheory.SeesawSumTarget.boxT_sumDec, GlobalTheory.MixModel.OrthDec.resT_apply]`. Simplify using `only`. Rewrite using `[GlobalTheory.SeesawSumTarget.pA_sumDec, GlobalTheory.SeesawSumTarget.pB_sumDec]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisenbergOperator_externalProduct_blocks (ψ : AddChar (AF D.host.F) ℂ) (S A B : HSp D) (φ : WO S A → ℂ) (φ' : WO S B → ℂ)
     (u : WO S (GlobalTheory.Doubling.hsum A B)) :
@@ -156,7 +152,7 @@ theorem heisenbergOperator_externalProduct_blocks (ψ : AddChar (AF D.host.F) �
   rw [GlobalTheory.SeesawSumTarget.pA_sumDec, GlobalTheory.SeesawSumTarget.pB_sumDec]
 
 /- English proof (translation)
-Introduce `a b` and use `by have h : ∀ k l, cA D e * cA D (y k l) = cA D (y k l) := fun k l => by rw [← map_mul, hy k l] simp only [GlobalTheory.RouteSeesaw.adjM, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul] refine Finset.sum_congr rfl fun k _ => Finset.sum_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_adjM (S B : HSp D) {e : AE D} {y : WO S B} (hy : IsHalf e y) :
     IsHalf (cA D e) (GlobalTheory.RouteSeesaw.adjM S B y) := fun a b => by
@@ -166,9 +162,9 @@ theorem isHalf_adjM (S B : HSp D) {e : AE D} {y : WO S B} (hy : IsHalf e y) :
   linear_combination (incA D (S.gram⁻¹ a l) * incA D (B.gram k b)) * h k l
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Establish `e1 : topR (A` using `A) (B := B) (2 • u) = 2 • topR (A := A) (B := B) u := rfl`. Establish `e2 : GlobalTheory.RouteSeesaw.adjM S B (botR (A` using `A) (B := B) (2 • u)) = 2 • GlobalTheory.RouteSeesaw.adjM S B (botR (A := A) (B := B) u) := by`. Rewrite using `[two_nsmul, two_nsmul, ← GlobalTheory.RouteSeesaw.adjM_add]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[heisenbergOperator_externalProduct_blocks, heisO_adj, e1, e2, hφ.1 _ (hΛ u hu).1, hg.1 _ (hΛ u hu).2]`. Establish `h1 : IsHalf e (topR (A` using `A) (B := B) u) := fun a b => hh _ _`. Establish `h2 : IsHalf e (botR (A` using `A) (B := B) u) := fun a b => hh _ _`. Rewrite using `[heisenbergOperator_externalProduct_blocks, heisO_adj, hφ.2 e he _ (hΛ u hu).1 h1, hg.2 _ (GlobalTheory.PlaceModelSum.isSplitIdem_cA he) _ (hΛ u hu).2 (isHalf_adjM S B h2)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLatticeVacuum_externalProduct_adjoint (ψ : AddChar (AF D.host.F) ℂ) (S A B : HSp D) {ΛA : AddSubgroup (WO (negSp S) A)}
     {ΛB : AddSubgroup (WO B S)} {Λ : AddSubgroup (WO (negSp S) (GlobalTheory.Doubling.hsum A B))}
@@ -190,7 +186,7 @@ theorem isLatticeVacuum_externalProduct_adjoint (ψ : AddChar (AF D.host.F) ℂ)
       hg.2 _ (GlobalTheory.PlaceModelSum.isSplitIdem_cA he) _ (hΛ u hu).2 (isHalf_adjM S B h2)]
 
 /- English proof (translation)
-Introduce `h0` and use `by let d := GlobalTheory.BiTransfer.sumDec A B have h := congrFun h0 ((d.resT (negSp S)).symm (x, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger B S z)) rw [← GlobalTheory.SeesawSumTarget.boxT_sumDec] at h unfold GlobalTheory.MixModel.OrthDec.boxT at h rw [ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem externalProduct_adjoint_ne_zero (S A B : HSp D) {φ : WO (negSp S) A → ℂ} {g : WO B S → ℂ} {x : WO (negSp S) A} {z : WO B S}
     (hx : φ x ≠ 0) (hz : g z ≠ 0) :
@@ -205,19 +201,17 @@ theorem externalProduct_adjoint_ne_zero (S A B : HSp D) {φ : WO (negSp S) A →
   exact mul_ne_zero hx hz h
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W ρ i j AV AV₁ hV hV₁ Λ hΛ hlat f hf`. Establish `hX : (Node.grid (i + 1) (j + 1)).InRange D.R.m` using `⟨i.2, j.2⟩`. Take `⟨A, hA⟩` from `exists_isGridFr W hX`. Establish `u₁` using `ρ.vX_is i (j + 1) i.2 j.2`. Establish `u₂` using `ρ.vT_is μ₀ (i + 1) j i.2 j.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v₁` using `u₁.2`. Establish `v₂` using `u₂.2`. Establish `cA : (GlobalTheory.SquareComm.frSgn true A).cart = fun τ => -W.cart (.grid (↑i + 1) (↑j + 1)) τ` using `funext fun τ => (GlobalTheory.PairLift.cart_frSgn true A τ).trans (congrArg Neg.neg (hA τ).2)`. Establish `cA' : A.cart = W.cart _` using `funext fun τ => (hA τ).2`. Establish `cV : AV.cart = W.cart _` using `funext fun τ => (hV τ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cV₁ : AV₁.cart = W.cart _` using `funext fun τ => (hV₁ τ).2`. Establish `w₁ : IsVacF W.ψ W.θ (GlobalTheory.SquareComm.frSgn true A) AV (ρ.vX i (j + 1))` using `⟨v₁.theta, fun τ => by`. Rewrite using `[cA, cV]`. Conclude with `v₁.fock τ⟩`. Establish `w₂ : IsVacF W.ψ W.θ AV₁ A (ρ.vT (i + 1) j)` using `⟨v₂.theta, fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cA', cV₁]`. Conclude with `v₂.fock τ⟩`. Establish `w₃` using `(GlobalTheory.SquareAlg.adj_ptF W.ψ_std W.θ_is A AV₁ w₂).1`. Establish `hv` using `GlobalTheory.SquareAlg.isVacF_boxT (GlobalTheory.BiTransfer.sumDec _ _) (GlobalTheory.SquareComm.frSgn true A) (GlobalTheory.SquareComm.frSum AV AV₁) AV AV₁ W.ψ_std W.θ_is (GlobalTheory.SquareAlg.qA_cart_frSum AV AV₁) (GlobalTheory.SquareAlg.qB_cart_frSum AV AV₁) w₁ w₃`. Rewrite `hv` using `[GlobalTheory.SeesawSumTarget.boxT_sumDec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfock` using `hv.2`. Rewrite `hfock` using `[cA]`. Establish `hl : IsLatVac (heisO W.ψ (GlobalTheory.Grid.neg (spW G i j)) (spX G i j)) (latO (GlobalTheory.Grid.neg (spW G i j)) (spX G i j) (G.Λ (.grid (i + 1) (j + 1))) Λ fun _ => True) (vacA ρ i j)` using `isLatticeVacuum_externalProduct_adjoint W.ψ (spW G i j) (spV G i j) (spV₁ G i j) (fun u hu => hlat.le hu) v₁.lat v₂.lat`. Take `⟨a, ha⟩` from `eq_smul_of_vac (S := GlobalTheory.Grid.neg (spW G i j)) (T := spX G i j) (f' := vacA ρ i j) (fun τ => isCartanInv_neg (W.cart_is _ hX τ)) (fun τ => GlobalTheory.CompactFockAction.cart_isCartanInv (frSum AV AV₁) τ) (isSelfDualC_neg (node_isV G hL hX).sd) hΛ hf hv.1 hfock hl`. Take `⟨x, hx⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO u₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO u₂`. Establish `hne : vacA ρ i j ≠ 0` using `externalProduct_adjoint_ne_zero (spW G i j) (spV G i j) (spV₁ G i j) hx hz`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by rw [ha, zero_smul])`.
-
-Conclude with `⟨a⁻¹, inv_ne_zero ha0, by rw [ha, smul_smul, inv_mul_cancel₀ ha0, one_smul]⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vac_eq_smul_vacA : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (ρ : RealMatch W) (i j : Fin D.R.m) (AV : Fr (spV G i j)) (AV₁ : Fr (spV₁ G i j)),
       IsGridFr W _ AV → IsGridFr W _ AV₁ → ∀ Λ : Submodule (𝓞 D.host.E) (Fin (spX G i j).rank → D.host.E), IsSelfDualC (spX G i j) Λ →

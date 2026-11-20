@@ -8,31 +8,29 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F Polynomial
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `key : ∀ m i : ℕ, h.natDegree ≤ i + m → h.coeff i ∈ k`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.eq_or_lt_of_le (by simpa using hi : h.natDegree ≤ i) with h1 | h1` into its components or cases. Rewrite using `[← h1, hm.coeff_natDegree]`. Conclude with `k.one_mem`. Rewrite using `[coeff_eq_zero_of_natDegree_lt h1]`. Conclude with `k.zero_mem`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Introduce `i hi`. Distinguish the cases in `h0 : h.natDegree ≤ i + m`. Conclude with `ih i h0`. Establish `hin : i < h.natDegree` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set n := h.natDegree with hn`. Establish `hmem : ∀ x ∈ Finset.HasAntidiagonal.antidiagonal (i + n), h.coeff x.1 * h.coeff x.2 - (if x = (i, n) then h.coeff i else 0) - (if x = (n, i) then h.coeff i else 0) ∈ k`. Introduce and unpack `⟨a, b⟩ hx`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at hx`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = i`. Establish `hb : b = n` using `by omega`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Establish `hne : ¬ ((a, h.natDegree) = (h.natDegree, a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `he`. Use `(Prod.mk.injEq _ _ _ _ ▸ he : a = h.natDegree ∧ h.natDegree = a).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos rfl, if_neg hne, hm.coeff_natDegree]`. Simplify using `[k.zero_mem]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha' : a = n`. Establish `hb : b = i` using `by omega`. Substitute `hb` using the available equality. Rewrite using `[ha']`. Establish `hne : ¬ ((n, b) = (b, n))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `he`. Use `(Prod.mk.injEq _ _ _ _ ▸ he : n = b ∧ b = n).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, if_pos rfl, hn, hm.coeff_natDegree]`. Simplify using `[k.zero_mem]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hne1 : ¬ ((a, b) = (i, n))` using `fun he => ha (congrArg Prod.fst he)`. Establish `hne2 : ¬ ((a, b) = (n, i))` using `fun he => ha' (congrArg Prod.fst he)`. Rewrite using `[if_neg hne1, if_neg hne2, sub_zero, sub_zero]`. Break down `lt_or_gt_of_ne ha with h1 | h1` into its components or cases. Establish `: n < b` using `by omega show h.coeff a * h.coeff b ∈ k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeff_eq_zero_of_natDegree_lt this, mul_zero]`. Conclude with `k.zero_mem`. Break down `lt_or_gt_of_ne ha' with h2 | h2` into its components or cases. Conclude with `k.mul_mem (ih a (by omega)) (ih b (by omega))`. Use `show h.coeff a * h.coeff b ∈ k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[coeff_eq_zero_of_natDegree_lt h2, zero_mul]`. Conclude with `k.zero_mem`. Establish `hsum` using `k.sum_mem hmem`. Rewrite `hsum` using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← coeff_mul, ← pow_two, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (by simp), if_pos (by simp [add_comm])]`. Establish `h2 : (2 : E) * h.coeff i ∈ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `k.sub_mem (hk (i + n)) hsum` as an intermediate fact. Establish `e : (h ^ 2).coeff (i + n) - ((h ^ 2).coeff (i + n) - h.coeff i - h.coeff i) = 2 * h.coeff i` using `by ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `h2k : (2 : E) ∈ k`. Use `k.add_mem k.one_mem k.one_mem` as an intermediate fact.
-
-Rewrite `this` using `[one_add_one_eq_two]`. Then use the resulting hypothesis. Use `k.mul_mem (k.inv_mem h2k) h2` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ (two_ne_zero), one_mul]`. Then use the resulting hypothesis. Introduce `i`. Conclude with `key h.natDegree i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sqrt_poly {E : Type} [Field E] [CharZero E] (k : Subfield E) (h : E[X]) (hm : h.Monic)
     (hk : ∀ i, (h ^ 2).coeff i ∈ k) : ∀ i, h.coeff i ∈ k := by

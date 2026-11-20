@@ -13,11 +13,9 @@ section Fac
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)]
 
 /- English proof (translation)
-Establish `key : ∀ i, ∃ s : Set (α i), MeasurableSet s ∧ μ i s ≠ 0 ∧ μ i s ≠ ∞`. Introduce `i`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hne i` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hz : ∀ n, μ i (spanningSets (μ i) n) = 0` using `fun n => by`. Assume the negation of the conclusion as `h0`. Conclude with `(measure_spanningSets_lt_top (μ i) n).ne (hc _ (measurableSet_spanningSets _ n) h0)`. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_spanningSets (μ i)]`. Conclude with `measure_iUnion_null hz`.
-
-Use `choose S hS1 hS2 hS3 using key`. Conclude with `⟨S, hS1, hS2, hS3⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_box_alt (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (hne : ∀ i, μ i ≠ 0) :
     ∃ S : ∀ i, Set (α i), (∀ i, MeasurableSet (S i)) ∧ (∀ i, μ i (S i) ≠ 0) ∧ ∀ i, μ i (S i) ≠ ∞ := by
@@ -35,7 +33,7 @@ theorem exists_box_alt (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] 
   exact ⟨S, hS1, hS2, hS3⟩
 
 /- English proof (translation)
-Rewrite using `[Measure.pi_pi, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hw)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_box_eval (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (S : ∀ i, Set (α i)) (v : ι) (A : Set (α v)) :
     Measure.pi μ (Set.univ.pi (Function.update S v A)) = μ v A * ∏ w ∈ Finset.univ.erase v, μ w (S w) := by
@@ -45,9 +43,9 @@ theorem pi_box_eval (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (S 
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hw)]
 
 /- English proof (translation)
-Take `⟨S, -, hS0, hSt⟩` from `exists_box_alt μ hne`. Use extensionality with `A _`. Establish `h1` using `pi_box_eval μ' S v A`. Establish `h2` using `pi_box_eval μ S v A`. Establish `hP : ∏ w ∈ Finset.univ.erase v, μ' w (S w) = ∏ w ∈ Finset.univ.erase v, μ w (S w)` using `Finset.prod_congr rfl fun w hm => by rw [hw w (Finset.ne_of_mem_erase hm)]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, h2, hP]`. Establish `hP0 : ∏ w ∈ Finset.univ.erase v, μ w (S w) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun w _ => hS0 w`. Establish `hPt : ∏ w ∈ Finset.univ.erase v, μ w (S w) ≠ ∞` using `ENNReal.prod_ne_top fun w _ => hSt w`. Conclude with `((ENNReal.mul_left_inj hP0 hPt).mp h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem factor_eq (μ μ' : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] [∀ i, SigmaFinite (μ' i)]
     (hne : ∀ i, μ i ≠ 0) (v : ι) (hw : ∀ w, w ≠ v → μ' w = μ w) (h : Measure.pi μ' = Measure.pi μ) : μ' v = μ v := by
@@ -63,11 +61,9 @@ theorem factor_eq (μ μ' : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] [
   exact ((ENNReal.mul_left_inj hP0 hPt).mp h1).symm
 
 /- English proof (translation)
-Establish `hsub : Set.univ.pi (Function.update (fun w => (Set.univ : Set (α w))) v (N v)ᶜ) ⊆ (Set.univ.pi N)ᶜ`. Introduce `x hx hxN`. Establish `hv` using `hx v (Set.mem_univ v)`. Rewrite `hv` using `[Function.update_self]`. Conclude with `hv (hxN v (Set.mem_univ v))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `measure_mono_null hsub hc`. Rewrite `h0` using `[pi_box_eval]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
-
-Take `⟨w, -, hw⟩` from `Finset.prod_eq_zero_iff.mp h`. Conclude with `hne w (Measure.measure_univ_eq_zero.mp hw)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem factor_conc (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (hne : ∀ i, μ i ≠ 0) (N : ∀ i, Set (α i))
     (hc : Measure.pi μ (Set.univ.pi N)ᶜ = 0) (v : ι) : μ v (N v)ᶜ = 0 := by
@@ -86,7 +82,7 @@ theorem factor_conc (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (hn
     exact hne w (Measure.measure_univ_eq_zero.mp hw)
 
 /- English proof (translation)
-Introduce `hv`. Apply `h` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero, ← Set.pi_univ Set.univ, Measure.pi_pi]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by simp [hv])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_ne (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (h : Measure.pi μ ≠ 0) (v : ι) : μ v ≠ 0 := by
   intro hv
@@ -103,15 +99,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [∀ v, Gro
   [∀ v, BorelSpace (G v)]
 
 /- English proof (translation)
-Establish `hne : ∀ w, μ w ≠ 0` using `fun w => factor_ne μ h0 w`. Establish `hμc : μ v (H v : Set (G v))ᶜ = 0` using `factor_conc μ hne (fun w => (H w : Set (G w))) hc v`. Establish `hμi : ∀ h ∈ H v, (μ v).map (fun x => h * x) = μ v`. Introduce `h hh`. Set `g : (w : ι) → G w` to `Pi.mulSingle v h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hg : ∀ w, g w ∈ H w`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify `hh` using `[g]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[g, Pi.mulSingle_eq_of_ne hw, (H w).one_mem]`. Set `μ' : ∀ w, Measure (G w)` to `fun w => (μ w).map (fun x => g w * x)`. Use `haveI hσ : ∀ w, SigmaFinite (μ' w) := fun w => (MeasurableEquiv.mulLeft (g w)).sigmaFinite_map (μ := μ w)`. Establish `hpi : Measure.pi μ' = Measure.pi μ`. Rewrite using `[← Measure.pi_map_pi (fun w => (measurable_const_mul (g w)).aemeasurable)]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi g hg`. Establish `hw : ∀ w, w ≠ v → μ' w = μ w`. Introduce `w hw`. Simplify using `[μ', g, Pi.mulSingle_eq_of_ne hw]`. Use `factor_eq μ μ' hne v hw hpi` as an intermediate fact.
-
-Simplify `this` using `[μ', g]`. Conclude with `uniq_on_closed (H v) (hH v) (μ v) (ν v) hμc (hνc v) hμi (hνi v) (hne v) (hν0 v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem factor_uniq (μ : ∀ v, Measure (G v)) [∀ v, SigmaFinite (μ v)] (H : ∀ v, Subgroup (G v))
     (hH : ∀ v, IsClosed (H v : Set (G v))) (ν : ∀ v, Measure (G v)) [∀ v, SigmaFinite (ν v)]

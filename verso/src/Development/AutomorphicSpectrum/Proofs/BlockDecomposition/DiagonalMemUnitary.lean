@@ -26,11 +26,11 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 namespace GlobalTheory.CompanionTheory.RealCountG
 
 /- English proof (translation)
-Take `⟨S, hfd, hvS, -, hKS, -⟩` from `hc.der.2 v`. Establish `hGl : Formalism.REAL.GlRel (kF E1 E2)` using `GlobalTheory.CompanionTheory.RealCount.KHw.glRel_kF hc.pair`. Establish `hK : Formalism.REAL.KHighest (fun _ => true) (kF E1 E2) (wtR ν) v` using `hh`. Establish `hanti : Antitone (wtR ν)` using `GlobalTheory.CompanionTheory.RealCount.highestWeight_antitone_of_finiteDimensional_stable V (kF E1 E2) S (wtR ν) v hGl hfd hKS hvS hv hK`. Establish `hanti' : Antitone ν` using `fun a b hab => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hanti hab` as an intermediate fact. Simplify `this` using `[wtR]`. Take `⟨ι, i1, i2, c, hcl, hconds⟩` from `GlobalTheory.T.parthasarathy_rao_varadarajan n`. Take `⟨w, hw, x, hx, hxh⟩` from `hconds V (kF E1 E2) S ν v hGl hc.pair.unitK hfd hKS hvS hv hK`. Establish `hn` using `GlobalTheory.T.clifford_highest_weight_vector lam V E1 E2 σ A hc ι c hcl _ x hx hxh`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.harmonic_of_norm_bound lam hl ν hanti' hdom w hw hn`.
+A detailed English derivation is pending.
 -/
 theorem hw_harm {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam)
     (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V)
@@ -50,11 +50,11 @@ theorem hw_harm {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam)
   exact GlobalTheory.T.harmonic_of_norm_bound lam hl ν hanti' hdom w hw hn
 
 /- English proof (translation)
-Establish `hk : ∀ a b (y : V), A (kF E1 E2 a b y) = kF E1 E2 a b (A y)`. Introduce `a b y`. Establish `h1 : A (E1 a b y) = E2 a b (A y)` using `LinearMap.congr_fun (hAE a b) y`. Establish `h2 : A (E2 a b y) = E1 a b (A y)`. Establish `h3 : A (E1 a b (A y)) = E2 a b (A (A y))` using `LinearMap.congr_fun (hAE a b) (A y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ u : V, A (A u) = u` using `fun u => LinearMap.congr_fun hA2 u`. Rewrite `h3` using `[h4]`. Rewrite using `[← h3, h4]`. Simplify using `only [kF, LinearMap.add_apply, map_add, h1, h2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `x hx`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, hx.1 a, map_smul]`. Rewrite using `[← hk, hx.2 a b hab he, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hw_stable' {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {E1 E2 : Fin n → Fin n → Module.End ℂ V} {A : V →ₗ[ℂ] V} (hA2 : A * A = 1) (hAE : ∀ a b, A * E1 a b = E2 a b * A)
@@ -75,9 +75,9 @@ theorem hw_stable' {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpac
   · rw [← hk, hx.2 a b hab he, map_zero]
 
 /- English proof (translation)
-Introduce `t ht k ξ`. Establish `h1 : dualT E T (ξ ∘L E.ρ k⁻¹) = (dualT E T ξ) ∘L E.ρ k⁻¹`. Use extensionality with `y`. Establish `h2` using `congrArg (fun S : E.V →L[ℂ] E.V => ξ (S y)) (hT k⁻¹)`. Simplify using `only [dualT, ContinuousLinearMap.flip_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(h2.symm)`. Establish `h3 : flipA E A T t (ξ ∘L E.ρ k⁻¹) = A (t (dualT E T (ξ ∘L E.ρ k⁻¹)))` using `rfl`. Establish `h4 : flipA E A T t ξ = A (t (dualT E T ξ))` using `rfl`. Rewrite using `[h3, h4, h1, ht k (dualT E T ξ)]`. Conclude with `LinearMap.congr_fun (hAσ k) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flip_stable' {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {σ : Matrix.unitaryGroup (Fin n) ℂ →* (V →ₗ[ℂ] V)} {A : V →ₗ[ℂ] V} (hAσ : ∀ k, A * σ k = σ k * A)
@@ -95,9 +95,9 @@ theorem flip_stable' {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSp
   exact LinearMap.congr_fun (hAσ k) _
 
 /- English proof (translation)
-Introduce `ξ hξ`. Establish `hc` using `GlobalTheory.T.dual_operator_commutes_lie E T hT G hG`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Use `show G a a (dualT E T ξ) = _`. Rewrite using `[← hc, hξ.1 a, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `show G a b (dualT E T ξ) = 0`. Rewrite using `[← hc, hξ.2 a b hab he, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_stable' {n : ℕ} (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : ∀ k, T * E.ρ k = E.ρ k * T)
     (G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ)) (hG : IsDualFam E G) (μ : Fin n → ℝ) :
@@ -112,7 +112,7 @@ theorem dual_stable' {n : ℕ} (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : ∀ k,
     rw [← hc, hξ.2 a b hab he, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply, RCLike.star_def]`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hz a]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -127,9 +127,9 @@ theorem diagonal_mem_unitary {n : ℕ} (z : Fin n → ℂ) (hz : ∀ a, ‖z a�
   simp
 
 /- English proof (translation)
-Take `⟨F, hF, -, hch⟩` from `GlobalTheory.T.dual_weight_trace_formula E T hT.1 G hG`. Introduce `μ hμ`. Use `(GlobalTheory.T.harmonic_weights_coefficient lam hl F hF (fun ν => trOn (hwOf G (wtR ν)) (dualT E T : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ))) (fun z hz hinj => ?_) μ hμ).2` and prove the remaining obligations. Establish `hzi : Function.Injective z` using `fun a b h => hinj (by simp only [h])`. Establish `h1` using `hch ⟨diagonal z, diagonal_mem_unitary z hz⟩ z rfl hzi`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.twisted_trace_weyl_character lam E T hT ⟨diagonal z, diagonal_mem_unitary z hz⟩ z rfl hinj`. Rewrite using `[← h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualtr {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam) (E : KMod n) (T : E.V →L[ℂ] E.V) (hT : IsLefK lam E T)
     (G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ)) (hG : IsDualFam E G) :
@@ -144,39 +144,37 @@ theorem dualtr {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam) (E : KMod n) 
   rw [← h1, h2]
 
 /- English proof (translation)
-Introduce `n lam hlam E T hT V _ _ E1 E2 σ A hc hfin`. Take `⟨hsp, htop⟩` from `GlobalTheory.T.dual_weights_dominated lam hlam E T hT`. Take `⟨G, hG⟩` from `GlobalTheory.T.exists_dual_lie_family E`. Establish `hint` using `GlobalTheory.T.invariant_intertwines_dual V σ (kF E1 E2) hc.der E G hG`. Establish `hmaps : ∀ t ∈ invA σ E, ∀ (μ : Fin n → ℝ), ∀ ξ ∈ hwOf G μ, t ξ ∈ hwSp E1 E2 μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht μ ξ hξ`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[← hint t ht, hξ.1 a, map_smul]`. Rewrite using `[← hint t ht, hξ.2 a b hab he, map_zero]`. Establish `hinj` using `GlobalTheory.T.finite_weights_invariant_hom V E1 E2 σ hc.pair hc.der E G hG hsp (harmZ lam) (fun ν v hv hh hw => hw_harm lam hlam V E1 E2 σ A hc ν v hv hh (htop ν hw))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hext` using `GlobalTheory.T.exists_invariant_extending V E1 E2 σ hc.pair hc.der E G hG (harmZ lam)`. Establish `hA : ∀ μ, ∀ x ∈ hwSp E1 E2 μ, A x ∈ hwSp E1 E2 μ` using `hw_stable' hc.Asq hc.AE`. Establish `hF : ∀ t ∈ invA σ E, flipA E A T t ∈ invA σ E` using `flip_stable' hc.Aσ E T hT.1`. Establish `hB` using `dual_stable' E T hT.1 G hG`. Establish `htr` using `dualtr lam hlam E T hT G hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ι` to `{μ // μ ∈ harmZ lam}`. Set `W : ι → Type` to `fun i => hwOf G (wtR i.1)`. Set `H : ι → Type` to `fun i => hwSp E1 E2 (wtR i.1)`. Set `b : ∀ i, W i →ₗ[ℂ] W i` to `fun i => (dualT E T : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)).restrict (p := hwOf G (wtR i.1)) (q := hwOf G (wtR i.1)) (hB _)`. Set `a : ∀ i, H i →ₗ[ℂ] H i` to `fun i => A.restrict (p := hwSp E1 E2 (wtR i.1)) (q := hwSp E1 E2 (wtR i.1)) (hA _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e3 : ∀ i : ι, LinearMap.trace ℂ (W i) (b i) = 2 ^ n`. Introduce `i`. Use `htr i.1 i.2` as an intermediate fact. Unfold `trOn at this`. Rewrite `this` using `[dif_pos (hB _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `haveI hWnt : ∀ i, Nontrivial (W i) := by`. Introduce `i`. Assume the negation of the conclusion as `hnt`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Establish `h0 : b i = 0` using `LinearMap.ext fun x => Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e3 i` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `(pow_ne_zero n (two_ne_zero : (2 : ℂ) ≠ 0)) this.symm`. Set `R0 : invA σ E →ₗ[ℂ] (∀ i, W i →ₗ[ℂ] H i)` to `{ toFun := fun t i => LinearMap.codRestrict (hwSp E1 E2 (wtR i.1)) (t.1 ∘ₗ (hwOf G (wtR i.1)).subtype) (fun ξ => hmaps t.1 t.2 _ ξ.1 ξ.2) map_add' := fun x y => by funext i; ext ξ; rfl map_smul' := fun c x => by funext i; ext ξ; rfl }`. Establish `hR0 : ∀ (t : invA σ E) (i : ι) (ξ : W i), ((R0 t i ξ : hwSp E1 E2 (wtR i.1)) : V) = t.1 ξ.1` using `fun _ _ _ => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hbij : Function.Bijective R0`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero R0).2 fun t ht => ?_` and prove the remaining obligations. Use `Subtype.ext (hinj t.1 t.2 fun μ hμ ξ hξ => ?_)` and prove the remaining obligations. Use `hR0 t ⟨μ, hμ⟩ ⟨ξ, hξ⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[ht]`. Simplify using `using this.symm`. Introduce `f`. Take `⟨t, ht, hf⟩` from `hext (fun μ => if h : μ ∈ harmZ lam then f ⟨μ, h⟩ else 0)`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `i`. Use extensionality with `ξ`. Rewrite using `[hR0]`. Use `hf i.1 i.2 ξ` as an intermediate fact. Rewrite `this` using `[dif_pos i.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `this`. Set `R` to `LinearEquiv.ofBijective R0 hbij`. Set `Fl` to `(flipA E A T).restrict (p := invA σ E) (q := invA σ E) hF`. Establish `hcomp : ∀ x i, R (Fl x) i = a i ∘ₗ R x i ∘ₗ b i`. Introduce `x i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use extensionality with `ξ`. Both sides reduce to the same expression. Use `haveI : FiniteDimensional ℂ (invA σ E) := hfin`. Take `⟨hfd, htrace⟩` from `GlobalTheory.T.trace_factor_tensor_decomp ι (invA σ E) W H R Fl a b hcomp`. Establish `hse : harmSet lam = (harmZ lam).image wtR` using `harmSet_eq lam`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨fun μ hμ => ?_, fun hne => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hμ` using `[hse, Finset.mem_image]`. Take `⟨ν, hν, rfl⟩` from `hμ`. Conclude with `⟨hA _, hfd ⟨ν, hν⟩⟩`. Assume the negation of the conclusion as `hno push_neg at hno`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use `(Submodule.eq_bot_iff _).2 fun t ht => hinj t ht fun μ hμ ξ hξ => ?_` and prove the remaining obligations. Establish `h1` using `hmaps t ht _ ξ hξ`. Establish `hμ' : wtR μ ∈ harmSet lam`. Rewrite using `[hse]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.mem_image_of_mem _ hμ`. Rewrite `h1` using `[hno _ hμ']`. Simplify using `using h1`. Establish `e1 : trOn (invA σ E) (flipA E A T) = LinearMap.trace ℂ (invA σ E) Fl`. Unfold `trOn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hF]`. Establish `e2 : ∀ i : ι, trOn (hwSp E1 E2 (wtR i.1)) A = LinearMap.trace ℂ (H i) (a i)`. Introduce `i`. Unfold `trOn`. Rewrite using `[dif_pos (hA _)]`.
-
-Rewrite using `[e1, htrace, hse, Finset.sum_image (fun x _ y _ h => wtR_injective h), Finset.mul_sum, ← Finset.sum_coe_sort (harmZ lam)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[e3 i, e2 i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countG : CountG := by
   intro n lam hlam E T hT V _ _ E1 E2 σ A hc hfin

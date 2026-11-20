@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.TranslQuotientPow
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Use `infer_instance`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift ((𝟙 G) ^ n) (𝟙 G) ≫ μ[G]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMonHom_id_pow {Y : Scheme.{0}} (G : Over Y) [GrpObj G] [IsCommMonObj G] (n : ℕ) :
     IsMonHom ((𝟙 G) ^ n : G ⟶ G) := by
@@ -27,7 +27,7 @@ theorem isMonHom_id_pow {Y : Scheme.{0}} (G : Over Y) [GrpObj G] [IsCommMonObj G
   | succ n ih => rw [pow_succ]; exact inferInstanceAs (IsMonHom (lift ((𝟙 G) ^ n) (𝟙 G) ≫ μ[G]))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, comp_mul, ih, Category.comp_id]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_id_pow {Y : Scheme.{0}} {G W : Over Y} [GrpObj G] (x : W ⟶ G) (n : ℕ) :
     x ≫ (𝟙 G) ^ n = x ^ n := by
@@ -36,7 +36,7 @@ theorem comp_id_pow {Y : Scheme.{0}} {G W : Over Y} [GrpObj G] (x : W ⟶ G) (n 
   | succ n ih => rw [pow_succ, pow_succ, comp_mul, ih, Category.comp_id]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comp_hom {Y : Scheme.{0}} {G A W : Over Y} [GrpObj G] [GrpObj A] (q : G ⟶ A) [IsMonHom q]
     (x : W ⟶ G) (n : ℕ) : (x ^ n) ≫ q = (x ≫ q) ^ n := by

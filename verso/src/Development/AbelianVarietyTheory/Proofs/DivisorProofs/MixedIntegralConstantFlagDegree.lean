@@ -19,7 +19,7 @@ namespace GlobalTheory.GenDeg
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Establish `hp : IsPotential A (θ + LocPot.ofFun f)` using `isPotentialAdd A _ _ hθ (isPotential_ofFun A f hf)`. Establish `h1` using `mIntLinear A (fun _ => θ + LocPot.ofFun f) (fun _ => hp) a (fun _ => 1) (fun _ => 0) (mIntegrableCont A _ (fun _ => hp) _ continuous_const) (mIntegrableCont A _ (fun _ => hp) _ continuous_const)`. Simplify using `only [mul_one, add_zero, st_mInt_zero] at h1`. Rewrite using `[h1, massIndep A (fun _ => θ) (fun _ => f) (fun _ => hθ) (fun _ => hf)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mInt_const_shift {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (θ : LocPot X) (hθ : IsPotential A θ) (f : X → ℝ) (hf : A.Smooth f) (a : ℝ) :
@@ -31,7 +31,7 @@ theorem mInt_const_shift {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace
   rw [h1, massIndep A (fun _ => θ) (fun _ => f) (fun _ => hθ) (fun _ => hf)]
 
 /- English proof (translation)
-Introduce `j y hy w`. Establish `l` using `fun x => Cauchy.loc_pot (K.firstChern_isPotential x σ)`. Rewrite using `[K.isOneCochain_add _ _ σ j y hy w, Cauchy.leviAt_add (l _) (l _) j hy, K.c1_ar f hf σ j y hy w, hv j y hy w, Cauchy.leviAt_add (Cauchy.loc_pot hP) (Cauchy.loc_fun (hf σ)) j hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem c1_add_ar_leviEq {e : ℕ} {M : Man e} (K : Calc M) (v : K.V) (f : M.Fun) (hf : M.Smooth f) (σ : Fin (M.n + 1))
     {P : LocPot (M.X σ)} (hP : IsPotential (M.A σ) P) (hv : LeviEq (M.A σ) (K.c1 v σ) P) :
@@ -42,11 +42,11 @@ theorem c1_add_ar_leviEq {e : ℕ} {M : Man e} (K : Calc M) (v : K.V) (f : M.Fun
     Cauchy.leviAt_add (Cauchy.loc_pot hP) (Cauchy.loc_fun (hf σ)) j hy]
 
 /- English proof (translation)
-Introduce `h2 hH D O hc hf A T H hR B _ c u f hfs a`. Establish `h4` using `((GlobalTheory.T.weights_sum_to_volume_proportional h2 hH D O hc hf A T H hR).1 c).2 u`. Rewrite using `[← h4]`. Establish `hσ : ∀ σ, mInt ((T.M c).A σ) (fun _ => (T.K B c).c1 (T.L B c u + (T.K B c).ar f) σ) (fun _ => a) = a * mInt ((T.M c).A σ) (fun _ => (T.F c).th u σ) (fun _ => 1)`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hθ` using `T.th_pot c u σ`. Establish `hp : IsPotential ((T.M c).A σ) ((T.F c).th u σ + LocPot.ofFun (f σ))` using `isPotentialAdd _ _ _ hθ (isPotential_ofFun _ _ (hfs σ))`. Rewrite using `[(GlobalTheory.LeviOnly.mInt_eq_of_leviEq _ _ _ _ _ _ (fun _ => (T.K B c).firstChern_isPotential _ σ) (fun _ => hp) (fun _ => c1_add_ar_leviEq (T.K B c) _ f hfs σ hθ (T.c1_L B c u σ))).1]`. Conclude with `mInt_const_shift _ _ hθ _ (hfs σ) a`. Simplify using `only [Man.int, hσ, ← Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem main : Hypotheses2 → HypothesesH → OnObj fun D O A T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ c (u : Wt O.Y) (f : (T.M c).Fun),
     (T.M c).Smooth f → ∀ a : ℝ,

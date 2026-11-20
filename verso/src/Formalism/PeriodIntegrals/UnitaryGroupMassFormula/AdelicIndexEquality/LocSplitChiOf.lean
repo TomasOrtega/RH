@@ -15,19 +15,19 @@ def GLChi : Prop :=
     ∀ g, χ g = 1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `star (star a) = a`. Conclude with `star_star a`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem spl_sig_sig (I : AutInst) (a : I.E) : I.cm.sig (I.cm.sig a) = a := by
   change star (star a) = a
   exact star_star a
 
 /- English proof (translation)
-The claim follows from `(I.cm.fixed a).1 h`.
+A detailed English derivation is pending.
 -/
 theorem spl_sig_fix (I : AutInst) (a : I.E) (h : I.cm.sig a = a) : a ∈ (algebraMap I.F I.E).range := (I.cm.fixed a).1 h
 
 /- English proof (translation)
-Simplify using `only [sigV, inclV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spl_sigV_inclV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x : I.E) :
     sigV I v (inclV I v x) = inclV I v (starRingEnd I.E x) := by
@@ -36,9 +36,9 @@ theorem spl_sigV_inclV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x : I.E
   rfl
 
 /- English proof (translation)
-Establish `h` using `I.J_herm`. Unfold `Formalism.UG.IsHerm at h`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at hij ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[spl_sigV_inclV, hij]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spl_herm_v (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     Formalism.UG.cT (sigV I v) (I.J.map (inclV I v)) = I.J.map (inclV I v) := by
@@ -50,7 +50,7 @@ theorem spl_herm_v (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
   rw [spl_sigV_inclV, hij]
 
 /- English proof (translation)
-Establish `h` using `RingHom.map_det (inclV I v) I.J`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`. Conclude with `(isUnit_iff_ne_zero.2 I.J_det).map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spl_det_v (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) : IsUnit (I.J.map (inclV I v)).det := by
   have h := RingHom.map_det (inclV I v) I.J
@@ -59,13 +59,13 @@ theorem spl_det_v (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) : IsUnit (I.J
   exact (isUnit_iff_ne_zero.2 I.J_det).map _
 
 /- English proof (translation)
-Introduce `I v hnf χ hpos hcent _ g`. Use `haveI : CharZero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) := charZero_of_injective_algebraMap (algebraMap I.F _).injective`. Take `⟨π, hπ⟩` from `SplitIso.exists_split (K := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) I.cm.sig (spl_sig_sig I) (spl_sig_fix I) I.cm.deg2 two_ne_zero hnf`. Establish `hπ' : ∀ r, π (sigV I v r) = (π r).swap` using `hπ`. Set `f : Uv I v →* GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v)` to `SplitGL.proj (sigV I v) π (I.J.map (inclV I v))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective f` using `SplitGL.proj_bijective (sigV I v) π hπ' (I.J.map (inclV I v)) (spl_herm_v I v) (spl_det_v I v)`. Set `e : Uv I v ≃* GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v)` to `MulEquiv.ofBijective f hbij`. Establish `key` using `hG (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) I.n (χ.comp e.symm.toMonoidHom) (fun g => hpos _) ?_ (e g)`. Establish `h2 : e.symm (e g) = g` using `e.symm_apply_apply g`. Rewrite using `[← h2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key`. Introduce `d show χ (e.symm _) = 1`. Apply `hcent` to reduce the goal to its premises. Introduce `t`. Apply `e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, map_mul, MulEquiv.apply_symm_apply]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Conclude with `Algebra.commutes _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locSplitChi_of (hG : GLChi) : LocSplitChi := by
   intro I v hnf χ hpos hcent _ g

@@ -16,15 +16,13 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `p _ D R _ b N K _ β o g hg`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Take `⟨ℓ, hℓp, hℓ⟩` from `Nat.exists_infinite_primes (p + 1)`. Establish `hcop : ℓ.Coprime p` using `(Nat.coprime_primes hℓ (Fact.out)).2 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ0 : 0 < ℓ` using `hℓ.pos`. Establish `hℓK : (ℓ : K) ≠ 0`. Establish `h` using `(b.unit ℓ hcop).map β`. Rewrite `h` using `[map_natCast]`. Conclude with `h.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hx : spMap (algebraMap K (AlgebraicClosure K)) ≫ spMap β = spMap ((algebraMap K (AlgebraicClosure K)).comp β)`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨I, -⟩` from `o.geom (AlgebraicClosure K) (spMap (algebraMap K (AlgebraicClosure K))) ((algebraMap K (AlgebraicClosure K)).comp β) hx`. Establish `hc` using `GlobalTheory.SepClosedTorsion.card_torsion_sepClosed K (AlgebraicClosure K) o.A o.ab g hg ℓ hℓK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `f : D.La →+ Additive (Over.mk (spMap (algebraMap K (AlgebraicClosure K))) ⟶ o.A)` to `AddMonoidHom.mk' (fun a => Additive.ofMul (I.ev ℓ a)) fun a b => congrArg Additive.ofMul (I.add ℓ a b)`. Establish `hk : f.ker = (nsmulAddMonoidHom ℓ : D.La →+ D.La).range`. Use extensionality with `a`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_range]`. Conclude with `(I.ker ℓ hℓ0 hcop a).trans ⟨fun ⟨b, h⟩ => ⟨b, h.symm⟩, fun ⟨b, h⟩ => ⟨b, h.symm⟩⟩`.
-
-Establish `h2 : Nat.card {x : ptOver K (AlgebraicClosure K) ⟶ o.A // x ^ ℓ = 1} = ℓ ^ Module.finrank ℤ D.La`. Rewrite using `[← AddSubgroup.index_range_nsmul, ← hk, AddSubgroup.index_ker]`. Conclude with `Nat.card_congr (Equiv.subtypeEquiv Additive.ofMul fun u => I.onto ℓ hℓ0 hcop u)`. Rewrite `h2` using `[hc]`. Conclude with `Nat.pow_right_injective hℓ.two_le h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_relDim_eq_finrank : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (K : Type) [Field K] (β : R →+* K) (o : Obj b N (spMap β)) (g : ℕ), SmoothOfRelativeDimension g o.A.hom → 2 * g = Module.finrank ℤ D.La := by
   intro p _ D R _ b N K _ β o g hg

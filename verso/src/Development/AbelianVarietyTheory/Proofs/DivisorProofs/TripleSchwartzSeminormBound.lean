@@ -21,15 +21,15 @@ namespace GlobalTheory.ArchKXPr
 open GlobalTheory.ArchUniq
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hP B a a' G X om om' hT K hK s`. Establish `hψ : IsStd B.ψ` using `hT.base.std`. Establish `hW : G.M.IsWeil B.ψ X.β (X.β / X.α) om` using `hT.weil`. Establish `hcK : IsCompact (K : Set (UA σ G.V.J))`. Take `⟨K', _, _, hK', hc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B a G.V (a - G.p) G.p hT.base hT.geo.hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : K = K'`. Use extensionality with `g`. Rewrite using `[hK g, hK' g]`. Substitute `e` using the available equality. Conclude with `hc`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `GlobalTheory.ArchKX.archActX_bound G.M _ (isCompact_KAt hcK (evI F))`. Take `⟨s', C, hC⟩` from `GlobalTheory.ArchKX.unif_bound F B.ψ hψ (Fin a × Fin (a + a')) M s`. Use `⟨s', C, fun k hk f => ?_⟩` and prove the remaining obligations. Establish `hkU : k ∈ UAt σ G.V (evI F)` using `hk.2`. Establish `hex : ∀ f : SInf F (Fin a × Fin (a + a')), ∃ f₁ : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (k, 1)) f f₁` using `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hT.base.cm hT.base.std hT.weil k hkU`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin : IsLinearMap ℂ ⇑(om (k, 1))` using `(om (k, 1)).isLinear`. Set `A : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a'))` to `{ toFun := locOpInf (om (k, 1)) map_add' := fun f g => by simpa using locOpInf_lin hlin hex 1 1 f g map_smul' := fun c f => by simpa using locOpInf_lin hlin hex c 0 f f }`. Set `L` to `IsLinearMap.mk' _ (GlobalTheory.ArchKX.isLinearMap_archActX G.M k)`. Set `N` to `IsLinearMap.mk' _ (GlobalTheory.ArchKX.isLinearMap_archActX G.M k⁻¹)`. Establish `hLN : ∀ v, L (N v) = v` using `GlobalTheory.ArchKX.archActX_inv G.M k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ v, ‖N v‖ ≤ M * ‖v‖` using `hM k⁻¹ (inv_mem hk)`. Establish `h2 : ∀ f, ∫⁻ z, ‖A f z‖ₑ ^ 2 ≤ ∫⁻ z, ‖f z‖ₑ ^ 2` using `fun f => (GlobalTheory.ArchKX.lintegral_acts_eq_volume G.M B.ψ X.β (X.β / X.α) om hW k f (A f) (acts_locOpInf (hex f))).le`. Establish `hI : ∀ v (f f' : SInf F (Fin a × Fin (a + a'))), ⇑f' = schrF (trP F (Fin a × Fin (a + a'))) v ⇑f → ⇑(A f') = schrF (trP F (Fin a × Fin (a + a'))) (L v) ⇑(A f)` using `fun v f f' h => GlobalTheory.ArchKX.locOpInf_schrF G.M B.ψ X.β (X.β / X.α) om hψ hW k hkU hex v f f' h`. Conclude with `hC A L N hLN hN h2 hI f`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locOpInf_unif_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

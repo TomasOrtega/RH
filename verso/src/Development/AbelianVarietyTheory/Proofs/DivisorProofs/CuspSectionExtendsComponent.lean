@@ -21,35 +21,29 @@ open scoped LaurentSeries
 open GlobalTheory.Toroidal GlobalTheory.FlatLine
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k Z hZ la _ f hf`. Establish `hf1 : 1 < Module.finrank ℚ D.host.E / 2`. Use `(CmDim.cm_dim D A).2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hpq : 1 ≤ S.Dw.p + S.Dw.q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `S.two_le` as an intermediate fact. Use `S.rank_eq` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set ex : Ix S.Dw → ℤ := GlobalTheory.AllWt.exOf S.Dw la 0 with hexd`. Establish `hex : ex none = 0` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : ∀ i (y : (Φ.C i).Y.X), (Φ.C i).π y ∉ genBd s.T.Z → ((Φ.C i).LEx ex).RegularAt y (Pi.single (M` using `fun i => (Φ.C i).Y.Fn) k f i) := by`. Introduce `i y _`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 hf.1 y`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (Submodule.zero_mem _) y`. Take `⟨g, ⟨hg, hgv⟩, -⟩` from `existsUnique_rule_of_regular _ _ _ _ _ _ _ _ _ _ κ.e _ _ _ Φ ex hex (Pi.single (M := fun i => (Φ.C i).Y.Fn) k f) hreg`. Establish `hg' : idem Z * g ∈ GlobalTheory.AllWt.secZ s.Xo κ.c ex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using mul_mem_secZ (idem_mem_secZ Z) hg`. Establish `hsupp : idem Z * g ∈ suppOn Z` using `mul_comm g (idem Z) ▸ mul_mem_suppOn g (idem_mem_suppOn Z)`. Establish `hval : ∀ i, (Φ.C i).val (idem Z * g) = Pi.single (M` using `fun i => (Φ.C i).Y.Fn) k f i := by`. Introduce `i`. Establish `hmul : (Φ.C i).val (idem Z * g) = (Φ.C i).val (idem Z) * (Φ.C i).val g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `letI := (constF κ.e (Φ.C i).Y).toAlgebra`. Conclude with `evalAt_mul (K := κ.c.F) (fun S _ _ => FrPt s.Xo κ.c S) (fun φ y z => FrMap φ y z) (idem Z) g (Φ.C i).y0`. Rewrite using `[hmul, hgv i]`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Φ.C i).val (idem Z) = 1`. Use `letI := (constF κ.e (Φ.C i).Y).toAlgebra`. Conclude with `evR_idem hZ (FlagTan.fromTest_of_isLocalRing _)`. Rewrite using `[h1, one_mul]`. Rewrite using `[Pi.single_eq_of_ne hi, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hvan : ∀ i, (Φ.C i).Y.vanishOn ((Φ.C i).LEx ex) ((Φ.C i).val (idem Z * g)) (Φ.C i).Ybd`. Introduce `i`. Rewrite using `[hval i]`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `hf.2`. Rewrite using `[Pi.single_eq_of_ne hi]`. Introduce `y _`. Conclude with `CartierDiv.vanishesAt_iff.2 ⟨Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 (Submodule.zero_mem _) y, fun h => h.ne_zero rfl⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `⟨idem Z * g, ⟨?_, hsupp⟩, by rw [hval k, Pi.single_eq_same]⟩` and prove the remaining obligations. Distinguish the cases in `hdec : ∀ (τ : D.host.E →+* ℂ) (i j' : ℕ), i ≤ j' → j' < S.Dw.mult τ → (wtOf S.Dw la 0).1 (τ, j') ≤ (wtOf S.Dw la 0).1 (τ, i)`. Use `swap`. Establish `hex' : ∃ (τ : D.host.E →+* ℂ) (m : ℕ) (hm : m + 1 < S.Dw.mult τ), (wtOf S.Dw la 0).1 (τ, m) < (wtOf S.Dw la 0).1 (τ, m + 1)`. Assume the negation of the conclusion as `hne`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hne`. Apply `hdec` to reduce the goal to its premises. Introduce `τ i j' hij hj'`. Use `revert hj'`. Proceed by induction on `j', hij using Nat.le_induction with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Consider the case `base => intro _`. Conclude with `le_refl _`. Consider the case `succ n hn ih => intro hj'; exact (hne τ n hj').trans (ih (by omega))`. Take `⟨τ, m, hm, hlt⟩` from `hex'`. Establish `h0 : idem Z * g = 0` using `GlobalTheory.NonDomVanish.eq_zero_of_lt hg' τ ⟨m, by omega⟩ ⟨m + 1, hm⟩ rfl hlt`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Use `GlobalTheory.AllWt.mem_cuspW.2 ⟨hg', fun σ hσ => holCusp_mem_holSub _ _ fun k' => ?_⟩` and prove the remaining obligations. Establish `hU : Formalism.L2.PjFree.IsUnf (s.U σ)` using `(s.unf σ hσ).1`. Establish `hsec : ((unf s σ).X k').IsSec (modelWt (unf s σ) (wtOf S.Dw la 0) k') (rdU (unf s σ) (idem Z * g) k')` using `GlobalTheory.T.isSec_reading_decreasing_integer_exponents _ _ _ _ _ _ σ _ (unf s σ) (KitEx.key_nonempty s) hσ ((ThetaDictCompare.isUnf_toU _).2 hU) hpq _ (even_wtOf la 0) hdec _ hg' k'`.
-
-Use `GlobalTheory.FJZero.mem_SS_of_isModerate _ _ _ hsec (GlobalTheory.CuspFrom.isModerate _ hf1 hsec) fun ξ hξ x hx => ?_` and prove the remaining obligations. Use `letI : Algebra κ.c.F ℂ⸨X⸩ := (GlobalTheory.ArcId.cstL.comp σ).toAlgebra`. Establish `halg : ∀ t : κ.c.F, algebraMap κ.c.F ℂ⸨X⸩ t = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R` using `ℂ) (σ t)) := fun _ => rfl`. Take `⟨y, T₀, s', d, hbd, hd, hw⟩` from `GlobalTheory.T.exists_laurentArc_degenerating_on_model_convergence _ _ _ _ _ _ σ _ (s.U σ) halg hσ hU k' ξ hξ x hx _ _ s.T.Z`. Establish `hc : (algebraMap (PowerSeries ℂ) ℂ⸨X⸩).comp ((PowerSeries.C (R` using `ℂ)).comp σ) = algebraMap κ.c.F ℂ⸨X⸩ := RingHom.ext fun t => (halg t).symm`.
-
-Take `⟨v, hv, hvl⟩` from `GlobalTheory.T.eigenframe_base_change_local_rings _ _ _ _ _ _ _ _ s.T.Z (GlobalTheory.T.exists_lieEigenspaceFrame_localRing_baseChange _ _ _ _ _ _ _ _ s.T.Z) _ κ.e _ _ _ Φ (PowerSeries ℂ) ℂ⸨X⸩ ((PowerSeries.C (R := ℂ)).comp σ) y ex (idem Z * g) hc hbd hex hg' hvan`. Conclude with `GlobalTheory.T.fourierJacobi_constant_term_eq_zero_of_flow_line _ _ _ _ _ ξ x s' d T₀ (fun m => (evR s.Xo κ.c (idem Z * g) y).coeff m) hsec (GlobalTheory.CuspFrom.freqNonneg _ hf1 hsec) hξ hx hd (fun m hm => by rw [hvl]; exact GlobalTheory.CuspFrom.coeff_eq_zero hv hm) fun w hw' …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cusp_of_isCuspSec : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c), Over Φ k Z → ∀ la : AllWt.Weight S.Dw, (∀ τ, Antitone (la τ)) → ∀ f, IsCuspSec Φ k la f → ∃ g ∈ cuspOn (unf s) Z (wtOf S.Dw la 0), (Φ.C k).val g = f := by
   intro D A N j S κ s Φ k Z hZ la _ f hf

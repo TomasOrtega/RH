@@ -30,13 +30,13 @@ namespace GlobalTheory.HeightParts
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `_ _ D O x P hC y K₀ _ _ io₀`. Take `⟨K, _, _, io, j, fK, yK, hio, b, hj, hK, hb⟩` from `GlobalTheory.T.base_change_tangent_embedding D O y K₀ io₀`. Establish `hs : (yK ≫ genι O.s.T.Z) ≫ O.s.T.Z.s = spMap (fK.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))`. Rewrite using `[Category.assoc, show genι O.s.T.Z ≫ O.s.T.Z.s = genStr O.s.T.Z ≫ spMap (algebraMap (𝓞 O.κ.c.F) O.κ.c.F) from Limits.pullback.condition, ← Category.assoc, hK, spMap_comp_spMap]`. Take `⟨xO, hx⟩` from `GlobalTheory.T.proper_point_extends_ring_of_integers O.κ.c.F O.s.T.Z.X O.s.T.Z.s O.s.T.Z.proj K fK (yK ≫ genι O.s.T.Z) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `GlobalTheory.T.letters_equiv_fin D O`. Establish `hio' : spMap io ≫ yK ≫ genι O.s.T.Z = y.y ≫ genι O.s.T.Z` using `by rw [← Category.assoc, hio]`. Establish `hliK : LinearIndependent K (fun i => b (e i))`. Establish `hQ` using `(GlobalTheory.T.linearIndependent_tangent_letters D O y).comp e e.injective`. Use `Fintype.linearIndependent_iff.2 fun c hc i => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∀ k, bcTan (t` using `O.s.T.Z.t) io hio' (b (e k)) = tanOf (y.tan (e k).1 (e k).2) := fun k => tan_ext ((hb (e k)).trans (left_tanOf _).symm)`. Establish `h1` using `congrArg (bcTan (t := O.s.T.Z.t) io hio') hc`. Rewrite `h1` using `[map_zero, map_sum]`. Simplify using `only [map_smulₛₗ, h2] at h1`. Conclude with `io.injective ((Fintype.linearIndependent_iff.1 hQ (fun k => io (c k)) h1 i).trans (map_zero io).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hli : ∀ σ : K →+* ℂ, LinearIndependent ℂ (fun i => bcTan σ (Category.assoc (spMap σ) yK (genι O.s.T.Z)).symm (b (e i)))` using `fun σ => GlobalTheory.T.linearIndependent_base_change_tangent O.s.T.Z.t σ _ _ hliK`. Take `⟨h, hh⟩` from `GlobalTheory.T.hermitian_family_independent_tangents D O x K fK yK hK (fun i => b (e i)) hli`. Conclude with `⟨K, inferInstance, inferInstance, io, j, lieCoordLat O.s.T.Z.t hx (fun i => b (e i)), h, hj, fK, yK, xO, hx, hio, e, fun i => b (e i), hC, hK, fun i => hb (e i), rfl, hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isLieAtWith : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ), O.CoreWith x P → ∀ (y : Pt O.s) (K₀ : Type) [Field K₀] [NumberField K₀] (io₀ : K₀ →+* Qb), ∃ (K : Type) (_ : Field K) (_ : NumberField K) (io : K →+* Qb) (j : K₀ →+* K) (L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K)) (h : HermFam K (Fin (D.R.f * O.N) → K)), io.comp j = io₀ ∧ IsLieAtWith O x P y K io L h := by
   intro _ _ D O x P hC y K₀ _ _ io₀

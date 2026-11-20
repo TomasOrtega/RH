@@ -13,9 +13,9 @@ section Eig
 variable {S M : Type} [Field S] [AddCommGroup M] [Module S M]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ']`. Use `show f ((f ^ n) x) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih, map_smul, hx, smul_smul, ← pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem pow_apply_eig (f : Module.End S M) (μ : S) (x : M) (hx : f x = μ • x) (k : ℕ) :
     (f ^ k) x = μ ^ k • x := by
@@ -27,7 +27,7 @@ theorem pow_apply_eig (f : Module.End S M) (μ : S) (x : M) (hx : f x = μ • x
     rw [ih, map_smul, hx, smul_smul, ← pow_succ]
 
 /- English proof (translation)
-Use `Polynomial.induction_on' p (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Simplify using `[hp, hq, add_smul]`. Simplify using `[pow_apply_eig f μ x hx, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem aeval_eig (f : Module.End S M) (μ : S) (x : M) (hx : f x = μ • x) (p : S[X]) :
     aeval f p x = p.eval μ • x := by
@@ -42,11 +42,11 @@ section Prim
 variable (E : Type) [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `Field.exists_primitive_element ℚ E`. Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors ℤ) α (Algebra.IsIntegral.isIntegral (R := ℚ) α)`. Establish `hm0 : (((m : ℤ) : E)) ≠ 0` using `Int.cast_ne_zero.mpr (nonZeroDivisors.ne_zero m.prop)`. Use `⟨⟨(m : ℤ) • α, hm⟩, ?_⟩` and prove the remaining obligations. Use `le_antisymm le_top ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hα, IntermediateField.adjoin_le_iff]`. Establish `h1 : (m : ℤ) • α ∈ IntermediateField.adjoin ℚ {(m : ℤ) • α}` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Establish `h2 : α = (((m : ℤ) : ℚ))⁻¹ • ((m : ℤ) • α)`. Rewrite using `[zsmul_eq_mul, Algebra.smul_def, map_inv₀, map_intCast, inv_mul_cancel_left₀ hm0]`. Establish `h3` using `SMulMemClass.smul_mem (((m : ℤ) : ℚ))⁻¹ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← h2]`. Conclude with `Set.singleton_subset_iff.mpr h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_primitive : ∃ θ : 𝓞 E, IntermediateField.adjoin ℚ {(θ : E)} = ⊤ := by
   obtain ⟨α, hα⟩ := Field.exists_primitive_element ℚ E
@@ -72,13 +72,11 @@ variable {E : Type} [Field E] [NumberField E] {S M : Type} [Field S] [CharZero S
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ θ` using `Algebra.IsIntegral.isIntegral θ`. Establish `h1 : Algebra.adjoin ℚ {θ} = ⊤` using `by first`. Consider the case `rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isIntegral hint, hθ, IntermediateField.top_toSubalgebra]`. Consider the case `rw [← IntermediateField.adjoin_algebraic_toSubalgebra (fun x hx => by`. Rewrite using `[Set.mem_singleton_iff.mp hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint.isAlgebraic), hθ, IntermediateField.top_toSubalgebra]`. Consider the case `rw [← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x hx => by`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `hint.isAlgebraic), hθ, IntermediateField.top_toSubalgebra]`. Consider the case `rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, hθ, IntermediateField.top_toSubalgebra]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : a ∈ Algebra.adjoin ℚ {θ}`. Rewrite using `[h1]`. Conclude with `Algebra.mem_top`. Rewrite `h2` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `(AlgHom.mem_range (aeval θ)).mp h2`.
-
-Conclude with `⟨p, hp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem poly_lemma (θ : E) (hθ : IntermediateField.adjoin ℚ {θ} = ⊤) (a : E) :
     ∃ p : ℚ[X], aeval θ p = a := by
@@ -101,7 +99,7 @@ private theorem poly_lemma (θ : E) (hθ : IntermediateField.adjoin ℚ {θ} = �
   exact ⟨p, hp⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Take `⟨p, rfl⟩` from `poly_lemma θ hθ a`. Establish `e : ∀ χ' : E →+* S, χ' (aeval θ p) = aeval (χ' θ) p` using `fun χ' => (Polynomial.aeval_algHom_apply χ'.toRatAlgHom θ p).symm`. Rewrite using `[e, e, h]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eqchi_lemma_2 (θ : E) (hθ : IntermediateField.adjoin ℚ {θ} = ⊤) (χ₁ χ₂ : E →+* S)
     (h : χ₁ θ = χ₂ θ) : χ₁ = χ₂ := by
@@ -112,9 +110,9 @@ private theorem eqchi_lemma_2 (θ : E) (hθ : IntermediateField.adjoin ℚ {θ} 
   rw [e, e, h]
 
 /- English proof (translation)
-Establish `hs : (Finset.univ.val.map l) ≤ f.roots`. Rewrite using `[Multiset.le_iff_subset (Multiset.Nodup.map hl Finset.univ.nodup)]`. Introduce `x hx`. Take `⟨σ, -, rfl⟩` from `Multiset.mem_map.mp hx`. Conclude with `(Polynomial.mem_roots hf).mpr (hr σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(Multiset.prod_X_sub_C_dvd_iff_le_roots hf _).mpr hs`. Rewrite `h` using `[Multiset.map_map]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dvd_lemma_3 {κ : Type} [Fintype κ] (l : κ → S) (hl : Function.Injective l) (f : S[X])
     (hf : f ≠ 0) (hr : ∀ σ, f.eval (l σ) = 0) : ∏ σ, (X - C (l σ)) ∣ f := by
@@ -129,19 +127,17 @@ private theorem dvd_lemma_3 {κ : Type} [Fintype κ] (l : κ → S) (hl : Functi
   exact h
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℤ (θ : E)` using `RingOfIntegers.isIntegral_coe θ`. Establish `hqm : (minpoly ℤ (θ : E)).Monic` using `minpoly.monic hint`. Establish `hq0 : aeval θ (minpoly ℤ (θ : E)) = 0`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algebraMap_apply, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `minpoly.aeval ℤ (θ : E)`. Establish `hqT : aeval (ρ θ) (minpoly ℤ (θ : E)) = 0`. Establish `h` using `Polynomial.aeval_algHom_apply ρ.toIntAlgHom θ (minpoly ℤ (θ : E))`. Rewrite `h` using `[hq0, map_zero]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlinj : Function.Injective (fun σ => χ σ (θ : E))` using `fun σ τ h => hχ (eqchi_lemma_2 (θ : E) hθ (χ σ) (χ τ) h)`. Establish `hqS0 : (minpoly ℤ (θ : E)).map (algebraMap ℤ S) ≠ 0` using `(hqm.map _).ne_zero`. Establish `hroot : ∀ σ, ((minpoly ℤ (θ : E)).map (algebraMap ℤ S)).eval (χ σ (θ : E)) = 0`. Introduce `σ`. Rewrite using `[Polynomial.eval_map_algebraMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `Polynomial.aeval_algHom_apply (χ σ).toIntAlgHom (θ : E) (minpoly ℤ (θ : E))`. Rewrite `h` using `[minpoly.aeval, map_zero]`. Conclude with `h`. Establish `hdvd` using `dvd_lemma_3 (fun σ => χ σ (θ : E)) hlinj _ hqS0 hroot`. Establish `hPm : (∏ σ, (X - C (χ σ (θ : E)))).Monic` using `monic_prod_of_monic _ _ fun σ _ => monic_X_sub_C _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hPdeg : (∏ σ, (X - C (χ σ (θ : E)))).natDegree = Fintype.card ι`. Rewrite using `[natDegree_prod_of_monic _ _ fun σ _ => monic_X_sub_C _]`. Simplify using the standard rewrite rules. Establish `hqdeg : ((minpoly ℤ (θ : E)).map (algebraMap ℤ S)).natDegree ≤ Fintype.card ι`. Rewrite using `[hqm.natDegree_map, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hint`. Establish `h2` using `minpoly.natDegree_le (A := ℚ) (θ : E)`. Rewrite `h2` using `[h1, hqm.natDegree_map]`. Conclude with `h2`. Establish `heq` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hPm (hqm.map _) hdvd (by rw [hPdeg]; exact hqdeg)`.
-
-Rewrite using `[← heq, Polynomial.aeval_map_algebraMap]`. Conclude with `hqT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem annih_lemma_4 (χ : ι → (E →+* S)) (hχ : Function.Injective χ)
     (hcard : Fintype.card ι = Module.finrank ℚ E) (ρ : 𝓞 E →+* Module.End S M) (θ : 𝓞 E)
@@ -183,13 +179,13 @@ private theorem annih_lemma_4 (χ : ι → (E →+* S)) (hχ : Function.Injectiv
   exact hqT
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `poly_lemma (θ : E) hθ (a : E)`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors ℤ) p`. Establish `hb0 : ((b : ℤ) : S) ≠ 0` using `Int.cast_ne_zero.mpr (nonZeroDivisors.ne_zero b.prop)`. Establish `hE : aeval (θ : E) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p) = (b : ℤ) • (a : E)`. Rewrite using `[← Polynomial.aeval_map_algebraMap (A := ℚ), hb, map_zsmul, hp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : (b : ℤ) • a = aeval θ (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p)`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[map_zsmul, ← Polynomial.aeval_algebraMap_apply]`. Conclude with `hE.symm`. Establish `h1 : ρ ((b : ℤ) • a) v = ((b : ℤ) : S) • ρ a v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul S, LinearMap.smul_apply]`. Establish `h2' : ρ (aeval θ (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p)) = aeval (ρ θ) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p)` using `(Polynomial.aeval_algHom_apply ρ.toIntAlgHom θ _).symm`. Establish `h2 : ρ (aeval θ (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p)) v = aeval (χ' (θ : E)) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p) • v`. Rewrite using `[h2', ← Polynomial.aeval_map_algebraMap (A := S), aeval_eig (ρ θ) (χ' (θ : E)) v hv, Polynomial.eval_map_algebraMap]`. Establish `h3 : aeval (χ' (θ : E)) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) p) = χ' ((b : ℤ) • (a : E))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hE]`. Conclude with `Polynomial.aeval_algHom_apply χ'.toIntAlgHom (θ : E) _`. Rewrite `h1` using `[hO, h2, h3, map_zsmul, ← Int.cast_smul_eq_zsmul S, smul_eq_mul, mul_smul]`. Conclude with `(smul_right_injective M hb0 h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eig_lemma_5 (χ' : E →+* S) (ρ : 𝓞 E →+* Module.End S M) (θ : 𝓞 E)
     (hθ : IntermediateField.adjoin ℚ {(θ : E)} = ⊤) (v : M) (hv : ρ θ v = χ' (θ : E) • v) (a : 𝓞 E) :
@@ -220,25 +216,23 @@ private theorem eig_lemma_5 (χ' : E →+* S) (ρ : 𝓞 E →+* Module.End S M)
   exact (smul_right_injective M hb0 h1).symm
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_integral_primitive E`. Establish `hlinj : Function.Injective (fun σ => χ σ (θ : E))` using `fun σ τ h => hχ (eqchi_lemma_2 (θ : E) hθ (χ σ) (χ τ) h)`. Establish `hP` using `annih_lemma_4 χ hχ hcard ρ θ hθ`. Establish `hinj : Set.InjOn (fun σ => χ σ (θ : E)) (Finset.univ : Finset ι)` using `fun σ _ τ _ h => hlinj h`. Establish `hLself : ∀ σ, (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ).eval (χ σ (θ : E)) = 1` using `fun σ => Lagrange.eval_basis_self hinj (Finset.mem_univ σ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLne : ∀ σ τ, σ ≠ τ → (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ).eval (χ τ (θ : E)) = 0` using `fun σ τ h => Lagrange.eval_basis_of_ne (v := fun σ => χ σ (θ : E)) h (Finset.mem_univ τ)`. Establish `hLsum : ∑ σ, Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ = 1`. Distinguish the cases in `hι : Nonempty ι`. Conclude with `Lagrange.sum_basis hinj Finset.univ_nonempty`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : Fintype.card ι = 0` using `Fintype.card_eq_zero_iff.mpr (not_nonempty_iff.mp hι)`. Rewrite `h0` using `[hcard]`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne' h0`. Establish `hproj : ∀ σ (w : M), ρ θ (aeval (ρ θ) (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ) w) = χ σ (θ : E) • aeval (ρ θ) (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ) w`. Introduce `σ w`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdvd : (∏ τ, (X - C (χ τ (θ : E)))) ∣ (X - C (χ σ (θ : E))) * Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ`. Apply `dvd_lemma_3 (fun τ => χ τ (θ : E)) hlinj` to reduce the goal to its premises. Introduce `h0`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `X_sub_C_ne_zero _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hLself σ`. Rewrite `h1` using `[h, Polynomial.eval_zero]`. Conclude with `zero_ne_one h1`. Introduce `τ`. Rewrite using `[Polynomial.eval_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hLne σ τ h, mul_zero]`. Take `⟨r, hr⟩` from `hdvd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : aeval (ρ θ) ((X - C (χ σ (θ : E))) * Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ) = 0`. Rewrite using `[hr, map_mul, hP, zero_mul]`. Establish `e : aeval (ρ θ) ((X - C (χ σ (θ : E))) * Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ) w = 0`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[map_mul, map_sub, aeval_X, aeval_C]`. Conclude with `sub_eq_zero.mp e`. Use `⟨fun m => ⟨fun σ => aeval (ρ θ) (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ) m, fun σ a => eig_lemma_5 (χ σ) ρ θ hθ _ (hproj σ m) a, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (∑ σ, aeval (ρ θ) (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ)) m = m`. Rewrite using `[← map_sum, hLsum, map_one]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[LinearMap.sum_apply]`. Then use the resulting hypothesis. Introduce `mσ hmσ hsum σ`. Establish `h` using `congrArg (aeval (ρ θ) (Lagrange.basis Finset.univ (fun σ => χ σ (θ : E)) σ)) hsum`. Rewrite `h` using `[map_sum, map_zero, Finset.sum_eq_single σ]`.
-
-Rewrite `h` using `[aeval_eig (ρ θ) (χ σ (θ : E)) (mσ σ) (hmσ σ θ), hLself, one_smul]`. Then use the resulting hypothesis. Introduce `τ _ hτ`. Rewrite using `[aeval_eig (ρ θ) (χ τ (θ : E)) (mσ τ) (hmσ τ θ), hLne σ τ (Ne.symm hτ), zero_smul]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp (χ : ι → (E →+* S)) (hχ : Function.Injective χ) (hcard : Fintype.card ι = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End S M) :
@@ -302,15 +296,13 @@ theorem decomp (χ : ι → (E →+* S)) (hχ : Function.Injective χ) (hcard : 
     · simp
 
 /- English proof (translation)
-Take `⟨hex, huniq⟩` from `decomp χ hχ hcard ρ`. Establish `heig : ∀ σ (c : Fin (mult σ) → S) (a : 𝓞 E), ρ a (∑ i, c i • U ⟨σ, i⟩) = χ σ (a : E) • ∑ i, c i • U ⟨σ, i⟩`. Introduce `σ c a`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, hU, smul_comm]`. Take `⟨mσ, hmσ, hsum⟩` from `hex W`. Establish `hex'` using `fun σ => (hb σ (mσ σ) (hmσ σ)).exists`. Use `choose c hc using hex'`. Use `⟨fun ℓ => c ℓ.1 ℓ.2, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ ℓ, c ℓ.1 ℓ.2 • U ℓ = W`. Rewrite using `[Fintype.sum_sigma, ← hsum]`. Conclude with `Finset.sum_congr rfl fun σ _ => hc σ`. Introduce `a ha`. Establish `hn : ∀ σ, ∑ i, a ⟨σ, i⟩ • U ⟨σ, i⟩ = mσ σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `huniq (fun σ => ∑ i, a ⟨σ, i⟩ • U ⟨σ, i⟩ - mσ σ) (fun σ b => by`. Rewrite using `[map_sub, smul_sub, heig σ (fun i => a ⟨σ, i⟩) b, hmσ σ b])`. Use the proof step `(by`. Rewrite using `[Finset.sum_sub_distrib, hsum, ← ha, Fintype.sum_sigma, sub_self])`. Introduce `σ`.
-
-Conclude with `sub_eq_zero.mp (h0 σ)`. Use function extensionality and compare the values at `ℓ`. Take `⟨σ, i⟩` from `ℓ`. Use `(hb σ (mσ σ) (hmσ σ)).unique (hn σ) (hc σ)` as an intermediate fact. Conclude with `congrFun this i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem global_basis (χ : ι → (E →+* S)) (hχ : Function.Injective χ)
     (hcard : Fintype.card ι = Module.finrank ℚ E) (ρ : 𝓞 E →+* Module.End S M) {mult : ι → ℕ}

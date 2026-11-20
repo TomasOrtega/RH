@@ -9,7 +9,7 @@ section
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) - 0 + 0 = 1`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af F) - 1 + _ = _`. Rewrite using `[sub_self, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -23,17 +23,17 @@ private theorem cc_finId_local (w : HeightOneSpectrum (𝓞 F)) (x : (w.adicComp
     rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 private theorem cc_pFin_inf (v : InfinitePlace F) (x : (v.Completion)ˣ) :
     Units.map (pFin F).toMonoidHom (infIdele F v x) = 1 := Units.ext rfl
 
 /- English proof (translation)
-Establish `h : ((infDiag k : Ideles F) : AdeleRing (𝓞 F) F) = (algebraMap F (InfiniteAdeleRing F) k, 1)`. Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `ι : (∀ w : InfinitePlace F, w.Completion) →* AdeleRing (𝓞 F) F` to `MonoidHom.inl (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace F, ι (Pi.mulSingle w (algebraMap F w.Completion k)) = ι (fun w => algebraMap F w.Completion k)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F (InfiniteAdeleRing F) k * (1 - 0 + 0) = algebraMap F (InfiniteAdeleRing F) k`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af F) * (1 - 1 + algebraMap F (Af F) k) = algebraMap F (Af F) k`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem cc_split (k : Fˣ) :
     infDiag k * finId F (Units.map (algebraMap F (Af F)).toMonoidHom k) = diagUnits F k := by
@@ -55,11 +55,11 @@ private theorem cc_split (k : Fˣ) :
     simp
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (algebraMap ℚ F)` using `(Algebra.finrank_eq_one_iff_bijective_algebraMap.1 hF).2`. Take `⟨q, hq⟩` from `hs (k : F)`. Establish `h1` using `h (k ^ 2) fun φ => by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_two_pos_of_ne_zero ((map_ne_zero φ).2 k.ne_zero)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((χ.inf k : ℂˣ) : ℂ) ^ 2 = (∏ φ : F →+* ℂ, (q : ℂ) ^ a φ) ^ 2`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, h1, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, ← hq, eq_ratCast, map_ratCast, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`. Establish `h3 : σ (∏ φ : F →+* ℂ, (q : ℂ) ^ a φ) = ∏ φ : F →+* ℂ, (q : ℂ) ^ a φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_prod, map_zpow₀, map_ratCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with e | e` into its components or cases. Rewrite using `[e, h3]`. Rewrite using `[e, map_neg, h3]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_inf_fixed (hF : Module.finrank ℚ F = 1) (χ : HChar F) (a : (F →+* ℂ) → ℤ) (h : IsAlgPos χ a)
     (σ : ℂ ≃+* ℂ) (k : Fˣ) : σ ((χ.inf k : ℂˣ) : ℂ) = ((χ.inf k : ℂˣ) : ℂ) := by
@@ -82,19 +82,19 @@ private theorem cc_inf_fixed (hF : Module.finrank ℚ F = 1) (χ : HChar F) (a :
 end
 
 /- English proof (translation)
-Introduce `F _ _ hF χ a ha σ`. Establish `hσ : ∀ k : Fˣ, σ ((χ.1 (finId F (Units.map (algebraMap F (Af F)).toMonoidHom k)) : ℂˣ) : ℂ) = ((χ.1 (finId F (Units.map (algebraMap F (Af F)).toMonoidHom k)) : ℂˣ) : ℂ)` using `fun k => by`. Establish `h1` using `χ.2.2 k`. Rewrite `h1` using `[← cc_split k, map_mul]`. Establish `h2 : χ.1 (finId F (Units.map (algebraMap F (Af F)).toMonoidHom k)) = (χ.inf k)⁻¹` using `eq_inv_of_mul_eq_one_right h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, Units.val_inv_eq_inv_val, map_inv₀, cc_inf_fixed hF χ a ha σ k]`. Set `ψ : (Af F)ˣ →* ℂˣ` to `χ.1.comp (finId F)`. Establish `hψ : Continuous ψ` using `χ.2.1.comp (GlobalTheory.CuspRep.continuous_finId F)`. Set `ψ' : (Af F)ˣ →* ℂˣ` to `(Units.map (σ : ℂ →+* ℂ).toMonoidHom).comp ψ`. Establish `hψ' : Continuous ψ'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `continuous_of_continuousAt_one ψ' ?_` and prove the remaining obligations. Establish `h1 : {u | ψ u = 1} ∈ nhds (1 : (Af F)ˣ)` using `(GlobalTheory.CuspRep.isOpen_ker_finIdele F ψ hψ).mem_nhds (map_one ψ)`. Use `(continuousAt_const (y := (1 : ℂˣ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [h1] with u hu`. Express the relevant statement in the definitionally equal form `1 = Units.map _ (ψ u)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, map_one]`. Set `p` to `Units.map (pFin F).toMonoidHom`. Establish `hp : Continuous p` using `Continuous.units_map _ continuous_snd`. Set `χ' : HChar F` to `⟨χ.1 * (ψ.comp p)⁻¹ * ψ'.comp p, (χ.2.1.mul (hψ.comp hp).inv).mul (hψ'.comp hp), fun k => by`. Establish `e : ψ' (Units.map (algebraMap F (Af F)).toMonoidHom k) = ψ (Units.map (algebraMap F (Af F)).toMonoidHom k)` using `Units.ext (hσ k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `χ.1 _ * (ψ (Units.map (algebraMap F (Af F)).toMonoidHom k))⁻¹ * ψ' (Units.map (algebraMap F (Af F)).toMonoidHom k) = 1`. Rewrite using `[χ.2.2 k, e, one_mul, inv_mul_cancel]⟩`. Establish `hloc : ∀ w x, χ'.loc w x = Units.map (σ : ℂ →+* ℂ).toMonoidHom (χ.loc w x)` using `fun w x => by`. Establish `e` using `cc_finId_local w x`. Express the relevant statement in the definitionally equal form `χ.1 (localIdele F w x) * (χ.1 (finId F (Units.map (pFin F).toMonoidHom (localIdele F w x))))⁻¹ * Units.map (σ : ℂ →+* ℂ).toMonoidHom (χ.1 (finId F (Units.map (pFin F).toMonoidHom (localIdele F w x)))) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_inv_cancel, one_mul]`. Both sides reduce to the same expression. Use `⟨χ', fun v => ?_, fun w hw => ⟨fun x hx => ?_, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ.1 (infIdele F v (-1)) * (ψ (Units.map (pFin F).toMonoidHom (infIdele F v (-1))))⁻¹ * ψ' (Units.map (pFin F).toMonoidHom (infIdele F v (-1))) = χ.1 (infIdele F v (-1))`. Rewrite using `[cc_pFin_inf, map_one, map_one, inv_one, mul_one, mul_one]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hloc, hw x hx, map_one]`. Conclude with `congrArg Units.val (hloc w (atFin w (unif w)))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.charConj :
     UpperTheory.V.Br.CharConj := by

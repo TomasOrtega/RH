@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.Contract
 noncomputable section
 
 /- English proof (translation)
-Establish `key : ((rename (Sum.inl : K → K ⊕ K') : MvPolynomial K Ω →ₐ[Ω] _).restrictScalars R).comp (pointConeMap R x) = (pointConeMap R (joinCoord x z)).comp (rename (liftVar ι'))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[pointConeMap, liftVar, joinCoord]`. Establish `hf0 : pointConeMap R x f = 0` using `hf`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun φ => φ f) key`. Simplify using `only [AlgHom.comp_apply, hf0, map_zero] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_liftVar_mem_pointIdeal {R Ω : Type*} [CommRing R] [Field Ω] [Algebra R Ω]
     {K K' : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {ι' : K' → Type}
@@ -38,11 +38,11 @@ theorem rename_liftVar_mem_pointIdeal {R Ω : Type*} [CommRing R] [Field Ω] [Al
   exact h.symm
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe b`. Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h' : ((⊤ : ℕ∞) : WithBot ℕ∞) < (((d + 1 + c : ℕ) : ℕ∞) : WithBot ℕ∞)` using `h`. Conclude with `absurd (WithBot.coe_lt_coe.mp h') (by simp)`. Consider the case `coe m`. Establish `h' : (((m : ℕ) : ℕ∞) : WithBot ℕ∞) < (((d + 1 + c : ℕ) : ℕ∞) : WithBot ℕ∞)` using `h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : m < d + 1 + c` using `by exact_mod_cast WithBot.coe_lt_coe.mp h'`. Use `show ((((m : ℤ) - c : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < (((n : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))`. Conclude with `WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem lowered_lt {a : WithBot ℕ∞} {c d n : ℕ} (h : a < ((d + 1 + c : ℕ) : WithBot ℕ∞)) (hn : d < n) :
     WithBot.map (fun e : ℕ∞ => WithTop.map (fun m : ℕ => (m : ℤ) - c) e) a <
@@ -63,7 +63,7 @@ theorem lowered_lt {a : WithBot ℕ∞} {c d n : ℕ} (h : a < ((d + 1 + c : ℕ
       exact WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by omega))
 
 /- English proof (translation)
-The claim follows from `ringKrullDim_le_of_surjective (Ideal.Quotient.factor h) (Ideal.Quotient.factor_surjective h)`.
+A detailed English derivation is pending.
 -/
 theorem dim_quot_le {A : Type*} [CommRing A] {I J : Ideal A} (h : I ≤ J) :
     ringKrullDim (A ⧸ J) ≤ ringKrullDim (A ⧸ I) :=
@@ -72,13 +72,11 @@ theorem dim_quot_le {A : Type*} [CommRing A] {I J : Ideal A} (h : I ≤ J) :
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Substitute `hl` using the available equality. Take `⟨hQp, -, hrelIff, -⟩` from `SpecialIdealCorresp.full O ϖ hϖ K' ι' ⊥ W hW.isPrime hϖW`. Establish `hQm` using `SpecialIdealMultiHomog.full O K' ι' W hW.multiHomog`. Establish `hdimQ` using `SpecialQuotDim.full O ϖ hϖ K' ι' W hϖW`. Express the relevant statement in the definitionally equal form `intNum (IsLocalRing.ResidueField O) (specialIdeal W) l.get = 0`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hcase : ringKrullDim (MRing ι' (IsLocalRing.ResidueField O) ⧸ specialIdeal W) < ((l.length + Fintype.card K' : ℕ) : WithBot ℕ∞)`. Conclude with `IntNumVanish.full (IsLocalRing.ResidueField O) K' ι' l.length (specialIdeal W) hQp hQm (Or.inr hcase) l.get`. Establish `hdimEq : ringKrullDim (MRing ι' (IsLocalRing.ResidueField O) ⧸ specialIdeal W) = ((l.length + Fintype.card K' : ℕ) : WithBot ℕ∞)` using `le_antisymm (hdimQ ▸ hdim) (not_lt.mp hcase)`. Establish `hrelQ : GroundTheory.Heights₂.Heights.FieldNumbers.relDim (specialIdeal W) = ((l.length : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[GroundTheory.Heights₂.Heights.FieldNumbers.relDim, hdimEq]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (((l.length + Fintype.card K' : ℕ) : ℤ) - Fintype.card K') = l.length` using `by push_cast; ring`. Conclude with `congrArg (fun z : ℤ => ((z : WithTop ℤ) : WithBot (WithTop ℤ))) this`. Establish `hz` using `GroundTheory.Heights₂.Heights.FieldNumbers.ProjectionFormulaContracted.full (IsLocalRing.ResidueField O) K K' j ι' (specialIdeal W) ⟨hQp, hQm, hrelIff.mp hW.relevant⟩ l.length hrelQ hcon (fun i => l.get i ∘ j)`. Rewrite using `[← hz]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `i`. Conclude with `(SegreFlagCutContraction.pullDeg_comp_of_eq_zero j _ (hlj _ (List.get_mem l i))).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vNumL_eq_zero_of_dim_le {ϖ : O} (hϖ : Irreducible ϖ)
     {K' : Type} [Fintype K'] [DecidableEq K'] {ι' : K' → Type} [∀ o, Fintype (ι' o)]
@@ -119,7 +117,7 @@ theorem vNumL_eq_zero_of_dim_le {ϖ : O} (hϖ : Irreducible ϖ)
       (hlj _ (List.get_mem l i))).symm
 
 /- English proof (translation)
-Use `Ideal.map_le_iff_le_comap.mpr fun f hf => ?_` and prove the remaining obligations. Use `show rename (liftVar ι') (MvPolynomial.map (IsLocalRing.residue O) f) ∈ specialIdeal W`. Rewrite using `[← MvPolynomial.map_rename]`. Conclude with `Ideal.mem_map_of_mem _ (hW (rename_liftVar_mem_pointIdeal x z hf))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specialIdeal_le_contract {Ω : Type} [Field Ω] [Algebra O Ω]
     {K K' : Type} [Fintype K] [DecidableEq K] [DecidableEq K'] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -134,7 +132,7 @@ theorem specialIdeal_le_contract {Ω : Type} [Field Ω] [Algebra O Ω]
   exact Ideal.mem_map_of_mem _ (hW (rename_liftVar_mem_pointIdeal x z hf))
 
 /- English proof (translation)
-Establish `hb` using `SpecialDimBound.full O ϖ hϖ K ι (pointIdeal O x) d hV`. Conclude with `lowered_lt (lt_of_le_of_lt (dim_quot_le (specialIdeal_le_contract x z hW)) hb) hdn`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relDim_contract_lt {Ω : Type} [Field Ω] [Algebra O Ω] {ϖ : O} (hϖ : Irreducible ϖ)
     {K K' : Type} [Fintype K] [DecidableEq K] [DecidableEq K'] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -154,9 +152,9 @@ end GlobalTheory.CompanionTheory.Ar.Num.Contract
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d r hr hV K' _ _ ι' _ z W hW hPW hϖW l hl hdim`. Use `Contract.vNumL_eq_zero_of_dim_le hϖ hW hϖW (Function.Embedding.inl : K ↪ K ⊕ K') (n := d + r) hdim (Contract.relDim_contract_lt hϖ x z (by omega) hV hPW) (l.map (pullDeg (K' := K'))) (by simpa using hl) ?_` and prove the remaining obligations. Introduce `b hb o ho`. Take `⟨a, -, rfl⟩` from `List.mem_map.mp hb`. Consider the cases of `o with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl k => exact absurd ⟨k, rfl⟩ ho`. Consider the case `inr k => rfl`.
+Treat this case separately. Treat this case separately.
 -/
 theorem vNumL_pull_eq_zero_of_contracted : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (ϖ : O), Irreducible ϖ → ∀ d r : ℕ, 0 < r → IsModelOver (pointIdeal O x) d → ∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) (W : Ideal (MRing (Sum.elim ι ι') O)), IsMultiProjPrime W → pointIdeal O (joinCoord x z) ≤ W → (C ϖ : MRing (Sum.elim ι ι') O) ∈ W → ∀ l : List (K → ℤ), l.length = d + r → ringKrullDim (MRing (Sum.elim ι ι') O ⧸ W) ≤ ((d + r + Fintype.card (K ⊕ K') : ℕ) : WithBot ℕ∞) → vNumL W (l.map (pullDeg (K' := K'))) = 0 := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d r hr hV K' _ _ ι' _ z W hW hPW hϖW l hl hdim

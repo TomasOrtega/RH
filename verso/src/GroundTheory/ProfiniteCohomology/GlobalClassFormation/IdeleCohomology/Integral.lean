@@ -21,7 +21,7 @@ noncomputable abbrev integerUnitsAboveRep :
   piUnitsRep
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `integerUnitsAbove_smul_apply v σ z w`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem integerUnitsAbove_smul_apply_of_eq (σ : Gal(L/K))
     (z : (w : PlacesOver L v) → (w.1.adicCompletionIntegers L)ˣ) (w w' : PlacesOver L v)
@@ -34,9 +34,9 @@ theorem integerUnitsAbove_smul_apply_of_eq (σ : Gal(L/K))
   exact integerUnitsAbove_smul_apply v σ z w
 
 /- English proof (translation)
-Introduce `σ f w hf`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((((σ • fun x => (f x).toMul) (σ • w) : ((σ • w).1.adicCompletionIntegers L)ˣ) : (σ • w).1.adicCompletionIntegers L) : (σ • w).1.adicCompletion L) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[integerUnitsAbove_smul_apply, hf]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permutesFactors_integerUnitsAboveRep : PermutesFactors (integerUnitsAboveRep L v) := by
   intro σ f w hf
@@ -53,9 +53,9 @@ section Decomposition
 variable (w : PlacesOver L v)
 
 /- English proof (translation)
-Rewrite using `[stabRep_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hw : w = (σ : Gal(L/K)) • w` using `((mem_stabilizer_iff_smul_eq v w σ).1 σ.2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [piUnitsRep_apply, toMul_ofMul]`. Rewrite using `[integerUnitsAbove_smul_apply_of_eq v (σ : Gal(L/K)) _ w w hw, galEquiv_apply, galHom_eq_decomposition]`. Simplify using `only [Pi.single_eq_same]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem stabRep_integerUnitsAboveRep (σ : MulAction.stabilizer Gal(L/K) w.1.asIdeal)
     (a : Additive (w.1.adicCompletionIntegers L)ˣ) :
@@ -95,7 +95,7 @@ noncomputable def integralShapiroIso (n : ℕ) :
     cohomologyIsoOfIso (stabRepIntegralIso v w) n
 
 /- English proof (translation)
-The claim follows from `(isZero_cohomology_decomposition_integerUnits v w.1 he hn).of_iso (integralShapiroIso v w n)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_integerUnitsAboveRep (he : w.1.asIdeal.ramificationIdx (𝓞 K) = 1)
     {n : ℕ} (hn : 1 ≤ n) : IsZero (cohomology (Rep.of (integerUnitsAboveRep L v)) n) :=

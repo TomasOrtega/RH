@@ -5,11 +5,9 @@ open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 open Polynomial
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `h1 : ¬ b ^ (l ^ (m + 1)) = 1`. Introduce `e`. Establish `: (b ^ l) ^ (l ^ m) = 1` using `by rw [← pow_mul, ← pow_succ']; exact e`. Conclude with `h.pow_ne_one_of_pos_of_lt (pow_ne_zero _ hl.ne_zero) (Nat.pow_lt_pow_right hl.one_lt (Nat.lt_succ_self m)) this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : b ^ (l ^ (m + 1 + 1)) = 1`. Rewrite using `[pow_succ' l (m + 1), pow_mul]`. Conclude with `h.pow_eq_one`. Establish `h3` using `orderOf_eq_prime_pow h1 h2`. Use `IsPrimitiveRoot.orderOf b` as an intermediate fact.
-
-Rewrite `this` using `[h3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem layerex_up {K : Type} [Field K] {l m : ℕ} (hl : l.Prime) {b : K}
     (h : IsPrimitiveRoot (b ^ l) (l ^ (m + 1))) : IsPrimitiveRoot b (l ^ (m + 2)) := by
@@ -26,13 +24,13 @@ private theorem layerex_up {K : Type} [Field K] {l m : ℕ} (hl : l.Prime) {b : 
   rwa [h3] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `key : ∀ n, ∃ z : K, IsPrimitiveRoot z (l ^ (k + n + 1))`. Introduce `n`. Proceed by induction on `n with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact h`. Consider the case `succ n ih => exact hc (k + n) (by omega) ih`. Take `⟨z, hz⟩` from `key (Module.finrank ℚ K)`. Establish `hpos : 0 < Nat.lcm (l ^ (k + Module.finrank ℚ K + 1)) (l ^ (k + Module.finrank ℚ K + 1))`. Rewrite using `[Nat.lcm_self]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_pos hl.pos _`. Establish `h1` using `IsPrimitiveRoot.lcm_totient_le_finrank (K := ℚ) hz hz (Polynomial.cyclotomic.irreducible_rat hpos)`. Rewrite `h1` using `[Nat.lcm_self, Nat.totient_prime_pow_succ hl]`. Establish `h2 : k + Module.finrank ℚ K < l ^ (k + Module.finrank ℚ K)` using `Nat.lt_pow_self hl.one_lt`. Establish `h3 : 1 ≤ l - 1` using `by have := hl.two_le; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h4` using `Nat.mul_le_mul_left (l ^ (k + Module.finrank ℚ K)) h3`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem layerex_max (K : Type) [Field K] [NumberField K] {l k : ℕ} (hl : l.Prime)
     (h : ∃ z : K, IsPrimitiveRoot z (l ^ (k + 1))) :
@@ -56,13 +54,11 @@ private theorem layerex_max (K : Type) [Field K] [NumberField K] {l k : ℕ} (hl
   omega
 
 /- English proof (translation)
-Establish `hirr : Irreducible (X ^ l - C z : K[X])` using `X_pow_sub_C_irreducible_of_prime hl (fun b hb => hn ⟨b, layerex_up hl (hb ▸ hz)⟩)`. Use `haveI : Fact (Irreducible (X ^ l - C z : K[X])) := ⟨hirr⟩`. Set `pb` to `AdjoinRoot.powerBasis hirr.ne_zero`. Use `haveI : Module.Finite K (AdjoinRoot (X ^ l - C z : K[X])) := pb.finite`. Use `haveI : NeZero (l ^ (m + 2)) := ⟨pow_ne_zero _ hl.ne_zero⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : IsPrimitiveRoot (AdjoinRoot.root (X ^ l - C z : K[X])) (l ^ (m + 2))`. Apply `layerex_up hl` to reduce the goal to its premises. Rewrite using `[root_X_pow_sub_C_pow]`. Conclude with `hz.map_of_injective (AdjoinRoot.of (X ^ l - C z : K[X])).injective`. Use `⟨AdjoinRoot (X ^ l - C z : K[X]), inferInstance, NumberField.of_module_finite K _, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsCyclotomicExtension.iff_singleton]`. Use `⟨⟨_, hr⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `: x ∈ Algebra.adjoin K {AdjoinRoot.root (X ^ l - C z : K[X])}`. Rewrite using `[AdjoinRoot.adjoinRoot_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
-
-Use `Algebra.adjoin_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `hr.pow_eq_one`. Rewrite using `[pb.finrank, AdjoinRoot.powerBasis_dim, natDegree_X_pow_sub_C]`.
+Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem layerex_step (K : Type) [Field K] [NumberField K] {l m : ℕ} (hl : l.Prime)
     {z : K} (hz : IsPrimitiveRoot z (l ^ (m + 1))) (hn : ¬ ∃ z : K, IsPrimitiveRoot z (l ^ (m + 2))) :
@@ -89,15 +85,13 @@ private theorem layerex_step (K : Type) [Field K] [NumberField K] {l m : ℕ} (h
   · rw [pb.finrank, AdjoinRoot.powerBasis_dim, natDegree_X_pow_sub_C]
 
 /- English proof (translation)
-Introduce `l j hl _ L _ _ hz`. Establish `key : ∃ (L' : Type) (_ : Field L') (_ : NumberField L') (_ : Algebra L L'), (∃ k : ℕ, IsCyclotomicExtension {l ^ (k + 1)} L L') ∧ Module.finrank L L' = l ^ j`. Proceed by induction on `j with`. Consider the case `zero`. Use `⟨L, inferInstance, inferInstance, inferInstance, ⟨0, ?_⟩, by simp⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero (l ^ (0 + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Rewrite using `[IsCyclotomicExtension.iff_singleton]`. Conclude with `⟨by simpa using hz, fun x => Subalgebra.algebraMap_mem _ x⟩`. Consider the case `succ j ih`. Take `⟨K, _, _, _, ⟨k, hk⟩, hd⟩` from `ih`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hkm, ⟨z, hz⟩, hn⟩` from `layerex_max K (k := k) hl (hk.exists_isPrimitiveRoot (Set.mem_singleton _) (pow_ne_zero _ hl.ne_zero))`. Take `⟨K', _, _, _, hc, hd'⟩` from `layerex_step K hl hz hn`. Use `letI : Algebra L K' := ((algebraMap K K').comp (algebraMap L K)).toAlgebra`. Use `haveI : IsScalarTower L K K' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `⟨K', inferInstance, inferInstance, inferInstance, ⟨m + 1, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `h1` using `IsCyclotomicExtension.trans {l ^ (k + 1)} {l ^ (m + 2)} L K K' (algebraMap K K').injective`. Rewrite `h1` using `[Set.union_comm]`. Conclude with `(IsCyclotomicExtension.iff_union_of_dvd L K' ⟨l ^ (m + 2), Set.mem_singleton _, pow_ne_zero _ hl.ne_zero, pow_dvd_pow _ (by omega)⟩).2 h1`. Rewrite using `[← Module.finrank_mul_finrank L K K', hd, hd', pow_succ]`.
-
-Take `⟨L', _, _, _, ⟨k, hk⟩, hd⟩` from `key`. Conclude with `⟨L', inferInstance, inferInstance, inferInstance, ⟨k + 1, hk⟩, hd⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.exists_cyclotomic_layer_of_primitiveRoot :
     ∀ (l j : ℕ), l.Prime → l ≠ 2 → ∀ (L : Type) [Field L] [NumberField L], (∃ z : L, IsPrimitiveRoot z l) →

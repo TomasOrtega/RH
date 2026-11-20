@@ -11,7 +11,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Establish `h0 : zeroFun.eval X (fun a b => B a b) = 0`. Rewrite using `[zeroFun.eval_eq hs]`. Both sides reduce to the same expression. Rewrite using `[evalR, vorFun, eval_baseFun, h0, Finset.sum_singleton, fineMean_eval_eq 1 hs, zero_add, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalR_vorFun_eq (O : Type) [CommRing O] [Module.Finite ℤ O] (g : ℕ) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] [Module.Finite ℤ X] {d : ℕ} {s : (Fin d → ℤ) →ₗ[ℤ] X} (hs : Function.Surjective s)
@@ -24,11 +24,11 @@ theorem evalR_vorFun_eq (O : Type) [CommRing O] [Module.Finite ℤ O] (g : ℕ) 
   rw [evalR, vorFun, eval_baseFun, h0, Finset.sum_singleton, fineMean_eval_eq 1 hs, zero_add, mul_assoc]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar g X _ _ _`. Establish `: Module.Finite ℤ X` using `Module.Finite.trans O X`. Take `⟨d, s, hs⟩` from `Module.Finite.exists_fin' ℤ X`. Establish `hc : (0 : ℝ) ≤ (fineDen g {1} : ℝ) * ((((1 : ℕ) : ℝ) + 1) ^ d)⁻¹` using `by positivity`. Use `⟨fun B _ t ht => ?_, fun B hB B' hB' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[evalR_vorFun_eq O g hs, evalR_vorFun_eq O g hs]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, classMin_smul ht, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[evalR_vorFun_eq O g hs, evalR_vorFun_eq O g hs, evalR_vorFun_eq O g hs, ← mul_add, ← Finset.sum_add_distrib]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun y _ => ?_) hc` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.add_apply]`. Conclude with `classMin_add_le (fun a => nonneg_of_mem_psdCone hB _) (fun a => nonneg_of_mem_psdCone hB' _) y`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vorFun_homog_superadd : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (g : ℕ) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X],

@@ -20,11 +20,11 @@ noncomputable section
 open GlobalTheory.ThK.Dbl PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Fin
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KLI.locInst_of_k hT _root_.PositivityTheory.SiegelWeilFormula.kfour.auxiliaryExistence_holds _root_.PositivityTheory.SiegelWeilFormula.KFock.fockMem_k (_root_.PositivityTheory.SiegelWeilFormula.KFock.liftEx_k hT.1)`.
+A detailed English derivation is pending.
 -/
 theorem locInst_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k := _root_.PositivityTheory.SiegelWeilFormula.KLI.locInst_of_k hT _root_.PositivityTheory.SiegelWeilFormula.kfour.auxiliaryExistence_holds _root_.PositivityTheory.SiegelWeilFormula.KFock.fockMem_k (_root_.PositivityTheory.SiegelWeilFormula.KFock.liftEx_k hT.1)
 /- English proof (translation)
-The claim follows from `have hT := _root_.PositivityTheory.SiegelWeilFormula.Fin.tAll_of_k hW _root_.PositivityTheory.SiegelWeilFormula.Fin.siegelWeilStd_of_k hT (_root_.PositivityTheory.SiegelWeilFormula.Fin.locInst_of_k hT) (_root_.PositivityTheory.SiegelWeilFormula.Kdil.gIdil_full_k hT _root_.Positiv …`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeilStd_mid_k (hW : _root_.PositivityTheory.SiegelWeilFormula.TWeyl_k) (hKP : _root_.PositivityTheory.SiegelWeilFormula.KFinPoly_k) (hLD : _root_.PositivityTheory.SiegelWeilFormula.LDEx_k) (hCT : _root_.PositivityTheory.SiegelWeilFormula.CTSplit_k) : _root_.GlobalTheory.ThK.Dbl.SiegelWeilStd_k :=
   have hT := _root_.PositivityTheory.SiegelWeilFormula.Fin.tAll_of_k hW

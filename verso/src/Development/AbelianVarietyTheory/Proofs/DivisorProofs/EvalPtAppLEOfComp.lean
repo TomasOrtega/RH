@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : Comp Xo c}
 
 /- English proof (translation)
-Simplify using `only [evalPt, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalPt_appLE_of_comp {R : Type} [CommRing R] {A B : Scheme.{0}} (v : Sp R ⟶ A) (φ : A ⟶ B) (U : B.Opens)
     (V : A.Opens) (e : V ≤ φ ⁻¹ᵁ U) (f : Γ(B, U)) (hV : ⊤ ≤ v ⁻¹ᵁ V) (hU : ⊤ ≤ (v ≫ φ) ⁻¹ᵁ U) :
@@ -25,7 +25,7 @@ theorem evalPt_appLE_of_comp {R : Type} [CommRing R] {A B : Scheme.{0}} (v : Sp 
   rw [← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Establish `hb` using `(GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L).1 Q`. Establish `a` using `ω.isKS L Q Q 1 v z zv i k O hO g hz hzv hk ho hi hQ hb hv hl`. Simplify `a` using `only [Pi.one_apply, one_zpow, Finset.prod_const_one, Units.val_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem canId_val_mul_det (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) (ω : CanId M)
     {L : Type} [Field L] [iL : Algebra c.F L] (Q : FrPt Xo c L)

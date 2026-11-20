@@ -16,7 +16,7 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheo
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
 /- English proof (translation)
-Use `⟨h.left, ⟨UpperTheory.isArchSmooth_of_contDiff_chart F a _ φ.2, fun g => ?_⟩, UpperTheory.k_finite_vectors F a φ h.level h.kfin, (zfin_iff φ).1 h.zfin, UpperTheory.growth_of_siegel_height siegelHeight F a φ h.left h.level h.growth⟩` and prove the remaining obligations. Use `filter_upwards [h.level.mem_nhds (show TR.finRep F a 1 φ = φ by rw [map_one]; rfl)] with y hy`. Rewrite using `[finEmb_eq]`. Conclude with `congrFun (congrArg Subtype.val hy) g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aut_to (φ : TR.Sm F a) (h : TR.IsAutForm φ) : IsAutomorphicForm φ.1 := by
   refine ⟨h.left, ⟨UpperTheory.isArchSmooth_of_contDiff_chart F a _ φ.2, fun g => ?_⟩, UpperTheory.k_finite_vectors F a φ h.level h.kfin, (zfin_iff φ).1 h.zfin,
@@ -26,17 +26,15 @@ private theorem aut_to (φ : TR.Sm F a) (h : TR.IsAutForm φ) : IsAutomorphicFor
   exact congrFun (congrArg Subtype.val hy) g
 
 /- English proof (translation)
-Use `⟨h.isLeftInvariant, ?_, ?_, (zfin_iff φ).2 h.isZFinite, fun g => ?_⟩` and prove the remaining obligations. Take `⟨U, -, hU⟩` from `exists_openSubgroup_rightInvariant h.isSmooth h.isKFinite`. Use `isOpen_iff_mem_nhds.2 fun k hk => ?_` and prove the remaining obligations. Establish `h1 : (fun x => k⁻¹ * x) ⁻¹' (U : Set _) ∈ nhds k` using `(U.isOpen.preimage (continuous_const.mul continuous_id)).mem_nhds (by simpa using U.one_mem)`. Use `filter_upwards [h1] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h2` using `hU (g * finGL F a k) _ hx`. Rewrite `h2` using `[finEmb_eq, mul_assoc, ← map_mul, mul_inv_cancel_left]`. Conclude with `h2.trans (congrFun (congrArg Subtype.val hk) g)`. Establish `hk : FiniteDimensional ℂ _` using `h.isKFinite`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `FiniteDimensional.of_injective ((TR.Sm F a).subtype.restrict (q := Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL F a)) => rightTranslate (k : AdelicGLn.AdelicGL F a) φ.1)) ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Use `Submodule.mem_comap.1 (Submodule.span_le.2 ?_ hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.subset_span ⟨⟨TR.infGL F a (Unitary.toUnits k), ?_⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← infEmb_grpEq]`. Conclude with `(UpperTheory.mem_archMaxCompact_iff_orthogonal_at_infinitePlaces F a _).2 k.2`. Introduce `x y hxy`. Establish `h2` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C, N, hC⟩` from `h.hasModerateGrowth`. Take `⟨M, hM⟩` from `UpperTheory.adelicHeight_infGL_le_opNorm F a`. Use `⟨|C| * (heightConst F a * height g) ^ N, M * N, fun y => (hC _).trans ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ heightConst F a * height g` using `mul_nonneg (zero_le_one.trans one_le_heightConst) (height_pos g).le`. Rewrite using `[mul_assoc, pow_mul, ← mul_pow]`.
-
-Conclude with `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (height_pos _).le ((height_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hM y) h0)) N) (pow_nonneg (height_pos _).le N) (abs_nonneg C)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aut_of (φ : TR.Sm F a) (h : IsAutomorphicForm φ.1) : TR.IsAutForm φ := by
   refine ⟨h.isLeftInvariant, ?_, ?_, (zfin_iff φ).2 h.isZFinite, fun g => ?_⟩
@@ -72,7 +70,7 @@ private theorem aut_of (φ : TR.Sm F a) (h : IsAutomorphicForm φ.1) : TR.IsAutF
 end
 
 /- English proof (translation)
-Use `TR.SS.cuspSemisimple_of fun F _ _ _ a => TR.SS.zeroCompl_of_fb (fun φ h => ?_) (fun f h => ?_) (fun X φ _ => congrArg Subtype.val (Fb.uAction_ι_smEq X φ).symm) UpperTheory.mem_archMaxCompact_iff_orthogonal_at_infinitePlaces` and prove the remaining obligations. Establish `h1` using `aut_to φ h.1`. Conclude with `⟨h1, UpperTheory.constantTerm_eq_zero_of_isCuspidal F a _ h1.isLeftInvariant h1.continuous h.2⟩`. Conclude with `⟨UpperTheory.contDiff_chart_of_isArchSmooth F a f h.1.isSmooth.1, aut_of _ h.1, UpperTheory.isCuspidal_of_constantTerm_eq_zero F a f h.1.isLeftInvariant h.1.continuous h.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Af.cuspSemisimpleReal_dB :
     UpperTheory.V.Published.CuspSemisimpleReal := by

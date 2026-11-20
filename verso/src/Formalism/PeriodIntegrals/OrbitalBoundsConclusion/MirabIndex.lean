@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.MirabIndex
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MirabolicIndex.RowMulOfMirab
 
 /- English proof (translation)
-The claim follows from `PI.MirabolicIndex₂.mirabIndex`.
+A detailed English derivation is pending.
 -/
 theorem mirabolic_index : PI.MirabIndex.MirabIndex := PI.MirabolicIndex₂.mirabIndex

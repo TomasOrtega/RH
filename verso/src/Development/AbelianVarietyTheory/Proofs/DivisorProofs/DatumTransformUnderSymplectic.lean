@@ -24,17 +24,15 @@ noncomputable section
 namespace GlobalTheory.ThetaPull
 
 /- English proof (translation)
-Introduce `g γ L hL hLs j m hD`. Establish `hU : IsPeriodMap (siegel g) tauU` using `(GlobalTheory.T.siegel_period_map_simply_connected g).1`. Establish `hO : IsOpen (cov (siegel g) g)` using `hU.1.prod isOpen_univ`. Establish `hb` using `GlobalTheory.SympBase.main hU γ`. Establish `hsym : ∀ s ∈ siegel g, tauU (actB γ s) = moeb γ (tauU s)` using `fun s hs => GlobalTheory.UnivAction.tauU_symPart_of_isSymm (hb.1.2.2 s hs).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo (fun P : Pt (symMat g) g => (actB γ P.1, P.2)) (cov (siegel g) g) (cov (siegel g) g)`. Introduce `P hP`. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Use `show IsSiegel (tauU (actB γ P.1))`. Rewrite using `[hsym P.1 hP.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hb.1.2.2 _ hP.1`. Establish `hFd : DifferentiableOn ℂ (fun P : Pt (symMat g) g => (actB γ P.1, P.2)) (cov (siegel g) g)`. Establish `h1 : DifferentiableOn ℂ (fun P : Pt (symMat g) g => fun i j => moeb γ (tauU P.1) i j) (cov (siegel g) g)` using `differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => (hb.1.2.1 i j).comp differentiableOn_fst fun P hP => hP.1`. Establish `h2` using `((GlobalTheory.UnivAction.symPartL g).differentiable.comp_differentiableOn h1).prodMk (differentiable_snd.differentiableOn (s := cov (siegel g) g))`. Use `h2.congr fun P _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hFs : ContDiffOn ℝ ∞ (fun P : Pt (symMat g) g => (actB γ P.1, P.2)) (cov (siegel g) g)` using `(GlobalTheory.SCV.contDiffOn_of_differentiableOn hO hFd ∞).restrict_scalars ℝ`. Establish `htr : ∀ P ∈ cov (siegel g) g, ∀ l : Fl g, ((actB γ (transl (fun s => moeb γ (tauU s)) l P).1, (transl (fun s => moeb γ (tauU s)) l P).2) : Pt (symMat g) g) = transl tauU l (actB γ P.1, P.2)`. Introduce `P hP l`. Use `show ((actB γ P.1, P.2 + per (moeb γ (tauU P.1)) l) : Pt (symMat g) g) = (actB γ P.1, P.2 + per (tauU (actB γ P.1)) l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsym P.1 hP.1]`. Take `⟨-, -, ⟨hjd, hjc⟩, hms, hmp, hmi⟩` from `hD`. Use `⟨hb.1, hL, ⟨fun l hl => ⟨(hjd l (hLs hl)).1.comp hFd hmaps, fun P hP => (hjd l (hLs hl)).2 _ (hmaps hP)⟩, fun l hl l' hl' P hP => ?_⟩, ⟨hms.comp hFs hmaps, fun P hP => hmp _ (hmaps hP), fun l hl P hP => ?_⟩⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[htr P hP l']`.
-
-Conclude with `hjc l (hLs hl) l' (hLs hl') _ (hmaps hP)`. Simplify using `only`. Rewrite using `[htr P hP l]`. Conclude with `hmi l (hLs hl) _ (hmaps hP)`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDatum_pull : ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g) (L : Submodule ℤ (Fl g)), IsLat L → L ≤ stdLat g → ∀ (j : Fl g → Pt (symMat g) g → ℂ) (m : Pt (symMat g) g → ℝ), IsDatum (siegel g) tauU (stdLat g) j m → IsDatum (siegel g) (fun s => moeb γ (tauU s)) L (fun l P => j l (actB γ P.1, P.2)) (fun P => m (actB γ P.1, P.2)) := by
   intro g γ L hL hLs j m hD

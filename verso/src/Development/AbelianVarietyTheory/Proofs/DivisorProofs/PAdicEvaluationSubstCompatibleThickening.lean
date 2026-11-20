@@ -12,15 +12,15 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `p _ B O Q _ _ _ _ θ hF σ _ _ z hz E hE τ _ _ u f q hu hf hq`. Introduce `m`. Take `⟨M0, hM0⟩` from `GlobalTheory.T.tail_subst_pAdically_small_of_integral_differential p B O Q θ hF σ z hz τ u f hu hf m`. Take `⟨M1, hM1⟩` from `hq m`. Take `⟨g, hg⟩ : ∃ g : MvPolynomial τ Q, g = trunc' Q (Finsupp.equivFunOnFinite.symm fun _ => max M0 M1) f` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N2, hN2⟩` from `GlobalTheory.T.hasVal_subst_polynomial_eval p B O Q θ hF σ z hz E hE τ u hu g m`. Use `⟨N2, fun N' hN' => ?_⟩` and prove the remaining obligations. Take `⟨b1, hb1⟩` from `hM1 (max M0 M1) (le_max_right _ _)`. Take `⟨b2, hb2⟩` from `hN2 N' hN'`. Take `⟨b3, hb3⟩` from `hM0 (max M0 M1) (le_max_left _ _) (Finsupp.equivFunOnFinite.symm fun _ => N')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hb1`, `hb3` using `[← hg]`. Establish `hs : HasSubst (up Q u)` using `hasSubst_of_constantCoeff_zero fun j => by`. Simplify using `[up, hu j]`. Establish `hsplit : subst (up Q u) f = subst (up Q u) (g : MvPowerSeries τ Q) + subst (up Q u) (f - (g : MvPowerSeries τ Q))`. Rewrite using `[← subst_add hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨b1 + b2 - b3, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, map_add, map_add]`. Simplify using `only [map_mul, map_sub, map_add, map_pow, map_natCast] at hb1 hb2 hb3 ⊢`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `hb1 + hb2 - hb3`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hasVal_subst : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (z : σ → B), (∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) → ∀ E : MvPowerSeries σ B →ₐ[B] B, IsEval p z E → ∀ (τ : Type) [Fintype τ] [DecidableEq τ] (u : τ → MvPowerSeries σ B) (f : MvPowerSeries τ Q) (q : Q), (∀ j, constantCoeff (u j) = 0) → DIn (⊤ : Ideal B) f → HasVal p (fun j => E (u j)) f q → HasVal p z (subst (up Q u) f) q := by
   intro p _ B O Q _ _ _ _ θ hF σ _ _ z hz E hE τ _ _ u f q hu hf hq

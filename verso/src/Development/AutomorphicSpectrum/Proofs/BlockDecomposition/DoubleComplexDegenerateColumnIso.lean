@@ -15,17 +15,17 @@ universe w
 namespace GlobalTheory.CompanionTheory.CechSerre
 
 /- English proof (translation)
-Introduce `R _ K a hK j`. Establish `hab : ∀ p q, a < q → Subsingleton ((K.col p).H q)` using `fun p q h => hK p q (ne_of_gt h)`. Establish `hbe : ∀ p q, q < a → Subsingleton ((K.col p).H q)` using `fun p q h => hK p q (ne_of_lt h)`. Establish `hs` using `GlobalTheory.T.double_complex_class_surjective K a j hab`. Establish `hk` using `GlobalTheory.T.double_complex_lead_zero_of_class_zero K a j hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `GlobalTheory.T.double_complex_class_zero_of_lead_zero K a j hbe`. Establish `hl` using `GlobalTheory.T.double_complex_lead_surjective K a j hbe`. Set `c` to `clsZ K (a + j) j`. Set `ψ : Zf K (a + j) j →ₗ[R] (colH K a).H j` to `leadE K j a`. Establish `hle : LinearMap.ker c ≤ LinearMap.ker ψ` using `fun z hz => hk z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L` to `(LinearMap.ker c).liftQ ψ hle`. Establish `hL : Function.Bijective L`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero L).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hz : ψ z = 0` using `by simpa [L] using hx`. Establish `hc : c z = 0` using `hi z hz`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hc`. Introduce `y`. Take `⟨z, rfl⟩` from `hl y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Submodule.Quotient.mk z, Submodule.liftQ_apply _ _ _⟩`. Set `e0` to `c.quotKerEquivOfSurjective hs`. Use `⟨e0.symm.trans (LinearEquiv.ofBijective L hL), fun z => ?_⟩` and prove the remaining obligations. Establish `h0 : e0.symm (c z) = Submodule.Quotient.mk z` using `e0.symm_apply_eq.2 (LinearMap.quotKerEquivOfSurjective_apply_mk c hs z).symm`. Express the relevant statement in the definitionally equal form `L (e0.symm (c z)) = ψ z`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Submodule.liftQ_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem row_iso_of_columns : ∀ {R : Type} [CommRing R] (K : DCx.{w} R) (a : ℕ), (∀ p q, q ≠ a → Subsingleton ((K.col p).H q)) →
     ∀ j, ∃ e : K.tot.H (a + j) ≃ₗ[R] (colH K a).H j, ∀ z : Zf K (a + j) j, e (clsZ K (a + j) j z) = leadE K j a z := by

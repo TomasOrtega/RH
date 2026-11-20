@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace GlobalTheory.LatAdFG
 
 /- English proof (translation)
-Unfold `latAd`. Conclude with `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem latAd_eq_globLat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
@@ -17,7 +17,7 @@ theorem latAd_eq_globLat {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   exact Submodule.span_eq (Formalism.UG.CS.globLat x Lb)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ N Lb hfin hspan x`. Rewrite using `[latAd_eq_globLat]`. Conclude with `(Formalism.UG.P.global_lattice_isLattice_holds F E (Fin N) Lb hfin hspan x).fg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAd_fg_of_full : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)), Module.Finite (𝓞 E) Lb → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ → ∀ (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), (latAd x Lb).FG := by
   intro F E _ _ _ _ _ N Lb hfin hspan x

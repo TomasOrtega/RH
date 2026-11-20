@@ -12,23 +12,21 @@ end
 
 open Polynomial in
 /- English proof (translation)
-Use `set ψ : k →+* F := (o.comp (algebraMap k Ω)).codRestrict F (fun c => (hF _).2 ⟨c, rfl⟩)`. Establish `hcomp : F.subtype.comp ψ = o.comp (algebraMap k Ω)` using `by ext; rfl`. Establish `hcomp' : (algebraMap F D).comp ψ = o.comp (algebraMap k Ω)` using `by ext; rfl`. Establish `hmon : ((minpoly k α).map ψ).Monic` using `(minpoly.monic hα).map ψ`. Establish `hroot : aeval (o α) ((minpoly k α).map ψ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_def, eval₂_map, hcomp', ← hom_eval₂, ← aeval_def, minpoly.aeval, map_zero]`. Establish `hβ : IsIntegral F (o α)` using `⟨_, hmon, hroot⟩`. Establish `hdvd : minpoly F (o α) ∣ (minpoly k α).map ψ` using `minpoly.dvd F _ hroot`. Establish `hP : ((minpoly k α).map ψ).map F.subtype = ((minpoly k α).map (algebraMap k Ω)).map o`. Rewrite using `[map_map, map_map, hcomp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP0 : ((minpoly k α).map ψ).map F.subtype ≠ 0` using `(hmon.map _).ne_zero`. Establish `hGdvd : (minpoly F (o α)).map F.subtype ∣ ((minpoly k α).map ψ).map F.subtype` using `Polynomial.map_dvd _ hdvd`. Establish `hGs : ((minpoly F (o α)).map F.subtype).Splits`. Use `Splits.of_dvd ?_ hP0 hGdvd` and prove the remaining obligations. Rewrite using `[hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hsplit.map o`. Establish `hGm : ((minpoly F (o α)).map F.subtype).Monic` using `(minpoly.monic hβ).map _`. Establish `hlift : (minpoly F (o α)).map F.subtype ∈ lifts o`. Use `hGs.mem_lift_of_roots_mem_range hGm o fun a ha => ?_` and prove the remaining obligations. Establish `h1` using `Multiset.mem_of_le (Polynomial.roots.le_of_dvd hP0 hGdvd) ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hP, hsplit.roots_map o]`. Take `⟨r, -, rfl⟩` from `Multiset.mem_map.1 h1`. Conclude with `⟨r, rfl⟩`. Establish `hlift' : (minpoly F (o α)).map F.subtype ∈ lifts (o.comp (algebraMap k Ω))`. Rewrite `hlift`, the goal using `[lifts_iff_coeff_lifts]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨y, hy⟩` from `hlift n`. Establish `hyF : o y ∈ F`. Rewrite using `[hy, coeff_map]`. Conclude with `((minpoly F (o α)).coeff n).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(hF y).1 hyF`. Conclude with `⟨c, hy⟩`. Take `⟨g, hg⟩` from `(mem_lifts _).1 hlift'`. Establish `hinj : Function.Injective (o.comp (algebraMap k Ω))` using `RingHom.injective _`. Establish `hg0 : g ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hg` using `[Polynomial.map_zero]`. Conclude with `hGm.ne_zero hg.symm`. Establish `hgα : aeval α g = 0`. Apply `o.injective` to reduce the goal to its premises.
-
-Rewrite using `[map_zero, aeval_def, hom_eval₂, ← eval_map, hg, eval_map]`. Conclude with `minpoly.aeval F (o α)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hg, natDegree_map_eq_of_injective hinj]`. Use `_ = (minpoly F (o α)).natDegree := natDegree_map_eq_of_injective (RingHom.injective _) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natDegree_minpoly_le_natDegree_minpoly_map {k Ω D : Type} [Field k] [Field Ω] [Field D]
     [Algebra k Ω] (o : Ω →+* D) (F : Subfield D)
@@ -86,27 +84,23 @@ private theorem natDegree_minpoly_le_natDegree_minpoly_map {k Ω D : Type} [Fiel
 open Polynomial in
 
 /- English proof (translation)
-Introduce `k Ω D _ _ _ _ _ o F hF m x hx b hb hsum`. Use `set M := IntermediateField.adjoin k (Set.range x)`. Use `haveI : FiniteDimensional k M := IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Take `⟨α', hα'⟩` from `Field.exists_primitive_element k M`. Use `set α : Ω := (α' : Ω) with hαdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxα : ∀ i, x i ∈ IntermediateField.adjoin k {α}`. Introduce `i`. Establish `h1 : (IntermediateField.adjoin k {α'}).map M.val = IntermediateField.adjoin k {α}`. Rewrite using `[IntermediateField.adjoin_map, Set.image_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← h1, hα']`. Conclude with `⟨⟨x i, IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩⟩, trivial, rfl⟩`. Establish `hint : IsIntegral k α` using `Algebra.IsIntegral.isIntegral α`. Use `set pb := IntermediateField.adjoin.powerBasis hint`. Establish `hdim : pb.dim ≤ (minpoly F (o α)).natDegree`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IntermediateField.adjoin.powerBasis_dim]`. Conclude with `natDegree_minpoly_le_natDegree_minpoly_map o F hF α hint (IsGalois.splits k α)`. Establish `hli : LinearIndependent F (fun j : Fin pb.dim => o α ^ (j : ℕ))` using `(linearIndependent_pow (o α)).comp (Fin.castLE hdim) (Fin.castLE_injective hdim)`. Use `set c : Fin m → Fin pb.dim → k := fun i j => pb.basis.repr ⟨x i, hxα i⟩ j`. Establish `hexp : ∀ i, x i = ∑ j, c i j • α ^ (j : ℕ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `h` using `congrArg Subtype.val (pb.basis.sum_repr ⟨x i, hxα i⟩)`. Use `h.symm.trans ?_` and prove the remaining obligations. Simplify using `[c, pb, IntermediateField.adjoin.powerBasis_gen]`. Establish `hd : ∀ j, ∑ i, o (algebraMap k Ω (c i j)) * b i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ j, ∑ i, o (algebraMap k Ω (c i j)) * b i ∈ F` using `fun j => F.sum_mem fun i _ => F.mul_mem ((hF _).2 ⟨_, rfl⟩) (hb i)`. Introduce `j`. Use `Fintype.linearIndependent_iff.1 hli (fun j => ⟨_, hmem j⟩) ?_ j` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Rewrite using `[← hsum]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hexp, Subfield.smul_def, map_sum, map_smul, Algebra.smul_def, map_mul, map_pow, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ i, o (algebraMap k Ω (c i j)) * b i) * o α ^ (j : ℕ) = _`. Rewrite using `[Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Take `⟨g, hg⟩` from `LinearMap.exists_extend hx.repr`. Establish `hgx : ∀ i, g (x i) = Finsupp.single i 1`. Introduce `i`. Use `LinearMap.congr_fun hg ⟨x i, Submodule.subset_span ⟨i, rfl⟩⟩` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this, hx.repr_eq_single i _ rfl]`. Introduce `l`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hgx, Finsupp.single_apply]`.
-
-Use `_ = ∑ j : Fin pb.dim, o (algebraMap k Ω (g (α ^ (j : ℕ)) l)) * ∑ i, o (algebraMap k Ω (c i j)) * b i := by`. Simplify using `only [hexp, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = 0 := by simp [hd]`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GalDisj.galois_linearDisjoint : ∀ (k Ω D : Type) [Field k] [Field Ω] [Field D] [Algebra k Ω] [IsGalois k Ω] (o : Ω →+* D) (F : Subfield D), (∀ x : Ω, o x ∈ F ↔ x ∈ (algebraMap k Ω).range) → ∀ (m : ℕ) (x : Fin m → Ω), LinearIndependent k x → ∀ b : Fin m → D, (∀ i, b i ∈ F) → ∑ i, o (x i) * b i = 0 → ∀ i, b i = 0 := by
   intro k Ω D _ _ _ _ _ o F hF m x hx b hb hsum

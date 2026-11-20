@@ -8,29 +8,29 @@ open scoped IntermediateField
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `f : L.lattice →ₗ[ℤ] L.lattice` to `(LinearMap.mulLeft ℤ α).restrict (fun l hl => hα l hl)`. Establish `hf : ∀ x : L.lattice, (f x : ℂ) = α * x` using `fun x => rfl`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Use `congrArg (fun t : L.lattice => (t : ℂ)) hxy` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hf] at this`. Conclude with `Subtype.ext (mul_left_cancel₀ h0 this)`. Establish `hsub : (AddSubgroup.map (AddMonoidHom.mulLeft α) L.lattice.toAddSubgroup).addSubgroupOf L.lattice.toAddSubgroup = (LinearMap.range f).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext hxy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, y.2, congrArg Subtype.val hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hidx` using `AddSubgroup.index_eq_natAbs_det L.latticeBasis (LinearMap.range f).toAddSubgroup (L.latticeBasis.map (LinearEquiv.ofInjective f hinj))`. Establish `hdet : (L.latticeBasis.det fun i => ((L.latticeBasis.map (LinearEquiv.ofInjective f hinj)) i : L.lattice)) = L.latticeBasis.repr (f (L.latticeBasis 0)) 0 * L.latticeBasis.repr (f (L.latticeBasis 1)) 1 - L.latticeBasis.repr (f (L.latticeBasis 1)) 0 * L.latticeBasis.repr (f (L.latt …`. Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two]`. Both sides reduce to the same expression. Establish `hrep : ∀ x : L.lattice, α * x = (L.latticeBasis.repr (f x) 0 : ℤ) * L.ω₁ + (L.latticeBasis.repr (f x) 1 : ℤ) * L.ω₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `congrArg (fun t : L.lattice => (t : ℂ)) (L.latticeBasis.sum_repr (f x))` as an intermediate fact. Simplify using `only [Fin.sum_univ_two, hf] at this`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hrep (L.latticeBasis 0)`. Establish `h2` using `hrep (L.latticeBasis 1)`. Rewrite using `[AddSubgroup.relIndex, hsub]`. Use `(congrArg Nat.cast (hidx.trans (congrArg Int.natAbs hdet))).trans ?_` and prove the remaining obligations. Generalize the expression as in `L.latticeBasis.repr (f (L.latticeBasis 0)) 0 = a at h1 h2 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `L.latticeBasis.repr (f (L.latticeBasis 0)) 1 = c at h1 h2 ⊢`. Generalize the expression as in `L.latticeBasis.repr (f (L.latticeBasis 1)) 0 = b at h1 h2 ⊢`. Generalize the expression as in `L.latticeBasis.repr (f (L.latticeBasis 1)) 1 = d at h1 h2 ⊢`. Simplify using `only [PeriodPair.latticeBasis_zero, PeriodPair.latticeBasis_one] at h1 h2`. Establish `hD : L.ω₁.re * L.ω₂.im - L.ω₂.re * L.ω₁.im ≠ 0`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hD`. Establish `hind` using `LinearIndependent.pair_iff.mp L.indep`. Establish `e1` using `hind L.ω₂.im (-L.ω₁.im) (by`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`. Establish `e2` using `hind L.ω₂.re (-L.ω₁.re) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith)`. Establish `e3 : L.ω₂ = 0` using `Complex.ext e2.1 e1.1`. Use `hind 0 1 (by simp [e3])` as an intermediate fact. Conclude with `one_ne_zero this.2`. Establish `r1` using `congrArg Complex.re h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `congrArg Complex.im h1`. Establish `r2` using `congrArg Complex.re h2`. Establish `i2` using `congrArg Complex.im h2`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im, Complex.intCast_re, Complex.intCast_im, zero_mul, sub_zero, add_zero] at r1 i1 r2 i2`. Establish `key : ((a * d - b * c : ℤ) : ℝ) = ‖α‖ ^ 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hD` to reduce the goal to its premises. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Use `push_cast`. Establish `: (α.re * L.ω₁.re - α.im * L.ω₁.im) * (α.re * L.ω₂.im + α.im * L.ω₂.re) - (α.re * L.ω₂.re - α.im * L.ω₂.im) * (α.re * L.ω₁.im + α.im * L.ω₁.re) = (a * L.ω₁.re + c * L.ω₂.re) * (b * L.ω₁.im + d * L.ω₂.im) - (b * L.ω₁.re + d * L.ω₂.re) * (a * L.ω₁.im + c * L.ω₂.im)`. Rewrite using `[r1, i1, r2, i2]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-this`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs, key]`. Conclude with `abs_of_nonneg (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_mul_periodLattice (L : PeriodPair) {α : ℂ} (h0 : α ≠ 0)
     (hα : ∀ l ∈ L.lattice, α * l ∈ L.lattice) :
@@ -107,17 +107,17 @@ theorem relIndex_mul_periodLattice (L : PeriodPair) {α : ℂ} (h0 : α ≠ 0)
   exact abs_of_nonneg (by positivity)
 
 /- English proof (translation)
-Introduce `L α N h0 hα hN`. Take `⟨A, D, -, -, hmon, -, -, hA, hD, hz, hdiv⟩` from `exists_weierstrassP_mul_eq_div h0 hα ⊤ trivial trivial trivial (fun _ _ _ => trivial)`. Establish `hAN : A.natDegree = N`. Use `relIndex_mul_periodLattice L h0 hα` as an intermediate fact. Rewrite `this` using `[← hA, hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Use `⟨A, D, hmon.ne_zero, hAN, hD.trans hAN, fun z hz' => ⟨?_, hdiv z hz'⟩, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hz' ((hz z (fun hl => hz' (hα z hl))).mp h)`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : {x : ℂ | D.IsRoot x}.Finite` using `Polynomial.finite_setOfPred_isRoot hmon.ne_zero`. Use `hfin.infinite_compl.mono ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, hzL, rfl⟩` from `exists_weierstrassP_eq L x`. Establish `hx' : D.eval (L.weierstrassP z) ≠ 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαz : α * z ∉ L.lattice` using `fun h => hx' ((hz z hzL).mpr h)`. Establish `e1` using `derivWeierstrassP_mul_eq hα hdiv hαz hx'`. Establish `e2` using `L.derivWeierstrassP_sq z hzL`. Establish `e3` using `L.derivWeierstrassP_sq _ hαz`. Rewrite `e3` using `[hdiv z hαz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_ofPred_eq, eval_mul, eval_sub, eval_pow, eval_C, eval_X, eval_ofNat] at e1 ⊢`. Rewrite using `[← e2]`. Establish `e4` using `congrArg (· ^ 2) e1`. Simplify using `only [mul_pow] at e4`. Rewrite `e4` using `[e3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear denominators, using `at e4` for the nonvanishing conditions. Take the linear combination `e4`.
+A detailed English derivation is pending.
 -/
 theorem exists_weierstrassP_mul_ode : ∀ (L : PeriodPair) (α : ℂ) (N : ℕ), α ≠ 0 → (∀ l ∈ L.lattice, α * l ∈ L.lattice) → ‖α‖ ^ 2 = N → ∃ A D : ℂ[X], D ≠ 0 ∧ A.natDegree = N ∧ D.natDegree + 1 = N ∧ (∀ z, α * z ∉ L.lattice → D.eval (L.weierstrassP z) ≠ 0 ∧ L.weierstrassP (α * z) = A.eval (L.weierstrassP z) / D.eval (L.weierstrassP z)) ∧ C (α ^ 2) * D * (4 * A ^ 3 - C L.g₂ * A * D ^ 2 - C L.g₃ * D ^ 3) = (derivative A * D - A * derivative D) ^ 2 * (4 * X ^ 3 - C L.g₂ * X - C L.g₃) := by
   intro L α N h0 hα hN

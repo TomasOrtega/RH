@@ -25,7 +25,7 @@ variable (D : D7) (i : Fin D.R.m)
 def liftC (τ : D.what₂.Tau) : ℤ := ⌊dShift D i τ⌋
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `(GlobalTheory.PairWeightArith.arithAt D i τ).d_int`. Rewrite using `[liftC, hz, Int.floor_intCast, ← hz, dShift]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftC_cast (τ : D.what₂.Tau) :
     (liftC D i τ : ℚ) = ((pS D i τ : ℚ) - (qS D i τ : ℚ)) / 2 - (D.hc τ).e i - 1 / 2 := by
@@ -41,15 +41,15 @@ def liftWeight : Weight D (Vc D i).rank where
   lam := lamV D i
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.PairWeightArith.arithAt D i τ).rank`. Express the relevant statement in the definitionally equal form `pS D i τ + qS D i τ ≤ _`. Use linear arithmetic over natural numbers and integers. Use `lam_eq τ a := by`. Establish `h` using `GlobalTheory.PairWeightArith.arithAt D i τ`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `h.rank`. Take `⟨z, hz⟩` from `h.d_int`. Establish `h3` using `h.coef_eq a`. Establish `ha` using `a.2`. Establish `hc : liftC D i τ = z` using `by rw [liftC, hz, Int.floor_intCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hz]`. Establish `h4 : (lamV D i τ).w a = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.thetaWt D i τ a + z` using `by exact_mod_cast h3`. Express the relevant statement in the definitionally equal form `(lamV D i τ).w a = (if a.val < pS D i τ then (aP D i τ a : ℤ) else if (Vc D i).rank - qS D i τ ≤ a.val then -(aM D i τ ((Vc D i).rank - 1 - a) : ℤ) else 0) + liftC D i τ`. Rewrite using `[h4, hc, GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.thetaWt]`. Use `congr 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `k1 : a.val < pS D i τ`. Rewrite using `[if_pos k1, if_pos k1]`. Rewrite using `[if_neg k1, if_neg k1]`. Distinguish the cases in `k2 : a.val < pS D i τ + D.R.t`. Rewrite using `[if_pos k2, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg k2, if_pos (by omega)]`. Use `congr 3`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem liftWeight_good : (liftWeight D i).Good where
   le τ := by
@@ -90,7 +90,7 @@ section Res
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, map_sub, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_loc {M N : Type} [CommRing M] [CommRing N] (f : M →+* N) (e a : M) :
     f (1 + e * (a - 1)) = 1 + f e * (f a - 1) := by
@@ -106,23 +106,23 @@ structure IsLocUnit (PP : Pl D.host.E) (u : (kP PP)ˣ) (x : (AE D)ˣ) : Prop whe
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP PP)`. Use `PP.isPrime` as an intermediate fact. Establish `haP : a ∉ PP.asIdeal` using `fun h0 => u.ne_zero (ha ▸ Ideal.Quotient.eq_zero_iff_mem.2 h0)`. Establish `ha1 : a ≠ 0` using `fun h0 => haP (h0 ▸ zero_mem _)`. Establish `ha0 : (a : D.host.E) ≠ 0` using `fun h0 => ha1 (RingOfIntegers.coe_eq_zero_iff.1 h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : infPart D (idemAt PP) = 0` using `GlobalTheory.PlaceVec.idemSum_infPart (P := {PP}) ⟨⟨idemAt, by simpa using h, by simp⟩, h.1.2.1⟩`. Establish `hai : finPart D (idemAt PP * incA D ((a : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `k`. Conclude with `haP ((h.2 a ha1).2 k)`. Take `⟨hi, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ PP h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : idemAt PP * idemAt PP = idemAt PP` using `h.1.1`. Establish `hm : incA D (a : D.host.E) * incA D ((a : D.host.E)⁻¹) = 1`. Rewrite using `[← RingHom.map_mul, mul_inv_cancel₀ ha0, RingHom.map_one]`. Establish `hb : toEAf D (incA D (a : D.host.E)) = ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)` using `rfl`. Generalize the expression as in `incA D (a : D.host.E) = b at hm hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `incA D ((a : D.host.E)⁻¹) = b' at hm hai`. Establish `hmul : (1 + idemAt PP * (b - 1)) * (1 + idemAt PP * (b' - 1)) = 1`. Take the linear combination `(b - 1) * (b' - 1) * he + idemAt PP * hm`. Establish `hv : toEAf D (1 + idemAt PP * (b - 1)) = ((1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`. Rewrite using `[map_loc, hb]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hx : toEAf D (1 + idemAt PP * (b - 1)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[hv]`. Conclude with `Subtype.property _`. Use `⟨⟨_, _, hmul, by rw [mul_comm]; exact hmul⟩, ?_, ?_, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf hx, ?_, hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 
-Express the relevant statement in the definitionally equal form `(1 - idemAt PP) * (1 + idemAt PP * (b - 1)) = _`. Take the linear combination `(1 - b) * he`. Express the relevant statement in the definitionally equal form `infPart D (1 + idemAt PP * (b - 1)) = 1`. Rewrite using `[map_loc, hinf, zero_mul, add_zero]`. Express the relevant statement in the definitionally equal form `finPart D (1 + idemAt PP * (b' - 1)) ∈ intAE D`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : finPart D (1 + idemAt PP * (b' - 1)) = finPart D (1 - idemAt PP) + finPart D (idemAt PP * b')`. Rewrite using `[← RingHom.map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem (GlobalTheory.AdIdem.idempotent_mem_intAE D _ ?_) hai` and prove the remaining obligations. Rewrite using `[← RingHom.map_mul]`. Use `congr 1`. Take the linear combination `he`. Establish `e2 : (⟨_, hx⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = 1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1)` using `Subtype.ext hv`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (resS D.host.F PP) e2).trans ?_` and prove the remaining obligations. Rewrite using `[map_loc, h1, resS_oToS, ha]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isLocUnit {PP : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) (u : (kP PP)ˣ) :
     ∃ x : (AE D)ˣ, IsLocUnit PP u x := by
@@ -174,14 +174,14 @@ theorem exists_isLocUnit {PP : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt (i
     ring
 
 /- English proof (translation)
-The claim follows from `hx.res.elim fun h2 h3 => h x hx.off h2 u h3`.
+A detailed English derivation is pending.
 -/
 theorem IsLocUnit.eq {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {PP : Pl D.host.E} {c : (kP PP)ˣ →* M}
     (h : IsResAt χ PP c) {u : (kP PP)ˣ} {x : (AE D)ˣ} (hx : IsLocUnit PP u x) : χ x = c u :=
   hx.res.elim fun h2 h3 => h x hx.off h2 u h3
 
 /- English proof (translation)
-Use `ext1 u`. Take `⟨x, hx⟩` from `exists_isLocUnit h u`. Rewrite using `[← hx.eq hc, hx.eq hc']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isResAt_unique {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {PP : Pl D.host.E}
     (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) {c c' : (kP PP)ˣ →* M} (hc : IsResAt χ PP c) (hc' : IsResAt χ PP c') :
@@ -191,7 +191,7 @@ theorem isResAt_unique {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {PP : Pl 
   rw [← hx.eq hc, hx.eq hc']
 
 /- English proof (translation)
-Use `hχ x hx.inf hx.int hx.int' ?_` and prove the remaining obligations. Establish `h0 : idemAt PP * (idem Q + cA D (idem Q)) = 0`. Rewrite using `[mul_add, idem, map_sum, Finset.mul_sum, Finset.mul_sum, Finset.sum_eq_zero fun j hj => hP.mul_eq_zero hPP (hQ hj) fun e => hn (e ▸ hj), Finset.sum_eq_zero fun j hj => hP.mul_conj hPP (hQ hj), add_zero]`. Take the linear combination `(idem Q + cA D (idem Q)) * hx.off + ((x : AE D) - 1) * h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IsLocUnit.eq_one {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {Q P : Finset (Pl D.host.E)} (hχ : UnramOutside χ Q)
     (hP : SplitSet P) (hQ : Q ⊆ P) {PP : Pl D.host.E} (hPP : PP ∈ P) (hn : PP ∉ Q) {u : (kP PP)ˣ} {x : (AE D)ˣ}
@@ -204,7 +204,7 @@ theorem IsLocUnit.eq_one {M : Type} [CommGroup M] {χ : (AE D)ˣ →* M} {Q P : 
   linear_combination (idem Q + cA D (idem Q)) * hx.off + ((x : AE D) - 1) * h0
 
 /- English proof (translation)
-Use `GlobalTheory.TameSplitChar.char_eq_prod_res D c χ {PP} (idemAt PP) (Function.update (fun _ => 1) PP ρ) hc ⟨⟨idemAt, by simpa using h, by simp⟩, h.1.2.1⟩ (by simpa using ⟨ht, hρ⟩) x x ⟨_, hi⟩ (Function.update (fun _ => 1) PP u) (by linear_combination hx) rfl (by simpa using hu.sym …` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_res_of_chrEq {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (hc : ChrEq c χ) {PP : Pl D.host.E}
     (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) (ht : χ.TameAt PP) {ρ : (kP PP)ˣ →* ℂˣ} (hρ : IsRes χ PP ρ) (x : (AE D)ˣ)
@@ -229,7 +229,7 @@ Both sides reduce to the same expression.
     ((toCircle c u : Circle) : ℂ) = ((c u : ℂˣ) : ℂ) := rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem toUnits_comp_toCircle {M : Type} [Group M] [Finite M] (c : M →* ℂˣ) : Circle.toUnits.comp (toCircle c) = c :=
   MonoidHom.ext fun _ => Units.ext rfl
@@ -277,7 +277,7 @@ def FixDat {S T : HSp D} (B : Base S T) (τ : ℂ ≃+* ℂ) : Prop :=
     ∀ PP ∈ B.G.Pg, ∀ u, τ ((B.G.mu PP u : Circle) : ℂ) = ((B.G.mu PP u : Circle) : ℂ)
 
 /- English proof (translation)
-Use `⟨by rw [h.2, h'.2, hc.1], fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h.1, h'.1]`. Simplify using `only [MonoidHom.mul_apply, Circle.coe_mul, map_mul, hf.1, hc.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjTup_of {B : Base (Vc D i) (Wc D i)} {τ : ℂ ≃+* ℂ} {ψ ψ' : Twist D Circle} {t t' : T0} (h : IsTupOf R B ψ t)
     (h' : IsTupOf R B ψ' t') (hc : ConjChar τ ψ ψ') (hf : FixDat B τ) : ConjTup R τ t t' := by
@@ -286,26 +286,26 @@ theorem conjTup_of {B : Base (Vc D i) (Wc D i)} {τ : ℂ ≃+* ℂ} {ψ ψ' : T
   simp only [MonoidHom.mul_apply, Circle.coe_mul, map_mul, hf.1, hc.2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.symm, fun x => by rw [h.2, RingEquiv.symm_apply_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ConjChar.symm {τ : ℂ ≃+* ℂ} {ψ ψ' : Twist D Circle} (h : ConjChar τ ψ ψ') : ConjChar τ.symm ψ' ψ :=
   ⟨h.1.symm, fun x => by rw [h.2, RingEquiv.symm_apply_apply]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => τ.symm_apply_eq.2 (h.1 x).symm, fun p => τ.symm_apply_eq.2 (h.2.1 p).symm, fun PP hPP u => τ.symm_apply_eq.2 (h.2.2 PP hPP u).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem FixDat.symm {S T : HSp D} {B : Base S T} {τ : ℂ ≃+* ℂ} (h : FixDat B τ) : FixDat B τ.symm :=
   ⟨fun x => τ.symm_apply_eq.2 (h.1 x).symm, fun p => τ.symm_apply_eq.2 (h.2.1 p).symm,
     fun PP hPP u => τ.symm_apply_eq.2 (h.2.2 PP hPP u).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun x => (h.1 x).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem FixDat.conjChar {S T : HSp D} {B : Base S T} {τ : ℂ ≃+* ℂ} (h : FixDat B τ) : ConjChar τ B.de B.de :=
   ⟨rfl, fun x => (h.1 x).symm⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_isLocUnit (hψ.split.isIdemAt hPP) u`. Rewrite using `[← hx.eq (hψ.res PP hPP), ← hx.eq (hψ'.res PP (h.1 ▸ hPP)), h.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ConjChar.res {τ : ℂ ≃+* ℂ} {ψ ψ' : Twist D Circle} (h : ConjChar τ ψ ψ') (hψ : ψ.Good) (hψ' : ψ'.Good)
     {PP : Pl D.host.E} (hPP : PP ∈ ψ.Q) (u : (kP PP)ˣ) : ((ψ'.res PP u : Circle) : ℂ) = τ ((ψ.res PP u : Circle) : ℂ) := by
@@ -320,21 +320,21 @@ variable {B : Base (Vc D i) (Wc D i)} (h : BaseOf R i B)
 include h
 
 /- English proof (translation)
-Rewrite using `[h.c, h.p, h.q, liftC_cast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exponent (τ : D.what₂.Tau) : (B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2 = -(D.hc τ).e i := by
   rw [h.c, h.p, h.q, liftC_cast]
   ring
 
 /- English proof (translation)
-Rewrite using `[Frame.fock, h.ψ, h.θ, h.sT, h.BT, funext h.BS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_eq (f : WO (Vc D i) (Wc D i) → ℂ) : B.F.fock f =
     pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) f := by
   rw [Frame.fock, h.ψ, h.θ, h.sT, h.BT, funext h.BS]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[series_apply, h.fock_eq]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem series_eq_ser (t : T0) (f : WO (Vc D i) (Wc D i) → ℂ) (u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Vc D i))
     (w : (R.cV i).W) : series B.F (R.ωP i t) f g (R.ioP i (PiTensorProduct.tprod ℂ u) w) = ser R i t f u g w := by
@@ -343,23 +343,23 @@ theorem series_eq_ser (t : T0) (f : WO (Vc D i) (Wc D i) → ℂ) (u : ∀ ρ, l
   rfl
 
 /- English proof (translation)
-Rewrite using `[Base.mu, h.mu0, mul_assoc, ← ht.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mu_mul {ψ : Twist D Circle} {t : T0} (ht : IsTupOf R B ψ t) : B.mu * ψ.chi = R.toLevCh.mu t ((i : ℕ) + 1) := by
   rw [Base.mu, h.mu0, mul_assoc, ← ht.1]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Base.IsWeil, h.mu_mul ht, h.ψ, h.eta]`. Conclude with `hω i t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeil (hω : R.thP_ωP) {ψ : Twist D Circle} {t : T0} (ht : IsTupOf R B ψ t) : B.IsWeil ψ.chi (R.ωP i t) := by
   rw [Base.IsWeil, h.mu_mul ht, h.ψ, h.eta]
   exact hω i t
 
 /- English proof (translation)
-Take `⟨P, h1, h2, hP⟩` from `hB.places.split`. Establish `hg : PP ∈ B.G.Pg` using `h.Pg ▸ hPP`. Use `MonoidHom.ext fun u => Units.ext ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_isLocUnit (hP.isIdemAt (h1 hg)) u`. Establish `e1` using `hx.eq (hB.tame PP hg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `hx.eq_one hB.de.unram hP h2 (h1 hg) (Finset.disjoint_left.1 hB.places.disj hg)`. Take `⟨k1, k2⟩` from `hx.res`. Establish `e3` using `eq_res_of_chrEq (hL.mu0 i) (hP.isIdemAt (h1 hg)) ((R.C.isMu0 i).tame PP) (hL.chi i PP hPP) x hx.off k1 u k2`. Rewrite `e1` using `[Base.mu, MonoidHom.mul_apply, e2, mul_one, h.mu0]`. Rewrite using `[← e3, e1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -378,9 +378,9 @@ theorem muC_eq {t₀ : T0} (hL : R.toLevCh.Is t₀) (hB : B.Good) {PP : Pl D.hos
   rfl
 
 /- English proof (translation)
-Introduce `PP hPP u`. Establish `hg : PP ∈ R.Pg` using `h.Pg ▸ hPP`. Establish `e : ((B.G.mu PP u : Circle) : ℂ) = ((R.chi ((i : ℕ) + 1) PP u⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[map_inv, ← MonoidHom.inv_apply, ← h.muC_eq hL hB hg]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, hτ PP hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_mu {t₀ : T0} (hL : R.toLevCh.Is t₀) (hB : B.Good) {τ : ℂ ≃+* ℂ}
     (hτ : ∀ PP ∈ R.Pg, ∀ u, τ ((R.chi ((i : ℕ) + 1) PP u : ℂˣ) : ℂ) = ((R.chi ((i : ℕ) + 1) PP u : ℂˣ) : ℂ)) :
@@ -395,13 +395,13 @@ theorem fix_mu {t₀ : T0} (hL : R.toLevCh.Is t₀) (hB : B.Good) {τ : ℂ ≃+
 end BaseOf
 
 /- English proof (translation)
-Take `⟨P, -, h2, hP⟩` from `hQ.1.split`. Establish `hm : PP ∈ B.de.Q ∨ PP ∈ ψ.Q` using `by simpa [ht.2] using hPP`. Establish `s1 : B.de.Q ⊆ P` using `fun a ha => h2 (by simp [ha])`. Establish `s2 : ψ.Q ⊆ P` using `fun a ha => h2 (by simp [ha])`. Establish `hp : PP ∈ P` using `hm.elim (fun k => s1 k) fun k => s2 k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun u => Units.ext ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_isLocUnit (hP.isIdemAt hp) u`. Take `⟨k1, k2⟩` from `hx.res`. Establish `key : ∀ {ν : Twist D Circle}, ν.Good → ν.Q ⊆ P → ((ν.chi x : Circle) : ℂ) = ((ν.locC PP u : ℂˣ) : ℂ)`. Introduce `ν hν hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Twist.locC`. Use `split_ifs with k`. Rewrite using `[hx.eq (hν.res PP k)]`. Both sides reduce to the same expression. Rewrite using `[hx.eq_one hν.unram hP hs hp k]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← eq_res_of_chrEq (hL.xi t) (hP.isIdemAt hp) (hL.xi_tame t PP) (hL.xiR t PP hPP) x hx.off k1 u k2, ht.1, MonoidHom.mul_apply, MonoidHom.mul_apply, Circle.coe_mul, Units.val_mul, key hB.de s1, key hψ s2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTupOf.xiR_eq {B : Base (Vc D i) (Wc D i)} {ψ : Twist D Circle} {t t₀ : T0} (ht : IsTupOf R B ψ t)
     (hL : R.toLevCh.Is t₀) (hB : B.Good) (hψ : ψ.Good) (hQ : B.admitted ψ.Q) {PP : Pl D.host.E} (hPP : PP ∈ R.Q t) :
@@ -431,16 +431,16 @@ variable (R)
 def tupTwist (t : T0) : Twist D Circle := ⟨R.Q t, R.xi t, fun PP => toCircle (R.xiR t PP)⟩
 
 /- English proof (translation)
-Introduce `x hx hi u hu` and use `Circle.ext (eq_res_of_chrEq (hL.xi t) h (hL.xi_tame t PP) (hL.xiR t PP hPP) x hx hi u hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isResAt_tupTwist {t₀ : T0} (hL : R.toLevCh.Is t₀) (t : T0) {PP : Pl D.host.E} (hPP : PP ∈ R.Q t)
     (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) : IsResAt (tupTwist R t).chi PP ((tupTwist R t).res PP) :=
   fun x hx hi u hu => Circle.ext (eq_res_of_chrEq (hL.xi t) h (hL.xi_tame t PP) (hL.xiR t PP hPP) x hx hi u hu)
 
 /- English proof (translation)
-Take `⟨ε, h1, h2, -⟩` from `h`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h0`. Use `congrArg Matrix.det h2` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_diagonal]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, -, ha⟩` from `Finset.prod_eq_zero_iff.1 this.symm`. Apply the tactic sequence `rcases h1 a with k | k <;> simp [k.1] at ha`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnit_of_isONBasis {k p : ℕ} {J s B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis J s B p) : IsUnit B := by
   obtain ⟨ε, h1, h2, -⟩ := h
@@ -464,41 +464,41 @@ def baseAt (hB : R.models_BV) (δ : Twist D Circle) (P : LevelP R.Pg (Wc D i).ra
   eta := R.eta
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, fun _ => rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem baseOf_baseAt (hB : R.models_BV) (δ : Twist D Circle) (P : LevelP R.Pg (Wc D i).rank ℂ) :
     BaseOf R i (baseAt R i hB δ P) :=
   ⟨rfl, rfl, rfl, fun _ => rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mul_one _).symm, by classical exact (Finset.union_empty _).symm.trans (by congr)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTupOf_baseAt (hB : R.models_BV) (t₀ : T0) (P : LevelP R.Pg (Wc D i).rank ℂ) :
     IsTupOf R (baseAt R i hB (tupTwist R t₀) P) (Twist.triv Circle ∅) t₀ :=
   ⟨(mul_one _).symm, by classical exact (Finset.union_empty _).symm.trans (by congr)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(one_mul _).symm, by classical exact (Finset.empty_union _).symm.trans (by congr)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTupOf_tupTwist (hB : R.models_BV) (t : T0) (P : LevelP R.Pg (Wc D i).rank ℂ) :
     IsTupOf R (baseAt R i hB (Twist.triv Circle ∅) P) (tupTwist R t) t :=
   ⟨(one_mul _).symm, by classical exact (Finset.empty_union _).symm.trans (by congr)⟩
 
 /- English proof (translation)
-The claim follows from `(baseOf_baseAt R hB _ P).isWeil hω (isTupOf_baseAt R hB t₀ P)`.
+A detailed English derivation is pending.
 -/
 example (hB : R.models_BV) (hω : R.thP_ωP) (t₀ : T0) (P : LevelP R.Pg (Wc D i).rank ℂ) :
     (baseAt R i hB (tupTwist R t₀) P).IsWeil 1 (R.ωP i t₀) :=
   (baseOf_baseAt R hB _ P).isWeil hω (isTupOf_baseAt R hB t₀ P)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun x => Circle.coe_inv_eq_conj (ψ.chi x)⟩`.
+Supply the required witnesses or components.
 -/
 example (ψ : Twist D Circle) : ConjChar (starRingAut : ℂ ≃+* ℂ) ψ ⟨ψ.Q, ψ.chi⁻¹, fun PP => (ψ.res PP)⁻¹⟩ :=
   ⟨rfl, fun x => Circle.coe_inv_eq_conj (ψ.chi x)⟩
 
 /- English proof (translation)
-Establish `h` using `(liftWeight_good D i).lam_eq τ a`. Rewrite `h` using `[if_neg (show ¬ a.val < (liftWeight D i).p τ from not_lt.2 h1), if_neg (show ¬ (Vc D i).rank - (liftWeight D i).q τ ≤ a.val from by change ¬ _ - qS D i τ ≤ _; omega), zero_add]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (τ : D.what₂.Tau) (a : Fin (Vc D i).rank) (h1 : pS D i τ ≤ a.val) (h2 : a.val + qS D i τ < (Vc D i).rank) :
     (lamV D i τ).w a = liftC D i τ := by

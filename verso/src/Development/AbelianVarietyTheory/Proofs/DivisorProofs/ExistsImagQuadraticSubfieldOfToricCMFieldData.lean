@@ -8,33 +8,31 @@ open scoped IntermediateField
 namespace GlobalTheory.QuadInHost
 
 /- English proof (translation)
-Introduce `E _ _ I _ d φ hF hd4 Λ hΛ`. Take `⟨hp, hd, -, -, -, hI, -, w, hw, hφw⟩` from `hF`. Establish `hd0 : (0 : ℚ) < d` using `by exact_mod_cast hp.pos`. Take `⟨i₀⟩ : Nonempty I` from `Fintype.card_pos_iff.1 (by omega)`. Establish `hm : (Polynomial.X ^ 2 + Polynomial.C (d : ℚ) : Polynomial ℚ).Monic` using `by monicity!`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : Polynomial.aeval w (Polynomial.X ^ 2 + Polynomial.C (d : ℚ) : Polynomial ℚ) = 0`. Simplify using `[hw]`. Establish `hi : IsIntegral ℚ w` using `⟨_, hm, he⟩`. Establish `h2 : Module.finrank ℚ ℚ⟮w⟯ = 2`. Rewrite using `[IntermediateField.adjoin.finrank hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm ((Polynomial.natDegree_le_natDegree (minpoly.min ℚ w hm he)).trans (by compute_degree)) ((minpoly.two_le_natDegree_iff hi).2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩`. Establish `h1 : (algebraMap ℚ E q) ^ 2 = -(d : E)` using `by rw [hq]; exact hw`. Establish `h3 : q ^ 2 = -(d : ℚ)` using `(algebraMap ℚ E).injective (by simpa using h1)`. Use polynomial arithmetic with `[sq_nonneg q]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Set `r : ℚ⟮w⟯` to `IntermediateField.AdjoinSimple.gen ℚ w`. Establish `hr : r ^ 2 = -(d : ℚ⟮w⟯)` using `Subtype.ext (by simpa [r] using hw)`. Set `φK : ℚ⟮w⟯ →+* ℂ` to `(φ i₀).comp (algebraMap ℚ⟮w⟯ E)`. Establish `hφr : ∀ i, (φ i).comp (algebraMap ℚ⟮w⟯ E) r = Complex.I * (Real.sqrt d : ℂ)` using `fun i => hφw i`. Establish `hsq : (Real.sqrt d : ℂ) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < Real.sqrt d` using `Real.sqrt_pos.2 (by exact_mod_cast hp.pos)`. Conclude with `this.ne'` after adjusting the coercions. Use `⟨ℚ⟮w⟯, h2, GlobalTheory.discr_eq_neg_of_sq_eq h2 hp.squarefree hd4 hr, φK, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `(IntermediateField.adjoin.powerBasis hi).algHom_ext (f := ((φ i).comp (algebraMap ℚ⟮w⟯ E)).toRatAlgHom) (g := φK.toRatAlgHom) (by simp only [IntermediateField.adjoin.powerBasis_gen]; exact (hφr i).trans (hφr i₀).symm)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg AlgHom.toRingHom this`. Introduce `h`. Use `congrArg (fun f => f r) h` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (φK r) = φK r at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[show φK r = _ from hφr i₀]`. Simplify using `[Complex.conj_ofReal] at this`. Establish `h0 : (2 * Complex.I) * (Real.sqrt d : ℂ) = 0` using `by linear_combination -this`. Break down `mul_eq_zero.1 h0 with h0 | h0` into its components or cases. Simplify using `at h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hsq h0`. Take `⟨ω, hω2, hgen⟩` from `GlobalTheory.exists_integer_generator_of_sq_eq_neg h2 hp.squarefree hd4 hr`. Establish `hφω : φK ω = (1 + Complex.I * (Real.sqrt d : ℂ)) / 2`. Use `congrArg φK hω2` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat, show φK r = _ from hφr i₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Take the linear combination `this / 2`. Unfold `IsLatOf`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, hΛ x]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨hx, a, b, rfl⟩`. Set `y : ℚ⟮w⟯` to `a + b * r`. Establish `hy : φK y = a + b * (Complex.I * (Real.sqrt d : ℂ))`. Simplify using `only [y, map_add, map_mul, map_ratCast, show φK r = _ from hφr i₀]`. Establish `hint : IsIntegral ℤ y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[← hy]`. Conclude with `(isIntegral_algHom_iff φK.toIntAlgHom φK.injective).1 hx`. Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, FractionalIdeal.mem_one_iff]`. Conclude with `⟨⟨y, hint⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[SetLike.mem_coe, FractionalIdeal.mem_one_iff]`. Take `⟨c, rfl⟩` from `hy`. Use `⟨(RingOfIntegers.isIntegral_coe c).map φK.toIntAlgHom, ?_⟩` and prove the remaining obligations. Take `⟨m, n, rfl⟩` from `hgen c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `⟨m + n / 2, n / 2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φK ((m + n * ω : 𝓞 ℚ⟮w⟯) : ℚ⟮w⟯) = _`. Use `push_cast`. Simplify using `only [map_add, map_mul, hφω]`. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_quadField : ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (d : ℕ) (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → d % 4 = 3 → ∀ (Λ : PeriodPair), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ → ∃ K : IntermediateField ℚ E, Module.finrank ℚ K = 2 ∧ discr K = -(d : ℤ) ∧ ∃ φK : K →+* ℂ, (∀ i, (φ i).comp (algebraMap K E) = φK) ∧ (starRingEnd ℂ).comp φK ≠ φK ∧ IsLatOf φK 1 Λ := by
   intro E _ _ I _ d φ hF hd4 Λ hΛ

@@ -13,7 +13,7 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TraitCmp
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ t P hR hT W _ _ _ hW g hg hnl t' m P'`. Take `⟨ρ, hs, hτ⟩` from `GlobalTheory.T.characters_restrict_linear_to_trait_uniformisation E H R t P hR hT W hW g hg hnl t' m P'`. Conclude with `⟨ρ, hs, GlobalTheory.T.associated_psi_coordinates_of_tau_units E H R t P W g hg t' P' ρ hτ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), IsCN R → P.TorsionIso →

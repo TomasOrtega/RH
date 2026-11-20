@@ -5,13 +5,13 @@ namespace ReciprocityTheory.ChartRestriction.G.AI
 open Module
 
 /- English proof (translation)
-Set `N : Submodule ℤ S` to `(Ideal.span {f}).restrictScalars ℤ`. Establish `hmem : ∀ x : S, f * x ∈ N` using `fun x => Ideal.mul_mem_right x _ (Ideal.subset_span rfl)`. Set `g : S →+ N` to `{ toFun := fun x => ⟨f * x, hmem x⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp [mul_add] }`. Establish `hbij : Function.Bijective g`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x y hxy`. Establish `h1 : f * x = f * y` using `congrArg Subtype.val hxy`. Conclude with `mul_left_cancel₀ hf h1`. Introduce and unpack `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, by ext; simp [g, mul_comm]⟩`. Set `e : S ≃+ N` to `AddEquiv.ofBijective g hbij`. Establish `h` using `Submodule.natAbs_det_equiv N e`. Establish `hlin : N.subtype ∘ₗ (e : S →+ N).toIntLinearMap = Algebra.lmul ℤ S f`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[hlin, ← Algebra.norm_apply]`. Rewrite using `[h]`. Conclude with `Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv ℤ (Ideal.span {f})).toEquiv.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_eq_natAbs_norm {S : Type*} [CommRing S] [IsDomain S] [Module.Free ℤ S]
     [Module.Finite ℤ S] (f : S) (hf : f ≠ 0) :
@@ -41,17 +41,15 @@ theorem card_quot_eq_natAbs_norm {S : Type*} [CommRing S] [IsDomain S] [Module.F
   exact Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv ℤ (Ideal.span {f})).toEquiv.symm
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ O`. Establish `hli : LinearIndependent ℚ (fun i => ((b i : O) : K))`. Establish `h1 : LinearIndependent ℤ (fun i => ((b i : O) : K))` using `b.linearIndependent.map' (O.subtype.toIntAlgHom.toLinearMap) (LinearMap.ker_eq_bot.mpr Subtype.val_injective)`. Conclude with `(LinearIndependent.iff_fractionRing ℤ ℚ).mp h1`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ O) = Module.finrank ℚ K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, Module.finrank_eq_card_chooseBasisIndex]`. Use `haveI : Nonempty (Module.Free.ChooseBasisIndex ℤ O) := by`. Apply `Fintype.card_pos_iff.mp` to reduce the goal to its premises. Rewrite using `[hcard]`. Conclude with `Module.finrank_pos`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `b'` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb' : ∀ i, b' i = ((b i : O) : K)` using `fun i => by`. Simplify using `only [b', coe_basisOfLinearIndependentOfCardEqFinrank]`. Rewrite using `[Algebra.norm_eq_matrix_det b f, Algebra.norm_eq_matrix_det b' (f : K)]`. Establish `hm` using `RingHom.map_det (Int.castRingHom ℚ) (Algebra.leftMulMatrix b f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[show ((Algebra.leftMulMatrix b f).det : ℚ) = (Int.castRingHom ℚ) (Algebra.leftMulMatrix b f).det from rfl, hm]`. Use `congr 1`. Use extensionality with `i j`. Establish `hx : (f : K) * b' j = ∑ k, ((b.repr (f * b j) k : ℤ) : ℚ) • b' k`. Establish `e1` using `congrArg (O.subtype.toIntAlgHom.toLinearMap) (b.sum_repr (f * b j))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[map_sum]`. Simplify using `only [map_zsmul] at e1`. Simplify using `only [hb', Int.cast_smul_eq_zsmul]`. Conclude with `e1.symm`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, eq_intCast]`.
-
-Rewrite using `[hx, b'.repr_sum_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_int_eq_norm_rat {K : Type*} [Field K] [NumberField K] (O : Subring K)
     [Module.Free ℤ O] [Module.Finite ℤ O] (h : Module.finrank ℤ O = Module.finrank ℚ K)
@@ -87,7 +85,7 @@ theorem norm_int_eq_norm_rat {K : Type*} [Field K] [NumberField K] (O : Subring 
   rw [hx, b'.repr_sum_self]
 
 /- English proof (translation)
-The claim follows from `|(Algebra.norm ℚ x : ℝ)| = ∏ σ : K →+* ℂ, ‖σ x‖ := by have h := Algebra.norm_eq_prod_embeddings ℚ ℂ x have h2 := congrArg (fun z : ℂ => ‖z‖) h simp only [norm_prod, eq_ratCast, Complex.norm_ratCast] at h2 exact h2.trans (Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_eq_prod {K : Type*} [Field K] [NumberField K] (x : K) :
     |(Algebra.norm ℚ x : ℝ)| = ∏ σ : K →+* ℂ, ‖σ x‖ := by
@@ -97,11 +95,9 @@ theorem abs_norm_eq_prod {K : Type*} [Field K] [NumberField K] (x : K) :
   exact h2.trans (Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ => rfl)).symm
 
 /- English proof (translation)
-Introduce `K _ _ O hfree hfin hrank f hf`. Use `haveI := hfree`. Use `haveI := hfin`. Establish `hc` using `card_quot_eq_natAbs_norm f hf`. Establish `hn` using `norm_int_eq_norm_rat O hrank f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod` using `abs_norm_eq_prod (f : K)`. Establish `h1 : (Nat.card (O ⧸ Ideal.span {f}) : ℝ) = |(Algebra.norm ℚ (f : K) : ℝ)|`. Rewrite using `[hc, ← hn]`. Simplify using `[Nat.cast_natAbs, Int.cast_abs, Rat.cast_intCast]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h1, hprod, Real.log_prod (fun σ _ => ?_)]`. Conclude with `norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr (fun h0 => hf (Subtype.ext h0)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_thm : IndexStatement := by
   intro K _ _ O hfree hfin hrank f hf

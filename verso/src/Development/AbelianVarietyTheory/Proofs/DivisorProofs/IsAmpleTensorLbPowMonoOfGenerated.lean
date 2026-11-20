@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.AmpleTwistLarger
 
 /- English proof (translation)
-Establish `h₁` using `GlobalTheory.isLB_lbPow hL (N * (m + 1))`. Establish `h₂` using `GlobalTheory.isLB_lbPow hL (N * m)`. Establish `h₃` using `GlobalTheory.isLB_lbPow hL N`. Establish `hT` using `GlobalTheory.CechPic.isLB_tens h₁ hM`. Establish `hS` using `GlobalTheory.CechPic.isLB_tens h₂ hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `LB.isLB_div hT hS`. Use `hA.tensor_isGenerated hG hT ((GlobalTheory.CechPic.cls_eq_zero_iff (LB.isLB_div hq h₃)).1 ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_div hq h₃, GlobalTheory.CechPic.cls_div hT hS, GlobalTheory.CechPic.cls_tens h₁ hM, GlobalTheory.CechPic.cls_tens h₂ hM, GlobalTheory.CechPic.cls_lbPow hL, GlobalTheory.CechPic.cls_lbPow hL, GlobalTheory.CechPic.cls_lbPow hL, Nat.mul_succ, add_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem isAmpleLB_tens_lbPow_succ {S : Scheme.{0}} {L M : LB S} {N m : ℕ} (hL : L.IsLB) (hM : M.IsLB)
     (hG : GlobalTheory.IsGenerated (lbPow L N)) (hA : GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow L (N * m)) M)) :
@@ -35,7 +35,7 @@ theorem isAmpleLB_tens_lbPow_succ {S : Scheme.{0}} {L M : LB S} {N m : ℕ} (hL 
   abel
 
 /- English proof (translation)
-Introduce `S L M N k hL hM hG hA k' hk`. Proceed by induction on `k', hk using Nat.le_induction with`. Consider the case `base => exact hA`. Consider the case `succ m _ ih => exact isAmpleLB_tens_lbPow_succ hL hM hG ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isAmpleLB_tens_lbPow_of_le : ∀ (S : Scheme.{0}) (L M : LB S) (N k : ℕ), L.IsLB → M.IsLB → GlobalTheory.IsGenerated (lbPow L N) → GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow L (N * k)) M) → ∀ k', k ≤ k' → GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow L (N * k')) M) := by
   intro S L M N k hL hM hG hA k' hk

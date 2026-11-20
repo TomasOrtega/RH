@@ -40,25 +40,21 @@ open GlobalTheory.Idele WithZero
 open GlobalTheory.StdDual (codiff codiff_ne_zero)
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ v hv x`. Establish `hc` using `GlobalTheory.SplitUnram.count_codiff_eq_zero v (fun h => hv (Ideal.le_of_dvd h))`. Use `set α : Af F := GlobalTheory.AdelicU.singleFin v x with hα`. Establish `hαv : α v = x` using `GlobalTheory.AdelicU.evalV_singleFin_self v x`. Establish `hαw : ∀ w, w ≠ v → α w = 0` using `fun w hw => GlobalTheory.AdelicU.evalV_singleFin_ne hw x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (GlobalTheory.LatVacArith.psi_fin_rat hψ) α`. Establish `key : (∀ y ∈ v.adicCompletionIntegers F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.psiLoc ψ v (x * y) = 1) ↔ ∀ β : Af F, (∀ w, β w ∈ w.adicCompletionIntegers F) → ψ (pairA F 0 (β * α)) = 1`. Prove the components needed by the constructor for the conclusion. Introduce `H β hβ`. Establish `e : β * α = GlobalTheory.AdelicU.singleFin v (x * β v)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, hα, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `β u * x = x * β u`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, hα, GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, mul_zero]`. Rewrite using `[e]`. Conclude with `H _ (hβ v)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `H y hy`. Establish `e : GlobalTheory.AdelicU.singleFin v y * α = GlobalTheory.AdelicU.singleFin v (x * y)`. Rewrite using `[hα, ← GlobalTheory.AdelicU.singleFin_mul, mul_comm]`. Use `H (GlobalTheory.AdelicU.singleFin v y) (fun w => by` as an intermediate fact. Distinguish the cases in `hw : w = v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `hw` using the available equality. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV _ w (GlobalTheory.AdelicU.singleFin w y) ∈ _`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`. Conclude with `hy`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV _ w (GlobalTheory.AdelicU.singleFin v y) ∈ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hw]`. Conclude with `zero_mem _)`. Rewrite `this` using `[e]`. Conclude with `this`. Rewrite using `[key, ← h, mem_adelicIdeal_iff codiff_ne_zero, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H v` as an intermediate fact. Rewrite `this` using `[hc, neg_zero, exp_zero, hαv]`. Then use the resulting hypothesis. Introduce `H w`.
-
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hc, neg_zero, exp_zero, hαv]`. Conclude with `H`. Rewrite using `[hαw w hw, map_zero]`.
-
-Conclude with `zero_le`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiUnr_of_not_le : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ¬ differentIdeal ℤ (𝓞 F) ≤ v.asIdeal → PsiUnr ψ v := by

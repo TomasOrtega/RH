@@ -17,15 +17,15 @@ variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDime
   [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hle : Fintype.card ι ≤ Module.finrank ℂ E` using `hp.linearIndependent.fintype_card_le_finrank`. Establish `hcard : Module.finrank ℂ E = Fintype.card (ι ⊕ Fin (Module.finrank ℂ E - Fintype.card ι))` using `by simp; omega`. Establish `hres : ∀ w : ι → E, Orthonormal ℂ w → Orthonormal ℂ ((Set.range (Sum.inl : _ → ι ⊕ Fin (Module.finrank ℂ E - Fintype.card ι))).restrict (Sum.elim w 0))`. Introduce `w hw`. Rewrite `hw`, the goal using `[orthonormal_iff_ite]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩`. Take `⟨p, rfl⟩` from `hx`. Take `⟨q, rfl⟩` from `hy`. Express the relevant statement in the definitionally equal form `inner ℂ (w p) (w q) = _`. Rewrite using `[hw p q]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg hpq, if_neg]`. Introduce `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpq (Sum.inl_injective (congrArg Subtype.val h))`. Take `⟨bP, hbP⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq hcard (hres _ hp)`. Take `⟨bQ, hbQ⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq hcard (hres _ hq)`. Establish `hP : ∀ a, bP (Sum.inl a) = p a` using `fun a => hbP _ ⟨a, rfl⟩`. Establish `hQ : ∀ a, bQ (Sum.inl a) = q a` using `fun a => hbQ _ ⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨bP.repr.trans bQ.repr.symm, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, ← hQ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_iso (p q : ι → E) (hp : Orthonormal ℂ p) (hq : Orthonormal ℂ q) :
     ∃ U : E ≃ₗᵢ[ℂ] E, ∀ a, U (p a) = q a := by
@@ -53,19 +53,19 @@ theorem exists_iso (p q : ι → E) (hp : Orthonormal ℂ p) (hq : Orthonormal �
   rw [← hP, ← hQ]; simp
 
 /- English proof (translation)
-Set `S : Submodule ℂ E` to `LinearMap.ker (H - LinearMap.id)`. Establish `hS : ∀ x, x ∈ S ↔ H x = x` using `fun x => by simp [S, sub_eq_zero]`. Set `P : E →ₗ[ℂ] S` to `(LinearMap.id + H).codRestrict S fun x => by`. Rewrite using `[hS]`. Simplify using `[hH, add_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hP : ∀ x, (P x : E) = x + H x` using `fun x => rfl`. Set `s : ℂ` to `((Real.sqrt 2 : ℝ) : ℂ)⁻¹`. Establish `h2 : ((Real.sqrt 2 : ℝ) : ℂ) * ((Real.sqrt 2 : ℝ) : ℂ) = 2`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num`. Establish `hs : s * s * 2 = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [s]`. Rewrite using `[← mul_inv, h2]`. Evaluate the numerical expressions. Establish `hs' : (starRingEnd ℂ) s = s` using `by simp [s]`. Establish `hs0 : s ≠ 0` using `fun h => by simp [h] at hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : ∀ w : ι → E, Orthonormal ℂ w → (∀ a b, inner ℂ (w a) (H (w b)) = 0) → Orthonormal ℂ fun a => s • P (w a)`. Introduce `w hw hwi`. Rewrite `hw`, the goal using `[orthonormal_iff_ite]`. Introduce `a b`. Rewrite using `[inner_smul_left, inner_smul_right, hs', Submodule.coe_inner, hP, hP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inner_add_left, inner_add_right, hadj, hH, hw, hwi]`. Use `split_ifs`. Take the linear combination `hs`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU⟩` from `exists_iso _ _ (hO c hc hci) (hO u hu hui)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S.subtype ∘ₗ U.toLinearEquiv.toLinearMap ∘ₗ P, fun x => (hS _).1 (U (P x)).2, fun x => ?_, fun x y => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `: P (H x) = P x` using `Subtype.ext (by rw [hP, hP, hH, add_comm]) show ((U (P (H x)) : S) : E) = (U (P x) : S)`. Rewrite using `[this]`. Use `show inner ℂ ((U (P x) : S) : E) ((U (P y) : S) : E) = _`. Rewrite using `[← Submodule.coe_inner, U.inner_map_map, Submodule.coe_inner, hP, hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show ((U (P (c a)) : S) : E) = _`. Use `hU a` as an intermediate fact. Rewrite `this` using `[map_smul]`. Rewrite using `[smul_right_injective _ hs0 this, hP]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_half (H : E →ₗ[ℂ] E) (hH : ∀ x, H (H x) = x) (hadj : ∀ x y, inner ℂ (H x) y = inner ℂ x (H y))
     (c u : ι → E) (hc : Orthonormal ℂ c) (hu : Orthonormal ℂ u)
@@ -108,11 +108,11 @@ theorem exists_half (H : E →ₗ[ℂ] E) (hH : ∀ x, H (H x) = x) (hadj : ∀ 
     rw [smul_right_injective _ hs0 this, hP]
 
 /- English proof (translation)
-Take `⟨U, h1, h2, h3, h4⟩` from `exists_half H hH hadj c u hc hu hci hui`. Take `⟨V, g1, g2, g3, g4⟩` from `exists_half (-H) (by simp [hH]) (by simp [hadj]) c u hc hu (by simp [hci]) (by simp [hui])`. Simplify using `only [LinearMap.neg_apply, map_neg, neg_eq_iff_eq_neg] at g1 g2 g3 g4`. Establish `hUV : ∀ x y, inner ℂ (U x) (V y) = 0` using `fun x y => by`. Establish `: inner ℂ (U x) (V y) = -inner ℂ (U x) (V y)` using `by conv_lhs => rw [← h1, hadj, g1, inner_neg_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `this / 2`. Establish `hVU : ∀ x y, inner ℂ (V x) (U y) = 0` using `fun x y => by`. Rewrite using `[← inner_conj_symm, hUV, map_zero]`. Use `⟨(1 / 2 : ℂ) • (U + V), fun x => ?_, fun x y => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `[h1, h2, g1, g2]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, inner_smul_left, inner_smul_right, inner_add_left, inner_add_right, hUV, hVU, h3, g3, inner_neg_left, inner_neg_right, hadj, hH, map_div₀, map_one, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, h4, g4] module`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem exists_comm (H : E →ₗ[ℂ] E) (hH : ∀ x, H (H x) = x) (hadj : ∀ x y, inner ℂ (H x) y = inner ℂ x (H y))
     (c u : ι → E) (hc : Orthonormal ℂ c) (hu : Orthonormal ℂ u)
@@ -142,7 +142,7 @@ end abstract
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UH_mul {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UH H) (hb : b ∈ UH H) : a * b ∈ UH H := by
   have ha' : aᴴ * H * a = H := ha
@@ -152,9 +152,7 @@ theorem UH_mul {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UH H) 
     _ = H := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `h1 : (H * aᴴ * H) * a = 1`. Rewrite using `[← hH]`. Use `nth_rewrite 4 [← ha']`. Simplify using `only [Matrix.mul_assoc]`.
-
-Conclude with `Matrix.isUnit_det_of_left_inverse h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UH_det {n : ℕ} {H a : Matrix (Fin n) (Fin n) ℂ} (hH : H * H = 1) (ha : a ∈ UH H) : IsUnit a.det := by
   have ha' : aᴴ * H * a = H := ha
@@ -163,7 +161,7 @@ theorem UH_det {n : ℕ} {H a : Matrix (Fin n) (Fin n) ℂ} (hH : H * H = 1) (ha
   exact Matrix.isUnit_det_of_left_inverse h1
 
 /- English proof (translation)
-Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hu` using `UH_det hH ha`. Use `show a⁻¹ᴴ * H * a⁻¹ = H`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UH_inv {n : ℕ} {H a : Matrix (Fin n) (Fin n) ℂ} (hH : H * H = 1) (ha : a ∈ UH H) : a⁻¹ ∈ UH H := by
   have ha' : aᴴ * H * a = H := ha
@@ -174,22 +172,22 @@ theorem UH_inv {n : ℕ} {H a : Matrix (Fin n) (Fin n) ℂ} (hH : H * H = 1) (ha
     _ = H := by rw [Matrix.mul_nonsing_inv _ hu]; simp
 
 /- English proof (translation)
-Unfold `Hb`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext j; split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hb_sq : Hb k * Hb k = 1 := by
   unfold Hb; rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext j; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sg; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq (j : Fin (k + 1)) : sg k j * sg k j = 1 := by
   unfold sg; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[Matrix.mul_apply, sum3]`. Apply the tactic sequence `induction x using cases3 <;> induction y using cases3 <;>`. Simplify using `[H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss, Matrix.one_apply, eI_inj, wI_inj, esI_inj, eI_ne_wI, eI_ne_esI, wI_ne_esI, wI_ne_eI, esI_ne_eI, esI_ne_wI]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `sg_sq _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
   ext x y
@@ -202,9 +200,9 @@ theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
   · rfl
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[conjTranspose_apply]`. Apply the tactic sequence `induction x using cases3 <;> induction y using cases3 <;>`. Simplify using `[H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss, apply_ite (starRingEnd ℂ), eq_comm]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `(star_sg _).symm`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
   ext x y
@@ -216,29 +214,29 @@ theorem Hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
   · rfl
 
 /- English proof (translation)
-Establish `hp' : pᴴ * Hpk k r * p = Hpk k r` using `hp`. Establish `ha0 : ∀ b, (a b : ℂ) ≠ 0` using `fun b => by exact_mod_cast (ha b).ne'`. Establish `hwe : ∀ j b, p (wI k r j) (eI k r b) = 0` using `fun j b => by`. Rewrite using `[h1 b _ (by have := b.2; simp only [wI]; omega), if_neg (wI_ne_eI _ _)]`. Establish `hse : ∀ j b, p (esI k r j) (eI k r b) = 0` using `fun j b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1 b _ (by have := b.2; have := j.2; simp only [esI]; omega), if_neg (esI_ne_eI _ _)]`. Establish `hsw : ∀ j b, p (esI k r b) (wI k r j) = 0`. Introduce `j b`. Proceed by induction on `b using WellFoundedLT.induction with`. Consider the case `ind b ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `congrFun (congrFun hp' (eI k r b)) (wI k r j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, sum3, Matrix.conjTranspose_apply] at this`. Simplify using `[hwe, hse, H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss] at this`. Rewrite `this` using `[Finset.sum_eq_single b, h1 b _ le_rfl, if_pos rfl]`. Simplify `this` using `[(ha b).ne']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[ih c h, mul_zero]`. Rewrite using `[h1 b _ h.le, if_neg (by rw [eI_inj]; exact hc)]; simp`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ` to `Matrix.of fun i j => p (wI k r i) (wI k r j)`. Establish `hm : m ∈ UH (Hb k)` using `by show mᴴ * Hb k * m = Hb k`. Use extensionality with `i j`. Use `congrFun (congrFun hp' (wI k r i)) (wI k r j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, sum3, Matrix.conjTranspose_apply] at this`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hsw, H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss] at this`. Simplify `this` using `[Matrix.mul_apply, Hb_apply, m]`. Establish `hmu` using `UH_det Hb_sq hm`. Establish `hd : IsUnit (Matrix.diagonal fun b => (a b : ℂ)⁻¹).det`. Rewrite using `[det_diagonal, isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun b _ => inv_ne_zero (ha0 b)`. Establish `u_we : ∀ u j b, uEmb k r u (wI k r j) (eI k r b) = 0` using `fun u j b => UEmb.u_me u b j`. Establish `u_ew : ∀ u j b, uEmb k r u (eI k r b) (wI k r j) = 0` using `fun u j b => UEmb.u_em u b j`. Establish `u_sw : ∀ u j b, uEmb k r u (esI k r b) (wI k r j) = 0` using `fun u j b => UEmb.u_sm u b j`. Establish `u_ww : ∀ u i j, uEmb k r u (wI k r i) (wI k r j) = if i = j then 1 else 0` using `fun u i j => UEmb.u_mm u i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨p * mEmb k r m⁻¹ * uEmb k r (Matrix.diagonal fun b => (a b : ℂ)⁻¹), ⟨UH_mul (UH_mul hp (mEmb_mem _ (UH_inv Hb_sq hm))) (UEmb.uEmb_mem _ hd), fun b i hi => ?_, fun i j g1 g2 g3 => ?_⟩, m, hm, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, sum3]`. Simplify using `[u_we, UEmb.u_ee, UEmb.u_se, m_e, middleSpaceLeviEmbedding_apply_es_row, m_we, Matrix.diagonal_apply, eI_inj, esI_ne_eI]`. Rewrite using `[h1 b i hi]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_inv_cancel₀ (ha0 b)`. Simplify using the standard rewrite rules. Proceed by induction on `j using cases3 with`. Consider the case `h1 a => exact absurd a.2 (by simp only [eI] at g1; omega)`. Consider the case `h3 a => exact absurd a.2 (by simp only [esI] at g2; omega)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `h2 j`. Simplify using `only [Matrix.mul_apply, sum3]`. Simplify using `[u_ew, u_sw, u_ww, m_e, middleSpaceLeviEmbedding_apply_es_row, m_ww, eI_ne_wI, esI_ne_wI]`. Proceed by induction on `i using cases3 with`. Consider the case `h1 a => exact absurd a.2 (by simp only [eI] at g3; omega)`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `h2 i`. Use `congrFun (congrFun (Matrix.mul_nonsing_inv m hmu) i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply, wI_inj, m]`. Consider the case `h3 b => simp [hsw, esI_ne_wI]`. Establish `: (Matrix.diagonal fun b => (a b : ℂ)⁻¹) * (Matrix.diagonal fun b => (a b : ℂ)) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Conclude with `inv_mul_cancel₀ (ha0 b)`. Rewrite using `[Matrix.mul_assoc (p * _), ← UEmb.uEmb_mul, this, UEmb.uEmb_one, Matrix.mul_one, Matrix.mul_assoc, mEmb_mul, Matrix.nonsing_inv_mul _ hmu, mEmb_one, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab (p : Mat k r) (hp : p ∈ GG k r) (a : Fin r → ℝ) (ha : ∀ b, 0 < a b)
     (h1 : ∀ (b : Fin r) (i : Fin (2 * r + k + 1)), b.val ≤ i.val → p i (eI k r b) = if i = eI k r b then (a b : ℂ) else 0) :
@@ -306,19 +304,17 @@ theorem stab (p : Mat k r) (hp : p ∈ GG k r) (a : Fin r → ℝ) (ha : ∀ b, 
       mEmb_mul, Matrix.nonsing_inv_mul _ hmu, mEmb_one, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨K, hκH, hκi, hκc⟩` from `exists_comm (Matrix.toEuclideanLin (Hpk k r)) (fun x => by simp [Matrix.toEuclideanLin_apply, Hpk_sq]) (Matrix.isHermitian_iff_isSymmetric.1 Hpk_herm) c u hc hu hci hui`. Use `set κ : Mat k r := Matrix.toEuclideanLin.symm K with hκdef`. Establish `hκ : ∀ v, WithLp.toLp 2 (κ *ᵥ v) = K (WithLp.toLp 2 v)`. Introduce `v`. Establish `h1 : Matrix.toEuclideanLin κ = K` using `LinearEquiv.apply_symm_apply _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun h1 (WithLp.toLp 2 v)` as an intermediate fact. Rewrite `this` using `[Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp]`. Conclude with `this`. Establish `hunit : κᴴ * κ = 1`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : inner ℂ (WithLp.toLp 2 (κ *ᵥ Pi.single i 1) : EuclideanSpace ℂ _) (WithLp.toLp 2 (κ *ᵥ Pi.single j 1)) = inner ℂ (WithLp.toLp 2 (Pi.single i 1) : EuclideanSpace ℂ _) (WithLp.toLp 2 (Pi.single j 1))`. Rewrite using `[hκ, hκ, hκi]`. Simplify using `only [EuclideanSpace.inner_eq_star_dotProduct, WithLp.ofLp_toLp, dotProduct] at h2`. Simplify using `only [mul_apply, conjTranspose_apply, one_apply]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[mulVec_single, mul_comm]`. Simplify using `[Pi.single_apply, eq_comm]`. Establish `hv : ∀ v, κ *ᵥ (Hpk k r *ᵥ v) = Hpk k r *ᵥ (κ *ᵥ v)`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hκH (WithLp.toLp 2 v)` as an intermediate fact. Rewrite `this` using `[Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp, ← hκ, ← hκ, Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp]`. Simplify using `using congrArg WithLp.ofLp this`. Establish `hcomm : κ * Hpk k r = Hpk k r * κ`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (hv (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, mulVec_mulVec]`. Simplify `this` using `[mulVec, dotProduct, Pi.single_apply]`. Use `⟨κ, ?_, hunit, fun a => ?_⟩` and prove the remaining obligations. Use `show κᴴ * Hpk k r * κ = Hpk k r`.
-
-Rewrite using `[Matrix.mul_assoc, ← hcomm, ← Matrix.mul_assoc, hunit, Matrix.one_mul]`. Rewrite using `[← hκc, ← WithLp.toLp_ofLp 2 (c a), ← hκ]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_K (c u : Fin r → EuclideanSpace ℂ (Fin (2 * r + k + 1))) (hc : Orthonormal ℂ c) (hu : Orthonormal ℂ u)
     (hci : ∀ a b, inner ℂ (c a) (Matrix.toEuclideanLin (Hpk k r) (c b)) = 0)
@@ -364,33 +360,31 @@ theorem exists_K (c u : Fin r → EuclideanSpace ℂ (Fin (2 * r + k + 1))) (hc 
 open InnerProductSpace in
 
 /- English proof (translation)
-Introduce `k r g hg`. Establish `hgu` using `UH_det Hpk_sq hg`. Establish `hgi : g⁻¹ᴴ * Hpk k r * g⁻¹ = Hpk k r` using `UH_inv Hpk_sq hg`. Set `c : Fin r → EuclideanSpace ℂ (Fin (2 * r + k + 1))` to `fun a => WithLp.toLp 2 (bvec (eI k r a))`. Set `w : Fin r → EuclideanSpace ℂ (Fin (2 * r + k + 1))` to `fun a => WithLp.toLp 2 (g⁻¹ *ᵥ bvec (eI k r a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc : Orthonormal ℂ c`. Rewrite using `[orthonormal_iff_ite]`. Introduce `a b`. Simplify using `[c, EuclideanSpace.inner_eq_star_dotProduct, bvec, Pi.single_apply, eI_inj, eq_comm, Pi.star_single]`. Establish `hgw : ∀ a, Matrix.toEuclideanLin g (w a) = c a` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[w, c, Matrix.toEuclideanLin_apply, Matrix.mul_nonsing_inv _ hgu]`. Establish `hw : LinearIndependent ℂ w` using `LinearIndependent.of_comp (Matrix.toEuclideanLin g) (by`. Establish `: (Matrix.toEuclideanLin g) ∘ w = c` using `funext hgw`. Rewrite using `[this]`. Conclude with `hc.linearIndependent)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hci : ∀ a b, inner ℂ (c a) (Matrix.toEuclideanLin (Hpk k r) (c b)) = 0` using `fun a b => by`. Simplify using `[c, EuclideanSpace.inner_eq_star_dotProduct, bvec, Matrix.toEuclideanLin_apply, Pi.star_single, H_ee]`. Establish `hwi : ∀ a b, inner ℂ (w a) (Matrix.toEuclideanLin (Hpk k r) (w b)) = 0` using `fun a b => by`. Rewrite using `[← hci a b]`. Simplify using `only [w, c, EuclideanSpace.inner_eq_star_dotProduct, Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dotProduct_comm, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hgi, dotProduct_comm]`. Establish `hspan : ∀ a, gramSchmidtNormed ℂ w a ∈ Submodule.span ℂ (Set.range w)` using `fun a => by`. Rewrite using `[← span_gramSchmidt, ← span_gramSchmidtNormed_range]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Establish `hui : ∀ a b, inner ℂ (gramSchmidtNormed ℂ w a) (Matrix.toEuclideanLin (Hpk k r) (gramSchmidtNormed ℂ w b)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a b`. Take `⟨ca, hca⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hspan a)`. Take `⟨cb, hcb⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hspan b)`. Rewrite using `[← hca, ← hcb, map_sum, sum_inner]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_left, inner_smul_right, hwi, mul_zero, mul_zero]`. Take `⟨κ, hκ, hκu, hκc⟩` from `exists_K c _ hc (gramSchmidtNormed_orthonormal hw) hci hui`. Establish `hlow : ∀ (b : Fin r) (i : Fin (2 * r + k + 1)), b.val ≤ i.val → ∀ y ∈ Submodule.span ℂ (w '' Set.Iio b), (Matrix.toEuclideanLin g y) i = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `b i hi y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Establish `ha' : a.val < b.val` using `ha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hgw]`. Conclude with `(bvec_apply _ _).trans (if_neg fun h => by rw [h] at hi; simp only [eI] at hi; omega)`. Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => rw [map_add, PiLp.add_apply, h1, h2, add_zero]`. Consider the case `smul t x _ h1 => rw [map_smul, PiLp.smul_apply, h1, smul_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgs : ∀ b, w b - gramSchmidt ℂ w b ∈ Submodule.span ℂ (w '' Set.Iio b)` using `fun b => by`. Rewrite using `[← span_gramSchmidt_Iio]`. Use `nth_rewrite 1 [gramSchmidt_def'' ℂ w b]`. Rewrite using `[add_sub_cancel_left]`. Conclude with `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, Finset.mem_Iio.1 hi, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : ∀ b, 0 < ‖gramSchmidt ℂ w b‖⁻¹` using `fun b => inv_pos.2 (norm_pos_iff.2 (gramSchmidt_ne_zero b hw))`. Take `⟨n, hn, m, hm, h⟩` from `stab (g * κ) (UH_mul hg hκ) (fun b => ‖gramSchmidt ℂ w b‖⁻¹) hpos (by`. Introduce `b i hi`. Establish `h1` using `hlow b i hi _ (hgs b)`. Rewrite `h1` using `[map_sub, hgw, PiLp.sub_apply, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : (g * κ) i (eI k r b) = (Matrix.toEuclideanLin g (gramSchmidtNormed ℂ w b)) i`. Rewrite using `[← mulVec_bvec (g * κ), ← mulVec_mulVec, Matrix.toEuclideanLin_apply, ← hκc]`. Rewrite using `[h2, gramSchmidtNormed, map_smul, PiLp.smul_apply, ← h1]`. Use `show _ • bvec (eI k r b) i = _`. Rewrite using `[bvec_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp)`. Establish `hκu' : κ * κᴴ = 1` using `mul_eq_one_comm.1 hκu`. Use `⟨n, hn, _, hpos, m, hm, κᴴ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.inv_eq_left_inv hκu]`. Conclude with `UH_inv Hpk_sq hκ`.
-
-Use `show κᴴ ∈ Matrix.unitaryGroup _ ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose, conjTranspose_conjTranspose]`. Conclude with `hκu`. Rewrite using `[← h, Matrix.mul_assoc, hκu', Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem iwasawa : ∀ (k r : ℕ), ∀ g ∈ GG k r, ∃ n ∈ Nset k r, ∃ a : Fin r → ℝ, (∀ b, 0 < a b) ∧ ∃ m ∈ UH (Hb k), ∃ κ ∈ (GG k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat k r))), g = n * uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m * κ := by
   intro k r g hg

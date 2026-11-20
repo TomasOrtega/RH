@@ -12,7 +12,7 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 variable {k : ℕ}
 
 /- English proof (translation)
-Establish `e : (Dx2.MN.phi (k` using `k) (ρ := ρ)) = fun x => Dx2.MN.phi x := rfl`. Rewrite using `[e]`. Simplify using `only [Dx2.MN.phi]`. Use `fun_prop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_cont (ρ : ℕ) : Continuous (Dx2.MN.phi (k := k) (ρ := ρ)) := by
   have e : (Dx2.MN.phi (k := k) (ρ := ρ)) = fun x => Dx2.MN.phi x := rfl
@@ -21,11 +21,11 @@ theorem phi_cont (ρ : ℕ) : Continuous (Dx2.MN.phi (k := k) (ρ := ρ)) := by
   fun_prop
 
 /- English proof (translation)
-Introduce `x y h`. Take `⟨x1, x2, x3⟩` from `x`. Take `⟨y1, y2, y3⟩` from `y`. Simplify using `only [Dx2.MN.phi, Prod.mk.injEq] at h`. Take `⟨h1, h3⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Prod.mk.injEq]`. Use `⟨?_, Subsingleton.elim _ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i a`. Establish `: a = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `congrFun h1 i`. Use function extensionality and compare the values at `a`. Establish `: a = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem phi_inj (ρ : ℕ) : Function.Injective (Dx2.MN.phi (k := k) (ρ := ρ)) := by
   intro x y h
@@ -47,12 +47,12 @@ theorem phi_inj (ρ : ℕ) : Function.Injective (Dx2.MN.phi (k := k) (ρ := ρ))
 def heisT (ρ : ℕ) (x : B2.HPar k ρ) : Mt k (1 + ρ) := Matrix.of.symm (B2.heis0 k ρ x)
 
 /- English proof (translation)
-The claim follows from `B2x5.continuous_heis0 k ρ`.
+A detailed English derivation is pending.
 -/
 theorem heis_cont (ρ : ℕ) : Continuous (heisT (k := k) ρ) := B2x5.continuous_heis0 k ρ
 
 /- English proof (translation)
-The claim follows from `(heis_cont ρ).measurableEmbedding (Formalism.FourierDecayAlt.P.heisenberg_subgroup_closed k ρ).1`.
+A detailed English derivation is pending.
 -/
 theorem heis_emb (ρ : ℕ) : MeasurableEmbedding (heisT (k := k) ρ) :=
   (heis_cont ρ).measurableEmbedding (Formalism.FourierDecayAlt.P.heisenberg_subgroup_closed k ρ).1
@@ -74,17 +74,17 @@ def phiE (ρ : ℕ) : U.RC k 1 ρ ≃ᵐ B2.HPar k ρ where
       (continuous_const.prodMk (continuous_pi fun _ => continuous_snd))
 
 /- English proof (translation)
-Conclude with `(phiE ρ).measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem phi_emb (ρ : ℕ) : MeasurableEmbedding (Dx2.MN.phi (k := k) (ρ := ρ)) := by
   exact (phiE ρ).measurableEmbedding
 
 /- English proof (translation)
-Establish `e0 : B2.μHeis k ρ = (volume : Measure (B2.HPar k ρ)).map (heisT ρ)` using `rfl`. Establish `e1 : (B2.μHeis k ρ).prod (B2.μHeis k ρ) = ((volume : Measure (B2.HPar k ρ)).prod volume).map (Prod.map (heisT (k` using `k) ρ) (heisT ρ)) := by`. Rewrite using `[e0, Measure.map_prod_map _ _ (heis_emb ρ).measurable (heis_emb ρ).measurable]`. Rewrite using `[e1, ((heis_emb ρ).prodMap (heis_emb ρ)).integral_map]`. Establish `hmp : MeasurePreserving (Prod.map (Dx2.MN.phi (k` using `k) (ρ := ρ)) (Dx2.MN.phi (k := k) (ρ := ρ))) ((U.muRC k 1 ρ).prod (U.muRC k 1 ρ)) ((volume : Measure (B2.HPar k ρ)).prod volume) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Dx2.MN.phi_mp (k := k) (ρ := ρ)).prod (Dx2.MN.phi_mp (k := k) (ρ := ρ))` as an intermediate fact. Simplify `this` using `[U.muRC]`. Rewrite using `[← hmp.integral_comp ((phi_emb ρ).prodMap (phi_emb ρ))]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards with xx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Dx2.MN.rn_heis, Dx2.MN.rn_heis]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heis_int (ρ : ℕ) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (Φ : B.Mat k (1 + ρ) → B.Mat k (1 + ρ) → E) :
@@ -123,9 +123,9 @@ def conjE {r : ℕ} (b : B.Mat k r) (hb : IsUnit b.det) : Mt k r ≃ᵐ Mt k r w
   measurable_invFun := B2x5.measurable_conjM b⁻¹
 
 /- English proof (translation)
-Use `sf_heis (k := k) ρ` as an intermediate fact. Establish `hu : IsUnit ((ιLev k 1 ρ g)⁻¹).det` using `Matrix.isUnit_nonsing_inv_det_iff.2 (LongWeylElement.lev_unit _ (HermitianFormFactor.UH_unit (Ux3.hpk_det k ρ) hg))`. Establish `hu' : IsUnit ((ιLev k 1 ρ g')⁻¹).det` using `Matrix.isUnit_nonsing_inv_det_iff.2 (LongWeylElement.lev_unit _ (HermitianFormFactor.UH_unit (Ux3.hpk_det k ρ) hg'))`. Establish `m1 : MeasurePreserving (conjE _ hu) (B2.μHeis k ρ) (B2.μHeis k ρ)` using `⟨(conjE _ hu).measurable, heis_meas_conj_inv ρ hg⟩`. Establish `m2 : MeasurePreserving (conjE _ hu') (B2.μHeis k ρ) (B2.μHeis k ρ)` using `⟨(conjE _ hu').measurable, heis_meas_conj_inv ρ hg'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(m1.prod m2).integral_comp ((conjE _ hu).measurableEmbedding.prodMap (conjE _ hu').measurableEmbedding) Φ` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heis_conj_int (ρ : ℕ) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {g g' : B.Mat k ρ}
     (hg : g ∈ B.GV k ρ) (hg' : g' ∈ B.GV k ρ) (Φ : Mt k (1 + ρ) × Mt k (1 + ρ) → E) :

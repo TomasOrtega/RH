@@ -9,15 +9,13 @@ noncomputable section
 namespace GlobalTheory.InertUnitFrame
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G hB hG v w hw h σL hc`. Establish `hX` using `hG.hV'`. Establish `hd : (G.V'.Jᵀ).det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ : IsHermND σ G.V'.Jᵀ` using `⟨fun i j => by simp only [Matrix.transpose_apply]; exact hX.herm j i, hd⟩`. Establish `hs : IsSelfDualAt σ G.V'.Jᵀ G.V'.L v` using `GlobalTheory.HermSelfDualLoc.isSelfDualAt_transpose F E σ B a' G.V' _ _ hB hX v`. Take `⟨f, hf, ef⟩` from `InertChart.exists_frame_antiJ hB.cm hJ hX.lat.fg hX.lat.span_eq_top hw hc hs`. Take `⟨ϖ, hU⟩` from `InertChart.exists_isUnramInv hB.cm hw hc`. Take `⟨k, hk, ek⟩` from `InertChart.exists_congr_antiJ hU (B := 1) (one_mem _) (by exact Formalism.UG.cT_one _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f * k⁻¹, (InertChart.isFrameAt_mul hf (inv_mem hk)).1, ?_⟩` and prove the remaining obligations. Establish `key : Formalism.UG.cT σL (f * k⁻¹).1 * (G.V'.Jᵀ).map (algebraMap E (w.adicCompletion E)) * (f * k⁻¹).1 = 1`. Rewrite `*` using `[Units.val_mul, Formalism.UG.cT_mul, Units.val_one, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.UG.cT σL (k⁻¹).1 * Formalism.UG.cT σL k.1 * (k.1 * (k⁻¹).1) := by`. Rewrite using `[ef, ← ek]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[← Formalism.UG.cT_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Formalism.UG.cT_one, Matrix.one_mul]`.
-
-Use `congrArg Matrix.transpose key` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT, Matrix.transpose_mul, Matrix.transpose_map, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_frame_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a'), B.IsGood σ → G.IsGood B → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)),

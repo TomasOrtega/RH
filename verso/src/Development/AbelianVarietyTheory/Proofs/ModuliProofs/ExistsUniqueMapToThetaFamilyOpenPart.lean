@@ -25,7 +25,7 @@ set_option backward.isDefEq.respectTransparency false
 variable {o : Type} [CommRing o] {g n N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨c, hc⟩` from `h m hm.isPrime 0`. Conclude with `hc (hle (Ideal.subset_span ⟨_, rfl⟩))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_coset {R : Type} [CommRing R] {v : Ix g (N' ^ 2) → R}
     (h : ∀ q : Ideal R, q.IsPrime → Coset n N' v q) : Ideal.span (Set.range v) = ⊤ := by
@@ -35,7 +35,7 @@ theorem span_eq_top_of_coset {R : Type} [CommRing R] {v : Ix g (N' ^ 2) → R}
   exact hc (hle (Ideal.subset_span ⟨_, rfl⟩))
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_spMap (x ≫ Y.s)`. Conclude with `(Y.pts R β v (Y.loc R β x v hβ h)).unique ⟨hβ, h⟩ ⟨e.symm.trans hβ, h'⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pt_eq_of_secCoord {I : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)} (Y : MMPre n N' I) {R : Type} [CommRing R]
     {x x' : Sp R ⟶ Y.MM} {v : Ix g (N' ^ 2) → R} (e : x ≫ Y.s = x' ≫ Y.s) (h : SecCoord Y.de Y.th x v)
@@ -44,21 +44,19 @@ theorem pt_eq_of_secCoord {I : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)} (Y : MMPr
   exact (Y.pts R β v (Y.loc R β x v hβ h)).unique ⟨hβ, h⟩ ⟨e.symm.trans hβ, h'⟩
 
 /- English proof (translation)
-Establish `hloc` using `fun p : S => GlobalTheory.ThetaLocal.exists_hasTh hL hL2 o g N' J b S s t ho p`. Use `choose R hR x v hx hp hth using hloc`. Establish `hβ' : ∀ p, ∃ β : o →+* R p, x p ≫ s = spMap β` using `fun p => exists_spMap (x p ≫ s)`. Use `choose β hβ using hβ'`. Establish `hin : ∀ p, InMM n N' (thIdeal em C) (β p) (v p)` using `fun p => GlobalTheory.T.thetaConstants_satisfy_closure_equations_of_dense_class hL hL2 o g n N' J b em C S s t (R p) (β p) (x p) (v p) hn hd ho hS hD (hx p) (hβ p) (hth p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpt : ∀ p, ∃ y : Sp (R p) ⟶ Y.MM, y ≫ Y.s = spMap (β p) ∧ SecCoord Y.de Y.th y (v p)` using `fun p => (Y.pts (R p) (β p) (v p) (hin p)).exists`. Use `choose f hf using hpt`. Take `⟨F, hF⟩` from `exists_glue (fun p => Sp (R p)) x hx (fun p => ⟨p, hp p⟩) f (by`. Introduce `i j T _ z z' hz`. Take `⟨φ, rfl⟩` from `exists_spMap z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ', rfl⟩` from `exists_spMap z'`. Establish `h1` using `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t (R i) T φ (x i) (v i) (hth i)`. Establish `h2` using `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t (R j) T φ' (x j) (v j) (hth j)`. Rewrite `h1` using `[hz]`. Establish `hsp : Ideal.span (Set.range fun a => φ (v i a)) = ⊤` using `span_eq_top_of_coset (n := n) fun q hq => GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b S s t n T _ _ q hn hd h1 hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b S s t T _ _ _ h1 h2 hsp`. Establish `c1 : SecCoord Y.de Y.th (spMap φ ≫ f i) fun a => φ' (v j a)`. Establish `e : (fun a => φ' (v j a)) = fun a => (u : T) * φ (v i a)` using `funext fun a => hu a`. Rewrite using `[e]`. Conclude with `GlobalTheory.ZM.Coord.scale (GlobalTheory.ZM.Coord.baseChange (hf i).2 φ) u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c2` using `GlobalTheory.ZM.Coord.baseChange (hf j).2 φ'`. Use `pt_eq_of_secCoord Y ?_ c1 c2` and prove the remaining obligations. Establish `e` using `congrArg (· ≫ s) hz`. Simplify using `only [Category.assoc, hβ] at e`. Simplify using `only [Category.assoc, (hf i).1, (hf j).1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e)`. Use `⟨F, ?_, ?_⟩` and prove the remaining obligations. Use `hom_ext_affine _ _ fun p => ⟨Sp (R p), x p, hx p, hp p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hF p, (hf p).1, hβ p]`. Introduce `K _ y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨p, hyp⟩ : ∃ p, p ∈ Set.range y` from `⟨_, IsLocalRing.closedPoint K, rfl⟩`. Use `hx p` as an intermediate fact. Take `⟨z, hz⟩` from `exists_lift_field (x p) y hyp (hp p)`. Take `⟨φ, rfl⟩` from `exists_spMap z`. Substitute `hz` using the available equality.
-
-Use `⟨fun a => φ (v p a), ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t (R p) K φ (x p) (v p) (hth p)`. Rewrite using `[Category.assoc, hF]`. Conclude with `GlobalTheory.ZM.Coord.baseChange (hf p).2 φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_thetaMap (hL : Out.Laws) (hL2 : Out.Laws2) (hn : 2 ≤ n) (hd : n ∣ N') (ho : Odd N') {em : o →+* ℂ}
     {C : TObj g (N' ^ 2) J b (spMap em) → Prop} (Y : MMPre n N' (thIdeal em C)) {S : Scheme.{0}} {s : S ⟶ Sp o}
@@ -110,7 +108,7 @@ theorem exists_thetaMap (hL : Out.Laws) (hL2 : Out.Laws2) (hn : 2 ≤ n) (hd : n
       exact GlobalTheory.ZM.Coord.baseChange (hf p).2 φ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨u, fun _ hP => hP⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_tObj_transport_of_eq {o₁ : Type} [CommRing o₁] {g₁ k₁ : ℕ} {J₁ : Type} {b₁ : TBase o₁ k₁}
     {S₁ : Scheme.{0}} {s₁ s₂ : S₁ ⟶ Sp o₁} (h : s₁ = s₂) (u : TObj g₁ k₁ J₁ b₁ s₁) :
@@ -119,23 +117,23 @@ private theorem exists_tObj_transport_of_eq {o₁ : Type} [CommRing o₁] {g₁ 
   exact ⟨u, fun _ hP => hP⟩
 
 /- English proof (translation)
-Introduce `hL hL2 g J _ Mat κ n w w' hnp hno`. Use `⟨2, fun j hj o _ b em C d _ _ F S s' t hS hD hFib => ?_⟩` and prove the remaining obligations. Establish `hn : 2 ≤ n` using `hnp.two_le`. Establish `hd : n ∣ n ^ j` using `dvd_pow_self n (by omega)`. Establish `hd2 : n ^ 2 ∣ n ^ j` using `pow_dvd_pow n hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : Odd (n ^ j)` using `hno.pow`. Take `⟨f0, hf0s, hf0⟩` from `exists_thetaMap hL hL2 hn hd ho F.Y t hS hD`. Establish `key : ∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ S) (u : TObj g ((n ^ j) ^ 2) J b (y ≫ s')), TMap u t y → ∃ x' : Sp K ⟶ F.U.toScheme, x' ≫ F.U.ι = y ≫ f0 ∧ TMap u F.univ x'`. Introduce `K _ _ y u hu`. Take `⟨v, hvt, hvs⟩` from `hf0 K y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsh` using `hFib K y u hu`. Establish `hth : u.HasTh (𝟙 _) v` using `(GlobalTheory.hasTh_iff_of_tmap o g (n ^ j) J b S s' t (Sp K) (y ≫ s') u y K (𝟙 _) v hu).2 (by simpa using hvt)`. Take `⟨u', hu'⟩` from `exists_tObj_transport_of_eq (show y ≫ s' = (y ≫ f0) ≫ F.Y.s by rw [Category.assoc, hf0s]) u`. Take `⟨h1, h2, h3⟩` from `hu' (fun _ w => w.Shape Mat κ ∧ w.HasTh (𝟙 _) v ∧ ∀ x' : Sp K ⟶ F.U.toScheme, TMap w F.univ x' → TMap u F.univ x') ⟨hsh, hth, fun _ h => h⟩`. Take `⟨x', hx'1, hx'2⟩` from `F.obj K (y ≫ f0) u' v h1 h2 hvs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x', hx'1, h3 x' hx'2⟩`. Establish `hrange : Set.range f0 ⊆ Set.range F.U.ι`. Introduce and unpack `q ⟨p, rfl⟩`. Take `⟨K, _, _, y, p0, hp0⟩` from `exists_geomPt S p`. Take `⟨u, hu⟩` from `GlobalTheory.tObj_pull o g _ J b S (Sp K) s' (y ≫ s') y t rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', -⟩` from `key K y u hu`. Use `⟨x' p0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp0, ← Scheme.Hom.comp_apply, hx', Scheme.Hom.comp_apply]`. Use `set f := IsOpenImmersion.lift F.U.ι f0 hrange with hfdef`. Establish `hfι : f ≫ F.U.ι = f0` using `IsOpenImmersion.lift_fac _ _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : f ≫ F.U.ι ≫ F.Y.s = s'` using `by rw [← Category.assoc, hfι, hf0s]`. Establish `hmap : ∀ f' : S ⟶ F.U.toScheme, f' ≫ F.U.ι ≫ F.Y.s = s' → TMap t F.univ f' → ∀ (R : Type) [CommRing R] (x : Sp R ⟶ S) (v : Ix g ((n ^ j) ^ 2) → R), t.HasTh x v → SecCoord F.Y.de F.Y.th ((x ≫ f') ≫ F.U.ι) v` using `fun f' _ hT R _ x v hth => (F.th R (x ≫ f') v).1 ((GlobalTheory.hasTh_iff_of_tmap o g _ J b F.U.toScheme _ F.univ S s' t f' R x v hT).1 hth)`. Establish `hT : TMap t F.univ f`. Take `⟨t2, ht2⟩` from `GlobalTheory.tObj_pull o g _ J b F.U.toScheme S (F.U.ι ≫ F.Y.s) s' f F.univ hfs`. Use `hS` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : TMap t t2 (𝟙 S)`. Use `tMap_id_of_geomPt hL hL2 hn hd2 ho fun K _ _ y u hu => ?_` and prove the remaining obligations. Take `⟨x', hx', hxu⟩` from `key K y u hu`. Establish `e : x' = y ≫ f` using `by rw [← cancel_mono F.U.ι, hx', Category.assoc, hfι]`. Rewrite `hxu` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `TMap.cancel ht2 hxu`. Simplify using `using TMap.comp hid ht2`. Use `⟨f, ⟨hfs, hT⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `f' ⟨hf's, hf'T⟩`. Use `hom_ext_affine _ _ fun p => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, _, x, v, hx, hp, hth⟩` from `GlobalTheory.ThetaLocal.exists_hasTh hL hL2 o g (n ^ j) J b S s' t ho p`. Use `⟨Sp R, x, hx, hp, (cancel_mono F.U.ι).1 ?_⟩` and prove the remaining obligations. Use `pt_eq_of_secCoord F.Y ?_ (hmap f' hf's hf'T R x v hth) (hmap f hfs hT R x v hth)` and prove the remaining obligations. Simplify using `only [Category.assoc, hf's, hfs]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_map_of_wFam : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ) (w w' : J), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ) (C : TObj g ((n ^ j) ^ 2) J b (spMap em) → Prop) (d : ℕ), ArBase em → GoodClass em C Mat κ w w' d → ∀ (F : WFam n em C Mat κ) (S : Scheme.{0}) (s' : S ⟶ Sp o) (t : TObj g ((n ^ j) ^ 2) J b s'), IsReduced S → Dense (fromSet em C t) → t.FibShape Mat κ → ∃! f : S ⟶ F.U.toScheme, f ≫ F.U.ι ≫ F.Y.s = s' ∧ TMap t F.univ f := by
   intro hL hL2 g J _ Mat κ n w w' hnp hno

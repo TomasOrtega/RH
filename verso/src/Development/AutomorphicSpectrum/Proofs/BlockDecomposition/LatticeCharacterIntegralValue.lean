@@ -11,17 +11,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.LFUDom
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ A hA`. Take `⟨hc, h1, h0⟩` from `hψ`. Establish `ht` using `isTrivialOn_addCharConductor hc h1`. Rewrite `ht` using `[h0]`. Establish `hopen : IsOpen {x : Fin 2 → F | ∀ i, ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : {x : Fin 2 → F | ∀ i, ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]} = ⋂ i, (fun x : Fin 2 → F => ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i) ⁻¹' (valBall F 0 : Set F)`. Use extensionality with `x`. Simplify using `[mem_valBall_zero_iff]`. Rewrite using `[hs]`. Use `isOpen_iInter_of_finite fun i => (isOpen_valBall _).preimage ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Use `fun_prop`. Establish `hf : Set.indicator {x : Fin 2 → F | ∀ i, ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]} (fun x : Fin 2 → F => ((ψ (-x 1) : Circle) : ℂ)) = Set.indicator {x : Fin 2 → F | ∀ i, ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]} (fun _ => (1 : ℂ))`. Use `Set.indicator_congr fun x hx => ?_` and prove the remaining obligations. Establish `hx1 : x 1 = (((A⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) *ᵥ ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x)) 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hint : x 1 ∈ 𝒪[F]`. Establish `key : ∀ y : Fin 2 → F, (∀ i, y i ∈ 𝒪[F]) → (((A⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) *ᵥ y) 1 ∈ 𝒪[F]` using `fun y hy => by`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `add_mem (mul_mem (hA 0) (hy 0)) (mul_mem (hA 1) (hy 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx1]`. Conclude with `key _ hx`. Establish `hb : -x 1 ∈ valBall F 0` using `mem_valBall_zero_iff.2 (neg_mem hint)`. Rewrite using `[ht _ hb]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hf, integral_indicator_const _ hopen.measurableSet]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latchar1 : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ A : GL (Fin 2) F,
   (∀ b, ((A⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 b ∈ 𝒪[F]) →

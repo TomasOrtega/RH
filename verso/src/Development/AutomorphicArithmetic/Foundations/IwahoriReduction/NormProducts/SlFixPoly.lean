@@ -21,17 +21,15 @@ namespace UpperTheory.Kd.K4.EisensteinBasis
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `hj : X.sl (ofSL γ) X.jK = X.jK`. Establish `h1` using `(jPoly X ⊤ Polynomial.X).2`. Simplify using `[jPoly, lev, Subfield.mem_iInf, RingHom.mem_eqLocusField] at h1`. Establish `h3` using `h1 γ`. Use `erw [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hc : ∀ c : Ω, X.sl (ofSL γ) ((levConst X Γ' c : lev X Γ') : X.K) = (levConst X Γ' c : lev X Γ')`. Introduce `c`. Establish `h2 : ((levConst X Γ' c : lev X Γ') : X.K) = algebraMap Ω X.K c` using `rfl`. Rewrite using `[h2, AlgEquiv.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : ∀ p : Polynomial Ω, X.sl (ofSL γ) ((jPoly X Γ' p : lev X Γ') : X.K) = (jPoly X Γ' p : lev X Γ')`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, Subfield.coe_add, hp, hq]`. Consider the case `monomial n c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial]`. Simplify using `only [jPoly, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow]`. Use `push_cast`. Rewrite using `[map_mul, map_pow, hc]`. Use `erw [hj]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `a using RatFunc.induction_on with`. Consider the case `f p q hq`. Simplify using `only [jRat, RatFunc.liftRingHom_apply_div]`. Use `push_cast`. Rewrite using `[map_div₀]`.
-
-Use `erw [hp p, hp q]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sl_fix (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (γ : SL(2, ℤ)) (a : RatFunc Ω) :
     X.sl (ofSL γ) ((jRat X Γ' a : lev X Γ') : X.K) = (jRat X Γ' a : lev X Γ') := by
@@ -63,9 +61,9 @@ private theorem sl_fix (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (γ : SL(2,
     erw [hp p, hp q]
 
 /- English proof (translation)
-Establish `hmem : ∀ (Γ : Subgroup SL(2, ℤ)) (g : X.K), g ∈ lev X Γ ↔ ∀ δ ∈ Γ, X.sl (ofSL δ) g = g`. Introduce `Γ g`. Simplify using `[lev, Subfield.mem_iInf, RingHom.mem_eqLocusField]`. Rewrite `hf`, the goal using `[hmem]`. Introduce `δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hconj : γ * δ * γ⁻¹ ∈ CongruenceSubgroup.Gamma M` using `(CongruenceSubgroup.Gamma_normal M).conj_mem δ hδ γ`. Establish `heq : γ * δ = (γ * δ * γ⁻¹) * γ` using `by group`. Rewrite using `[← X.sl_mul, ← map_mul, heq, map_mul, X.sl_mul, hf _ hconj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sl_stable (X : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) {f : X.K} (hf : f ∈ lev X (CongruenceSubgroup.Gamma M)) :
     X.sl (ofSL γ) f ∈ lev X (CongruenceSubgroup.Gamma M) := by
@@ -80,7 +78,7 @@ private theorem sl_stable (X : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) {f : X.K
   rw [← X.sl_mul, ← map_mul, heq, map_mul, X.sl_mul, hf _ hconj]
 
 /- English proof (translation)
-Rewrite using `[← X.sl_mul, ← map_mul, mul_inv_cancel, map_one, X.sl_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sl_inv (X : Tower Ω ε) (γ : SL(2, ℤ)) (f : X.K) : X.sl (ofSL γ⁻¹) (X.sl (ofSL γ) f) = f := by
   rw [← X.sl_mul, ← map_mul, mul_inv_cancel, map_one, X.sl_one]
@@ -103,9 +101,9 @@ private noncomputable def resA (X : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) :
 end UpperTheory.Kd.K4.EisensteinBasis
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, Subfield.coe_add, hp, hq]`. Consider the case `monomial n c`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial]`. Simplify using `only [jPoly, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 private theorem jPoly_coe_eq_aeval_jK {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (Γ' : Subgroup SL(2, ℤ)) (p : Polynomial Ω) :
@@ -120,7 +118,7 @@ private theorem jPoly_coe_eq_aeval_jK {Ω : Type} [Field Ω] [Algebra ℚ Ω] {�
     rfl
 
 /- English proof (translation)
-Simplify using `only [jRat, RatFunc.liftRingHom_apply_div]`. Rewrite using `[Subfield.coe_div, jPoly_coe_eq_aeval_jK, jPoly_coe_eq_aeval_jK]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem jRat_coe_div_eq_aeval_div_aeval {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (Γ' : Subgroup SL(2, ℤ)) (p q : Polynomial Ω) :
@@ -130,9 +128,7 @@ private theorem jRat_coe_div_eq_aeval_div_aeval {Ω : Type} [Field Ω] [Algebra 
   rw [Subfield.coe_div, jPoly_coe_eq_aeval_jK, jPoly_coe_eq_aeval_jK]
 
 /- English proof (translation)
-Rewrite `h` using `[Filter.Germ.coe_eq]`. Establish `h1` using `(mem_codiscreteWithin.1 h) τ hτ`. Establish `h2 : Hs ∈ nhdsWithin τ {τ}ᶜ` using `mem_nhdsWithin_of_mem_nhds (H3.isOpen_Hs_place.mem_nhds hτ)`. Use `filter_upwards [h2, Filter.disjoint_principal_right.1 h1] with y hy1 hy2`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hy2 ⟨hy1, hne⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eventually_eq_of_mero_coe_eq {τ : ℂ} (hτ : τ ∈ Hs) {f g : ℂ → ℂ} (h : (f : Mero) = g) :
     ∀ᶠ y in nhdsWithin τ {τ}ᶜ, f y = g y := by
@@ -144,9 +140,9 @@ private theorem eventually_eq_of_mero_coe_eq {τ : ℂ} (hτ : τ ∈ Hs) {f g :
   exact hy2 ⟨hy1, hne⟩
 
 /- English proof (translation)
-Introduce `htop`. Apply `hb` to reduce the goal to its premises. Establish `hE` using `(hd.analyticOnNhd H3.isOpen_Hs_place).eqOn_zero_of_preconnected_of_eventuallyEq_zero H3.isConnected_Hs_place.isPreconnected hτ (analyticOrderAt_eq_top.1 htop)`. Rewrite using `[← Filter.Germ.coe_zero, Filter.Germ.coe_eq]`. Establish `hmem : Hs ∈ Filter.codiscreteWithin Hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_codiscreteWithin]`. Introduce `x _`. Simplify using the standard rewrite rules. Use `filter_upwards [hmem] with y hy`. Conclude with `hE hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem analyticOrderAt_finite_of_mero_ne_zero {τ : ℂ} (hτ : τ ∈ Hs) {b : ℂ → ℂ} (hd : DifferentiableOn ℂ b Hs)
     (hb : (b : Mero) ≠ 0) : analyticOrderAt b τ ≠ ⊤ := by
@@ -163,9 +159,9 @@ private theorem analyticOrderAt_finite_of_mero_ne_zero {τ : ℂ} (hτ : τ ∈ 
   exact hE hy
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[← Filter.Germ.coe_zero]`. Establish `h1` using `eventually_eq_of_mero_coe_eq hτ h`. Establish `ha : AnalyticAt ℂ b τ` using `(hd.analyticOnNhd H3.isOpen_Hs_place) τ hτ`. Break down `ha.eventually_eq_zero_or_eventually_ne_zero with h2 | h2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hb (analyticOrderAt_eq_top.2 h2)`. Take `⟨y, hy1, hy2⟩` from `(h1.and h2).exists`. Conclude with `hy2 hy1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mero_coe_ne_zero_of_analyticOrderAt_finite {τ : ℂ} (hτ : τ ∈ Hs) {b : ℂ → ℂ} (hd : DifferentiableOn ℂ b Hs)
     (hb : analyticOrderAt b τ ≠ ⊤) : (b : Mero) ≠ 0 := by
@@ -179,7 +175,7 @@ private theorem mero_coe_ne_zero_of_analyticOrderAt_finite {τ : ℂ} (hτ : τ 
     exact hy2 hy1
 
 /- English proof (translation)
-Establish `hu : IsUnit (⟨z, h1⟩ : W)` using `⟨⟨⟨z, h1⟩, ⟨z⁻¹, h2⟩, Subtype.ext (mul_inv_cancel₀ hz), Subtype.ext (inv_mul_cancel₀ hz)⟩, rfl⟩`. Conclude with `(W.valuation_eq_one_iff ⟨z, h1⟩).1 hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem valuation_eq_one_of_mem_of_inv_mem {K : Type} [Field K] (W : ValuationSubring K) {z : K} (hz : z ≠ 0)
     (h1 : z ∈ W) (h2 : z⁻¹ ∈ W) : W.valuation z = 1 := by
@@ -188,9 +184,7 @@ private theorem valuation_eq_one_of_mem_of_inv_mem {K : Type} [Field K] (W : Val
   exact (W.valuation_eq_one_iff ⟨z, h1⟩).1 hu
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `monomial n c`. Rewrite using `[Polynomial.aeval_monomial]`.
-
-Conclude with `mul_mem (hV.1 c) (pow_mem hV.2 n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_jK_mem_of_overY {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (V : ValuationSubring X.K) (hV : X.OverY V) (P : Polynomial Ω) : Polynomial.aeval X.jK P ∈ V := by
@@ -201,15 +195,15 @@ private theorem aeval_jK_mem_of_overY {Ω : Type} [Field Ω] [Algebra ℚ Ω] {�
     exact mul_mem (hV.1 c) (pow_mem hV.2 n)
 
 /- English proof (translation)
-Use `set t := X.jK - algebraMap Ω X.K c with ht`. Establish `htV : t ∈ V` using `sub_mem hV.2 (hV.1 c)`. Establish `hvt : V.valuation t < 1`. Break down `lt_or_eq_of_le ((V.valuation_le_one_iff t).2 htV) with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hc` to reduce the goal to its premises. Rewrite using `[← V.valuation_le_one_iff, map_inv₀, h, inv_one]`. Establish `hdiv : (Polynomial.X - Polynomial.C c) * ((R - Polynomial.C (R.eval c)) /ₘ (Polynomial.X - Polynomial.C c)) = R - Polynomial.C (R.eval c)`. Rewrite using `[Polynomial.mul_divByMonic_eq_iff_isRoot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hR' : Polynomial.aeval X.jK R = algebraMap Ω X.K (R.eval c) + t * Polynomial.aeval X.jK ((R - Polynomial.C (R.eval c)) /ₘ (Polynomial.X - Polynomial.C c))`. Establish `h` using `congrArg (Polynomial.aeval X.jK) hdiv`. Simplify using `only [map_mul, map_sub, Polynomial.aeval_X, Polynomial.aeval_C] at h`. Take the linear combination `(-1 : X.K) * h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcst : V.valuation (algebraMap Ω X.K (R.eval c)) = 1`. Apply `valuation_eq_one_of_mem_of_inv_mem V ((map_ne_zero (algebraMap Ω X.K)).2 hR) (hV.1 _)` to reduce the goal to its premises. Rewrite using `[← map_inv₀]`. Conclude with `hV.1 _`. Establish `hsmall : V.valuation (t * Polynomial.aeval X.jK ((R - Polynomial.C (R.eval c)) /ₘ (Polynomial.X - Polynomial.C c))) < 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hval : V.valuation (Polynomial.aeval X.jK R) = 1`. Rewrite using `[hR', Valuation.map_add_eq_of_lt_left _ (by rw [hcst]; exact hsmall), hcst]`. Rewrite using `[← V.valuation_le_one_iff, map_inv₀, hval, inv_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_aeval_mem_of_inv_sub_not_mem_of_eval_ne_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (V : ValuationSubring X.K) (hV : X.OverY V) (c : Ω)
@@ -247,27 +241,25 @@ private theorem inv_aeval_mem_of_inv_sub_not_mem_of_eval_ne_zero {Ω : Type} [Fi
   rw [← V.valuation_le_one_iff, map_inv₀, hval, inv_one]
 
 /- English proof (translation)
-Establish `htne : X.jK - algebraMap Ω X.K c ≠ 0`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Rewrite using `[h0, inv_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hP0 : Polynomial.aeval X.jK P = 0`. Rewrite using `[hP0, zero_div]`. Conclude with `zero_mem _`. Distinguish the cases in `hQ0 : Polynomial.aeval X.jK Q = 0`. Rewrite using `[hQ0, div_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `zero_mem _`. Establish `hP : P ≠ 0`. Introduce and unpack `rfl`. Conclude with `hP0 (map_zero _)`. Establish `hQ : Q ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hQ0 (map_zero _)`. Take `⟨P', hPe, hP'⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd P hP c`. Take `⟨Q', hQe, hQ'⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd Q hQ c`. Rewrite `hP'`, `hQ'` using `[Polynomial.dvd_iff_isRoot]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPa : Polynomial.aeval X.jK P = (X.jK - algebraMap Ω X.K c) ^ Polynomial.rootMultiplicity c P * Polynomial.aeval X.jK P'` using `by conv_lhs => rw [hPe]`. Simplify using `only [map_mul, map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Establish `hQa : Polynomial.aeval X.jK Q = (X.jK - algebraMap Ω X.K c) ^ Polynomial.rootMultiplicity c Q * Polynomial.aeval X.jK Q'` using `by conv_lhs => rw [hQe]`. Simplify using `only [map_mul, map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Establish `hP'ne : Polynomial.aeval X.jK P' ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[hPa, h, mul_zero]`. Establish `hQ'ne : Polynomial.aeval X.jK Q' ≠ 0`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Apply `hQ0` to reduce the goal to its premises. Rewrite using `[hQa, h, mul_zero]`. Rewrite `hPQ`, the goal using `[hPa, hQa]`. Generalize the expression as in `Polynomial.rootMultiplicity c P = p at hPQ ⊢`. Generalize the expression as in `Polynomial.rootMultiplicity c Q = q at hPQ ⊢`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `hT : X.jK - algebraMap Ω X.K c = t at hPQ htne h1 h2 ⊢`. Establish `htV1 : t ∈ V1` using `hT ▸ sub_mem hV1.2 (hV1.1 c)`. Establish `htV2 : t ∈ V2` using `hT ▸ sub_mem hV2.2 (hV2.1 c)`. Break down `le_or_gt q p with hqp | hpq` into its components or cases. Take `⟨d, rfl⟩ : ∃ d, p = q + d` from `⟨p - q, by omega⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Establish `heq : t ^ (q + d) * Polynomial.aeval X.jK P' / (t ^ q * Polynomial.aeval X.jK Q') = t ^ d * Polynomial.aeval X.jK P' * (Polynomial.aeval X.jK Q')⁻¹`. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Conclude with `mul_mem (mul_mem (pow_mem htV2 _) (aeval_jK_mem_of_overY X V2 hV2 P')) (inv_aeval_mem_of_inv_sub_not_mem_of_eval_ne_zero X V2 hV2 c (by rw [hT]; exact h2) Q' hQ')`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Take `⟨d, rfl⟩ : ∃ d, q = p + d + 1` from `⟨q - p - 1, by omega⟩`. Establish `heq : t⁻¹ = (t ^ p * Polynomial.aeval X.jK P' / (t ^ (p + d + 1) * Polynomial.aeval X.jK Q')) * Polynomial.aeval X.jK Q' * (Polynomial.aeval X.jK P')⁻¹ * t ^ d`. Rewrite using `[pow_add, pow_add]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Conclude with `mul_mem (mul_mem (mul_mem hPQ (aeval_jK_mem_of_overY X V1 hV1 Q')) (inv_aeval_mem_of_inv_sub_not_mem_of_eval_ne_zero X V1 hV1 c (by rw [hT]; exact h1) P' hP')) (pow_mem htV1 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_div_mem_of_mem_of_same_pole {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (V1 V2 : ValuationSubring X.K) (hV1 : X.OverY V1) (hV2 : X.OverY V2) (c : Ω)
@@ -337,15 +329,13 @@ private theorem aeval_div_mem_of_mem_of_same_pole {Ω : Type} [Field Ω] [Algebr
       (inv_aeval_mem_of_inv_sub_not_mem_of_eval_ne_zero X V1 hV1 c (by rw [hT]; exact h1) P' hP')) (pow_mem htV1 _)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ Q : Polynomial Ω, Q.natDegree = n → (Polynomial.aeval X.jK Q)⁻¹ ∈ V`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Q hQn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hQ0 : Q = 0`. Rewrite using `[hQ0, map_zero, inv_zero]`. Conclude with `zero_mem _`. Distinguish the cases in `hdeg : Q.degree = 0`. Rewrite using `[Polynomial.eq_C_of_degree_eq_zero hdeg, Polynomial.aeval_C, ← map_inv₀]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hV.1 _`. Take `⟨r, hr⟩` from `IsAlgClosed.exists_root Q hdeg`. Establish `hdiv` using `(Polynomial.mul_divByMonic_eq_iff_isRoot).2 hr`. Establish `hpos : 0 < Q.natDegree` using `Polynomial.natDegree_pos_iff_degree_pos.2 (lt_of_le_of_ne (Polynomial.zero_le_degree_iff.2 hQ0) (Ne.symm hdeg))`. Establish `hlt : (Q /ₘ (Polynomial.X - Polynomial.C r)).natDegree < n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Polynomial.natDegree_divByMonic _ (Polynomial.monic_X_sub_C r), Polynomial.natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hdiv, map_mul, mul_inv, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Conclude with `mul_mem (h r) (ih _ hlt _ rfl)`. Rewrite using `[div_eq_mul_inv]`.
-
-Conclude with `mul_mem (aeval_jK_mem_of_overY X V hV P) (key _ Q rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_div_mem_of_forall_inv_sub_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (V : ValuationSubring X.K) (hV : X.OverY V) (h : ∀ c : Ω, (X.jK - algebraMap Ω X.K c)⁻¹ ∈ V)
@@ -375,11 +365,11 @@ private theorem aeval_div_mem_of_forall_inv_sub_mem {Ω : Type} [Field Ω] [Alge
   exact mul_mem (aeval_jK_mem_of_overY X V hV P) (key _ Q rfl)
 
 /- English proof (translation)
-Establish `key : ∀ (w : X.K) (a b : ℂ → ℂ), DifferentiableOn ℂ a Hs → DifferentiableOn ℂ b Hs → X.an w * (b : Mero) = (a : Mero) → analyticOrderAt a τ = analyticOrderAt b τ → analyticOrderAt b τ ≠ ⊤ → w ∈ W`. Introduce `w a b ha hb hab hord hfin`. Rewrite using `[hW]`. Use `H3.exists_analyticAt_of_order_nonneg X hτ w a b ha hb (mero_coe_ne_zero_of_analyticOrderAt_finite hτ hb hfin) hab ?_` and prove the remaining obligations. Establish `ha' : AnalyticAt ℂ a τ` using `(ha.analyticOnNhd H3.isOpen_Hs_place) τ hτ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb' : AnalyticAt ℂ b τ` using `(hb.analyticOnNhd H3.isOpen_Hs_place) τ hτ`. Rewrite using `[div_eq_mul_inv, meromorphicOrderAt_mul ha'.meromorphicAt hb'.meromorphicAt.inv, meromorphicOrderAt_inv, ha'.meromorphicOrderAt_eq, hb'.meromorphicOrderAt_eq, hord]`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 hfin`. Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨key z a b ha hb hab hord hfin, key z⁻¹ b a hb ha ?_ hord.symm (by rw [hord]; exact hfin)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mem_and_inv_mem_of_analyticOrderAt_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {τ : ℂ}
     (hτ : τ ∈ Hs) (W : ValuationSubring X.K)
@@ -405,13 +395,13 @@ private theorem mem_and_inv_mem_of_analyticOrderAt_eq {Ω : Type} [Field Ω] [Al
     _ = (b : Mero) := by rw [← mul_assoc, ← map_mul, inv_mul_cancel₀ hz, map_one, one_mul]
 
 /- English proof (translation)
-Establish `ha1' : AnalyticAt ℂ a1 τ` using `(ha1.analyticOnNhd H3.isOpen_Hs_place) τ hτ`. Establish `hb1' : AnalyticAt ℂ b1 τ` using `(hb1.analyticOnNhd H3.isOpen_Hs_place) τ hτ`. Establish `hg' : AnalyticAt ℂ g τ` using `(hg.analyticOnNhd H3.isOpen_Hs_place) τ hτ`. Establish `hz : xs ^ E / (t ^ m1 / t ^ m2) * t ^ m1 = xs ^ E * t ^ m2`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hne : xs ^ E / (t ^ m1 / t ^ m2) ≠ 0` using `div_ne_zero (pow_ne_zero _ hxs) (div_ne_zero (pow_ne_zero _ ht) (pow_ne_zero _ ht))`. Establish `hmain : X.an (xs ^ E / (t ^ m1 / t ^ m2)) * X.an t ^ m1 = X.an xs ^ E * X.an t ^ m2`. Rewrite using `[← map_pow, ← map_mul, hz, map_mul, map_pow, map_pow]`. Apply `mem_and_inv_mem_of_analyticOrderAt_eq X hτ W hW _ hne (a1 ^ E * g ^ m2) (b1 ^ E * g ^ m1) ((ha1.pow E).mul (hg.pow m2)) ((hb1.pow E).mul (hg.pow m1))` to reduce the goal to its premises. Simplify using `only [Filter.Germ.coe_mul, Filter.Germ.coe_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← htg, ← hab]`. Take the linear combination `(b1 : Mero) ^ E * hmain`. Rewrite using `[analyticOrderAt_mul (ha1'.pow E) (hg'.pow m2), analyticOrderAt_mul (hb1'.pow E) (hg'.pow m1), analyticOrderAt_pow ha1', analyticOrderAt_pow hb1', analyticOrderAt_pow hg', analyticOrderAt_pow hg', hA, hB, he]`. Simplify using `only [nsmul_eq_mul]`. Conclude with `hm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[analyticOrderAt_mul (hb1'.pow E) (hg'.pow m1), analyticOrderAt_pow hb1', analyticOrderAt_pow hg', hB, he]`. Simplify using `only [nsmul_eq_mul]`. Conclude with `ENat.coe_ne_top (E * nB + m1 * ne)` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_and_inv_mem_of_pow_div_pow_of_orders {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {τ : ℂ}
     (hτ : τ ∈ Hs) (W : ValuationSubring X.K)
@@ -448,63 +438,55 @@ private theorem mem_and_inv_mem_of_pow_div_pow_of_orders {Ω : Type} [Field Ω] 
 
 open UpperTheory.Kd.K4.EisensteinBasis in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨φ, E0, hφ, hφd, hsurj, hord⟩` from `jan ε X`. Establish `hJ : H3.JHol X` using `⟨φ, hφ, hφd⟩`. Use `⟨E0.factorial, Nat.factorial_pos _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW x hx`. Take `⟨M, hM, hMx⟩` from `X.level x`. Establish `hmemlev : ∀ (Γ : Subgroup SL(2, ℤ)) (g : X.K), g ∈ lev X Γ ↔ ∀ δ ∈ Γ, X.sl (ofSL δ) g = g`. Introduce `Γ g`. Simplify using `[lev, Subfield.mem_iInf, RingHom.mem_eqLocusField]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hxL : x ∈ lev X (CongruenceSubgroup.Gamma M)` using `(hmemlev _ _).2 hMx`. Use `letI := algRat X (CongruenceSubgroup.Gamma M)`. Use `haveI : FiniteDimensional (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) := GlobalTheory.T.finiteDimensional_lev_of_gamma_le Ω ε X _ M hM le_rfl`. Use `haveI : IsGalois (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) := by`. Apply `IsGalois.of_fixedField_eq_bot` to reduce the goal to its premises.
+Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Rewrite `hu` using `[IntermediateField.mem_fixedField_iff]`. Establish `hfix : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) (u : X.K) = u` using `fun γ => congrArg Subtype.val (hu (resA X M γ) (Subgroup.mem_top _))`. Take `⟨r, s, hrs⟩` from `(IntermediateField.mem_adjoin_simple_iff Ω _).1 (GlobalTheory.T.modularTower_mem_adjoin_j_of_slTwoInt_invariant ε X ⟨φ, hφd, hφ⟩ (u : X.K) hfix)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[IntermediateField.mem_bot]`. Use `⟨algebraMap (Polynomial Ω) (RatFunc Ω) r / algebraMap (Polynomial Ω) (RatFunc Ω) s, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hrs]`. Conclude with `jRat_coe_div_eq_aeval_div_aeval X _ r s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hjRat : ∀ (V : ValuationSubring X.K) (P Q : Polynomial Ω), algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) (algebraMap (Polynomial Ω) (RatFunc Ω) P / algebraMap (Polynomial Ω) (RatFunc Ω) Q) ∈ V.comap (lev X (CongruenceSubgroup.Gamma M)).subtype ↔ Polynomial.aeval X.j …`. Introduce `V P Q`. Rewrite using `[ValuationSubring.mem_comap]`. Conclude with `Iff.of_eq (congrArg (· ∈ V) (jRat_coe_div_eq_aeval_div_aeval X _ P Q))`. Distinguish the cases in `hcase : ∃ c : Ω, (X.jK - algebraMap Ω X.K c)⁻¹ ∉ W`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hcase`. Take `⟨τ, hτ, hτc⟩` from `hsurj (ε c)`. Take `⟨Wτ, hWτ, hmem⟩` from `H3.exists_place_at_point Ω ε X hJ τ hτ`. Establish `htne : X.jK - algebraMap Ω X.K c ≠ 0`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hc` to reduce the goal to its premises. Rewrite using `[h0, inv_zero]`. Conclude with `zero_mem _`. Take `⟨g, hg⟩ : ∃ g : ℂ → ℂ, g = φ - fun _ => ε c` from `⟨_, rfl⟩`. Establish `hgd : DifferentiableOn ℂ g Hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `hφd.sub (differentiableOn_const _)`. Establish `hg' : AnalyticAt ℂ g τ` using `(hgd.analyticOnNhd H3.isOpen_Hs_place) τ hτ`. Establish `htg : X.an (X.jK - algebraMap Ω X.K c) = (g : Mero)`. Rewrite using `[map_sub, hφ, X.an_c, hg, Filter.Germ.coe_sub]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hgτ : g τ = 0`. Rewrite using `[hg]`. Simplify using `[hτc]`. Establish `hcτ : (X.jK - algebraMap Ω X.K c)⁻¹ ∉ Wτ`. Rewrite using `[hmem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨ψ, hψ, hψa⟩`. Establish `h1 : ((g * ψ : ℂ → ℂ) : Mero) = ((1 : ℂ → ℂ) : Mero)`. Rewrite using `[Filter.Germ.coe_mul, ← htg, ← hψ, ← map_mul, mul_inv_cancel₀ htne, map_one, Filter.Germ.coe_one]`. Establish `h2` using `eventually_eq_of_mero_coe_eq hτ h1`. Establish `h3 : Filter.Tendsto (fun y => g y * ψ y) (nhds τ) (nhds (g τ * ψ τ))` using `(hg'.continuousAt.mul hψa.continuousAt).tendsto`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h3` using `[hgτ, zero_mul]`. Establish `h4 : Filter.Tendsto (fun y => g y * ψ y) (nhdsWithin τ {τ}ᶜ) (nhds 1)` using `tendsto_const_nhds.congr' (h2.mono fun y hy => by`. Simplify using `only [Pi.mul_apply, Pi.one_apply] at hy`. Conclude with `hy.symm)`. Conclude with `one_ne_zero (tendsto_nhds_unique h4 (h3.mono_left nhdsWithin_le_nhds))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hres : ∀ a : RatFunc Ω, algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) a ∈ W.comap (lev X (CongruenceSubgroup.Gamma M)).subtype ↔ algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) a ∈ Wτ.comap (lev X (CongruenceSubgroup.Gamma M)).subtype`. Introduce `a`. Rewrite using `[← RatFunc.num_div_denom a, hjRat, hjRat]`. Conclude with `⟨aeval_div_mem_of_mem_of_same_pole X W Wτ hW hWτ c hc hcτ _ _, aeval_div_mem_of_mem_of_same_pole X Wτ W hWτ hW c hcτ hc _ _⟩`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_galois_conj_valuationSubring_same_trace (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) (W.comap (lev X (CongruenceSubgroup.Gamma M)).subtype) (Wτ.comap (lev X (CongruenceSubgroup.Gamma M)).subtype) hres`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxs : ((σ ⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) : X.K) ≠ 0`. Introduce `h0`. Establish `h1 : σ ⟨x, hxL⟩ = 0` using `Subtype.ext h0`. Conclude with `hx (congrArg Subtype.val ((map_eq_zero_iff σ σ.injective).1 h1))`. Take `⟨a1, b1, ha1, hb1, hb1ne, hab⟩` from `X.an_mero ((σ ⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) : X.K)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha1ne : (a1 : Mero) ≠ 0`. Introduce `h0`. Apply `hb1ne` to reduce the goal to its premises. Establish `h1 : X.an ((σ ⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) : X.K)⁻¹ * (X.an ((σ ⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) : X.K) * (b1 : Mero)) = b1`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hxs, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← h1, hab, h0, mul_zero]`. Take `⟨nA, hA⟩` from `ENat.ne_top_iff_exists.1 (analyticOrderAt_finite_of_mero_ne_zero hτ ha1 ha1ne)`. Take `⟨nB, hB⟩` from `ENat.ne_top_iff_exists.1 (analyticOrderAt_finite_of_mero_ne_zero hτ hb1 hb1ne)`. Establish `hgle : analyticOrderAt g τ ≤ E0`. Establish `h` using `hord τ hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h' : (fun s => φ s - φ τ) = g`. Rewrite using `[hg]`. Use function extensionality and compare the values at `s`. Simplify using `[hτc]`. Rewrite `h` using `[h']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ne, he⟩` from `ENat.ne_top_iff_exists.1 (ne_top_of_le_ne_top (ENat.coe_ne_top E0) hgle)`. Establish `hne0 : ne ≠ 0`. Introduce `h0`. Apply `(hg'.analyticOrderAt_eq_zero).1 (by rw [← he, h0, Nat.cast_zero])` to reduce the goal to its premises. Conclude with `hgτ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnele : ne ≤ E0`. Rewrite `hgle` using `[← he]`. Conclude with `hgle` after adjusting the coercions. Establish `hdvd : ne ∣ E0.factorial` using `Nat.dvd_factorial (Nat.pos_of_ne_zero hne0) hnele`. Choose the witnesses or unpack the hypotheses as in `⟨m1, m2, hm⟩ : ∃ m1 m2 : ℕ, E0.factorial * nA + m2 * ne = E0.factorial * nB + m1 * ne := by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `le_total nB nA with h | h` into its components or cases. Use `⟨E0.factorial * (nA - nB) / ne, 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.div_mul_cancel (dvd_mul_of_dvd_left hdvd _), Nat.mul_sub, zero_mul, add_zero]`. Use `Nat.mul_le_mul_left E0.factorial h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, E0.factorial * (nB - nA) / ne, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.div_mul_cancel (dvd_mul_of_dvd_left hdvd _), Nat.mul_sub, zero_mul, add_zero]`. Use `Nat.mul_le_mul_left E0.factorial h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `htlev : X.jK - algebraMap Ω X.K c ∈ lev X ⊤`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmemlev]`. Introduce `δ _`. Rewrite using `[map_sub, X.j_inv, AlgEquiv.commutes]`. Use `⟨(X.jK - algebraMap Ω X.K c) ^ m1 / (X.jK - algebraMap Ω X.K c) ^ m2, div_mem (pow_mem htlev _) (pow_mem htlev _), div_ne_zero (pow_ne_zero _ htne) (pow_ne_zero _ htne), ?_⟩` and prove the remaining obligations. Establish `hrYv : ((algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) (algebraMap (Polynomial Ω) (RatFunc Ω) ((Polynomial.X - Polynomial.C c) ^ m1) / algebraMap (Polynomial Ω) (RatFunc Ω) ((Polynomial.X - Polynomial.C c) ^ m2)) : lev X (CongruenceSubgroup.Gamma M)) : X.K) = (X.jK …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `jRat_coe_div_eq_aeval_div_aeval X (CongruenceSubgroup.Gamma M) ((Polynomial.X - Polynomial.C c) ^ m1) ((Polynomial.X - Polynomial.C c) ^ m2)`. Use `h.trans ?_` and prove the remaining obligations. Simplify using `only [map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Take `⟨hz1, hz2⟩` from `mem_and_inv_mem_of_pow_div_pow_of_orders X hτ Wτ hmem _ _ hxs htne a1 b1 _ ha1 hb1 hgd hab htg E0.factorial m1 m2 nA nB ne hA.symm hB.symm he.symm hm`. Take `⟨u, hu⟩ : ∃ u : lev X (CongruenceSubgroup.Gamma M), u = (⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) ^ E0.factorial / algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) (algebraMap (Polynomial Ω) (RatFunc Ω) ((Polynomial.X - Polynomial.C c) ^ m1) / algebraMap (Polynom …` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huv : (u : X.K) = x ^ E0.factorial / ((X.jK - algebraMap Ω X.K c) ^ m1 / (X.jK - algebraMap Ω X.K c) ^ m2)`. Rewrite using `[hu, Subfield.coe_div, SubmonoidClass.coe_pow, hrYv]`. Establish `hσu : ((σ u : lev X (CongruenceSubgroup.Gamma M)) : X.K) = ((σ ⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) : X.K) ^ E0.factorial / ((X.jK - algebraMap Ω X.K c) ^ m1 / (X.jK - algebraMap Ω X.K c) ^ m2)`. Rewrite using `[hu, map_div₀, map_pow, AlgEquiv.commutes, Subfield.coe_div, SubmonoidClass.coe_pow, hrYv]`. Apply `valuation_eq_one_of_mem_of_inv_mem W (div_ne_zero (pow_ne_zero _ hx) (div_ne_zero (pow_ne_zero _ htne) (pow_ne_zero _ htne)))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← huv]`. Establish `h0 : ((σ u : lev X (CongruenceSubgroup.Gamma M)) : X.K) ∈ Wτ`. Rewrite using `[hσu]`. Conclude with `hz1`. Conclude with `ValuationSubring.mem_comap.1 ((hσ u).1 (ValuationSubring.mem_comap.2 h0))`.
-
-Rewrite using `[← huv, ← Subfield.coe_inv]`. Establish `h0 : ((σ u⁻¹ : lev X (CongruenceSubgroup.Gamma M)) : X.K) ∈ Wτ`. Rewrite using `[map_inv₀, Subfield.coe_inv, hσu]`. Conclude with `hz2`. Conclude with `ValuationSubring.mem_comap.1 ((hσ u⁻¹).1 (ValuationSubring.mem_comap.2 h0))`.
-
-Use `push_neg at hcase`. Establish `hall : ∀ a : RatFunc Ω, algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) a ∈ W.comap (lev X (CongruenceSubgroup.Gamma M)).subtype ↔ algebraMap (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) a ∈ (⊤ : ValuationSubring (lev X (CongruenceSubgroup.Gamma M)))`. Introduce `a`. Rewrite using `[← RatFunc.num_div_denom a, hjRat]`. Conclude with `⟨fun _ => ValuationSubring.mem_top _, fun _ => aeval_div_mem_of_forall_inv_sub_mem X W hW hcase _ _⟩`.
-
-Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_galois_conj_valuationSubring_same_trace (RatFunc Ω) (lev X (CongruenceSubgroup.Gamma M)) (W.comap (lev X (CongruenceSubgroup.Gamma M)).subtype) ⊤ hall`. Establish `hallW : ∀ u : lev X (CongruenceSubgroup.Gamma M), (u : X.K) ∈ W` using `fun u => ValuationSubring.mem_comap.1 ((hσ u).1 (ValuationSubring.mem_top _))`. Use `⟨1, one_mem _, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[div_one]`. Apply `valuation_eq_one_of_mem_of_inv_mem W (pow_ne_zero _ hx)` to reduce the goal to its premises.
-
-Conclude with `hallW ((⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) ^ E0.factorial)`. Conclude with `hallW (((⟨x, hxL⟩ : lev X (CongruenceSubgroup.Gamma M)) ^ E0.factorial)⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.eb :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∃ E : ℕ, 0 < E ∧ ∀ W : ValuationSubring X.K, X.OverY W → ∀ x : X.K, x ≠ 0 → ∃ y ∈ lev X ⊤, y ≠ 0 ∧ W.valuation (x ^ E / y) = 1 := by

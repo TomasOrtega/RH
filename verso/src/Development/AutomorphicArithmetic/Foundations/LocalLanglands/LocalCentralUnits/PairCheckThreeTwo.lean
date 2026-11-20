@@ -57,26 +57,26 @@ section
 variable {g : ℕ} [Fact g.Prime] {n : ℕ} {K : Type} [Field K] [Algebra (ZMod g) K]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_eq_nat_card, Nat.card_units, natCard_K hn hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_unitsK [Fintype Kˣ] (hn : 0 < n) (hr : Module.finrank (ZMod g) K = n) :
     Fintype.card Kˣ = g ^ n - 1 := by
   rw [Fintype.card_eq_nat_card, Nat.card_units, natCard_K hn hr]
 
 /- English proof (translation)
-Use `haveI := fin_of hn hr`. Use `letI : Fintype Kˣ := Fintype.ofFinite Kˣ`. Assume the negation of the conclusion as `hne`. Establish `hdisj` using `disj_cj hn hr θ θ' hne`. Take `⟨D, hD1, hD2, -⟩` from `exists_D (K := K) (g := g) hn hr`.
+Equip the data with the indicated structure. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdif : ∀ z ∉ D, dif (cj g n θ) (cj g n θ') z = 0`. Introduce `z hz`. Unfold `dif`. Rewrite using `[sum_cj hθ, sum_cj hθ', hs z (hD1 z hz), sub_self]`. Take `⟨η₀, hgen, hpow⟩` from `exists_gen_char (G := Kˣ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcard` using `card_unitsK (K := K) (g := g) hn hr`. Rewrite `hgen`, `hpow` using `[hcard]`. Establish `key : ∀ s : ℕ, (∀ i j, i < n → j < n → (η₀ ^ s) ^ g ^ i = (η₀ ^ s) ^ g ^ j → i = j) → (∀ ψ ∈ cj g n (η₀ ^ s), ψ * η₀ ^ e ∈ cj g n (η₀ ^ s)) → Reg g n (g ^ n - 1) s ∧ Cl g n (g ^ n - 1) e s`. Introduce `s hreg hcl`. Unfold `Reg Cl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i hi j hj hij => hreg i j hi hj ?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_mul, hpow]`. Conclude with `hij`. Establish `hm : (η₀ ^ s) ^ g ^ i ∈ cj g n (η₀ ^ s)` using `mem_cj.2 ⟨i, hi, rfl⟩`. Take `⟨j, hj, hjeq⟩` from `mem_cj.1 (hcl _ hm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Rewrite `hjeq` using `[← pow_mul, ← pow_mul, ← pow_add, hpow]`. Conclude with `hjeq.symm`. Establish `hηD : ∀ z ∈ D, (η₀ ^ e) z = 1`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, hzp⟩` from `hD2 z hz`. Take `⟨c, hc⟩` from `he p hp`. Rewrite using `[MonoidHom.pow_apply, ← map_pow, hc, pow_mul, hzp, one_pow, map_one]`. Establish `hmm` using `mul_mem _ _ hdisj D hdif (η₀ ^ e) hηD`. Take `⟨t, ht, rfl⟩` from `hgen θ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨t', ht', rfl⟩` from `hgen θ'`. Establish `hP` using `hcheck t ht t' ht'`. Unfold `Pair at hP`. Take `⟨j, hj, hjt⟩` from `hP (key t hθ (fun ψ hψ => (hmm ψ).1 hψ)) (key t' hθ' (fun ψ hψ => (hmm ψ).2 hψ))`. Conclude with `hne ⟨j, hj, by rw [← pow_mul, hpow]; exact hjt⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem exc (hn : 0 < n) (hr : Module.finrank (ZMod g) K = n) (e : ℕ)
     (he : ∀ p ∈ n.primeFactors, (g ^ (n / p) - 1) ∣ e)
@@ -128,31 +128,29 @@ private theorem exc (hn : 0 < n) (hr : Module.finrank (ZMod g) K = n) (e : ℕ)
   exact hne ⟨j, hj, by rw [← pow_mul, hpow]; exact hjt⟩
 
 /- English proof (translation)
-Use `haveI := fin_of hn hr`. Use `letI : Fintype Kˣ := Fintype.ofFinite Kˣ`. Establish `hg2 : 2 ≤ g` using `(Fact.out : g.Prime).two_le`. Establish `hcard` using `card_unitsK (K := K) (g := g) hn hr`. Take `⟨D, hD1, hD2, hDb⟩` from `exists_D (K := K) (g := g) hn hr`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA` using `card_cj hθ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno push_neg at hno`. Establish `hdif : ∀ z ∉ D, dif (cj g n θ) ∅ z = 0`. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `dif`. Rewrite using `[sum_cj hθ, hno z (hD1 z hz)]`. Simplify using the standard rewrite rules. Establish `hle` using `card_le (cj g n θ) ∅ (Finset.disjoint_empty_right _) D hdif (by simp [hA, hn])`. Rewrite `hle` using `[hA, hcard]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.card_empty, add_zero] at hle`. Establish `h1` using `one_bd g n hg2 hn`. Establish `h2 : D.card * n ≤ n * bd g n`. Rewrite using `[mul_comm n]`. Conclude with `Nat.mul_le_mul_right n hDb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `θ' hθ' hs`. Distinguish the cases in `hex : g = 2 ∧ n = 2 ∨ g = 3 ∧ n = 2 ∨ g = 2 ∧ n = 4 ∨ g = 2 ∧ n = 6`. Break down `hex with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Use `exc hn hr 1 ?_ pairCheck_two_two θ θ' hθ hθ' hs` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `h1` using `Nat.le_of_mem_primeFactors hp`. Establish `h2` using `Nat.dvd_of_mem_primeFactors hp`. Establish `h3` using `(Nat.prime_of_mem_primeFactors hp).two_le`. Apply the tactic sequence `interval_cases p <;> revert h2 <;> decide`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exc hn hr 2 ?_ pairCheck_three_two θ θ' hθ hθ' hs` and prove the remaining obligations. Introduce `p hp`. Establish `h1` using `Nat.le_of_mem_primeFactors hp`. Establish `h2` using `Nat.dvd_of_mem_primeFactors hp`. Establish `h3` using `(Nat.prime_of_mem_primeFactors hp).two_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `interval_cases p <;> revert h2 <;> decide`. Use `exc hn hr 3 ?_ pairCheck_two_four θ θ' hθ hθ' hs` and prove the remaining obligations. Introduce `p hp`. Establish `h1` using `Nat.le_of_mem_primeFactors hp`. Establish `h2` using `Nat.dvd_of_mem_primeFactors hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h3` using `(Nat.prime_of_mem_primeFactors hp).two_le`. Apply the tactic sequence `interval_cases p <;> revert h2 <;> decide`. Use `exc hn hr 21 ?_ pairCheck_two_six θ θ' hθ hθ' hs` and prove the remaining obligations. Introduce `p hp`. Establish `h1` using `Nat.le_of_mem_primeFactors hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.dvd_of_mem_primeFactors hp`. Establish `h3` using `(Nat.prime_of_mem_primeFactors hp).two_le`. Apply the tactic sequence `interval_cases p <;> revert h2 <;> decide`. Assume the negation of the conclusion as `hne`. Establish `hB` using `card_cj hθ'`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisj` using `disj_cj hn hr θ θ' hne`. Establish `hdif : ∀ z ∉ D, dif (cj g n θ) (cj g n θ') z = 0`. Introduce `z hz`. Unfold `dif`. Rewrite using `[sum_cj hθ, sum_cj hθ', hs z (hD1 z hz), sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle` using `card_le _ _ hdisj D hdif (by rw [hA, hB]; omega)`. Rewrite `hle` using `[hA, hB, hcard]`. Establish `h1` using `two_bd g n hg2 hn hex`. Establish `h2 : D.card * (n + n) ≤ 2 * n * bd g n`. Combine the equalities or inequalities in the displayed calculation.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem main (hn : 0 < n) (hr : Module.finrank (ZMod g) K = n) (θ : Kˣ →* ℂˣ)
     (hθ : ∀ i j, i < n → j < n → θ ^ g ^ i = θ ^ g ^ j → i = j) :
@@ -232,7 +230,7 @@ end
 end UpperTheory.Zero.LLC.CharacterSumPairs
 
 /- English proof (translation)
-Unfold `UpperTheory.Zero.LLC.Pin`. Introduce `g _ n hn K _ _ hr θ hθ`. Conclude with `UpperTheory.Zero.LLC.CharacterSumPairs.main hn hr θ hθ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.pin :
     UpperTheory.Zero.LLC.Pin := by

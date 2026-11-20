@@ -12,7 +12,7 @@ def tB (r : ℕ) : ℕ → List (ℂ × ℕ) → List (ℂ × ℕ)
   | o, (t, s) :: bs => ((-1 : ℂ) ^ r * (-Complex.I) ^ (2 * o + s - 1) * t, s) :: tB r (o + s) bs
 
 /- English proof (translation)
-The claim follows from `| [], o, i, j => by simp [tB, ptEntry] | (t, s) :: bs, o, i, j => by simp only [tB, ptEntry] split_ifs with h1 h2 h3 · have e : 2 * o + s - 1 = 2 * o + i + j := by omega rw [e] · ring · rw [ptEntry_tB r bs (o + s) (i - s) (j - s)] have e : 2 * (o + s) + (i - s) + (j - s) = 2 * o …`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_tB (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o i j : ℕ),
     ptEntry (tB r o bs) i j = (-1 : ℂ) ^ r * (-Complex.I) ^ (2 * o + i + j) * ptEntry bs i j
@@ -29,26 +29,26 @@ theorem ptEntry_tB (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o i j : ℕ),
     · ring
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | (t, s) :: bs, o => by simp [tB, tB_snd r bs (o + s)]`.
+A detailed English derivation is pending.
 -/
 theorem tB_snd (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o : ℕ), (tB r o bs).map Prod.snd = bs.map Prod.snd
   | [], _ => rfl
   | (t, s) :: bs, o => by simp [tB, tB_snd r bs (o + s)]
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ (neg_ne_zero.2 Complex.I_ne_zero))`.
+A detailed English derivation is pending.
 -/
 theorem unit_ne (r e : ℕ) : (-1 : ℂ) ^ r * (-Complex.I) ^ e ≠ 0 :=
   mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ (neg_ne_zero.2 Complex.I_ne_zero))
 
 /- English proof (translation)
-Simplify using `[map_mul, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unit_normSq (r e : ℕ) : Complex.normSq ((-1 : ℂ) ^ r * (-Complex.I) ^ e) = 1 := by
   simp [map_mul, map_pow]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => by simp [tB] | (t, s) :: bs, o, h => by intro b hb simp only [tB, List.mem_cons] at hb rcases hb with rfl | hb · have h0 := h (t, s) (by simp) exact ⟨mul_ne_zero (unit_ne r _) h0.1, h0.2⟩ · exact tB_mem r bs (o + s) (fun b hb => h b (by simp [hb])) b hb`.
+A detailed English derivation is pending.
 -/
 theorem tB_mem (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o : ℕ), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ b ∈ tB r o bs, b.1 ≠ 0 ∧ 1 ≤ b.2
@@ -65,7 +65,7 @@ def turnPt {r : ℕ} (p : Point ℂ (r + 1)) : Point ℂ (r + 1) :=
   ⟨tB r 0 p.1, tB_mem r p.1 0 p.2.1, by rw [tB_snd]; exact p.2.2⟩
 
 /- English proof (translation)
-Apply the tactic sequence `show ptEntry (tB r 0 p.1) a.val b.val = _`. Rewrite using `[ptEntry_tB]`. Simplify using `[ptMat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptMat_turnPt {r : ℕ} (p : Point ℂ (r + 1)) (a b : Fin (r + 1)) :
     ptMat (turnPt p) a b = (-1 : ℂ) ^ r * (-Complex.I) ^ (a.val + b.val) * ptMat p a b := by
@@ -74,7 +74,7 @@ theorem ptMat_turnPt {r : ℕ} (p : Point ℂ (r + 1)) (a b : Fin (r + 1)) :
   simp [ptMat]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | (t, s) :: bs, o, q => by simp only [tB, blockIdx] split_ifs · rfl · rw [blockIdx_tB r bs (o + s)]`.
+A detailed English derivation is pending.
 -/
 theorem blockIdx_tB (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o q : ℕ), blockIdx (tB r o bs) q = blockIdx bs q
   | [], _, _ => rfl
@@ -85,14 +85,14 @@ theorem blockIdx_tB (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o q : ℕ), blockI
     · rw [blockIdx_tB r bs (o + s)]
 
 /- English proof (translation)
-Unfold `rootPat`. Simplify using `only [turnPt, blockIdx_tB]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem rootPat_turnPt {r : ℕ} (p : Point ℂ (r + 1)) : rootPat (turnPt p) = rootPat p := by
   unfold rootPat
   simp only [turnPt, blockIdx_tB]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | (t, s) :: bs, o, a => by simp only [tB, ptWeightFrom] rw [ptWeightFrom_tB k r T T' bs (o + s) (a + s)] congr 1 have h1 : Complex.normSq ((-1 : ℂ) ^ r * (-Complex.I) ^ (2 * o + s - 1) * t) = Complex.normSq t := by rw [map_mul, unit_normSq, one_mul] have h2 : ‖( …`.
+A detailed English derivation is pending.
 -/
 theorem ptWeightFrom_tB (k r : ℕ) (T T' : ℝ) : ∀ (bs : List (ℂ × ℕ)) (o a : ℕ),
     ptWeightFrom k r T T' a (tB r o bs) = ptWeightFrom k r T T' a bs
@@ -110,15 +110,15 @@ theorem ptWeightFrom_tB (k r : ℕ) (T T' : ℝ) : ∀ (bs : List (ℂ × ℕ)) 
     rw [h1, h2]
 
 /- English proof (translation)
-The claim follows from `ptWeightFrom_tB k r T T' p.1 0 0`.
+A detailed English derivation is pending.
 -/
 theorem ptWeight_turnPt (k r : ℕ) (T T' : ℝ) (p : Point ℂ (r + 1)) : ptWeight k r T T' (turnPt p) = ptWeight k r T T' p :=
   ptWeightFrom_tB k r T T' p.1 0 0
 
 /- English proof (translation)
-Unfold `leadMinor`. Use `set e := Fin.castLE hl`. Establish `hM : (ptMat (turnPt p)).submatrix e e = Matrix.diagonal (fun a => (-1 : ℂ) ^ r * (-Complex.I) ^ (e a).val) * (ptMat p).submatrix e e * Matrix.diagonal (fun b => (-Complex.I) ^ (e b).val)`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, ptMat_turnPt, pow_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, map_mul, map_mul, map_prod, map_prod]`. Establish `h1 : ∀ a : Fin l, Complex.normSq ((-1 : ℂ) ^ r * (-Complex.I) ^ (e a).val) = 1` using `fun a => unit_normSq _ _`. Establish `h2 : ∀ b : Fin l, Complex.normSq ((-Complex.I) ^ (e b).val) = 1` using `fun b => by simp [map_pow]`. Simplify using `only [h1, h2, Finset.prod_const_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leadMinor_turnPt {r : ℕ} (p : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤ r + 1) :
     Complex.normSq (leadMinor (ptMat (turnPt p)) l hl) = Complex.normSq (leadMinor (ptMat p) l hl) := by
@@ -137,16 +137,16 @@ theorem leadMinor_turnPt {r : ℕ} (p : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤
   simp only [h1, h2, Finset.prod_const_one, one_mul, mul_one]
 
 /- English proof (translation)
-Unfold `Gpt`. Rewrite using `[leadMinor_turnPt, leadMinor_turnPt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem GPoint_turnPt {r : ℕ} (T T' : ℝ) (p : Point ℂ (r + 1)) : Gpt T T' (turnPt p) = Gpt T T' p := by
   unfold Gpt
   rw [leadMinor_turnPt, leadMinor_turnPt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Unfold `tT bvec`. Rewrite using `[Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Pi.single_apply]`. Use `split_ifs with h`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tT_mulVec_bvec {k r : ℕ} (i : Fin (2 * r + k + 1)) : tT k r *ᵥ bvec i = dT k r i • bvec i := by
   funext j
@@ -158,9 +158,9 @@ theorem tT_mulVec_bvec {k r : ℕ} (i : Fin (2 * r + k + 1)) : tT k r *ᵥ bvec 
   · ring
 
 /- English proof (translation)
-Unfold `fvec`. Use `split_ifs with h`. Rewrite using `[tT_mulVec_bvec, dT_eI]`. Rewrite using `[tT_mulVec_Wb hz]`. Establish `: a.val = r` using `by have := a.isLt; omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem tT_mulVec_fvec {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (r + 1)) :
     tT k r *ᵥ fvec k r z a = Complex.I ^ a.val • fvec k r z a := by
@@ -172,7 +172,7 @@ theorem tT_mulVec_fvec {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb 
     rw [this]
 
 /- English proof (translation)
-Establish `h : (tT k r)ᴴ * Hpk k r * tT k r = Hpk k r` using `tT_mem_UH k r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem Hpk_tTi {k r : ℕ} : Hpk k r * tTi k r = (tT k r)ᴴ * Hpk k r := by
   have h : (tT k r)ᴴ * Hpk k r * tT k r = Hpk k r := tT_mem_UH k r
@@ -180,7 +180,7 @@ theorem Hpk_tTi {k r : ℕ} : Hpk k r * tTi k r = (tT k r)ᴴ * Hpk k r := by
     _ = (tT k r)ᴴ * Hpk k r := by rw [Matrix.mul_assoc _ (tT k r), tT_mul_tTi, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.mulVec_mulVec, Hpk_tTi, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_tTi {k r : ℕ} (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (tTi k r *ᵥ v) w = herm (Hpk k r) v (tT k r *ᵥ w) := by
@@ -188,7 +188,7 @@ theorem herm_tTi {k r : ℕ} (v w : Fin (2 * r + k + 1) → ℂ) :
   rw [Matrix.mulVec_mulVec, Hpk_tTi, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_left {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (v w : Fin m → ℂ) :
     herm H (c • v) w = c * herm H v w := by
@@ -196,7 +196,7 @@ theorem herm_smul_left {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (v w
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (v w : Fin m → ℂ) :
     herm H v (c • w) = star c * herm H v w := by
@@ -204,7 +204,7 @@ theorem herm_smul_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (v 
   rw [star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `Zhat`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, herm_tTi, tT_mulVec_fvec hz', tT_mulVec_fvec hz, Matrix.mulVec_smul, herm_smul_left, herm_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Zhat_conjI {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     (g : Mx k r) (a b : Fin (r + 1)) :
@@ -215,11 +215,11 @@ theorem Zhat_conjI {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k
   ring
 
 /- English proof (translation)
-Establish `hs : star (Complex.I ^ a) = (-Complex.I) ^ a`. Rewrite using `[star_pow, Complex.star_def, Complex.conj_I]`. Establish `hI : Complex.I ^ b = (-1 : ℂ) ^ b * (-Complex.I) ^ b`. Rewrite using `[← mul_pow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hr : (-1 : ℂ) ^ r = (-1 : ℂ) ^ b * (-1 : ℂ) ^ (r - b)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hs, hI, hr, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phase_id (r a b : ℕ) (hb : b ≤ r) :
     Complex.I ^ b * star (Complex.I ^ a) * (-1 : ℂ) ^ (r - b) = (-1 : ℂ) ^ r * (-Complex.I) ^ (a + b) := by
@@ -233,7 +233,7 @@ theorem phase_id (r a b : ℕ) (hb : b ≤ r) :
   ring
 
 /- English proof (translation)
-Unfold `ZhatO`. Rewrite using `[← mul_assoc, ← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem ZhatO_eq {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) (a b : Fin (r + 1)) :
     Zhat k r z z' g a b = (-1 : ℂ) ^ (r - b.val) * ZhatO k r z z' g a b := by
@@ -242,7 +242,7 @@ theorem ZhatO_eq {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) (
   norm_num
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Zhat_conjI hz hz', ZhatO_eq, h, ptMat_turnPt, ← phase_id r a.val b.val (by have := b.isLt; omega)]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Zhat_conjI_turn {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {g : Mx k r} {p : Point ℂ (r + 1)} (h : ZhatO k r z z' g = ptMat p) :

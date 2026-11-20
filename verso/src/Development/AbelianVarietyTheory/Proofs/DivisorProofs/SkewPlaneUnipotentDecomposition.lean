@@ -20,9 +20,9 @@ open Matrix
 namespace GlobalTheory.FlagDecomp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN r Xf Yf hWf X' Y' hW' hX0 hY0 hXs S' g hg`. Establish `h` using `(Subgroup.mem_iInf.1 hg.1 0).2 ((GlobalTheory.SiegelSet.adMat F X')ᵀ 0) (Submodule.subset_span ⟨0, rfl, rfl⟩)`. Establish `e : GlobalTheory.StdPar.colSpan F X' {i | ∃ k ∈ insert 0 (S'.map (Fin.succEmb r)), i ≤ k ∧ k < 0} = ⊥`. Simplify using `[GlobalTheory.StdPar.colSpan]`. Rewrite `h` using `[e, Submodule.mem_bot, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx : (GlobalTheory.SiegelSet.adMat F X')ᵀ 0 = incV F H.x` using `funext fun k => by simp [incV, hX0 k]`. Rewrite `h` using `[hx]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_aux : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
@@ -44,13 +44,13 @@ theorem fix_aux : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   exact h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr g h₁ hfix hact`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Establish `mm : ∀ {k : ℕ} {J : Matrix (Fin k) (Fin k) E} (a b : UA σ J), mat (a * b) = mat a * mat b` using `fun _ _ => rfl`. Establish `mi : ∀ {k : ℕ} {J : Matrix (Fin k) (Fin k) E} (a : UA σ J), mat a⁻¹ * mat a = 1 ∧ mat a * mat a⁻¹ = 1` using `fun a => ⟨by rw [← mm, inv_mul_cancel]; rfl, by rw [← mm, mul_inv_cancel]; rfl⟩`. Establish `hx1 : mat (M h₁) *ᵥ incV F H.x = incV F H.x` using `by simpa using (hM h₁).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι1` using `(hM h₁).2.2`. Establish `hinvx : mat (M h₁)⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← hx1]`. Rewrite using `[mulVec_mulVec, (mi _).1, one_mulVec]`. Establish `hinvι : mat (M h₁)⁻¹ * incM F H.ι = incM F H.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_assoc (mat _), Matrix.mul_assoc (incM F H.ι), (mi h₁).2, Matrix.mul_one]`. Use `_ = incM F H.ι * mat h₁⁻¹ := by`. Rewrite using `[← hι1, ← Matrix.mul_assoc, (mi _).1, Matrix.one_mul]`. Use `⟨by rw [mm, ← mulVec_mulVec, hinvx, hfix], fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hact (mat h₁⁻¹ *ᵥ z)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[mm, ← mulVec_mulVec, mulVec_mulVec (N := incM F H.ι), hinvι, ← mulVec_mulVec, ha, mulVec_mulVec (M := mat h₁), (mi h₁).2, one_mulVec, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_radical_of_skew_plane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
@@ -82,13 +82,13 @@ theorem unipotent_radical_of_skew_plane : ∀ (F E : Type) [Field F] [NumberFiel
     one_mulVec, add_comm]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hX0 hY0 hXs S' g`. Establish `hd : W₁.J.det ≠ 0` using `fun h0 => hN₁.2 (by`. Rewrite using `[Matrix.det_smul, show (W₁.J.map σ).det = (σ : E →+* E) W₁.J.det from by rw [RingHom.map_det]; rfl, h0, map_zero, mul_zero])`. Establish `hP : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, hι, hJ₁⟩`. Establish `hB : ∀ v ∈ unip σ W H, GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ v ∈ GlobalTheory.StdPar.unip σ (c₀ • W.J.map σ) X' (insert 0 (S'.map (Fin.succEmb r)))` using `fun v hv => GlobalTheory.StdPar.unip_mono_of_subset F E σ hCM n _ hN (r + 1) X' Y' hW' _ {0} (by simp) ((hP.mem_unip_iff hσ hsk hd hc₀ hW' (Nat.succ_pos r) hX0 v).1 hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg set g₀ := (GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀).symm g with hg₀def`. Establish `hg₀ : GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ g₀ ∈ GlobalTheory.StdPar.unip σ (c₀ • W.J.map σ) X' (insert 0 (S'.map (Fin.succEmb r)))` using `by rw [hg₀def, MulEquiv.apply_symm_apply]; exact hg`. Establish `hfix` using `fix_aux F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN r Xf Yf hWf X' Y' hW' hX0 hY0 hXs S' g₀ hg₀`. Take `⟨h₁, hh₁⟩` from `GlobalTheory.T.skew_plane_eisenstein_constant_term F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN g₀ hfix`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨g₀ * (M h₁)⁻¹, unipotent_radical_of_skew_plane F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr g₀ h₁ hfix hh₁, GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀ h₁, GlobalTheory.T.skew_plane_unipotent_integral F E σ hCM hσ n n₁ W W₁ H hsk hn hx …` and prove the remaining obligations. Rewrite using `[MulEquiv.symm_apply_apply, ← map_mul, inv_mul_cancel_right, hg₀def, MulEquiv.apply_symm_apply]`. Introduce and unpack `⟨v, hv, u, hu, rfl⟩ set h₁ := (GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀).symm u with hh₁def`. Establish `hu' : GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀ h₁ ∈ GlobalTheory.StdPar.unip σ (c₀ • W₁.J.map σ) Xf S'` using `by rw [hh₁def, MulEquiv.apply_symm_apply]; exact hu`. Use `mul_mem (hB v hv) (GlobalTheory.T.skew_plane_fourier_expansion F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN r Xf Yf hWf X' Y' hW' hX0 hY0 hXs S' (M h₁) h₁ ?_ ?_ hu')` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hM h₁).1` as an intermediate fact. Simplify using `using this`. Introduce `z`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul, zero_add, Matrix.mulVec_mulVec, (hM h₁).2.2, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unip_insert_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

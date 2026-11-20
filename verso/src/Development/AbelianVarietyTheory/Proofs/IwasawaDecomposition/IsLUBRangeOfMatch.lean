@@ -18,7 +18,7 @@ section FinalTheorems
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A}
 
 /- English proof (translation)
-Simplify using `only [divOf, FlagCpt.Lw, FlagCpt.LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk, neg_smul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem divOf_neg_exOf {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp) (la : GlobalTheory.AllWt.Weight S.Dw) :
     divOf (Φ.C k) (fun z => -GlobalTheory.AllWt.exOf S.Dw la 0 (some z)) = (Φ.C k).Lw la := by

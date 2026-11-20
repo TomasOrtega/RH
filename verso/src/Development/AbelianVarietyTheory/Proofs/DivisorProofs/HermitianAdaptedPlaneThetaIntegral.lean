@@ -13,23 +13,21 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.MixXTorus
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hL Φ hΦ`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hm1 : mat m * incM F H.ι = incM F H.ι`. Use `hL.2.2` as an intermediate fact. Simplify `this` using `[mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `Heisenberg₂ : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), (e ∘ₗ om (m, 1)) (M.co.rho B.ψ (incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) Φ) = M₁.co.rho B.ψ z ((e ∘ₗ om (m, 1)) Φ)`. Introduce `z Φ hΦ`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl _ _ _ hΦ]`. Establish `hm2 : ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) * incM F H.ι = incM F H.ι` using `hm1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: actAB (cA σ) (m, (1 : UA σ W.J)) (incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) = incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc]`. Rewrite using `[hm2]`. Rewrite using `[this, he.Heisenberg₂ _ _ (hs.pres _ _ hΦ)]`. Establish `hinv : ∀ u ∈ {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z}, ∀ Φ ∈ schA F (Fin n × Fin d), (e ∘ₗ om (m, 1)) (M.co.rho B.ψ u Φ) = (e ∘ₗ om (m, 1)) Φ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `u ⟨z, rfl⟩ Φ hΦ`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl _ _ _ hΦ]`. Establish `key : ∀ i, (∑ k, ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) i k * incV F H.x k) = t.1 * incV F H.x i`. Introduce `i`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun hL.1 i` as an intermediate fact. Simplify `this` using `[mat, Matrix.mulVec, dotProduct]`. Establish `hact : actAB (cA σ) (m, (1 : UA σ W.J)) (Matrix.vecMulVec (incV F H.x) z) = Matrix.vecMulVec (incV F H.x) (t.1 • z)`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (∑ k, ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) i k * (incV F H.x k * z j)) = (∑ k, ((m : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) i k * incV F H.x k) * z j by`. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun k _ => by ring, key i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hact]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he.inv _ ⟨t.1 • z, rfl⟩ _ (hs.pres _ _ hΦ)`. Establish `hadm : ∀ l ∈ (adeleClass F).adm (Fin n₁ × Fin d), l ∘ₗ (e ∘ₗ om (m, 1)) ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `l hl`. Establish `h1` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he l hl`. Conclude with `hs.adm (m, 1) _ h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.hermitian_adapted_plane_seesaw hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he (e ∘ₗ om (m, 1)) (fun Φ hΦ => he.maps _ (hs.pres _ _ hΦ)) Heisenberg₂ hinv hadm`. Distinguish the cases in `hne : ∃ Φ ∈ schA F (Fin n × Fin d), e Φ ≠ 0`. Rewrite using `[show e (om (m, 1) Φ) = c • e Φ from hc Φ hΦ, GlobalTheory.T.hermitian_adapted_plane_integral hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hL c hc hne]`. Use `push_neg at hne`. Establish `h0` using `hne Φ hΦ`.
-
-Rewrite using `[show e (om (m, 1) Φ) = c • e Φ from hc Φ hΦ, h0, smul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZero_torus : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

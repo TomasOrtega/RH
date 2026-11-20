@@ -13,7 +13,7 @@ namespace GlobalTheory.WeilSchrodinger.DiagLagr
 def fold (n : ℕ) (i : Fin (n + n)) : Fin n := Sum.elim id id (finSumFinEquiv.symm i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Apply the tactic sequence `rcases i with i | i <;>`. Apply the tactic sequence `simp only [Matrix.mul_apply, Matrix.submatrix_apply, fold, Equiv.symm_apply_apply] <;>`. Simplify using `[diagCols, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem diagCols_mul {A : Type} [CommRing A] {n m : ℕ} (u : Matrix (Fin n) (Fin m) A) :
     ((diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) A).submatrix finSumFinEquiv.symm id) * u =
@@ -27,7 +27,7 @@ theorem diagCols_mul {A : Type} [CommRing A] {n m : ℕ} (u : Matrix (Fin n) (Fi
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [hTens, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Matrix.submatrix_apply, fold, GlobalTheory.WeilSchrodinger.DblTargetF.dblG, incM, Matrix.map_apply, Matrix.transpose_apply, Matrix.reindex_apply, Equiv.symm_apply_apply, id]`. Simplify using `[dbl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hTens_fold (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (JB : Matrix (Fin m) (Fin m) (AF F ⊗[F] E)) (u v : Matrix (Fin n) (Fin m) (AF F ⊗[F] E)) :
@@ -47,9 +47,9 @@ def repL (F : Type) [Field F] [NumberField F] [Algebra F E] (n m : ℕ) :
     simp [incM, inclR, TensorProduct.tmul_smul]
 
 /- English proof (translation)
-Introduce `x y h`. Establish `: Nontrivial (AF F)` using `(NumberField.AdeleRing.algebraMap_injective (NumberField.RingOfIntegers F) F).nontrivial`. Establish `hi : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := by`. Establish `: Nontrivial (AF F ⊗[F] E)` using `(Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (A := AF F) (B := E) (algebraMap F E).injective).nontrivial`. Conclude with `RingHom.injective _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h (finSumFinEquiv (Sum.inl i))) j` as an intermediate fact. Simplify using `only [repL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.submatrix_apply, fold, Equiv.symm_apply_apply, incM, Matrix.map_apply, Sum.elim_inl, id] at this`. Conclude with `hi this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repL_injective (n m : ℕ) : Function.Injective (repL (E := E) F n m) := by
   intro x y h
@@ -67,21 +67,21 @@ theorem repL_injective (n m : ℕ) : Function.Injective (repL (E := E) F n m) :=
   exact hi this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ nS nT JT JB ξ κ _ co hrat`. Establish `hinj` using `NumberField.AdeleRing.algebraMap_injective (NumberField.RingOfIntegers F) F`. Establish `: Nontrivial (AF F)` using `hinj.nontrivial`. Set `i1 : (κ → F) →ₗ[F] (κ → AF F)` to `(Algebra.linearMap F (AF F)).compLeft κ`. Set `ι : ((κ → F) × (κ → F)) →ₗ[F] ((κ → AF F) × (κ → AF F))` to `i1.prodMap i1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hι : ∀ w, ι w = ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i)))` using `fun _ => rfl`. Establish `hιi : Function.Injective ι`. Introduce `a b h`. Rewrite `h` using `[hι, hι, Prod.mk.injEq]`. Conclude with `Prod.ext (funext fun i => hinj (congrFun h.1 i)) (funext fun i => hinj (congrFun h.2 i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `g : Matrix (Fin nT) (Fin nS) E →ₗ[F] ((κ → AF F) × (κ → AF F))` to `(co.e.toLinearMap.restrictScalars F) ∘ₗ repL F nT nS`. Establish `hg : ∀ x, g x = co.e ((incM F x).submatrix (fold nT) id)` using `fun _ => rfl`. Establish `hgi : Function.Injective g` using `co.e.injective.comp (repL_injective nT nS)`. Establish `hle : LinearMap.range g ≤ LinearMap.range ι`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, z, h⟩` from `hrat (x.submatrix (fold nT) id)`. Conclude with `⟨(y, z), h.symm⟩`. Use `⟨(LinearMap.range g).comap ι, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨x, hx⟩ b ⟨x', hx'⟩`. Establish `h` using `co.form ((incM F x).submatrix (fold nT) id) ((incM F x').submatrix (fold nT) id)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[symp, hTens_fold, mul_zero, map_zero, ← hg, ← hg, hx, hx', hι, hι, eq_comm, sub_eq_zero]`. Apply `hinj` to reduce the goal to its premises. Simplify `h` using `only [dotProduct, map_sum, map_mul]`. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h1 : Module.finrank F ((LinearMap.range g).comap ι) = nT * nS * Module.finrank F E`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Submodule.equivMapOfInjective ι hιi _).finrank_eq, Submodule.map_comap_eq_of_le hle, LinearMap.finrank_range_of_inj hgi, Module.finrank_matrix]`. Simplify using the standard rewrite rules. Establish `h2` using `co.e.finrank_eq`. Rewrite `h2` using `[Module.finrank_matrix, Module.finrank_baseChange, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Simplify using `only [Fintype.card_fin] at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use polynomial arithmetic with `[h2]`. Introduce and unpack `t w ⟨x, hx⟩`. Use `⟨t • incM F x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hι, ← hx, hg, diagCols_mul, ← map_smul]`.
+Use the polynomial consequences of the given equalities and inequalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_diag_lagrangian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (nS nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)

@@ -13,16 +13,16 @@ section SigLemmas
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wa_cT_conj_eq {m k : Type} (M : Matrix m k ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j
   simp [Formalism.UG.cT, conjTranspose_apply]
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Use `⟨by rw [Fintype.card_congr e, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin], ?_⟩` and prove the remaining obligations. Use `⟨(P : Matrix _ _ ℂ).submatrix e id, ?_⟩` and prove the remaining obligations. Rewrite `hP` using `[wa_cT_conj_eq]`. Establish `hJ : J = (J.reindex e e).submatrix e e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hJ, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv]`. Simplify using `using hP`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wa_sig_data (J : Matrix n n ℂ) (p q : ℕ) (h : Formalism.UG.HasSignature J p q) :
     Fintype.card n = p + q ∧ ∃ Q : Matrix n (Fin p ⊕ Fin q) ℂ, Qᴴ * J * Q = Formalism.UG.Jpq p q := by
@@ -36,7 +36,7 @@ theorem wa_sig_data (J : Matrix n n ℂ) (p q : ℕ) (h : Formalism.UG.HasSignat
   simpa using hP
 
 /- English proof (translation)
-Establish `: star (Q *ᵥ x) ⬝ᵥ (J *ᵥ (Q *ᵥ x)) = star x ⬝ᵥ ((Qᴴ * J * Q) *ᵥ x)`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← dotProduct_mulVec, Matrix.mul_assoc]`. Rewrite using `[this, hQ]`. Simplify using `[Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, sub_eq_add_neg, neg_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wa_sig_quad {p q : ℕ} (J : Matrix n n ℂ) (Q : Matrix n (Fin p ⊕ Fin q) ℂ)
     (hQ : Qᴴ * J * Q = Formalism.UG.Jpq p q) (x : Fin p ⊕ Fin q → ℂ) :
@@ -49,21 +49,21 @@ theorem wa_sig_quad {p q : ℕ} (J : Matrix n n ℂ) (Q : Matrix n (Fin p ⊕ Fi
   simp [Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, sub_eq_add_neg, neg_mulVec]
 
 /- English proof (translation)
-Set `M : Matrix n (Fin p ⊕ Fin m) ℂ` to `Matrix.of fun i k => Sum.elim (fun a => Q i (Sum.inl a)) (fun b => V b i) k`. Establish `hinj : Function.Injective M.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Rewrite `hx` using `[Matrix.mulVecLin_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `u : Fin p ⊕ Fin q → ℂ` to `Sum.elim (x ∘ Sum.inl) 0`. Establish `hM : M *ᵥ x = Q *ᵥ u + ∑ k, x (Sum.inr k) • V k`. Use function extensionality and compare the values at `i`. Simplify using `[M, u, mulVec, dotProduct, Fintype.sum_sum_type, Finset.sum_apply, mul_comm]`. Rewrite `hx` using `[hM]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : ∑ k, x (Sum.inr k) • V k = -(Q *ᵥ u)` using `eq_neg_of_add_eq_zero_right hx`. Establish `h1` using `wa_sig_quad J Q hQ u`. Establish `hn` using `hneg (fun k => x (Sum.inr k))`. Rewrite `hn` using `[hv]`. Simplify using `only [star_neg, mulVec_neg, neg_dotProduct, dotProduct_neg, neg_neg] at hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hn` using `[h1]`. Simplify using `only [u, Sum.elim_inl, Sum.elim_inr, Function.comp_apply, Pi.zero_apply, star_zero, mul_zero, Finset.sum_const_zero, sub_zero] at hn`. Establish `hre : ∀ z : ℂ, (star z * z).re = Complex.normSq z`. Introduce `z`. Simplify using `[Complex.normSq_apply, Complex.mul_re]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.re_sum, hre] at hn`. Establish `hA` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (x (Sum.inl i)))).1 (le_antisymm hn (Finset.sum_nonneg (fun i _ => Complex.normSq_nonneg _)))`. Establish `hxl : ∀ a, x (Sum.inl a) = 0` using `fun a => Complex.normSq_eq_zero.1 (hA a (Finset.mem_univ _))`. Establish `hu0 : u = 0`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `k with a | b` into its components or cases. Simplify using `[u, hxl a]`. Simplify using `[u]`. Rewrite `hv` using `[hu0, mulVec_zero, neg_zero]`. Establish `hxr` using `hV (fun k => x (Sum.inr k)) hv`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Break down `k with a | b` into its components or cases. Conclude with `hxl a`. Conclude with `congrFun hxr b`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[Module.finrank_fintype_fun_eq_card] at this`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem wa_neg_dim {p q m : ℕ} (J : Matrix n n ℂ) (Q : Matrix n (Fin p ⊕ Fin q) ℂ)
     (hQ : Qᴴ * J * Q = Formalism.UG.Jpq p q) (hc : Fintype.card n = p + q) (V : Fin m → n → ℂ)
@@ -120,9 +120,9 @@ def wa_cv (v : S.V) : Fin S.rank → ℂ := fun i => τ (S.frame.repr v i)
 variable {S τ}
 
 /- English proof (translation)
-Establish `hu` using `S.frame.sum_repr u`. Establish `hv` using `S.frame.sum_repr v`. Use `conv_lhs => rw [← hu, ← hv]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, map_mul, starRingEnd_apply, hτ]`. Simplify using `only [dotProduct, mulVec, wa_cv, HSpace.gram, Matrix.map_apply, Pi.star_apply, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wa_form (hτ : ∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) (u v : S.V) :
     τ (S.hT u v) = star (wa_cv S τ u) ⬝ᵥ ((S.gram.map τ) *ᵥ wa_cv S τ v) := by
@@ -137,9 +137,9 @@ theorem wa_form (hτ : ∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) (u v : S
   ring
 
 /- English proof (translation)
-Simplify using `only [star_sum, star_smul, mulVec_sum, mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, ← wa_form hτ]`. Simplify using `only [Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations. Rewrite using `[Complex.star_def]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem wa_comb (hτ : ∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) {m : ℕ} (x : Fin m → ℂ)
     (u : Fin m → S.V) :
@@ -154,23 +154,21 @@ theorem wa_comb (hτ : ∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) {m : ℕ
   ring
 
 /- English proof (translation)
-Set `f` to `Fintype.linearCombination E u`. Establish `hker : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Rewrite `hc` using `[Fintype.linearCombination_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.1 hu c hc k`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f hker`. Establish `hgu : ∀ k, g (u k) = Pi.single k 1`. Introduce `k`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : f (Pi.single k 1) = u k`. Simplify using `[f, Fintype.linearCombination_apply, Pi.single_apply]`. Rewrite using `[← h1]`. Conclude with `LinearMap.congr_fun hg _`. Use function extensionality and compare the values at `l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ v : S.V, g v l = ∑ i, S.frame.repr v i * g (S.frame i) l`. Introduce `v`. Use `conv_lhs => rw [← S.frame.sum_repr v]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `key : ∀ k, ∑ i, wa_cv S τ (u k) i * τ (g (S.frame i) l) = if l = k then 1 else 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k`. Establish `h2` using `congrArg τ (hφ (u k))`. Rewrite `h2` using `[hgu k]`. Simplify using `only [map_sum, map_mul] at h2`. Simplify using `only [wa_cv]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[← h2]`. Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∑ i, (∑ k, x k • wa_cv S τ (u k)) i * τ (g (S.frame i) l) = 0`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Establish `h3 : ∑ i, (∑ k, x k • wa_cv S τ (u k)) i * τ (g (S.frame i) l) = ∑ k, x k * ∑ i, wa_cv S τ (u k) i * τ (g (S.frame i) l)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun i _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[h3]`. Simplify using `only [key, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h0`.
-
-Simplify using `using h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wa_indep {m : ℕ} (u : Fin m → S.V) (hu : LinearIndependent E u) (x : Fin m → ℂ)
     (hx : ∑ k, x k • wa_cv S τ (u k) = 0) : x = 0 := by
@@ -225,53 +223,49 @@ open PI.BetaLUniq
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D u' F' w hw hww`. Assume the negation of the conclusion as `hwX`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `hτ : ∀ a : D.host.E, τ (star a) = starRingEnd ℂ (τ a)` using `D.sp.cm.cmUnram.2.1 τ`. Establish `hTpos : 0 < Tu D u'` using `(D.mem u').A.T_prime.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTE : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hTpos.ne'`. Establish `hsymm : ∀ x y : (hS D).V, (hS D).hT y x = star ((hS D).hT x y)`. Introduce `x y`. Rewrite using `[← (hS D).herm.eq x y, starRingEnd_apply]`. Establish `horth` using `(mem_orth (hS D)).1 hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hez : ∀ a, (hS D).hT (F'.fl.e a) F'.fl.z = 0` using `F'.fl.z_orth`. Establish `hze : ∀ a, (hS D).hT F'.fl.z (F'.fl.e a) = 0`. Introduce `a`. Rewrite using `[hsymm, hez, star_zero]`. Establish `hXz : ∀ x ∈ Xsp F', (hS D).hT x F'.fl.z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `hez a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h1 => simp [h1]`. Establish `hzX : ∀ x ∈ Xsp F', (hS D).hT F'.fl.z x = 0`. Introduce `x hx`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsymm, hXz x hx, star_zero]`. Establish `hzz : (hS D).hT F'.fl.z F'.fl.z = -((Tu D u' : ℕ) : D.host.E)` using `F'.fl.z_norm`. Establish `he_mem : ∀ a, F'.fl.e a ∈ Xplus F'` using `fun a => Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hz_mem : F'.fl.z ∈ Xplus F'` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `hew : ∀ a, (hS D).hT (F'.fl.e a) w = 0` using `fun a => horth _ (he_mem a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzw : (hS D).hT F'.fl.z w = 0` using `horth _ hz_mem`. Establish `hwe : ∀ a, (hS D).hT w (F'.fl.e a) = 0` using `by intro a; rw [hsymm, hew, star_zero]`. Establish `hwz : (hS D).hT w F'.fl.z = 0` using `by rw [hsymm, hzw, star_zero]`. Establish `hzX' : F'.fl.z ∉ Submodule.span D.host.E (Set.range F'.fl.e)`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hXz _ h` as an intermediate fact. Rewrite `this` using `[hzz]`. Conclude with `hTE (neg_eq_zero.1 this)`. Establish `hwX' : w ∉ Submodule.span D.host.E (Set.range (Fin.snoc F'.fl.e F'.fl.z : Fin (D.R.rS + 1) → (hS D).V))`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Submodule.span D.host.E (Set.range (Fin.snoc F'.fl.e F'.fl.z : Fin (D.R.rS + 1) → (hS D).V)) ≤ Xsp F' ⊔ Submodule.span D.host.E {F'.fl.z}`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [Fin.snoc_last]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Consider the case `cast a`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (hle h)`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `h0 : (hS D).hT F'.fl.z (x + c • F'.fl.z) = 0` using `by rw [hxy]; exact hzw`. Rewrite `h0` using `[map_add, hzX x hx, map_smul, hzz, zero_add, smul_eq_mul]`. Establish `hc : c = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Break down `mul_eq_zero.1 h0 with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd (neg_eq_zero.1 h') hTE`. Apply `hwX` to reduce the goal to its premises. Rewrite using `[← hxy, hc, zero_smul, add_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Set `u : Fin (D.R.rS + 1 + 1) → (hS D).V` to `Fin.snoc (Fin.snoc F'.fl.e F'.fl.z : Fin (D.R.rS + 1) → (hS D).V) w`. Establish `hu : LinearIndependent D.host.E u` using `linearIndependent_finSnoc.2 ⟨linearIndependent_finSnoc.2 ⟨F'.fl.e_indep, hzX'⟩, hwX'⟩`. Set `zi : Fin (D.R.rS + 1 + 1)` to `Fin.castSucc (Fin.last D.R.rS)`. Establish `huz : u zi = F'.fl.z` using `by simp [u, zi]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Establish `hk : ∀ k, k ≠ zi → ∀ l, (hS D).hT (u k) (u l) = 0`. Introduce `k hk l`. Proceed by induction on `k using Fin.lastCases with`. Consider the case `last`. Simplify using `only [u, Fin.snoc_last]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => simpa [Fin.snoc_last] using hww`. Consider the case `cast l'`. Proceed by induction on `l' using Fin.lastCases with`. Consider the case `last => simpa [Fin.snoc_castSucc, Fin.snoc_last] using hwz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `cast b => simpa [Fin.snoc_castSucc] using hwe b`. Consider the case `cast k'`. Proceed by induction on `k' using Fin.lastCases with`. Consider the case `last => exact absurd rfl hk`. Consider the case `cast a`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [u, Fin.snoc_castSucc]`. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => simpa [Fin.snoc_last] using hew a`. Consider the case `cast l'`. Proceed by induction on `l' using Fin.lastCases with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `last => simpa [Fin.snoc_castSucc, Fin.snoc_last] using hez a`. Consider the case `cast b => simpa [Fin.snoc_castSucc] using F'.fl.e_iso a b`. Establish `hl : ∀ l, l ≠ zi → (hS D).hT F'.fl.z (u l) = 0`. Introduce `l hl`. Proceed by induction on `l using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `last => simpa [u, Fin.snoc_last] using hzw`. Consider the case `cast l'`. Proceed by induction on `l' using Fin.lastCases with`. Consider the case `last => exact absurd rfl hl`. Consider the case `cast b => simpa [u, Fin.snoc_castSucc] using hze b`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsig : Formalism.UG.HasSignature (((hS D).gram).map τ) (D.R.k + D.R.rS) (D.R.rS + 1)`. Establish `h` using `D.sp.Y_sig 0 τ`. Rewrite `h` using `[D.sp.baseSpace_signature_eq τ]`. Conclude with `h`. Take `⟨hcard, Q, hQ⟩` from `wa_sig_data _ _ _ hsig`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim` using `wa_neg_dim (((hS D).gram).map τ) Q hQ hcard (fun k => wa_cv (hS D) τ (u k)) (fun x hx => wa_indep u hu x hx) (by`. Introduce `x`. Rewrite using `[wa_comb hτ x u]`. Rewrite using `[Fintype.sum_eq_single zi (fun k hk' => Finset.sum_eq_zero (fun l _ => by`. Rewrite using `[hk k hk' l, map_zero, mul_zero]))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_eq_single zi (fun l hl' => by rw [huz, hl l hl', map_zero, mul_zero])]`. Rewrite using `[huz, hzz, map_neg, map_natCast]`. Establish `h1 : starRingEnd ℂ (x zi) * x zi = (Complex.normSq (x zi) : ℂ)`. Rewrite using `[mul_comm]`. Conclude with `Complex.mul_conj (x zi)`.
-
-Rewrite using `[h1]`. Establish `h2 : ((Complex.normSq (x zi) : ℂ) * -((Tu D u' : ℕ) : ℂ)).re = -(Complex.normSq (x zi) * (Tu D u' : ℝ))`. Simplify using `[Complex.mul_re]`. Rewrite using `[h2]`. Use `Complex.normSq_nonneg (x zi)` as an intermediate fact.
-
-Establish `: (0 : ℝ) ≤ (Tu D u' : ℝ)` using `Nat.cast_nonneg _`. Use the proof step `nlinarith)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem weight_space_anisotropic : WAniso := by
   intro D u' F' w hw hww

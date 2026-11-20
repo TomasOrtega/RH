@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.CuspRep.ParLawsT
 
 /- English proof (translation)
-Introduce `hF hT E Ω _ _ _ _ _ _ a π`. Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Use `filter_upwards [LocSph.locComp_spherical E a π] with w hw A h`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Take `⟨v, h0, hv⟩` from `hw σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ah, hah, H⟩` from `isRecT_locRecT hT h`. Establish `e : locParT hT (Quotient.mk _ π) h = locRecT hT h (cls (ParLaws.toRep σ))`. Establish `h1 : CG.IsLoc (Quotient.mk _ π : CG E a) w (Quotient.mk _ σ)` using `hσ`. Unfold `locParT`. Rewrite using `[CG.IsLoc.unique E a _ w _ _ h1.loc h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `(GlobalTheory.RecT.isSpherical_iff_unr_of_lawsT E Ω A w h ah hah _ ((GlobalTheory.RecT.lawsT_iff ah hah _).2 H) _).1 ?_` and prove the remaining obligations. Use `fixed_ne_bot_of_equiv (equivRep (ParLaws.toRep σ)) ((Submodule.ne_bot_iff _).2 ⟨v, fun x => ?_, h0⟩)` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[SphCompletion.KO_completion]`. Take `⟨g, rfl⟩` from `hx`. Conclude with `(hv g).trans (one_smul _ _).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_unrT : ∀ (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hT : UpperTheory.Zero.LLC.RecTExists) (E Ω : Type) [Field E] [NumberField E] [IsTotallyComplex E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (a : ℕ) (π : CG E a), ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w), (locParT hT π h).unr := by
   intro hF hT E Ω _ _ _ _ _ _ a π

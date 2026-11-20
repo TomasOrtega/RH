@@ -16,9 +16,9 @@ section Alg
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `h` using `(mem_Mir_iff k (g : GL (Fin 1) k)).1 g.2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hi : i = Fin.last 0` using `Fin.ext (by have := i.isLt; simp only [Fin.val_last]; omega)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hj : j = Fin.last 0` using `Fin.ext (by have := j.isLt; simp only [Fin.val_last]; omega)`. Substitute `hi` using the available equality. Substitute `hj` using the available equality. Use `congrFun h (Fin.last 0)` as an intermediate fact. Simplify `this` using `[eLast]`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mir_zero_eq_one (g : Mir k 0) : g = 1 := by
   have h := (mem_Mir_iff k (g : GL (Fin 1) k)).1 g.2
@@ -35,7 +35,7 @@ theorem mir_zero_eq_one (g : Mir k 0) : g = 1 := by
 end Alg
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Rewrite using `[hN n]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twKer_eq_bot_of_forall_eq_one {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) (hN : ∀ n : N, n = 1) :
@@ -47,7 +47,7 @@ theorem twKer_eq_bot_of_forall_eq_one {G V : Type} [Group G] [AddCommGroup V] [M
   simp
 
 /- English proof (translation)
-The claim follows from `nontrivial_of_ne (Submodule.Quotient.mk v) 0 (by rwa [Ne, Submodule.Quotient.mk_eq_zero])`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_quot_of_not_mem {V : Type} [AddCommGroup V] [Module ℂ V] (p : Submodule ℂ V) (v : V)
     (hv : v ∉ p) : Nontrivial (V ⧸ p) :=
@@ -58,9 +58,9 @@ section Top
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `Continuous.units_map` to reduce the goal to its premises. Use `show Continuous (glEmbMat k n)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => induction j using Fin.lastCases <;> simp [glEmbMat] <;> first | exact continuous_const | exact (continuous_apply _).comp (continuous_apply _) | fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i => induction j using Fin.lastCases <;> simp [glEmbMat] <;> first | exact continuous_const | exact (continuous_apply _).comp (continuous_apply _) | fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glEmb (n : ℕ) : Continuous (glEmb k n) := by
   apply Continuous.units_map
@@ -73,7 +73,7 @@ theorem continuous_glEmb (n : ℕ) : Continuous (glEmb k n) := by
       first | exact continuous_const | exact (continuous_apply _).comp (continuous_apply _) | fun_prop
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 ((continuous_glEmb (m + 1)).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levi_comp_subtype (m : ℕ) : Continuous ((levi k (m + 1)).comp (Mir k m).subtype) :=
   continuous_induced_rng.2 ((continuous_glEmb (m + 1)).comp continuous_subtype_val)
@@ -81,17 +81,15 @@ theorem continuous_levi_comp_subtype (m : ℕ) : Continuous ((levi k (m + 1)).co
 end Top
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `V _ _ τ _ hV`. Use `⟨0, le_rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Apply `nontrivial_quot_of_not_mem _ v` to reduce the goal to its premises. Rewrite using `[twKer_eq_bot_of_forall_eq_one τ _ _ (fun n => Subtype.ext (mir_zero_eq_one _))]`. Conclude with `hv`. Consider the case `succ m ih`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V _ _ τ hτ hV`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Distinguish the cases in `h1 : v ∈ twKer τ (MirUin k (m + 1)) 1`. Establish `hex : ∃ g : GL (Fin (m + 1)) k, τ (levi k (m + 1) g) v ∉ twKer τ (MirUin k (m + 1)) (mirChar k ψ m)`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hcon`. Conclude with `hv (GlobalTheory.T.smooth_mirabolic_kernel_eq_zero k ψ hψc hψ m V τ hτ v h1 hcon)`. Take `⟨g, hg⟩` from `hex`. Use `haveI := nontrivial_quot_of_not_mem _ _ hg`. Establish `hs : IsSmooth (phiMinus k ψ τ)` using `GlobalTheory.T.twisted_action_smooth τ hτ _ _ _ (continuous_levi_comp_subtype m) (levi_stab ψ m)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn, hnt⟩` from `ih _ (phiMinus k ψ τ) hs inferInstance`. Take `⟨e⟩` from `GlobalTheory.T.twisted_jacquet_phi_minus_equiv k ψ m n hn V τ`. Conclude with `⟨n, hn.trans (Nat.le_succ m), e.injective.nontrivial⟩`. Use `⟨m + 1, le_rfl, ?_⟩` and prove the remaining obligations. Apply `nontrivial_quot_of_not_mem _ v` to reduce the goal to its premises.
-
-Rewrite using `[← GlobalTheory.T.mirabolic_twisted_kernel_derivative_zero k ψ (m + 1) V τ]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_derivative_nontrivial (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ : ψ ≠ 1) :

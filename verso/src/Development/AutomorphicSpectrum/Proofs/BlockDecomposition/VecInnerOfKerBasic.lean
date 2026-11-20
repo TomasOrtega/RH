@@ -8,13 +8,13 @@ open MeasureTheory PositivityTheory.Rg.BcB.E1
 namespace GlobalTheory.CompanionTheory.E1
 
 /- English proof (translation)
-Introduce `hK X ι _ Φ y j k u hΦ`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hk l] with z hz`. Rewrite using `[hz, RCLike.inner_apply, mul_comm]`. Introduce `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hk l] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(hK X (Φ j l) (hΦ j l)).2.2.2.2.1 z y`. Rewrite using `[hz, h, RCLike.inner_apply, Complex.conj_conj, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem vecInner_of_kerBasic : KerBasic → VecInner := by
   intro hK X ι _ Φ y j k u hΦ

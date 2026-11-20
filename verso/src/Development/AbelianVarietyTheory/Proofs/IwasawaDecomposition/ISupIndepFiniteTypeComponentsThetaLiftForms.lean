@@ -20,23 +20,21 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.IsotIndep
 
 /- English proof (translation)
-Set `k : G → GA D V` to `fun g => if hx : ∃ κ, IsLevelLift V β L (eG g) κ then hx.choose else 1`. Set `a : G → ℂ` to `fun g => if hx : ∃ κ, IsLevelLift V β L (eG g) κ then c0 g * (levChi V β (flagL L) hx.choose)⁻¹ else 0`. Establish `hk : ∀ g, c0 g • actL V β L (eG g) = a g • principalLevelFrame.rtA (k g)`. Introduce `g`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `F`. Use function extensionality and compare the values at `h`. Distinguish the cases in `hx : ∃ κ, IsLevelLift V β L (eG g) κ`. Establish `e1 : a g = c0 g * (levChi V β (flagL L) hx.choose)⁻¹` using `dif_pos hx`. Establish `e2 : k g = hx.choose` using `dif_pos hx`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Use `show c0 g * actG0 V β L (eG g) F h = c0 g * (levChi V β (flagL L) hx.choose)⁻¹ * F (h * hx.choose)`. Unfold `actG0`. Rewrite using `[dif_pos hx, mul_assoc]`. Establish `e1 : a g = 0` using `dif_neg hx`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, zero_smul]`. Use `show c0 g * actG0 V β L (eG g) F h = 0`. Unfold `actG0`. Rewrite using `[dif_neg hx]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Finset.univ.image k, fun x => ∑ g ∈ Finset.univ.filter (fun g => k g = x), a g, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨g, -, rfl⟩` from `Finset.mem_image.1 hx`. Distinguish the cases in `h : ∃ κ, IsLevelLift V β L (eG g) κ`. Establish `e2 : k g = h.choose` using `dif_pos h`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `h.choose_spec.1`. Establish `e2 : k g = 1` using `dif_neg h`. Rewrite using `[e2]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `e0 : gaL V β L eG c0 = ∑ g, a g • principalLevelFrame.rtA (k g)`. Unfold `gaL`. Conclude with `Finset.sum_congr rfl fun g _ => hk g`. Rewrite using `[e0]`. Use `symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hg).2]`.
-
-Use `_ = ∑ g, a g • principalLevelFrame.rtA (k g) := Finset.sum_fiberwise_of_maps_to (fun g _ => Finset.mem_image_of_mem k (Finset.mem_univ g)) _`.
+A detailed English derivation is pending.
 -/
 theorem gaL_finSum {D : D7} {G : Type} [Group G] [Fintype G] (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) (eG : G ≃* G0 L.Pg L.r) (c0 : G → ℂ) :
@@ -91,17 +89,17 @@ theorem gaL_finSum {D : D7} {G : Type} [Group G] [Fintype G] (V : HSp D) (β : G
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost i`. Establish `hI : Inputs D` using `GlobalTheory.T.linksAnalyticHypotheses_of_weilRep_harishChandra hW hDS hHC hCR D`. Establish `hB` using `hP.char.base`. Establish `hT` using `Y.tied.lift`. Establish `h0` using `hB.models.νW i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.HilbertLevels.scaled (inv_pos.2 (GlobalTheory.HilbertLevels.nP_pos F.lv2 false)) h0.1.1 h0.2`. Establish `hO` using `(GlobalTheory.T.rowFiniteTypes_isotypicParts_span_orthogonal D (Wc D i) _ R.θ (R.MW i (sg0 D A3.A)) (Y.PW i) Y.hF (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A))) (R.eWf i (sg0 D A3.A)) _ (R.fdW i) hI (D.sp.W_sig _) hB.models.inf (Y.stdPsi.2 i) hs.1 hs.2 (gaL_finSum _ _ _ _ …`. Apply `OrthogonalFamily.independent` to reduce the goal to its premises. Rewrite using `[orthogonalFamily_iff_pairwise]`. Introduce `σ σ' hne`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.onFun, Submodule.isOrtho_iff_inner_eq]`. Introduce `u hu v hv`. Establish `hu'` using `(hT.isot i σ u).1 hu`. Establish `hv'` using `(hT.isot i σ' v).1 hv`. Rewrite `hu'`, `hv'` using `[Y.prtWE]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hau⟩` from `hu'`. Take `⟨b, hb, hbv⟩` from `hv'`. Establish `hni : ¬ (principalLevelFrame.rowRepR R.θ (Y.eFT σ)).Iso (principalLevelFrame.rowRepR R.θ (Y.eFT σ'))` using `fun h => hne (Y.eFT.injective (principalLevelFrame.rowRepR_inj R.θ _ _ h))`. Establish `key` using `hO _ _ hni a ha b hb`. Rewrite using `[hT.mj i u v]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `LiftReal.ipWc ipMT`. Rewrite using `[← hau, ← hbv]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `LinearEquiv.symm_apply_apply _ a`. Conclude with `LinearEquiv.symm_apply_apply _ b`.
+A detailed English derivation is pending.
 -/
 theorem isot_iSupIndep : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ i : Fin D.R.m, iSupIndep (fun σ : D.what₂.FT => D.what₂.isot ((i : ℕ) + 1) σ) := by
   intro hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost i

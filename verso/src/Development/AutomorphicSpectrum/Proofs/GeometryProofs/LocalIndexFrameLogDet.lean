@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.LocFrame
 variable {L : Type} [Field L] [NumberField L] {n : ℕ}
 
 /- English proof (translation)
-Establish `hw : IsDedekindDomain.HeightOneSpectrum.valuation L v.maximalIdeal x ≠ 0`. Rewrite using `[ne_eq, Valuation.zero_iff]` and apply the resulting hypothesis. Rewrite using `[← NumberField.FinitePlace.norm_embedding_eq, NumberField.FinitePlace.norm_embedding, NumberField.HeightOneSpectrum.adicAbv_def]`. Unfold `Formalism.L2.Ker.ordE`. Rewrite using `[neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩ : ∃ k : ℤ, IsDedekindDomain.HeightOneSpectrum.valuation L v.maximalIdeal x = WithZero.exp k` from `⟨_, (WithZero.exp_log hw).symm⟩`. Rewrite using `[hk, WithZero.log_exp, WithZeroMulInt.toNNReal_neg_apply _ (WithZero.exp_ne_zero)]`. Simplify using `[WithZero.exp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem place_eq_zpow_ordE (v : FinitePlace L) {x : L} (hx : x ≠ 0) :
     v x = ((Ideal.absNorm v.maximalIdeal.asIdeal : ℕ) : ℝ) ^ (-Formalism.L2.Ker.ordE v.maximalIdeal x) := by
@@ -27,15 +27,13 @@ theorem place_eq_zpow_ordE (v : FinitePlace L) {x : L} (hx : x ≠ 0) :
   simp [WithZero.exp]
 
 /- English proof (translation)
-Establish `hint : ∀ a : L, v a ≤ 1 ↔ Formalism.L2.Col.IntAt v.maximalIdeal a` using `fun a => by`. Rewrite using `[place_le_one_iff, GlobalTheory.CharValCompare.intAt_iff]`. Establish `hle : Λ.map f ≤ Λ`. Introduce `z hz`. Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.mp hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hy`, the goal using `[hΛ]`. Introduce `i`. Rewrite using `[hf]`. Use `show v (∑ j, S i j * y j) ≤ 1`. Conclude with `place_sum_le_one v _ _ (fun j _ => place_mul_le_one v (hS i j) (hy j))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hle, ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.IdxDet.relIndex_mulVec L (Fin n) v.maximalIdeal S Λ (Λ.map f) hdet (fun x => by rw [hΛ]; exact forall_congr' fun i => hint (x i)) (fun x => by`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, hy, hf y⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, hf y⟩)`. Use `hle`. Rewrite using `[place_eq_zpow_ordE v hdet, _root_.zpow_neg, inv_inv]`.
-
-Establish `key'` using `congrArg (fun q : ℚ => (q : ℝ)) key`. Move the coercions through the operations in `at key'`. Conclude with `key'`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem relIndex_map_of_integral (v : FinitePlace L) (S : Matrix (Fin n) (Fin n) L)
     (hS : ∀ i j, v (S i j) ≤ 1) (hdet : S.det ≠ 0) (f : (Fin n → L) →+ (Fin n → L))
@@ -68,31 +66,29 @@ theorem relIndex_map_of_integral (v : FinitePlace L) (S : Matrix (Fin n) (Fin n)
   exact key'
 
 /- English proof (translation)
-Use `set Λ := (locAt v (frame (1 : Matrix (Fin n) (Fin n) L))).toAddSubgroup with hΛdef`. Establish `hΛ : ∀ x, x ∈ Λ ↔ ∀ i, v (x i) ≤ 1` using `fun x => mem_locAt_frame_one`. Take `⟨M, hM⟩ : ∃ M : (Fin n → L) →+ (Fin n → L), ∀ x, M x = T *ᵥ x` from `⟨(Matrix.mulVecLin T).toAddMonoidHom, fun x => rfl⟩`. Establish `hTΛ : (locAt v (frame T)).toAddSubgroup = Λ.map M`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_toAddSubgroup, mem_locAt_frame, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, (hΛ y).2 hy, hM y⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y, (hΛ y).1 hy, hM y⟩`. Establish `hMinj : Function.Injective M`. Introduce `x y hxy`. Rewrite `hxy` using `[hM, hM]`. Establish `h` using `congrArg (fun z => T⁻¹ *ᵥ z) hxy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul T (isUnit_iff_ne_zero.mpr hdet)]`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (NumberField.RingOfIntegers L)) (Finset.univ : Finset (Fin n × Fin n)) (fun p => T p.1 p.2)`. Use `set c : L := algebraMap (NumberField.RingOfIntegers L) L b with hcdef`. Establish `hc0 : c ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `hcv : v c ≤ 1` using `place_int_le_one v b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcT : ∀ i j, v ((c • T) i j) ≤ 1`. Introduce `i j`. Take `⟨r, hr⟩` from `hb (i, j) (Finset.mem_univ _)`. Rewrite using `[Matrix.smul_apply]`. Establish `: c • T i j = algebraMap (NumberField.RingOfIntegers L) L r`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, smul_eq_mul, Algebra.smul_def]`. Apply the tactic sequence `all_goals rfl`. Rewrite using `[this]`. Conclude with `place_int_le_one v r`. Establish `hcI : ∀ i j, v ((c • (1 : Matrix (Fin n) (Fin n) L)) i j) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply]`. Use `split_ifs`. Simplify using `using hcv`. Simplify using `using place_int_le_one v 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩ : ∃ a : (Fin n → L) →+ (Fin n → L), ∀ x, a x = c • x` from `⟨DistribSMul.toAddMonoidHom _ c, fun x => rfl⟩`. Establish `hdetI : (c • (1 : Matrix (Fin n) (Fin n) L)).det = c ^ n`. Rewrite using `[Matrix.det_smul, Matrix.det_one, Fintype.card_fin, mul_one]`. Establish `hdetT : (c • T).det = c ^ n * T.det`. Rewrite using `[Matrix.det_smul, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hcn : c ^ n ≠ 0` using `pow_ne_zero _ hc0`. Establish `h1` using `relIndex_map_of_integral v (c • (1 : Matrix (Fin n) (Fin n) L)) hcI (by rw [hdetI]; exact hcn) a (fun x => by rw [ha]; ext i; simp [Matrix.mulVec, dotProduct, Matrix.one_apply]) Λ hΛ`. Establish `h2` using `relIndex_map_of_integral v (c • T) hcT (by rw [hdetT]; exact mul_ne_zero hcn hdet) (a.comp M) (fun x => by`. Rewrite using `[AddMonoidHom.comp_apply, ha, hM]`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]) Λ hΛ`. Establish `hpos : ∀ y : L, y ≠ 0 → 0 < v y` using `fun y hy => NumberField.FinitePlace.pos_iff.mpr hy`. Establish `hr1 : (Λ.map a).relIndex Λ ≠ 0`. Introduce `h0`. Use `h1.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, Nat.cast_zero, hdetI]`. Conclude with `(inv_pos.mpr (hpos _ hcn)).ne' this.symm`. Establish `hr2 : (Λ.map (a.comp M)).relIndex Λ ≠ 0`. Introduce `h0`. Use `h2.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[h0, Nat.cast_zero, hdetT]`. Conclude with `(inv_pos.mpr (hpos _ (mul_ne_zero hcn hdet))).ne' this.symm`. Rewrite using `[hTΛ, gIdx_frac Λ M a hMinj (fun x => by rw [ha, hM, hM, ha, Matrix.mulVec_smul]) h1.1 hr1 h2.1 hr2, h1.2, h2.2, hdetI, hdetT, Real.log_inv, Real.log_inv]`. Establish `hm : v (c ^ n * T.det) = v (c ^ n) * v T.det`. Rewrite using `[NumberField.FinitePlace.coe_apply, NumberField.FinitePlace.coe_apply, NumberField.FinitePlace.coe_apply, map_mul]`.
-
-Rewrite using `[hm, Real.log_mul (hpos _ hcn).ne' (hpos _ hdet).ne']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gIdx_locAt_frame (L : Type) [Field L] [NumberField L] (n : ℕ) (v : FinitePlace L)
     (T : Matrix (Fin n) (Fin n) L) (hdet : T.det ≠ 0) :

@@ -46,7 +46,7 @@ def retie (O : OnObj S P oc) (ι : Bs.J → ℕ) : OnObj S P oc :=
     DF := ((Finset.univ.sup fun j : Bs.J => WeightAlgebra.DF (lR Tp hK (ι j)) : ℕ) : ℝ) }
 
 /- English proof (translation)
-The claim follows from `hι star_eq := hs conj := hc E_eq _ _ := rfl σ_eq _ _ := rfl nn_eq _ := rfl T_eq := rfl jets_eq_fact := rfl g2_eq := rfl cmQuadraticForm_eq_alternatingForm := rfl dd_eq := rfl sm_eq := rfl k_eq := rfl m_eq := rfl f_eq := rfl x_eq := rfl eps_eq := rfl Sc_eq := rfl eta_eq := rfl bp_ …`.
+A detailed English derivation is pending.
 -/
 theorem runTie_retie (O : OnObj S P oc) (ι : Bs.J → ℕ) (hι : ∀ j, InR D (ι j))
     (hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a)
@@ -84,13 +84,13 @@ theorem runTie_retie (O : OnObj S P oc) (ι : Bs.J → ℕ) (hι : ∀ j, InR D 
 variable {T EX Tp hK} {O : OnObj S P oc} {ι : Bs.J → ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.jets_eq_fact, h.g2_eq, h.cmQuadraticForm_eq_alternatingForm, h.dd_eq, h.sm_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem tiePrimes (h : RunTie T EX Tp hK O ι) : DepthCond.TiePrimes O (numOf D L) :=
   ⟨h.jets_eq_fact, h.g2_eq, h.cmQuadraticForm_eq_alternatingForm, h.dd_eq, h.sm_eq⟩
 
 /- English proof (translation)
-Use `⟨?_, h.k_eq⟩` and prove the remaining obligations. Rewrite using `[h.f_eq]`. Use `show ((2 * D.R.n : ℕ) : ℝ) = 2 * ((D.R.n : ℕ) : ℝ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tieFK (h : RunTie T EX Tp hK O ι) : DepthCond.TieFK O (numOf D L) := by
   refine ⟨?_, h.k_eq⟩
@@ -100,31 +100,31 @@ theorem tieFK (h : RunTie T EX Tp hK O ι) : DepthCond.TieFK O (numOf D L) := by
   ring
 
 /- English proof (translation)
-The claim follows from `h.T_eq`.
+A detailed English derivation is pending.
 -/
 theorem tieT (h : RunTie T EX Tp hK O ι) : O.T = (((depOf T EX Tp hK).Q.T : ℕ) : ℝ) := h.T_eq
 
 /- English proof (translation)
-Unfold `OnObj.b OnObj.xe Scale.b Scale.L`. Rewrite using `[h.x_eq, h.eps_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem b_eq (h : RunTie T EX Tp hK O ι) : O.b = L.sc.b := by
   unfold OnObj.b OnObj.xe Scale.b Scale.L
   rw [h.x_eq, h.eps_eq]
 
 /- English proof (translation)
-Rewrite using `[h.wt_eq, h.f_eq, b_eq h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_eq' (h : RunTie T EX Tp hK O ι) (j : Bs.J) : O.wt j = 2 * O.f * O.b := by
   rw [h.wt_eq, h.f_eq, b_eq h]
 
 /- English proof (translation)
-Establish `hk : (1 : ℝ) ≤ (D.R.k : ℝ)`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `h1 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ ((3 : ℝ) / 2)` using `Real.one_le_rpow hk (by norm_num)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.th_eq, Formalism.UnitaryBoundIntegral.thl]`. Use `Real.sSup_empty` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨i, -, h3, hlt, -⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlt` using `[Nat.cast_zero, zero_pow (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h.th_eq, Formalism.UnitaryBoundIntegral.thl]`. Use `Real.sSup_empty` and compare the differences between its conclusion and the goal. Use extensionality with `t`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨i, -, -, hlt, -⟩`. Rewrite `hlt` using `[Nat.cast_one, one_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem th_zero (h : RunTie T EX Tp hK O ι) : O.th 0 = 0 ∧ O.th 1 = 0 := by
   have hk : (1 : ℝ) ≤ (D.R.k : ℝ) := by
@@ -148,7 +148,7 @@ theorem th_zero (h : RunTie T EX Tp hK O ι) : O.th 0 = 0 ∧ O.th 1 = 0 := by
     linarith
 
 /- English proof (translation)
-Introduce `h'`. Establish `h0 : (0 : ℝ) = (Tp.TO : ℝ)` using `h'.T_eq`. Use `TO_pos Tp` as an intermediate fact. Establish `: (0 : ℝ) < (Tp.TO : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem not_runTies_zeroSteps (h : RunTie T EX Tp hK O ι) :
     ¬ RunTie T EX Tp hK ({ O with T := 0 } : OnObj S P oc) ι := by
@@ -161,7 +161,7 @@ theorem not_runTies_zeroSteps (h : RunTie T EX Tp hK O ι) :
 end General
 
 /- English proof (translation)
-Establish `h1 : j - 1 < D.R.m` using `by have := hj.1; have := hj.2; omega`. Unfold `NumDatum.w NumDatum.eQ wj`. Rewrite using `[dif_pos (show 1 ≤ j ∧ j ≤ (numOf D L).R.m from hj), dif_pos h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem numOf_w (L : SizeData₂ D) {j : ℕ} (hj : InR D j) (z : RPl D.R) : (numOf D L).w j z = wj D j (plOf D z) := by
   have h1 : j - 1 < D.R.m := by have := hj.1; have := hj.2; omega
@@ -182,21 +182,21 @@ theorem numOf_aMinus (L : SizeData₂ D) (j : ℕ) (z : RPl D.R) (i : ℕ) :
     (numOf D L).aMinus j z i = DV.aMinusQ D j (plOf D z) i := rfl
 
 /- English proof (translation)
-Simplify using `[plOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eTau_plOf_false (t : D.R.A) :
     (D.eTau (plOf D (false, t)) : D.R.GG) = D.R.tau1 t := by
   simp [plOf]
 
 /- English proof (translation)
-Simplify using `[plOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eTau_plOf_true (t : D.R.A) :
     (D.eTau (plOf D (true, t)) : D.R.GG) = D.R.tau2 t := by
   simp [plOf]
 
 /- English proof (translation)
-Unfold `DepPage.cP`. Rewrite using `[if_pos (show (depOf T EX Tp hK).Q.IsRam p from Or.inl hp)]`. Use `show ⌈vdOf D p * _⌉.toNat = _`. Unfold `vdOf c2`. Rewrite using `[if_pos hp, Int.ceil_toNat, ← Nat.cast_mul, Nat.ceil_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localExponent_small_prime (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) {j : ℕ} (w : WeightFamilies.Wt D j)
     {p : ℕ} (hp : p ∈ D.host.small) :
@@ -208,7 +208,7 @@ theorem localExponent_small_prime (T : Core D) (EX : ErrX D) (Tp : ParamsT D L P
   rw [if_pos hp, Int.ceil_toNat, ← Nat.cast_mul, Nat.ceil_natCast]
 
 /- English proof (translation)
-The claim follows from `localExponent_small_prime T EX Tp hK w (Nat.mem_primeFactors.2 ⟨Nat.prime_two, (dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd, D.host.QS_pos.ne'⟩)`.
+A detailed English derivation is pending.
 -/
 theorem localExponent_two (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) {j : ℕ} (w : WeightFamilies.Wt D j) :
     (depOf T EX Tp hK).Q.cP (WeightAlgebra.DF w) 2 = padicValNat 2 D.host.QS * c2 D w :=
@@ -222,7 +222,7 @@ def intMap (T : Core D) : 𝓞 T.Q.c.F →+* 𝓞 D.what₂.LL :=
 def hostMap (D : D7) : 𝓞 D.host.E →+* D.what₂.LL := D.embE.comp (algebraMap (𝓞 D.host.E) D.host.E)
 
 /- English proof (translation)
-Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[D.starLL_cx]`. Establish `e : ∀ b : 𝓞 D.host.E, D.what₂.embLL (hostMap D b) = D.host.φ₀ (b : D.host.E)` using `fun b => DFunLike.congr_fun D.embE_φ₀ (b : D.host.E)`. Rewrite using `[e, e, T.Q.H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hostMap_conj (T : Core D) (a : 𝓞 D.host.E) : star (hostMap D a) = hostMap D (T.Q.H.bar a) := by
   apply D.what₂.embLL.injective
@@ -232,7 +232,7 @@ theorem hostMap_conj (T : Core D) (a : 𝓞 D.host.E) : star (hostMap D a) = hos
   rw [e, e, T.Q.H.bar_eq, IsCMField.complexEmbedding_complexConj]
 
 /- English proof (translation)
-Use `letI := (intMap T).toAlgebra`. Conclude with `Algebra.IsIntegral.tower_top (R := ℤ)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem intMap_integral (T : Core D) :
     letI := (intMap T).toAlgebra
@@ -241,7 +241,7 @@ theorem intMap_integral (T : Core D) :
   exact Algebra.IsIntegral.tower_top (R := ℤ)
 
 /- English proof (translation)
-The claim follows from `intMap_integral T letI := (hostMap D).toAlgebra RunTie T EX Tp hK (retie T EX Tp hK O ι) ι := by letI := Formalism.MainNotions.ModuliIntegralCharts.H1.GaugeR.barStar T.Q.H letI := (intMap T).toAlgebra haveI := intMap_integral T letI := (hostMap D).toAlgebra exact runTie_retie T E …`.
+A detailed English derivation is pending.
 -/
 theorem exists_runTie (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK : DV.KapDef D)
     {Bs : DefBase D.what₂.LL} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group P] [Finite P] {oc : OnConst}
@@ -258,7 +258,7 @@ theorem exists_runTie (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK : DV.
   exact runTie_retie T EX Tp hK O ι hι (fun _ => rfl) (hostMap_conj T)
 
 /- English proof (translation)
-The claim follows from `intMap_integral T letI := (hostMap D).toAlgebra ∃ O : OnObj (exampleIndefiniteData D.what₂.LL v0 Tw0 0) Unit exampleC, RunTie T EX Tp hK O fun _ => j := ⟨_, exists_runTie T EX Tp hK (exampleObject D.what₂.LL v0 Tw0) (fun _ => j) fun _ => hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_runTie_toy (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK : DV.KapDef D)
     (v0 : InfinitePlace D.what₂.LL) (Tw0 : Finset (HeightOneSpectrum (𝓞 D.what₂.LL))) (j : ℕ) (hj : InR D j) :
@@ -270,7 +270,7 @@ theorem exists_runTie_toy (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK :
   ⟨_, exists_runTie T EX Tp hK (exampleObject D.what₂.LL v0 Tw0) (fun _ => j) fun _ => hj⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, by have := D.R.two_le_m; omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem inR_one (D : D7) : InR D 1 := ⟨le_rfl, by have := D.R.two_le_m; omega⟩
 

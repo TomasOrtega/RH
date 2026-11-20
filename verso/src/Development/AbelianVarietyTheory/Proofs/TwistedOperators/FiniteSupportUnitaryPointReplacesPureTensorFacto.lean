@@ -26,7 +26,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {X : Spc F E n}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem mat_injOne (g : UA σ X.J) (h : mat g = 1) : g = 1 := Subtype.ext (Units.ext h)
 
@@ -41,13 +41,13 @@ Both sides reduce to the same expression.
 theorem mat_one' : mat (1 : UA σ X.J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul', inv_mul_cancel, mat_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul' (g : UA σ X.J) : mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul', inv_mul_cancel, mat_one']
 
 /- English proof (translation)
-Introduce `u _`. Rewrite using `[mat_one', sub_self, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_mem_UAt {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ X.J) ∈ UAt σ X ev := by
   intro u _
@@ -58,33 +58,31 @@ end GlobalTheory.PlaceProd
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.PlaceProd GlobalTheory.AdelicU in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP S`. Establish `hstd` using `hP.good.std`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `gS hgS f φ hSB _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : mat gS = 1`. Use `hgS 1 (by simp)` as an intermediate fact. Rewrite `this` using `[one_smul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hg : gS = 1` using `mat_injOne gS h1`. Use `⟨φ, hSB, fun _ _ => rfl, fun v => by simp, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hg` using the available equality. Rewrite using `[show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]`. Both sides reduce to the same expression. Consider the case `@insert v S' hv ih`. Introduce `gS hgS f φ hSB hvac`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g1, k, hgk, h2, h3, -, -⟩` from `GlobalTheory.T.exists_adelicUnitary_factor_finiteSetOfPlaces σ X gS {v}`. Establish `hg1 : g1 ∈ UAt σ X (evFin F v)` using `fun u hu => h2 u (fun w hw => by rw [Finset.mem_singleton.1 hw]; exact hu)`. Establish `hk : ∀ u : AF F, (∀ w ∈ S', evFin F w u = 0) → u • (mat k - 1) = 0`. Introduce `u hu`. Use `set e : AF F := GlobalTheory.LatVac.liftV v (1 : Fv F v) with he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsplit : u = e * u + (1 - e) * u` using `by ring`. Establish `ha : (e * u) • (mat k - 1) = 0`. Apply `h3 v (Finset.mem_singleton_self v)` to reduce the goal to its premises. Rewrite using `[he, GlobalTheory.ThK.LocalOps.liftV_one_mul]`. Introduce `u' hu'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Establish `hb : ((1 - e) * u) • (mat k - 1) = 0` using `by set u' : AF F := (1 - e) * u with hu'def`. Establish `hv' : evFin F v u' = 0`. Simplify using `[hu'def, he, map_mul, map_sub, GlobalTheory.LatVac.evFin_liftV]`. Establish `hS : u' • (mat gS - 1) = 0` using `hgS u' (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `w hw`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Conclude with `hv'`. Simplify using `[hu'def, map_mul, hu w hw])`. Establish `hg1' : u' • (mat g1 - 1) = 0` using `hg1 u' hv'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkk : k = g1⁻¹ * gS` using `by rw [hgk, inv_mul_cancel_left]`. Establish `hkdef : mat k - 1 = mat g1⁻¹ * (mat gS - 1) - mat g1⁻¹ * (mat g1 - 1)`. Rewrite using `[hkk, mat_mul', Matrix.mul_sub, Matrix.mul_sub, mat_inv_mul', Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[hkdef, smul_sub, ← Matrix.mul_smul, ← Matrix.mul_smul, hS, hg1', Matrix.mul_zero, sub_self]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsplit, add_smul, ha, hb, add_zero]`. Take `⟨φ₁, hSB1, hoff1, haug1, hom1⟩` from `ih k hk f φ hSB hvac`. Take `⟨φ₂, hSB2, hact⟩` from `GlobalTheory.ThK.LocalOps.acts_exists hP v (g1, 1) hg1 (one_mem_UAt (evFin F v)) (φ₁ v) (hSB1 v)`. Establish `hnot : ∀ᶠ w in Filter.cofinite, w ∉ S'` using `Filter.eventually_cofinite.2 (S'.finite_toSet.subset fun x hx => by simpa using hx)`. Establish `hstd1 : ∀ᶠ w in Filter.cofinite, φ₁ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `by filter_upwards [hvac, hstd, hnot] with w h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hoff1 w h3, h1, h2]`. Establish `hpure` using `GlobalTheory.TensUniq.pure_mem_schA f φ₁ hSB1 hstd1`. Establish `hstep` using `GlobalTheory.ThK.LocalOps.acts_pure v (om (g1, 1)) f φ₁ φ₂ hpure (GlobalTheory.PureFactor.mulSupport_finite φ₁ hstd1) hact`. Use `⟨Function.update φ₁ v φ₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hSB2`. Rewrite using `[Function.update_of_ne hw]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hSB1 w`. Introduce `w hw`. Establish `hwv : w ≠ v` using `fun h => hw (h ▸ Finset.mem_insert_self _ _)`. Establish `hwS : w ∉ S'` using `fun h => hw (Finset.mem_insert_of_mem h)`. Rewrite using `[Function.update_of_ne hwv]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hoff1 w hwS`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self, ← hoff1 w hv]`.
-
-Conclude with `Submodule.subset_span ⟨g1, hg1, φ₁ w, hSB1 w, φ₂, hSB2, hact, rfl⟩`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `haug1 w`. Rewrite using `[hgk, show ((g1 * k, 1) : UA σ X.J × UA σ W.J) = (g1, 1) * (k, 1) by simp, map_mul, Module.End.mul_apply, hom1, hstep]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PlaceProd.pure_of_finSupp : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

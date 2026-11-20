@@ -7,15 +7,15 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
 namespace GlobalTheory.FrechetDerivativeBound
 
 /- English proof (translation)
-Establish `hp : p ∈ Metric.ball p R` using `Metric.mem_ball_self (hρ.trans hR)`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM p hp)`. Use `ContinuousLinearMap.opNorm_le_of_unit_norm (div_nonneg hM0 hρ.le) ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hmem : ∀ t ∈ Metric.closedBall (0 : ℂ) ρ, p + t • v ∈ Metric.ball p R`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite `ht` using `[mem_closedBall_zero_iff]`. Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, hv, mul_one]`. Conclude with `ht.trans_lt hR`. Establish `hline : ∀ t : ℂ, HasDerivAt (fun s : ℂ => p + s • v) v t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Simplify using `using ((hasDerivAt_id t).smul_const v).const_add p`. Establish `hd : DifferentiableOn ℂ (fun t : ℂ => u (p + t • v)) (Metric.closedBall 0 ρ)` using `hu.comp (fun t _ => (hline t).differentiableAt.differentiableWithinAt) hmem`. Establish `hdc : DiffContOnCl ℂ (fun t : ℂ => u (p + t • v)) (Metric.ball 0 ρ)`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[closure_ball _ hρ.ne']` and apply the resulting hypothesis. Establish `hup : DifferentiableAt ℂ u p` using `hu.differentiableAt (Metric.isOpen_ball.mem_nhds hp)`. Establish `hder : HasDerivAt (fun t : ℂ => u (p + t • v)) (fderiv ℂ u p v) 0`. Establish `h1 : HasFDerivAt u (fderiv ℂ u p) (p + (0 : ℂ) • v)`. Simplify using `using hup.hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.comp_hasDerivAt (0 : ℂ) (hline 0)`. Rewrite using `[← hder.deriv]`. Conclude with `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hρ hdc (fun z hz => hM _ (hmem z (Metric.sphere_subset_closedBall hz)))`.
+A detailed English derivation is pending.
 -/
 theorem norm_fderiv_le_of_bounded_gen {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {p : E} {ρ R M : ℝ} (hρ : 0 < ρ) (hR : ρ < R) (u : E → ℂ)
@@ -48,7 +48,7 @@ theorem norm_fderiv_le_of_bounded_gen {E : Type*} [NormedAddCommGroup E] [Normed
     (fun z hz => hM _ (hmem z (Metric.sphere_subset_closedBall hz)))
 
 /- English proof (translation)
-The claim follows from `norm_fderiv_le_of_bounded_gen hρ hR u hu hM`.
+A detailed English derivation is pending.
 -/
 theorem norm_fderiv_le_of_bounded {n : ℕ} {p : ReciprocityTheory.L2DbarEstimates.V n} {ρ R M : ℝ}
     (hρ : (0 : ℝ) < ρ) (hR : ρ < R) (u : ReciprocityTheory.L2DbarEstimates.V n → ℂ)

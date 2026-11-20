@@ -27,9 +27,9 @@ Both sides reduce to the same expression.
 theorem join_v₀ {R : Type} (k₀ : K) (z₀ z₁ : (Σ k, ι k) → R) : joinPt k₀ z₀ z₁ ∘ v₀ k₀ = z₀ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨k, m⟩`. Distinguish the cases in `e : k = k₀`. Substitute `e show joinPt k z₀ z₁ (v₁ k ⟨k, m⟩) = _` using the available equality. Rewrite using `[v₁_self]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show joinPt k₀ z₀ z₁ (v₁ k₀ ⟨k, m⟩) = _`. Rewrite using `[v₁_ne (p := ⟨k, m⟩) e]`. Conclude with `h k e m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem join_v₁ {R : Type} {k₀ : K} {z₀ z₁ : (Σ k, ι k) → R} (h : ∀ k, k ≠ k₀ → ∀ m, z₀ ⟨k, m⟩ = z₁ ⟨k, m⟩) :
     joinPt k₀ z₀ z₁ ∘ v₁ k₀ = z₁ := by
@@ -43,7 +43,7 @@ theorem join_v₁ {R : Type} {k₀ : K} {z₀ z₁ : (Σ k, ι k) → R} (h : �
     exact h k e m
 
 /- English proof (translation)
-Use `choose c hc e using h`. Conclude with `⟨c, hc, funext fun q => e q.1 q.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbit_of_blocks {z z' : (Σ k, ι k) → ℂ} (h : ∀ k, ∃ c : ℂ, c ≠ 0 ∧ ∀ m, z ⟨k, m⟩ = c * z' ⟨k, m⟩) :
     SameOrbit z z' := by
@@ -51,7 +51,7 @@ theorem orbit_of_blocks {z z' : (Σ k, ι k) → ℂ} (h : ∀ k, ∃ c : ℂ, c
   exact ⟨c, hc, funext fun q => e q.1 q.2⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨c k, hc k, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem blocks_of_orbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (k : K) :
     ∃ c : ℂ, c ≠ 0 ∧ ∀ m, z ⟨k, m⟩ = c * z' ⟨k, m⟩ := by
@@ -59,21 +59,21 @@ theorem blocks_of_orbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (k : 
   exact ⟨c k, hc k, fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `FibreCount.comp_orbit (Pts.isBlockMap_v₀ k₀) h`.
+A detailed English derivation is pending.
 -/
 theorem fst_orbit {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
     SameOrbit (fstPt k₀ z) (fstPt k₀ z') := FibreCount.comp_orbit (Pts.isBlockMap_v₀ k₀) h
 
 /- English proof (translation)
-The claim follows from `FibreCount.comp_orbit (isBlockMap_v₁ k₀) h`.
+A detailed English derivation is pending.
 -/
 theorem snd_orbit {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
     SameOrbit (sndPt k₀ z) (sndPt k₀ z') := FibreCount.comp_orbit (isBlockMap_v₁ k₀) h
 
 /- English proof (translation)
-Use `orbit_of_blocks fun o => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none`. Take `⟨c, hc, e⟩` from `blocks_of_orbit h₁ k₀`. Conclude with `⟨c, hc, fun m => by simpa only [Pts.snd_self] using e m⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `some k => exact blocks_of_orbit h₀ k`.
+Treat this case separately.
 -/
 theorem sameOrbit_of_sameOrbit_fstPt_sndPt {k₀ : K} {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h₀ : SameOrbit (fstPt k₀ z) (fstPt k₀ z'))
     (h₁ : SameOrbit (sndPt k₀ z) (sndPt k₀ z')) : SameOrbit z z' := by
@@ -85,9 +85,9 @@ theorem sameOrbit_of_sameOrbit_fstPt_sndPt {k₀ : K} {z z' : (Σ o : Option K, 
   | some k => exact blocks_of_orbit h₀ k
 
 /- English proof (translation)
-Use `orbit_of_blocks fun o => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none`. Take `⟨c, hc, e⟩` from `blocks_of_orbit h₁ k₀`. Conclude with `⟨c, hc, fun m => (e m).trans (by rw [Pts.snd_self])⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `some k => exact blocks_of_orbit h₀ k`.
+Treat this case separately.
 -/
 theorem join_orbit {k₀ : K} {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ} {z₀ z₁ : (Σ k, ι k) → ℂ}
     (h₀ : SameOrbit z₀ (fstPt k₀ z)) (h₁ : SameOrbit z₁ (sndPt k₀ z)) : SameOrbit (joinPt k₀ z₀ z₁) z := by
@@ -99,7 +99,7 @@ theorem join_orbit {k₀ : K} {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ} 
   | some k => exact blocks_of_orbit h₀ k
 
 /- English proof (translation)
-Use `analyticAt_pi_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `⟨_ | k, m⟩`. Conclude with `analyticAt_pi_iff.1 h₁ ⟨k₀, m⟩`. Conclude with `analyticAt_pi_iff.1 h₀ ⟨k, m⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem analytic_join {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (k₀ : K) {f₀ f₁ : E → (Σ k, ι k) → ℂ}
     {x : E} (h₀ : AnalyticAt ℂ f₀ x) (h₁ : AnalyticAt ℂ f₁ x) :
@@ -110,14 +110,14 @@ theorem analytic_join {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (k�
   · exact analyticAt_pi_iff.1 h₀ ⟨k, m⟩
 
 /- English proof (translation)
-The claim follows from `analyticAt_pi_iff.2 fun a => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : β => ℂ) (v a)).analyticAt x`.
+A detailed English derivation is pending.
 -/
 theorem analytic_comp_idx {α β : Type} [Fintype α] [Fintype β] (v : α → β) (x : β → ℂ) :
     AnalyticAt ℂ (fun z : β → ℂ => z ∘ v) x :=
   analyticAt_pi_iff.2 fun a => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : β => ℂ) (v a)).analyticAt x
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun a => continuous_apply (v a)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_comp_idx {α β : Type} (v : α → β) : Continuous (fun z : β → ℂ => z ∘ v) :=
   continuous_pi fun a => continuous_apply (v a)
@@ -142,28 +142,28 @@ section W
 variable {M : FlagModel y Ψ N j} {τ : Ψ} {a b : Fin N} {k₀ : K} {ca cb : Fin N} {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `(S.wa K ι Φ y Ψ N j M d τ a b k₀ ca cb S.hb S.hab S.hk S.hca S.hcb hy).1`.
+A detailed English derivation is pending.
 -/
 theorem Sw.arith (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2)) :
     IsArithVar (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) (d + 2 + 1) :=
   (S.wa K ι Φ y Ψ N j M d τ a b k₀ ca cb S.hb S.hab S.hk S.hca S.hcb hy).1
 
 /- English proof (translation)
-The claim follows from `(S.wa K ι Φ y Ψ N j M d τ a b k₀ ca cb S.hb S.hab S.hk S.hca S.hcb hy).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem Sw.im₀ (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2)) :
     imageZ (v₀ k₀) (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) = mCoordIdeal y :=
   (S.wa K ι Φ y Ψ N j M d τ a b k₀ ca cb S.hb S.hab S.hk S.hca S.hcb hy).2.2.2.1
 
 /- English proof (translation)
-The claim follows from `CPts.comp_mem_mcPts (Pts.isBlockMap_v₀ k₀) (algebraMap Φ (RatFunc Φ)) (funext fun _ => rfl) hz`.
+A detailed English derivation is pending.
 -/
 theorem fst_mem {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X))) : fstPt k₀ z ∈ mcPts (mCoordIdeal y) :=
   CPts.comp_mem_mcPts (Pts.isBlockMap_v₀ k₀) (algebraMap Φ (RatFunc Φ)) (funext fun _ => rfl) hz
 
 /- English proof (translation)
-The claim follows from `Pts.snd_mem ((S.wa K ι Φ y Ψ N j M d τ a b k₀ ca cb S.hb S.hab S.hk S.hca S.hcb hy).2.2.2.2 (v₁ k₀) (fun _ h => v₁_ne h) (v₁_self k₀)) hz`.
+A detailed English derivation is pending.
 -/
 theorem Sw.snd_mem (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2))
     {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ}
@@ -172,11 +172,11 @@ theorem Sw.snd_mem (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y)
     (fun _ h => v₁_ne h) (v₁_self k₀)) hz
 
 /- English proof (translation)
-Take `⟨z₁, ⟨c, hc, e⟩, hn⟩` from `FibreCount.exists_normal_base M.blk F.c (fstPt k₀ z) fun k => FibreCount.chart_ne (hG.1 k)`. Set `z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ` to `fun q => q.1.elim 1 c * z q`. Apply the tactic sequence `have ho : SameOrbit z' z := ⟨fun o => o.elim 1 c, fun o => by cases o <;> simp [hc], rfl⟩`. Establish `e' : fstPt k₀ z' = z₁` using `by rw [e]; rfl`. Establish `hI` using `CoordinateConeArithVar.isMultiHomogIdeal y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₀` using `mem_mcPts_of_sameOrbit hI (fst_orbit ho) h₀`. Establish `m₁` using `mem_mcPts_of_sameOrbit hI (snd_orbit ho) h₁`. Establish `hG' : M.GoodAt F (mCoordIdeal (basePart M.blk (fstPt k₀ z')))`. Rewrite using `[FibreCount.mCoordIdeal_eq_of_orbit (FibreCount.basePart_orbit M.blk (fst_orbit ho))]`. Conclude with `hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsnd` using `Pts.basePart_snd M S.hk z'`. Establish `hc' : ∀ k, basePart M.blk (fstPt k₀ z') ⟨k, F.c k⟩ = 1` using `by rw [e']; exact hn`. Take `⟨h, H⟩` from `CPts.flag_fwd M hF m₀ hG' hc'`. Take `⟨h', H'⟩` from `CPts.flag_fwd M hF m₁ (hsnd ▸ hG') (hsnd ▸ hc')`. Conclude with `⟨z', ho, Pts.fwd_flags M S.hb S.hab S.hk S.hca S.hcb hF (CPts.base_mem M m₀) hG' H H'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Sw.data (S : Sw M τ a b k₀ ca cb) {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ}
     (h₀ : fstPt k₀ z ∈ mcPts (mCoordIdeal y)) (h₁ : sndPt k₀ z ∈ mcPts (mCoordIdeal y))
@@ -200,9 +200,9 @@ theorem Sw.data (S : Sw M τ a b k₀ ca cb) {z : (Σ o : Option K, ι (o.getD k
   exact ⟨z', ho, Pts.fwd_flags M S.hb S.hab S.hk S.hca S.hcb hF (CPts.base_mem M m₀) hG' H H'⟩
 
 /- English proof (translation)
-Take `⟨F, hF, hG⟩` from `(GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).2.1 _ (CPts.base_mem M h₀)`. Take `⟨z', ho, h, t, H, H'⟩` from `S.data h₀ h₁ hF hG`. Establish `m₀` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal y) (fst_orbit ho) h₀`. Establish `hG' : M.GoodAt F (mCoordIdeal (basePart M.blk (fstPt k₀ z')))`. Rewrite using `[FibreCount.mCoordIdeal_eq_of_orbit (FibreCount.basePart_orbit M.blk (fst_orbit ho))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG`. Conclude with `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) (orbit_symm ho) (Pts.back M S.hb S.hab S.hk S.hca S.hcb hF (CPts.base_mem M m₀) hG' H H')`.
+A detailed English derivation is pending.
 -/
 theorem Sw.mem (S : Sw M τ a b k₀ ca cb) {z : (Σ o : Option K, ι (o.getD k₀)) → ℂ}
     (h₀ : fstPt k₀ z ∈ mcPts (mCoordIdeal y)) (h₁ : sndPt k₀ z ∈ mcPts (mCoordIdeal y)) :
@@ -216,7 +216,7 @@ theorem Sw.mem (S : Sw M τ a b k₀ ca cb) {z : (Σ o : Option K, ι (o.getD k�
     (Pts.back M S.hb S.hab S.hk S.hca S.hcb hF (CPts.base_mem M m₀) hG' H H')
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨z, hz, hz'⟩` from `HilbertSamuel.exists_mcPts_not_mem_mcPts (S.arith hy) hn`. Conclude with `hz' (S₂.mem (e ▸ fst_mem hz) (e ▸ S.snd_mem hy hz))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ideal_W_le {Φ₂ : Type} [Field Φ₂] {y₂ : (Σ k, ι k) → Φ₂} {M₂ : FlagModel y₂ Ψ N j}
     (S : Sw M τ a b k₀ ca cb) (S₂ : Sw M₂ τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2))
@@ -227,7 +227,7 @@ theorem ideal_W_le {Φ₂ : Type} [Field Φ₂] {y₂ : (Σ k, ι k) → Φ₂} 
   exact hz' (S₂.mem (e ▸ fst_mem hz) (e ▸ S.snd_mem hy hz))
 
 /- English proof (translation)
-The claim follows from `le_antisymm (ideal_W_le S S₂ hy e) (ideal_W_le S₂ S (e ▸ hy) e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem ideal_W_eq {Φ₂ : Type} [Field Φ₂] {y₂ : (Σ k, ι k) → Φ₂} {M₂ : FlagModel y₂ Ψ N j}
     (S : Sw M τ a b k₀ ca cb) (S₂ : Sw M₂ τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2))
@@ -246,29 +246,27 @@ variable {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j}
 open FibreCount in
 
 /- English proof (translation)
-Establish `P` using `GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M`. Establish `P'` using `GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M'`. Take `⟨F', hF', hg'⟩` from `P'.2.1 _ (P'.1 z₁ h₁)`. Take `⟨a₁, o₁, n₁⟩` from `exists_normal_base M'.blk F'.c z₁ fun k => chart_ne (hg'.1 k)`. Take `⟨a₂, o₂, n₂⟩` from `exists_normal_base M'.blk F'.c z₂ fun k => chart_ne (by rw [← mCoordIdeal_eq_of_orbit hb]; exact hg'.1 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ob₁` using `basePart_orbit M'.blk o₁`. Establish `ob₂` using `basePart_orbit M'.blk o₂`. Establish `eb : basePart M'.blk a₁ = basePart M'.blk a₂` using `eq_of_orbit_normal (c := F'.c) (Cj.sameOrbit_trans ob₁ (Cj.sameOrbit_trans hb (Cj.sameOrbit_symm ob₂))) n₁ n₂`. Establish `hbm : basePart M'.blk a₁ ∈ mcPts (mCoordIdeal M'.x)` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) ob₁ (P'.1 z₁ h₁)`. Establish `hgb : M'.GoodAt F' (mCoordIdeal (basePart M'.blk a₁))` using `by rw [mCoordIdeal_eq_of_orbit ob₁]; exact hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha₁` using `mem_mcPts_of_sameOrbit hy'.2.1.2.1 o₁ h₁`. Establish `ha₂` using `mem_mcPts_of_sameOrbit hy'.2.1.2.1 o₂ h₂`. Establish `hbw : SameOrbit (basePart M'.blk a₁ ∘ Cv.v) (basePart M.blk w₁)` using `Cj.sameOrbit_trans (comp_orbit Cv.block ob₁) (Cj.sameOrbit_symm (GlobalTheory.T.flag_cover_arithmetic_third K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' z₁ h₁ w₁ i₁))`. Establish `hbv` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) hbw (P.1 w₁ hw)`. Take `⟨F, hF, hg⟩` from `P.2.1 _ hbv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, fl₁⟩` from `(P'.2.2 F' hF' a₁ hbm hgb n₁).1 ha₁`. Take `⟨g₂, fl₂⟩` from `(P'.2.2 F' hF' a₂ (by rw [← eb]; exact hbm) (by rw [← eb]; exact hgb) n₂).1 ha₂`. Take `⟨z₀, s₁, t₁, f₁⟩` from `i₁ a₁ o₁ F' F hF' hF hgb hg g₁ fl₁`. Take `⟨z₀', s₂, t₂, f₂⟩` from `i₂ a₂ o₂ F' F hF' hF (by rw [← eb]; exact hgb) (by rw [← eb]; exact hg) g₂ fl₂`. Rewrite `t₂`, `f₂` using `[← eb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eβ : basePart M.blk z₀ = basePart M.blk z₀'` using `eq_of_orbit_normal (c := F.c) (Cj.sameOrbit_trans t₁ (Cj.sameOrbit_symm t₂)) f₁.1 f₂.1`. Establish `hβ : basePart M.blk z₀ ∈ mcPts (mCoordIdeal M.x)` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) t₁ hbv`. Establish `hgβ : M.GoodAt F (mCoordIdeal (basePart M.blk z₀))` using `by rw [mCoordIdeal_eq_of_orbit t₁]; exact hg`. Take `⟨c₁, hc₁, ez₁⟩` from `blocks_of_orbit s₁ k`. Take `⟨c₂, hc₂, ez₂⟩` from `blocks_of_orbit s₂ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, ez⟩ : ∃ c : ℂ, c ≠ 0 ∧ ∀ m, z₀ ⟨k, m⟩ = c * z₀' ⟨k, m⟩` from `⟨c₁ / c₂, div_ne_zero hc₁ hc₂, fun m => by rw [ez₁, ez₂, hww]; field_simp⟩`. Establish `hT` using `trans_unit Cv hbm hF' hF hgb hg`. Establish `hpr : IsProperStep N j p.2`. Assume the negation of the conclusion as `hn`. Rewrite `hp'` using `[(M'.blk_none p).2 hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hp' (by simp)`. Take `⟨e₁, he₁, v₁⟩` from `f₁.2.2 p k hk`. Take `⟨e₂, he₂, v₂⟩` from `f₂.2.2 p k hk`. Establish `key` using `step_prop (M' := M') (c := c) (e₁ := e₁) (e₂ := e₂) hF hβ hgβ hk hpr (hT p.1) (fl₁.2.1 p.1).1 (fl₂.2.1 p.1).1 he₁ (fun m => by`. Establish `x3` using `ez m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x1` using `v₁ m`. Establish `x2` using `v₂ m`. Rewrite `x2` using `[← eβ]`. Rewrite `x3` using `[x1, x2]`. Conclude with `x3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, w₁⟩` from `fl₁.2.2 p k' hp'`. Take `⟨a', ha', w₂⟩` from `fl₂.2.2 p k' hp'`. Take `⟨b₁, hb₁, eb₁⟩` from `blocks_of_orbit o₁ k'`. Take `⟨b₂, hb₂, eb₂⟩` from `blocks_of_orbit o₂ k'`. Use `⟨a * (c * e₂ / e₁) / a' * b₂ / b₁, div_ne_zero (mul_ne_zero (div_ne_zero (mul_ne_zero ha (div_ne_zero (mul_ne_zero hc he₂) he₁)) ha') hb₂) hb₁, fun m => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g0 : a₁ ⟨k', m⟩ = a * (c * e₂ / e₁) / a' * a₂ ⟨k', m⟩`. Rewrite using `[w₁ m, w₂ m, ← eb]`. Simplify using `only [key]`. Establish `g1 : ∑ I, valAt M'.x (F'.u ⟨k', m⟩ I) (basePart M'.blk a₁) * ((c * e₂ / e₁) * minorIJ (g₂ p.1) I (stepCols N j p.2)) = (c * e₂ / e₁) * ∑ I, valAt M'.x (F'.u ⟨k', m⟩ I) (basePart M'.blk a₁) * minorIJ (g₂ p.1) I (stepCols N j p.2)`. Rewrite using `[Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[g1]`. Clear the denominators using the available nonvanishing facts. Rewrite `g0` using `[eb₁, eb₂]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hb₁]`.
-
-Take the linear combination `g0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem img_blk (Cv : FlagCover M' M) {d : ℕ}
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
@@ -347,7 +345,7 @@ theorem img_blk (Cv : FlagCover M' M) {d : ℕ}
   linear_combination g0
 
 /- English proof (translation)
-The claim follows from `Option.ne_none_iff_exists'.1 fun e => by rw [(M'.blk_none p).2 ((M.blk_none p).1 e)] at hp cases hp`.
+A detailed English derivation is pending.
 -/
 theorem blk_cover (M : FlagModel y Ψ N j) (M' : FlagModel y' Ψ N j) {p : Ψ × Fin N} {k' : K'}
     (hp : M'.blk p = some k') : ∃ k, M.blk p = some k :=
@@ -362,7 +360,7 @@ def RelW (Cv : FlagCover M' M) (k₀ : K) (k₀' : K') (z : (Σ o : Option K', �
   IsImg Cv (fstPt k₀' z) (fstPt k₀ w) ∧ IsImg Cv (sndPt k₀' z) (sndPt k₀ w)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.orbit (fst_orbit hz) (fst_orbit hw), h.2.orbit (snd_orbit hz) (snd_orbit hw)⟩`.
+Supply the required witnesses or components.
 -/
 theorem RelW.orbit {Cv : FlagCover M' M} {z z₁ : (Σ o : Option K', ι' (o.getD k₀')) → ℂ}
     {w w₁ : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : RelW Cv k₀ k₀' z w) (hz : SameOrbit z₁ z)
@@ -370,13 +368,13 @@ theorem RelW.orbit {Cv : FlagCover M' M} {z z₁ : (Σ o : Option K', ι' (o.get
   ⟨h.1.orbit (fst_orbit hz) (fst_orbit hw), h.2.orbit (snd_orbit hz) (snd_orbit hw)⟩
 
 /- English proof (translation)
-Establish `hb` using `GlobalTheory.T.flag_cover_arithmetic_third K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' z₀ hz₀ _ hi`. Take `⟨z₁, hz₁, ho, hi₁⟩` from `FibreCount.img_surj Cv hy hy' (S.snd_mem hy hw) (CPts.base_mem M' hz₀) (by rw [Pts.basePart_snd M S.hk]; exact orbit_symm hb)`. Establish `hs : SameOrbit (sndPt k₀' (joinPt k₀' z₀ z₁)) z₁`. Use `orbit_of_blocks fun k' => ?_` and prove the remaining obligations. Distinguish the cases in `e : k' = k₀'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Conclude with `⟨1, one_ne_zero, fun m => by rw [Pts.snd_self, one_mul]; rfl⟩`. Simplify using `only [Pts.snd_fst_ne e]`. Distinguish the cases in `hk : ∀ p, M'.blk p ≠ some k'`. Conclude with `blocks_of_orbit (orbit_symm ho) ⟨k', hk⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hk`. Take `⟨p, hp⟩` from `hk`. Take `⟨k, hk⟩` from `blk_cover M M' hp`. Establish `hne : k ≠ k₀` using `fun e' => e (by`. Use `M.blk_inj _ _ _ hk (e' ▸ S.hk)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hp` using `[this, S'.hk]`. Conclude with `(Option.some.inj hp).symm)`. Conclude with `img_blk Cv hy hy' (fst_mem hw) hz₀ hz₁ hi hi₁ (orbit_symm ho) hk hp fun m => (Pts.snd_fst_ne hne w m).symm`. Conclude with `⟨joinPt k₀' z₀ z₁, S'.mem hz₀ (mem_mcPts_of_sameOrbit hy'.2.1.2.1 hs hz₁), rfl, hi, hi₁.orbit hs (Cj.sameOrbit_refl _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_relW_lift_of_isImg (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' τ a b k₀' ca cb)
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
@@ -407,13 +405,13 @@ theorem exists_relW_lift_of_isImg (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca
     hi₁.orbit hs (Cj.sameOrbit_refl _)⟩
 
 /- English proof (translation)
-Establish `key : ∀ z : (Σ o : Option K', ι' (o.getD k₀')) → ℂ, {u | ∃ z₂ ∈ {z'' | SameOrbit z'' z}, SameOrbit u (fstPt k₀' z₂)} = {u | SameOrbit u (fstPt k₀' z)}` using `fun z => by`. Use extensionality with `u`. Conclude with `⟨fun ⟨z₂, h1, h2⟩ => orbit_trans h2 (fst_orbit h1), fun h => ⟨z, Cj.sameOrbit_refl z, h⟩⟩`. Use `Set.ncard_congr (fun O _ => {u | ∃ z₂ ∈ O, SameOrbit u (fstPt k₀' z₂)}) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `O ⟨z, hz, rfl, hr⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fstPt k₀' z, fst_mem hz, key z, hr.1⟩`. Introduce and unpack `O O' ⟨z, hz, rfl, hr⟩ ⟨z', hz', rfl, hr'⟩ e`. Simplify using `only [key] at e`. Establish `h0` using `FibreCount.orbit_eq_iff.1 e`. Use `FibreCount.orbit_eq_iff.2 (sameOrbit_of_sameOrbit_fstPt_sndPt h0 ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `FibreCount.img_inj Cv hy hy' (S.snd_mem hy hw) (S'.snd_mem hy' hz) (S'.snd_mem hy' hz') hr.2 hr'.2 ?_` and prove the remaining obligations. Rewrite using `[Pts.basePart_snd M' S'.hk, Pts.basePart_snd M' S'.hk]`. Conclude with `FibreCount.basePart_orbit _ h0`. Introduce and unpack `O ⟨z₀, hz₀, rfl, hi⟩`. Take `⟨z, hz, rfl, hr⟩` from `exists_relW_lift_of_isImg Cv S S' hy hy' hw hz₀ hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨z, hz, rfl, hr⟩, key z⟩`.
+A detailed English derivation is pending.
 -/
 theorem ncard_orbits_relW_eq_ncard_orbits_isImg (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' τ a b k₀' ca cb)
     (hy : IsArithVar (mCoordIdeal y) (d + 2)) (hy' : IsArithVar (mCoordIdeal y') (d + 2))
@@ -440,19 +438,19 @@ theorem ncard_orbits_relW_eq_ncard_orbits_isImg (Cv : FlagCover M' M) (S : Sw M 
     exact ⟨_, ⟨z, hz, rfl, hr⟩, key z⟩
 
 /- English proof (translation)
-Establish `hz₀` using `fst_mem hz`. Establish `hz₁` using `S'.snd_mem hy' hz`. Establish `hb` using `CPts.base_mem M' hz₀`. Establish `hbv` using `(GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ hb).1`. Take `⟨F', hF', hg'⟩` from `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').2.1 _ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, hg⟩` from `(GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).2.1 _ hbv`. Establish `hsb` using `Pts.basePart_snd M' S'.hk`. Take `⟨V₀, f₀, hV₀, hzV₀, hf₀, hs₀⟩` from `GlobalTheory.T.flag_cover_frames_at_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hz₀ hF' hF hg' hg`. Take `⟨V₁, f₁, hV₁, hzV₁, hf₁, hs₁⟩` from `GlobalTheory.T.flag_cover_frames_at_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hz₁ hF' hF (by rw [hsb]; exact hg') (by rw [hsb]; exact hg)`. Use `⟨fstPt k₀' ⁻¹' V₀ ∩ sndPt k₀' ⁻¹' V₁, fun u => joinPt k₀ (f₀ (fstPt k₀' u)) (f₁ (sndPt k₀' u)), (hV₀.preimage (continuous_comp_idx _)).inter (hV₁.preimage (continuous_comp_idx _)), ⟨hzV₀, hzV₁⟩, fun u hu => analytic_join k₀ ((hf₀ _ hu.1).comp (analytic_comp_idx _ u)) ((hf₁ _ hu.2 …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu₀` using `fst_mem hu.2`. Establish `hu₁` using `S'.snd_mem hy' hu.2`. Take `⟨g1, g2, e₀⟩` from `hs₀ _ ⟨hu.1.1, hu₀⟩`. Take `⟨g3, g4, e₁⟩` from `hs₁ _ ⟨hu.1.2, hu₁⟩`. Take `⟨m₀, i₀⟩` from `LocImg.img_spec K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hu₀ hF' hF g1 g2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, i₁⟩` from `LocImg.img_spec K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hu₁ hF' hF g3 g4`. Establish `e : sndPt k₀ (joinPt k₀ (LocImg.img Cv F' F (fstPt k₀' u)) (LocImg.img Cv F' F (sndPt k₀' u))) = LocImg.img Cv F' F (sndPt k₀' u)`. Use `join_v₁ fun k hk m => ?_` and prove the remaining obligations. Distinguish the cases in `hkb : ∀ p, M.blk p ≠ some k`. Establish `h1` using `congrFun (LocImg.img_base Cv F' F (fstPt k₀' u)) ⟨⟨k, hkb⟩, m⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (LocImg.img_base Cv F' F (sndPt k₀' u)) ⟨⟨k, hkb⟩, m⟩`. Rewrite `h2` using `[hsb]`. Conclude with `h1.trans h2.symm`. Use `push_neg at hkb`. Take `⟨p, hp⟩` from `hkb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k', hk'⟩` from `blk_cover M' M hp`. Establish `hne : k' ≠ k₀'` using `fun e' => hk (by`. Use `M'.blk_inj _ _ _ hk' (e' ▸ S'.hk)` as an intermediate fact. Rewrite `hp` using `[this, S.hk]`. Conclude with `(Option.some.inj hp).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[LocImg.img_step Cv F' F _ hp hk', LocImg.img_step Cv F' F _ hp hk']`. Simplify using `only [LocImg.stepCoord, hsb, Pts.snd_fst_ne hne]`. Simplify using `only [e₀, e₁]`. Conclude with `⟨S.mem m₀ (by rw [e]; exact m₁), i₀, by rw [e]; exact i₁⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem local_analytic_section_coords (Cv : FlagCover M' M) (S : Sw M τ a b k₀ ca cb) (S' : Sw M' τ a b k₀' ca cb)
     (hy' : IsArithVar (mCoordIdeal y') (d + 2))

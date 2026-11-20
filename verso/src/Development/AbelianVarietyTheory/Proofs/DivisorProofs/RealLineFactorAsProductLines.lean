@@ -7,11 +7,11 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.ThK.LineDec
 
 /- English proof (translation)
-Establish `key : ∀ (l : List (InfinitePlace F)), l.Nodup → ∀ u, projArch σ J u (l.map fun w => embArch σ J w (projArch σ J w m)).prod = if u ∈ l then projArch σ J u m else 1`. Introduce `l hl u`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons w l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih hl.of_cons]`. Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Simplify using `[hl.notMem]`. Simplify using `[projArch_embArch_ne σ J e, e]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `GAd_ext σ J (fun u => by rw [key _ (Finset.nodup_toList _), if_pos (by simp)]) fun v => ?_` and prove the remaining obligations. Rewrite using `[mem_infPts_iff_forall.1 hm v, map_list_prod, List.map_map]`. Conclude with `List.prod_eq_one fun _ h => by`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 h`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_embArch_projArch {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {m : GAd σ J} (hm : m ∈ infPts σ J) :
@@ -35,7 +35,7 @@ theorem prod_embArch_projArch {F E : Type} [Field F] [NumberField F] [Field E] [
     simp
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Take `⟨Z, hZ⟩` from `GlobalTheory.OneParamMatrix.eq_exp_of_continuous_oneParameter (fun t => GlobalTheory.Orb.archMat σ J τ (projArch σ J w (g t))) ((GlobalTheory.Orb.continuous_archMat σ J τ).comp ((continuous_projArch σ J w).comp hc)) (by simp only [h0, map_one]) (fun s t => by simp only [hm, map_m …`. Conclude with `⟨w, τ, Z, GlobalTheory.ThK.OneParamLie.lie_of_archMat_eq_exp F E σ hcm n J w τ Z (fun t => projArch σ J w (g t)) hZ, fun t => ⟨_, rfl, hZ t⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isRealLine_component {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : ℝ → GAd σ J)
@@ -49,9 +49,9 @@ theorem isRealLine_component {F E : Type} [Field F] [NumberField F] [Field E] [N
   exact ⟨w, τ, Z, GlobalTheory.ThK.OneParamLie.lie_of_archMat_eq_exp F E σ hcm n J w τ Z (fun t => projArch σ J w (g t)) hZ, fun t => ⟨_, rfl, hZ t⟩⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ hcm d W c hc γ hγ`. Set `g : ℝ → GAd σ (c • W.J.map σ)` to `fun t => toGAd hσ W.J hc (γ (Multiplicative.ofAdd t))`. Establish `hT : Continuous (toGAd hσ W.J hc)` using `continuous_subtype_val.subtype_mk _`. Establish `hg : Continuous g` using `hT.comp (hγ.1.comp continuous_ofAdd)`. Set `l` to `(Finset.univ : Finset (InfinitePlace F)).toList`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨l.length, fun i t => embArch σ _ (l.get i) (projArch σ _ (l.get i) (g t)), fun i => isRealLine_component hcm g hg (by simp [g]) (fun s t => by simp only [g, ofAdd_add, map_mul]) _, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `prod_embArch_projArch (GlobalTheory.ThK.FiniteLevelDerivatives.toGAd_mem_infPts hσ W hc (hγ.2 (Multiplicative.ofAdd t)))`. Use `h.symm.trans (congrArg List.prod ?_)` and prove the remaining obligations. Use `conv_lhs => rw [← List.ofFn_get (Finset.univ : Finset (InfinitePlace F)).toList, List.map_ofFn]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem line_eq_prod_realLines : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x), IsCMExt F E σ → ∀ {d : ℕ} (W : Spc F E d) (c : E) (hc : c ≠ 0), ∀ γ ∈ Lines σ W,

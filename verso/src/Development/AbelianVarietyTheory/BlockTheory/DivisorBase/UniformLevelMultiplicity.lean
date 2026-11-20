@@ -171,7 +171,7 @@ def RowForms : Prop :=
 def Row : Prop := RowGeo ∧ RowForms
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (D : D7) : Side D D.what₂.embLL := fun _ => rfl
 
@@ -182,7 +182,7 @@ example (w : WeightFamilies.Wt D j) (s : T.Q.c.F →+* ℂ) (f : T.R j) :
     rdK T j w s (T.cE j s) f = T.phiJ j s (wtA w) f := rfl
 
 /- English proof (translation)
-The claim follows from `Set.ext h`.
+A detailed English derivation is pending.
 -/
 example (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)) (h : IsLevelK V N Kf) : (Kf : Set (GA D V)) = levSet V N :=
   Set.ext h

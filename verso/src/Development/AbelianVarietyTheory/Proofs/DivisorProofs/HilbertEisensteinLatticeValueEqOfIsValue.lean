@@ -15,13 +15,13 @@ set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `h`. Take `⟨h₁', h₂'⟩` from `h'`. Distinguish the cases in `hk : k = 2`. Substitute `hk` using the available equality. Take `⟨H, hH, hsum, rfl⟩` from `h₂ rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨H', hH', hsum', rfl⟩` from `h₂' rfl`. Establish `hU : IsOpen {σ : ℂ | -1 / 2 < σ.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hC : IsPreconnected {σ : ℂ | -1 / 2 < σ.re}` using `(convex_halfSpace_re_gt _).isPreconnected`. Establish `hone : (1 : ℂ) ∈ {σ : ℂ | -1 / 2 < σ.re}`. Simplify using `only [Set.mem_setOf_eq, Complex.one_re]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Establish `hzero : (0 : ℂ) ∈ {σ : ℂ | -1 / 2 < σ.re}`. Simplify using `only [Set.mem_setOf_eq, Complex.zero_re]`. Evaluate the numerical expressions. Establish `hev : H =ᶠ[nhds 1] H'` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show (0 : ℝ) < (1 : ℂ).re by simp)] with σ hσ`.
+Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Conclude with `(hsum σ hσ).unique (hsum' σ hσ)`. Conclude with `(hH.analyticOnNhd hU).eqOn_of_preconnected_of_eventuallyEq (hH'.analyticOnNhd hU) hC hone hev hzero`. Conclude with `(h₁ hk).unique (h₁' hk)`.
+A detailed English derivation is pending.
 -/
 private theorem isGVal_unique' {F : Type} [Field F] [NumberField F] {k : ℕ}
     {L : _root_.GlobalTheory.HilbFam.Lat F} {b a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ} {G G' : ℂ}
@@ -52,7 +52,7 @@ open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F _ _ _ k L b a G hG`. Establish `h : ∃ G, _root_.GlobalTheory.HilbFam.IsGVal k L b a G` using `⟨G, hG⟩`. Rewrite using `[_root_.GlobalTheory.HilbFam.gval, dif_pos h]`. Conclude with `isGVal_unique' h.choose_spec hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbFam.gval_eq_of_isGVal : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (L : _root_.GlobalTheory.HilbFam.Lat F) (b a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) (G : ℂ),
     _root_.GlobalTheory.HilbFam.IsGVal k L b a G → _root_.GlobalTheory.HilbFam.gval k L b a = G := by

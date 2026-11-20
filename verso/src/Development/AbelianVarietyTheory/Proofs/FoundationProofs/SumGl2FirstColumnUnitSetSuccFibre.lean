@@ -9,14 +9,14 @@ open scoped Classical
 namespace GlobalTheory.KummerEisensteinGalois
 
 /- English proof (translation)
-Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glFibre_val_map {p n : ℕ} [NeZero p] (x : ZMod (p ^ (n + 1))) :
     (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) x).val = x.val % p ^ n := by
   rw [ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val x]`. Rewrite using `[ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff (by omega), Nat.coprime_comm, hp.coprime_iff_not_dvd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glFibre_isUnit_iff {p : ℕ} [Fact p.Prime] {n : ℕ} (hn : 1 ≤ n) (x : ZMod (p ^ n)) :
     IsUnit x ↔ ¬ p ∣ x.val := by
@@ -26,34 +26,30 @@ theorem glFibre_isUnit_iff {p : ℕ} [Fact p.Prime] {n : ℕ} (hn : 1 ≤ n) (x 
     hp.coprime_iff_not_dvd]
 
 /- English proof (translation)
-Rewrite using `[glFibre_val_map, Nat.dvd_mod_iff (dvd_pow_self p (by omega))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glFibre_dvd_map_iff {p : ℕ} [Fact p.Prime] {n : ℕ} (hn : 1 ≤ n) (x : ZMod (p ^ (n + 1))) :
     p ∣ (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) x).val ↔ p ∣ x.val := by
   rw [glFibre_val_map, Nat.dvd_mod_iff (dvd_pow_self p (by omega))]
 
 /- English proof (translation)
-Introduce `p _ n K _ G Φ hn`. Use `set ρ := ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) with hρ`. Establish `hent : ∀ (γ : GL (Fin 2) (ZMod (p ^ (n + 1)))) (a b : Fin 2), (Matrix.GeneralLinearGroup.map ρ γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) a b = ρ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) a b)` using `fun _ _ _ => rfl`. Establish `hmaps : ∀ γ ∈ unitSet p (n + 1), Matrix.GeneralLinearGroup.map ρ γ ∈ unitSet p n`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [unitSet, mem_filter, mem_univ, true_and] at hγ ⊢`. Rewrite using `[hent, hent, hρ, glFibre_dvd_map_iff hn, glFibre_dvd_map_iff hn]`. Conclude with `hγ`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl (fun g hg => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_congr rfl (fun γ hγ => by rw [(mem_filter.mp hγ).2]), ← Finset.mul_sum]`. Use `congr 1`. Simplify using `only [← Finset.sum_product']`. Use `Finset.sum_bij (fun γ _ => (((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 0 0), ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 0 1), ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 1 0), ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 1 1))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ hγ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨_, hγg⟩` from `mem_filter.mp hγ`. Simplify using `only [mem_product, mem_filter, mem_univ, true_and, ← hγg, hent, and_self]`. Introduce `γ _ δ _ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2, h3, h4⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Use `exacts [h1, h2, h3, h4]`. Introduce and unpack `⟨a, b, c, d⟩ hb`. Simplify using `only [mem_product, mem_filter, mem_univ, true_and] at hb`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ha, hb', hc, hd⟩` from `hb`. Set `B : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))` to `!![a, b; c, d]`. Establish `hBm : ρ.mapMatrix B = (g : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n)))`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exacts [ha, hb', hc, hd]`. Establish `hdet : IsUnit B.det`. Establish `h1 : IsUnit (ρ B.det)`. Rewrite using `[RingHom.map_det, hBm]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp g.isUnit`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[glFibre_isUnit_iff hn, hρ, glFibre_dvd_map_iff hn]`. Conclude with `(glFibre_isUnit_iff (by omega) _).mpr h1`. Take `⟨γ, hγ⟩` from `(Matrix.isUnit_iff_isUnit_det B).mpr hdet`. Establish `hmap : Matrix.GeneralLinearGroup.map ρ γ = g`. Apply `Units.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hBm, ← hγ]`. Both sides reduce to the same expression. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Use `mem_filter.mpr ⟨?_, hmap⟩` and prove the remaining obligations. Simplify using `only [unitSet, mem_filter, mem_univ, true_and] at hg ⊢`.
-
-Rewrite using `[← glFibre_dvd_map_iff hn, ← glFibre_dvd_map_iff hn, ← hρ, ← hent, ← hent, hmap]`. Conclude with `hg`. Simplify using `only [hγ, B]`. Both sides reduce to the same expression. Introduce `γ _`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_unitSet_succ_fibre : ∀ (p : ℕ) [Fact p.Prime] (n : ℕ) (K : Type) [CommRing K] (G : GL (Fin 2) (ZMod (p ^ n)) → K) (Φ : ZMod (p ^ (n + 1)) → ZMod (p ^ (n + 1)) → ZMod (p ^ (n + 1)) → ZMod (p ^ (n + 1)) → K), 1 ≤ n → ∑ γ ∈ unitSet p (n + 1), G (Matrix.GeneralLinearGroup.map (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n))) γ) * Φ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 0 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 0 1) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 1 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 1 1) = ∑ γ ∈ unitSet p n, G γ * ∑ y₀₀ ∈ (univ.filter (fun y : ZMod (p ^ (n + 1)) => ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) y = (γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0)), ∑ y₀₁ ∈ (univ.filter (fun y : ZMod (p ^ (n + 1)) => ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) y = (γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 1)), ∑ y₁₀ ∈ (univ.filter (fun y : ZMod (p ^ (n + 1)) => ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) y = (γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0)), ∑ y₁₁ ∈ (univ.filter (fun y : ZMod (p ^ (n + 1)) => ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) y = (γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 1)), Φ y₀₀ y₀₁ y₁₀ y₁₁ := by
   intro p _ n K _ G Φ hn

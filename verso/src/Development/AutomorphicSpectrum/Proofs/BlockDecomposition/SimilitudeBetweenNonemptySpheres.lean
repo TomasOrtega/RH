@@ -16,7 +16,7 @@ def frame (σ : E →ₐ[F] E) (J : Matrix (Fin 2) (Fin 2) E) (x : Fin 2 → E) 
   !![x 0, -(σ (x 0) * J 0 1 + σ (x 1) * J 1 1); x 1, σ (x 0) * J 0 0 + σ (x 1) * J 1 0]
 
 /- English proof (translation)
-Simplify using `[frame, Matrix.det_fin_two, hE, hform, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frame_det (σ : E →ₐ[F] E) (J : Matrix (Fin 2) (Fin 2) E) (x : Fin 2 → E) :
     (frame σ J x).det = hE σ J x x := by
@@ -24,9 +24,9 @@ theorem frame_det (σ : E →ₐ[F] E) (J : Matrix (Fin 2) (Fin 2) E) (x : Fin 2
   ring
 
 /- English proof (translation)
-Establish `h00 : σ (J 0 0) = J 0 0` using `hJ.1 0 0`. Establish `h11 : σ (J 1 1) = J 1 1` using `hJ.1 1 1`. Establish `h01 : σ (J 1 0) = J 0 1` using `hJ.1 0 1`. Establish `h10 : σ (J 0 1) = J 1 0` using `hJ.1 1 0`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [frame, cT, Matrix.mul_apply, Fin.sum_univ_two, hE, hform, Matrix.det_fin_two, hσ, h00, h11, h01, h10] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frame_gram {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {J : Matrix (Fin 2) (Fin 2) E}
     (hJ : IsHermND σ J) (x : Fin 2 → E) :
@@ -42,19 +42,17 @@ theorem frame_gram {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {J : Matrix
       h01, h10] <;> ring
 
 /- English proof (translation)
-Use `set P := frame σ J x with hP`. Use `set P' := frame σ J x' with hP'`. Establish `hdet : P.det = b` using `by rw [hP, frame_det, hx]`. Establish `hdet' : P'.det = b'` using `by rw [hP', frame_det, hx']`. Establish `hu : IsUnit P.det` using `by rw [hdet]; exact hb.isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hu`. Establish `hc : cT (σ : E →+* E) P⁻¹ * cT (σ : E →+* E) P = 1`. Rewrite using `[← cT_mul, hinv, cT_one]`. Establish `hg : cT (σ : E →+* E) P * J * P = b • Matrix.diagonal ![1, J.det]`. Rewrite using `[hP, frame_gram hσ hJ, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : cT (σ : E →+* E) P' * J * P' = b' • Matrix.diagonal ![1, J.det]`. Rewrite using `[hP', frame_gram hσ hJ, hx']`. Establish `hJ' : J = b • (cT (σ : E →+* E) P⁻¹ * Matrix.diagonal ![1, J.det] * P⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, hinv, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = cT (σ : E →+* E) P⁻¹ * (cT (σ : E →+* E) P * J * P) * P⁻¹ := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hg, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hdetG : (P' * P⁻¹).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, hdet', hdet]`. Simplify using `using ⟨hb', hb⟩`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (P' * P⁻¹) hdetG, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cT (σ : E →+* E) (P' * P⁻¹) * J * (P' * P⁻¹) = (b' / b) • J`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = b' • (cT (σ : E →+* E) P⁻¹ * Matrix.diagonal ![1, J.det] * P⁻¹) := by`. Rewrite using `[hg', Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = (b' / b) • (b • (cT (σ : E →+* E) P⁻¹ * Matrix.diagonal ![1, J.det] * P⁻¹)) := by`.
-
-Rewrite using `[smul_smul, div_mul_cancel₀ _ hb]`. Use `_ = (b' / b) • J := by rw [← hJ']`.
+A detailed English derivation is pending.
 -/
 theorem exists_similitude_of_vectors {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e)
     {J : Matrix (Fin 2) (Fin 2) E} (hJ : IsHermND σ J) {x x' : Fin 2 → E} {b b' : E}
@@ -95,11 +93,11 @@ theorem exists_similitude_of_vectors {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e
     _ = (b' / b) • J := by rw [← hJ']
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm J hJ β β' hβ hβ' ⟨X, hX⟩ ⟨X', hX'⟩`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hx : hE σ J (X 0) (X 0) = algebraMap F E β` using `congrFun (congrFun hX 0) 0`. Establish `hx' : hE σ J (X' 0) (X' 0) = algebraMap F E β'` using `congrFun (congrFun hX' 0) 0`. Establish `hb : algebraMap F E β ≠ 0` using `by simpa using hβ`. Establish `hb' : algebraMap F E β' ≠ 0` using `by simpa using hβ'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_div₀]`. Conclude with `exists_similitude_of_vectors hσ hJ hx hx' hb hb'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_similitude : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ J : Matrix (Fin 2) (Fin 2) E, IsHermND σ J → ∀ β β' : F, β ≠ 0 → β' ≠ 0 → (PositivityTheory.Rg.Mass.sph σ J β).Nonempty → (PositivityTheory.Rg.Mass.sph σ J β').Nonempty → ∃ γ : GL (Fin 2) E, cT (σ : E →+* E) (γ : Matrix (Fin 2) (Fin 2) E) * J * (γ : Matrix (Fin 2) (Fin 2) E) = (algebraMap F E (β' / β)) • J := by
   intro F E _ _ _ _ _ σ hcm J hJ β β' hβ hβ' ⟨X, hX⟩ ⟨X', hX'⟩

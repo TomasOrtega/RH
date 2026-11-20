@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.LocalWeilHom
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Use `set z : κ → AF F := fun i => GlobalTheory.LatVac.liftV v (y i) with hz`. Establish `hza : At (evFin F v) z` using `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.LatVac.at_liftV v _`. Establish `hrx : R (0 + z) = R 0` using `hR 0 z hza`. Establish `hy : (fun i => evFin F v ((0 + z) i)) = y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hz, zero_add, GlobalTheory.LatVac.evFin_liftV]`. Establish `e` using `congrFun h (0 + z)`. Simplify using `only [tens] at e`. Rewrite `e` using `[hrx, hy]`.
-
-Conclude with `mul_right_cancel₀ hR0 e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_cancel {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fintype κ]
     {R : (κ → AF F) → ℂ} (hR : ∀ x z, At (evFin F v) z → R (x + z) = R x) (hR0 : R 0 ≠ 0)
@@ -36,9 +34,7 @@ theorem tens_cancel {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} 
   exact mul_right_cancel₀ hR0 e
 
 /- English proof (translation)
-Introduce `r hr`. Establish `e₂` using `h₂ r hr`. Establish `hr' : Rest (evFin F v) φ' r` using `⟨hr.1, by rw [← e₂]; exact hT₂ _ hr.2⟩`. Use `show T₁ (T₂ (tens (evFin F v) φ r)) = _`. Rewrite using `[e₂]`.
-
-Conclude with `h₁ r hr'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_mul {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fintype κ]
     (T₁ T₂ : Module.End ℂ ((κ → AF F) → ℂ)) (hT₂ : ∀ Φ ∈ schA F κ, T₂ Φ ∈ schA F κ)
@@ -52,25 +48,23 @@ theorem acts_mul {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fi
   exact h₁ r hr'
 
 /- English proof (translation)
-Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (F := F) κ v`. Establish `hRi : ∀ x z, At (evFin F v) z → R (x + z) = R x` using `(hR 0 (SB _).zero_mem).1`. Use `choose f hfSB hfA using hex`. Establish `hread : ∀ γ (m : (κ → Fv F v) → ℂ) (hm : m ∈ SB (κ → Fv F v)) (φ₁ : (κ → Fv F v) → ℂ), Acts (evFin F v) (ρ γ) m φ₁ → ρ γ (tens (evFin F v) m R) = tens (evFin F v) φ₁ R` using `fun γ m hm φ₁ h => h R (hR m hm)`. Establish `huniq : ∀ γ (m : (κ → Fv F v) → ℂ) (hm : m ∈ SB (κ → Fv F v)) (φ₁ : (κ → Fv F v) → ℂ), ρ γ (tens (evFin F v) m R) = tens (evFin F v) φ₁ R → f γ m hm = φ₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ m hm φ₁ h`. Conclude with `tens_cancel v hRi hR0 ((hread γ m hm _ (hfA γ m hm)).symm.trans h)`. Establish `htadd : ∀ φ φ' : (κ → Fv F v) → ℂ, tens (evFin F v) (φ + φ') R = tens (evFin F v) φ R + tens (evFin F v) φ' R`. Introduce `φ φ'`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [tens, Pi.add_apply, add_mul]`. Establish `htsmul : ∀ (c : ℂ) (φ : (κ → Fv F v) → ℂ), tens (evFin F v) (c • φ) R = c • tens (evFin F v) φ R`. Introduce `c φ`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `L : Γ → Module.End ℂ (SB (κ → Fv F v))` to `fun γ => { toFun := fun m => ⟨f γ m m.2, hfSB γ m m.2⟩ map_add' := fun m m' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show f γ _ _ = f γ m m.2 + f γ m' m'.2`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add, htadd, map_add, hread γ m m.2 _ (hfA γ m m.2), hread γ m' m'.2 _ (hfA γ m' m'.2), htadd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c m => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show f γ _ _ = c • f γ m m.2`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, htsmul, map_smul, hread γ m m.2 _ (hfA γ m m.2), htsmul] }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hL : ∀ γ (m : SB (κ → Fv F v)), ((L γ m : SB (κ → Fv F v)) : (κ → Fv F v) → ℂ) = f γ m m.2` using `fun _ _ => rfl`. Use `⟨{ toFun := L, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL]`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[map_one]`. Both sides reduce to the same expression. Introduce `γ γ'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hL]`. Use `show f (γ * γ') m m.2 = f γ (f γ' m m.2) (hfSB γ' m m.2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `huniq` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `acts_mul v (ρ γ) (ρ γ') (hpres γ') (hfA γ' m m.2) (hfA γ _ (hfSB γ' m m.2)) R (hR m m.2)`. Introduce `γ m φ₁ _ show _ ↔ f γ m m.2 = φ₁`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Conclude with `huniq γ m m.2 φ₁ (hread γ m m.2 φ₁ h)`. Introduce `h`. Rewrite using `[← h]`. Conclude with `hfA γ m m.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fintype κ] {Γ : Type} [Monoid Γ]
     (ρ : Γ →* Module.End ℂ ((κ → AF F) → ℂ)) (hpres : ∀ γ, ∀ Φ ∈ schA F κ, ρ γ Φ ∈ schA F κ)
@@ -132,13 +126,13 @@ end GlobalTheory.LocalWeilHom
 namespace GlobalTheory.LocalWeilHom
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w _ _ L _ σL JS JT ιS ιT hιS hιT`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil'`. Set `ρ` to `om'.comp (MonoidHom.prodMap ιS ιT)`. Establish `hρ : ∀ g h, ρ (g, h) = om' (ιS g, ιT h)` using `fun _ _ => rfl`. Establish `hpres : ∀ γ, ∀ Φ ∈ schA F (Fin a' × Fin (a + a')), ρ γ Φ ∈ schA F (Fin a' × Fin (a + a'))` using `fun γ Φ hΦ => hW.pres _ Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ γ, ∀ m ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (ρ γ) m φ₁`. Introduce and unpack `⟨g, h⟩ m hm`. Take `⟨φ₁, hφ₁, hA₁⟩` from `GlobalTheory.T.weilRepresentation_localAtFinitePlace_unitaryGroupW F E σ B a a' G X om om' hTr v (ιT h) (hιT h) m hm`. Take `⟨S, hS⟩` from `GlobalTheory.WeilLocality.locality B G X om om' hTr v (ιS g) (hιS g)`. Use `⟨S φ₁, (hS φ₁ hφ₁).1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : ρ (g, h) = om' (ιS g, 1) * om' (1, ιT h)`. Rewrite using `[hρ, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[hsplit]`. Conclude with `acts_mul v _ _ (fun Φ hΦ => hW.pres _ Φ hΦ) hA₁ (hS φ₁ hφ₁).2`. Take `⟨ω, hω⟩` from `exists_hom v ρ hpres hex`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ω, fun g h m φ₁ hφ₁ => hω (g, h) m φ₁ hφ₁⟩`.
+A detailed English derivation is pending.
 -/
 theorem local_weil_hom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

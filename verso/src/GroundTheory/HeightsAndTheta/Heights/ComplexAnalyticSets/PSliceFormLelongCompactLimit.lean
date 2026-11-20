@@ -20,7 +20,7 @@ namespace SliceFormLelongCompact
 variable {n d : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `hx _ hℓ` as an intermediate fact. Simplify using `[linForm] at this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_mem_zeroSet {I : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin n → ℂ}
     (hℓ : linForm ℓ - 1 ∈ I) {x : Fin n → ℂ} (hx : x ∈ zeroSet I) : x ≠ 0 := by
@@ -29,13 +29,13 @@ theorem ne_zero_of_mem_zeroSet {I : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin
   simp [linForm] at this
 
 /- English proof (translation)
-Introduce `_ hx p hp` and use `hx p (hle hp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zeroSet_anti {I I' : Ideal (MvPolynomial (Fin n) ℂ)} (hle : I ≤ I') : zeroSet I' ⊆ zeroSet I :=
   fun _ hx p hp => hx p (hle hp)
 
 /- English proof (translation)
-Unfold `varInt chartInt`. Use `split_ifs with hA`. Rewrite using `[CutOffDominated.chartDens_congr_zeroSet hfg]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem varInt_congr_weight {J : Ideal (MvPolynomial (Fin n) ℂ)} {f g : (Fin n → ℂ) → ℝ}
     (hfg : ∀ x ∈ zeroSet J, f x = g x) (φ : Fin d → (Fin n → ℂ) → ℝ) : varInt J d f φ = varInt J d g φ := by
@@ -45,13 +45,13 @@ theorem varInt_congr_weight {J : Ideal (MvPolynomial (Fin n) ℂ)} {f g : (Fin n
   · rfl
 
 /- English proof (translation)
-Take `⟨U, hU, hZU, hfU⟩` from `hf`. Establish `hK : IsCompact (Z ∩ tsupport f)` using `hfc.isCompact.inter_left hZ`. Take `⟨V, hVo, hKV, hVU, -⟩` from `exists_open_between_and_isCompact_closure hK hU (Set.inter_subset_left.trans hZU)`. Take `⟨θ, hθ, -, h0, h1⟩` from `exists_contMDiff_zero_iff_one_iff_of_isClosed (I := 𝓘(ℝ, Fin n → ℂ)) (n := ⊤) hVo.isClosed_compl hK.isClosed (Set.disjoint_compl_left_iff_subset.2 hKV)`. Establish `hθc : ContDiff ℝ ∞ θ` using `contMDiff_iff_contDiff.1 hθ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsupp : tsupport θ ⊆ U`. Use `(closure_mono fun y hy => ?_).trans hVU` and prove the remaining obligations. Assume the negation of the conclusion as `hyV`. Conclude with `hy ((h0 y).1 hyV)`. Use `⟨fun x => θ x * f x, contDiff_iff_contDiffAt.2 fun x => ?_, hfc.mul_left, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hxU : x ∈ U`. Conclude with `hθc.contDiffAt.mul (hfU.contDiffAt (hU.mem_nhds hxU))`. Establish `hθ0 : θ =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.1 fun h => hxU (hsupp h)`. Use `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hθ0] with y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hy]`. Use `show θ x * f x = f x`. Distinguish the cases in `hxf : x ∈ tsupport f`. Rewrite using `[(h1 x).1 ⟨hx, hxf⟩, one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hxf, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_contDiff_eqOn {Z : Set (Fin n → ℂ)} {f : (Fin n → ℂ) → ℝ} (hZ : IsClosed Z)
     (hf : SmoothNear Z f) (hfc : HasCompactSupport f) :
@@ -81,11 +81,11 @@ theorem exists_contDiff_eqOn {Z : Set (Fin n → ℂ)} {f : (Fin n → ℂ) → 
     · rw [image_eq_zero_of_notMem_tsupport hxf, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `chartAbsDens sheetSum`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Distinguish the cases in `hxB : x ∈ B`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[Set.indicator_of_mem hxB]`. Establish `hM` using `ChartMassCompact.maDens_eq_zero hs.choose_spec ψ i fun h => hxB (hB h)`. Rewrite `hM` using `[hx.2]`. Simplify using `[hM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chartAbsDens_indicator_eq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (w : (Fin n → ℂ) → ℝ) (ψ : Fin d → (Fin n → ℂ) → ℝ) {B : Set (Fin n → ℂ)} (i : Fin d)
@@ -103,9 +103,9 @@ theorem chartAbsDens_indicator_eq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Ma
   · rfl
 
 /- English proof (translation)
-Use `hi.mono' hm.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Rewrite using `[Real.norm_eq_abs]`. Unfold `chartDens chartAbsDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integrable_chartDens {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hA : IsFiniteProjection J A) {w : (Fin n → ℂ) → ℝ} {ψ : Fin d → (Fin n → ℂ) → ℝ}
@@ -120,7 +120,7 @@ theorem integrable_chartDens {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hN : Measurable h.dualNorm` using `(SliceCut.continuous_dualNorm h).measurable`. Establish `hL : Measurable fun y : Fin n → ℂ => ‖∑ j, u j * y j‖` using `(by fun_prop : Continuous _).measurable`. Unfold `fsLogReg`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_fsLogReg (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) : Measurable (fsLogReg h u ε) := by
   have hN : Measurable h.dualNorm := (SliceCut.continuous_dualNorm h).measurable
@@ -129,7 +129,7 @@ theorem measurable_fsLogReg (h : HermNorm n) (u : Fin n → ℂ) (ε : ℝ) : Me
   fun_prop
 
 /- English proof (translation)
-The claim follows from `|fsLogReg h u ε x| ≤ 2 * |Real.log ‖linEval u x‖| + (2 * |Real.log (h.dualNorm x)| + 1) := by have ht : 0 < ‖linEval u x‖ := norm_pos_iff.2 hu have he : fsLogReg h u ε x = Real.log ((‖linEval u x‖ / h.dualNorm x) ^ 2 + ε) / 2 := by unfold fsLogReg linEval congr 2 field_simp rw [h …`.
+A detailed English derivation is pending.
 -/
 theorem abs_fsLogReg_le (h : HermNorm n) (u x : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) (hε1 : ε ≤ 1)
     (hu : linEval u x ≠ 0) (hx : 0 < h.dualNorm x) :
@@ -152,7 +152,7 @@ theorem abs_fsLogReg_le (h : HermNorm n) (u x : Fin n → ℂ) {ε : ℝ} (hε :
   linarith
 
 /- English proof (translation)
-Use `(fsLogReg_tendsto h u x hx hu).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact. Establish `e : Real.log (‖∑ j, u j * x j‖ / h.dualNorm x) = Real.log ‖linEval u x‖ - Real.log (h.dualNorm x)` using `Real.log_div (norm_pos_iff.2 hu).ne' hx.ne'`. Rewrite `this` using `[fsLog, e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tendsto_fsLogReg_sub (h : HermNorm n) (u x : Fin n → ℂ) (hu : linEval u x ≠ 0)
     (hx : 0 < h.dualNorm x) :
@@ -165,13 +165,13 @@ theorem tendsto_fsLogReg_sub (h : HermNorm n) (u x : Fin n → ℂ) (hu : linEva
   rwa [fsLog, e] at this
 
 /- English proof (translation)
-Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Unfold `chartDens chartAbsDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs : ∃ s, IsSheetAt J A x s`. Simplify using `only [dif_pos hs]`. Distinguish the cases in `hxB : x ∈ Metric.closedBall 0 R`. Establish `hb` using `abs_fsLogReg_le h u x hε hε1 (hy x hx) (h.dualNorm_pos (h0 x hx.1))`. Establish `hpos : (0 : ℝ) ≤ 2 * |Real.log (h.dualNorm x)| + 1` using `by positivity`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hxB, Real.norm_eq_abs]`. Simplify using `only [abs_mul]`. Rewrite using `[abs_of_nonneg hpos]`. Conclude with `(mul_le_mul_of_nonneg_right hb (abs_nonneg _)).trans (le_of_eq (by ring))`. Establish `hM` using `ChartMassCompact.maDens_eq_zero hs.choose_spec (vecCons f φ) 0 (by simpa using fun h' => hxB (hR h'))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[hx.2]`. Rewrite using `[hM]`. Simplify using the standard rewrite rules. Simplify using `only [dif_neg hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_chartDens_fsLogReg_le (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (d + 1)) (Fin n) ℂ} (hA : IsFiniteProjection J A) {u : Fin n → ℂ}
@@ -206,9 +206,9 @@ theorem norm_chartDens_fsLogReg_le (h : HermNorm n) {J : Ideal (MvPolynomial (Fi
     simp
 
 /- English proof (translation)
-Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Unfold `chartDens sheetSum`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_sub_distrib]`. Use `tendsto_finsetSum _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs : ∃ s, IsSheetAt J A x s`. Simplify using `only [dif_pos hs, ← sub_mul]`. Conclude with `(tendsto_fsLogReg_sub h u x (hy x hx) (h.dualNorm_pos (h0 x hx.1))).mul_const _`. Simplify using `only [dif_neg hs, sub_zero]`. Conclude with `tendsto_const_nhds`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_chartDens_fsLogReg (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hA : IsFiniteProjection J A) (u : Fin n → ℂ)
@@ -229,17 +229,15 @@ theorem tendsto_chartDens_fsLogReg (h : HermNorm n) {J : Ideal (MvPolynomial (Fi
     exact tendsto_const_nhds
 
 /- English proof (translation)
-Unfold `varInt`. Use `split_ifs with hA`. Use `swap`. Simplify using `only [sub_zero]`. Conclude with `(tendsto_const_nhds : Tendsto (fun _ : ℝ => (0 : ℝ)) (𝓝[>] 0) (𝓝 0))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hAf` using `hA.choose_spec`. Unfold `chartInt`. Take `⟨R, hR⟩` from `hfc.isCompact.isBounded.subset_closedBall (0 : Fin n → ℂ)`. Establish `hψ : ∀ i, SmoothNear (zeroSet J) (vecCons f φ i)` using `fun i => Fin.cases (by simpa using hf) (fun i => by simpa using hφ i) i`. Establish `hcs : HasCompactSupport (vecCons f φ 0)` using `by simpa using hfc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcN : ContinuousOn (fun x => Real.log (h.dualNorm x)) (zeroSet J)` using `(contDiffOn_log_dualNorm h).continuousOn.mono fun x hx => h0 x hx`. Establish `hmN : Measurable fun x : Fin n → ℂ => Real.log (h.dualNorm x)` using `Real.measurable_log.comp (SliceCut.continuous_dualNorm h).measurable`. Establish `hmU : Measurable fun x : Fin n → ℂ => Real.log ‖linEval u x‖` using `Real.measurable_log.comp (Continuous.measurable (by unfold linEval; fun_prop))`. Establish `hmeas : ∀ w, Measurable w → Measurable (chartDens J hA.choose w (vecCons f φ))` using `fun w hw => (SheetSumMeasurable.proof n (d + 1) J hA.choose w _ hJ hdim hAf hw hψ).1`. Establish `hI1` using `hLI n (d + 1) J hA.choose u (vecCons f φ) R hJ hdim hAf hu hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI2` using `hCM n (d + 1) J hA.choose (fun x => 2 * |Real.log (h.dualNorm x)| + 1) (vecCons f φ) hJ hdim hAf ((hcN.abs.const_smul (2 : ℝ)).add continuousOn_const) hψ (Or.inr ⟨0, hcs⟩)`. Establish `hIN` using `hCM n (d + 1) J hA.choose _ (vecCons f φ) hJ hdim hAf hcN hψ (Or.inr ⟨0, hcs⟩)`. Establish `hIU : Integrable (chartAbsDens J hA.choose (fun x => Real.log ‖linEval u x‖) (vecCons f φ))`. Rewrite using `[← chartAbsDens_indicator_eq _ _ 0 (by simpa using hR)]` and apply the resulting hypothesis. Rewrite using `[← integral_sub (integrable_chartDens hAf (hmeas _ hmU) hIU) (integrable_chartDens hAf (hmeas _ hmN) hIN)]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP, hPy⟩` from `LelongRegularise.exists_poly_of_linEval_eq_zero hJ hAf hu`. Establish `hgood : ∀ᵐ y : Fin (d + 1) → ℂ, ∀ x ∈ fibre J hA.choose y, linEval u x ≠ 0` using `by filter_upwards [LelongRegularise.ae_eval_ne_zero P hP] with y hy x hx hx0`. Conclude with `hy (hPy y x hx hx0)`. Use `tendsto_integral_filter_of_dominated_convergence _ ?_ ?_ ((hI1.const_mul 2).add hI2) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε _`.
-
-Conclude with `(hmeas _ (measurable_fsLogReg h u ε)).aestronglyMeasurable`. Use `filter_upwards [Ioc_mem_nhdsGT one_pos] with ε hε filter_upwards [hgood] with y hy`. Conclude with `norm_chartDens_fsLogReg_le h hAf φ hR h0 hε.1 hε.2 hy`. Use `filter_upwards [hgood] with y hy`. Conclude with `tendsto_chartDens_fsLogReg h hAf u _ h0 hy`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_varInt_fsLogReg (hLI : LogIntegrable.Statement) (hCM : ChartMassCompact.Statement)
     (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ)) (u : Fin n → ℂ) (f : (Fin n → ℂ) → ℝ)

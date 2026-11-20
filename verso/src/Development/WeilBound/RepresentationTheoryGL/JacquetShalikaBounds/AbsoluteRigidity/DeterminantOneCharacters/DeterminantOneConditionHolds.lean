@@ -14,9 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 def locU (w : HeightOneSpectrum (𝓞 E)) : (w.adicCompletion E)ˣ →* (Af E)ˣ := Units.map (corner (sLoc E w))
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e1 : ((locGL E a w (GlobalTheory.CompanionTheory.Ipf.Val.SphM.sc w a h0) : GL (Fin a) (Af E)) : Matrix (Fin a) (Fin a) (Af E)) i j = (1 : Matrix (Fin a) (Fin a) (Af E)) i j - sLoc E w ((1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) + sLoc E w ((ϖ • (1 : Matrix (Fin a) (Fi …` using `rfl`. Establish `e2 : ((Matrix.GeneralLinearGroup.scalar (Fin a) (locU w (Units.mk0 ϖ h0)) : GL (Fin a) (Af E)) : Matrix (Fin a) (Fin a) (Af E)) i j = if i = j then 1 - sLoc E w 1 + sLoc E w ϖ else 0`. Simplify using `[Matrix.GeneralLinearGroup.scalar, locU, corner, Matrix.scalar_apply, Matrix.diagonal_apply]`. Rewrite using `[e1, e2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem locGL_sc (a : ℕ) (w : HeightOneSpectrum (𝓞 E)) {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) :
     locGL E a w (GlobalTheory.CompanionTheory.Ipf.Val.SphM.sc w a h0) =
@@ -35,7 +35,7 @@ theorem locGL_sc (a : ℕ) (w : HeightOneSpectrum (𝓞 E)) {ϖ : w.adicCompleti
   · simp [Matrix.one_apply_ne h, h]
 
 /- English proof (translation)
-Establish `hp` using `Multiset.powersetCard_self (B.map fun b : ℂˣ => (b : ℂ))`. Rewrite `hp` using `[Multiset.card_map, hB]`. Simplify using `only [GlobalTheory.LFun.satEig, Multiset.esymm, hp, sub_self, mul_zero, zero_div, Complex.cpow_zero, one_mul, Multiset.map_singleton, Multiset.sum_singleton]`. Conclude with `((Units.coeHom ℂ).map_multiset_prod B).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem satEig_self (q a : ℕ) (B : Multiset ℂˣ) (hB : B.card = a) :
     GlobalTheory.LFun.satEig q a B a = ((B.prod : ℂˣ) : ℂ) := by
@@ -49,13 +49,13 @@ end LocalDeterminantOne
 
 open LocalDeterminantOne in
 /- English proof (translation)
-Introduce `E _ _ _ m π w B hu hB`. Proceed by induction on `π using Quotient.inductionOn with | _ π => ?_`. Take `⟨ω, hω, hc⟩` from `hu`. Express the relevant statement in the definitionally equal form `(CG.mk π).HasSat w B at hB`. Express the relevant statement in the definitionally equal form `(CG.mk π).HasCentChar ω at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hB` using `[CG.hasSat_mk]`. Rewrite `hc` using `[CG.hasCentChar_mk]`. Take `⟨x, hx⟩` from `hB.exists_vec`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV w`. Establish `h0 : ϖ ≠ 0` using `fun h => by simp [Formalism.UG.IsUnifV, h] at hϖ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hx.2.2.2 ϖ hϖ m le_rfl`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.Ipf.Val.SphM.Tj_self w m h0, GlobalTheory.CompanionTheory.Ipf.Val.SphM.heckeVec_central _ hx.2.1 (GlobalTheory.CompanionTheory.Ipf.Val.SphM.sc_central w m h0), CuspSub.locRep_eq, locGL_sc m w h0, satEig_self _ m B hx.2.2.1]`. Establish `h2 : π.op (.fin (Matrix.GeneralLinearGroup.scalar (Fin m) (locU w (Units.mk0 ϖ h0)))) x = ((ω.1 (finId E (locU w (Units.mk0 ϖ h0))) : ℂˣ) : ℂ) • x` using `hc _ x`. Rewrite `h2` using `[h1]`. Establish `h3 : ((B.prod : ℂˣ) : ℂ) = ((ω.1 (finId E (locU w (Units.mk0 ϖ h0))) : ℂˣ) : ℂ)` using `smul_left_injective ℂ hx.1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `hω _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem determinant_one_condition_holds : DetOne := by
   intro E _ _ _ m π w B hu hB

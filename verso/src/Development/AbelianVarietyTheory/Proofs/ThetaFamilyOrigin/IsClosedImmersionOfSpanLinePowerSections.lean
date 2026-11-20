@@ -15,21 +15,19 @@ namespace GlobalTheory.PowSec
 open Out in
 
 /- English proof (translation)
-Introduce `h K _ _ P n J _ t ρ ρ₂ hn hspan`. Set `T : Over (Sp K)` to `baseOver (Sp K)`. Set `c : Γ(T.left, ⊤) ≃+* K` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv`. Establish `ρ₁ : ρ ≫ (fst T P.A).left = P.A.hom` using `((congrArg (ρ ≫ ·) ((Category.comp_id _).symm.trans pullback.condition)).trans (Category.assoc _ _ _).symm).trans ((congrArg (· ≫ P.A.hom) ρ₂).trans (Category.id_comp _))`. Establish `ρ₃ : (snd T P.A).left ≫ ρ = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₁).trans (pullback.condition.symm.trans ((Category.comp_id _).trans (Category.id_comp _).symm)))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₂).trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Use `haveI : IsIso ρ := ⟨_, ρ₂, ρ₃⟩`. Set `b : J → SecM P.A P.L n T` to `fun a => SecM.ofSec P.A (t a)`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `D : SecM P.A P.L n T → (lbPow P.L n).Sec` to `fun v => down P.L (snd T P.A).left ρ ρ₂ n (SecM.toSec P.A v)`. Establish `hlin : ∀ (a : J → K) j, (D (∑ i, c.symm (a i) • b i)).f j = ∑ i, constFn P.A.hom _ (a i) * (D (b i)).f j`. Introduce `a j`. Use `show (ρ.appLE _ _ (chart_eq P.L (snd T P.A).left ρ ρ₂ j).le).hom ((∑ i, c.symm (a i) • b i : SecM P.A P.L n T).1 (fun _ => j PUnit.unit)) = _`. Rewrite using `[Submodule.coe_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrArg _ (Finset.sum_apply _ _ _)).trans ?_` and prove the remaining obligations. Use `(map_sum (ρ.appLE _ _ (chart_eq P.L (snd T P.A).left ρ ρ₂ j).le).hom _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `(map_mul _ (liftHom P.A _ (c.symm (a i))) ((b i).1 fun _ => j PUnit.unit)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Establish `h1` using `(Scheme.Hom.appLE_comp_appLE ρ (fst T P.A).left ⊤ _ _ (fun _ _ => trivial) (chart_eq P.L (snd T P.A).left ρ ρ₂ j).le).trans (appLE_congr ρ₁ ⊤ _ _ (fun _ _ => trivial))`. Conclude with `congrArg (fun φ => φ.hom (c.symm (a i))) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, s, hcov, hs⟩` from `veryAmple_lbPow h.ample K P n hn`. Establish `himm : ImmBy P.A.hom (lbPow P.L n) s Set.univ`. Use `⟨by simpa only [Set.mem_univ, iSup_pos] using hcov, fun i _ => ?_⟩` and prove the remaining obligations. Take `⟨haff, r, hr, hsurj⟩` from `hs i`. Use `⟨haff, r, hr, (SpanImm.closure_eq_top_iff (RingHom.comp (P.A.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom) r).2 fun f => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, hF⟩` from `hsurj f`. Conclude with `⟨F, hF.symm⟩`. Use `haveI := P.isAb.proper`. Use `SpanImm.immBy_of_span K _ P.A.hom _ (LB.isLB_linComb P.isLB _ _) _ J s _ himm fun i => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `down_surjective P.L (snd T P.A).left ρ ρ₂ n (s i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hw' : D (SecM.ofSec P.A w) = s i` using `hw`. Establish `hm : (SecM.ofSec P.A w : SecM P.A P.L n T) ∈ Submodule.span Γ(T.left, ⊤) (Set.range b)` using `hspan.ge Submodule.mem_top`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hm`. Use `⟨fun i => c (a i), fun j => ?_⟩` and prove the remaining obligations. Use `hlin (fun i => c (a i)) j` as an intermediate fact.
-
-Simplify using `only [RingEquiv.symm_apply_apply] at this`. Rewrite `this` using `[ha, hw']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem immBy_down_of_span : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N : ℕ) (J : Type) [Fintype J] (t : J → LB.Sec (Out.LPow P.A P.L N (Out.baseOver (Sp K)))) (ρ : P.A.left ⟶ ((Out.baseOver (Sp K)) ⊗ P.A).left) (e : ρ ≫ (snd (Out.baseOver (Sp K)) P.A).left = 𝟙 P.A.left), 4 ≤ N → Submodule.span Γ((Out.baseOver (Sp K)).left, ⊤) (Set.range fun a => (Out.SecM.ofSec P.A (t a) : Out.SecM P.A P.L N (Out.baseOver (Sp K)))) = ⊤ → ImmBy P.A.hom (lbPow P.L N) (fun a => PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((N : ℕ) : ℤ) (t a)) Set.univ := by
   intro h K _ _ P n J _ t ρ ρ₂ hn hspan

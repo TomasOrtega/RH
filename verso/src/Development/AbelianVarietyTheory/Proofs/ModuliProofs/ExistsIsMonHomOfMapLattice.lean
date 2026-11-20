@@ -17,13 +17,13 @@ namespace GlobalTheory
 open LatticeHom in
 
 /- English proof (translation)
-Introduce `hT hL P P' g u u' F hg hg' hF`. Establish `key : ∀ (Q : Out.PolAV (Sp ℂ)) (w : HolUnif Q.A Q.L g), Q.g = g → ∃ (v : HolUnif Q.A Q.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : v.Λ → ℂ) (T : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), v.IsAH Hm χ ∧ (∀ (k : ℕ) θ, v.IsThetaFn Hm χ k θ → ∃ s, v.IsFnPow k s θ) ∧ (∀ (k : ℕ) s, ∃ θ, v.IsThetaFn …`. Introduce and unpack `Q w rfl`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨v, Hm, χ, -, hAH, -, -, -, -, hsec, -⟩` from `hT Q rig hrig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hTv⟩` from `exists_linearEquiv_of_holUnif hL.mulN Q w v`. Conclude with `⟨v, Hm, χ, T, hAH, fun k θ h => ((hsec k).2 θ h).exists, fun k s => ((hsec k).1 s).exists, hTv⟩`. Take `⟨v, Hm, χ, T, hAH, hsec, -, hv⟩` from `key P u hg`. Take `⟨v', Hm', χ', T', hAH', -, hfn, hv'⟩` from `key P' u' hg'`. Set `F₀ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `T'.toLinearMap ∘ₗ F ∘ₗ T.symm.toLinearMap`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hF₀ : ∀ z, F₀ (T z) = T' (F z)` using `fun z => by simp [F₀]`. Establish `hΛ : ∀ l ∈ v.Λ, F₀ l ∈ v'.Λ` using `fun l hl => by`. Take `⟨z, rfl⟩` from `T.surjective l`. Rewrite using `[hF₀, ← v'.ker, hv', u'.ker]`. Use `hF z ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← u.ker, ← hv, v.ker]` and apply the resulting hypothesis. Take `⟨d, hd⟩` from `exists_complementary_theta ThetaLarge.exists_theta_apply_ne_zero v v' P.isLB P'.isLB hAH hAH' F₀ hΛ 4`. Take `⟨f, hf, hfe⟩` from `exists_isMonHom_of_complementary hL.ample P P' v v' hsec hfn F₀ hΛ d hd`. Conclude with `⟨f, hf, fun z => by rw [← hv', ← hF₀, hfe, hv]⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isMonHom_of_map_lattice :
     ThetaUnifAV → Out.Laws → ∀ (P P' : Out.PolAV (Sp ℂ)) (g : ℕ) (u : HolUnif P.A P.L g) (u' : HolUnif P'.A P'.L g) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), P.g = g → P'.g = g → (∀ z ∈ u.Λ, F z ∈ u'.Λ) → ∃ f : P.A ⟶ P'.A, IsMonHom f ∧ ∀ z, u'.ex (F z) = u.ex z ≫ f := by

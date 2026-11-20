@@ -14,7 +14,7 @@ section Kill
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_killCompl, Finsupp.embDomain_zero, coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_kill {σ τ : Type} (e : σ ↪ τ) (f : MvPowerSeries τ R) :
     constantCoeff (killCompl e f) = constantCoeff f := by
@@ -22,7 +22,7 @@ theorem cc_kill {σ τ : Type} (e : σ ↪ τ) (f : MvPowerSeries τ R) :
     coeff_zero_eq_constantCoeff_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[coeff_killCompl, coeff_subst (hasSubst_of_constantCoeff_zero ha), coeff_subst (hasSubst_of_constantCoeff_zero fun k => (cc_kill e _).trans (ha k))]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[← coeff_killCompl, map_finsuppProd]`. Simplify using `only [map_pow]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kill_subst {σ τ υ : Type} [Finite υ] (e : σ ↪ τ) {a : υ → MvPowerSeries τ R}
     (ha : ∀ s, constantCoeff (a s) = 0) (H : MvPowerSeries υ R) :
@@ -35,7 +35,7 @@ theorem kill_subst {σ τ υ : Type} [Finite υ] (e : σ ↪ τ) {a : υ → MvP
   simp only [map_pow]
 
 /- English proof (translation)
-Establish `h` using `kill_subst e (a := fun t => (X t : MvPowerSeries τ R)) (fun t => constantCoeff_X t) F`. Rewrite `h` using `[subst_self]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill_eq_subst {σ τ : Type} [Finite τ] (e : σ ↪ τ) (F : MvPowerSeries τ R) :
     killCompl e F = subst (fun t => (killCompl e (X t) : MvPowerSeries σ R)) F := by
@@ -46,7 +46,7 @@ theorem kill_eq_subst {σ τ : Type} [Finite τ] (e : σ ↪ τ) (F : MvPowerSer
 variable {d : ℕ} {τ : Type}
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `inl i => exact hu i`. Consider the case `inr i => exact hv i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem elim_const {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) (j : Fin d ⊕ Fin d) :
@@ -56,7 +56,7 @@ theorem elim_const {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoe
   | inr i => exact hv i
 
 /- English proof (translation)
-Unfold `at2`. Rewrite using `[kill_subst e (elim_const hu hv)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem killCompl_powerSeriesEvalTwoGroups {σ : Type} [Finite τ] (e : σ ↪ τ) (c : MvPowerSeries (Fin d ⊕ Fin d) R)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -69,9 +69,9 @@ theorem killCompl_powerSeriesEvalTwoGroups {σ : Type} [Finite τ] (e : σ ↪ �
   cases s <;> rfl
 
 /- English proof (translation)
-Unfold `at2`. Establish `: (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries τ R)) fun _ : Fin d => 0) = (0 : Fin d ⊕ Fin d → MvPowerSeries τ R)`. Apply the tactic sequence `funext s; cases s <;> rfl`. Rewrite using `[this, subst_zero_eq_C_constantCoeff]`. Use extensionality with `n`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[coeff_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem powerSeriesEvalTwoGroups_zero_zero (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
     at2 c (fun _ => (0 : MvPowerSeries τ R)) (fun _ => 0) = C (constantCoeff c) := by
@@ -84,9 +84,9 @@ theorem powerSeriesEvalTwoGroups_zero_zero (c : MvPowerSeries (Fin d ⊕ Fin d) 
   simp [coeff_C]
 
 /- English proof (translation)
-Rewrite using `[kill_eq_subst]`. Unfold `at2`. Use `congr 1`. Use function extensionality and compare the values at `s`. Consider the cases of `s with`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl i => exact (killCompl_X (e := (Function.Embedding.inl : Fin d ↪ Fin d ⊕ Fin d)) i).symm`. Consider the case `inr i`. Use `(killCompl_X_eq_zero ?_).symm` and prove the remaining obligations. Introduce and unpack `⟨j, hj⟩`. Conclude with `Sum.inl_ne_inr hj`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem powerSeriesEvalTwoGroups_X_zero (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
     at2 c (fun i => (X i : MvPowerSeries (Fin d) R)) (fun _ => 0) =
@@ -103,9 +103,9 @@ theorem powerSeriesEvalTwoGroups_X_zero (c : MvPowerSeries (Fin d ⊕ Fin d) R) 
     exact Sum.inl_ne_inr hj
 
 /- English proof (translation)
-Rewrite using `[kill_eq_subst]`. Unfold `at2`. Use `congr 1`. Use function extensionality and compare the values at `s`. Consider the cases of `s with`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl i`. Use `(killCompl_X_eq_zero ?_).symm` and prove the remaining obligations. Introduce and unpack `⟨j, hj⟩`. Conclude with `Sum.inr_ne_inl hj`. Consider the case `inr i => exact (killCompl_X (e := (Function.Embedding.inr : Fin d ↪ Fin d ⊕ Fin d)) i).symm`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem powerSeriesEvalTwoGroups_zero_X (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
     at2 c (fun _ => 0) (fun i => (X i : MvPowerSeries (Fin d) R)) =
@@ -122,7 +122,7 @@ theorem powerSeriesEvalTwoGroups_zero_X (c : MvPowerSeries (Fin d ⊕ Fin d) R) 
   | inr i => exact (killCompl_X (e := (Function.Embedding.inr : Fin d ↪ Fin d ⊕ Fin d)) i).symm
 
 /- English proof (translation)
-Unfold `at2`. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero (elim_const hu hv))]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mvPowerSeriesMap_evalTwoGroups {S : Type} [CommRing S] (h : R →+* S) (c : MvPowerSeries (Fin d ⊕ Fin d) R)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -141,9 +141,9 @@ section Main
 variable {R : Type} [CommRing R] {d : ℕ} {τ : Type}
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_of_constantCoeff_zero (elim_const hu hv)`. Apply the tactic sequence `have hW : HasSubst (Sum.elim (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R)) (fun i => X (Sum.inl i))) := hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp`. Unfold `swap at2`. Rewrite using `[subst_comp_subst_apply hW hs]`. Use `congr 1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> simp [subst_X hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem powerSeriesEvalTwoGroups_swapVariableGroups (c : MvPowerSeries (Fin d ⊕ Fin d) R) {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
@@ -159,7 +159,7 @@ theorem powerSeriesEvalTwoGroups_swapVariableGroups (c : MvPowerSeries (Fin d �
   cases s <;> simp [subst_X hs]
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (elim_const hu hv)) (elim_const hu hv) (h i)`.
+A detailed English derivation is pending.
 -/
 theorem op_const {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -168,9 +168,9 @@ theorem op_const {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, 
     (elim_const hu hv) (h i)
 
 /- English proof (translation)
-Use extensionality with `s`. Consider the cases of `s with`. Consider the case `inl i`. Rewrite using `[Finsupp.sumElim_apply, Sum.elim_inl]`. Conclude with `(Finsupp.embDomain_apply_self (Function.Embedding.inl : Fin d ↪ Fin d ⊕ Fin d) a i).symm`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `inr i`. Rewrite using `[Finsupp.sumElim_apply, Sum.elim_inr, Finsupp.embDomain_of_notMem_range]`. Both sides reduce to the same expression. Introduce and unpack `⟨j, hj⟩`. Conclude with `Sum.inl_ne_inr hj`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sumElim_zero_right (a : Fin d →₀ ℕ) :
     Finsupp.sumElim a (0 : Fin d →₀ ℕ) =
@@ -187,9 +187,9 @@ theorem sumElim_zero_right (a : Fin d →₀ ℕ) :
       exact Sum.inl_ne_inr hj
 
 /- English proof (translation)
-Use extensionality with `s`. Consider the cases of `s with`. Consider the case `inl i`. Rewrite using `[Finsupp.sumElim_apply, Sum.elim_inl, Finsupp.embDomain_of_notMem_range]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨j, hj⟩`. Conclude with `Sum.inr_ne_inl hj`. Consider the case `inr i`. Rewrite using `[Finsupp.sumElim_apply, Sum.elim_inr]`. Conclude with `(Finsupp.embDomain_apply_self (Function.Embedding.inr : Fin d ↪ Fin d ⊕ Fin d) a i).symm`.
+Assume the hypotheses and unpack their components. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumElim_zero_left (a : Fin d →₀ ℕ) :
     Finsupp.sumElim (0 : Fin d →₀ ℕ) a =
@@ -213,13 +213,13 @@ variable {B O Q : Type} [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] {θ
   {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}
 
 /- English proof (translation)
-Simplify using `[up, hL.const i]`.
+Simplify using the standard rewrite rules.
 -/
 theorem up_const (hL : IsLift θ μ) (i : Fin d) : constantCoeff (up Q μ i) = 0 := by
   simp [up, hL.const i]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (map (algebraMap B Q)) (congrFun hL.unit i)`. Unfold `op at h ⊢`. Rewrite `h` using `[mvPowerSeriesMap_evalTwoGroups _ _ (fun _ => constantCoeff_X _) (fun _ => map_zero _)]`. Simplify `h` using `[up]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem up_unit (hL : IsLift θ μ) :
     op (up Q μ) (fun i => (X i : MvPowerSeries (Fin d) Q)) (fun _ => 0) = fun i => X i := by
@@ -230,7 +230,7 @@ theorem up_unit (hL : IsLift θ μ) :
   simpa [up] using h
 
 /- English proof (translation)
-Establish `h` using `congrArg (map (algebraMap B Q)) (hL.comm i)`. Unfold `swap at h ⊢`. Rewrite `h` using `[mvPowerSeriesMap_evalTwoGroups _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)]`. Simplify `h` using `[up]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem up_comm (hL : IsLift θ μ) (i : Fin d) : swap (up Q μ i) = up Q μ i := by
   have h := congrArg (map (algebraMap B Q)) (hL.comm i)
@@ -239,7 +239,7 @@ theorem up_comm (hL : IsLift θ μ) (i : Fin d) : swap (up Q μ i) = up Q μ i :
   simpa [up] using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `op`. Rewrite using `[← up_comm hL i, powerSeriesEvalTwoGroups_swapVariableGroups _ (fun _ => map_zero _) (fun _ => constantCoeff_X _)]`. Conclude with `congrFun (up_unit hL) i`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_unit_left (hL : IsLift θ μ) :
     op (up Q μ) (fun _ => 0) (fun i => (X i : MvPowerSeries (Fin d) Q)) = fun i => X i := by
@@ -258,34 +258,34 @@ def e3 (d : ℕ) : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d) :=
   ⟨fun i => Sum.inr (Sum.inr i), fun _ _ h => by simpa using h⟩
 
 /- English proof (translation)
-The claim follows from `funext fun i => killCompl_X (e := (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d))) i`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_inl_threeGroupsFirstVariables : (fun i => killCompl (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d))
     (x1 (R := Q) (d := d) i)) = fun i => X i :=
   funext fun i => killCompl_X (e := (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d))) i
 
 /- English proof (translation)
-The claim follows from `funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩; exact Sum.inl_ne_inr hj)`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_inl_threeGroupsSecondVariables : (fun i => killCompl (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d))
     (x2 (R := Q) (d := d) i)) = fun _ => 0 :=
   funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩; exact Sum.inl_ne_inr hj)
 
 /- English proof (translation)
-The claim follows from `funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩; exact Sum.inl_ne_inr hj)`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_inl_threeGroupsThirdVariables : (fun i => killCompl (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d))
     (x3 (R := Q) (d := d) i)) = fun _ => 0 :=
   funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩; exact Sum.inl_ne_inr hj)
 
 /- English proof (translation)
-The claim follows from `funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩; exact Sum.inr_ne_inl hj)`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_thirdBlock_threeGroupsFirstVariables : (fun i => killCompl (e3 d) (x1 (R := Q) (d := d) i)) = fun _ => 0 :=
   funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩; exact Sum.inr_ne_inl hj)
 
 /- English proof (translation)
-The claim follows from `funext fun _ => killCompl_X_eq_zero (by rintro ⟨j, hj⟩ exact Sum.inr_ne_inl (Sum.inr.inj hj))`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_thirdBlock_threeGroupsSecondVariables : (fun i => killCompl (e3 d) (x2 (R := Q) (d := d) i)) = fun _ => 0 :=
   funext fun _ => killCompl_X_eq_zero (by
@@ -293,25 +293,25 @@ theorem killCompl_thirdBlock_threeGroupsSecondVariables : (fun i => killCompl (e
     exact Sum.inr_ne_inl (Sum.inr.inj hj))
 
 /- English proof (translation)
-The claim follows from `funext fun i => killCompl_X (e := e3 d) i`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_thirdBlock_threeGroupsThirdVariables : (fun i => killCompl (e3 d) (x3 (R := Q) (d := d) i)) = fun i => X i :=
   funext fun i => killCompl_X (e := e3 d) i
 
 /- English proof (translation)
-Establish `x1c : ∀ i, constantCoeff (x1 (R` using `Q) (d := d) i) = 0 := fun _ => constantCoeff_X _`. Establish `x2c : ∀ i, constantCoeff (x2 (R` using `Q) (d := d) i) = 0 := fun _ => constantCoeff_X _`. Establish `x3c : ∀ i, constantCoeff (x3 (R` using `Q) (d := d) i) = 0 := fun _ => constantCoeff_X _`. Establish `h12` using `op_const h0 x1c x2c`. Establish `h23` using `op_const h0 x2c x3c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `opz : op μ (fun _ => (0 : MvPowerSeries (Fin d) Q)) (fun _ => 0) = fun _ => 0`. Use function extensionality and compare the values at `i`. Unfold `op`. Rewrite using `[powerSeriesEvalTwoGroups_zero_zero, h0, map_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k12 : (fun i => killCompl (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d)) (op μ x1 x2 i)) = fun i => X i`. Rewrite using `[← hu]`. Use function extensionality and compare the values at `i`. Unfold `op`. Rewrite using `[killCompl_powerSeriesEvalTwoGroups _ _ x1c x2c, killCompl_inl_threeGroupsFirstVariables, killCompl_inl_threeGroupsSecondVariables]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `k23 : (fun i => killCompl (Function.Embedding.inl : Fin d ↪ Fin d ⊕ (Fin d ⊕ Fin d)) (op μ x2 x3 i)) = fun _ => 0`. Rewrite using `[← opz]`. Use function extensionality and compare the values at `i`. Unfold `op`. Rewrite using `[killCompl_powerSeriesEvalTwoGroups _ _ x2c x3c, killCompl_inl_threeGroupsSecondVariables, killCompl_inl_threeGroupsThirdVariables]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cob2`. Rewrite using `[map_sub, map_add, map_sub, killCompl_powerSeriesEvalTwoGroups _ c x2c x3c, killCompl_powerSeriesEvalTwoGroups _ c h12 x3c, killCompl_powerSeriesEvalTwoGroups _ c x1c h23, killCompl_powerSeriesEvalTwoGroups _ c x1c x2c, killCompl_inl_threeGroupsFirstVariables, killCompl_inl_three …`. Normalize the expressions using the abelian group laws. Establish `k12 : (fun i => killCompl (e3 d) (op μ x1 x2 i)) = fun _ => 0`. Rewrite using `[← opz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Unfold `op`. Rewrite using `[killCompl_powerSeriesEvalTwoGroups _ _ x1c x2c, killCompl_thirdBlock_threeGroupsFirstVariables, killCompl_thirdBlock_threeGroupsSecondVariables]`. Establish `k23 : (fun i => killCompl (e3 d) (op μ x2 x3 i)) = fun i => X i`. Rewrite using `[← hu']`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Unfold `op`. Rewrite using `[killCompl_powerSeriesEvalTwoGroups _ _ x2c x3c, killCompl_thirdBlock_threeGroupsSecondVariables, killCompl_thirdBlock_threeGroupsThirdVariables]`. Unfold `cob2`. Rewrite using `[map_sub, map_add, map_sub, killCompl_powerSeriesEvalTwoGroups _ c x2c x3c, killCompl_powerSeriesEvalTwoGroups _ c h12 x3c, killCompl_powerSeriesEvalTwoGroups _ c x1c h23, killCompl_powerSeriesEvalTwoGroups _ c x1c x2c, killCompl_thirdBlock_threeGroupsFirstVariables, killCompl_th …`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -368,11 +368,11 @@ theorem killCompl_formalGroupLawCoboundaryTwo {μ : Fin d → MvPowerSeries (Fin
 end Edges
 
 /- English proof (translation)
-Introduce `B O Q _ _ _ _ θ d μ hL N c hc hN a`. Take `⟨k1, k3⟩` from `killCompl_formalGroupLawCoboundaryTwo (up_const (Q := Q) hL) (up_unit hL) (up_unit_left hL) c hc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb, e⟩` from `hN (Finsupp.embDomain Function.Embedding.inl a)`. Use `⟨-b, N.neg_mem hb, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[← coeff_killCompl, k1, map_neg, coeff_killCompl, ← sumElim_zero_right]`. Rewrite using `[map_neg, ← e, neg_neg]`. Take `⟨b, hb, e⟩` from `hN (Finsupp.embDomain (e3 d) a)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[← coeff_killCompl, k3, coeff_killCompl, ← sumElim_zero_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem coeff_edges_mem : ∀ (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O) (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ (N : Ideal B) (c : MvPowerSeries (Fin d ⊕ Fin d) Q), constantCoeff c = 0 → In N (cob2 (up Q μ) c) → ∀ a : Fin d →₀ ℕ, (∃ b ∈ N, coeff (Finsupp.sumElim a 0) c = algebraMap B Q b) ∧ (∃ b ∈ N, coeff (Finsupp.sumElim 0 a) c = algebraMap B Q b) := by
   intro B O Q _ _ _ _ θ d μ hL N c hc hN a

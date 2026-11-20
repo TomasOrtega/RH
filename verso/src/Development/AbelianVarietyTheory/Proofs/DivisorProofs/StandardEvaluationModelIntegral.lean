@@ -17,11 +17,11 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 
 /- English proof (translation)
-Establish `hP` using `isPairing_trP (F := F) κ`. Establish `h` using `GlobalTheory.HeisDer.hasDerivAt_heis w.1 (linL w.2) (trP F κ w.1 w.2 / 2) f T`. Establish `hL : ∀ x, linL w.2 x = trP F κ x w.2` using `fun x => linL_apply _ _`. Establish `e1 : (fun x => ((linL w.2 x : ℝ) : ℂ)) = lin w.2`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[linL_apply]`. Both sides reduce to the same expression. Rewrite `h` using `[e1]`. Use `h using 3 with t` and compare the differences between its conclusion and the goal. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Rewrite using `[hg t, SchwartzMap.smulLeftCLM_apply_apply (GlobalTheory.HeisDer.hasTemperateGrowth_phase _ _ _), SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul, schrF, Prod.smul_fst, Prod.smul_snd, hP.smulR, hP.smulR, hP.smulL, hL]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem heisLine_hasDerivAt {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (w : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))
@@ -45,11 +45,11 @@ private theorem heisLine_hasDerivAt {F : Type} [Field F] [NumberField F] {κ : T
   all_goals rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hψ hM hM₁ he ei ev hevac hloc z f`. Use `set u := incM F ι * z * (incM F ι')ᵀ with hu`. Use extensionality with `y`. Establish `h1` using `heisLine_hasDerivAt (coordI M u) f (fun t => locOpInf (M.co.rho B.ψ (partInf F (realAd F t • u))) f) (fun t => by`. Rewrite using `[(locOpInf_rho M.co hψ _ f).2, ← coordI_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl) ((GlobalTheory.ArchUniqStd.evAt y).comp ei)`. Establish `h2` using `heisLine_hasDerivAt (coordI M₁ z) (ei f) (fun t => locOpInf (M₁.co.rho B.ψ (partInf F (realAd F t • z))) (ei f)) (fun t => by`. Rewrite using `[(locOpInf_rho M₁.co hψ _ (ei f)).2, ← coordI_smul]`. Use the proof step `rfl) (GlobalTheory.ArchUniqStd.evAt y)`. Use `h1.unique (h2.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `GlobalTheory.ConeInfNe.arch_heis hψ hM hM₁ he ei ev hevac hloc (realAd F t • z) f`. Rewrite `h3` using `[Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.standard_evaluation_model_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)

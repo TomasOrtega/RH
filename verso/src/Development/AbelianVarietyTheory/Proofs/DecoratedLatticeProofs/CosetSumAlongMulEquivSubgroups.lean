@@ -15,23 +15,21 @@ open scoped Matrix NNReal ComplexConjugate TensorProduct ContDiff in
 open MeasureTheory IsDedekindDomain NumberField in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 /- English proof (translation)
-Establish `hout : ∀ q : _root_.GlobalTheory.AutomorphicL2Unitary.Quot (P₁.subgroupOf Γ₁), _root_.GlobalTheory.AutomorphicL2Unitary.mk (P₁.subgroupOf Γ₁) (Quotient.out q) = q`. Introduce `q`. Unfold `_root_.GlobalTheory.AutomorphicL2Unitary.mk`. Conclude with `Quotient.out_eq q`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q q' h`. Simplify using `only at h`. Take `⟨p, hp⟩` from `_root_.GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1 h`. Establish `hp' : κ.symm ((p : Γ₂) : G₂) * (Quotient.out q : Γ₁) = (Quotient.out q' : Γ₁)`. Apply `κ.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hp` as an intermediate fact. Simplify using `using this`. Establish `hmemΓ : κ.symm ((p : Γ₂) : G₂) ∈ Γ₁`. Rewrite using `[hΓ]`. Simplify using `using ((p : Γ₂)).2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmemP : (⟨κ.symm ((p : Γ₂) : G₂), hmemΓ⟩ : Γ₁) ∈ P₁.subgroupOf Γ₁`. Rewrite using `[Subgroup.mem_subgroupOf, hP]`. Simplify using `using Subgroup.mem_subgroupOf.1 p.2`. Rewrite using `[← hout q, ← hout q']`. Use `_root_.GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.2 ⟨⟨_, hmemP⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `using hp'`. Introduce `q₂`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : ∃ y : Γ₂, _root_.GlobalTheory.AutomorphicL2Unitary.mk (P₂.subgroupOf Γ₂) y = q₂ := by`. Use `⟨Quotient.out q₂, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.AutomorphicL2Unitary.mk`. Conclude with `Quotient.out_eq q₂`. Establish `hx : κ.symm (y : G₂) ∈ Γ₁`. Rewrite using `[hΓ]`. Simplify using `using y.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨_root_.GlobalTheory.AutomorphicL2Unitary.mk (P₁.subgroupOf Γ₁) ⟨_, hx⟩, ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `_root_.GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1 (hout (_root_.GlobalTheory.AutomorphicL2Unitary.mk (P₁.subgroupOf Γ₁) ⟨_, hx⟩)).symm`. Simplify using `only`. Rewrite using `[← hp]`. Establish `hmemΓ : κ ((p : Γ₁) : G₁) ∈ Γ₂` using `(hΓ _).1 (p : Γ₁).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemP : (⟨κ ((p : Γ₁) : G₁), hmemΓ⟩ : Γ₂) ∈ P₂.subgroupOf Γ₂`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `(hP _).1 (Subgroup.mem_subgroupOf.1 p.2)`. Use `(_root_.GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.2 ⟨⟨_, hmemP⟩, ?_⟩).symm` and prove the remaining obligations. Use `ext`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bijective_quot_mk_map_out {G₁ G₂ : Type} [Group G₁] [Group G₂] (κ : G₁ ≃* G₂)
     (P₁ Γ₁ : Subgroup G₁) (P₂ Γ₂ : Subgroup G₂) (hP : ∀ g, g ∈ P₁ ↔ κ g ∈ P₂)
@@ -86,15 +84,15 @@ open MeasureTheory IsDedekindDomain NumberField in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ κ P₁ Γ₁ P₂ Γ₂ hP hΓ Φ₂ x c Φ₁ hΦ hinv₂`. Establish `hinv₁ : _root_.GlobalTheory.AutomorphicL2Unitary.LeftInv (P₁ ⊓ Γ₁) Φ₁`. Unfold `_root_.GlobalTheory.AutomorphicL2Unitary.LeftInv at hinv₂ ⊢`. Introduce `γ hγ g`. Establish `hγ₂ : κ γ ∈ P₂ ⊓ Γ₂` using `Subgroup.mem_inf.2 ⟨(hP γ).1 (Subgroup.mem_inf.1 hγ).1, (hΓ γ).1 (Subgroup.mem_inf.1 hγ).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hΦ, hΦ, mul_assoc, map_mul, hinv₂ _ hγ₂]`. Establish `hbij` using `bijective_quot_mk_map_out κ P₁ Γ₁ P₂ Γ₂ hP hΓ`. Establish `hbij₁ : Function.Bijective fun q : _root_.GlobalTheory.AutomorphicL2Unitary.Quot (P₁.subgroupOf Γ₁) => _root_.GlobalTheory.AutomorphicL2Unitary.mk (P₁.subgroupOf Γ₁) (Quotient.out q)`. Establish `: (fun q : _root_.GlobalTheory.AutomorphicL2Unitary.Quot (P₁.subgroupOf Γ₁) => _root_.GlobalTheory.AutomorphicL2Unitary.mk (P₁.subgroupOf Γ₁) (Quotient.out q)) = id`. Use function extensionality and compare the values at `q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `_root_.GlobalTheory.AutomorphicL2Unitary.mk`. Conclude with `Quotient.out_eq q`. Rewrite using `[this]`. Conclude with `Function.bijective_id`. Establish `hterm : ∀ (g : G₁) (q : _root_.GlobalTheory.AutomorphicL2Unitary.Quot (P₁.subgroupOf Γ₁)), Φ₁ (((Quotient.out q : Γ₁) : G₁) * g) = c * Φ₂ (((⟨κ (Quotient.out q : Γ₁), (hΓ _).1 (Quotient.out q : Γ₁).2⟩ : Γ₂) : G₂) * κ (g * x))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g q`. Rewrite using `[hΦ, mul_assoc, map_mul]`. Use `⟨hinv₁, fun g => ⟨fun hconv => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Eis.cosetConv_iff hinv₁ hbij₁]`. Rewrite `hconv` using `[_root_.GlobalTheory.Eis.cosetConv_iff hinv₂ hbij]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hterm g, norm_mul]`. Conclude with `hconv.mul_left _`. Rewrite using `[_root_.GlobalTheory.Eis.cosetSum_eq_tsum hinv₁ hbij₁, _root_.GlobalTheory.Eis.cosetSum_eq_tsum hinv₂ hbij]`. Repeatedly rewrite using `[hterm g]`. Conclude with `tsum_mul_left`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.StdUnn.cosetSum_along_mulEquiv : ∀ (G₁ G₂ : Type) [Group G₁] [Group G₂] (κ : G₁ ≃* G₂) (P₁ Γ₁ : Subgroup G₁) (P₂ Γ₂ : Subgroup G₂), (∀ g, g ∈ P₁ ↔ κ g ∈ P₂) → (∀ g, g ∈ Γ₁ ↔ κ g ∈ Γ₂) → ∀ (Φ₂ : G₂ → ℂ) (x : G₁) (c : ℂ) (Φ₁ : G₁ → ℂ), (∀ g, Φ₁ g = c * Φ₂ (κ (g * x))) → _root_.GlobalTheory.AutomorphicL2Unitary.LeftInv (P₂ ⊓ Γ₂) Φ₂ → _root_.GlobalTheory.AutomorphicL2Unitary.LeftInv (P₁ ⊓ Γ₁) Φ₁ ∧ ∀ g, (_root_.GlobalTheory.Eis.CosetConv P₂ Γ₂ Φ₂ (κ (g * x)) → _root_.GlobalTheory.Eis.CosetConv P₁ Γ₁ Φ₁ g) ∧ _root_.GlobalTheory.Eis.cosetSum P₁ Γ₁ Φ₁ g = c * _root_.GlobalTheory.Eis.cosetSum P₂ Γ₂ Φ₂ (κ (g * x)) := by
   intro G₁ G₂ _ _ κ P₁ Γ₁ P₂ Γ₂ hP hΓ Φ₂ x c Φ₁ hΦ hinv₂

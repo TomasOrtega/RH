@@ -9,17 +9,17 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 namespace GlobalTheory.TamUnf.RatIn
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Ψ θ _ hθ γ hγ`. Take `⟨δ, hδ, hδγ⟩` from `(Subgroup.mem_subgroupOf.1 hγ).2`. Establish `hm : ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) = (δ : Matrix (Fin r) (Fin r) E).map (inclR …` using `maximalRealSubfield E) (AF (maximalRealSubfield E))) := (congrArg Units.val hδγ).symm`. Establish `hdet : ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)).det = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 γ.2)`. Establish `hfin : finMat (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 = GlobalTheory.UCls.ratM (maximalRealSubfield E) (δ : Matrix (Fin r) (Fin r) E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `finMat`. Rewrite using `[hm]`. Use extensionality with `a b`. Simplify using `[inclR, GlobalTheory.UCls.ratM]`. Use `⟨δ, ⟨GlobalTheory.RatUnit.isUA_ratM E r G _ δ.det_ne_zero fun x y => ?_, ?_⟩, fun ρ => ?_, hfin⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : Formalism.UG.cT ((IsCMField.complexConj E).toAlgHom : E →+* E) (δ : Matrix (Fin r) (Fin r) E) * Gᵀ * (δ : Matrix (Fin r) (Fin r) E) = Gᵀ` using `hδ`. Establish `hG : (δ : Matrix (Fin r) (Fin r) E)ᵀ * G * (δ : Matrix (Fin r) (Fin r) E).map ((IsCMField.complexConj E).toAlgHom : E →+* E) = G`. Use `congrArg Matrix.transpose hu` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `GlobalTheory.RatUnit.dot_mulVec ((IsCMField.complexConj E).toAlgHom : E →+* E) G δ x y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hG, ← GlobalTheory.RatUnit.sum_eq_dot, ← GlobalTheory.RatUnit.sum_eq_dot]`. Conclude with `this`. Rewrite using `[← hfin]`. Unfold `finMat`. Use `(Algebra.TensorProduct.map (sndA (maximalRealSubfield E)) (AlgHom.id (maximalRealSubfield E) E)).map_det ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) …` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hdet, map_one]`. Conclude with `this.symm`. Unfold `infMat`. Rewrite using `[hm]`. Use extensionality with `a b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[← (hθ ρ).1]`. Simplify using `[inclR]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Ψ : Finset (E →+* ℂ)) (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),

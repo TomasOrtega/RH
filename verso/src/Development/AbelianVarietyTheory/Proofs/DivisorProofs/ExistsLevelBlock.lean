@@ -16,15 +16,15 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G ReciprocityTheory.C
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hp0` using `X.p0_le`. Establish `hj : r - X.p0 ≤ r` using `Nat.sub_le _ _`. Establish `hp : r - (r - X.p0) = X.p0` using `by omega`. Establish `hx' : lact γ x ∈ X.dom` using `FrameFibre.lact_mem_GG (X.Γ_stab γ hγ).1 hx`. Establish `key : ∀ τ : X.Ψ, ∃ b t : Matrix (Fin r) (Fin r) ℂ, b.det ≠ 0 ∧ (∀ a c : Fin r, (c : ℕ) < r - (r - X.p0) → ¬ (a : ℕ) < r - (r - X.p0) → b a c = 0) ∧ (∀ a c, c < a → t a c = 0) ∧ mat m τ * b = b * t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Use `FreeOnDomain.exists_conj_block hj _ ?_` and prove the remaining obligations. Use extensionality with `a c`. Use `hm τ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[idx_symm_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[idx_symm_inl]`. Use linear arithmetic over natural numbers and integers. Use `choose b t hb hb0 ht e using key`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `e' : ∀ τ, mat (lact γ x) τ * b τ = mat x τ * b τ * t τ` using `fun τ => by`. Rewrite using `[Matrix.mul_assoc, ← e, h, ← Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `X.Γ_free γ hγ (rmul x fun τ => b τ) (GlobalTheory.PointOfFrames.rmul_mem_dom X hx _ hb (by rw [hp] at hb0; exact hb0)) (fun τ => t τ) (fun τ => ⟨?_, ht τ⟩) ?_` and prove the remaining obligations. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg det (e' τ)`. Establish `h0' : (t τ).det = 0` using `h0`. Rewrite `h1` using `[det_mul, det_mul, h0', mul_zero]`. Conclude with `mul_ne_zero (hx' τ).1 (hb τ) h1`. Conclude with `(ReciprocityTheory.ChartRestriction.G.AR.Up.KU.lact_rmul' X γ x _).trans (funext e')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_block (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (m : Frame X.Ψ r) (hm : ∀ τ (a c : Fin r), (c : ℕ) < X.p0 → X.p0 ≤ (a : ℕ) → m τ a c = 0)
@@ -59,7 +59,7 @@ theorem eq_one_of_block (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1 : (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ * mat m τ` using `congrFun h τ`. Express the relevant statement in the definitionally equal form `((δ⁻¹ * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ * mat m τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc, h1, Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lact_inv_mul {Ψ : Finset (E →+* ℂ)} {δ γ : GL (Fin r) E} {x m : Frame Ψ r}
     (h : lact γ x = rmul (lact δ x) m) : lact (δ⁻¹ * γ) x = rmul x m := by
@@ -80,25 +80,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨W⟩` from `nonempty_uw hU`. Take `⟨hκ, -, -, hrk, hinj, hspan, -⟩` from `uw_lattice E H Dw l Xo c σ r U hσ hU h1 W k`. Take `⟨hr, hX, -⟩` from `hU`. Take `⟨hp0, hty⟩` from `hX k`. Take `⟨idx, hi, hper⟩` from `CompInj.exists_idx hσ hr W.e (U.X k) hp0 hty`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hq : (W.F.Di (W.ik k)).q = Dw.q` using `(W.F.sig _).2`. Establish `hξ : cc (-(U.X k).ξ0) = -(-(U.X k).ξ0)`. Establish `h` using `(U.X k).ξ0_im`. Unfold `cc at h ⊢`. Rewrite using `[map_neg, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : ∀ τ ∈ (U.X k).Ψ, 0 < (τ (-(U.X k).ξ0)).im`. Introduce `τ hτ`. Use `(U.X k).κ0_sign ⟨τ, hτ⟩` as an intermediate fact. Rewrite `this` using `[hκ, map_mul, map_ofNat]`. Rewrite using `[map_neg, Complex.neg_im]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Set `Pf : Frame (U.X k).Ψ r → ((W.F.Di (W.ik k)).La →+ (Fin W.g → ℂ))` to `fun y => AddMonoidHom.mk' (fun v j => Formalism.L2.PjFree.perFr (U.X k) y (W.emb k v) (Formalism.L2.PjFree.relab c σ (W.e j).1) (W.e j).2) (by`. Introduce `a b`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he : ∀ τ : E →+* ℂ, Data.emb τ (W.emb k (a + b)) = Data.emb τ (W.emb k a) + Data.emb τ (W.emb k b)`. Introduce `τ`. Use function extensionality and compare the values at `i`. Simplify using `[Data.emb]`. Simplify using `only [Pi.add_apply, hper, he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`. Simplify using `[Matrix.mulVec_add])`. Establish `hpt : ∀ y : (U.X k).dom, (U.un k y).x = W.F.u (W.ik k) (Pf y.1)`. Introduce `y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, -, hu, -⟩` from `W.pt k y`. Rewrite using `[hu]`. Use `congr 1`. Use extensionality with `a j`. Conclude with `hP a j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hrange : LinearMap.range (W.emb k) = (U.X k).Λ`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(W.φ k a).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce `hv`. Conclude with `⟨(W.φ k).symm ⟨v, hv⟩, by simp [UW.emb]⟩`. Take `⟨δ, m, hδ, hM, -, hm, hm0⟩` from `FrameFibre.exists_level_block_of_eq E H Dw l Xo _ W.g _ W.F (W.ik k) r (-(U.X k).ξ0) (U.X k).Gm (W.emb k) (U.X k).Ψ idx Pf hty (by rw [hq]; exact hi) hξ hpos ⟨hinj, hspan, (U.X k).Gm_herm, (U.X k).Gm_det, W.isom k⟩ hrk (by rw [hq]; exact fun y v j => hper y _ j) x.1 (by rw [hq, ← …`. Rewrite `hδ` using `[hrange]`. Rewrite `hm0` using `[hq, ← hp0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, m, hδ, fun u hu => ?_, hm, hm0⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : u ∈ LinearMap.range (W.emb k)` from `hrange ▸ hu`. Take `⟨w, hw⟩` from `hM a`. Conclude with `⟨_, (W.φ k w).2, hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level_block {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (h1 : 1 ≤ r) (k : U.Comp) (x x' : (U.X k).dom)
@@ -176,11 +176,11 @@ open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU h1 _ k hP γ hγ`. Take `⟨x, hx⟩` from `GlobalTheory.CompInj.dom_nonempty (U.X k)`. Establish `hx' : lact γ x ∈ (U.X k).dom` using `GlobalTheory.FrameFibre.lact_mem_GG ((U.X k).Γ_stab γ hγ).1 hx`. Take `⟨t, ht⟩` from `(hU.2.2.2.1 k k ⟨x, hx⟩ ⟨_, hx'⟩).2 ⟨γ, hγ, fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨by`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `simp, fun a c h => Matrix.one_apply_ne h.ne'⟩, by`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_one (mat (lact γ x) τ)).symm⟩`. Take `⟨δ, m, hδ, hM, hm, hm0⟩` from `GlobalTheory.GammaLevel.exists_level_block (U := Formalism.L2.PjFree.Unf.ofPj U) hσ ((Formalism.L2.PjFree.isUnf_ofPj U).2 hU) h1 k ⟨x, hx⟩ ⟨_, hx'⟩ ht.1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `GlobalTheory.GammaLevel.eq_one_of_block (U.X k) (mul_mem (inv_mem (hP δ hδ hM)) hγ) hx m hm0 (GlobalTheory.GammaLevel.lact_inv_mul hm)`. Rewrite `h` using `[inv_mul_eq_one]`. Conclude with `h ▸ hM`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GammaLevel.trivial_mod_of_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → l.A = 1 → ∀ (k : U.Comp), (∀ δ : GL (Fin r) E, IsUStab (U.X k).Gm (U.X k).Λ δ → (∀ u ∈ (U.X k).Λ, ∃ u' ∈ (U.X k).Λ, (δ : Matrix (Fin r) (Fin r) E).mulVec u = u + (l.M : ℕ) • u') → δ ∈ (U.X k).Γ) → ∀ γ ∈ (U.X k).Γ, (∀ u ∈ (U.X k).Λ, ∃ u' ∈ (U.X k).Λ, (γ : Matrix (Fin r) (Fin r) E).mulVec u = u + (l.M : ℕ) • u') := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU h1 _ k hP γ hγ

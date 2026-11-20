@@ -14,17 +14,15 @@ noncomputable section
 namespace GlobalTheory.KeyVals
 
 /- English proof (translation)
-Introduce `S G _ _ L δ σ i R _ ξ t hξ ht hσ r`. Establish `hP` using `isGrpPullback_pullback G ξ`. Take `⟨z, hz, hz'⟩` from `hσ (ξ r)`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback hP.1 z r hz`. Take `⟨k, hb⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk : pullback.fst G.hom ξ y ∈ (CechPic.tens L.L (δ.pull G.hom)).U k` using `G.left.basicOpen_le _ hb`. Establish `hle : (bL L ξ).L.U (fun _ => k.1) ≤ pullback.fst G.hom ξ ⁻¹ᵁ (CechPic.tens L.L (δ.pull G.hom)).U (k.1, fun _ => i)`. Introduce `x hx`. Use `⟨mem_pull.1 hx, mem_pull.2 ?_⟩` and prove the remaining obligations. Establish `e : G.hom (pullback.fst G.hom ξ x) = ξ (pullback.snd G.hom ξ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Use `show G.hom (pullback.fst G.hom ξ x) ∈ δ.U i`. Rewrite using `[e]`. Conclude with `hξ (Set.mem_univ _)`. Establish `hy1 : y ∈ (bL L ξ).L.U (fun _ => k.1)` using `mem_pull.2 hk.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2` using `hle hy1`. Establish `hb' : pullback.fst G.hom ξ y ∈ G.left.basicOpen (σ.f (k.1, fun _ => i))`. Establish `hm : pullback.fst G.hom ξ y ∈ (CechPic.tens L.L (δ.pull G.hom)).U k ⊓ (CechPic.tens L.L (δ.pull G.hom)).U (k.1, fun _ => i)` using `⟨hk, hy2⟩`. Establish `e` using `congrArg G.left.basicOpen (σ.compat k (k.1, fun _ => i))`. Rewrite `e` using `[Scheme.basicOpen_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `G.left.basicOpen_res (σ.f k) (homOfLE (inf_le_left : (CechPic.tens L.L (δ.pull G.hom)).U k ⊓ (CechPic.tens L.L (δ.pull G.hom)).U (k.1, fun _ => i) ≤ _)).op`. Establish `e2` using `G.left.basicOpen_res (σ.f (k.1, fun _ => i)) (homOfLE (inf_le_right : (CechPic.tens L.L (δ.pull G.hom)).U k ⊓ (CechPic.tens L.L (δ.pull G.hom)).U (k.1, fun _ => i) ≤ _)).op`. Establish `h1` using `e1.ge ⟨hm, hb⟩`. Establish `h2` using `(e.le h1).2`. Conclude with `(e2.le h2).2`.
-
-Use `⟨y, hy, TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => k.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ht (fun _ => k.1) hle]`. Conclude with `(Scheme.basicOpen_appLE (pullback.fst G.hom ξ) _ _ hle _).ge ⟨hy1, hb'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzFib_of_isLocSec : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (δ : LB S)
     (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec) (i : δ.ι) (R : Type) [CommRing R] (ξ : Sp R ⟶ S) (t : (KeyVals.bL L ξ).L.Sec),

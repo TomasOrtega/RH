@@ -19,7 +19,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.ClosedPt
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Use `Pdiv.PullbackComparison.exists_gen_transfer (L := L.pull (b ≫ a)) (L' := (L.pull a).pull b) (fun j _ => j PUnit.unit PUnit.unit) (fun j z hz => ?_) (fun i j y hy => ?_) h` and prove the remaining obligations. Conclude with `(Pdiv.PullbackComparison.mem_wchart_pu L (b ≫ a) _ z).2 ((Pdiv.PullbackComparison.mem_wchart_pu L a _ _).1 ((Pdiv.PullbackComparison.mem_wchart_pu (L.pull a) b j z).1 hz))`. Establish `hy' : y ∈ (b ≫ a) ⁻¹ᵁ (L.U (i PUnit.unit PUnit.unit) ⊓ L.U (j PUnit.unit PUnit.unit))` using `Pdiv.PullbackComparison.pull_inf_le L a _ _ (Pdiv.PullbackComparison.pull_inf_le (L.pull a) b i j hy)`. Conclude with `(Pdiv.PullbackComparison.germ_pull_pull L a b i j y hy hy').trans (Pdiv.PullbackComparison.germ_pull L (b ≫ a) (fun _ => i PUnit.unit PUnit.unit) (fun _ => j PUnit.unit PUnit.unit) y _ hy').symm`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_pull_pull_of {X Y Z : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (c : Z ⟶ X) (hc : c = b ≫ a)
     (h : ∃ t : LB.Gen (L.pull c), t.IsGen) : ∃ t : LB.Gen ((L.pull a).pull b), t.IsGen := by
@@ -34,7 +34,7 @@ theorem gen_pull_pull_of {X Y Z : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z �
       (Pdiv.PullbackComparison.germ_pull L (b ≫ a) (fun _ => i PUnit.unit PUnit.unit) (fun _ => j PUnit.unit PUnit.unit) y _ hy').symm
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Establish `hU : ∀ (j : PUnit → L.ι), (L.pull (b ≫ a)).U j ≤ ((L.pull a).pull b).U (fun _ => j)` using `fun j z hz => (Pdiv.PullbackComparison.mem_wchart_pu (L.pull a) b _ z).2 ((Pdiv.PullbackComparison.mem_wchart_pu L a _ _).2 ((Pdiv.PullbackComparison.mem_wchart_pu L (b ≫ a) j z).1 hz))`. Use `Pdiv.PullbackComparison.exists_gen_transfer (L' := L.pull (b ≫ a)) (L := (L.pull a).pull b) (fun j _ => j) hU (fun i j y hy => ?_) h` and prove the remaining obligations. Establish `hy' : y ∈ (b ≫ a) ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit))` using `Pdiv.PullbackComparison.pull_inf_le L (b ≫ a) _ _ hy`. Conclude with `(Pdiv.PullbackComparison.germ_pull L (b ≫ a) i j y hy hy').trans (Pdiv.PullbackComparison.germ_pull_pull L a b (fun _ => i) (fun _ => j) y _ hy').symm`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_of_pull_pull {X Y Z : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (c : Z ⟶ X) (hc : c = b ≫ a)
     (h : ∃ t : LB.Gen ((L.pull a).pull b), t.IsGen) : ∃ t : LB.Gen (L.pull c), t.IsGen := by
@@ -49,7 +49,7 @@ theorem gen_of_pull_pull {X Y Z : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z �
     (Pdiv.PullbackComparison.germ_pull_pull L a b (fun _ => i) (fun _ => j) y _ hy').symm
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Take `⟨t, ht⟩` from `h`. Conclude with `⟨LB.pullGen L (fun _ : PUnit => a) (fun _ => 1) t b, DVR.pullGen_isGen L (fun _ : PUnit => a) (fun _ => 1) t ht b⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gen_comp {X Y Z : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (c : Z ⟶ X) (hc : c = b ≫ a)
     (h : ∃ t : LB.Gen (L.pull a), t.IsGen) : ∃ t : LB.Gen (L.pull c), t.IsGen := by
@@ -58,9 +58,9 @@ theorem gen_comp {X Y Z : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (c 
   exact ⟨LB.pullGen L (fun _ : PUnit => a) (fun _ => 1) t b, DVR.pullGen_isGen L (fun _ : PUnit => a) (fun _ => 1) t ht b⟩
 
 /- English proof (translation)
-Use `isClosed_singleton_iff_isClosedImmersion.1 hy` as an intermediate fact. Use `isClosed_singleton_iff_isClosedImmersion.1 hs` as an intermediate fact. Establish `e` using `Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField f y`. Establish `h₁ : LocallyOfFiniteType (Spec.map (f.residueFieldMap y) ≫ S.fromSpecResidueField (f y))`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `h₂ : LocallyOfFiniteType (Spec.map (f.residueFieldMap y))` using `locallyOfFiniteType_of_comp _ (S.fromSpecResidueField (f y))`. Establish `h₃ : IsFinite (Spec.map (f.residueFieldMap y))` using `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 h₂`. Rewrite using `[← e]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_fromSpec {X S : Scheme.{0}} (f : X ⟶ S) [LocallyOfFiniteType f] (y : X) (hy : IsClosed ({y} : Set X))
     (hs : IsClosed ({f y} : Set S)) : IsFinite (X.fromSpecResidueField y ≫ f) := by
@@ -75,19 +75,17 @@ theorem isFinite_fromSpec {X S : Scheme.{0}} (f : X ⟶ S) [LocallyOfFiniteType 
   rw [← e]; infer_instance
 
 /- English proof (translation)
-Set `j` to `pullback.fst (pullback.fst g x) (G.fromSpecResidueField y)`. Establish `sq : IsPullback (j ≫ pullback.snd g x) (pullback.snd (pullback.fst g x) (G.fromSpecResidueField y)) x (G.fromSpecResidueField y ≫ g)` using `(IsPullback.of_hasPullback _ _).paste_horiz (IsPullback.of_hasPullback g x).flip`. Establish `hfin : IsFinite (j ≫ pullback.snd g x)` using `MorphismProperty.of_isPullback sq.flip ‹_›`. Establish `hirr : IrreducibleSpace (pullback (pullback.fst g x) (G.fromSpecResidueField y) : Scheme.{0})` using `GeometricallyIrreducible.geometrically_irreducibleSpace (f := pullback.fst g x) _ _ _ (IsPullback.of_hasPullback _ _)`. Establish `hr : ∀ q, pullback.fst g x q = y → ∃ p, j p = q` using `fun q hq => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: q ∈ Set.range j`. Rewrite using `[Scheme.Pullback.range_fst, Scheme.range_fromSpecResidueField]`. Conclude with `hq`. Conclude with `this`. Set `ξ` to `genericPoint (pullback (pullback.fst g x) (G.fromSpecResidueField y) : Scheme.{0})`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hξ : ∀ i ∈ l, j ξ ∈ W i` using `fun i hi => by`. Take `⟨q, hq, hqy⟩` from `hW i hi`. Take `⟨p, rfl⟩` from `hr q hqy`. Conclude with `((genericPoint_specializes p).map j.continuous).mem_open (W i).isOpen hq`. Establish `hU : IsOpen {p | ∀ i ∈ l, j p ∈ W i}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: {p | ∀ i ∈ l, j p ∈ W i} = ⋂ i ∈ {i | i ∈ l}, j ⁻¹' (W i)` using `by ext; simp`. Rewrite using `[this]`. Conclude with `(List.finite_toSet l).isOpen_biInter fun i _ => (W i).isOpen.preimage j.continuous`. Establish `hB` using `(j ≫ pullback.snd g x).isClosedMap _ hU.isClosed_compl`. Use `⟨⟨_, hB.isOpen_compl⟩, ⟨(j ≫ pullback.snd g x) ξ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨p, hp, hpξ⟩`. Establish `hd` using `(j ≫ pullback.snd g x).isDiscrete_preimage_singleton ((j ≫ pullback.snd g x) ξ)`. Establish `: ξ = p`. Use `hd.to_subtype` as an intermediate fact. Establish `hs : (⟨ξ, rfl⟩ : (j ≫ pullback.snd g x) ⁻¹' {(j ≫ pullback.snd g x) ξ}) ⤳ ⟨p, hpξ⟩` using `Topology.IsInducing.subtypeVal.specializes_iff.1 (genericPoint_specializes p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `congrArg Subtype.val hs.eq`. Conclude with `hp (this ▸ hξ)`. Rewrite using `[← Scheme.Hom.comp_apply, sq.w, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Introduce `q hq hN`. Take `⟨p, rfl⟩` from `hr q hq`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hN ⟨p, h, Scheme.Hom.comp_apply _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_good {G X S : Scheme.{0}} (g : G ⟶ S) (x : X ⟶ S) [GeometricallyIrreducible x] (y : G)
     [IsFinite (G.fromSpecResidueField y ≫ g)] {K : Type} (l : List K) (W : K → (pullback g x).Opens)
@@ -134,11 +132,11 @@ def ten {S : Scheme.{0}} (G : Over S) [GrpObj G] : List (G ⊗ G ⊗ G ⊗ G ⟶
   cubeTen (fst _ _) (snd _ _ ≫ fst _ _) (snd _ _ ≫ snd _ _ ≫ fst _ _) (snd _ _ ≫ snd _ _ ≫ snd _ _)
 
 /- English proof (translation)
-Introduce `f hf`. Simplify using `only [ten, cubeTen, List.mem_cons, List.not_mem_nil, or_false] at hf`. Break down `hf with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨lift (y⁻¹ * g) (lift 1 1), by simp [MonObj.comp_mul]⟩`. Conclude with `⟨lift (g⁻¹ * y) (lift 1 1), by simp [MonObj.comp_mul, GrpObj.comp_inv]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨lift g (lift 1 1), by simp⟩`. Conclude with `⟨lift g⁻¹ (lift 1 1), by simp [GrpObj.comp_inv]⟩`. Conclude with `⟨lift 1 (lift (y⁻¹ * g) 1), by simp [MonObj.comp_mul]⟩`. Conclude with `⟨lift 1 (lift 1 (y⁻¹ * g)), by simp [MonObj.comp_mul]⟩`. Conclude with `⟨lift 1 (lift (g⁻¹ * y) 1), by simp [MonObj.comp_mul, GrpObj.comp_inv]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨lift 1 (lift g 1), by simp⟩`. Conclude with `⟨lift 1 (lift 1 g), by simp⟩`. Conclude with `⟨lift 1 (lift g⁻¹ 1), by simp [MonObj.comp_mul, GrpObj.comp_inv]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ten_solve {S : Scheme.{0}} (G : Over S) [GrpObj G] {T : Over S} (y g : T ⟶ G) :
     ∀ f ∈ ten G, ∃ u : T ⟶ G ⊗ G ⊗ G, lift y u ≫ f = g := by
@@ -157,9 +155,7 @@ theorem ten_solve {S : Scheme.{0}} (G : Over S) [GrpObj G] {T : Over S} (y g : T
   · exact ⟨lift 1 (lift g⁻¹ 1), by simp [MonObj.comp_mul, GrpObj.comp_inv]⟩
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨z, hy, hg⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := G.hom) y g h`. Take `⟨u, hu⟩` from `ten_solve G (fst G G) (snd G G) f hf`. Use `⟨(lift (fst G G) u).left z, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun φ => φ.left z) hu).trans hg)`.
-
-Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun φ => φ.left z) (lift_fst (fst G G) u)).trans hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ten_meets {S : Scheme.{0}} (G : Over S) [GrpObj G] (y g : G.left) (h : G.hom y = G.hom g) :
     ∀ f ∈ ten G, ∃ q : (pullback G.hom (G ⊗ G ⊗ G).hom : Scheme.{0}),
@@ -172,17 +168,17 @@ theorem ten_meets {S : Scheme.{0}} (G : Over S) [GrpObj G] (y g : G.left) (h : G
   · exact (Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun φ => φ.left z) (lift_fst (fst G G) u)).trans hy)
 
 /- English proof (translation)
-Establish `hw : ζ ≫ (G ⊗ G ⊗ G ⊗ G).hom = (Over.mk (k ≫ G'.hom)).hom ≫ π`. Rewrite using `[← Over.w (fst G _), ← Category.assoc, hζ, Category.assoc, hpb.1.w]`. Conclude with `(Category.assoc _ _ _).symm`. Take `⟨hl, hm⟩` from `GlobalTheory.T.grpPullback_points_lift_and_compat_mul_inv T S π G G' β hpb (Over.mk (k ≫ G'.hom)) (G ⊗ G ⊗ G ⊗ G) ζ hw`. Take `⟨a, ha⟩` from `hl (snd _ _ ≫ fst _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hl (snd _ _ ≫ snd _ _ ≫ fst _ _)`. Take `⟨c, hc⟩` from `hl (snd _ _ ≫ snd _ _ ≫ snd _ _)`. Set `x : Over.mk (k ≫ G'.hom) ⟶ G'` to `Over.homMk k rfl`. Establish `hx : x.left ≫ β = ζ ≫ (fst G _).left` using `hζ.symm`. Establish `mu` using `fun u v u' v' h₁ h₂ => (hm u v u' v' h₁ h₂).1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iv` using `fun u u' h₁ => (hm u u u' u' h₁ h₁).2`. Establish `key : ∀ f' ∈ cubeTen x a b c, ∃ f ∈ ten G, f'.left ≫ β = ζ ≫ f.left`. Introduce `f hf`. Simplify using `only [cubeTen, List.mem_cons, List.not_mem_nil, or_false] at hf`. Break down `hf with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨_, by simp [ten, cubeTen], mu _ _ _ _ hx ha⟩`. Conclude with `⟨_, by simp [ten, cubeTen], mu _ _ _ _ hx (iv _ _ ha)⟩`. Conclude with `⟨_, by simp [ten, cubeTen], ha⟩`. Conclude with `⟨_, by simp [ten, cubeTen], iv _ _ ha⟩`. Conclude with `⟨_, by simp [ten, cubeTen], mu _ _ _ _ hx hb⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, by simp [ten, cubeTen], mu _ _ _ _ hx hc⟩`. Conclude with `⟨_, by simp [ten, cubeTen], mu _ _ _ _ hx (iv _ _ (mu _ _ _ _ hb hc))⟩`. Conclude with `⟨_, by simp [ten, cubeTen], hb⟩`. Conclude with `⟨_, by simp [ten, cubeTen], hc⟩`. Conclude with `⟨_, by simp [ten, cubeTen], iv _ _ (mu _ _ _ _ hb hc)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hg` using `GlobalTheory.T.exists_generator_of_theoremOfCube_ten_points S G' P θ (Over.mk (k ≫ G'.hom)) x a b c ⊤ fun f' hf' z _ => by`. Take `⟨f, hf, e⟩` from `key f' hf'`. Use `h f hf z _ ?_` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun φ => φ z) e).trans (Scheme.Hom.comp_apply _ _ _))`. Conclude with `gen_comp _ _ Z.topIso.inv k (by simp [x]) hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gen_of_ten {T S : Scheme.{0}} (π : S ⟶ T) (G : Over T) [GrpObj G] (G' : Over S) [GrpObj G'] [IsCommMonObj G']
     (β : G'.left ⟶ G.left) (hpb : IsGrpPullback G' G π β) (P : GlobalTheory.UU.CP G') (θ : P.L.L.Sec) {Z : Scheme.{0}}
@@ -219,33 +215,29 @@ theorem gen_of_ten {T S : Scheme.{0}} (π : S ⟶ T) (G : Over T) [GrpObj G] (G'
   exact gen_comp _ _ Z.topIso.inv k (by simp [x]) hg
 
 /- English proof (translation)
-Introduce `R _ _ _ hR M G' _ _ hG' P' G _ _ β hG hpb θ O hO hθ y hyc hy`. Establish `hN : IsNoetherianRing R` using `hR.1`. Establish `hI : IsIntegrallyClosed R` using `hR.2.2.1`. Use `hG.smooth` as an intermediate fact. Use `M.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ : IsProper β` using `MorphismProperty.of_isPullback hpb.1.flip M.proper`. Establish `hgi : GeometricallyIrreducible G.hom` using `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun Ω _ s => GlobalTheory.T.irreducibleSpace_fibre_semiAbelian_fieldPoint _ G hG Ω s⟩`. Establish `s₂ : Smooth (G ⊗ G).hom` using `inferInstanceAs (Smooth (pullback.fst G.hom G.hom ≫ G.hom))`. Establish `i₂ : GeometricallyIrreducible (G ⊗ G).hom` using `GeometricallyIrreducible.comp (pullback.fst G.hom G.hom) G.hom`. Establish `s₃ : Smooth (G ⊗ G ⊗ G).hom` using `inferInstanceAs (Smooth (pullback.fst G.hom (G ⊗ G).hom ≫ G.hom))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₃ : GeometricallyIrreducible (G ⊗ G ⊗ G).hom` using `GeometricallyIrreducible.comp (pullback.fst G.hom (G ⊗ G).hom) G.hom`. Set `O' : G.left.Opens` to `⟨farSet β θ, isOpen_farSet β β.isClosedMap θ⟩`. Take `⟨g, hgO, hg⟩` from `hO`. Establish `hgO' : g ∈ O'` using `fun g' e => by`. Substitute `e` using the available equality.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 (hθ g' hgO hg)`. Establish `hfin : IsFinite (G.left.fromSpecResidueField y ≫ G.hom)` using `isFinite_fromSpec G.hom y hyc (by rw [hy]; exact isClosed_singleton_closedPoint R)`. Take `⟨N, hN₁, hN₂⟩` from `exists_open_good G.hom (G ⊗ G ⊗ G).hom y (ten G) (fun f => f.left ⁻¹ᵁ O') fun f hf => by`. Take `⟨q, h₁, h₂⟩` from `ten_meets G y g (hy.trans hg.symm) f hf`. Conclude with `⟨q, show f.left q ∈ O' from h₁ ▸ hgO', h₂⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN₁` using `[hy]`. Take `⟨R', _, _, _, ρ, t, hρ, het, ht, htN⟩` from `GlobalTheory.T.exists_finiteEtale_section_of_smooth_closedFibre R hR (G ⊗ G ⊗ G) s₃ N hN₁`. Establish `hρf : IsFinite (spMap ρ)` using `(IsFinite.SpecMap_iff (CommRingCat.ofHom ρ)).2 hρ.2.2`. Establish `hflat : ρ.Flat` using `by algebraize [ρ]`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m : pullback G.hom (spMap ρ) ⟶ pullback G.hom (G ⊗ G ⊗ G).hom` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ t) (by rw [Category.assoc, ht]; exact pullback.condition)`. Establish `m₁ : m ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `m₂ : m ≫ pullback.snd _ _ = pullback.snd _ _ ≫ t` using `pullback.lift_snd _ _ _`. Establish `hU : IsOpen {p | ∀ f ∈ ten G, f.left (m p) ∈ O'}`. Establish `: {p | ∀ f ∈ ten G, f.left (m p) ∈ O'} = ⋂ f ∈ {f | f ∈ ten G}, m ⁻¹' (f.left ⁻¹' O')` using `by ext; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `(List.finite_toSet _).isOpen_biInter fun f _ => (O'.isOpen.preimage f.left.continuous).preimage m.continuous`. Set `V : G.left.Opens` to `⟨_, ((pullback.fst G.hom (spMap ρ)).isClosedMap _ hU.isClosed_compl).isOpen_compl⟩`. Establish `hyV : y ∈ V`. Introduce and unpack `⟨p, hp, hpy⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hp (hN₂ (m p) ?_ ?_)` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, m₁, hpy]`. Rewrite using `[← Scheme.Hom.comp_apply, m₂, Scheme.Hom.comp_apply]`. Conclude with `htN ⟨_, rfl⟩`. Set `k` to `pullback.fst (V.ι ≫ G.hom) (spMap ρ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Set `n : pullback (V.ι ≫ G.hom) (spMap ρ) ⟶ pullback G.hom (spMap ρ)` to `pullback.lift (k ≫ V.ι) (pullback.snd _ _) (by rw [Category.assoc]; exact pullback.condition)`. Establish `n₁ : n ≫ pullback.fst _ _ = k ≫ V.ι` using `pullback.lift_fst _ _ _`. Establish `hn : ∀ p, ∀ f ∈ ten G, f.left (m (n p)) ∈ O'` using `fun p => by`. Assume the negation of the conclusion as `h`. Establish `: V.ι (k p) ∈ V` using `(k p).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `this ⟨n p, h, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, n₁, Scheme.Hom.comp_apply]`. Establish `hgen` using `gen_of_ten M.π G G' β hpb P' θ (pullback.fst (β ∣_ V) k ≫ (β ⁻¹ᵁ V).ι) (pullback.snd (β ∣_ V) k ≫ n ≫ m) (by`. Express the relevant statement in the definitionally equal form `(pullback.snd (β ∣_ V) k ≫ n ≫ m) ≫ pullback.fst G.hom (G ⊗ G ⊗ G).hom = _`. Rewrite using `[Category.assoc, Category.assoc, m₁, n₁, ← pullback.condition_assoc, morphismRestrict_ι, Category.assoc])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun f hf z => by`. Use `hn (pullback.snd (β ∣_ V) k z) f hf` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.comp_apply n m, ← Scheme.Hom.comp_apply (pullback.snd (β ∣_ V) k)]`. Conclude with `this`. Establish `sq : IsPullback (β ∣_ V) ((β ⁻¹ᵁ V).ι ≫ G'.hom) (V.ι ≫ G.hom) M.π` using `(isPullback_morphismRestrict β V).paste_vert hpb.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hnoeth : IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Take `⟨V₁, hV₁, hgen₁⟩` from `GlobalTheory.T.exists_generator_near_fibres_of_finiteFlat R hR R' ρ hρ hflat _ _ _ _ (β ∣_ V) (pullback.snd (β ∣_ V) k) (V.ι ≫ G.hom) (pullback.snd _ _) k (pullback.fst (β ∣_ V) k) (IsPullback.of_hasPullback _ _) (IsPullback.of_hasPullback _ _) inferInstance inferInstance (app_bi …`. Use `⟨V.ι ''ᵁ V₁, ⟨⟨y, hyV⟩, hV₁, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (β ⁻¹ᵁ (V.ι ''ᵁ V₁)).ι ⊆ Set.range (((β ∣_ V) ⁻¹ᵁ V₁).ι ≫ (β ⁻¹ᵁ V).ι)`. Introduce and unpack `_ ⟨⟨z, v, hv, hz⟩, rfl⟩`.
-
-Establish `hz' : v.1 = β z` using `hz`. Establish `hzV : z ∈ β ⁻¹ᵁ V` using `show β z ∈ V from hz' ▸ v.2`. Use `⟨⟨⟨z, hzV⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: (β ∣_ V) ⟨z, hzV⟩ = v` using `Subtype.ext ((morphismRestrict_base_coe β V ⟨z, hzV⟩).trans hz'.symm)`. Conclude with `show (β ∣_ V) ⟨z, hzV⟩ ∈ V₁ from this ▸ hv`.
-
-Conclude with `gen_comp _ _ (IsOpenImmersion.lift _ _ hr) _ (IsOpenImmersion.lift_fac _ _ hr).symm (gen_of_pull_pull _ _ _ _ rfl hgen₁)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_gen_near_closed_point : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (P' : GlobalTheory.UU.CP G') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G M.π β → ∀ (θ : P'.L.L.Sec) (O : G.left.Opens), (∃ g ∈ O, G.hom g = closedPoint R) → (∀ g : G'.left, β g ∈ O → G.hom (β g) = closedPoint R → ∃ i, g ∈ G'.left.basicOpen (θ.f i)) → ∀ y : G.left, IsClosed ({y} : Set G.left) → G.hom y = closedPoint R → ∃ V : G.left.Opens, y ∈ V ∧ ∃ t : LB.Gen (P'.L.L.pull (β ⁻¹ᵁ V).ι), t.IsGen := by
   intro R _ _ _ hR M G' _ _ hG' P' G _ _ β hG hpb θ O hO hθ y hyc hy

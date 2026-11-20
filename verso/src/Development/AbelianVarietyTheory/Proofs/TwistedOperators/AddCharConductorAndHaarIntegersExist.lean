@@ -11,11 +11,11 @@ namespace GlobalTheory.SplitWeil
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hU : ψ ⁻¹' Circle.centeredArc (Real.pi / 2) ∈ 𝓝 (0 : k)`. Use `((Circle.isOpen_centeredArc _).preimage hψ).mem_nhds ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, AddChar.map_zero_eq_one]`. Conclude with `⟨0, by simpa using Real.pi_pos, by simp⟩`. Take `⟨s, hs⟩` from `exists_cball_subset hU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨s, fun y hy => Circle.eq_one_of_forall_pow_mem_centeredArc_pi_div_two fun n _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Use `hs ?_` and prove the remaining obligations. Use `clear * - hy`. Proceed by induction on `n with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [cball]`. Consider the case `succ n ih => rw [succ_nsmul]`. Conclude with `add_mem_cball ih hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_cball_addChar_eq_one (ψ : AddChar k Circle) (hψ : Continuous ψ) :
     ∃ s : kˣ, ∀ y ∈ cball s, ψ y = 1 := by
@@ -33,23 +33,19 @@ theorem exists_cball_addChar_eq_one (ψ : AddChar k Circle) (hψ : Continuous ψ
   | succ n ih => rw [succ_nsmul]; exact add_mem_cball ih hy
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y, ψ y ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h1 (by ext y; simp [h y])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hy0 : y₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy₀ (AddChar.map_zero_eq_one ψ)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `h0 : (ϖ : k) ≠ 0` using `by simpa using hϖ.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : ∀ y : 𝒪[k], y ∈ 𝓂[k] ↔ valuation k (y : k) < 1` using `fun y => by`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`. Establish `hϖ1 : valuation k (ϖ : k) < 1` using `(hlt ϖ).mp hϖ.not_isUnit`. Establish `hex : ∃ n : ℕ, ∀ y, valuation k y ≤ valuation k (y₀ * (ϖ : k) ^ n) → ψ y = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `exists_pow_lt₀ hϖ1 (Units.mk0 (valuation k (y₀⁻¹ * s)) (by simp [hy0]))`. Use `⟨n, fun y hy => hs y (show valuation k y ≤ valuation k (s : k) from hy.trans ?_)⟩` and prove the remaining obligations. Rewrite `hn` using `[Units.val_mk0, map_mul, map_inv₀, lt_inv_mul_iff₀ (by simp [zero_lt_iff, hy0])]`. Rewrite using `[map_mul, map_pow]`. Conclude with `hn.le`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hspec` using `Nat.find_spec hex`. Establish `hne : Nat.find hex ≠ 0`. Introduce `h`. Rewrite `hspec` using `[h]`. Conclude with `hy₀ (hspec y₀ (by simp))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hne`. Establish `hmin` using `Nat.find_min hex (m := m) (by omega)`. Rewrite `hspec` using `[hm]`. Use `⟨Units.mk0 (y₀ * (ϖ : k) ^ (m + 1)) (mul_ne_zero hy0 (pow_ne_zero _ h0)), fun x => ⟨fun h => ?_, fun h y hy => hspec y (hy.trans h)⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[Units.val_mk0, not_le]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `hxp : 0 < valuation k x` using `by simp [zero_lt_iff, hx0]`.
-
-Establish `hxi : valuation k (x⁻¹ * (y₀ * (ϖ : k) ^ (m + 1))) < 1`. Rewrite using `[map_mul, map_inv₀, inv_mul_lt_iff₀ hxp, mul_one]`. Conclude with `hx`. Establish `h2 : valuation k (x⁻¹ * (y₀ * (ϖ : k) ^ (m + 1))) ≤ valuation k (ϖ : k)` using `(mem_cball_uniformiser hϖ (x := Units.mk0 _ h0) rfl ⟨_, (Valuation.mem_integer_iff _ _).mpr hxi.le⟩).mpr ((hlt _).mpr hxi)`. Rewrite `h2` using `[map_mul, map_inv₀, inv_mul_le_iff₀ hxp, pow_succ, ← mul_assoc, map_mul, mul_le_mul_iff_left₀ (by simp [zero_lt_iff, h0])]`.
-
-Conclude with `hmin fun y hy => h y (hy.trans h2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hasConductor_of_continuous (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1) :
     ∃ c : kˣ, HasConductor ψ c := by
@@ -102,7 +98,7 @@ theorem exists_hasConductor_of_continuous (ψ : AddChar k Circle) (hψ : Continu
   exact hmin fun y hy => h y (hy.trans h2)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _`. Take `⟨ψ, hψ⟩` from `exists_hasConductor_one k`. Conclude with `⟨exists_hasConductor_of_continuous, ⟨ψ, hψ.continuous, hψ.ne_one, hψ⟩, exists_isUnitVol k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conductor_exists :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

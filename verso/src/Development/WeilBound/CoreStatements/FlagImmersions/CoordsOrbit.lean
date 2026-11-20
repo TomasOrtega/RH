@@ -15,9 +15,9 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp Global
 namespace Pot
 
 /- English proof (translation)
-Establish `hH : AnalyticAt ℂ (fun t => F t / F t₀) t₀` using `hF.div analyticAt_const h0`. Establish `e1 : F t₀ / F t₀ ∈ Complex.slitPlane` using `by rw [div_self h0]; exact Complex.one_mem_slitPlane`. Use `⟨fun t => Complex.log (F t / F t₀) + (Real.log ‖F t₀‖ : ℂ), (hH.clog e1).add analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hF.continuousAt.eventually_ne h0] with t ht`. Rewrite using `[Complex.add_re, Complex.ofReal_re, Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.2 ht) (norm_ne_zero_iff.2 h0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem log_norm_an {n : ℕ} {t₀ : Fin n → ℂ} {F : (Fin n → ℂ) → ℂ} (hF : AnalyticAt ℂ F t₀)
     (h0 : F t₀ ≠ 0) : ∃ G : (Fin n → ℂ) → ℂ, AnalyticAt ℂ G t₀ ∧ ∀ᶠ t in 𝓝 t₀, Real.log ‖F t‖ = (G t).re := by
@@ -32,9 +32,9 @@ theorem log_norm_an {n : ℕ} {t₀ : Fin n → ℂ} {F : (Fin n → ℂ) → �
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Take `⟨h0, s, rfl, -⟩` from `h`. Take `⟨U, hU, f, rfl⟩` from `X.presheaf.exists_germ_eq s`. Establish `hg : centre ξ ∈ U` using `h0.mem_open U.isOpen hU`. Establish `hn : {b ∈ B | ⊤ ≤ z b ⁻¹ᵁ U} ∈ 𝓝 t₀` using `(hz U f).1.mem_nhds ⟨ht, (SheetDecomposition.CovSch.top_le_iff _ _).2 hU⟩`. Use `⟨fun b => valAt' (z b) U f, GlobalTheory.SCV.analyticAt_of_differentiableOn (hz U f).2 hn, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hn] with t h1`. Establish `h2` using `(SheetDecomposition.CovSch.top_le_iff _ _).1 h1.2`. Rewrite using `[SheetDecomposition.CovSch.valAt'_eq _ _ h2, SheetDecomposition.CovSch.genMap_germ' ⟨centre (z t₀), h0⟩ U hU hg f]`. Conclude with `SheetDecomposition.CovSch.valAt_sec (hall _) U h2 hg f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_an {n : ℕ} {B : Set (Fin n → ℂ)} {z : (Fin n → ℂ) → (Sp ℂ ⟶ X)} (hz : IsHolTo B z)
     (hall : ∀ q : X, genPt ξ ⤳ q) {t₀ : Fin n → ℂ} (ht : t₀ ∈ B) {a : Ω} {r : ℂ} (h : ValAt ξ (z t₀) a r) :
@@ -52,9 +52,9 @@ theorem val_an {n : ℕ} {B : Set (Fin n → ℂ)} {z : (Fin n → ℂ) → (Sp 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hs`. Use `⟨fun k => (h.1 k).imp fun i hi => (IsUnit.mk0 _ (ha k)).mul hi, fun k i hi => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h.2 k i (isUnit_of_mul_isUnit_right hi)`. Use `⟨h1, fun j => (h2 j).imp fun r hr => ⟨hr.1, ?_⟩⟩` and prove the remaining obligations. Use `show a k * w' ⟨k, j⟩ = r * (a k * w' ⟨k, i⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr.2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coords_orbit {z : Sp ℂ ⟶ X} {w w' : (Σ k, J k) → ℂ} (h : CoordsAt ξ y z w') (hs : SameOrbit w w') :
     CoordsAt ξ y z w := by
@@ -67,7 +67,7 @@ theorem coords_orbit {z : Sp ℂ ⟶ X} {w w' : (Σ k, J k) → ℂ} (h : Coords
   ring
 
 /- English proof (translation)
-Establish `h1 : ∀ k, ‖a k‖ ^ A.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.2 (ha k))`. Rewrite using `[A.smul a w ha, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => h1 k) (A.pos w hw).ne', Real.log_prod fun k _ => h1 k]`. Simplify using `only [Real.log_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_h_smul (A : HermLine J) (a : K → ℂ) (ha : ∀ k, a k ≠ 0) {w : (Σ k, J k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
     Real.log (A.h fun p => a p.1 * w p) = ∑ k, (A.a k : ℝ) * Real.log ‖a k‖ + Real.log (A.h w) := by
@@ -77,7 +77,7 @@ theorem log_h_smul (A : HermLine J) (a : K → ℂ) (ha : ∀ k, a k ≠ 0) {w :
   simp only [Real.log_zpow]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hs`. Simplify using `only [log_h_smul _ a ha hw, hd, Finset.sum_add_distrib, Pi.neg_apply, Finset.sum_apply, Int.cast_neg, Int.cast_sum, neg_mul, Finset.sum_neg_distrib, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_orbit {I : Type} (s : Finset I) (A : HermLine J) (B : I → HermLine J) (hd : A.a = -∑ i ∈ s, (B i).a)
     {w w' : (Σ k, J k) → ℂ} (hs : SameOrbit w w') (hw : ∀ k, ∃ i, w' ⟨k, i⟩ ≠ 0) :
@@ -89,13 +89,13 @@ theorem log_orbit {I : Type} (s : Finset I) (A : HermLine J) (B : I → HermLine
   ring
 
 /- English proof (translation)
-Take `⟨p0, h0⟩` from `hν.self_of_nhds`. Take `⟨c, hc⟩` from `h0.exists_chart`. Take `⟨u₀, hu₀, e0⟩` from `h0.2.2 c hc`. Take `⟨u, hu, hue⟩` from `val_an hz hall ht hu₀`. Set `F : (Fin n → ℂ) → ℂ` to `fun t => u t * ∏ k, γ t ⟨k, c k⟩ ^ A.a k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hF : AnalyticAt ℂ F t₀` using `hu.mul (Finset.analyticAt_fun_prod _ fun k _ => (hγ _).zpow (hc k))`. Establish `hcn : ∀ᶠ t in 𝓝 t₀, ∀ k, γ t ⟨k, c k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => (hγ _).continuousAt.eventually_ne (hc k)`. Establish `hev : ∀ᶠ t in 𝓝 t₀, ν t * A.h (γ t) = ‖F t‖` using `by filter_upwards [hν, hue, hcn] with t h1 h2 h3`. Take `⟨u', hu', e⟩` from `h1.2.2.2 c h3`. Rewrite using `[e, CxVal.unique hu' h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [F, norm_mul, norm_prod, norm_zpow]`. Establish `hF0 : F t₀ ≠ 0`. Rewrite using `[← norm_ne_zero_iff, ← hev.self_of_nhds]`. Conclude with `(mul_pos p0 (A.pos _ fun k => ⟨c k, hc k⟩)).ne'`. Take `⟨G, hG, hGe⟩` from `log_norm_an hF hF0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun t => -G t, hG.neg, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hν, hev, hcn, hGe] with t h1 h2 h3 h4`. Rewrite using `[Complex.neg_re, ← h4, ← h2, Real.log_mul h1.1.ne' (A.pos _ fun k => ⟨c k, h3 k⟩).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_h_an {n : ℕ} {B : Set (Fin n → ℂ)} {z : (Fin n → ℂ) → (Sp ℂ ⟶ X)} (hz : IsHolTo B z)
     (hall : ∀ q : X, genPt ξ ⤳ q) {t₀ : Fin n → ℂ} (ht : t₀ ∈ B) (A : HermLine J) (e₀ T : Ω)
@@ -125,9 +125,9 @@ theorem log_h_an {n : ℕ} {B : Set (Fin n → ℂ)} {z : (Fin n → ℂ) → (S
   ring
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `B.cover (ψ ((A.chart k).symm t))`. Establish `h1` using `hψ.2 k j t ⟨ht, hj⟩`. Establish `h2` using `hf j (B.chart j (ψ ((A.chart k).symm t))) ⟨(B.chart j).map_source hj, by show (B.chart j).symm _ ∈ W`. Rewrite using `[(B.chart j).left_inv hj]⟩` and apply the resulting hypothesis. Establish `h3` using `AnalyticAt.comp (f := B.chart j ∘ ψ ∘ (A.chart k).symm) (x := t) h2 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `h3.congr ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun t' => ψ ((A.chart k).symm t')) t` using `hψ.1.continuousAt.comp ((A.chart k).continuousAt_symm ht)`. Use `filter_upwards [hc.eventually_mem ((B.chart j).open_source.mem_nhds hj)] with t' h`. Simplify using `only [Function.comp_apply, (B.chart j).left_inv h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holo_comp {e e' : ℕ} {M N : Type} [TopologicalSpace M] [TopologicalSpace N] {A : FinHolAtlas e M}
     {B : FinHolAtlas e' N} {ψ : M → N} (hψ : HoloMap A B ψ) (k : Fin A.n) {t : Fin e → ℂ} (ht : t ∈ (A.chart k).target)
@@ -149,19 +149,19 @@ end Pot
 
 open Pot in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S RM Sys Fx Or ψ k V z tr ν hψ hπ hV hVt hpt t₁ ht₁ p`. Take `⟨τ, i⟩` from `p`. Set `w : _ → Or.Re.R.X` to `fun t => ψ ((Sys.A.chart k).symm t)`. Set `γ : _ → (Σ k, RM.ι k) → ℂ` to `fun t => Or.Re.R.lift (w t₁) (w t)`. Establish `hwc : ∀ t ∈ V, ContinuousAt w t` using `fun t ht => hψ.1.continuousAt.comp ((Sys.A.chart k).continuousAt_symm (hVt ht))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B` to `V ∩ w ⁻¹' Or.Re.R.U (w t₁)`. Establish `hB : IsOpen B` using `(continuousOn_of_forall_continuousAt hwc).isOpen_inter_preimage hV (Or.Re.R.isOpen_U _)`. Establish `ht₁B : t₁ ∈ B` using `⟨ht₁, Or.Re.R.mem_U _⟩`. Establish `hγ : ∀ t ∈ B, ∀ q, AnalyticAt ℂ (fun t => γ t q) t` using `fun t ht q => holo_comp hψ k (hVt ht.1) (Or.Re.R.holo (w t₁) q) ht.2`. Establish `horb : ∀ t ∈ B, SameOrbit (γ t) (Or.Re.R.lift (w t) (w t))` using `fun t ht => Or.Re.R.compat _ _ _ ⟨ht.2, Or.Re.R.mem_U _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco : ∀ t ∈ B, CoordsAt Or.𝔐.ξ RM.y (z t) (γ t)` using `fun t ht => coords_orbit (hpt t ht.1).2.1 (horb t ht)`. Establish `hz : IsHolTo B z` using `GlobalTheory.T.holomorphic_coords_of_generic_point _ _ Or.𝔐.ξ _ _ RM.y Or.𝔐.tie Or.𝔐.all _ B γ z hB (differentiableOn_pi.2 fun q t ht => (hγ t ht q).differentiableAt.differentiableWithinAt) hco`. Establish `hop : ∀ t ∈ V, Or.Re.π (w t) ∈ Sys.open'` using `fun t ht => by`. Rewrite using `[hπ]`. Conclude with `(hpt t ht).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hin : ∀ t ∈ V, Or.𝔐.Interior (z t)` using `fun t ht => (Or.interior (w t) (z t) (hpt t ht).2.1).2 (hop t ht)`. Establish `hroot : ∀ r : RootIx D, ∃ G : _ → ℂ, AnalyticAt ℂ G t₁ ∧ ∀ᶠ t in 𝓝 t₁, -Real.log ((Or.sing r).h (γ t)) = Real.log (ν r t ^ HodgeCpt.rootSgn D r) + (G t).re` using `fun r => by`. Use `log_h_an (y := RM.y) hz Or.𝔐.all ht₁B (Or.sing r) (Or.e r) (tr r ^ HodgeCpt.rootSgn D r) (hγ t₁ ht₁B) ?_` and prove the remaining obligations. Use `filter_upwards [hB.mem_nhds ht₁B] with t ht`. Conclude with `⟨zpow_pos ((hpt t ht.1).2.2 r).pos _, Or.hodge r (z t) (γ t) (hco t ht) (hin t ht.1) _ _ ((hpt t ht.1).2.2 r)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose G hG hGe using hroot`. Take `⟨W, hW, hwW, G₀, hG₀, e₀⟩` from `Or.Re.ref_pot (some (τ, i)) (w t₁) trivial`. Establish `hG₀a : AnalyticAt ℂ (fun t => G₀ (w t)) t₁` using `holo_comp hψ k (hVt ht₁) hG₀ hwW`. Use `⟨fun t => ∑ j ∈ Finset.Iic i, G (τ, j) t - G₀ (w t), (Finset.analyticAt_fun_sum _ fun j _ => hG _).sub hG₀a, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hB.mem_nhds ht₁B, (hwc t₁ ht₁).eventually_mem (hW.mem_nhds hwW), (Filter.eventually_all_finset (Finset.Iic i)).2 fun j _ => hGe (τ, j)] with t ht htW h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Real.log ((Or.Re.ref (some (τ, i))).h (γ t)) - (Sys.th (some (τ, i))).φ (Or.Re.π (w t₁)) (Or.Re.π (w t)) = (G₀ (w t)).re` using `e₀ (w t) htW`. Establish `e2` using `Or.fund_sing τ i (w t) (hop t ht.1)`. Establish `e3` using `log_orbit (Finset.Iic i) (Or.Re.ref (some (τ, i))) (fun j => Or.sing (τ, j)) (by rw [Or.fund_deg]; simp only [Or.sing_deg]) (horb t ht) (Or.Re.R.mem _ _ (Or.Re.R.mem_U _)).1`. Establish `e4 : ∑ j ∈ Finset.Iic i, -Real.log ((Or.sing (τ, j)).h (γ t)) = ∑ j ∈ Finset.Iic i, ((HodgeCpt.rootSgn D (τ, j) : ℝ) * Real.log (ν (τ, j) t) + (G (τ, j) t).re)` using `Finset.sum_congr rfl fun j hj => by rw [h3 j hj, Real.log_zpow]`. Rewrite `e4` using `[Finset.sum_neg_distrib, Finset.sum_add_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [w, hπ] at e1 e2`. Use `show (Sys.th (some (τ, i))).φ _ _ + Sys.ph (some (τ, i)) _ = _`. Rewrite using `[Complex.sub_re, Complex.re_sum]`. Simplify using `only [w] at e3 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem potLoc : PotLoc := by
   intro E _ _ _ H D l Xo c Y S RM Sys Fx Or ψ k V z tr ν hψ hπ hV hVt hpt t₁ ht₁ p

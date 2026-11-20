@@ -12,7 +12,7 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 open scoped IntermediateField nonZeroDivisors in
 /- English proof (translation)
-Establish `h` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) L (𝓞 L)`. Use `Nat.le_of_dvd (Int.natAbs_pos.mpr (discr_ne_zero L)) ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Dvd.intro_left _ rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma natAbs_discr_pow_finrank_le_natAbs_discr (K L : Type*) [Field K] [NumberField K] [Field L]
     [NumberField L] [Algebra K L] :
@@ -27,17 +27,17 @@ open NumberField IsDedekindDomain in
 open scoped IntermediateField nonZeroDivisors in
 
 /- English proof (translation)
-Establish `hmul` using `Module.finrank_mul_finrank ℚ K L`. Establish `hn : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `hm : 0 < Module.finrank K L` using `Module.finrank_pos`. Establish `hnR : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast hn`. Establish `hmR : (0 : ℝ) < Module.finrank K L` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNR : ((Module.finrank ℚ L : ℕ) : ℝ) = Module.finrank ℚ K * Module.finrank K L`. Rewrite using `[← hmul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion.
 
-Apply `Real.log_le_log hnR` to reduce the goal to its premises. Rewrite using `[hNR]`. Establish `: (1 : ℝ) ≤ Module.finrank K L` using `by exact_mod_cast hm`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK : (0 : ℝ) < |((discr K : ℤ) : ℝ)|`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `discr_ne_zero K` as an intermediate fact. Check the signs of the components of the expression. Establish `hle : |((discr K : ℤ) : ℝ)| ^ Module.finrank K L ≤ |((discr L : ℤ) : ℝ)|`. Establish `h` using `natAbs_discr_pow_finrank_le_natAbs_discr K L`. Establish `h' : (((discr K).natAbs ^ Module.finrank K L : ℕ) : ℝ) ≤ ((discr L).natAbs : ℝ)`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Simplify `h'` using `[Nat.cast_natAbs, Int.cast_abs]`. Establish `hlog : (Module.finrank K L : ℝ) * Real.log |((discr K : ℤ) : ℝ)| ≤ Real.log |((discr L : ℤ) : ℝ)|`. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (pow_pos hK _) hle`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hNR, div_le_div_iff₀ hnR (mul_pos hnR hmR)]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldSize.log_finrank_rootDiscr_le_of_tower (K L : Type*) [Field K] [NumberField K] [Field L]
     [NumberField L] [Algebra K L] :
@@ -76,9 +76,9 @@ open NumberField IsDedekindDomain in
 open scoped IntermediateField nonZeroDivisors in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `F a b a' b' ⟨hF, h1, h2⟩ ha hb`. Conclude with `⟨hF, h1.trans ha, h2.trans hb⟩`. Introduce and unpack `F F' a b hFF' ⟨hF', h1, h2⟩ haveI : FiniteDimensional ℚ F' := hF' haveI hF : FiniteDimensional ℚ F := FiniteDimensional.of_injective (IntermediateField.inclusion hFF').toLinearMap (IntermediateField.inclusion hFF').injective haveI : NumberField F := ⟨⟩ haveI : NumberField F' := ⟨ …`. Use `letI : Algebra F F' := (IntermediateField.inclusion hFF').toRingHom.toAlgebra`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Take `⟨g1, g2⟩` from `_root_.GlobalTheory.FieldSize.log_finrank_rootDiscr_le_of_tower F F'`. Conclude with `⟨hF, g1.trans h1, g2.trans h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.FieldSize.sz_mono_and_of_le :
     (∀ (F : IntermediateField ℚ ℂ) (a b a' b' : ℝ), _root_.GlobalTheory.FieldSize.Sz F a b →

@@ -16,7 +16,7 @@ namespace GlobalTheory.ModelSum
 open GlobalTheory.LN ReciprocityTheory.ChartRestriction.G.Out in
 
 /- English proof (translation)
-Introduce `z`. Conclude with `isEmptyElim ((fst T' G).left z)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lin_of_isEmpty {S : Scheme.{0}} (G : Over S) (L : LB G.left) (N : ℕ) {T T' : Over S} [hT : IsEmpty T'.left]
     (h : T' ⟶ T) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (N : ℤ) T)) (c : Fin n → Γ(T'.left, ⊤))
@@ -25,14 +25,14 @@ theorem lin_of_isEmpty {S : Scheme.{0}} (G : Over S) (L : LB G.left) (N : ℕ) {
   exact isEmptyElim ((fst T' G).left z)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨fun x => by simpa using x.2⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem isEmpty_of_eq_bot {Z : Scheme.{0}} {U : Z.Opens} (h : U = ⊥) : IsEmpty U.toScheme := by
   subst h
   exact ⟨fun x => by simpa using x.2⟩
 
 /- English proof (translation)
-Use `CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty ?_)` and prove the remaining obligations. Use extensionality with `x`. Conclude with `isEmptyElim x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem subsingleton_sections_of_isEmpty {X : Scheme.{0}} [IsEmpty X] : Subsingleton Γ(X, ⊤) := by
   refine CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty ?_)
@@ -42,7 +42,7 @@ theorem subsingleton_sections_of_isEmpty {X : Scheme.{0}} [IsEmpty X] : Subsingl
 open GlobalTheory.LN ReciprocityTheory.ChartRestriction.G.Out in
 
 /- English proof (translation)
-Establish `hE : IsEmpty (U ⊓ V).toScheme` using `isEmpty_of_eq_bot hUV`. Use `subsingleton_sections_of_isEmpty (X := (U ⊓ V).toScheme)` as an intermediate fact. Establish `sec : ∀ M : ℕ, LB.Sec (LPow G L (M : ℤ) (Over.mk (U ⊓ V).ι))` using `fun M => { f := fun _ => 0 compat := fun _ _ => fn_ext fun y _ => (hE.false ((fst (Over.mk (U ⊓ V).ι) G).left y)).elim }`. Use `⟨1, 1, ⟨sec 1, lin_of_isEmpty (hT := hE) G L 1 _ _ _ _, lin_of_isEmpty (hT := hE) G L 1 _ _ _ _⟩, fun k => ⟨sec N, lin_of_isEmpty (hT := hE) G L N _ _ _ _, lin_of_isEmpty (hT := hE) G L N _ _ _ _⟩, Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem trans_of_inf_eq_bot {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (N : ℕ) {n : ℕ} (r s : ℤ) {U V : Z.Opens}
     (hUV : U ⊓ V = ⊥) (thU : LB.Sec (LPow G L ((1 : ℕ) : ℤ) (Over.mk U.ι)))
@@ -69,11 +69,9 @@ theorem trans_of_inf_eq_bot {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (N : �
     Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Introduce `Z G L N A B n r s hAB hA hB`. Take `⟨thA, bA, hAt, hAb⟩` from `hA`. Take `⟨thB, bB, hBt, hBb⟩` from `hB`. Use `⟨fun | .inl i => thA i | .inr j => thB j, fun | .inl i => bA i | .inr j => bB j, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hAt i j`. Conclude with `trans_of_inf_eq_bot G L N r s (hAB i j) (thA i) (thB j) (bA i) (bB j) _`. Conclude with `trans_of_inf_eq_bot G L N r s (by rw [inf_comm]; exact hAB j i) (thB i) (thA j) (bB i) (bA j) _`. Conclude with `hBt i j`. Introduce and unpack `(i | i) W _ _ _ hW χ hχ`.
-
-Conclude with `hAb i W hW χ hχ`. Conclude with `hBb i W hW χ hχ`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hasFrames_sumLB : ∀ (Z : Scheme.{0}) (G : Over Z) (L : LB G.left) (N : ℕ) (A B : LB Z) (n : ℕ) (r s : ℤ), (∀ i j, A.U i ⊓ B.U j = ⊥) → HasFrames G L N A n r s → HasFrames G L N B n r s → HasFrames G L N (sumLB A B) n r s := by
   intro Z G L N A B n r s hAB hA hB

@@ -9,7 +9,7 @@ open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotio
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MomOne.moment_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMassBoundLowTypesSum.lean&line=314#L314)
 -/

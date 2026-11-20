@@ -14,7 +14,7 @@ def pder (n : ℕ) (Θ : V × ℝ → ℂ) (p : V × ℝ) : ContinuousMultilinea
   iteratedFDeriv ℝ n (fun y => Θ (y, p.2)) p.1
 
 /- English proof (translation)
-Establish `e : (fun y => Θ (y, p.2)) = (fun z => Θ (z + (0, p.2))) ∘ ContinuousLinearMap.inl ℝ V ℝ`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `hg : ContDiff ℝ ∞ (fun z => Θ (z + (0, p.2)))` using `hΘ.comp (contDiff_id.add contDiff_const)`. Rewrite using `[pder, e, ContinuousLinearMap.iteratedFDeriv_comp_right _ hg _ (by exact_mod_cast le_top), iteratedFDeriv_comp_add_right]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -28,9 +28,9 @@ theorem pder_eq (n : ℕ) {Θ : V × ℝ → ℂ} (hΘ : ContDiff ℝ ∞ Θ) (p
   simp
 
 /- English proof (translation)
-Establish `: pder n Θ = (ContinuousMultilinearMap.compContinuousLinearMapL (fun _ : Fin n => ContinuousLinearMap.inl ℝ V ℝ)) ∘ iteratedFDeriv ℝ n Θ`. Use function extensionality and compare the values at `p`. Rewrite using `[pder_eq n hΘ p]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ContinuousLinearMap.contDiff _).comp (hΘ.iteratedFDeriv_right (by norm_cast))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_pder (n : ℕ) {Θ : V × ℝ → ℂ} (hΘ : ContDiff ℝ ∞ Θ) : ContDiff ℝ ∞ (pder n Θ) := by
   have : pder n Θ = (ContinuousMultilinearMap.compContinuousLinearMapL
@@ -42,13 +42,13 @@ theorem contDiff_pder (n : ℕ) {Θ : V × ℝ → ℂ} (hΘ : ContDiff ℝ ∞ 
 variable [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero`. Rewrite using `[iteratedFDeriv_zero_eq_comp]`. Simplify using `only [Function.comp_apply, pder, iteratedFDeriv_zero_eq_comp]`. Conclude with `((continuousMultilinearCurryFin0 ℝ V ℂ).symm.toLinearIsometry.integral_comp_comm _).symm`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `hfun : iteratedFDeriv ℝ n (fun y => ∫ s in Ioc (0 : ℝ) 1, Θ (y, s)) = fun y => ∫ s in Ioc (0 : ℝ) 1, (1 : ℂ) • pder n Θ (y, id s)`. Use function extensionality and compare the values at `y`. Simplify using `[ih y]`. Establish `hd` using `GlobalTheory.SchwartzDiv.hasFDerivAt_integral_smul_param (ν := volume.restrict (Ioc (0 : ℝ) 1)) (c := id) (S := Icc (0 : ℝ) 1) (φ := fun _ => (1 : ℂ)) aestronglyMeasurable_id isCompact_Icc ((ae_restrict_mem measurableSet_Ioc).mono fun t ht => Ioc_subset_Icc_self ht) (integrableOn …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, hfun, hd.fderiv]`. Establish `hc` using `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ).symm.toLinearIsometry.integral_comp_comm (μ := volume.restrict (Ioc (0 : ℝ) 1)) (fun y => (1 : ℂ) • fderiv ℝ (fun s => pder n Θ (s, id y)) x)`. Simplify using `only [LinearIsometryEquiv.coe_toLinearIsometry] at hc`. Rewrite using `[← hc]`. Use `integral_congr_ae (.of_forall fun s => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_smul, id, pder]`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_integral {Θ : V × ℝ → ℂ} (hΘ : ContDiff ℝ ∞ Θ) (n : ℕ) (x : V) :
     iteratedFDeriv ℝ n (fun y => ∫ s in Ioc (0 : ℝ) 1, Θ (y, s)) x = ∫ s in Ioc (0 : ℝ) 1, pder n Θ (x, s) := by

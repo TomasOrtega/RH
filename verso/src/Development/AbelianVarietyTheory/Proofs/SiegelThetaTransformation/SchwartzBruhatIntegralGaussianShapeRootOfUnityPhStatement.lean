@@ -5,7 +5,7 @@ open Matrix Complex GlobalTheory.SW GlobalTheory.Phase
 open scoped ComplexConjugate Real
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Phase.ph_haar_of_shape` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FSchwartzBruhatIntegralGaussianShapeRootOfUnityPh.lean&line=102#L102)
 -/

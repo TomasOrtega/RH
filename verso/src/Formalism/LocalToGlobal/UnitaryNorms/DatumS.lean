@@ -56,12 +56,12 @@ def CMDatumFamilyClass : FamClass := fun {_} Fm =>
   LinkedFamiliesAligned Fm ∧ ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, ∃ T : LinkedFamilyData (Fm.ex x hx i), HostDatumS T
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem CMDatumFamilyClass.c2sa {eps : ℝ} {Fm : FamP eps} (h : CMDatumFamilyClass Fm) : LinkedFamiliesAligned Fm := h.1
 
 /- English proof (translation)
-The claim follows from `h.1.c2s`.
+A detailed English derivation is pending.
 -/
 theorem CMDatumFamilyClass.c2s {eps : ℝ} {Fm : FamP eps} (h : CMDatumFamilyClass Fm) : LinkedFamiliesLevelClass Fm := h.1.c2s
 

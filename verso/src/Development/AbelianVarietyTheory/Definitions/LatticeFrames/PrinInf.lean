@@ -84,7 +84,7 @@ def DownNe (D : D7) : Prop :=
     Occ ψ θ sW om m β Z u Φ → ¬ NoLift ψ om m u
 
 /- English proof (translation)
-Introduce `f _ h`. Simplify using `[up, AutomorphicL2Unitary.descend]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example (ψ : AddChar (AF D.host.F) ℂ) {A W : HSp D} (om : WRep A W) (m : Measure (GA D A)) : NoLift ψ om m 0 := by
   intro f _ h

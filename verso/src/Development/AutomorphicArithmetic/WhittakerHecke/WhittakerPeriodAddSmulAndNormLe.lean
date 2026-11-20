@@ -9,22 +9,22 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Automorphic.FourierWhittaker.vecMeasure_vecDomain`.
+A detailed English derivation is pending.
 -/
 private theorem volume_fundamental_domain_two : adeleMeasurePi (ι := Fin 2) ℚ (FS2 ℚ) = 1 :=
   GroundTheory.Automorphic.FourierWhittaker.vecMeasure_vecDomain
 
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.R2.Pp.cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_nE {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) :
     Continuous (nE D : (Fin 2 → A ℚ) → GL (Fin 2) (A E)) :=
   UpperTheory.ConvolutionTheory.R2.Pp.cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))
 
 /- English proof (translation)
-Establish `hg : Continuous fun u : Fin 2 → A ℚ => f (nE D u * h) * ψ (u 1)` using `(hf.comp ((cont_nE D).mul continuous_const)).mul (UpperTheory.ConvolutionTheory.R2.Pp.cont_ψ.comp (continuous_apply 1))`. Take `⟨C, hC, hs⟩` from `UpperTheory.ConvolutionTheory.R2.Pp.exists_cpt (F := ℚ)`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin 2 => C)` using `isCompact_univ_pi fun _ => hC`. Establish `hsub : FS2 ℚ ⊆ Set.univ.pi fun _ : Fin 2 => C` using `Set.pi_mono fun _ _ => hs`. Unfold `adeleMeasurePi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(hg.continuousOn.integrableOn_compact hK).mono_set hsub`.
+A detailed English derivation is pending.
 -/
 private theorem int_Wo {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) {f : GL (Fin 2) (A E) → ℂ}
     (hf : Continuous f) (h : GL (Fin 2) (A E)) :
@@ -39,9 +39,9 @@ private theorem int_Wo {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) {f :
   exact (hg.continuousOn.integrableOn_compact hK).mono_set hsub
 
 /- English proof (translation)
-Introduce `E _ _ D`. Use `⟨fun f f' hf hf' h => ?_, fun c f h => ?_, fun f B h hB => ?_⟩` and prove the remaining obligations. Unfold `Wo`. Rewrite using `[← integral_add (int_Wo D hf h) (int_Wo D hf' h)]`. Simplify using `only [Pi.add_apply, add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Wo`. Rewrite using `[← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `norm_setIntegral_le_of_norm_le_const (μ := adeleMeasurePi (ι := Fin 2) ℚ) (s := FS2 ℚ) (f := fun u => f (nE D u * h) * ψ (u 1)) (C := B) (by rw [volume_fundamental_domain_two]; exact ENNReal.one_lt_top) fun u _ => by rw [norm_mul, UpperTheory.ConvolutionTheory.R2.Pp.norm_ψ, mul_o …` as an intermediate fact. Rewrite `this` using `[measureReal_def, volume_fundamental_domain_two, ENNReal.toReal_one, mul_one]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.whittakerPeriod_add_smul_and_norm_le :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E),

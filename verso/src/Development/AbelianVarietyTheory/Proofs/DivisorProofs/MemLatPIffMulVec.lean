@@ -29,7 +29,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Build
 
 /- English proof (translation)
-Simplify using `only [mem_latP]`. Use `forall₂_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[h, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_localLattice_iff_mulVec {r : ℕ} (D : D7) {Λ Λ' : Submodule (𝓞 D.host.E) (Fin r → D.host.E)}
     (A : Matrix (Fin r) (Fin r) D.host.E) (h : ∀ w, w ∈ Λ ↔ A.mulVec w ∈ Λ') (w : Fin r → D.host.E) :
@@ -39,7 +39,7 @@ theorem mem_localLattice_iff_mulVec {r : ℕ} (D : D7) {Λ Λ' : Submodule (𝓞
   rw [h, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chi_one_of_toData {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (Xd : DataX E r) (X : Data E r)
     (e : Xd.toData = X) (h : ∀ la, ∀ γ ∈ X.Γ, X.χ la γ = 1) : ∀ la, ∀ γ ∈ Xd.Γ, Xd.χ la γ = 1 := by
@@ -47,7 +47,7 @@ theorem chi_one_of_toData {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
   exact h
 
 /- English proof (translation)
-Take `⟨I, hb, ht⟩` from `(Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top).1 (NumberField.RingOfIntegers.not_isField D.what₂.LL)`. Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal I ht.ne`. Conclude with `⟨⟨P, hP.isPrime, fun e => hb.ne' (le_bot_iff.1 (e ▸ hIP))⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_place (D : D7) : Nonempty (HeightOneSpectrum (𝓞 D.what₂.LL)) := by
   obtain ⟨I, hb, ht⟩ := (Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top).1 (NumberField.RingOfIntegers.not_isField D.what₂.LL)
@@ -58,7 +58,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Take `⟨X, ⟨h1, -, h3⟩, -⟩` from `GlobalTheory.ModelLatticeCheck.holds_by_value D (r.used v).full.toCore (h.laws v).p.toLawsCore ((i : ℕ) + 1) ⟨Nat.le_add_left _ _, i.2⟩ (r.used v).full.σ₀ (r.used v).full.toCore.good_σ₀ k`. Use `⟨X, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ModelLatExamples.eq_latP D X.Λ X.L' h3]`. Use `show lattice₂ D X.toData.Λ = _`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dataX_latP (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r) (i : Fin D.R.m)
     (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (k : (uAt r v i).Comp) :

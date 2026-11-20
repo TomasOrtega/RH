@@ -8,11 +8,11 @@ namespace GlobalTheory
 
 open Filter Topology in
 /- English proof (translation)
-Take `⟨U, hU, hUo, hwU⟩` from `eventually_nhds_iff.1 hH.eventually_analyticAt`. Use `set s : Set (E × F) := (fun q ↦ q + (0, w)) ⁻¹' U with hs`. Establish `hso : IsOpen s` using `hUo.preimage (continuous_id.add continuous_const)`. Establish `h0s : (0 : E × F) ∈ s` using `by simpa [hs] using hwU`. Establish `hf : AnalyticOnNhd ℂ (fun q : E × F ↦ H (q + (0, w))) s` using `fun q hq ↦ (hU _ hq).comp (f := fun q : E × F ↦ q + (0, w)) (analyticAt_id.add analyticAt_const)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hslice : (fun z : E ↦ H (z, w)) = (fun q : E × F ↦ H (q + (0, w))) ∘ ContinuousLinearMap.inl ℂ E F`. Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `hpre : IsOpen (ContinuousLinearMap.inl ℂ E F ⁻¹' s)` using `hso.preimage (ContinuousLinearMap.continuous _)`. Establish `h0s' : ContinuousLinearMap.inl ℂ E F 0 ∈ s` using `by rw [map_zero]; exact h0s`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0pre : (0 : E) ∈ ContinuousLinearMap.inl ℂ E F ⁻¹' s` using `h0s'`. Rewrite using `[hslice, ← iteratedFDerivWithin_of_isOpen k hpre h0pre, ContinuousLinearMap.iteratedFDerivWithin_comp_right _ (hf.contDiffOn (n := k) hso.uniqueDiffOn) hso.uniqueDiffOn hpre.uniqueDiffOn h0s' le_rfl, iteratedFDerivWithin_of_isOpen k hso h0s', iteratedFDeriv_comp_add_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma iteratedFDeriv_slice_eq_compContinuousLinearMap_inl {E F : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F] (H : E × F → ℂ) {w : F}
@@ -41,7 +41,7 @@ private lemma iteratedFDeriv_slice_eq_compContinuousLinearMap_inl {E F : Type} [
 
 open Filter Topology in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i ↦ ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma fin_snoc_eq_cons_comp_finRotate {X : Type} {k : ℕ} (u : Fin k → X) (a : X) :
     (Fin.snoc u a : Fin (k + 1) → X) = Fin.cons a u ∘ finRotate (k + 1) := by
@@ -53,13 +53,13 @@ private lemma fin_snoc_eq_cons_comp_finRotate {X : Type} {k : ℕ} (u : Fin k �
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `E F _ _ _ _ _ _ H w₀ k v hH`. Use `set u : Fin k → E × F := fun i ↦ (v i, 0) with hu`. Establish `hev : ∀ᶠ w in 𝓝 w₀, AnalyticAt ℂ H (0, w)` using `((continuous_const.prodMk continuous_id).tendsto w₀).eventually hH.eventually_analyticAt`. Establish `heq : (fun w ↦ iteratedFDeriv ℂ k (fun z ↦ H (z, w)) 0 v) =ᶠ[𝓝 w₀] fun w ↦ iteratedFDeriv ℂ k H (0, w) u` using `hev.mono fun w hw ↦ by dsimp only; rw [iteratedFDeriv_slice_eq_compContinuousLinearMap_inl H hw k]; rfl`. Take `⟨U, hU, hUo, hwU⟩` from `eventually_nhds_iff.1 hH.eventually_analyticAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hiter : AnalyticAt ℂ (iteratedFDeriv ℂ k H) (0, w₀)` using `(AnalyticOnNhd.iteratedFDeriv_of_isOpen hU hUo k) _ hwU`. Establish `hA : AnalyticAt ℂ (fun w ↦ iteratedFDeriv ℂ k H (0, w) u) w₀` using `((ContinuousMultilinearMap.apply ℂ (fun _ : Fin k ↦ E × F) ℂ u).analyticAt _).comp (hiter.comp (f := fun w : F ↦ ((0 : E), w)) (analyticAt_const.prod analyticAt_id))`. Use `⟨hA.congr heq.symm, fun e ↦ ?_⟩` and prove the remaining obligations. Establish `hD : HasFDerivAt (fun w ↦ iteratedFDeriv ℂ k H (0, w) u) ((ContinuousMultilinearMap.apply ℂ (fun _ : Fin k ↦ E × F) ℂ u).comp ((fderiv ℂ (iteratedFDeriv ℂ k H) (0, w₀)).comp (ContinuousLinearMap.inr ℂ E F))) w₀` using `(ContinuousMultilinearMap.apply ℂ (fun _ : Fin k ↦ E × F) ℂ u).hasFDerivAt.comp w₀ (hiter.differentiableAt.hasFDerivAt.comp w₀ (hasFDerivAt_prodMk_right (0 : E) w₀))`. Establish `hG : AnalyticAt ℂ (fun y ↦ fderiv ℂ H y (0, e)) (0, w₀)` using `((ContinuousLinearMap.apply ℂ ℂ ((0 : E), e)).analyticAt _).comp hH.fderiv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq.fderiv_eq, hD.fderiv, iteratedFDeriv_slice_eq_compContinuousLinearMap_inl _ hG k]`. Establish `hcomp : (fun y ↦ fderiv ℂ H y (0, e)) = (ContinuousLinearMap.apply ℂ ℂ ((0 : E), e)) ∘ fderiv ℂ H` using `rfl`. Rewrite using `[hcomp, ContinuousLinearMap.iteratedFDeriv_comp_left _ (hH.fderiv.contDiffAt (n := k)) le_rfl]`. Establish `hperm` using `(hH.contDiffAt (n := ⊤)).iteratedFDeriv_comp_perm (Fin.cons ((0 : E), e) u) (finRotate (k + 1))`. Rewrite `hperm` using `[← fin_snoc_eq_cons_comp_finRotate, iteratedFDeriv_succ_apply_right, iteratedFDeriv_succ_apply_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hperm.symm` using `[u]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.analyticAt_iteratedFDeriv_slice_and_fderiv :
     ∀ {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F] [FiniteDimensional ℂ E] [FiniteDimensional ℂ F] (H : E × F → ℂ) (w₀ : F) (k : ℕ) (v : Fin k → E), AnalyticAt ℂ H (0, w₀) → AnalyticAt ℂ (fun w ↦ iteratedFDeriv ℂ k (fun z ↦ H (z, w)) 0 v) w₀ ∧ ∀ e : F, fderiv ℂ (fun w ↦ iteratedFDeriv ℂ k (fun z ↦ H (z, w)) 0 v) w₀ e = iteratedFDeriv ℂ k (fun z ↦ fderiv ℂ H (z, w₀) (0, e)) 0 v := by

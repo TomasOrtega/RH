@@ -32,11 +32,9 @@ section LocalNorms
 variable {K : Type*} [Field K] [NumberField K] (L : Type*) [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Use `set p := tensorEquiv L v z`. Establish `hp : (x : v.adicCompletion K) = ∏ w, Algebra.norm (v.adicCompletion K) (p w)`. Rewrite using `[hz, ← GroundTheory.Global.SemiLocal.norm_pi, Algebra.norm_eq_of_algEquiv]`. Establish `hp0 : ∀ w, p w ≠ 0`. Introduce `w h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `x.ne_zero` to reduce the goal to its premises. Rewrite using `[hp]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ w) (by rw [h0, Algebra.norm_zero])`. Use `⟨fun w ↦ Units.mk0 (p w) (hp0 w), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IdeleNorm.coe_finiteLocalNorm, hp]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_range_finiteLocalNorm_of_eq_norm (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ) (z : v.adicCompletion K ⊗[K] L)
@@ -65,7 +63,7 @@ variable {K : Type*} [Field K] [NumberField K] (L : Type*) [Field L] [NumberFiel
 open scoped Classical in
 
 /- English proof (translation)
-Use `⟨(GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := L) v).symm (fun w ↦ (y w : (w : InfinitePlace L).Completion)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.norm_eq_of_algEquiv (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := L) v), AlgEquiv.apply_symm_apply, GroundTheory.Global.Algebra.norm_pi, IdeleNorm.coe_infiniteLocalNorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_norm_tensor_eq_infiniteLocalNorm (v : InfinitePlace K)
     (y : (w : v.placesOver L) → ((w : InfinitePlace L).Completion)ˣ) :
@@ -80,11 +78,9 @@ theorem exists_norm_tensor_eq_infiniteLocalNorm (v : InfinitePlace K)
 open scoped Classical in
 
 /- English proof (translation)
-Use `set p := GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := L) v z`. Establish `hp : (x : v.Completion) = ∏ w, Algebra.norm v.Completion (p w)`. Rewrite using `[hz, ← GroundTheory.Global.Algebra.norm_pi, Algebra.norm_eq_of_algEquiv]`. Establish `hp0 : ∀ w, p w ≠ 0`. Introduce `w h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `x.ne_zero` to reduce the goal to its premises. Rewrite using `[hp]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ w) (by rw [h0, Algebra.norm_zero])`. Use `⟨fun w ↦ Units.mk0 (p w) (hp0 w), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IdeleNorm.coe_infiniteLocalNorm, hp]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_range_infiniteLocalNorm_of_eq_norm (v : InfinitePlace K) (x : (v.Completion)ˣ)
     (z : v.Completion ⊗[K] L) (hz : (x : v.Completion) = Algebra.norm v.Completion z) :

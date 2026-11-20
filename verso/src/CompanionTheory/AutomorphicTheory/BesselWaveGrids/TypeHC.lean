@@ -30,33 +30,31 @@ variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Take `⟨p1, pmul, punit, pcont⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_facts hT hπ`. Establish `hrep : Formalism.QuantumDeterminants.IsCRepOn (Formalism.QuantumDeterminants.UWset k r z) π` using `⟨p1, pmul⟩`. Establish `hcont : ContinuousOn π (Formalism.QuantumDeterminants.UWset k r z)` using `continuousOn_clm_apply.2 pcont`. Take `⟨g, hg, h₀⟩` from `hπ`. Establish `hirr : ∀ S : Submodule ℂ W, (∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ v ∈ S, π h v ∈ S) → S = ⊥ ∨ S = ⊤` using `fun S hS => h₀.2.2.2.2.2.1 S le_top fun x hx v hv => hS _ (conj_mem_UW hg (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Matrix.mem_unitaryGroup_iff'.mp hx.1` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Conclude with `mem_UJset_allPos.2 this)) v hv`. Take `⟨E, hgl, -, hE⟩` from `GlobalTheory.UnitaryDerived.exists_derived_action k W _ h₀.2.2.1`. Take `⟨v, hv, hq⟩` from `qdet_eigen h₀ E hgl hE`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB` using `isFrameOf hg`. Use `set A := g * incl k r with hA`. Use `set B := Aᴴ * Hpk k r with hBd`. Establish `hd : ∀ Z : Matrix (Fin k) (Fin k) ℂ, Zᴴ = -Z → ∀ x, Q.dRep π (A * Z * B) x = ∑ a, ∑ b, Z a b • E a b x`. Introduce `Z hZ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← (hE Z hZ x).deriv]`. Unfold `Q.dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[conj_blockW hg.1, ← exp_corner _ _ (co_mul hg.1), Matrix.mul_smul, Matrix.smul_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : (Formalism.QuantumDeterminants.Hpk k r)⁻¹ = Hpk k r` using `Matrix.inv_eq_left_inv Hpk_mul_self`. Establish `hc : ∀ Y : Matrix (Fin k) (Fin k) ℂ, (Formalism.QuantumDeterminants.Hpk k r)⁻¹ * (A * Y * B)ᴴ * Formalism.QuantumDeterminants.Hpk k r = A * Yᴴ * B`. Introduce `Y`. Rewrite using `[hH, hBd]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Hpk_conjTranspose, ← Matrix.mul_assoc, Hpk_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `hEB : Qr.EB π (fun a => g *ᵥ bvec (bl k r a)) = E`. Use function extensionality and compare the values at `a b`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hl` using `P.QrD.frame_lie hB a b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show P.QrD.ecOp π _ x = _`. Rewrite using `[← P.QrD.ecRep_eq hrep hcont hl.1 hl.2, unitB_eq]`. Unfold `Q.EcRep Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`. Rewrite using `[← hA, ← hBd, hc, ← Matrix.sub_mul, ← Matrix.mul_sub, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.smul_mul, ← Matrix.mul_smul, hd, hd]`. Simplify using `only [Finset.smul_sum, smul_smul, ← Finset.sum_add_distrib, ← add_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : ∀ c d, ((1 / 2 : ℂ) • (Matrix.single a b (1 : ℂ) - (Matrix.single a b (1 : ℂ))ᴴ)) c d + Complex.I * ((1 / (2 * Complex.I) : ℂ) • (Matrix.single a b (1 : ℂ) + (Matrix.single a b (1 : ℂ))ᴴ)) c d = Matrix.single a b (1 : ℂ) c d`. Introduce `c d`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [e]`. Simplify using `[Matrix.single, ite_and, ite_smul]`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose, ← neg_smul, add_comm]`. Use `congr 1`. Simplify using `[Complex.conj_ofNat]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, ← smul_neg, neg_sub]`. Use `congr 1`. Simplify using the standard rewrite rules. Set `K : Submodule ℂ W` to `{ carrier := {x | ∀ Y : ℂ, Formalism.REAL.qdet E (Y + ((k : ℂ) - 1) / 2) x = (∏ s, (Y + (u₀ s : ℂ))) • x} add_mem' := fun ha hb w => by rw [map_add, ha w, hb w, smul_add] zero_mem' := fun w => by simp smul_mem' := fun s x hx w => by rw [map_smul, hx w, smul_comm] }`. Establish `hKs : Qr.Stab (Qr.EB π (fun a => g *ᵥ bvec (bl k r a))) K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hEB]`. Introduce `a b x hx w`. Use `congrArg (fun T : Module.End ℂ W => T x) (Formalism.REAL.qDetCentral _ k _ hgl (w + ((k : ℂ) - 1) / 2) a b)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hx w, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK` using `P.lie_stabilizer W k r z π _ hz hT ⟨hrep, hcont⟩ hB K hKs`. Establish `hKt : K = ⊤` using `(hirr K hK).resolve_left ((Submodule.ne_bot_iff K).2 ⟨v, hq, hv⟩)`. Use `⟨h₀.1, hrep, hcont, punit, hirr, fun Bs hBs w x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ K` using `hKt ▸ Submodule.mem_top`. Establish `e` using `hx (w - ((k : ℂ) - 1) / 2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[sub_add_cancel]`. Rewrite using `[(P.frame_general_linear W k r k z π Bs ⟨hrep, hcont⟩ hBs).2, P.QrCap.capChange hz hT ⟨hrep, hcont⟩ hBs hB, hEB, e, CompanionTheory.D.Inhab.TypeHW.prod_Icc]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hu]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isType_of_hc {u : ℕ → ℝ} {u₀ : Fin k → ℝ} (hz : Formalism.QuantumDeterminants.inWb k r z) (hT : 0 < Formalism.QuantumDeterminants.Tz k r z)
     (hπ : IsHCTypeW k r z u₀ π) (hu : ∀ s : Fin k, u (s.val + 1) = u₀ s) : Q.IsType k r z π u := by
@@ -141,21 +139,21 @@ theorem isType_of_hc {u : ℕ → ℝ} {u₀ : Fin k → ℝ} (hz : Formalism.Qu
 end param
 
 /- English proof (translation)
-Take `⟨Cb, -, hTL⟩` from `Formalism.FourierDecayAlt.P.top_lift_exists`. Use `⟨Cb, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' μW μW' l0 hP hk hl1 hl2 hW hW1 hW' hW1'`. Take `⟨μ, hμ⟩` from `CompanionTheory.D.Inhab.IsDataInh.haar_glev_last P.k P.r`. Take `⟨hOK, hz, hz', hT, hT', ⟨-, hr, hc, hu, -, -⟩, ⟨-, hr', hc', hu', -, -⟩⟩` from `id hP`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B0, e1, e2, e3, e4, -⟩` from `Formalism.FourierDecayAlt.P.setting_with_prescribed_data_exists P.k P.r Wp Wq z z' π π' hOK.k_pos hz hz' (by rw [hT]; exact hOK.T_pos) (by rw [hT']; exact hOK.T'_pos) hr hr' hu hu' hc hc'`. Take `⟨T0, -, -, -, -, hN0⟩` from `Formalism.FourierDecayAlt.P.exists_normalized_tower P.k P.r Wp Wq B0`. Establish `hmuN : B.IsHaarOn (Formalism.QuantumDeterminants.Nset P.k P.r) (D.muN P.k P.r)`. Establish `h` using `(hN0 0 (Nat.zero_le _)).2.2`. Establish `h' : T0.base.μN = D.muN P.k P.r` using `(by simpa using h : (T0.bs 0).μN = D.muN P.k P.r)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h' ▸ T0.base.haarN`. Substitute `e1 e2 e3 e4` using the available equality. Set `Bs : B.RealPlaceData P.k P.r Wp Wq` to `{ B0 with μW := μW, μN := D.muN P.k P.r, μW' := μW', haarW := hW, haarN := hmuN, haarW' := hW' }`. Take `⟨T, hTb, hTN⟩` from `Formalism.FourierDecayAlt.P.exists_level_tower P.k P.r Wp Wq Bs hW1 hW1' rfl`. Establish `hPl : Q.IsPlace P T.base.z T.base.z' T.base.π T.base.π'`.
+Substitute using the available equality. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTb]`. Conclude with `hP`. Take `⟨ν', m₀, hF⟩` from `Formalism.FourierDecayAlt.P.HaarMassHermitianCurvature.frame_of T.base`. Take `⟨X, L, st, hD⟩` from `CompanionTheory.D.Inhab.IsDataInh.isData_of_place P _ _ _ _ hPl μ hμ l0`. Take `⟨Θ, hI, hDD⟩` from `hTL Wp Wq P T.base X μ L st l0 hl1 hl2 hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f1, f2, f3⟩` from `Formalism.FourierDecayAlt.P.HaarMassHermitianCurvature.frameVec_facts T.base ν' m₀ hF`. Take `⟨TP⟩` from `Formalism.FourierDecayAlt.P.type_projectors_exist Wp Wq P T.base.z T.base.z' T.base.π T.base.π' (m₀ *ᵥ ν') hPl f1 f2 f3`. Use `⟨⟨l0, T, ν', m₀, Θ, TP, ⟨hl1, hl2, hk⟩, hTN, hF, hPl, ⟨X, μ, L, st, hD, hI⟩⟩, rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hDD⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T.base.z = B0.z`. Rewrite using `[hTb]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `T.base.z' = B0.z'`. Rewrite using `[hTb]`. Express the relevant statement in the definitionally equal form `T.base.π = B0.π`. Rewrite using `[hTb]`. Express the relevant statement in the definitionally equal form `T.base.π' = B0.π'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hTb]`. Express the relevant statement in the definitionally equal form `T.base.μW = μW`. Rewrite using `[hTb]`. Express the relevant statement in the definitionally equal form `T.base.μN = D.muN P.k P.r`. Rewrite using `[hTb]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `T.base.μW' = μW'`. Rewrite using `[hTb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_place : ∃ Cb : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)

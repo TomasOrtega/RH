@@ -6,7 +6,7 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.isPotentialOn_contDiffAt_two_compatChart` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPotentialSmoothOnOpen.lean&line=33#L33)
 -/

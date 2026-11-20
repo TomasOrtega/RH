@@ -8,7 +8,7 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.CartGL.Lower
 
 /- English proof (translation)
-Establish `h : (((GlobalTheory.CompanionTheory.CartGL.dPow p a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = diagonal fun i => ((p ^ (-a i) : Lˣ) : L)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, h, GlobalTheory.CompanionTheory.CartGL.dPow_val, mul_diagonal, diagonal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_entry {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L] {n : ℕ}
     (p : Lˣ) (a : Fin n → ℤ) (w : GL (Fin n) L) (i j : Fin n) :
@@ -20,9 +20,9 @@ theorem conj_entry {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L] 
   rw [Units.val_mul, Units.val_mul, h, GlobalTheory.CompanionTheory.CartGL.dPow_val, mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < ‖(p : L)‖` using `norm_pos_iff.mpr p.ne_zero`. Take `⟨m, hm⟩ : ∃ m : ℕ, c = b + m` from `⟨(c - b).toNat, by omega⟩`. Establish `e : ‖((p ^ (-b) : Lˣ) : L) * x * ((p ^ c : Lˣ) : L)‖ = ‖x‖ * ‖(p : L)‖ ^ m`. Rewrite using `[norm_mul, norm_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, norm_zpow, norm_zpow, hm, zpow_add₀ hp0.ne', _root_.zpow_neg, zpow_natCast]`. Establish `: ‖(p : L)‖ ^ b ≠ 0` using `(zpow_pos hp0 b).ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ hp0.le hp.le)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_conj_le {L : Type} [NontriviallyNormedField L] (p : Lˣ) (hp : ‖(p : L)‖ < 1)
     {b c : ℤ} (hbc : b ≤ c) (x : L) :
@@ -38,13 +38,13 @@ theorem norm_conj_le {L : Type} [NontriviallyNormedField L] (p : Lˣ) (hp : ‖(
   exact mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ hp0.le hp.le)
 
 /- English proof (translation)
-Introduce `L _ _ n p hp a ha r w hl hr i j`. Rewrite using `[Matrix.sub_apply, conj_entry]`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Establish `h0` using `hr i j`. Rewrite `h0` using `[Matrix.sub_apply, hl i j h, Matrix.one_apply_ne h.ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hl i j h, Matrix.one_apply_ne h.ne]`. Simplify using `using h0`. Substitute `h` using the available equality. Establish `hne : ((p ^ (-a i) : Lˣ) : L) * ((p ^ a i : Lˣ) : L) = 1`. Rewrite using `[← Units.val_mul, _root_.zpow_neg, inv_mul_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((p ^ (-a i) : Lˣ) : L) * (w : Matrix (Fin n) (Fin n) L) i i * ((p ^ a i : Lˣ) : L) = (w : Matrix (Fin n) (Fin n) L) i i`. Rewrite using `[mul_right_comm, hne, one_mul]`. Rewrite using `[e]`. Simplify `hr i i` using `[Matrix.sub_apply]`. Establish `h0` using `hr i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h0` using `[Matrix.sub_apply, Matrix.one_apply_ne h.ne', sub_zero]`. Rewrite using `[Matrix.one_apply_ne h.ne', sub_zero]`. Conclude with `(norm_conj_le p hp (ha h.le) _).trans h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_lower_contract : ∀ (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] (n : ℕ) (p : Lˣ), ‖(p : L)‖ < 1 → ∀ (a : Fin n → ℤ), Antitone a → ∀ (r : ℝ) (w : GL (Fin n) L), (∀ i j, i < j → (w : Matrix (Fin n) (Fin n) L) i j = 0) → (∀ i j, ‖((w : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r) → ∀ i j, ‖((((GlobalTheory.CompanionTheory.CartGL.dPow p a)⁻¹ * w * GlobalTheory.CompanionTheory.CartGL.dPow p a : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r := by
   intro L _ _ n p hp a ha r w hl hr i j

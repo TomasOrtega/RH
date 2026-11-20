@@ -14,9 +14,9 @@ namespace GlobalTheory.ThK.BotSmall
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, ⟨h.chars.heckeα.1.div' h.chars.heckeβ.1, fun x => by` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, h.chars.heckeα.2 x, h.chars.heckeβ.2 x, div_self']⟩,`. Use the proof step `h.chars.resα, fun x => ?_, h.weil'⟩`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h.chars.resα x, h.chars.resβ x]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ a with hm | hm <;> rw [hm] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pair_small {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (h : IsTriple B G X om om') :
@@ -32,9 +32,9 @@ theorem pair_small {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     rcases neg_one_pow_eq_or ℂ a with hm | hm <;> rw [hm] <;> ring
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h0 : piInf (τ w) (z : AE F E) ≠ 0` using `(z.isUnit.map (piInf (τ w))).ne_zero`. Establish `h1 : piInf (τ w) (z : AE F E) / (‖piInf (τ w) (z : AE F E)‖ : ℂ) ≠ 0` using `div_ne_zero h0 (Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 h0))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zpow_sub₀ h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasExp_div {τ : ∀ w : InfinitePlace F, EmbOver E w} {χ χ' : Chr F E} {m m' : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (h' : HasExp τ χ' m') : HasExp τ (χ / χ') fun w => m w - m' w := by
@@ -47,7 +47,7 @@ theorem hasExp_div {τ : ∀ w : InfinitePlace F, EmbOver E w} {χ χ' : Chr F E
   rw [zpow_sub₀ h1]
 
 /- English proof (translation)
-Introduce `w hw x hx`. Establish `e` using `h w hw x hx`. Establish `e'` using `h' w hw x hx`. Simplify using `only [locChar, MonoidHom.comp_apply, MonoidHom.div_apply, map_div] at e e' ⊢`. Rewrite using `[e, e', div_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unrOff_div {χ χ' : Chr F E} {S : Set (Pl F)} (h : UnrOff χ S) (h' : UnrOff χ' S) : UnrOff (χ / χ') S := by
   intro w hw x hx
@@ -57,7 +57,7 @@ theorem unrOff_div {χ χ' : Chr F E} {S : Set (Pl F)} (h : UnrOff χ S) (h' : U
   rw [e, e', div_one]
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT hp hq`. Establish `hlt` using `hT.geo.lt`. Establish `ha` using `hT.geo.aBig`. Use `GlobalTheory.T.doubling_l_function_special_value hK F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ (pair_small hT) (by omega) (by omega) (by omega) (by omega) hT.geo.even (fun w => B.mα w - B.mβ w) (hasExp_div hT.chars.expα hT.chars.expβ) (fun w => (hT.geo.kappa w) …` and prove the remaining obligations. Conclude with `GlobalTheory.T.triple_doubling_period_second hK F E σ B a a' G X om om' hT hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_I_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.p = 0 → G.q = 0 → ∃ Φ' ∈ PolData B G.M', G.M'.I om' Φ' ≠ 0 := by

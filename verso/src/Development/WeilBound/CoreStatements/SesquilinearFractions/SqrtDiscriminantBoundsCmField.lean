@@ -11,11 +11,11 @@ section SlopeTestRemainingChoices
 variable {O J : Type} [CommRing O] [Fintype J] [DecidableEq J]
 
 /- English proof (translation)
-Use `haveI : Fact d.Prime := ⟨hd⟩`. Rewrite using `[Algebra.trace_eq_matrix_trace b y, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hnil : IsNilpotent ((Algebra.leftMulMatrix b y).map (Int.castRingHom (ZMod d)))`. Use `⟨2, ?_⟩` and prove the remaining obligations. Establish `e : (d : O) * z = (d : ℤ) • z` using `by simp [zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_pow, ← map_pow, h, e, map_zsmul]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, eq_intCast, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self]`. Simplify using the standard rewrite rules. Establish `htr` using `(Matrix.isNilpotent_trace_of_isNilpotent hnil).eq_zero`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((Algebra.leftMulMatrix b y).map (Int.castRingHom (ZMod d))).trace = (((Algebra.leftMulMatrix b y).trace : ℤ) : ZMod d)`. Simplify using `[Matrix.trace, Matrix.map_apply]`. Rewrite using `[← hc]`. Conclude with `htr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_dvd_trace_of_sq (b : Module.Basis J ℤ O) (d : ℕ) (hd : d.Prime) (y z : O) (h : y ^ 2 = (d : O) * z) :
     (d : ℤ) ∣ Algebra.trace ℤ O y := by
@@ -38,7 +38,7 @@ theorem prime_dvd_trace_of_sq (b : Module.Basis J ℤ O) (d : ℕ) (hd : d.Prime
   exact htr
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Algebra.traceMatrix_apply, Algebra.traceForm_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Use `conv_rhs => rw [← b.sum_repr (r * b j), Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, LinearMap.map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceMatrix_mul_leftMulMatrix (b : Module.Basis J ℤ O) (r : O) (i j : J) :
     (Algebra.traceMatrix ℤ b * Algebra.leftMulMatrix b r) i j = Algebra.trace ℤ O (b i * (r * b j)) := by
@@ -49,17 +49,17 @@ theorem traceMatrix_mul_leftMulMatrix (b : Module.Basis J ℤ O) (r : O) (i j : 
   rw [mul_smul_comm, LinearMap.map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hd0 : (d : ℤ) ≠ 0` using `by exact_mod_cast hd.ne_zero`. Establish `hent : ∀ i j, (d : ℤ) ∣ (Algebra.traceMatrix ℤ b * Algebra.leftMulMatrix b r) i j`. Introduce `i j`. Rewrite using `[traceMatrix_mul_leftMulMatrix b r i j]`. Use `prime_dvd_trace_of_sq b d hd (b i * (r * b j)) (-((b i) ^ 2 * (b j) ^ 2)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (b i * (r * b j)) ^ 2 = (b i) ^ 2 * (b j) ^ 2 * r ^ 2` using `by ring`. Rewrite using `[e, hr]`. Expand and normalize the polynomial expressions, which then agree. Set `C : Matrix J J ℤ` to `fun i j => (Algebra.traceMatrix ℤ b * Algebra.leftMulMatrix b r) i j / d`. Establish `hTL : Algebra.traceMatrix ℤ b * Algebra.leftMulMatrix b r = (d : ℤ) • C`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [C, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(Int.mul_ediv_cancel' (hent i j)).symm`. Establish `hL2 : (Algebra.leftMulMatrix b r).det ^ 2 = (-(d : ℤ)) ^ Fintype.card J`. Rewrite using `[sq, ← Matrix.det_mul, ← map_mul, ← sq, hr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (-(d : O)) = algebraMap ℤ O (-(d : ℤ))` using `by simp`. Rewrite using `[e, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, Matrix.det_smul, Matrix.det_one, _root_.mul_one]`. Establish `h1 : (Algebra.traceMatrix ℤ b * Algebra.leftMulMatrix b r).det ^ 2 = ((d : ℤ) ^ Fintype.card J) ^ 2 * C.det ^ 2`. Rewrite using `[hTL, Matrix.det_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Matrix.det_mul, mul_pow, hL2, ← Algebra.discr_def, neg_pow]`. Establish `key2 : Algebra.discr ℤ b ^ 2 * (-1) ^ Fintype.card J = (d : ℤ) ^ Fintype.card J * C.det ^ 2`. Apply `mul_right_cancel₀ (pow_ne_zero (Fintype.card J) hd0)` to reduce the goal to its premises. Take the linear combination `h1`. Establish `hdv : (d : ℤ) ^ Fintype.card J ∣ Algebra.discr ℤ b ^ 2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (d : ℤ) ^ Fintype.card J ∣ Algebra.discr ℤ b ^ 2 * (-1) ^ Fintype.card J` using `⟨_, key2⟩`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ (Fintype.card J) with h | h <;> rw [h] at h2 <;> simpa using h2`. Conclude with `Int.le_of_dvd (lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 h0))) hdv`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem discriminant_bound_sqrt_neg_prime (b : Module.Basis J ℤ O) (d : ℕ) (hd : d.Prime) (r : O) (hr : r ^ 2 = -(d : O))
     (h0 : Algebra.discr ℤ b ≠ 0) : (d : ℤ) ^ Fintype.card J ≤ Algebra.discr ℤ b ^ 2 := by
@@ -98,13 +98,11 @@ theorem discriminant_bound_sqrt_neg_prime (b : Module.Basis J ℤ O) (d : ℕ) (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Establish `hd` using `H.d_prime`. Establish `hd1 : (1 : ℝ) ≤ H.d` using `by exact_mod_cast hd.one_lt.le`. Use `⟨by simpa using Real.sqrt_le_sqrt hd1, ?_⟩` and prove the remaining obligations. Use `set n := Module.finrank ℚ E with hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn0 : n ≠ 0` using `Module.finrank_pos.ne'`. Establish `hD : (H.d : ℤ) ^ n ≤ (discr E) ^ 2`. Establish `h` using `discriminant_bound_sqrt_neg_prime (RingOfIntegers.basis E) H.d hd H.rt H.rt_sq (discr_ne_zero E)`. Rewrite `h` using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : ((Real.sqrt H.d) ^ n) ^ 2 ≤ |((discr E : ℤ) : ℝ)| ^ 2`. Rewrite using `[← pow_mul, mul_comm n 2, pow_mul, Real.sq_sqrt (by positivity), sq_abs]`. Conclude with `hD` after adjusting the coercions. Establish `hR2 : (Real.sqrt H.d) ^ n ≤ |((discr E : ℤ) : ℝ)|` using `(pow_le_pow_iff_left₀ (by positivity) (abs_nonneg _) two_ne_zero).mp hR`. Unfold `rootDiscr`.
-
-Rewrite using `[Int.cast_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sqrt_discriminant_bounds_cm_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), 1 ≤ Real.sqrt H.d ∧ Real.sqrt H.d ≤ rootDiscr E := by
   intro E _ _ _ H

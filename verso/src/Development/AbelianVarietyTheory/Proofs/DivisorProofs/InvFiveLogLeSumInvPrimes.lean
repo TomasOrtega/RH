@@ -20,13 +20,13 @@ noncomputable def okAll : ℕ → List (ℕ × ℕ × ℕ × ℕ × List ℕ) �
   | lo, (a, b, j, c, L) :: rest, hi => a ≤ lo && okIv a b j c L && okAll b rest hi
 
 /- English proof (translation)
-Introduce `D`. Proceed by induction on `D with`. Consider the case `zero => intro _ d h2 hD`. Use linear arithmetic over natural numbers and integers. Consider the case `succ D ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `h d h2 hD hdd`. Simplify using `only [noSmallDiv, Bool.and_eq_true] at h`. Break down `Nat.lt_or_ge d (D + 1) with hlt | hge` into its components or cases. Conclude with `ih h.2 d h2 (by omega) hdd`. Establish `hd : d = D + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hd` using the available equality. Establish `h1` using `h.1`. Simplify using `only [Bool.or_eq_true, decide_eq_true_eq, bne_iff_ne, ne_eq] at h1`. Break down `h1 with (h1 | h1) | h1` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem noSmallDiv_spec (p : ℕ) : ∀ D, noSmallDiv p D = true →
     ∀ d, 2 ≤ d → d ≤ D → d * d ≤ p → p % d ≠ 0 := by
@@ -48,7 +48,7 @@ theorem noSmallDiv_spec (p : ℕ) : ∀ D, noSmallDiv p D = true →
       · exact h1
 
 /- English proof (translation)
-Rewrite using `[Nat.prime_def_le_sqrt]`. Use `⟨h2, fun m hm hms hdvd => ?_⟩` and prove the remaining obligations. Establish `hmm : m * m ≤ p` using `Nat.le_sqrt.1 hms`. Establish `hm130 : m ≤ 130` using `by nlinarith`. Conclude with `noSmallDiv_spec p 130 h m hm hm130 hmm (Nat.dvd_iff_mod_eq_zero.1 hdvd)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prime_of_check {p : ℕ} (h2 : 2 ≤ p) (hp : p < 17161) (h : noSmallDiv p 130 = true) :
     p.Prime := by
@@ -59,7 +59,7 @@ theorem prime_of_check {p : ℕ} (h2 : 2 ≤ p) (hp : p < 17161) (h : noSmallDiv
   exact noSmallDiv_spec p 130 h m hm hm130 hmm (Nat.dvd_iff_mod_eq_zero.1 hdvd)
 
 /- English proof (translation)
-The claim follows from `| [], _ => List.Pairwise.nil | [_], _ => List.pairwise_singleton _ _ | a :: b :: t, h => by simp only [sortedB, Bool.and_eq_true, decide_eq_true_eq] at h have ih := sortedB_pairwise (b :: t) h.2 refine List.pairwise_cons.2 ⟨fun x hx => ?_, ih⟩ rcases List.mem_cons.1 hx with rfl | …`.
+A detailed English derivation is pending.
 -/
 theorem sortedB_pairwise : ∀ L : List ℕ, sortedB L = true → L.Pairwise (· < ·)
   | [], _ => List.Pairwise.nil
@@ -73,23 +73,21 @@ theorem sortedB_pairwise : ∀ L : List ℕ, sortedB L = true → L.Pairwise (·
     · exact h.1.trans (List.rel_of_pairwise_cons ih hx)
 
 /- English proof (translation)
-Simplify using `only [okIv, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at h`. Take `⟨⟨⟨⟨hall, hsort⟩, hj⟩, hc0⟩, hk⟩` from `h`. Establish `hnd : L.Nodup` using `(sortedB_pairwise L hsort).imp (fun h => ne_of_lt h)`. Establish `hcard : L.toFinset.card = L.length` using `List.toFinset_card_of_nodup hnd`. Establish `hsub : L.toFinset ⊆ (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp`. Rewrite `hp` using `[List.mem_toFinset]`. Take `⟨⟨⟨⟨⟨h2, h3⟩, h4⟩, h5⟩, h6⟩, -⟩` from `hall p hp`. Rewrite using `[Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨by omega, prime_of_check h2 h3 h4, by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hcR : (0 : ℝ) < c` using `by exact_mod_cast hc0`. Establish `hkR : (c : ℝ) * 10 ^ 10 ≤ 5 * L.length * j * 6931471803` using `by exact_mod_cast hk`. Establish `hj1 : 1 ≤ j`. Break down `Nat.eq_zero_or_pos j with h0 | h0` into its components or cases. Substitute `h0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `at hk`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `h2j : 2 ≤ N`. Establish `: 2 ^ 1 ≤ 2 ^ j` using `Nat.pow_le_pow_right (by norm_num) hj1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN2 : (2 : ℝ) ≤ N` using `by exact_mod_cast h2j`. Establish `hlogN : (j : ℝ) * Real.log 2 ≤ Real.log N`. Establish `h2jR : ((2 : ℝ)) ^ j ≤ N` using `by exact_mod_cast (hj.trans haN)`. Use `Real.log_le_log (by positivity) h2jR` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hL : 0 < Real.log N` using `Real.log_pos (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) hcR]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (L.length : ℝ) * (j * 0.6931471803) ≤ L.length * (j * Real.log 2)` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hl2.le (by positivity)) (by positivity)`. Establish `e2 : (L.length : ℝ) * (j * Real.log 2) ≤ L.length * Real.log N` using `mul_le_mul_of_nonneg_left hlogN (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = ∑ _p ∈ L.toFinset, (1 : ℝ) / c := by rw [Finset.sum_const, hcard, nsmul_eq_mul]`. Use `_ ≤ ∑ p ∈ L.toFinset, (1 : ℝ) / p := by`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[List.mem_toFinset]`. Take `⟨⟨⟨⟨⟨h2, -⟩, -⟩, -⟩, -⟩, h7⟩` from `hall p hp`. Establish `: (0 : ℝ) < p` using `by exact_mod_cast (by omega : 0 < p)`. Conclude with `one_div_le_one_div_of_le this (by exact_mod_cast h7)`.
-
-Use `_ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg hsub (fun _ _ _ => by positivity)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem okIv_sound {a b j c : ℕ} {L : List ℕ} (h : okIv a b j c L = true) (N : ℕ) (haN : a ≤ N)
     (hNb : N < b) :
@@ -141,7 +139,7 @@ theorem okIv_sound {a b j c : ℕ} {L : List ℕ} (h : okIv a b j c L = true) (N
     _ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg hsub (fun _ _ _ => by positivity)
 
 /- English proof (translation)
-The claim follows from `| [], lo, hi, h, N, h1, h2 => by simp [okAll] at h; omega | (a, b, j, c, L) :: rest, lo, hi, h, N, h1, h2 => by simp only [okAll, Bool.and_eq_true, decide_eq_true_eq] at h obtain ⟨⟨hal, hiv⟩, hrest⟩ := h by_cases hNb : N < b · exact okIv_sound hiv N (by omega) hNb · exact okAll_s …`.
+A detailed English derivation is pending.
 -/
 theorem okAll_sound : ∀ (T : List (ℕ × ℕ × ℕ × ℕ × List ℕ)) (lo hi : ℕ), okAll lo T hi = true →
     ∀ N, lo ≤ N → N < hi → 1 / (5 * Real.log N) ≤
@@ -156,7 +154,7 @@ theorem okAll_sound : ∀ (T : List (ℕ × ℕ × ℕ × ℕ × List ℕ)) (lo 
     · exact okAll_sound rest b hi hrest N (by omega) h2
 
 /- English proof (translation)
-Establish `h` using `Nat.primeCounting_add_le (a := 6) (k := 6) (by norm_num) le_rfl (s - 6)`. Rewrite `h` using `[show 6 + (s - 6) = s by omega]`. Establish `h6 : Nat.primeCounting 6 = 3` using `by decide`. Establish `ht : Nat.totient 6 = 2` using `by decide`. Rewrite `h` using `[h6, ht]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -169,27 +167,25 @@ theorem three_mul_primeCounting_le (s : ℕ) (hs : 6 ≤ s) : 3 * Nat.primeCount
   omega
 
 /- English proof (translation)
-Establish `n_pos : 0 < n` using `(Nat.zero_le _).trans_lt n_large`. Establish `n2_pos : 1 ≤ 2 * n` using `mul_pos (zero_lt_two' ℕ) n_pos`. Set `S` to `{p ∈ Finset.range (2 * n / 3 + 1) | Nat.Prime p}`. Set `T` to `(Finset.range (2 * n + 1)).filter (fun p => p.Prime ∧ n < p)`. Set `f : ℕ → ℕ` to `fun x => x ^ n.centralBinom.factorization x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : ∀ p, f p ≤ 2 * n` using `fun p => Nat.pow_factorization_choose_le (mul_pos two_pos n_pos)`. Establish `hdisj : Disjoint S T`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hy`. Establish `h1` using `Finset.mem_range.1 (Finset.mem_filter.1 hx).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(Finset.mem_filter.1 hy).2.2`. Use linear arithmetic over natural numbers and integers. Establish `key : n.centralBinom = (∏ x ∈ S, f x) * ∏ x ∈ T, f x`. Rewrite using `[← Finset.prod_union hdisj]`. Use `(Eq.trans ?_ n.prod_pow_factorization_centralBinom).symm` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `x hx`. Break down `Finset.mem_union.1 hx with h | h` into its components or cases. Establish `h1` using `Finset.mem_range.1 (Finset.mem_filter.1 h).1`. Rewrite using `[Finset.mem_range]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `(Finset.mem_filter.1 h).1`. Introduce `x hx h2x`. Distinguish the cases in `hp : x.Prime`. Establish `h1 : ¬ x < 2 * n / 3 + 1` using `fun h => h2x (Finset.mem_union.2 (Or.inl (Finset.mem_filter.2 ⟨Finset.mem_range.2 h, hp⟩)))`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ¬ n < x` using `fun h => h2x (Finset.mem_union.2 (Or.inr (Finset.mem_filter.2 ⟨hx, hp, h⟩)))`. Establish `h3 : 2 * n < 3 * x` using `by omega`. Simplify using `only [f]`. Rewrite using `[Nat.factorization_centralBinom_of_two_mul_self_lt_three_mul n_large (not_lt.1 h2) h3, Nat.pow_zero]`. Simplify using `only [f]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.factorization_eq_zero_of_not_prime n.centralBinom hp, Nat.pow_zero]`. Rewrite using `[key]`. Apply `mul_le_mul'` to reduce the goal to its premises. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not S (· ≤ Nat.sqrt (2 * n))]`. Apply `mul_le_mul'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.prod_le_prod' fun p _ => hf p).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const]`. Use `pow_right_mono₀ n2_pos ?_` and prove the remaining obligations. Rewrite using `[← Nat.primesLE_card_eq_primeCounting]`. Use `Finset.card_le_card fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hx`. Conclude with `Nat.mem_primesLE.2 ⟨h2, (Finset.mem_filter.1 h1).2⟩`. Use `le_trans ?_ (primorial_le_four_pow (2 * n / 3))` and prove the remaining obligations. Use `(Finset.prod_le_prod' fun p hp => (?_ : f p ≤ p)).trans ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pow_right_mono₀ (Finset.mem_filter.1 h1).2.one_lt.le ?_).trans (pow_one p).le` and prove the remaining obligations. Conclude with `Nat.factorization_choose_le_one (Nat.sqrt_lt'.mp <| not_le.1 h2)`. Use `Finset.prod_le_prod_of_subset_of_one_le' (Finset.filter_subset _ _) ?_` and prove the remaining obligations. Conclude with `fun p hp _ => (Finset.mem_filter.1 hp).2.one_lt.le`. Use `(Finset.prod_le_prod' fun p _ => hf p).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.prod_const]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centralBinom_le_pow_primeCounting (n : ℕ) (n_large : 2 < n) :
     n.centralBinom ≤ (2 * n) ^ Nat.primeCounting (Nat.sqrt (2 * n)) * 4 ^ (2 * n / 3) *
@@ -249,41 +245,37 @@ theorem centralBinom_le_pow_primeCounting (n : ℕ) (n_large : 2 < n) :
     rw [Finset.prod_const]
 
 /- English proof (translation)
-Use `set U := (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) with hU`. Take `⟨n, hn⟩ : ∃ n, n = N / 2` from `⟨_, rfl⟩`. Use `set T := (Finset.range (2 * n + 1)).filter (fun p => p.Prime ∧ n < p) with hT`. Establish `hcard : T.card ≤ U.card + 3`. Establish `hsub : T ⊆ U ∪ {N - 2, N - 1, N}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨h1, h2, h3⟩` from `Finset.mem_filter.1 hx`. Rewrite `h1` using `[Finset.mem_range]`. Distinguish the cases in `h : x + 3 ≤ N`. Conclude with `Finset.mem_union.2 (Or.inl (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), h2, by omega, h⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `Finset.mem_union.2 (Or.inr ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Use `(Finset.card_le_card hsub).trans ((Finset.card_union_le _ _).trans ?_)` and prove the remaining obligations. Conclude with `Nat.add_le_add_left Finset.card_le_three _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `Nat.four_pow_lt_mul_centralBinom n (by omega)`. Establish `h2` using `centralBinom_le_pow_primeCounting n (by omega)`. Rewrite `h2` using `[← hT]`. Take `⟨s, hs⟩ : ∃ s, s = Nat.sqrt N` from `⟨_, rfl⟩`. Establish `hs1 : s * s ≤ N` using `hs ▸ Nat.sqrt_le N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hs2 : N < (s + 1) * (s + 1)` using `hs ▸ Nat.lt_succ_sqrt N`. Establish `hs3 : 130 ≤ s`. Assume the negation of the conclusion as `h`. Establish `: s + 1 ≤ 130` using `by omega`. Use `Nat.mul_le_mul this this` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨K, hK⟩ : ∃ K, K = Nat.primeCounting (Nat.sqrt (2 * n))` from `⟨_, rfl⟩`. Rewrite `h2` using `[← hK]`. Establish `hK3 : 3 * K ≤ s + 9`. Establish `a : K ≤ Nat.primeCounting s` using `hK ▸ Nat.monotone_primeCounting (hs ▸ Nat.sqrt_le_sqrt (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b` using `three_mul_primeCounting_le s (by omega)`. Use linear arithmetic over natural numbers and integers. Take `⟨m, hm⟩ : ∃ m, m = n - 2 * n / 3` from `⟨_, rfl⟩`. Establish `h3 : 4 ^ m ≤ N ^ (K + U.card + 4)`. Establish `hNpos : 1 ≤ N` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `e : 4 ^ n = 4 ^ m * 4 ^ (2 * n / 3)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `a1 : (2 * n) ^ K ≤ N ^ K` using `Nat.pow_le_pow_left (by omega) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `a2 : (2 * n) ^ T.card ≤ N ^ (U.card + 3)` using `(Nat.pow_le_pow_left (by omega) _).trans (Nat.pow_le_pow_right hNpos hcard)`. Establish `a3 : 4 ^ m * 4 ^ (2 * n / 3) ≤ N ^ (K + U.card + 4) * 4 ^ (2 * n / 3)`. Rewrite using `[← e]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_right a3 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNR : (16900 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hL : 0 < Real.log N` using `Real.log_pos (by linarith)`. Establish `h4 : (m : ℝ) * Real.log 4 ≤ (K + U.card + 4) * Real.log N`. Establish `: ((4 : ℝ)) ^ m ≤ (N : ℝ) ^ (K + U.card + 4)` using `by exact_mod_cast h3`. Use `Real.log_le_log (by positivity) this` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Real.log_pow, Real.log_pow]`. Conclude with `this` after adjusting the coercions. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hl2'` using `Real.log_two_lt_d9`. Establish `hl4 : Real.log 4 = 2 * Real.log 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Establish `hmR : (N : ℝ) ≤ 6 * m + 1`. Establish `: N ≤ 6 * m + 1` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hsR : (130 : ℝ) ≤ s` using `by exact_mod_cast hs3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs1R : (s : ℝ) * s ≤ N` using `by exact_mod_cast hs1`. Establish `hs2R : (N : ℝ) ≤ (s + 1) * (s + 1)` using `by exact_mod_cast hs2.le`. Establish `hK3R : 3 * (K : ℝ) ≤ s + 9` using `by exact_mod_cast hK3`. Establish `hLle : Real.log N ≤ (s + 1) / 64 + 7.70407`. Establish `b1 : Real.log N ≤ 2 * Real.log (s + 1)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.log_le_log (by linarith) hs2R` as an intermediate fact. Rewrite `this` using `[Real.log_mul (by linarith) (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b2 : Real.log ((s + 1) / 2 ^ 7) ≤ (s + 1) / 2 ^ 7 - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite `b2` using `[Real.log_div (by linarith) (by norm_num), Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at b2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : (N : ℝ) ≤ U.card * (5 * Real.log N)`. Establish `c1 : ((s : ℝ) + 21) * Real.log N ≤ (s + 21) * ((s + 1) / 64 + 7.70407)` using `mul_le_mul_of_nonneg_left hLle (by linarith)`. Establish `c2 : (m : ℝ) * 1.386294 ≤ m * Real.log 4` using `mul_le_mul_of_nonneg_left (by linarith) (Nat.cast_nonneg _)`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c3 : 130 * (s : ℝ) ≤ s * s` using `mul_le_mul_of_nonneg_right hsR (by linarith)`. Establish `c4 : 3 * (K : ℝ) * Real.log N ≤ (s + 9) * Real.log N` using `mul_le_mul_of_nonneg_right hK3R hL.le`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) (by linarith)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ∑ _p ∈ U, (1 : ℝ) / N := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Take `⟨-, hp1, -, hp2⟩` from `Finset.mem_filter.1 hp`.
-
-Establish `: (0 : ℝ) < p` using `by exact_mod_cast hp1.pos`. Establish `h' : (p : ℝ) ≤ N` using `by exact_mod_cast (by omega : p ≤ N)`. Conclude with `one_div_le_one_div_of_le this h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inv_five_log_le_sum_inv_primes_of_large (N : ℕ) (hN : 16900 ≤ N) :
     1 / (5 * Real.log N) ≤
@@ -401,12 +393,12 @@ def table : List (ℕ × ℕ × ℕ × ℕ × List ℕ) := [
   (13522, 16900, 13, 13513, [10667, 10687, 10691, 10709, 10711, 10723, 10729, 10733, 10739, 10753, 10771, 10781, 10789, 10799, 10831, 10837, 10847, 10853, 10859, 10861, 10867, 10883, 10889, 10891, 10903, 10909, 10937, 10939, 10949, 10957, 10973, 10979, 10987, 10993, 11003, 11027, 11047, 11057, 11059, 11069, 11071, 11083, 11087, 11093, 11113, 11117, 11119, 11131, 11149, 11159, 11161, 11171, 11173, 11177, 11197, 11213, 11239, 11243, 11251, 11257, 11261, 11273, 11279, 11287, 11299, 11311, 11317, 11321, 11329, 11351, 11353, 11369, 11383, 11393, 11399, 11411, 11423, 11437, 11443, 11447, 11467, 11471, 11483, 11489, 11491, 11497, 11503, 11519, 11527, 11549, 11551, 11579, 11587, 11593, 11597, 11617, 11621, 11633, 11657, 11677, 11681, 11689, 11699, 11701, 11717, 11719, 11731, 11743, 11777, 11779, 11783, 11789, 11801, 11807, 11813, 11821, 11827, 11831, 11833, 11839, 11863, 11867, 11887, 11897, 11903, 11909, 11923, 11927, 11933, 11939, 11941, 11953, 11959, 11969, 11971, 11981, 11987, 12007, 12011, 12037, 12041, 12043, 12049, 12071, 12073, 12097, 12101, 12107, 12109, 12113, 12119, 12143, 12149, 12157, 12161, 12163, 12197, 12203, 12211, 12227, 12239, 12241, 12251, 12253, 12263, 12269, 12277, 12281, 12289, 12301, 12323, 12329, 12343, 12347, 12373, 12377, 12379, 12391, 12401, 12409, 12413, 12421, 12433, 12437, 12451, 12457, 12473, 12479, 12487, 12491, 12497, 12503, 12511, 12517, 12527, 12539, 12541, 12547, 12553, 12569, 12577, 12583, 12589, 12601, 12611, 12613, 12619, 12637, 12641, 12647, 12653, 12659, 12671, 12689, 12697, 12703, 12713, 12721, 12739, 12743, 12757, 12763, 12781, 12791, 12799, 12809, 12821, 12823, 12829, 12841, 12853, 12889, 12893, 12899, 12907, 12911, 12917, 12919, 12923, 12941, 12953, 12959, 12967, 12973, 12979, 12983, 13001, 13003, 13007, 13009, 13033, 13037, 13043, 13049, 13063, 13093, 13099, 13103, 13109, 13121, 13127, 13147, 13151, 13159, 13163, 13171, 13177, 13183, 13187, 13217, 13219, 13229, 13241, 13249, 13259, 13267, 13291, 13297, 13309, 13313, 13327, 13331, 13337, 13339, 13367, 13381, 13397, 13399, 13411, 13417, 13421, 13441, 13451, 13457, 13463, 13469, 13477, 13487, 13499, 13513])]
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem table_ok : okAll 100 table 16900 = true := by decide +kernel
 
 /- English proof (translation)
-Introduce `N hN`. Distinguish the cases in `h : N < 16900`. Conclude with `okAll_sound table 100 16900 table_ok N hN h`. Conclude with `inv_five_log_le_sum_inv_primes_of_large N (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem inv_five_log_le_sum_inv_primes :
     ∀ N : ℕ, 100 ≤ N → 1 / (5 * Real.log N) ≤

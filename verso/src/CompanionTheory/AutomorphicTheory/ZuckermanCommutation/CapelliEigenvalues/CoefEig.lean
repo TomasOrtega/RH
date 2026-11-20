@@ -9,11 +9,11 @@ noncomputable section
 namespace CompanionTheory.CapEig
 
 /- English proof (translation)
-Take `⟨P₀, hP₀, hds⟩` from `hσ`. Establish `hdet : IsUnit P₀.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hP₀.1.1`. Establish `hPQ : P₀ * P₀⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hQP : P₀⁻¹ * P₀ = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `hH : Formalism.QuantumDeterminants.Hpk k r = P₀ᴴ * Formalism.REAL.Jm ε * P₀` using `hP₀.1.2.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : Formalism.REAL.SmoothOnGV ε (fun x => σ (P₀⁻¹ * x * P₀) v)` using `Formalism.QuantumDeterminants.ioh_smooth ε _ P₀ P₀⁻¹ (fun x => σ x v) hPQ hH hv`. Establish `hg' : Formalism.REAL.inUJ ε (P₀ * g * P₀⁻¹)` using `Formalism.QuantumDeterminants.ioh_inUJ ε _ P₀ P₀⁻¹ g hPQ hH hg`. Establish `hsm : Formalism.REAL.SmoothOnGV ε (fun x => L (σ (P₀⁻¹ * x * P₀) v))` using `(Formalism.REAL.rdVPair _ ε Hs E L _ 0 1 hv' (by simp [Formalism.REAL.inG]) inUJ_one).1`. Establish `hm : ∀ a b, Formalism.REAL.inUJ ε a → Formalism.REAL.inUJ ε b → σ (P₀⁻¹ * (a * b) * P₀) = (σ (P₀⁻¹ * a * P₀)).comp (σ (P₀⁻¹ * b * P₀))` using `fun a b ha hb => hds.2.2.1.1.2 a ha b hb`. Establish `hu : (Y + ((2 * r + k : ℕ) : ℂ) / 2) = Y + (((2 * r + k + 1 : ℕ) : ℂ) - 1) / 2` using `by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `PI.CapelliEig.capC`. Rewrite using `[capelli_localization _ ε _ _ P₀ P₀⁻¹ F (fun x => L (σ x v)) _ g hQP hPQ hH hF hg, capelli_transport _ ε _ _ P₀ P₀⁻¹ _ _ g hQP hPQ hH hsm hg, ← capelli_clm L hv' _ hg', capelli_vec (σ := fun x => σ (P₀⁻¹ * x * P₀)) hm hv' _ hg', hu, hI _ ε lam Hs _ hlam hds v hv' Y, Formalism.Qua …`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem capC_vec (hI : PI.DSInfCharCap.DSInfCharCap) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
@@ -45,7 +45,7 @@ theorem capC_vec (hI : PI.DSInfCharCap.DSInfCharCap) {k r : ℕ} {ε : Fin (2 * 
     Formalism.QuantumDeterminants.ioh_QP P₀ P₀⁻¹ g hQP, hF g hg, map_smul, map_smul]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: a = id` using `funext fun j => Fin.ext (ha j)`. Rewrite using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem qminorOp_cast {n m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E)) (h : m = n)
@@ -56,9 +56,9 @@ theorem qminorOp_cast {n m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpac
   rw [this]
 
 /- English proof (translation)
-Introduce `k r E _ _ Y F`. Unfold `Q.CV Q.capL PI.CapelliEig.capC Formalism.QuantumDeterminants.capelliH Formalism.QuantumDeterminants.qdetOp`. Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Establish `hu : Q.uC k r 0 Y = Y + ((2 * r + k : ℕ) : ℂ) / 2`. Unfold `Q.uC`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hu]`. Conclude with `qminorOp_cast _ hm _ (fun j => by simp [Q.posL]) _ _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capelli_eigenvalue_transfer : CompanionTheory.LimBd.Main.CVBridge := by
   intro k r E _ _ Y F
@@ -70,7 +70,7 @@ theorem capelli_eigenvalue_transfer : CompanionTheory.LimBd.Main.CVBridge := by
   exact qminorOp_cast _ hm _ (fun j => by simp [Q.posL]) _ _
 
 /- English proof (translation)
-Introduce `k r ε μ φ Wp Wq _ _ _ _ _ _ T hφ Y g hg`. Take `⟨H, _, _, _, σ, v, w, hμ, hσ, hv, -, he⟩` from `hφ`. Rewrite using `[capelli_eigenvalue_transfer]`. Conclude with `capC_vec hI hμ hσ ((innerSL ℂ w).smulRight T) (hK k r ε μ H σ hμ hσ v hv) (F := fun x => φ x • T) (fun x hx => by simp [he x hx]) Y hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefEig_of (hI : PI.DSInfCharCap.DSInfCharCap) (hK : PI.KFinSmooth) : CompanionTheory.LimBd.Main.CoefEig := by
   intro k r ε μ φ Wp Wq _ _ _ _ _ _ T hφ Y g hg

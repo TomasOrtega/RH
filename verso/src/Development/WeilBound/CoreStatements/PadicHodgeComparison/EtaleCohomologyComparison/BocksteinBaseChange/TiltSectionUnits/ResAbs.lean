@@ -17,22 +17,22 @@ def redPow (f : R →+* O) (n : ℕ) : R →+* ModP O p :=
   (iterateFrobenius (ModP O p) p n).comp ((Ideal.Quotient.mk _).comp f)
 
 /- English proof (translation)
-Rewrite using `[redPow, RingHom.comp_apply, iterateFrobenius_def, RingHom.comp_apply, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem redPow_apply (f : R →+* O) (n : ℕ) (y : R) :
     redPow (p := p) f n y = Ideal.Quotient.mk (span {(p : O)}) (f y ^ p ^ n) := by
   rw [redPow, RingHom.comp_apply, iterateFrobenius_def, RingHom.comp_apply, map_pow]
 
 /- English proof (translation)
-Set `ψ : IsLocalRing.ResidueField R →+* ModP O p` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal R) (redPow (p := p) f n) (fun y hy => by`. Rewrite using `[redPow_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hn y hy)`. Set `u` to `(iterateFrobeniusEquiv (IsLocalRing.ResidueField R) p n).symm`. Set `g : IsLocalRing.ResidueField R →+* ModP O p` to `ψ.comp u.toRingHom`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : IsLocalRing.ResidueField R →+* PreTilt O p` to `Perfection.lift p _ (ModP O p) g`. Use `⟨s, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `IsLocalRing.residue_surjective (u (IsLocalRing.residue R x))`. Establish `h1 : IsLocalRing.residue R y ^ p ^ n = IsLocalRing.residue R x`. Rewrite using `[hy, ← iterateFrobenius_def, ← coe_iterateFrobeniusEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(iterateFrobeniusEquiv _ p n).apply_symm_apply _`. Establish `hm : y ^ p ^ n - x ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, h1, sub_self]`. Establish `h2 : Ideal.Quotient.mk (span {(p : O)}) (PreTilt.untilt (s (IsLocalRing.residue R x))) = Ideal.Quotient.mk (span {(p : O)}) (f y ^ p ^ n)`. Rewrite using `[PreTilt.mk_untilt_eq_coeff_zero, ← redPow_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show g (IsLocalRing.residue R x) = _`. Use `show ψ (u (IsLocalRing.residue R x)) = _`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Rewrite `h2` using `[Ideal.Quotient.eq, mem_span_singleton']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨a, ha⟩` from `h2`. Use `⟨a, y ^ p ^ n - x, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_pow]`. Take the linear combination `-ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_tilt_section (f : R →+* O) (n : ℕ)
     (hn : ∀ y ∈ IsLocalRing.maximalIdeal R, f y ^ p ^ n ∈ span {(p : O)}) :

@@ -9,11 +9,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J _hJ _ha hc a _ha1 ha2 _X0 _hT _hdet`. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [hE.2.2.1]; norm_num)`. Set `b` to `Module.finBasis F E`. Establish `h0 : 2 * 0 < M` using `by omega`. Establish `hrd : RapidDecay b (fun _ : Fin 0 → Fin M → Ainf F ⊗[F] E => (1 : ℂ))` using `fun N => ⟨1, fun X => by simp [sizeTup]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpf : IsPureFin b (fun _ : Fin 0 → Fin M → Af F ⊗[F] E => (1 : ℂ)) (fun v (_ : Fin 0 → Fin M → Fv F v ⊗[F] E) => (1 : ℂ))`. Use `⟨fun v => ⟨IsLocallyConstant.const 1, ?_⟩, Filter.Eventually.of_forall fun v => ?_, fun X => by simp⟩` and prove the remaining obligations. Conclude with `(Set.subsingleton_of_subsingleton).isCompact`. Use function extensionality and compare the values at `X`. Simplify using `[latV, Set.indicator]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS` using `hc 0 h0 (0 : Matrix (Fin 0) (Fin 0) E) (fun i => Fin.elim0 i) (by simp) (Module.finrank F E) b (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ _ => 1) continuous_const hrd (Formalism.L2.SG.Pf.NcWeil.isSmoothCc_empty _) hpf (fun _ => by simp)`. Take `⟨μ, hμ⟩` from `hS.1`. Take `⟨𝓕, h𝓕⟩` from `(hS.2 μ hμ).1`. Conclude with `((hS.2 μ hμ).2 𝓕 h𝓕).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exChar_holds : ExChar := by
   intro F E _ _ _ _ _ σ hE M J _hJ _ha hc a _ha1 ha2 _X0 _hT _hdet

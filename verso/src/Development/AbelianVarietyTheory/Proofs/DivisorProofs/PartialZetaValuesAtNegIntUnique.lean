@@ -11,9 +11,7 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory.ZetaValUnique
 
 /- English proof (translation)
-Establish `ho : IsOpen ({1}ᶜ : Set ℂ)` using `isOpen_compl_singleton`. Establish `hc : IsPreconnected ({1}ᶜ : Set ℂ)` using `(isConnected_compl_singleton_of_one_lt_rank (by simp) (1 : ℂ)).isPreconnected`. Use `(h.1.analyticOnNhd ho).eqOn_of_preconnected_of_eventuallyEq (h'.1.analyticOnNhd ho) hc (z₀ := 2) (by norm_num) ?_` and prove the remaining obligations. Establish `hh : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hh.mem_nhds (show (2 : ℂ) ∈ {s : ℂ | 1 < s.re} by simp)] with s hs`.
-
-Conclude with `(h.2 s hs).unique (h'.2 s hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classZeta_eqOn {E : Type} [Field E] [NumberField E] {C : ClassGroup (GlobalTheory.CMVal.OF E)} {Z Z' : ℂ → ℂ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZeta C Z) (h' : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZeta C Z') :
@@ -28,9 +26,9 @@ theorem classZeta_eqOn {E : Type} [Field E] [NumberField E] {C : ClassGroup (Glo
   exact (h.2 s hs).unique (h'.2 s hs)
 
 /- English proof (translation)
-Introduce `E _ _ k hk z z' hz hz'`. Use function extensionality and compare the values at `C`. Take `⟨Z, hZ, hZv⟩` from `hz C`. Take `⟨Z', hZ', hZv'⟩` from `hz' C`. Establish `hne : (1 - (k : ℂ)) ∈ ({1}ᶜ : Set ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff, sub_eq_self, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers. Use `classZeta_eqOn hZ hZ' hne` as an intermediate fact. Rewrite `this` using `[hZv, hZv']`. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classZetaVals_unique : ∀ {E : Type} [Field E] [NumberField E] {k : ℕ}, 2 ≤ k →
     ∀ {z z' : ClassGroup (GlobalTheory.CMVal.OF E) → ℚ}, GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZetaVals k z →

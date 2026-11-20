@@ -7,11 +7,11 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory.LevelSplit
 
 /- English proof (translation)
-Use extensionality with `P`. Simplify using `only [Ideal.primesOver, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hL⟩`. Use `⟨hP, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (g : ℤ) ∈ Ideal.span {(g : ℤ)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[hL.over]`. Simplify using `using (Ideal.mem_comap.mp h1)`. Introduce and unpack `⟨hP, hgP⟩`. Use `⟨hP, ⟨?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmax : (Ideal.span {(g : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hg).irreducible`. Use `hmax.eq_of_le (Ideal.comap_ne_top _ hP.ne_top) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap]`. Simplify using `using hgP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem primesOver_eq (E : Type) [Field E] [NumberField E] {g : ℕ} (hg : g.Prime) :
     (Ideal.span {(g : ℤ)}).primesOver (𝓞 E) = {P : Ideal (𝓞 E) | P.IsPrime ∧ (g : 𝓞 E) ∈ P} := by
@@ -34,9 +34,9 @@ theorem primesOver_eq (E : Type) [Field E] [NumberField E] {g : ℕ} (hg : g.Pri
 end GlobalTheory.LevelSplit
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ M hM`. Take `⟨g, ⟨hg, hcard⟩, hgr, hU⟩` from `hM`. Establish `hset` using `GlobalTheory.LevelSplit.primesOver_eq E hg`. Use `⟨g, ⟨hg, ?_⟩, hgr, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcard`. Introduce `c β hβ P hP`. Rewrite `hP` using `[hset]`. Conclude with `⟨r, fun v hv => hU c β hβ P hP.1 hP.2 v hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.levelHyp_totallySplit_unipotent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C), LevelHyp M → ∃ g : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsTotallySplitPrime E g ∧ 3 * r < g ∧ ∀ c, ∀ β ∈ M.upper c, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsUnipotentModOver (M.comp c).L' g β := by
   intro E _ _ _ r U C _ _ M hM

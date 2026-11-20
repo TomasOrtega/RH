@@ -12,7 +12,7 @@ namespace GlobalTheory.IndefiniteRowSideFullHecke.ResCont
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict s) := isFiniteMeasure_restrict.2 hs.ne`. Use `⟨?_, fun x => norm_integral_le_of_norm_le_const (.of_forall fun y => hb x y)⟩` and prove the remaining obligations. Use `continuous_of_dominated (bound := fun _ => K) (fun x => ?_) (fun x => .of_forall fun y => hb x y) (integrable_const K) (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(hc.comp (continuous_const.prodMk continuous_id) : Continuous fun y => F x y).aestronglyMeasurable`. Conclude with `(hc.comp (continuous_id.prodMk continuous_const) : Continuous fun x => F x y)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_bounded_setIntegral {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [TopologicalSpace Y]
     [MeasurableSpace Y] [OpensMeasurableSpace Y] (μ : Measure Y) (s : Set Y) (hs : μ s < ⊤) (F : X → Y → ℂ)
@@ -26,15 +26,13 @@ theorem continuous_bounded_setIntegral {X Y : Type} [TopologicalSpace X] [FirstC
   · exact (hc.comp (continuous_id.prodMk continuous_const) : Continuous fun x => F x y)
 
 /- English proof (translation)
-Introduce `D V V' W r C C' B ψ hψ μ 𝓨 h𝓨 f hf`. Take `⟨K, hK⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hf`. Establish `hn : ∀ z, ‖ψ z‖ = 1` using `hψ.1.2.1`. Establish `hfin : μ 𝓨 < ⊤` using `by rw [h𝓨.2.2]; exact ENNReal.one_lt_top`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓨) := isFiniteMeasure_restrict.2 hfin.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, i3, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank r`. Take `⟨-, -, j3, -⟩` from `GlobalTheory.MixModel.lattice_Mx D W.rank V'.rank`. Use `haveI : BorelSpace (Mx D W.rank r) := ⟨rfl⟩`. Use `haveI : OpensMeasurableSpace (Mx D W.rank r) := BorelSpace.opensMeasurable`. Use `haveI : SecondCountableTopology (WO V' W × Mx D W.rank r) := @TopologicalSpace.instSecondCountableTopologyProd _ _ _ _ j3 i3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : FirstCountableTopology (WO V' W × Mx D W.rank r) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Establish `hiso : ∀ (C₀ : Matrix (Fin V.rank) (Fin r) D.host.E), Continuous (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C₀)` using `fun C₀ => Continuous.matrix_mul continuous_id continuous_const`. Establish `hmid : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W B)` using `Continuous.matrix_mul continuous_id continuous_const`. Establish `hFb : ∀ (p : WO V' W × Mx D W.rank r) (y : Mx D W.rank r), ‖heisO ψ V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' p.2) f (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y + GlobalTheory.IndefiniteRow …` using `fun p y => by`. Simplify using `only [heisO, norm_mul, hn, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `hK _`. Establish `ha : Continuous fun q : (WO V' W × Mx D W.rank r) × Mx D W.rank r => GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C q.2 + GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W B q.1.1` using `((hiso C).comp continuous_snd).add (hmid.comp (continuous_fst.comp continuous_fst))`. Establish `hb : Continuous fun q : (WO V' W × Mx D W.rank r) × Mx D W.rank r => GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' q.1.2` using `(hiso C').comp (continuous_snd.comp continuous_fst)`. Establish `hFc : Continuous fun q : (WO V' W × Mx D W.rank r) × Mx D W.rank r => heisO ψ V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' q.1.2) f (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C q.2 + GlobalTheory …` using `(hψ.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH ha hb)).mul (hf.cont.comp (ha.add hb))`. Establish `h` using `continuous_bounded_setIntegral μ 𝓨 hfin _ hFc K hFb`.
-
-Conclude with `⟨h.1, _, fun x u => h.2 (x, u)⟩`.
+A detailed English derivation is pending.
 -/
 theorem res_heisO_continuous_bounded : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →

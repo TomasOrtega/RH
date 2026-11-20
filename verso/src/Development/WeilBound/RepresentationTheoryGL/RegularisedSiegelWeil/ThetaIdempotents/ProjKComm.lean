@@ -20,11 +20,11 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 namespace PositivityTheory.Rg.Rsw.L.LIkEq2
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D T)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (GA D T)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D T).2.1`. Use function extensionality and compare the values at `x`. Establish `hc` using `GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hW φ hφ`. Take `⟨C1, hC1⟩` from `bdd_om_compact hW hφ ((isCompact_singleton (x := (1 : GA D S))).prod hKc)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, hC2⟩` from `bdd_om_compact hW hφ ((isCompact_singleton (x := g)).prod hKc)`. Establish `hF2 : (fun q : K × WO S T => om (g, 1) (om (1, (q.1 : GA D T)) φ) q.2) = fun q => om (g, (q.1 : GA D T)) φ q.2`. Use function extensionality and compare the values at `q`. Rewrite using `[weilRepUnitaryPair_left_apply_right]`. Establish `key` using `GlobalTheory.CommIntBdd.om_integral_comm_bdd D ψ S T χS χT om hW K ν (fun k : K => om (1, (k : GA D T)) φ) (g, 1) (fun k => hW.om_pres _ φ hφ) (hc.comp ((continuous_const.prodMk (continuous_subtype_val.comp continuous_fst)).prodMk continuous_snd)) ⟨C1, fun k y => hC1 (1, (k : GA …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Use `show ∫ k, om (1, (k : GA D T)) (om (g, 1) φ) x ∂ν = ∫ k, om (g, 1) (om (1, (k : GA D T)) φ) x ∂ν`. Simplify using `only [weilRepUnitaryPair_left_apply_right, weilRepUnitaryPair_right_apply_left]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projK_comm {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hW : IsWeilDatumO ψ S T χS χT om) (K : Subgroup (GA D T)) (hKc : IsCompact (K : Set (GA D T))) (ν : Measure K)
@@ -53,21 +53,19 @@ theorem projK_comm {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS 
   simp only [weilRepUnitaryPair_left_apply_right, weilRepUnitaryPair_right_apply_left]
 
 /- English proof (translation)
-Take `⟨ψ₀, μ', lam, κ, omB, h₀, hsk, hl, rfl, hκ, homB, hTB⟩` from `GlobalTheory.StdUnn.SchDatum.exists_datum D A B ψ hψ χ hχ hηB θ hθ μB 𝓕B hμB ωB hB`. Take `⟨hχi, hri⟩` from `GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χ W.rank hχ hη`. Establish `hr1 : ResEta D 1 (dblSp A).rank`. Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D A.rank` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[GlobalTheory.Doubling.dblSp]`. Use linear arithmetic over natural numbers and integers. Take `⟨omW, homW⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ₀ (dblSp A) W 1 χ⁻¹ h₀ ⟨continuous_const, fun _ => rfl⟩ hχi hr1 hri`. Take `⟨omS, hS⟩` from `GlobalTheory.StdUnn.exists_transport_std D ψ₀ A W χ⁻¹ omW homW μW 𝓕W hμW θ hθ κ`. Establish `hWS : IsWeilSch (shift ψ₀ lam) χ θ W μW omS`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g a hg Φ x`. Use `GlobalTheory.StdUnn.transport_levi D ψ₀ A W χ⁻¹ omW homW μW 𝓕W hμW θ hθ μ' hsk κ hκ omS hS lam hl g a hg Φ x` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g b hg Φ x`. Conclude with `GlobalTheory.StdUnn.Unip.transport_unip D ψ₀ A W χ⁻¹ omW homW μW 𝓕W hμW θ hθ μ' hsk κ hκ omS hS lam hl g b hg Φ x`. Introduce `g hg Φ x`. Conclude with `GlobalTheory.StdUnn.WeylStd.main D ψ₀ A W χ⁻¹ omW homW μW 𝓕W hμW θ hθ μ' hsk κ hκ omS hS lam hl g hg Φ x`. Take `rfl` from `GlobalTheory.SiegelWeilLitCompare.isWeilSch_unique hW hWS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `κ.surjective g`. Take `⟨f, hf, hfΦ⟩` from `(GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ₀ h₀ θ hθ A B μB 𝓕B hμB).2.1 Φ.1 Φ.2`. Take `⟨μ₁, 𝓕₁, hμ₁⟩` from `GlobalTheory.MixModel.exists_isCovolOne D t (dblSp A).rank`. Take `⟨𝓕₂, hμ₂⟩` from `I.cov₁`. Establish `hK` using `LIkSch.isCompact_K d I.good`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `I.probK` as an intermediate fact. Establish `hP` using `GlobalTheory.T.compactAverageProjection_theta_schrodinger D ψ₀ A B χ⁻¹ omB homB μB 𝓕B hμB I.l.K hK I.νK I.probK`. Establish `hI` using `GlobalTheory.T.ikedaMap_schrodinger_partialIntegral D ψ₀ h₀ A B W t d μB 𝓕B hμB μW 𝓕W hμW μ₁ 𝓕₁ hμ₁ I.μ₁ 𝓕₂ hμ₂`. Establish `hgf` using `homB.om_pres (g, 1) f hf`. Establish `e1 : ∀ φ, IsThetaFunO ψ₀ (dblSp A) B φ → ikp I (GlobalTheory.Core.Rk.SW.sch ψ₀ A B μB 𝓕B φ) = GlobalTheory.Core.Rk.SW.sch ψ₀ A W μW 𝓕W (ikeda ψ₀ d μ₁ 𝓕₁ (projK omB I.νK φ))` using `fun φ hφ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[(hI _ (hP φ hφ).1).2, (hP φ hφ).2]`. Both sides reduce to the same expression. Establish `hmix` using `(GlobalTheory.T.mixedModelFormulas_wittTarget D ψ₀ (dblSp A) B W t d 1 χ⁻¹ omB omW homB homW μ₁ 𝓕₁ hμ₁ _ (hP f hf).1).source g 0`. Rewrite `hmix` using `[Matrix.mul_zero]`. Rewrite using `[hTB g f hf Φ hfΦ.symm, e1 _ hgf, projK_comm homB _ hK I.νK f hf (hP f hf).1 g, hS g _ (hI _ (hP f hf).1).1 Ψ (by rw [hΨ, ← hfΦ, e1 f hf])]`.
-
-Conclude with `congrArg _ hmix.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (D : D7) (A : HSp D) (t : ℕ) (B W : HSp D) (d : HypDec B W t) (ψ : AddChar (AF D.host.F) ℂ)
     (hψ : IsCharAF D.host.F ψ) (χ : (AE D)ˣ →* Circle) (hχ : IsHeckeChar D χ) (hη : ResEta D χ W.rank) (hηB : ResEta D χ B.rank)
@@ -119,7 +117,7 @@ theorem main (D : D7) (A : HSp D) (t : ℕ) (B W : HSp D) (d : HypDec B W t) (ψ
 end PositivityTheory.Rg.Rsw.L.LIkEq2
 
 /- English proof (translation)
-Introduce `D n t B W d hn ψ χ θ μB μW ωB ωW hS I Φ Ψ hΨ g`. Take `⟨𝓕B, hB⟩` from `hS.hμB`. Take `⟨𝓕W, hW⟩` from `hS.hμW`. Establish `hηB : ResEta D χ B.rank` using `Formalism.L2.Theta.resEta_parity hS.hη (by rw [← d.rank_add]; omega)`. Conclude with `PositivityTheory.Rg.Rsw.L.LIkEq2.main D (Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n) t B W d ψ hS.hψ χ hS.hχ hS.hη hηB θ hS.hθ μB μW 𝓕B 𝓕W hB hW ωB ωW hS.hB hS.hW I Φ Ψ hΨ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.Rsw.L.ikEq2 : PositivityTheory.Rg.Rsw.L.IkEq := by
   intro D n t B W d hn ψ χ θ μB μW ωB ωW hS I Φ Ψ hΨ g

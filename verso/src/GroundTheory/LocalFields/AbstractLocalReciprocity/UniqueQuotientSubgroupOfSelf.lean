@@ -21,7 +21,7 @@ instance finiteIndex_subgroupOf_self : (K.subgroupOf K).FiniteIndex :=
   ⟨by simp [Subgroup.subgroupOf_self]⟩
 
 /- English proof (translation)
-Use `MonoidHom.ext fun a => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_norm, finprod_unique]`. Use `show ((1 : K) : G) • (a : A) = a`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_self : norm A K K = MonoidHom.id (fixedModule A K) := by
   refine MonoidHom.ext fun a => Subtype.ext ?_
@@ -36,9 +36,9 @@ section Pow
 variable {K L : Subgroup G} [(L.subgroupOf K).FiniteIndex]
 
 /- English proof (translation)
-Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Rewrite using `[coe_norm, finprod_eq_prod_of_fintype]`. Establish `h : ∀ q : K ⧸ L.subgroupOf K, cosetSMul A K L ⟨a, fixedModule_anti hLK ha⟩ q = a`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H σ => exact ha σ σ.2`. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.prod_const, Finset.card_univ, ← Nat.card_eq_fintype_card, Subgroup.relIndex, Subgroup.index_eq_card]`.
+Treat this case separately. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_norm_of_mem (hLK : L ≤ K) {a : A} (ha : a ∈ fixedModule A K) :
     (norm A K L ⟨a, fixedModule_anti hLK ha⟩ : A) = a ^ L.relIndex K := by
@@ -73,23 +73,23 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Set `_` to `Fintype.ofFinite (K ⧸ M.subgroupOf K)`. Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Set `_` to `Fintype.ofFinite (L ⧸ M.subgroupOf L)`. Establish `hle : M.subgroupOf K ≤ L.subgroupOf K` using `fun x hx => hML hx`. Use `ext`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [coe_norm, finprod_eq_prod_of_fintype]`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ) (g := Subgroup.quotientMapOfLE hle) (fun _ _ => Finset.mem_univ _)]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Proceed by induction on `p using QuotientGroup.induction_on with`. Consider the case `H σ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[cosetSMul_mk, coe_norm, finprod_eq_prod_of_fintype, Finset.smul_prod']`. Use `Finset.prod_bij (fun t _ => cosetShift hLK σ t) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Rewrite using `[cosetShift_mk, Subgroup.quotientMapOfLE_apply_mk, QuotientGroup.eq]`. Simplify using `[Subgroup.mem_subgroupOf, mul_assoc]`. Introduce `t _ t' _ h`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Proceed by induction on `t' using QuotientGroup.induction_on with`. Consider the case `H τ'`. Rewrite `h` using `[cosetShift_mk, cosetShift_mk, QuotientGroup.eq]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq]`. Simplify `h` using `[Subgroup.mem_subgroupOf, mul_assoc]`. Introduce `q hq`. Rewrite `hq` using `[Finset.mem_filter]`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `H ρ`. Establish `h` using `hq.2`. Rewrite `h` using `[Subgroup.quotientMapOfLE_apply_mk, QuotientGroup.eq]`. Establish `hmem : (σ : G)⁻¹ * ρ ∈ L`. Use `L.inv_mem h` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Subgroup.mem_subgroupOf, mul_inv_rev]`. Use `⟨((⟨(σ : G)⁻¹ * ρ, hmem⟩ : L) : L ⧸ M.subgroupOf L), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[cosetShift_mk]`. Use `congr 1`. Use `ext`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Introduce `t _`. Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Rewrite using `[cosetShift_mk, cosetSMul_mk, cosetSMul_mk, smul_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -146,7 +146,7 @@ theorem norm_norm (hML : M ≤ L) (hLK : L ≤ K) [(L.subgroupOf K).FiniteIndex]
         rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨norm A L M a, norm_norm hML hLK a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_norm_le_range_norm (hML : M ≤ L) (hLK : L ≤ K) [(L.subgroupOf K).FiniteIndex]
     [(M.subgroupOf L).FiniteIndex] [(M.subgroupOf K).FiniteIndex] :
@@ -181,17 +181,17 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Set `_` to `Fintype.ofFinite (K ⧸ L.subgroupOf K)`. Set `_` to `Fintype.ofFinite (K.map (MulAut.conj σ).toMonoidHom ⧸ (L.map (MulAut.conj σ).toMonoidHom).subgroupOf (K.map (MulAut.conj σ).toMonoidHom))`. Rewrite using `[coe_norm, coe_norm, finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, Finset.smul_prod']`. Use `Finset.prod_bij (fun t _ => cosetConj σ t) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _ t' _ h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Proceed by induction on `t' using QuotientGroup.induction_on with`. Consider the case `H τ'`. Rewrite `h` using `[cosetConj_mk, cosetConj_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Take `⟨x, hx, hx'⟩` from `h`. Establish `: x = (τ : G)⁻¹ * τ'`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Subgroup.coe_mul, InvMemClass.coe_inv, mul_inv_rev, inv_inv] at hx'`. Use `congrArg (fun y => σ⁻¹ * y * σ) hx'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Simplify `hx` using `[this]`. Introduce `q _`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H ρ`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨κ, hκ, hκρ⟩` from `Subgroup.mem_map.1 ρ.2`. Use `⟨((⟨κ, hκ⟩ : K) : K ⧸ L.subgroupOf K), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[cosetConj_mk]`. Use `congr 1`. Use `ext`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `using hκρ`. Introduce `t _`. Proceed by induction on `t using QuotientGroup.induction_on with`. Consider the case `H τ`. Rewrite using `[cosetConj_mk, cosetSMul_mk, cosetSMul_mk, smul_smul, smul_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

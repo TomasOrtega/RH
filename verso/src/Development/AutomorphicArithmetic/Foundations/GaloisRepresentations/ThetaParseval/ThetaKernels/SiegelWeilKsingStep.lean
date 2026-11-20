@@ -16,17 +16,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KSing
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨-, -, hG, hLC, -, hSC⟩` from `hAux F E σ d`. Use `haveI := hG`. Use `haveI := hLC`. Use `haveI := hSC`. Take `⟨nb, lam, 𝓖, hCD⟩` from `hCE F E σ d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β, hβc, hβ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSing.nbw_k d R w hCD.1 nr hnr`. Establish `hnrc` using `cont_nr nr hnr`. Establish `hφc : Continuous fun y : d.G => ∫ x, f (R.ι w (nr x) * y) * ψ₀ x`. Establish `hc : Continuous (Function.uncurry fun (y : d.G) (x : Fin d.n → Fin d.n → ℝ) => f (R.ι w (nr x) * y) * ψ₀ x)` using `(hf.comp (((R.cont w).comp (hnrc.comp continuous_snd)).mul continuous_fst)).mul (hψ.1.comp continuous_snd)`. Establish `h1` using `continuous_parametric_integral_of_continuous (μ := (volume : Measure (Fin d.n → Fin d.n → ℝ))) hc hψ.2.1.isCompact`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h1.congr fun y => ?_` and prove the remaining obligations. Use `setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, mul_zero]`. Establish `hφinv : ∀ β₀ ∈ nF σ d.Y d.b, ∀ g, (fun y : d.G => ∫ x, f (R.ι w (nr x) * y) * ψ₀ x) (nb β₀ * g) = (fun y : d.G => ∫ x, f (R.ι w (nr x) * y) * ψ₀ x) g`. Introduce `β₀ hβ₀ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hβ x, ← mul_assoc, ← _root_.PositivityTheory.SiegelWeilFormula.KSing.nb_add_k d hCD.1, add_comm, _root_.PositivityTheory.SiegelWeilFormula.KSing.nb_add_k d hCD.1, mul_assoc, hinv _ (_root_.PositivityTheory.SiegelWeilFormula.KSing.nb_rat_k d hCD.1 hβ₀)]`. Establish `hφco : ∀ T g, fc d.B.ψ d.b nb lam 𝓖 (fun y : d.G => ∫ x, f (R.ι w (nr x) * y) * ψ₀ x) T g = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `T g`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KSing.fc_avg_k d R w hG hCD f hf hinv ψ₀ hψ.1 hψ.2.1 nr hnr β hβc hβ T g]`. Distinguish the cases in `hT : T.1.1.det = 0`. Take `⟨β', hβ'h, hβ'd, hβ'e⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSing.charW_k d R w hCD.1 nr hnr β hβ T`. Repeatedly rewrite using `[hβ'e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ.2.2 β' hβ'h (hβ'd hT), mul_zero]`. Establish `h0` using `hL (fun f => fc d.B.ψ d.b nb lam 𝓖 f T g) ⟨nb, lam, 𝓖, T, g, hCD, hT, rfl⟩`. Rewrite using `[show fc d.B.ψ d.b nb lam 𝓖 f T g = 0 from h0, zero_mul]`. Introduce `z`. Conclude with `congrFun (hFZ F E σ d nb lam 𝓖 hCD _ hφc hφinv hφco) z`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fourierStep_k (hCE : _root_.PositivityTheory.SiegelWeilFormula.CoefEx_k) (hFZ : _root_.PositivityTheory.SiegelWeilFormula.FourierZero_k) (hAux : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
     (f : d.G → ℂ) (hf : Continuous f) (hinv : ∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g)

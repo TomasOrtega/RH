@@ -6,7 +6,7 @@ namespace GlobalTheory
 
 open NumberField IsDedekindDomain Matrix in
 /- English proof (translation)
-Use extensionality with `x`. Simplify `(Module.finBasis ℂ W).sum_repr x` using `[h]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sum_smulRight_finBasis_mul_smulRight_eq_one {W : Type} [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] (w : W) (ℓ : Module.Dual ℂ W) (h : ℓ w = 1) :
@@ -16,9 +16,7 @@ private theorem sum_smulRight_finBasis_mul_smulRight_eq_one {W : Type} [AddCommG
 
 open NumberField IsDedekindDomain Matrix in
 /- English proof (translation)
-Use `by_contra! hzero`. Apply `hy` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sum_smulRight_finBasis_mul_smulRight_eq_one w ℓ h, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
-
-Use `_ = 0 := by simp [hzero]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_dual_algHom_smulRight_apply_ne_zero {W V : Type} [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] [AddCommGroup V] [Module ℂ V] (w : W) (ℓ : Module.Dual ℂ W)
@@ -35,7 +33,7 @@ private theorem exists_dual_algHom_smulRight_apply_ne_zero {W V : Type} [AddComm
 
 open NumberField IsDedekindDomain Matrix in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem smulRight_mul_smulRight_of_apply_eq_one {W : Type} [AddCommGroup W] [Module ℂ W]
     (w : W) (ℓ φ : Module.Dual ℂ W) (h : ℓ w = 1) :
@@ -46,13 +44,13 @@ private theorem smulRight_mul_smulRight_of_apply_eq_one {W : Type} [AddCommGroup
 open NumberField IsDedekindDomain Matrix in
 
 /- English proof (translation)
-Introduce `ι _ Wv _ _ _ V _ _ Φ w ℓ _ hℓ hcomm`. Establish `key : ∀ s : Finset ι, ∃ y : V, y ≠ 0 ∧ ∀ v ∈ s, Φ v ((ℓ v).smulRight (w v)) y = y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : V)`. Conclude with `⟨y, hy, by simp⟩`. Consider the case `insert v s hv ih`. Take `⟨y, hy0, hy⟩` from `ih`. Take `⟨φ, hφ⟩` from `exists_dual_algHom_smulRight_apply_ne_zero (w v) (ℓ v) (hℓ v) (Φ v) hy0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ v (φ.smulRight (w v)) y, hφ, fun u hu => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hu with rfl | hu` into its components or cases. Rewrite using `[← Module.End.mul_apply, ← map_mul, smulRight_mul_smulRight_of_apply_eq_one _ _ _ (hℓ u)]`. Establish `huv : u ≠ v` using `fun h => hv (h ▸ hu)`. Rewrite using `[← Module.End.mul_apply, (hcomm u v huv _ _).eq, Module.End.mul_apply, hy u hu]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy0, hy⟩` from `key Finset.univ`. Conclude with `⟨y, hy0, fun v => hy v (Finset.mem_univ v)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.commuting_endAlgebras_common_fixed_vector :
     ∀ (ι : Type) [Fintype ι] (Wv : ι → Type) [∀ v, AddCommGroup (Wv v)] [∀ v, Module ℂ (Wv v)]

@@ -19,9 +19,9 @@ open Classical in
 def cosetInd (S : Finset (G ⧸ K)) : G → ℂ := fun g => if (g : G ⧸ K) ∈ S then 1 else 0
 
 /- English proof (translation)
-Use `⟨fun a b g => ?_, S.image Quotient.out, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : ((a * g * b : G) : G ⧸ K) = (a : G) • (g : G ⧸ K)` using `QuotientGroup.mk_mul_of_mem _ b.2`. Establish `: (a : G) • (g : G ⧸ K) ∈ S ↔ (g : G ⧸ K) ∈ S` using `⟨fun h => by simpa using hS _ (inv_mem a.2) _ h, hS _ a.2 _⟩`. Simplify using `only [cosetInd, e, this]`. Establish `h : (g : G ⧸ K) ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hg (if_neg h)`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Conclude with `⟨_, Finset.mem_image_of_mem _ h, 1, k⁻¹, by rw [hk]; simp⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cosetInd_mem {S : Finset (G ⧸ K)} (hS : ∀ x ∈ K, ∀ c ∈ S, x • c ∈ S) : cosetInd S ∈ Hecke ℂ K := by
   classical
@@ -37,7 +37,7 @@ theorem cosetInd_mem {S : Finset (G ⧸ K)} (hS : ∀ x ∈ K, ∀ c ∈ S, x �
     exact ⟨_, Finset.mem_image_of_mem _ h, 1, k⁻¹, by rw [hk]; simp⟩
 
 /- English proof (translation)
-Rewrite using `[heckeVec, finsum_eq_sum_of_support_subset (s := S)]`. Conclude with `Finset.sum_congr rfl fun c hc => by simp [cosetInd, hc]`. Introduce `c hc`. Assume the negation of the conclusion as `h`. Conclude with `hc (by simp [cosetInd, show c ∉ S from h])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem heckeVec_cosetInd (ρ : Representation ℂ G V) (S : Finset (G ⧸ K)) (x : V) :
     heckeVec ρ K (cosetInd S) x = ∑ c ∈ S, ρ c.out x := by
@@ -48,13 +48,11 @@ theorem heckeVec_cosetInd (ρ : Representation ℂ G V) (S : Finset (G ⧸ K)) (
     exact hc (by simp [cosetInd, show c ∉ S from h])
 
 /- English proof (translation)
-Establish `hb : BddAbove (Set.range fun y => ‖l (ρ y x)‖)` using `⟨C, by rintro _ ⟨y, rfl⟩; exact hC y⟩`. Use `set M := ⨆ y, ‖l (ρ y x)‖`. Establish `hM : ∀ y, ‖l (ρ y x)‖ ≤ M` using `fun y => le_ciSup hb y`. Establish `hM0 : 0 < M` using `(norm_pos_iff.2 h1).trans_le (hM 1)`. Establish `key : ∀ y, ‖a‖ * ‖l (ρ y x)‖ ≤ S.card * M` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_mul, ← smul_eq_mul, ← map_smul, ← map_smul, ← h, map_sum, map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul _ _ _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hM _`. Break down `(norm_nonneg a).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression. Establish `: M ≤ S.card * M / ‖a‖` using `ciSup_le fun y => by rw [le_div_iff₀' h0]; exact key y`.
-
-Rewrite `this` using `[le_div_iff₀' h0]`. Conclude with `le_of_mul_le_mul_right this hM0`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_card {ι : Type} (ρ : Representation ℂ G V) {x : V} (l : V →ₗ[ℂ] ℂ) {C : ℝ}
     (hC : ∀ y, ‖l (ρ y x)‖ ≤ C) (h1 : l (ρ 1 x) ≠ 0) (S : Finset ι) (g : ι → G) (a : ℂ)
@@ -85,19 +83,19 @@ open NumberField IsDedekindDomain Formalism.UG GlobalTheory.PRep GlobalTheory.LF
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨α, rfl⟩ : ∃ α : Fin n → ℂˣ, Finset.univ.val.map α = B := by`. Take `⟨l, rfl⟩` from `Quot.exists_rep B`. Take `rfl : l.length = n` from `hx.2.2.1`. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Take `⟨φ, hφ, hφ1, -⟩` from `Final.SphericalExists E w n (fun i => (α i : ℂ)) fun i => (α i).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hφ0 : φ ≠ 0` using `fun e => by simp [e] at hφ1`. Establish `hy` using `isSatVecGL_of_isSpherical hφ hφ0`. Establish `hKO : KO (w.adicCompletion E) (Fin n) = KGL w n` using `SphCompletion.KO_completion w n`. Establish `hb : HasBoundedSums (w.adicCompletion E) φ`. Introduce `S hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `H` using `SatCompare.exists_eigenvalue_GL hx hy`. Rewrite `H` using `[← hKO]`. Take `⟨c, e1, e2⟩` from `H _ (cosetInd_mem hS)`. Rewrite `e1`, `e2` using `[heckeVec_cosetInd]`. Establish `e3 : ∑ c ∈ S, φ c.out = c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun e2 1` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply, Pi.smul_apply, hφ1, smul_eq_mul, mul_one]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun c _ => congrArg φ (one_mul _).symm`. Rewrite using `[e3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_le_card ρ l hC h1 S _ c e1`. Establish `hs : IsBorelSph (w.adicCompletion E) (fun i : Fin n => (α i : ℂ) * (((resCard (w.adicCompletion E) : ℝ) ^ (((i : ℕ) : ℝ) - ((n : ℝ) - 1) / 2) : ℝ) : ℂ)) φ`. Use `⟨fun g k hk => congrFun (GlobalTheory.LGrp.mem_fixed.1 hy.2.1 k (hKO ▸ hk)) g, fun b hb' t ht => ?_⟩` and prove the remaining obligations. Take `⟨y, -, rfl⟩` from `(SphCompletion.isSpherical_iff E w n α φ).1 hφ`. Establish `h` using `GlobalTheory.SatakeBound.Rep.law α y b hb' t ht 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hφ1, mul_one, mul_one]`. Then use the resulting hypothesis. Introduce `β hβ`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hβ`. Establish `hq : (0 : ℝ) < resCard (w.adicCompletion E)`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard (w.adicCompletion E)).le` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `norm_le_pow hs hb i`. Simplify using `only [norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hq.le _), ← Real.rpow_natCast] at h2`. Rewrite `h2` using `[← le_div_iff₀ (Real.rpow_pos_of_pos hq _), ← Real.rpow_sub hq]`. Rewrite using `[← GlobalTheory.LFun.SatBoundGL.resCard_completion w]`. Conclude with `h2.trans_eq (congrArg _ (by ring))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_isSatVecGL {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ} {V : Type}
     [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {x : V} {B : Multiset ℂˣ}
@@ -148,9 +146,9 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce and unpack `D A L - v hv par c ⟨⟨C, hC⟩, V, _, _, ρ, x, l, hx, -, hc⟩ h1 w h`. Use `⟨(hx w h).card, fun β hβ => ?_⟩` and prove the remaining obligations. Break down `hx w h with ⟨-, e, -, hx⟩ | ⟨hw, -⟩` into its components or cases. Establish `hb` using `norm_le_of_isSatVecGL hx l (C := C) (fun y => (hc (e.symm y)) ▸ hC (e.symm y)) (by rw [hc] at h1; rwa [map_one, ← map_one ρ]) β hβ`. Use `hb.trans (Real.rpow_le_rpow_of_exponent_le ?_ (by linarith))` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.LFun.one_lt_absNorm w).le` after adjusting the coercions. Conclude with `absurd hv (GlobalTheory.LFun.not_isSplit_of_isInertAt hw)`.
+A detailed English derivation is pending.
 -/
 theorem paramBound_split : ∀ D : D7, ParamBoundOn D fun v => Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
   rintro D A L - v hv par c ⟨⟨C, hC⟩, V, _, _, ρ, x, l, hx, -, hc⟩ h1 w h

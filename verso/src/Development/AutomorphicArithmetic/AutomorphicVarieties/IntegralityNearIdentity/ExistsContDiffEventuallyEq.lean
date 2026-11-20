@@ -8,7 +8,7 @@ open scoped ContDiff
 namespace UpperTheory.V.Lib.Small
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ConjugateOfRoots.conj_of_roots d hd N D hD hN`.
+A detailed English derivation is pending.
 -/
 theorem conj_of_roots {K : Type} [Field K] {n : ℕ} (d : Fin n → K) (hd : Function.Injective d) (N D : GL (Fin n) K)
     (hD : (D : Matrix (Fin n) (Fin n) K) = Matrix.diagonal d)
@@ -16,7 +16,7 @@ theorem conj_of_roots {K : Type} [Field K] {n : ℕ} (d : Fin n → K) (hd : Fun
   _root_.UpperTheory.Reformulated.B.ConjugateOfRoots.conj_of_roots d hd N D hD hN
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.weightedSumBis.exists_eq_exp f hc h0 hm`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_exp (f : ℝ → ℂ) (hc : Continuous f) (h0 : f 0 = 1) (hm : ∀ x y, f (x + y) = f x * f y) :
     ∃ c : ℂ, ∀ x : ℝ, f x = Complex.exp (c * x) :=

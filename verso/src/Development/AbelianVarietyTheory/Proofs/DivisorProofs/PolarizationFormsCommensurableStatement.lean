@@ -15,7 +15,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarizationFormsCommensurable.lean&line=136#L136)
 -/

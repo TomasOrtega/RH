@@ -18,23 +18,21 @@ noncomputable section
 namespace GlobalTheory.LevProd
 
 /- English proof (translation)
-Establish `hLev` using `GlobalTheory.TwBridge.Lev.levelAgree X Pr R Ch sel S₀ mu cst σ₀ P k ι s W ν hν hok hat`. Take `⟨e, he, hge⟩` from `hg`. Establish `hcc : cOf R j = c + 1` using `by unfold cOf; have := hat.steps; omega`. Establish `heR : ∀ i : Fin (c + 1), (e (Sum.inr i)).val = R.N j + i.val` using `fun i => he (Sum.inr i)`. Establish `hgφ : g = GlobalTheory.VolBridge.locHom ι e γ` using `Units.ext hge`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : (W.T s R).Regular` using `Chain.ofTwist_regular _ _ _ _ _`. Take `⟨hJo, -, -⟩` from `hreg.2.2 j (c + 1) h`. Use `set J := ((W.T s R).lev j (c + 1) h).J with hJdef`. Use `set φ := GlobalTheory.VolBridge.locHom ι e with hφ`. Establish `hcompl` using `hat.compl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIsGL : ∀ x : AutY X R j, IsGL ι (γ⁻¹ * x * γ) (g⁻¹ * φ x * g)`. Introduce `x`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Rewrite using `[hgφ, ← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : ∀ x : AutY X R j, x ∈ Loc.Cbe (Jat (Pr` using `Pr) cst.sharp j P.1) γ ↔ φ x ∈ Cgrp J g := by`. Introduce `x`. Rewrite using `[mem_Cgrp, ← GlobalTheory.RankOneMatrix.mem_rationalFirstParabolic_iff_localGL_mem_rootExchange ι e hcc heR x, (hLev j (c + 1) h _ _ (hIsGL x)).1]`. Simplify using `[Loc.Cbe, Subgroup.mem_comap, MulAut.conj_apply]`. Establish `hN1` using `GlobalTheory.UnipRead.mem_N1_iff_local_hom ι e hcc heR`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdN` using `GlobalTheory.VolBridge.exists_N1_local_hom_mem_open ι hcompl.dense e hcc heR`. Use `set e' := GlobalTheory.VolBridge.eX e hcc heR with he'`. Use `set φ' := GlobalTheory.VolBridge.locHom ι e' with hφ'`. Establish `hOo : IsOpen {w : GL (XIx (Fin R.k) (Fin R.t) j ⊕ Fin (c + 1)) k | g⁻¹ * w * g ∈ J}` using `hJo.preimage (by fun_prop)`. Establish `hOR : ∀ z ∈ GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) j) (c + 1) 1, z ∈ Cgrp J g ↔ z ∈ {w | g⁻¹ * w * g ∈ J}` using `fun z hz => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mem_Cgrp, hz]`. Establish `hCR : Cgrp J g ≤ GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) j) (c + 1) 1` using `fun z hz => (mem_Cgrp.1 hz).1`. Establish `hP : ∀ y, y ∈ prCat (Pr` using `Pr) cst.sharp j P.1 γ ↔ φ' y ∈ prX (Cgrp J g) := GlobalTheory.VolBridge.prX_iff_locHom ι e hcc heR hN1 hdN _ _ _ hOo hOR hCR hC`. Establish `hG : ∀ y, y ∈ GLint X.E (R.N j) P.1 ↔ φ' y ∈ KO k _` using `fun y => GlobalTheory.VolBridge.mem_stabL_stdAt_iff_locHom_mem_KO P.1 ι hcompl.int e' y`. Establish `hpo : IsOpen (prX (Cgrp J g) : Set (GL (XIx (Fin R.k) (Fin R.t) j) k))` using `GlobalTheory.OpenPr.isOpen_prX _ _ hOo (by simp [J.one_mem]) (fun z hz hzO => (hOR z hz).2 hzO)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hV : IsOpen {v : GL (XIx (Fin R.k) (Fin R.t) j) k | v⁻¹ * z ∈ ((prX (Cgrp J g) ⊓ KO k _ : Subgroup _) : Set _)}` using `(hpo.inter GlobalTheory.SplitFlip.isOpen_KO).preimage (by fun_prop)`. Take `⟨y, hy⟩` from `GlobalTheory.denseGL_completion ι hcompl.dense e' z _ hV (by simp [one_mem, hz])`. Establish `hy1 : (φ' y)⁻¹ * z ∈ prX (Cgrp J g)` using `hy.1`. Establish `hy2 : (φ' y)⁻¹ * z ∈ KO k _` using `hy.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hyC : φ' y ∈ prX (Cgrp J g)`. Use `mul_mem hz (inv_mem hy1)` as an intermediate fact. Simplify using `using this`. Establish `hyK : φ' y ∈ KO k _` using `(hG y).1 (hle ((hP y).2 hyC))`. Use `mul_mem hyK hy2` as an intermediate fact.
-
-Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem prX_le_KO_of_prCat (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀)

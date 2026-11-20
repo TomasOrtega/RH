@@ -8,15 +8,15 @@ namespace Formalism.MainNotions.Ext
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric
 
 /- English proof (translation)
-Establish `hd : D.host.d ≠ 0`. Introduce `h0`. Establish `hs : D.host.sqd = 0`. Establish `h` using `D.host.sqd_sq`. Rewrite `h` using `[h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h`. Conclude with `h`. Establish `hK : D.host.K = ⊥` using `by show IntermediateField.adjoin ℚ {D.host.sqd} = ⊥`. Rewrite using `[hs]`. Conclude with `IntermediateField.adjoin_simple_eq_bot_iff.mpr (zero_mem _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(IntermediateField.finrank_eq_one_iff).mpr hK`. Establish `h2` using `Formalism.HC.HostRaw.finrank_K (H := D.host.toHostRaw)`. Use linear arithmetic over natural numbers and integers. Establish `hreal : IsEmpty (D.host.K →+* ℝ)`. Use `⟨fun f => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : (⟨D.host.sqd, Formalism.HC.HostRaw.sqd_mem_K (H` using `D.host.toHostRaw)⟩ : D.host.K) ^ 2 = -((D.host.d : ℕ) : D.host.K) := by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using D.host.sqd_sq`. Establish `h2` using `congrArg f hs`. Rewrite `h2` using `[map_pow, map_neg, map_natCast]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `sq_nonneg (f ⟨D.host.sqd, Formalism.HC.HostRaw.sqd_mem_K (H := D.host.toHostRaw)⟩)`. Establish `h4 : (0 : ℝ) < (D.host.d : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hd`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨w₁, w₂, hw, heq⟩, -⟩` from `HI D.host.K (D.host.φ₀.comp (algebraMap D.host.K D.host.E)) (Formalism.HC.HostRaw.finrank_K (H := D.host.toHostRaw)) hreal cc δ hc hδ`. Conclude with `⟨w₁, w₂, hw, heq⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lamOf_lat (HI : IdealLattice) (D : D7) (cc : Ideal (NumberField.RingOfIntegers D.host.K)) (hc : cc ≠ ⊥) (δ : ℂ) (hδ : δ ≠ 0) :
     ∃ w₁ w₂ : ℂ, ((starRingEnd ℂ) w₁ * w₂).im ≠ 0 ∧ lamOf D cc δ = lat2 w₁ w₂ := by
@@ -51,7 +51,7 @@ theorem lamOf_lat (HI : IdealLattice) (D : D7) (cc : Ideal (NumberField.RingOfIn
   exact ⟨w₁, w₂, hw, heq⟩
 
 /- English proof (translation)
-Take `⟨w₁, w₂, hw, hL⟩` from `lamOf_lat HI D cc hc 1 one_ne_zero`. Introduce `h0`. Establish `h12 : δ ^ 12 = discr (lamOf D cc 1)` using `hδ`. Rewrite `h12` using `[h0, hL]`. Conclude with `HD w₁ w₂ hw (by simpa using h12.symm)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_ne (HI : IdealLattice) (HD : DiscrNe) (D : D7) (cc : Ideal (NumberField.RingOfIntegers D.host.K)) (hc : cc ≠ ⊥) (δ : ℂ)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : δ ≠ 0 := by
@@ -62,9 +62,9 @@ theorem delta_ne (HI : IdealLattice) (HD : DiscrNe) (D : D7) (cc : Ideal (Number
   exact HD w₁ w₂ hw (by simpa using h12.symm)
 
 /- English proof (translation)
-Introduce `cc δ hC x ω m hm hx hω`. Take `⟨⟨hc, -⟩, hd12⟩` from `hC`. Establish `hδ : δ ≠ 0` using `delta_ne HI HD D cc hc δ hd12`. Take `⟨w₁, w₂, hw, hL⟩` from `lamOf_lat HI D cc hc δ hδ`. Rewrite `hx`, `hω`, the goal using `[hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hspec` using `Classical.epsilon_spec (HS w₁ w₂ hw)`. Conclude with `HT w₁ w₂ hw _ hspec.2.2.2 x ω m hm hx hω`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transInv_of (HI : IdealLattice) (HD : DiscrNe) (HS : SigmaStarEx) (HT : TransInvLat) (D : D7) : StandardLatticesGL3.transInv D := by
   intro cc δ hC x ω m hm hx hω

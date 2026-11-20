@@ -13,31 +13,31 @@ noncomputable section
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `hb_self_real _ (hpk_herm k r) x`.
+A detailed English derivation is pending.
 -/
 theorem herm_real (x : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) x x = ((herm (Hpk k r) x x).re : ℂ) :=
   hb_self_real _ (hpk_herm k r) x
 
 /- English proof (translation)
-Establish `hzz : herm (Hpk k r) z z ≠ 0` using `fun h => by rw [h, Complex.zero_re] at hzn; exact lt_irrefl _ hzn`. Establish `hW : ∀ x, inWb k r x → herm (Hpk k r) x z = 0 → herm (Hpk k r) v x = 0`. Introduce `x hx hxz`. Establish `key : ∀ s : ℝ, 0 < s → ‖herm (Hpk k r) v x‖ * s ≤ (herm (Hpk k r) x x).re`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set t : ℝ := Real.sqrt s with htdef`. Establish `ht : 0 < t` using `Real.sqrt_pos.2 hs`. Establish `htt : t * t = s` using `Real.mul_self_sqrt hs.le`. Establish `h` using `norm_perp_le hz hzn (u := (t : ℂ) • v) (v := ((t⁻¹ : ℝ) : ℂ) • x) (inWb_smul _ hv) (inWb_smul _ hx) (by rw [hb_smul_left, hvz, mul_zero]) (by rw [hb_smul_left, hxz, mul_zero])`. Rewrite `h` using `[hb_smul_left, hb_smul_right, hb_smul_left, hb_smul_right, hb_smul_left, hb_smul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (t : ℂ) * (star (((t⁻¹ : ℝ)) : ℂ) * herm (Hpk k r) v x) = herm (Hpk k r) v x`. Rewrite using `[Complex.star_def, Complex.conj_ofReal, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ ht.ne', Complex.ofReal_one, one_mul]`. Rewrite `h` using `[e1]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal] at h`. Rewrite `h` using `[Complex.re_ofReal_mul, Complex.re_ofReal_mul, Complex.re_ofReal_mul, Complex.re_ofReal_mul, h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hti : t⁻¹ * (t⁻¹ * (herm (Hpk k r) x x).re) = (herm (Hpk k r) x x).re / s`. Rewrite using `[← htt]`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[hti]`. Establish `h' : ‖herm (Hpk k r) v x‖ ≤ (herm (Hpk k r) x x).re / s` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h'` using `[le_div_iff₀ hs]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hne`. Establish `hn : 0 < ‖herm (Hpk k r) v x‖` using `norm_pos_iff.2 hne`. Establish `hxx : 0 ≤ (herm (Hpk k r) x x).re` using `perp_nonneg hz hzn hx hxz`. Use `key (((herm (Hpk k r) x x).re + 1) / ‖herm (Hpk k r) v x‖) (by positivity)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_div_cancel₀ _ hn.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hall : ∀ y, herm (Hpk k r) v y = 0`. Introduce `y`. Establish `hd` using `Formalism.FourierDecayAlt.P.Dx2.DF.decomp (k := k) (r := r) y`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set α : ℂ := herm (Hpk k r) (Formalism.FourierDecayAlt.P.Dx2.DF.Wb y) z / herm (Hpk k r) z z with hα`. Establish `hWb : inWb k r (Formalism.FourierDecayAlt.P.Dx2.DF.Wb y)`. Introduce `i hi; simp only [Formalism.FourierDecayAlt.P.Dx2.DF.Wb]; rw [if_neg (by omega)]`. Establish `hx : inWb k r (Formalism.FourierDecayAlt.P.Dx2.DF.Wb y - α • z)` using `inWb_sub hWb (inWb_smul _ hz)`. Establish `hxz : herm (Hpk k r) (Formalism.FourierDecayAlt.P.Dx2.DF.Wb y - α • z) z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb_sub_left, hb_smul_left, hα, div_mul_cancel₀ _ hzz, sub_self]`. Establish `h1 : herm (Hpk k r) v (Formalism.FourierDecayAlt.P.Dx2.DF.Wb y) = 0`. Establish `e : Formalism.FourierDecayAlt.P.Dx2.DF.Wb y = (Formalism.FourierDecayAlt.P.Dx2.DF.Wb y - α • z) + α • z` using `by abel`. Rewrite using `[e, hb_add_right, hb_smul_right, hW _ hx hxz, hvz, mul_zero, add_zero]`. Rewrite using `[hd, hb_add_right, hb_add_right, h1, Formalism.FourierDecayAlt.P.Dx2.DF.herm_sum_right, Formalism.FourierDecayAlt.P.Dx2.DF.herm_sum_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hb_smul_right, Formalism.FourierDecayAlt.P.Dx2.DF.h_w_ee hv, Formalism.FourierDecayAlt.P.Dx2.DF.h_w_es hv, mul_zero, Finset.sum_const_zero, add_zero]`. Establish `hHv : Hpk k r *ᵥ v = 0`. Use function extensionality and compare the values at `p`. Use `hall (bvec p)` as an intermediate fact. Rewrite `this` using `[Formalism.FourierDecayAlt.P.Dx2.DF.herm_bvec_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[mulVec, dotProduct]`. Establish `hHH : Hpk k r * Hpk k r = 1` using `(Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem perp_eq_zero {z v : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hzn : (herm (Hpk k r) z z).re < 0)
     (hv : inWb k r v) (hvz : herm (Hpk k r) v z = 0) (h0 : (herm (Hpk k r) v v).re = 0) : v = 0 := by
@@ -114,7 +114,7 @@ def hh (k r : ℕ) (z e u : Fin (2 * r + k + 1) → ℂ) : B.Mat k r :=
 variable {k r : ℕ} {z e : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Unfold `pW`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.DF.prW_eq]`. Use `inWb_sub ?_ (inWb_smul _ hz)` and prove the remaining obligations. Introduce `i hi; simp only [Formalism.FourierDecayAlt.P.Dx2.DF.Wb]; rw [if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem pW_inWb (hz : inWb k r z) (u : Fin (2 * r + k + 1) → ℂ) : inWb k r (pW k r z u) := by
   unfold pW
@@ -123,7 +123,7 @@ theorem pW_inWb (hz : inWb k r z) (u : Fin (2 * r + k + 1) → ℂ) : inWb k r (
   intro i hi; simp only [Formalism.FourierDecayAlt.P.Dx2.DF.Wb]; rw [if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `pW`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.DF.prW_eq, hb_sub_left, hb_smul_left, div_mul_cancel₀ _ hzz, sub_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pW_perp (hzz : herm (Hpk k r) z z ≠ 0) (u : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (pW k r z u) z = 0 := by
@@ -131,13 +131,13 @@ theorem pW_perp (hzz : herm (Hpk k r) z z ≠ 0) (u : Fin (2 * r + k + 1) → �
   rw [Formalism.FourierDecayAlt.P.Dx2.DF.prW_eq, hb_sub_left, hb_smul_left, div_mul_cancel₀ _ hzz, sub_self]
 
 /- English proof (translation)
-The claim follows from `inWb_sub (pW_inWb hz u) (inWb_smul _ he)`.
+A detailed English derivation is pending.
 -/
 theorem vH_inWb (hz : inWb k r z) (he : inWb k r e) (u : Fin (2 * r + k + 1) → ℂ) : inWb k r (vH k r z e u) :=
   inWb_sub (pW_inWb hz u) (inWb_smul _ he)
 
 /- English proof (translation)
-Unfold `vH`. Rewrite using `[hb_sub_left, hb_smul_left, pW_perp hzz, hez, mul_zero, sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vH_perp (hzz : herm (Hpk k r) z z ≠ 0) (hez : herm (Hpk k r) e z = 0) (u : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (vH k r z e u) z = 0 := by
@@ -145,13 +145,13 @@ theorem vH_perp (hzz : herm (Hpk k r) z z ≠ 0) (hez : herm (Hpk k r) e z = 0) 
   rw [hb_sub_left, hb_smul_left, pW_perp hzz, hez, mul_zero, sub_zero]
 
 /- English proof (translation)
-Unfold `hh`. Use `split_ifs with h0`. Conclude with `⟨by simp [UH], fun a => by simp, by simp⟩`. Use `set v := vH k r z e u with hv set R := (herm (Hpk k r) v v).re with hR`. Establish `hvv : herm (Hpk k r) v v = (R : ℂ)` using `herm_real v`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvW` using `vH_inWb hz he u`. Establish `hvz` using `vH_perp hzz hez u`. Establish `hzv : herm (Hpk k r) z v = 0` using `by rw [hb_symm _ (hpk_herm k r) v z, hvz, star_zero]`. Use `⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Formalism.FourierDecayAlt.P.TwoByOneBlock.qrefl_mem (Hpk k r) (hpk_herm k r)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hvv, Complex.star_def, Complex.conj_ofReal]`. Establish `hR0 : (R : ℂ) ≠ 0` using `by exact_mod_cast h0`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.qrefl_mulVec, Formalism.FourierDecayAlt.P.Dx2.DF.h_ee_w hvW a, mul_zero, zero_smul, add_zero]`. Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.qrefl_mulVec, Formalism.FourierDecayAlt.P.Dx2.DF.h_es_w hvW a, mul_zero, zero_smul, add_zero]`. Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.qrefl_mulVec, hzv, mul_zero, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hh_mem (hz : inWb k r z) (hzz : herm (Hpk k r) z z ≠ 0) (he : inWb k r e) (hez : herm (Hpk k r) e z = 0)
     (u : Fin (2 * r + k + 1) → ℂ) : hh k r z e u ∈ UWset k r z := by
@@ -182,33 +182,31 @@ section apply
 variable {k r : ℕ} {z e : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Establish `hzz : herm (Hpk k r) z z ≠ 0` using `fun h => by rw [h, Complex.zero_re] at hzn; exact lt_irrefl _ hzn`. Establish `hp : pW k r z u = u` using `Formalism.FourierDecayAlt.P.Dx2.DF.prW_perp hu huz`. Use `set a := aC k r z e u with ha`. Use `set N := nR k r z u with hN`. Use `set s := sC k r z e u with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : herm (Hpk k r) u e = a` using `by rw [ha, aC, hp]`. Establish `hNn : 0 ≤ N` using `Real.sqrt_nonneg _`. Establish `hre : 0 ≤ (herm (Hpk k r) u u).re` using `perp_nonneg hz hzn hu huz`. Establish `hN2 : N ^ 2 = (herm (Hpk k r) u u).re` using `by rw [hN, nR, hp, Real.sq_sqrt hre]`. Establish `huu : herm (Hpk k r) u u = ((N ^ 2 : ℝ) : ℂ)` using `by rw [hN2]; exact herm_real u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsa : star s * a = ((N * ‖a‖ : ℝ) : ℂ)`. Rewrite using `[hs, sC, ← ha]`. Use `split_ifs with h0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hn : (‖a‖ : ℂ) ≠ 0` using `by simpa using h0`. Simplify using `only [star_mul', star_div₀, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← hN, show (N : ℂ) * ((starRingEnd ℂ) a / (‖a‖ : ℂ)) * a = (N : ℂ) * ((starRingEnd ℂ) a * a) / (‖a‖ : ℂ) by ring, Complex.conj_mul']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hss : s * star s = ((N ^ 2 : ℝ) : ℂ)`. Rewrite using `[hs, sC, ← ha]`. Use `split_ifs with h0`. Rewrite using `[Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hn : (‖a‖ : ℂ) ≠ 0` using `by simpa using h0`. Simplify using `only [star_mul', star_div₀, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← hN, show (N : ℂ) * (a / (‖a‖ : ℂ)) * ((N : ℂ) * ((starRingEnd ℂ) a / (‖a‖ : ℂ))) = (N : ℂ) ^ 2 * (a * (starRingEnd ℂ) a) / (‖a‖ : ℂ) ^ 2 by ring, Complex.mul_conj']`. Use `push_cast`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hea : s * herm (Hpk k r) e u = ((N * ‖a‖ : ℝ) : ℂ)`. Rewrite using `[hb_symm _ (hpk_herm k r) u e, ha']`. Establish `: s * star a = star (star s * a)` using `by rw [star_mul', star_star, mul_comm]`. Rewrite using `[this, hsa, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : vH k r z e u = u + (-s) • e` using `by rw [vH, hp, neg_smul, ← sub_eq_add_neg]`. Establish `hvv : herm (Hpk k r) (vH k r z e u) (vH k r z e u) = ((2 * (N ^ 2 - N * ‖a‖) : ℝ) : ℂ)`. Rewrite using `[hv, hb_expand, huu, ha', hee]`. Simplify using `only [star_neg, neg_mul, mul_neg, neg_neg, mul_one]`. Rewrite using `[hsa, hea, hss]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `huv : herm (Hpk k r) u (vH k r z e u) = ((N ^ 2 - N * ‖a‖ : ℝ) : ℂ)`. Rewrite using `[hv, hb_add_right, hb_smul_right, huu, ha', star_neg, neg_mul, hsa]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `hh`. Rewrite using `[hvv, Complex.ofReal_re]`. Use `split_ifs with h0`. Establish `hv0 : vH k r z e u = 0` using `perp_eq_zero hz hzn (vH_inWb hz he u) (vH_perp hzz hez u) (by rw [hvv, Complex.ofReal_re, h0])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one_mulVec]`. Use `hv0` as an intermediate fact. Rewrite `this` using `[vH, hp, sub_eq_zero]`. Conclude with `this`. Rewrite using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.qrefl_mulVec, huv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : N ^ 2 - N * ‖a‖ ≠ 0` using `fun h => h0 (by rw [h, mul_zero])`. Establish `hc : ((-2 / (2 * (N ^ 2 - N * ‖a‖)) : ℝ) : ℂ) * ((N ^ 2 - N * ‖a‖ : ℝ) : ℂ) = -1`. Rewrite using `[← Complex.ofReal_mul]`. Establish `: -2 / (2 * (N ^ 2 - N * ‖a‖)) * (N ^ 2 - N * ‖a‖) = -1`. Establish `h2 : (2 : ℝ) * (N ^ 2 - N * ‖a‖) ≠ 0` using `mul_ne_zero two_ne_zero h1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_mul_eq_mul_div, div_eq_iff h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hc, vH, hp]`. Simplify using `only [neg_smul, one_smul]`. Rewrite using `[← hs]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hh_apply (hz : inWb k r z) (hzn : (herm (Hpk k r) z z).re < 0) (he : inWb k r e)
     (hez : herm (Hpk k r) e z = 0) (hee : herm (Hpk k r) e e = 1) {u : Fin (2 * r + k + 1) → ℂ}
@@ -284,14 +282,14 @@ section meas
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `herm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem herm_cont : Continuous (fun q : (Fin (2 * r + k + 1) → ℂ) × (Fin (2 * r + k + 1) → ℂ) =>
     herm (Hpk k r) q.1 q.2) := by
   unfold herm; fun_prop
 
 /- English proof (translation)
-Set `L : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `{ toFun := pW k r z map_add' := fun v w => Formalism.FourierDecayAlt.P.Dx2.DF.prW_add z v w map_smul' := fun c v => Formalism.FourierDecayAlt.P.Dx2.DF.prW_smul z v c }`. Conclude with `L.continuous_of_finiteDimensional`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem pW_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (pW k r z) := by
   let L : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ) :=
@@ -301,7 +299,7 @@ theorem pW_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (pW k r z) := by
   exact L.continuous_of_finiteDimensional
 
 /- English proof (translation)
-Establish `hp` using `pW_cont (k := k) (r := r) z`. Unfold `aC`. Conclude with `(herm_cont (k := k) (r := r)).comp (hp.prodMk continuous_const)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem aC_cont (z e : Fin (2 * r + k + 1) → ℂ) : Continuous (aC k r z e) := by
   have hp := pW_cont (k := k) (r := r) z
@@ -309,7 +307,7 @@ theorem aC_cont (z e : Fin (2 * r + k + 1) → ℂ) : Continuous (aC k r z e) :=
   exact (herm_cont (k := k) (r := r)).comp (hp.prodMk continuous_const)
 
 /- English proof (translation)
-Establish `hp` using `pW_cont (k := k) (r := r) z`. Unfold `nR`. Conclude with `Real.continuous_sqrt.comp (Complex.continuous_re.comp ((herm_cont (k := k) (r := r)).comp (hp.prodMk hp)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nR_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (nR k r z) := by
   have hp := pW_cont (k := k) (r := r) z
@@ -317,7 +315,7 @@ theorem nR_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (nR k r z) := by
   exact Real.continuous_sqrt.comp (Complex.continuous_re.comp ((herm_cont (k := k) (r := r)).comp (hp.prodMk hp)))
 
 /- English proof (translation)
-Establish `ha` using `aC_cont (k := k) (r := r) z e`. Establish `hn` using `nR_cont (k := k) (r := r) z`. Unfold `sC`. Conclude with `Measurable.ite (measurableSet_eq_fun ha.measurable measurable_const) (Complex.measurable_ofReal.comp hn.measurable) ((Complex.measurable_ofReal.comp hn.measurable).mul (ha.measurable.div (Complex.measurable_ofReal.comp ha.measurable.norm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sC_meas (z e : Fin (2 * r + k + 1) → ℂ) : Measurable (sC k r z e) := by
   have ha := aC_cont (k := k) (r := r) z e
@@ -329,7 +327,7 @@ theorem sC_meas (z e : Fin (2 * r + k + 1) → ℂ) : Measurable (sC k r z e) :=
       (ha.measurable.div (Complex.measurable_ofReal.comp ha.measurable.norm)))
 
 /- English proof (translation)
-Establish `hp` using `pW_cont (k := k) (r := r) z`. Unfold `vH`. Conclude with `hp.measurable.sub ((sC_meas (k := k) (r := r) z e).smul_const e)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vH_meas (z e : Fin (2 * r + k + 1) → ℂ) : Measurable (vH k r z e) := by
   have hp := pW_cont (k := k) (r := r) z
@@ -337,31 +335,29 @@ theorem vH_meas (z e : Fin (2 * r + k + 1) → ℂ) : Measurable (vH k r z e) :=
   exact hp.measurable.sub ((sC_meas (k := k) (r := r) z e).smul_const e)
 
 /- English proof (translation)
-Unfold `herm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hermSelf_cont : Continuous (fun x : Fin (2 * r + k + 1) → ℂ => herm (Hpk k r) x x) := by
   unfold herm; fun_prop
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem vecH_cont (j : Fin (2 * r + k + 1)) :
     Continuous (fun x : Fin (2 * r + k + 1) → ℂ => (star x ᵥ* Hpk k r) j) := by
   fun_prop
 
 /- English proof (translation)
-The claim follows from `(Complex.continuous_re.comp (hermSelf_cont (k := k) (r := r))).measurable.comp (vH_meas (k := k) (r := r) z e)`.
+A detailed English derivation is pending.
 -/
 theorem R_meas (z e : Fin (2 * r + k + 1) → ℂ) :
     Measurable (fun u => (herm (Hpk k r) (vH k r z e u) (vH k r z e u)).re) :=
   (Complex.continuous_re.comp (hermSelf_cont (k := k) (r := r))).measurable.comp (vH_meas (k := k) (r := r) z e)
 
 /- English proof (translation)
-Establish `hv` using `vH_meas (k := k) (r := r) z e`. Establish `hR` using `R_meas (k := k) (r := r) z e`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Establish `e1 : (fun u => hh k r z e u i j) = fun u => if (herm (Hpk k r) (vH k r z e u) (vH k r z e u)).re = 0 then (1 : B.Mat k r) i j else (1 : B.Mat k r) i j + ((-2 / (herm (Hpk k r) (vH k r z e u) (vH k r z e u)).re : ℝ) : ℂ) * (vH k r z e u i * (star (vH k r z e u) ᵥ* Hpk k r) j)`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `hh`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using `[Formalism.FourierDecayAlt.P.TwoByOneBlock.qrefl, Matrix.vecMulVec_apply]`. Rewrite using `[e1]`.
-
-Conclude with `Measurable.ite (measurableSet_eq_fun hR measurable_const) measurable_const (measurable_const.add ((Complex.measurable_ofReal.comp (measurable_const.div hR)).mul (((measurable_pi_apply i).comp hv).mul ((vecH_cont (k := k) (r := r) j).measurable.comp hv))))`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hh_meas (z e : Fin (2 * r + k + 1) → ℂ) : Measurable (hh k r z e) := by
   have hv := vH_meas (k := k) (r := r) z e
@@ -382,7 +378,7 @@ theorem hh_meas (z e : Fin (2 * r + k + 1) → ℂ) : Measurable (hh k r z e) :=
 end meas
 
 /- English proof (translation)
-Introduce `k r z e hz hzn he hez hee`. Establish `hzz : herm (Hpk k r) z z ≠ 0` using `fun h => by rw [h, Complex.zero_re] at hzn; exact lt_irrefl _ hzn`. Conclude with `⟨hh k r z e, hh_meas z e, hh_mem hz hzz he hez, fun u hu huz _ => ⟨sC k r z e u, hh_apply hz hzn he hez hee hu huz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem householder_measurability_holds : HouseMeas := by
   intro k r z e hz hzn he hez hee

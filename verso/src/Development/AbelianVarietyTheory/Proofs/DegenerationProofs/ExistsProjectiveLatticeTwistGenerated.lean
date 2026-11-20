@@ -25,7 +25,7 @@ open Classical in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : _root_.GlobalTheory.ZH.RatModel o Ω} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR`. Rewrite using `[dif_pos h, map_one, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma valR_one_degeneration {L : Type} [Field L] {X : Scheme} (x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp L ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR x U 1 = 1 := by
@@ -40,17 +40,15 @@ attribute [local instance] MvPolynomial.gradedAlgebra in
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : _root_.GlobalTheory.ZH.RatModel o Ω} in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver at h`. Take `⟨N, π, hπ, hcomm⟩` from `h`. Use `haveI := hπ`. Establish `hx : (M.pt ≫ π) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str o N = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap o Ω)`. Rewrite using `[Category.assoc, hcomm, M.pt_s]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : ∀ p q : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp Ω, p = q`. Introduce `p q`. Conclude with `Subsingleton.elim p q`. Take `⟨p⟩ : Nonempty (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp Ω)` from `inferInstance`. Take `⟨k, hk⟩` from `_root_.GlobalTheory.ProjSpace.exists_mem_chart o N ((M.pt ≫ π) p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : ⊤ ≤ (M.pt ≫ π) ⁻¹ᵁ _root_.GlobalTheory.ProjSpace.chart o N k`. Introduce `q _`. Rewrite using `[hsub q p]`. Conclude with `hk`. Use `set t : Fin (N + 1) → Ω := fun j => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR (M.pt ≫ π) (_root_.GlobalTheory.ProjSpace.chart o N k) (_root_.GlobalTheory.ProjSpace.ratio o N k j) with ht_def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `htk : t k = 1`. Simplify using `only [ht_def]`. Establish `: _root_.GlobalTheory.ProjSpace.ratio o N k k = 1`. Unfold `_root_.GlobalTheory.ProjSpace.ratio`. Conclude with `_root_.GlobalTheory.ProjSpace.ratioOn_self`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `valR_one_degeneration _ _ htop`. Establish `ht : t ≠ 0`. Introduce `h0`. Use `congrFun h0 k` as an intermediate fact.
-
-Rewrite `this` using `[htk]`. Conclude with `one_ne_zero this`. Establish `heq : M.pt ≫ π = _root_.GlobalTheory.TuplePoint.point o t ht` using `_root_.GlobalTheory.TuplePoint.eq_point hx (i := k) (by rw [htk]; exact one_ne_zero) htop (fun j => by rw [htk, div_one])`. Conclude with `⟨N, t, M.isCl_of_isClosedImmersion π heq⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.RatModel.exists_isCl_of_isProjOver (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver M.s) :
     ∃ (n : ℕ) (t : Fin (n + 1) → Ω), M.IsCl t := by
@@ -96,23 +94,23 @@ open Classical in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : _root_.GlobalTheory.ZH.RatModel o Ω} in
 /- English proof (translation)
-Establish `hu : IsUnit b.det` using `isUnit_iff_ne_zero.mpr hb`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨r, rfl⟩` from `hx`. Introduce `k`. Establish `hrow : Matrix.vecMul (b r) b⁻¹ = Pi.single r 1`. Use function extensionality and compare the values at `j`. Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv b hu) r) j`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.vecMul, dotProduct]`. Rewrite using `[h1, Matrix.one_apply]`. Distinguish the cases in `hrj : r = j`. Substitute `hrj` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hrj, Pi.single_apply, Ne.symm hrj]`. Rewrite using `[hrow]`. Distinguish the cases in `hkr : k = r`. Substitute `hkr` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[R.one_mem]`. Simplify using `[Pi.single_apply, hkr, R.zero_mem]`. Consider the case `zero => intro k`. Simplify using `[R.zero_mem]`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `k`. Rewrite using `[Matrix.add_vecMul]`. Conclude with `R.add_mem (hx k) (hy k)`. Consider the case `smul c x _ hx`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsm : Matrix.vecMul (c • x) b⁻¹ = (c : Ω) • Matrix.vecMul x b⁻¹`. Rewrite using `[← Matrix.smul_vecMul]`. Both sides reduce to the same expression. Rewrite using `[hsm, Pi.smul_apply, smul_eq_mul]`. Conclude with `R.mul_mem c.2 (hx k)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hc`. Establish `hw : w = Matrix.vecMul (Matrix.vecMul w b⁻¹) b`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul b hu, Matrix.vecMul_one]`. Rewrite using `[hw, Matrix.vecMul_eq_sum]`. Use `Submodule.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : Matrix.vecMul w b⁻¹ k • b k = (⟨_, hc k⟩ : R) • b k` using `rfl`. Rewrite using `[hsm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_range_iff_vecMul_inv_mem {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
     {J : Type} [Fintype J] [DecidableEq J]
@@ -167,57 +165,49 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : _root_.Global
 variable {J : Type} [Fintype J] [DecidableEq J] in
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ M hproj J _ EE`. Take `⟨n, t, hcl⟩` from `_root_.GlobalTheory.ZH.RatModel.exists_isCl_of_isProjOver hproj`. Establish `hcl'` using `hcl`. Unfold `_root_.GlobalTheory.ZH.RatModel.IsCl at hcl'`. Take `⟨hdiv, hchart⟩` from `hcl'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.GlobalTheory.ZH.RatModel.HasDiv at hdiv`. Establish `hdivne : ∀ {i z}, M.Div t i z → t i ≠ 0`. Introduce `i z h`. Unfold `_root_.GlobalTheory.ZH.RatModel.Div at h`. Conclude with `h.1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hdivratio : ∀ {i z} (j : Fin (n + 1)), M.Div t i z → t j / t i ∈ M.O z`. Introduce `i z j h`. Unfold `_root_.GlobalTheory.ZH.RatModel.Div at h`. Conclude with `h.2 j`. Establish `hD : ∀ i, ∃ U : M.Z.Opens, (∀ z, z ∈ U ↔ M.Div t i z) ∧ (t i ≠ 0 → IsAffineOpen U)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i`. Distinguish the cases in `hi : t i ≠ 0`. Take `⟨U, hU, hUeq, _⟩` from `hchart i hi`. Use `⟨U, fun z => ?_, fun _ => hU⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, hUeq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨⊥, fun z => ⟨fun h => absurd h (by simp), fun h => absurd (hdivne h) hi⟩, fun h => absurd h hi⟩` and prove the remaining obligations. Use `choose D hDmem hDaff using hD`. Establish `hloc : ∀ z : M.Z, ∃ (U : M.Z.Opens) (b : Matrix J J Ω) (i : Fin (n + 1)) (f : Γ(M.Z, D i)), z ∈ M.Z.basicOpen f ∧ M.Z.basicOpen f ≤ U ∧ b.det ≠ 0 ∧ t i ≠ 0 ∧ ∀ z' ∈ U, EE.E z' = Submodule.span (M.O z') (Set.range b)`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, b, hzU, hb, hspan⟩` from `EE.loc z`. Take `⟨i, hi⟩` from `hdiv z`. Establish `hzD : z ∈ D i` using `(hDmem i z).2 hi`. Take `⟨f, hfle, hzf⟩` from `(hDaff i (hdivne hi)).exists_basicOpen_le (V := D i ⊓ U) ⟨z, hzD, hzU⟩ hzD`. Conclude with `⟨U, b, i, f, hzf, hfle.trans inf_le_right, hb, hdivne hi, hspan⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Uz bz iz fz hzmem hzle hzdet hzti hzspan using hloc`. Use `set u : M.Z → Ω := fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valF M.pt (D (iz z)) (fz z) with hu_def`. Establish `hu_mem : ∀ z z', z' ∈ D (iz z) → u z ∈ M.O z'` using `fun z z' hz' => _root_.GlobalTheory.ZH.RatModel.valF_mem_O hz' (fz z)`. Establish `hzD : ∀ z, z ∈ D (iz z)` using `fun z => (M.Z.basicOpen_le (fz z)) (hzmem z)`. Establish `hu_unit : ∀ z z' (hz' : z' ∈ D (iz z)), z' ∈ M.Z.basicOpen (fz z) ↔ (u z ≠ 0 ∧ (u z)⁻¹ ∈ M.O z')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `z z' hz'`. Rewrite using `[← _root_.GlobalTheory.ZH.RatModel.isUnit_valF_iff hz' (fz z), _root_.GlobalTheory.ZH.RatModel.isUnit_O_iff]`. Establish `hu_ne : ∀ z, u z ≠ 0` using `fun z => ((hu_unit z z (hzD z)).1 (hzmem z)).1`. Establish `hu_inv : ∀ z z', z' ∈ M.Z.basicOpen (fz z) → (u z)⁻¹ ∈ M.O z'` using `fun z z' h => ((hu_unit z z' ((M.Z.basicOpen_le (fz z)) h)).1 h).2`. Use `haveI := M.noetherianSpace_of_isNoetherianRing`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `isCompact_univ.elim_finite_subcover (fun z => (M.Z.basicOpen (fz z) : Set M.Z)) (fun z => (M.Z.basicOpen (fz z)).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hzmem x⟩)`. Establish `hcover : ∀ z : M.Z, ∃ z₀ ∈ F, z ∈ M.Z.basicOpen (fz z₀)`. Introduce `z`. Use `hF (Set.mem_univ z)` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z₀, hz₀, h⟩` from `this`. Conclude with `⟨z₀, hz₀, h⟩`. Establish `hcoord : ∀ z₁ z', z' ∈ Uz z₁ → ∀ w : J → Ω, w ∈ EE.E z' ↔ ∀ k, Matrix.vecMul w (bz z₁)⁻¹ k ∈ M.O z'`. Introduce `z₁ z' hz' w`. Rewrite using `[hzspan z₁ z' hz']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_span_range_iff_vecMul_inv_mem _ _ (hzdet z₁) w`. Establish `hrow : ∀ z₀ r z', z' ∈ Uz z₀ → bz z₀ r ∈ EE.E z'`. Introduce `z₀ r z' hz'`. Rewrite using `[hzspan z₀ z' hz']`. Conclude with `Submodule.subset_span ⟨r, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ z₀ r z₁ k, ∃ C₀ : ℕ, ∀ C ≥ C₀, ∀ z' ∈ D (iz z₀) ⊓ Uz z₁, Matrix.vecMul (bz z₀ r) (bz z₁)⁻¹ k * u z₀ ^ C ∈ M.O z'`. Introduce `z₀ r z₁ k`. Use `_root_.GlobalTheory.ZH.RatModel.exists_forall_mul_pow_mem_O (D (iz z₀) ⊓ Uz z₁) (hu_ne z₀) (fun z' hz' => hu_mem z₀ z' hz'.1) (fun z' hz' hinv => ?_)` and prove the remaining obligations. Establish `hb : z' ∈ M.Z.basicOpen (fz z₀)` using `((hu_unit z₀ z' hz'.1).2 ⟨hu_ne z₀, hinv⟩)`. Conclude with `(hcoord z₁ z' hz'.2 _).1 (hrow z₀ r z' (hzle z₀ hb)) k`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose C1 hC1 using h1`. Use `set C : ℕ := (F ×ˢ F ×ˢ (Finset.univ : Finset J) ×ˢ (Finset.univ : Finset J)).sup (fun p => C1 p.1 p.2.2.1 p.2.1 p.2.2.2) with hC_def`. Establish `hC : ∀ z₀ ∈ F, ∀ z₁ ∈ F, ∀ r k, C1 z₀ r z₁ k ≤ C`. Introduce `z₀ hz₀ z₁ hz₁ r k`. Rewrite using `[hC_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.le_sup (f := fun p : M.Z × M.Z × J × J => C1 p.1 p.2.2.1 p.2.1 p.2.2.2) (b := (z₀, z₁, r, k)) (Finset.mem_product.2 ⟨hz₀, Finset.mem_product.2 ⟨hz₁, Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_univ _⟩⟩⟩)`. Establish `h2 : ∀ z₀ r (i : Fin (n + 1)) z₁ k, ∃ C₀ : ℕ, z₀ ∈ F → z₁ ∈ F → ∀ e ≥ C₀, ∀ z' ∈ D i ⊓ Uz z₁, Matrix.vecMul (bz z₀ r) (bz z₁)⁻¹ k * u z₀ ^ C * (t (iz z₀) / t i) ^ e ∈ M.O z'`. Introduce `z₀ r i z₁ k`. Distinguish the cases in `hmem : z₀ ∈ F ∧ z₁ ∈ F`. Take `⟨C₀, hC₀⟩` from `_root_.GlobalTheory.ZH.RatModel.exists_forall_mul_prod_div_pow_mem_O o Ω M (Fin (n + 1)) t (D i ⊓ Uz z₁) i (fun z' hz' => (hDmem i z').1 hz'.1) {iz z₀} (Matrix.vecMul (bz z₀ r) (bz z₁)⁻¹ k * u z₀ ^ C) (fun z' hz' hI => hC1 z₀ r z₁ k C (hC z₀ hmem.1 z₁ hmem.2 r k) z' ⟨(hDmem (iz z …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨C₀, fun _ _ e he z' hz' => ?_⟩` and prove the remaining obligations. Use `hC₀ e he z' hz'` as an intermediate fact. Rewrite `this` using `[Finset.prod_singleton]`. Then use the resulting hypothesis. Conclude with `⟨0, fun h₀ h₁ => absurd ⟨h₀, h₁⟩ hmem⟩`. Use `choose C2 hC2 using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `set e : ℕ := (F ×ˢ (Finset.univ : Finset J) ×ˢ (Finset.univ : Finset (Fin (n + 1))) ×ˢ F ×ˢ (Finset.univ : Finset J)).sup (fun p => C2 p.1 p.2.1 p.2.2.1 p.2.2.2.1 p.2.2.2.2) with he_def`. Establish `he : ∀ z₀ ∈ F, ∀ z₁ ∈ F, ∀ r i k, C2 z₀ r i z₁ k ≤ e`. Introduce `z₀ hz₀ z₁ hz₁ r i k`. Rewrite using `[he_def]`. Conclude with `Finset.le_sup (f := fun p : M.Z × J × Fin (n + 1) × M.Z × J => C2 p.1 p.2.1 p.2.2.1 p.2.2.2.1 p.2.2.2.2) (b := (z₀, r, i, z₁, k)) (Finset.mem_product.2 ⟨hz₀, Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_product.2 ⟨hz₁, Finset.mem_un …`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Set `gen : F × J → J → Ω` to `fun p j => bz p.1 p.2 j * u p.1 ^ C * t (iz p.1) ^ e`. Set `eqv` to `Fintype.equivFin (F × J)`. Use `⟨n, t, e, Fintype.card (F × J), fun k => gen (eqv.symm k), hcl, fun z i hzi => ?_⟩` and prove the remaining obligations. Establish `hti : t i ≠ 0` using `hdivne hzi`. Establish `hgen : ∀ p : F × J, (fun j => gen p j / t i ^ e) = (u p.1 ^ C * (t (iz p.1) / t i) ^ e) • bz p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p`. Use function extensionality and compare the values at `j`. Simplify using `only [gen, Pi.smul_apply, smul_eq_mul, div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hrange : (Set.range fun k j => gen (eqv.symm k) j / t i ^ e) = Set.range fun p : F × J => fun j => gen p j / t i ^ e`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨eqv.symm k, rfl⟩`. Introduce and unpack `⟨p, rfl⟩; exact ⟨eqv p, by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrange]`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨z₀, hz₀F, hz₀⟩` from `hcover z`. Rewrite using `[hzspan z₀ z (hzle z₀ hz₀)]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨r, rfl⟩`. Use `set g : Ω := u z₀ ^ C * (t (iz z₀) / t i) ^ e with hg`. Establish `htz₀ : t (iz z₀) ≠ 0` using `hzti z₀`. Establish `hg_ne : g ≠ 0` using `mul_ne_zero (pow_ne_zero _ (hu_ne z₀)) (pow_ne_zero _ (div_ne_zero htz₀ hti))`. Establish `hdz₀ : M.Div t (iz z₀) z` using `(hDmem (iz z₀) z).1 ((M.Z.basicOpen_le (fz z₀)) hz₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hg_inv : g⁻¹ ∈ M.O z`. Establish `h3 : g⁻¹ = (u z₀)⁻¹ ^ C * (t i / t (iz z₀)) ^ e`. Rewrite using `[hg, mul_inv, ← inv_pow, ← inv_pow, inv_div]`. Rewrite using `[h3]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hu_inv z₀ z hz₀) _) (Subalgebra.pow_mem _ (hdivratio i hdz₀) _)`.
-
-Establish `hb : bz z₀ r = (⟨g⁻¹, hg_inv⟩ : M.O z) • (fun j => gen (⟨z₀, hz₀F⟩, r) j / t i ^ e)`. Rewrite using `[hgen]`. Use `show bz z₀ r = g⁻¹ • (g • bz z₀ r)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hg_ne, one_smul]`. Rewrite using `[hb]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(⟨z₀, hz₀F⟩, r), rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨z₁, hz₁F, hz₁⟩` from `hcover z`. Establish `hzU : z ∈ Uz z₁` using `hzle z₁ hz₁`.
-
-Rewrite using `[SetLike.mem_coe, hcoord z₁ z hzU]`. Introduce `k`. Simplify using `only`. Rewrite using `[hgen p, Matrix.smul_vecMul, Pi.smul_apply, smul_eq_mul]`. Use `hC2 p.1 p.2 i z₁ k p.1.2 hz₁F e (he p.1 p.1.2 z₁ hz₁F p.2 i k) z ⟨(hDmem i z).2 hzi, hzU⟩` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.RatModel.exists_isCl_lat_eq_span : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω]
     [IsNoetherianRing o] (M : _root_.GlobalTheory.ZH.RatModel o Ω), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver M.s → ∀ (J : Type) [Fintype J]

@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `σ f g`. Conclude with `Formalism.REAL.fischerInner_eq_star g f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fischerInnerConjSymm_holds : FockHerm := by
   intro σ f g

@@ -18,7 +18,7 @@ namespace GlobalTheory.RowRepLoc
 open GlobalTheory.LocGrp GlobalTheory.LocMod
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hp with rfl | rfl <;> rcases r with r | r <;> rcases s with s | s <;>`. Apply the tactic sequence `simp only [Sum.elim_inl, Sum.elim_inr, GlobalTheory.RootEx.lev] at h ⊢ <;> (try split_ifs at h) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma lev_le_of_sum_elim_le {σ p' : ℕ} (hp : p' = σ ∨ p' = σ + 1) {n : Type} (r s : n ⊕ Fin (2 * σ))
     (h : (Sum.elim (fun _ => σ + 1) (fun j : Fin (2 * σ) => if j.val < σ then j.val + 1 else j.val + 2) : n ⊕ Fin (2 * σ) → ℕ) s ≤
@@ -29,7 +29,7 @@ private lemma lev_le_of_sum_elim_le {σ p' : ℕ} (hp : p' = σ ∨ p' = σ + 1)
     simp only [Sum.elim_inl, Sum.elim_inr, GlobalTheory.RootEx.lev] at h ⊢ <;> (try split_ifs at h) <;> omega
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hX r) i`. Simplify using `only [Matrix.mul_apply, hc] at h ⊢`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mul_apply_eq_of_mul_eq_of_col_eq {K : Type} [Field K] {m n n' : Type} [Fintype m] (M : Matrix m m K) (X : Matrix m n K)
     (Y : Matrix m n' K) (hX : M * X = X) (i : n) (j : n') (hc : ∀ t, X t i = Y t j) (r : m) : (M * Y) r j = Y r j := by
@@ -39,39 +39,35 @@ private lemma mul_apply_eq_of_mul_eq_of_col_eq {K : Type} [Field K] {m n n' : Ty
   exact h
 
 /- English proof (translation)
-Establish `hS : ∀ r (j : Fin (2 * σ)), sumCols d p.π b u r (Sum.inr j) = p.π (incA D (d.a r j)) * u j`. Introduce `r j`. Simplify using `only [sumCols, Matrix.fromCols_apply_inr, Matrix.mul_diagonal, Matrix.map_apply, RingHom.comp_apply]`. Set `F : Frame k B.rank (Fin A.rank ⊕ Fin (2 * σ))` to `⟨sumCols d p.π b u, Γ, h2, h1⟩`. Set `FA : Frame k A.rank (Fin A.rank)` to `⟨b, b', hb, hb'⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨φ, hφ⟩` from `exists_hom p F`. Establish `hgx : p.IsLoc F g x`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Use `show (mt B g).map p.π = sumCols d p.π b u * x.val * Γ`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[isLoc_unique p hgx (hφ x)]`. Establish `hfix : ∀ g₀ : GA D A, (mt B ((jacDec d rfl).emb0 g₀)).map p.π * d.a.map (p.π.comp (incA D)) = d.a.map (p.π.comp (incA D))`. Introduce `g₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hX` using `map_fix p (HypDec.wittDecomp_anisotropicEmbedding_inclX (d := jacDec d rfl) (g := g₀))`. Establish `hY` using `map_fix p (HypDec.wittDecomp_anisotropicEmbedding_inclY (d := jacDec d rfl) (g := g₀))`. Use extensionality with `r j`. Distinguish the cases in `hj : j.val < σ`. Conclude with `mul_apply_eq_of_mul_eq_of_col_eq _ _ _ hX ⟨j.val, hj⟩ j (fun t => rfl) r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `mul_apply_eq_of_mul_eq_of_col_eq _ _ _ hY ⟨2 * σ - 1 - j.val, by omega⟩ j (fun t => ?_) r show p.π (incA D ((jacDec d rfl).e' t ⟨2 * σ - 1 - j.val, by omega⟩)) = p.π (incA D (d.a t j)) dsimp only [jacDec, Matrix.submatrix_apply, id]` and prove the remaining obligations. Use `congr 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hN : ∀ p', (p' = σ ∨ p' = σ + 1) → GlobalTheory.RootEx.N k (Fin A.rank) (2 * σ) p' ≤ (jacGrp (jacDec d rfl)).comap φ`. Introduce `p' hp'`. Unfold `GlobalTheory.RootEx.N`. Rewrite using `[Subgroup.closure_le]`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show φ q ∈ flagN (jacDec d rfl) ⊔ (jacDec d rfl).emb0.range`. Use `Subgroup.mem_sup_left (flag_of_strict p (jacDec d rfl) FA F (Sum.elim (fun a => Sum.inl a) (Sum.elim (fun i : Fin σ => Sum.inr ⟨i.val, by omega⟩) (fun i : Fin σ => Sum.inr ⟨2 * σ - 1 - i.val, by omega⟩))) ?_ (Sum.elim (fun _ => (1 : k)) (Sum.elim (fun i : Fin σ => u ⟨i.val, by om …` and prove the remaining obligations. Introduce and unpack `(a | j)`. Conclude with `⟨Sum.inl a, rfl⟩`. Distinguish the cases in `hj : j.val < σ`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Sum.inr (Sum.inl ⟨j.val, hj⟩), rfl⟩`. Use `⟨Sum.inr (Sum.inr ⟨2 * σ - 1 - j.val, by omega⟩), congrArg Sum.inr (Fin.ext ?_)⟩ show 2 * σ - 1 - (2 * σ - 1 - j.val) = j.val` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Introduce and unpack `r (a | i | i)`. Use `show sumCols d p.π b u r (Sum.inl a) = 1 * ((jacDec d rfl).j0.map p.π * b) r a`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Both sides reduce to the same expression. Use `show sumCols d p.π b u r (Sum.inr ⟨i.val, _⟩) = u ⟨i.val, _⟩ * ((jacDec d rfl).jX.map p.π) r i`. Rewrite using `[hS, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show sumCols d p.π b u r (Sum.inr ⟨2 * σ - 1 - i.val, _⟩) = u ⟨2 * σ - 1 - i.val, _⟩ * ((jacDec d rfl).jY.map p.π) r i`. Rewrite using `[hS, mul_comm]`. Use `show u ⟨2 * σ - 1 - i.val, _⟩ * p.π (incA D (d.a r ⟨2 * σ - 1 - i.val, _⟩)) = u ⟨2 * σ - 1 - i.val, _⟩ * p.π (incA D ((jacDec d rfl).e' r i))`. Simplify using `only [jacDec, Matrix.submatrix_apply, id]`. Use `congr 4`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce and unpack `(a | i | i)`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show (if i.val < σ then i.val + 1 else i.val + 2) = i.val + 1`. Rewrite using `[if_pos i.isLt]`. Use `show (if 2 * σ - 1 - i.val < σ then 2 * σ - 1 - i.val + 1 else 2 * σ - 1 - i.val + 2) = 2 * σ - i.val + 1`. Use `i.isLt` as an intermediate fact. Rewrite using `[if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Introduce `r s hrs`. Establish `hq' : GlobalTheory.RootEx.InN p' q` using `hq`. Rewrite using `[Matrix.sub_apply, hq' r s (lev_le_of_sum_elim_le hp' r s hrs), sub_self]`. Establish `hR : symR k (Fin A.rank) (2 * σ) ≤ (jacGrp (jacDec d rfl)).comap φ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `symR symN`. Rewrite using `[show (2 * σ + 1) / 2 = σ by omega, show 2 * σ / 2 + 1 = σ + 1 by omega]`. Use `sup_le ?_ (sup_le (hN σ (Or.inl rfl)) (hN (σ + 1) (Or.inr rfl)))` and prove the remaining obligations. Introduce and unpack `_ ⟨g₀, rfl⟩`. Take `⟨ψ, hψ⟩` from `exists_hom p FA`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc : p.IsLoc F ((jacDec d rfl).emb0 (ψ g₀)) (embX (2 * σ) g₀)`. Use `⟨suppAt_wittLeviEmbedding _ (hψ g₀).1, ?_⟩` and prove the remaining obligations. Use `eq_embX F _ g₀ ((frameMat B A d.ι).map (p.π.comp (incA D)) * b) (fun r a => rfl) ?_ ?_` and prove the remaining obligations. Conclude with `intertwine p (HypDec.wittDecomp_anisotropicEmbedding_inclAnisotropic (d := jacDec d rfl) (g := ψ g₀)) (hψ g₀)`. Introduce `j`.
-
-Use `fix_col (hfix (ψ g₀)) (u j) j (fun r => ?_)` and prove the remaining obligations. Use `show sumCols d p.π b u r (Sum.inr j) = u j * (d.a.map (p.π.comp (incA D))) r j`. Rewrite using `[hS, mul_comm]`. Both sides reduce to the same expression. Use `show φ (embX (2 * σ) g₀) ∈ flagN (jacDec d rfl) ⊔ (jacDec d rfl).emb0.range`.
-
-Rewrite using `[isLoc_unique p (hφ _) hloc]`. Conclude with `Subgroup.mem_sup_right ⟨_, rfl⟩`. Conclude with `hR hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_jac {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
     {A B : HSp D} {σ : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B (2 * σ) ε)
@@ -179,11 +175,9 @@ theorem mem_jac {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
 end GlobalTheory.RowRepLoc
 
 /- English proof (translation)
-Introduce `D A B c σ ε d h _ w β β' u hF _ a b ha hb hab q hq g hg hx`. Substitute `h ha hb` using the available equality. Take `⟨Γ, hΓ1, hΓ2, hΓ⟩` from `frame_val d w hF`. Establish `hπ : (GlobalTheory.LocMod.Place.ofSplitPt q).π = piAt w` using `RingHom.ext hq`. Use `GlobalTheory.RowRepLoc.mem_jac (GlobalTheory.LocMod.Place.ofSplitPt q) d (b' := (GlobalTheory.StdFrames.loc w β)⁻¹.val) (Units.mul_inv _) (Units.inv_mul _) (u := u) (Γ := Γ) ?_ ?_ hg (x := frameGL hab (inBasis rfl β' w (Lev.finE B g))) ?_ hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hπ]`. Conclude with `hΓ1`. Rewrite using `[hπ]`. Conclude with `hΓ2`. Rewrite using `[hπ]`.
-
-Conclude with `hΓ g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowRepLoc.mem_jacGrp_of_symR : ∀ {D : D7} {A B : HSp D} {c σ : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (h : c = 2 * σ), 1 ≤ σ → ∀ (w : Pl D.host.E) (β : GL (Fin A.rank) (Lev.EAf D)) (β' : GL (Fin B.rank) (Lev.EAf D)) (u : Fin c → Kw w), IsSumFrame d w β β' u → (∀ p, u p ≠ 0) → ∀ {a b : ℕ} (_ : a = A.rank) (hb : b = B.rank) (hab : a + c = b) (q : GlobalTheory.FinPl.SplitPt D (Kw w)), (∀ x, q.pr x = GlobalTheory.RowRep.piAt w x) → ∀ g : GA D B, SuppAt q.e B g → frameGL hab (inBasis hb β' w (Lev.finE B g)) ∈ symR (Kw w) (Fin a) c → g ∈ jacGrp (jacDec d h) := by
   intro D A B c σ ε d h _ w β β' u hF _ a b ha hb hab q hq g hg hx

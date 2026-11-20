@@ -21,31 +21,31 @@ abbrev Quad (i : X₀ ⟶ X) (L : LB X₀) (φ₀ φ₁ φ₂ : Y ⟶ X) : Type 
 variable {i : X₀ ⟶ X} {L : LB X₀} {φ₀ φ₁ φ₂ : Y ⟶ X}
 
 /- English proof (translation)
-The claim follows from `(Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1`.
+A detailed English derivation is pending.
 -/
 theorem Quad.le_W {p q : Quad i L φ₀ φ₁ φ₂} (h : p ≤ q) : p.1.1 ≤ q.1.1 :=
   (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1
 
 /- English proof (translation)
-The claim follows from `(Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).1`.
+A detailed English derivation is pending.
 -/
 theorem Quad.le_K₀ {p q : Quad i L φ₀ φ₁ φ₂} (h : p ≤ q) : p.1.2.1 ≤ q.1.2.1 :=
   (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).1
 
 /- English proof (translation)
-The claim follows from `(Prod.le_def.1 (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).2).1`.
+A detailed English derivation is pending.
 -/
 theorem Quad.le_K₁ {p q : Quad i L φ₀ φ₁ φ₂} (h : p ≤ q) : p.1.2.2.1 ≤ q.1.2.2.1 :=
   (Prod.le_def.1 (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).2).1
 
 /- English proof (translation)
-The claim follows from `(Prod.le_def.1 (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).2).2`.
+A detailed English derivation is pending.
 -/
 theorem Quad.le_K₂ {p q : Quad i L φ₀ φ₁ φ₂} (h : p ≤ q) : p.1.2.2.2 ≤ q.1.2.2.2 :=
   (Prod.le_def.1 (Prod.le_def.1 (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2).2).2
 
 /- English proof (translation)
-The claim follows from `Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨hW, Prod.le_def.2 ⟨h₀, Prod.le_def.2 ⟨h₁, h₂⟩⟩⟩)`.
+A detailed English derivation is pending.
 -/
 theorem Quad.le_of {p q : Quad i L φ₀ φ₁ φ₂} (hW : p.1.1 ≤ q.1.1) (h₀ : p.1.2.1 ≤ q.1.2.1) (h₁ : p.1.2.2.1 ≤ q.1.2.2.1)
     (h₂ : p.1.2.2.2 ≤ q.1.2.2.2) : p ≤ q :=
@@ -70,18 +70,16 @@ section SlopeTestRemainingChoices
 variable {X X₀ Y Y₀ : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_eq_of_eq {f g : Y ⟶ X} (e : f = g) (U : X.Opens) (V : Y.Opens) (h : V ≤ f ⁻¹ᵁ U)
     (h' : V ≤ g ⁻¹ᵁ U) : f.appLE U V h = g.appLE U V h' := by
   subst e; rfl
 
 /- English proof (translation)
-Establish `hle' : i' ⁻¹ᵁ W ≤ (ψ ≫ i) ⁻¹ᵁ U` using `fun y hy ↦ by show (ψ ≫ i) y ∈ U`. Rewrite using `[h, Scheme.Hom.comp_apply]`. Conclude with `le hy`. Establish `e1 : φ.appLE U W le ≫ i'.app W = (ψ ≫ i).appLE U (i' ⁻¹ᵁ W) hle'`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `appLE_eq_of_eq h.symm _ _ _ _`. Establish `e2` using `congrArg (fun q ↦ q.hom b) e1`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`. Rewrite using `[e2, Scheme.Hom.comp_appLE, CommRingCat.hom_comp, RingHom.comp_apply, hc]`. Establish `e3` using `congrArg (fun q ↦ q.hom c) (Scheme.Hom.map_appLE ψ (U := i ⁻¹ᵁ U) (U' := V₀) hle' (homOfLE hV).op)`.
-
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e3`. Conclude with `e3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_appLE {i : X₀ ⟶ X} {i' : Y₀ ⟶ Y} {φ : Y ⟶ X} {ψ : Y₀ ⟶ X₀} (h : ψ ≫ i = i' ≫ φ) {U : X.Opens}
     {W : Y.Opens} (le : W ≤ φ ⁻¹ᵁ U) {V₀ : X₀.Opens} (hV : i ⁻¹ᵁ U ≤ V₀) (hle : i' ⁻¹ᵁ W ≤ ψ ⁻¹ᵁ V₀) (b : Γ(X, U))
@@ -101,7 +99,7 @@ theorem app_appLE {i : X₀ ⟶ X} {i' : Y₀ ⟶ Y} {φ : Y ⟶ X} {ψ : Y₀ �
   exact e3
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom a.val) = (X.presheaf.map (homOfLE (h'.trans h)).op).hom a.val`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_res_val {U V V' : X.Opens} (h : V ≤ U) (h' : V' ≤ V) (a : Γ(X, U)ˣ) :
     (X.presheaf.map (homOfLE h').op).hom (res h a).val = (res (h'.trans h) a).val := by
@@ -111,9 +109,9 @@ theorem map_res_val {U V V' : X.Opens} (h : V ≤ U) (h' : V' ≤ V) (a : Γ(X, 
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hx.exists_right_inv`. Take `⟨y, rfl⟩` from `hp u`. Establish `hn : x * y - 1 ∈ K` using `hker _ (by simp [hu])`. Establish `hsq : (x * y - 1) * (x * y - 1) = 0`. Establish `: (x * y - 1) * (x * y - 1) ∈ K ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul hn hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hK]`. Simplify using `using this`. Establish `hnil : IsNilpotent (x * y - 1)` using `⟨2, by rw [pow_two, hsq]⟩`. Establish `: IsUnit (x * y)` using `by simpa using hnil.isUnit_one_add`. Conclude with `isUnit_of_mul_isUnit_left this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_sqZero {A A₀ : Type} [CommRing A] [CommRing A₀] (p : A →+* A₀) (hp : Function.Surjective p)
     (K : Ideal A) (hK : K ^ 2 = ⊥) (hker : ∀ a, p a = 0 → a ∈ K) (x : A) (hx : IsUnit (p x)) : IsUnit x := by
@@ -128,14 +126,14 @@ theorem isUnit_of_sqZero {A A₀ : Type} [CommRing A] [CommRing A₀] (p : A →
   exact isUnit_of_mul_isUnit_left this
 
 /- English proof (translation)
-Rewrite using `[gm_res (𝟙 Y) y hle h, gm_pull (𝟙 Y) f y U (hle h), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_one_res_pull (f : Y ⟶ X) (y : Y) {U : X.Opens} {V : Y.Opens} (hle : V ≤ f ⁻¹ᵁ U) (h : y ∈ V)
     (a : Γ(X, U)ˣ) : gm (𝟙 Y) y V (res hle (pullU f U a)) = gm f y U a := by
   rw [gm_res (𝟙 Y) y hle h, gm_pull (𝟙 Y) f y U (hle h), Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[h, mul_comm a b⁻¹, _root_.mul_assoc b⁻¹, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commGroup_mul_eq_mul_of_eq_mul_inv_mul {G : Type} [CommGroup G] (a b w w' : G) (h : w = a * b⁻¹ * w') : a * w' = b * w := by
   rw [h, mul_comm a b⁻¹, _root_.mul_assoc b⁻¹, mul_inv_cancel_left]
@@ -143,31 +141,29 @@ theorem commGroup_mul_eq_mul_of_eq_mul_inv_mul {G : Type} [CommGroup G] (a b w w
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `R _ I hI X X₀ Y Y₀ s s' i i' φ₀ φ₁ φ₂ w₀ w₁ w₂ ψ₀ ψ₁ ψ₂ L hL u hT hB hu h₀ h₁ h₂ hcls`. Establish `hcls' : cls (tens (L.pull ψ₁) (L.pull ψ₂)) (isLB_tens (pull_isLB hL ψ₁) (pull_isLB hL ψ₂)) = cls (L.pull ψ₀) (pull_isLB hL ψ₀)` using `hcls.symm`. Take `⟨w, hw⟩` from `(cls_eq_iff _ _).1 hcls'`. Establish `mem : ∀ (ψ : Y₀ ⟶ X₀) (φ : Y ⟶ X), ψ ≫ i = i' ≫ φ → ∀ (q : Small i L) (W : Y.Opens), W ≤ φ ⁻¹ᵁ q.1.1.1 → ∀ y, i' y ∈ W → ψ y ∈ L.U q.1.2` using `fun ψ φ h q W hW y hy ↦ q.2 (show i (ψ y) ∈ q.1.1.1 by rw [← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]; exact hW hy)`. Set `c : (Quad i L φ₀ φ₁ φ₂)ᵒᵖ → (LB.div (L.pull ψ₀) (tens (L.pull ψ₁) (L.pull ψ₂))).ι` to `fun t ↦ ((fun _ ↦ t.unop.1.2.1.1.2), ((fun _ ↦ t.unop.1.2.2.1.1.2), (fun _ ↦ t.unop.1.2.2.2.1.2)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : ∀ t : (Quad i L φ₀ φ₁ φ₂)ᵒᵖ, i' ⁻¹ᵁ t.unop.1.1.1 ≤ (LB.div (L.pull ψ₀) (tens (L.pull ψ₁) (L.pull ψ₂))).U (c t)` using `fun t y hy ↦ ⟨mem_pull.2 (mem ψ₀ φ₀ h₀ _ _ t.unop.2.1 y hy), mem_pull.2 (mem ψ₁ φ₁ h₁ _ _ t.unop.2.2.1 y hy), mem_pull.2 (mem ψ₂ φ₂ h₂ _ _ t.unop.2.2.2 y hy)⟩`. Establish `surj` using `fun t : (Quad i L φ₀ φ₁ φ₂)ᵒᵖ ↦ hT.app_surj t.unop.1.1`. Set `v : C0 (quadW i L φ₀ φ₁ φ₂ ⋙ OAff s')` to `fun t ↦ Function.surjInv (surj t) (res (hc t) (w.s (c t))).val`. Establish `hv : ∀ t : (Quad i L φ₀ φ₁ φ₂)ᵒᵖ, (i'.app t.unop.1.1.1).hom (v t) = (res (hc t) (w.s (c t))).val` using `fun t ↦ Function.surjInv_eq (surj t) _`. Use `⟨(Quad i L φ₀ φ₁ φ₂)ᵒᵖ, inferInstance, inferInstance, quadW i L φ₀ φ₁ φ₂, quadK₀ i L φ₀ φ₁ φ₂, quadK₁ i L φ₀ φ₁ φ₂, quadK₂ i L φ₀ φ₁ φ₂, fun t ↦ t.unop.2.1, fun t ↦ t.unop.2.2.1, fun t ↦ t.unop.2.2.2, v, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `y U hy`. Take `⟨a₀, ha₀, -⟩` from `hB.cover (φ₀ y) ⊤ trivial`. Take `⟨a₁, ha₁, -⟩` from `hB.cover (φ₁ y) ⊤ trivial`. Take `⟨a₂, ha₂, -⟩` from `hB.cover (φ₂ y) ⊤ trivial`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hyW, hWU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (show y ∈ U ⊓ (φ₀ ⁻¹ᵁ ((smallG i L).obj a₀).unop.1 ⊓ (φ₁ ⁻¹ᵁ ((smallG i L).obj a₁).unop.1 ⊓ φ₂ ⁻¹ᵁ ((smallG i L).obj a₂).unop.1)) from ⟨hy, ha₀, ha₁, ha₂⟩)`. Conclude with `⟨Opposite.op ⟨(⟨W, hW⟩, a₀.unop, a₁.unop, a₂.unop), fun z hz ↦ (hWU hz).2.1, fun z hz ↦ (hWU hz).2.2.1, fun z hz ↦ (hWU hz).2.2.2⟩, hyW, fun z hz ↦ (hWU hz).1⟩`. Introduce `t₁ t₂ y U hy hy₁ hy₂`. Take `⟨b₀, ⟨f₀⟩, ⟨g₀⟩, hb₀, -⟩` from `hB.dir ((quadK₀ i L φ₀ φ₁ φ₂).obj t₁) ((quadK₀ i L φ₀ φ₁ φ₂).obj t₂) (φ₀ y) ⊤ trivial (t₁.unop.2.1 hy₁) (t₂.unop.2.1 hy₂)`. Take `⟨b₁, ⟨f₁⟩, ⟨g₁⟩, hb₁, -⟩` from `hB.dir ((quadK₁ i L φ₀ φ₁ φ₂).obj t₁) ((quadK₁ i L φ₀ φ₁ φ₂).obj t₂) (φ₁ y) ⊤ trivial (t₁.unop.2.2.1 hy₁) (t₂.unop.2.2.1 hy₂)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₂, ⟨f₂⟩, ⟨g₂⟩, hb₂, -⟩` from `hB.dir ((quadK₂ i L φ₀ φ₁ φ₂).obj t₁) ((quadK₂ i L φ₀ φ₁ φ₂).obj t₂) (φ₂ y) ⊤ trivial (t₁.unop.2.2.2 hy₁) (t₂.unop.2.2.2 hy₂)`. Take `⟨W, hW, hyW, hWU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (show y ∈ U ⊓ (t₁.unop.1.1.1 ⊓ t₂.unop.1.1.1) ⊓ (φ₀ ⁻¹ᵁ ((smallG i L).obj b₀).unop.1 ⊓ (φ₁ ⁻¹ᵁ ((smallG i L).obj b₁).unop.1 ⊓ φ₂ ⁻¹ᵁ ((smallG i L).obj b₂).unop.1)) from ⟨⟨hy, hy₁, hy₂⟩, hb₀, hb₁, hb₂⟩)`. Set `t₃ : (Quad i L φ₀ φ₁ φ₂)ᵒᵖ` to `Opposite.op ⟨(⟨W, hW⟩, b₀.unop, b₁.unop, b₂.unop), fun z hz ↦ (hWU hz).2.1, fun z hz ↦ (hWU hz).2.2.1, fun z hz ↦ (hWU hz).2.2.2⟩`. Use `⟨t₃, ⟨(homOfLE (Quad.le_of (p := t₃.unop) (q := t₁.unop) (fun z hz ↦ (hWU hz).1.2.1) (leOfHom f₀.unop) (leOfHom f₁.unop) (leOfHom f₂.unop))).op⟩, ⟨(homOfLE (Quad.le_of (p := t₃.unop) (q := t₂.unop) (fun z hz ↦ (hWU hz).1.2.2) (leOfHom g₀.unop) (leOfHom g₁.unop) (leOfHom g₂.unop)) …` and prove the remaining obligations. Introduce `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isUnit_of_sqZero (i'.app t.unop.1.1.1).hom (surj t) (I.map (algebraMap R (Sec s' t.unop.1.1.1))) (by have e := Ideal.map_pow (algebraMap R (Sec s' t.unop.1.1.1)) I 2; rw [hI, Ideal.map_bot] at e; exact e.symm) (fun a ha ↦ (hT.ker t.unop.1.1 a).1 ha) (v t) ?_` and prove the remaining obligations. Rewrite using `[hv t]`. Conclude with `Units.isUnit _`. Introduce `t t' a`. Establish `le : t'.unop ≤ t.unop` using `leOfHom a.unop`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWle : t'.unop.1.1.1 ≤ t.unop.1.1.1` using `Quad.le_W le`. Establish `hV : i' ⁻¹ᵁ t'.unop.1.1.1 ≤ i' ⁻¹ᵁ t.unop.1.1.1` using `fun y hy ↦ hWle hy`. Use `(hT.ker t'.unop.1.1 _).1 ?_` and prove the remaining obligations. Establish `ek : ∀ (ψ : Y₀ ⟶ X₀) (φ : Y ⟶ X) (hψ : ψ ≫ i = i' ≫ φ) (p q : (Small i L)ᵒᵖ) (f : p ⟶ q) (le' : t'.unop.1.1.1 ≤ φ ⁻¹ᵁ q.unop.1.1.1) (hle : i' ⁻¹ᵁ t'.unop.1.1.1 ≤ ψ ⁻¹ᵁ (L.U p.unop.1.2 ⊓ L.U q.unop.1.2)), (i'.app t'.unop.1.1.1).hom ((φ.appLE _ t'.unop.1.1.1 le').hom (u p q f)) = ( …` using `fun ψ φ hψ p q f le' hle ↦ (app_appLE hψ le' (Small.le_inf f) hle _ _ (hu p q f)).trans rfl`. Establish `hle₀ : i' ⁻¹ᵁ t'.unop.1.1.1 ≤ ψ₀ ⁻¹ᵁ (L.U t.unop.1.2.1.1.2 ⊓ L.U t'.unop.1.2.1.1.2)` using `fun y hy ↦ ⟨mem ψ₀ φ₀ h₀ _ _ t.unop.2.1 y (hV hy), mem ψ₀ φ₀ h₀ _ _ t'.unop.2.1 y hy⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle₁ : i' ⁻¹ᵁ t'.unop.1.1.1 ≤ ψ₁ ⁻¹ᵁ (L.U t.unop.1.2.2.1.1.2 ⊓ L.U t'.unop.1.2.2.1.1.2)` using `fun y hy ↦ ⟨mem ψ₁ φ₁ h₁ _ _ t.unop.2.2.1 y (hV hy), mem ψ₁ φ₁ h₁ _ _ t'.unop.2.2.1 y hy⟩`. Establish `hle₂ : i' ⁻¹ᵁ t'.unop.1.1.1 ≤ ψ₂ ⁻¹ᵁ (L.U t.unop.1.2.2.2.1.2 ⊓ L.U t'.unop.1.2.2.2.1.2)` using `fun y hy ↦ ⟨mem ψ₂ φ₂ h₂ _ _ t.unop.2.2.2 y (hV hy), mem ψ₂ φ₂ h₂ _ _ t'.unop.2.2.2 y hy⟩`. Establish `e₀` using `ek ψ₀ φ₀ h₀ _ _ ((quadK₀ i L φ₀ φ₁ φ₂).map a) (t'.unop.2.1) hle₀`. Establish `e₁` using `ek ψ₁ φ₁ h₁ _ _ ((quadK₁ i L φ₀ φ₁ φ₂).map a) (t'.unop.2.2.1) hle₁`. Establish `e₂` using `ek ψ₂ φ₂ h₂ _ _ ((quadK₂ i L φ₀ φ₁ φ₂).map a) (t'.unop.2.2.2) hle₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `emp : (i'.app t'.unop.1.1.1).hom (mp (quadW i L φ₀ φ₁ φ₂ ⋙ OAff s') a (v t)) = (res (hV.trans (hc t)) (w.s (c t))).val`. Establish `n` using `congrArg (fun q ↦ q.hom (v t)) (i'.naturality (homOfLE hWle).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at n`. Use `n.trans ?_` and prove the remaining obligations. Use `show (Y₀.presheaf.map _).hom ((i'.app t.unop.1.1.1).hom (v t)) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv t]`. Conclude with `map_res_val (hc t) hV _`. Establish `key : res hle₀ (pullU ψ₀ _ (L.g t.unop.1.2.1.1.2 t'.unop.1.2.1.1.2)) * res (hc t') (w.s (c t')) = res hle₁ (pullU ψ₁ _ (L.g t.unop.1.2.2.1.1.2 t'.unop.1.2.2.1.1.2)) * res hle₂ (pullU ψ₂ _ (L.g t.unop.1.2.2.2.1.2 t'.unop.1.2.2.2.1.2)) * res (hV.trans (hc t)) (w.s (c t))`. Use `unit_ext fun y hy ↦ ?_` and prove the remaining obligations. Establish `hp` using `hc t (hV hy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq` using `hc t' hy`. Establish `g` using `(isGen_iff_germ w).1 hw y (c t) (c t') hp hq`. Rewrite `g` using `[gm_div' (L.pull ψ₀) (tens (L.pull ψ₁) (L.pull ψ₂)) (𝟙 Y₀) y (c t) (c t') hp hq, gm_pull_g L ψ₀ (𝟙 Y₀) y _ _ hp.1 hq.1, gm_tens (L.pull ψ₁) (L.pull ψ₂) (𝟙 Y₀) y _ _ hp.2 hq.2, gm_pull_g L ψ₁ (𝟙 Y₀) y _ _ hp.2.1 hq.2.1, gm_pull_g L ψ₂ (𝟙 Y₀) y _ _ hp.2.2 hq.2.2, Category.id_comp, …`. Simplify using `only [map_mul, gm_one_res_pull _ y _ hy, gm_res (𝟙 Y₀) y _ hy]`. Conclude with `commGroup_mul_eq_mul_of_eq_mul_inv_mul _ _ _ _ g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `kv` using `congrArg Units.val key`. Simplify using `only [Units.val_mul] at kv`. Use `beta_reduce`. Use `(map_sub (i'.app t'.unop.1.1.1).hom _ _).trans (sub_eq_zero.2 ?_)` and prove the remaining obligations. Use `((map_mul (i'.app t'.unop.1.1.1).hom _ _).trans ?_).trans (((map_mul (i'.app t'.unop.1.1.1).hom _ _).trans (congrArg (· * _) (map_mul (i'.app t'.unop.1.1.1).hom _ _))).symm)` and prove the remaining obligations.
-
-Use `erw [emp, hv t', e₀, e₁, e₂]`. Conclude with `kv`.
+A detailed English derivation is pending.
 -/
 theorem mulRel_of_iso : ∀ (R : Type) [CommRing R] (I : Ideal R), I ^ 2 = ⊥ → ∀ (X X₀ Y Y₀ : Scheme.{0}) (s : X ⟶ Sp R) (s' : Y ⟶ Sp R) (i : X₀ ⟶ X) (i' : Y₀ ⟶ Y) (φ₀ φ₁ φ₂ : Y ⟶ X) (w₀ : φ₀ ≫ s = s' ≫ spMap (RingHom.id R)) (w₁ : φ₁ ≫ s = s' ≫ spMap (RingHom.id R)) (w₂ : φ₂ ≫ s = s' ≫ spMap (RingHom.id R)) (ψ₀ ψ₁ ψ₂ : Y₀ ⟶ X₀) (L : LB X₀) (hL : L.IsLB) (u : C1 (smallG i L ⋙ OAff s)), IsThick I s' i' → IsBasis (smallG i L) → IsLift s i L u → ψ₀ ≫ i = i' ≫ φ₀ → ψ₁ ≫ i = i' ≫ φ₁ → ψ₂ ≫ i = i' ≫ φ₂ → GlobalTheory.CechPic.pull ψ₀ (cls L hL) = GlobalTheory.CechPic.pull ψ₁ (cls L hL) + GlobalTheory.CechPic.pull ψ₂ (cls L hL) → ∃ (T : Type) (_ : Category.{0} T) (_ : Quiver.IsThin T) (H : T ⥤ AffOp Y) (K₀ K₁ K₂ : T ⥤ (Small i L)ᵒᵖ) (le₀ : ∀ t, (H.obj t).unop.1 ≤ φ₀ ⁻¹ᵁ ((smallG i L).obj (K₀.obj t)).unop.1) (le₁ : ∀ t, (H.obj t).unop.1 ≤ φ₁ ⁻¹ᵁ ((smallG i L).obj (K₁.obj t)).unop.1) (le₂ : ∀ t, (H.obj t).unop.1 ≤ φ₂ ⁻¹ᵁ ((smallG i L).obj (K₂.obj t)).unop.1) (v : C0 (H ⋙ OAff s')), IsBasis H ∧ (∀ t, IsUnit (v t)) ∧ MulRel I (pullMap w₀ _ H K₀ le₀) (pullMap w₁ _ H K₁ le₁) (pullMap w₂ _ H K₂ le₂) u v := by
   intro R _ I hI X X₀ Y Y₀ s s' i i' φ₀ φ₁ φ₂ w₀ w₁ w₂ ψ₀ ψ₁ ψ₂ L hL u hT hB hu h₀ h₁ h₂ hcls

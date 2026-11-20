@@ -25,36 +25,36 @@ theorem coe_algebraMap_integer (x : 𝒪[K]) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Valuation.HasExtension.algebraMap_injective`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_integer_injective : Function.Injective (algebraMap 𝒪[K] 𝒪[L]) :=
   Valuation.HasExtension.algebraMap_injective
 
 /- English proof (translation)
-Simplify using `only [Valuation.mem_integer_iff]`. Conclude with `Valuation.HasExtension.val_map_le_one_iff (valuation K) (valuation L) x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_integer_iff (x : K) : algebraMap K L x ∈ 𝒪[L] ↔ x ∈ 𝒪[K] := by
   simp only [Valuation.mem_integer_iff]
   exact Valuation.HasExtension.val_map_le_one_iff (valuation K) (valuation L) x
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsScalarTower 𝒪[K] 𝒪[L] L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsScalarTower 𝒪[K] K L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsLocalHom (algebraMap 𝒪[K] 𝒪[L]) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra 𝓀[K] 𝓀[L] := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : FaithfulSMul 𝒪[K] 𝒪[L] := inferInstance
 
@@ -67,13 +67,11 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Algebra K L] [ValuativeExtension K L]
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero (algebraMap K L) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (IsValuativeTopology.hasBasis_nhds_zero K).tendsto_iff (IsValuativeTopology.hasBasis_nhds_zero L)]`. Introduce `γ _`. Take `⟨δ, hδ0, hδ1⟩` from `IsNontrivial.exists_lt_one (R := K)`. Take `⟨a, rfl⟩` from `valuation_surjective δ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hδ0`. Establish `hb : valuation L (algebraMap K L a) < 1`. Conclude with `(Valuation.HasExtension.val_map_lt_one_iff (valuation K) (valuation L) a).mpr hδ1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_lt₀ hb γ`. Use `⟨Units.mk0 (valuation K (a ^ n)) (by simp [ha0]), trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0] at hx ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← (valuation L).vlt_iff_lt, ValuativeExtension.vlt_iff_vlt, (valuation K).vlt_iff_lt]`.
-
-Conclude with `hx`. Use `_ = valuation L (algebraMap K L a) ^ n := by simp`. Use `_ < γ := hn`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algebraMap : Continuous (algebraMap K L) := by
   refine continuous_of_continuousAt_zero (algebraMap K L) ?_

@@ -12,37 +12,37 @@ variable {n : ℕ}
 def Qc (n : ℕ) (ε : ℤˣ) : M2 n := Matrix.fromBlocks 0 1 (((ε : ℤ) : ℂ) • 1) 0
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem mapStar_mul {ι : Type} [Fintype ι] (A B : Matrix ι ι ℂ) : (A * B).map star = A.map star * B.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (star_zero _) (star_one _)`.
+A detailed English derivation is pending.
 -/
 theorem mapStar_one {ι : Type} [DecidableEq ι] : (1 : Matrix ι ι ℂ).map star = 1 :=
   Matrix.map_one _ (star_zero _) (star_one _)
 
 /- English proof (translation)
-Simplify using `[dZ, Matrix.fromBlocks_multiply, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_mul (a b : ℂ) : dZ n a * dZ n b = dZ n (a * b) := by
   simp [dZ, Matrix.fromBlocks_multiply, smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `[dZ, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_one : dZ n 1 = 1 := by
   simp [dZ, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `[dZ, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_transpose (a : ℂ) : (dZ n a)ᵀ = dZ n a := by
   simp [dZ, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Unfold `dZ`. Rewrite using `[Matrix.fromBlocks_map]`. Simplify using `[mapStar_one]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dZ_map_star (a : ℂ) : (dZ n a).map star = dZ n (star a) := by
   unfold dZ
@@ -52,19 +52,19 @@ theorem dZ_map_star (a : ℂ) : (dZ n a).map star = dZ n (star a) := by
   by_cases h : i = j <;> simp [h, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[dZ_mul, inv_mul_cancel₀ h, dZ_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dZ_inv_mul {ζ : ℂ} (h : ζ ≠ 0) : dZ n ζ⁻¹ * dZ n ζ = 1 := by
   rw [dZ_mul, inv_mul_cancel₀ h, dZ_one]
 
 /- English proof (translation)
-Rewrite using `[dZ_mul, mul_inv_cancel₀ h, dZ_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dZ_mul_inv {ζ : ℂ} (h : ζ ≠ 0) : dZ n ζ * dZ n ζ⁻¹ = 1 := by
   rw [dZ_mul, mul_inv_cancel₀ h, dZ_one]
 
 /- English proof (translation)
-Break down `hζ with ⟨-, rfl⟩ | ⟨-, rfl⟩` into its components or cases. Conclude with `one_ne_zero`. Conclude with `Complex.I_ne_zero`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem zeta_ne {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) : ζ ≠ 0 := by
   rcases hζ with ⟨-, rfl⟩ | ⟨-, rfl⟩
@@ -72,7 +72,7 @@ theorem zeta_ne {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧
   · exact Complex.I_ne_zero
 
 /- English proof (translation)
-Break down `hζ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Simplify using `[Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul]`. Simplify using `[Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, smul_smul, Complex.inv_I]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mid {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) :
     dZ n ζ⁻¹ * Qc n ε * dZ n (star ζ⁻¹) = ζ • JJ n := by
@@ -81,7 +81,7 @@ theorem mid {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ 
   · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, smul_smul, Complex.inv_I]
 
 /- English proof (translation)
-Break down `hζ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Simplify using `[Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul]`. Simplify using `[Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, smul_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem outer {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) :
     dZ n ζ * (ζ • JJ n) * dZ n (star ζ) = Qc n ε := by
@@ -90,7 +90,7 @@ theorem outer {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ �
   · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, dZ_transpose, dZ_transpose, mapStar_mul, mapStar_mul, dZ_map_star, dZ_map_star]`. Establish `e : ζ • (gᵀ * JJ n * g.map star) = gᵀ * (ζ • JJ n) * g.map star`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e, ← mid (n := n) hζ]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem key {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) (g : M2 n) :
     (dZ n ζ⁻¹ * g * dZ n ζ)ᵀ * Qc n ε * (dZ n ζ⁻¹ * g * dZ n ζ).map star =
@@ -103,13 +103,13 @@ theorem key {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `key2 : ∀ A : M2 n, (A.map star).map star = A` using `fun A => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hJ : (JJ n).map star = JJ n`. Unfold `JJ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.fromBlocks_map]`. Simplify using `[mapStar_one]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Establish `e : (gᵀ * JJ n * g.map star).map star = gᴴ * JJ n * g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[mapStar_mul, mapStar_mul, hJ, key2]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← e, h, hJ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `h` using `[← e]`. Rewrite using `[← key2 (gᵀ * JJ n * g.map star), h, hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem conj_JJ (g : M2 n) : gᵀ * JJ n * g.map star = JJ n ↔ gᴴ * JJ n * g = JJ n := by
   have key2 : ∀ A : M2 n, (A.map star).map star = A := fun A => by
@@ -132,11 +132,11 @@ theorem conj_JJ (g : M2 n) : gᵀ * JJ n * g.map star = JJ n ↔ gᴴ * JJ n * g
     rw [← key2 (gᵀ * JJ n * g.map star), h, hJ]
 
 /- English proof (translation)
-Establish `hz` using `zeta_ne hζ`. Establish `hs : star ζ ≠ 0` using `star_ne_zero.mpr hz`. Establish `canc : ∀ A : M2 n, dZ n ζ⁻¹ * (dZ n ζ * A * dZ n (star ζ)) * dZ n (star ζ)⁻¹ = A`. Introduce `A`. Simplify using `only [Matrix.mul_assoc, dZ_mul_inv hs, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, dZ_inv_mul hz, Matrix.one_mul]`. Establish `hI : InG g ↔ gᵀ * JJ n * g.map star = JJ n` using `(conj_JJ g).symm`. Rewrite using `[key hζ, ← outer (n := n) hζ, hI]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `canc (ζ • (gᵀ * JJ n * g.map star))`. Rewrite `h2` using `[h, canc]`. Conclude with `smul_right_injective _ hz h2.symm`. Introduce `h`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_iff {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) (g : M2 n) :
     (dZ n ζ⁻¹ * g * dZ n ζ)ᵀ * Qc n ε * (dZ n ζ⁻¹ * g * dZ n ζ).map star = Qc n ε ↔ InG g := by
@@ -157,9 +157,9 @@ theorem unitary_iff {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1
     rw [h]
 
 /- English proof (translation)
-Establish `hz` using `zeta_ne hζ`. Establish `e : dZ n ζ⁻¹ * (dZ n ζ * Z * dZ n ζ⁻¹) * dZ n ζ = Z`. Simplify using `only [Matrix.mul_assoc, dZ_inv_mul hz, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, dZ_inv_mul hz, Matrix.one_mul]`. Rewrite using `[← unitary_iff hζ, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hZ`.
+A detailed English derivation is pending.
 -/
 theorem inG_conj {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) (Z : M2 n)
     (hZ : Zᵀ * Qc n ε * Z.map star = Qc n ε) : InG (dZ n ζ * Z * dZ n ζ⁻¹) := by

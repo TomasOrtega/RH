@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.TraceIdem
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `[nval]`. Rewrite using `[nval_of_ne hz, EReal.coe_nonneg]`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_nonneg_iff]`. Establish `h1 : valV T.V z ≠ 0` using `valV_ne_zero hz`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h, -⟩ | ⟨-, h⟩)`. Establish `h' : 0 ≤ vV T.V z` using `by exact_mod_cast h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Unfold `vV at h'`. Rewrite using `[← WithZero.log_le_log h1 one_ne_zero, WithZero.log_one]`. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h left`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, he'.le⟩` and prove the remaining obligations. Use `(WithZero.log_le_log h1 one_ne_zero).2 h` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Establish `h' : 0 ≤ vV T.V z` using `by unfold vV; omega`. Conclude with `h'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nval_nonneg_iff {T : CDVR} {e : ℕ} (he : 0 < e) (z : T.Fr) : 0 ≤ nval T.V e z ↔ valV T.V z ≤ 1 := by
   by_cases hz : z = 0
@@ -44,13 +44,11 @@ theorem nval_nonneg_iff {T : CDVR} {e : ℕ} (he : 0 < e) (z : T.Fr) : 0 ≤ nva
     exact_mod_cast h'
 
 /- English proof (translation)
-Introduce `D T hL j hj σ hσ a n hD hspan hmu C hU hP la p hla m β hβ hβi y hφ`. Take `⟨g, hgs, hgp, hgi⟩` from `(GlobalTheory.T.exists_integral_cover_form_pullback_combination D T hL j hj σ hσ a n hD C hU hP la m β (fun k => (hβ k).1) y hφ)`. Use `letI : Algebra T.Q.c.F C.d.c₂.F := C.inc.toAlgebra`. Take `⟨N, hN⟩` from `GlobalTheory.T.trace_integral_of_small_at_other_places T.Q.c.F C.d.c₂.F p la hla m y`. Use `⟨N, fun b hb v hv => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ k, 0 ≤ v (β k)` using `fun k => hβi k v hv`. Take `⟨⟨q, T0, io, e, ho, pt, hpt, eta, heta, rfl⟩, rfl⟩` from `hv`. Establish `hx' : ∀ k, valV T0.V (evI pt (β k)) ≤ 1` using `fun k => (nval_nonneg_iff ho.1 _).1 (hx k)`. Establish `hs : ∀ (s : Finset (Fin m)) (t : Fin m → T.Q.c.F), evI pt (∑ k ∈ s, t k • β k) = ∑ k ∈ s, io (t k) * evI pt (β k)`. Introduce `s t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isEval_evI pt).zero ()`. Consider the case `insert k s hk ih => rw [Finset.sum_insert hk, Finset.sum_insert hk, evI_add, evI_smul, ih]`. Use `show 0 ≤ nval T0.V e (evI pt _)`. Rewrite using `[nval_nonneg_iff ho.1, hs]`.
-
-Conclude with `hN b hb T0 hpt io e ho (fun k => evI pt (β k)) hx' (fun T' i e' τ e'' he' hi hT' hτ ho' => GlobalTheory.T.baseSections_values_integral_at_coverLift D T hL j hj σ C hU la a n m β g (fun k => (hβ k).1) hgs hgp y hgi T0 io pt hpt T' i e' τ e'' he' hi hT' hτ ho')`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_comb_integral : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → holSub0 (T.U j σ).X (laU (T.U j σ) a n) ≤ Submodule.span ℂ (rdU (T.U j σ) '' {f | f ∈ sec (T.Q.Xo j) T.Q.c a n ∧ rdU (T.U j σ) f ∈ holSub0 (T.U j σ).X (laU (T.U j σ) a n)}) → (∀ k ∈ T.Kf j σ, ∀ h, T.mu j σ (h * k) = T.mu j σ h) → ∀ C : Cover T j σ, C.IsUnif → C.IsPinned a n → ∀ (la : HeightOneSpectrum (𝓞 C.d.c₂.F)) (p : HeightOneSpectrum (𝓞 T.Q.c.F)), (letI : Algebra T.Q.c.F C.d.c₂.F := C.inc.toAlgebra; la.asIdeal.under (𝓞 T.Q.c.F) = p.asIdeal) → ∀ (m : ℕ) (β : Fin m → Rul (T.Q.Xo j) T.Q.c), (∀ k, β k ∈ sec (T.Q.Xo j) T.Q.c a n ∧ rdU (T.U j σ) (β k) ∈ holSub0 (T.U j σ).X (laU (T.U j σ) a n)) → (∀ k, ∀ v ∈ valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c) p, 0 ≤ v (β k)) → ∀ y : Fin m → C.d.c₂.F, (∑ k, C.σ₂ (y k) • T.phiJ j σ a (β k)) ∈ C.intForms a n {la} → ∃ N : ℕ, ∀ b : 𝓞 C.d.c₂.F, (∀ la' : HeightOneSpectrum (𝓞 C.d.c₂.F), la' ≠ la → (letI : Algebra T.Q.c.F C.d.c₂.F := C.inc.toAlgebra; la'.asIdeal.under (𝓞 T.Q.c.F) = p.asIdeal) → b ∈ la'.asIdeal ^ N) → ∀ v ∈ valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c) p, 0 ≤ v (∑ k, (letI : Algebra T.Q.c.F C.d.c₂.F := C.inc.toAlgebra; Algebra.trace T.Q.c.F C.d.c₂.F ((b : C.d.c₂.F) * y k)) • β k) := by
   intro D T hL j hj σ hσ a n hD hspan hmu C hU hP la p hla m β hβ hβi y hφ

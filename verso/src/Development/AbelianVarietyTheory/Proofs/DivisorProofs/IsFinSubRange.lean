@@ -31,7 +31,7 @@ def finFam {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V 
     resK gp (inf_le_right : W ⊓ V i ≤ V i) '' (t i : Set _))).comap (resK gp (inf_le_left : W ⊓ V i ≤ W))
 
 /- English proof (translation)
-Rewrite using `[resK, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, gp.naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resK_app {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W : S.Opens} (h : W ≤ V) (a : Γ(S, V)) :
     resK gp h ((gp.app V).hom a) = (gp.app W).hom ((S.presheaf.map (homOfLE h).op).hom a) := by
@@ -39,7 +39,7 @@ theorem resK_app {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[resK, resK, resK, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resK_resK {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W X : S.Opens} (h : W ≤ V) (h' : X ≤ W)
     (x : Γ(Sp K, gp ⁻¹ᵁ V)) : resK gp h' (resK gp h x) = resK gp (h'.trans h) x := by
@@ -47,7 +47,7 @@ theorem resK_resK {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W X
   rfl
 
 /- English proof (translation)
-Simplify using `[finFam, Subring.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_finFam {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W : S.Opens) (x : Γ(Sp K, gp ⁻¹ᵁ W)) :
@@ -56,7 +56,7 @@ theorem mem_finFam {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : 
   simp [finFam, Subring.mem_iInf]
 
 /- English proof (translation)
-Rewrite using `[mem_finFam]`. Introduce `i`. Rewrite using `[resK_app]`. Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finFam_range {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W : S.Opens) (a : Γ(S, W)) : (gp.app W).hom a ∈ finFam gp V t W := by
@@ -66,11 +66,11 @@ theorem finFam_range {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r 
   exact Subring.subset_closure (Or.inl ⟨_, rfl⟩)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_finFam]`. Introduce `i`. Establish `hii : W' ⊓ V i ≤ W ⊓ V i` using `inf_le_inf_right _ hle`. Establish `e : resK gp (inf_le_left : W' ⊓ V i ≤ W') (resK gp hle x) = resK gp hii (resK gp (inf_le_left : W ⊓ V i ≤ W) x)`. Rewrite using `[resK_resK, resK_resK]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hm : resK gp hii (resK gp (inf_le_left : W ⊓ V i ≤ W) x) ∈ (Subring.closure _).map (resK gp hii)` using `⟨_, hx i, rfl⟩`. Rewrite `hm` using `[RingHom.map_closure]`. Use `Subring.closure_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy | ⟨z, hz, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨a, rfl⟩` from `hy`. Conclude with `Or.inl ⟨_, (resK_app gp hii a).symm⟩`. Conclude with `Or.inr ⟨z, hz, by rw [resK_resK]⟩`.
+Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative.
 -/
 theorem finFam_res {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W W' : S.Opens) (hle : W' ≤ W) (x : Γ(Sp K, gp ⁻¹ᵁ W))

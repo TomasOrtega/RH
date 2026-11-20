@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.SiegUniq
 
 /- English proof (translation)
-Introduce `g n _ _ _ F S s' c f f' hf hf' h₁ h₂`. Use `GlobalTheory.hom_ext_of_fromSpecStalk fun x => ?_` and prove the remaining obligations. Use `haveI : IsLocalRing (S.presheaf.stalk x) := inferInstance`. Take `⟨c', hc'⟩` from `(GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) S (Sp (S.presheaf.stalk x)) s' (S.fromSpecStalk x ≫ s') (S.fromSpecStalk x) c rfl).1`. Establish `e : (S.fromSpecStalk x ≫ f) ≫ F.s = (S.fromSpecStalk x ≫ f') ≫ F.s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, hf, hf']`. Conclude with `@SFam.inj g n _ _ _ F (S.presheaf.stalk x) _ this (S.fromSpecStalk x ≫ f) (S.fromSpecStalk x ≫ f') (S.fromSpecStalk x ≫ s') c' e (GlobalTheory.SiegelPullComp.pb_comp h₁ hc') (GlobalTheory.SiegelPullComp.pb_comp h₂ hc')`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_siegPB : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (S : Scheme.{0})
     (s' : S ⟶ Sp (cycAway n)) (c : SiegPre g n (zetaAway n) s') (f f' : S ⟶ F.X), f ≫ F.s = s' → f' ≫ F.s = s' →

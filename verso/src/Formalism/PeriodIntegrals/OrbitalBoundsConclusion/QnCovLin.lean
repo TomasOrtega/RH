@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.ContractionsCovariantIff
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CovariantLinearProduct.OfFnProdSmul
 
 /- English proof (translation)
-The claim follows from `PI.QnCovLinW.qnCovLin`.
+A detailed English derivation is pending.
 -/
 theorem covariant_linear : PI.QnCovLin :=
   PI.QnCovLinW.qnCovLin

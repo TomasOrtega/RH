@@ -10,7 +10,7 @@ namespace GlobalTheory.RSJ
 open IsDedekindDomain.HeightOneSpectrum WithZero
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)) N]`. Conclude with `valuedAdicCompletion_eq_valuation' v (N : E)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_natCast_apply (E : Type) [Field E] [NumberField E] (N : ℕ)
     (v : HeightOneSpectrum (𝓞 E)) :
@@ -19,17 +19,17 @@ theorem valued_natCast_apply (E : Type) [Field E] [NumberField E] (N : ℕ)
   exact valuedAdicCompletion_eq_valuation' v (N : E)
 
 /- English proof (translation)
-Introduce `E _ _ N hN J hJ x`. Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hc0 : ∀ v : HeightOneSpectrum (𝓞 E), v.valuation E (N : E) ≠ 0` using `fun v => (Valuation.ne_zero_iff _).2 hN0`. Establish `hc : ∀ v : HeightOneSpectrum (𝓞 E), exp (-FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E)) = v.valuation E (N : E)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hJ, GroundTheory.Global.count_spanSingleton v hN0, neg_neg, exp_log (hc0 v)]`. Rewrite using `[GroundTheory.Global.mem_idealFiniteAdeles]`. Simplify using `only [hc]`. Establish `hunit : (N : FiniteAdeleRing (𝓞 E) E) * algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)) N, ← map_mul, mul_inv_cancel₀ hN0, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩ v`. Express the relevant statement in the definitionally equal form `Valued.v ((N : FiniteAdeleRing (𝓞 E) E) v * z v) ≤ _`. Rewrite using `[map_mul, valued_natCast_apply]`. Establish `: Valued.v (z v) ≤ 1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hz v`. Rewrite `h` using `[mem_adicCompletionIntegers]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Introduce `hx`. Use `⟨algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹ * x, fun v => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `Valued.v ((algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹) v * x v) ≤ 1`. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `Valued.v (((N : E)⁻¹ : E) : v.adicCompletion E) * Valued.v (x v) ≤ 1`. Rewrite using `[valuedAdicCompletion_eq_valuation' v, map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GroundTheory.Global.inv_mul_le_one_iff_withZero (hc0 v)).2 (hx v)`. Rewrite using `[← mul_assoc, hunit, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natLat_iff_mem_idealFiniteAdeles : ∀ (E : Type) [Field E] [NumberField E] (N : ℕ), 0 < N →
     ∀ (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ),

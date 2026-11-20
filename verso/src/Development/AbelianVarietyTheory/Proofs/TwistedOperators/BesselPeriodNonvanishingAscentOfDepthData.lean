@@ -19,7 +19,7 @@ open GlobalTheory.Asc
 namespace GlobalTheory.Asc
 
 /- English proof (translation)
-Introduce `hD` and use `have hTot : FockTot := GlobalTheory.T.fockConjugates_span_depth_data have hPart : PartFixed := GlobalTheory.T.gridLiftsFixedByCongruenceDepth_of_depthData hD GlobalTheory.T.firstRow_data_have_depth GlobalTheory.T.besselPeriod_ascent_of_tower_rungs (GlobalTheory.T.existsGoodGridFr …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ascent_of_depFixed : DepFixed → Ascent := fun hD =>
   have hTot : FockTot := GlobalTheory.T.fockConjugates_span_depth_data

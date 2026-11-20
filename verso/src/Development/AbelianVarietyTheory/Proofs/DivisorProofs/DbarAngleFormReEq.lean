@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.CurveDens
 
 /- English proof (translation)
-Substitute `hQi hdQi hdv hR hdR` using the available equality. Establish `hQ : (0:ℝ) < a * a'` using `mul_pos ha ha'`. Establish `ha0 : a ≠ 0` using `ha.ne'`. Establish `ha0' : a' ≠ 0` using `ha'.ne'`. Choose the witnesses or unpack the hypotheses as in `⟨K, m, hK, hn⟩ : ∃ K m, K = (‖q‖ ^ 2 / (a * a')) ^ m ∧ ((‖q‖ ^ 2 / (a * a')) ^ n = K * (‖q‖ ^ 2 / (a * a')) ∧ ((n : ℝ) * (‖q‖ ^ 2 / (a * a')) ^ (n - 1)) = n * K ∧ (n:ℝ) ≠ 0 ∨ (‖q‖ ^ 2 / (a * a')) ^ n = 1 ∧ ((n : ℝ) * (‖q‖ ^ 2 / (a * a')) ^ (n - 1)) = 0 ∧ n = 0) := by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `n with _ | m` into its components or cases. Conclude with `⟨1, 0, by simp, Or.inr ⟨by simp, by simp, rfl⟩⟩`. Use `⟨_, m, rfl, Or.inl ⟨pow_succ _ _, by simp, by positivity⟩⟩` and prove the remaining obligations. Establish `hpow : (‖q‖ ^ 2 / (a * a')) ^ (n + 1) = (‖q‖ ^ 2 / (a * a')) ^ n * (‖q‖ ^ 2 / (a * a'))` using `pow_succ _ _`. Rewrite using `[hpow]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hn with ⟨h1, h2, -⟩ | ⟨h1, h2, rfl⟩` into its components or cases. Rewrite using `[h1, h2]`. Simplify using `only [Complex.sq_norm, Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.neg_re, Complex.neg_im]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1]`. Simplify using `only [Nat.cast_zero, zero_mul, Complex.ofReal_zero, add_zero, zero_add, one_mul, Complex.ofReal_one]`. Simplify using `only [Complex.sq_norm, Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.sub_re, Complex.sub_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.neg_re, Complex.neg_im]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem angleForm_alg (n : ℕ) (q P D H β β' L L' : ℂ) (a a' : ℝ) (ha : 0 < a) (ha' : 0 < a')
     (Qi dQi dv R dR : ℂ)
@@ -68,7 +68,7 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Establish `h` using `differentiableAt_fderiv_of_contDiffAt_two hf`. Simplify using `only [del_apply]`. Conclude with `((h.clm_apply (differentiableAt_const _)).sub ((h.clm_apply (differentiableAt_const _)).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_del_apply_of_contDiffAt_two {f : E → ℂ} {z : E}
     (hf : ContDiffAt ℝ 2 f z) (w : E) : DifferentiableAt ℝ (fun x => del f x w) z := by
@@ -78,29 +78,29 @@ theorem differentiableAt_del_apply_of_contDiffAt_two {f : E → ℂ} {z : E}
     ((h.clm_apply (differentiableAt_const _)).const_smul Complex.I)).const_smul (1 / 2 : ℂ)
 
 /- English proof (translation)
-Establish `hq1 : DifferentiableAt ℝ q z` using `hq.differentiableAt (by norm_num)`. Establish `ha1 : DifferentiableAt ℝ a z` using `ha.differentiableAt (by norm_num)`. Establish `ha1' : DifferentiableAt ℝ a' z` using `ha'.differentiableAt (by norm_num)`. Establish `hαC : ContDiffAt ℝ 2 (fun x => (Real.log (a x) : ℂ)) z` using `contDiffAt_ofReal_comp (ha.log h0.ne')`. Establish `hαC' : ContDiffAt ℝ 2 (fun x => (Real.log (a' x) : ℂ)) z` using `contDiffAt_ofReal_comp (ha'.log h0'.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqc : ContDiffAt ℝ 2 (fun x => starRingEnd ℂ (q x)) z` using `(Complex.conjCLE : ℂ ≃L[ℝ] ℂ).contDiff.contDiffAt.comp z hq`. Establish `dP` using `differentiableAt_del_apply_of_contDiffAt_two hq ξ`. Establish `dPt` using `differentiableAt_del_apply_of_contDiffAt_two hqc ξ`. Establish `dB` using `differentiableAt_del_apply_of_contDiffAt_two hαC ξ`. Establish `dB'` using `differentiableAt_del_apply_of_contDiffAt_two hαC' ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dqc : DifferentiableAt ℝ (fun x => starRingEnd ℂ (q x)) z` using `hqc.differentiableAt (by norm_num)`. Establish `daC : DifferentiableAt ℝ (fun x => (a x : ℂ)) z` using `(contDiffAt_ofReal_comp ha).differentiableAt (by norm_num)`. Establish `daC' : DifferentiableAt ℝ (fun x => (a' x : ℂ)) z` using `(contDiffAt_ofReal_comp ha').differentiableAt (by norm_num)`. Establish `hQ1 : DifferentiableAt ℝ (fun x => a x * a' x) z` using `ha1.mul ha1'`. Establish `hQ0 : a z * a' z ≠ 0` using `(mul_pos h0 h0').ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : DifferentiableAt ℝ (fun x => ‖q x‖ ^ 2 / (a x * a' x)) z` using `((hq1.norm_sq (𝕜 := ℂ)).mul (hQ1.inv hQ0)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun x => by simp only [div_eq_mul_inv, Pi.mul_apply, Pi.inv_apply])`. Establish `dQi : DifferentiableAt ℝ (fun x => (((a x * a' x)⁻¹ : ℝ) : ℂ)) z` using `Complex.ofRealCLM.differentiableAt.comp z (hQ1.inv hQ0)`. Establish `dW : DifferentiableAt ℝ (fun x => (((‖q x‖ ^ 2 / (a x * a' x)) ^ n : ℝ) : ℂ)) z` using `Complex.ofRealCLM.differentiableAt.comp z (hv1.pow n)`. Establish `dR : DifferentiableAt ℝ (fun x => starRingEnd ℂ (q x) * (del q x ξ - q x * del (fun y => (Real.log (a' y) : ℂ)) x ξ) - q x * (del (fun y => starRingEnd ℂ (q y)) x ξ - starRingEnd ℂ (q x) * del (fun y => (Real.log (a y) : ℂ)) x ξ)) z` using `(dqc.mul (dP.sub (hq1.mul dB'))).sub (hq1.mul (dPt.sub (dqc.mul dB)))`. Establish `hG : angleForm n a a' q ξ = fun x => (((‖q x‖ ^ 2 / (a x * a' x)) ^ n : ℝ) : ℂ) * ((starRingEnd ℂ (q x) * (del q x ξ - q x * del (fun y => (Real.log (a' y) : ℂ)) x ξ) - q x * (del (fun y => starRingEnd ℂ (q y)) x ξ - starRingEnd ℂ (q x) * del (fun y => (Real.log (a y) : ℂ)) x ξ)) …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[angleForm, map_sub, map_mul, dbar_ofReal (fun y => Real.log (a y)), Complex.conj_conj, ← del_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dbar_ofReal (fun x => Real.log (a x)) z ξ, hG, dbar_mul dW (dR.fun_mul dQi) ξ, dbar_mul dR dQi ξ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Establish `hW` using `dbar_ofReal_comp (h := fun s : ℝ => s ^ n) (hasDerivAt_pow n _) hv1 ξ`. Use `beta_reduce at hW`. Rewrite using `[hW, del_conj q z ξ]`. Use `angleForm_alg n (q z) (del q z ξ) (dbar q z ξ) (ddbar q z ξ ξ) (del (fun x => (Real.log (a x) : ℂ)) z ξ) (del (fun x => (Real.log (a' x) : ℂ)) z ξ) (leviForm (fun x => Real.log (a x)) z ξ ξ) (leviForm (fun x => Real.log (a' x)) z ξ ξ) (a z) (a' z) h0 h0' _ _ _ _ _ rfl ?_ ?_ rfl ? …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `dbar_ofReal_comp (t := fun x => a x * a' x) (h := fun s : ℝ => s⁻¹) (hasDerivAt_inv (x := a z * a' z) hQ0) hQ1 ξ beta_reduce at h1`. Establish `h2 : (fun x => ((a x * a' x : ℝ) : ℂ)) = fun x => (a x : ℂ) * (a' x : ℂ)`. Use function extensionality and compare the values at `x`. Use `push_cast`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hda` using `dbar_ofReal_comp (h := Real.log) (Real.hasDerivAt_log h0.ne') ha1 ξ`. Establish `hda'` using `dbar_ofReal_comp (h := Real.log) (Real.hasDerivAt_log h0'.ne') ha1' ξ`. Rewrite `hda`, `hda'` using `[dbar_ofReal]`. Establish `hz : (a z : ℂ) ≠ 0` using `by exact_mod_cast h0.ne'`. Establish `hz' : (a' z : ℂ) ≠ 0` using `by exact_mod_cast h0'.ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : dbar (fun x => (a x : ℂ)) z ξ = (a z : ℂ) * starRingEnd ℂ (del (fun x => (Real.log (a x) : ℂ)) z ξ)`. Rewrite using `[hda]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e2 : dbar (fun x => (a' x : ℂ)) z ξ = (a' z : ℂ) * starRingEnd ℂ (del (fun x => (Real.log (a' x) : ℂ)) z ξ)`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hda']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, h2, dbar_mul daC daC' ξ, e1, e2]`. Establish `h3 : (fun x => ((‖q x‖ ^ 2 / (a x * a' x) : ℝ) : ℂ)) = fun x => q x * starRingEnd ℂ (q x) * (((a x * a' x)⁻¹ : ℝ) : ℂ)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, dbar_mul (hq1.fun_mul dqc) dQi ξ, dbar_mul hq1 dqc ξ, dbar_conj]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dbar_sub (dqc.fun_mul (dP.fun_sub (hq1.fun_mul dB'))) (hq1.fun_mul (dPt.fun_sub (dqc.fun_mul dB))), ContinuousLinearMap.sub_apply, dbar_mul dqc (dP.fun_sub (hq1.fun_mul dB')) ξ, dbar_mul hq1 (dPt.fun_sub (dqc.fun_mul dB)) ξ, dbar_sub dP (hq1.fun_mul dB'), dbar_sub dPt (dqc.fun_m …`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem re_dbar_angleForm (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] (n : ℕ) (a a' : E → ℝ) (q : E → ℂ) (ξ z : E)

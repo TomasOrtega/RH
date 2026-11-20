@@ -26,15 +26,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.HeightCounting.Up.ParCopy
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `e0 : Rw0.locR = A.row.locR` using `eq_of_heq h0`. Establish `e1 : Rw.locR = A.row.locR` using `eq_of_heq hRw`. Establish `hpar : _root_.GlobalTheory.HeightCounting.Up.ParityConditions hL D cf rep A.row` using `⟨A.wdT, A.lab, A.chr, cg, A.au, au, row⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLaws` using `_root_.UpperTheory.GalN.par_laws_bare hN hL D cf rep A.row A.bare hpar`. Establish `hconds` using `_root_.UpperTheory.BaseChangeIdentities.Conclusion1_alt_alt_alt hN.bc hN.what₂.bern hN.gen hN.std hL D A.wdT A.au cg au`. Establish `hLift' : LiftAll D A.row`. Introduce `j h1 h2 σ hσ`. Take `⟨π, μ, hl⟩` from `hLift j h1 h2 σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨π, μ, ⟨hl.csd, hl.unr, hl.sph, fun w hw => ?_, hl.eta, hl.inf⟩⟩` and prove the remaining obligations. Use `hl.loc w hw` as an intermediate fact. Rewrite `this` using `[e0]`. Conclude with `this`. Establish `hLoc' : ∀ σ, RowLoc D A.row σ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ w hw hk`. Use `hLoc σ w hw hk` as an intermediate fact. Rewrite `this` using `[e0]`. Conclude with `this`. Establish `hG` using `_root_.GlobalTheory.T.cuspParam_of_definite_liftAll D A.row hLaws hconds hEFK hCM hDef hLift' hLoc'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j h1 h2 σ hσ hg`. Take `⟨π, hπ⟩` from `hG j h1 h2 σ hσ hg`. Use `⟨π, hπ.1, hπ.2.1, fun w hw => ?_, hπ.2.2.2⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hπ.2.2.1 w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_cusp_param_of_definite_heq_locR (hN : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (Rw0 : RowSide D') (h0 : HEq Rw0.locR nt.A.row.locR)
@@ -70,13 +70,13 @@ end GlobalTheory.HeightCounting.Up.ParCopy
 namespace GlobalTheory.HeightCounting.Up
 open GlobalTheory.HeightCounting.Up.ParCopy in
 /- English proof (translation)
-Introduce `hN hL`. Establish `hlift` using `_root_.GlobalTheory.T.liftAll_of_parIn_of_mtInput hN hL`. Establish `hloc` using `_root_.GlobalTheory.T.local_component_of_par_in_third_layer hN hL`. Establish `hsz` using `GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices`. Use `EvG.imp ((hlift.inter hloc).inter hsz) fun K _ _ _ _ H => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `large₂.imp ((H.1.1.inter H.1.2).inter H.2) fun B f T _ h => ?_` and prove the remaining obligations. Introduce `hKP w Z Wt p0 t nch n xd c hE _ hpin Rw hRw`. Take `⟨⟨h1, h2⟩, h3⟩` from `h`. Take `⟨e⟩` from `hE`. Establish `e' : _root_.GlobalTheory.HeightCounting.RealExpansionExtraData (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Rw0, hRw0, ⟨hpar⟩⟩` from `_root_.GlobalTheory.HeightCounting.Up.ParCopy.parIn_of_nTrue_alt c.a.nt _ c.row.rep_eq`. Take `⟨tup, Q, hmt⟩` from `_root_.GlobalTheory.HeightCounting.Up.ParCopy.exists_mtInput_of_nTrue c.a.nt c.a.all.gal.mt c.a.mt_eq`. Establish `hLift` using `h1 hKP w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt Rw0 hpar _ tup Q e'.ad hmt`. Establish `hLoc` using `h2 hKP w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt Rw0 hpar`. Take `⟨-, -, -, hEFK, hCM, hDef, -⟩` from `h3 hKP T w Z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `_root_.GlobalTheory.HeightCounting.Up.ParCopy.good_cusp_param_of_definite_heq_locR hN hL c.a.nt Rw0 hRw0 hLift hLoc hEFK hCM hDef Rw hRw`.
+A detailed English derivation is pending.
 -/
 theorem cuspParameter_at_member_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL (fun _ _ _ _ w Z _ _ _ _ _ c =>
     ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam (w.D Z) Rw) := by
@@ -103,7 +103,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.cuspParameter_at_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.cuspParameter_at_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.cuspParameter_at_member_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.good_cusp_param_at_member_of_heq_locR : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL (fun _ _ _ _ w Z _ _ _ _ _ c => ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam (w.D Z) Rw) := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.cuspParameter_at_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.cuspParameter_at_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.cuspParameter_at_member_alt <;> assumption)

@@ -11,9 +11,9 @@ open Formalism.L2.Th1.H (CmOK)
 namespace HAux
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `hOK`. Break down `Int.even_or_odd b₀ with ⟨k, hk⟩ | h` into its components or cases. It suffices to derive a contradiction. Substitute `hk` using the available equality. Establish `h4 : (dK : ℤ) = 4 * ((a₀ : ℤ) * c₀ - k * k)` using `by linear_combination -h1`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : ∃ m : ℤ, (dK : ℤ) = 4 * m` from `⟨_, h4⟩`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem odd_b {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (hOK : CmOK a₀ b₀ c₀ dK) : Odd b₀ := by
   obtain ⟨h1, -, h3, -⟩ := hOK
@@ -26,13 +26,13 @@ theorem odd_b {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (hOK : CmOK a₀ b₀ c�
   · exact h
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `odd_b hOK`. Establish `h1` using `hOK.1`. Use `⟨hOK.2.2.2.squarefree, by have := hOK.2.2.1; omega, ?_⟩` and prove the remaining obligations. Introduce `ω hω`. Simplify using `only [PeriodPair.lattice, Formalism.L2.Th1.F.cmPair] at hω ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hω`, the goal using `[Submodule.mem_span_pair]`. Take `⟨m, n, rfl⟩` from `hω`. Use `⟨-m * j - n * c₀, m * a₀ + n * (j + 1), ?_⟩` and prove the remaining obligations. Establish `hs : ((Real.sqrt dK : ℝ) : ℂ) ^ 2 = (dK : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hI : Complex.I ^ 2 = -1` using `Complex.I_sq`. Establish `h1c : 4 * (a₀ : ℂ) * c₀ = (b₀ : ℂ) ^ 2 + dK` using `by exact_mod_cast h1`. Establish `hb : (b₀ : ℂ) = 2 * j + 1` using `by exact_mod_cast hj`. Simplify using `only [Formalism.L2.Th1.CM.omegaK, Formalism.L2.Th1.F.cmTheta, zsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Take the linear combination `(↑m * ↑a₀ / 2) * hb - ↑n * ((((Real.sqrt dK : ℝ) : ℂ) ^ 2 / 4) * hI - (1 / 4) * hs + (1 / 4) * h1c + ((↑b₀ + Complex.I * ((Real.sqrt dK : ℝ) : ℂ)) / 4) * hb)`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem data {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 < dK) (hOK : CmOK a₀ b₀ c₀ dK) :
     Squarefree dK ∧ dK % 4 = 3 ∧ Formalism.L2.Th1.CM.HasCMBy dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) := by
@@ -58,11 +58,11 @@ theorem data {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 
 end HAux
 
 /- English proof (translation)
-Unfold `ThmAEntryEveryH MatrixEntriesCM at *`. Introduce `hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨hsf, hd4, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨lam, hlam, hLT⟩` from `hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations. Introduce `n _ _ h Λ g₀ hLat`. Take `⟨κ, hκ0, hκalg, hκn, hθ⟩` from `hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat`. Use `⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hiso, hidx, hK1⟩` from `hθ θ hθmem heq l h5 ι`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₁, hiso, hidx, ?_⟩` and prove the remaining obligations. Introduce `t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde ιr _ _ om oms how htr hζ f f' hhyp`. Establish `hcurve` using `hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr`. Conclude with `hrest σ hσ F hF d N0 N1 hd2 hde ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ThmAEntryEveryH_of (hX : MatrixEntriesCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : ThmAEntryEveryH := by
   unfold ThmAEntryEveryH MatrixEntriesCM at *
@@ -82,11 +82,11 @@ theorem ThmAEntryEveryH_of (hX : MatrixEntriesCM) (hN : LTNormExists) (hK : unif
   exact hrest σ hσ F hF d N0 N1 hd2 hde ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
 
 /- English proof (translation)
-Unfold `ThmAGaussEveryH GaussFormCM at *`. Introduce `hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨hsf, hd4, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨lam, hlam, hLT⟩` from `hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations. Introduce `n _ _ h Λ g₀ hLat`. Take `⟨κ, hκ0, hκalg, hκn, hθ⟩` from `hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat`. Use `⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hiso, hidx, hK1⟩` from `hθ θ hθmem heq l h5 ι`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₁, hiso, hidx, ?_⟩` and prove the remaining obligations. Introduce `t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde ιr _ _ om oms how htr hζ f f' hhyp`. Establish `hcurve` using `hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr`. Conclude with `hrest σ hσ F hF d N0 N1 hd2 hde ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ThmAGaussEveryH_of (hX : GaussFormCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : ThmAGaussEveryH := by
   unfold ThmAGaussEveryH GaussFormCM at *
@@ -106,11 +106,11 @@ theorem ThmAGaussEveryH_of (hX : GaussFormCM) (hN : LTNormExists) (hK : uniformG
   exact hrest σ hσ F hF d N0 N1 hd2 hde ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
 
 /- English proof (translation)
-Unfold `OneLetterGaussEveryH OneLetterGaussCMReformulated at *`. Introduce `hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨hsf, hd4, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨lam, hlam, hLT⟩` from `hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations. Introduce `N0 N1 h Λ g₀ hLat`. Take `⟨κ, hκ0, hκalg, hκn, hθ⟩` from `hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK (Fin N0 × Fin N1) h Λ g₀ hLat`. Use `⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hiso, hidx, hK1⟩` from `hθ θ hθmem heq l h5 ι`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₁, hiso, hidx, ?_⟩` and prove the remaining obligations. Introduce `t N hN0 hlN hNt σ hσ γ B' hfr F hF C`. Establish `hcurve` using `hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr`. Conclude with `hrest σ hσ F hF N0 N1 C _ γ hfr.1 hcurve`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem OneLetterGaussEveryH_of (hX : OneLetterGaussCMReformulated) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) :
     OneLetterGaussEveryH := by
@@ -131,11 +131,11 @@ theorem OneLetterGaussEveryH_of (hX : OneLetterGaussCMReformulated) (hN : LTNorm
   exact hrest σ hσ F hF N0 N1 C _ γ hfr.1 hcurve
 
 /- English proof (translation)
-Introduce `hL hκ a₀ b₀ c₀ dK ha hdK hOK l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨hsq, hmod, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, tail⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsq hmod hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨lam, hlam, hLT⟩` from `hN l _ ι g2 g3 s2 ε c hc hε e2 e3 es`. Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n _ _ h Λ g₀ hLat`. Take `⟨κ, k1, k2, k3, hθ⟩` from `hK hL hκ a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat`. Use `⟨κ, k1, k2, k3, fun θ hθm hten => ?_⟩` and prove the remaining obligations. Take `⟨g₁, i1, i2, hK1⟩` from `hθ θ hθm hten l h5 ι`. Use `⟨g₁, i1, i2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t N hN0 hlN ht σ hσ γ B' hFr F hF ν r0 r1 _ om oms hO hT f f' hH`. Conclude with `tail σ hσ F hF ν r0 r1 om oms hO hT n f f' hH _ γ hFr.1 (hK1 g2 g3 ε s2 hLT hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth t N hN0 hlN ht σ γ B' hFr)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem KernelEveryH_of (hX : ThreeBoundsCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : CMThetaKernelEveryInertPrime := by
   intro hL hκ a₀ b₀ c₀ dK ha hdK hOK l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -154,11 +154,11 @@ theorem KernelEveryH_of (hX : ThreeBoundsCM) (hN : LTNormExists) (hK : uniformGa
     (hK1 g2 g3 ε s2 hLT hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth t N hN0 hlN ht σ γ B' hFr)
 
 /- English proof (translation)
-Introduce `hL hκ a₀ b₀ c₀ dK ha hdK hOK l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨hsq, hmod, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, c, hc, hs2, e2, e3, es, tail⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsq hmod hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨lam, hlam, hLT⟩` from `hN l _ ι g2 g3 s2 ε c hc hε e2 e3 es`. Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n _ _ h Λ g₀ hLat`. Take `⟨κ, k1, k2, k3, hθ⟩` from `hK hL hκ a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat`. Use `⟨κ, k1, k2, k3, fun θ hθm hten => ?_⟩` and prove the remaining obligations. Take `⟨g₁, i1, i2, hK1⟩` from `hθ θ hθm hten l h5 ι`. Use `⟨g₁, i1, i2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t N hN0 hlN ht σ hσ γ B' hFr F hF ν r0 r1 _`. Take `⟨cS, c1, c2, c3⟩` from `tail σ hσ F hF ν r0 r1`. Use `⟨cS, c1, c2, ?_⟩` and prove the remaining obligations. Introduce `om oms ϖ μ hϖ hO hT hμ0 hμ f f' hH`. Conclude with `c3 om oms ϖ μ hϖ hO hT hμ0 hμ n f f' hH _ γ hFr.1 (hK1 g2 g3 ε s2 hLT hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth t N hN0 hlN ht σ γ B' hFr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ThmSEveryH_of (hX : StructureTheoremCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : ThmSEveryH := by
   intro hL hκ a₀ b₀ c₀ dK ha hdK hOK l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -180,11 +180,11 @@ theorem ThmSEveryH_of (hX : StructureTheoremCM) (hN : LTNormExists) (hK : unifor
     (hK1 g2 g3 ε s2 hLT hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth t N hN0 hlN ht σ γ B' hFr)
 
 /- English proof (translation)
-Unfold `MatrixEntriesSharpTranslate MatrixEntriesSharpCM at *`. Introduce `hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨hsf, hd4, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨lam, hlam, hLT⟩` from `hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations. Introduce `n _ _ h Λ g₀ hLat`. Take `⟨κ, hκ0, hκalg, hκn, hθ⟩` from `hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat`. Use `⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hiso, hidx, hK1⟩` from `hθ θ hθmem heq l h5 ι`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₁, hiso, hidx, ?_⟩` and prove the remaining obligations. Introduce `t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde hx ιr _ _ om oms how htr hζ f f' hhyp`. Establish `hcurve` using `hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr`. Conclude with `hrest σ hσ F hF d N0 N1 hd2 hde hx ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem matrix_entries_translate_of_cm_case (hX : MatrixEntriesSharpCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : MatrixEntriesSharpTranslate := by
   unfold MatrixEntriesSharpTranslate MatrixEntriesSharpCM at *
@@ -204,11 +204,11 @@ theorem matrix_entries_translate_of_cm_case (hX : MatrixEntriesSharpCM) (hN : LT
   exact hrest σ hσ F hF d N0 N1 hd2 hde hx ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
 
 /- English proof (translation)
-Unfold `GaussFormSharpTranslate GaussFormSharpCM at *`. Introduce `hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨hsf, hd4, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨lam, hlam, hLT⟩` from `hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations. Introduce `n _ _ h Λ g₀ hLat`. Take `⟨κ, hκ0, hκalg, hκn, hθ⟩` from `hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat`. Use `⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hiso, hidx, hK1⟩` from `hθ θ hθmem heq l h5 ι`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₁, hiso, hidx, ?_⟩` and prove the remaining obligations. Introduce `t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde hx ιr _ _ om oms how htr hζ f f' hhyp`. Establish `hcurve` using `hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr`. Conclude with `hrest σ hσ F hF d N0 N1 hd2 hde hx ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gauss_form_translate_of_cm_case (hX : GaussFormSharpCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : GaussFormSharpTranslate := by
   unfold GaussFormSharpTranslate GaussFormSharpCM at *
@@ -228,11 +228,11 @@ theorem gauss_form_translate_of_cm_case (hX : GaussFormSharpCM) (hN : LTNormExis
   exact hrest σ hσ F hF d N0 N1 hd2 hde hx ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
 
 /- English proof (translation)
-Unfold `OneLetterGaussSharpTranslate OneLetterGaussSharpCM at *`. Introduce `hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨hsf, hd4, hcm⟩` from `HAux.data ha hdK hOK`. Take `⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩` from `hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef`. Take `⟨lam, hlam, hLT⟩` from `hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s2, lam, hlam, hs2, hLT, ?_⟩` and prove the remaining obligations. Introduce `N0 N1 h Λ g₀ hLat`. Take `⟨κ, hκ0, hκalg, hκn, hθ⟩` from `hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK (Fin N0 × Fin N1) h Λ g₀ hLat`. Use `⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hiso, hidx, hK1⟩` from `hθ θ hθmem heq l h5 ι`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g₁, hiso, hidx, ?_⟩` and prove the remaining obligations. Introduce `t N hN0 hlN hNt σ hσ γ B' hfr F hF C`. Establish `hcurve` using `hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr`. Conclude with `hrest σ hσ F hF N0 N1 C _ γ hfr.1 hcurve`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_letter_gauss_translate_of_cm_case (hX : OneLetterGaussSharpCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) :
     OneLetterGaussSharpTranslate := by

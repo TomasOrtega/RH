@@ -11,7 +11,7 @@ noncomputable section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 namespace GlobalTheory.RefSum.ToWeight
 /- English proof (translation)
-Introduce `hP hS hF hT` and use `Closed.imp (Closed.and (Closed.and hT (GlobalTheory.BadLog.logSum_badPrimes_le hS)) (Closed.and hF (Closed.and (GlobalTheory.T.length_unit_size_bounds hS) (GlobalTheory.T.quotient_weight_gap_bounds hS)))) fun Fm _ _ ⟨⟨⟨C₁, h₁, hT⟩, C₂, h₂, hB⟩, ⟨_, _, hF⟩, ⟨_, _, hZ⟩, _, _, hW⟩ = …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem refW_of_size_of_flatDeg_of_refTheta : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Size → FlatDeg → RefTheta → RefW := fun hP hS hF hT =>
   Closed.imp (Closed.and (Closed.and hT (GlobalTheory.BadLog.logSum_badPrimes_le hS))
@@ -45,7 +45,7 @@ section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RefSum.ToWeight.refW_of_size_of_flatDeg_of_refTheta | exact _root_.GlobalTheory.RefSum.ToWeight.refW_of_size_of_flatDeg_of_refTheta | (intros; apply _root_.GlobalTheory.RefSum.ToWeight.refW_of_size_of_flatDeg_of_refTheta <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.refW_of_refTheta' : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Size → FlatDeg → RefTheta → RefW := by
   first | exact @_root_.GlobalTheory.RefSum.ToWeight.refW_of_size_of_flatDeg_of_refTheta | exact _root_.GlobalTheory.RefSum.ToWeight.refW_of_size_of_flatDeg_of_refTheta | (intros; apply _root_.GlobalTheory.RefSum.ToWeight.refW_of_size_of_flatDeg_of_refTheta <;> assumption)

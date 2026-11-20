@@ -9,37 +9,33 @@ open UpperHalfPlane hiding I
 namespace UpperTheory.V.Af.Rs
 
 /- English proof (translation)
-Introduce `s hs x z hz`. Take `⟨hs1, hs2⟩` from `hs`. Unfold `ker`. Establish `hy : 0 < z.im` using `z.im_pos`. Establish `hy2 : 3 ≤ 4 * z.im ^ 2` using `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r : ℝ := ‖(z : ℂ)‖ with hr`. Use `set n : ℝ := ‖x‖ with hn`. Establish `hr0 : 0 ≤ r` using `norm_nonneg _`. Establish `hn0 : 0 ≤ n` using `norm_nonneg _`. Establish `hyr : z.im ≤ r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Complex.abs_im_le_norm (z : ℂ)` as an intermediate fact. Simplify using `only [UpperHalfPlane.coe_im] at this`. Conclude with `le_trans (le_abs_self _) this`. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn' : n = 0` using `by simp [hn]`. Establish `hs0 : -(2 * s) ≠ 0` using `by linarith`. Rewrite using `[hn', Real.zero_rpow hs0, mul_zero]`. Conclude with `Real.rpow_nonneg (div_nonneg hy.le (Complex.normSq_nonneg _)) _`. Establish `hxi : ∀ i, |((x i : ℤ) : ℝ)| ≤ n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `i`. Use `norm_le_pi_norm x i` as an intermediate fact. Rewrite `this` using `[Int.norm_eq_abs]`. Then use the resulting hypothesis. Establish `hn1 : 1 ≤ n`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx0 (funext h)`. Establish `h1 : (1 : ℝ) ≤ |((x i : ℤ) : ℝ)|`. Rewrite using `[← Int.cast_abs]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Int.one_le_abs hi` after adjusting the coercions. Conclude with `h1.trans (hxi i)`. Use `set w : ℂ := (x 0 : ℂ) * (z : ℂ) + (x 1 : ℂ) with hw`. Establish `hwle : ‖w‖ ≤ n * (r + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Conclude with `(norm_add_le _ _).trans (by rw [norm_mul])`. Use `_ ≤ n * r + n := by`. Rewrite using `[Complex.norm_intCast, Complex.norm_intCast]`. Use `hxi 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `hxi 1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `_ = n * (r + 1) := by ring`. Establish `hwne : w ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `him : (w).im = 0` using `by rw [h0]; simp`. Establish `hre : (w).re = 0` using `by rw [h0]; simp`. Simplify using `[hw] at him hre`. Break down `him with h | h` into its components or cases. Establish `h1 : x 1 = 0` using `by simpa [h] using hre`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Apply the tactic sequence `exact hx0 (by ext i; fin_cases i <;> simp [h, h1])`. Conclude with `absurd h hy.ne'`. Establish `hwpos : 0 < Complex.normSq w` using `Complex.normSq_pos.mpr hwne`. Establish `hnsq : Complex.normSq w ≤ n ^ 2 * (r + 1) ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_nonneg w` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `set q : ℝ := z.im / (r + 1) ^ 2 with hq`. Establish `hr1 : 0 < (r + 1) ^ 2` using `by positivity`. Establish `hq0 : 0 < q` using `div_pos hy hr1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : q ≤ 1`. Rewrite using `[div_le_one hr1]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hbase : q / n ^ 2 ≤ z.im / Complex.normSq w`. Rewrite using `[hq, div_div]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Apply `div_le_div_of_nonneg_left hy.le hwpos` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hqn0 : 0 ≤ q / n ^ 2` using `by positivity`. Establish `hstep : (q / n ^ 2) ^ s ≤ (z.im / Complex.normSq w) ^ s` using `Real.rpow_le_rpow hqn0 hbase (by linarith)`. Establish `hsplit : (q / n ^ 2) ^ s = q ^ s * n ^ (-(2 * s))`.
-
-Rewrite using `[Real.div_rpow hq0.le (by positivity), div_eq_mul_inv, Real.rpow_neg hn0, Real.rpow_mul hn0]`. Evaluate the numerical expressions. Establish `hq2 : q ^ (2 : ℝ) ≤ q ^ s` using `Real.rpow_le_rpow_of_exponent_ge hq0 hq1 hs2`. Establish `hq2' : 1 / 2 / (r + 1) ^ 4 ≤ q ^ (2 : ℝ)`. Rewrite using `[Real.rpow_two, hq, div_pow, ← pow_mul]`.
-
-Evaluate the numerical expressions. Apply `div_le_div_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hnpos : 0 ≤ n ^ (-(2 * s))` using `Real.rpow_nonneg hn0 _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem kerLow : KerLow := by
   intro s hs x z hz

@@ -18,7 +18,7 @@ def ExtIn (Y : Model Xo c β) (S : Set Y.X) (T : CDVR) (io : c.F →+* T.Fr) (x 
     z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y' ∧ Set.range y' ⊆ S
 
 /- English proof (translation)
-Take `⟨y', z, h1, h2, h3, h4⟩` from `hx`. Conclude with `⟨y', z, h1, h2, h3, h4.trans h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ExtIn.mono {Y : Model Xo c β} {S S' : Set Y.X} (h : S ⊆ S') {T : CDVR} {io : c.F →+* T.Fr}
     {x : Sp T.Fr ⟶ Xo.X} (hx : ExtIn Y S T io x) : ExtIn Y S' T io x := by

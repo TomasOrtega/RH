@@ -21,7 +21,7 @@ def letter (T : Choice bs) (t : Slot bs) : Letter n dim :=
   ((bs t.1).col t.2.2, ⟨(bs t.1).τ, Fin.castLE (bs t.1).hi (T t.1 t.2.1 t.2.2)⟩)
 
 /- English proof (translation)
-Rewrite using `[Block.poly, Matrix.det_apply', ← Fin.prod_const, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem block_poly_expand (B : Block E n dim) :
     B.poly = ∑ p : Fin B.c → Equiv.Perm (Fin B.i),
@@ -33,9 +33,9 @@ theorem block_poly_expand (B : Block E n dim) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[P1]`. Simplify using `only [block_poly_expand]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, MvPolynomial.smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [sgnT, map_prod, map_intCast]`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -65,7 +65,7 @@ def lst (T : Choice bs) : List (Fin n × Vsp X.dim) :=
     (fun l => (l.1, EuclideanSpace.single l.2 (1 : ℂ)))
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_X_letter (T : Choice bs) :
     (∏ t : Slot bs, MvPolynomial.X (letter bs T t) : MvPolynomial (Letter n X.dim) ℂ) =
@@ -74,9 +74,9 @@ theorem prod_X_letter (T : Choice bs) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_nsmul]`. Rewrite using `[Finset.sum_eq_multiset_sum]`. Establish `h : ∀ (s : Multiset (Slot bs)), (s.map fun t => ({letter bs T t} : Multiset (Letter n X.dim))).sum = s.map (letter bs T)`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih => simp [ih]`. Conclude with `h _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem toMultiset_letters (T : Choice bs) :
     Finsupp.toMultiset (∑ t : Slot bs, Finsupp.single (letter bs T t) 1) =
@@ -93,11 +93,11 @@ theorem toMultiset_letters (T : Choice bs) :
   exact h _
 
 /- English proof (translation)
-Rewrite using `[determinantPoly_expand, jof_polyDeriv_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[polyDeriv_smul, prod_X_letter, polyDeriv_monomial_one, pdTerm_eq_itD, toMultiset_letters]`. Use `congr 1`. Establish `hl : (Multiset.map (letter bs T) Finset.univ.val).toList.map dir = (lst X bs T).map (fun p => Pi.single p.1 p.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[lst, List.map_map]`. Both sides reduce to the same expression. Rewrite using `[hl]`. Establish `hg : ∀ k, ContDiff ℂ (⊤ : ℕ∞) (fun z : Vsp X.dim => s k (fun _ => z))` using `fun k => (hs k).comp (contDiff_pi.2 fun _ => contDiff_id)`. Establish `h1` using `itD_prod hg (lst X bs T) 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show tens X s = fun v : Fin n → Vsp X.dim => ∏ k, s k (fun _ => v k) from rfl, h1]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.zero_apply, itD_col (hs k)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_determinantPoly_tensor (s : Fin n → (Fin 1 → Vsp X.dim) → ℂ)
     (hs : ∀ k, ContDiff ℂ (⊤ : ℕ∞) (s k)) :
@@ -124,7 +124,7 @@ theorem polyDeriv_determinantPoly_tensor (s : Fin n → (Fin 1 → Vsp X.dim) �
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[colL, lst, List.filter_map, List.map_map, ← Multiset.map_coe]`. Use `conv_rhs => rw [← Multiset.coe_toList (Multiset.map (letter bs T) Finset.univ.val), Multiset.filter_coe, Multiset.map_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colL_coe (T : Choice bs) (k : Fin n) :
     ((colL (lst X bs T) k : List (Vsp X.dim)) : Multiset (Vsp X.dim)) =

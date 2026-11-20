@@ -6,7 +6,7 @@ namespace KStar.TotallyRealRoots
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `ENat.forall_natCast_le_iff_le.mp fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[le_nu_iff]`. Conclude with `le_emultiplicity_of_pow_dvd (hn u hu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nf_nu_le {U : Subgroup ℤ_[l]ˣ} {u : ℤ_[l]ˣ} (hu : u ∈ U) (tr : ℕ) :
     nu l U tr ≤ emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) ^ tr - 1) := by
@@ -15,9 +15,9 @@ private theorem nf_nu_le {U : Subgroup ℤ_[l]ˣ} {u : ℤ_[l]ˣ} (hu : u ∈ U)
   exact le_emultiplicity_of_pow_dvd (hn u hu)
 
 /- English proof (translation)
-Establish `h : IsUnit (1 + (l : ℤ_[l]) ^ a)`. Assume the negation of the conclusion as `hn`. Establish `h1 : ‖1 + (l : ℤ_[l]) ^ a‖ < 1` using `PadicInt.not_isUnit_iff.mp hn`. Rewrite `h1` using `[PadicInt.norm_lt_one_iff_dvd]`. Establish `h2 : (l : ℤ_[l]) ∣ (l : ℤ_[l]) ^ a` using `dvd_pow_self _ (by omega)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `PadicInt.prime_p.not_dvd_one ((dvd_add_left h2).mp h1)`. Conclude with `⟨h.unit, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem nf_exists_unit {a : ℕ} (ha : 1 ≤ a) :
     ∃ u : ℤ_[l]ˣ, (u : ℤ_[l]) - 1 = (l : ℤ_[l]) ^ a := by
@@ -30,7 +30,7 @@ private theorem nf_exists_unit {a : ℕ} (ha : 1 ≤ a) :
   exact ⟨h.unit, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[mem_princ, hu]`. Conclude with `pow_dvd_pow _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nf_mem_princ {a s : ℕ} (h : s ≤ a) {u : ℤ_[l]ˣ}
     (hu : (u : ℤ_[l]) - 1 = (l : ℤ_[l]) ^ a) : u ∈ princ l s := by
@@ -38,14 +38,14 @@ private theorem nf_mem_princ {a s : ℕ} (h : s ≤ a) {u : ℤ_[l]ˣ}
   exact pow_dvd_pow _ h
 
 /- English proof (translation)
-Rewrite using `[hu, emultiplicity_pow_self_of_prime PadicInt.prime_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem nf_emult {a : ℕ} {u : ℤ_[l]ˣ} (hu : (u : ℤ_[l]) - 1 = (l : ℤ_[l]) ^ a) :
     emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) - 1) = a := by
   rw [hu, emultiplicity_pow_self_of_prime PadicInt.prime_p]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `nf_exists_unit (l := l) (le_max_left 1 s)`. Establish `hm : u ∈ U ⊓ princ l 1` using `⟨h (nf_mem_princ (le_max_right 1 s) hu), nf_mem_princ (le_max_left 1 s) hu⟩`. Use `nf_nu_le hm 1` as an intermediate fact. Rewrite `this` using `[pow_one, nf_emult hu]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem depth_le_of_princ_le {U : Subgroup ℤ_[l]ˣ} {s : ℕ} (h : princ l s ≤ U) :
     depth l U ≤ ((max 1 s : ℕ) : ℕ∞) := by
@@ -56,11 +56,11 @@ theorem depth_le_of_princ_le {U : Subgroup ℤ_[l]ˣ} {s : ℕ} (h : princ l s �
   rwa [pow_one, nf_emult hu] at this
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `nf_exists_unit (l := l) (le_max_left 1 s)`. Establish `hm : u ∈ U` using `h (nf_mem_princ (le_max_right 1 s) hu)`. Distinguish the cases in `hl : l = 2`. Substitute `hl` using the available equality. Rewrite using `[(nu_two_of_odd U htr).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `nf_nu_le hm 1` as an intermediate fact. Rewrite `this` using `[pow_one, nf_emult hu]`. Conclude with `this.trans (by exact_mod_cast Nat.le_add_right _ _)`. Establish `h1 : (l : ℤ_[l]) ∣ (u : ℤ_[l]) - 1`. Rewrite using `[hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_pow_self _ (by omega)`. Use `nf_nu_le hm tr` as an intermediate fact. Rewrite `this` using `[emultiplicity_pow_sub_one_odd hl h1, nf_emult hu, ← padicValNat_eq_emultiplicity htr.pos.ne']`. Rewrite using `[Nat.cast_add]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_le_of_princ_le {U : Subgroup ℤ_[l]ˣ} {s tr : ℕ} (h : princ l s ≤ U) (htr : Odd tr) :
     nu l U tr ≤ ((max 1 s + padicValNat l tr : ℕ) : ℕ∞) := by
@@ -82,9 +82,9 @@ theorem nu_le_of_princ_le {U : Subgroup ℤ_[l]ˣ} {s tr : ℕ} (h : princ l s �
     exact this
 
 /- English proof (translation)
-Take `⟨s, h⟩` from `(isOpen_iff_princ_le U).mp hU`. Take `⟨u, hu⟩` from `nf_exists_unit (l := l) (a := s + 2) (by omega)`. Establish `hm : u ∈ U` using `h (nf_mem_princ (by omega) hu)`. Establish `h1 : (l : ℤ_[l]) ^ 2 ∣ (u : ℤ_[l]) - 1`. Rewrite using `[hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_dvd_pow _ (by omega)`. Use `nf_nu_le hm tr` as an intermediate fact. Rewrite `this` using `[emultiplicity_pow_sub_one_sq h1, nf_emult hu, ← padicValNat_eq_emultiplicity htr, ← Nat.cast_add]`. Conclude with `ne_top_of_le_ne_top (ENat.natCast_ne_top _) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_ne_top {U : Subgroup ℤ_[l]ˣ} (hU : IsOpen (U : Set ℤ_[l]ˣ)) {tr : ℕ} (htr : tr ≠ 0) :
     nu l U tr ≠ ⊤ := by
@@ -100,7 +100,7 @@ theorem nu_ne_top {U : Subgroup ℤ_[l]ˣ} (hU : IsOpen (U : Set ℤ_[l]ˣ)) {tr
   exact ne_top_of_le_ne_top (ENat.natCast_ne_top _) this
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (l : ℤ_[l]) ∣ ((2 : ℕ) : ℤ_[l])` using `by simpa using h`. Rewrite `h2` using `[← PadicInt.norm_lt_one_iff_dvd, PadicInt.norm_natCast_lt_one_iff]`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).mp h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nf_not_dvd_two (hl : l ≠ 2) : ¬ (l : ℤ_[l]) ∣ 2 := by
   intro h
@@ -109,15 +109,13 @@ private theorem nf_not_dvd_two (hl : l ≠ 2) : ¬ (l : ℤ_[l]) ∣ 2 := by
   exact hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).mp h2)
 
 /- English proof (translation)
-Establish `key : ∀ {t : ℕ}, Odd t → nu l U t ≤ emultiplicity (l : ℤ_[l]) 2`. Introduce `t ht`. Use `nf_nu_le h t` as an intermediate fact. Establish `e : (((-1 : ℤ_[l]ˣ)) : ℤ_[l]) ^ t - 1 = -2`. Rewrite using `[Units.val_neg, Units.val_one, ht.neg_one_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e, emultiplicity_neg]`. Then use the resulting hypothesis. Establish `odd : l ≠ 2 → ∀ {t : ℕ}, Odd t → nu l U t = 0`. Introduce `hl t ht`. Use `key ht` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[emultiplicity_eq_zero.2 (nf_not_dvd_two hl)]`. Conclude with `le_antisymm this bot_le`. Use `⟨?_, fun hl => ?_⟩` and prove the remaining obligations. Use `split_ifs with hl`. Substitute `hl` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (nu_two_of_odd U htr).2` and prove the remaining obligations. Establish `hs : emultiplicity ((2 : ℕ) : ℤ_[2]) 2 = 1`. Simplify using `using emultiplicity_pow_self_of_prime (PadicInt.prime_p (p := 2)) 1`. Conclude with `hs ▸ key htr`. Conclude with `odd hl htr`.
-
-Assume the negation of the conclusion as `hn`. Establish `h0` using `odd hl (Nat.not_even_iff_odd.mp hn)`. Use `(nu_pos_iff U (resOrder l U)).mpr dvd_rfl` as an intermediate fact. Conclude with `this.ne' h0`.
+Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nu_of_neg_one_mem {U : Subgroup ℤ_[l]ˣ} (h : -1 ∈ U) {tr : ℕ} (htr : Odd tr) :
     nu l U tr = (if l = 2 then 1 else 0) ∧ (l ≠ 2 → Even (resOrder l U)) := by

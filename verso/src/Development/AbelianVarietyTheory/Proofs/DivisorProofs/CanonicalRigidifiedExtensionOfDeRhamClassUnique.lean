@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[AlgHom.convMul_apply]`. Simplify using `only [Bialgebra.comulAlgHom_apply]`. Proceed by induction on `(Coalgebra.comul (R := R) a) with`. Consider the case `zero => simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul u v => simp`.
+Treat this case separately. Treat this case separately.
 -/
 theorem convMul_includeLeft_includeRight {R : Type} [CommRing R] {D : Type} [CommRing D] [Bialgebra R D] :
     (toConv (Algebra.TensorProduct.includeLeft : D →ₐ[R] D ⊗[R] D) *
@@ -30,7 +30,7 @@ theorem convMul_includeLeft_includeRight {R : Type} [CommRing R] {D : Type} [Com
   | tmul u v => simp
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, cobOne_apply, Algebra.algebraMap_eq_smul_one]`. Simplify using `[Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cobOne_algebraMap {R : Type} [CommRing R] {D : Type} [CommRing D] [Bialgebra R D] (r : R) :
     cobOne R D (algebraMap R D r) = -algebraMap R (D ⊗[R] D) r := by
@@ -42,31 +42,31 @@ end GlobalTheory.PtExt
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Take `⟨d, z, w, hz, hw, rfl⟩` from `hx`. Take `⟨d', z', w', hz', hw', rfl⟩` from `hx'`. Take `⟨k, hk⟩` from `H1.mk_eq_mk.1 (d.cl.trans d'.cl.symm)`. Set `κ : Fn0 A` to `fun D _ _ y ↦ k (trivAt y)`. Establish `hκ : ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (y : Pt A D), fv d.f D D' φ y - fv d'.f D D' φ y = κ D' (spOver φ ≫ y) - φ (κ D y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `D _ _ D' _ _ φ y`. Use `congrFun (congrFun (congrFun hk (trivAt y)) (trivAt (spOver φ ≫ y))) (trivMap φ y)` as an intermediate fact. Conclude with `this.symm`. Set `e : Fn0 (A ⊗ A)` to `fun D _ _ u ↦ d.g D (u ≫ fst A A) (u ≫ snd A A) - d'.g D (u ≫ fst A A) (u ≫ snd A A) - (κ D ((u ≫ fst A A) * (u ≫ snd A A)) - κ D (u ≫ fst A A) - κ D (u ≫ snd A A))`. Establish `hcob : IsCob (whole (A ⊗ A)) (Fn1.zero _) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D _ _ D' _ _ φ u _`. Establish `h1` using `d.add D D' φ (u ≫ fst A A) (u ≫ snd A A)`. Establish `h2` using `d'.add D D' φ (u ≫ fst A A) (u ≫ snd A A)`. Establish `h3` using `hκ D D' φ ((u ≫ fst A A) * (u ≫ snd A A))`. Establish `h4` using `hκ D D' φ (u ≫ fst A A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `hκ D D' φ (u ≫ snd A A)`. Rewrite `h3` using `[comp_mul]`. Simplify using `only [e, Fn1.zero, Category.assoc, map_sub]`. Take the linear combination `-h1 + h2 - h3 + h4 + h5`. Take `⟨r, hr⟩` from `GlobalTheory.T.natural_pointwiseCochain_const_of_globalSections_base R (A ⊗ A) Unit (whole _) (by simp [whole]) (globalFns_holds _ (A ⊗ A) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA)).2 e hcob`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : ∀ (D : Type) [CommRing D] [Algebra R D] (y y' : Pt A D), d.g D y y' - d'.g D y y' - (κ D (y * y') - κ D y - κ D y') = algebraMap R D r`. Introduce `D _ _ y y'`. Use `hr D (lift y y') (sm_whole _)` as an intermediate fact. Simplify `this` using `[e]`. Set `b : ∀ n, G.A n` to `fun n ↦ d.h n - d'.h n - κ _ (t.y n) + algebraMap R (G.A n) r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : b ∈ G.funs`. Introduce `n`. Establish `h1` using `d.res n`. Establish `h2` using `d'.res n`. Establish `h3` using `hκ _ _ (G.res n : G.A (n + 1) →ₐ[R] G.A n) (t.y (n + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[t.res]`. Establish `h4 : (G.res n : G.A (n + 1) →ₐ[R] G.A n) (algebraMap R _ r) = algebraMap R _ r` using `AlgHom.commutes _ _`. Express the relevant statement in the definitionally equal form `(G.res n : G.A (n + 1) →ₐ[R] G.A n) (b (n + 1)) = b n`. Establish `e1 : ∀ a, (G.res n : G.A (n + 1) →ₐ[R] G.A n) a = G.res n a` using `fun _ ↦ rfl`. Simplify using `only [b, map_sub, map_add, e1] at h3 h4 ⊢`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1 - h2 - h3 + h4`. Use `(Submodule.Quotient.eq _).2 ⟨-⟨b, hb⟩, Prod.ext (Subtype.ext (funext fun n ↦ ?_)) (Subtype.ext (funext fun n ↦ ?_))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cobOne R _ (-b n) = z.1 n - z'.1 n`. Rewrite using `[hz, hz']`. Establish `hXY` using `t.mul n (G.A n ⊗[R] G.A n) (toConv Algebra.TensorProduct.includeLeft) (toConv Algebra.TensorProduct.includeRight)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hXY` using `[convMul_includeLeft_includeRight]`. Establish `h0` using `he _ (spOver (Algebra.TensorProduct.includeLeft : G.A n →ₐ[R] G.A n ⊗[R] G.A n) ≫ t.y n) (spOver (Algebra.TensorProduct.includeRight : G.A n →ₐ[R] G.A n ⊗[R] G.A n) ≫ t.y n)`. Rewrite `h0` using `[← hXY]`. Establish `hc` using `hκ _ _ (Bialgebra.comulAlgHom R (G.A n)) (t.y n)`. Establish `hL` using `hκ _ _ (Algebra.TensorProduct.includeLeft : G.A n →ₐ[R] G.A n ⊗[R] G.A n) (t.y n)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `hκ _ _ (Algebra.TensorProduct.includeRight : G.A n →ₐ[R] G.A n ⊗[R] G.A n) (t.y n)`. Establish `hk1` using `cobOne_apply (O := R) (κ _ (t.y n))`. Establish `hk2` using `cobOne_algebraMap (R := R) (D := G.A n) r`. Simplify using `only [Bialgebra.comulAlgHom_apply, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply] at hc hL hR`. Simplify using `only [Dat.coc, b, map_neg, map_add, map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hk1 - hk2 - h0 + hc - hL - hR`. Express the relevant statement in the definitionally equal form `dUnit R (-b n) = w.1 n - w'.1 n`. Rewrite using `[hw, hw']`. Establish `h0` using `GlobalTheory.T.cotVal_sub_eq_dUnit_of_d0_eq_sub R A (G.A n) (t.y n) d.f d'.f k hk`. Establish `h1 : dUnit R (algebraMap R (G.A n) r) = 0` using `AugCot.d_algebraMap _ r`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dat.om, b]`. Express the relevant statement in the definitionally equal form `AugCot.d _ _ = _`. Simplify using `only [map_neg, map_add, map_sub]`. Express the relevant statement in the definitionally equal form `-(dUnit R _ - dUnit R _ - dUnit R _ + dUnit R _) = _`. Rewrite using `[h1]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = cotVal d.f (t.y n) - dUnit R _ - (cotVal d'.f (t.y n) - dUnit R _)`. Rewrite using `[show cotVal d.f (t.y n) - dUnit R (d.h n) - (cotVal d'.f (t.y n) - dUnit R (d'.h n)) = (cotVal d.f (t.y n) - cotVal d'.f (t.y n)) - dUnit R (d.h n) + dUnit R (d'.h n) by abel, h0]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem isCan_unique (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) (c : primDR A) (hA : IsAbelianScheme A) (x x' : G.RigExt)

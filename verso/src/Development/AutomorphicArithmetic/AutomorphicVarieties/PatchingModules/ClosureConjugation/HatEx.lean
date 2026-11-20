@@ -16,9 +16,9 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI : Algebra B M := Algebra.compHom M (algebraMap B C)`. Use `haveI : IsScalarTower B C M := .of_algebraMap_eq' rfl`. Set `ρ' : E →ₐ[B] M` to `{ ρ with commutes' := hρ }`. Use `⟨Algebra.TensorProduct.lift (Algebra.ofId C M) ρ' fun s _ => Algebra.commute_algebraMap_left s _, fun y => ?_⟩` and prove the remaining obligations. Use `(Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lift_ex {B C E M : Type} [CommRing B] [CommRing C] [Algebra B C] [Ring E] [Algebra B E] [Ring M]
     [Algebra C M] (ρ : E →+* M) (hρ : ∀ b, ρ (algebraMap B E b) = algebraMap C M (algebraMap B C b)) :
@@ -32,9 +32,9 @@ private theorem lift_ex {B C E M : Type} [CommRing B] [CommRing C] [Algebra B C]
   rfl
 
 /- English proof (translation)
-Take `⟨t', ht'⟩` from `(d_tr (D.baseChange C)).1 hn`. Rewrite using `[← ht']`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul c z`. Establish `: c ⊗ₜ[B] z = c • ((1 : C) ⊗ₜ[B] z)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, map_smul, ht, ht']`. Use `congr 1`. Conclude with `(((d_bc D C).2.2.2 z).2 1).symm`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem tr_bc {n : ℕ} {B E : Type} [CommRing B] [Ring E] [Algebra B E] (D : Det n B E) (hn : 1 ≤ n)
     (C : Type) [CommRing C] [Algebra B C] (t : C ⊗[B] E →ₗ[C] C) (ht : ∀ y, t (1 ⊗ₜ y) = algebraMap B C (D.tr y))
@@ -51,29 +51,27 @@ private theorem tr_bc {n : ℕ} {B E : Type} [CommRing B] [Ring E] [Algebra B E]
     exact (((d_bc D C).2.2.2 z).2 1).symm
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P Bh _ _ _ _ hB`. Establish `hrep : ∀ (g : G.G₀) (b : B), P.rep (MonoidAlgebra.single g b) = P.f b • mat x.ρ (h.p₀ g)` using `by clear hB`. Introduce `g b`. Simplify using `only [OoPt.rep, GDet.repAlg, RingHom.comp_apply, MonoidAlgebra.mapRingHom_single, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MonoidAlgebra.lift_single, MonoidHom.coe_comp, Function.comp_apply, RingHom.mapMatrix_apply, Algebra.algebraMap_self]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hρv : ∀ (b : B) (i j : Fin n), (algebraMap x.A (FractionRing x.A)) ((P.rep (MonoidAlgebra.single 1 b)) i j) = algebraMap Bh (Matrix (Fin n) (Fin n) (FractionRing x.A)) (algebraMap B Bh b) i j`. Introduce `b i j`. Rewrite using `[hrep, map_one, map_one, Matrix.smul_apply, Matrix.algebraMap_matrix_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Matrix.one_apply_eq, if_pos rfl, hB, smul_eq_mul, mul_one]`. Rewrite using `[Matrix.one_apply_ne hij, if_neg hij, smul_zero, map_zero]`. Establish `hφ : PhiCond G.frame.G₀ l` using `phi_fg _ P.fg`. Establish `hn : 1 ≤ n` using `le_trans x.a_pos x.a_le`. Use `haveI : IsAdicComplete (maximalIdeal B) B := IsCO.complete (O := O)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompactSpace G.frame.G₀ := isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ G.frame.η_open).isCompact`. Take `⟨DE, T, hCH, hpull, hst, htr⟩` from `trinv u hφ hn P.gens (gens_kill P)`. Take `⟨hres, -, hh, χ, hred, hmf⟩` from `pair_mf u hφ`. Take `⟨-, hfinB, hcont⟩` from `finE u.D χ u.cont hred hmf P.gens`. Establish `hπs : Function.Surjective (u.D.toQuot P.gens)` using `fun q => Quotient.inductionOn' q fun z => ⟨z, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι, hιs, hιmap, hιker, hιpull⟩` from `tens u.D DE (u.D.toQuot P.gens) Bh hπs hpull`. Establish `hker : {z | u.D.toQuot P.gens z = 0} = P.ker`. Use extensionality with `z`. Express the relevant statement in the definitionally equal form `((z : (u.D.chBar P.gens).ringCon.Quotient) = ((0 : MonoidAlgebra B G.G₀) : _)) ↔ _`. Rewrite using `[RingCon.eq, TwoSidedIdeal.rel_iff, sub_zero]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hιker` using `[hker]`. Establish `hs : ∀ g : G.G₀, ι (MonoidAlgebra.single g 1) = 1 ⊗ₜ[B] u.D.toQuot P.gens (MonoidAlgebra.single g 1)`. Introduce `g`. Use `hιmap (MonoidAlgebra.single g 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[MonoidAlgebra.mapRingHom_single, map_one]`. Then use the resulting hypothesis. Use `haveI : Module.Finite B (u.D.CHQuot P.gens) := hfinB`. Take `⟨T', hT'st, hT'tr⟩` from `trinv_baseChange T Bh`. Take `⟨ρ0, hρ0⟩` from `rep_quot P`. Establish `hρ : ∀ b : B, ((algebraMap x.A (FractionRing x.A)).mapMatrix.comp ρ0) (algebraMap B (u.D.CHQuot P.gens) b) = algebraMap Bh (Matrix (Fin n) (Fin n) (FractionRing x.A)) (algebraMap B Bh b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `b`. Establish `e1 : algebraMap B (u.D.CHQuot P.gens) b = u.D.toQuot P.gens (MonoidAlgebra.single 1 b)` using `((u.D.toQuot P.gens).commutes b).symm`. Use extensionality with `i j`. Rewrite using `[RingHom.comp_apply, e1, hρ0, RingHom.mapMatrix_apply, Matrix.map_apply, hρv]`. Take `⟨rr, hrr⟩` from `lift_ex ((algebraMap x.A (FractionRing x.A)).mapMatrix.comp ρ0) hρ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hπg : ∀ (g : G.G₀) (c : B), u.D.toQuot P.gens (MonoidAlgebra.single g c) = c • u.D.toQuot P.gens (MonoidAlgebra.single g 1)`. Introduce `g c`. Rewrite using `[← map_smul, MonoidAlgebra.smul_single', mul_one]`. Use `⟨Hat.mk (Bh ⊗[B] u.D.CHQuot P.gens) inferInstance ι hιs hιker (DE.baseChange Bh) ((d_chS DE Bh).2.2 hCH).1 hιpull T' (fun y => tr_bc DE hn Bh T'.tr (fun z => by rw [hT'tr, htr]) y) (fun g => ?_) rr (fun g => ?_) (Submodule.map (TensorProduct.mk B Bh (u.D.CHQuot P.gens) 1) ⊤) (Mod …` and prove the remaining obligations. Rewrite using `[hs, hs, hT'st, hst, (star_basic G.frame n O B).2.2.2.2.2.2 g 1, one_mul, hπg, TensorProduct.tmul_smul, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, hrr, RingHom.comp_apply, hρ0, hrep, map_one, one_smul, RingHom.mapMatrix_apply]`. Take `⟨U, hU⟩` from `hcont j`. Use `⟨U, fun g v hv => ?_⟩` and prove the remaining obligations. Establish `hl : u.D.toQuot P.gens (MonoidAlgebra.single g 1) * (u.D.toQuot P.gens (MonoidAlgebra.single v 1) - 1) ∈ (maximalIdeal B ^ j • ⊤ : Submodule B (u.D.CHQuot P.gens))`. Use `Submodule.mem_map_of_mem (f := LinearMap.mulLeft B (u.D.toQuot P.gens (MonoidAlgebra.single g 1))) (hU v hv)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `key` using `Submodule.mem_map_of_mem (f := TensorProduct.mk B Bh (u.D.CHQuot P.gens) 1) hl`. Rewrite `key` using `[Submodule.map_smul'']`. Use `key using 1` and compare the differences between its conclusion and the goal.
-
-Establish `e : MonoidAlgebra.single (g * v) (1 : B) = MonoidAlgebra.single g 1 * MonoidAlgebra.single v 1`. Rewrite using `[MonoidAlgebra.single_mul_single, mul_one]`. Rewrite using `[hs, hs, TensorProduct.mk_apply, e, map_mul, mul_sub, mul_one, TensorProduct.tmul_sub]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.hat_ex :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K] {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u), ∀ {Bh : Type} [CommRing Bh] [IsLocalRing Bh] [Algebra B Bh] [Algebra Bh (FractionRing x.A)], (∀ b, algebraMap Bh (FractionRing x.A) (algebraMap B Bh b) = algebraMap x.A (FractionRing x.A) (P.f b)) → Nonempty (Hat h x u.D P.ker Bh (G.frame.eps O B)) := by

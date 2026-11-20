@@ -29,7 +29,7 @@ def IsInfLoc (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+*
 variable {D}
 
 /- English proof (translation)
-Unfold `locE`. Rewrite using `[map_mul]`. Take the linear combination `((incA D k - 1) * (incA D l - 1)) * he`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem locE_mul_locE {e : AE D} (he : e * e = e) (k l : D.host.E) : locE D e k * locE D e l = locE D e (k * l) := by
   unfold locE
@@ -37,7 +37,7 @@ theorem locE_mul_locE {e : AE D} (he : e * e = e) (k l : D.host.E) : locE D e k 
   linear_combination ((incA D k - 1) * (incA D l - 1)) * he
 
 /- English proof (translation)
-Use `isUnit_iff_exists_inv.mpr ⟨locE D e ((k⁻¹ : D.host.Eˣ) : D.host.E), ?_⟩` and prove the remaining obligations. Rewrite using `[locE_mul_locE he]`. Simplify using `[locE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_locE {e : AE D} (he : e * e = e) (k : D.host.Eˣ) : IsUnit (locE D e k) := by
   refine isUnit_iff_exists_inv.mpr ⟨locE D e ((k⁻¹ : D.host.Eˣ) : D.host.E), ?_⟩

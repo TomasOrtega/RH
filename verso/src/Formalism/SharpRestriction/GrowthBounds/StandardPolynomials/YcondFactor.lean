@@ -24,7 +24,7 @@ variable {X : Loc} {O : Type} [CommRing O] [IsDomain O]
 def HomW (φ : MonH X →+ ℕ) (d : ℕ) (P : RHH O X) : Prop := ∀ m ∈ P.support, φ m = d
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (support_mul P Q hm)`. Rewrite using `[map_add, hP a ha, hQ b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem HomW.mul {φ : MonH X →+ ℕ} {d d' : ℕ} {P Q : RHH O X} (hP : HomW φ d P) (hQ : HomW φ d' Q) :
     HomW φ (d + d') (P * Q) := by
@@ -34,9 +34,9 @@ theorem HomW.mul {φ : MonH X →+ ℕ} {d d' : ℕ} {P Q : RHH O X} (hP : HomW 
   rw [map_add, hP a ha, hQ b hb]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_one]`. Distinguish the cases in `h : 0 = m`. Rewrite using `[← h, map_zero]`. Rewrite `hm` using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl hm`.
+A detailed English derivation is pending.
 -/
 theorem HomW.one (φ : MonH X →+ ℕ) : HomW φ 0 (1 : RHH O X) := by
   classical
@@ -47,7 +47,7 @@ theorem HomW.one (φ : MonH X →+ ℕ) : HomW φ 0 (1 : RHH O X) := by
   · rw [if_neg h] at hm; exact absurd rfl hm
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `zero => simpa using HomW.one (O := O) φ`. Consider the case `succ u ih`. Rewrite using `[pow_succ, Nat.succ_mul]`. Conclude with `ih.mul hP`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomW.pow {φ : MonH X →+ ℕ} {d : ℕ} {P : RHH O X} (hP : HomW φ d P) (u : ℕ) : HomW φ (u * d) (P ^ u) := by
   induction u with
@@ -57,7 +57,7 @@ theorem HomW.pow {φ : MonH X →+ ℕ} {d : ℕ} {P : RHH O X} (hP : HomW φ d 
     exact ih.mul hP
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using HomW.one (O := O) φ`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomW.prod {φ : MonH X →+ ℕ} {κ : Type} (s : Finset κ) (d : κ → ℕ) (P : κ → RHH O X)
     (h : ∀ a ∈ s, HomW φ (d a) (P a)) : HomW φ (∑ a ∈ s, d a) (∏ a ∈ s, P a) := by
@@ -69,7 +69,7 @@ theorem HomW.prod {φ : MonH X →+ ℕ} {κ : Type} (s : Finset κ) (d : κ →
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
 /- English proof (translation)
-Introduce `m hm`. Use `support_monomial_subset hm` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HomW.monomial (φ : MonH X →+ ℕ) (M : MonH X) (c : KK O) : HomW φ (φ M) (monomial M c : RHH O X) := by
   classical
@@ -79,9 +79,9 @@ theorem HomW.monomial (φ : MonH X →+ ℕ) (M : MonH X) (c : KK O) : HomW φ (
   rw [this]
 
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h l m hm`. Conclude with `h (Finset.mem_coe.2 hm) l`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h m hm l`. Conclude with `h l m (Finset.mem_coe.1 hm)`.
+A detailed English derivation is pending.
 -/
 theorem mem_Pol_iffW {d : X.TT × Bool → ℕ} {P : RHH O X} :
     P ∈ Pol (KK O) (ι := X.TT × Bool) (X.m + 1) d ↔ ∀ l, HomW (mdHom X l) (d l) P := by
@@ -94,7 +94,7 @@ theorem mem_Pol_iffW {d : X.TT × Bool → ℕ} {P : RHH O X} :
     exact h l m (Finset.mem_coe.1 hm)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, ← ih, monomial_pow, one_pow, monomial_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_sum {ι : Type} (s : Finset ι) (n : ι → ℕ) (a : ι → MonH X) :
     (monomial (∑ i ∈ s, n i • a i) (1 : KK O) : RHH O X) = ∏ i ∈ s, (monomial (a i) (1 : KK O) : RHH O X) ^ n i := by
@@ -105,7 +105,7 @@ theorem mono_sum {ι : Type} (s : Finset ι) (n : ι → ℕ) (a : ι → MonH X
     rw [Finset.sum_insert hi, Finset.prod_insert hi, ← ih, monomial_pow, one_pow, monomial_mul, one_mul]
 
 /- English proof (translation)
-The claim follows from `(hR.mul (HomW.prod _ _ _ fun a _ => (h a).pow _)).mul (HomW.monomial φ M 1)`.
+A detailed English derivation is pending.
 -/
 theorem hom_total (φ : MonH X →+ ℕ) {κ : Type} [Fintype κ] (sg : κ → RHH O X) (d : κ → ℕ) (h : ∀ a, HomW φ (d a) (sg a))
     {sgR : RHH O X} {dR : ℕ} (hR : HomW φ dR sgR) (mult u : κ → ℕ) (M : MonH X) :
@@ -117,25 +117,23 @@ end Hom
 open Formalism.MainNotions.G.PolBridge Formalism.MainNotions.G.GLWeightTheory in
 
 /- English proof (translation)
-Consider the cases of `M with`. Consider the case `top => rw [WithTop.top_add, ycond_top]`. Conclude with `Submodule.mem_top`. Consider the case `coe Mz`. Rewrite using `[← WithTop.coe_add, mem_ycond_iff D]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[mem_ycond_iff D, (valuationsAdditive_D7 D K (Fin N) (⟨LL.vec⟩ : Letters (Fin N)) r {i : Fin N | (i : ℕ) < jj}).2.2.1]`. Establish `hlow : ¬ lam1S (⟨LL.vec⟩ : Letters (Fin N)) {i : Fin N | (i : ℕ) < jj} Gr ≤ ((-(cov : ℤ) - 1 : ℤ) : WithBot ℤ)`. Introduce `hle`. Establish `h1` using `ycond_le (K := K) (r := r) LL jj ((-(cov : ℤ) - 1 : ℤ) : WithTop ℤ) ((mem_ycond_iff D LL jj _ Gr).2 hle)`. Rewrite `h1` using `[MvPolynomial.mem_restrictSupport_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : Gr.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h0`. Conclude with `hne (MvPolynomial.support_eq_empty.1 h0)`. Establish `h2 : ((chWt LL jj 0 m : ℤ) : WithTop ℤ) ≤ ((-(cov : ℤ) - 1 : ℤ) : WithTop ℤ)` using `h1 (Finset.mem_coe.2 hm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : chWt LL jj 0 m ≤ -(cov : ℤ) - 1` using `by exact_mod_cast h2`. Establish `hdeg : ∀ i, multideg m i = dr i`. Unfold `Pol at hr`. Rewrite `hr` using `[MvPolynomial.mem_restrictSupport_iff]`. Conclude with `hr (Finset.mem_coe.2 hm)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : -((∑ i, (if LL.vec i then 0 else dr i) : ℕ) : ℤ) ≤ chWt LL jj 0 m`. Unfold `chWt`. Rewrite using `[Nat.cast_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `hm0 : m (i, 0) ≤ dr i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hdeg i]`. Conclude with `Finset.single_le_sum (f := fun c => m (i, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ 0)`. Establish `hm0' : (m (i, 0) : ℤ) ≤ (dr i : ℤ)` using `by exact_mod_cast hm0`. Distinguish the cases in `hv : LL.vec i = true`. Apply the tactic sequence `simp only [hv, if_true] split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Proceed by induction.
 
-Apply the tactic sequence `simp only [hv] split_ifs <;> simp <;> omega`. Establish `h5 : ((∑ i, (if LL.vec i then 0 else dr i) : ℕ) : ℤ) ≤ (cov : ℤ)` using `by exact_mod_cast hcov`. Use linear arithmetic over natural numbers and integers. Proceed by induction on `hGr : lam1S (⟨LL.vec⟩ : Letters (Fin N)) {i : Fin N | (i : ℕ) < jj} Gr using WithBot.recBotCoe with`. Consider the case `bot => rw [hGr] at hlow`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd bot_le hlow`. Consider the case `coe v`. Rewrite `hlow`, `h` using `[hGr]`. Establish `hv : -(cov : ℤ) - 1 < v`. Assume the negation of the conclusion as `hc`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hlow (by exact_mod_cast (not_lt.1 hc))`. Proceed by induction on `hGu : lam1S (⟨LL.vec⟩ : Letters (Fin N)) {i : Fin N | (i : ℕ) < jj} Gu using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe a`. Rewrite `h` using `[hGu]`.
-
-Establish `h6 : a + v ≤ Mz` using `by exact_mod_cast h`. Establish `: a ≤ Mz + (cov : ℤ)` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ycond_factor (D : Formalism.BasicNotions.D7) {K : Type} [Field K] [CharZero K] {N r : ℕ} [NeZero r] (LL : ChainLetters N) (jj : ℕ)
     (M : WithTop ℤ) (Gu Gr : MvPolynomial (Fin N × Fin r) K) (dr : Fin N → ℕ) (hr : Gr ∈ Pol K r dr) (hne : Gr ≠ 0)

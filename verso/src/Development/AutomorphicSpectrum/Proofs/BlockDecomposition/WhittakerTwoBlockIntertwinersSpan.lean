@@ -33,11 +33,11 @@ def whitFirstMap (ψ : AddChar k Circle) (d : Fin 2 → ℕ) {X : Fin 2 → Type
     rw [funext h])
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ d X _ _ ρ`. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Proceed by induction on `t using PiTensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `smul_tprod r v`. Establish `hmem : Submodule.Quotient.mk (PiTensorProduct.tprod ℂ v) ∈ ⨆ f : (ρ 0).IntertwiningMap (whit2 ψ d (piTensor ρ)), LinearMap.range f.toLinearMap`. Use `Submodule.mem_iSup_of_mem (whitFirstMap ψ d ρ v) (LinearMap.mem_range.2 ⟨v 0, ?_⟩)` and prove the remaining obligations. Use `show whitFirstLin ψ d ρ v (v 0) = _`. Rewrite using `[whitFirstLin_apply, Function.update_eq_self]`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.mk_smul]`. Conclude with `Submodule.smul_mem _ r hmem`. Consider the case `add a b ha hb`. Rewrite using `[Submodule.Quotient.mk_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_iSup_range_eq_top : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (X : Fin 2 → Type)
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)),

@@ -14,21 +14,19 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Mo
   {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-It suffices to establish `H : ∀ s : Finset (Fin r), ∀ b : Fin r → E, (∀ i, b i ∈ Submodule.span R (Set.range e)) → (∀ i, i ∉ s → b i ∈ Set.range e) → exteriorPower.ιMulti Ω r b ∈ Submodule.span R {exteriorPower.ιMulti Ω r e} from H Finset.univ b hb (fun i hi => absurd (Finset.mem_univ i) hi)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `b _ hb' choose g hg using fun i => hb' i (Finset.notMem_empty i)`. Establish `hbg : b = e ∘ g` using `funext fun i => (hg i).symm`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hbg` using the available equality. Distinguish the cases in `hinj : Function.Injective g`. Establish `hσ` using `Finite.injective_iff_bijective.1 hinj`. Establish `he : e ∘ g = e ∘ ⇑(Equiv.ofBijective g hσ)` using `rfl`. Rewrite using `[he, AlternatingMap.map_perm, Units.smul_def]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zsmul_mem (Submodule.mem_span_singleton_self _) _`. Rewrite using `[AlternatingMap.map_eq_zero_of_not_injective _ _ (fun h => hinj h.of_comp)]`. Conclude with `Submodule.zero_mem _`. Introduce `a s ha ih b hb hb'`. Establish `key : ∀ y ∈ Submodule.span R (Set.range e), exteriorPower.ιMulti Ω r (Function.update b a y) ∈ Submodule.span R {exteriorPower.ιMulti Ω r e}`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Apply `ih` to reduce the goal to its premises. Introduce `i`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `eq_or_ne i a with rfl | hi` into its components or cases. Simplify using `using Submodule.subset_span hy`. Rewrite using `[Function.update_of_ne hi]`. Conclude with `hb i`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne i a with rfl | hia` into its components or cases. Simplify using `using hy`. Rewrite using `[Function.update_of_ne hia]`. Conclude with `hb' i (by simp [hia, hi])`. Consider the case `zero`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[AlternatingMap.map_update_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[AlternatingMap.map_update_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx`. Rewrite using `[Subring.smul_def, AlternatingMap.map_update_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hk` using `key (b a) (hb a)`. Rewrite `hk` using `[Function.update_eq_self]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem iota_multi_mem_span_of_mem_span {R : Subring Ω} {r : ℕ} {e : Fin r → E} (b : Fin r → E)
     (hb : ∀ i, b i ∈ Submodule.span R (Set.range e)) :
@@ -81,11 +79,9 @@ private theorem iota_multi_mem_span_of_mem_span {R : Subring Ω} {r : ℕ} {e : 
     rwa [Function.update_eq_self] at hk
 
 /- English proof (translation)
-Take `⟨-, hL⟩` from `h`. Express the relevant statement in the definitionally equal form `Submodule.span (regAt ξ x) {w | ∃ b : Fin r → E, (∀ i, b i ∈ L x) ∧ w = exteriorPower.ιMulti Ω r b} = _`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨b, hb, rfl⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hb` using `[hL]`. Conclude with `iota_multi_mem_span_of_mem_span b hb`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Use `Submodule.subset_span ⟨e, fun i => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hL]`.
-
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedge_of_frame {L : Lat ξ E} {r : ℕ} {e : Fin r → E} {x : Cpt ξ} (h : L.IsFrameAt e x) :
     L.wedge r x = Submodule.span (regAt ξ x) {exteriorPower.ιMulti Ω r e} := by
@@ -103,7 +99,7 @@ theorem wedge_of_frame {L : Lat ξ E} {r : ℕ} {e : Fin r → E} {x : Cpt ξ} (
     exact Submodule.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Use `⟨s⁻¹, t⁻¹, inv_ne_zero hs, inv_ne_zero ht, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[wedge_of_frame he, smul_smul, inv_mul_cancel₀ hs, one_smul]`. Rewrite using `[wedge_of_frame hg, smul_smul, inv_mul_cancel₀ ht, one_smul]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isCoeffAt_of_frame {A B : Lat ξ E} {p q : ℕ} {e : Fin p → E} {g : Fin q → E} {x : Cpt ξ}
     (he : A.IsFrameAt e x) (hg : B.IsFrameAt g x) {s t : Ω} (hs : s ≠ 0) (ht : t ≠ 0) :
@@ -114,9 +110,9 @@ theorem isCoeffAt_of_frame {A B : Lat ξ E} {p q : ℕ} {e : Fin p → E} {g : F
   · field_simp
 
 /- English proof (translation)
-Establish `hmem : α • a ∈ Submodule.span (regAt ξ x) {α' • a}`. Rewrite using `[← h]`. Conclude with `Submodule.mem_span_singleton_self _`. Take `⟨u, hu⟩` from `Submodule.mem_span_singleton.1 hmem`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[Subring.smul_def, smul_smul]`. Conclude with `(smul_left_injective Ω ha hu).symm`.
+A detailed English derivation is pending.
 -/
 theorem unit_of_span_eq {F : Type} [AddCommGroup F] [Module Ω F] {x : Cpt ξ} {a : F} (ha : a ≠ 0) {α α' : Ω}
     (h : Submodule.span (regAt ξ x) {α • a} = Submodule.span (regAt ξ x) {α' • a}) :
@@ -130,11 +126,11 @@ theorem unit_of_span_eq {F : Type} [AddCommGroup F] [Module Ω F] {x : Cpt ξ} {
   exact (smul_left_injective Ω ha hu).symm
 
 /- English proof (translation)
-Take `⟨α, β, hα, hβ, hA, hB, e1⟩` from `h`. Take `⟨α', β', hα', hβ', hA', hB', e2⟩` from `h'`. Take `⟨u', hu'⟩` from `unit_of_span_eq ha (hA'.symm.trans hA)`. Take `⟨v, hv⟩` from `unit_of_span_eq hb (hB.symm.trans hB')`. Establish `hf' : f' ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hβ' (by rw [← e2, zero_mul])`. Establish `key : f = (v : Ω) * u' * f'`. Apply `mul_right_cancel₀ hα` to reduce the goal to its premises. Take the linear combination `e1 + hv - (v : Ω) * e2 + (v : Ω) * f' * hu'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, mul_div_assoc, div_self hf', mul_one]`. Conclude with `mul_mem v.2 u'.2`.
+A detailed English derivation is pending.
 -/
 private theorem div_mem_reg_at_of_is_coeff_at {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b : ⋀[Ω]^q E} {x : Cpt ξ}
     {f f' : Ω} (ha : a ≠ 0) (hb : b ≠ 0) (h : IsCoeffAt A B p q a b x f)
@@ -153,11 +149,9 @@ private theorem div_mem_reg_at_of_is_coeff_at {A B : Lat ξ E} {p q : ℕ} {a : 
   exact mul_mem v.2 u'.2
 
 /- English proof (translation)
-Establish `hf : f ≠ 0`. Take `⟨α, β, -, hβ, -, -, e1⟩` from `h`. Introduce and unpack `rfl`. Conclude with `hβ (by rw [← e1, zero_mul])`. Establish `hf' : f' ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, β, -, hβ, -, -, e1⟩` from `h'`. Introduce and unpack `rfl`. Conclude with `hβ (by rw [← e1, zero_mul])`. Use `⟨div_ne_zero hf hf', div_mem_reg_at_of_is_coeff_at ha hb h h', ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div]`.
-
-Conclude with `div_mem_reg_at_of_is_coeff_at ha hb h' h`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_div {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b : ⋀[Ω]^q E} {x : Cpt ξ} {f f' : Ω}
     (ha : a ≠ 0) (hb : b ≠ 0) (h : IsCoeffAt A B p q a b x f) (h' : IsCoeffAt A B p q a b x f') :
@@ -175,7 +169,7 @@ theorem unitAt_div {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b : ⋀[Ω]^q
   exact div_mem_reg_at_of_is_coeff_at ha hb h' h
 
 /- English proof (translation)
-Take `⟨α, β, hα, hβ, hA, hB, e1⟩` from `h`. Use `⟨α / c, β / d, div_ne_zero hα hc, div_ne_zero hβ hd, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, smul_smul, div_mul_cancel₀ _ hc]`. Rewrite using `[hB, smul_smul, div_mul_cancel₀ _ hd]`. Rewrite using `[← e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -190,7 +184,7 @@ theorem isCoeffAt_smul {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b : ⋀[�
     field_simp
 
 /- English proof (translation)
-Establish `h1 : IsCoeffAt A B p q (c • a) b x c`. Establish `h2` using `isCoeffAt_smul hc one_ne_zero (h.2.2 x hx)`. Rewrite `h2` using `[one_smul, mul_one, div_one]`. Then use the resulting hypothesis. Establish `h3` using `unitAt_div h'.1 h'.2.1 h1 (h'.2.2 x hx)`. Rewrite `h3` using `[div_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitAt_of_isLineGenOn {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b : ⋀[Ω]^q E} {T : Set (Cpt ξ)}
     {c : Ω} (hc : c ≠ 0) (h : IsLineGenOn A B p q a b T) (h' : IsLineGenOn A B p q (c • a) b T)
@@ -202,13 +196,13 @@ theorem unitAt_of_isLineGenOn {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b 
   rwa [div_one] at h3
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_extend h.repr`. Set `f : Fin r → Module.Dual Ω E` to `fun j => Finsupp.lapply j ∘ₗ g`. Establish `hfe : ∀ i j, f j (e i) = if i = j then 1 else 0`. Introduce `i j`. Establish `h1 : g (e i) = Finsupp.single i 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun φ => φ ⟨e i, Submodule.subset_span ⟨i, rfl⟩⟩) hg`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h2`. Rewrite using `[h2]`. Conclude with `h.repr_eq_single i _ rfl`. Simplify using `[f, h1, Finsupp.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hd` using `exteriorPower.pairingDual_ιMulti_ιMulti f e`. Rewrite `hd` using `[h0, map_zero]`. Establish `hm : (Matrix.of fun i j => f j (e i)) = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.of_apply, hfe, Matrix.one_apply]`. Rewrite `hd` using `[hm, Matrix.det_one]`. Conclude with `zero_ne_one hd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ιMulti_ne_zero {r : ℕ} {e : Fin r → E} (h : LinearIndependent Ω e) :
     exteriorPower.ιMulti Ω r e ≠ 0 := by
@@ -233,9 +227,9 @@ theorem ιMulti_ne_zero {r : ℕ} {e : Fin r → E} (h : LinearIndependent Ω e)
   exact zero_ne_one hd
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨α, β, hα, -, hA, -, -⟩` from `h`. Rewrite `hA` using `[wedge_of_frame he, smul_zero]`. Establish `hmem : exteriorPower.ιMulti Ω p e ∈ Submodule.span (regAt ξ x) {(0 : ⋀[Ω]^p E)}`. Rewrite using `[← hA]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_span_singleton_self _`. Rewrite `hmem` using `[Submodule.span_singleton_eq_bot.2 rfl, Submodule.mem_bot]`. Conclude with `ιMulti_ne_zero he.1 hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_frame {A B : Lat ξ E} {p q : ℕ} {a : ⋀[Ω]^p E} {b : ⋀[Ω]^q E} {x : Cpt ξ} {f : Ω}
     {e : Fin p → E} (he : A.IsFrameAt e x) (h : IsCoeffAt A B p q a b x f) : a ≠ 0 := by
@@ -258,32 +252,32 @@ def line (v : Fin 2 → ℚ) : Lat (pt (algebraMap ℤ ℚ)) (Fin 2 → ℚ) :=
   fun x => Submodule.span (regAt _ x) (Set.range ![v])
 
 /- English proof (translation)
-Conclude with `linearIndependent_unique_iff.2 (by simpa using hv)`.
+A detailed English derivation is pending.
 -/
 theorem li {v : Fin 2 → ℚ} (hv : v ≠ 0) : LinearIndependent ℚ ![v] := by
   exact linearIndependent_unique_iff.2 (by simpa using hv)
 
 /- English proof (translation)
-Conclude with `⟨li hv, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame {v : Fin 2 → ℚ} (hv : v ≠ 0) (x) : (line v).IsFrameAt ![v] x := by
   exact ⟨li hv, rfl⟩
 
 /- English proof (translation)
-Introduce `h`. Simplify using `using congrFun h 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ne₀ : (![2, 0] : Fin 2 → ℚ) ≠ 0 := by
   intro h
   simpa using congrFun h 0
 /- English proof (translation)
-Introduce `h`. Simplify using `using congrFun h 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ne₁ : (![0, 1] : Fin 2 → ℚ) ≠ 0 := by
   intro h
   simpa using congrFun h 1
 
 /- English proof (translation)
-Use `⟨ιMulti_ne_zero (li ne₀), ιMulti_ne_zero (li ne₁), fun x _ => ?_⟩` and prove the remaining obligations. Establish `h` using `isCoeffAt_of_frame (frame ne₀ x) (frame ne₁ x) (one_ne_zero) (one_ne_zero)`. Rewrite `h` using `[one_smul, one_smul, div_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gen : IsLineGenOn (line ![2, 0]) (line ![0, 1]) 1 1 (exteriorPower.ιMulti ℚ 1 ![![2, 0]])
     (exteriorPower.ιMulti ℚ 1 ![![0, 1]]) Set.univ := by
@@ -292,7 +286,7 @@ theorem gen : IsLineGenOn (line ![2, 0]) (line ![0, 1]) 1 1 (exteriorPower.ιMul
   rwa [one_smul, one_smul, div_one] at h
 
 /- English proof (translation)
-Establish `h` using `isCoeffAt_of_frame (frame ne₀ x) (frame ne₁ x) (inv_ne_zero two_ne_zero) one_ne_zero`. Rewrite `h` using `[one_smul, div_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coeff_half (x) : IsCoeffAt (line ![2, 0]) (line ![0, 1]) 1 1
     ((2 : ℚ)⁻¹ • exteriorPower.ιMulti ℚ 1 ![![2, 0]]) (exteriorPower.ιMulti ℚ 1 ![![0, 1]]) x 2⁻¹ := by
@@ -300,7 +294,7 @@ theorem coeff_half (x) : IsCoeffAt (line ![2, 0]) (line ![0, 1]) 1 1
   rwa [one_smul, div_one] at h
 
 /- English proof (translation)
-Introduce `h`. Establish `hg : IsLineGenOn (line ![2, 0]) (line ![0, 1]) 1 1 (exteriorPower.ιMulti ℚ 1 ![![2, 0]]) (exteriorPower.ιMulti ℚ 1 ![![0, 1]]) {two}` using `⟨gen.1, gen.2.1, fun x _ => gen.2.2 x trivial⟩`. Conclude with `half_notMem (unitAt_of_isLineGenOn (inv_ne_zero two_ne_zero) hg h (Set.mem_singleton _)).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_gen : ¬ IsLineGenOn (line ![2, 0]) (line ![0, 1]) 1 1
     ((2 : ℚ)⁻¹ • exteriorPower.ιMulti ℚ 1 ![![2, 0]]) (exteriorPower.ιMulti ℚ 1 ![![0, 1]]) {two} := by

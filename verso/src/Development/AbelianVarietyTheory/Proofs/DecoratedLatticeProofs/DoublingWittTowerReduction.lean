@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.ResKill
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Eis.dblInt_smul (V := V) (μ := μ) (m := m) (E := E) (f₁ := f) (f₂ := f) c 1 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dblInt_smul_left {D : D7} {V : HSp D} {μ : (AE D)ˣ →* Circle} {m : Measure (GA D V)} (c : ℂ)
     (E : GA D (dblSp V) → ℂ) (f : GA D V → ℂ) :
@@ -36,15 +36,15 @@ theorem dblInt_smul_left {D : D7} {V : HSp D} {μ : (AE D)ˣ →* Circle} {m : M
   simpa using h
 
 /- English proof (translation)
-Introduce `hPr D ψ θ A cA a hDef h2 B W t d hsB hsW hW ht hA χ omB omW hWB hWW ν 𝓕 hcov m hm u hu hinv hK φ hφ hKφ`. Take `⟨b, hb⟩` from `GlobalTheory.RegSW.Model.exists_isMaj B`. Take `⟨νK, hνH, hνP⟩` from `GlobalTheory.RegSW.Model.exists_haar_Kmax B b`. Take `⟨μ₁, 𝓕₁, hμ₁⟩` from `GlobalTheory.MixModel.exists_isCovolOne D t (dblSp A).rank`. Establish `hrk` using `d.rank_add`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIwA : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a hDef.maj`. Establish `hIwB : HasIw d (Kmax B b)` using `GlobalTheory.T.adelic_iwasawa_decomposition_wittIsotropicStabilizer D B W t d b h2 hb`. Take `⟨hP1, hP2, hP3, hP4⟩` from `hPr D ψ A B W t d (by omega) (by omega) hW χ omB omW hWB hWW a b hDef.maj hb hIwA hIwB ν 𝓕 hcov μ₁ 𝓕₁ hμ₁ νK hνH hνP Measure.haar inferInstance`. Establish `hproj : ∀ φ, IsThetaFunO ψ (dblSp A) B φ → IsThetaFunO ψ (dblSp A) B (projK omB νK φ)` using `fun φ h => (hP1 φ h).1`. Establish `hφ' : IsThetaFunO ψ (dblSp A) W (ikeda ψ d μ₁ 𝓕₁ (projK omB νK φ))` using `(hP1 _ (hproj φ hφ)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKφ' : IsKFinVec omW (Khat A a) (ikeda ψ d μ₁ 𝓕₁ (projK omB νK φ))` using `(GlobalTheory.T.theta_majorant_average_identity D ψ (dblSp A) B W t d 1 χ omB omW hWB hWW b hb νK hνP μ₁ 𝓕₁ hμ₁ hproj).2 (Khat A a) φ hφ hKφ`. Use `⟨hP2 φ hφ hKφ, ?_⟩` and prove the remaining obligations. Take `⟨-, hWitt⟩` from `GlobalTheory.T.majorant_exists_and_witt_decomposition D W hsW`. Break down `hWitt with hAn | ⟨W₀, r', d₀, hAn₀, hr'⟩` into its components or cases. Take `⟨hconv, κ, -, hE⟩` from `hP3 hAn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hE φ hφ hKφ, ?_⟩` and prove the remaining obligations. Rewrite using `[dblInt_smul_left, GlobalTheory.T.theta_killing_implies_vanishing D ψ θ A cA a hDef W χ omW hWW m Measure.haar hm inferInstance u hu hinv hK hconv _ hφ' hKφ', mul_zero]`. Take `⟨b', hb'⟩` from `GlobalTheory.RegSW.Model.exists_isMaj W`. Establish `hIw₀ : HasIw d₀ (Kmax W b')` using `GlobalTheory.T.adelic_iwasawa_decomposition_wittIsotropicStabilizer D W W₀ r' d₀ b' h2 hb'`. Take `⟨hAux, hReg, κ, -, hE⟩` from `hP4 W₀ r' d₀ hAn₀ hr' b' hb' hIw₀ θ hDef.inf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Take `⟨zG, zH, P, hzP⟩` from `hReg τ`. Take `⟨hRI, hE'⟩` from `hE τ zG zH P hzP`. Use `⟨_, hE' φ hφ hKφ, ?_⟩` and prove the remaining obligations. Rewrite using `[dblInt_smul_left, GlobalTheory.T.theta_kill_witt_decomposition D ψ θ A cA a hDef W W₀ r' d₀ b' χ omW hWW m Measure.haar hm inferInstance u hu hinv hK hAux τ zH P hzP.2.2.2 hRI _ hφ' hKφ', mul_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_killed : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A : HSp D) (cA : CptF A) (a : GL (Fin A.rank) (AE D)), Defin θ A cA a → (∀ v : FinPl D, (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) → ∀ (B W : HSp D) (t : ℕ) (_ : HypDec B W t), HSpace.SigOK B → HSpace.SigOK W → 0 < W.rank → 0 < t → A.rank = W.rank + t → ∀ (χ : (AE D)ˣ →* Circle) (omB : WRep (dblSp A) B) (omW : WRep (dblSp A) W), IsWeilDatumO ψ (dblSp A) B 1 χ omB → IsWeilDatumO ψ (dblSp A) W 1 χ omW → ∀ ν 𝓕, IsCovolOne (ratL B A) ν 𝓕 → ∀ m : Measure (GA D A), m.IsHaarMeasure → ∀ u : GA D A → ℂ, Continuous u → (∀ γ ∈ GQ A, ∀ g, u (γ * g) = u g) → Kills ψ χ omW m u → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → IsKFinVec omB (Khat A a) φ → GlobalTheory.Eis.EisPoleLE A (flat A a (swSec A B omB ν 𝓕 φ) (sZero A B)) (sZero A B) 1 ∧ ∃ E₁, GlobalTheory.Eis.EisCoeffAt A (flat A a (swSec A B omB ν 𝓕 φ) (sZero A B)) (sZero A B) (-1) E₁ ∧ GlobalTheory.Eis.dblInt A χ⁻¹ m E₁ (fun g => conj (u g)) (fun g => conj (u g)) = 0 := by
   intro hPr D ψ θ A cA a hDef h2 B W t d hsB hsW hW ht hA χ omB omW hWB hWW ν 𝓕 hcov m hm u hu hinv hK φ hφ hKφ

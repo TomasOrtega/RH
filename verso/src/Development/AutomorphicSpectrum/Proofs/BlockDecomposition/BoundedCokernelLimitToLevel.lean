@@ -7,13 +7,11 @@ open TensorProduct CrystallineSemistableComparison CrystallineSemistableComparis
 namespace GlobalTheory.CompanionTheory.TwCok
 
 /- English proof (translation)
-Use `haveI := isNoetherian_of_isNoetherianRing_of_finite W T`. Set `f : ℕ →o Submodule W T` to `⟨fun k => LinearMap.ker ((r ^ k) • LinearMap.id : T →ₗ[W] T), fun a b hab t ht => by`. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at ht ⊢`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[pow_add, mul_comm, mul_smul, ht, smul_zero]⟩`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `monotone_stabilizes_iff_noetherian.mpr inferInstance f`. Use `⟨n, fun k t ht => ?_⟩` and prove the remaining obligations. Break down `le_total k n with hkn | hnk` into its components or cases. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hkn`. Rewrite using `[pow_add, mul_comm, mul_smul, ht, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : t ∈ f k`. Simplify using `only [f, OrderHom.coe_mk, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `ht`. Rewrite `h1` using `[← hn k hnk]`. Establish `h2 : t ∈ LinearMap.ker ((r ^ n) • LinearMap.id : T →ₗ[W] T)` using `h1`.
-
-Rewrite `h2` using `[LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_torsion_bounded {W : Type} [CommRing W] [IsNoetherianRing W] (r : W) (T : Type 1)
     [AddCommGroup T] [Module W T] [Module.Finite W T] :
@@ -43,7 +41,7 @@ def conn (Q : LSeq l S S') (n : ℕ) (x : S.M n) : S'.lim :=
   ⟨fun a => Q.δ n a x, fun a => Q.δ_r n a x⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Simplify using `[conn]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conn_smul (Q : LSeq l S S') (n : ℕ) (s : W) (x : S.M n) :
     s • conn Q n x = conn Q n (s • x) := by
@@ -52,7 +50,7 @@ theorem conn_smul (Q : LSeq l S S') (n : ℕ) (s : W) (x : S.M n) :
   simp [conn]
 
 /- English proof (translation)
-Rewrite using `[conn_smul, Q.kill n x]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Simplify using `[conn]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conn_kill (Q : LSeq l S S') (n : ℕ) (x : S.M n) : ((l : W) ^ n) • conn Q n x = 0 := by
   rw [conn_smul, Q.kill n x]
@@ -61,19 +59,17 @@ theorem conn_kill (Q : LSeq l S S') (n : ℕ) (x : S.M n) : ((l : W) ^ n) • co
   simp [conn]
 
 /- English proof (translation)
-Establish `hy : ∀ m, n ≤ m → ∃ u : S.M m, Q.ρ m n u = x` using `fun m hm => Q.ex₂ (m - n) n m (by omega) x (h _)`. Set `y : ∀ m, S.M m` to `fun m => if hm : n ≤ m then (hy m hm).choose else 0`. Establish `hyx : ∀ m (hm : n ≤ m), Q.ρ m n (y m) = x`. Introduce `m hm`. Simplify using `only [y, dif_pos hm]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(hy m hm).choose_spec`. Set `N : ∀ m, Submodule W (S.M m)` to `fun m => if n ≤ m then LinearMap.ker (Q.ρ m n) else ⊤`. Establish `hN : ∀ m (hm : n ≤ m), N m = LinearMap.ker (Q.ρ m n)` using `fun m hm => if_pos hm`. Establish `hN' : ∀ m (hm : ¬ n ≤ m), N m = ⊤` using `fun m hm => if_neg hm`. Establish `hNr : ∀ m, ∀ u ∈ N (m + 1), S.r m u ∈ N m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m u hu`. Distinguish the cases in `hm : n ≤ m`. Rewrite `hu` using `[hN (m + 1) (by omega), LinearMap.mem_ker]`. Rewrite using `[hN m hm, LinearMap.mem_ker, ← Q.ρ_succ m n hm]`. Conclude with `hu`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hN' m hm]`. Conclude with `Submodule.mem_top`. Establish `hyr : ∀ m, S.r m (y (m + 1)) - y m ∈ N m`. Introduce `m`. Distinguish the cases in `hm : n ≤ m`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hN m hm, LinearMap.mem_ker, map_sub, ← Q.ρ_succ m n hm, hyx (m + 1) (by omega), hyx m hm, sub_self]`. Rewrite using `[hN' m hm]`. Conclude with `Submodule.mem_top`. Take `⟨z, hz⟩` from `GlobalTheory.T.artinian_limit_lift_of_compatible W S hA N y hNr hyr`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hz n`. Rewrite `h1` using `[hN n le_rfl, LinearMap.mem_ker, map_sub, Q.ρ_self, Q.ρ_self, sub_eq_zero]`. Establish `h2` using `hyx n le_rfl`. Rewrite `h2` using `[Q.ρ_self]`. Rewrite using `[← h2]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_of_conn_zero (Q : LSeq l S S') (hA : ∀ n, IsArtinian W (S.M n)) (n : ℕ) (x : S.M n)
     (h : ∀ a, Q.δ n a x = 0) : ∃ y : S.lim, y.1 n = x := by
@@ -113,9 +109,9 @@ theorem lift_of_conn_zero (Q : LSeq l S S') (hA : ∀ n, IsArtinian W (S.M n)) (
   exact h1
 
 /- English proof (translation)
-Introduce `W _ _ l S S' Q hA hF`. Take `⟨c, hc⟩` from `pow_torsion_bounded ((l : W)) S'.lim`. Use `⟨c, fun n x => lift_of_conn_zero Q hA n _ (fun a => ?_)⟩` and prove the remaining obligations. Establish `h0 : conn Q n ((l : W) ^ c • x) = 0`. Rewrite using `[← conn_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc n _ (conn_kill Q n x)`. Establish `h3` using `congrArg (fun v : S'.lim => (v : ∀ m, S'.M m) a) h0`. Simplify `h3` using `[conn]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lim_cokernel_bounded : ∀ (W : Type) [CommRing W] [IsNoetherianRing W] (l : ℕ) (S S' : Sys.{1} W)
     (_ : LSeq l S S'), (∀ n, IsArtinian W (S.M n)) → Module.Finite W S'.lim →

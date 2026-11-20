@@ -46,15 +46,15 @@ def spanSub : Sub F where
     exact this
 
 /- English proof (translation)
-Establish `hl' (j) {V : X.Opens} (h : V ≤ L.U j) (c : Fin r → Γ(X, V)) (a) : dualApp (l j a) h (∑ b, c b • resM F h (w j b)) = c a`. Establish `e (b) : dualApp (l j a) h (resM F h (w j b)) = if a = b then 1 else 0`. Apply the tactic sequence `rw [dualApp_resM (l j a) le_rfl h, hl]; split_ifs <;> simp`. Simplify using `[e]`. Set `N` to `spanSub w l`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hm (j) (b) : w j b ∈ N.sec (L.U j)` using `fun j' V h₁ h₂ => by`. Establish `e` using `congrArg (resM F (le_inf h₂ h₁)) (hB j' j b)`. Simplify using `only [map_sum, resM_smul, resM_resM] at e`. Rewrite using `[e]`. Simplify using `only [hl']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hi (j) {V : X.Opens} (h : V ≤ L.U j) (c : Fin r → Γ(X, V)) : N.incl.app V (∑ b, c b • resM _ h (N.mkSec _ (hm j b))) = ∑ b, c b • resM F h (w j b)`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, app_resM, Sub.incl_app_mkSec]`. Establish `he (j) : IsFrame fun b => N.mkSec _ (hm j b)` using `isFrame_iff.2 fun V h => by`. Use `⟨Fintype.linearIndependent_iff.2 fun c hc a => ?_, fun s _ => (Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun a => dualApp (l j a) h (resM F le_rfl (N.incl.app V s)), N.incl_app_injective V ((hi j h _).trans ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[← hl' j h c a, ← hi, hc, map_zero, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(N.incl_app_mem s j V le_rfl h).symm.trans (resM_self _ _)`. Use `⟨N.toMod, N.incl, inferInstance, lbIso_det_of_frames hL _ he fun j j' => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hg, IsFrame.val_detUnit, Module.Basis.det_apply]`. Use `congr 1`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e : resM _ inf_le_right (N.mkSec _ (hm j' b)) = ∑ a, B j j' a b • (he j).basis (inf_le_left : L.U j ⊓ L.U j' ≤ _) a`. Simplify using `only [IsFrame.basis_apply]`. Use `N.incl_app_injective _ (Eq.trans ?_ (hi j _ _).symm)` and prove the remaining obligations. Rewrite using `[app_resM, Sub.incl_app_mkSec, hB]`. Rewrite using `[Module.Basis.toMatrix_apply, e, Module.Basis.repr_sum_self]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_det {L : LB X} (hL : L.IsLB) (w : ∀ j, Fin r → Γ(F, L.U j)) (l : ∀ j, Fin r → Γ(VB.dual F, L.U j))
     (hl : ∀ j a b, dualApp (l j a) le_rfl (w j b) = if a = b then 1 else 0)
@@ -102,11 +102,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open Classical in
 
 /- English proof (translation)
-Establish `e : (∏ ix, F.T k k' ix ^ (-stepEx σ n ix))⁻¹ = ∏ a : Fin n, F.T k k' (some ⟨σ, a.castLE hn⟩)`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `(Finset.prod_of_injOn (fun a : Fin n => (some ⟨σ, a.castLE hn⟩ : Ix Dw)) (fun a _ b _ h => ?_) (fun _ _ => Finset.mem_univ _) (fun ix _ h => ?_) fun a _ => ?_).symm` and prove the remaining obligations. Simplify using `using h`. Break down `ix with _ | ⟨σ', i⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[stepEx]`. Establish `: ¬ (σ' = σ ∧ (i : ℕ) < n)`. Introduce and unpack `⟨rfl, hi⟩`. Conclude with `h ⟨⟨i, hi⟩, by simp, rfl⟩`. Simplify using `[stepEx, this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[stepEx]`. Use `(congrArg Units.val e).trans ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LL_stepEx_g_inv (σ : E →+* ℂ) {n : ℕ} (hn : n ≤ Dw.mult σ) (k k' : F.J) :
     ((show Γ(Z, F.U k ⊓ F.U k')ˣ from (F.LL (stepEx σ n)).g k k')⁻¹).val =
@@ -128,7 +128,7 @@ theorem LL_stepEx_g_inv (σ : E →+* ℂ) {n : ℕ} (hn : n ≤ Dw.mult σ) (k 
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[← F.tanPull_vecAt k φ z hz hz' rfl rfl (Category.assoc _ _ _).symm, tanPull_left]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_vecAt {S S' : Type} [CommRing S] [CommRing S'] (k : F.J) (φ : S →+* S') {z : Sp S ⟶ Z} {z' : Sp S' ⟶ Z}
     (e : spMap φ ≫ z = z') (hz : ⊤ ≤ z ⁻¹ᵁ F.U k) (hz' : ⊤ ≤ z' ⁻¹ᵁ F.U k) (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) :
@@ -137,29 +137,27 @@ theorem left_vecAt {S S' : Type} [CommRing S] [CommRing S'] (k : F.J) (φ : S �
   rw [← F.tanPull_vecAt k φ z hz hz' rfl rfl (Category.assoc _ _ _).symm, tanPull_left]
 
 /- English proof (translation)
-Use `t.semi` as an intermediate fact. Take `⟨Ψ, hΨ⟩` from `exists_tangent_equiv m`. Take `⟨d, -, hd⟩` from `exists_isVB_of_isSemiAbelian t.G`. Use `hd.isQuasicoherent` as an intermediate fact. Set `J` to `{q : C.Opens × F.J // CoordOpen t q.1 ∧ q.1 ≤ g ⁻¹ᵁ F.U q.2}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hin {T : C.Opens} (hT : IsAffineOpen T) {U : Z.Opens} (h : T ≤ g ⁻¹ᵁ U) : ⊤ ≤ (affPt hT ≫ g) ⁻¹ᵁ U` using `fun z hz => h (le_preimage_affPt hT hz)`. Establish `hc : ⨆ j : J, j.1.1 = ⊤` using `top_unique fun x _ => by`. Take `⟨q, hq⟩` from `Opens.mem_iSup.1 (F.cover.ge (Set.mem_univ (g x)))`. Take `⟨T, hT, hx, hle⟩` from `exists_coordOpen t (V := g ⁻¹ᵁ F.U q) hq`. Conclude with `Opens.mem_iSup.2 ⟨⟨(T, q), hT, hle⟩, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `M` to `CechPic.dual ((F.LL (stepEx σ n)).pull g)`. Establish `hM : M.IsLB` using `isLB_dual (LB.isLB_pull (F.isLB_LL _) g)`. Establish `hle (j : J) : j.1.1 ≤ M.U fun _ => j.1.2` using `j.2.2.trans (GlobalTheory.LB.pull_U (L := F.LL _) g fun _ => j.1.2).ge`. Establish `hL` using `TriangularFrames.isLB_refine hc hM (fun j : J => fun _ => j.1.2) hle`. Set `ψ (j : J)` to `Ψ _ j.2.1 ((affPt j.2.1.1 ≫ g) ≫ π) (Category.assoc _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b (j : J)` to `(lieBasis (F.M j.1.2).toMChart _ (F.inM (hin j.2.1.1 j.2.2) rfl)).map (ψ j)`. Establish `hb (j : J) : IsFrame (b j)` using `Summand.isFrame_of_affine_basis j.2.1.1 _`. Use `choose p hp using fun j : J => F.uAt_split j.1.2 _ (hin j.2.1.1 j.2.2) σ`. Establish `hT (j j' : J) : CoordOpen t (j.1.1 ⊓ j'.1.1)` using `j.2.1.mono (j.2.1.1.inf j'.2.1.1) inf_le_left`. Establish `hh (j j' : J)` using `hin (hT j j').1 ((inf_le_inf j.2.2 j'.2.2).trans (Scheme.Hom.preimage_inf g).ge)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hres (j : J) {T : C.Opens} (hT : CoordOpen t T) (h : T ≤ j.1.1) (a : Fin (Dw.mult σ)) : resM (Lie t.G) h (ψ j (F.vecAt j.1.2 _ (hin j.2.1.1 j.2.2) rfl σ a)) = Ψ T hT _ (Category.assoc _ _ _).symm (F.vecAt j.1.2 _ (hin hT.1 (h.trans j.2.2)) rfl σ a)`. Conclude with `(hΨ _ _ _ _ _ _ _ _ h _ _ (left_vecAt F _ _ (by rw [← Category.assoc, spMap_affPt]) _ _ _ _)).symm`. Set `w (j : J) (a : Fin n) : Γ(Lie t.G, j.1.1)` to `ψ j (F.vecAt j.1.2 _ (hin j.2.1.1 j.2.2) rfl σ (a.castLE hn))`. Set `f (j : J) (a : Fin n) : Γ(VB.dual (Lie t.G), j.1.1)` to `∑ s, p j (a.castLE hn) s • (hb j).coord s`. Set `B (j j' : J) : Matrix (Fin n) (Fin n) Γ(C, j.1.1 ⊓ j'.1.1)` to `((F.B j.1.2 j'.1.2 σ).map (ev _ _ (hh j j'))).submatrix (Fin.castLE hn) (Fin.castLE hn)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁ (j : J) (a a' : Fin n) : dualApp (f j a) le_rfl (w j a') = if a = a' then 1 else 0`. Establish `e` using `congrFun (congrFun (hp j) (a.castLE hn)) (a'.castLE hn)`. Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Fin.castLE_inj] at e`. Rewrite using `[← e, dualApp_sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `e' : w j a' = ∑ s, F.uAt j.1.2 _ (hin j.2.1.1 j.2.2) σ s (a'.castLE hn) • (hb j).basis le_rfl s`. Simplify using `only [w, Frames.vecAt, vec_apply, map_sum, map_smul, IsFrame.basis_apply, resM_self, b, Module.Basis.map_apply]`. Rewrite using `[dualApp_smul, LinearMap.smul_apply, IsFrame.dualApp_coord, e', Module.Basis.repr_sum_self, GlobalTheory.LB.resG_self, smul_eq_mul]`. Establish `h₂ (j j' : J) (a : Fin n) : resM (Lie t.G) (inf_le_right : j.1.1 ⊓ j'.1.1 ≤ _) (w j' a) = ∑ s, B j j' s a • resM (Lie t.G) inf_le_left (w j s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hres j' (hT j j') inf_le_right _).trans ?_` and prove the remaining obligations. Rewrite using `[F.vecAt_eq_sum j.1.2 j'.1.2 _ (hin (hT j j').1 (inf_le_left.trans j.2.2)) _ (hh j j'), map_sum]`. Use `(Finset.sum_of_injOn (Fin.castLE hn) (Fin.castLE_injective hn).injOn (fun _ _ => Finset.mem_univ _) (fun s _ h => ?_) fun s _ => ?_).symm` and prove the remaining obligations. Establish `hs : a.castLE hn < s` using `lt_of_not_ge fun h' => h ⟨⟨s, lt_of_le_of_lt h' a.2⟩, by simp, rfl⟩`. Establish `h0 : (F.B j.1.2 j'.1.2 σ).map (ev _ _ (hh j j')) s (a.castLE hn) = 0` using `F.B_map_tri _ _ σ _ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h0, zero_smul, map_zero]`. Rewrite using `[map_smul, ← hres j (hT j j') inf_le_left]`. Both sides reduce to the same expression. Establish `h₃ (j j' : J) : resG C (inf_le_inf (hle j) (hle j')) (M.g (fun _ => j.1.2) fun _ => j'.1.2).val = (B j j').det`. Establish `ht : (B j j').BlockTriangular id` using `fun s s' h => F.B_map_tri j.1.2 j'.1.2 σ (ev _ _ (hh j j')) (i := s.castLE hn) (j := s'.castLE hn) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_upperTriangular ht]`. Simplify using `only [B, Matrix.submatrix_apply, Matrix.map_apply, ← map_prod]`. Rewrite using `[← LL_stepEx_g_inv F σ hn]`. Use `left_inv_eq_right_inv (a := ev _ _ (hh j j') ((F.LL (stepEx σ n)).g j.1.2 j'.1.2).val) ?_ ((map_mul _ _ _).symm.trans ((congrArg _ (Units.mul_inv _)).trans (map_one _)))` and prove the remaining obligations. Establish `e : ev _ _ (hh j j') ((F.LL (stepEx σ n)).g j.1.2 j'.1.2).val = resG C (inf_le_inf (hle j) (hle j')) (((F.LL (stepEx σ n)).pull g).g (fun _ => j.1.2) fun _ => j'.1.2).val`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (GlobalTheory.LB.resG_pull_g (L := F.LL _) g _ _ _).symm` and prove the remaining obligations. Use `(ev_appLE (affPt (hT j j').1) g ((inf_le_inf j.2.2 j'.2.2).trans (Scheme.Hom.preimage_inf g).ge) (le_preimage_affPt _) _ _).symm.trans ?_` and prove the remaining obligations. Conclude with `congr($(ev_tau_self (hT j j').1 _) _)`. Use `(congrArg (_ * ·) e).trans ((map_mul _ _ _).symm.trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (Units.inv_mul _)).trans (map_one _)`.
-
-Take `⟨W, i, hi, hW, e⟩` from `exists_sub_det (F := Lie t.G) hL w f h₁ B h₂ h₃`. Conclude with `⟨W, i, hi, hW, (cls_eq_iff hM hW.isLB_det).1 (((cls_eq_iff hL hM).2 (TriangularFrames.lbIso_refine hM _ hle)).symm.trans ((cls_eq_iff hL hW.isLB_det).2 e))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_step_sub {C : Scheme.{0}} [C.IsSeparated] [PreconnectedSpace C] (g : C ⟶ Z) {t : SAB H C}
     (m : SABMap t Y.t (g ≫ π)) (σ : E →+* ℂ) {n : ℕ} (hn : n ≤ Dw.mult σ) :
@@ -238,7 +236,7 @@ theorem exists_step_sub {C : Scheme.{0}} [C.IsSeparated] [PreconnectedSpace C] (
     (TriangularFrames.lbIso_refine hM _ hle)).symm.trans ((cls_eq_iff hL hW.isLB_det).2 e))⟩
 
 /- English proof (translation)
-Introduce `C _ hs hp hc g` and use `by have := LieSemineg.isIntegral_curve hs hc have := (isProper_and_exists_isAmpleLB_of_isProjOver hp).1 have : C.IsSeparated := ⟨by rw [← terminal.comp_from (strHom K C)]; infer_instance⟩ obtain ⟨W, i, _, hW, e⟩ := exists_step_sub F g (sabM Out.proved_CubePullSt (g ≫ π) Y.t) σ hn …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem curveTest_LL_stepEx (h : Published.SemiAbelianLieSeminegative) (K : Type) [Field K] [CharZero K] (σ : E →+* ℂ)
     {n : ℕ} (hn : n ≤ Dw.mult σ) : CurveTest K (F.LL (stepEx σ n)) := fun C _ hs hp hc g => by
@@ -255,7 +253,7 @@ theorem curveTest_LL_stepEx (h : Published.SemiAbelianLieSeminegative) (K : Type
   rw [cls_dual hW.isLB_det, ← (cls_eq_iff (isLB_dual hM) hW.isLB_det).2 e, cls_dual hM, neg_neg]
 
 /- English proof (translation)
-The claim follows from `((curveTest_LL_stepEx F h (AlgebraicClosure k) σ hn).pull (F.isLB_LL _) g).isNef hN (LB.isLB_pull (F.isLB_LL _) g)`.
+A detailed English derivation is pending.
 -/
 theorem isNef_pull_LL_stepEx (h : Published.SemiAbelianLieSeminegative) (hN : Published.NefProductNonneg) (k : Type) [Field k]
     [CharZero k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] (g : X ⟶ Z) (σ : E →+* ℂ) {n : ℕ} (hn : n ≤ Dw.mult σ) :

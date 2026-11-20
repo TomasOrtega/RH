@@ -10,9 +10,9 @@ open Matrix NumberField IsDedekindDomain
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ y]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem form_eq_sum {d : ℕ} (φ : (Fin d → ℂ) →ₗ[ℂ] ℂ) (y : Fin d → ℂ) :
     φ y = ∑ i, y i * φ (Pi.single i 1) := by
@@ -37,19 +37,17 @@ theorem coordCLM_apply {d : ℕ} (x : Fin d → ℂ) (i : Fin d) (M : Matrix (Fi
     coordCLM x i M = (M *ᵥ x) i := rfl
 
 /- English proof (translation)
-Use `set c : ℝ → Fin d → ℂ := fun s => NormedSpace.exp ((1 - s) • A) *ᵥ x with hc`. Use `set h : ℝ → ℂ := fun s => ∑ i, c s i * a s (Pi.single i 1) with hh`. Establish `hcd : ∀ s i, HasDerivAt (fun s => c s i) (-(A *ᵥ c s) i) s`. Introduce `s i`. Establish `e1 : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • A)) (A * NormedSpace.exp ((1 - s) • A)) (1 - s)` using `hasDerivAt_exp_smul_const' A (1 - s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : HasDerivAt (fun s : ℝ => NormedSpace.exp ((1 - s) • A)) (-(A * NormedSpace.exp ((1 - s) • A))) s`. Use `e1.scomp s ((hasDerivAt_id s).const_sub 1)` as an intermediate fact. Simplify using `only [neg_smul, one_smul, id] at this`. Conclude with `this`. Establish `e3` using `(coordCLM x i).hasFDerivAt.comp_hasDerivAt s e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e4 : coordCLM x i (-(A * NormedSpace.exp ((1 - s) • A))) = -(A *ᵥ c s) i`. Rewrite using `[coordCLM_apply, Matrix.neg_mulVec, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Conclude with `e3.congr_deriv e4`. Establish `hd : ∀ s, HasDerivAt h 0 s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Introduce `s`. Establish `hs : HasDerivAt h (∑ i, (-(A *ᵥ c s) i * a s (Pi.single i 1) + c s i * a s (A *ᵥ Pi.single i 1))) s` using `HasDerivAt.fun_sum (u := Finset.univ) (fun i _ => (hcd s i).mul (ha s (Pi.single i 1)))`. Use `hs using 1` and compare the differences between its conclusion and the goal. Establish `e4 : ∑ i, c s i * a s (A *ᵥ Pi.single i 1) = a s (A *ᵥ c s)`. Establish `e7` using `form_eq_sum ((a s).comp (Matrix.toLin' A)) (c s)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply] at e7`. Conclude with `e7.symm`. Establish `e5 : ∑ i, (A *ᵥ c s) i * a s (Pi.single i 1) = a s (A *ᵥ c s)` using `(form_eq_sum (a s) _).symm`. Rewrite using `[Finset.sum_add_distrib, e4]`. Simplify using `only [neg_mul, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e5]`. Expand and normalize the polynomial expressions, which then agree. Establish `hconst` using `is_const_of_deriv_eq_zero (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) 1 0`. Establish `h1 : h 1 = a 1 x`. Simplify using `only [hh, hc, sub_self, zero_smul, NormedSpace.exp_zero, Matrix.one_mulVec]`.
-
-Conclude with `(form_eq_sum (a 1) x).symm`. Establish `h0 : h 0 = a 0 (NormedSpace.exp A *ᵥ x)`. Simplify using `only [hh, hc, sub_zero, one_smul]`. Conclude with `(form_eq_sum (a 0) _).symm`. Rewrite using `[← h1, ← h0, hconst]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flow {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (a : ℝ → (Fin d → ℂ) →ₗ[ℂ] ℂ)
     (ha : ∀ s y, HasDerivAt (fun s => a s y) (a s (A *ᵥ y)) s) (x : Fin d → ℂ) :
@@ -92,9 +90,9 @@ theorem flow {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (a : ℝ → (Fin d → 
   rw [← h1, ← h0, hconst]
 
 /- English proof (translation)
-Set `ψ : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun M => φ (M *ᵥ x) map_add' := fun M M' => by simp [Matrix.add_mulVec] map_smul' := fun c M => by simp [Matrix.smul_mulVec] }`. Establish `h` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A).mapL (LinearMap.toContinuousLinearMap ψ)`. Establish `e : ∀ n : ℕ, LinearMap.toContinuousLinearMap ψ (((n.factorial : ℂ))⁻¹ • A ^ n) = ((n.factorial : ℂ))⁻¹ * φ ((A ^ n) *ᵥ x)` using `fun n => by show ψ _ = _`. Simplify using `[ψ, Matrix.smul_mulVec]`. Simplify using `only [e] at h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_exp_mulVec {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (φ : (Fin d → ℂ) →ₗ[ℂ] ℂ) (x : Fin d → ℂ) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * φ ((A ^ n) *ᵥ x)) (φ (NormedSpace.exp A *ᵥ x)) := by
@@ -111,7 +109,7 @@ theorem hasSum_exp_mulVec {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (φ : (Fin 
   exact h
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ (a - b)]`. Introduce `l`. Simplify using `[h l]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem eq_of_forms {V : Type} [AddCommGroup V] [Module ℂ V] {a b : V} (h : ∀ l : V →ₗ[ℂ] ℂ, l a = l b) : a = b := by
   rw [← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ (a - b)]
@@ -131,13 +129,13 @@ def mat : Matrix (Fin (Module.finrank ℂ N)) (Fin (Module.finrank ℂ N)) ℂ :
   LinearMap.toMatrix' ((crd N).toLinearMap ∘ₗ L.restrict hN ∘ₗ (crd N).symm.toLinearMap)
 
 /- English proof (translation)
-Simplify using `[mat, emb, LinearMap.toMatrix'_mulVec, LinearMap.restrict_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_mulVec (y) : emb N (mat L N hN *ᵥ y) = L (emb N y) := by
   simp [mat, emb, LinearMap.toMatrix'_mulVec, LinearMap.restrict_apply]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing y with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, ih, emb_mulVec, pow_succ, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_pow_mulVec (n : ℕ) (y) : emb N ((mat L N hN ^ n) *ᵥ y) = (L ^ n) (emb N y) := by
   induction n generalizing y with
@@ -146,13 +144,13 @@ theorem emb_pow_mulVec (n : ℕ) (y) : emb N ((mat L N hN ^ n) *ᵥ y) = (L ^ n)
     rw [pow_succ, ← Matrix.mulVec_mulVec, ih, emb_mulVec, pow_succ, Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_crd (v : V) (hv : v ∈ N) : emb N (crd N ⟨v, hv⟩) = v := by
   simp [emb]
 
 /- English proof (translation)
-Establish `h` using `hasSum_exp_mulVec (mat L N hN) (l ∘ₗ emb N) (crd N ⟨v, hv⟩)`. Simplify using `only [LinearMap.comp_apply, emb_pow_mulVec, emb_crd] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_emb (v : V) (hv : v ∈ N) (l : V →ₗ[ℂ] ℂ) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((L ^ n) v))
@@ -164,13 +162,11 @@ theorem hasSum_emb (v : V) (hv : v ∈ N) (l : V →ₗ[ℂ] ℂ) :
 end Sub
 
 /- English proof (translation)
-Establish `hp : ∀ v : V, ∃ u : V, ∀ l : V →ₗ[ℂ] ℂ, HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((L ^ n) v)) (l u)`. Introduce `v`. Take `⟨N, hfin, hv, hN⟩` from `hL v`. Conclude with `⟨_, hasSum_emb L N hN v hv⟩`. Use `choose U0 hU0 using hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := U0, map_add' := fun v w => ?_, map_smul' := fun c v => ?_ }, fun v l => hU0 v l⟩` and prove the remaining obligations. Use `eq_of_forms fun l => (hU0 (v + w) l).unique ?_` and prove the remaining obligations. Use `(hU0 v l).add (hU0 w l)` as an intermediate fact. Simplify using `only [map_add, mul_add]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_of_forms fun l => (hU0 (c • v) l).unique ?_` and prove the remaining obligations. Use `(hU0 v l).mul_left c` as an intermediate fact. Establish `e : ∀ n : ℕ, c * (((n.factorial : ℂ))⁻¹ * l ((L ^ n) v)) = ((n.factorial : ℂ))⁻¹ * l ((L ^ n) (c • v))` using `fun n => by simp only [map_smul, smul_eq_mul]; ring`. Simplify using `only [e] at this`. Simplify using `only [map_smul, smul_eq_mul] at this ⊢`.
-
-Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isExp {V : Type} [AddCommGroup V] [Module ℂ V] (L : Module.End ℂ V) (hL : GlobalTheory.RealLift.LocFin L) :
     ∃ U : Module.End ℂ V, GlobalTheory.RealLift.IsExp L U := by
@@ -198,7 +194,7 @@ def evalAt {X : Type} (p : X) : (X → ℂ) →ₗ[ℂ] ℂ := LinearMap.proj p
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (p i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (p i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `[evalAt, GlobalTheory.WeilM.pureA, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_mem_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (p : κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) : evalAt p ∈ (GlobalTheory.WeilM.adeleClass F).adm κ := by
@@ -217,17 +213,17 @@ def pureL (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] (g : (κ
   map_smul' c f := by funext x; simp [GlobalTheory.WeilM.pureA, mul_assoc]
 
 /- English proof (translation)
-Introduce `F _ _ κ V _ _ _ Φ L om hL hadm hSD`. Take `⟨U, hU⟩` from `exists_isExp L hL`. Use `⟨U, hU, fun T g hg => ?_⟩` and prove the remaining obligations. Take `⟨N, hfin, hT, hN⟩` from `hL T`. Establish `hUT : U T = emb N (NormedSpace.exp (mat L N hN) *ᵥ crd N ⟨T, hT⟩)` using `eq_of_forms fun l => (hU T l).unique (hasSum_emb L N hN T hT l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Set `a : ℝ → (Fin (Module.finrank ℂ N) → ℂ) →ₗ[ℂ] ℂ` to `fun s => evalAt p ∘ₗ om (Multiplicative.ofAdd s) ∘ₗ pureL F g ∘ₗ Φ ∘ₗ emb N`. Establish `ha : ∀ s y, HasDerivAt (fun s => a s y) (a s (mat L N hN *ᵥ y)) s`. Introduce `s y`. Establish `h0` using `hSD (emb N y) g hg _ (hadm (Multiplicative.ofAdd s) _ (evalAt_mem_adm F κ p))`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h0)`. Establish `e : (fun u => (evalAt p ∘ₗ om (Multiplicative.ofAdd s)) (om (Multiplicative.ofAdd (u - s)) (GlobalTheory.WeilM.pureA F (Φ (emb N y)) g))) = fun u => a u y`. Use function extensionality and compare the values at `u`. Use `show evalAt p (om (Multiplicative.ofAdd s) (om (Multiplicative.ofAdd (u - s)) _)) = evalAt p (om (Multiplicative.ofAdd u) _)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← ofAdd_add, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `ev : (evalAt p ∘ₗ om (Multiplicative.ofAdd s)) (GlobalTheory.WeilM.pureA F (Φ (L (emb N y))) g) = a s (mat L N hN *ᵥ y)` using `by show _ = evalAt p (om (Multiplicative.ofAdd s) (GlobalTheory.WeilM.pureA F (Φ (emb N (mat L N hN *ᵥ y))) g))`. Rewrite using `[emb_mulVec]`. Both sides reduce to the same expression. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.congr_deriv ev`. Establish `hf` using `flow (mat L N hN) a ha (crd N ⟨T, hT⟩)`. Establish `l1 : a 1 (crd N ⟨T, hT⟩) = om (Multiplicative.ofAdd 1) (GlobalTheory.WeilM.pureA F (Φ T) g) p` using `by show evalAt p (om (Multiplicative.ofAdd 1) (GlobalTheory.WeilM.pureA F (Φ (emb N (crd N ⟨T, hT⟩))) g)) = _`. Rewrite using `[emb_crd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `l0 : a 0 (NormedSpace.exp (mat L N hN) *ᵥ crd N ⟨T, hT⟩) = GlobalTheory.WeilM.pureA F (Φ (U T)) g p` using `by show evalAt p (om (Multiplicative.ofAdd 0) (GlobalTheory.WeilM.pureA F (Φ (emb N (NormedSpace.exp (mat L N hN) *ᵥ crd N ⟨T, hT⟩))) g)) = _`. Rewrite using `[← hUT, ofAdd_zero, map_one, Module.End.one_apply]`. Both sides reduce to the same expression. Rewrite using `[← l1, ← l0]`. Conclude with `hf`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expAct_fock : ∀ (F : Type) [Field F] [NumberField F] (κ V : Type) [Fintype κ] [AddCommGroup V] [Module ℂ V]
     (Φ : V →ₗ[ℂ] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (L : Module.End ℂ V)

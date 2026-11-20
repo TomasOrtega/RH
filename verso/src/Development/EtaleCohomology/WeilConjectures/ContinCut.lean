@@ -36,11 +36,11 @@ Both sides reduce to the same expression.
 theorem evk_apply (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ) (k : ℕ) (x : Hl l E n i) : evk l E n i k x = x.1 k := rfl
 
 /- English proof (translation)
-Introduce `a b hab x hx`. Simplify using `only [LinearMap.mem_ker, evk_apply] at hx ⊢`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Proceed by induction on `d with`. Consider the case `zero => exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `succ d ih`. Apply `ih (Nat.le_add_right _ _)` to reduce the goal to its premises. Establish `h2 : red (l ^ (a + d + 1)) (l ^ (a + d)) E n i (x.1 (a + d + 1)) = x.1 (a + d)` using `x.2 (a + d)`. Establish `h3 : (x.1 (a + d + 1) : Ht (l ^ (a + d + 1)) E n i) = 0` using `hx`. Rewrite using `[← h2, h3]`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero (red (l ^ (a + d + 1)) (l ^ (a + d)) E n i)`.
+A detailed English derivation is pending.
 -/
 theorem evk_anti (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ) : Antitone fun k => LinearMap.ker (evk l E n i k) := by
   intro a b hab x hx

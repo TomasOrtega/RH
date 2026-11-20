@@ -18,7 +18,7 @@ variable {O : Type} [CommRing O] [StarRing O] {A : AnArc O} {T : ℝ} (hT : A.Is
 include hT
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hw => (AnArc.hasSum_coeff_FSum hT h hw v).summable, fun _ hw => Conv.ev_eq_of_hasSum hw _ (AnArc.hasSum_coeff_FSum hT h hw v)⟩`.
+Supply the required witnesses or components.
 -/
 theorem fsum_mem_halfRing {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (v : A.V) :
     ∃ hm : A.FSum j α th v ∈ Conv.halfRing T, ∀ w hw, Conv.ev T w hw ⟨_, hm⟩ = A.Sum j α th w v :=
@@ -26,7 +26,7 @@ theorem fsum_mem_halfRing {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th �
     fun _ hw => Conv.ev_eq_of_hasSum hw _ (AnArc.hasSum_coeff_FSum hT h hw v)⟩
 
 /- English proof (translation)
-Set `S : ℂ⸨X⸩` to `HahnSeries.ofSuppBddBelow (fun n => fderiv ℂ (fun v => (A.FSum j α th v).coeff n) 0 z₀) ⟨-A.be α α, fun n hn => by`. Assume the negation of the conclusion as `hlt`. Conclude with `hn (by simp only [AnArc.fderiv_coeff_FSum_eq_zero (not_le.1 hlt), ContinuousLinearMap.zero_apply])⟩`. Conclude with `⟨⟨S, fun _ hw => (AnArc.hasSum_fderiv_coeff_FSum hT h hw 0 z₀).summable⟩, fun _ => rfl, fun _ hw => Conv.ev_eq_of_hasSum hw _ (AnArc.hasSum_fderiv_coeff_FSum hT h hw 0 z₀)⟩`.
+Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dfsum_halfRing {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (z₀ : A.V) :
     ∃ F : Conv.halfRing T, IsDFSum A j α th z₀ F ∧
@@ -39,11 +39,9 @@ theorem exists_dfsum_halfRing {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : 
     fun _ hw => Conv.ev_eq_of_hasSum hw _ (AnArc.hasSum_fderiv_coeff_FSum hT h hw 0 z₀)⟩
 
 /- English proof (translation)
-Take `⟨n, r, α, th, h1, h2⟩` from `hf`. Establish `key : (fun v => Conv.ev T w hw (f v)) = fun v => ∑ i, Conv.ev T w hw ⟨r i, (h1 i).1⟩ * A.Sum j (α i) (th i) w v`. Use function extensionality and compare the values at `v`. Use `choose hm hv using fun i => fsum_mem_halfRing hT (h1 i).2 v`. Establish `e : f v = ∑ i, (⟨r i, (h1 i).1⟩ : Conv.halfRing T) * ⟨_, hm i⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `h2 v`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, hv i w hw]`.
-
-Rewrite using `[key]`. Conclude with `Differentiable.fun_sum fun i _ => (AnArc.differentiable_Sum hT (NeZero.ne j) (h1 i).2 hw).const_mul _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiable_ev_comb (f : A.V → Conv.halfRing T) (hf : IsComb A j (Conv.halfRing T) (fun v => f v))
     (w : ℂ) (hw : T < w.im) : Differentiable ℂ (fun v => Conv.ev T w hw (f v)) := by
@@ -65,7 +63,7 @@ theorem differentiable_ev_comb (f : A.V → Conv.halfRing T) (hf : IsComb A j (C
 end
 
 /- English proof (translation)
-Introduce `O _ _ A`. Take `⟨T₀, h₀⟩` from `A.exists_isConvLine`. Use `⟨T₀, fun T hT j _ => ?_⟩` and prove the remaining obligations. Establish `h` using `h₀.mono hT`. Conclude with `⟨fun α th hth => ⟨fsum_mem_halfRing h hth, exists_dfsum_halfRing h hth⟩, differentiable_ev_comb h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_formal_convergence : ∀ (O : Type) [CommRing O] [StarRing O] (A : AnArc O), ∃ T₀ : ℝ, ∀ T ≥ T₀, ∀ (j : ℕ) [NeZero j], (∀ α, ∀ th ∈ A.Theta j α, (∀ v, ∃ h : A.FSum j α th v ∈ Conv.halfRing T, ∀ w hw, Conv.ev T w hw ⟨_, h⟩ = A.Sum j α th w v) ∧ ∀ z₀, ∃ F : Conv.halfRing T, IsDFSum A j α th z₀ F ∧ ∀ w hw, Conv.ev T w hw F = fderiv ℂ (A.Sum j α th w) 0 z₀) ∧ ∀ f : A.V → Conv.halfRing T, IsComb A j (Conv.halfRing T) (fun v => f v) → ∀ w hw, Differentiable ℂ (fun v => Conv.ev T w hw (f v)) := by
   intro O _ _ A

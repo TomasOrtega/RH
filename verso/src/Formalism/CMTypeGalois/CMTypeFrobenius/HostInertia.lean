@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.Q3
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, Ideal.over_def P (span {(p : ℤ)}), Ideal.under_def, Ideal.mem_comap, eq_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hostIn_intCast_mem_iff {E : Type} [Field E] [NumberField E] (p : ℕ)
     (P : Ideal (𝓞 E)) [P.LiesOver (span {(p : ℤ)})] (n : ℤ) :
@@ -17,7 +17,7 @@ theorem hostIn_intCast_mem_iff {E : Type} [Field E] [NumberField E] (p : ℕ)
     Ideal.mem_comap, eq_intCast]
 
 /- English proof (translation)
-Establish `: IsGaloisGroup Gal(E/ℚ) ℤ (𝓞 E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ E`. Establish `: (span {(p : ℤ)}).IsPrime`. Rewrite using `[Ideal.span_singleton_prime (by exact_mod_cast (Fact.out : p.Prime).ne_zero)]`. Conclude with `Nat.prime_iff_prime_int.mp Fact.out`. Rewrite using `[card_inertia_eq_ramificationIdxIn (G := Gal(E/ℚ)) (span {(p : ℤ)}) P, ramificationIdxIn_eq_ramificationIdx (span {(p : ℤ)}) P Gal(E/ℚ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostIn_card (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ) [Fact p.Prime]
     (P : Ideal (𝓞 E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
@@ -30,7 +30,7 @@ theorem hostIn_card (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : �
     ramificationIdxIn_eq_ramificationIdx (span {(p : ℤ)}) P Gal(E/ℚ)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[galSign]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hostIn_galSign_one {E : Type} [Field E] [Algebra ℚ E] (α : Fin 3 → E) :
     galSign α (1 : Gal(E/ℚ)) = 1 := by
@@ -38,9 +38,9 @@ theorem hostIn_galSign_one {E : Type} [Field E] [Algebra ℚ E] (α : Fin 3 → 
   simp [galSign]
 
 /- English proof (translation)
-Establish `hsq : α j ^ 2 = ((-(q j : ℤ) : ℤ) : E)` using `hα.1 j`. Establish `hint : IsIntegral ℤ (α j)`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hsq, ← eq_intCast (algebraMap ℤ E)]`. Conclude with `isIntegral_algebraMap`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨α j, hint⟩, rfl, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `only [map_intCast]`. Conclude with `hsq.trans (by push_cast; rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hostIn_A (q : Fin 3 → ℕ) {E : Type} [Field E] [NumberField E] (α : Fin 3 → E)
     (hα : IsHost q α) (j : Fin 3) :
@@ -56,21 +56,21 @@ theorem hostIn_A (q : Fin 3 → ℕ) {E : Type} [Field E] [NumberField E] (α : 
   exact hsq.trans (by push_cast; rfl)
 
 /- English proof (translation)
-Establish `hne : ∀ l, (-(q l : ℤ)) ≠ 0` using `fun l => by`. Use `(hq.1 l).1.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsq : α j ^ 2 = ((-(q j : ℤ) : ℤ) : E)` using `hα.1 j`. Establish `hσα : σ (α j) = -α j`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hG 3 E _ α hα hne).2.1 σ j` as an intermediate fact. Rewrite using `[this, hj]`. Simplify using the standard rewrite rules. Take `⟨c, hc⟩ : ∃ c : ℤ, -(q j : ℤ) = 4 * c + 1` from `⟨(-(q j : ℤ) - 1) / 4, by have := (hq.1 j).2; omega⟩`. Establish `hcE : ((-(q j : ℤ) : ℤ) : E) = 4 * c + 1` using `by exact_mod_cast hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ω, hωdef⟩ : ∃ ω : E, ω = (1 + α j) / 2` from `⟨_, rfl⟩`. Establish `hω2 : ω ^ 2 = ω + (c : E)`. Rewrite using `[hωdef]`. Take the linear combination `(1 / 4 : E) * hsq + (1 / 4 : E) * hcE`. Establish `hωint : IsIntegral ℤ ω`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨Polynomial.X ^ 2 - (Polynomial.X + Polynomial.C c), ?_, ?_⟩` and prove the remaining obligations. Apply `Polynomial.monic_X_pow_sub` to reduce the goal to its premises. Rewrite using `[Polynomial.degree_X_add_C]`. Evaluate the numerical expressions. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_add, Polynomial.eval₂_X, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, hω2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨W, hWcoe⟩ : ∃ W : 𝓞 E, (W : E) = ω` from `⟨⟨ω, hωint⟩, rfl⟩`. Take `⟨A, hAcoe, hA2⟩` from `hostIn_A q α hα j`. Establish `hσW : σ • W - W = -A`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show σ (W : E) - (W : E) = -(A : E)`. Rewrite using `[hWcoe, hAcoe, hωdef, map_div₀, map_add, map_one, hσα]`. Establish `h2 : σ (2 : E) = 2` using `map_ofNat σ 2`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hAP : A ∈ P`. Use `P.neg_mem_iff.mpr (hσW ▸ hσ W)` as an intermediate fact. Simplify using `using this`. Establish `hqP : ((-(q j : ℤ) : ℤ) : 𝓞 E) ∈ P`. Rewrite using `[← hA2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `P.pow_mem_of_mem hAP 2 (by norm_num)`. Rewrite `hqP` using `[hostIn_intCast_mem_iff p P]`. Conclude with `dvd_neg.mp hqP`.
+A detailed English derivation is pending.
 -/
 theorem hostIn_key (hG : MQGalois) (q : Fin 3 → ℕ) (hq : Hyp3 q)
     (E : Type) [Field E] [NumberField E] (α : Fin 3 → E) (hα : IsHost q α)
@@ -119,13 +119,11 @@ theorem hostIn_key (hG : MQGalois) (q : Fin 3 → ℕ) (hq : Hyp3 q)
   exact dvd_neg.mp hqP
 
 /- English proof (translation)
-Establish `hq0 : (q i : ℤ) ≠ 0` using `by exact_mod_cast (hq.1 i).1.ne_zero`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (span {(q i : ℤ)}) P (by simpa using (hq.1 i).1.ne_zero)]`. Establish `hmemq : ((q i : ℤ) : 𝓞 E) ∈ P` using `(hostIn_intCast_mem_iff (q i) P _).mpr dvd_rfl`. Establish `hmap : map (algebraMap ℤ (𝓞 E)) (span {(q i : ℤ)}) = span {((q i : ℤ) : 𝓞 E)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, eq_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.ramificationIdx'_ne_one_iff (by rw [hmap, Ideal.span_le, Set.singleton_subset_iff]; exact hmemq), hmap, Ideal.span_le, Set.singleton_subset_iff]`. Take `⟨A, -, hA2⟩` from `hostIn_A q α hα i`. Establish `hA2P : A ^ 2 ∈ P`. Rewrite using `[hA2, Int.cast_neg]`. Conclude with `P.neg_mem_iff.mpr hmemq`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAP : A ∈ P` using `(inferInstance : P.IsPrime).mem_of_pow_mem 2 hA2P`. Establish `: ((q i : ℤ) : 𝓞 E) = -(A * A)`. Rewrite using `[← pow_two, hA2, Int.cast_neg, neg_neg]`. Use `show ((q i : ℤ) : 𝓞 E) ∈ P ^ 2`. Rewrite using `[this, pow_two]`.
-
-Conclude with `(P * P).neg_mem_iff.mpr (Ideal.mul_mem_mul hAP hAP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostIn_ram_ne_one (q : Fin 3 → ℕ) (hq : Hyp3 q)
     (E : Type) [Field E] [NumberField E] (α : Fin 3 → E) (hα : IsHost q α)
@@ -151,25 +149,23 @@ theorem hostIn_ram_ne_one (q : Fin 3 → ℕ) (hq : Hyp3 q)
   exact (P * P).neg_mem_iff.mpr (Ideal.mul_mem_mul hAP hAP)
 
 /- English proof (translation)
-Introduce `q hq E _ _ α hα i P _ _ σ`. Establish `hGal` using `hH q hq E α hα`. Establish `: IsGalois ℚ E` using `hGal.1`. Establish `hinj` using `hGal.2.2.1.1`. Establish `h1 : galSign α (1 : Gal(E/ℚ)) = 1` using `hostIn_galSign_one α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfwd : ∀ τ : Gal(E/ℚ), (∀ x : 𝓞 E, τ • x - x ∈ P) → (galSign α τ = 1 ∨ galSign α τ = e3 i)`. Introduce `τ hτ`. Establish `hoth : ∀ j, j ≠ i → galSign α τ j = 1`. Introduce `j hji`. Break down `Int.units_eq_one_or (galSign α τ j) with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. It suffices to derive a contradiction. Establish `hd` using `hostIn_key hG q hq E α hα (q i) P τ hτ j h`. Use `(Nat.prime_dvd_prime_iff_eq (hq.1 i).1 (hq.1 j).1).mp (by exact_mod_cast hd)` as an intermediate fact. Conclude with `hji (hq.2 this).symm`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `Int.units_eq_one_or (galSign α τ i) with h | h` into its components or cases. Use `left`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `using h`. Rewrite using `[hoth j hji]`. Both sides reduce to the same expression. Use `right`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `[e3, h]`. Simplify using `[e3, hji, hoth j hji]`. Use `⟨hfwd σ, fun h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `h with h | h` into its components or cases. Establish `: σ = 1` using `hinj (h.trans h1.symm)`. Substitute `this` using the available equality. Introduce `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Establish `hbot : P.inertia Gal(E/ℚ) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `τ hτ`. Rewrite using `[Subgroup.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Break down `hfwd τ hτ with h' | h'` into its components or cases. Conclude with `hinj (h'.trans h1.symm)`. Use `hinj (h'.trans h.symm)` as an intermediate fact. Substitute `this` using the available equality. Conclude with `absurd hτ hn`.
-
-Establish `: Fact (q i).Prime` using `⟨(hq.1 i).1⟩`. Establish `hc` using `hostIn_card E (q i) P`. Rewrite `hc` using `[hbot, Subgroup.card_bot]`. Conclude with `hostIn_ram_ne_one q hq E α hα i P hc.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostInertia_of (hH : HostGalois) (hG : MQGalois) : HostInertia := by
   intro q hq E _ _ α hα i P _ _ σ

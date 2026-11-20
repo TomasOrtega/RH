@@ -15,17 +15,17 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.TripleAssembly.Onto
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm`. Take `⟨iA, iB⟩` from `_root_.GlobalTheory.T.theta_image_eq_span_darboux hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm`. Establish `hg` using `hm.triple.geo`. Establish `hψ' : Bs.ψ = ψ` using `h.ψ`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hψ' ▸ hm.triple.base.std`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `dV : Γ.V.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV.sig w)`. Establish `dV' : Γ.V'.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV'.sig w)`. Establish `dW : Γ.W.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 Complex.I (hg.hW.sig w)`. Establish `gA : (sgn true W).gram.det ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (sgn true W).gram = -W.gram` using `rfl`. Rewrite `dV` using `[h.JW, one_smul]`. Rewrite using `[e1, Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) dV`. Establish `gB : (sgn false W₁).gram.det ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (sgn false W₁).gram = W₁.gram` using `rfl`. Rewrite `dV'` using `[h.JW₁, Matrix.det_smul]`. Rewrite using `[e1]`. Conclude with `right_ne_zero_of_mul dV'`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT, hinj⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M ψ (sgn true W).gram e (hψ' ▸ hg.hM) hstd dV dW gA`. Rewrite using `[← iA T hT]`. Use `(map_thetaLift Γ.M ψ _ e _ _ (GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz _ _ _ Γ.M Bs.ψ Bs.emb hg.hM) T hT hinj).trans ?_` and prove the remaining obligations. Conclude with `map_darbAlg_eq_top Γ.M Bs.ψ Bs.emb hg.hM R.p Rf.p _ (Filter.Eventually.of_forall fun _ => rfl) hm.real.quot.onto hm.fin.onto`. Take `⟨T, hT, hinj⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M' ψ (sgn false W₁).gram e (hψ' ▸ hg.hM') hstd dV' dW gB`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← iB T hT]`. Use `(map_thetaLift Γ.M' ψ _ e _ _ (GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz _ _ _ Γ.M' Bs.ψ Bs.emb hg.hM') T hT hinj).trans ?_` and prove the remaining obligations. Use `map_darbAlg_eq_top Γ.M' Bs.ψ Bs.emb hg.hM' R.p' Rf.p' _ ?_ hm.real.quot'.onto hm.fin.onto'` and prove the remaining obligations. Use `filter_upwards [Xc.T.eventually_cofinite_notMem] with v hv using (hm.fin.sph v hv).1.symm`.
+A detailed English derivation is pending.
 -/
 theorem tripleProductAlgebra_weilRep_range_eq_top : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -83,7 +83,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleAssembly.Onto.tripleProductAlgebra_weilRep_range_eq_top | exact _root_.GlobalTheory.TripleAssembly.Onto.tripleProductAlgebra_weilRep_range_eq_top | (intros; apply _root_.GlobalTheory.TripleAssembly.Onto.tripleProductAlgebra_weilRep_range_e …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.triple_algebra_map_surjective : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

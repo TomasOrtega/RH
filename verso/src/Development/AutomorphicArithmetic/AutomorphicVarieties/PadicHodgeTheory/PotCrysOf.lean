@@ -8,13 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsContinuous
 open Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc Topology NumberField IsDedekindDomain
 
 /- English proof (translation)
-Establish `hr : φ.range = φ'.range`. Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨e g, h1 g⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨g, rfl⟩`. Take `⟨g, rfl⟩` from `he g`. Conclude with `⟨g, (h1 g).symm⟩`. Establish `hρ : ∀ g, resCoef ℚ_[l] ρ' (e g) = resCoef ℚ_[l] ρ g` using `fun g => LinearMap.ext fun x => h2 g x`. Establish `hc : Dcr φ (resCoef ℚ_[l] ρ) = Dcr φ' (resCoef ℚ_[l] ρ')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Dcr`. Rewrite using `[he.iInf_comp (fun g => LinearMap.ker (actC φ' (resCoef ℚ_[l] ρ') g - LinearMap.id)) |>.symm]`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Unfold `actC`. Rewrite using `[hρ, h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsCr`. Rewrite using `[hr, hc]`. Conclude with `id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cr_transport {l : ℕ} [Fact l.Prime] {G G' A V : Type} [Group G] [Group G'] [CommRing A]
     [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V]
@@ -41,7 +41,7 @@ private theorem cr_transport {l : ℕ} [Fact l.Prime] {G G' A V : Type} [Group G
   exact id
 
 /- English proof (translation)
-Use `E'.2` as an intermediate fact. Establish `: IsModuleTopology ℚ_[l] (Fin n → ↥E'.1)` using `isModuleTopologyOfFiniteDimensional`. Conclude with `(isCrField K ρ).1.1 ((isCrIff K ρ).1.1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem crys_of_isCr {l : ℕ} [Fact l.Prime] (K E' : FinExt l) {n : ℕ}
     (ρ : Representation ↥E'.1 ↥(GK K) (Fin n → ↥E'.1)) (h : IsCr (GK K).subtype ρ) :
@@ -51,7 +51,7 @@ private theorem crys_of_isCr {l : ℕ} [Fact l.Prime] (K E' : FinExt l) {n : ℕ
   exact (isCrField K ρ).1.1 ((isCrIff K ρ).1.1 h)
 
 /- English proof (translation)
-Set `K : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun x : E => j (algebraMap E Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap E Ω))⟩`. Use `K.2` as an intermediate fact. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := E) hj K rfl`. Conclude with `⟨⟨IntermediateField.normalClosure ℚ_[l] K.1 (PadicAlgCl l), inferInstance⟩, { Kw := K j := j j_E := fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩ j_dense := GlobalTheory.PlaceBridge.adjoin_range_subset_closure (j.comp (algebraMap E Ω)) e := e e_cont := he e_symm_cont := h …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ex_bridge {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} (j : Ω →+* Om l) (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) :
@@ -78,29 +78,27 @@ private theorem ex_bridge {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Al
       eO_symm_cont := continuous_id }, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ j H _ _ _ φ ψ hφ hφψ n r hr E' r' hr' hcr`. Establish `hj : ∀ x, x ∈ placeJ j ↔ ‖j x‖ ≤ 1` using `fun x => by`. Express the relevant statement in the definitionally equal form `Valued.v (j x) ≤ 1 ↔ _`. Rewrite using `[PadicAlgCl.valuation_def]`. Conclude with `Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Take `⟨L, Bw, hBj, hK⟩` from `ex_bridge (E := F) j hj`. Use `⟨↥(OL L), inferInstance, inferInstance, inferInstance, Bw, fun x => by rw [hBj]; exact hj x, ?_⟩` and prove the remaining obligations. Use `haveI : CompactSpace ↥(GK Bw.Kw) := by haveI := Bw.Kw.2`. Conclude with `isCompact_iff_compactSpace.1 Bw.Kw.1.fixingSubgroup_isClosed.isCompact`. Use `haveI : CompactSpace ↥(Dec (F := F) (placeJ j)) := Bw.e.symm.surjective.compactSpace Bw.e_symm_cont`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : T2Space ↥(Dec (F := F) (placeJ j)) := inferInstance`. Set `r₀` to `r.comp (Dec (F := F) (placeJ j)).subtype`. Establish `hc0 : Continuous fun g => ((r₀ g : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l))` using `Units.continuous_val.comp (hr.comp continuous_subtype_val)`. Take `⟨LL, hL, hent⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l _ n r₀ hc0 (GlobalTheory.Pst.supExt Bw.LL E')`. Take `⟨r₁, hr₁⟩` from `GlobalTheory.CompactRepField.exists_hom_of_entries_mem r₀ LL.1 hent`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `l₁ : Bw.LL.1 ≤ LL.1` using `le_trans le_sup_left hL`. Establish `l₂ : E'.1 ≤ LL.1` using `le_trans le_sup_right hL`. Use `⟨LL, r₁, ⟨l₁, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `g a b`. Conclude with `hr₁ g a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨K, e, -, -, he, hKr, -, -⟩` from `openField φ hφ`. Establish `he' : ∀ g, ((e g : ↥(GK K)) : GQ l) = φ g` using `fun g => DFunLike.congr_fun he g`. Establish `hle : GK K ≤ GK Bw.Kw`. Rewrite using `[← hKr]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.PlaceBridge.mem_GK_iff Bw.Kw hK]`. Introduce `x`. Rewrite using `[hφψ, AlgEquiv.commutes]`. Establish `h : Bw.Kw.1 ≤ K.1`. Establish `: IsGalois ℚ_[l] (Om l)` using `inferInstance`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup K.1, ← InfiniteGalois.fixedField_fixingSubgroup Bw.Kw.1]`. Conclude with `IntermediateField.fixedField_le hle`. Use `⟨K, h, ?_⟩` and prove the remaining obligations. Set `ρK : Representation ↥E'.1 ↥(GK K) (Fin n → ↥E'.1)` to `(colRep r').comp e.symm.toMonoidHom`. Establish `t1 : IsCr (GK K).subtype ρK` using `cr_transport e e.surjective he' (fun g x => by simp [ρK]) hcr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t2` using `crys_of_isCr K E' ρK t1`. Set `_ : Algebra ↥E'.1 ↥LL.1` to `(IntermediateField.inclusion l₂).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥E'.1 ↥LL.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `LL.2` as an intermediate fact. Establish `: FiniteDimensional ↥E'.1 ↥LL.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(GlobalTheory.Pst.isCrys_ext_iff _ (ρ := ρK) fun g => ⟨r' (e.symm g), fun _ => rfl, fun x => ?_⟩).2 t2` and prove the remaining obligations. Establish `hg : ((Bw.e.symm (Subgroup.inclusion (GK_le h) g) : ↥(Dec (F` using `F) (placeJ j))) : G F Ω) = ψ (e.symm g) := by`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `y`. Apply `j.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1` using `Bw.e_comm (Bw.e.symm (Subgroup.inclusion (GK_le h) g)) y`. Rewrite `h1` using `[hBj, MulEquiv.apply_symm_apply]`. Rewrite using `[← h1, ← hφψ, ← he', MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hM : (r₁ (Bw.e.symm (Subgroup.inclusion (GK_le h) g)) : Matrix (Fin n) (Fin n) ↥LL.1) = (r' (e.symm g) : Matrix (Fin n) (Fin n) ↥E'.1).map (algebraMap ↥E'.1 ↥LL.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Rewrite using `[hr₁]`. Use `Eq.trans ?_ (hr' (e.symm g) a b).symm` and prove the remaining obligations. Rewrite using `[← hg]`. Both sides reduce to the same expression.
-
-Rewrite using `[← hM]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.potCrysOf :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (j : Ω →+* Om l) {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (φ : H →* GQ l) (ψ : H →* G F Ω), IsOpenEmbedding φ → (∀ h y, φ h (j y) = j (ψ h y)) → ∀ {n : ℕ} (r : G F Ω →* GL (Fin n) (Qbar l)), Continuous r → ∀ (E' : FinExt l) (r' : H →* GL (Fin n) ↥E'.1), (∀ h a b, (((r' h : Matrix (Fin n) (Fin n) ↥E'.1) a b : ↥E'.1) : Om l) = (r (ψ h) : Matrix (Fin n) (Fin n) (Qbar l)) a b) → IsCr φ (colRep r') → UpperTheory.V.Af.PotCrysAt r (placeJ j) := by

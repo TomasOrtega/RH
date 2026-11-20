@@ -22,9 +22,9 @@ def perp {n : ℕ} (ψ : AddChar k Circle) (A : AddSubgroup (Fin n → k)) :
     rw [neg_dotProduct, AddChar.map_neg_eq_inv, hx a ha, inv_one]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Establish `hN : IsOpen ((fun q : (Fin n → k) × (Fin n → k) => q.1 ⬝ᵥ q.2) ⁻¹' cball s)` using `(isOpen_cball s).preimage continuous_dot`. Establish `hsub : ({0} : Set (Fin n → k)) ×ˢ (A : Set (Fin n → k)) ⊆ (fun q : (Fin n → k) × (Fin n → k) => q.1 ⬝ᵥ q.2) ⁻¹' cball s`. Introduce and unpack `⟨x, a⟩ ⟨hx, -⟩`. Take `rfl : x = 0` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `[cball]`. Take `⟨u, v, hu, -, h0u, hAv, huv⟩` from `generalized_tube_lemma isCompact_singleton hAc hN hsub`. Use `AddSubgroup.isOpen_of_mem_nhds (perp ψ A) (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (hu.mem_nhds (h0u rfl)) fun ξ hξ a ha => ?_` and prove the remaining obligations. Conclude with `hs _ (huv (Set.mk_mem_prod hξ (hAv ha)))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (A : AddSubgroup (Fin n → k)) (hAc : IsCompact (A : Set (Fin n → k))) :
@@ -44,9 +44,9 @@ theorem isOpen_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
   exact hs _ (huv (Set.mk_mem_prod hξ (hAv ha)))
 
 /- English proof (translation)
-Establish `: (perp ψ A : Set (Fin n → k)) = ⋂ a ∈ A, (fun ξ : Fin n → k => ψ (ξ ⬝ᵥ a)) ⁻¹' {1}`. Use extensionality with `ξ`. Simplify using `[perp]`. Rewrite using `[this]`. Use `isClosed_biInter fun a _ => isClosed_singleton.preimage ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hψ.comp (continuous_id.dotProduct continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (A : AddSubgroup (Fin n → k)) : IsClosed (perp ψ A : Set (Fin n → k)) := by
@@ -59,11 +59,11 @@ theorem isClosed_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
   exact hψ.comp (continuous_id.dotProduct continuous_const)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Take `⟨s, hs⟩` from `exists_box_subset (n := Fin n) (hAo.mem_nhds A.zero_mem)`. Use `(isCompact_box (n := Fin n) (c * s⁻¹)).of_isClosed_subset (isClosed_perp ψ hψ A) ?_` and prove the remaining obligations. Introduce `ξ hξ i _`. Assume the negation of the conclusion as `hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨t, ht, hne⟩` from `hc.exists_ne_one s hi`. Establish `hmem : Pi.single i t ∈ box (Fin n) s`. Introduce `j _`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using ht`. Simplify using `[Pi.single_eq_of_ne hj, cball]`. Apply `hne` to reduce the goal to its premises. Use `hξ _ (hs hmem)` as an intermediate fact. Rewrite `this` using `[dotProduct_single, mul_comm]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isCompact_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (A : AddSubgroup (Fin n → k)) (hAo : IsOpen (A : Set (Fin n → k))) :
@@ -85,7 +85,7 @@ theorem isCompact_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   rwa [dotProduct_single, mul_comm] at this
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h1 n A hAc hAo`. Conclude with `⟨isOpen_perp ψ hψ A hAc, isCompact_perp ψ hψ h1 A hAo⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem perp_isOpen_isCompact : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →

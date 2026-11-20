@@ -3,29 +3,27 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `O Ω _ _ _ _ _ _ _ hO ϖ hϖ hlt S hS E hE hdig`. Establish `hI : maximalIdeal O = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Establish `hhaus : IsHausdorff (maximalIdeal O) S`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ n : ℕ, ‖(x : Ω)‖ ≤ ‖algebraMap O Ω ϖ‖ ^ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `n`. Establish `h` using `hx n`. Rewrite `h` using `[SModEq.zero, hI, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul]`. Take `⟨t, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h`. Establish `: (((ϖ ^ n) • t : S) : Ω) = algebraMap O Ω ϖ ^ n * (t : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[Algebra.smul_def]`. Rewrite using `[this, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (hS _ t.2)`. Establish `hlim : Filter.Tendsto (fun n : ℕ => ‖algebraMap O Ω ϖ‖ ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hlt`. Establish `h0 : ‖(x : Ω)‖ ≤ 0` using `ge_of_tendsto' hlim hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (norm_le_zero_iff.1 h0)`. Establish `hpre : IsPrecomplete (maximalIdeal O) (E → O)`. Use `⟨fun g hg => ?_⟩` and prove the remaining obligations. Establish `hcoord : ∀ {m : ℕ} (x : E → O), x ∈ (maximalIdeal O ^ m • ⊤ : Submodule O (E → O)) → ∀ i, x i ∈ maximalIdeal O ^ m`. Introduce `m x hx i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `Submodule.mem_map_of_mem (f := (LinearMap.proj i : (E → O) →ₗ[O] O)) hx`. Rewrite `h` using `[Submodule.map_smul'']`. Establish `h2 : x i ∈ (maximalIdeal O ^ m • ⊤ : Submodule O O)` using `Submodule.smul_mono le_rfl le_top h`. Simplify using `using h2`. Establish `hc : ∀ i : E, ∃ L : O, ∀ n, g n i ≡ L [SMOD (maximalIdeal O ^ n • ⊤ : Submodule O O)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `IsPrecomplete.prec (I := maximalIdeal O) (M := O) inferInstance (f := fun n => g n i) ?_` and prove the remaining obligations. Introduce `m n hmn`. Establish `h` using `(SModEq.sub_mem.1 (hg hmn))`. Use `SModEq.sub_mem.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hcoord _ h i`. Simplify using `using h2`. Use `choose L hL using hc`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `SModEq.sub_mem.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hsum : g n - L = ∑ i : E, (g n i - L i) • (Pi.single i 1 : E → O)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `h` using `SModEq.sub_mem.1 (hL i n)`. Simplify using `using h`. Set `v : E → S` to `fun e => ⟨e, hE e e.2⟩`. Set `f : (E → O) →ₗ[O] S` to `Fintype.linearCombination O v`. Establish `hsurj : Function.Surjective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `surjective_of_mkQ_comp_surjective (I := maximalIdeal O) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨s, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨e, he, s', hs', hs⟩` from `hdig s s.2`. Use `⟨Pi.single ⟨e, he⟩ 1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hf : f (Pi.single ⟨e, he⟩ 1) = ⟨e, hE e he⟩`. Simplify using `[f, v, Fintype.linearCombination_apply_single]`. Simplify using `only [LinearMap.comp_apply, hf]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, hI, Submodule.ideal_span_singleton_smul]`. Use `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨-⟨s', hs'⟩, trivial, ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hs]`. Conclude with `Module.Finite.of_surjective f hsurj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.digit_expansion_lattice :
     ∀ {O Ω : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

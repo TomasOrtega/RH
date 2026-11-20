@@ -4,13 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Use `haveI : (H.subgroupOf L).FiniteIndex := ⟨hfin⟩`. Set `f : L ⧸ H.subgroupOf L → K ⧸ H.subgroupOf K` to `Quotient.map' (fun l => (⟨l, hLK l.2⟩ : K)) (by`. Introduce `a b hab`. Rewrite `hab`, the goal using `[QuotientGroup.leftRel_apply]`. Simplify `hab)` using `[Subgroup.mem_subgroupOf]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hf : Function.Surjective f`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H k`. Take `⟨l, hl, h, hh, e⟩` from `hcov k k.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨QuotientGroup.mk ⟨l, hl⟩, ?_⟩` and prove the remaining obligations. Use `show QuotientGroup.mk _ = QuotientGroup.mk k`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `hh` using `[e]`. Use `haveI := Finite.of_surjective f hf`.
-
-Conclude with `Subgroup.index_ne_zero_of_finite`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem relIndex_ne_zero_of_cover_ordinary_hecke_characters {G : Type} [Group G] (H K L : Subgroup G) (hHK : H ≤ K) (hLK : L ≤ K)
     (hcov : ∀ k ∈ K, ∃ l ∈ L, ∃ h ∈ H, k = l * h) (hfin : H.relIndex L ≠ 0) : H.relIndex K ≠ 0 := by
@@ -33,13 +31,11 @@ private theorem relIndex_ne_zero_of_cover_ordinary_hecke_characters {G : Type} [
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Establish `hNm : I.Nm c ≤ I.Iw c` using `le_sup_right`. Establish `hT : I.T ≤ I.Iw c` using `le_trans le_sup_right le_sup_left`. Establish `hN : I.N ≤ I.Iw c` using `le_trans le_sup_left le_sup_left`. Use `relIndex_ne_zero_of_cover_ordinary_hecke_characters (I.Iw c) (I.Iw 0) (I.Nm 0) ?_ le_sup_right ?_ ?_` and prove the remaining obligations. Use `show I.N ⊔ I.T ⊔ I.Nm c ≤ I.N ⊔ I.T ⊔ I.Nm 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sup_le_sup_left (I.Nm_anti (Nat.zero_le c)) _`. Introduce `g hg`. Take `⟨x, hx, t, ht, y, hy, e⟩` from `((iwMem G I 0 g⁻¹).1).1 (inv_mem hg)`. Use `⟨y⁻¹, inv_mem hy, t⁻¹ * x⁻¹, mul_mem (hT (inv_mem ht)) (hN (inv_mem hx)), ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv g, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `group`. Introduce `h0`. Apply `I.fin_Nm c` to reduce the goal to its premises. Establish `hd` using `Subgroup.relIndex_dvd_of_le_left (I.Nm 0) hNm`. Rewrite `hd` using `[h0]`.
-
-Conclude with `Nat.eq_zero_of_zero_dvd hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iwahori_relIndex_ne_zero {G : Type} [Group G] (I : Iwa G) (c : ℕ) : (I.Iw c).relIndex (I.Iw 0) ≠ 0 := by
   have hNm : I.Nm c ≤ I.Iw c := le_sup_right
@@ -60,15 +56,13 @@ private theorem iwahori_relIndex_ne_zero {G : Type} [Group G] (I : Iwa G) (c : �
     exact Nat.eq_zero_of_zero_dvd hd
 
 /- English proof (translation)
-Establish `hTc : I.Tc c ≤ I.I1 c` using `le_trans le_sup_right le_sup_left`. Establish `hN1 : I.N ≤ I.I1 c` using `le_trans le_sup_left le_sup_left`. Establish `hNm1 : I.Nm c ≤ I.I1 c` using `le_sup_right`. Establish `hT : I.T ≤ I.Iw c` using `le_trans le_sup_right le_sup_left`. Establish `hle : I.I1 c ≤ I.Iw c` using `by show I.N ⊔ I.Tc c ⊔ I.Nm c ≤ I.N ⊔ I.T ⊔ I.Nm c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sup_le_sup_right (sup_le_sup_left (I.Tc_le c) _) _`. Establish `hle' : I.Iw c ≤ I.Iw 0` using `by show I.N ⊔ I.T ⊔ I.Nm c ≤ I.N ⊔ I.T ⊔ I.Nm 0`. Conclude with `sup_le_sup_left (I.Nm_anti (Nat.zero_le c)) _`. Establish `h1 : (I.I1 c).relIndex (I.Iw c) ≠ 0`. Use `relIndex_ne_zero_of_cover_ordinary_hecke_characters (I.I1 c) (I.Iw c) I.T hle hT ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Take `⟨x, hx, t, ht, y, hy, e⟩` from `((iwMem G I c g).1).1 hg`. Establish `hx' : t⁻¹ * x * t ∈ I.N`. Simplify using `using I.T_N t⁻¹ (inv_mem ht) x hx`. Use `⟨t, ht, t⁻¹ * x * t * y, mul_mem (hN1 hx') (hNm1 hy), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Use `group`. Introduce `h0`. Apply `I.fin_Tc c` to reduce the goal to its premises. Establish `hd` using `Subgroup.relIndex_dvd_of_le_left I.T hTc`.
-
-Rewrite `hd` using `[h0]`. Conclude with `Nat.eq_zero_of_zero_dvd hd`. Rewrite using `[← Subgroup.relIndex_mul_relIndex _ _ _ hle hle']`. Conclude with `mul_ne_zero h1 (iwahori_relIndex_ne_zero I c)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iwahori_pro_unipotent_finite_index {G : Type} [Group G] (I : Iwa G) (c : ℕ) : (I.I1 c).relIndex (I.Iw 0) ≠ 0 := by
   have hTc : I.Tc c ≤ I.I1 c := le_trans le_sup_right le_sup_left
@@ -99,7 +93,7 @@ private theorem iwahori_pro_unipotent_finite_index {G : Type} [Group G] (I : Iwa
   exact mul_ne_zero h1 (iwahori_relIndex_ne_zero I c)
 
 /- English proof (translation)
-Introduce `G _ I c`. Conclude with `⟨iwahori_relIndex_ne_zero I c, iwahori_pro_unipotent_finite_index I c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Hi.iwFin :
     ∀ (G : Type) [Group G] (I : Iwa G) (c : ℕ), (I.Iw c).relIndex (I.Iw 0) ≠ 0 ∧ (I.I1 c).relIndex (I.Iw 0) ≠ 0 := by

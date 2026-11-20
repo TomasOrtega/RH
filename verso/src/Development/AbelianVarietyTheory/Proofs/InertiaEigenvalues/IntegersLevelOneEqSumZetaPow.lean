@@ -18,9 +18,9 @@ open Polynomial GlobalTheory.Cyc.IntBasis
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1 : IsPrimitiveRoot (algebraMap (Om l) (PadicComplex l) ζ) (l ^ 1)`. Rewrite using `[pow_one]`. Conclude with `hζ.map_of_injective (algebraMap (Om l) (PadicComplex l)).injective`. Establish `h2` using `GlobalTheory.Cyc.norm_primitiveRoot_sub_one l 1 le_rfl _ h1`. Establish `h3 : ‖algebraMap (Om l) (PadicComplex l) (ζ - 1)‖ = ‖ζ - 1‖` using `PadicComplex.norm_extends l (ζ - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[map_sub, map_one, h2]`. Rewrite using `[← h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_primitiveRoot_sub_one' (ζ : Om l) (hζ : IsPrimitiveRoot ζ l) :
     ‖ζ - 1‖ = (l : ℝ) ^ (-(1 : ℝ) / ((l : ℝ) - 1)) := by
@@ -35,11 +35,11 @@ private theorem norm_primitiveRoot_sub_one' (ζ : Om l) (hζ : IsPrimitiveRoot �
   simp
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hm : (l : ℝ) - 1 ≠ 0` using `by linarith`. Take `⟨n, hn⟩` from `GlobalTheory.UnramValue.norm_of_mem_unramified_subfield l K z hz h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, hn, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, hn, norm_primitiveRoot_sub_one' ζ hζ, ← Real.rpow_intCast, ← Real.rpow_mul_natCast hl0.le, ← Real.rpow_add hl0]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Apply the tactic sequence `try ring`.
+A detailed English derivation is pending.
 -/
 theorem norm_term (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
     (z : Om l) (hz : z ∈ K0 K) (h0 : z ≠ 0) :
@@ -59,17 +59,17 @@ theorem norm_term (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
   try ring
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hm : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Use `norm_le_norm_sum (Finset.range (l - 1)) (fun b => z b * (ζ - 1) ^ b) ?_ a (Finset.mem_range.2 ha)` and prove the remaining obligations. Introduce `b hb c hc hbc hb0 hc0 heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb' : z b ≠ 0` using `fun h => hb0 (by simp [h])`. Establish `hc' : z c ≠ 0` using `fun h => hc0 (by simp [h])`. Establish `heq' : ‖z b * (ζ - 1) ^ b‖ = ‖z c * (ζ - 1) ^ c‖` using `heq`. Take `⟨nb, -, hnb⟩` from `GlobalTheory.Cyc.FirstLevel.norm_term K ζ hζ (z b) (hz b) hb'`. Take `⟨nc, -, hnc⟩` from `GlobalTheory.Cyc.FirstLevel.norm_term K ζ hζ (z c) (hz c) hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `heq'` using `[hnb b, hnc c]`. Establish `he` using `le_antisymm ((Real.rpow_le_rpow_left_iff hl1).1 heq'.le) ((Real.rpow_le_rpow_left_iff hl1).1 heq'.ge)`. Rewrite `he` using `[div_left_inj' hm.ne']`. Establish `he' : nb * ((l : ℤ) - 1) - b = nc * ((l : ℤ) - 1) - c` using `by exact_mod_cast he`. Rewrite `hb`, `hc` using `[Finset.mem_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb2 : (b : ℤ) < (l : ℤ) - 1` using `by omega`. Establish `hc2 : (c : ℤ) < (l : ℤ) - 1` using `by omega`. Establish `hb3 : (0 : ℤ) ≤ b` using `by omega`. Establish `hc3 : (0 : ℤ) ≤ c` using `by omega`. Establish `hm' : (0 : ℤ) ≤ (l : ℤ) - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hbc` to reduce the goal to its premises. Break down `lt_trichotomy nb nc with h | h | h` into its components or cases. It suffices to derive a contradiction. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (show nb + 1 ≤ nc by omega) hm']`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Substitute using the available equality.
 
-Establish `: (b : ℤ) = c` using `by linarith`. Conclude with `this` after adjusting the coercions. It suffices to derive a contradiction. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (show nc + 1 ≤ nb by omega) hm']`.
+Establish an intermediate fact. It suffices to derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem term_le (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
     (z : ℕ → Om l) (hz : ∀ a, z a ∈ K0 K) (a : ℕ) (ha : a < l - 1) :
@@ -107,13 +107,13 @@ theorem term_le (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
     nlinarith [mul_le_mul_of_nonneg_right (show nc + 1 ≤ nb by omega) hm']
 
 /- English proof (translation)
-Distinguish the cases in `h0 : z = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `zero_le_one`. Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Take `⟨n, hn, hna⟩` from `GlobalTheory.Cyc.FirstLevel.norm_term K ζ hζ z hz h0`. Rewrite `h` using `[hna a]`. Establish `h'` using `(Real.rpow_le_rpow_left_iff hl1).1 (h.trans_eq (Real.rpow_zero (l : ℝ)).symm)`. Rewrite `h'` using `[div_le_iff₀ hm, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : n * ((l : ℤ) - 1) - a ≤ 0` using `by exact_mod_cast h'`. Establish `ha' : (a : ℤ) < (l : ℤ) - 1` using `by omega`. Establish `hn0 : n ≤ 0`. Assume the negation of the conclusion as `hc`. Establish `hm' : (0 : ℤ) ≤ (l : ℤ) - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (show (1 : ℤ) ≤ n by omega) hm']`. Rewrite using `[hn]`. Conclude with `zpow_le_one_of_nonpos₀ hl1.le hn0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_le (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
     (z : Om l) (hz : z ∈ K0 K) (a : ℕ) (ha : a < l - 1) (h : ‖z * (ζ - 1) ^ a‖ ≤ 1) :
@@ -138,21 +138,19 @@ theorem coeff_le (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
   exact zpow_le_one_of_nonpos₀ hl1.le hn0
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `: NeZero l` using `⟨by omega⟩`. Establish `hint : IsIntegral (↥(K0 K)) ζ`. Use `IsIntegral.of_pow (n := l) (by omega) ?_` and prove the remaining obligations. Rewrite using `[hζ.pow_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`. Establish `hle : Ks K 1 ≤ (IntermediateField.adjoin (↥(K0 K)) {ζ}).restrictScalars ℚ_[l]`. Unfold `Ks`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.mem_restrictScalars]`. Conclude with `IntermediateField.algebraMap_mem _ (⟨y, hy⟩ : ↥(K0 K))`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `y hy`. Establish `hy' : y ^ l = 1` using `by simpa using hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hy'`. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_restrictScalars]`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self _ ζ) i`. Establish `hx' : x ∈ (IntermediateField.adjoin (↥(K0 K)) {ζ}).toSubalgebra` using `(IntermediateField.mem_restrictScalars ℚ_[l]).1 (hle hx)`. Rewrite `hx'` using `[IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval, AlgHom.mem_range]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, rfl⟩` from `hx'`. Establish `hmon` using `minpoly.monic hint`. Establish `hpos` using `minpoly.natDegree_pos hint`. Establish `hdeg : (minpoly (↥(K0 K)) ζ).natDegree ≤ l - 1`. Establish `hdvd : minpoly (↥(K0 K)) ζ ∣ Polynomial.cyclotomic l (↥(K0 K))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[Polynomial.aeval_def, ← Polynomial.eval_map, Polynomial.map_cyclotomic]`. Conclude with `hζ.isRoot_cyclotomic (by omega)`. Use `Polynomial.natDegree_le_of_dvd hdvd (Polynomial.cyclotomic_ne_zero l (↥(K0 K)))` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_cyclotomic, Nat.totient_prime (Fact.out : l.Prime)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨p %ₘ minpoly (↥(K0 K)) ζ, ?_, ?_⟩` and prove the remaining obligations. Establish `hne : minpoly (↥(K0 K)) ζ ≠ 1`. Introduce `h`. Rewrite `hpos` using `[h, Polynomial.natDegree_one]`. Conclude with `lt_irrefl 0 hpos`.
-
-Conclude with `lt_of_lt_of_le (Polynomial.natDegree_modByMonic_lt p hmon hne) hdeg`. Conclude with `Polynomial.aeval_modByMonic_eq_self_of_root (minpoly.aeval _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_poly (K : FinExt l) (ζ : Om l) (hζ : IsPrimitiveRoot ζ l)
     (x : Om l) (hx : x ∈ Ks K 1) :
@@ -202,25 +200,25 @@ end GlobalTheory.Cyc.FirstLevel
 open Polynomial GlobalTheory.Cyc.IntBasis in
 
 /- English proof (translation)
-Introduce `l _ K ζ hζ α hα hα1`. Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Take `⟨p, hpdeg, hp⟩` from `GlobalTheory.Cyc.FirstLevel.exists_poly K ζ hζ α hα`. Use `set q := Polynomial.taylor (1 : ↥(K0 K)) p with hq`. Establish `hqdeg : q.natDegree < l - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, Polynomial.natDegree_taylor]`. Conclude with `hpdeg`. Set `z : ℕ → Om l` to `fun b => ((q.coeff b : ↥(K0 K)) : Om l)`. Establish `hzK : ∀ b, z b ∈ K0 K` using `fun b => (q.coeff b).2`. Establish `hsum : α = ∑ b ∈ Finset.range (l - 1), z b * (ζ - 1) ^ b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hp]`. Establish `h1 : aeval ζ p = aeval (ζ - 1) q`. Rewrite using `[hq, aeval_taylor']`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, Polynomial.aeval_eq_sum_range' hqdeg]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hzle : ∀ b, ‖z b‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `b`. Distinguish the cases in `hb : b < l - 1`. Apply `GlobalTheory.Cyc.FirstLevel.coeff_le K ζ hζ (z b) (hzK b) b hb` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hc : q.coeff b = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[z, hc]`. Set `Q : (intRing (K0 K))[X]` to `∑ b ∈ Finset.range (l - 1), Polynomial.C (⟨z b, ⟨hzK b, hzle b⟩⟩ : intRing (K0 K)) * (Polynomial.X - Polynomial.C 1) ^ b`. Establish `hQdeg : Q.natDegree < l`. Establish `: Q.natDegree ≤ l - 2`. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `b hb`. Rewrite `hb` using `[Finset.mem_range]`. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `Polynomial.natDegree_pow_le.trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_X_sub_C]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hQ : aeval ζ Q = α`. Rewrite using `[hsum, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, Polynomial.aeval_C, map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, map_one]`. Both sides reduce to the same expression. Establish `hmem : ∀ s : intRing (K0 K), (s : Om l) ∈ K0 K ∧ ‖(s : Om l)‖ ≤ 1` using `fun s => s.2`. Use `⟨fun a : Fin l => ((Q.coeff (a : ℕ) : intRing (K0 K)) : Om l), fun a => hmem _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hQ, Polynomial.aeval_eq_sum_range' hQdeg, Finset.sum_range]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Cyc.integers_level_one_eq_sum_zeta_pow : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (ζ : Om l), IsPrimitiveRoot ζ l → ∀ α : Om l, α ∈ Ks K 1 → ‖α‖ ≤ 1 → ∃ y : Fin l → Om l, (∀ a, y a ∈ K0 K ∧ ‖y a‖ ≤ 1) ∧ α = ∑ a : Fin l, ζ ^ (a : ℕ) * y a := by
   intro l _ K ζ hζ α hα hα1

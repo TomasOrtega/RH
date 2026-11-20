@@ -15,45 +15,39 @@ noncomputable section
 namespace GlobalTheory.Mean4O.Cover.ThroughFibre
 
 /- English proof (translation)
-Introduce `F _ _ Y V p hp W hW U x hxU hpx`. Use `V.ar.flat` as an intermediate fact. Establish `: IsProper V.p`. Take `⟨n, c, hc, h⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) n` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Use `infer_instance`. Establish `hj : IsPreimmersion V.j` using `MorphismProperty.of_isPullback V.pb.flip (IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F)) (S := F))`. Take `⟨t, ht, htW⟩` from `V.j.isEmbedding.isInducing.isOpen_iff.1 (V.π ⁻¹ᵁ W).isOpen`. Take `⟨w, hw⟩` from `V.π.surjective (genericPoint Y.X)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwt : V.j w ∈ t`. Establish `: w ∈ (V.π ⁻¹ᵁ W : Set V.G)`. Express the relevant statement in the definitionally equal form `V.π w ∈ W`. Rewrite using `[hw]`. Conclude with `hW`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← htW]`. Conclude with `this`. Take `⟨U', hU, hxU', hU'U⟩` from `exists_isAffineOpen_mem_and_subset hxU`. Establish `hle : U' ≤ U` using `hU'U`. Establish `: Nonempty U'` using `⟨⟨x, hxU'⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hηt : genericPoint V.X ∈ t` using `((genericPoint_spec V.X).mem_open_set_iff ht).2 ⟨_, trivial, hwt⟩`. Establish `hηU : genericPoint V.X ∈ U'` using `((genericPoint_spec V.X).mem_open_set_iff U'.isOpen).2 ⟨x, trivial, hxU'⟩`. Take `⟨g', hg't, hηg'⟩` from `hU.exists_basicOpen_le (V := ⟨t, ht⟩ ⊓ U') ⟨genericPoint V.X, ⟨hηt, hηU⟩⟩ hηU`. Establish `hg0 : g' ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hηg'` using `[Scheme.basicOpen_zero]`. Conclude with `hηg'`. Establish `: CharZero Γ(V.X, U')` using `HorizPt.charZero (V.p ≫ spMap (Int.castRingHom (𝓞 F))) hU`. Set `_ : Algebra (𝓞 F) Γ(V.X, U')` to `(HorizPt.strHom V.p U').hom.toAlgebra`. Establish `: Algebra.FiniteType (𝓞 F) Γ(V.X, U')` using `RingHom.FiniteType.comp (V.p.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ q : PrimeSpectrum Γ(V.X, U'), hU.fromSpec q ∈ V.X.basicOpen g' ↔ g' ∉ q.asIdeal`. Introduce `q`. Express the relevant statement in the definitionally equal form `q ∈ hU.fromSpec ⁻¹ᵁ V.X.basicOpen g' ↔ _`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hpP : (p : Γ(V.X, U')) ∈ (hU.primeIdealOf ⟨x, hxU'⟩).asIdeal`. Use `letI : Algebra Γ(V.X, U') (V.X.presheaf.stalk x) := (V.X.presheaf.germ U' x hxU').hom.toAlgebra`. Use `hU.isLocalization_stalk ⟨x, hxU'⟩` as an intermediate fact. Assume the negation of the conclusion as `hn`. Apply `hpx` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(IsLocalization.AtPrime.isUnit_to_map_iff (V.X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hxU'⟩).asIdeal (p : Γ(V.X, U'))).2 hn`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨𝔪, h𝔪, hle'⟩` from `Ideal.exists_le_maximal _ (hU.primeIdealOf ⟨x, hxU'⟩).isPrime.ne_top`. Take `⟨v, e, φ, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_ext_place_of_ne_zero_maximal F Γ(V.X, U') 𝔪 h𝔪 g' hg0`. Set `yt : Sp e.O ⟶ V.X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hwq : (spMap e.O.subtype ≫ yt) ≫ V.p = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F)`. Simplify using `only [yt, Category.assoc]`. Rewrite using `[HorizPt.fromSpec_str, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h₁ a`. Use `set z := V.pb.lift _ _ hwq with hz`. Establish `hzj : z ≫ V.j = spMap e.O.subtype ≫ yt` using `V.pb.lift_fst _ _ hwq`. Establish `hzs : z ≫ V.π ≫ Y.str = spMap (algebraMap F (AlgebraicClosure F))` using `V.pb.lift_snd _ _ hwq`. Set `y : AlgPt Y` to `⟨z ≫ V.π, by rw [Category.assoc]; exact hzs⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpv : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal`. Establish `hm : φ (p : Γ(V.X, U')) ∈ IsLocalRing.maximalIdeal e.O`. Rewrite using `[← Ideal.mem_comap, h₂]`. Conclude with `hle' hpP`. Rewrite `hm` using `[map_natCast]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ExtConj.lies_over e]`. Establish `h` using `(ValuationSubring.valuation_lt_one_iff e.O _).1 hm`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `hres : resP v = p`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : ((p : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hpv`. Establish `hd` using `ringChar.dvd h0`. Establish `: Nontrivial (𝓞 F ⧸ v.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr v.isPrime.ne_top`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hp.eq_one_or_self_of_dvd _ hd with h | h` into its components or cases. Conclude with `absurd h (CharP.ringChar_ne_one)`. Conclude with `h`. Use `⟨v, e, y, z, yt, hres, ?_, rfl, hzj.symm, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : (z ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ V.X.basicOpen g'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hzj]`. Use `(hb (PrimeSpectrum.comap φ (PrimeSpectrum.comap e.O.subtype (IsLocalRing.closedPoint (AlgebraicClosure F))))).2 fun h => h₃ ?_` and prove the remaining obligations. Establish `h' : ((φ g' : e.O) : AlgebraicClosure F) ∈ IsLocalRing.maximalIdeal (AlgebraicClosure F)` using `h`. Rewrite `h'` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Conclude with `Subtype.ext h'`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht' : V.j (z (IsLocalRing.closedPoint (AlgebraicClosure F))) ∈ t`. Conclude with `(hg't hmem).1`. Establish `hz' : z (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ (V.π ⁻¹ᵁ W : Set V.G)`. Rewrite using `[← htW]`. Conclude with `ht'`.
-
-Conclude with `hz'`. Introduce `q _`. Conclude with `hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)`. Establish `hx : hU.fromSpec (hU.primeIdealOf ⟨x, hxU'⟩) = x` using `hU.fromSpec_primeIdealOf ⟨x, hxU'⟩`. Establish `hsp : hU.primeIdealOf ⟨x, hxU'⟩ ⤳ PrimeSpectrum.comap φ (IsLocalRing.closedPoint e.O)`.
-
-Rewrite using `[← PrimeSpectrum.le_iff_specializes]`. Express the relevant statement in the definitionally equal form `(hU.primeIdealOf ⟨x, hxU'⟩).asIdeal ≤ (IsLocalRing.maximalIdeal e.O).comap φ`. Rewrite using `[h₂]`. Conclude with `hle'`. Use `hsp.map hU.fromSpec.continuous` as an intermediate fact.
-
-Rewrite `this` using `[hx]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_algPt_through : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p.Prime → ∀ (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ (U : V.X.Opens), ∀ x ∈ U, ¬ IsUnit (p : V.X.presheaf.stalk x) → ∃ (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (y : AlgPt Y) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), resP v = p ∧ below y.1 ∈ W ∧ z ≫ V.π = y.1 ∧ spMap e.O.subtype ≫ yt = z ≫ V.j ∧ ⊤ ≤ yt ⁻¹ᵁ U ∧ x ⤳ yt (IsLocalRing.closedPoint e.O) := by
   intro F _ _ Y V p hp W hW U x hxU hpx

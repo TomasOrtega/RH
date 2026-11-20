@@ -7,7 +7,7 @@ open scoped NNReal ENNReal TensorProduct
 namespace GlobalTheory.ModuLR
 
 /- English proof (translation)
-Introduce `κ X Y _ _ _ _ _`. Set `e : ((κ → X) × (κ → Y)) ≃ₜ (κ → X × Y)` to `{ toFun := fun p i => (p.1 i, p.2 i) invFun := fun q => (fun i => (q i).1, fun i => (q i).2) left_inv := fun _ => rfl right_inv := fun _ => rfl continuous_toFun := continuous_pi fun i => ((continuous_apply i).comp continuous_fst).prodMk ((continuous_apply i).comp continuous_snd) …`. Conclude with `e.isOpenEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem zipHom_isOpenEmbedding : ∀ (κ X Y : Type) [Fintype κ] [AddCommGroup X] [TopologicalSpace X]
     [AddCommGroup Y] [TopologicalSpace Y], IsOpenEmbedding (zipHom κ X Y) := by

@@ -42,7 +42,7 @@ scoped instance topGroupHA : IsTopologicalGroup (HA R σ J) :=
   inferInstanceAs (IsTopologicalGroup (HR R σ J))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous fun g : HA R σ J =>
     ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) :=
@@ -188,7 +188,7 @@ def intV (v : HeightOneSpectrum (𝓞 F)) : Set (Fv F v ⊗[F] E) :=
   {y | ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latV_iff (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (Y : Fin n → Fin M → Fv F v ⊗[F] E) :
     Y ∈ latV b v ↔ ∀ a i, Y a i ∈ intV b v := Iff.rfl

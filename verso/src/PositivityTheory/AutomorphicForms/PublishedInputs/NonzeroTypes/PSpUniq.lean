@@ -20,13 +20,13 @@ abbrev LG : Type := Levi k fun a : Fin G.s => Fin (G.d a)
 abbrev KG : Subgroup (LG G) := leviK k (m := fun a : Fin G.s => Fin (G.d a))
 
 /- English proof (translation)
-Simplify using `only [Grp.eta, Pi.mul_apply, map_mul, Units.val_mul, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eta_mul (x y : LG G) : G.eta (x * y) = G.eta x * G.eta y := by
   simp only [Grp.eta, Pi.mul_apply, map_mul, Units.val_mul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem eta_ne_zero (x : LG G) : G.eta x ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _
@@ -34,14 +34,14 @@ theorem eta_ne_zero (x : LG G) : G.eta x ≠ 0 :=
 def etaKer : Subgroup (LG G) := Subgroup.pi Set.univ fun a => (detChar (Fin (G.d a)) (G.μ a)).ker
 
 /- English proof (translation)
-Rewrite using `[etaKer, Subgroup.coe_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun a _ => (G.smooth a).detChar`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_etaKer : IsOpen (etaKer G : Set (LG G)) := by
   rw [etaKer, Subgroup.coe_pi]
   exact isOpen_set_pi Set.finite_univ fun a _ => (G.smooth a).detChar
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `h` using `(Subgroup.mem_pi Set.univ).1 hx a (Set.mem_univ a)`. Rewrite `h` using `[MonoidHom.mem_ker, detChar_apply]`. Rewrite using `[h, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_eq_one {x : LG G} (hx : x ∈ etaKer G) : G.eta x = 1 := by
   refine Finset.prod_eq_one fun a _ => ?_
@@ -50,7 +50,7 @@ theorem eta_eq_one {x : LG G} (hx : x ∈ etaKer G) : G.eta x = 1 := by
   rw [h, Units.val_one]
 
 /- English proof (translation)
-Use `show IsCompact ((Subgroup.pi Set.univ fun a => KO k (Fin (G.d a)) : Subgroup (LG G)) : Set (LG G))`. Rewrite using `[Subgroup.coe_pi]`. Conclude with `isCompact_univ_pi fun _ => GlobalTheory.SplitFlip.isCompact_KO`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_KG : IsCompact (KG G : Set (LG G)) := by
   show IsCompact ((Subgroup.pi Set.univ fun a => KO k (Fin (G.d a)) : Subgroup (LG G)) : Set (LG G))
@@ -62,7 +62,7 @@ section Avg
 variable {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Simplify using `only [Grp.etaSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_etaSp (ρ : Representation ℂ (LG G) W) (w : W) :
     w ∈ G.etaSp ρ ↔ ∀ m ∈ KG G, ρ m w = G.eta m • w := by
@@ -70,7 +70,7 @@ theorem mem_etaSp (ρ : Representation ℂ (LG G) W) (w : W) :
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[mem_etaSp]`. Introduce `m hm`. Rewrite using `[← F.isIntertwining, hw m hm, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_etaSp {W' : Type} [AddCommGroup W'] [Module ℂ W'] {ρ : Representation ℂ (LG G) W}
     {ρ' : Representation ℂ (LG G) W'} (F : ρ.IntertwiningMap ρ') {w : W} (hw : w ∈ G.etaSp ρ) :
@@ -98,9 +98,9 @@ def stab (ρ : Representation ℂ (LG G) W) (w : W) : Subgroup (LG G) where
       _ = w := by rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Set `H : Subgroup (LG G)` to `etaKer G ⊓ stab G ρ w₁ ⊓ stab G ρ w₂`. Establish `hH : IsOpen (H : Set (LG G))` using `((isOpen_etaKer G).inter (hρ w₁)).inter (hρ w₂)`. Establish `: CompactSpace (KG G)` using `isCompact_iff_compactSpace.mp (isCompact_KG G)`. Use `⟨H.subgroupOf (KG G), Subgroup.quotient_finite_of_isOpen _ ?_, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `hH.preimage continuous_subtype_val`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu' : (u : LG G) ∈ H` using `Subgroup.mem_subgroupOf.1 hu`. Conclude with `⟨eta_eq_one G hu'.1.1, hu'.1.2, hu'.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_U (ρ : Representation ℂ (LG G) W) (hρ : IsSmooth ρ) (w₁ w₂ : W) :
     ∃ U : Subgroup (KG G), Finite (KG G ⧸ U) ∧
@@ -119,14 +119,14 @@ def avg (ρ : Representation ℂ (LG G) W) : W →ₗ[ℂ] W :=
   ∑ c : KG G ⧸ U, (G.eta (c.out : LG G))⁻¹ • ρ (c.out : LG G)
 
 /- English proof (translation)
-Simplify using `only [avg, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem avg_apply (ρ : Representation ℂ (LG G) W) (w : W) :
     avg G U ρ w = ∑ c : KG G ⧸ U, (G.eta (c.out : LG G))⁻¹ • ρ (c.out : LG G) w := by
   simp only [avg, LinearMap.sum_apply, LinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[avg_apply, avg_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, F.isIntertwining]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_intertwine {W' : Type} [AddCommGroup W'] [Module ℂ W'] {ρ : Representation ℂ (LG G) W}
     {ρ' : Representation ℂ (LG G) W'} (F : ρ.IntertwiningMap ρ') (w : W) :
@@ -136,7 +136,7 @@ theorem avg_intertwine {W' : Type} [AddCommGroup W'] [Module ℂ W'] {ρ : Repre
   rw [map_smul, F.isIntertwining]
 
 /- English proof (translation)
-Rewrite using `[avg_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hA _ _ hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_mem (ρ : Representation ℂ (LG G) W) (A : Submodule ℂ W) (hA : ∀ m : LG G, ∀ w ∈ A, ρ m w ∈ A)
     {w : W} (hw : w ∈ A) : avg G U ρ w ∈ A := by
@@ -144,7 +144,7 @@ theorem avg_mem (ρ : Representation ℂ (LG G) W) (A : Submodule ℂ W) (hA : �
   exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hA _ _ hw)
 
 /- English proof (translation)
-Rewrite using `[avg_apply]`. Establish `h : ∀ c : KG G ⧸ U, (G.eta (c.out : LG G))⁻¹ • ρ (c.out : LG G) w = w` using `fun c => by`. Rewrite using `[(mem_etaSp G ρ w).1 hw _ c.out.2, smul_smul, inv_mul_cancel₀ (eta_ne_zero G _), one_smul]`. Rewrite using `[Finset.sum_congr rfl fun c _ => h c, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_of_mem_etaSp (ρ : Representation ℂ (LG G) W) {w : W} (hw : w ∈ G.etaSp ρ) :
     avg G U ρ w = (Fintype.card (KG G ⧸ U) : ℂ) • w := by
@@ -154,13 +154,13 @@ theorem avg_of_mem_etaSp (ρ : Representation ℂ (LG G) W) {w : W} (hw : w ∈ 
   rw [Finset.sum_congr rfl fun c _ => h c, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Rewrite using `[mem_etaSp]`. Introduce `m hm`. Set `m' : KG G` to `⟨m, hm⟩`. Establish `key : ∀ c : KG G ⧸ U, ρ m ((G.eta (c.out : LG G))⁻¹ • ρ (c.out : LG G) w) = G.eta m • ((G.eta ((m' • c).out : LG G))⁻¹ • ρ ((m' • c).out : LG G) w)`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U (m' * c.out)`. Establish `hc : m' • c = (QuotientGroup.mk (m' * c.out) : KG G ⧸ U)` using `by conv_lhs => rw [← QuotientGroup.out_eq' c]`. Both sides reduce to the same expression. Rewrite using `[hc, hh]`. Establish `h1` using `hU (h : KG G) h.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (((m' * c.out * (h : KG G) : KG G)) : LG G) = m * (c.out : LG G) * ((h : KG G) : LG G)` using `rfl`. Rewrite using `[e1, eta_mul, eta_mul, h1.1, mul_one, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h1.2, map_smul, smul_smul]`. Use `congr 1`. Establish `h2` using `eta_ne_zero G m`. Establish `h3` using `eta_ne_zero G (c.out : LG G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[avg_apply, map_sum, Finset.sum_congr rfl fun c _ => key c, ← Finset.smul_sum]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (MulAction.toPerm m') _ _ (fun c => rfl)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem avg_mem_etaSp (ρ : Representation ℂ (LG G) W) {w : W}
     (hU : ∀ u ∈ U, G.eta (u : LG G) = 1 ∧ ρ (u : LG G) w = w) : avg G U ρ w ∈ G.etaSp ρ := by
@@ -190,11 +190,11 @@ theorem avg_mem_etaSp (ρ : Representation ℂ (LG G) W) {w : W}
 end Avg
 
 /- English proof (translation)
-Use `le_antisymm ?_ (le_inf (sup_le_sup inf_le_left inf_le_left) (sup_le inf_le_right inf_le_right))` and prove the remaining obligations. Introduce `v hv`. Take `⟨hv, hvE⟩` from `Submodule.mem_inf.1 hv`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨U, hfin, hU⟩` from `exists_U G ρ hρ a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `_` to `Fintype.ofFinite (KG G ⧸ U)`. Establish `hN : (Fintype.card (KG G ⧸ U) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `h1` using `avg_of_mem_etaSp G U ρ hvE`. Rewrite `h1` using `[map_add]`. Establish `hav : a + b = (Fintype.card (KG G ⧸ U) : ℂ)⁻¹ • (avg G U ρ a + avg G U ρ b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, smul_smul, inv_mul_cancel₀ hN, one_smul]`. Rewrite using `[hav]`. Use `Submodule.smul_mem _ _ (Submodule.add_mem_sup ⟨avg_mem G U ρ A hA ha, ?_⟩ ⟨avg_mem G U ρ B hB hb, ?_⟩)` and prove the remaining obligations. Conclude with `avg_mem_etaSp G U ρ fun u hu => ⟨(hU u hu).1, (hU u hu).2.1⟩`. Conclude with `avg_mem_etaSp G U ρ fun u hu => ⟨(hU u hu).1, (hU u hu).2.2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sup_inf_etaSp {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (LG G) W) (hρ : IsSmooth ρ)
     (A B : Submodule ℂ W) (hA : ∀ m : LG G, ∀ w ∈ A, ρ m w ∈ A) (hB : ∀ m : LG G, ∀ w ∈ B, ρ m w ∈ B) :
@@ -216,7 +216,7 @@ theorem sup_inf_etaSp {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Represent
   · exact avg_mem_etaSp G U ρ fun u hu => ⟨(hU u hu).1, (hU u hu).2.2⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Take `⟨x, rfl⟩` from `hf v`. Use `⟨σ u x - (((1 : N →* ℂˣ) u : ℂˣ) : ℂ) • x, Submodule.subset_span ⟨u, x, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[f.isIntertwining]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem twKer_le_map {Γ W W' : Type} [Group Γ] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     {σ : Representation ℂ Γ W} {τ : Representation ℂ Γ W'} (f : σ.IntertwiningMap τ) (hf : Function.Surjective f)
@@ -237,7 +237,7 @@ def jm {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module �
   jacquetMap f (unipRad k G.e) (leviEmb k G.e) (leviEmb_mem_normalizer k G.e)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.JacquetExact.jacMap_injective G.e hτ f hf`.
+A detailed English derivation is pending.
 -/
 theorem jm_injective {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     {π : Representation ℂ (GL (Fin n) k) W} {τ : Representation ℂ (GL (Fin n) k) W'} (hτ : IsSmooth τ)
@@ -248,7 +248,7 @@ def img (X : Subrepresentation I) : Submodule ℂ (Jacquet I (unipRad k G.e)) :=
   X.toSubmodule.map (twKer I (unipRad k G.e) 1).mkQ
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hw`. Conclude with `⟨I (leviEmb k G.e m) x, X.apply_mem_toSubmodule _ hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem img_stable (X : Subrepresentation I) (m : LG G) (w : Jacquet I (unipRad k G.e)) (hw : w ∈ img G I X) :
     jacU G.e I m w ∈ img G I X := by
@@ -256,21 +256,19 @@ theorem img_stable (X : Subrepresentation I) (m : LG G) (w : Jacquet I (unipRad 
   exact ⟨I (leviEmb k G.e m) x, X.apply_mem_toSubmodule _ hx, rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.map_inf_le _) ?_` and prove the remaining obligations. Introduce `v hv`. Take `⟨⟨x, hx, rfl⟩, ⟨y, hy, hxy⟩⟩` from `Submodule.mem_inf.1 hv`. Establish `hd : x - y ∈ twKer I (unipRad k G.e) 1`. Establish `h` using `hxy.symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `h`. Set `Q` to `I.quotient Y.toSubmodule (fun g _ hv => Y.apply_mem_toSubmodule g hv)`. Set `p : I.IntertwiningMap Q` to `⟨Y.toSubmodule.mkQ, fun _ => LinearMap.ext fun _ => rfl⟩`. Establish `hQ : IsSmooth Q` using `(IsSubquotient.of_surjective p (Submodule.mkQ_surjective _)).isSmooth hI`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : (subQuot X Y).IntertwiningMap Q` to `⟨Submodule.mapQ _ _ X.toSubmodule.subtype le_rfl, fun _ => Submodule.linearMap_qext _ (LinearMap.ext fun _ => rfl)⟩`. Establish `hg : Function.Injective g`. Use `(injective_iff_map_eq_zero g).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨x', rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (x' : V) : V ⧸ Y.toSubmodule) = 0 at hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hx'' : (x' : V) ∈ Y.toSubmodule` using `(Submodule.Quotient.mk_eq_zero Y.toSubmodule).1 hz`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hx''`. Set `xX : X.toSubmodule` to `⟨x, hx⟩`. Establish `h0 : jm G g (Submodule.Quotient.mk (Submodule.Quotient.mk xX)) = 0` using `by show (Submodule.Quotient.mk (Submodule.Quotient.mk x : V ⧸ Y.toSubmodule) : Jacquet Q (unipRad k G.e)) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.JacquetExact.map_mem_twKer p hd`. Establish `h3 : p (x - y) = Submodule.Quotient.mk x` using `by show Submodule.Quotient.mk (x - y) = _`. Rewrite using `[Submodule.Quotient.mk_sub, (Submodule.Quotient.mk_eq_zero _).2 hy, sub_zero]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Establish `h4 : (Submodule.Quotient.mk xX : X.toSubmodule ⧸ Y.toSubmodule.comap X.toSubmodule.subtype) ∈ twKer (subQuot X Y) (unipRad k G.e) 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Conclude with `jm_injective G hQ g hg (h0.trans (map_zero (jm G g)).symm)`. Set `q : X.toRepresentation.IntertwiningMap (subQuot X Y)` to `⟨Submodule.mkQ _, fun _ => LinearMap.ext fun _ => rfl⟩`. Take `⟨t, ht, htx⟩` from `twKer_le_map q (Submodule.mkQ_surjective _) (unipRad k G.e) h4`. Establish `h5 : ((xX - t : X.toSubmodule) : V) ∈ Y.toSubmodule`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: (Submodule.Quotient.mk (xX - t) : X.toSubmodule ⧸ Y.toSubmodule.comap X.toSubmodule.subtype) = 0`. Rewrite using `[Submodule.Quotient.mk_sub, ← htx]`. Conclude with `sub_self _`. Conclude with `(Submodule.Quotient.mk_eq_zero (Y.toSubmodule.comap X.toSubmodule.subtype)).1 this`. Set `ι : X.toRepresentation.IntertwiningMap I` to `⟨X.toSubmodule.subtype, fun _ => LinearMap.ext fun _ => rfl⟩`.
-
-Establish `ht' : ((t : X.toSubmodule) : V) ∈ twKer I (unipRad k G.e) 1` using `GlobalTheory.JacquetExact.map_mem_twKer ι ht`. Use `⟨x - (t : V), ⟨X.toSubmodule.sub_mem hx t.2, h5⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Simplify using `using neg_mem ht'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem img_inf (hI : IsSmooth I) (X Y : Subrepresentation I) : img G I (X ⊓ Y) = img G I X ⊓ img G I Y := by
   refine le_antisymm (Submodule.map_inf_le _) ?_
@@ -321,7 +319,7 @@ theorem img_inf (hI : IsSmooth I) (X Y : Subrepresentation I) : img G I (X ⊓ Y
 def dd (X : Subrepresentation I) : ℕ := Module.finrank ℂ ↥(img G I X ⊓ G.etaSp (jacU G.e I))
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ ↥(img G I Y ⊓ G.etaSp (jacU G.e I))` using `Submodule.finiteDimensional_of_le inf_le_right`. Conclude with `Submodule.finrank_mono (inf_le_inf_right _ (Submodule.map_mono fun x hx => h hx))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dd_mono [FiniteDimensional ℂ ↥(G.etaSp (jacU G.e I))] {X Y : Subrepresentation I} (h : X ≤ Y) :
     dd G I X ≤ dd G I Y := by
@@ -329,9 +327,9 @@ theorem dd_mono [FiniteDimensional ℂ ↥(G.etaSp (jacU G.e I))] {X Y : Subrepr
   exact Submodule.finrank_mono (inf_le_inf_right _ (Submodule.map_mono fun x hx => h hx))
 
 /- English proof (translation)
-Establish `hJ` using `isSmooth_jacU G.e hI`. Unfold `dd`. Rewrite using `[img_inf G I hI, show img G I (X ⊔ Y) = img G I X ⊔ img G I Y from Submodule.map_sup _ _ _, sup_inf_etaSp G _ hJ _ _ (img_stable G I X) (img_stable G I Y), inf_inf_distrib_right]`. Establish `: FiniteDimensional ℂ ↥(img G I X ⊓ G.etaSp (jacU G.e I))` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `: FiniteDimensional ℂ ↥(img G I Y ⊓ G.etaSp (jacU G.e I))` using `Submodule.finiteDimensional_of_le inf_le_right`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.finrank_sup_add_finrank_inf_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem dd_modular (hI : IsSmooth I) [FiniteDimensional ℂ ↥(G.etaSp (jacU G.e I))] (X Y : Subrepresentation I) :
     dd G I (X ⊔ Y) + dd G I (X ⊓ Y) = dd G I X + dd G I Y := by
@@ -354,7 +352,7 @@ def kerSub {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representation ℂ (
     rw [f.isIntertwining, hx', map_zero]
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨x, -, rfl⟩` from `hv`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kerSub_le {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representation ℂ (GL (Fin n) k) A}
     (S : Subrepresentation I) (f : S.toRepresentation.IntertwiningMap α) : kerSub I S f ≤ S := by
@@ -363,7 +361,7 @@ theorem kerSub_le {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representatio
   exact x.2
 
 /- English proof (translation)
-Establish `hc : (kerSub I S f).toSubmodule.comap S.toSubmodule.subtype = LinearMap.ker f.toLinearMap` using `Submodule.comap_map_eq_of_injective Subtype.val_injective _`. Use `⟨Representation.Equiv.mk ((Submodule.quotEquivOfEq _ _ hc).trans (f.toLinearMap.quotKerEquivOfSurjective hf)) fun g => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Conclude with `f.isIntertwining _ _ g x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kerEquiv {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representation ℂ (GL (Fin n) k) A}
     (S : Subrepresentation I) (f : S.toRepresentation.IntertwiningMap α) (hf : Function.Surjective f) :
@@ -376,21 +374,19 @@ theorem kerEquiv {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representation
   exact f.isIntertwining _ _ g x
 
 /- English proof (translation)
-Take `⟨z, hz0, hz⟩` from `hη`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Take `⟨y, rfl⟩` from `hf a`. Set `ι : S.toRepresentation.IntertwiningMap I` to `⟨S.toSubmodule.subtype, fun _ => LinearMap.ext fun _ => rfl⟩`. Establish `hS : IsSmooth S.toRepresentation` using `(IsSubquotient.of_injective ι Subtype.val_injective).isSmooth hI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y' : Jacquet S.toRepresentation (unipRad k G.e)` to `Submodule.Quotient.mk y`. Take `⟨U, hfin, hU⟩` from `exists_U G (jacU G.e S.toRepresentation) (isSmooth_jacU G.e hS) y' y'`. Set `_` to `Fintype.ofFinite (KG G ⧸ U)`. Establish `hwE : avg G U (jacU G.e S.toRepresentation) y' ∈ G.etaSp (jacU G.e S.toRepresentation)` using `avg_mem_etaSp G U _ fun u hu => ⟨(hU u hu).1, (hU u hu).2.1⟩`. Establish `hzE : (Submodule.Quotient.mk (f y) : Jacquet α (unipRad k G.e)) ∈ G.etaSp (jacU G.e α)` using `(mem_etaSp G _ _).2 hz`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFw : jm G f (avg G U (jacU G.e S.toRepresentation) y') = (Fintype.card (KG G ⧸ U) : ℂ) • (Submodule.Quotient.mk (f y) : Jacquet α (unipRad k G.e))`. Rewrite using `[avg_intertwine]`. Conclude with `avg_of_mem_etaSp G U _ hzE`. Establish `hFw0 : jm G f (avg G U (jacU G.e S.toRepresentation) y') ≠ 0`. Rewrite using `[hFw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `smul_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero) hz0`. Establish `hvE : jm G ι (avg G U (jacU G.e S.toRepresentation) y') ∈ G.etaSp (jacU G.e I)` using `map_mem_etaSp G _ hwE`. Establish `hvS : jm G ι (avg G U (jacU G.e S.toRepresentation) y') ∈ img G I S`. Take `⟨u, hu⟩` from `Submodule.Quotient.mk_surjective _ (avg G U (jacU G.e S.toRepresentation) y')`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨u, u.2, rfl⟩`. Establish `hvX : jm G ι (avg G U (jacU G.e S.toRepresentation) y') ∉ img G I (kerSub I S f)`. Introduce and unpack `⟨x, ⟨x', hx', rfl⟩, hxv⟩`. Establish `hw : avg G U (jacU G.e S.toRepresentation) y' = Submodule.Quotient.mk x'` using `jm_injective G hI ι Subtype.val_injective (show _ = jm G ι (Submodule.Quotient.mk x') from hxv.symm)`. Apply `hFw0` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Establish `hx'' : f x' = 0` using `hx'`. Use `show (Submodule.Quotient.mk (f x') : Jacquet α (unipRad k G.e)) = 0`. Rewrite using `[hx'', Submodule.Quotient.mk_zero]`. Establish `: FiniteDimensional ℂ ↥(img G I S ⊓ G.etaSp (jacU G.e I))` using `Submodule.finiteDimensional_of_le inf_le_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : img G I (kerSub I S f) ⊓ G.etaSp (jacU G.e I) ≤ img G I S ⊓ G.etaSp (jacU G.e I)` using `inf_le_inf_right _ (Submodule.map_mono fun x hx => kerSub_le I S f hx)`. Establish `hlt : img G I (kerSub I S f) ⊓ G.etaSp (jacU G.e I) < img G I S ⊓ G.etaSp (jacU G.e I)`. Use `lt_of_le_of_ne hle fun h => hvX ?_` and prove the remaining obligations. Establish `hmem : jm G ι (avg G U (jacU G.e S.toRepresentation) y') ∈ img G I S ⊓ G.etaSp (jacU G.e I)` using `Submodule.mem_inf.2 ⟨hvS, hvE⟩`. Rewrite `hmem` using `[← h]`.
-
-Conclude with `(Submodule.mem_inf.1 hmem).1`. Conclude with `Submodule.finrank_lt_finrank_of_lt hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_of_hasEtaVec (hI : IsSmooth I) [FiniteDimensional ℂ ↥(G.etaSp (jacU G.e I))]
     {A : Type} [AddCommGroup A] [Module ℂ A] {α : Representation ℂ (GL (Fin n) k) A}
@@ -447,9 +443,7 @@ end P_spUniq
 open P_spUniq in
 
 /- English proof (translation)
-Introduce `hLat V _ _ I hI hfin hle A B _ _ _ _ α β hα hβ hsa hsb hηa hηb`. Use `haveI := hfin`. Take `⟨Sa, fa, hfa⟩` from `hsa`. Take `⟨Sb, fb, hfb⟩` from `hsb`. Use `hLat (GL (Fin n) k) V I (dd G I) (fun X Y h => dd_mono G I h) (dd_modular G I hI) ?_ A B α β hα hβ ⟨kerSub I Sa fa, Sa, kerSub_le I Sa fa, lt_of_hasEtaVec G I hI Sa fa hfa hηa, kerEquiv I Sa fa hfa⟩ ⟨kerSub I Sb fb, Sb, kerSub_le I Sb fb, lt_of_hasEtaVec G I hI Sb fb hfb hηb, ker …` and prove the remaining obligations.
-
-Conclude with `(Submodule.finrank_mono inf_le_right).trans hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step_spUniq {n : ℕ} (G : Grp k n) : G.SphericalVectorUniqueness := by
   intro hLat V _ _ I hI hfin hle A B _ _ _ _ α β hα hβ hsa hsb hηa hηb

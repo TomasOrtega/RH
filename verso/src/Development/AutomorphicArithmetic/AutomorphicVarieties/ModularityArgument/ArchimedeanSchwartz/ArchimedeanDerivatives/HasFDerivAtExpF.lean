@@ -17,14 +17,14 @@ private def pairL (y : Lie K n) : Lie K n →L[ℝ] ℝ :=
         (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => Fin n → Cinf K) a))))
 
 /- English proof (translation)
-Simplify using `only [pairL, ContinuousLinearMap.sum_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.proj_apply, Complex.reCLM_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pairL_eq (y x : Lie K n) : pairL y x = ∑ w, ∑ a, ∑ b, (y b a w * x a b w).re := by
   simp only [pairL, ContinuousLinearMap.sum_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply,
     ContinuousLinearMap.proj_apply, Complex.reCLM_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[pairL_eq]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply, Complex.re_sum, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pairL_apply (y x : Lie K n) : pairL y x = ∑ w, ((Matrix.of x * Matrix.of y).trace w).re := by
   rw [pairL_eq]
@@ -32,7 +32,7 @@ private theorem pairL_apply (y x : Lie K n) : pairL y x = ∑ w, ((Matrix.of x *
     Complex.re_sum, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (InfinitePlace.mk τ)]`. Apply the tactic sequence `unfold coord atEmb split_ifs <;> simp`. Introduce `w _ hw`. Unfold `atEmb`. Apply the tactic sequence `split_ifs <;> simp [Pi.single_eq_of_ne hw]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
 Simplify using the standard rewrite rules.
 -/
@@ -48,9 +48,9 @@ private theorem sum_atEmb (τ : K →+* ℂ) (c : Cinf K) (z : ℂ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[pairL_eq, ← sum_atEmb]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.single_apply, hb.symm]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[Matrix.single_apply, ha.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem pairL_single (y : Lie K n) (τ : K →+* ℂ) (i j : Fin n) (z : ℂ) :
     pairL y (toL (Matrix.single i j (atEmb τ z))) = (coord τ (y j i) * z).re := by
@@ -68,13 +68,13 @@ private theorem pairL_single (y : Lie K n) (τ : K →+* ℂ) (i j : Fin n) (z :
 private def expF (e : ℝ) (y : Lie K n) (x : Lie K n) : ℂ := Complex.exp (Complex.I * e * (pairL y x : ℂ))
 
 /- English proof (translation)
-Simplify using `only [four, expF, pairL_apply, Complex.ofReal_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem four_eq (e : ℝ) (Φ : Lie K n → ℂ) (y : Lie K n) : four e Φ y = ∫ x, Φ x * expF e y x := by
   simp only [four, expF, pairL_apply, Complex.ofReal_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun x : Lie K n => Complex.I * e * (pairL y x : ℂ)) ((Complex.I * e) • (Complex.ofRealCLM.comp (pairL y))) x` using `((Complex.ofRealCLM.comp (pairL y)).hasFDerivAt).const_mul _`. Conclude with `(h1.cexp).const_mul a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hasFDerivAt_expF (e : ℝ) (y : Lie K n) (a : ℂ) (x : Lie K n) :
     HasFDerivAt (fun x => a * expF e y x)
@@ -85,14 +85,14 @@ private theorem hasFDerivAt_expF (e : ℝ) (y : Lie K n) (a : ℂ) (x : Lie K n)
   exact (h1.cexp).const_mul a
 
 /- English proof (translation)
-Unfold `expF`. Conclude with `Complex.contDiff_exp.comp (contDiff_const.mul ((Complex.ofRealCLM.comp (pairL y)).contDiff))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem contDiff_expF (e : ℝ) (y : Lie K n) : ContDiff ℝ ∞ (expF e y) := by
   unfold expF
   exact Complex.contDiff_exp.comp (contDiff_const.mul ((Complex.ofRealCLM.comp (pairL y)).contDiff))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[pd, (hasFDerivAt_expF e y a x).fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Complex.ofRealCLM_apply, pairL_single, smul_eq_mul, mul_one, Complex.mul_I_re, Complex.ofReal_neg]`. Use `conv_rhs => rw [← Complex.re_add_im (coord τ (y j i))]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem pd_expF (e : ℝ) (y : Lie K n) (a : ℂ) (τ : K →+* ℂ) (i j : Fin n) :
     pd τ i j (fun x => a * expF e y x) = fun x => (a * (Complex.I * e / 2 * coord τ (y j i))) * expF e y x := by
@@ -104,9 +104,9 @@ private theorem pd_expF (e : ℝ) (y : Lie K n) (a : ℂ) (τ : K →+* ℂ) (i 
   ring
 
 /- English proof (translation)
-Proceed by induction on `l generalizing a with`. Consider the case `nil => simp`. Consider the case `cons j l ih`. Rewrite using `[List.foldr_cons, ih, pd_expF]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem foldr_expF (e : ℝ) (y : Lie K n) (τ : K →+* ℂ) (p : Equiv.Perm (Fin n)) (l : List (Fin n)) (a : ℂ) :
     l.foldr (fun j G => pd τ (p j) j G) (fun x => a * expF e y x) =
@@ -121,7 +121,7 @@ private theorem foldr_expF (e : ℝ) (y : Lie K n) (τ : K →+* ℂ) (p : Equiv
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[detAt, (coord τ).map_det, ← Matrix.det_transpose, Matrix.det_apply']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem detAt_eq (τ : K →+* ℂ) (y : Lie K n) :
     detAt τ y = ∑ p : Equiv.Perm (Fin n), (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) * ∏ j, coord τ (y j (p j)) := by
@@ -129,7 +129,7 @@ private theorem detAt_eq (τ : K →+* ℂ) (y : Lie K n) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h : expF e y = fun x => 1 * expF e y x` using `by simp`. Rewrite using `[detD, h]`. Simplify using `only [foldr_expF, detAt_eq, ← Fin.prod_univ_def, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -146,7 +146,7 @@ private theorem detD_expF (e : ℝ) (y : Lie K n) (τ : K →+* ℂ) :
 variable [IsTotallyComplex K]
 
 /- English proof (translation)
-Establish `hp` using `(parts K n τ Φ hΦ).2 (expF e y) (contDiff_expF e y).contDiffOn`. Rewrite using `[four_eq, four_eq, hp, detD_expF]`. Repeatedly rewrite using `[mul_left_comm (Φ _) (_ ^ n * _)]`. Rewrite using `[integral_const_mul, neg_pow (Complex.I * e / 2)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem four_detD (e : ℝ) (τ : K →+* ℂ) (Φ : Lie K n → ℂ) (hΦ : IsTest Φ) (y : Lie K n) :
     four e (detD τ Φ) y = (-(Complex.I * e / 2)) ^ n * detAt τ y * four e Φ y := by
@@ -157,9 +157,9 @@ private theorem four_detD (e : ℝ) (τ : K →+* ℂ) (Φ : Lie K n → ℂ) (h
   ring
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [hΦ]`. Consider the case `cons τ L ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨(parts K n τ _ h1).1, fun y => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[List.foldr_cons, four_detD e τ _ h1, h2 y]`. Simplify using `only [List.length_cons, List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem four_foldr (e : ℝ) (L : List (K →+* ℂ)) (Φ : Lie K n → ℂ) (hΦ : IsTest Φ) :
     IsTest (L.foldr detD Φ) ∧ ∀ y, four e (L.foldr detD Φ) y =
@@ -174,13 +174,13 @@ private theorem four_foldr (e : ℝ) (L : List (K →+* ℂ)) (Φ : Lie K n → 
     ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ InfinitePlace.mk, Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : ComplexEmbedding.conjugate w.embedding ≠ w.embedding` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 (ComplexEmbedding.isReal_iff.2 h))`. Establish `hf : (Finset.univ.filter fun τ : K →+* ℂ => InfinitePlace.mk τ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`. Use extensionality with `τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Rewrite using `[hf, Finset.prod_pair hne.symm]`. Unfold `coord`. Rewrite using `[if_pos (by rw [InfinitePlace.mk_embedding]), if_neg (by rw [InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]; exact hne.symm)]`. Simplify using `[InfinitePlace.mk_embedding, InfinitePlace.mk_conjugate_eq, Complex.mul_conj']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_coord (c : Cinf K) : ∏ τ : K →+* ℂ, coord τ c = ((∏ w, ‖c w‖ ^ 2 : ℝ) : ℂ) := by
   classical
@@ -211,9 +211,9 @@ end UpperTheory.V.Z.Inf.FourDH
 
 open UpperTheory.V.Z.Inf.FourDH in
 /- English proof (translation)
-Introduce `K _ _ _ n e he`. Use `⟨(-(Complex.I * e / 2)) ^ (n * (Finset.univ : Finset (K →+* ℂ)).card), ?_, fun Φ hΦ y => ?_⟩` and prove the remaining obligations. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Simplify using `[he, Complex.I_ne_zero]`. Rewrite using `[detAll, (four_foldr e _ Φ hΦ).2 y, Finset.length_toList, Finset.prod_map_toList]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [detAt, prod_coord, nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.Inf.fourD :
     UpperTheory.V.Z.Inf.FourD := by

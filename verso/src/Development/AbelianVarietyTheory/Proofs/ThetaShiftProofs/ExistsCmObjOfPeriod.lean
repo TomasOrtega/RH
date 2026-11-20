@@ -17,9 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} {P' : D'.La →+ (Fin g → ℂ)}
 
 /- English proof (translation)
-Use `⟨fun h => funext fun j => ?_, fun h j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[hP.1, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hj : ty j (H.rt : E) = ρ`. Rewrite using `[hj]`. Rewrite using `[h j hj, mul_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun h j` as an intermediate fact. Rewrite `this` using `[hP.1, Pi.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_mul_right_iff.1 this).resolve_left hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lat_iff (hP : IsPeriod D ty P) (ρ : ℂ) (a : D.La) :
     a ∈ PureType.lat hP ρ ↔ P (H.rt • a) = ρ • P a := by
@@ -33,7 +33,7 @@ theorem mem_lat_iff (hP : IsPeriod D ty P) (ρ : ℂ) (a : D.La) :
     exact (mul_eq_mul_right_iff.1 this).resolve_left hj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ D₁ := Z.D₁ sigP := Z.sigP sigM := Z.sigM f := fun j => gam.toLinearMap ∘ₗ Z.f j pure := fun j a => by refine (mem_lat_iff hP' _ _).2 ?_ show P' (H.rt • gam (Z.f j a)) = _ • P' (gam (Z.f j a)) rw [← map_smul, hh, hh, (mem_lat_iff hP _ _).1 (Z.pure j a), map_smul] hh := Z.hh for …`.
+Supply the required witnesses or components.
 -/
 theorem exists_lat_move (hP : IsPeriod D ty P) (hP' : IsPeriod D' ty P') (gam : D.La ≃ₗ[𝓞 E] D'.La)
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hE : ∀ a b, D'.EF (gam a) (gam b) = D.EF a b)
@@ -59,15 +59,13 @@ theorem exists_lat_move (hP : IsPeriod D ty P) (hP' : IsPeriod D' ty P') (gam : 
        exact this }, rfl⟩
 
 /- English proof (translation)
-Take `⟨hP', hol, add, onto, ker, lin, weil⟩` from `he`. Establish `hd : Differentiable ℂ h` using `h.toContinuousLinearEquiv.differentiable`. Use `⟨hP, fun U f => ⟨?_, ?_⟩, fun z w => ?_, onto.comp h.surjective, fun z => ?_, fun a z => ?_, fun k a b c hk hc => ?_⟩` and prove the remaining obligations. Conclude with `(hol U f).1.preimage hd.continuous`. Conclude with `(hol U f).2.comp hd.differentiableOn fun z hz => hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[map_add, add]`. Use `(ker _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨gam.symm a, h.injective (by rw [← hh, gam.apply_symm_apply, ha])⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨gam a, hh a⟩`. Set `m : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `LinearMap.pi fun k => (LinearMap.mulLeft ℝ (ty k (a : E))).comp (LinearMap.proj k)`. Establish `hm : ∀ z, m z = fun k => ty k (a : E) * z k` using `fun _ => rfl`. Establish `hc : h.toLinearMap.restrictScalars ℝ ∘ₗ m = m ∘ₗ h.toLinearMap.restrictScalars ℝ` using `LinearMap.ext_on_range hP.2.2.2.1 fun x => by show h (m (P x)) = m (h (P x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hh, hm, hm, ← funext (hP.1 a x), ← funext (hP'.1 a (gam x)), ← hh, map_smul]`. Establish `hz : h (m z) = m (h z)` using `LinearMap.congr_fun hc z`. Use `show e (h (m z)) = _`. Rewrite using `[hz, hm, lin]`. Use `beta_reduce`.
-
-Rewrite using `[map_smul, map_smul, ← hh, ← hh]`. Conclude with `weil k _ _ c hk (by rw [hE]; exact hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExp_move {R : Type} [CommRing R] {T : GlobalTheory.CM.PAT H (Sp R)} {σ : R →+* ℂ} (hP : IsPeriod D ty P)
     (gam : D.La ≃ₗ[𝓞 E] D'.La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hE : ∀ a b, D'.EF (gam a) (gam b) = D.EF a b)
@@ -105,11 +103,11 @@ end GlobalTheory.ArcCM.PeriodObj
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-Introduce `kn E _ _ _ H l c DB g ty PB hP Z hpq hty hA`. Take `⟨Xo⟩` from `kn.n1ab E H DB l hpq`. Take `⟨FU⟩` from `kn.n1c E H DB l Xo (algebraMap (KA l) ℂ) g ty hpq rfl hty`. Establish `hζ : algebraMap (KA l) ℂ (baseKA l).ζ = Complex.exp (-(2 * Real.pi * Complex.I) * (((1 : ℤ) : ℂ)) / l.A)` using `by show zeta l.A = _`. Rewrite using `[hA, zeta]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.exp_neg]`. Take `⟨y, e, he⟩` from `GlobalTheory.Moduli.exists_point_of_isPeriod kn.theta kn.laws E H DB l Xo (algebraMap (KA l) ℂ) g ty hpq`. Use `rfl hty DB LinearMap.id PB ⟨rfl, rfl, fun _ => LinearMap.id, fun _ => 1, fun n m _ _ a => ⟨0, by simp⟩, fun n _ => ⟨fun a => Iff.rfl, fun a => ⟨a, 0, by simp⟩⟩, fun n _ a a' => by simp, hζ, rfl⟩ hP`. Take `⟨i, P', hP', hy⟩` from `FU.onto y he.1`. Take `⟨gam, h, hE, -, -, hh⟩` from `(GlobalTheory.UnifPoint.point_eq_iff_isometry_closed kn.theta kn.laws E H DB l Xo (algebraMap (KA l) ℂ) g ty hpq rfl hty DB (FU.Di i) LinearMap.id (FU.t i) PB P' y (FU.u i P') e (FU.ex i P') he ⟨FU.over_σ i P' hP', hP', ⟨FU.ex_add i P' hP', FU.ex_onto i P' hP', ExpUniqFamily.isHo …`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Z', hZ'⟩` from `PeriodObj.exists_lat_move hP hP' gam h hE hh Z`. Take `⟨K, _, hk, ρ, X, y₀, t₀, m, m', gA, tyA, PA, eA, F, hle, hρ, hX, -, hy₀, -⟩` from `kn.cm E H DB l Xo g ty FU i P' hP' Z' c.F c.fin`. Take `⟨eB, heB, -⟩` from `GlobalTheory.CM.ExCompare.exists_isExp_of_family FU i hP' (algebraMap (𝓞 K) K) (algebraMap K ℂ) X.B m m' hy₀`. Conclude with `⟨K, inferInstance, inferInstance, (IntermediateField.inclusion hle).toRingHom.toAlgebra, algebraMap K ℂ, ρ, X, fun z => eB (h z), RingHom.ext fun _ => rfl, hρ, hX.trans hZ', PeriodObj.isExp_move hP gam h hE hh heB⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cmObj_of_period : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (DB : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (PB : DB.La →+ (Fin g → ℂ)) (hP : IsPeriod DB ty PB) (Z : GlobalTheory.CM.CMLat hP DB.p DB.q), 1 ≤ DB.p + DB.q → IsTypeFn H DB.p DB.q ty → l.A = 1 → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : Algebra c.F K) (σ₁ : K →+* ℂ) (ρ : 𝓞 K) (X : GlobalTheory.CM.CMObj H K ρ σ₁ DB.p DB.q) (ex : (Fin g → ℂ) → (Over.mk (spMap (σ₁.comp (algebraMap (𝓞 K) K))) ⟶ X.B.t.G)), σ₁.comp (algebraMap c.F K) = c.F.val.toRingHom ∧ σ₁ (ρ : K) = H.rt0 ∧ X.hh = Z.hh ∧ GlobalTheory.CM.IsExp X.B (σ₁.comp (algebraMap (𝓞 K) K)) DB ty PB ex := by
   intro kn E _ _ _ H l c DB g ty PB hP Z hpq hty hA

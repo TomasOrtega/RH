@@ -6,7 +6,7 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 namespace GlobalTheory.HomStab
 
 /- English proof (translation)
-Introduce `k G _ _ A`. Set `e : Rep.free k G A ⟶ A` to `Rep.freeLift k G A (fun x => x)`. Establish `he : Epi e` using `(Rep.epi_iff_surjective e).2 fun x => ⟨Finsupp.single x (MonoidAlgebra.single 1 1), by`. Simplify using `[e, Representation.freeLift_single_single]⟩`. Conclude with `⟨A, kernel e, kernel.ι e, e, kernel.condition e, ShortComplex.ShortExact.mk' (ShortComplex.exact_kernel e) inferInstance he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_free_shortExact : ∀ (k G : Type) [CommRing k] [Group G] (A : Rep k G), ∃ (ι : Type) (K : Rep k G) (i : K ⟶ Rep.free k G ι) (e : Rep.free k G ι ⟶ A) (h : i ≫ e = 0), (ShortComplex.mk i e h).ShortExact := by
   intro k G _ _ A
@@ -22,7 +22,7 @@ end GlobalTheory.HomStab
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.HomStab.exists_free_shortExact`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_free_resolution_short_exact : ∀ (k G : Type) [CommRing k] [Group G] (A : Rep k G), ∃ (ι : Type) (K : Rep k G) (i : K ⟶ Rep.free k G ι) (e : Rep.free k G ι ⟶ A) (h : i ≫ e = 0), (ShortComplex.mk i e h).ShortExact := by
   first

@@ -11,13 +11,13 @@ namespace GlobalTheory.FlowProgrammeFacts
 variable {l d : ℕ} [NeZero d]
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : (l : ℝ) * flowVal d x ≤ ∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x a i`. Unfold `flowVal`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi0 : i ≠ 0`. Introduce and unpack `rfl`. Conclude with `absurd (Finset.mem_filter.1 hi).2 (by decide)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (le_self_pow₀ hl1 hi0) (hx.1 a i)`. Establish `h2 : ∑ a : ZMod d, ∑ i ∈ oddLevels d, x (a - (i : ZMod d)) i = flowVal d x`. Unfold `flowVal`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Equiv.sum_comp (Equiv.subRight (i : ZMod d)) (fun a => x a i)`. Establish `h3` using `Finset.sum_le_sum fun a (_ : a ∈ Finset.univ) => hx.2 a`. Rewrite `h3` using `[Finset.sum_add_distrib, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma succ_mul_flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ}
     (hx : IsFlow l d D x) : ((l : ℝ) + 1) * flowVal d x ≤ ∑ a, D a := by
@@ -42,11 +42,11 @@ lemma succ_mul_flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → �
   linarith
 
 /- English proof (translation)
-Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hp : (0 : ℝ) < (l : ℝ) + 1` using `by linarith`. Establish `hm : maxFlow l d D ≤ (∑ a, D a) / ((l : ℝ) + 1)` using `GlobalTheory.FlowScaling.maxFlow_le hD fun x hx => by`. Rewrite using `[le_div_iff₀ hp, mul_comm]`. Conclude with `succ_mul_flowVal_le (by omega) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `e : Formalism.IncomingBounds.gam l * ∑ a, D a - (∑ a, D a) / ((l : ℝ) + 1) = Formalism.IncomingBounds.rho l * ∑ a, D a`. Unfold `Formalism.IncomingBounds.gam Formalism.IncomingBounds.rho`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Unfold `Fnum`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma rho_mul_le_Fnum (hl : 2 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) :
     Formalism.IncomingBounds.rho l * ∑ a, D a ≤ Fnum l d D := by
@@ -66,11 +66,11 @@ lemma rho_mul_le_Fnum (hl : 2 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a
   linarith
 
 /- English proof (translation)
-Introduce `l d _ D hl hD`. Use `⟨rho_mul_le_Fnum hl hD, fun t ht => ?_, GlobalTheory.LevelsOrbits.lpF_eq l d D, fun i₀ => ?_⟩` and prove the remaining obligations. Unfold `Fnum`. Rewrite using `[GlobalTheory.FlowScaling.maxFlow_mul (by omega) ht hD, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨x, ⟨hx, hx0⟩, hmax⟩` from `GlobalTheory.BasicFlow.low_optimum l d hl D hD i₀`. Establish `hm : maxFlow l d D ≤ flowVal d x + (∑ a, D a) / (l : ℝ) ^ i₀` using `GlobalTheory.FlowScaling.maxFlow_le hD fun z hz => by`. Take `⟨z', h1, h2, h3⟩` from `GlobalTheory.BasicFlow.truncate l d hl D i₀ z hz`. Combine the linear relations using `[hmax z' h1 h2]`. Use `⟨x, hx, fun a i h => hx0 a i (Or.inl h), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm` using `[div_eq_inv_mul]`. Unfold `Fnum`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem main : ∀ (l d : ℕ) [NeZero d] (D : ZMod d → ℝ), 2 ≤ l → (∀ a, 0 ≤ D a) →
     Formalism.IncomingBounds.rho l * ∑ a, D a ≤ Fnum l d D ∧

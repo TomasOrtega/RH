@@ -25,17 +25,15 @@ open GlobalTheory.ExportSeries GlobalTheory.IndefiniteRowSideFullHecke.RaisingLo
 namespace GlobalTheory.LieEquivFock
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t τ Y hY ψ ψ' hψ hψ'`. Take `⟨a, hL⟩` from `GlobalTheory.T.hasDerivAt_fockVector_targetLieOneParam D G Pl0 T A Ks R F hG hF i t τ Y hY`. Establish `hinj : Function.Injective (R.ptP i t)` using `(GlobalTheory.CoefActIo.thetaVector_laws (i := i) hG.core t).2.2`. Establish `hlin : ∀ (c : ℂ) (P : PolF D (Wc D i).rank (Vc D i).rank), R.ptP i t (c • P) = c • R.ptP i t P`. Introduce `c P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `RealDat.ptP`. Conclude with `map_smul _ c P`. Use `set Y' := (R.MW i (sg0 D A)).fr τ * Y * ((R.MW i (sg0 D A)).fr τ)⁻¹`. Use `set Lop : PolF D (Wc D i).rank (Vc D i).rank → PolF D (Wc D i).rank (Vc D i).rank := fun P => fockT τ (fun _ : Fin (Vc D i).rank => true) (fun j : Fin (Wc D i).rank => decide ((j : ℕ) < pS D i τ)) Y' P + a • P with hLop`. Establish `hder : ∀ w, ψ' w = Lop (ψ w)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `w`. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Conclude with `(hψ' w z).unique (hL (ψ w) z)`. Introduce `u hu w'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, g, hg⟩` from `GlobalTheory.T.realPoints_act_fock_scalar_linear_substitution D G Pl0 T A Ks R F hG i t u hu`. Establish `h1 : ψ ((R.cV i).ρ u w') = c • fockSubst (pS D i) g (ψ w')`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hψ u hu w', hg, hlin]`. Establish `hcomm : ∀ Q, Lop (fockSubst (pS D i) g Q) = fockSubst (pS D i) g (Lop Q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Q`. Simplify using `only [hLop, map_add, map_smul]`. Rewrite using `[GlobalTheory.T.fockPolynomialSubstitution_commute_targetGlAction]`. Establish `hsm : ∀ x, Lop (c • x) = c • Lop x`. Introduce `x`.
-
-Simplify using `only [hLop, map_smul, smul_add]`. Rewrite using `[smul_comm a c]`. Rewrite using `[hder, h1, hder, hg, ← hlin, hsm, hcomm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_equivariant : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (τ : D.what₂.Tau) (Y : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ), Y ∈ lieAt (Wc D i) τ → ∀ (ψ ψ' : ((R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank)), (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (ψ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (ψ w'))) → (∀ w z, HasDerivAt (fun s : ℝ => R.ωP i t (1, oneP R.θ (Wc D i) τ Y s) (R.ptP i t (ψ w)) z) (R.ptP i t (ψ' w) z) 0) → (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (ψ' ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (ψ' w'))) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t τ Y hY ψ ψ' hψ hψ'

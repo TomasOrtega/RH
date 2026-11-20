@@ -12,9 +12,9 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem`. Consider the case `exact _root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem`. Consider the case `(apply _root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eigen_components_mod_stable {k : Type} [Field k] {H : Type 1} [AddCommGroup H] [Module k H]
     {O : Type} [CommRing O] (ρ : O →+* Module.End k H) (F : Submodule k H)
@@ -31,7 +31,7 @@ theorem eigen_components_mod_stable {k : Type} [Field k] {H : Type 1} [AddCommGr
   | (intros; exact _root_.GlobalTheory.MembershipOfSum.mem_of_sum_mem ..)
 
 /- English proof (translation)
-Introduce `k _ H _ _ O _ ρ F hF a χ hχ u hu hs i`. Conclude with `eigen_components_mod_stable ρ F hF χ hχ Finset.univ u (fun i _ c => hu i c) hs i (Finset.mem_univ i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eigen_mod_stable : ∀ (k : Type) [Field k] (H : Type 1) [AddCommGroup H] [Module k H] (O : Type) [CommRing O] (ρ : O →+* Module.End k H) (F : Submodule k H), (∀ c, ∀ x ∈ F, ρ c x ∈ F) → ∀ (a : ℕ) (χ : Fin a → O → k), (∀ i j, i ≠ j → ∃ c, χ i c ≠ χ j c) → ∀ u : Fin a → H, (∀ i c, ρ c (u i) - χ i c • u i ∈ F) → ∑ i, u i ∈ F → ∀ i, u i ∈ F := by
   intro k _ H _ _ O _ ρ F hF a χ hχ u hu hs i

@@ -12,14 +12,14 @@ namespace GlobalTheory.CovDomGrp
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SgAlg.eOf, Pc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eOf_Pc_apply (u : D.what₂.Word) (i : Fin (2 * D.R.rS + D.R.k + 1)) (a : Fin D.R.rS) :
     GlobalTheory.SgAlg.eOf (Pc X u) i a = crdH X (X.eX a) i := by
   simp [GlobalTheory.SgAlg.eOf, Pc]
 
 /- English proof (translation)
-Use `show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Xsp_Fu_eq_span (u : D.what₂.Word) :
     Formalism.MainNotions.S.Lat.Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX) := by
@@ -27,7 +27,7 @@ theorem Xsp_Fu_eq_span (u : D.what₂.Word) :
   rw [X.Fu_e]
 
 /- English proof (translation)
-Establish `hcol : GlobalTheory.SgAlg.eOf (Pc X u) *ᵥ c = ∑ a, c a • crdH X (X.eX a)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, eOf_Pc_apply, Finset.sum_apply, mul_comm]`. Rewrite using `[hcol, map_sum]`. Simplify using `only [map_smul, vecOf_crdH]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vecOf_eOf_mulVec (u : D.what₂.Word) (c : Fin D.R.rS → D.host.E) :
     vecOf X (GlobalTheory.SgAlg.eOf (Pc X u) *ᵥ c) = ∑ a, c a • X.eX a := by
@@ -38,7 +38,7 @@ theorem vecOf_eOf_mulVec (u : D.what₂.Word) (c : Fin D.R.rS → D.host.E) :
   simp only [map_smul, vecOf_crdH]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec]`. Use `conv_rhs => rw [← vecOf_crdH X (X.eX a), hT_vecOf]`. Simplify using `only [GlobalTheory.SgAlg.form, GlobalTheory.SgAlg.cT, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.map_apply, eOf_Pc_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_eOf_mulVec_apply (u : D.what₂.Word) (v : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) (a : Fin D.R.rS) :
     ((GlobalTheory.SgAlg.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (GlobalTheory.SgAlg.eOf (Pc X u)) * Jc X) *ᵥ v) a
@@ -49,11 +49,11 @@ theorem cT_eOf_mulVec_apply (u : D.what₂.Word) (v : Fin (2 * D.R.rS + D.R.k + 
     Matrix.map_apply, eOf_Pc_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.Lat.orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `h _ (Submodule.subset_span ⟨a, rfl⟩)`. Introduce `h x hx`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `h a`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz => simp [hx, hz]`. Consider the case `smul c x _ hx => simp [hx]`.
+A detailed English derivation is pending.
 -/
 theorem mem_orth_span_iff (y : (VS D).V) :
     y ∈ Formalism.MainNotions.S.Lat.orth (VS D) (Submodule.span D.host.E (Set.range X.eX)) ↔
@@ -72,19 +72,17 @@ theorem mem_orth_span_iff (y : (VS D).V) :
     | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Introduce `D X u n γ hγ`. Establish `inj : Function.Injective (vecOf X)` using `fun a b h => by`. Simplify `congrArg (crdH X) h` using `[crdH_vecOf]`. Establish `hperp : ∀ v, (GlobalTheory.SgAlg.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (GlobalTheory.SgAlg.eOf (Pc X u)) * Jc X) *ᵥ v = 0 ↔ ∀ a, (VS D).hT (X.eX a) (vecOf X v) = 0`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h a`. Establish `h'` using `congrFun h a`. Rewrite `h'` using `[cT_eOf_mulVec_apply]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[cT_eOf_mulVec_apply]`. Conclude with `h a`. Establish `himg : ∀ v c, (γ *ᵥ v - v = GlobalTheory.SgAlg.eOf (Pc X u) *ᵥ c ↔ n (vecOf X v) - vecOf X v = ∑ a, c a • X.eX a)`. Introduce `v c`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← vecOf_eOf_mulVec X u c, n_vecOf hγ, ← map_sub]`. Conclude with `inj.eq_iff.symm`. Rewrite using `[Xsp_Fu_eq_span X u]`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[mem_orth_span_iff X x]`. Take `⟨c, hc⟩` from `H (crdH X x) ((hperp _).2 (by simpa [vecOf_crdH] using hx))`. Rewrite `hc` using `[himg, vecOf_crdH]`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨c, hc.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `H v hv`. Establish `hx : vecOf X v ∈ Formalism.MainNotions.S.Lat.orth (VS D) (Submodule.span D.host.E (Set.range X.eX))` using `(mem_orth_span_iff X (vecOf X v)).2 ((hperp v).1 hv)`. Establish `hm` using `H _ hx`. Rewrite `hm` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hm`.
-
-Conclude with `⟨c, (himg v c).2 hc.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orth_cond_iff_coord : ∀ {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E), (∀ y, crdH X (n y) = γ *ᵥ crdH X y) → ((∀ v, (GlobalTheory.SgAlg.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (GlobalTheory.SgAlg.eOf (Pc X u)) * Jc X) *ᵥ v = 0 → ∃ c, γ *ᵥ v - v = GlobalTheory.SgAlg.eOf (Pc X u) *ᵥ c) ↔ ∀ x ∈ Formalism.MainNotions.S.Lat.orth (VS D) (Formalism.MainNotions.S.Lat.Xsp (lf D (X.Fu u))), n x - x ∈ Formalism.MainNotions.S.Lat.Xsp (lf D (X.Fu u))) := by
   intro D X u n γ hγ

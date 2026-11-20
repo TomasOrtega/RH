@@ -10,13 +10,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨W0, ⟨by simp, by simp, by simp, by simp⟩, by simp⟩` and prove the remaining obligations. Consider the case `insert j s hj ih`. Take `⟨A, hA0, hA⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `h j (Finset.mem_insert_self _ _)`. Establish `h1 : (A ⊓ B).relIndex A ≠ 0`. Rewrite using `[AddSubgroup.inf_relIndex_left]`. Conclude with `AddSubgroup.relIndex_ne_zero_trans hB.1 hA0.2.1`. Establish `h2 : (A ⊓ B).relIndex B ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.inf_relIndex_right]`. Conclude with `AddSubgroup.relIndex_ne_zero_trans hA0.1 hB.2.1`. Use `⟨A ⊓ B, (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 ∅).2.1 A _ hA0 inf_le_left h1, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `(GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).2.1 B _ hB inf_le_right h2`.
-
-Conclude with `(GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).2.1 A _ (hA i hi) inf_le_left h1`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_common_goodSub {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {ι : Type}
     (s : Finset ι) (S : ι → Set W) (h : ∀ i ∈ s, IsCO W0 (S i)) :
@@ -39,15 +37,15 @@ theorem exists_common_goodSub {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {
     · exact (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).2.1 A _ (hA i hi) inf_le_left h1
 
 /- English proof (translation)
-Introduce `W _ W0 ι s S h`. Take `⟨A, hA0, hA⟩` from `exists_common_goodSub W0 s S h`. Establish `himg : (QuotientAddGroup.mk : W → W ⧸ A) '' (⋃ i ∈ s, S i) = ⋃ i ∈ s, (QuotientAddGroup.mk : W → W ⧸ A) '' S i`. Simplify using `only [Set.image_iUnion]`. Establish `hU : GoodSub W0 A (⋃ i ∈ s, S i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hA0.1, hA0.2.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx a ha`. Simplify using `only [Set.mem_iUnion] at hx ⊢`. Take `⟨i, hi, hx⟩` from `hx`. Conclude with `⟨i, hi, (hA i hi).2.2.1 x hx a ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[himg]`. Conclude with `Set.Finite.biUnion s.finite_toSet fun i hi => (hA i hi).2.2.2`. Use `⟨⟨A, hU⟩, fun hd => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 _).1 A hU, Finset.sum_congr rfl fun i hi => (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg W0 (S i)).1 A (hA i hi), ← Finset.sum_mul, himg]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `key` using `Set.Finite.ncard_biUnion (t := (s : Set ι)) (s := fun i => (QuotientAddGroup.mk : W → W ⧸ A) '' S i) s.finite_toSet (fun i hi => (hA i hi).2.2.2) (by`. Introduce `i hi j hj hij`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ ⟨y, hy, hxy⟩`. Establish `hm : -y + x ∈ A` using `QuotientAddGroup.eq.1 hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hA j hj).2.2.1 y hy _ hm` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Conclude with `Set.disjoint_left.1 (hd i hi j hj hij) hx this)`. Rewrite `key` using `[finsum_mem_coe_finset]`. Conclude with `key` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_biUnion : ∀ {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) {ι : Type} (s : Finset ι) (S : ι → Set W), (∀ i ∈ s, IsCO W0 (S i)) → IsCO W0 (⋃ i ∈ s, S i) ∧ ((∀ i ∈ s, ∀ j ∈ s, i ≠ j → Disjoint (S i) (S j)) → cont W0 (⋃ i ∈ s, S i) = ∑ i ∈ s, cont W0 (S i)) := by
   intro W _ W0 ι s S h

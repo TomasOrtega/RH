@@ -11,7 +11,7 @@ variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
   {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ}
 
 /- English proof (translation)
-Use extensionality with `⟨i, hi⟩ ⟨l, hl⟩`. Simplify using `only [Formalism.IrreducibleCountingLemmas.TYPES.blk, Matrix.submatrix_apply, Matrix.one_apply, Subtype.mk.injEq]`. Conclude with `hg.2 i l (hi.trans hl.symm)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_unip (b : ι → Fin s) (c : Fin s) {g : GL ι K}
     (hg : g ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b) :
@@ -23,7 +23,7 @@ theorem blk_unip (b : ι → Fin s) (c : Fin s) {g : GL ι K}
 omit [Fintype K] [DecidableEq K] [Fintype ι] in
 
 /- English proof (translation)
-Use `congrFun (congrFun (h (b j)) ⟨i, hij⟩) ⟨j, rfl⟩` as an intermediate fact. Simplify `this` using `only [Formalism.IrreducibleCountingLemmas.TYPES.blk, Matrix.submatrix_apply, Matrix.one_apply, Subtype.mk.injEq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entry_of_blk (b : ι → Fin s) {M : Matrix ι ι K}
     (h : ∀ c, Formalism.IrreducibleCountingLemmas.TYPES.blk K b c M = 1) (i j : ι) (hij : b i = b j) :
@@ -33,7 +33,7 @@ theorem entry_of_blk (b : ι → Fin s) {M : Matrix ι ι K}
     Subtype.mk.injEq] using this
 
 /- English proof (translation)
-Use `⟨mul_mem hg.1 hh.1, entry_of_blk b fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Formalism.IrreducibleCountingLemmas.TYPES.blk_mul b c hg.1.1 hh.1.1, blk_unip b c hg, blk_unip b c hh, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unip_mul_mem (b : ι → Fin s) {g h : GL ι K}
     (hg : g ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b) (hh : h ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b) :
@@ -43,7 +43,7 @@ theorem unip_mul_mem (b : ι → Fin s) {g h : GL ι K}
     one_mul]
 
 /- English proof (translation)
-Use `⟨inv_mem hg.1, entry_of_blk b fun c => ?_⟩` and prove the remaining obligations. Establish `h` using `Formalism.IrreducibleCountingLemmas.TYPES.blk_mul b c hg.1.2 hg.1.1`. Rewrite `h` using `[Units.inv_mul, blk_unip b c hg, mul_one]`. Rewrite using `[← h]`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_inv_mem (b : ι → Fin s) {g : GL ι K}
     (hg : g ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b) : g⁻¹ ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b := by
@@ -56,11 +56,11 @@ theorem unip_inv_mem (b : ι → Fin s) {g : GL ι K}
 open Classical in
 
 /- English proof (translation)
-Use `set P : Module.End ℂ τ := ∑ v : GL ι K, if v ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b then τ.ρ v else 0 with hP`. Establish `hfix : ∀ a ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b, τ.ρ a * P = P`. Introduce `a ha`. Rewrite using `[hP, Finset.mul_sum, ← Equiv.sum_comp (Equiv.mulLeft a) (fun v : GL ι K => if v ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b then τ.ρ v else 0)]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hiff : a * v ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b ↔ v ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K b`. Use `⟨fun h => ?_, unip_mul_mem b ha⟩` and prove the remaining obligations. Simplify using `using unip_mul_mem b (unip_inv_mem b ha) h`. Simplify using `only [Equiv.coe_mulLeft, hiff]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Rewrite using `[mul_zero]`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Conclude with `hc s b hb hs (P w) fun a ha => LinearMap.congr_fun (hfix a ha) w`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_rho_unip (τ : FDRep ℂ (GL ι K)) (hc : Formalism.IrreducibleCountingLemmas.TYPES.IsCuspidal K τ)
     (b : ι → Fin s) (hb : Function.Surjective b) (hs : 2 ≤ s) :
@@ -83,7 +83,7 @@ theorem sum_rho_unip (τ : FDRep ℂ (GL ι K)) (hc : Formalism.IrreducibleCount
   exact hc s b hb hs (P w) fun a ha => LinearMap.congr_fun (hfix a ha) w
 
 /- English proof (translation)
-Introduce `c`. Use `fin_cases c`. Conclude with `⟨⟨0, by omega⟩, by simp [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]; omega⟩`. Conclude with `⟨⟨j, hjd⟩, by simp [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twoBlock_surjective {d j : ℕ} (hj : 1 ≤ j) (hjd : j < d) :
     Function.Surjective (Formalism.IrreducibleCountingLemmas.TYPES.twoBlock d j) := by
@@ -93,9 +93,9 @@ theorem twoBlock_surjective {d j : ℕ} (hj : 1 ≤ j) (hjd : j < d) :
   · exact ⟨⟨j, hjd⟩, by simp [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ d j τ hj hjd hc u`. Establish `h0` using `sum_rho_unip τ hc (Formalism.IrreducibleCountingLemmas.TYPES.twoBlock d j) (twoBlock_surjective hj hjd) le_rfl`. Establish `h1 : LinearMap.trace ℂ τ (τ.ρ u * ∑ v : GL (Fin d) K, if v ∈ Formalism.IrreducibleCountingLemmas.TYPES.unip K (Formalism.IrreducibleCountingLemmas.TYPES.twoBlock d j) then τ.ρ v else 0) = 0`. Rewrite using `[h0, mul_zero, map_zero]`. Rewrite `h1` using `[Finset.mul_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans (Finset.sum_congr rfl fun v _ => ?_) h1` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[FDRep.character, map_mul]`. Rewrite using `[mul_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_character_translate :
     ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (d j : ℕ) (τ : FDRep ℂ (GL (Fin d) K)), 1 ≤ j → j < d → IsCuspidal K τ → ∀ u : GL (Fin d) K,

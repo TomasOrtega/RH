@@ -20,17 +20,17 @@ variable {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (h 
 include h
 
 /- English proof (translation)
-The claim follows from `Finset.prod_range_succ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cubN_succ' (k : ℕ) (a m x : A) : cubN θ (k + 1) a m x = cubN θ k a m x * θ (a * m ^ k) m x :=
   Finset.prod_range_succ _ _
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact Ex.ext (pow_zero x).symm (by simp [cubN]; rfl)`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih]`. Use `Ex.ext (pow_succ x k).symm ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ex.mul_u, cubN_succ' h]`. Use `show _ = _ * (_ * θ (1 * x ^ k) x c)⁻¹`. Rewrite using `[_root_.one_mul, h.s01 c, h.s12 (x ^ k) c x, pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem ex_pow (c x : A) (w : U) (k : ℕ) :
     (⟨x, w⟩ : Ex h c) ^ k = ⟨x ^ k, w ^ k * (cubN θ k 1 x c)⁻¹⟩ := by
@@ -47,11 +47,11 @@ theorem ex_pow (c x : A) (w : U) (k : ℕ) :
     abel
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, h.N_one]`. Simplify using `[cubN]`. Consider the case `succ k ih`. Establish `e` using `h.N_add n 1 a (x ^ k) x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `e` using `[h.face, _root_.mul_one, _root_.one_mul]`. Rewrite using `[cubN_succ' h, cubN_succ' h, _root_.one_mul, pow_succ x k, h.s12 (x ^ k) x a, h.s01 (x ^ k) a x, h.s12 (x ^ k) x (a ^ n), h.s01 (x ^ k) (a ^ n) x]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Establish `ih'` using `congrArg Additive.ofMul ih`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ih' ⊢`. Simplify using `only [add_nsmul, one_nsmul, nsmul_add]`. Take the linear combination `(norm := abel) e' + ih'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cubN_pow (a x : A) (n k : ℕ) :
     cubN θ n 1 a (x ^ k) * cubN θ k 1 x a ^ n = cubN θ n 1 a x ^ k * cubN θ k 1 x (a ^ n) := by
@@ -78,27 +78,25 @@ variable {A U X : Type} [CommGroup A] [CommGroup U] [AddCommGroup X] [Module.Fre
 include h
 
 /- English proof (translation)
-Set `e` to `Module.Free.chooseBasis ℤ X`. Set `f : X →ₗ[ℤ] Additive (Ex h b)` to `e.constr ℤ fun i => Additive.ofMul ⟨c' (e i), 1⟩`. Set `p : Additive (Ex h b) →+ Additive A` to `AddMonoidHom.mk' (fun x => Additive.ofMul x.toMul.b) fun _ _ => rfl`. Establish `fb : ∀ χ, (f χ).toMul.b ^ n = c χ` using `fun χ => by`. Use `LinearMap.congr_fun (e.ext (f₁ := n • (p.toIntLinearMap ∘ₗ f)) (f₂ := (AddMonoidHom.mk' (fun χ => Additive.ofMul (c χ)) hc).toIntLinearMap) fun i => by show n • p (f (e i)) = Additive.ofMul (c (e i))` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show f (e i) = Additive.ofMul ⟨c' (e i), 1⟩ from e.constr_basis ℤ _ i, ← hc', ofMul_pow]`. Use the proof step `rfl) χ`. Conclude with `Additive.ofMul.injective (by rw [ofMul_pow]; exact this)`. Establish `fadd : ∀ χ χ', (f (χ + χ')).toMul = (f χ).toMul * (f χ').toMul` using `fun χ χ' => by rw [map_add]; rfl`. Set `g : X → Ex h b` to `fun χ => (f χ).toMul ^ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gadd : ∀ χ χ', g (χ + χ') = g χ * g χ'` using `fun χ χ' => by simp only [g, fadd, mul_pow]`. Establish `gb : ∀ χ, (g χ).b = c χ` using `fun χ => (Ex.pow_b _ _).trans (fb χ)`. Establish `m : Mult θ c b fun χ => (g χ).u`. Use `⟨?_, fun χ χ' => ?_⟩` and prove the remaining obligations. Use `show ((f 0).toMul ^ n).u = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, toMul_zero, one_pow]`. Both sides reduce to the same expression. Use `show (g (χ + χ')).u * _ = _`. Rewrite using `[gadd, Ex.mul_u, gb, gb, h.s01 b, h.s12 (c χ) b, inv_mul_cancel_right]`. Establish `mp` using `m.pow (h := h) hc n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `wadd : ∀ χ χ', ((⟨b, (g (χ + χ')).u⟩ : Ex h (c (χ + χ'))) ^ n).u = ((⟨b, (g χ).u⟩ : Ex h (c χ)) ^ n).u * ((⟨b, (g χ').u⟩ : Ex h (c χ')) ^ n).u` using `fun χ χ' => by`. Use `mp.2 χ χ'` as an intermediate fact. Rewrite `this` using `[hb, h.face₃, _root_.mul_one]`. Then use the resulting hypothesis. Establish `wroot : ∀ χ, ∃ r : U, r ^ n = ((⟨b, (g χ).u⟩ : Ex h (c χ)) ^ n).u` using `fun χ => by`. Use `⟨(f χ).toMul.u ^ n * (cubN θ n 1 b (f χ).toMul.b)⁻¹, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁ : (g χ).u = (f χ).toMul.u ^ n * (cubN θ n 1 (f χ).toMul.b b)⁻¹` using `by show ((f χ).toMul ^ n).u = _`. Rewrite using `[show (f χ).toMul = ⟨(f χ).toMul.b, (f χ).toMul.u⟩ from rfl, ex_pow h]`. Rewrite using `[ex_pow h, ← fb χ]`. Use `show _ = (g χ).u ^ n * (cubN θ n 1 b ((f χ).toMul.b ^ n))⁻¹`. Establish `e₂` using `cubN_pow h (f χ).toMul.b b n n`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e₂` using `[hb, h.N_one, _root_.one_mul]`. Rewrite using `[e₁]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e₂'` using `congrArg Additive.ofMul e₂`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, nsmul_add, nsmul_neg] at e₂' ⊢`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[smul_neg, smul_neg, e₂']`. Normalize the expressions using the abelian group laws. Use `choose r hr using wroot`. Set `W : X →ₗ[ℤ] Additive U` to `(AddMonoidHom.mk' (fun χ => Additive.ofMul ((⟨b, (g χ).u⟩ : Ex h (c χ)) ^ n).u) wadd).toIntLinearMap`. Set `ro : X →ₗ[ℤ] Additive U` to `e.constr ℤ fun i => Additive.ofMul (r (e i))⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `roW : ∀ χ, (ro χ).toMul ^ n * ((⟨b, (g χ).u⟩ : Ex h (c χ)) ^ n).u = 1` using `fun χ => by`. Use `LinearMap.congr_fun (e.ext (f₁ := n • ro) (f₂ := -W) fun i => by show n • ro (e i) = -W (e i)` as an intermediate fact. Rewrite using `[show ro (e i) = Additive.ofMul (r (e i))⁻¹ from e.constr_basis ℤ _ i, ← ofMul_pow, inv_pow, hr]`. Use the proof step `rfl) χ`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofMul_mul, ofMul_pow, ofMul_one]`. Conclude with `eq_neg_iff_add_eq_zero.1 this`. Establish `roadd : ∀ χ χ', (ro (χ + χ')).toMul = (ro χ).toMul * (ro χ').toMul` using `fun χ χ' => by rw [map_add]; rfl`. Use `⟨fun χ => (g χ).u * (ro χ).toMul, ⟨?_, fun χ χ' => ?_⟩, fun χ => ?_⟩` and prove the remaining obligations. Use `show (g 0).u * (ro 0).toMul = 1`.
-
-Rewrite using `[show (g 0).u = 1 from m.1, map_zero, toMul_zero, _root_.mul_one]`. Use `show (g (χ + χ')).u * (ro (χ + χ')).toMul * _ = (g χ).u * (ro χ).toMul * ((g χ').u * (ro χ').toMul)`. Rewrite using `[roadd, mul_right_comm, m.2, _root_.mul_mul_mul_comm]`. Rewrite using `[ex_pow h, ← roW χ, ex_pow h, mul_pow] show (g χ).u ^ n * (ro χ).toMul ^ n * _ = (ro χ).toMul ^ n * ((g χ).u ^ n * _)`. Rewrite using `[mul_comm ((g χ).u ^ n), _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mult_pow_eq_one {c : X → A} (hc : ∀ χ χ', c (χ + χ') = c χ * c χ') {n : ℕ} (c' : X → A)
     (hc' : ∀ χ, c' χ ^ n = c χ) {b : A} (hb : b ^ n = 1) :
@@ -168,13 +166,13 @@ end Key
 section Main
 
 /- English proof (translation)
-Introduce `R _ _ D hB n _ c' hc' F _ _ b hb`. Take `⟨J, hJ⟩` from `good_pt D.P.isLB (default : PrimeSpectrum F)`. Establish `C` using `isCub_cubV D.cub (T := TF (R := R) F) hJ`. Establish `cpw : ∀ (x : 𝟙_ (Over (Sp R)) ⟶ D.P.A) (k : ℕ), toUnit (TF (R` using `R) F) ≫ x ^ k = (toUnit _ ≫ x) ^ k := fun x k => by`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `MonObj.comp_one _`. Consider the case `succ k ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`. Establish `cpow : ∀ χ, (toUnit (TF (R` using `R) F) ≫ c' χ) ^ n = cP D (TF (R := R) F) χ := fun χ => by`. Rewrite using `[← cpw, hc']`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨v, m, hv⟩` from `exists_mult_pow_eq_one C (cPoint_add D (TF (R := R) F)) (fun χ => toUnit _ ≫ c' χ) cpow hb`. Establish `i0 : ∀ χ, ix (𝟙 _) hJ (0 : D.X) χ = 1` using `fun χ => by`. Use `ix_add (𝟙 (TF (R := R) F)) hJ hB 0 0 χ` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_eq_left.1 this.symm`. Take `⟨q, h₁, h₂, -⟩` from `exists_qk hJ (n := n) 0 b v m fun χ => by`. Rewrite using `[i0]`. Conclude with `Ex.ext ((Ex.pow_b _ _).trans hb) (hv χ)`. Conclude with `⟨q, h₁, h₂⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_qk_zero_of_pow_eq : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (n : ℕ), 1 ≤ n →
     ∀ (c' : D.X → (𝟙_ (Over (Sp R)) ⟶ D.P.A)), (∀ χ, c' χ ^ n = D.c χ) →

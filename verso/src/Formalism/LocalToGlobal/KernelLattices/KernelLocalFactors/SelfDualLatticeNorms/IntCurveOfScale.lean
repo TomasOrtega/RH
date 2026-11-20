@@ -18,17 +18,17 @@ open Formalism.MainNotions Formalism.L2.Col
 open Formalism.L2.Th1.E (IntCurve curveL)
 
 /- English proof (translation)
-Establish `hH` using `Formalism.L2.Th1.F.homogeneity L c hc`. Establish `h2 : (Formalism.L2.Th1.F.scalePair L c hc).g₂ = (c ^ 4)⁻¹ * L.g₂` using `hH.2.2.2.2.2.2.2.2.2.1`. Establish `h3 : (Formalism.L2.Th1.F.scalePair L c hc).g₃ = (c ^ 6)⁻¹ * L.g₃` using `hH.2.2.2.2.2.2.2.2.2.2`. Take `⟨-, -, -, h4, h6, hD⟩` from `h`. Establish `hS` using `fun g2 g3 : ℂ_[p] => (Formalism.L2.Th1.A.shortInv ℂ_[p] g2 g3).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hιc : ι c ≠ 0` using `by simpa using hc`. Establish `hcn : ‖ι c‖ = 1`. Unfold `curveL at hD`. Rewrite `hD` using `[hS, h2, h3]`. Establish `e : ι ((c ^ 4)⁻¹ * L.g₂) ^ 3 - 27 * ι ((c ^ 6)⁻¹ * L.g₃) ^ 2 = (ι c ^ 12)⁻¹ * ι (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv₀, map_pow, map_sub, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Rewrite `hD` using `[e, norm_mul, hΔ, mul_one, norm_inv, norm_pow, inv_eq_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 hD`. Use `⟨by simp [curveL, Formalism.L2.Th1.A.shortW], by simp [curveL, Formalism.L2.Th1.A.shortW], by simp [curveL, Formalism.L2.Th1.A.shortW], ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (curveL p L ι).a₄ = ι c ^ 4 * (curveL p (Formalism.L2.Th1.F.scalePair L c hc) ι).a₄`. Simplify using `only [curveL, Formalism.L2.Th1.A.shortW, h2, map_mul, map_inv₀, map_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, norm_mul, norm_pow, hcn, one_pow, one_mul]`. Conclude with `h4`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (curveL p L ι).a₆ = ι c ^ 6 * (curveL p (Formalism.L2.Th1.F.scalePair L c hc) ι).a₆`. Simplify using `only [curveL, Formalism.L2.Th1.A.shortW, h3, map_mul, map_inv₀, map_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, norm_mul, norm_pow, hcn, one_pow, one_mul]`. Conclude with `h6`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `curveL`. Rewrite using `[hS]`. Simplify `hΔ` using `only [map_sub, map_mul, map_pow, map_ofNat]`.
+A detailed English derivation is pending.
 -/
 theorem intCurve_of_scale (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (L : PeriodPair) (c : ℂ) (hc : c ≠ 0)
     (h : IntCurve (curveL p (Formalism.L2.Th1.F.scalePair L c hc) ι)) (hΔ : ‖ι (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)‖ = 1) :
@@ -65,9 +65,9 @@ theorem intCurve_of_scale (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (L :
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
 /- English proof (translation)
-Establish `hL : (B.L.lattice : Set ℂ) = TaylorLogMetric.lamOf D cc δ`. Rewrite using `[← B.lat]`. Both sides reduce to the same expression. Take `⟨e2, e3⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair (TaylorLogMetric.lamOf D cc δ) B.L hL`. Establish `h` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_discr_lamOf D cc hcc δ hδ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← e2, ← e3]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_one (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : B.L.g₂ ^ 3 - 27 * B.L.g₃ ^ 2 = 1 := by
   have hL : (B.L.lattice : Set ℂ) = TaylorLogMetric.lamOf D cc δ := by
@@ -78,9 +78,9 @@ theorem disc_one (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetri
   exact h
 
 /- English proof (translation)
-Establish `hcm : Formalism.L2.Th1.CM.HasCMBy D.host.d B.L`. Introduce `ω hω`. Use `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.hst B ω hω` as an intermediate fact. Rewrite `this` using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.theta_val]`. Then use the resulting hypothesis. Establish `hd8 : D.host.d % 8 = 7` using `dMod8 D`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨c, hc, hI⟩` from `Formalism.L2.Th1.Top.good_model_exists_all_primes D.host.d B.L D.host.hyp.2.1.squarefree (by omega) hcm p hp ι`. Use `intCurve_of_scale p ι B.L c hc hI ?_` and prove the remaining obligations. Rewrite using `[disc_one B hcc hδ, map_one, norm_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem intCurve_base (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (p : ℕ) [Fact p.Prime] (hp : 5 ≤ p) (ι : ℂ ≃+* ℂ_[p]) :
     IntCurve (curveL p B.L ι) := by
@@ -94,7 +94,7 @@ theorem intCurve_base (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLog
   rw [disc_one B hcc hδ, map_one, norm_one]
 
 /- English proof (translation)
-Take `⟨hq, hn⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.chiFacUnit χ hχ p ((ι : ℂ →+* ℂ_[p]).comp (algebraMap TaylorLogMetric.Qbar ℂ)) N N' L L' hA h1 h2`. Unfold `TaylorLogMetric.lamC at hn`. Rewrite `hn` using `[dif_pos hq]`. Conclude with `hn`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiFac_unit (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}

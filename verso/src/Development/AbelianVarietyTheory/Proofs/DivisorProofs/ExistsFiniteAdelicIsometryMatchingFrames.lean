@@ -16,13 +16,11 @@ open GlobalTheory.CuspMult
 namespace GlobalTheory.FinIsoExists
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨u' * u⁻¹, fun y hy => ?_⟩` and prove the remaining obligations. Use `set k := β' * Formalism.UG.bc φ y * β'⁻¹ with hk`. Use `set B := β * Formalism.UG.bc φ u with hB`. Use `set B' := β' * Formalism.UG.bc φ u' with hB'`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hy' : Formalism.UG.cT σ k.val * J' * k.val = J'` using `hy`. Use `⟨(k * B' * B⁻¹).val, (k * B' * B⁻¹)⁻¹.val, Units.mul_inv _, Units.inv_mul _, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Formalism.UG.cT_mul, Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT σ B⁻¹.val * (Formalism.UG.cT σ B.val * J * B.val) * B⁻¹.val := by rw [hy', hu, hu']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.UG.cT σ (B.val * B⁻¹.val) * J * (B.val * B⁻¹.val) := by`. Simplify using `only [Formalism.UG.cT_mul, Matrix.mul_assoc]`. Use `_ = J := by rw [Units.mul_inv, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Establish `e : k * B' * B⁻¹ * β = β' * Formalism.UG.bc φ (y * (u' * u⁻¹))`. Rewrite using `[hk, hB, hB', map_mul, map_mul, map_inv]`.
-
-Use `group`. Rewrite using `[← Units.val_mul, e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isometry {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) (σ : A →+* A) {n n' : ℕ} (h : n = n')
     (J : Matrix (Fin n) (Fin n) A) (J' : Matrix (Fin n') (Fin n') A) (β : GL (Fin n) A) (β' : GL (Fin n') A)
@@ -53,9 +51,9 @@ theorem exists_isometry {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) 
     rfl
 
 /- English proof (translation)
-Establish `hg : g ∈ blockTri (κ` using `κ) (blk2 n) := by`. Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Simplify using `[blk2] at hij`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[upper_block_val_submatrix hr hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (hr : n ≤ n) (g : GL (Fin n) κ) : upperLeftBlock hr g = g := by
   have hg : g ∈ blockTri (κ := κ) (blk2 n) := by
@@ -67,13 +65,13 @@ theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (hr : n �
   rfl
 
 /- English proof (translation)
-Introduce `D V V' β Λ N β' Λ' N' Pg h hβ hβ' hPg`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_integral_change_baseFrame_orthonormal V β Λ N hβ`. Take `⟨u', hu'⟩` from `GlobalTheory.T.exists_integral_change_baseFrame_orthonormal V' β' Λ' N' hβ'`. Apply the tactic sequence `obtain ⟨u₀, hu₀⟩ := exists_isometry (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) h _ _ β β' u u' hu hu'`. Establish `hL` using `GlobalTheory.T.finite_group_lifts_to_parahoric_level V' β' (datW V'.rank Pg (LevelP.triv Pg V'.rank ℂ) Frm.B) Λ' N' hβ' rfl hPg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, -, hκ, hred⟩` from `hL (fun PP => (Formalism.UG.bc (resS D.host.F PP.1) u₀)⁻¹)`. Take `⟨y, hy⟩` from `parLev_St hκ`. Establish `hU : β' * Formalism.UG.bc (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype y * β'⁻¹ ∈ UA D.sp.cm V'.gram`. Establish `h1` using `parLev_UA hκ`. Rewrite `h1` using `[← hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Take `⟨j, j', h1, h2, h3, h4⟩` from `hu₀ y hU`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_finiteAdelicUnitaryGroup_iso V V' j j' h1 h2 h3`. Use `⟨j, Φ, h3, hΦ, h, y * u₀, h4, fun PP hPP => ?_⟩` and prove the remaining obligations. Establish `h5 : upperLeftBlock le_rfl (redFn β' PP (finE V' κ)) = (Formalism.UG.bc (resS D.host.F PP) u₀)⁻¹` using `congrFun hred ⟨PP, hPP⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : redFn β' PP (finE V' κ) = Formalism.UG.bc (resS D.host.F PP) y` using `(congrArg (redFn β' PP) hy).symm.trans (redFn_frGL β' PP y)`. Establish `h7 : Formalism.UG.bc (resS D.host.F PP) y = (Formalism.UG.bc (resS D.host.F PP) u₀)⁻¹` using `h6.symm.trans ((restrictedBlock_self_apply _ _).symm.trans h5)`. Conclude with `(map_mul _ y u₀).trans (mul_eq_one_iff_eq_inv.2 h7)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isFinIso : ∀ {D : D7} (V V' : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (β' : GL (Fin V'.rank) (EAf D)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)) (N' : ℕ) (Pg : Finset (Pl D.host.E)), V.rank = V'.rank → IsBaseFrame V β Λ N → IsBaseFrame V' β' Λ' N' → (∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl PP PP') → ∃ j Φ, IsFinIso V V' β β' Pg j Φ := by
   intro D V V' β Λ N β' Λ' N' Pg h hβ hβ' hPg

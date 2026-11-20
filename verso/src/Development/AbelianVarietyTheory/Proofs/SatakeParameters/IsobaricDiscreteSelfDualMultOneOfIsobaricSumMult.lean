@@ -12,7 +12,7 @@ def seg {C : Type} (p : C × ℕ) : Multiset (C × ℤ) :=
   (Multiset.range p.2).map fun a : ℕ => (p.1, (p.2 : ℤ) - 1 - 2 * (a : ℤ))
 
 /- English proof (translation)
-Use `(Multiset.nodup_range _).map ?_` and prove the remaining obligations. Introduce `a b h`. Use `congrArg Prod.snd h` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem seg_nodup {C : Type} (p : C × ℕ) : (seg p).Nodup := by
   refine (Multiset.nodup_range _).map ?_
@@ -22,9 +22,9 @@ theorem seg_nodup {C : Type} (p : C × ℕ) : (seg p).Nodup := by
   omega
 
 /- English proof (translation)
-Simplify using `only [seg, Multiset.mem_map, Multiset.mem_range, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, h1, h2⟩`. Conclude with `⟨h1, a, ha, h2⟩`. Introduce and unpack `⟨h1, a, ha, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_seg {C : Type} (p : C × ℕ) (c : C) (e : ℤ) :
     (c, e) ∈ seg p ↔ p.1 = c ∧ ∃ a : ℕ, a < p.2 ∧ (p.2 : ℤ) - 1 - 2 * (a : ℤ) = e := by
@@ -36,17 +36,17 @@ theorem mem_seg {C : Type} (p : C × ℕ) (c : C) (e : ℤ) :
     exact ⟨a, ha, h1, h2⟩
 
 /- English proof (translation)
-Rewrite using `[Multiset.count_eq_of_nodup (seg_nodup p), Multiset.count_eq_of_nodup (seg_nodup p)]`. Take `⟨c', d'⟩` from `p`. Establish `e1 : (c, (d : ℤ) - 1) ∈ seg (c', d') ↔ c' = c ∧ d ≤ d' ∧ (d' + d) % 2 = 0`. Rewrite using `[mem_seg]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨(d' - d) / 2, ?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨a, h1, h2⟩`. Simplify using `only at h1 h2`. Use linear arithmetic over natural numbers and integers. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `e2 : (c, (d : ℤ) + 1) ∈ seg (c', d') ↔ c' = c ∧ d + 2 ≤ d' ∧ (d' + d) % 2 = 0`. Rewrite using `[mem_seg]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨(d' - d - 2) / 2, ?_, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨a, h1, h2⟩`. Simplify using `only at h1 h2`. Use linear arithmetic over natural numbers and integers. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Simplify using `only [e1, e2, Prod.mk.injEq]`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [true_and]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[hc, Ne.symm hc]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem count_seg {C : Type} [DecidableEq C] (p : C × ℕ) (c : C) (d : ℕ) (hd : 1 ≤ d) :
     (seg p).count (c, (d : ℤ) - 1) = (seg p).count (c, (d : ℤ) + 1) + if (c, d) = p then 1 else 0 := by
@@ -76,7 +76,7 @@ theorem count_seg {C : Type} [DecidableEq C] (p : C × ℕ) (c : C) (d : ℕ) (h
   · simp [hc, Ne.symm hc]
 
 /- English proof (translation)
-Proceed by induction on `P using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons p P ih`. Rewrite using `[Multiset.cons_bind, Multiset.count_add, Multiset.count_add, ih, count_seg p c d hd, Multiset.count_cons]`. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem count_bind_seg {C : Type} [DecidableEq C] (P : Multiset (C × ℕ)) (c : C) (d : ℕ) (hd : 1 ≤ d) :
     (P.bind seg).count (c, (d : ℤ) - 1) = (P.bind seg).count (c, (d : ℤ) + 1) + P.count (c, d) := by
@@ -87,9 +87,9 @@ theorem count_bind_seg {C : Type} [DecidableEq C] (P : Multiset (C × ℕ)) (c :
     omega
 
 /- English proof (translation)
-Use extensionality with `⟨c, d⟩`. Distinguish the cases in `hd : 1 ≤ d`. Establish `h1` using `count_bind_seg P c d hd`. Establish `h2` using `count_bind_seg P' c d hd`. Rewrite `h1` using `[e]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Multiset.count_eq_zero_of_notMem fun hm => hd (h _ hm), Multiset.count_eq_zero_of_notMem fun hm => hd (h' _ hm)]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_bind_seg {C : Type} (P P' : Multiset (C × ℕ)) (h : ∀ p ∈ P, 1 ≤ p.2) (h' : ∀ p ∈ P', 1 ≤ p.2)
     (e : P.bind seg = P'.bind seg) : P = P' := by
@@ -109,7 +109,7 @@ def flat (p : Formalism.BasicNotions.Part A.CG) : List ((Σ a : ℕ, A.CG a) × 
   (List.range p.d).map fun k : ℕ => (⟨p.a, p.π⟩, ((p.d : ℝ) - 1) / 2 - (k : ℝ))
 
 /- English proof (translation)
-Unfold `GlobalTheory.RowTie.twSum`. Proceed by induction on `L with`. Consider the case `nil => rw [List.nil_append, List.foldr_nil, A.lpSum_comm, A.lpSum_zero]`. Consider the case `cons p L ih => rw [List.cons_append, List.foldr_cons, List.foldr_cons, ih, A.lpSum_assoc]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem twSum_append (L L' : List ((Σ a : ℕ, A.CG a) × ℝ)) (w : PlE H) :
     GlobalTheory.RowTie.twSum N A (L ++ L') w = A.lpSum (GlobalTheory.RowTie.twSum N A L w) (GlobalTheory.RowTie.twSum N A L' w) := by
@@ -119,7 +119,7 @@ theorem twSum_append (L L' : List ((Σ a : ℕ, A.CG a) × ℝ)) (w : PlE H) :
   | cons p L ih => rw [List.cons_append, List.foldr_cons, List.foldr_cons, ih, A.lpSum_assoc]
 
 /- English proof (translation)
-Unfold `spehLoc GlobalTheory.RowTie.twSum flat`. Establish `hl : (List.range p.d >>= fun a : ℕ => (pure (a : ℝ) : List ℝ)) = (List.range p.d).map (fun a : ℕ => (a : ℝ))`. Simplify using `[List.map_eq_flatMap]`. Rewrite using `[hl, List.foldr_map, List.foldr_map]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem spehLoc_eq (p : Formalism.BasicNotions.Part A.CG) (w : PlE H) :
     spehLoc N A p w = GlobalTheory.RowTie.twSum N A (flat N A p) w := by
@@ -129,7 +129,7 @@ theorem spehLoc_eq (p : Formalism.BasicNotions.Part A.CG) (w : PlE H) :
   rw [hl, List.foldr_map, List.foldr_map]
 
 /- English proof (translation)
-Proceed by induction on `P with`. Consider the case `nil => rfl`. Consider the case `cons p P ih => rw [List.flatMap_cons, twSum_append, ← ih, ← spehLoc_eq]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem isoLoc_eq (P : List (Formalism.BasicNotions.Part A.CG)) (w : PlE H) :
     isoLoc N A P w = GlobalTheory.RowTie.twSum N A (P.flatMap (flat N A)) w := by
@@ -140,17 +140,17 @@ theorem isoLoc_eq (P : List (Formalism.BasicNotions.Part A.CG)) (w : PlE H) :
 def toPair (p : Formalism.BasicNotions.Part A.CG) : (Σ a : ℕ, A.CG a) × ℕ := (⟨p.a, p.π⟩, p.d)
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (g := fun q => ⟨q.1.1, q.1.2, q.2⟩) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem toPair_injective : Function.Injective (toPair N A) :=
   Function.LeftInverse.injective (g := fun q => ⟨q.1.1, q.1.2, q.2⟩) fun _ => rfl
 
 /- English proof (translation)
-Proceed by induction on `P with`. Consider the case `nil => simp`. Consider the case `cons p P ih`. Rewrite using `[List.flatMap_cons, ← Multiset.coe_add, ih, List.map_cons, ← Multiset.cons_coe, Multiset.cons_bind, Multiset.map_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `seg flat toPair`. Rewrite using `[Multiset.map_map, ← Multiset.map_coe]`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coe_flatMap (P : List (Formalism.BasicNotions.Part A.CG)) :
     Multiset.ofList (P.flatMap (flat N A)) =
@@ -170,15 +170,15 @@ theorem coe_flatMap (P : List (Formalism.BasicNotions.Part A.CG)) :
     ring
 
 /- English proof (translation)
-Introduce `R H what₂ N A hR Pa Pa' h h' he`. Establish `hpos : ∀ P : List (Formalism.BasicNotions.Part A.CG), (∀ p ∈ P, 1 ≤ p.a ∧ 1 ≤ p.d ∧ A.csd p.π) → ∀ q ∈ P.flatMap (flat N A), 1 ≤ q.1.1`. Introduce `P hP q hq`. Take `⟨p, hp, hq⟩` from `List.mem_flatMap.1 hq`. Take `⟨k, -, rfl⟩` from `List.mem_map.1 hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hP p hp).1`. Establish `hd : ∀ P : List (Formalism.BasicNotions.Part A.CG), (∀ p ∈ P, 1 ≤ p.a ∧ 1 ≤ p.d ∧ A.csd p.π) → ∀ q ∈ Multiset.ofList (P.map (toPair N A)), 1 ≤ q.2`. Introduce `P hP q hq`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 (Multiset.mem_coe.1 hq)`. Conclude with `(hP p hp).2.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hR _ _ (hpos Pa h) (hpos Pa' h') (by simpa only [isoLoc_eq] using he)`. Establish `h2` using `Multiset.coe_eq_coe.2 h1`. Rewrite `h2` using `[coe_flatMap, coe_flatMap]`. Establish `hinj : Function.Injective fun q : (Σ a : ℕ, A.CG a) × ℤ => (q.1, (q.2 : ℝ) / 2)`. Introduce `q q' e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg Prod.fst e`. Establish `e2` using `congrArg Prod.snd e`. Simplify using `only at e1 e2`. Use `Prod.ext e1 ?_` and prove the remaining obligations. Establish `: (q.2 : ℝ) = q'.2` using `by linarith`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `h3` using `eq_of_bind_seg _ _ (hd Pa h) (hd Pa' h') (Multiset.map_injective hinj h2)`. Rewrite `h3` using `[← Multiset.map_coe, ← Multiset.map_coe]`. Conclude with `Multiset.coe_eq_coe.1 (Multiset.map_injective (toPair_injective N A) h3)`.
+A detailed English derivation is pending.
 -/
 theorem isobaricDiscreteSelfDualMultOne_of_isobaricSumMultOne : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N),
     GlobalTheory.RowTie.IsobaricRigid N A → GlobalTheory.RowCopy.IsobaricDiscreteSelfDualStrongMultiplicityOne N A := by

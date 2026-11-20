@@ -10,7 +10,7 @@ open scoped IntermediateField
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion.SquareConjugationSign
 
 /- English proof (translation)
-Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.intCast_re, Complex.intCast_im] at h1 h2`. Conclude with `⟨by linarith, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem sq_parts (z : ℂ) (a : ℤ) (h : z ^ 2 = (a : ℂ)) :
     z.re ^ 2 - z.im ^ 2 = a ∧ z.re * z.im = 0 := by
@@ -20,9 +20,9 @@ private theorem sq_parts (z : ℂ) (a : ℤ) (h : z ^ 2 = (a : ℂ)) :
   exact ⟨by linarith, by linarith⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `sq_parts z a h`. Establish `ha' : (0 : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `him : z.im = 0`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Rewrite `h1` using `[h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg z.im]`. Conclude with `h3`. Conclude with `(Complex.conj_eq_iff_im.mpr him).symm`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem conj_of_sq_nonneg (z : ℂ) (a : ℤ) (h : z ^ 2 = (a : ℂ)) (ha : 0 ≤ a) :
     z = starRingEnd ℂ z := by
@@ -36,9 +36,9 @@ private theorem conj_of_sq_nonneg (z : ℂ) (a : ℤ) (h : z ^ 2 = (a : ℂ)) (h
   exact (Complex.conj_eq_iff_im.mpr him).symm
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `sq_parts z a h`. Establish `ha' : (a : ℝ) ≤ 0` using `by exact_mod_cast ha`. Establish `hre : z.re = 0`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h3]`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hre]`. Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_of_sq_nonpos (z : ℂ) (a : ℤ) (h : z ^ 2 = (a : ℂ)) (ha : a ≤ 0) :
     -z = starRingEnd ℂ z := by
@@ -56,25 +56,23 @@ private theorem conj_of_sq_nonpos (z : ℂ) (a : ℤ) (h : z ^ 2 = (a : ℂ)) (h
 end UpperTheory.Gal.UnramifiedFromSplittingCriterion.SquareConjugationSign
 
 /- English proof (translation)
-Introduce `Y Ω _ _ _ _ _ _ x a hx ⟨g, hg⟩`. Establish `hxa : x ^ 2 = algebraMap Y Ω (a : Y)` using `by rw [hx, map_intCast]`. Establish `heval : aeval x (X ^ 2 - C (a : Y) : Y[X]) = 0`. Rewrite using `[map_sub, map_pow, aeval_X, aeval_C, hxa, sub_self]`. Establish `hint : IsIntegral Y x` using `⟨X ^ 2 - C (a : Y), monic_X_pow_sub_C _ two_ne_zero, heval⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hirr : Irreducible (X ^ 2 - C (a : Y) : Y[X])`. Use `X_pow_sub_C_irreducible_of_prime Nat.prime_two (fun b hb => hg ?_)` and prove the remaining obligations. Establish `h2 : x ^ 2 = (algebraMap Y Ω b) ^ 2` using `by rw [hxa, ← map_pow, hb]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h2 with h | h` into its components or cases. Rewrite using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.commutes b`. Rewrite using `[h, map_neg]`. Use `congr 1`. Conclude with `g.commutes b`. Establish `hmin : minpoly Y x = X ^ 2 - C (a : Y)` using `(minpoly.eq_of_irreducible_of_monic hirr heval (monic_X_pow_sub_C _ two_ne_zero)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (minpoly Y x).natDegree = 2` using `by rw [hmin, natDegree_X_pow_sub_C]`. Establish `hfin : Module.finrank Y Y⟮x⟯ = 2`. Rewrite using `[IntermediateField.adjoin.finrank hint, hdeg]`. Use `haveI := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI nf : NumberField Y⟮x⟯ := NumberField.of_module_finite Y _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hconj : x ∈ GlobalTheory.CMSub.conjStable Ω`. Establish `hφ : ∀ φ : Ω →+* ℂ, (φ x) ^ 2 = (a : ℂ)` using `fun φ => by rw [← map_pow, hx, map_intCast]`. Break down `le_total 0 a with ha | ha` into its components or cases. Conclude with `⟨x, fun φ => UpperTheory.Gal.UnramifiedFromSplittingCriterion.SquareConjugationSign.conj_of_sq_nonneg _ a (hφ φ) ha⟩`. Conclude with `⟨-x, fun φ => by rw [map_neg]; exact UpperTheory.Gal.UnramifiedFromSplittingCriterion.SquareConjugationSign.conj_of_sq_nonpos _ a (hφ φ) ha⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : Y⟮x⟯ ≤ GlobalTheory.CMSub.conjField Y Ω`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hconj`. Establish `cm : IsCMField Y⟮x⟯` using `GlobalTheory.CMSub.isCMField_of_le _ hle`. Establish `hxK : x ∈ Y⟮x⟯` using `IntermediateField.mem_adjoin_simple_self Y x`. Establish `hspan : ∀ y : Y⟮x⟯, ∃ b c : Y, y = algebraMap Y Y⟮x⟯ b + algebraMap Y Y⟮x⟯ c * ⟨x, hxK⟩`. Introduce `y`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, rfl⟩` from `(IntermediateField.adjoin.powerBasis hint).exists_eq_aeval y`. Rewrite `hf` using `[IntermediateField.adjoin.powerBasis_dim, hdeg]`. Use `⟨f.coeff 0, f.coeff 1, ?_⟩` and prove the remaining obligations. Establish `hf' : f = C (f.coeff 1) * X + C (f.coeff 0)` using `Polynomial.eq_X_add_C_of_natDegree_le_one (by omega)`. Rewrite using `[hf', map_add, map_mul, aeval_C, aeval_C, aeval_X, IntermediateField.adjoin.powerBasis_gen, add_comm]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [coeff_add, coeff_C_mul, coeff_X_zero, coeff_X_one, coeff_C_zero, coeff_C_succ, mul_zero, mul_one, zero_add, add_zero]`. Both sides reduce to the same expression. Use `⟨⟨Y⟮x⟯, nf, cm, hfin⟩, hxK, hspan, ?_⟩` and prove the remaining obligations. Introduce `F _ _ h hY hhx y`. Take `⟨b, c, rfl⟩` from `hspan y`.
-
-Establish `hb : ∀ e : Y, h (algebraMap Y Ω e) = algebraMap Y Ω e` using `hY`. Use `show h ((algebraMap Y Ω b) + (algebraMap Y Ω c) * x) = (algebraMap Y Ω b) + (algebraMap Y Ω c) * x`. Rewrite using `[map_add, map_mul, hb, hb, hhx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.mkQ :
     MkQ := by

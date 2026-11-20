@@ -18,23 +18,23 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CMTorsion.ConjPt
 
 /- English proof (translation)
-Introduce `K _ _ io g t Λ₀ Λ₁ Ω₀ Ω₁ hT a a' hint`. Take `⟨hΩ₀, hΩ₁, hfix, hL0, ⟨𝔞, h𝔞, hL1⟩, h2, h3, hval⟩` from `hT`. Establish `hA : ∀ y : Af K, y ∈ GlobalTheory.Idele.adelicIdeal (1 : FractionalIdeal (𝓞 K)⁰ K) ↔ ∀ v : HeightOneSpectrum (𝓞 K), Valued.v (y v) ≤ 1` using `fun y => GlobalTheory.Idele.mem_adelicIdeal_one_iff`. Establish `hone : ∀ x : K, x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K) ↔ algebraMap K (Af K) x ∈ GlobalTheory.Idele.adelicIdeal (1 : FractionalIdeal (𝓞 K)⁰ K)` using `fun x => (GlobalTheory.Idele.algebraMap_mem_adelicIdeal (one_ne_zero : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0) x).symm`. Establish `hd : (t : Af K) * algebraMap K (Af K) a' - algebraMap K (Af K) a ∈ GlobalTheory.Idele.adelicIdeal (1 : FractionalIdeal (𝓞 K)⁰ K)` using `(hA _).2 hint`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem𝔞 : a' ∈ 𝔞 ↔ (t : Af K) * algebraMap K (Af K) a' ∈ GlobalTheory.Idele.adelicIdeal (1 : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[h𝔞, hA]`. Establish `hL0' : ∀ z, z ∈ Λ₀.lattice ↔ z ∈ io '' ((1 : FractionalIdeal (𝓞 K)⁰ K) : Set K)` using `fun z => Set.ext_iff.1 hL0 z`. Establish `hL1' : ∀ z, z ∈ Λ₁.lattice ↔ z ∈ io '' ((𝔞 : FractionalIdeal (𝓞 K)⁰ K) : Set K)` using `fun z => Set.ext_iff.1 hL1 z`. Establish `h0 : io a ∈ Λ₀.lattice ↔ a ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL0']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Rewrite using `[← io.injective e]` and apply the resulting hypothesis. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨a, h, rfl⟩`. Establish `h1 : io a' ∈ Λ₁.lattice ↔ a' ∈ 𝔞`. Rewrite using `[hL1']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← io.injective e]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨a', h, rfl⟩`. Distinguish the cases in `ha : io a ∈ Λ₀.lattice`. Establish `ha' : io a' ∈ Λ₁.lattice`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[h1, hmem𝔞]`. Use `add_mem hd ((hone a).1 (h0.1 ha))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Simplify using `only [coords, if_pos ha, if_pos ha']`. Apply the tactic sequence `ext i; fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ha' : io a' ∉ Λ₁.lattice`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Rewrite using `[h0, hone]`. Use `sub_mem (hmem𝔞.1 (h1.1 h)) hd` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨e2, e3⟩` from `hval a a' ha hint`. Simplify using `only [coords, if_neg ha, if_neg ha']`. Establish `e3' : g (Λ₀.derivWeierstrassP (io a) / (2 * Ω₀ ^ 3)) = Λ₁.derivWeierstrassP (io a') / (2 * Ω₁ ^ 3)`. Rewrite using `[mul_comm, ← div_div, map_div₀, e3, map_ofNat, div_div, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext i; fin_cases i <;> simp [e2, e3']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coords_conj : ∀ (K : Type) [Field K] [NumberField K] (io : K →+* ℂ) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair)
     (Ω₀ Ω₁ : ℂ), TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ → ∀ (a a' : K),
@@ -88,7 +88,7 @@ end GlobalTheory.CMTorsion.ConjPt
 namespace GlobalTheory.CMTorsion.ConjPt
 
 /- English proof (translation)
-Introduce `K _ _ io g t Λ₀ Λ₁ Ω₀ Ω₁ hT h a a' hint`. Establish `e` using `coords_conj K io g t Λ₀ Λ₁ Ω₀ Ω₁ hT a a' hint`. Unfold `pt`. Rewrite using `[GlobalTheory.WeierstrassCurve.ptHom_mapHom, spMap, GlobalTheory.WeierstrassCurve.SpecMap_ptHom]`. Conclude with `GlobalTheory.WeierstrassCurve.ptHom_congr _ _ _ _ (by ext; simp) e _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_pt : ∀ (K : Type) [Field K] [NumberField K] (io : K →+* ℂ) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ → ∀ (h : (curve Λ₀ Ω₀).map (g : ℂ →+* ℂ) = curve Λ₁ Ω₁) (a a' : K), (∀ v : HeightOneSpectrum (𝓞 K), Valued.v (((t : Af K) * algebraMap K (Af K) a' - algebraMap K (Af K) a) v) ≤ 1) → pt Λ₁ Ω₁ (io a') ≫ mapHom (curve Λ₀ Ω₀) (g : ℂ →+* ℂ) h = spMap (g : ℂ →+* ℂ) ≫ pt Λ₀ Ω₀ (io a) := by
   intro K _ _ io g t Λ₀ Λ₁ Ω₀ Ω₁ hT h a a' hint

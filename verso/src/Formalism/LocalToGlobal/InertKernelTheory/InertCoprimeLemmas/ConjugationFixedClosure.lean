@@ -18,9 +18,9 @@ namespace FrFix
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `hleg : legendreSym p (-(d : ℤ)) = -1` using `by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hj`. Establish `hns : ¬ IsSquare (((-(d : ℤ)) : ℤ) : ZMod p)` using `(legendreSym.eq_neg_one_iff (p := p)).1 hleg`. Introduce and unpack `⟨a, ha⟩`. Apply `hns` to reduce the goal to its premises. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[← ha]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem not_sq (d : ℕ) (hj : jacobiSym (-(d : ℤ)) p = -1) : ¬ ∃ a : ZMod p, a ^ 2 = -(d : ZMod p) := by
   have hleg : legendreSym p (-(d : ℤ)) = -1 := by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hj
@@ -33,15 +33,15 @@ theorem not_sq (d : ℕ) (hj : jacobiSym (-(d : ℤ)) p = -1) : ¬ ∃ a : ZMod 
   ring
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ‖z‖ hp1`. Establish `hpk : ‖((p : MaximalUnramifiedExtension p) ^ k)‖ = ((p : ℝ) ^ k)⁻¹` using `by rw [norm_pow, hσ.2.2.1, inv_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpkpos : (0 : ℝ) < (p : ℝ) ^ k` using `by positivity`. Take `⟨w, hw⟩ : ∃ w : MaximalUnramifiedExtension p, w = (p : MaximalUnramifiedExtension p) ^ k * z` from `⟨_, rfl⟩`. Establish `hw1 : ‖w‖ ≤ 1`. Rewrite using `[hw, norm_mul, hpk, inv_mul_le_iff₀ hpkpos, mul_one]`. Conclude with `hk.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσw : σ w = w` using `by rw [hw, map_mul, map_pow, map_natCast, hz]`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Establish `hε' : 0 < ε * ((p : ℝ) ^ k)⁻¹` using `by positivity`. Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one hε' (inv_lt_one_of_one_lt₀ hp1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `Formalism.L2.Th1.D.fixedIsLimit (MaximalUnramifiedExtension p) p σ hσ w hw1 hσw j`. Use `⟨((n : ℚ) / (p : ℚ) ^ k : ℚ), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hpk0 : ((p : MaximalUnramifiedExtension p) ^ k) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.ne_zero)`. Establish `hq : ((((n : ℚ) / (p : ℚ) ^ k : ℚ)) : ℂ_[p]) = ((((n : ℚ) / (p : ℚ) ^ k : ℚ) : MaximalUnramifiedExtension p) : ℂ_[p])` using `(map_ratCast (MaximalUnramifiedExtension p).subtype _).symm`. Establish `e : z - ((((n : ℚ) / (p : ℚ) ^ k : ℚ)) : MaximalUnramifiedExtension p) = ((p : MaximalUnramifiedExtension p) ^ k)⁻¹ * (w - n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hq, ← Subtype.dist_eq, dist_eq_norm, e, norm_mul, norm_inv, hpk, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fixed_mem_closure (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (hσ : Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension p) p σ) (z : MaximalUnramifiedExtension p)
     (hz : σ z = z) : (z : ℂ_[p]) ∈ closure (Set.range fun q : ℚ => (q : ℂ_[p])) := by
@@ -78,39 +78,39 @@ theorem fixed_mem_closure (σ : MaximalUnramifiedExtension p →+* MaximalUnrami
 end FrFix
 
 /- English proof (translation)
-Introduce `D p _ h5 hj lam ι hι σ hσ y hy`. Establish `hsq : Squarefree D.host.d` using `(Nat.prime_iff.mp D.host.hyp.2.1).squarefree`. Establish `h4 : D.host.d % 4 = 3` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.discriminant_mod_four D`. Take `⟨hwm, hws⟩` from `Formalism.L2.Th1.D.sqrt_in_unramified_completion D.host.d hsq h4 p h5 (FrFix.not_sq D.host.d hj) ι`. Take `⟨w, hw⟩ : ∃ w : MaximalUnramifiedExtension p, (w : ℂ_[p]) = ι (omegaK D.host.d)` from `⟨⟨_, hwm⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hσw : σ w = 1 - w` using `hws σ hσ w hw`. Establish `hLI` using `Formalism.L2.KerInert.lamCIota p lam ι hι`. Establish `hlc : ∀ z : D.host.E, lamC lam (D.host.φ₀ z) = ι (D.host.φ₀ z)` using `fun z => hLI.1 _ (Formalism.MainNotions.Ext.test_vector_mem_schwartz_bruhat D z)`. Establish `hsK : D.host.sqrtMinusD ∈ D.host.K` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_sqrt_mem D`. Establish `hx2 : (D.host.φ₀ D.host.sqrtMinusD) ^ 2 = -(D.host.d : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_sqrtE_sq D, map_neg, map_natCast]`. Establish `hom : (2 * omegaK D.host.d - 1) ^ 2 = -(D.host.d : ℂ)`. Unfold `omegaK`. Establish `hsq : ((Real.sqrt D.host.d : ℝ) : ℂ) ^ 2 = (D.host.d : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Take the linear combination `(-1 : ℂ) * hsq + (((Real.sqrt D.host.d : ℝ) : ℂ) ^ 2) * Complex.I_sq`. Establish `c2 : ((2 : MaximalUnramifiedExtension p) : ℂ_[p]) = 2` using `map_ofNat (MaximalUnramifiedExtension p).subtype 2`. Choose the witnesses or unpack the hypotheses as in `⟨rK, hrK, hσr⟩ : ∃ rK : MaximalUnramifiedExtension p, (rK : ℂ_[p]) = ι (D.host.φ₀ D.host.sqrtMinusD) ∧ σ rK = -rK := by`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (hx2.trans hom.symm) with h | h` into its components or cases. Use `⟨2 * w - 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_sub, map_mul, map_ofNat, map_one, ← hw]`. Use `push_cast`. Rewrite using `[c2]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_ofNat, map_one, hσw]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨1 - 2 * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_neg, map_sub, map_mul, map_ofNat, map_one, ← hw]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[c2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, map_mul, map_ofNat, map_one, hσw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd0 : (D.host.d : ℂ_[p]) ≠ 0` using `by exact_mod_cast (D.host.hyp.2.1).ne_zero`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hr0 : rK ≠ 0`. Introduce `h`. Establish `h' : ((rK : ℂ_[p])) ^ 2 = 0` using `by rw [h]; simp`. Rewrite `h'` using `[hrK, ← map_pow, hx2, map_neg, map_natCast, neg_eq_zero]`. Conclude with `hd0 h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (2 : MaximalUnramifiedExtension p) ≠ 0` using `two_ne_zero`. Take `⟨u, hu⟩ : ∃ u : MaximalUnramifiedExtension p, u = (y + σ y) / 2` from `⟨_, rfl⟩`. Take `⟨v, hv⟩ : ∃ v : MaximalUnramifiedExtension p, v = (y - σ y) / (2 * rK)` from `⟨_, rfl⟩`. Establish `hσu : σ u = u` using `by rw [hu, map_div₀, map_add, hy, map_ofNat]; ring`. Establish `hσv : σ v = v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, map_div₀, map_sub, map_mul, hy, hσr, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hyuv : y = u + v * rK`. Rewrite using `[hu, hv]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `cu` using `FrFix.fixed_mem_closure σ hσ u hσu`. Establish `cv` using `FrFix.fixed_mem_closure σ hσ v hσv`. Establish `hyc : (y : ℂ_[p]) = (u : ℂ_[p]) + (v : ℂ_[p]) * (rK : ℂ_[p])` using `by rw [hyuv]; push_cast; rfl`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous fun ab : ℂ_[p] × ℂ_[p] => ab.1 + ab.2 * (rK : ℂ_[p])` using `by fun_prop`. Establish `hmem : ((u : ℂ_[p]), (v : ℂ_[p])) ∈ closure ((Set.range fun q : ℚ => (q : ℂ_[p])) ×ˢ (Set.range fun q : ℚ => (q : ℂ_[p])))`. Rewrite using `[closure_prod_eq]`. Conclude with `⟨cu, cv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo (fun ab : ℂ_[p] × ℂ_[p] => ab.1 + ab.2 * (rK : ℂ_[p])) ((Set.range fun q : ℚ => (q : ℂ_[p])) ×ˢ (Set.range fun q : ℚ => (q : ℂ_[p]))) (Set.range fun x : D.host.K => lamC lam (D.host.φ₀ (x : D.host.E)))`. Introduce and unpack `⟨_, _⟩ ⟨⟨a, rfl⟩, ⟨b, rfl⟩⟩`. Use `⟨(a : D.host.K) + (b : D.host.K) * ⟨D.host.sqrtMinusD, hsK⟩, ?_⟩` and prove the remaining obligations. Establish `e : (((a : D.host.K) + (b : D.host.K) * ⟨D.host.sqrtMinusD, hsK⟩ : D.host.K) : D.host.E) = (a : D.host.E) + (b : D.host.E) * D.host.sqrtMinusD` using `by push_cast; rfl`. Simplify using `only`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hlc, hrK, map_add, map_mul, map_ratCast, map_ratCast, map_add, map_mul, map_ratCast, map_ratCast]`. Establish `hh` using `map_mem_closure hcont hmem hmaps`. Rewrite using `[hyc]`. Conclude with `hh`. Introduce `σp hσp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσc : Continuous σp` using `AddMonoidHomClass.continuous_of_bound σp 1 (fun z => by rw [hσp.2 z, one_mul])`. Establish `hfixS : closure (Set.range fun q : ℚ => (q : ℂ_[p])) ⊆ {z | σp z = z}` using `closure_minimal (by rintro _ ⟨q, rfl⟩; exact map_ratCast σp q) (isClosed_eq hσc continuous_id)`. Establish `hu' : σp u = u` using `hfixS cu`. Establish `hv' : σp v = v` using `hfixS cv`. Establish `hr' : σp (rK : ℂ_[p]) = -(rK : ℂ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hσp.1 ⟨D.host.sqrtMinusD, hsK⟩`. Establish `hc : D.host.conj D.host.sqrtMinusD = -D.host.sqrtMinusD` using `Formalism.BasicNotions.Examples₂.conj_bE D.host`. Express the relevant statement in the definitionally equal form `σp (lamC lam (D.host.φ₀ D.host.sqrtMinusD)) = lamC lam (D.host.φ₀ (D.host.conj D.host.sqrtMinusD)) at h`. Rewrite `h` using `[hc, hlc, hlc, map_neg, map_neg, ← hrK]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hyc, map_add, map_mul, hu', hv', hr', hyuv, map_add, map_mul, hσu, hσv, hσr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem conjugation_fixed_closure : FixConj := by
   intro D p _ h5 hj lam ι hι σ hσ y hy

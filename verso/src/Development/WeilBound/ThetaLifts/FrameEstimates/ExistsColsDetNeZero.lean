@@ -11,9 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' K A.col`. Use `haveI : Fintype κ := Fintype.ofInjective a ha`. Establish `hcard : Fintype.card κ = i`. Rewrite using `[← finrank_span_eq_card hli, hsp, ← Matrix.rank_eq_finrank_span_cols, hA.rank_matrix, Fintype.card_fin]`. Set `e` to `(Fintype.equivFinOfCardEq hcard).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a ∘ e, ha.comp e.injective, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (A.submatrix id (a ∘ e))`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hli.comp e e.injective`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cols_det_ne_zero {K : Type} [Field K] {i d : ℕ} (A : Matrix (Fin i) (Fin d) K)
     (hA : LinearIndependent K A.row) : ∃ c : Fin i → Fin d, Function.Injective c ∧ (A.submatrix id c).det ≠ 0 := by
@@ -29,9 +29,7 @@ theorem exists_cols_det_ne_zero {K : Type} [Field K] {i d : ℕ} (A : Matrix (Fi
   exact ((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : InfinitePlace E, 1 ≤ w x := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Conclude with `absurd (InfinitePlace.one_le_of_lt_one (w := w) (a := (⟨x, hx⟩ : 𝓞 E)) (fun h => h0 (congrArg Subtype.val h)) fun z _ => hne z) (not_le.2 (hne w))`.
-
-Conclude with `⟨w.embedding, by rwa [InfinitePlace.norm_embedding_eq]⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one_le_emb {x : E} (hx : IsIntegral ℤ x) (h0 : x ≠ 0) : ∃ φ : E →+* ℂ, 1 ≤ ‖φ x‖ := by
   obtain ⟨w, hw⟩ : ∃ w : InfinitePlace E, 1 ≤ w x := by
@@ -43,17 +41,17 @@ theorem exists_one_le_emb {x : E} (hx : IsIntegral ℤ x) (h0 : x ≠ 0) : ∃ �
   exact ⟨w.embedding, by rwa [InfinitePlace.norm_embedding_eq]⟩
 
 /- English proof (translation)
-Establish `key : ∀ θ : ℝ, 0 ≤ θ → ∑ a, lam (c a) t ≤ ∑ j, max 0 (t j - θ) + i * θ`. Introduce `θ hθ`. Establish `e` using `sum_lam h1 h2 h3 (fun u => max 0 (u - θ)) t`. Establish `e1 : ∀ j, max 0 (-t j - θ) = 0` using `fun j => max_eq_left (by linarith [ht.2 j])`. Simplify using `only [e1, max_eq_left (show 0 - θ ≤ 0 by linarith), Finset.sum_const_zero, add_zero, mul_zero] at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Establish `e2 : ∑ a, max 0 (lam (c a) t - θ) ≤ ∑ k, max 0 (lam k t - θ)`. Conclude with `(Finset.sum_map Finset.univ ⟨c, hc⟩ fun k => max 0 (lam k t - θ)).symm.trans_le (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => le_max_left _ _)`. Establish `e3 : ∑ a, lam (c a) t ≤ ∑ a, (max 0 (lam (c a) t - θ) + θ)` using `Finset.sum_le_sum fun a _ => by linarith [le_max_right 0 (lam (c a) t - θ)]`. Rewrite `e3` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hi : i < y`. Use `(key (t ⟨i, hi⟩) (ht.2 _)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `e : ∀ j : Fin y, max 0 (t j - t ⟨i, hi⟩) = (if j.val < i then t j else 0) - if j.val < i then t ⟨i, hi⟩ else 0`. Introduce `j`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Conclude with `max_eq_right (sub_nonneg.2 (ht.1 (show j ≤ ⟨i, hi⟩ from h.le)))`. Rewrite using `[sub_zero]`. Conclude with `max_eq_left (sub_nonpos.2 (ht.1 (show (⟨i, hi⟩ : Fin y) ≤ j from not_lt.1 h)))`. Establish `hcard : (Finset.univ.filter fun j : Fin y => j.val < i).card = i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [e, Finset.sum_sub_distrib]`. Rewrite using `[← Finset.sum_filter (fun j : Fin y => j.val < i) fun _ => t ⟨i, hi⟩, Finset.sum_const, hcard, nsmul_eq_mul, psum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(key 0 le_rfl).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_zero, add_zero, psum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (by omega), sub_zero, max_eq_right (ht.2 j)]`.
+A detailed English derivation is pending.
 -/
 theorem sum_lam_le_psum {d y : ℕ} {lam : Fin d → (Fin y → ℝ) →ₗ[ℝ] ℝ} {jx jy : Fin y ↪ Fin d} (h1 : ∀ i j, jx i ≠ jy j)
     (h2 : ∀ i t, lam (jx i) t = t i ∧ lam (jy i) t = -t i) (h3 : ∀ k, (∀ i, jx i ≠ k ∧ jy i ≠ k) → lam k = 0)
@@ -94,40 +92,36 @@ theorem sum_lam_le_psum {d y : ℕ} {lam : Fin d → (Fin y → ℝ) →ₗ[ℝ]
     rw [if_pos (by omega), sub_zero, max_eq_right (ht.2 j)]
 
 /- English proof (translation)
-Conclude with `(Fintype.sum_of_injective _ (Fin.castLE_injective hi) _ (fun j : Fin q => if j.val < i then s j else 0) (fun j hj => if_neg fun h => hj ⟨⟨j, h⟩, rfl⟩) fun a => (if_pos a.2).symm).symm`.
+A detailed English derivation is pending.
 -/
 theorem psum_eq {q i : ℕ} (hi : i ≤ q) (s : Fin q → ℝ) : psum s i = ∑ a : Fin i, s (Fin.castLE hi a) := by
   exact (Fintype.sum_of_injective _ (Fin.castLE_injective hi) _ (fun j : Fin q => if j.val < i then s j else 0)
     (fun j hj => if_neg fun h => hj ⟨⟨j, h⟩, rfl⟩) fun a => (if_pos a.2).symm).symm
 
 /- English proof (translation)
-Introduce `hB F E _ _ _ _ _ σ hσ τ n d J J' hJ hJ' fr fr' hfr hfr' C hC`. Take `⟨b, lam, ix, iy, h1, h2, h3, -, hb⟩` from `hB F E σ hσ n J hJ fr hfr`. Take `⟨b', lam', jx, jy, h1', h2', h3', -, hb'⟩` from `hB F E σ hσ d J' hJ' fr' hfr'`. Take `⟨m, K, hm, hK, h⟩` from `diag_coords τ hfr hfr' hb hb' hC`. Establish `hm' : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : (1 : ℝ) ≤ n.factorial` using `by exact_mod_cast n.factorial_pos`. Use `set A : ℝ := n.factorial * m * K with hA`. Establish `hA1 : 1 ≤ A` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf hm') hK`. Use `⟨A⁻¹, by positivity, fun s hs t ht x hx hsupp => ?_⟩` and prove the remaining obligations. Take `⟨ha, hsz⟩` from `h s t x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint` using `ha hsupp`. Establish `hz` using `sz_nonneg τ (mat (fr.a s)⁻¹ * incM F x * (mat (fr'.a t)⁻¹)ᵀ)`. Use `set z := sz τ (mat (fr.a s)⁻¹ * incM F x * (mat (fr'.a t)⁻¹)ᵀ)`. Use `set ξ := (b⁻¹).1 * x * (b'⁻¹).1ᵀ with hξ`. Take `⟨i, hi⟩` from `exists_eq_ciSup_of_finite (f := fun i : Fin (fr.r + 1) => psum s i.val - psum t i.val)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiq : i.val ≤ fr.r` using `Nat.lt_succ_iff.1 i.2`. Establish `hqn : fr.r ≤ n` using `by simpa using Fintype.card_le_of_embedding iy`. Establish `hrk : ξ.rank = n`. Rewrite using `[hξ, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (by`. Rewrite using `[Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)),`. Use the proof step `Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _))]`. Conclude with `hx`. Establish `hli : LinearIndependent E ξ.row`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, ← Matrix.rank_eq_finrank_span_row, hrk, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `ρ : Fin i.val → Fin n` to `fun a => iy (Fin.castLE hiq a)`. Take `⟨c, hc, hdet⟩` from `exists_cols_det_ne_zero (ξ.submatrix ρ id) (hli.comp ρ (iy.injective.comp (Fin.castLE_injective hiq)))`. Use `set M : Matrix (Fin i.val) (Fin i.val) E := (ξ.submatrix ρ id).submatrix id c with hM`. Establish `hI : IsIntegral ℤ ((m : E) • M).det` using `IsIntegral.det fun a a' => hint _ _`. Establish `hI0 : ((m : E) • M).det ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hm.ne')) hdet`. Take `⟨φ, hφ⟩` from `exists_one_le_emb hI hI0`. Take `⟨w, hw⟩` from `norm_emb hσ τ φ`. Rewrite `hφ` using `[hw, Matrix.det_smul, map_mul, map_pow, map_natCast, norm_mul, norm_pow, Complex.norm_natCast, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `N : Matrix (Fin i.val) (Fin i.val) ℂ` to `Matrix.of fun a a' => (Real.exp (s (Fin.castLE hiq a)) : ℂ) * ((Real.exp (-lam' (c a') t) : ℂ) * (τ w).1 (M a a'))`. Establish `hN : ‖N.det‖ = Real.exp (psum s i - ∑ a, lam' (c a) t) * ‖(τ w).1 M.det‖`. Establish `e1 : N.det = (∏ a, (Real.exp (s (Fin.castLE hiq a)) : ℂ)) * ((∏ a, (Real.exp (-lam' (c a) t) : ℂ)) * (τ w).1 M.det)`. Rewrite using `[RingHom.map_det, ← Matrix.det_mul_row, ← Matrix.det_mul_column]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e1, ← Complex.ofReal_prod, ← Complex.ofReal_prod, ← Real.exp_sum, ← Real.exp_sum, norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Real.norm_of_nonneg (Real.exp_pos _).le, ← mul_assoc, ← Real.exp_add, psum_eq hiq, Finset.sum_neg_ …`. Establish `hent : ∀ a a', ‖N a a'‖ ≤ K * (1 + z)`. Introduce `a a'`. Set `T : InfinitePlace F → Fin n → Fin d → ℝ` to `fun w k l => Real.exp (-(lam k s + lam' l t)) * ‖(τ w).1 (ξ k l)‖`. Establish `hT : ∀ w k l, 0 ≤ T w k l` using `fun w k l => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : ‖N a a'‖ = T w (ρ a) (c a')`. Simplify using `only [N, T, ρ, Matrix.of_apply, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, (h2 _ _).2, neg_add, neg_neg, Real.exp_add, mul_assoc]`. Both sides reduce to the same expression. Establish `l1` using `Finset.single_le_sum (f := T w (ρ a)) (fun _ _ => hT _ _ _) (Finset.mem_univ (c a'))`. Establish `l2` using `Finset.single_le_sum (f := fun k => ∑ l, T w k l) (fun _ _ => Finset.sum_nonneg fun _ _ => hT _ _ _) (Finset.mem_univ (ρ a))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l3` using `Finset.single_le_sum (f := fun w => ∑ k, ∑ l, T w k l) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => hT _ _ _) (Finset.mem_univ w)`. Establish `l4 : ∑ w, ∑ k, ∑ l, T w k l ≤ K * z` using `hsz`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdle : ‖N.det‖ ≤ i.val.factorial * (K * (1 + z)) ^ i.val`. Use `Matrix.det_le (A := N) (abv := NormedField.toAbsoluteValue ℂ) (x := K * (1 + z)) hent` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `this` using `[Fintype.card_fin, nsmul_eq_mul]`. Conclude with `this`. Establish `hv : Real.exp (viol s t) ≤ (A * (1 + z)) ^ (n + 1)`. Establish `e1 : Real.exp (viol s t) ≤ Real.exp (psum s i - ∑ a, lam' (c a) t)`. Rewrite using `[viol, ← hi]`.
-
-Conclude with `Real.exp_le_exp.2 (by linarith [sum_lam_le_psum h1' h2' h3' ht hc])`. Establish `hin : i.val ≤ n` using `hiq.trans hqn`. Establish `e2 : (i.val.factorial : ℝ) ≤ (n.factorial : ℝ) ^ (n + 1)` using `le_trans (by exact_mod_cast Nat.factorial_le hin) (le_self_pow₀ hf (by omega))`. Establish `hB1 : 1 ≤ (m : ℝ) * (K * (1 + z))` using `one_le_mul_of_one_le_of_one_le hm' (one_le_mul_of_one_le_of_one_le hK (by linarith))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[inv_mul_le_iff₀ (by positivity)]`. Use `le_of_pow_le_pow_left₀ (n := n + 1) (by omega) (by positivity) ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, show ((n + 1 : ℕ) : ℝ) * (viol s t / (n + 1)) = viol s t by push_cast; field_simp]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_of : FrameBasis → Minor := by
   intro hB F E _ _ _ _ _ σ hσ τ n d J J' hJ hJ' fr fr' hfr hfr' C hC

@@ -19,9 +19,9 @@ section Embeddings
 omit [NumberField K] in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hσ`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h1` using `congrArg (fun φ : K →+* ℂ => φ x) h`. Simplify using `only [conjugate_coe_eq] at h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.conj_eq_iff_im.mp h1`.
+A detailed English derivation is pending.
 -/
 theorem conjugate_ne (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0) : conjugate σ ≠ σ := by
   obtain ⟨x, hx⟩ := hσ
@@ -32,9 +32,9 @@ theorem conjugate_ne (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0) : con
   exact Complex.conj_eq_iff_im.mp h1
 
 /- English proof (translation)
-Establish `hcard : Fintype.card (K →+* ℂ) = 2` using `by rw [NumberField.Embeddings.card K ℂ, hK]`. Establish `h2 : ({σ, conjugate σ} : Finset (K →+* ℂ)) = Finset.univ`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[Finset.card_pair (conjugate_ne σ hσ).symm, hcard]`. Establish `: φ ∈ ({σ, conjugate σ} : Finset (K →+* ℂ))` using `h2 ▸ Finset.mem_univ φ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_or_eq_conjugate (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ)
     (hσ : ∃ x : K, (σ x).im ≠ 0) (φ : K →+* ℂ) : φ = σ ∨ φ = conjugate σ := by
@@ -47,7 +47,7 @@ theorem eq_or_eq_conjugate (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ)
   simpa using this
 
 /- English proof (translation)
-Break down `eq_or_eq_conjugate hK σ hσ w.embedding with h | h` into its components or cases. Rewrite using `[← mk_embedding w, h]`. Rewrite using `[← mk_embedding w, h, mk_conjugate_eq]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_mk (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (w : InfinitePlace K) : w = mk σ := by
@@ -56,7 +56,7 @@ theorem eq_mk (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : 
   · rw [← mk_embedding w, h, mk_conjugate_eq]
 
 /- English proof (translation)
-Rewrite using `[eq_mk hK σ hσ w, apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem place_apply (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (w : InfinitePlace K) (x : K) : w x = ‖σ x‖ := by
@@ -65,15 +65,15 @@ theorem place_apply (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : �
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `isComplex_mk_iff.mpr fun h => conjugate_ne σ hσ (ComplexEmbedding.isReal_iff.mp h)`.
+A detailed English derivation is pending.
 -/
 theorem isComplex_mk (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0) : IsComplex (mk σ) :=
   isComplex_mk_iff.mpr fun h => conjugate_ne σ hσ (ComplexEmbedding.isReal_iff.mp h)
 
 /- English proof (translation)
-Establish `h` using `prod_eq_abs_norm x`. Establish `hall : ∀ w : InfinitePlace K, w = mk σ` using `eq_mk hK σ hσ`. Rewrite `h` using `[Finset.prod_eq_single_of_mem (mk σ) (Finset.mem_univ _) (fun w _ hw => absurd (hall w) hw)]`. Establish `hm : mult (mk σ) = 2`. Rewrite using `[mult, if_neg (not_isReal_iff_isComplex.mpr (isComplex_mk σ hσ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hm, apply]`. Rewrite using `[h, Rat.cast_abs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_norm_eq (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (x : K) : |((Algebra.norm ℚ x : ℚ) : ℝ)| = ‖σ x‖ ^ 2 := by
@@ -88,9 +88,9 @@ theorem abs_norm_eq (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : �
   rw [h, Rat.cast_abs]
 
 /- English proof (translation)
-Rewrite using `[Units.mem_torsion]`. Introduce `w`. Rewrite using `[place_apply hK σ hσ]`. Establish `h` using `abs_norm_eq hK σ hσ (u : K)`. Rewrite `h` using `[← Rat.cast_abs, Units.norm K u, Rat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : 0 ≤ ‖σ (u : K)‖` using `norm_nonneg _`. Use polynomial arithmetic with `[sq_nonneg (‖σ (u : K)‖ - 1), sq_nonneg (‖σ (u : K)‖ + 1)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem mem_torsion_of (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0)
     (u : (𝓞 K)ˣ) : u ∈ Units.torsion K := by
@@ -103,7 +103,7 @@ theorem mem_torsion_of (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ :
   nlinarith [sq_nonneg (‖σ (u : K)‖ - 1), sq_nonneg (‖σ (u : K)‖ + 1)]
 
 /- English proof (translation)
-Establish `htop : Units.torsion K = ⊤` using `eq_top_iff.mpr fun u _ => mem_torsion_of hK σ hσ u`. Rewrite using `[Units.torsionOrder, htop, Subgroup.card_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_units (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K, (σ x).im ≠ 0) :
     Nat.card (𝓞 K)ˣ = Units.torsionOrder K := by
@@ -120,9 +120,9 @@ def embPair (σ : K →+* ℂ) : Fin 2 → (K →ₐ[ℚ] ℂ) :=
   ![σ.toRatAlgHom, (conjugate σ).toRatAlgHom]
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card, AlgHom.card, hK, Fintype.card_fin]`. Establish `hne : σ.toRatAlgHom ≠ (conjugate σ).toRatAlgHom` using `fun h => conjugate_ne σ hσ (RingHom.ext fun x => by`. Use `DFunLike.congr_fun h x` as an intermediate fact. Simplify `this.symm)` using `[RingHom.toRatAlgHom_apply]`. Use `⟨fun i j hij => ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `match i, j with`. Consider the case `0, 0 => rfl`. Consider the case `0, 1 => exact absurd hij hne`. Consider the case `1, 0 => exact absurd hij.symm hne`. Consider the case `1, 1 => rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem embPair_bijective (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ)
     (hσ : ∃ x : K, (σ x).im ≠ 0) : Function.Bijective (embPair σ) := by
@@ -143,9 +143,9 @@ def embEquiv (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (hσ : ∃ x : K
   Equiv.ofBijective _ (embPair_bijective hK σ hσ)
 
 /- English proof (translation)
-Establish `hcb : (starRingEnd ℂ) c * (starRingEnd ℂ) b = (starRingEnd ℂ) τ`. Rewrite using `[← map_mul, hb]`. Establish `hca : (starRingEnd ℂ) c * (starRingEnd ℂ) a = 1`. Rewrite using `[← map_mul, ha, map_one]`. Establish `hn : ((‖c‖ ^ 2 : ℝ) : ℂ) = c * (starRingEnd ℂ) c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hsub : τ - (starRingEnd ℂ) τ = ((2 * τ.im : ℝ) : ℂ) * Complex.I` using `Complex.sub_conj τ`. Rewrite using `[hn]`. Move the coercions through the operations in `at hsub`. Take the linear combination `((starRingEnd ℂ) c * (starRingEnd ℂ) b) * ha + hcb - (c * b) * hca - hb - hsub`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem normSq_mul_det (c a b τ : ℂ) (ha : c * a = 1) (hb : c * b = τ) :
     ((‖c‖ ^ 2 : ℝ) : ℂ) * (a * (starRingEnd ℂ) b - (starRingEnd ℂ) a * b) =
@@ -168,43 +168,41 @@ section Covolume2
 open EtaPeriodLatticeClass
 
 /- English proof (translation)
-Establish `hmem : ∀ x : K, x ∈ I → c * σ x ∈ latticeOf (τ : ℂ)` using `fun x hx => by`. Rewrite using `[← himg]`. Conclude with `⟨σ x, ⟨x, hx, rfl⟩, rfl⟩`. Establish `hpre : ∀ z ∈ latticeOf (τ : ℂ), ∃ x ∈ I, c * σ x = z`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz` using `[← himg]`. Take `⟨_, ⟨x, hx, rfl⟩, rfl⟩` from `hz`. Conclude with `⟨x, hx, rfl⟩`. Take `⟨α, hαI, hα⟩` from `hpre 1 (mem_latticeOf.mpr ⟨1, 0, by simp⟩)`. Take `⟨β, hβI, hβ⟩` from `hpre τ (mem_latticeOf.mpr ⟨0, 1, by simp⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcoord : ∀ x ∈ I, ∃ m n : ℤ, x = m * α + n * β`. Introduce `x hx`. Take `⟨m, n, hmn⟩` from `mem_latticeOf.mp (hmem x hx)`. Use `⟨m, n, σ.injective (mul_left_cancel₀ hc ?_)⟩` and prove the remaining obligations. Rewrite using `[hmn, map_add, map_mul, map_mul, map_intCast, map_intCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(m : ℂ)) * hα - (n : ℂ) * hβ`. Establish `hind : ∀ m n : ℤ, (m : K) * α + n * β = 0 → m = 0 ∧ n = 0`. Introduce `m n h`. Establish `h2` using `congrArg (fun x => c * σ x) h`. Simplify using `only [map_add, map_mul, map_intCast, map_zero, mul_zero] at h2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : (m : ℂ) + n * (τ : ℂ) = ((0 : ℤ) : ℂ) + ((0 : ℤ) : ℂ) * (τ : ℂ)`. Use `push_cast`. Take the linear combination `h2 - (m : ℂ) * hα - (n : ℂ) * hβ`. Conclude with `coord_unique h3`. Set `v : Fin 2 → (I : Submodule (𝓞 K) K)` to `![⟨α, hαI⟩, ⟨β, hβI⟩]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℤ v`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Apply `hind s t` to reduce the goal to its premises. Use `congrArg (fun y : (I : Submodule (𝓞 K) K) => (y : K)) hst` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[zsmul_eq_mul]`. Establish `hsp : ⊤ ≤ Submodule.span ℤ (Set.range v)`. Introduce and unpack `⟨x, hx⟩ -`. Take `⟨m, n, hxmn⟩` from `hcoord x hx`. Establish `h0 : v 0 ∈ Submodule.span ℤ (Set.range v)` using `Submodule.subset_span ⟨0, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : v 1 ∈ Submodule.span ℤ (Set.range v)` using `Submodule.subset_span ⟨1, rfl⟩`. Use `Submodule.add_mem _ (Submodule.smul_mem _ m h0) (Submodule.smul_mem _ n h1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using `[v, zsmul_eq_mul, hxmn]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `bJ : Module.Basis (Fin 2) ℤ (I : Submodule (𝓞 K) K)` to `Module.Basis.mk hli hsp`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = 2`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, hK]`. Set `b : Module.Basis (Fin 2) ℤ (𝓞 K)` to `(RingOfIntegers.basis K).reindex (Fintype.equivFinOfCardEq hcard)`. Establish `habs` using `FractionalIdeal.abs_det_basis_change b I bJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b₀ := b.localizationLocalization ℚ ℤ⁰ K`. Use `set w : Fin 2 → K := (↑) ∘ bJ with hw`. Establish `hw0 : w 0 = α` using `by simp [hw, bJ, v]`. Establish `hw1 : w 1 = β` using `by simp [hw, bJ, v]`. Establish `hdisc` using `Algebra.discr_of_matrix_vecMul (⇑b₀) (b₀.toMatrix w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdisc` using `[Module.Basis.toMatrix_map_vecMul, ← Module.Basis.det_apply, Algebra.discr_localizationLocalization ℤ ℤ⁰ K b, NumberField.discr_eq_discr K b]`. Establish `hemb` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ ℂ w (embEquiv hK σ hσ)`. Rewrite `hemb` using `[Matrix.det_fin_two]`. Simplify using `only [Algebra.embeddingsMatrixReindex, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply, Equiv.symm_symm, Algebra.embeddingsMatrix_apply, embEquiv, Equiv.ofBijective_apply, embPair, Matrix.cons_val_zero, Matrix.cons_val_one, RingHom.toRatAlgHom_appl …`. Establish `hX` using `normSq_mul_det c (σ α) (σ β) τ hα hβ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hX` using `[UpperHalfPlane.coe_im]`. Establish `hq : Algebra.discr ℚ w = (FractionalIdeal.absNorm I) ^ 2 * (discr K : ℚ)`. Rewrite using `[hdisc, ← sq_abs, habs]`. Simplify using the standard rewrite rules. Establish `hC : ((‖c‖ ^ 2 : ℝ) : ℂ) ^ 2 * ((((FractionalIdeal.absNorm I : ℚ) : ℝ) : ℂ) ^ 2 * (((discr K : ℤ) : ℝ) : ℂ)) = ((-(4 * τ.im ^ 2) : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : ((‖c‖ ^ 2 : ℝ) : ℂ) ^ 2 * (σ α * (starRingEnd ℂ) (σ β) - (starRingEnd ℂ) (σ α) * σ β) ^ 2 = ((-(4 * τ.im ^ 2) : ℝ) : ℂ)`. Rewrite using `[← mul_pow, hX]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h1, ← hemb, hq]`. Simplify using `only [map_mul, map_pow, eq_ratCast, Rat.cast_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : (‖c‖ ^ 2) ^ 2 * (((FractionalIdeal.absNorm I : ℚ) : ℝ) ^ 2 * (discr K : ℝ)) = -(4 * τ.im ^ 2)`. Use `Complex.ofReal_injective (by push_cast at hC ⊢; exact hC : (((‖c‖ ^ 2) ^ 2 * (((FractionalIdeal.absNorm I : ℚ) : ℝ) ^ 2 * (discr K : ℝ)) : ℝ) : ℂ) = ((-(4 * τ.im ^ 2) : ℝ) : ℂ))` as an intermediate fact. Conclude with `this`. Establish `hy` using `τ.im_pos`. Establish `hN : 0 ≤ ((FractionalIdeal.absNorm I : ℚ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.absNorm_nonneg I` after adjusting the coercions. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.mpr hc`. Establish `hD : (discr K : ℝ) < 0`. Assume the negation of the conclusion as `h`. Use `replace h := not_lt.mp h`.
+Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ (‖c‖ ^ 2) ^ 2 * (((FractionalIdeal.absNorm I : ℚ) : ℝ) ^ 2 * (discr K : ℝ))`. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Use `⟨hD, ?_⟩` and prove the remaining obligations. Establish `hsq : Real.sqrt |(discr K : ℝ)| ^ 2 = -(discr K : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Real.sq_sqrt (abs_nonneg _), abs_of_neg hD]`. Establish `hspos : 0 < Real.sqrt |(discr K : ℝ)|` using `Real.sqrt_pos.mpr (abs_pos.mpr hD.ne)`. Establish `key : Real.sqrt |(discr K : ℝ)| * (((FractionalIdeal.absNorm I : ℚ) : ℝ) * ‖c‖ ^ 2) = 2 * τ.im`. Establish `h1 : (Real.sqrt |(discr K : ℝ)| * (((FractionalIdeal.absNorm I : ℚ) : ℝ) * ‖c‖ ^ 2)) ^ 2 = (2 * τ.im) ^ 2`. Rewrite using `[mul_pow, hsq]`.
-
-Take the linear combination `(-1 : ℝ) * hR`. Conclude with `(pow_left_inj₀ (by positivity) (by positivity) two_ne_zero).mp h1`. Rewrite using `[eq_div_iff hspos.ne']`. Combine the linear relations using `[key]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem discr_neg_and_absNorm_mul (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ)
     (hσ : ∃ x : K, (σ x).im ≠ 0) (I : FractionalIdeal (𝓞 K)⁰ K) (τ : ℍ) (c : ℂ) (hc : c ≠ 0)

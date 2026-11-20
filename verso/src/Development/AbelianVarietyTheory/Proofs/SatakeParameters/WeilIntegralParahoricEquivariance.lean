@@ -9,21 +9,19 @@ noncomputable section
 namespace GlobalTheory.PD.XCover
 
 /- English proof (translation)
-Use `letI := ψ.toAlgebra`. Use `haveI : Module.Finite B A := hψ`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := B) (M := A)`. Set `M : Submodule F K` to `Submodule.span F (g '' (s : Set A))`. Establish `hMfg : M.FG` using `Submodule.fg_span (s.finite_toSet.image g)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ a : A, g a ∈ M`. Introduce `a`. Establish `ha : a ∈ Submodule.span B (s : Set A)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `M.add_mem hx hy`. Consider the case `smul b x _ hx`. Take `⟨c, hc⟩` from `hB b`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.smul_def, map_mul, RingHom.algebraMap_toAlgebra, ← hc, ← Algebra.smul_def]`. Conclude with `M.smul_mem c hx`. Set `R` to `Algebra.adjoin F (Set.range g)`. Establish `hRM : Subalgebra.toSubmodule R ≤ M`. Rewrite using `[Algebra.adjoin_eq_span]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∈ g.range.toSubmonoid` using `(Submonoid.closure_le.2 (fun y hy => hy)) hx`. Take `⟨a, rfl⟩` from `hx'`. Conclude with `hM a`. Establish `hRfg : (Subalgebra.toSubmodule R).FG` using `by haveI : FiniteDimensional F M := Module.Finite.iff_fg.2 hMfg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isNoetherian_submodule.1 inferInstance _ hRM`. Establish `htop : ∀ z : K, z ∈ M`. Introduce `z`. Take `⟨a, b, hb, e⟩` from `hfr z`. Establish `hbR : g b ∈ R` using `Algebra.subset_adjoin ⟨b, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral F (g b)` using `IsIntegral.of_mem_of_fg R hRfg _ hbR`. Establish `hinv : (g b)⁻¹ ∈ R` using `Subalgebra.inv_mem_of_algebraic R (x := ⟨g b, hbR⟩) hint.isAlgebraic`. Establish `hz : z = g a * (g b)⁻¹` using `by rw [← e, mul_assoc, mul_inv_cancel₀ hb, mul_one]`. Rewrite using `[hz]`. Conclude with `hRM (R.mul_mem (Algebra.subset_adjoin ⟨a, rfl⟩) hinv)`.
-
-Establish `: M = ⊤` using `eq_top_iff.2 fun z _ => htop z`. Conclude with `⟨this ▸ hMfg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_finite {A B F K : Type} [CommRing A] [CommRing B] [Field F] [Field K] [Algebra F K]
     (ψ : B →+* A) (hψ : ψ.Finite) (g : A →+* K) (hB : ∀ b, g (ψ b) ∈ Set.range (algebraMap F K))
@@ -71,14 +69,14 @@ variable {d : ℕ}
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Use `(GlobalTheory.ProjFrac.awayToSection_mk (𝒜 := MvPolynomial.homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d i) 1 _).trans ?_` and prove the remaining obligations. Conclude with `GlobalTheory.ProjFrac.frac_eq (by ring)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ratioSec_eq (i j : Fin (d + 1)) : ratioSec d i j = GlobalTheory.ProjSpace.ratio ℂ d i j := by
   refine (GlobalTheory.ProjFrac.awayToSection_mk (𝒜 := MvPolynomial.homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d i) 1 _).trans ?_
   exact GlobalTheory.ProjFrac.frac_eq (by ring)
 
 /- English proof (translation)
-Use `haveI : Nonempty U := ⟨⟨_, h⟩⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen Z U hU`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(Z, U)) x`. Establish `hb' : algebraMap Γ(Z, U) Z.functionField b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Conclude with `⟨a, b, hb', div_mul_cancel₀ _ hb'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frac_germ (Z : Scheme.{0}) [IsIntegral Z] (U : Z.Opens) (hU : IsAffineOpen U) (h : genericPoint Z ∈ U)
     (x : Z.functionField) : ∃ a b : Γ(Z, U), (Z.presheaf.germ U _ h).hom b ≠ 0 ∧
@@ -91,13 +89,13 @@ theorem exists_frac_germ (Z : Scheme.{0}) [IsIntegral Z] (U : Z.Opens) (hU : IsA
   exact ⟨a, b, hb', div_mul_cancel₀ _ hb'⟩
 
 /- English proof (translation)
-Use `letI := ffAlg p`. Take `⟨P, rfl⟩` from `GlobalTheory.ProjSpace.aeval_ratio_surjective ℂ d 0 b`. Establish `e` using `congrArg (fun t => t P) (GlobalTheory.ProjSpace.appLE_comp_aeval_ratio (φ := φ) (W := φ ⁻¹ᵁ chart d 0) (i := 0) (hi := le_rfl))`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe] at e`. Rewrite using `[← Scheme.Hom.appLE_eq_app, e, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.eval₂_mem (fun _ _ => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hp]`. Establish `hc : ∀ c : ℂ, (Z.presheaf.germ _ _ h).hom ((GlobalTheory.QCoh.Qcqs.baseRingHom p (φ ⁻¹ᵁ chart d 0)).hom c) = algebraMap ℂ Z.functionField c`. Introduce `c`. Rewrite using `[← GlobalTheory.QCoh.Qcqs.baseRingHom_res p (le_top : φ ⁻¹ᵁ chart d 0 ≤ ⊤), Z.presheaf.germ_res_apply, GlobalTheory.QCoh.Qcqs.baseRingHom_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hc]`. Conclude with `IntermediateField.algebraMap_mem _ _`. Establish `hr : (Z.presheaf.germ _ _ h).hom (GlobalTheory.ProjSpace.pullRatio φ (φ ⁻¹ᵁ chart d 0) 0 le_rfl j) = rat φ 0 j`. Rewrite using `[rat, dif_pos h, ratioSec_eq, ← Scheme.Hom.appLE_eq_app]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [Function.comp_apply]`. Rewrite using `[hr]`. Conclude with `IntermediateField.subset_adjoin ℂ _ ⟨j, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_app_mem (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) (φ : Z ⟶ PSpace ℂ d)
     (hp : φ ≫ PSpace.str ℂ d = p) (h : genericPoint Z ∈ φ ⁻¹ᵁ chart d 0) (b : Γ(PSpace ℂ d, chart d 0)) :
@@ -126,7 +124,7 @@ theorem germ_app_mem (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) (φ : Z 
     exact IntermediateField.subset_adjoin ℂ _ ⟨j, rfl⟩
 
 /- English proof (translation)
-Introduce `d Z _ p _ inst hinst φ _ hp hgen`. Substitute `hinst` using the available equality. Establish `hC : IsAffineOpen (chart d 0)` using `GlobalTheory.ProjSpace.isAffineOpen_chart ℂ d 0`. Establish `hU : IsAffineOpen (φ ⁻¹ᵁ chart d 0)` using `hC.preimage φ`. Conclude with `finiteDimensional_of_finite (φ.app (chart d 0)).hom (φ.finite_app _ hC) (Z.presheaf.germ _ _ (hgen 0)).hom (fun b => ⟨⟨_, germ_app_mem Z p φ hp (hgen 0) b⟩, rfl⟩) (exists_frac_germ Z _ hU (hgen 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fld : ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfRelativeDimension d p]
     [inst : Algebra ℂ Z.functionField], inst = ffAlg p → ∀ (φ : Z ⟶ PSpace ℂ d) [IsFinite φ], φ ≫ PSpace.str ℂ d = p →

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Finitel
 open IsLocalRing
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FinitelyGeneratedModPow.fg_mod_pow m hres n`.
+A detailed English derivation is pending.
 -/
 private theorem exists_fg_sup_pow {O A : Type} [CommRing O] [CommRing A] [Algebra O A] [IsNoetherianRing A]
     (m : Ideal A) (hres : ∀ x : A, ∃ a : O, x - algebraMap O A a ∈ m) (n : ℕ) :
@@ -12,11 +12,11 @@ private theorem exists_fg_sup_pow {O A : Type} [CommRing O] [CommRing A] [Algebr
   _root_.UpperTheory.Reformulated.B.FinitelyGeneratedModPow.fg_mod_pow m hres n
 
 /- English proof (translation)
-Use `haveI : IsHausdorff (maximalIdeal A) A := IsHausdorff.of_isLocalRing _ _ (maximalIdeal.isMaximal A).ne_top`. Use `haveI : IsHausdorff (maximalIdeal O) A := IsHausdorff.of_map hloc`. Use `(UpperTheory.V.abelian₂.nakayama O (maximalIdeal O) A).2 ?_` and prove the remaining obligations. Take `⟨N, hN, hx⟩` from `exists_fg_sup_pow (maximalIdeal A) hres n`. Establish `: N.map (maximalIdeal O • (⊤ : Submodule O A)).mkQ = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.map_mkQ_eq_top, eq_top_iff]`. Introduce `x _`. Take `⟨y, hy, h1⟩` from `hx x`. Establish `h2 : x - y ∈ maximalIdeal O • (⊤ : Submodule O A)`. Rewrite using `[Ideal.smul_top_eq_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hn h1`. Use `Submodule.add_mem_sup h2 hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `⟨this ▸ hN.map _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.finPow {O A : Type} [CommRing O] [IsLocalRing O] [IsAdicComplete (maximalIdeal O) O]
     [CommRing A] [IsLocalRing A] [Algebra O A] [IsNoetherianRing A]

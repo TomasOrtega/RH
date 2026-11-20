@@ -11,21 +11,19 @@ noncomputable def efr (X : Data E r) (v w : X.Ψ → Fin r → ℂ) : ℝ :=
   ∑ τ, 2 * (τ.1 (-X.ξ0) * hermC τ.1 X.Gm (v τ) (w τ)).re
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma add_conj' (w : ℂ) : w + conj w = 2 * (w.re : ℂ) := by
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `hall : ((Algebra.trace ℚ E z : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ z`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := z)`. Establish `h' : (algebraMap ℚ ℂ) (Algebra.trace ℚ E z) = ((Algebra.trace ℚ E z : ℚ) : ℂ)` using `eq_ratCast _ _`. Rewrite using `[← h', h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun σ => rfl)`. Establish `hcc : ∀ σ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]`. Establish `hconj : ∑ σ ∈ X.Ψᶜ, σ z = ∑ σ ∈ X.Ψ, conj (σ z)`. Apply `Finset.sum_nbij' (fun σ => ComplexEmbedding.conjugate σ) (fun σ => ComplexEmbedding.conjugate σ)` to reduce the goal to its premises. Introduce `σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_compl, Finset.mem_coe] at hσ ⊢`. Rewrite using `[X.cmType, hcc]`. Conclude with `hσ`. Introduce `σ hσ`. Simplify using `only [Finset.mem_compl, Finset.mem_coe] at hσ ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(X.cmType σ).mp hσ`. Introduce `σ _`. Conclude with `hcc σ`. Introduce `σ _`. Conclude with `hcc σ`.
-
-Introduce `σ _`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Use `push_cast`. Rewrite using `[hall, ← Finset.sum_add_sum_compl X.Ψ, hconj, ← Finset.sum_add_distrib, ← Finset.sum_coe_sort X.Ψ]`. Conclude with `Finset.sum_congr rfl fun τ _ => add_conj' _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma trace_re (X : Data E r) (z : E) :
     ((Algebra.trace ℚ E z : ℚ) : ℝ) = ∑ τ : X.Ψ, 2 * (τ.1 z).re := by
@@ -61,9 +59,9 @@ lemma trace_re (X : Data E r) (z : E) :
   exact Finset.sum_congr rfl fun τ _ => add_conj' _
 
 /- English proof (translation)
-Unfold `EFf efr`. Rewrite using `[trace_re X]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 3`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [herm, hermC, map_sum, map_mul, ReciprocityTheory.ChartRestriction.G.FD.emb_cc, Data.embV, Data.emb]`.
+Simplify using the standard rewrite rules.
 -/
 lemma EF_eq_efr (X : Data E r) (x y : Fin r → E) :
     ((EFf X.ξ0 X.Gm x y : ℚ) : ℝ) = efr X (X.embV x) (X.embV y) := by
@@ -75,14 +73,14 @@ lemma EF_eq_efr (X : Data E r) (x y : Fin r → E) :
   simp only [herm, hermC, map_sum, map_mul, ReciprocityTheory.ChartRestriction.G.FD.emb_cc, Data.embV, Data.emb]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hC_sub_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
     hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
   simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Unfold `efr`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, Complex.add_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma efr_add_right (X : Data E r) (v w w' : X.Ψ → Fin r → ℂ) :
     efr X v (w + w') = efr X v w + efr X v w' := by
@@ -92,7 +90,7 @@ lemma efr_add_right (X : Data E r) (v w w' : X.Ψ → Fin r → ℂ) :
   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, Complex.add_re]
 
 /- English proof (translation)
-Unfold `efr`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, Complex.sub_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma efr_sub_right (X : Data E r) (v w w' : X.Ψ → Fin r → ℂ) :
     efr X v (w - w') = efr X v w - efr X v w' := by
@@ -102,7 +100,7 @@ lemma efr_sub_right (X : Data E r) (v w w' : X.Ψ → Fin r → ℂ) :
   simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, Complex.sub_re]
 
 /- English proof (translation)
-Unfold `efr`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add, Complex.add_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma efr_add_left (X : Data E r) (v v' w : X.Ψ → Fin r → ℂ) :
     efr X (v + v') w = efr X v w + efr X v' w := by
@@ -112,7 +110,7 @@ lemma efr_add_left (X : Data E r) (v v' w : X.Ψ → Fin r → ℂ) :
   simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add, Complex.add_re]
 
 /- English proof (translation)
-Unfold `efr`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, mul_sub, Complex.sub_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma efr_sub_left (X : Data E r) (v v' w : X.Ψ → Fin r → ℂ) :
     efr X (v - v') w = efr X v w - efr X v' w := by
@@ -122,11 +120,11 @@ lemma efr_sub_left (X : Data E r) (v v' w : X.Ψ → Fin r → ℂ) :
   simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, mul_sub, Complex.sub_re]
 
 /- English proof (translation)
-Unfold `efr`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h : hermC τ.1 X.Gm (v τ) (((n : ℂ) • w) τ) = (n : ℂ) * hermC τ.1 X.Gm (v τ) (w τ)`. Simplify using `only [hermC, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, mul_left_comm]`. Establish `e : ((n : ℂ) * (τ.1 (-X.ξ0) * hermC τ.1 X.Gm (v τ) (w τ))).re = (n : ℝ) * (τ.1 (-X.ξ0) * hermC τ.1 X.Gm (v τ) (w τ)).re`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (n : ℂ) = ((n : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma efr_nsmul_right (X : Data E r) (n : ℕ) (v w : X.Ψ → Fin r → ℂ) :
     efr X v ((n : ℂ) • w) = n * efr X v w := by
@@ -146,11 +144,11 @@ lemma efr_nsmul_right (X : Data E r) (n : ℕ) (v w : X.Ψ → Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `efr`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h : hermC τ.1 X.Gm (((n : ℂ) • v) τ) (w τ) = (n : ℂ) * hermC τ.1 X.Gm (v τ) (w τ)`. Simplify using `only [hermC, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, mul_left_comm]`. Establish `e : ((n : ℂ) * (τ.1 (-X.ξ0) * hermC τ.1 X.Gm (v τ) (w τ))).re = (n : ℝ) * (τ.1 (-X.ξ0) * hermC τ.1 X.Gm (v τ) (w τ)).re`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (n : ℂ) = ((n : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma efr_nsmul_left (X : Data E r) (n : ℕ) (v w : X.Ψ → Fin r → ℂ) :
     efr X ((n : ℂ) • v) w = n * efr X v w := by
@@ -170,29 +168,27 @@ lemma efr_nsmul_left (X : Data E r) (n : ℕ) (v w : X.Ψ → Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hcc : ∀ σ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]`. Set `d' : (E →+* ℂ) → ℂ` to `fun σ => if hσ : σ ∈ X.Ψ then d ⟨σ, hσ⟩ else 0`. Establish `hd' : ∀ τ : X.Ψ, d' τ.1 = d τ` using `fun τ => by simp [d', τ.2]`. Set `c : (E →+* ℂ) → ℂ` to `fun σ => if σ ∈ X.Ψ then conj (d' σ) else d' (ComplexEmbedding.conjugate σ)`. Establish `hint : ∀ β : 𝓞 E, ∑ σ : E →+* ℂ, c σ * σ (β : E) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `β`. Establish `hb' : ∑ τ ∈ X.Ψ, (d' τ * conj (τ (β : E)) + conj (d' τ * conj (τ (β : E)))) = 0`. Establish `h2 : ((∑ τ : X.Ψ, 2 * (d τ * conj (τ.1 (β : E))).re : ℝ) : ℂ) = 0`. Rewrite using `[h β]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at h2`. Rewrite using `[← h2, ← Finset.sum_coe_sort X.Ψ]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hd', add_conj']`. Rewrite using `[← Finset.sum_add_sum_compl X.Ψ]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ σ ∈ X.Ψ, c σ * σ (β : E) = ∑ σ ∈ X.Ψ, conj (d' σ * conj (σ (β : E)))`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Simplify using `[c, hσ]`. Establish `h2 : ∑ σ ∈ X.Ψᶜ, c σ * σ (β : E) = ∑ σ ∈ X.Ψ, d' σ * conj (σ (β : E))`. Apply `Finset.sum_nbij' (fun σ => ComplexEmbedding.conjugate σ) (fun σ => ComplexEmbedding.conjugate σ)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `σ hσ`. Simplify using `only [Finset.mem_compl, Finset.mem_coe] at hσ ⊢`. Rewrite using `[X.cmType, hcc]`. Conclude with `hσ`. Introduce `σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_compl, Finset.mem_coe] at hσ ⊢`. Conclude with `(X.cmType σ).mp hσ`. Introduce `σ _`. Conclude with `hcc σ`. Introduce `σ _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hcc σ`. Introduce `σ hσ`. Simplify using `only [Finset.mem_compl, Finset.mem_coe] at hσ`. Simplify using `[c, hσ, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[h1, h2, ← Finset.sum_add_distrib, ← hb']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => add_comm _ _`. Establish `hall : ∀ x : E, ∑ σ : E →+* ℂ, c σ * σ x = 0`. Introduce `x`. Take `⟨y, hy, hyx⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic x))`. Establish `hx` using `hint ⟨y • x, hyx⟩`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∑ σ : E →+* ℂ, c σ * σ (y • x) = 0 at hx`. Establish `e2 : ∑ σ : E →+* ℂ, c σ * σ (y • x) = (y : ℂ) * ∑ σ : E →+* ℂ, c σ * σ x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hx` using `[e2]`. Conclude with `(mul_eq_zero.mp hx).resolve_left (by exact_mod_cast hy)`. Establish `hli` using `(linearIndependent_monoidHom E ℂ).comp (fun σ : E →+* ℂ => (σ : E →* ℂ)) (fun a b hab => RingHom.ext fun x => by`. Use `congrArg (fun f : E →* ℂ => f x) hab` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this)`. Establish `hc0` using `Fintype.linearIndependent_iff.mp hli c (by`. Use function extensionality and compare the values at `x`. Simplify `hall x)` using `[Finset.sum_apply]`. Establish `hnot : ComplexEmbedding.conjugate τ0.1 ∉ X.Ψ` using `(X.cmType τ0.1).mp τ0.2`.
-
-Establish `h0` using `hc0 (ComplexEmbedding.conjugate τ0.1)`. Simplify using `only [c, hnot, if_false, hcc] at h0`. Rewrite using `[← hd']`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_indep (X : Data E r) (d : X.Ψ → ℂ)
     (h : ∀ β : 𝓞 E, ∑ τ : X.Ψ, 2 * (d τ * conj (τ.1 (β : E))).re = 0) (τ0 : X.Ψ) :

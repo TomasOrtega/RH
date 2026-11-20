@@ -24,11 +24,11 @@ variable {C : Type} [NormedField C] [IsUltrametricDist C] [CompleteSpace C] [Cha
 include hO
 
 /- English proof (translation)
-Take `⟨g, hg, -⟩` from `NormIntegers.existsUnique_extend_of_fg hO (maximalIdeal A).fg_of_isNoetherianRing f`. Establish `hgl` using `isLocalHom_of_comp_algebraMap_adicCompletion f g hg`. Establish `hN : IsNoetherianRing (AdicCompletion (maximalIdeal A) A)`. Use `AdicNoeth.isNoetherianRing_of_isAdicComplete _ (maximalIdeal _) ?_ inferInstance (inferInstanceAs (IsNoetherianRing (ResidueField _)))` and prove the remaining obligations. Rewrite using `[AdicCompletion.maximalIdeal_eq_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(maximalIdeal A).fg_of_isNoetherianRing.map _`. Establish `: Nontrivial (AdicCompletion (maximalIdeal A) A ⧸ RingHom.ker g)` using `Ideal.Quotient.nontrivial_iff.2 (RingHom.ker_ne_top g)`. Establish `hl : IsLocalRing (AdicCompletion (maximalIdeal A) A ⧸ RingHom.ker g)` using `IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Use `⟨_, _, hl, (Ideal.Quotient.mk (RingHom.ker g)).comp (algebraMap A _), RingHom.kerLift g, inferInstance, CompleteFiniteExtension.isAdicComplete_of_finite_local (AdicCompletion (maximalIdeal A) A) _, RingHom.kerLift_injective g, ⟨fun a ha => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hgl.map_nonunit a ha).map _`. Rewrite using `[← hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_complete_domain (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (f : A →+* O)
     [IsLocalHom f] :
@@ -54,21 +54,19 @@ theorem exists_complete_domain (A : Type) [CommRing A] [IsLocalRing A] [IsNoethe
     rfl
 
 /- English proof (translation)
-Use `NormIntegers.isDomain hO` as an intermediate fact. Establish `: CharZero O` using `RingHom.charZero (algebraMap O C)`. Set `n : Ideal B` to `(maximalIdeal O).comap f`. Set `A` to `Localization.AtPrime n`. Establish `hu : ∀ y : n.primeCompl, IsUnit (f y)` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `y.2 h`. Set `f₁ : A →+* O` to `IsLocalization.lift hu`. Establish `hf₁ : f₁.comp (algebraMap B A) = f` using `IsLocalization.lift_comp hu`. Establish `: IsLocalHom f₁`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((IsLocalRing.local_hom_TFAE f₁).out 0 2).2 ?_` and prove the remaining obligations. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, hf₁]`. Conclude with `Ideal.map_comap_le`. Establish `: IsNoetherianRing A` using `IsLocalization.isNoetherianRing n.primeCompl A inferInstance`. Take `⟨S, _, _, φ, g, hN, hc, hg, hgl, hgφ⟩` from `exists_complete_domain hO A f₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain S` using `hg.isDomain`. Establish `: CharZero S` using `RingHom.charZero g`. Establish `hpS : (p : S) ∈ maximalIdeal S` using `fun h => hpO (by simpa using h.map g)`. Take `⟨hfin, hl, hNR, hcR⟩` from `normalisation_finite_local_complete_of_mixedChar S p hp hpS hN hc`. Establish `hinj : Function.Injective ((algebraMap O C).comp g)` using `hO.hom_inj.comp hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : FractionRing S →+* C` to `IsFractionRing.lift hinj`. Establish `he : e.comp (algebraMap S _) = (algebraMap O C).comp g` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a`. Establish `hint : ∀ x : integralClosure S (FractionRing S), ∃ y : O, algebraMap O C y = e x` using `fun x => hO.exists_of_le_one (hO.mem_of_integral (IsIntegral.map_of_comp_eq g e he.symm x.2))`. Set `r : integralClosure S (FractionRing S) →+* (algebraMap O C).range` to `(e.comp (integralClosure S (FractionRing S)).val.toRingHom).codRestrict _ hint`. Set `q : O ≃+* (algebraMap O C).range` to `RingEquiv.ofBijective (algebraMap O C).rangeRestrict ⟨fun a b h => hO.hom_inj (congrArg Subtype.val h), (algebraMap O C).rangeRestrict_surjective⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g' : integralClosure S (FractionRing S) →+* O` to `q.symm.toRingHom.comp r`. Establish `hg' : g'.comp (algebraMap S _) = g` using `RingHom.ext fun a => by`. Apply `q.injective` to reduce the goal to its premises. Use `(q.apply_symm_apply _).trans (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `congrArg (fun w => w a) he`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : CharZero (integralClosure S (FractionRing S))` using `RingHom.charZero g'`. Establish `hloc : IsLocalHom g'`. Use `((IsLocalRing.local_hom_TFAE g').out 0 4).2 ?_` and prove the remaining obligations. Establish `: (((maximalIdeal O).comap g').comap (algebraMap S _)).IsMaximal`. Rewrite using `[Ideal.comap_comap, hg', IsLocalRing.maximalIdeal_comap]`.
-
-Use `infer_instance`. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := S) _ this)`. Use `⟨integralClosure S (FractionRing S), _, inferInstance, hl, hz, (algebraMap S _).comp (φ.comp (algebraMap B A)), g', hNR, integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing S), hcR, hloc, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, hg', ← RingHom.comp_assoc, hgφ, hf₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_normal {p : ℕ} (hp : p.Prime) (hpO : (p : O) ∈ maximalIdeal O) (B : Type) [CommRing B]
     [IsNoetherianRing B] (f : B →+* O) :
@@ -121,19 +119,17 @@ theorem exists_complete_normal {p : ℕ} (hp : p.Prime) (hpO : (p : O) ∈ maxim
   rw [← RingHom.comp_assoc, hg', ← RingHom.comp_assoc, hgφ, hf₁]
 
 /- English proof (translation)
-Set `pb` to `Field.powerBasisOfFiniteOfSeparable (ResidueField A) k`. Establish `hm` using `minpoly.monic pb.isIntegral_gen`. Take `⟨Q, hQ, hdeg, hmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic (f := residue A) (Polynomial.mem_lifts_of_surjective residue_surjective _) hm`. Establish `hd : ((Q.map f).map (algebraMap O C)).degree ≠ 0`. Rewrite using `[(hmon.map f).degree_map, hmon.degree_map, hdeg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(minpoly.degree_pos pb.isIntegral_gen).ne'`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hd`. Establish `hint : IsIntegral O x` using `⟨Q.map f, hmon.map f, by rwa [IsRoot, Polynomial.eval_map] at hx⟩`. Take `⟨y, rfl⟩` from `hO.exists_of_le_one (hO.mem_of_integral hint)`. Establish `hy : Q.eval₂ f y = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hO.hom_inj` to reduce the goal to its premises. Rewrite `hx` using `[IsRoot, Polynomial.eval_map, eval₂_at_apply, Polynomial.eval_map]`. Rewrite using `[hx, map_zero]`. Take `⟨R, _, _, _, _, φ, g, hN, hI, hc, hg, hgφ⟩` from `exists_complete_normal hO hp hpO A[X] (eval₂RingHom f y)`. Establish `hf : g.comp (φ.comp Polynomial.C) = f`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_assoc, hgφ]`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `: IsLocalHom (g.comp (φ.comp Polynomial.C))` using `hf ▸ ‹IsLocalHom f›`. Establish `: IsLocalHom (φ.comp Polynomial.C)` using `isLocalHom_of_comp _ g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra (ResidueField A) (ResidueField R) := (ResidueField.map (φ.comp Polynomial.C)).toAlgebra`. Establish `hres : (algebraMap (ResidueField A) (ResidueField R)).comp (residue A) = (residue R).comp (φ.comp Polynomial.C)` using `RingHom.ext fun a => ResidueField.map_residue _ a`. Establish `hroot : aeval (residue R (φ X)) (minpoly (ResidueField A) pb.gen) = 0`. Establish `h₁ : Q.eval₂ (φ.comp Polynomial.C) (φ X) = φ Q`. Rewrite using `[← hom_eval₂, eval₂_C_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hQ, aeval_def, eval₂_map, hres, ← hom_eval₂, h₁, residue_eq_zero_iff]`. Introduce `hu`. Establish `h₂ : g (φ Q) = 0` using `(congrArg (fun w => w Q) hgφ).trans hy`. Conclude with `(hu.map g).ne_zero h₂`. Use `⟨R, _, inferInstance, inferInstance, inferInstance, φ.comp Polynomial.C, g, (pb.lift _ hroot).toRingHom, hN, hI, hc, hg, hf, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hres]`. Conclude with `congrArg (fun w => RingHom.comp w (residue A)) (pb.lift _ hroot).comp_algebraMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_normal_residue [IsAlgClosed C] {p : ℕ} (hp : p.Prime) (hpO : (p : O) ∈ maximalIdeal O) (A : Type)
     [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (f : A →+* O) [IsLocalHom f] (k : Type) [Field k]
@@ -181,7 +177,7 @@ theorem exists_complete_normal_residue [IsAlgClosed C] {p : ℕ} (hp : p.Prime) 
 end Algebra
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective map_le_one x := by rw [NormedField.valuation_apply, ← NNReal.coe_le_coe] exact x.2 exists_of_le_one r hr := by rw [NormedField.valuation_apply, ← NNReal.coe_le_coe] at hr exact ⟨⟨r, hr⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem intO_integers (C : Type) [NormedField C] [IsUltrametricDist C] :
     (NormedField.valuation (K := C)).Integers (intO C) where
@@ -197,21 +193,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Establish `hO` using `intO_integers ↥C.S`. Use `NormIntegers.isLocalRing hO` as an intermediate fact. Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `hpO : (p : intO ↥C.S) ∈ maximalIdeal (intO ↥C.S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[NormIntegers.mem_maximalIdeal_iff hO, map_natCast, C.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Set `x : Y.X` to `P.yt (closedPoint (intO ↥C.S))`. Set `f : Y.X.presheaf.stalk x →+* intO ↥C.S` to `(Scheme.stalkClosedPointTo (R := .of (intO ↥C.S)) P.yt).hom`. Establish `hf : spMap f ≫ Y.X.fromSpecStalk x = P.yt` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of (intO ↥C.S)) P.yt`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalHom f` using `Scheme.isLocalHom_stalkClosedPointTo' (R := intO ↥C.S) P.yt`. Take `⟨k, _, ak, hfin, hsep, S', hS'⟩` from `hS x`. Take `⟨R, _, _, _, _, φ, g, j, hN, hI, hc, hg, hgφ, hj⟩` from `@exists_complete_normal_residue _ _ _ _ _ _ _ _ _ hO _ p hp hpO (Y.X.presheaf.stalk x) _ _ _ f _ k _ ak hfin hsep`. Set `ι : Sp R ⟶ Y.X` to `spMap φ ≫ Y.X.fromSpecStalk x`. Establish `fac : spMap g ≫ ι = P.yt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf, ← hgφ, spMap_comp, Category.assoc]`. Take `⟨t, ⟨m⟩⟩` from `exists_sab ι Y.t`. Establish `hne : (ι ⁻¹' abLocus Y.t.G).Nonempty`. Set `q : Sp ↥C.S` to `(⊥ : PrimeSpectrum ↥C.S)`. Establish `e : (spMap (intO ↥C.S).subtype ≫ spMap g) ≫ ι = (P.y ≫ Y.jQ) ≫ pullback.fst _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, fac, P.ext, Category.assoc]`. Both sides reduce to the same expression. Establish `h : (P.y ≫ Y.jQ) q ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G`. Rewrite using `[Y.ab_gen]`. Conclude with `⟨P.y q, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(spMap (intO ↥C.S).subtype ≫ spMap g) q, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]`. Conclude with `h`. Take `⟨S₁, -, -, -, -, hS₁⟩` from `ReciprocityTheory.ChartRestriction.G.Out.GtBCPf.gtBaseChange _ _ (spMap j) S' _ hS'`. Establish `hq : spMap j ≫ (Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField x) k)) ≫ Y.X.fromSpecResidueField x) = spMap (residue R) ≫ ι`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : spMap j ≫ spMap (algebraMap (Y.X.residueField x) k) ≫ spMap (residue (Y.X.presheaf.stalk x)) = spMap (residue R) ≫ spMap φ`. Rewrite using `[← spMap_comp, ← hj, spMap_comp, spMap_comp, Category.assoc]`. Both sides reduce to the same expression. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ Y.X.fromSpecStalk x) h₁)).trans (Category.assoc _ _ _) |> Eq.trans (by rw [Category.assoc]; rfl)`. Establish `gp₁` using `((isGrpPullback_pullback _ (spMap j)).comp (isGrpPullback_pullback Y.t.G _)).congr hq rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `gp₂` using `(isGrpPullback_pullback t.G (spMap (residue R))).comp m.cart`. Take `⟨e, he, -⟩` from `grpPullback_iso gp₁ gp₂`. Take `⟨U, hu, ht⟩` from `hU R hN hI hc ι t m hne ⟨S₁, isGt_of_iso e hS₁⟩`. Conclude with `⟨{ R := R noeth := hN normal := hI complete := hc := ι f := g f_loc := fun a ha => (NormIntegers.mem_maximalIdeal_iff hO).1 (map_nonunit g a ha) fac := fac t := t m := m U := U unitOn := hu tors := ht }⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_datAt_of_isNoetherianRing [IsNoetherianRing O] (Y : Model Xo c β) (hS : Y.SplitFibres) (hU : Y.N3) {p : ℕ}
     (hp : p.Prime) (C : SCF p) (P : PointsOfFlagModel.PtC Y C) : Nonempty (DatAt Y P) := by
@@ -271,9 +267,9 @@ theorem nonempty_datAt_of_isNoetherianRing [IsNoetherianRing O] (Y : Model Xo c 
            tors := ht }⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W hp hW Y _ h i C P`. Use `i.c.fin` as an intermediate fact. Establish `: NumberField i.c.F` using `{}`. Establish `: IsDiscreteValuationRing (i.c.V W)`. Use `(isDiscreteValuationRing_and_finite_residueField_of_numberField (i.c.V W) hp.ne_zero ?_).1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hp.ne_zero`. Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`. Conclude with `nonempty_datAt_of_isNoetherianRing (Y i) (h i).1 (h i).2 hp C P`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem nonempty_datAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), (∀ i, (Y i).SplitFibres ∧ (Y i).N3) → ∀ (i : Idx H p) (C : Formalism.MainNotions.DIV.Cons.SCF p) (P : PointsOfFlagModel.PtC (Y i) C), Nonempty (DatAt (Y i) P) := by
   intro E _ _ _ H Dw Xo p W hp hW Y _ h i C P

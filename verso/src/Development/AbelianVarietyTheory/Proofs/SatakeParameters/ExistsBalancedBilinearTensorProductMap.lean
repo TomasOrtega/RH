@@ -31,16 +31,16 @@ def baseBil (β : D₁ →ₗ[LL] D₂ →ₗ[LL] D₃) : F ⊗[LL] D₁ →ₗ[
   ((LinearMap.baseChangeHom LL F D₂ D₃) ∘ₗ β).liftBaseChange F
 
 /- English proof (translation)
-Simplify using `[baseBil, LinearMap.liftBaseChange_tmul, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseBil_tmul (β : D₁ →ₗ[LL] D₂ →ₗ[LL] D₃) (a b : F) (x : D₁) (y : D₂) :
     baseBil F β (a ⊗ₜ x) (b ⊗ₜ y) = (a * b) ⊗ₜ β x y := by
   simp [baseBil, LinearMap.liftBaseChange_tmul, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add w w' hw hw' => simp [map_add, LinearMap.add_apply, hw, hw']`. Consider the case `tmul a x`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`. Consider the case `tmul b y => simp [LinearMap.baseChange_tmul, baseBil_tmul, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseBil_left (β : D₁ →ₗ[LL] D₂ →ₗ[LL] D₃) (f₁ : Module.End LL D₁) (f₃ : Module.End LL D₃)
     (h : ∀ x y, β (f₁ x) y = f₃ (β x y)) (w : F ⊗[LL] D₁) (z : F ⊗[LL] D₂) :
@@ -55,9 +55,9 @@ theorem baseBil_left (β : D₁ →ₗ[LL] D₂ →ₗ[LL] D₃) (f₁ : Module.
     | tmul b y => simp [LinearMap.baseChange_tmul, baseBil_tmul, h]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add w w' hw hw' => simp [map_add, LinearMap.add_apply, hw, hw']`. Consider the case `tmul a x`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`. Consider the case `tmul b y => simp [LinearMap.baseChange_tmul, baseBil_tmul, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseBil_right (β : D₁ →ₗ[LL] D₂ →ₗ[LL] D₃) (f₂ : Module.End LL D₂) (f₃ : Module.End LL D₃)
     (h : ∀ x y, β x (f₂ y) = f₃ (β x y)) (w : F ⊗[LL] D₁) (z : F ⊗[LL] D₂) :
@@ -78,17 +78,15 @@ namespace GlobalTheory.LetterDescent
 open TensorProduct
 
 /- English proof (translation)
-Set `C : F ⊗[LL] D₁ →ₗ[F] F ⊗[LL] D₂ →ₗ[F] GlobalTheory.Pst.Letter m₃ F τ` to `(baseBil F β).compr₂ (GlobalTheory.Pst.letterQ m₃ F τ)`. Establish `hmem : ∀ (c : U) (v : F ⊗[LL] D₃), GlobalTheory.Pst.letterQ m₃ F τ ((m₃ c).baseChange F v - τ c • v) = 0`. Introduce `c v`. Rewrite using `[← LinearMap.mem_ker, GlobalTheory.Pst.ker_letterQ]`. Conclude with `Submodule.mem_iSup_of_mem c ⟨v, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k₂ : GlobalTheory.Pst.letterKer m₂ F τ ≤ LinearMap.ker C.flip`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `w`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [C, LinearMap.flip_apply, LinearMap.compr₂_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, map_smul, baseBil_right F β (m₂ c) (m₃ c) (h₂ c), LinearMap.zero_apply]`. Rewrite using `[← map_smul, ← map_sub]`. Conclude with `hmem c _`. Set `C₂` to `(GlobalTheory.Pst.letterKer m₂ F τ).liftQ C.flip k₂`. Establish `k₁ : GlobalTheory.Pst.letterKer m₁ F τ ≤ LinearMap.ker C₂.flip`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `iSup_le fun c => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `GlobalTheory.Pst.letterQ_surjective m₂ F τ q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.Pst.letterQ m₃ F τ (baseBil F β (((m₁ c).baseChange F - τ c • LinearMap.id : F ⊗[LL] D₁ →ₗ[F] F ⊗[LL] D₁) w) z) = 0`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, baseBil_left F β (m₁ c) (m₃ c) (h₁ c)]`. Conclude with `hmem c _`. Use `⟨TensorProduct.lift ((GlobalTheory.Pst.letterKer m₁ F τ).liftQ C₂.flip k₁), fun x y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Pst.letterQ m₃ F τ (baseBil F β (1 ⊗ₜ x) (1 ⊗ₜ y)) = _`.
-
-Rewrite using `[baseBil_tmul, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_letter_tensor_map {LL U D₁ D₂ D₃ : Type} [Field LL] [Field U] [AddCommGroup D₁] [Module LL D₁]
     [AddCommGroup D₂] [Module LL D₂] [AddCommGroup D₃] [Module LL D₃] (m₁ : U →+* Module.End LL D₁)

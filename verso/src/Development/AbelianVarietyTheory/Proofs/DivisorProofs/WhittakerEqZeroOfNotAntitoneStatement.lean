@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.UG GlobalTheory.PRep GlobalTheory.LF
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JSW.whittaker_eq_zero_of_not_antitone` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWhittakerEqZeroOfNotAntitone.lean&line=11#L11)
 -/

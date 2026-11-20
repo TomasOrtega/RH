@@ -6,23 +6,21 @@ noncomputable section
 namespace GlobalTheory.JR
 
 /- English proof (translation)
-Establish `h01 : (0 : A.L) = 1`. Rewrite using `[← map_zero (algebraMap A.K A.L), ← map_one (algebraMap A.K A.L), Subsingleton.elim (0 : A.K) 1]`. Use `haveI hL : Subsingleton A.L := subsingleton_of_zero_eq_one h01`. Establish `hpsi : ∀ (ψ : AddChar F ℂ), IsStdChar ψ → ∀ t : A.K, A.psiK ψ t = 1`. Introduce `ψ _ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Et.psiK`. Rewrite using `[Subsingleton.elim t 0, map_zero, AddChar.map_zero_eq_one]`. Introduce `ψ hψ x μ hμ`. Use `haveI := hμ.1`. Establish `hpos : 0 < μ Set.univ` using `(isOpen_univ.measure_pos μ Set.univ_nonempty)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : μ Set.univ < ⊤` using `isCompact_univ.measure_lt_top`. Establish `hreal : μ.real Set.univ ≠ 0`. Rewrite using `[measureReal_def]`. Conclude with `(ENNReal.toReal_pos hpos.ne' hfin.ne).ne'`. Use `⟨(μ.real Set.univ : ℂ)⁻¹, fun _ φ => φ, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun _ _ hf => hf, fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ _ _ _ => rfl⟩`. Introduce `φ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z y`. Simplify using `[hpsi ψ hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `s y`. Establish `he : A.etaK (s : A.K) = 1`. Unfold `Et.etaK eta`. Rewrite using `[Subsingleton.elim (s : A.K) 1, map_one]`. Rewrite using `[if_pos ⟨1, by simp⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : A.absK (s : A.K) = 1`. Unfold `Et.absK`. Rewrite using `[dif_pos s.isUnit]`. Rewrite using `[Subsingleton.elim (s.isUnit.unit) 1, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he, ha, Subsingleton.elim ((s : A.K) • y) y]`. Simplify using the standard rewrite rules. Introduce `y`. Unfold `fourB`. Establish `: (fun x' => φ x' * A.kerL ψ x x' y) = fun _ => φ y`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x'`. Unfold `Et.kerL`. Rewrite using `[hpsi ψ hψ, Subsingleton.elim x' y, mul_one]`. Rewrite using `[this, integral_const, Complex.real_smul]`. Use `show φ y = _`.
-
-Establish `hc : ((μ.real Set.univ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hreal`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem weilAt_of_subsingleton (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (hK : Subsingleton A.K) : WeilAt A := by

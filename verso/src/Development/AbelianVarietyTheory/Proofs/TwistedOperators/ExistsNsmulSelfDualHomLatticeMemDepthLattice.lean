@@ -18,9 +18,9 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.BigRow
 
 /- English proof (translation)
-Take `⟨d, hd, hI⟩` from `I.isFractional`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hJ : Ideal.span {d} * 𝔪 ≠ ⊥` using `mul_ne_zero (by simpa using hd0) h𝔪`. Use `⟨Ideal.absNorm (Ideal.span {d} * 𝔪), Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff]), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzd⟩` from `Ideal.mem_span_singleton_mul.1 (Ideal.absNorm_mem (Ideal.span {d} * 𝔪))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hI a ha`. Use `⟨z * b, 𝔪.mul_mem_right _ hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K), ← hzd, map_mul, map_mul, hb, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_nsmul_mem {K : Type} [Field K] [NumberField K] (I : FractionalIdeal (𝓞 K)⁰ K) {𝔪 : Ideal (𝓞 K)}
     (h𝔪 : 𝔪 ≠ ⊥) : ∃ N : ℕ, 0 < N ∧ ∀ a ∈ I, ∃ o ∈ 𝔪, (N : K) * a = algebraMap (𝓞 K) K o := by
@@ -37,7 +37,7 @@ theorem exists_nsmul_mem {K : Type} [Field K] [NumberField K] (I : FractionalIde
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul]`. Conclude with `(map_nsmul (TensorProduct.mk D.host.F (AF D.host.F) D.host.E α) N x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_tmul (N : ℕ) (α : AF D.host.F) (x : D.host.E) :
     (N • (α ⊗ₜ[D.host.F] x) : AE D) = α ⊗ₜ[D.host.F] ((N : D.host.E) * x) := by
@@ -45,11 +45,11 @@ theorem nsmul_tmul (N : ℕ) (α : AF D.host.F) (x : D.host.E) :
   exact (map_nsmul (TensorProduct.mk D.host.F (AF D.host.F) D.host.E α) N x).symm
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, h0, a, ha, s, hs, _, h t ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.smul_apply, Matrix.of_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[nsmul_tmul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_latO {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT LT' : Set (Fin T.rank → D.host.E)) (N : ℕ)
     (h : ∀ t ∈ LT, (N : D.host.E) • t ∈ LT') (x : WO S T) (hx : x ∈ latO S T LS LT fun _ => True) :
@@ -68,13 +68,11 @@ theorem nsmul_mem_latO {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT LT
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Take `⟨o, ho, hoa⟩` from `h a ha`. Use `AddSubgroup.subset_closure ⟨α, hα, _, Submodule.smul_mem_smul ho (GlobalTheory.RowLatChi.genMap_one_mem_homLat hS hs ht), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, GlobalTheory.LatVac.genMap]`. Rewrite using `[nsmul_tmul, Algebra.smul_def, ← hoa]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_hatMx {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ}
@@ -97,11 +95,9 @@ theorem nsmul_mem_hatMx {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.ra
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, y, hy, rfl⟩` from `hx`. Take `⟨o, -, ho⟩` from `h s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_smul, ho, algebraMap_smul]`. Conclude with `Λ.smul_mem o hy`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul o x _ hx => rw [smul_comm]`. Conclude with `Λ.smul_mem o hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_idLat {n : ℕ} {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E}
     (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) {N : ℕ}
@@ -119,11 +115,11 @@ theorem smul_mem_of_idLat {n : ℕ} {I : FractionalIdeal (𝓞 D.host.E)⁰ D.ho
   | smul o x _ hx => rw [smul_comm]; exact Λ.smul_mem o hx
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM F hF i hi`. Take `⟨N₁, hN₁, h₁⟩` from `exists_nsmul_mem (shiftId G) (𝔪 := ⊤) top_ne_bot`. Take `⟨N₂, hN₂, h₂⟩` from `exists_nsmul_mem D.host.AA (𝔪 := G.modul) (G.pl.modul_ne_bot sc)`. Establish `hsd` using `GlobalTheory.CosetRow.selfDual_chi hL G i hi`. Use `⟨N₂ * N₁, Nat.mul_pos hN₂ hN₁, fun u hu => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k1` using `nsmul_mem_latO _ _ (G.Λ (.grid i 0) : Set _) N₁ (smul_mem_of_idLat _ h₁) u hu`. Establish `k2 : N₁ • u ∈ latO (negSp (G.V (.grid (i + 1) 0))) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (fun _ => True)` using `GlobalTheory.RowLoc.mem_latO_negSp.2 k1`. Rewrite using `[mul_smul]`. Use `⟨nsmul_mem k2 N₂, fun e he => ?_⟩` and prove the remaining obligations. Establish `hprops` using `GlobalTheory.IdemSumIdeal.isIdemSum_props e G.pl.W0 (fun _ => 0) he`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CosScalar.smul_mem_hatMx hsd.1.1 hsd.2.1 G.modul hprops.1 hprops.2.1 (nsmul_mem_hatMx hsd.1 h₂ _ k2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_latBig_mem_latRow : OnStd fun {D} _ _ {sc} {G} _ _ => ∀ i, i < D.R.m → ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latBig G i, N • u ∈ latRow G i := by
   intro D hq T L μ0 hL sc G W M hM F hF i hi

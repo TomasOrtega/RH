@@ -24,14 +24,14 @@ Both sides reduce to the same expression.
 theorem coe_toMap (x : K) : (toMap ι K x : L') = ι x := rfl
 
 /- English proof (translation)
-The claim follows from `(K.equivMap ι).surjective`.
+A detailed English derivation is pending.
 -/
 theorem toMap_surj : Function.Surjective (toMap ι K) := (K.equivMap ι).surjective
 
 /- English proof (translation)
-Rewrite using `[extend_span]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨a, ha, hy⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, by rw [coe_toMap, hy]⟩`. Introduce and unpack `⟨a, ha, hx⟩`. Take `⟨y, rfl⟩` from `toMap_surj ι K x`. Conclude with `⟨y, ⟨a, ha, ι.injective hx⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem image_map {E : Type} [Field E] (𝔞 : Ideal (𝓞 E)) (e : E → L) :
     extend (toMap ι K) (Submodule.span (𝓞 K) {x : K | ∃ a ∈ 𝔞, (x : L) = e (a : E)}) =
@@ -49,23 +49,23 @@ theorem image_map {E : Type} [Field E] (𝔞 : Ideal (𝓞 E)) (e : E → L) :
 end map
 
 /- English proof (translation)
-Introduce `B S h`. Take `⟨SE, hSE, hE⟩` from `exists_gens B.LL`. Take `⟨K, hfd, hKgal, hS, -, hconj⟩` from `GlobalTheory.exists_galois_subfield_conj_stable (S ∪ SE) (by`. Introduce `z hz`. Break down `Finset.mem_union.1 hz with hz | hz` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [h z hz, hSE z hz])`. Establish `hEK` using `hE K (fun z hz => hS z (Finset.mem_union_right _ hz)) B.embLL`. Establish `: NumberField K` using `{}`. Set `ι : B.LL →ₐ[ℚ] K` to `(B.embLL.codRestrict K hEK).toRatAlgHom`. Establish `hι : ∀ x, K.val (ι x) = B.embLL x` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tr : ∀ (F : IntermediateField ℚ B.LL) (w : ℂ), (∃ z ∈ F, B.embLL z = w) → ∃ z ∈ F.map ι, K.val z = w`. Introduce and unpack `F w ⟨z, hz, rfl⟩`. Conclude with `⟨ι z, ⟨z, hz, rfl⟩, rfl⟩`. Establish `im : ∀ F : IntermediateField ℚ B.LL, (K.val : K →+* ℂ) '' (F.map ι : Set K) = B.embLL '' (F : Set B.LL)`. Introduce `F`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Conclude with `tr F w`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg0` using `B.coeffGaloisSubfield_isGalois`. Set `f` to `toMap ι B.Ks`. Use `⟨{ toPre := B.toPre LL := K starLL := starOf K hconj embLL := K.val starLL_cx := fun _ => rfl embE := (ι : B.LL →+* K).comp B.embE embE_φ₀ := by rw [← B.embE_φ₀]; rfl LL0 := B.LL0.map ι coeffGaloisSubfield_isGalois := @IsGalois.of_algEquiv ℚ B.LL0 _ _ (B.LL0.map ι) _ _ _ hg0 (B.L …` and prove the remaining obligations. Introduce `𝔞`. Take `⟨β, hsp⟩` from `B.capit 𝔞`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨f β, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (extend f) hsp`. Rewrite `h` using `[extend_span, Set.image_singleton]`. Conclude with `h.trans (image_map ι B.Ks 𝔞 B.embE)`. Introduce `j hj1 hj 𝔞 h𝔞`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨β, hβ, hsp, hn⟩` from `B.kPsi j hj1 hj 𝔞 h𝔞`. Use `⟨f β, (map_ne_zero f).2 hβ, ?_, fun σ => hn (σ.comp f)⟩` and prove the remaining obligations. Establish `h` using `congrArg (extend f) hsp`. Rewrite `h` using `[extend_span, Set.image_singleton, map_prod]`. Rewrite using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `e1` using `image_map ι B.Ks 𝔞 (fun a => B.embE (B.host.sigmaOf g a))`. Establish `e2` using `image_map ι B.Ks 𝔞 (fun a => B.embE (B.host.sigmaOf g (B.host.conj a)))`. Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `congrArg₂ (· * ·) (congrArg (· ^ (B.R.sigW j).1) e1) (congrArg (· ^ (B.R.sigW j).2) e2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨z, hz⟩` from `B.roots_LL u`. Conclude with `⟨ι z, hz⟩`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨ι z, rfl⟩`. Conclude with `fun z hz => ⟨⟨z, hS z (Finset.mem_union_left _ hz)⟩, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_enl : ∀ (B : Base) (S : Finset ℂ), (∀ z ∈ S, IsAlgebraic ℚ z) →
     ∃ B' : Base, Enl B B' ∧ ∀ z ∈ S, ∃ x : B'.LL, B'.embLL x = z := by

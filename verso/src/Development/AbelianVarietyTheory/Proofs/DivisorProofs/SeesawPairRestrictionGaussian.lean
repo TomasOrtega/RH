@@ -28,7 +28,7 @@ variable {R : Type} [CommRing R] [Invertible (2 : R)]
 
 omit [Invertible (2 : R)] in
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_transpose, Matrix.transpose_zero]`. Use extensionality with `i j`. Apply the tactic sequence `cases j <;> simp [Matrix.mul_apply, Matrix.fromCols, Matrix.fromBlocks, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fromCols_zero_mul_blockDiag_transpose {m a b : Type} [Fintype a] [Fintype b]
     (z : Matrix m b R) (A : Matrix a b R) :
@@ -38,9 +38,9 @@ theorem fromCols_zero_mul_blockDiag_transpose {m a b : Type} [Fintype a] [Fintyp
   cases j <;> simp [Matrix.mul_apply, Matrix.fromCols, Matrix.fromBlocks, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Take `⟨u, v, rfl⟩ : ∃ u v, y = Sum.elim u v` from `⟨_, _, (Sum.elim_comp_inl_inr y).symm⟩`. Establish `h'` using `h 0 w`. Simplify using `only [Darboux.rho, boxFun, h', schr, map_zero, Prod.fst_zero, Prod.snd_zero, neg_zero, sumElim_dotProduct_sumElim, Sum.elim_add_add, Sum.elim_comp_inl, Sum.elim_comp_inr, AddChar.inv_apply, dotProduct_zero, zero_dotProduct, add_zero, zero_add, mul_zero, dotProduct_neg]`. Establish `e1 : (Sum.elim u v + Sum.elim (0 : κ → R) (d.e w).1) ∘ Sum.inl = u` using `funext fun i => by simp`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (Sum.elim u v + Sum.elim (0 : κ → R) (d.e w).1) ∘ Sum.inr = v + (d.e w).1` using `funext fun i => by simp`. Rewrite using `[e1, e2, neg_add, mul_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_fromCols_zero_boxFun {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (ξ : E) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (JA : Matrix α α E) (JB : Matrix β β E) {κ : Type} [Fintype κ]
@@ -60,7 +60,7 @@ theorem rho_fromCols_zero_boxFun {E : Type} [CommRing E] [Algebra R E] (c : E �
 
 omit [CommRing R] [Invertible (2 : R)] in
 /- English proof (translation)
-The claim follows from `funext fun s => mul_left_cancel₀ hu (by simpa [boxFun] using congrFun h (Sum.elim t₀ s))`.
+A detailed English derivation is pending.
 -/
 theorem boxFun_cancel {κ κ' : Type} {u : (κ → R) → ℂ} {v v' : (κ' → R) → ℂ} (t₀ : κ → R) (hu : u t₀ ≠ 0)
     (h : boxFun u v = boxFun u v') : v = v' :=
@@ -70,7 +70,7 @@ variable (ψ : AddChar R ℂ) (hψ : ∀ t, ‖ψ t‖ = 1)
 include hψ
 
 /- English proof (translation)
-Rewrite using `[AddChar.inv_apply, AddChar.map_neg_eq_inv]`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hψ t]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem conj_psi' (t : R) : starRingEnd ℂ (ψ t) = ψ⁻¹ t := by
   rw [AddChar.inv_apply, AddChar.map_neg_eq_inv]
@@ -79,14 +79,14 @@ theorem conj_psi' (t : R) : starRingEnd ℂ (ψ t) = ψ⁻¹ t := by
   norm_num
 
 /- English proof (translation)
-Simplify using `only [schr, map_mul, conj_psi' ψ hψ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_schr' {κ : Type} [Fintype κ] (w : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) (x : κ → R) :
     starRingEnd ℂ (schr ψ w φ x) = schr ψ⁻¹ w (fun x => starRingEnd ℂ (φ x)) x := by
   simp only [schr, map_mul, conj_psi' ψ hψ]
 
 /- English proof (translation)
-Simplify using `only [schr, map_mul, AddChar.inv_apply, conj_psi' ψ hψ, inv_inv, neg_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_schr_inv' {κ : Type} [Fintype κ] (w : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) (x : κ → R) :
     starRingEnd ℂ (schr ψ⁻¹ w φ x) = schr ψ w (fun x => starRingEnd ℂ (φ x)) x := by
@@ -120,9 +120,9 @@ def conjForm {X : Type} (l : (X → ℂ) →ₗ[ℂ] ℂ) : (X → ℂ) →ₗ[�
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Introduce `l hl g hg`. Take `⟨Tsl, hTsl⟩` from `GlobalTheory.ThK.Adapt.exists_slice (Equiv.refl (κ ⊕ κ')) (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (p₀ k).1)`. Take `⟨T, hT⟩` from `hl _ (GlobalTheory.ThK.Adapt.slice_mem_SB (Equiv.refl (κ ⊕ κ')) (fun k => (p₀ k).2) hg)`. Use `⟨T.comp Tsl, fun f => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← hT]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, pureA, hTsl]`. Apply the tactic sequence `congr 2 <;> funext k <;> rcases k with k | k <;> rfl`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem admissible_of_slice_zero {κ κ' : Type} [Fintype κ] [Fintype κ'] (p₀ : κ → AF F) :
     ∀ l ∈ (adeleClass F).adm κ',
@@ -141,19 +141,17 @@ theorem admissible_of_slice_zero {κ κ' : Type} [Fintype κ] [Fintype κ'] (p�
   congr 2 <;> funext k <;> rcases k with k | k <;> rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨f₁, g₁, hg₁, hne₁⟩ : ∃ (f₁ : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g₁ : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g₁ ∈ SB _ ∧ e₁ (pureA F f₁ g₁) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨φ, hφ, hφne⟩` from `hne`. Establish `hz : ∀ φ ∈ schA F κ, e₁ φ = 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨f, g, hg, rfl⟩ := hx`. Conclude with `hc f g hg`. Consider the case `zero => exact map_zero _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Conclude with `hφne (hz φ hφ)`. Choose the witnesses or unpack the hypotheses as in `⟨t₀, ht₀⟩ : ∃ t, e₁ (pureA F f₁ g₁) t ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `push_neg at h`. Conclude with `hne₁ (funext h)`. Take `⟨Bx, hBx⟩` from `GlobalTheory.T.schwartz_tensor_left_factor (mixedEmbedding.mixedSpace F) κ κ' f₁`. Introduce `l hl g hg`. Take `⟨T, hT⟩` from `hadm _ (admissible_of_slice_zero t₀ l hl) _ (GlobalTheory.SchwartzBox.sb_box hg₁ hg)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨(e₁ (pureA F f₁ g₁) t₀)⁻¹ • T.comp Bx, fun f => ?_⟩` and prove the remaining obligations. Establish `hkey : pureA F (Bx f) (fun z => g₁ (z ∘ Sum.inl) * g (z ∘ Sum.inr)) = boxFun (pureA F f₁ g₁) (pureA F f g)`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, boxFun, hBx, Function.comp_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hT (Bx f)`. Rewrite `h1` using `[LinearMap.comp_apply, hkey, hbox _ (Submodule.subset_span ⟨f₁, g₁, hg₁, rfl⟩) _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)]`. Establish `h2 : LinearMap.funLeft ℂ ℂ (fun t : κ₁' → AF F => Sum.elim t₀ t) (boxFun (e₁ (pureA F f₁ g₁)) (e₂ (pureA F f g))) = e₁ (pureA F f₁ g₁) t₀ • e₂ (pureA F f g)`. Use function extensionality and compare the values at `t`. Simplify using `[boxFun]`.
-
-Rewrite `h1` using `[LinearMap.comp_apply, h2, map_smul, smul_eq_mul]`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ← h1, smul_eq_mul, LinearMap.comp_apply, inv_mul_cancel_left₀ ht₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adm_of_box {κ κ₁ κ' κ₁' : Type} [Fintype κ] [Fintype κ₁] [Fintype κ'] [Fintype κ₁']
     (Ed : ((κ ⊕ κ' → AF F) → ℂ) →ₗ[ℂ] ((κ₁ ⊕ κ₁' → AF F) → ℂ)) (e₁ : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ₁ → AF F) → ℂ))
@@ -201,33 +199,31 @@ theorem adm_of_box {κ κ₁ κ' κ₁' : Type} [Fintype κ] [Fintype κ₁] [Fi
 end admitted
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hpair₁ e he hne dd dd₁ hdd hdd₁ Ed e₂ hEdS hheis hinv hadm hbox he₂S hne₂`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hpair.base.std`. Establish `conjMem : ∀ {κ : Type} [Fintype κ], ∀ Φ ∈ schA F κ, (fun x => starRingEnd ℂ (Φ x)) ∈ schA F κ` using `fun Φ hΦ => GlobalTheory.SchAConj.star_mem_schA F _ Φ hΦ`. Establish `rhoInvMem : ∀ (w : Matrix (Fin n) (Fin d) (AE F E)), ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ⁻¹ w Φ ∈ schA F (Fin n × Fin d)`. Introduce `w Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : M.co.rho B.ψ⁻¹ w Φ = fun x => starRingEnd ℂ (M.co.rho B.ψ w (fun y => starRingEnd ℂ (Φ y)) x)`. Use function extensionality and compare the values at `fun x => by simp only [Darboux.rho, conj_schr' B.ψ hψ, Complex.conj_conj]`. Rewrite using `[h1]`. Conclude with `conjMem _ (GlobalTheory.HeisSchA.schr_mem_schA B.ψ hpair.base.std _ _ (conjMem Φ hΦ))`. Take `⟨φ₁, hφ₁, hφ₁ne⟩` from `hne`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t₀, ht₀⟩ : ∃ t, e φ₁ t ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hφ₁ne (funext h)`. Establish `hone : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[incM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `boxMem : ∀ Φ ∈ schA F (Fin n × Fin d), boxFun φ₁ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `fun Φ hΦ => GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ hφ₁ Φ hΦ`. Establish `heis₂ : ∀ (z : Matrix (Fin n) (Fin d₁) (AE F E)), ∀ Φ ∈ schA F (Fin n × Fin d), e₂ (M.co.rho B.ψ⁻¹ (z * (incM F H'.ι)ᵀ) Φ) = M₁.co.rho B.ψ⁻¹ z (e₂ Φ)`. Introduce `z Φ hΦ`. Establish `h1` using `hheis (Matrix.fromCols 0 z) (boxFun φ₁ Φ) (boxMem Φ hΦ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[fromCols_zero_mul_blockDiag_transpose, rho_fromCols_zero_boxFun _ _ _ _ _ _ hdd, hbox _ hφ₁ _ (rhoInvMem _ Φ hΦ), hbox _ hφ₁ _ hΦ, rho_fromCols_zero_boxFun _ _ _ _ _ _ hdd₁]`. Conclude with `boxFun_cancel t₀ ht₀ h1`. Establish `inv₂ : ∀ (y : Fin n → AE F E), ∀ Φ ∈ schA F (Fin n × Fin d), e₂ (M.co.rho B.ψ⁻¹ (Matrix.vecMulVec y (incV F H'.x)) Φ) = e₂ Φ`. Introduce `y Φ hΦ`. Establish `h1` using `(hinv y (boxFun φ₁ Φ) (boxMem Φ hΦ)).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[rho_fromCols_zero_boxFun _ _ _ _ _ _ hdd, hbox _ hφ₁ _ (rhoInvMem _ Φ hΦ), hbox _ hφ₁ _ hΦ]`. Conclude with `boxFun_cancel t₀ ht₀ h1`. Establish `hS1 : ∀ Φ ∈ schA F (Fin n × Fin d), conjLin e₂ Φ ∈ schA F (Fin n × Fin d₁)` using `fun Φ hΦ => conjMem _ (he₂S _ (conjMem Φ hΦ))`. Establish `hS2 : ∀ z : Matrix (Fin n) (Fin d₁) (AE F E), ∀ Φ ∈ schA F (Fin n × Fin d), conjLin e₂ (M.co.rho B.ψ (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) Φ) = M₁.co.rho B.ψ z (conjLin e₂ Φ)`. Introduce `z Φ hΦ`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hone, Matrix.one_mul]`. Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ (z * (incM F H'.ι)ᵀ) Φ x)) = M.co.rho B.ψ⁻¹ (z * (incM F H'.ι)ᵀ) (fun x => starRingEnd ℂ (Φ x))`. Use function extensionality and compare the values at `fun x => conj_schr' B.ψ hψ _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, heis₂ z _ (conjMem Φ hΦ)]`. Conclude with `conj_schr_inv' B.ψ hψ _ _ _`. Establish `hS3 : ∀ u ∈ iso0 n H', ∀ Φ ∈ schA F (Fin n × Fin d), conjLin e₂ (M.co.rho B.ψ u Φ) = conjLin e₂ Φ`. Introduce and unpack `u ⟨y, rfl⟩ Φ hΦ`. Use function extensionality and compare the values at `x'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[conjLin_apply, conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ (Matrix.vecMulVec y (incV F H'.x)) Φ x)) = M.co.rho B.ψ⁻¹ (Matrix.vecMulVec y (incV F H'.x)) (fun x => starRingEnd ℂ (Φ x))`. Use function extensionality and compare the values at `fun x => conj_schr' B.ψ hψ _ _ _`. Rewrite using `[h1, inv₂ y _ (conjMem Φ hΦ)]`. Establish `hS4 : ∀ l ∈ (adeleClass F).adm (Fin n × Fin d₁), l ∘ₗ conjLin e₂ ∈ (adeleClass F).adm (Fin n × Fin d)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `l hl`. Establish `h1 : conjForm l ∈ (adeleClass F).adm (Fin n × Fin d₁)` using `GlobalTheory.T.admissible_conj_functional F _ l hl _ fun Φ => rfl`. Establish `h2` using `adm_of_box Ed e e₂ hadm hbox ⟨φ₁, hφ₁, hφ₁ne⟩ _ h1`. Use `GlobalTheory.T.admissible_conj_functional F _ _ h2 (l ∘ₗ conjLin e₂) fun Φ => ?_` and prove the remaining obligations. Use `show l (conjLin e₂ Φ) = starRingEnd ℂ (starRingEnd ℂ (l _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Complex.conj_conj]`. Both sides reduce to the same expression. Take `⟨c', hc'⟩` from `GlobalTheory.T.skew_adapted_plane_pair_converse hKP F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hpair₁ e he (conjLin e₂) hS1 hS2 hS3 hS4`. Establish `hrel : ∀ Φ ∈ schA F (Fin n × Fin d), e₂ (fun x => star (Φ x)) = starRingEnd ℂ c' • fun x => star (e Φ x)`. Introduce `Φ hΦ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Establish `h1` using `congrFun (hc' Φ hΦ) y`. Rewrite `h1` using `[conjLin_apply, Pi.smul_apply, smul_eq_mul]`. Establish `h2` using `congrArg (starRingEnd ℂ) h1`. Rewrite `h2` using `[Complex.conj_conj, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Use `⟨starRingEnd ℂ c', fun hc => ?_, hrel⟩` and prove the remaining obligations. Take `⟨Φ', hΦ', hne'⟩` from `hne₂`. Apply `hne'` to reduce the goal to its premises. Establish `h3` using `hrel _ (conjMem Φ' hΦ')`.
-
-Rewrite `h3` using `[hc, zero_smul]`. Simplify using `using h3`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

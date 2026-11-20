@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ N U _ R M _ _ _`. Establish `hf : ∀ (g : G F Ω) (φ : U → M) (u : U), funRep R M U g φ u = φ (UpperTheory.V.Base.conjHom U g u)` using `fun _ _ _ => rfl`. Establish `hc : ∀ (g : G F Ω) (u : U), (UpperTheory.V.Base.conjHom U g u).1 = g⁻¹ * u.1 * g` using `fun _ _ => rfl`. Use `⟨fun g φ hφ => ?_, fun g hg φ hφ => ?_, fun ρ φ => ?_⟩` and prove the remaining obligations. Establish `h : IsLift (RingEquiv.refl F) g.toRingEquiv` using `fun x => g.commutes x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ x : G F Ω, conjGal h x = g⁻¹ * x * g` using `fun _ => rfl`. Establish `hA : ∀ (A : ValuationSubring Ω) x, g.toRingEquiv x ∈ A ↔ x ∈ A.comap g.toRingEquiv.toRingHom` using `fun _ _ => Iff.rfl`. Take `⟨h1, h2, h3, h4⟩` from `hφ`. Use `⟨h1.comp_continuous (continuous_conjHom U g), fun a b => ?_, fun A u hu => ?_, fun A hN u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hf, hf, map_mul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Use `h3 (A.comap g.toRingEquiv.toRingHom) _ ?_` and prove the remaining obligations. Rewrite using `[hc, ← e1]`. Conclude with `conjGal_mem_Ine h (hA A) hu`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h4 (A.comap g.toRingEquiv.toRingHom) ?_ _ ?_` and prove the remaining obligations. Rewrite using `[← val_lt_one (hA A), map_natCast]`. Conclude with `hN`. Rewrite using `[hc, ← e1]`. Conclude with `conjGal_mem_Dec h (hA A) hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Establish `e : (⟨g, hg⟩ : U) * UpperTheory.V.Base.conjHom U g u = u * ⟨g, hg⟩` using `Subtype.ext (by simp [hc, mul_assoc])`. Establish `e2` using `congrArg φ e`. Rewrite `e2` using `[hφ.2.1, hφ.2.1, add_comm]`. Rewrite using `[hf]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_right_cancel e2`. Unfold `EqHom`. Rewrite using `[Submodule.mem_inf, Submodule.mem_iInf]`. Use `and_congr_right fun _ => forall_congr' fun g => ⟨fun h u => ?_, fun h u u' hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(h _ u fun x => ?_).symm` and prove the remaining obligations. Use `show u.1 (g x) = g (g.symm (u.1 (g x)))`. Rewrite using `[g.apply_symm_apply]`. Establish `e : UpperTheory.V.Base.conjHom U g u' = u` using `Subtype.ext (AlgEquiv.ext fun x => by show g.symm (u'.1 (g x)) = u.1 x`. Conclude with `g.symm_apply_eq.2 (hu x))`.
-
-Rewrite using `[← h u', hf, e]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.funRepMem :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (N : ℕ) (U : Subgroup (G F Ω)) [U.Normal] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], (∀ g, ∀ φ ∈ XDual N U R M, funRep R M U g φ ∈ XDual N U R M) ∧ (∀ g ∈ U, ∀ φ ∈ XDual N U R M, funRep R M U g φ = φ) ∧

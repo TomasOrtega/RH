@@ -9,11 +9,11 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE s t`. Use `set H := (Units.map (Algebra.norm F : E →* F)).range with hH`. Unfold `sgn`. Rewrite using `[← hH]`. Apply the tactic sequence `by_cases hs : s ∈ H <;> by_cases ht : t ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hs, ht, H.mul_mem hs ht]`. Establish `: s * t ∉ H` using `fun h => ht ((H.mul_mem_cancel_left hs).mp h)`. Simplify using `[hs, ht, this]`. Establish `: s * t ∉ H` using `fun h => hs ((H.mul_mem_cancel_right ht).mp h)`. Simplify using `[hs, ht, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: s * t ∈ H` using `GlobalTheory.T.mul_mem_range_norm_of_not_mem F E c δ hE s t hs ht`. Simplify using `[hs, ht, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem KSp.sgn_mul_of_isQuad : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (s t : Fˣ), sgn E (s * t) = sgn E s * sgn E t := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE s t

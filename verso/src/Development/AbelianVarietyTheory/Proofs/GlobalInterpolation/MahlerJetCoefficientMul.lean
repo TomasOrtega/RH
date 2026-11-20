@@ -15,13 +15,13 @@ def dd (u : V) (f : V → ℂ) : V → ℂ := fun x => fderiv ℂ f x u
 def ddl {κ : Type} (v : κ → V) (L : List κ) (f : V → ℂ) : V → ℂ := L.foldr (fun a h => dd (v a) h) f
 
 /- English proof (translation)
-The claim follows from `(contDiff_infty_iff_fderiv.1 hf).2.clm_apply contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dd (u : V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) : ContDiff ℂ ∞ (dd u f) :=
   (contDiff_infty_iff_fderiv.1 hf).2.clm_apply contDiff_const
 
 /- English proof (translation)
-The claim follows from `| [] => hf | a :: L => contDiff_dd (v a) (contDiff_ddl v hf L)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_ddl {κ : Type} (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) :
     ∀ L : List κ, ContDiff ℂ ∞ (ddl v L f)
@@ -29,7 +29,7 @@ theorem contDiff_ddl {κ : Type} (v : κ → V) {f : V → ℂ} (hf : ContDiff �
   | a :: L => contDiff_dd (v a) (contDiff_ddl v hf L)
 
 /- English proof (translation)
-The claim follows from `| [], x => by simp [ddl] | a :: L, x => by have hd : DifferentiableAt ℂ (iteratedFDeriv ℂ L.length f) x := hf.differentiable_iteratedFDeriv (by exact_mod_cast ENat.natCast_lt_top _) x have h : (fun y => iteratedFDeriv ℂ L.length f y (fun i => v (L.get i))) = ddl v L f := funext f …`.
+A detailed English derivation is pending.
 -/
 theorem jet_eq {κ : Type} (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) :
     ∀ (L : List κ) (x : V), iteratedFDeriv ℂ L.length f x (fun i => v (L.get i)) = ddl v L f x
@@ -47,9 +47,9 @@ theorem jet_eq {κ : Type} (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hs` using `(hf.contDiffAt (x := x)).isSymmSndFDerivAt (by simp only [minSmoothness_of_isRCLikeNormedField]; exact WithTop.coe_le_coe.2 (le_top : (2:ℕ∞) ≤ ⊤))`. Establish `hd : DifferentiableAt ℂ (fderiv ℂ f) x` using `(contDiff_infty_iff_fderiv.1 hf).2.differentiable (by simp) x`. Use `show fderiv ℂ (fun y => fderiv ℂ f y w) x u = fderiv ℂ (fun y => fderiv ℂ f y u) x w`. Rewrite using `[fderiv_clm_apply hd (differentiableAt_const _), fderiv_clm_apply hd (differentiableAt_const _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hs u w]`.
+A detailed English derivation is pending.
 -/
 theorem dd_comm (u w : V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) : dd u (dd w f) = dd w (dd u f) := by
   funext x
@@ -61,7 +61,7 @@ theorem dd_comm (u w : V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) : dd u (dd w
   simp [hs u w]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `cons a _ ih => exact congrArg (dd (v a)) ih`. Consider the case `swap a b L => exact dd_comm (v b) (v a) (contDiff_ddl v hf L)`. Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ddl_perm {κ : Type} (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) {L L' : List κ} (h : L.Perm L') :
     ddl v L f = ddl v L' f := by
@@ -72,21 +72,21 @@ theorem ddl_perm {κ : Type} (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ �
   | trans _ _ ih1 ih2 => exact ih1.trans ih2
 
 /- English proof (translation)
-Simplify using `[ddl, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ddl_append {κ : Type} (v : κ → V) (f : V → ℂ) (L L' : List κ) :
     ddl v (L ++ L') f = ddl v L (ddl v L' f) := by
   simp [ddl, List.foldr_append]
 
 /- English proof (translation)
-The claim follows from `jet_eq v hf _ 0`.
+A detailed English derivation is pending.
 -/
 theorem monoJet_eq {κ : Type} [Fintype κ] (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) (m : κ →₀ ℕ) :
     monoJet v f m = ddl v m.toMultiset.toList f 0 :=
   jet_eq v hf _ 0
 
 /- English proof (translation)
-Rewrite using `[monoJet_eq v hf, monoJet_eq v (contDiff_dd _ hf)]`. Establish `e : dd (v i) f = ddl v [i] f` using `rfl`. Rewrite using `[e, ← ddl_append]`. Use `congrFun (ddl_perm v hf ?_) 0` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add, Multiset.coe_toList, Multiset.coe_toList, Finsupp.toMultiset_add, Finsupp.toMultiset_single]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -101,7 +101,7 @@ theorem monoJet_add_single {κ : Type} [Fintype κ] (v : κ → V) {f : V → �
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [dd]`. Rewrite using `[show (fun z => F z * G z) = F * G from rfl, fderiv_mul (hF.differentiable (by simp) x) (hG.differentiable (by simp) x)]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dd_mul (u : V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (hG : ContDiff ℂ ∞ G) :
     dd u (fun z => F z * G z) = fun z => dd u F z * G z + F z * dd u G z := by
@@ -111,7 +111,7 @@ theorem dd_mul (u : V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (hG : ContDif
   simp; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [dd]`. Rewrite using `[show (fun z => F z + G z) = F + G from rfl, fderiv_add (hF.differentiable (by simp) x) (hG.differentiable (by simp) x)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dd_add (u : V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (hG : ContDiff ℂ ∞ G) :
     dd u (fun z => F z + G z) = fun z => dd u F z + dd u G z := by
@@ -121,7 +121,7 @@ theorem dd_add (u : V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (hG : ContDif
   rfl
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | a :: L => by show dd (v a) (ddl v L _) = _ rw [ddl_add v hF hG L, dd_add _ (contDiff_ddl v hF L) (contDiff_ddl v hG L)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem ddl_add {κ : Type} (v : κ → V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (hG : ContDiff ℂ ∞ G) :
     ∀ L : List κ, ddl v L (fun z => F z + G z) = fun z => ddl v L F z + ddl v L G z
@@ -132,7 +132,7 @@ theorem ddl_add {κ : Type} (v : κ → V) {F G : V → ℂ} (hF : ContDiff ℂ 
     rfl
 
 /- English proof (translation)
-Rewrite using `[monoJet_eq v (hF.add hG), monoJet_eq v hF, monoJet_eq v hG, ddl_add v hF hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monoJet_add {κ : Type} [Fintype κ] (v : κ → V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F)
     (hG : ContDiff ℂ ∞ G) (m : κ →₀ ℕ) :
@@ -140,7 +140,7 @@ theorem monoJet_add {κ : Type} [Fintype κ] (v : κ → V) {F G : V → ℂ} (h
   rw [monoJet_eq v (hF.add hG), monoJet_eq v hF, monoJet_eq v hG, ddl_add v hF hG]
 
 /- English proof (translation)
-Rewrite using `[monoJet_eq v hf]`. Simplify using `[ddl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monoJet_zero {κ : Type} [Fintype κ] (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) :
     monoJet v f 0 = f 0 := by
@@ -153,7 +153,7 @@ variable {κ : Type} [Fintype κ]
 open MvPolynomial
 
 /- English proof (translation)
-The claim follows from `Finset.sum_subset hs fun m _ hm => by rw [MvPolynomial.mem_support_iff, not_not] at hm; rw [hm, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem sum_support_eq {σ : Type} (c : (σ →₀ ℕ) → ℂ) (r : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ))
     (hs : r.support ⊆ s) : ∑ m ∈ r.support, r.coeff m * c m = ∑ m ∈ s, r.coeff m * c m :=
@@ -170,7 +170,7 @@ def lin {σ : Type} (c : (σ →₀ ℕ) → ℂ) : MvPolynomial σ ℂ →+ ℂ
     simp only [MvPolynomial.coeff_add, add_mul]
 
 /- English proof (translation)
-Use `show ∑ k ∈ (monomial m a).support, (monomial m a).coeff k * c k = _`. Rewrite using `[sum_support_eq c _ {m} MvPolynomial.support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_monomial {σ : Type} (c : (σ →₀ ℕ) → ℂ) (m : σ →₀ ℕ) (a : ℂ) : lin c (monomial m a) = a * c m := by
   classical
@@ -190,14 +190,14 @@ def Pn {σ : Type} [Fintype σ] (n : σ → ℕ) : MvPolynomial σ ℂ :=
   ∏ i, C (((n i).factorial : ℂ)⁻¹) * Polynomial.aeval (X i : MvPolynomial σ ℂ) (descPochhammer ℂ (n i))
 
 /- English proof (translation)
-Conclude with `lin_monomial _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem LJ_monomial (v : κ → V) (f : V → ℂ) (m : κ →₀ ℕ) (c : ℂ) :
     LJ v f (monomial m c) = c * monoJet v f m := by
   exact lin_monomial _ _ _
 
 /- English proof (translation)
-Conclude with `lin_monomial _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem BJ_monomial (v : κ → V) (F G : V → ℂ) (e : κ ⊕ κ →₀ ℕ) (c : ℂ) :
     BJ v F G (monomial e c) = c * (monoJet v F (Finsupp.sumFinsuppAddEquivProdFinsupp e).1 *
@@ -211,7 +211,7 @@ theorem mahler_eq (v : κ → V) (f : V → ℂ) (n : κ → ℕ) : mahler v f n
   rfl
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial m c => rw [X, monomial_mul, LJ_monomial, LJ_monomial, mul_one, monoJet_add_single v hf]`. Consider the case `add p q hp hq => rw [add_mul, map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem LJ_mul_X (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) (p : MvPolynomial κ ℂ) (i : κ) :
     LJ v f (p * X i) = LJ v (dd (v i) f) p := by
@@ -220,7 +220,7 @@ theorem LJ_mul_X (v : κ → V) {f : V → ℂ} (hf : ContDiff ℂ ∞ f) (p : M
   | add p q hp hq => rw [add_mul, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial m c => rw [LJ_monomial, LJ_monomial, LJ_monomial, monoJet_add v hF hG, mul_add]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem LJ_fun_add (v : κ → V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (hG : ContDiff ℂ ∞ G)
     (p : MvPolynomial κ ℂ) : LJ v (fun z => F z + G z) p = LJ v F p + LJ v G p := by
@@ -229,7 +229,7 @@ theorem LJ_fun_add (v : κ → V) {F G : V → ℂ} (hF : ContDiff ℂ ∞ F) (h
   | add p q hp hq => rw [map_add, map_add, map_add, hp, hq]; ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext j <;> simp [Finsupp.fst_sumFinsuppAddEquivProdFinsupp, Finsupp.snd_sumFinsuppAddEquivProdFinsupp, Finsupp.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem split_single_inl (e : κ ⊕ κ →₀ ℕ) (i : κ) :
     Finsupp.sumFinsuppAddEquivProdFinsupp (e + Finsupp.single (Sum.inl i) 1) =
@@ -239,7 +239,7 @@ theorem split_single_inl (e : κ ⊕ κ →₀ ℕ) (i : κ) :
     Finsupp.single_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext j <;> simp [Finsupp.fst_sumFinsuppAddEquivProdFinsupp, Finsupp.snd_sumFinsuppAddEquivProdFinsupp, Finsupp.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem split_single_inr (e : κ ⊕ κ →₀ ℕ) (i : κ) :
     Finsupp.sumFinsuppAddEquivProdFinsupp (e + Finsupp.single (Sum.inr i) 1) =
@@ -249,7 +249,7 @@ theorem split_single_inr (e : κ ⊕ κ →₀ ℕ) (i : κ) :
     Finsupp.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m c => rw [X, monomial_mul, BJ_monomial, BJ_monomial, mul_one, split_single_inl, monoJet_add_single v hF]`. Consider the case `add p q hp hq => rw [add_mul, map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem BJ_mul_X_inl (v : κ → V) {F : V → ℂ} (G : V → ℂ) (hF : ContDiff ℂ ∞ F) (Q : MvPolynomial (κ ⊕ κ) ℂ) (i : κ) :
     BJ v F G (Q * X (Sum.inl i)) = BJ v (dd (v i) F) G Q := by
@@ -258,7 +258,7 @@ theorem BJ_mul_X_inl (v : κ → V) {F : V → ℂ} (G : V → ℂ) (hF : ContDi
   | add p q hp hq => rw [add_mul, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m c => rw [X, monomial_mul, BJ_monomial, BJ_monomial, mul_one, split_single_inr, monoJet_add_single v hG]`. Consider the case `add p q hp hq => rw [add_mul, map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem BJ_mul_X_inr (v : κ → V) (F : V → ℂ) {G : V → ℂ} (hG : ContDiff ℂ ∞ G) (Q : MvPolynomial (κ ⊕ κ) ℂ) (i : κ) :
     BJ v F G (Q * X (Sum.inr i)) = BJ v F (dd (v i) G) Q := by
@@ -267,11 +267,11 @@ theorem BJ_mul_X_inr (v : κ → V) (F : V → ℂ) {G : V → ℂ} (hG : ContDi
   | add p q hp hq => rw [add_mul, map_add, map_add, hp, hq]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `F G hF hG`. Establish `h0 : Finsupp.sumFinsuppAddEquivProdFinsupp (0 : κ ⊕ κ →₀ ℕ) = (0, 0)` using `map_zero _`. Rewrite using `[cop, aeval_C, algebraMap_eq, C_apply, C_apply, LJ_monomial, BJ_monomial, h0, monoJet_zero v (hF.mul hG), monoJet_zero v hF, monoJet_zero v hG]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Introduce `F G hF hG`. Rewrite using `[map_add, map_add, map_add, hp F G hF hG, hq F G hF hG]`. Consider the case `mul_X p i ih`. Introduce `F G hF hG`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LJ_mul_X v (hF.mul hG), dd_mul _ hF hG, LJ_fun_add v ((contDiff_dd _ hF).mul hG) (hF.mul (contDiff_dd _ hG)), ih _ _ (contDiff_dd _ hF) hG, ih _ _ hF (contDiff_dd _ hG), map_mul, cop, aeval_X, ← cop, mul_add, map_add, BJ_mul_X_inl v G hF, BJ_mul_X_inr v F hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LJ_mul (v : κ → V) (P : MvPolynomial κ ℂ) : ∀ (F G : V → ℂ), ContDiff ℂ ∞ F → ContDiff ℂ ∞ G →
     LJ v (fun z => F z * G z) P = BJ v F G (cop P) := by
@@ -297,18 +297,18 @@ section Alg2
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[← descPochhammer_map (algebraMap ℤ ℂ), Polynomial.aeval_map_algebraMap, Polynomial.aeval_eq_smeval]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_descPochhammer {R : Type} [CommRing R] [Algebra ℂ R] (z : R) (k : ℕ) :
     Polynomial.aeval z (descPochhammer ℂ k) = (descPochhammer ℤ k).smeval z := by
   rw [← descPochhammer_map (algebraMap ℤ ℂ), Polynomial.aeval_map_algebraMap, Polynomial.aeval_eq_smeval]
 
 /- English proof (translation)
-Simplify using `only [aeval_descPochhammer]`. Rewrite using `[Ring.descPochhammer_smeval_add n (Commute.all x y), Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha' : a ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 ha)`. Establish `hc : ((n.factorial : ℂ))⁻¹ * (n.choose a : ℂ) = (a.factorial : ℂ)⁻¹ * ((n - a).factorial : ℂ)⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.choose_mul_factorial_mul_factorial ha']`. Use `push_cast`. Establish `h1 : (a.factorial : ℂ) ≠ 0` using `by exact_mod_cast a.factorial_ne_zero`. Establish `h2 : ((n - a).factorial : ℂ) ≠ 0` using `by exact_mod_cast (n - a).factorial_ne_zero`. Establish `h3 : (n.choose a : ℂ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos ha').ne'`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[C_mul, ← map_natCast (C : ℂ →+* MvPolynomial σ ℂ)]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hc, C_mul]; ring`.
+Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vdm {σ : Type} (x y : MvPolynomial σ ℂ) (n : ℕ) :
     C ((n.factorial : ℂ)⁻¹) * Polynomial.aeval (x + y) (descPochhammer ℂ n) =
@@ -335,9 +335,9 @@ theorem vdm {σ : Type} (x y : MvPolynomial σ ℂ) (n : ℕ) :
 variable {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Establish `e : ∀ i, cop (C (((n i).factorial : ℂ)⁻¹) * Polynomial.aeval (X i : MvPolynomial κ ℂ) (descPochhammer ℂ (n i))) = C (((n i).factorial : ℂ)⁻¹) * Polynomial.aeval (X (Sum.inl i) + X (Sum.inr i) : MvPolynomial (κ ⊕ κ) ℂ) (descPochhammer ℂ (n i))`. Introduce `i`. Rewrite using `[map_mul, ← Polynomial.aeval_algHom_apply, cop, aeval_C, aeval_X, algebraMap_eq]`. Rewrite using `[Pn, map_prod]`. Simplify using `only [e, vdm, Finset.prod_univ_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Pn, Pn, map_prod, map_prod]`. Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun i _ => ?_ <;>`. Rewrite using `[map_mul, rename_C, ← Polynomial.aeval_algHom_apply, rename_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem cop_Pn (n : κ → ℕ) :
     cop (Pn n) = ∑ k ∈ Fintype.piFinset (fun i => Finset.range (n i + 1)),
@@ -355,7 +355,7 @@ theorem cop_Pn (n : κ → ℕ) :
     rw [map_mul, rename_C, ← Polynomial.aeval_algHom_apply, rename_X]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Finsupp.fst_sumFinsuppAddEquivProdFinsupp, Finsupp.mapDomain_apply Sum.inl_injective, Finsupp.mapDomain_notin_range]`. Simplify using `[Finsupp.snd_sumFinsuppAddEquivProdFinsupp, Finsupp.mapDomain_apply Sum.inr_injective, Finsupp.mapDomain_notin_range]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem split_rename (a b : κ →₀ ℕ) :
     Finsupp.sumFinsuppAddEquivProdFinsupp (Finsupp.mapDomain Sum.inl a + Finsupp.mapDomain Sum.inr b) = (a, b) := by
@@ -366,9 +366,9 @@ theorem split_rename (a b : κ →₀ ℕ) :
       Finsupp.mapDomain_notin_range]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial a c`. Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `monomial b d`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, BJ_monomial, LJ_monomial, LJ_monomial, split_rename]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add q q' hq hq' => rw [map_add, mul_add, map_add, hq, hq', map_add, mul_add]`. Consider the case `add p p' hp hp' => rw [map_add, add_mul, map_add, hp, hp', map_add, add_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately.
 -/
 theorem BJ_rename (v : κ → V) (F G : V → ℂ) (p q : MvPolynomial κ ℂ) :
     BJ v F G (rename Sum.inl p * rename Sum.inr q) = LJ v F p * LJ v G q := by
@@ -391,7 +391,7 @@ open GlobalTheory.MomN.MahlerProd
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `hF' : ContDiff ℂ ∞ F` using `hF.of_le le_top`. Establish `hG' : ContDiff ℂ ∞ G` using `hG.of_le le_top`. Rewrite using `[mahler_eq, LJ_mul v _ F G hF' hG', cop_Pn, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[BJ_rename, ← mahler_eq, ← mahler_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mahler_mul (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (κ : Type) [Fintype κ] [DecidableEq κ]
     (v : κ → V) (F G : V → ℂ) (hF : ContDiff ℂ ⊤ F) (hG : ContDiff ℂ ⊤ G) (n : κ → ℕ) :

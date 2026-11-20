@@ -12,23 +12,21 @@ noncomputable section
 namespace GlobalTheory.RoadU
 
 /- English proof (translation)
-Introduce `E M _ _ _ _ _ w u _ n c ξ hξ he`. Use `letI : Algebra (w.adicCompletion E) (u.adicCompletion M) := (GroundTheory.Global.adicCompletionMap w u).toAlgebra`. Establish `hf` using `GroundTheory.Global.continuous_adicCompletionMap w u`. Use `haveI : ContinuousSMul (w.adicCompletion E) (u.adicCompletion M) := _root_.continuousSMul_of_algebraMap _ _ hf`. Use `haveI : IsScalarTower E (w.adicCompletion E) (u.adicCompletion M) := .of_algebraMap_eq fun x => by show _ = GroundTheory.Global.adicCompletionMap w u _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[GroundTheory.Global.adicCompletionMap_algebraMap, IsScalarTower.algebraMap_apply E M (u.adicCompletion M)]`. Use `haveI : FiniteDimensional (w.adicCompletion E) (u.adicCompletion M) := GroundTheory.Global.finite_adicCompletion w u`. Use `haveI : IsModuleTopology (w.adicCompletion E) (u.adicCompletion M) := by`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ _`. Conclude with `isModuleTopologyOfFiniteDimensional`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ t : ℂ, (absPow (w.adicCompletion E) t).comp (GlobalTheory.BCChar.normU w u) = absPow (u.adicCompletion M) t` using `fun t => GlobalTheory.LBCNu.absPow_comp_norm t`. Establish `hval : ∀ (s : ℝ) (x : (u.adicCompletion M)ˣ), ‖((absPow (u.adicCompletion M) (s : ℂ) x : ℂˣ) : ℂ)‖ = nabs (u.adicCompletion M) x ^ s` using `fun s x => by`. Rewrite using `[val_absPow_ofReal, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (nabs_pos' _ x).le _)]`. Establish `key : ∀ j, ∃ e : ℝ, |e| < 1 / 2 ∧ ∀ x, ‖(((ξ j).comp (GlobalTheory.BCChar.normU w u) x : ℂˣ) : ℂ)‖ = nabs (u.adicCompletion M) x ^ (e - c)`. Introduce `j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨e, he1, he2⟩` from `he j`. Use `⟨e, he1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, he2, ← MonoidHom.comp_apply, hN, hval]`. Introduce `y hy z hz hyz`. Simplify using `only [chars, Multiset.mem_map, Finset.mem_val, Finset.mem_univ, true_and] at hy hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hy`. Take `⟨j, rfl⟩` from `hz`. Rewrite `hyz` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Take `⟨a, ha, ha'⟩` from `key i`. Take `⟨b, hb, hb'⟩` from `key j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : absPow (u.adicCompletion M) ((a - b - 1 : ℝ) : ℂ) = 1`. Use extensionality with `x`. Establish `hx` using `congrArg (fun χ : (u.adicCompletion M)ˣ →* ℂˣ => ‖((χ x : ℂˣ) : ℂ)‖) hyz`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, norm_mul] at hx`. Establish `h1' : ‖((absPow (u.adicCompletion M) 1 x : ℂˣ) : ℂ)‖ = nabs (u.adicCompletion M) x ^ (1 : ℝ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hval]`. Simplify using the standard rewrite rules. Rewrite `hx` using `[ha', hb', h1']`. Establish `ht` using `nabs_pos' (u.adicCompletion M) x`. Rewrite using `[val_absPow_ofReal, MonoidHom.one_apply, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: nabs (u.adicCompletion M) x ^ (a - b - 1) = 1`. Rewrite using `[show a - b - 1 = (a - c) - ((b - c) + 1) by ring, Real.rpow_sub ht, Real.rpow_add ht, hx, div_self (by positivity)]`. Rewrite using `[this, Complex.ofReal_one]`. Establish `h2` using `(absPow_ofReal_eq_one (k := u.adicCompletion M)).1 h1`. Rewrite `ha`, `hb` using `[abs_lt]`.
-
-Combine the linear relations using `[ha.1, ha.2, hb.1, hb.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem unlinked_chars_comp_normU : ∀ (E M : Type) [Field E] [NumberField E] [Field M] [NumberField M] [Algebra E M] (w : HeightOneSpectrum (𝓞 E)) (u : HeightOneSpectrum (𝓞 M)) [u.asIdeal.LiesOver w.asIdeal] (n : ℕ) (c : ℝ), ∀ (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)), (∀ j, ∃ e : ℝ, |e| < 1 / 2 ∧ ∀ x, ‖((ξ j x : ℂˣ) : ℂ)‖ = ‖((absPow (w.adicCompletion E) ((e - c : ℝ) : ℂ) x : ℂˣ) : ℂ)‖) → Unlinked (chars (fun j => (ξ j).comp (GlobalTheory.BCChar.normU w u)) fun j => GlobalTheory.BCChar.isSmoothChar_comp_normU w u (hξ j)) := by
   intro E M _ _ _ _ _ w u _ n c ξ hξ he

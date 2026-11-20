@@ -11,15 +11,15 @@ namespace UpperTheory.V.Loc.TorusExponentialLift
 open IsNilpotent
 
 /- English proof (translation)
-The claim follows from `(Commute.all a b).isNilpotent_add ha hb`.
+A detailed English derivation is pending.
 -/
 private theorem nil_add {B : Type} [CommRing B] {a b : B} (ha : IsNilpotent a) (hb : IsNilpotent b) :
     IsNilpotent (a + b) := (Commute.all a b).isNilpotent_add ha hb
 
 /- English proof (translation)
-Establish `hK' : n ^ (K + 2) = 0` using `by rw [pow_add, hK, zero_mul]`. Use `⟨∑ i ∈ Finset.range K, (((i + 2).factorial : ℕ) : ℚ)⁻¹ • n ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[exp_eq_sum hK', Finset.sum_range_succ', Finset.sum_range_succ', Finset.mul_sum]`. Establish `e : ∀ i : ℕ, (((i + 1 + 1).factorial : ℕ) : ℚ)⁻¹ • n ^ (i + 1 + 1) = n ^ 2 * ((((i + 2).factorial : ℕ) : ℚ)⁻¹ • n ^ i)`. Introduce `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_smul_comm, ← pow_add, add_comm 2 i]`. Simplify using `only [e, zero_add, Nat.factorial_zero, Nat.factorial_one, Nat.cast_one, inv_one, one_smul, pow_zero, pow_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem exists_exp_eq_one_add_add_sq_mul_of_nilpotent {B : Type} [CommRing B] [Algebra ℚ B] (n : B) (K : ℕ) (hK : n ^ K = 0) :
     ∃ w : B, exp n = 1 + n + n ^ 2 * w := by
@@ -35,13 +35,13 @@ private theorem exists_exp_eq_one_add_add_sq_mul_of_nilpotent {B : Type} [CommRi
   abel
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `n hn`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hn` using `[zero_add, pow_one]`. Conclude with `⟨0, IsNilpotent.zero, by rw [exp_zero, hn, add_zero]⟩`. Take `⟨w, hw⟩` from `exists_exp_eq_one_add_add_sq_mul_of_nilpotent n (k + 1) hn`. Establish `hnil : IsNilpotent n` using `⟨k + 1, hn⟩`. Establish `hu` using `exp_mul_exp_neg_self hnil`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : exp n * (1 + n ^ 2 * (-(exp (-n)) * w)) = 1 + n`. Take the linear combination `hw - n ^ 2 * w * hu`. Establish `hm : (n ^ 2 * (-(exp (-n)) * w)) ^ (k / 2 + 1) = 0`. Rewrite using `[mul_pow, ← pow_mul, pow_eq_zero_of_le (by omega : k + 1 ≤ 2 * (k / 2 + 1)) hn, zero_mul]`. Take `⟨y, hy, hey⟩` from `ih (k / 2) (by omega) _ hm`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨n + y, nil_add hnil hy, ?_⟩` and prove the remaining obligations. Rewrite using `[exp_add_of_commute (Commute.all n y) hnil hy, hey]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exp_onto {B : Type} [CommRing B] [Algebra ℚ B] :
     ∀ (k : ℕ) (n : B), n ^ (k + 1) = 0 → ∃ x : B, IsNilpotent x ∧ exp x = 1 + n := by
@@ -65,9 +65,9 @@ private theorem exp_onto {B : Type} [CommRing B] [Algebra ℚ B] :
       exact h1
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `ha`. Establish `e : ∀ g, exp (f g • a) = ∑ i ∈ Finset.range K, algebraMap ℚ B ((i.factorial : ℚ)⁻¹) * ((f g) ^ i • a ^ i)`. Introduce `g`. Rewrite using `[exp_eq_sum (k := K) (by rw [smul_pow, hK, smul_zero])]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, smul_pow]`. Simplify using `only [e]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((hf.pow i).smul continuous_const)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_exp {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra ℚ B] [Algebra ℚ_[l] B]
     [TopologicalSpace B] [IsTopologicalRing B] [ContinuousSMul ℚ_[l] B] {X : Type} [TopologicalSpace X]
@@ -84,9 +84,9 @@ private theorem cont_exp {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algeb
   exact continuous_const.mul ((hf.pow i).smul continuous_const)
 
 /- English proof (translation)
-Establish `hna : ∀ g, IsNilpotent (f g • a)`. Introduce `g`. Take `⟨K, hK⟩` from `ha`. Conclude with `⟨K, by rw [smul_pow, hK, smul_zero]⟩`. Establish `hnb : ∀ g, IsNilpotent (f' g • b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `g`. Take `⟨K, hK⟩` from `hb`. Conclude with `⟨K, by rw [smul_pow, hK, smul_zero]⟩`. Simplify using `only [fun g => exp_add_of_commute (Commute.all (f g • a) (f' g • b)) (hna g) (hnb g)]`. Conclude with `(cont_exp hf ha).mul (cont_exp hf' hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_exp_nilpotent_pair {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra ℚ B] [Algebra ℚ_[l] B]
     [TopologicalSpace B] [IsTopologicalRing B] [ContinuousSMul ℚ_[l] B] {X : Type} [TopologicalSpace X]
@@ -104,7 +104,7 @@ private theorem continuous_exp_nilpotent_pair {l : ℕ} [Fact l.Prime] {B : Type
   exact (cont_exp hf ha).mul (cont_exp hf' hb)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℚ_[l] V`. Set `e : V →ₗ[ℚ_[l]] (Module.Free.ChooseBasisIndex ℚ_[l] V → ℚ_[l])` to `b.equivFun.toLinearMap`. Establish `hc : Continuous e` using `IsModuleTopology.continuous_of_linearMap e`. Conclude with `T2Space.of_injective_continuous b.equivFun.injective hc`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem t2Space_of_finite_dim_padic_module {l : ℕ} [Fact l.Prime] (V : Type) [AddCommGroup V] [Module ℚ_[l] V]
     [Module.Finite ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] : T2Space V := by
@@ -114,9 +114,9 @@ private theorem t2Space_of_finite_dim_padic_module {l : ℕ} [Fact l.Prime] (V :
   exact T2Space.of_injective_continuous b.equivFun.injective hc
 
 /- English proof (translation)
-Establish `h` using `T.mul a a⁻¹`. Use `split_ifs with ha`. Establish `h1` using `h i`. Rewrite `h1` using `[mul_inv_cancel, T.t_one, if_pos ha]`. Conclude with `eq_inv_of_mul_eq_one_right h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `h i.rev`. Rewrite `h1` using `[mul_inv_cancel, T.t_one, if_neg ha, Fin.rev_rev]`. Conclude with `(mul_inv_eq_one.mp h1.symm).symm`.
+A detailed English derivation is pending.
 -/
 private theorem tor_inv_apply_eq_ite_rev {G : Type} [Group G] {η : G →* ℤˣ} {B : Type} [CommRing B] (T : Tor η B)
     (a : G) (i : Fin 3) : T.t a⁻¹ i = if η a = 1 then (T.t a i)⁻¹ else T.t a i.rev := by
@@ -130,19 +130,17 @@ private theorem tor_inv_apply_eq_ite_rev {G : Type} [Group G] {η : G →* ℤˣ
     exact (mul_inv_eq_one.mp h1.symm).symm
 
 /- English proof (translation)
-Set `S : Subgroup (GQ l)` to `{ carrier := {g | ∀ i, Units.map p (T.t g i) = T'.t g i} one_mem' := by`. Introduce `i`. Simplify using `only [T.t_one, T'.t_one, map_one]`. Use the proof step `mul_mem' := by`. Introduce `a b ha hb i`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[T.mul, T'.mul, map_mul, ha]`. Use `split_ifs`. Rewrite using `[hb]`. Rewrite using `[map_inv, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `inv_mem' := by`. Introduce `a ha i`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[tor_inv_apply_eq_ite_rev T, tor_inv_apply_eq_ite_rev T']`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_inv, ha]`. Rewrite using `[ha] }`. Establish `key : ∀ g i, p (T.t g i : B) = T'.t g i ↔ Units.map p (T.t g i) = T'.t g i`. Introduce `g i`. Rewrite using `[Units.ext_iff, Units.coe_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hS : IsClosed (S : Set (GQ l))`. Establish `e : (S : Set (GQ l)) = ⋂ i, {g | p (T.t g i : B) = T'.t g i}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq, key]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_eq (hT i) (hT' i)`. Establish `hle : Iq l ⊔ Subgroup.zpowers σ ≤ S`. Rewrite using `[sup_le_iff, Subgroup.zpowers_le]`. Conclude with `⟨fun g hg i => (key g i).1 (hI g hg i), fun i => (key σ i).1 (hs i)⟩`.
-
-Establish `htop` using `Subgroup.topologicalClosure_minimal _ hle hS`. Rewrite `htop` using `[frobDense σ hσ]`. Introduce `i`. Conclude with `(key g i).2 (htop (Subgroup.mem_top g) i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem tor_ext {l : ℕ} [Fact l.Prime] {η : GQ l →* ℤˣ} {B B' : Type} [CommRing B] [CommRing B']
     [TopologicalSpace B'] [T2Space B'] (p : B →* B') (T : Tor η B) (T' : Tor η B')
@@ -187,13 +185,13 @@ private theorem tor_ext {l : ℕ} [Fact l.Prime] {η : GQ l →* ℤˣ} {B B' : 
   exact (key g i).2 (htop (Subgroup.mem_top g) i)
 
 /- English proof (translation)
-Set `χ : GQ l →* ℚ_[l]ˣ` to `(Units.map (Int.castRingHom ℚ_[l]).toMonoidHom).comp η`. Establish `hχ : ∀ g, (χ g : ℚ_[l]) = ((η g : ℤ) : ℚ_[l])`. Introduce `g`. Simplify using `[χ]`. Establish `hcont : Continuous fun g => (χ g : ℚ_[l])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hχ]`. Conclude with `(hlc.comp fun u : ℤˣ => ((u : ℤ) : ℚ_[l])).continuous`. Establish `hI' : ∀ g ∈ Iq l, chRep χ g = 1`. Introduce `g hg`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[chRep_apply, hχ, hI g hg]`. Simplify using the standard rewrite rules. Take `⟨c, ⟨hcZ, hcI, hcσ⟩, -⟩` from `existsUnique_unramified_cocycle_frobenius_value (v := l) (l := l) (chRep χ) (contAction_chRep hcont) hI' σ hσ (1 : ℚ_[l])`. Rewrite `hcZ` using `[ReciprocityTheory.Gal.mem_Z1_iff_cocycle]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, hcZ.1, fun g h => ?_, hcI, hcσ⟩` and prove the remaining obligations. Rewrite using `[hcZ.2 g h, chRep_apply, hχ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem scal_cocycle {l : ℕ} [Fact l.Prime] {η : GQ l →* ℤˣ} (hI : ∀ g ∈ Iq l, η g = 1)
     (hlc : IsLocallyConstant η) {σ : GQ l} (hσ : IsFrob σ) :
@@ -219,7 +217,7 @@ private theorem scal_cocycle {l : ℕ} [Fact l.Prime] {η : GQ l →* ℤˣ} (hI
   rw [hcZ.2 g h, chRep_apply, hχ]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem weight_rev_eq_neg (i : Fin 3) : wt1 i.rev = -wt1 i := by
   fin_cases i <;> rfl
@@ -228,67 +226,61 @@ end UpperTheory.V.Loc.TorusExponentialLift
 
 open UpperTheory.V.Loc.TorusExponentialLift IsNilpotent in
 /- English proof (translation)
-Introduce `l _ E _ _ _ _ _ η Ψ H e hD B _ _ _ _ _ _ _ _ _ _ π hπ B' _ _ _ _ _ _ _ _ _ _ π' hπ' p hp hpπ T' hT'`. Use `letI : Algebra ℚ B := ((algebraMap ℚ_[l] B).comp (algebraMap ℚ ℚ_[l])).toAlgebra`. Use `letI : Algebra ℚ B' := ((algebraMap ℚ_[l] B').comp (algebraMap ℚ ℚ_[l])).toAlgebra`. Use `haveI : T2Space B' := t2Space_of_finite_dim_padic_module (l := l) B'`. Take `⟨σ, hσ⟩` from `(iqBasic l).2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcm, hcI, hcσ⟩` from `scal_cocycle hD.ηI hD.ηlc hσ`. Take `⟨d, hd, hdm, hdI, hdσ⟩` from `scal_cocycle (η := 1) (fun _ _ => rfl) (IsLocallyConstant.const (1 : ℤˣ)) hσ`. Establish `hdm' : ∀ g h, d (g * h) = d g + d h`. Introduce `g h`. Rewrite using `[hdm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hEnil : ∀ z : E, IsNilpotent z → z = 0` using `fun z hz => hz.eq_zero`. Establish `hn' : ∀ i, IsNilpotent ((T'.t σ i : B') * algebraMap E B' ↑((Ψ σ ^ wt1 i)⁻¹) - 1)`. Introduce `i`. Apply `hπ'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, AlgHom.commutes, hT'.red, map_one, Algebra.algebraMap_self, RingHom.id_apply, Units.mul_inv, sub_self]`. Establish `hy : ∀ i, ∃ y : B', IsNilpotent y ∧ exp y = (T'.t σ i : B') * algebraMap E B' ↑((Ψ σ ^ wt1 i)⁻¹)`. Introduce `i`. Take `⟨k, hk⟩` from `hn' i`. Take `⟨y, hy1, hy2⟩` from `exp_onto k _ (pow_eq_zero_of_le (Nat.le_succ k) hk)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy1, by rw [hy2, add_sub_cancel]⟩`. Use `choose y hyn hye using hy`. Use `choose x hx using fun i => hp (y i)`. Establish `hxn : ∀ i, IsNilpotent (x i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `hπ` to reduce the goal to its premises. Rewrite using `[← hpπ, AlgHom.comp_apply, hx]`. Conclude with `hEnil _ ((hyn i).map π')`. Set `s : Fin 3 → B` to `fun i => (2⁻¹ : ℚ_[l]) • (x i + x i.rev)`. Set `u : Fin 3 → B` to `fun i => (2⁻¹ : ℚ_[l]) • (x i - x i.rev)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ i, s i.rev = s i`. Introduce `i`. Simplify using `only [s, Fin.rev_rev, add_comm]`. Establish `hu : ∀ i, u i.rev = -u i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, Fin.rev_rev, ← smul_neg, neg_sub]`. Establish `hsu : ∀ i, s i + u i = x i`. Introduce `i`. Simplify using `only [s, u]`. Rewrite using `[← smul_add, show x i + x i.rev + (x i - x i.rev) = (2 : ℚ_[l]) • x i by rw [two_smul]; abel, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsn : ∀ i, IsNilpotent (s i)` using `fun i => by`. Take `⟨k, hk⟩` from `nil_add (hxn i) (hxn i.rev)`. Conclude with `⟨k, by simp only [s]; rw [smul_pow, hk, smul_zero]⟩`. Establish `hun : ∀ i, IsNilpotent (u i)` using `fun i => by`. Take `⟨k, hk⟩` from `nil_add (hxn i) (hxn i.rev).neg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨k, by simp only [u]; rw [sub_eq_add_neg, smul_pow, hk, smul_zero]⟩`. Set `a : GQ l → Fin 3 → B` to `fun g i => c g • s i + d g • u i`. Establish `ha : ∀ g h i, a (g * h) i = a g i + if η g = 1 then a h i else -a h i.rev`. Introduce `g h i`. Break down `Int.units_eq_one_or (η g) with h1 | h1` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [a, hcm, hdm', h1, if_pos, Units.val_one, Int.cast_one, one_mul, add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[if_neg (by rw [h1]; decide)]`. Simplify using `only [a, hcm, hdm', h1, hs, hu, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_mul, add_smul, neg_smul, smul_neg]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `han : ∀ g i, IsNilpotent (a g i)`. Introduce `g i`. Use `nil_add ?_ ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hsn i`. Conclude with `⟨k, by rw [smul_pow, hk, smul_zero]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨k, hk⟩` from `hun i`. Conclude with `⟨k, by rw [smul_pow, hk, smul_zero]⟩`. Establish `hLc : Continuous fun b : B' => algebraMap E B (π' b)`. Set `L : B' →ₗ[ℚ_[l]] B` to `((Algebra.linearMap E B).comp π'.toLinearMap).restrictScalars ℚ_[l]`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpc : Continuous fun b : B => p b`. Set `L : B →ₗ[ℚ_[l]] B'` to `p.toLinearMap.restrictScalars ℚ_[l]`. Conclude with `IsModuleTopology.continuous_of_linearMap L`. Set `EU : GQ l → Fin 3 → Bˣ` to `fun g i => Units.map (algebraMap E B : E →* B) (Ψ g ^ wt1 i)`. Set `XU : GQ l → Fin 3 → Bˣ` to `fun g i => (isUnit_exp (han g i)).unit`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hEU : ∀ g i, (EU g i : B) = algebraMap E B ↑(Ψ g ^ wt1 i)` using `fun g i => rfl`. Establish `hXU : ∀ g i, (XU g i : B) = exp (a g i)` using `fun g i => rfl`. Establish `hE1 : ∀ g h i, EU (g * h) i = EU g i * EU h i`. Introduce `g h i`. Simplify using `only [EU, map_mul, mul_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hE2 : ∀ h i, EU h i.rev = (EU h i)⁻¹`. Introduce `h i`. Simplify using `only [EU, weight_rev_eq_neg, zpow_neg, map_inv]`. Establish `hX1 : ∀ g h i, η g = 1 → XU (g * h) i = XU g i * XU h i`. Introduce `g h i h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hXU, hXU, hXU, ha, if_pos h1, exp_add_of_commute (Commute.all _ _) (han g i) (han h i)]`. Establish `hX2 : ∀ g h i, ¬ η g = 1 → (XU (g * h) i : B) * XU h i.rev = XU g i`. Introduce `g h i h1`. Rewrite using `[hXU, hXU, hXU, ha, if_neg h1, ← exp_add_of_commute (Commute.all _ _) (nil_add (han g i) (han h i.rev).neg) (han h i.rev), neg_add_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Set `T : Tor η B` to `⟨fun g i => EU g i * XU g i, by`. Introduce `g h i`. Use `split_ifs with h1`. Rewrite using `[hE1, hX1 g h i h1]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq, hE1, hE2]`. Apply `Units.ext` to reduce the goal to its premises. Establish `hP` using `Units.mul_inv (EU h i)`. Establish `hQ` using `hX2 g h i h1`. Simplify using `only [Units.val_mul] at hP ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `((EU g i : B) * ((XU (g * h) i : B) * XU h i.rev)) * hP + (EU g i : B) * hQ⟩`. Establish `hT : ∀ g i, (T.t g i : B) = algebraMap E B ↑(Ψ g ^ wt1 i) * exp (a g i)` using `fun g i => rfl`. Take `⟨hT'c, hT'ci, hT'ine, hT'red⟩` from `hT'`. Establish `hUred : ∀ g i, Units.map (π' : B' →+* E).toMonoidHom (T'.t g i) = Ψ g ^ wt1 i`. Introduce `g i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map]`. Conclude with `hT'red g i`. Establish `hPE : ∀ w : Eˣ, algebraMap E B (w : E) * algebraMap E B ↑w⁻¹ = 1`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hPE' : ∀ w : Eˣ, algebraMap E B' (w : E) * algebraMap E B' ↑w⁻¹ = 1`. Introduce `w`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hTinv : ∀ g i, ((T.t g i)⁻¹ : Bˣ) = algebraMap E B (π' ↑((T'.t g i)⁻¹)) * exp (-a g i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g i`. Establish `e1 : π' ↑((T'.t g i)⁻¹) = ↑((Ψ g ^ wt1 i)⁻¹)`. Rewrite using `[← hUred g i, ← map_inv, Units.coe_map]`. Both sides reduce to the same expression. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hT, e1]`. Take the linear combination `(exp (a g i) * exp (-a g i)) * hPE (Ψ g ^ wt1 i) + exp_mul_exp_neg_self (han g i)`. Establish `hπexp : ∀ g i, π (exp (a g i)) = 1`. Introduce `g i`. Establish `h0` using `hEnil _ ((isNilpotent_exp_sub_one (han g i)).map π)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h0`. Establish `hG : T.Good π Ψ`. Use `⟨fun i => ?_, fun i => ?_, fun g hg i => ?_, fun g i => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun g => (T.t g i : B)) = fun g => algebraMap E B (π' (T'.t g i)) * exp (c g • s i + d g • u i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hT, hT'red]`. Rewrite using `[e1]`. Conclude with `(hLc.comp (hT'c i)).mul (continuous_exp_nilpotent_pair hc hd (hsn i) (hun i))`. Establish `e1 : (fun g => ((T.t g i)⁻¹ : Bˣ) : GQ l → B) = fun g => algebraMap E B (π' ↑((T'.t g i)⁻¹)) * exp ((-c g) • s i + (-d g) • u i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hTinv]`. Simplify using `only [a, neg_smul, neg_add]`. Rewrite using `[e1]`. Conclude with `(hLc.comp (hT'ci i)).mul (continuous_exp_nilpotent_pair hc.neg hd.neg (hsn i) (hun i))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hT]`. Simplify using `only [a, hcI g hg, hdI g hg, zero_smul, add_zero, exp_zero, mul_one]`. Rewrite using `[hT, map_mul, hπexp, mul_one, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`. Use `⟨T, hG, fun g i => ?_⟩` and prove the remaining obligations. Establish `hI' : ∀ g ∈ Iq l, ∀ i, p.toRingHom.toMonoidHom (T.t g i : B) = T'.t g i`.
-
-Introduce `g hg i`. Use `show p (T.t g i : B) = T'.t g i`. Rewrite using `[hT]`. Simplify using `only [a, hcI g hg, hdI g hg, zero_smul, add_zero, exp_zero, mul_one]`. Rewrite using `[AlgHom.commutes, hT'ine g hg i]`.
-
-Establish `hs' : ∀ i, p.toRingHom.toMonoidHom (T.t σ i : B) = T'.t σ i`. Introduce `i`. Use `show p (T.t σ i : B) = T'.t σ i`. Establish `e1 : a σ i = x i`. Simplify using `only [a, hcσ, hdσ, one_smul, hsu]`.
-
-Rewrite using `[hT, e1, map_mul, AlgHom.commutes, map_exp (hxn i) p, hx, hye]`. Take the linear combination `(T'.t σ i : B') * hPE' (Ψ σ ^ wt1 i)`. Conclude with `tor_ext p.toRingHom.toMonoidHom T T' (fun i => hpc.comp (hG.cont i)) hT'c hσ hI' hs' g i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_torus_lift_to_nilpotent_thickening :
     ∀ {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {η : GQ l →* ℤˣ} {Ψ : GQ l →* Eˣ} {H : Subgroup (GQ l)} {e : ℕ} (hD : TriDat η Ψ H e) {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) {B' : Type} [CommRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [TopologicalSpace B'] [IsModuleTopology ℚ_[l] B'] [IsTopologicalRing B'] [Algebra ℤ_[l] B'] [IsScalarTower ℤ_[l] ℚ_[l] B'] [Algebra E B'] [IsScalarTower ℚ_[l] E B'] (π' : B' →ₐ[E] E) (hπ' : ∀ a, π' a = 0 → IsNilpotent a) (p : B →ₐ[E] B'), Function.Surjective p → π'.comp p = π → ∀ T' : Tor η B', T'.Good π' Ψ → ∃ T : Tor η B, T.Good π Ψ ∧ ∀ g i, p (T.t g i : B) = (T'.t g i : B') := by

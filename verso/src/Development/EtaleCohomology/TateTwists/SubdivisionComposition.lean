@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations.SubdivisionComposition
 
 /- English proof (translation)
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `((i : ℕ) + j' + j) = (i : ℕ) + (j + j')`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 lemma subint_comp (N j l j' l' : ℕ) (h : j + l ≤ N) (h' : j' + l' ≤ l) :
     SimplexCategory.subinterval j' l' h' ≫ SimplexCategory.subinterval j l h =
@@ -17,7 +17,7 @@ lemma subint_comp (N j l j' l' : ℕ) (h : j + l ≤ N) (h' : j' + l' ≤ l) :
   omega
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[SimplexCategory.subinterval]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma subint_id (N : ℕ) :
     SimplexCategory.subinterval (n := N) 0 N (by omega) = 𝟙 _ := by
@@ -25,7 +25,7 @@ lemma subint_id (N : ℕ) :
   simp [SimplexCategory.subinterval]
 
 /- English proof (translation)
-Simplify using `only [Sx.along, op_comp, Functor.map_comp, NatTrans.comp_app, types_comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma along_comp {E : Spc} {U : Scheme.{0}} {N p r : ℕ} (x : Sx E N U)
     (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk p) :
@@ -36,17 +36,15 @@ end LateralTheory.EtaleFoundations.SubdivisionComposition
 
 open LateralTheory.EtaleFoundations.SubdivisionComposition in
 /- English proof (translation)
-Introduce `E U N x`. Establish `hsa : ∀ (j l : ℕ) (h : j + l ≤ N), x.sub j l h = x.along (SimplexCategory.subinterval j l h)` using `fun _ _ _ => rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j l j' l' h h'`. Express the relevant statement in the definitionally equal form `(x.along _).along _ = x.along _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[along_comp, subint_comp]`. Rewrite using `[hsa, subint_id]`. Simplify using `[Sx.along]`. Introduce `j l h`. Use `⟨?_, ?_, hsa j l h⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V g`. Simplify using `only [Sx.sub, Sx.res]`. Establish `hn` using `ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x`. Simplify using `only [ConcreteCategory.comp_apply] at hn`. Conclude with `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E' f`. Simplify using `only [Sx.sub, Sx.map]`. Establish `hn` using `congrArg (fun t => t.app (op U)) (f.naturality (SimplexCategory.subinterval j l h).op)`. Simplify using `only [NatTrans.comp_app] at hn`. Use `first`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `(have hm := ConcreteCategory.congr_hom hn x`. Simplify using `only [ConcreteCategory.comp_apply] at hm`. Apply the tactic sequence `first | exact hm | exact hm.symm)`. Consider the case `exact (congrFun hn x).symm`. Consider the case `(rw [← types_comp_apply, ← hn]; rfl)`.
-
-Introduce `p r a b`. Conclude with `along_comp x a b`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.simplicial_subinterval_of_subinterval_along_etale : LateralTheory.EtaleFoundations.EtaleSimplexSubfaceComposition := by
   intro E U N x

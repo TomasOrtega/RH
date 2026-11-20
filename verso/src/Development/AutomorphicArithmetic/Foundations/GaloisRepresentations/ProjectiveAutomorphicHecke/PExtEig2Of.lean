@@ -14,14 +14,14 @@ section
 variable {Γ H A Z V J : Type} [Group Γ] [Group H] [Group A] [Group Z] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rop, Pi.add_apply, smul_add, Finsupp.sum_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem rop_add (r : H →₀ ℂ) (Φ Ψ : H → V) : rop r (Φ + Ψ) = rop r Φ + rop r Ψ := by
   funext g
   simp only [rop, Pi.add_apply, smul_add, Finsupp.sum_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rop, Pi.smul_apply, Finsupp.smul_sum, smul_smul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem rop_smul (r : H →₀ ℂ) (a : ℂ) (Φ : H → V) : rop r (a • Φ) = a • rop r Φ := by
   funext g
@@ -43,47 +43,43 @@ private def eigForms (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ 
 end
 
 /- English proof (translation)
-Introduce `hZ hC`. Unfold `ExtEig2`. Introduce `Γ H A Z V _ _ _ _ _ _ ι K ξ c ζ hcen hs φ hφ hφne J r θ hsupp hforms heig`. Take `⟨s, hs⟩` from `hs`. Take `⟨u₀, hu₀, hφu₀⟩` from `hφne`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `memF : ∀ Ψ : H → V, Ψ ∈ forms ι K ξ ↔ ((∀ γ g, Ψ (ι γ * g) = ξ γ (Ψ g)) ∧ ∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g)` using `fun Ψ => Iff.rfl`. Take `⟨Φ, hΦ, hext, hsup⟩` from `hZ Γ H A V ι K ξ c φ hφ`. Take `⟨hΦ1, hΦ2⟩` from `(memF Φ).1 hΦ`. Establish `hΦne : Φ ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hφu₀` to reduce the goal to its premises. Rewrite using `[← hext u₀ hu₀, h]`. Both sides reduce to the same expression. Establish `hΦeig : ∀ j, rop (r j) Φ = θ j • Φ`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : ∀ u, c u = 1 → rop (r j) Φ u = θ j • Φ u`. Introduce `u hu`. Rewrite using `[hext u hu, ← heig j u hu]`. Simplify using `only [rop, Finsupp.sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v hv`. Rewrite using `[hext (u * v) (by rw [map_mul, hu, hsupp j v hv, one_mul])]`. Take `⟨hf1, hf2⟩` from `(memF _).1 (hforms j Φ hΦ)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : ∃ γ u k, c u = 1 ∧ k ∈ K ∧ g = ι γ * u * k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Take `⟨γ, u, k, hu', hk, rfl⟩` from `hg`. Rewrite using `[Pi.smul_apply, mul_assoc, hf1 γ (u * k), hf2 k hk u, hΦ1 γ (u * k), hΦ2 k hk u, hu u hu', map_smul]`. Establish `h0 : Φ g = 0`. Assume the negation of the conclusion as `h`. Conclude with `hg (hsup g h)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, h0, smul_zero]`. Simplify using `only [rop, Finsupp.sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `v hv`. Establish `hcv` using `hsupp j v hv`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Φ (g * v) = 0`. Assume the negation of the conclusion as `h`. Take `⟨γ, u, k, hu', hk, he⟩` from `hsup _ h`. Apply `hg` to reduce the goal to its premises. Use `⟨γ, u * (k * v⁻¹ * k⁻¹), k, ?_, hk, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul, map_inv, hu', hcv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hz, smul_zero]`. Establish `trForms : ∀ Ψ ∈ forms ι K ξ, ∀ z, (fun g => Ψ (g * ζ z)) ∈ forms ι K ξ`. Introduce `Ψ hΨ z`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(memF Ψ).1 hΨ`. Use `(memF _).2 ⟨fun γ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Use `show Ψ (ι γ * g * ζ z) = ξ γ (Ψ (g * ζ z))`. Rewrite using `[mul_assoc, h1]`. Use `show Ψ (g * k * ζ z) = Ψ (g * ζ z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, ← hcen z k, ← mul_assoc, h2 k hk]`. Establish `trRop : ∀ (Ψ : H → V) j z, rop (r j) (fun g => Ψ (g * ζ z)) = fun g => rop (r j) Ψ (g * ζ z)`. Introduce `Ψ j z`. Use function extensionality and compare the values at `g`. Simplify using `only [rop, Finsupp.sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `u _`. Rewrite using `[mul_assoc g (ζ z), hcen z u, mul_assoc]`. Establish `key : ∀ z, ∃ t ∈ s, ∃ a : ℂ, (fun g => Φ (g * ζ z)) = a • fun g => Φ (g * ζ t)`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨t, ht, z₀, z₁, rfl, hz₀, γ, a, hz₁, ha⟩` from `hs z`. Use `⟨t, ht, a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show Φ (g * ζ (t * z₀ * z₁)) = a • Φ (g * ζ t)`. Rewrite using `[map_mul, map_mul, ← mul_assoc, ← mul_assoc, ← hcen z₁, hz₁, hΦ1, ha, hΦ2 _ hz₀]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `M : Submodule ℂ (H → V)` to `Submodule.span ℂ ((fun t g => Φ (g * ζ t)) '' (s : Set Z))`. Establish `hfin : FiniteDimensional ℂ M` using `FiniteDimensional.span_of_finite ℂ ((s.finite_toSet).image _)`. Establish `trM : ∀ z, (fun g => Φ (g * ζ z)) ∈ M`. Introduce `z`. Take `⟨t, ht, a, he⟩` from `key z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[he]`. Conclude with `M.smul_mem a (Submodule.subset_span ⟨t, ht, rfl⟩)`. Establish `hΦM : Φ ∈ M`. Establish `h` using `trM 1`. Simplify using `only [map_one, mul_one] at h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hle : M ≤ eigForms ι K ξ r θ`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, _, rfl⟩`. Use `show (fun g => Φ (g * ζ t)) ∈ forms ι K ξ ∧ ∀ j, rop (r j) (fun g => Φ (g * ζ t)) = θ j • (fun g => Φ (g * ζ t))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨trForms Φ hΦ t, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[trRop, hΦeig j]`. Both sides reduce to the same expression. Establish `hE : ∀ Ψ ∈ M, Ψ ∈ forms ι K ξ ∧ ∀ j, rop (r j) Ψ = θ j • Ψ` using `fun Ψ h => hle h`. Establish `hne : M ≠ ⊥`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `hΦne` to reduce the goal to its premises. Establish `h'` using `hΦM`. Rewrite `h'` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 h'`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hclos : ∀ Ψ ∈ M, ∀ z, (fun g => Ψ (g * ζ z)) ∈ M`. Introduce `Ψ hΨ z`. Establish `hL : M ≤ M.comap (LinearMap.funLeft ℂ V (fun g : H => g * ζ z))`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, _, rfl⟩`.
-
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `h` using `trM (z * t)`. Simplify using `only [map_mul, ← mul_assoc] at h`. Conclude with `h`. Conclude with `hL hΨ`.
-
-Take `⟨Ψ, hΨM, hΨne, ψ, hψ⟩` from `hC Γ H Z V ι K ξ ζ hcen M hfin (fun Ψ h => (hE Ψ h).1) hne hclos`. Conclude with `⟨Ψ, (hE Ψ hΨM).1, hΨne, (hE Ψ hΨM).2, ψ, hψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pExtEig2_of : ExtZero → CentralEig2 → ExtEig2 := by
   intro hZ hC

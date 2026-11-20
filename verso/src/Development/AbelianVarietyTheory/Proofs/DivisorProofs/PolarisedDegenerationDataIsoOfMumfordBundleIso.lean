@@ -32,20 +32,20 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D₁ D₂ D₃ : De
   {U₃ : UnifPre I D₃ A₃ G₃} {a : G₁ ⟶ G₂} {a' : G₂ ⟶ G₃}
 
 /- English proof (translation)
-Introduce `e` and use `by rw [Functor.map_comp, Functor.map_comp, Category.assoc, h' e, ← Category.assoc, h e, Category.assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem over_comp {b : D₁.toPre.P.A ⟶ D₂.toPre.P.A} {b' : D₂.toPre.P.A ⟶ D₃.toPre.P.A} (h : Over₀ U₁ U₂ a b)
     (h' : Over₀ U₂ U₃ a' b') : Over₀ U₁ U₃ (a ≫ a') (b ≫ b') := fun e => by
   rw [Functor.map_comp, Functor.map_comp, Category.assoc, h' e, ← Category.assoc, h e, Category.assoc]
 
 /- English proof (translation)
-Introduce `e` and use `by rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem over_id : Over₀ U₁ U₁ (𝟙 _) (𝟙 _) := fun e => by
   rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Introduce `e` and use `by obtain ⟨t, ht, et⟩ := H e obtain ⟨t', ht', et'⟩ := H' e refine ⟨t ≫ t', fun χ => unit_ext fun z _ => ?_, by rw [Functor.map_comp, ← Category.assoc, et, Category.assoc, et', Category.assoc]⟩ have e₁ := congrArg (gm (𝟙 _) z ⊤) (ht (h' χ)) have e₂ := congrArg (gm (𝟙 _ ≫ t.left) z …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem onTorus_comp {h : D₂.toPre.X → D₁.toPre.X} {h' : D₃.toPre.X → D₂.toPre.X} (H : OnTorus U₁ U₂ a h)
     (H' : OnTorus U₂ U₃ a' h') : OnTorus U₁ U₃ (a ≫ a') (h ∘ h') := fun e => by
@@ -63,7 +63,7 @@ theorem onTorus_comp {h : D₂.toPre.X → D₁.toPre.X} {h' : D₃.toPre.X → 
   rw [Over.comp_left, Category.assoc]
 
 /- English proof (translation)
-Introduce `e` and use `⟨𝟙 _, fun χ => unit_ext fun z _ => ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) (𝟙 _) z ⊤ trivial _)).trans (by rw [Category.comp_id]; rfl), by rw [CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem onTorus_id : OnTorus U₁ U₁ (𝟙 _) id := fun e =>
   ⟨𝟙 _, fun χ => unit_ext fun z _ => ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans
@@ -75,27 +75,27 @@ end Comp
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U O _ _ _ o oA oG lin D' A' U' _ o' oA' lin' H`. Use `hR.2` as an intermediate fact. Establish `hA` using `hR.1`. Use `U.gen_hom` as an intermediate fact. Use `U'.gen_hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨prB, hprB, qpr⟩` from `GlobalTheory.Mum.Two.exists_abelian_hom R _ hA D D' A A' G G U.toUnifPre U'.toUnifPre (𝟙 G) inferInstance`. Take `⟨incB, hincB, qinc⟩` from `GlobalTheory.Mum.Two.exists_abelian_hom R _ hA D' D A' A G G U'.toUnifPre U.toUnifPre (𝟙 G) inferInstance`. Take `⟨h, th⟩` from `GlobalTheory.Mum.Two.unifPre_hom_character_const R _ hA D D' A A' G G U.toUnifPre U'.toUnifPre (𝟙 G) inferInstance`. Take `⟨k, tk⟩` from `GlobalTheory.Mum.Two.unifPre_hom_character_const R _ hA D' D A' A G G U'.toUnifPre U.toUnifPre (𝟙 G) inferInstance`. Establish `un` using `GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D D A A G G U.toUnifPre U.toUnifPre (𝟙 G)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `un'` using `GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D' D' A' A' G G U'.toUnifPre U'.toUnifPre (𝟙 G)`. Establish `ipB : incB ≫ prB = 𝟙 _` using `un'.1 _ _ (by have := over_comp qinc qpr; rwa [Category.comp_id] at this) over_id`. Establish `piB : prB ≫ incB = 𝟙 _` using `un.1 _ _ (by have := over_comp qpr qinc; rwa [Category.comp_id] at this) over_id`. Establish `kh : ∀ χ, k (h χ) = χ` using `congrFun (un'.2 _ _ (by have := onTorus_comp tk th; rwa [Category.comp_id] at this) onTorus_id)`. Establish `hk : ∀ χ, h (k χ) = χ` using `congrFun (un.2 _ _ (by have := onTorus_comp th tk; rwa [Category.comp_id] at this) onTorus_id)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective h` using `Function.LeftInverse.injective kh`. Set `xe : D'.toPre.X ≃+ D.toPre.X` to `{ toFun := h, invFun := k, left_inv := kh, right_inv := hk, map_add' := h.map_add }`. Establish `ql : ∀ x, Over₀ U.toUnifPre U.toUnifPre (oG.act x) (o.onB.act x)` using `fun x e => lin.q_lin e x`. Establish `ql' : ∀ x, Over₀ U'.toUnifPre U'.toUnifPre (oG.act x) (o'.onB.act x)` using `fun x e => lin'.q_lin e x`. Establish `il : ∀ x, OnTorus U.toUnifPre U.toUnifPre (oG.act x) (fun χ => star x • χ)` using `fun x e => lin.i_lin e x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `il' : ∀ x, OnTorus U'.toUnifPre U'.toUnifPre (oG.act x) (fun χ => star x • χ)` using `fun x e => lin'.i_lin e x`. Establish `linB : ∀ a, o'.onB.act a ≫ incB = incB ≫ o.onB.act a` using `fun a => (GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D' D A' A G G U'.toUnifPre U.toUnifPre (oG.act a)).1 _ _ (by have := over_comp (ql' a) qinc; rwa [Category.comp_id] at this) (by have := over_comp qinc (ql a); rwa [Category.id_comp] at this)`. Establish `linS : ∀ (b : O) χ, star b • h χ = h (star b • χ)` using `fun b => congrFun ((GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D D' A A' G G U.toUnifPre U'.toUnifPre (oG.act b)).2 _ _ (by have := onTorus_comp (il b) th; rwa [Category.comp_id] at this) (by have := onTorus_comp th (il' b); rwa [Category.id_comp] at this))`. Establish `linX : ∀ (a : O) x, h (a • x) = a • h x` using `fun a x => by`. Use `linS (star a) x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[star_star]`. Conclude with `this.symm`. Establish `L : Lin U.toUnifPre U'.toUnifPre (𝟙 G) prB h` using `⟨inferInstance, hprB, qpr, th⟩`. Establish `C` using `GlobalTheory.Mum.Two.coord_of_lin R _ hA D D' A A' G G U.toUnifPre U'.toUnifPre (𝟙 G) prB h L`. Take `⟨c, hc, gc⟩ : ∃ c : A.A ⟶ A'.A, IsMonHom c ∧ Gen₀ U.toUnifPre U'.toUnifPre (𝟙 G) c` from `⟨U.gen.inv ≫ (Over.pullback (jK R)).map (𝟙 G) ≫ U'.gen.hom, inferInstance, by simp [Gen₀]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, eG, -⟩` from `(GlobalTheory.UT.functorial_of_unif R _ hA D A G hG U).1 (𝟙 G) (𝟙 A.A) inferInstance inferInstance (by simp)`. Establish `eh : ∀ y, E.h y = y` using `fun y => congrFun (un.2 _ _ (eG ▸ (lin_of_endU E).1.2.2.2) onTorus_id) y`. Establish `adj : LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E.aG] U.LG.L)`. Rewrite using `[eG]`. Simplify using `only [Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.PolBaseChange.lbIso_refl (LB.isLB_linComb U.LG.isLB _ _)`. Establish `H₂` using `GlobalTheory.Mum.Two.lbIso_cubeLB_generic R _ D D' A A' G G U.toUnifPre U'.toUnifPre (𝟙 G) (𝟙 G) E.aG (𝟙 G) c c E.aA (𝟙 _) gc gc E.ext (by simp [Gen₀]) (by rw [eG]; simp only [Category.comp_id]; exact H)`. Take `⟨Ω, _, _, _, K⟩` from `GlobalTheory.Mum.Two.exists_key R _ hA D D' A A' G G hG hG U U' (𝟙 G) c prB h hc gc L C hinj`. Take `⟨φ, hφ, hhφ⟩` from `GlobalTheory.Mum.Two.periods_of_key R _ hA D D' A A' G G hG hG U U' (𝟙 G) c prB h hc gc L C E E adj H₂ Ω K`. Establish `H' : LBIso (abelian₂ G U'.LG.L) ((abelian₂ G U.LG.L).pull (lift (fst G G ≫ 𝟙 G) (snd G G ≫ 𝟙 G) : G2 G ⟶ G2 G).left)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Category.comp_id, lift_fst_snd, Over.id_left]`. Conclude with `LBIso.chartPull (chartPullId _) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) H`. Establish `H₃` using `GlobalTheory.T.mumfordBundle_iso_along_homs_descends_abelianPart R hA D' D A' A G G hG hG U' U (𝟙 G) (𝟙 G) incB incB inferInstance inferInstance hincB hincB qinc qinc H'`. Establish `key` using `GlobalTheory.Mum.Two.Fac.periods_of_factor R D'.toPre D.toPre D.tau_bimult O o 1 1 incB prB h φ hincB hprB (by rw [piB, o.onB.map_one]) (fun χ => (C χ).imp fun _ => And.left) (by rw [o.onB.map_one, Category.comp_id]; exact H₃) Ω hφ (fun y => by rw [hhφ, eh, star_one, one_smul, on …`. Rewrite `key` using `[o.onB.map_one, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨cφ, w, hw, ht⟩` from `key`. Establish `φh : ∀ x, φ (h x) = x` using `fun x => hinj ((hhφ (h x)).trans (eh _))`. Use `⟨⟨incB, prB, ipB, piB⟩, xe, hincB, qinc, tk, linB, linX, fun x => ?_, w, hw, fun a b z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `show D'.toPre.c x ≫ incB = D.toPre.c (h x)`. Use `cφ (h x)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[φh]`. Rewrite using `[this, Category.assoc, piB, Category.comp_id]`. Use `ht (h a) (h b) z J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[φh, φh, one_smul, one_smul, one_smul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem iso_of_lbIso_lam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G), ∀ [Module O D'.toPre.X] (o' : D'.toPre.OAct O) (oA' : A'.OAct O), U'.toUnifPre.OLinear O o' oA' oG → LBIso (abelian₂ G U'.LG.L) (abelian₂ G U.LG.L) → ∃ (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (xe : D'.toPre.X ≃+ D.toPre.X), IsMonHom Φ.hom ∧ Over₀ U'.toUnifPre U.toUnifPre (𝟙 G) Φ.hom ∧ OnTorus U'.toUnifPre U.toUnifPre (𝟙 G) xe.symm ∧ (∀ a, o'.onB.act a ≫ Φ.hom = Φ.hom ≫ o.onB.act a) ∧ (∀ (a : O) x, xe (a • x) = a • xe x) ∧ (∀ x, D'.toPre.c x ≫ Φ.hom = D.toPre.c (xe x)) ∧ ∃ wΛ : (letI := D.toPre.P.isAb.comm; letI := D'.toPre.P.isAb.comm; LB.Iso (abelian₂ D'.toPre.P.A D'.toPre.P.L) ((abelian₂ D.toPre.P.A D.toPre.P.L).pull (lift (fst D'.toPre.P.A D'.toPre.P.A ≫ Φ.hom) (snd D'.toPre.P.A D'.toPre.P.A ≫ Φ.hom) : G2 D'.toPre.P.A ⟶ G2 D.toPre.P.A).left)), wΛ.IsGen ∧ ∀ a b z J J', Good D.toPre.P.L z J → Good D'.toPre.P.L z J' → val (D'.toPre.tau a b) (𝟙 _) z J' = GlobalTheory.PolDeg.lamVal wΛ (lift (toUnit (TK R) ≫ D'.toPre.c a) (toUnit (TK R) ≫ D'.toPre.c b)).left z J J' * val (D.toPre.tau (xe a) (xe b)) (𝟙 _) z J := by
   intro R _ _ _ hR D A G _ _ hG U O _ _ _ o oA oG lin D' A' U' _ o' oA' lin' H

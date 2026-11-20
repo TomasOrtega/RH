@@ -29,11 +29,11 @@ def counitCoef {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] [Category.
     exact map_smul _ r b
 
 /- English proof (translation)
-Introduce `R _ C C' _ _ F G H adj`. Establish `hl : ∀ c, pullHyp1 (counitCoef F adj) (pullHyp1 (CoefMap.restrict F G) c) = c`. Introduce `c`. Rewrite using `[← pullHyp1_comp]`. Conclude with `(pullHyp1_eq_of_natTrans _ (CoefMap.id F) adj.counit (fun T b ↦ rfl) c).trans (pullHyp1_id c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : ∀ c, pullHyp1 (CoefMap.restrict F G) (pullHyp1 (counitCoef F adj) c) = c`. Introduce `c`. Rewrite using `[← pullHyp1_comp]`. Use `((pullHyp1_eq_of_natTrans (CoefMap.id (G ⋙ F)) ((counitCoef F adj).comp (CoefMap.restrict F G)) adj.unit (fun T b ↦ ?_) c).symm.trans (pullHyp1_id c))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mp F (adj.counit.app (G.obj T)) (mp F (G.map (adj.unit.app T)) b) = b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 
-Conclude with `(mp_comp F (G.map (adj.unit.app T)) (adj.counit.app (G.obj T)) b).symm.trans ((congrArg (fun ξ ↦ mp F ξ b) (adj.left_triangle_components T)).trans (mp_id F (G.obj T) b))`. Conclude with `⟨Function.LeftInverse.injective hl, Function.RightInverse.surjective hr⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (C C' : Type) [Category.{0} C] [Category.{0} C']
     (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (H : C ⥤ C'), (G ⊣ H) →

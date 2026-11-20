@@ -6,11 +6,11 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.LeviChart
 
 /- English proof (translation)
-Introduce `e X _ A ψ U g hψ hU hg hA z hz hzU w`. Take `⟨j, hj⟩` from `A.cover (ψ.symm z)`. Establish `hzs : z ∈ ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source` using `⟨hz, hj⟩`. Establish `hopen : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source)` using `ψ.continuousOn_symm.isOpen_inter_preimage ψ.open_target (A.chart j).open_source`. Establish `hτ : AnalyticAt ℂ (⇑(A.chart j) ∘ ⇑ψ.symm) z` using `(hψ j).2 z hzs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEq : g ∘ ⇑ψ.symm =ᶠ[𝓝 z] (g ∘ ⇑(A.chart j).symm) ∘ (⇑(A.chart j) ∘ ⇑ψ.symm)` using `by filter_upwards [hopen.mem_nhds hzs] with y hy`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv hy.2]`. Establish `hcz : (⇑(A.chart j) ∘ ⇑ψ.symm) z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Function.comp_apply, (A.chart j).left_inv hj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hzU`. Establish `hopen2 : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target hU`. Apply the tactic sequence `have hsm : ContDiffAt ℝ 2 (g ∘ ⇑(A.chart j).symm) ((⇑(A.chart j) ∘ ⇑ψ.symm) z) := ((hg j).contDiffAt (hopen2.mem_nhds hcz)).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp | norm_num | exact_mod_cast (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤))`. Rewrite using `[levi_congr hEq w, levi_comp w hτ hsm]`. Conclude with `hA j _ hcz _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_eq_zero_of_compatChart : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X)
     (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (U : Set X) (g : X → ℝ), IsCompatChart A ψ →

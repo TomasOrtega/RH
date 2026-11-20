@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4
 namespace LateralTheory.E.LeafRelDimOnePf
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `: Subsingleton C` using `⟨fun a b => (h a).trans (h b).symm⟩`. Establish `: DiscreteTopology C` using `inferInstance`. Use `topologicalKrullDim_zero_of_discreteTopology C` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hd]`. Conclude with `absurd this (by decide)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_generic {C : Scheme.{0}} [IsIntegral C] (hd : topologicalKrullDim C = 1) :
     ∃ x : C, x ≠ genericPoint C := by
@@ -22,28 +22,26 @@ theorem exists_ne_generic {C : Scheme.{0}} [IsIntegral C] (hd : topologicalKrull
   exact absurd this (by decide)
 
 /- English proof (translation)
-The claim follows from `MulEquiv.isField (Field.toIsField Ω) (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.toMulEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isField_top (Ω : Type) [Field Ω] : IsField Γ(Sp Ω, ⊤) :=
   MulEquiv.isField (Field.toIsField Ω)
     (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.toMulEquiv
 
 /- English proof (translation)
-Establish `hU : U = ⊤`. Use extensionality with `p`. Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Establish `: p = c x` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `e hx`. Substitute `hU` using the available equality. Establish `: Nonempty V` using `⟨⟨x, hx⟩⟩`. Set `: Field Γ(Sp Ω, ⊤)` to `(isField_top Ω).toField`. Set `: Algebra Γ(Sp Ω, ⊤) Γ(C, V)` to `(c.appLE ⊤ V e).hom.toAlgebra`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, σ, _, _, ⟨P⟩⟩` from `hs.out`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension P.dimension Γ(Sp Ω, ⊤) Γ(C, V)` using `P.isStandardSmoothOfRelativeDimension rfl`. Establish `h1` using `GlobalTheory.AffinePoints.ringKrullDim_eq_of_isStandardSmooth (K := Γ(Sp Ω, ⊤)) (A := Γ(C, V)) (d := P.dimension)`. Establish `hle : ringKrullDim Γ(C, V) ≤ 1`. Rewrite using `[← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, ← hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hV.fromSpec.isOpenEmbedding.isInducing.topologicalKrullDim_le`. Establish `hne : ringKrullDim Γ(C, V) ≠ 0`. Introduce `h0`. Establish `: Ring.KrullDimLE 0 Γ(C, V)` using `Ring.krullDimLE_iff.mpr (by rw [h0]; rfl)`. Establish `hF` using `Ring.KrullDimLE.isField_of_isDomain (R := Γ(C, V))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `` to `hF.toField`. Establish `hη : genericPoint C ∈ V` using `((genericPoint_spec C).mem_open_set_iff V.isOpen).mpr ⟨x, by simp, hx⟩`. Establish `hx' : x ∈ Set.range hV.fromSpec` using `by rw [hV.range_fromSpec]; exact hx`. Establish `hη' : genericPoint C ∈ Set.range hV.fromSpec` using `by rw [hV.range_fromSpec]; exact hη`. Take `⟨a, rfl⟩` from `hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨b, hb⟩` from `hη'`. Apply `hxη` to reduce the goal to its premises. Rewrite using `[← hb]`. Establish `key : ∀ p : PrimeSpectrum Γ(C, V), p.asIdeal = ⊥`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hp` using `p.isPrime`. Conclude with `Ideal.eq_bot_of_prime _`. Use `congr 1`. Conclude with `PrimeSpectrum.ext ((key a).trans (key b).symm)`. Rewrite `hle`, `hne` using `[h1]`.
-
-Establish `h2 : P.dimension ≤ 1` using `by exact_mod_cast hle`. Establish `h3 : P.dimension ≠ 0` using `by exact_mod_cast hne`. Conclude with `P.isStandardSmoothOfRelativeDimension (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart (Ω : Type) [Field Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω) [IsIntegral C]
     (hd : topologicalKrullDim C = 1) (U : (Sp Ω).Opens) (V : C.Opens) (hV : IsAffineOpen V)
@@ -93,9 +91,9 @@ theorem chart (Ω : Type) [Field Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω) [IsInteg
   exact P.isStandardSmoothOfRelativeDimension (by omega)
 
 /- English proof (translation)
-Introduce `Ω _ C c hC hs hd`. Take `⟨x₀, hx₀⟩` from `exists_ne_generic hd`. Prove the components needed by the constructor for the conclusion. Introduce `y`. Distinguish the cases in `hy : y = genericPoint C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨U, hU, V, hV, hx, e, h⟩` from `Smooth.exists_isStandardSmooth c x₀`. Establish `hyV : y ∈ V` using `hy ▸ ((genericPoint_spec C).mem_open_set_iff V.isOpen).mpr ⟨x₀, by simp, hx⟩`. Conclude with `⟨U, hU, V, hV, hyV, e, chart Ω c hd U V hV x₀ hx hx₀ e h⟩`. Take `⟨U, hU, V, hV, hx, e, h⟩` from `Smooth.exists_isStandardSmooth c y`. Conclude with `⟨U, hU, V, hV, hx, e, chart Ω c hd U V hV y hx hy e h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafRelDimOne_of : LateralTheory.E.LeafSmoothOfNormalPf.LeafRelDimOne := by
   intro Ω _ C c hC hs hd

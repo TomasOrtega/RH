@@ -19,7 +19,7 @@ section Poly
 variable {K : Type}
 
 /- English proof (translation)
-Use `show eval₂Hom (RingHom.id ℚ) z _ = _`. Rewrite using `[eval₂Hom_bind₁]`. Establish `hfun : (fun i => eval₂Hom (RingHom.id ℚ) z (X i - C (a i))) = z - a` using `funext fun k => by simp`. Rewrite using `[hfun]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_bind₁_shift (p : MvPolynomial K ℚ) (a z : K → ℚ) :
     eval z (bind₁ (fun k => X k - C (a k)) p) = eval (z - a) p := by
@@ -30,13 +30,13 @@ theorem eval_bind₁_shift (p : MvPolynomial K ℚ) (a z : K → ℚ) :
   rfl
 
 /- English proof (translation)
-Set `q : MvPolynomial K ℚ` to `∑ T : Finset (Fin n), C ((-1 : ℚ) ^ T.card) * bind₁ (fun k => X k - C (((∑ i ∈ T, δ i) k : ℤ) : ℚ)) p`. Establish `hq : ∀ w : K → ℤ, eval (fun k => (w k : ℚ)) q = ∑ T : Finset (Fin n), (-1 : ℚ) ^ T.card * eval (fun k => (((w - ∑ i ∈ T, δ i) k : ℤ) : ℚ)) p`. Introduce `w`. Simplify using `only [q, map_sum, map_mul, eval_C, eval_bind₁_shift]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Take `⟨m₀, hm₀⟩` from `eventually_atTop.mp h`. Set `s : K → Set ℚ` to `fun k => (fun t : ℤ => (t : ℚ)) '' Set.Ici (m₀ k)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hs : ∀ k, (s k).Infinite` using `fun k => (Set.Ici_infinite (m₀ k)).image (fun a _ b _ hab => Int.cast_injective hab)`. Establish `hqD : q = C D`. Use `funext_set s hs fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ∀ k, ∃ t : ℤ, m₀ k ≤ t ∧ (t : ℚ) = w k` using `fun k => hw k (Set.mem_univ k)`. Use `choose m hm1 hm2 using hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwm : w = fun k => (m k : ℚ)` using `funext fun k => (hm2 k).symm`. Rewrite using `[hwm, hq, eval_C]`. Conclude with `hm₀ m hm1`. Rewrite using `[← hq, hqD, eval_C]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem altSum_eq_of_eventually (p : MvPolynomial K ℚ) {n : ℕ} (δ : Fin n → K → ℤ) (D : ℚ)
     (h : ∀ᶠ m : K → ℤ in atTop,
@@ -70,19 +70,19 @@ theorem altSum_eq_of_eventually (p : MvPolynomial K ℚ) {n : ℕ} (δ : Fin n �
 end Poly
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod n L δ hL hsub`. Take `⟨i₀, hi₀⟩` from `hmod.1 k₀`. Establish `hj : x (e i₀) ≠ 0`. Rewrite using `[hx]`. Simplify `hi₀` using `[IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hP` using `isMultiProjPrime_mIdealOver (S := F) y hmod.1`. Establish `hdim` using `(hD F K ι Ω y k₀ N e x hx hmod n).mp hsub`. Take `⟨p, hpH, hpS⟩` from `hS F K ι Ω y k₀ hmod`. Establish `hMD` using `(FieldNumbers.MixedDiffConst.full F K ι (mIdealOver F y) hP.multiHomog hP.relevant n hdim).1 δ`. Use `set D := NumbersDVR.intNum F (mIdealOver F y) δ with hD_def`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ m : K → ℤ in atTop, ∑ T : Finset (Fin n), (-1 : ℚ) ^ T.card * eval (fun k => (((m - ∑ i ∈ T, δ i) k : ℤ) : ℚ)) p = D`. Establish `h2 : ∀ T : Finset (Fin n), ∀ᶠ m : K → ℤ in atTop, (NumbersDVR.hilbFn (mIdealOver F y) (m - ∑ i ∈ T, δ i) : ℚ) = eval (fun k => (((m - ∑ i ∈ T, δ i) k : ℤ) : ℚ)) p` using `fun T => ((tendsto_atTop_add_const_right atTop (-(∑ i ∈ T, δ i)) tendsto_id).eventually hpH).mono fun m hm => by simpa only [id, sub_eq_add_neg] using hm`. Use `filter_upwards [hMD, eventually_all.mpr h2] with m h1 h2`. Rewrite `h1` using `[mixedDiff_eq_sum]`. Establish `h1'` using `congrArg (Int.cast : ℤ → ℚ) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h1'`. Rewrite using `[← h1']`. Conclude with `Finset.sum_congr rfl fun T _ => by rw [h2 T]`. Establish `hall` using `altSum_eq_of_eventually p δ (D : ℚ) hev`. Establish `hsecs : ∀ T : Finset (Fin n), ∀ᶠ c : ℕ in atTop, ((restrLen (primeOf (S` using `F) x) ((tensorSub (fun i => (L i).toSubSystem) T).twist (twistSys F x (c : ℤ))) : ℤ) : ℚ) = eval (fun k => (((∑ i ∈ T, δ i + (c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k : ℤ) : ℚ)) p := fun T => by filter_upwards [hT F K ι Ω y k₀ N e x hx hmod n L δ hL T, hpS (∑ i …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[restrLen_primeOf_eq_finrank x hj, h1, ← h2]`. Simplify using the standard rewrite rules. Establish `hfin : ∀ᶠ c : ℕ in atTop, interSum (primeOf (S` using `F) x) (fun i => (L i).toSubSystem) c = D := by filter_upwards [eventually_all.mpr hsecs] with c hc`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[interSum, ← hall (∑ i, δ i + (c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_cast`. Use `Fintype.sum_bijective compl compl_involutive.bijective _ _ fun T => ?_` and prove the remaining obligations. Establish `hcard : Tᶜ.card = n - T.card` using `by rw [Finset.card_compl, Fintype.card_fin]`. Establish `hvec : (∑ i, δ i + (c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) - ∑ i ∈ Tᶜ, δ i = ∑ i ∈ T, δ i + (c : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀`. Rewrite using `[← Finset.sum_add_sum_compl T δ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hc T, hcard, hvec]`. Unfold `interNum`. Conclude with `(tendsto_const_nhds.congr' (hfin.mono fun c h => h.symm)).limUnder_eq`.
+A detailed English derivation is pending.
 -/
 theorem NumModel.proof (hT : TensorRealise.Statement) (hS : SectionsPoly.Statement) (hD : ModelDim.Statement) :
     NumModel.Statement := by

@@ -11,7 +11,7 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range, Matrix.trace_sum]`. Simplify using `only [Matrix.trace_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_aeval_eq_sum (A : Matrix (Fin n) (Fin n) k) (p : k[X]) :
     trace (aeval A p) = ∑ i ∈ Finset.range (p.natDegree + 1), p.coeff i * trace (A ^ i) := by
@@ -19,21 +19,21 @@ theorem trace_aeval_eq_sum (A : Matrix (Fin n) (Fin n) k) (p : k[X]) :
   simp only [Matrix.trace_smul, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨q, hq, hXq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd A.charpoly (charpoly_monic A).ne_zero 0`. Simplify using `only [map_zero, sub_zero] at hq hXq`. Use `set r := rootMultiplicity 0 A.charpoly`. Establish `hcop : IsCoprime (X ^ (r + 1) : k[X]) q` using `IsCoprime.pow_left ((Polynomial.irreducible_X.coprime_iff_not_dvd).2 hXq)`. Take `⟨a, b, hab⟩` from `hcop`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzero : aeval A (X ^ (r + 1) * q) = 0`. Establish `e : (X ^ (r + 1) * q : k[X]) = X * A.charpoly`. Rewrite using `[hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul, aeval_self_charpoly, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : aeval A (a * X ^ (r + 1)) + aeval A (b * q) = 1`. Rewrite using `[← map_add, hab, map_one]`. Establish `hprod : aeval A (a * X ^ (r + 1)) * aeval A (b * q) = 0`. Rewrite using `[← map_mul]`. Establish `e : a * X ^ (r + 1) * (b * q) = (a * b) * (X ^ (r + 1) * q)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, hzero, mul_zero]`. Establish `he : aeval A (a * X ^ (r + 1)) = 1 - aeval A (b * q)` using `eq_sub_of_add_eq hsum`. Establish `hidem : IsIdempotentElem (aeval A (a * X ^ (r + 1)))`. Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `htr : trace (aeval A (a * X ^ (r + 1))) = 0`. Rewrite using `[trace_aeval_eq_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Break down `i with _ | i` into its components or cases. Simplify using `[coeff_mul_X_pow']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h (i + 1) (by omega), mul_zero]`. Establish `hlin : IsIdempotentElem (Matrix.toLinAlgEquiv' (aeval A (a * X ^ (r + 1))))` using `hidem.map _`. Establish `hlintr : LinearMap.trace k _ (Matrix.toLinAlgEquiv' (aeval A (a * X ^ (r + 1)))) = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace k (Pi.basisFun k (Fin n)), LinearMap.toMatrix_eq_toMatrix']`. Express the relevant statement in the definitionally equal form `trace (LinearMap.toMatrix' (Matrix.toLin' _)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.toMatrix'_toLin', htr]`. Establish `hz : aeval A (a * X ^ (r + 1)) = 0`. Use `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hlin hlintr` as an intermediate fact. Conclude with `(map_eq_zero_iff _ (AlgEquiv.injective _)).1 this`. Use `⟨r + 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : (X ^ (r + 1) : k[X]) = X ^ (r + 1) * (a * X ^ (r + 1)) + b * (X ^ (r + 1) * q)`. Take the linear combination `(-(X ^ (r + 1) : k[X])) * hab`. Use `congrArg (aeval A) e` as an intermediate fact. Rewrite `this` using `[map_add, map_mul (aeval A) (X ^ (r + 1)), hz, map_mul (aeval A) b, hzero, mul_zero, mul_zero, add_zero, map_pow, aeval_X]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_trace_pow [CharZero k] (A : Matrix (Fin n) (Fin n) k)
     (h : ∀ m, 1 ≤ m → trace (A ^ m) = 0) : IsNilpotent A := by
@@ -89,9 +89,9 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `h1 : ((1 : Z) : Matrix (Fin n) (Fin n) k) = ∑ j, (Module.finBasis k Z).repr 1 j • ((Module.finBasis k Z j : Z) : Matrix (Fin n) (Fin n) k)`. Establish `h0` using `congrArg Subtype.val ((Module.finBasis k Z).sum_repr 1)`. Rewrite using `[← h0, AddSubmonoidClass.coe_finset_sum]`. Both sides reduce to the same expression. Establish `key : ∀ y : Matrix (Fin n) (Fin n) k, trace (y ^ i) = ∑ j, (Module.finBasis k Z).repr 1 j * pZ Z y (⟨i, hi⟩, j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Finset.sum_mul, Matrix.trace_sum]`. Simplify using `[pZ, smul_mul_assoc, Matrix.trace_smul]`. Rewrite using `[key x, key x₀, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_pow_eq {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x x₀ : Matrix (Fin n) (Fin n) k}
     (h : pZ Z x = pZ Z x₀) (i : ℕ) (hi : i < 2 * n + 1) : trace (x ^ i) = trace (x₀ ^ i) := by
@@ -110,7 +110,7 @@ theorem trace_pow_eq {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x x₀ : Mat
   rw [key x, key x₀, h]
 
 /- English proof (translation)
-Rewrite using `[trace_aeval_eq_sum, trace_aeval_eq_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[trace_pow_eq h i (by simp at hi; omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem trace_aeval_eq {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x x₀ : Matrix (Fin n) (Fin n) k}
     (h : pZ Z x = pZ Z x₀) (p : k[X]) (hp : p.natDegree ≤ 2 * n) :
@@ -120,9 +120,9 @@ theorem trace_aeval_eq {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x x₀ : M
   rw [trace_pow_eq h i (by simp at hi; omega)]
 
 /- English proof (translation)
-Establish `hM : (x.charpoly * x₀.charpoly).Monic` using `(charpoly_monic x).mul (charpoly_monic x₀)`. Establish `hdeg : (x.charpoly * x₀.charpoly).natDegree = 2 * n`. Rewrite using `[(charpoly_monic x).natDegree_mul (charpoly_monic x₀), charpoly_natDegree_eq_dim, charpoly_natDegree_eq_dim, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx : aeval x (x.charpoly * x₀.charpoly) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[map_mul, aeval_self_charpoly, zero_mul]`. Establish `hx0 : aeval x₀ (x.charpoly * x₀.charpoly) = 0`. Rewrite using `[map_mul, aeval_self_charpoly, mul_zero]`. Rewrite using `[← aeval_modByMonic_eq_self_of_root hx, ← aeval_modByMonic_eq_self_of_root hx0]`. Conclude with `trace_aeval_eq h _ ((natDegree_modByMonic_le p hM).trans hdeg.le)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_aeval_eq_of_pZ_eq {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
     {x x₀ : Matrix (Fin n) (Fin n) k} (h : pZ Z x = pZ Z x₀) (p : k[X]) :
@@ -140,7 +140,7 @@ private theorem trace_aeval_eq_of_pZ_eq {Z : Subalgebra k (Matrix (Fin n) (Fin n
   exact trace_aeval_eq h _ ((natDegree_modByMonic_le p hM).trans hdeg.le)
 
 /- English proof (translation)
-Apply `isNilpotent_of_trace_pow` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[← map_pow, trace_aeval_eq_of_pZ_eq h, map_pow, aeval_self_charpoly, zero_pow (by omega), Matrix.trace_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isNilpotent_aeval_charpoly [CharZero k] {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
     {x x₀ : Matrix (Fin n) (Fin n) k} (h : pZ Z x = pZ Z x₀) : IsNilpotent (aeval x x₀.charpoly) := by
@@ -152,7 +152,7 @@ theorem isNilpotent_aeval_charpoly [CharZero k] {Z : Subalgebra k (Matrix (Fin n
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `h` using `isNilpotent_charpoly_sub_pow_of_isNilpotent hN`. Establish `h0 : N.charpoly - X ^ Fintype.card (Fin n) = 0` using `h.eq_zero`. Rewrite `h0` using `[sub_eq_zero, Fintype.card_fin]`. Use `aeval_self_charpoly N` as an intermediate fact. Rewrite `this` using `[h0, map_pow, aeval_X]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_eq_zero_of_isNilpotent {N : Matrix (Fin n) (Fin n) k} (hN : IsNilpotent N) : N ^ n = 0 := by
   have h := isNilpotent_charpoly_sub_pow_of_isNilpotent hN
@@ -162,35 +162,33 @@ theorem pow_eq_zero_of_isNilpotent {N : Matrix (Fin n) (Fin n) k} (hN : IsNilpot
   rwa [h0, map_pow, aeval_X] at this
 
 /- English proof (translation)
-Unfold `JCPoly`. Introduce `m Z _ y`. Distinguish the cases in `hex : ∃ x₀ ∈ Bz Z, pZ Z x₀ = y`. Take `⟨x₀, -, rfl⟩` from `hex`. Establish `hsq : Squarefree (UniqueFactorizationMonoid.radical x₀.charpoly)` using `UniqueFactorizationMonoid.squarefree_radical`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsep : (UniqueFactorizationMonoid.radical x₀.charpoly).Separable` using `PerfectField.separable_iff_squarefree.mpr hsq`. Take `⟨N, c, hc⟩` from `(UniqueFactorizationMonoid.exists_dvd_pow_iff_radical_dvd (charpoly_monic x₀).ne_zero).mpr dvd_rfl`. Use `set Q := UniqueFactorizationMonoid.radical x₀.charpoly`. Take `⟨a, b, hab⟩` from `hsep`. Use `set T : k[X] := X - b * Q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ z : k[X], T.comp z = z + -(b.comp z * Q.comp z)`. Introduce `z`. Simplify using `[T, sub_comp, mul_comp, sub_eq_add_neg]`. Establish `e1 : ∀ p w : k[X], (p.map C).eval w = p.comp w` using `fun p w => by`. Rewrite using `[eval_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `step : ∀ z : k[X], ∃ w, Q.comp (T.comp z) = (Q.comp z) ^ 2 * w`. Introduce `z`. Take `⟨s, hs⟩` from `Polynomial.binomExpansion (Q.map C) z (-(b.comp z * Q.comp z))`. Use `⟨a.comp z + s * (b.comp z) ^ 2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab' : a.comp z * Q.comp z + b.comp z * (derivative Q).comp z = 1`. Use `congrArg (fun p => p.comp z) hab` as an intermediate fact. Simplify `this` using `[add_comp, mul_comp]`. Rewrite `hs` using `[derivative_map]`. Simplify using `only [e1] at hs`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hT, hs]`. Take the linear combination `(-(Q.comp z)) * hab'`. Establish `iter : ∀ j, ∃ w v, Q.comp ((fun p => T.comp p)^[j] X) = Q ^ (2 ^ j) * w ∧ X - (fun p => T.comp p)^[j] X = Q * v`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, 0, by simp, by simp⟩`. Consider the case `succ j ih`. Take `⟨w, v, hw, hv⟩` from `ih`. Take `⟨w', hw'⟩` from `step ((fun p => T.comp p)^[j] X)`. Rewrite using `[Function.iterate_succ_apply']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w ^ 2 * w', v + b.comp ((fun p => T.comp p)^[j] X) * Q ^ (2 ^ j - 1) * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw', hw, pow_succ (2 : ℕ) j, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : Q ^ (2 ^ j) = Q * Q ^ (2 ^ j - 1)`. Rewrite using `[← pow_succ']`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `Nat.one_le_two_pow (n := j)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hT, hw, hQ]`. Take the linear combination `hv`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, v, hw, hv⟩` from `iter m`. Use `⟨(fun p => T.comp p)^[m] X, fun x _ hx => ?_⟩` and prove the remaining obligations. Establish `hQx : IsNilpotent (aeval x Q)`. Establish `h5` using `isNilpotent_aeval_charpoly hx`. Establish `hpow : aeval x Q ^ N = aeval x x₀.charpoly * aeval x c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hc, map_mul]`. Establish `hcomm : Commute (aeval x x₀.charpoly) (aeval x c)`. Rewrite using `[Commute, SemiconjBy, ← map_mul, ← map_mul, mul_comm]`. Establish `: IsNilpotent (aeval x Q ^ N)`. Rewrite using `[hpow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hcomm.isNilpotent_mul_right h5`. Conclude with `IsNilpotent.of_pow this`. Establish `hQn : aeval x Q ^ m = 0` using `pow_eq_zero_of_isNilpotent hQx`. Prove the components needed by the constructor for the conclusion. Apply `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsq` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : aeval (aeval x ((fun p => T.comp p)^[m] X)) Q = 0`. Rewrite using `[← aeval_comp, hw, map_mul, map_pow]`. Rewrite using `[pow_eq_zero_of_le (Nat.lt_two_pow_self).le hQn, zero_mul]`. Express the relevant statement in the definitionally equal form `aeval (Matrix.toLinAlgEquiv' _) Q = 0`. Rewrite using `[aeval_algEquiv, AlgHom.comp_apply, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : x - aeval x ((fun p => T.comp p)^[m] X) = aeval x Q * aeval x v`. Rewrite using `[← map_mul, ← hv, map_sub, aeval_X]`. Rewrite using `[h1]`. Establish `hcomm : Commute (aeval x Q) (aeval x v)`. Rewrite using `[Commute, SemiconjBy, ← map_mul, ← map_mul, mul_comm]`.
-
-Conclude with `hcomm.isNilpotent_mul_right hQx`. Conclude with `⟨0, fun x hx hxy => absurd ⟨x, hx, hxy⟩ hex⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jcPoly [CharZero k] : JCPoly (k := k) := by
   classical

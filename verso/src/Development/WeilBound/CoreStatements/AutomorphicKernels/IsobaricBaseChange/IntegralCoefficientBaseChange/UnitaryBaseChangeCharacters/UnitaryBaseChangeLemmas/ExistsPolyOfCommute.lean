@@ -15,21 +15,21 @@ instance isLocalRing_intL : IsLocalRing (intL L) :=
   inferInstanceAs (IsLocalRing (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Establish `hJ' : J * Ji = 1` using `mul_eq_one_comm.1 hJ`. Set `u : (Matrix (Fin n) (Fin n) R)ˣ` to `⟨Ji, J, hJ, hJ'⟩`. Use `set N := Ji * cT s M * J with hNdef`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hNM : N * M = 1`. Rewrite using `[hNdef, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT s M), hM, hJ]`. Establish `hdeg : M.charpoly.natDegree = n` using `by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hdegN : N.charpoly.natDegree = n` using `by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hNc : N.charpoly = (cT s M).charpoly`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.charpoly_units_conj u (cT s M)` as an intermediate fact. Rewrite `this` using `[← Matrix.coe_units_inv]`. Conclude with `this`. Establish `hmap : M.charpoly.map s = N.charpoly`. Rewrite using `[hNc, ← Matrix.charpoly_map, ← Matrix.charpoly_transpose]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hrev : (M.charpoly.map s).reflect n = N.charpolyRev`. Rewrite using `[hmap, ← Matrix.reverse_charpoly, Polynomial.reverse, hdegN]`. Establish `hdetN : N.det * M.det = 1` using `by rw [← Matrix.det_mul, hNM, Matrix.det_one]`. Establish `hNd : N.det = s M.det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : N.det = (cT s M).det`. Rewrite using `[hNdef, Matrix.det_mul, Matrix.det_mul, mul_comm (Ji.det), mul_assoc, ← Matrix.det_mul, hJ, Matrix.det_one, mul_one]`. Rewrite using `[h1, cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h0 : M.charpoly.coeff 0 = (-1) ^ n * M.det`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]`. Establish `hs0 : s (M.charpoly.coeff 0) = (-1) ^ n * N.det`. Rewrite using `[h0, map_mul, map_pow, map_neg, map_one, hNd]`. Use `⟨Matrix.charpoly_monic M, ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg, hrev, Matrix.charpolyRev, hs0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : (1 - (X : R[X]) • N.map C) * M.map C = -charmatrix M`. Rewrite using `[sub_mul, one_mul, smul_mul_assoc, ← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero C) (map_one C), charmatrix, Matrix.smul_one_eq_diagonal, Matrix.scalar_apply, neg_sub]`. Both sides reduce to the same expression. Establish `e1 : (1 - (X : R[X]) • N.map C).det * C M.det = (-1) ^ n * M.charpoly`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.det_mul, hA, Matrix.det_neg, Fintype.card_fin]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2 : C N.det * C M.det = (1 : R[X])` using `by rw [← C_mul, hdetN, C_1]`. Rewrite using `[C_mul, C_pow, C_neg, C_1]`. Take the linear combination `(-C N.det) * e1 + (1 - (X : R[X]) • N.map C).det * e2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCsr_charpoly {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (M J Ji : Matrix (Fin n) (Fin n) R)
     (hJ : Ji * J = 1) (hM : cT s M * J * M = J) : GlobalTheory.UTr.IsCsr s M.charpoly := by
@@ -73,19 +73,19 @@ theorem isCsr_charpoly {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (M J Ji
   linear_combination (-C N.det) * e1 + (1 - (X : R[X]) • N.map C).det * e2
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `GlobalTheory.BCT.UnitStable.exists_cyclic M hs`. Use `set K := GlobalTheory.ClassParam.krylov M v with hK`. Establish `key : ∀ r : Matrix (Fin n) (Fin n) O, r * M = M * r → r * K = GlobalTheory.ClassParam.krylov M (r *ᵥ v)`. Introduce `r hr`. Establish `hc : Commute r M` using `hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [hK, GlobalTheory.ClassParam.krylov, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[Matrix.mulVec_mulVec, ← (hc.pow_right (j : ℕ)).eq, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `hKd : IsUnit K.det` using `(Matrix.isUnit_iff_isUnit_det K).1 hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set c : Fin n → O := K⁻¹ *ᵥ (x *ᵥ v) with hcdef`. Set `p : O[X]` to `∑ i : Fin n, C (c i) * X ^ (i : ℕ)`. Establish `hp : aeval M p = ∑ i : Fin n, c i • M ^ (i : ℕ)`. Simplify using `only [p, map_sum, map_mul, aeval_C, aeval_X_pow, Algebra.smul_def]`. Establish `hpv : aeval M p *ᵥ v = x *ᵥ v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : aeval M p *ᵥ v = K *ᵥ c`. Rewrite using `[hp]`. Use extensionality with `k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.sum_mul, hK, GlobalTheory.ClassParam.krylov, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hcdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hKd, Matrix.one_mulVec]`. Establish `hpc : aeval M p * M = M * aeval M p`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : aeval M (p * X) = aeval M p * M` using `by rw [map_mul, aeval_X]`. Establish `e2 : aeval M (X * p) = M * aeval M p` using `by rw [map_mul, aeval_X]`. Rewrite using `[← e1, ← e2, mul_comm]`. Use `⟨p, ?_⟩` and prove the remaining obligations. Establish `e : x * K = aeval M p * K` using `by rw [key x hc, key _ hpc, hpv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (· * K⁻¹) e` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hKd, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_poly_of_commute {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (M x : Matrix (Fin n) (Fin n) O)
     (hs : M.charpoly.Separable) (hc : x * M = M * x) : ∃ p : O[X], x = aeval M p := by

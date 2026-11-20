@@ -5,13 +5,13 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
 /- English proof (translation)
-Establish `hz : ∀ k : ℤ, s (ζ ^ (a₂ * k)) = ζ ^ (b₂ * k)`. Introduce `k`. Rewrite using `[zpow_mul, zpow_mul, map_zpow₀, h]`. Establish `hz' : ∀ k : ℤ, s (ζ ^ (-(a₂ * k))) = ζ ^ (-(b₂ * k))`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zpow_neg, zpow_neg, map_inv₀, hz]`. Unfold `eisF const0 coefPos`. Use `split_ifs`. Simplify using `only [map_div₀, map_mul, map_add, map_sub, map_one, map_ofNat, h]`. Simplify using `only [map_ratCast]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_neg, map_ratCast]`. Simplify using `only [map_sum, map_sub]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_div₀, map_natCast, map_natCast, hz]`. Conclude with `map_zero s`. Use `split_ifs`. Rewrite using `[map_mul, map_pow, map_neg, map_div₀, map_natCast, map_natCast, hz']`. Conclude with `map_zero s`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ring_hom_eisenstein_coeff {K : Type} [Field K] [CharZero K] (s : K →+* K) (j M : ℕ) (ζ : K) (a₁ a₂ b₂ : ℤ)
     (h : s (ζ ^ a₂) = ζ ^ b₂) (n : ℕ) : s (eisF j M ζ a₁ a₂ n) = eisF j M ζ a₁ b₂ n := by
@@ -37,9 +37,9 @@ private theorem UpperTheory.ring_hom_eisenstein_coeff {K : Type} [Field K] [Char
       · exact map_zero s
 
 /- English proof (translation)
-Introduce `K _ _ s c j M ζ a₁ a₂ b₂ _ h n`. Establish `hc : s (ζ ^ (c * a₂)) = ζ ^ (c * b₂)`. Rewrite using `[mul_comm c a₂, mul_comm c b₂, zpow_mul, zpow_mul, map_zpow₀, h]`. Unfold `smF`. Rewrite using `[map_sub, map_mul, map_mul, UpperTheory.ring_hom_eisenstein_coeff s j M ζ a₁ a₂ b₂ h n, UpperTheory.ring_hom_eisenstein_coeff s j M ζ (c * a₁) (c * a₂) (c * b₂) hc n]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, map_zpow₀, map_intCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ringHom_apply_smoothedEisensteinCoeff :
     ∀ {K : Type} [Field K] [CharZero K] (s : K →+* K) (c : ℤ) (j M : ℕ) (ζ : K) (a₁ a₂ b₂ : ℤ), ζ ≠ 0 → s (ζ ^ a₂) = ζ ^ b₂ → ∀ n : ℕ, s (smF c j M ζ a₁ a₂ n) = smF c j M ζ a₁ b₂ n := by

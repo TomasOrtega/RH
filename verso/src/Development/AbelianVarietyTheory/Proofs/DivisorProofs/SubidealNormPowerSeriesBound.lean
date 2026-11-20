@@ -14,17 +14,17 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ t ht`. Use `⟨ReciprocityTheory.Cheb.idealZetaR K t, fun I hI => ?_⟩` and prove the remaining obligations. Establish `hex : ∀ J : {J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K // J ≠ 0 ∧ J ≤ I}, ∃ b : Ideal (𝓞 K), (b : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) = I⁻¹ * J.1`. Introduce `J`. Use `FractionalIdeal.le_one_iff_exists_coeIdeal.mp ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `choose g hg using hex`. Establish `hJ : ∀ J, J.1 = I * (g J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)`. Introduce `J`. Rewrite using `[hg, ← mul_assoc, mul_inv_cancel₀ hI, one_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective g`. Introduce `J1 J2 h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hJ J1, hJ J2, h]`. Establish `hI0 : (0 : ℝ) ≤ (FractionalIdeal.absNorm I : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.absNorm_nonneg I` after adjusting the coercions. Establish `hN : ∀ J, ((FractionalIdeal.absNorm J.1 : ℚ) : ℝ) ^ (-t) = ((FractionalIdeal.absNorm I : ℚ) : ℝ) ^ (-t) * ((Ideal.absNorm (g J) : ℕ) : ℝ) ^ (-t)`. Introduce `J`. Rewrite using `[hJ J, map_mul, FractionalIdeal.coeIdeal_absNorm, Rat.cast_mul, Rat.cast_natCast, Real.mul_rpow hI0 (Nat.cast_nonneg _)]`. Use `ENNReal.summable.tsum_le_of_sum_le fun s => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : ∀ J : {J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K // J ≠ 0 ∧ J ≤ I}, 0 ≤ ((FractionalIdeal.absNorm J.1 : ℚ) : ℝ) ^ (-t)` using `fun J => Real.rpow_nonneg (by exact_mod_cast FractionalIdeal.absNorm_nonneg _) _`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun J _ => hnn J)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Repeatedly rewrite using `[hN]`. Rewrite using `[← Finset.mul_sum, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ (Real.rpow_nonneg hI0 _)` and prove the remaining obligations. Rewrite using `[← Finset.sum_image (f := fun b : Ideal (𝓞 K) => ((Ideal.absNorm b : ℕ) : ℝ) ^ (-t)) (fun x _ y _ h => hinj h)]`. Conclude with `ReciprocityTheory.Cheb.sum_le_idealZetaR K ht _`.
+A detailed English derivation is pending.
 -/
 theorem sum_absNorm_rpow_fractionalIdeal_le_le :
     ∀ (K : Type) [Field K] [NumberField K] (t : ℝ), 1 < t → ∃ Z : ℝ,

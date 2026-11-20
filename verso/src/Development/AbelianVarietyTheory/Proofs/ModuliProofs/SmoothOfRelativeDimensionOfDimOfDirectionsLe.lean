@@ -35,17 +35,17 @@ noncomputable def derivationPoint {k R K : Type} [CommRing k] [CommRing R] [Fiel
     simp
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `exists_linearIndependent_of_le_finrank (le_refl (Module.finrank K (Derivation k R K)))`. Use `ht _ (algebraMap k K) (spMap (derivationPoint D) ≫ j) ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun a ↦ TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[derivationPoint, ← IsScalarTower.algebraMap_apply, TrivSqZeroExt.algebraMap_eq_inl]`. Use function extensionality and compare the values at `i`. Simplify using `[derivationPoint, TrivSqZeroExt.algebraMap_eq_inl]`. Introduce `lam h`. Simplify using `only [constPt, ← Category.assoc, cancel_mono] at h`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Spec.map_comp, ← CommRingCat.ofHom_comp] at h`. Establish `h₁` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`. Establish `h₂ (a : R) : lam (fun i ↦ D i a) = 0`. Use `congrArg TrivSqZeroExt.snd (RingHom.congr_fun h₁ a)` as an intermediate fact. Simplify `this` using `[dirMap, derivationPoint, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h₃` using `Fintype.linearIndependent_iff.mp hD (fun i ↦ lam (Pi.single i 1)) (by`. Use extensionality with `a`. Use `h₂ a` as an intermediate fact. Rewrite `this` using `[← Finset.univ_sum_single (fun i ↦ D i a), map_sum]`. Rewrite using `[Derivation.zero_apply, ← this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(congrFun (map_sum (Derivation.coeFnAddMonoidHom (R := k) (A := R) (M := K)) _ _) a).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lam (Pi.single i 1) • D i a = _`. Rewrite using `[smul_eq_mul, mul_comm, ← smul_eq_mul, ← map_smul, ← Pi.single_smul, smul_eq_mul, _root_.mul_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(Pi.basisFun K _).ext fun i ↦ ?_` and prove the remaining obligations. Simplify using `using h₃ i`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_derivation_le {k R K : Type} [Field k] [CommRing R] [Field K]
     [Algebra k R] [Algebra k K] [Algebra R K] [IsScalarTower k R K] {X : Scheme.{0}}
@@ -86,13 +86,13 @@ theorem finrank_derivation_le {k R K : Type} [Field k] [CommRing R] [Field K]
     simpa using h₃ i
 
 /- English proof (translation)
-Establish `: Algebra.FinitePresentation k R` using `Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Establish `key (m : Ideal R) (hm : m.IsMaximal) : ∃ f ∉ m, Algebra.IsStandardSmoothOfRelativeDimension d k (Localization.Away f)`. Establish `h₁ : (d : WithBot ℕ∞) ≤ ringKrullDim (Localization.AtPrime m)`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height m (Localization.AtPrime m)]`. Conclude with `SmoothTangent.le_height_of_forall_minimalPrimes k hd m` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : Module.finrank (R ⧸ m) m.Cotangent ≤ d`. Set `` to `Ideal.Quotient.field m`. Conclude with `(SmoothTangent.finrank_cotangent_le_finrank_derivation k m (AlgebraicClosure (R ⧸ m))).trans (ht _)`. Take `⟨-, -, -, h₃, -, h₄⟩` from `isSmoothAt_of_finrank_cotangent_le_of_perfectField k m h₁ h₂`. Conclude with `exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt k m h₄`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension d)).mpr ?_` and prove the remaining obligations. Use `⟨{f | Algebra.IsStandardSmoothOfRelativeDimension d k (Localization.Away f)}, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h`. Take `⟨f, hf, hs⟩` from `key m hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hf (hle (Ideal.subset_span hs))`. Introduce `f hf`. Use `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap d).mpr hf` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_eq k R]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_forall_finrank_derivation_le (k : Type) [Field k]
     [PerfectField k] (R : Type) [CommRing R] [Algebra k R] [Algebra.FiniteType k R] (d : ℕ)
@@ -129,11 +129,9 @@ namespace GlobalTheory
 open SmoothDirections
 
 /- English proof (translation)
-Introduce `k _ _ X s d _ hd ht`. Use `choose A iA aA j hj q hq hjs using exists_affine_chart_over s`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension d)` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (Scheme.Cover.mkOfCovers X (fun x ↦ Sp (A x)) j (fun x ↦ ⟨x, q x, hq x⟩) hj) fun (x : X) ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension d (j x ≫ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Set `` to `iA x`. Set `` to `aA x`. Use `hj x` as an intermediate fact. Establish `: Algebra.FiniteType k (A x)` using `RingHom.finiteType_algebraMap.mp <| (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom (algebraMap k (A x)))).mp (hjs x ▸ inferInstance)`. Rewrite using `[hjs]`.
-
-Conclude with `smoothOfRelativeDimension_of_forall_finrank_derivation_le k (A x) d (hd _ (j x) (hj x) (hjs x)) fun K _ _ _ _ _ ↦ finrank_derivation_le s (j x) (hjs x) (ht K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_dim_of_directions_le :
     ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) (s : X ⟶ Sp k) (d : ℕ),

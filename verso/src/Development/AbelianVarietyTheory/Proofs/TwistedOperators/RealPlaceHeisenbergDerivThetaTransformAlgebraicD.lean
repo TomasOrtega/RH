@@ -30,9 +30,9 @@ variable {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Modul
   {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, map_add, Prod.fst_add, Prod.snd_add, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc]`. Use `congr 2`. Rewrite using `[d.form]`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ⅟(2 : AF F) + ⅟(2 : AF F) = 1` using `invOf_two_add_invOf_two`. Take the linear combination `(-((d.e w).1 ⬝ᵥ (d.e v).2)) * h2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_rho (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (w v : W) (Φ : (κ → AF F) → ℂ) :
     d.rho ψ w (d.rho ψ v Φ) = ψ (⅟(2 : AF F) * B w v) • d.rho ψ (w + v) Φ := by
@@ -46,7 +46,7 @@ theorem rho_rho (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (w v : W) (Φ : (κ
   linear_combination (-((d.e w).1 ⬝ᵥ (d.e v).2)) * h2
 
 /- English proof (translation)
-Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaSum_smul (c : ℂ) (Φ : (κ → AF F) → ℂ) : thetaSum F (c • Φ) = c * thetaSum F Φ := by
   simp only [thetaSum, Pi.smul_apply, smul_eq_mul]
@@ -60,7 +60,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Y : Spc F E n} {Wd : Spc F E d}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, -, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v hv => hv.1.trans hv.2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem algD_le_schA (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w)
     (hM : M.IsGood ψ) : algD M ψ emb ≤ schA F (Fin n × Fin d) := by
@@ -69,7 +69,7 @@ theorem algD_le_schA (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (emb : ∀ w 
   exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v hv => hv.1.trans hv.2)
 
 /- English proof (translation)
-Take `⟨Dr, hDr⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ (incM F Y.J) (incM F Wd.J) M.co hψ`. Establish `hSD` using `(hDr u hu g).1`. Establish `hA : ActsD (evI F) (M.heisLine ψ u) g (Dr u g)` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) g (Dr u g) (Dr u g)).1 (M.heisLine ψ u) (fun t => by funext x; simp [Model.heisLine, Darboux.rho, schr]) hSD`. Use `⟨Dr u g, Submodule.mem_sInf.2 fun N hN => hN.2 u hu g (Submodule.mem_sInf.1 hg N hN) _ hA, hA⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_actsD_mem_Pol (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w)
     (hψ : IsStd ψ) (u : Matrix (Fin n) (Fin d) (AE F E)) (hu : At (evI F) u) (g : SInf F (Fin n × Fin d))
@@ -82,17 +82,17 @@ theorem exists_actsD_mem_Pol (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (emb 
   refine ⟨Dr u g, Submodule.mem_sInf.2 fun N hN => hN.2 u hu g (Submodule.mem_sInf.1 hg N hN) _ hA, hA⟩
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨0, zero_mem _, fun x => ?_⟩` and prove the remaining obligations. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[Darboux.rho, schr]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨a', ha', hda⟩` from `ha`. Take `⟨b', hb', hdb⟩` from `hb`. Use `⟨a' + b', add_mem ha' hb', fun x => ?_⟩` and prove the remaining obligations. Establish `e : (fun t : ℝ => M.co.rho ψ (realAd F t • u) (a + b) x) = fun t => M.co.rho ψ (realAd F t • u) a x + M.co.rho ψ (realAd F t • u) b x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Simplify using `[Darboux.rho, schr, mul_add]`. Rewrite using `[e]`. Conclude with `(hda x).add (hdb x)`. Consider the case `smul c a _ ha`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha', hda⟩` from `ha`. Use `⟨c • a', Submodule.smul_mem _ c ha', fun x => ?_⟩` and prove the remaining obligations. Establish `e : (fun t : ℝ => M.co.rho ψ (realAd F t • u) (c • a) x) = fun t => c * M.co.rho ψ (realAd F t • u) a x`. Use function extensionality and compare the values at `t`. Simplify using `[Darboux.rho, schr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using `using (hda x).const_mul c`. Consider the case `mem Φ hΦ`. Take `⟨g, φ, hg, hSB, hev, rfl⟩` from `hΦ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁, hA⟩` from `exists_actsD_mem_Pol M ψ emb hψ u hu g hg`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hM.std).mono fun v hv => hv.1.trans hv.2`. Use `⟨pure g₁ φ, Submodule.subset_span ⟨g₁, φ, hg₁, hSB, hev, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hA _ (GlobalTheory.ThK.EvUniqInf.rest_pure g φ hSB hstd) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_deriv_algD (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w)
     (hψ : IsStd ψ) (hM : M.IsGood ψ) (u : Matrix (Fin n) (Fin d) (AE F E)) (hu : At (evI F) u) :
@@ -135,19 +135,17 @@ end GlobalTheory.SquareAgree.HeisDeriv
 namespace GlobalTheory.SquareAgree.HeisDeriv
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS ΦD hΦD f hf τ z`. Substitute `hψ` using the available equality. Take `⟨hline, hAt⟩` from `GlobalTheory.T.archimedeanLine_eq_realScalar_smul_supported D θ hθ τ z`. Establish `hsm : ∀ (a : AF D.host.F) (u : Matrix (Fin S.rank) (Fin d) (AE D)), cS (a • u) = a • cS u`. Introduce `a u`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcS, hcS]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.smul_apply, Finset.smul_sum, smul_mul_assoc, id]`. Use `set w₀ := lineAt θ τ z 1 with hw₀`. Use `set u := cS.symm w₀ with hu_def`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : cS u = w₀` using `cS.apply_symm_apply w₀`. Establish `hu : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) u`. Introduce `a ha`. Apply `cS.injective` to reduce the goal to its premises. Rewrite using `[hsm, hcu, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hAt a ha`. Establish `hLt : ∀ t : ℝ, cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u) = lineAt θ τ z t`. Introduce `t`. Rewrite using `[hsm, hcu, hline t]`. Establish `hstd` using `hBs.std`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨Φ', hΦ', hder⟩` from `exists_deriv_algD M Bs.ψ Bs.emb hstd hM u hu ΦD hΦD`. Use `⟨Φ', hΦ', algD_le_schA M Bs.ψ Bs.emb hM hΦ', fun u' => ?_⟩` and prove the remaining obligations. Establish `h2 : ⅟(2 : AF D.host.F) = algebraMap D.host.F (AF D.host.F) (1 / 2)`. Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `key : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u' (M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u) ΦD)) = heisO Bs.ψ (sgn ε S) X (lineAt θ τ z t) f (cS u')`. Introduce `t`. Rewrite using `[rho_rho, thetaSum_smul, hf.2, map_add, ← hLt t, heisO, symplOH, ← GlobalTheory.T.schrodingerModel_symplectic_eq_orientedPair D ε S X e Vs Ws hJ hJW cS hcS, h2]`. Establish `hd` using `GlobalTheory.T.hasDerivAt_thetaSum_heisenbergLine M.co Bs.ψ hstd u hu ΦD (algD_le_schA M Bs.ψ Bs.emb hM hΦD) Φ' (algD_le_schA M Bs.ψ Bs.emb hM hΦ') hder u'`.
-
-Simplify using `only [key] at hd`. Conclude with `hd.deriv.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisDeriv_algD : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

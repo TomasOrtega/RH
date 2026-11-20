@@ -13,9 +13,9 @@ def CechPointVanish.Statement : Prop :=
     ∀ β : K → ℤ, Subsingleton (cechHc ι (quotPart F (mIdealOver F y)) β 1)
 
 /- English proof (translation)
-Establish `hbot : chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) c = ⊥`. Use `eq_bot_iff.mpr (Algebra.adjoin_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨u, i⟩, rfl⟩`. Establish `hi : c u = i` using `Fin.ext (by omega)`. Simplify using `only [hi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_self (IndefiniteRowSideFullHecke.Kleiman2.pnPt_ne_zero F 0 _)]`. Conclude with `one_mem _`. Rewrite using `[hbot]`. Conclude with `(Algebra.botEquiv F (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0)).toMulEquiv.isField (Field.toIsField F)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isField_chartRingOver_pnPt_zero (F : Type) [Field F] (c : ∀ k, IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0 k) :
     IsField (chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) c) := by
@@ -30,7 +30,7 @@ theorem isField_chartRingOver_pnPt_zero (F : Type) [Field F] (c : ∀ k, Indefin
   exact (Algebra.botEquiv F (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0)).toMulEquiv.isField (Field.toIsField F)
 
 /- English proof (translation)
-The claim follows from `h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) (fun c _ => isField_chartRingOver_pnPt_zero F c) 0`.
+A detailed English derivation is pending.
 -/
 example (F : Type) [Field F] (h : CechPointVanish.Statement) :=
   h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0)

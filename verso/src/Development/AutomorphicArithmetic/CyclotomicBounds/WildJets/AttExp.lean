@@ -20,9 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.Chain.StepVac in
 /- English proof (translation)
-Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Establish `h0` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hL.mu0 ⟨j, hj⟩) (hasInfQ_tau (L.C.isMu0 ⟨j, hj⟩).inf) τ`. Take `⟨θ, hθ⟩ : ∃ θ, IsInfFam (D` from `D) θ := by`. Take `⟨_, _, hθ, _⟩` from `h0`. Conclude with `hθ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hasInfExp_mul h0 (hasInfExp_of_order hθ (hL.xi t) hn ho τ)` as an intermediate fact. Rewrite `this` using `[add_zero, Formalism.L2.Host.eExp, Equiv.symm_apply_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mu_exp' {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T} (hL : L.Is μ₀) (t : T) (j : ℕ) (hj : j < D.R.m)
     (τ : D.what₂.Tau) : HasInfExp D (L.mu t (j + 1)) τ (-(D.hc τ).e ⟨j, hj⟩) := by
@@ -36,9 +36,9 @@ private theorem mu_exp' {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T} (hL : L.
   exact this
 
 /- English proof (translation)
-Establish `hm1 : 1 ≤ D.R.m - i` using `by omega`. Establish `hm2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `h0 : HasInfExp D (G.ch.chi (D.R.m - i)) τ (cen D sc.cGap τ (D.R.m - i) : ℚ)` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ)) (G.ch.chi_eq _ hm1 hm2) ⟨fun τ => 2 * cen D sc.cGap τ (D.R.m - i), fun τ => by push_cast; ring, G.ch.inf _ hm1 hm2⟩ τ`. Unfold `Formalism.IndefR.Lift.attChr`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg]`. Conclude with `GlobalTheory.Chain.StepVac.hasInfExp_mul h0 (GlobalTheory.Chain.StepVac.hasInfExp_inv (GlobalTheory.SquareExps.eta_exp hL τ))`. Simplify using `using h0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem att_exp' {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ0 : T} (hL : L.Is μ0)
     {i : ℕ} (hi : i < D.R.m) (n : ℕ) (τ : D.what₂.Tau) :
@@ -56,25 +56,23 @@ private theorem att_exp' {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : 
   · simpa using h0
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL p hp`. Establish `half : ∀ (c : ℤ) (n : ℕ), ∃ e : ℤ, (e : ℚ) = ((c : ℚ) - if Odd n then 1 / 2 else 0) + (-1) * (n : ℚ) / 2`. Introduce `c n`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Take `⟨k, hk⟩` from `id h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨c - k, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 h), hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `id h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `⟨c - k - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos h, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the cases of `p with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Split into cases according to the possible forms of the given data.
 
-Consider the case `mu t i j => exact hp.elim`. Consider the case `core i => exact hp.elim`. Consider the case `top t j`. Establish `hj : j < D.R.m` using `hp`. Establish `hr0 : Even (G.V (.top j)).rank` using `by rw [GlobalTheory.FunObj.rank_top G (j := j) (by omega)]; exact even_rankX D j`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : Even (G.V (.top (j + 1))).rank`. Rewrite using `[GlobalTheory.FunObj.rank_top G (j := j + 1) (by omega)]; exact even_rankX D (j + 1)`. Establish `hS : G.chrS (.top t j) = L.mu t (j + 1)`. Simplify using `only [GridData.chrS, Formalism.IndefR.Lift.attChr, GridData.chr, GridData.pS, Nat.not_odd_iff_even.2 hr0, if_false]`. Establish `hT : G.chrT (.top t j) = L.mu t (j + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [GridData.chrT, Formalism.IndefR.Lift.attChr, GridData.chr, GridData.pT, Nat.not_odd_iff_even.2 hr1, if_false]`. Establish `hce : ∀ τ, (((num D sc.cGap τ).e (j + 1) : ℤ) : ℚ) = (D.hc τ).e ⟨j, hj⟩` using `fun τ => num_e D sc.cGap τ (l := j + 1) (by omega) hj`. Take `⟨k0, hk0⟩` from `hr0`. Take `⟨k1, hk1⟩` from `hr1`. Use `⟨fun τ => -((D.hc τ).e ⟨j, hj⟩ : ℚ), fun τ => -((D.hc τ).e ⟨j, hj⟩ : ℚ), fun τ => -(num D sc.cGap τ).e (j + 1) + k0, fun τ => (num D sc.cGap τ).e (j + 1) - k1, fun τ => ?_, fun τ => ?_, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hS]`. Conclude with `mu_exp' hL t j hj τ`. Rewrite using `[hT]`. Conclude with `mu_exp' hL t j hj τ`. Simplify using `only [GlobalTheory.FockReal.sgnP, one_mul, hk0, ← hce]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GlobalTheory.FockReal.sgnP, one_mul, hk1, ← hce]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `chi i j`. Establish `hi : i < D.R.m` using `hp.1`. Use `choose e he using half`. Use `⟨_, _, fun τ => e (cen D sc.cGap τ (D.R.m - i)) (G.pS (.chi i j : Pair T)).rank, fun τ => -e (cen D sc.cGap τ (D.R.m - i)) (G.pT (.chi i j : Pair T)).rank, fun τ => att_exp' G hL hi _ τ, fun τ => att_exp' G hL hi _ τ, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Conclude with `he _ _`.
-
-Rewrite using `[Int.cast_neg, he]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.expEx :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ p : GlobalTheory.ChiGrid.Pair T, DefPair D.R.m p → ∃ (a b : D.what₂.Tau → ℚ) (e₁ e₂ : D.what₂.Tau → ℤ),

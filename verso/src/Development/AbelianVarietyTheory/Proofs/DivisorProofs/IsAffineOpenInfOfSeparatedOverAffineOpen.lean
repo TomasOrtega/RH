@@ -5,13 +5,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 namespace GlobalTheory.SepAffInf
 
 /- English proof (translation)
-Use `haveI : IsAffine U.1 := U.2`. Use `haveI : (h ⁻¹ᵁ U.1).toScheme.IsSeparated := by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← terminal.comp_from (h ∣_ U.1)]`. Use `infer_instance`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ Ω : Z.Opens, Ω ≤ h ⁻¹ᵁ U.1 → (h ⁻¹ᵁ U.1).ι ''ᵁ ((h ⁻¹ᵁ U.1).ι ⁻¹ᵁ Ω) = Ω`. Introduce `Ω hΩ`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.mpr hΩ`. Establish `a₁ : IsAffineOpen ((h ⁻¹ᵁ U.1).ι ⁻¹ᵁ Ω₁.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion (h ⁻¹ᵁ U.1).ι, key _ h₁]`. Conclude with `Ω₁.2`. Establish `a₂ : IsAffineOpen ((h ⁻¹ᵁ U.1).ι ⁻¹ᵁ Ω₂.1)`. Rewrite using `[← Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion (h ⁻¹ᵁ U.1).ι, key _ h₂]`. Conclude with `Ω₂.2`.
-
-Establish `a : IsAffineOpen ((h ⁻¹ᵁ U.1).ι ⁻¹ᵁ (Ω₁.1 ⊓ Ω₂.1))` using `a₁.inf a₂`. Rewrite using `[← key _ (inf_le_left.trans h₁)]`. Conclude with `a.image_of_isOpenImmersion _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_inf_of_le_preimage {X Z : Scheme.{0}} (h : Z ⟶ X) [IsSeparated h]
     (U : X.affineOpens) (Ω₁ Ω₂ : Z.affineOpens)

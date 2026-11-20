@@ -11,14 +11,14 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-The claim follows from `(Formalism.HermitianLatticesTheory.gmap_locS_comm g (Formalism.HermitianLatticesTheory.hcompl (K := K) p) L).symm`.
+A detailed English derivation is pending.
 -/
 theorem loc_gmap (g : V ≃ₗ[K] V) (p : Ideal (𝓞 K)) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.loc (K := K) p (Formalism.HermitianLatticesTheory.gmap g L) = Formalism.HermitianLatticesTheory.gmap g (Formalism.HermitianLatticesTheory.loc (K := K) p L) :=
   (Formalism.HermitianLatticesTheory.gmap_locS_comm g (Formalism.HermitianLatticesTheory.hcompl (K := K) p) L).symm
 
 /- English proof (translation)
-Introduce `A B hAB`. Rewrite using `[← Formalism.HermitianLatticesTheory.isomAct_gmap_symm g A, ← Formalism.HermitianLatticesTheory.isomAct_gmap_symm g B, hAB]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_injective (g : V ≃ₗ[K] V) :
     Function.Injective (Formalism.HermitianLatticesTheory.gmap g : Submodule (𝓞 K) V → Submodule (𝓞 K) V) := by
@@ -26,7 +26,7 @@ theorem gmap_injective (g : V ≃ₗ[K] V) :
   rw [← Formalism.HermitianLatticesTheory.isomAct_gmap_symm g A, ← Formalism.HermitianLatticesTheory.isomAct_gmap_symm g B, hAB]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt`. Rewrite using `[loc_gmap, Formalism.HermitianLatticesTheory.genusCovolBound_dualAt_gmap h g hg]`. Conclude with `(gmap_injective g).eq_iff`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnimodularAt_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V}
     (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (p : Ideal (𝓞 K)) (L : Submodule (𝓞 K) V) :
@@ -36,7 +36,7 @@ theorem isUnimodularAt_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] 
   exact (gmap_injective g).eq_iff
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt`. Rewrite using `[he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnimodularAt_of_loc_eq {h : V →ₗ⋆[K] V →ₗ[K] K} (p : Ideal (𝓞 K))
     {L M : Submodule (𝓞 K) V} (he : Formalism.HermitianLatticesTheory.loc (K := K) p L = Formalism.HermitianLatticesTheory.loc (K := K) p M) :
@@ -45,7 +45,7 @@ theorem isUnimodularAt_of_loc_eq {h : V →ₗ⋆[K] V →ₗ[K] K} (p : Ideal (
   rw [he]
 
 /- English proof (translation)
-Use `⟨hL.1, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgI⟩` from `hL.2 p hp`. Rewrite `hgI` using `[← loc_gmap]`. Rewrite using `[← isUnimodularAt_of_loc_eq p hgI, isUnimodularAt_gmap hg]`. Conclude with `isUnimodularAt_of_ortho hK hs hI p hp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodular_of_mem_genus_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {I : Submodule (𝓞 K) V} {n : ℕ} (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I n)

@@ -20,7 +20,7 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Simplify using `only [dualLatticeCoord, hab p.2, Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast, Finset.mul_sum, map_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_stacked {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F)}
     {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
@@ -33,7 +33,7 @@ def twist (Ω : Type) [Field Ω] : MvPolynomial Unit Ω →+* MvPolynomial Unit 
   eval₂Hom (C.comp C) fun u => C (X u) * X u
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map (MvPolynomial.eval fun _ : Unit => (1 : Ω))).comp (twist Ω) = RingHom.id _`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun u => ?_)` and prove the remaining obligations. Simplify using `[twist]`. Simplify using `[twist]`. Conclude with `Function.LeftInverse.injective (g := MvPolynomial.map (MvPolynomial.eval fun _ : Unit => (1 : Ω))) fun x => RingHom.congr_fun h x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twist_injective (Ω : Type) [Field Ω] : Function.Injective (twist Ω) := by
   have h : (MvPolynomial.map (MvPolynomial.eval fun _ : Unit => (1 : Ω))).comp (twist Ω) = RingHom.id _ := by
@@ -44,15 +44,15 @@ theorem twist_injective (Ω : Type) [Field Ω] : Function.Injective (twist Ω) :
     fun x => RingHom.congr_fun h x
 
 /- English proof (translation)
-Set `ψ : MRing (dualBlocks T) →+* MvPolynomial Unit (ProjField K i)` to `mConeMap (dualLatticeCoord b')`. Set `ι : (MRing (dualBlocks T) ⧸ dualIdeal b') →+* MvPolynomial Unit (ProjField K i)` to `Ideal.Quotient.lift (dualIdeal b') ψ fun x hx => RingHom.mem_ker.mp hx`. Establish `hι : Function.Injective ι`. Use `(injective_iff_map_eq_zero ι).mpr fun x hx => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[Ideal.Quotient.lift_mk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (RingHom.mem_ker.mpr hx)`. Establish `hcomp : (MvPolynomial.map ι).comp ((graphMap (dualIdeal b') (linForm (stackedDiag a))).comp (rename (inrV (ι` using `dualBlocks T) (ι₂ := dualBlocks T)) : MRing (dualBlocks T) →ₐ[ℤ] MRing (stackedBlocks T)).toRingHom) = (twist (ProjField K i)).comp (mConeMap (dualLatticeCoord b) : MRing (dualBlocks T) →+* _) := by`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨u, t⟩` from `p`. Consider the cases of `u`. Simplify using `[graphMap, inrV, twist, mConeMap, TopDualSimpleStacked.linForm_stackedDiag, ι, ψ, coord_stacked hab]`. Rewrite using `[show eval₂ (C.comp C) (fun u => C (X u) * X u) ((a t : ℤ) : MvPolynomial Unit (ProjField K i)) = ((a t : ℤ) : MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) from map_intCast (twist _) _]`. Expand and normalize the polynomial expressions, which then agree.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Establish `e` using `RingHom.congr_fun hcomp f`. Simplify using `only [RingHom.comp_apply] at e`. Establish `e1` using `map_eq_zero_iff _ (MvPolynomial.map_injective ι hι) (x := graphMap (dualIdeal b') (linForm (stackedDiag a)) ((rename (inrV (ι := dualBlocks T) (ι₂ := dualBlocks T)) : MRing (dualBlocks T) →ₐ[ℤ] MRing (stackedBlocks T)).toRingHom f))`. Establish `e2` using `map_eq_zero_iff _ (twist_injective (ProjField K i)) (x := (mConeMap (dualLatticeCoord b) : MRing (dualBlocks T) →+* MvPolynomial Unit (ProjField K i)) f)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[e]`. Rewrite using `[imageZ, Ideal.mem_comap, stackedGraph, graphIdeal, RingHom.mem_ker, ← e1, e2]`. Conclude with `RingHom.mem_ker.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_eq {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F)}
     {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
@@ -93,37 +93,33 @@ theorem image_eq {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F
   exact RingHom.mem_ker.symm
 
 /- English proof (translation)
-Establish `hP' : IsArithVar (dualIdeal b') i` using `DualArithVar.proof (CoordConeArithVar.proof IntDomainDim.proof) K i F' T b' hi`. Establish `hP : IsArithVar (dualIdeal b) i` using `DualArithVar.proof (CoordConeArithVar.proof IntDomainDim.proof) K i F T b hi`. Establish `hprime : (dualIdeal b').IsPrime` using `hP'.2.1.1`. Establish `ha : ∀ t, a t ≠ 0`. Introduce `t h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `b.ne_zero t` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hab t, h0, zero_smul]`. Both sides reduce to the same expression. Take `⟨t₀, ht₀⟩` from `hP'.2.1.2.2 ()`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hlin : (C (a t₀) * X ⟨(), t₀⟩ : MRing (dualBlocks T)) ∉ dualIdeal b'` using `TopDualSimpleStacked.C_mul_X_not_mem hprime hP'.2.2.1 (ha t₀) ht₀`. Establish `hform : ∀ q : Σ _ : Unit, T, IsMultiHomog (linForm (stackedDiag a) q) ((fun _ _ => 1 : Unit → Unit → ℕ) q.1)`. Introduce and unpack `⟨u, t⟩`. Consider the cases of `u`. Rewrite using `[TopDualSimpleStacked.linForm_stackedDiag]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `TopDualSimpleStacked.isMultiHomog_C_mul (TopDualSimpleStacked.isMultiHomog_X_int (ι := dualBlocks T) () t) (a t)`. Establish `he : (Pi.single () 1 : Unit → ℕ) = fun _ => 1`. Use function extensionality and compare the values at `u`. Consider the cases of `u`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[he]`. Then use the resulting hypothesis. Establish `hΓ : IsArithVar (stackedGraph b' a) i` using `(hGr Unit (dualBlocks T) Unit (dualBlocks T) (dualIdeal b') i (linForm (stackedDiag a)) (fun _ _ => 1) hP' hform (fun _ => ⟨t₀, by rw [TopDualSimpleStacked.linForm_stackedDiag]; exact hlin⟩)).1`. Establish `hIm : IsArithVar (imageZ inrV (stackedGraph b' a)) i`. Rewrite using `[image_eq hab]`. Conclude with `hP`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpt : IsProjVarF (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) 0` using `hDim Unit (dualBlocks T) (Unit ⊕ Unit) (stackedBlocks T) Sum.inr inrV _ i 0 G isBlockMap_inr hΓ hIm`. Establish `hmem : ∀ f, f ∈ stackedGraph b' a ↔ aeval G.x' f = 0` using `fun f => by`. Rewrite using `[← RingHom.mem_ker, G.genericFibre_ker_target]`. Establish `hx0 : G.x' ⟨Sum.inl (), t₀⟩ ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : (X ⟨Sum.inl (), t₀⟩ : MRing (stackedBlocks T)) ∈ stackedGraph b' a` using `(hmem _).2 (by rw [aeval_X]; exact h)`. Rewrite `hm` using `[stackedGraph, graphIdeal, RingHom.mem_ker, graphMap, eval₂Hom_X']`. Conclude with `ht₀ (Ideal.Quotient.eq_zero_iff_mem.1 (C_eq_zero.1 hm))`. Establish `hy0 : G.x' ⟨Sum.inr (), t₀⟩ ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `TopDualSimpleStacked.second_not_mem hprime a hlin ((hmem _).2 (by rw [graphSecond, aeval_X]; exact h))`. Establish `haΦ : ∀ t, (a t : G.Φ) ≠ 0`. Introduce `t h`. Establish `hm : (C (a t) : MRing (dualBlocks T)) ∈ dualIdeal b`. Rewrite using `[← image_eq hab, ← G.ker_x, RingHom.mem_ker, aeval_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Establish `h2 : a t ∈ (dualIdeal b).comap (C : ℤ →+* MRing (dualBlocks T))` using `hm`. Rewrite `h2` using `[hP.2.2.1]`. Conclude with `ha t (Ideal.mem_bot.mp h2)`. Establish `hrat : ∀ t, G.x' ⟨Sum.inl (), t⟩ / G.x' ⟨Sum.inl (), t₀⟩ = algebraMap G.Φ G.Φ' ((a t₀ : G.Φ) * G.x ⟨(), t⟩ / ((a t : G.Φ) * G.x ⟨(), t₀⟩))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t`. Establish `hm` using `(hmem _).1 (TopDualSimpleStacked.minor_mem (dualIdeal b') a t₀ t)`. Simplify using `only [graphFirst, graphSecond, map_sub, map_mul, aeval_X, eq_intCast, map_intCast] at hm`. Establish `c1 : G.x' ⟨Sum.inr (), t⟩ = algebraMap G.Φ G.Φ' (G.x ⟨(), t⟩)` using `G.compat ⟨(), t⟩`. Establish `c0 : G.x' ⟨Sum.inr (), t₀⟩ = algebraMap G.Φ G.Φ' (G.x ⟨(), t₀⟩)` using `G.compat ⟨(), t₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hat : (a t : G.Φ') ≠ 0`. Rewrite using `[← map_intCast (algebraMap G.Φ G.Φ')]`. Conclude with `(map_ne_zero _).2 (haΦ t)`. Rewrite using `[map_div₀, map_mul, map_mul, map_intCast, map_intCast, ← c1, ← c0, div_eq_div_iff hx0 (mul_ne_zero hat hy0)]`. Take the linear combination `hm`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `ch : (k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)) → fibreIdx (stackedBlocks T) Sum.inr k` to `fun`. Consider the case `⟨Sum.inl _, _⟩ => t₀`. Consider the case `⟨Sum.inr u, h⟩ => absurd ⟨u, rfl⟩ h`. Establish `hz : ∀ k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit), G.x' ⟨k.1, ch k⟩ ≠ 0`. Introduce and unpack `⟨(u | u), h⟩`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `u`. Conclude with `hx0`. Conclude with `absurd ⟨u, rfl⟩ h`. Establish `hch : IsChart (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) ch`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal, RingHom.mem_ker, aeval_X]`. Conclude with `hz k`. Rewrite using `[hJ.1 _ _ _ hpt hch]`. Establish `hdeg` using `Inter.ChartRankAdjoin.proof (FibreBlock (Sum.inr : Unit → Unit ⊕ Unit)) (fibreIdx (stackedBlocks T) Sum.inr) G.Φ G.Φ' (fun q => G.x' ⟨q.1.1, q.2⟩) ch hz hpt.1.2.1`. Establish `hbot : IntermediateField.adjoin G.Φ (Set.range fun q : Σ k : FibreBlock (Sum.inr : Unit → Unit ⊕ Unit), fibreIdx (stackedBlocks T) Sum.inr k => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, ch q.1⟩) = ⊥`.
-
-Rewrite using `[eq_bot_iff, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨⟨(u | u), h⟩, t⟩, rfl⟩`. Consider the cases of `u`. Conclude with `IntermediateField.mem_bot.2 ⟨_, (hrat t).symm⟩`. Conclude with `absurd ⟨u, rfl⟩ h`.
-
-Express the relevant statement in the definitionally equal form `((ptDeg (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) ch : ℕ) : ℤ) = 1`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal, hdeg, hbot, IntermediateField.finrank_bot, Nat.cast_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_deg (hGr : GraphStatement) (hDim : FibreDimStatement) {F F' : HermLattice K i}
     {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
@@ -233,7 +229,7 @@ end StackedGraphImage
 open StackedGraphImage in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a hi hab`. Conclude with `⟨image_eq hab, fun G J hJ => fibre_deg hGr hDim hi hab G J hJ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem DualStackedGraphImage.proof (hGr : GraphStatement) (hDim : FibreDimStatement) :
     DualStackedGraphImage.Statement := by

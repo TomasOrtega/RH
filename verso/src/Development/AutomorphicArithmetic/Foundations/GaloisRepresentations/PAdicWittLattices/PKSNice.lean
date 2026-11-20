@@ -7,15 +7,13 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hKN hP hT hS p _ D G L hsc R _ _ gb k T N J g`. Establish `hq` using `T.e_q N`. Take `⟨hsm, -, hpr⟩` from `hP p D R gb N (T.M N) k`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Smooth (T.X.q (T.lev N))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq]`. Use `infer_instance`. Use `show IsProjOver (T.X.q (T.lev N))`. Rewrite using `[← hq]`. Conclude with `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion _ (hpr hsc.cpt)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j dsimp only [UpperTheory.Gal.Int.Geo.KS.tower]`. Establish `hne : ((L.KN ↑N).subgroupOf (g j).K).index ≠ 0`. Establish `h0` using `(hKN p D G L 1).2.2 N (by norm_num) (by have := N.2.1; omega)`. Rewrite `h0` using `[← Subgroup.relIndex_mul_relIndex _ _ _ (g j).le (g j).le_one]`. Conclude with `left_ne_zero_of_mul h0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : ((L.KN ↑N).subgroupOf (g j).K).FiniteIndex := ⟨hne⟩`. Use `⟨_, hS _ _ _ (hT T.X _ _ ⟨?_, ?_⟩)⟩` and prove the remaining obligations. Conclude with `one_mem _`. Introduce `u hu`. Rewrite `hu`, the goal using `[T.K_eq]`.
-
-Simplify using `using UpperTheory.Gal.Int.Geo.KN_anti (g j).dvd hu`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pKSNice :
     KNBasic → PowSm → TwFEt → SigmaFEt → KSNice := by

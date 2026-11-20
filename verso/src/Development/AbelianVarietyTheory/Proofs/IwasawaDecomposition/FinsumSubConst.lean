@@ -10,17 +10,15 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo.HtTwist
 
 /- English proof (translation)
-Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.fromSpecResidueField x ≫ s)`. Establish `hfin : IsFinite (Spec.map φ)`. Rewrite using `[hφ]`. Conclude with `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : Algebra k (X.residueField x) := φ.hom.toAlgebra`. Use `haveI : Module.Finite k (X.residueField x) := (IsFinite.SpecMap_iff φ).1 hfin`. Use `⟨Module.finrank k (X.residueField x), Module.finrank_pos.ne', fun K _ _ σ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra k K := σ.toAlgebra`. Establish `hP (ψ : X.residueField x →ₐ[k] K) : (Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ X.fromSpecResidueField x) ≫ s = spMap σ`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : φ ≫ CommRingCat.ofHom ψ.toRingHom = CommRingCat.ofHom σ` using `CommRingCat.hom_ext ψ.comp_algebraMap`. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Conclude with `congrArg Spec.map h`. Set `P : (X.residueField x →ₐ[k] K) → {y : {y : Sp K ⟶ X // y ≫ s = spMap σ} // below y.1 = x}` to `fun ψ => ⟨⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ X.fromSpecResidueField x, hP ψ⟩, ExtConj.below_comp x _⟩`. Establish `hb : Function.Bijective P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map (CommRingCat.ofHom a.toRingHom) ≫ X.fromSpecResidueField x = Spec.map (CommRingCat.ofHom b.toRingHom) ≫ X.fromSpecResidueField x` using `congrArg (fun t => t.1.1) h`. Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 h1))`. Conclude with `AlgHom.coe_ringHom_injective h2`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ψ, h⟩` from `ExtConj.factor y x hyx`. Establish `h2 : Spec.map (φ ≫ ψ) = Spec.map (CommRingCat.ofHom σ)`. Rewrite using `[Spec.map_comp, hφ, ← Category.assoc, h]`. Conclude with `hy`. Establish `h3` using `Spec.map_injective h2`.
-
-Conclude with `⟨⟨ψ.hom, fun a => congrArg (fun t => t.hom a) h3⟩, Subtype.ext (Subtype.ext h)⟩`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective P hb), Nat.card_eq_fintype_card, AlgHom.card]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_card {k : Type} [Field k] [CharZero k] {X : Scheme.{0}} (s : X ⟶ Sp k)
     [LocallyOfFiniteType s] (x : X) (hx : IsClosed ({x} : Set X)) :
@@ -60,7 +58,7 @@ theorem exists_card {k : Type} [Field k] [CharZero k] {X : Scheme.{0}} (s : X �
   rw [← Nat.card_congr (Equiv.ofBijective P hb), Nat.card_eq_fintype_card, AlgHom.card]
 
 /- English proof (translation)
-Establish `: Finite {y // p y}` using `Nat.finite_of_card_ne_zero (h ▸ hN)`. Use `letI := Fintype.ofFinite {y // p y}`. Rewrite using `[← finsum_subtype_eq_finsum_cond, ← finsum_subtype_eq_finsum_cond, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_sub_distrib, ← h, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finsum_sub_const {α : Type} (p : α → Prop) {N : ℕ} (hN : N ≠ 0) (h : Nat.card {y // p y} = N)
     (f : α → ℝ) (c : ℝ) : ∑ᶠ (y) (_ : p y), (f y - c) = (∑ᶠ (y) (_ : p y), f y) - N * c := by
@@ -71,7 +69,7 @@ theorem finsum_sub_const {α : Type} (p : α → Prop) {N : ℕ} (hN : N ≠ 0) 
   simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : F →+* ℂ => InfinitePlace.mk σ)]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => c v) fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2], Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mk {F : Type} [Field F] [NumberField F] (c : InfinitePlace F → ℝ) :
     ∑ σ : F →+* ℂ, c (InfinitePlace.mk σ) = ∑ v : InfinitePlace F, (v.mult : ℝ) * c v := by
@@ -82,15 +80,15 @@ theorem sum_mk {F : Type} [Field F] [NumberField F] (c : InfinitePlace F → ℝ
     InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `F _ _ C Y A ci cf ⟨M, L, k, c₀, hI⟩ hcf x hx`. Take `⟨N, hN, hc⟩` from `exists_card Y.str x hx`. Establish `hA : Nat.card {y : AlgPt Y // below y.1 = x} = N` using `hc _ _`. Establish `hfin : Finite {y : AlgPt Y // below y.1 = x}` using `(ExtConj.pts Y x hx).2`. Establish `h₁ (σ : F →+* ℂ) (f : Pts Y σ → ℝ) : ∑ᶠ (z : Pts Y σ) (_ : under z = x), (f z - (A.n : ℕ) * (A.ci + ci) (InfinitePlace.mk σ)) = (∑ᶠ (z : Pts Y σ) (_ : under z = x), (f z - (A.n : ℕ) * A.ci (InfinitePlace.mk σ))) - N * ((A.n : ℕ) * ci (InfinitePlace.mk σ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← finsum_sub_const (fun z : Pts Y σ => under z = x) hN (hc ℂ σ)]`. Simplify using `only [Pi.add_apply, mul_add, sub_sub]`. Establish `hs : (Function.support fun v : HeightOneSpectrum (𝓞 F) => ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y).Finite`. Use `(Set.finite_iUnion fun y : {y : AlgPt Y // below y.1 = x} => finite_places_lg_ne_zero F C Y A M L k c₀ hI y.1).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_not, ne_eq] at h`. Use `hv ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← finsum_subtype_eq_finsum_cond]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h₂ : ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), (A.lg v (Ext.instNonempty v).some y - (A.n : ℕ) * cf v) = (∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y) - N * ((A.n : ℕ) * ∑ᶠ v, cf v)`. Rewrite using `[mul_finsum, mul_finsum, ← finsum_sub_distrib hs (hcf.subset fun v hv h0 => hv (by simp [h0]))]`. Conclude with `finsum_congr fun v => finsum_sub_const _ hN hA _ _`. Establish `hN' : (N : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 A.n.ne_zero`. Simplify using `only [Adl.ht, Adl.twist, dif_pos (Ext.instNonempty _), h₁, h₂, hA, Finset.sum_sub_distrib, ← Finset.mul_sum, sum_mk]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (ci : InfinitePlace F → ℝ) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.IsModel → (Function.support cf).Finite → ∀ x : Y.X, IsClosed ({x} : Set Y.X) → (A.twist ci cf).ht x = A.ht x + ((∑ v : InfinitePlace F, (v.mult : ℝ) * ci v) + ∑ᶠ v, cf v) / (Module.finrank ℚ F : ℝ) := by
   intro F _ _ C Y A ci cf ⟨M, L, k, c₀, hI⟩ hcf x hx

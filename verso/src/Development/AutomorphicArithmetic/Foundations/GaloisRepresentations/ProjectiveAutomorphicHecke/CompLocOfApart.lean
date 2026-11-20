@@ -36,7 +36,7 @@ def Sim {A B : Type} [CommRing A] [CommRing B] (σ : A →+* A) (i : B →+* A) 
       _ = _ := by rw [← h3, Units.mul_inv]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Sim {A B : Type} [CommRing A] [CommRing B] {σ : A →+* A} {i : B →+* A} {n : ℕ} {p : GL (Fin n) A × Bˣ} :
     p ∈ Sim σ i n ↔ (p.1.val.map σ)ᵀ * p.1.val = i p.2 • (1 : Matrix (Fin n) (Fin n) A) := Iff.rfl
@@ -99,7 +99,7 @@ Both sides reduce to the same expression.
 def locE {w : Plc E} (hw : IsSplitAt w) : locU n w ≃ₜ* GL (Fin n) (w.adicCompletion E) := (GlobalTheory.locU_equiv_GL E n w hw).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.locU_equiv_GL E n w hw).choose_spec x`.
+A detailed English derivation is pending.
 -/
 theorem locE_apply {w : Plc E} (hw : IsSplitAt w) (x : locU n w) : locE hw x = cLoc w x.1 := (GlobalTheory.locU_equiv_GL E n w hw).choose_spec x
 
@@ -107,13 +107,13 @@ def locF {w : Plc E} (hw : IsSplitAt w) : GL (Fin n) (w.adicCompletion E) →* f
   (Subgroup.inclusion (inf_le_left : locU n w ≤ finU E n)).comp (locE hw).symm.toMulEquiv.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `((locE hw).symm x).2`.
+A detailed English derivation is pending.
 -/
 theorem locF_mem {w : Plc E} (hw : IsSplitAt w) (x : GL (Fin n) (w.adicCompletion E)) : (locF hw x).1 ∈ locU n w :=
   ((locE hw).symm x).2
 
 /- English proof (translation)
-The claim follows from `(locE_apply hw _).symm.trans ((locE hw).apply_symm_apply x)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem cLoc_locF {w : Plc E} (hw : IsSplitAt w) (x : GL (Fin n) (w.adicCompletion E)) : cLoc w (locF hw x).1 = x :=
   (locE_apply hw _).symm.trans ((locE hw).apply_symm_apply x)
@@ -126,13 +126,13 @@ Both sides reduce to the same expression.
 @[simp] theorem sim_loc {w : Plc E} (hw : IsSplitAt w) (x : GL (Fin n) (w.adicCompletion E)) : sim (loc hw x) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `cLoc_locF hw x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem comp_loc {w : Plc E} (hw : IsSplitAt w) (x : GL (Fin n) (w.adicCompletion E)) : comp w (loc hw x) = x :=
   cLoc_locF hw x
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (locF_mem hw x)).2 u) hu)`.
+A detailed English derivation is pending.
 -/
 theorem comp_loc_of_apart {w u : Plc E} (hw : IsSplitAt w) (hu : GlobalTheory.Cong.Apart u w) (x : GL (Fin n) (w.adicCompletion E)) :
     comp u (loc hw x) = 1 :=
@@ -154,7 +154,7 @@ def lev (S : Finset (Plc E)) (Kw : ∀ w : Plc E, Subgroup (GL (Fin n) (w.adicCo
   ZU.comap sim ⊓ (⨅ w ∈ S, (Kw w).comap (comp w)) ⊓ ⨅ (w : Plc E) (_ : w ∉ S ∧ cj w ∉ S), (KGL w n).comap (comp w)
 
 /- English proof (translation)
-Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, and_assoc, and_imp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lev {S : Finset (Plc E)} {Kw : ∀ w : Plc E, Subgroup (GL (Fin n) (w.adicCompletion E))} {k : GUf E n} :
     k ∈ lev S Kw ↔ sim k ∈ ZU ∧ (∀ w ∈ S, comp w k ∈ Kw w) ∧ ∀ w, w ∉ S → cj w ∉ S → comp w k ∈ KGL w n := by

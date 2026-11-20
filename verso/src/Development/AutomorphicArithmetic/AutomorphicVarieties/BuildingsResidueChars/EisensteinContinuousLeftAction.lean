@@ -8,20 +8,20 @@ open NumberField MeasureTheory Topology Matrix Neutral.B1 Formalism.L2.Host Glob
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_aff1 {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : R) :
     GeneralLinearGroup.map f (aff 1 x) = aff 1 (f x) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_one_zero {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Use `TR.ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[TR.pInf_infGL, map_aff1]`. Conclude with `congrArg _ ((TR.infEq F).symm_apply_apply x).symm`. Rewrite using `[TR.pFin_infGL, map_aff1]`. Conclude with `aff_one_zero.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem infGL_aff (x : TR.Rinf F) : TR.infGL F 2 (aff 1 x) = aff 1 (TR.sInf F x) := by
   refine TR.ga_ext ?_ ?_
@@ -31,7 +31,7 @@ private theorem infGL_aff (x : TR.Rinf F) : TR.infGL F 2 (aff 1 x) = aff 1 (TR.s
     exact aff_one_zero.symm
 
 /- English proof (translation)
-The claim follows from `TR.ga_ext (by simp only [map_mul, map_inv, TR.pInf_infGL]; group) (by simp only [map_mul, map_inv, TR.pFin_infGL]; group)`.
+A detailed English derivation is pending.
 -/
 private theorem infGL_left (a : GL (Fin 2) (TR.Rinf F)) (g : GA F 2) :
     TR.infGL F 2 a * g = g * TR.infGL F 2 ((GeneralLinearGroup.map (TR.pInf F) g)⁻¹ * a * GeneralLinearGroup.map (TR.pInf F) g) :=
@@ -39,7 +39,7 @@ private theorem infGL_left (a : GL (Fin 2) (TR.Rinf F)) (g : GA F 2) :
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-The claim follows from `((TR.rmul (TR.toL h.val)).comp (TR.lmul (TR.toL (h⁻¹).val))).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ha`.
+A detailed English derivation is pending.
 -/
 private theorem conj_deriv (h : GL (Fin 2) (TR.Rinf F)) (a : ℝ → GL (Fin 2) (TR.Rinf F)) (X : Matrix (Fin 2) (Fin 2) (TR.Rinf F))
     (ha : HasDerivAt (fun t => TR.toL (a t).val) (TR.toL X) 0) :
@@ -49,7 +49,7 @@ private theorem conj_deriv (h : GL (Fin 2) (TR.Rinf F)) (a : ℝ → GL (Fin 2) 
 open Classical in
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Use function extensionality and compare the values at `a b w`. Simplify using `only [← map_inv]`. Generalize the expression as in `h⁻¹ = h'`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Matrix.single_apply, Fin.sum_univ_two, Pi.single_apply, Finset.sum_apply] <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem conj_dec (h : GL (Fin 2) (TR.Rinf F)) (i j : Fin 2) (u : TR.Rinf F) :
     TR.toL ((h⁻¹).val * Matrix.single i j u * h.val) = ∑ v, u v • ∑ a, ∑ b,
@@ -64,9 +64,9 @@ private theorem conj_dec (h : GL (Fin 2) (TR.Rinf F)) (i j : Fin 2) (u : TR.Rinf
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Use `⟨Units.continuous_iff.2 ⟨?_, ?_⟩, fun s t => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, -Matrix.coe_units_inv] <;> fun_prop`. Apply the tactic sequence `ext i j : 2 fin_cases i <;> fin_cases j <;> simp [aff, add_smul, add_comm]`. Apply the tactic sequence `refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, hasDerivAt_const]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const u`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem nil_curve (u : TR.Rinf F) :
     Continuous (fun t : ℝ => aff (1 : (TR.Rinf F)ˣ) (t • u)) ∧
@@ -85,9 +85,9 @@ private theorem nil_curve (u : TR.Rinf F) :
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Establish `e : ∀ t, (y t).val = fun v => Real.exp (t * u v)` using `fun t => funext (hy t)`. Establish `e' : ∀ t, ((y t)⁻¹).val = fun v => Real.exp (-(t * u v))` using `fun t => Units.inv_eq_of_mul_eq_one_right (by funext v; simp [hy, ← Real.exp_add])`. Use `⟨Units.continuous_iff.2 ⟨?_, ?_⟩, fun s t => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, e] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, -Matrix.coe_units_inv, e'] <;> fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext i j v fin_cases i <;> fin_cases j <;> simp [aff, hy, add_mul, Real.exp_add]`. Apply the tactic sequence `refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, hasDerivAt_const]`. Use `hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Simplify `((hasDerivAt_id (0 : ℝ)).mul_const (u v)).exp` using `[hy]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem tor_curve (u : TR.Rinf F) (y : ℝ → (TR.Rinf F)ˣ) (hy : ∀ t v, (y t).val v = Real.exp (t * u v)) :
     Continuous (fun t : ℝ => aff (y t) 0) ∧
@@ -109,27 +109,23 @@ private theorem tor_curve (u : TR.Rinf F) (y : ℝ → (TR.Rinf F)ˣ) (hy : ∀ 
     simpa [hy] using ((hasDerivAt_id (0 : ℝ)).mul_const (u v)).exp
 
 /- English proof (translation)
-Introduce `hS hB hL hA hC F _ _ _ _ _ μ _ D hD k c ω hω φ hφ u y hy g`. Establish `hl` using `hL F μ D hD φ hφ.aut.left hφ.aut.level`. Establish `hb` using `hB F μ D hD φ.1 (hS F 2 φ hφ.aut.level) hφ.aut.left`. Establish `hi : ∀ X, IntegrableOn (fun x : NA F => (TR.lie F 2 X φ).1 (unip x * g)) D μ` using `fun X => (hB F μ D hD _ (hl X).1.2 (hl X).1.1).1 g`. Set `L : TR.Lie F 2 →ₗ[ℝ] ℂ` to `{ toFun := fun X => cterm μ D (TR.lie F 2 X φ).1 g map_add' := fun X Y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[map_add]`. Conclude with `integral_add (hi X) (hi Y)`. Use the proof step `map_smul' := fun r X => by`. Rewrite using `[map_smul]`. Conclude with `integral_smul r (fun x : NA F => (TR.lie F 2 X φ).1 (unip x * g)) }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : ∀ (X) (z : ℂ) (ψ : TR.Sm F 2), TR.lie F 2 X φ = z • ψ → L X = z * cterm μ D ψ.1 g` using `fun X z ψ e => by`. Express the relevant statement in the definitionally equal form `cterm μ D (TR.lie F 2 X φ).1 g = _`. Rewrite using `[e]`. Conclude with `integral_const_mul z (fun x : NA F => ψ.1 (unip x * g))`. Use `set h := GeneralLinearGroup.map (TR.pInf F) g with hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (a : ℝ → GL (Fin 2) (TR.Rinf F)) (X : Matrix (Fin 2) (Fin 2) (TR.Rinf F)), Continuous a → (∀ s t, a (s + t) = a s * a t) → HasDerivAt (fun t => TR.toL (a t).val) (TR.toL X) 0 → HasDerivAt (fun t => cterm μ D φ.1 (TR.infGL F 2 (a t) * g)) (L (TR.toL ((h⁻¹).val * X * h.val) …`. Introduce `a X h1 h2 h3`. Simplify using `only [infGL_left _ g]`. Conclude with `(hl _).2 (fun t => h⁻¹ * a t * h) (by fun_prop) (fun s t => by rw [h2]; group) (conj_deriv h a X h3) g`. Establish `hnil : ∀ x : TR.Rinf F, L (TR.toL ((h⁻¹).val * Matrix.single 0 1 x * h.val)) = 0` using `fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2, h3⟩` from `nil_curve x`. Use `key _ _ h1 h2 h3` as an intermediate fact. Simplify using `only [infGL_aff, hb.2.1] at this`. Conclude with `this.unique (hasDerivAt_const _ _)`. Set `E : InfinitePlace F → Fin 2 → Fin 2 → TR.Lie F 2` to `fun v a b => TR.toL (Matrix.single a b (Pi.single v 1 : TR.Rinf F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ∀ v a b, TR.lie F 2 (E v a b) = TR.Eop v a b` using `fun _ _ _ => by`. Simplify using `only [E, TR.Eop]`. Establish `hdec : ∀ (i j : Fin 2) (x : TR.Rinf F), L (TR.toL ((h⁻¹).val * Matrix.single i j x * h.val)) = ∑ v, (x v : ℂ) * ∑ a, ∑ b, ((((GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h)⁻¹).val * Matrix.single i j (1 : ℝ) * (GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h). …` using `fun i j x => by`. Rewrite using `[conj_dec]`. Simplify using `only [map_sum, map_smul, Complex.real_smul, E]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hv` using `fun v : InfinitePlace F => hA (GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h) (fun a b => L (E v a b)) (k * cterm μ D φ.1 g) (by`. Rewrite using `[← map_add, hsm _ 0 φ, zero_mul]`. Rewrite using `[map_add, hE, hE, zero_smul]`. Conclude with `hC F k c ω hω φ hφ v)`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_sub, hsm _ (Complex.I * k) φ, mul_assoc]`. Rewrite using `[map_sub, hE, hE]`. Conclude with `hφ.wt v)`. Use the proof step `(by`. Rewrite using `[← map_sub, ← map_add, hsm _ Complex.I (TR.lie F 2 (E v 0 1 + E v 1 0) φ)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_sub, map_add, hE, hE, hE, hE]`. Conclude with `hφ.low v)`. Use the proof step `(by`. Use `hnil (Pi.single v 1)` as an intermediate fact.
-
-Rewrite `this` using `[hdec, Finset.sum_eq_single v (fun w _ hw => by simp [Pi.single_eq_of_ne hw]) (by simp)]`. Simplify `this)` using `only [Pi.single_eq_same, Complex.ofReal_one, one_mul]`. Take `⟨h1, h2, h3⟩` from `tor_curve u y hy`. Use `key _ _ h1 h2 h3` as an intermediate fact. Rewrite `this` using `[hdec]`.
-
-Simplify using `only [hv] at this`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.sum_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eisenstein_continuous_left_action :
     UpperTheory.V.Sd.Eis.SmCont → UpperTheory.V.Sd.Eis.CtBasic → UpperTheory.V.Sd.Eis.CtLie → UpperTheory.V.Sd.Eis.LieAlg → UpperTheory.V.Sd.Eis.CentLie → UpperTheory.V.Sd.Eis.CtLeft := by

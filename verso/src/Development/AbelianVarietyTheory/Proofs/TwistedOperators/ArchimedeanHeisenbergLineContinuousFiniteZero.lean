@@ -24,9 +24,7 @@ namespace GlobalTheory.ArchLineCont
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (realAd)
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ofMixed' (F : Type) [Field F] [NumberField F] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
@@ -40,7 +38,7 @@ theorem continuous_ofMixed' (F : Type) [Field F] [NumberField F] :
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 /- English proof (translation)
-The claim follows from `Continuous.prodMk ((continuous_ofMixed' F).comp (continuous_algebraMap ℝ _)) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realAd' (F : Type) [Field F] [NumberField F] : Continuous (realAd F) :=
   Continuous.prodMk ((continuous_ofMixed' F).comp (continuous_algebraMap ℝ _)) continuous_const
@@ -48,11 +46,11 @@ theorem continuous_realAd' (F : Type) [Field F] [NumberField F] : Continuous (re
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D S X d e g cS hcS u`. Establish `hform : ∀ t, GlobalTheory.VacTransfer.archLine cS u t = (HMul.hMul ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u)ᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM g) : Matrix (Fin X.rank) (Fin S.rank) (AE D))` using `fun t => by`. Rewrite using `[GlobalTheory.VacTransfer.archLine_apply, hcS]`. Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Establish `hsm : Continuous fun t : ℝ => (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u : Matrix (Fin S.rank) (Fin d) (AE D))` using `(continuous_realAd' D.host.F).smul continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (GlobalTheory.VacTransfer.archLine cS u : ℝ → WO S X) = fun t => (HMul.hMul ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u)ᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM g) : Matrix (Fin X.rank) (Fin S.rank) …` using `funext hform`. Rewrite using `[this]`. Conclude with `(hsm.matrix_transpose.matrix_submatrix e id).matrix_mul continuous_const`. Rewrite using `[hform]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, Matrix.zero_apply, Matrix.mul_apply, map_sum (finPart D)]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[(finPart D).map_mul, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.smul_apply, GlobalTheory.ArchLineSum.finPart_smul, show sndA D.host.F (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t) = 0 from rfl, TensorProduct.zero_tmul, zero_mul, zero_mu …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archLine_continuous_finPart : ∀ (D : D7) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (g : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (cS : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X),

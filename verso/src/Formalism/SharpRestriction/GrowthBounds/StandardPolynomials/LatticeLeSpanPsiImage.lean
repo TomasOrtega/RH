@@ -13,17 +13,17 @@ section Span
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hKz : CharZero (KK O)` using `dvr_fraction_field_charZero S hp`. Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`. Take `⟨hli, hspan⟩` from `hA2 O N r (⟨LL.vec⟩ : Letters (Fin N)) LL.deg`. Establish `hli' : LinearIndependent O (psiR (r` using `r) O LL) := hli`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrange : Submodule.span O (Set.range (psiR (r` using `r) O LL)) = Pol O r LL.deg := by`. Rewrite using `[← hspan]`. Use `congr 1`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.1.1, x.1.2, x.2, rfl⟩`. Introduce and unpack `⟨P, I, h, rfl⟩`. Conclude with `⟨⟨(P, I), h⟩, rfl⟩`. Establish `hfin : Finite (Tx r LL)` using `tx_finite LL hli' hrange`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨Bd, hBd⟩` from `exists_bound (r := r) (Lt := (⟨LL.vec⟩ : Letters (Fin N))) (B := LL.deg)`. Establish `hC1` using `one_cond D LL hrange hspan (fun th M => (hA3 p O S N r _ LL.deg th M).1) Bd hBd J M hJ`. Introduce `F hF`. Take `⟨hY, G, hG⟩` from `hF`. Set `φ : MvPolynomial (Fin N × Fin r) O →ₗ[O] MvPolynomial (Fin N × Fin r) (KK O)` to `(MvPolynomial.mapAlgHom (Algebra.ofId O (KK O))).toLinearMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hG' : MvPolynomial.map (algebraMap O (KK O)) G = F` using `hG`. Establish `hY' : MvPolynomial.map (algebraMap O (KK O)) G ∈ Yjt (KK O) (r` using `r) LL J M := by rw [hG']; exact hY`. Rewrite `hY'` using `[Yjt, Submodule.mem_inf, Submodule.mem_iInf]`. Establish `hGP : G ∈ Pol O r LL.deg` using `(map_mem_Pol_iff _ hinj _ G).1 hY'.1`. Establish `hGs : G ∈ Submodule.span O (psiR O LL '' sAll LL J M)` using `mem_span_iInter hli' (sK LL J M) (hrange ▸ hGP) (fun k => (hC1 k G hGP).1 (hY'.2 k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F ∈ Submodule.map φ (Submodule.span O (psiR O LL '' sAll LL J M))` using `⟨G, hGs, hG⟩`. Rewrite `h1` using `[Submodule.map_span, ← Set.image_comp]`. Establish `h2 : (φ ∘ psiR (r` using `r) O LL) = psiR (KK O) LL := funext fun x => psiR_map LL x`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lattice_le_span_psi_image {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) {p : ℕ} [Fact p.Prime]
     (S : UniformizedDVR p O) (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (hJ : ∀ k, J k ≤ N) :
@@ -65,24 +65,24 @@ section Xi
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Introduce `c d h`. Simplify `h` using `[xiVar]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xiVar_inj (N r t : ℕ) : Function.Injective (xiVar N r t) := by
   intro c d h
   simpa [xiVar] using h
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hf`. Take `⟨g, rfl⟩` from `LinearMap.mem_range.1 h2`. Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`. Establish `hmap : ∀ p : MvPolynomial (BVar N r t) O, (MvPolynomial.mapAlgHom (Algebra.ofId O (KK O)) : MvPolynomial (BVar N r t) O →ₐ[O] _).toLinearMap p = MvPolynomial.map (algebraMap O (KK O)) p` using `fun p => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsup : ∀ m ∈ g.support, (∀ v ∈ m.support, ∃ c, v = xiVar N r t c) ∧ ∑ c, m (xiVar N r t c) = b`. Introduce `m hm`. Establish `hm' : m ∈ (MvPolynomial.map (algebraMap O (KK O)) g).support`. Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_map]`. Conclude with `(map_ne_zero_iff _ hinj).2 (MvPolynomial.mem_support_iff.1 hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hmap]`. Conclude with `((MvPolynomial.mem_restrictSupport_iff (KK O)).1 h1) (Finset.mem_coe.2 hm')`. Rewrite using `[hmap, MvPolynomial.as_sum g, map_sum]`. Use `Submodule.sum_mem _ (fun m hm => ?_)` and prove the remaining obligations. Take `⟨hv, hb⟩` from `hsup m hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmon : m.prod (fun v e => (X v : MvPolynomial (BVar N r t) (KK O)) ^ e) = ∏ c, X (xiVar N r t c) ^ m (xiVar N r t c)`. Rewrite using `[Finsupp.prod, ← Finset.prod_image (fun c _ c' _ h => xiVar_inj N r t h) (f := fun v => (X v : MvPolynomial (BVar N r t) (KK O)) ^ m v)]`. Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `v hv'`. Take `⟨c, rfl⟩` from `hv v hv'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ c)`. Introduce `v _ hv'`. Establish `h0 : m v = 0` using `by simpa using hv'`. Rewrite using `[h0, pow_zero]`. Establish `hprod1 : m.prod (fun v e => (X v : MvPolynomial (BVar N r t) (KK O)) ^ e) = MvPolynomial.monomial m 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul]`. Establish `hterm : MvPolynomial.map (algebraMap O (KK O)) (MvPolynomial.monomial m (g.coeff m)) = g.coeff m • ∏ c, X (xiVar N r t c) ^ m (xiVar N r t c)`. Rewrite using `[← hmon, hprod1, MvPolynomial.smul_monomial, Algebra.smul_def, mul_one, MvPolynomial.map_monomial]`. Rewrite using `[hterm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun c => m (xiVar N r t c), hb, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiSpan (N r t b : ℕ) :
     XiPolZ O N r t b ≤ Submodule.span O
@@ -130,17 +130,15 @@ section Gen
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [genSet, Set.mem_iUnion] at hx`. Take `⟨j, jp, hok, y, hy, g, hg, rfl⟩` from `hx`. Establish `key : ∀ y ∈ Submodule.span O (psiR (KK O) (B.lettersAt j jp) '' sAll (B.lettersAt j jp) B.T.J B.T.thr), ∀ g ∈ Submodule.span O {g : MvPolynomial (BVar N r B.T.t) (KK O) | ∃ γ : Fin r → ℕ, ∑ c, γ c = B.B - jp ∧ g = ∏ c, X (xiVar N r B.T.t c) ^ γ c}, ((∏ i, B.Ehat O (r` using `r) i ^ j i) * B.Eplus O (r := r) ^ jp * (∏ i, X (scalZ N r B.T.t (Fin.castSucc i)) ^ B.T.z i) * X (scalZ N r B.T.t (Fin.last B.T.t)) ^ B.zPlus) * rename (chainEmb N r B.T.t) y * g ∈ Submodule.span O (colGens O (r := r) B) := by`. Introduce `y hy g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y0 hy0`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g0 hg0`. Take `⟨yy, hyy, rfl⟩` from `hy0`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, rfl⟩` from `hg0`. Conclude with `Submodule.subset_span ⟨j, jp, hok, yy, hyy, γ, hγ, rfl⟩`. Consider the case `zero => simp`. Consider the case `add g1 g2 _ _ h1 h2`. Rewrite using `[mul_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a g1 _ h1`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ a h1`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y1 y2 _ _ h1 h2`. Rewrite using `[map_add, mul_add, add_mul]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y1 _ h1`. Rewrite using `[AlgHom.map_smul_of_tower, mul_smul_comm, smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ a h1`. Conclude with `key y (lattice_le_span_psi_image (r := r) hA2 hA3 S (B.lettersAt j jp) B.T.J B.T.thr hJ hy) g (xiSpan (O := O) N r B.T.t (B.B - jp) hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genSet_le {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) {p : ℕ} [Fact p.Prime]
     (S : UniformizedDVR p O) (B : BlockData N) (hJ : ∀ k, B.T.J k ≤ N) :
@@ -179,7 +177,7 @@ theorem genSet_le {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.C
     (xiSpan (O := O) N r B.T.t (B.B - jp) hg)
 
 /- English proof (translation)
-Use `show (if h : (k : ℕ) < S.t then 2 * (uTop S ⟨k, h⟩ : ℕ) + 1 else 2 * s + 1) ≤ 2 * s + 1`. Use `split_ifs with h`. Use `(uTop S ⟨k, h⟩).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem blockData_J_le (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (k : Fin (blockData p S aTop aPlus m b).T.q) : (blockData p S aTop aPlus m b).T.J k ≤ 2 * s + 1 := by
@@ -192,7 +190,7 @@ theorem blockData_J_le (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → �
 end Gen
 
 /- English proof (translation)
-Introduce `_ _ X _ _ O _ _ _ _ S hSq hD1 hHI hCB mm hmm n hn1 hnc β hβ s hs`. Establish `hmem : symFam (KK O) X.p C0 CE1 CE2 X β s ∈ liftSub C0 Cde CE1 CE2 X O S.w mm n (ordFam C0 CE1 CE2 X β)` using `symFam_span β (fun j => colGens O (r := X.m) (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j))) _ (fun s' hs' => (hF X O S hSq hD1 hHI hCB mm hmm n hn1 hnc β hβ s' hs').some.liftable S.w_irr.ne_zero) s (fun j => genSet_ …`. Take `⟨raw, hc, τ, hτ, hw⟩` from `hmem`. Conclude with `⟨raw, τ, hc, hτ, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem asmRTAt_of_facSys {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D)
     {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : FacSysAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
@@ -208,9 +206,9 @@ theorem asmRTAt_of_facSys {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainN
   exact ⟨raw, τ, hc, hτ, hw⟩
 
 /- English proof (translation)
-Unfold `admitted at hA`. Take `⟨-, -, -, -, -, h6, -, -, -, -, -, -, -, -, h15, -⟩` from `hA`. Introduce `Cc hCc`. Take `⟨T0, hT0, h1⟩` from `h Cc hCc`. Use `⟨T0, hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T1, hT1, h2⟩` from `h1 C0 hC0`. Use `⟨T1, hT1, fun CE1 CE2 Cm hE1 hE2 hm => ?_⟩` and prove the remaining obligations. Take `⟨T2, hT2, h3⟩` from `h2 CE1 CE2 Cm hE1 hE2 hm`. Conclude with `⟨T2, hT2, fun CYb Cde Ck CD Cb a b c d e => asmRTAt_of_facSys (D := D) h15 h6 (h3 CYb Cde Ck CD Cb a b c d e)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem restAsmRT_of_facSys {D : Formalism.BasicNotions.D7} (hA : admitted D) (h : FacSysCondition) : RestAsmRT := by
   unfold admitted at hA

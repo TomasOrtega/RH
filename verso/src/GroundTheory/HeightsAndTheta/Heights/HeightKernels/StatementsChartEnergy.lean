@@ -20,7 +20,7 @@ def ChartEnergy.Statement : Prop :=
         chartMass (1 : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one, fun h => by have h1 := congrFun (congrFun h 0) 0 simp at h1⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
     (1 : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
@@ -30,7 +30,7 @@ example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) 
     simp at h1⟩
 
 /- English proof (translation)
-Simplify using `[chartMixedEnergy]`.
+Simplify using the standard rewrite rules.
 -/
 example (M N : Matrix (Fin (0 + 1)) (Fin (0 + 1)) ℂ) :
     chartMixedEnergy M N 0 = ∫ y : Fin 0 → ℂ, (hermChartPot M y - hermChartPot N y) *

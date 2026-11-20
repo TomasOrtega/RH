@@ -28,13 +28,11 @@ section SlopeTestRemainingChoices
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Take `⟨-, -, hs, hc, he, hm, -, -⟩` from `uaFacts L n`. Establish `hone : ∀ x : UA L n, x ∈ finU L n → x ∈ infU L n → x = 1` using `fun x h₁ h₂ => he x 1 (fun w => by rw [(hm x).2.1 h₂ w, map_one]) (fun τ => by rw [(hm x).1.1 h₁ τ, map_one])`. Establish `hu : ∀ f ∈ finU L n, ∀ k ∈ infU L n, ∀ f' ∈ finU L n, ∀ k' ∈ infU L n, f * k = f' * k' → f = f'`. Introduce `f hf k hk f' hf' k' hk' h`. Establish `h₀ : f'⁻¹ * f = k' * k⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← h, mul_inv_cancel_right]`. Establish `h₁` using `hone _ (mul_mem (inv_mem hf') hf) (h₀ ▸ mul_mem hk' (inv_mem hk))`. Conclude with `(inv_mul_eq_one.1 h₁).symm`. Use `choose f hf k hk hx using hs`. Use `⟨{ toFun := fun x => ⟨f x, hf x⟩, map_one' := ?_, map_mul' := ?_ }, ?_, fun x => ⟨k x, hk x, hx x⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.ext (hu _ (hf 1) _ (hk 1) 1 (one_mem _) 1 (one_mem _) (by rw [← hx, one_mul]))`. Introduce `x y`. Use `Subtype.ext (hu _ (hf (x * y)) _ (hk (x * y)) (f x * f y) (mul_mem (hf x) (hf y)) (k x * k y) (mul_mem (hk x) (hk y)) ?_)` and prove the remaining obligations. Establish `hxy` using `(hc _ (hf y) _ (hk x)).eq`. Combine the equalities or inequalities in the displayed calculation.
-
-Introduce `f₀ k₀ hk₀`. Conclude with `Subtype.ext (hu _ (hf _) _ (hk _) _ f₀.2 _ hk₀ (hx _).symm)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exFin (n : ℕ) : ∃ p : UA L n →* finU L n,
     (∀ f : finU L n, ∀ k ∈ infU L n, p ((f : UA L n) * k) = f) ∧ ∀ x : UA L n, ∃ k ∈ infU L n, x = (p x : UA L n) * k := by
@@ -61,7 +59,7 @@ theorem exFin (n : ℕ) : ∃ p : UA L n →* finU L n,
     exact Subtype.ext (hu _ (hf _) _ (hk _) _ f₀.2 _ hk₀ (hx _).symm)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hm, -, -⟩` from `uaFacts L n`. Use function extensionality and compare the values at `v`. Conclude with `(hm x).1.1 h v.embedding`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem infC_fin {n : ℕ} {x : UA L n} (h : x ∈ finU L n) : infC L n x = 1 := by
   obtain ⟨-, -, -, -, -, hm, -, -⟩ := uaFacts L n
@@ -69,11 +67,11 @@ theorem infC_fin {n : ℕ} {x : UA L n} (h : x ∈ finU L n) : infC L n x = 1 :=
   exact (hm x).1.1 h v.embedding
 
 /- English proof (translation)
-Establish `h₁ : Wt.infG (em B) 2 ((γ : DX B.Δ) : GL (Fin 2) _) = infC L 2 (B.rS γ : UA L 2)`. Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Use `show _ = ((cEmb v.embedding (B.rS γ : UA L 2) : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ)`. Rewrite using `[B.rS_inf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hdet : Matrix.GeneralLinearGroup.det ((γ : DX B.Δ) : GL (Fin 2) (Lsq (Lp L) B.Δ)) = 1` using `MonoidHom.mem_ker.1 (show (γ : DX B.Δ) ∈ ((Matrix.GeneralLinearGroup.det (n := Fin 2) (R := Lsq (Lp L) B.Δ)).comp (DX B.Δ).subtype).ker from γ.2)`. Establish `h₂ : Wt.detE 2 e (Wt.infG (em B) 2 ((γ : DX B.Δ) : GL (Fin 2) _)) = 1` using `by show ∏ v, Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (em B v) ((γ : DX B.Δ) : GL (Fin 2) _)) ^ e = 1`. Simplify using `[Matrix.GeneralLinearGroup.map_det, hdet]`. Use `show Wt.repD _ n e (Wt.infG (em B) 2 ((γ : DX B.Δ) : GL (Fin 2) _)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h₃ : ∀ g : InfinitePlace L → GL (Fin 2) ℂ, repE n (0 : InfinitePlace L → ℤ) g = Wt.mRep 2 _ g` using `fun g => by show ((∏ v, Matrix.GeneralLinearGroup.det (g v) ^ (0 : InfinitePlace L → ℤ) v : ℂˣ) : ℂ) • Wt.mRep 2 _ g = _`. Simplify using the standard rewrite rules. Rewrite using `[Wt.repD_apply, h₂, h₁, h₃]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cD_rS (B : Bridge L) (n : ℕ) (e : ℤ) (γ : SU B.Δ) :
     Wt.cD (em B) n e (γ : DX B.Δ) = repE n (0 : InfinitePlace L → ℤ) (infC L 2 (B.rS γ : UA L 2)) := by
@@ -103,7 +101,7 @@ def eT : ↥(finU L 2 ⊓ SUA L) ≃* ↥((SUA L).subgroupOf (finU L 2)) where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[mul_comm x y, mul_inv_cancel_right, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_one {C : Type} [CommGroup C] (x y : C) : x * y * x⁻¹ * y⁻¹ = 1 := by
   rw [mul_comm x y, mul_inv_cancel_right, mul_inv_cancel]
@@ -119,7 +117,7 @@ section Aux2
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_subgroupOf]`. Use `MonoidHom.mem_ker.2 ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inv, map_mul, map_mul, map_mul, map_inv, map_inv]`. Conclude with `comm_one _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_mem (x y : finU L 2) : x * y * x⁻¹ * y⁻¹ ∈ (SUA L).subgroupOf (finU L 2) := by
   rw [Subgroup.mem_subgroupOf]
@@ -128,11 +126,9 @@ theorem comm_mem (x y : finU L 2) : x * y * x⁻¹ * y⁻¹ ∈ (SUA L).subgroup
   exact comm_one _ _
 
 /- English proof (translation)
-Establish `hdet : (mt (γ₀ : DX B.Δ)).det = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 (show (γ₀ : DX B.Δ) ∈ ((Matrix.GeneralLinearGroup.det (n := Fin 2) (R := Lsq (Lp L) B.Δ)).comp (DX B.Δ).subtype).ker from γ₀.2))`. Establish `hmem : ι γ₀ ∈ SA B.Δ`. Use `Subgroup.mem_iInf.2 fun v => ?_` and prove the remaining obligations. Use `show (ι γ₀).1 v ∈ SU (cv v B.Δ)`. Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (mt ((ι γ₀).1 v)).det = 1`. Rewrite using `[hι, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hdet, map_one]`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Take `⟨k', hk', hr, -⟩` from `hB.finS γ₀ ⟨ι γ₀, hmem⟩ (hι _)`. Establish `h₁` using `hp1 ⟨_, (B.bS ⟨ι γ₀, hmem⟩).2.1⟩ k' hk'.1`.
-
-Establish `h₂ : p (B.rS γ₀ : UA L 2) = ⟨_, (B.bS ⟨ι γ₀, hmem⟩).2.1⟩` using `by rw [hr]; exact h₁`. Conclude with `(congrArg Subtype.val h₂).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rat_iota (B : Bridge L) (hB : B.Ok) (p : UA L 2 →* finU L 2)
     (hp1 : ∀ f : finU L 2, ∀ k ∈ infU L 2, p ((f : UA L 2) * k) = f) (ι : DX B.Δ →* DA B.Δ) (hι : IsIotaD ι) (γ₀ : SU B.Δ) :
@@ -165,15 +161,13 @@ def eS (B : Bridge L) : SA B.Δ ≃* ↥((SUA L).subgroupOf (finU L 2)) := B.bS.
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨k, hk, hγ⟩` from `hp2 γ.1`. Establish `hfS : p γ.1 ∈ (SUA L).subgroupOf (finU L 2)`. Establish `h₁` using `mul_mem g'.2 (inv_mem g.2)`. Rewrite `h₁` using `[hg, mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `hr : (p γ.1 : UA L 2) * k ∈ ratU L 2` using `by rw [← hγ]; exact γ.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hdr` using `detRoot L m hm U hU _ (p γ.1).2 k hk hr 1 (one_mem _) (by rw [mul_one]; exact Subgroup.mem_subgroupOf.1 hfS)`. Establish `hγS : γ.1 ∈ ratU L 2 ⊓ SUA L` using `⟨γ.2, by rw [hγ]; exact mul_mem hdr.1 hdr.2⟩`. Take `⟨γ₀, hγ₀⟩ : ∃ γ₀ : SU B.Δ, (B.rS γ₀ : UA L 2) = γ.1` from `⟨B.rS.symm ⟨γ.1, hγS⟩, congrArg Subtype.val (B.rS.apply_symm_apply ⟨γ.1, hγS⟩)⟩`. Take `⟨hmem, hf'⟩` from `rat_iota B hB p hp1 ι hι γ₀`. Rewrite `hf'` using `[hγ₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg₁ : (((eS B).symm g' : SA B.Δ) : DA B.Δ) = ι γ₀ * ((eS B).symm g : SA B.Δ)`. Establish `: (eS B).symm g' = ⟨ι γ₀, hmem⟩ * (eS B).symm g`. Apply `(eS B).injective` to reduce the goal to its premises. Rewrite using `[map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((g' : finU L 2) : UA L 2) = (B.bS ⟨ι γ₀, hmem⟩ : UA L 2) * ((g : finU L 2) : UA L 2)`. Rewrite using `[hg, hf']`. Both sides reduce to the same expression. Conclude with `congrArg Subtype.val this`. Establish `h₁` using `h0 γ₀ _ _ hg₁`.
-
-Rewrite `h₁` using `[cD_rS, hγ₀]`. Conclude with `h₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_eq (B : Bridge L) (hB : B.Ok) (p : UA L 2 →* finU L 2)
     (hp1 : ∀ f : finU L 2, ∀ k ∈ infU L 2, p ((f : UA L 2) * k) = f)
@@ -233,9 +227,7 @@ section Aux5
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `le_rfl`. Conclude with `h`. Simplify using `at hij`.
-
-Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dom_two {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : kˣ)
     (h : valuation k (t : k) ≤ valuation k ((t⁻¹ : kˣ) : k)) : AlgebraTools.Dom ![t, t⁻¹] := by
@@ -247,7 +239,7 @@ theorem dom_two {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h₀ : valuation k (t : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 t.ne_zero`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `h.le.trans ((one_le_inv₀ (zero_lt_iff.2 h₀)).2 h.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_inv_ge {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : kˣ)
     (h : valuation k (t : k) < 1) : valuation k (t : k) ≤ valuation k ((t⁻¹ : kˣ) : k) := by
@@ -259,33 +251,27 @@ variable {B : Bridge L}
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨t₀, ht₀⟩ : ∃ t₀ : (Kv (un w))ˣ, iu T w h t₀ = t` from `⟨Units.map ((T w h).i.symm : Kw w →* Kv (un w)) t, Units.ext ((T w h).i.apply_symm_apply _)⟩`. Establish `ht₀' : iu T w h t₀⁻¹ = t⁻¹` using `by rw [map_inv, ht₀]`. Take `⟨t', h1, h2⟩ : ∃ t' : Dat.Par (Lp L), t' (un w) = t₀ ∧ ∀ v, v ≠ un w → t' v = 1` from `⟨Pi.mulSingle _ t₀, Pi.mulSingle_eq_same _ _, fun v hv => Pi.mulSingle_eq_of_ne hv _⟩`. Establish `hdS : SD.dS t' (un w) = ![t₀, t₀⁻¹]` using `by show ![t' (un w), (t' (un w))⁻¹] = _`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdS1 : ∀ v, v ≠ un w → SD.dS t' v = 1`. Introduce `v hv`. Use `show ![t' v, (t' v)⁻¹] = _`. Rewrite using `[h2 v hv]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> simp`. Establish `hEl` using `elEx _ _ A hA`. Take `⟨g, hg₀⟩ : ∃ g : SA B.Δ, A.IsElD (g : DA B.Δ) (SD.dS t')` from `⟨⟨(hEl.2.1 (SD.dS t')).choose, hEl.2.2.2.2 _ t' (hEl.2.1 (SD.dS t')).choose_spec.1⟩, (hEl.2.1 (SD.dS t')).choose_spec.1⟩`. Establish `hLG` using `levG L B hB T S VL A hA hF`. Establish `hL4` using `hLG.2.2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL5` using `hLG.2.2.2.2`. Establish `hcl` using `((hL4 g _).1 hg₀).2`. Establish `hone : ∀ v, v ≠ un w → (g : DA B.Δ).1 v = 1`. Introduce `v hv`. Distinguish the cases in `hvS : v ∈ A.Sg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hS` using `(datOk _ _ A hA).2.2.1 v hvS`. Apply `(eD_facts (Kv v) (Ov v) hS.1 hS.2.1 _ _ (A.hs v hvS) hS.2.2.1).1.1` to reduce the goal to its premises. Rewrite using `[hg₀.1 v hvS, map_one, hdS1 v hv]`. Conclude with `map_one _`. Conclude with `hg₀.2 v hvS`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoff : ∀ u, un u ≠ un w → cLoc u (B.bS g : UA L 2) = 1` using `fun u hu => (hB.oneS g (un u)).1 (hone _ hu) u rfl`. Establish `hloc : (B.bS g : UA L 2) ∈ locU 2 w` using `Subgroup.mem_inf.2 ⟨(B.bS g).2.1, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 (hoff u hu)⟩`. Establish `hcw : cLoc w (B.bS g : UA L 2) = Sig.dg ![t, t⁻¹]`. Rewrite using `[hcl w hw h, hdS]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `ht₀`. Conclude with `ht₀'`. Establish `hsec` using `((uaFacts L 2).1 w h).2.2.2 _ hloc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsec` using `[hcw]`. Establish `hwg : un w ∈ A.Sg` using `(hF.sg _).2 ⟨w, hw, rfl⟩`. Use `⟨t', g, hg₀, ?_, ?_, hsec, hoff, hcl⟩` and prove the remaining obligations. Introduce `v hv`. Break down `eq_or_ne v (un w) with rfl | hvw` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdS]`. Apply `dom_two` to reduce the goal to its premises. Establish `h₃` using `val_inv_ge t ht`. Rewrite `h₃` using `[← ht₀']`. Rewrite `h₃` using `[← ht₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((T w h).val_le _ _).1 h₃`. Rewrite using `[hdS1 v hvw]`. Introduce `i j _`. Conclude with `le_rfl`. Use `show ∏ v ∈ A.Sg, Dict.expo ![b v, 1] (SD.dS t' v) = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_eq_single (un w) ?_ (fun hn => absurd hwg hn), hdS, hab w hw h]`. Establish `h₃` using `hL5 w h 2 ![a w, 1] ![t₀, t₀⁻¹] (Or.inl rfl)`. Establish `e₁ : (fun i => iu T w h (![t₀, t₀⁻¹] i)) = ![t, t⁻¹]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
-
-Conclude with `ht₀`. Conclude with `ht₀'`. Establish `e₂ : (fun i => (![a w, 1] i).comp (iu T w h)) = ![(a w).comp (iu T w h), 1]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
-
-Both sides reduce to the same expression. Conclude with `MonoidHom.one_comp _`. Rewrite `h₃` using `[e₁, e₂]`. Conclude with `h₃.symm`. Introduce `v _ hv`.
-
-Rewrite using `[hdS1 v hv]`. Conclude with `((expoEq (Kv v) (b v)).2.2 2 _).2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_el (hB : B.Ok) (T : Spl B) {S : Finset (Plc L)} {VL : ∀ w : Plc L, Lev (Kw w)} {A : SD B.Δ} (hA : A.Ok) (hF : Fit T S VL A)
     {a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ} {b : Chs (Lp L)} (hab : FitCh T S a b) {w : Plc L} (hw : w ∈ S) (h : IsSplitAt w) (t : (Kw w)ˣ)

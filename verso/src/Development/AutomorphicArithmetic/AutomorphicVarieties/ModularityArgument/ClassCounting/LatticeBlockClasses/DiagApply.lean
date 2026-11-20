@@ -41,7 +41,7 @@ theorem diag_apply (u : J → Fˣ) (x : J → F) (j : J) : diag L u x j = (u j :
 def toF (ζ : (𝓞 F)ˣ) : Fˣ := Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F) ζ
 
 /- English proof (translation)
-Rewrite using `[toF, ← map_pow, h, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toF_pow {ζ : (𝓞 F)ˣ} {q : ℕ} (h : ζ ^ q = 1) : toF ζ ^ q = 1 := by rw [toF, ← map_pow, h, map_one]
 

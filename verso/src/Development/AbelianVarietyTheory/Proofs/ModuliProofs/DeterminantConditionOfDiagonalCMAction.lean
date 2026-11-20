@@ -14,13 +14,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 
 /- English proof (translation)
-Introduce `_ _ _ unif E _ _ _ H D P u _ _ act ty _ hty hact K _ _ β`. Take `⟨h₁, h₂, -⟩` from `GlobalTheory.AnyUnif.tangent_and_unimodular unif P u`. Establish `hs : Smooth P.A.hom` using `P.isAb.smooth`. Take `⟨v, hv, heig⟩` from `GlobalTheory.exists_lieBasis_of_holUnif P.A P.L P.g u hs h₁ h₂`. Establish `key : ∀ τ₀ : E →+* ℂ, LieMult act (𝟙 (Sp ℂ)) (τ₀.comp (algebraMap (𝓞 E) E)) (Nat.card {i // ty i = τ₀})` using `fun τ₀ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.lieMult_of_eigenbasis ℂ (𝓞 E) P.A act P.g v (fun i => (ty i).comp (algebraMap (𝓞 E) E)) hs hv (fun i a => heig _ _ (act.hom a) (hact a) i) (τ₀.comp (algebraMap (𝓞 E) E))`. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun i => ⟨fun e => by rw [e], fun e => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) e⟩)`. Establish `hd : DetCond D act (𝟙 (Sp ℂ)) H.rt0` using `fun τ => by`. Take `⟨τ₀, rfl⟩` from `GlobalTheory.PeriodPoint.exists_embedding (RingHom.id ℂ) τ`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hty τ₀).1 h]`. Conclude with `key τ₀`. Rewrite using `[← (hty τ₀).2 h]`. Conclude with `key τ₀`.
-
-Use `(GlobalTheory.detCond_iff_of_field_extension E H D _ P.A ℂ K β (𝟙 _) act H.rt0 hs).2 hd` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.detCond_of_diagonal_action : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (act : OAct (𝓞 E) P.A) (ty : Fin P.g → (E →+* ℂ)), u.IsAH Hm χ → IsTypeFn H D.p D.q ty → (∀ (a : 𝓞 E) z, u.ex (fun i => ty i (a : E) * z i) = u.ex z ≫ act.act a) → ∀ (K : Type) [Field K] [IsAlgClosed K] (β : ℂ →+* K), DetCond D act (spMap β) (β H.rt0) := by
   intro _ _ _ unif E _ _ _ H D P u _ _ act ty _ hty hact K _ _ β

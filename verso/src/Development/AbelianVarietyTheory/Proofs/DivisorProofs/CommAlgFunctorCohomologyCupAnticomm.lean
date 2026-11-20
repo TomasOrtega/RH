@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Rewrite using `[eq_neg_iff_add_eq_zero]`. Take `⟨a, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective F a`. Take `⟨b, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective F b`. Rewrite using `[cup_mk, cup_mk, ← map_add]`. Use `GlobalTheory.CatCoh.H2.mk_eq_zero.2 ⟨fun T T' φ ↦ -(a.1 T T' φ * b.1 T T' φ), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `only [d1_apply, Submodule.coe_add, Pi.add_apply, cupZ_apply, Z1.comp a, Z1.comp b, map_mul, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cup_anticomm (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (a b : GlobalTheory.CatCoh.H1 F) : cup F a b = - cup F b a := by

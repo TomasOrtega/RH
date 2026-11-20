@@ -12,7 +12,7 @@ open PositivityTheory.Rg.Sw
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[h]`. Unfold `Ac`. Apply the tactic sequence `congr 2 <;> funext j <;> push_cast [Complex.ofReal_exp] <;> (try ring_nf)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mR_dil (X : Fin n → ℝ) (s : ℝ) (a : GR n) (h : IsDil X s a) : mR a = Ac X s := by
   rw [h]
@@ -20,7 +20,7 @@ theorem mR_dil (X : Fin n → ℝ) (s : ℝ) (a : GR n) (h : IsDil X s a) : mR a
   congr 2 <;> funext j <;> push_cast [Complex.ofReal_exp] <;> (try ring_nf)
 
 /- English proof (translation)
-Unfold `Ac`. Rewrite using `[det_fromBlocks_zero₂₁, det_diagonal, det_diagonal, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.exp_add]`. Apply the tactic sequence `try simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_Ac (X : Fin n → ℝ) (z : ℂ) : (Ac X z).det = 1 := by
   unfold Ac
@@ -30,7 +30,7 @@ theorem det_Ac (X : Fin n → ℝ) (z : ℂ) : (Ac X z).det = 1 := by
   try simp
 
 /- English proof (translation)
-Unfold `holomorphicSectionExtension F0 f0`. Rewrite using `[mR_mul, mR_dil X s (a s) (ha s), det_mul, det_Ac, mul_one, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem holomorphic_section_extension_eq (p q : ℕ) (e : ℤ) (X : Fin n → ℝ) (a : ℝ → GR n) (ha : ∀ s, IsDil X s (a s)) (h : GR n) (s : ℝ) :
     holomorphicSectionExtension p q e X h s = F0 p q e (h * a s) := by
@@ -38,7 +38,7 @@ theorem holomorphic_section_extension_eq (p q : ℕ) (e : ℤ) (X : Fin n → �
   rw [mR_mul, mR_dil X s (a s) (ha s), det_mul, det_Ac, mul_one, mul_assoc]
 
 /- English proof (translation)
-Unfold `Ac`. Use `Continuous.matrix_fromBlocks ?_ continuous_const continuous_const ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_diagonal (continuous_pi fun j => by fun_prop)`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun j => by fun_prop)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_Ac (X : Fin n → ℝ) : Continuous (Ac X) := by
   unfold Ac
@@ -47,16 +47,16 @@ theorem continuous_Ac (X : Fin n → ℝ) : Continuous (Ac X) := by
   · exact Continuous.matrix_diagonal (continuous_pi fun j => by fun_prop)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> by_cases hab : a = b <;>`. Apply the tactic sequence `simp [Ac, diagonal_apply, hab] <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem differentiable_Ac_entry (X : Fin n → ℝ) (a b : Fin n ⊕ Fin n) : Differentiable ℂ fun z => Ac X z a b := by
   rcases a with a | a <;> rcases b with b | b <;> by_cases hab : a = b <;>
     simp [Ac, diagonal_apply, hab] <;> fun_prop
 
 /- English proof (translation)
-Establish `: (fun z => (A z).det) = fun z => ∑ σ : Equiv.Perm m, ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A z (σ i) i`. Use function extensionality and compare the values at `z`. Rewrite using `[det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `Differentiable.fun_sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `(differentiable_const _).mul (Differentiable.fun_finsetProd fun i _ => hA _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiable_det_entries {m : Type} [Fintype m] [DecidableEq m] (A : ℂ → Matrix m m ℂ)
     (hA : ∀ i j, Differentiable ℂ fun z => A z i j) : Differentiable ℂ fun z => (A z).det := by
@@ -70,9 +70,9 @@ theorem differentiable_det_entries {m : Type} [Fintype m] [DecidableEq m] (A : �
   exact (differentiable_const _).mul (Differentiable.fun_finsetProd fun i _ => hA _ _)
 
 /- English proof (translation)
-Apply `differentiable_det_entries` to reduce the goal to its premises. Introduce `i j`. Establish `hm : ∀ a b, Differentiable ℂ fun z => (M * Ac X z) a b`. Introduce `a b`. Simplify using `only [Matrix.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact Differentiable.fun_sum fun k _ => (differentiable_const _).mul (differentiable_Ac_entry X k b)`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, toBlocks₂₁, toBlocks₂₂, of_apply, smul_eq_mul]`. Conclude with `((differentiable_const _).mul (hm _ _)).add (hm _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_u_det (M : M2 n) (X : Fin n → ℝ) (w : ℂ) :
     Differentiable ℂ fun z => (w • (M * Ac X z).toBlocks₂₁ + (M * Ac X z).toBlocks₂₂).det := by
@@ -86,7 +86,7 @@ theorem differentiable_u_det (M : M2 n) (X : Fin n → ℝ) (w : ℂ) :
   exact ((differentiable_const _).mul (hm _ _)).add (hm _ _)
 
 /- English proof (translation)
-Establish `hM : Continuous fun y : GR n × ℂ => mR y.1 * Ac X y.2` using `(continuous_mR.comp continuous_fst).matrix_mul ((continuous_Ac X).comp continuous_snd)`. Establish `h21 : Continuous fun y : GR n × ℂ => (mR y.1 * Ac X y.2).toBlocks₂₁` using `hM.matrix_submatrix (fun i : Fin n => (Sum.inr i : Fin n ⊕ Fin n)) (fun j : Fin n => (Sum.inl j : Fin n ⊕ Fin n))`. Establish `h22 : Continuous fun y : GR n × ℂ => (mR y.1 * Ac X y.2).toBlocks₂₂` using `hM.matrix_submatrix (fun i : Fin n => (Sum.inr i : Fin n ⊕ Fin n)) (fun j : Fin n => (Sum.inr j : Fin n ⊕ Fin n))`. Conclude with `((h21.const_smul w).add h22).matrix_det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_u_det (X : Fin n → ℝ) (w : ℂ) :
     Continuous fun y : GR n × ℂ => (w • (mR y.1 * Ac X y.2).toBlocks₂₁ + (mR y.1 * Ac X y.2).toBlocks₂₂).det := by
@@ -104,31 +104,27 @@ Both sides reduce to the same expression.
 theorem first_cayley_block_eq (M : M2 n) : u1 M = Complex.I • M.toBlocks₂₁ + M.toBlocks₂₂ := rfl
 
 /- English proof (translation)
-Simplify using `[u2, neg_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem second_cayley_block_eq (M : M2 n) : u2 M = (-Complex.I) • M.toBlocks₂₁ + M.toBlocks₂₂ := by
   simp [u2, neg_smul]
 
 /- English proof (translation)
-Establish `c1 : Continuous fun y : GR n × ℂ => (u1 (mR y.1 * Ac X y.2)).det`. Simplify `continuous_u_det X Complex.I` using `only [first_cayley_block_eq]`. Establish `c2 : Continuous fun y : GR n × ℂ => (u2 (mR y.1 * Ac X y.2)).det`. Simplify `continuous_u_det X (-Complex.I)` using `only [second_cayley_block_eq]`. Use `set Z := {y : GR n × ℂ | (u1 (mR y.1 * Ac X y.2)).det ≠ 0 ∧ (u2 (mR y.1 * Ac X y.2)).det ≠ 0}`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hZ : IsOpen Z` using `(isOpen_ne_fun c1 continuous_const).inter (isOpen_ne_fun c2 continuous_const)`. Establish `hreal : ∀ (h : GR n) (s : ℝ), ((h, (s : ℂ)) : GR n × ℂ) ∈ Z`. Introduce `h s`. Establish `hm : mR h * Ac X s = mR (h * aD X s)` using `by rw [mR_mul, mR_dil X s _ (isDil_aD X s)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (u1 (mR h * Ac X s)).det ≠ 0`. Rewrite using `[hm]`. Conclude with `automorphy_first_det_ne_zero _`. Use `show (u2 (mR h * Ac X s)).det ≠ 0`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `automorphy_second_det_ne_zero _`. Establish `tube : ∀ s : ℝ, ∃ v : Set ℂ, IsOpen v ∧ (s : ℂ) ∈ v ∧ S ×ˢ v ⊆ Z`. Introduce `s`. Take `⟨u, v, -, hv, hSu, hsv, huv⟩` from `generalized_tube_lemma hS (isCompact_singleton (x := (s : ℂ))) hZ (by`. Introduce and unpack `⟨h, z⟩ ⟨-, hz⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_singleton_iff] at hz`. Rewrite using `[hz]`. Conclude with `hreal h s)`. Conclude with `⟨v, hv, hsv rfl, (Set.prod_mono hSu le_rfl).trans huv⟩`. Use `choose v hv hsv hSv using tube`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⋃ s, v s, isOpen_iUnion hv, fun s => Set.mem_iUnion.mpr ⟨s, hsv s⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hsub : S ×ˢ (⋃ s, v s) ⊆ Z`. Introduce and unpack `⟨h, z⟩ ⟨hh, hz⟩`. Take `⟨s, hs⟩` from `Set.mem_iUnion.mp hz`. Conclude with `hSv s (Set.mk_mem_prod hh hs)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hyZ` using `hsub hy`. Unfold `holomorphicSectionExtension`. Establish `e1 : ContinuousAt (fun y : GR n × ℂ => (mR y.1).det ^ e) y` using `((continuous_mR.comp continuous_fst).matrix_det.continuousAt).zpow₀ _ (Or.inl (det_mR_ne _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : ContinuousAt (fun y : GR n × ℂ => (u1 (mR y.1 * Ac X y.2)).det ^ (-(p : ℤ))) y` using `c1.continuousAt.zpow₀ _ (Or.inl hyZ.1)`. Establish `e3 : ContinuousAt (fun y : GR n × ℂ => (u2 (mR y.1 * Ac X y.2)).det ^ (-(q : ℤ))) y` using `c2.continuousAt.zpow₀ _ (Or.inl hyZ.2)`. Conclude with `(e1.mul e2).mul e3`. Introduce `h hh z hz`. Take `⟨s, hs⟩` from `Set.mem_iUnion.mp hz`.
-
-Establish `hyZ` using `hSv s (Set.mk_mem_prod hh hs)`. Establish `d1 : Differentiable ℂ fun z => (u1 (mR h * Ac X z)).det`. Simplify `differentiable_u_det (mR h) X Complex.I` using `only [first_cayley_block_eq]`. Establish `d2 : Differentiable ℂ fun z => (u2 (mR h * Ac X z)).det`. Simplify `differentiable_u_det (mR h) X (-Complex.I)` using `only [second_cayley_block_eq]`.
-
-Unfold `holomorphicSectionExtension`. Establish `g1 : DifferentiableAt ℂ (fun z => (u1 (mR h * Ac X z)).det ^ (-(p : ℤ))) z` using `(d1 z).zpow (Or.inl hyZ.1)`. Establish `g2 : DifferentiableAt ℂ (fun z => (u2 (mR h * Ac X z)).det ^ (-(q : ℤ))) z` using `(d2 z).zpow (Or.inl hyZ.2)`. Conclude with `(((differentiableAt_const _).mul g1).mul g2).differentiableWithinAt`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holomorphic_section_extension_exists (p q : ℕ) (e : ℤ) (X : Fin n → ℝ) (S : Set (GR n)) (hS : IsCompact S) :
     ∃ V : Set ℂ, IsOpen V ∧ (∀ s : ℝ, (s : ℂ) ∈ V) ∧

@@ -9,7 +9,7 @@ abbrev pMultiples (p : ℕ) (M : Type) [AddCommGroup M] [Module ℤ M] : Submodu
   LinearMap.range ((p : ℤ) • LinearMap.id : M →ₗ[ℤ] M)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [zmultiplesHom_apply, AddMonoidHom.coe_smul, Pi.smul_apply, AddMonoidHom.zero_apply]`. Use `show (p : ℤ) • Submodule.Quotient.mk m = (0 : M ⧸ pMultiples p M)`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨m, by simp⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma zmultiples_mkQ_p (p : ℕ) (M : Type) [AddCommGroup M] [Module ℤ M] :
     zmultiplesHom (M →+ M ⧸ pMultiples p M) (pMultiples p M).mkQ.toAddMonoidHom (p : ℤ) = 0 := by
@@ -24,7 +24,7 @@ def modPPairing (p : ℕ) (M : Type) [AddCommGroup M] [Module ℤ M] :
   ZMod.lift p ⟨zmultiplesHom _ (pMultiples p M).mkQ.toAddMonoidHom, zmultiples_mkQ_p p M⟩
 
 /- English proof (translation)
-Establish `h` using `ZMod.lift_coe p (A := M →+ (M ⧸ pMultiples p M)) ⟨zmultiplesHom _ (pMultiples p M).mkQ.toAddMonoidHom, zmultiples_mkQ_p p M⟩ 1`. Simplify using `only [Int.cast_one] at h`. Unfold `modPPairing`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma modPPairing_one (p : ℕ) (M : Type) [AddCommGroup M] [Module ℤ M] (m : M) :
     modPPairing p M 1 m = Submodule.Quotient.mk m := by
@@ -51,7 +51,7 @@ def tensorToModP (p : ℕ) (M : ModuleCat.{0} ℤ) :
     exact (int_smul_eq_zsmul _ r m).symm)
 
 /- English proof (translation)
-Rewrite using `[ModuleCat.extendRestrictScalarsAdj_unit_app_apply]`. Unfold `tensorToModP`. Conclude with `(TensorProduct.liftAddHom_tmul _ _ _ _).trans (modPPairing_one p M m)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma tensorToModP_unit (p : ℕ) (M : ModuleCat.{0} ℤ) (m : M) :
     tensorToModP p M
@@ -72,11 +72,11 @@ namespace GlobalTheory
 def oneZ (p : ℕ) : zmodOverInt p := (1 : ZMod p)
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.tmul_zero _ _⟩`. Consider the case `tmul a m`. Take `⟨k, hk⟩` from `ZMod.intCast_surjective (n := p) a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `map_zsmul (AddMonoidHom.mk' (fun x : M => oneZ p ⊗ₜ[ℤ] x) (TensorProduct.tmul_add _)) k m`. Establish `h2` using `map_zsmul (AddMonoidHom.mk' (fun b : zmodOverInt p => b ⊗ₜ[ℤ] m) (fun b c => TensorProduct.add_tmul b c m)) k (oneZ p)`. Use `⟨_, (h1.trans h2.symm).trans (congrArg (fun x => x ⊗ₜ[ℤ] m) ?_)⟩` and prove the remaining obligations. Use `show (k • (1 : ZMod p) : ZMod p) = a`. Rewrite using `[zsmul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hk`. Consider the case `add x y hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`. Conclude with `⟨u + v, (TensorProduct.tmul_add _ u v).trans (by rw [hu, hv])⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma oneZ_tmul_surjective (p : ℕ) (M : ModuleCat.{0} ℤ) :
     ∀ t : TensorProduct ℤ (zmodOverInt p) M, ∃ m : M, oneZ p ⊗ₜ[ℤ] m = t := by
@@ -98,7 +98,7 @@ lemma oneZ_tmul_surjective (p : ℕ) (M : ModuleCat.{0} ℤ) :
     exact ⟨u + v, (TensorProduct.tmul_add _ u v).trans (by rw [hu, hv])⟩
 
 /- English proof (translation)
-Introduce `t`. Take `⟨m, hm⟩` from `oneZ_tmul_surjective p M t`. Conclude with `⟨m, (ModuleCat.extendRestrictScalarsAdj_unit_app_apply _ _ _).trans hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma unit_surjective_zmod (p : ℕ) (M : ModuleCat.{0} ℤ) :
     Function.Surjective ((ModuleCat.extendRestrictScalarsAdj (Int.castRingHom (ZMod p))).unit.app M).hom := by
@@ -107,7 +107,7 @@ lemma unit_surjective_zmod (p : ℕ) (M : ModuleCat.{0} ℤ) :
   exact ⟨m, (ModuleCat.extendRestrictScalarsAdj_unit_app_apply _ _ _).trans hm⟩
 
 /- English proof (translation)
-Establish `h` using `tensorToModP_unit p M y`. Rewrite `h` using `[hy]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mp (h.symm.trans (map_zero (tensorToModP p M)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma unit_kernel_zmod (p : ℕ) (M : ModuleCat.{0} ℤ) (y : M)
     (hy : ((ModuleCat.extendRestrictScalarsAdj (Int.castRingHom (ZMod p))).unit.app M).hom y = 0) :
@@ -117,7 +117,7 @@ lemma unit_kernel_zmod (p : ℕ) (M : ModuleCat.{0} ℤ) (y : M)
   exact (Submodule.Quotient.mk_eq_zero _).mp (h.symm.trans (map_zero (tensorToModP p M)))
 
 /- English proof (translation)
-Establish `h1` using `map_zsmul (AddMonoidHom.mk' (fun y : M => oneZ p ⊗ₜ[ℤ] y) (TensorProduct.tmul_add _)) (p : ℤ) x`. Establish `h2` using `map_zsmul (AddMonoidHom.mk' (fun b : zmodOverInt p => b ⊗ₜ[ℤ] x) (fun b c => TensorProduct.add_tmul b c x)) (p : ℤ) (oneZ p)`. Use `(h1.trans h2.symm).trans ((congrArg (fun b => b ⊗ₜ[ℤ] x) ?_).trans (TensorProduct.zero_tmul _ _))` and prove the remaining obligations. Use `show ((p : ℤ) • (1 : ZMod p) : ZMod p) = 0`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma oneZ_tmul_p (p : ℕ) (M : ModuleCat.{0} ℤ) (x : M) :
     oneZ p ⊗ₜ[ℤ] ((p : ℤ) • x) = 0 := by
@@ -129,7 +129,7 @@ lemma oneZ_tmul_p (p : ℕ) (M : ModuleCat.{0} ℤ) (x : M) :
   simp
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.extendRestrictScalarsAdj_unit_app_apply _ _ _).trans (oneZ_tmul_p p M x)`.
+A detailed English derivation is pending.
 -/
 lemma unit_pmul_zmod (p : ℕ) (M : ModuleCat.{0} ℤ) (x : M) :
     ((ModuleCat.extendRestrictScalarsAdj (Int.castRingHom (ZMod p))).unit.app M).hom
@@ -137,7 +137,7 @@ lemma unit_pmul_zmod (p : ℕ) (M : ModuleCat.{0} ℤ) (x : M) :
   (ModuleCat.extendRestrictScalarsAdj_unit_app_apply _ _ _).trans (oneZ_tmul_p p M x)
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : (p : ℤ) • a = (p : ℤ) • b` using `hab`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `h` to reduce the goal to its premises. Rewrite using `[zsmul_sub, hab', sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma pmul_injective (p : ℕ) (M : ModuleCat.{0} ℤ) (h : ∀ x : M, (p : ℤ) • x = 0 → x = 0) :
     Function.Injective (ConcreteCategory.hom ((p : ℤ) • 𝟙 M)) := by
@@ -148,13 +148,11 @@ lemma pmul_injective (p : ℕ) (M : ModuleCat.{0} ℤ) (h : ∀ x : M, (p : ℤ)
   rw [zsmul_sub, hab', sub_self]
 
 /- English proof (translation)
-Introduce `C p _ hinj`. Set `π : C ⟶ ((ModuleCat.restrictScalars.{0} (Int.castRingHom (ZMod p))).mapHomologicalComplex (ComplexShape.up ℕ)).obj (((ModuleCat.extendScalars (Int.castRingHom (ZMod p))).mapHomologicalComplex (ComplexShape.up ℕ)).obj C)` to `{ f := fun n => (ModuleCat.extendRestrictScalarsAdj (Int.castRingHom (ZMod p))).unit.app (C.X n) comm' := fun i j _ => ((ModuleCat.extendRestrictScalarsAdj (Int.castRingHom (ZMod p))).unit.naturality (C.d i j)) }`. Establish `hz : ((p : ℤ) • 𝟙 C) ≫ π = 0`. Use extensionality with `n x`. Simplify using `only [HomologicalComplex.comp_f, HomologicalComplex.zsmul_f_apply, HomologicalComplex.id_f, ModuleCat.hom_comp, ModuleCat.hom_zsmul, ModuleCat.hom_id, LinearMap.comp_apply, HomologicalComplex.zero_f, ModuleCat.hom_zero, LinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `unit_pmul_zmod p (C.X n) x`. Use `⟨π, hz, ?_⟩` and prove the remaining obligations. Apply `HomologicalComplex.shortExact_of_degreewise_shortExact` to reduce the goal to its premises. Introduce `n`. Apply `ShortComplex.ShortExact.mk'` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ShortComplex.moduleCat_exact_iff]`. Introduce `y hy`. Simplify using `only [ShortComplex.map_f, ShortComplex.map_g, HomologicalComplex.eval_map, HomologicalComplex.zsmul_f_apply, HomologicalComplex.id_f, ModuleCat.hom_zsmul, ModuleCat.hom_id] at hy ⊢`. Conclude with `unit_kernel_zmod p (C.X n) y hy`. Rewrite using `[ModuleCat.mono_iff_injective]`.
-
-Conclude with `pmul_injective p (C.X n) (hinj n)`. Rewrite using `[ModuleCat.epi_iff_surjective]`. Conclude with `unit_surjective_zmod p (C.X n)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_mul_p_modP :
     ∀ (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (p : ℕ) [Fact p.Prime],

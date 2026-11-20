@@ -13,21 +13,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
 
 /- English proof (translation)
-Introduce `v`. Conclude with `ha v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma mem_intAf_of_mem_intAd {a : Af F} (ha : a ∈ Formalism.UG.intAd F) : a ∈ Formalism.MainNotions.StandardLattice.intAf F := by
   intro v
   exact ha v
 
 /- English proof (translation)
-Introduce `v`. Conclude with `ha v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma mem_intAd_of_mem_intAf {a : Af F} (ha : a ∈ Formalism.MainNotions.StandardLattice.intAf F) : a ∈ Formalism.UG.intAd F := by
   intro v
   exact ha v
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma intAf_mul_mem {a b : Af F} (ha : a ∈ Formalism.MainNotions.StandardLattice.intAf F) (hb : b ∈ Formalism.MainNotions.StandardLattice.intAf F) :
     a * b ∈ Formalism.MainNotions.StandardLattice.intAf F := by
@@ -36,7 +36,7 @@ private lemma intAf_mul_mem {a b : Af F} (ha : a ∈ Formalism.MainNotions.Stand
   exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[map_one]`. Conclude with `one_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma one_mem_intAf_flag_measures : (1 : Af F) ∈ Formalism.MainNotions.StandardLattice.intAf F := by
   intro v
@@ -46,11 +46,11 @@ private lemma one_mem_intAf_flag_measures : (1 : Af F) ∈ Formalism.MainNotions
 omit [NumberField E] in
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.StandardLattice.latHat at hy ⊢`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, x, hx, rfl⟩` from `hw`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨a * b, intAf_mul_mem (mem_intAf_of_mem_intAd ha) hb, c • x, L.smul_mem c hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw => rw [smul_add]`. Conclude with `add_mem hu hw`. Consider the case `neg u _ hu => rw [smul_neg]`. Conclude with `neg_mem hu`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gen_smul_mem (a : Af F) (ha : a ∈ Formalism.UG.intAd F) (c : 𝓞 E)
     (y : Fin n → Af F ⊗[F] E) (hy : y ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin n → E))) :
@@ -69,15 +69,13 @@ theorem gen_smul_mem (a : Af F) (ha : a ∈ Formalism.UG.intAd F) (c : 𝓞 E)
   | neg u _ hu => rw [smul_neg]; exact neg_mem hu
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.IntAf Formalism.UG.tensInt at ht`. Proceed by induction on `ht using Subring.closure_induction with`. Consider the case `mem s hs`. Introduce `y hy`. Break down `hs with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩` into its components or cases.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, rfl⟩` from `he`. Rewrite using `[Algebra.TensorProduct.comm_symm_tmul]`. Conclude with `gen_smul_mem L 1 (one_mem _) c y hy`. Rewrite using `[Algebra.TensorProduct.comm_symm_tmul]`. Simplify using `using gen_smul_mem L b hb 1 y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `zero => intro y _`. Rewrite using `[map_zero, zero_smul]`. Conclude with `zero_mem _`. Consider the case `one => intro y hy`. Rewrite using `[map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Consider the case `add s u _ _ hs hu => intro y hy`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem (hs y hy) (hu y hy)`. Consider the case `neg s _ hs => intro y hy`.
-
-Rewrite using `[map_neg, neg_smul]`. Conclude with `neg_mem (hs y hy)`. Consider the case `mul s u _ _ hs hu => intro y hy`. Rewrite using `[map_mul, mul_smul]`. Conclude with `hs _ (hu y hy)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_smul_mem (t : E ⊗[F] Af F) (ht : t ∈ Formalism.MainNotions.S.IntAf F E) :
     ∀ y : Fin n → Af F ⊗[F] E, y ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin n → E)) →
@@ -100,17 +98,15 @@ theorem int_smul_mem (t : E ⊗[F] Af F) (ht : t ∈ Formalism.MainNotions.S.Int
   | mul s u _ _ hs hu => intro y hy; rw [map_mul, mul_smul]; exact hs _ (hu y hy)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.lamAf at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨⟨x, hx⟩, rfl⟩` from `hw`. Unfold `Formalism.MainNotions.StandardLattice.latHat`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, one_mem_intAf_flag_measures, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (Algebra.TensorProduct.comm F (Af F) E).symm ((x i) ⊗ₜ[F] (1 : Af F)) = (1 : Af F) ⊗ₜ[F] x i`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero`. Establish `h0 : (fun i => (Algebra.TensorProduct.comm F (Af F) E).symm ((0 : Fin n → E ⊗[F] Af F) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add u w _ _ hu hw`. Establish `h1 : (fun i => (Algebra.TensorProduct.comm F (Af F) E).symm ((u + w) i)) = (fun i => (Algebra.TensorProduct.comm F (Af F) E).symm (u i)) + fun i => (Algebra.TensorProduct.comm F (Af F) E).symm (w i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[h1]`. Conclude with `add_mem hu hw`. Consider the case `smul s u _ hu`. Establish `h2 : (fun i => (Algebra.TensorProduct.comm F (Af F) E).symm ((s • u) i)) = (Algebra.TensorProduct.comm F (Af F) E).symm (s : E ⊗[F] Af F) • fun i => (Algebra.TensorProduct.comm F (Af F) E).symm (u i)`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[Subring.smul_def]`. Rewrite using `[h2]`. Conclude with `int_smul_mem L s s.2 _ hu`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_mem_of_mem (z : Fin n → E ⊗[F] Af F) (hz : z ∈ Formalism.MainNotions.S.lamAf (F := F) L) :
     (fun i => (Algebra.TensorProduct.comm F (Af F) E).symm (z i)) ∈
@@ -149,15 +145,15 @@ theorem symm_mem_of_mem (z : Fin n → E ⊗[F] Af F) (hz : z ∈ Formalism.Main
     exact int_smul_mem L s s.2 _ hu
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Unfold `Formalism.MainNotions.StandardLattice.latHat at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, hx, rfl⟩` from `hw`. Establish `hg : (fun i => Formalism.UG.inclE (F` using `F) (Af F) (x i)) ∈ Formalism.MainNotions.S.lamAf (F := F) L := Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`. Establish `hs : ((1 : E) ⊗ₜ[F] a : E ⊗[F] Af F) ∈ Formalism.MainNotions.S.IntAf F E` using `Subring.subset_closure (Or.inr ⟨⟨a, mem_intAd_of_mem_intAf ha⟩, rfl⟩)`. Use `Submodule.smul_mem _ (⟨_, hs⟩ : Formalism.MainNotions.S.IntAf F E) hg using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Subring.smul_def, Formalism.UG.inclE, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero`. Use `zero_mem (Formalism.MainNotions.S.lamAf (F := F) L) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add u w _ _ hu hw`. Use `add_mem hu hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `neg u _ hu`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `neg_mem hu using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce `hz`. Simplify using `using symm_mem_of_mem L _ hz`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_latHat_iff_comm_mem_lamAf (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E))

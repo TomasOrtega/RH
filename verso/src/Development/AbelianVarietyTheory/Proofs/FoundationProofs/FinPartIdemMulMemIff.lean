@@ -23,9 +23,9 @@ Both sides reduce to the same expression.
 theorem atPlace_apply (a : Fv F v) : atPlace v a = pairA F 0 (singleFin v a) := rfl
 
 /- English proof (translation)
-Use `Prod.ext (zero_mul _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `singleFin v a * sndA F y = singleFin v (a * evalV F v (sndA F y))`. Use `FiniteAdeleRing.ext _ fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F u (singleFin v a * sndA F y) = evalV F u (singleFin v (a * evalV F v (sndA F y)))`. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[evalV_singleFin_self, evalV_singleFin_self]`. Rewrite using `[evalV_singleFin_ne e, evalV_singleFin_ne e, zero_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_mul_right (a : Fv F v) (y : AF F) : atPlace v a * y = atPlace v (a * evFin F v y) := by
   refine Prod.ext (zero_mul _) ?_
@@ -38,7 +38,7 @@ theorem atPlace_mul_right (a : Fv F v) (y : AF F) : atPlace v a * y = atPlace v 
   · rw [evalV_singleFin_ne e, evalV_singleFin_ne e, zero_mul]
 
 /- English proof (translation)
-The claim follows from `evalV_singleFin_self v a`.
+A detailed English derivation is pending.
 -/
 theorem evFin_atPlace (a : Fv F v) : evFin F v (atPlace v a) = a := evalV_singleFin_self v a
 
@@ -52,7 +52,7 @@ Both sides reduce to the same expression.
 theorem tensAt_tmul (a : Fv F v) (x : E) : tensAt E v (a ⊗ₜ[F] x) = atPlace v a ⊗ₜ[F] x := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (· ⊗ₜ[F] x) (evFin_atPlace v a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_tensAt (y : Fv F v ⊗[F] E) : compFin F E v (tensAt E v y) = y := by
   induction y using TensorProduct.induction_on with
@@ -61,15 +61,15 @@ theorem compFin_tensAt (y : Fv F v ⊗[F] E) : compFin F E v (tensAt E v y) = y 
   | tmul a x => exact congrArg (· ⊗ₜ[F] x) (evFin_atPlace v a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by rw [← compFin_tensAt v y, h, map_zero], fun h => by rw [h, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tensAt_eq_zero {y : Fv F v ⊗[F] E} : tensAt E v y = 0 ↔ y = 0 :=
   ⟨fun h => by rw [← compFin_tensAt v y, h, map_zero], fun h => by rw [h, map_zero]⟩
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, add_mul, hx, hy]`. Consider the case `tmul a x`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, mul_add, hx, hy]`. Consider the case `tmul b x'`. Express the relevant statement in the definitionally equal form `_ = tensAt E v (a ⊗ₜ[F] x * evFin F v b ⊗ₜ[F] x')`. Rewrite using `[tensAt_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, tensAt_tmul, atPlace_mul_right]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensAt_mul_right (y : Fv F v ⊗[F] E) (z : AF F ⊗[F] E) :
     tensAt E v y * z = tensAt E v (y * compFin F E v z) := by
@@ -86,7 +86,7 @@ theorem tensAt_mul_right (y : Fv F v ⊗[F] E) (z : AF F ⊗[F] E) :
         atPlace_mul_right]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_tensAt (σ : E →ₐ[F] E) (y : Fv F v ⊗[F] E) :
     sigR (AF F) σ (tensAt E v y) = tensAt E v (sigR _ σ y) := by
@@ -96,7 +96,7 @@ theorem sigR_tensAt (σ : E →ₐ[F] E) (y : Fv F v ⊗[F] E) :
   | tmul a x => rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_evalV_map_sndA (z : AF F ⊗[F] E) :
     Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E) (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z) =
@@ -107,9 +107,9 @@ theorem map_evalV_map_sndA (z : AF F ⊗[F] E) :
   | tmul a x => rfl
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, o, rfl⟩` from `hw`. Conclude with `tmul_mem_intLoc (hα v) o`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_evalV_mem {z : Af F ⊗[F] E}
     (hz : z ∈ AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)}) :
@@ -123,11 +123,9 @@ theorem map_evalV_mem {z : Af F ⊗[F] E}
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun y => Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (tensAt E v y) ∈ AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)}) (fun a ha x => ?_) ?_ (fun y z hy hz => ?_) (fun y hy = …` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨singleFin v a, fun u => ?_, x, rfl⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[evalV_singleFin_self]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Rewrite using `[evalV_singleFin_ne e]`. Conclude with `zero_mem _`. Rewrite using `[map_zero, map_zero]`. Conclude with `zero_mem _`.
-
-Rewrite using `[map_add, map_add]`. Conclude with `add_mem hy hz`. Rewrite using `[map_neg, map_neg]`. Conclude with `neg_mem hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sndA_tensAt_mem {y : Fv F v ⊗[F] E} (h : y ∈ intLoc F E v) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (tensAt E v y) ∈
@@ -148,7 +146,7 @@ end General
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, map_sndA_tensAt_mem v⟩` and prove the remaining obligations. Establish `h3` using `map_evalV_mem v h`. Rewrite `h3` using `[show finPart D (tensAt D.host.E v y) = _ from rfl, finPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_evalV_map_sndA, compFin_tensAt]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finPart_tensAt_mem_iff (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
     finPart D (tensAt D.host.E v y) ∈ intAE D ↔ y ∈ intLoc D.host.F D.host.E v := by
@@ -160,27 +158,27 @@ theorem finPart_tensAt_mem_iff (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
 def idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : AE D := tensAt D.host.E v (splitIdem (isCMExt_host D) τ)
 
 /- English proof (translation)
-The claim follows from `tensAt_mul_right v _ a`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (a : AE D) :
     idem τ * a = tensAt D.host.E v (splitIdem (isCMExt_host D) τ * compFin D.host.F D.host.E v a) :=
   tensAt_mul_right v _ a
 
 /- English proof (translation)
-The claim follows from `compFin_tensAt v _`.
+A detailed English derivation is pending.
 -/
 theorem compFin_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     compFin D.host.F D.host.E v (idem τ) = splitIdem (isCMExt_host D) τ := compFin_tensAt v _
 
 /- English proof (translation)
-The claim follows from `(sigR_tensAt v _ _).trans (congrArg _ (sigR_splitIdem _ τ))`.
+A detailed English derivation is pending.
 -/
 theorem cA_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     cA D (idem τ) = tensAt D.host.E v (1 - splitIdem (isCMExt_host D) τ) :=
   (sigR_tensAt v _ _).trans (congrArg _ (sigR_splitIdem _ τ))
 
 /- English proof (translation)
-Use `⟨?_, ?_, v, atPlace v 1, ⟨singleFin v 1, rfl, evalV_singleFin_self v 1, fun u hu => evalV_singleFin_ne hu 1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[idem_mul, compFin_idem, splitIdem_mul_self]`. Both sides reduce to the same expression. Rewrite using `[idem_mul, cA_idem, compFin_tensAt, mul_sub, mul_one, splitIdem_mul_self, sub_self, LinearMap.map_zero]`. Rewrite using `[cA_idem, idem, ← LinearMap.map_add, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -192,7 +190,7 @@ theorem isSplitIdem_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : IsSpli
   · rw [cA_idem, idem, ← LinearMap.map_add, add_sub_cancel]; rfl
 
 /- English proof (translation)
-Rewrite using `[idem_mul, finPart_tensAt_mem_iff, mem_intLoc_iff_split (isCMExt_host D) τ, map_mul, map_mul, splitProj_splitIdem, splitProj_comp_splitIdem, one_mul, zero_mul]`. Conclude with `and_iff_left (zero_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_idem_mul_mem_iff (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (a : AE D) :
     finPart D (idem τ * a) ∈ intAE D ↔
@@ -202,9 +200,9 @@ theorem finPart_idem_mul_mem_iff (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) 
   exact and_iff_left (zero_mem _)
 
 /- English proof (translation)
-Use `⟨fun a => ⟨tensAt D.host.E v (a ⊗ₜ 1), ?_⟩, fun a => ?_, fun y => ?_, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `splitProj τ (compFin D.host.F D.host.E v (tensAt D.host.E v (a ⊗ₜ[D.host.F] 1))) = a`. Rewrite using `[compFin_tensAt, splitProj_tmul, map_one, mul_one]`. Rewrite using `[idem_mul, tensAt_eq_zero]`. Conclude with `splitProj_eq_zero_iff _ τ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `splitProj τ (evFin D.host.F v y ⊗ₜ 1) = _`. Rewrite using `[splitProj_tmul, map_one, mul_one]`. Both sides reduce to the same expression. Rewrite using `[finPart_idem_mul_mem_iff, isInt_Ov]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chart_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : Chart (idem τ) v
     ((splitProj τ : Fv D.host.F v ⊗[D.host.F] D.host.E →+* Fv D.host.F v).comp (compFin D.host.F D.host.E v)) := by
@@ -218,9 +216,9 @@ theorem chart_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : Chart (idem 
   · rw [finPart_idem_mul_mem_iff, isInt_Ov]; rfl
 
 /- English proof (translation)
-Use `⟨isSplitIdem_idem τ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : Valued.v (τ x) ≠ 0` using `(map_ne_zero _).2 ((map_ne_zero τ).2 (RingOfIntegers.coe_ne_zero_iff.2 hx))`. Establish `h1 : splitProj τ (compFin D.host.F D.host.E v (incA D (x : D.host.E)⁻¹)) = τ (x : D.host.E)⁻¹`. Express the relevant statement in the definitionally equal form `splitProj τ (evFin D.host.F v 1 ⊗ₜ _) = _`. Rewrite using `[splitProj_tmul, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[finPart_idem_mul_mem_iff, h1, mem_splitPrime, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 h0)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIdemAt_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : IsIdemAt (idem τ) (splitPrime τ) := by
   refine ⟨isSplitIdem_idem τ, fun x hx => ?_⟩
@@ -233,7 +231,7 @@ theorem isIdemAt_idem (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : IsIdemAt 
     map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 h0)]
 
 /- English proof (translation)
-Introduce `τ` and use `⟨idem τ, isIdemAt_idem τ, chart_idem τ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isIdemAt_chart : ∀ {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v), ∃ e : AE D, IsIdemAt e (GlobalTheory.AdelicU.splitPrime τ) ∧ Chart e v ((GlobalTheory.AdelicU.splitProj τ : Fv D.host.F v ⊗[D.host.F] D.host.E →+* Fv D.host.F v).comp (GlobalTheory.AdelicU.compFin D.host.F D.host.E v)) :=
   fun τ => ⟨idem τ, isIdemAt_idem τ, chart_idem τ⟩

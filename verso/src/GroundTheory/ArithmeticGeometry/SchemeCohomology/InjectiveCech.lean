@@ -11,7 +11,7 @@ universe w u
 variable {X : TopCat.{u}}
 
 /- English proof (translation)
-Establish `h` using `TopCat.Presheaf.toTypes_isSheaf X (fun x => A x)`. Use `(TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget AddCommGrpCat.{u}) (discPresheaf A)).2` as an intermediate fact. Conclude with `this h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma discPresheaf_isSheaf (A : X → AddCommGrpCat.{u}) :
     Presheaf.IsSheaf (Opens.grothendieckTopology X) (discPresheaf A) := by
@@ -34,7 +34,7 @@ noncomputable def toGerms (F : TopCat.Sheaf AddCommGrpCat.{u} X) :
     exact F.presheaf.germ_res_apply h.unop x.1 x.2 s
 
 /- English proof (translation)
-Introduce `s t h`. Apply `TopCat.Presheaf.section_ext F W.unop s t` to reduce the goal to its premises. Introduce `x hx`. Conclude with `congrFun h ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma toGerms_injective (F : TopCat.Sheaf AddCommGrpCat.{u} X) (W : (Opens X)ᵒᵖ) :
     Function.Injective ((toGerms F).app W) := by
@@ -53,7 +53,7 @@ instance (F : TopCat.Sheaf AddCommGrpCat.{u} X) : Mono (toGermSheaf F) := by
   exact Sheaf.Hom.mono_of_presheaf_mono (f := toGermSheaf F)
 
 /- English proof (translation)
-Set `r` to `Injective.factorThru (𝟙 I) (toGermSheaf I)`. Establish `hr : toGermSheaf I ≫ r = 𝟙 I` using `Injective.comp_factorThru _ _`. Establish `hr' : toGerms I ≫ r.hom = 𝟙 I.obj` using `congrArg (fun f => f.hom) hr`. Conclude with `CechAcyclic.of_retract U (toGerms I) r.hom hr' (cechAcyclic_discPresheaf U _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cechAcyclic_of_injective (I : TopCat.Sheaf AddCommGrpCat.{u} X) [Injective I]
     {ι : Type w} (U : ι → Opens X) : CechAcyclic I.obj U := by

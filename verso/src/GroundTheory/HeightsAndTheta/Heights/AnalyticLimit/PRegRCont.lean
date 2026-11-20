@@ -8,15 +8,15 @@ open ReciprocityTheory.AnForm.A (coordDiv)
 open Filter Topology
 
 /- English proof (translation)
-Introduce `X _ D A R y hy`. Use `set j := bdIdx R y`. Establish `hyU : y ∈ bdDom R j` using `mem_bdDom_bdIdx R y`. Set `g : (Fin D → ℂ) → ℝ` to `fun z => Real.exp 1 + R.f j z - ∑ i ∈ R.S j, Real.log (‖z i‖ ^ 2)`. Establish `key : ∀ y' ∈ bdDom R j ∩ R.Yo, R.ψ j y' ∉ coordDiv (R.S j) ∧ R.r y' = g (R.ψ j y')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y' ⟨⟨hs, hW⟩, hY⟩`. Establish `hinv : (R.ψ j).symm (R.ψ j y') = y'` using `(R.ψ j).left_inv hs`. Establish `hnot : R.ψ j y' ∉ coordDiv (R.S j)` using `(R.mem_Yo_iff j _ hW).1 (by rw [hinv]; exact hY)`. Use `⟨hnot, ?_⟩` and prove the remaining obligations. Establish `h` using `R.r_chart j (R.ψ j y') ⟨hW, hnot⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hinv]`. Conclude with `h`. Establish `hg : ContinuousAt g (R.ψ j y)`. Establish `hW : R.ψ j y ∈ R.W j` using `hyU.2`. Establish `hnd` using `(key y ⟨hyU, hy⟩).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : ContinuousAt (R.f j) (R.ψ j y)` using `(R.f_cont j).continuousAt ((R.isOpen_kappaOpenNeighbourhood j).mem_nhds hW)`. Use `(continuousAt_const.add hf).sub ?_` and prove the remaining obligations. Use `tendsto_finsetSum (R.S j) fun i hi => ?_` and prove the remaining obligations. Establish `hzi : R.ψ j y i ≠ 0` using `fun h0 => hnd ⟨i, hi, h0⟩`. Establish `hc : ContinuousAt (fun z : Fin D → ℂ => ‖z i‖ ^ 2) (R.ψ j y)` using `((continuous_apply i).norm.pow 2).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.log (pow_ne_zero 2 (norm_ne_zero_iff.2 hzi))`. Establish `hO : IsOpen (bdDom R j ∩ R.Yo)` using `(isOpen_bdDom R j).inter R.isOpen_Yo`. Establish `heq : g ∘ R.ψ j =ᶠ[𝓝 y] R.r` using `Filter.eventually_of_mem (hO.mem_nhds ⟨hyU, hy⟩) fun y' h => ((key y' h).2).symm`. Conclude with `((hg.comp ((R.ψ j).continuousAt hyU.1)).congr heq).continuousWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem RegRCont.proof : RegRCont.Statement := by
   intro X _ D A R y hy

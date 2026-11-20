@@ -32,11 +32,11 @@ def locW {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (w : Pl.P
   Submodule.span (intW Pl w) (L : Set V)
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `key : ∀ z : V, e z = ∑ j, σ (b.repr z j) • e (b j)`. Introduce `z`. Use `conv_lhs => rw [← b.sum_repr z]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.map_smulₛₗ]`. Establish `hsum : ∑ j, (σ (b.repr x j) - σ (b.repr y j)) • e (b j) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← key, hxy, sub_self]`. Establish `hz` using `(Fintype.linearIndependent_iff.mp h) _ hsum`. Apply `b.ext_elem` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `σ.injective (sub_eq_zero.mp (hz i))`.
+A detailed English derivation is pending.
 -/
 theorem inj_of_li {K V M ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup M]
     [Module ℂ M] [Fintype ι] (σ : K →+* ℂ) (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V)
@@ -74,7 +74,7 @@ def descend {K V W M N : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommG
     rw [h1, LinearMap.map_smulₛₗ e₂, h2, LinearMap.map_smulₛₗ e₁, LinearMap.map_smul]
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (h x)`.
+A detailed English derivation is pending.
 -/
 theorem descend_spec {K V W M N : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module K W] [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] {σ : K →+* ℂ}
@@ -99,13 +99,13 @@ def Klin (i : ℕ) : (C.cls i → C.Y i → ℂ) →ₗ[ℂ] (C.cls (i + 1) → 
 end ColumnChain
 
 /- English proof (translation)
-Simplify using `[Ranks.N]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ranks.N_zero (R : Ranks) : R.N 0 = R.k := by
   simp [Ranks.N]
 
 /- English proof (translation)
-Establish `h1` using `R.two_le_m`. Establish `h2` using `R.m_add_three_le_k`. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Ranks.N_pos (R : Ranks) (j : ℕ) : 0 < R.N j := by
   have h1 := R.two_le_m
@@ -114,7 +114,7 @@ theorem Ranks.N_pos (R : Ranks) (j : ℕ) : 0 < R.N j := by
   omega
 
 /- English proof (translation)
-Establish `hi : i.1 < R.k + j * (R.t + 1)` using `i.2`. Establish `hlt : i.1 - R.k < R.m * (R.t + 1)` using `lt_of_lt_of_le (by omega) (Nat.mul_le_mul_right _ hj)`. Conclude with `(Nat.div_lt_iff_lt_mul (Nat.succ_pos _)).mpr hlt`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ranks.blk_lt (R : Ranks) {j : ℕ} (hj : j ≤ R.m) (i : Fin (R.N j)) (h : ¬ i.1 < R.k) :
     (i.1 - R.k) / (R.t + 1) < R.m := by
@@ -246,13 +246,13 @@ variable {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL] {embL
 def ipC (i : ℕ) (φ ψ : C.cls i → C.Y i → ℂ) : ℂ := ∑ c, C.wt i c * M.ipV i c (φ c) (ψ c)
 
 /- English proof (translation)
-The claim follows from `inj_of_li embLL (M.emb i) (M.lat i).b (M.emb_basis i).1`.
+A detailed English derivation is pending.
 -/
 theorem emb_inj (i : ℕ) : Function.Injective (M.emb i) :=
   inj_of_li embLL (M.emb i) (M.lat i).b (M.emb_basis i).1
 
 /- English proof (translation)
-The claim follows from `inj_of_li embLL M.ptEmb M.ptLat.b M.ptEmb_basis.1`.
+A detailed English derivation is pending.
 -/
 theorem ptEmb_inj : Function.Injective M.ptEmb :=
   inj_of_li embLL M.ptEmb M.ptLat.b M.ptEmb_basis.1
@@ -280,7 +280,7 @@ def KL (i : ℕ) (h : M.KRat i) : (M.lat i).V →ₗ[LL] (M.lat (i + 1)).V :=
   descend (M.emb i) (M.emb (i + 1)) (M.emb_inj (i + 1)) (C.Klin i) h
 
 /- English proof (translation)
-The claim follows from `descend_spec (M.emb i) (M.emb (i + 1)) (M.emb_inj (i + 1)) (C.Klin i) h x`.
+A detailed English derivation is pending.
 -/
 theorem KL_spec (i : ℕ) (h : M.KRat i) (x : (M.lat i).V) :
     M.emb (i + 1) (M.KL i h x) = C.K i (M.emb i x) :=
@@ -295,7 +295,7 @@ def PtL (h : M.PRat) : (M.lat R.m).V →ₗ[LL] M.ptLat.V :=
   descend (M.emb R.m) M.ptEmb M.ptEmb_inj (P.lowerMap ∘ₗ P.evz) h
 
 /- English proof (translation)
-The claim follows from `descend_spec (M.emb R.m) M.ptEmb M.ptEmb_inj (P.lowerMap ∘ₗ P.evz) h x`.
+A detailed English derivation is pending.
 -/
 theorem PtL_spec (h : M.PRat) (x : (M.lat R.m).V) :
     M.ptEmb (M.PtL h x) = P.lowerMap (P.evz (M.emb R.m x)) :=

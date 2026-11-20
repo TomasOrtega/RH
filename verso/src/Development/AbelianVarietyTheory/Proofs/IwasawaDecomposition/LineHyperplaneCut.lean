@@ -9,7 +9,7 @@ namespace GlobalTheory.EigenLine
 variable {K : Type} [Field K] {O : Type} [CommRing O] {L : Type} [AddCommGroup L] [Module K L]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem action_one_tmul (ρ : O →+* Module.End K L) (a : O) :
     tensorAction ρ ((1 : K) ⊗ₜ[ℤ] a) = ρ a := by
@@ -17,9 +17,9 @@ theorem action_one_tmul (ρ : O →+* Module.End K L) (a : O) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `tmul r a => intro x hx`. Rewrite using `[tensorAction_tmul]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.smul_mem _ (hP a x hx)`. Consider the case `add s t hs ht`. Introduce `x hx`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `P.add_mem (hs x hx) (ht x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem action_mem (ρ : O →+* Module.End K L) (P : Submodule K L)
     (hP : ∀ a, ∀ x ∈ P, ρ a x ∈ P) (t : K ⊗[ℤ] O) : ∀ x ∈ P, tensorAction ρ t x ∈ P := by
@@ -32,7 +32,7 @@ theorem action_mem (ρ : O →+* Module.End K L) (P : Submodule K L)
     exact P.add_mem (hs x hx) (ht x hx)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun t => tensorAction ρ t x) (hε a)`. Simplify `h` using `only [map_mul, Module.End.mul_apply, action_one_tmul, map_smul, LinearMap.smul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem action_eigen_right (ρ : O →+* Module.End K L) (χ : O →+* K) (ε : K ⊗[ℤ] O)
     (hε : ∀ a, ε * ((1 : K) ⊗ₜ[ℤ] a) = χ a • ε) (a : O) (x : L) :
@@ -42,7 +42,7 @@ theorem action_eigen_right (ρ : O →+* Module.End K L) (χ : O →+* K) (ε : 
     LinearMap.smul_apply] using h
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun t => tensorAction ρ t x) ((mul_comm _ _).trans (hε a))`. Simplify `h` using `only [map_mul, Module.End.mul_apply, action_one_tmul, map_smul, LinearMap.smul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem action_eigen_left (ρ : O →+* Module.End K L) (χ : O →+* K) (ε : K ⊗[ℤ] O)
     (hε : ∀ a, ε * ((1 : K) ⊗ₜ[ℤ] a) = χ a • ε) (a : O) (x : L) :
@@ -55,7 +55,7 @@ noncomputable def twist (c : O →+* O) : K ⊗[ℤ] O →ₐ[ℤ] K ⊗[ℤ] O 
   Algebra.TensorProduct.map (AlgHom.id ℤ K) c.toIntAlgHom
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a => simp [twist, hcc]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem twist_twist (c : O →+* O) (hcc : ∀ a, c (c a) = a) (t : K ⊗[ℤ] O) :
     twist c (twist c t) = t := by
@@ -65,7 +65,7 @@ theorem twist_twist (c : O →+* O) (hcc : ∀ a, c (c a) = a) (t : K ⊗[ℤ] O
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a => simp [twist, hadj]`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem form_action (ρ : O →+* Module.End K L) (c : O →+* O) (B : LinearMap.BilinForm K L)
     (hadj : ∀ a x y, B x (ρ a y) = B (ρ (c a) x) y) (t : K ⊗[ℤ] O) (x y : L) :
@@ -76,9 +76,9 @@ theorem form_action (ρ : O →+* Module.End K L) (c : O →+* O) (B : LinearMap
   | add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, f y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (LinearMap.ext h)`. Establish `htop : LinearMap.range f = ⊤`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.range_eq_top.2 fun k => ⟨(k / f y) • y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, div_mul_cancel₀ _ hy]`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `h` using `[htop, finrank_top, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_ker_add_one {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (f : V →ₗ[K] K) (hf : f ≠ 0) :
@@ -95,41 +95,35 @@ theorem finrank_ker_add_one {V : Type} [AddCommGroup V] [Module K V] [FiniteDime
   omega
 
 /- English proof (translation)
-Use `set T := tensorAction ρ ε with hT`. Use `set E := LinearMap.range T with hE`. Establish `hn₀ : n₀ ∈ M`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨1, by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTn : T n₀ ≠ 0` using `fun h => hε0 (hinj ε h)`. Establish `hTM : ∀ m ∈ M, T m ∈ K ∙ T n₀`. Introduce `m hm`. Rewrite `hm` using `[hspan]`. Proceed by induction on `hm using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Establish `: T (ρ a n₀) = χ a • T n₀` using `action_eigen_right ρ χ ε hε a n₀`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hline : M ⊓ E = K ∙ T n₀`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hxM, z, rfl⟩`. Establish `hz : z ∈ M ⊔ M'` using `by rw [hMM.sup_eq_top]; trivial`. Take `⟨m, hm, m', hm', rfl⟩` from `Submodule.mem_sup.1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : T m' ∈ M'` using `action_mem ρ M' hM' ε m' hm'`. Establish `h2 : T m ∈ M` using `action_mem ρ M hM ε m hm`. Establish `h3 : T m' ∈ M`. Establish `: T m' = T (m + m') - T m` using `by rw [map_add]; abel`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `M.sub_mem hxM h2`. Establish `h4 : T m' = 0`. Establish `: T m' ∈ M ⊓ M'` using `⟨h3, h1⟩`. Rewrite `this` using `[hMM.inf_eq_bot, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[map_add, h4, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hTM m hm`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `⟨action_mem ρ M hM ε n₀ hn₀, n₀, rfl⟩`. Use `⟨by rw [hline]; exact finrank_span_singleton hTn, ?_⟩` and prove the remaining obligations. Set `f : E →ₗ[K] K` to `(B n₀).comp E.subtype`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hf : f ≠ 0`. Establish `h1 : twist c ε ≠ 0`. Introduce `h`. Apply `hε0` to reduce the goal to its premises. Rewrite using `[← twist_twist c hcc ε, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h2 : tensorAction ρ (twist c ε) n₀ ≠ 0` using `fun h => h1 (hinj _ h)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, B (tensorAction ρ (twist c ε) n₀) z ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h2 (hnd _ h)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← form_action ρ c B hadj]`. Conclude with `LinearMap.congr_fun h0 ⟨T z, z, rfl⟩`. Establish `hmap : (LinearMap.ker f).map E.subtype = B.orthogonal M ⊓ E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, hy⟩, hyk, rfl⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ B.orthogonal M`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Introduce `n hn`. Establish `hy0 : B n₀ y = 0` using `hyk`. Rewrite `hn` using `[hspan]`. Proceed by induction on `hn using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mem n hn`. Take `⟨a, rfl⟩` from `hn`. Take `⟨z, rfl⟩` from `hy`. Establish `h1` using `hadj (c a) n₀ (T z)`. Rewrite `h1` using `[hcc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show B (ρ a n₀) (T z) = 0`. Rewrite using `[← h1, action_eigen_left ρ χ ε hε, map_smul, hy0, smul_zero]`. Consider the case `zero => simp [LinearMap.BilinForm.IsOrtho]`. Consider the case `add u v _ _ hu hv`. Simplify using `only [LinearMap.BilinForm.IsOrtho, map_add, LinearMap.add_apply] at *`.
-
-Rewrite using `[hu, hv, add_zero]`. Consider the case `smul r u _ hu`. Simplify using `only [LinearMap.BilinForm.IsOrtho, map_smul, LinearMap.smul_apply] at *`. Rewrite using `[hu, smul_zero]`. Introduce and unpack `⟨hx, hxE⟩`.
-
-Use `⟨⟨x, hxE⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hx' : x ∈ B.orthogonal M` using `hx`. Rewrite `hx'` using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Conclude with `hx' n₀ hn₀`. Rewrite using `[← hmap, Submodule.finrank_map_subtype_eq]`.
-
-Conclude with `finrank_ker_add_one f hf`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_hyperplane_cut (K : Type) [Field K] (O : Type) [CommRing O] (L : Type)
     [AddCommGroup L] [Module K L]

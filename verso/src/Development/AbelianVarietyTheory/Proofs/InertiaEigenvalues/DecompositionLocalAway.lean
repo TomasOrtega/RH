@@ -19,7 +19,7 @@ variable {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
   {hw : w ∈ placesOver D.host.E (D.nd.l i)}
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : Br.G D.nbr i w hw => M ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) a b` using `(hM.matrix_elem a b).comp (continuous_subtype_val.comp (Br.iota_cont D.nbr i w hw))`. Establish `h2 : Continuous fun y : D.nd.O i => (((D.nbr i w hw).eO y : ↥(OL (D.nbr i w hw).LL)) : ↥(D.nbr i w hw).LL.1)` using `continuous_subtype_val.comp (D.nbr i w hw).eO_cont`. Establish `h3 : Continuous fun y : ↥(D.nbr i w hw).LL.1 => C.inc y` using `Continuous.subtype_mk continuous_subtype_val _`. Conclude with `h3.comp (h2.comp h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locC_cont' (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (hM : Continuous fun g => M g) : Continuous fun g => TruncatedSeriesCountingIdentities.locC C M g := by
@@ -33,7 +33,7 @@ theorem locC_cont' (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k :
   exact h3.comp (h2.comp h1)
 
 /- English proof (translation)
-Establish `h1` using `((((h41 i).2.2 r hr).2.1 w hw).1 hl0 hl1 x).1`. Establish `h2 : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (Br.loc D.nbr i w hw (rO D.nd i r x)))` using `((D.loc_tie i w hw).2.1 D.R.nV (r x) (by simpa [rO] using (hr x).1)).1.1 h1`. Conclude with `GlobalTheory.CrysCoef.isCrys_inclusion (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw (D.nbr i w hw).LL C.LL C.le D.R.nV _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rx_crys (h41 : SumRepresentations.Conclusion41 D) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) (hl0 : D.nd.l i ≠ D.host.g 0) (hl1 : D.nd.l i ≠ D.host.g 1)
@@ -46,15 +46,15 @@ theorem rx_crys (h41 : SumRepresentations.Conclusion41 D) (r : D.nd.X i → (GE 
     D.R.nV _ h2
 
 /- English proof (translation)
-Set `φ` to `GlobalTheory.HTW.RecS.Model.phiK i w hw C`. Set `Bt : Matrix (Fin D.R.nV) (Fin k) ↥C.LL.1` to `B.map φ`. Establish `hinj : Function.Injective Bt.mulVec`. Establish `h1 : A.map φ * Bt = 1`. Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u v huv`. Use `congrArg (A.map φ).mulVec huv` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Establish `hcN : ∀ (_ : Unit) (v : Fin k → ↥C.LL.1), Continuous fun g => (TruncatedSeriesCountingIdentities.locC C N g).mulVec v` using `fun _ v => (locC_cont' C N hN).matrix_mulVec continuous_const`. Establish `hcR : ∀ (_ : Unit) (v : Fin D.R.nV → ↥C.LL.1), Continuous fun g => (TruncatedSeriesCountingIdentities.locC C (rO D.nd i r π) g).mulVec v` using `fun _ v => (locC_cont' C _ hcont).matrix_mulVec continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : IsSubOfSums (GRep.mat (Qp` using `ℚ_[D.nd.l i]) (O := ↥(OL C.LL)) (fun _ : Unit => TruncatedSeriesCountingIdentities.locC C N) hcN ()).ρ (fun _ : Unit => ⇑(TruncatedSeriesCountingIdentities.locC C (rO D.nd i r π))) := by`. Use `⟨1, fun _ => (), LinearMap.pi fun _ => Matrix.mulVecLin Bt, ?_, fun g v => ?_⟩` and prove the remaining obligations. Introduce `u v huv`. Conclude with `hinj (congrFun huv 0)`. Establish `key : ∀ (u : Fin k → ↥C.LL.1), Bt.mulVec ((TruncatedSeriesCountingIdentities.locC C N g).mulVec u) = (TruncatedSeriesCountingIdentities.locC C (rO D.nd i r π) g).mulVec (Bt.mulVec u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[GlobalTheory.HTW.RecS.Model.locC_eq_map, GlobalTheory.HTW.RecS.Model.locC_eq_map]`. Simplify using `only [Bt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hint]`. Use function extensionality and compare the values at `a`. Conclude with `key v`. Conclude with `(subsum_crys (fun _ : Unit => TruncatedSeriesCountingIdentities.locC C (rO D.nd i r π)) hcR hF (S := fun _ => Set.univ) (fun _ => hcr) (fun _ _ _ _ => Set.mem_univ _) _ hsub).1`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sub_crys (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
     (hF : TruncatedSeriesCountingIdentities.FontaineAt (Br.PD D.loc D.nbr i w hw) ↥C.LL.1 ↥(OL C.LL))
@@ -100,11 +100,11 @@ def chiM (c : ℕ) : GE D.nd →* Matrix (Fin 1) (Fin 1) (D.nd.O i) :=
   twistM (1 : GE D.nd →* Matrix (Fin 1) (Fin 1) (D.nd.O i)) (chiU D.nd i c)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hd`. Use `⟨LinearMap.toMatrix' (e.symm.toLinearMap ∘ₗ LinearMap.inl (KK D.nd i) _ _), LinearMap.toMatrix' (LinearMap.fst (KK D.nd i) _ _ ∘ₗ e.toLinearMap), ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_mul, Matrix.toLin'_toMatrix', LinearMap.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`. Apply `e.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem decomp_rho (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
@@ -128,17 +128,17 @@ theorem decomp_rho (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hd`. Establish `ht : 0 < D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `c0 : Fin D.R.t` to `⟨0, ht⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Set `L : (Fin 1 → KK D.nd i) →ₗ[KK D.nd i] (Fin D.R.t → KK D.nd i)` to `LinearMap.single (KK D.nd i) (fun _ => KK D.nd i) c0 ∘ₗ LinearMap.proj 0`. Set `L' : (Fin D.R.t → KK D.nd i) →ₗ[KK D.nd i] (Fin 1 → KK D.nd i)` to `LinearMap.pi fun _ => LinearMap.proj c0`. Use `⟨LinearMap.toMatrix' (e.symm.toLinearMap ∘ₗ LinearMap.inr (KK D.nd i) _ _ ∘ₗ L), LinearMap.toMatrix' (L' ∘ₗ LinearMap.snd (KK D.nd i) _ _ ∘ₗ e.toLinearMap), ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Simplify using `[L, L']`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_mul, Matrix.toLin'_toMatrix', LinearMap.comp_apply, Matrix.toLin'_apply, LinearEquiv.coe_coe]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearEquiv.apply_symm_apply, LinearMap.inr_apply]`. Use extensionality with `c`. Simplify using the standard rewrite rules. Simplify using `only [L, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.single_apply]`. Distinguish the cases in `hc : c = c0`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hc` using the available equality. Simplify using `[chiM, twistM, mapM, Matrix.mulVec, dotProduct, c0]`. Simplify using `[Pi.single_apply, hc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem decomp_chi (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
@@ -179,7 +179,7 @@ theorem decomp_chi (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
       · simp [Pi.single_apply, hc]
 
 /- English proof (translation)
-Establish `: (fun g => chiM (D` using `D) (i := i) c g) = fun g => ((D.nd.chi i c g : (D.nd.O i)ˣ) : D.nd.O i) • (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)) := by`. Use function extensionality and compare the values at `g`. Simplify using `[chiM, twistM]`. Rewrite using `[this]`. Conclude with `(D.nd.chi_cont i c).smul continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiM_cont (c : ℕ) : Continuous fun g => chiM (D := D) (i := i) c g := by
   have : (fun g => chiM (D := D) (i := i) c g) = fun g => ((D.nd.chi i c g : (D.nd.O i)ˣ) : D.nd.O i) • (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)) := by
@@ -189,18 +189,18 @@ theorem chiM_cont (c : ℕ) : Continuous fun g => chiM (D := D) (i := i) c g := 
   exact (D.nd.chi_cont i c).smul continuous_const
 
 /- English proof (translation)
-Simplify using `[TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, chiM, twistM, Br.loc, Br.locChi, Br.locM, Br.locO, Br.chiG, mapM, LocBridge.toLL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locC_chiM_apply (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (g : Br.G D.nbr i w hw) :
     TruncatedSeriesCountingIdentities.locC C (chiM (D := D) (i := i) 1) g 0 0 = ((TruncatedSeriesCountingIdentities.chi1C C g : (↥C.LL.1)ˣ) : ↥C.LL.1) := by
   simp [TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, chiM, twistM, Br.loc, Br.locChi, Br.locM, Br.locO, Br.chiG, mapM, LocBridge.toLL]
 
 /- English proof (translation)
-Take `⟨B, A, hAB, hint⟩` from `decomp_chi r ρ π hd`. Establish `h1 : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (chiM (D` using `D) (i := i) 1))) := sub_crys C hF r π hcr hcont _ (chiM_cont 1) B A hAB hint`. Establish `h2` using `(GlobalTheory.HTW.Rec.tateDual_matRep_crys (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL (TruncatedSeriesCountingIdentities.locC C (chiM (D := D) (i := i) 1)) hF.2.2.1 (locC_cont' C _ (chiM_cont 1)) h1).2`. Establish `h3 : IsCrys (Br.PD D.loc D.nbr i w hw) (WeaklyAdmissibleFiltrations.charRep ((TruncatedSeriesCountingIdentities.chi1C C)⁻¹ * cycLL (Br.PD D.loc D.nbr i w hw) ↥C.LL.1))`. Use `GlobalTheory.Cmp.WachMonoidal.isCrys_of_equiv _ (LinearEquiv.funUnique (Fin 1) ↥C.LL.1 ↥C.LL.1) ?_ h2` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g v`. Simplify using `only [LinearEquiv.funUnique_apply, Function.eval]`. Express the relevant statement in the definitionally equal form `((twistM (dualM (TruncatedSeriesCountingIdentities.locC C (chiM (D := D) (i := i) 1))) _ g).mulVec v) 0 = _`. Simplify using `[twistM, dualM, Matrix.mulVec, dotProduct, WeaklyAdmissibleFiltrations.charRep, locC_chiM_apply]`. Use `left`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Conclude with `(GlobalTheory.BlockCrys.isCrys_mul_cyc _ _).1 h3`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chi1inv_crys (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
     (hF : TruncatedSeriesCountingIdentities.FontaineAt (Br.PD D.loc D.nbr i w hw) ↥C.LL.1 ↥(OL C.LL))
@@ -228,9 +228,9 @@ theorem chi1inv_crys (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
   exact (GlobalTheory.BlockCrys.isCrys_mul_cyc _ _).1 h3
 
 /- English proof (translation)
-Establish `hc : ∀ (_ : Unit) (v : Fin k → ↥C.LL.1), Continuous fun g => (M g).mulVec v` using `fun _ v => hM.matrix_mulVec continuous_const`. Establish `hc' : ∀ (_ : Unit) (v : Fin k → ↥C.LL.1), Continuous fun g => (twistM M χ g).mulVec v` using `fun _ v => hM'.matrix_mulVec continuous_const`. Use `(hF.2.1 (GRep.mat (Qp := ℚ_[D.nd.l i]) (O := ↥(OL C.LL)) (fun _ : Unit => M) hc ()) (GRep.mat (Qp := ℚ_[D.nd.l i]) (O := ↥(OL C.LL)) (fun _ : Unit => twistM M χ) hc' ()) χ ⟨LinearEquiv.refl _ _, fun g x => ?_⟩ hχ hcr).1` and prove the remaining obligations. Establish `key : ∀ u : Fin k → ↥C.LL.1, (twistM M χ g).mulVec u = ((χ g : (↥C.LL.1)ˣ) : ↥C.LL.1) • (M g).mulVec u`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `j`. Simplify using `[twistM, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Conclude with `key x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twist_crys (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
     (hF : TruncatedSeriesCountingIdentities.FontaineAt (Br.PD D.loc D.nbr i w hw) ↥C.LL.1 ↥(OL C.LL))
@@ -253,9 +253,9 @@ theorem twist_crys (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
   exact key x
 
 /- English proof (translation)
-Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `a b`. Establish `key : ∀ u v : D.nd.O i, C.inc ((D.nbr i w hw).toLL (u * v)) = C.inc ((D.nbr i w hw).toLL u) * C.inc ((D.nbr i w hw).toLL v)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u v`. Rewrite using `[map_mul, map_mul]`. Conclude with `key _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locC_WpO (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
     (π : D.nd.X i) :
@@ -271,7 +271,7 @@ theorem locC_WpO (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (ρ : 
   exact key _ _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun u : (Br.LL D.nbr i w hw)ˣ => C.inc (u : Br.LL D.nbr i w hw)) (GlobalTheory.CycBridge.locChi_epsU D i w hw g)`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Conclude with `((IntermediateField.inclusion C.le).commutes _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cyc_locC (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (g : Br.G D.nbr i w hw) :
     ((cycLL (Br.PD D.loc D.nbr i w hw) ↥C.LL.1 g : (↥C.LL.1)ˣ) : ↥C.LL.1) =
@@ -282,9 +282,9 @@ theorem cyc_locC (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (g : B
   exact ((IntermediateField.inclusion C.le).commutes _).symm
 
 /- English proof (translation)
-Use extensionality with `g a b`. Simplify using `only [twistM, dualM, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, cyc_locC]`. Use `congr 1`. Use `show C.inc ((D.nbr i w hw).toLL (rDuO D.nd i r x (decS D.nd w (Br.iota D.nbr i w hw g)) a b)) = C.inc ((D.nbr i w hw).toLL ((epsU D.nd i (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i)) * C.inc ((D.nbr i w hw).toLL (rTwO D.nd i r x (decS D.nd w (Br.iota D.nbr i …`. Rewrite using `[← map_mul, ← map_mul, map_inv, map_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply the tactic sequence `all_goals (simp [rDuO, rTwO, T2O, WpO, twistM, dualM] <;> ring)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem locC_rDuO (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (x : D.nd.X i) :
@@ -302,9 +302,9 @@ theorem locC_rDuO (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (r : 
   all_goals (simp [rDuO, rTwO, T2O, WpO, twistM, dualM] <;> ring)
 
 /- English proof (translation)
-Use extensionality with `g a b`. Simplify using `only [twistM, dualM, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, cyc_locC]`. Use `congr 1`. Use `show C.inc ((D.nbr i w hw).toLL (T2O D.nd i ρ π (decS D.nd w (Br.iota D.nbr i w hw g)) a b)) = C.inc ((D.nbr i w hw).toLL ((epsU D.nd i (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i)) * C.inc ((D.nbr i w hw).toLL (WpO D.nd i ρ π (decS D.nd w (Br.iota D.nbr i w …`. Rewrite using `[← map_mul, ← map_mul, map_inv, map_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply the tactic sequence `all_goals (simp [rDuO, rTwO, T2O, WpO, twistM, dualM] <;> ring)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem locC_T2O (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
     (π : D.nd.X i) :
@@ -322,17 +322,15 @@ theorem locC_T2O (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (ρ : 
   all_goals (simp [rDuO, rTwO, T2O, WpO, twistM, dualM] <;> ring)
 
 /- English proof (translation)
-Introduce `D i r ρ π h41 hfont hr hρc hd hl0 hl1 w hw C`. Establish `hF` using `hfont w hw C`. Establish `hcA : TruncatedSeriesCountingIdentities.FamilyContinuous (D` using `D) i r := continuous_family_of D i r hr`. Establish `hrx` using `rx_crys h41 r hr hl0 hl1 C`. Establish `hchi` using `chi1inv_crys C hF r ρ π hd (hrx π) (hcA π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTw : ∀ x, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x)))`. Introduce `x`. Establish `hc'` using `locC_cont' C _ (rTwO_cont D i r hcA x)`. Rewrite `hc'`, the goal using `[locC_rTwO]`. Conclude with `twist_crys C hF _ _ (locC_cont' C _ (hcA x)) hc' hchi (hrx x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, A, hAB, hint⟩` from `decomp_rho r ρ π hd`. Establish `hrho` using `sub_crys C hF r π (hrx π) (hcA π) (rhoO D.nd i ρ π) hρc B A hAB hint`. Establish `hWc : Continuous fun g => WpO D.nd i ρ π g`. Establish `h1 : Continuous fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)`. Establish `e : (fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)) = fun g => ((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(D.nd.chi_cont i 1).comp continuous_inv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.smul hρc`. Establish `hW : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π)))`. Establish `hc'` using `locC_cont' C _ hWc`. Rewrite `hc'`, the goal using `[locC_WpO]`. Conclude with `twist_crys C hF _ _ (locC_cont' C _ hρc) hc' hchi hrho`.
-
-Use `⟨hchi, fun x => ?_, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[locC_rDuO]`. Conclude with `(GlobalTheory.HTW.Rec.tateDual_matRep_crys (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL _ hF.2.2.1 (locC_cont' C _ (rTwO_cont D i r hcA x)) (hTw x)).2`. Rewrite using `[locC_T2O]`. Conclude with `(GlobalTheory.HTW.Rec.tateDual_matRep_crys (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL _ hF.2.2.1 (locC_cont' C _ hWc) hW).2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i), SumRepresentations.Conclusion41 D → TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i → GoodR D.nd i r → (Continuous fun g => ((ρ π g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i))) → TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw), IsCrys (Br.PD D.loc D.nbr i w hw) (Formalism.WeaklyAdmissibleFiltrations.charRep (TruncatedSeriesCountingIdentities.chi1C C)⁻¹) ∧ (∀ x, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i r x)))) ∧ IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π))) ∧ IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (T2O D.nd i ρ π))) := by
   intro D i r ρ π h41 hfont hr hρc hd hl0 hl1 w hw C

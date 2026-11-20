@@ -19,9 +19,9 @@ Both sides reduce to the same expression.
 theorem conjAlg_apply (x : K) : conjAlg K x = star x := rfl
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixedField_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h _ (Subgroup.mem_zpowers _)`. Introduce `h f hf`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : conjAlg K ∈ MulAction.stabilizer (K ≃ₐ[ℚ] K) x` using `MulAction.mem_stabilizer_iff.2 (by rw [AlgEquiv.smul_def, conjAlg_apply, h])`. Use `MulAction.mem_stabilizer_iff.1 ((Subgroup.zpowers_le.2 hs) hf)` as an intermediate fact. Rewrite `this` using `[AlgEquiv.smul_def]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_cmF_iff (x : K) : x ∈ cmF K ↔ star x = x := by
   rw [IntermediateField.mem_fixedField_iff]
@@ -35,7 +35,7 @@ theorem mem_cmF_iff (x : K) : x ∈ cmF K ↔ star x = x := by
     rwa [AlgEquiv.smul_def] at this
 
 /- English proof (translation)
-The claim follows from `(mem_cmF_iff K x).1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem star_coe_cmF (x : cmF K) : star (x : K) = x := (mem_cmF_iff K x).1 x.2
 
@@ -52,9 +52,9 @@ theorem conjF_apply (x : K) : conjF K x = star x := rfl
 variable {K}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Set `φ : K →+* ℂ` to `(IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom`. Establish `hφ : ComplexEmbedding.IsReal φ`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hK.2.1 φ a, h a]`. Establish `hc` using `hK.1.isComplex (InfinitePlace.mk φ)`. Rewrite `hc` using `[InfinitePlace.isComplex_mk_iff]`. Conclude with `hc hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_star_ne (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : ∃ a : K, star a ≠ a := by
   by_contra h
@@ -69,7 +69,7 @@ theorem exists_star_ne (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : �
   exact hc hφ
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_star_ne hK`. Use `⟨a - star a, sub_ne_zero.2 (Ne.symm ha), ?_⟩` and prove the remaining obligations. Rewrite using `[star_sub, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_skew (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : ∃ w : K, w ≠ 0 ∧ star w = -w := by
   obtain ⟨a, ha⟩ := exists_star_ne hK
@@ -78,9 +78,9 @@ theorem exists_skew (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : ∃ w
   ring
 
 /- English proof (translation)
-Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Use `⟨⟨(x + star x) / 2, (mem_cmF_iff K _).2 ?_⟩, ⟨(x - star x) / (2 * w), (mem_cmF_iff K _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[star_div₀, star_add, star_star, star_ofNat, add_comm]`. Rewrite using `[star_div₀, star_mul', star_sub, star_star, hw, star_ofNat]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show x = (x + star x) / 2 + (x - star x) / (2 * w) * w`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_add_mul_skew {w : K} (hw0 : w ≠ 0) (hw : star w = -w) (x : K) :
     ∃ a b : cmF K, x = a + b * w := by
@@ -95,7 +95,7 @@ theorem eq_add_mul_skew {w : K} (hw0 : w ≠ 0) (hw : star w = -w) (x : K) :
     ring
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, ha⟩` from `exists_star_ne hK`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← conjAlg_apply, h, AlgEquiv.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjAlg_ne_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : conjAlg K ≠ 1 := by
   intro h
@@ -104,7 +104,7 @@ theorem conjAlg_ne_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : co
   rw [← conjAlg_apply, h, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.finrank_fixedField_eq_card, Nat.card_zpowers]`. Use `orderOf_eq_prime ?_ (conjAlg_ne_one hK)` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[sq, AlgEquiv.mul_apply, conjAlg_apply, conjAlg_apply, star_star, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : finrank (cmF K) K = 2 := by
   rw [IntermediateField.finrank_fixedField_eq_card, Nat.card_zpowers]
@@ -113,11 +113,11 @@ theorem finrank_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : finra
   rw [sq, AlgEquiv.mul_apply, conjAlg_apply, conjAlg_apply, star_star, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Establish `h1c : (1 : K ≃ₐ[cmF K] K) ≠ conjF K`. Introduce `e`. Take `⟨a, ha⟩` from `exists_star_ne hK`. Apply `ha` to reduce the goal to its premises. Use `DFunLike.congr_fun e a` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[AlgEquiv.one_apply, conjF_apply]`. Conclude with `this.symm`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h2 : Fintype.card (K ≃ₐ[cmF K] K) ≤ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Use `(AlgEquiv.card_le (F := cmF K) (K := K)).trans (finrank_cmF hK).le` and compare the differences between its conclusion and the goal. Establish `hle : ({g, 1, conjF K} : Finset (K ≃ₐ[cmF K] K)).card ≤ 2` using `(Finset.card_le_univ _).trans h2`. Rewrite `hle` using `[Finset.card_insert_of_notMem (by simp [h.1, h.2]), Finset.card_pair h1c]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem gal_cmF_cases (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (g : K ≃ₐ[cmF K] K) : g = 1 ∨ g = conjF K := by
   classical
@@ -137,15 +137,15 @@ theorem gal_cmF_cases (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (g : 
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `rcases gal_cmF_cases hK a with rfl | rfl <;> rcases gal_cmF_cases hK b with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gal_cmF_comm (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (a b : K ≃ₐ[cmF K] K) : a * b = b * a := by
   rcases gal_cmF_cases hK a with rfl | rfl <;> rcases gal_cmF_cases hK b with rfl | rfl <;> simp
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, ha⟩` from `exists_star_ne hK`. Apply `ha` to reduce the goal to its premises. Use `DFunLike.congr_fun h a` as an intermediate fact. Rewrite `this` using `[AlgEquiv.one_apply, conjF_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem one_ne_conjF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : (1 : K ≃ₐ[cmF K] K) ≠ conjF K := by
   intro h
@@ -156,11 +156,11 @@ theorem one_ne_conjF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : (1 :
   exact this.symm
 
 /- English proof (translation)
-Use `haveI : IsGalois (cmF K) K := by`. Apply `IsGalois.of_card_aut_eq_finrank` to reduce the goal to its premises. Rewrite using `[finrank_cmF hK, Nat.card_eq_fintype_card]`. Apply `le_antisymm` to reduce the goal to its premises. Use `(AlgEquiv.card_le (F := cmF K) (K := K)).trans (finrank_cmF hK).le` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Use `Finset.card_le_univ ({1, conjF K} : Finset (K ≃ₐ[cmF K] K))` as an intermediate fact. Rewrite `this` using `[Finset.card_pair (one_ne_conjF hK)]`. Then use the resulting hypothesis. Use `show algebraMap (cmF K) K (Algebra.norm (cmF K) x) = _`. Rewrite using `[Algebra.norm_eq_prod_automorphisms]`. Establish `hu : (Finset.univ : Finset (K ≃ₐ[cmF K] K)) = {1, conjF K}`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `g`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Conclude with `gal_cmF_cases hK g`. Rewrite using `[hu, Finset.prod_pair (one_ne_conjF hK), AlgEquiv.one_apply, conjF_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (x : K) :
     ((Algebra.norm (cmF K) x : cmF K) : K) = x * star x := by
@@ -181,11 +181,11 @@ theorem norm_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (x : K) :
   rw [hu, Finset.prod_pair (one_ne_conjF hK), AlgEquiv.one_apply, conjF_apply]
 
 /- English proof (translation)
-Introduce and unpack `⟨r, hr⟩`. Establish `hr' : w * w = (r : K) * r` using `congrArg Subtype.val hr`. Establish `hs : star (r : K) = r` using `star_coe_cmF K r`. Establish `hw2 : ∀ c : K, w = c → star c = c → False`. Introduce `c hc hc'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hw0` to reduce the goal to its premises. Establish `e : w = -w` using `by rw [← hw, hc, hc']`. Establish `e2 : (2 : K) * w = 0` using `by linear_combination e`. Conclude with `(mul_eq_zero.1 e2).resolve_left two_ne_zero`. Establish `hz : (w - r) * (w + r) = 0` using `by linear_combination hr'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 hz with h | h` into its components or cases. Conclude with `hw2 r (sub_eq_zero.1 h) hs`. Conclude with `hw2 (-r) (eq_neg_of_add_eq_zero_left h) (by rw [star_neg, hs])`.
+A detailed English derivation is pending.
 -/
 theorem not_isSquare_skew (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {w : K} (hw0 : w ≠ 0) (hw : star w = -w) :
     ¬ IsSquare (⟨w * w, (mem_cmF_iff K _).2 (by rw [star_mul', hw]; ring)⟩ : cmF K) := by
@@ -204,7 +204,7 @@ theorem not_isSquare_skew (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {
   · exact hw2 (-r) (eq_neg_of_add_eq_zero_left h) (by rw [star_neg, hs])
 
 /- English proof (translation)
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `a`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hK.2.1 ψ]`. Conclude with `congrArg ψ (star_coe_cmF K a)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReal_embedding_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (ψ : K →+* ℂ) :
     ComplexEmbedding.IsReal (ψ.comp (algebraMap (cmF K) K)) := by
@@ -214,9 +214,7 @@ theorem isReal_embedding_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K
   exact congrArg ψ (star_coe_cmF K a)
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `InfinitePlace.comap_surjective (K := K) v`. Use `show (w.comap (algebraMap (cmF K) K)).IsReal`. Establish `e : w.comap (algebraMap (cmF K) K) = InfinitePlace.mk (w.embedding.comp (algebraMap (cmF K) K))`. Rewrite using `[← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`. Rewrite using `[e, InfinitePlace.isReal_mk_iff]`.
-
-Conclude with `isReal_embedding_cmF hK _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReal_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (v : InfinitePlace (cmF K)) : v.IsReal := by
   obtain ⟨w, rfl⟩ := InfinitePlace.comap_surjective (K := K) v
@@ -227,15 +225,13 @@ theorem isReal_cmF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (v : Inf
   exact isReal_embedding_cmF hK _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h φ`. Take `⟨w, hw⟩` from `InfinitePlace.comap_surjective (K := K) (InfinitePlace.mk (Complex.ofRealHom.comp φ))`. Establish `hr` using `isReal_embedding_cmF hK w.embedding`. Establish `hw' : InfinitePlace.mk (w.embedding.comp (algebraMap (cmF K) K)) = InfinitePlace.mk (Complex.ofRealHom.comp φ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`. Conclude with `hw`. Rewrite `hw'` using `[InfinitePlace.mk_eq_iff]`. Establish `e : w.embedding.comp (algebraMap (cmF K) K) = Complex.ofRealHom.comp φ`. Break down `hw' with e | e` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `e`. Rewrite `e` using `[ComplexEmbedding.isReal_iff.1 hr]`. Then use the resulting hypothesis. Establish `h1` using `h w.embedding`. Establish `e2 : w.embedding (a : K) = (φ a : ℂ)` using `RingHom.congr_fun e a`. Rewrite `h1` using `[e2, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`. Introduce `h ψ`. Establish `hr` using `isReal_embedding_cmF hK ψ`. Establish `e : ((hr.embedding a : ℝ) : ℂ) = ψ (a : K)` using `hr.coe_embedding_apply a`. Rewrite using `[← e, Complex.ofReal_re]`.
-
-Conclude with `h _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem totPos_iff (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (a : cmF K) :
     TotPos (a : K) ↔ ∀ φ : cmF K →+* ℝ, 0 < φ a := by

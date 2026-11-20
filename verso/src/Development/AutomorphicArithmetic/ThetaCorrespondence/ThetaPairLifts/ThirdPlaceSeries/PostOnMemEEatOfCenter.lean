@@ -31,9 +31,9 @@ open GlobalTheory.MiTop.CentralShift
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 /- English proof (translation)
-Unfold `RealDat.EEat at hT ⊢`. Use `GlobalTheory.MultTranslate.postOn_mem_goodPart hzf (fun k hk => ?_) (fun f => ?_) hT` and prove the remaining obligations. Establish `e : z⁻¹ * k * z = k`. Rewrite using `[mul_assoc, Subgroup.mem_center_iff.mp hzc k, inv_mul_cancel_left]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hk, rfl⟩`. Unfold `RealDat.e0`. Conclude with `gaL_rTr_of_center _ _ _ _ hzc f`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem postOn_rTrL_mem_EEat_of_mem_center (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {z : GA D (Yc D 0)} (hzf : z ∈ GfC (Yc D 0))
     (hzc : z ∈ Subgroup.center (GA D (Yc D 0))) (Pl : LevelP W.Q.Rl.toRealDat.Pg D.R.r ℂ) {T : MMap (W.Q.Rl.MY 0)}
@@ -52,21 +52,19 @@ end GlobalTheory.MiTop.CentralShift
 namespace GlobalTheory.MiTop
 open GlobalTheory.MiTop.CentralShift
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hB z hzf hzc`. Establish `hM` using `hB.hyp.2.2.2.1.models`. Establish `hE` using `hM.HE`. Establish `h0` using `hM.ν0`. Establish `hHaar : W.Q.Rl.ν0.IsHaarMeasure` using `h0.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFD` using `h0.2`. Take `⟨hinj, hrange, hip⟩` from `hE`. Establish `he : ∀ e, W.Q.Rl.HE.e e ∈ W.Q.Rl.toRealDat.EEat W.Q.Rl.toRealDat.triv` using `fun e => by`. Rewrite using `[← hrange]`. Conclude with `LinearMap.mem_range_self _ e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ e, postOn (W.Q.Rl.MY 0) (GlobalTheory.FinTranslate.rTrL (Yc D 0) z) (W.Q.Rl.HE.e e) ∈ LinearMap.range W.Q.Rl.HE.e` using `fun e => by rw [hrange]; exact _root_.GlobalTheory.MiTop.CentralShift.postOn_rTrL_mem_EEat_of_mem_center W hzf hzc _ (he e)`. Set `Lr : W.Q.Rl.HE.H →ₗ[ℂ] LinearMap.range W.Q.Rl.HE.e` to `(postOn (W.Q.Rl.MY 0) (GlobalTheory.FinTranslate.rTrL (Yc D 0) z) ∘ₗ W.Q.Rl.HE.e).codRestrict _ hmem`. Set `Vz : W.Q.Rl.HE.H →ₗ[ℂ] W.Q.Rl.HE.H` to `(LinearEquiv.ofInjective W.Q.Rl.HE.e hinj).symm.toLinearMap ∘ₗ Lr`. Establish `hV : ∀ e, W.Q.Rl.HE.e (Vz e) = postOn (W.Q.Rl.MY 0) (GlobalTheory.FinTranslate.rTrL (Yc D 0) z) (W.Q.Rl.HE.e e)`. Introduce `e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((LinearEquiv.ofInjective W.Q.Rl.HE.e hinj ((LinearEquiv.ofInjective W.Q.Rl.HE.e hinj).symm (Lr e)) : LinearMap.range W.Q.Rl.HE.e) : MMap (W.Q.Rl.MY 0)) = W.Q.Rl.HE.e ((LinearEquiv.ofInjective W.Q.Rl.HE.e hinj).symm (Lr e))` using `LinearEquiv.ofInjective_apply _ _`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h1.symm`. Establish `hzc' : z⁻¹ ∈ Subgroup.center (GA D (Yc D 0))` using `Subgroup.inv_mem _ hzc`. Establish `hipv : ∀ e e' : W.Q.Rl.HE.H, ipM (W.Q.Rl.MY 0) W.Q.Rl.ν0 W.Q.Rl.fd0 (W.Q.Rl.HE.e e) (W.Q.Rl.HE.e e') = ipM (W.Q.Rl.MY 0) W.Q.Rl.ν0 W.Q.Rl.fd0 (postOn (W.Q.Rl.MY 0) (GlobalTheory.FinTranslate.rTrL (Yc D 0) z) (W.Q.Rl.HE.e e)) (postOn (W.Q.Rl.MY 0) (GlobalTheory.FinTranslate.rTrL ( …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e e'`. Establish `m1` using `(Submodule.mem_inf.mp (he e)).1`. Establish `m2` using `(Submodule.mem_inf.mp (he e')).1`. Establish `m3` using `(Submodule.mem_inf.mp (_root_.GlobalTheory.MiTop.CentralShift.postOn_rTrL_mem_EEat_of_mem_center W hzf hzc _ (he e))).1`. Establish `m4` using `(Submodule.mem_inf.mp (_root_.GlobalTheory.MiTop.CentralShift.postOn_rTrL_mem_EEat_of_mem_center W hzf hzc _ (he e'))).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ipM_eq_of_iff` to reduce the goal to its premises. Introduce `c`. Prove the components needed by the constructor for the conclusion. Conclude with `GlobalTheory.isMultiplicityInner_of_unit_twist_shift _ _ _ _ _ _ hHaar hFD z 1 (by simp) (map_mul_right_center _ hHaar hzc) _ m1 _ m2 _ _ (fun v g => by rw [one_mul]; rfl) (fun v g => by rw [one_mul]; rfl) c`. Conclude with `GlobalTheory.isMultiplicityInner_of_unit_twist_shift _ _ _ _ _ _ hHaar hFD z⁻¹ 1 (by simp) (map_mul_right_center _ hHaar hzc') _ m3 _ m4 _ _ (fun v g => by rw [one_mul]; exact congrArg (W.Q.Rl.HE.e e v) (inv_mul_cancel_right g _).symm) (fun v g => by rw [one_mul]; exact congrArg …`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Vz, fun e v => ?_, fun e => ?_, fun e hel => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.MiTop.rowFormOfVector`. Rewrite using `[hV]`. Conclude with `lift_postOn _ _ _`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hip, hip, hV, ← hipv]`.
-
-Rewrite using `[hV]`. Conclude with `_root_.GlobalTheory.MiTop.CentralShift.postOn_rTrL_mem_EEat_of_mem_center W hzf hzc _ hel`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isShift_of_center_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.BottomHypotheses W → ∀ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) → ∃ V, _root_.GlobalTheory.MiTop.IsShiftOperator W z V := by
   intro D L hT Gi Gl Kc Yd cX ex W hB z hzf hzc

@@ -32,13 +32,13 @@ section Sb
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_zero {m n : ℕ} (a : AE D) (Λ : AddSubgroup (Mx D m n)) : IsSBHalf a Λ 0 :=
   ⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `h`. Establish `hne : ∀ t, (c • Φ) t ≠ 0 → Φ t ≠ 0` using `fun t ht h0 => ht (by rw [Pi.smul_apply, h0, smul_zero])`. Conclude with `⟨fun t ht => h1 t (hne t ht), k, hk, fun u hu hu' t => by rw [Pi.smul_apply, Pi.smul_apply, h2 u hu hu' t], fun t ht => h3 t (hne t ht)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sb_smul {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ : Mx D m n → ℂ} (c : ℂ)
     (h : IsSBHalf a Λ Φ) : IsSBHalf a Λ (c • Φ) := by
@@ -48,15 +48,13 @@ theorem sb_smul {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ : Mx D 
     fun u hu hu' t => by rw [Pi.smul_apply, Pi.smul_apply, h2 u hu hu' t], fun t ht => h3 t (hne t ht)⟩
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `h`. Take `⟨h1', k', hk', h2', h3'⟩` from `h'`. Establish `hne : ∀ t, (Φ + Ψ) t ≠ 0 → Φ t ≠ 0 ∨ Ψ t ≠ 0` using `fun t ht => by`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or, not_not, not_not]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht (by rw [Pi.add_apply, hc.1, hc.2, add_zero])`. Establish `hh : ∀ (j : ℕ) (u : Mx D m n), IsHalf a u → IsHalf a (j • u)` using `fun j u hu p q => by`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hu p q]`. Use `⟨fun t ht => (hne t ht).elim (h1 t) (h1' t), k * k', Nat.mul_pos hk hk', fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : Φ (t + (k * k') • u) = Φ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Conclude with `h2 _ (Λ.nsmul_mem hu k') (hh _ _ hu') t`. Establish `e2 : Ψ (t + (k * k') • u) = Ψ t`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `h2' _ (Λ.nsmul_mem hu k) (hh _ _ hu') t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply, Pi.add_apply, e1, e2]`. Break down `hne t ht with h | h` into its components or cases. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.nsmul_mem (h3 t h) k'`. Rewrite using `[mul_smul]`.
-
-Conclude with `Λ.nsmul_mem (h3' t h) k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_add {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ Ψ : Mx D m n → ℂ}
     (h : IsSBHalf a Λ Φ) (h' : IsSBHalf a Λ Ψ) : IsSBHalf a Λ (Φ + Ψ) := by
@@ -80,19 +78,17 @@ theorem sb_add {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ Ψ : Mx 
     · rw [mul_smul]; exact Λ.nsmul_mem (h3' t h) k
 
 /- English proof (translation)
-Take `⟨p, hp, hP⟩` from `GlobalTheory.HalfCompare.exists_prime_under w`. Establish `hb` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D`. Establish `h0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hb`. Use `⟨Ideal.absNorm D.host.ccK * Ideal.absNorm D.host.𝔟, fun h => hw ((hP _).2 ?_), fun a ha => ?_⟩` and prove the remaining obligations. Break down `hp.dvd_mul.1 ((hP _).1 h) with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h.mul_left _`. Conclude with `(((GlobalTheory.HalfCompare.prime_dvd_absNorm_halfDifferent D hp).1 h).mul_right _).mul_right _`. Establish `h1 : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∈ D.host.ccE`. Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (1 : D.host.E) ∈ D.host.AA0`. Rewrite using `[Host.AA0, FractionalIdeal.mem_inv_iff h0]`. Introduce `y hy`. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem (nonZeroDivisors (𝓞 D.host.E)) h1) h2`. Rewrite `h3` using `[mul_one, map_natCast]`. Establish `h4 : a ∈ D.host.AA0`. Establish `: D.host.AA ≤ D.host.AA0`. Rewrite using `[Host.AA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `this ha`. Rewrite `h4` using `[Host.AA0, FractionalIdeal.mem_inv_iff h0]`. Establish `h5` using `h4 _ (FractionalIdeal.mem_coeIdeal_of_mem (nonZeroDivisors (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.𝔟))`. Rewrite `h5` using `[map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 h5`. Establish `h6 : IsIntegral ℤ (star (r : D.host.E))` using `(map_isIntegral_int (starRingEnd D.host.E) (RingOfIntegers.isIntegral_coe r) :)`. Establish `h7` using `D.host.AA.1.smul_mem (⟨_, h6⟩ : 𝓞 D.host.E) h3`. Establish `e : star (((Ideal.absNorm D.host.ccK * Ideal.absNorm D.host.𝔟 : ℕ) : D.host.E) * a) = star (r : D.host.E) * (Ideal.absNorm D.host.ccK : ℕ)`. Rewrite using `[show (r : D.host.E) = _ from hr, Nat.cast_mul, mul_assoc, star_mul', star_natCast, mul_comm a, mul_comm]`.
-
-Rewrite using `[e]`. Conclude with `h7`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_conj {w : Pl D.host.E}
     (hw : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) :
@@ -135,11 +131,11 @@ theorem exists_nat_conj {w : Pl D.host.E}
     exact h7
 
 /- English proof (translation)
-Use `set v := w.under (𝓞 D.host.F)`. Establish `h1 : (m : 𝓞 D.host.F) ∉ v.asIdeal` using `fun h => hm (by`. Establish `: algebraMap (𝓞 D.host.F) (𝓞 D.host.E) m ∈ w.asIdeal` using `h`. Rewrite using `[map_natCast] at this)` and apply the resulting hypothesis. Establish `h2 : Valued.v (m : v.adicCompletion D.host.F) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (algebraMap (𝓞 D.host.F) D.host.F m)` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 h1, map_natCast]`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `(map_natCast (algebraMap D.host.F (v.adicCompletion D.host.F)) m).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[show (m : v.adicCompletion D.host.F) = 0 from h, map_zero]`. Conclude with `zero_ne_one h2`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h2, inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_nat_mem {w : Pl D.host.E} {m : ℕ} (hm : (m : 𝓞 D.host.E) ∉ w.asIdeal) :
     (m : Fv D.host.F (w.under (𝓞 D.host.F))) ≠ 0 ∧
@@ -176,30 +172,30 @@ Both sides reduce to the same expression.
 theorem ptE_apply (e : Num G i j) (u : PtS G i j) : ptE e u = ptB e u := rfl
 
 /- English proof (translation)
-The claim follows from `map_add (ptE e) u x`.
+A detailed English derivation is pending.
 -/
 theorem ptB_add (e : Num G i j) (u x : PtS G i j) : ptB e (u + x) = ptB e u + ptB e x := map_add (ptE e) u x
 
 /- English proof (translation)
-The claim follows from `map_smul (ptE e) a u`.
+A detailed English derivation is pending.
 -/
 theorem ptB_smul (e : Num G i j) (a : AE D) (u : PtS G i j) : ptB e (a • u) = a • ptB e u := map_smul (ptE e) a u
 
 /- English proof (translation)
-The claim follows from `(ptE e).apply_symm_apply y`.
+A detailed English derivation is pending.
 -/
 theorem ptB_symm (e : Num G i j) (y : WO (spW₁ G i j) (spX G i j)) : ptB e ((ptE e).symm y) = y := (ptE e).apply_symm_apply y
 
 /- English proof (translation)
-The claim follows from `(ptE e).injective ((ptB_smul e a u).trans (smul_of_isHalf h))`.
+A detailed English derivation is pending.
 -/
 theorem smul_of_half (e : Num G i j) {a : AE D} {u : PtS G i j} (h : IsHalf a (ptB e u)) : a • u = u :=
   (ptE e).injective ((ptB_smul e a u).trans (smul_of_isHalf h))
 
 /- English proof (translation)
-Use `GlobalTheory.SquareAgree.HeisCov.symp_eq false (spW₁ G i j) (spX G i j) (finSumFinEquiv.symm.trans e) Γ.V'.J Γ.W.J hW ?_ (ptB e) (fun u => ?_) u x` and prove the remaining obligations. Rewrite using `[hWW, GlobalTheory.Doubling.gram_hsum, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram]`. Use `congr 1`. Use extensionality with `a b`. Apply the tactic sequence `obtain ⟨a | a, rfl⟩ := e.surjective a <;> obtain ⟨b | b, rfl⟩ := e.surjective b <;>`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, GlobalTheory.Doubling.blkMat]`. Rewrite using `[if_neg Bool.false_ne_true, one_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sympS_ptB (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram)
     (hWW : Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e) (u x : PtS G i j) :
@@ -215,7 +211,7 @@ theorem sympS_ptB (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Unfold `heisS heisO symplOH`. Rewrite using `[sympS_ptB e Γ hW hWW, ← ptB_add, GlobalTheory.BigDat.invOf_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisS_ptB (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram)
     (hWW : Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e) (ψ : AddChar (AF D.host.F) ℂ) (x : PtS G i j)
@@ -226,7 +222,7 @@ theorem heisS_ptB (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.
   rw [sympS_ptB e Γ hW hWW, ← ptB_add, GlobalTheory.BigDat.invOf_two]
 
 /- English proof (translation)
-Introduce `c hc` and use `smul_eq_zero_of_isHalf v hb (x := u) (fun p q => congrFun (congrFun (smul_of_half e hu) p) q) c hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_of_half (e : Num G i j) (v : Pl D.host.F) {b : AE D}
     (hb : b * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = b) {u : PtS G i j} (hu : IsHalf b (ptB e u)) :
@@ -234,7 +230,7 @@ theorem at_of_half (e : Num G i j) (v : Pl D.host.F) {b : AE D}
   smul_eq_zero_of_isHalf v hb (x := u) (fun p q => congrFun (congrFun (smul_of_half e hu) p) q) c hc
 
 /- English proof (translation)
-Use `hu (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftV_smul {v : Pl D.host.F} {u : PtS G i j} (hu : At (evFin D.host.F v) u) : GlobalTheory.LatVac.liftV v 1 • u = u := by
   have := hu (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])
@@ -242,7 +238,7 @@ theorem liftV_smul {v : Pl D.host.F} {u : PtS G i j} (hu : At (evFin D.host.F v)
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, ← GlobalTheory.BigDat.mulG_divG (spW₁ G i j) (Matrix.of _)]`. Use `congrArg (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.mulG (spW₁ G i j)) (Matrix.ext fun p q => ?_)` and prove the remaining obligations. Use `(GlobalTheory.BigDat.divG_gen (spW₁ G i j) β a s r p q).trans ?_` and prove the remaining obligations. Rewrite using `[submatrix_apply, transpose_apply, GlobalTheory.BigDat.smul_incM_apply, vecMulVec_apply, mul_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symm_gen (e : Num G i j) (β : AF D.host.F) (a : D.host.E) (s : Fin (spW₁ G i j).rank → D.host.E)
     (r : Fin (spX G i j).rank → D.host.E) :
@@ -255,15 +251,15 @@ theorem symm_gen (e : Num G i j) (β : AF D.host.F) (a : D.host.E) (s : Fin (spW
   simp
 
 /- English proof (translation)
-Take `⟨m, hm, hA⟩` from `exists_nat_conj hw`. Take `⟨hm0, hmi⟩` from `inv_nat_mem hm`. Use `set v := w.under (𝓞 D.host.F)`. Establish `key : ∀ y ∈ homLatB G i j, GlobalTheory.LatVac.liftV v 1 • m • (ptE e).symm y ∈ latAtV Γ.V' Γ.W v` using `fun y hy => by`. Use `GlobalTheory.BigDat.map_mem_of_closure ((DistribMulAction.toAddMonoidHom (PtS G i j) (GlobalTheory.LatVac.liftV v 1)).comp ((DistribMulAction.toAddMonoidHom (PtS G i j) m).comp (ptE e).symm.toLinearMap.toAddMonoidHom)) ?_ hy` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, r, hr, rfl⟩`. Establish `e1 : m • (pairA D.host.F 0 α) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (vecMulVec (star s) fun q => a * r (finSumFinEquiv (e.symm q))) = (pairA D.host.F 0 α) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (vecMulVec (star …`. Use extensionality with `p q`. Rewrite using `[Matrix.smul_apply, GlobalTheory.BigDat.smul_incM_apply, GlobalTheory.BigDat.smul_incM_apply, vecMulVec_apply, vecMulVec_apply, ← TensorProduct.tmul_smul, nsmul_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(congrArg (fun z => GlobalTheory.LatVac.liftV v 1 • z ∈ latAtV Γ.V' Γ.W v) ((congrArg (m • ·) (symm_gen e (pairA _ 0 α) a s r)).trans e1)).mpr (GlobalTheory.BigDat.one_smul_gen_mem _ _ v hα (h.2.ge (GlobalTheory.BigDat.star_mem_conjSub hs)) (h.1.2.1.ge ?_))` and prove the remaining obligations. Rewrite using `[GlobalTheory.SkewLat.mem_pairLat]`. Simplify using `only [Equiv.symm_apply_apply]`. Establish `hma : (m : D.host.E) * a ∈ D.host.AA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.host.AA.1.smul_mem (m : 𝓞 D.host.E) ha` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, map_natCast]`. Then use the resulting hypothesis. Use `⟨GlobalTheory.BigDat.smul_mem_scLat_of_mem hma hr.1, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.BigDat.star_mem_conjSub (GlobalTheory.BigDat.smul_mem_scLat_of_mem (hA a ha) (GlobalTheory.BigDat.star_mem_conjSub hr.2))` as an intermediate fact. Rewrite `this` using `[star_smul, star_star, star_star]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.LatVac.latAtV_at_stable Γ.V' Γ.W v).2 _ hmi _ (key _ hl)`. Rewrite `h1` using `[← ptE_apply, LinearEquiv.symm_apply_apply, smul_comm _ m, liftV_smul hu, smul_comm, ← smul_assoc, ← map_nsmul, nsmul_eq_mul, mul_inv_cancel₀ hm0, liftV_smul hu]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latAtV {t : T} {e : Num G i j} {Bs : Base D.host.F D.host.E} {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j}
     {X : Chars D.host.F D.host.E} (h : IsDoublyCompatible t i j e Bs Γ X) {w : Pl D.host.E}
@@ -310,12 +306,12 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} 
 def atC (w : Pl D.host.E) : AE D →+* Kw w := (atW w).comp (cA D)
 
 /- English proof (translation)
-The claim follows from `congrArg (atW w) (GlobalTheory.DualPairCheck.cA_cA a)`.
+A detailed English derivation is pending.
 -/
 theorem atC_cA (w : Pl D.host.E) (a : AE D) : atC w (cA D a) = atW w a := congrArg (atW w) (GlobalTheory.DualPairCheck.cA_cA a)
 
 /- English proof (translation)
-Unfold `frMapAdj`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_mul (f := toEAf D), Matrix.map_mul (f := toEAf D), Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem adj_eq (S X : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βX : GL (Fin X.rank) (EAf D)) (w : Pl D.host.E) (y : WO S X) :
     (frMapAdj S X βS βX y).map (cpt w) = ((βS⁻¹).val.map (cpt w) * ((S.gram⁻¹).map (incA D)).map (atW w)) *
@@ -326,9 +322,9 @@ theorem adj_eq (S X : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βX : GL (Fin X.ra
   rfl
 
 /- English proof (translation)
-Establish `h1 : ((βS⁻¹).val.map (cpt w) * ((S.gram⁻¹).map (incA D)).map (atW w)) * ((S.gram.map (incA D)).map (atW w) * βS.val.map (cpt w)) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.map _ (atW w)), ← Matrix.map_mul, GlobalTheory.SquareAgree.HeisCov.gram_inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : ((βX⁻¹).val.map (cpt w) * ((X.gram⁻¹).map (incA D)).map (atW w)) * ((X.gram.map (incA D)).map (atW w) * βX.val.map (cpt w)) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.map _ (atW w)), ← Matrix.map_mul, GlobalTheory.SquareAgree.HeisCov.gram_inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨y₀, hy₀⟩ : ∃ y₀ : Matrix (Fin S.rank) (Fin X.rank) (Kw w), y₀ = ((S.gram.map (incA D)).map (atW w) * βS.val.map (cpt w)) * z * ((βX⁻¹).val.map (cpt w) * ((X.gram⁻¹).map (incA D)).map (atW w))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨y₀ᵀ.map fun a => cA D (atPl w a), fun p q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_apply, ← RingHom.map_mul, atPl_one_mul]`. Establish `e : ((y₀ᵀ.map fun a => cA D (atPl w a)).map (atC w))ᵀ = y₀` using `Matrix.ext fun p q => (atC_cA w _).trans (atW_atPl_self w _)`. Rewrite using `[adj_eq, e, hy₀, ← Matrix.mul_assoc _ (_ * z), ← Matrix.mul_assoc _ _ z, h1, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem adj_surj (S X : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βX : GL (Fin X.rank) (EAf D)) (w : Pl D.host.E)
     (z : Matrix (Fin S.rank) (Fin X.rank) (Kw w)) :
@@ -355,7 +351,7 @@ theorem adj_surj (S X : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βX : GL (Fin X.
 variable (B : Frames G) (t : T) (i j : Fin D.R.m) (w : Pl D.host.E)
 
 /- English proof (translation)
-Unfold `linB`. Rewrite using `[adj_eq, adj_eq, adj_eq, Matrix.map_add _ (map_add _), transpose_add, Matrix.mul_add, Matrix.add_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem linB_add (x y : WO (spW₁ G i j) (spX G i j)) : linB B t i j w (x + y) = linB B t i j w x + linB B t i j w y := by
   unfold linB
@@ -363,7 +359,7 @@ theorem linB_add (x y : WO (spW₁ G i j) (spX G i j)) : linB B t i j w (x + y) 
   rfl
 
 /- English proof (translation)
-Take `⟨y, h1, h2⟩` from `adj_surj (spW₁ G i j) (spX G i j) (B.β i j) (frX B i j) w ((reindex (finCongr (rankW₁ G t i j w)) (colX G t i j w)).symm z)`. Conclude with `⟨y, h1, (congrArg _ h2).trans (Equiv.apply_symm_apply _ z)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem linB_surj (z : MatB G t i j w) : ∃ y, IsHalf (cA D (atPl w 1)) y ∧ linB B t i j w y = z := by
   obtain ⟨y, h1, h2⟩ := adj_surj (spW₁ G i j) (spX G i j) (B.β i j) (frX B i j) w
@@ -371,7 +367,7 @@ theorem linB_surj (z : MatB G t i j w) : ∃ y, IsHalf (cA D (atPl w 1)) y ∧ l
   exact ⟨y, h1, (congrArg _ h2).trans (Equiv.apply_symm_apply _ z)⟩
 
 /- English proof (translation)
-Establish `e : (cA D (atPl w 1) • y).map (atC w) = y.map (atC w)` using `Matrix.ext fun p q => by`. Rewrite using `[map_apply, map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, atC_cA, atW_atPl_self, one_mul]`. Unfold `linB`. Rewrite using `[adj_eq, adj_eq, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem linB_smul (y : WO (spW₁ G i j) (spX G i j)) : linB B t i j w (cA D (atPl w 1) • y) = linB B t i j w y := by
   have e : (cA D (atPl w 1) • y).map (atC w) = y.map (atC w) := Matrix.ext fun p q => by
@@ -380,7 +376,7 @@ theorem linB_smul (y : WO (spW₁ G i j) (spX G i j)) : linB B t i j w (cA D (at
   rw [adj_eq, adj_eq, e]
 
 /- English proof (translation)
-Establish `e : y.map (atC w) = 0` using `Matrix.ext fun p q => by`. Rewrite using `[map_apply, ← hy p q, RingHom.map_mul, atC_cA, atW_atPl_ne h, zero_mul, Matrix.zero_apply]`. Unfold `linB`. Rewrite using `[adj_eq, e, transpose_zero, Matrix.mul_zero, Matrix.zero_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem linB_ne {w' : Pl D.host.E} (h : w ≠ w') {y : WO (spW₁ G i j) (spX G i j)} (hy : IsHalf (cA D (atPl w' 1)) y) :
     linB B t i j w y = 0 := by
@@ -397,11 +393,11 @@ section Vac
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {i j : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, θ, -, hθ⟩` from `hT.geo.hM'.vac v`. Establish `h1` using `hθ γ hγ`. Establish `h0 : GlobalTheory.WeilM.hTens (R` using `AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V'.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J) γ γ = 0 := by`. Establish `hl : ∀ p q, b * γ p q = γ p q` using `fun p q => congrFun (congrFun (smul_of_half e hh) p) q`. Unfold `GlobalTheory.WeilM.hTens`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun q _ => Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `u : cA D b * cA D (γ k l) = cA D (γ k l)` using `by rw [← RingHom.map_mul, hl]`. Express the relevant statement in the definitionally equal form `γ p q * _ * _ * cA D (γ k l) = 0`. Rewrite using `[← u, ← hl p q]`. Take the linear combination `(γ p q * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V'.J p k * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J q l * cA D (γ k l)) * hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Unfold `GlobalTheory.WeilM.symp at h1`. Rewrite `h1` using `[h0, mul_zero, map_zero, mul_zero, AddChar.map_zero_eq_one, one_smul, h.ψ]`. Conclude with `h1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_fixed_half {W : G.Weil} {M : Vol G} {t : T} {e : Num G i j} {Bs : Base D.host.F D.host.E}
     {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j} {X : Chars D.host.F D.host.E} {om : Rep D.sp.cm.sig Γ.V Γ.W} {om' : Rep D.sp.cm.sig Γ.V' Γ.W}
@@ -426,15 +422,15 @@ theorem vac_fixed_half {W : G.Weil} {M : Vol G} {t : T} {e : Num G i j} {Bs : Ba
   exact h1
 
 /- English proof (translation)
-Take `⟨haa, hac, -⟩` from `hc`. Establish `hcc : cA D c * cA D c = cA D c` using `by rw [← RingHom.map_mul, haa]`. Establish `hca : cA D c * c = 0` using `by rw [mul_comm, hac]`. Establish `ha1 : c * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = c`. Rewrite using `[← hsum, mul_add, haa, hac, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : cA D c * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = cA D c`. Rewrite using `[← hsum, mul_add, hca, hcc, zero_add]`. Establish `hfa : finPart D c ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, haa])`. Establish `hfc : finPart D (cA D c) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hcc])`. Establish `hp : ∀ {b : AE D}, b * b = b → ∀ u : PtS G i j, IsHalf b (ptB e (b • u))` using `fun hb u => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ptB_smul]`. Conclude with `isHalf_smul_self hb _`. Establish `hs : ∀ x y : WO (spW₁ G i j) (spX G i j), symplO _ _ x (c • y) = symplO _ _ (cA D c • x) y` using `fun x y => by`. Rewrite using `[← symplO_cA_smul, GlobalTheory.DualPairCheck.cA_cA]`. Use `⟨fun u hu => at_of_half e v hc1 hu, fun u hu => at_of_half e v ha1 hu, fun u hu => ⟨_, hp hcc u, _, hp haa u, ?_⟩, fun x hx hψ => ⟨at_of_half e v hc1 hx, ?_⟩, fun u => ⟨hp hcc u, fun y hy => ?_, fun hu => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_smul, add_comm (cA D c), hsum, algebraMap_smul, liftV_smul hu]`. Use `GlobalTheory.LatVac.mem_of_char hstd hS hX (map_infPart_of_isHalf v hc1 hx) fun l hl => ?_` and prove the remaining obligations. Use `hψ (c • (ptE e).symm l) ⟨at_of_half e v ha1 (hp haa _), by` as an intermediate fact. Rewrite using `[ptB_smul, ptB_symm]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfa l hl⟩ (hp haa _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sympS_ptB e Γ hW hWW, ptB_smul, ptB_symm, hs, smul_of_isHalf hx]`. Then use the resulting hypothesis. Rewrite using `[sympS_ptB e Γ hW hWW, sympS_ptB e Γ hW hWW, ptB_smul, ← hs, smul_of_isHalf hy]`. Rewrite using `[ptB_smul]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfc _ hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halves (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram)
     (hWW : Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram (spV G i j) (spV₁ G i j) e) {ψ : AddChar (AF D.host.F) ℂ} (hstd : IsStdChar D ψ (-1))
@@ -477,37 +473,31 @@ end Vac
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B t i j M hst e Bs Γ X om om' h hT hti ρ f hf₀ I hI ε hε Ψ F hF φ hφ hΨ`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd W.ψ` using `h.ψ ▸ hT.base.std`. Establish `hG : Γ.M'.IsGood W.ψ` using `h.ψ ▸ hT.geo.hM'`. Establish `hadd : ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F (IxS G i j), ∀ Φ' ∈ GlobalTheory.WeilM.schA D.host.F (IxS G i j), thetaS Γ W.ψ (Φ + Φ') = thetaS Γ W.ψ Φ + thetaS Γ W.ψ Φ'` using `fun Φ hΦ Φ' hΦ' => funext fun u => (tsum_congr fun _ => mul_add _ _ _).trans ((GlobalTheory.WeilM.summable_of_mem_schA _ (GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hstd u _ hΦ)).tsum_add (GlobalTheory.WeilM.summable_of_mem_schA _ (GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hst …`. Take `⟨hid, hsumid⟩` from `GlobalTheory.IdemAtPl.main hL (G := G) t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `sW : IsSelfDualC (spW₁ G i j) (G.Λ (.grid i j))` using `(node_isV G hL (X := .grid i j) ⟨i.2.le, j.2.le⟩).sd`. Establish `sX : IsSelfDualC (spX G i j) (latX G i j)` using `GlobalTheory.Twist.OrthSum.selfDual_hsum (node_isV G hL (X := .grid i (j + 1)) ⟨i.2.le, j.2⟩).sd (node_isV G hL (X := .grid (i + 1) j) ⟨i.2, j.2.le⟩).sd`. Establish `hh` using `fun w hw => halves e Γ h.JW₁ h.JWW W.ψ_std sW sX _ (hid w hw).1 (hid w hw).2`. Establish `hv` using `fun w hw => GlobalTheory.SmallPlaces.lagr_vac (hI w hw) (hG.vac _).1 (hG.vac _).2.1 {u | At (evFin D.host.F (w.under (𝓞 D.host.F))) u ∧ ptB e u ∈ homLatB G i j} (fun γ hγ hγ' => hγ'.elim (fun h' => vac_fixed_half h hT (mem_latAtV hti (hst.2 w hw) hγ.1 hγ.2) (GlobalTheory.SmallPla …`. Use `set c := ∏ w ∈ locPl G t, I w (Γ.M'.vac _) 0 with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : thetaS Γ W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c • f) Γ.M'.vac) = fun u => (c • vacB ρ i j) (ptB e u)`. Use function extensionality and compare the values at `fun u => (congrArg (thetaS Γ W.ψ · u) (funext fun _ => mul_assoc _ _ _)).trans ((thetaS_smul _ _ _ _ u).trans (congrArg (c * ·) (hf₀.2 u)))`. Take `⟨⟨T₁, hT₁⟩, hall⟩` from `hF`. Take `⟨hεs, hεw⟩` from `hsumid ε hε`. Establish `hinf : infPart D ε = 0` using `GlobalTheory.PlaceVec.idemSum_infPart hε`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcε : cA D (cA D ε) = ε` using `GlobalTheory.DualPairCheck.cA_cA ε`. Set `R : Submodule ℂ ((PtS G i j → ℂ) × ((IxS G i j → AF D.host.F) → ℂ))` to `{ carrier := {p | p.2 ∈ GlobalTheory.WeilM.schA D.host.F _ ∧ ∃ g, IsSBHalf (cA D ε) (homLatB G i j) g ∧ p.1 = (fun u => g (ptB e u)) ∧ thetaS Γ W.ψ p.2 = fun u => T₁ g (ptB e u)} zero_mem' := ⟨zero_mem _, 0, sb_zero _ _, rfl, funext fun u => by`. Rewrite using `[map_zero]`. Simplify using `using thetaS_smul Γ W.ψ 0 0 u⟩`. Use the proof step `add_mem' := fun {p q} ⟨hp, g, g1, g2, g3⟩ ⟨hq, k, k1, k2, k3⟩ => ⟨add_mem hp hq, g + k, sb_add g1 k1, by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.fst_add, g2, k2]; rfl, by`. Rewrite using `[Prod.snd_add, hadd _ hp _ hq, g3, k3, map_add]`. Use the proof step `rfl⟩`. Use the proof step `smul_mem' := fun a p ⟨hp, g, g1, g2, g3⟩ => ⟨Submodule.smul_mem _ a hp, a • g, sb_smul a g1, by`. Rewrite using `[Prod.smul_fst, g2]; rfl, funext fun u => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Prod.smul_snd, thetaS_smul, g3, map_smul]`. Use the proof step `rfl⟩ }`. Set `H : AddSubgroup (PtS G i j)` to `(GlobalTheory.PlaceModel.half _ _ (cA D ε)).comap (ptE e).toLinearMap.toAddMonoidHom`. Establish `hH : ∀ u, u ∈ H ↔ IsHalf (cA D ε) (ptB e u)` using `fun u => (GlobalTheory.PlaceModel.isHalf_iff _ _).symm`. Establish `hA : ∀ w ∈ locPl G t, ∀ x : WO (spW₁ G i j) (spX G i j), IsHalf (cA D (atPl w 1)) x → IsHalf (cA D ε) x` using `fun w hw x hx => GlobalTheory.SmallPlaces.isHalf_mono (by rw [← RingHom.map_mul, hεw w hw]) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hA' : ∀ w ∈ locPl G t, ∀ x : WO (spW₁ G i j) (spX G i j), IsHalf (atPl w 1) x → IsHalf (cA D (cA D ε)) x` using `fun w hw x hx => GlobalTheory.SmallPlaces.isHalf_mono (by rw [hcε, hεw w hw]) hx`. Establish `hco : ∀ w u, linB B t i j w (ptB e (cA D (atPl w 1) • u)) = linB B t i j w (ptB e u)` using `fun w u => by`. Rewrite using `[ptB_smul, linB_smul]`. Establish `hbase : (Set.indicator (H : Set _) fun u => ∏ w ∈ locPl G t, I w (Γ.M'.vac _) (linB B t i j w (ptB e u))) = fun u => (c • halfInd (cA D ε) (homLatB G i j)) (ptB e u)`. Use function extensionality and compare the values at `u`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, halfInd]`. Distinguish the cases in `hu : IsHalf (cA D ε) (ptB e u)`. Rewrite using `[Set.indicator_of_mem ((hH u).2 hu), Finset.prod_congr rfl fun w hw => (congrArg _ (hco w u).symm).trans ((hv w hw).2 _ ((hh w hw).2.2.2.2 u).1)]`. Distinguish the cases in `hl : ptB e u ∈ homLatB G i j`. Rewrite using `[if_pos ⟨hl, hu⟩, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w hw => Set.indicator_of_mem ?_ _` and prove the remaining obligations. Conclude with `⟨(hh w hw).1 _ ((hh w hw).2.2.2.2 u).1, ((hh w hw).2.2.2.2 u).2.2 hl⟩`. Establish `: ∃ w ∈ locPl G t, ptB e (cA D (atPl w 1) • u) ∉ homLatB G i j` using `by by_contra! hall`. Use `hl (GlobalTheory.SmallPlaces.mem_of_sum_smul (P := locPl G t) (a := fun w => cA D (atPl w 1)) ?_ fun w hw => (congrArg (· ∈ homLatB G i j) (ptB_smul e _ u)).mp (hall w hw))` and prove the remaining obligations. Rewrite using `[← map_sum, ← hεs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`. Take `⟨w, hw, hn⟩` from `this`. Rewrite using `[if_neg fun h' => hl h'.1, mul_zero]`. Use `Finset.prod_eq_zero hw (Set.indicator_of_notMem ?_ _)` and prove the remaining obligations. Conclude with `fun h' => hn h'.2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (mt (hH u).1 hu), if_neg fun h' => hu h'.2, mul_zero]`. Establish `hR` using `GlobalTheory.InductLagr.rel_of_vac Γ.M' W.ψ hstd hG (locPl G t) (fun w => w.under (𝓞 D.host.F)) (Good.under_injOn hL G t) _ (fun w => {u | IsHalf (cA D (atPl w 1)) (ptB e u)}) (fun w => {u | IsHalf (atPl w 1) (ptB e u)}) (fun w u => linB B t i j w (ptB e u)) I H R (c • f) hI (fun …`. Use function extensionality and compare the values at `fun u => (congrFun g2 _).trans (congrArg g (ptB_add e u x)), by`. Rewrite using `[hT₁.trans g g1 _ (hA w hw _ hx), ← heisS_ptB e Γ h.JW₁ h.JWW, ← g3]`. Conclude with `thetaS_rho Γ W.ψ p.2 x⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun w hw x hx p ⟨hp, g, g1, g2, g3⟩ => ⟨GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hstd x _ hp, _, GlobalTheory.BigDat.GraphHeis.sb_modul_latO W.ψ_std sW sX (hcε.symm ▸ hinf) g1 (hA' w hw _ hx),`. Use function extensionality and compare the values at `fun u => congrArg₂ (· * ·) (congrArg W.ψ (sympS_ptB e Γ h.JW₁ h.JWW u x)) (congrFun g2 u), by`. Rewrite using `[hT₁.modul g g1 _ (hA' w hw _ hx), ← heisS_ptB e Γ h.JW₁ h.JWW, ← g3]`. Conclude with `thetaS_rho Γ W.ψ p.2 x⟩)`. Use the proof step `⟨(isFinPart_vac hG ∅).fam.mem hG _, _, sb_smul c (GlobalTheory.isSBHalf_halfInd _ _), hbase, by`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, (congrArg T₁ (one_smul ℂ _).symm).trans hT₁.vac]`. Conclude with `hb⟩`. Use `φ hφ.1 fun v hv => hφ.2 v fun hm => let ⟨w, hw, e⟩ := (hti.1.2.2.1 v).1 hm`. Use `hv w hw e`. Take `⟨r1, g, -, g2, g3⟩` from `hR`.
-
-Establish `hg : g = prodB B t i j ε Ψ` using `funext fun y => by`. Take `⟨u, rfl⟩` from `(ptE e).surjective y`. Use `(congrFun g2 u).symm.trans ?_` and prove the remaining obligations. Rewrite using `[ptE_apply, prodB]`. Simplify using `only`.
-
-Distinguish the cases in `hu : IsHalf (cA D ε) (ptB e u)`. Rewrite using `[if_pos hu]`. Rewrite using `[Set.indicator_of_mem ((hH u).2 hu)]`. Conclude with `Finset.prod_congr rfl fun w hw => congrFun (hΨ w hw) _`. Rewrite using `[if_neg hu]`.
-
-Conclude with `Set.indicator_of_notMem (mt (hH u).1 hu) _`. Use `⟨r1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hall T₁ hT₁, ← hg]`. Conclude with `congrFun g3 u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDatum_linB : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G), SquareStanding G t →
     ∀ (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)

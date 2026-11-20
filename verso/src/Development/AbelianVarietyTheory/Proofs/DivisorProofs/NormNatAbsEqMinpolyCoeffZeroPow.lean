@@ -13,9 +13,9 @@ attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Take `⟨l, hl, hlp⟩` from `Nat.exists_infinite_primes (ringChar k + 1)`. Use `⟨l, hlp, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[CharP.cast_eq_zero_iff k (ringChar k)]`. Break down `hlp.eq_one_or_self_of_dvd _ h with h1 | h1` into its components or cases. Conclude with `CharP.ringChar_ne_one h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_cast_ne_zero_of_field (k : Type) [Field k] : ∃ l : ℕ, l.Prime ∧ (l : k) ≠ 0 := by
   obtain ⟨l, hl, hlp⟩ := Nat.exists_infinite_primes (ringChar k + 1)
@@ -26,9 +26,9 @@ theorem exists_prime_cast_ne_zero_of_field (k : Type) [Field k] : ∃ l : ℕ, l
   · omega
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ x` using `RingOfIntegers.isIntegral x`. Establish `hxF : (x : F) ≠ 0` using `by exact_mod_cast hx`. Establish `h1` using `minpoly.coeff_zero_ne_zero (A := ℚ) (IsIntegral.of_finite ℚ (x : F)) hxF`. Establish `h2 : minpoly ℚ (x : F) = (minpoly ℤ x).map (algebraMap ℤ ℚ)` using `minpoly.isIntegrallyClosed_eq_field_fractions ℚ F hi`. Rewrite `h1` using `[h2, coeff_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h; exact h1 (by rw [h, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem minpoly_int_coeff_zero_ne_zero {F : Type} [Field F] [NumberField F] (x : 𝓞 F) (hx : x ≠ 0) :
     (minpoly ℤ x).coeff 0 ≠ 0 := by
@@ -45,9 +45,9 @@ end GlobalTheory.AV.AbVar
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Take `⟨r, -, hr⟩` from `ReciprocityTheory.ChartRestriction.T1.lat_cp_eq_minpoly_pow x`. Establish `hm : (minpoly ℤ x).Monic` using `minpoly.monic (RingOfIntegers.isIntegral x)`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ReciprocityTheory.ChartRestriction.T1.lat_cp_natDegree x, hr, hm.natDegree_pow]`. Establish `e : Algebra.norm ℤ x = (-1) ^ Module.finrank ℤ (𝓞 F) * (ReciprocityTheory.ChartRestriction.T1.lat_cp x).coeff 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.norm_apply, LinearMap.det_eq_sign_charpoly_coeff]`. Both sides reduce to the same expression. Rewrite using `[e, hr, coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero, Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_natAbs_eq_minpoly_coeff_zero_pow {F : Type} [Field F] [NumberField F] (x : 𝓞 F) :
     ∃ r : ℕ, r * (minpoly ℤ x).natDegree = Module.finrank ℚ F ∧
@@ -67,17 +67,17 @@ end GlobalTheory.AV.AbVar
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Take `⟨l, hl, hl0⟩` from `exists_prime_cast_ne_zero_of_field k`. Use `haveI := Fact.mk hl`. Take `⟨-, -, -, hfin, hrank⟩` from `GlobalTheory.AV.AbVar.tl_free_finrank k l hl0 A`. Use `haveI := hfin`. Take `⟨h1, -, h3, -⟩` from `GlobalTheory.T.endCharpoly_tate_det_degree_trace k l hl0 A f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1'` using `@h1 hfin`. Establish `inj : Function.Injective (algebraMap ℤ ℚ_[l])` using `RingHom.injective_int _`. Set `ψ : End A →+* Module.End ℚ_[l] (Vl l A)` to `(Module.End.baseChangeHom ℤ_[l] ℚ_[l] (Tl l A)).toRingHom.comp (tend l A)`. Establish `hψ : ψ f = vmap l (A` using `A) (B := A) f := rfl`. Establish `hT : aeval (vmap l (A` using `A) (B := A) f) m = 0 := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hψ]`. Use `Polynomial.hom_eval₂ m (algebraMap ℤ (End A)) ψ f` as an intermediate fact. Rewrite `this` using `[← aeval_def, hf, map_zero, Subsingleton.elim (ψ.comp (algebraMap ℤ (End A))) (algebraMap ℤ _), ← aeval_def]`. Conclude with `this.symm`. Establish `hdvd` using `GlobalTheory.CharpolyDvd.charpoly_dvd_pow_finrank (vmap l (A := A) (B := A) f) (m.map (algebraMap ℤ ℚ_[l])) (by rw [aeval_map_algebraMap]; exact hT)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdvd` using `[← h1', ← Polynomial.map_pow]`. Establish `hQm : (charpoly f).Monic` using `Polynomial.monic_of_injective inj (by rw [h1']; exact LinearMap.charpoly_monic _)`. Rewrite `hdvd` using `[map_dvd_map _ inj hQm]`. Take `⟨i, -, hi⟩` from `(dvd_prime_pow hp _).1 hdvd`. Establish `hQ : charpoly f = m ^ i` using `eq_of_monic_of_associated hQm (hm.pow i) hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdeg : (charpoly f).natDegree = 2 * A.dim`. Rewrite using `[← Polynomial.natDegree_map_eq_of_injective inj, h1', LinearMap.charpoly_natDegree, hrank]`. Use `⟨i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdeg, hQ, hm.natDegree_pow]`. Establish `e` using `LinearMap.det_eq_sign_charpoly_coeff (vmap l (A := A) (B := A) f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[h3, ← h1', coeff_map, hrank, pow_mul, neg_one_sq, one_pow, one_mul, hQ, coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero]`. Apply `Int.cast_injective (α := ℚ_[l])` to reduce the goal to its premises. Rewrite using `[Int.cast_natCast, e, eq_intCast, Int.cast_pow]`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq_coeff_zero_pow_of_aeval {k : Type} [Field k] (A : AbVar k) (f : End A) (m : ℤ[X]) (hm : m.Monic)
     (hp : Prime m) (hf : aeval f m = 0) :
@@ -121,17 +121,15 @@ end GlobalTheory.AV.AbVar
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `k _ A F _ _ ι d hd x hx`. Establish `hi : IsIntegral ℤ x` using `RingOfIntegers.isIntegral x`. Establish `hm : (minpoly ℤ x).Monic` using `minpoly.monic hi`. Establish `hp : Prime (minpoly ℤ x)` using `(minpoly.irreducible hi).prime`. Establish `hf : aeval (ι x) (minpoly ℤ x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Polynomial.hom_eval₂ (minpoly ℤ x) (algebraMap ℤ (𝓞 F)) ι x` as an intermediate fact. Rewrite `this` using `[← aeval_def, minpoly.aeval, map_zero, Subsingleton.elim (ι.comp (algebraMap ℤ (𝓞 F))) (algebraMap ℤ _), ← aeval_def]`. Conclude with `this.symm`. Take `⟨e, he, hdeg⟩` from `deg_eq_coeff_zero_pow_of_aeval A (ι x) (minpoly ℤ x) hm hp hf`. Take `⟨r, hr, hN⟩` from `norm_natAbs_eq_minpoly_coeff_zero_pow x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : 0 < (minpoly ℤ x).natDegree` using `minpoly.natDegree_pos hi`. Establish `her : e = d * r`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Rewrite using `[he, hd, ← hr, mul_assoc]`. Establish `hdeg' : deg (A` using `A) (B := A) (ι x) = ((minpoly ℤ x).coeff 0).natAbs ^ e := by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Int.natAbs hdeg` as an intermediate fact. Rewrite `this` using `[Int.natAbs_natCast, Int.natAbs_pow]`. Then use the resulting hypothesis. Establish `hval : deg (A` using `A) (B := A) (ι x) = (Algebra.norm ℤ x).natAbs ^ d := by`. Rewrite using `[hdeg', hN, ← pow_mul, her, mul_comm]`. Use `⟨?_, hval⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Establish `h0 : deg (A` using `A) (B := A) (ι x) = 0 := by classical`. Unfold `deg`. Rewrite using `[if_neg h]`. Rewrite `h0` using `[hdeg']`.
-
-Conclude with `minpoly_int_coeff_zero_ne_zero x hx (Int.natAbs_eq_zero.1 (pow_eq_zero_iff'.1 h0).1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIsogeny_and_deg_eq_norm_pow : ∀ (k : Type) [Field k] (A : AbVar k) (F : Type) [Field F] [NumberField F]
     (ι : 𝓞 F →+* End A) (d : ℕ), 2 * A.dim = d * Module.finrank ℚ F → ∀ x : 𝓞 F, x ≠ 0 →

@@ -8,25 +8,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CechVB
 
 /- English proof (translation)
-Introduce `O _ X str C _ F ι U U' m κ _ act b g hfree hstr hres hb hg`. Simplify using `only [ExistsUnique] at hfree`. Use `choose co h1 h2 using hfree`. Establish `actadd : ∀ {n : ℕ} (i : Fin (n + 1) → ι) (f f' : Γ(X, capO U i)) (h : HU F (capT U' i) m), act i (f + f') h = act i f h + act i f' h`. Introduce `n i f f' h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Both sides reduce to the same expression. Establish `actmul : ∀ {n : ℕ} (i : Fin (n + 1) → ι) (f f' : Γ(X, capO U i)) (h : HU F (capT U' i) m), act i (f * f') h = act i f (act i f' h)`. Introduce `n i f f' h`. Rewrite using `[map_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `actsum : ∀ {n : ℕ} (i : Fin (n + 1) → ι) {κ' : Type} (s : Finset κ') (f : κ' → Γ(X, capO U i)) (h : HU F (capT U' i) m), act i (∑ k ∈ s, f k) h = ∑ k ∈ s, act i (f k) h`. Introduce `n i κ' s f h`. Conclude with `map_sum ((AddMonoidHom.eval h).comp (act i).toAddMonoidHom) f s`. Establish `coadd : ∀ (n : ℕ) (i : Fin (n + 1) → ι) (a : Fin (n + 1)) (h h' : HU F (capT U' i) m), co n i a (h + h') = co n i a h + co n i a h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n i a h h'`. Use `(h2 n i a _ _ ?_).symm` and prove the remaining obligations. Use `conv_lhs => rw [h1 n i a h, h1 n i a h']`. Simplify using `only [Pi.add_apply, actadd, Finset.sum_add_distrib]`. Use `⟨{ κ := κ, g := g, e := fun n a => { toFun := fun x i => co n i a (x i) invFun := fun f i => ∑ k, act i (f i k) (b i a k) left_inv := fun x => funext fun i => (h1 n i a (x i)).symm right_inv := fun f => funext fun i => (h2 n i a _ (f i) rfl).symm map_add' := fun x y => funext fun …` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n a c x i k`. Establish `key : co n i a (c • x i) = fun k => str _ c * co n i a (x i) k`. Use `(h2 n i a _ _ ?_).symm` and prove the remaining obligations. Rewrite using `[← hstr n i c (x i)]`. Use `conv_lhs => rw [h1 n i a (x i)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => (actmul i _ _ _).symm`. Conclude with `congrFun key k`. Introduce `n a b' x i k`. Establish `key : co (n + 1) i (b'.succAbove a) ((resU F (U` using `capT U' (i ∘ b'.succAbove)) (V := capT U' i) (fun _ h _ => h _)).pull m (x (i ∘ b'.succAbove))) = fun k => rs (capO_comp U i b'.succAbove) (co n (i ∘ b'.succAbove) a (x (i ∘ b'.succAbove)) k) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(h2 (n + 1) i (b'.succAbove a) _ _ ?_).symm` and prove the remaining obligations. Use `conv_lhs => rw [h1 n (i ∘ b'.succAbove) a (x (i ∘ b'.succAbove))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hres, hb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun key k`. Introduce `n a b' x i k`. Establish `key : co n i a (x i) = fun k => ∑ k' : κ (i b'), rs (le_inf (capO_le U i a) (capO_le U i b')) (g (i a) (i b') k k') * co n i b' (x i) k'`. Use `(h2 n i a _ _ ?_).symm` and prove the remaining obligations. Establish `e1 : ∀ k', act i (co n i b' (x i) k') (b i b' k') = ∑ k, act i (rs (le_inf (capO_le U i a) (capO_le U i b')) (g (i a) (i b') k k') * co n i b' (x i) k') (b i a k)`.
-
-Introduce `k'`. Use `conv_lhs => rw [hg n i a b' k']`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← actmul, mul_comm]`.
-
-Use `conv_lhs => rw [h1 n i b' (x i)]`. Rewrite using `[Finset.sum_congr rfl fun k' _ => e1 k', Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => (actsum i _ _ _).symm`. Conclude with `congrFun key k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_basis : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} (str : ∀ V : X.Opens, O →+* Γ(X, V)) {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} O) {ι : Type}
     (U : ι → X.Opens) (U' : ι → ObjectProperty C) (m : ℕ) (κ : ι → Type) [∀ α, Fintype (κ α)]

@@ -12,9 +12,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 namespace GlobalTheory.CompanionTheory.CubeModels
 
 /- English proof (translation)
-Take `⟨-, l, q, s, sq⟩` from `hm`. Establish `hc : Spec.map (CommRingCat.ofHom φ) = Spec.map (CommRingCat.ofHom φ₁) ≫ Spec.map (CommRingCat.ofHom ψ)`. Substitute `e` using the available equality. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Use `⟨ft, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_right (h₁₂ := pullback.fst f₀ (Spec.map (CommRingCat.ofHom ψ))) (v₁₃ := f₀) (h₂₂ := Spec.map (CommRingCat.ofHom ψ)) ?_ h₂ (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[h₁, ← hc]`. Conclude with `sq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_refine {R R₀ R₁ : Type} [CommRing R] [CommRing R₀] [CommRing R₁] {φ : R₀ →+* R}
     {ψ : R₀ →+* R₁} {φ₁ : R₁ →+* R} (e : φ₁.comp ψ = φ) (ft : Algebra.FiniteType ℤ R₁)
@@ -49,7 +49,7 @@ def refineMap {R R₀ R₁ : Type} [CommRing R] [CommRing R₀] [CommRing R₁] 
     exact hm.2.2.2.2.w)
 
 /- English proof (translation)
-The claim follows from `model_refine e ft hm _ (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem model_refine' {R R₀ R₁ : Type} [CommRing R] [CommRing R₀] [CommRing R₁] {φ : R₀ →+* R}
     {ψ : R₀ →+* R₁} {φ₁ : R₁ →+* R} (e : φ₁.comp ψ = φ) (ft : Algebra.FiniteType ℤ R₁)
@@ -59,11 +59,11 @@ theorem model_refine' {R R₀ R₁ : Type} [CommRing R] [CommRing R₀] [CommRin
   model_refine e ft hm _ (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-Introduce `hS hSm hPr hLB R _ Y f hsm hpr M hM`. Take `⟨R₀, _, φ, Y₀, f₀, π, hm⟩` from `hS R Y f inferInstance inferInstance inferInstance`. Take `⟨R₁, _, ψ₁, φ₁, e₁, ft₁, sm₁⟩` from `hSm R R₀ φ Y Y₀ f f₀ π hm hsm`. Establish `m₁` using `model_refine' e₁ ft₁ hm`. Take `⟨R₂, _, ψ₂, φ₂, e₂, ft₂, pr₂⟩` from `hPr R R₁ φ₁ Y _ f _ _ m₁ hpr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `m₂` using `model_refine' e₂ ft₂ m₁`. Take `⟨R₃, _, ψ₃, φ₃, ρ, e₃, ft₃, r₁, r₂, M₃, hM₃, w, hw⟩` from `hLB R R₂ φ₂ Y _ f _ _ m₂ M hM`. Establish `m₃` using `model_refine e₃ ft₃ m₂ ρ r₁ r₂`. Establish `sm₁' : Smooth (pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁)))` using `sm₁`. Establish `pr₂' : IsProper (pullback.snd (pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁))) (Spec.map (CommRingCat.ofHom ψ₂)))` using `pr₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨R₃, inferInstance, Algebra.FiniteType.isNoetherianRing ℤ R₃, φ₃, _, pullback.snd (pullback.snd (pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁))) (Spec.map (CommRingCat.ofHom ψ₂))) (Spec.map (CommRingCat.ofHom ψ₃)), ρ, inferInstance, inferInstance, m₃.2.2.2.2, M₃, hM₃, w, hw⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hasModel_of_spreads : GlobalTheory.SpreadingModels.SchemeModels → GlobalTheory.SpreadingModels.Spreads (fun _ _ f => Smooth f) →
     GlobalTheory.SpreadingModels.Spreads (fun _ _ f => IsProper f) → GlobalTheory.SpreadingModels.LBSpreads →

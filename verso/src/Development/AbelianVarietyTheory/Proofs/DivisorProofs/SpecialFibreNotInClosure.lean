@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem inOpen_top (w : T ⟶ X) : InOpen ⊤ w := rfl
 
 /- English proof (translation)
-Unfold `InOpen at h ⊢`. Rewrite using `[Over.comp_left, Scheme.Hom.comp_preimage, h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem InOpen.comp {U : X.left.Opens} {w : T ⟶ X} (h : InOpen U w) {T' : Over S} (u : T' ⟶ T) :
     InOpen U (u ≫ w) := by
@@ -66,7 +66,7 @@ def HasCubeFn [IsAlgClosed C] [CharZero C] (A : Out.PolAV (Sp C)) : Prop :=
     ∃ Θ : CubeFn A.A, Θ.IsNatural V ∧ Θ.GivesWeil A V
 
 /- English proof (translation)
-Introduce `S S' _ _ φ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example {A : Over (Sp C)} [GrpObj A] (V : A.left.Opens) :
     CubeFn.IsNatural (A := A) (fun _ _ _ _ _ _ _ => 1) V := by
@@ -134,7 +134,7 @@ def WeilIntegralFinite : Prop :=
   ∀ (B : Type) [CommRing B] [Algebra O B] [Module.Finite O B] [Module.Flat O B], WeilIntegralOn P B
 
 /- English proof (translation)
-The claim follows from `(P.eq_toA_iff x _).1 rfl`.
+A detailed English derivation is pending.
 -/
 theorem toA_isGeneric (x : specO O O ⟶ P.Gt) : IsGeneric P (P.toG x) (P.toA x) :=
   (P.eq_toA_iff x _).1 rfl

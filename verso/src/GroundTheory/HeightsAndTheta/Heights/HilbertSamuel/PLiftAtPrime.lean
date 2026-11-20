@@ -10,23 +10,19 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ Ω _ _ y D N p hY hp hN`. Take `⟨q, hq, hgen, hvan⟩` from `hN`. Take `⟨t₀, ht₀⟩` from `hvan 0`. Use `⟨q, t₀, hq, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hga : KH.GeneratedV (ZMod p) (fibreIdeal p y) ((t * q) • N)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hC (ZMod p) K ι (fibreIdeal p y) (q • N) t hgen`. Rewrite `h` using `[smul_smul]`. Then use the resulting hypothesis. Establish `hH1 : Subsingleton (KH.cechHc ι (KH.quotPart (ZMod p) (fibreIdeal p y)) ((t * q) • N) 1)`. Establish `h` using `ht₀ t ht`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfi : fibreIdeal p y = GenOnFibres.idealOver y (ZMod p)` using `rfl`. Rewrite `hga`, `hH1` using `[hfi]`. Use `choose r z u hz hu hrel using hga`. Establish `hlift : ∀ I j, ∃ s ∈ chartLat y ((t * q) • N) 1, GenOnFibres.secCoch y (ZMod p) s ((t * q) • N) = z I j` using `fun I j => hA K ι Ω y D p ((t * q) • N) hY hp hH1 (z I j) (hz I j)`. Use `choose s hs hsz using hlift`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (KH.Cell K ι 0)` using `by unfold KH.Cell; infer_instance`. Establish `: Fintype (KH.Cell K ι 0)` using `Fintype.ofFinite _`. Set `e` to `(Fintype.equivFin (Σ I, Fin (r I))).symm`. Use `⟨Fintype.card (Σ I, Fin (r I)), fun j => s (e j).1 (e j).2, fun j => hs _ _, fun c hc => ?_⟩` and prove the remaining obligations. Set `J : KH.Cell K ι 0` to `⟨fun k => {c k}, fun k => Finset.singleton_nonempty _, by simp⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hJ : GenOnFibres.cellChart J = c`. Use function extensionality and compare the values at `fun k => Finset.mem_singleton.mp (GenOnFibres.cellChart_mem J k)`. Establish `hrelJ : ∑ j, u J j * GenOnFibres.secCoch y (ZMod p) (s J j) ((t * q) • N) J = 1`. Rewrite using `[← hrel J]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hsz J j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨u', v, hu', hv, hsum⟩` from `hB K ι Ω y p ((t * q) • N) (r J) (s J) J (u J) (hs J) (by rw [hJ]; exact hc) (hu J) hrelJ`. Rewrite `hu'`, `hv`, `hsum` using `[hJ]`. Set `U : (Σ I, Fin (r I)) → Ω` to `fun x => if h : x.1 = J then u' (Fin.cast (congrArg r h) x.2) else 0`. Use `⟨fun j => U (e j), v, fun j => ?_, hv, ?_⟩` and prove the remaining obligations. Simplify using `only [U] split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hu' _`. Conclude with `zero_mem _`. Rewrite using `[← hsum]`. Use `congr 1`. Rewrite using `[e.sum_comp (fun x => U x * (s x.1 x.2 * ∏ k, y ⟨k, c k⟩ ^ (-((t * q) • N) k))), Fintype.sum_sigma, Finset.sum_eq_single J]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[U]`. Introduce `I _ hI`. Conclude with `Finset.sum_eq_zero fun j _ => by simp [U, hI]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ J) h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LiftAtPrime.proof (hC : GeneratedPow.Statement) (hA : FibreSectionLift.Statement)
     (hB : FibreRelLift.Statement) : LiftAtPrime.Statement := by

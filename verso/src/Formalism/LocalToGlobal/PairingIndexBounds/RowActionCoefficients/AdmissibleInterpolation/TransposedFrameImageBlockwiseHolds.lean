@@ -15,7 +15,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 namespace PairingSeriesCoefficients
 
 /- English proof (translation)
-Rewrite using `[coe_eval₂Hom, eval₂_eq]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, smul_eq_C_mul, mul_comm, map_prod]`. Simplify using `only [map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_eq {σ τ K : Type} [Field K] (P : MvPolynomial σ (MvPolynomial τ K)) (d0 : σ → K) :
     eval₂Hom (RingHom.id _) (fun z => C (d0 z)) P = ∑ n ∈ P.support, (∏ i ∈ n.support, d0 i ^ n i) • coeff n P := by
@@ -25,11 +25,11 @@ theorem ev_eq {σ τ K : Type} [Field K] (P : MvPolynomial σ (MvPolynomial τ K
   simp only [map_pow]
 
 /- English proof (translation)
-Establish `hR : R = ∑ n ∈ P.support, monomial n (l (coeff n P))`. Use `MvPolynomial.funext fun d0 => ?_` and prove the remaining obligations. Rewrite using `[h d0, ev_eq, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, eval_monomial, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hR, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq' P.support n]`. Use `split_ifs with hn`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[notMem_support_iff.1 hn, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_of_eval {σ τ K : Type} [Field K] [Infinite K] (P : MvPolynomial σ (MvPolynomial τ K))
     (l : MvPolynomial τ K →ₗ[K] K) (R : MvPolynomial σ K)
@@ -52,9 +52,9 @@ theorem coeff_of_eval {σ τ K : Type} [Field K] [Infinite K] (P : MvPolynomial 
 end PairingSeriesCoefficients
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ _ j P f l R h`. Establish `hc` using `PairingSeriesCoefficients.coeff_of_eval P l R h`. Unfold `pairD`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_subset (Finset.subset_union_left (s₁ := P.support) (s₂ := R.support)), Finset.sum_subset (Finset.subset_union_right (s₁ := P.support) (s₂ := R.support))]`. Introduce `n _ hn`. Rewrite using `[← hc, notMem_support_iff.1 hn, mul_zero]`. Introduce `n _ hn`. Rewrite using `[notMem_support_iff.1 hn, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_series_linear_form_holds : PairingSeriesLinearForm := by
   intro p _ X Kc _ _ _ j P f l R h
@@ -80,11 +80,9 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.
 include hne
 
 /- English proof (translation)
-Unfold `linP`. Use `IsWeightedHomogeneous.sum _ _ _ fun y _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Distinguish the cases in `h : Lk x y = 0`. Rewrite using `[h, map_zero, map_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isWeightedHomogeneous_zero _ _ _`. Establish `h2 : wB X j v s x = wB X j v s y`. Unfold `wB`. Rewrite using `[hne x y h]`. Rewrite using `[h2]`.
-
-Conclude with `(isWeightedHomogeneous_X _ _ y).C_mul _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_linP (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : X.ZA j) :
     IsWeightedHomogeneous (wB X j v s)
@@ -102,7 +100,7 @@ theorem isWeightedHomogeneous_linP (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : X.ZA j
     exact (isWeightedHomogeneous_X _ _ y).C_mul _
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, map_one, one_mul, Finsupp.weight_apply]`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun x _ => (isWeightedHomogeneous_linP X Kc j Lk hne v s x).pow _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_wh (v : X.Pl) (s : Fin (X.G.P.n' v)) (m : X.ZA j →₀ ℕ) :
     IsWeightedHomogeneous (wB X j v s)
@@ -112,9 +110,9 @@ theorem mono_wh (v : X.Pl) (s : Fin (X.G.P.n' v)) (m : X.ZA j →₀ ℕ) :
   exact IsWeightedHomogeneous.prod _ _ _ fun x _ => (isWeightedHomogeneous_linP X Kc j Lk hne v s x).pow _
 
 /- English proof (translation)
-Establish `key : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)), ∑ a, ∑ b, n ⟨v, (s, a, b)⟩ = ∑ a, ∑ b, m ⟨v, (s, a, b)⟩`. Introduce `v s`. Rewrite using `[← wt_eq, ← wt_eq]`. Assume the negation of the conclusion as `hne'`. Conclude with `h ((mono_wh X Kc j Lk hne v s m).coeff_eq_zero n hne')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions.
 
-Unfold `GoodDeg`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hGd (m n : X.ZA j →₀ ℕ)
     (h : coeff n (aeval (linP fun x y => algebraMap Kc (XspC (X.Pj (j + 1)) Kc) (Lk x y))
@@ -128,7 +126,7 @@ theorem hGd (m n : X.ZA j →₀ ℕ)
   simp only [key]
 
 /- English proof (translation)
-Conclude with `pr_sub Lk (GoodDeg X j) (hGd X Kc j Lk hne) Q f`.
+A detailed English derivation is pending.
 -/
 theorem pairD_linSub (Q : DA X Kc j) (f : MvPowerSeries (X.ZA j) Kc) :
     pairD X Kc j Q (linSub Lk f) =
@@ -139,7 +137,7 @@ theorem pairD_linSub (Q : DA X Kc j) (f : MvPowerSeries (X.ZA j) Kc) :
 omit hne in
 
 /- English proof (translation)
-Establish `h : (evD X Kc j d0).comp (aeval (linT fun x y => algebraMap Kc (XspC (X.Pj (j + 1)) Kc) (Lk x y)) : DA X Kc j →ₐ[XspC (X.Pj (j + 1)) Kc] DA X Kc j).toRingHom = evD X Kc j (fun y => ∑ z, Lk z y * d0 z)`. Use `ringHom_ext (fun r => ?_) fun y => ?_` and prove the remaining obligations. Simplify using `[evD]`. Simplify using `only [evD, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, linT, map_sum, map_mul, coe_eval₂Hom, eval₂_C, eval₂_X, RingHom.id_apply, algebraMap_eq]`. Conclude with `RingHom.congr_fun h Q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evD_linT (d0 : X.ZA j → Kc) (Q : DA X Kc j) :
     evD X Kc j d0 (aeval (linT fun x y => algebraMap Kc (XspC (X.Pj (j + 1)) Kc) (Lk x y)) Q) =
@@ -158,9 +156,9 @@ end GlobalTheory
 end PairingSeriesCoefficients
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ _ _ j La La' φ P f l R h`. Rewrite using `[PairingSeriesCoefficients.pairD_linSub X Kc j (bc Kc φ) (fun x y hxy => by`. Assume the negation of the conclusion as `hne`. Conclude with `hxy (bc_ne Kc φ x y fun h' => hne h'.symm)) P f]`. Use `pairing_series_linear_form_holds p X Kc j _ f l R fun d0 => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h d0, PairingSeriesCoefficients.evD_linT]`.
+A detailed English derivation is pending.
 -/
 theorem frame_change_pairing_holds : XB := by
   intro p _ X Kc _ _ _ _ j La La' φ P f l R h
@@ -171,11 +169,11 @@ theorem frame_change_pairing_holds : XB := by
   rw [h d0, PairingSeriesCoefficients.evD_linT]
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ _ j La La' φ d0 b`. Take `⟨v, s⟩` from `b`. Use `Matrix.ext fun a b' => ?_` and prove the remaining obligations. Use `show ∑ z, bc Kc φ z ⟨v, (s, a, b')⟩ * d0 z = _`. Rewrite using `[sum_block X j (fun z => bc Kc φ z ⟨v, (s, a, b')⟩ * d0 z) v s (fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bc_ne Kc φ z _ hz, zero_mul])]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, dM, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b'' _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bc_same]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem transposed_frame_image_blockwise_holds : TransposedFrameImageBlockwise := by
   intro p _ X Kc _ _ _ j La La' φ d0 b
@@ -198,7 +196,7 @@ section Ev
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (j : ℕ)
 
 /- English proof (translation)
-Simplify using `only [xd, mulC, map_sum, map_mul, Matrix.transpose_apply, dMat, dM, evD, coe_eval₂Hom, eval₂_X, MvPolynomial.algebraMap_apply, eval₂_C, RingHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evD_xd (b : BX X) (x : Fin (NJ X j) → ℕ → X.G.Kf) (d0 : X.ZA j → Kc) (b' : Fin (NJ X (j + 1))) (i : ℕ) :
     evD X Kc j d0 (xd X Kc j b.1 b.2 x b' i) =
@@ -207,7 +205,7 @@ theorem evD_xd (b : BX X) (x : Fin (NJ X j) → ℕ → X.G.Kf) (d0 : X.ZA j →
     eval₂_C, RingHom.id_apply]
 
 /- English proof (translation)
-Use `Matrix.ext fun b' t => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, yMat, yV, evD, coe_eval₂Hom, eval₂_C, RingHom.id_apply, RingHom.coe_coe, rename_X]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evD_yMat (b : BX X) (d0 : X.ZA j → Kc) :
     (yMat X Kc j b.1 b.2).map (evD X Kc j d0) =
@@ -223,11 +221,11 @@ end Ev
 end PairingSeriesCoefficients
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ j b x d0`. Unfold `tgtD tgtN`. Use `split_ifs with ho`. Rewrite using `[map_hvO, PairingSeriesCoefficients.evD_yMat, ← RingHom.coe_coe (rename (emX X (j + 1) b)), map_hvO]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b' i`. Rewrite using `[PairingSeriesCoefficients.evD_xd, RingHom.coe_coe, rename_C]`. Rewrite using `[map_hvE, PairingSeriesCoefficients.evD_yMat, ← RingHom.coe_coe (rename (emX X (j + 1) b)), map_hvE]`. Use `congr 1`. Use function extensionality and compare the values at `b' i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PairingSeriesCoefficients.evD_xd, RingHom.coe_coe, rename_C]`.
+A detailed English derivation is pending.
 -/
 theorem frame_change_compatibility_holds : XC := by
   intro p _ X Kc _ _ j b x d0
@@ -247,9 +245,9 @@ namespace PairingSeriesCoefficients
 section Deg
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `IsWeightedHomogeneous.sum _ _ _ fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : IsWeightedHomogeneous w (∏ i, M (τ i) i) (m * d)`. Use `IsWeightedHomogeneous.prod (w := w) Finset.univ (fun i => M (τ i) i) (fun _ => d) fun i _ => h (τ i) i` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign τ) with h2 | h2` into its components or cases. Rewrite using `[h2, one_smul]`. Conclude with `h1`. Rewrite using `[h2, Units.neg_smul, one_smul]`. Conclude with `(mem_weightedHomogeneousSubmodule R w _ _).1 (neg_mem ((mem_weightedHomogeneousSubmodule R w _ _).2 h1))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_wh {σ R : Type} [CommRing R] (w : σ → ℕ) {m : ℕ} (M : Matrix (Fin m) (Fin m) (MvPolynomial σ R)) (d : ℕ)
     (h : ∀ i i', IsWeightedHomogeneous w (M i i') d) : IsWeightedHomogeneous w M.det (m * d) := by
@@ -268,7 +266,7 @@ theorem det_wh {σ R : Type} [CommRing R] (w : σ → ℕ) {m : ℕ} (M : Matrix
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ)
 
 /- English proof (translation)
-Unfold `Sys.colFac`. Use `det_wh _ _ _ fun i i' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply]`. Use `IsWeightedHomogeneous.sum _ _ _ fun a _ => ?_` and prove the remaining obligations. Conclude with `(isWeightedHomogeneous_X _ (wB X j v s) (⟨b.1, (b.2, a, I b.1 b.2 c i'.val)⟩ : X.ZA j)).C_mul _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colFac_wh (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (b : BX X) (c : ℕ) :
     IsWeightedHomogeneous (wB X j v s) (X.colFac j I b.1 b.2 c)
@@ -280,13 +278,13 @@ theorem colFac_wh (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (b : BX X) (
   exact (isWeightedHomogeneous_X _ (wB X j v s) (⟨b.1, (b.2, a, I b.1 b.2 c i'.val)⟩ : X.ZA j)).C_mul _
 
 /- English proof (translation)
-Establish `h1 : X.PI j I i0 = ∏ b : BX X, ∏ c ∈ Finset.range (X.nuv b.1 (j + 1) b.2 1).toNat, (p : MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) ^ (X.colExp j I i0 b.1 b.2 c) * X.colFac j I b.1 b.2 c`. Rewrite using `[Fintype.prod_sigma]`. Both sides reduce to the same expression. Establish `h2` using `IsWeightedHomogeneous.prod (w := wB X j v s) (Finset.univ : Finset (BX X)) (fun b => ∏ c ∈ Finset.range (X.nuv b.1 (j + 1) b.2 1).toNat, (p : MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) ^ (X.colExp j I i0 b.1 b.2 c) * X.colFac j I b.1 b.2 c) (fun b => ∑ c ∈ Finset.range (X. …`. Use `IsWeightedHomogeneous.mul ?_ (colFac_wh X j I v s b c)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (p : MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) ^ (X.colExp j I i0 b.1 b.2 c) = C ((p : MvPolynomial (X.FrI j) ℤ) ^ (X.colExp j I i0 b.1 b.2 c))`. Rewrite using `[map_pow, map_natCast]`. Rewrite using `[h3]`. Conclude with `isWeightedHomogeneous_C _ _)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_eq_single (⟨v, s⟩ : BX X)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem PI_wh (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     IsWeightedHomogeneous (wB X j v s) (X.PI j I i0)
@@ -318,7 +316,7 @@ theorem PI_wh (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) (s : Fin (X.G.P.n' 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `v s`. Rewrite using `[← wt_eq, PI_wh X j I i0 v s hn, Finset.sum_range]`. Conclude with `sum_colHt X v j s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PI_good (I : X.ColCh j) (i0 : X.Pl → ℕ) (n : X.ZA j →₀ ℕ) (hn : coeff n (X.PI j I i0) ≠ 0) : GoodDeg X j n := by
   intro v s
@@ -330,9 +328,9 @@ end Deg
 end PairingSeriesCoefficients
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ j I i0 f x`. Rewrite using `[Finset.sum_subset (support_map_subset _ _) (fun n _ hn => by rw [notMem_support_iff.1 hn, mul_zero])]`. Unfold `applyD`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eval, eval_map, coeff_map, coe_eval₂Hom]`. Use `congr 1`. Unfold `derAt`. Rewrite using `[if_pos (PairingSeriesCoefficients.PI_good X j I i0 n (mem_support_iff.1 hn))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_change_group_action_holds : XG := by
   intro p _ X Kc _ _ j I i0 f x
@@ -347,9 +345,9 @@ theorem frame_change_group_action_holds : XG := by
   rw [if_pos (PairingSeriesCoefficients.PI_good X j I i0 n (mem_support_iff.1 hn))]
 
 /- English proof (translation)
-Introduce `p _ X j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨v, s⟩, a⟩ ⟨⟨v', s'⟩, a'⟩ h`. Establish `h1` using `congrArg (idxJ X j) h`. Simplify using `only [emX, idxJ_idxI] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the cases of `h1`. Both sides reduce to the same expression. Introduce and unpack `⟨⟨v, s⟩, a, t⟩ ⟨⟨v', s'⟩, a', t'⟩ h`. Simplify using `only [xmX] at h`. Consider the cases of `h`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data.
 
 Both sides reduce to the same expression.
 -/

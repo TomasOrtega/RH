@@ -13,12 +13,12 @@ namespace GlobalTheory.FlatColLaw
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[← p.ι_π, p.π_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_iota (p : Place D k) (x : k) : p.e * p.ι x = p.ι x := by rw [← p.ι_π, p.π_ι]
 
 /- English proof (translation)
-Establish `h2` using `p.ι_π (p.ι x * m)`. Rewrite `h2` using `[map_mul, p.π_ι]`. Rewrite using `[h2, ← mul_assoc, e_iota]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_mul (p : Place D k) (x : k) (m : AE D) : p.ι x * m = p.ι (x * p.π m) := by
   have h2 := p.ι_π (p.ι x * m)
@@ -26,7 +26,7 @@ theorem iota_mul (p : Place D k) (x : k) (m : AE D) : p.ι x * m = p.ι (x * p.�
   rw [h2, ← mul_assoc, e_iota]
 
 /- English proof (translation)
-Establish `h : p.xi * p.pr D.host.xi0⁻¹ = 1`. Rewrite using `[Place.xi, Place.pr, Place.pr, ← map_mul, ← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_ne (p : Place D k) : p.xi ≠ 0 := by
   have h : p.xi * p.pr D.host.xi0⁻¹ = 1 := by
@@ -35,7 +35,7 @@ theorem xi_ne (p : Place D k) : p.xi ≠ 0 := by
   exact left_ne_zero_of_mul_eq_one h
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, iota_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_iota_mul (p : Place D k) {a b c : ℕ} (zk : Matrix (Fin a) (Fin b) k) (x : Mx D b c) :
     (zk.map p.ι : Mx D a b) ⬝ x = (zk * x.map p.π).map p.ι := by
@@ -43,21 +43,21 @@ theorem map_iota_mul (p : Place D k) {a b c : ℕ} (zk : Matrix (Fin a) (Fin b) 
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, iota_mul]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_map_iota (p : Place D k) {a : ℕ} (x : Matrix (Fin a) (Fin a) k) :
     (x.map p.ι : Mx D a a).trace = p.ι x.trace := by
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `p.π_ι _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_iota_pi (p : Place D k) {a b : ℕ} (x : Matrix (Fin a) (Fin b) k) : (x.map p.ι).map p.π = x := by
   ext i j
   exact p.π_ι _
 
 /- English proof (translation)
-Rewrite using `[d.hO_coordS]`. Simplify using `only [HypDec.extY_apply, Matrix.mul_assoc, HypDec.pY_jY, HypDec.pY_j0, HypDec.pY_jX, Matrix.mul_one, Matrix.mul_zero, pairS, hO_eq_trace S₀, adj_zero, Matrix.zero_mul, trace_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hO_extY {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (w : WO S T) (a : Mx D T.rank ρ) :
     hO S T w (d.extY T a) = pairS T (w ⬝ d.jX) a := by
@@ -66,14 +66,14 @@ theorem hO_extY {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (w : WO S T
     Matrix.mul_zero, pairS, hO_eq_trace S₀, adj_zero, Matrix.zero_mul, trace_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[pairS, adj_mul, adj_adj, adj_giA, Matrix.mul_assoc, giA_gA_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairS_giA_adj (T : HSp D) {ρ : ℕ} (x : Mx D T.rank ρ) (z : Mx D ρ T.rank) :
     pairS T x (giA T ⬝ adj z) = (z ⬝ x).trace := by
   rw [pairS, adj_mul, adj_adj, adj_giA, Matrix.mul_assoc, giA_gA_cancel]
 
 /- English proof (translation)
-Rewrite using `[hχ, symplO, hO_extY, pairS_giA_adj, map_iota_mul, trace_map_iota]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_sympl_extY (p : Place D k) {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (hχ : p.IsChar ψ ψk)
     {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (zk : Matrix (Fin ρ) (Fin T.rank) k) (w : WO S T) :
@@ -83,7 +83,7 @@ theorem psi_sympl_extY (p : Place D k) {ψ : AddChar (AF D.host.F) ℂ} {ψk : A
   rfl
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, h l j]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHalf_mul_left {e : AE D} {a b c : ℕ} (x : Mx D a b) {y : Mx D b c} (h : IsHalf e y) : IsHalf e (x ⬝ y) := by
   intro i j
@@ -91,7 +91,7 @@ theorem isHalf_mul_left {e : AE D} {a b c : ℕ} (x : Mx D a b) {y : Mx D b c} (
   exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, h l j]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, h i l]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHalf_mul_right {e : AE D} {a b c : ℕ} {x : Mx D a b} (y : Mx D b c) (h : IsHalf e x) : IsHalf e (x ⬝ y) := by
   intro i j
@@ -99,14 +99,14 @@ theorem isHalf_mul_right {e : AE D} {a b c : ℕ} {x : Mx D a b} (y : Mx D b c) 
   exact Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, h i l]
 
 /- English proof (translation)
-Introduce `i j` and use `(map_mul (cA D) p.e (p.ι (zk j i))).symm.trans (congrArg (cA D) (e_iota p _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_adj (p : Place D k) {a b : ℕ} (zk : Matrix (Fin a) (Fin b) k) :
     IsHalf (cA D p.e) (adj (zk.map p.ι : Mx D a b)) := fun i j =>
   (map_mul (cA D) p.e (p.ι (zk j i))).symm.trans (congrArg (cA D) (e_iota p _))
 
 /- English proof (translation)
-Take `⟨_, h0, v, ε, h1, h2⟩` from `p.split`. Take `rfl` from `GlobalTheory.AdelicU.Supp.isPlaceIdem_iff.1 h1`. Use `⟨v, fun a b x hx i j => GlobalTheory.FinPl.Model.mem_idAt_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, add_mul, hx i j, ← hx i j, ← mul_assoc, h0, zero_mul, zero_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mxAt (p : Place D k) : ∃ v : GlobalTheory.FinPl.Pl D, ∀ (a b : ℕ) (x : Mx D a b), IsHalf (cA D p.e) x →
     GlobalTheory.FinPl.MxAt (· = v) x := by
@@ -116,7 +116,7 @@ theorem exists_mxAt (p : Place D k) : ∃ v : GlobalTheory.FinPl.Pl D, ∀ (a b 
   rw [← h2, add_mul, hx i j, ← hx i j, ← mul_assoc, h0, zero_mul, zero_add]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hu` using `u.2`. Rewrite using `[Matrix.diag_apply, Matrix.diag_apply, GlobalTheory.UniIndexPrime.diag_mul hM (fun a b h => (hu a b).1 h), (hu i i).2, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mul_uni {ρ : ℕ} (M : Mx D ρ ρ) (hM : ∀ i j, j < i → M i j = 0) (u : UX D ρ) :
     (M ⬝ u.1.1).trace = M.trace := by
@@ -125,7 +125,7 @@ theorem trace_mul_uni {ρ : ℕ} (M : Mx D ρ ρ) (hM : ∀ i j, j < i → M i j
   rw [Matrix.diag_apply, Matrix.diag_apply, GlobalTheory.UniIndexPrime.diag_mul hM (fun a b h => (hu a b).1 h), (hu i i).2, mul_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, h, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by field_simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_mul {K m l o o' : Type} [Field K] [Fintype l] (M : Matrix m l K) (E : Matrix l o K) (F : Matrix l o' K) (j : o)
     (j' : o') {κ : K} (hκ : κ ≠ 0) (h : ∀ x, F x j' = κ * E x j) (r : m) : (M * E) r j = κ⁻¹ * (M * F) r j' := by
@@ -133,7 +133,7 @@ theorem col_mul {K m l o o' : Type} [Field K] [Fintype l] (M : Matrix m l K) (E 
   exact Finset.sum_congr rfl fun x _ => by field_simp
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : i = i₀ <;> simp [Matrix.mul_apply, h, Finset.mul_sum, mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_mul {K m l o : Type} [Field K] [Fintype l] {ρ : ℕ} (i₀ : Fin ρ) (a : K) (G : Matrix m l K) (r : m)
     (X : Matrix l o K) (i : Fin ρ) (j : o) :
@@ -142,7 +142,7 @@ theorem row_mul {K m l o : Type} [Field K] [Fintype l] {ρ : ℕ} (i₀ : Fin ρ
   by_cases h : i = i₀ <;> simp [Matrix.mul_apply, h, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag_apply, row_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_row_mul {K m l : Type} [Field K] [Fintype l] {ρ : ℕ} (i₀ : Fin ρ) (a : K) (G : Matrix m l K) (r : m)
     (X : Matrix l (Fin ρ) K) :
@@ -150,21 +150,19 @@ theorem trace_row_mul {K m l : Type} [Field K] [Fintype l] {ρ : ℕ} (i₀ : Fi
   simp only [Matrix.trace, Matrix.diag_apply, row_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `D _ hFL _ k _ _ _ _ _ _ p ν _ ψ ψk hχ ρ B J st s hs n n' _ _ _ _ c FA F₀ FV G₀ FW _ hbes hjac Tm hTm r q hq b Φ Φ' hΦ'`. Take `⟨i, rfl, hi, hfree⟩` from `hq`. Establish `hc : c = 2 * ρ` using `hjac.1`. Establish `hκ : ∀ m : ℕ, s * p.xi ^ m ≠ 0` using `fun m => mul_ne_zero hs (pow_ne_zero _ (xi_ne p))`. Set `i₀ : Fin ρ` to `⟨i.val, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `zk : Matrix (Fin ρ) (Fin J.W.rank) k` to `Matrix.of fun i' β => if i' = i₀ then b * (s * p.xi ^ (ρ - i.val)) * FW.γ r β else 0`. Set `a : Mx D J.W.rank ρ` to `giA J.W ⬝ adj (zk.map p.ι : Mx D ρ J.W.rank)`. Establish `ha : IsHalf (cA D p.e) a` using `isHalf_mul_left _ (isHalf_adj p zk)`. Establish `hy : IsHalf (cA D p.e) (B.d.extY J.W a)` using `isHalf_mul_right _ ha`. Establish `hW : ∀ j : Fin ρ, (FW.γ * J.d.jX.map p.π) r j = (s * p.xi ^ (ρ - j.val))⁻¹ * (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r (Sum.inr ⟨j.val, by omega⟩)` using `fun j => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← FW.γβ]`. Conclude with `col_mul _ _ _ _ _ (hκ _) (hjac.2.2.1 j ⟨j.val, by omega⟩ rfl) r`. Establish `hB : ∀ t, ψ (symplO B.V J.W (p.up FV FW t) (B.d.extY J.W a)) = (ψk (b * t r (Sum.inr i)) : ℂ)` using `fun t => by`. Rewrite using `[psi_sympl_extY p hχ, trace_row_mul, Place.up, map_iota_mul, map_iota_pi, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, FW.γβ, Matrix.one_mul, col_mul _ _ FV.β i₀ (Sum.inr i) (hκ _) (hbes.2.2.1 i₀ i rfl), Matrix.mul_assoc, FV.γβ, Matrix.mul_one, mul_assoc, mul_inv_c …`. Establish `hD : ψ (symplO B.V J.W (B.d.extX J.W (xZero J.d)) (B.d.extY J.W a)) = (ψk (b * basePt c (0 : Matrix n n' k) r (Sum.inr i)) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psi_sympl_extY p hχ, trace_row_mul, HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one, xZero, hW, mul_assoc, mul_inv_cancel_left₀ (hκ _)]`. Use `congr 3`. Break down `r with r | r` into its components or cases. Simplify using `[basePt]`. Simplify using `[basePt, Matrix.one_apply, Fin.ext_iff, i₀]`.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : GlobalTheory.FinPl.UInv J.W (xZero J.d) a` using `fun u => by`. Rewrite using `[pairS_giA_adj, pairS_giA_adj, ← Matrix.mul_assoc]`. Use `trace_mul_uni _ (fun i' j hj => ?_) u` and prove the remaining obligations. Rewrite using `[map_iota_mul, Matrix.map_apply, row_mul]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[xZero, hW, Matrix.one_apply_ne, mul_zero, mul_zero, map_zero]`. Introduce and unpack `rfl`. Conclude with `hfree hj`. Conclude with `map_zero _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `exists_mxAt p`. Establish `hlaw` using `((hFL ψ (· = v)).1 ρ B J st).Heisenberg₂.dual _ (hTm.theta Φ) a (hv _ _ a ha) hU`. Establish `hmod` using `hTm.modul _ hy Φ ((ψk (b * basePt c (0 : Matrix n n' k) r (Sum.inr i)) : ℂ) • Φ') fun t => by`. Rewrite using `[hB, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hΦ', ← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← mul_add, add_sub_cancel]`. Rewrite `hlaw` using `[← hmod, hD, map_smul, GlobalTheory.HandHom.flatBF_smul]`.
-
-Conclude with `smul_right_injective _ (Circle.coe_ne_zero _) hlaw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_dual_col : ∀ (D : D7), FlatLaw D → GlobalTheory.FinPl.FlatLaws D → OmLoc D → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure → ∀ (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (st : StepBF ψ B J) (s : k), s ≠ 0 → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ) (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FV : Frame k B.V.rank (n' ⊕ Fin (c + 1))) (G₀ : Frame k J.W₀.rank n) (FW : Frame k J.W.rank (n ⊕ Fin c)), p.IsCoreFrame B s FA F₀ → p.IsBesFrame B s FA FV → p.IsJacFrame J s (p.hz B) G₀ FW → ∀ (Tm : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (WO B.V J.W → ℂ)), p.IsModel ψ FV FW Tm → ∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ i, q = Sum.inr i ∧ i.val < ρ ∧ ¬ GlobalTheory.RootEx.Free (ρ + 1) (r, q)) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψk (b * (t r q - GlobalTheory.RootEx.basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → flatBF st (Tm Φ') = flatBF st (Tm Φ) := by
   intro D _ hFL _ k _ _ _ _ _ _ p ν _ ψ ψk hχ ρ B J st s hs n n' _ _ _ _ c FA F₀ FV G₀ FW _ hbes hjac Tm hTm r q hq b Φ Φ' hΦ'

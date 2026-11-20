@@ -12,7 +12,7 @@ universe u
 section Tower
 
 /- English proof (translation)
-The claim follows from `Additive.toMul.injective (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem additive_units_ext {M : Type u} [Field M] {x y : Additive Mˣ}
     (h : ((Additive.toMul x : Mˣ) : M) = ((Additive.toMul y : Mˣ) : M)) : x = y :=
@@ -34,7 +34,7 @@ theorem galRestrictScalars_apply (σ : Gal(M/F)) (x : M) : galRestrictScalars K 
   rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `AlgEquiv.ext fun x => DFunLike.congr_fun h x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galRestrictScalars_injective : Function.Injective (galRestrictScalars K F M) :=
   fun _ _ h => AlgEquiv.ext fun x => DFunLike.congr_fun h x
@@ -68,11 +68,11 @@ noncomputable abbrev galFixing : Subgroup Gal(M/K) :=
 
 omit [FiniteDimensional K M] [IsGalois K M] in
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Rewrite using `[← AlgEquiv.restrictNormal_commutes σ F x]`. Express the relevant statement in the definitionally equal form `algebraMap F M ((AlgEquiv.restrictNormalHom F σ) x) = _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `h`. Use extensionality with `x`. Apply `(algebraMap F M).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `algebraMap F M ((AlgEquiv.restrictNormal σ F) x) = _`. Rewrite using `[AlgEquiv.restrictNormal_commutes, h]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_galFixing_iff (σ : Gal(M/K)) :
     σ ∈ galFixing K F M ↔ ∀ x : F, σ (algebraMap F M x) = algebraMap F M x := by
@@ -92,9 +92,9 @@ theorem mem_galFixing_iff (σ : Gal(M/K)) :
 
 omit [FiniteDimensional K M] [IsGalois K M] in
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[mem_galFixing_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x`. Conclude with `τ.commutes x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) h, AlgEquiv.ext fun _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_galRestrictScalars : (galRestrictScalars K F M).range = galFixing K F M := by
   ext σ
@@ -126,7 +126,7 @@ noncomputable def galFixingCohomologyIso (n : ℕ) :
 
 omit [FiniteDimensional K M] [IsGalois K M] in
 /- English proof (translation)
-Establish `hinv : (galFixingCohomologyIso K F M n).inv = groupCohomology.map (galFixingEquiv K F M : Gal(M/F) →* galFixing K F M) (Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩ : Rep.res (galFixingEquiv K F M : Gal(M/F) →* _) (Rep.res (galFixing K F M).subtype (galUnits.{u} K M)) ⟶ galUnits.{u} F …` using `rfl`. Rewrite using `[hinv, ← groupCohomology.map_comp]`. Use `groupCohomology.map_congr ?_ ?_ n` and prove the remaining obligations. Use extensionality with `σ x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
 Both sides reduce to the same expression.
 -/
@@ -145,7 +145,7 @@ theorem unitsRes_eq (n : ℕ) :
 
 omit [IsGalois K M] in
 /- English proof (translation)
-Establish `: FiniteDimensional F M` using `Module.Finite.of_restrictScalars_finite K F M`. Conclude with `(isZero_groupCohomology_one_galUnits F M).of_iso (galFixingCohomologyIso K F M 1).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_galFixing :
     IsZero (groupCohomology (Rep.res (galFixing K F M).subtype (galUnits.{u} K M)) 1) := by
@@ -161,15 +161,13 @@ noncomputable def unitsToInvariantsTower :
     exact (mem_galFixing_iff K F M σ.1).1 σ.2 _
 
 /- English proof (translation)
-Establish `: FiniteDimensional F M` using `Module.Finite.of_restrictScalars_finite K F M`. Establish `: IsGalois F M` using `IsGalois.tower_top_of_isGalois K F M`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h'` using `congrArg (fun v => ((Additive.toMul (α := Mˣ) v.1 : Mˣ) : M)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(algebraMap F M).injective h'`. Introduce `v`. Establish `hfix : ∀ τ : Gal(M/F), τ ((Additive.toMul (α` using `Mˣ) v.1 : Mˣ) : M) = ((Additive.toMul (α := Mˣ) v.1 : Mˣ) : M) := by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Use `v.2 ⟨galRestrictScalars K F M τ, (range_galRestrictScalars K F M) ▸ ⟨τ, rfl⟩⟩` as an intermediate fact. Conclude with `congrArg (fun w => ((Additive.toMul (α := Mˣ) w : Mˣ) : M)) this`. Take `⟨y, hy⟩` from `IntermediateField.mem_bot.1 ((IsGalois.mem_bot_iff_fixed _).2 hfix)`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`. Conclude with `(Additive.toMul (α := Mˣ) v.1).ne_zero hy.symm`. Use `⟨Additive.ofMul (Units.mk0 y hy0), Subtype.ext ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises.
-
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem unitsToInvariantsTower_bijective : Function.Bijective (unitsToInvariantsTower K F M) := by
   have : FiniteDimensional F M := Module.Finite.of_restrictScalars_finite K F M
@@ -218,9 +216,9 @@ noncomputable def galQuotientCohomologyIso (n : ℕ) :
     exact AlgEquiv.restrictNormal_commutes σ F ((Additive.toMul (α := Fˣ) x : Fˣ) : F)) n
 
 /- English proof (translation)
-Establish `hhom : (galQuotientCohomologyIso K F M n).hom = groupCohomology.map (galQuotientEquiv K F M : Gal(M/K) ⧸ galFixing K F M →* Gal(F/K)) (Rep.ofHom ⟨(unitsInvariantsEquivTower K F M).toLinearMap, fun g => by`. Take `⟨σ, rfl⟩` from `QuotientGroup.mk_surjective g`. Use `LinearMap.ext fun x => Subtype.ext (additive_units_ext ?_)` and prove the remaining obligations. Conclude with `AlgEquiv.restrictNormal_commutes σ F ((Additive.toMul (α := Fˣ) x : Fˣ) : F)⟩ :`. Use the proof step `Rep.res (galQuotientEquiv K F M : Gal(M/K) ⧸ galFixing K F M →* Gal(F/K)) (galUnits.{u} K F) ⟶ (galUnits.{u} K M).quotientToInvariants (galFixing K F M)) n := rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hhom, ← groupCohomology.map_comp]`. Use `groupCohomology.map_congr ?_ ?_ n` and prove the remaining obligations. Use extensionality with `σ x`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unitsInfl_eq (n : ℕ) :
     unitsInfl K F M n = (galQuotientCohomologyIso K F M n).hom ≫
@@ -240,7 +238,7 @@ theorem unitsInfl_eq (n : ℕ) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[unitsInfl_eq, ModuleCat.hom_comp, LinearMap.coe_comp]`. Conclude with `(GroundTheory.GroupCoh.inflation_two_injective (A := galUnits.{u} K M) (S := galFixing K F M) (isZero_groupCohomology_one_galFixing K F M)).comp ((ModuleCat.mono_iff_injective _).1 inferInstance)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsInfl_two_injective : Function.Injective (unitsInfl K F M 2).hom := by
   rw [unitsInfl_eq, ModuleCat.hom_comp, LinearMap.coe_comp]
@@ -249,7 +247,7 @@ theorem unitsInfl_two_injective : Function.Injective (unitsInfl K F M 2).hom := 
     ((ModuleCat.mono_iff_injective _).1 inferInstance)
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (galQuotientCohomologyIso K F M 2).hom.hom` using `(ModuleCat.epi_iff_surjective _).1 inferInstance`. Establish `hinj : Function.Injective (galFixingCohomologyIso K F M 2).inv.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Rewrite using `[unitsInfl_eq, unitsRes_eq, ModuleCat.hom_comp, ModuleCat.hom_comp, LinearMap.range_comp, LinearMap.range_eq_top.2 hsurj, Submodule.map_top, LinearMap.ker_comp, LinearMap.ker_eq_bot.2 hinj, Submodule.comap_bot]`. Conclude with `GroundTheory.GroupCoh.range_inflation_two_eq_ker_restriction (A := galUnits.{u} K M) (S := galFixing K F M) (isZero_groupCohomology_one_galFixing K F M)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_unitsInfl_two_eq_ker_unitsRes :
     LinearMap.range (unitsInfl K F M 2).hom = LinearMap.ker (unitsRes K F M 2).hom := by
@@ -272,9 +270,9 @@ variable (K E F M : Type u) [Field K] [Field E] [Field F] [Field M] [Algebra K E
   [Normal K E] [Normal K F] [FiniteDimensional K M] [IsGalois K M]
 
 /- English proof (translation)
-Establish `hmem : ∀ y, (unitsInfl K E M 2).hom y ∈ LinearMap.range (unitsInfl K F M 2).hom`. Introduce `y`. Rewrite using `[range_unitsInfl_two_eq_ker_unitsRes, LinearMap.mem_ker]`. Conclude with `congrArg (fun φ => φ.hom y) h`. Use `choose g hg using hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Nat.card_le_card_of_injective g fun y y' hyy' => ?_` and prove the remaining obligations. Apply `unitsInfl_two_injective K E M` to reduce the goal to its premises. Rewrite using `[← hg y, ← hg y', hyy']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_le_of_unitsInfl_comp_unitsRes_eq_zero
     (h : unitsInfl K E M 2 ≫ unitsRes K F M 2 = 0)

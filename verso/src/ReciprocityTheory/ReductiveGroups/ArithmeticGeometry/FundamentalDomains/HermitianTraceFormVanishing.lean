@@ -8,87 +8,87 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_cc (a : E) : cc (cc a) = a := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_mul (a b : E) : cc (a * b) = cc a * cc b := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_add (a b : E) : cc (a + b) = cc a + cc b := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_sub (a b : E) : cc (a - b) = cc a - cc b := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_neg (a : E) : cc (-a) = -cc a := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_zero : cc (0 : E) = 0 := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_one : cc (1 : E) = 1 := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_inv (a : E) : cc a⁻¹ = (cc a)⁻¹ := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cc_sum {ι : Type*} (s : Finset ι) (f : ι → E) : cc (∑ i ∈ s, f i) = ∑ i ∈ s, cc (f i) := by
   simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_eq_zero (a : E) : cc a = 0 ↔ a = 0 := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_intCast (n : ℤ) : cc (n : E) = n := by simp [cc]
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma cc_natCast (n : ℕ) : cc (n : E) = n := by simp [cc]
 
 variable {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[herm, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_add_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     herm G (x + x') y = herm G x y + herm G x' y := by
   simp [herm, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[herm, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_sub_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     herm G (x - x') y = herm G x y - herm G x' y := by
   simp [herm, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[herm, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_smul_left (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
     herm G (c • x) y = c * herm G x y := by
   simp [herm, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[herm, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_sub_right (G : Matrix (Fin r) (Fin r) E) (x y y' : Fin r → E) :
     herm G x (y - y') = herm G x y - herm G x y' := by
   simp [herm, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, cc_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma herm_smul_right (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
     herm G x (c • y) = cc c * herm G x y := by
@@ -97,7 +97,7 @@ lemma herm_smul_right (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E)
   ring
 
 /- English proof (translation)
-Simplify using `only [herm, cc_sum, cc_mul, cc_cc, hG]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma herm_conj (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = G b a)
     (x y : Fin r → E) : cc (herm G x y) = herm G y x := by
@@ -107,7 +107,7 @@ lemma herm_conj (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = G b a
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma cc_single (b c : Fin r) :
     cc ((Pi.single b (1 : E) : Fin r → E) c) = (Pi.single b (1 : E) : Fin r → E) c := by
@@ -116,7 +116,7 @@ lemma cc_single (b c : Fin r) :
   · simp [h]
 
 /- English proof (translation)
-Simplify using `only [herm, cc_single, Matrix.vecMul, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma herm_single_right (G : Matrix (Fin r) (Fin r) E) (v : Fin r → E) (b : Fin r) :
     herm G v (Pi.single b 1) = (Matrix.vecMul v G) b := by
@@ -125,7 +125,7 @@ lemma herm_single_right (G : Matrix (Fin r) (Fin r) E) (v : Fin r → E) (b : Fi
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Apply `Matrix.eq_zero_of_vecMul_eq_zero hG` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Rewrite using `[← herm_single_right]`. Simplify using `using hv _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma eq_zero_of_herm (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (v : Fin r → E)
     (hv : ∀ y, herm G v y = 0) : v = 0 := by
@@ -135,15 +135,13 @@ lemma eq_zero_of_herm (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (v : Fin
   simpa using hv _
 
 /- English proof (translation)
-Establish `hk : ∃ k, herm G (Pi.single k 1) ξ ≠ 0`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`. Apply `hξ` to reduce the goal to its premises. Apply `Matrix.eq_zero_of_vecMul_eq_zero hG` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[← herm_single_right, ← herm_conj G hGh, hne b]`. Simplify using the standard rewrite rules. Take `⟨k, hk⟩` from `hk`. Use `set y0 : Fin r → E := (herm G (Pi.single k 1) ξ)⁻¹ • Pi.single k 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : herm G y0 ξ = 1`. Simplify using `only [y0, herm_smul_left]`. Conclude with `inv_mul_cancel₀ hk`. Use `⟨herm G μ y0, ?_⟩` and prove the remaining obligations. Establish `hall : ∀ y, herm G (μ - herm G μ y0 • ξ) y = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `h1` using `h (y - herm G y ξ • y0) (by rw [herm_sub_left, herm_smul_left, hy0]; ring)`. Rewrite `h1` using `[herm_sub_right, herm_smul_right, herm_conj G hGh, sub_eq_zero]`. Rewrite using `[herm_sub_left, herm_smul_left, h1]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `eq_zero_of_herm G hG _ hall` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma exists_eq_smul_of_herm (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0)
     (hGh : ∀ a b, cc (G a b) = G b a) (ξ μ : Fin r → E) (hξ : ξ ≠ 0)
@@ -171,13 +169,11 @@ lemma exists_eq_smul_of_herm (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0)
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Establish `halg : IsAlgebraic ℤ (cc a⁻¹)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨y, hy, hint⟩` from `halg.exists_integral_multiple`. Set `β : 𝓞 E` to `⟨y • cc a⁻¹, hint⟩`. Establish `hβ : (β : E) = y • cc a⁻¹` using `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `h β`. Establish `h2 : cc (y • cc a⁻¹) * a = algebraMap ℚ E (y : ℚ)`. Rewrite using `[zsmul_eq_mul, cc_mul, cc_intCast, cc_cc, mul_assoc, inv_mul_cancel₀ ha, mul_one]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hβ, h2, Algebra.trace_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : (Module.finrank ℚ E : ℚ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne'` after adjusting the coercions. Rewrite `h1` using `[nsmul_eq_mul]`. Break down `mul_eq_zero.mp h1 with h3 | h3` into its components or cases. Conclude with `hd h3`.
-
-Conclude with `hy (by exact_mod_cast h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_trace (a : E) (h : ∀ β : 𝓞 E, Algebra.trace ℚ E (cc (β : E) * a) = 0) :
     a = 0 := by
@@ -200,7 +196,7 @@ lemma eq_zero_of_trace (a : E) (h : ∀ β : 𝓞 E, Algebra.trace ℚ E (cc (β
   · exact hy (by exact_mod_cast h3)
 
 /- English proof (translation)
-Conclude with `Bl.general_b_fact_alt_form.goal1 S hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {R F X : Type*} [CommRing R] [IsDomain R] [Field F] [Algebra R F]
     [IsFractionRing R F] [AddCommGroup X] [Module F X] [Module R X] [IsScalarTower R F X]

@@ -6,15 +6,15 @@ open scoped TensorProduct
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Use `letI := (secAlg A g U).toAlgebra`. Set `W : (pullback (str A B) g).Opens` to `pullback.snd (str A B) g ⁻¹ᵁ (U : T.Opens)`. Use `haveI : IsAffineHom (pullback.snd (str A B) g) := isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback (str A B) g) inferInstance`. Establish `hW : IsAffineOpen W` using `U.2.preimage _`. Establish `H` using `IsPullback.of_hasPullback (str A B) g`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := (U : T.Opens)) (UX := ⊤) (UY := W) le_top le_top (by simp [W])).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) U.2 (isAffineOpen_top _))`. Establish `hgen` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`. Establish `hle : (⊤ : Subring Γ(pullback (str A B) g, W)) ≤ (kappa A B g I U).range.comap (I.subschemeι.app W).hom`. Rewrite using `[← hgen, Subring.closure_le]`. Introduce and unpack `_ (⟨z, rfl⟩ | ⟨c, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 ⊗ₜ (Scheme.ΓSpecIso (CommRingCat.of B)).hom z, ?_⟩` and prove the remaining obligations. Rewrite using `[kappa_tmul]`. Simplify using `only [map_one, one_mul, Iso.hom_inv_id_apply]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c ⊗ₜ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[kappa_tmul]`. Simplify using `only [map_one, mul_one]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨x, hx⟩` from `I.subschemeι_app_surjective ⟨W, hW⟩ y`. Take `⟨w, hw⟩` from `hle (Subring.mem_top x)`. Conclude with `⟨w, hw.trans hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kappa_surjective (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (I : (pullback (str A B) g).IdealSheafData)

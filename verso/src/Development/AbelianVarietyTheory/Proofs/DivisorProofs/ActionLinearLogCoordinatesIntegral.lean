@@ -13,19 +13,17 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.LawLog ReciprocityTheory.ChartRestriction.G.TB
 
 /- English proof (translation)
-Introduce `C _ _ v d R _ _ O _ _ B hB σ _ a`. Establish `hφ0 : ∀ i, constantCoeff (B.actK C a i) = 0`. Introduce `i`. Use `show constantCoeff (MvPowerSeries.map (algebraMap R C) (B.A.act a i)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, GlobalTheory.FBMap.nc_act B.A a i, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hhom : comp1 (B.actK C a) (GlobalTheory.FBMap.mapLaw (algebraMap R C) B.G).F = addOf (GlobalTheory.FBMap.mapLaw (algebraMap R C) B.G).F (comp1 (B.actK C a) (pt C (n` using `2) d 0)) (comp1 (B.actK C a) (pt C (n := 2) d 1)) := by`. Establish `h` using `(GlobalTheory.FBMap.mapAct (algebraMap R C) B.A).hom a`. Rewrite `h` using `[GlobalTheory.LawLog.add_pt]`. Conclude with `h`. Establish `hcomp` using `GlobalTheory.FactorDepth.logOf_comp_hom _ _ (B.actK C a) hφ0 hhom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ e, constantCoeff (subst (oneVar C d) (B.actK C a e)) = 0` using `fun e => constantCoeff_subst_eq_zero hs_oneVar cc_oneVar (hφ0 e)`. Establish `hl : ∀ e, subst (fun f => subst (oneVar C d) (B.actK C a f)) ((fglOf hB).lg e) = ∑ f, dAct C B a e f • (fglOf hB).lg f`. Introduce `e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcomp]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← coe_substAlgHom hs_oneVar, map_sum]`. Simplify using `only [map_smul, coe_substAlgHom]`. Conclude with `Finset.sum_congr rfl fun f _ => rfl`. Establish `hexp : ∀ w : Fin d → MvPowerSeries σ C, (∀ i, constantCoeff (w i) = 0) → expPt (fglOf hB) (mv (dAct C B a) w) = fun i => subst (fun q : Fin 1 × Fin d => expPt (fglOf hB) w q.2) (B.actK C a i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `w hw`. Establish `hsE : HasSubst (fun f => subst w (GlobalTheory.FGDepth.expOf (fglOf hB) f))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun f => cc_expPt (fglOf hB) hw f`. Use function extensionality and compare the values at `i`. Establish `key` using `GlobalTheory.FactorDepth.exp_eq_of_log_hom (fglOf hB) (fglOf hB) _ h0 (dAct C B a) hl (mv (dAct C B a) w) w hw (fun e => rfl) i`. Use `show subst (mv (dAct C B a) w) (GlobalTheory.FGDepth.expOf (fglOf hB) i) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, subst_comp_subst_apply hs_oneVar hsE]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `subst_X hsE q.2`. Use `⟨hexp, fun w hw => ⟨cc_mv (dAct C B a) hw.1, fun i => ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hexp w hw.1]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (hB.2.1 a i) (fun q => hw.2 q.2) (fun q => cc_expPt (fglOf hB) hw.1 q.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actSt : ActSt := by
   intro C _ _ v d R _ _ O _ _ B hB σ _ a

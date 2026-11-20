@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.RowVacTw
 
 /- English proof (translation)
-Apply `Circle.ext` to reduce the goal to its premises. Use `Circle.coe_ne_zero A` as an intermediate fact. Use `Circle.coe_ne_zero B` as an intermediate fact. Use `Circle.coe_ne_zero A'` as an intermediate fact. Use `Circle.coe_ne_zero B'` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Circle.coe_mul, Circle.coe_inv]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem circ_id (A B A' B' : Circle) : A'⁻¹ * B' = (A⁻¹ * B) * ((A' * A⁻¹)⁻¹ * (B' * B⁻¹)) := by
   apply Circle.ext
@@ -34,21 +34,21 @@ theorem circ_id (A B A' B' : Circle) : A'⁻¹ * B' = (A⁻¹ * B) * ((A' * A⁻
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `Big.and (Big.and GlobalTheory.T.exists_vacuumBasePointFamily_every_tuple GlobalTheory.T.vacuumBasePoint_unique_all_tuples) (Big.and GlobalTheory.T.twistCharacter_mem_twistFiniteValueProductSubgroup GlobalTheory.T.unfoldingJointData_twist_ratio_at_detRoots)`. Use `⟨C, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, h⟩` from `h ε CF hC`. Use `⟨x₀, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi ha => ?_⟩` and prove the remaining obligations. Take `⟨⟨hex, hun⟩, hxv, hcon⟩` from `h D large₂ he hx Γ Pl0 T A Ks R F s ch hi ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `s.core.lev`. Set `xr : ∀ k, GA D (ch.G.V (.grid D.R.m k)) → (AE D)ˣ` to `fun k g => (GlobalTheory.RecDict.exists_isDetRoot D _ g).choose`. Establish `hxr : ∀ k g, IsDetRoot _ g (xr k g)` using `fun k g => (GlobalTheory.RecDict.exists_isDetRoot D _ g).choose_spec`. Set `bb : T → Pts ch.G` to `fun t => (hex t).choose`. Establish `hbb : ∀ t, IsBase t ch.S.B (bb t)` using `fun t => (hex t).choose_spec`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : T → ℕ → Circle` to `fun t j => (R.toLevCh.xi t (xr j (bb t j)))⁻¹ * R.toLevCh.xi t (xr (j + 2) (bb t (j + 2)))`. Use `⟨hex, fun t j => Circle.toUnits (w t j), fun t j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [w, map_mul, map_inv]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (hxv t _)) (hxv t _)`. Introduce `t t' M M' hM hM' b b' hb hb' P p hp j hj hjm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : b = bb t` using `hun t t b (bb t) hb (hbb t)`. Establish `e2 : b' = bb t` using `hun t' t b' (bb t) hb' (hbb t)`. Establish `e3 : bb t' = bb t` using `hun t' t _ _ (hbb t') (hbb t)`. Substitute `e1 e2` using the available equality. Establish `hfin : ∀ k, ∃ y : (AE D)ˣ, finPart D (y : AE D) = 1 ∧ IsDetRoot _ (p k) y` using `fun k => GlobalTheory.TwistFinPart.exists_isDetRoot_finPart_one _ (p k) (hp.1 k) _ (hxr k (p k))`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose y hy1 hy using hfin`. Establish `hx : ∀ k, IsDetRoot _ ((p * bb t) k) (y k * xr k (bb t k))` using `fun k => GlobalTheory.ExtCore.isDetRoot_mul _ _ _ _ _ (hy k) (hxr k (bb t k))`. Establish `hm2` using `D.R.two_le_m`. Establish `hmi : D.R.m ∉ idx D` using `fun h' => by`. Simplify using `only [idx, List.mem_range'_1] at h'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm : (p * bb t) D.R.m = 1`. Rewrite using `[Pi.mul_apply, hp.2 _ hmi, (hbb t).2.2 _ (by omega) hmi, one_mul]`. Rewrite using `[hcon t t' M M' hM hM' P (p * bb t) _ hx hm j hj hjm, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn0, hn⟩` from `hL.xi_fin t`. Take `⟨n', hn0', hn'⟩` from `hL.xi_fin t'`. Establish `h1 : ∀ k, R.toLevCh.xi t (y k) = 1` using `fun k => GlobalTheory.TupRoot.eq_one_of_finPart (hL.xi t) hn0 hn _ (hy1 k)`. Establish `h1' : ∀ k, R.toLevCh.xi t' (y k) = 1` using `fun k => GlobalTheory.TupRoot.eq_one_of_finPart (hL.xi t') hn0' hn' _ (hy1 k)`. Establish `hw : w t' j = w t j * (((R.toLevCh.xi t' * (R.toLevCh.xi t)⁻¹) (y j * xr j (bb t j)))⁻¹ * (R.toLevCh.xi t' * (R.toLevCh.xi t)⁻¹) (y (j + 2) * xr (j + 2) (bb t (j + 2))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w, e3, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, h1, h1', inv_one, one_mul]`. Conclude with `circ_id _ _ _ _`. Use `show ((Circle.toUnits (w t' j) : ℂˣ) : ℂ) = ((Circle.toUnits (w t j) : ℂˣ) : ℂ) * _`. Rewrite using `[hw, map_mul, Units.val_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vacTw : Big fun ch => VacTw ch := by
   obtain ⟨C, h⟩ := Big.and (Big.and GlobalTheory.T.exists_vacuumBasePointFamily_every_tuple GlobalTheory.T.vacuumBasePoint_unique_all_tuples) (Big.and GlobalTheory.T.twistCharacter_mem_twistFiniteValueProductSubgroup GlobalTheory.T.unfoldingJointData_twist_ratio_at_detRoots)

@@ -6,21 +6,21 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hT E _ _ _ A n V _ _ β z z' h`. Establish `hb` using `(UpperTheory.cmField_real_tensor_bijective_cmType hT A).1`. Use `set B : V →ₗ[ℚ] (Fin n → E) := (β : V →ₗ[ℚ] (Fin n → E)) with hBdef`. Establish `key : ∀ j (y : ℝ ⊗[ℚ] V) (τ : Phi A), Th (fun τ : Phi A => τ.1) B y (τ, j) = ev1 τ.1 ((LinearMap.proj j ∘ₗ B).baseChange ℝ y)`. Introduce `j y τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r w`. Rewrite using `[Th_tmul, LinearMap.baseChange_tmul, realTensorEvalAlgHom_tmul]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add a b ha hb'`. Rewrite using `[map_add, Pi.add_apply, ha, hb', map_add, map_add]`. Establish `hj : ∀ j, (LinearMap.proj j ∘ₗ B).baseChange ℝ z = (LinearMap.proj j ∘ₗ B).baseChange ℝ z'`. Introduce `j`. Apply `hb` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Simplify using `only`. Rewrite using `[← key, ← key, h]`. Establish `hsum : ∀ y : ℝ ⊗[ℚ] (Fin n → E), y = ∑ j, (LinearMap.single ℚ (fun _ : Fin n => E) j).baseChange ℝ ((LinearMap.proj j : (Fin n → E) →ₗ[ℚ] E).baseChange ℝ y)`. Introduce `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r v`. Simplify using `only [LinearMap.baseChange_tmul, ← TensorProduct.tmul_sum]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.univ_sum_single v]`. Consider the case `add a b ha hb' => conv_lhs => rw [ha, hb']`. Simplify using `only [map_add, ← Finset.sum_add_distrib]`. Establish `hc : ∀ j (y : ℝ ⊗[ℚ] V), (LinearMap.proj j : (Fin n → E) →ₗ[ℚ] E).baseChange ℝ (B.baseChange ℝ y) = (LinearMap.proj j ∘ₗ B).baseChange ℝ y`. Introduce `j y`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.baseChange_comp]`. Both sides reduce to the same expression. Establish `hB : B.baseChange ℝ z = B.baseChange ℝ z'`. Rewrite using `[hsum (B.baseChange ℝ z), hsum (B.baseChange ℝ z')]`. Simplify using `only [hc, hj]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hid : ((β.symm : (Fin n → E) →ₗ[ℚ] V).baseChange ℝ).comp (B.baseChange ℝ) = LinearMap.id`. Rewrite using `[← LinearMap.baseChange_comp, hBdef, LinearEquiv.symm_comp, LinearMap.baseChange_id]`. Establish `hl : ∀ x, ((β.symm : (Fin n → E) →ₗ[ℚ] V).baseChange ℝ) (B.baseChange ℝ x) = x` using `fun x => LinearMap.congr_fun hid x`. Rewrite using `[← hl z, ← hl z', hB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cmType_trace_embedding_injective_of_linearEquiv :
     TraceType → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) {V : Type} [AddCommGroup V] [Module ℚ V] (β : V ≃ₗ[ℚ] (Fin n → E)), Function.Injective (Th (fun τ : Phi A => τ.1) (β : V →ₗ[ℚ] (Fin n → E))) := by

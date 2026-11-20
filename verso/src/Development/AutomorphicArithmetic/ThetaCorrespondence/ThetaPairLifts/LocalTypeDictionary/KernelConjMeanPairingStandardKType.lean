@@ -17,15 +17,15 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 end Std
 /- English proof (translation)
-Introduce `hP hI hD hDp`. Take `⟨C1, hC1, hmean⟩` from `GlobalTheory.T.exists_const_mean_logArea_logThetaNorm_le`. Take `⟨F1, k1⟩` from `_root_.GlobalTheory.T.kernel_conjugation_average hP hI hD hDp C1 hC1`. Take `⟨F2, k2⟩` from `GlobalTheory.T.rationalEqualSignKernels_largeConstants`. Take `⟨F3, k3⟩` from `_root_.GlobalTheory.T.conjRowAt_of_dict_depth hP hI hD hDp C1 hC1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F4, k4⟩` from `GlobalTheory.T.oppositeKernelsRationalRowMap_largeConstants`. Use `⟨max (max F1 F2) (max F3 F4), fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C01, l1⟩` from `k1 CF (by simp only [max_le_iff] at hCF; exact hCF.1.1)`. Take `⟨C02, l2⟩` from `k2 CF (by simp only [max_le_iff] at hCF; exact hCF.1.2)`. Take `⟨C03, l3⟩` from `k3 CF (by simp only [max_le_iff] at hCF; exact hCF.2.1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C04, l4⟩` from `k4 CF (by simp only [max_le_iff] at hCF; exact hCF.2.2)`. Use `⟨2 * max (max C01 C02) (max C03 C04), fun ε C hC => ?_⟩` and prove the remaining obligations. Establish `hC' : max (max C01 C02) (max C03 C04) ≤ C / 2` using `by linarith`. Simplify using `only [max_le_iff] at hC'`. Take `⟨x1, m1⟩` from `l1 ε (C / 2) hC'.1.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, m2⟩` from `l2 ε (C / 2) hC'.1.2`. Take `⟨x3, m3⟩` from `l3 ε (C / 2) hC'.2.1`. Take `⟨x4, m4⟩` from `l4 ε (C / 2) hC'.2.2`. Use `⟨max (max x1 x2) (max x3 x4), fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt hF => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨hL1, hLrd, hLd⟩` from `sizes D large₂ Γ Pl0 T A Ks R F hS`. Take `⟨hmA, hmT⟩` from `hmean D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ hL1 hLrd hLd`. Conclude with `pairStdAt_of ch C large₂.sc.b C1 hmA hmT (fun σ => GlobalTheory.T.embeddingsCurveFieldAbove_finite_nonempty D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 σ) (m2 D large₂ hε hx.1.2 Γ Pl0 T A Ks R F hS ch hIs hAt hF) (m1 D large₂ hε hx.1.1 Γ Pl0 T A Ks R F hS ch hIs hAt hF) (m4 …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kernel_conj_mean_pairing_standard_KType : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → PairStdK := by
   intro hP hI hD hDp
@@ -64,7 +64,7 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim GlobalTheory.SumSize.OppConj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType | exact _root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType | (intros; apply _root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.conj_mean_kernel_pairing : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → PairStdK := by
   first | exact @_root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType | exact _root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType | (intros; apply _root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType <;> assumption)

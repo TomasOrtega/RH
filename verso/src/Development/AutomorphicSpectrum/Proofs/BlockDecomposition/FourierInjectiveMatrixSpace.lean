@@ -22,11 +22,11 @@ theorem entries_apply (m n : ℕ) (u : Fin m → Fin n → ℂ) (p : Fin m × Fi
     entries m n u p = u p.1 p.2 := rfl
 
 /- English proof (translation)
-Establish `key : s * Matrix.trace ((Matrix.of fun a j => -(w (a, j)) / conj s)ᴴ * Matrix.of v) = -(∑ a, ∑ j, conj (w (a, j)) * v a j)`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_div₀, star_neg, Complex.star_def, Complex.conj_conj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key, PiLp.inner_apply, Fintype.sum_prod_type, Complex.neg_re, Complex.re_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.inner]`. Simplify using `only [entries_apply, Complex.mul_re, Complex.conj_re, Complex.conj_im]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,21 +54,21 @@ theorem pairing {m n : ℕ} {s : ℂ} (hs : s ≠ 0) (w : EuclideanSpace ℂ (Fi
   ring
 
 /- English proof (translation)
-Introduce `m n s hs g hgc hgi hF`. Establish `hemb : MeasurableEmbedding (entries m n)` using `(entries m n).toHomeomorph.measurableEmbedding`. Establish `hC : (volume : Measure ℂ).IsAddHaarMeasure` using `inferInstance`. Establish `hV1 : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure (fun _ => volume)`. Establish `hV2 : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure (fun _ => volume)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Measure.map (entries m n) (volume : Measure (Fin m → Fin n → ℂ))).IsAddHaarMeasure` using `(entries m n).isAddHaarMeasure_map volume`. Establish `hμ` using `Measure.isAddLeftInvariant_eq_smul (Measure.map (entries m n) (volume : Measure (Fin m → Fin n → ℂ))) (volume : Measure (EuclideanSpace ℂ (Fin m × Fin n)))`. Establish `hcpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (Measure.map (entries m n) (volume : Measure (Fin m → Fin n → ℂ))) (volume : Measure (EuclideanSpace ℂ (Fin m × Fin n)))`. Establish `hcomp : (fun x => g ((entries m n).symm x)) ∘ (entries m n) = g`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Establish `hGmap : Integrable (fun x => g ((entries m n).symm x)) (Measure.map (entries m n) (volume : Measure (Fin m → Fin n → ℂ)))` using `hemb.integrable_map_iff.mpr (by rw [hcomp]; exact hgi)`. Rewrite `hGmap` using `[hμ, ← Measure.coe_nnreal_smul]`. Establish `hGi : Integrable (fun x => g ((entries m n).symm x)) (volume : Measure (EuclideanSpace ℂ (Fin m × Fin n)))` using `(integrable_smul_measure (ENNReal.coe_ne_zero.mpr hcpos.ne') ENNReal.coe_ne_top).mp hGmap`. Establish `hGc : Continuous (fun x => g ((entries m n).symm x))` using `hgc.comp (entries m n).symm.continuous`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFG : FourierTransform.fourier (fun x => g ((entries m n).symm x)) = 0`. Use function extensionality and compare the values at `w`. Rewrite using `[Real.fourier_eq', Pi.zero_apply]`. Establish `h0` using `hF (fun a j => -(w (a, j)) / conj s)`. Establish `h1 : ∫ x, Complex.exp (↑(-2 * Real.pi * ⟪x, w⟫_ℝ) * Complex.I) • g ((entries m n).symm x) ∂(Measure.map (entries m n) (volume : Measure (Fin m → Fin n → ℂ))) = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hemb.integral_map]`. Use `Eq.trans ?_ h0` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[pairing hs w v]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearEquiv.symm_apply_apply, smul_eq_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hμ, integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_zero]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.resolve_left (by exact_mod_cast hcpos.ne')`. Establish `hinv` using `Continuous.fourierInv_fourier_eq hGc hGi (by rw [hFG]; exact integrable_zero _ _ _)`. Rewrite `hinv` using `[hFG]`. Use function extensionality and compare the values at `v`. Establish `hx` using `congrFun hinv ((entries m n) v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Real.fourierInv_eq']`. Simplify using `only [Pi.zero_apply, smul_zero, integral_zero, ContinuousLinearEquiv.symm_apply_apply] at hx`. Rewrite using `[Pi.zero_apply]`. Conclude with `hx.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourier_uniqueness : ∀ (m n : ℕ) (s : ℂ), s ≠ 0 → ∀ g : (Fin m → Fin n → ℂ) → ℂ,
     Continuous g → Integrable g →

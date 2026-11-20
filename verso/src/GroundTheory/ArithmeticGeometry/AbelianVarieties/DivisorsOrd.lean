@@ -16,7 +16,7 @@ section Infinity
 
 omit [Field F] in
 /- English proof (translation)
-Break down `le_total v w with hvw | hvw` into its components or cases. Rewrite `h` using `[max_eq_right hvw]`. Conclude with `le_max_of_le_right (add_le_add (nsmul_le_nsmul_right h 2) le_rfl)`. Rewrite `h` using `[max_eq_left hvw]`. Conclude with `le_max_of_le_left (add_le_add (nsmul_le_nsmul_right h 2) le_rfl)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_nsmul_add_le {u v w : WithBot ℕ} (h : u ≤ max v w) (c : WithBot ℕ) :
     2 • u + c ≤ max (2 • v + c) (2 • w + c) := by
@@ -27,9 +27,9 @@ private theorem two_nsmul_add_le {u v w : WithBot ℕ} (h : u ≤ max v w) (c : 
     exact le_max_of_le_left (add_le_add (nsmul_le_nsmul_right h 2) le_rfl)
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `exists_smul_basis_eq a`. Take `⟨p', q', rfl⟩` from `exists_smul_basis_eq b`. Establish `hs : p • (1 : W.toAffine.CoordinateRing) + q • AdjoinRoot.mk W.toAffine.polynomial X + (p' • 1 + q' • AdjoinRoot.mk W.toAffine.polynomial X) = (p + p') • 1 + (q + q') • AdjoinRoot.mk W.toAffine.polynomial X`. Rewrite using `[add_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hs, degree_norm_smul_basis, degree_norm_smul_basis, degree_norm_smul_basis]`. Establish `h1` using `two_nsmul_add_le (degree_add_le p p') 0`. Establish `h2` using `two_nsmul_add_le (degree_add_le q q') 3`. Simplify using `only [add_zero] at h1`. Conclude with `max_le (h1.trans (max_le_max (le_max_left _ _) (le_max_left _ _))) (h2.trans (max_le_max (le_max_right _ _) (le_max_right _ _)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degree_norm_add_le (a b : W.toAffine.CoordinateRing) :
     (Algebra.norm F[X] (a + b)).degree ≤
@@ -48,7 +48,7 @@ theorem degree_norm_add_le (a b : W.toAffine.CoordinateRing) :
     (h2.trans (max_le_max (le_max_right _ _) (le_max_right _ _)))
 
 /- English proof (translation)
-The claim follows from `Algebra.norm_ne_zero_iff.mpr ha`.
+A detailed English derivation is pending.
 -/
 theorem norm_coordinateRing_ne_zero {a : W.toAffine.CoordinateRing} (ha : a ≠ 0) :
     Algebra.norm F[X] a ≠ 0 :=
@@ -83,13 +83,13 @@ noncomputable def valuationInftyCoord : Valuation W.toAffine.CoordinateRing ℤ�
     · exact le_max_of_le_right (exp_le_exp.mpr (by exact_mod_cast WithBot.coe_le_coe.mp h))
 
 /- English proof (translation)
-The claim follows from `if_neg ha`.
+A detailed English derivation is pending.
 -/
 theorem valuationInftyCoord_apply {a : W.toAffine.CoordinateRing} (ha : a ≠ 0) :
     valuationInftyCoord W a = exp ((Algebra.norm F[X] a).natDegree : ℤ) := if_neg ha
 
 /- English proof (translation)
-Rewrite using `[valuationInftyCoord_apply W ha]`. Conclude with `exp_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuationInftyCoord_ne_zero {a : W.toAffine.CoordinateRing} (ha : a ≠ 0) :
     valuationInftyCoord W a ≠ 0 := by
@@ -101,7 +101,7 @@ noncomputable def valuationInfty : Valuation W.toAffine.FunctionField ℤᵐ⁰ 
     W.toAffine.FunctionField
 
 /- English proof (translation)
-The claim follows from `Valuation.extendToLocalization_apply_map_apply _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem valuationInfty_algebraMap (a : W.toAffine.CoordinateRing) :
     valuationInfty W (algebraMap _ W.toAffine.FunctionField a) = valuationInftyCoord W a :=
@@ -111,21 +111,21 @@ noncomputable def ordInfty (f : W.toAffine.FunctionField) : ℤ :=
   -log (valuationInfty W f)
 
 /- English proof (translation)
-The claim follows from `(Valuation.ne_zero_iff _).mpr hf`.
+A detailed English derivation is pending.
 -/
 theorem valuationInfty_ne_zero {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     valuationInfty W f ≠ 0 :=
   (Valuation.ne_zero_iff _).mpr hf
 
 /- English proof (translation)
-Rewrite using `[ordInfty, neg_neg, exp_log (valuationInfty_ne_zero W hf)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuationInfty_eq_exp {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     valuationInfty W f = exp (-ordInfty W f) := by
   rw [ordInfty, neg_neg, exp_log (valuationInfty_ne_zero W hf)]
 
 /- English proof (translation)
-Rewrite using `[ordInfty, valuationInfty_algebraMap, valuationInftyCoord_apply W ha, log_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordInfty_algebraMap {a : W.toAffine.CoordinateRing} (ha : a ≠ 0) :
     ordInfty W (algebraMap _ W.toAffine.FunctionField a) =
@@ -133,7 +133,7 @@ theorem ordInfty_algebraMap {a : W.toAffine.CoordinateRing} (ha : a ≠ 0) :
   rw [ordInfty, valuationInfty_algebraMap, valuationInftyCoord_apply W ha, log_exp]
 
 /- English proof (translation)
-Rewrite using `[ordInfty, ordInfty, ordInfty, map_mul, log_mul (valuationInfty_ne_zero W hf) (valuationInfty_ne_zero W hg), neg_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordInfty_mul {f g : W.toAffine.FunctionField} (hf : f ≠ 0) (hg : g ≠ 0) :
     ordInfty W (f * g) = ordInfty W f + ordInfty W g := by
@@ -141,20 +141,20 @@ theorem ordInfty_mul {f g : W.toAffine.FunctionField} (hf : f ≠ 0) (hg : g ≠
     log_mul (valuationInfty_ne_zero W hf) (valuationInfty_ne_zero W hg), neg_add]
 
 /- English proof (translation)
-Rewrite using `[ordInfty, ordInfty, map_inv₀, log_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordInfty_inv (f : W.toAffine.FunctionField) : ordInfty W f⁻¹ = -ordInfty W f := by
   rw [ordInfty, ordInfty, map_inv₀, log_inv]
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, ordInfty_mul W hf (inv_ne_zero hg), ordInfty_inv, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordInfty_div {f g : W.toAffine.FunctionField} (hf : f ≠ 0) (hg : g ≠ 0) :
     ordInfty W (f / g) = ordInfty W f - ordInfty W g := by
   rw [div_eq_mul_inv, ordInfty_mul W hf (inv_ne_zero hg), ordInfty_inv, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h : algebraMap F W.toAffine.FunctionField c = algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField (algebraMap F[X] W.toAffine.CoordinateRing (C c))`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply F F[X] W.toAffine.FunctionField c, algebraMap_eq]`. Establish `hc' : algebraMap F[X] W.toAffine.CoordinateRing (C c) ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).mpr (C_ne_zero.mpr hc)`. Rewrite using `[h, ordInfty_algebraMap W hc', Algebra.norm_algebraMap, finrank_coordinateRing, ← C_pow, natDegree_C, Nat.cast_zero, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordInfty_algebraMap_const {c : F} (hc : c ≠ 0) :
     ordInfty W (algebraMap F W.toAffine.FunctionField c) = 0 := by
@@ -169,7 +169,7 @@ theorem ordInfty_algebraMap_const {c : F} (hc : c ≠ 0) :
     natDegree_C, Nat.cast_zero, neg_zero]
 
 /- English proof (translation)
-Establish `hx : AdjoinRoot.mk W.toAffine.polynomial (C X) = algebraMap F[X] W.toAffine.CoordinateRing X`. Simplify using `only [AdjoinRoot.mk_C, AdjoinRoot.algebraMap_eq]`. Establish `h0 : algebraMap F[X] W.toAffine.CoordinateRing X ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).mpr X_ne_zero`. Rewrite using `[hx, ordInfty_algebraMap W h0, Algebra.norm_algebraMap, finrank_coordinateRing, natDegree_X_pow]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem ordInfty_X :
     ordInfty W (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField
@@ -184,11 +184,11 @@ theorem ordInfty_X :
   norm_num
 
 /- English proof (translation)
-Establish `hy : AdjoinRoot.mk W.toAffine.polynomial X = (0 : F[X]) • (1 : W.toAffine.CoordinateRing) + (1 : F[X]) • AdjoinRoot.mk W.toAffine.polynomial X`. Rewrite using `[zero_smul, one_smul, zero_add]`. Establish `hdeg` using `degree_norm_smul_basis (W' := W.toAffine) (0 : F[X]) 1`. Rewrite `hdeg` using `[← hy, degree_zero, degree_one]`. Establish `hdeg' : (Algebra.norm F[X] (AdjoinRoot.mk W.toAffine.polynomial X)).degree = 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdeg]`. Both sides reduce to the same expression. Establish `h0 : AdjoinRoot.mk W.toAffine.polynomial X ≠ 0`. Rewrite using `[← basis_one]`. Conclude with `(CoordinateRing.basis W.toAffine).ne_zero 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ordInfty_algebraMap W h0, natDegree_eq_of_degree_eq_some hdeg']`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem ordInfty_Y :
     ordInfty W (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField
@@ -208,7 +208,7 @@ theorem ordInfty_Y :
   norm_num
 
 /- English proof (translation)
-Establish `hne : ∀ f : W.toAffine.FunctionField, ordInfty W f ≠ 0 → f ≠ 0`. Introduce and unpack `f hf rfl`. Conclude with `hf (by simp [ordInfty])`. Rewrite using `[ordInfty_div W (hne _ (by rw [ordInfty_X]; norm_num)) (hne _ (by rw [ordInfty_Y]; norm_num)), ordInfty_X, ordInfty_Y]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem ordInfty_X_div_Y :
     ordInfty W (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField
@@ -235,14 +235,14 @@ noncomputable def ordAtIdeal (v : HeightOneSpectrum W.toAffine.CoordinateRing)
 
 omit [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-The claim follows from `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hf`.
+A detailed English derivation is pending.
 -/
 theorem spanSingleton_ne_zero {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     FractionalIdeal.spanSingleton W.toAffine.CoordinateRing⁰ f ≠ 0 :=
   FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hf
 
 /- English proof (translation)
-Rewrite using `[ordAtIdeal, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul _ _ (spanSingleton_ne_zero W hf) (spanSingleton_ne_zero W hg)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ordAtIdeal_mul (v : HeightOneSpectrum W.toAffine.CoordinateRing)
     {f g : W.toAffine.FunctionField} (hf : f ≠ 0) (hg : g ≠ 0) :
@@ -252,7 +252,7 @@ theorem ordAtIdeal_mul (v : HeightOneSpectrum W.toAffine.CoordinateRing)
   rfl
 
 /- English proof (translation)
-Rewrite using `[ordAtIdeal, FractionalIdeal.coeIdeal_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordAtIdeal_algebraMap (v : HeightOneSpectrum W.toAffine.CoordinateRing)
     (a : W.toAffine.CoordinateRing) :
@@ -263,13 +263,13 @@ theorem ordAtIdeal_algebraMap (v : HeightOneSpectrum W.toAffine.CoordinateRing)
   rw [ordAtIdeal, FractionalIdeal.coeIdeal_span_singleton]
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective W.toAffine.CoordinateRing⁰ f`. Simplify using `only at hf ⊢`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf (IsLocalization.mk'_zero _)`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hs : (s : W.toAffine.CoordinateRing) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Establish `hs' : algebraMap _ W.toAffine.FunctionField (s : W.toAffine.CoordinateRing) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ W.toAffine.FunctionField)).mpr hs`. Establish `hsa : Ideal.span {a} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hss : Ideal.span {(s : W.toAffine.CoordinateRing)} ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hord` using `ordAtIdeal_mul W v hf hs'`. Rewrite `hord` using `[IsLocalization.mk'_spec, ordAtIdeal_algebraMap, ordAtIdeal_algebraMap]`. Rewrite using `[HeightOneSpectrum.valuation_of_mk', HeightOneSpectrum.intValuation_if_neg _ ha, HeightOneSpectrum.intValuation_if_neg _ hs, ← FractionalIdeal.count_coe W.toAffine.FunctionField v hsa, ← FractionalIdeal.count_coe W.toAffine.FunctionField v hss, ← exp_sub]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_exp_neg_ordAtIdeal (v : HeightOneSpectrum W.toAffine.CoordinateRing)
     {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
@@ -314,7 +314,7 @@ theorem ordPoint_some {x y : F} (h : W.toAffine.Nonsingular x y) :
     ordPoint W (.some x y h) = ordAtIdeal W (heightOneOfNonsingular h) := rfl
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact valuationInfty_eq_exp W hf`. Consider the case `some x y h => exact valuation_eq_exp_neg_ordAtIdeal W _ hf`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem valuationPoint_eq_exp (P : W.toAffine.Point) {f : W.toAffine.FunctionField}
     (hf : f ≠ 0) : valuationPoint W P f = exp (-ordPoint W P f) := by
@@ -323,7 +323,7 @@ theorem valuationPoint_eq_exp (P : W.toAffine.Point) {f : W.toAffine.FunctionFie
   | some x y h => exact valuation_eq_exp_neg_ordAtIdeal W _ hf
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact ordInfty_mul W hf hg`. Consider the case `some x y h => exact ordAtIdeal_mul W _ hf hg`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem ordPoint_mul (P : W.toAffine.Point) {f g : W.toAffine.FunctionField} (hf : f ≠ 0)
     (hg : g ≠ 0) : ordPoint W P (f * g) = ordPoint W P f + ordPoint W P g := by
@@ -332,9 +332,9 @@ theorem ordPoint_mul (P : W.toAffine.Point) {f g : W.toAffine.FunctionField} (hf
   | some x y h => exact ordAtIdeal_mul W _ hf hg
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero`. Use `⟨algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField (AdjoinRoot.mk W.toAffine.polynomial (C X)) / algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField (AdjoinRoot.mk W.toAffine.polynomial X), ?_⟩` and prove the remaining obligations. Rewrite using `[valuationPoint, valuationInfty_eq_exp W, ordInfty_X_div_Y]`. Introduce `h0`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ordInfty_X_div_Y W` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[ordInfty] at this`. Consider the case `some x y h => exact HeightOneSpectrum.valuation_exists_uniformizer _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem exists_valuationPoint_eq_exp_neg_one (P : W.toAffine.Point) :
     ∃ t : W.toAffine.FunctionField, valuationPoint W P t = exp (-1) := by

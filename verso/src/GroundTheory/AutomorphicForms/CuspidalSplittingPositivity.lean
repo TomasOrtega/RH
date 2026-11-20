@@ -12,7 +12,7 @@ open Function Topology ComplexConjugate
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hfin' : (support fun q : G ⧸ H => Φ q.out).Finite` using `hfin`. Rewrite `h0` using `[quotSum_def, finsum_eq_sum_of_support_subset _ hfin'.coe_toFinset.symm.subset]`. Distinguish the cases in `hq : q ∈ hfin'.toFinset`. Conclude with `(Finset.sum_eq_zero_iff_of_nonneg fun q _ => hΦ q.out).1 h0 q hq`. Simplify using `using hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem quotSum_eq_zero_of_nonneg {G : Type*} [Group G] {H : Subgroup G} {Φ : G → ℝ}
     (hΦ : ∀ g, 0 ≤ Φ g) (hfin : HasFiniteSupport fun q : G ⧸ H => Φ q.out)
@@ -42,7 +42,7 @@ theorem coe_scalarDet (g : GL (Fin n) F) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.2 ⟨_, (coe_scalarDet g).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem scalarDet_mem_center (g : GL (Fin n) F) :
     scalarDet g ∈ Subgroup.center (GL (Fin n) F) :=
@@ -51,7 +51,7 @@ theorem scalarDet_mem_center (g : GL (Fin n) F) :
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 hz`. Establish `hdet : (z : Matrix (Fin n) (Fin n) F).det = a ^ n`. Rewrite using `[← ha, Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `ext1`. Rewrite using `[coe_scalarDet, Units.val_pow_eq_pow_val, hdet, ← ha, map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalarDet_of_mem_center {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
     scalarDet z = z ^ n := by
@@ -63,7 +63,7 @@ theorem scalarDet_of_mem_center {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (
   rw [coe_scalarDet, Units.val_pow_eq_pow_val, hdet, ← ha, map_pow]
 
 /- English proof (translation)
-Establish `hval : Continuous fun g : GL (Fin n) F => ((scalarDet g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Simplify using `only [coe_scalarDet, Matrix.scalar_apply]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => Units.continuous_val.matrix_det)`. Use `Units.continuous_iff.2 ⟨hval, ?_⟩` and prove the remaining obligations. Conclude with `(hval.comp continuous_inv).congr fun g => by simp only [Function.comp_apply, map_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_scalarDet : Continuous (scalarDet : GL (Fin n) F → GL (Fin n) F) := by
   have hval : Continuous fun g : GL (Fin n) F =>
@@ -88,7 +88,7 @@ include hωπ hv
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Introduce `h0` and use `by have := hωπ.inv_mul hv hz rw [h0, mul_zero] at this exact zero_ne_one this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasCentralChar.ne_zero {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
     ω z ≠ 0 := fun h0 => by
@@ -98,14 +98,14 @@ theorem HasCentralChar.ne_zero {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (G
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `Real.rpow_pos_of_pos (norm_pos_iff.2 (hωπ.ne_zero hv (scalarDet_mem_center g))) _`.
+A detailed English derivation is pending.
 -/
 theorem normChar_pos (g : GL (Fin n) F) : 0 < normChar ω g :=
   Real.rpow_pos_of_pos (norm_pos_iff.2 (hωπ.ne_zero hv (scalarDet_mem_center g))) _
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `normChar`. Rewrite using `[map_mul, hωπ.mul hv (scalarDet_mem_center x) (scalarDet_mem_center y), norm_mul, Real.mul_rpow (norm_nonneg _) (norm_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normChar_mul (x y : GL (Fin n) F) :
     normChar ω (x * y) = normChar ω x * normChar ω y := by
@@ -115,7 +115,7 @@ theorem normChar_mul (x y : GL (Fin n) F) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `normChar`. Rewrite using `[map_one, hωπ.one hv, norm_one, Real.one_rpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normChar_one : normChar ω (1 : GL (Fin n) F) = 1 := by
   unfold normChar
@@ -123,14 +123,14 @@ theorem normChar_one : normChar ω (1 : GL (Fin n) F) = 1 := by
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite using `[← normChar_mul hωπ hv, inv_mul_cancel, normChar_one hωπ hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normChar_inv_mul (g : GL (Fin n) F) : normChar ω g⁻¹ * normChar ω g = 1 := by
   rw [← normChar_mul hωπ hv, inv_mul_cancel, normChar_one hωπ hv]
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, hωπ.one hv]`. Consider the case `succ m ih => rw [pow_succ, hωπ.mul hv (pow_mem hz m) hz, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_pow_of_mem_center {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F))
     (m : ℕ) : ω (z ^ m) = ω z ^ m := by
@@ -141,7 +141,7 @@ theorem map_pow_of_mem_center {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h1 : z = 1` using `Units.ext (Subsingleton.elim _ _)`. Rewrite using `[h1, normChar_one hωπ hv, hωπ.one hv, norm_one]`. Unfold `normChar`. Rewrite using `[scalarDet_of_mem_center hz, map_pow_of_mem_center hωπ hv hz, norm_pow, Real.pow_rpow_inv_natCast (norm_nonneg _) hn.ne']`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normChar_of_mem_center {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
     normChar ω z = ‖ω z‖ := by
@@ -155,7 +155,7 @@ theorem normChar_of_mem_center {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (G
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `h1 : ω (scalarDet k) • v = (1 : ℂ) • v`. Rewrite using `[one_smul, ← hωπ _ (scalarDet_mem_center k), hk]`. Unfold `normChar`. Rewrite using `[smul_left_injective ℂ hv h1, norm_one, Real.one_rpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normChar_eq_one {k : GL (Fin n) F} (hk : π (scalarDet k) v = v) : normChar ω k = 1 := by
   have h1 : ω (scalarDet k) • v = (1 : ℂ) • v := by
@@ -180,9 +180,9 @@ include hωπ hv
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `twVec`. Establish `hnz : (‖ω z‖ : ℂ) ≠ 0`. Conclude with `(norm_pos_iff.2 (hωπ.ne_zero hv hz)).ne'` after adjusting the coercions. Establish `hθ : (normChar ω g : ℂ) ≠ 0` using `by exact_mod_cast (normChar_pos hωπ hv g).ne'`. Rewrite using `[map_mul, Module.End.mul_apply, hωπ z hz, map_smul, smul_smul, smul_smul, normChar_mul hωπ hv, normChar_of_mem_center hωπ hv hz]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem twVec_mul_center (x : V) (g : GL (Fin n) F) {z : GL (Fin n) F}
     (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
@@ -199,7 +199,7 @@ theorem twVec_mul_center (x : V) (g : GL (Fin n) F) {z : GL (Fin n) F}
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `twVec`. Rewrite using `[map_mul, Module.End.mul_apply, hx k hk, normChar_mul hωπ hv, hK k hk, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twVec_mul_of_mem {x : V} (hx : x ∈ fixedVectors π K)
     (hK : ∀ k ∈ K, normChar ω k = 1) (g : GL (Fin n) F) {k : GL (Fin n) F} (hk : k ∈ K) :
@@ -209,7 +209,7 @@ theorem twVec_mul_of_mem {x : V} (hx : x ∈ fixedVectors π K)
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `twVec`. Rewrite using `[map_smul, smul_smul, map_mul, Module.End.mul_apply, normChar_mul hωπ hv]`. Use `push_cast`. Rewrite using `[mul_inv, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twVec_mul (x : V) (a g : GL (Fin n) F) :
     twVec π ω x (a * g) = ((normChar ω a : ℂ)⁻¹) • π a (twVec π ω x g) := by
@@ -220,7 +220,7 @@ theorem twVec_mul (x : V) (a g : GL (Fin n) F) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `twVec`. Rewrite using `[normChar_one hωπ hv, map_one, Module.End.one_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twVec_one (x : V) : twVec π ω x 1 = x := by
   unfold twVec
@@ -229,7 +229,7 @@ theorem twVec_one (x : V) : twVec π ω x 1 = x := by
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Establish `h1 : ‖ω z / (‖ω z‖ : ℂ)‖ = 1`. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 (hωπ.ne_zero hv hz))]`. Rewrite using `[Complex.conj_mul', h1]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem conj_mul_self_unit {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
     conj (ω z / (‖ω z‖ : ℂ)) * (ω z / (‖ω z‖ : ℂ)) = 1 := by
@@ -241,7 +241,7 @@ theorem conj_mul_self_unit {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (F
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 (hωπ.ne_zero hv hz))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_twVec_unit {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
     ‖ω z / (‖ω z‖ : ℂ)‖ = 1 := by
@@ -251,7 +251,7 @@ theorem norm_twVec_unit {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Use `rightInv_centerSup (Φ := fun g => ‖f (twVec π ω x g)‖ ^ 2) (fun g z hz => ?_) (fun g k hk => ?_)` and prove the remaining obligations. Rewrite using `[twVec_mul_center hωπ hv x g hz, map_smul, smul_eq_mul, norm_mul, norm_twVec_unit hωπ hv hz, one_mul]`. Rewrite using `[twVec_mul_of_mem hωπ hv hx hK g hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem normSq_twVec_rightInv {x : V} (hx : x ∈ fixedVectors π K)
     (hK : ∀ k ∈ K, normChar ω k = 1) :
@@ -270,7 +270,7 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (G
   {ω : GL (Fin n) F → ℂ}
 
 /- English proof (translation)
-Rewrite using `[quotSum_def, quotSum_def]`. Conclude with `(map_finsum Complex.ofRealHom hfin).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotSum_ofReal {G : Type*} [Group G] {H : Subgroup G} {Φ : G → ℝ}
     (hfin : HasFiniteSupport fun q : G ⧸ H => Φ q.out) :
@@ -286,7 +286,7 @@ include hπ hsc hωπ hv hKo hf
 
 omit hωπ hv in
 /- English proof (translation)
-The claim follows from `finite_support_centerSup (Φ := fun g => ‖f (twVec π ω x g)‖ ^ 2) hKo (isCompactModCenter_matrixCoeff hπ hsc x (mem_smoothVectors_dual_of_inv hKo hf)) fun g h0 => by change f (π g x) = 0 at h0 simp [twVec, h0]`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_normSq_twVec (x : V) :
     HasFiniteSupport fun q : GL (Fin n) F ⧸ centerSup K => ‖f (twVec π ω x q.out)‖ ^ 2 :=
@@ -297,7 +297,7 @@ theorem finite_support_normSq_twVec (x : V) :
       simp [twVec, h0]
 
 /- English proof (translation)
-Establish `h1` using `quotSum_eq_zero_of_nonneg (fun g => by positivity) (finite_support_normSq_twVec hπ hsc hKo hf x) h0 (QuotientGroup.mk 1)`. Rewrite `h1` using `[apply_out_mk (Φ := fun g => ‖f (twVec π ω x g)‖ ^ 2) (normSq_twVec_rightInv hωπ hv hx hK), twVec_one hωπ hv]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_eq_zero_of_quotSum_normSq {x : V} (hx : x ∈ fixedVectors π K)
     (hK : ∀ k ∈ K, normChar ω k = 1)
@@ -311,47 +311,45 @@ theorem apply_eq_zero_of_quotSum_normSq {x : V} (hx : x ∈ fixedVectors π K)
 end Nonvanishing
 
 /- English proof (translation)
-Take `⟨v, hv0⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `h1 : (stabilizerOf π v : Set (GL (Fin n) F)) ∈ 𝓝 (1 : GL (Fin n) F)` using `(hπ v).mem_nhds (one_mem _)`. Establish `hU : (stabilizerOf π v : Set (GL (Fin n) F)) ∩ scalarDet ⁻¹' (stabilizerOf π v : Set (GL (Fin n) F)) ∈ 𝓝 (1 : GL (Fin n) F)` using `Filter.inter_mem h1 (continuous_scalarDet.continuousAt.preimage_mem_nhds (by rwa [map_one]))`. Take `⟨K', hKc, hKU⟩` from `exists_openSubgroup_isCompact_subset hU`. Set `K : Subgroup (GL (Fin n) F)` to `K'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hKo : IsOpen (K : Set (GL (Fin n) F))` using `K'.isOpen`. Establish `hKc' : IsCompact (K : Set (GL (Fin n) F))` using `hKc`. Establish `hvK : v ∈ fixedVectors π K` using `fun k hk => (hKU hk).1`. Establish `hθK : ∀ k ∈ K, normChar ω k = 1` using `fun k hk => normChar_eq_one hωπ hv0 (hKU hk).2`. Choose the witnesses or unpack the hypotheses as in `⟨f₀, hf₀⟩ : ∃ f₀ : Module.Dual ℂ V, f₀ v ≠ 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hv0 ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 h)`. Set `f : Module.Dual ℂ V` to `f₀ ∘ₗ (fixedVectors π K).subtype ∘ₗ fixedProj π hπ hKc' hKo`. Establish `hf : ∀ k ∈ K, ∀ x, f (π k x) = f x` using `fun k hk x => by`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [f, LinearMap.comp_apply, fixedProj_apply_act hπ hKc' hKo hk]`. Establish `hfv : f v = f₀ v`. Simplify using `only [f, LinearMap.comp_apply, fixedProj_apply_of_mem hπ hKc' hKo hvK, Submodule.subtype_apply]`. Establish `hfs` using `mem_smoothVectors_dual_of_inv hKo hf`. Set `P : GL (Fin n) F → V` to `twVec π ω v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : GL (Fin n) F → V` to `fun g => conj (f (P g)) • P g`. Establish `hSfin : HasFiniteSupport fun q : GL (Fin n) F ⧸ centerSup K => S q.out` using `finite_support_centerSup (Φ := S) hKo (isCompactModCenter_matrixCoeff hπ hsc v hfs) fun g h0 => by`. Express the relevant statement in the definitionally equal form `f (π g v) = 0 at h0`. Simplify using `[S, P, twVec, h0]`. Establish `hSinv : ∀ g, ∀ h ∈ centerSup K, S (g * h) = S g`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `rightInv_centerSup (Φ := S) (fun g z hz => ?_) (fun g k hk => ?_)` and prove the remaining obligations. Simplify using `only [S, P]`. Rewrite using `[twVec_mul_center hωπ hv0 v g hz, map_smul, smul_eq_mul, map_mul, smul_smul]`. Use `congr 1`. Take the linear combination `conj (f (twVec π ω v g)) * conj_mul_self_unit hωπ hv0 hz`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, P]`. Rewrite using `[twVec_mul_of_mem hωπ hv0 hvK hθK g hk]`. Establish `hPk : ∀ k ∈ K, ∀ g, P (k * g) = π k (P g)` using `fun k hk g => by`. Simplify using `only [P]`. Rewrite using `[twVec_mul hωπ hv0 v k g, hθK k hk, Complex.ofReal_one, inv_one, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v' : V` to `quotSum (centerSup K) S`. Establish `hv'K : v' ∈ fixedVectors π K`. Introduce `k hk`. Establish `hSk : ∀ g, π k (S g) = S (k * g)` using `fun g => by`. Simplify using `only [S]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hPk k hk, hf k hk, map_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hΨinv : ∀ a, ∀ g, ∀ h ∈ centerSup K, conj (f (P (g * h))) * f (P (a * (g * h))) = conj (f (P g)) * f (P (a * g))`. Introduce `a`. Use `rightInv_centerSup (Φ := fun g => conj (f (P g)) * f (P (a * g))) (fun g z hz => ?_) (fun g k hk => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [P]`. Rewrite using `[← mul_assoc, twVec_mul_center hωπ hv0 v g hz, twVec_mul_center hωπ hv0 v (a * g) hz, f.map_smul, f.map_smul, smul_eq_mul, smul_eq_mul, map_mul]`. Take the linear combination `conj (f (twVec π ω v g)) * f (twVec π ω v (a * g)) * conj_mul_self_unit hωπ hv0 hz`. Simplify using `only [P]`. Rewrite using `[← mul_assoc, twVec_mul_of_mem hωπ hv0 hvK hθK g hk, twVec_mul_of_mem hωπ hv0 hvK hθK (a * g) hk]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hΨfin : ∀ a, HasFiniteSupport fun q : GL (Fin n) F ⧸ centerSup K => conj (f (P q.out)) * f (P (a * q.out))` using `fun a => finite_support_centerSup (Φ := fun g => conj (f (P g)) * f (P (a * g))) hKo (isCompactModCenter_matrixCoeff hπ hsc v hfs) fun g h0 => by`. Express the relevant statement in the definitionally equal form `f (π g v) = 0 at h0`. Simplify using `[P, twVec, h0]`. Set `k' : GL (Fin n) F → ℂ` to `fun x => f (twVec π ω v' x)`. Establish `hk'eq : ∀ x, k' x = quotSum (centerSup K) fun g => conj (f (P g)) * f (P (x * g))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `x`. Set `L : V →ₗ[ℂ] ℂ` to `((normChar ω x : ℂ)⁻¹) • (f ∘ₗ π x)`. Establish `hL : ∀ y, L y = f (((normChar ω x : ℂ)⁻¹) • π x y)` using `fun y => by`. Simplify using `[L]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hL, S, P]`. Rewrite using `[twVec_mul hωπ hv0 v x g]`. Simplify using `only [map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk'conj : ∀ x, conj (k' x⁻¹) = k' x`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hk'eq, hk'eq, ← quotSum_mul_left (Φ := fun g => conj (f (P g)) * f (P (x * g))) (hΨinv x) x⁻¹, quotSum_def, quotSum_def, map_finsum (starRingEnd ℂ) (hΨfin x⁻¹)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj, mul_inv_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfk : ∀ g, f (π g v') = (normChar ω g : ℂ) * k' g` using `fun g => by`. Establish `hθ : (normChar ω g : ℂ) ≠ 0` using `by exact_mod_cast (normChar_pos hωπ hv0 g).ne'`. Simplify using `only [k', twVec, map_smul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨K, hKc', hKo, f, hf, v', hv'K, v', fun hzero => hf₀ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : quotSum (centerSup K) (fun g => f (π g⁻¹ v') * f (π g v')) = 0`. Establish `h2` using `congrArg f hzero`. Rewrite `h2` using `[map_zero]`. Unfold `coeffSum at h2`. Rewrite `h2` using `[quotSum_def, linearMap_finsum f (finite_support_coeffSum hπ hsc hKo hf v')]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[quotSum_def]`. Simplify `h2` using `only [map_smul, smul_eq_mul]`. Establish `hterm : ∀ g, f (π g⁻¹ v') * f (π g v') = ((‖k' g‖ ^ 2 : ℝ) : ℂ)` using `fun g => by`. Rewrite using `[hfk, hfk, ← hk'conj g⁻¹, inv_inv]`. Establish `h2 : (normChar ω g⁻¹ : ℂ) * (normChar ω g : ℂ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `normChar_inv_mul hωπ hv0 g` after adjusting the coercions. Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul']`. Take the linear combination `(conj (k' g) * k' g) * h2`. Establish `hk'0 : f v' = 0`. Use `apply_eq_zero_of_quotSum_normSq hπ hsc hωπ hv0 hKo hf hv'K hθK ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsum` using `[quotSum_congr hterm, quotSum_ofReal (finite_support_normSq_twVec (ω := ω) hπ hsc hKo hf v')]`. Conclude with `hsum` after adjusting the coercions. Establish `hk'1 : f v' = ((quotSum (centerSup K) fun g => ‖f (twVec π ω v g)‖ ^ 2 : ℝ) : ℂ)`. Establish `h2` using `hk'eq 1`. Simplify using `only [k', twVec_one hωπ hv0, one_mul] at h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← quotSum_ofReal (finite_support_normSq_twVec (ω := ω) hπ hsc hKo hf v)]`. Use `quotSum_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul']`. Rewrite using `[← hfv]`. Use `apply_eq_zero_of_quotSum_normSq hπ hsc hωπ hv0 hKo hf hvK hθK ?_` and prove the remaining obligations.
-
-Rewrite `hk'0` using `[hk'1]`. Conclude with `hk'0` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeffSum_ne_zero {V : Type*} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) F) V} {ω : GL (Fin n) F → ℂ} [π.IsIrreducible]

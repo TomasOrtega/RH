@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FinDisc
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ _ μ _ φ _`. Take `⟨F, -, hF⟩` from `GlobalTheory.CompanionTheory.LatticeFD.exists_measurable_isFundamentalDomain E N`. Conclude with `⟨F, hF μ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFundamentalDomain_of_isSqInt :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)]

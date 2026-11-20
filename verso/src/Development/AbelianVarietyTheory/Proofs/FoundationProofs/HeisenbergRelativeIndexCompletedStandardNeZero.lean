@@ -10,15 +10,13 @@ open scoped BigOperators
 namespace GlobalTheory.FinWeil
 
 /- English proof (translation)
-Set `φ : T →+ (ι → κ → S ⧸ Ideal.span {((k * n : ℕ) : S)})` to `AddMonoidHom.mk' (fun ζ i j => Ideal.Quotient.mk _ ⟨(k : A) * ζ.1 i j, hT _ ζ.2 i j⟩) (fun x y => by`. Use function extensionality and compare the values at `i j`. Rewrite using `[Pi.add_apply, Pi.add_apply, ← map_add]`. Use `congr 1`. Conclude with `Subtype.ext (mul_add _ _ _))`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hle : φ.ker ≤ L.addSubgroupOf T`. Introduce `ζ hζ`. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Use `hL _ fun i j => ?_` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mk (Ideal.span {((k * n : ℕ) : S)}) ⟨(k : A) * ζ.1 i j, hT _ ζ.2 i j⟩ = 0` using `congrFun (congrFun ((AddMonoidHom.mem_ker).1 hζ) i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Establish `h1 : (s : A) * (((k * n : ℕ) : S) : A) = (k : A) * ζ.1 i j` using `congrArg Subtype.val hs`. Establish `h2 : ζ.1 i j = (n : A) * s`. Apply `hk.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `hn _ s.2`. Establish `: φ.ker.FiniteIndex` using `AddSubgroup.finiteIndex_ker φ`.
-
-Conclude with `(AddSubgroup.finiteIndex_of_le hle).index_ne_zero`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_denom {A ι κ : Type} [CommRing A] [Finite ι] [Finite κ] (S : Subring A) (I : AddSubgroup A) (k n : ℕ)
     (hk : IsUnit (k : A)) (hfin : Finite (S ⧸ Ideal.span {((k * n : ℕ) : S)})) (hn : ∀ s ∈ S, (n : A) * s ∈ I)
@@ -49,9 +47,9 @@ theorem relIndex_ne_zero_of_denom {A ι κ : Type} [CommRing A] [Finite ι] [Fin
   exact (AddSubgroup.finiteIndex_of_le hle).index_ne_zero
 
 /- English proof (translation)
-Introduce `D hD cc δ hc N N' m hm T hT`. Take `⟨-, -, -, -, ⟨m₁, hm₁, h₁⟩, m₂, hm₂, h₂⟩` from `GlobalTheory.T.completedStandardAdelicLattice_properties D hD cc δ hc N N'`. Establish `hk : 0 < m₁ * m` using `Nat.mul_pos hm₁ hm`. Establish `hu : IsUnit ((m₁ * m : ℕ) : AE D)`. Use `(IsUnit.mk0 ((m₁ * m : ℕ) : D.host.E) (Nat.cast_ne_zero.2 hk.ne')).map (inc D)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `relIndex_ne_zero_of_denom (OhE D) (IhE D cc) (m₁ * m) m₂ hu (GlobalTheory.HeckeVal.finite_quot D _ (Nat.mul_pos hk hm₂)) h₂ _ _ (fun ζ h => mem_latA.2 h) fun ζ hζ i j => ?_` and prove the remaining obligations. Establish `h` using `h₁ _ (mem_latA.1 (hT ζ hζ) i j)`. Rewrite `h` using `[Matrix.smul_apply, nsmul_eq_mul, ← mul_assoc]`. Rewrite using `[Nat.cast_mul]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem idx_latA_ne_zero : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' m : ℕ), 0 < m → ∀ T : Submodule (𝓞 D.host.E) (XA D N N'), (∀ ζ ∈ T, m • ζ ∈ latA D cc N N') → idx (latA D cc N N') T ≠ 0 := by
   intro D hD cc δ hc N N' m hm T hT

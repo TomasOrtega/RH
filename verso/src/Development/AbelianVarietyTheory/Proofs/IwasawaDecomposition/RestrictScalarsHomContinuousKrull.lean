@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Rewrite `hs` using `[krullTopology_mem_nhds_one_iff]`. Take `⟨L, hL, hLs⟩` from `hs`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis E L`. Establish `hint : ∀ i, IsIntegral K ((b i : L) : Ω)` using `fun i => ((IsIntegral.of_finite E (b i)).map (IsScalarTower.toAlgHom E L Ω)).tower_top`. Establish `hN : ⋂ i, ((IntermediateField.adjoin K {((b i : L) : Ω)}).fixingSubgroup : Set (G K Ω)) ∈ nhds (1 : G K Ω)` using `Filter.iInter_mem.mpr fun i => by haveI := IntermediateField.adjoin.finiteDimensional (hint i)`. Conclude with `(IntermediateField.fixingSubgroup_isOpen _).mem_nhds (Subgroup.one_mem _)`. Rewrite using `[Filter.mem_map]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset hN ?_` and prove the remaining obligations. Introduce `σ hσ`. Apply `hLs` to reduce the goal to its premises. Simplify using `only [Set.mem_iInter, SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff] at hσ`. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hb : ∀ i, σ ((b i : L) : Ω) = ((b i : L) : Ω)` using `fun i => hσ i _ (IntermediateField.mem_adjoin_simple_self K _)`. Take `⟨y, rfl⟩ : ∃ y : L, (y : Ω) = x` from `⟨⟨x, hx⟩, rfl⟩`. Rewrite using `[← b.sum_repr y]`. Express the relevant statement in the definitionally equal form `(AlgEquiv.restrictScalars E σ) _ = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.restrictScalars_apply, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictScalarsHom_continuous_krull (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω]
     (K : IntermediateField E Ω) :

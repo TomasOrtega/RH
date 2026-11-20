@@ -12,9 +12,9 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Use `analyticOnNhd_pi_iff.2 fun j => ?_` and prove the remaining obligations. Establish `hj : DifferentiableOn ℂ (fun t => f t j) U` using `differentiableOn_pi.1 hf j`. Use `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_continuousOn_of_separately hU hj.continuousOn fun w hw i => ?_` and prove the remaining obligations. Establish `hw : DifferentiableAt ℂ (fun t => f t j) (Function.update w i (w i))`. Rewrite using `[Function.update_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hj w hw).differentiableAt (hU.mem_nhds hw)`. Conclude with `hw.comp (w i) (hasFDerivAt_update w (w i)).differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem ParamDensIntegrable.analyticOnNhd_of_differentiableOn {k m : ℕ} {U : Set (Fin k → ℂ)}
     {f : (Fin k → ℂ) → Fin m → ℂ} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) : AnalyticOnNhd ℂ f U := by
@@ -27,17 +27,15 @@ theorem ParamDensIntegrable.analyticOnNhd_of_differentiableOn {k m : ℕ} {U : S
   exact hw.comp (w i) (hasFDerivAt_update w (w i)).differentiableAt
 
 /- English proof (translation)
-Introduce `n d W σ r r' N hσ hrr' hN f φ hf hfN hφ`. Use `set B := Metric.ball (0 : Fin d → ℂ) r with hB`. Use `choose U hUo hZU hφU using hφ`. Use `set V : Set (Fin d → ℂ) := B ∩ σ ⁻¹' (⋂ k, U k) with hV`. Establish `hσc : ContinuousOn σ B` using `hσ.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVo : IsOpen V` using `hσc.isOpen_inter_preimage Metric.isOpen_ball (isOpen_iInter_of_finite hUo)`. Establish `hσ2 : ContDiffOn ℝ 2 σ B` using `((ParamDensIntegrable.analyticOnNhd_of_differentiableOn Metric.isOpen_ball hσ).contDiffOn_of_completeSpace).restrict_scalars ℝ`. Establish `hc2 : ∀ k, ContDiffOn ℝ 2 (φ k ∘ σ) V`. Introduce `k`. Conclude with `((hφU k).of_le (WithTop.coe_le_coe.2 le_top)).comp (hσ2.mono Set.inter_subset_left) fun w hw => Set.mem_iInter.1 hw.2 k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hmaV : ContinuousOn (ReciprocityTheory.AnForm.maDens fun k => φ k ∘ σ) V` using `ReciprocityTheory.AnForm.M.maDens_continuousOn _ _ hVo hc2`. Establish `hcont : ContinuousOn (fun w => f (σ w) * ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ σ) w) B`. Use `continuousOn_of_forall_continuousAt fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `hs : σ w ∈ tsupport f`. Establish `hwV : w ∈ V` using `⟨hw, Set.mem_iInter.2 fun k => hZU k (hN w hw (hfN hs)).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `((hf.continuousAt).comp (hσc.continuousAt (Metric.isOpen_ball.mem_nhds hw))).mul (hmaV.continuousAt (hVo.mem_nhds hwV))`. Establish `hO : IsOpen (B ∩ σ ⁻¹' (tsupport f)ᶜ)` using `hσc.isOpen_inter_preimage Metric.isOpen_ball (isClosed_tsupport f).isOpen_compl`. Use `(continuousAt_const (y := (0 : ℝ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds ⟨hw, hs⟩] with w' hw'`. Simplify using `[image_eq_zero_of_notMem_tsupport hw'.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hK : IsCompact (Metric.closedBall (0 : Fin d → ℂ) r')` using `isCompact_closedBall 0 r'`. Establish `hKB : Metric.closedBall (0 : Fin d → ℂ) r' ⊆ B` using `Metric.closedBall_subset_ball hrr'`. Use `((hcont.mono hKB).integrableOn_compact hK).of_forall_sdiff_eq_zero Metric.isOpen_ball.measurableSet ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hwB, hwK⟩`. Establish `hf0 : f (σ w) = 0`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hwK (Metric.mem_closedBall.2 (by`. Simplify using `using (hN w hwB (hfN (subset_tsupport f h))).2))`. Simplify using `[hf0]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ParamDensIntegrable.proof : ParamDensIntegrable.Statement := by
   intro n d W σ r r' N hσ hrr' hN f φ hf hfN hφ

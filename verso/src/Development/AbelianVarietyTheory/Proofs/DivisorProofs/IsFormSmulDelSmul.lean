@@ -8,7 +8,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CxForm.SmulForm
 
 /- English proof (translation)
-Unfold `HolAtlas.loc`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(smul_zero c).symm`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem loc_smul {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) (c : ℂ) (α : A.Fld) (i : A.ι)
     (v : ReciprocityTheory.L2DbarEstimates.V n) : A.loc (c • α) i v = c • A.loc α i v := by
@@ -18,11 +18,11 @@ theorem loc_smul {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) (c
   · exact (smul_zero c).symm
 
 /- English proof (translation)
-Establish `hc (i : A.ι) (S : Finset (Fin (n + n))) : (fun v => (bas n).repr (A.loc (c • α) i v) S) = fun v => c • (bas n).repr (A.loc α i v) S`. Use function extensionality and compare the values at `v`. Rewrite using `[loc_smul, map_smul, Finsupp.smul_apply]`. Use `⟨⟨fun i S => ?_, fun x x' e => ?_⟩, funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.smooth i S).const_smul c`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, map_smul, ← h.compat x x' e]`. Establish `hd (S : Finset (Fin (n + n))) : DifferentiableAt ℝ (fun v => (bas n).repr (A.loc α x.1.1 v) S) x.crd` using `((h.smooth x.1.1 S).contDiffAt (x.ch.open_target.mem_nhds (x.ch.map_source x.2))).differentiableAt (by simp)`. Rewrite using `[Pi.smul_apply, HolAtlas.del, HolAtlas.del, delAt, delAt, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_smul_comm, coefwise, coefwise, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[hc, GlobalTheory.del_const_smul c (hd S), ContinuousLinearMap.smul_apply, smul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isForm_smul_and_del_smul {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (c : ℂ)
     (α : A.Fld) (h : A.IsForm α) : A.IsForm (c • α) ∧ A.del (c • α) = c • A.del α := by

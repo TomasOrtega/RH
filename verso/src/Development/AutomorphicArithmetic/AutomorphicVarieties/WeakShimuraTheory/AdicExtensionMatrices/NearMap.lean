@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ Λ _ _ a R _ _ _ R' _ _ _ τ D f hD`. Establish `hr : ∀ g i j, (D.map (f : R →+* R')).r g i j = f (D.r g i j)`. Introduce `g i j`. Simplify using `[RD.map, mapRep]`. Establish `hψ : ∀ v i s, (D.map (f : R →+* R')).ψ v i s = f (D.ψ v i s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v i s`. Simplify using `[RD.map]`. Establish `hm : maximalIdeal R ≤ Ideal.comap (f : R →+* R') (maximalIdeal R')`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show f x ∈ maximalIdeal R'`. Rewrite using `[← res_eq_zero_iff Λ R', res_map, res_eq_zero_iff]`. Conclude with `hx`. Establish `hadj : ∀ X : M4 R, adj ((f : R →+* R').mapMatrix X) = (f : R →+* R').mapMatrix (adj X)`. Introduce `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[adj_apply, map_zsmul]`. Establish `hrm : ∀ g, (D.map (f : R →+* R')).r g = (f : R →+* R').mapMatrix (D.r g)`. Introduce `g`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr]`. Simplify using the standard rewrite rules. Use `⟨⟨fun g => ?_, fun g hg => ?_, ?_⟩, fun i j => ?_, fun v i => ?_, fun g i => ?_, fun g i j hij hτ => ?_, fun v i s => ?_⟩` and prove the remaining obligations. Establish `hX : adj (D.r g) * D.r g = (algebraMap Λ R) (a ↑(Φ.ν g)) • 1` using `hD.rep.mult g`. Establish `h` using `congrArg (f : R →+* R').mapMatrix hX`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[map_mul, ← hadj, ← hrm]`. Use `show adj ((D.map (f : R →+* R')).r g) * (D.map (f : R →+* R')).r g = ((algebraMap Λ R').comp a) ↑(Φ.ν g) • 1`. Rewrite using `[h]`. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `split_ifs <;> simp [Algebra.algebraMap_eq_smul_one]`. Rewrite using `[hrm, hD.rep.kill g hg, map_one]`. Introduce `i j hij`. Rewrite using `[hrm]`. Simplify using `[hD.rep.nrm hij]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `adicCont_map (f : R →+* R') hm (hD.cont i j)` using `[hr]`. Simplify `adicCont_map (f : R →+* R') hm (hD.contψ v i)` using `[hψ]`. Rewrite using `[hr, res_map]`. Conclude with `hD.diag g i`. Rewrite using `[hr]`.
-
-Conclude with `hm (hD.off g i j hij hτ)`. Rewrite using `[hψ, res_map]`. Conclude with `hD.redψ v i s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxNearMap :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {a : O →+* Λ} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] {R' : Type} [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] {τ : ℤ × ℤ →+ ℤ} {D : RD Φ R} (f : R →ₐ[Λ] R'), Φ.Near a τ D → Φ.Near a τ (D.map (f : R →+* R')) := by

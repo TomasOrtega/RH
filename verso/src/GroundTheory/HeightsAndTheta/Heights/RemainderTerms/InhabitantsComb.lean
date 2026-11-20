@@ -12,7 +12,7 @@ def inhNumberingFun (p : youngCells (![2, 1] : Fin 2 → ℕ)) : Fin 3 :=
   if p.1 = (0, 0) then 0 else if p.1 = (0, 1) then 1 else 2
 
 /- English proof (translation)
-Unfold `inhNumberingFun`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 -/
 theorem inhNumberingFun_bijective : Function.Bijective inhNumberingFun := by
   unfold inhNumberingFun
@@ -28,7 +28,7 @@ def inhNumbering :
   (Equiv.ofBijective _ inhNumberingFun_bijective).trans (finCongr inh_card_two_one.symm)
 
 /- English proof (translation)
-Introduce `p q h1 h2`. Express the relevant statement in the definitionally equal form `((inhNumberingFun p : ℕ)) ≤ (inhNumberingFun q : ℕ)`. Use `revert p q`. Unfold `inhNumberingFun`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem Comb.inh_standard_two_one : IsStandard inhNumbering := by
   intro p q h1 h2
@@ -38,7 +38,7 @@ theorem Comb.inh_standard_two_one : IsStandard inhNumbering := by
   decide
 
 /- English proof (translation)
-Use `⟨isAlt_vandermonde_mul_prod _, ?_, by decide, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j h; fin_cases i <;> fin_cases j <;> simp_all`. Introduce `h`. Use `h (show (0 : Fin 2) ≤ 1 by decide)` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Comb.inh_updateZero :
     IsAlt (alternantPsum 2 [1]) ∧ Antitone (![1, 1] : Fin 2 → ℕ) ∧
@@ -51,7 +51,7 @@ theorem Comb.inh_updateZero :
     simp at this
 
 /- English proof (translation)
-Use `⟨?_, by decide, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j h; fin_cases i <;> fin_cases j <;> simp_all`. Apply the tactic sequence `intro i j h fin_cases i <;> fin_cases j <;> simp_all [stair, Function.update]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Comb.inh_sortShift :
     Antitone (![2, 1] : Fin 2 → ℕ) ∧ 1 ≤ (![2, 1] : Fin 2 → ℕ) 0 + stair 2 0 ∧
@@ -63,7 +63,7 @@ theorem Comb.inh_sortShift :
     fin_cases i <;> fin_cases j <;> simp_all [stair, Function.update]
 
 /- English proof (translation)
-Use `⟨?_, le_rfl, by decide, by decide, by decide⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j h; fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Comb.inh_sortShiftDistinct :
     Function.Injective (![3, 1] : Fin 2 → ℕ) ∧ 1 ≤ 1 ∧ (0 : Fin 2) ≠ 1 ∧
@@ -72,7 +72,7 @@ theorem Comb.inh_sortShiftDistinct :
   intro i j h; fin_cases i <;> fin_cases j <;> simp_all
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_two, stair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Comb.inh_vandermondePsumOne :
     ∑ i, (![2, 0] : Fin 2 → ℕ) i = ∑ i, stair 2 i + 1 := by

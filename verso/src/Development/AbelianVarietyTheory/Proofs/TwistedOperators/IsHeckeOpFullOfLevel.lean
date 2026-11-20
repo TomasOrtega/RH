@@ -34,9 +34,9 @@ variable {K G X H E : Type} [Field K] [Group G] [Fintype G] [AddCommGroup X] [Mo
 omit [Fintype G] in
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[← LinearMap.orthogonal_ker, Submodule.mem_orthogonal]`. Introduce `u hu`. Establish `h1 : ρ g (ρ g⁻¹ u) = u`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `h2 : inner ℂ (ρ g (ρ g⁻¹ u)) (ρ g y) = inner ℂ (ρ g⁻¹ u) y` using `LinearIsometry.inner_map_map ⟨ρ g, hρ g⟩ _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, h2]`. Use `hy _ ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hΘ, hu, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_range_adjoint (ρ : Representation ℂ G H) (π : Representation ℂ G E) (Θ : H →ₗ[ℂ] E)
     (hρ : ∀ g y, ‖ρ g y‖ = ‖y‖) (hΘ : ∀ g y, Θ (ρ g y) = π g (Θ y)) (g : G) {y : H}
@@ -52,15 +52,13 @@ theorem mem_range_adjoint (ρ : Representation ℂ G H) (π : Representation ℂ
   rw [hΘ, hu, map_zero]
 
 /- English proof (translation)
-Establish `hop : ∀ (c : G → K) z, j ((∑ g, c g • r g) z) = ∑ g, σ (c g) • ρ g (j z)` using `fun c z => by`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hj]`. Establish `hst : ∀ (c : G → K) z, j z ∈ LinearMap.range (LinearMap.adjoint Θ) → j ((∑ g, c g • r g) z) ∈ LinearMap.range (LinearMap.adjoint Θ)` using `fun c z hz => by`. Rewrite using `[hop]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (mem_range_adjoint ρ π Θ hρ hΘ g hz)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hth : ∀ (c : G → K) z, Θ (j ((∑ g, c g • r g) z)) = (∑ g, σ (c g) • π g) (Θ (j z))` using `fun c z => by`. Rewrite using `[hop]`. Simplify using `only [map_sum, map_smul, hΘ, LinearMap.sum_apply, LinearMap.smul_apply]`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : Submodule.span ℂ (j '' {z | j z ∈ LinearMap.range (LinearMap.adjoint Θ)}) ≤ LinearMap.ker ((∑ g, σ (a g) • π g) ∘ₗ (∑ g, σ (b g) • π g) ∘ₗ Θ)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `h0 : (∑ g, a g • r g) ((∑ g, b g • r g) z) = 0`. Assume the negation of the conclusion as `h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hn z h0 (hst a _ (hst b z hz))`. Use `show (∑ g, σ (a g) • π g) ((∑ g, σ (b g) • π g) (Θ (j z))) = 0`. Rewrite using `[← hth, ← hth, h0, map_zero, map_zero]`. Establish `h1 : (∑ g, σ (a g) • π g) ((∑ g, σ (b g) • π g) (Θ (LinearMap.adjoint Θ u))) = 0` using `hker (hrat ⟨u, rfl⟩)`. Simplify using `only [hu, LinearMap.sum_apply, LinearMap.smul_apply, hb, ha] at h1`.
-
-Conclude with `hx h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rational {σ : K →+* ℂ} (j : X →ₛₗ[σ] H) (r : Representation K G X) (ρ : Representation ℂ G H)
     (π : Representation ℂ G E) (Θ : H →ₗ[ℂ] E) (hj : ∀ g z, j (r g z) = ρ g (j z)) (hρ : ∀ g y, ‖ρ g y‖ = ‖y‖)
@@ -98,11 +96,11 @@ theorem exists_rational {σ : K →+* ℂ} (j : X →ₛₗ[σ] H) (r : Represen
 omit [FiniteDimensional ℂ E] in
 
 /- English proof (translation)
-Establish `hc : (Nat.card P : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `h1 : ∀ (h : G) (c : K), ∑ g, σ ((MonoidAlgebra.single h c).coeff g) • π g x = σ c • π h x` using `fun h c => by`. Rewrite using `[Finset.sum_eq_single h]`. Simplify using the standard rewrite rules. Introduce `g _ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finsupp.single_eq_of_ne hg]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ h : P, σ ((Nat.card P : K)⁻¹ * ((ψ h⁻¹ : Kˣ) : K)) • π (h : G) x = (Nat.card P : ℂ)⁻¹ • x` using `fun h => by`. Rewrite using `[hx h, smul_smul, ← map_mul, mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, mul_one, map_inv₀, map_natCast]`. Unfold `lvlIdem`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, map_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [h1, h2, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← Nat.card_eq_fintype_card, mul_inv_cancel₀ hc, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_lvlIdem {σ : K →+* ℂ} (π : Representation ℂ G E) (P : Subgroup G) (ψ : P →* Kˣ) {x : E}
     (hx : ∀ g : P, π (g : G) x = σ ((ψ g : Kˣ) : K) • x) : ∑ g, σ ((lvlIdem P ψ).coeff g) • π g x = x := by
@@ -132,15 +130,13 @@ open GlobalTheory.HeckeModel GlobalTheory.SphericalOps
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hU : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)`. Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`. Rewrite using `[this]` and apply the resulting hypothesis. Use `P.isPrime` as an intermediate fact. Establish `h : ¬ P.asIdeal ∣ differentIdeal (𝓞 D.host.F) (𝓞 D.host.E)` using `not_dvd_differentIdeal_iff.2 (Algebra.unramified_iff_forall.1 hU ⟨P.asIdeal, P.isPrime⟩)`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions.
 
-Unfold `RealUnif at hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Establish `hle : (P.asIdeal.under (𝓞 D.host.F)).map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ P.asIdeal ^ 2`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `hne x _ rfl hx`. Use `P.isMaximal` as an intermediate fact. Establish `: (P.asIdeal.under (𝓞 D.host.F)).IsMaximal` using `Ideal.IsMaximal.under _ _`. Establish `hb : P.asIdeal.under (𝓞 D.host.F) ≠ ⊥` using `Ideal.under_ne_bot _ P.ne_bot`.
-
-Use `pow_sub_one_dvd_differentIdeal (𝓞 D.host.F) P.asIdeal 2 hb (Ideal.dvd_iff_le.2 hle)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem realUnif (P : HeightOneSpectrum (𝓞 D.host.E)) : RealUnif (D := D) P := by
   have hU : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E) := by
@@ -169,7 +165,7 @@ theorem realUnif (P : HeightOneSpectrum (𝓞 D.host.E)) : RealUnif (D := D) P :
   simpa using this
 
 /- English proof (translation)
-Introduce `hP`. Take `⟨x, hx, hy⟩` from `h (P.under (𝓞 D.host.F)) ((GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.mem_finS D _).2 (by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ P.asIdeal`. Rewrite using `[map_natCast]))` and apply the resulting hypothesis. Conclude with `hy (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) rfl hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem not_mem_of_offS {P : HeightOneSpectrum (𝓞 D.host.E)} (h : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D) P) :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
@@ -186,11 +182,9 @@ def AtTypePrimes (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat
     ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal
 
 /- English proof (translation)
-Take `⟨Λ, N, hβ, c, a, ha⟩` from `h.1`. Establish `h0` using `not_mem_of_offS hP`. Use `(GlobalTheory.LevSplit.lev_split V β Λ N L hβ).2 P e f hp (fun hN => h0 ?_) fun PP hPP => ⟨fun e => h0 (e ▸ h.2 PP hPP), fun hc => h0 ?_⟩` and prove the remaining obligations. Use `P.isPrime.mem_of_pow_mem c ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow, ha, Nat.cast_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ hN`. Take `⟨c', h1, h2⟩` from `hc _ (h.2 PP hPP)`. Establish `: c' = ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)` using `RingOfIntegers.ext (by`. Rewrite using `[h2]`. Use the proof step `simp)`.
-
-Rewrite `h1` using `[this]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem AtTypePrimes.split {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} (h : AtTypePrimes β L)
     {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : Formalism.L2.Theta.AE D} (hP : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D) P)
@@ -210,7 +204,7 @@ theorem AtTypePrimes.split {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} (h 
     rwa [this] at h1
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hp, h1, h2, hd, hJ, -, hα, hD, hR, hc⟩` from `hA`. Take `⟨k1, k2, -⟩` from `h'.split hS hp`. Use `⟨e, f, ϖ, α, hS, hp, h1, h2, hd, k1, k2, hα, hD, hR, ?_⟩` and prove the remaining obligations. Establish `: {k | k ∈ levS V β L' ∧ SuppF V f k} = {k | k ∈ levS V β L ∧ SuppF V f k}` using `Set.ext fun k => and_congr_left fun hk => (k1 k hk).trans (hJ k hk).symm`. Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isHeckeOpFull_of_level {L L' : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} (h' : AtTypePrimes β L')
     {P : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ} {A : Finset (GA D V)}
@@ -224,11 +218,9 @@ theorem isHeckeOpFull_of_level {L L' : Formalism.L2.DIV.LevDat D.host.E ℂ V.ra
   rwa [this]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h.split hP hp`. Take `⟨hf, hcf, -⟩` from `(GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 P e f hp`. Establish `hc` using `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).1 f hf hcf).2.2`. Use `⟨⟨fun g hg => (hLg g).2 ((hK g).1 hg).2, fun g hg => ?_, fun k hk => ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 g ((hLg g).1 hg), hK]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨h, (hLg g).1 hg⟩, fun h => h.1⟩`. Take `⟨k₁, hk₁, k₂, hk₂, s₁, s₂, rfl⟩` from `h3 k hk`. Use `⟨k₁, (hK _).2 ⟨(h1 _ s₁).1 hk₁, s₁⟩, k₂, hk₂, rfl, fun l hl => ?_⟩` and prove the remaining obligations. Conclude with `(hc (1 - f) l k₂ (by rw [mul_sub, mul_one, hf, sub_self]) ((hLg l).1 hl) s₂).symm`. Use `(hK k).1 hk` as an intermediate fact.
-
-Conclude with `h2 k ((h1 k this.2).2 this.1) this.2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem AtTypePrimes.offAt {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} (h : AtTypePrimes β L)
     {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : Formalism.L2.Theta.AE D} (hP : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D) P)
@@ -247,7 +239,7 @@ theorem AtTypePrimes.offAt {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} (h 
     exact h2 k ((h1 k this.2).2 this.1) this.2
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hp, -, -, -, hJ, -, hα, -, -, hc⟩` from `hA`. Take `⟨hf, hcf, hfin, -⟩` from `(GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 P e f hp`. Take `⟨large₂, hLg⟩` from `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).1 f hf hcf).1`. Establish `hK : ∀ g, g ∈ levG V β L' ⊓ large₂ ↔ g ∈ KsphC V ∅ ∧ SuppF V f g` using `fun g => ⟨fun hg => ⟨(hJ g ((hLg g).1 hg.2)).1 hg.1, (hLg g).1 hg.2⟩, fun hg => ⟨(hJ g hg.2).2 hg.1, (hLg g).2 hg.2⟩⟩`. Conclude with `heckeOn_mem_goodPart (AtTypePrimes.offAt (L := flagL L) ⟨h.1, h.2⟩ hS hp hLg hK) (h'.offAt hS hp hLg hK) (fun g hg => hfin g ((hLg g).1 hg)) eG a ((hLg α).2 hα) (isDC_of_rep hLg hc) hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heckeOn_mem {θ : InfFam D} {M : DSModel V S} {L L' : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
     (h : AtTypePrimes β L) (h' : AtTypePrimes β L') {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (a : G → ℂ)
@@ -264,9 +256,9 @@ theorem heckeOn_mem {θ : InfFam D} {M : DSModel V S} {L L' : Formalism.L2.DIV.L
     (fun g hg => hfin g ((hLg g).1 hg)) eG a ((hLg α).2 hα) (isDC_of_rep hLg hc) hT
 
 /- English proof (translation)
-Use `Module.finite_of_finrank_pos hpos` as an intermediate fact. Use `Module.nontrivial_of_finrank_pos hpos` as an intermediate fact. Establish `hlev : ∀ T : goodPart θ M (levS V β L') (levChi V β L') (gaL V β L eG a), ∀ v, ∀ k ∈ (levG V β L' : Set (GA D V)), ∀ g, (T : MMap M) v (g * k) = levChi V β L' k * (T : MMap M) v g` using `fun T => ((GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ _).1 T.2.1).lev`. Take `⟨T, hT0, hT⟩` from `GlobalTheory.exists_common_eigenvector_of_commute (L := ℂ) (ι := {x : HeightOneSpectrum (𝓞 D.host.E) × List ℤ × Finset (GA D V) // Hecke₂ V (levS V β L') (levChi V β L') (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D) x.1 x.2.1 x.2.2}) (V := goodPart θ M (l …`. Use `choose x hx using hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun P d => if hR : ∃ R, Hecke₂ V (levS V β L') (levChi V β L') (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D) P d R then x ⟨(P, d, hR.choose), hR.choose_spec⟩ else 0, fun hb => hT0 (Subtype.ext ?_)⟩` and prove the remaining obligations. Use `(Submodule.eq_bot_iff _).1 hb _ ⟨(mem_partFull ..).2 ⟨T.2.1, fun P d R hR v => ?_⟩, T.2⟩` and prove the remaining obligations. Establish `hex : ∃ R, Hecke₂ V (levS V β L') (levChi V β L') (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D) P d R` using `⟨R, hR⟩`. Rewrite using `[dif_pos hex, labelUnique (J := levG V β L') realUnif P d R hex.choose hR hex.choose_spec _ (hlev T v)]`. Conclude with `congrArg (fun U : goodPart θ M (levS V β L') (levChi V β L') (gaL V β L eG a) => (U : MMap M) v) (hx ⟨(P, d, hex.choose), hex.choose_spec⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_part_ne_bot {θ : InfFam D} {M : DSModel V S} {L L' : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
     (h : AtTypePrimes β L) (h' : AtTypePrimes β L') {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (a : G → ℂ)
@@ -302,9 +294,9 @@ section Rows
 variable {D : D7}
 
 /- English proof (translation)
-Use `Submodule.span_mono fun T hT => ⟨hT.aut, hT.cusp, fun v k hk g => ?_, hT.equiv, hT.cont⟩` and prove the remaining obligations. Establish `h1 : rTup β L (finE V k) = 1` using `Subgroup.mem_bot.1 hk.2.2`. Establish `h2 : k ∈ levS V β (withP L P)` using `⟨hk.1, hk.2.1, (h1 ▸ P.H.one_mem : rTup β L (finE V k) ∈ P.H)⟩`. Rewrite using `[hT.lev v k h2 g]`. Unfold `levChi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[levFn_withP, h1, blockDiagonalExtendByOnePrimeField_one, one_mul, levFn_flag1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_le_principal {V : HSp D} {S : D.what₂.Tau → SPar} {β : GL (Fin V.rank) (Lev.EAf D)} {θ : InfFam D} {M : DSModel V S}
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (P : LevelP L.Pg L.r ℂ) :
@@ -320,11 +312,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(hL.Pg PP).1 h`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (PP.under (𝓞 D.host.K)).asIdeal`. Establish `e : PP.under (𝓞 D.host.K) = R.C.P.pb k` using `hk`. Rewrite using `[e]`. Conclude with `R.C.P.pb_over k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← map_natCast (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))]`. Conclude with `h1`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`.
-
-Conclude with `Ideal.mul_mem_right _ _ h2`. Conclude with `Ideal.mul_mem_left _ _ h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_Pg (hL : R.toLevCh.Is A.μ0) {PP : Pl D.host.E} (h : PP ∈ R.Pg) :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -342,14 +332,14 @@ theorem mem_of_mem_Pg (hL : R.toLevCh.Is A.μ0) {PP : Pl D.host.E} (h : PP ∈ R
   · exact Ideal.mul_mem_left _ _ h2
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hL.βY 0 (by have := D.R.two_le_m; omega)`. Conclude with `⟨⟨_, _, hc, c, dvd_rfl⟩, fun PP h => h.elim (mem_of_mem_Pg R hL) fun h => absurd h (Finset.notMem_empty _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem atTypePrimes_rows (hL : R.toLevCh.Is A.μ0) (P : LevelP R.Pg D.R.r ℂ) : AtTypePrimes (R.βY 0) (R.dat0 P) := by
   obtain ⟨c, hc⟩ := hL.βY 0 (by have := D.R.two_le_m; omega)
   exact ⟨⟨_, _, hc, c, dvd_rfl⟩, fun PP h => h.elim (mem_of_mem_Pg R hL) fun h => absurd h (Finset.notMem_empty _)⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hL.βW i`. Conclude with `⟨⟨_, _, hc, 0, by simp⟩, fun PP h => h.elim (mem_of_mem_Pg R hL) fun h => absurd h (Finset.notMem_empty _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem atTypePrimes_lift (hL : R.toLevCh.Is A.μ0) (i : Fin D.R.m) (P : LevelP R.Pg D.R.r ℂ) :
     AtTypePrimes (R.βW i) (R.datWp i P) := by
@@ -357,11 +347,11 @@ theorem atTypePrimes_lift (hL : R.toLevCh.Is A.μ0) (i : Fin D.R.m) (P : LevelP 
   exact ⟨⟨_, _, hc, 0, by simp⟩, fun PP h => h.elim (mem_of_mem_Pg R hL) fun h => absurd h (Finset.notMem_empty _)⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_part_ne_bot (θ := R.θ) (M := R.MW i (sg0 D A)) (atTypePrimes_lift R hL i R.triv) (atTypePrimes_lift R hL i (R.levL F b (sg0 D A))) R.eG (RealDat.eC (A := A) (sg0 D A)) hW`. Take `⟨h1, h2, h3⟩` from `hM.2 b i c`. Establish `h4 : GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.EEc R (R.levR F b) c ≠ ⊥`. Introduce `h0`. Rewrite `h3` using `[h0, finrank_bot]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc ((Submodule.finrank_eq_zero (S := GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.Wc' R i (R.levL F b (sg0 D A)) c)).1 h3.symm)`. Take `⟨U, hU, hU0⟩` from `(Submodule.ne_bot_iff _).1 h4`. Establish `hm : U ∈ Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv))` using `mult_le_principal (R.dat0 R.triv) (R.levR F b) hU.2.1`. Establish `ht : U ∈ R.EEat R.triv` using `⟨hm, hU.2.2⟩`. Take `⟨x, rfl⟩ : U ∈ LinearMap.range R.HE.e` from `hE.2.1 ▸ ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS : GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.typePlaces D = GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.finS D` using `Finset.ext fun v => (GlobalTheory.IndefiniteRowSideFullHecke.DownUpLambdaOperators.mem_typePlaces D v).trans (GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.mem_finS D v).symm`. Use `⟨c, x, fun h0 => hU0 (by rw [h0, map_zero]), hU.2, ⟨?_, ht⟩⟩` and prove the remaining obligations. Rewrite using `[hS]`. Conclude with `(mem_partFull ..).2 ⟨hm, fun P d B hB => ((mem_partFull ..).1 hU.1).2 P d B (isHeckeOpFull_of_level (atTypePrimes_rows R hL _) hB)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_row (hL : R.toLevCh.Is A.μ0) (hE : R.models_HE) (hM : GlobalTheory.IndefiniteRowSideFullHecke.CharacterMatchingGaps.MatchAll R F) (b : Bool) (i : Fin D.R.m)
     (hW : 0 < GlobalTheory.IndefiniteRowSideFullHecke.DegreeClassification.dGood R F b i) :
@@ -386,11 +376,11 @@ theorem exists_row (hL : R.toLevCh.Is A.μ0) (hE : R.models_HE) (hM : GlobalTheo
     ((mem_partFull ..).1 hU.1).2 P d B (isHeckeOpFull_of_level (atTypePrimes_rows R hL _) hB)⟩
 
 /- English proof (translation)
-Rewrite `h0`, `hZ` using `[← B.gaOp_mul, ← goodAt]`. Establish `hV : LinearMap.range (B.vE ℓ).mulVecLin = LinearMap.range (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).mulVecLin` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ))).2`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : B.S.basis.equivFun (B.S.gaOp B.r (goodAt ℓ.X ℓ.P ℓ.ψ) z) ∈ LinearMap.range (B.vE ℓ).mulVecLin := by`. Rewrite using `[hV]`. Conclude with `⟨B.S.basis.equivFun z, by rw [Matrix.mulVecLin_apply, CSD.gaMat_mulVec_equivFun]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hu` using `[Matrix.mulVecLin_apply]`. Use `Nat.pos_of_ne_zero fun h => h0 ?_` and prove the remaining obligations. Establish `h1 : u ∈ B.Z0 ℓ Z`. Rewrite using `[BlockDat.Z0, B.mem_goodPart_iff, hu, LinearEquiv.symm_apply_apply]`. Conclude with `hZ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Submodule.finrank_eq_zero.1 h, Submodule.mem_bot]`. Rewrite `hu` using `[h1, Matrix.mulVec_zero]`. Conclude with `B.S.basis.equivFun.map_eq_zero_iff.1 hu.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dZ_pos {K : Type} [Field K] [NumberField K] [StarRing K] (B : BlockDat K G Pl0) (ℓ : Lvl K G) (Z : Submodule K B.S.Forms)
     {z : B.S.Forms} (h0 : B.S.gaOp B.r (idemOf ℓ.X) (B.S.gaOp B.r (lvlIdem ℓ.P ℓ.ψ) z) ≠ 0)

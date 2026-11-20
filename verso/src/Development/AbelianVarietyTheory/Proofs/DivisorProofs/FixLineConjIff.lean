@@ -6,11 +6,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKCx
 
 /- English proof (translation)
-Establish `key : ((B * A * B⁻¹ : GL n ℂ) : Matrix n n ℂ) *ᵥ ((B : Matrix n n ℂ) *ᵥ z) = (B : Matrix n n ℂ) *ᵥ ((A : Matrix n n ℂ) *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_right, Units.val_mul, ← Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [key, hc, Matrix.mulVec_smul]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, hc⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[key, ← Matrix.mulVec_smul]`. Establish `h` using `congrArg (fun w => ((B⁻¹ : GL n ℂ) : Matrix n n ℂ) *ᵥ w) hc`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec] at h`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fixLine_conj_iff {n : Type} [Fintype n] [DecidableEq n] (A B : GL n ℂ) (z : n → ℂ) :
     (∃ c : ℂ, (A : Matrix n n ℂ) *ᵥ z = c • z) ↔
@@ -30,7 +30,7 @@ theorem fixLine_conj_iff {n : Type} [Fintype n] [DecidableEq n] (A B : GL n ℂ)
     rwa [inv_mul_cancel_left] at h
 
 /- English proof (translation)
-Introduce `p _ G v β y g z`. Unfold `FixL`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `fixLine_conj_iff _ _ z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixL_conj_iff : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ)
     (y g : grp G β) (z : Fin G.n → ℂ),

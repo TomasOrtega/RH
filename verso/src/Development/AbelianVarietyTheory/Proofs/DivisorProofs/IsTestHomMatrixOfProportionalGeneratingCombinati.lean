@@ -14,23 +14,21 @@ noncomputable section
 namespace GlobalTheory.HomFixCond
 
 /- English proof (translation)
-Set `W : Fin m → X.Opens` to `fun j => X.basicOpen (C j)`. Establish `lW : ∀ j, W j ≤ V` using `fun j => X.basicOpen_le _`. Establish `uC : ∀ j, ∀ y ∈ W j, IsUnit (gs (𝟙 X) y V (C j))` using `fun j y hy => (GlobalTheory.LBGerm.isUnit_gs_iff (𝟙 X) y V (lW j hy) (C j)).2 hy`. Establish `uB : ∀ j, ∀ y ∈ W j, IsUnit (gs (𝟙 X) y V (B j))` using `fun j y hy => by`. Take `⟨j', hj'⟩` from `hB y (lW j hy)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hP y (lW j hy) j' j`. Establish `h2` using `hj'.mul (uC j y hy)`. Rewrite `h2` using `[e]`. Conclude with `isUnit_of_mul_isUnit_left h2`. Establish `hu : ∀ j, IsUnit (resG X (lW j) (C j))` using `fun j => X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `uC j y hy` as an intermediate fact. Rewrite `this` using `[← gs_res (𝟙 X) y (lW j) hy, gs_eq _ y _ hy]`. Conclude with `this`. Set `w : ∀ j, Γ(X, W j)` to `fun j => resG X (lW j) (B j) * ((hu j).unit⁻¹).val`. Establish `hw : ∀ j, ∀ y ∈ W j, gs (𝟙 X) y (W j) (w j) * gs (𝟙 X) y V (C j) = gs (𝟙 X) y V (B j)` using `fun j y hy => by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gs_res (𝟙 X) y (lW j) hy (C j), ← gs_mul _ y _ hy, _root_.mul_assoc]`. Use `show gs (𝟙 X) y (W j) (resG X (lW j) (B j) * (((hu j).unit⁻¹).val * (hu j).unit.val)) = _`. Rewrite using `[Units.inv_mul, _root_.mul_one, gs_res _ y _ hy]`. Establish `wu : ∀ j, IsUnit (w j)` using `fun j => X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Establish `e` using `hw j y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : IsUnit (gs (𝟙 X) y (W j) (w j))`. Use `uB j y hy` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `isUnit_of_mul_isUnit_left this`. Rewrite `h1` using `[gs_eq _ y _ hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Take `⟨s, hs⟩` from `glue_unit V W lW (fun y hy => by`. Take `⟨j, hj⟩` from `hC y hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, (GlobalTheory.LBGerm.isUnit_gs_iff (𝟙 X) y V hy (C j)).1 hj⟩)`. Use the proof step `(fun j => (wu j).unit) (fun i j y hy => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit _ y _ hy.1, ← gs_unit _ y _ hy.2]`. Use `(uC i y hy.1).mul_right_cancel ?_` and prove the remaining obligations. Use `(uC j y hy.2).mul_right_cancel ?_` and prove the remaining obligations. Use `show gs (𝟙 X) y (W i) (w i) * gs (𝟙 X) y V (C i) * gs (𝟙 X) y V (C j) = gs (𝟙 X) y (W j) (w j) * gs (𝟙 X) y V (C i) * gs (𝟙 X) y V (C j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw i y hy.1, mul_right_comm, hw j y hy.2, hP y (lW i hy.1) i j])`. Use `⟨s, fun j => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hC y hy`. Establish `yi : y ∈ W i` using `(GlobalTheory.LBGerm.isUnit_gs_iff (𝟙 X) y V hy (C i)).1 hi`. Establish `es : gs (𝟙 X) y V s.val = gs (𝟙 X) y (W i) (w i)`.
-
-Rewrite using `[← gs_res (𝟙 X) y (lW i) yi]`. Conclude with `congrArg (fun q : Γ(X, W i)ˣ => gs (𝟙 X) y (W i) q.val) (hs i)`. Rewrite using `[gs_mul _ y _ hy, es]`. Use `hi.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, hw i y yi, hP y hy i j]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_proportional {X : Scheme.{0}} {V : X.Opens} {m : ℕ} (B C : Fin m → Γ(X, V))
     (hC : ∀ x ∈ V, ∃ j, IsUnit (gs (𝟙 X) x V (C j)))
@@ -88,24 +86,20 @@ theorem unit_of_proportional {X : Scheme.{0}} {V : X.Opens} {m : ℕ} (B C : Fin
   rw [mul_right_comm, hw i y yi, hP y hy i j]
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_finsum {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {n : ℕ} (a : Fin n → Γ(X, U)) :
     gs f y U (∑ i, a i) = ∑ i, gs f y U (a i) := by
   simp only [gs_eq f y U h, map_sum]
 
 /- English proof (translation)
-Introduce `Rg _ A B _ _ L M k mA mB bA bB eA eB αA βB R _ t A' B' _ _ φA' φB' Φ' c hL hM heA heB hcov hvA hvB hT hgen hprop hnorm`. Establish `key : ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), ∃ u : Γ(A'.left, (isoLB (L` using `L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p)ˣ, ∀ j : Fin mB, ((Φ'.left ≫ φB' ≫ θ B).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1) ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) (inf_le_left.trans (GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1 …`. Introduce `p`. Use `set V := (isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p with hV`. Establish `mB' : ∀ z ∈ V, (Φ'.left ≫ φB' ≫ θ B) z ∈ LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1` using `fun z hz => GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1 hz.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mA' : ∀ z ∈ V, (φA' ≫ θ A) z ∈ LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2` using `fun z hz => GlobalTheory.HomFixMat.wchart_comp_le L _ _ p.2 hz.2`. Establish `gB : ∀ z ∈ V, ∀ j : Fin mB, gs (𝟙 A'.left) z V (((Φ'.left ≫ φB' ≫ θ B).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1) V (inf_le_left.trans (GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1))).hom ((bB j).f p.1)) = gs (Φ'.left ≫ φB' ≫ θ B) z (LB.wchart M (fun _ : …` using `fun z hz j => (gs_appLE _ _ _ _ (𝟙 A'.left) z hz _).trans (by rw [Category.id_comp])`. Establish `gC : ∀ z ∈ V, ∀ j : Fin mB, gs (𝟙 A'.left) z V (∑ i, (A'.hom.appLE ⊤ V (by simp)).hom (c i j) * ((φA' ≫ θ A).appLE (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2) V (inf_le_right.trans (GlobalTheory.HomFixMat.wchart_comp_le L _ _ p.2))).hom ((bA i).f p.2)) = comb bA ( …` using `fun z hz j => by`. Rewrite using `[gs_finsum _ z _ hz]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_mul _ z _ hz]`. Use `congrArg₂ (· * ·) ((gs_appLE _ _ _ _ (𝟙 A'.left) z hz _).trans (by rw [Category.id_comp])) ((gs_appLE _ _ _ _ (𝟙 A'.left) z hz _).trans (by rw [Category.id_comp]; rfl))` and prove the remaining obligations. Take `⟨u, hu⟩` from `unit_of_proportional (V := V) (fun j => ((Φ'.left ≫ φB' ≫ θ B).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1) V (inf_le_left.trans (GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1))).hom ((bB j).f p.1)) (fun j => ∑ i, (A'.hom.appLE ⊤ V (by simp)).hom (c i j) * …`. Take `⟨j, hj⟩` from `hgen z p.2 (mA' z hz)`. Conclude with `⟨j, by rw [gC z hz j]; exact hj⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun z hz => by`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hcov.ge (Set.mem_univ ((Φ'.left ≫ φB' ≫ θ B) z)))`. Conclude with `⟨j, by rw [gB z hz j]; exact (GlobalTheory.mem_nonzeroLocus_iff_pull (bB j) _ z (mB' z hz)).1 hj⟩)`. Use the proof step `(fun z hz j j' => by`. Rewrite using `[gB z hz j, gB z hz j', gC z hz j, gC z hz j']`.
-
-Conclude with `hprop z p.2 p.1 (mA' z hz) (mB' z hz) j j')`. Conclude with `⟨u, hu⟩`. Use `choose u hu using key`. Use `⟨φA' ≫ θ A, φB' ≫ θ B, ⟨u⟩, by rw [Category.assoc, θ_snd, Category.comp_id], by rw [Category.assoc, θ_snd, Category.comp_id], ?_, ?_, fun j p => hu p j⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isGenerator_isoBundle_of_matrix_relation Rg A B L M k mA mB bA bB R A' B' Φ' (φA' ≫ θ A) (φB' ≫ θ B) c u hgen (fun j p => hu p j)`.
-
-Conclude with `GlobalTheory.T.isoNormalisation_at_zeroSection Rg A B L M k mA mB bA bB eA eB αA βB R t A' B' φA' φB' Φ' c u hcov hvA hvB hT hnorm (fun j p => hu p j)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMat_of_conditions : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left) (k mA mB : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (eA : LB.Gen (L.pull (eSec A))) (eB : LB.Gen (M.pull (eSec B))) (αA : Fin mA → Γ(Sp Rg, ⊤)) (βB : Fin mB → Γ(Sp Rg, ⊤)) (R : Type) [CommRing R] (t : Sp R ⟶ Sp Rg) (A' B' : Over (Sp R)) [GrpObj A'] [GrpObj B'] (φA' : A'.left ⟶ A.left) (φB' : B'.left ⟶ B.left) (Φ' : A' ⟶ B') (c : Fin mA → Fin mB → Γ(Sp R, ⊤)), L.IsLB → M.IsLB → eA.IsGen → eB.IsGen → (⨆ j, nonzeroLocus (bB j)) = ⊤ → (∀ i, GlobalTheory.HomFixUniv.IsVal (eSec A ≫ GlobalTheory.HomFixUniv.θ A) (GlobalTheory.HomFixUniv.uFr A L k eA) (bA i) (αA i)) → (∀ j, GlobalTheory.HomFixUniv.IsVal (eSec B ≫ GlobalTheory.HomFixUniv.θ B) (GlobalTheory.HomFixUniv.uFr B M k eB) (bB j) (βB j)) → IsTest A B L M t A' B' φA' φB' Φ' → GlobalTheory.HomFixUniv.Generates bA (φA' ≫ GlobalTheory.HomFixUniv.θ A) A'.hom c → GlobalTheory.HomFixUniv.Proport bA bB (φA' ≫ GlobalTheory.HomFixUniv.θ A) A'.hom (Φ'.left ≫ φB' ≫ GlobalTheory.HomFixUniv.θ B) c → GlobalTheory.HomFixUniv.Normal t c αA βB → IsMat L M k bA bB eA eB t A' B' φA' φB' Φ' c := by
   intro Rg _ A B _ _ L M k mA mB bA bB eA eB αA βB R _ t A' B' _ _ φA' φB' Φ' c hL hM heA heB hcov hvA hvB hT hgen

@@ -9,9 +9,9 @@ namespace PositivityTheory.Rg.Sw.FFTSteps.SecondLineEstimates
 variable {m n : ℕ}
 
 /- English proof (translation)
-Unfold `evX`. Use `(MvPolynomial.continuous_eval P).comp (continuous_pi fun k => ?_)` and prove the remaining obligations. Distinguish the cases in `h : k.2.2`. Simplify using `only [h, if_true]`. Conclude with `continuous_star.comp ((continuous_apply k.2.1).comp (continuous_apply k.1))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h]`. Conclude with `(continuous_apply k.2.1).comp (continuous_apply k.1)`.
+A detailed English derivation is pending.
 -/
 lemma continuous_evX (P : PX m n) : Continuous (fun x : Fin m → Fin n → ℂ => evX P x) := by
   unfold evX
@@ -23,15 +23,13 @@ lemma continuous_evX (P : PX m n) : Continuous (fun x : Fin m → Fin n → ℂ 
     exact (continuous_apply k.2.1).comp (continuous_apply k.1)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Conclude with `⟨‖a‖, norm_nonneg _, 0, fun x => by simp [evX]⟩`. Consider the case `add p q hp hq`. Take `⟨C1, h1, N1, hp⟩` from `hp`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, h2, N2, hq⟩` from `hq`. Use `⟨C1 + C2, by positivity, max N1 N2, fun x => ?_⟩` and prove the remaining obligations. Establish `hs : 1 ≤ 1 + sq x` using `by linarith [sq_nonneg' x]`. Establish `e1 : (1 + sq x) ^ N1 ≤ (1 + sq x) ^ (max N1 N2)` using `pow_le_pow_right₀ hs (le_max_left _ _)`. Establish `e2 : (1 + sq x) ^ N2 ≤ (1 + sq x) ^ (max N1 N2)` using `pow_le_pow_right₀ hs (le_max_right _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `mul_X p k hp`. Take `⟨C, h, N, hp⟩` from `hp`. Use `⟨C, h, N + 1, fun x => ?_⟩` and prove the remaining obligations. Establish `hk : ‖(if k.2.2 then star (x k.1 k.2.1) else x k.1 k.2.1)‖ ≤ 1 + sq x` using `by split_ifs`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[norm_star]`. Conclude with `coord_le x _ _`. Conclude with `coord_le x _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[evX, map_mul, eval_X, norm_mul]`.
-
-Both sides reduce to the same expression. Use `_ ≤ C * (1 + sq x) ^ N * (1 + sq x) := mul_le_mul (hp x) hk (norm_nonneg _) (by have := sq_nonneg' x; positivity)`. Use `_ = C * (1 + sq x) ^ (N + 1) := by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma evX_bound (P : PX m n) : ∃ C : ℝ, 0 ≤ C ∧ ∃ N : ℕ, ∀ x, ‖evX P x‖ ≤ C * (1 + sq x) ^ N := by
   induction P using MvPolynomial.induction_on with
@@ -64,7 +62,7 @@ lemma evX_bound (P : PX m n) : ∃ C : ℝ, 0 ≤ C ∧ ∃ N : ℕ, ∀ x, ‖e
       _ = C * (1 + sq x) ^ (N + 1) := by ring
 
 /- English proof (translation)
-Simplify using `only [gramX, Qp, Qb, evX, map_sub, map_sum, map_mul, eval_X]`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε a <;> simp [sgn, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma gram_apply (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : Fin n) :
     gramX ε x i j = ∑ a, sgn ε a * (star (x a i) * x a j) := by
@@ -74,18 +72,16 @@ lemma gram_apply (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : Fin 
   cases h : ε a <;> simp [sgn, h]
 
 /- English proof (translation)
-The claim follows from `continuous_evX _`.
+A detailed English derivation is pending.
 -/
 lemma continuous_gram (ε : Fin m → Bool) (i j : Fin n) :
     Continuous (fun x : Fin m → Fin n → ℂ => gramX ε x i j) :=
   continuous_evX _
 
 /- English proof (translation)
-Rewrite using `[gram_apply]`. Apply the tactic sequence `have hsg : ∀ a, ‖sgn ε a‖ = 1 := fun a => by unfold sgn; split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hsg, norm_star, one_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∑ a, (‖x a i‖ ^ 2 + ‖x a j‖ ^ 2) / 2 := by`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Use polynomial arithmetic with `[sq_nonneg (‖x a i‖ - ‖x a j‖)]`. Use `_ = ((∑ a, ‖x a i‖ ^ 2) + ∑ a, ‖x a j‖ ^ 2) / 2 := by rw [← Finset.sum_add_distrib, Finset.sum_div]`. Apply the tactic sequence `_ ≤ (sq x + sq x) / 2 := by gcongr <;> exact col_sq_le x _`.
-
-Use `_ = sq x := by ring`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma norm_gram_le (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : Fin n) : ‖gramX ε x i j‖ ≤ sq x := by
   rw [gram_apply]
@@ -102,14 +98,14 @@ lemma norm_gram_le (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : Fi
     _ = sq x := by ring
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma trace_eq (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (x : Fin m → Fin n → ℂ) :
     (b * gramX ε x).trace = ∑ i, ∑ j, b i j * gramX ε x j i := by
   simp [Matrix.trace, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [trace_eq]`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => continuous_const.mul (continuous_gram ε j i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_trace (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun x : Fin m → Fin n → ℂ => (b * gramX ε x).trace) := by
@@ -120,14 +116,14 @@ lemma continuous_trace (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) :
 def kb (b : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖b i j‖
 
 /- English proof (translation)
-Unfold `kb`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma kb_nonneg (b : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ kb b := by unfold kb; positivity
 
 /- English proof (translation)
-Rewrite using `[trace_eq, kb, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (norm_gram_le ε x j i) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma norm_trace_le (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (x : Fin m → Fin n → ℂ) :
     ‖(b * gramX ε x).trace‖ ≤ kb b * sq x := by
@@ -139,11 +135,11 @@ lemma norm_trace_le (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (x : 
   exact mul_le_mul_of_nonneg_left (norm_gram_le ε x j i) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hg : ∀ i j, star (gramX ε x j i) = gramX ε x i j`. Introduce `i j`. Rewrite using `[gram_apply, gram_apply, star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have hs : star (sgn ε a) = sgn ε a := by unfold sgn; split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[star_mul', star_mul', hs, star_star]`. Expand and normalize the polynomial expressions, which then agree. Establish `: star ((b * gramX ε x).trace) = (b * gramX ε x).trace`. Rewrite using `[trace_eq, star_sum]`. Repeatedly rewrite using `[star_sum, star_mul', hg]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hb.apply]`. Conclude with `Complex.conj_eq_iff_im.1 this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma trace_im (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) (x : Fin m → Fin n → ℂ) :
     ((b * gramX ε x).trace).im = 0 := by

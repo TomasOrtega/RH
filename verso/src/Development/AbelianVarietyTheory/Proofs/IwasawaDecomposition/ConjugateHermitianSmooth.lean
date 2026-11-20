@@ -8,13 +8,13 @@ namespace GlobalTheory
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `k _ Y p σ D m R S hS A M hA hM a b`. Establish `hC : ∀ i, ContDiffOn ℝ ∞ ((fun y => ((A y)ᴴ * M y * A y) a b) ∘ (R.chart i).e.symm) ((R.chart i).e.target ∩ (R.chart i).e.symm ⁻¹' S)`. Introduce `i`. Use `set e := (R.chart i).e`. Establish `hU` using `GlobalTheory.ChartGlue.isOpen_over e hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAe : ∀ c d, ContDiffOn ℝ ∞ (fun v => A (e.symm v) c d) (e.target ∩ e.symm ⁻¹' S)` using `fun c d => GlobalTheory.ChartGlue.contDiffOn_real hU (hA c d i)`. Establish `hAc : ∀ c d, ContDiffOn ℝ ∞ (fun v => star (A (e.symm v) c d)) (e.target ∩ e.symm ⁻¹' S)` using `fun c d => Complex.conjCLE.contDiff.comp_contDiffOn (hAe c d)`. Establish `hMe : ∀ c d, ContDiffOn ℝ ∞ (fun v => M (e.symm v) c d) (e.target ∩ e.symm ⁻¹' S)`. Introduce `c d`. Establish `h1 : ContDiffOn ℝ ∞ (fun v => (M (e.symm v) c d).re) (e.target ∩ e.symm ⁻¹' S)` using `(hM c d).1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContDiffOn ℝ ∞ (fun v => (M (e.symm v) c d).im) (e.target ∩ e.symm ⁻¹' S)` using `(hM c d).2 i`. Establish `hf : (fun v => M (e.symm v) c d) = fun v => (((M (e.symm v) c d).re : ℝ) : ℂ) + (((M (e.symm v) c d).im : ℝ) : ℂ) * Complex.I`. Use function extensionality and compare the values at `v`. Conclude with `(Complex.re_add_im _).symm`. Rewrite using `[hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `(Complex.ofRealCLM.contDiff.comp_contDiffOn h1).add ((Complex.ofRealCLM.contDiff.comp_contDiffOn h2).mul contDiffOn_const)`. Use `show ContDiffOn ℝ ∞ (fun v => ((A (e.symm v))ᴴ * M (e.symm v) * A (e.symm v)) a b) _`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply]`. Conclude with `ContDiffOn.sum fun x _ => (ContDiffOn.sum fun c _ => (hAc c a).mul (hMe c x)).mul (hAe x b)`. Conclude with `⟨fun i => Complex.reCLM.contDiff.comp_contDiffOn (hC i), fun i => Complex.imCLM.contDiff.comp_contDiffOn (hC i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem AnRead.smoothOn_conjTranspose_mul_mul :
     ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {D m : ℕ} (R : AnRead p σ D) (S : Set (CxPts p σ)), IsOpen S → ∀ (A M : CxPts p σ → Matrix (Fin m) (Fin m) ℂ), (∀ a b, R.HoloOn S (fun y => A y a b)) → (∀ a b, R.SmoothOn S (fun y => (M y a b).re) ∧ R.SmoothOn S (fun y => (M y a b).im)) → ∀ a b : Fin m, R.SmoothOn S (fun y => (((A y)ᴴ * M y * A y) a b).re) ∧ R.SmoothOn S (fun y => (((A y)ᴴ * M y * A y) a b).im) := by

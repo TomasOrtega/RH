@@ -15,7 +15,7 @@ open NumberField IsDedekindDomain Matrix
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mulVec_self {E : Type} [Field E] {n : ℕ} (g : GL (Fin n) E) (z : Fin n → E) :
     ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((g : Matrix (Fin n) (Fin n) E) *ᵥ z) = z := by
@@ -25,11 +25,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hfun2 : ∀ (x : ↥(Ld D u 0 (Nat.zero_le _) c2)) (hx : (γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ x.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c), (D.fm u).fv 0 v c2 (T.lv0.pr v c2 x) = (μ • g) (T.lv0.prk v c ⟨_, hx⟩)` using `fun x hx => (hfun' x hx).trans (LinearMap.smul_apply μ g _).symm`. Establish `eq1 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Lk T.atT 0 (Nat.zero_le _) v c2)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) …`. Use extensionality with `y`. Rewrite using `[dnk_char T v c c2 (μ • g) γ' hl' hfun2 y, dnk_char T v c c1 g γ hl hfun y]`. Simplify using `only [LinearMap.smul_apply, smul_eq_zero, hμ, false_or]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `L1 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (Lk T.atT 0 (Nat.zero_le _) v c1) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c1)` using `le_antisymm (dnk_lk_locP T v c1) (localization_mono₂ _ le_sup_left)`. Establish `L2 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (Lk T.atT 0 (Nat.zero_le _) v c2) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c2)` using `le_antisymm (dnk_lk_locP T v c2) (localization_mono₂ _ le_sup_left)`. Establish `M1 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Lk T.atT 0 (Nat.zero_le _) v c1)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D. …` using `le_antisymm (rlv_locP_mulLat_le _ _ L1.le) (rlv_locP_mulLat_le _ _ L1.ge)`. Establish `M2 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Lk T.atT 0 (Nat.zero_le _) v c2)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) …` using `le_antisymm (rlv_locP_mulLat_le _ _ L2.le) (rlv_locP_mulLat_le _ _ L2.ge)`. Rewrite `eq1` using `[M1, M2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `localization_smul_cancel _ γ γ' eq1`.
+A detailed English derivation is pending.
 -/
 theorem dnk_latP_smul (T : Forms0 D u) (v : (D.mem u).A.vT) (c c1 c2 : (D.mem u).C.cls 0)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) (μ : (D.mem u).A.Fv v) (hμ : μ ≠ 0)
@@ -72,45 +72,39 @@ set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `set g' : GL (Fin (D.R.N 0)) D.host.E := γd * γ2.1 with hg'`. Establish `hl' : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Ld D u 0 (Nat.zero_le _) c3)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c)`. Rewrite using `[hg', Units.val_mul]`. Conclude with `rlv_chainP _ _ _ (by rw [hLc]) hl2`. Establish `hLkinv : mulLat ((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Lk T.atT 0 (Nat.zero_le _) v c) = Lk T.atT 0 (Nat.zero_le _) v c2` using `dni_inv_eq γd (dni_lk T v c2 c _ hLc hLd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf' : ∀ (w : ↥(Ld D u 0 (Nat.zero_le _) c3)) (hw : (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c), (D.fm u).fv 0 v c3 (T.lv0.pr v c3 w) = ((k : ℤ) : (D.mem u).A.Fv v) • x (T.lv0.prk v c ⟨_, hw⟩)`. Introduce `w hw`. Establish `e1 : ((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1) = γ2.1.1 *ᵥ w.1`. Rewrite using `[hg', Matrix.mulVec_mulVec, ← Units.val_mul, ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `hw2 : γ2.1.1 *ᵥ w.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1]`. Conclude with `dni_mem_of _ hLkinv hw`. Rewrite using `[hf2 w hw2, hxy, dniEquiv_prk]`. Use `congrArg (fun t => ((k : ℤ) : (D.mem u).A.Fv v) • x (T.lv0.prk v c t)) (Subtype.ext ?_)` and prove the remaining obligations. Use `show (γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ (γ2.1.1 *ᵥ w.1) = (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg', Units.val_mul, Matrix.mulVec_mulVec]`. Establish `hPc` using `dnk_latP_smul T v c c1 c3 x ((k : ℤ) : (D.mem u).A.Fv v) hμ γ.1 g' hl1 hf1 hl' hf'`. Use `set Γ : GL (Fin (D.R.N 0)) D.host.E := γ2.1⁻¹ * γd⁻¹ * γ.1 with hΓdef`. Establish `hPΓ : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (clsCrd D u 0 (Nat.zero_le _) c1)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c3)`. Establish `e2 : (γ.1⁻¹ * g')⁻¹ = Γ` using `by rw [hg', hΓdef]; group`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `localization_inv_smul_eq _ (γ.1⁻¹ * g') hPc` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Establish `hPdΓ : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Ld D u 0 (Nat.zero_le _) c1)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (Ld D u 0 (Nat.zero_le _) c3)`. Establish `e3 : g'⁻¹ * γ.1 = Γ` using `by rw [hg', hΓdef]; group`. Use `localization_smul_cancel _ g' γ.1 (hl1.trans hl'.symm)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[e3]`. Then use the resulting hypothesis. Establish `hΓU : Γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))` using `mul_mem (mul_mem (inv_mem γ2.2) (inv_mem hγd)) γ.2`. Establish `hQd : Formalism.HermitianLatticesTheory.localization₂ (rlvQ T.atT v) (mulLat (Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Ld D u 0 (Nat.zero_le _) c1)) = Formalism.HermitianLatticesTheory.localization₂ (rlvQ T.atT v) (Ld D u 0 (Nat.zero_le _) c3)` using `local_dual_Q_eq_of_P T.atT v c3 c1 Γ hΓU hPΓ`. Establish `eΓ : ∀ z, (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) = γ.1.1 *ᵥ z`. Introduce `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e4 : g' * Γ = γ.1` using `by rw [hg', hΓdef]; group`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, e4]`. Establish `hFc : ∀ z (hz : z ∈ Ld D u 0 (Nat.zero_le _) c1), ∃ r : 𝓞 D.host.F, r ∉ (T.atT.eV v).1.asIdeal ∧ ∃ h : (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • ((Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ∈ Ld D u 0 (Nat.zero_le _) c3, (D.fm u).fv 0 v c3 (T.lv0.pr v c3 ⟨_, h⟩) …`. Introduce `z hz`. Take `⟨b, hbP, hbQ, hb⟩` from `rlv_two (T.atT.Pv v) (rlvQ T.atT v) hPdΓ.le hQd.le (x := (Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ⟨z, hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨r, hr, b', hb'⟩` from `rlv_norm T.atT v b hbP hbQ`. Establish `hmem : (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • ((Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ∈ Ld D u 0 (Nat.zero_le _) c3`. Rewrite using `[hb', mul_smul]`. Conclude with `Submodule.smul_mem _ _ hb`. Use `⟨r, hr, hmem, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγz : γ.1.1 *ᵥ z ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c)`. Rewrite using `[← hl1]`. Conclude with `mem_localization_of_mem₂ _ ⟨z, hz, rfl⟩`. Take `⟨s, hs, hsz⟩` from `(rlv_mem_locP _ _ _).1 hγz`. Use `set R := (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) with hR`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e4 : (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ (s • (R • ((Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z))) = R • (s • (γ.1.1 *ᵥ z))`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, eΓ, smul_comm]`. Establish `e5 : γ.1.1 *ᵥ (s • (R • z)) = R • (s • (γ.1.1 *ᵥ z))`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, smul_comm]`. Establish `hin : R • (s • (γ.1.1 *ᵥ z)) ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.mem_sup_left (Submodule.smul_mem _ R hsz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRz : R • z ∈ Ld D u 0 (Nat.zero_le _) c1` using `Submodule.smul_mem _ _ hz`. Take `⟨w3, hw3def⟩ : ∃ w3 : ↥(Ld D u 0 (Nat.zero_le _) c3), w3.1 = s • (R • ((Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z))` from `⟨s • (⟨_, hmem⟩ : ↥(Ld D u 0 (Nat.zero_le _) c3)), rfl⟩`. Take `⟨w1, hw1def⟩ : ∃ w1 : ↥(Ld D u 0 (Nat.zero_le _) c1), w1.1 = s • (R • z)` from `⟨s • (⟨R • z, hRz⟩ : ↥(Ld D u 0 (Nat.zero_le _) c1)), rfl⟩`. Establish `hw3 : (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w3.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `by rw [hw3def, e4]; exact hin`. Establish `hw1 : γ.1.1 *ᵥ w1.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `by rw [hw1def, e5]; exact hin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA` using `hf' w3 hw3`. Establish `hB` using `hf1 w1 hw1`. Establish `ew3 : w3 = s • (⟨_, hmem⟩ : ↥(Ld D u 0 (Nat.zero_le _) c3))` using `Subtype.ext hw3def`. Establish `ew1 : w1 = s • (⟨R • z, hRz⟩ : ↥(Ld D u 0 (Nat.zero_le _) c1))` using `Subtype.ext hw1def`. Establish `pA : T.lv0.pr v c3 w3 = T.atT.res v s • T.lv0.pr v c3 ⟨_, hmem⟩` using `by rw [ew3, T.lv0.pr_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `pB : T.lv0.pr v c1 w1 = T.atT.res v s • T.lv0.pr v c1 ⟨R • z, hRz⟩` using `by rw [ew1, T.lv0.pr_smul]`. Rewrite `hA` using `[pA, map_smul]`. Rewrite `hB` using `[pB, map_smul]`. Establish `hres : T.atT.res v s ≠ 0` using `fun h0 => hs (RingHom.mem_ker.2 h0)`. Establish `key : T.atT.res v s • (D.fm u).fv 0 v c3 (T.lv0.pr v c3 ⟨_, hmem⟩) = T.atT.res v s • (((k : ℤ) : (D.mem u).A.Fv v) • (D.fm u).fv 0 v c1 (T.lv0.pr v c1 ⟨R • z, hRz⟩))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm (T.atT.res v s) ((k : ℤ) : (D.mem u).A.Fv v), hB]`. Use `hA.trans ?_` and prove the remaining obligations. Use `congrArg (fun t => ((k : ℤ) : (D.mem u).A.Fv v) • x (T.lv0.prk v c t)) (Subtype.ext ?_)` and prove the remaining obligations. Use `show (g' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w3.1 = γ.1.1 *ᵥ w1.1`. Rewrite using `[hw3def, hw1def, e4, e5]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `smul_right_injective _ hres key`. Establish `eΓ2 : γ2.1⁻¹ * 1⁻¹ * (γd⁻¹ * γ.1 * γe) = Γ * γe` using `by rw [hΓdef]; group`. Establish `hΓ2 : γ2.1⁻¹ * 1⁻¹ * (γd⁻¹ * γ.1 * γe) ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))` using `by rw [eΓ2]; exact mul_mem hΓU hγe`. Establish `hP2 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat ((γ2.1⁻¹ * 1⁻¹ * (γd⁻¹ * γ.1 * γe) : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (clsCrd D u 0 (Nat.zero_le _) c1')) = Formalism.HermitianLatticesTheory.localization₂ (T …`. Rewrite using `[eΓ2, Units.val_mul, rlv_mulLat_mul, hLc1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hPΓ`. Establish `hPd2 : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat ((γ2.1⁻¹ * 1⁻¹ * (γd⁻¹ * γ.1 * γe) : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Ld D u 0 (Nat.zero_le _) c1')) = Formalism.HermitianLatticesTheory.localization₂ (T.at …`. Rewrite using `[eΓ2, Units.val_mul, rlv_mulLat_mul, hLd1]`. Conclude with `hPdΓ`. Use `local_unitary_of_matching_zero T v c3 c1' _ hΓ2 hU hP2 hPd2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hz1 : (γe : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z ∈ Ld D u 0 (Nat.zero_le _) c1` using `dni_mem_of _ hLd1 hz`. Take `⟨r, hr, hmem, hval⟩` from `hFc _ hz1`. Establish `eΓz : ((γ2.1⁻¹ * 1⁻¹ * (γd⁻¹ * γ.1 * γe) : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z = (Γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((γe : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z)`. Rewrite using `[eΓ2, Units.val_mul, Matrix.mulVec_mulVec]`.
-
-Establish `hmem2 : (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • (((γ2.1⁻¹ * 1⁻¹ * (γd⁻¹ * γ.1 * γe) : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ∈ Ld D u 0 (Nat.zero_le _) c3`. Rewrite using `[eΓz]`. Conclude with `hmem`. Use `⟨r, hr, hmem2, ?_⟩` and prove the remaining obligations. Establish `hRz1 : (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • ((γe : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ∈ Ld D u 0 (Nat.zero_le _) c1` using `Submodule.smul_mem _ _ hz1`.
-
-Establish `eback : ((γe⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • ((γe : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z)) = (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • z`. Rewrite using `[Matrix.mulVec_smul, inv_mulVec_self]`. Establish `hz2 : ((γe⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • ((γe : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z)) ∈ Ld D u 0 (Nat.zero_le _) c1'`. Rewrite using `[eback]`. Conclude with `Submodule.smul_mem _ _ hz`.
-
-Establish `hd` using `hdf _ hRz1 hz2`. Rewrite `hd` using `[← Int.cast_smul_eq_zsmul ((D.mem u).A.Fv v)]`. Rewrite using `[pr_congr T v c3 ⟨_, hmem2⟩ ⟨_, hmem⟩ (congrArg (fun t => (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • t) eΓz), hval, pr_congr T v c1' ⟨(algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r) • z, Submodule.smul_mem _ _ hz⟩ ⟨_, hz2⟩ eback.symm, hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dn_same_loc (T : Forms0 D u) (v : (D.mem u).A.vT) (k : ℤ) (hμ : ((k : ℤ) : (D.mem u).A.Fv v) ≠ 0)
     (c c2 c1 c3 c1' : (D.mem u).C.cls 0) (γd : GL (Fin (D.R.N 0)) D.host.E) (hγd : γd ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
@@ -244,25 +238,23 @@ set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hμ : ((k : ℤ) : (D.mem u).A.Fv v) ≠ 0` using `by rw [hk]; exact a.ne_zero`. Establish `hδ'` using `isDia_conj T.cls0.lev (T.atT.eV v).1 (T.atT.eV v).2 hδ κ`. Establish `hcl` using `T.val0.dil v a k hk c1 _ hδ'`. Take `⟨c1', hc1'⟩ : ∃ c1', (D.fm u).dil 0 v a c1 = c1'` from `⟨_, rfl⟩`. Rewrite `hcl` using `[hc1']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hh, hhH, κ0, hκK, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hcl`. Establish `hκ0 : κ0.1 ∈ T.cls0.lev.U` using `hκK`. Take `⟨γe, hγe, hge⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hhH)`. Establish `hx1 : (T.cls0.y c1 * conjPt T.cls0.lev δ κ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γe * (T.cls0.y c1').1 * κ0.1 := by`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← hge]`. Take `⟨hLc1, hLd1⟩` from `diamond_lattice_transport T v k _ hδ' c1 c1' γe hγe ⟨κ0.1, hκ0⟩ hx1`. Establish `hdf : ∀ z (hz : z ∈ Ld D u 0 (Nat.zero_le _) c1) (hz2 : ((γe⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z ∈ Ld D u 0 (Nat.zero_le _) c1'), (D.fm u).fv 0 v c1' (T.lv0.pr v c1' ⟨_, hz2⟩) = k • (D.fm u).fv 0 v c1 (T.lv0.pr v c1 ⟨z, hz⟩)` using `fun z hz hz2 => diaFun_same T v k _ hδ' c1 c1' γe ⟨κ0.1, hκ0⟩ hx1 z hz hz2`. Establish `hκdU : κd.1 ∈ UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `((T.cls0.lev.U_eq _).1 κd.2).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨η', hη'⟩ : ∃ η' : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), η'.1 = κd.1 * (δ.1⁻¹ * η.1 * δ.1) * κd.1⁻¹` from `⟨⟨_, mul_mem (mul_mem hκdU (mul_mem (mul_mem (inv_mem δ.2) η.2) δ.2)) (inv_mem hκdU)⟩, rfl⟩`. Take `⟨κ', hκ'⟩ : ∃ κ' : T.cls0.lev.U, κ'.1 = κd.1 * κ.1 * κ0.1⁻¹` from `⟨κd * κ * (⟨κ0.1, hκ0⟩ : T.cls0.lev.U)⁻¹, rfl⟩`. Establish `hs' : ∀ w, w ≠ (T.atT.eV v).1 → bc (prV (E` using `D.host.E) w) η'.1 = 1 := by`. Introduce `w hw`. Rewrite using `[hη']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_inv, hs1 w hw, hδ.1 w hw, inv_one, mul_one, mul_inv_cancel]`. Establish `ey2 : (T.cls0.y c2).1 = (bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd)⁻¹ * ((T.cls0.y c).1 * δ.1) * κd.1⁻¹ := by`. Rewrite using `[hrel]`. Use `group`. Establish `ey1 : (T.cls0.y c1').1 = (bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γe)⁻¹ * ((T.cls0.y c1).1 * (κ.1⁻¹ * δ.1 * κ.1)) * κ0.1⁻¹ := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hx1`. Simplify using `only [Subgroup.coe_mul, conjPt_coe] at h`. Rewrite using `[h]`. Use `group`. Establish `ey : (T.cls0.y c).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 * (T.cls0.y c1).1 * κ.1⁻¹ * η.1⁻¹ := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `group`. Establish `h1' : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γd⁻¹ * γ.1 * γe) * (T.cls0.y c1').1 = (T.cls0.y c2).1 * η'.1 * κ'.1 := by`. Rewrite using `[hη', hκ', ey1, ey2, ey]`. Simplify using `only [map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `group`. Establish `h3 : (T.cls0.y c2).1 * (1 : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (1 : GL (Fin (D.R.N 0)) D.host.E) * (T.cls0.y c2).1 * (1 : T.cls0.lev.U).1 := by`. Simplify using `only [OneMemClass.coe_one, map_one, one_mul, mul_one]`. Establish `hU` using `matching_unitary_eq T.cls0 c2 c1' c2 c3 (γd⁻¹ * γ.1 * γe) γ2.1 1 η' η2 1 κ' κ2 1 h1' h2 h3`. Establish `hloc` using `dn_same_loc T v k hμ c c2 c1 c3 c1' γd hγd hLc hLd x x2 hxy γ γ2 hl1 hl2 hf1 hf2 γe hγe hLc1 hLd1 hdf hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `matching_move_mem_level_zero T v c2 c1' c2 c3 (γd⁻¹ * γ.1 * γe) γ2.1 1 η' η2 1 κ' κ2 1 hs' hs2 (by simp only [OneMemClass.coe_one, map_one]) h1' h2 h3 hloc`. Establish `e2 : η2.1⁻¹ * κd.1 * (δ.1⁻¹ * η.1 * δ.1) = (η2.1⁻¹ * (1 : T.cls0.lev.U).1 * η'.1) * κd.1`. Rewrite using `[hη', OneMemClass.coe_one]`. Use `group`. Rewrite using `[e2]`.
-
-Conclude with `mul_mem hm κd.2`.
+A detailed English derivation is pending.
 -/
 theorem dn_same_one (T : Forms0 D u) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (k : ℤ)
     (hk : (k : (D.mem u).A.Fv v) = a) (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -341,23 +333,19 @@ set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `v a k hk δ hδ c γd hγd κd hrel`. Take `⟨hLc, hLd⟩` from `diamond_lattice_transport T v k δ hδ c ((D.fm u).dil 0 v a c) γd hγd κd hrel`. Take `⟨z, hz⟩` from `dni_exists_one T v ((D.fm u).dil 0 v a c)`. Establish `hw : (γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1 ∈ Ld D u 0 (Nat.zero_le _) c` using `dni_mem_of _ hLd z.2`. Establish `hz2 : ((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1) ∈ Ld D u 0 (Nat.zero_le _) ((D.fm u).dil 0 v a c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mulVec_self]`. Conclude with `z.2`. Establish `hdf` using `diaFun_same T v k δ hδ c _ γd κd hrel _ hw hz2`. Rewrite `hdf` using `[pr_congr T v _ ⟨_, hz2⟩ z (inv_mulVec_self γd z.1), hz]`. Use `set φ : (D.fm u).lk 0 v ((D.fm u).dil 0 v a c) ≃ₗ[(D.mem u).A.Fv v] (D.fm u).lk 0 v c := (dniEquiv T v ((D.fm u).dil 0 v a c) c γd hLc hLd).trans (LinearEquiv.smulOfUnit a) with hφdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : ∀ w, φ w = ((k : ℤ) : (D.mem u).A.Fv v) • dniEquiv T v ((D.fm u).dil 0 v a c) c γd hLc hLd w`. Introduce `w`. Rewrite using `[hk]`. Both sides reduce to the same expression. Establish `h1 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z.1 ∈ Lk T.atT 0 (Nat.zero_le _) v ((D.fm u).dil 0 v a c)` using `Submodule.mem_sup_left (dnk_tld T _ z.1 z.2)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTw : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • ((γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1) ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.mem_sup_left (dnk_tld T c _ hw)`. Establish `hkw : (D.fm u).fv 0 v c (T.lv0.pr v c (k • (⟨_, hw⟩ : ↥(Ld D u 0 (Nat.zero_le _) c)))) = 1`. Rewrite using `[map_zsmul, map_zsmul]`. Conclude with `hdf.symm`. Establish `hTkw : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (k • (⟨_, hw⟩ : ↥(Ld D u 0 (Nat.zero_le _) c))).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.mem_sup_left (dnk_tld T c _ (k • (⟨_, hw⟩ : ↥(Ld D u 0 (Nat.zero_le _) c))).2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hte : φ ((D.fm u).te 0 v ((D.fm u).dil 0 v a c)) = (D.fm u).te 0 v c`. Rewrite using `[← T.lv0.te v _ z hz h1, ← T.lv0.te v c _ hkw hTkw, hφ, dniEquiv_prk]`. Establish `e : (⟨(((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (k • (⟨_, hw⟩ : ↥(Ld D u 0 (Nat.zero_le _) c))).1, hTkw⟩ : ↥(Lk T.atT 0 (Nat.zero_le _) v c)) = k • (⟨_, hTw⟩ : ↥(Lk T.atT 0 (Nat.zero_le _) v c))`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (k • ((γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1)) = k • ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • ((γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `smul_comm _ _ _`. Rewrite using `[e, map_zsmul, ← Int.cast_smul_eq_zsmul ((D.mem u).A.Fv v)]`. Use `congrArg (fun t => ((k : ℤ) : (D.mem u).A.Fv v) • T.lv0.prk v c t) (Subtype.ext ?_)` and prove the remaining obligations. Use `show (γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z.1) = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • ((γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1)`. Conclude with `Matrix.mulVec_smul _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hne0 : ∀ {c0 : (D.mem u).C.cls 0} (x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c0)), x ((D.fm u).te 0 v c0) = 1 → x ≠ 0`. Introduce `c0 x hx h0`. Rewrite `hx` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one hx`. Use `choose γ1 η1 κ1 hs1 hr1 hl1 hf1 ht1 using fun x : {x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) // x ((D.fm u).te 0 v c) = 1} => T.down_natural_level_zero v c x.1 (hne0 x.1 x.2)`.
-
-Use `choose γ2 η2 κ2 hs2 hr2 hl2 hf2 ht2 using fun x : {x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v ((D.fm u).dil 0 v a c)) // x ((D.fm u).te 0 v ((D.fm u).dil 0 v a c)) = 1} => T.down_natural_level_zero v ((D.fm u).dil 0 v a c) x.1 (hne0 x.1 x.2)`. Use `⟨dualSigma φ _ _ hte, η1, η2, fun x => ⟨γ1 x, κ1 x, hs1 x, hr1 x, fun h => ?_⟩, fun x => ⟨γ2 x, κ2 x, hs2 x, hr2 x, fun h => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[ht1 x h s _ (is_translate_inverse T (γ1 x) s), Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
-
-Use function extensionality and compare the values at `s`. Rewrite using `[ht2 x h s _ (is_translate_inverse T (γ2 x) s), Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression. Conclude with `dn_same_one T v a k hk δ hδ c _ _ _ γd hγd κd hrel hLc hLd x.1 _ (fun w => by rw [dualSigma_apply, hφ, map_smul]) (γ1 x) (γ2 _) (η1 x) (η2 _) (κ1 x) (κ2 _) (hs1 x) (hs2 _) (hr1 x) (hr2 _) (hl1 x) (hl2 _) (hf1 x) (hf2 _)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dnDiaSame0F_holds (T : Forms0 D u) : DnDiaSame0F T := by
   intro v a k hk δ hδ c γd hγd κd hrel
@@ -418,7 +406,7 @@ theorem dnDiaSame0F_holds (T : Forms0 D u) : DnDiaSame0F T := by
       (hr1 x) (hr2 _) (hl1 x) (hl2 _) (hf1 x) (hf2 _)
 
 /- English proof (translation)
-Introduce `_ _ T` and use `dnDiaSame0F_holds T`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dnSameAll_holds : DnSameAll := fun _ _ T => dnDiaSame0F_holds T
 

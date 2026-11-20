@@ -19,7 +19,7 @@ noncomputable def barInclF (n : ℕ) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Simplify using `[barInclF]`.
+Simplify using the standard rewrite rules.
 -/
 lemma barInclF_single (n : ℕ) (v : Fin n → S) (s : S) (r : k) :
     (barInclF S n).hom (Finsupp.single v (MonoidAlgebra.single s r)) =
@@ -28,7 +28,7 @@ lemma barInclF_single (n : ℕ) (v : Fin n → S) (s : S) (r : k) :
 
 omit [Group G] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Fin.contractNth, Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma contractNth_subtype {G : Type u} [Group G] (S : Subgroup G) {n : ℕ} (j : Fin (n + 1))
     (x : Fin (n + 1) → S) :
@@ -39,9 +39,9 @@ lemma contractNth_subtype {G : Type u} [Group G] (S : Subgroup G) {n : ℕ} (j :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `free_ext _ _ _ _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [Rep.hom_comp, Representation.IntertwiningMap.comp_apply]`. Rewrite using `[barInclF_single, barComplex.d_single]`. Rewrite using `[Rep.resMap_hom_apply, OneMemClass.coe_one, barComplex.d_single]`. Rewrite using `[map_add, map_sum, barInclF_single]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (· + ·) rfl (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[barInclF_single, OneMemClass.coe_one]`. Conclude with `congrArg (fun v => Finsupp.single v _) (contractNth_subtype S i x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma barInclF_comm (j : ℕ) :
     barInclF S (j + 1) ≫ (resFunctor S.subtype).map (barComplex.d k G j) =
@@ -73,9 +73,7 @@ noncomputable def barIncl :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use extensionality with `: 1`. Use `free_ext _ _ _ _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [barIncl, resBarResolution, Functor.mapProjectiveResolution, HomologicalComplex.comp_f, Rep.hom_comp, Representation.IntertwiningMap.comp_apply]`. Simplify using the standard rewrite rules. Use `erw [barInclF_single]`.
-
-Use `erw [barResolution_π_f_zero_single (k := k) (G := G)]`. Use `erw [barResolution_π_f_zero_single (k := k) (G := S)]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma barIncl_π : barIncl (k := k) S ≫ (resBarResolution (k := k) S).π = (barResolution k S).π := by
   ext : 1
@@ -117,7 +115,7 @@ noncomputable def resHomComplex (A : Rep.{u} k G) :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `free_ext _ _ _ _ _ fun w => ?_` and prove the remaining obligations. Simplify using `only [Rep.hom_comp, Representation.IntertwiningMap.comp_apply]`. Rewrite using `[barInclF_single]`. Simplify using `[cochainsMap_f_hom]`. Conclude with `(show (freeLift k G A y).hom (Finsupp.single (Subtype.val ∘ w) (MonoidAlgebra.single 1 1)) = y (Subtype.val ∘ w) by simp).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma freeLift_cochainsMap_subtype (A : Rep.{u} k G) (n : ℕ) (y : (Fin n → G) → A) :
     freeLift k S (res S.subtype A) (((cochainsMap S.subtype (𝟙 (res S.subtype A))).f n).hom y) =
@@ -132,7 +130,7 @@ lemma freeLift_cochainsMap_subtype (A : Rep.{u} k G) (n : ℕ) (y : (Fin n → G
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use extensionality with `n y : 3`. Conclude with `freeLift_cochainsMap_subtype S A n y`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma cochainsMap_subtype_comp_iso (A : Rep.{u} k G) :
     cochainsMap S.subtype (𝟙 (res S.subtype A)) ≫ (inhomogeneousCochainsIso (res S.subtype A)).hom =
@@ -144,9 +142,9 @@ lemma cochainsMap_subtype_comp_iso (A : Rep.{u} k G) :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use extensionality with `n y : 3`. Use function extensionality and compare the values at `v`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((resCoindToHom S.subtype ((barResolution k G).complex.X n) (res S.subtype A) ((resFunctor S.subtype).map (freeLift k G A y))).hom (Finsupp.single v (MonoidAlgebra.single 1 1))).1 g = ((resCoindToHom S.subtype A (res S.subtype A) (𝟙 _)).hom (y v)).1 g`. Rewrite using `[resCoindToHom_hom_apply_coe, resCoindToHom_hom_apply_coe]`.
+By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(A.ρ.freeLift y) ((Representation.free k G (Fin n → G)) g (Finsupp.single v (MonoidAlgebra.single 1 1))) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma iso_resHomComplex_adj_iso (A : Rep.{u} k G) :
     (inhomogeneousCochainsIso A).hom ≫ resHomComplex S A ≫
@@ -166,11 +164,9 @@ lemma iso_resHomComplex_adj_iso (A : Rep.{u} k G) :
   simp
 
 /- English proof (translation)
-Establish `H` using `((linearYonedaObjHomotopy (R := k) (barInclHomotopy (k := k) S) (res S.subtype A)).compRight ((linearYonedaObjResProjectiveResolutionIso (barResolution k G) (res S.subtype A)).hom ≫ (inhomogeneousCochainsIso (coind S.subtype (res S.subtype A))).inv)).compLeft ((inhomogeneousCocha …`. Establish `e1 : ((inhomogeneousCochainsIso A).hom ≫ resHomComplex S A) ≫ linearYonedaObjMap ((barHomotopyEquiv (k` using `k) S).inv ≫ barIncl S) (res S.subtype A) ≫ (linearYonedaObjResProjectiveResolutionIso (barResolution k G) (res S.subtype A)).hom ≫ (inhomogeneousCochainsIso (coind S.subtype (res S.subtype A))).inv = cochainsMap S.subtype (𝟙 (res S.subtype A)) ≫ (shapiroCochainsHomotopyEquiv S (r …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[linearYonedaObjMap_comp]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (cochainsMap S.subtype (𝟙 (res S.subtype A)) ≫ (inhomogeneousCochainsIso (res S.subtype A)).hom) ≫ linearYonedaObjMap (barHomotopyEquiv (k := k) S).inv (res S.subtype A) ≫ (linearYonedaObjResProjectiveResolutionIso (barResolution k G) (res S.subtype A)).hom ≫ (inhomogeneousCo …`. Use `_ = _ := by simp only [Category.assoc]; rfl`. Establish `e2 : ((inhomogeneousCochainsIso A).hom ≫ resHomComplex S A) ≫ linearYonedaObjMap (𝟙 _) (res S.subtype A) ≫ (linearYonedaObjResProjectiveResolutionIso (barResolution k G) (res S.subtype A)).hom ≫ (inhomogeneousCochainsIso (coind S.subtype (res S.subtype A))).inv = cochainsMap (Mon …`. Rewrite using `[linearYonedaObjMap_id, Category.id_comp, Category.assoc]`. Conclude with `iso_resHomComplex_adj_iso S A`.
-
-Rewrite using `[← e2, ← H.homologyMap_eq, e1, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem homologyMap_cochainsMap_unit (A : Rep.{u} k G) (n : ℕ) :
     HomologicalComplex.homologyMap (cochainsMap (MonoidHom.id G)
@@ -216,7 +212,7 @@ end Key
 section Compare
 
 /- English proof (translation)
-Substitute `ha hcu hsh` using the available equality. Simplify using `[reassoc_of% hb]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 lemma comp_cancel_of_isos {C : Type*} [Category C] {X X' Y Y' Z Z' : C} (pG : X ≅ X') (pS : Y ≅ Y')
     (pGc : Z ≅ Z') (a : X ⟶ Z) (cu : X' ⟶ Z') (m : X' ⟶ Y') (sh : Y' ⟶ Z') (b : Y ⟶ Z) (c : Z ⟶ Y)
@@ -228,9 +224,9 @@ lemma comp_cancel_of_isos {C : Type*} [Category C] {X X' Y Y' Z Z' : C} (pG : X 
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G] (S : Subgroup G) [Fintype S]
 
 /- English proof (translation)
-Establish `h1 : HomologicalComplex.homologyMap (tateComplex.map ((Rep.resCoindAdjunction.{u, u} k S.subtype).unit.app A)) n = ((tateComplexConnectData A).homologyIsoPos n n rfl).hom ≫ HomologicalComplex.homologyMap (cochainsMap (MonoidHom.id G) ((Rep.resCoindAdjunction.{u, u} k S.subtype).u …` using `CochainComplex.ConnectData.homologyMap_map_of_eq_succ _ _ _ _ _ n n rfl`. Establish `h2 : HomologicalComplex.homologyMap (tateShapiroMap S (res S.subtype A)) n = _` using `CochainComplex.ConnectData.homologyMap_map_of_eq_succ (tateComplexConnectData (res S.subtype A)) (tateComplexConnectData (coind S.subtype (res S.subtype A) : Rep.{u} k G)) (groupHomology.chainsMap S.subtype (toResCoind S (res S.subtype A))) (shapiroCochainsHomotopyEquiv S (res S. …`. Establish `hb` using `homologyMap_tateShapiroMap_comp_tateCoindIso_hom S (res S.subtype A) n`. Establish `h2' : HomologicalComplex.homologyMap (shapiroCochainsHomotopyEquiv S (res S.subtype A)).hom n = ((tateComplexConnectData (res S.subtype A)).homologyIsoPos n n rfl).inv ≫ HomologicalComplex.homologyMap (tateShapiroMap S (res S.subtype A)) n ≫ ((tateComplexConnectData (coind S.subt …`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[tateRes_app, Category.assoc]`. Use `show HomologicalComplex.homologyMap (tateComplex.map ((Rep.resCoindAdjunction.{u, u} k S.subtype).unit.app A)) n ≫ (tateCoindIso S (res S.subtype A) n).hom ≫ ((tateComplexConnectData (res S.subtype A)).homologyIsoPos n n rfl).hom = ((tateComplexConnectData A).homologyIsoPos n n r …`. Conclude with `comp_cancel_of_isos _ _ _ _ _ _ _ _ _ h1 (homologyMap_cochainsMap_unit S A n) h2' hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateRes_comp_isoGroupCohomology (n : ℕ) [NeZero n] (A : Rep.{u} k G) :
     (tateRes S n).app A ≫ (TateCohomology.isoGroupCohomology n).hom.app (res S.subtype A) =

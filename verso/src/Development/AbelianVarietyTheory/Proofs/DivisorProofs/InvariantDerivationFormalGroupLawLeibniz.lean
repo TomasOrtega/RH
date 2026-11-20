@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.LawDer
 
 /- English proof (translation)
-Establish `hμ : HasSubst μ` using `hasSubst_of_constantCoeff_zero hc`. Apply the tactic sequence `have hz : HasSubst (Sum.elim (fun i : Fin d => (X i : MvPowerSeries (Fin d) R)) fun _ : Fin d => (0 : MvPowerSeries (Fin d) R)) := hasSubst_of_constantCoeff_zero (by intro s; cases s <;> simp)`. Unfold `atZero`. Rewrite using `[subst_comp_subst_apply hμ hz]`. Establish `: (fun i => subst (Sum.elim (fun i : Fin d => (X i : MvPowerSeries (Fin d) R)) fun _ : Fin d => (0 : MvPowerSeries (Fin d) R)) (μ i)) = fun i => X i` using `hu`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem atZero_subst_of_unit (R : Type) [CommRing R] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hc : ∀ i, constantCoeff (μ i) = 0)
@@ -29,13 +29,13 @@ theorem atZero_subst_of_unit (R : Type) [CommRing R] (d : ℕ)
   rfl
 
 /- English proof (translation)
-Introduce `R _ d μ hc hu u F G`. Establish `hμ : HasSubst μ` using `hasSubst_of_constantCoeff_zero hc`. Apply the tactic sequence `have hz : HasSubst (Sum.elim (fun i : Fin d => (X i : MvPowerSeries (Fin d) R)) fun _ : Fin d => (0 : MvPowerSeries (Fin d) R)) := hasSubst_of_constantCoeff_zero (by intro s; cases s <;> simp)`. Establish `hmul : ∀ H K : MvPowerSeries (Fin d ⊕ Fin d) R, atZero (H * K) = atZero H * atZero K`. Introduce `H K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `atZero`. Conclude with `subst_mul hz H K`. Establish `h0` using `atZero_subst_of_unit R d μ hc hu`. Establish `key : ∀ i, atZero (pderiv R (Sum.inr i) (subst μ (F * G))) = atZero (pderiv R (Sum.inr i) (subst μ F)) * G + F * atZero (pderiv R (Sum.inr i) (subst μ G))`. Introduce `i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_mul hμ, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Unfold `atZero`. Rewrite using `[subst_add hz, subst_mul hz, subst_mul hz]`. Establish `hF` using `h0 F`. Establish `hG` using `h0 G`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `atZero at hF hG`. Rewrite using `[hF, hG]`. Expand and normalize the polynomial expressions, which then agree. Unfold `invDer`. Repeatedly rewrite using `[key, smul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invDer_mul : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), (∀ i, constantCoeff (μ i) = 0) → op μ (fun i => (X i : MvPowerSeries (Fin d) R)) (fun _ => 0) = (fun i => X i) → ∀ (u : Fin d → R) (F G : MvPowerSeries (Fin d) R), invDer μ u (F * G) = invDer μ u F * G + F * invDer μ u G := by
   intro R _ d μ hc hu u F G

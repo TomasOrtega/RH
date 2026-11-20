@@ -6,11 +6,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.CompactAvg
 
 /- English proof (translation)
-Introduce `G _ _ _ J hJ V _ _ π hπ u hu hl`. Take `⟨E, -, hfix, -, hinv, -⟩` from `GlobalTheory.T.compact_fixed_vector_projection G J hJ V π hπ`. Assume the negation of the conclusion as `hne`. Establish `hex : ∃ l0 : Module.Dual ℂ V, l0 u ≠ 0`. Assume the negation of the conclusion as `hall`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hall`. Conclude with `hne ((Module.forall_dual_apply_eq_zero_iff ℂ u).1 hall)`. Take `⟨l0, hl0⟩` from `hex`. Establish `hzero : (l0 ∘ₗ E) u = 0`. Use `hl (l0 ∘ₗ E) fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.comp_assoc, hinv x hx]`. Apply `hl0` to reduce the goal to its premises. Simplify `hzero` using `[hfix u hu]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem invariant_forms_separate_fixed :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G),

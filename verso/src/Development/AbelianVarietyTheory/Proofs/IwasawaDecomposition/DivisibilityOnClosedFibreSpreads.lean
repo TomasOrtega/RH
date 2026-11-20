@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Spread
 
 /- English proof (translation)
-Establish `hq : X.fromSpecStalk x q ∈ U`. Establish `: X.fromSpecStalk x q ⤳ x` using `(Scheme.range_fromSpecStalk (x := x)).le ⟨q, rfl⟩`. Conclude with `this.mem_open U.2 hx`. Rewrite using `[gs_eq _ _ _ hq, gs_eq _ _ _ hx]`. Rewrite using `[Scheme.fromSpecStalk_app hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.comp_apply, Scheme.ΓSpecIso_inv]`. Use `erw [TopCat.Presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gs_fromSpecStalk (X : Scheme.{0}) (x : X) (U : X.Opens) (hx : x ∈ U) (c : Γ(X, U))
     (q : PrimeSpectrum (X.presheaf.stalk x)) :
@@ -37,7 +37,7 @@ theorem gs_fromSpecStalk (X : Scheme.{0}) (x : X) (U : X.Opens) (hx : x ∈ U) (
 variable {V : Type} [CommRing V]
 
 /- English proof (translation)
-Establish `h : g z ∈ p ⁻¹ᵁ (⊤ : (Sp V).Opens)` using `trivial`. Rewrite using `[cst, cst, ← gs_pull g p z ⊤ trivial, gs_stalkMap g z (p ⁻¹ᵁ ⊤) h, gs_pull (𝟙 Y) p (g z) ⊤ trivial, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkMap_cst {Y Z : Scheme.{0}} (g : Z ⟶ Y) (p : Y ⟶ Sp V) (z : Z) (v : V) :
     (g.stalkMap z).hom (cst p (g z) v) = cst (g ≫ p) z v := by
@@ -46,9 +46,9 @@ theorem stalkMap_cst {Y Z : Scheme.{0}} (g : Z ⟶ Y) (p : Y ⟶ Sp V) (z : Z) (
     Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[cst, gs_stalkMap p z ⊤ trivial, isUnit_map_iff]`. Set `P : PrimeSpectrum V` to `p z`. Establish `e : gs (𝟙 (Sp V)) (p z) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom v) = algebraMap V ((Spec.structureSheaf V).presheaf.stalk P) v`. Rewrite using `[gs_eq _ _ (⊤ : (Sp V).Opens) (show (𝟙 (Sp V) : Sp V ⟶ Sp V) (p z) ∈ (⊤ : (Sp V).Opens) from trivial)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `IsLocalization.AtPrime.isUnit_to_map_iff ((Spec.structureSheaf V).presheaf.stalk P) P.asIdeal v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_cst_iff {Z : Scheme.{0}} (p : Z ⟶ Sp V) (z : Z) (v : V) :
     IsUnit (cst p z v) ↔ v ∉ (p z).asIdeal := by
@@ -62,7 +62,7 @@ theorem isUnit_cst_iff {Z : Scheme.{0}} (p : Z ⟶ Sp V) (z : Z) (v : V) :
   exact IsLocalization.AtPrime.isUnit_to_map_iff ((Spec.structureSheaf V).presheaf.stalk P) P.asIdeal v
 
 /- English proof (translation)
-Use `(isNormalScheme_iff _).2 fun P => ?_` and prove the remaining obligations. Set `P' : PrimeSpectrum R` to `P`. Express the relevant statement in the definitionally equal form `IsDomain ((Spec.structureSheaf R).presheaf.stalk P') ∧ IsIntegrallyClosed ((Spec.structureSheaf R).presheaf.stalk P')`. Establish `hle` using `P'.asIdeal.primeCompl_le_nonZeroDivisors`. Conclude with `⟨IsLocalization.isDomain_of_le_nonZeroDivisors ((Spec.structureSheaf R).presheaf.stalk P') hle, isIntegrallyClosed_of_isLocalization _ _ hle⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isNormalScheme_sp (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] :
     IsNormalScheme (Sp R) := by
@@ -81,7 +81,7 @@ namespace GlobalTheory.Spread
 variable {V : Type} [CommRing V]
 
 /- English proof (translation)
-Unfold `cst`. Use `(gs_pull (X.fromSpecStalk x) p q ⊤ trivial _).symm.trans ((gs_fromSpecStalk X x (p ⁻¹ᵁ ⊤) trivial _ q).trans ?_)` and prove the remaining obligations. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cst_fromSpecStalk (X : Scheme.{0}) (x : X) (p : X ⟶ Sp V) (q : PrimeSpectrum (X.presheaf.stalk x))
     (v : V) :
@@ -94,13 +94,13 @@ theorem cst_fromSpecStalk (X : Scheme.{0}) (x : X) (p : X ⟶ Sp V) (q : PrimeSp
   congr 1
 
 /- English proof (translation)
-Use `set P := G.hom y`. Establish `hI : IsIntegral (G.hom.fiber P)` using `GeometricallyIntegral.geometrically_isIntegral (f := G.hom) ((Sp R).fromSpecResidueField P) (pullback.fst _ _) (pullback.snd _ _) (IsPullback.of_hasPullback _ _)`. Set `η` to `G.hom.fiberι P (genericPoint (G.hom.fiber P))`. Establish `hη : ∀ w : G.left, G.hom w = P → η ⤳ w`. Introduce `w hw`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w', rfl⟩ : w ∈ Set.range (G.hom.fiberι P)` from `by rw [Scheme.Hom.range_fiberι]; exact hw`. Conclude with `(genericPoint_specializes w').map (G.hom.fiberι P).continuous`. Establish `hηP : G.hom η = P`. Establish `: η ∈ Set.range (G.hom.fiberι P)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.Hom.range_fiberι]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `hηy : η = y` using `hy η (hη y rfl) hηP`. Set `e` to `(MonObj.one : 𝟙_ (Over (Sp R)) ⟶ G).left`. Establish `he : ∀ u, G.hom (e u) = u` using `fun u => by`. Express the relevant statement in the definitionally equal form `(e ≫ G.hom) u = u`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.w]`. Both sides reduce to the same expression. Use `⟨e (closedPoint R), he _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hηy]`. Conclude with `(hη (e P) (he P)).trans ((IsLocalRing.specializes_closedPoint P).map e.continuous)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closedFibre_of_generic (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R))
     [GrpObj G] [GeometricallyIntegral G.hom] (y : G.left)
@@ -134,33 +134,31 @@ end GlobalTheory.Spread
 namespace GlobalTheory.Spread
 
 /- English proof (translation)
-Introduce `R _ _ _ hN hIC G _ hG r hr W a x hxW H`. Establish `: Smooth G.hom` using `hG.smooth`. Establish `: GeometricallyConnected G.hom` using `hG.geomConnected`. Establish `: GeometricallyIntegral G.hom` using `GlobalTheory.geometricallyIntegral_of_smooth G.hom`. Establish `: IsNormalScheme (Sp R)` using `isNormalScheme_sp R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNormalScheme G.left` using `GlobalTheory.isNormalScheme_of_smooth G.hom`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Take `⟨_, _⟩` from `(isNormalScheme_iff G.left).1 ‹_› x`. Establish `ha : cst G.hom x r ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hreg` using `cst_regular G.hom x hr`. Rewrite `hreg` using `[h0]`. Conclude with `one_ne_zero (hreg (by simp : (0 : G.left.presheaf.stalk x) * 1 = 0 * 0))`. Use `GlobalTheory.dvd_of_forall_height_eq_one ha fun q _ hq1 haq => ?_` and prove the remaining obligations. Set `f` to `G.left.fromSpecStalk x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q : PrimeSpectrum (G.left.presheaf.stalk x)` to `⟨q, inferInstance⟩`. Establish `hmem : ∀ Q' : PrimeSpectrum (G.left.presheaf.stalk x), r ∈ (G.hom (f Q')).asIdeal ↔ cst G.hom x r ∈ Q'.asIdeal`. Introduce `Q'`. Use `letI := StructureSheaf.stalkAlgebra (G.left.presheaf.stalk x) Q'`. Establish `e1` using `isUnit_cst_iff (f ≫ G.hom) Q' r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[cst_fromSpecStalk]`. Establish `e2` using `IsLocalization.AtPrime.isUnit_to_map_iff ((Spec.structureSheaf (G.left.presheaf.stalk x)).presheaf.stalk Q') Q'.asIdeal (cst G.hom x r)`. Establish `e` using `e1.symm.trans e2`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Conclude with `(e.2 h') h`. Introduce `h`. Assume the negation of the conclusion as `h'`. Conclude with `(e.1 h') h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : f Q ⤳ x` using `(Scheme.range_fromSpecStalk (x := x)).le ⟨Q, rfl⟩`. Establish `hyW : f Q ∈ W` using `hyx.mem_open W.2 hxW`. Establish `key : ∃ z : G.left, G.hom z = closedPoint R ∧ f Q ⤳ z`. Apply `exists_closedFibre_of_generic R G (f Q)` to reduce the goal to its premises. Introduce `w hwy hw`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Q'', rfl⟩ : w ∈ Set.range f := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hwy.trans hyx`. Set `Q' : PrimeSpectrum (G.left.presheaf.stalk x)` to `Q''`. Establish `hsp : Q' ⤳ Q` using `(f.isEmbedding.isInducing.specializes_iff).1 hwy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hle : Q'.asIdeal ≤ q` using `(PrimeSpectrum.le_iff_specializes Q' Q).2 hsp`. Establish `haQ' : cst G.hom x r ∈ Q'.asIdeal` using `(hmem Q').1 (by change r ∈ (G.hom (f Q'')).asIdeal; rw [hw]; exact (hmem Q).2 haq)`. Establish `hQ : Q'' = Q`. Assume the negation of the conclusion as `hne`. Establish `hlt : Q'.asIdeal < q` using `lt_of_le_of_ne hle (fun h => hne (PrimeSpectrum.ext h))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Ideal.height_strict_mono_of_isPrime hlt`. Rewrite `h1` using `[hq1, ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Rewrite `haQ'` using `[h1]`. Conclude with `ha haQ'`. Rewrite using `[hQ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `H (f Q) hyW key`. Establish `hd` using `map_dvd (f.stalkMap Q).hom ⟨t, ht⟩`. Use `replace hd : cst (f ≫ G.hom) Q r ∣ gs f Q W a := by`. Establish `e1` using `stalkMap_cst f G.hom Q r`. Establish `e2` using `gs_stalkMap f Q W hyW a`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Rewrite using `[← e1, e2]`. Conclude with `hd`. Rewrite `hd` using `[cst_fromSpecStalk, gs_fromSpecStalk _ x W hxW]`. Use `letI := StructureSheaf.stalkAlgebra (G.left.presheaf.stalk x) Q`. Use `haveI : IsLocalization Q.asIdeal.primeCompl ((Spec.structureSheaf (G.left.presheaf.stalk x)).presheaf.stalk Q) := StructureSheaf.IsLocalization.to_stalk _ Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `hd`. Take `⟨⟨c, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (S := (Spec.structureSheaf (G.left.presheaf.stalk x)).presheaf.stalk Q) Q.asIdeal.primeCompl w`. Simplify using `only at hw`. Establish `e : algebraMap (G.left.presheaf.stalk x) ((Spec.structureSheaf (G.left.presheaf.stalk x)).presheaf.stalk Q) (gs (𝟙 G.left) x W a * s) = algebraMap (G.left.presheaf.stalk x) ((Spec.structureSheaf (G.left.presheaf.stalk x)).presheaf.stalk Q) (cst G.hom x r * c)`. Rewrite using `[map_mul, hw]`.
-
-Use `erw [mul_assoc, IsLocalization.mk'_spec]`. Rewrite using `[map_mul]`. Take `⟨u, hu⟩` from `(IsLocalization.eq_iff_exists Q.asIdeal.primeCompl _).1 e`. Use `⟨u * s, Q.asIdeal.primeCompl.mul_mem u.2 s.2, ⟨u * c, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `hu`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dvd_of_dvd_near_closedFibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R → IsIntegrallyClosed R →
     ∀ (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ (r : R), r ≠ 0 → ∀ (W : G.left.Opens) (a : Γ(G.left, W))

@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSerie
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TorusSymbol.betaWeight | exact GlobalTheory.CompanionTheory.TorusSymbol.betaWeight | (intros; apply GlobalTheory.CompanionTheory.TorusSymbol.betaWeight <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.beta_weight_of_torus_facts : PositivityTheory.RgDs.K.HolFacts → PositivityTheory.RgDs.K.RhoTorus → PositivityTheory.RgDs.K.TorW → PositivityTheory.RgDs.K.BetaWeight := by
   first | exact @GlobalTheory.CompanionTheory.TorusSymbol.betaWeight | exact GlobalTheory.CompanionTheory.TorusSymbol.betaWeight | (intros; apply GlobalTheory.CompanionTheory.TorusSymbol.betaWeight <;> assumption)

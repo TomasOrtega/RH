@@ -38,20 +38,20 @@ Both sides reduce to the same expression.
 theorem extA_apply (o : OrthDec S A B) (u : WO A T) : extA o T u = (o.resS T).symm (u, 0) := rfl
 
 /- English proof (translation)
-Rewrite using `[o.resS_symm_apply, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_left (o : OrthDec S A B) (u : WO A T) : (o.resS T).symm (u, 0) = u ⬝ o.pA := by
   rw [o.resS_symm_apply, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[OrthDec.resS_symm_apply, OrthDec.resS_symm_apply]`. Conclude with `add_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_swap (o : OrthDec S A B) (v : WO B T) : (o.symm.resS T).symm (v, 0) = (o.resS T).symm (0, v) := by
   rw [OrthDec.resS_symm_apply, OrthDec.resS_symm_apply]
   exact add_comm _ _
 
 /- English proof (translation)
-Unfold `compAt OrthDec.pA GlobalTheory.MixModel.rat`. Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `GlobalTheory.FockCompare.comp_incA hθ τ e`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem compAt_pA {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B) (τ : D.what₂.Tau) :
     compAt θ τ o.pA = o.qA.map (tauE D τ) := by
@@ -62,11 +62,11 @@ theorem compAt_pA {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B) (τ : 
   exact GlobalTheory.FockCompare.comp_incA hθ τ e
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ z`. Set `L : ℝ →+ WO S T` to `(extA o T).comp (lineAt θ τ z)`. Establish `hL' : IsLineAt θ τ (z * o.qA.map (tauE D τ)) L`. Use `⟨(o.continuous_resS_symm T).comp (hL.1.prodMk continuous_const), fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Use `show ((o.resS T).symm (lineAt θ τ z t, 0)).map (finPart D) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symm_left, Matrix.map_mul, hL.2.1, Matrix.zero_mul]`. Use `show compAt θ τ' ((o.resS T).symm (lineAt θ τ z t, 0)) = _`. Rewrite using `[symm_left, GlobalTheory.OrientedHeis.compAt_mul, hL.2.2, compAt_pA hθ]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul]`. Rewrite using `[Matrix.zero_mul]`. Rewrite using `[GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ _) hL']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lineAt_slice {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin A.rank) ℂ) (t : ℝ) :
@@ -87,7 +87,7 @@ theorem lineAt_slice {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B) (τ
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [slA, heisO]`. Rewrite using `[o.symplOH_resS T, ← map_add, Prod.mk_add_mk, add_zero]`. Simplify using `only [AddEquiv.apply_symm_apply, symplOH_zero_left, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heisO_slice (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec S A B) (u : WO A T) (g : WO S T → ℂ) :
     heisO ψ A T u (slA o g) = slA o (heisO ψ S T ((o.resS T).symm (u, 0)) g) := by
@@ -97,7 +97,7 @@ theorem heisO_slice (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec S A B) (u : WO
   simp only [AddEquiv.apply_symm_apply, symplOH_zero_left, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [Formalism.IndefR.Datum.dRho, heisO_slice, lineAt_slice hθ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dRho_slice (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin A.rank) ℂ) (g : WO S T → ℂ) :
@@ -123,7 +123,7 @@ def opA (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (o : OrthDec S A B)
   Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (dirA o a) g
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[wordAct_cons, wordAct_cons, ih]`. Conclude with `dRho_slice ψ hθ o a.1 _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_slice (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B)
     (l : List (D.what₂.Tau × Fin T.rank × Fin A.rank × Bool)) (g : WO S T → ℂ) :
@@ -137,9 +137,9 @@ theorem word_slice (ψ : AddChar (AF D.host.F) ℂ) {θ : InfFam D} (hθ : IsInf
 abbrev supN (φ : WO S T → ℂ) : ℝ≥0∞ := ⨆ w, ‖φ w‖ₑ
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, fun g _ k => by simp⟩`. Consider the case `cons a l ih`. Take `⟨c, hc⟩` from `ih`. Use `⟨Real.toNNReal (∑ i, ∑ j, (|(dirA o a i j).re| + |(dirA o a i j).im|)) * c, fun g hg k => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : IsThetaFunO ψ S T (wordAct (opA ψ θ o) l g)` using `wordAct_rel (B := opA ψ θ o) (R := fun x _ => IsThetaFunO ψ S T x) l (fun a _ _ _ h => theta_dRho hθ hψ a.1 _ h) (y := g) hg`. Rewrite using `[wordAct_cons]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[List.length_cons, show k + (l.length + 1) = k + 1 + l.length by omega, ← mul_assoc, ENNReal.ofReal, ENNReal.coe_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem word_bound {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ)
     (o : OrthDec S A B) (l : List (D.what₂.Tau × Fin T.rank × Fin A.rank × Bool)) :
@@ -164,7 +164,7 @@ theorem word_bound {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
           ENNReal.coe_mul]
 
 /- English proof (translation)
-Establish `h : l2O μ 𝓕 φ ^ 2 ≤ supN φ ^ 2`. Rewrite using `[l2O_sq_eq_lintegral]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(ENNReal.pow_le_pow_left_iff two_ne_zero).1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem l2O_le_supN_of_measure_eq_one {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (h1 : μ 𝓕 = 1) (φ : WO S T → ℂ) :
     l2O μ 𝓕 φ ≤ supN φ := by
@@ -176,7 +176,7 @@ theorem l2O_le_supN_of_measure_eq_one {μ : Measure (WO S T)} {𝓕 : Set (WO S 
   exact (ENNReal.pow_le_pow_left_iff two_ne_zero).1 h
 
 /- English proof (translation)
-The claim follows from `iSup_le fun _ => le_iSup (fun w => ‖φ w‖ₑ) _`.
+A detailed English derivation is pending.
 -/
 theorem supN_slice (o : OrthDec S A B) (φ : WO S T → ℂ) : supN (slA o φ) ≤ supN φ :=
   iSup_le fun _ => le_iSup (fun w => ‖φ w‖ₑ) _
@@ -190,11 +190,11 @@ open GlobalTheory.Size GlobalTheory.OrientedHeis GlobalTheory.FockCompare
 variable {D : D7} {S A B T : HSp D}
 
 /- English proof (translation)
-Use `choose c hc using word_bound (T := T) hψ hθ o`. Use `⟨∑ k ∈ Finset.range (d + 1), ∑ a : Fin k → D.what₂.Tau × Fin T.rank × Fin A.rank × Bool, c (List.ofFn a), fun μ 𝓕 h1 f hf => ?_⟩` and prove the remaining obligations. Unfold `sobO supSob wordSum`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun k hk => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `hkd : k ≤ d` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)`. Rewrite using `[word_slice ψ hθ o]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `wordSum_mono (by rw [List.length_ofFn]; omega) f`. Use `_ = _ := rfl`.
+A detailed English derivation is pending.
 -/
 theorem sobO_slice_le {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ)
     (o : OrthDec S A B) (d : ℕ) : ∃ K : ℝ≥0, ∀ (μ : Measure (WO A T)) (𝓕 : Set (WO A T)), μ 𝓕 = 1 →
@@ -220,15 +220,15 @@ theorem sobO_slice_le {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
     _ = _ := rfl
 
 /- English proof (translation)
-Use `show om p (slA o f + slA o g) 0 = _`. Rewrite using `[map_add]`. Both sides reduce to the same expression. Use `smul c f _ := by show om p (c • slA o f) 0 = _`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `bound U hU := by`. Establish `hψ` using `hom.std`. Set `U' : AddSubgroup (WO A T)` to `U.comap (extA o T)`. Establish `hU' : IsOpen (U' : Set (WO A T))` using `hU.preimage ((o.continuous_resS_symm T).comp (continuous_id.prodMk continuous_const))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, d, hK⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth_onObjects D A.rank T.rank`. Take `⟨C, hC⟩` from `hK A T rfl rfl ψ θ hθ U' hU'`. Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne A T`. Take `⟨K, hKs⟩` from `sobO_slice_le (T := T) hψ hθ o d`. Use `⟨d, C * (ENNReal.ofReal ((height A p.1 * height T p.2) ^ e)).toNNReal * K, fun f hf => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsl : slA o f ∈ thetaLevel ψ A T U'`. Use `⟨((GlobalTheory.T.thetaFunction_products_slices_orthogonalDecomposition D ψ hψ S A B T o).2.2.2 f hf.1).1 0, fun u hu h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_slice, ← extA_apply, hf.2 _ hu]`. Rewrite using `[extA_apply, symm_left, Matrix.map_mul, h0, Matrix.zero_mul]`. Establish `h` using `hC χ χ' om hom μ 𝓕 hμ (slA o f) hsl p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2` using `hKs μ 𝓕 hμ.2.2 f hf.1`. Establish `hfin : ENNReal.ofReal ((height A p.1 * height T p.2) ^ e) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.coe_mul, ENNReal.coe_mul, ENNReal.coe_toNNReal hfin]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isSobForm_slice {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) (o : OrthDec S A B)
     {χ χ' : (AE D)ˣ →* Circle} {om : Om A T} (hom : IsWeilDatumO ψ A T χ χ' om) (p : GA D A × GA D T) :
@@ -264,9 +264,9 @@ theorem isSobForm_slice {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : 
         ring
 
 /- English proof (translation)
-Introduce `D ψ θ hθ S A B T o`. Use `⟨fun χ χ' om hom p => isSobForm_slice hθ o hom p, fun χ χ' om hom p => ?_⟩` and prove the remaining obligations. Establish `e : (fun f : WO S T → ℂ => om p (fun v => f ((o.resS T).symm (0, v))) 0) = fun f => om p (fun v => f ((o.symm.resS T).symm (v, 0))) 0`. Use function extensionality and compare the values at `f`. Simplify using `only [symm_swap]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isSobForm_slice hθ o.symm hom p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_slice_isSobForm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (S A B T : HSp D) (o : OrthDec S A B),

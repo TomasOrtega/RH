@@ -4,21 +4,19 @@ open Polynomial IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S _ _ _ f hmon hdeg hdvd`. Use `letI : Fintype (ResidueField S) := Fintype.ofFinite _`. Establish `hQ : Nat.card (ResidueField S) = Fintype.card (ResidueField S)` using `Nat.card_eq_fintype_card`. Use `set Q := Fintype.card (ResidueField S) with hQdef`. Use `set g : (ResidueField S)[X] := f.map (residue S) with hgdef`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgm : g.Monic` using `hmon.map _`. Establish `hgdeg : g.natDegree ≠ 0` using `by rw [hgdef, hmon.natDegree_map]; exact hdeg`. Establish `hQ1 : 1 < Q` using `Fintype.one_lt_card`. Establish `hdvd' : g ∣ X ^ Q - X`. Establish `h1 : g ∣ X ^ (Q - 1) - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Polynomial.map_dvd (residue S) hdvd` as an intermediate fact. Simplify `this` using `[hQ, g]`. Establish `: (X ^ Q - X : (ResidueField S)[X]) = X * (X ^ (Q - 1) - 1)` using `by conv_lhs => rw [show Q = (Q - 1) + 1 by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dvd_mul_of_dvd_right h1 _`. Establish `hne : (X ^ Q - X : (ResidueField S)[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero (ResidueField S) hQ1`. Establish `hsplit : Splits (X ^ Q - X : (ResidueField S)[X])`. Rewrite using `[splits_iff_card_roots, FiniteField.roots_X_pow_card_sub_X, FiniteField.X_pow_card_sub_X_natDegree_eq (ResidueField S) hQ1]`. Simplify using `[Q]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgs : Splits g` using `hsplit.of_dvd hne hdvd'`. Take `⟨abar, habar⟩` from `hgs.exists_eval_eq_zero (by rw [degree_eq_natDegree hgm.ne_zero]; exact_mod_cast hgdeg)`. Establish `hchar : ringChar (ResidueField S) ∣ Q`. Apply `(ringChar.spec (ResidueField S) Q).mp` to reduce the goal to its premises. Conclude with `FiniteField.cast_card_eq_zero (ResidueField S)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : (X ^ Q - X : (ResidueField S)[X]).Separable` using `galois_poly_separable (ringChar (ResidueField S)) Q hchar`. Establish `hgsep` using `hsep.of_dvd hdvd'`. Establish `hder : eval abar (derivative g) ≠ 0`. Use `hgsep.aeval_derivative_ne_zero (S := ResidueField S) (x := abar) (by simpa [aeval_def] using habar)` as an intermediate fact. Simplify `this` using `[aeval_def]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `residue_surjective abar`. Establish `key : ∀ p : S[X], residue S (p.eval a) = (p.map (residue S)).eval (residue S a)`. Introduce `p`. Rewrite using `[eval_map, eval₂_hom]`. Take `⟨y, hy, -⟩` from `HenselianLocalRing.is_henselian f hmon a (by rw [← residue_eq_zero_iff, key]; exact habar) (by`.
-
-Rewrite using `[← residue_ne_zero_iff_isUnit, key, ← derivative_map]`. Conclude with `hder)`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem monic_dvd_X_pow_card_sub_one_exists_root :
     ∀ (S : Type) [CommRing S] [HenselianLocalRing S] [Finite (ResidueField S)] (f : S[X]),

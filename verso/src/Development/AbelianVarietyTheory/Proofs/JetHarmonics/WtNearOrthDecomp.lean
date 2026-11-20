@@ -6,9 +6,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.WtOrth
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Function.ne_iff.mp hne`. Establish `h` using `hU a a x y`. Rewrite `h` using `[hx a, hy a, inner_smul_left, inner_smul_right]`. Simplify using `only [Formalism.REAL.sgn, if_true, Complex.ofReal_one, one_mul, Complex.conj_ofReal] at h`. Establish `h2 : ((ω a : ℂ) - (ω' a : ℂ)) * ⟪x, y⟫_ℂ = 0` using `by rw [sub_mul, h, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd (Complex.ofReal_injective (sub_eq_zero.mp h3)) ha`. Conclude with `h3`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem inner_eq_zero_of_ne {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {n : ℕ} {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ M} (hU : IsUnitary ε E) {ω ω' : Fin n → ℝ} {x y : M}
@@ -23,23 +23,21 @@ theorem inner_eq_zero_of_ne {M : Type} [NormedAddCommGroup M] [InnerProductSpace
   · exact h3
 
 /- English proof (translation)
-Unfold `WtNear at hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨ω, h1, h2⟩` from `hy`. Use `⟨{ω}, fun ω' => if ω' = ω then y else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ω' h`. Rewrite using `[Finset.mem_singleton.mp h]`. Conclude with `h1`. Introduce `ω'`. Distinguish the cases in `h : ω' = ω`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_true]`. Conclude with `h2`. Introduce `a`. Simplify using `[h]`. Introduce `ω' h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ω' ≠ ω` using `fun e => h (Finset.mem_singleton.mpr e)`. Simplify using `[this]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨∅, fun _ => 0, by simp, fun ω a => by simp, by simp, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, x, h1, h2, h3, h4⟩` from `hy`. Take `⟨T', x', h1', h2', h3', h4'⟩` from `hz`. Use `⟨T ∪ T', fun ω => x ω + x' ω, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ω h`. Break down `Finset.mem_union.mp h with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `h1 ω h`. Conclude with `h1' ω h`. Introduce `ω a`. Simplify using `only [map_add, h2 ω a, h2' ω a, smul_add]`. Introduce `ω h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `h` using `[Finset.mem_union, not_or]`. Simplify using `[h3 ω h.1, h3' ω h.2]`. Rewrite using `[Finset.sum_add_distrib, h4, h4']`. Use `congr 1`. Conclude with `Finset.sum_subset Finset.subset_union_left fun ω _ h => h3 ω h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_subset Finset.subset_union_right fun ω _ h => h3' ω h`. Consider the case `smul c y _ hy`. Take `⟨T, x, h1, h2, h3, h4⟩` from `hy`. Use `⟨T, fun ω => c • x ω, h1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ω a`.
-
-Simplify using `only [map_smul, h2 ω a]`. Conclude with `smul_comm _ _ _`. Introduce `ω h`. Simplify using `[h3 ω h]`. Rewrite using `[h4, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decomp {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ M) (Λ : Fin n → ℝ) (t : ℝ) (w : M) (hw : w ∈ WtNear E Λ t) :
@@ -90,7 +88,7 @@ theorem exists_decomp {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M
     · rw [h4, Finset.smul_sum]
 
 /- English proof (translation)
-Introduce `M _ _ n ε E Λ t w hU hw`. Take `⟨T, x, h1, h2, _, h4⟩` from `exists_decomp E Λ t w hw`. Conclude with `⟨T, x, fun ω h => ⟨h1 ω h, h2 ω⟩, h4, fun ω _ ω' _ hne => inner_eq_zero_of_ne hU (h2 ω) (h2 ω') hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wtNear_orth_decomp : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (Λ : Fin n → ℝ) (t : ℝ) (w : M), IsUnitary ε E → w ∈ WtNear E Λ t → ∃ (T : Finset (Fin n → ℝ)) (x : (Fin n → ℝ) → M), (∀ ω ∈ T, ∑ a, |ω a - Λ a| ≤ t ∧ IsWeight E ω (x ω)) ∧ w = ∑ ω ∈ T, x ω ∧ ∀ ω ∈ T, ∀ ω' ∈ T, ω ≠ ω' → ⟪x ω, x ω'⟫_ℂ = 0 := by
   intro M _ _ n ε E Λ t w hU hw

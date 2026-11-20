@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijecti
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hY : (Y₁ ⊗ Y₂).hom = pullback.fst Y₁.hom Y₂.hom ≫ Y₁.hom` using `rfl`. Rewrite using `[hY]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma tensor_fe {S : Scheme.{0}} (Y₁ Y₂ : Over S) (h1 : IsFinite Y₁.hom) (e1 : Etale Y₁.hom)
     (h2 : IsFinite Y₂.hom) (e2 : Etale Y₂.hom) :
@@ -17,11 +17,11 @@ private lemma tensor_fe {S : Scheme.{0}} (Y₁ Y₂ : Over S) (h1 : IsFinite Y�
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Use `⟨by simp, fun T V _ => ?_⟩` and prove the remaining obligations. Establish `hE : IsEmpty (T ⊗ G).left` using `⟨fun x => hG.false ((CartesianMonoidalCategory.snd T G).left x)⟩`. Establish `hV : V = ⊥`. Use extensionality with `x`. Conclude with `hE.elim x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Substitute `hV` using the available equality. Use `⟨Over.homMk T.hom (by simp), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hE.elim x`. Introduce `y _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use `ext`. Simplify using `using Over.w y`.
+A detailed English derivation is pending.
 -/
 private lemma rep_empty {S : Scheme.{0}} (G : Over S) (hG : IsEmpty G.left) :
     UpperTheory.RepresentationRank.Rep G (Over.mk (𝟙 S)) (⊥ : ((Over.mk (𝟙 S)) ⊗ G).left.Opens) := by
@@ -39,11 +39,11 @@ private lemma rep_empty {S : Scheme.{0}} (G : Over S) (hG : IsEmpty G.left) :
     simpa using Over.w y
 
 /- English proof (translation)
-Introduce `S G n`. Proceed by induction on `n generalizing G with`. Consider the case `zero`. Introduce `h`. Establish `hG : IsEmpty G.left` using `(GlobalTheory.FinEt.isSplitOfRank_zero_iff G.hom).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨Over.mk (𝟙 S), ⊥, rep_empty G hG, ?_, ?_⟩` and prove the remaining obligations. Use `show IsFinite (𝟙 S) infer_instance`. Use `show Etale (𝟙 S) infer_instance`. Consider the case `succ n ih`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, V, hσp, hrange, hV⟩` from `h.exists_of_succ`. Take `⟨Y₁, U₁, hR₁, hf₁, he₁⟩` from `UpperTheory.exists_clopRep_trivial S`. Take `⟨Y₂, U₂, hR₂, hf₂, he₂⟩` from `ih (Over.mk (V.ι ≫ G.hom)) hV`. Take `⟨U, hU⟩` from `UpperTheory.exists_clopRep_of_disjoint_open_cover G (Over.mk (𝟙 S)) (Over.mk (V.ι ≫ G.hom)) Y₁ Y₂ (Over.homMk σ hσp) (Over.homMk V.ι rfl) U₁ U₂ hσ (show IsOpenImmersion V.ι from inferInstance) (show Set.range σ = (Set.range V.ι)ᶜ by rw [hrange, compl_compl]) hR₁ hR₂`. Conclude with `⟨Y₁ ⊗ Y₂, U, hU, tensor_fe Y₁ Y₂ hf₁ he₁ hf₂ he₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_clopRep_of_isSplitOfRank :
     ∀ {S : Scheme.{0}} (G : Over S) (n : ℕ), GlobalTheory.FinEt.IsSplitOfRank G.hom n → ∃ (Y : Over S) (U : (Y ⊗ G).left.Opens), UpperTheory.RepresentationRank.Rep G Y U ∧ IsFinite Y.hom ∧ Etale Y.hom := by

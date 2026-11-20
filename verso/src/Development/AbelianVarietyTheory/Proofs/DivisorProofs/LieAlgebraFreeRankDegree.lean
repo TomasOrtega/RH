@@ -15,9 +15,9 @@ open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 R _ _ X`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.lie_algebra_finite_projective_rank X`. Use `haveI := hfin`. Use `haveI := hproj`. Use `haveI : Module.Free R X.Lie := Module.free_of_flat_of_isLocalRing`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨inferInstance, hfin, ?_⟩` and prove the remaining obligations. Establish `h` using `hrk (IsLocalRing.closedPoint R)`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Lie.free_finrank_of_isLocalRing : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (R : Type) [CommRing R] [IsLocalRing R] (X : Obj F 𝔠 (Sp R)),
     Module.Free R X.Lie ∧ Module.Finite R X.Lie ∧ Module.finrank R X.Lie = Module.finrank ℚ F := by

@@ -10,9 +10,9 @@ section Ring
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ, Finset.mul_sum, add_comm]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: k + 1 - 1 - i = (k - 1 - i) + 1` using `by omega`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geom_succ (k : ℕ) (a b : R) :
     ∑ i ∈ Finset.range (k + 1), a ^ i * b ^ (k + 1 - 1 - i) =
@@ -26,9 +26,9 @@ theorem geom_succ (k : ℕ) (a b : R) :
     rw [this]; ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp, by simp, by simp⟩`. Consider the case `succ k ih`. Take `⟨H, h1, h2, h3⟩` from `ih`. Establish `eyw` using `geom_sum₂_mul y w k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[geom_succ, geom_succ, geom_succ]`. Use `⟨(∑ i ∈ Finset.range k, y ^ i * w ^ (k - 1 - i)) + z * H, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `z * h1`. Take the linear combination `z * h2 - eyw`. Take the linear combination `z * h3 + eyw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_divided_difference (k : ℕ) (y w z : R) : ∃ H : R,
     (∑ i ∈ Finset.range k, y ^ i * z ^ (k - 1 - i)) -
@@ -53,13 +53,13 @@ end Ring
 variable {Z : ITh}
 
 /- English proof (translation)
-Unfold `ck`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hP` using `P.hx i`. Establish `hP'` using `P'.hx i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hP'` using `[h1]`. Rewrite using `[h4, h2, h3, h1, map_add, LinearMap.add_apply]`. Take `⟨H, e1, e2, -⟩` from `exists_divided_difference k (Z.c1 (P.x i)) (Z.c1 (P.x' i)) (Z.c1 (P'.x' i))`. Establish `f1 : Gk Z k (Z.c1 (P.x i)) (Z.c1 (P'.x' i)) * Q = Gk Z k (Z.c1 (P.x i)) (Z.c1 (P.x' i)) * Q - Z.cD (P'.Dv i) * (H * Q)`. Unfold `Gk`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take the linear combination `Q * e1 + H * Q * hP'`. Establish `f2 : Gk Z k (Z.c1 (P.x i)) (Z.c1 (P'.x' i)) * Q = Gk Z k (Z.c1 (P.x' i)) (Z.c1 (P'.x' i)) * Q + Z.cD (P.Dv i) * (H * Q)`. Unfold `Gk`. Take the linear combination `Q * e2 - H * Q * hP`. Establish `g1` using `congrArg (Z.capDeg (P.Dv i)) f1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `g2` using `congrArg (Z.capDeg (P'.Dv i)) f2`. Rewrite `g1` using `[map_sub]`. Rewrite `g2` using `[map_add]`. Rewrite using `[g1, g2, hc (P.Dv i) (P'.Dv i)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ck_add (hc : ∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = Z.capDeg E' (Z.cD E * a))
     {r : ℕ} (P P' P'' : FPair Z r) (h1 : P'.x = P.x') (h2 : P''.x = P.x) (h3 : P''.x' = P'.x')
@@ -89,9 +89,9 @@ theorem ck_add (hc : ∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = 
   ring
 
 /- English proof (translation)
-Unfold `ck`. Rewrite using `[Finset.sum_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hP` using `P.hx i`. Rewrite `hP` using `[h, map_smul, Z.cD_divP, smul_zero, sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG : Gk Z k (Z.c1 (P.x i)) (Z.c1 (P.x i)) * Q = (k : ℚ) • (Z.c1 (P.x i) ^ (k - 1) * Q)`. Unfold `Gk`. Rewrite using `[geom_sum₂_self, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, mul_assoc]`. Rewrite using `[h, hP, hG, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ck_scalar {r : ℕ} (P : FPair Z r) (v : ℚ) (h : ∀ i, P.Dv i = v • Z.divP) (k : ℕ) (Q : Z.Ch) :
     ck P k Q = (k : ℚ) * v * Z.capDeg Z.divP ((∑ i, Z.c1 (P.x i) ^ (k - 1)) * Q) := by
@@ -107,11 +107,11 @@ theorem ck_scalar {r : ℕ} (P : FPair Z r) (v : ℚ) (h : ∀ i, P.Dv i = v •
   ring
 
 /- English proof (translation)
-Unfold `ck`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Simplify using `[Gk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hG : Gk Z (k + 1) (c • Z.c1 (P.x i)) (c • Z.c1 (P.x' i)) * Q = c ^ k • (Gk Z (k + 1) (Z.c1 (P.x i)) (Z.c1 (P.x' i)) * Q)`. Unfold `Gk`. Rewrite using `[← smul_mul_assoc, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha'` using `Finset.mem_range.1 ha`. Rewrite using `[smul_pow, smul_pow, smul_mul_smul_comm, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, h2, h3, hG, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

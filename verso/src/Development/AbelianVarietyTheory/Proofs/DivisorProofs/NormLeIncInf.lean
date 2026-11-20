@@ -73,7 +73,7 @@ def glue {n d d₁ : ℕ} (h : d = d₁ + 2) {R : Type} (p : Fin n × Fin d₁ �
   fun k => Sum.elim p q (idx h k)
 
 /- English proof (translation)
-Simplify using `[glue]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glue_inl {n d d₁ : ℕ} (h : d = d₁ + 2) {R : Type} (p : Fin n × Fin d₁ → R) (q : Fin n × Fin 2 → R)
     (j : Fin n × Fin d₁) : glue h p q ((idx h).symm (Sum.inl j)) = p j := by
@@ -128,7 +128,7 @@ def incInf : (Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) →L[ℝ] (Fin 
 
 open scoped Classical in
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Establish `e : y j = incInf h y ((idx h).symm (Sum.inl j))` using `(glue_inl h y 0 j).symm`. Rewrite using `[e]`. Conclude with `norm_le_pi_norm (incInf h y) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_incInf (y : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) : ‖y‖ ≤ ‖incInf h y‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_

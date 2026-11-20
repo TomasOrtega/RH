@@ -18,17 +18,17 @@ noncomputable section
 namespace GlobalTheory.MatCoefLevel
 
 /- English proof (translation)
-Introduce `D ψ hψ S T μ 𝓕 hcov f f₀ hf hf₀`. Take `⟨U₁, hU₁, hl₁⟩` from `hf.level`. Take `⟨U₂, hU₂, hl₂⟩` from `hf₀.level`. Use `⟨U₁ ⊓ U₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU₁.inter hU₂`. Introduce `w hw u hu hinf`. Take `⟨hμ, h𝓕, -⟩` from `hcov`. Establish `hu₁ : heisO ψ S T u f = f` using `hl₁ u (AddSubgroup.mem_inf.1 hu).1 hinf`. Establish `hu₂ : heisO ψ S T u f₀ = f₀` using `hl₂ u (AddSubgroup.mem_inf.1 hu).2 hinf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf₀ w`. Establish `e1` using `GlobalTheory.Size.ipO_heisO hψ hμ h𝓕 hf hg u`. Rewrite `e1` using `[hu₁, heisO_comm, hu₂]`. Establish `e2 : GlobalTheory.Ker.ipO μ 𝓕 f (ψ (symplO S T u w) • heisO ψ S T w f₀) = starRingEnd ℂ (ψ (symplO S T u w)) * GlobalTheory.Ker.ipO μ 𝓕 f (heisO ψ S T w f₀)`. Unfold `GlobalTheory.Ker.ipO`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[e2]`. Establish `hw' : GlobalTheory.Ker.ipO μ 𝓕 f (heisO ψ S T w f₀) ≠ 0` using `hw`. Establish `h3 : (starRingEnd ℂ (ψ (symplO S T u w)) - 1) * GlobalTheory.Ker.ipO μ 𝓕 f (heisO ψ S T w f₀) = 0`. Take the linear combination `e1`. Establish `h4 : starRingEnd ℂ (ψ (symplO S T u w)) = 1` using `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_right hw')`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ψ (symplO S T u w) = 1`. Establish `h6` using `congrArg (starRingEnd ℂ) h4`. Rewrite `h6` using `[Complex.conj_conj, map_one]`. Then use the resulting hypothesis. Conclude with `(psi_symplO_swap ψ _ _).1 h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem matCoef_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ f f₀ : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T f₀ → ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ w : WO S T, thPair μ 𝓕 f (heisO ψ S T w f₀) ≠ 0 → ∀ u ∈ U, u.map (infPart D) = 0 → ψ (symplO S T w u) = 1 := by
   intro D ψ hψ S T μ 𝓕 hcov f f₀ hf hf₀

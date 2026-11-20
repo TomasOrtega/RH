@@ -47,19 +47,17 @@ theorem mixCoS_eq (B : Frames G) (t : T) {i j : Fin D.R.m} (e : Num G i j) (w : 
       (B.coord t w (X := (i, j)) (Y := (i + 1, j)) ⟨i.2.le, j.2.le⟩ ⟨i.2, j.2.le⟩ ((mapB e u).map (atW w)))ᵀ := rfl
 
 /- English proof (translation)
-Introduce `D T L sc G B t i j e w`. Use `⟨fun u x => ?_, fun z => ?_, fun u => ?_, fun w' hw x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mixCoS_eq, mixCoS_eq, mixCoS_eq, mapA_add, mapB_add, Matrix.map_add _ (map_add _), Matrix.map_add _ (map_add _), GlobalTheory.BigDat.CoordinateMaps.coord_add, GlobalTheory.BigDat.CoordinateMaps.coord_add, transpose_add]`. Apply the tactic sequence `exact Matrix.ext fun a b => by rcases b with b | b <;> rfl`. Take `⟨y₁, hy₁⟩` from `GlobalTheory.BigDat.CoordinateMaps.coord_surj B t w (X := (i, j + 1)) (Y := (i, j)) ⟨i.2.le, j.2⟩ ⟨i.2.le, j.2.le⟩ z.toCols₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, hy₂⟩` from `GlobalTheory.BigDat.CoordinateMaps.coord_surj B t w (X := (i, j)) (Y := (i + 1, j)) ⟨i.2.le, j.2.le⟩ ⟨i.2, j.2.le⟩ z.toCols₂ᵀ`. Set `x₁ : HomA G t i j` to `y₁.map (atPl w)`. Set `x₂ : HomB G i j` to `y₂.map (atPl w)`. Establish `k₁ : mapA t e (ofMaps t e (x₁, x₂)) = x₁` using `mapA_ofMaps t e _`. Establish `k₂ : mapB e (ofMaps t e (x₁, x₂)) = x₂` using `mapB_ofMaps t e _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁ : x₁.map (atW w) = y₁` using `Matrix.ext fun a b => atW_atPl_self w _`. Establish `m₂ : x₂.map (atW w) = y₂` using `Matrix.ext fun a b => atW_atPl_self w _`. Use `⟨ofMaps t e (x₁, x₂), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show IsHalf _ (mapA t e _)`. Rewrite using `[k₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Conclude with `atPl_one_mul w _`. Use `show IsHalf _ (mapB e _)`. Rewrite using `[k₂]`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `atPl_one_mul w _`. Rewrite using `[mixCoS_eq, k₁, k₂, m₁, m₂, hy₁, hy₂, transpose_transpose, fromCols_toCols]`. Establish `k₁ : mapA t e (ofMaps t e (atPl w 1 • mapA t e u, atPl w 1 • mapB e u)) = atPl w 1 • mapA t e u` using `mapA_ofMaps t e _`. Establish `k₂ : mapB e (ofMaps t e (atPl w 1 • mapA t e u, atPl w 1 • mapB e u)) = atPl w 1 • mapB e u` using `mapB_ofMaps t e _`. Rewrite using `[mixCoS_eq, mixCoS_eq, k₁, k₂, map_atW_smul, map_atW_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h₁ : (mapA t e x).map (atW w) = 0`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h₂ : (mapB e x).map (atW w) = 0`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mixCoS_eq, h₁, h₂, GlobalTheory.BigDat.CoordinateMaps.coord_zero, GlobalTheory.BigDat.CoordinateMaps.coord_zero, transpose_zero, fromCols_zero]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixCoS_spec : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (B : Frames G) (t : T)
     (i j : Fin D.R.m) (e : Num G i j) (w : Pl D.host.E),
@@ -112,7 +110,7 @@ section Halves
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {i j : ℕ} {t : T}
 
 /- English proof (translation)
-Introduce `c hc`. Apply `(maps t e).injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero, maps_apply, Prod.smul_mk, smul_eq_zero_of_isHalf v hb hu.1 c hc, smul_eq_zero_of_isHalf v hb hu.2 c hc, Prod.mk_zero_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_of_mixHalf (t : T) (e : Num G i j) (v : Pl D.host.F) {b : AE D}
     (hb : b * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = b) {u : PtS G i j} (hu : u ∈ mixHalfS e b) :
@@ -123,9 +121,7 @@ theorem at_of_mixHalf (t : T) (e : Num G i j) (v : Pl D.host.F) {b : AE D}
     smul_eq_zero_of_isHalf v hb hu.2 c hc, Prod.mk_zero_zero]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsHalf b (mapA t e (ofMaps t e _))`. Rewrite using `[mapA_ofMaps]`. Conclude with `isHalf_smul_self hb _`. Use `show IsHalf b (mapB e (ofMaps t e _))`.
-
-Rewrite using `[mapB_ofMaps]`. Conclude with `isHalf_smul_self hb _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofMaps_smul_mem (e : Num G i j) {b : AE D} (hb : b * b = b) (x₁ : HomA G t i j) (x₂ : HomB G i j) :
     ofMaps t e (b • x₁, b • x₂) ∈ mixHalfS e b := by
@@ -138,9 +134,9 @@ theorem ofMaps_smul_mem (e : Num G i j) {b : AE D} (hb : b * b = b) (x₁ : HomA
     exact isHalf_smul_self hb _
 
 /- English proof (translation)
-Establish `h1 : (1 - GlobalTheory.LatVac.liftV v 1) • u = 0` using `hu _ (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, map_one, sub_self])`. Establish `hℓu : GlobalTheory.LatVac.liftV v 1 • u = u`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1.symm`. Apply `(maps t e).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show mapA t e (_ + _) = mapA t e u`. Rewrite using `[mapA_add, mapA_ofMaps, mapA_ofMaps, ← add_smul, hsum, algebraMap_smul, ← mapA_smul, hℓu]`. Use `show mapB e (_ + _) = mapB e u`. Rewrite using `[mapB_add, mapB_ofMaps, mapB_ofMaps, ← add_smul, hsum, algebraMap_smul, ← mapB_smul, hℓu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofMaps_add_ofMaps (e : Num G i j) (v : Pl D.host.F) {a : AE D}
     (hsum : a + cA D a = algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1)) {u : PtS G i j}
@@ -159,13 +155,11 @@ theorem ofMaps_add_ofMaps (e : Num G i j) (v : Pl D.host.F) {a : AE D}
     rw [mapB_add, mapB_ofMaps, mapB_ofMaps, ← add_smul, hsum, algebraMap_smul, ← mapB_smul, hℓu]
 
 /- English proof (translation)
-Use `GlobalTheory.LatVac.mem_of_char hstd hS hT (map_infPart_of_isHalf v ha1 hx.1) fun l hl => ?_` and prove the remaining obligations. Establish `hy : ofMaps t e (cA D a • l, (0 : HomB G i j)) ∈ mixHalfS e (cA D a)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsHalf _ (mapA t e (ofMaps t e _))`. Rewrite using `[mapA_ofMaps]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isHalf_smul_self hcc _`. Use `show IsHalf _ (mapB e (ofMaps t e _))`. Rewrite using `[mapB_ofMaps]`. Conclude with `fun p q => mul_zero _`. Establish `hyl : ofMaps t e (cA D a • l, (0 : HomB G i j)) ∈ latPtS t e v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨at_of_mixHalf t e v hc1 hy, ?_, ?_⟩` and prove the remaining obligations. Use `show mapA t e (ofMaps t e _) ∈ latA G t i j`. Rewrite using `[mapA_ofMaps]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfc l hl`. Use `show mapB e (ofMaps t e _) ∈ latB G i j`.
-
-Rewrite using `[mapB_ofMaps]`. Conclude with `zero_mem _`. Establish `h` using `hψ _ hyl hy`. Rewrite `h` using `[sympS_eq t e Γ hW hWW, mapA_ofMaps, mapB_ofMaps, symplO_cA_smul, smul_of_isHalf hx.1, symplO_zero_right', add_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapA_mem_latA_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) {ψ : AddChar (AF D.host.F) ℂ} (hstd : IsStdChar D ψ (-1))
@@ -198,13 +192,11 @@ theorem mapA_mem_latA_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSi
   exact h
 
 /- English proof (translation)
-Use `GlobalTheory.LatVac.mem_of_char hstd hS hT (map_infPart_of_isHalf v ha1 hx.2) fun l hl => ?_` and prove the remaining obligations. Establish `hy : ofMaps t e ((0 : HomA G t i j), cA D a • l) ∈ mixHalfS e (cA D a)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsHalf _ (mapA t e (ofMaps t e _))`. Rewrite using `[mapA_ofMaps]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun p q => mul_zero _`. Use `show IsHalf _ (mapB e (ofMaps t e _))`. Rewrite using `[mapB_ofMaps]`. Conclude with `isHalf_smul_self hcc _`. Establish `hyl : ofMaps t e ((0 : HomA G t i j), cA D a • l) ∈ latPtS t e v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨at_of_mixHalf t e v hc1 hy, ?_, ?_⟩` and prove the remaining obligations. Use `show mapA t e (ofMaps t e _) ∈ latA G t i j`. Rewrite using `[mapA_ofMaps]`. Conclude with `zero_mem _`. Use `show mapB e (ofMaps t e _) ∈ latB G i j`.
-
-Rewrite using `[mapB_ofMaps]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfc l hl`. Establish `h` using `hψ _ hyl hy`. Rewrite `h` using `[sympS_eq t e Γ hW hWW, mapA_ofMaps, mapB_ofMaps, symplO_cA_smul, smul_of_isHalf hx.2, symplO_zero_right', zero_add]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapB_mem_latB_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) {ψ : AddChar (AF D.host.F) ℂ} (hstd : IsStdChar D ψ (-1))
@@ -237,15 +229,15 @@ theorem mapB_mem_latB_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSi
   exact h
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W t i j e Γ hW hWW v a ha hsum`. Take `⟨haa, hac, -⟩` from `ha`. Establish `hcc : cA D a * cA D a = cA D a` using `by rw [← map_mul, haa]`. Establish `hca : cA D a * a = 0` using `by rw [mul_comm, hac]`. Establish `ha1 : a * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsum, mul_add, haa, hac, add_zero]`. Establish `hc1 : cA D a * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = cA D a`. Rewrite using `[← hsum, mul_add, hca, hcc, zero_add]`. Establish `hfa : finPart D a ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, haa])`. Establish `hfc : finPart D (cA D a) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hcc])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsSelfDualC (spW₁ G i j) (G.Λ (.grid (i : ℕ) (j : ℕ)))` using `(node_isV G hL (X := .grid (i : ℕ) (j : ℕ)) ⟨i.2.le, j.2.le⟩).sd`. Establish `hT : IsSelfDualC (spV G i j) (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`. Establish `hS₁ : IsSelfDualC (negSp (spV₁ G i j)) (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))` using `isSelfDualC_neg (node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`. Establish `hT₁ : IsSelfDualC (spW₁ G i j) (G.Λ (.grid (i : ℕ) (j : ℕ)))` using `(node_isV G hL (X := .grid (i : ℕ) (j : ℕ)) ⟨i.2.le, j.2.le⟩).sd`. Use `⟨fun u hu => at_of_mixHalf t e v ha1 hu, fun u hu => at_of_mixHalf t e v hc1 hu, fun u hu => ⟨_, ofMaps_smul_mem e haa _ _, _, ofMaps_smul_mem e hcc _ _, (ofMaps_add_ofMaps (t := t) e v hsum hu).symm⟩, fun x hx hψ => ⟨at_of_mixHalf t e v ha1 hx, mapA_mem_latA_of_char e Γ hW hWW W …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ofMaps_smul_mem e haa _ _, fun y hy => ?_, fun hV hW' => ?_⟩` and prove the remaining obligations. Rewrite using `[sympS_eq t e Γ hW hWW, sympS_eq t e Γ hW hWW, mapA_ofMaps, mapB_ofMaps, ← symplO_cA_smul, ← symplO_cA_smul, smul_of_isHalf hy.1, smul_of_isHalf hy.2]`. Use `⟨at_of_mixHalf t e v ha1 (ofMaps_smul_mem e haa _ _), ?_, ?_⟩` and prove the remaining obligations. Use `show mapA t e (ofMaps t e _) ∈ latA G t i j`. Rewrite using `[mapA_ofMaps]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfa _ hV`. Use `show mapB e (ofMaps t e _) ∈ latB G i j`. Rewrite using `[mapB_ofMaps]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfa _ hW'`.
+A detailed English derivation is pending.
 -/
 theorem halves_split : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m) (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j),
     Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram → Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e → ∀ (v : Pl D.host.F) (a : AE D), IsSplitIdem D a →
@@ -319,7 +311,7 @@ def graphMap (t : T) (e : Num G i j) (T₁ : (HomA G t i j → ℂ) →ₗ[ℂ] 
     rw [h, map_smul]; rfl
 
 /- English proof (translation)
-The claim follows from `funext fun u => by have e2 : ∀ x, (fun y => boxS t e φ₁ φ₂ (ofMaps t e (x, y))) = φ₁ x • φ₂ := fun x => funext fun y => by show φ₁ (mapA t e (ofMaps t e (x, y))) * φ₂ (mapB e (ofMaps t e (x, y))) = φ₁ x * φ₂ y rw [mapA_ofMaps, mapB_ofMaps] have e1 : (fun x => T₂ (fun y => boxS t …`.
+A detailed English derivation is pending.
 -/
 theorem graphMap_box (e : Num G i j) (T₁ : (HomA G t i j → ℂ) →ₗ[ℂ] (HomA G t i j → ℂ))
     (T₂ : (HomB G i j → ℂ) →ₗ[ℂ] (HomB G i j → ℂ)) (φ₁ : HomA G t i j → ℂ) (φ₂ : HomB G i j → ℂ) :
@@ -350,25 +342,23 @@ def modulPair (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.G
   map_smul' c p := Prod.ext (funext fun u => mul_left_comm _ _ _) (funext fun u => mul_left_comm _ _ _)
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W t i j e Γ hW hWW ε P hε f₁ f₂ T₁ T₂ h₁ h₂`. Establish `hinf : infPart D ε = 0` using `GlobalTheory.PlaceVec.idemSum_infPart hε`. Establish `hinf' : infPart D (cA D ε) = 0` using `GlobalTheory.PlaceVec.infPart_cA hinf`. Establish `sdW : IsSelfDualC (spW₁ G i j) (G.Λ (.grid (i : ℕ) (j : ℕ)))` using `(node_isV G hL (X := .grid (i : ℕ) (j : ℕ)) ⟨i.2.le, j.2.le⟩).sd`. Establish `sdV : IsSelfDualC (spV G i j) (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sdV₁ : IsSelfDualC (negSp (spV₁ G i j)) (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))` using `isSelfDualC_neg (node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`. Establish `sdW' : IsSelfDualC (spW₁ G i j) (G.Λ (.grid (i : ℕ) (j : ℕ)))` using `sdW`. Use `⟨fun f hf => ?_, fun x hx p hp => ?_, fun y hy p hp => ?_⟩` and prove the remaining obligations. Establish `key : boxGraph t e ε T₁ T₂ ≤ LinearMap.ker (LinearMap.snd ℂ _ _ - graphMap t e T₁ T₂ ∘ₗ LinearMap.fst ℂ _ _)`. Use `Submodule.span_le.2 fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ₁, φ₂, -, -, rfl⟩` from `hp`. Use `show boxS t e (T₁ φ₁) (T₂ φ₂) - graphMap t e T₁ T₂ (boxS t e φ₁ φ₂) = 0`. Rewrite using `[graphMap_box, sub_self]`. Establish `h0` using `key hf`. Rewrite `h0` using `[LinearMap.mem_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : f - graphMap t e T₁ T₂ 0 = 0` using `h0`. Rewrite `h1` using `[map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `key : boxGraph t e ε T₁ T₂ ≤ (boxGraph t e ε T₁ T₂).comap (transPair Γ W.ψ x)`. Use `Submodule.span_le.2 fun p hp => ?_` and prove the remaining obligations. Take `⟨φ₁, φ₂, hφ₁, hφ₂, rfl⟩` from `hp`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx₁ : IsHalf ε (mapA t e x)` using `hx.1`. Establish `hx₂ : IsHalf ε (mapB e x)` using `hx.2`. Establish `s₁ : IsSBHalf ε (latA G t i j) (fun y' => φ₁ (y' + mapA t e x))` using `sb_trans_latO (S := spW₁ G i j) (T := spV G i j) (ΛS := G.Λ (.grid (i : ℕ) (j : ℕ))) (ΛT := G.Λ (.grid (i : ℕ) ((j : ℕ) + 1))) sdW'.1 sdV.1 hinf hφ₁ hx₁`. Establish `s₂ : IsSBHalf ε (latB G i j) (fun y' => φ₂ (y' + mapB e x))` using `sb_trans_latO (S := negSp (spV₁ G i j)) (T := spW₁ G i j) (ΛS := G.Λ (.grid ((i : ℕ) + 1) (j : ℕ))) (ΛT := G.Λ (.grid (i : ℕ) (j : ℕ))) sdV₁.1 sdW.1 hinf hφ₂ hx₂`. Use `show (fun u => boxS t e φ₁ φ₂ (u + x), heisS Γ W.ψ x (boxS t e (T₁ φ₁) (T₂ φ₂))) ∈ boxGraph t e ε T₁ T₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heisS_box t e Γ hW hWW]`. Use `Submodule.subset_span ⟨_, _, s₁, s₂, ?_⟩` and prove the remaining obligations. Rewrite using `[h₁.trans φ₁ hφ₁ _ hx₁, h₂.trans φ₂ hφ₂ _ hx₂]`. Use `Prod.ext (funext fun u => ?_) rfl` and prove the remaining obligations. Use `show φ₁ (mapA t e (u + x)) * φ₂ (mapB e (u + x)) = φ₁ (mapA t e u + mapA t e x) * φ₂ (mapB e u + mapB e x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mapA_add, mapB_add]`. Conclude with `key hp`. Establish `key : boxGraph t e ε T₁ T₂ ≤ (boxGraph t e ε T₁ T₂).comap (modulPair Γ W.ψ y)`. Use `Submodule.span_le.2 fun p hp => ?_` and prove the remaining obligations. Take `⟨φ₁, φ₂, hφ₁, hφ₂, rfl⟩` from `hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₁ : IsHalf (cA D ε) (mapA t e y)` using `hy.1`. Establish `hy₂ : IsHalf (cA D ε) (mapB e y)` using `hy.2`. Establish `s₁ : IsSBHalf ε (latA G t i j) (fun y' => W.ψ (symplO _ _ y' (mapA t e y)) * φ₁ y')` using `sb_modul_latO (S := spW₁ G i j) (T := spV G i j) (ΛS := G.Λ (.grid (i : ℕ) (j : ℕ))) (ΛT := G.Λ (.grid (i : ℕ) ((j : ℕ) + 1))) W.ψ_std sdW' sdV hinf' hφ₁ hy₁`. Establish `s₂ : IsSBHalf ε (latB G i j) (fun y' => W.ψ (symplO _ _ y' (mapB e y)) * φ₂ y')` using `sb_modul_latO (S := negSp (spV₁ G i j)) (T := spW₁ G i j) (ΛS := G.Λ (.grid ((i : ℕ) + 1) (j : ℕ))) (ΛT := G.Λ (.grid (i : ℕ) (j : ℕ))) W.ψ_std sdV₁ sdW hinf' hφ₂ hy₂`. Use `show (fun u => W.ψ (sympS Γ u y) * boxS t e φ₁ φ₂ u, heisS Γ W.ψ y (boxS t e (T₁ φ₁) (T₂ φ₂))) ∈ boxGraph t e ε T₁ T₂`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heisS_box t e Γ hW hWW]`. Use `Submodule.subset_span ⟨_, _, s₁, s₂, ?_⟩` and prove the remaining obligations. Rewrite using `[h₁.modul φ₁ hφ₁ _ hy₁, h₂.modul φ₂ hφ₂ _ hy₂]`. Use `Prod.ext (funext fun u => ?_) rfl` and prove the remaining obligations. Use `show W.ψ (sympS Γ u y) * (φ₁ (mapA t e u) * φ₂ (mapB e u)) = (W.ψ (symplO _ _ (mapA t e u) (mapA t e y)) * φ₁ (mapA t e u)) * (W.ψ (symplO _ _ (mapB e u) (mapB e y)) * φ₂ (mapB e u))`.
-
-Rewrite using `[sympS_eq t e Γ hW hWW, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key hp`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem boxGraph_graph_heis : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m) (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j),
     Γ.V'.J = (-1 : D.host.E) • (spW₁ G i j).gram → Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e → ∀ (ε : AE D) (P : Finset (Pl D.host.E)), IsIdemSum ε P →
@@ -444,9 +434,9 @@ theorem boxGraph_graph_heis : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
 end Halves
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ A, ι φ (co x) = Λ.indicator (fun _ => ι φ 0) x` using `fun x hx => by`. Distinguish the cases in `hΛ : x ∈ Λ`. Rewrite using `[Set.indicator_of_mem hΛ, h.2.1 x hx φ hφ φ hφ (hfix x hΛ (.inl hx)) 0, zero_add]`. Rewrite using `[Set.indicator_of_notMem hΛ]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hΛ (hd x hx fun y hy hy' => mul_right_cancel₀ hne ((h.2.2 y hy' φ hφ φ hφ (hfix y hy (.inr hy')) x hx).symm.trans (one_mul _).symm))`. Use `⟨fun h1 => h0 (h.1.injOn hφ (zero_mem _) (funext fun z => ?_)), key⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hon z`. Rewrite using `[key x hx, h1, map_zero]`. Conclude with `congrFun (Set.indicator_zero _ _) x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagr_vac {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {Y : Spc F E d} {M : Model σ X Y} {ψ : AddChar (AF F) ℂ} {v : HeightOneSpectrum (𝓞 F)} {A A' : Set _}
@@ -471,7 +461,7 @@ theorem lagr_vac {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, h3, h4⟩` from `h`. Use `⟨by rw [← RingHom.map_mul, h1], ?_, v, ε, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2]`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, add_comm, h4]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitIdem_conj {a : AE D} (h : IsSplitIdem D a) : IsSplitIdem D (cA D a) := by
   obtain ⟨h1, h2, v, ε, h3, h4⟩ := h
@@ -483,19 +473,19 @@ def halfPt {i j : ℕ} (t : T) (e : Num G i j) (ε : AE D) : AddSubgroup (PtS G 
   ((GlobalTheory.PlaceModel.half _ _ ε).prod (GlobalTheory.PlaceModel.half _ _ ε)).comap (maps t e).toLinearMap.toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `and_congr (GlobalTheory.PlaceModel.isHalf_iff _ _).symm (GlobalTheory.PlaceModel.isHalf_iff _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_halfPt {i j : ℕ} {t : T} {e : Num G i j} {ε : AE D} {u : PtS G i j} : u ∈ halfPt t e ε ↔ u ∈ mixHalfS e ε :=
   and_congr (GlobalTheory.PlaceModel.isHalf_iff _ _).symm (GlobalTheory.PlaceModel.isHalf_iff _ _).symm
 
 /- English proof (translation)
-Introduce `p q` and use `by rw [← hx p q, ← mul_assoc, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_mono {m n : ℕ} {a ε : AE D} (h : ε * a = a) {x : Mx D m n} (hx : IsHalf a x) : IsHalf ε x := fun p q => by
   rw [← hx p q, ← mul_assoc, h]
 
 /- English proof (translation)
-Establish `: x = ∑ w ∈ P, a w • x`. Rewrite using `[← Finset.sum_smul]`. Conclude with `Matrix.ext fun p q => (hx p q).symm`. Rewrite using `[this]`. Conclude with `sum_mem h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_sum_smul {m n : ℕ} {ι : Type} {P : Finset ι} {a : ι → AE D} {x : Mx D m n} (hx : IsHalf (∑ w ∈ P, a w) x)
     {Λ : AddSubgroup (Mx D m n)} (h : ∀ w ∈ P, a w • x ∈ Λ) : x ∈ Λ := by
@@ -508,41 +498,35 @@ theorem mem_of_sum_smul {m n : ℕ} {ι : Type} {P : Finset ι} {a : ι → AE D
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j M _ e Bs Γ X om om' h hT hti f hf₀ I hI`. Establish `h₁` using `ρ.vT_is t i j i.2.le j.2`. Establish `h₂` using `ρ.vX_is i j i.2 j.2.le`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd W.ψ` using `h.ψ ▸ hT.base.std`. Establish `hG : Γ.M'.IsGood W.ψ` using `h.ψ ▸ hT.geo.hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ Φ ∈ schA D.host.F (IxS G i j), ∀ Φ' ∈ schA D.host.F (IxS G i j), thetaS Γ W.ψ (Φ + Φ') = thetaS Γ W.ψ Φ + thetaS Γ W.ψ Φ'` using `fun Φ hΦ Φ' hΦ' => funext fun u => (tsum_congr fun _ => mul_add _ _ _).trans ((summable_of_mem_schA _ (GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hstd u _ hΦ)).tsum_add (summable_of_mem_schA _ (GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hstd u _ hΦ')))`. Establish `hf : thetaS Γ W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f Γ.M'.vac) = boxS t e (ρ.vT i j) (ρ.vX i j)`. Use function extensionality and compare the values at `fun u => (hf₀.2 u).trans ((Finsupp.sum_single_index (zero_mul _)).trans (one_mul _))`. Take `⟨hid, hsumid⟩` from `GlobalTheory.T.gridLocalTensorPlaces_splitIdempotent_sum hL (G := G) t`. Establish `hh` using `fun w hw => halves_split hL W t i j e Γ h.JW₁ h.JWW _ _ (hid w hw).1 (hid w hw).2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hco` using `mixCoS_spec B t i j e`. Establish `hv` using `fun w hw => lagr_vac (hI w hw) (hG.vac _).1 (hG.vac _).2.1 (latPtS t e (w.under (𝓞 D.host.F)) : Set _) (fun γ hγ hγ' => VacFix.vac_fixed W M t i j e Bs Γ X om om' h hT _ (latPtS_le_latAtV t i j e Bs Γ X hti _) γ (.inr ⟨hγ, hγ'.elim (fun h => ⟨_, (hid w hw).1, h⟩) fun h => ⟨_, spl …`. Use `set c := ∏ w ∈ locPl G t, I w (Γ.M'.vac _) 0 with hc`. Establish `hc0 : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun w hw => (hv w hw).1`. Use `⟨c, hc0, fun ε hε n Ψ τ _ ⟨φ₁, φ₂, hmem, hsum⟩ φ hφ hΨ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : thetaS Γ W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c • f) Γ.M'.vac) = c • boxS t e (ρ.vT i j) (ρ.vX i j)`. Rewrite using `[← hf]`. Conclude with `funext fun u => (congrArg (thetaS Γ W.ψ · u) (funext fun _ => mul_assoc _ _ _)).trans (thetaS_smul _ _ _ _ u)`. Establish `sW` using `(node_isV G hL (X := .grid i j) ⟨i.2.le, j.2.le⟩).sd`. Take `⟨T₁, hT₁⟩` from `(GlobalTheory.PlaceModelSum.placeModelExistsSum D W.ψ W.ψ_std _ _ _ _ sW (node_isV G hL (X := .grid i (j + 1)) ⟨i.2.le, j.2⟩).sd _ ε hε _ h₁.2.theta h₁.2.lat).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T₂, hT₂⟩` from `(GlobalTheory.PlaceModelSum.placeModelExistsSum D W.ψ W.ψ_std _ _ _ _ (isSelfDualC_neg (node_isV G hL (X := .grid (i + 1) j) ⟨i.2, j.2.le⟩).sd) sW _ ε hε _ h₂.2.theta h₂.2.lat).1`. Take `⟨g0, g1, g2⟩` from `boxGraph_graph_heis hL W t i j e Γ h.JW₁ h.JWW ε _ hε _ _ T₁ T₂ hT₁ hT₂`. Take `⟨hεs, hεw⟩` from `hsumid ε hε`. Set `R : Submodule ℂ ((PtS G i j → ℂ) × ((IxS G i j → AF D.host.F) → ℂ))` to `{ carrier := {p | p.2 ∈ schA D.host.F _ ∧ (p.1, thetaS Γ W.ψ p.2) ∈ boxGraph t e ε T₁ T₂} zero_mem' := ⟨zero_mem _, by`. Establish `: thetaS Γ W.ψ 0 = 0` using `funext fun u => by simpa using thetaS_smul Γ W.ψ 0 0 u`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.snd_zero, this]`. Conclude with `zero_mem _⟩`. Use the proof step `add_mem' := fun {p q} hp hq => ⟨add_mem hp.1 hq.1, by`. Rewrite using `[Prod.snd_add, hadd _ hp.1 _ hq.1]`. Conclude with `add_mem hp.2 hq.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := fun a p hp => ⟨Submodule.smul_mem _ a hp.1, by`. Rewrite using `[Prod.smul_snd, show thetaS Γ W.ψ (a • p.2) = a • thetaS Γ W.ψ p.2 from funext (thetaS_smul _ _ _ _)]`. Conclude with `Submodule.smul_mem _ a hp.2⟩ }`. Establish `hA : ∀ w ∈ locPl G t, ∀ x ∈ mixHalfS e (atPl w 1), x ∈ mixHalfS e ε` using `fun w hw x hx => ⟨isHalf_mono (hεw w hw) hx.1, isHalf_mono (hεw w hw) hx.2⟩`. Establish `hA' : ∀ w ∈ locPl G t, ∀ x ∈ mixHalfS e (cA D (atPl w 1)), x ∈ mixHalfS e (cA D ε)` using `fun w hw x hx =>`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: cA D ε * cA D (atPl w 1) = cA D (atPl w 1)` using `by rw [← RingHom.map_mul, hεw w hw]`. Use the proof step `⟨isHalf_mono this hx.1, isHalf_mono this hx.2⟩`. Establish `hbase : (Set.indicator (halfPt t e ε : Set _) fun u => ∏ w ∈ locPl G t, I w (Γ.M'.vac _) (mixCoS B t e w u)) = c • boxS t e (halfInd ε (latA G t i j)) (halfInd ε (latB G i j))`. Use function extensionality and compare the values at `u`. Rewrite using `[Pi.smul_apply, smul_eq_mul, boxS, halfInd, halfInd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hu : u ∈ mixHalfS e ε`. Rewrite using `[Set.indicator_of_mem (mem_halfPt.2 hu), Finset.prod_congr rfl fun w hw => (congrArg _ ((hco w).2.2.1 u).symm).trans ((hv w hw).2 _ ((hh w hw).2.2.2.2 u).1)]`. Distinguish the cases in `hl : mapA t e u ∈ latA G t i j ∧ mapB e u ∈ latB G i j`. Rewrite using `[if_pos ⟨hl.1, hu.1⟩, if_pos ⟨hl.2, hu.2⟩, mul_one, mul_one]`. Conclude with `Finset.prod_congr rfl fun w hw => Set.indicator_of_mem (((hh w hw).2.2.2.2 u).2.2 hl.1 hl.2) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∃ w ∈ locPl G t, ofMaps t e (atPl w 1 • mapA t e u, atPl w 1 • mapB e u) ∉ latPtS t e (w.under (𝓞 D.host.F))` using `by by_contra! hall`. Conclude with `hl ⟨mem_of_sum_smul (hεs ▸ hu.1) fun w hw => (mapA_ofMaps t e _ ▸ (hall w hw).2.1 :), mem_of_sum_smul (hεs ▸ hu.2) fun w hw => (mapB_ofMaps t e _ ▸ (hall w hw).2.2 :)⟩`. Take `⟨w, hw, hn⟩` from `this`. Rewrite using `[Finset.prod_eq_zero hw (Set.indicator_of_notMem hn _)]`. Break down `not_and_or.1 hl with hl | hl` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[if_neg fun h => hl h.1, zero_mul, mul_zero]`. Rewrite using `[if_neg fun h : _ ∧ IsHalf ε (mapB e u) => hl h.1, mul_zero, mul_zero]`. Rewrite using `[Set.indicator_of_notMem (mt mem_halfPt.1 hu)]`. Break down `not_and_or.1 hu with hl | hl` into its components or cases. Rewrite using `[if_neg fun h => hl h.2, zero_mul, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg fun h : _ ∧ IsHalf ε (mapB e u) => hl h.2, mul_zero, mul_zero]`. Establish `hR` using `GlobalTheory.T.heisenbergStableRelation_of_vacua Γ.M' W.ψ hstd hG (locPl G t) (fun w => w.under (𝓞 D.host.F)) (Good.under_injOn hL G t) _ (fun w => mixHalfS e (atPl w 1)) (fun w => mixHalfS e (cA D (atPl w 1))) (mixCoS B t e) I (halfPt t e ε) R (c • f) hI (fun w hw u hu => ⟨(hh w …`. Use `g1 x (hA w hw x hx) _ hp.2` as an intermediate fact. Rewrite using `[← thetaS_rho] at this⟩)` and apply the resulting hypothesis. Use the proof step `(fun w hw x hx p hp => ⟨GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hstd x _ hp.1, by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `g2 x (hA' w hw x hx) _ hp.2` as an intermediate fact. Rewrite using `[← thetaS_rho] at this⟩)` and apply the resulting hypothesis. Use the proof step `⟨(isFinPart_vac hG ∅).fam.mem hG _, by`. Use `(boxGraph t e ε T₁ T₂).smul_mem c (Submodule.subset_span ⟨_, _, GlobalTheory.isSBHalf_halfInd ε _, GlobalTheory.isSBHalf_halfInd ε _, rfl⟩)` as an intermediate fact. Rewrite `this` using `[(congrArg T₁ (one_smul ℂ _).symm).trans hT₁.vac, (congrArg T₂ (one_smul ℂ _).symm).trans hT₂.vac]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (_, thetaS Γ W.ψ _) ∈ _`. Rewrite using `[hbase, hb]`. Conclude with `this⟩`. Use `φ hφ.1 fun v hv => hφ.2 v fun hm => let ⟨w, hw, e⟩ := (hti.1.2.2.1 v).1 hm`. Use `hv w hw e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hτ : (∑ d ∈ τ.support, τ d • (boxS t e (φ₁ d) (φ₂ d), boxS t e d.1.2 d.2)) ∈ boxGraph t e ε T₁ T₂` using `sum_mem fun d hd => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, (hmem d hd).1.1, (hmem d hd).2.1, by`. Rewrite using `[← (hmem d hd).1.2.2 T₁ hT₁, ← (hmem d hd).2.2.2 T₂ hT₂]⟩)`. Establish `hfst : (Set.indicator (halfPt t e ε : Set _) fun u => ∏ w ∈ locPl G t, I w (φ _) (mixCoS B t e w u)) = (∑ d ∈ τ.support, τ d • (boxS t e (φ₁ d) (φ₂ d), boxS t e d.1.2 d.2)).1`. Use function extensionality and compare the values at `u`. Rewrite using `[Prod.fst_sum, Finset.sum_apply]`.
-
-Distinguish the cases in `hu : u ∈ mixHalfS e ε`. Rewrite using `[Set.indicator_of_mem (mem_halfPt.2 hu), Finset.prod_congr rfl fun w hw => congrFun (hΨ w hw) _]`. Conclude with `(hsum _ _ hu.1 hu.2).symm`. Rewrite using `[Set.indicator_of_notMem (mt mem_halfPt.1 hu)]`. Use `(Finset.sum_eq_zero fun d hd => mul_eq_zero_of_right _ ?_).symm` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hu ⟨(hmem d hd).1.1.1 _ (left_ne_zero_of_mul hne), (hmem d hd).2.1.1 _ (right_ne_zero_of_mul hne)⟩`. Use `⟨hR.1, fun u => ?_⟩` and prove the remaining obligations. Use `g0 _ (by` as an intermediate fact. Use `sub_mem hR.2 hτ` as an intermediate fact.
-
-Rewrite using `[← Prod.mk.eta (p := Finset.sum _ _), Prod.mk_sub_mk, ← hfst, sub_self] at this)` and apply the resulting hypothesis. Use `congrFun (sub_eq_zero.1 this) u` as an intermediate fact. Rewrite `this` using `[Prod.snd_sum, Finset.sum_apply]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_scalar_datum : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hst : SquareStanding G t) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W) (h : IsTripleOf W M t i j e Bs Γ X), IsTriple Bs Γ X om om' → IsDoublyCompatible t i j e Bs Γ X →

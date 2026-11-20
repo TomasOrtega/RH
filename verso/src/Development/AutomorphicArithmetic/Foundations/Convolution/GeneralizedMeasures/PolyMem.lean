@@ -7,7 +7,7 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
 /- English proof (translation)
-Set `K₀ : TopologicalSpace.PositiveCompacts G` to `⟨⟨U, hc⟩, by`. Rewrite using `[TopologicalSpace.Compacts.carrier_eq_coe, TopologicalSpace.Compacts.coe_mk, ho.interior_eq]`. Conclude with `⟨1, U.one_mem⟩⟩`. Conclude with `⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self (K₀ := K₀)⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem haar_one {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (U : Subgroup G) (hc : IsCompact (U : Set G)) (ho : IsOpen (U : Set G)) :
@@ -18,7 +18,7 @@ private theorem haar_one {G : Type*} [Group G] [TopologicalSpace G] [IsTopologic
   exact ⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self (K₀ := K₀)⟩
 
 /- English proof (translation)
-Introduce `σ` and use `by rw [← polyEmb_rename] congr 1 rw [← AlgHom.comp_apply, MvPolynomial.comp_aeval] congr 2 funext i exact MvPolynomial.esymm_isSymmetric (Fin n) ℂ _ σ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem poly_mem {n : ℕ} (p : MvPolynomial (Fin n) ℂ) :
     polyEmb n (aeval (fun i : Fin n => esymm (Fin n) ℂ (i + 1)) p) ∈ symmetricLaurent n := fun σ => by
@@ -30,13 +30,13 @@ private theorem poly_mem {n : ℕ} (p : MvPolynomial (Fin n) ℂ) :
   exact MvPolynomial.esymm_isSymmetric (Fin n) ℂ _ σ
 
 /- English proof (translation)
-Introduce `K _ _ n _ w`. Use `⟨fun p => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `borelize (GL (Fin n) (w.adicCompletion K))`. Take `⟨m, hm, h1⟩` from `haar_one (GLnLocal.integralGL (w.adicCompletion K) n) (GLnLocal.isCompact_integralGL _ n) (GLnLocal.isOpen_integralGL _ n)`. Take `⟨H, hH⟩` from `(AlgHom.mem_range _).1 (symmetricLaurent_le_range (μ := m) (F := w.adicCompletion K) (poly_mem p))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun x => (H : HeckeAlgebra m) x, _, inferInstance, m, hm, h1, H, fun _ => rfl, hH⟩`. Use `borelize (GL (Fin n) (w.adicCompletion K))`. Take `⟨m, hm, h1⟩` from `haar_one (GLnLocal.integralGL (w.adicCompletion K) n) (GLnLocal.isCompact_integralGL _ n) (GLnLocal.isOpen_integralGL _ n)`. Use `⟨_, inferInstance, m, hm, h1, 1, fun x => ?_, by rw [map_one, map_one, map_one]⟩` and prove the remaining obligations. Rewrite using `[HeckeAlgebra.HeckeAlgebraLevel.val_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr : m.real (GLnLocal.integralGL (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) = 1`. Simplify using `[Measure.real, h1]`. Rewrite using `[HeckeAlgebra.idem_apply, hr]`. Simplify using `only [Complex.ofReal_one, inv_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `p h ⟨_, _, m, _, -, H, hH, -⟩`. Take `rfl : (fun x => (H : HeckeAlgebra m) x) = h` from `funext hH`. Conclude with `⟨(H : HeckeAlgebra m).mem.1, (H : HeckeAlgebra m).mem.2, fun k hk x => HeckeAlgebra.HeckeAlgebraLevel.val_mem _ _ H k hk x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.sphEx :
     SphEx := by

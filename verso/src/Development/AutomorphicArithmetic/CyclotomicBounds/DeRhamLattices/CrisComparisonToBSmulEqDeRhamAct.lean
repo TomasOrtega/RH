@@ -7,11 +7,11 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c c' hc hc' => rw [map_add, add_smul, map_add, hc, hc', map_add, map_add, AddMonoidHom.add_apply]`. Consider the case `tmul o w`. Rewrite using `[hB, hD]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => rw [smul_add, map_add, hy, hy', map_add, map_add]`. Consider the case `tmul r x`. Proceed by induction on `r using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add r r' hr hr' => rw [TensorProduct.add_tmul, smul_add, map_add, hr, hr', map_add, map_add]`. Consider the case `tmul o' b`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_abstract {Z O A B D M N : Type} [CommRing Z] [CommRing O] [CommRing A] [CommRing B]
     [CommRing D] [Algebra Z O] [Algebra Z A] [Algebra Z B] [Algebra Z D] [AddCommGroup M] [Module O M]
@@ -38,9 +38,9 @@ private theorem smul_abstract {Z O A B D M N : Type} [CommRing Z] [CommRing O] [
         rw [TensorProduct.smul_tmul', smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, h]
 
 /- English proof (translation)
-Introduce `l _ LL T Pl AI Td X hX act hact c y`. Use `smul_abstract (toB l ↥(OL LL)) (toOD l ↥(OL LL)) (fun w => acrisToBcris l (ainfToAcris l w)) (fun w => ainfToBdRp l w) (fun _ _ => rfl) (fun _ _ => rfl) X act (fun o o' w b x => ?_) c y` and prove the remaining obligations. Use `(hX _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (act _) (hX o' b x)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (hact _ _ _ _).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((o * o' : ↥(OL LL)) : ↥LL.1) = (o : ↥LL.1) * (o' : ↥LL.1)` using `rfl`. Rewrite using `[h1, mul_smul, map_mul, UpperTheory.KN.crisComparison_ainf_eq_deRhamComparison l Pl AI Td w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.UpperTheory.KN.crisComparison_toB_smul_eq_deRham_act :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (X : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR), (∀ (o : ↥(OL LL)) (b : Per.Bcris l) (x : ↥T.L.T), X ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) → ∀ (act : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), act (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (c : OA l ↥(OL LL)) (y : TW (OB l ↥(OL LL)) T), X (toB l ↥(OL LL) c • y) = act (toOD l ↥(OL LL) c) (X y) := by

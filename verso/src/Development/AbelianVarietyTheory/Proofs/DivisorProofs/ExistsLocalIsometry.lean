@@ -9,11 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocalIsometryEqualRank
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `⟨(h' * h⁻¹).1, (h * h'⁻¹).1, ?_, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← Units.val_mul]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e : ((h⁻¹).1.map σ)ᵀ * (h.1.map σ)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Establish `e2 : h.1 * (h⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_of_frames {A : Type} [CommRing A] (σ : A →+* A) {m n : ℕ} (hr : m = n)
     (J : Matrix (Fin n) (Fin n) A) (J' : Matrix (Fin m) (Fin m) A) (h : GL (Fin n) A) (h' : GL (Fin m) A)
@@ -41,7 +41,7 @@ section CM
 attribute [local instance] IsCMField.starRing
 
 /- English proof (translation)
-Take `⟨h, h1, h2⟩` from `exists_orthonormal hc V v`. Take `⟨h', h1', h2'⟩` from `exists_orthonormal hc V' v`. Take `⟨φ, ψ, a, b, c, d⟩` from `exists_of_frames (sigR (Fv (maximalRealSubfield E) v) hc.sig) hr (JR (Fv (maximalRealSubfield E) v) V.gram) (JR (Fv (maximalRealSubfield E) v) V'.gram) h h' h2 h2' (ordAt E v)`. Conclude with `⟨φ, ψ, a, b, c, fun x => (h1 x).trans ((d x).trans (h1' _).symm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_cm {E : Type} [Field E] [NumberField E] [IsCMField E] (hc : CMData (maximalRealSubfield E) E)
     (V V' : HSpace E) (hr : V'.rank = V.rank) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
@@ -62,7 +62,7 @@ theorem exists_of_cm {E : Type} [Field E] [NumberField E] [IsCMField E] (hc : CM
 end CM
 
 /- English proof (translation)
-Introduce `D V V' hr v`. Use `D.host.isCMField_hostE` as an intermediate fact. Establish `key` using `exists_of_cm (E := D.host.E) D.sp.cm V V' hr v`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_local_isometry : ∀ (D : D7) (V V' : Formalism.BasicNotions.TH.HSp D), V'.rank = V.rank → ∀ v : HeightOneSpectrum (𝓞 D.host.F), ∃ (φ : Matrix (Fin V'.rank) (Fin V.rank) (Fv D.host.F v ⊗[D.host.F] D.host.E)) (ψ : Matrix (Fin V.rank) (Fin V'.rank) (Fv D.host.F v ⊗[D.host.F] D.host.E)), φ * ψ = 1 ∧ ψ * φ = 1 ∧ (Formalism.UG.cT (sigR (Fv D.host.F v) D.sp.cm.sig) φ * JR (Fv D.host.F v) V'.gram : Matrix (Fin V.rank) (Fin V'.rank) (Fv D.host.F v ⊗[D.host.F] D.host.E)) * φ = JR (Fv D.host.F v) V.gram ∧ ∀ x, x ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := D.host.F) V v ↔ φ.mulVec x ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := D.host.F) V' v := by
   intro D V V' hr v

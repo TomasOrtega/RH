@@ -21,17 +21,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.TwConj
 open GlobalTheory.ConjTwist
 /- English proof (translation)
-Introduce `hRF hA`. Use `_root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt) fun Fm x hx k p hr hm w _ j H => ?_` and prove the remaining obligations. Introduce `ρ hρ hp hL τ hτ`. Establish `hR` using `_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx k p hr hm _ H.1.2.2 H.2 j`. Establish `hτ' : ∀ z ∈ (Formalism.L2.Host.embLL0 (Fm.D x k)).fieldRange, τ z = z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hτ y`. Establish `hFB : FixBase p.T p.R.toRealDat j τ` using `GlobalTheory.T.fixes_untwistedTupleData_of_fixes_smallField _ _ _ _ _ _ hRF p.T p.R p.cG p.Sx p.nexp (F2 p) p.κ p.v₀ hR.laws hR.core hR.fw hR.tieIn hR.galois hR.small.val hR.small.ray hR.small.roots j τ hτ'`. Use `⟨hFB, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `de_chi_eq hρ ((Fm.ex x hx k).nch.twI w) j ((Fm.ex x hx k).nch.sd w) y`. Express the relevant statement in the definitionally equal form `τ (((ρ.B _ j _).de.chi y : Circle) : ℂ) = _`. Rewrite using `[hσ]`. Use `GlobalTheory.T.ringAut_fixing_smallField_fixes_delta_values ρ hρ _ j _ (p.R.C.delAt ((Fm.D x k).ntw.l ((Fm.ex x hx k).nch.twI w))) (hp.delta _ j _) ?_ τ hτ σ` and prove the remaining obligations. Unfold `Formalism.L2.Host.CharFrame.delAt`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components.
 
-Use `split_ifs`. Use `exacts [hR.small.val.del', hR.small.val.del]`. Introduce and unpack `⟨q, hq⟩`. Take `⟨y, rfl⟩` from `(ρ.eG ((Fm.ex x hx k).nch.twI w) j ((Fm.ex x hx k).nch.sd w)).surjective q`. Take `⟨g, rfl⟩` from `(p.R.eG.trans p.cG).surjective y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hg` using `(mem_level_iff hm.2.2 hL _ j _ g).1 hq`. Take `⟨z, hz⟩` from `(level_chi hm.2.2 hρ hL _ j _ ⟨g, hg⟩ hq).2`. Express the relevant statement in the definitionally equal form `τ ((((ρ.B _ j _).G.P.chi ⟨_, hq⟩ : ℂˣ) : ℂ)) = _`. Rewrite using `[← hz]`. Conclude with `hτ z`.
-
-Conclude with `(baseOf_of_realPin hR.core.lev hρ hp _ j _).fix_mu hR.core.lev (hρ.base _ j _) hFB.chi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixAt_holds_alt : GlobalTheory.Published.RayClassFieldSt → _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.TwConj.FixedPointCondition := by
   intro hRF hA

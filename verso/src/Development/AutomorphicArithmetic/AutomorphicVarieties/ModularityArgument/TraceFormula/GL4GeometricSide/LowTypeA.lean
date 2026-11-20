@@ -14,16 +14,16 @@ def ev (a : Fin n) : Fin n → ℝ := fun x => if x = a then 1 else 0
 abbrev Cone (Q : Fin n → ℝ) : Prop := inCone (fun a : Fin n => (a : ℕ)) Q
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => 0, fun _ _ h => absurd rfl h, fun x => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem cone_zero : Cone (0 : Fin n → ℝ) := ⟨fun _ _ => 0, fun _ _ h => absurd rfl h, fun x => by simp⟩
 
 /- English proof (translation)
-Take `⟨c, hc, eQ⟩` from `hQ`. Take `⟨d, hd, eR⟩` from `hR`. Use `⟨fun a b => c a b + d a b, fun a b h => ?_, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : c a b = 0`. Conclude with `hd a b (by simpa [h1] using h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc a b h1`. Rewrite using `[Pi.add_apply, eQ, eR, ← sum_add_distrib]`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_add_distrib]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Cone.add {Q R : Fin n → ℝ} (hQ : Cone Q) (hR : Cone R) : Cone (Q + R) := by
   obtain ⟨c, hc, eQ⟩ := hQ
@@ -40,11 +40,11 @@ theorem Cone.add {Q R : Fin n → ℝ} (hQ : Cone Q) (hR : Cone R) : Cone (Q + R
     ring
 
 /- English proof (translation)
-Use `⟨fun c d => if c = a ∧ d = b then 1 else 0, fun c d hcd => ?_, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : c = a ∧ d = b`. Rewrite using `[h1.1, h1.2]`. Conclude with `h`. Conclude with `absurd (if_neg h1) hcd`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_eq_single a, sum_eq_single b]`. Simplify using `[ev]`. Introduce `d _ hd`. Simplify using `[hd]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cone_root {a b : Fin n} (h : a < b) : Cone (ev a - ev b) := by
   refine ⟨fun c d => if c = a ∧ d = b then 1 else 0, fun c d hcd => ?_, fun x => ?_⟩
@@ -59,15 +59,15 @@ theorem cone_root {a b : Fin n} (h : a < b) : Cone (ev a - ev b) := by
     · simp
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f Cone (fun _ _ => Cone.add) cone_zero h`.
+A detailed English derivation is pending.
 -/
 theorem cone_sum {α : Type} (T : Finset α) (f : α → Fin n → ℝ) (h : ∀ p ∈ T, Cone (f p)) : Cone (∑ p ∈ T, f p) :=
   Finset.sum_induction f Cone (fun _ _ => Cone.add) cone_zero h
 
 /- English proof (translation)
-Rewrite using `[← sum_sdiff_sub_sum_sdiff]`. Establish `hd : (A \ B).card = (B \ A).card` using `card_sdiff_comm hc`. Set `φ` to `Finset.equivOfCardEq hd`. Rewrite using `[← sum_coe_sort (A \ B), ← sum_coe_sort (B \ A), ← Equiv.sum_comp φ, ← sum_sub_distrib]`. Use `cone_sum _ _ fun x _ => cone_root ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `mem_sdiff.1 x.2`. Establish `h2` using `mem_sdiff.1 (φ x).2`. Conclude with `h _ h1.1 h1.2 _ h2.1 h2.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cone_sets (A B : Finset (Fin n)) (hc : A.card = B.card) (h : ∀ x ∈ A, x ∉ B → ∀ y ∈ B, y ∉ A → x < y) :
     Cone (∑ x ∈ A, ev x - ∑ y ∈ B, ev y) := by
@@ -81,9 +81,9 @@ theorem cone_sets (A B : Finset (Fin n)) (hc : A.card = B.card) (h : ∀ x ∈ A
   exact h _ h1.1 h1.2 _ h2.1 h2.2
 
 /- English proof (translation)
-Rewrite using `[sum_sub_distrib, ← sum_image (f := ev) hf, ← sum_image (f := ev) hg]`. Use `cone_sets _ _ (by rw [card_image_of_injOn hf, card_image_of_injOn hg]) ?_` and prove the remaining obligations. Introduce `x hx hx' y hy hy'`. Take `⟨p, hp, rfl⟩` from `mem_image.1 hx`. Take `⟨q, hq, rfl⟩` from `mem_image.1 hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h p hp (fun q hq e => hx' (mem_image.2 ⟨q, hq, e⟩)) q hq fun p hp e => hy' (mem_image.2 ⟨p, hp, e⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cone_maps {α : Type} (T : Finset α) (f g : α → Fin n) (hf : Set.InjOn f T) (hg : Set.InjOn g T)
     (h : ∀ p ∈ T, (∀ q ∈ T, g q ≠ f p) → ∀ q ∈ T, (∀ p ∈ T, f p ≠ g q) → f p < g q) :
@@ -96,13 +96,11 @@ theorem cone_maps {α : Type} (T : Finset α) (f g : α → Fin n) (hf : Set.Inj
   exact h p hp (fun q hq e => hx' (mem_image.2 ⟨q, hq, e⟩)) q hq fun p hp e => hy' (mem_image.2 ⟨p, hp, e⟩)
 
 /- English proof (translation)
-Establish `inj : ∀ (f : P → Fin n), (∀ p q, col p = col q → f p = f q → p = q) → ∀ c, Set.InjOn f (S.filter fun p => col p = c)` using `fun f hf c p hp q hq e => hf p q ((mem_filter.1 hp).2.trans (mem_filter.1 hq).2.symm) e`. Establish `up : ∀ c, ∀ q ∈ S.filter (fun p => col p = c), ∀ i, b q < i → ∃ r ∈ S.filter (fun p => col p = c), b r = i`. Introduce `c q hq i hi`. Take `⟨r, hr, e⟩` from `hb.2 q i hi`. Conclude with `⟨r, mem_filter.2 ⟨hS q r hr.symm (mem_filter.1 hq).1, hr.trans (mem_filter.1 hq).2⟩, e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← sum_fiberwise_of_maps_to (g := col) (t := S.image col) fun p hp => mem_image_of_mem _ hp]`. Use `cone_sum _ _ fun c _ => cone_maps _ _ _ (inj I hI c) (inj b hb.1 c) fun p _ h1 q hq _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (I p) (b q) with h | h | h` into its components or cases. Conclude with `h`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd h.symm (h1 q hq)`. Take `⟨r, hr, e⟩` from `up c q hq _ h`. Conclude with `absurd e (h1 r hr)`. Rewrite using `[← sum_fiberwise_of_maps_to (g := col) (t := S.image col) fun p hp => mem_image_of_mem _ hp]`. Use `cone_sum _ _ fun c _ => cone_maps _ (fun p => (b p).rev) _ (inj _ (fun p q h e => hb.1 p q h (Fin.rev_injective e)) c) (inj I hI c) fun p hp _ q _ h2 => ?_` and prove the remaining obligations.
-
-Break down `lt_trichotomy (b p).rev (I q) with h | h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (h2 p hp)`. Take `⟨r, hr, e⟩` from `up c p hp (I q).rev (Fin.lt_rev_iff.1 h)`. Conclude with `absurd (by rw [e, Fin.rev_rev]) (h2 r hr)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cone_cols {P C : Type} [DecidableEq C] (col : P → C) (b I : P → Fin n) (S : Finset P)
     (hS : ∀ p q, col p = col q → p ∈ S → q ∈ S) (hb : IsTab col b) (hI : ∀ p q, col p = col q → I p = I q → p = q) :
@@ -132,13 +130,13 @@ theorem cone_cols {P C : Type} [DecidableEq C] (col : P → C) (b I : P → Fin 
       exact absurd (by rw [e, Fin.rev_rev]) (h2 r hr)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1 : ∑ c : Fin n, ∑ d : Fin n, (if c < d then ev c a else 0) = ((Ioi a).card : ℝ)`. Rewrite using `[sum_eq_single a]`. Simplify using `[ev, filter_lt_eq_Ioi]`. Introduce `c _ hc`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ev, Ne.symm hc]`. Simplify using the standard rewrite rules. Establish `h2 : ∑ c : Fin n, ∑ d : Fin n, (if c < d then ev d a else 0) = ((Iio a).card : ℝ)`. Rewrite using `[sum_comm, sum_eq_single a]`. Simplify using `[ev, filter_gt_eq_Iio]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Simplify using `[ev, Ne.symm hc]`. Simplify using the standard rewrite rules. Apply the tactic sequence `have h3 : ∀ c d : Fin n, (if c < d then ev c - ev d else 0) a = (if c < d then ev c a else 0) - (if c < d then ev d a else 0) := fun c d => by split_ifs <;> simp`. Rewrite using `[Finset.sum_apply, Fintype.sum_prod_type]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h3, sum_sub_distrib, h1, h2, Fin.card_Ioi, Fin.card_Iio]`. Use `a.2` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_rho : (fun a : Fin n => ((n : ℝ) - 1) - 2 * (a : ℕ)) =
     ∑ x : Fin n × Fin n, if x.1 < x.2 then ev x.1 - ev x.2 else 0 := by
@@ -163,11 +161,9 @@ theorem two_rho : (fun a : Fin n => ((n : ℝ) - 1) - 2 * (a : ℕ)) =
   ring
 
 /- English proof (translation)
-Rewrite using `[← sum_image (f := fun x : Fin n × Fin n => ev x.1 - ev x.2) hr, two_rho, ← univ_inter (T.image r), ← sum_ite_mem, ← sum_sub_distrib]`. Use `cone_sum _ _ fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`. Rewrite using `[sub_self]`. Conclude with `cone_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_zero]`. Conclude with `cone_root h1`. Rewrite using `[zero_sub, neg_sub]`. Break down `(not_lt.1 h1).lt_or_eq with h | h` into its components or cases. Conclude with `cone_root h`.
-
-Rewrite using `[h, sub_self]`. Conclude with `cone_zero`. Rewrite using `[sub_self]`. Conclude with `cone_zero`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_pairs {α : Type} (T : Finset α) (r : α → Fin n × Fin n) (hr : Set.InjOn r T) :
     Cone ((fun a : Fin n => ((n : ℝ) - 1) - 2 * (a : ℕ)) - ∑ k ∈ T, (ev (r k).1 - ev (r k).2)) := by

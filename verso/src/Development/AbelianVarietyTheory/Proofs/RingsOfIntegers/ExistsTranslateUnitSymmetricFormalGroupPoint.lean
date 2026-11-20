@@ -29,11 +29,11 @@ section Alg
 variable {Γ Γ' U : Type*} [CommGroup Γ] [CommGroup Γ'] [CommGroup U]
 
 /- English proof (translation)
-Use `⟨fun x => hg _ _ fun i => ?_, hg _ _ fun i => ?_, fun x y => hg _ _ fun i => ?_⟩` and prove the remaining obligations. Use `(h i).1 (P x)` as an intermediate fact. Simplify using `only [← map_pow P, ← map_mul P, hφ] at this`. Rewrite using `[map_prod, this, map_one]`. Use `(h i).2.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← map_one P, ← map_inv P, hφ, hφ, hρ, hρ, quadN_map P (g i) hw (hθ i) (hθ i)]`. Simplify using `only [map_mul, map_pow, map_div, map_one]`. Conclude with `this`. Use `(h i).2.2 (P x) (P y)` as an intermediate fact. Rewrite `this` using `[← map_one P, ← map_mul P, hφ, hφ, hφ, hφ, hρ, map_lineCoeffCubic P (g i) (hρ i), quadQ_map P (g i) hw (hθ i) (hθ i)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, map_div]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem LiftLaws.pull {I : Type*} {U' : I → Type*} [∀ i, CommGroup (U' i)] (P : Γ →* Γ') (g : ∀ i, U →* U' i)
     (hg : ∀ u v, (∀ i, g i u = g i v) → u = v) {θ : Γ → Γ → Γ → U} {ρ φ : Γ → U} {w : Γ → Γ} {w' : Γ' → Γ'}
@@ -59,13 +59,13 @@ def trU (ρ φ : Γ → U) (e : Γ → Γ → U) (w : Γ → Γ) (a : Γ) (k : �
   φ x * (ρ (a * x) * e (a * x) (w (a * x)) / (ρ x * e x (w x))) ^ k
 
 /- English proof (translation)
-Take `⟨o, s, m⟩` from `h`. Use `⟨fun x y => ?_, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg Additive.ofMul (m x y)` as an intermediate fact. Rewrite `this` using `[quadQ_of_diff w h₁ h₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [trU, c3, _root_.mul_one, _root_.one_mul, e₁, mul_comm a, ofMul_mul, ofMul_div, ofMul_pow, ofMul_inv, ofMul_one] at this ⊢`. Take the linear combination `(norm := module) this`. Simplify using `only [trU]`. Rewrite using `[Finset.prod_mul_distrib, o, _root_.one_mul, Finset.prod_pow]`. Use `Finset.prod_range_div (fun j => ρ (a ^ j * x) * e (a ^ j * x) (w (a ^ j * x))) k` as an intermediate fact.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pow_succ', _root_.mul_assoc] at this`. Rewrite using `[this, ha, pow_zero, div_self', one_pow]`. Use `congrArg Additive.ofMul s` as an intermediate fact. Rewrite `this` using `[quadN_of_diff w h₁ h₂ e₁ e₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [trU, _root_.mul_one, mul_inv_cancel, ofMul_mul, ofMul_div, ofMul_pow, ofMul_one] at this ⊢`. Take the linear combination `(norm := module) this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem trU_laws {θ p₁ p₂ : Γ → Γ → Γ → U} {ρ φ : Γ → U} {e : Γ → Γ → U} (w : Γ →* Γ) {a : Γ} {k : ℕ}
     (h : LiftLaws θ ρ φ w a k) (ha : a ^ k = 1)
@@ -102,14 +102,14 @@ variable {A : Type} [CommRing A]
 def cstH (z : Sp A) : A →+* (Sp A).presheaf.stalk z := ((Sp A).presheaf.germ ⊤ z trivial).hom.comp (toΓ A)
 
 /- English proof (translation)
-The claim follows from `(gs_eq (𝟙 _) z ⊤ trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem cstH_eq (z : Sp A) (a : A) : cstH z a = cst (𝟙 _) z a := (gs_eq (𝟙 _) z ⊤ trivial _).symm
 
 def gu (z : Sp A) : Aˣ →* ((Sp A).presheaf.stalk z)ˣ := Units.map (cstH z : A →* _)
 
 /- English proof (translation)
-The claim follows from `H1.cst_ext fun z => (cstH_eq z a).symm.trans ((h z).trans (cstH_eq z b))`.
+A detailed English derivation is pending.
 -/
 theorem cstH_ext {a b : A} (h : ∀ z, cstH z a = cstH z b) : a = b :=
   H1.cst_ext fun z => (cstH_eq z a).symm.trans ((h z).trans (cstH_eq z b))
@@ -117,13 +117,13 @@ theorem cstH_ext {a b : A} (h : ∀ z, cstH z a = cstH z b) : a = b :=
 variable {X Y : Scheme.{0}} {L : LB X} {j : L.ι} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Introduce `_ _` and use `Set.mem_iInter.2 fun k => h k trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_wchart (r : Sp A ⟶ Y) (h : ∀ k, ⊤ ≤ (r ≫ φ k) ⁻¹ᵁ L.U j) :
     ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ (fun _ => j) := fun _ _ => Set.mem_iInter.2 fun k => h k trivial
 
 /- English proof (translation)
-Rewrite using `[← JetSer.fnVal_eq_fnValHom, ← JetSer.fnVal_specMap ψ r W h]`. Conclude with `(JetSer.valSer_germ_fnVal _ _ (JetSer.top_le_preimage_comp _ r W h) z _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_read (r : Sp A ⟶ Y) (W : Y.Opens) (h : ⊤ ≤ r ⁻¹ᵁ W) (f : Γ(Y, W)) {A' : Type} [CommRing A'] (ψ : A →+* A')
     (z : Sp A') : gs (spMap ψ ≫ r) z W f = cstH z (ψ (JetSer.fnValHom r W h f)) := by
@@ -131,7 +131,7 @@ theorem gs_read (r : Sp A ⟶ Y) (W : Y.Opens) (h : ⊤ ≤ r ⁻¹ᵁ W) (f : �
   exact (JetSer.valSer_germ_fnVal _ _ (JetSer.top_le_preimage_comp _ r W h) z _).symm
 
 /- English proof (translation)
-Establish `h'` using `top_le_wchart r h`. Use `⟨_, fun A' _ ψ z J hJ => Eq.trans ?_ (gs_read r _ h' (s.f fun _ => j) ψ z)⟩` and prove the remaining obligations. Conclude with `sval_of s _ z J (fun _ => j) fun k => hJ.2 _ (Set.mem_iInter.1 (JetSer.top_le_preimage_comp (spMap ψ) r _ h' (show z ∈ ⊤ from trivial)) k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_read_sec (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp A ⟶ Y) (h : ∀ k, ⊤ ≤ (r ≫ φ k) ⁻¹ᵁ L.U j) :
     ∃ u : A, ∀ (A' : Type) [CommRing A'] (ψ : A →+* A') (z : Sp A') (J), Pref L j z J →
@@ -142,7 +142,7 @@ theorem exists_read_sec (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp A ⟶ Y) (h : 
     hJ.2 _ (Set.mem_iInter.1 (JetSer.top_le_preimage_comp (spMap ψ) r _ h' (show z ∈ ⊤ from trivial)) k)
 
 /- English proof (translation)
-Establish `h'` using `top_le_wchart r h`. Use `⟨Units.map (JetSer.fnValHom r _ h').toMonoidHom (t.s fun _ => j), fun A' _ ψ z J hJ => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `(val_pref hJ t _ (JetSer.top_le_preimage_comp (spMap ψ) r _ h' (show z ∈ ⊤ from trivial))).trans (gs_read r _ h' _ ψ z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_read_gen (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp A ⟶ Y) (h : ∀ k, ⊤ ≤ (r ≫ φ k) ⁻¹ᵁ L.U j) :
     ∃ u : Aˣ, ∀ (A' : Type) [CommRing A'] (ψ : A →+* A') (z : Sp A') (J), Pref L j z J →
@@ -164,27 +164,27 @@ variable (B) in
 def toSm (u : Q V d n) : Sm B n := ⟨u.1, fun i => by rw [u.2 i]; exact zero_mem _⟩
 
 /- English proof (translation)
-The claim follows from `(evA_eq_ev (fun j => toSm B (b j)) (fun j i => (b j).2 i) f).trans (sb_apply b f).symm`.
+A detailed English derivation is pending.
 -/
 theorem evA_toSm (b : Fin k → Q V d n) (f : PS V k d) : evA (fun j => toSm B (b j)) f = sb b f :=
   (evA_eq_ev (fun j => toSm B (b j)) (fun j i => (b j).2 i) f).trans (sb_apply b f).symm
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun i => (evA_toSm (B := B) ![u, v] (B.G.F i)).symm.trans ((congrArg (evA · (B.G.F i)) (funext fun j => by fin_cases j <;> rfl)).trans (smallPointsSubstitutionAlgHom_two_points _ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem toSm_op (u v : Q V d n) : toSm B (op (FQ B.G) u v) = toSm B u * toSm B v :=
   Subtype.ext (funext fun i => (evA_toSm (B := B) ![u, v] (B.G.F i)).symm.trans
     ((congrArg (evA · (B.G.F i)) (funext fun j => by fin_cases j <;> rfl)).trans (smallPointsSubstitutionAlgHom_two_points _ _ _)))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun i => (evA_toSm (B := B) ![u] (B.A.act o i)).symm.trans ((congrArg (evA · (B.A.act o i)) (funext fun j => by fin_cases j; rfl)).trans (smallPointsSubstitutionAlgHom_single_point _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem toSm_ac (o : 𝓞 E) (u : Q V d n) : toSm B (ac (AQ B.A o) u) = Sm.act B o (toSm B u) :=
   Subtype.ext (funext fun i => (evA_toSm (B := B) ![u] (B.A.act o i)).symm.trans
     ((congrArg (evA · (B.A.act o i)) (funext fun j => by fin_cases j; rfl)).trans (smallPointsSubstitutionAlgHom_single_point _ _)))
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun f => (congrArg (psJet m) (evA_toSm b f)).trans (jQ_psJet m b f).symm`.
+A detailed English derivation is pending.
 -/
 theorem jetA_evA (m : ℕ) (b : Fin k → Q V d n) :
     (jetA _ m).comp (evA fun j => toSm B (b j)) = (jQ m b).comp (jetA _ m) :=
@@ -194,7 +194,7 @@ variable {t : SAB H (Sp V)} {x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G} {X : li
 
 include hX in
 /- English proof (translation)
-Establish `e : (![toSm B u] : Fin 1 → Sm B n) = fun j => toSm B (![u] j)` using `funext fun j => by fin_cases j; rfl`. Rewrite using `[ptOf, PP, ← hX m, ← Category.assoc, ← Category.assoc, GermD.homAt_comp, GermD.homAt_comp, e, jetA_evA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_ptOf (m : ℕ) (u : Q V d n) :
     Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetA _ m) ≫ ptOf X (toSm B u) = PP m x u := by
@@ -202,7 +202,7 @@ theorem jet_ptOf (m : ℕ) (u : Q V d n) :
   rw [ptOf, PP, ← hX m, ← Category.assoc, ← Category.assoc, GermD.homAt_comp, GermD.homAt_comp, e, jetA_evA]
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (GlobalTheory.T.spec_powerSeries_hom_ext_of_jets V _ _ _ _ fun m => congrArg (fun r => r.left) (h m))`.
+A detailed English derivation is pending.
 -/
 theorem lim_ext {p q : limO V d n ⟶ t.G}
     (h : ∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetA _ m) ≫ p = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetA _ m) ≫ q) : p = q :=
@@ -214,7 +214,7 @@ variable {κ : Type} [Fintype κ] {tg : κ → (Sp (DualNumber V) ⟶ t.G.left)}
 include hX hc
 
 /- English proof (translation)
-Establish `h : ptOf X (toSm B (gen 0 : Q V d 2) * toSm B (gen 1)) = ptOf X (toSm B (gen 0)) * ptOf X (toSm B (gen 1))` using `lim_ext fun m => by`. Rewrite using `[MonObj.comp_mul, ← toSm_op, jet_ptOf hX, jet_ptOf hX, jet_ptOf hX, PP_op hc]`. Use `congrArg (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (evA ![a, b]) ≫ ·) h` as an intermediate fact. Simplify using `only [MonObj.comp_mul, ptOf_sub, map_mul] at this`. Rewrite `this` using `[show Sm.sub ![a, b] (toSm B (gen 0)) = a from Sm.sub_gen _ 0, show Sm.sub ![a, b] (toSm B (gen 1)) = b from Sm.sub_gen _ 1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ptOf_mul (a b : Sm B n) : ptOf X (a * b) = ptOf X a * ptOf X b := by
   have h : ptOf X (toSm B (gen 0 : Q V d 2) * toSm B (gen 1)) = ptOf X (toSm B (gen 0)) * ptOf X (toSm B (gen 1)) :=
@@ -226,7 +226,7 @@ theorem ptOf_mul (a b : Sm B n) : ptOf X (a * b) = ptOf X a * ptOf X b := by
     show Sm.sub ![a, b] (toSm B (gen 1)) = b from Sm.sub_gen _ 1] at this
 
 /- English proof (translation)
-Establish `h : ptOf X (Sm.act B o (toSm B (gen 0 : Q V d 1))) = ptOf X (toSm B (gen 0)) ≫ t.act.act o` using `lim_ext fun m => by`. Rewrite using `[← Category.assoc, ← toSm_ac, jet_ptOf hX, jet_ptOf hX, PP_ac hc]`. Use `congrArg (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (evA ![a]) ≫ ·) h` as an intermediate fact. Simplify using `only [← Category.assoc, ptOf_sub, Sm.sub_act] at this`. Rewrite `this` using `[show Sm.sub ![a] (toSm B (gen 0)) = a from Sm.sub_gen _ 0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ptOf_act (o : 𝓞 E) (a : Sm B n) : ptOf X (Sm.act B o a) = ptOf X a ≫ t.act.act o := by
   have h : ptOf X (Sm.act B o (toSm B (gen 0 : Q V d 1))) = ptOf X (toSm B (gen 0)) ≫ t.act.act o :=
@@ -240,7 +240,7 @@ def ptH (n : ℕ) : Sm B n →* (limO V d n ⟶ t.G) := MonoidHom.mk' (ptOf X) (
 
 omit hX hc in
 /- English proof (translation)
-Establish `e : evA ![(Sm.gen B 0 : Sm B 1)] = AlgHom.id V _` using `AlgHom.ext fun f => (congrArg (evA · f) (funext fun j => by fin_cases j; rfl)).trans (evA_gen f)`. Rewrite using `[ptOf, e, GermD.homAt_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptOf_gen : ptOf X (Sm.gen B 0) = X := by
   have e : evA ![(Sm.gen B 0 : Sm B 1)] = AlgHom.id V _ := AlgHom.ext fun f =>
@@ -248,11 +248,11 @@ theorem ptOf_gen : ptOf X (Sm.gen B 0) = X := by
   rw [ptOf, e, GermD.homAt_id, Category.id_comp]
 
 /- English proof (translation)
-Set `χ : PS V 1 d →ₐ[V] V` to `(jetAug : Jet V _ 0 →ₐ[V] V).comp (jetA _ 0)`. Establish `hs : Function.Surjective (χ : PS V 1 d →+* V)` using `fun a => ⟨algebraMap V _ a, χ.commutes a⟩`. Establish `e : Formalism.L2.Pj.homAt (𝟙 (Sp V)) χ ≫ X = 1`. Rewrite using `[← GermD.homAt_comp, Category.assoc, hX 0, hc.zero 0]`. Establish `e' : spMap (χ : PS V 1 d →+* V) ≫ X.left = (toUnit (overAt (𝟙 (Sp V)) V)).left ≫ η[t.G].left` using `congrArg (fun q => q.left) e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsLocalHom (CommRingCat.ofHom (χ : PS V 1 d →+* V)).hom` using `IsLocalHom.of_surjective _ hs`. Establish `h : ((toUnit (overAt (𝟙 (Sp V)) V)).left ≫ η[t.G].left) (closedPoint V) ∈ W` using `hW trivial`. Rewrite `h` using `[← e']`. Establish `h2 : spMap (χ : PS V 1 d →+* V) (closedPoint V) = closedPoint (PS V 1 d)` using `Spec_closedPoint`. Establish `h3 : closedPoint (PS V 1 d) ∈ (X.left ⁻¹ᵁ W : (Sp (PS V 1 d)).Opens)` using `by rw [← h2]; exact h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((IsLocalRing.closedPoint_mem_iff _).1 h3).ge`.
+A detailed English derivation is pending.
 -/
 theorem lim_mem (W : t.G.left.Opens) (hW : ⊤ ≤ η[t.G].left ⁻¹ᵁ W) : ⊤ ≤ X.left ⁻¹ᵁ W := by
   let χ : PS V 1 d →ₐ[V] V := (jetAug : Jet V _ 0 →ₐ[V] V).comp (jetA _ 0)
@@ -269,7 +269,7 @@ theorem lim_mem (W : t.G.left.Opens) (hW : ⊤ ≤ η[t.G].left ⁻¹ᵁ W) : �
   exact ((IsLocalRing.closedPoint_mem_iff _).1 h3).ge
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hp`. Conclude with `JetSer.top_le_preimage_comp _ X.left W (lim_mem hX hc W hW)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_mem (W : t.G.left.Opens) (hW : ⊤ ≤ η[t.G].left ⁻¹ᵁ W) {p : limO V d n ⟶ t.G}
     (hp : p ∈ (ptH hX hc n).range) : ⊤ ≤ p.left ⁻¹ᵁ W := by
@@ -277,7 +277,7 @@ theorem range_mem (W : t.G.left.Opens) (hW : ⊤ ≤ η[t.G].left ⁻¹ᵁ W) {p
   exact JetSer.top_le_preimage_comp _ X.left W (lim_mem hX hc W hW)
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `(List.finRange l).filter (· ∈ I) with`. Consider the case `nil => exact (congrArg (· ∈ (ptH hX hc n).range) (MonObj.comp_one r)).mpr (one_mem _)`. Consider the case `cons a s ih => exact (congrArg (· ∈ (ptH hX hc n).range) (MonObj.comp_mul r _ _)).mpr (mul_mem (h a) ih)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psum_mem {T : Over (Sp V)} {l : ℕ} (r : limO V d n ⟶ T) (xs : Fin l → (T ⟶ t.G))
     (h : ∀ i, r ≫ xs i ∈ (ptH hX hc n).range) (I : Finset (Fin l)) : r ≫ psum t.G xs I ∈ (ptH hX hc n).range := by
@@ -287,7 +287,7 @@ theorem psum_mem {T : Over (Sp V)} {l : ℕ} (r : limO V d n ⟶ T) (xs : Fin l 
   | cons a s ih => exact (congrArg (· ∈ (ptH hX hc n).range) (MonObj.comp_mul r _ _)).mpr (mul_mem (h a) ih)
 
 /- English proof (translation)
-The claim follows from `e ▸ range_mem hX hc W hW hp`.
+A detailed English derivation is pending.
 -/
 theorem range_mem' (W : t.G.left.Opens) (hW : ⊤ ≤ η[t.G].left ⁻¹ᵁ W) {p : limO V d n ⟶ t.G}
     (hp : p ∈ (ptH hX hc n).range) {q : Sp (PS V n d) ⟶ t.G.left} (e : q = p.left) : ⊤ ≤ q ⁻¹ᵁ W :=
@@ -297,7 +297,7 @@ def toBase (T : Over (Sp V)) : T ⟶ baseOver (Sp V) := Over.homMk T.hom (Catego
 
 omit hX hc [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] in
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (((Category.comp_id _).symm.trans (Over.w f)).trans ((Category.comp_id _).symm.trans (Over.w g)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem base_ext {T : Over (Sp V)} (f g : T ⟶ baseOver (Sp V)) : f = g :=
   Over.OverMorphism.ext (((Category.comp_id _).symm.trans (Over.w f)).trans
@@ -307,9 +307,9 @@ variable {j : t.PP.L.ι} (hj : ⊤ ≤ η[t.G].left ⁻¹ᵁ t.PP.L.U j)
 include hj
 
 /- English proof (translation)
-Establish `g : X ∈ (ptH hX hc 1).range` using `⟨Sm.gen B 0, ptOf_gen⟩`. Take `⟨ρ, hρ⟩` from `exists_read_gen (j := j) wP X.left (by`. Introduce and unpack `(i | I)`. Conclude with `range_mem' hX hc _ hj g (Category.comp_id _)`. Use `range_mem' hX hc _ hj (psum_mem hX hc X ![𝟙 t.G, t.act.act H.w0] (fun i => ?_) I.down) (Over.comp_left _ _ _ _ _).symm fin_cases i` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `(congrArg (· ∈ (ptH hX hc 1).range) (Category.comp_id X)).mpr g`. Conclude with `⟨Sm.act B H.w0 (Sm.gen B 0), (ptOf_act hX hc _ _).trans (by rw [ptOf_gen]; rfl)⟩)`. Use `⟨ρ, fun n A _ _ ψ z J hJ a => Eq.trans ?_ (hρ A (ψ.comp (evA ![a])) z J hJ)⟩` and prove the remaining obligations. Rewrite using `[ptOf, ← Category.assoc, GermD.homAt_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem read_prim (wP : PrimTyG t) : ∃ ρ : (PS V 1 d)ˣ, ∀ (n : ℕ) (A : Type) [CommRing A] [Algebra V A]
     (ψ : PS V n d →ₐ[V] A) (z : Sp A) (J), Pref t.PP.L j z J → ∀ a : Sm B n,
@@ -327,11 +327,11 @@ theorem read_prim (wP : PrimTyG t) : ∃ ρ : (PS V 1 d)ˣ, ∀ (n : ℕ) (A : T
   rfl
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_read_gen (j := j) (φ := thφ t.G (x3 t.G)) (ε := thε) t.cub.t (lift (ptOf X (Sm.gen B (0 : Fin 3))) (lift (ptOf X (Sm.gen B 1)) (ptOf X (Sm.gen B 2)))).left (fun I => by`. Use `range_mem' hX hc _ hj (psum_mem hX hc _ (x3 t.G) (fun i => ?_) I.down) (Over.comp_left _ _ _ _ _).symm` and prove the remaining obligations. Use `fin_cases i`. Conclude with `⟨Sm.gen B 0, by simp [x3]; rfl⟩`. Conclude with `⟨Sm.gen B 1, by simp [x3]; rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Sm.gen B 2, by simp [x3]; rfl⟩)`. Use `⟨θ, fun n A _ _ ψ z J hJ a b c => Eq.trans ?_ (hθ A (ψ.comp (evA ![a, b, c])) z J hJ)⟩` and prove the remaining obligations. Establish `e : lift (Formalism.L2.Pj.homAt (𝟙 (Sp V)) ψ ≫ ptOf X a) (lift (Formalism.L2.Pj.homAt (𝟙 (Sp V)) ψ ≫ ptOf X b) (Formalism.L2.Pj.homAt (𝟙 (Sp V)) ψ ≫ ptOf X c)) = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (ψ.comp (evA ![a, b, c])) ≫ lift (ptOf X (Sm.gen B (0 : Fin 3))) (lift (ptOf X (Sm.ge …`. Simplify using `only [← GermD.homAt_comp, comp_lift, Category.assoc, ptOf_sub, Sm.sub_gen]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cubV, e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem read_cub : ∃ θ : (PS V 3 d)ˣ, ∀ (n : ℕ) (A : Type) [CommRing A] [Algebra V A]
     (ψ : PS V n d →ₐ[V] A) (z : Sp A) (J), Pref t.PP.L j z J → ∀ a b c : Sm B n,
@@ -356,7 +356,7 @@ theorem read_cub : ∃ θ : (PS V 3 d)ˣ, ∀ (n : ℕ) (A : Type) [CommRing A] 
 
 omit hX hc hj in
 /- English proof (translation)
-Establish `e : lift σ (Formalism.L2.Pj.homAt (𝟙 (Sp V)) ψ ≫ ptOf X a) = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (ψ.comp (evA ![a])) ≫ lift (toBase _) X`. Rewrite using `[comp_lift, ptOf, ← Category.assoc, GermD.homAt_comp, base_ext σ]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lift_base {A : Type} [CommRing A] [Algebra V A] (ψ : PS V n d →ₐ[V] A) (a : Sm B n)
     (σ : overAt (𝟙 (Sp V)) A ⟶ baseOver (Sp V)) :
@@ -369,7 +369,7 @@ theorem lift_base {A : Type} [CommRing A] [Algebra V A] (ψ : PS V n d →ₐ[V]
   rfl
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_read_sec (j := j) (φ := fun _ : Fin 1 => (snd (baseOver (Sp V)) t.G).left) (ε := fun _ => k) s (lift (toBase _) X).left (fun _ => range_mem hX hc _ hj (p := lift (toBase _) X ≫ snd _ _) ⟨Sm.gen B 0, ptOf_gen.trans (lift_snd _ _).symm⟩)`. Use `⟨S, fun n A _ _ ψ z J hJ a σ => Eq.trans ?_ (hS A (ψ.comp (evA ![a])) z J hJ)⟩` and prove the remaining obligations. Rewrite using `[lift_base]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem read_sec {k : ℤ} (s : LB.Sec (LPow t.G t.PP.L k (baseOver (Sp V)))) :
     ∃ S : PS V 1 d, ∀ (n : ℕ) (A : Type) [CommRing A] [Algebra V A]
@@ -382,11 +382,11 @@ theorem read_sec {k : ℤ} (s : LB.Sec (LPow t.G t.PP.L k (baseOver (Sp V)))) :
   rw [lift_base]
 
 /- English proof (translation)
-Establish `g : X ∈ (ptH hX hc 1).range` using `⟨Sm.gen B 0, ptOf_gen⟩`. Take `⟨φ, hφ⟩` from `exists_read_gen (j := j) (φ := ![(snd (baseOver (Sp V)) t.G).left, (translPt t.G U.pt).left]) (ε := ![k, -k]) U.φ (lift (toBase _) X).left (fun i => by fin_cases i`. Conclude with `range_mem hX hc _ hj (p := lift (toBase _) X ≫ snd _ _) ⟨Sm.gen B 0, ptOf_gen.trans (lift_snd _ _).symm⟩`. Use `range_mem hX hc _ hj (p := lift (toBase _) X ≫ translPt t.G U.pt) ?_` and prove the remaining obligations. Establish `e : lift (toBase _) X ≫ translPt t.G U.pt = (toBase _ ≫ U.pt) * X`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[translPt, comp_lift_assoc, lift_fst_assoc, lift_snd]`. Both sides reduce to the same expression. Rewrite using `[e, ha]`. Conclude with `mul_mem ⟨a₁, rfl⟩ g)`. Use `⟨φ, fun n A _ _ ψ z J hJ a σ => Eq.trans ?_ (hφ A (ψ.comp (evA ![a])) z J hJ)⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[lift_base]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem read_lift {k : ℤ} (U : ThetaGrp t.G t.PP.L k (baseOver (Sp V))) (a₁ : Sm B 1)
     (ha : toBase _ ≫ U.pt = ptOf X a₁) :
@@ -414,11 +414,11 @@ include hε
 
 omit hX in
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_read_gen (j := j) (φ := cφG t ![jptG t (𝟙 (Sp V)) d x 0 (0 : Fin 2), jptG t (𝟙 (Sp V)) d x 0 (1 : Fin 2)]) (ε := cε 2) (e 0) (𝟙 (Sp (Jet V (Fin 2 × Fin d) 0))) (fun I y _ => Set.mem_iInter.1 (mem_frame hc.zero hj 0 y) I)`. Establish `h : psJet 0 ε₀ = u.val` using `cstH_ext fun z => by`. Take `⟨J, hJ⟩` from `exists_pref t.PP.L j t.PP.isLB (Z := Sp (Jet V (Fin 2 × Fin d) 0)) z`. Establish `a` using `hu _ (RingHom.id _) z J hJ`. Establish `i : spMap (RingHom.id (Jet V (Fin 2 × Fin d) 0)) = 𝟙 _` using `Spec.map_id _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a` using `[i, Category.id_comp]`. Establish `b` using `hε 0 z J hJ.1 (fun I => hJ.2 _ (Set.mem_iInter.1 (mem_frame hc.zero hj 0 z) I))`. Conclude with `(cstH_eq z _).trans (b.symm.trans (congrArg Units.val a))`. Set `χ : PS V 2 d →ₐ[V] V` to `(jetAug : Jet V _ 0 →ₐ[V] V).comp (jetA _ 0)`. Establish `hs : Function.Surjective (χ : PS V 2 d →+* V)` using `fun a => ⟨algebraMap V _ a, χ.commutes a⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalHom (χ : PS V 2 d →+* V)` using `IsLocalHom.of_surjective _ hs`. Use `isUnit_of_map_unit (χ : PS V 2 d →+* V) _ ?_` and prove the remaining obligations. Use `show IsUnit (jetAug (psJet 0 ε₀))`. Rewrite using `[h]`. Conclude with `u.isUnit.map _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_eps : IsUnit ε₀ := by
   obtain ⟨u, hu⟩ := exists_read_gen (j := j)
@@ -441,28 +441,28 @@ theorem isUnit_eps : IsUnit ε₀ := by
 
 omit hX hc hj hε in
 /- English proof (translation)
-The claim follows from `(cstH_eq _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem VV_eq (m : ℕ) (y : (jOG (𝟙 (Sp V)) d m n).left) (f : PS V n d) :
     VV m y f = cstH (A := Jet V (Fin n × Fin d) m) y (jetA _ m f) := (cstH_eq _ _).symm
 
 omit hX hc hj hε in
 /- English proof (translation)
-The claim follows from `(congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl)).trans (evA_toSm (B := B) ![u, v] f.val)`.
+A detailed English derivation is pending.
 -/
 theorem unitSeriesValueTwoPoints_smallPoints (f : (PS V 2 d)ˣ) (u v : Q V d n) : (u2 f (toSm B u) (toSm B v)).val = E2 f.val u v :=
   (congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl)).trans (evA_toSm (B := B) ![u, v] f.val)
 
 omit hX hc hj hε in
 /- English proof (translation)
-The claim follows from `(congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl)).trans (evA_toSm (B := B) ![u, v, w] f.val)`.
+A detailed English derivation is pending.
 -/
 theorem unitSeriesValueThreePoints_smallPoints (f : (PS V 3 d)ˣ) (u v w : Q V d n) : (u3 f (toSm B u) (toSm B v) (toSm B w)).val = E3 f.val u v w :=
   (congrArg (evA · f.val) (funext fun j => by fin_cases j <;> rfl)).trans (evA_toSm (B := B) ![u, v, w] f.val)
 
 omit hX in
 /- English proof (translation)
-The claim follows from `Units.ext ((ee_eps hc.zero hj hε hJ u v).symm.trans ((VV_eq m y _).trans (by rw [← h, ← unitSeriesValueTwoPoints_smallPoints (B := B)]; rfl)))`.
+A detailed English derivation is pending.
 -/
 theorem ee_gu {ε : (PS V 2 d)ˣ} (h : ε.val = ε₀) {m : ℕ} {y : (jOG (𝟙 (Sp V)) d m n).left} {J}
     (hJ : Pref t.PP.L j y J) (u v : Q V d n) : ee x e y J u v =
@@ -471,7 +471,7 @@ theorem ee_gu {ε : (PS V 2 d)ˣ} (h : ε.val = ε₀) {m : ℕ} {y : (jOG (𝟙
 
 omit hX hc hj hε in
 /- English proof (translation)
-The claim follows from `Units.ext (VV_ext_pref j fun m y J hJ => (VV_eq m y _).trans ((congrArg Units.val (h m y J hJ)).trans (VV_eq m y _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem unit_ext_jets (j : t.PP.L.ι) {f g : (PS V n d)ˣ}
     (h : ∀ m (y : (jOG (𝟙 (Sp V)) d m n).left) J, Pref t.PP.L j y J →
@@ -481,17 +481,17 @@ theorem unit_ext_jets (j : t.PP.L.ι) {f g : (PS V n d)ˣ}
     (VV_eq m y _).trans ((congrArg Units.val (h m y J hJ)).trans (VV_eq m y _).symm))
 
 /- English proof (translation)
-Set `g : Fin 3 → Sm B 3` to `fun i => toSm B (gen i)`. Establish `r : u3 θ (g 0) (g 1) (g 2) = u3 p₁ (g 0) (g 1) (g 2) * (u2 ε (g 0 * g 1) (g 2) / (u2 ε (g 0) (g 2) * u2 ε (g 1) (g 2))) ∧ u3 θ (g 0) (g 1) (g 2) = u3 p₂ (g 0) (g 1) (g 2) * (u2 ε (g 0) (g 1 * g 2) / (u2 ε (g 0) (g 1) * u2 ε (g 0) (g 2)))`. Use `⟨unit_ext_jets j fun m y J hJ => ?_, unit_ext_jets j fun m y J hJ => ?_⟩` and prove the remaining obligations. Establish `q` using `frame_biext_dictionary_first_partial_law hJ.1 hf (gen 0 : Q V d 3) (gen 1) (gen 2)`. Establish `c` using `hθ 3 _ (jetA _ m) y J hJ (g 0) (g 1) (g 2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [g, jet_ptOf hX] at c`. Rewrite `q` using `[VV_eq, ← h₁, ← unitSeriesValueThreePoints_smallPoints (B := B), c, ee_gu hc hj hε h hJ, ee_gu hc hj hε h hJ, ee_gu hc hj hε h hJ, toSm_op]`. Establish `q' : gu (A` using `Jet V (Fin 3 × Fin d) m) y (Units.map (jetA (V := V) (Fin 3 × Fin d) m : PS V 3 d →* _) (u3 p₁ (g 0) (g 1) (g 2))) = _ := Units.ext q`. Simplify using `only [map_mul, map_div, q', g]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Normalize the expressions using the abelian group laws. Establish `q` using `frame_biext_dictionary_second_partial_law hJ.1 hf (gen 0 : Q V d 3) (gen 1) (gen 2)`. Establish `c` using `hθ 3 _ (jetA _ m) y J hJ (g 0) (g 1) (g 2)`. Simplify using `only [g, jet_ptOf hX] at c`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `q` using `[VV_eq, ← h₂, ← unitSeriesValueThreePoints_smallPoints (B := B), c, ee_gu hc hj hε h hJ, ee_gu hc hj hε h hJ, ee_gu hc hj hε h hJ, toSm_op]`. Establish `q' : gu (A` using `Jet V (Fin 3 × Fin d) m) y (Units.map (jetA (V := V) (Fin 3 × Fin d) m : PS V 3 d →* _) (u3 p₂ (g 0) (g 1) (g 2))) = _ := Units.ext q`. Simplify using `only [map_mul, map_div, q', g]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `s : ∀ i, Sm.sub ![a, b, c] (g i) = ![a, b, c] i` using `Sm.sub_gen _`. Establish `r₁` using `congrArg (evU ![a, b, c]) r.1`. Establish `r₂` using `congrArg (evU ![a, b, c]) r.2`. Simplify using `only [map_mul (evU _), map_div (evU _), ← unitSeriesValueThreePoints_substitution, ← unitSeriesValueTwoPoints_substitution, map_mul (Sm.sub _), s] at r₁ r₂`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨r₁, r₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem cub_diff (hf : IsFrameG t (𝟙 (Sp V)) d x B.G.F B.A.act B.ph1 B.ph2 B.sy B.ad e) {ε : (PS V 2 d)ˣ}
     (h : ε.val = ε₀) {θ p₁ p₂ : (PS V 3 d)ˣ} (h₁ : p₁.val = B.ph1) (h₂ : p₂.val = B.ph2)
@@ -535,15 +535,15 @@ theorem cub_diff (hf : IsFrameG t (𝟙 (Sp V)) d x B.G.F B.A.act B.ph1 B.ph2 B.
   exact ⟨r₁, r₂⟩
 
 /- English proof (translation)
-Establish `id1 : ∀ f : PS V 1 d, evA ![(Sm.gen B 0 : Sm B 1)] f = f` using `fun f => (congrArg (evA · f) (funext fun j => by fin_cases j; rfl)).trans (evA_gen f)`. Use `VV_ext_pref j fun m y J hJ => ?_` and prove the remaining obligations. Establish `q` using `RegularGerm.sv_of_isGerm hg m (𝟙 _) y hJ.1`. Establish `a` using `hS 1 _ (jetA _ m) y J hJ (Sm.gen B 0) (jBaseG (𝟙 (Sp V)) d m 1)`. Establish `b` using `hρ 1 _ (jetA _ m) y J hJ (Sm.gen B 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a`, `b` using `[ptOf_gen, hX m]`. Rewrite `a` using `[id1]`. Establish `i : 𝟙 _ ≫ RegularGerm.jetPt (x m) = (lift (jBaseG (𝟙 (Sp V)) d m 1) (x m)).left`. Rewrite using `[Category.id_comp, RegularGerm.jetPt, ← Over.comp_left, ptSecT, lift_whiskerRight, Category.id_comp]`. Establish `i0 : (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jQ m (gen : Fin 1 → Q V d 1))).left = 𝟙 _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: jQ m (gen : Fin 1 → Q V d 1) = AlgHom.id V _` using `GermD.jet_hom_ext fun p => (jQ_X m _ p).trans (psJet_X m p)`. Rewrite using `[this, GermD.homAt_id, Over.id_left]`. Establish `c` using `val_peG x hJ.1 e (gen : Fin 1 → Q V d 1) ![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn d m ![0] (B.A.act H.w0 j)] (gen 0) (ac (AQ B.A H.w0) (gen 0)) (by rintro ⟨l, j⟩; fin_cases l; exacts [FrameBiextId.hX 0 j, hA _ 0 j]) (by rintro ⟨l, j⟩; fin_cases l; exacts [MvPolyn …`. Rewrite `c` using `[i0, sq_ac, sq_gen, ee_gu hc hj hε h hJ, toSm_ac]`. Establish `v : val (eLG t (𝟙 (Sp V)) d x B.A.act e wP m) (𝟙 _) y J = gu (A` using `Jet V (Fin 1 × Fin d) m) y (Units.map (jetA (V := V) (Fin 1 × Fin d) m : PS V 1 d →* _) (u1 ρ (Sm.gen B 0) * u2 ε (Sm.gen B 0) (Sm.act B H.w0 (Sm.gen B 0)))) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul]`. Use `(val_mul hJ.1 _ _ _).trans (congrArg₂ (· * ·) ((val_pull hJ.1 _ _ _).trans ?_) c)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `b`. Rewrite `q` using `[i, v, ← map_pow, ← map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VV_mul, VV_eq, ← a, q, VV_eq m y (Units.val _)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germ_read {ε : (PS V 2 d)ˣ} (h : ε.val = ε₀) {wP : PrimTyG t} {ρ : (PS V 1 d)ˣ}
     (hρ : ∀ (n : ℕ) (A : Type) [CommRing A] [Algebra V A]
@@ -585,7 +585,7 @@ theorem germ_read {ε : (PS V 2 d)ˣ} (h : ε.val = ε₀) {wP : PrimTyG t} {ρ 
 
 omit hX hc hj hε in
 /- English proof (translation)
-Rewrite using `[evA_apply]`. Use `evC_eq_algHom _ (fun p => (![(1 : Sm B n)] p.1).2 p.2) ((Algebra.ofId V (PS V n d)).comp { (MvPowerSeries.constantCoeff : PS V 1 d →+* V) with commutes' := fun c => MvPowerSeries.constantCoeff_C c }) (fun p => ?_) f` and prove the remaining obligations. Take `⟨i, l⟩` from `p`. Use `fin_cases i`. Conclude with `(congrArg (Algebra.ofId V (PS V n d)) (MvPowerSeries.constantCoeff_X _)).trans (map_zero _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem evA_one (f : PS V 1 d) : evA ![(1 : Sm B n)] f = MvPowerSeries.C (MvPowerSeries.constantCoeff f) := by
   rw [evA_apply]
@@ -598,11 +598,11 @@ theorem evA_one (f : PS V 1 d) : evA ![(1 : Sm B n)] f = MvPowerSeries.C (MvPowe
 
 omit hX hc hj hε in
 /- English proof (translation)
-Establish `un : ∀ (f : PS V 3 d) (b : Fin 3 → Pt V 2 d), (∀ i, TB.WickVanishing.GP (b i)) → ev b f = 1 → IsUnit f` using `fun f b hb h => by`. Use `congrArg MvPowerSeries.constantCoeff h` as an intermediate fact. Rewrite `this` using `[TB.WickVanishing.gt_const_ev_eq _ hb, map_one]`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, this]`. Conclude with `isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `g0` using `TB.WickVanishing.gp_pt (k := V) (d := d) (0 : Fin 2)`. Establish `g1` using `TB.WickVanishing.gp_pt (k := V) (d := d) (1 : Fin 2)`. Use `⟨⟨(un _ _ (TB.WickVanishing.triple_points_zero_constant TB.WickVanishing.gp_zero₂ g0 g1) B.cocycleLeft_zero_fst).unit, rfl, fun n y z => ?_⟩, ⟨(un _ _ (TB.WickVanishing.triple_points_zero_constant g0 TB.WickVanishing.gp_zero₂ g1) B.cocycleRight_zero_snd).unit, rfl, fun n y z => ? …` and prove the remaining obligations. Establish `h : u3 (un _ _ (TB.WickVanishing.triple_points_zero_constant TB.WickVanishing.gp_zero₂ g0 g1) B.cocycleLeft_zero_fst).unit (1 : Sm B 2) (Sm.gen B 0) (Sm.gen B 1) = 1` using `Units.ext ((unitSeriesValueThreePoints_smallPoints (B := B) _ 0 (gen 0) (gen 1)).trans ((formalSeriesValueAtThreePoints_eq_ev _ _ _ _).trans B.cocycleLeft_zero_fst))`. Use `congrArg (evU ![y, z]) h` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← unitSeriesValueThreePoints_substitution, map_one, map_one, Sm.sub_gen, Sm.sub_gen]`. Then use the resulting hypothesis. Establish `h : u3 (un _ _ (TB.WickVanishing.triple_points_zero_constant g0 TB.WickVanishing.gp_zero₂ g1) B.cocycleRight_zero_snd).unit (Sm.gen B 0) (1 : Sm B 2) (Sm.gen B 1) = 1` using `Units.ext ((unitSeriesValueThreePoints_smallPoints (B := B) _ (gen 0) 0 (gen 1)).trans ((formalSeriesValueAtThreePoints_eq_ev _ _ _ _).trans B.cocycleRight_zero_snd))`. Use `congrArg (evU ![y, z]) h` as an intermediate fact. Rewrite `this` using `[← unitSeriesValueThreePoints_substitution, map_one, map_one, Sm.sub_gen, Sm.sub_gen]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_unit_ph : (∃ p : (PS V 3 d)ˣ, p.val = B.ph1 ∧ ∀ (n : ℕ) (y z : Sm B n), u3 p 1 y z = 1) ∧
     ∃ p : (PS V 3 d)ˣ, p.val = B.ph2 ∧ ∀ (n : ℕ) (y z : Sm B n), u3 p y 1 z = 1 := by
@@ -626,14 +626,14 @@ theorem exists_unit_ph : (∃ p : (PS V 3 d)ˣ, p.val = B.ph1 ∧ ∀ (n : ℕ) 
 
 omit hX hc hj hε in
 /- English proof (translation)
-Rewrite using `[GermD.homAt_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homAt_id_comp (p : limO V d n ⟶ t.G) : Formalism.L2.Pj.homAt (𝟙 (Sp V)) (AlgHom.id V (PS V n d)) ≫ p = p := by
   rw [GermD.homAt_id, Category.id_comp]
 
 omit hX hc hj hε in
 /- English proof (translation)
-The claim follows from `Units.ext (cstH_ext fun z => by obtain ⟨J, hJ⟩ := exists_pref t.PP.L j t.PP.isLB z exact congrArg Units.val (h ⟨z, J, hJ⟩))`.
+A detailed English derivation is pending.
 -/
 theorem unit_ext_pref (j : t.PP.L.ι) {f g : (PS V n d)ˣ}
     (h : ∀ i : (z : Sp (PS V n d)) × {J // Pref t.PP.L j z J}, gu i.1 f = gu i.1 g) : f = g :=
@@ -644,47 +644,41 @@ theorem unit_ext_pref (j : t.PP.L.ι) {f g : (PS V n d)ˣ}
 omit hX hc hj hε in
 
 /- English proof (translation)
-Take `⟨X, hX⟩` from `GlobalTheory.T.exists_powerSeries_limit_of_compatible_jetPoints V t.G d x hc.trunc`. Set `a : ∀ n, Sm B n` to `fun n => Sm.const B α hα`. Establish `ha : ∀ n, toBase _ ≫ aV = ptOf X (a n)` using `fun n => Over.OverMorphism.ext ((congrArg (· ≫ aV.left) (Category.comp_id _)).trans (GlobalTheory.T.constantSection_eq_limitChart_point V d _ B t.G x X hX α hα aV.left haV n).symm)`. Establish `hak : aV ^ k = 1`. Establish `q : toBase (limO V d 0) ≫ aV ^ k = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_pow, ha]`. Conclude with `(map_pow (ptH hX hc 0) _ _).symm.trans ((congrArg _ (hαk 0)).trans (map_one _))`. Set `s : baseOver (Sp V) ⟶ limO V d 0` to `Over.homMk (spMap (MvPowerSeries.constantCoeff : PS V 0 d →+* V)) (by show spMap _ ≫ spMap _ ≫ 𝟙 _ = 𝟙 _`. Rewrite using `[Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]`. Use `congr 2)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congrArg (s ≫ ·) q` as an intermediate fact. Simplify using `only [← Category.assoc, MonObj.comp_one] at this`. Rewrite `this` using `[base_ext (s ≫ _) (𝟙 _), Category.id_comp]`. Then use the resulting hypothesis. Take `⟨U, hU⟩` from `GlobalTheory.T.exists_symmetric_lift_odd_order_localRing E H V t hs k hk aV hak`. Take `⟨j, hj0⟩` from `Geo.Tor.exists_chart t.PP.isLB (η[t.G].left (closedPoint V))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : ⊤ ≤ η[t.G].left ⁻¹ᵁ t.PP.L.U j` using `((IsLocalRing.closedPoint_mem_iff (R := V) (η[t.G].left ⁻¹ᵁ t.PP.L.U j)).1 hj0).ge`. Take `⟨ε₀, hε⟩` from `LinkEps.linkEps E H V t d _ _ _ _ _ _ tg x e wP hc hf hP htr j hj`. Take `⟨ε, hε'⟩` from `isUnit_eps hc hj hε`. Take `⟨ρ, hρ⟩` from `read_prim hX hc hj wP`. Take `⟨θ, hθ⟩` from `read_cub hX hc hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `read_lift hX hc hj U (a 1) (hU.pt_eq ▸ ha 1)`. Take `⟨⟨p₁, h₁, x₁⟩, p₂, h₂, x₂⟩` from `exists_unit_ph (B := B)`. Establish `cd` using `fun n (a b c : Sm B n) => cub_diff hX hc hj hε hf hε' h₁ h₂ hθ a b c`. Establish `hθ' : ∀ n (i : (z : Sp (PS V n d)) × {J // Pref t.PP.L j z J}) (a b c : Sm B n), cubV t.cub (T` using `limO V d n) i.1 i.2.1 (ptH hX hc n a) (ptH hX hc n b) (ptH hX hc n c) = gu i.1 (u3 θ a b c) := fun n i a b c => by`. Use `hθ n _ (AlgHom.id V _) i.1 i.2.1 i.2.2 a b c` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [homAt_id_comp] at this`. Conclude with `this`. Establish `LL : ∀ n, LiftLaws (u3 θ) (u1 ρ) (u1 φ) (Sm.act B H.w0) (a n) k` using `fun n => LiftLaws.pull (ptH hX hc n) (fun i : (z : Sp (PS V n d)) × {J // Pref t.PP.L j z J} => gu i.1) (fun u v => unit_ext_pref j) (w' := fun p => p ≫ t.act.act H.w0) (ρ' := fun i p => val wP p.left i.1 i.2.1) (φ' := fun i p => CommPairing.tval U (lift (toBase _) p).left i.1 i. …`. Use `hρ n _ (AlgHom.id V _) i.1 i.2.1 i.2.2 p` as an intermediate fact. Rewrite `this` using `[homAt_id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this)`. Use the proof step `(fun i p => by`. Use `hφ n _ (AlgHom.id V _) i.1 i.2.1 i.2.2 p (toBase _)` as an intermediate fact. Rewrite `this` using `[homAt_id_comp]`. Conclude with `this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun i => by`. Use `GlobalTheory.T.symmetricLift_order_symmetry_multiplicativity E H _ t hs wP hP.1 k aV U hU (limO V d n) (toBase _) i.1 i.2.1 i.2.2.1` as an intermediate fact. Rewrite `this` using `[ha]`. Conclude with `this)`. Establish `e₁ : ∀ n (z : Sm B n), u2 ε 1 z = 1` using `fun n z => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `q : u3 θ 1 1 z = 1` using `unit_ext_pref j fun i => by`. Rewrite using `[← hθ', map_one, map_one]`. Conclude with `(isCub_cubV t.cub i.2.2.1).face _ _`. Use `(cd n 1 1 z).1` as an intermediate fact. Rewrite `this` using `[q, x₁, _root_.one_mul, _root_.one_mul, div_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `inv_eq_one.1 this.symm`. Establish `e₂ : ∀ n (z : Sm B n), u2 ε z 1 = 1` using `fun n z => by`. Establish `q : u3 θ z 1 1 = 1` using `unit_ext_pref j fun i => by`. Rewrite using `[← hθ', map_one, map_one]`. Conclude with `(isCub_cubV t.cub i.2.2.1).face₂ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(cd n z 1 1).2` as an intermediate fact. Rewrite `this` using `[q, x₂, _root_.one_mul, _root_.one_mul, div_mul_cancel_left]`. Conclude with `inv_eq_one.1 this.symm`. Set `u : ∀ n, Sm B n → (PS V n d)ˣ` to `fun n => trU (u1 ρ) (u1 φ) (u2 ε) (Sm.act B H.w0) (a n) k`. Establish `TL` using `fun n => trU_laws (Sm.act B H.w0) (LL n) (hαk n) (fun x y z => (cd n x y z).1) (fun x y z => (cd n x y z).2) (e₁ n) (e₂ n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `sa : ∀ {m n} (b : Fin m → Sm B n), Sm.sub b (a m) = a n` using `fun b => Sm.sub_const b α hα`. Establish `us : ∀ {m n} (b : Fin m → Sm B n) (p : Sm B m), evU b (u m p) = u n (Sm.sub b p)` using `fun b p => by`. Simplify using `only [u, trU, map_mul (evU _), map_div (evU _), map_pow (evU _), ← besselUnipotentSubgroup_zero_subsingleton, ← unitSeriesValueTwoPoints_substitution, Sm.sub_act, map_mul (Sm.sub _), sa]`. Establish `ev1 : ∀ {n} (p : Sm B n), evA ![p] (u 1 (Sm.gen B 0)).val = (u n p).val` using `fun p => congrArg Units.val ((us ![p] _).trans (congrArg _ (Sm.sub_gen _ 0)))`. Establish `sh : ∀ f, shift B.G.F (fun _ => α) f = evA ![a 1 * Sm.gen B 0] f` using `fun f => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, smallPointsSubstitutionAlgHom_single_point]`. Conclude with `congrArg (evV · f) (funext fun i => by fin_cases i; rfl)`. Use `⟨U, (u 1 (Sm.gen B 0)).val, hU, ⟨Units.isUnit _, ?_, ?_, ?_⟩, fun f σ σ' hg hact => ?_⟩` and prove the remaining obligations. Establish `q` using `congrArg Units.val ((TL 2).1 (Sm.gen B 0) (Sm.gen B 1))`. Establish `r` using `GlobalTheory.T.eval_thetaSeries_mul_quadratic_partials V d _ B K h H.w0 hh p₁ p₂ h₁ h₂ Θ hΘ 2 (Sm.gen B 0) (Sm.gen B 1) (a 2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `q` using `[Units.val_mul, Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, ← Units.eq_inv_of_mul_eq_one_right r]`. Rewrite using `[← evA_one (B := B), ev1]`. Conclude with `(congrArg (· * _) ((smallPointsSubstitutionAlgHom_single_point (Sm.gen B 0 * Sm.gen B 1) _).symm.trans (ev1 _))).trans (q.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) ((ev1 _).symm.trans (smallPointsSubstitutionAlgHom_single_point _ _)) ((ev1 _).symm.trans (smallPointsSubstitution …`. Establish `it : ∀ i : ℕ, (fun f : PS V 1 d => (u 1 (Sm.gen B 0)).val * shift B.G.F (fun _ => α) f)^[i] 1 = (∏ l ∈ Finset.range i, u 1 (a 1 ^ l * Sm.gen B 0)).val` using `fun i => by`. Proceed by induction on `i with`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `zero => rfl`. Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply', ih, sh, ← evU_val, map_prod, Finset.prod_range_succ', pow_zero, _root_.one_mul, mul_comm, Units.val_mul]`. Simplify using `only [us, map_mul, map_pow, sa, Sm.sub_gen, Matrix.cons_val_zero, pow_succ, _root_.mul_assoc]`. Rewrite using `[it, (TL 1).2.1, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `q` using `congrArg Units.val (TL 0).2.2`. Establish `r` using `GlobalTheory.T.eval_iotaSeries_eq_quadratic_inversion_partials V d _ B K h H.w0 hh p₁ p₂ h₁ h₂ jo hjo 0 (a 0)`. Rewrite `q` using `[Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, ← r]`. Rewrite using `[← evA_one (B := B), ev1]`. Conclude with `(congrArg₂ (· * ·) (congrArg (_ * · ^ k) (smallPointsSubstitutionAlgHom_single_point (a 0) _).symm) ((smallPointsSubstitutionAlgHom_single_point (a 0)⁻¹ _).symm.trans (ev1 _))).trans q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨f', hf'⟩` from `germSt_holds E H _ t V (𝟙 _) d _ _ _ tg _ x _ _ _ _ e wP hc hf hP htr k σ'`. Take `⟨S, hS⟩` from `read_sec hX hc hj σ`. Take `⟨S', hS'⟩` from `read_sec hX hc hj σ'`. Establish `g` using `germ_read hX hc hj hε hε' hρ hS hg`. Establish `g'` using `germ_read hX hc hj hε hε' hρ hS' hf'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `id1 : ∀ f : PS V 1 d, evA ![(Sm.gen B 0 : Sm B 1)] f = f` using `fun f => (congrArg (evA · f) (funext fun j => by fin_cases j; rfl)).trans (evA_gen f)`. Establish `key : S' = (u1 φ (Sm.gen B 0)).val * evA ![a 1 * Sm.gen B 0] S` using `cstH_ext fun z => by`. Take `⟨J, hJ⟩` from `exists_pref t.PP.L j t.PP.isLB z`. Establish `q` using `twist_val hact (lift (toBase _) (ptOf X (Sm.gen B (0 : Fin 1)))).left z hJ.1`. Establish `b₁` using `hS' 1 _ (AlgHom.id V _) z J hJ (Sm.gen B 0) (toBase _)`.
-
-Establish `b₂` using `hS 1 _ (AlgHom.id V _) z J hJ (a 1 * Sm.gen B 0) (toBase _)`. Establish `b₃` using `hφ 1 _ (AlgHom.id V _) z J hJ (Sm.gen B 0) (toBase _)`. Rewrite `b₁`, `b₂`, `b₃` using `[homAt_id_comp]`. Rewrite `q` using `[← Over.comp_left, lift_transl, show toBase _ ≫ U.pt = ptOf X (a 1) from hU.pt_eq ▸ ha 1, ← ptOf_mul hX hc]`. Rewrite `b₁` using `[id1]`.
-
-Rewrite using `[map_mul]`. Conclude with `b₁.symm.trans (q.trans (congrArg₂ (· * ·) (congrArg Units.val b₃) b₂))`. Establish `: f' = (u 1 (Sm.gen B 0)).val * shift B.G.F (fun _ => α) f`. Rewrite `key` using `[g, g', map_mul, ← evU_val, map_pow, map_mul, ← besselUnipotentSubgroup_zero_subsingleton, ← unitSeriesValueTwoPoints_substitution, Sm.sub_act, Sm.sub_gen]`. Rewrite using `[sh, (Units.eq_mul_inv_iff_mul_eq _).2 key]`.
-
-Simplify using `only [u, trU, Matrix.cons_val_zero, div_eq_mul_inv, mul_pow, inv_pow, mul_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this ▸ hf'`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
     (hc : IsChartG t (𝟙 (Sp V)) d B.G.F B.A.act tg (fun j : Fin d => Pi.single j (1 : V)) x)
@@ -826,17 +820,15 @@ theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
 end Model
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C hC B hB Θ jo hΘ hjo k hk a α hFP hak`. Take `⟨f1, fu, fm, -, -⟩` from `GlobalTheory.PlaceFormPt.formPt_spec E H Dw l Xo c hstar T io y C B hB`. Establish `hh` using `((integralBiext_gauge_eig_bound E H Dw l Xo c hstar T io y C).choose_spec.2 B hB).1`. Establish `hα` using `hFP.1`. Establish `hαk : ∀ n, (Sm.const B α hα : Sm B n) ^ k = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cc : ∀ p : Sm B 0, (cpt fun i => MvPowerSeries.constantCoeff (p.1 i) : Pt T.V 0 (chD C.ch)) = p.1` using `fun p => funext fun i => MvPowerSeries.ext fun e => by`. Take `rfl : e = 0` from `Subsingleton.elim _ _`. Simplify using `[cpt]`. Establish `pw : ∀ i : ℕ, FormPt C (a ^ i) fun l => MvPowerSeries.constantCoeff (((Sm.const B α hα : Sm B 0) ^ i).1 l)`. Introduce `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `(congrArg (FormPt C 1) (funext fun l => map_zero MvPowerSeries.constantCoeff)).mpr f1`. Consider the case `succ i ih => rw [pow_succ]; exact fm _ _ _ _ _ ih hFP (by rw [cc, cc, pow_succ]; rfl)`. Establish `z` using `(fu _ _ _ _ (pw k) f1).1 hak`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z0 : (Sm.const B α hα : Sm B 0) ^ k = 1` using `Subtype.ext (by`. Rewrite using `[← cc, z]`. Conclude with `funext fun i => map_zero _)`. Introduce `n`. Rewrite using `[← Sm.sub_const (Fin.elim0 : Fin 0 → Sm B n), ← map_pow, z0, map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, aV, r, h0, r0, r1, r2, hψ⟩` from `hFP`. Take `⟨b1, b2, b3, b4, b5, b6⟩` from `hB`. Take `⟨U, u, hU, hu, hg⟩` from `model_unit (B := B) (t := C.I.G) (x := C.xT) (e := C.eT) (b1 ▸ b2 ▸ C.chartT) (b1 ▸ b2 ▸ b3 ▸ b4 ▸ b5 ▸ b6 ▸ C.frameT) C.primT hC (ModelSquareFunctions.surjective_appTop_square E H Dw l Xo c T io y.1 C.I) hh hΘ hjo hk hα hαk (Over.homMk aV h0) hψ`. Use `⟨u, hu, fun F F' f hF hf hm => GlobalTheory.T.germ_symmetricTranslate_fibre_eq_model E H Dw l Xo c hstar T io y C hC k hk a _ r r0 r1 r2 U hU F F' f _ hF hf hm fun σ σ' => ?_⟩` and prove the remaining obligations. Rewrite using `[← b2]`.
-
-Conclude with `hg f σ σ'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT → ∀ B : FB T.V (chD C.ch) (𝓞 E), IsBT C B → ∀ (Θ : PS T.V 3 (chD C.ch)) (jo : PS T.V 1 (chD C.ch)), IsTheta B T.Fr (gaugeOf C) H.w0 Θ → IsIota B T.Fr (gaugeOf C) H.w0 jo → ∀ (k : ℕ), Odd k → ∀ (a : (ptO Xo (xOf y) ⟶ Xo.univ.t.G)) α, FormPt C a α → a ^ k = 1 → ∃ u : PS T.V 1 (chD C.ch), TrUnit B Θ jo k α u ∧ ∀ (F F' : SecN Xo (xOf y) k) (f : PS T.V 1 (chD C.ch)), Regular C k F → GermIs C k F f → Moves Xo a F F' → GermIs C k F' (u * shift B.G.F (fun _ => α) f) := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C hC B hB Θ jo hΘ hjo k hk a α hFP hak

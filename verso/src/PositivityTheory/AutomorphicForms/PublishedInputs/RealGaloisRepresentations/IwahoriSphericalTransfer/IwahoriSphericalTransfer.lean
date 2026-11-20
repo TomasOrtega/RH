@@ -22,9 +22,9 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at h`. Establish `h1 : valuation k x⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ h`. Establish `h2` using `GlobalTheory.TypeRec.TwistInert.valuation_lt_one_map f.toRingHom hf h1`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfx : f x ≠ 0` using `(map_ne_zero f).2 hx0`. Establish `hw : 0 < valuation k' (f x)` using `by rw [zero_lt_iff]; exact (Valuation.ne_zero_iff _).2 hfx`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, map_inv₀] at h2`. Conclude with `absurd ((inv_lt_one₀ hw).1 h2) (not_lt.2 hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_map (f : k ≃+* k') (hf : Continuous f) {x : k}
     (hx : valuation k' (f x) ≤ 1) : valuation k x ≤ 1 := by
@@ -39,11 +39,11 @@ theorem valuation_le_one_of_map (f : k ≃+* k') (hf : Continuous f) {x : k}
   exact absurd ((inv_lt_one₀ hw).1 h2) (not_lt.2 hx)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at h`. Establish `h1 : x⁻¹ ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_le_one_of_one_le₀ h`. Establish `h2` using `GlobalTheory.LastCompare.map_mem_integer f.toMonoidHom hf h1`. Rewrite `h2` using `[Valuation.mem_integer_iff]`. Establish `hfx : f x ≠ 0` using `(map_ne_zero f).2 hx0`. Establish `hw : 0 < valuation k' (f x)` using `by rw [zero_lt_iff]; exact (Valuation.ne_zero_iff _).2 hfx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : valuation k' (f x⁻¹) ≤ 1` using `h2`. Rewrite `h3` using `[map_inv₀, map_inv₀]`. Conclude with `absurd hx (not_lt.2 ((inv_le_one₀ hw).1 h3))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_lt_one_of_map (f : k ≃+* k') (hf : Continuous f) {x : k}
     (hx : valuation k' (f x) < 1) : valuation k x < 1 := by
@@ -63,7 +63,7 @@ theorem valuation_lt_one_of_map (f : k ≃+* k') (hf : Continuous f) {x : k}
 variable (f : k ≃+* k') (hf : Continuous f) {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_map_symm (h : GL n k') :
     Matrix.GeneralLinearGroup.map f.toRingHom (Matrix.GeneralLinearGroup.map f.symm.toRingHom h) = h := by
@@ -73,9 +73,9 @@ theorem map_map_symm (h : GL n k') :
 include hf in
 
 /- English proof (translation)
-Take `⟨h0, rfl⟩` from `hh`. Set `j : 𝒪[k'] →+* 𝒪[k]` to `(f.symm.toRingHom.comp (algebraMap 𝒪[k'] k')).codRestrict 𝒪[k] (fun y => by show valuation k (f.symm (y : k')) ≤ 1`. Apply `valuation_le_one_of_map f hf` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `y.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.GeneralLinearGroup.map j h0, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Apply the tactic sequence `simp [j] <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_symm_mem_KO {h : GL n k'} (hh : h ∈ GlobalTheory.SplitWeil.KO k' n) :
     Matrix.GeneralLinearGroup.map f.symm.toRingHom h ∈ GlobalTheory.SplitWeil.KO k n := by
@@ -92,7 +92,7 @@ theorem map_symm_mem_KO {h : GL n k'} (hh : h ∈ GlobalTheory.SplitWeil.KO k' n
 include hf in
 
 /- English proof (translation)
-Rewrite `hh`, the goal using `[GlobalTheory.SmGL.mem_iwahori]`. Use `⟨map_symm_mem_KO f hf hh.1, fun a b hab => ?_⟩` and prove the remaining obligations. Apply `valuation_lt_one_of_map f hf` to reduce the goal to its premises. Use `hh.2 a b hab` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_symm_mem_iwahori [LinearOrder n] {h : GL n k'} (hh : h ∈ GlobalTheory.SmGL.iwahori k' n) :
     Matrix.GeneralLinearGroup.map f.symm.toRingHom h ∈ GlobalTheory.SmGL.iwahori k n := by
@@ -105,9 +105,9 @@ theorem map_symm_mem_iwahori [LinearOrder n] {h : GL n k'} (hh : h ∈ GlobalThe
 end Val
 
 /- English proof (translation)
-Introduce `hne`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hx' : ∀ h : H, ρ (h : G) x = (((1 : H →* ℂˣ) h : ℂˣ) : ℂ) • x` using `hx`. Use `(Submodule.ne_bot_iff _).2 ⟨e x, ?_, by simpa using hx0⟩` and prove the remaining obligations. Use `show ∀ h : H', ρ' (h : G') (e x) = (((1 : H' →* ℂˣ) h : ℂˣ) : ℂ) • e x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `hx' ⟨ψ h, hH h h.2⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at h1 ⊢`. Rewrite using `[← hψ h, ← he, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_transfer {G G' V V' : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] (ρ : Representation ℂ G V) (ρ' : Representation ℂ G' V') (φ : G →* G')
@@ -125,7 +125,7 @@ theorem fixed_ne_bot_transfer {G G' V V' : Type} [Group G] [Group G'] [AddCommGr
   rw [← hψ h, ← he, h1]
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ v w i hi a σ σ' e he`. Conclude with `⟨fixed_ne_bot_transfer σ.ρ σ'.ρ (Matrix.GeneralLinearGroup.map i.toRingHom) (Matrix.GeneralLinearGroup.map i.symm.toRingHom) (map_map_symm i) e he _ _ (fun h hh => map_symm_mem_iwahori i hi hh), fixed_ne_bot_transfer σ.ρ σ'.ρ (Matrix.GeneralLinearGroup.map i.toRingHom) (Matrix.Ge …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem iwahori_spherical_transfer : ∀ (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 K)) (i : v.adicCompletion F ≃+* w.adicCompletion K), Continuous i → ∀ (a : ℕ) (σ : SmIrr (GL (Fin a) (v.adicCompletion F))) (σ' : SmIrr (GL (Fin a) (w.adicCompletion K))) (e : σ.V ≃ₗ[ℂ] σ'.V), (∀ g x, e (σ.ρ g x) = σ'.ρ (Matrix.GeneralLinearGroup.map i.toRingHom g) (e x)) → (GlobalTheory.PRep.fixed σ.ρ (GlobalTheory.SmGL.iwahori (v.adicCompletion F) (Fin a)) ≠ ⊥ → GlobalTheory.PRep.fixed σ'.ρ (GlobalTheory.SmGL.iwahori (w.adicCompletion K) (Fin a)) ≠ ⊥) ∧ (GlobalTheory.SmGL.IsSpherical σ.ρ → GlobalTheory.SmGL.IsSpherical σ'.ρ) := by
   intro F K _ _ _ _ v w i hi a σ σ' e he

@@ -45,18 +45,18 @@ def pmGrp (Γ : Subgroup SL(2, ℤ)) : Subgroup SL(2, ℤ) where
       rw [h]; exact Γ.inv_mem ha
 
 /- English proof (translation)
-Introduce `_ h` and use `Or.inl h`.
+Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative.
 -/
 theorem le_pmGrp (Γ : Subgroup SL(2, ℤ)) : Γ ≤ pmGrp Γ := fun _ h => Or.inl h
 
 /- English proof (translation)
-The claim follows from `Or.inr (by simpa using Γ.one_mem)`.
+Prove the second alternative.
 -/
 theorem neg_one_mem_pmGrp (Γ : Subgroup SL(2, ℤ)) : -1 ∈ pmGrp Γ :=
   Or.inr (by simpa using Γ.one_mem)
 
 /- English proof (translation)
-Apply `le_antisymm _ (le_pmGrp Γ)` to reduce the goal to its premises. Introduce and unpack `γ (hγ | hγ)`. Conclude with `hγ`. Simplify using `using Γ.mul_mem h hγ`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pmGrp_eq_self {Γ : Subgroup SL(2, ℤ)} (h : -1 ∈ Γ) : pmGrp Γ = Γ := by
   apply le_antisymm _ (le_pmGrp Γ)
@@ -68,9 +68,9 @@ instance pmGrp_finiteIndex (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] : (pmGrp 
   Subgroup.finiteIndex_of_le (le_pmGrp Γ)
 
 /- English proof (translation)
-Unfold `Subgroup.relIndex`. Rewrite using `[Subgroup.index_eq_two_iff]`. Use `⟨⟨-1, neg_one_mem_pmGrp Γ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.coe_mul, mul_neg, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hne : ¬ (b ∈ Γ ∧ -b ∈ Γ)` using `fun ⟨h1, h2⟩ => h (by simpa using Γ.mul_mem h2 (Γ.inv_mem h1))`. Break down `hb with hb | hb` into its components or cases. Conclude with `Or.inr ⟨hb, fun h2 => hne ⟨hb, h2⟩⟩`. Conclude with `Or.inl ⟨hb, fun h1 => hne ⟨h1, hb⟩⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 -/
 theorem relIndex_pmGrp_of_notMem {Γ : Subgroup SL(2, ℤ)} (h : -1 ∉ Γ) :
     Γ.relIndex (pmGrp Γ) = 2 := by
@@ -85,9 +85,9 @@ theorem relIndex_pmGrp_of_notMem {Γ : Subgroup SL(2, ℤ)} (h : -1 ∉ Γ) :
   · exact Or.inl ⟨hb, fun h1 => hne ⟨h1, hb⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨h, -⟩`. Establish `h1` using `((Gamma1_mem N _).1 h).1`. Establish `h2 : (((-1 : ℤ) : ℤ) : ZMod N) = 1` using `by simpa using h1`. Establish `h3 : ((2 : ℕ) : ZMod N) = 0`. Move the coercions through the operations in `at h2 ⊢`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `-h2`. Rewrite `h3` using `[ZMod.natCast_eq_zero_iff]`. Use `Nat.le_of_dvd two_pos h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem neg_one_notMem_lev {N : ℕ} (l : ℕ) (hN : 3 ≤ N) : -1 ∉ lev N l := by
   rintro ⟨h, -⟩
@@ -104,9 +104,9 @@ def petProd (Γ : Subgroup SL(2, ℤ)) (k : ℤ) (f g : ℍ → ℂ) : ℂ :=
   ∑ᶠ γ : SL(2, ℤ) ⧸ pmGrp Γ, ∫ z in ModularGroup.fd, petersson k g f (γ.out⁻¹ • z)
 
 /- English proof (translation)
-Unfold `petProd`. Use `haveI : Fintype (SL(2, ℤ) ⧸ pmGrp Γ) := Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [petersson, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem petProd_smul_left (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) (c : ℂ) (f g : ℍ → ℂ) :
     petProd Γ k (c • f) g = c * petProd Γ k f g := by
@@ -121,9 +121,9 @@ theorem petProd_smul_left (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) 
   ring
 
 /- English proof (translation)
-Unfold `petProd`. Use `haveI : Fintype (SL(2, ℤ) ⧸ pmGrp Γ) := Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [petersson, Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem petProd_smul_right (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) (c : ℂ) (f g : ℍ → ℂ) :
     petProd Γ k f (c • g) = (starRingEnd ℂ) c * petProd Γ k f g := by
@@ -138,7 +138,7 @@ theorem petProd_smul_right (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ)
   ring
 
 /- English proof (translation)
-Unfold `petProd`. Use `haveI : Fintype (SL(2, ℤ) ⧸ pmGrp Γ) := Fintype.ofFinite _`. Simplify using `only [← petersson_slash_SL, hf, hg]`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Subgroup.index, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem petProd_level_one (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) {f g : ℍ → ℂ}
     (hf : ∀ γ : SL(2, ℤ), f ∣[k] γ = f) (hg : ∀ γ : SL(2, ℤ), g ∣[k] γ = g) :
@@ -150,7 +150,7 @@ theorem petProd_level_one (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `show (((10 : ℤ) : ZMod (5 * 2))) = 0`. Evaluate the decidable proposition. Use `show (((3 : ℤ) : ZMod 5)) = ((3 : ℤ) : ZMod 5)`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Evaluate the decidable proposition. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 example : IsDia 5 2 3 ⟨!![7, 2; 10, 3], by simp [Matrix.det_fin_two]⟩ := by
   constructor
@@ -160,14 +160,14 @@ example : IsDia 5 2 3 ⟨!![7, 2; 10, 3], by simp [Matrix.det_fin_two]⟩ := by
     rfl
 
 /- English proof (translation)
-Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Simplify using `[heckeT, uOp, vOp, hq']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example {q : ℕ} (hq : 0 < q) (τ : ℍ) : heckeT 0 q 1 (fun _ => 1) τ = 1 + (q : ℂ)⁻¹ := by
   have hq' : (q : ℂ) ≠ 0 := by exact_mod_cast hq.ne'
   simp [heckeT, uOp, vOp, hq']
 
 /- English proof (translation)
-Rewrite using `[petProd_smul_left, petProd_smul_right, Complex.conj_I]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) (f g : ℍ → ℂ) :
     petProd Γ k (Complex.I • f) g = Complex.I * petProd Γ k f g ∧
@@ -176,13 +176,13 @@ example (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) (f g : ℍ → ℂ
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `relIndex_pmGrp_of_notMem (neg_one_notMem_lev 2 (by norm_num))`.
+A detailed English derivation is pending.
 -/
 example : (lev 5 2).relIndex (pmGrp (lev 5 2)) = 2 :=
   relIndex_pmGrp_of_notMem (neg_one_notMem_lev 2 (by norm_num))
 
 /- English proof (translation)
-Rewrite using `[petProd_level_one ⊤ k hf hg, pmGrp_eq_self (Subgroup.mem_top _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (k : ℤ) {f g : ℍ → ℂ} (hf : ∀ γ : SL(2, ℤ), f ∣[k] γ = f) (hg : ∀ γ : SL(2, ℤ), g ∣[k] γ = g) :
     petProd ⊤ k f g = ∫ z in ModularGroup.fd, petersson k g f z := by

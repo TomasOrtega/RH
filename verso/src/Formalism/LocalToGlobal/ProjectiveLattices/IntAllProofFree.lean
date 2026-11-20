@@ -18,11 +18,11 @@ variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fi
   [IsFractionRing V K']
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Establish `hv0 : HeightOneSpectrum.valuation K' (IsDiscreteValuationRing.maximalIdeal V) x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Establish `hle : HeightOneSpectrum.valuation K' (IsDiscreteValuationRing.maximalIdeal V) x ≤ 1`. Rewrite using `[← WithZero.exp_log hv0, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `vV valV at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ w : HeightOneSpectrum V, w.valuation K' x ≤ 1`. Introduce `w`. Establish `hw : w = IsDiscreteValuationRing.maximalIdeal V` using `HeightOneSpectrum.ext (IsLocalRing.eq_maximalIdeal w.isMaximal)`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Conclude with `hle`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := V) (K := K') x key`. Conclude with `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_vV_nonneg {x : K'} (h : 0 ≤ vV V x) : x ∈ Set.range (algebraMap V K') := by
   by_cases hx : x = 0
@@ -74,9 +74,9 @@ section Proofs
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Unfold `vV valV`. Distinguish the cases in `ha : HeightOneSpectrum.valuation K' (IsDiscreteValuationRing.maximalIdeal V) (algebraMap V K' a) = 0`. Simplify using `[ha]`. Establish `h1 : HeightOneSpectrum.valuation K' (IsDiscreteValuationRing.maximalIdeal V) (algebraMap V K' a) ≤ 1` using `by first`. Consider the case `exact HeightOneSpectrum.valuation_le_one _ a`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (IsDiscreteValuationRing.maximalIdeal V).valuation_le_one a`. Consider the case `exact HeightOneSpectrum.valuation_le_one (K := K') _ a`. Consider the case `exact (IsDiscreteValuationRing.maximalIdeal V).valuation_le_one (K := K') a`. Rewrite `h1` using `[← WithZero.exp_log ha, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma vV_alg_nonneg_lemma {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K']
     [Algebra V K'] [IsFractionRing V K'] (a : V) : 0 ≤ vV V (algebraMap V K' a) := by
@@ -93,13 +93,13 @@ private lemma vV_alg_nonneg_lemma {V K' : Type} [CommRing V] [IsDomain V] [IsDis
     linarith
 
 /- English proof (translation)
-Introduce `la T io e hO hFin y`. Use `letI := io.toAlgebra`. Take `⟨T', i, r, hr, hv, hF', y0, hy0⟩` from `hE T io hFin y.x y.x_over`. Use `letI := (i.comp io).toAlgebra`. Set `φ : T.Fr →ₐ[c.F] T'.Fr` to `{ i with commutes' := fun _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Take `⟨z, hz⟩` from `hB T.Fr T'.Fr φ y`. Take `⟨t, y', hy'⟩` from `hR T' (i.comp io) y0 z (hz.1.trans hy0.symm)`. Use `⟨T', i.comp io, r * e, y', ?_, hF', φ, z, t, ?_, hz, hy'⟩` and prove the remaining obligations. Unfold `OverLa at hO ⊢`. Use `⟨Nat.mul_pos hr hO.1, fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.comp_apply, hv, hO.2 a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `a`. Apply `mem_range_of_vV_nonneg` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show 0 ≤ vV T'.V (i (algebraMap T.V T.Fr a))`. Rewrite using `[hv]`. Conclude with `mul_nonneg (Nat.cast_nonneg r) (vV_alg_nonneg_lemma a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAll_of (hE : IntFrExt Xo c) (hB : FrBaseChg Xo c) (hR : ReFrame Xo c) : IntAll Xo c := by
   intro la T io e hO hFin y
@@ -122,9 +122,9 @@ theorem intAll_of (hE : IntFrExt Xo c) (hB : FrBaseChg Xo c) (hR : ReFrame Xo c)
     exact mul_nonneg (Nat.cast_nonneg r) (vV_alg_nonneg_lemma a)
 
 /- English proof (translation)
-Introduce `la`. Take `⟨L, _, _, j, x, hx⟩` from `hN`. Take `⟨T, k, e, hO, hF⟩` from `hL c.F L j la`. Use `⟨T, k.comp j, e, hO, hF, spMap k ≫ x, ?_⟩` and prove the remaining obligations. Establish `hx' : x ≫ Xo.s = spMap (j.comp (IntermediateField.inclusion c.le).toRingHom)` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (spMap k ≫ x) ≫ Xo.s = spMap ((k.comp j).comp (IntermediateField.inclusion c.le).toRingHom)`. Rewrite using `[Category.assoc, hx']`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algPtLa_of (hN : XoNumPt Xo c) (hL : LocFld) : AlgPtLa Xo c := by
   intro la
@@ -139,11 +139,11 @@ theorem algPtLa_of (hN : XoNumPt Xo c) (hL : LocFld) : AlgPtLa Xo c := by
   rfl
 
 /- English proof (translation)
-Introduce `la`. Take `⟨T, io, e, hO, hF, x, hx⟩` from `algPtLa_of hN hL la`. Take `⟨T', i, r, hr, hv, hF', y, hy⟩` from `hE T io hF x hx`. Use `⟨T', i.comp io, r * e, ?_, y, ?_⟩` and prove the remaining obligations. Unfold `OverLa at hO ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨Nat.mul_pos hr hO.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hv, hO.2 a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `algCls IntFr.IsAlg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Conclude with `hF'`.
+A detailed English derivation is pending.
 -/
 theorem intFrNe_of' (hN : XoNumPt Xo c) (hL : LocFld) (hE : IntFrExt Xo c) : IntFrNe Xo c (algCls Xo c) := by
   intro la
@@ -163,7 +163,7 @@ end Proofs
 section Frames
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Take `⟨u', hu', rfl⟩` from `h'`. Establish `e : u = u'` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCombAt_unique {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {a : Fin m → S}
@@ -174,7 +174,7 @@ theorem isCombAt_unique {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶
   rw [e]
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -183,7 +183,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_comp_alg {S : Type} [CommRing S] (a : S) :
     (epsMul a).comp (algebraMap S (DualNumber S)) = algebraMap S (DualNumber S) := by
@@ -196,7 +196,7 @@ def epsPt {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X}
     rfl)
 
 /- English proof (translation)
-The claim follows from `Over.homMk_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem epsPt_left {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X}
     {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) (a : S) :
@@ -204,7 +204,7 @@ theorem epsPt_left {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X
   Over.homMk_left _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, fun i => epsPt (hv i) (a i), fun i => epsPt_left (hv i) (a i), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCombAt_exists {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, IsTanAt x (v j)) (a : Fin m → S) :
@@ -212,7 +212,7 @@ theorem isCombAt_exists {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶
   ⟨_, fun i => epsPt (hv i) (a i), fun i => epsPt_left (hv i) (a i), rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => epsPt (hv i) (a i), fun i => epsPt_left (hv i) (a i), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCombAt_epsPt {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, IsTanAt x (v j)) (a : Fin m → S) :
@@ -220,11 +220,11 @@ theorem isCombAt_epsPt {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ 
   ⟨fun i => epsPt (hv i) (a i), fun i => epsPt_left (hv i) (a i), rfl⟩
 
 /- English proof (translation)
-Establish `hm : (1 : tEps x ⟶ Xo.univ.t.G) = (Over.homMk (spMap (algebraMap S (DualNumber S))) (by rfl) : tEps x ⟶ Over.mk x) ≫ 1`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc]`. Use `congr 1`. Establish `he : epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom` using `by first`. Consider the case `(ext d <;> simp [epsMul])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(refine RingHom.ext fun d => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[epsMul, TrivSqZeroExt.algebraMap_eq_inl])`. Consider the case `(refine RingHom.ext fun d => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[epsMul, TrivSqZeroExt.map, TrivSqZeroExt.algebraMap_eq_inl])`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hm, Over.comp_left]`. Use `show (epsPt hv 0).left = spMap (algebraMap S (DualNumber S)) ≫ (1 : Over.mk x ⟶ Xo.univ.t.G).left`. Rewrite using `[← hv.2, epsPt_left, ← Category.assoc, spMap_comp', he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsPt_zero {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X}
     {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) : epsPt hv 0 = 1 := by
@@ -245,9 +245,9 @@ theorem epsPt_zero {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X
   rw [← hv.2, epsPt_left, ← Category.assoc, spMap_comp', he]
 
 /- English proof (translation)
-Rewrite using `[epsPt_left]`. Establish `h1 : epsMul (1 : S) = RingHom.id _`. Apply the tactic sequence `ext x <;> simp [epsMul]`. Rewrite using `[h1]`. Use `show Spec.map (CommRingCat.ofHom (RingHom.id _)) ≫ v = v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem epsPt_one_left {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X}
     {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) : (epsPt hv 1).left = v := by
@@ -259,11 +259,9 @@ theorem epsPt_one_left {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ 
   rw [CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `h` using `isCombAt_epsPt hv (Pi.single j 1)`. It suffices to establish `e : (List.ofFn fun i => epsPt (hv i) ((Pi.single j 1 : Fin m → S) i)).prod.left = v j by`. Rewrite `h` using `[e]`. Conclude with `h`. Rewrite using `[List.prod_ofFn, Finset.prod_eq_single j]`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_same]`. Conclude with `epsPt_one_left (hv j)`. Introduce `i _ hij`. Rewrite using `[Pi.single_eq_of_ne hij]`. Conclude with `epsPt_zero (hv i)`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCombAt_single {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, IsTanAt x (v j)) (j : Fin m) :
@@ -307,23 +305,23 @@ def IntRebase : Prop :=
 variable {Xo c}
 
 /- English proof (translation)
-Introduce `T io`. Set `_` to `io.toAlgebra`. Introduce `y0 z hx`. Establish `tz : ∀ τ i, IsTanAt y0.1.x (z.u τ i)` using `fun τ i => by rw [← hx]; exact z.tan τ i`. Establish `ty : ∀ τ i, IsTanAt z.x (y0.1.u τ i)` using `fun τ i => by rw [hx]; exact y0.1.tan τ i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ τ i, ∃ a : Fin (Dw.mult τ) → T.Fr, IsCombAt y0.1.x (y0.1.u τ) a (z.u τ i)` using `fun τ i => (y0.1.basis τ (z.u τ i) (tz τ i) (z.eig τ i)).exists`. Use `choose a ha using hA`. Establish `hB : ∀ τ j, ∃ b : Fin (Dw.mult τ) → T.Fr, IsCombAt z.x (z.u τ) b (y0.1.u τ j)` using `fun τ j => (z.basis τ (y0.1.u τ j) (ty τ j) (y0.1.eig τ j)).exists`. Use `choose b hb using hB`. Set `A : ∀ τ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T.Fr` to `fun τ => Matrix.of fun j i => a τ i j`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Bm : ∀ τ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T.Fr` to `fun τ => Matrix.of fun j i => b τ i j`. Establish `hAB : ∀ τ, A τ * Bm τ = 1`. Introduce `τ`. Use extensionality with `j' i'`. Establish `hb' : IsCombAt y0.1.x (z.u τ) (b τ i') (y0.1.u τ i')` using `by rw [← hx]; exact hb τ i'`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hT T.Fr y0.1.x (y0.1.u τ) (y0.1.tan τ) (z.u τ) (A τ) (b τ i') (y0.1.u τ i') (fun i => ha τ i) hb'`. Establish `hu` using `isCombAt_single (y0.1.tan τ) i'`. Establish `heq` using `(y0.1.basis τ (y0.1.u τ i') (y0.1.tan τ i') (y0.1.eig τ i')).unique hc hu`. Establish `h1` using `congrFun heq j'`. Simplify using `only [Matrix.mulVec, dotProduct, A, Bm, Matrix.of_apply] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [A, Bm, Matrix.of_apply]`. Rewrite using `[h1, Pi.single_apply]`. Establish `hdet : ∀ τ, (A τ).det ≠ 0` using `fun τ h => by`. Establish `h2` using `congrArg Matrix.det (hAB τ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h2`. Use `choose k N hk hN hNd hAN using fun τ => iwasawa' (V := T.V) (A τ) (hdet τ)`. Take `⟨y'', t0, hx'', hu'', hs''⟩` from `hR T io y0 z hx k hk`. Use `⟨fun o => Option.casesOn o t0 (fun p => Units.mk0 (N p.1 p.2 p.2) (hNd p.1 p.2)), y'', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Unfold `FrBor`. Use `⟨hx'', fun τ i => ?_, hs''⟩` and prove the remaining obligations. Use `⟨fun j => N τ j i, rfl, fun j hij => hN τ hij, ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `isCombAt_exists (z.tan τ) (fun j => N τ j i)`. Establish `hw0 : IsCombAt y0.1.x (z.u τ) (fun j => N τ j i) w'` using `by rw [← hx]; exact hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hc` using `hT T.Fr y0.1.x (y0.1.u τ) (y0.1.tan τ) (z.u τ) (A τ) (fun j => N τ j i) w' (fun i => ha τ i) hw0`. Establish `hkc : (A τ).mulVec (fun j => N τ j i) = fun j => algebraMap T.V T.Fr (k τ j i)`. Use function extensionality and compare the values at `j`. Establish `h3` using `congrFun (congrFun (hAN τ) j) i`. Rewrite `h3` using `[Matrix.mul_apply, Matrix.map_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Both sides reduce to the same expression. Rewrite `hc` using `[hkc]`. Rewrite using `[← isCombAt_unique hc (hu'' τ i)]`. Conclude with `hw'`.
+A detailed English derivation is pending.
 -/
 theorem reFrame_of (hT : TanLin Xo) (hR : IntRebase Xo c) : ReFrame Xo c := by
   intro T io
@@ -377,7 +375,7 @@ theorem reFrame_of (hT : TanLin Xo) (hR : IntRebase Xo c) : ReFrame Xo c := by
   exact hw'
 
 /- English proof (translation)
-The claim follows from `intAll_of hE hB (reFrame_of hT hR)`.
+A detailed English derivation is pending.
 -/
 theorem intAll_of' (hE : IntFrExt Xo c) (hB : FrBaseChg Xo c) (hT : TanLin Xo) (hR : IntRebase Xo c) :
     IntAll Xo c :=

@@ -11,13 +11,13 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 
 /- English proof (translation)
-Introduce `X _ _ _ p n _ _ Γ B a b x hB hab`. Take `⟨m', f, hm', hf, hBf⟩` from `GlobalTheory.T.exists_localEquation_effectiveQCartierDivisor X p B hB x`. Establish `key : ∀ (η : RatForms p n) (m : ℕ) (g : X.functionFieldˣ), 0 < m → IsLogEqn p (Γ + b • B) η x m g → ∃ (m'' : ℕ) (g'' : X.functionFieldˣ), 0 < m'' ∧ IsLogEqn p (Γ + a • B) η x m'' g'' ∧ ∀ E : DivOver p, E.Through x → discrep E η m g ≤ discrep E η m'' g''`. Introduce `η m g hm hlog`. Take `⟨m'', g'', hm'', hlog'', hd⟩` from `GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n (Γ + b • B) B η x m m' g f (a - b) hm hm' hlog hBf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : Γ + b • B + (a - b) • B = Γ + a • B`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hlog''` using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨m'', g'', hm'', hlog'', fun E hE => ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : ℚ) ≤ E.ord f` using `by exact_mod_cast (E.ord_nonneg_iff f).2 (hE _ hf)`. Establish `h1 : (0 : ℚ) ≤ (E.ord f : ℚ) / m'` using `div_nonneg h0 (Nat.cast_nonneg _)`. Rewrite using `[hd E]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hab) h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `⟨fun ⟨η, m, g, hη, hm, hlog, hk⟩ => ?_, fun ⟨η, m, g, hη, hm, hlog, hk⟩ => ?_⟩` and prove the remaining obligations. Take `⟨m'', g'', hm'', hlog'', hle⟩` from `key η m g hm hlog`. Conclude with `⟨η, m'', g'', hη, hm'', hlog'', fun E hE => lt_of_lt_of_le (hk E hE) (hle E hE)⟩`. Take `⟨m'', g'', hm'', hlog'', hle⟩` from `key η m g hm hlog`. Conclude with `⟨η, m'', g'', hη, hm'', hlog'', fun E hE => le_trans (hk E hE) (hle E hE)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PairStep.kltAt_lcAt_of_le_coeff : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Γ B : X → ℚ) (a b : ℚ) (x : X), IsQCart B → a ≤ b → (KltAt p n (Γ + b • B) x → KltAt p n (Γ + a • B) x) ∧ (LcAt p n (Γ + b • B) x → LcAt p n (Γ + a • B) x) := by
   intro X _ _ _ p n _ _ Γ B a b x hB hab

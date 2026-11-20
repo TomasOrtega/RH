@@ -11,9 +11,9 @@ namespace GlobalTheory.SmallRootCl
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h1 : ‖1 + x‖ ≤ 1` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by simp) hx)`. Establish `e : (1 + x) ^ (m + 1) - 1 = ((1 + x) ^ m - 1) * (1 + x) + x` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_one_add_pow_sub_one_le (x : ℂ_[l]) (hx : ‖x‖ ≤ 1) (m : ℕ) :
     ‖(1 + x) ^ m - 1‖ ≤ ‖x‖ := by
@@ -31,9 +31,9 @@ theorem norm_one_add_pow_sub_one_le (x : ℂ_[l]) (hx : ‖x‖ ≤ 1) (m : ℕ)
       _ = ‖x‖ := mul_one _
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `h` using `PadicComplex.norm_extends' l (q : ℚ_[l])`. Rewrite `h` using `[map_natCast, PadicComplex.coe_natCast]`. Rewrite using `[h]`. Distinguish the cases in `hql : q = l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hql` using the available equality. Rewrite using `[Padic.norm_p]`. Establish `hc : Nat.Coprime l q` using `(Nat.coprime_primes hl hq).2 (Ne.symm hql)`. Rewrite using `[(Padic.norm_natCast_eq_one_iff).2 hc]`. Conclude with `inv_le_one_of_one_le₀ (by exact_mod_cast hl.one_lt.le)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_le_norm_prime (q : ℕ) (hq : q.Prime) : (l : ℝ)⁻¹ ≤ ‖(q : ℂ_[l])‖ := by
   have hl : l.Prime := Fact.out
@@ -47,21 +47,17 @@ theorem inv_le_norm_prime (q : ℕ) (hq : q.Prime) : (l : ℝ)⁻¹ ≤ ‖(q : 
     exact inv_le_one_of_one_le₀ (by exact_mod_cast hl.one_lt.le)
 
 /- English proof (translation)
-Introduce `hpow`. Establish `hl : l.Prime` using `Fact.out`. Establish `hx1 : ‖x‖ ≤ 1` using `hx.le.trans (inv_le_one_of_one_le₀ (by exact_mod_cast hl.one_lt.le))`. Use `set ζ := 1 + x with hζ`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨i, by omega, hpow⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d := orderOf ζ with hd`. Establish `hdpos : 0 < d` using `hfin.orderOf_pos`. Establish `hd1 : d ≠ 1`. Introduce `h`. Rewrite `h` using `[hd, orderOf_eq_one_iff, hζ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx0 (by linear_combination h)`. Use `set q := d.minFac with hqdef`. Establish `hq : q.Prime` using `Nat.minFac_prime hd1`. Establish `hqd : q ∣ d` using `Nat.minFac_dvd d`. Use `set η := ζ ^ (d / q) with hη`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hηq : η ^ q = 1`. Rewrite using `[hη, ← pow_mul, Nat.div_mul_cancel hqd, hd]`. Conclude with `pow_orderOf_eq_one ζ`. Establish `hη1 : η ≠ 1`. Apply `pow_ne_one_of_lt_orderOf` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.div_pos (Nat.le_of_dvd hdpos hqd) hq.pos).ne'`. Conclude with `Nat.div_lt_self hdpos hq.one_lt`. Establish `hsum : ∑ j ∈ Finset.range q, η ^ j = 0`. Establish `h` using `geom_sum_mul η q`. Rewrite `h` using `[hηq, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 h).resolve_right (sub_ne_zero.2 hη1)`. Establish `hsmall : ∀ j, ‖η ^ j - 1‖ ≤ ‖x‖` using `fun j => by`. Rewrite using `[hη, ← pow_mul]`. Conclude with `norm_one_add_pow_sub_one_le x hx1 _`. Establish `hqeq : (q : ℂ_[l]) = -∑ j ∈ Finset.range q, (η ^ j - 1)`.
-
-Rewrite using `[Finset.sum_sub_distrib, hsum]`. Simplify using the standard rewrite rules. Establish `hle : ‖(q : ℂ_[l])‖ ≤ ‖x‖`. Rewrite using `[hqeq, norm_neg]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun j _ => hsmall j`.
-
-Use `inv_le_norm_prime (l := l) q hq` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_root (x : ℂ_[l]) (hx0 : x ≠ 0) (hx : ‖x‖ < (l : ℝ)⁻¹) (i : ℕ) (hi : 1 ≤ i) :
     (1 + x) ^ i ≠ 1 := by
@@ -101,15 +97,13 @@ theorem not_root (x : ℂ_[l]) (hx0 : x ≠ 0) (hx : ‖x‖ < (l : ℝ)⁻¹) (
   linarith
 
 /- English proof (translation)
-Introduce `l _ a ha`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hnl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Rewrite `h` using `[Padic.norm_p, map_natCast, PadicComplex.coe_natCast]`. Conclude with `h`. Establish `ha0 : 0 < ‖a‖` using `norm_pos_iff.2 ha`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (div_pos (inv_pos.2 hl0) ha0) (inv_lt_one_of_one_lt₀ hl1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x := (l : ℂ_[l]) ^ k * a with hxdef`. Establish `hxn : ‖x‖ < (l : ℝ)⁻¹`. Rewrite using `[hxdef, norm_mul, norm_pow, hnl]`. Conclude with `(lt_div_iff₀ ha0).1 hk`. Establish `hl0' : (l : ℂ_[l]) ≠ 0` using `by exact_mod_cast hl.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx0 : x ≠ 0` using `mul_ne_zero (pow_ne_zero _ hl0') ha`. Use `⟨k, ?_, fun i hi => not_root x hx0 hxn i hi⟩` and prove the remaining obligations. Introduce `h`. Establish `: x = -1` using `by linear_combination h`. Establish `h1 : ‖x‖ = 1` using `by rw [this, norm_neg, norm_one]`.
-
-Establish `: (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_one_add_pow_mul_not_root : ∀ (l : ℕ) [Fact l.Prime] (a : ℂ_[l]), a ≠ 0 → ∃ k : ℕ, 1 + (l : ℂ_[l]) ^ k * a ≠ 0 ∧ ∀ i : ℕ, 1 ≤ i → (1 + (l : ℂ_[l]) ^ k * a) ^ i ≠ 1 := by
   intro l _ a ha

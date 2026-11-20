@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.FixedLevelIsolate
 
 /- English proof (translation)
-Introduce `l x hi`. Proceed by induction on `l with`. Consider the case `nil => simp at hi`. Consider the case `cons a t ih`. Distinguish the cases in `ha : a = i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `hit : i ∈ t`. Break down `List.mem_cons.1 hi with h | h` into its components or cases. Conclude with `absurd h.symm ha`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Establish `he : (a :: t).erase i = a :: t.erase i`. Simplify using `[ha]`. Rewrite using `[he, List.foldr_cons, List.foldr_cons, ih hit, hc a ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_extract {ι X : Type} [DecidableEq ι] (g : ι → X → X) (i : ι)
     (hc : ∀ a, a ≠ i → ∀ x, g a (g i x) = g i (g a x)) :
@@ -43,7 +43,7 @@ theorem foldr_extract {ι X : Type} [DecidableEq ι] (g : ι → X → X) (i : �
 variable {D : D7}
 
 /- English proof (translation)
-Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun p hp => hv p fun hq => hp (h p hq), rest⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latO_mono {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     {P P' : Pl D → Prop} (h : ∀ p, P p → P' p) : latO S T LS LT P ≤ latO S T LS LT P' := by
@@ -52,14 +52,14 @@ theorem latO_mono {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT : Set (
   exact ⟨α, hα, fun p hp => hv p fun hq => hp (h p hq), rest⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1, fun u hu => hf.2.1 u (latO_mono _ _ h hu), fun e he u hu hh => hf.2.2 e he u (latO_mono _ _ h hu) hh⟩`.
+Supply the required witnesses or components.
 -/
 theorem vac_mono {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {P P' : Pl D → Prop}
     (h : ∀ p, P p → P' p) {f : WO S T → ℂ} (hf : Vac ψ S T LS LT P' f) : Vac ψ S T LS LT P f :=
   ⟨hf.1, fun u hu => hf.2.1 u (latO_mono _ _ h hu), fun e he u hu hh => hf.2.2 e he u (latO_mono _ _ h hu) hh⟩
 
 /- English proof (translation)
-Introduce `u hu a b`. Establish `h` using `(G.eg_is j (G.s - j) (by omega)).1 u hu a b`. Conclude with `(GlobalTheory.FinPl.FrameLat.idem_iff G.q _).2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eg_combAt {c : Comm D} {v : VCom c} (G : GLoc v) (j : ℕ) (hj : j ≤ G.s) : CombAt (· = G.q.v) (G.eg j) := by
   intro u hu a b

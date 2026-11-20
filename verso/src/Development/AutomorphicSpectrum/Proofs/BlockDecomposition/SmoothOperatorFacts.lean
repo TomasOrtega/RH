@@ -24,7 +24,7 @@ namespace GlobalTheory.CompanionTheory.FcSmooth
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `g hg k`. Simplify using `only [h g hg k, h' g hg k, map_add, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isSec_comb (E : KMod n) (c : ℂ) {f f' : Mat n → E.V} (h : IsSec E f) (h' : IsSec E f') :
     IsSec E (fun y => c • f y + f' y) := by
@@ -36,7 +36,7 @@ section
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n)
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.complete ℂ E.V ∀ (Ω : Msob μ E.V →ₗ[ℂ] Msob μ E.V) (T : Lp E.V 2 μ →L[ℂ] Lp E.V 2 μ) (F : FCalc (Lp E.V 2 μ) (Msob μ E.V) Ω T), (∀ (f : Mat n → E.V) (hf : cls μ f ∈ Msob μ E.V), Sob μ f → (Ω ⟨cls μ f, hf⟩ : Lp E.V 2 μ) = cls μ (Om f)) → ∀ w : List (Bool × Fin n …`.
+A detailed English derivation is pending.
 -/
 theorem word_est (hAE : AlgEst) (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hC : CalcSteps)
     (h : C₀(ℝ, ℂ)) (hh : ∀ m : ℕ, ∃ h' : C₀(ℝ, ℂ), ∀ y, h' y = (y : ℂ) ^ m * h y) :
@@ -103,39 +103,33 @@ theorem word_est (hAE : AlgEst) (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hC : 
 end
 
 /- English proof (translation)
-Introduce `n _ _ μ _ E`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Introduce `Ω T F hL hU hR hS hAE hC hΩ h hh`. Establish `hW` using `word_est μ E hAE hL hU hR hC h hh Ω T F hΩ`. Use `choose Cw hCw using hW`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, Cs, hb⟩` from `GlobalTheory.CompanionTheory.CurveJ.sup_bound hS n μ`. Establish `hkeep` using `(GlobalTheory.T.functional_calculus_on_sobolev) n μ E Ω T F hL hU hR hS hC hΩ h`. Use `⟨|Cs| * ∑ w ∈ S, |Cw w|, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨xs, hxs, hlim⟩` from `mem_closure_iff_seq_limit.1 hx`. Use `choose fs hfS hfsec hfcl using hxs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose a haS hasec hacl using fun k => hkeep (fs k) (hfS k) (hfsec k)`. Establish `hacl' : ∀ k, cls μ (a k) = F.Φ h (xs k)` using `fun k => by rw [hacl, hfcl]`. Establish `hdiff : ∀ w k l, ‖cls μ (Rw w (a k)) - cls μ (Rw w (a l))‖ ≤ |Cw w| * ‖xs k - xs l‖`. Introduce `w k l`. Establish `c1` using `GlobalTheory.CompanionTheory.CurveJ.sob_comb (-1) (haS l) (haS k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c2` using `GlobalTheory.CompanionTheory.CurveJ.sob_comb (-1) (hfS l) (hfS k)`. Establish `e1 : cls μ (fun y => (-1 : ℂ) • fs l y + fs k y) = xs k - xs l`. Use `c2.2 []` as an intermediate fact. Simplify using `only [Rw, id] at this`. Rewrite using `[this, hfcl, hfcl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[sub_eq_neg_add]`. Establish `e2 : cls μ (fun y => (-1 : ℂ) • a l y + a k y) = F.Φ h (cls μ (fun y => (-1 : ℂ) • fs l y + fs k y))`. Use `c1.2 []` as an intermediate fact. Simplify using `only [Rw, id] at this`. Rewrite using `[this, hacl', hacl', e1, map_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[sub_eq_neg_add]`. Establish `b` using `hCw w _ _ (isSec_comb E (-1) (hasec l) (hasec k)) c1.1 e2`. Rewrite `b` using `[c1.2 w, e1]`. Establish `e3 : (-1 : ℂ) • cls μ (Rw w (a l)) + cls μ (Rw w (a k)) = cls μ (Rw w (a k)) - cls μ (Rw w (a l))`. Simplify using `[sub_eq_neg_add]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `b` using `[e3]`. Conclude with `b.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (norm_nonneg _))`. Establish `hcs : CauchySeq xs` using `hlim.cauchySeq`. Establish `hcau : ∀ w, CauchySeq fun k => cls μ (Rw w (a k))`. Introduce `w`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hcs`, the goal using `[Metric.cauchySeq_iff]`. Introduce `ε hε`. Establish `hpos : 0 < |Cw w| + 1` using `by positivity`. Take `⟨N, hN⟩` from `hcs (ε / (|Cw w| + 1)) (div_pos hε hpos)`. Use `⟨N, fun k hk l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1` using `hN k hk l hl`. Rewrite `h1`, the goal using `[dist_eq_norm]`. Establish `h2` using `hdiff w k l`. Rewrite `h1` using `[lt_div_iff₀ hpos]`. Use polynomial arithmetic with `[norm_nonneg (xs k - xs l), abs_nonneg (Cw w)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hbS, hbt, hbp⟩` from `(GlobalTheory.T.sobolev_space_complete) n μ E.V hS a haS hcau`. Use `⟨b, hbS, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg k`. Establish `hgk : g * k.1 ∈ GLs n`. Establish `hk : (k.1 : Mat n).det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Use `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff.1 k.2)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Use `show (g * k.1).det ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hg hk`. Establish `t1` using `hbp _ hgk`. Establish `t2 : Tendsto (fun j => a j (g * k.1)) atTop (𝓝 (E.ρ k⁻¹ (b g)))`. Simplify using `only [fun j => hasec j g hg k]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((E.ρ k⁻¹).continuous.tendsto _).comp (hbp g hg)`. Conclude with `tendsto_nhds_unique t1 t2`. Establish `t1` using `hbt []`. Simplify using `only [Rw, id] at t1`. Establish `t2 : Tendsto (fun k => cls μ (a k)) atTop (𝓝 (F.Φ h x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hacl']`. Conclude with `((F.Φ h).continuous.tendsto _).comp hlim`. Conclude with `tendsto_nhds_unique t1 t2`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `t1 : Tendsto (fun k => ‖a k 1‖) atTop (𝓝 ‖b 1‖)` using `(hbp 1 h1).norm`.
-
-Establish `t2 : Tendsto (fun k => (|Cs| * ∑ w ∈ S, |Cw w|) * ‖xs k‖) atTop (𝓝 ((|Cs| * ∑ w ∈ S, |Cw w|) * ‖x‖))` using `hlim.norm.const_mul _`. Use `le_of_tendsto_of_tendsto' t1 t2 fun k => ?_` and prove the remaining obligations. Establish `b1` using `hb E.V (a k) (haS k) 1 h1`. Establish `h0 : 0 ≤ ∑ w ∈ S, ‖cls μ (Rw w (a k))‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hs : ∑ w ∈ S, ‖cls μ (Rw w (a k))‖ ≤ (∑ w ∈ S, |Cw w|) * ‖xs k‖`.
-
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Use `hCw w (fs k) (a k) (hasec k) (haS k) (by rw [hacl', hfcl])` as an intermediate fact. Rewrite `this` using `[hfcl]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (norm_nonneg _))`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smoothOp : SmoothOp := by
   intro n _ _ μ _ E

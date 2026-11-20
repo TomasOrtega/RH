@@ -40,11 +40,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Top.Link
 
 /- English proof (translation)
-Establish `key : ∀ f : MRing J, mConeMap (fun p => i (y₀ p)) f = MvPolynomial.map i (mConeMap y₀ f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p n hp => simp only [map_mul, hp]`. Simplify using `[mConeMap]`. Use extensionality with `f`. Use `show mConeMap _ f = 0 ↔ mConeMap _ f = 0`. Rewrite using `[key]`.
-
-Conclude with `map_eq_zero_iff _ (MvPolynomial.map_injective i i.injective)`.
+Treat this case separately. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_map {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω₀ Ω : Type} [Field Ω₀] [Field Ω]
     (i : Ω₀ →+* Ω) (y₀ : (Σ k, J k) → Ω₀) : mCoordIdeal (fun p => i (y₀ p)) = mCoordIdeal y₀ := by
@@ -60,7 +58,7 @@ theorem mCoordIdeal_map {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype 
   exact map_eq_zero_iff _ (MvPolynomial.map_injective i i.injective)
 
 /- English proof (translation)
-Rewrite using `[← GroundTheory.Heights₂.Heights.Inter.BlockRatioAlgebraic.mCoordIdeal_comp_v hv y, ← mCoordIdeal_map i y₀]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `hy p`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem imageZ_of_restr {K₀ K : Type} [Fintype K₀] [Fintype K] {J₀ : K₀ → Type} {J : K → Type} [∀ k, Fintype (J₀ k)]
     [∀ k, Fintype (J k)] {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (i : Ω₀ →+* Ω) (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω)
@@ -77,39 +75,33 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 open Classical in
 
 /- English proof (translation)
-Take `⟨Ω, _, _, K, _, J, _, y, κ₀, v₀, κ₁, v₁, κR, vR, i₀, i₁, iR, 𝔐, Fl, hv₀, hv₁, hvR, hy₀, hy₁, hyR, hg₀, hg₁, hd0, hdeq, ⟨h, hvb, hsub, hl₀⟩, hl₁, hfr⟩` from `GlobalTheory.T.root_origin_comparison_subset E H D l Xo c Y S₀ S M₀ M₁ Rf Sys Fx o₀ o₁ oR hS hdisc hom₀ hom₁ hR hdeg`. Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `RingOfIntegers.coe_injective`. Use `haveI : Nonempty K := ⟨κ₀ o₀.k₀⟩`. Take `⟨hbir, harith⟩` from `GlobalTheory.T.hodge_cpt_birational_arith_var E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl hβ`. Establish `ha : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar (mCoordIdeal y) (dimFl (CMType H) (D.p + D.q) + 1)` using `harith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : 0 < IntermediateField.relfinrank (blockFnField (y ∘ v₀)) (blockFnField y) * M₀.δ` using `Nat.mul_pos (Nat.pos_of_ne_zero hd0) M₀.δ_pos`. Set `M : RootModel (CMType H) (D.p + D.q)` to `pullModel M₀ y ha hbir hv₀ _ hδ`. Take `⟨f, g, hfg, hvert⟩` from `GlobalTheory.T.flag_height_bound_of_arith_var E H D l Xo c (𝓞 c.F) (algebraMap _ _) Y S Ω K J y 𝔐 _ ha Fl S₀ h hvb hsub _ _ _ _ hl₀ hl₁`. Set `Sp : Finset Nat.Primes` to `(S \ S₀).preimage (fun p : Nat.Primes => (p : ℕ)) Subtype.val_injective.injOn`. Set `Tr : CMType H × Fin (D.p + D.q) → LocPair J ℤ Unit` to `fun r => ⟨fun _ => pullDeg κ₀ (M₀.xdeg r), fun _ => pullDeg κ₁ (M₁.xdeg r), fun _ => f r, fun _ => g r⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTr : ∀ r, (Tr r).IsVertOff (mCoordIdeal y) Sp` using `fun r _ => hvert r`. Establish `htw : ∀ (t : ℝ) (r : CMType H × Fin (D.p + D.q)), ∃ A' : HermLine J, IsSmoothHerm A' ∧ IsConjInvariantH A' ∧ (Tr r).IsIsometric (mCoordIdeal y) (fun _ => M.x t r) (fun _ => A')` using `fun t r => GlobalTheory.T.exists_isometric_herm_line K J (mCoordIdeal y) _ ha Sp (Tr r) (hTr r) (M.x t r) (M.x_deg t r) (M.x_smooth t r) (M.x_conj t r)`. Use `choose tw tws twc twi using htw`. Establish `ht₀ : 0 < Sys.t₀` using `(Sys.reg none).1`. Set `x' : ℝ → CMType H × Fin (D.p + D.q) → HermLine J` to `fun t r => if 0 < t ∧ t ≤ Sys.t₀ then pullHerm hv₁ (M₁.x t r) else tw t r`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hx'deg : ∀ t r, (x' t r).a = pullDeg κ₁ (M₁.xdeg r)` using `fun t r => by`. Distinguish the cases in `ht : 0 < t ∧ t ≤ Sys.t₀`. Simplify using `only [x', if_pos ht] show pullDeg κ₁ (M₁.x t r).a = _`. Rewrite using `[M₁.x_deg]`. Simplify using `only [x', if_neg ht]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `((twi t r) ()).2.1`. Establish `hx's : ∀ t r, IsSmoothHerm (x' t r)` using `fun t r => by`. Distinguish the cases in `ht : 0 < t ∧ t ≤ Sys.t₀`. Simplify using `only [x', if_pos ht]`. Conclude with `Chg.isSmoothHerm_pull hv₁ (M₁.x_smooth t r)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [x', if_neg ht]`. Conclude with `tws t r`. Establish `hx'c : ∀ t r, IsConjInvariantH (x' t r)` using `fun t r => by`. Distinguish the cases in `ht : 0 < t ∧ t ≤ Sys.t₀`. Simplify using `only [x', if_pos ht]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Chg.isConj_pull hv₁ (M₁.x_conj t r)`. Simplify using `only [x', if_neg ht]`. Conclude with `twc t r`. Set `R : SecondRoots M` to `{ xdeg := fun r => pullDeg κ₁ (M₁.xdeg r), x := x', x_deg := hx'deg, x_smooth := hx's, x_conj := hx'c, f := f, g := g }`. Establish `hTL : Fl.TwoLevels S₀ (⟨fun r => pullDeg κ₀ (M₀.xdeg r), fun r => pullDeg κ₁ (M₁.xdeg r), f, g⟩ : LocPair J ℤ (CMType H × Fin (D.p + D.q)))` using `⟨h, hvb, hsub, _, _, hl₀, hl₁, hfg, hvert⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hvert', hloc⟩` from `GlobalTheory.T.hodge_comp_root_model_primes hSeg hM3 hTv E H D l Xo c _ _ Y S S₀ M 𝔐 Fl R hTL (fun p hp hp' => ⟨hfr p hp, h2 p hp hp', fun hd => hp' (hdisc p (𝔐.S_prime p hp) hd)⟩) φ hφ`. Establish `hIso : ∀ t, 0 < t → R.pairs.IsIsometric M.P (M.x t) (R.x t)` using `fun t ht r => by`. Use `⟨M.x_deg t r, R.x_deg t r, fun z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ht' : t ≤ Sys.t₀`. Take `⟨⟨bf, bg, hbf, hbg, hb⟩, hfP, hgP, -⟩` from `hvert r`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (R.x t r).h z = (M₁.x t r).h (fun p => z (v₁ p))` using `by show (x' t r).h z = _`. Simplify using `only [x', if_pos (And.intro ht ht')]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `GlobalTheory.T.root_origin_height_comparison_three E H D l Xo c Y S₀ S M₀ M₁ Rf Sys Fx o₀ o₁ oR Ω K J y κ₀ v₀ κ₁ v₁ κR vR i₀ i₁ iR hv₀ hv₁ hvR hy₀ hy₁ hyR hg₀ hg₁ hJ₀ hJ₁ hJR hdeg ha r (f r) (g r) bf bg hbf hbg hb hfP hgP (hfg r) t ht ht' z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1 : R.x t r = tw t r` using `by show x' t r = _`. Simplify using `only [x', if_neg (fun hh : 0 < t ∧ t ≤ Sys.t₀ => ht' hh.2)]`. Rewrite using `[e1]`. Conclude with `((twi t r) ()).2.2 z hz`. Take `⟨T, hTx, hTx', hTv', hTi⟩` from `GlobalTheory.T.root_origin_height_comparison_two E H D l Xo c Y S₀ S M₀ M₁ Sys Fx o₀ o₁ Ω K J y κ₀ v₀ κ₁ v₁ i₀ i₁ hv₀ hv₁ hy₀ hy₁ (by rw [hg₀, hg₁]) ha`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hAs` using `Chg.isSmoothHerm_pull hv₁ M₁.A_smooth`. Establish `hAc` using `Chg.isConj_pull hv₁ M₁.A_conj`. Set `Rm` to `R.model`. Set `R2` to `reline Rm Rm.xdeg Rm.x Rm.x_deg Rm.x_smooth Rm.x_conj (pullHerm hv₁ M₁.A) hAs hAc`. Set `M₁'` to `reline Rm Rm.xdeg (fun t r => pullHerm hv₁ (M₁.x t r)) (fun t r => by show pullDeg κ₁ (M₁.x t r).a = _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[M₁.x_deg]`. Use the proof step `rfl) (fun t r => Chg.isSmoothHerm_pull hv₁ (M₁.x_smooth t r))`. Use the proof step `(fun t r => Chg.isConj_pull hv₁ (M₁.x_conj t r)) (pullHerm hv₁ M₁.A) hAs hAc`. Establish `hkA : M₁'.kA = M₁.kA` using `by show M₀.kA = M₁.kA`. Rewrite using `[o₀.kA_eq, o₁.kA_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : CharZero M₁'.Ω := ‹CharZero Ω›`. Take `⟨-, hPP₁, hCv₁, -⟩` from `GlobalTheory.T.root_model_block_pullback _ _ M₁ M₁' II hII κ₁ v₁ hv₁ (imageZ_of_restr i₁ M₁.y y hv₁ hy₁) (fun t r => by`. Consider the cases of `r with`. Consider the case `none => exact ⟨rfl, fun _ => rfl⟩`. Consider the case `some r => exact ⟨rfl, fun _ => rfl⟩) hkA hdeq`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ m, ∀ᶠ t in 𝓝[>] (0 : ℝ), M₁'.arMono II t m = Rm.arMono II t m` using `fun m => by filter_upwards [Ioo_mem_nhdsGT ht₀] with t ht`. Rewrite using `[GlobalTheory.T.arMono_eq_relined_isometric_vert _ _ Rm II hII (pullHerm hv₁ M₁.A) hAs hAc T hTv' hTi t m]`. Use `arMono_reline Rm II t m (fun r => ?_) rfl` and prove the remaining obligations. Use `show pullHerm hv₁ (M₁.x t r) = x' t r`. Simplify using `only [x', if_pos (And.intro ht.1 ht.2.le)]`.
-
-Establish `hCv : Rm.Converges II` using `fun m => by`. Take `⟨L, hL⟩` from `hCv₁ hc₁ m`. Conclude with `⟨L, hL.congr' (hev m)⟩`. Use `haveI : CharZero M.Ω := ‹CharZero Ω›`. Take `⟨-, hPP₀, hCv₀, hgeo⟩` from `GlobalTheory.T.root_model_block_pullback _ _ M₀ M II hII κ₀ v₀ hv₀ (imageZ_of_restr i₀ M₀.y y hv₀ hy₀) (fun t r => by`.
-
-Consider the cases of `r with`. Consider the case `none => exact ⟨rfl, fun _ => rfl⟩`. Consider the case `some r => exact ⟨rfl, fun _ => rfl⟩) rfl rfl`. Use `⟨M, R, hCv₀ hc₀, hCv, fun F => by rw [hPP₀], fun F => ?_, fun F => by rw [hgeo], ⟨hvert', hIso⟩, hloc⟩` and prove the remaining obligations. Rewrite using `[← hPP₁]`.
-
-Use `(Indep.pp_toA_eq_of_tendsto M₁' Rm II (hCv₁ hc₁) (fun m => ?_) F).symm` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev (m.mapDomain some)] with t ht`. Rewrite using `[ht, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem link_step (hSeg : GroundTheory.Heights₂.Heights.NumbersDVR.NumericalSegre.Statement) (hM3 : HodgeLatticeFlagBound) (hTv : TrivFlagOnHodge)
     (S₀ S : Finset ℕ) (M₀ M₁ Rf : RootModel (CMType H) (D.p + D.q))
@@ -240,17 +232,17 @@ end GlobalTheory.CompanionTheory.Ar.Top.Link
 namespace GlobalTheory.CompanionTheory.Ar.Top.Link
 
 /- English proof (translation)
-Introduce `_ hA hM3 hTv hG E _ _ _ _ H D Xo l c Y _ T o II _ hX hII _ _`. Take `⟨-, -, -, hSeg, -, -, -, -, -, hIn, -⟩` from `hG`. Take `⟨φ, hφ, hsh⟩` from `GlobalTheory.T.frobenius_labels_shape E (fun a b => IsMulCommutative.is_comm.comm a b) H l c`. Use `⟨φ, hsh, ?_⟩` and prove the remaining obligations. Introduce `B₀ B h2 hB a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hConv : T.Conv II` using `(GlobalTheory.T.real_tower_conv_I2 hA hIn II hII _ _ T (realOf o.toTowerOrigin)).1`. Establish `hmem : ∀ (B' p : ℕ), p ∈ o.S B' ↔ p.Prime ∧ (p ≤ B' ∨ p ∈ T.bad)` using `fun B' p => o.S_iff B' p`. Establish `hsub : o.S B₀ ⊆ o.S B` using `fun p hp => by`. Take `⟨h1, h3⟩` from `(hmem _ _).1 hp`. Conclude with `(hmem _ _).2 ⟨h1, h3.imp (fun h => h.trans hB) id⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdisc : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ NumberField.discr E → p ∈ o.S B₀` using `fun p hp hd => (hmem _ _).2 ⟨hp, Or.inr ((o.bad_iff p).2 ⟨hp, Dvd.dvd.mul_right (Dvd.dvd.mul_left hd 2) _⟩)⟩`. Establish `hRR : ∀ p ∈ o.S B₀, (o.Or B₀ a).𝔐.R p = (o.Or B a).𝔐.R p` using `fun p hp => by`. Rewrite using `[hX.2 B₀ a p hp, hX.2 B a p (hsub hp)]`. Establish `h2' : ∀ p ∈ o.S B, p ∉ o.S B₀ → p ≠ 2` using `fun p _ hp' e => by`. Substitute `e` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `hp' ((hmem _ _).2 ⟨Nat.prime_two, Or.inr T.two_mem⟩)`. Take `⟨M, R, c1, c2, c3, c4, c5, c6, c7⟩` from `link_step hSeg hM3 hTv (o.S B₀) (o.S B) (T.M B₀ a) (T.M B a) (o.R a) (o.Sys a) (o.Fx a) (o.Or B₀ a) (o.Or B a) (o.refOr a) II hII hsub hdisc (o.omVB B₀ a) (o.omVB B a) hRR (o.ref_deg a) (o.smooth B₀ a).1 (o.smooth B a).1 (o.ref_top a) (hConv B₀ a) (hConv B a) h2' φ (fun p hp _ => …`. Use `⟨M, R, _, fun p => ?_, c1, c2, c3, c4, c5, c6, ?_⟩` and prove the remaining obligations. Use `Finset.mem_preimage.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_sdiff, hmem, hmem]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hp : (p : ℕ).Prime` using `p.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, h3⟩, h4⟩`. Establish `h5 : ¬ ((p : ℕ) ≤ B₀ ∨ (p : ℕ) ∈ T.bad)` using `fun h => h4 ⟨hp, h⟩`. Use `push_neg at h5`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨h5.1, h3.resolve_right h5.2, h5.2⟩`. Introduce and unpack `⟨h3, h4, h5⟩`. Conclude with `⟨⟨hp, Or.inl h4⟩, fun h => h.2.elim (fun h' => absurd h' (not_le.2 h3)) h5⟩`. Rewrite using `[o.j_eq]`. Conclude with `c7`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodOrigin_linked : GlobalTheory.CompanionTheory.Ar.Cmp.CmpSt → PB.AgreementPos → HodgeLatticeFlagBound → TrivFlagOnHodge → Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem), IsGlobal Xo l c Y → o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → ∃ φ : ℕ → Equiv.Perm (CMType H ⊕ CMType H), FrobShape (fun p τ n => (φ p ^ (n + 1)) (Sum.inl τ)) ∧ Num.LinkedTower T II φ := by
   intro _ hA hM3 hTv hG E _ _ _ _ H D Xo l c Y _ T o II _ hX hII _ _

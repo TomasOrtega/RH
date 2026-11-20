@@ -5,13 +5,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Rewrite `hx` using `[wSub]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, z', rfl⟩` from `hz`. Rewrite using `[smul_smul, ← map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨e * c, ?_, z', rfl⟩` and prove the remaining obligations. Rewrite `hc`, the goal using `[pow_one]`. Rewrite using `[mul_comm]`. Conclude with `Ideal.mul_mem_mul he hc`. Consider the case `zero => rw [smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[smul_smul, Algebra.commutes, mul_smul]`.
-
-Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma smul_mem_prod {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {𝔞 𝔟 : Ideal (𝓞 D.F)}
     {e : 𝓞 D.F} (he : e ∈ 𝔟) {x : D.La} (hx : x ∈ wSub D 𝔞 1) :
@@ -32,13 +30,13 @@ private lemma smul_mem_prod {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.D
     exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-The claim follows from `Ideal.mul_le_left h`.
+A detailed English derivation is pending.
 -/
 private lemma mem_of_mem_mul {A : Type} [CommRing A] {I J : Ideal A} {c : A} (h : c ∈ I * J) : c ∈ I :=
   Ideal.mul_le_left h
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨c, hc, z', rfl⟩`. Rewrite `hc` using `[pow_one]`. Conclude with `⟨c, by rw [pow_one]; exact mem_of_mem_mul hc, z', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma wSub_mul_le {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (𝔞 𝔟 : Ideal (𝓞 D.F)) :
     wSub D (𝔞 * 𝔟) 1 ≤ wSub D 𝔞 1 := by
@@ -48,15 +46,15 @@ private lemma wSub_mul_le {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Dat
   exact ⟨c, by rw [pow_one]; exact mem_of_mem_mul hc, z', rfl⟩
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o 𝔞 𝔟 e he he' T l h`. Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `hcomm : ∀ (c : D.O) (x : D.La), algebraMap (𝓞 D.F) D.O e • c • x = c • algebraMap (𝓞 D.F) D.O e • x` using `fun c x => by`. Rewrite using `[smul_smul, Algebra.commutes, mul_smul]`. Establish `he1 : 1 - e ∈ 𝔞 ^ 1` using `by rwa [pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `IsEtLevOver`. Use `beta_reduce`. Use `⟨fun x y => ?_, fun c x => ?_, fun x hx => h3 _ (smul_mem_prod he hx), fun k _ _ x => ⟨fun y hy => ?_, fun g hg => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[smul_add, h1]`. Rewrite using `[hcomm, h2]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE` using `wSub_mul_le D 𝔞 𝔟 ((h4 k x).1 _ hy)`. Establish `hy' : y = algebraMap (𝓞 D.F) D.O (1 - e) • y + algebraMap (𝓞 D.F) D.O e • y`. Rewrite using `[← add_smul, ← map_add, sub_add_cancel, map_one, one_smul]`. Rewrite using `[hy']`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨1 - e, he1, y, rfl⟩) hE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `(h4 k x).2 g (fun c hc => hg c (by`. Rewrite `hc`, the goal using `[pow_one]`. Conclude with `mem_of_mem_mul hc))`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← Category.assoc, hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : g = (g ≫ o.act.act (algebraMap (𝓞 D.F) D.O (1 - e))) * (g ≫ o.act.act (algebraMap (𝓞 D.F) D.O e))`. Rewrite using `[← MonObj.comp_mul, ← o.act.add, ← map_add, sub_add_cancel, map_one, o.act.one, Category.comp_id]`. Rewrite `key` using `[hg (1 - e) he1, _root_.one_mul]`. Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.crtProj_holds :
     CrtProj := by

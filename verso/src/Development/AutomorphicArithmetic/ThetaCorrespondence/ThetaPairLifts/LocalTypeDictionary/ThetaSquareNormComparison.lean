@@ -15,13 +15,13 @@ open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.SqCompare
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gBig_three (_root_.GlobalTheory.T.exists_tied_theta_pair hP hK hM) (_root_.GlobalTheory.T.theta_real_places_separation hP hK hM) (_root_.GlobalTheory.T.regConst_eq_away_unit_mul_factor hP hK hM) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hex hreal hcmp W S hstd hN ρ i j X lam hT hX hl`. Take `⟨ρ₀, hvX, hvT, htied, hreg⟩` from `hex W S.B ρ`. Take `⟨l, hl0, hl1⟩` from `hreal W S.B ρ ρ₀ hvX hvT i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hc⟩` from `hcmp W S hstd hN ρ₀ htied i j X lam hT hX hl`. Use `⟨fun t => l * κ t, fun t => ?_, fun t c' _ hc' => ?_⟩` and prove the remaining obligations. Take `⟨h0, ζ, hζ, he⟩` from `hκ t`. Use `⟨mul_ne_zero hl0 h0, ζ, hζ, ?_⟩` and prove the remaining obligations. Use `show l * κ t = _ * (l * κ μ₀)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c₀, h₀⟩` from `hreg i j t`. Establish `h1` using `(hl1 t c' c₀ hc' h₀).2`. Establish `h2` using `hc t c₀ h₀`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show c' = l * κ t * lam t`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem theta_square_comparison : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) → NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W) (i j : Fin D.R.m) (X : TriG G i j) (lam : T → ℂ),
@@ -56,7 +56,7 @@ open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqCompare.theta_square_comparison | exact _root_.GlobalTheory.SqCompare.theta_square_comparison | (intros; apply _root_.GlobalTheory.SqCompare.theta_square_comparison <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_square_norm_comparison : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) → NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W) (i j : Fin D.R.m) (X : TriG G i j) (lam : T → ℂ),

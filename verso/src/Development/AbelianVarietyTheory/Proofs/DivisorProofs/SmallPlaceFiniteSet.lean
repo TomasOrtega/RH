@@ -12,13 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameAutCof
 
 /- English proof (translation)
-Establish `hc : Nat.card (𝓞 K ⧸ I) = Ideal.absNorm I`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Fact (Ideal.absNorm I).Prime` using `⟨hp⟩`. Establish `: Finite (𝓞 K ⧸ I)` using `Nat.finite_of_card_ne_zero (hc ▸ hp.ne_zero)`. Use `Fintype.ofFinite (𝓞 K ⧸ I)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `ZMod.ringEquivOfPrime (𝓞 K ⧸ I) hp (by rw [← Nat.card_eq_fintype_card, hc])`. Take `⟨n, hn⟩` from `ZMod.intCast_surjective (e.symm (Ideal.Quotient.mk I x))`. Establish `h1 : x - (n : 𝓞 K) ∈ I`. Rewrite using `[← Ideal.Quotient.eq, map_intCast]`. Apply `e.symm.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_intCast, hn]`. Establish `h2 : σ x - (n : 𝓞 K) ∈ I`. Use `hI (Ideal.mem_map_of_mem σ h1)` as an intermediate fact. Rewrite `this` using `[map_sub, map_intCast]`. Then use the resulting hypothesis. Use `I.sub_mem h2 h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sub_mem_of_prime_norm {K : Type} [Field K] [NumberField K] (σ : 𝓞 K →+* 𝓞 K) (I : Ideal (𝓞 K))
     (hp : (Ideal.absNorm I).Prime) (hI : I.map σ ≤ I) (x : 𝓞 K) : σ x - x ∈ I := by
@@ -40,11 +40,11 @@ theorem sub_mem_of_prime_norm {K : Type} [Field K] [NumberField K] (σ : 𝓞 K 
   rwa [sub_sub_sub_cancel_right] at this
 
 /- English proof (translation)
-Establish `hx : ∃ x : 𝓞 K, Formalism.DivisionValues.cO K x - x ≠ 0`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨y, hy⟩` from `h`. Apply `hy` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0 : ∀ a : 𝓞 K, star (a : K) = a` using `fun a => congrArg (fun z : 𝓞 K => (z : K)) (sub_eq_zero.1 (hn a))`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) y`. Rewrite using `[star_div₀]`. Conclude with `congrArg₂ (· / ·) (h0 a) (h0 b)`. Take `⟨x, hx⟩` from `hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(Ideal.finite_factors (I := Ideal.span {Formalism.DivisionValues.cO K x - x}) (by simpa using hx)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hp, hv⟩`. Use `show v.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `sub_mem_of_prime_norm (Formalism.DivisionValues.cO K : 𝓞 K →+* 𝓞 K) v.asIdeal hp (le_of_eq (congrArg HeightOneSpectrum.asIdeal hv)) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_fixed {K : Type} [Field K] [NumberField K] [StarRing K] (h : ∃ x : K, star x ≠ x) :
     {v : HeightOneSpectrum (𝓞 K) | (Ideal.absNorm v.asIdeal).Prime ∧ Formalism.DivisionValues.conjPl v = v}.Finite := by
@@ -66,7 +66,7 @@ theorem finite_fixed {K : Type} [Field K] [NumberField K] [StarRing K] (h : ∃ 
     (le_of_eq (congrArg HeightOneSpectrum.asIdeal hv)) x
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `IsCMField.complexConj_ne_one D.host.E` to reduce the goal to its premises. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Conclude with `hn x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_star_ne (D : D7) : ∃ x : D.host.E, star x ≠ x := by
   by_contra hn
@@ -76,17 +76,15 @@ theorem exists_star_ne (D : D7) : ∃ x : D.host.E, star x ≠ x := by
   exact hn x
 
 /- English proof (translation)
-Take `⟨gR, c0R, c0L, hTie⟩` from `p.charW.base.fam.tie`. Establish `honto` using `p.charW.base.fam.pl_onto`. Establish `hcc : ∀ v : HeightOneSpectrum (𝓞 D.host.E), Formalism.DivisionValues.conjPl (Formalism.DivisionValues.conjPl v) = v` using `Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl`. Establish `hinj : Function.Injective (Formalism.DivisionValues.conjPl (K` using `D.host.E)) := Function.Involutive.injective hcc`. Use `set S : Set (HeightOneSpectrum (𝓞 D.host.E)) := (p.R.Sb : Set (Pl D.host.E)) ∪ (p.R.Q t : Set (Pl D.host.E)) with hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSf : S.Finite` using `hTie.S_fin.union (Finset.finite_toSet _)`. Establish `hlf : {v : HeightOneSpectrum (𝓞 D.host.E) | v.asIdeal ∣ Ideal.span {((l : ℕ) : 𝓞 D.host.E)}}.Finite` using `Ideal.finite_factors (by simpa using hl)`. Use `(((finite_fixed (exists_star_ne D)).union hSf).union ((hSf.union hlf).preimage hinj.injOn)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hp, hv⟩`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, Set.mem_preimage, not_or, not_and, Ideal.dvd_span_singleton] at hn`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `hn`. Establish `hci : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) (Formalism.DivisionValues.conjPl v).asIdeal = v.asIdeal := by`. Rewrite using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq, hcc]`. Establish `hoff : Bridge.SplitOff (D` using `D) (Formalism.DivisionValues.conjPl v) S := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, h3, fun Q hQ he => h2 ?_⟩` and prove the remaining obligations. Rewrite using `[hci]`. Conclude with `fun he => h1 hp (HeightOneSpectrum.ext he).symm`. Rewrite `he` using `[hci]`. Conclude with `HeightOneSpectrum.ext he ▸ hQ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP⟩` from `honto (Formalism.DivisionValues.conjPl v) ⟨hoff.1, fun h => hoff.2.1 (Or.inl h), fun Q hQ => hoff.2.2 Q (Or.inl hQ)⟩`. Establish `hok` using `(hTie.ok t P).2 (hP ▸ hoff)`. Establish `e1 : plOf p j t ⟨P, hok⟩ = Formalism.DivisionValues.conjPl v` using `hP`. Use `hv ⟨⟨P, hok⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
-
-Conclude with `h4`. Use `show Formalism.DivisionValues.conjPl (plOf p j t ⟨P, hok⟩) = v`. Rewrite using `[e1, hcc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cofinite_labels {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
@@ -123,7 +121,7 @@ theorem cofinite_labels {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Form
     rw [e1, hcc]
 
 /- English proof (translation)
-Introduce `p _ _ j _ _ _ _ w _ _ hs` and use `cofinite_labels p j (p.R.mu w) hs.1.ne_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cofinite_labels_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), PtAt.Rows p → More p →

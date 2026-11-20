@@ -17,7 +17,7 @@ variable {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loc
   [MulAction G X] [TopologicalSpace X] [MeasurableSpace X]
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (MulAction.stabilizer G x0) k`. Rewrite using `[hh, mul_smul, (MulAction.mem_stabilizer_iff.1 h.2)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem orb_mk (x0 : X) (k : G) :
     ((k : G ⧸ MulAction.stabilizer G x0)).out • x0 = k • x0 := by
@@ -25,7 +25,7 @@ theorem orb_mk (x0 : X) (k : G) :
   rw [hh, mul_smul, (MulAction.mem_stabilizer_iff.1 h.2)]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Establish `: g • ((q.out : G) : G ⧸ MulAction.stabilizer G x0) = ((g * q.out : G) : G ⧸ MulAction.stabilizer G x0)` using `rfl`. Rewrite using `[this, orb_mk, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orb_smul (x0 : X) (g : G) (q : G ⧸ MulAction.stabilizer G x0) :
     (g • q).out • x0 = g • (q.out • x0) := by
@@ -35,39 +35,35 @@ theorem orb_smul (x0 : X) (g : G) (q : G ⧸ MulAction.stabilizer G x0) :
   rw [this, orb_mk, mul_smul]
 
 /- English proof (translation)
-Use `hνH` as an intermediate fact. Use `set ι : G ⧸ MulAction.stabilizer G x0 → X := fun q => q.out • x0 with hιdef`. Take `⟨ρ, hρ0, hρfin, hρinv, hρF, hρU⟩` from `PI.weil_quotient_measure G (MulAction.stabilizer G x0) hcl μ ν inferInstance hμr inferInstance hνr`. Establish `hrange : ∀ y, y ∈ Set.range ι ↔ ∃ g : G, g • x0 = y`. Introduce `y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Conclude with `⟨q.out, rfl⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨(g : G ⧸ MulAction.stabilizer G x0), orb_mk x0 g⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set ρ' : Measure (G ⧸ MulAction.stabilizer G x0) := νX.comap ι with hρ'def`. Establish `hmap : ρ'.map ι = νX`. Rewrite using `[hρ'def, hemb.map_comap]`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `hnull using 2` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, hrange]`. Establish `hρ'inv : ∀ (g : G) (s : Set (G ⧸ MulAction.stabilizer G x0)), MeasurableSet s → ρ' ((fun y => g • y) ⁻¹' s) = ρ' s`. Introduce `g s hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρ'def, hemb.comap_apply, hemb.comap_apply]`. Establish `himg : ι '' ((fun y => g • y) ⁻¹' s) = (fun y => g • y) ⁻¹' (ι '' s)`. Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `⟨g • q, hq, orb_smul x0 g q⟩`. Introduce and unpack `⟨q', hq', hy⟩`. Use `⟨g⁻¹ • q', by simpa [smul_smul] using hq', ?_⟩` and prove the remaining obligations. Use `show (g⁻¹ • q').out • x0 = y`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orb_smul x0 g⁻¹ q']`. Use `show g⁻¹ • ι q' = y`. Rewrite using `[hy, inv_smul_smul]`. Rewrite using `[himg]`. Conclude with `hinv g _ (hemb.measurableSet_image.2 hs)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρ'fin : ∀ K : Set (G ⧸ MulAction.stabilizer G x0), IsCompact K → ρ' K < ⊤`. Introduce `K hK`. Rewrite using `[hρ'def, hemb.comap_apply]`. Conclude with `hfin _ (hK.image hcont)`. Establish `hρ'ne : ρ' ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hmap, h0, Measure.map_zero]`. Take `⟨c, hc⟩` from `hρU ρ' hρ'fin hρ'inv`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Conclude with `hρ'ne (by rw [hc, zero_smul])`. Establish `hK : ∃ K : Set (G ⧸ MulAction.stabilizer G x0), IsCompact K ∧ ρ K ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Apply `hρ0` to reduce the goal to its premises. Apply `Measure.measure_univ_eq_zero.1` to reduce the goal to its premises. Apply `measure_mono_null (t := ⋃ n, (QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0) '' compactCovering G n)` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[Set.mem_iUnion]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `Set.mem_iUnion.1 ((iUnion_compactCovering G).symm ▸ Set.mem_univ q.out)`. Conclude with `⟨n, q.out, hn, QuotientGroup.out_eq' q⟩`. Conclude with `measure_iUnion_null fun n => hcon _ ((isCompact_compactCovering G n).image QuotientGroup.continuous_mk)`. Establish `hctop : c ≠ ⊤`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K, hKc, hKpos⟩` from `hK`. Use `hρ'fin K hKc` as an intermediate fact. Rewrite `this` using `[hc, Measure.smul_apply, smul_eq_mul, ENNReal.top_mul hKpos]`. Conclude with `lt_irrefl _ this`. Use `⟨c⁻¹ • ν, Measure.IsHaarMeasure.smul ν (ENNReal.inv_ne_zero.2 hctop) (ENNReal.inv_ne_top.2 hc0), ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `f hf s hs`. Rewrite using `[hρF f hf]`. Establish `hin : ∀ q : G ⧸ MulAction.stabilizer G x0, ∫⁻ h', f (s (ι q) * (h' : G)) ∂(c⁻¹ • ν) = c⁻¹ * ∫⁻ h, f (q.out * (h : G)) ∂ν`. Introduce `q`. Rewrite using `[lintegral_smul_measure]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `congr 1`. Establish `hsq : s (ι q) • x0 = q.out • x0` using `hs (ι q) ⟨q.out, rfl⟩`. Establish `hk : q.out⁻¹ * s (ι q) ∈ MulAction.stabilizer G x0`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, hsq, inv_smul_smul]`. Establish `hsk : s (ι q) = q.out * (q.out⁻¹ * s (ι q))` using `by group`.
-
-Rewrite using `[hsk]`. Use `lintegral_mul_left_eq_self (μ := ν) (fun h : MulAction.stabilizer G x0 => f (q.out * (h : G))) ⟨q.out⁻¹ * s (ι q), hk⟩` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Rewrite using `[← hmap, hemb.lintegral_map, hc, lintegral_smul_measure]`. Repeatedly rewrite using `[hin]`.
-
-Rewrite using `[lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hc0), smul_eq_mul, ← mul_assoc, ENNReal.mul_inv_cancel hc0 hctop, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_orbit (x0 : X) (hcl : IsClosed (MulAction.stabilizer G x0 : Set G))
     (μ : Measure G) [μ.IsHaarMeasure] (hμr : μ.IsMulRightInvariant)
@@ -203,11 +199,11 @@ def OrbEmb : Prop := InCtx fun F E _ _ _ _ _ σ _M J _a X0 _hT =>
     Continuous (fun q : HA (AF F) σ J ⧸ stabT (AF F) σ J X0 => q.out • ratTup (F := F) (AF F) X0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μ hμ νX hν`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `hS F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet` as an intermediate fact. Establish `: T2Space (HA (AF F) σ J)` using `inferInstanceAs (T2Space (HR (AF F) σ J))`. Establish `: μ.IsHaarMeasure` using `hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ν, hνH, hνr⟩` from `hH F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `hnull : νX {y | ¬ ∃ g : HA (AF F) σ J, g • ratTup (AF F) X0 = y} = 0`. Apply `measure_mono_null _ hν.1` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [Set.mem_ofPred_eq] at hy ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `hg`. Conclude with `hy (hO F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet y hg)`. Take `⟨hemb, hcont⟩` from `hE F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Take `⟨μ', h1, h2⟩` from `weil_orbit (G := HA (AF F) σ J) (ratTup (AF F) X0) (hCl F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet) μ (hU F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet μ hμ) ν hνH hνr νX hnull (hI F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν) (hF F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT h …`. Conclude with `⟨μ', h1, hnull, fun f hf s hs => h2 f hf s hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exStab_of (hS : SecCtblG) (hO : OrbTup) (hCl : StabClosed) (hH : StabUni) (hI : NuInv)
     (hF : NuFin) (hN : NuNeZero) (hE : OrbEmb) (hU : Unimod) : ExStab := by

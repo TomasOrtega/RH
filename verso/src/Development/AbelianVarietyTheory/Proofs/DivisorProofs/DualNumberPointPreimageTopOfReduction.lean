@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ U` using `fun p _ ↦ h (Set.mem_univ _)`. Unfold `evU`. Rewrite using `[dif_pos h', dif_pos h]`. Unfold `GlobalTheory.Cris.evalAt`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap φ) x U ⊤ ⊤ h le_rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (fun k => k.hom (x.appLE U ⊤ h a)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`. Simplify using `only [RingHom.comp_apply, CommRingCat.comp_apply] at e ⊢`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalSectionAtPointOrZero_specMap_comp (Y : Scheme.{0}) (D D' : Type) [CommRing D] [CommRing D'] (φ : D →+* D') (x : Sp D ⟶ Y) (U : Y.Opens) (a : Γ(Y, U)) (h : ⊤ ≤ x ⁻¹ᵁ U) : evU (spMap φ ≫ x) U a = φ (evU x U a) := by
   have h' : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ U := fun p _ ↦ h (Set.mem_univ _)
@@ -26,9 +26,9 @@ theorem evalSectionAtPointOrZero_specMap_comp (Y : Scheme.{0}) (D D' : Type) [Co
   exact e
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `hV.trans (fun p hp ↦ h hp)`. Unfold `evU`. Rewrite using `[dif_pos hV, dif_pos hU]`. Unfold `GlobalTheory.Cris.evalAt`. Establish `e` using `congrArg (fun k => k.hom a) (Scheme.Hom.map_appLE x hV (homOfLE h).op)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, CommRingCat.comp_apply] at e ⊢`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalSectionAtPointOrZero_restriction (Y : Scheme.{0}) (D : Type) [CommRing D] (x : Sp D ⟶ Y) (U V : Y.Opens) (h : V ≤ U) (a : Γ(Y, U)) (hV : ⊤ ≤ x ⁻¹ᵁ V) : evU x V ((Y.presheaf.map (homOfLE h).op).hom a) = evU x U a := by
   have hU : ⊤ ≤ x ⁻¹ᵁ U := hV.trans (fun p hp ↦ h hp)
@@ -40,9 +40,9 @@ theorem evalSectionAtPointOrZero_restriction (Y : Scheme.{0}) (D : Type) [CommRi
   rw [e]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hu.map (TrivSqZeroExt.fstHom D D D)`. Take `⟨v', hv'⟩` from `hu'.map (TrivSqZeroExt.fstHom D D D)`. Simplify using `only [TrivSqZeroExt.fstHom_apply] at hv hv'`. Unfold `dl`. Rewrite using `[TrivSqZeroExt.fst_mul, DualNumber.snd_mul, ← hv, ← hv', ← Units.val_mul, Ring.inverse_unit, Ring.inverse_unit, Ring.inverse_unit]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_rev, Units.val_mul]`. Establish `a1 : (v : D) * ↑v⁻¹ = 1` using `Units.mul_inv v`. Establish `a2 : (v' : D) * ↑v'⁻¹ = 1` using `Units.mul_inv v'`. Take the linear combination `(u'.snd * ↑v'⁻¹) * a1 + (u.snd * ↑v⁻¹) * a2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dualNumberSndMulInverseFst_mul_units (D : Type) [CommRing D] (u u' : DualNumber D) (hu : IsUnit u) (hu' : IsUnit u') : dl (u * u') = dl u + dl u' := by
   obtain ⟨v, hv⟩ := hu.map (TrivSqZeroExt.fstHom D D D)
@@ -56,11 +56,11 @@ theorem dualNumberSndMulInverseFst_mul_units (D : Type) [CommRing D] (u u' : Dua
   linear_combination (u'.snd * ↑v'⁻¹) * a1 + (u.snd * ↑v⁻¹) * a2
 
 /- English proof (translation)
-Establish `h1 : (epsHom φ u).fst = φ u.fst`. Simplify using `[epsHom, DualNumber.lift_apply_apply]`. Establish `h2 : (epsHom φ u).snd = φ u.snd`. Simplify using `[epsHom, DualNumber.lift_apply_apply]`. Use `⟨h1, h2, fun hu ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `hu.map (TrivSqZeroExt.fstHom D D D)`. Simplify using `only [TrivSqZeroExt.fstHom_apply] at hv`. Unfold `dl`. Rewrite using `[h1, h2, ← hv, Ring.inverse_unit, map_mul]`. Establish `: φ (v : D) = ((Units.map (φ : D →* D') v : D'ˣ) : D')` using `rfl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Ring.inverse_unit]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dualNumberAlgHomMap_fst_snd_logDerivative (R D D' : Type) [CommRing R] [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (u : DualNumber D) : (epsHom φ u).fst = φ u.fst ∧ (epsHom φ u).snd = φ u.snd ∧ (IsUnit u → dl (epsHom φ u) = φ (dl u)) := by
   have h1 : (epsHom φ u).fst = φ u.fst := by
@@ -76,9 +76,9 @@ theorem dualNumberAlgHomMap_fst_snd_logDerivative (R D D' : Type) [CommRing R] [
   rw [this, Ring.inverse_unit]
   rfl
 /- English proof (translation)
-Unfold `evU`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ (q ⁻¹ᵁ U)`. Establish `h' : ⊤ ≤ (x ≫ q) ⁻¹ᵁ U` using `h`. Rewrite using `[dif_pos h, dif_pos h']`. Unfold `GlobalTheory.Cris.evalAt`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Scheme.Hom.comp_appLE, CommRingCat.comp_apply]`. Establish `h' : ¬ ⊤ ≤ (x ≫ q) ⁻¹ᵁ U` using `h`. Rewrite using `[dif_neg h, dif_neg h']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalSectionAtPointOrZero_schemeHom_app (Y Z : Scheme.{0}) (D : Type) [CommRing D] (x : Sp D ⟶ Y) (q : Y ⟶ Z) (U : Z.Opens) (a : Γ(Z, U)) : evU x (q ⁻¹ᵁ U) ((q.app U).hom a) = evU (x ≫ q) U a := by
   unfold evU
@@ -92,15 +92,15 @@ theorem evalSectionAtPointOrZero_schemeHom_app (Y Z : Scheme.{0}) (D : Type) [Co
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Introduce `p _`. Set `q : Sp D` to `PrimeSpectrum.comap (TrivSqZeroExt.inlHom D D) p`. Establish `hq : (spMap (TrivSqZeroExt.fstHom D D D).toRingHom) q = p`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `z ∈ (PrimeSpectrum.comap ((TrivSqZeroExt.fstHom D D D).toRingHom) q).asIdeal ↔ z ∈ p.asIdeal`. Simplify using `only [q, PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Establish `heps : (DualNumber.eps : DualNumber D) ∈ p.asIdeal` using `p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, DualNumber.eps_mul_eps]; exact p.asIdeal.zero_mem)`. Establish `hz : z = TrivSqZeroExt.inl z.fst + TrivSqZeroExt.inl z.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Rewrite using `[hz]`. Conclude with `p.asIdeal.add_mem hm (p.asIdeal.mul_mem_left _ heps)`. Introduce `hm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: TrivSqZeroExt.inl z.fst = z - TrivSqZeroExt.inl z.snd * DualNumber.eps`. Apply the tactic sequence `rw [hz]; ext <;> simp`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.inl z.fst ∈ p.asIdeal`. Rewrite using `[this]`. Conclude with `p.asIdeal.sub_mem hm (p.asIdeal.mul_mem_left _ heps)`.
+Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h (Set.mem_univ q)` as an intermediate fact. Rewrite using `[← hq]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem dualNumberPoint_preimage_top_of_reduction (Y : Scheme.{0}) (D : Type) [CommRing D] (y : Sp (DualNumber D) ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom D D D).toRingHom ≫ y) ⁻¹ᵁ U) : ⊤ ≤ y ⁻¹ᵁ U := by
   intro p _
@@ -129,7 +129,7 @@ theorem dualNumberPoint_preimage_top_of_reduction (Y : Scheme.{0}) (D : Type) [C
   exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨evalSectionAtPointOrZero_specMap_comp, evalSectionAtPointOrZero_restriction, evalSectionAtPointOrZero_schemeHom_app, dualNumberSndMulInverseFst_mul_units, dualNumberAlgHomMap_fst_snd_logDerivative, dualNumberPoint_preimage_top_of_reduction⟩`.
+Supply the required witnesses or components.
 -/
 theorem evU_dl_rules : (∀ (Y : Scheme.{0}) (D D' : Type) [CommRing D] [CommRing D'] (φ : D →+* D') (x : Sp D ⟶ Y) (U : Y.Opens) (a : Γ(Y, U)), ⊤ ≤ x ⁻¹ᵁ U → evU (spMap φ ≫ x) U a = φ (evU x U a)) ∧ (∀ (Y : Scheme.{0}) (D : Type) [CommRing D] (x : Sp D ⟶ Y) (U V : Y.Opens) (h : V ≤ U) (a : Γ(Y, U)), ⊤ ≤ x ⁻¹ᵁ V → evU x V ((Y.presheaf.map (homOfLE h).op).hom a) = evU x U a) ∧ (∀ (Y Z : Scheme.{0}) (D : Type) [CommRing D] (x : Sp D ⟶ Y) (q : Y ⟶ Z) (U : Z.Opens) (a : Γ(Z, U)), evU x (q ⁻¹ᵁ U) ((q.app U).hom a) = evU (x ≫ q) U a) ∧ (∀ (D : Type) [CommRing D] (u u' : DualNumber D), IsUnit u → IsUnit u' → dl (u * u') = dl u + dl u') ∧ (∀ (R D D' : Type) [CommRing R] [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (u : DualNumber D), (epsHom φ u).fst = φ u.fst ∧ (epsHom φ u).snd = φ u.snd ∧ (IsUnit u → dl (epsHom φ u) = φ (dl u))) ∧ ∀ (Y : Scheme.{0}) (D : Type) [CommRing D] (y : Sp (DualNumber D) ⟶ Y) (U : Y.Opens), ⊤ ≤ (spMap (TrivSqZeroExt.fstHom D D D).toRingHom ≫ y) ⁻¹ᵁ U → ⊤ ≤ y ⁻¹ᵁ U :=
   ⟨evalSectionAtPointOrZero_specMap_comp, evalSectionAtPointOrZero_restriction, evalSectionAtPointOrZero_schemeHom_app, dualNumberSndMulInverseFst_mul_units, dualNumberAlgHomMap_fst_snd_logDerivative, dualNumberPoint_preimage_top_of_reduction⟩

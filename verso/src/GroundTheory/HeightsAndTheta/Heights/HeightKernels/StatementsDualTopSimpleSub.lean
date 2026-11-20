@@ -26,7 +26,7 @@ namespace DualTopSimpleSubExample
 def oneVec : Fin 1 → ℚ := fun _ => 1
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem oneVec_mem : oneVec ∈ (HermLattice.standard ℚ 1).lattice := by
   apply Submodule.subset_span
@@ -36,7 +36,7 @@ theorem oneVec_mem : oneVec ∈ (HermLattice.standard ℚ 1).lattice := by
   rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 ℚ)).mp hv`. Use `⟨Rat.ringOfIntegersEquiv (c 0), ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Rat.ringOfIntegersEquiv_apply_coe]`. Simplify using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_of_mem {v : Fin 1 → ℚ} (hv : v ∈ (HermLattice.standard ℚ 1).lattice) : ∃ n : ℤ, v 0 = n := by
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun (𝓞 ℚ)).mp hv
@@ -45,7 +45,7 @@ theorem coord_of_mem {v : Fin 1 → ℚ} (hv : v ∈ (HermLattice.standard ℚ 1
   simp [Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hv`. Use `⟨Rat.ringOfIntegersEquiv r, ?_⟩` and prove the remaining obligations. Rewrite using `[Rat.ringOfIntegersEquiv_apply_coe]`. Simplify using `[twoVecExample, Algebra.smul_def, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_of_mem_two {v : Fin 1 → ℚ} (hv : v ∈ HermLattice.twiceStandardExample.lattice) :
     ∃ m : ℤ, v 0 = 2 * m := by
@@ -55,7 +55,7 @@ theorem coord_of_mem_two {v : Fin 1 → ℚ} (hv : v ∈ HermLattice.twiceStanda
   simp [twoVecExample, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `h : (fun _ : Fin 1 => 2 * (m : ℚ)) = (m : 𝓞 ℚ) • twoVecExample`. Use function extensionality and compare the values at `j`. Simplify using `[twoVecExample, Algebra.smul_def, mul_comm]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evenVec_mem (m : ℤ) :
     (fun _ : Fin 1 => 2 * (m : ℚ)) ∈ HermLattice.twiceStandardExample.lattice := by
@@ -66,9 +66,9 @@ theorem evenVec_mem (m : ℤ) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span rfl)
 
 /- English proof (translation)
-Use `lt_of_le_of_ne twiceStandardExample_le fun h => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `coord_of_mem_two (h ▸ oneVec_mem)`. Establish `h1 : (1 : ℤ) = 2 * m`. Simplify using `only [oneVec] at hm`. Conclude with `hm` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem twice_lt : HermLattice.twiceStandardExample.lattice < (HermLattice.standard ℚ 1).lattice := by
   refine lt_of_le_of_ne twiceStandardExample_le fun h => ?_
@@ -79,21 +79,17 @@ theorem twice_lt : HermLattice.twiceStandardExample.lattice < (HermLattice.stand
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hN : N ≤ HermLattice.twiceStandardExample.lattice`. Conclude with `Or.inl (le_antisymm hN h₁)`. Use `right`. Use `le_antisymm h₂ ?_` and prove the remaining obligations. Take `⟨u, huN, hu2⟩` from `SetLike.not_le_iff_exists.mp hN`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `coord_of_mem (h₂ huN)`. Establish `hu : u = fun _ => (n : ℚ)`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Conclude with `hn`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hodd : ¬ ∃ m : ℤ, n = 2 * m`. Introduce and unpack `⟨m, rfl⟩`. Apply `hu2` to reduce the goal to its premises. Rewrite using `[hu]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `evenVec_mem m`. Establish `hm : n = 2 * (n / 2) + 1`. Assume the negation of the conclusion as `hne`. Conclude with `hodd ⟨n / 2, by omega⟩`. Establish `hone : oneVec ∈ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : oneVec = u - fun _ => 2 * ((n / 2 : ℤ) : ℚ)`. Rewrite using `[hu]`. Use function extensionality and compare the values at `j`. Simplify using `only [oneVec, Pi.sub_apply]`. Establish `: (n : ℚ) = 2 * ((n / 2 : ℤ) : ℚ) + 1` using `by exact_mod_cast hm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1]`. Conclude with `sub_mem huN (h₁ (evenVec_mem _))`. Use `show Submodule.span (𝓞 ℚ) _ ≤ N`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨j, rfl⟩`. Establish `: (Pi.single j 1 : Fin 1 → ℚ) = oneVec`. Use function extensionality and compare the values at `k`. Use `fin_cases j`. Use `fin_cases k`.
-
-Both sides reduce to the same expression. Use `show (Pi.single j 1 : Fin 1 → ℚ) ∈ N`. Rewrite using `[this]`. Conclude with `hone`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twice_cover (N : Submodule (𝓞 ℚ) (Fin 1 → ℚ))
     (h₁ : HermLattice.twiceStandardExample.lattice ≤ N) (h₂ : N ≤ (HermLattice.standard ℚ 1).lattice) :
@@ -143,7 +139,7 @@ end DualTopSimpleSubExample
 open DualTopSimpleSubExample in
 
 /- English proof (translation)
-Take `⟨T, hT, hdT, ⟨b'⟩⟩` from `DualLatticeBasisExists.proof ℚ 1 HermLattice.twiceStandardExample`. Conclude with `⟨T, hT, hdT, b', DualEmbBijective.proof ℚ 1 _ T b', dualEmbMatrix_standard_bijective, twice_lt, twice_cover, le_rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ (T : Type) (_ : Fintype T) (_ : DecidableEq T)
     (b' : Module.Basis T ℤ (dualLattice HermLattice.twiceStandardExample)),

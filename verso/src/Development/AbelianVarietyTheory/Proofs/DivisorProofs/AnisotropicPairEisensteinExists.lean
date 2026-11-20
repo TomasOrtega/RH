@@ -18,15 +18,15 @@ open GlobalTheory.Doubling
 namespace GlobalTheory.CuspDbl
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP hmin hn hd Φ₁ hΦ₁ Φ₂ hΦ₂ μ hμ`. Establish `hW` using `hP.skew`. Set `W₂ : Spc F E (d + d)` to `⟨dblGram finSumFinEquiv W.J, sumLat finSumFinEquiv W.L W.L, fun w => blkMat finSumFinEquiv (W.θ w) (-W.θ w), fun _ => 1⟩`. Take `⟨i, hi⟩` from `GlobalTheory.blockDiag_unitary_hom F E σ d W W₂ rfl`. Take `⟨K, φ₀, Ψ, κ, hK, hI, hφ₀, hconv, hΨ, hκ, hkern⟩` from `GlobalTheory.T.doubling_seesaw_polynomial_data hKP F E σ B n d X W M χX χW om r s' r₁ s₁ hP hmin hn hd Φ₂ hΦ₂ Φ₁ hΦ₁ W₂ rfl rfl (fun _ => rfl) i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ei, hEi1, hEi2⟩` from `hKP.siegelEisensteinDoubled F E σ hP.base.cm hP.base.unram B d hd W hW.skew hW.lat hW.dual hW.cartan W₂ rfl rfl (fun _ => rfl) K hK hI χX hP.hX (((n : ℂ) - (d : ℂ)) / 2) φ₀ hφ₀`. Take `⟨hwc, hw1, hwΓ⟩` from `GlobalTheory.ChiDetFun.chiDet_props F E σ d W χX hP.hX`. Take `⟨R₀, hR₀, hU⟩` from `GlobalTheory.T.doubling_gram_lattice_theta hKP F E σ B n d X W M χX χW om r s' r₁ s₁ hP hd W₂ rfl rfl (fun _ => rfl) i hi K hK hI φ₀ hφ₀ hconv μ hμ`. Use `⟨fun s h h' => (if s = ((n : ℂ) - (d : ℂ)) / 2 then Ψ (i (h, h')) else Ei s (i (h, h'))) * (fun h : UA σ W.J => (((χX (Matrix.GeneralLinearGroup.det h.1))⁻¹ : Circle) : ℂ)) h', fun s g => flatOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype (absE F E) K φ₀ (((n : ℂ) - (d : ℂ)) …` and prove the remaining obligations. Introduce `h h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_true]`. Conclude with `hkern h h'`. Conclude with `isRegFam_doubled F E σ d W W₂ rfl i hi _ hconv Ei (fun s hs g => (hEi1 s hs g).2) hEi2 (((n : ℂ) - (d : ℂ)) / 2) Ψ hΨ (fun h : UA σ W.J => (((χX (Matrix.GeneralLinearGroup.det h.1))⁻¹ : Circle) : ℂ)) hwc hw1 hwΓ`. Introduce `s hs`. Establish `hs0 : R₀ < s.re` using `lt_of_le_of_lt (le_max_left _ _) hs`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hint, hunf⟩` from `hU s hs0`. Use `⟨hint, fun 𝓕 h𝓕 f hfc hfΓ hfd hfcusp h => ?_⟩` and prove the remaining obligations. Establish `hs' : (d : ℝ) / 2 < s.re` using `lt_of_le_of_lt hR₀ hs0`. Establish `hne : s ≠ ((n : ℂ) - (d : ℂ)) / 2`. Introduce `he`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[← he]`. Conclude with `absurd (lt_of_le_of_lt (le_max_right _ _) hs) (lt_irrefl _)`. Rewrite using `[← hunf 𝓕 h𝓕 f hfc hfΓ hfd hfcusp h]`. Use `congrArg (fun F' : UA σ W.J → ℂ => ∫ h' in 𝓕, F' h' ∂μ) (funext fun h' => ?_)` and prove the remaining obligations. Simplify using `only [if_neg hne, (hEi1 s hs' _).2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem anisoFamily : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ), IsPair B M χX χW om r s' r₁ s₁ → min r s' = 0 → 1 ≤ n → 1 ≤ d →

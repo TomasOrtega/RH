@@ -10,7 +10,7 @@ namespace PositivityTheory.KB.SplitAffineSpectral.EigenLocalizationShapes
 def gpoly (Λ : ℂ) : ℝ[X] := X ^ 2 - C (2 * Λ.re) * X + C (Complex.normSq Λ)
 
 /- English proof (translation)
-Simplify using `only [gpoly, eval_add, eval_sub, eval_pow, eval_X, eval_mul, eval_C, Complex.normSq_apply, Complex.sub_re, Complex.one_re, Complex.sub_im, Complex.one_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gpoly_eval_one (Λ : ℂ) : (gpoly Λ).eval 1 = Complex.normSq (1 - Λ) := by
   simp only [gpoly, eval_add, eval_sub, eval_pow, eval_X, eval_mul, eval_C, Complex.normSq_apply,
@@ -24,7 +24,7 @@ theorem mapOp_apply {A : Type} (φ : A → A) (m : ℕ) (F : (Fin m → A) → �
     mapOp φ m F y = F fun i => φ (y i) := rfl
 
 /- English proof (translation)
-Simplify using `only [gpoly, map_add, map_sub, map_mul, aeval_X, aeval_C, map_pow]`. Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.add_apply, LinearMap.sub_apply, Module.End.mul_apply, pow_two, Module.algebraMap_end_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, mapOp_apply, hE, Pi.zero_apply]`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kill_one {A : Type} (φ : A → A) (m : ℕ) (E : (Fin m → A) → ℂ) (Λ z : ℂ)
     (hE : ∀ y, E (fun i => φ (y i)) = Λ * E y) :
@@ -38,9 +38,9 @@ theorem kill_one {A : Type} (φ : A → A) (m : ℕ) (E : (Fin m → A) → ℂ)
   ring
 
 /- English proof (translation)
-Establish `hF' : F = ∑ j, fun y => (z j * E j y).re`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply, ← Complex.re_sum, ← hF y, Complex.ofReal_re]`. Rewrite using `[hF', map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), map_mul, Module.End.mul_apply, kill_one φ m (E j) (Λ j) (z j) (hE j), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_sum {A : Type} (φ : A → A) (m : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι]
     (E : ι → (Fin m → A) → ℂ) (Λ z : ι → ℂ) (hE : ∀ j y, E j (fun i => φ (y i)) = Λ j * E j y)
@@ -55,15 +55,15 @@ theorem kill_sum {A : Type} (φ : A → A) (m : ℕ) {ι : Type} [Fintype ι] [D
     kill_one φ m (E j) (Λ j) (z j) (hE j), map_zero]
 
 /- English proof (translation)
-Use `choose c hc using hspan`. Set `d : Fin (q + 1) → (Fin (q + 2) → A) → Additive A` to `fun i y => Additive.ofMul ((y i.castSucc)⁻¹ * y i.succ)`. Set `E : (Fin (q + 1) → ι) → (Fin (q + 2) → A) → ℂ` to `fun J y => ∏ i, β (J i) (d i y)`. Set `Λ : (Fin (q + 1) → ι) → ℂ` to `fun J => ∏ i, lam (J i)`. Set `z : (Fin (q + 1) → ι) → ℂ` to `fun J => ∏ i, c (α i) (J i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : ∀ J y, E J (fun i => φ (y i)) = Λ J * E J y`. Introduce `J y`. Simplify using `only [E, Λ]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: d i (fun k => φ (y k)) = Additive.ofMul (φ ((y i.castSucc)⁻¹ * y i.succ))`. Simplify using `only [d, map_mul, map_inv]`. Rewrite using `[this, hβ]`. Establish `hF : ∀ y, (cupH α y : ℂ) = ∑ J, z J * E J y`. Introduce `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (cupH α y : ℂ) = ∏ i, ∑ j, c (α i) j * β j (d i y)`. Rewrite using `[cupH, Complex.ofReal_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => hc (α i) _`. Rewrite using `[h1, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [z, E]`. Rewrite using `[Finset.prod_mul_distrib]`. Conclude with `kill_sum (⇑φ) (q + 2) E Λ z hE (cupH α) hF`.
+A detailed English derivation is pending.
 -/
 theorem cup_kill {A : Type} [Group A] (φ : A →* A) {ι : Type} [Fintype ι] [DecidableEq ι]
     (β : ι → Additive A → ℂ) (lam : ι → ℂ)

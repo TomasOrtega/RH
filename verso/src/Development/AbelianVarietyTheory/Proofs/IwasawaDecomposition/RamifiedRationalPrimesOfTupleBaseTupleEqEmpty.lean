@@ -14,16 +14,14 @@ namespace GlobalTheory.Mem.HD.ReQ
 variable {D : D7} {C : CharFrame D} {nch : NChoice D}
 
 /- English proof (translation)
-Rewrite using `[aboveF, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_aboveF_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {P : HeightOneSpectrum (𝓞 D.host.E)} :
     P ∈ aboveF (L := D.host.E) D.host.F v ↔ P.under (𝓞 D.host.F) = v := by
   rw [aboveF, Set.Finite.mem_toFinset]; rfl
 
 /- English proof (translation)
-Rewrite `hP` using `[mem_aboveF_iff]`. Substitute `hP` using the available equality. Establish `hd : Ideal.absNorm (P.under (𝓞 D.host.F)).asIdeal ∣ Ideal.absNorm P.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `AddSubgroup.card_dvd_of_injective (Ideal.quotientMap P.asIdeal (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) le_rfl).toAddMonoidHom Ideal.quotientMap_injective`.
-
-Conclude with `((Nat.dvd_prime h).1 hd).resolve_left fun h1 => (P.under (𝓞 D.host.F)).isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_of_mem {v : HeightOneSpectrum (𝓞 D.host.F)} {P : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : P ∈ aboveF (L := D.host.E) D.host.F v) (h : (Ideal.absNorm P.asIdeal).Prime) :
@@ -39,7 +37,7 @@ theorem absNorm_eq_of_mem {v : HeightOneSpectrum (𝓞 D.host.F)} {P : HeightOne
     (P.under (𝓞 D.host.F)).isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)
 
 /- English proof (translation)
-Use `le_antisymm h (not_lt.1 fun h1 => h' ?_)` and prove the remaining obligations. Rewrite using `[← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, sub_add_cancel]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {m : ℤ} (h : x ≤ WithZero.exp m)
     (h' : ¬ x ≤ WithZero.exp (m - 1)) : x = WithZero.exp m := by
@@ -48,9 +46,9 @@ theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {m : ℤ} (h : x ≤ Wi
   exact h1
 
 /- English proof (translation)
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hmem : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `e : ((qP P : ℕ) : P.adicCompletion L) = algebraMap L (P.adicCompletion L) (algebraMap (𝓞 L) L ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L))`. Simplify using `[qP]`. Establish `hv : ∀ y : L, Valued.v (algebraMap L (P.adicCompletion L) y) = P.valuation L y` using `fun y => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, hv, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `a1` using `(P.intValuation_le_pow_iff_mem _ 1).2 (by simpa using hmem)`. Establish `a2 : ¬ P.intValuation ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => h2 ((P.intValuation_le_pow_iff_mem _ 2).1 h)`. Use `eq_exp_of_le (by simpa using a1) fun h => a2 ?_` and prove the remaining obligations. Use `h using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Evaluate the numerical expressions.
 -/
@@ -72,12 +70,12 @@ theorem degreeOne_of_prime_absNorm_not_mem_sq {L : Type} [Field L] [NumberField 
   norm_num
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.tupleChar_ramified_at_all_primes_over_place`.
+A detailed English derivation is pending.
 -/
 theorem ramTransfer : ∀ (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTied D C nch), TupPins Tp → ∀ (μ : D.what₂.Tup) (v : HeightOneSpectrum (𝓞 D.host.F)) (w P : HeightOneSpectrum (𝓞 D.host.E)), w ∈ aboveF (L := D.host.E) D.host.F v → P ∈ aboveF (L := D.host.E) D.host.F v → ¬ (Tp.xi μ).UnrAt w → ¬ (Tp.xi μ).UnrAt P := GlobalTheory.T.tupleChar_ramified_at_all_primes_over_place
 
 /- English proof (translation)
-Use `((GlobalTheory.Mem.UnrAe.finite_ramified (Tp.xi μ)).image fun w => w.under (𝓞 D.host.F)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw, hr⟩`. Conclude with `⟨w, hr, mem_aboveF_iff.1 hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_inQ (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
     {v : HeightOneSpectrum (𝓞 D.host.F) | Tp.InQ' μ v}.Finite := by
@@ -86,9 +84,9 @@ theorem finite_inQ (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
   exact ⟨w, hr, mem_aboveF_iff.1 hw⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Establish `h : ((a * p + b * q : ℤ) : 𝓞 D.host.E) ∈ w.asIdeal`. Use `push_cast`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ (by exact_mod_cast h1)) (w.asIdeal.mul_mem_left _ (by exact_mod_cast h2))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hab, Int.cast_one]`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem prime_eq_of_overP {p q : ℕ} (hp : p.Prime) (hq : q.Prime) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h1 : OverP D.host p w) (h2 : OverP D.host q w) : p = q := by
@@ -102,7 +100,7 @@ theorem prime_eq_of_overP {p q : ℕ} (hp : p.Prime) (hq : q.Prime) {w : HeightO
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
 /- English proof (translation)
-Establish `hs : ∀ w : HeightOneSpectrum (𝓞 D.host.E), Set.Subsingleton {p : ℕ | p.Prime ∧ OverP D.host p w}` using `fun w p hp q hq => prime_eq_of_overP hp.1 hq.1 hp.2 hq.2`. Use `((GlobalTheory.Mem.UnrAe.finite_ramified (Tp.xi μ)).biUnion fun w _ => (hs w).finite).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, w, hw, hr⟩`. Conclude with `Set.mem_biUnion hr ⟨hp, hw⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finite_qp (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
     {p : ℕ | p.Prime ∧ ∃ w, OverP D.host p w ∧ ¬ (Tp.xi μ).UnrAt w}.Finite := by
@@ -115,14 +113,14 @@ theorem finite_qp (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
 def qpSet (Tp : TupTied D C nch) (μ : D.what₂.Tup) : Finset ℕ := (finite_qp Tp μ).toFinset
 
 /- English proof (translation)
-Rewrite using `[qpSet, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_qpSet (Tp : TupTied D C nch) (μ : D.what₂.Tup) (p : ℕ) :
     p ∈ qpSet Tp μ ↔ p.Prime ∧ ∃ w, OverP D.host p w ∧ ¬ (Tp.xi μ).UnrAt w := by
   rw [qpSet, Set.Finite.mem_toFinset]; rfl
 
 /- English proof (translation)
-Use `Finset.eq_empty_of_forall_notMem fun p hp => ?_` and prove the remaining obligations. Take `⟨-, w, -, hr⟩` from `(mem_qpSet Tp _ p).1 hp`. Conclude with `hr fun x _ => by rw [Tp.trueColumnChoices_heckeChar_reference_eq_one]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ramifiedRationalPrimesOfTuple_baseTuple_eq_empty (Tp : TupTied D C nch) : qpSet Tp D.what₂.mu0 = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun p hp => ?_
@@ -130,7 +128,7 @@ theorem ramifiedRationalPrimesOfTuple_baseTuple_eq_empty (Tp : TupTied D C nch) 
   exact hr fun x _ => by rw [Tp.trueColumnChoices_heckeChar_reference_eq_one]; rfl
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨-, w', hw', hr⟩ := (mem_qpSet Tp _ _).1 h exact hr (hp.atl w w' hw')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qpSet_muAt (Tp : TupTied D C nch) (hp : TupPins Tp) (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w ∉ qpSet Tp (D.what₂.muAt w) := fun h => by
@@ -138,7 +136,7 @@ theorem qpSet_muAt (Tp : TupTied D C nch) (hp : TupPins Tp) (w : D.what₂.place
   exact hr (hp.atl w w' hw')
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨-, w, hw, hr⟩ := (mem_qpSet Tp _ _).1 h exact (hp.ram μ w hr).2.2.2 i hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qpSet_g (Tp : TupTied D C nch) (hp : TupPins Tp) (μ : D.what₂.Tup) (i : Fin 2) :
     D.host.g i ∉ qpSet Tp μ := fun h => by
@@ -146,7 +144,7 @@ theorem qpSet_g (Tp : TupTied D C nch) (hp : TupPins Tp) (μ : D.what₂.Tup) (i
   exact (hp.ram μ w hr).2.2.2 i hw
 
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_lt_absNorm {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) :
     1 < Ideal.absNorm v.asIdeal := by
@@ -160,7 +158,7 @@ variable (Tp : TupTied D C nch) (hp : TupPins Tp) (Pv : HeightOneSpectrum (𝓞 
 include hp hPv in
 
 /- English proof (translation)
-Take `⟨w, hw, hr⟩` from `v.2`. Conclude with `ramTransfer D C nch Tp hp μ v.1 w (Pv v.1) hw (hPv v.1) hr`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ram_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) :
     ¬ (Tp.xi μ).UnrAt (Pv v.1) := by
@@ -169,14 +167,14 @@ theorem ram_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) 
 
 include hp hPv in
 /- English proof (translation)
-The claim follows from `degreeOne_of_prime_absNorm_not_mem_sq _ (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1 (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem chosenPrimeAbove_ramifiedPlace_degreeOne (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) : Deg1 (Pv v.1) :=
   degreeOne_of_prime_absNorm_not_mem_sq _ (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1 (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.1
 
 include hp hPv in
 /- English proof (translation)
-The claim follows from `(hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem offg_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) :
     ∀ k, ¬ OverP D.host (D.host.g k) (Pv v.1) :=
@@ -184,21 +182,21 @@ theorem offg_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F)
 
 include hp hPv in
 /- English proof (translation)
-The claim follows from `absNorm_eq_of_mem (hPv v.1) (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) :
     Ideal.absNorm v.1.asIdeal = qP (Pv v.1) :=
   absNorm_eq_of_mem (hPv v.1) (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1
 
 /- English proof (translation)
-Use `D.R.three_m_lt_t` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_letterBlockLength : 1 ≤ D.R.t := by have := D.R.three_m_lt_t; omega
 
 include hp hPv in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_type_dimension_and_local_integrals_degree_one D.host.E (Pv v.1) (chosenPrimeAbove_ramifiedPlace_degreeOne Tp hp Pv hPv μ v) _ _ (isDel_delQ Tp μ (ram_Pv Tp hp Pv hPv μ v)) (isNu_nuP C (offg_Pv Tp hp Pv hPv μ v)) D.R.r D.R.t j one_le_letterBlockLength`.
+A detailed English derivation is pending.
 -/
 theorem stepEx (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) (j : ℕ) :
     (∃ n, TypeDimAt (Pv v.1) (delQ Tp μ (Pv v.1)) (nuP C (Pv v.1)) D.R.r D.R.t j n) ∧
@@ -250,7 +248,7 @@ def reducedDivisorCharacter (Z₀ : DivX D) : DivisorCharacterCompatibility D C 
   qv_eq := fun _ _ => rfl
 
 /- English proof (translation)
-Use `⟨fun μ v => hPv _, ?_⟩` and prove the remaining obligations. Use `{ qv_eq := fun μ v => absNorm_Pv Tp hp Pv hPv μ v deg1 := fun μ v => chosenPrimeAbove_ramifiedPlace_degreeOne Tp hp Pv hPv μ v ram := fun μ v => ram_Pv Tp hp Pv hPv μ v off_g := fun μ v => offg_Pv Tp hp Pv hPv μ v nu_eq := fun μ v i => ?_ typeDim_eq := fun μ v j _ => (stepEx Tp h …` and prove the remaining obligations. Use `show ((nuP C (Pv v.1) (i.1 + 1) (piP (Pv v.1)) : ℂˣ) : ℂ) = _`. Rewrite using `[nuP_succ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reLoc (Z₀ : DivX D) : QLocTiedC (reducedDivisorCharacter Tp hp Pv hPv Z₀) Pv := by
   refine ⟨fun μ v => hPv _, ?_⟩

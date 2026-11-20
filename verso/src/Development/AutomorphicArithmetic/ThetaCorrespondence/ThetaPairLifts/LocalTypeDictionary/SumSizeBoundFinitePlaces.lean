@@ -11,11 +11,11 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open GlobalTheory.SumSize
 namespace GlobalTheory.SumSize
 /- English proof (translation)
-Establish `hG : PairInt.PairIntRatK` using `_root_.GlobalTheory.T.pairIntRatK_of_thetaLocalInputs hP hI hD`. Take `⟨CF0, h⟩` from `BigC.and hG hd`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF hCF`. Use `⟨C0, fun ε C hC => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, h⟩` from `h ε C hC`. Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨⟨dl, hL, h⟩, hDe⟩` from `h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3`. Use `⟨dl, hL, ?_⟩` and prove the remaining obligations. Introduce `t w hw Φ β d hO c i a v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hβ, τ, hτ, hdτ⟩` from `hO`. Establish `hrat` using `(h3.isRatAt hβ hτ hdτ c).2 i`. Take `⟨hk, ⟨e, -, hPz, -⟩, hcos⟩` from `hτ`. Establish `hdep` using `(hDe t Φ β hβ).2`. Conclude with `h t (.chi i D.R.m) ⟨i.2, rfl⟩ w hw _ (d.2 i) hk ((hcos d hdτ).2 i) ((hPz d hdτ).2 i).2.2 ((hPz d hdτ).2 i).1 (fun l hl hlw => hdep w l hl hlw hw) _ _ hrat a v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_place_sum_size_bound (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hI : ∀ D, GlobalTheory.NormSum.Inp D) (hD : DictK) (hd : DepthK) : FinRowK := by
   have hG : PairInt.PairIntRatK := _root_.GlobalTheory.T.pairIntRatK_of_thetaLocalInputs hP hI hD
@@ -42,7 +42,7 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SumSize.finite_place_sum_size_bound | exact _root_.GlobalTheory.SumSize.finite_place_sum_size_bound | (intros; apply _root_.GlobalTheory.SumSize.finite_place_sum_size_bound <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sum_size_bound_finite_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → FinRowK := by
   first | exact @_root_.GlobalTheory.SumSize.finite_place_sum_size_bound | exact _root_.GlobalTheory.SumSize.finite_place_sum_size_bound | (intros; apply _root_.GlobalTheory.SumSize.finite_place_sum_size_bound <;> assumption)

@@ -19,7 +19,7 @@ def MuInert : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n 
   ∀ (μ : (w.adicCompletion E)ˣ →* ℂˣ) (f : UL n w → ℂ) (φ : GLw a w × GLw b w → ℂ), Match n a b w 1 f φ → Match n a b w μ f φ
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b w hw μ f φ h Q₁ Q₂ h1 h2 h3 h4 h5 h6 h7`. Rewrite using `[h Q₁ Q₂ h1 h2 h3 h4 h5 h6 h7, PositivityTheory.Rg.Bc.ArchbcB.B.M4.V1.delta_inert w hw μ, PositivityTheory.Rg.Bc.ArchbcB.B.M4.V1.delta_inert w hw 1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem muInert : MuInert := by
   intro E _ _ _ n a b w hw μ f φ h Q₁ Q₂ h1 h2 h3 h4 h5 h6 h7

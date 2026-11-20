@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicChar
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `hN`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `e : (a : Ω) * (l : Ω) + (b : Ω) * (N : Ω) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab`. Establish `key : ∀ (c : ℤ) (x : Ω), B.valuation x < 1 → B.valuation ((c : Ω) * x) < 1`. Introduce `c x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((B.valuation_le_one_iff _).2 (intCast_mem B c))) hx`. Use `B.valuation.map_add_lt (key a _ hl) (key b _ hN)` as an intermediate fact. Rewrite `this` using `[e, map_one]`. Conclude with `lt_irrefl _ this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_not_lt_one_of_coprime {Ω : Type} [Field Ω] (B : ValuationSubring Ω) {l N : ℕ} (h : Nat.Coprime l N)
     (hl : B.valuation (l : Ω) < 1) : ¬ B.valuation (N : Ω) < 1 := by
@@ -23,7 +23,7 @@ private theorem valuation_not_lt_one_of_coprime {Ω : Type} [Field Ω] (B : Valu
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `h1 : (x / y) ^ a = 1` using `by rw [div_pow, ha, div_self (pow_ne_zero _ hy)]`. Establish `h2 : (x / y) ^ b = 1` using `by rw [div_pow, hb, div_self (pow_ne_zero _ hy)]`. Establish `h3 : (x / y) ^ (Nat.gcd a b) = 1` using `pow_gcd_eq_one.2 ⟨h1, h2⟩`. Rewrite `h3` using `[h.gcd_eq_one, pow_one]`. Conclude with `(div_eq_one_iff_eq hy).1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_idempotent_mul_add_of_mul_sub_eq {Ω : Type} [Field Ω] {a b : ℕ} (h : Nat.Coprime a b) {x y : Ω} (hy : y ≠ 0)
     (ha : x ^ a = y ^ a) (hb : x ^ b = y ^ b) : x = y := by
@@ -34,21 +34,19 @@ private theorem eq_idempotent_mul_add_of_mul_sub_eq {Ω : Type} [Field Ω] {a b 
   exact (div_eq_one_iff_eq hy).1 h3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl C _ χ r N hN hlN hχ B hB hI s hs`. Use `haveI : NeZero N := ⟨hN⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => by haveI : NeZero ((l ^ i : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr (pow_ne_zero _ hl.out.ne_zero)⟩ infer_instance`. Establish `hcop : Nat.Coprime l N` using `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hlN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ, hc⟩` from `GlobalTheory.T.cyclotomicChar_inertia_surjective Ω l B hB (cycZ ℚ Ω l s)`. Establish `hker` using `(UpperTheory.V.Chr.clsFacts ℚ Ω N).2.2.2.2 B (valuation_not_lt_one_of_coprime B hcop hB) hσ`. Establish `hone` using `(UpperTheory.V.Chr.clsFacts ℚ Ω N).2.2.2.2 B (valuation_not_lt_one_of_coprime B hcop hB) (Ine (F := ℚ) B).one_mem`. Establish `hσN : ∀ ζ : Ω, ζ ^ N = 1 → σ ζ = ζ`. Introduce `ζ hζ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `UpperTheory.V.Chr.cls_spec (k := ℚ) N σ ζ hζ`. Establish `h2` using `UpperTheory.V.Chr.cls_spec (k := ℚ) N 1 ζ hζ`. Rewrite `hker`, `hone` using `[MonoidHom.mem_ker]`. Rewrite `h1` using `[hker]`. Rewrite `h2` using `[hone]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h1, ← h2]`. Both sides reduce to the same expression. Establish `hσl : ∀ ζ : Ω, ζ ^ l ^ r = 1 → s ζ = σ ζ`. Introduce `ζ hζ`. Establish `h1 : s ζ = ζ ^ ((cycZ ℚ Ω l s).val.toZModPow r).val` using `cyclotomicCharacter.spec l s.toRingEquiv ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : σ ζ = ζ ^ ((cycZ ℚ Ω l σ).val.toZModPow r).val` using `cyclotomicCharacter.spec l σ.toRingEquiv ζ hζ`. Rewrite using `[h1, h2, hc]`. Establish `h1 : χ (σ⁻¹ * s) = 1`. Use `hχ _ fun ζ hζ => ?_` and prove the remaining obligations. Establish `h0 : ζ ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow (mul_ne_zero (pow_ne_zero _ hl.out.ne_zero) hN)]`. Conclude with `zero_ne_one hζ`. Establish `e : s ζ = σ ζ`. Use `eq_idempotent_mul_add_of_mul_sub_eq (Nat.Coprime.pow_left r hcop) ((map_ne_zero σ).2 h0) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : (ζ ^ l ^ r) ^ N = 1` using `by rw [← pow_mul, hζ]`. Rewrite using `[← map_pow, ← map_pow, hs _ hz, hσN _ hz]`. Establish `hz : (ζ ^ N) ^ l ^ r = 1` using `by rw [← pow_mul, mul_comm, hζ]`. Rewrite using `[← map_pow, ← map_pow, hσl _ hz]`. Rewrite using `[AlgEquiv.mul_apply, e, ← AlgEquiv.mul_apply, inv_mul_cancel]`.
-
-Both sides reduce to the same expression. Establish `h2 : χ σ = 1` using `hI hσ`. Rewrite `h1` using `[map_mul, map_inv, h2, inv_one, one_mul]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.sc_strip :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (C : Type) [Group C] (χ : G ℚ Ω →* C) (r N : ℕ), N ≠ 0 → ¬ l ∣ N → Af.KillsMu (l ^ r * N) χ → ∀ B : ValuationSubring Ω, B.valuation (l : Ω) < 1 → Ine (F := ℚ) B ≤ χ.ker → Af.KillsMu N χ := by

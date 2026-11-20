@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `j`. Use `split_ifs with hj`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Establish `hc : (2 : ℂ) * (↑Real.pi : ℂ) * Complex.I * (↑j : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (j : ℂ) ≠ 0` using `by exact_mod_cast hj`. Establish `hpi : (↑Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `[hpi, this, Complex.I_ne_zero]`. Rewrite using `[integral_exp_mul_complex hc]`. Establish `h1 : Complex.exp ((2 : ℂ) * (↑Real.pi : ℂ) * Complex.I * (↑j : ℂ) * ((1:ℝ) : ℂ)) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.exp_eq_one_iff]`. Conclude with `⟨j, by push_cast; ring⟩`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yra2.main :
     ∀ (j : ℤ),

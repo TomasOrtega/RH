@@ -16,19 +16,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.N
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Establish `hA : Antitone F` using `antitone_int_of_succ_le anti`. Establish `hd : Antitone fun a => finrank L (F a)` using `antitone_int_of_succ_le fun a => by`. Use `h a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a₀, ha₀⟩` from `Multiset.exists_mem_of_ne_zero hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < finrank L (F a₀)`. Use `h a₀` as an intermediate fact. Use `Multiset.count_pos.2 ha₀` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfin : ∀ a ≤ a₀, FiniteDimensional L (F a)` using `fun a ha => Module.finite_of_finrank_pos (lt_of_lt_of_le hpos (hd ha))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `J.toFinset.bddBelow`. Establish `hb' : ∀ a ∈ J, b ≤ a` using `fun a ha => hb (by simpa using ha)`. Establish `hb0 : b ≤ a₀` using `hb' a₀ ha₀`. Establish `hst : ∀ a ≤ b, F a = F b`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a, ha using Int.le_induction_down with`. Consider the case `base => rfl`. Consider the case `pred a ha ih => haveI := hfin (a - 1) (by omega)`. Establish `h1` using `h (a - 1)`. Establish `h2 : J.count (a - 1) = 0` using `Multiset.count_eq_zero.2 fun hm => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hb' _ hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[sub_add_cancel, h2]`. Rewrite using `[← ih]`. Conclude with `(Submodule.eq_of_le_of_finrank_eq (hA (by omega)) (by omega)).symm`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hfin b hb0`. Use `Submodule.finiteDimensional_of_le (S₂ := F b) fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exh x hx`. Break down `le_total a b with hab | hab` into its components or cases. Rewrite using `[← hst a hab]` and apply the resulting hypothesis.
-
-Conclude with `hA hab ha`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_of_jumps {L M : Type} [Field L] [AddCommGroup M] [Module L M] (F : ℤ → Submodule L M)
     (U : Submodule L M) (anti : ∀ a, F (a + 1) ≤ F a) (exh : ∀ x ∈ U, ∃ a, x ∈ F a)
@@ -81,9 +79,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Use `antitone_int_of_succ_le fun a => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => exact ⟨v ⊗ₜ ⟨b.1, PD.Fil_anti a b.2⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem filV_anti : Antitone fun a => FilV PD (LL := LL) (V := V) a := by
   refine antitone_int_of_succ_le fun a => ?_
@@ -94,9 +92,9 @@ theorem filV_anti : Antitone fun a => FilV PD (LL := LL) (V := V) a := by
   | add x y hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v b`. Take `⟨a, ha⟩` from `PD.Fil_exh b`. Conclude with `⟨a, v ⊗ₜ ⟨b, ha⟩, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, Submodule.add_mem _ (filV_anti PD (min_le_left a b) ha) (filV_anti PD (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem filV_exh (x : TensorProduct Qp V BdR) : ∃ a, x ∈ FilV PD (LL := LL) (V := V) a := by
   induction x using TensorProduct.induction_on with
@@ -111,7 +109,7 @@ theorem filV_exh (x : TensorProduct Qp V BdR) : ∃ a, x ∈ FilV PD (LL := LL) 
       (filV_anti PD (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-The claim follows from `finite_of_jumps (FildR PD ρ τ) _ (fun a => inf_le_inf_left _ (filV_anti PD (by omega : a ≤ a + 1))) (fun x hx => (filV_exh PD (LL := LL) x).imp fun _ ha => ⟨hx, ha⟩) J hJ h`.
+A detailed English derivation is pending.
 -/
 theorem finite_ddRE_of_multV (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (J : Multiset ℤ) (hJ : J ≠ 0)
     (h : ∀ a, multV PD ρ τ a = (J.count a : ℤ)) : FiniteDimensional LL (DdRE PD ρ τ) :=
@@ -122,13 +120,13 @@ theorem finite_ddRE_of_multV (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL)
 end Periods
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih`. Establish `hx' : x ∉ (s : Set ι)` using `hx`. Rewrite `h`, the goal using `[Finset.coe_insert, linearIndepOn_insert hx']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨ih h.1, fun hm => h.2 ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_image_finset_iff_exists_fun' F).1 hm`. Establish `key : ∀ i ∈ s, ∀ g, a g (c i) = c i`. Introduce `i hi g`. Establish `h1 : ∑ i ∈ s, a g (c i) • v i = v x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hv g x, ← hc, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hσ, hv]`. Establish `h2` using `linearIndepOn_finset_iff.1 (ih h.1) (fun j => a g (c j) - c j) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h1, hc, sub_self]) i hi`. Conclude with `sub_eq_zero.1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hinv _ (key i hi)`. Rewrite using `[← hk, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndepOn_of_invariant {K F W G ι : Type} [Field K] [Field F] [Algebra K F] [AddCommGroup W]
     [Module F W] [Module K W] [IsScalarTower K F W] (a : G → F → F) (σ : G → W →+ W)
@@ -158,7 +156,7 @@ theorem linearIndepOn_of_invariant {K F W G ι : Type} [Field K] [Field F] [Alge
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← Module.rank_lt_aleph0_iff]`. Use `lt_of_le_of_lt (rank_le (n := finrank F W) fun s hs => ?_) (Cardinal.natCast_lt_aleph0)` and prove the remaining obligations. Establish `h1 : LinearIndepOn K (fun x : U => (x : W)) s` using `hs.map' U.subtype U.ker_subtype`. Establish `h2` using `linearIndepOn_of_invariant a σ hσ hinv (fun x : U => (x : W)) (fun g x => hU x x.2 g) s h1`. Simplify using `using LinearIndependent.fintype_card_le_finrank h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_of_invariant {K F W G : Type} [Field K] [Field F] [Algebra K F] [AddCommGroup W]
     [Module F W] [Module K W] [IsScalarTower K F W] [Module.Finite F W] (a : G → F → F) (σ : G → W →+ W)
@@ -184,17 +182,15 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Use `letI : Field BdR := hF.toField`. Use `haveI := PD.finK`. Set `σ : G → TensorProduct Qp BdR V →ₗ[Qp] TensorProduct Qp BdR V` to `fun g => TensorProduct.map (((PD.actdR g).toAlgHom.toLinearMap).restrictScalars Qp) ((ρ g).restrictScalars Qp)`. Establish `hσ : ∀ g (b : BdR) w, σ g (b • w) = PD.actdR g b • σ g w`. Introduce `g b w`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [σ, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Set `U : Submodule K (TensorProduct Qp BdR V)` to `{ carrier := {x | ∀ g, σ g x = x} zero_mem' := fun g => map_zero _ add_mem' := fun hx hy g => by rw [map_add, hx g, hy g] smul_mem' := fun c x hx g => by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul BdR c x, hσ, hx g, AlgEquiv.commutes] }`. Use `haveI : Module.Finite K U := finite_of_invariant (F := BdR) (fun g b => PD.actdR g b) (fun g => (σ g).toAddMonoidHom) hσ PD.invdR U fun _ hx => hx`. Use `haveI : Module.Finite Qp U := Module.Finite.trans K U`. Establish `hc : ∀ g x, σ g (TensorProduct.comm Qp V BdR x) = TensorProduct.comm Qp V BdR (actVdR PD ρ g x)`. Introduce `g x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [σ, actVdR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `f : DdR PD ρ →ₗ[Qp] U` to `{ toFun := fun x => ⟨TensorProduct.comm Qp V BdR x, fun g => by`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `x.2` as an intermediate fact. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at this`. Rewrite using `[hc, this g]⟩`. Use the proof step `map_add' := fun x y => Subtype.ext (map_add _ _ _)`. Use the proof step `map_smul' := fun c x => Subtype.ext (map_smul (TensorProduct.comm Qp V BdR) c _) }`.
-
-Use `haveI : Module.Finite Qp (DdR PD ρ) := Module.Finite.of_injective f fun x y h => Subtype.ext ((TensorProduct.comm Qp V BdR).injective (congrArg Subtype.val h))`. Conclude with `Module.Finite.of_restrictScalars_finite Qp LL _`.
+A detailed English derivation is pending.
 -/
 theorem finite_ddR_of_isField (hF : IsField BdR) [Module.Finite Qp V] (ρ : Representation LL G V) :
     Module.Finite LL (DdR PD ρ) := by
@@ -245,7 +241,7 @@ section Place
 variable (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Use `forall_congr' fun x => ⟨?_, fun h => ⟨_, h.symm, CrystallineAtPlaces.embLL_sigmaOf g x⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, h1, h2⟩`. Establish `: y = D.embE (D.host.sigmaOf g x)` using `D.what₂.embLL.injective (h2.trans (CrystallineAtPlaces.embLL_sigmaOf g x).symm)`. Rewrite using `[← this, h1]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem over_iff (τ : BlockSumMultiplicities.Emb D i w hw) (g : D.R.GG) :
     BlockSumMultiplicities.Over D i w hw τ g ↔ CrystallineAtPlaces.Reads D i w hw τ g := by

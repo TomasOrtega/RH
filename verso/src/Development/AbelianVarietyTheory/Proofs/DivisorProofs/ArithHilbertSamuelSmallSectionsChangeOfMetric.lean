@@ -21,7 +21,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k
   {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k}
 
 /- English proof (translation)
-Use `HermLB.isometric_of_eqOn ?_` and prove the remaining obligations. Introduce `σ a y _`. Use `erw [Weight.pull_φ]`. Conclude with `(congrArg (· + u.u σ (Points.PtsOver.map ρ hρ (spMap σ) y)) (Weight.pull_φ (L.φ σ) ρ hρ a y)).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem up_pull_isometric (L : HermLB p) (u : SmFn p) (ρ : Y ⟶ X) (hρ : ρ ≫ p = q) :
     (up (L.pull ρ hρ) (u.pull ρ hρ)).Isometric ((up L u).pull ρ hρ) := by
@@ -31,11 +31,9 @@ theorem up_pull_isometric (L : HermLB p) (u : SmFn p) (ρ : Y ⟶ X) (hρ : ρ �
   exact (congrArg (· + u.u σ (Points.PtsOver.map ρ hρ (spMap σ) y)) (Weight.pull_φ (L.φ σ) ρ hρ a y)).symm
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨f, hf, rfl⟩, hR⟩`. Use `⟨f, ⟨hf, fun σ x => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hs σ x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hn f hf σ y]`. Conclude with `hR σ y`. Introduce and unpack `⟨f, ⟨hf, hR⟩, rfl⟩`. Use `⟨⟨f, hf, rfl⟩, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[hn f hf σ y]`.
-
-Conclude with `hR σ _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballIn_map (P : Pair p) (Q : Pair q) (e : X.functionField →+* Y.functionField) (ρ : Y ⟶ X) (hρ : ρ ≫ p = q)
     (hs : ∀ σ : k →+* ℂ, Function.Surjective (Points.PtsOver.map ρ hρ (spMap σ) : CxPts q σ → CxPts p σ))
@@ -55,7 +53,7 @@ theorem ballIn_map (P : Pair p) (Q : Pair q) (e : X.functionField →+* Y.functi
     exact hR σ _
 
 /- English proof (translation)
-Rewrite using `[ballIn_map P Q e ρ hρ hs Λ a b hn R]`. Conclude with `Set.ncard_image_of_injective _ e.injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_ballIn_map (P : Pair p) (Q : Pair q) (e : X.functionField →+* Y.functionField) (ρ : Y ⟶ X) (hρ : ρ ≫ p = q)
     (hs : ∀ σ : k →+* ℂ, Function.Surjective (Points.PtsOver.map ρ hρ (spMap σ) : CxPts q σ → CxPts p σ))
@@ -66,13 +64,11 @@ theorem ncard_ballIn_map (P : Pair p) (Q : Pair q) (e : X.functionField →+* Y.
   exact Set.ncard_image_of_injective _ e.injective
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `(he m 1 f (h.le m hf)).1`. Use `fg m := by classical`. Take `⟨s, hs'⟩` from `h.fg m`. Use `⟨s.image e, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.coe_image, ← hs', AddMonoidHom.map_closure]`. Both sides reduce to the same expression. Use `small := by`. Take `⟨C, hC, hCm⟩` from `h.small`. Use `⟨C, hC, fun m hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ∀ f ∈ Λ m, ∀ (σ : k →+* ℂ) (y : CxPts q σ), Q.nu m 1 σ y (e f) = P.nu m 1 σ (Points.PtsOver.map ρ hρ (spMap σ) y) f` using `fun f hf => (he m 1 f (h.le m hf)).2`. Rewrite using `[ballIn_map P Q e ρ hρ hs (Λ m) m 1 hn]`. Conclude with `(AddSubgroup.map_mono (hCm m hm)).trans (AddMonoidHom.map_closure e.toAddMonoidHom (ballIn P (Λ m) m 1 (C ^ m))).le`. Use `rank := by`. Establish `e' : ∀ m, Module.finrank ℤ ((Λ m).map e.toAddMonoidHom) = Module.finrank ℤ (Λ m)` using `fun m => ((AddSubgroup.equivMapOfInjective (Λ m) e.toAddMonoidHom e.injective).toIntLinearEquiv.finrank_eq).symm`.
-
-Simplify using `only [e']`. Conclude with `h.rank`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goodFam_map (P : Pair p) (Q : Pair q) (e : X.functionField →+* Y.functionField) (ρ : Y ⟶ X) (hρ : ρ ≫ p = q)
     (hs : ∀ σ : k →+* ℂ, Function.Surjective (Points.PtsOver.map ρ hρ (spMap σ) : CxPts q σ → CxPts p σ))
@@ -109,21 +105,19 @@ end GlobalTheory.HSAmp.ChangeSing
 namespace GlobalTheory.HSAmp.ChangeSing
 
 /- English proof (translation)
-Introduce `hPr k _ X _ p D hX P a hsp hsi hgf`. Establish `hC : Published.ArCalc` using `MixHt.arCalc_of_principalisation hPr`. Take `⟨Y, hY, ρ, hYa, hYs, hgen, hdeg⟩` from `GenRes.exists_birational_genSmooth hPr k X p D hX`. Take `⟨Q, e, hQL, -, he⟩` from `T.exists_hermLineBundlePair_pullback_dominant k X p Y (ρ ≫ p) ρ rfl hgen P`. Establish `hs : ∀ σ : k →+* ℂ, Function.Surjective (Points.PtsOver.map ρ rfl (spMap σ) : CxPts (ρ ≫ p) σ → CxPts p σ)` using `T.dominant_projArith_surjective_complexPoints k X p D hX Y (ρ ≫ p) D hYa ρ rfl hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ρ.residueDegree (genericPoint Y) ≠ 0` using `by rw [hdeg]; exact one_ne_zero`. Establish `hproj` using `hC.2.2.2.2.1 k X Y p (ρ ≫ p) D hX hYa ρ rfl hgen hne`. Establish `hdeg' : ((ρ.residueDegree (genericPoint Y) : ℕ) : ℝ) = 1` using `by rw [hdeg]; simp`. Establish `hQsp : Q.L.SemiPos D`. Rewrite using `[hQL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.semiPos_pullback_generically_birational k X p D hX Y (ρ ≫ p) hYa ρ rfl hgen hdeg P.L hsp`. Establish `hQsi : Q.L.IsSelfInter a`. Establish `h` using `hproj.1 P.L a hsi`. Rewrite `h` using `[hdeg', one_mul]`. Rewrite using `[hQL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hQg : gdeg Q.L D = gdeg P.L D`. Rewrite using `[hQL, CovTest.gdegPull k X Y p (ρ ≫ p) D hX hYa ρ rfl hgen hne, hdeg', one_mul]`. Establish `hgf'` using `goodFam_map P Q e ρ rfl hs he D _ _ hgf`. Rewrite `hgf'` using `[← hQg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₀, ht⟩` from `T.tendsto_logSectionCount_change_of_metric hC k Y (ρ ≫ p) D hYa hYs Q a hQsp hQsi _ hgf'`. Use `⟨t₀, fun u B a' hB hu husp husi t ht' => ?_⟩` and prove the remaining obligations. Establish `hiso : (up Q.L (u.pull ρ rfl)).Isometric ((up P.L u).pull ρ rfl)`. Rewrite using `[hQL]`. Conclude with `up_pull_isometric P.L u ρ rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (up Q.L (u.pull ρ rfl)).SemiPos D` using `HermLB.Isometric.semiPos _ _ D hiso.symm (T.semiPos_pullback_generically_birational k X p D hX Y (ρ ≫ p) hYa ρ rfl hgen hdeg _ husp)`. Establish `h2 : (up Q.L (u.pull ρ rfl)).IsSelfInter a'`. Establish `h` using `hproj.1 (up P.L u) a' husi`. Rewrite `h` using `[hdeg', one_mul]`. Conclude with `hiso.symm.isSelfInter hYa h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `ht (u.pull ρ rfl) B a' hB (fun σ y => hu σ _) h1 h2 t ht'`. Establish `hnP : ∀ m : ℕ, ∀ f ∈ P.H (m : ℤ) 1, ∀ (σ : k →+* ℂ) (y : CxPts (ρ ≫ p) σ), Q.nu m 1 σ y (e f) = P.nu m 1 σ (Points.PtsOver.map ρ rfl (spMap σ) y) f` using `fun m f hf => (he m 1 f hf).2`. Establish `hnU : ∀ m : ℕ, ∀ f ∈ P.H (m : ℤ) 1, ∀ (σ : k →+* ℂ) (y : CxPts (ρ ≫ p) σ), (upperParabolic Q (u.pull ρ rfl)).nu m 1 σ y (e f) = (upperParabolic P u).nu m 1 σ (Points.PtsOver.map ρ rfl (spMap σ) y) f`. Introduce `m f hf σ y`. Rewrite using `[((T.raiseFirstWeight_sections_loci_values_norms k Y (ρ ≫ p) Q (u.pull ρ rfl) m 1).2.2 σ y (e f)).2, ((T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).2.2 σ _ f).2, hnP m f hf σ y]`.
-
-Both sides reduce to the same expression. Use `h3.congr fun m => ?_` and prove the remaining obligations. Rewrite using `[ncard_ballIn_map (upperParabolic P u) (upperParabolic Q (u.pull ρ rfl)) e ρ rfl hs _ _ _ (hnU m), ncard_ballIn_map P Q e ρ rfl hs _ _ _ (hnP m)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_change_of_principalisation : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (a : ℝ), P.L.SemiPos D → P.L.IsSelfInter a → GoodFam P D (gdeg P.L D / D.factorial) (fun m => P.H m 1) → ∃ t₀ : ℝ, ∀ (u : SmFn p) (B a' : ℝ), 0 ≤ B → (∀ σ y, |u.u σ y| ≤ B) → (up P.L u).SemiPos D → (up P.L u).IsSelfInter a' → ∀ t : ℝ, t₀ + B ≤ t → Tendsto (fun m : ℕ => (Real.log ((ballIn (upperParabolic P u) (P.H m 1) m 1 (Real.exp (t * m))).ncard : ℝ) - Real.log ((ballIn P (P.H m 1) m 1 (Real.exp (t * m))).ncard : ℝ)) / (m : ℝ) ^ (D + 1)) atTop (𝓝 ((a' - a) / (D + 1).factorial)) := by
   intro hPr k _ X _ p D hX P a hsp hsi hgf

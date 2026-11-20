@@ -27,7 +27,7 @@ def coneUnit (i : (k : K) → ι k) : MvPolynomial (Σ k, ι k) ℂ :=
 abbrev ConeRing (i : (k : K) → ι k) := Localization.Away (coneUnit i)
 
 /- English proof (translation)
-The claim follows from `isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem (fun k => (X ⟨k, i k⟩ : MvPolynomial (Σ k, ι k) ℂ)) (Finset.mem_univ k))) (IsLocalization.Away.algebraMap_isUnit (coneUnit i))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_coneX (i : (k : K) → ι k) (k : K) :
     IsUnit (algebraMap (MvPolynomial (Σ k, ι k) ℂ) (ConeRing i) (X ⟨k, i k⟩)) :=
@@ -39,7 +39,7 @@ def coneRatio (i : (k : K) → ι k) : MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ]
     algebraMap (MvPolynomial (Σ k, ι k) ℂ) (ConeRing i) (X p)
 
 /- English proof (translation)
-Rewrite using `[coneRatio, aeval_X]`. Conclude with `(isUnit_coneX i k).val_inv_mul`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneRatio_X_self (i : (k : K) → ι k) (k : K) : coneRatio i (X ⟨k, i k⟩) = 1 := by
   rw [coneRatio, aeval_X]
@@ -54,7 +54,7 @@ def ratioMap (i : (k : K) → ι k) : DehomRing i →+* ConeRing i :=
     exact fun a ha => hle ha)
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.lift_mk _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ratioMap_dehom (i : (k : K) → ι k) (f : MvPolynomial (Σ k, ι k) ℂ) :
     ratioMap i (dehom i f) = coneRatio i f :=
@@ -62,14 +62,14 @@ theorem ratioMap_dehom (i : (k : K) → ι k) (f : MvPolynomial (Σ k, ι k) ℂ
 
 omit [Fintype K] in
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_one (dehom i), ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehom_X_self (i : (k : K) → ι k) (k : K) : dehom i (X ⟨k, i k⟩) = 1 := by
   rw [← sub_eq_zero, ← map_one (dehom i), ← map_sub]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[coneUnit, map_prod]`. Conclude with `Finset.prod_eq_one fun k _ => dehom_X_self i k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehom_coneUnit (i : (k : K) → ι k) : dehom i (coneUnit i) = 1 := by
   rw [coneUnit, map_prod]
@@ -77,7 +77,7 @@ theorem dehom_coneUnit (i : (k : K) → ι k) : dehom i (coneUnit i) = 1 := by
 
 omit [Fintype K] in
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem dehom_surjective (i : (k : K) → ι k) : Function.Surjective (dehom i) :=
   Ideal.Quotient.mk_surjective
@@ -87,27 +87,27 @@ def evalOne (i : (k : K) → ι k) : ConeRing i →+* DehomRing i :=
     (by rw [AlgHom.coe_toRingHom, dehom_coneUnit]; exact isUnit_one)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem evalOne_algebraMap (i : (k : K) → ι k) (f : MvPolynomial (Σ k, ι k) ℂ) :
     evalOne i (algebraMap _ (ConeRing i) f) = dehom i f :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-The claim follows from `RingHom.ext (evalOne_algebraMap i)`.
+A detailed English derivation is pending.
 -/
 theorem evalOne_comp_algebraMap (i : (k : K) → ι k) :
     (evalOne i).comp (algebraMap _ (ConeRing i)) = (dehom i : MvPolynomial (Σ k, ι k) ℂ →+* DehomRing i) :=
   RingHom.ext (evalOne_algebraMap i)
 
 /- English proof (translation)
-Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`. Establish `h1 : ratioMap i (Ideal.Quotient.mk (dehomIdeal i) (C c)) = algebraMap (MvPolynomial (Σ k, ι k) ℂ) (ConeRing i) (C c)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[show Ideal.Quotient.mk (dehomIdeal i) (C c) = dehom i (C c) from rfl, ratioMap_dehom, coneRatio, aeval_C, IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Σ k, ι k) ℂ) (ConeRing i), MvPolynomial.algebraMap_eq]`. Rewrite using `[h1, evalOne_algebraMap]`. Both sides reduce to the same expression. Introduce `p`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[show Ideal.Quotient.mk (dehomIdeal i) (X p) = dehom i (X p) from rfl, ratioMap_dehom, coneRatio, aeval_X, map_mul, evalOne_algebraMap]`. Establish `hu : evalOne i (((isUnit_coneX i p.1).unit : (ConeRing i)ˣ) : ConeRing i) = 1`. Rewrite using `[IsUnit.unit_spec, evalOne_algebraMap, dehom_X_self]`. Establish `hinv : evalOne i (((isUnit_coneX i p.1).unit⁻¹ : (ConeRing i)ˣ) : ConeRing i) = 1`. Use `congrArg (evalOne i) ((isUnit_coneX i p.1).unit.inv_mul)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, hu, mul_one, map_one]`. Then use the resulting hypothesis. Rewrite using `[hinv, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalOne_comp_ratioMap (i : (k : K) → ι k) : (evalOne i).comp (ratioMap i) = RingHom.id _ := by
   apply Ideal.Quotient.ringHom_ext
@@ -133,7 +133,7 @@ theorem evalOne_comp_ratioMap (i : (k : K) → ι k) : (evalOne i).comp (ratioMa
     rw [hinv, one_mul]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (evalOne_comp_ratioMap i) g`.
+A detailed English derivation is pending.
 -/
 theorem evalOne_ratioMap (i : (k : K) → ι k) (g : DehomRing i) : evalOne i (ratioMap i g) = g :=
   RingHom.congr_fun (evalOne_comp_ratioMap i) g
@@ -145,11 +145,9 @@ def segreDehom {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι
   aeval fun a => dehom i (∏ k, X ⟨k, σ a k⟩)
 
 /- English proof (translation)
-Establish `h : (segreDehom σ i).comp (chartSubst σ i) = dehom i`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[AlgHom.comp_apply, chartSubst_X, segreDehom, aeval_X, Equiv.apply_symm_apply, map_prod]`. Rewrite using `[Finset.prod_eq_single p.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.update_self]`. Introduce `k _ hk`. Rewrite using `[Function.update_of_ne hk, dehom_X_self]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
-
-Conclude with `AlgHom.congr_fun h f`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem segreDehom_chartSubst {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)
     (f : MvPolynomial (Σ k, ι k) ℂ) : segreDehom σ i (chartSubst σ i f) = dehom i f := by
@@ -166,7 +164,7 @@ theorem segreDehom_chartSubst {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i :
   exact AlgHom.congr_fun h f
 
 /- English proof (translation)
-Introduce `g` and use `by obtain ⟨f, rfl⟩ := dehom_surjective i g exact ⟨chartSubst σ i f, segreDehom_chartSubst σ i f⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem segreDehom_surjective {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) :
     Function.Surjective (segreDehom σ i) := fun g => by

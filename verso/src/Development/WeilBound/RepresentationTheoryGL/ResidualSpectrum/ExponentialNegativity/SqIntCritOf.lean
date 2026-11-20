@@ -17,20 +17,20 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CountLeOfDvd
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-The claim follows from `expNegGlue_holds dict_holds (l2glue_holds h GlobalTheory.CompanionTheory.SiegelEscape.escape)`.
+A detailed English derivation is pending.
 -/
 theorem expNeg_of (h : An.Count) : ExpNeg :=
   expNegGlue_holds dict_holds (l2glue_holds h GlobalTheory.CompanionTheory.SiegelEscape.escape)
 
 /- English proof (translation)
-The claim follows from `sqIntGlue_holds dict_holds niceAut_holds h1 h2 killPoly_holds (GlobalTheory.CompanionTheory.AnBoot.bootGlue diffstep_holds (ctstepglue_holds GlobalTheory.CompanionTheory.LinRec.recBound)) (GlobalTheory.CompanionTheory.SlabGlue.slabGlue h3)`.
+A detailed English derivation is pending.
 -/
 theorem sqIntCrit_of (h1 : InitBnd) (h2 : FinTr) (h3 : An.BoxVol) : SqIntCrit :=
   sqIntGlue_holds dict_holds niceAut_holds h1 h2 killPoly_holds
     (GlobalTheory.CompanionTheory.AnBoot.bootGlue diffstep_holds (ctstepglue_holds GlobalTheory.CompanionTheory.LinRec.recBound)) (GlobalTheory.CompanionTheory.SlabGlue.slabGlue h3)
 
 /- English proof (translation)
-The claim follows from `gapGlue_holds h1 (gapAbs_of h2 GlobalTheory.CompanionTheory.GapPolyProof.gapPoly)`.
+A detailed English derivation is pending.
 -/
 theorem gap_of (h1 : LatOf) (h2 : GapOp) : Gap :=
   gapGlue_holds h1 (gapAbs_of h2 GlobalTheory.CompanionTheory.GapPolyProof.gapPoly)

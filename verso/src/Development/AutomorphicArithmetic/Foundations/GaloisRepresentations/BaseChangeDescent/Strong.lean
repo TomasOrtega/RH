@@ -22,9 +22,9 @@ def WeakAll : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Gl
         IsCompAlong σ (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ ∧ HasSatGL w τ.ρ B ∧ (CG.mk π).HasSat w B
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hreg hd hsat`. Break down `hRun E hE n hn π hreg hd hsat with h | ⟨D, h1, h2, -, h4⟩` into its components or cases. Conclude with `h`. Use `absurd (hR E hE n hn (CG.mk π) (hU E n hn π hd) (Fin D.c) D.N D.P D.pos (fun i => ?_) (h4.mono fun w hw hs => ?_)) h1` and prove the remaining obligations. Take `⟨P, e, -, hu⟩` from `hN E n hn π hd D h2 h4 i`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `(CG.isUnitary_mk P).2 hu`. Take `⟨B, ⟨b, hb, rfl⟩, hB⟩` from `hw hs`. Conclude with `⟨b, hb, hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weakAll_of (hR : SR.SplitRigid) (hN : GlobalTraceComparison.PartNorm) (hU : GOne.UnitOf) (hRun : GlobalTraceComparison.RunTh) : WeakAll := by
   intro E _ _ _ hE n hn π hreg hd hsat
@@ -38,11 +38,11 @@ theorem weakAll_of (hR : SR.SplitRigid) (hN : GlobalTraceComparison.PartNorm) (h
     exact ⟨b, hb, hB⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hq0 : 0 < q` using `by omega`. Establish `hq1 : (0 : ℝ) < q` using `by exact_mod_cast hq0`. Establish `h0` using `(h ⟨0, by omega⟩).2`. Establish `h1` using `(h ⟨1, by omega⟩).1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0`, `h1` using `[norm_mul, Complex.norm_natCast_cpow_of_pos hq0]`. Establish `e0 : (((d : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ)).re = ((d : ℝ) - 1) / 2` using `by simp`. Establish `e1 : (((d : ℂ) - 1) / 2 - ((1 : ℕ) : ℂ)).re = ((d : ℝ) - 1) / 2 - 1` using `by simp`. Simplify using `only at h0 h1`. Rewrite `h0` using `[e0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1, Real.rpow_sub hq1, Real.rpow_one, ← mul_div_assoc, lt_div_iff₀ hq1]`. Establish `e2 : (q : ℝ) ^ (-(1 / 2) : ℝ) * q = (q : ℝ) ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.rpow_add_one hq1.ne']`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem len_one {q d : ℕ} (hq : 1 < q) (hd : 1 ≤ d) (z : ℂ)
     (h : ∀ k : Fin d, (q : ℝ) ^ (-(1 / 2) : ℝ) < ‖z * (q : ℂ) ^ (((d : ℂ) - 1) / 2 - (k : ℕ))‖ ∧
@@ -64,27 +64,25 @@ theorem len_one {q d : ℕ} (hq : 1 < q) (hd : 1 ≤ d) (z : ℂ)
   linarith
 
 /- English proof (translation)
-Take `⟨c, a, d, h, P, ρ, m, σ, hP, hsp, hsplit⟩` from `hB E hE n hn U hU`. Establish `key : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, IsSplitAt w → ∃ (B : Multiset ℂˣ) (S : Fin c → Multiset ℂˣ), (CG.mk π).HasSat w B ∧ (∀ i, (CG.mk (P i)).HasSat w (S i)) ∧ ∑ i, ∑ k : Fin (d i), (S i).map (fun z : ℂˣ => (z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((d i : ℂ) - …` using `hae.mono fun w hw hs => by`. Take `⟨τ, B, t1, t2, t3⟩` from `hw hs`. Take `⟨e⟩` from `h1 E n U hU w hs τ { V := _, ρ := locProd h w (σ · w), smooth := isSmooth_parInd _ _, irred := (hsplit w hs).1 } t1 (hsplit w hs)`. Take `⟨S, s1, s2⟩` from `GlobalTheory.SatInd.satake_locProd_speh E w c n a d h (ρ · w) (σ · w) (fun i => (hP.pos i).2) (fun i => (hsp i w).2.2) B (GlobalTheory.BaseChangeBridge.hasSatGL_of_equiv e.toLinearEquiv (fun g x => LinearMap.congr_fun (e.toIntertwiningMap.isIntertwining' g) x) t2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, S, t3, fun i => (GlobalTheory.BcSpehCompare.hasSat_iff (hP.loc i w) _).2 (s1 i), by`. Simplify `s2⟩` using `only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Establish `hd : ∀ i, d i = 1` using `fun i => by`. Take `⟨w, hs, hw⟩` from `(hT E).2.exists_notMem_finite (eventually_cofinite.1 key)`. Take `⟨B, S, b1, b2, b3⟩` from `not_not.1 hw hs`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩ : ∃ z, z ∈ S i` from `Multiset.card_pos_iff_exists_mem.mp (by rw [(b2 i).card]; exact (hP.pos i).1)`. Establish `hq : 1 < Ideal.absNorm w.asIdeal`. Establish `a0 : Ideal.absNorm w.asIdeal ≠ 0` using `by simpa [Ideal.absNorm_eq_zero_iff] using w.ne_bot`. Establish `a1 : Ideal.absNorm w.asIdeal ≠ 1` using `fun e => w.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 e)`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `len_one hq (hP.pos i).2 (z : ℂ) fun k => ?_` and prove the remaining obligations. Establish `hm : (z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((d i : ℂ) - 1) / 2 - (k : ℕ)) ∈ B.map (fun z : ℂˣ => (z : ℂ))`. Rewrite using `[← b3]`. Conclude with `Multiset.mem_sum.2 ⟨i, Finset.mem_univ _, Multiset.mem_sum.2 ⟨k, Finset.mem_univ _, Multiset.mem_map_of_mem _ hz⟩⟩`. Take `⟨α, hα, e⟩` from `Multiset.mem_map.1 hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `hJ E n _ hu w B b1 α hα`. Take `rfl : d = fun _ => 1` from `funext hd`. Take `⟨j, hj⟩` from `hR E hE n hn (CG.mk π) hu (Fin c) a (fun i => CG.mk (P i)) (fun i => (hP.pos i).1) (fun i => GlobalTheory.CuspRep.CsdUnitary.isUnitary_of_isCsd E _ (CG.mk (P i)) (hP.csd i)) (key.mono fun w hw hs => by`. Take `⟨B, S, b1, b2, b3⟩` from `hw hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨S, b2, ?_⟩` and prove the remaining obligations. Establish `e : ∑ i, S i = B`. Apply `Multiset.map_injective (f := fun z : ℂˣ => (z : ℂ)) Units.val_injective` to reduce the goal to its premises. Rewrite using `[← b3]`. Conclude with `(map_sum (Multiset.mapAddMonoidHom fun z : ℂˣ => (z : ℂ)) S Finset.univ).trans (by simp)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e])` and apply the resulting hypothesis. Establish `haj : a j = n` using `congrArg Sigma.fst hj`. Establish `hone : ∀ i, i = j` using `fun i => by`. Assume the negation of the conclusion as `hij`. Establish `h2 : 1 * a i + 1 * a j ≤ ∑ k, 1 * a k`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_pair (f := fun k => 1 * a k) hij]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Use `(hP.pos i).1` as an intermediate fact. Establish `h' : ∑ k, 1 * a k = n` using `h`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : c = 1 := by`. Use `Fintype.card_eq_one_iff.2 ⟨j, hone⟩` as an intermediate fact. Simplify using `using this`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Take `rfl : a = fun _ => n` from `funext fun i => by rw [hone i, haj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hπ : P 0 = π` using `CuspSub.ext (hM E n _ _ (eq_of_heq (Sigma.mk.inj hj).2))`. Substitute `hπ` using the available equality. Use `⟨hU, hun, fun w hw σ' hσ' => ?_, fun τ' lam hl => ?_⟩` and prove the remaining obligations. Take `⟨e₁⟩` from `h3 E w n h (ρ 0 w) (σ · w) (hsp 0 w).2.2`. Take `⟨e₂⟩` from `LocUniq.isLocComp_unique (P 0) w _ _ (hP.loc 0 w) hσ'`.
-
-Conclude with `GlobalTheory.BaseChangeBridge.isCompAlong_of_equiv (e₁.trans e₂).toLinearEquiv (fun g x => LinearMap.congr_fun ((e₁.trans e₂).toIntertwiningMap.isIntertwining' g) x) σ'.irred (hsplit w hw)`. Establish `hw` using `hP.weight τ' lam hl`. Rewrite `hw` using `[Fin.sum_univ_one]`. Rewrite using `[← hw, show spehInf 1 (m 0 τ') = m 0 τ' by simp [spehInf]]`. Conclude with `CG.HasInfChar.infChar_eq (π := CG.mk (P 0)) (hP.inf 0 τ')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem match_of (hB : BcSpeh) (h1 : CompUnique) (h3 : OneFactor) (hJ : GlobalTheory.Published.JacquetShalikaBound)
     (hM : GlobalTheory.Published.CuspidalMultiplicityOne) (hR : SR.SplitRigid) (hT : GOne.Thin)
@@ -160,9 +158,9 @@ theorem match_of (hB : BcSpeh) (h1 : CompUnique) (h3 : OneFactor) (hJ : GlobalTh
     exact CG.HasInfChar.infChar_eq (π := CG.mk (P 0)) (hP.inf 0 τ')
 
 /- English proof (translation)
-Introduce `E _ _ _ l a _ ha π ⟨hreg, hpol, hg, _⟩`. Establish `hE : GlobalTheory.BCT.Unr E` using `fun w => by`. Distinguish the cases in `hs : IsSplitAt w`. Conclude with `GlobalTheory.SplitUnram.isUnramifiedAt_of_isSplitAt E w hs`. Conclude with `(hg.2.2 w hs).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : GlobalTheory.ContraPair.DualIsConj π`. Use `hpol.dual` as an intermediate fact. Rewrite `this` using `[map_pow, compNorm_quadChar, one_pow, GlobalTheory.ContraPair.dualIsConjBy_one]`. Then use the resulting hypothesis. Take `⟨U, u1, u2, u3⟩` from `hW E hE a ha π hreg hd fun w hw => (hg.2.2 w hw).2.2`. Conclude with `⟨U, match_of hB h1 h3 hJ hM hR hT hE ha π (hU E a ha π hd) U u1 u2 u3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem desc_of (hB : BcSpeh) (h1 : CompUnique) (h3 : OneFactor) (hJ : GlobalTheory.Published.JacquetShalikaBound)
     (hM : GlobalTheory.Published.CuspidalMultiplicityOne) (hR : SR.SplitRigid) (hT : GOne.Thin) (hU : GOne.UnitOf) (hW : WeakAll) :

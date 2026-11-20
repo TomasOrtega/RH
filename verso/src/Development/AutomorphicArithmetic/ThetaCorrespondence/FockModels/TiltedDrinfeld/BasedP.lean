@@ -12,14 +12,14 @@ open Formalism.Per6 hiding σB aB
 open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst PfDRPst Matrix
 
 /- English proof (translation)
-The claim follows from `continuous_κ l`.
+A detailed English derivation is pending.
 -/
 theorem base_κ_cont (l : ℕ) [Fact l.Prime] : Continuous (κ : GQ l → ℚ_[l]) := continuous_κ l
 
 /- English proof (translation)
-Introduce `L hL x h`. Take `⟨P, AI, ⟨T0⟩⟩` from `GlobalTheory.MemLoc.exists_locPrime_tied l`. Take `⟨T⟩` from `UpperTheory.Lit.Cmp.locTied6 l P AI ⟨T0⟩`. Take `⟨β, hβ⟩` from `UpperTheory.Lit.Drps.exists_beta T`. Use `GlobalTheory.Pst.nontrivial_B P` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.Pst.StLat.kummer_not_frac l P AI T0 ⟨L, hL⟩ 1 (T.eB.symm (x + qB l β * t l)) one_ne_zero fun g hg => ?_` and prove the remaining obligations. Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[map_one, one_mul, one_mul, one_mul, one_mul, map_sub, DualB.tie_σB T, RingEquiv.apply_symm_apply, hβ, map_add, ← h g hg]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem base_no_kummer (l : ℕ) [Fact l.Prime] : ∀ L : Fld l, FiniteDimensional ℚ_[l] L → ∀ x : B l,
     ¬ ∀ σ ∈ L.fixingSubgroup, σB σ x - x = qB l (κ σ) * t l := by

@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Use `X.B.sf` as an intermediate fact. Use `X.B.haar` as an intermediate fact. Conclude with `Formalism.L2.SG.Pf.reg_alg Formalism.L2.SG.Closed.UnimodGf_holds X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regAlg : (∀ a b, X.B.R (a * b) = (X.B.R a).comp (X.B.R b)) ∧ X.B.R 1 = 1 ∧ ∀ a F, ‖X.B.R a F‖ = ‖F‖ := by
   have := X.B.sf
@@ -23,7 +23,7 @@ theorem regAlg : (∀ a b, X.B.R (a * b) = (X.B.R a).comp (X.B.R b)) ∧ X.B.R 1
   exact Formalism.L2.SG.Pf.reg_alg Formalism.L2.SG.Closed.UnimodGf_holds X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec
 
 /- English proof (translation)
-Take `⟨hmul, hone, hiso⟩` from `regAlg X`. Use `Formalism.L2.SG.Pf.inner_orbit X.B.R hmul hiso a⁻¹ 1 x z` as an intermediate fact. Rewrite `this` using `[hone, ContinuousLinearMap.one_apply, inv_inv, mul_one]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_reg (a : X.B.I.GA) (x z : L2X X) : ⟪x, X.B.R a z⟫_ℂ = ⟪X.B.R a⁻¹ x, z⟫_ℂ := by
   obtain ⟨hmul, hone, hiso⟩ := regAlg X

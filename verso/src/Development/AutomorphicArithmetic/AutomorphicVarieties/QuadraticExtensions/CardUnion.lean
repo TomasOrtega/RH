@@ -4,15 +4,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `P S b hmono hcov hcard`. Use `choose m hm using hcov`. Establish `key : ∀ T : Finset P, T.card ≤ b`. Introduce `T`. Take `⟨hfN, hbN⟩` from `hcard (T.sup m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsub : (↑T : Set P) ⊆ S (T.sup m)`. Introduce `x hx`. Conclude with `hmono (Finset.le_sup (f := m) hx) (hm x)`. Establish `hfin : (S (T.sup m)).Finite` using `Set.toFinite _`. Establish `h1` using `Nat.card_mono hfin hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : Nat.card (↑T : Set P) = T.card` using `by simp`. Use linear arithmetic over natural numbers and integers. Establish `hfin : Finite P`. Assume the negation of the conclusion as `hnot`. Rewrite `hnot` using `[not_finite_iff_infinite]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `Infinite.exists_subset_card_eq P (b + 1)`. Use `key T` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite P` as an intermediate fact.
-
-Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ]`. Conclude with `key _`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.cardUnion :
     ∀ (P : Type) (S : ℕ → Set P) (b : ℕ), Monotone S → (∀ x, ∃ n, x ∈ S n) → (∀ n, CardLe (S n) b) → CardLe P b := by

@@ -23,22 +23,22 @@ def SupBoundPageRows (D : D7) (large₂ : SizeData₂ D) {j : ℕ} (ka : WeightF
 def OwnPr (D : D7) (p : ℕ) : Prop := p = Formalism.MainNotions.DIV.Cons.po D ∨ p = Formalism.MainNotions.DIV.Cons.po2 D
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ownPr_iff (D : D7) (p : ℕ) : OwnPr D p ↔ p ∈ ({D.host.pde, D.host.pde'} : Set ℕ) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Or.inl rfl`.
+Prove the first alternative.
 -/
 theorem ownPr_po (D : D7) : OwnPr D (Formalism.MainNotions.DIV.Cons.po D) := Or.inl rfl
 
 /- English proof (translation)
-The claim follows from `Or.inr rfl`.
+Prove the second alternative.
 -/
 theorem isDistinguishedPrime_second (D : D7) : OwnPr D (Formalism.MainNotions.DIV.Cons.po2 D) := Or.inr rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h _ (ownPr_po D), h _ (isDistinguishedPrime_second D)⟩, fun h p hp => by rcases hp with rfl | rfl; exacts [h.1, h.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ownPr_forall (D : D7) (Q : ℕ → Prop) :
     (∀ p, OwnPr D p → Q p) ↔ Q (Formalism.MainNotions.DIV.Cons.po D) ∧ Q (Formalism.MainNotions.DIV.Cons.po2 D) :=
@@ -63,7 +63,7 @@ def I4 (large₂ : SizeData₂ D) (X : PJ D B P j) (wL wF : WeightFamilies.Wt D 
     ∀ σ, Real.log (B.supN j w2 σ th) ≤ PI4 D j PLam lNc * WeightFamilies.dimY D j * wL.size
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d, e, f, g⟩ => ⟨⟨a, b, c, d, e, f⟩, g⟩, fun ⟨⟨a, b, c, d, e, f⟩, g⟩ => ⟨a, b, c, d, e, f, g⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fourthHypothesis_iff_sizes_and_index (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR : ℝ) (ka wL wF : WeightFamilies.Wt D j) (T nW : ℕ) :
     H4 large₂ X H C2 A2 CR ka wL wF T nW ↔ FourthHypothesisSizes large₂ C2 A2 CR ka wL wF T ∧ I4 large₂ X wL wF nW :=
@@ -75,7 +75,7 @@ def HypPage (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR CT 
     FourthHypothesisSizes large₂ C2 A2 CR ka wL wF T ∧ (T : ℝ) ≤ large₂.sc.x ^ CT
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d, e, f, g, h⟩ => ⟨⟨a, b, f, ((fourthHypothesis_iff_sizes_and_index ..).1 g).1, h⟩, c, d, e, ((fourthHypothesis_iff_sizes_and_index ..).1 g).2⟩, fun ⟨⟨a, b, f, g, h⟩, c, d, e, i⟩ => ⟨a, b, c, d, e, f, (fourthHypothesis_iff_sizes_and_index ..).2 ⟨g, i⟩, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyp_iff (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR CT : ℝ) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T nP nW : ℕ) (h0 : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) :
@@ -86,7 +86,7 @@ theorem hyp_iff (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR
     fun ⟨⟨a, b, f, g, h⟩, c, d, e, i⟩ => ⟨a, b, c, d, e, f, (fourthHypothesis_iff_sizes_and_index ..).2 ⟨g, i⟩, h⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d, e, f, g, h⟩ => ⟨⟨a, b, f, ((fourthHypothesis_iff_sizes_and_index ..).1 g).1, h⟩, c, d, e, ((fourthHypothesis_iff_sizes_and_index ..).1 g).2⟩, fun ⟨⟨a, b, f, g, h⟩, c, d, e, i⟩ => ⟨a, b, c, d, e, f, (fourthHypothesis_iff_sizes_and_index ..).2 ⟨g, i⟩, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypC_iff (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR CT : ℝ) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T nP nW : ℕ) (h0 : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) :
@@ -97,7 +97,7 @@ theorem hypC_iff (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 C
     fun ⟨⟨a, b, f, g, h⟩, c, d, e, i⟩ => ⟨a, b, c, d, e, f, (fourthHypothesis_iff_sizes_and_index ..).2 ⟨g, i⟩, h⟩⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem deepIn_iff (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (large₂ : SizeData₂ D) (CG AG Pd : ℝ) :
     Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepIn X ka large₂ CG AG Pd ↔ Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepHerm X ka ∧ Formalism.MainNotions.Gaps.EtaleWeightGaps.DeepSubMul X ∧
@@ -109,7 +109,7 @@ def ZSel {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : Formalism.Main
   (∃ φ : Fin G.rz → B.Cusp j ka →ₗ[B.KO] B.KO, Formalism.MainNotions.Gaps.SizeBoundsAlt.detPoly φ G.zc ≠ 0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c⟩ => ⟨fun k => ⟨(a k).1, (a k).2.1, (a k).2.2.1⟩, fun k => (a k).2.2.2, b, c⟩, fun ⟨a, b, c, d⟩ => ⟨fun k => ⟨(a k).1, (a k).2.1, (a k).2.2, b k⟩, c, d⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tiedZ_iff {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData X ka wL wF) (S : Scal B) (T : ℕ) (Gc : ℝ) :
     G.TiedZ S T Gc ↔
@@ -126,7 +126,7 @@ def refill {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G₀ : Formalism
   ⟨G₀.N, G₀.w, del, th', rz, alz, th0, zc, rq, th, iet, et, G₀.mx⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tiedW_refill {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G₀ : Formalism.MainNotions.Gaps.EtaleWeightGaps.GlobalFamilyData X ka wL wF) (S : Scal B) (Gc Prw : ℝ)
     (del : ℕ) (th' : Fin del → B.Cusp j wF) (rz : ℕ) (alz : Fin rz → Fin (WeightFamilies.dimY D j) → ℕ)
@@ -221,7 +221,7 @@ def TiedZSt (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (large₂ 
         G.TiedZ (Formalism.MainNotions.DIV.Cons.scalOf (toWeightFamilies F) hinj EX ka wL wF T) T Gc
 
 /- English proof (translation)
-Introduce `j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨_, _, _, _, _, po, hpo, _, PLam, hPL, _, ⟨Sh, hsub, hspan, hmean⟩, _, _⟩` from `hS j h1 h2 ka wL wF T nP nW h0 hp hc`. Conclude with `⟨Sh, hspan, fun G hGm i => ⟨hsub (Finset.mem_coe.2 (hGm i)), (hmean _ (hGm i)).trans (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tiedThSt_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ}
     (hS : ScalSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT)
@@ -233,9 +233,9 @@ theorem tiedThSt_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {l
     (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh, hs, hG⟩` from `h j h1 h2 ka wL wF T nP nW h0 hp hc`. Establish `key` using `fun g (hg : g ∈ Sh) => hG ⟨0, fun k => k.elim0, 1, fun _ => g, 0, fun k => k.elim0, fun k => k.elim0, fun k => k.elim0, 0, fun k => k.elim0, 0, 0, 0⟩ (fun _ => hg) 0`. Conclude with `⟨Sh, fun g hg => (key g (Finset.mem_coe.1 hg)).1, hs, fun g hg => (key g hg).2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `h j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh, hsub, hs, hm⟩` from `h j h1 h2 ka wL wF T nP nW h0 hp hc`. Conclude with `⟨Sh, hs, fun G hG i => ⟨hsub (Finset.mem_coe.2 (hG i)), hm _ (hG i)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tiedThSt_iff {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ} :
     TiedThSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc ↔
@@ -255,7 +255,7 @@ theorem tiedThSt_iff {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {
     exact ⟨Sh, hs, fun G hG i => ⟨hsub (Finset.mem_coe.2 (hG i)), hm _ (hG i)⟩⟩
 
 /- English proof (translation)
-Introduce `j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨_, _, _, _, _, po, hpo, _, PLam, hPL, _, _, ⟨Sh, hsub, hspan, hmean⟩, _⟩` from `hS j h1 h2 ka wL wF T nP nW h0 hp hc`. Establish `hM` using `(h2n j h1 h2 ka wL wF T nP nW h0 hp).2.2.1`. Conclude with `⟨Sh, hspan, fun G hGm hz => (tiedZ_iff G _ T Gc).2 ⟨fun k => ⟨hsub (Finset.mem_coe.2 (hGm k)), hM (hsub (Finset.mem_coe.2 (hGm k))), (hmean _ (hGm k)).trans (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩, hz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tiedZSt_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ}
     (hS : ScalSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT) (h2n : IntegralityFamily F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT)
@@ -268,7 +268,7 @@ theorem tiedZSt_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {la
     (hmean _ (hGm k)).trans (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩, hz⟩⟩
 
 /- English proof (translation)
-Take `⟨G₀, hw⟩` from `hW j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh, hs, hth⟩` from `hT j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh0, hs0, hz⟩` from `hZ j h1 h2 ka wL wF T nP nW h0 hp hc`. Conclude with `⟨G₀, Sh, Sh0, hs, hs0, fun del th' rz alz th0 zc rq th iet et a b c => ⟨hw, hth (refill G₀ del th' rz alz th0 zc rq th iet et) a, hz (refill G₀ del th' rz alz th0 zc rq th iet et) b c⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tied_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc Prw : ℝ}
     (hW : TiedWSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc Prw) (hT : TiedThSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc)
@@ -294,20 +294,20 @@ theorem tied_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large
     ⟨hw, hth (refill G₀ del th' rz alz th0 zc rq th iet et) a, hz (refill G₀ del th' rz alz th0 zc rq th iet et) b c⟩⟩
 
 /- English proof (translation)
-Introduce `j h1 h2 ka _ _ _ _ _ _ _` and use `h j h1 h2 ka`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MSt.latSt (h : MSt F) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) : LatSt F I dat hI iW hiW large₂ H C2 A2 CR CT :=
   fun j h1 h2 ka _ _ _ _ _ _ _ => h j h1 h2 ka
 
 /- English proof (translation)
-Introduce `j h1 h2 ka _ _ _ _ _ _ _ Fo σ` and use `h j h1 h2 ka Fo σ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GSt.sup_L2_of_all_weights {large₂ : SizeData₂ D} {CG AG : ℝ} (h : GSt F large₂ CG AG) (H : KHyp) (C2 A2 CR CT : ℝ) :
     SupL2AtFamily F I dat hI iW hiW large₂ H C2 A2 CR CT CG AG :=
   fun j h1 h2 ka _ _ _ _ _ _ _ Fo σ => h j h1 h2 ka Fo σ
 
 /- English proof (translation)
-Introduce `j h1 h2 _ ka wL wF T nP nW h0 _ hy` and use `have hp := ((hyp_iff ..).1 hy).1 ⟨hH j h1 h2 ka wL wF T nP nW h0 hp, hM j h1 h2, hD j h1 h2 ka wL wF T nP nW h0 hp, hG j h1 h2 ka wL wF T nP nW h0 hp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem deepSt_of {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT CG AG : ℝ} {Pd : (j : ℕ) → WeightFamilies.Wt D j → ℝ}
     (hH : DeepHermSt F I dat hI iW hiW large₂ H C2 A2 CR CT) (hM : DeepSubMulSt F I dat hI iW hiW)
@@ -321,7 +321,7 @@ theorem deepSt_of {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT CG AG : ℝ
     ⟨hH j h1 h2 ka wL wF T nP nW h0 hp, hM j h1 h2, hD j h1 h2 ka wL wF T nP nW h0 hp, hG j h1 h2 ka wL wF T nP nW h0 hp⟩
 
 /- English proof (translation)
-The claim follows from `(hypC_iff ..).2 ⟨hp, hS j h1 h2 ka wL wF T nP nW h0 hp hc, hH1, h2n j h1 h2 ka wL wF T nP nW h0 hp, hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem hypC_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ}
     (hS : ScalSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT) (h2n : IntegralityFamily F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT)
@@ -336,12 +336,12 @@ theorem hypC_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large
     hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem AdmissibilitySecond.gSt {large₂ : SizeData₂ D} {CA C1 A1 CG AG : ℝ} (h : AdmissibilitySecond F I dat hI iW hiW large₂ CA C1 A1 CG AG) : GSt F large₂ CG AG := h.2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem admissibleModule_iff_lattice_quotients (large₂ : SizeData₂ D) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq : ℝ) :
     WeightAlgebra.admitted large₂ (toWeightAlgebra F I dat hI iW hiW) K H Ch Ah Cq Aq ↔
@@ -350,7 +350,7 @@ theorem admissibleModule_iff_lattice_quotients (large₂ : SizeData₂ D) (K : K
         WeightAlgebra.adm7 large₂ (toWeightFamilies F) K.CRm H.CK Ch Ah Cq Aq := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(hyp_iff ..).2 ⟨hp, hS j h1 h2 ka wL wF T nP nW h0 hp hc, hH1, h2n j h1 h2 ka wL wF T nP nW h0 hp, hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem hyp_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ}
     (hS : ScalSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT) (h2n : IntegralityFamily F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT)
@@ -365,7 +365,7 @@ theorem hyp_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large�
     hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩
 
 /- English proof (translation)
-The claim follows from `h j h1 h2 S ka wL wF T nP nW h0 nus hH`.
+A detailed English derivation is pending.
 -/
 theorem deepSt_apply {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT CG AG : ℝ} {Pd : (j : ℕ) → WeightFamilies.Wt D j → ℝ}
     (h : DeepSt F I dat hI iW hiW large₂ H C2 A2 CR CT CG AG Pd)
@@ -422,47 +422,47 @@ def TiedZStP (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ)
         G.TiedZ (Formalism.MainNotions.DIV.Cons.scalOfP (toWeightFamilies F) hinj EX p ka wL wF T) T Gc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ => h, fun h => h (ownPr_po D)⟩`.
+Supply the required witnesses or components.
 -/
 theorem integrality_iff_at_prime {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ} :
     IntegralityFamily F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT ↔ IntegralityAtPrime F I dat hI iW hiW hinj EX (Formalism.MainNotions.DIV.Cons.po D) large₂ H C2 A2 CR CT :=
   ⟨fun h _ => h, fun h => h (ownPr_po D)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ => h, fun h => h (ownPr_po D)⟩`.
+Supply the required witnesses or components.
 -/
 theorem scalars_iff_at_prime {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ} :
     ScalSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT ↔ ScalStP F I dat hI iW hiW hinj EX (Formalism.MainNotions.DIV.Cons.po D) large₂ H C2 A2 CR CT :=
   ⟨fun h _ => h, fun h => h (ownPr_po D)⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tiedWStP_iff {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} (p : ℕ) {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc Prw : ℝ} :
     TiedWStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT Gc Prw ↔ TiedWSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc Prw := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem weightCondition_iff_at_prime {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc Prw : ℝ} :
     TiedWSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc Prw ↔ TiedWStP F I dat hI iW hiW hinj EX (Formalism.MainNotions.DIV.Cons.po D) large₂ H C2 A2 CR CT Gc Prw := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ => h, fun h => h (ownPr_po D)⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaCondition_iff_at_prime {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ} :
     TiedThSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc ↔ TiedThStP F I dat hI iW hiW hinj EX (Formalism.MainNotions.DIV.Cons.po D) large₂ H C2 A2 CR CT Gc :=
   ⟨fun h _ => h, fun h => h (ownPr_po D)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ => h, fun h => h (ownPr_po D)⟩`.
+Supply the required witnesses or components.
 -/
 theorem zeroCondition_iff_at_prime {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ} :
     TiedZSt F I dat hI iW hiW hinj EX large₂ H C2 A2 CR CT Gc ↔ TiedZStP F I dat hI iW hiW hinj EX (Formalism.MainNotions.DIV.Cons.po D) large₂ H C2 A2 CR CT Gc :=
   ⟨fun h _ => h, fun h => h (ownPr_po D)⟩
 
 /- English proof (translation)
-Introduce `hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨_, _, _, _, _, po, hpo, _, PLam, hPL, _, ⟨Sh, hsub, hspan, hmean⟩, _, _⟩` from `hS hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Conclude with `⟨Sh, hspan, fun G hGm i => ⟨hsub (Finset.mem_coe.2 (hGm i)), (hmean _ (hGm i)).trans (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tiedThStP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ}
     (hS : ScalStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT)
@@ -474,9 +474,9 @@ theorem tiedThStP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {
     (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh, hs, hG⟩` from `h hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Establish `key` using `fun g (hg : g ∈ Sh) => hG ⟨0, fun k => k.elim0, 1, fun _ => g, 0, fun k => k.elim0, fun k => k.elim0, fun k => k.elim0, 0, fun k => k.elim0, 0, 0, 0⟩ (fun _ => hg) 0`. Conclude with `⟨Sh, fun g hg => (key g (Finset.mem_coe.1 hg)).1, hs, fun g hg => (key g hg).2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `h hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh, hsub, hs, hm⟩` from `h hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Conclude with `⟨Sh, hs, fun G hG i => ⟨hsub (Finset.mem_coe.2 (hG i)), hm _ (hG i)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tiedThStP_iff {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ} :
     TiedThStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT Gc ↔
@@ -497,7 +497,7 @@ theorem tiedThStP_iff {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} 
     exact ⟨Sh, hs, fun G hG i => ⟨hsub (Finset.mem_coe.2 (hG i)), hm _ (hG i)⟩⟩
 
 /- English proof (translation)
-Introduce `hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨_, _, _, _, _, po, hpo, _, PLam, hPL, _, _, ⟨Sh, hsub, hspan, hmean⟩, _⟩` from `hS hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Establish `hM` using `(h2n hown j h1 h2 ka wL wF T nP nW h0 hp).2.2.1`. Conclude with `⟨Sh, hspan, fun G hGm hz => (tiedZ_iff G _ T Gc).2 ⟨fun k => ⟨hsub (Finset.mem_coe.2 (hGm k)), hM (hsub (Finset.mem_coe.2 (hGm k))), (hmean _ (hGm k)).trans (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩, hz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tiedZStP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc : ℝ}
     (hS : ScalStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT) (h2n : IntegralityAtPrime F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT)
@@ -510,7 +510,7 @@ theorem tiedZStP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p
     (hmean _ (hGm k)).trans (mul_le_mul_of_nonneg_right (hG po hpo PLam hPL) (zero_le_one.trans (WeightFamilies.Wt.one_le_size _)))⟩, hz⟩⟩
 
 /- English proof (translation)
-Take `⟨G₀, hw⟩` from `hW j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh, hs, hth⟩` from `hT hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Take `⟨Sh0, hs0, hz⟩` from `hZ hown j h1 h2 ka wL wF T nP nW h0 hp hc`. Conclude with `⟨G₀, Sh, Sh0, hs, hs0, fun del th' rz alz th0 zc rq th iet et a b c => ⟨hw, hth (refill G₀ del th' rz alz th0 zc rq th iet et) a, hz (refill G₀ del th' rz alz th0 zc rq th iet et) b c⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tiedP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT Gc Prw : ℝ} (hown : OwnPr D p)
     (hW : TiedWStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT Gc Prw) (hT : TiedThStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT Gc)
@@ -536,7 +536,7 @@ theorem tiedP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : 
     ⟨hw, hth (refill G₀ del th' rz alz th0 zc rq th iet et) a, hz (refill G₀ del th' rz alz th0 zc rq th iet et) b c⟩⟩
 
 /- English proof (translation)
-The claim follows from `(hypC_iff ..).2 ⟨hp, hS hown j h1 h2 ka wL wF T nP nW h0 hp hc, hH1, h2n hown j h1 h2 ka wL wF T nP nW h0 hp, hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem hypCP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ} (hown : OwnPr D p)
     (hS : ScalStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT) (h2n : IntegralityAtPrime F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT)
@@ -551,7 +551,7 @@ theorem hypCP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : 
     hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩
 
 /- English proof (translation)
-The claim follows from `(hyp_iff ..).2 ⟨hp, hS hown j h1 h2 ka wL wF T nP nW h0 hp hc, hH1, h2n hown j h1 h2 ka wL wF T nP nW h0 hp, hI4 j h1 h2 ka wL wF T nP nW h0 hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem hypP_of {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ} {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR CT : ℝ} (hown : OwnPr D p)
     (hS : ScalStP F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT) (h2n : IntegralityAtPrime F I dat hI iW hiW hinj EX p large₂ H C2 A2 CR CT)

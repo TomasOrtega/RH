@@ -10,7 +10,7 @@ section
 variable {A : Type} [CommRing A] {a r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `[rect, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rect_map {B B' : Type} [AddCommGroup B] [Module A B] [AddCommGroup B'] [Module A B'] (p : B →ₗ[A] B')
     (Z : Matrix (Fin r) (Fin a) A) (x : Fin a → B) : p.compLeft (Fin r) (rect Z x) = rect Z (p ∘ x) := by
@@ -18,7 +18,7 @@ theorem rect_map {B B' : Type} [AddCommGroup B] [Module A B] [AddCommGroup B'] [
   simp [rect, map_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `[matAct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_map {B B' : Type} [AddCommGroup B] [Module A B] [AddCommGroup B'] [Module A B'] (p : B →ₗ[A] B')
     (Φ : Matrix (Fin a) (Fin a) A) (x : Fin a → B) : p ∘ matAct Φ x = matAct Φ (p ∘ x) := by
@@ -28,41 +28,35 @@ theorem matAct_map {B B' : Type} [AddCommGroup B] [Module A B] [AddCommGroup B']
 end
 
 /- English proof (translation)
-Introduce `D N X bkP i s A _ _ κ Q Q' a a' Φ Φ' Z Z' γ σ hU hU' hSel hσ`. Use `set W : Submodule A (Fin a' → A) := what₂ Φ' ⊔ what₂ (fun j : Bool × Fin D.R.r => Z' (γ j.1) j.2) with hW`. Use `letI tY : TopologicalSpace ((Fin a' → A) ⧸ W) := ⊥`. Use `haveI : DiscreteTopology ((Fin a' → A) ⧸ W) := ⟨rfl⟩`. Set `gens : Fin a' → (Fin a' → A) ⧸ W` to `fun j => W.mkQ (Pi.single j 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ v : Fin a' → A, ∑ j, v j • gens j = W.mkQ v`. Introduce `v`. Establish `: v = ∑ j, v j • (Pi.single j (1 : A) : Fin a' → A)`. Use function extensionality and compare the values at `c`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_rhs => rw [this]`. Simplify using `[gens, map_sum]`. Establish `hrect : ∀ g c, rect (Z' g) gens c = W.mkQ (Z' g c)` using `fun g c => hsum _`. Establish `hgens : matAct Φ' gens = 0`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: matAct Φ' gens b = W.mkQ (Φ' b)` using `hsum (Φ' b)`. Rewrite using `[this]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).2 ((le_sup_left : what₂ Φ' ≤ W) (Submodule.subset_span ⟨b, rfl⟩))`. Establish `hf'` using `(hU' ((Fin a' → A) ⧸ W)).1 gens hgens`. Establish `hγ : ∀ b, (fun g => rect (Z' g) gens) (γ b) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Use function extensionality and compare the values at `c`. Use `show rect (Z' (γ b)) gens c = 0`. Rewrite using `[hrect]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).2 ((le_sup_right : what₂ (fun j : Bool × Fin D.R.r => Z' (γ j.1) j.2) ≤ W) (Submodule.subset_span ⟨(b, c), rfl⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf` using `hSel _ _ hf' hγ`. Take `⟨x, hx, m, hm⟩` from `(hU ((Fin a' → A) ⧸ W)).2.2 _ hf`. Take `⟨E, hE⟩ : ∃ E : Matrix (Fin a) (Fin a') A, ∀ b, W.mkQ (E b) = x b` from `⟨fun b => (Submodule.mkQ_surjective W (x b)).choose, fun b => (Submodule.mkQ_surjective W (x b)).choose_spec⟩`. Establish `hvm : ∀ v : Fin a → A, W.mkQ (∑ k, v k • E k) = ∑ k, v k • x k` using `fun v => by`. Rewrite using `[map_sum]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_smul, hE]`. Use `⟨E, ?_, ?_, ?_⟩` and prove the remaining obligations. Set `S : Submodule A ((Fin a' → A) ⧸ W)` to `Submodule.span A (Set.range x)`. Use `letI tS : TopologicalSpace (((Fin a' → A) ⧸ W) ⧸ S) := ⊥`. Use `haveI : DiscreteTopology (((Fin a' → A) ⧸ W) ⧸ S) := ⟨rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpx : S.mkQ ∘ x = 0`. Use function extensionality and compare the values at `b`. Conclude with `(Submodule.Quotient.mk_eq_zero S).2 (Submodule.subset_span ⟨b, rfl⟩)`. Establish `hz : S.mkQ ∘ gens = 0`. Use `(hU' (((Fin a' → A) ⧸ W) ⧸ S)).2.1 _ ?_ ⟨S.mkQ.compLeft (Fin D.R.r) m, fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← matAct_map, hgens]`. Use function extensionality and compare the values at `b`. Simplify using the standard rewrite rules. Establish `e` using `congrArg (S.mkQ.compLeft (Fin D.R.r)) (hm g)`. Rewrite `e` using `[map_sub, map_sub, rect_map, rect_map, hpx, repOn_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : rect (Z g) (0 : Fin a → ((Fin a' → A) ⧸ W) ⧸ S) = 0`. Use function extensionality and compare the values at `c`. Simplify using `[rect]`. Rewrite `e` using `[h0, sub_zero]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hgS : ∀ j, gens j ∈ S` using `fun j => (Submodule.Quotient.mk_eq_zero S).1 (congrFun hz j)`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hvS : W.mkQ v ∈ S`. Rewrite using `[← hsum]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `S.sum_mem fun j _ => S.smul_mem _ (hgS j)`. Establish `hSm : S = (what₂ E).map W.mkQ` using `by show Submodule.span A (Set.range x) = (Submodule.span A (Set.range E)).map W.mkQ`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨E b, ⟨b, rfl⟩, hE b⟩`. Introduce and unpack `⟨_, ⟨b, rfl⟩, rfl⟩`. Conclude with `⟨b, (hE b).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `hvS` using `[hSm]`. Take `⟨e, he, hev⟩` from `hvS`. Establish `hd : v - e ∈ W`. Rewrite using `[← Submodule.Quotient.mk_eq_zero W, ← Submodule.mkQ_apply, map_sub, hev, sub_self]`. Establish `: v = e + (v - e)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup he hd`. Introduce `b`. Rewrite using `[← Submodule.Quotient.mk_eq_zero W, ← Submodule.mkQ_apply]`. Establish `e1 : (Φ * E) b = ∑ k, Φ b k • E k`.
-
-Use function extensionality and compare the values at `c`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[e1, hvm (Φ b)]`. Conclude with `congrFun hx b`. Introduce and unpack `⟨b, c⟩`.
-
-Rewrite using `[← Submodule.Quotient.mk_eq_zero W, ← Submodule.mkQ_apply]`. Establish `e1 : Matrix.vecMul (Z (σ b) c) E = ∑ k, Z (σ b) c k • E k`. Use function extensionality and compare the values at `t`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`. Establish `e2` using `congrFun (hm (σ b)) c`.
-
-Rewrite `e2` using `[hσ, sub_self]`. Use `show W.mkQ (Z' (σ b) c - Matrix.vecMul (Z (σ b) c) E) = 0`. Rewrite using `[map_sub, e1, hvm (Z (σ b) c), ← hrect]`. Conclude with `e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comparison_cocycles : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), ∀ (A : Type) [CommRing A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q Q' : Finset (PlE D.host)) (a a' : ℕ) (Φ : Matrix (Fin a) (Fin a) A) (Φ' : Matrix (Fin a') (Fin a') A) Z Z' (γ σ : Bool → GE N), Univ bkP i s κ Q Φ Z → Univ bkP i s κ Q' Φ' Z' → (∀ (Y : Type) [AddCommGroup Y] [Module A Y] [TopologicalSpace Y] [DiscreteTopology Y] (f : GE N → Fin D.R.r → Y), SelC bkP i s κ Y Q' f → (∀ b, f (γ b) = 0) → SelC bkP i s κ Y Q f) → (∀ (Y : Type) [AddCommGroup Y] [Module A Y] b m, repOn (Tgl i s) κ Y (σ b) m = m) → ∃ E : Matrix (Fin a) (Fin a') A, what₂ E ⊔ (what₂ Φ' ⊔ what₂ (fun j : Bool × Fin D.R.r => Z' (γ j.1) j.2)) = ⊤ ∧ (∀ b, (Φ * E) b ∈ what₂ Φ' ⊔ what₂ (fun j : Bool × Fin D.R.r => Z' (γ j.1) j.2)) ∧ ∀ j : Bool × Fin D.R.r, Z' (σ j.1) j.2 - Matrix.vecMul (Z (σ j.1) j.2) E ∈ what₂ Φ' ⊔ what₂ (fun j : Bool × Fin D.R.r => Z' (γ j.1) j.2) := by
   intro D N X bkP i s A _ _ κ Q Q' a a' Φ Φ' Z Z' γ σ hU hU' hSel hσ

@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj IsDedekindDoma
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem spMap_comp_eq {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -27,9 +27,9 @@ private theorem spMap_comp_eq {R S T : Type} [CommRing R] [CommRing S] [CommRing
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Establish `e₁ : (dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp ψ`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e₂ : (TrivSqZeroExt.fstHom T T T).toRingHom.comp (dualMap ψ) = ψ.comp (TrivSqZeroExt.fstHom S S S).toRingHom` using `RingHom.ext fun z => by simp [dualMap]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hv.1, ← Category.assoc, spMap_comp_eq, e₁, ← spMap_comp_eq, Category.assoc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, spMap_comp_eq, e₂, ← spMap_comp_eq, Category.assoc, hv.2]`. Set `p : Over.mk (spMap ψ ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap ψ) rfl`. Rewrite using `[← MonObj.comp_one p]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem isTanAtG_bc {X : Scheme.{0}} (t : SAB H X) {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T)
     {x : Sp S ⟶ X} {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x v) :
@@ -46,7 +46,7 @@ private theorem isTanAtG_bc {X : Scheme.{0}} (t : SAB H X) {S T : Type} [CommRin
     rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dualMap_comp_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     (dualMap ψ).comp (epsMul a) = (epsMul (ψ a)).comp (dualMap ψ) := by
@@ -56,7 +56,7 @@ variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type
   {Z : Model Xo c β}
 
 /- English proof (translation)
-Establish `e : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `by simp`. Establish `h : ‖(p : ℂ_[p])‖ < 1`. Rewrite using `[e, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_p_lt_one (p : ℕ) (hp : Fact p.Prime) :
     @norm ℂ_[p] (PadicComplex.nontriviallyNormedField p).toNorm
@@ -68,9 +68,9 @@ private theorem norm_p_lt_one (p : ℕ) (hp : Fact p.Prime) :
   exact h
 
 /- English proof (translation)
-Use `(GlobalTheory.UnramLine.lnStep_inl_eq_inr Z.t (spMap ψ ≫ x) _ p hp hpC hpd (fun τ => (ψ.comp φ).comp (embF c τ)) ?_ (fun τ i => isTanAtG_bc Z.t ψ (f.tan τ i)) ?_ b k z hk).symm` and prove the remaining obligations. Introduce `τ τ' h`. Use extensionality with `a`. Establish `h₁ : (ψ.comp φ) (embF c τ a) = (ψ.comp φ) (embF c τ' a)` using `congrArg (fun g : E →+* C => g a) h`. Conclude with `congrArg Subtype.val ((ψ.comp φ).injective h₁)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ i a`. Rewrite using `[Category.assoc, f.eig τ i a, ← Category.assoc, spMap_comp_eq, dualMap_comp_epsMul, ← spMap_comp_eq, Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lnStep_frame {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x) (p : ℕ)
     {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
@@ -92,7 +92,7 @@ private theorem lnStep_frame {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp 
 omit [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_single_index (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sum_single_one (s : Sym E) (g : Sym E → ℝ) :
     ((Finsupp.single s (1 : ℤ)).sum fun a n => (n : ℝ) * g a) = g s := by
@@ -100,9 +100,9 @@ private theorem sum_single_one (s : Sym E) (g : Sym E → ℝ) :
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h₁ : letterOf Dw (.inr k) = some z` using `hk`. Establish `h₂ : letterOf Dw (.inl (z.1, (z.2 : ℕ))) = some z` using `dif_pos z.2.isLt`. Unfold `expo`. Rewrite using `[Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[h₁, h₂]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem expo_inr_eq_inl (a : ℕ → Bool) (R : Option ℝ) (k : ℕ) (z : Letter Dw)
     (hk : (letters Dw)[k]? = some z) : expo Dw (Finsupp.single ((a, R, .inr k) : Sym E) 1) =
@@ -116,11 +116,11 @@ private theorem expo_inr_eq_inl (a : ℕ → Bool) (R : Option ℝ) (k : ℕ) (z
   rw [h₁, h₂]
 
 /- English proof (translation)
-Establish `hex` using `expo_inr_eq_inl a R k z hk`. Distinguish the cases in `hp : (resP v).Prime`. Unfold `lgOf`. Rewrite using `[dif_pos hp, dif_pos hp, hex]`. Simplify using `only`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[sum_single_one, sum_single_one]`. Simplify using `only`. Use `congrArg₂ (· + ·) rfl (congrArg₂ (· * ·) rfl ?_)` and prove the remaining obligations. Conclude with `lnStep_frame _ _ hp (norm_p_lt_one _ _) _ hv _ k z hk`. Unfold `lgOf`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hp, dif_neg hp]`.
+A detailed English derivation is pending.
 -/
 private theorem lgOf_inr_eq_inl {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (a : ℕ → Bool)
     (R : Option ℝ) (k : ℕ) (z : Letter Dw) (hk : (letters Dw)[k]? = some z) (v : HeightOneSpectrum (𝓞 F))
@@ -142,7 +142,7 @@ private theorem lgOf_inr_eq_inl {F : Type} [Field F] [NumberField F] {e : F ≃+
 end General
 
 /- English proof (translation)
-Introduce `_ O _ T R c k z hk v ε y hv` and use `lgOf_inr_eq_inl (O.Φ.C c) (ArIn.ind T) (some R) k z hk v ε y hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem awayAgree : ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ) (c : O.s.Comp),
     GlobalTheory.EigWhole.AwayAgree O T R c :=
@@ -154,7 +154,7 @@ end
 
 open NumberField MvPolynomial CategoryTheory AlgebraicGeometry Formalism.BasicNotions Formalism.DegreeFormula GlobalTheory.FlagPoly GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad in
 /- English proof (translation)
-The claim follows from `GlobalTheory.EigWhole.awayAgree`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.eigen_away_agree : ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ) (c : O.s.Comp), GlobalTheory.EigWhole.AwayAgree O T R c :=
   GlobalTheory.EigWhole.awayAgree

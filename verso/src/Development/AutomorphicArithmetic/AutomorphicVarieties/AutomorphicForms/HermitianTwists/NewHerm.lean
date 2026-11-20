@@ -5,9 +5,9 @@ open Polynomial UpperTheory.V UpperTheory.V.Af Formalism.ConjugateSelfDual
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Establish `h0` using `congrArg (Polynomial.eval 0) h`. Establish `h1` using `congrArg (Polynomial.eval 1) h`. Simplify using `only [eval_add, eval_sub, eval_mul, eval_pow, eval_X, eval_C] at h0 h1`. Prove the components needed by the constructor for the conclusion. Take the linear combination `h0 - h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h0`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem quad_inj {a b c d : ℂ} (h : (X ^ 2 - C a * X + C b : ℂ[X]) = X ^ 2 - C c * X + C d) : a = c ∧ b = d := by
   have h0 := congrArg (Polynomial.eval 0) h
@@ -18,11 +18,11 @@ private theorem quad_inj {a b c d : ℂ} (h : (X ^ 2 - C a * X + C b : ℂ[X]) =
   · linear_combination h0
 
 /- English proof (translation)
-Introduce `hN hT hO hS k hk f w hw`. Take `⟨π, hi, hs⟩` from `hN k hk f 0`. Take `⟨π₀, hi₀, ht⟩` from `hT k (by omega) 0 π hi`. Take `⟨H, hH⟩` from `hO _ π₀ hi₀`. Take `⟨B, hB, e⟩` from `hs w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, h5, h6⟩` from `ht w`. Take `⟨γ, δ, rfl⟩` from `Multiset.card_eq_two.1 (TR.CuspSub.HasSat.card hB)`. Take `⟨α, rfl⟩ : ∃ α, γ = α * t` from `⟨γ * t⁻¹, by simp⟩`. Take `⟨β, rfl⟩ : ∃ β, δ = β * t` from `⟨δ * t⁻¹, by simp⟩`. Establish `h0 : π₀.HasSat w {α, β}` using `(h5 _).2 (by simpa using hB)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hS π₀ H hH w α β h0`. Rewrite `e` using `[h6, Newform.heckePoly]`. Take `⟨h2, h3⟩` from `quad_inj e`. Establish `hp : (normV w : ℂ) ^ (k - 1) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (UpperTheory.V.Af.Nf.places w).1.ne_zero)`. Rewrite using `[← h2, ← mul_right_cancel₀ hp h3, map_mul, Complex.conj_ofReal, mul_assoc, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Af.Rn.newHerm :
     UpperTheory.V.Published.NewformRep → UpperTheory.V.Af.Rn.UnitTw → UpperTheory.V.Af.Rn.HermOf → UpperTheory.V.Af.Rn.SatHerm → UpperTheory.V.Af.Rn.NewHerm := by

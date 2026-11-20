@@ -47,86 +47,86 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `LogDetGramContinuous.proof`.
+A detailed English derivation is pending.
 -/
 theorem LogDetGramContinuous.full : LogDetGramContinuous.Statement := LogDetGramContinuous.proof
 
 /- English proof (translation)
-The claim follows from `LogDetGramSubmean.proof LogDetGramContinuous.full`.
+A detailed English derivation is pending.
 -/
 theorem LogDetGramSubmean.full : LogDetGramSubmean.Statement :=
   LogDetGramSubmean.proof LogDetGramContinuous.full
 
 /- English proof (translation)
-The claim follows from `InvEntryBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem InvEntryBound.full : InvEntryBound.Statement := InvEntryBound.proof
 
 /- English proof (translation)
-The claim follows from `InvEntryDeriv.proof InvEntryBound.full`.
+A detailed English derivation is pending.
 -/
 theorem InvEntryDeriv.full : InvEntryDeriv.Statement := InvEntryDeriv.proof InvEntryBound.full
 
 /- English proof (translation)
-The claim follows from `LogDetGramDeriv.proof InvEntryBound.full InvEntryDeriv.full MatrixDetDeriv.proof GramEntryDeriv.proof`.
+A detailed English derivation is pending.
 -/
 theorem LogDetGramDeriv.full : LogDetGramDeriv.Statement :=
   LogDetGramDeriv.proof InvEntryBound.full InvEntryDeriv.full MatrixDetDeriv.proof
     GramEntryDeriv.proof
 
 /- English proof (translation)
-The claim follows from `AnalyticDerivBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem AnalyticDerivBound.full : AnalyticDerivBound.Statement := AnalyticDerivBound.proof
 
 /- English proof (translation)
-The claim follows from `ChartFrameDeriv.proof AnalyticDerivBound.full`.
+A detailed English derivation is pending.
 -/
 theorem ChartFrameDeriv.full : ChartFrameDeriv.Statement :=
   ChartFrameDeriv.proof AnalyticDerivBound.full
 
 /- English proof (translation)
-The claim follows from `ChartImagDeriv.proof AnalyticDerivBound.full CuspTimeDeriv.proof`.
+A detailed English derivation is pending.
 -/
 theorem ChartImagDeriv.full : ChartImagDeriv.Statement :=
   ChartImagDeriv.proof AnalyticDerivBound.full CuspTimeDeriv.proof
 
 /- English proof (translation)
-The claim follows from `PeriodHermValue.proof`.
+A detailed English derivation is pending.
 -/
 theorem PeriodHermValue.full : PeriodHermValue.Statement := PeriodHermValue.proof
 
 /- English proof (translation)
-The claim follows from `PeriodGramPosDef.proof PeriodHermValue.full`.
+A detailed English derivation is pending.
 -/
 theorem PeriodGramPosDef.full : PeriodGramPosDef.Statement :=
   PeriodGramPosDef.proof PeriodHermValue.full
 
 /- English proof (translation)
-The claim follows from `PivotInvDiag.proof LeadMinorLeading.proof LeadMinorBasic.proof`.
+A detailed English derivation is pending.
 -/
 theorem PivotInvDiag.full : PivotInvDiag.Statement :=
   PivotInvDiag.proof LeadMinorLeading.proof LeadMinorBasic.proof
 
 /- English proof (translation)
-The claim follows from `PivotLast.proof PivotInvDiag.full`.
+A detailed English derivation is pending.
 -/
 theorem PivotLast.full : PivotLast.Statement := PivotLast.proof PivotInvDiag.full
 
 /- English proof (translation)
-The claim follows from `PivotBounds.proof LeadMinorLeading.proof LeadMinorBasic.proof PivotInvDiag.full PivotLast.full`.
+A detailed English derivation is pending.
 -/
 theorem PivotBounds.full : PivotBounds.Statement :=
   PivotBounds.proof LeadMinorLeading.proof LeadMinorBasic.proof PivotInvDiag.full PivotLast.full
 
 /- English proof (translation)
-The claim follows from `PivotProductBound.proof LeadMinorBasic.proof`.
+A detailed English derivation is pending.
 -/
 theorem PivotProductBound.full : PivotProductBound.Statement :=
   PivotProductBound.proof LeadMinorBasic.proof
 
 /- English proof (translation)
-The claim follows from `GramPivotProduct.proof LeadMinorLeading.proof LeadMinorBasic.proof PivotLast.full UnimodularLast.proof SchurDetBound.proof IntGramQf.proof IntGramUnimodular.proof IntGramDropLast.proof IntGramSubLast.proof`.
+A detailed English derivation is pending.
 -/
 theorem GramPivotProduct.full : GramPivotProduct.Statement :=
   GramPivotProduct.proof LeadMinorLeading.proof LeadMinorBasic.proof PivotLast.full
@@ -134,48 +134,48 @@ theorem GramPivotProduct.full : GramPivotProduct.Statement :=
     IntGramDropLast.proof IntGramSubLast.proof
 
 /- English proof (translation)
-The claim follows from `CuspCoordinateBound.proof ChartPeriodImPos.proof ChartLowerBlockBound.proof PeriodGramPosDef.full`.
+A detailed English derivation is pending.
 -/
 theorem CuspCoordinateBound.full : CuspCoordinateBound.Statement :=
   CuspCoordinateBound.proof ChartPeriodImPos.proof ChartLowerBlockBound.proof PeriodGramPosDef.full
 
 /- English proof (translation)
-The claim follows from `ChartBounds.proof`.
+A detailed English derivation is pending.
 -/
 theorem ChartBounds.full : ChartBounds.Statement := ChartBounds.proof
 
 /- English proof (translation)
-The claim follows from `ChartGradient.proof LogDetGramDeriv.full ChartFrameDeriv.full ChartImagDeriv.full ChartBounds.full`.
+A detailed English derivation is pending.
 -/
 theorem ChartGradient.full : ChartGradient.Statement :=
   ChartGradient.proof LogDetGramDeriv.full ChartFrameDeriv.full ChartImagDeriv.full
     ChartBounds.full
 
 /- English proof (translation)
-The claim follows from `LogDetGramPsh.proof LogDetGramContinuous.full LogDetGramSubmean.full`.
+A detailed English derivation is pending.
 -/
 theorem LogDetGramPsh.full : LogDetGramPsh.Statement :=
   LogDetGramPsh.proof LogDetGramContinuous.full LogDetGramSubmean.full
 
 /- English proof (translation)
-The claim follows from `ChartPotentialPsh.proof LogDetGramContinuous.full LogDetGramSubmean.full ChartImagContinuous.proof ChartImagMean.proof`.
+A detailed English derivation is pending.
 -/
 theorem ChartPotentialPsh.full : ChartPotentialPsh.Statement :=
   ChartPotentialPsh.proof LogDetGramContinuous.full LogDetGramSubmean.full
     ChartImagContinuous.proof ChartImagMean.proof
 
 /- English proof (translation)
-The claim follows from `MCSchur.schurQuotient`.
+A detailed English derivation is pending.
 -/
 theorem SchurQuotient.full : SchurQuotient.Statement := MCSchur.schurQuotient
 
 /- English proof (translation)
-The claim follows from `MCPeriod.schurQuotientPeriod`.
+A detailed English derivation is pending.
 -/
 theorem SchurQuotientPeriod.full : SchurQuotientPeriod.Statement := MCPeriod.schurQuotientPeriod
 
 /- English proof (translation)
-The claim follows from `CuspLattice.proof (CuspShortVectors.proof ChartPeriodImPos.proof ChartLowerBlockBound.proof PeriodHermValue.full) (CuspLeadingMinima.proof ChartPeriodImPos.proof) (CuspCovolume.proof ChartPeriodImPos.proof PeriodGramPosDef.full CuspCoordinateBound.full PivotBounds.full GramPivotP …`.
+A detailed English derivation is pending.
 -/
 theorem CuspLattice.full : CuspLattice.Statement :=
   CuspLattice.proof

@@ -8,9 +8,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 
 /- English proof (translation)
-Introduce `n G hG`. Take `⟨𝔤, h𝔤, -⟩` from `GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra hG`. Establish `hm : ∀ X, X ∈ HCSS.lieOf G ↔ X ∈ 𝔤` using `fun X => (h𝔤 X).symm`. Use `⟨fun X Y hX hY => ?_, fun r X hX => ?_, fun X Y hX hY => ?_, fun k hk X hX => ?_⟩` and prove the remaining obligations. Conclude with `(hm _).2 (𝔤.add_mem ((hm X).1 hX) ((hm Y).1 hY))`.
-
-Conclude with `(hm _).2 (𝔤.smul_mem r ((hm X).1 hX))`. Conclude with `(hm _).2 ((GlobalTheory.CompanionTheory.LieStable.lieAlg_stable hG 𝔤 h𝔤).2 X ((hm X).1 hX) Y ((hm Y).1 hY))`. Conclude with `(hm _).2 (GlobalTheory.CompanionTheory.LieStable.conj_mem hG h𝔤 hk ((hm X).1 hX))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lieOf_isLieSubalgebra : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} (hG : IsLinRed G),
     (∀ X Y, X ∈ HCSS.lieOf G → Y ∈ HCSS.lieOf G → X + Y ∈ HCSS.lieOf G) ∧

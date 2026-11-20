@@ -17,15 +17,13 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (Multiplicative A) := l1`. Use `haveI : SecondCountableTopology (Multiplicative A) := l2`. Use `haveI : T2Space (Multiplicative A) := l3`. Use `letI : MeasurableSpace (Multiplicative A) := m`. Use `haveI : BorelSpace (Multiplicative A) := ⟨l4.measurable_eq⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `eK : ι ≃ AddSubgroup.toSubgroup Λ` to `Equiv.ofBijective (fun c => ⟨.ofAdd (j c), (hΛ _).2 ⟨c, rfl⟩⟩) ⟨fun c c' h => hj (congrArg Subtype.val h), fun k => by`. Take `⟨c, hc⟩` from `(hΛ _).1 k.2`. Conclude with `⟨c, Subtype.ext hc⟩⟩`. Use `haveI : Countable (AddSubgroup.toSubgroup Λ) := Countable.of_equiv _ eK`. Establish `hr : ∀ k : AddSubgroup.toSubgroup Λ, s k ∈ Γ` using `fun k => by simpa using (hrat 1 (one_mem _) k).2 ⟨one_mem _, k.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : DiscreteTopology (AddSubgroup.toSubgroup Λ) := DiscreteTopology.of_continuous_injective (f := fun k : AddSubgroup.toSubgroup Λ => (⟨s k, hr k⟩ : Γ)) (Continuous.subtype_mk (hs.comp continuous_subtype_val) hr) fun k k' h => Subtype.ext (hinj 1 (one_mem _) 1 (one_mem _) _ _ …`. Take `⟨K₀, hK₀, hK₀s⟩` from `hK`. Take `⟨μ, 𝓔, hμ, h𝓔, h𝓔1⟩` from `GlobalTheory.HaarFundDom.exists_haar_fundDom_mass_one (Multiplicative A) (AddSubgroup.toSubgroup Λ) K₀ hK₀ fun g => by`. Take `⟨c, hc⟩` from `hK₀s g.toAdd`. Use `⟨(eK c)⁻¹, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `hc` using `[sub_eq_neg_add]`. Conclude with `hc`. Use `⟨GlobalTheory.SemiUnfold.cocompact_of_semi Γ N hN s hs hc hinj _ hrat (hPe ▸ hP), μ, { lt_top_of_isCompact := fun K hK => hμ.lt_top_of_isCompact hK map_add_left_eq_self := fun g => hμ.map_mul_left_eq_self (Multiplicative.ofAdd g) open_pos := hμ.open_pos }, fun ν 𝓓 hν h𝓓 k1 μ' 𝓕' …` and prove the remaining obligations. Take `⟨hI, hE⟩` from `GlobalTheory.SemiUnfold.unfold_semi Γ N hN s hs hc hinj _ hrat P hPe (GlobalTheory.SemiMean.isClosed_of_cocompact Γ P hP) μ 𝓔 h𝓔 h𝓔1 ν 𝓓 h𝓓 k1 μ' 𝓕' hμ' h𝓕' h1' φ hφ hφi C fun x hx => by`. Rewrite using `[← eK.summable_iff, ← eK.tsum_eq]`.
-
-Conclude with `hC x hx`. Use `⟨hI, Eq.trans ?_ hE⟩` and prove the remaining obligations. Simplify using `only [← eK.tsum_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem unfold_add {G A ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
@@ -83,31 +81,23 @@ private theorem unfold_add {G A ι : Type} [Group G] [TopologicalSpace G] [IsTop
 set_option maxHeartbeats 400000 in
 open GlobalTheory.MidUnfold GlobalTheory.SemiUnfold GlobalTheory.ThK.FlagSemi in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V V' W₁' hT₁' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hn f hfm hfS hfN hfB Gf hGf`. Establish `hH'` using `hC.hH'`. Establish `hσ : ∀ t, σ (σ t) = t` using `GlobalTheory.SwapShearLines.sig_invol' hT.base.cm`. Take `⟨π, hF⟩` from `exists_isFrame H' hσ hT.geo.hW.skew hH'.rank hH'.xx hH'.yy hH'.xy hH'.orth hH'.gram (GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B _ _ _ G₁.W hT₁.geo.hW)`. Establish `hS : Spans F H₂` using `spans_of_span H₂ (GlobalTheory.SwapShearLines.span_plane B H₂ _ W₂ _ _ hH₂ hT₁'.geo.hW.lat)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlev : ∀ h, emb h = hF.1.levi h` using `fun h => by`. Take `⟨h1, h2, h3⟩` from `hemb h`. Take `⟨k1, k2, k3⟩` from `hF.isLevi h`. Conclude with `mat_ext (hF.ext (h1.trans k1.symm) (h2.trans k2.symm) (h3.trans k3.symm))`. Establish `hr : ∀ c : E, nn (inclR (F` using `F) (AF F) c) ∈ ratU σ G.W.J := fun c => (mul_mem_cancel_left hw.1).1 ((GlobalTheory.SwapShearLines.swap_shear_lines F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V V' W₁' hT₁' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hn).2.1 c)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnipCT.topFacts σ G.W.J`. Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.UnipCT.topFacts σ G₁.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ G₁.W.J) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (unip σ G₁.W H₂) := (GlobalTheory.UnipCT.isClosed_unip σ _ _).locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (unip σ G₁.W H₂) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI := GlobalTheory.RatUDiscrete.discreteTopology_ratU F E σ _ G.W.J`. Use `haveI := GlobalTheory.RatUDiscrete.discreteTopology_ratU F E σ _ G₁.W.J`. Use `haveI := GlobalTheory.UnipCT.countable_ratU (σ := σ) G.W.J`. Use `haveI := GlobalTheory.UnipCT.countable_ratU (σ := σ) G₁.W.J`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := countable_subgroupOf (ratU σ G₁.W.J) (unip σ G₁.W H₂)`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI l1 : LocallyCompactSpace (AE F E) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI l2 : SecondCountableTopology (AE F E) := e0.secondCountableTopology`. Use `haveI l3 : T2Space (AE F E) := e0.isEmbedding.t2Space`. Use `letI : MeasurableSpace (AE F E) := borel _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Establish `c1 : GlobalTheory.Cusp.Cocompact (ratU σ G.W.J) (unip σ G.W H')` using `GlobalTheory.UnipCocompact.cocompact_unip F E σ B _ _ G X om om' hT _ G₁.W H' _ _ hH'`. Establish `c2 : GlobalTheory.Cusp.Cocompact (ratU σ G₁.W.J) (unip σ G₁.W H₂)` using `GlobalTheory.UnipCocompact.cocompact_unip F E σ B _ _ (reG G₁ V V' W₁') X om₁ om₁' hT₁' _ W₂ H₂ _ _ hH₂`. Take `⟨c3, ν, hν, hU⟩` from `unfold_add (fun c : E => inclR (F := F) (AF F) c) GlobalTheory.SwapShearLines.inclR_injective' (inclR (F := F) (E := E) (AF F)).toAddMonoidHom.range (fun _ => Iff.rfl) (GlobalTheory.AdeleCocompactExt.exists_compact_adeleE F E) (ratU σ G.W.J) (stabY σ G.W H' H₂) (isClosed_stabY _ …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, ν, one_ne_zero, hν, fun μ 𝓕 hμ h𝓕 h1 g => ?_⟩` and prove the remaining obligations. Take `⟨μy, 𝓓, hμy, h𝓓, h𝓓1⟩` from `GlobalTheory.SemiMean.exists_mass_one _ _ c3`. Take `⟨μ₂, 𝓕₂, hμ₂, h𝓕₂, h𝓕₂1⟩` from `GlobalTheory.SemiMean.exists_mass_one _ _ c2`. Establish `hinv : ∀ y, ∀ γ ∈ ratU σ G.W.J, γ ∈ stabY σ G.W H' H₂ → ∀ x, f (w * (γ * x) * y) = f (w * x * y)`. Introduce `y γ hγ hγ' x`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hfS (w * γ * w⁻¹) (mul_mem (mul_mem hw.1 hγ) (inv_mem hw.1)) ⟨1, by rw [Units.val_one, one_smul]; exact conj_fix hw hγ'⟩ (w * x * y)]`. Use `congr 1`. Use `group`. Establish `hfib : ∀ y, ∫ v in 𝓓, f (w * v.1 * y) ∂μy = Gf (w * y)` using `fun y => by`. Establish `h2 : Gf (emb 1 * (w * y)) = ∫ u in 𝓕₂, f (emb (u.1 * 1) * (w * y)) ∂μ₂` using `hGf (w * y) μ₂ 𝓕₂ hμ₂ h𝓕₂ h𝓕₂1 1`.
-
-Establish `h3 : ∀ n ∈ capN σ G.W H' w, ∀ h : unip σ G₁.W H₂, f (w * (n * leviW H₂ hF w h) * y) = f (emb (h.1 * 1) * (w * y))` using `fun n hn' h => by`. Rewrite using `[mul_one, hlev, ← hfN _ (mem_capN.1 hn').2 (hF.1.levi h.1 * (w * y)), ← mul_assoc (w * n * w⁻¹), ← conj_leviW, ← mul_assoc _ w y, inv_mul_cancel_right]`. Rewrite `h2` using `[hlev 1, map_one, one_mul]`. Rewrite using `[h2]`. Conclude with `mean_factor (ratU σ G.W.J) (capN σ G.W H' w) isClosed_capN (leviW H₂ hF w) (continuous_leviW hF) (leviW_conj hF hS hw) (leviW_inj hF) _ (leviW_rat_iff hF hw) _ (stabY_eq_sup hF hS hw) c3 μ₂ 𝓕₂ h𝓕₂ h𝓕₂1 μy 𝓓 hμy h𝓓 h𝓓1 (fun x => f (w * x * y)) (fun h => f (emb (h.1 * 1) * (w * y)) …`.
-
-Take `⟨C, hCb⟩` from `hfB g`. Establish `hm : Measurable fun x => f (w * x * g)` using `hfm.comp (Continuous.measurable (by fun_prop))`. Take `⟨hI, hE⟩` from `hU μy 𝓓 hμy h𝓓 h𝓓1 μ 𝓕 hμ h𝓕 h1 (fun x => f (w * x * g)) hm (hinv g) C fun x hx => by`. Simplify `hCb x hx` using `only [shearHom_apply, toAdd_ofAdd, mul_assoc]`. Establish `h4 : ∀ c, ∫ n in 𝓓, f (w * (n.1 * nn c) * g) ∂μy = Gf (w * nn c * g)` using `fun c => by`.
-
-Rewrite using `[mul_assoc w (nn _), ← hfib]`. Simplify using `only [mul_assoc]`. Simplify using `only [shearHom_apply, toAdd_ofAdd, h4] at hI hE`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, ← hE]`.
-
-Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.reconfigured_triple_local_identity : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

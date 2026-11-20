@@ -49,16 +49,16 @@ theorem toRing_apply (u : A ⟶ A) [IsMonHom u] (x : A ⟶ A) :
     (toRing u).1 (Additive.ofMul x) = Additive.ofMul (x ≫ u) := rfl
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCast_mul_apply (n : ℕ) (f : homRing A) (x : Additive (A ⟶ A)) :
     ((n : homRing A) * f).1 x = n • f.1 x := by
   rw [← nsmul_eq_mul]; rfl
 
 /- English proof (translation)
-Take `⟨f, u, hu, hf⟩` from `f`. Take `⟨g, v, hv, hg⟩` from `g`. Establish `e : u = v`. Simplify `h` using `only [hf, hg, Category.id_comp, EmbeddingLike.apply_eq_iff_eq]`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Conclude with `Subtype.ext (AddMonoidHom.ext fun x => (hf x.toMul).trans (hg x.toMul).symm)`.
+A detailed English derivation is pending.
 -/
 theorem homRing_ext {f g : homRing A}
     (h : f.1 (Additive.ofMul (𝟙 A)) = g.1 (Additive.ofMul (𝟙 A))) : f = g := by
@@ -80,9 +80,9 @@ instance isMonHom_iter (σ : A ≅ A) [IsMonHom σ.hom] (m : ℕ) : IsMonHom (it
   | succ m ih => exact inferInstanceAs (IsMonHom ((iter σ m).hom ≫ σ.hom))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact homRing_ext (by rw [toRing_apply]; simp [iter])`. Consider the case `succ m ih`. Rewrite using `[pow_succ', ih]`. Conclude with `homRing_ext (by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(toRing σ.hom).1 ((toRing (iter σ m).hom).1 _) = _`. Simplify using `only [toRing_apply, iter, Iso.trans_hom, Category.assoc])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toRing_pow (σ : A ≅ A) [IsMonHom σ.hom] (m : ℕ) :
     toRing σ.hom ^ m = toRing (iter σ m).hom := by
@@ -97,9 +97,9 @@ theorem toRing_pow (σ : A ≅ A) [IsMonHom σ.hom] (m : ℕ) :
 omit [GrpObj A] [IsCommMonObj A] in
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Conclude with `(h.mul h.inv).of_formEq hL (fun U _ f => by`. Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type, iter])`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `((h.pull (iter σ m).hom.left).mul ih).of_formEq hL (fun U _ f => by`. Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type, iter])`.
+A detailed English derivation is pending.
 -/
 theorem hasGen_iter {L : LB A.left} (hL : L.IsLB) (σ : A ≅ A)
     (h : HasGen L (K := Fin 2) ![σ.hom.left, 𝟙 A.left] ![1, -1]) (m : ℕ) :
@@ -113,13 +113,13 @@ theorem hasGen_iter {L : LB A.left} (hL : L.IsLB) (σ : A ≅ A)
       simp [Fin.prod_univ_succ, Fintype.prod_sum_type, iter])
 
 /- English proof (translation)
-Set `f : {x : T ⟶ A // x ^ n = 1} → {x : T ⟶ A // x ^ n = 1}` to `fun x => ⟨x.1 ≫ σ.hom, by rw [← MonObj.pow_comp, x.2, MonObj.one_comp]⟩`. Establish `hf : Function.Injective f` using `fun x y h => Subtype.ext ((cancel_mono σ.hom).1 (congrArg Subtype.val h))`. Set `e : Equiv.Perm {x : T ⟶ A // x ^ n = 1}` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf)`. Establish `he : ∀ (m : ℕ) x, ((e ^ m) x).1 = x.1 ≫ (iter σ m).hom`. Introduce `m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro x`. Simplify using `[iter]`. Consider the case `succ m ih`. Introduce `x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', Equiv.Perm.mul_apply]`. Express the relevant statement in the definitionally equal form `((e ^ m) x).1 ≫ σ.hom = _`. Rewrite using `[ih, iter, Iso.trans_hom, Category.assoc]`. Use `⟨orderOf e, (orderOf_pos e).ne', fun x hx => ?_⟩` and prove the remaining obligations. Use `he (orderOf e) ⟨x, hx⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_orderOf_eq_one]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iter_fix (σ : A ≅ A) [IsMonHom σ.hom] (T : Over S) (n : ℕ)
     [Finite {x : T ⟶ A // x ^ n = 1}] :
@@ -146,9 +146,9 @@ theorem exists_iter_fix (σ : A ≅ A) [IsMonHom σ.hom] (T : Over S) (n : ℕ)
 end Ring
 
 /- English proof (translation)
-Distinguish the cases in `h : ((5 : ℕ) : K) = 0`. Use `⟨11, by decide, by decide, fun h' => ?_⟩` and prove the remaining obligations. Establish `: (1 : K) = ((11 : ℕ) : K) - 2 * ((5 : ℕ) : K)` using `by push_cast; ring`. Rewrite `this` using `[h, h']`. Simplify using `at this`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨5, by decide, le_rfl, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_odd_ne_zero (K : Type) [Field K] : ∃ n : ℕ, Odd n ∧ 5 ≤ n ∧ (n : K) ≠ 0 := by
   by_cases h : ((5 : ℕ) : K) = 0
@@ -159,21 +159,19 @@ theorem exists_odd_ne_zero (K : Type) [Field K] : ∃ n : ℕ, Odd n ∧ 5 ≤ n
   · exact ⟨5, by decide, le_rfl, h⟩
 
 /- English proof (translation)
-Introduce `hM hdiv hsep hfin hmink K _ _ P M hM3 σ hσ hL hfix`. Take `⟨n, hodd, h5, hn⟩` from `exists_odd_ne_zero K`. Use `haveI := (hM _ P n (by omega)).1`. Use `haveI := finite_torsion_of_isFinite_mul K P n`. Take `⟨m, hm0, hm⟩` from `exists_iter_fix σ (baseOver (Spec (CommRingCat.of K))) n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : (iter σ m).hom = 𝟙 P.A` using `hfin K P n hodd h5 hn (iter σ m) inferInstance (hasGen_iter P.isLB σ hL m) hm`. Establish `hu : IsMonHom (σ.hom * (𝟙 P.A)⁻¹)`. Rewrite using `[Hom.mul_def, Hom.inv_def]`. Use `infer_instance`. Take `⟨⟨φ, hφ, e⟩, -⟩` from `hdiv _ P P.A M (by omega) (σ.hom * (𝟙 P.A)⁻¹) hu (fun T x hx => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, hfix T x hx, Category.comp_id, mul_inv_cancel])`. Establish `key : toRing σ.hom = 1`. Use `hmink (homRing P.A) M hM3 ?_ ?_ (toRing σ.hom) (toRing φ) m hm0 ?_ ?_` and prove the remaining obligations. Introduce and unpack `k ⟨f, u, hu, hf⟩ hk h`. Establish `h1` using `congrArg (fun g : homRing P.A => g.1 (Additive.ofMul (𝟙 P.A))) h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [natCast_mul_apply, hf, Category.id_comp] at h1`. Establish `h2 : u ^ k = 1` using `h1`. Establish `h3 : u = 1`. Take `⟨_, _, _, -⟩` from `hM _ P k (by omega)`. Use `haveI : Epi (mulA P.A k).left := Flat.epi_of_flat_of_surjective _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Over.OverMorphism.ext ((cancel_epi (mulA P.A k).left).1 ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, MonObj.comp_one, mulA, MonObj.pow_comp, Category.id_comp, h2]`. Conclude with `homRing_ext (by rw [hf, h3, Category.id_comp]; rfl)`. Introduce and unpack `q ⟨f, u, hu, hf⟩ hq h`. Establish `h3 : u = 1` using `hsep K P q hq u fun k => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨g, v, hv, hg⟩, e⟩` from `h k`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun g : homRing P.A => g.1 (Additive.ofMul (𝟙 P.A))) e`. Simplify using `only [← Nat.cast_pow, natCast_mul_apply, hf, hg, Category.id_comp] at h1`. Conclude with `h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `homRing_ext (by rw [hf, h3, Category.id_comp]; rfl)`. Use `homRing_ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Additive.ofMul (𝟙 P.A) + ((M : homRing P.A) * toRing φ).1 _`. Rewrite using `[natCast_mul_apply, toRing_apply, toRing_apply, Category.id_comp, Category.id_comp, ← ofMul_pow, ← e, ← ofMul_mul, mul_comm, inv_mul_cancel_right]`. Rewrite using `[toRing_pow]`.
-
-Conclude with `homRing_ext (by rw [toRing_apply, hord, Category.id_comp]; rfl)`. Establish `h1` using `congrArg (fun g : homRing P.A => g.1 (Additive.ofMul (𝟙 P.A))) key`. Simplify using `only [toRing_apply, Category.id_comp] at h1`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem serre_algClosed :
     (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left)) → (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (B : Over S) [GrpObj B] [IsCommMonObj B] (M : ℕ), 1 ≤ M → ∀ u : P.A ⟶ B, IsMonHom u → (∀ (T : Over S) (x : T ⟶ P.A), x ^ M = 1 → x ≫ u = 1) → (∃ φ : P.A ⟶ B, IsMonHom φ ∧ u = φ ^ M) ∧ (u ^ M = 1 → u = 1)) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (q : ℕ), 2 ≤ q → ∀ u : P.A ⟶ P.A, (∀ k : ℕ, ∃ ψ : P.A ⟶ P.A, IsMonHom ψ ∧ u = ψ ^ (q ^ k)) → u = 1) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (n : ℕ), Odd n → 5 ≤ n → (n : K) ≠ 0 → ∀ σ : P.A ≅ P.A, IsMonHom σ.hom → (∃ c : LB.Gen (LB.LinComb P.L (K := Fin 2) ![σ.hom.left, 𝟙 P.A.left] ![1, -1]), c.IsGen) → (∀ x : baseOver (Spec (CommRingCat.of K)) ⟶ P.A, x ^ n = 1 → x ≫ σ.hom = x) → σ.hom = 𝟙 P.A) → (∀ (E : Type) [Ring E] (M : ℕ), 3 ≤ M → (∀ (n : ℕ) (x : E), n ≠ 0 → (n : E) * x = 0 → x = 0) → (∀ (q : ℕ) (x : E), 2 ≤ q → (∀ k : ℕ, ∃ y : E, x = (q : E) ^ k * y) → x = 0) → ∀ (σ φ : E) (m : ℕ), m ≠ 0 → σ = 1 + (M : E) * φ → σ ^ m = 1 → σ = 1) → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (M : ℕ), 3 ≤ M → ∀ σ : P.A ≅ P.A, IsMonHom σ.hom → (∃ c : LB.Gen (LB.LinComb P.L (K := Fin 2) ![σ.hom.left, 𝟙 P.A.left] ![1, -1]), c.IsGen) → (∀ (T : Over (Spec (CommRingCat.of K))) (x : T ⟶ P.A), x ^ M = 1 → x ≫ σ.hom = x) → σ.hom = 𝟙 P.A := by

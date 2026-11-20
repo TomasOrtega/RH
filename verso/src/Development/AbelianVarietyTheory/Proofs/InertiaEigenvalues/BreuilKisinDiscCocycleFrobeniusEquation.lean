@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.BSP.CocycleFrob
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.sigA_coeff l g, WittVector.map_coeff, WittVector.map_coeff, GlobalTheory.RingIface.sigA_coeff l g, frobenius_def, frobenius_def, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem σA_frob {l : ℕ} [Fact l.Prime] (g : GQ l) (x : Ainf l) :
     Per.σA g (WittVector.frobenius x) = WittVector.frobenius (Per.σA g x) := by
@@ -29,11 +29,9 @@ theorem σA_frob {l : ℕ} [Fact l.Prime] (g : GQ l) (x : Ainf l) :
     GlobalTheory.RingIface.sigA_coeff l g, frobenius_def, frobenius_def, map_pow]
 
 /- English proof (translation)
-Establish `h1 : Y * X₁ = Y * X₂`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hc this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun Z => Y.adjugate * Z) h1`. Simplify using `only [← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul] at h2`. Use extensionality with `i j`. Use `congrFun (congrFun h2 i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`.
-
-Conclude with `mul_left_cancel₀ hY this`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cancel_left {R : Type} [CommRing R] [IsDomain R] {n : Type} [Fintype n] [DecidableEq n]
     (Y X₁ X₂ : Matrix n n R) (c : R) (hc : c ≠ 0) (hY : Y.det ≠ 0) (h : c • (Y * X₁) = c • (Y * X₂)) :
@@ -51,47 +49,39 @@ theorem cancel_left {R : Type} [CommRing R] [IsDomain R] {n : Type} [Fintype n] 
   exact mul_left_cancel₀ hY this
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d M N Y A A' hAA hφ hdet g G Φ _ hΦ w hw P hP e he`. Take `⟨-, -, -, h0, h1, -⟩` from `GlobalTheory.BSP.exists_discMaps l K bk`. Use `haveI : IsDomain (bk.DA bk.ρ₀) := (GlobalTheory.BSP.discAinf_isDomain l K bk bk.ρ₀ h0 h1).1`. Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.BSP.AinfTopBasis.main l K bk`. Establish `hinj : Function.Injective bk.iA` using `(GlobalTheory.BSP.toDisc_injective_of_topBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ h0 h1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hστ⟩` from `GlobalTheory.BSP.isUnit_inclW_of_isPer l K bk τ hτ`. Establish `ht' : bk.iA (Per.σA g τ) ≠ 0`. Rewrite using `[← map_zero bk.iA]`. Introduce `h`. Establish `h2` using `hστ g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hinj h, map_zero]`. Conclude with `not_isUnit_zero h2`. Establish `hE : bk.iA (bk.ev bk.E) ≠ 0`. Rewrite using `[← map_zero bk.iA]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `bk.E_ne_zero (bk.ev_injective ((hinj h).trans (map_zero _).symm))`. Establish `hu : bk.iA (w : Ainf l) ≠ 0` using `fun h => by`. Use `congrArg bk.iA w.mul_inv` as an intermediate fact. Rewrite `this` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦA : ∀ x, Φ (bk.iA x) = bk.iA (WittVector.frobenius x)` using `hΦ.ext`. Establish `hσE : ∀ k : ℕ, bk.iA (Per.σA g (bk.ev bk.E ^ k)) = (bk.iA (bk.ev bk.E) * bk.iA w) ^ k` using `fun k => by`. Rewrite using `[map_pow, hw, map_pow, map_mul]`. Establish `hφ1 : bk.iA (bk.ev bk.E) ^ N • (Y.map WittVector.frobenius).map bk.iA = bk.iA (bk.ev bk.E) ^ M • (Y.map bk.iA * (A.map bk.ev).map bk.iA)`. Use `congrArg (fun X => X.map bk.iA) hφ` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_smul' _ _ _ (map_mul bk.iA), Matrix.map_mul, map_pow] at this`. Conclude with `this`. Establish `hφ2 : (bk.iA (bk.ev bk.E) * bk.iA w) ^ N • ((Y.map (Per.σA g)).map WittVector.frobenius).map bk.iA = (bk.iA (bk.ev bk.E) * bk.iA w) ^ M • ((Y.map (Per.σA g)).map bk.iA * ((A.map bk.ev).map (Per.σA g)).map bk.iA)`. Use `congrArg (fun X => (X.map (Per.σA g)).map bk.iA) hφ` as an intermediate fact. Simplify using `only [Matrix.map_smul' _ _ _ (map_mul bk.iA), Matrix.map_smul' _ _ _ (map_mul (Per.σA g)), Matrix.map_mul] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hσE, hσE]`. Establish `hc : ((Y.map WittVector.frobenius).map (Per.σA g)) = ((Y.map (Per.σA g)).map WittVector.frobenius)`. Conclude with `Matrix.ext fun i j => σA_frob g (Y i j)`. Rewrite `this` using `[hc]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : (bk.iA (bk.ev bk.E) * bk.iA w * bk.iA (Per.σA g τ)) ^ M • ((Y.map WittVector.frobenius).map bk.iA * e.map Φ) = (bk.iA (bk.ev bk.E) * bk.iA τ) ^ M • (P.map bk.iA * ((Y.map (Per.σA g)).map WittVector.frobenius).map bk.iA)`. Use `congrArg (fun X => X.map Φ) he` as an intermediate fact. Simplify using `only [Matrix.map_smul' _ _ _ (map_mul Φ), Matrix.map_mul, map_pow, hΦA] at this`. Establish `m1 : ∀ Z : Matrix (Fin d) (Fin d) (Ainf l), (Z.map bk.iA).map Φ = (Z.map WittVector.frobenius).map bk.iA` using `fun Z => Matrix.ext fun i j => hΦA (Z i j)`. Rewrite `this` using `[m1, m1, m1, hP, ← σA_frob, hτ.1, map_mul, hw, map_mul, map_mul, map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hA2 : ((A.map bk.ev).map (Per.σA g)).map bk.iA * ((A'.map bk.ev).map (Per.σA g)).map bk.iA = (bk.iA (bk.ev bk.E) * bk.iA w) ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))`. Use `congrArg (fun X => ((X.map bk.ev).map (Per.σA g)).map bk.iA) hAA` as an intermediate fact. Simplify using `only [Matrix.map_smul' _ _ _ (map_mul bk.iA), Matrix.map_smul' _ _ _ (map_mul (Per.σA g)), Matrix.map_smul' _ _ _ (map_mul bk.ev), Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this`. Rewrite `this` using `[map_pow bk.ev, hσE]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `this`. Establish `hv : bk.iA ((w⁻¹ : (Ainf l)ˣ) : Ainf l) * bk.iA w = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hiS : bk.iS bk.E = bk.iA (bk.ev bk.E)` using `rfl`. Rewrite using `[hiS, Matrix.map_smul' _ _ _ (map_mul bk.iA), map_pow]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(Y.map WittVector.frobenius).map bk.iA = ΦY at hφ1 he1`. Generalize the expression as in `((Y.map (Per.σA g)).map WittVector.frobenius).map bk.iA = ΦGY at hφ2 he1`. Generalize the expression as in `(Y.map (Per.σA g)).map bk.iA = GY at hφ2 he`. Generalize the expression as in `Y.map bk.iA = YY at hφ1 he hdet`. Generalize the expression as in `(A.map bk.ev).map bk.iA = AA at hφ1 ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `((A.map bk.ev).map (Per.σA g)).map bk.iA = GA at hφ2 hA2`. Generalize the expression as in `((A'.map bk.ev).map (Per.σA g)).map bk.iA = GA' at hA2 ⊢`. Generalize the expression as in `P.map bk.iA = PP at he he1`. Generalize the expression as in `e.map Φ = Φe at he1 ⊢`. Generalize the expression as in `bk.iA (bk.ev bk.E) = E' at *`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Generalize the expression as in `bk.iA ((w⁻¹ : (Ainf l)ˣ) : Ainf l) = v at *`. Generalize the expression as in `bk.iA (w : Ainf l) = u at *`. Generalize the expression as in `bk.iA (Per.σA g τ) = t' at *`. Generalize the expression as in `bk.iA τ = t at *`. Establish `key : (E' ^ (2 * M) * u ^ M * t' ^ M) • (YY * (u ^ N • (AA * Φe))) = (E' ^ (2 * M) * u ^ M * t' ^ M) • (YY * (e * GA))`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (u ^ N * (E' * u * t') ^ M) • ((E' ^ N • ΦY) * Φe) := by rw [hφ1]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `_ = (E' * u) ^ N • ((E' * u * t') ^ M • (ΦY * Φe)) := by`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (E' * u) ^ N • ((E' * t) ^ M • (PP * ΦGY)) := by rw [he1]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = (E' * t) ^ M • (PP * ((E' * u) ^ N • ΦGY)) := by`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (E' * t) ^ M • (PP * ((E' * u) ^ M • (GY * GA))) := by rw [hφ2]`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (E' ^ M * (E' * u) ^ M) • ((t ^ M • (PP * GY)) * GA) := by`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (E' ^ M * (E' * u) ^ M) • ((t' ^ M • (YY * e)) * GA) := by rw [he]`.
-
-Use `_ = (E' ^ (2 * M) * u ^ M * t' ^ M) • (YY * (e * GA)) := by`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hu' : u ≠ 0` using `fun h => by rw [h, mul_zero] at hv; exact zero_ne_one hv`.
-
-Establish `hc : E' ^ (2 * M) * u ^ M * t' ^ M ≠ 0` using `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hE) (pow_ne_zero _ hu')) (pow_ne_zero _ ht')`. Establish `hX` using `cancel_left YY _ _ _ hc hdet key`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[show v ^ (2 * N) * (E' * u) ^ (2 * N) = E' ^ (2 * N) * (v * u) ^ (2 * N) by ring, hv, one_pow, mul_one]`.
-
-Use `_ = v ^ (2 * N) • (e * ((E' * u) ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀)))) := by`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, smul_smul]`. Use `_ = v ^ (2 * N) • ((e * GA) * GA') := by rw [← hA2, Matrix.mul_assoc]`. Use `_ = v ^ (2 * N) • ((u ^ N • (AA * Φe)) * GA') := by rw [hX]`. Use `_ = (v ^ N • AA) * Φe * GA' := by`.
-
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Rewrite using `[show v ^ (2 * N) * u ^ N = v ^ N * (v * u) ^ N by ring, hv, one_pow, mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_eq : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d M N : ℕ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (A A' : Matrix (Fin d) (Fin d) bk.S), A * A' = bk.E ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) bk.S) → bk.ev bk.E ^ N • Y.map WittVector.frobenius = bk.ev bk.E ^ M • (Y * A.map bk.ev) → (Y.map bk.iA).det ≠ 0 → ∀ (g : GQ l) (G Φ : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀), IsDiscMap (Per.σA g) G → IsDiscMap WittVector.frobenius Φ → ∀ (w : (Ainf l)ˣ), Per.σA g (bk.ev bk.E) = bk.ev bk.E * w → ∀ (P : Matrix (Fin d) (Fin d) (Ainf l)), P.map WittVector.frobenius = P → ∀ (e : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀)), bk.iA (Per.σA g τ) ^ M • (Y.map bk.iA * e) = bk.iA τ ^ M • (P.map bk.iA * (Y.map (Per.σA g)).map bk.iA) → bk.iS bk.E ^ (2 * N) • e = (((↑w⁻¹ : Ainf l) ^ N) • A.map bk.ev).map bk.iA * e.map Φ * ((A'.map bk.ev).map (Per.σA g)).map bk.iA := by
   intro l _ K bk τ hτ d M N Y A A' hAA hφ hdet g G Φ _ hΦ w hw P hP e he

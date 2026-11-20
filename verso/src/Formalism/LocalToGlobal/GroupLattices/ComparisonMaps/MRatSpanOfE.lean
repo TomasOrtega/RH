@@ -25,9 +25,9 @@ def RatTup : Prop :=
     ∀ v, L v = colSpan (G.P.W v) ((a : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) E).map (iw v))
 
 /- English proof (translation)
-Use `⟨fun i γ v s => ?_, hc⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `ha i γ`. Use `⟨Matrix.GeneralLinearGroup.map (t v s) a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha v]`. Use extensionality with `j k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[gPosGL, hp v s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratLev_of (hp : PosCompat G e iw t) (ha : ActE G iw) (hc : ChiRat G e) : RatLev G e := by
   refine ⟨fun i γ v s => ?_, hc⟩
@@ -38,9 +38,9 @@ theorem ratLev_of (hp : PosCompat G e iw t) (ha : ActE G iw) (hc : ChiRat G e) :
   simp [gPosGL, hp v s]
 
 /- English proof (translation)
-Introduce `L hL v s`. Take `⟨a, ha⟩` from `hr L hL`. Use `⟨Matrix.GeneralLinearGroup.map (t v s) a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha v, Formalism.MainNotions.G.LatticeSystems.la_extO_G]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `j k`. Simplify using `[Formalism.MainNotions.G.LatticeSystems.la_tw, hp v s]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ratBasis_of (hp : PosCompat G e iw t) (hr : RatTup G iw) : RatBasis G e := by
   intro L hL v s

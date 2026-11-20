@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.EtaJoin.Side
 
 /- English proof (translation)
-Use `(LinearEquiv.length_eq (Submodule.Quotient.equiv (Q.comap P.subtype) ((Q.map f).comap (P.map f).subtype) (Submodule.equivMapOfInjective f hf P) ?_)).symm` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, hxQ, hxy⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨x, hxQ, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hxy` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨x, hxQ, hxy⟩`. Take `⟨x', hx', rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `: x = x'` using `hf hxy`. Substitute `this` using the available equality. Conclude with `⟨⟨x, hx'⟩, hxQ, rfl⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem length_quot_map {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     (f : M →ₗ[R] M') (hf : Function.Injective f) (P Q : Submodule R M) :
@@ -37,7 +37,7 @@ theorem length_quot_map {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R 
 open scoped Formalism.L2.Col in
 
 /- English proof (translation)
-Unfold `Formalism.L2.Col.lenUW Formalism.L2.Col.lenW`. Rewrite using `[Formalism.L2.Col.atW_map, Formalism.L2.Col.atW_map, length_quot_map (φ.restrictScalars (Formalism.L2.Col.Ow w)) hφ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenUW_map {K : Type} [Field K] [NumberField K] {V V' : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V']
@@ -48,17 +48,15 @@ theorem lenUW_map {K : Type} [Field K] [NumberField K] {V V' : Type} [AddCommGro
     length_quot_map (φ.restrictScalars (Formalism.L2.Col.Ow w)) hφ]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[lat, Submodule.span_le]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `e.surjective y`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show x ∈ N`. Rewrite using `[hL.2 x]`. Use `⟨fun v => if v = D.what₂.jMt μ j (e x) then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (D.what₂.jMt μ j (e x))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Conclude with `absurd hy h`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(hL.2 x).1 hx`. Use `choose! g hg using D.what₂.MtLat_sub μ j`. Establish `hx' : e x = ∑ v ∈ (D.what₂.MtLat μ j).gen, (c v) • g v`. Apply `GlobalTheory.Mem.LiftForms.jMt_injective μ j` to reduce the goal to its premises. Rewrite using `[map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc' : D.what₂.jMt μ j (e x) = ∑ v ∈ (D.what₂.MtLat μ j).gen, D.what₂.embLL (c v : D.what₂.LL) • v` using `hc`. Rewrite using `[hc']`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.what₂.LL (c v) (g v), map_smulₛₗ, hg v hv]`. Use `show e x ∈ lat D μ j`.
-
-Rewrite using `[hx']`. Use `Submodule.sum_mem _ fun v hv => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Use `show D.what₂.jMt μ j (g v) ∈ (D.what₂.MtLat μ j).gen`. Rewrite using `[hg v hv]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_eq_map (D : D7) (μ : D.what₂.Tup) (j : ℕ) {n : ℕ} (e : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.MtL μ j)
     (N : Submodule (𝓞 D.what₂.LL) (Fin n → D.what₂.LL))
@@ -97,35 +95,29 @@ theorem lat_eq_map (D : D7) (μ : D.what₂.Tup) (j : ℕ) {n : ℕ} (e : (Fin n
     exact hv
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A P ψ Zs tup eMt s hOk i t hF hL hZ`. Take `⟨hinj, hrange, hproj⟩` from `GlobalTheory.T.concreteProjector_eq_orthogonalProjection D G Pl0 T m A P ψ Zs tup eMt s hOk i t hF hZ`. Establish `hB : BlockHyp (A.fam.L i t) (A.fam.lvlA P ψ) A.v0 s` using `⟨hOk.conj, hOk.irr, hOk.lifts i t⟩`. Establish `hcut` using `BlockDat.lf_cut_nab (Z := Zs.Zl i t) hB`. Establish `hlat` using `lat_eq_map D (tup t) ((i : ℕ) + 1) (eMt i t) _ hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := eMt i t with he`. Use `set ψL := (e.toLinearMap ∘ₗ (lZ0 D A P ψ Zs i t).mulVecLin) with hψL`. Use `set R := ratSub D (tup t) ((i : ℕ) + 1) (Idx.Z0 D (tup t) ((i : ℕ) + 1)) with hR`. Use `set Rp := ratSub D (tup t) ((i : ℕ) + 1) (Idx.Z0 D (tup t) ((i : ℕ) + 1))ᗮ with hRp`. Establish `hbot : ∀ y, y ∈ R → y ∈ Rp → y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y h1 h2`. Apply `GlobalTheory.Mem.LiftForms.jMt_injective (tup t) ((i : ℕ) + 1)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `h3 : D.what₂.jMt (tup t) ((i : ℕ) + 1) y ∈ Idx.Z0 D (tup t) ((i : ℕ) + 1) ⊓ (Idx.Z0 D (tup t) ((i : ℕ) + 1))ᗮ` using `⟨h1, h2⟩`. Rewrite `h3` using `[Submodule.inf_orthogonal_eq_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h3`. Establish `hmemR : ∀ z, ψL z ∈ R` using `fun z => by rw [hrange]; exact LinearMap.mem_range_self _ z`. Establish `hup : up D (tup t) ((i : ℕ) + 1) = ((A.fam.L i t).Tl (A.fam.lvlA P ψ) (Zs.Zl i t)).map (ψL.restrictScalars (𝓞 D.what₂.LL))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨hyR, hy⟩`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hy`. Rewrite `ha` using `[hlat]`. Take `⟨x, hx, rfl⟩` from `ha`. Establish `hd : y - ψL ((lPrj D A P ψ Zs i t).mulVec x) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Apply `hbot` to reduce the goal to its premises. Conclude with `R.sub_mem hyR (hmemR _)`. Establish `: y - ψL ((lPrj D A P ψ Zs i t).mulVec x) = (e x - ψL ((lPrj D A P ψ Zs i t).mulVec x)) + b`. Rewrite using `[← hab]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Rp.add_mem (hproj x) hb`. Use `⟨(lPrj D A P ψ Zs i t).mulVec x, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ψL _ = y`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(sub_eq_zero.1 hd).symm`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨hmemR _, Submodule.mem_sup.2 ⟨e x, ?_, ψL ((lPrj D A P ψ Zs i t).mulVec x) - e x, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Conclude with `⟨x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show _ ∈ Rp`. Rewrite using `[← neg_sub]`. Conclude with `Rp.neg_mem (hproj x)`. Use `show e x + (ψL ((lPrj D A P ψ Zs i t).mulVec x) - e x) = ψL ((lPrj D A P ψ Zs i t).mulVec x)`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlow : low D (tup t) ((i : ℕ) + 1) = ((A.fam.L i t).cutZ (A.fam.lvlA P ψ) (Zs.Zl i t)).map (ψL.restrictScalars (𝓞 D.what₂.LL))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hyR⟩`. Establish `hyR' : y ∈ R` using `hyR`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hyR'` using `[hrange]`. Take `⟨z, rfl⟩` from `hyR'`. Rewrite `hy` using `[hlat]`. Take `⟨x, hx, hxz⟩` from `hy`. Establish `hxz' : x = (lZ0 D A P ψ Zs i t).mulVec z` using `e.injective hxz`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hcut]`. Use `show (lZ0 D A P ψ Zs i t).mulVec z ∈ lNab D A P ψ i t`. Rewrite using `[← hxz']`. Conclude with `hx`.
-
-Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨?_, hmemR z⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Rewrite `hz` using `[← hcut]`. Conclude with `⟨(lZ0 D A P ψ Zs i t).mulVec z, hz, rfl⟩`.
-
-Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ZRat, eq_top_iff]`. Introduce `y _`. Take `⟨x, rfl⟩` from `e.surjective y`. Use `Submodule.mem_sup.2 ⟨ψL ((lPrj D A P ψ Zs i t).mulVec x), hmemR _, e x - ψL ((lPrj D A P ψ Zs i t).mulVec x), hproj x, ?_⟩` and prove the remaining obligations.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[etaRat, hup, hlow, lenUW_map ψL hinj]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zRat_and_etaRat_eq : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (tup : T → D.what₂.Tup) (eMt : ∀ (i : Fin m) (t : T), (Fin (lDim D A P ψ i t) → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.MtL (tup t) ((i : ℕ) + 1)) (s : ℕ), A.fam.Ok s → ∀ (i : Fin m) (t : T), FormsTie D.what₂.embLL ((D.what₂.jMt (tup t) ((i : ℕ) + 1)).comp (eMt i t).toLinearMap) (lH D A P ψ i t) (lE D A P ψ i t) (D.what₂.eMt (tup t) ((i : ℕ) + 1)) → OLatTie D.what₂.embLL (D.what₂.MtLat (tup t) ((i : ℕ) + 1)) ((D.what₂.jMt (tup t) ((i : ℕ) + 1)).comp (eMt i t).toLinearMap) (lNab D A P ψ i t) → Idx.Z0 D (tup t) ((i : ℕ) + 1) = Submodule.span ℂ (Set.range fun k => (D.what₂.jMt (tup t) ((i : ℕ) + 1)) (eMt i t ((lZ0 D A P ψ Zs i t).mulVec (Pi.single k 1)))) → ZRat D (tup t) ((i : ℕ) + 1) ∧ ∀ w, etaRat D (tup t) ((i : ℕ) + 1) w = A.fam.etaJ P ψ Zs i t (D.plEq w) := by
   intro D G _ _ Pl0 T m A P ψ Zs tup eMt s hOk i t hF hL hZ

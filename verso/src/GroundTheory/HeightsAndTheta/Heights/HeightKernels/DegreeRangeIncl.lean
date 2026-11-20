@@ -13,9 +13,9 @@ open NumberField TensorProduct GroundTheory.Heights₂.Heights
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[HermitianBundle.degree_eq_arithDegree]`. Use `symm`. Use `LatticeLemmas.arithDegree_congr _ _ (LinearEquiv.ofInjective Y.incl Y.incl_injective) fun σ x y ↦ ?_` and prove the remaining obligations. Rewrite using `[HermitianMetric.comap_inner, fibreMap_tmul, fibreMap_tmul]`. Establish `h` using `Y.incl_isometric σ ((1 : ComplexAt σ) ⊗ₜ x) ((1 : ComplexAt σ) ⊗ₜ y)`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.lTensor_tmul] at h`. Conclude with `h.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HermitianExtension.degree_range_incl {K : Type} [Field K] [NumberField K]
     {E' E E'' : HermitianBundle.{0} K} (Y : HermitianExtension E' E E'') :
@@ -30,7 +30,7 @@ theorem HermitianExtension.degree_range_incl {K : Type} [Field K] [NumberField K
   exact h.symm
 
 /- English proof (translation)
-Introduce `K _ _ E' E E'' Y`. Rewrite using `[HermitianBundle.degree_top_eq_arithDegree, HermitianBundle.degree_top_eq_arithDegree, HermitianExtension.degree_range_incl, Y.arithDegree_eq_add]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem S6.ExtensionDegree.proof : S6.ExtensionDegree.Statement := by
   intro K _ _ E' E E'' Y

@@ -3,21 +3,19 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Use `letI : Algebra F K := c.toAlgebra`. Use `letI : Algebra F L := d.toAlgebra`. Express the relevant statement in the definitionally equal form `b.comp (algebraMap R S) = (algebraMap F K).comp a at hab`. Establish `hab' : ∀ r, b (algebraMap R S r) = algebraMap F K (a r)` using `fun r => RingHom.congr_fun hab r`. Establish `hT : ∀ s ∈ Set.range (fun i => b (u i)), IsIntegral F s ∧ ((minpoly F s).map (algebraMap F L)).Splits`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨h1, h2, h3⟩` from `hf i`. Establish `h4 : Polynomial.aeval (b (u i)) ((f i).map a) = 0`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, ← hab, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, h2, map_zero]`. Use `⟨⟨_, h1.map a, h4⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[← Polynomial.map_map]`. Conclude with `h3.of_dvd ((h1.map a).map _).ne_zero (Polynomial.map_dvd _ (minpoly.dvd F _ h4))`. Take `⟨φ⟩` from `IntermediateField.nonempty_algHom_adjoin_of_splits hT`. Establish `hmem : ∀ s : S, b s ∈ IntermediateField.adjoin F (Set.range (fun i => b (u i)))`. Introduce `s`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : s ∈ Algebra.adjoin R (Set.range u)` using `hu ▸ Algebra.mem_top`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => rw [hab']`. Conclude with `IntermediateField.algebraMap_mem _ _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `mul y z _ _ hy hz => rw [map_mul]`.
+Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `mul_mem hy hz`. Set `b' : S →+* IntermediateField.adjoin F (Set.range (fun i => b (u i)))` to `b.codRestrict _ hmem`. Use `⟨φ.toRingHom.comp b', ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Establish `: b' (algebraMap R S r) = algebraMap F _ (a r)` using `Subtype.ext (hab' r)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ (b' (algebraMap R S r)) = algebraMap F L (a r)`. Rewrite using `[this, AlgHom.commutes]`. Use extensionality with `s`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `φ (b' s) = 0 ↔ _`.
-
-Rewrite using `[map_eq_zero_iff φ φ.toRingHom.injective]`. Conclude with `Subtype.ext_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_field_lift {R S F K L : Type} [CommRing R] [CommRing S] [Algebra R S]
     [Field F] [Field K] [Field L] (c : F →+* K) (d : F →+* L) (a : R →+* F) (b : S →+* K)
@@ -66,27 +64,25 @@ private theorem exists_field_lift {R S F K L : Type} [CommRing R] [CommRing S] [
     exact Subtype.ext_iff
 
 /- English proof (translation)
-Introduce `R S A _ _ _ _ _ x ι u f hu hf P hP hPx`. Use `haveI : (RingHom.ker x).IsPrime := RingHom.ker_isPrime x`. Set `j : A →+* FractionRing A` to `algebraMap A (FractionRing A)`. Establish `hj : Function.Injective j` using `IsFractionRing.injective A (FractionRing A)`. Set `b : S →+* FractionRing (S ⧸ P)` to `(algebraMap (S ⧸ P) (FractionRing (S ⧸ P))).comp (Ideal.Quotient.mk P)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : RingHom.ker b = P`. Use extensionality with `s`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `algebraMap (S ⧸ P) (FractionRing (S ⧸ P)) (Ideal.Quotient.mk P s) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ (IsFractionRing.injective (S ⧸ P) (FractionRing (S ⧸ P))), Ideal.Quotient.eq_zero_iff_mem]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkb : RingHom.ker (b.comp (algebraMap R S)) = RingHom.ker x`. Rewrite using `[← RingHom.comap_ker, hb, hPx]`. Establish `hkj : RingHom.ker (j.comp x) = RingHom.ker x`. Rewrite using `[← RingHom.comap_ker, (RingHom.injective_iff_ker_eq_bot j).1 hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `g₁ : R ⧸ RingHom.ker x →+* FractionRing (S ⧸ P)` to `Ideal.Quotient.lift _ (b.comp (algebraMap R S)) (fun r hr => by`. Rewrite `hr` using `[← hkb]`. Conclude with `hr)`. Set `g₂ : R ⧸ RingHom.ker x →+* FractionRing A` to `Ideal.Quotient.lift _ (j.comp x) (fun r hr => by rw [← hkj] at hr; exact hr)`. Establish `hg₁ : Function.Injective g₁` using `RingHom.lift_injective_of_ker_le_ideal _ _ hkb.le`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg₂ : Function.Injective g₂` using `RingHom.lift_injective_of_ker_le_ideal _ _ hkj.le`. Set `F` to `FractionRing (R ⧸ RingHom.ker x)`. Set `a : R →+* F` to `(algebraMap (R ⧸ RingHom.ker x) F).comp (Ideal.Quotient.mk _)`. Take `⟨c, h1⟩ : ∃ c : F →+* FractionRing (S ⧸ P), b.comp (algebraMap R S) = c.comp a` from `⟨IsFractionRing.lift hg₁, RingHom.ext fun r => ((IsFractionRing.lift_algebraMap (K := F) hg₁ (Ideal.Quotient.mk _ r)).trans (Ideal.Quotient.lift_mk _ _ _)).symm⟩`. Take `⟨d, h2⟩ : ∃ d : F →+* FractionRing A, d.comp a = j.comp x` from `⟨IsFractionRing.lift hg₂, RingHom.ext fun r => ((IsFractionRing.lift_algebraMap (K := F) hg₂ (Ideal.Quotient.mk _ r)).trans (Ideal.Quotient.lift_mk _ _ _))⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ψ, hψ1, hψ2⟩` from `exists_field_lift c d a b h1 u f hu (fun i => ⟨(hf i).1, (hf i).2.1, by rw [h2, ← Polynomial.map_map]; exact (hf i).2.2.map j⟩)`. Rewrite `hψ1` using `[h2]`. Rewrite `hψ2` using `[hb]`. Establish `hmem : ∀ s : S, ψ s ∈ j.range`. Introduce `s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `hs : s ∈ Algebra.adjoin R (Set.range u)` using `hu ▸ Algebra.mem_top`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Take `⟨hm, h0, hsp⟩` from `hf i`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : Polynomial.eval₂ j (ψ (u i)) ((f i).map x) = 0`. Rewrite using `[Polynomial.eval₂_map, ← hψ1, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, h0, map_zero]`. Rewrite `h4` using `[hsp.eq_prod_roots_of_monic (hm.map x), Polynomial.eval₂_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map, Multiset.mem_map]`. Take `⟨c, -, hc⟩` from `h4`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [Function.comp_apply, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C] at hc`. Conclude with `(sub_eq_zero.1 hc).symm`. Consider the case `algebraMap r => exact ⟨x r, (RingHom.congr_fun hψ1 r).symm⟩`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `mul_mem hy hz`. Use `choose g hg using hmem`. Set `x' : S →+* A` to `{ toFun := g map_one' := hj (by rw [hg, map_one, map_one]) map_mul' := fun s t => hj (by rw [map_mul, hg, hg, hg, map_mul]) map_zero' := hj (by rw [hg, map_zero, map_zero]) map_add' := fun s t => hj (by rw [map_add, hg, hg, hg, map_add]) }`. Use `⟨x', ?_, ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `r`. Conclude with `hj ((hg _).trans (RingHom.congr_fun hψ1 r))`. Use extensionality with `s`. Rewrite using `[← hψ2, RingHom.mem_ker, RingHom.mem_ker, ← hg, map_eq_zero_iff j hj]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.exists_lift_ker_eq :
     ∀ (R S A : Type) [CommRing R] [CommRing S] [CommRing A] [IsDomain A] [Algebra R S] (x : R →+* A)

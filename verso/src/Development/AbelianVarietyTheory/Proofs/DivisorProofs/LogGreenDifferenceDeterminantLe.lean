@@ -22,16 +22,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open Classical in
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_single_index (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem expo_single' (a : Sym E) (n : ℤ) (x : Letter Dw) :
     expo Dw (Finsupp.single a n) x = if letterOf Dw a.2.2 = some x then n else 0 :=
   Finsupp.sum_single_index (by simp)
 
 /- English proof (translation)
-Establish `h (b : ℕ → Bool) (x : Letter Dw) : expo Dw (detSym Dw b R τ) x = ∑ i ∈ Finset.range (Dw.p + Dw.q), expo Dw (rootSym Dw b R τ i) x`. Unfold `detSym expo`. Apply the tactic sequence `rw [Finsupp.sum_finsetSum_index (fun _ => by simp) (fun _ _ _ => by split_ifs <;> simp)]`. Use function extensionality and compare the values at `x`. Rewrite using `[h, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> simp only [expo_single']`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_detSym (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) :
     expo Dw (detSym Dw a R τ) = expo Dw (detSym Dw a' R τ) := by
@@ -47,7 +47,7 @@ theorem expo_detSym (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) :
   split_ifs <;> simp only [expo_single']
 
 /- English proof (translation)
-Unfold `detSym`. Rewrite using `[← Finsupp.sum_finsetSum_index (fun _ => by simp) (fun _ _ _ => by push_cast; ring)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> rw [Finsupp.sum_single_index (by simp)] <;> push_cast <;> ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_detSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (Φ : Sym E → ℝ) :
     ((detSym Dw a R τ).sum fun b n => (n : ℝ) * Φ b) =
@@ -67,7 +67,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `|Real.log (grNorm Z.t x (latDR Z.t x) u i) - Real.log (grNorm Z.t x (latHT Z.t p x) u i)| ≤ Real.log p * (1 / ((p : ℝ) - 1)) := by have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt have hp2 : (0 : ℝ) < (p : ℝ) - 1 := by linarith have hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by r …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_grNorm_DR_HT_le (hB : HTBoundSt) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (p : ℕ) [hp : Fact p.Prime]
     (x : Sp ℂ_[p] ⟶ Z.X) {m : ℕ} (u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left)) (i : Fin m) :
@@ -97,7 +97,7 @@ theorem abs_log_grNorm_DR_HT_le (hB : HTBoundSt) (Z : Model Xo c (algebraMap (�
     ring
 
 /- English proof (translation)
-The claim follows from `|lnStep Z.t x u p true (.inl (τ, k)) - lnStep Z.t x u p false (.inl (τ, k))| ≤ Real.log p / ((p : ℝ) - 1) + vDiff E p * Real.log p := by have hv : 0 ≤ vDiff E p * Real.log p := mul_nonneg (by unfold vDiff; positivity) (Real.log_natCast_nonneg p) have hL : 0 ≤ Real.log p / ((p : ℝ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lnStep_sub_le (hB : HTBoundSt) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (p : ℕ) [hp : Fact p.Prime]
     (x : Sp ℂ_[p] ⟶ Z.X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left))
@@ -139,7 +139,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-The claim follows from `|lgOf Y (detSym Dw (ArIn.ind T) none τ) v ε y - lgOf Y (detSym Dw (fun _ => false) none τ) v ε y| ≤ if resP v ∈ T then |Real.log (ε.w (resP v)) / Real.log (resP v)| * (((Dw.p + Dw.q : ℕ) : ℝ) * (Real.log (resP v) / ((resP v : ℝ) - 1) + vDiff E (resP v) * Real.log (resP v))) else …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lgOf_detSym_sub_le_gen (hB : HTBoundSt) (τ : E →+* ℂ) (T : Finset ℕ) (v : HeightOneSpectrum (𝓞 F))
     (ε : Ext v) (y : AlgPt Y.Y) (hp : (resP v).Prime) :
@@ -177,7 +177,7 @@ end GlobalTheory.LgDiff
 namespace GlobalTheory.LgDiff
 
 /- English proof (translation)
-The claim follows from `|lgOf (fl.C k) (detSym S.Dw (ArIn.ind T) none τ) v ε y - lgOf (fl.C k) (detSym S.Dw (fun _ => false) none τ) v ε y| ≤ if resP v ∈ T then |Real.log (ε.w (resP v)) / Real.log (resP v)| * (N * (Real.log (resP v) / ((resP v : ℝ) - 1) + vDiff D.host.E (resP v) * Real.log (resP v))) el …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lgOf_detSym_sub_le : HTBoundSt → ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A}
     {s : FinalTheorems S κ} (fl : s.Flag) (k : s.Comp) (τ : D.host.E →+* ℂ) (T : Finset ℕ)

@@ -5,11 +5,11 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Fra
 open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LHost NumberField Ideal
 
 /- English proof (translation)
-Introduce `φ H C ho hQ`. Establish `h0 : H.QS ≠ 0` using `H.QS_pos.ne'`. Establish `hC : (0 : ℝ) ≤ C` using `(Nat.cast_nonneg _).trans ho`. Establish `h1 : φ.e + 2 ≤ H.QS.factorization 2` using `(Nat.prime_two.pow_dvd_iff_le_factorization h0).1 H.tower_dvd`. Establish `h2 : 2 ^ φ.e * ordCompl[2] H.QS ≤ H.QS` using `by conv_rhs => rw [← Nat.ordProj_mul_ordCompl_eq_self H.QS 2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.mul_le_mul_right _ (Nat.pow_le_pow_right two_pos (by omega))`. Establish `h3 : (φ.ord : ℝ) ≤ φ.o * 2 ^ φ.e` using `by exact_mod_cast φ.ord_le_o_mul_two_pow`. Establish `h4 : (2 : ℝ) ^ φ.e * ((ordCompl[2] H.QS : ℕ) : ℝ) ≤ H.QS` using `by exact_mod_cast h2`. Establish `hp : (0 : ℝ) < 2 ^ φ.e` using `by positivity`. Establish `h5 : (φ.ord : ℝ) ≤ C * 2 ^ φ.e` using `h3.trans (mul_le_mul_of_nonneg_right ho hp.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_mul_le_mul_left ?_ hp` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GL.oddQS_le :
     ∀ {φ : Frame} (H : HostRaw φ) (C : ℝ), (φ.o : ℝ) ≤ C → (H.QS : ℝ) ≤ C * φ.ord → ((ordCompl[2] H.QS : ℕ) : ℝ) ≤ C ^ 2 := by

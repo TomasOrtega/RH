@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.HeightTieProof
 
 /- English proof (translation)
-Establish `hr : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Unfold `ht formHeight`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, Nat.cast_zero, mul_zero, zero_mul, zero_div, add_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formHeight_eq_ht {F : Type} [Field F] [NumberField F] {B N n : ℕ} (δ : ℕ)
     (w : Matrix (Fin N) (Fin n) F) (A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ)
@@ -28,9 +28,9 @@ theorem formHeight_eq_ht {F : Type} [Field F] [NumberField F] {B N n : ℕ} (δ 
   ring
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Use `(hM F B N n w A Λ hL).2 1 one_ne_zero` as an intermediate fact. Simplify using `using this`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hk : IsMultiHomogeneous (k • a) (f ^ k)` using `isMultiHomogeneous_iff_block.2 ((isMultiHomogeneous_iff_block.1 ha).pow k)`. Rewrite using `[pow_succ, (hM F B N n w A Λ hL).1 (k • a) a _ _ (pow_ne_zero k hf) hf hk ha, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ht_pow (hM : HtMul) {F : Type} [Field F] [NumberField F] {B N n : ℕ} {w : Matrix (Fin N) (Fin n) F}
     {A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ} {Λ : ℝ} (hL : Lat w A Λ) {a : Fin B → ℕ}
@@ -47,19 +47,19 @@ theorem ht_pow (hM : HtMul) {F : Type} [Field F] [NumberField F] {B N n : ℕ} {
     push_cast; ring
 
 /- English proof (translation)
-Introduce `hM F _ _ T Λ hL h hh d e f c hf he hc`. Take `⟨d', f', -, hf', e'⟩` from `hh`. Take `⟨rfl, c', hc', rfl⟩` from `hf.isChowFormInt.unique hf'.isChowFormInt`. Establish `hf0` using `hf.isChowFormInt.ne_zero`. Establish `hd` using `hf.isChowFormInt.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[HeightUnique.formHeight_C_mul hL.pos d hL.spans hL.det hf0 hf.homog hc', formHeight_eq_ht]`. Establish `hpow : IsMultiHomogeneous (e • fun _ => d) (f ^ e)` using `isMultiHomogeneous_iff_block.2 ((isMultiHomogeneous_iff_block.1 hf.homog).pow e)`. Establish `key : ht T.w T.A (C c * f ^ e) = e * ht T.w T.A f`. Unfold `ht`. Rewrite using `[HeightUnique.formHeight_C_mul hL.pos 0 hL.spans hL.det (pow_ne_zero e hf0) hpow hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht_pow hM hL hf0 hf.homog e`. Establish `hD : (0 : ℝ) < (T.D : ℝ) + 1` using `by positivity`. Establish `hdR : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `heR : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `eq1 : ht T.w T.A (C c * f ^ e) / (((T.D : ℝ) + 1) * (e * d : ℕ)) = h - (harmonic (T.N - 1) : ℝ) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, div_eq_iff (by push_cast; positivity)]`. Use `push_cast`. Move the coercions through the operations in `at e'`. Establish `: ht T.w T.A f = ((T.D : ℝ) + 1) * d * h - ((T.D : ℝ) + 1) * d * (harmonic (T.N - 1) : ℝ) / 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨eq1, ?_⟩` and prove the remaining obligations. Rewrite using `[eq1]`. Establish `hNn : T.N ≤ T.n`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `finrank_range_le_card (R := F) (b := T.w.col)`. Rewrite `h1` using `[Set.finrank, hL.spans, finrank_top, Module.finrank_fin_fun, Fintype.card_fin]`. Conclude with `h1`. Establish `hH : (harmonic (T.N - 1) : ℝ) ≤ 1 + Real.log (T.N - 1 : ℕ)` using `harmonic_le_one_add_log _`. Establish `hlog : Real.log (T.N - 1 : ℕ) ≤ Real.log T.n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos (T.N - 1) with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast (by omega : T.N - 1 ≤ T.n))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heightTie : HtMul → HeightTie := by
   intro hM F _ _ T Λ hL h hh d e f c hf he hc

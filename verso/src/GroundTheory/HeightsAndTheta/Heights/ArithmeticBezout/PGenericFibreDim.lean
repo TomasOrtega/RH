@@ -24,7 +24,7 @@ def blkRingEquiv (n : ℕ) : MvPolynomial (Fin n) ℤ ≃+* MRing (PBlk n) :=
   (renameEquiv ℤ (blkEquiv n)).toRingEquiv
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem finIdeal_eq_comap {n : ℕ} (P : Ideal (MRing (PBlk n))) :
     IndefiniteRowSideFullHecke.ArithBezout.finIdeal P = P.comap (blkRingEquiv n) := by
@@ -32,7 +32,7 @@ theorem finIdeal_eq_comap {n : ℕ} (P : Ideal (MRing (PBlk n))) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[finIdeal_eq_comap]`. Use `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv (P.comap (blkRingEquiv n)) P (blkRingEquiv n) ?_)` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_surjective _ (blkRingEquiv n).surjective P).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quot_finIdeal {n : ℕ} (P : Ideal (MRing (PBlk n))) :
     ringKrullDim (MvPolynomial (Fin n) ℤ ⧸ IndefiniteRowSideFullHecke.ArithBezout.finIdeal P) =
@@ -43,13 +43,13 @@ theorem ringKrullDim_quot_finIdeal {n : ℕ} (P : Ideal (MRing (PBlk n))) :
   exact (Ideal.map_comap_of_surjective _ (blkRingEquiv n).surjective P).symm
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd hform (by simp; rw [← Nat.cast_succ]; exact (WithBot.natCast_ne_bot _).symm)`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h1 : (((⊤ : ℕ∞) + 1 : ℕ∞) : WithBot ℕ∞) = (((d + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[WithBot.coe_add]`. Conclude with `hform` after adjusting the coercions. Establish `h2 : ((⊤ : ℕ∞) + 1 : ℕ∞) = ((d + 1 : ℕ) : ℕ∞)` using `WithBot.coe_injective h1`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[top_add]`. Conclude with `ENat.top_ne_natCast _ h2`. Consider the case `coe y`. Establish `h1 : ((y + 1 : ℕ) : WithBot ℕ∞) = ((d + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast hform`. Establish `: y = d` using `by exact_mod_cast (by exact_mod_cast h1 : y + 1 = d + 1) |> Nat.succ_injective`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem eq_natCast_of_add_one_eq (d : ℕ) (x : WithBot ℕ∞)
     (hform : x + 1 = ((d : ℕ) : WithBot ℕ∞) + 1) : x = d := by
@@ -74,15 +74,13 @@ end GenericFibreDim
 open GenericFibreDim in
 
 /- English proof (translation)
-Introduce `n d P hP`. Take `⟨-, ⟨hPp, -, -⟩, hhor, hdim⟩` from `hP`. Use `set P' := IndefiniteRowSideFullHecke.ArithBezout.finIdeal P with hP'`. Establish `hP'p : P'.IsPrime`. Rewrite using `[hP', finIdeal_eq_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.comap_isPrime _ _`. Establish `hchar : ∀ m : ℤ, (C m : MvPolynomial (Fin n) ℤ) ∈ P' → m = 0`. Introduce `m hm`. Rewrite `hm` using `[hP', finIdeal_eq_comap, Ideal.mem_comap]`. Establish `hm' : (blkRingEquiv n) (C m) = C m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[blkRingEquiv]`. Rewrite `hm` using `[hm']`. Establish `: m ∈ P.comap (C : ℤ →+* MRing (PBlk n))` using `hm`. Rewrite `this` using `[show P.comap (C : ℤ →+* MRing (PBlk n)) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, -, hform⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P' hchar`. Establish `hgen : genericIdeal P = ReciprocityTheory.AnForm.R.extQ P'` using `rfl`. Rewrite `hform` using `[hP', ringKrullDim_quot_finIdeal, hdim]`. Rewrite using `[hgen]`. Simplify using `only [Fintype.card_unit] at hform`.
-
-Conclude with `eq_natCast_of_add_one_eq d _ hform`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GenericFibreDim.proof : GenericFibreDim.Statement := by
   intro n d P hP

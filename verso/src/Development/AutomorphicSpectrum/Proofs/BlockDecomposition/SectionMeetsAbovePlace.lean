@@ -9,9 +9,9 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LocHypAbove
 
 /- English proof (translation)
-Introduce `E _ _ _ S hS v`. Establish `hinj : Function.Injective (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))` using `FaithfulSMul.algebraMap_injective _ _`. Take `⟨Q, -, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal (⊥ : Ideal (𝓞 E)) (by rw [Ideal.comap_bot_of_injective _ hinj]; exact bot_le)`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hQv` using `[Ideal.comap_bot_of_injective _ hinj]`. Conclude with `v.ne_bot hQv.symm`. Take `⟨u, ⟨hu, huw⟩, -⟩` from `hS (⟨Q, hQ, hQ0⟩ : Pl E)`. Conclude with `⟨⟨u, huw.trans (HeightOneSpectrum.ext hQv)⟩, hu⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_above_mem_section : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (S : Set (Pl E)),
     IsSection S → ∀ v : PlF E, ∃ w : Above v, w.1 ∈ S := by

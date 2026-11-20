@@ -15,9 +15,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Take `⟨k, rfl⟩` from `hs y`. Use `e.injective ?_` and prove the remaining obligations. Establish `hR : ∀ u, infRep (V` using `V) ι lam k (infRep (V := V) ι lam (k : UA L n)⁻¹ u) = u := fun u => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hR _).symm.trans (Eq.trans (congrArg _ ?_) (hR _))` and prove the remaining obligations. Use `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => ?_)` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (h ℓ) k)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_inj {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) (d : ℕ)
@@ -48,7 +48,7 @@ private noncomputable def formLin {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field 
     simp only [toForm, Pi.smul_apply, map_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `h3` using `(UpperTheory.V.Hi.partUR2Abs L n w M ρ ⊥ τ bot_le).2.2.1 M' ρ' f.toAddMonoidHom hf j F`. Establish `h2` using `(UpperTheory.V.Hi.partUR2Abs L n w M' ρ' σ τ hiso).2.1 j a ha (f F) (Submodule.mem_inf.2 ⟨hm, fun k hk => (hf k F).symm.trans (congrArg f (hfix k hk))⟩)`. Conclude with `h3.trans (h2.trans (f.map_smul a F).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem push (L : Type) [Field L] [NumberField L] (n : ℕ) (w : Plc L) (M : Type) [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ (GLw n w) M) (M' : Type) [AddCommGroup M'] [Module ℂ M'] (ρ' : Representation ℂ (GLw n w) M')
@@ -62,11 +62,11 @@ private theorem push (L : Type) [Field L] [NumberField L] (n : ℕ) (w : Plc L) 
   exact h3.trans (h2.trans (f.map_smul a F).symm)
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c ι m τ₀ lam d e ξ hξ σ hσ hAx w hw hsp τ hτ j a ha F hF`. Take `⟨j0, hj1, hj2, -, hj3⟩` from `(UpperTheory.V.Hi.secU l L Ω s n hn w hsp).1`. Establish `hS : w.under (𝓞 (Lp L)) ∉ s.S` using `fun h => hw (Q.range ▸ Or.inl h)`. Establish `hat` using `UpperTheory.V.Hi.partUR2AtW l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ w hsp hS j0 hj1 hj2`. Take `⟨hB, hm⟩` from `(UpperTheory.V.Hi.partUR2Mem l L Ω s n hn V Q c ι m τ₀ lam d e ξ σ F).1 hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hiso` using `UpperTheory.isoSum_restriction_of_local_component_unitary L n σ hσ w j0 hj1 hj2 hj3 τ hτ`. Establish `hs` using `(UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ (fun _ => rfl)).2.2.2.1`. Establish `hfix : ∀ k ∈ KO (w.adicCompletion L) (Fin n), (hset Q τ₀).atW ι d w k F = F` using `fun k hk => hB.2 _ (hAx.W_le w ⟨hw, hsp⟩ (Subgroup.mem_map_of_mem _ hk))`. Use function extensionality and compare the values at `i`. Use `form_inj V ι lam d e hs _ _ fun ℓ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `push L n w (Fin m → Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) ((hset Q τ₀).atW ι d w) _ ((RU L n).comp j0) σ τ hiso j a ha (formLin V ι lam d e m i ℓ) (fun g v => hat v g i ℓ) F hfix (hm i ℓ)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.partUR2Sph :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

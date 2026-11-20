@@ -21,11 +21,9 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L]
 variable {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} {hf : IsMulCocycle₂ f}
 
 /- English proof (translation)
-Establish `hzero : ∀ τ, τ ≠ σ → x.coeff τ = 0`. Introduce `τ hτ`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, σ b ≠ τ b := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hτ (AlgEquiv.ext fun b => (h b).symm)`. Establish `h : (incl (σ b) * x - x * incl b).coeff τ = 0`. Rewrite using `[hx b, sub_self]`. Both sides reduce to the same expression. Rewrite `h` using `[coeff_incl_mul_sub_mul_incl]`.
-
-Conclude with `(mul_eq_zero.1 h).resolve_left (sub_ne_zero.2 hb)`. Rewrite using `[← incl_mul_u]`. Conclude with `eq_incl_mul_u_of_coeff_eq_zero x σ hzero`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_single_of_mul_incl (σ : L ≃ₐ[K] L) (x : CrossedProduct hf)
     (hx : ∀ b : L, x * incl b = incl (σ b) * x) : x = single σ (x.coeff σ) := by
@@ -46,17 +44,15 @@ theorem eq_single_of_mul_incl (σ : L ≃ₐ[K] L) (x : CrossedProduct hf)
 variable [FiniteDimensional K L] [IsGalois K L]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_unit_conj ((e : CrossedProduct hf →ₐ[K] CrossedProduct hg).comp incl) (incl : L →ₐ[K] CrossedProduct hg)`. Use `set φ : CrossedProduct hf → CrossedProduct hg := fun y => (a : CrossedProduct hg) * e y * ↑a⁻¹ with hφ`. Establish `φmul : ∀ y z, φ (y * z) = φ y * φ z`. Introduce `y z`. Simplify using `only [hφ, map_mul, mul_assoc, Units.inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `φone : φ 1 = 1`. Simplify using `only [hφ, map_one, mul_one, Units.mul_inv]`. Establish `φincl : ∀ b, φ (incl b) = incl b` using `fun b => (ha b).symm`. Take `⟨c, hw⟩ : ∃ c : (L ≃ₐ[K] L) → L, ∀ σ, φ (u σ) = single σ (c σ)` from `⟨fun σ => (φ (u σ)).coeff σ, fun σ => eq_single_of_mul_incl σ _ fun b => by rw [← φincl, ← φmul, u_mul_incl, φmul, φincl]⟩`. Establish `hc0 : ∀ σ, c σ ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ h0`. Take `⟨w, hw'⟩` from `(isUnit_u σ (hf := hf)).exists_right_inv`. Establish `h` using `congrArg φ hw'`. Rewrite `h` using `[φmul, φone, hw σ, h0, single_zero, zero_mul]`. Conclude with `zero_ne_one h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ σ τ, c σ * σ (c τ) * g (σ, τ) = f (σ, τ) * c (σ * τ)`. Introduce `σ τ`. Establish `h` using `congrArg φ (u_mul_u (hf := hf) σ τ)`. Simplify using `only [φmul, φincl] at h`. Rewrite `h` using `[hw σ, hw τ, hw (σ * τ), single_mul_single, incl_mul_single]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `single_injective _ h`. Use `⟨fun σ => Units.mk0 (c σ) (hc0 σ), fun σ τ => ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [Units.val_mul, Units.val_div_eq_div_val, val_smul_units, Units.val_mk0, Pi.div_apply]`. Rewrite using `[div_mul_eq_mul_div, div_eq_div_iff (hc0 _) (g (σ, τ)).ne_zero]`.
-
-Take the linear combination `key σ τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isMulCoboundary₂_div_of_algEquiv {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
     (hf : IsMulCocycle₂ f) (hg : IsMulCocycle₂ g) (e : CrossedProduct hf ≃ₐ[K] CrossedProduct hg) :
@@ -94,9 +90,9 @@ theorem isMulCoboundary₂_div_of_algEquiv {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] 
   linear_combination key σ τ
 
 /- English proof (translation)
-Establish `hcard : Fintype.card ι = Module.finrank K L`. Establish `h1` using `e.toLinearEquiv.finrank_eq`. Rewrite `h1` using `[finrank_eq_sq, Module.finrank_matrix, Module.finrank_self, mul_one, ← sq]`. Conclude with `(Nat.pow_left_injective two_ne_zero h1).symm`. Establish `h` using `isMulCoboundary₂_div_of_algEquiv hf isMulCocycle₂_one (e.trans ((Matrix.reindexAlgEquiv K K (Fintype.equivFinOfCardEq hcard)).trans (matrixEquiv isMulCocycle₂_one).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[div_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isMulCoboundary₂_of_algEquiv_matrix {ι : Type*} [Fintype ι] [DecidableEq ι]
     (hf : IsMulCocycle₂ f) (e : CrossedProduct hf ≃ₐ[K] Matrix ι ι K) : IsMulCoboundary₂ f := by
@@ -112,11 +108,11 @@ theorem isMulCoboundary₂_of_algEquiv_matrix {ι : Type*} [Fintype ι] [Decidab
 end CrossedProduct
 
 /- English proof (translation)
-Establish `: IsArtinianRing A` using `IsArtinianRing.of_finite K A`. Establish `: IsArtinianRing B` using `IsArtinianRing.of_finite K B`. Take `⟨n, hn, D, _, _, _, ⟨eA⟩⟩` from `IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite K A`. Take `⟨m, hm, D', _, _, _, ⟨eB⟩⟩` from `IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite K B`. Take `⟨φ⟩` from `(isBrauerEquivalent_iff_nonempty_algEquiv eA eB).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdA` using `eA.toLinearEquiv.finrank_eq`. Establish `hdB` using `eB.toLinearEquiv.finrank_eq`. Rewrite `hdA`, `hdB` using `[Module.finrank_matrix, Fintype.card_fin]`. Establish `hDD : Module.finrank K D = Module.finrank K D'` using `φ.toLinearEquiv.finrank_eq`. Establish `hD0 : 0 < Module.finrank K D` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : n = m := by`. Rewrite `hd` using `[hdA, hdB, ← hDD]`. Conclude with `Nat.mul_self_inj.1 (Nat.eq_of_mul_eq_mul_right hD0 hd)`. Conclude with `⟨eA.trans (φ.mapMatrix.trans eB.symm)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_algEquiv_of_isBrauerEquivalent {K : Type u} [Field K] {A B : CSA.{u, v} K}
     (h : IsBrauerEquivalent A B) (hd : Module.finrank K A = Module.finrank K B) :
@@ -142,7 +138,7 @@ variable {K L : Type u} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L
 variable {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
 
 /- English proof (translation)
-Establish `: NeZero (Module.finrank K L)` using `⟨Module.finrank_pos.ne'⟩`. Conclude with `isBrauerEquivalent_of_algEquiv_matrix (C := K) (matrixEquiv isMulCocycle₂_one) (matrixFinOneAlgEquiv K).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isBrauerEquivalent_one_one :
     IsBrauerEquivalent (csaOf K (CrossedProduct (isMulCocycle₂_one (K := K) (L := L))))
@@ -152,7 +148,7 @@ theorem isBrauerEquivalent_one_one :
     (matrixFinOneAlgEquiv K).symm
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Brauer.nonempty_algEquiv_of_isBrauerEquivalent h (show Module.finrank K (CrossedProduct hf) = Module.finrank K (CrossedProduct hg) by rw [finrank_eq_sq, finrank_eq_sq])`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_algEquiv_of_isBrauerEquivalent {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
     (hf : IsMulCocycle₂ f) (hg : IsMulCocycle₂ g)
@@ -163,7 +159,7 @@ theorem nonempty_algEquiv_of_isBrauerEquivalent {g : (L ≃ₐ[K] L) × (L ≃�
       rw [finrank_eq_sq, finrank_eq_sq])
 
 /- English proof (translation)
-Take `⟨e⟩` from `nonempty_algEquiv_of_isBrauerEquivalent hf isMulCocycle₂_one (h.trans (isBrauerEquivalent_one_one (L := L)).symm)`. Establish `h'` using `isMulCoboundary₂_div_of_algEquiv hf isMulCocycle₂_one e`. Rewrite `h'` using `[div_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isMulCoboundary₂_of_isBrauerEquivalent_one (hf : IsMulCocycle₂ f)
     (h : IsBrauerEquivalent (csaOf K (CrossedProduct hf)) (oneCSA K)) : IsMulCoboundary₂ f := by
@@ -173,14 +169,14 @@ theorem isMulCoboundary₂_of_isBrauerEquivalent_one (hf : IsMulCocycle₂ f)
   rwa [div_one] at h'
 
 /- English proof (translation)
-The claim follows from `isMulCoboundary₂_of_isBrauerEquivalent_one hf (Quotient.exact (h.trans BrauerGroup.one_def))`.
+A detailed English derivation is pending.
 -/
 theorem isMulCoboundary₂_of_mk_eq_one (hf : IsMulCocycle₂ f)
     (h : (⟦csaOf K (CrossedProduct hf)⟧ : BrauerGroup.{u, u} K) = 1) : IsMulCoboundary₂ f :=
   isMulCoboundary₂_of_isBrauerEquivalent_one hf (Quotient.exact (h.trans BrauerGroup.one_def))
 
 /- English proof (translation)
-Rewrite using `[BrauerGroup.one_def]`. Use `Quotient.sound (IsBrauerEquivalent.trans ?_ (isBrauerEquivalent_one_one (L := L)))` and prove the remaining obligations. Use `isBrauerEquivalent_of_algEquiv (A := csaOf K (CrossedProduct hf)) (B := csaOf K (CrossedProduct (isMulCocycle₂_one (K := K) (L := L)))) (equivOfIsMulCoboundary₂ hf isMulCocycle₂_one ?_)` and prove the remaining obligations. Rewrite using `[one_div]`. Conclude with `isMulCoboundary₂_inv h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_one_of_isMulCoboundary₂ (hf : IsMulCocycle₂ f) (h : IsMulCoboundary₂ f) :
     (⟦csaOf K (CrossedProduct hf)⟧ : BrauerGroup.{u, u} K) = 1 := by
@@ -195,7 +191,7 @@ theorem mk_eq_one_of_isMulCoboundary₂ (hf : IsMulCocycle₂ f) (h : IsMulCobou
 end CrossedProduct
 
 /- English proof (translation)
-The claim follows from `c.2`.
+A detailed English derivation is pending.
 -/
 theorem isMulCocycle₂_of_mem {G M : Type*} [Group G] [CommGroup M] [MulDistribMulAction G M]
     (c : mulCocycles₂ G M) : IsMulCocycle₂ (c : G × G → M) := c.2
@@ -223,9 +219,9 @@ theorem toBrauer_mk (c : mulCocycles₂ (L ≃ₐ[K] L) Lˣ) :
     toBrauer K L (mk _ _ c) = ⟦csaOf K (CrossedProduct (isMulCocycle₂_of_mem c))⟧ := rfl
 
 /- English proof (translation)
-Introduce `x y hxy`. Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Proceed by induction on `y using H2mul.induction_on with`. Consider the case `h c'`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite `hxy` using `[toBrauer_mk, toBrauer_mk]`. Take `⟨e⟩` from `CrossedProduct.nonempty_algEquiv_of_isBrauerEquivalent (isMulCocycle₂_of_mem c) (isMulCocycle₂_of_mem c') (Quotient.exact hxy)`. Conclude with `(mk_eq_mk_iff c c').2 (CrossedProduct.isMulCoboundary₂_div_of_algEquiv _ _ e)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toBrauer_injective : Function.Injective (toBrauer K L) := by
   intro x y hxy
@@ -239,7 +235,7 @@ theorem toBrauer_injective : Function.Injective (toBrauer K L) := by
   exact (mk_eq_mk_iff c c').2 (CrossedProduct.isMulCoboundary₂_div_of_algEquiv _ _ e)
 
 /- English proof (translation)
-Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Rewrite using `[toBrauer_mk, mk_eq_one_iff]`. Conclude with `⟨CrossedProduct.isMulCoboundary₂_of_mk_eq_one (isMulCocycle₂_of_mem c), CrossedProduct.mk_eq_one_of_isMulCoboundary₂ (isMulCocycle₂_of_mem c)⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem toBrauer_eq_one_iff (x : H2mul (L ≃ₐ[K] L) Lˣ) : toBrauer K L x = 1 ↔ x = 1 := by
   induction x using H2mul.induction_on with
@@ -249,7 +245,7 @@ theorem toBrauer_eq_one_iff (x : H2mul (L ≃ₐ[K] L) Lˣ) : toBrauer K L x = 1
     CrossedProduct.mk_eq_one_of_isMulCoboundary₂ (isMulCocycle₂_of_mem c)⟩
 
 /- English proof (translation)
-The claim follows from `(toBrauer_eq_one_iff _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem toBrauer_one : toBrauer K L (1 : H2mul (L ≃ₐ[K] L) Lˣ) = 1 :=
   (toBrauer_eq_one_iff _).2 rfl

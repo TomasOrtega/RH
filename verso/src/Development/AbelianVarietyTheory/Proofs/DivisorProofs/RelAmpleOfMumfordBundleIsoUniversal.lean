@@ -24,23 +24,21 @@ open GlobalTheory.ZM
 namespace GlobalTheory.MumAmple
 
 /- English proof (translation)
-Introduce `o _ ζ g n F R' _ _ T B _ _ β β₂ hpb hsq L hL hiso`. Establish `hB : IsAbelianScheme B` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback F.univ.ab hpb`. Use `hB.proper` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `ProperFinite.relAmple_of_geometricFibres B hL fun K _ _ y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk` using `isGrpPullback_pullback B y`. Establish `hkU` using `hk.comp hpb`. Take `⟨⟨c, hc⟩, hprin⟩` from `GlobalTheory.siegPre_pullback g n o ζ F.X (Sp K) F.s ((y ≫ T) ≫ F.s) (y ≫ T) F.univ rfl`. Establish `hcp` using `hprin c hc F.princ`. Take `⟨φc, φc₂, hcpb, hcsq, hcP, -⟩` from `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L₀, h₀, hlam₀, ha₀⟩` from `PolBundleLoc.exists_ample_root c.A c.ab c.isLB c.rig₁ c.rig₂ c.symm hcp.1`. Establish `hk₀` using `KTrivOfLam.kTriv_of_lam_iso _ c.A c.ab c.P c.isLB hcp.2 L₀ h₀ hlam₀`. Take `⟨e, he, heφ⟩` from `grpPullback_iso hcpb hkU`. Use `haveI := he`. Set `ψ : c.A.left ⟶ B.left` to `e.hom.left ≫ pullback.fst B.hom y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : IsGrpPullback c.A B y ψ`. Use `(isGrpPullback_of_iso e).comp hk` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Take `⟨ψ₂, sψ⟩` from `SiegPull.exists_isSquare hψ.1.w`. Establish `hN : (L.pull ψ).IsLB` using `pull_isLB hL ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlamN : LBIso (abelian₂ c.A (L.pull ψ)) ((abelian₂ B L).pull ψ₂)` using `SiegPull.lbIso_lam_pull hψ ((CechPic.cls_eq_iff hN hN).1 rfl) sψ`. Establish `hsq' : IsSquare (ψ ≫ β) (ψ₂ ≫ β₂)` using `SiegPull.isSquare_comp sψ hsq`. Establish `hφ : ψ ≫ β = φc` using `by simpa [ψ, Category.assoc] using heφ`. Establish `e₂ : ψ₂ ≫ β₂ = φc₂` using `SiegPull.isSquare_unique hsq' hcsq hφ`. Establish `hpullP : LBIso ((abelian₂ B L).pull ψ₂) (F.univ.P.pull (ψ₂ ≫ β₂))` using `SiegPull.lbIso_pull_comp hiso ψ₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpullP` using `[e₂]`. Establish `iLN : (abelian₂ c.A (L.pull ψ)).IsLB` using `LB.isLB_linComb hN _ _`. Establish `iL0 : (abelian₂ c.A L₀).IsLB` using `LB.isLB_linComb h₀ _ _`. Establish `iLB : (abelian₂ B L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hlam : CechPic.lam (CechPic.cls (L.pull ψ) hN) (fst c.A c.A) (snd c.A c.A) = CechPic.lam (CechPic.cls L₀ h₀) (fst c.A c.A) (snd c.A c.A)` using `(CechPic.cls_cube_two hN _ _ iLN).symm.trans (((CechPic.cls_eq_iff iLN (pull_isLB iLB _)).2 hlamN).trans (((CechPic.cls_eq_iff (pull_isLB iLB _) (pull_isLB F.univ.isLB _)).2 hpullP).trans (((CechPic.cls_eq_iff c.isLB (pull_isLB F.univ.isLB _)).2 hcP).symm.trans (((CechPic.cls_eq_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hampN, -⟩` from `AmpleKerFibre.relAmple_kTriv_of_lam_eq K c.A c.ab L₀ h₀ ha₀ hk₀ (L.pull ψ) hN hlam`. Establish `: IsProper c.A.hom` using `c.ab.proper`. Establish `hAN` using `(relAmple_iff_isAmpleLB_of_isAffine c.A hN).1 hampN`. Use `haveI : IsIso e.inv.left := inferInstanceAs (IsIso ((Over.forget _).map e.inv))`. Establish `h1` using `hAN.pull_of_isAffineHom e.inv.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : LBIso ((L.pull ψ).pull e.inv.left) (L.pull (pullback.fst B.hom y))`. Establish `h3` using `SiegPull.lbIso_pull_comp ((CechPic.cls_eq_iff hN hN).1 rfl) e.inv.left`. Establish `ee : e.inv.left ≫ ψ = pullback.fst B.hom y`. Simplify using `only [ψ]`. Rewrite using `[← Category.assoc, ← Over.comp_left, e.inv_hom_id, Over.id_left, Category.id_comp]`.
-
-Rewrite `h3` using `[ee]`. Then use the resulting hypothesis. Conclude with `(isAmpleLB_congr (pull_isLB hN _) (pull_isLB hL _) h2).1 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem relAmple_of_lam_iso_univ : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (R' : Type) [CommRing R'] [IsNoetherianRing R'] (T : Sp R' ⟶ F.X) (B : Over (Sp R')) [GrpObj B] [IsCommMonObj B] (β : B.left ⟶ F.univ.A.left) (β₂ : (G2 B).left ⟶ (G2 F.univ.A).left), IsGrpPullback B F.univ.A T β → IsSquare β β₂ → ∀ L : LB B.left, L.IsLB → LBIso (abelian₂ B L) (F.univ.P.pull β₂) → RelAmple B L := by
   intro o _ ζ g n F R' _ _ T B _ _ β β₂ hpb hsq L hL hiso

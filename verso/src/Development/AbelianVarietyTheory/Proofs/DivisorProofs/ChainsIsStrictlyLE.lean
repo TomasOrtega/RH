@@ -24,7 +24,7 @@ variable (q : ℕ) {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc}
   (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B) (i : ℤ)
 
 /- English proof (translation)
-Establish `hs : ∀ (f : Fin N → Cochain (totChains (ZMod q) (twX E V)) (res _ (tw q i)) n), δ n m (∑ j, f j) = ∑ j, δ n m (f j)` using `fun f => map_sum (AddMonoidHom.mk' (δ n m) (δ_add n m)) f _`. Rewrite using `[phi_apply, phi_apply, hs]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = δ n m _`. Rewrite using `[GlobalTheory.T.crossProductTwisted_leibniz_rule V ℓ (twPairI q i ((j : ℕ) : ℤ)) (sub_add_cancel n _) (show n - 2 * ((j : ℕ) : ℤ) + 1 = m - 2 * ((j : ℕ) : ℤ) by omega) rfl hnm (by omega) (by omega), Cocycle.δ_eq_zero (z j), crossT_zero_right, smul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem phi_δ (z : ∀ j : Fin N, Cocycle ((chains (ZMod q)).obj B) (res _ (tw q ((j : ℕ) : ℤ))) (2 * ((j : ℕ) : ℤ)))
     (n m : ℤ) (hnm : n + 1 = m)
@@ -41,7 +41,7 @@ theorem phi_δ (z : ∀ j : Fin N, Cocycle ((chains (ZMod q)).obj B) (res _ (tw 
     Cocycle.δ_eq_zero (z j), crossT_zero_right, smul_zero, add_zero]
 
 /- English proof (translation)
-Set `ev₀ : Cochain (totChains (ZMod q) (twX E V)) (res _ (tw q i)) n →+ _` to `AddMonoidHom.mk' (fun γ => (biChains (ZMod q) (twX E V)).ιTotal (ComplexShape.up ℤ) c l t h ≫ γ.v t r hr) (fun γ γ' => by rw [Cochain.add_v, Preadditive.comp_add])`. Express the relevant statement in the definitionally equal form `ev₀ _ = 0`. Rewrite using `[phi_apply, map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => GlobalTheory.T.cochain_product_vanishing_above_degree V ℓ _ _ (α j) (z j) p (hα j) c l t h r hr hc`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_van (z : ∀ j : Fin N, Cochain ((chains (ZMod q)).obj B) (res _ (tw q ((j : ℕ) : ℤ))) (2 * ((j : ℕ) : ℤ)))
     (p n : ℤ)
@@ -57,9 +57,9 @@ theorem phi_van (z : ∀ j : Fin N, Cochain ((chains (ZMod q)).obj B) (res _ (tw
   exact Finset.sum_eq_zero fun j _ => GlobalTheory.T.cochain_product_vanishing_above_degree V ℓ _ _ (α j) (z j) p (hα j) c l t h r hr hc
 
 /- English proof (translation)
-Use `⟨fun x y hxy => ?_, fun y => ⟨pull (ZMod q) e.inv F n y, ?_⟩⟩` and prove the remaining obligations. Establish `hx` using `(pull_comp (ZMod q) e.inv e.hom F n x).symm`. Establish `hy` using `(pull_comp (ZMod q) e.inv e.hom F n y).symm`. Rewrite `hx`, `hy` using `[e.inv_hom_id, pull_id]`. Conclude with `hx.symm.trans ((congrArg _ hxy).trans hy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`.
+A detailed English derivation is pending.
 -/
 theorem pull_iso_bijective {E E' : Spc} (e : E ≅ E') (F : Shv (ZMod q)) (n : ℤ) :
     Function.Bijective (pull (ZMod q) e.hom F n) := by
@@ -71,11 +71,11 @@ theorem pull_iso_bijective {E E' : Spc} (e : E ≅ E') (F : Shv (ZMod q)) (n : �
   · rw [← pull_comp, e.hom_inv_id, pull_id]
 
 /- English proof (translation)
-Introduce `n i`. Establish `hf1` using `pull_iso_bijective q (twIso E V) (tw q i) n`. Establish `hf2` using `pull_awChains_bijective (ZMod q) (twX E V) (res _ (tw q i)) n`. Set `φ : (∀ j : Fin N, CohomologyClass ((chains (ZMod q)).obj E) (res _ (tw q (i - ((j : ℕ) : ℤ)))) (n - 2 * ((j : ℕ) : ℤ))) → CohomologyClass (totChains (ZMod q) (twX E V)) (res _ (tw q i)) n` to `fun x => Function.surjInv hf2.2 (pull _ (twIso E V).hom _ n (pbfMap q V n i x))`. Establish `hφ : ∀ (a : ∀ j : Fin N, Cocycle ((chains (ZMod q)).obj E) (res _ (tw q (i - ((j : ℕ) : ℤ)))) (n - 2 * ((j : ℕ) : ℤ))) (b : Cocycle (totChains (ZMod q) (twX E V)) (res _ (tw q i)) n), b.1 = phi q V ℓ i (fun j => (z j).1) n (fun j => (a j).1) → φ (fun j => CohomologyClass.mk (a j) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b hb`. Apply `hf2.1` to reduce the goal to its premises. Rewrite using `[Function.surjInv_eq hf2.2]`. Conclude with `GlobalTheory.T.twisted_cocycle_classes_pullback_cup q V ℓ n i z hzd a b hb`. Establish `hb : Function.Bijective φ` using `GlobalTheory.ColFilt.bijective_total_of_terms (ZMod q) (biChains (ZMod q) (twX E V)) (fun p k h => biChains_isZero (twX E V) p k h) ((chains (ZMod q)).obj E) (fun j : Fin N => res _ (tw q (i - ((j : ℕ) : ℤ)))) (res _ (tw q i)) (fun j : Fin N => 2 * ((j : ℕ) : ℤ)) (phi q V ℓ i (fu …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (pull _ (twIso E V).hom _ n) ∘ pbfMap q V n i = (cpull (awChains (ZMod q) (twX E V)) (res _ (tw q i)) n) ∘ φ`. Use function extensionality and compare the values at `fun x => (Function.surjInv_eq hf2.2 _).symm`. Conclude with `(Function.Bijective.of_comp_iff' hf1 _).1 (hcomp ▸ hf2.comp hb)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pbf_of_model [NeZero q] (hE : Inv q E)
     (z : ∀ j : Fin N, Cocycle ((chains (ZMod q)).obj B) (res _ (tw q ((j : ℕ) : ℤ))) (2 * ((j : ℕ) : ℤ)))

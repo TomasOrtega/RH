@@ -6,15 +6,13 @@ open IsLocalRing GlobalTheory.FormalOrigin GlobalTheory.FormalOrigin.Extend
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `L : MvPowerSeries σ R →ₗ[ℤ] MvPowerSeries σ R` to `{ toFun := fun F => fun α => D (MvPowerSeries.coeff α F) map_add' := by`. Introduce `F G`. Use function extensionality and compare the values at `α`. Use `show D (MvPowerSeries.coeff α (F + G)) = D (MvPowerSeries.coeff α F) + D (MvPowerSeries.coeff α G)`. Rewrite using `[map_add, map_add]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_smul' := by`. Introduce `n F`. Use function extensionality and compare the values at `α`. Use `show D (MvPowerSeries.coeff α (n • F)) = n • D (MvPowerSeries.coeff α F)`. Rewrite using `[map_zsmul, map_zsmul] }`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ F α, MvPowerSeries.coeff α (L F) = D (MvPowerSeries.coeff α F)` using `fun _ _ => rfl`. Use `⟨Derivation.mk' L ?_, ?_⟩` and prove the remaining obligations. Introduce `F G`. Use extensionality with `α`. Rewrite using `[smul_eq_mul, smul_eq_mul, map_add]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [hL]`. Rewrite using `[MvPowerSeries.coeff_mul, map_sum, MvPowerSeries.coeff_mul, mul_comm G, MvPowerSeries.coeff_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `erw [hL, hL]`.
-
-Conclude with `congrArg (_ + ·) (mul_comm _ _)`. Introduce `F α`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mvPowerSeries_derivation_coeffwise (σ R : Type) [CommRing R] (D : Derivation ℤ R R) :
     ∃ E : Derivation ℤ (MvPowerSeries σ R) (MvPowerSeries σ R),

@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.Inhab
 open Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n hn ih => exact ih.trans (hw n (ha.trans hn))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mono_from_one (w : ℕ → ℤ) (hw : ∀ i, 1 ≤ i → w i ≤ w (i + 1)) (a b : ℕ) (ha : 1 ≤ a) (hab : a ≤ b) :
     w a ≤ w b := by
@@ -16,11 +16,11 @@ theorem mono_from_one (w : ℕ → ℤ) (hw : ∀ i, 1 ≤ i → w i ≤ w (i + 
   | succ n hn ih => exact ih.trans (hw n (ha.trans hn))
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : a.val ≤ b.val` using `hab`. Unfold `G.liftWt`. Distinguish the cases in `ha : a.val < m + 1`. Distinguish the cases in `hb : b.val < m + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos ha, dif_pos hb]`. Conclude with `hl hab'`. Rewrite using `[dif_pos ha, dif_neg hb]`. Establish `e1 : lam (Fin.last m) ≤ lam ⟨a.val, ha⟩` using `hl (Fin.le_last _)`. Establish `e2` using `mono_from_one w hw 1 ((b.val - (m + 1)) / (t + 1) + 1) le_rfl (Nat.le_add_left _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : ¬ b.val < m + 1` using `by omega`. Rewrite using `[dif_neg ha, dif_neg hb]`. Establish `e2` using `mono_from_one w hw ((a.val - (m + 1)) / (t + 1) + 1) ((b.val - (m + 1)) / (t + 1) + 1) (Nat.le_add_left _ _) (Nat.add_le_add_right (Nat.div_le_div_right (Nat.sub_le_sub_right hab' _)) 1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem liftWt_antitone (t m : ℕ) (lam : Fin (m + 1) → ℤ) (w : ℕ → ℤ) (j : ℕ) (hl : Antitone lam)
     (h1 : -(lam (Fin.last m)) ≤ w 1) (hw : ∀ i, 1 ≤ i → w i ≤ w (i + 1)) : Antitone (G.liftWt t m lam w j) := by
@@ -44,7 +44,7 @@ theorem liftWt_antitone (t m : ℕ) (lam : Fin (m + 1) → ℤ) (w : ℕ → ℤ
 def tCo (D : D7) (τ : D.what₂.Tau) : G.HH D := D.R.iotaInv ((D.eTau τ : D.R.GG)).2
 
 /- English proof (translation)
-Unfold `tCo`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordinate_of_first_embedding (D : D7) (τ : D.what₂.Tau) (t : G.HH D) (h : (D.eTau τ : D.R.GG) = D.R.tau1 t) :
     tCo D τ = t := by
@@ -53,7 +53,7 @@ theorem coordinate_of_first_embedding (D : D7) (τ : D.what₂.Tau) (t : G.HH D)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← plGG_false, plGG_top_iff]`. Conclude with `⟨fun h => h.2, fun h => ⟨rfl, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tau_top_places_iff (D : D7) (t : G.HH D) : D.R.tau1 t ∈ D.host.topPlaces ↔ t ∈ D.host.TT := by
   rw [← plGG_false, plGG_top_iff]
@@ -135,13 +135,13 @@ def latInst : G.LatInst D where
   Vram := fun _ _ _ => ⊥
 
 /- English proof (translation)
-Introduce `u w hg`. Use `⟨rfl, rfl, H.c_le, H.r_eq u w hg, H.inj u w hg, fun v s t ht => ⟨fun hs => ?_, fun j hj => ?_⟩, fun t0 ht0 => ⟨H.n_eq u w hg t0 ht0, fun s => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : D.R.tau2 t ∈ D.host.topPlaces` using `ht ▸ (Finset.mem_filter.1 hs).2`. Rewrite `h1` using `[← plGG_true, plGG_top_iff]`. Conclude with `Bool.noConfusion h1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((H.wZ (hT.gat_pos u w hg ⟨v, s⟩) j : ℤ) : ℝ) = _`. Rewrite using `[H.wZ_eq _ j hj]`. Unfold `G.fillG`. Rewrite using `[hf j hj (hT.gat_pos u w hg ⟨v, s⟩) (true, t) (by rw [ht, plGG_true])]`. Establish `hp` using `H.pos u w hg t0 ht0 s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : s ∈ (H.latInst.Fl u w hg).TT (H.latInst.vOf u w hg t0) ↔ t0 + s.val • G.hP D (D.what₂.places.resChar w) ∈ D.host.TT`. Rewrite using `[← tau_top_places_iff, ← hp]`. Conclude with `⟨fun h => (Finset.mem_filter.1 h).2, fun h => Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩⟩`. Use `⟨hp, hmem, fun _ => ⟨?_, ?_⟩, fun j hj => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (G.aL L) (coordinate_of_first_embedding D _ _ hp)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (G.bL L) (coordinate_of_first_embedding D _ _ hp)`. Use `show ((H.wZ (hT.gat_pos u w hg ⟨H.vOf u w hg t0, s⟩) j : ℤ) : ℝ) = _`. Rewrite using `[H.wZ_eq _ j hj]`. Unfold `G.fillG`. Rewrite using `[hf j hj (hT.gat_pos u w hg ⟨H.vOf u w hg t0, s⟩) (false, _) (by rw [hp, plGG_false])]`.
+A detailed English derivation is pending.
 -/
 theorem latTied
     (hf : ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × G.HH D),
@@ -173,7 +173,7 @@ theorem latTied
 end LatHyp
 
 /- English proof (translation)
-Use `⟨fun _ u hg => ⟨0, ?_, by rw [hl]; simp⟩, fun u _ _ => hl u w⟩` and prove the remaining obligations. Use `hs u w hg` as an intermediate fact. Rewrite using `[Nat.cast_zero, Module.length_eq_zero_iff]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sizeDataLat_of_subsingleton {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (Y : G.LatInst D) (K : G.Consts)
     (hs : ∀ u w hg, Subsingleton (D.gat u w hg).Fn) (hl : ∀ u w, L.lenMN u w = 0) (w : D.what₂.places.Pl) :
@@ -184,9 +184,9 @@ theorem sizeDataLat_of_subsingleton {D : D7} {L : SizeData₂ D} (X : G.Inst D L
   infer_instance
 
 /- English proof (translation)
-Use `⟨fun _ u hg => ⟨0, ?_, by rw [hl]; simp⟩, fun u _ _ => hl u w⟩` and prove the remaining obligations. Establish `h1 : (D.gat u w hg).M ⊓ Y.Vram u w hg = ⊥` using `by rw [hM, bot_inf_eq]`. Establish `h2 : Subsingleton ↥((D.gat u w hg).M ⊓ Y.Vram u w hg)`. Rewrite using `[h1]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_zero, Module.length_eq_zero_iff]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sizeDataLat_of_M_bot {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (Y : G.LatInst D) (K : G.Consts)
     (hM : ∀ u w hg, (D.gat u w hg).M = ⊥) (hl : ∀ u w, L.lenMN u w = 0) (w : D.what₂.places.Pl) :
@@ -200,9 +200,9 @@ theorem sizeDataLat_of_M_bot {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (Y : 
   infer_instance
 
 /- English proof (translation)
-Use `⟨fun _ u hg => ⟨0, ?_, by rw [hl]; simp⟩, fun u _ _ => hl u w⟩` and prove the remaining obligations. Establish `h1 : (D.gat u w hg).M ⊓ Y.Vram u w hg = ⊥` using `by rw [hV, inf_bot_eq]`. Establish `h2 : Subsingleton ↥((D.gat u w hg).M ⊓ Y.Vram u w hg)`. Rewrite using `[h1]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_zero, Module.length_eq_zero_iff]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sizeDataLat_of_Vram_bot {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (Y : G.LatInst D) (K : G.Consts)
     (hV : ∀ u w hg, Y.Vram u w hg = ⊥) (hl : ∀ u w, L.lenMN u w = 0) (w : D.what₂.places.Pl) :

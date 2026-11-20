@@ -23,7 +23,7 @@ variable {p : ℕ} [Fact p.Prime]
 def scaleVC (e : ℂ_[p]ˣ) : WeierstrassCurve.VariableChange ℂ_[p] := ⟨e⁻¹, 0, 0, 0⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;>`. Apply the tactic sequence `simp only [WeierstrassCurve.variableChange_a₁, WeierstrassCurve.variableChange_a₂, WeierstrassCurve.variableChange_a₃, WeierstrassCurve.variableChange_a₄, WeierstrassCurve.variableChange_a₆, scaleVC, shortW, inv_inv] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scaleVC_smul (e : ℂ_[p]ˣ) (g2 g3 : ℂ_[p]) :
     scaleVC e • shortW g2 g3 = shortW ((e : ℂ_[p]) ^ 4 * g2) ((e : ℂ_[p]) ^ 6 * g3) := by
@@ -33,7 +33,7 @@ theorem scaleVC_smul (e : ℂ_[p]ˣ) (g2 g3 : ℂ_[p]) :
       WeierstrassCurve.variableChange_a₆, scaleVC, shortW, inv_inv] <;> ring
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Rewrite using `[show (4 : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((4 : ℕ) : ℚ_[p]) by rw [map_natCast]; norm_num, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Use `(Nat.Prime.coprime_iff_not_dvd hp).mpr fun hd => ?_` and prove the remaining obligations. Use `Nat.le_of_dvd (by norm_num) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem norm_four (h5 : 5 ≤ p) : ‖(4 : ℂ_[p])‖ = 1 := by
   have hp : p.Prime := Fact.out
@@ -44,7 +44,7 @@ theorem norm_four (h5 : 5 ≤ p) : ‖(4 : ℂ_[p])‖ = 1 := by
   omega
 
 /- English proof (translation)
-Establish `h4` using `norm_four h5`. Simplify using `only [Formalism.L2.Th1.C.CoeffIn, Formalism.L2.Th1.C.mem_unitBall_iff, shortW, norm_zero, zero_le_one, norm_div, norm_neg, h4, div_one, true_and]`. Conclude with `⟨n2, n3⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem coeffIn_short (h5 : 5 ≤ p) {g2 g3 : ℂ_[p]} (n2 : ‖g2‖ ≤ 1) (n3 : ‖g3‖ ≤ 1) :
     Formalism.L2.Th1.C.CoeffIn (Formalism.L2.KerInert.ModelP.RB p) (shortW g2 g3) := by
@@ -54,29 +54,27 @@ theorem coeffIn_short (h5 : 5 ≤ p) {g2 g3 : ℂ_[p]} (n2 : ‖g2‖ ≤ 1) (n3
   exact ⟨n2, n3⟩
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `by omega`. Establish `hε0 : ε ≠ 0`. Introduce `h`. Rewrite `hε` using `[h, norm_zero]`. Conclude with `zero_ne_one hε`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set e : ℂ_[p]ˣ := Units.mk0 ε hε0 with he`. Establish `hee : (e : ℂ_[p]) = ε` using `rfl`. Establish `hW' : shortW (ε ^ 4 * g2) (ε ^ 6 * g3) = scaleVC e • shortW g2 g3`. Rewrite using `[scaleVC_smul, hee]`. Use `set D := C * scaleVC e with hD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCD : C • shortW (ε ^ 4 * g2) (ε ^ 6 * g3) = D • shortW g2 g3`. Rewrite using `[hW', hD, mul_smul]`. Establish `hΔ0 : (shortW g2 g3).Δ = g2 ^ 3 - 27 * g3 ^ 2`. Simplify using `only [shortW, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW0int : Formalism.L2.Th1.C.CoeffIn (Formalism.L2.KerInert.ModelP.RB p) (shortW g2 g3)` using `coeffIn_short h5 n2 n3`. Take `⟨hu, hui, hr, hs, ht⟩` from `Formalism.L2.KerInert.ModelP.vc_gen h5 (shortW g2 g3) (by simp [shortW]) (by simp [shortW]) (by simp [shortW]) (by rw [hΔ0, nd]) D (by rw [← hCD]; exact i1) (by rw [← hCD]; exact i2) (by rw [← hCD]; exact i3) (by rw [← hCD]; exact hΔ)`. Establish `hsu : ((scaleVC e).u : ℂ_[p]) = ε⁻¹` using `by show ((e⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = ε⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, hee]`. Establish `hDu : (D.u : ℂ_[p]) = C.u * ε⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hsu]`. Both sides reduce to the same expression. Establish `hCu : ‖(C.u : ℂ_[p])‖ = 1`. Rewrite `hu` using `[hDu, norm_mul, norm_inv, hε, inv_one, mul_one]`. Conclude with `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hphiInt : Formalism.L2.Th1.C.IntPS (Formalism.L2.KerInert.ModelP.RB p) (phi (shortW g2 g3) D)` using `Formalism.L2.KerInert.MC.intPS_phi (shortW g2 g3) hW0int D ((Formalism.L2.Th1.C.mem_unitBall_iff _).mpr hu.le) ((Formalism.L2.Th1.C.mem_unitBall_iff _).mpr hr) ((Formalism.L2.Th1.C.mem_unitBall_iff _).mpr hs) ((Formalism.L2.Th1.C.mem_unitBall_iff _).mpr ht)`. Establish `hthInt : Formalism.L2.Th1.C.IntPS (Formalism.L2.KerInert.ModelP.RB p) (Formalism.L2.Th1.D.thetaS p g2 g3 ε)` using `fun n => (Formalism.L2.Th1.C.mem_unitBall_iff _).mpr (hth n)`. Establish `hlg0 : constantCoeff (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p) = 0` using `Formalism.InvariantFactorPaths.G7.FormalGroupLaws.constantCoeff_lgF p hp2`. Establish `hth0 : constantCoeff (Formalism.L2.Th1.D.thetaS p g2 g3 ε) = 0`. Simplify using `only [Formalism.L2.Th1.D.thetaS]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PowerSeries.constantCoeff_subst_eq_zero (by rw [map_mul]; exact mul_eq_zero_of_right _ hlg0) _ ?_` and prove the remaining obligations. Simplify using `[Formalism.L2.Th1.CM.uSer]`. Use `set b : PowerSeries ℂ_[p] := PowerSeries.C (C.u : ℂ_[p]) * Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p with hbdef`. Establish `hb0 : constantCoeff b = 0` using `by simp [hbdef, hlg0]`. Establish `hb : PowerSeries.HasSubst b` using `PowerSeries.HasSubst.of_constantCoeff_zero' hb0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hE0, hE1, hEL, -, -⟩` from `Formalism.L2.Th1.A.expSpec ℂ_[p] (D • shortW g2 g3)`. Establish `hE : PowerSeries.HasSubst (expSer (D • shortW g2 g3))` using `PowerSeries.HasSubst.of_constantCoeff_zero' hE0`. Establish `hh : PowerSeries.subst b (expSer (D • shortW g2 g3)) = PowerSeries.subst (Formalism.L2.Th1.D.thetaS p g2 g3 ε) (phi (shortW g2 g3) D)`. Establish `hCX0 : constantCoeff (PowerSeries.C ((D.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * X : PowerSeries ℂ_[p]) = 0`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hCX : PowerSeries.HasSubst (PowerSeries.C ((D.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * X : PowerSeries ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero' hCX0`. Take `⟨hE00, -, -, -, -⟩` from `Formalism.L2.Th1.A.expSpec ℂ_[p] (shortW g2 g3)`. Establish `hA : PowerSeries.HasSubst (PowerSeries.subst (PowerSeries.C ((D.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * X) (expSer (shortW g2 g3)))` using `PowerSeries.HasSubst.of_constantCoeff_zero' (PowerSeries.constantCoeff_subst_eq_zero hCX0 _ hE00)`. Rewrite using `[Formalism.L2.KerInert.MC.exp_eq, PowerSeries.subst_comp_subst_apply hA hb, PowerSeries.subst_comp_subst_apply hCX hb]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Establish `hsb : PowerSeries.subst b (PowerSeries.C ((D.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * X : PowerSeries ℂ_[p]) = PowerSeries.C ε * Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p`. Rewrite using `[PowerSeries.subst_mul hb, PowerSeries.subst_X hb, PowerSeries.subst_C]`. Use `show PowerSeries.C _ * b = _`. Rewrite using `[hbdef, ← mul_assoc, ← map_mul, Units.val_inv_eq_inv_val, hDu]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hsb, Formalism.L2.Th1.D.thetaS, Formalism.L2.Th1.A.uSerEq]`. Use `⟨PowerSeries.subst b (expSer (D • shortW g2 g3)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hb0 _ hE0`. Introduce `n`.
-
-Rewrite using `[hh]`. Conclude with `(Formalism.L2.Th1.C.mem_unitBall_iff _).mp (Formalism.L2.KerInert.MC.intPS_subst' _ hphiInt hthInt hth0 n)`. Rewrite using `[Formalism.L2.G.Pend.coeff_one_subst _ _ hb0, hE1, one_mul, hbdef, PowerSeries.coeff_C_mul, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.coeff_one_lgF p hp2, mul_one, hCu]`. Rewrite using `[hCD, ← PowerSeries.subst_comp_subst_apply hE hb, hEL, PowerSeries.subst_X hb, hbdef, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem param (h5 : 5 ≤ p) (g2 g3 ε : ℂ_[p]) (hε : ‖ε‖ = 1) (n2 : ‖g2‖ ≤ 1) (n3 : ‖g3‖ ≤ 1)
     (nd : ‖g2 ^ 3 - 27 * g3 ^ 2‖ = 1) (hth : ∀ n, ‖coeff n (Formalism.L2.Th1.D.thetaS p g2 g3 ε)‖ ≤ 1)
@@ -173,7 +171,7 @@ section Exp
 open Formalism.L2.Th1.B (fExp fLog sigS sigma lU fExp_add constantCoeff_fExp fExp_fLog constantCoeff_fLog)
 
 /- English proof (translation)
-Establish `h` using `PowerSeries.sub_const_eq_X_mul_shift f`. Rewrite `h` using `[hf, map_zero, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem X_mul_shift (f : PowerSeries ℂ_[p]) (hf : constantCoeff f = 0) :
     f = X * PowerSeries.mk (fun n => coeff (n + 1) f) := by
@@ -181,7 +179,7 @@ theorem X_mul_shift (f : PowerSeries ℂ_[p]) (hf : constantCoeff f = 0) :
   rwa [hf, map_zero, sub_zero] at h
 
 /- English proof (translation)
-Simplify using `only [fExp]`. Conclude with `PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hf) (PowerSeries.HasSubst.of_constantCoeff_zero' ha) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_fExp {a f : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (hf : constantCoeff f = 0) :
     PowerSeries.subst a (fExp (ι := Unit) f) = fExp (ι := Unit) (PowerSeries.subst a f) := by
@@ -190,19 +188,19 @@ theorem subst_fExp {a f : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) (hf : 
     (PowerSeries.HasSubst.of_constantCoeff_zero' ha) _
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `by omega`. Use `set L : PowerSeries ℂ_[p] := PowerSeries.C ε * Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p with hLdef`. Use `set P := wpReg (shortW g2 g3)`. Establish `hlg0 : constantCoeff (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p) = 0` using `Formalism.InvariantFactorPaths.G7.FormalGroupLaws.constantCoeff_lgF p hp2`. Establish `hL0 : constantCoeff L = 0` using `by simp [hLdef, hlg0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : PowerSeries.HasSubst L` using `PowerSeries.HasSubst.of_constantCoeff_zero' hL0`. Establish `hS0 : constantCoeff (sigS P) = 0`. Simplify using `[sigS, Formalism.L2.Th1.B.constantCoeff_prim]`. Establish `hQ0 : constantCoeff (-(PowerSeries.C (s2 / 2) * X ^ 2 : PowerSeries ℂ_[p])) = 0` using `by simp`. Establish `hA0 : constantCoeff (PowerSeries.subst L (sigS P)) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hL0 _ hS0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : constantCoeff (-(PowerSeries.C (s2 / 2) * L ^ 2)) = 0` using `by simp [hL0]`. Establish `hAB : constantCoeff (PowerSeries.subst L (sigS P) + -(PowerSeries.C (s2 / 2) * L ^ 2)) = 0`. Rewrite using `[map_add, hA0, hB0, add_zero]`. Establish `hU1 : constantCoeff (lU (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p)) = 1`. Establish `h` using `Formalism.InvariantFactorPaths.G7.coeff_lgF_pow ℂ_[p] hp2 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [pow_zero, inv_one] at h`. Simplify `h` using `[lU]`. Establish `hF0 : constantCoeff (fLog (lU (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p))) = 0` using `constantCoeff_fLog hU1`. Establish `hXU : X * lU (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p) = Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p` using `(X_mul_shift _ hlg0).symm`. Establish `hL' : L = PowerSeries.C ε * X * lU (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, hXU]`. Establish `hsubQ : PowerSeries.subst L (-(PowerSeries.C (s2 / 2) * X ^ 2 : PowerSeries ℂ_[p])) = -(PowerSeries.C (s2 / 2) * L ^ 2)`. Rewrite using `[← PowerSeries.coe_substAlgHom hL, map_neg, map_mul, map_pow, PowerSeries.coe_substAlgHom hL, PowerSeries.subst_X hL, PowerSeries.subst_C]`. Both sides reduce to the same expression. Establish `hphi : -Formalism.L2.Th1.D.phFF p g2 g3 s2 ε = PowerSeries.subst L (sigS P) + -(PowerSeries.C (s2 / 2) * L ^ 2) + fLog (lU (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Formalism.L2.Th1.D.phFF]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hphi, fExp_add hAB hF0, fExp_add hA0 hB0, fExp_fLog hU1]`. Simplify using `only [Formalism.L2.Th1.B.sgStar, sigma]`. Rewrite using `[PowerSeries.subst_mul hL, PowerSeries.subst_mul hL, PowerSeries.subst_X hL, subst_fExp hL0 hS0, subst_fExp hL0 hQ0, hsubQ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `fExp (PowerSeries.subst L (sigS P)) = a`. Generalize the expression as in `fExp (-(PowerSeries.C (s2 / 2) * L ^ 2)) = b`. Rewrite using `[hL']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sig_at (h5 : 5 ≤ p) (g2 g3 s2 ε : ℂ_[p]) :
     (Formalism.L2.Th1.B.sgStar s2 (wpReg (shortW g2 g3))).subst (PowerSeries.C ε * Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p) =

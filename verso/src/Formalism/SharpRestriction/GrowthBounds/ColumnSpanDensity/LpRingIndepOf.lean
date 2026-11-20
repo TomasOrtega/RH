@@ -11,19 +11,17 @@ def RestOIso : Prop :=
     ∃ φO : R₁.O ≃+* R₂.O, (∀ x, φO (R₁.jO x) = R₂.jO (φW x)) ∧ φO R₁.w = R₂.w
 
 /- English proof (translation)
-Introduce `p n' R₁ R₂`. Establish `s₁` using `R₁.std.1`. Establish `s₂` using `R₂.std.1`. Use `haveI : Fact (Nat.Prime p) := ⟨s₁.prime⟩`. Use `haveI := s₁.frac_alt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := s₂.frac_alt`. Use `haveI := s₁.frac_O`. Use `haveI := s₂.frac_O`. Take `⟨φ₁, h₁⟩` from `hW p n' R₁.W R₁.Qq R₁.O R₁.Kf R₁.ι R₁.σ R₁.jO R₁.w s₁`. Take `⟨φ₂, h₂⟩` from `hW p n' R₂.W R₂.Qq R₂.O R₂.Kf R₂.ι R₂.σ R₂.jO R₂.w s₂`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φO, hj, hw⟩` from `hO p n' R₁ R₂ (φ₁.symm.trans φ₂)`. Set `φQ : R₁.Qq ≃+* R₂.Qq` to `IsFractionRing.ringEquivOfRingEquiv (φ₁.symm.trans φ₂)`. Set `φK : R₁.Kf ≃+* R₂.Kf` to `IsFractionRing.ringEquivOfRingEquiv φO`. Establish `hWQ : ∀ x, φQ (algebraMap R₁.W R₁.Qq x) = algebraMap R₂.W R₂.Qq ((φ₁.symm.trans φ₂) x)` using `fun x => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x`. Establish `hOK : ∀ x, φK (algebraMap R₁.O R₁.Kf x) = algebraMap R₂.O R₂.Kf (φO x)` using `fun x => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∀ x, φQ (R₁.σ x) = R₂.σ (φQ x)`. Establish `key : (φQ : R₁.Qq →+* R₂.Qq).comp (R₁.σ : R₁.Qq →+* R₁.Qq) = (R₂.σ : R₂.Qq →+* R₂.Qq).comp (φQ : R₁.Qq →+* R₂.Qq)`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors R₁.W)` to reduce the goal to its premises. Use extensionality with `u`. Take `⟨v, rfl⟩` from `φ₁.surjective u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[h₁ v, hWQ, hWQ]`. Simplify using `only [RingEquiv.trans_apply, RingEquiv.symm_apply_apply]`. Rewrite using `[h₂ v]`. Conclude with `fun x => RingHom.congr_fun key x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hι : ∀ x, φK (R₁.ι x) = R₂.ι (φQ x)`. Establish `key : (φK : R₁.Kf →+* R₂.Kf).comp R₁.ι = R₂.ι.comp (φQ : R₁.Qq →+* R₂.Qq)`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors R₁.W)` to reduce the goal to its premises. Use extensionality with `u`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`.
-
-Rewrite using `[s₁.ι_comp, hOK, hj, hWQ, s₂.ι_comp]`. Conclude with `fun x => RingHom.congr_fun key x`. Conclude with `⟨⟨φ₁.symm.trans φ₂, φQ, φO, φK, hWQ, hOK, hι, hσ, hj, hw⟩⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem restRSIso_of (hW : WittIdent) (hO : RestOIso) : RestRSIso := by
   intro p n' R₁ R₂
@@ -64,7 +62,7 @@ theorem restRSIso_of (hW : WittIdent) (hO : RestOIso) : RestRSIso := by
   exact ⟨⟨φ₁.symm.trans φ₂, φQ, φO, φK, hWQ, hOK, hι, hσ, hj, hw⟩⟩
 
 /- English proof (translation)
-The claim follows from `lpRingIndep_of' (restRSIso_of hW hO)`.
+A detailed English derivation is pending.
 -/
 theorem lpRingIndep_of'' (hW : WittIdent) (hO : RestOIso) : LPRingIndep := lpRingIndep_of' (restRSIso_of hW hO)
 

@@ -24,7 +24,7 @@ variable {B B' G G' T T' S₀ : Scheme.{0}} {M : LB B} {M' : LB B'} {L : LB G} {
   {pr : Fin j → (B' ⟶ B)} {prG : Fin j → (G' ⟶ G)} {p : T ⟶ B} {p' : T' ⟶ B'} {f : T ⟶ G} {f' : T' ⟶ G'}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sec_res_comp_algebraMap {X : Scheme.{0}} {U V W : X.Opens} (h₁ : U ≤ V) (h₂ : V ≤ W)
     (x : Γ(X, W)ˣ) : res h₁ (res h₂ x) = res (h₁.trans h₂) x := by
@@ -34,7 +34,7 @@ private theorem sec_res_comp_algebraMap {X : Scheme.{0}} {U V W : X.Opens} (h₁
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Establish `e : homOfLE h = 𝟙 U` using `rfl`. Rewrite using `[e, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem res_self_lemma {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)ˣ) : res h x = x := by
   apply Units.ext
@@ -44,7 +44,7 @@ private theorem res_self_lemma {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (x :
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [LB.LinComb, LB.wchart, TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe] at hx ⊢`. Introduce `_ k`. Simplify using `using hx k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem linComb_comp_U_le_linComb_linComb_U {eG' : S₀ ⟶ G'} (jN : Fin j → L.ι) :
     (LB.LinComb L (fun i => eG' ≫ prG i) (fun _ => 1)).U jN ≤
@@ -56,7 +56,7 @@ private theorem linComb_comp_U_le_linComb_linComb_U {eG' : S₀ ⟶ G'} (jN : Fi
   simpa using hx k
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [LB.LinComb, LB.wchart, TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Scheme.Hom.mem_preimage, TopologicalSpace.Opens.mem_inf] at hx ⊢`. Conclude with `⟨hx.1 PUnit.unit, hx.2 PUnit.unit⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem linComb_unit_U_le {X Y : Scheme.{0}} (N : LB X) (e : Y ⟶ X) (a b : N.ι) :
     (LB.LinComb N (K := PUnit) (fun _ => e) (fun _ => 1)).U (fun _ => a) ⊓
@@ -67,7 +67,7 @@ private theorem linComb_unit_U_le {X Y : Scheme.{0}} (N : LB X) (e : Y ⟶ X) (a
   exact ⟨hx.1 PUnit.unit, hx.2 PUnit.unit⟩
 
 /- English proof (translation)
-Simplify using `only [LB.LinComb, Fintype.prod_unique, zpow_one, pow_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem linComb_unit_g_eq {X Y : Scheme.{0}} (N : LB X) (e : Y ⟶ X) (a b : N.ι) :
     (LB.LinComb N (K := PUnit) (fun _ => e) (fun _ => 1)).g (fun _ => a) (fun _ => b) =
@@ -76,7 +76,7 @@ private theorem linComb_unit_g_eq {X Y : Scheme.{0}} (N : LB X) (e : Y ⟶ X) (a
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem res_pullU_id_eq_res'' {X : Scheme.{0}} {U V : X.Opens} (x : Γ(X, U)ˣ) (h : V ≤ (𝟙 X) ⁻¹ᵁ U) :
     res h (pullU (𝟙 X) U x) = res (fun y hy => h hy) x := by
@@ -85,7 +85,7 @@ private theorem res_pullU_id_eq_res'' {X : Scheme.{0}} {U V : X.Opens} (x : Γ(X
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem res_congr_of_index_eq {X : Scheme.{0}} {Idx : Type*} {U : Idx → X.Opens} (s : ∀ a, Γ(X, U a)ˣ) {V : X.Opens}
     {a b : Idx} (e : a = b) (h₁ : V ≤ U a) (h₂ : V ≤ U b) : res h₁ (s a) = res h₂ (s b) := by
@@ -93,17 +93,15 @@ private theorem res_congr_of_index_eq {X : Scheme.{0}} {Idx : Type*} {U : Idx �
   rfl
 
 /- English proof (translation)
-Use `⟨⟨fun jN => res (linComb_comp_U_le_linComb_linComb_U (prG := prG) (eG' := eG') jN) ((GeneratorPullback.boxGen L prG (fun _ : PUnit => eG') (fun _ => 1) (fun i => GeneratorPullback.pullAlong L (prG i) (𝟙 S₀) (fun _ => eG) (fun _ => 1) (fun _ => eG') (hG i) rL)).s fun _ => jN)⟩, ?_ …` and prove the remaining obligations. Unfold `GeneratorPullback.MapsAt`. Introduce `jN jL`. Establish `H` using `hr (fun _ => jN) (fun _ => jL)`. Establish `hO : eG' ⁻¹ᵁ ((L.LinComb prG fun _ => 1).U jN ⊓ (L.LinComb prG fun _ => 1).U jL) ≤ ((L.LinComb prG fun _ => 1).LinComb (K` using `PUnit) (fun _ => eG') (fun _ => 1)).U (fun _ => jN) ⊓ ((L.LinComb prG fun _ => 1).LinComb (K := PUnit) (fun _ => eG') (fun _ => 1)).U (fun _ => jL) := by`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Simplify using `only [LB.LinComb, LB.wchart, TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Scheme.Hom.mem_preimage, TopologicalSpace.Opens.mem_inf] at hx ⊢`. Conclude with `⟨fun _ => hx.1, fun _ => hx.2⟩`. Establish `H2` using `congrArg (res hO) H`. Use `erw [linComb_unit_g_eq] at H2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, sec_res_comp_algebraMap, res_self_lemma] at H2`. Simplify using `only`. Use `erw [sec_res_comp_algebraMap]`. Simplify using `only [pow_one, zpow_one]`. Conclude with `H2`.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `LB.Gen.Corr GeneratorPullback.finProdGen`. Introduce `j₁ j' c₁ c₂ hj`. Establish `hk : ∀ k, j₁ k = j' (k, PUnit.unit)` using `fun k => hj k (k, PUnit.unit) (by simpa using hG k PUnit.unit)`. Use `clear hj c₁ c₂ hr`. Simplify using `only`.
+Simplify by unfolding definitions. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GeneratorPullback.boxGen GeneratorPullback.pullAlong`. Simplify using `only`. Use `erw [sec_res_comp_algebraMap, map_prod, map_prod]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i _`.
-
-Use `erw [sec_res_comp_algebraMap]`. Conclude with `(sec_res_comp_algebraMap _ _ _).trans ((res_pullU_id_eq_res'' _ _).trans ((res_congr_of_index_eq rL.s (funext fun k => by cases k; exact hk i) _ _).trans (sec_res_comp_algebraMap _ _ _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem idIso_rig (hL : L.IsLB) {eG : S₀ ⟶ G} {eG' : S₀ ⟶ G'} (rL : LB.Gen (L.pull eG))
     (hG : ∀ (i : Fin j) (_ : PUnit), eG' ≫ prG i = 𝟙 S₀ ≫ eG)
@@ -148,7 +146,7 @@ theorem idIso_rig (hL : L.IsLB) {eG : S₀ ⟶ G} {eG' : S₀ ⟶ G'} (rL : LB.G
       ((res_congr_of_index_eq rL.s (funext fun k => by cases k; exact hk i) _ _).trans (sec_res_comp_algebraMap _ _ _).symm))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pullU_res_eq_res_pullU'' {X Y : Scheme.{0}} (r : Y ⟶ X) {U U' : X.Opens} (h' : U' ≤ U)
     (hh : r ⁻¹ᵁ U' ≤ r ⁻¹ᵁ U) (x : Γ(X, U)ˣ) : pullU r U' (res h' x) = res hh (pullU r U x) := by
@@ -165,28 +163,28 @@ private theorem div_g_eq_res_mul_res_inv {X : Scheme.{0}} (A B : LB X) (p q : A.
       (res (inf_le_inf inf_le_right inf_le_right) (B.g p.2 q.2))⁻¹ := rfl
 
 /- English proof (translation)
-The claim follows from `linComb_unit_g_eq N e a b`.
+A detailed English derivation is pending.
 -/
 private theorem pull_g_eq_res_pullU {X Y : Scheme.{0}} (N : LB X) (e : Y ⟶ X) (a b : N.ι) :
     (N.pull e).g (fun _ => a) (fun _ => b) = res (linComb_unit_U_le N e a b) (pullU e (N.U a ⊓ N.U b) (N.g a b)) :=
   linComb_unit_g_eq N e a b
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem res_mul_rings_of_integers {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (a b : Γ(X, U)ˣ) :
     res h (a * b) = res h a * res h b := map_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_inv _ _`.
+A detailed English derivation is pending.
 -/
 private theorem res_inv' {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ) :
     res h a⁻¹ = (res h a)⁻¹ := map_inv _ _
 
 /- English proof (translation)
-Establish `hy' : r y ∈ U` using `hV hy`. Establish `hy1 : (𝟙 Y : Y ⟶ Y) y ∈ V` using `hy`. Unfold `gm`. Rewrite using `[dif_pos hy1, dif_pos hy']`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, res, pullU]`. Conclude with `TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hV) y hy _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem toFld_gm_res {X Y : Scheme.{0}} (r : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (hV : V ≤ r ⁻¹ᵁ U)
     (u : Γ(X, U)ˣ) (y : Y) (hy : y ∈ V) : gm (𝟙 Y) y V (res hV (pullU r U u)) = gm r y U u := by
@@ -199,9 +197,9 @@ private theorem toFld_gm_res {X Y : Scheme.{0}} (r : Y ⟶ X) {U : X.Opens} {V :
   exact TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hV) y hy _
 
 /- English proof (translation)
-Establish `hy1 : (𝟙 Y : Y ⟶ Y) y ∈ V` using `hy`. Establish `hy2 : (𝟙 Y : Y ⟶ Y) y ∈ U` using `hV hy`. Unfold `gm`. Rewrite using `[dif_pos hy1, dif_pos hy2]`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, res, pullU]`. Conclude with `TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hV) y hy _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gm_id_res_eq' {Y : Scheme.{0}} {U V : Y.Opens} (hV : V ≤ U) (u : Γ(Y, U)ˣ) (y : Y) (hy : y ∈ V) :
     gm (𝟙 Y) y V (res hV u) = gm (𝟙 Y) y U u := by
@@ -214,9 +212,9 @@ private theorem gm_id_res_eq' {Y : Scheme.{0}} {U V : Y.Opens} (hV : V ≤ U) (u
   exact TopCat.Presheaf.germ_res_apply Y.presheaf (homOfLE hV) y hy _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `TopCat.Presheaf.section_ext Y.sheaf V` to reduce the goal to its premises. Introduce `y hy`. Establish `e` using `congrArg Units.val (H y hy)`. Establish `hy1 : (𝟙 Y : Y ⟶ Y) y ∈ V` using `hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `gm at e`. Rewrite `e` using `[dif_pos hy1]`. Conclude with `e`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem units_ext_of_gm_id_eq' {Y : Scheme.{0}} {V : Y.Opens} (a b : Γ(Y, V)ˣ)
     (H : ∀ y (hy : y ∈ V), gm (𝟙 Y) y V a = gm (𝟙 Y) y V b) : a = b := by
@@ -230,21 +228,19 @@ private theorem units_ext_of_gm_id_eq' {Y : Scheme.{0}} {V : Y.Opens} (a b : Γ(
   exact e
 
 /- English proof (translation)
-Establish `hw2` using `hwe`. Unfold `LB.Gen.IsGen at hw2`. Establish `hV1 : V ≤ ((M'.pull p').div ((L.LinComb prG fun _ => 1).pull f')).U (fun _ => jM', fun _ => jNL) ⊓ ((M'.pull p').div ((L.LinComb prG fun _ => 1).pull f')).U (fun _ => jM', fun _ => jL')`. Introduce `x hx`. Establish `a2` using `h₂ hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a4` using `h₄ hx`. Use `clear h₁ h₃ Q hwe hw2 h₂ h₄ hx`. Simplify using `only [LB.div, LB.pull, LB.LinComb, LB.wchart, TopologicalSpace.Opens.mem_inf, TopologicalSpace.Opens.mem_mk, TopologicalSpace.Opens.coe_mk, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Scheme.Hom.mem_preimage, Set.mem_inter_iff] at a2 a4 ⊢`. Use `⟨⟨a2.1, ?_⟩, a2.1, ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => a4.1 k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => a4.2 k`. Establish `hg` using `congrArg (res hV1) (hw2 (fun _ => jM', fun _ => jNL) (fun _ => jM', fun _ => jL'))`. Simplify using `only [map_mul, sec_res_comp_algebraMap] at hg`. Rewrite `hg` using `[div_g_eq_res_mul_res_inv]`. Simplify using `only at hg`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hg` using `[pull_g_eq_res_pullU]`. Use `erw [pull_g_eq_res_pullU] at hg`. Simplify using `only [map_mul, map_inv, sec_res_comp_algebraMap] at hg`. Establish `hVp : V ≤ p' ⁻¹ᵁ M'.U jM'` using `fun y hy => (h₁ hy).2`. Establish `hself : ∀ (k : V ≤ p' ⁻¹ᵁ (M'.U jM' ⊓ M'.U jM')), res k (pullU p' (M'.U jM' ⊓ M'.U jM') (M'.g jM' jM')) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Establish `e1` using `pullU_res_eq_res_pullU'' p' (le_inf le_rfl le_rfl : M'.U jM' ≤ M'.U jM' ⊓ M'.U jM') (fun y hy => ⟨hy, hy⟩) (M'.g jM' jM')`. Rewrite `e1` using `[hM'.g_self jM', map_one]`. Conclude with `(sec_res_comp_algebraMap hVp (show p' ⁻¹ᵁ M'.U jM' ≤ p' ⁻¹ᵁ (M'.U jM' ⊓ M'.U jM') from fun y hy => ⟨hy, hy⟩) _).symm.trans (by rw [← e1, map_one])`. Establish `hX : ∀ k, res hV1 (res k (pullU p' (M'.U jM' ⊓ M'.U jM') (M'.g jM' jM'))) = 1` using `fun k => (sec_res_comp_algebraMap _ _ _).trans (hself _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `erw [res_mul_rings_of_integers, res_inv'] at hg`. Use `erw [hX] at hg`. Rewrite `hg` using `[_root_.one_mul, eq_inv_mul_iff_mul_eq]`. Rewrite using `[← hg]`. Use `(mul_left_comm _ _ _).trans ((mul_comm _ _).trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg₂ (· * ·) ?_ ((sec_res_comp_algebraMap _ _ _).trans rfl)` and prove the remaining obligations. Apply `units_ext_of_gm_id_eq'` to reduce the goal to its premises. Introduce `y hy`. Establish `c1 : ∀ i, pr i (p' ((𝟙 T' : T' ⟶ T') y)) ∈ M.U (jNM i)` using `fun i => Set.mem_iInter.1 (h₁ hy).1 i`. Establish `c2 : p' ((𝟙 T' : T' ⟶ T') y) ∈ M'.U jM'` using `(h₁ hy).2`.
-
-Establish `c3 : ∀ i, prG i (f' ((𝟙 T' : T' ⟶ T') y)) ∈ L.U (jNL i)` using `fun i => Set.mem_iInter.1 (h₄ hy).1 i`. Establish `q` using `Q T' (𝟙 T') y jNM jM' jNL c1 c2 c3`. Simplify using `only [bw, Geo.Tor.gw, Category.id_comp] at q`. Rewrite using `[map_mul, map_prod, toFld_gm_res _ _ _ _ hy, gm_id_res_eq' _ _ _ hy, Finset.prod_congr rfl (fun i _ => toFld_gm_res (h i) (h₃ i) _ y hy)]`. Conclude with `q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_res (hM' : M'.IsLB)
     {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} {we : LB.Iso (L.pull f) (M.pull p)}

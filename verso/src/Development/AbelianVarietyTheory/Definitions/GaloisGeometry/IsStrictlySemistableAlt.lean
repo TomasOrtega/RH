@@ -52,7 +52,7 @@ def Mu.map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) : Mu n A →�
 
 omit [NeZero n] in
 /- English proof (translation)
-The claim follows from `Additive.toMul.injective (Subtype.ext (Units.ext h))`.
+A detailed English derivation is pending.
 -/
 theorem Mu.ext' {A : Type} [CommRing A] {x y : Mu n A}
     (h : (((Additive.toMul (show Additive (rootsOfUnity n A) from x) : rootsOfUnity n A) : Aˣ) : A) =
@@ -60,13 +60,13 @@ theorem Mu.ext' {A : Type} [CommRing A] {x y : Mu n A}
   Additive.toMul.injective (Subtype.ext (Units.ext h))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun _ => Mu.ext' n rfl`.
+A detailed English derivation is pending.
 -/
 theorem Mu.map_id (A : Type) [CommRing A] : Mu.map n (RingHom.id A) = LinearMap.id :=
   LinearMap.ext fun _ => Mu.ext' n rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun _ => Mu.ext' n rfl`.
+A detailed English derivation is pending.
 -/
 theorem Mu.map_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B) (ψ : B →+* C) :
     Mu.map n (ψ.comp φ) = (Mu.map n ψ).comp (Mu.map n φ) :=

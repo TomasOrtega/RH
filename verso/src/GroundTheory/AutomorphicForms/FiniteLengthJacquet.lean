@@ -22,11 +22,9 @@ variable {α α' : Type*} [LinearOrder α] [LinearOrder α'] {β : Fin n → α}
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Break down `lt_trichotomy (γ i) (γ j) with hl | he | hg` into its components or cases. Conclude with `absurd ((h i j).2 hl) (by rw [e]; exact lt_irrefl _)`. Conclude with `he`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd ((h j i).2 hg) (by rw [e]; exact lt_irrefl _)`. Introduce `e`. Break down `lt_trichotomy (β i) (β j) with hl | he | hg` into its components or cases. Conclude with `absurd ((h i j).1 hl) (by rw [e]; exact lt_irrefl _)`. Conclude with `he`.
-
-Conclude with `absurd ((h j i).1 hg) (by rw [e]; exact lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 theorem eq_iff_eq_of_lt_iff (h : ∀ i j, β i < β j ↔ γ i < γ j) (i j : Fin n) :
     β i = β j ↔ γ i = γ j := by
@@ -45,7 +43,7 @@ theorem eq_iff_eq_of_lt_iff (h : ∀ i j, β i < β j ↔ γ i < γ j) (i j : Fi
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [mem_blockUpper, Matrix.BlockTriangular]`. Conclude with `forall_congr' fun i => forall_congr' fun j => imp_congr_left (h j i)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockUpper_congr (h : ∀ i j, β i < β j ↔ γ i < γ j) :
     blockUpper F n β = blockUpper F n γ := by
@@ -56,7 +54,7 @@ theorem blockUpper_congr (h : ∀ i j, β i < β j ↔ γ i < γ j) :
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipotentRadical, mem_unipotentRadical, blockUpper_congr h]`. Conclude with `and_congr_right fun _ => forall_congr' fun i => forall_congr' fun j => imp_congr_left (eq_iff_eq_of_lt_iff h i j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentRadical_congr (h : ∀ i j, β i < β j ↔ γ i < γ j) :
     unipotentRadical F n β = unipotentRadical F n γ := by
@@ -67,7 +65,7 @@ theorem unipotentRadical_congr (h : ∀ i j, β i < β j ↔ γ i < γ j) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Use `⟨fun h => ?_, blockRank_lt⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Break down `(not_lt.1 h').lt_or_eq with h'' | h''` into its components or cases. Conclude with `absurd (blockRank_lt h'') (by omega)`. Conclude with `absurd (blockRank_eq h''.symm) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem blockRank_lt_iff {i j : Fin n} : blockRank β i < blockRank β j ↔ β i < β j := by
   refine ⟨fun h => ?_, blockRank_lt⟩
@@ -78,7 +76,7 @@ theorem blockRank_lt_iff {i j : Fin n} : blockRank β i < blockRank β j ↔ β 
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Establish `: (Finset.univ.filter fun j => β j < β i) ⊂ Finset.univ` using `Finset.ssubset_iff_subset_ne.2 ⟨Finset.subset_univ _, fun h => by`. Use `h ▸ Finset.mem_univ i` as an intermediate fact. Simplify using `at this⟩`. Simplify `Finset.card_lt_card this` using `[blockRank]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blockRank_lt_card (β : Fin n → α) (i : Fin n) : blockRank β i < n := by
   have : (Finset.univ.filter fun j => β j < β i) ⊂ Finset.univ :=
@@ -91,7 +89,7 @@ def rankFun (β : Fin n → α) : Fin n → Fin n := fun i => ⟨blockRank β i,
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `blockRank_lt_iff`.
+A detailed English derivation is pending.
 -/
 theorem rankFun_lt_iff (β : Fin n → α) (i j : Fin n) :
     ((rankFun β i : Fin n) : ℕ) < (rankFun β j : ℕ) ↔ β i < β j :=
@@ -105,7 +103,7 @@ variable {V V' : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Modul
   {X : Representation ℂ (GL (Fin n) F) V} {π : Representation ℂ (GL (Fin n) F) V'}
 
 /- English proof (translation)
-Introduce `y`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y`. Take `⟨u, rfl⟩` from `hp v`. Conclude with `⟨Representation.Coinvariants.mk _ u, jacquetMap_mk _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jacquetMap_surjective (p : Representation.IntertwiningMap X π) (hp : Surjective p)
     (γ : Fin n → ℕ) : Surjective (jacquetMap F n γ p) := by
@@ -115,9 +113,9 @@ theorem jacquetMap_surjective (p : Representation.IntertwiningMap X π) (hp : Su
   exact ⟨Representation.Coinvariants.mk _ u, jacquetMap_mk _ _⟩
 
 /- English proof (translation)
-Establish `hex` using `exact_jacquetMap (β := γ) hX hπ (0 : Representation.IntertwiningMap X X) i (fun y => ⟨fun hy => ⟨0, by show (0 : V) = y`. Conclude with `(hi (hy.trans (map_zero i).symm)).symm⟩, by rintro ⟨z, rfl⟩; exact map_zero i⟩)`. Use `(injective_iff_map_eq_zero _).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hex y).1 hy`. Take `⟨z, rfl⟩` from `Representation.Coinvariants.mk_surjective _ z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[jacquetMap_mk]`. Rewrite using `[← hz]`. Conclude with `map_zero (Representation.Coinvariants.mk _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacquetMap_injective (hX : IsSmooth X) (hπ : IsSmooth π)
     (i : Representation.IntertwiningMap X π) (hi : Injective i) (γ : Fin n → ℕ) :
@@ -134,7 +132,7 @@ theorem jacquetMap_injective (hX : IsSmooth X) (hπ : IsSmooth π)
   exact map_zero (Representation.Coinvariants.mk _)
 
 /- English proof (translation)
-Take `⟨C, p, hp⟩` from `h`. Conclude with `.of_injective_of_surjective (jacquetMap F n γ (subrepInclusion C)) (jacquetMap_injective (isSmooth_subrep hX C) hX _ (fun a b h => Subtype.ext h) γ) (jacquetMap F n γ p) (jacquetMap_surjective p hp γ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Automorphic.IsSubquotient.jacquetRep (hX : IsSmooth X) (h : IsSubquotient π X) (γ : Fin n → ℕ) :
     IsSubquotient (jacquetRep F n γ π) (jacquetRep F n γ X) := by
@@ -144,9 +142,7 @@ theorem _root_.GroundTheory.Automorphic.IsSubquotient.jacquetRep (hX : IsSmooth 
     (jacquetMap F n γ p) (jacquetMap_surjective p hp γ)
 
 /- English proof (translation)
-Break down `Representation.IsIrreducible.surjective_or_eq_zero (frobeniusParabolic F n δ τ hπ Φ) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `h0 : Φ = 0` using `(frobeniusParabolic F n δ τ hπ).injective (h.trans (map_zero _).symm)`. Take `⟨v, hv⟩` from `exists_ne (0 : V')`.
-
-Conclude with `hv (hΦ (by rw [map_zero, h0]; rfl))`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem surjective_frobeniusParabolic [Nontrivial V'] {δ : Fin n → ℕ} {U : Type*}
     [AddCommGroup U] [Module ℂ U] {τ : Representation ℂ (levi F n δ) U} [τ.IsIrreducible]
@@ -170,19 +166,17 @@ variable {G : Type*} [Group G] {V W : Type*} [AddCommGroup V] [Module ℂ V] [Ad
   [Module ℂ W] {ρ : Representation ℂ G V} {π : Representation ℂ G W}
 
 /- English proof (translation)
-Take `⟨C, p, hp⟩` from `h`. Take `⟨x, hx⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `hC : C = ⊤` using `(eq_bot_or_eq_top C).resolve_left fun hC => hx (by`. Take `⟨c, rfl⟩` from `hp x`. Establish `hc : (c : V) ∈ (⊥ : Subrepresentation ρ).toSubmodule` using `by rw [← hC]; exact c.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show c = 0 from Subtype.ext ((Submodule.mem_bot ℂ).1 hc), map_zero])`. Establish `hCtop : ∀ v : V, v ∈ C.toSubmodule` using `fun v => by rw [hC]; trivial`. Set `K : Subrepresentation ρ` to `⟨(LinearMap.ker p.toLinearMap).map C.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨c, hc, rfl⟩`. Use `⟨C.toRepresentation g c, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc' : p c = 0` using `hc`. Use `show p (C.toRepresentation g c) = 0`. Rewrite using `[Representation.IntertwiningMap.isIntertwining, hc', map_zero]⟩`. Establish `hK : K = ⊥` using `(eq_bot_or_eq_top K).resolve_right fun hK => hx (by`. Take `⟨c, rfl⟩` from `hp x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : (c : V) ∈ K.toSubmodule` using `by rw [hK]; trivial`. Take `⟨c', hc', hcc'⟩` from `hc`. Rewrite using `[show c = c' from Subtype.ext hcc'.symm]`. Conclude with `hc')`. Establish `hpinj : Injective p` using `(injective_iff_map_eq_zero _).2 fun c hc => Subtype.ext (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : (c : V) ∈ K.toSubmodule` using `⟨c, hc, rfl⟩`. Rewrite `hmem` using `[hK]`. Conclude with `(Submodule.mem_bot ℂ).1 hmem)`. Set `e₀ : C.toSubmodule ≃ₗ[ℂ] W` to `LinearEquiv.ofBijective p.toLinearMap ⟨hpinj, hp⟩`. Establish `he₀ : ∀ c, e₀ c = p c` using `fun c => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨C.toSubmodule.subtype ∘ₗ e₀.symm.toLinearMap, fun g => LinearMap.ext fun y => ?_⟩, ⟨?_, fun v => ⟨e₀ ⟨v, hCtop v⟩, by simp⟩⟩⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `e₀.surjective y`. Establish `h1 : π g (e₀ c) = e₀ (C.toRepresentation g c)`. Rewrite using `[he₀, he₀, Representation.IntertwiningMap.isIntertwining]`. Simplify using `only [LinearMap.coe_comp, comp_apply, LinearEquiv.coe_coe, h1, LinearEquiv.symm_apply_apply, Submodule.coe_subtype]`.
-
-Both sides reduce to the same expression. Introduce `a b hab`. Conclude with `e₀.symm.injective (Subtype.ext hab)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsSubquotient.exists_bijective [π.IsIrreducible] [ρ.IsIrreducible]
     (h : IsSubquotient π ρ) : ∃ e : Representation.IntertwiningMap π ρ, Bijective e := by

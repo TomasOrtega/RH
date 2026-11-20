@@ -11,7 +11,7 @@ open GlobalTheory.LatVal (Sz)
 open GlobalTheory.LatJet (EisExp IsEis FR)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HilbFam.fourier_with_support` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHilbertEisensteinFourierExpansionSupport.lean&line=18#L18)
 -/

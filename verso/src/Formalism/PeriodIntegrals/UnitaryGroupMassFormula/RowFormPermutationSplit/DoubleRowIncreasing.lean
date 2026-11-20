@@ -11,9 +11,7 @@ def opE {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) : Fin n → F
   fun a b => MulOpposite.op (E b a)
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h` using `hE d c b a`. Use `show MulOpposite.op (E b a) * MulOpposite.op (E d c) - MulOpposite.op (E d c) * MulOpposite.op (E b a) = (if b = c then MulOpposite.op (E d a) else 0) - (if d = a then MulOpposite.op (E b c) else 0)`. Rewrite using `[← MulOpposite.op_mul, ← MulOpposite.op_mul, ← MulOpposite.op_sub, h]`. Use `clear h hE`.
-
-Apply the tactic sequence `split_ifs <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem glRel_opE {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) : GlRel (opE E) := by
   intro a b c d
@@ -25,7 +23,7 @@ theorem glRel_opE {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (hE
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Unfold `Tm opE`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Tm_opE {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (x : ℂ) (a b : Fin n) :
     Tm (opE E) x a b = MulOpposite.op (Tm E x b a) := by
@@ -36,9 +34,9 @@ theorem Tm_opE {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Apply `List.ext_getElem (by simp)` to reduce the goal to its premises. Introduce `i h1 h2`. Rewrite using `[List.getElem_reverse, List.getElem_ofFn, List.getElem_ofFn]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Fin.val_rev, List.length_ofFn]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem reverse_ofFn' {α : Type*} {t : ℕ} (f : Fin t → α) :
     (List.ofFn f).reverse = List.ofFn (fun k => f (Fin.rev k)) := by
@@ -57,7 +55,7 @@ def revConj (t : ℕ) : Equiv.Perm (Fin t) ≃ Equiv.Perm (Fin t) where
   right_inv τ := by ext k; simp
 
 /- English proof (translation)
-Use `show Equiv.Perm.sign (Fin.revPerm * τ * Fin.revPerm) = _`. Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_mul, mul_right_comm, Int.units_mul_self, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_revConj {t : ℕ} (τ : Equiv.Perm (Fin t)) :
     Equiv.Perm.sign (revConj t τ) = Equiv.Perm.sign τ := by
@@ -65,13 +63,13 @@ theorem sign_revConj {t : ℕ} (τ : Equiv.Perm (Fin t)) :
   rw [Equiv.Perm.sign_mul, Equiv.Perm.sign_mul, mul_right_comm, Int.units_mul_self, one_mul]
 
 /- English proof (translation)
-Unfold `PI.qminorRow Formalism.REAL.qminor`. Rewrite using `[show ∀ f : Equiv.Perm (Fin t) → Aᵐᵒᵖ, MulOpposite.unop (∑ σ, f σ) = ∑ σ, MulOpposite.unop (f σ) from fun f => map_sum (MulOpposite.opAddEquiv : A ≃+ Aᵐᵒᵖ).symm f Finset.univ]`. Use `Fintype.sum_equiv (revConj t) _ _ (fun σ => ?_)` and prove the remaining obligations. Rewrite using `[MulOpposite.unop_mul, MulOpposite.unop_intCast, sign_revConj, ← Int.cast_comm]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MulOpposite.unop_list_prod, List.map_ofFn, reverse_ofFn']`. Use `congr 2`. Use function extensionality and compare the values at `k`. Establish `hk : (((Fin.rev k : Fin t) : ℕ) : ℂ) = (t : ℂ) - 1 - ((k : ℕ) : ℂ)`. Rewrite using `[Fin.val_rev, Nat.cast_sub (by have := k.isLt; omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hσ : (revConj t σ) (Fin.rev k) = Fin.rev (σ k)` using `by show Fin.revPerm (σ (Fin.revPerm (Fin.rev k))) = Fin.rev (σ k)`. Simplify using the standard rewrite rules. Simplify using `only [Function.comp_apply, Tm_opE, MulOpposite.unop_op, hσ, Fin.rev_rev, hk]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qminorRow_eq_unop {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin t → Fin n) (u : ℂ) :
@@ -97,7 +95,7 @@ theorem qminorRow_eq_unop {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : 
   ring
 
 /- English proof (translation)
-Establish `ha : a ∘ τ ∘ Fin.rev = (a ∘ Fin.rev) ∘ (revConj t τ)`. Use function extensionality and compare the values at `k`. Simplify using `[revConj]`. Rewrite using `[qminorRow_eq_unop, qminorRow_eq_unop, Function.comp_assoc, ha, quantumMinorColSkew_holds Aᵐᵒᵖ n t (opE E) (glRel_opE E hE), MulOpposite.unop_mul, MulOpposite.unop_intCast, sign_revConj, ((Int.cast_commute _ _).eq)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem qminorRow_skew {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     (a b : Fin t → Fin n) (τ : Equiv.Perm (Fin t)) (u : ℂ) :
@@ -109,11 +107,11 @@ theorem qminorRow_skew {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin 
     sign_revConj, ((Int.cast_commute _ _).eq)]
 
 /- English proof (translation)
-Introduce `A _ _ n t E hE a b u`. Establish `inner : ∀ σ : Equiv.Perm (Fin t), (∑ τ : Equiv.Perm (Fin t), (((Equiv.Perm.sign σ : ℤ) * (Equiv.Perm.sign τ : ℤ) : ℤ) : A) * (List.ofFn fun k : Fin t => Tm E (u - (t : ℂ) + 1 + ((k : ℕ) : ℂ)) (a (σ k)) (b (τ k))).prod) = PI.qminorRow E a b u`. Introduce `σ`. Establish `e : PI.qminorRow E (a ∘ σ) b u = ∑ τ : Equiv.Perm (Fin t), ((Equiv.Perm.sign τ : ℤ) : A) * (List.ofFn fun k : Fin t => Tm E (u - (t : ℂ) + 1 + ((k : ℕ) : ℂ)) (a (σ k)) (b (τ k))).prod` using `rfl`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_mul, mul_assoc]`. Use `_ = PI.qminorRow E a b u := by`. Rewrite using `[← e, qminorRow_skew E hE, ← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `doubleRowFormSum`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => inner σ), Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem double_row_increasing : DblInc := by
   intro A _ _ n t E hE a b u

@@ -7,7 +7,7 @@ open MeasureTheory GlobalTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory
 open scoped TensorProduct
 namespace UpperTheory.Lit.HoweDuality
 /- English proof (translation)
-Introduce `hBZ _ k _ _ _ _ r t μ V _ _ W _ _ σ π hrt hμs hμu hσs hσi hσu hπs hπi hθ` and use `lift_of_irr k r t μ V W σ π hrt hμs hμu hσu hπs hπi (UpperTheory.Lit.Mix.top (GlobalTheory.geometricLemma_of_filtration hBZ GlobalTheory.geometricLemmaFiltration_unconditional) hBZ hZ k r t V σ μ hrt hσs hσi hσu hμs hμu) hθ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaLift_gl_of_zelevinsky_classification (hZ : ZelevinskyPolynomialRing) : _root_.GlobalTheory.ThetaLiftGL.ThetaLiftGeneralLinearStatement :=
   fun hBZ _ k _ _ _ _ r t μ V _ _ W _ _ σ π hrt hμs hμu hσs hσi hσu hπs hπi hθ =>

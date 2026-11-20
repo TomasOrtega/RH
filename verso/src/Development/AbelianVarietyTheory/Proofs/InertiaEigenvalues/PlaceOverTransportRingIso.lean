@@ -23,15 +23,15 @@ noncomputable section
 namespace GlobalTheory.WeilTransport
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ E' Ω' _ _ _ φ U' hU'`. Take `⟨L', hL'fin, hL'⟩` from `(krullTopology_mem_nhds_one_iff E' Ω' U').mp hU'`. Set `b` to `Module.finBasis E' L'`. Set `S : Set Ω` to `Set.range fun i => φ.symm (b i : Ω')`. Set `L : IntermediateField E Ω` to `IntermediateField.adjoin E S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Finite S := (Set.finite_range _).to_subtype`. Use `haveI : FiniteDimensional E L := IntermediateField.finiteDimensional_adjoin (fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral)`. Use `⟨L.fixingSubgroup, L.fixingSubgroup_isOpen, L.fixingSubgroup.one_mem, ?_⟩` and prove the remaining obligations. Introduce `σ hσ σ' hrel`. Apply `hL'` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hb : ∀ i, σ' (b i : Ω') = b i`. Introduce `i`. Establish `h1 : φ.symm (b i : Ω') ∈ L` using `IntermediateField.subset_adjoin E S ⟨i, rfl⟩`. Establish `h2` using `(IntermediateField.mem_fixingSubgroup_iff L σ).mp hσ _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hrel (φ.symm (b i : Ω'))`. Rewrite `h3` using `[h2, RingEquiv.apply_symm_apply]`. Conclude with `h3.symm`. Introduce `x hx`. Establish `e` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at e`. Rewrite using `[← e, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_nhds : ∀ (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] [Algebra.IsAlgebraic E Ω] (E' Ω' : Type)
     [Field E'] [Field Ω'] [Algebra E' Ω'] (φ : Ω ≃+* Ω') (U' : Set (G E' Ω')), U' ∈ nhds (1 : G E' Ω') →
@@ -88,14 +88,14 @@ Both sides reduce to the same expression.
     conjAlg φ σ hσ y = φ (σ (φ.symm y)) := rfl
 
 /- English proof (translation)
-Rewrite using `[A'.valuation_le_one_iff, A.valuation_le_one_iff, hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_le_one_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) (z : Ω) :
     A'.valuation (φ z) ≤ 1 ↔ A.valuation z ≤ 1 := by
   rw [A'.valuation_le_one_iff, A.valuation_le_one_iff, hm]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, hm, hm, map_eq_zero_iff _ φ.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_lt_one_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) (z : Ω) :
     A'.valuation (φ z) < 1 ↔ A.valuation z < 1 := by
@@ -103,9 +103,9 @@ theorem val_lt_one_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) (z : Ω) :
 
 omit [NumberField E'] in
 /- English proof (translation)
-Use `⟨fun h x => apply_mem_iff_of_mem_Dec h x, fun h => mem_Dec.mpr ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `h ((τ⁻¹ : G F K) x)` as an intermediate fact. Rewrite `this` using `[mul_inv_apply]`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_Dec_iff' {K F : Type} [Field K] [Field F] [NumberField F] [Algebra F K] (B : ValuationSubring K)
     (τ : G F K) : τ ∈ Dec (F := F) B ↔ ∀ x, τ x ∈ B ↔ x ∈ B := by
@@ -117,9 +117,9 @@ theorem mem_Dec_iff' {K F : Type} [Field K] [Field F] [NumberField F] [Algebra F
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[mem_Dec_iff', mem_Dec_iff']`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Rewrite using `[← hm, hrel, h, hm]`. Introduce `h x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `φ.surjective x`. Rewrite using `[← hrel, hm, hm, h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Dec_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) {σ : G E Ω} {σ' : G E' Ω'}
     (hrel : ∀ z, φ (σ z) = σ' (φ z)) : σ' ∈ Dec (F := E') A' ↔ σ ∈ Dec (F := E) A := by
@@ -129,11 +129,11 @@ theorem mem_Dec_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) {σ : G E Ω} {σ' : G
   · intro h x; obtain ⟨z, rfl⟩ := φ.surjective x; rw [← hrel, hm, hm, h]
 
 /- English proof (translation)
-Unfold `ActsAs`. Rewrite using `[mem_Dec_iff hm hrel]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (φ x) ((val_le_one_iff hm x).mpr hx)` as an intermediate fact. Rewrite `this` using `[← hrel, ← map_pow φ, ← map_pow φ, ← map_sub φ, val_lt_one_iff hm]`. Then use the resulting hypothesis. Introduce `h x hx`. Take `⟨z, rfl⟩` from `φ.surjective x`. Rewrite `hx` using `[val_le_one_iff hm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hrel, ← map_pow φ, ← map_pow φ, ← map_sub φ, val_lt_one_iff hm]`. Conclude with `h z hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsAs_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) {σ : G E Ω} {σ' : G E' Ω'}
     (hrel : ∀ z, φ (σ z) = σ' (φ z)) (q a b : ℕ) : ActsAs A' q σ' a b ↔ ActsAs A q σ a b := by
@@ -160,11 +160,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`. Take `⟨O', hO', hpre⟩` from `isOpen_induced_iff.mp hf`. Establish `h1 : (1 : G E' Ω') ∈ O'`. Establish `: (1 : Ine (F` using `E') A') ∈ Subtype.val ⁻¹' O' := by rw [hpre]; simp`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, hU1, hUO⟩` from `conj_nhds E Ω E' Ω' φ O' (hO'.mem_nhds h1)`. Use `IsSmooth.of_open (U := Subtype.val ⁻¹' U) (hU.preimage continuous_subtype_val) hU1 ?_` and prove the remaining obligations. Introduce `τ hτ`. Establish `hmem : ((e (ineIncl h τ) : Weil h') : G E' Ω') ∈ Ine (F` using `E') A' := by`. Rewrite using `[← deg_eq_zero_iff, hdeg, deg_ineIncl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hO : (⟨_, hmem⟩ : Ine (F` using `E') A') ∈ Subtype.val ⁻¹' O' := hUO τ hτ _ (he (ineIncl h τ))`. Rewrite `hO` using `[hpre]`. Establish `e1 : ineIncl h' ⟨_, hmem⟩ = e (ineIncl h τ)` using `Subtype.ext rfl`. Rewrite `hO` using `[Set.mem_setOf_eq, e1]`. Conclude with `hO`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_comp (φ : Ω ≃+* Ω') (e : Weil h →* Weil h')
     (he : ∀ (σ : Weil h) z, φ ((σ : G E Ω) z) = (e σ : G E' Ω') (φ z)) (hdeg : ∀ σ, deg (e σ) = deg σ)
@@ -189,39 +189,35 @@ end Smooth
 
 open GlobalTheory.LocLanglands in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hP`. Use `haveI : CharZero Ω' := (RingHom.charZero_iff (algebraMap E' Ω').injective).mp inferInstance`. Use `haveI : Algebra.IsAlgebraic E' Ω' := IsAlgClosure.isAlgebraic`. Establish `fixE : ∀ σ : G E Ω, σ ∈ Dec (F` using `E) A → ∀ y : E', conj φ σ.toRingEquiv (algebraMap E' Ω' y) = algebraMap E' Ω' y := by`. Introduce `σ hσ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.fixed_algebraic_of_limit_of_fixed_elements Ω' A' (conj φ σ.toRingEquiv) ?_ _ ?_ ?_` and prove the remaining obligations. Introduce `z`. Rewrite using `[conj_apply, hP.mem, AlgEquiv.coe_ringEquiv, apply_mem_iff_of_mem_Dec hσ]`. Use `conv_rhs => rw [← φ.apply_symm_apply z]`. Rewrite using `[hP.mem]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsIntegral.map (algebraMap E' Ω').toRatAlgHom (Algebra.IsIntegral.isIntegral (R := ℚ) y)).isAlgebraic`. Introduce `δ hδ`. Take `⟨x, hx⟩` from `GlobalTheory.T.dense_numberField_of_continuous_completion_equiv E w E' Ω' A' w' h' j i hP.cont hP.loc y δ hδ`. Use `⟨algebraMap E' Ω' (j x), ?_, hx⟩` and prove the remaining obligations. Rewrite using `[conj_apply, ← hP.ext, RingEquiv.symm_apply_apply, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `fixE' : ∀ σ' : G E' Ω', ∀ x : E, conj φ.symm σ'.toRingEquiv (algebraMap E Ω x) = algebraMap E Ω x`. Introduce `σ' x`. Rewrite using `[conj_apply, RingEquiv.symm_symm, hP.ext, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes, ← hP.ext, RingEquiv.symm_apply_apply]`. Establish `hrelC : ∀ (σ : G E Ω) (hσ : ∀ y : E', conj φ σ.toRingEquiv (algebraMap E' Ω' y) = algebraMap E' Ω' y) z, φ (σ z) = conjAlg φ σ hσ (φ z)`. Introduce `σ hσ z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjAlg_apply, RingEquiv.symm_apply_apply]`. Establish `hrelC' : ∀ (σ' : G E' Ω') z, φ (conjAlg φ.symm σ' (fixE' σ') z) = σ' (φ z)`. Introduce `σ' z`. Rewrite using `[conjAlg_apply, RingEquiv.symm_symm, RingEquiv.apply_symm_apply]`. Establish `q_eq : normV w' = normV w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_antisymm` to reduce the goal to its premises. Take `⟨σ, hσ⟩` from `exists_isFrob h`. Establish `hrel` using `hrelC σ (fixE σ hσ.1)`. Use `GlobalTheory.T.absNorm_place_le_of_frobenius E' Ω' A' w' h' (normV w) (one_lt_normV w) (conjAlg φ σ (fixE σ hσ.1)) ?_` and prove the remaining obligations. Rewrite using `[← actsAs_one_iff, actsAs_iff hP.mem hrel, actsAs_one_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσ`. Take `⟨τ', hτ'⟩` from `exists_isFrob h'`. Establish `hrel` using `hrelC' τ'`. Use `GlobalTheory.T.absNorm_place_le_of_frobenius E Ω A w h (normV w') (one_lt_normV w') (conjAlg φ.symm τ' (fixE' τ')) ?_` and prove the remaining obligations. Rewrite using `[← actsAs_one_iff, ← actsAs_iff hP.mem hrel, actsAs_one_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hτ'`. Establish `memW : ∀ σ : Weil h, conjAlg φ (σ : G E Ω) (fixE σ (Weil_le_Dec h σ.2)) ∈ Weil h'`. Introduce `σ`. Take `⟨a, b, hab⟩` from `σ.2`. Use `⟨a, b, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[q_eq, actsAs_iff hP.mem (hrelC _ _)]`. Conclude with `hab`. Establish `memW' : ∀ σ' : Weil h', conjAlg φ.symm (σ' : G E' Ω') (fixE' σ') ∈ Weil h`. Introduce `σ'`. Take `⟨a, b, hab⟩` from `σ'.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[← q_eq, ← actsAs_iff hP.mem (hrelC' _)]`. Conclude with `hab`. Set `c : Weil h ≃* Weil h'` to `{ toFun := fun σ => ⟨_, memW σ⟩ invFun := fun σ' => ⟨_, memW' σ'⟩ left_inv := fun σ => by ext z; simp right_inv := fun σ' => by ext z; simp map_mul' := fun σ τ => by ext z; simp }`. Establish `hc : ∀ σ y, ((c σ : Weil h') : G E' Ω') y = φ ((σ : G E Ω) (φ.symm y))` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcs : ∀ σ' y, ((c.symm σ' : Weil h) : G E Ω) y = φ.symm ((σ' : G E' Ω') (φ y))` using `fun _ _ => rfl`. Establish `hrel : ∀ (σ : Weil h) z, φ ((σ : G E Ω) z) = ((c σ : Weil h') : G E' Ω') (φ z)`. Introduce `σ z`. Rewrite using `[hc, RingEquiv.symm_apply_apply]`. Establish `hdeg : ∀ σ, deg (c σ) = deg σ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `σ`. Take `⟨a, b, hab⟩` from `σ.2`. Rewrite using `[deg_eq hab, deg_eq (σ := c σ) (a := a) (b := b) (by rw [q_eq, actsAs_iff hP.mem (hrel σ)]; exact hab)]`. Use `⟨c, ?_, hdeg, q_eq, ?_⟩` and prove the remaining obligations. Introduce `σ σ'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hr`. Use extensionality with `y`. Take `⟨z, rfl⟩` from `φ.surjective y`. Rewrite using `[← hrel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr z`. Introduce and unpack `rfl z`. Conclude with `hrel σ z`. Introduce `M _ f`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `smooth_comp φ c.toMonoidHom hrel hdeg f`. Introduce `hf`. Establish `hrel' : ∀ (σ' : Weil h') z, φ.symm ((σ' : G E' Ω') z) = ((c.symm σ' : Weil h) : G E Ω) (φ.symm z)`. Introduce `σ' z`. Rewrite using `[hcs, RingEquiv.apply_symm_apply]`.
-
-Establish `hdeg' : ∀ σ', deg (c.symm σ') = deg σ'`. Introduce `σ'`. Rewrite using `[← hdeg, MulEquiv.apply_symm_apply]`. Use `smooth_comp φ.symm c.symm.toMonoidHom hrel' hdeg' (f.comp c.toMonoidHom) hf` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use extensionality with `σ'`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weil_equiv : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), PlaceIso A w A' w' φ j i → ∃ c : Weil h ≃* Weil h', (∀ σ σ', WeilRel φ σ σ' ↔ c σ = σ') ∧ (∀ σ, deg (c σ) = deg σ) ∧ normV w' = normV w ∧ ∀ (M : Type) [Monoid M] (f : Weil h' →* M), GlobalTheory.WeilDeligne.IsSmooth f ↔ GlobalTheory.WeilDeligne.IsSmooth (f.comp c.toMonoidHom) := by
   intro E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hP

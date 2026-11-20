@@ -10,11 +10,11 @@ open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheor
 open UpperTheory.V.AlgebraTools.Det
 
 /- English proof (translation)
-Introduce `i N`. Establish `hl : IsLocallyConstant (fun g : G => fun a b => Ideal.Quotient.mk (I ^ N) (ρ g a b))`. Use `letI : TopologicalSpace (A ⧸ I ^ N) := ⊥`. Use `haveI : DiscreteTopology (A ⧸ I ^ N) := ⟨rfl⟩`. Rewrite using `[IsLocallyConstant.iff_continuous]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `continuous_pi fun a => continuous_pi fun b => (IsLocallyConstant.iff_continuous _).1 (h a b N)`. Establish `key : (fun g => Ideal.Quotient.mk (I ^ N) ((GDet.ofRep ρ).lam i (MonoidAlgebra.single g 1))) = (fun M : Fin n → Fin n → A ⧸ I ^ N => Ideal.Quotient.mk (I ^ N) ((-1 : A) ^ i) * (Matrix.of M).charpoly.coeff (n - i)) ∘ (fun g a b => Ideal.Quotient.mk (I ^ N) (ρ g a b))`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, GDet.lam, (repApi ρ).2.1, map_mul]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Polynomial.coeff_map, ← Matrix.charpoly_map]`. Both sides reduce to the same expression. Use `show IsLocallyConstant (fun g => Ideal.Quotient.mk (I ^ N) ((GDet.ofRep ρ).lam i (MonoidAlgebra.single g 1)))`. Rewrite using `[key]`. Conclude with `hl.comp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pairOfRep_cont {n : ℕ} {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] (I : Ideal A)
     (ρ : G →* Matrix (Fin n) (Fin n) A) (h : ∀ a b, AdicCont I fun g => ρ g a b) : (GDet.ofRep ρ).IsCont I := by
@@ -38,9 +38,9 @@ private theorem pairOfRep_cont {n : ℕ} {A G : Type} [CommRing A] [Group G] [To
   exact hl.comp _
 
 /- English proof (translation)
-Establish `key` using `(formRep F O R n r P h).1 R y`. Establish `hP : (↑P : Matrix (Fin n) (Fin n) R).map ⇑(algebraMap R R) = ↑P`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite `key` using `[hP]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (GDet.repAlg (mat r) R) (F.star O R n y) = ((P⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * ((GDet.repAlg (mat r) R) y)ᵀ * ((P⁻¹⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)`. Rewrite using `[inv_inv, Matrix.mul_assoc, key, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Unfold `GDet.lam`. Rewrite using `[(repApi (mat r)).1, (repApi (mat r)).1, e, Matrix.coe_units_inv (P⁻¹), Matrix.charpoly_units_conj, Matrix.charpoly_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pairOfRep_polar {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type)
     [CommRing R] [Algebra O R] (n : ℕ) (r : F.G₀ →* GL (Fin n) R) (P : GL (Fin n) R) (h : F.IsForm O n r P) (i : ℕ)
@@ -60,9 +60,9 @@ private theorem pairOfRep_polar {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Typ
     Matrix.charpoly_transpose]
 
 /- English proof (translation)
-Introduce `l _ n F O _ _ _ r A _ _ _ ρ P ψ hn hc hred hP hψ hfl hI`. Use `⟨⟨GDet.ofRep (mat ρ), ψ, pairOfRep_cont _ _ hc, hred, hψ, fun i g => pairOfRep_polar F O A n ρ P hP i _, fun v g h => ?_, fun u g hg h => ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Establish `h2` using `oElRep F O A n ρ v _ (hfl v) g`. Rewrite using `[(repApi _).2.2.1 hn, map_mul, h2, mul_zero, Matrix.trace_zero]`. Establish `h1 : GDet.repAlg (mat ρ) A (MonoidAlgebra.single g 1 - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one]`. Simplify using `[GDet.repAlg, mat, hI u g hg]`. Rewrite using `[(repApi _).2.2.1 hn, map_mul, h1, mul_zero, Matrix.trace_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Th.Nm.pairOfRep :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid F O n) (A : Type) [CommRing A] [Algebra O A] [IsCO O A] (ρ : F.G₀ →* GL (Fin n) A) (P : GL (Fin n) A) (ψ : ∀ v, Fin n → F.Gv v →* Aˣ), 1 ≤ n → (∀ i j, AdicCont (maximalIdeal A) fun g => mat ρ g i j) → (GDet.ofRep (mat ρ)).map (res O A : A →+* ResidueField O) = r.Dbar → F.IsForm O n ρ P → (∀ v i, r.IsPsi v i (ψ v i)) → (∀ v, HasFlag (ρ.comp (F.φ v)) (ψ v)) → (∀ u, ∀ g ∈ r.Ip u, ρ g = 1) → ∃ p : Pair r A, p.D = GDet.ofRep (mat ρ) ∧ p.ψ = ψ := by

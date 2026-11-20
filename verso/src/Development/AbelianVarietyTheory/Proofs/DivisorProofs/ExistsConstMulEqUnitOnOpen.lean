@@ -17,7 +17,7 @@ section General
 variable {X Y Y' G B Z : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `(gs_res r z e h _).trans (gs_pull r f z U (e h) a)`.
+A detailed English derivation is pending.
 -/
 theorem gs_appLE (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) (U : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ U) (h : r z ∈ W)
     (a : Γ(X, U)) : gs r z W ((f.appLE U W e).hom a) = gs (r ≫ f) z U a :=

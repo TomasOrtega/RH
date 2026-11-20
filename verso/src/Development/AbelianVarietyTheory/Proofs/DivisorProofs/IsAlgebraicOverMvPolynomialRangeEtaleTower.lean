@@ -14,23 +14,15 @@ noncomputable section
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL r R T ι ψ τ h hinj z`. Set `A` to `MvPolynomial (Fin r) R`. Set `φ : A →+* T` to `MvPolynomial.eval₂Hom ι τ`. Set `φL : A →+* L` to `T.subtype.comp φ`. Establish `hφL : Function.Injective φL` using `Subtype.val_injective.comp hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : Algebra A T := φ.toAlgebra`. Use `letI : Algebra A L := φL.toAlgebra`. Use `haveI : IsScalarTower A T L := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.FormallyEtale A T := h.etale`. Use `haveI : IsFractionRing T L := IsFractionRing.of_field T L fun f => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨a, ha, b, hb, hb0, e⟩` from `h.top.frac f`. Use `⟨⟨a, ha⟩, ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f = a / b`. Rewrite using `[← e, mul_div_cancel_right₀ _ hb0]`. Use `haveI : Algebra.FormallyUnramified T L := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors T)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.FormallyUnramified A L := Algebra.FormallyUnramified.comp A T L`. Set `c0 : ℂ →+* R` to `cK.codRestrict R h.base.const_mem`. Set `cT : ℂ →+* T` to `cL.codRestrict T h.top.const_mem`. Use `letI : Algebra ℂ R := c0.toAlgebra`. Use `letI : Algebra ℂ T := cT.toAlgebra`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra ℂ L := cL.toAlgebra`. Use `haveI : IsScalarTower ℂ T L := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower ℂ A L := IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `cL a = T.subtype (MvPolynomial.eval₂Hom ι τ (MvPolynomial.C (c0 a)))`. Rewrite using `[MvPolynomial.eval₂Hom_C]`.
-
-Conclude with `(h.const a).symm`. Use `haveI : Algebra.EssFiniteType ℂ T := RingHom.essFiniteType_algebraMap.1 h.top.essFiniteType`. Use `haveI : Algebra.EssFiniteType T L := Algebra.EssFiniteType.of_isLocalization L (nonZeroDivisors T)`. Use `haveI : Algebra.EssFiniteType ℂ L := Algebra.EssFiniteType.comp ℂ T L`. Use `haveI : Algebra.EssFiniteType A L := Algebra.EssFiniteType.of_comp ℂ A L`.
-
-Set `F` to `FractionRing A`. Use `letI : Algebra F L := (IsFractionRing.lift hφL : F →+* L).toAlgebra`. Use `haveI : IsScalarTower A F L := IsScalarTower.of_algebraMap_eq fun a => (IsFractionRing.lift_algebraMap hφL a).symm`. Use `haveI : Algebra.FormallyUnramified F L := Algebra.FormallyUnramified.of_restrictScalars A F L`. Use `haveI : Algebra.EssFiniteType F L := Algebra.EssFiniteType.of_comp A F L`.
-
-Use `haveI : Algebra.IsSeparable F L := Algebra.FormallyUnramified.isSeparable F L`. Establish `hA : IsAlgebraic A z` using `(IsFractionRing.isAlgebraic_iff A F L).2 (Algebra.IsAlgebraic.isAlgebraic z)`. Take `⟨p, hp, hpz⟩` from `hA`. Use `⟨p.map φL.rangeRestrict, (Polynomial.map_ne_zero_iff (RingHom.injective_codRestrict.2 hφL)).2 hp, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`.
-
-Conclude with `hpz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_range_eval₂Hom_of_isEtTower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T),

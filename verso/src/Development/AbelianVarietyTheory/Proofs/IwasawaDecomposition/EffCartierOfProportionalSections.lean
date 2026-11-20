@@ -6,11 +6,11 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.ProjBlowup
 
 /- English proof (translation)
-Establish `hu : IsUnit (d.app A.1 s)`. Use `T.toRingedSpace.isUnit_of_isUnit_germ _ _ fun t ht => ?_` and prove the remaining obligations. Use `(T.mem_basicOpen _ t ht).1 ?_` and prove the remaining obligations. Rewrite using `[← Scheme.preimage_basicOpen]`. Establish `h` using `hd t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := A) ht, hs, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Conclude with `not_not.1 h`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Apply `d.app_injective A.1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (d.app A.1) hx`. Rewrite `h` using `[map_mul, map_zero]`. Rewrite using `[map_zero]`. Conclude with `hu.mul_left_eq_zero.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nonZeroDivisors_of_dense_compl_support {W T : Scheme.{0}} (I : W.IdealSheafData) (d : T ⟶ W)
     [IsSchemeTheoreticallyDominant d] [QuasiCompact d] (hd : ∀ t : T, d t ∉ I.support)
@@ -32,11 +32,11 @@ theorem mem_nonZeroDivisors_of_dense_compl_support {W T : Scheme.{0}} (I : W.Ide
   exact hu.mul_left_eq_zero.1 h
 
 /- English proof (translation)
-Introduce `w`. Take `⟨k, hk⟩ : ∃ k, w ∈ g ⁻¹ᵁ L.U k` from `TopologicalSpace.Opens.mem_iSup.1 (hI.1.ge (show w ∈ (⊤ : W.Opens) from trivial))`. Take `⟨i, hi⟩` from `GlobalTheory.ProjSpace.exists_mem_chart R m (ψ w)`. Take `⟨A, hA, hw, hle⟩` from `exists_isAffineOpen_mem_and_subset (show w ∈ g ⁻¹ᵁ L.U k ⊓ ψ ⁻¹ᵁ GlobalTheory.ProjSpace.chart R m i from ⟨hk, hi⟩)`. Establish `hAk : A ≤ g ⁻¹ᵁ L.U k` using `fun x hx => (hle hx).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAi : A ≤ ψ ⁻¹ᵁ GlobalTheory.ProjSpace.chart R m i` using `fun x hx => (hle hx).2`. Establish `hs : I.ideal ⟨A, hA⟩ = Ideal.span {(g.appLE (L.U k) A hAk).hom ((σ i).f k)}`. Rewrite using `[hI.2 k ⟨A, hA⟩ hAk]`. Use `le_antisymm (Ideal.span_le.2 ?_) (Ideal.span_mono (Set.singleton_subset_iff.2 ⟨i, rfl⟩))` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Ideal.mem_span_singleton'.2 ⟨_, (hp A k hAk i hAi j).symm⟩`. Conclude with `⟨⟨A, hA⟩, _, hw, mem_nonZeroDivisors_of_dense_compl_support I d hd ⟨A, hA⟩ _ hs, hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem effCartier_of_proportional (R : Type) [CommRing R] (X W T : Scheme.{0}) (I : W.IdealSheafData) (L : LB X)
     (m : ℕ) (σ : Fin (m + 1) → L.Sec) (g : W ⟶ X) (ψ : W ⟶ PSpace R m) (d : T ⟶ W)

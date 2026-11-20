@@ -13,21 +13,21 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ H _ n R R' hR x₀ y₀ htr`. Set `φ : H →* Matrix (Fin n) (Fin n) k` to `(Units.coeHom _).comp R'`. Set `ψ : H →* Matrix (Fin n) (Fin n) k` to `(Units.coeHom _).comp R`. Set `f : Matrix (Fin n) (Fin n) k →ₗ[k] k` to `(Matrix.traceLinearMap (Fin n) k k) ∘ₗ LinearMap.mulLeft k (y₀ : Matrix (Fin n) (Fin n) k)`. Take `⟨hdim, hker⟩` from `Ga.kerLe k H n R hR x₀ (Matrix (Fin n) (Fin n) k) φ f (fun h => by simpa [f, φ, Ga.tr] using htr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `htop : Algebra.adjoin k (Set.range φ) = ⊤`. Apply `Subalgebra.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Apply `le_antisymm (Submodule.finrank_le _)` to reduce the goal to its premises. Simplify `hdim` using `[Module.finrank_matrix, sq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Set `P : MonoidAlgebra k H →ₐ[k] Matrix (Fin n) (Fin n) k` to `MonoidAlgebra.lift k _ H φ`. Set `Q : MonoidAlgebra k H →ₐ[k] Matrix (Fin n) (Fin n) k` to `MonoidAlgebra.lift k _ H ψ`. Establish `hs : Function.Surjective P`. Establish `hle : Algebra.adjoin k (Set.range φ) ≤ P.range` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨h, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨MonoidAlgebra.of k H h, by simp [P]⟩)`. Introduce `m`. Establish `hm : m ∈ P.range` using `hle (htop ▸ Algebra.mem_top)`. Conclude with `hm`. Establish `hk : ∀ a ∈ RingHom.ker P, Q a = 0` using `fun a ha => hker a ha`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : Matrix (Fin n) (Fin n) k →ₐ[k] Matrix (Fin n) (Fin n) k` to `(Ideal.Quotient.liftₐ (RingHom.ker P) Q hk).comp (Ideal.quotientKerAlgEquivOfSurjective hs).symm.toAlgHom`. Establish `hT : ∀ h, T (φ h) = ψ h`. Introduce `h`. Establish `h1 : (Ideal.quotientKerAlgEquivOfSurjective hs).symm (φ h) = Ideal.Quotient.mk (RingHom.ker P) (MonoidAlgebra.of k H h)`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[P]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.liftₐ (RingHom.ker P) Q hk ((Ideal.quotientKerAlgEquivOfSurjective hs).symm (φ h)) = ψ h`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `Q (MonoidAlgebra.of k H h) = ψ h`. Simplify using `[Q]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `KStar.Tree.exists_conj_of_algHom T`. Use `⟨J⁻¹, fun s => ?_⟩` and prove the remaining obligations. Establish `h2` using `hJ (φ s)`. Rewrite `h2` using `[hT]`. Establish `h3 : R s * J = J * R' s` using `Units.ext h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv, mul_assoc, h3, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.conjOn :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (H : Type) [Group H] (n : ℕ) (R R' : H →* GL (Fin n) k), IsIrr R → ∀ x₀ y₀ : GL (Fin n) k, (∀ h, Ga.tr (x₀ * R h) = Ga.tr (y₀ * R' h)) → RepIso R R' := by

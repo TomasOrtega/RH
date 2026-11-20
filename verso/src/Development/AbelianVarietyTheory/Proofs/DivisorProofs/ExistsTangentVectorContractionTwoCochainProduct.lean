@@ -18,15 +18,15 @@ variable {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
   {D : Type} [CommRing D] [Algebra R D] {D' : Type} [CommRing D'] [Algebra R D']
 
 /- English proof (translation)
-Simplify using `[pt0, comp_lift, MonObj.comp_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem specOverOfAlgHom_pointWithZeroSecondCoord (φ : D →ₐ[R] D') (x : Pt A D) : spOver φ ≫ pt0 B x = pt0 B (spOver φ ≫ x) := by
   simp [pt0, comp_lift, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `k : spOver (TrivSqZeroExt.fstHom R D D) ≫ spOver (EpsWeil.epsMap R D) = toUnit _ ≫ GrpTangent.epsZero R`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[spOver_comp, PDiv.spOver_left, Over.comp_left, Over.toUnit_left]`. Use `Eq.trans (congrArg spMap (RingHom.ext fun a ↦ ?_)) (Cris.spMap_comp (TrivSqZeroExt.fstHom R R R).toRingHom (algebraMap R D))` and prove the remaining obligations. Simplify using `[EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `ext1`. Simplify using `only [ptV, pt0, comp_lift, lift_fst, ← Category.assoc, spOver_comp]`. Rewrite using `[show (TrivSqZeroExt.fstHom R D D).comp (TrivSqZeroExt.inlAlgHom R D D) = AlgHom.id R D from AlgHom.ext fun _ ↦ rfl, PDiv.spOver_id, Category.id_comp]`. Simplify using `only [ptV, pt0, comp_lift, lift_snd]`. Rewrite using `[← Category.assoc, k, Category.assoc, (GrpTangent.isTangent_iff v).1 hv, MonObj.comp_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spOver_fst_ptV (v : epsR R ⟶ B) (hv : IsTangent v) (x : Pt A D) :
     spOver (TrivSqZeroExt.fstHom R D D) ≫ ptV v x = pt0 B x := by
@@ -45,9 +45,9 @@ theorem spOver_fst_ptV (v : epsR R ⟶ B) (hv : IsTangent v) (x : Pt A D) :
     rw [← Category.assoc, k, Category.assoc, (GrpTangent.isTangent_iff v).1 hv, MonObj.comp_one]
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [ptV, comp_lift, lift_fst, ← Category.assoc, spOver_comp]`. Use `congr 2`. Apply the tactic sequence `ext c <;> simp [epsHom, DualNumber.lift_apply_apply]`. Simplify using `only [ptV, comp_lift, lift_snd, ← Category.assoc, spOver_comp]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply the tactic sequence `ext <;> simp only [AlgHom.comp_apply, EpsWeil.epsMap, epsHom, DualNumber.lift_apply_eps]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem spOver_epsHom_ptV (v : epsR R ⟶ B) (φ : D →ₐ[R] D') (x : Pt A D) :
     spOver (epsHom φ) ≫ ptV v x = ptV v (spOver φ ≫ x) := by
@@ -93,11 +93,11 @@ end GlobalTheory.PtExt.ContrMor
 namespace GlobalTheory.PtExt.ContrMor
 
 /- English proof (translation)
-Introduce `R _ A B _ _ v hv`. Use `⟨fun D _ _ D' _ _ φ x ↦ ⟨sHom x, iHom v hv x, sHom _, iHom v hv _, aHom φ x, bHom v φ x, τHom φ x, fun _ ↦ rfl, fun _ ↦ rfl, fun _ ↦ rfl, fun _ ↦ rfl, fun _ ↦ rfl, fun _ ↦ rfl, fun _ ↦ rfl⟩, fun z ↦ ?_⟩` and prove the remaining obligations. Use `⟨fun D _ _ D' _ _ φ x ↦ TrivSqZeroExt.snd (R := D') (z _ _ _ (sHom x) (τHom φ x) - z _ _ _ (aHom φ x) (sHom _) - z _ _ _ (iHom v hv x) (τHom φ x) + z _ _ _ (bHom v φ x) (iHom v hv _)), ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x s i s' i' a b τ hs hi hs' hi' ha hb hτ`. Take `rfl : s = sHom x` from `Thick.hom_ext fun r ↦ (hs r).trans rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : i = iHom v hv x` from `Thick.hom_ext fun r ↦ (hi r).trans rfl`. Take `rfl : s' = sHom _` from `Thick.hom_ext fun r ↦ (hs' r).trans rfl`. Take `rfl : i' = iHom v hv _` from `Thick.hom_ext fun r ↦ (hi' r).trans rfl`. Take `rfl : a = aHom φ x` from `Thick.hom_ext fun r ↦ (ha r).trans rfl`. Take `rfl : b = bHom v φ x` from `Thick.hom_ext fun r ↦ (hb r).trans rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : τ = τHom φ x` from `Thick.hom_ext fun r ↦ (hτ r).trans rfl`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem exists_contr : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (v : epsR R ⟶ B), IsTangent v → (∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt A D), ∃ (s : trivAt (pt0 B x) ⟶ thickAt B x) (i : trivAt (ptV v x) ⟶ thickAt B x) (s' : trivAt (pt0 B (spOver φ ≫ x)) ⟶ thickAt B (spOver φ ≫ x)) (i' : trivAt (ptV v (spOver φ ≫ x)) ⟶ thickAt B (spOver φ ≫ x)) (a : trivAt (pt0 B x) ⟶ trivAt (pt0 B (spOver φ ≫ x))) (b : trivAt (ptV v x) ⟶ trivAt (ptV v (spOver φ ≫ x))) (τ : thickAt B x ⟶ thickAt B (spOver φ ≫ x)), (∀ r, s.φ r = TrivSqZeroExt.inl r) ∧ (∀ r, i.φ r = r) ∧ (∀ r, s'.φ r = TrivSqZeroExt.inl r) ∧ (∀ r, i'.φ r = r) ∧ (∀ r, a.φ r = φ r) ∧ (∀ r, b.φ r = epsHom φ r) ∧ (∀ r, τ.φ r = epsHom φ r)) ∧ ∀ z : C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)), ∃ κ : Fn1 A, IsContr z v κ := by
   intro R _ A B _ _ v hv

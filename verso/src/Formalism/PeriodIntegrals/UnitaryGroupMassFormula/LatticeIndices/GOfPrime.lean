@@ -10,21 +10,19 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped ENNReal
 
 /- English proof (translation)
-Take `⟨hcm, hbo⟩` from `hT`. Establish `hone : (1 : G) ∈ Kg`. Use `(hker 1).1 (map_one ρ)` as an intermediate fact. Simplify using `using this`. Establish `hsub : Subtype.val '' (A : Set K) ⊆ K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, _, rfl⟩`. Conclude with `a.2`. Establish `hopen : IsOpen (Subtype.val '' (A : Set K))`. Establish `heq : Subtype.val '' (A : Set K) = ⋃ a ∈ (A : Set K), (fun y => (a : G) * y) '' Kg`. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `Set.mem_biUnion ha ⟨1, hone, by simp⟩`. Introduce `hx`. Take `⟨a, ha, y, hy, rfl⟩` from `Set.mem_iUnion₂.1 hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyK : y ∈ K` using `hKgK hy`. Establish `hyA : (⟨y, hyK⟩ : K) ∈ A` using `hA ((hker ⟨y, hyK⟩).2 hy)`. Conclude with `⟨a * ⟨y, hyK⟩, A.mul_mem ha hyA, rfl⟩`. Rewrite using `[heq]`. Use `isOpen_biUnion fun a _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Homeomorph.mulLeft (a : G)).isOpenMap _ hKg`. Use `⟨hopen, hsub, ?_, hR K Q ρ hρ A hA⟩` and prove the remaining obligations. Establish `hidx : A.index ≠ 0` using `by haveI : Nonempty Q := ⟨1⟩`. Establish `h1 : ρ.ker.index ≠ 0`. Rewrite using `[Subgroup.index_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_pos.ne'`. Conclude with `fun h0 => h1 (Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.index_dvd_of_le hA))`. Establish `hmap : ((A.map K.subtype : Subgroup G) : Set G) = Subtype.val '' (A : Set K)`. Rewrite using `[Subgroup.coe_map]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrel : (A.map K.subtype).relIndex K = A.index`. Rewrite using `[Subgroup.relIndex]`. Use `show (Subgroup.comap K.subtype (A.map K.subtype)).index = _`. Rewrite using `[Subgroup.comap_map_eq_self_of_injective K.subtype_injective]`. Establish `hle : A.map K.subtype ≤ K`.
-
-Introduce `x hx`. Rewrite `hx` using `[← SetLike.mem_coe, hmap]`. Conclude with `hsub hx`. Establish `key` using `hH G μ K (A.map K.subtype) hle (by rw [hmap]; exact hopen) (by rw [hrel]; exact hidx)`. Rewrite using `[key, hrel, hmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measOfRed (hH : HaarIdx) (hR : RedIdx) {G : Type} [Group G] [TopologicalSpace G]
     [MeasurableSpace G] (hT : ContinuousMul G ∧ BorelSpace G) (μ : Measure G) [μ.IsMulLeftInvariant]
@@ -79,7 +77,7 @@ theorem measOfRed (hH : HaarIdx) (hR : RedIdx) {G : Type} [Group G] [Topological
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
 /- English proof (translation)
-Unfold `gOf`. Use `split_ifs`. Conclude with `D.host.g_prime 0`. Conclude with `D.host.g_prime 1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gOf_prime (p : TypX X) : (gOf p).Prime := by
   unfold gOf
@@ -88,25 +86,25 @@ theorem gOf_prime (p : TypX X) : (gOf p).Prime := by
   · exact D.host.g_prime 1
 
 /- English proof (translation)
-Use `haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem finite_GL (p : TypX X) : Finite (GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))) := by
   haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩
   infer_instance
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kg_sub (p : TypX X) : KgX X p ⊆ KvX X p := fun _ hx => hx.1
 
 /- English proof (translation)
-Take `⟨K, hKv, -, -, hKgo⟩` from `hK`. Take `⟨ρ, hρs, hρk⟩` from `hRed K hKv`. Use `haveI := finite_GL X p`. Take `⟨A, hAeq, hAker, hAcard⟩` from `hIm K hKv ρ hρs hρk`. Use `haveI : (muP X p).IsHaarMeasure := X.measG_norm.2.2.2.1 p.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKgK : KgX X p ⊆ (K : Set (HAp X p))` using `hKv ▸ kg_sub X p`. Take `⟨-, -, hmeas, hidx⟩` from `measOfRed hH hR hT (muP X p) K ρ hρs (KgX X p) hKgo hKgK hρk A hAker`. Rewrite `hidx` using `[hAcard]`. Use `⟨A.index, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (ggC D.R.rS D.R.k (gOf p) : ℝ) = ((A.index * (nnC D.R.rS D.R.k (gOf p) * ukC D.R.k (gOf p)) : ℕ) : ℝ)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hidx]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < Nat.card (A.map ρ)` using `Nat.card_pos`. Rewrite `hpos` using `[hAcard]`. Conclude with `hpos.ne'` after adjusting the coercions. Rewrite using `[← hKv, hmeas, hAeq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measA_of (hH : HaarIdx) (hR : RedIdx) (p : TypX X) (hT : StTop X p) (hK : StK X p)
     (hRed : StRed X p) (hIm : StImA X hb p) : StMeasA X hb p := by
@@ -130,15 +128,13 @@ theorem measA_of (hH : HaarIdx) (hR : RedIdx) (p : TypX X) (hT : StTop X p) (hK 
   · rw [← hKv, hmeas, hAeq]
 
 /- English proof (translation)
-Take `⟨K, hKv, -, hKc, hKgo⟩` from `hK`. Take `⟨ρ, hρs, hρk⟩` from `hRed K hKv`. Use `haveI := finite_GL X p`. Take `⟨B, hBeq, hBker, hBcard⟩` from `hIm K hKv ρ hρs hρk`. Use `haveI : (muP X p).IsHaarMeasure := X.measG_norm.2.2.2.1 p.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKgK : KgX X p ⊆ (K : Set (HAp X p))` using `hKv ▸ kg_sub X p`. Take `⟨hBo, hBK, hmeas, hidx⟩` from `measOfRed hH hR hT (muP X p) K ρ hρs (KgX X p) hKgo hKgK hρk B hBker`. Rewrite `hidx` using `[hBcard]`. Use `⟨B.index, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (ggC D.R.rS D.R.k (gOf p) : ℝ) = ((B.index * (glkC D.R.k (gOf p) * nnC D.R.rS D.R.k (gOf p)) : ℕ) : ℝ)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hidx]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < Nat.card (B.map ρ)` using `Nat.card_pos`. Rewrite `hpos` using `[hBcard]`. Conclude with `hpos.ne'` after adjusting the coercions. Rewrite using `[← hKv, hmeas, hBeq]`. Rewrite using `[← hBeq]`.
-
-Conclude with `hBo.measure_ne_zero _ ⟨_, 1, B.one_mem, rfl⟩`. Rewrite using `[← hBeq]`. Conclude with `(measure_mono hBK).trans_lt hKc.measure_lt_top |>.ne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measB_of (hH : HaarIdx) (hR : RedIdx) (u : D.what₂.Word) (p : TypX X) (hT : StTop X p)
     (hK : StK X p) (hRed : StRed X p) (hIm : StImB X u p) : StMeasB X u p := by

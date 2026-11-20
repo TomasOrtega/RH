@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Γ G K A M ι _ _ _ _ _ _ gl j ρ x hcov huniq hstab v`. Establish `key : ∀ γ i k γ' i' k', gl γ * x i * j k = gl γ' * x i' * j k' → i = i' ∧ ρ k⁻¹ (v i) = ρ k'⁻¹ (v i')`. Introduce `γ i k γ' i' k' h`. Establish `e : x i' = gl (γ'⁻¹ * γ) * x i * j (k * k'⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `hii : i = i'` using `huniq i i' _ _ e`. Substitute `hii` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : gl (γ'⁻¹ * γ) * x i = x i * j (k' * k⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e]`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : ρ (k' * k⁻¹) = 1` using `hstab i _ _ e2`. Establish `: ρ k⁻¹ = ρ k'⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Use `choose γf iF kF hg using hcov`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun g => ρ (kF g)⁻¹ (v (iF g)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ g`. Establish `h : gl (γf (gl γ * g)) * x (iF (gl γ * g)) * j (kF (gl γ * g)) = gl (γ * γf g) * x (iF g) * j (kF g)`. Rewrite using `[← hg (gl γ * g)]`. Use `conv_lhs => rw [hg g]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, mul_assoc]`. Conclude with `(key _ _ _ _ _ _ h).2`. Introduce `g k`. Establish `h : gl (γf (g * j k)) * x (iF (g * j k)) * j (kF (g * j k)) = gl (γf g) * x (iF g) * j (kF g * k)`. Rewrite using `[← hg (g * j k)]`.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hg g]`. Simplify using `only [map_mul, mul_assoc]`. Simplify using `only`. Rewrite using `[(key _ _ _ _ _ _ h).2, mul_inv_rev, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `i`. Establish `h : gl (γf (x i)) * x (iF (x i)) * j (kF (x i)) = gl 1 * x i * j 1`. Rewrite using `[← hg (x i), map_one, map_one, one_mul, mul_one]`. Simplify using `only`. Rewrite using `[(key _ _ _ _ _ _ h).2, inv_one, map_one]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_automorphic_function_with_values_on_coset_reps :
     ∀ (Γ G K A M ι : Type) [Group Γ] [Group G] [Group K] [CommRing A] [AddCommGroup M] [Module A M] (gl : Γ →* G) (j : K →* G) (ρ : Representation A K M) (x : ι → G), (∀ g, ∃ γ i k, g = gl γ * x i * j k) → (∀ i i' γ k, x i' = gl γ * x i * j k → i = i') → (∀ i γ k, gl γ * x i = x i * j k → ρ k = 1) → ∀ v : ι → M, ∃ Φ : G → M, (∀ γ g, Φ (gl γ * g) = Φ g) ∧ (∀ g k, Φ (g * j k) = ρ k⁻¹ (Φ g)) ∧ ∀ i, Φ (x i) = v i := by

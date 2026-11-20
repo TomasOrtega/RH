@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelFrameDet
 
 /- English proof (translation)
-Substitute `hC` using the available equality. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem mul_fromRows_apply {R : Type} [CommRing R] {β : Type} [Fintype β] [DecidableEq β]
     (M : Matrix (β ⊕ β) (β ⊕ β) R) (C : Matrix (β ⊕ β) β R) (hC : C = Matrix.fromRows (1 : Matrix β β R) 0)
@@ -21,11 +21,9 @@ theorem mul_fromRows_apply {R : Type} [CommRing R] {β : Type} [Fintype β] [Dec
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hD : D = B * C * Ti` using `by rw [hB, Matrix.mul_assoc, hTi, Matrix.mul_one]`. Establish `key : Bi * P * B * C = C * (Ti * s * T)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (Bi * P) B C, hB]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = Bi * (D * s * T) := by rw [hP]`. Use `_ = Bi * (B * C * Ti * s * T) := by rw [← hD]`. Use `_ = (Bi * B) * C * (Ti * s * T) := by simp only [Matrix.mul_assoc]`. Use `_ = C * (Ti * s * T) := by rw [hBi, Matrix.one_mul]`. Establish `h1` using `congrFun (congrFun key (Sum.inl r)) c`.
-
-Rewrite `h1` using `[mul_fromRows_apply _ C hC]`. Rewrite using `[h1, hC, Matrix.fromRows_mul, Matrix.fromRows_apply_inl, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_conj {R : Type} [CommRing R] {β : Type} [Fintype β] [DecidableEq β]
     (B P Bi : Matrix (β ⊕ β) (β ⊕ β) R) (T Ti s : Matrix β β R) (C D : Matrix (β ⊕ β) β R)
@@ -47,13 +45,13 @@ theorem corner_conj {R : Type} [CommRing R] {β : Type} [Fintype β] [DecidableE
   rw [h1, hC, Matrix.fromRows_mul, Matrix.fromRows_apply_inl, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n Y χ ε b hb t₀ ht₀ p t hp`. Take `⟨t₀A, ht₀A⟩ : ∃ g : GL (Fin n) (AE F E), g = Matrix.GeneralLinearGroup.map (inclR (F` from `F) (E := E) (AF F)) t₀ := ⟨_, rfl⟩`. Establish `hent : ∀ r c : Fin n, (((frameEquiv χ ε b hb p).1 : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (Sum.inl r) (Sum.inl c) = ((t₀A⁻¹ * t * t₀A : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) r c`. Introduce `r c`. Rewrite using `[frameEquiv_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul]`. Use `corner_conj _ _ _ _ _ _ _ _ rfl (Units.inv_mul _) (Units.mul_inv _) ?_ hp r c` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[mul_fromRows_apply _ _ rfl, bA_val]`. Establish `hij` using `congrFun (congrFun ht₀ i) j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hij` using `[Matrix.toCols₁_apply]`. Substitute `ht₀A` using the available equality. Use `show inclR (F := F) (E := E) (AF F) (b.1 i (Sum.inl j)) = _`. Rewrite using `[hij]`. Consider the cases of `i with`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inl r' => show inclR (F := F) (E := E) (AF F) (∑ k, Matrix.fromRows (1 : Matrix (Fin n) (Fin n) E) 1 (Sum.inl r') k * t₀.1 k j) = _`. Simplify using `[diagCols, Matrix.mul_apply, Matrix.one_apply, Fintype.sum_sum_type]`. Consider the case `inr r' => show inclR (F := F) (E := E) (AF F) (∑ k, Matrix.fromRows (1 : Matrix (Fin n) (Fin n) E) 1 (Sum.inr r') k * t₀.1 k j) = _`. Simplify using `[diagCols, Matrix.mul_apply, Matrix.one_apply, Fintype.sum_sum_type]`. Rewrite using `[GlobalTheory.CompanionTheory.RgEisLevi.bdet_inl Set.univ _ (t₀A⁻¹ * t * t₀A) hent, GlobalTheory.CompanionTheory.RgEis.bdet_univ, map_mul, map_mul, mul_comm, ← mul_assoc, map_inv, mul_inv_cancel, one_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdet_frameEquiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (Y : Spc F E n), ∀ (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E) (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (t₀ : GL (Fin n) E), b.1.toCols₁ = diagCols (Fin n) * t₀.1 → ∀ (p : G2 σ Y) (t : GL (Fin n) (AE F E)), IsPar p t → bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hb p).1 = Matrix.GeneralLinearGroup.det t := by
   intro F E _ _ _ _ _ σ n Y χ ε b hb t₀ ht₀ p t hp

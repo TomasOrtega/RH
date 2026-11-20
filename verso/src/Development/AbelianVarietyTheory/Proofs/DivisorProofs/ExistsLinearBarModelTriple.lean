@@ -44,29 +44,23 @@ open Filter GlobalTheory.ThK GlobalTheory.ConeSoB GlobalTheory.StdPairLoc
 namespace GlobalTheory.LinBarAt
 
 /- English proof (translation)
-Take `⟨uT, uM, hT, hM, hspan, hsymp⟩` from `(GlobalTheory.T.exists_local_unipotent_additive) F E σ B a a' G X om om' hTr v t`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.VacAny.continuous_psiV hTr.base.std.1 v`. Establish `hunr : PsiUnr B.ψ v` using `(GlobalTheory.T.psi_unramified_away_different) F B.ψ hTr.base.std v (GlobalTheory.SplitFullyUnr.not_le_differentIdeal v hv.2)`. Establish `hunr' : ∀ x : Fv F v, (∀ y ∈ 𝒪[Fv F v], GlobalTheory.LatVac.psiAt B.ψ v (x * y) = 1) ↔ x ∈ 𝒪[Fv F v]`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GlobalTheory.FinPl.SplitPoint.mem_integer_iff]`. Conclude with `hunr x`. Establish `hcoM : ∀ z, coAt G t (uM z) = 0` using `fun z => coAt_eq_zero G t _ (hM z).2.1`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Take `⟨ι, hbij, htr, hmu⟩` from `GlobalTheory.T.stoneVonNeumann_schwartzBruhat_transverseLagrangians (GlobalTheory.LatVac.psiAt B.ψ v) hψc hunr' ((GlobalTheory.LatVac.locCo G.M'.co v).comp uT) ((GlobalTheory.LatVac.locCo G.M'.co v).comp uM) (fun Y Y' => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form', hsymp _ _ (hT Y).1 (hT Y').1, (hT Y).2.1, (hT Y').2.1]`. Use the proof step `simp)`. Use the proof step `(fun z z' => by`. Simplify using `only [AddMonoidHom.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[locCo_form', hsymp _ _ (hM z).1 (hM z').1, hcoM, hcoM]`. Use the proof step `simp)`. Use the proof step `(fun Y z => by`. Simplify using `only [AddMonoidHom.comp_apply]`. Rewrite using `[locCo_form', hsymp _ _ (hT Y).1 (hM z).1, (hT Y).2.1, (hT Y).2.2, (hM z).2.2, hcoM]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `simp)`. Use the proof step `(fun w => by`. Take `⟨u, hu, rfl⟩` from `locCo_surj' G.M'.co v w`. Take `⟨Y, z, rfl⟩` from `hspan u hu`. Conclude with `⟨Y, z, by simp only [AddMonoidHom.comp_apply, map_add]⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφ₁ : ∀ (u : Matrix (Fin a') (Fin (a + a')) (AE F E)), At (evFin F v) u → ∀ φ ∈ GlobalTheory.WeilM.SB _, ∀ φ₁, Acts (evFin F v) (G.M'.co.rho B.ψ u) φ φ₁ → φ₁ = GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v u) φ` using `fun u hu φ hφ φ₁ hact => GlobalTheory.TensUniq.eq_of_tens_eq v φ φ₁ _ hφ fun r hr => (hact r hr).symm.trans (GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ v u hu φ r hr)`. Use `⟨ι, hbij, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hu0 φ hφ φ₁ _ hact Y`. Establish `e1` using `hφ₁ u hu φ hφ φ₁ hact`. Take `⟨Y₀, z, rfl⟩` from `hspan u hu`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : z = 0`. Establish `h` using `hu0`. Rewrite `h` using `[Matrix.map_add _ (map_add _), (hT Y₀).2.1, (hM z).2.2, zero_add, neg_eq_zero]`. Conclude with `h`. Substitute `hz` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1`, the goal using `[map_zero, add_zero]`. Use `show ι φ₁ Y = ι φ (Y + coAt G t (uT Y₀))`. Rewrite using `[(hT Y₀).2.2, e1]`. Conclude with `congrFun (htr Y₀ φ hφ) Y`. Introduce `u hu hu1 φ hφ φ₁ _ hact x hx hx0`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `hφ₁ u hu φ hφ φ₁ hact`. Take `⟨Y₀, z, rfl⟩` from `hspan u hu`. Establish `hY : Y₀ = 0`. Establish `h` using `hu1`. Rewrite `h` using `[Matrix.map_add _ (map_add _), (hM z).2.1, add_zero]`.
-
-Rewrite using `[← (hT Y₀).2.2]`. Conclude with `coAt_eq_zero G t _ h`. Substitute `hY` using the available equality. Rewrite `e1`, the goal using `[map_zero, zero_add]`. Use `show ι φ₁ (coAt G t x) = _ * ι φ (coAt G t x)`.
-
-Rewrite using `[e1, GlobalTheory.VacIndic.psi_of_at B.ψ (at_symp' _ _ _ x (uM z) hx), hsymp x (uM z) hx (hM z).1, hx0, hcoM, (hM z).2.2]`. Establish `h2` using `congrFun (hmu z φ hφ) (coAt G t x)`. Simplify using `only [AddMonoidHom.comp_apply] at h2`. Rewrite using `[h2, ← GlobalTheory.LatVac.psiAt_apply]`. Use `congr 2`.
-
-Simplify using `[Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isLinBar_at_good {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (hTr : IsTriple B G X om om') (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (hv : X.Good v)
@@ -138,7 +132,7 @@ theorem exists_isLinBar_at_good {F E : Type} [Field F] [NumberField F] [Field E]
     simp [Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr`. Conclude with `exists_isLinBar_at_good B G X om om' hTr B.v₁ (hTr.chars.good) B.τ₁`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isLinBar_v₁ : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a a' : ℕ}
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

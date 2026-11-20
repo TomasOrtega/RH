@@ -19,13 +19,13 @@ variable (G) in
 def normU : Rˣ →* Rˣ := ∏ g : G, act g
 
 /- English proof (translation)
-Simplify using `[normU, Units.coe_prod, act_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normU_val (u : Rˣ) : ((normU G u : Rˣ) : R) = ∏ g : G, g • (u : R) := by
   simp [normU, Units.coe_prod, act_val]
 
 /- English proof (translation)
-Rewrite using `[← MulSemiringAction.toRingHom_apply, map_prod]`. Simplify using `only [MulSemiringAction.toRingHom_apply, smul_smul]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft g) _ _ fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_prod_univ (g : G) (x : R) : g • ∏ g' : G, g' • x = ∏ g' : G, g' • x := by
   rw [← MulSemiringAction.toRingHom_apply, map_prod]
@@ -33,14 +33,14 @@ theorem smul_prod_univ (g : G) (x : R) : g • ∏ g' : G, g' • x = ∏ g' : G
   exact Fintype.prod_equiv (Equiv.mulLeft g) _ _ fun _ => rfl
 
 /- English proof (translation)
-Simplify using `only [smul_smul]`. Conclude with `Fintype.prod_equiv (Equiv.mulRight g) _ _ fun _ => rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_smul_smul (g : G) (x : R) : ∏ g' : G, g' • g • x = ∏ g' : G, g' • x := by
   simp only [smul_smul]
   exact Fintype.prod_equiv (Equiv.mulRight g) _ _ fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[← IsCyclic.image_range_orderOf hg, sum_image]`. Introduce `a ha b hb hab`. Conclude with `pow_injOn_Iio_orderOf (by simpa using ha) (by simpa using hb) hab`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_pow_eq {g₀ : G} (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (f : G → R) :
     ∑ k ∈ range (orderOf g₀), f (g₀ ^ k) = ∑ g, f g := by
@@ -50,7 +50,7 @@ theorem sum_pow_eq {g₀ : G} (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (f : G �
   exact pow_injOn_Iio_orderOf (by simpa using ha) (by simpa using hb) hab
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[sum_range_succ, smul_add, smul_smul, ← pow_succ']`. Take the linear combination `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem telescope (g₀ : G) (z : R) (k : ℕ) :
     g₀ • ∑ j ∈ range k, g₀ ^ j • z - ∑ j ∈ range k, g₀ ^ j • z = g₀ ^ k • z - z := by
@@ -67,7 +67,7 @@ variable {I : ℕ → AddSubgroup R} {e : R →+ R} (h : Filt G I e)
 include h
 
 /- English proof (translation)
-Rewrite using `[mem_V, act_val]`. Use `h.smul n g _ hu` as an intermediate fact. Rewrite `this` using `[smul_sub, smul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem act_mem {n : ℕ} (g : G) {u : Rˣ} (hu : u ∈ h.V n) : act g u ∈ h.V n := by
   rw [mem_V, act_val]
@@ -75,20 +75,20 @@ theorem act_mem {n : ℕ} (g : G) {u : Rˣ} (hu : u ∈ h.V n) : act g u ∈ h.V
   rwa [smul_sub, smul_one] at this
 
 /- English proof (translation)
-Rewrite using `[normU, MonoidHom.finsetProd_apply]`. Conclude with `(h.V n).prod_mem fun g _ => h.act_mem g hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normU_mem {n : ℕ} {u : Rˣ} (hu : u ∈ h.V n) : normU G u ∈ h.V n := by
   rw [normU, MonoidHom.finsetProd_apply]
   exact (h.V n).prod_mem fun g _ => h.act_mem g hu
 
 /- English proof (translation)
-Set `Z : Subgroup Rˣ` to `{ carrier := {u | ∀ g : G, act g u = u} one_mem' := fun g => map_one _ mul_mem' := fun {a b} ha hb g => by rw [map_mul, ha g, hb g] inv_mem' := fun {a} ha g => by rw [map_inv, ha g] }`. Establish `step : ∀ n, ∀ u ∈ h.V n, u ∈ Z → ∃ v ∈ h.V n, u / normU G v ∈ h.V (n + 1)`. Introduce `n u hu hZ`. Establish `hx : ∀ g : G, g • ((u : R) - 1) = (u : R) - 1` using `fun g => by`. Rewrite using `[smul_sub, smul_one, ← act_val, hZ g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : e ((u : R) - 1) ∈ I n` using `h.e_mem n _ hu`. Establish `htr : ∑ g : G, g • e ((u : R) - 1) = (u : R) - 1` using `by conv_rhs => rw [← h.e_sum ((u : R) - 1)]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [hx]`. Use `⟨h.mkU _ (h.le_zero n hy), h.mkU_mem _ hy, h.div_mem_V (h.normU_mem (h.mkU_mem _ (h.le_zero n hy))) ?_⟩` and prove the remaining obligations. Establish `hp` using `h.prod_one_add (n := n) univ (fun g : G => g • e ((u : R) - 1)) (fun g _ => h.smul n g _ hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[htr]`. Rewrite using `[normU_val, mkU_val]`. Simplify using `only [smul_add, smul_one]`. Use `(I (n + 1)).neg_mem hp` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv, hvu⟩` from `exists_of_approx h.V h.V_comp h.V_sep Z (normU G) (fun n u hu => h.normU_mem hu) (fun u g => Units.ext (by rw [act_val, normU_val, smul_prod_univ])) step u hu (fun g => Units.ext (hfix g))`. Conclude with `⟨v, hv, by rw [← normU_val, hvu]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_surj (u : Rˣ) (hu : (u : R) - 1 ∈ I 0) (hfix : ∀ g : G, g • (u : R) = u) :
     ∃ v : Rˣ, (v : R) - 1 ∈ I 0 ∧ ∏ g : G, g • (v : R) = u := by
@@ -120,23 +120,21 @@ theorem norm_surj (u : Rˣ) (hu : (u : R) - 1 ∈ I 0) (hfix : ∀ g : G, g • 
   exact ⟨v, hv, by rw [← normU_val, hvu]⟩
 
 /- English proof (translation)
-Establish `step : ∀ n, ∀ u ∈ h.V n, u ∈ (normU G).ker → ∃ v ∈ h.V n, u / (act g₀ / MonoidHom.id _ : Rˣ →* Rˣ) v ∈ h.V (n + 1)`. Introduce `n u hu hZ`. Use `set x : R := (u : R) - 1 with hxdef`. Establish `hx : x ∈ I n` using `hu`. Establish `hux : (u : R) = 1 + x` using `by rw [hxdef]; ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr : ∑ g : G, g • x ∈ I (n + 1)`. Establish `hp` using `h.prod_one_add (n := n) univ (fun g : G => g • x) (fun g _ => h.smul n g _ hx)`. Establish `h1 : ∏ g : G, (1 + g • x) = 1`. Use `congrArg Units.val (MonoidHom.mem_ker.1 hZ)` as an intermediate fact. Rewrite `this` using `[normU_val, hux]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [smul_add, smul_one, Units.val_one]`. Rewrite `hp` using `[h1, sub_self, zero_sub]`. Simplify using `using (I (n + 1)).neg_mem hp`. Use `set y : R := ∑ k ∈ range (orderOf g₀), ∑ j ∈ range k, g₀ ^ j • e ((g₀ ^ k)⁻¹ • x) with hydef`. Establish `hy : y ∈ I n` using `(I n).sum_mem fun k _ => (I n).sum_mem fun j _ => h.smul n _ _ (h.e_mem n _ (h.smul n _ _ hx))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : g₀ • y - y = x - e (∑ g : G, g • x)`. Rewrite using `[hydef, smul_sum, ← sum_sub_distrib]`. Simplify using `only [telescope]`. Rewrite using `[sum_sub_distrib, sum_pow_eq hg (fun g => g • e (g⁻¹ • x)), h.e_sum, ← map_sum, sum_pow_eq hg (fun g => g⁻¹ • x)]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ fun _ => rfl`. Establish `hy0` using `h.le_zero n hy`. Establish `hvV : h.mkU y hy0 ∈ h.V n` using `h.mkU_mem y hy`. Use `⟨h.mkU y hy0, hvV, h.div_mem_V ((h.V 0).div_mem (h.act_mem g₀ (h.V_le_zero n hvV)) (h.V_le_zero n hvV)) ?_⟩` and prove the remaining obligations. Use `set z : R := (1 + y)⁻¹ - 1 with hzdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : z ∈ I n` using `h.inv n y hy`. Establish `hyz : (1 + y) * (1 + z) = 1`. Rewrite using `[hzdef, add_sub_cancel, mul_inv_cancel₀ (h.one_add_ne_zero hy0)]`. Establish `hval : (((act g₀ / MonoidHom.id _ : Rˣ →* Rˣ) (h.mkU y hy0) : Rˣ) : R) = (1 + g₀ • y) * (1 + z)`. Rewrite using `[MonoidHom.div_apply, MonoidHom.id_apply, div_eq_mul_inv, Units.val_mul, act_val, Units.val_inv_eq_inv_val, mkU_val, smul_add, smul_one, hzdef, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, hux]`. Establish `: 1 + x - (1 + g₀ • y) * (1 + z) = e (∑ g : G, g • x) - (g₀ • y - y) * z`. Take the linear combination `-hyz - hd`. Rewrite using `[this]`. Conclude with `(I (n + 1)).sub_mem (h.e_mem _ _ htr) (h.mul n _ _ ((I n).sub_mem (h.smul n _ _ hy) hy) (h.le_zero n hz))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, hvu⟩` from `exists_of_approx h.V h.V_comp h.V_sep (normU G).ker (act g₀ / MonoidHom.id _) (fun n u hu => (h.V n).div_mem (h.act_mem g₀ hu) hu) (fun u => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.div_apply, MonoidHom.id_apply, map_div, div_eq_one]`. Conclude with `Units.ext (by rw [normU_val, normU_val, act_val, prod_smul_smul])) step u hu`. Use the proof step `(Units.ext (by rw [normU_val, hN]; rfl))`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hvu` using `[MonoidHom.div_apply, MonoidHom.id_apply, div_eq_iff_eq_mul]`. Rewrite using `[← act_val, hvu, Units.val_mul]`.
+A detailed English derivation is pending.
 -/
 theorem hilbert90_matrix_subalgebra_norm_one (g₀ : G) (hg : ∀ g, g ∈ Subgroup.zpowers g₀) (u : Rˣ) (hu : (u : R) - 1 ∈ I 0)
     (hN : ∏ g : G, g • (u : R) = 1) :

@@ -23,23 +23,19 @@ end GlobalTheory.KExpLineW
 namespace GlobalTheory.KExpLineW
 open MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP γ hγL hγK N hN Φ hΦN hΦ`. Take `⟨-, -, hDer, hOp⟩` from `_root_.GlobalTheory.T.dualPair_preserves_polarization hPr F E σ B n d X W M χX χW om r s r' s' hP`. Take `⟨Dg, hDgP, hDg⟩` from `hDer γ hγL`. Use `choose D hDP hD using fun t : ℝ => hOp (γ (Multiplicative.ofAdd t)) (hγK _)`. Set `U : Multiplicative ℝ →* Module.End ℂ (Fn F n d)` to `om.comp ((MonoidHom.inr (UA σ X.J) (UA σ W.J)).comp γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdiff : ∀ Ψ ∈ PolData B M, ∀ x (t : ℝ), DifferentiableAt ℝ (fun s : ℝ => U (Multiplicative.ofAdd s) Ψ x) t`. Introduce `Ψ hΨ x`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hP.good.std).mono fun _ h => h.1.trans h.2`. Establish `hpt : ∀ u : ℝ, U (Multiplicative.ofAdd u) (pure f φ) = pure (D u f) φ` using `fun u => map_pure M B.ψ hP.good _ f (D u f) ((hD u f hf (D u f)).2 rfl) φ hφ hvac`. Establish `hshift : ∀ s', U (Multiplicative.ofAdd (s' + t)) (pure f φ) = U (Multiplicative.ofAdd s') (pure (D t f) φ)`. Introduce `s'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofAdd_add, map_mul, Module.End.mul_apply, hpt t]`. Establish `h0` using `(hDg (D t f) (hDP t f hf) (Dg (D t f))).2 rfl _ (GlobalTheory.ThK.EvUniqInf.rest_pure (D t f) φ hφ hstd) x`. Establish `h0' : DifferentiableAt ℝ (fun s' : ℝ => U (Multiplicative.ofAdd s') (pure (D t f) φ) x) 0` using `h0.differentiableAt`. Establish `e : (fun s : ℝ => U (Multiplicative.ofAdd s) (pure f φ) x) = (fun s' : ℝ => U (Multiplicative.ofAdd s') (pure (D t f) φ) x) ∘ fun s => s - t`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = U (Multiplicative.ofAdd (s - t)) (pure (D t f) φ) x`. Rewrite using `[← hshift, sub_add_cancel]`. Establish `h4 : DifferentiableAt ℝ (fun s' : ℝ => U (Multiplicative.ofAdd s') (pure (D t f) φ) x) ((fun s : ℝ => s - t) t)`. Simplify using `only [sub_self]`. Conclude with `h0'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `DifferentiableAt.comp (f := fun s : ℝ => s - t) t h4 (differentiableAt_id.sub_const t)`. Consider the case `zero`. Introduce `t`. Simplify using `only [map_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `differentiableAt_const _`. Consider the case `add y z _ _ hy hz`. Introduce `t`. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(hy t).add (hz t)`.
-
-Consider the case `smul a y _ hy`. Introduce `t`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hy t).const_mul a`. Take `⟨C, hCfin, hCP, hCk⟩` from `polData_kfin F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ`.
-
-Use `haveI := hCfin`. Conclude with `orbit_mem U (PolData B M) N C hCP (fun Ψ h Ψ₁ h₁ hd => hN Ψ h Ψ₁ h₁ hd) Φ hΦN (fun t => hCk _ (hγK _)) (hdiff Φ hΦ) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem KExpLine_stabilizes_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)
@@ -109,7 +105,7 @@ section
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KExpLineW.KExpLine_stabilizes_line | exact _root_.GlobalTheory.KExpLineW.KExpLine_stabilizes_line | (intros; apply _root_.GlobalTheory.KExpLineW.KExpLine_stabilizes_line <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.stabilizer_of_K_exponential_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

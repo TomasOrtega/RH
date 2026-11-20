@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ComplexSets
 
 /- English proof (translation)
-Introduce `n I q hI`. Use `isReduced_curveLocalRing I q hI` as an intermediate fact. Conclude with `finite_integralClosure_of_isReduced hN (algebraMap _ (curveLocalRing I q)) (curveLocalRing_eq_div I q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CurveNormalisationFinite.proof (hN : FieldNumbers.NoetherIntegralClosureFinite.Statement.{0}) :
     CurveNormalisationFinite.Statement := by

@@ -28,9 +28,9 @@ def JoinPinAlt (Q : _root_.Formalism.IndefR.IndefiniteRealisation R P Dcf Spf Zs
         ((_root_.Formalism.L2.SG.JoinSI.complexRealisationJoinData Q).iC Q.F.cr true P.A3.A.μ0 (cpt P.A3.A.v0.embedding y'))) ∧
     ∀ hF : Formalism.L2.SG.PackageTie2.FinX S.Y, GlobalTheory.Mem.SRe.RowJ Q.Rl.toRealDat eE S.X S.inst S.G Q.tS (_root_.Formalism.L2.SG.JoinSI.spectralRowIsometry S hF)
 /- English proof (translation)
-Use `HEq.trans (heq_of_eq (hPin.bR_read (P.I.wU u) i)) ?_` and prove the remaining obligations. Establish `key : ∀ (w : D.what₂.Word) (hw : w = u) (hc : P.Dc.a (P.I.wU u) = P.Dc.a (P.I.wU w)), HEq (D.eMu w (D.jN w (P.I.eNu w (Pi.single (Fin.cast hc i) 1)))) (D.eMu u (D.jN u (P.I.eNu u (Pi.single i 1))))`. Introduce `w hw hc`. Substitute `hw` using the available equality. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `key _ (Q.wdD_wU u) _`.
+A detailed English derivation is pending.
 -/
 theorem bR_heq_eMu_single (Q : _root_.Formalism.IndefR.IndefiniteRealisation R P Dcf Spf Zscf S Ks) (hPin : _root_.Formalism.IndefR.IndefiniteRealisationNormalisation Q) (u : D.what₂.Word) (i : Fin (P.Dc.a (P.I.wU u))) :
     HEq (Q.bR (P.I.wU u) i) (D.eMu u (D.jN u (P.I.eNu u (Pi.single i 1)))) := by

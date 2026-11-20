@@ -11,7 +11,7 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `InW at *`. Take `⟨h1, h2, h3⟩` from `hx`. Take `⟨k1, k2, k3⟩` from `hy`. Conclude with `⟨fun a => by rw [map_add, h1 a, k1 a, add_zero], fun a => by rw [map_add, h2 a, k2 a, add_zero], by rw [map_add, h3, k3, add_zero]⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inW_add (D : Formalism.BasicNotions.D7) {x y : (VS D).V} (hx : InW D x) (hy : InW D y) : InW D (x + y) := by
   unfold InW at *
@@ -21,7 +21,7 @@ theorem inW_add (D : Formalism.BasicNotions.D7) {x y : (VS D).V} (hx : InW D x) 
     by rw [map_add, h3, k3, add_zero]⟩
 
 /- English proof (translation)
-Unfold `InW at *`. Take `⟨h1, h2, h3⟩` from `hx`. Conclude with `⟨fun a => by rw [map_smul, h1 a, smul_zero], fun a => by rw [map_smul, h2 a, smul_zero], by rw [map_smul, h3, smul_zero]⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inW_smul (D : Formalism.BasicNotions.D7) (k : D.host.E) {x : (VS D).V} (hx : InW D x) : InW D (k • x) := by
   unfold InW at *
@@ -30,14 +30,14 @@ theorem inW_smul (D : Formalism.BasicNotions.D7) (k : D.host.E) {x : (VS D).V} (
     by rw [map_smul, h3, smul_zero]⟩
 
 /- English proof (translation)
-Unfold `InW`. Conclude with `⟨fun a => map_zero _, fun a => map_zero _, map_zero _⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem inW_zero (D : Formalism.BasicNotions.D7) : InW D 0 := by
   unfold InW
   exact ⟨fun a => map_zero _, fun a => map_zero _, map_zero _⟩
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction x (InW D) (fun a b ha hb => inW_add D ha hb) (inW_zero D) (fun i _ => hx i)`.
+A detailed English derivation is pending.
 -/
 theorem inW_sum (D : Formalism.BasicNotions.D7) {ι : Type} (s : Finset ι) (x : ι → (VS D).V) (hx : ∀ i, InW D (x i)) :
     InW D (∑ i ∈ s, x i) := by
@@ -51,14 +51,14 @@ def LamW (D : Formalism.BasicNotions.D7) (Λ : Submodule (𝓞 D.host.E) (VS D).
     rw [← algebraMap_smul D.host.E o]; exact inW_smul D _ hx.2⟩
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply, star_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_int_left (D : Formalism.BasicNotions.D7) (n : ℤ) (x y : (VS D).V) :
     (VS D).hT ((n : D.host.E) • x) y = (n : D.host.E) * (VS D).hT x y := by
   rw [LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply, star_intCast]
 
 /- English proof (translation)
-Establish `h : Formalism.E.hdual (VS D).hT Λ = Λ` using `hU`. Establish `hv' : v ∈ Formalism.E.hdual (VS D).hT Λ` using `by rw [h]; exact hv`. Simplify using `only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hv'`. Conclude with `Submodule.mem_one.mp (hv' y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hT_isIntegral_of_mem_unimodular (D : Formalism.BasicNotions.D7) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) {y v : (VS D).V} (hy : y ∈ Λ) (hv : v ∈ Λ) :
@@ -69,25 +69,23 @@ private theorem hT_isIntegral_of_mem_unimodular (D : Formalism.BasicNotions.D7) 
   exact Submodule.mem_one.mp (hv' y hy)
 
 /- English proof (translation)
-Establish `hT0 : (D.sp.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr D.sp.T_prime.ne_zero`. Establish `hsm : ∀ (o : 𝓞 D.host.E) {y : (VS D).V}, y ∈ Λ → algebraMap (𝓞 D.host.E) D.host.E o • y ∈ Λ` using `fun o y hy => by rw [algebraMap_smul]; exact Λ.smul_mem o hy`. Establish `hint : ∀ (n : ℤ) {y : (VS D).V}, y ∈ Λ → (n : D.host.E) • y ∈ Λ` using `fun n y hy => by`. Use `hsm (n : 𝓞 D.host.E) hy` as an intermediate fact. Rewrite `this` using `[map_intCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hnat : ∀ (n : ℕ) {y : (VS D).V}, y ∈ Λ → (n : D.host.E) • y ∈ Λ` using `fun n y hy => by`. Use `hsm (n : 𝓞 D.host.E) hy` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Unfold `pW`. Simplify using `only [smul_add, smul_sub, Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `Λ.add_mem (Λ.sub_mem (Λ.sub_mem ?_ ?_) ?_) ?_` and prove the remaining obligations. Rewrite using `[pow_two, mul_smul]`. Conclude with `hint d (hint d hv)`. Use `Λ.sum_mem (fun a _ => ?_)` and prove the remaining obligations. Take `⟨o, ho⟩` from `hT_isIntegral_of_mem_unimodular D hU (hdF a) hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heq : (d : D.host.E) ^ 2 • ((VS D).hT (D.sp.hypF a) v • D.sp.hypE a) = algebraMap (𝓞 D.host.E) D.host.E ((d : 𝓞 D.host.E) * o) • D.sp.hypE a`. Simplify using `only [smul_smul]`. Rewrite using `[map_mul, map_intCast, ho, hT_int_left]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hsm _ (heΛ a)`. Use `Λ.sum_mem (fun a _ => ?_)` and prove the remaining obligations. Take `⟨o, ho⟩` from `hT_isIntegral_of_mem_unimodular D hU (heΛ a) hv`. Establish `heq : (d : D.host.E) ^ 2 • ((VS D).hT (D.sp.hypE a) v • D.sp.hypF a) = algebraMap (𝓞 D.host.E) D.host.E ((d : 𝓞 D.host.E) * o) • ((d : D.host.E) • D.sp.hypF a)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_smul]`. Rewrite using `[map_mul, map_intCast, ho]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hsm _ (hdF a)`. Take `⟨o, ho⟩` from `hT_isIntegral_of_mem_unimodular D hU hdz hv`. Establish `hc : (VS D).hT (((d : D.host.E) * (D.sp.T : D.host.E)⁻¹) • D.sp.zm) v = (d : D.host.E) * (D.sp.T : D.host.E)⁻¹ * (VS D).hT D.sp.zm v`. Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hdzm : (d : D.host.E) • D.sp.zm ∈ Λ`. Use `hnat D.sp.T hdz` as an intermediate fact. Rewrite `this` using `[smul_smul, ← mul_assoc, mul_comm (D.sp.T : D.host.E) (d : D.host.E), mul_assoc, mul_inv_cancel₀ hT0, mul_one]`. Then use the resulting hypothesis. Establish `heq : (d : D.host.E) ^ 2 • (((VS D).hT D.sp.zm v / (D.sp.T : D.host.E)) • D.sp.zm) = algebraMap (𝓞 D.host.E) D.host.E o • ((d : D.host.E) • D.sp.zm)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [smul_smul]`. Rewrite using `[ho, hc]`. Use `congr 1`. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[heq]`. Conclude with `hsm _ hdzm`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pW_lat (D : Formalism.BasicNotions.D7) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) (heΛ : ∀ a, D.sp.hypE a ∈ Λ) (d : ℤ)
@@ -147,7 +145,7 @@ def Pm (D : Formalism.BasicNotions.D7) (Z : MatZ D) (R : Matrix (Fin (D.R.rS + 1
   1 - R * betaZ D Z
 
 /- English proof (translation)
-Unfold `Pm`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hR, Matrix.one_mul, sub_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_Pm (D : Formalism.BasicNotions.D7) (Z : MatZ D) (R : Matrix (Fin (D.R.rS + 1)) (Fin D.R.rS) D.host.E)
     (hR : betaZ D Z * R = 1) : betaZ D Z * Pm D Z R = 0 := by
@@ -171,7 +169,7 @@ def tv (D : Formalism.BasicNotions.D7) (Z : MatZ D) (R : Matrix (Fin (D.R.rS + 1
   ∑ b', Pm D Z R b' b • pWf D x b'
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ((VS D).herm p q).symm`. Consider the case `exact ((VS D).herm.eq p q).symm`. Consider the case `simpa using ((VS D).herm p q).symm`. Consider the case `simpa using ((VS D).herm.eq p q).symm`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hT_swap_eq_star' (D : Formalism.BasicNotions.D7) (p q : (VS D).V) :
     (VS D).hT q p = star ((VS D).hT p q) := by
@@ -182,7 +180,7 @@ private theorem hT_swap_eq_star' (D : Formalism.BasicNotions.D7) (p q : (VS D).V
   | simpa using ((VS D).herm.eq p q).symm
 
 /- English proof (translation)
-Unfold `pW`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib, add_div]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem pW_add' (D : Formalism.BasicNotions.D7) (u v : (VS D).V) : pW D (u + v) = pW D u + pW D v := by
   unfold pW
@@ -190,7 +188,7 @@ private theorem pW_add' (D : Formalism.BasicNotions.D7) (u v : (VS D).V) : pW D 
   abel
 
 /- English proof (translation)
-Unfold `pW`. Simplify using `only [map_smul, smul_eq_mul, mul_div_assoc, mul_smul, smul_sub, smul_add, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem pW_smul' (D : Formalism.BasicNotions.D7) (c : D.host.E) (v : (VS D).V) :
     pW D (c • v) = c • pW D v := by
@@ -198,24 +196,24 @@ private theorem pW_smul' (D : Formalism.BasicNotions.D7) (c : D.host.E) (v : (VS
   simp only [map_smul, smul_eq_mul, mul_div_assoc, mul_smul, smul_sub, smul_add, Finset.smul_sum]
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (pW D) (pW_add' D)) f s`.
+A detailed English derivation is pending.
 -/
 private theorem pW_sum' (D : Formalism.BasicNotions.D7) {ι : Type} (s : Finset ι) (f : ι → (VS D).V) :
     pW D (∑ i ∈ s, f i) = ∑ i ∈ s, pW D (f i) := by
   exact map_sum (AddMonoidHom.mk' (pW D) (pW_add' D)) f s
 
 /- English proof (translation)
-Establish `hs : ∀ p q : (VS D).V, (VS D).hT q p = star ((VS D).hT p q)` using `fun p q => hT_swap_eq_star' D p q`. Establish `hee : ∀ a a', (VS D).hT (D.sp.hypE a) (D.sp.hypE a') = 0` using `D.sp.hyp_ee`. Establish `hze : ∀ a, (VS D).hT D.sp.zm (D.sp.hypE a) = 0` using `fun a => (D.sp.hyp_orthz a).1`. Establish `hez : ∀ a, (VS D).hT (D.sp.hypE a) D.sp.zm = 0` using `fun a => by rw [hs, hze, star_zero]`. Establish `hwe : ∀ a, (VS D).hT w (D.sp.hypE a) = 0` using `fun a => by rw [hs, hw a, star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzz : (VS D).hT D.sp.zm D.sp.zm = -(D.sp.T : D.host.E)` using `D.sp.zm_norm`. Establish `hT0 : (D.sp.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr D.sp.T_prime.ne_zero`. Establish `hwz : (VS D).hT w D.sp.zm = star ((VS D).hT D.sp.zm w)` using `hs _ _`. Unfold `pW`. Simplify using `only [hw, zero_smul, Finset.sum_const_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `set g := (VS D).hT D.sp.zm w / (D.sp.T : D.host.E) with hg`. Use `set s := ∑ a, (VS D).hT (D.sp.hypF a) w • D.sp.hypE a with hsdef`. Establish `hsy : ∀ y, (VS D).hT s y = ∑ a, star ((VS D).hT (D.sp.hypF a) w) * (VS D).hT (D.sp.hypE a) y`. Introduce `y`. Simplify using `only [hsdef, map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, LinearMap.map_sum₂, LinearMap.map_smulₛₗ₂]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hys : ∀ y, (VS D).hT y s = ∑ a, (VS D).hT (D.sp.hypF a) w * (VS D).hT y (D.sp.hypE a)`. Introduce `y`. Simplify using `only [hsdef, map_sum, map_smul, smul_eq_mul]`. Establish `h1 : (VS D).hT s w = 0` using `by rw [hsy]; simp [hw]`. Establish `h2 : (VS D).hT s s = 0` using `by rw [hsy]; simp [hys, hee]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (VS D).hT s D.sp.zm = 0` using `by rw [hsy]; simp [hez]`. Establish `h4 : (VS D).hT w s = 0` using `by rw [hys]; simp [hwe]`. Establish `h5 : (VS D).hT D.sp.zm s = 0` using `by rw [hys]; simp [hze]`. Establish `h6 : (VS D).hT D.sp.zm w = (D.sp.T : D.host.E) * g`. Rewrite using `[hg, mul_div_assoc', mul_comm, mul_div_assoc, div_self hT0, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_sub, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, h1, h2, h3, h4, h5, hzz, hwz, h6, starRingEnd_apply, star_mul', star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem hT_pW_self_of_hT_hypE_eq_zero (D : Formalism.BasicNotions.D7) (w : (VS D).V)
     (hw : ∀ a, (VS D).hT (D.sp.hypE a) w = 0) :
@@ -254,21 +252,21 @@ private theorem hT_pW_self_of_hT_hypE_eq_zero (D : Formalism.BasicNotions.D7) (w
   ring
 
 /- English proof (translation)
-Take `⟨-, hZ, hG⟩` from `hx`. Use `set w := ∑ b', Pm D Z R b' b • fr D x b' with hw`. Establish `htv : tv D Z R x b = pW D w` using `by show ∑ b', Pm D Z R b' b • pW D (fr D x b') = pW D w`. Rewrite using `[hw, pW_sum']`. Simplify using `only [pW_smul']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hEu : ∀ a b', (VS D).hT (D.sp.hypE a) (fr D x b') = Z (Fin.castSucc a) b'`. Introduce `a b'`. Establish `h` using `hZ (Fin.castSucc a) b'`. Simplify `h` using `[brS, FlagG.fvec, he]`. Establish `hzu : ∀ b', (VS D).hT D.sp.zm (fr D x b') = Z (Fin.last D.R.rS) b' / star c0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b'`. Establish `h` using `hZ (Fin.last D.R.rS) b'`. Simplify using `only [brS, FlagG.fvec, Fin.snoc_last, hz, LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply] at h`. Rewrite using `[eq_div_iff (star_ne_zero.mpr hc0), ← h, mul_comm]`. Establish `hGu : ∀ b1 b2, (VS D).hT (fr D x b1) (fr D x b2) = Gfl D T' b1 b2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b1 b2`. Rewrite using `[hG b1 b2]`. Unfold `Gfl`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; tauto)`. Establish `hEw : ∀ a, (VS D).hT (D.sp.hypE a) w = 0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `h0 : (betaZ D Z * Pm D Z R) a b = 0` using `by rw [beta_Pm D Z R hR]; rfl`. Rewrite `h0` using `[Matrix.mul_apply]`. Rewrite using `[hw, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hEu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[betaZ, Matrix.submatrix_apply, mul_comm]`. Establish `hww : (VS D).hT w w = ∑ b1, ∑ b2, star (Pm D Z R b1 b) * Pm D Z R b2 b * Gfl D T' b1 b2`. Rewrite using `[hw]`. Simplify using `only [LinearMap.map_sum₂, LinearMap.map_smulₛₗ₂, map_sum, map_smul, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun b1 _ => Finset.sum_congr rfl (fun b2 _ => ?_))` and prove the remaining obligations. Rewrite using `[hGu b1 b2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzw : (VS D).hT D.sp.zm w = ∑ b', Pm D Z R b' b * (Z (Fin.last D.R.rS) b' / star c0)`. Rewrite using `[hw, map_sum]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, smul_eq_mul, hzu]`. Rewrite using `[htv, hT_pW_self_of_hT_hypE_eq_zero D w hEw]`. Unfold `kap gam`. Rewrite using `[hww, hzw]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tv_norm (D : Formalism.BasicNotions.D7) {T : D.host.E} (T' : D.host.E) (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (Z : MatZ D) (R : Matrix (Fin (D.R.rS + 1)) (Fin D.R.rS) D.host.E)

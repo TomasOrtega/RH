@@ -11,7 +11,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hodd : Odd q` using `Nat.odd_iff.mpr (by omega)`. Rewrite using `[jacobiSym.at_two hodd, ZMod.χ₈_nat_eq_if_mod_eight]`. Unfold `GlobalTheoryTheory.kron2`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kroneckerTwo_neg_eq_jacobiSym_two (q : ℕ) (hq : q % 4 = 3) :
     GlobalTheoryTheory.kron2 (-(q : ℤ)) = jacobiSym 2 q := by
@@ -21,11 +21,11 @@ theorem kroneckerTwo_neg_eq_jacobiSym_two (q : ℕ) (hq : q % 4 = 3) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `⟨fun q n hq hn => ?_, fun n hn => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheoryTheory.kronSym`. Establish `hodd : Odd (n / 2 ^ n.factorization 2)`. Establish `h` using `Nat.not_dvd_ordCompl Nat.prime_two hn.ne'`. Conclude with `Nat.odd_iff.mpr (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : 2 ^ n.factorization 2 * (n / 2 ^ n.factorization 2) = n` using `Nat.ordProj_mul_ordCompl_eq_self n 2`. Rewrite using `[jacobiSym_neg_eq_of_three_mod_four q _ hq hodd, kroneckerTwo_neg_eq_jacobiSym_two q hq, ← jacobiSym.pow_left, ← jacobiSym.mul_left]`. Use `congr 1`. Rewrite using `[mul_comm]`. Conclude with `hmul` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `GlobalTheoryTheory.kronSym`. Establish `h0 : n.factorization 2 = 0` using `Nat.factorization_eq_zero_of_not_dvd (by have := Nat.odd_iff.mp hn; omega)`. Rewrite using `[h0, pow_zero, pow_zero, Nat.div_one, mul_one, jacobiSym.at_two hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kronSym_neg_eq_jacobiSym_and_two :
     (∀ q n : ℕ, q % 4 = 3 → 0 < n → GlobalTheoryTheory.kronSym (-(q : ℤ)) n = jacobiSym (n : ℤ) q) ∧

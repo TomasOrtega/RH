@@ -28,13 +28,13 @@ noncomputable def semigroupAlgebra (S : AddSubmonoid G) : Subalgebra k (AddMonoi
 variable {k}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_semigroupAlgebra {S : AddSubmonoid G} {f : AddMonoidAlgebra k G} :
     f ∈ semigroupAlgebra k S ↔ ↑f.coeff.support ⊆ (S : Set G) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_semigroupAlgebra, coeff_single]`. Conclude with `(Finset.coe_subset.2 Finsupp.support_single_subset).trans (by simpa using hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_semigroupAlgebra {S : AddSubmonoid G} {s : G} (hs : s ∈ S) (a : k) :
     single s a ∈ semigroupAlgebra k S := by
@@ -42,14 +42,14 @@ theorem single_mem_semigroupAlgebra {S : AddSubmonoid G} {s : G} (hs : s ∈ S) 
   exact (Finset.coe_subset.2 Finsupp.support_single_subset).trans (by simpa using hs)
 
 /- English proof (translation)
-Introduce `_ hf` and use `(mem_semigroupAlgebra.1 hf).trans (SetLike.coe_subset_coe.2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem semigroupAlgebra_mono {S T : AddSubmonoid G} (h : S ≤ T) :
     semigroupAlgebra k S ≤ semigroupAlgebra k T :=
   fun _ hf => (mem_semigroupAlgebra.1 hf).trans (SetLike.coe_subset_coe.2 h)
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.supported_eq_span_single k (S : Set G)`.
+A detailed English derivation is pending.
 -/
 theorem toSubmodule_semigroupAlgebra (S : AddSubmonoid G) :
     Subalgebra.toSubmodule (semigroupAlgebra k S) =
@@ -57,9 +57,9 @@ theorem toSubmodule_semigroupAlgebra (S : AddSubmonoid G) :
   AddMonoidAlgebra.supported_eq_span_single k (S : Set G)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Establish `: f ∈ Subalgebra.toSubmodule (semigroupAlgebra k S)` using `hf`. Rewrite `this` using `[toSubmodule_semigroupAlgebra]`. Conclude with `Algebra.span_le_adjoin k _ this`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `single_mem_semigroupAlgebra hs 1`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem semigroupAlgebra_eq_adjoin (S : AddSubmonoid G) :
     semigroupAlgebra k S = Algebra.adjoin k ((fun s => single s (1 : k)) '' (S : Set G)) := by
@@ -73,13 +73,11 @@ theorem semigroupAlgebra_eq_adjoin (S : AddSubmonoid G) :
     exact single_mem_semigroupAlgebra hs 1
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[semigroupAlgebra_eq_adjoin, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Proceed by induction on `hs using AddSubmonoid.closure_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin ⟨x, hx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => show single (0 : G) (1 : k) ∈ _`. Rewrite using `[← AddMonoidAlgebra.one_def]`. Conclude with `Subalgebra.one_mem _`. Consider the case `add x y _ _ hx hy`. Establish `e : single (x + y) (1 : k) = single x 1 * single y 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[single_mul_single, one_mul]`. Use `show single (x + y) (1 : k) ∈ _`. Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ hx hy`. Rewrite using `[Algebra.adjoin_le_iff]`.
-
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `single_mem_semigroupAlgebra (AddSubmonoid.subset_closure hs) 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem semigroupAlgebra_closure (T : Set G) :
     semigroupAlgebra k (AddSubmonoid.closure T) =
@@ -103,7 +101,7 @@ theorem semigroupAlgebra_closure (T : Set G) :
     exact single_mem_semigroupAlgebra (AddSubmonoid.subset_closure hs) 1
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hS`. Rewrite using `[← Subalgebra.fg_iff_finiteType, semigroupAlgebra_closure]`. Conclude with `⟨T.image fun s => single s (1 : k), by rw [Finset.coe_image]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finiteType_semigroupAlgebra {S : AddSubmonoid G} (hS : S.FG) :
     Algebra.FiniteType k (semigroupAlgebra k S) := by
@@ -140,7 +138,7 @@ section Domain
 variable {k : Type*} [CommRing k] {G : Type*} [AddCommGroup G]
 
 /- English proof (translation)
-The claim follows from `UniqueSums.of_injective_addHom ((Module.Free.chooseBasis ℤ G).repr.toLinearMap.toAddMonoidHom.toAddHom) (Module.Free.chooseBasis ℤ G).repr.injective inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem uniqueSums_of_free [Module.Free ℤ G] : UniqueSums G :=
   UniqueSums.of_injective_addHom
@@ -167,19 +165,17 @@ noncomputable abbrev semigroupAlgebraAlgebra {S T : AddSubmonoid G} (h : S ≤ T
   (Subalgebra.inclusion (semigroupAlgebra_mono h)).toRingHom.toAlgebra
 
 /- English proof (translation)
-Set `` to `semigroupAlgebraAlgebra (k := k) h`. Establish `hmap : ∀ x : semigroupAlgebra k S, ((algebraMap (semigroupAlgebra k S) (semigroupAlgebra k T) x : semigroupAlgebra k T) : AddMonoidAlgebra k G) = x` using `fun _ => rfl`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, n, rfl⟩`. Establish `e1 : single u (1 : k) * single (-u) 1 = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[single_mul_single, add_neg_cancel, one_mul, ← AddMonoidAlgebra.one_def]`. Establish `hunit : IsUnit (algebraMap (semigroupAlgebra k S) (semigroupAlgebra k T) ⟨single u 1, single_mem_semigroupAlgebra hu 1⟩)` using `isUnit_iff_exists_inv.2 ⟨⟨single (-u) 1, single_mem_semigroupAlgebra hu' 1⟩, Subtype.ext e1⟩`. Rewrite using `[map_pow]`. Conclude with `hunit.pow n`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : ∀ m ∈ (z : AddMonoidAlgebra k G).coeff.support, ∃ j : ℕ, m + j • u ∈ S` using `fun m hm => hT m (z.2 hm)`. Use `choose! f hf using hz`. Use `set n := (z : AddMonoidAlgebra k G).coeff.support.sup f`. Establish `hmem : single (n • u) 1 * (z : AddMonoidAlgebra k G) ∈ semigroupAlgebra k S`. Rewrite using `[mem_semigroupAlgebra]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `m hm`. Take `⟨m', hm', rfl⟩` from `Finset.mem_image.1 (support_coeff_single_mul_subset (z : AddMonoidAlgebra k G) 1 (n • u) hm)`. Establish `hle : f m' ≤ n` using `Finset.le_sup hm'`. Establish `: n • u + m' = (m' + f m' • u) + (n - f m') • u`. Rewrite using `[add_assoc, ← add_nsmul, Nat.add_sub_cancel' hle, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]`. Conclude with `S.add_mem (hf m' hm') (S.nsmul_mem hu _)`. Use `⟨(⟨_, hmem⟩, ⟨_, n, rfl⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [map_pow, Subalgebra.coe_mul, Subalgebra.coe_pow, hmap, single_pow, one_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Introduce `x y hxy`. Establish `hxy' : x = y` using `Subtype.ext (by`. Use `congrArg (fun z : semigroupAlgebra k T => (z : AddMonoidAlgebra k G)) hxy` as an intermediate fact. Simplify `this)` using `only [hmap]`.
-
-Conclude with `⟨1, by rw [hxy']⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_semigroupAlgebra {S T : AddSubmonoid G} (h : S ≤ T) {u : G}
     (hu : u ∈ S) (hu' : -u ∈ T) (hT : ∀ m ∈ T, ∃ j : ℕ, m + j • u ∈ S) :
@@ -242,7 +238,7 @@ variable {k}
 variable [Module.Free ℤ N] [Module.Finite ℤ N]
 
 /- English proof (translation)
-The claim follows from `finiteType_semigroupAlgebra (dualMonoid_fg hσ)`.
+A detailed English derivation is pending.
 -/
 theorem finiteType_toricAlgebra {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) : Algebra.FiniteType k (toricAlgebra k σ) :=

@@ -5,11 +5,9 @@ namespace GlobalTheory.CommonAlgClosedExtension
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI : Algebra K₀ K := i.toAlgebra`. Use `letI : Algebra K₀ K' := i'.toAlgebra`. Use `haveI : Nontrivial (K ⊗[K₀] K') := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[K₀] K')`. Use `letI : Field ((K ⊗[K₀] K') ⧸ m) := Ideal.Quotient.field m`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `φ : (K ⊗[K₀] K') →+* AlgebraicClosure ((K ⊗[K₀] K') ⧸ m)` to `(algebraMap ((K ⊗[K₀] K') ⧸ m) _).comp (Ideal.Quotient.mk m)`. Use `⟨AlgebraicClosure ((K ⊗[K₀] K') ⧸ m), inferInstance, inferInstance, φ.comp (Algebra.TensorProduct.includeLeft (R := K₀) (S := K₀) (A := K) (B := K')).toRingHom, φ.comp (Algebra.TensorProduct.includeRight (R := K₀) (A := K) (B := K')).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h1` using `(Algebra.TensorProduct.includeLeft (R := K₀) (S := K₀) (A := K) (B := K')).commutes x`. Establish `h2` using `(Algebra.TensorProduct.includeRight (R := K₀) (A := K) (B := K')).commutes x`.
-
-Conclude with `congrArg φ (h1.trans h2.symm)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_common_algClosed_extension (K₀ K K' : Type) [Field K₀] [Field K] [Field K']
     (i : K₀ →+* K) (i' : K₀ →+* K') :

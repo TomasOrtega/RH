@@ -9,13 +9,13 @@ variable {F : Type*} [Field F]
 section VariableChangePoint
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Affine.nonsingular_iff']`. Take `⟨he, hd⟩` from `h`. Rewrite `he`, the goal using `[Affine.equation_iff']`. Establish `hv : (↑C.u⁻¹ : F) ≠ 0` using `Units.ne_zero _`. Simplify using `only [variableChange_a₁, variableChange_a₂, variableChange_a₃, variableChange_a₄, variableChange_a₆]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set v : F := ↑C.u⁻¹`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take the linear combination `v ^ 6 * he`. Assume the negation of the conclusion as `hc push Not at hc`. Take `⟨h1, h2⟩` from `hc`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hY : 2 * y + W.a₁ * x + W.a₃ = 0`. Establish `: v ^ 3 * (2 * y + W.a₁ * x + W.a₃) = 0` using `by linear_combination h2`. Simplify `this` using `[hv]`. Establish `hX : W.a₁ * y - (3 * x ^ 2 + 2 * W.a₂ * x + W.a₄) = 0`. Establish `: v ^ 4 * (W.a₁ * y - (3 * x ^ 2 + 2 * W.a₂ * x + W.a₄)) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1 - v ^ 4 * C.s * hY`. Simplify `this` using `[hv]`. Break down `hd with hd | hd` into its components or cases. Conclude with `hd hX`. Conclude with `hd hY`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem nonsingular_variableChange (C : VariableChange F) (W : WeierstrassCurve F) {x y : F}
     (h : W.toAffine.Nonsingular x y) :

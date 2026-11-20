@@ -27,13 +27,13 @@ noncomputable section
 namespace GlobalTheory.CuspIntertwiner
 
 /- English proof (translation)
-Establish `hd : DenseRange (Finsupp.linearCombination ℂ e)`. Rewrite `he` using `[← Finsupp.range_linearCombination]`. Conclude with `he`. Establish `hn : ∀ x : ι →₀ ℂ, ‖Finsupp.linearCombination ℂ f x‖ ≤ √‖c‖ * ‖Finsupp.linearCombination ℂ e x‖`. Introduce `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ⟪Finsupp.linearCombination ℂ f x, Finsupp.linearCombination ℂ f x⟫_ℂ = c * ⟪Finsupp.linearCombination ℂ e x, Finsupp.linearCombination ℂ e x⟫_ℂ`. Simplify using `only [Finsupp.linearCombination_apply, Finsupp.sum, sum_inner, inner_sum, inner_smul_left, inner_smul_right, h, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_pow, RCLike.norm_ofReal, abs_norm] at h2`. Use `le_of_eq ((sq_eq_sq₀ (norm_nonneg _) (by positivity)).1 ?_)` and prove the remaining obligations. Rewrite using `[h2, mul_pow, Real.sq_sqrt (norm_nonneg _)]`. Use `⟨(Finsupp.linearCombination ℂ f).extendOfNorm (Finsupp.linearCombination ℂ e), fun i => ?_⟩` and prove the remaining obligations. Use `LinearMap.extendOfNorm_eq hd ⟨_, hn⟩ (Finsupp.single i 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_extend {ι H K : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup K]
     [InnerProductSpace ℂ K] [CompleteSpace K] (e : ι → H) (f : ι → K)
@@ -59,7 +59,7 @@ theorem exists_extend {ι H K : Type} [NormedAddCommGroup H] [InnerProductSpace 
   simpa using this
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun y => tendsto_iff_norm_sub_tendsto_zero.2 ?_` and prove the remaining obligations. Establish `h1 : Continuous fun x => ‖t x - t y‖`. Simplify using `only [@norm_eq_sqrt_re_inner ℂ, inner_sub_sub_self, h]`. Use `fun_prop`. Simplify using `using h1.tendsto y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_tens {κ H : Type} [Fintype κ] {E : κ → Type} [∀ v, NormedAddCommGroup (E v)]
     [∀ v, InnerProductSpace ℂ (E v)] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (t : (∀ v, E v) → H)
@@ -71,9 +71,9 @@ theorem continuous_tens {κ H : Type} [Fintype κ] {E : κ → Type} [∀ v, Nor
   simpa using h1.tendsto y
 
 /- English proof (translation)
-Establish `h1 : Submodule.span ℂ (Set.range t) ≤ (Submodule.span ℂ (Set.range fun i => t (s i))).topologicalClosure`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `map_mem_closure (continuous_tens t h) (hs x) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `dense_closure.1 (hd.mono h1)`.
+A detailed English derivation is pending.
 -/
 theorem dense_span_tens {κ H : Type} [Fintype κ] {E : κ → Type} [∀ v, NormedAddCommGroup (E v)]
     [∀ v, InnerProductSpace ℂ (E v)] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (t : (∀ v, E v) → H)
@@ -89,9 +89,9 @@ theorem dense_span_tens {κ H : Type} [Fintype κ] {E : κ → Type} [∀ v, Nor
   exact dense_closure.1 (hd.mono h1)
 
 /- English proof (translation)
-Establish `h0 : innerSL ℂ (p - q) = 0`. Use `ContinuousLinearMap.ext_on hd ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[innerSL_apply_apply, ContinuousLinearMap.zero_apply, ← inner_conj_symm, inner_sub_right, h z, sub_self, map_zero]`. Use `congrArg (fun L : H →L[ℂ] ℂ => L (p - q)) h0` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [innerSL_apply_apply, ContinuousLinearMap.zero_apply, inner_self_eq_zero] at this`. Conclude with `sub_eq_zero.1 this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_inner_eq {X H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (t : X → H)
     (hd : Dense (Submodule.span ℂ (Set.range t) : Set H)) {p q : H} (h : ∀ z, ⟪t z, p⟫_ℂ = ⟪t z, q⟫_ℂ) : p = q := by
@@ -105,7 +105,7 @@ theorem eq_of_inner_eq {X H : Type} [NormedAddCommGroup H] [InnerProductSpace �
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Rewrite using `[h, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hv)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_update {κ H : Type} [Fintype κ] [DecidableEq κ] {E : κ → Type} [∀ v, NormedAddCommGroup (E v)]
     [∀ v, InnerProductSpace ℂ (E v)] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (t : (∀ v, E v) → H)
@@ -132,14 +132,14 @@ def tensML {κ H : Type} [Fintype κ] {E : κ → Type} [∀ v, NormedAddCommGro
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
 /- English proof (translation)
-Use `(dense_pi Set.univ fun τ _ => Formalism.IndefR.SchurOrthogonalityAlt.sm_dense M τ).mono fun x hx => ?_` and prove the remaining obligations. Conclude with `⟨fun τ => ⟨x τ, hx τ trivial⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem denseRange_vec (M : DSModel V S) : DenseRange fun (u : M.Vec) (τ : D.what₂.Tau) => (u τ : M.H τ) := by
   refine (dense_pi Set.univ fun τ _ => Formalism.IndefR.SchurOrthogonalityAlt.sm_dense M τ).mono fun x hx => ?_
   exact ⟨fun τ => ⟨x τ, hx τ trivial⟩, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coe_update [DecidableEq D.what₂.Tau] (u : M.Vec) (τ : D.what₂.Tau) (w : M.sm τ) :
     (fun τ' => ((Function.update u τ w τ' : M.sm τ') : M.H τ')) =
@@ -152,23 +152,21 @@ theorem coe_update [DecidableEq D.what₂.Tau] (u : M.Vec) (τ : D.what₂.Tau) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h𝓕` using `isFundamentalDomain_stdDom (GQ V) μ`. Take `⟨c, hc⟩` from `GlobalTheory.MultFinite.schurMult (θ := θ) (M := M) (J := ∅) (χ := fun _ => 1) hP μ (stdDom (GQ V)) hθ inferInstance h𝓕 T (Submodule.subset_span hT) T (Submodule.subset_span hT)`. Establish `hm : ∀ u, MemL2Quotient (GQ V) μ (T u)`. Introduce `u`. Use `(memL2_iff_fundamental_domain h𝓕).2 ⟨(hT.aut u).left, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(memLp_two_iff_integrable_sq_norm (hT.aut u).cont.measurable.aestronglyMeasurable).2 ((hc u u).1.norm.congr (.of_forall fun x => ?_))` and prove the remaining obligations. Simplify using `only [norm_mul, norm_star, sq]`. Choose the witnesses or unpack the hypotheses as in `⟨F, hFl, hF⟩ : ∃ F : M.Vec → DividedPowerChartLift V μ, (∀ u, lift (GQ V) (F u) =ᵐ[μ] T u) ∧ ∀ u u', ⟪F u, F u'⟫_ℂ = c * ∏ τ, ⟪(u τ : M.H τ), (u' τ : M.H τ)⟫_ℂ := by`. Use `⟨fun u => (hm u).toL2, fun u => (hm u).lift_toL2_ae_eq, fun u u' => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hc u u').2, MemL2Quotient.inner_toL2_eq_theta_pairing (hm u') (hm u), pet_eq h𝓕 (hT.aut u').left (hT.aut u).left]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨K, _, _, t0, ht0⟩` from `GlobalTheory.HilbTensorExists.exists_pre M.H`. Take `⟨L, _, _, _, s, hs, hd⟩` from `GlobalTheory.HilbTensorExists.exists_complete_dense t0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs' : ∀ x y, ⟪s x, s y⟫_ℂ = ∏ τ, ⟪x τ, y τ⟫_ℂ` using `fun x y => (hs x y).trans (ht0 x y)`. Establish `hvec` using `denseRange_vec M`. Establish `hdense` using `dense_span_tens s hs' hd _ hvec`. Establish `hG : ∀ u u' : M.Vec, ⟪F u, F u'⟫_ℂ = c * ⟪s (fun τ => (u τ : M.H τ)), s (fun τ => (u' τ : M.H τ))⟫_ℂ` using `fun u u' => by`. Rewrite using `[hF, hs']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨A, hA⟩` from `exists_extend (ι := M.Vec) (fun u => s fun τ => (u τ : M.H τ)) F hdense c hG`. Take `⟨Φ, hΦ⟩ : ∃ Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ), ∀ u : M.Vec, Φ (fun τ => (u τ : M.H τ)) = F u` from `⟨A.compContinuousMultilinearMap (tensML s hs' hd), hA⟩`. Use `⟨Φ, (mem_homDS hθ).2 ⟨fun y => ?_, fun τ g hg y => ?_⟩, fun u => ?_⟩` and prove the remaining obligations. Use `hvec.induction_on y ((Submodule.isClosed_topologicalClosure _).preimage Φ.cont) fun u => ?_ show Φ _ ∈ GlobalTheory.Cusp.L2cusp V μ` and prove the remaining obligations. Rewrite using `[hΦ u]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.Cusp.mem_L2cusp_of_ae_eq ⟨(hT.aut u).cont, (hT.aut u).left, hT.cusp u⟩ (hFl u)`. Establish `h1 : Continuous fun y : (∀ τ, M.H τ) => Φ (Function.update y τ (M.rep τ g (y τ)))` using `Φ.cont.comp (continuous_id.update τ ((M.rep τ g).continuous.comp (continuous_apply τ)))`. Establish `h2 : Continuous fun y : (∀ τ, M.H τ) => RG V μ (atTau θ V τ g) (Φ y)` using `(RG V μ (atTau θ V τ g)).continuous.comp Φ.cont`. Use `congrFun (hvec.equalizer h1 h2 (funext fun u => ?_)) y` and prove the remaining obligations. Set `w : M.sm τ` to `⟨M.rep τ g (u τ), GlobalTheory.SmoothStable.rep_mem_sm D V S M τ g hg _ (u τ).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1` using `hT.equiv τ g hg u w rfl`. Establish `e2 : Function.update (fun τ' => (u τ' : M.H τ')) τ (M.rep τ g (u τ)) = fun τ' => ((Function.update u τ w τ' : M.sm τ') : M.H τ')` using `(coe_update u τ w).symm`. Use `show Φ (Function.update (fun τ' => (u τ' : M.H τ')) τ (M.rep τ g (u τ))) = RG V μ (atTau θ V τ g) (Φ fun τ' => (u τ' : M.H τ'))`. Rewrite using `[e2, hΦ (Function.update u τ w), hΦ u]`. Use `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hFl _).trans ?_` and prove the remaining obligations. Rewrite using `[e1]`. Use `(EventuallyEq.trans ?_ (lift_R _ _).symm)` and prove the remaining obligations. Conclude with `((measurePreserving_mul_right μ (atTau θ V τ g)).quasiMeasurePreserving.ae (hFl u)).mono fun x hx => hx.symm`. Rewrite using `[hΦ u]`.
-
-Conclude with `hFl u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_isMultMap (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D.what₂.Tau → (TensorProduct D.host.F (Ainf D.host.F) D.host.E →+* ℂ)}
     (hθ : IsInfFam θ) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {T : MMap M}
@@ -229,7 +227,7 @@ theorem exists_of_isMultMap (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D
     exact hFl u
 
 /- English proof (translation)
-Use `ContinuousMultilinearMap.ext fun y => congrFun ((denseRange_vec M).equalizer Φ.cont Φ'.cont (funext fun v => ?_)) y` and prove the remaining obligations. Conclude with `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ((h v).trans (h' v).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_represents {μ : Measure (GA D V)} [μ.IsHaarMeasure] {T : MMap M}
     {Φ Φ' : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ)}
@@ -240,13 +238,11 @@ theorem eq_of_represents {μ : Measure (GA D V)} [μ.IsHaarMeasure] {T : MMap M}
   exact l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ((h v).trans (h' v).symm)
 
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact exists_of_isMultMap hP hθ μ hT`. Consider the case `zero`. Use `⟨0, zero_mem _, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousMultilinearMap.zero_apply, MultilinearMap.zero_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)`. Consider the case `add T T' _ _ ih ih'`. Take `⟨Φ, h1, h2⟩` from `ih`. Take `⟨Φ', h1', h2'⟩` from `ih'`. Use `⟨Φ + Φ', add_mem h1 h1', fun v => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousMultilinearMap.add_apply, MultilinearMap.add_apply]`. Conclude with `Filter.EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_add _ _)) ((h2 v).add (h2' v))`. Consider the case `smul a T _ ih`. Take `⟨Φ, h1, h2⟩` from `ih`. Use `⟨a • Φ, Submodule.smul_mem _ a h1, fun v => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [ContinuousMultilinearMap.smul_apply, MultilinearMap.smul_apply]`. Conclude with `Filter.EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_smul a _)) ((h2 v).const_smul a)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_mem (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D.what₂.Tau → (TensorProduct D.host.F (Ainf D.host.F) D.host.E →+* ℂ)}
     (hθ : IsInfFam θ) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {T : MMap M}
@@ -272,7 +268,7 @@ theorem exists_of_mem (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D.what�
     exact Filter.EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_smul a _)) ((h2 v).const_smul a)
 
 /- English proof (translation)
-Introduce `hP D θ hθ V S M μ _ _ T hT`. Take `⟨Φ, h1, h2⟩` from `exists_of_mem hP hθ μ hT`. Conclude with `⟨Φ, ⟨h1, h2⟩, fun Φ' h' => eq_of_represents h'.2 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_intertwiner : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : D.what₂.Tau → (TensorProduct D.host.F (Ainf D.host.F) D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], ∀ T ∈ GlobalTheory.CuspMult.allMaps θ M, ∃! Φ : ContinuousMultilinearMap ℂ M.H (DividedPowerChartLift V μ), Φ ∈ homDS M (RG V μ) (GlobalTheory.Cusp.L2cusp V μ) ∧ ∀ v : M.Vec, lift (GQ V) (Φ fun τ => (v τ : M.H τ)) =ᵐ[μ] T v := by
   intro hP D θ hθ V S M μ _ _ T hT

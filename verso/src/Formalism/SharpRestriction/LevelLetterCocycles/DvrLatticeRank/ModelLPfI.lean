@@ -19,20 +19,20 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
 
 /- English proof (translation)
-Simplify using `[expS, serC, if_neg (show ¬ (0 ≤ i) by omega)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expS_neg (ζ : LL) {m : ℕ} (a : Fin m → LetA O n) (y : Fin m → W.DD T) {i : ℤ} (hi : i < 0) :
     expS W T c ζ a y i = 0 := by
   simp [expS, serC, if_neg (show ¬ (0 ≤ i) by omega)]
 
 /- English proof (translation)
-Establish `key : ∀ N : ℕ, ∀ j, j < m₀ + N → g j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j) := by`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro j hj; rw [hg j (by omega)]; exact Submodule.zero_mem _`. Consider the case `succ N ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `j hj`. Distinguish the cases in `hjN : j < m₀ + N`. Conclude with `ih j hjN`. Establish `hj' : j = m₀ + N` using `by push_cast at hj; omega`. Establish `hs` using `hH j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[MLG.serMul_eq_sum U hg j ((j - m₀).toNat + 1) le_rfl, Finset.sum_range_succ']`. Establish `hrest : ∑ k ∈ Finset.range (j - m₀).toNat, PowerSeries.coeff (k + 1) U • g (j - ((k + 1 : ℕ) : ℤ)) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j) := by`. Use `Submodule.sum_mem _ (fun k hk => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_range]`. Conclude with `u3upPf_FilC_anti (PD := PD) T τ (by push_cast; omega) (ih _ (by push_cast; omega))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `Submodule.sub_mem _ hs hrest`. Rewrite `h0` using `[add_sub_cancel_left, PowerSeries.coeff_zero_eq_constantCoeff_apply, Nat.cast_zero, sub_zero]`. Conclude with `(Submodule.smul_mem_iff _ hU).1 h0`. Introduce `j`. Conclude with `key ((j - m₀).toNat + 1) j (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ind_fil (τ : K →ₐ[Qp] LL) (U : PowerSeries LL) (hU : PowerSeries.constantCoeff U ≠ 0)
     {g : ℤ → T.V ⊗[Qp] BdR} {m₀ : ℤ} (hg : MLG.Bdd g m₀)

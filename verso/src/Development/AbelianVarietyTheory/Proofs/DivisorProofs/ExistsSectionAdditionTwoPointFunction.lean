@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A _ _ n hr b hb S hS`. Use `⟨fun D _ _ x y ↦ (GlobalTheory.T.existsUnique_pushoutTorsorSection_mul_difference R A n hr b hb D x y (S D x) (S D y) (S D (x * y)) (hS D x) (hS D y) (hS D (x * y))).exists.choose, ?_⟩` and prove the remaining obligations. Introduce `D _ _ x y E _ _ ψ z w hz hw`. Conclude with `((GlobalTheory.T.existsUnique_pushoutTorsorSection_mul_difference R A n hr b hb D x y (S D x) (S D y) (S D (x * y)) (hS D x) (hS D y) (hS D (x * y))).exists.choose_spec E ψ z w hz hw).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isSecAdd : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ),
     HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ S : SecFam A,

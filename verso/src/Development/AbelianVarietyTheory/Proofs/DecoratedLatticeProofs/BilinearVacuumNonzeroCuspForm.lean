@@ -34,7 +34,7 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 open GlobalTheory.WeilVacMove in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [dLine, heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← deriv_const_mul_field]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,9 +48,9 @@ theorem dLine_smul {S T : HSp D} (M : ℝ →+ WO S T) (a : ℂ) (f : WO S T →
 
 open GlobalTheory.WeilVacMove in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h` using `((hasDerivAt_zero_and_isTheta hψ hM hM0 hf).1 x).add ((hasDerivAt_zero_and_isTheta hψ hM hM0 hg).1 x)`. Use `Eq.trans ?_ h.deriv` and prove the remaining obligations. Unfold `dLine`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [heisO, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dLine_add (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {M : ℝ →+ WO S T} (hM : Continuous M)
     (hM0 : ∀ s, (M s).map (finPart D) = 0) {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
@@ -66,7 +66,7 @@ theorem dLine_add (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {M : ℝ →+ WO S T
 variable {A S A' : HSp D} {χA χS χS' χA' : (AE D)ˣ →* Circle} {oma : Om A S} {omb : Om S A'}
 
 /- English proof (translation)
-Establish `h` using `(hB ψ A S A' _ _ _ _ oma omb ha hb G hG).2.2.2.comp (show Continuous fun x : (GA D A × GA D S) × WO A S × WO S A' => (x.1, ((1 : GA D S × GA D A'), x.2)) from continuous_fst.prodMk (continuous_const.prodMk continuous_snd))`. Simplify `h` using `only [Function.comp_def, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_act (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     {G : WO A S → WO S A' → ℂ} (hG : IsBiTheta ψ A S A' G) :
@@ -85,33 +85,31 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {χA χS χS
 open GlobalTheory.WeilVacMove GlobalTheory.BiTransfer in
 
 /- English proof (translation)
-Establish `hψ` using `ha.std`. Set `d` to `sumDec A (GlobalTheory.ChiGrid.negSp A')`. Set `gen : Set (K → WO (GlobalTheory.Doubling.hsum A (GlobalTheory.ChiGrid.negSp A')) S → ℂ)` to `{F | ∃ (c : K → ℂ) (G : WO A S → WO S A' → ℂ), Continuous c ∧ IsBiTheta ψ A S A' G ∧ F = fun k => c k • join d S fun u v => oma (p k) (fun u' => G u' v) u}`. Establish `h1 : ∀ F ∈ Submodule.span ℂ gen, Continuous fun q : K × WO (GlobalTheory.Doubling.hsum A (GlobalTheory.ChiGrid.negSp A')) S => F q.1 q.2`. Introduce `F hF`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨c, G, hc, hG, rfl⟩` from `h`. Conclude with `(hc.comp continuous_fst).mul ((continuous_act ha hb hB hG).comp ((hp.comp continuous_fst).prodMk (((continuous_fstH d S).comp continuous_snd).prodMk ((continuous_sndH d S).comp continuous_snd))))`. Consider the case `zero => exact continuous_const`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add F F' _ _ h h' => exact h.add h'`. Consider the case `smul a F _ h => exact h.const_smul a`. Establish `h2 : ∀ F ∈ Submodule.span ℂ gen, ∀ k, IsThetaFunO ψ _ S (F k)`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem F h`. Take `⟨c, G, hc, hG, rfl⟩` from `h`. Conclude with `fun k => isTheta_smul _ (isThetaFunO_join d ((hB ψ A S A' _ _ _ _ oma omb ha hb G hG).1 (p k)))`. Consider the case `zero => exact fun _ => isTheta_zero`. Consider the case `add F F' _ _ h h' => exact fun k => isTheta_add (h k) (h' k)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a F _ h => exact fun k => isTheta_smul a (h k)`. Establish `h3 : ∀ F ∈ Submodule.span ℂ gen, ∀ M : ℝ →+ WO _ S, Continuous M → (∀ s, (M s).map (finPart D) = 0) → (fun k => dLine ψ _ S M (F k)) ∈ Submodule.span ℂ gen`. Introduce `F hF M hM hM0`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, G, hc, hG, rfl⟩` from `h`. Establish `hT` using `(hB ψ A S A' _ _ _ _ oma omb ha hb G hG).1`. Take `⟨f1, f2, -⟩` from `GlobalTheory.T.heisenbergOneParamDeriv_orthDecJoined_eq_sum D ψ hψ _ A S A' d G hG M hM hM0`. Establish `c1 : Continuous ((fstH d S).comp M)` using `(continuous_fstH d S).comp hM`. Establish `c2 : Continuous ((sndH d S).comp M)` using `(continuous_sndH d S).comp hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, N, e, hN, hN0, he, hexp⟩` from `GlobalTheory.T.heisenbergDeriv_weilTranslate_continuous_combination D ψ A S χA χS oma ha _ c1 f1`. Establish `key : (fun k => dLine ψ _ S M (c k • join d S fun u v => oma (p k) (fun u' => G u' v) u)) = (∑ i, fun k => (c k * e i (p k)) • join d S fun u v => oma (p k) (fun u' => dLine ψ A S (N i) (fun u'' => G u'' v) u') u) + fun k => c k • join d S fun u v => oma (p k) (fun u' => dLine ψ …`. Use function extensionality and compare the values at `k`. Rewrite using `[dLine_smul, (GlobalTheory.T.heisenbergOneParamDeriv_orthDecJoined_eq_sum D ψ hψ _ A S A' d _ (hT (p k)) M hM hM0).2.2]`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Pi.add_apply, Finset.sum_apply, join_apply, smul_eq_mul]`. Rewrite using `[GlobalTheory.T.weilOperator_first_commutes_heisenbergDerivative_second D ψ A S A' _ _ _ _ oma omb ha hb hB G hG _ c2 f2, mul_add]`. Use `congr 1`. Use `congrFun (hexp (p k) _ (GlobalTheory.FrComb.slice_left hG (sndH d S x))) (fstH d S x)` as an intermediate fact. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul] at this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun u' => oma (p k) (fun u'' => G u'' (sndH d S x)) u') = oma (p k) (fun u'' => G u'' (sndH d S x)) from rfl, this, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm`. Rewrite using `[key]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.subset_span ?_) (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨_, _, hc.mul ((he i).comp hp), (GlobalTheory.T.isJointlySmoothBiTheta_heisenbergDeriv D ψ hψ A S A' G hG).1 _ (hN i) (hN0 i), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨_, _, hc, (GlobalTheory.T.isJointlySmoothBiTheta_heisenbergDeriv D ψ hψ A S A' G hG).2 _ c2 f2, rfl⟩`. Consider the case `zero`. Establish `: (fun k : K => dLine ψ _ S M ((0 : K → WO (GlobalTheory.Doubling.hsum A (GlobalTheory.ChiGrid.negSp A')) S → ℂ) k)) = 0`. Use function extensionality and compare the values at `k x`. Simplify using `[dLine, heisO]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add F F' hF hF' h h'`. Establish `: (fun k => dLine ψ _ S M ((F + F') k)) = (fun k => dLine ψ _ S M (F k)) + fun k => dLine ψ _ S M (F' k)`. Use function extensionality and compare the values at `fun k => dLine_add hψ hM hM0 (h2 F hF k) (h2 F' hF' k)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul a F _ h`. Establish `: (fun k => dLine ψ _ S M ((a • F) k)) = a • fun k => dLine ψ _ S M (F k)`. Use function extensionality and compare the values at `fun k => dLine_smul M a (F k)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a h`. Introduce `n L L' hL hL' h0 h0' u v`. Use `GlobalTheory.T.compactAverage_thetaFamily_smooth D ψ hψ _ S K μ (Submodule.span ℂ gen : Set _) h1 h2 h3 _ (Submodule.subset_span (show _ ∈ gen from ⟨c, G, hc, hG, rfl⟩)) n ((inlH d S).comp L + (inrH d S).comp L') (((continuous_inlH d S).comp hL).add ((continuous_inrH d S).comp hL …` as an intermediate fact. Rewrite using `[Matrix.map_add _ (RingHom.map_add _), map_inlH d S _ (h0 t), fin_inrH d S (h0' t), add_zero]) (inlH d S u + inrH d S v)`.
-
-Use `this using 4 with t k` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, join_apply, smul_eq_mul, AddMonoidHom.add_apply, AddMonoidHom.comp_apply, map_add, fst_inl, fst_inr, snd_inl, snd_inr, add_zero, zero_add]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBiSmooth_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ]
@@ -204,11 +202,11 @@ section Compact
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {K : Type} [TopologicalSpace K] [CompactSpace K]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, Q, hQ, hQc⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Take `⟨C, hC⟩` from `(isCompact_univ.prod hQ).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun k x => ?_⟩` and prove the remaining obligations. Take `⟨γ, ⟨γ', rfl⟩, hx⟩` from `hQc x`. Establish `hq` using `(hF k).quasi γ' x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (((incA D).toAddMonoidHom.mapMatrix (m` using `Fin T.rank) (n := Fin S.rank)) γ') = ratW T S γ' := rfl`. Rewrite `hx` using `[e]`. Establish `h1` using `hψ.1.2.1 (-(symplOH S T (ratW T S γ') x))`. Use `hC (k, _) ⟨Set.mem_univ _, hx⟩` as an intermediate fact. Simplify using `only at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hq, norm_mul, h1, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_fam (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {F : K → WO S T → ℂ} (hF : ∀ k, IsThetaFunO ψ S T (F k))
     (hc : Continuous fun q : K × WO S T => F q.1 q.2) : ∃ C : ℝ, ∀ k x, ‖F k x‖ ≤ C := by
@@ -228,9 +226,9 @@ theorem exists_bound_fam (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {F : K → WO
 variable [MeasurableSpace K] [BorelSpace K] [SecondCountableTopology K] (μ : Measure K)
 
 /- English proof (translation)
-Establish `hF' : ∀ k, IsThetaFunO ψ S T (c k • F k)` using `fun k => GlobalTheory.WeilVacMove.isTheta_smul _ (hF k)`. Establish `h1' : Continuous fun q : K × WO S T => (c q.1 • F q.1) q.2` using `(hc.comp continuous_fst).mul h1`. Establish `h2' : Continuous fun q : K × WO S T => om p (c q.1 • F q.1) q.2`. Simplify using `only [map_smul]`. Conclude with `(hc.comp continuous_fst).mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `GlobalTheory.T.weilOperator_integral_comm_of_bounded_finiteMeasure D ψ S T χS χT om hom K μ (fun k => c k • F k) p hF' h1' (exists_bound_fam hom.std hF' h1') h2' (exists_bound_fam hom.std (fun k => hom.om_pres p _ (hF' k)) h2') hI x` as an intermediate fact. Simplify `this` using `only [map_smul, Pi.smul_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem om_integral [IsFiniteMeasure μ] {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {c : K → ℂ} (hc : Continuous c) {F : K → WO S T → ℂ} (p : GA D S × GA D T)
@@ -249,11 +247,9 @@ theorem om_integral [IsFiniteMeasure μ] {S T : HSp D} {χS χT : (AE D)ˣ →* 
 omit [CompactSpace K] in
 
 /- English proof (translation)
-Take `⟨i1, -, i3, -, i5, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D A`. Establish `hfin` using `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D A hA vA Unit (fun _ _ => 1) continuous_const (fun _ _ _ _ => rfl)).1 ()`. Use `haveI : IsFiniteMeasure (vA.μ.restrict vA.𝓕) := by`. Break down `(integrable_const_iff (c := (1 : ℂ))).1 hfin with h | h` into its components or cases. Conclude with `absurd h one_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h`. Take `⟨C, hC⟩` from `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D A hA vA Unit (fun g _ => F g) (hF.2.comp continuous_fst) (fun γ hγ g _ => hF.1 γ hγ g)).2.2 ()`. Establish `hC'` using `hC.self_of_nhds`. Rewrite using `[integral_integral_swap]`. Repeatedly rewrite using `[GlobalTheory.T.setIntegral_fundamentalDomain_right_translate_invariant D A vA.μ vA.𝓕 vA.haar vA.fund F hF.1]`.
-
-Simplify using the standard rewrite rules. Use `Integrable.mono' (integrable_const C) ?_ (ae_of_all _ fun q => hC' _)` and prove the remaining obligations. Conclude with `(hF.2.comp (continuous_fst.mul (hj.comp continuous_snd))).aestronglyMeasurable`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_mean [IsProbabilityMeasure μ] {A : HSp D} (hA : CoCpt A) (vA : Vol A) {j : K → GA D A} (hj : Continuous j)
     {F : GA D A → ℂ} (hF : IsContAut A F) : ∫ h in vA.𝓕, ∫ k, F (h * j k) ∂μ ∂vA.μ = ∫ h in vA.𝓕, F h ∂vA.μ := by
@@ -285,9 +281,9 @@ def avg (oma : Om A S) (μ : Measure K) (j : K → GA D A) (c : K → ℂ) (G : 
 variable (μ : Measure K) {j : K → GA D A} (c : K → ℂ) {G : WO A S → WO S A' → ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [heisO, avg]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (ha.om_heis (j k) 1 w _ hG) u` as an intermediate fact. Rewrite `this` using `[h, GlobalTheory.FrComb.actO_real (hj k) (GinfC S).one_mem hw]`. Rewrite using `[this, heisO]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem avg_fix_left (ha : IsWeilDatumO ψ A S χA χS oma) (hj : ∀ k, j k ∈ GinfC A) {v : WO S A'}
     (hG : IsThetaFunO ψ A S fun u => G u v) {w : WO A S} (hw : w.map (infPart D) = 0)
@@ -304,9 +300,9 @@ theorem avg_fix_left (ha : IsWeilDatumO ψ A S χA χS oma) (hj : ∀ k, j k ∈
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [heisO, avg]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun u' => G u' v) = ψ (symplOH S A' v w) • fun u' => G u' (v + w)` using `funext fun u' => (congrFun (h u') v).symm`. Rewrite using `[e, map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem avg_fix_right {w : WO S A'} (h : ∀ u, heisO ψ S A' w (G u) = G u) (u : WO A S) :
     heisO ψ S A' w (avg oma μ j c G u) = avg oma μ j c G u := by
@@ -323,7 +319,7 @@ variable [TopologicalSpace K] [CompactSpace K] [BorelSpace K] [IsFiniteMeasure �
 
 omit [MeasurableSpace K] [CompactSpace K] [BorelSpace K] in
 /- English proof (translation)
-The claim follows from `(continuous_act ha hb hB hG).comp ((hp.comp continuous_fst).prodMk continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fam (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     (hG : IsBiTheta ψ A S A' G) {p : K → GA D A × GA D S} (hp : Continuous p) :
@@ -331,13 +327,13 @@ theorem continuous_fam (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO
   (continuous_act ha hb hB hG).comp ((hp.comp continuous_fst).prodMk continuous_snd)
 
 /- English proof (translation)
-Establish `hp : Continuous fun k => (j k, (1 : GA D S))` using `hjc.prodMk continuous_const`. Establish `hT` using `(hB ψ A S A' _ _ _ _ oma omb ha hb G hG).1`. Use `⟨?_, isBiSmooth_avg ha hb hB μ hp hc hG, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.AvgFam.continuous_avg μ (F := fun k (q : WO A S × WO S A') => c k * oma (j k, 1) (fun u' => G u' q.2) q.1) ((hc.comp continuous_fst).mul (continuous_fam ha hb hB hG hp))`. Simplify using `only [avg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[(hT (j k, 1)).quasiL]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [avg]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[(hT (j k, 1)).quasiR]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, h⟩` from `hG.levL`. Conclude with `⟨U, hU, fun a haU ha0 v => avg_fix_left μ c ha hj (GlobalTheory.FrComb.slice_left hG v) ha0 (h a haU ha0 v)⟩`. Take `⟨U, hU, h⟩` from `hG.levR`. Conclude with `⟨U, hU, fun a haU ha0 u => avg_fix_right μ c (h a haU ha0) u⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBiTheta_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC A) (hc : Continuous c) (hG : IsBiTheta ψ A S A' G) :
@@ -365,9 +361,7 @@ theorem isBiTheta_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO 
     exact ⟨U, hU, fun a haU ha0 u => avg_fix_right μ c (h a haU ha0) u⟩
 
 /- English proof (translation)
-Establish `h` using `isBiTheta_avg μ ha hb hB hjc hj hc hG`. Use `⟨h.cont, fun v => ⟨GlobalTheory.FrComb.slice_left h v, fun w hw => ?_, fun e he w hw hw' => ?_⟩, fun u => ⟨GlobalTheory.FrComb.slice_right h u, fun w hw => ?_, fun e he w hw hw' => ?_⟩⟩` and prove the remaining obligations. Conclude with `avg_fix_left μ c ha hj (hv.left v).1 (GlobalTheory.FrComb.nsmul_fin (GlobalTheory.SplitScalar.latO_fin hw) 2) ((hv.left v).2.1 w hw)`. Conclude with `avg_fix_left μ c ha hj (hv.left v).1 (GlobalTheory.SplitScalar.latO_fin hw) ((hv.left v).2.2 e he w hw hw')`. Conclude with `avg_fix_right μ c (fun u' => (hv.right u').2.1 w hw) u`.
-
-Conclude with `avg_fix_right μ c (fun u' => (hv.right u').2.2 e he w hw hw') u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBiVac_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC A) (hc : Continuous c) (hG : IsBiTheta ψ A S A' G) {LA LS LA'}
@@ -381,13 +375,13 @@ theorem isBiVac_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ
   · exact avg_fix_right μ c (fun u' => (hv.right u').2.2 e he w hw hw') u
 
 /- English proof (translation)
-Establish `hp : Continuous fun k => (j k, (1 : GA D S))` using `hjc.prodMk continuous_const`. Establish `hK1` using `GlobalTheory.FrComb.biTheta_combR ha.std hG he'`. Establish `s1 : ∀ k u v, oma (j k, 1) (fun u' => biComb ψ A S A' e e' G u' v) u = biComb ψ A S A' e e' (fun u v => oma (j k, 1) (fun u' => G u' v) u) u v`. Introduce `k u v`. Use `show oma (j k, 1) (comb ψ A S e fun u'' => comb ψ S A' e' (G u'') v) u = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FrComb.om_comb ha (hj k) (GinfC S).one_mem he (GlobalTheory.FrComb.slice_left hK1 v), GlobalTheory.FrComb.op_combR]`. Both sides reduce to the same expression. Establish `hi : ∀ (a : ℂ) u v, Integrable (fun k => a * (c k * oma (j k, 1) (fun u' => G u' v) u)) μ` using `fun a u v => GlobalTheory.AvgFam.integrable_of_continuous μ (continuous_const.mul (hc.mul ((continuous_fam ha hb hB hG hp).comp (continuous_id.prodMk (continuous_const (y := (u, v)))))))`. Use function extensionality and compare the values at `u v`. Establish `e1 : biComb ψ A S A' e e' (avg oma μ j c G) u v = ∑ x ∈ e.support, ∑ y ∈ e'.support, ∫ k, (e x * ψ (symplOH A S u x) * (e' y * ψ (symplOH S A' v y))) * (c k * oma (j k, 1) (fun u' => G u' (v + y)) (u + x)) ∂μ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [biComb, GlobalTheory.FrComb.comb_apply, Finset.mul_sum, avg, integral_const_mul, mul_assoc]`. Rewrite using `[e1]`. Simplify using `only [avg, s1]`. Rewrite using `[← Finset.sum_congr rfl fun x _ => integral_finset_sum _ fun y _ => hi _ _ _, ← integral_finset_sum _ fun x _ => integrable_finset_sum _ fun y _ => hi _ _ _]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [biComb, GlobalTheory.FrComb.comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem biComb_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC A) (hc : Continuous c) (hG : IsBiTheta ψ A S A' G)
@@ -422,9 +416,9 @@ theorem biComb_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ 
 variable [SecondCountableTopology K]
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D A).1`. Establish `hm : ∀ k f, oma (g, h) (oma (j k, 1) f) = oma (g * j k, h) f` using `fun k f => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hv : Continuous fun q : K × WO A S => (q.1, q.2, v)` using `continuous_fst.prodMk (continuous_snd.prodMk continuous_const)`. Use `om_integral μ ha hc (F := fun k => oma (j k, 1) fun u' => G u' v) (g, h) (fun k => ha.om_pres _ _ (GlobalTheory.FrComb.slice_left hG v)) ((continuous_fam ha hb hB hG (hjc.prodMk continuous_const)).comp hv) (by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm]`. Conclude with `(continuous_fam ha hb hB hG (p := fun k => (g * j k, h)) ((continuous_const.mul hjc).prodMk continuous_const)).comp hv)`. Use the proof step `(GlobalTheory.FrComb.slice_left (isBiTheta_avg μ ha hb hB hjc hj hc hG) v) u`. Simplify using `only [hm] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC A) (hc : Continuous c) (hG : IsBiTheta ψ A S A' G) (g : GA D A) (h : GA D S)
@@ -445,9 +439,9 @@ theorem om_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A'
   exact this
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D A).1`. Establish `hBG` using `hB ψ A S A' _ _ _ _ oma omb ha hb G hG`. Establish `hp : Continuous fun k => (g * j k, h)` using `(continuous_const.mul hjc).prodMk continuous_const`. Establish `hI` using `GlobalTheory.FrComb.slice_right ((hB ψ A S A' _ _ _ _ oma omb ha hb _ (isBiTheta_avg μ ha hb hB hjc hj hc hG)).1 (g, h)) u`. Simplify using `only [om_avg μ ha hb hB hjc hj hc hG] at hI ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `om_integral μ hb hc (F := fun k v' => oma (g * j k, h) (fun u' => G u' v') u) q (fun k => GlobalTheory.FrComb.slice_right (hBG.1 (g * j k, h)) u) ?_ ?_ hI v` and prove the remaining obligations. Conclude with `(continuous_fam ha hb hB hG hp).comp (continuous_fst.prodMk (continuous_const.prodMk continuous_snd))`. Conclude with `hBG.2.2.2.comp (show Continuous fun z : K × WO S A' => ((g * j z.1, h), q, u, z.2) from (hp.comp continuous_fst).prodMk (continuous_const.prodMk (continuous_const.prodMk continuous_snd)))`.
+A detailed English derivation is pending.
 -/
 theorem ker_avg (ha : IsWeilDatumO ψ A S χA χS oma) (hb : IsWeilDatumO ψ S A' χS' χA' omb) (hB : BiAct D)
     (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC A) (hc : Continuous c) (hG : IsBiTheta ψ A S A' G) (g : GA D A) (h : GA D S)

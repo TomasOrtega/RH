@@ -8,9 +8,9 @@ namespace GroundTheory.ProfCoh
 open CategoryTheory
 
 /- English proof (translation)
-Introduce `x`. Take `⟨q, rfl⟩` from `QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨q.den, q.den_pos, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((q.den • q : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[AddCircle.coe_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q.num, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, mul_comm, Rat.mul_den_eq_num, zsmul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAddTorsion_QZ : IsAddTorsion QZ := by
   intro x
@@ -39,9 +39,9 @@ theorem evalCharacter_apply (σ : G) (χ : Additive G →ₜ+ QZ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `χ hχ`. Establish `hlc : IsLocallyConstant fun g : G => χ (Additive.ofMul g)` using `(IsLocallyConstant.iff_continuous _).2 (χ.continuous.comp continuous_ofMul)`. Establish `h` using `hσ.eq_of_forall_zpow hlc (IsLocallyConstant.const (0 : QZ)) fun n => by`. Express the relevant statement in the definitionally equal form `χ (Additive.ofMul (σ ^ n)) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ofMul_zpow, map_zsmul]`. Express the relevant statement in the definitionally equal form `n • evalCharacter σ χ = 0`. Rewrite using `[hχ, smul_zero]`. Use extensionality with `x`. Conclude with `congrFun h (Additive.toMul x)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem evalCharacter_injective {σ : G} (hσ : IsTopologicalGenerator σ) :
     Function.Injective (evalCharacter σ) := by
@@ -58,9 +58,9 @@ theorem evalCharacter_injective {σ : G} (hσ : IsTopologicalGenerator σ) :
   exact congrFun h (Additive.toMul x)
 
 /- English proof (translation)
-Introduce `x`. Establish `hn : 0 < addOrderOf x` using `(isAddTorsion_QZ x).addOrderOf_pos`. Take `⟨φ, hφo, hφσ⟩` from `hσ.exists_hom _ hn`. Set `ψ : ZMod (addOrderOf x) →+ QZ` to `ZMod.lift (addOrderOf x) ⟨zmultiplesHom QZ x, by simp [addOrderOf_nsmul_eq_zero]⟩`. Set `χ₀ : Additive G →+ QZ` to `ψ.comp (MonoidHom.toAdditive φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hlc : IsLocallyConstant fun a : Additive G => χ₀ a` using `((φ.isLocallyConstant_of_isOpen_ker hφo).comp fun z => ψ (Multiplicative.toAdd z)).comp_continuous continuous_toMul`. Use `⟨⟨χ₀, hlc.continuous⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (Multiplicative.toAdd (φ σ)) = x`. Rewrite using `[hφσ, toAdd_ofAdd, ← Int.cast_one, ZMod.lift_coe]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evalCharacter_surjective [IsTopologicalGroup G] {σ : G} (hσ : IsZHatGenerator σ) :
     Function.Surjective (evalCharacter σ) := by
@@ -106,7 +106,7 @@ noncomputable def cohomologyTwoIntAddEquivQZ (hσ : IsZHatGenerator σ) :
   (cohomologyTwoIntAddEquiv G).trans (evalCharacterEquiv hσ)
 
 /- English proof (translation)
-Rewrite using `[← cohomologyTwoIntAddEquiv_symm_apply, cohomologyTwoIntAddEquivQZ, AddEquiv.trans_apply, AddEquiv.apply_symm_apply, evalCharacterEquiv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyTwoIntAddEquivQZ_δ (hσ : IsZHatGenerator σ) (χ : Additive G →ₜ+ QZ) :
     cohomologyTwoIntAddEquivQZ hσ

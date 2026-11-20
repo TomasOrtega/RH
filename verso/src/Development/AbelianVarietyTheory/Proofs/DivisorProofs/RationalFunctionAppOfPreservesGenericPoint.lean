@@ -11,13 +11,11 @@ noncomputable section
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Introduce `X Y _ _ m φ hφ V hV hV' a`. Establish `h : gp Y ≫ m = spMap φ ≫ gp X`. Take `⟨l, h1, h2⟩` from `hφ`. Rewrite `h1` using `[Category.comp_id]`. Rewrite using `[← h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc : IsLocalHom φ` using `inferInstance`. Establish `e1 : Spec.map (m.stalkMap (genericPoint Y)) ≫ X.fromSpecStalk (m (genericPoint Y)) = Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk (genericPoint X)`. Rewrite using `[Scheme.SpecMap_stalkMap_fromSpecStalk]`. Conclude with `h`. Establish `e2` using `(SpecToEquivOfLocalRing X (CommRingCat.of Y.functionField)).symm.injective (a₁ := ⟨m (genericPoint Y), m.stalkMap (genericPoint Y), inferInstance⟩) (a₂ := ⟨genericPoint X, CommRingCat.ofHom φ, hloc⟩) (by rw [SpecToEquivOfLocalRing_symm_apply, SpecToEquivOfLocalRing_symm_apply]; e …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, e3⟩` from `SpecToEquivOfLocalRing_eq_iff.mp e2`. Simplify using `only at e3`. Establish `key : X.presheaf.germ V _ hV' ≫ m.stalkMap (genericPoint Y) = X.presheaf.germ V _ hV ≫ CommRingCat.ofHom φ`. Rewrite using `[e3, TopCat.Presheaf.stalkCongr_hom]`. Conclude with `X.presheaf.germ_stalkSpecializes_assoc hV' _ _`.
-
-Establish `key' : m.app V ≫ Y.presheaf.germ (m ⁻¹ᵁ V) (genericPoint Y) hV' = X.presheaf.germ V _ hV ≫ CommRingCat.ofHom φ` using `(Scheme.Hom.germ_stalkMap m V (genericPoint Y) hV').symm.trans key`. Conclude with `congrArg (fun q => CommRingCat.Hom.hom q a) key'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnOf_app_of_pff : ∀ (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (m : Y ⟶ X) (φ : X.functionField →+* Y.functionField), PFF (𝟙 _) m φ → ∀ (V : X.Opens) (hV : genericPoint X ∈ V) (hV' : genericPoint Y ∈ m ⁻¹ᵁ V) (a : Γ(X, V)), fnOf (m ⁻¹ᵁ V) hV' ((m.app V).hom a) = φ (fnOf V hV a) := by
   intro X Y _ _ m φ hφ V hV hV' a

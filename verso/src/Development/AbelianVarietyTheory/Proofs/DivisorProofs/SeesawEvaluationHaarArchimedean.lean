@@ -16,11 +16,11 @@ namespace GlobalTheory.ConeSmallUnip
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `u hu`. Set `S : Subgroup (UA σ W.J)` to `{ carrier := {g | mat g *ᵥ incV F H'.x = incV F H'.x} one_mem' := by simp [mat] mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `show ((a * b : UA σ W.J).1.1) *ᵥ _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `(congrArg _ hb).trans ha`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : mat a⁻¹ * mat a = 1` using `by show ((a⁻¹ * a : UA σ W.J).1.1) = 1`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `hle : unip σ W H' ≤ S` using `Subgroup.closure_le _ |>.2 fun g hg => hg.1`. Conclude with `hle hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unip_fix {d d₁ : ℕ} {W : Spc F E d} (H' : Plane E d d₁) :
     ∀ u ∈ unip σ W H', mat u *ᵥ incV F H'.x = incV F H'.x := by
@@ -48,17 +48,17 @@ theorem unip_fix {d d₁ : ℕ} {W : Spc F E d} (H' : Plane E d d₁) :
 end GlobalTheory.ConeSmallUnip
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' z u hu h`. Establish `hΦs : Φ' ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΦ').2`. Establish `hW` using `IsUWeilPair.isUSplitting hT.weil'`. Establish `hx : mat u *ᵥ incV F H'.x = incV F H'.x` using `GlobalTheory.ConeSmallUnip.unip_fix H' u hu`. Establish `hLev : IsLevi (W₁` using `G₁.W) H' 1 1 (1 : UA σ G.W.J) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [mat]`. Unfold `GlobalTheory.ConeSmall.coneI`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Establish `hΨ : om' (k.1, h) Φ' ∈ schA F _` using `hW.pres _ _ hΦs`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : om' (k.1, u * h) Φ' = om' (1, u) (om' (k.1, h) Φ')`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hact : actAB (cA σ) ((1, u) : UA σ G.V'.J × UA σ G.W.J) (shiftB σ H H' l) = shiftB σ H H' l`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [actAB, shiftB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_apply]`. Use `congr 1`. Use `conv_rhs => rw [← hx]`. Simplify using `[mat, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (1, u) (om' (k.1, h) Φ')) = om' (1, u) (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))`. Rewrite using `[hW.impl (1, u) (shiftB σ H H' l) _ hΨ, hact]`. Establish `hρ` using `GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hT.base.std (shiftB σ H H' l) _ hΨ`. Establish `e3` using `GlobalTheory.T.config_b_levi_torus_evaluation hKP.base F E σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁ 1 1 1 hLev u hu _ hρ`. Rewrite `e3` using `[mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[e1, e2, e3]`. Establish `hone : ((1 : UA σ G₁.V'.J), (1 : UA σ G₁.W.J)) = 1` using `rfl`. Rewrite using `[hone]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConeSmall.coneI_unip : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

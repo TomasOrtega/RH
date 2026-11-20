@@ -8,7 +8,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Module Submodule
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_tail.goal1 .. | (apply Bl.general_b_fact_tail.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_tail.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_subtype_comp_associated_prod {R M : Type*} [CommRing R] [IsDomain R]
     [IsPrincipalIdealRing R] [AddCommGroup M] [Module R M] {ι : Type*} [Fintype ι]
@@ -19,7 +19,7 @@ theorem det_subtype_comp_associated_prod {R M : Type*} [CommRing R] [IsDomain R]
   first | exact Bl.general_b_fact_tail.goal1 .. | (apply Bl.general_b_fact_tail.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_tail.goal1 <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact'''''''.goal1 .. | (apply Bl.general_b_fact'''''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact'''''''.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addVal_prod {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ι : Type*} (s : Finset ι) (a : ι → O) :
@@ -28,15 +28,15 @@ theorem addVal_prod {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
   first | exact Bl.general_b_fact'''''''.goal1 .. | (apply Bl.general_b_fact'''''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact'''''''.goal1 <;> assumption)
 
 /- English proof (translation)
-Introduce `O B _ _ _ _ _ _ _ _ g hg`. Establish `: Module.Free O B` using `Module.free_iff_isTorsionFree.mpr inferInstance`. Use `set b := Module.Free.chooseBasis O B`. Use `set I : Ideal B := Ideal.span ({g} : Set B)`. Establish `hI : I ≠ ⊥` using `by simpa [I] using hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Ideal.finrank_eq_finrank b I hI`. Establish `hlen : Module.length O (B ⧸ I) = ∑ i, IsDiscreteValuationRing.addVal O (smithNormalFormCoeffs b h i)`. Rewrite using `[(Ideal.quotientEquivPiSpan I b hI).length_eq, Module.length_pi_of_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Ring.ord_eq_addVal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hdet : Associated (Algebra.norm O g) (∏ i, smithNormalFormCoeffs b h i)`. Rewrite using `[Algebra.norm_apply]`. Establish `key` using `det_subtype_comp_associated_prod b (I.restrictScalars O) h (b.equiv (Ideal.basisSpanSingleton b hg) (Equiv.refl _))`. Use `key using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `b.ext fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Submodule.subtype_apply]`. Establish `h1` using `Basis.equiv_apply (b := b) (b' := Ideal.basisSpanSingleton b hg) (e := Equiv.refl _) i`. Use `Eq.trans ?_ (congrArg Subtype.val h1).symm` and prove the remaining obligations. Rewrite using `[Equiv.refl_apply, Ideal.basisSpanSingleton_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hlen, ← addVal_prod, ← Ring.ord_eq_addVal, ← Ring.ord_eq_addVal]`. Conclude with `Ring.ord_eq_of_associated hdet`.
+A detailed English derivation is pending.
 -/
 theorem gaugeSplitting_holds : NormLengthStatement := by
   intro O B _ _ _ _ _ _ _ _ g hg

@@ -7,7 +7,7 @@ open NumberField Filter Topology
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Unfold `Nrm`. Rewrite using `[Nat.one_le_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `q.ne_bot`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csb_nrm_pos {E : Type} [Field E] [NumberField E] (q : Prm E) : 1 ≤ Nrm q := by
   unfold Nrm
@@ -15,7 +15,7 @@ theorem csb_nrm_pos {E : Type} [Field E] [NumberField E] (q : Prm E) : 1 ≤ Nrm
   exact q.ne_bot
 
 /- English proof (translation)
-Establish `ha' : (1 : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `hab' : ((a : ℝ)) ^ 2 ≤ (b : ℝ)` using `by exact_mod_cast hab`. Establish `hb' : (1 : ℝ) ≤ b` using `le_trans (one_le_pow₀ ha') hab'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_neg (by positivity), show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem csb_pow_le (a b : ℕ) (ha : 1 ≤ a) (hab : a ^ 2 ≤ b) (s : ℝ) (hs : 1 < s) :
     ((b : ℕ) : ℝ) ^ (-s) ≤ ((a : ℕ) : ℝ) ^ (-2 : ℝ) := by
@@ -29,29 +29,27 @@ theorem csb_pow_le (a b : ℕ) (ha : 1 ≤ a) (hab : a ^ 2 ≤ b) (s : ℝ) (hs 
       rw [Real.rpow_neg (by positivity), show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hfin` using `splitA_finite_not_coprime E l hl0`. Use `set A : ℝ := ∑' q : Prm E, ((Nrm q : ℕ) : ℝ) ^ (-2 : ℝ)`. Use `set B : ℝ := ∑' q : Prm E, (if Nat.Coprime (Nrm q) l then (0 : ℝ) else 1)`. Use `⟨((l - 1 : ℕ) : ℝ) * (A + B), fun s hs => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Summable (fun q : Prm E => ((Nrm q : ℕ) : ℝ) ^ (-2 : ℝ))` using `affine_proper_base_change.2.2 E 2 (by norm_num)`. Establish `hB : Summable (fun q : Prm E => (if Nat.Coprime (Nrm q) l then (0 : ℝ) else 1))`. Apply `summable_of_ne_finset_zero (s := hfin.toFinset)` to reduce the goal to its premises. Introduce `q hq`. Rewrite `hq` using `[Set.Finite.mem_toFinset]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq, not_not] at hq`. Simplify using `[hq]`. Establish `hP1 : Summable (fun q : Prm E => if ((Nrm q : ℕ) : ZMod l) = 1 then ((Nrm q : ℕ) : ℝ) ^ (-s) else 0)`. Use `Summable.of_nonneg_of_le (fun q => ?_) (fun q => ?_) (affine_proper_base_change.2.2 E s hs)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Check the signs of the components of the expression. Introduce a local definition for the expression.
 
-Use `split_ifs`. Conclude with `le_rfl`. Check the signs of the components of the expression. Set `h : Prm E → ℝ` to `fun q => ((if ((Nrm q : ℕ) : ZMod l) = 1 then ((Nrm q : ℕ) : ℝ) ^ (-s) else 0) + ((Nrm q : ℕ) : ℝ) ^ (-2 : ℝ)) + (if Nat.Coprime (Nrm q) l then (0 : ℝ) else 1)`. Establish `hh0 : ∀ q, 0 ≤ h q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `q`. Simplify using `only [h]`. Establish `: 0 ≤ ((Nrm q : ℕ) : ℝ) ^ (-2 : ℝ)` using `by positivity`. Apply the tactic sequence `split_ifs <;> positivity`. Establish `hhs : Summable h` using `(hP1.add hA).add hB`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfh : ∀ P : Prm (CyclotomicField l E), ((Nrm P : ℕ) : ℝ) ^ (-s) ≤ h (under P)`. Introduce `P`. Use `set q := under (E := E) P with hq`. Establish `hq1` using `csb_nrm_pos q`. Establish `hP1'` using `csb_nrm_pos P`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ ((Nrm q : ℕ) : ℝ) ^ (-2 : ℝ)` using `by positivity`. Establish `hPs : 0 ≤ ((Nrm P : ℕ) : ℝ) ^ (-s)` using `by positivity`. Simplify using `only [h]`. Distinguish the cases in `hc : Nat.Coprime (Nrm q) l`. Establish `hnd : ¬ l ∣ Nrm q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)]`. Conclude with `hc.symm`. Rewrite using `[if_pos hc, add_zero]`. Break down `splitA_norm E l q P hq.symm hnd with ⟨he, h1⟩ | hsq` into its components or cases. Rewrite using `[if_pos h1, he]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `csb_pow_le _ _ hq1 hsq s hs` as an intermediate fact. Apply the tactic sequence `have : 0 ≤ (if ((Nrm q : ℕ) : ZMod l) = 1 then ((Nrm q : ℕ) : ℝ) ^ (-s) else 0) := by split_ifs <;> positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hc]`.
+Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ((Nrm P : ℕ) : ℝ) ^ (-s) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hP1') (by linarith)`. Apply the tactic sequence `have : 0 ≤ (if ((Nrm q : ℕ) : ZMod l) = 1 then ((Nrm q : ℕ) : ℝ) ^ (-s) else 0) := by split_ifs <;> positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `fibre_sum_le (under (E := E)) (fun P : Prm (CyclotomicField l E) => ((Nrm P : ℕ) : ℝ) ^ (-s)) h (l - 1) (fun P => by positivity) hfh hh0 hhs (fun q => splitA_fibre E l hirr q)`. Establish `hsum : ∑' q, h q = Pcl E l 1 s + A + B`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [h]`. Rewrite using `[(hP1.add hA).tsum_add hB, hP1.tsum_add hA]`. Both sides reduce to the same expression. Establish `: PE (CyclotomicField l E) s ≤ ((l - 1 : ℕ) : ℝ) * ∑' q, h q` using `key.2`. Rewrite `this` using `[hsum]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem PE_cyclotomicField_le_mul_Pcl_add_const (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     (hirr : Irreducible (Polynomial.cyclotomic l E)) :

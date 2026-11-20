@@ -11,9 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.L1
 open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 
 /- English proof (translation)
-Introduce `h`. Apply `hin` to reduce the goal to its premises. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h4 : 4 * ((d + 1) / 4) = d + 1` using `by omega`. Establish `h0 : ((d + 1 : ℕ) : ZMod l) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h4, ZMod.natCast_eq_zero_iff]`. Conclude with `Dvd.dvd.mul_left h 4`. Move the coercions through the operations in `at h0`. Take the linear combination `h0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem end_not_dvd (d : ℕ) (hd : d % 4 = 3) (l : ℕ) [Fact l.Prime]
     (hin : ¬ ∃ a : ZMod l, a ^ 2 = -(d : ZMod l)) : ¬ l ∣ (d + 1) / 4 := by
@@ -28,9 +28,9 @@ theorem end_not_dvd (d : ℕ) (hd : d % 4 = 3) (l : ℕ) [Fact l.Prime]
   linear_combination h0
 
 /- English proof (translation)
-Establish `hnn : ‖(n : ℂ_[l])‖ = 1`. Simplify using `using kq_int_unit l (n : ℤ) (by exact_mod_cast hn)`. Establish `hprod : a * (1 - a) = n` using `by linear_combination -hq`. Establish `hb : ‖1 - a‖ ≤ 1`. Establish `e : 1 - a = 1 + -a` using `by ring`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `kq_add_le l _ _ 1 (by simp) (by rwa [norm_neg])`. Use `le_antisymm ha ?_` and prove the remaining obligations. Rewrite using `[← hnn, ← hprod, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem end_unit (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : ¬ l ∣ n) (a : ℂ_[l]) (ha : ‖a‖ ≤ 1)
     (hq : a ^ 2 - a + (n : ℂ_[l]) = 0) : ‖a‖ = 1 := by
@@ -46,11 +46,11 @@ theorem end_unit (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : ¬ l ∣ n) (a : ℂ_[
   exact mul_le_of_le_one_right (norm_nonneg _) hb
 
 /- English proof (translation)
-Establish `h1` using `Formalism.L2.Th1.F.kerRepsCard L (omegaK d) S h0 hCM hS`. Establish `h2` using `(Formalism.L2.Th1.F.hasCMByStable d L hCM 0 1).2`. Establish `h4 : 4 * ((d + 1) / 4) = d + 1` using `by omega`. Establish `h4' : (4 : ℝ) * (((d + 1) / 4 : ℕ) : ℝ) = (d : ℝ) + 1` using `by exact_mod_cast h4`. Establish `e : ((0 : ℤ) : ℂ) + ((1 : ℤ) : ℂ) * omegaK d = omegaK d` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e]`. Establish `h3 : ((S.card + 1 : ℕ) : ℝ) = (((d + 1) / 4 : ℕ) : ℝ)`. Use `push_cast`. Rewrite using `[h1, h2]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem end_card (d : ℕ) (hd : d % 4 = 3) (L : PeriodPair) (hCM : HasCMBy d L) (S : Finset ℂ)
     (h0 : omegaK d ≠ 0) (hS : Formalism.L2.Th1.F.IsKerReps L (omegaK d) S) :
@@ -69,27 +69,25 @@ theorem end_card (d : ℕ) (hd : d % 4 = 3) (L : PeriodPair) (hCM : HasCMBy d L)
   exact_mod_cast h3
 
 /- English proof (translation)
-Take `⟨L', hM, hCM'⟩` from `good_lattice l L ι g2 g3 hg`. Establish `hCM1 : HasCMBy d L'` using `hCM' d hCM`. Establish `hl2 : l ≠ 2` using `by omega`. Establish `hquadC` using `omegaK_quad d hd`. Establish `hquad : (ι (omegaK d)) ^ 2 - ι (omegaK d) + (((d + 1) / 4 : ℕ) : ℂ_[l]) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg ι hquadC` as an intermediate fact. Simplify using `using this`. Establish `hln` using `end_not_dvd d hd l hin`. Establish `hn0 : 0 < (d + 1) / 4` using `by omega`. Take `⟨ha1, -, -⟩` from `kur_quad l d hd hl2 hld hin _ hquad`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hau : ‖ι (omegaK d)‖ = 1` using `end_unit l _ hln _ ha1 hquad`. Establish `h2 : ‖(2 : ℂ_[l])‖ = 1`. Use `kq_int_unit l 2 (by` as an intermediate fact. Introduce `h`. Establish `h' : l ∣ 2` using `by exact_mod_cast h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).mp h'))`. Simplify using `using this`. Establish `hα : omegaK d ≠ 0`. Introduce `h`. Rewrite `hau` using `[h, map_zero, norm_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one hau`. Take `⟨S, hS⟩` from `Formalism.L2.Th1.F.kerRepsExist L' (omegaK d) hα hCM1`. Establish `hcard` using `end_card d hd L' hCM1 S hα hS`. Take `⟨neg, hE⟩` from `endo_curve l L' ι (omegaK d) S hα hCM1 hS`. Rewrite `hE` using `[← hM.eq2, ← hM.eq3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htor : ∀ P : S, ‖ι (L'.weierstrassP (P : ℂ))‖ ≤ 1 ∧ ‖ι (L'.derivWeierstrassP (P : ℂ))‖ ≤ 1`. Introduce `P`. Take `⟨hP1, hP2⟩` from `hS.1 P P.2`. Use `tor_integral l hl2 L' ι g2 g3 hM _ hn0 hln P ?_ hP2` and prove the remaining obligations. Establish `e : (((d + 1) / 4 : ℕ) : ℂ) * (P : ℂ) = omegaK d * (P : ℂ) - omegaK d * (omegaK d * (P : ℂ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(P : ℂ) * hquadC`. Rewrite using `[e]`. Conclude with `sub_mem hP1 (hCM1 _ hP1)`. Establish `hc : Formalism.L2.Th1.C.CoeffIn (unitBall ℂ_[l]) (Formalism.L2.Th1.A.shortW g2 g3)` using `shortW_intModel g2 g3 hM.n2 hM.n3 h2`. Establish `h2R : (2 : ℂ_[l])⁻¹ ∈ unitBall ℂ_[l]` using `Formalism.L2.Th1.C.inv_mem_unitBall h2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨hlp, hwp, hAx, -, -⟩` from `Formalism.L2.Th1.C.curveFrame ℂ_[l] (unitBall ℂ_[l]) _ hc`. Establish `hDat` using `Formalism.L2.Th1.C.curveEndoR ℂ_[l] (unitBall ℂ_[l]) _ hc S neg _ _ (ι (omegaK d)) (1 - ι (omegaK d)) hE (fun P => (htor P).1) (fun P => by`. Express the relevant statement in the definitionally equal form `‖ι (L'.derivWeierstrassP (P : ℂ)) / 2‖ ≤ 1`. Rewrite using `[norm_div, h2, div_one]`. Conclude with `(htor P).2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use the proof step `(by`. Rewrite using `[Fintype.card_coe]`. Establish `: ((S.card : ℂ_[l]) + 1) = (((d + 1) / 4 : ℕ) : ℂ_[l])` using `by exact_mod_cast hcard`. Rewrite using `[this]`. Take the linear combination `-hquad)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `hau.le (Formalism.L2.Th1.C.inv_mem_unitBall hau)`. Use the proof step `(by`. Establish `: (Formalism.L2.Th1.A.shortW g2 g3).b₂ = 0`. Simplify using `[Formalism.L2.Th1.A.shortW, WeierstrassCurve.b₂]`. Rewrite using `[this]`.
-
-Use the proof step `simp)`. Establish `hEnd` using `Formalism.L2.Th1.C.endIntFromDatum ℂ_[l] (unitBall ℂ_[l]) _ _ _ _ _ S neg _ _ _ _ _ hlp hwp hAx h2R hDat`. Rewrite using `[lgS_eq_logSer, Formalism.L2.Th1.A.uSerEq]`. Conclude with `hEnd`.
+A detailed English derivation is pending.
 -/
 theorem end_integral (d : ℕ) (L : PeriodPair) (hd : d % 4 = 3) (hCM : HasCMBy d L) (l : ℕ)
     [Fact l.Prime] (hl : 5 ≤ l) (hld : ¬ l ∣ d) (hin : ¬ ∃ a : ZMod l, a ^ 2 = -(d : ZMod l))

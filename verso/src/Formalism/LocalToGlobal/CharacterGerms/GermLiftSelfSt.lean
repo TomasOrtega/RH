@@ -46,7 +46,7 @@ namespace VP
 variable (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o)) {N n : ℕ} (pl : Fin N × Fin 2 ↪ Fin n)
 
 /- English proof (translation)
-Simplify using `only [MS, pl.injective.eq_iff, Prod.mk.injEq]`. Distinguish the cases in `h : ρ' = ρ`. Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem MS_pl (ρ' ρ : Fin N) (w : WVO (IS I0)) (col : Fin 2) (i : Fin dd) :
     MS Y p pl (ρ', w) (pl (ρ, col), i) = if ρ' = ρ then uS Y p w (col, i) else 0 := by
@@ -56,7 +56,7 @@ theorem MS_pl (ρ' ρ : Fin N) (w : WVO (IS I0)) (col : Fin 2) (i : Fin dd) :
   · simp [h]
 
 /- English proof (translation)
-Simplify using `only [MS]`. Conclude with `Finset.sum_eq_zero fun col _ => if_neg fun h => hb ⟨_, h⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MS_off (x : Fin N × WVO (IS I0)) (b : Fin n) (hb : b ∉ Set.range pl) (i : Fin dd) :
     MS Y p pl x (b, i) = 0 := by
@@ -64,9 +64,9 @@ theorem MS_off (x : Fin N × WVO (IS I0)) (b : Fin n) (hb : b ∉ Set.range pl) 
   exact Finset.sum_eq_zero fun col _ => if_neg fun h => hb ⟨_, h⟩
 
 /- English proof (translation)
-Simplify using `only [linPt]`. Rewrite using `[rowOf_eq, rename_subst_linS]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [linS, colLin, map_sum, map_smul, MvPowerSeries.rename_X]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single ρ]`. Simplify using `only [MS_pl, if_true]`. Both sides reduce to the same expression. Introduce `ρ' _ hρ'`. Simplify using `[MS_pl, hρ']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -85,9 +85,9 @@ theorem linPt_pl (ρ : Fin N) (col : Fin 2) (i : Fin dd) :
   · simp
 
 /- English proof (translation)
-Establish `h0 : linS (colLin (MS Y p pl) b) = 0`. Use function extensionality and compare the values at `j`. Simplify using `[linS, colLin, MS_off Y p pl _ b hb]`. Establish `hc` using `cc_linPt Y (MS Y p pl) (b, i)`. Simplify using `only [linPt, h0, MvPowerSeries.subst_zero_eq_C_constantCoeff] at hc ⊢`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at hc`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linPt_off (b : Fin n) (hb : b ∉ Set.range pl) (i : Fin dd) : linPt Y (MS Y p pl) (b, i) = 0 := by
   have h0 : linS (colLin (MS Y p pl) b) = 0 := by
@@ -99,7 +99,7 @@ theorem linPt_off (b : Fin n) (hb : b ∉ Set.range pl) (i : Fin dd) : linPt Y (
   simp [hc]
 
 /- English proof (translation)
-Take `⟨c, i⟩` from `q`. Apply the tactic sequence `fin_cases c <;> simp [pt]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_ptPl (ρ : Fin N) (q : Fin 2 × Fin dd) :
     MvPowerSeries.constantCoeff ((![pt C dd (pl (ρ, 0)), pt C dd (pl (ρ, 1))] : Fin 2 → Pt C n dd) q.1 q.2) = 0 := by
@@ -107,9 +107,9 @@ theorem cc_ptPl (ρ : Fin N) (q : Fin 2 × Fin dd) :
   fin_cases c <;> simp [pt]
 
 /- English proof (translation)
-Establish `hA : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => (![pt C dd (pl (ρ, 0)), pt C dd (pl (ρ, 1))] : Fin 2 → Pt C n dd) q.1 q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_ptPl pl ρ q)`. Establish `hL : MvPowerSeries.HasSubst (linPt Y (MS Y p pl))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_linPt Y _ q)`. Establish `hL2 : MvPowerSeries.HasSubst (linPt Y (uS Y p))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_linPt Y _ q)`. Establish `hR : MvPowerSeries.HasSubst (fun w : WVO (IS I0) => (MvPowerSeries.X (ρ, w) : MvPowerSeries (Fin N × WVO (IS I0)) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => by simp)`. Simplify using `only [pullS, pull2, linPull, ev, rowOf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply hA hL, MvPowerSeries.subst_comp_subst_apply hL2 hR]`. Use `congr 1`. Use function extensionality and compare the values at `⟨c, i⟩`. Apply the tactic sequence `have hc : (![pt C dd (pl (ρ, 0)), pt C dd (pl (ρ, 1))] : Fin 2 → Pt C n dd) c i = MvPowerSeries.X (pl (ρ, c), i) := by fin_cases c <;> rfl`. Rewrite using `[hc, MvPowerSeries.subst_X hL, linPt_pl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -136,13 +136,13 @@ theorem pullS_plane (ρ : Fin N) (G : PS C 2 dd) :
   rfl
 
 /- English proof (translation)
-Establish `hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => (![pt C dd (pl (ρ, col))] : Fin 1 → Pt C n dd) q.1 q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => by obtain ⟨c, i⟩ := q; fin_cases c; simp [pt])`. Establish `hA' : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => (![pt C dd col] : Fin 1 → Pt C 2 dd) q.1 q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => by obtain ⟨c, i⟩ := q; fin_cases c; simp [pt])`. Establish `hL : MvPowerSeries.HasSubst (linPt Y (MS Y p pl))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_linPt Y _ q)`. Establish `hL2 : MvPowerSeries.HasSubst (linPt Y (uS Y p))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_linPt Y _ q)`. Establish `hR : MvPowerSeries.HasSubst (fun w : WVO (IS I0) => (MvPowerSeries.X (ρ, w) : MvPowerSeries (Fin N × WVO (IS I0)) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => linPt Y (uS Y p) (col, q.2))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_linPt Y _ _)`. Establish `hin : (fun q : Fin 1 × Fin dd => MvPowerSeries.subst (linPt Y (uS Y p)) ((![pt C dd col] : Fin 1 → Pt C 2 dd) q.1 q.2)) = fun q => linPt Y (uS Y p) (col, q.2)`. Use function extensionality and compare the values at `⟨c, i⟩`. Use `fin_cases c`. Conclude with `MvPowerSeries.subst_X hL2 (col, i)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pullS, pull2, linPull, ev, rowOf]`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hA hL, MvPowerSeries.subst_comp_subst_apply hA' hL2, hin, MvPowerSeries.subst_comp_subst_apply hcol hR]`. Use `congr 1`. Use function extensionality and compare the values at `⟨c, i⟩`. Establish `hc0 : c = 0` using `Subsingleton.elim _ _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `hc0` using the available equality. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (linPt Y (MS Y p pl)) (MvPowerSeries.X (pl (ρ, col), i)) = MvPowerSeries.subst (fun w => MvPowerSeries.X (ρ, w)) (linPt Y (uS Y p) (col, i))`. Rewrite using `[MvPowerSeries.subst_X hL, linPt_pl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pullS_col (ρ : Fin N) (col : Fin 2) (E : PS C 1 dd) :
     pullS Y p pl (ev (n := n) ![pt C dd (pl (ρ, col))] E) = rowOf ρ (pull2 Y p (ev (n := 2) ![pt C dd col] E)) := by
@@ -179,11 +179,11 @@ theorem pullS_col (ρ : Fin N) (col : Fin 2) (E : PS C 1 dd) :
   rfl
 
 /- English proof (translation)
-Establish `hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => (![pt C dd b] : Fin 1 → Pt C n dd) q.1 q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => by obtain ⟨c, i⟩ := q; fin_cases c; simp [pt])`. Establish `hL : MvPowerSeries.HasSubst (linPt Y (MS Y p pl))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => cc_linPt Y _ q)`. Simplify using `only [pullS, linPull, ev]`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hA hL]`. Establish `h0 : (fun q : Fin 1 × Fin dd => MvPowerSeries.subst (linPt Y (MS Y p pl)) ((![pt C dd b] : Fin 1 → Pt C n dd) q.1 q.2)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `⟨c, i⟩`. Establish `hc0 : c = 0` using `Subsingleton.elim _ _`. Substitute `hc0` using the available equality. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (linPt Y (MS Y p pl)) (MvPowerSeries.X (b, i)) = 0`. Rewrite using `[MvPowerSeries.subst_X hL, linPt_off Y p pl b hb i]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, MvPowerSeries.subst_zero_eq_C_constantCoeff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullS_off (b : Fin n) (hb : b ∉ Set.range pl) (E : PS C 1 dd) :
     pullS Y p pl (ev (n := n) ![pt C dd b] E) = MvPowerSeries.C (MvPowerSeries.constantCoeff E) := by
@@ -205,13 +205,13 @@ theorem pullS_off (b : Fin n) (hb : b ∉ Set.range pl) (E : PS C 1 dd) :
   simp
 
 /- English proof (translation)
-Take `⟨ρ, col, hpl, hco0, hvec⟩` from `h`. Establish `key : ∀ c : Fin 2, (∑ x : Fin N × WVO (IS I0), co x * (if pl (x.1, c) = b then uS Y p x.2 (c, i) else 0)) = if pl (ρ, c) = b then (if c = col then uv ℓ i else 0) else 0`. Introduce `c`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single ρ (fun ρ' _ hρ' => Finset.sum_eq_zero fun w _ => by simp [hco0 ρ' w hρ']) (by simp)]`. Distinguish the cases in `hb' : pl (ρ, c) = b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `congrFun hvec (c, i)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Simplify using `only [hb', if_true]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[hb']`. Simplify using `only [MS, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [key]`. Rewrite using `[Finset.sum_eq_single col (fun c _ hc => by simp [hc]) (by simp)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_true]`. Distinguish the cases in `hb : b = cp ℓ`. Simplify using `[hb, hpl]`. Establish `h2 : pl (ρ, col) ≠ b` using `fun h' => hb (h'.symm.trans hpl)`. Simplify using `[h2, hb]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hco_of_img {ι : Type} (cp : ι → Fin n) (uv : ι → Fin dd → C) (ℓ : ι)
     (co : Fin N × WVO (IS I0) → C)

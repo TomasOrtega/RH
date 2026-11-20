@@ -11,55 +11,47 @@ namespace PositivityTheory.RgHe.LowestKTypeUnitIntegral
 open Formalism.REAL Formalism.MainNotions.S PositivityTheory.UnitaryDecomposition Formalism.MainNotions.BridgeCSchur CompanionTheory.D.Upq.Sm
 
 /- English proof (translation)
-Introduce `n ε lam ε' mu e hG H H' _ _ _ _ _ _ π σ ν hν hπ hσ ⟨j, hj0, hj⟩ κ hK w hw hw1`. Use `haveI := hν`. Use `haveI := inv_inv_of_haar ν`. Establish `hm` using `coef_int hG.two hG.hc' hσ hG.gap' ν hw hw1`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ` using `uRep_emb hG.fits hπ.2.2.1`. Establish `hs` using `uRep_self hσ.2.2.1`. Establish `hS : ∀ v w v' w' : H', ∫ g : UJ ε', ⟪w, σ (um g) v⟫_ℂ * conj ⟪w', σ (um g) v'⟫_ℂ ∂ν = κ * (⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ)` using `fun v w v' w' => (hK.2 v w v' w').2`. Establish `hw0 : w ≠ 0` using `norm_ne_zero_iff.1 (by rw [hw1]; exact one_ne_zero)`. Establish `hww : ⟪w, w⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hw1]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ : UJ ε' → ℂ := fun h => conj ⟪w, σ (um h) w⟫_ℂ with hφd`. Establish `hφ : Integrable φ ν` using `Complex.conjCLE.toContinuousLinearMap.integrable_comp hm`. Use `set ρ : UJ ε' → (H →L[ℂ] H) := fun h => π (emb e (um h)) with hρd`. Use `set b0 := j w with hb0`. Establish `hint : ∀ b a : H, Integrable (fun h => φ h * ⟪b, ρ h a⟫_ℂ) ν` using `fun b a => hφ.mul_bdd (c := ‖b‖ * ‖a‖) (continuous_const.inner (hρ.cont a)).aestronglyMeasurable (.of_forall fun h => (norm_inner_le_norm _ _).trans (by rw [hρ.nrm]))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `L0 : H →ₗ[ℂ] ℂ` to `{ toFun := fun a => ∫ h, φ h * ⟪b0, ρ h a⟫_ℂ ∂ν map_add' := fun a a' => by`. Rewrite using `[← integral_add (hint _ a) (hint _ a')]`. Simplify using `only [map_add, inner_add_right, mul_add]`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_smul, inner_smul_right]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Use `ring }`. Set `Lc : H →L[ℂ] ℂ` to `L0.mkContinuous ((∫ h, ‖φ h‖ ∂ν) * ‖b0‖) fun a => by show ‖∫ h, φ h * ⟪b0, ρ h a⟫_ℂ ∂ν‖ ≤ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(norm_integral_le_of_norm_le (hφ.norm.mul_const (‖b0‖ * ‖a‖)) (.of_forall fun h => ?_)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((norm_inner_le_norm _ _).trans (by rw [hρ.nrm])) (norm_nonneg _)`. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hLc : ∀ a, Lc a = ∫ h, φ h * ⟪b0, ρ h a⟫_ℂ ∂ν` using `fun a => rfl`. Establish `hjw : b0 ≠ 0` using `apply_ne_zero hσ.2.2.2.1 hj0 hj hw0`. Establish `hLb : Lc b0 ≠ 0`. Rewrite using `[hLc]`. Establish `e1 : ∀ h : UJ ε', φ h * ⟪b0, ρ h b0⟫_ℂ = ⟪ContinuousLinearMap.adjoint j b0, σ (um h) w⟫_ℂ * conj ⟪w, σ (um h) w⟫_ℂ` using `fun h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.adjoint_inner_left, hj, mul_comm]`. Simplify using `only [e1, hS, hww, one_mul]`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, inner_self_eq_norm_sq_to_K]`. Establish `: (0 : ℝ) < ‖b0‖` using `norm_pos_iff.2 hjw`. Establish `hκ` using `hK.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (by exact_mod_cast hκ.ne') (pow_ne_zero _ (by simp [hjw]))`. Take `⟨v0, hv0, hv01⟩` from `exists_lowK_unit hπ`. Establish `hv0n : v0 ≠ 0` using `norm_ne_zero_iff.1 (by rw [hv01]; exact one_ne_zero)`. Establish `hv0s` using `(CompanionTheory.Lime.T3.kFiniteWordBound_indefUnitary (n + 1) ε lam (∑ a, |lam a|) H π (by have := hG.two; omega) hG.hc hπ (fun a => Finset.single_le_sum (f := fun a => |lam a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)) (fun a b hab => le_trans (by push_cast; have : (0 : ℝ) …`. Choose the witnesses or unpack the hypotheses as in `⟨g1, hg1⟩ : ∃ g : UJ ε, Lc (π (um g) v0) ≠ 0 := by`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Use `set D := Submodule.span ℂ (Set.range fun g : UJ ε => π (um g) v0) with hDd`. Establish `hD : ∀ g : UJ ε, ∀ y ∈ D, π (um g) y ∈ D` using `fun g y hy => by`. Use `Submodule.span_induction (p := fun y _ => π (um g) y ∈ D) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `_ ⟨g', rfl⟩`. Conclude with `Submodule.subset_span ⟨g * g', u_mul hπ.2.2.1 g g' v0⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `D.add_mem hx hy`. Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `D.smul_mem c hx`. Establish `hv0D : v0 ∈ D` using `Submodule.subset_span ⟨1, by show π (um (1 : UJ ε)) v0 = v0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show um (1 : UJ ε) = 1 from rfl, hπ.2.2.1.1.1]`. Use the proof step `rfl⟩`. Establish `hcl : D.topologicalClosure = ⊤`. Break down `irr_of hπ.2.2.2.1 D.topologicalClosure D.isClosed_topologicalClosure (fun g v hv => map_mem_closure (π (umat g)).continuous hv (hD g)) with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ D.le_topologicalClosure hv0D)) hv0n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hle : D.topologicalClosure ≤ LinearMap.ker (Lc : H →ₗ[ℂ] ℂ)` using `Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact hno g)) Lc.isClosed_ker`. Conclude with `hLb (hle (hcl ▸ Submodule.mem_top))`. Use `set η := π (um g1) v0 with hηd`. Establish `hηs : η ∈ PI.PhMeasCore.smoothVecs (Jm ε) π` using `IsSm.apply (repOn hπ.2.2.1) hv0s g1.2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j', hj'1, hj'2⟩` from `exists_intertwiner ν hρ hs (irr_of hσ.2.2.2.1) κ hS w hw0 hm η`. Use `set ξ0 := j' w with hξ0d`. Establish `hξ0 : ξ0 ≠ 0` using `fun h0 => hg1 (by rw [hLc, ← hj'2 b0, h0, inner_zero_right])`. Establish `hsym : ∀ g, φ g⁻¹ = conj (φ g)` using `fun g => by show conj _ = conj (conj _)`. Rewrite using `[← u_adj hσ.2.2.1 g w w, Complex.conj_conj, inner_conj_symm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconv : ∀ x, ∫ h, φ h * φ (h⁻¹ * x) ∂ν = (κ : ℂ) * φ x` using `fun x => by`. Use `(hK.2 w (σ (um x) w) w w).2` as an intermediate fact. Rewrite `this` using `[inner_self_eq_norm_sq_to_K, hw1]`. Use `show ∫ h, conj ⟪w, σ (um h) w⟫_ℂ * conj ⟪w, σ (um (h⁻¹ * x)) w⟫_ℂ ∂ν = (κ : ℂ) * conj ⟪w, σ (um x) w⟫_ℂ`. Rewrite using `[inner_conj_symm (σ (um x) w), show (κ : ℂ) * ⟪σ (um x) w, w⟫_ℂ = κ * ((((1 : ℝ) : ℂ)) ^ 2 * ⟪σ (um x) w, w⟫_ℂ) by simp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `Eq.trans (integral_congr_ae (.of_forall fun h => ?_)) this` and prove the remaining obligations. Establish `a1` using `hs.adj h w (σ (um x) w)`. Simplify using `only at a1 ⊢`. Rewrite using `[u_mul hσ.2.2.1, ← a1, inner_conj_symm (σ (um x) w), mul_comm]`. Take `⟨b', hb1, hb2⟩` from `idem_avg ν ρ hρ.mul hρ.adj hρ.nrm hρ.cont φ hφ hsym κ hconv η`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : ∀ a, ⟪ξ0, a⟫_ℂ = ∫ h, φ h * ⟪η, ρ h a⟫_ℂ ∂ν` using `fun a => by`. Rewrite using `[← inner_conj_symm, hj'2 a, ← integral_conj, ← integral_inv_eq_self (fun h => φ h * ⟪η, ρ h a⟫_ℂ) ν]`. Use `integral_congr_ae (.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, hsym, inner_conj_symm, hρ.adj, hφd]`. Rewrite using `[u_adj hσ.2.2.1, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hbξ : b' = ξ0` using `ext_inner_right ℂ fun a => by rw [hb1, h7]`. Rewrite `hb2` using `[hbξ]`. Take `⟨c, hc⟩` from `isom_of hσ.2.2.1 hσ.2.2.2.1 hρ j' hj'1`. Use `set r := ‖ξ0‖ with hrd`. Establish `hr : 0 < r` using `norm_pos_iff.2 hξ0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcr : c = ((r ^ 2 : ℝ) : ℂ)`. Use `hc w` as an intermediate fact. Rewrite `this` using `[hww, mul_one, ← hξ0d, inner_self_eq_norm_sq_to_K]`. Rewrite using `[← this]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hnj : ∀ x, ‖j' x‖ = r * ‖x‖` using `fun x => by`. Establish `h1` using `hc x`. Rewrite `h1` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, hcr]`. Establish `h3 : ((‖j' x‖ ^ 2 : ℝ) : ℂ) = ((r ^ 2 * ‖x‖ ^ 2 : ℝ) : ℂ)` using `by push_cast at h1 ⊢; exact h1`.
-
-Establish `h2 : ‖j' x‖ ^ 2 = (r * ‖x‖) ^ 2` using `by rw [mul_pow]; exact Complex.ofReal_injective h3`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h2`. Establish `hκ0 : (κ : ℂ) ≠ 0` using `by exact_mod_cast hK.1.ne'`. Establish `hq : ⟪ξ0, η⟫_ℂ = ((r ^ 2 / κ : ℝ) : ℂ)`. Rewrite `hb2` using `[inner_self_eq_norm_sq_to_K]`.
-
-Use `push_cast`. Rewrite using `[eq_div_iff hκ0]`. Take the linear combination `-hb2`. Establish `hq' : ⟪η, ξ0⟫_ℂ = ((r ^ 2 / κ : ℝ) : ℂ)` using `by rw [← inner_conj_symm, hq, Complex.conj_ofReal]`. Use `⟨((r⁻¹ : ℝ) : ℂ) • j', η, fun x => ?_, fun h x => ?_, hηs, ?_, fun a => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ContinuousLinearMap.smul_apply, norm_smul, Complex.norm_real, Real.norm_of_nonneg (inv_pos.2 hr).le, hnj, ← mul_assoc, inv_mul_cancel₀ hr.ne', one_mul]`. Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`. Rewrite using `[hj'1]`. Rewrite using `[ContinuousLinearMap.smul_apply, ← hξ0d, inner_smul_right, hq']`. Establish `: (0 : ℝ) < r ^ 2 / κ` using `div_pos (by positivity) hK.1`.
-
-Conclude with `mul_ne_zero (by exact_mod_cast (inv_pos.2 hr).ne') (by exact_mod_cast this.ne')`. Rewrite using `[ContinuousLinearMap.smul_apply, ← hξ0d, inner_smul_right, inner_smul_left, hq', Complex.conj_ofReal, ← h7]`. Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lowestKTypeModel : Seed := by
   intro n ε lam ε' mu e hG H H' _ _ _ _ _ _ π σ ν hν hπ hσ ⟨j, hj0, hj⟩ κ hK w hw hw1

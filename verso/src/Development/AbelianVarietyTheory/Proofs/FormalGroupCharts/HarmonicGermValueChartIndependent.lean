@@ -22,9 +22,9 @@ namespace GlobalTheory
 open Formalism.MainNotions.ModuliIntegralCharts.H1
 
 /- English proof (translation)
-Establish `hAct : ExpActOfSt`. Use `expActOf_of_eig ?_` and prove the remaining obligations. Introduce `E _ _ _ H Dw l Xo c _ S _ _ _ y C a ℓ i`. Conclude with `EigDir.linEig_holds E H Dw l Xo c S y C a ℓ i`. Use `chartIndep2_verb ?_ (GlobalTheory.BalancedTwist.frTruncFix_iff.mp frTruncFix_holds) germFix_holds (harmInv_of hAct)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `chartIndepTrunc_of (expChartOf_of hAct) (ExpGauge.expGaugeOf_of hAct) tie_holds ExpUniqChart.expUniqTan (gaugeUniq_of_global globalFns_holds) (killAddVal_of ?_)` and prove the remaining obligations. Introduce `E _ _ _ H`. Conclude with `psiCover_holds H`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem harmonicValue_chart_independent : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 := by
   have hAct : ExpActOfSt := by

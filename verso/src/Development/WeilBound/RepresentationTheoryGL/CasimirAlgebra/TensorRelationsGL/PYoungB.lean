@@ -16,14 +16,14 @@ def kap (tl : Fin N → ι) (colF colS : Fin N → C) (r c : Fin N → Fin n) : 
   ∑ σ ∈ colG tl, (Equiv.Perm.sign σ : ℤ) * (sg colF r (r ∘ σ) * sg colS c (c ∘ σ))
 
 /- English proof (translation)
-The claim follows from `(mem_colG col _).2 fun p => by rw [Equiv.Perm.mul_apply, (mem_colG col π).1 h, (mem_colG col π').1 h']`.
+A detailed English derivation is pending.
 -/
 theorem colG_mul' {X : Type} [Fintype X] [DecidableEq X] {D : Type} [DecidableEq D] (col : X → D)
     {π π' : Equiv.Perm X} (h : π ∈ colG col) (h' : π' ∈ colG col) : π * π' ∈ colG col := (mem_colG col _).2 fun p => by
   rw [Equiv.Perm.mul_apply, (mem_colG col π).1 h, (mem_colG col π').1 h']
 
 /- English proof (translation)
-The claim follows from `(mem_colG col _).2 fun p => by have hp := (mem_colG col π).1 h (π⁻¹ p) simp at hp exact hp.symm`.
+A detailed English derivation is pending.
 -/
 theorem colG_inv' {X : Type} [Fintype X] [DecidableEq X] {D : Type} [DecidableEq D] (col : X → D)
     {π : Equiv.Perm X} (h : π ∈ colG col) : π⁻¹ ∈ colG col := (mem_colG col _).2 fun p => by
@@ -32,7 +32,7 @@ theorem colG_inv' {X : Type} [Fintype X] [DecidableEq X] {D : Type} [DecidableEq
   exact hp.symm
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_mul, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sum_sum_ite_mul_eq_sum_mul_comp {Γ : Type} [Fintype Γ] [DecidableEq Γ] {κ : Type} (s : Finset κ)
     (x : κ → Γ) (w : κ → ℤ) (F : Γ → ℤ) :
@@ -42,11 +42,9 @@ private theorem sum_sum_ite_mul_eq_sum_mul_comp {Γ : Type} [Fintype Γ] [Decida
   simp
 
 /- English proof (translation)
-Apply `Finset.sum_nbij' (fun x => a⁻¹ * x) (fun u => a * u)` to reduce the goal to its premises. Introduce `x hx`. Conclude with `hCm _ (hCi _ ha) _ hx`. Introduce `u hu`. Conclude with `hCm _ ha _ hu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x _`. Simplify using the standard rewrite rules. Introduce `u _`. Simplify using the standard rewrite rules. Introduce `x _`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_closed_eq_sum_left_mul {Γ : Type} [Group Γ] [DecidableEq Γ] (C : Finset Γ)
     (hCm : ∀ x ∈ C, ∀ y ∈ C, x * y ∈ C) (hCi : ∀ x ∈ C, x⁻¹ ∈ C) {a : Γ} (ha : a ∈ C)
@@ -64,11 +62,9 @@ private theorem sum_closed_eq_sum_left_mul {Γ : Type} [Group Γ] [DecidableEq �
     simp
 
 /- English proof (translation)
-Apply `Finset.sum_nbij' (fun x => x * a⁻¹) (fun v => v * a)` to reduce the goal to its premises. Introduce `x hx`. Conclude with `hCm _ hx _ (hCi _ ha)`. Introduce `u hu`. Conclude with `hCm _ hu _ ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x _`. Simplify using the standard rewrite rules. Introduce `u _`. Simplify using the standard rewrite rules. Introduce `x _`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_closed_eq_sum_mul_right {Γ : Type} [Group Γ] [DecidableEq Γ] (C : Finset Γ)
     (hCm : ∀ x ∈ C, ∀ y ∈ C, x * y ∈ C) (hCi : ∀ x ∈ C, x⁻¹ ∈ C) {a : Γ} (ha : a ∈ C)
@@ -86,27 +82,25 @@ private theorem sum_closed_eq_sum_mul_right {Γ : Type} [Group Γ] [DecidableEq 
     simp
 
 /- English proof (translation)
-Use `set K := ∑ b1 ∈ R, ∑ u ∈ C, ∑ b2 ∈ R, ∑ v ∈ C, (if u * b2 * v = b1 then e b1 * e b2 else 0) with hK`. Set `f : Γ → ℤ` to `fun g => ∑ t ∈ C ×ˢ (R ×ˢ C), if t.1 * t.2.1 * t.2.2 = g then e t.2.1 else 0`. Establish `hI : ∀ a1 ∈ C, ∀ b1 : Γ, ∀ a1' ∈ C, (∑ a2 ∈ C, ∑ b2 ∈ R, ∑ a2' ∈ C, if a2 * b2 * a2' = a1 * b1 * a1' then e b1 * e b2 else 0) = ∑ u ∈ C, ∑ b2 ∈ R, ∑ v ∈ C, if u * b2 * v = b1 then e b1 * e b2 else 0`. Introduce `a1 ha1 b1 a1' ha1'`. Rewrite using `[sum_closed_eq_sum_left_mul C hCm hCi ha1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun b2 _ => ?_` and prove the remaining obligations. Rewrite using `[sum_closed_eq_sum_mul_right C hCm hCi ha1']`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hm : a1 * u * b2 * (v * a1') = a1 * (u * b2 * v) * a1'` using `by simp only [mul_assoc]`. Simplify using `only [hm, mul_left_inj, mul_right_inj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∑ g, f g * f g = (C.card : ℤ) * C.card * K`. Establish `h0` using `sum_sum_ite_mul_eq_sum_mul_comp (C ×ˢ (R ×ˢ C)) (fun t => t.1 * t.2.1 * t.2.2) (fun t => e t.2.1) f`. Rewrite using `[show (∑ g, f g * f g) = ∑ i ∈ C ×ˢ (R ×ˢ C), e i.2.1 * f (i.1 * i.2.1 * i.2.2) from h0]`. Simplify using `only [f, Finset.mul_sum, Finset.sum_product, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun a1 ha1 => Finset.sum_congr rfl fun b1 _ => Finset.sum_congr rfl fun a1' ha1' => hI a1 ha1 b1 a1' ha1']`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum, hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : f 1 = C.card`. Simplify using `only [f, Finset.sum_product]`. Rewrite using `[Finset.card_eq_sum_ones, Nat.cast_sum, Nat.cast_one]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (1 : Γ)]`. Rewrite using `[Finset.sum_eq_single a⁻¹]`. Simplify using `[he]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite `h` using `[mul_one]`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (hCi a ha) h`. Introduce `b hb hb1`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a' ha'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[if_neg]`. Introduce `h`. Apply `hb1` to reduce the goal to its premises. Apply `hRC b hb` to reduce the goal to its premises. Establish `hb' : b = a⁻¹ * (a * b * a') * a'⁻¹` using `by simp [mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hb'` using `[h, mul_one]`. Rewrite using `[hb']`. Conclude with `hCm _ (hCi _ ha) _ (hCi _ ha')`. Introduce `h`. Conclude with `absurd hR1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h3 : f 1 * f 1 ≤ ∑ g, f g * f g` using `Finset.single_le_sum (f := fun g => f g * f g) (fun g _ => mul_self_nonneg (f g)) (Finset.mem_univ 1)`. Establish `hc : (0 : ℤ) < C.card` using `by exact_mod_cast Finset.card_pos.2 ⟨1, hC1⟩`. Establish `hcc : (0 : ℤ) < (C.card : ℤ) * C.card` using `mul_pos hc hc`. Rewrite `h3` using `[h1, h2]`. Assume the negation of the conclusion as `hK0`.
-
-Use `push_neg at hK0`. Use `mul_nonpos_of_nonneg_of_nonpos hcc.le hK0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem sum_ite_mul_mul_eq_pos_of_subgroup_transversal {Γ : Type} [Group Γ] [Fintype Γ] [DecidableEq Γ] (C R : Finset Γ)
     (e : Γ → ℤ) (hC1 : (1 : Γ) ∈ C) (hCm : ∀ x ∈ C, ∀ y ∈ C, x * y ∈ C)
@@ -176,11 +170,11 @@ private theorem sum_ite_mul_mul_eq_pos_of_subgroup_transversal {Γ : Type} [Grou
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Apply `Finset.sum_nbij' (fun σ => σ * p⁻¹) (fun b => b * p)` to reduce the goal to its premises. Introduce `σ hσ`. Conclude with `(Finset.mem_filter.1 hσ).2`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_filter.2 ⟨hp b hb, by simpa using hb⟩`. Introduce `σ _`. Simplify using the standard rewrite rules. Introduce `b _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `σ _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem sum_ite_mul_inv_mem_eq_sum_mul {Γ : Type} [Group Γ] [DecidableEq Γ] (G R : Finset Γ) (p : Γ)
     (hp : ∀ b ∈ R, b * p ∈ G) (F : Γ → ℤ) :
@@ -199,19 +193,15 @@ private theorem sum_ite_mul_inv_mem_eq_sum_mul {Γ : Type} [Group Γ] [Decidable
     simp
 
 /- English proof (translation)
-Establish `hu : ∀ b1 b2 v : Γ, (∑ u ∈ C, if u * b2 * v = b1 then e b1 * e b2 else 0) = if b1 * (b2 * v)⁻¹ ∈ C then e b1 * e b2 else 0`. Introduce `b1 b2 v`. Establish `h : ∀ u, (u * b2 * v = b1) ↔ (u = b1 * (b2 * v)⁻¹)` using `fun u => by`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc]`. Simplify using `only [h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_ite_eq' _ _ _`. Establish `hinv : ∀ x : Γ, x ∈ C ↔ x⁻¹ ∈ C` using `fun x => ⟨hCi x, fun h => by simpa using hCi _ h⟩`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Use `_ = ∑ π ∈ C, ∑ σ ∈ G, ∑ ρ ∈ R, if σ * π⁻¹ ∈ R then (if σ * ρ⁻¹ ∈ C then e σ * e π * e ρ else 0) else 0 := Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ π ∈ C, ∑ ρ ∈ R, ∑ σ ∈ G, if σ * π⁻¹ ∈ R then (if σ * ρ⁻¹ ∈ C then e σ * e π * e ρ else 0) else 0 := Finset.sum_congr rfl fun π _ => Finset.sum_comm`. Use `_ = ∑ π ∈ C, ∑ ρ ∈ R, ∑ b2 ∈ R, if b2 * π * ρ⁻¹ ∈ C then e (b2 * π) * e π * e ρ else 0 := by`. Use `Finset.sum_congr rfl fun π hπ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Conclude with `sum_ite_mul_inv_mem_eq_sum_mul G R π (fun b hb => hGm _ (hRG b hb) _ (hCG π hπ)) (fun σ => if σ * ρ⁻¹ ∈ C then e σ * e π * e ρ else 0)`. Use `_ = ∑ π ∈ C, ∑ ρ ∈ R, ∑ b2 ∈ R, if ρ * (b2 * π)⁻¹ ∈ C then e ρ * e b2 else 0 := by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun π _ => Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun b2 _ => ?_` and prove the remaining obligations. Establish `hc : (b2 * π * ρ⁻¹ ∈ C) ↔ (ρ * (b2 * π)⁻¹ ∈ C)`. Rewrite using `[hinv (b2 * π * ρ⁻¹)]`. Simplify using `[_root_.mul_inv_rev, mul_assoc]`. Distinguish the cases in `h : ρ * (b2 * π)⁻¹ ∈ C`.
-
-Rewrite using `[if_pos (hc.2 h), if_pos h, hem]`. Take the linear combination `(e b2 * e ρ) * hee π`. Rewrite using `[if_neg (fun h' => h (hc.1 h')), if_neg h]`. Use `_ = ∑ v ∈ C, ∑ b1 ∈ R, ∑ b2 ∈ R, if b1 * (b2 * v)⁻¹ ∈ C then e b1 * e b2 else 0 := rfl`. Use `_ = ∑ b1 ∈ R, ∑ v ∈ C, ∑ b2 ∈ R, if b1 * (b2 * v)⁻¹ ∈ C then e b1 * e b2 else 0 := Finset.sum_comm`.
-
-Use `_ = ∑ b1 ∈ R, ∑ b2 ∈ R, ∑ v ∈ C, if b1 * (b2 * v)⁻¹ ∈ C then e b1 * e b2 else 0 := Finset.sum_congr rfl fun b1 _ => Finset.sum_comm`. Use `_ = ∑ b1 ∈ R, ∑ b2 ∈ R, ∑ v ∈ C, ∑ u ∈ C, if u * b2 * v = b1 then e b1 * e b2 else 0 := by`. Simplify using `only [hu]`. Use `_ = ∑ b1 ∈ R, ∑ b2 ∈ R, ∑ u ∈ C, ∑ v ∈ C, if u * b2 * v = b1 then e b1 * e b2 else 0 := Finset.sum_congr rfl fun b1 _ => Finset.sum_congr rfl fun b2 _ => Finset.sum_comm`. Use `_ = ∑ b1 ∈ R, ∑ u ∈ C, ∑ b2 ∈ R, ∑ v ∈ C, if u * b2 * v = b1 then e b1 * e b2 else 0 := Finset.sum_congr rfl fun b1 _ => Finset.sum_comm`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_e_mul_prod_sums_eq_four_sum {Γ : Type} [Group Γ] [DecidableEq Γ] (G C R : Finset Γ) (e : Γ → ℤ)
     (hem : ∀ x y, e (x * y) = e x * e y) (hee : ∀ x, e x * e x = 1)
@@ -272,27 +262,25 @@ private theorem sum_e_mul_prod_sums_eq_four_sum {Γ : Type} [Group Γ] [Decidabl
         Finset.sum_congr rfl fun b1 _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `hGt : ∀ x ∈ colG tl, ∀ p, tl (x p) = tl p` using `fun x hx => (mem_colG tl x).1 hx`. Establish `hCG : ∀ x ∈ colG colF, x ∈ colG tl` using `fun x hx => (mem_colG tl x).2 fun p => ((hF (x p) p).1 ((mem_colG colF x).1 hx p)).1`. Establish `hRG : ∀ x ∈ colG colS, x ∈ colG tl` using `fun x hx => (mem_colG tl x).2 fun p => ((hS (x p) p).1 ((mem_colG colS x).1 hx p)).1`. Establish `hP : ∀ σ ∈ colG tl, ∀ π ∈ colG colF, (r ∘ ⇑π = r ∘ ⇑σ ↔ σ * π⁻¹ ∈ colG colS)`. Introduce `σ hσ π hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_colG]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Establish `e1` using `congrFun h (π⁻¹ p)`. Simplify using `only [Function.comp_apply] at e1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[show π (π⁻¹ p) = p by simp]`. Rewrite using `[hS, Equiv.Perm.mul_apply]`. Use `⟨?_, e1.symm⟩` and prove the remaining obligations. Rewrite using `[hGt σ hσ, hGt _ (hCG _ (colG_inv' colF hπ))]`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Establish `e2` using `(hS _ _).1 (h (π k))`. Rewrite `e2` using `[Equiv.Perm.mul_apply, show π⁻¹ (π k) = k by simp]`. Conclude with `e2.2.symm`. Establish `hQ : ∀ σ ∈ colG tl, ∀ ρ ∈ colG colS, (c ∘ ⇑ρ = c ∘ ⇑σ ↔ σ * ρ⁻¹ ∈ colG colF)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hσ ρ hρ`. Rewrite using `[mem_colG]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Establish `e1` using `congrFun h (ρ⁻¹ p)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply] at e1`. Rewrite `e1` using `[show ρ (ρ⁻¹ p) = p by simp]`. Rewrite using `[hF, Equiv.Perm.mul_apply]`. Use `⟨?_, e1.symm⟩` and prove the remaining obligations. Rewrite using `[hGt σ hσ, hGt _ (hRG _ (colG_inv' colS hρ))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use function extensionality and compare the values at `k`. Establish `e2` using `(hF _ _).1 (h (ρ k))`. Rewrite `e2` using `[Equiv.Perm.mul_apply, show ρ⁻¹ (ρ k) = k by simp]`. Conclude with `e2.2.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key : kap tl colF colS r c = ∑ σ ∈ colG tl, (Equiv.Perm.sign σ : ℤ) * ((∑ π ∈ colG colF, if σ * π⁻¹ ∈ colG colS then (Equiv.Perm.sign π : ℤ) else 0) * (∑ ρ ∈ colG colS, if σ * ρ⁻¹ ∈ colG colF then (Equiv.Perm.sign ρ : ℤ) else 0))`. Unfold `kap sg`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Establish `a1 : (∑ π ∈ colG colF, if r ∘ ⇑π = r ∘ ⇑σ then (Equiv.Perm.sign π : ℤ) else 0) = ∑ π ∈ colG colF, if σ * π⁻¹ ∈ colG colS then (Equiv.Perm.sign π : ℤ) else 0` using `Finset.sum_congr rfl fun π hπ => by simp only [hP σ hσ π hπ]`. Establish `a2 : (∑ ρ ∈ colG colS, if c ∘ ⇑ρ = c ∘ ⇑σ then (Equiv.Perm.sign ρ : ℤ) else 0) = ∑ ρ ∈ colG colS, if σ * ρ⁻¹ ∈ colG colF then (Equiv.Perm.sign ρ : ℤ) else 0` using `Finset.sum_congr rfl fun ρ hρ => by simp only [hQ σ hσ ρ hρ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[a1, a2]`. Establish `hRC : ∀ x ∈ colG colS, x ∈ colG colF → x = 1`. Introduce `x hxS hxF`. Use `Equiv.Perm.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[Equiv.Perm.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hS _ _).1 ((mem_colG colS x).1 hxS k)`. Establish `h2` using `(hF _ _).1 ((mem_colG colF x).1 hxF k)`. Conclude with `hinj _ _ h1.1 h1.2 h2.2`. Rewrite using `[key]`. Use `lt_of_lt_of_eq (sum_ite_mul_mul_eq_pos_of_subgroup_transversal (colG colF) (colG colS) (fun g => (Equiv.Perm.sign g : ℤ)) ((mem_colG _ _).2 fun p => rfl) (fun x hx y hy => colG_mul' colF hx hy) (fun x hx => colG_inv' colF hx) ((mem_colG _ _).2 fun p => rfl) hRC (by simp)) (sum_e_ …` and prove the remaining obligations.
-
-Rewrite using `[← Units.val_mul, Int.units_mul_self, Units.val_one])`. Use `hCG hRG (fun x hx y hy => colG_mul' tl hx hy) (fun x hx => colG_inv' colF hx)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_pos (tl : Fin N → ι) (colF colS : Fin N → C) (r c : Fin N → Fin n)
     (hF : ∀ k k', colF k = colF k' ↔ tl k = tl k' ∧ c k = c k')

@@ -5,23 +5,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo MeasureTheory GlobalT
 namespace GlobalTheory.CompanionTheory.Ar.Tw
 
 /- English proof (translation)
-Set `F` to `FractionRing D`. Set `g : Polynomial F` to `Polynomial.X ^ 2 + Polynomial.C (p : F)`. Establish `hmonic : g.Monic` using `Polynomial.monic_X_pow_add_C _ (by norm_num)`. Establish `hdeg : g.natDegree = 2` using `Polynomial.natDegree_X_pow_add_C`. Establish `hinjF : Function.Injective (algebraMap D F)` using `IsFractionRing.injective D F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnr : ∀ r : F, r ^ 2 + (p : F) ≠ 0`. Introduce `r hr`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := D) r`. Establish `hb0 : algebraMap D F b ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `nonZeroDivisors.ne_zero hb (hinjF (by simpa using h0))`. Establish `h1 : algebraMap D F (a ^ 2 + (p : D) * b ^ 2) = 0`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Establish `e : algebraMap D F a ^ 2 + (p : F) * algebraMap D F b ^ 2 = ((algebraMap D F a / algebraMap D F b) ^ 2 + (p : F)) * algebraMap D F b ^ 2`. Rewrite using `[div_pow, add_mul, div_mul_cancel₀ _ (pow_ne_zero 2 hb0)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hr, zero_mul]`. Establish `h2 : a ^ 2 + (p : D) * b ^ 2 = 0` using `hinjF (by simpa using h1)`. Conclude with `hb0 (by rw [h a b h2, map_zero])`. Establish `hirr : Irreducible g`. Rewrite using `[hmonic.irreducible_iff_roots_eq_zero_of_degree_le_three (by omega) (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Multiset.eq_zero_of_forall_notMem fun r hr => ?_` and prove the remaining obligations. Use `(Polynomial.mem_roots'.mp hr).2` as an intermediate fact. Simplify using `[g, Polynomial.IsRoot] at this`. Conclude with `hnr r this`. Use `haveI : Fact (Irreducible g) := ⟨hirr⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨AdjoinRoot g, inferInstance, (AdjoinRoot.of g).comp (algebraMap D F), AdjoinRoot.root g, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : AdjoinRoot.mk g (Polynomial.X ^ 2 + Polynomial.C (p : F)) = 0` using `AdjoinRoot.mk_self`. Rewrite `h0` using `[map_add, map_pow, AdjoinRoot.mk_X, AdjoinRoot.mk_C, map_natCast]`. Take the linear combination `h0`. Introduce `u v huv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : AdjoinRoot.mk g (Polynomial.C (algebraMap D F u) + Polynomial.C (algebraMap D F v) * Polynomial.X) = 0`. Simplify using `using huv`. Rewrite `h1` using `[AdjoinRoot.mk_eq_zero]`. Establish `h2` using `Polynomial.eq_zero_of_dvd_of_degree_lt h1 (by`. Rewrite using `[Polynomial.degree_eq_natDegree hmonic.ne_zero, hdeg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `compute_degree`. Conclude with `(by norm_num : 1 < 2))` after adjusting the coercions. Establish `hu` using `congrArg (fun t => Polynomial.coeff t 0) h2`. Establish `hv` using `congrArg (fun t => Polynomial.coeff t 1) h2`. Simplify using `at hu hv`.
-
-Conclude with `⟨hu, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_field {D : Type} [CommRing D] [IsDomain D] (p : ℕ)
     (h : ∀ a b : D, a ^ 2 + (p : D) * b ^ 2 = 0 → b = 0) :
@@ -73,63 +71,59 @@ theorem exists_root_field {D : Type} [CommRing D] [IsDomain D] (p : ℕ)
     exact ⟨hu, hv⟩
 
 /- English proof (translation)
-Use `haveI : IsDomain (MRing ι ⧸ W) := Ideal.Quotient.isDomain W`. Establish `hD : ∀ a b : MRing ι ⧸ W, a ^ 2 + (p : MRing ι ⧸ W) * b ^ 2 = 0 → b = 0`. Introduce `a b h`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Apply `hN a` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using h`. Take `⟨E, _, i, s, hs, hind⟩` from `exists_root_field p hD`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ : MRing (Tb ι) →+* Polynomial E` to `(aeval (fun q : Σ o, Tb ι o => match q with`. Consider the case `⟨none, j⟩ => if j = (0 : Fin 2) then Polynomial.C s * Polynomial.X else Polynomial.X`. Consider the case `⟨some k, l⟩ => Polynomial.C (i (Ideal.Quotient.mk W (X ⟨k, l⟩)))) : MRing (Tb ι) →ₐ[ℤ] Polynomial E).toRingHom`. Establish `hinc : ∀ f : MRing ι, φ (inc f) = Polynomial.C (i (Ideal.Quotient.mk W f))`. Introduce `f`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (φ.comp inc) = (Polynomial.C.comp (i.comp (Ideal.Quotient.mk W)))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[φ, inc]`. Introduce `l`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[φ, inc, oldIdx]`. Conclude with `congrArg (fun g => g f) this`. Establish `hx : φ xN = Polynomial.C s * Polynomial.X`. Simplify using `only [φ, xN, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Conclude with `if_pos rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : φ yN = Polynomial.X`. Simplify using `only [φ, yN, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Conclude with `if_neg (show ¬ ((1 : Fin 2) = 0) by decide)`. Establish `hCp : φ (C (p : ℤ)) = (p : Polynomial E)`. Simplify using `[φ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle : twist p W ≤ RingHom.ker φ`. Use `sup_le (Ideal.map_le_iff_le_comap.mpr fun f hf => ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hinc, Ideal.Quotient.eq_zero_iff_mem.mpr hf]`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show quad p ∈ RingHom.ker φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Simplify using `only [quad, map_add, map_mul, map_pow, hx, hy, hCp]`. Establish `hs' : (Polynomial.C s) ^ 2 = -(p : Polynomial E)`. Rewrite using `[← map_pow, hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take the linear combination `(Polynomial.X ^ 2 : Polynomial E) * hs'`. Set `φ' : (MRing (Tb ι) ⧸ twist p W) →+* Polynomial E` to `Ideal.Quotient.lift _ φ (fun a ha => hle ha)`. Set `mk'` to `Ideal.Quotient.mk (twist p W)`. Establish `hWle : ∀ a ∈ W, (mk'.comp inc) a = 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ha))`. Set `τ : (MRing ι ⧸ W) →+* (MRing (Tb ι) ⧸ twist p W)` to `Ideal.Quotient.lift W (mk'.comp inc) hWle`. Set `σ : Polynomial (MRing ι ⧸ W) →+* (MRing (Tb ι) ⧸ twist p W)` to `Polynomial.eval₂RingHom τ (mk' yN)`. Establish `hσC : ∀ d, σ (Polynomial.C d) = τ d` using `fun d => by simp [σ]`. Establish `hσX : σ Polynomial.X = mk' yN` using `by simp [σ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxx : mk' xN * mk' xN = σ (-(p : Polynomial (MRing ι ⧸ W)) * Polynomial.X ^ 2)`. Establish `hq : mk' (quad p) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Simplify using `only [quad, map_add, map_mul, map_pow] at hq`. Establish `hc : mk' (C (p : ℤ)) = (p : MRing (Tb ι) ⧸ twist p W)` using `by simp [mk']`. Rewrite `hq` using `[hc]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `only [map_mul, map_neg, map_natCast, map_pow, hσX]`. Take the linear combination `hq`. Establish `hform : ∀ f : MRing (Tb ι), ∃ a b : Polynomial (MRing ι ⧸ W), mk' f = σ a + σ b * mk' xN`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `C n`. Use `⟨(n : Polynomial (MRing ι ⧸ W)), 0, ?_⟩` and prove the remaining obligations. Simplify using `[mk']`. Consider the case `add f g hf hg`. Take `⟨a, b, h1⟩` from `hf`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', b', h2⟩` from `hg`. Conclude with `⟨a + a', b + b', by rw [map_add, h1, h2, map_add, map_add]; ring⟩`. Consider the case `mul_X f q hf`. Take `⟨a, b, h1⟩` from `hf`. Rewrite using `[map_mul, h1]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨o, l⟩` from `q`. Consider the cases of `o with`. Consider the case `none`. Establish `aux : ∀ l : Fin 2, (X (⟨none, l⟩ : Σ o, Tb ι o) : MRing (Tb ι)) = xN ∨ (X (⟨none, l⟩ : Σ o, Tb ι o) : MRing (Tb ι)) = yN`. Introduce `l`.
+Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases l`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Break down `aux l with hl | hl` into its components or cases. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b * (-(p : Polynomial (MRing ι ⧸ W)) * Polynomial.X ^ 2), a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul σ b, ← hxx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl]`. Use `⟨a * Polynomial.X, b * Polynomial.X, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hσX]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `some k`. Use `⟨a * Polynomial.C (Ideal.Quotient.mk W (X ⟨k, l⟩)), b * Polynomial.C (Ideal.Quotient.mk W (X ⟨k, l⟩)), ?_⟩` and prove the remaining obligations. Establish `hτ : τ (Ideal.Quotient.mk W (X ⟨k, l⟩)) = mk' (X ⟨some k, l⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show τ (Ideal.Quotient.mk W (X ⟨k, l⟩)) = mk' (inc (X ⟨k, l⟩)) from Ideal.Quotient.lift_mk _ _ _]`. Simplify using `[inc, oldIdx]`. Rewrite using `[map_mul, map_mul, hσC, hτ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφ' : ∀ f, φ' (mk' f) = φ f` using `fun f => Ideal.Quotient.lift_mk _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hτ' : ∀ d, τ (Ideal.Quotient.mk W d) = mk' (inc d)` using `fun d => Ideal.Quotient.lift_mk _ _ _`. Establish `hσ : ∀ a, φ' (σ a) = a.map (i : (MRing ι ⧸ W) →+* E)`. Establish `: (φ'.comp σ) = Polynomial.mapRingHom i`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Use `show φ' (σ (Polynomial.C _)) = (Polynomial.C _).map i`. Rewrite using `[hσC, hτ', hφ', hinc, Polynomial.map_C]`. Use `show φ' (σ Polynomial.X) = Polynomial.X.map i`. Rewrite using `[hσX, hφ', hy, Polynomial.map_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `fun a => congrArg (fun g => g a) this`. Establish `hφx : φ' (mk' xN) = Polynomial.C s * Polynomial.X`. Rewrite using `[hφ', hx]`. Establish `hinj : Function.Injective φ'`. Rewrite using `[injective_iff_map_eq_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `q hq`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨a, b, h1⟩` from `hform f`. Express the relevant statement in the definitionally equal form `φ' (mk' f) = 0 at hq`. Express the relevant statement in the definitionally equal form `mk' f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hq`, the goal using `[h1]`. Rewrite `hq` using `[map_add, map_mul, hσ, hσ, hφx]`. Establish `hcoef : ∀ n, (a.coeff (n + 1) = 0 ∧ b.coeff n = 0)`. Introduce `n`. Use `congrArg (fun t => Polynomial.coeff t (n + 1)) hq` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Polynomial.coeff_add, Polynomial.coeff_map, Polynomial.coeff_zero] at this`. Establish `e : (Polynomial.map i b * (Polynomial.C s * Polynomial.X)).coeff (n + 1) = i (b.coeff n) * s`. Rewrite using `[← mul_assoc, Polynomial.coeff_mul_X, mul_comm, Polynomial.coeff_C_mul, Polynomial.coeff_map, mul_comm]`. Rewrite `this` using `[e]`. Conclude with `hind _ _ this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `ha0 : a.coeff 0 = 0`. Use `congrArg (fun t => Polynomial.coeff t 0) hq` as an intermediate fact. Simplify using `only [Polynomial.coeff_add, Polynomial.coeff_map, Polynomial.coeff_zero] at this`. Establish `e : (Polynomial.map i b * (Polynomial.C s * Polynomial.X)).coeff 0 = 0`. Rewrite using `[← mul_assoc, Polynomial.coeff_mul_X_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `this` using `[e, add_zero]`. Establish `h3` using `hind (a.coeff 0) 0 (by simpa using this)`. Conclude with `h3.1`. Establish `ha : a = 0`. Use extensionality with `n`.
-
-Consider the cases of `n with`. Consider the case `zero => simpa using ha0`. Consider the case `succ n => simpa using (hcoef n).1`. Establish `hb : b = 0`. Use extensionality with `n`.
-
-Simplify using `using (hcoef n).2`. Rewrite using `[ha, hb]`. Simplify using the standard rewrite rules. Use `haveI : IsDomain (MRing (Tb ι) ⧸ twist p W) := hinj.isDomain φ'`. Conclude with `(Ideal.Quotient.isDomain_iff_prime _).mp inferInstance`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twist_isPrime (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (p : ℕ)
     (W : Ideal (MRing ι)) (hW : W.IsPrime) (hN : NoRoot p W) : (twist p W).IsPrime := by

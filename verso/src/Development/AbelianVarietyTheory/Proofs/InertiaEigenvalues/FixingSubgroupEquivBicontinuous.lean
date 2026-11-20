@@ -10,17 +10,17 @@ namespace GlobalTheory
 open scoped Topology
 
 /- English proof (translation)
-Use `⟨continuous_of_continuousAt_one _ ?_, continuous_of_continuousAt_one _ ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, Filter.tendsto_def]`. Introduce `s hs`. Take `⟨E, hE, hEs⟩` from `(krullTopology_mem_nhds_one_iff K Ω s).1 hs`. Establish `: IsScalarTower k K E` using `⟨fun a b x => Subtype.ext (smul_assoc a b (x : Ω))⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE' : Module.Finite k E` using `Module.Finite.trans K E`. Establish `hfin : FiniteDimensional k (E.restrictScalars k)` using `hE'`. Rewrite using `[mem_nhds_subtype]`. Use `⟨(E.restrictScalars k).fixingSubgroup, (krullTopology_mem_nhds_one_iff k Ω _).2 ⟨E.restrictScalars k, hfin, subset_rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hEs` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x hx`. Rewrite using `[ContinuousAt, map_one, Filter.tendsto_def]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Take `⟨u, hu, hus⟩` from `(mem_nhds_subtype _ _ _).1 hs`. Take `⟨E, hE, hEu⟩` from `(krullTopology_mem_nhds_one_iff k Ω u).1 hu`. Set `F : IntermediateField K Ω` to `IntermediateField.extendScalars (le_sup_right : K ≤ E ⊔ K)`. Establish `hk : FiniteDimensional k (E ⊔ K : IntermediateField k Ω)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite k F` using `hk`. Establish `hF : FiniteDimensional K F` using `Module.Finite.of_restrictScalars_finite k K F`. Use `(krullTopology_mem_nhds_one_iff K Ω _).2 ⟨F, hF, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Apply `hus` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hEu` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ x ((IntermediateField.mem_extendScalars _).2 (le_sup_left (a := E) hx))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixingSubgroupEquiv_bicontinuous (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     (K : IntermediateField k Ω) [FiniteDimensional k ↥K] :

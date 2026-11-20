@@ -18,7 +18,7 @@ section Small
 variable {Γ G V U : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-Establish `: Subsingleton ρ.asModule` using `inferInstanceAs (Subsingleton V)`. Rewrite using `[HasFiniteLength, isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hasFiniteLength_of_subsingleton [Subsingleton V] (ρ : Representation ℂ G V) : HasFiniteLength ρ := by
   have : Subsingleton ρ.asModule := inferInstanceAs (Subsingleton V)
@@ -26,7 +26,7 @@ theorem hasFiniteLength_of_subsingleton [Subsingleton V] (ρ : Representation �
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `have : Subsingleton (V ⧸ twRel (τ.comp (MonoidHom.inl Γ G)) ψ) := Submodule.Quotient.subsingleton_iff.2 (Subsingleton.elim _ _) hasFiniteLength_of_subsingleton _`.
+A detailed English derivation is pending.
 -/
 theorem coinv_of_subsingleton [Subsingleton V] (τ : Representation ℂ (Γ × G) V) (ψ : Γ →* ℂˣ) :
     HasFiniteLength (coinv τ ψ) :=
@@ -34,9 +34,9 @@ theorem coinv_of_subsingleton [Subsingleton V] (τ : Representation ℂ (Γ × G
   hasFiniteLength_of_subsingleton _
 
 /- English proof (translation)
-Set `τ₀ : Representation ℂ (Γ × G) PUnit` to `Representation.trivial ℂ _ _`. Set `i : τ₀.IntertwiningMap τ` to `⟨0, fun g => by ext v; simp⟩`. Use `GlobalTheory.T.finite_length_coinvariants_exact Γ G PUnit V U τ₀ τ τ' i E.toIntertwiningMap E.toLinearEquiv.surjective (fun x => ?_) ψ (coinv_of_subsingleton _ _) h` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: E.toLinearEquiv x = 0` using `hx`. Conclude with `((E.toLinearEquiv.map_eq_zero_iff).1 this).symm ▸ rfl`. Introduce and unpack `⟨y, rfl⟩ show E.toLinearEquiv 0 = 0`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coinv_of_equiv {τ : Representation ℂ (Γ × G) V} {τ' : Representation ℂ (Γ × G) U} (E : τ.Equiv τ')
     (ψ : Γ →* ℂˣ) (h : HasFiniteLength (coinv τ' ψ)) : HasFiniteLength (coinv τ ψ) := by
@@ -61,17 +61,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
 /- English proof (translation)
-Distinguish the cases in `hκ : κ ≤ Fintype.card b`. Set `e : Fin κ ⊕ Fin (Fintype.card b - κ) ≃ b` to `(stdSum (Nat.add_sub_cancel' hκ)).trans (Fintype.equivFin b).symm`. Take `⟨E⟩` from `GlobalTheory.T.omega_equiv_induced_fibre k a b (Fin κ) (Fin (Fintype.card b - κ)) e κ (Fintype.card_fin κ).symm μ hμ`. Use `coinv_of_equiv E ψ (GlobalTheory.T.coinvariants_finite_of_smooth_levi k hI _ _ b _ _ e _ (GlobalTheory.T.fibre_representation_smooth k a _ _ μ hμ κ) ψ ?_)` and prove the remaining obligations. Set `τ` to `fibRep (k := k) a (Fin κ) (Fin (Fintype.card b - κ)) μ κ`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `ω : GL a k →* ℂˣ` to `(fibChar a (Fin κ) (Fin (Fintype.card b - κ)) μ).comp (MonoidHom.inl _ _)`. Establish `hfin` using `GlobalTheory.T.finite_twisted_rank_quotient k a (Fin κ) κ (Fintype.card_fin κ).symm (ψ * ω⁻¹)`. Establish `hle : twRel (rightRep (k` using `k) a (Fin κ) κ) (ψ * ω⁻¹) ≤ twRel (τ.comp (MonoidHom.inl _ _)) ψ := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1 : ∀ φ' : SB (RankIn k a (Fin κ) {κ}), τ (g, 1) φ' = (ω g : ℂ) • rightRep (k` using `k) a (Fin κ) κ g φ' := by`. Introduce `φ'`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show (fibRep a (Fin κ) (Fin (Fintype.card b - κ)) μ κ (g, 1, 1) φ').1 y = _`. Rewrite using `[fibRep_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : rightRep (k` using `k) a (Fin κ) κ g φ - (((ψ * ω⁻¹) g : ℂˣ) : ℂ) • φ = ((ω g)⁻¹ : ℂˣ).1 • (τ (g, 1) φ - (ψ g : ℂ) • φ) := by`. Rewrite using `[h1, smul_sub, smul_smul, smul_smul]`. Simplify using `[mul_comm]`. Rewrite using `[SetLike.mem_coe, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, φ, rfl⟩)`. Conclude with `Module.Finite.of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)`. Establish `: IsEmpty (RankIn k a b {κ})` using `⟨fun x => hκ (by`. Establish `h` using `rank_le_card_height x.1`. Rewrite `h` using `[show x.1.rank = κ from x.2]`.
-
-Conclude with `h)⟩`. Establish `: Subsingleton (SB (RankIn k a b {κ}))` using `⟨fun f g => Subtype.ext (funext fun x => isEmptyElim x)⟩`. Conclude with `coinv_of_subsingleton _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stratum_finiteLength (hI : InductionFiniteLength k) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ) (κ : ℕ)
     (ψ : GL a k →* ℂˣ) : HasFiniteLength (coinv (omegaOn a b μ {κ}) ψ) := by
@@ -108,13 +106,13 @@ theorem stratum_finiteLength (hI : InductionFiniteLength k) {μ : kˣ →* ℂˣ
     exact coinv_of_subsingleton _ _
 
 /- English proof (translation)
-Proceed by induction on `j generalizing κ with`. Consider the case `zero`. Take `rfl : κ = N` from `h`. Establish `: Subsingleton (filt a b μ (Set.Iio κ) κ).toSubmodule` using `⟨fun f g => Subtype.ext (Subtype.ext (funext fun x => (f.2 x x.2).trans (g.2 x x.2).symm))⟩`. Conclude with `coinv_of_subsingleton _ _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `succ j ih`. Establish `hs : ∀ r, r ∈ ({κ} : Set ℕ) ↔ κ ≤ r ∧ r < κ + 1` using `fun r => by`. Rewrite using `[Set.mem_singleton_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hmn : κ + 1 ≤ N` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (filt a b μ (Set.Iio N) (κ + 1)).toSubmodule ≤ (filt a b μ (Set.Iio N) κ).toSubmodule` using `fun Φ hΦ x hx => hΦ x (Nat.lt_succ_of_lt hx)`. Set `i : (filt a b μ (Set.Iio N) (κ + 1)).toRepresentation.IntertwiningMap (filt a b μ (Set.Iio N) κ).toRepresentation` to `⟨Submodule.inclusion hle, fun g => by ext; rfl⟩`. Use `GlobalTheory.T.finite_length_coinvariants_exact _ _ _ _ _ _ _ _ i (resFilt μ hmn hs) (resFilt_surjective μ hmn hs) (fun Φ => ?_) ψ (ih (κ + 1) (by omega)) (stratum_finiteLength hI hμ κ ψ)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(ker_resFilt μ hmn hs Φ).1 h0` as an intermediate fact. Conclude with `⟨⟨Φ.1, this⟩, rfl⟩`. Introduce and unpack `⟨Ψ, rfl⟩`. Conclude with `(ker_resFilt μ hmn hs _).2 Ψ.2`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem filt_finiteLength (hI : InductionFiniteLength k) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ)
     (ψ : GL a k →* ℂˣ) (N : ℕ) (j κ : ℕ) (h : κ + j = N) :
@@ -169,11 +167,11 @@ abbrev thetaQuot (μ χ : kˣ →* ℂˣ) := coinv (omega a b μ⁻¹) (detChar 
 variable {a b}
 
 /- English proof (translation)
-Unfold `twRel`. Use `congrArg (Submodule.span ℂ) (Set.ext fun w => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, Φ, rfl⟩`. Use `⟨g, Φ, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `omega_eq_om μ⁻¹ g (1 : GL b k) Φ` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `congrArg₂ (· - ·) this rfl`. Introduce and unpack `⟨g, Φ, h⟩`. Use `⟨g, Φ, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `omega_eq_om μ⁻¹ g (1 : GL b k) Φ` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `h.trans (congrArg₂ (· - ·) this.symm rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twRel_omega (μ χ : kˣ →* ℂˣ) :
     twRel ((omega a b μ⁻¹).comp (MonoidHom.inl _ _)) (detChar a χ) =
@@ -194,7 +192,7 @@ theorem twRel_omega (μ χ : kˣ →* ℂˣ) :
     exact h.trans (congrArg₂ (· - ·) this.symm rfl)
 
 /- English proof (translation)
-Use `omega_eq_om μ⁻¹ (1 : GL a k) h Φ` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (this.trans hΨ.symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaQuot_mk (μ χ : kˣ →* ℂˣ) (h : GL b k) (Φ Ψ : SB (Matrix b a k)) (hΨ : Ψ.1 = om μ 1 h Φ.1) :
     thetaQuot a b μ χ h (Submodule.Quotient.mk Φ) = Submodule.Quotient.mk Ψ := by
@@ -203,7 +201,7 @@ theorem thetaQuot_mk (μ χ : kˣ →* ℂˣ) (h : GL b k) (Φ Ψ : SB (Matrix b
   exact congrArg Submodule.Quotient.mk (Subtype.ext (this.trans hΨ.symm))
 
 /- English proof (translation)
-Establish `hI : InductionFiniteLength k` using `(hBZ k).2.2.1`. Establish `hN : ∀ x : Matrix b a k, x.rank < Fintype.card a + 1` using `fun x => Nat.lt_succ_of_le (rank_le_card_width x)`. Conclude with `coinv_of_equiv (toFilt μ⁻¹ _ hN) _ (filt_finiteLength hI hμ.inv _ (Fintype.card a + 1) (Fintype.card a + 1) 0 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaQuot_finiteLength (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {μ : kˣ →* ℂˣ}
     (hμ : IsSmoothChar μ) (χ : kˣ →* ℂˣ) : HasFiniteLength (thetaQuot a b μ χ) := by
@@ -221,14 +219,14 @@ abbrev thetaQuotSwap (μ χ : kˣ →* ℂˣ) :=
 variable {a b}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_length_coinvariants_swap k a b μ χ (thetaQuot_finiteLength hBZ hμ χ⁻¹)`.
+A detailed English derivation is pending.
 -/
 theorem thetaQuotSwap_finiteLength (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {μ : kˣ →* ℂˣ}
     (hμ : IsSmoothChar μ) (χ : kˣ →* ℂˣ) : HasFiniteLength (thetaQuotSwap a b μ χ) :=
   GlobalTheory.T.finite_length_coinvariants_swap k a b μ χ (thetaQuot_finiteLength hBZ hμ χ⁻¹)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thetaQuot_finiteLength hBZ hμ χ, thetaQuotSwap_finiteLength hBZ hμ χ⟩`.
+Supply the required witnesses or components.
 -/
 theorem main (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (n r : ℕ) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ)
     (χ : kˣ →* ℂˣ) : HasFiniteLength (thetaQuot (k := k) (Fin r) (Fin n) μ χ) ∧

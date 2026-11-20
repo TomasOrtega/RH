@@ -43,9 +43,9 @@ def HypTJ : Prop :=
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `locHyp_of (rankN D (i + 1) hi) (locJ hi t B) S (D.sp.X (i + 1)).gram (gramN_apply D (i + 1) hi) B rfl Uloc hU ?_` and prove the remaining obligations. Introduce `v x0 hx0 h1 h2`. Establish `hfr` using `hB _ ((X.g u w hg).pl v).2`. Use `hT _ ((X.g u w hg).pl v).2 x0 hx0 ?_ ?_` and prove the remaining obligations. Rewrite using `[hfr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[hfr]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locHyp_locJ (hU : SameUlocJ hi S Uloc) (hB : FrRatJ t B) (hT : HypTJ t) : LocHyp S (locJ hi t B) := by
   refine locHyp_of (rankN D (i + 1) hi) (locJ hi t B) S (D.sp.X (i + 1)).gram (gramN_apply D (i + 1) hi) B rfl Uloc hU ?_
@@ -58,7 +58,7 @@ theorem locHyp_locJ (hU : SameUlocJ hi S Uloc) (hB : FrRatJ t B) (hT : HypTJ t) 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨c, γ, k, hγ, hk, hkU, e⟩` from `comp_re (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) t.yG (awayG D.sp.cm.sig (D.sp.X (i + 1)).gram Uloc (D.what₂.places.resChar w)) t.yG_bij.2 x`. Use `⟨c, γ, reGL (rankN D (i + 1) hi) _ k, hγ, reGL_mem_UPts (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) _ _ hkU, e, fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[bc_reGL, hU w']`. Conclude with `Subgroup.mem_map.2 ⟨_, ((mem_awayG _ _ _ _ k).1 hk).2 w' hw', rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_locJ (hU : SameUlocJ hi S Uloc)
     (x : UPts (sigD D) (gramN D (i + 1) hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
@@ -77,7 +77,7 @@ theorem comp_locJ (hU : SameUlocJ hi S Uloc)
   exact Subgroup.mem_map.2 ⟨_, ((mem_awayG _ _ _ _ k).1 hk).2 w' hw', rfl⟩
 
 /- English proof (translation)
-The claim follows from `(mem_map_conj _ _ _).1 ((t.gamI_range c _).1 ⟨γ, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem gam_away (c : cmp) (γ : (Lv.levS i (em c)).Γ) :
     ((t.yG c).1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (t.gamI c γ).1 * (t.yG c).1 ∈
@@ -86,7 +86,7 @@ theorem gam_away (c : cmp) (γ : (Lv.levS i (em c)).Γ) :
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, ← bc_reGL]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gam_re (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) :
     ((locJ hi t B).yG c)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((locJ hi t B).gamI c γ) *
@@ -98,7 +98,7 @@ theorem gam_re (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Rewrite using `[gam_re hi t B c γ]`. Take `⟨h2, h3⟩` from `(mem_awayG _ _ _ _ _).1 (gam_away t c γ)`. Use `⟨reGL_mem_UPts (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) _ _ h2, fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[bc_reGL, hU w']`. Conclude with `Subgroup.mem_map.2 ⟨_, h3 w' hw', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_locJ (hU : SameUlocJ hi S Uloc) (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) :
     ((locJ hi t B).yG c)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((locJ hi t B).gamI c γ) *
@@ -126,9 +126,9 @@ def UnitCharacterChartCompatibility (e : D.what₂.LL →+* (D.gat u w hg).Kf)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `h0 : ((gatCh (gatJ Lv (i + 1)) em).lev c).χ γ = ψ ⟨_, gam_away t c γ⟩`. Establish `h1` using `t.chi_eq c γ ⟨_, gam_away t c γ⟩ rfl`. Establish `he : eps (t.gamI c γ) = 1` using `(DFunLike.congr_fun heps (t.gamI c γ)).trans (MonoidHom.one_apply _)`. Rewrite `h1` using `[he, mul_one]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Use `hψ ⟨_, gam_away t c γ⟩ κ (fun v hv => ?_) (fun w' hw' => ?_)` and prove the remaining obligations. Take `⟨v', rfl⟩` from `LocGood.exists_pl (locJ hi t B) v hv`. Conclude with `hκ.1 v'`. Rewrite using `[hκ.2 w' hw', gam_re hi t B c γ]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_locJ (e : D.what₂.LL →+* (D.gat u w hg).Kf) (heps : eps = 1) (hψ : UnitCharacterChartCompatibility hi S e ψ)
     (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) (κ : S.U) (hκ : (locJ hi t B).IsAway c γ κ.1) :
@@ -235,7 +235,7 @@ structure LocTies (Fo : FormsIn M (i + 1) hi) (Lc : LocIn X u w hg Lv i Fo.Ch)
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-The claim follows from `locGood_locJ hi (Lc.t β) Lc.B int := locInt_locJ hi (Lc.t β) Lc.B hypP := locHyp_locJ hi (Lc.t β) Lc.B (Fo.K β).lev H.sameU H.frRat H.hypT bad_p := H.bad_p comp := comp_locJ hi (Lc.t β) Lc.B (Fo.K β).lev H.sameU gam := gam_locJ hi (Lc.t β) Lc.B (Fo.K β).lev H.sameU gamU := locJ_U …`.
+A detailed English derivation is pending.
 -/
 theorem core_of {Fo : FormsIn M (i + 1) hi} {Lc : LocIn X u w hg Lv i Fo.Ch}
     {pos : (Σ v : Fin (Fl.Pj (i + 1)).nV, Fin ((Fl.Pj (i + 1)).n' v)) ≃ D.what₂.Tau}

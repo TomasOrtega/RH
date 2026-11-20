@@ -15,7 +15,7 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.HermFrame
 
 /- English proof (translation)
-Simplify using `only [chTwo, wedge, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chTwo_eq_trace_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {n : Type*} [Fintype n] [DecidableEq n] (H : E → Matrix n n ℂ)
@@ -26,30 +26,30 @@ theorem chTwo_eq_trace_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
     Finset.sum_add_distrib, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-The claim follows from `e.sum_comp fun a => M a a`.
+A detailed English derivation is pending.
 -/
 theorem trace_submatrix_of_equiv {m n : Type*} [Fintype m] [Fintype n] (e : m ≃ n)
     (M : Matrix n n ℂ) : (M.submatrix e e).trace = M.trace :=
   e.sum_comp fun a => M a a
 
 /- English proof (translation)
-Introduce `D ι _ _ m n _ _ U K T G hU hK hT hb hG z hz`. Establish `hcard : Fintype.card n = Fintype.card (Σ τ : ι, Fin (m τ))`. Use `(LinearEquiv.ofBijective (T z).mulVecLin (hb z hz)).finrank_eq` as an intermediate fact. Simplify `this` using `only [Module.finrank_fintype_fun_eq_card]`. Set `e : n ≃ Σ τ : ι, Fin (m τ)` to `Fintype.equivOfCardEq hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `A : V D → Matrix (Σ τ : ι, Fin (m τ)) (Σ τ : ι, Fin (m τ)) ℂ` to `fun u => (T u).submatrix id e.symm`. Set `B : V D → Matrix (Σ τ : ι, Fin (m τ)) (Σ τ : ι, Fin (m τ)) ℂ` to `fun u => Matrix.blockDiagonal' fun τ => dualGram (K τ u)`. Establish `hn` using `hU.mem_nhds hz`. Establish `hB : IsHermFrame U B` using `isHermFrame_blockDiagonal' hU fun τ => (hK τ).isHermFrame.dual`. Establish `hA : MContDiffAt 2 A z` using `fun a b => ((GlobalTheory.ChartGlue.contDiffOn_real hU (hT a (e.symm b))).contDiffAt hn).of_le (by norm_cast)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAu : IsUnit (A z).det`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `w`. Take `⟨v, hv⟩` from `(hb z hz).2 w`. Use `⟨v ∘ e.symm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [A]`. Rewrite using `[Matrix.submatrix_mulVec_equiv, ← hv]`. Establish `hv' : (v ∘ e.symm) ∘ e.symm.symm = v` using `by funext a; simp`. Rewrite using `[hv']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hA0 : ∀ᶠ x in 𝓝 z, ∀ η, mdbar A x η = 0` using `by filter_upwards [hn] with x hx η`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `dbar (fun u => T u a (e.symm b)) x η = 0`. Rewrite using `[GlobalTheory.dbar_eq_zero ((hT a (e.symm b)).differentiableAt (hU.mem_nhds hx))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hGe : G =ᶠ[𝓝 z] fun u => ((A u)ᵀ * B u * (A u)ᴴᵀ).submatrix e e` using `by filter_upwards [hn] with x hx`. Rewrite using `[hG x hx]`. Use extensionality with `a b`. Simplify using `[chg, A, B, Matrix.mul_apply]`. Establish `hc : ∀ ξ η, curv G z ξ η = ((A z)⁻¹ * (Matrix.blockDiagonal' fun τ => -(curv (K τ) z ξ η)ᵀ) * A z).submatrix e e` using `fun ξ η => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[curv_congr hGe, curv_submatrix_equiv (fun u => (A u)ᵀ * B u * (A u)ᴴᵀ) e, curv_changeFrame (hB.two hz) (hB.isUnit z hz) hA hAu hA0, curv_blockDiagonal' (H := fun τ u => dualGram (K τ u)) (fun τ => (hK τ).isHermFrame.dual.two hz) (fun τ => (hK τ).isHermFrame.dual.isUnit z hz)]`. Simplify using `only [fun τ => curv_dual ((hK τ).isHermFrame.two hz) ((hK τ).isHermFrame.isUnit z hz) ξ η]`. Establish `ht : ∀ M : Matrix (Σ τ : ι, Fin (m τ)) (Σ τ : ι, Fin (m τ)) ℂ, ((A z)⁻¹ * M * A z).trace = M.trace` using `fun M => by`. Rewrite using `[Matrix.trace_mul_comm, Matrix.mul_nonsing_inv_cancel_left _ _ hAu]`. Establish `hm : ∀ ξ η ξ' η', (curv G z ξ η * curv G z ξ' η').trace = ∑ τ, (curv (K τ) z ξ' η' * curv (K τ) z ξ η).trace` using `fun ξ η ξ' η' => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, hc, Matrix.submatrix_mul_equiv, trace_submatrix_of_equiv, Matrix.mul_assoc _ (A z), Matrix.mul_assoc (A z)⁻¹ _ (A z), Matrix.mul_nonsing_inv_cancel_left _ _ hAu, ← Matrix.mul_assoc, Matrix.mul_assoc (A z)⁻¹, ht, ← Matrix.blockDiagonal'_mul, Matrix.trace_blockDiagonal']`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.neg_mul, Matrix.mul_neg, neg_neg, ← Matrix.transpose_mul, Matrix.trace_transpose]`. Use `⟨?_, fun ξ η => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `ξ₁ η₁ ξ₂ η₂`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [chTwo_eq_trace_mul, hm, ← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, trace_submatrix_of_equiv, ht, Matrix.trace_blockDiagonal', ← Finset.sum_neg_distrib]`. Simplify using `only [Matrix.trace_neg, Matrix.trace_transpose]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chTwo_chg_blockDiagonal'_dualGram : ∀ (D : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (n : Type) [Fintype n] [DecidableEq n] (U : Set (V D)) (K : ∀ τ : ι, V D → Matrix (Fin (m τ)) (Fin (m τ)) ℂ) (T : V D → Matrix (Σ τ : ι, Fin (m τ)) n ℂ) (G : V D → Matrix n n ℂ), IsOpen U → (∀ τ, IsPosFrame U (K τ)) → (∀ j b, DifferentiableOn ℂ (fun u => T u j b) U) → (∀ u ∈ U, Function.Bijective (T u).mulVec) → (∀ u ∈ U, G u = chg (T u) (Matrix.blockDiagonal' fun τ => dualGram (K τ u))) → ∀ z ∈ U, chTwo G z = (fun ξ₁ η₁ ξ₂ η₂ => ∑ τ, chTwo (K τ) z ξ₁ η₁ ξ₂ η₂) ∧ ∀ ξ η, (curv G z ξ η).trace = -∑ τ, (curv (K τ) z ξ η).trace := by
   intro D ι _ _ m n _ _ U K T G hU hK hT hb hG z hz

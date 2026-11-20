@@ -32,25 +32,25 @@ def IsBddUnit (G : WTZ E) (s t : Rul Xo c) : Prop :=
     ∃ m : ℕ, 0 < m ∧ ∀ la, ∀ v ∈ GlobalTheory.FlatLine.valOn Z la, 0 ≤ v ((m : c.F) • s) ∧ 0 ≤ v ((m : c.F) • t)
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exZ_zero' : Formalism.L2.Pj.exZ Dw (0 : WTZ E) = 0 := by
   funext i; cases i <;> rfl
 
 /- English proof (translation)
-The claim follows from `funext fun i => exZ_add _ _ i`.
+A detailed English derivation is pending.
 -/
 theorem exZ_add_eq' (G G' : WTZ E) : Formalism.L2.Pj.exZ Dw (G + G') = Formalism.L2.Pj.exZ Dw G + Formalism.L2.Pj.exZ Dw G' :=
   funext fun i => exZ_add _ _ i
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exZ_neg_eq' (G : WTZ E) : Formalism.L2.Pj.exZ Dw (-G) = -Formalism.L2.Pj.exZ Dw G := by
   funext i; cases i <;> rfl
 
 /- English proof (translation)
-Take `⟨hd, hl⟩` from `hz`. Break down `eq_or_ne (GlobalTheory.AllWt.homN V x 0 (GlobalTheory.FlatLine.idem Z) z) 0 with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `zero_le_one`. Rewrite using `[GlobalTheory.FlatLine.homN_idem V x hd hl (GlobalTheory.FlatLine.tested_of_homN_ne V x hd h)]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_idem_le {σ : c.F →+* ℂ} (V : Unf Xo c σ r) {z} (hz : z ∈ framesOn V Z) :
     GlobalTheory.AllWt.homN V x 0 (GlobalTheory.FlatLine.idem Z) z ≤ 1 := by
@@ -60,9 +60,9 @@ theorem homN_idem_le {σ : c.F →+* ℂ} (V : Unf Xo c σ r) {z} (hz : z ∈ fr
   · rw [GlobalTheory.FlatLine.homN_idem V x hd hl (GlobalTheory.FlatLine.tested_of_homN_ne V x hd h)]
 
 /- English proof (translation)
-Establish `hm : GlobalTheory.FlatLine.idem Z ∈ GlobalTheory.AllWt.secZ Xo c (Formalism.L2.Pj.exZ Dw (0 : WTZ E))`. Rewrite using `[exZ_zero']`. Conclude with `GlobalTheory.FlatLine.idem_mem_secZ Z`. Use `⟨by simp, hm, by rwa [exZ_zero', neg_zero, ← exZ_zero' (Dw := Dw)], GlobalTheory.FlatLine.idem_mul_idem Z, GlobalTheory.FlatLine.idem_mul_idem Z, GlobalTheory.FlatLine.idem_mul_idem Z, fun σ _ => ⟨1, fun z hz => ?_⟩, 1, one_pos, fun la v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨homN_idem_le x Z (U σ) hz, homN_idem_le x Z (U σ) hz⟩`. Rewrite using `[Nat.cast_one, one_smul, GlobalTheory.FlatLine.val_idem hv]`. Conclude with `⟨le_rfl, le_rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBddUnit_zero : IsBddUnit U x Z 0 (GlobalTheory.FlatLine.idem Z) (GlobalTheory.FlatLine.idem Z) := by
   have hm : GlobalTheory.FlatLine.idem Z ∈ GlobalTheory.AllWt.secZ Xo c (Formalism.L2.Pj.exZ Dw (0 : WTZ E)) := by
@@ -76,13 +76,11 @@ theorem isBddUnit_zero : IsBddUnit U x Z 0 (GlobalTheory.FlatLine.idem Z) (Globa
 variable {U x Z}
 
 /- English proof (translation)
-Take `⟨hG, hs, ht, his, hit, hst, hb, m, hm, hv⟩` from `h`. Take `⟨hG', hs', ht', his', hit', hst', hb', m', hm', hv'⟩` from `h'`. Use `⟨hG.add hG', ?_, ?_, by rw [← mul_assoc, his], by rw [← mul_assoc, hit], ?_, fun σ hσ => ?_, m * m', Nat.mul_pos hm hm', fun la v hw => ?_⟩` and prove the remaining obligations. Rewrite using `[exZ_add_eq']`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ hs hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[exZ_add_eq', neg_add]`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ ht ht'`. Rewrite using `[mul_mul_mul_comm, hst, hst', GlobalTheory.FlatLine.idem_mul_idem]`. Take `⟨C, hC⟩` from `hb σ hσ`. Take `⟨C', hC'⟩` from `hb' σ hσ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨max C 0 * max C' 0, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AllWt.homN_mul (U σ) x hG hG' s s' z hz.1]`. Conclude with `mul_le_mul ((hC z hz).1.trans (le_max_left _ _)) ((hC' z hz).1.trans (le_max_left _ _)) (GlobalTheory.AllWt.homN_nonneg _ _ _ _ _) (le_max_right _ _)`. Rewrite using `[neg_add, GlobalTheory.AllWt.homN_mul (U σ) x (G := -G) (G' := -G') hG.neg hG'.neg t t' z hz.1]`. Conclude with `mul_le_mul ((hC z hz).2.trans (le_max_left _ _)) ((hC' z hz).2.trans (le_max_left _ _)) (GlobalTheory.AllWt.homN_nonneg _ _ _ _ _) (le_max_right _ _)`.
-
-Establish `hV` using `GlobalTheory.FlatLine.isVal_valOn hw`. Rewrite using `[Nat.cast_mul, ← smul_mul_smul_comm, ← smul_mul_smul_comm, hV.mul, hV.mul]`. Conclude with `⟨add_nonneg (hv la v hw).1 (hv' la v hw).1, add_nonneg (hv la v hw).2 (hv' la v hw).2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsBddUnit.mul {G G' : WTZ E} {s t s' t' : Rul Xo c} (h : IsBddUnit U x Z G s t)
     (h' : IsBddUnit U x Z G' s' t') : IsBddUnit U x Z (G + G') (s * s') (t * t') := by
@@ -107,7 +105,7 @@ theorem IsBddUnit.mul {G G' : WTZ E} {s t s' t' : Rul Xo c} (h : IsBddUnit U x Z
     exact ⟨add_nonneg (hv la v hw).1 (hv' la v hw).1, add_nonneg (hv la v hw).2 (hv' la v hw).2⟩
 
 /- English proof (translation)
-Take `⟨hG, hs, ht, his, hit, hst, hb, m, hm, hv⟩` from `h`. Use `⟨hG.neg, by rwa [exZ_neg_eq'], by rwa [exZ_neg_eq', neg_neg], hit, his, by rw [mul_comm, hst], fun σ hσ => ?_, m, hm, fun la v hw => (hv la v hw).symm⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hb σ hσ`. Conclude with `⟨C, fun z hz => ⟨(hC z hz).2, by rw [neg_neg]; exact (hC z hz).1⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsBddUnit.swap {G : WTZ E} {s t : Rul Xo c} (h : IsBddUnit U x Z G s t) : IsBddUnit U x Z (-G) t s := by
   obtain ⟨hG, hs, ht, his, hit, hst, hb, m, hm, hv⟩ := h
@@ -117,7 +115,7 @@ theorem IsBddUnit.swap {G : WTZ E} {s t : Rul Xo c} (h : IsBddUnit U x Z G s t) 
   exact ⟨C, fun z hz => ⟨(hC z hz).2, by rw [neg_neg]; exact (hC z hz).1⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨_, _, by rw [zero_nsmul]; exact isBddUnit_zero U x Z⟩`. Consider the case `succ k ih`. Take `⟨s', t', h'⟩` from `ih`. Conclude with `⟨_, _, by rw [succ_nsmul]; exact h'.mul h⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nsmul {G : WTZ E} {s t : Rul Xo c} (h : IsBddUnit U x Z G s t) (k : ℕ) :
     ∃ s' t' : Rul Xo c, IsBddUnit U x Z (k • G) s' t' := by
@@ -128,9 +126,9 @@ theorem exists_nsmul {G : WTZ E} {s t : Rul Xo c} (h : IsBddUnit U x Z G s t) (k
     exact ⟨_, _, by rw [succ_nsmul]; exact h'.mul h⟩
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat k`. Take `⟨s', t', h'⟩` from `exists_nsmul h k`. Conclude with `⟨s', t', by rw [Int.ofNat_eq_natCast, natCast_zsmul]; exact h'⟩`. Consider the case `negSucc k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨s', t', h'⟩` from `exists_nsmul h (k + 1)`. Conclude with `⟨t', s', by rw [negSucc_zsmul]; exact h'.swap⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_zsmul {G : WTZ E} {s t : Rul Xo c} (h : IsBddUnit U x Z G s t) (n : ℤ) :
     ∃ s' t' : Rul Xo c, IsBddUnit U x Z (n • G) s' t' := by
@@ -143,9 +141,9 @@ theorem exists_zsmul {G : WTZ E} {s t : Rul Xo c} (h : IsBddUnit U x Z G s t) (n
     exact ⟨t', s', by rw [negSucc_zsmul]; exact h'.swap⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨_, _, by rw [Finset.sum_empty]; exact isBddUnit_zero U x Z⟩`. Consider the case `insert a S ha ih`. Take `⟨s, t, h⟩` from `ih`. Take `⟨s₀, t₀, h₀⟩` from `hu a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₁, t₁, h₁⟩` from `exists_zsmul h₀ (n a)`. Conclude with `⟨_, _, by rw [Finset.sum_insert ha]; exact h₁.mul h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sum {ι : Type} (G : ι → WTZ E) (hu : ∀ i, ∃ s t : Rul Xo c, IsBddUnit U x Z (G i) s t)
     (n : ι → ℤ) (S : Finset ι) : ∃ s t : Rul Xo c, IsBddUnit U x Z (∑ i ∈ S, n i • G i) s t := by
@@ -163,9 +161,9 @@ end GlobalTheory.FlatUnitProd
 open GlobalTheory.FlatUnitProd in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x Z ι _ G hev hu n`. Establish `hu' : ∀ i, ∃ s t : Rul Xo c, IsBddUnit U x Z (G i) s t` using `fun i => by`. Take `⟨s, t, ⟨h1, h2, h3, h4, h5, h6⟩, m, hm, hv⟩` from `hu i`. Conclude with `⟨s, t, hev i, h1, h2, h3, h4, h5, h6, m, hm, hv⟩`. Take `⟨s, t, -, h1, h2, h3, h4, h5, h6, m, hm, hv⟩` from `exists_sum G hu' n Finset.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, t, ⟨h1, h2, h3, h4, h5, h6⟩, m, hm, hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FlatUnitProd.exists_unit_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (Z : Comp Xo c) (ι : Type) [Fintype ι] (G : ι → WTZ E), (∀ i, Even (G i).2) → (∀ i, ∃ s t : Rul Xo c, (s ∈ GlobalTheory.AllWt.secZ Xo c (Formalism.L2.Pj.exZ Dw (G i)) ∧ t ∈ GlobalTheory.AllWt.secZ Xo c (-Formalism.L2.Pj.exZ Dw (G i)) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ GlobalTheory.FlatLine.idem Z * t = t ∧ s * t = GlobalTheory.FlatLine.idem Z ∧ (∀ σ, GoodEmb c σ → ∃ C : ℝ, ∀ z ∈ framesOn (U σ) Z, GlobalTheory.AllWt.homN (U σ) (x) (G i) s z ≤ C ∧ GlobalTheory.AllWt.homN (U σ) (x) (-(G i)) t z ≤ C)) ∧ ∃ m : ℕ, 0 < m ∧ ∀ la, ∀ v ∈ GlobalTheory.FlatLine.valOn Z la, 0 ≤ v ((m : c.F) • s) ∧ 0 ≤ v ((m : c.F) • t)) → ∀ n : ι → ℤ, ∃ s t : Rul Xo c, (s ∈ GlobalTheory.AllWt.secZ Xo c (Formalism.L2.Pj.exZ Dw (∑ i, n i • G i)) ∧ t ∈ GlobalTheory.AllWt.secZ Xo c (-Formalism.L2.Pj.exZ Dw (∑ i, n i • G i)) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ GlobalTheory.FlatLine.idem Z * t = t ∧ s * t = GlobalTheory.FlatLine.idem Z ∧ (∀ σ, GoodEmb c σ → ∃ C : ℝ, ∀ z ∈ framesOn (U σ) Z, GlobalTheory.AllWt.homN (U σ) (x) (∑ i, n i • G i) s z ≤ C ∧ GlobalTheory.AllWt.homN (U σ) (x) (-(∑ i, n i • G i)) t z ≤ C)) ∧ ∃ m : ℕ, 0 < m ∧ ∀ la, ∀ v ∈ GlobalTheory.FlatLine.valOn Z la, 0 ≤ v ((m : c.F) • s) ∧ 0 ≤ v ((m : c.F) • t) := by
   intro E _ _ _ H Dw l Xo c r U x Z ι _ G hev hu n

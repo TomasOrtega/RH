@@ -7,15 +7,15 @@ namespace GlobalTheory.CompanionTheory.Ar.HT
 open Module NumberField
 
 /- English proof (translation)
-Establish `key : ∀ (a b : C) (x : V), b ≠ 0 → v a ≤ v b → b • x ∈ L → a • x ∈ L`. Introduce `a b x hb hab hx`. Establish `hvb : 0 < v b` using `(Valuation.pos_iff v).2 hb`. Establish `h1 : v (a / b) ≤ 1`. Rewrite using `[map_div₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(div_le_one hvb).2 hab`. Take `⟨o, ho⟩` from `hv.exists_of_le_one h1`. Establish `h2 : a • x = o • (b • x)`. Rewrite using `[← IsScalarTower.algebraMap_smul C o, ho, smul_smul, div_mul_cancel₀ _ hb]`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Conclude with `L.smul_mem o hx`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hx⟩` from `hx`. Take `⟨b, hb, hy⟩` from `hy`. Break down `le_total (v a) (v b) with h | h` into its components or cases. Conclude with `⟨a, ha, by rw [smul_add]; exact L.add_mem hx (key a b y hb h hy)⟩`. Conclude with `⟨b, hb, by rw [smul_add]; exact L.add_mem (key b a x ha h hx) hy⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul d x _ hx`. Take `⟨a, ha, hx⟩` from `hx`. Distinguish the cases in `hd : d = 0`. Conclude with `⟨1, one_ne_zero, by simp [hd]⟩`. Conclude with `⟨a / d, div_ne_zero ha hd, by rw [smul_smul, div_mul_cancel₀ _ hd]; exact hx⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span_val {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) {V : Type} [AddCommGroup V] [Module C V]
@@ -48,13 +48,13 @@ theorem exists_smul_mem_of_mem_span_val {C : Type} [Field C] {v : Valuation C NN
     · exact ⟨a / d, div_ne_zero ha hd, by rw [smul_smul, div_mul_cancel₀ _ hd]; exact hx⟩
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv V _ _ _ _ L U hL hU`. Establish `hfg` using `GlobalTheory.CompanionTheory.Ar.HT.fg_inf_restrictScalars_of_integers C v O hv V L U hL`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (U.subtype.restrictScalars O)` using `Subtype.val_injective`. Apply `Submodule.fg_of_fg_map_injective (U.subtype.restrictScalars O) hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hfg using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, y.2⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`. Rewrite using `[eq_top_iff]`. Introduce `u _`. Take `⟨c, hc, hcu⟩` from `exists_smul_mem_of_mem_span_val hv L (hU u.2)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : c • u ∈ Submodule.span C (latIn L U : Set U)` using `Submodule.subset_span hcu`. Establish `h2` using `Submodule.smul_mem _ c⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem latIn_isLattice : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (L : Submodule O V) (U : Submodule C V), L.FG → U ≤ Submodule.span C (L : Set V) → (latIn L U).IsLattice C := by
   intro C _ v O _ _ hv V _ _ _ _ L U hL hU

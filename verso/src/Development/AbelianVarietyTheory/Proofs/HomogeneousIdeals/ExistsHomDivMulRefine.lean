@@ -44,9 +44,9 @@ variable {K : Type*} [Field K] [CharZero K] [StarRing K] {d : ℤ} {s : K}
 omit [StarRing K] in
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℤ, d = 4 * k - 1` from `⟨(1 + d) / 4, by omega⟩`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C k, by monicity!, ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[hk]`. Move the coercions through the operations in `at hs`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_intCast]`. Take the linear combination `(1 / 4 : K) * hs`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isIntegral_half (hd : d % 4 = 3) (hs : s ^ 2 = -(d : K)) :
     IsIntegral ℤ ((1 + s) / 2) := by
@@ -85,7 +85,7 @@ end QuadRefinement
 variable {O Y A : Type*} [CommRing O] [StarRing O] [AddCommGroup Y] [Module O Y] [CommGroup A] in
 variable {τ : Y →+ Y →+ Additive A} {w : O} in
 /- English proof (translation)
-Rewrite using `[hsymm y' (w • y), hadj, ← (τ y).map_add, ← add_smul, hw, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem apply_smul_add_apply_smul_eq_of_add_star_eq_one (hsymm : ∀ y y', τ y y' = τ y' y)
     (hadj : ∀ (a : O) y y', τ (a • y) y' = τ y (star a • y')) (hw : w + star w = 1) (y y' : Y) :
@@ -95,7 +95,7 @@ private theorem apply_smul_add_apply_smul_eq_of_add_star_eq_one (hsymm : ∀ y y
 variable {O Y A : Type*} [CommRing O] [StarRing O] [AddCommGroup Y] [Module O Y] [CommGroup A] in
 variable {τ : Y →+ Y →+ Additive A} {w : O} in
 /- English proof (translation)
-Rewrite using `[← apply_smul_add_apply_smul_eq_of_add_star_eq_one hsymm hadj hw y y']`. Simplify using `only [smul_add, map_add, AddMonoidHom.add_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem apply_add_smul_add_eq_add_add (hsymm : ∀ y y', τ y y' = τ y' y)
     (hadj : ∀ (a : O) y y', τ (a • y) y' = τ y (star a • y')) (hw : w + star w = 1) (y y' : Y) :
@@ -115,7 +115,7 @@ private theorem apply_neg_smul_neg_eq (y : Y) : τ (-y) (w • -y) = τ y (w •
 variable {O Y A : Type*} [CommRing O] [StarRing O] [AddCommGroup Y] [Module O Y] [CommGroup A] in
 variable {τ : Y →+ Y →+ Additive A} {w : O} in
 /- English proof (translation)
-Establish `e : star a * w * a = (n : O) * w` using `by rw [← h]; ring`. Rewrite using `[hadj, smul_smul, smul_smul, e, mul_smul, Int.cast_smul_eq_zsmul, map_zsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem apply_smul_smul_smul_eq_zsmul_of_mul_star_eq (hadj : ∀ (a : O) y y', τ (a • y) y' = τ y (star a • y'))
     (a : O) (n : ℤ) (h : a * star a = n) (y : Y) :
@@ -124,33 +124,33 @@ private theorem apply_smul_smul_smul_eq_zsmul_of_mul_star_eq (hadj : ∀ (a : O)
   rw [hadj, smul_smul, smul_smul, e, mul_smul, Int.cast_smul_eq_zsmul, map_zsmul]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `O Y A _ _ _ _ _ τ w hsymm hadj hw set m := _root_.GlobalTheory.QuadRefinement.mulRefine τ w with hmdef`. Establish `hm : ∀ y, m y = (τ y (w • y)).toMul` using `fun _ => rfl`. Establish `hadd : ∀ y y', m (y + y') = m y * m y' * (τ y y').toMul`. Introduce `y y'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hm, apply_add_smul_add_eq_add_add hsymm hadj hw, toMul_add]`. Establish `hneg : ∀ y, m (-y) = m y`. Introduce `y`. Simplify using `only [hm, apply_neg_smul_neg_eq]`. Establish `hsq : ∀ y, m y ^ 2 = (τ y y).toMul`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[hm, ← toMul_nsmul, two_nsmul, apply_smul_add_apply_smul_eq_of_add_star_eq_one hsymm hadj hw]`. Establish `hpow : ∀ (a : O) (n : ℤ), a * star a = n → ∀ y, m (a • y) = m y ^ n`. Introduce `a n h y`. Rewrite using `[hm, hm, apply_smul_smul_smul_eq_zsmul_of_mul_star_eq hadj a n h, toMul_zsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hadd, hneg, hsq, hpow, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ heven`. Establish `h0 : ψ 0 = 1`. Use `hψ 0 0` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hψsq : ∀ y, ψ y ^ 2 = (τ y y).toMul`. Introduce `y`. Establish `h` using `hψ y (-y)`. Rewrite `h` using `[add_neg_cancel, h0, heven, map_neg, toMul_neg, eq_comm, mul_inv_eq_one]`. Rewrite using `[sq, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ y y', ψ (y + y') / m (y + y') = ψ y / m y * (ψ y' / m y')`. Introduce `y y'`. Rewrite using `[hψ, hadd, mul_div_mul_right_eq_div, div_mul_div_comm]`. Establish `hbsq : ∀ y, (ψ y / m y) ^ 2 = 1`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[div_pow, hψsq, hsq, div_self']`. Set `β : Multiplicative Y →* A` to `MonoidHom.mk' (fun y => ψ y.toAdd / m y.toAdd) (fun y y' => by`. Simplify using `only [toAdd_mul]`. Conclude with `hb _ _)`. Use `⟨⟨β, fun y => rfl, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `y show β y ^ 2 = 1`. Conclude with `hbsq (Multiplicative.toAdd y)`. Introduce `n hn h1 h2`. Use function extensionality and compare the values at `y`. Establish `hw1 : ψ (w • y) / m (w • y) = (ψ y / m y) ^ n`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, hpow w n hn, div_zpow]`. Establish `hw2 : ψ (star w • y) / m (star w • y) = (ψ y / m y) ^ n`. Rewrite using `[h2, hpow (star w) n (by rw [star_star, mul_comm, hn]), div_zpow]`. Establish `e : w • y + star w • y = y` using `by rw [← add_smul, hw, one_smul]`. Establish `key : ψ y / m y = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `div_eq_one.mp key`. Introduce `v y`. Rewrite using `[hm, ofMul_toMul, AddMonoidHom.compr₂_apply, ← apply_smul_add_apply_smul_eq_of_add_star_eq_one hsymm hadj hw y y, map_add, two_mul]`. Introduce `K _ _ _ d s hd hs hstar`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩ : ∃ k, d = 8 * k + 7` from `⟨d / 8, by omega⟩`. Establish `hq : (1 + (8 * k + 7)) / 4 = 2 * k + 2` using `by omega`. Rewrite using `[hq]`. Move the coercions through the operations in `at hs`. Establish `hst : star ((1 + s) / 2) = (1 - s) / 2`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_eq_mul_inv, star_mul', star_inv₀, star_add, star_one, hstar, star_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_, ?_, by omega, ⟨k + 1, by ring⟩⟩` and prove the remaining obligations. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((2 * k + 2 : ℤ)), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Rewrite using `[algebraMap_int_eq, eq_intCast]`. Use `push_cast`. Take the linear combination `(1 / 4 : K) * hs`. Rewrite using `[hst]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hst]`. Use `push_cast`. Take the linear combination `(-1 / 4 : K) * hs`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.quadratic_refinement :
     (∀ {O Y A : Type} [CommRing O] [StarRing O] [AddCommGroup Y] [Module O Y] [CommGroup A]

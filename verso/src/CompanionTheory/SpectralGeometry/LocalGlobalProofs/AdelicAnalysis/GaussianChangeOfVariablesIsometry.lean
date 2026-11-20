@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
 /- English proof (translation)
-Establish `h : (gᵀ * M * g) *ᵥ x = gᵀ *ᵥ (M *ᵥ (g *ᵥ x))`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[h, Matrix.dotProduct_mulVec x gᵀ, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] (g M : Matrix ι ι ℝ) (x : ι → ℝ) :
     (g *ᵥ x) ⬝ᵥ (M *ᵥ (g *ᵥ x)) = x ⬝ᵥ ((gᵀ * M * g) *ᵥ x) := by
@@ -18,9 +18,9 @@ theorem quad_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] (g M : Matrix ι �
   rw [h, Matrix.dotProduct_mulVec x gᵀ, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `h2 : g.det * g.det = 1`. Apply `mul_right_cancel₀ hM` to reduce the goal to its premises. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : |g.det| * |g.det| = 1` using `by rw [← abs_mul, h2, abs_one]`. Establish `h4 : 0 ≤ |g.det|` using `abs_nonneg _`. Use polynomial arithmetic with `[sq_nonneg (|g.det| - 1), sq_nonneg (|g.det| + 1)]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem abs_det_eq_one {ι : Type} [Fintype ι] [DecidableEq ι] {g M : Matrix ι ι ℝ}
     (hM : M.det ≠ 0) (h : gᵀ * M * g = M) : |g.det| = 1 := by
@@ -36,11 +36,11 @@ theorem abs_det_eq_one {ι : Type} [Fintype ι] [DecidableEq ι] {g M : Matrix �
   nlinarith [sq_nonneg (|g.det| - 1), sq_nonneg (|g.det| + 1)]
 
 /- English proof (translation)
-Establish `hd : g.det ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, abs_zero]`. Conclude with `zero_ne_one h`. Use `⟨(Continuous.matrix_mulVec continuous_const continuous_id).measurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.map_matrix_volume_pi_eq_smul_volume_pi hd` as an intermediate fact. Establish `e : (fun x : ι → ℝ => g *ᵥ x) = ⇑(Matrix.toLin' g)`. Use extensionality with `x i`. Simplify using `[Matrix.toLin'_apply]`. Rewrite using `[e, this, abs_inv, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] {g : Matrix ι ι ℝ}
     (h : |g.det| = 1) : MeasurePreserving (fun x : ι → ℝ => g *ᵥ x) volume volume := by
@@ -57,13 +57,11 @@ theorem measurePreserving_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] {g : 
   simp
 
 /- English proof (translation)
-Establish `hu : ∀ w, IsUnit (g w).det` using `fun w => isUnit_iff_ne_zero.mpr (h w)`. Set `e : (W → ι → ℝ) ≃ᵐ (W → ι → ℝ)` to `{ toFun := fun x w => g w *ᵥ x w invFun := fun x w => (g w)⁻¹ *ᵥ x w left_inv := by`. Introduce `x`. Use function extensionality and compare the values at `w`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hu w), Matrix.one_mulVec]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `right_inv := by`. Introduce `x`. Use function extensionality and compare the values at `w`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hu w), Matrix.one_mulVec]`. Use `measurable_toFun := by`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.measurable (continuous_pi fun w => ?_)` and prove the remaining obligations. Conclude with `Continuous.matrix_mulVec continuous_const (continuous_apply w)`. Use `measurable_invFun := by`. Use `Continuous.measurable (continuous_pi fun w => ?_)` and prove the remaining obligations. Conclude with `Continuous.matrix_mulVec continuous_const (continuous_apply w) }`.
-
-Conclude with `e.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_mulVec {W ι : Type} [Fintype W] [Fintype ι] [DecidableEq ι]
     {g : W → Matrix ι ι ℝ} (h : ∀ w, (g w).det ≠ 0) :
@@ -89,15 +87,15 @@ theorem measurableEmbedding_mulVec {W ι : Type} [Fintype W] [Fintype ι] [Decid
   exact e.measurableEmbedding
 
 /- English proof (translation)
-Establish `first : ∀ (τ : InfinitePlace F → ℂ) (x : InfinitePlace F → ι → ℝ), gauss B ρ P τ (fun w => gi w *ᵥ x w) = gauss B ρ (fun w => (gi w)ᵀ * P w * gi w) τ x`. Introduce `τ x`. Unfold `gauss`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[quad_mulVec, quad_mulVec, hg w]`. Use `⟨first, fun τ => ?_⟩` and prove the remaining obligations. Establish `hdet : ∀ w, (B.map (ρ w)).det ≠ 0`. Introduce `w`. Establish `e : (B.map (ρ w)).det = ρ w B.det` using `(RingHom.map_det (ρ w) B).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(map_ne_zero (ρ w)).mpr hB`. Establish `habs : ∀ w, |(gi w).det| = 1` using `fun w => abs_det_eq_one (hdet w) (hg w)`. Establish `hne : ∀ w, (gi w).det ≠ 0`. Introduce `w h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `habs w` as an intermediate fact. Rewrite `this` using `[h0, abs_zero]`. Conclude with `zero_ne_one this`. Establish `hmp : MeasurePreserving (fun (x : InfinitePlace F → ι → ℝ) w => gi w *ᵥ x w) volume volume` using `volume_preserving_pi fun w => measurePreserving_mulVec (habs w)`. Establish `hint` using `hmp.integral_comp (measurableEmbedding_mulVec hne) (gauss B ρ P τ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cG`. Rewrite using `[← hint]`. Use `congr 1`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => (first τ x).symm)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gauss_orth {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
     (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
@@ -137,7 +135,7 @@ theorem gauss_orth {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
 end GlobalTheory.CompanionTheory.SW.ThW.GaussOrth
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ B ρ P gi hB hg` and use `GlobalTheory.CompanionTheory.SW.ThW.GaussOrth.gauss_orth B ρ P gi hB hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.ThW.gauss_orth_closed : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι F) (ρ : NumberField.InfinitePlace F → (F →+* ℝ)) (P : NumberField.InfinitePlace F → Matrix ι ι ℝ) (gi : NumberField.InfinitePlace F → Matrix ι ι ℝ), B.det ≠ 0 → (∀ w, (gi w).transpose * B.map (ρ w) * gi w = B.map (ρ w)) → (∀ (τ : NumberField.InfinitePlace F → ℂ) (x : NumberField.InfinitePlace F → ι → ℝ), GlobalTheory.CompanionTheory.SW.Core.gauss B ρ P τ (fun w => (gi w).mulVec (x w)) = GlobalTheory.CompanionTheory.SW.Core.gauss B ρ (fun w => (gi w).transpose * P w * gi w) τ x) ∧ ∀ τ : NumberField.InfinitePlace F → ℂ, GlobalTheory.CompanionTheory.SW.Core.cG B ρ (fun w => (gi w).transpose * P w * gi w) τ = GlobalTheory.CompanionTheory.SW.Core.cG B ρ P τ :=
   fun _ _ _ _ _ _ B ρ P gi hB hg => GlobalTheory.CompanionTheory.SW.ThW.GaussOrth.gauss_orth B ρ P gi hB hg

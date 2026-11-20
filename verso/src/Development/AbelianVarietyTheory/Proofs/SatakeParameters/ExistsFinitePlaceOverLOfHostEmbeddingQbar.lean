@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.PlaceOfEmb
 
 /- English proof (translation)
-Use `(Valuation.integer.integers (NormedField.valuation (K := K))).mem_of_integral hx.tower_top` as an intermediate fact. Rewrite `this` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral' {K : Type} [NormedField K] [IsUltrametricDist K] {x : K}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
@@ -21,7 +21,7 @@ theorem norm_le_one_of_isIntegral' {K : Type} [NormedField K] [IsUltrametricDist
 variable {E : Type} [Field E] [NumberField E] {C : Type} [NormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral' ((x.isIntegral_coe).map (τ.toIntAlgHom))`.
+A detailed English derivation is pending.
 -/
 theorem norm_map_le_one (τ : E →+* C) (x : 𝓞 E) : ‖τ (x : E)‖ ≤ 1 :=
   norm_le_one_of_isIntegral' ((x.isIntegral_coe).map (τ.toIntAlgHom))
@@ -46,16 +46,16 @@ def ballIdeal (τ : E →+* C) : Ideal (𝓞 E) where
       _ < 1 := by rw [one_mul]; exact hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ballIdeal (τ : E →+* C) (x : 𝓞 E) : x ∈ ballIdeal τ ↔ ‖τ (x : E)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_ballIdeal]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Express the relevant statement in the definitionally equal form `‖τ ((a : E) * (b : E))‖ < 1 at hab`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hab` using `[map_mul, norm_mul]`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `h` using `[mem_ballIdeal, mem_ballIdeal]`. Establish `ha : ‖τ (a : E)‖ = 1` using `le_antisymm (norm_map_le_one τ a) (not_lt.1 h.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ‖τ (b : E)‖ = 1` using `le_antisymm (norm_map_le_one τ b) (not_lt.1 h.2)`. Rewrite `hab` using `[ha, hb]`. Evaluate the numerical expressions using `at hab`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem ballIdeal_isPrime (τ : E →+* C) : (ballIdeal τ).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -74,11 +74,9 @@ end GlobalTheory.PlaceOfEmb
 
 open GlobalTheory.PlaceOfEmb in
 /- English proof (translation)
-Introduce `D l _ τ`. Establish `hl : ((l : 𝓞 D.host.E)) ∈ ballIdeal τ`. Rewrite using `[mem_ballIdeal]`. Simplify using `only [map_natCast]`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Establish `hne : ballIdeal τ ≠ ⊥`. Introduce `h`. Rewrite `hl` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) hl`.
-
-Use `⟨⟨ballIdeal τ, ballIdeal_isPrime τ, hne⟩, hl, fun x => Iff.rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PlaceOfEmb.exists_place_of_emb : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (τ : D.host.E →+* Qbar l), ∃ w : PlE D.host, w ∈ placesOver D.host.E l ∧ ∀ x : 𝓞 D.host.E, ‖τ (x : D.host.E)‖ < 1 ↔ x ∈ w.asIdeal := by
   intro D l _ τ

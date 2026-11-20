@@ -24,7 +24,7 @@ instance LocalizeNefAbove.exTower : @IsScalarTower ℤ LocalizeNefAbove.exO Loca
   IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)
 
 /- English proof (translation)
-Introduce `pp _ _` and use `by rw [Kleiman.interNum_twistSys_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocalizeNefAbove.hyps₂ :
     Kleiman.NefAbove (Kleiman.twistSys ℤ (![1, 1] : Fin 2 → LocalizeNefAbove.exΩ) 0)
@@ -32,7 +32,7 @@ theorem LocalizeNefAbove.hyps₂ :
   fun pp _ _ => by rw [Kleiman.interNum_twistSys_zero]
 
 /- English proof (translation)
-The claim follows from `h ℤ (Ideal.span {(2 : ℤ)}) LocalizeNefAbove.exO LocalizeNefAbove.exΩ 1 ![1, 1] _ LocalizeNefAbove.hyps₂`.
+A detailed English derivation is pending.
 -/
 example (h : LocalizeNefAbove.Statement) :=
   h ℤ (Ideal.span {(2 : ℤ)}) LocalizeNefAbove.exO LocalizeNefAbove.exΩ 1 ![1, 1] _ LocalizeNefAbove.hyps₂

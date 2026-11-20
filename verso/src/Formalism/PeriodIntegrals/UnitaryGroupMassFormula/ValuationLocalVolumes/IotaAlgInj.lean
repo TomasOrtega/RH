@@ -18,15 +18,15 @@ def OmVDdTr : Prop :=
       X.ιE (algebraMap X.B.I.F X.B.I.E (x : X.B.I.F)) = ((d : D.host.F) : D.host.E)
 
 /- English proof (translation)
-The claim follows from `X.ιE.injective.comp (algebraMap X.B.I.F X.B.I.E).injective`.
+A detailed English derivation is pending.
 -/
 theorem iota_alg_inj : Function.Injective (fun x : X.B.I.F => X.ιE (algebraMap X.B.I.F X.B.I.E x)) :=
   X.ιE.injective.comp (algebraMap X.B.I.F X.B.I.E).injective
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(X.ιE_F ((d : D.host.F) : D.host.E)).1 (d : D.host.F).2`. Use `set f : X.B.I.F →+* D.host.E := (X.ιE : X.B.I.E →+* D.host.E).comp (algebraMap X.B.I.F X.B.I.E) with hf`. Establish `hd : IsIntegral ℤ (((d : D.host.F) : D.host.E))` using `(RingOfIntegers.isIntegral_coe d).map ((D.host.F).subtype : D.host.F →+* D.host.E).toIntAlgHom`. Establish `ha' : f a = ((d : D.host.F) : D.host.E)` using `ha`. Rewrite `hd` using `[← ha']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hai : IsIntegral ℤ a` using `(isIntegral_algHom_iff f.toIntAlgHom (iota_alg_inj X)).1 hd`. Conclude with `⟨⟨a, (mem_integralClosure_iff ℤ _).2 hai⟩, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pre_int (d : 𝓞 D.host.F) : ∃ x : 𝓞 X.B.I.F, X.ιE (algebraMap X.B.I.F X.B.I.E (x : X.B.I.F)) = ((d : D.host.F) : D.host.E) := by
   obtain ⟨a, ha⟩ := (X.ιE_F ((d : D.host.F) : D.host.E)).1 (d : D.host.F).2
@@ -39,13 +39,13 @@ theorem pre_int (d : 𝓞 D.host.F) : ∃ x : 𝓞 X.B.I.F, X.ιE (algebraMap X.
   exact ⟨⟨a, (mem_integralClosure_iff ℤ _).2 hai⟩, ha⟩
 
 /- English proof (translation)
-Proceed by induction on `k generalizing d with`. Consider the case `zero`. Take `⟨x, hx⟩` from `pre_int X d`. Conclude with `⟨x, by simp, hx⟩`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite `hd` using `[pow_succ']`. Use `Submodule.mul_induction_on (C := fun d : 𝓞 D.host.F => ∃ x : 𝓞 X.B.I.F, x ∈ differentIdeal ℤ (𝓞 X.B.I.F) ^ (k + 1) ∧ X.ιE (algebraMap X.B.I.F X.B.I.E (x : X.B.I.F)) = ((d : D.host.F) : D.host.E)) hd ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨x1, hx1, e1⟩` from `(hT a).1 ha`. Take `⟨x2, hx2, e2⟩` from `ih b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x1 * x2, by rw [pow_succ']; exact Submodule.mul_mem_mul hx1 hx2, ?_⟩` and prove the remaining obligations. Establish `: ((x1 * x2 : 𝓞 X.B.I.F) : X.B.I.F) = (x1 : X.B.I.F) * (x2 : X.B.I.F)` using `rfl`. Rewrite using `[this, map_mul, map_mul, e1, e2]`. Both sides reduce to the same expression. Introduce and unpack `a b ⟨x1, hx1, e1⟩ ⟨x2, hx2, e2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Use `⟨x1 + x2, Submodule.add_mem _ hx1 hx2, ?_⟩` and prove the remaining obligations. Establish `: ((x1 + x2 : 𝓞 X.B.I.F) : X.B.I.F) = (x1 : X.B.I.F) + (x2 : X.B.I.F)` using `rfl`. Rewrite using `[this, map_add, map_add, e1, e2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pow_tr (hT : OmVDdTr X) (k : ℕ) (d : 𝓞 D.host.F) (hd : d ∈ differentIdeal ℤ (𝓞 D.host.F) ^ k) :
     ∃ x : 𝓞 X.B.I.F, x ∈ differentIdeal ℤ (𝓞 X.B.I.F) ^ k ∧
@@ -91,7 +91,7 @@ def Qi (v : PlX X) (c : Fv X.B.I.F v) : Ideal (𝓞 D.host.E) where
       (RingOfIntegers.isIntegral_coe o).map (X.ιE.symm : D.host.E →+* X.B.I.E).toIntAlgHom⟩ : 𝓞 X.B.I.E)) hi
 
 /- English proof (translation)
-Establish `e : algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) c = (⟨c, hc⟩ : v.adicCompletionIntegers X.B.I.F) • (1 : Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (one_mem_oev v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_int_mem (v : PlX X) (c : Fv X.B.I.F v) (hc : Valued.v c ≤ 1) :
     algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) c ∈ OEv (E := X.B.I.E) v := by
@@ -101,20 +101,20 @@ theorem alg_int_mem (v : PlX X) (c : Fv X.B.I.F v) (hc : Valued.v c ≤ 1) :
   rw [e]; exact Submodule.smul_mem _ _ (one_mem_oev v)
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_pow, FractionalIdeal.coeIdeal_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ddS_pow (k : ℕ) : ddS D ^ k = ((Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))
     (differentIdeal ℤ (𝓞 D.host.F) ^ k) : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
   rw [Ideal.map_pow, FractionalIdeal.coeIdeal_pow]; rfl
 
 /- English proof (translation)
-Rewrite `hx` using `[ddS_pow, FractionalIdeal.mem_coeIdeal]`. Take `⟨i, hi, rfl⟩` from `hx`. Establish `hle : Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F) ^ k) ≤ Qi X v ((dV v)⁻¹ ^ k)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `d hd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, ex⟩` from `pow_tr X hT k d hd`. Use `show sc (E := X.B.I.E) v ((dV v)⁻¹ ^ k) * inclR (F := X.B.I.F) (Fv X.B.I.F v) (X.ιE.symm ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) d : 𝓞 D.host.E) : D.host.E)) ∈ OEv (E := X.B.I.E) v`. Establish `e1 : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) d : 𝓞 D.host.E) : D.host.E) = ((d : D.host.F) : D.host.E)` using `rfl`. Rewrite using `[e1, ← ex, RingEquiv.symm_apply_apply, ← alg_alg]`. Express the relevant statement in the definitionally equal form `algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) _ * _ ∈ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Use `alg_int_mem X v _ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `show Valued.v ((dV v)⁻¹ ^ k) * Valued.v (algebraMap X.B.I.F (Fv X.B.I.F v) (x : X.B.I.F)) ≤ 1`. Rewrite using `[map_pow, map_inv₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `val_pow_le v k x hx`. Establish `h0 : Valued.v (dV v) ≠ 0` using `(Valuation.ne_zero_iff _).2 (dV_ne_zero v)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle hi`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dd1 (hT : OmVDdTr X) (v : PlX X) (k : ℕ) (x : D.host.E) (hx : x ∈ ddS D ^ k) :
     sc (E := X.B.I.E) v ((dV v)⁻¹ ^ k) * inclR (F := X.B.I.F) (Fv X.B.I.F v) (X.ιE.symm x) ∈ OEv (E := X.B.I.E) v := by

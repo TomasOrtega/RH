@@ -12,7 +12,7 @@ section
 variable {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hX`. Conclude with `((y : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)) i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_mem {n : ℕ} {X : GL (Fin n) (v.adicCompletion F)} (hX : X ∈ GLint (Fin n) (Formalism.UG.Ov F v))
     (i j : Fin n) : (X : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ Formalism.UG.Ov F v := by
@@ -20,7 +20,7 @@ theorem entry_mem {n : ℕ} {X : GL (Fin n) (v.adicCompletion F)} (hX : X ∈ GL
   exact ((y : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)) i j).2
 
 /- English proof (translation)
-Establish `h1 : Valued.v x * Valued.v y = 1` using `by rw [← map_mul, hxy, map_one]`. Establish `hy1 : Valued.v y ≤ 1` using `hy`. Establish `hx1 : Valued.v x ≤ 1` using `hx`. Use `le_antisymm hx1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem v_eq_one_of_mul {x y : v.adicCompletion F} (hx : x ∈ Formalism.UG.Ov F v) (hy : y ∈ Formalism.UG.Ov F v)
     (hxy : x * y = 1) : Valued.v x = 1 := by
@@ -32,11 +32,11 @@ theorem v_eq_one_of_mul {x y : v.adicCompletion F} (hx : x ∈ Formalism.UG.Ov F
     _ ≤ Valued.v x := mul_le_of_le_one_right' hy1
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hX`. Establish `hd : ∀ z : GL (Fin n) (Formalism.UG.Ov F v), ((Formalism.UG.bc (n` using `Fin n) (Formalism.UG.Ov F v).subtype z : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det = (((z : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)).det : Formalism.UG.Ov F v) : v.adicCompletion F) := by`. Introduce `z`. Rewrite using `[← (Formalism.UG.Ov F v).subtype_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hdi : (y : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)).det * ((y⁻¹ : GL (Fin n) (Formalism.UG.Ov F v)) : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Rewrite using `[hd]`. Use `v_eq_one_of_mul (SetLike.coe_mem _) (SetLike.coe_mem (((y⁻¹ : GL (Fin n) (Formalism.UG.Ov F v)) : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)).det)) ?_` and prove the remaining obligations. Use `congrArg (fun z : Formalism.UG.Ov F v => (z : v.adicCompletion F)) hdi` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem det_v {n : ℕ} {X : GL (Fin n) (v.adicCompletion F)} (hX : X ∈ GLint (Fin n) (Formalism.UG.Ov F v)) :
     Valued.v (X : Matrix (Fin n) (Fin n) (v.adicCompletion F)).det = 1 := by
@@ -79,9 +79,9 @@ theorem coe_ent (k : GLint (Fin n) (Formalism.UG.Ov F v)) (i j : Fin n) :
       ((k : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j := rfl
 
 /- English proof (translation)
-Use extensionality with `i j : 2`. Rewrite using `[coe_ent]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ent_one : ent (1 : GLint (Fin n) (Formalism.UG.Ov F v)) = 1 := by
   ext i j : 2
@@ -91,7 +91,7 @@ theorem ent_one : ent (1 : GLint (Fin n) (Formalism.UG.Ov F v)) = 1 := by
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use extensionality with `i j : 2`. Rewrite using `[coe_ent, Matrix.mul_apply]`. Simplify using `[Matrix.mul_apply, coe_ent]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ent_mul (k k' : GLint (Fin n) (Formalism.UG.Ov F v)) : ent (k * k') = ent k * ent k' := by
   ext i j : 2
@@ -110,13 +110,13 @@ def X0 (π : v.adicCompletionIntegers F) (c : Fin n → Fin n → ℕ) (y : Fin 
     Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F) := 1 + Matrix.of fun i j => π ^ c i j * y i j
 
 /- English proof (translation)
-Use `set π : v.adicCompletionIntegers F := ⟨ϖ, hϖO⟩`. Establish `hπ : Ideal.Quotient.mk (Ideal.span {π}) π = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self π)`. Establish `hmk : (Ideal.Quotient.mk (Ideal.span {π})).mapMatrix (X0 π c y) = 1`. Use extensionality with `i j`. Establish `h0 : c i j ≠ 0` using `by have := hc i j; omega`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[X0, hπ, zero_pow h0]`. Simplify using `[X0, hπ, zero_pow h0, Matrix.one_apply_ne h]`. Establish `hd : Ideal.Quotient.mk (Ideal.span {π}) ((X0 π c y).det) = Ideal.Quotient.mk (Ideal.span {π}) 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, hmk, Matrix.det_one, map_one]`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hd)`. Establish `hdet : (X0 π c y).det = 1 + z * π` using `by rw [hz]; ring`. Rewrite using `[hdet]`. Establish `: (((1 + z * π : v.adicCompletionIntegers F)) : v.adicCompletion F) = 1 + (z : v.adicCompletion F) * ϖ` using `by push_cast; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Rewrite using `[map_mul, show Valued.v ϖ = WithZero.exp (-1 : ℤ) from hϖ]`. Establish `hz1 : Valued.v (z : v.adicCompletion F) ≤ 1` using `z.2`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_cover_matrix_valuation_one (hϖO : ϖ ∈ v.adicCompletionIntegers F) (hϖ : Formalism.UG.IsUnifV F v ϖ) (c : Fin n → Fin n → ℕ)
     (hc : ∀ i j, 1 ≤ c i j) (y : Fin n → Fin n → v.adicCompletionIntegers F) :
@@ -155,7 +155,7 @@ variable {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {
 variable {ϖ : v.adicCompletion F} {a : Fin n → ℤ}
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det (v.adicCompletionIntegers F).toSubring.subtype (X0 π c y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_map_cover_matrix (π : v.adicCompletionIntegers F) (c : Fin n → Fin n → ℕ)
     (y : Fin n → Fin n → v.adicCompletionIntegers F) :

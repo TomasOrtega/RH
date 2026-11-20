@@ -13,11 +13,11 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Set `φ : Λ →+ Additive H` to `AddMonoidHom.mk' (fun x => Additive.ofMul (L x)) hL`. Establish `hφ : ∀ x, L x = Additive.toMul (φ x)` using `fun x => rfl`. Establish `hc : bas c u = ∑ i, c i • bas (Pi.single i 1) u` using `by conv_lhs => rw [← Finset.univ_sum_single c]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : (Pi.single i (c i) : Fin n → ℤ) = c i • (Pi.single i 1 : Fin n → ℤ)`. Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[hs, map_zsmul, Pi.smul_apply]`. Rewrite using `[map_prod, hc, hφ, map_sum, toMul_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, hP, map_zsmul, toMul_zsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -43,9 +43,9 @@ theorem levelFactor_comp {G H Λ : Type} [CommGroup G] [CommGroup H] [AddCommGro
   rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : ∃ c, bas c = Pi.single u x` from `⟨bas.symm (Pi.single u x), bas.apply_symm_apply _⟩`. Establish `h1` using `levelFactor_comp bas P π L hL hP c u`. Rewrite `h1` using `[hc, Pi.single_eq_same]`. Establish `hk : ∀ i, (P i ^ c i) ^ k = 1` using `fun i => by`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, ht, one_zpow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← map_pow, ← Finset.prod_pow, Finset.prod_eq_one (fun i _ => hk i), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levelFactor_torsion {G H Λ : Type} [CommGroup G] [CommGroup H] [AddCommGroup Λ] {n m : ℕ} (u : Fin m)
     (bas : (Fin n → ℤ) ≃ₗ[ℤ] (Fin m → Λ)) (P : Fin n → G) (π : Fin m → (G →* H)) (L : Λ → H)
@@ -59,25 +59,25 @@ theorem levelFactor_torsion {G H Λ : Type} [CommGroup G] [CommGroup H] [AddComm
   rw [← h1, ← map_pow, ← Finset.prod_pow, Finset.prod_eq_one (fun i _ => hk i), map_one]
 
 /- English proof (translation)
-Establish `: NeZero k` using `⟨hk.ne'⟩`. Establish `hcomp` using `levelFactor_comp bas P π L hL hP`. Establish `htor` using `levelFactor_torsion u bas P π L hL hP k ht`. Establish `L0 : L 0 = 1` using `mul_left_cancel (a := L 0) (by rw [← hL, add_zero, _root_.mul_one])`. Establish `hsm : ∀ (j : ℕ) (x : Λ), L (j • x) = L x ^ j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j x`. Proceed by induction on `j with`. Consider the case `zero => rw [zero_smul, L0, pow_zero]`. Consider the case `succ j ih => rw [succ_nsmul, hL, ih, pow_succ]`. Establish `hone : ∀ a : G, (∀ v, π v a = 1) → a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨x, -, hx⟩` from `hπ (fun _ => 1)`. Conclude with `(hx a ha).trans (hx 1 (fun v => map_one _)).symm`. Establish `hred : ∀ w : Fin n → ℤ, ∏ i, P i ^ w i = (List.ofFn fun i => P i ^ ((w i : ZMod k).val)).prod`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.prod_ofFn]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_eq_zpow_emod (w i) (n := (k : ℤ)) (by rw [zpow_natCast]; exact ht i), ← ZMod.val_intCast, zpow_natCast]`. Use `⟨fun x => ⟨fun hx => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩ : ∃ w, bas w = Pi.single u x` from `⟨_, bas.apply_symm_apply _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : ∏ i, P i ^ w i = 1` using `hone _ fun v => by`. Rewrite using `[hcomp, hw]`. Distinguish the cases in `hv : v = u`. Substitute `hv` using the available equality. Rewrite using `[Pi.single_eq_same, hx]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hv, L0]`. Take `⟨c0, -, huniq⟩` from `hb 1 (one_pow _)`. Establish `e1` using `huniq (fun i => (w i : ZMod k)) ((hred w).symm.trans hg)`. Establish `e2` using `huniq 0 (by simp)`. Establish `hdvd : ∀ i, (k : ℤ) ∣ w i` using `fun i => (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp (congrFun (e1.trans e2.symm) i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w' hw' using hdvd`. Establish `hww : w = (k : ℤ) • w'` using `funext fun i => by rw [Pi.smul_apply, smul_eq_mul, hw' i]`. Use `⟨bas w' u, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsm, htor]`. Take `⟨a, ha, -⟩` from `hπ (Pi.mulSingle u y)`. Establish `hak : a ^ k = 1` using `hone _ fun v => by`. Rewrite using `[map_pow, ha]`. Distinguish the cases in `hv : v = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hv` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, hy]`. Rewrite using `[Pi.mulSingle_eq_of_ne hv, one_pow]`. Take `⟨c, hc, -⟩` from `hb a hak`. Use `⟨bas (fun i => ((c i).val : ℤ)) u, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∏ i, P i ^ ((c i).val : ℤ) = a`. Rewrite using `[← hc, List.prod_ofFn]`. Conclude with `Finset.prod_congr rfl fun i _ => zpow_natCast _ _`. Rewrite using `[← hcomp, hprod, ha, Pi.mulSingle_eq_same]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelFactor_bij {G H Λ : Type} [CommGroup G] [CommGroup H] [AddCommGroup Λ] {n m : ℕ} (u : Fin m)
     (bas : (Fin n → ℤ) ≃ₗ[ℤ] (Fin m → Λ)) (P : Fin n → G) (π : Fin m → (G →* H)) (L : Λ → H)
@@ -140,15 +140,13 @@ theorem levelFactor_bij {G H Λ : Type} [CommGroup G] [CommGroup H] [AddCommGrou
     rw [← hcomp, hprod, ha, Pi.mulSingle_eq_same]
 
 /- English proof (translation)
-Introduce `h g J bas k o _ b S s t A _ _ pr lev hk hpr huniv hlev hpt`. Establish `hcomp : ∀ i u, t.pt i ≫ pr u = lev (bas (Pi.single i 1) u)` using `fun i u => Over.OverMorphism.ext (hpt i u)`. Establish `hinj : ∀ (T : Over S) (x y : T ⟶ t.A), (∀ u, x ≫ pr u = y ≫ pr u) → x = y` using `fun T x y hxy => (huniv T (fun u => y ≫ pr u)).unique hxy (fun u => rfl)`. Set `cg : ∀ T : Over S, CommGroup (T ⟶ t.A)` to `fun T => { (inferInstance : Group (T ⟶ t.A)) with mul_comm := fun x y => hinj T _ _ fun u => by`. Use `hpr u` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[MonObj.mul_comp, MonObj.mul_comp, _root_.mul_comm] }`. Set `π : ∀ T : Over S, Fin 8 → ((T ⟶ t.A) →* (T ⟶ A))` to `fun T u => MonoidHom.mk' (fun x => x ≫ pr u) (fun x y => by`. Use `hpr u` as an intermediate fact. Conclude with `MonObj.mul_comp x y (pr u))`. Use `⟨?_, fun K _ _ p => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `letI := cg (Out.baseOver S)`. Conclude with `levelFactor_torsion (G := Out.baseOver S ⟶ t.A) (H := Out.baseOver S ⟶ A) (0 : Fin 8) bas t.pt (π _) lev hlev hcomp k t.torsion`. Set `T` to `Over.mk p`. Use `letI := cg T`. Set `q : T ⟶ Out.baseOver S` to `Over.homMk p (by simp [T])`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ : (Out.baseOver S ⟶ t.A) →* (T ⟶ t.A)` to `MonoidHom.mk' (fun x => q ≫ x) (fun x y => MonObj.comp_mul q x y)`. Establish `hq : toUnit T = q` using `toUnit_unique _ _`. Use `levelFactor_bij (G := T ⟶ t.A) (0 : Fin 8) bas (fun i => q ≫ t.pt i) (π T) (fun x => toUnit T ≫ lev x) (fun x y => by rw [hlev, MonObj.comp_mul]) (fun i u => ?_) k hk (fun i => by` and prove the remaining obligations. Establish `h1` using `map_pow ρ (t.pt i) k`. Rewrite `h1` using `[t.torsion, map_one]`.
-
-Conclude with `h1.symm)`. Use the proof step `(fun y => huniv T y) (fun y hy => t.bij K p y hy)`. Use `show (q ≫ t.pt i) ≫ pr u = toUnit T ≫ lev (bas (Pi.single i 1) u)`. Rewrite using `[Category.assoc, hcomp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_on_factor_of_eighth_power : ∀ (h g : ℕ) (J : Type) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))) (k : ℕ) (o : Type) [CommRing o] (b : TBase o k) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g k J b s) (A : Over S) [GrpObj A] [IsCommMonObj A] (pr : Fin 8 → (t.A ⟶ A)) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ A)), 0 < k → (∀ u, IsMonHom (pr u)) → (∀ (T : Over S) (y : Fin 8 → (T ⟶ A)), ∃! x : T ⟶ t.A, ∀ u, x ≫ pr u = y u) → (∀ x y, lev (x + y) = lev x * lev y) → (∀ i u, (t.pt i ≫ pr u).left = (lev (bas (Pi.single i 1) u)).left) → (∀ x, lev x ^ k = 1) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (p : Sp K ⟶ S), (∀ x, (toUnit (Over.mk p) ≫ lev x = 1 ↔ ∃ y, x = k • y)) ∧ ∀ y : Over.mk p ⟶ A, y ^ k = 1 → ∃ x, toUnit _ ≫ lev x = y := by
   intro h g J bas k o _ b S s t A _ _ pr lev hk hpr huniv hlev hpt

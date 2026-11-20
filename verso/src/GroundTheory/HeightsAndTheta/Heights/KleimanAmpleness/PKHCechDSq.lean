@@ -22,26 +22,26 @@ def rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) : ∀ k, Finset (ι k) :=
 def sg (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) : ℤ := KH.faceSign I p.1 p.2
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[rem, and_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rem_same (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) : rem I ⟨k, i⟩ k = (I k).erase i := by
   ext j
   simp [rem, and_comm]
 
 /- English proof (translation)
-The claim follows from `Finset.filter_true_of_mem fun _ _ e => h (congrArg Sigma.fst e)`.
+A detailed English derivation is pending.
 -/
 theorem rem_ne (I : ∀ k, Finset (ι k)) {k l : K} (i : ι k) (h : l ≠ k) : rem I ⟨k, i⟩ l = I l :=
   Finset.filter_true_of_mem fun _ _ e => h (congrArg Sigma.fst e)
 
 /- English proof (translation)
-The claim follows from `Finset.filter_subset _ _`.
+A detailed English derivation is pending.
 -/
 theorem rem_subset (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) (l : K) : rem I p l ⊆ I l :=
   Finset.filter_subset _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Use extensionality with `j`. Simplify using `only [rem, Finset.mem_filter]`. The claim follows by propositional logic.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem rem_comm (I : ∀ k, Finset (ι k)) (p q : Σ k, ι k) : rem (rem I p) q = rem (rem I q) p := by
   funext l
@@ -50,7 +50,7 @@ theorem rem_comm (I : ∀ k, Finset (ι k)) (p q : Σ k, ι k) : rem (rem I p) q
   tauto
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Use extensionality with `j`. Simplify using `only [rem, Finset.mem_filter]`. The claim follows by propositional logic.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem rem_self (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) : rem (rem I p) p = rem I p := by
   funext l
@@ -59,7 +59,7 @@ theorem rem_self (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) : rem (rem I p) p =
   tauto
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Break down `eq_or_ne l k with rfl | hl` into its components or cases. Rewrite using `[Function.update_self, rem_same]`. Rewrite using `[Function.update_of_ne hl, rem_ne I i hl]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem update_erase_eq_rem (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
     Function.update I k ((I k).erase i) = rem I ⟨k, i⟩ := by
@@ -69,7 +69,7 @@ theorem update_erase_eq_rem (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
   · rw [Function.update_of_ne hl, rem_ne I i hl]
 
 /- English proof (translation)
-Use extensionality with `⟨l, j⟩`. Simplify using `[rem, and_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sigma_rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) :
     Finset.univ.sigma (rem I p) = (Finset.univ.sigma I).erase p := by
@@ -77,7 +77,7 @@ theorem sigma_rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) :
   simp [rem, and_comm]
 
 /- English proof (translation)
-Establish `h : Fintype.card K = ∑ _l : K, 1` using `by simp`. Rewrite using `[h, Finset.card_sigma, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun l _ => Nat.sub_add_cancel (Finset.card_pos.2 (hJ l))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_add_card (J : ∀ k, Finset (ι k)) (hJ : ∀ l, (J l).Nonempty) :
     ∑ l, ((J l).card - 1) + Fintype.card K = (Finset.univ.sigma J).card := by
@@ -86,7 +86,7 @@ theorem deg_add_card (J : ∀ k, Finset (ι k)) (hJ : ∀ l, (J l).Nonempty) :
   exact Finset.sum_congr rfl fun l _ => Nat.sub_add_cancel (Finset.card_pos.2 (hJ l))
 
 /- English proof (translation)
-Establish `h1` using `deg_add_card (rem I p) hne`. Establish `h2` using `deg_add_card I hI.1`. Rewrite `h1` using `[sigma_rem, Finset.card_erase_of_mem hp]`. Use `hI.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem deg_rem {I : ∀ k, Finset (ι k)} {m : ℕ} (hI : (∀ l, (I l).Nonempty) ∧ ∑ l, ((I l).card - 1) = m + 1)
     {p : Σ k, ι k} (hp : p ∈ Finset.univ.sigma I) (hne : ∀ l, (rem I p l).Nonempty) :
@@ -98,7 +98,7 @@ theorem deg_rem {I : ∀ k, Finset (ι k)} {m : ℕ} (hI : (∀ l, (I l).Nonempt
   omega
 
 /- English proof (translation)
-Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Rewrite using `[GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono (S := S) h₁), GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono (S := S) h₂), GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono (S := S) fun l => (h₁ l).trans (h₂ l))]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRes_comp (S : Type) [CommRing S] (M : Type) [AddCommGroup M] [Module (MRingOver S ι) M]
     {J' J I : ∀ k, Finset (ι k)} (h₁ : ∀ l, J' l ⊆ J l) (h₂ : ∀ l, J l ⊆ I l)
@@ -111,9 +111,9 @@ theorem cellRes_comp (S : Type) [CommRing S] (M : Type) [AddCommGroup M] [Module
       GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono (S := S) fun l => (h₁ l).trans (h₂ l))]
 
 /- English proof (translation)
-Establish `hkm : k ∈ Finset.univ.filter (· < k')` using `by simp [hk]`. Establish `e1` using `Finset.add_sum_erase (Finset.univ.filter (· < k')) (fun l => ((rem I ⟨k, i⟩ l).card - 1)) hkm`. Establish `e2` using `Finset.add_sum_erase (Finset.univ.filter (· < k')) (fun l => ((I l).card - 1)) hkm`. Establish `e3 : ∑ l ∈ (Finset.univ.filter (· < k')).erase k, ((rem I ⟨k, i⟩ l).card - 1) = ∑ l ∈ (Finset.univ.filter (· < k')).erase k, ((I l).card - 1)` using `Finset.sum_congr rfl fun l hl => by rw [rem_ne I i (Finset.ne_of_mem_erase hl)]`. Establish `e4 : (rem I ⟨k, i⟩ k).card = (I k).card - 1` using `by rw [rem_same, Finset.card_erase_of_mem hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoff : ∑ l ∈ Finset.univ.filter (· < k'), ((I l).card - 1) = ∑ l ∈ Finset.univ.filter (· < k'), ((rem I ⟨k, i⟩ l).card - 1) + 1` using `by omega`. Unfold `KH.faceSign`. Rewrite using `[rem_ne I i hk.ne', hoff, ← add_assoc, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem faceSign_block_lt (I : ∀ k, Finset (ι k)) {k k' : K} (hk : k < k') {i : ι k} (i' : ι k')
     (hi : i ∈ I k) (h2 : 2 ≤ (I k).card) :
@@ -132,7 +132,7 @@ theorem faceSign_block_lt (I : ∀ k, Finset (ι k)) {k k' : K} (hk : k < k') {i
   ring
 
 /- English proof (translation)
-Unfold `KH.faceSign`. Rewrite using `[rem_ne I i' hk.ne, Finset.sum_congr rfl fun l hl => by rw [rem_ne I i' ((Finset.mem_filter.1 hl).2.trans hk).ne]]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem faceSign_block_gt (I : ∀ k, Finset (ι k)) {k k' : K} (hk : k < k') (i : ι k) (i' : ι k') :
     KH.faceSign (rem I ⟨k', i'⟩) k i = KH.faceSign I k i := by
@@ -141,9 +141,9 @@ theorem faceSign_block_gt (I : ∀ k, Finset (ι k)) {k k' : K} (hk : k < k') (i
     by rw [rem_ne I i' ((Finset.mem_filter.1 hl).2.trans hk).ne]]
 
 /- English proof (translation)
-Establish `hmem : i ∈ (I k).filter (· < i')` using `Finset.mem_filter.2 ⟨hi, h⟩`. Establish `e1 : (((I k).erase i).filter (· < i')).card + 1 = ((I k).filter (· < i')).card`. Rewrite using `[Finset.filter_erase, Finset.card_erase_add_one hmem]`. Establish `e2 : ∑ l ∈ Finset.univ.filter (· < k), ((rem I ⟨k, i⟩ l).card - 1) = ∑ l ∈ Finset.univ.filter (· < k), ((I l).card - 1)` using `Finset.sum_congr rfl fun l hl => by rw [rem_ne I i (Finset.mem_filter.1 hl).2.ne]`. Unfold `KH.faceSign`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[rem_same, e2, ← e1, add_right_comm, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem faceSign_lt (I : ∀ k, Finset (ι k)) {k : K} {i i' : ι k} (h : i < i') (hi : i ∈ I k) :
     KH.faceSign I k i' = -KH.faceSign (rem I ⟨k, i⟩) k i' := by
@@ -158,9 +158,9 @@ theorem faceSign_lt (I : ∀ k, Finset (ι k)) {k : K} {i i' : ι k} (h : i < i'
   ring
 
 /- English proof (translation)
-Establish `e1 : ((I k).erase i').filter (· < i) = (I k).filter (· < i)`. Rewrite using `[Finset.filter_erase, Finset.erase_eq_of_notMem]`. Simplify using `only [Finset.mem_filter, not_and, not_lt]`. Conclude with `fun _ => h.le`. Establish `e2 : ∑ l ∈ Finset.univ.filter (· < k), ((rem I ⟨k, i'⟩ l).card - 1) = ∑ l ∈ Finset.univ.filter (· < k), ((I l).card - 1)` using `Finset.sum_congr rfl fun l hl => by rw [rem_ne I i' (Finset.mem_filter.1 hl).2.ne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Unfold `KH.faceSign`. Rewrite using `[rem_same, e1, e2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem faceSign_gt (I : ∀ k, Finset (ι k)) {k : K} {i i' : ι k} (h : i < i') :
     KH.faceSign (rem I ⟨k, i'⟩) k i = KH.faceSign I k i := by
@@ -175,15 +175,15 @@ theorem faceSign_gt (I : ∀ k, Finset (ι k)) {k : K} {i i' : ι k} (h : i < i'
   rw [rem_same, e1, e2]
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Take `⟨k', i'⟩` from `q`. Simplify using `only [Finset.mem_sigma, Finset.mem_univ, true_and] at hp hq`. Simplify using `only [sg]`. Break down `lt_trichotomy k k' with hk | rfl | hk` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hX'` using `hX k`. Rewrite `hX'` using `[rem_ne _ i' hk.ne, rem_same]`. Establish `h1` using `Finset.card_pos.2 hX'`. Rewrite `h1` using `[Finset.card_erase_of_mem hp]`. Rewrite using `[faceSign_block_lt I hk i' hp (by omega), faceSign_block_gt I hk i i']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hii : i ≠ i'` using `fun h => hpq (by rw [h])`. Break down `lt_or_gt_of_ne hii with h | h` into its components or cases. Rewrite using `[faceSign_lt I h hp, faceSign_gt I h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[faceSign_lt I h hq, faceSign_gt I h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hX'` using `hX k'`. Rewrite `hX'` using `[rem_same, rem_ne _ i hk.ne]`. Establish `h1` using `Finset.card_pos.2 hX'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.card_erase_of_mem hq]`. Rewrite using `[faceSign_block_lt I hk i hq (by omega), faceSign_block_gt I hk i' i]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sg_swap (I : ∀ k, Finset (ι k)) {p q : Σ k, ι k} (hp : p ∈ Finset.univ.sigma I)
     (hq : q ∈ Finset.univ.sigma I) (hpq : p ≠ q) (hX : ∀ l, (rem (rem I p) q l).Nonempty) :
@@ -218,11 +218,11 @@ def val (n : ℕ) (φ : KH.CechC S ι M n) (X : ∀ k, Finset (ι k)) : Localize
   if h : (∀ l, (X l).Nonempty) ∧ ∑ l, ((X l).card - 1) = n then φ ⟨X, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `only [KH.cechD, LinearMap.pi_apply, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e` using `update_erase_eq_rem I.1 k i`. Establish `key : ∀ (X Y : ∀ k, Finset (ι k)) (_ : X = Y) hX, KH.cellRes S M X I.1 (φ ⟨X, hX⟩) = KH.cellRes S M Y I.1 (val S M n φ Y)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `X _ rfl hX`. Unfold `val`. Rewrite using `[dif_pos hX]`. Distinguish the cases in `h : (∀ l, (Function.update I.1 k ((I.1 k).erase i) l).Nonempty) ∧ ∑ l, ((Function.update I.1 k ((I.1 k).erase i) l).card - 1) = n`. Establish `h' : (∀ l, (rem I.1 ⟨k, i⟩ l).Nonempty) ∧ ∑ l, ((rem I.1 ⟨k, i⟩ l).card - 1) = n` using `e ▸ h`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h, if_pos h']`. Conclude with `congrArg (KH.faceSign I.1 k i • ·) (key _ _ e h)`. Establish `h' : ¬((∀ l, (rem I.1 ⟨k, i⟩ l).Nonempty) ∧ ∑ l, ((rem I.1 ⟨k, i⟩ l).card - 1) = n)` using `e ▸ h`. Rewrite using `[dif_neg h, if_neg h']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cechD_apply (n : ℕ) (φ : KH.CechC S ι M n) (I : KH.Cell K ι (n + 1)) :
     KH.cechD S ι M n φ I = ∑ p ∈ Finset.univ.sigma I.1,
@@ -247,7 +247,7 @@ theorem cechD_apply (n : ℕ) (φ : KH.CechC S ι M n) (I : KH.Cell K ι (n + 1)
     rfl
 
 /- English proof (translation)
-The claim follows from `(dif_pos hX).trans (cechD_apply S M n φ ⟨X, hX⟩)`.
+A detailed English derivation is pending.
 -/
 theorem val_cechD (n : ℕ) (φ : KH.CechC S ι M n) (X : ∀ k, Finset (ι k))
     (hX : (∀ l, (X l).Nonempty) ∧ ∑ l, ((X l).card - 1) = n + 1) :
@@ -262,7 +262,7 @@ def pairTerm (n : ℕ) (φ : KH.CechC S ι M n) (I : ∀ k, Finset (ι k)) (p q 
     (sg I p * sg (rem I p) q) • KH.cellRes S M (rem (rem I p) q) I (val S M n φ (rem (rem I p) q)) else 0
 
 /- English proof (translation)
-Unfold `pairTerm`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1`, `h2` using `[rem_self]`. Use `deg_rem hI hp h1` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -277,7 +277,7 @@ theorem pairTerm_self (n : ℕ) (φ : KH.CechC S ι M n) (I : ∀ k, Finset (ι 
   omega
 
 /- English proof (translation)
-Unfold `pairTerm`. Rewrite using `[rem_comm I q p]`. Distinguish the cases in `h : (∀ l, (rem (rem I p) q l).Nonempty) ∧ ∑ l, ((rem (rem I p) q l).card - 1) = n`. Rewrite using `[if_pos h, if_pos h, sg_swap I hp hq hpq h.1, neg_zsmul, neg_add_cancel]`. Rewrite using `[if_neg h, if_neg h, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairTerm_swap (n : ℕ) (φ : KH.CechC S ι M n) (I : ∀ k, Finset (ι k)) {p q : Σ k, ι k}
     (hp : p ∈ Finset.univ.sigma I) (hq : q ∈ Finset.univ.sigma I) (hpq : p ≠ q) :
@@ -289,11 +289,11 @@ theorem pairTerm_swap (n : ℕ) (φ : KH.CechC S ι M n) (I : ∀ k, Finset (ι 
   · rw [if_neg h, if_neg h, add_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h : (∀ l, (rem I p l).Nonempty) ∧ ∑ l, ((rem I p l).card - 1) = n + 1`. Rewrite using `[if_pos h, val_cechD S M n φ _ h, map_sum, ← Finset.sum_zsmul, sigma_rem, ← Finset.sum_erase (Finset.univ.sigma I) (pairTerm_self S M n φ I hI hp)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Unfold `pairTerm`. Distinguish the cases in `h' : (∀ l, (rem (rem I p) q l).Nonempty) ∧ ∑ l, ((rem (rem I p) q l).card - 1) = n`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h', if_pos h', map_zsmul, ← mul_zsmul, cellRes_comp S M (rem_subset _ q) (rem_subset _ p)]`. Rewrite using `[if_neg h', if_neg h', map_zero, zsmul_zero]`. Rewrite using `[if_neg h]`. Use `(Finset.sum_eq_zero fun q _ => ?_).symm` and prove the remaining obligations. Unfold `pairTerm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg]`. Introduce `h'`. Establish `hne : ∀ l, (rem I p l).Nonempty` using `fun l => (h'.1 l).mono (rem_subset _ q l)`. Conclude with `h ⟨hne, deg_rem hI hp hne⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step (n : ℕ) (φ : KH.CechC S ι M n) (I : ∀ k, Finset (ι k))
     (hI : (∀ l, (I l).Nonempty) ∧ ∑ l, ((I l).card - 1) = n + 1 + 1) {p : Σ k, ι k}
@@ -319,15 +319,13 @@ theorem step (n : ℕ) (φ : KH.CechC S ι M n) (I : ∀ k, Finset (ι k))
     exact h ⟨hne, deg_rem hI hp hne⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Take `⟨I, hI⟩` from `I`. Use `(cechD_apply S M (n + 1) (KH.cechD S ι M n φ) ⟨I, hI⟩).trans ?_` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun p hp => step S M n φ I hI hp).trans ?_` and prove the remaining obligations. Use `(Finset.sum_product' _ _ (fun p q => pairTerm S M n φ I p q)).symm.trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_involution (fun x _ => x.swap) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨p, q⟩ hx`. Take `⟨hp, hq⟩` from `Finset.mem_product.1 hx`. Use `show pairTerm S M n φ I p q + pairTerm S M n φ I q p = 0`. Distinguish the cases in `hpq : p = q`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hpq` using the available equality. Rewrite using `[pairTerm_self S M n φ I hI hp, add_zero]`. Conclude with `pairTerm_swap S M n φ I hp hq hpq`. Introduce and unpack `⟨p, q⟩ hx hne heq`. Simplify using `only [Prod.swap_prod_mk, Prod.mk.injEq] at heq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨rfl, -⟩` from `heq`. Conclude with `hne (pairTerm_self S M n φ I hI (Finset.mem_product.1 hx).1)`. Introduce and unpack `⟨p, q⟩ hx`. Take `⟨hp, hq⟩` from `Finset.mem_product.1 hx`. Conclude with `Finset.mem_product.2 ⟨hq, hp⟩`.
-
-Introduce and unpack `x -`. Conclude with `Prod.swap_swap x`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cechD_cechD (n : ℕ) (φ : KH.CechC S ι M n) :
     KH.cechD S ι M (n + 1) (KH.cechD S ι M n φ) = 0 := by
@@ -357,7 +355,7 @@ theorem cechD_cechD (n : ℕ) (φ : KH.CechC S ι M n) :
 end KHCechDSq
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ M _ _ _ _ n`. Conclude with `LinearMap.ext fun φ => KHCechDSq.cechD_cechD S M n φ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem KHCechDSq.full : KH.CechDSqStatement := by
   intro S _ K _ _ ι _ _ M _ _ _ _ n

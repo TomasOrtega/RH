@@ -13,7 +13,7 @@ open GlobalTheory.Mum GlobalTheory.TwFam
 namespace GlobalTheory.TwFac
 
 /- English proof (translation)
-Substitute `e` using the available equality. Introduce `U _ h`. Simplify using `only [dε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel, Finset.univ_eq_empty, Finset.prod_empty]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem formEq_empty_dε {X Y : Scheme.{0}} (φ φ' : Fin 5 → (Y ⟶ X)) (e : φ' = φ) (n j : ℤ) :
     FormEq (K := PEmpty) PEmpty.elim PEmpty.elim (Sum.elim φ φ') (dε n j) := by
@@ -23,11 +23,11 @@ theorem formEq_empty_dε {X Y : Scheme.{0}} (φ φ' : Fin 5 → (Y ⟶ X)) (e : 
     mul_inv_cancel, Finset.univ_eq_empty, Finset.prod_empty]
 
 /- English proof (translation)
-Establish `C : IsCub (DVR.th D (T` using `TF (R := R) (FractionRing R)) z J) := isCub_cubV D.cub hJ`. Establish `z0 : (0 : D.X) + 0 = 0` using `add_zero 0`. Establish `hτ` using `DVR.tau_mul (𝟙 (TF (R := R) (FractionRing R))) hJ hB 0 0 0`. Establish `hψ` using `DVR.UUA.psi_add (𝟙 (TF (R := R) (FractionRing R))) hJ (0 : D.X) 0`. Establish `hpt : ∀ a b c : D.X, a = b → ∀ (r : (TF (R` using `R) (FractionRing R)).left ⟶ _), val (D.tau a c) r z J = val (D.tau b c) r z J := by rintro a b c rfl r; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpp : ∀ a b : D.X, a = b → ∀ (r : (TF (R` using `R) (FractionRing R)).left ⟶ _), val (D.psi a) r z J = val (D.psi b) r z J := by rintro a b rfl r; rfl`. Rewrite `hτ` using `[hpt _ _ _ z0, cPoint_zero, C.face]`. Establish `t00` using `(mul_left_cancel hτ).symm`. Rewrite `hψ` using `[hpp _ _ z0, t00, _root_.one_mul]`. Rewrite `t00`, `hψ` using `[Over.id_left, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨t00, mul_left_cancel (a := val (D.psi 0) (jFK (R := R) (FractionRing R)) z J) ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_one, ← _root_.mul_assoc]`. Conclude with `hψ.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_tau_psi_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : D.TauBimult)
     (z : (TF (R := R) (FractionRing R)).left) (J) (hJ : Good D.P.L z J) :
@@ -50,15 +50,15 @@ theorem val_tau_psi_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB
   exact hψ.symm
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D a a' h h' hE N _ s₀`. Establish `hs : shift h h' N (-1) 0 = 0` using `by simp [shift]`. Generalize the expression as in `shift h h' N (-1) 0 = β' at hs`. Substitute `hs` using the available equality. Introduce `s' hv u hu Z x z J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL` using `D.toPre.P.isLB`. Establish `htr : (DegPre.trF D.toPre (FractionRing R) 0).left = 𝟙 _` using `by rw [DVR.UUA.trF_zero, Over.id_left]`. Establish `hc0 : D.toPre.c 0 = 1`. Establish `h` using `D.toPre.c_add 0 0`. Rewrite `h` using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.1 h.symm`. Establish `hp : padd D.toPre.P.A (𝟙 _) (toUnit _ ≫ D.toPre.c 0) = 𝟙 _`. Rewrite using `[hc0, MonObj.comp_one]`. Conclude with `_root_.mul_one (𝟙 D.toPre.P.A)`. Take `⟨u₀, hu₀, -⟩` from `exists_gen hL (formEq_empty_dε (tφ D.toPre a 0) (fun k => (padd D.toPre.P.A (𝟙 _) (toUnit _ ≫ D.toPre.c 0)).left ≫ tφ D.toPre a 0 k) (funext fun k => by rw [hp, Over.id_left, Category.id_comp]) (N : ℤ) (-1)) (LB.oneGen D.toPre.P.L) (LB.isGen_oneGen D.toPre.P.L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u', hu', hv'⟩` from `exists_gen hL (φ' := dφ D.toPre a 0 0 0) (formEq_empty_dε _ _ (funext fun k => by rw [htr, Category.id_comp]) (N : ℤ) (-1)) (LB.oneGen D.toPre.P.L) (LB.isGen_oneGen D.toPre.P.L)`. Establish `hf : IsFac D.toPre a h N (-1) 0 0 0 u'`. Use `⟨hu', fun y I hI => ?_⟩` and prove the remaining obligations. Take `⟨t0, p0⟩` from `val_tau_psi_zero D.tau_bimult y I hI`. Establish `hh : val (D.toPre.psi (h 0)) (jFK (R` using `R) (FractionRing R)) y I = val (D.toPre.psi 0) (jFK (R := R) (FractionRing R)) y I := congrArg (fun w => val (D.toPre.psi w) (jFK (R := R) (FractionRing R)) y I) (map_zero h)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv' _ _ y I hI, val_one, hh, t0, _root_.mul_one, ← zpow_add, ← mul_zpow, p0, one_zpow]`. Establish `key` using `(GlobalTheory.T.twistedFactor_exists_unique_const_mul_integralGenerator R hR D a h hE.1 hE.2.2.2.1 N (-1) 0 0 0 u₀ hu₀).2.1 u u' hu hf Z x z J hJ`. Rewrite using `[key, hv' _ _ z J hJ, val_one, htr, Category.id_comp, Units.val_one, _root_.mul_one]`. Conclude with `hv Z _ z J hJ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trel_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ N : ℕ, 1 ≤ N → ∀ (s₀ : SecT D.toPre a N (-1) 0) (s' : SecT D.toPre a N (-1) (shift h h' N (-1) 0)), (∀ (Z : Scheme.{0}) (x : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → sval s' x z J = sval s₀ x z J) → TRel h 0 s₀ s' := by
   intro R _ _ _ hR D a a' h h' hE N _ s₀

@@ -35,7 +35,7 @@ def extChart (t : ∀ k : K ⊕ K', Sum.elim ι ι' k) (u : ∀ k, ι₂ k) :
   | .inr (.inr k) => t (.inr k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem midChart_extChart (t : ∀ k : K ⊕ K', Sum.elim ι ι' k) (u : ∀ k, ι₂ k) :
     midChart (extChart t u) = t := by
@@ -50,7 +50,7 @@ theorem wChart_extChart (t : ∀ k : K ⊕ K', Sum.elim ι ι' k) (u : ∀ k, ι
   rfl
 
 /- English proof (translation)
-Simplify using `only [mseg, Fintype.prod_sum_type]`. Simplify using `only [joinCoord, midChart, wChart]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mseg_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     (s : ∀ k : K ⊕ (K₂ ⊕ K'), Sum.elim ι (Sum.elim ι₂ ι') k) :
@@ -60,7 +60,7 @@ theorem mseg_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k
   ring
 
 /- English proof (translation)
-Simplify using `only [chartMon, Fintype.prod_sum_type]`. Simplify using `[joinCoord, midChart, midDeg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chartMon_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     (s : ∀ k : K ⊕ (K₂ ⊕ K'), Sum.elim ι (Sum.elim ι₂ ι') k) (a : K ⊕ K' → ℤ) :
@@ -72,11 +72,9 @@ theorem chartMon_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (
 variable (O : Type*) [CommRing O] [Algebra O Ω]
 
 /- English proof (translation)
-Establish `hw : mseg w (wChart s) ≠ 0`. Rewrite `hs` using `[mseg_mid]`. Conclude with `right_ne_zero_of_mul hs`. Unfold `chartRing`. Apply `Algebra.adjoin_le` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨t', rfl⟩`. Establish `h : mseg (joinCoord x z) t' / mseg (joinCoord x z) (midChart s) = mseg (joinCoord x (joinCoord w z)) (extChart t' (wChart s)) / mseg (joinCoord x (joinCoord w z)) s`. Rewrite using `[mseg_mid x z w (extChart t' (wChart s)), mseg_mid x z w s, midChart_extChart, wChart_extChart, mul_div_mul_right _ _ hw]`. Simplify using `only`. Rewrite using `[h]`.
-
-Conclude with `div_mem_chartRing (o := O) _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartRing_le_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     (s : ∀ k : K ⊕ (K₂ ⊕ K'), Sum.elim ι (Sum.elim ι₂ ι') k)
@@ -105,7 +103,7 @@ variable {O : Type*} [CommRing O] {Ω : Type*} [Field Ω] [Algebra O Ω]
 variable {K K' K₂ : Type} {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type}
 
 /- English proof (translation)
-Rewrite using `[aeval_rename]`. Conclude with `congrArg (fun y => aeval y p) (funext (joinCoord_midVar x z w))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     (p : ReciprocityTheory.ChartRestriction.G.Geo.MRingOver O (Sum.elim ι ι')) :
@@ -114,7 +112,7 @@ theorem aeval_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ 
   exact congrArg (fun y => aeval y p) (funext (joinCoord_midVar x z w))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k | k <;> simp [midDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem midDeg_sub (a b : K ⊕ K' → ℤ) :
     midDeg (K₂ := K₂) a - midDeg (K₂ := K₂) b = midDeg (K₂ := K₂) (a - b) := by
@@ -131,9 +129,9 @@ variable {K K' K₂ : Type} [Fintype K] [Fintype K'] [Fintype K₂] {ι : K → 
 variable {N : ℕ} {V : Type*} [AddCommGroup V] [Module Ω V]
 
 /- English proof (translation)
-Establish `hsF : mseg (joinCoord x z) (midChart s) ≠ 0`. Rewrite `hs` using `[mseg_mid]`. Conclude with `left_ne_zero_of_mul hs`. Rewrite using `[hF _ hsF, hB s hs]`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, chartRing_le_mid O x z w s hs ha, e, he, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lat_le_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     {E : ChartBundle O (mseg x) N V} {EF : ChartBundle O (mseg (joinCoord x z)) N V}
@@ -150,43 +148,39 @@ theorem lat_le_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ
   exact ⟨a, chartRing_le_mid O x z w s hs ha, e, he, rfl⟩
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hsF : mseg (joinCoord x z) (midChart s) ≠ 0`. Rewrite `hs` using `[mseg_mid]`. Conclude with `left_ne_zero_of_mul hs`. Establish `hle` using `chartRing_le_mid O x z w s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat` using `lat_le_mid O x z w hF hB s hs`. Take `⟨k, f, c, hf, hc, hsum, hl⟩` from `h _ hsF`. Use `⟨k, f, c, fun l => hle (hf l), fun l => hle (hc l), hsum, fun l => ?_⟩` and prove the remaining obligations. Take `⟨b, hli, hspan, hiff, hw⟩` from `hl l`. Establish `hfR : f l ∈ chartRing O (mseg (joinCoord x (joinCoord w z))) s` using `hle (hf l)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, hli, hspan, fun e => ⟨?_, ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩`. Distinguish the cases in `h0 : f l = 0`. Take `⟨a, ha, he⟩` from `(hiff e).mp ⟨1, by rw [h0, pow_one, zero_smul]; exact zero_mem _⟩`. Conclude with `⟨a, fun q => (ha q).imp fun _ hk => hle hk, he⟩`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ v ∈ EB.lat s, ∃ a : Fin N → Ω, (∀ q, ∃ n : ℕ, f l ^ n * a q ∈ chartRing O (mseg (joinCoord x (joinCoord w z))) s) ∧ v = ∑ q, a q • b q`. Introduce `v hv`. Rewrite `hv` using `[hB s hs]`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', e', he', rfl⟩` from `hv`. Establish `he'F : e' ∈ EF.lat (midChart s)`. Rewrite using `[hF _ hsF]`. Conclude with `AddSubgroup.subset_closure ⟨1, one_mem _, e', he', (one_smul _ _).symm⟩`. Take `⟨a, ha, rfl⟩` from `(hiff e').mp ⟨0, by rwa [pow_zero, one_smul]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun q => c' * a q, fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem hc' (hle hn)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`. Consider the case `zero => exact ⟨0, fun _ => ⟨0, by simp⟩, by simp⟩`. Consider the case `add v v' _ _ hv hv'`. Take `⟨a, ha, rfl⟩` from `hv`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha', rfl⟩` from `hv'`. Use `⟨a + a', fun q => ?_, by simp [add_smul, Finset.sum_add_distrib]⟩` and prove the remaining obligations. Take `⟨n₁, h₁⟩` from `ha q`. Take `⟨n₂, h₂⟩` from `ha' q`. Use `⟨n₁ + n₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h12 : f l ^ (n₁ + n₂) * (a + a') q = f l ^ n₂ * (f l ^ n₁ * a q) + f l ^ n₁ * (f l ^ n₂ * a' q)`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h12]`. Conclude with `add_mem (mul_mem (pow_mem hfR _) h₁) (mul_mem (pow_mem hfR _) h₂)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the case `neg v _ hv`. Take `⟨a, ha, rfl⟩` from `hv`. Use `⟨-a, fun q => ?_, by simp [neg_smul, Finset.sum_neg_distrib]⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`. Conclude with `⟨n, by simpa [mul_neg] using neg_mem hn⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, he⟩` from `key _ hn`. Establish `hfn : f l ^ n ≠ 0` using `pow_ne_zero _ h0`. Use `⟨fun q => (f l ^ n)⁻¹ * a q, fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k', hk'⟩` from `ha q`. Use `⟨k' + n, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_add, mul_assoc, ← mul_assoc (f l ^ n), mul_inv_cancel₀ hfn, one_mul]`. Conclude with `hk'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he, Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Establish `hb : ∀ q, ∃ n : ℕ, f l ^ n • b q ∈ EB.lat s`. Introduce `q`. Establish `h1 : ∀ q', ∃ n : ℕ, f l ^ n * (Pi.single q (1 : Ω) : Fin N → Ω) q' ∈ chartRing O (mseg (joinCoord x z)) (midChart s)`. Introduce `q'`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : q' = q`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : b q = ∑ q', (Pi.single q (1 : Ω) : Fin N → Ω) q' • b q'`. Simplify using `[Pi.single_apply]`. Take `⟨n, hn⟩` from `(hiff (b q)).mpr ⟨Pi.single q 1, h1, h2⟩`. Conclude with `⟨n, hlat hn⟩`. Use `choose nb hnb using hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose na hna using ha`. Use `⟨∑ q, (na q + nb q), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `AddSubgroup.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Establish `hq : na q + nb q ≤ ∑ q, (na q + nb q)` using `Finset.single_le_sum (f := fun q => na q + nb q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : f l ^ (∑ q, (na q + nb q)) = f l ^ (∑ q, (na q + nb q) - (na q + nb q)) * f l ^ na q * f l ^ nb q`. Rewrite using `[mul_assoc, ← pow_add, ← pow_add, Nat.sub_add_cancel hq]`. Establish `heq : f l ^ (∑ q, (na q + nb q)) • (a q • b q) = (f l ^ (∑ q, (na q + nb q) - (na q + nb q)) * (f l ^ na q * a q)) • (f l ^ nb q • b q)`. Rewrite using `[smul_smul, smul_smul, hpow]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `EB.stable s _ (mul_mem (pow_mem hfR _) (hna q)) _ (hnb q)`. Take `⟨u, ⟨hu0, ⟨n₁, hn₁⟩, ⟨n₂, hn₂⟩⟩, hmem⟩` from `hw i`. Use `⟨u, ⟨hu0, ⟨n₁, hle hn₁⟩, ⟨n₂, hle hn₂⟩⟩, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only`. Rewrite using `[chartMon_mid]`. Conclude with `hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGradedFrame_mid (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω)
     {E : ChartBundle O (mseg x) N V} {EF : ChartBundle O (mseg (joinCoord x z)) N V}
@@ -303,9 +297,7 @@ end FlagPairJoinRight
 open FlagPairJoinRight in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z K₂ _ ι₂ _ w N V _ _ E E' EF E'F hp hp' φ EB E'B hB hB'`. Use `⟨{ Vs := φ.Vs mono := φ.mono dim := φ.dim top := φ.top deg := fun i => midDeg (K₂ := K₂) (φ.deg i) gen := φ.gen gen_mem := φ.gen_mem frame := isGradedFrame_mid O x z w hp hB φ.frame deg' := fun i => midDeg (K₂ := K₂) (φ.deg' i) gen' := φ.gen' gen'_mem := φ.gen'_mem frame' := isGr …` and prove the remaining obligations. Simplify using `only [aeval_mid]`. Conclude with `φ.rel i`. Use `vert := fun i => by`.
-
-Simplify using `only [midDeg_sub]`. Conclude with `hVert O Ω K ι x K' ι' z K₂ ι₂ w _ _ _ (φ.vert i) }, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FlagPairJoinRight.proof (hVert : JoinVerticalDivisorRight.Statement) :
     FlagPairJoinRight.Statement := by

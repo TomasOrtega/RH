@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.TorsionFormCompare
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Introduce `Z r z p q hp hq`. Establish `hp' : ∀ k, φ k (r z) ∈ L.U (p k)` using `hp`. Rewrite using `[Category.comp_id, gen_trans ht r z (j := p) (j' := q) (Set.mem_iInter.2 hp') (Set.mem_iInter.2 hq), trF]`. Use `congr 1`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.prod_congr rfl fun k _ => by rw [hw Z (r ≫ φ k) z (p k) (q k) (hp' k) (hq k)]`.
+A detailed English derivation is pending.
 -/
 theorem pmaps_self_of_tautological {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (hF : F = 𝟙 X)
     (w : LB.Iso L (L.pull F))
@@ -31,9 +31,9 @@ theorem pmaps_self_of_tautological {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (
   exact Finset.prod_congr rfl fun k _ => by rw [hw Z (r ≫ φ k) z (p k) (q k) (hp' k) (hq k)]
 
 /- English proof (translation)
-Introduce `R _ _ D hD ⟨hx, he, hw⟩ F _ _ g`. Use `⟨by rw [he, Category.comp_id], fun χ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ χ' : D.X, χ = χ' → ∃ hψ : ∀ k : Fin 4, DegPre.gtφ D F g.b χ k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = 𝟙 _ ≫ DegPre.gtφ D F g.b χ' k, LB.Gen.Maps (LB.linCombIso hD.w _ DegPre.gtε) (g.s χ) (GeneratorPullback.pullAlong D.P.L (hD.e.hom.left ≫ pullba …`. Introduce and unpack `_ rfl`. Establish `hψ : ∀ k : Fin 4, DegPre.gtφ D F g.b χ k ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = 𝟙 _ ≫ DegPre.gtφ D F g.b χ k` using `fun k => by rw [he, Category.comp_id, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨hψ, (maps_iff hD.w _ _ _ _ _ (𝟙 _) _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).2 (pmaps_self_of_tautological he hD.w hw _ _ _ (g.isGen _))⟩`. Conclude with `key _ (hx χ).symm`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPullGtF_self_of_isIdPull : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (hD : IsPullDeg (RingHom.id R) D D), IsIdPull hD → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (g : GtPtF D F), IsPullGtF (RingHom.id R) hD F g g := by
   intro R _ _ D hD ⟨hx, he, hw⟩ F _ _ g

@@ -16,9 +16,9 @@ def SegreLiftComap.Statement : Prop :=
       IsMultiProjPrime (W'.comap (segreIncl ι F)) ∧ W' = segreLift ι F (W'.comap (segreIncl ι F))
 
 /- English proof (translation)
-Establish `: ∀ k, Nonempty (segreIdx (fun _ : Unit => Fin 1) k)` using `fun k => by`. Break down `k with _ | _` into its components or cases. Conclude with `⟨fun _ => (0 : Fin 1)⟩`. Conclude with `⟨(0 : Fin 1)⟩`. Use `⟨NumbersDVR.isMultiProjPrime_bot, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g ⟨c, d, rfl⟩`. Take `rfl : c = d` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem SegreLiftComap.hyps :
     IsMultiProjPrime (⊥ : Ideal (MRing (segreIdx (fun _ : Unit => Fin 1)) ℚ)) ∧
@@ -34,7 +34,7 @@ theorem SegreLiftComap.hyps :
   simp
 
 /- English proof (translation)
-The claim follows from `h ℚ Unit (fun _ => Fin 1) ⊥ SegreLiftComap.hyps.1 SegreLiftComap.hyps.2`.
+A detailed English derivation is pending.
 -/
 example (h : SegreLiftComap.Statement) :=
   h ℚ Unit (fun _ => Fin 1) ⊥ SegreLiftComap.hyps.1 SegreLiftComap.hyps.2

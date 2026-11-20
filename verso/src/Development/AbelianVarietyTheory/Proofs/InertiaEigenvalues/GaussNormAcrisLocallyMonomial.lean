@@ -15,21 +15,19 @@ open scoped Formalism.Per
 namespace GlobalTheory.GaussMono
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, 0 < c j := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hG` to reduce the goal to its premises. Establish `: ∀ n, c n = 0` using `fun n => le_antisymm (h n) (h0 n)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Establish `hσ0 : 0 < ρ / 2` using `by positivity`. Establish `hσρ : ρ / 2 < ρ` using `by linarith`. Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one (mul_pos hj (pow_pos hσ0 j)) hρ1`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image (insert j (Finset.range M)) (fun n => toLex (c n * ρ ^ n, OrderDual.toDual n)) ⟨j, Finset.mem_insert_self _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : ∀ᶠ r in 𝓝[≤] ρ, ρ / 2 < r` using `(eventually_gt_nhds hσρ).filter_mono nhdsWithin_le_nhds`. Establish `key : ∀ n ∈ insert j (Finset.range M), ∀ᶠ r in 𝓝[≤] ρ, c n * r ^ n ≤ c i * r ^ i`. Introduce `n hn`. Break down `Prod.Lex.toLex_le_toLex.1 (hi n hn) with h | ⟨h, h'⟩` into its components or cases. Establish `: ∀ᶠ r in 𝓝 ρ, c n * r ^ n < c i * r ^ i` using `ContinuousAt.eventually_lt (f := fun r : ℝ => c n * r ^ n) (g := fun r : ℝ => c i * r ^ i) (by fun_prop) (by fun_prop) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(this.filter_mono nhdsWithin_le_nhds).mono fun _ h => h.le`. Use `filter_upwards [self_mem_nhdsWithin, hpos] with r hr hr0`. Establish `hr : r ≤ ρ` using `hr`. Establish `hr0 : 0 ≤ r` using `hσ0.le.trans hr0.le`. Simplify using `only at h h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : i ≤ n` using `OrderDual.toDual_le_toDual.1 h'`. Establish `e : ∀ m, c m * r ^ m = c m * ρ ^ m * (r / ρ) ^ m` using `fun m => by`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e n, e i, h]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one (div_nonneg hr0 hρ.le) ((div_le_one hρ).2 hr) hin) (mul_nonneg (h0 _) (pow_nonneg hρ.le _))`. Use `⟨i, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(eventually_all_finset _).2 key, hpos, self_mem_nhdsWithin] with r hk hrσ hr`. Establish `hr : r ≤ ρ` using `hr`. Establish `hr0 : 0 ≤ r` using `hσ0.le.trans hrσ.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hall : ∀ n, c n * r ^ n ≤ c i * r ^ i`. Introduce `n`. Distinguish the cases in `hn : n < M`. Conclude with `hk n (Finset.mem_insert_of_mem (Finset.mem_range.2 hn))`. Use `le_trans ?_ (hk j (Finset.mem_insert_self _ _))` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm (ciSup_le hall) (le_ciSup (f := fun n => c n * r ^ n) ⟨_, Set.forall_mem_range.2 hall⟩ i)`.
+A detailed English derivation is pending.
 -/
 theorem eventually_iSup_eq_monomial_left (c : ℕ → ℝ) (h0 : ∀ n, 0 ≤ c n) (h1 : ∀ n, c n ≤ 1) {ρ : ℝ}
     (hρ : 0 < ρ) (hρ1 : ρ < 1) (hG : (⨆ n, c n * ρ ^ n) ≠ 0) :
@@ -80,21 +78,19 @@ theorem eventually_iSup_eq_monomial_left (c : ℕ → ℝ) (h0 : ∀ n, 0 ≤ c 
   exact le_antisymm (ciSup_le hall) (le_ciSup (f := fun n => c n * r ^ n) ⟨_, Set.forall_mem_range.2 hall⟩ i)
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `hL.trans_le hLρ`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hb hρ1`. Take `⟨k, a, z, c, hab, h0, h1, hc⟩` from `hd n`. Establish `hz : ∀ r, L ≤ r → r < 1 → N r (p ^ (k + n) * z) ≤ r ^ (k + n)`. Introduce `r hr hr1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e1, -, -, e4, e5⟩` from `hN r hr hr1`. Rewrite using `[GlobalTheory.GaussSlope.map_pow_mul _ e4, e5]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (hL.le.trans hr) _) (e1 z)`. Establish `hbb : ∀ r, L ≤ r → r < 1 → N r (p ^ k * b) = r ^ k * N r b`. Introduce `r hr hr1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, e4, e5⟩` from `hN r hr hr1`. Rewrite using `[GlobalTheory.GaussSlope.map_pow_mul _ e4, e5]`. Establish `ha : ρ ^ (k + n) < N ρ a`. Take `⟨-, e2, e3, -, -⟩` from `hN ρ hLρ hρ1`. Establish `h2 : ρ ^ (k + n) < N ρ (p ^ k * b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbb ρ hLρ hρ1, pow_add]`. Conclude with `mul_lt_mul_of_pos_left hn (pow_pos hρ _)`. Establish `h3 : a = p ^ k * b + -(p ^ (k + n) * z)` using `by rw [hab]; ring`. Rewrite using `[h3, GlobalTheory.GaussSlope.add_eq_of_lt _ e2 e3 (by rw [e3]; exact (hz ρ hLρ hρ1).trans_lt h2)]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `ha` using `[hc ρ hLρ hρ1]`. Take `⟨i, hi⟩` from `hmono c h0 h1 ((pow_pos hρ _).trans ha).ne'`. Establish `hiρ : (⨆ n, c n * ρ ^ n) = c i * ρ ^ i` using `Filter.mem_pure.1 (hf0 hi)`. Rewrite `ha` using `[hiρ]`. Establish `hci : 0 < c i` using `(mul_pos_iff_of_pos_right (pow_pos hρ i)).1 ((pow_pos hρ _).trans ha)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h4 : ∀ᶠ r in 𝓝 ρ, r ^ (k + n) < c i * r ^ i` using `ContinuousAt.eventually_lt (f := fun r : ℝ => r ^ (k + n)) (g := fun r : ℝ => c i * r ^ i) (by fun_prop) (by fun_prop) ha`. Use `⟨c i, (i : ℤ) - k, hci, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hi, hf h4, hfL] with r hr1 hr2 hr`. Take `⟨hr, hr3⟩` from `hr`. Establish `hr0 : 0 < r` using `hL.trans_le hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, e2, e3, -, -⟩` from `hN r hr hr3`. Establish `h6` using `hbb r hr hr3`. Establish `h7 : N r a = c i * r ^ i` using `by rw [hc r hr hr3, hr1]`. Rewrite `h6` using `[hab, GlobalTheory.GaussSlope.add_eq_of_lt _ e2 e3 (by rw [h7]; exact (hz r hr hr3).trans_lt hr2), h7]`. Rewrite using `[zpow_sub₀ hr0.ne', zpow_natCast, zpow_natCast, ← mul_div_assoc, h6]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eventually_monomial {R : Type} [CommRing R] (p : R) {L ρ : ℝ} (hL : 0 < L) (hLρ : L ≤ ρ) (hρ1 : ρ < 1)
     (N : ℝ → R → ℝ)
@@ -151,19 +147,19 @@ end GlobalTheory.GaussMono
 namespace GlobalTheory.PMon.Gauss
 
 /- English proof (translation)
-Introduce `l _ x hx ρ₀ hρl hρ1`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hL : (0 : ℝ) < (l : ℝ)⁻¹` using `by positivity`. Establish `hρ0 : 0 < ρ₀` using `hL.trans_le hρl`. Establish `hN : ∀ r, (l : ℝ)⁻¹ ≤ r → r < 1 → (∀ y, gC l r y ≤ 1) ∧ (∀ y z, gC l r (y + z) ≤ max (gC l r y) (gC l r z)) ∧ (∀ y, gC l r (-y) = gC l r y) ∧ (∀ y z, gC l r (y * z) = gC l r y * gC l r z) ∧ gC l r (l : Formalism.Per.Acris l) = r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr hr1`. Take `⟨e1, e2, e3, e4, e5⟩` from `isGauss_gC_target l r hr hr1`. Use `⟨fun y => (e1 y).2, e2, e3, e4, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l)) l, e5]`. Conclude with `GlobalTheory.GaussSlope.gauss_l l (hL.le.trans hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ∀ n : ℕ, ∃ (k : ℕ) (a z : Formalism.Per.Acris l) (c : ℕ → ℝ), (l : Formalism.Per.Acris l) ^ k * x = a + (l : Formalism.Per.Acris l) ^ (k + n) * z ∧ (∀ n, 0 ≤ c n) ∧ (∀ n, c n ≤ 1) ∧ ∀ r, (l : ℝ)⁻¹ ≤ r → r < 1 → gC l r a = ⨆ n, c n * r ^ n`. Introduce `n`. Take `⟨s, z, h⟩` from `(GlobalTheory.MemLoc.acris_basic l).2.2.1 x n`. Take `⟨k, a, ha⟩` from `GlobalTheory.GaussSlope.exists_pow_mul_eq l s`. Use `⟨k, algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) a, z, fun n => ‖(((a.coeff n).untilt : Formalism.Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n), ?_, fun n => by positivity, fun n => ?_, fun r hr hr1 => (isGauss_gC_target l r hr hr1).2.2.2.2 a⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, mul_add, ha, pow_add, mul_assoc]`. Conclude with `Real.rpow_le_one (norm_nonneg _) ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.prop _)) (by positivity)`. Establish `hb : 0 < gC l ρ₀ x` using `GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx ρ₀ hρl hρ1`. Prove the components needed by the constructor for the conclusion. Establish `hfL : ∀ᶠ r in 𝓝[≥] ρ₀, (l : ℝ)⁻¹ ≤ r ∧ r < 1` using `by filter_upwards [self_mem_nhdsWithin, (eventually_lt_nhds hρ1).filter_mono nhdsWithin_le_nhds] with r hr hr1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hρl.trans hr, hr1⟩`. Take `⟨c, k, hc, hev⟩` from `GlobalTheory.GaussMono.eventually_monomial (l : Formalism.Per.Acris l) hL hρl hρ1 (gC l) hN x hb hd (𝓝[≥] ρ₀) nhdsWithin_le_nhds (pure_le_nhdsWithin (Set.mem_Ici.2 le_rfl)) hfL (fun c h0 h1 hG => GlobalTheory.GaussSlope.eventually_iSup_eq_monomial c h0 h1 hρ0 hρ1 hG)`. Take `⟨u, hu, hsub⟩` from `mem_nhdsGE_iff_exists_Ico_subset.1 hev`. Establish `hu : ρ₀ < u` using `hu`. Take `⟨ρ₂, h2a, h2b⟩` from `exists_between (lt_min hu hρ1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨c, k, ρ₂, hc, h2a, h2b.trans_le (min_le_right _ _), fun r hr => hsub ⟨hr.1, hr.2.trans_lt (h2b.trans_le (min_le_left _ _))⟩⟩`. Introduce `hlt`. Establish `hfL : ∀ᶠ r in 𝓝[≤] ρ₀, (l : ℝ)⁻¹ ≤ r ∧ r < 1` using `by filter_upwards [self_mem_nhdsWithin, (eventually_gt_nhds hlt).filter_mono nhdsWithin_le_nhds] with r hr hr1`. Conclude with `⟨(hr1 : (l : ℝ)⁻¹ < r).le, (hr : r ≤ ρ₀).trans_lt hρ1⟩`. Take `⟨c, k, hc, hev⟩` from `GlobalTheory.GaussMono.eventually_monomial (l : Formalism.Per.Acris l) hL hρl hρ1 (gC l) hN x hb hd (𝓝[≤] ρ₀) nhdsWithin_le_nhds (pure_le_nhdsWithin (Set.mem_Iic.2 le_rfl)) hfL (fun c h0 h1 hG => GlobalTheory.GaussMono.eventually_iSup_eq_monomial_left c h0 h1 hρ0 hρ1 hG)`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, hsub⟩` from `mem_nhdsLE_iff_exists_Ioc_subset.1 hev`. Establish `hu : u < ρ₀` using `hu`. Take `⟨ρ₁, h1a, h1b⟩` from `exists_between (max_lt hu hlt)`. Conclude with `⟨c, k, ρ₁, hc, (le_max_right _ _).trans h1a.le, h1b, fun r hr => hsub ⟨(le_max_left _ _).trans_lt (h1a.trans_le hr.1), hr.2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gC_monomial_near : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l), x ≠ 0 → ∀ ρ₀ : ℝ, (l : ℝ)⁻¹ ≤ ρ₀ →
     ρ₀ < 1 → (∃ (c : ℝ) (k : ℤ) (ρ₂ : ℝ), 0 < c ∧ ρ₀ < ρ₂ ∧ ρ₂ < 1 ∧

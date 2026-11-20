@@ -12,9 +12,9 @@ section Core
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Use `⟨Matrix.vecMul f (Matrix.of U)⁻¹, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of U).det` using `isUnit_iff_ne_zero.mpr h`. Establish `key : Matrix.vecMul (Matrix.vecMul f (Matrix.of U)⁻¹) (Matrix.of U) = f`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `conv_lhs => rw [← key]`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_sum_rows {n : ℕ} (U : Fin n → Fin n → C) (h : (Matrix.of U).det ≠ 0)
     (f : Fin n → C) : ∃ γ : Fin n → C, f = ∑ s, γ s • U s := by
@@ -27,11 +27,11 @@ theorem eq_sum_rows {n : ℕ} (U : Fin n → Fin n → C) (h : (Matrix.of U).det
   simp [Matrix.vecMul, dotProduct, Finset.sum_apply]
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `eq_sum_rows _ hN f`. Rewrite `hγ` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right] at hγ`. Establish `hz : ∑ i, γ (Fin.castAdd q i) • F.mkQ (u0 i) = 0`. Establish `h1` using `congrArg F.mkQ hγ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : F.mkQ f = 0` using `by simpa using hf`. Establish `hm : ∑ k, γ (Fin.natAdd p k) • F.mkQ (m0 k) = 0` using `Finset.sum_eq_zero fun k _ => by simp [hm0 k]`. Rewrite `h1` using `[hf0, map_add, map_sum, map_sum]`. Simplify using `only [map_smul] at h1`. Rewrite `h1` using `[hm, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli _ hz`. Conclude with `⟨fun k => γ (Fin.natAdd p k), by rw [hγ]; simp [h0]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_of_mem {p q : ℕ} (F : Submodule C (Fin (p + q) → C))
     (u0 : Fin p → Fin (p + q) → C) (m0 : Fin q → Fin (p + q) → C)
@@ -54,13 +54,11 @@ theorem exists_eq_sum_of_mem {p q : ℕ} (F : Submodule C (Fin (p + q) → C))
   exact ⟨fun k => γ (Fin.natAdd p k), by rw [hγ]; simp [h0]⟩
 
 /- English proof (translation)
-Establish `hmem : ∀ i, u i - ∑ j, A i j • u0 j ∈ F`. Introduce `i`. Establish `: F.mkQ (u i - ∑ j, A i j • u0 j) = 0`. Rewrite using `[map_sub, map_sum, hu i]`. Simplify using `only [map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sub_self _`. Rewrite `this` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Use `choose β hβ using fun i => exists_eq_sum_of_mem F u0 m0 hli hm0 hN _ (hmem i)`. Establish `key : (Matrix.of (Fin.append u m)).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks A (Matrix.of β) 0 B * (Matrix.of (Fin.append u0 m0)).submatrix finSumFinEquiv finSumFinEquiv`. Use extensionality with `r c`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Break down `r with i | k` into its components or cases. Establish `hi : u i = ∑ j, A i j • u0 j + ∑ k, β i k • m0 k` using `by rw [← hβ i]; abel`. Simplify using `[Matrix.fromBlocks, hi, Finset.sum_apply]`. Simplify using `[Matrix.fromBlocks, hm k, Finset.sum_apply]`.
-
-Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv, key, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_submatrix_equiv_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_append_eq {p q : ℕ} (F : Submodule C (Fin (p + q) → C))
     (u u0 : Fin p → Fin (p + q) → C) (m m0 : Fin q → Fin (p + q) → C)
@@ -89,7 +87,7 @@ theorem det_append_eq {p q : ℕ} (F : Submodule C (Fin (p + q) → C))
     Matrix.det_fromBlocks_zero₂₁, Matrix.det_submatrix_equiv_self]
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [hc i, hb, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_sum {W : Type} [AddCommGroup W] [Module C W] {n k l : ℕ} (a : Fin n → W)
     (b : Fin k → W) (c : Fin l → W) (P : Matrix (Fin k) (Fin n) C)
@@ -106,7 +104,7 @@ section Lattice
 variable {C : Type} [Field C] {w : Valuation C ℝ≥0}
 
 /- English proof (translation)
-Use `choose P hP using fun i => (Submodule.mem_span_range_iff_exists_fun w.valuationSubring).1 (h i)`. Conclude with `⟨Matrix.of P, fun i => by`. Rewrite using `[← hP i]`. Conclude with `Finset.sum_congr rfl fun j _ => (algebraMap_smul C (P i j) (a j)).symm⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffs {W : Type} [AddCommGroup W] [Module C W] [Module w.valuationSubring W]
     [IsScalarTower w.valuationSubring C W] {n k : ℕ} (a : Fin n → W) (b : Fin k → W)
@@ -119,7 +117,7 @@ theorem coeffs {W : Type} [AddCommGroup W] [Module C W] [Module w.valuationSubri
     rw [← hP i]; exact Finset.sum_congr rfl fun j _ => (algebraMap_smul C (P i j) (a j)).symm⟩
 
 /- English proof (translation)
-Rewrite using `[ha.2, ← hb.2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_isLatticeBasis {W : Type} [AddCommGroup W] [Module C W]
     [Module w.valuationSubring W] [IsScalarTower w.valuationSubring C W] {n k : ℕ}
@@ -129,13 +127,13 @@ theorem mem_span_of_isLatticeBasis {W : Type} [AddCommGroup W] [Module C W]
   rw [ha.2, ← hb.2]; exact Submodule.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `coeffs a b (mem_span_of_isLatticeBasis ha hb)`. Take `⟨Q, hQ⟩` from `coeffs b a (mem_span_of_isLatticeBasis hb ha)`. Establish `hQP` using `comp_sum a b a (P.map (algebraMap w.valuationSubring C)) (Q.map (algebraMap w.valuationSubring C)) hP hQ`. Establish `hone : (Q.map (algebraMap w.valuationSubring C)) * (P.map (algebraMap w.valuationSubring C)) = 1`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h` using `Fintype.linearIndependent_iff.1 ha.1 (fun j => ((Q.map (algebraMap w.valuationSubring C)) * (P.map (algebraMap w.valuationSubring C))) i j - (1 : Matrix (Fin n) (Fin n) C) i j) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hQP i]`. Simplify using `[Matrix.one_apply])`. Use `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 h`. Establish `hdet` using `congrArg Matrix.det hone`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_one]`. Establish `hle : ∀ R : Matrix (Fin n) (Fin n) w.valuationSubring, w (R.map (algebraMap w.valuationSubring C)).det ≤ 1`. Introduce `R`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, ValuationSubring.algebraMap_apply]`. Conclude with `(w.mem_valuationSubring_iff _).1 R.det.2`. Use `⟨P.map (algebraMap w.valuationSubring C), fun i => hP i, le_antisymm (hle P) ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem transition {W : Type} [AddCommGroup W] [Module C W] [Module w.valuationSubring W]
     [IsScalarTower w.valuationSubring C W] {n : ℕ} (a b : Fin n → W)

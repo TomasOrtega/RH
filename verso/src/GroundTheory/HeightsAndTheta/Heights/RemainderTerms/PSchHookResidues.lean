@@ -8,41 +8,39 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Introduce `k nu hk hanti hsum hhook`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Use `set s := univ.filter fun i : Fin (n + 1) => (i : ℕ) ≠ 0 ∧ nu i = 1 with hs`. Use `set t := s.card with ht`. Establish `down : ∀ i j : Fin (n + 1), (i : ℕ) ≠ 0 → i ≤ j → j ∈ s → i ∈ s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j hi hij hj`. Simplify using `only [hs, mem_filter, mem_univ, true_and] at hj ⊢`. Establish `h1` using `hanti hij`. Establish `h2` using `hhook i hi`. Conclude with `⟨hi, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ j ∈ s, (j : ℕ) ≤ t`. Introduce `j hj`. Establish `hsub : Finset.Icc 1 (j : ℕ) ⊆ s.map Fin.valEmbedding`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_Icc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mem_map]`. Use `⟨⟨m, by omega⟩, down _ j (show m ≠ 0 by omega) (by rw [Fin.le_iff_val_le_val]; show m ≤ (j : ℕ); omega) hj, rfl⟩` and prove the remaining obligations. Use `Finset.card_le_card hsub` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ i : Fin (n + 1), (i : ℕ) ≠ 0 → (i : ℕ) ≤ t → i ∈ s`. Introduce `i hi hit`. Assume the negation of the conclusion as `hni`. Establish `hsub : s.map Fin.valEmbedding ⊆ Finset.Ico 1 (i : ℕ)`. Introduce `m hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[Finset.mem_map]`. Take `⟨j, hj, rfl⟩` from `hm`. Establish `hj'` using `hj`. Simplify using `only [hs, mem_filter, mem_univ, true_and] at hj'`. Rewrite using `[Finset.mem_Ico]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨by simp only [Fin.valEmbedding_apply]; omega, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hle`. Conclude with `hni (down i j hi (by rw [Fin.le_iff_val_le_val]; simp at hle; omega) hj)`. Use `Finset.card_le_card hsub` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Establish `hval : ∀ i : Fin (n + 1), (i : ℕ) ≠ 0 → nu i = if (i : ℕ) ≤ t then 1 else 0`. Introduce `i hi`. Establish `h1` using `hhook i hi`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hB i hi h` as an intermediate fact. Simplify using `only [hs, mem_filter, mem_univ, true_and] at this`. Conclude with `this.2`. Establish `: nu i ≠ 1`. Introduce `h1'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA i (by simp only [hs, mem_filter, mem_univ, true_and]; exact ⟨hi, h1'⟩)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `htn : t ≤ n`. Establish `hsub : s ⊆ univ.erase 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `i hi`. Simplify using `only [hs, mem_filter, mem_univ, true_and] at hi`. Conclude with `Finset.mem_erase.mpr ⟨fun h => hi.1 (by simp [h]), mem_univ _⟩`. Use `card_le_card hsub` as an intermediate fact. Simplify `this` using `[card_erase_of_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hnu0 : nu 0 + t = n + 1`. Establish `hpt : ∀ i, nu i = (if i = 0 then nu 0 else 0) + (if (i : ℕ) ≠ 0 ∧ nu i = 1 then 1 else 0)`. Introduce `i`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hi : (i : ℕ) ≠ 0` using `fun h => h0 (Fin.ext (by simp [h]))`. Use `hhook i hi` as an intermediate fact. Rewrite using `[if_neg h0, zero_add]`. Apply the tactic sequence `split_ifs with h <;> omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum2 : ∑ i, nu i = nu 0 + t`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hpt i), Finset.sum_add_distrib, Finset.sum_boole]`. Simplify using `[t, s]`. Use linear arithmetic over natural numbers and integers. Use `⟨(Fin.cycleRange (⟨t, by omega⟩ : Fin (n + 1)))⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨j, rfl⟩` from `(Fin.cycleRange (⟨t, by omega⟩ : Fin (n + 1))).surjective i`. Simplify using `only [Equiv.Perm.inv_def, Equiv.symm_apply_apply]`. Break down `lt_trichotomy (j : ℕ) t with h | h | h` into its components or cases. Establish `hlt : j < (⟨t, by omega⟩ : Fin (n + 1))` using `Fin.lt_def.mpr h`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((Fin.cycleRange (⟨t, by omega⟩ : Fin (n + 1)) j : Fin (n + 1)) : ℕ) = j + 1` using `Fin.coe_cycleRange_of_lt hlt`. Rewrite using `[hval _ (by rw [hv]; omega), hv, if_pos (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.cycleRange_of_eq (Fin.ext h), Fin.val_zero]`. Establish `h2 : nu 0 + (n + 1 - 1 - 0) = (n - t) + (n + 1)` using `by omega`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hgt : (⟨t, by omega⟩ : Fin (n + 1)) < j` using `Fin.lt_def.mpr h`. Rewrite using `[Fin.cycleRange_of_gt hgt, hval j (by omega), if_neg (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[Equiv.Perm.sign_inv, Fin.sign_cycleRange]`. Simplify using `[t, s]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SchHookResidues.proof : SchHookResidues.Statement := by
   intro k nu hk hanti hsum hhook

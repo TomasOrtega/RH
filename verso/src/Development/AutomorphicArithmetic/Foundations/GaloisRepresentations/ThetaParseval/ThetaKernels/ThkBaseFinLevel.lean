@@ -13,13 +13,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GroundTheory.Automorphic.GJMatrix GroundTheory.Global GlobalTheory.HeisSchA
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B m n A Y hB κ _ dd K hK Φ hΦ`. Establish `lin : ∀ (k : G2 σ Y) (u : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)), actB (cA σ) k (epsF F • u) = epsF F • actB (cA σ) k u` using `fun k u => Matrix.smul_mul _ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : ∀ {α β : Type} [Finite α] [Finite β], IsModuleTopology (AF F) (Matrix α β (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (_ → _ → AE F E))`. Establish `c : Continuous fun y : ((κ → AF F) × (κ → AF F)) × G2 σ Y => dd.e (actB (cA σ) y.2 (dd.e.symm y.1))` using `(IsModuleTopology.continuous_of_linearMap dd.e.toLinearMap).comp (((IsModuleTopology.continuous_of_linearMap dd.e.symm.toLinearMap).comp continuous_fst).matrix_mul (Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)).matrix_transpose)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, h⟩` from `finite_values hB.std (hK.eventually_forall_of_forall_eventually (P := fun w k => schr B.ψ (epsF F • dd.e (actB (cA σ) k (dd.e.symm w))) Φ = Φ) fun k _ => (c.tendsto' (0, k) 0 (by simp [actB])).eventually (level hB.std.1 hΦ))`. Use `⟨{u | epsF F • u = u ∧ ∀ k ∈ K, dd.rho B.ψ (actB (cA σ) k u) Φ = Φ}, fun u hu => ⟨fun i => ?_, fun i => ?_, fun k hk => ⟨by rw [← lin, hu.1], fun k' hk' => ?_⟩⟩, fun u hu => ?_, s, hs, fun Ψ hΨ => h Ψ fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu.1, map_smul]`. Conclude with `evI_epsF _`. Rewrite using `[← hu.1, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `evI_epsF _`. Use `hu.2 _ (mul_mem hk' hk)` as an intermediate fact. Simplify `this` using `[actB, Matrix.mul_assoc]`. Simplify `hu.2 1 (one_mem _)` using `[actB]`. Use `hΨ (epsF F • dd.e.symm w) ⟨by rw [smul_smul, epsF_sq], fun k hk => by` as an intermediate fact.
-
-Rewrite using `[lin, Darboux.rho, map_smul]`. Conclude with `hw k hk⟩`. Rewrite `this` using `[Darboux.rho, map_smul, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finLevel_k : _root_.GlobalTheory.ThK.Dbl.FinLevel_k := by
   intro F E _ _ _ _ _ σ B m n A Y hB κ _ dd K hK Φ hΦ

@@ -18,7 +18,7 @@ def toSt (p : Spec (CommRingCat.of A)) : A →+* (Spec (CommRingCat.of A)).presh
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.germ ⊤ p trivial).hom
 
 /- English proof (translation)
-The claim follows from `StructureSheaf.IsLocalization.to_stalk A (pr A p)`.
+A detailed English derivation is pending.
 -/
 theorem isLoc (p : Spec (CommRingCat.of A)) :
     letI := (toSt A p).toAlgebra
@@ -27,9 +27,9 @@ theorem isLoc (p : Spec (CommRingCat.of A)) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `h1` using `(Spec (CommRingCat.of A)).presheaf.germ_stalkSpecializes (U := ⊤) (y := p.1) trivial p.2`. Establish `h2` using `Scheme.germ_stalkClosedPointTo_Spec (R := CommRingCat.of A) (S := CommRingCat.of Ω) (CommRingCat.ofHom (algebraMap A Ω))`. Establish `h3 : ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.germ ⊤ p.1 trivial) ≫ ((Spec (CommRingCat.of A)).presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo (gen A Ω)) = CommRingCat.ofHom (algebraMap A Ω)`. Rewrite using `[Category.assoc, ← Category.assoc ((Spec (CommRingCat.of A)).presheaf.germ ⊤ p.1 trivial), h1]`. Use `erw [h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `congrArg (fun f => f.hom a) h3`.
+A detailed English derivation is pending.
 -/
 theorem genMap_toSt (p : Cpt (gen A Ω)) (a : A) :
     genMap (gen A Ω) p (toSt A p.1 a) = algebraMap A Ω a := by
@@ -46,13 +46,11 @@ theorem genMap_toSt (p : Cpt (gen A Ω)) (a : A) :
   exact congrArg (fun f => f.hom a) h3
 
 /- English proof (translation)
-Use `letI := (toSt A p.1).toAlgebra`. Use `haveI := isLoc A p.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Take `⟨⟨r, s⟩, h⟩` from `IsLocalization.surj ((pr A p.1).asIdeal).primeCompl t`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← genMap_toSt A Ω p, ← genMap_toSt A Ω p, ← map_mul]`. Conclude with `congrArg _ h`. Introduce and unpack `⟨r, s, hs, h⟩`. Take `⟨u, hu⟩` from `IsLocalization.map_units ((Spec (CommRingCat.of A)).presheaf.stalk p.1) (⟨s, hs⟩ : ((pr A p.1).asIdeal).primeCompl)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨toSt A p.1 r * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `e : genMap (gen A Ω) p u = algebraMap A Ω s`. Rewrite using `[hu]`. Conclude with `genMap_toSt A Ω p s`. Establish `e2 : genMap (gen A Ω) p u * genMap (gen A Ω) p ↑u⁻¹ = 1`.
-
-Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_mul, genMap_toSt, ← h, ← e, mul_assoc, e2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt (p : Cpt (gen A Ω)) (a : Ω) :
     a ∈ regAt (gen A Ω) p ↔ ∃ r s : A, s ∉ (pr A p.1).asIdeal ∧ a * algebraMap A Ω s = algebraMap A Ω r := by
@@ -77,7 +75,7 @@ theorem mem_regAt (p : Cpt (gen A Ω)) (a : Ω) :
 variable [IsDomain A] [IsFractionRing A Ω]
 
 /- English proof (translation)
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `algebraMap A Ω a ∈ IsLocalRing.maximalIdeal Ω ↔ _`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem genPt_asIdeal : (pr A (genPt (gen A Ω))).asIdeal = ⊥ := by
   ext a
@@ -85,7 +83,7 @@ theorem genPt_asIdeal : (pr A (genPt (gen A Ω))).asIdeal = ⊥ := by
   simp
 
 /- English proof (translation)
-Use `(PrimeSpectrum.le_iff_specializes (R := A) _ _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pr A (genPt (gen A Ω))).asIdeal ≤ (pr A q).asIdeal`. Rewrite using `[genPt_asIdeal]`. Conclude with `bot_le`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_all (q : Spec (CommRingCat.of A)) : genPt (gen A Ω) ⤳ q := by
   refine (PrimeSpectrum.le_iff_specializes (R := A) _ _).1 ?_
@@ -93,11 +91,11 @@ theorem spec_all (q : Spec (CommRingCat.of A)) : genPt (gen A Ω) ⤳ q := by
   rw [genPt_asIdeal]; exact bot_le
 
 /- English proof (translation)
-Use `letI := (toSt A p.1).toAlgebra`. Use `haveI := isLoc A p.1`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨⟨r, s⟩, h⟩` from `IsLocalization.surj ((pr A p.1).asIdeal).primeCompl t`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (genMap (gen A Ω) p) h`. Rewrite `h'` using `[map_mul, ht, zero_mul]`. Establish `: algebraMap A Ω r = 0` using `by rw [← genMap_toSt A Ω p]; exact h'.symm`. Establish `hr : r = 0` using `by simpa using this`. Substitute `hr` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero] at h`. Conclude with `(IsLocalization.map_units _ s).mul_left_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem genMap_inj (p : Cpt (gen A Ω)) : Function.Injective (genMap (gen A Ω) p) := by
   letI := (toSt A p.1).toAlgebra
@@ -114,13 +112,11 @@ theorem genMap_inj (p : Cpt (gen A Ω)) : Function.Injective (genMap (gen A Ω) 
   exact (IsLocalization.map_units _ s).mul_left_eq_zero.1 h
 
 /- English proof (translation)
-Use `⟨?_, genMap_inj A Ω⟩` and prove the remaining obligations. Establish `e : genMap (gen A Ω) ⟨genPt (gen A Ω), specializes_rfl⟩ = (Scheme.stalkClosedPointTo (gen A Ω)).hom`. Unfold `genMap`. Use `erw [TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hb : Function.Bijective (genMap (gen A Ω) ⟨genPt (gen A Ω), specializes_rfl⟩)`. Use `⟨genMap_inj A Ω _, fun a => ?_⟩` and prove the remaining obligations. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := A) a`. Use `(mem_regAt A Ω ⟨genPt (gen A Ω), specializes_rfl⟩ _).2 ⟨r, s, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s ∉ (pr A (genPt (gen A Ω))).asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genPt_asIdeal]`. Simplify using `using nonZeroDivisors.ne_zero hs`. Establish `: algebraMap A Ω s ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hs`. Clear the denominators using the available nonvanishing facts. Rewrite `hb` using `[e]`.
-
-Conclude with `hb`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCptGen : IsCptGen (gen A Ω) := by
   refine ⟨?_, genMap_inj A Ω⟩
@@ -141,11 +137,9 @@ theorem isCptGen : IsCptGen (gen A Ω) := by
 
 omit [IsDomain A] [IsFractionRing A Ω] in
 /- English proof (translation)
-Establish `key : ∀ a ∈ Ideal.span (Set.range x), algebraMap A Ω a / algebraMap A Ω (x c) ∈ S`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a h => obtain ⟨j, rfl⟩ := h`. Conclude with `hS j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using S.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add, add_div]`. Conclude with `S.add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_eq_mul, map_mul, mul_div_assoc]`. Conclude with `S.mul_mem (hA r) ha`.
-
-Simplify using `using key 1 (hx ▸ Submodule.mem_top)`.
+Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_mem {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤) (c : κ) (S : Subring Ω)
     (hA : ∀ a, algebraMap A Ω a ∈ S) (hS : ∀ j, algebraMap A Ω (x j) / algebraMap A Ω (x c) ∈ S) :
@@ -161,17 +155,17 @@ theorem inv_mem {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤)
 
 omit [IsDomain A] [IsFractionRing A Ω] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, genMap_toSt A Ω p a⟩`.
+Supply the required witnesses or components.
 -/
 theorem algebraMap_mem_regAt (p : Cpt (gen A Ω)) (a : A) : algebraMap A Ω a ∈ regAt (gen A Ω) p :=
   ⟨_, genMap_toSt A Ω p a⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h⟩ hc`. Take `⟨r, s, hs, e⟩` from `(mem_regAt A Ω p _).1 (inv_mem A Ω hx c _ (algebraMap_mem_regAt A Ω p) h)`. Establish `: s = x c * r`. Apply `IsFractionRing.injective A Ω` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, ← e]`. Clear the denominators using the available nonvanishing facts. Conclude with `hs (this ▸ Ideal.mul_mem_right _ _ hc)`. Introduce `hc`. Establish `h0 : algebraMap A Ω (x c) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: x c = 0` using `by simpa using h`. Conclude with `hc (this ▸ Ideal.zero_mem _)`. Conclude with `⟨h0, fun j => (mem_regAt A Ω p _).2 ⟨x j, x c, hc, by field_simp⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inChart_iff {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤) (c : κ) (p : Cpt (gen A Ω)) :
     InChart (gen A Ω) (fun j => algebraMap A Ω (x j)) c p ↔ x c ∉ (pr A p.1).asIdeal := by
@@ -190,7 +184,7 @@ theorem inChart_iff {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = 
     exact ⟨h0, fun j => (mem_regAt A Ω p _).2 ⟨x j, x c, hc, by field_simp⟩⟩
 
 /- English proof (translation)
-The claim follows from `isCptGen A Ω cover p := by by_contra h push Not at h refine (pr A p.1).isPrime.ne_top (top_le_iff.1 (hx ▸ Ideal.span_le.2 ?_)) rintro _ ⟨c, rfl⟩ by_contra hc exact h c ((inChart_iff A Ω hx c p).2 hc) affine c _ := by refine ⟨_, IsAffineOpen.Spec_basicOpen (R := CommRingCat.of A) …`.
+A detailed English derivation is pending.
 -/
 theorem coordTie (o : Type) [CommRing o] [Algebra o A] [Algebra o Ω] [IsScalarTower o A Ω]
     {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤)
@@ -246,7 +240,7 @@ theorem coordTie (o : Type) [CommRing o] [Algebra o A] [Algebra o Ω] [IsScalarT
       exact Subalgebra.mul_mem _ (hA c hc' r) (Subalgebra.pow_mem _ hi n)
 
 /- English proof (translation)
-Use `coordTie ℤ ℚ ℤ ?_ fun c _ a => Subalgebra.algebraMap_mem _ a` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h` using `Ideal.sub_mem (Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ))) (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coordTie_two_three : CoordTie ℤ (gen ℤ ℚ) (fun j => algebraMap ℤ ℚ (![2, 3] j)) := by
   refine coordTie ℤ ℚ ℤ ?_ fun c _ a => Subalgebra.algebraMap_mem _ a
@@ -256,11 +250,11 @@ theorem coordTie_two_three : CoordTie ℤ (gen ℤ ℚ) (fun j => algebraMap ℤ
   simpa using h
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `(h.ring () one_ne_zero (1 / 2)).2 fun p _ => algebraMap_mem_regAt ℚ ℚ p (1 / 2)`. Establish `hle : Algebra.adjoin ℤ (Set.range fun _ : Unit => (1 : ℚ) / 1) ≤ ⊥`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `using Subalgebra.one_mem _`. Take `⟨n, hn⟩` from `Algebra.mem_bot.1 (hle h2)`. Establish `: (2 * n : ℤ) = 1`. Establish `h' : (n : ℚ) = 1 / 2` using `by simpa using hn`. Establish `: ((2 * n : ℤ) : ℚ) = 1` using `by push_cast; rw [h']; norm_num`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_coordTie_rat : ¬ CoordTie ℤ (gen ℚ ℚ) (fun _ : Unit => (1 : ℚ)) := by
   intro h
@@ -277,13 +271,13 @@ theorem not_coordTie_rat : ¬ CoordTie ℤ (gen ℚ ℚ) (fun _ : Unit => (1 : �
   omega
 
 /- English proof (translation)
-Establish `hp : (p : Ω) = algebraMap A Ω p` using `by simp`. Unfold `InFibre unitAt`. Rewrite using `[hp, ← not_iff_not, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, -, h⟩ hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨r, s, hs, e⟩` from `(mem_regAt A Ω q _).1 h`. Establish `: s = p * r`. Apply `IsFractionRing.injective A Ω` to reduce the goal to its premises. Rewrite using `[map_mul, ← e]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hs (this ▸ Ideal.mul_mem_right _ _ hc)`. Introduce `hc`. Establish `h0 : algebraMap A Ω p ≠ 0`. Introduce `h`. Establish `: (p : A) = 0` using `IsFractionRing.injective A Ω (by rw [h, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `hc (this ▸ Ideal.zero_mem _)`. Conclude with `⟨h0, algebraMap_mem_regAt A Ω q _, (mem_regAt A Ω q _).2 ⟨1, p, hc, by rw [map_one]; field_simp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem inFibre_iff (p : ℕ) (q : Cpt (gen A Ω)) : InFibre (gen A Ω) p q ↔ (p : A) ∈ (pr A q.1).asIdeal := by
   have hp : (p : Ω) = algebraMap A Ω p := by simp
@@ -309,7 +303,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {R : Type} [CommRing R] [IsLoca
   {ξ : Spec (CommRingCat.of Ω) ⟶ X} {z : Spec (CommRingCat.of R) ⟶ X}
 
 /- English proof (translation)
-Take `⟨hz, s, rfl, rfl⟩` from `h`. Take `⟨_, s', e, rfl⟩` from `h'`. Rewrite using `[hξ.inj ⟨centre z, hz⟩ e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_unique (hξ : IsCptGen ξ) {a : Ω} {r r' : R} (h : ValAt ξ z a r) (h' : ValAt ξ z a r') : r = r' := by
   obtain ⟨hz, s, rfl, rfl⟩ := h
@@ -317,7 +311,7 @@ theorem valAt_unique (hξ : IsCptGen ξ) {a : Ω} {r r' : R} (h : ValAt ξ z a r
   rw [hξ.inj ⟨centre z, hz⟩ e]
 
 /- English proof (translation)
-Take `⟨hz, t, rfl, rfl⟩` from `h`. Take `⟨_, t', rfl, rfl⟩` from `h'`. Conclude with `⟨hz, t * t', map_mul _ _ _, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valAt_mul {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
   obtain ⟨hz, t, rfl, rfl⟩ := h
@@ -325,9 +319,9 @@ theorem valAt_mul {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s
   exact ⟨hz, t * t', map_mul _ _ _, map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨hz, t, rfl, e⟩` from `h`. Establish `ht : IsUnit t` using `(Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit t (by have := r.isUnit; rw [← e] at this; exact this)`. Take `⟨u, rfl⟩` from `ht`. Use `⟨(u.isUnit.map (genMap ξ ⟨centre z, hz⟩)).ne_zero, hz, ↑u⁻¹, map_units_inv _ u, ?_⟩` and prove the remaining obligations. Use `(Units.inv_eq_of_mul_eq_one_right ?_).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e]`. Conclude with `(map_mul _ _ _).symm.trans ((congrArg _ u.mul_inv).trans (map_one _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_inv {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : a ≠ 0 ∧ ValAt ξ z a⁻¹ ↑r⁻¹ := by
   obtain ⟨hz, t, rfl, e⟩ := h
@@ -339,15 +333,13 @@ theorem valAt_inv {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : a ≠ 0 ∧ ValAt ξ
   exact (map_mul _ _ _).symm.trans ((congrArg _ u.mul_inv).trans (map_one _))
 
 /- English proof (translation)
-Use `choose c hc using h`. Establish `hv : ∀ j : Σ k, ι k, ∃ r, ValAt ξ z (y j / y ⟨j.1, c j.1⟩) r`. Introduce and unpack `⟨k, i⟩`. Take `⟨s, hs⟩` from `(hc k).2 i`. Conclude with `⟨_, hz, s, hs, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose w hw using hv`. Use `⟨w, fun k => ⟨c k, ?_⟩, fun k d hd => ?_⟩` and prove the remaining obligations. Establish `h1 : ValAt ξ z 1 1` using `⟨hz, 1, map_one _, map_one _⟩`. Establish `h2` using `hw ⟨k, c k⟩`. Rewrite `h2` using `[div_self (hc k).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[valAt_unique hξ h2 h1]`. Conclude with `isUnit_one`. Take `⟨u, hu⟩` from `hd`. Establish `h1` using `hw ⟨k, d⟩`. Rewrite `h1` using `[← hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h0, h2⟩` from `valAt_inv h1`. Establish `hd0 : y ⟨k, d⟩ ≠ 0` using `fun e => h0 (by simp [e])`. Use `⟨hd0, fun i => ⟨w ⟨k, i⟩ * ↑u⁻¹, ?_, by rw [← hu]; simp⟩⟩` and prove the remaining obligations. Establish `h3` using `valAt_mul (hw ⟨k, i⟩) h2`. Establish `hc0 : y ⟨k, c k⟩ ≠ 0` using `(hc k).1`.
-
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_coordsAt {K : Type} {ι : K → Type} (y : (Σ k, ι k) → Ω) (hz : genPt ξ ⤳ centre z)
     (h : ∀ k, ∃ c, InChart ξ (fun i => y ⟨k, i⟩) c ⟨centre z, hz⟩) (hξ : IsCptGen ξ) :
@@ -375,13 +367,13 @@ theorem exists_coordsAt {K : Type} {ι : K → Type} (y : (Σ k, ι k) → Ω) (
     field_simp
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.1 k`. Take `⟨d, hd⟩` from `h'.1 k`. Take `⟨hc0, hv⟩` from `h.2 k c hc`. Take `⟨hd0, hv'⟩` from `h'.2 k d hd`. Take `⟨r, hr, -⟩` from `hv d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', hr', e'⟩` from `hv' c`. Establish `h1 : ValAt ξ z 1 1` using `⟨hr.1, 1, map_one _, map_one _⟩`. Establish `h2` using `valAt_mul hr hr'`. Rewrite `h2` using `[show y ⟨k, d⟩ / y ⟨k, c⟩ * (y ⟨k, c⟩ / y ⟨k, d⟩) = 1 by field_simp]`. Establish `hu : IsUnit (w' ⟨k, c⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e']`. Conclude with `(IsUnit.of_mul_eq_one_right r (valAt_unique hξ h2 h1)).mul hd`. Take `⟨-, hv''⟩` from `h'.2 k c hu`. Use `⟨hu.unit * hc.unit⁻¹, fun i => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, es⟩` from `hv i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', es'⟩` from `hv'' i`. Rewrite using `[es, es', valAt_unique hξ hs' hs, Units.val_mul, IsUnit.unit_spec, mul_assoc, mul_left_comm _ s, IsUnit.val_inv_mul, mul_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordsAt_unique {K : Type} {ι : K → Type} {y : (Σ k, ι k) → Ω} (hξ : IsCptGen ξ) {w w' : (Σ k, ι k) → R}
     (h : CoordsAt ξ y z w) (h' : CoordsAt ξ y z w') (k : K) : ∃ u : Rˣ, ∀ i, w' ⟨k, i⟩ = u * w ⟨k, i⟩ := by
@@ -405,7 +397,7 @@ theorem coordsAt_unique {K : Type} {ι : K → Type} {y : (Σ k, ι k) → Ω} (
     IsUnit.val_inv_mul, mul_one, mul_comm]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc⟩` from `h.cover ⟨genPt ξ, specializes_rfl⟩`. Conclude with `hc.1 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_coordTie_zero (o : Type) [CommRing o] [Algebra o Ω] {κ : Type} : ¬ CoordTie o ξ (0 : κ → Ω) := by
   intro h
@@ -413,7 +405,7 @@ theorem not_coordTie_zero (o : Type) [CommRing o] [Algebra o Ω] {κ : Type} : �
   exact hc.1 rfl
 
 /- English proof (translation)
-The claim follows from `exists_coordsAt _ hz (fun _ => h.cover _) h.gen`.
+A detailed English derivation is pending.
 -/
 theorem exists_coordsAt_of_coordTie {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (h : CoordTie o ξ x) (hz : genPt ξ ⤳ centre z) :

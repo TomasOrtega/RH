@@ -34,14 +34,14 @@ def ClassMapPropertiesOfSymmetricForms : Prop :=
     Formalism.L2.Rows.LowerMapTieS Tf → Formalism.L2.Ker.BeOnTie D u → ClassMapInjectiveBijectiveNorms D u
 
 /- English proof (translation)
-Introduce `D u Ch chOf Tf hL hB` and use `⟨h1 D u Ch chOf Tf, h2 D u Ch chOf Tf, h3 D u Ch chOf Tf hL, h4 D u Ch chOf Tf hL hB⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem symmetric_clauses_of_four (h1 : ClassMapInjective) (h2 : StabiliserMapBijective) (h3 : FormsCarriedToComplement) (h4 : NormBoundAtInfinity) : ClassMapPropertiesOfSymmetricForms :=
   fun D u Ch chOf Tf hL hB =>
     ⟨h1 D u Ch chOf Tf, h2 D u Ch chOf Tf, h3 D u Ch chOf Tf hL, h4 D u Ch chOf Tf hL hB⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem lowerMapTieSym_of (Tf : FormsTiedSym D u Ch chOf) (h : Formalism.L2.Rows.LowerMapTieS Tf) : LowerMapTieSym Tf := h
 

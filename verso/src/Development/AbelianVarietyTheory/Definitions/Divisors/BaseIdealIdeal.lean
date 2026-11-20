@@ -17,7 +17,7 @@ def baseIdeal (f : W ⟶ Spec (CommRingCat.of R)) (J : Ideal R) : W.IdealSheafDa
   Scheme.IdealSheafData.ofIdealTop (J.map (cst f ⊤))
 
 /- English proof (translation)
-Rewrite using `[baseIdeal, Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_map]`. Use `congr 1`. Use extensionality with `r`. Conclude with `rs_cst f le_top r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem baseIdeal_ideal (f : W ⟶ Spec (CommRingCat.of R)) (J : Ideal R) (U : W.affineOpens) :
     (baseIdeal f J).ideal U = J.map (cst f U.1) := by
@@ -38,7 +38,7 @@ def Alg (f : W ⟶ Spec (CommRingCat.of R)) (I : Ideal R) : Prop :=
     ∃ T : W.IdealSheafData, IsProper (T.subschemeι ≫ f) ∧ Reduces f I T t
 
 /- English proof (translation)
-Rewrite using `[h e]`. Conclude with `le_sup_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSystem.baseIdeal_le {f : W ⟶ Spec (CommRingCat.of R)} {I : Ideal R}
     {t : ℕ → W.IdealSheafData} (h : IsSystem f I t) (e : ℕ) : baseIdeal f (I ^ (e + 1)) ≤ t e := by

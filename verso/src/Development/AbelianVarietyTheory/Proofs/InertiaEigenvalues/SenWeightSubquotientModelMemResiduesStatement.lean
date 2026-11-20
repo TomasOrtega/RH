@@ -6,7 +6,7 @@ open GlobalTheory.PhiGam GlobalTheory.AdmLoc GlobalTheory.Models
 open scoped LaurentSeries PowerSeries
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Models.ModTh.sen_model_subquot_mem_U` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSenWeightSubquotientModelMemResidues.lean&line=25#L25)
 -/

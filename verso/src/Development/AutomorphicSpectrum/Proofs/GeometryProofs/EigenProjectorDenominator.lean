@@ -10,15 +10,15 @@ open NumberField Polynomial GlobalTheory.CompanionTheory.Ar
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨f, -, hroot, hder⟩` from `exists_sep_poly w`. Establish `key : ∀ p : ℤ[X], eval₂ (Int.castRingHom (𝓞 E)) w p = aeval w p` using `fun p => by`. Rewrite using `[aeval_def, algebraMap_int_eq]`. Establish `hF : (f.map (Int.castRingHom (𝓞 E))).IsRoot w`. Rewrite using `[IsRoot, eval_map, key]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hroot`. Use `set g := f.map (Int.castRingHom (𝓞 E)) /ₘ (X - C w) with hg`. Establish `hfac : (X - C w) * g = f.map (Int.castRingHom (𝓞 E))` using `(mul_divByMonic_eq_iff_isRoot).2 hF`. Use `⟨g.eval w, ?_, ?_⟩` and prove the remaining obligations. Establish `hd : (derivative (f.map (Int.castRingHom (𝓞 E)))).eval w = g.eval w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hfac, derivative_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← hd, derivative_map, eval_map, key]`. Conclude with `hder`. Introduce `Ω _ V _ _ ρ σ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨eval₂ (scal V σ) (ρ w) g, eval₂_mem_opRing ρ σ w g, ?_, ?_⟩` and prove the remaining obligations. Establish `hcomm : ∀ k, Commute (scal V σ (g.coeff k)) (ρ w)` using `fun k => commute_scal σ (g.coeff k) (ρ w)`. Establish `h1 : ρ w - scal V σ w = eval₂ (scal V σ) (ρ w) (X - C w)`. Simplify using `[eval₂_sub]`. Rewrite using `[h1, ← eval₂_mul_noncomm _ _ hcomm, hfac, eval₂_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : (scal V σ).comp (Int.castRingHom (𝓞 E)) = ρ.comp (Int.castRingHom (𝓞 E))` using `RingHom.ext_int _ _`. Rewrite using `[hc, ← hom_eval₂, key, hroot, map_zero]`. Introduce `v hv`. Conclude with `eval₂_apply_of_eigen ρ σ w hv g`.
+A detailed English derivation is pending.
 -/
 theorem exists_uniform_factor (w : 𝓞 E) :
     ∃ x : 𝓞 E, x ≠ 0 ∧ ∀ (Ω : Type) [Field Ω] (V : Type) [AddCommGroup V] [Module Ω V]
@@ -53,7 +53,7 @@ theorem exists_uniform_factor (w : 𝓞 E) :
       exact eval₂_apply_of_eigen ρ σ w hv g
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_eigSp_iff_geometry {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V]
     (ρ : 𝓞 E →+* Module.End Ω V) (σ : 𝓞 E →+* Ω) (v : V) :
@@ -61,15 +61,15 @@ private theorem mem_eigSp_iff_geometry {Ω : Type} [Field Ω] {V : Type} [AddCom
   simp [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
 /- English proof (translation)
-Proceed by induction on `W using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `Ω _ V _ _ ρ σ`. Conclude with `⟨1, (opRing ρ σ).one_mem, by simp, fun v _ => by simp⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `@insert a W' ha ih`. Take `⟨x', hx', hT'⟩` from `ih`. Take `⟨xa, hxa, hTa⟩` from `exists_uniform_factor a`. Use `⟨xa * x', mul_ne_zero hxa hx', ?_⟩` and prove the remaining obligations. Introduce `Ω _ V _ _ ρ σ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T', hT'm, hT'k, hT'e⟩` from `hT' Ω V ρ σ`. Take `⟨Ta, hTam, hTak, hTae⟩` from `hTa Ω V ρ σ`. Use `⟨Ta * T', (opRing ρ σ).mul_mem hTam hT'm, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Break down `Finset.mem_insert.1 hw with rfl | hw'` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← mul_assoc, hTak, zero_mul]`. Establish `hc : Commute (ρ w - scal V σ w) Ta` using `(commute_opRing hTam w).symm.sub_left (commute_scal σ w Ta)`. Rewrite using `[← mul_assoc, hc.eq, mul_assoc, hT'k w hw', mul_zero]`. Introduce `v hv`. Apply the tactic sequence `have hva : ρ a v = σ a • v := (mem_eigSp_iff_geometry ρ σ v).1 hv a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Ta (T' v) = _`. Rewrite using `[hT'e v hv, map_smul, hTae v hva, smul_smul, map_mul, mul_comm (σ xa)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_uniform_product (W : Finset (𝓞 E)) :
     ∃ x : 𝓞 E, x ≠ 0 ∧ ∀ (Ω : Type) [Field Ω] (V : Type) [AddCommGroup V] [Module Ω V]
@@ -101,25 +101,23 @@ theorem exists_uniform_product (W : Finset (𝓞 E)) :
       rw [hT'e v hv, map_smul, hTae v hva, smul_smul, map_mul, mul_comm (σ xa)]
 
 /- English proof (translation)
-Introduce `E _ _`. Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ (𝓞 E)).FG)`. Take `⟨x, hx, hT⟩` from `exists_uniform_product S`. Establish `hint : IsIntegral ℤ x` using `Algebra.IsIntegral.isIntegral x`. Establish `hbot` using `Ideal.comap_ne_bot_of_integral_mem hx (Ideal.mem_span_singleton_self x) hint`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hcmem, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Rewrite `hcmem` using `[Ideal.mem_comap, Ideal.mem_span_singleton, algebraMap_int_eq, eq_intCast]`. Take `⟨y0, hy0⟩` from `hcmem`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn0, y, hy⟩ : ∃ n : ℕ, 0 < n ∧ ∃ y : 𝓞 E, x * y = (n : 𝓞 E) := by`. Break down `Int.natAbs_eq c with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨c.natAbs, Int.natAbs_pos.2 hc0, y0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy0]`. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Use `⟨c.natAbs, Int.natAbs_pos.2 hc0, -y0, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_neg, ← hy0]`. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Use `⟨n, hn0, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ V _ _ ρ σ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hTm, hTk, hTe⟩` from `hT Ω V ρ σ`. Establish `hall : ∀ v, ∀ a : 𝓞 E, ρ a (T v) = σ a • T v`. Introduce `v a`. Establish `ha : a ∈ Submodule.span ℤ (S : Set (𝓞 E))`. Rewrite using `[hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem w hw`. Establish `h` using `congrArg (fun U : Module.End Ω V => U v) (hTk w hw)`. Express the relevant statement in the definitionally equal form `(ρ w - scal V σ w) (T v) = 0 at h`.
+Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Rewrite `h` using `[LinearMap.sub_apply, scal_apply, sub_eq_zero]`. Conclude with `h`. Consider the case `zero => simp`. Consider the case `add a b _ _ iha ihb`. Rewrite using `[map_add, map_add, LinearMap.add_apply, iha, ihb, add_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `smul m a _ ih`. Rewrite using `[map_zsmul, map_zsmul, LinearMap.smul_apply, ih, smul_assoc]`. Establish `hs : scal V σ y ∈ opRing ρ σ`. Simplify using `using eval₂_mem_opRing ρ σ 0 (C y)`. Use `⟨scal V σ y * T, (opRing ρ σ).mul_mem hs hTm, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Express the relevant statement in the definitionally equal form `scal V σ y (T v) ∈ eigSp ρ σ`. Rewrite using `[scal_apply]`. Apply the tactic sequence `exact Submodule.smul_mem _ _ ((mem_eigSp_iff_geometry ρ σ (T v)).2 (hall v))`. Introduce `v hv`.
-
-Express the relevant statement in the definitionally equal form `scal V σ y (T v) = _`. Rewrite using `[scal_apply, hTe v hv, smul_smul, ← map_mul, mul_comm y x, hy, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigen_op_uniform : ∀ (E : Type) [Field E] [NumberField E], ∃ D : ℕ, 0 < D ∧
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] (V : Type) [AddCommGroup V] [Module Ω V]

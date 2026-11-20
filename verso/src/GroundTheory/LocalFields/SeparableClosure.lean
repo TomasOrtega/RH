@@ -16,13 +16,11 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [Field L] [ValuativeRel L] [Al
   [ValuativeExtension K L]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `set d := p.natDegree`. Establish `hsum : aeval y p = y ^ d + ∑ i ∈ Finset.range d, algebraMap K L (p.coeff i) * y ^ i`. Rewrite using `[aeval_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, one_smul, add_comm]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite `hy` using `[hsum, add_eq_zero_iff_eq_neg]`. Establish `hy0 : valuation L y ^ d ≠ 0` using `pow_ne_zero _ (ne_of_gt (lt_trans zero_lt_one h))`. Establish `hlt : valuation L (∑ i ∈ Finset.range d, algebraMap K L (p.coeff i) * y ^ i) < valuation L y ^ d`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_lt _ hy0 fun i hi ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Establish `hci : valuation L (algebraMap K L (p.coeff i)) ≤ 1` using `(Valuation.HasExtension.val_map_le_one_iff (valuation K) (valuation L) _).mpr (hc i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[← map_pow, hy, Valuation.map_neg]`.
-
-Conclude with `lt_irrefl _ hlt`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_aeval_eq_zero {p : K[X]} (hp : p.Monic)
     (hc : ∀ n, valuation K (p.coeff n) ≤ 1) {y : L} (hy : aeval y p = 0) : valuation L y ≤ 1 := by
@@ -63,7 +61,7 @@ def algebraicNormedField : NontriviallyNormedField L :=
   spectralNorm.nontriviallyNormedField K L
 
 /- English proof (translation)
-Set `` to `normedField K`. Use `normedField_isUltrametricDist K` as an intermediate fact. Use `normedField_completeSpace K` as an intermediate fact. Set `` to `algebraicNormedField K L`. Conclude with `IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm (isNonarchimedean_spectralNorm (K := K) (L := L))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem algebraicNormedField_isUltrametricDist :
     letI := algebraicNormedField K L
@@ -76,7 +74,7 @@ theorem algebraicNormedField_isUltrametricDist :
     (isNonarchimedean_spectralNorm (K := K) (L := L))
 
 /- English proof (translation)
-Set `` to `normedField K`. Conclude with `spectralNorm_extends a`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem algebraicNormedField_norm_algebraMap (a : K) :
     letI := normedField K
@@ -88,9 +86,9 @@ theorem algebraicNormedField_norm_algebraMap (a : K) :
 variable {K L}
 
 /- English proof (translation)
-Set `` to `normedField K`. Establish `hint : IsIntegral K y` using `Algebra.IsIntegral.isIntegral y`. Establish `hc` using `(spectralValue_le_one_iff (minpoly.monic hint)).mp h`. Use `valuation_le_one_of_aeval_eq_zero (minpoly.monic hint) (fun n ↦ ?_) (minpoly.aeval K y)` and prove the remaining obligations. Establish `h1 : ‖(minpoly K y).coeff n‖ ≤ ‖(1 : K)‖` using `by rw [norm_one]; exact hc n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[normedField_norm_le_norm_iff, (valuation K).vle_iff_le, map_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_spectralNorm_le_one [ValuativeRel L] [ValuativeExtension K L] {y : L}
     (h : letI := normedField K; spectralNorm K L y ≤ 1) : valuation L y ≤ 1 := by
@@ -103,23 +101,21 @@ theorem valuation_le_one_of_spectralNorm_le_one [ValuativeRel L] [ValuativeExten
   exact h1
 
 /- English proof (translation)
-Set `` to `normedField K`. Set `` to `algebraicNormedField K L`. Express the relevant statement in the definitionally equal form `valuation L x < 1 ↔ ‖x‖ < 1`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hn` using `[norm_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hn (by norm_num)`. Establish `hinv : valuation L x⁻¹ ≤ 1`. Use `valuation_le_one_of_spectralNorm_le_one (K := K) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖x⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_le_one_of_one_le₀ hn`. Rewrite `hinv` using `[map_inv₀]`. Establish `hv0 : valuation L x ≠ 0` using `by simpa using hx0`. Use `mul_le_mul_right hinv (valuation L x)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hv0, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hx this.not_gt`. Introduce `hx`. Take `⟨a, ha0, ha1⟩` from `NormedField.exists_norm_lt_one K`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one ha0 hx`. Establish `ha : a ≠ 0` using `norm_pos_iff.mp ha0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hna : algebraMap K L a ≠ 0` using `(_root_.map_ne_zero _).mpr ha`. Establish `hnorm : ‖algebraMap K L a‖ = ‖a‖` using `algebraicNormedField_norm_algebraMap K L a`. Use `set u := x ^ n * (algebraMap K L a)⁻¹ with hu`. Establish `hu1 : valuation L u ≤ 1`. Use `valuation_le_one_of_spectralNorm_le_one (K := K) ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖u‖ ≤ 1`. Rewrite using `[hu, norm_mul, norm_inv, norm_pow, hnorm]`. Conclude with `mul_inv_le_one_of_le₀ hn.le (norm_nonneg _)`. Establish `hva : valuation L (algebraMap K L a) < 1`. Use `(Valuation.HasExtension.val_map_lt_one_iff (valuation K) (valuation L) a).mpr ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ¬ ‖(1 : K)‖ ≤ ‖a‖` using `by rw [norm_one]; exact not_le.mpr ha1`. Rewrite `this` using `[normedField_norm_le_norm_iff, (valuation K).vle_iff_le, map_one]`. Conclude with `not_le.mp this`. Establish `hxn : x ^ n = u * algebraMap K L a`. Rewrite using `[hu, mul_assoc, inv_mul_cancel₀ hna, mul_one]`.
-
-Establish `hpow : valuation L x ^ n < 1`. Rewrite using `[← map_pow, hxn, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `h`. Conclude with `(one_le_pow₀ (not_lt.mp h)).not_gt hpow`.
+Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem valuation_lt_one_iff_spectralNorm_lt_one [ValuativeRel L] [ValuativeExtension K L] (x : L) :
     valuation L x < 1 ↔ (letI := normedField K; spectralNorm K L x < 1) := by
@@ -173,9 +169,9 @@ theorem valuation_lt_one_iff_spectralNorm_lt_one [ValuativeRel L] [ValuativeExte
     exact (one_le_pow₀ (not_lt.mp h)).not_gt hpow
 
 /- English proof (translation)
-Set `` to `normedField K`. Set `` to `algebraicNormedField K L`. Express the relevant statement in the definitionally equal form `x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `only [norm_zero, norm_nonneg, iff_true]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `ValuativeRel.zero_vle y`. Rewrite using `[vle_iff_not_valuation_div_lt_one hx, valuation_lt_one_iff_spectralNorm_lt_one (K := K)]`. Express the relevant statement in the definitionally equal form `¬ ‖y / x‖ < 1 ↔ _`. Rewrite using `[norm_div, div_lt_one (norm_pos_iff.mpr hx), not_lt]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vle_iff_spectralNorm_le [ValuativeRel L] [ValuativeExtension K L] (x y : L) :
     x ≤ᵥ y ↔ (letI := normedField K; spectralNorm K L x ≤ spectralNorm K L y) := by
@@ -192,7 +188,7 @@ theorem vle_iff_spectralNorm_le [ValuativeRel L] [ValuativeExtension K L] (x y :
 variable (K) in
 
 /- English proof (translation)
-Use extensionality with `x y`. Conclude with `(@vle_iff_spectralNorm_le K _ _ _ _ L _ _ _ v₁ e₁ x y).trans (@vle_iff_spectralNorm_le K _ _ _ _ L _ _ _ v₂ e₂ x y).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem valuativeRel_eq_of_isAlgebraic {v₁ v₂ : ValuativeRel L}
     (e₁ : @ValuativeExtension K L _ _ _ v₁ _) (e₂ : @ValuativeExtension K L _ _ _ v₂ _) :
@@ -202,7 +198,7 @@ theorem valuativeRel_eq_of_isAlgebraic {v₁ v₂ : ValuativeRel L}
     (@vle_iff_spectralNorm_le K _ _ _ _ L _ _ _ v₂ e₂ x y).symm
 
 /- English proof (translation)
-Set `` to `normedField K`. Establish `h : spectralNorm K L (σ x) = spectralNorm K L x` using `(spectralNorm_eq_of_equiv σ x).symm`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[← (valuation L).vle_iff_le, vle_iff_spectralNorm_le (K := K), h]`. Rewrite using `[← (valuation L).vle_iff_le, vle_iff_spectralNorm_le (K := K), h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_algEquiv_apply_of_isAlgebraic [ValuativeRel L] [ValuativeExtension K L]
     (σ : L ≃ₐ[K] L) (x : L) : valuation L (σ x) = valuation L x := by
@@ -230,7 +226,7 @@ def algebraicTopology : TopologicalSpace L :=
   (algebraicNormedField K L).toUniformSpace.toTopologicalSpace
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem algebraicValuativeRel_vle_iff (x y : L) :
     letI := normedField K
@@ -238,9 +234,9 @@ theorem algebraicValuativeRel_vle_iff (x y : L) :
     x ≤ᵥ y ↔ spectralNorm K L x ≤ spectralNorm K L y := Iff.rfl
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel K L`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Rewrite using `[algebraicValuativeRel_vle_iff]`. Set `` to `normedField K`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← normedField_norm_le_norm_iff]`. Rewrite using `[← algebraicNormedField_norm_algebraMap K L a, ← algebraicNormedField_norm_algebraMap K L b]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraicValuativeRel_valuativeExtension :
     letI := algebraicValuativeRel K L
@@ -255,9 +251,9 @@ theorem algebraicValuativeRel_valuativeExtension :
   rfl
 
 /- English proof (translation)
-Set `` to `algebraicNormedField K L`. Use `algebraicNormedField_isUltrametricDist K L` as an intermediate fact. Set `` to `algebraicValuativeRel K L`. Establish `hc : (NormedField.valuation (K` using `L)).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[isNontrivial_iff_isNontrivial (NormedField.valuation (K := L))]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem algebraicValuativeRel_isNontrivial :
     letI := algebraicValuativeRel K L
@@ -270,7 +266,7 @@ theorem algebraicValuativeRel_isNontrivial :
   infer_instance
 
 /- English proof (translation)
-Set `` to `algebraicNormedField K L`. Use `algebraicNormedField_isUltrametricDist K L` as an intermediate fact. Set `` to `algebraicValuativeRel K L`. Establish `hc : (NormedField.valuation (K` using `L)).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `IsValuativeTopology.of_mem_nhds_zero_iff_vle (NormedField.valuation (K := L)) (fun {s} ↦ (NormedField.toValued (K := L)).is_topological_valuation s)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraicTopology_isValuativeTopology :
     letI := algebraicValuativeRel K L
@@ -309,7 +305,7 @@ end SeparableClosure
 section Topology
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.ext_nhds fun x ↦ Filter.ext fun s ↦ (@IsValuativeTopology.mem_nhds_iff R _ _ t₁ h₁ s x).trans (@IsValuativeTopology.mem_nhds_iff R _ _ t₂ h₂ s x).symm`.
+A detailed English derivation is pending.
 -/
 theorem topologicalSpace_eq_of_isValuativeTopology {R : Type*} [CommRing R] [ValuativeRel R]
     {t₁ t₂ : TopologicalSpace R} (h₁ : @IsValuativeTopology R _ _ t₁)
@@ -325,11 +321,11 @@ variable {K Ω : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonar
 omit [TopologicalSpace Ω] [IsValuativeTopology Ω] in
 
 /- English proof (translation)
-Set `` to `normedField K`. Set `` to `algebraicNormedField K Ω`. Take `⟨z, hz⟩` from `valuation_surjective (γ : ValueGroupWithZero Ω)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hz` using `[map_zero]`. Conclude with `γ.ne_zero hz.symm`. Take `⟨a, ha0, ha1⟩` from `NormedField.exists_norm_lt_one K`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.mpr hz0) ha1`. Establish `ha : a ≠ 0` using `norm_pos_iff.mp ha0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a ^ n, pow_ne_zero _ ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← (valuation Ω).vlt_iff_lt, ← not_vle, vle_iff_spectralNorm_le (K := K), not_le]`. Express the relevant statement in the definitionally equal form `‖algebraMap K Ω (a ^ n)‖ < ‖z‖`. Rewrite using `[algebraicNormedField_norm_algebraMap K Ω, norm_pow]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_valuation_lt (γ : (ValueGroupWithZero Ω)ˣ) :
     ∃ a : K, a ≠ 0 ∧ valuation Ω (algebraMap K Ω a) < γ := by
@@ -387,7 +383,7 @@ section Inclusion
 variable {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω] [ValuativeRel Ω]
 
 /- English proof (translation)
-The claim follows from `letI := (IntermediateField.inclusion h).toRingHom.toAlgebra ⟨fun a b ↦ by rw [← IntermediateField.coe_vle_coe_iff (L := Ω) a b, ← IntermediateField.coe_vle_coe_iff (L := Ω)] rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem IntermediateField.valuativeExtension_inclusion {E F : IntermediateField K Ω} (h : E ≤ F) :
     letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -407,7 +403,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 variable (K) in
 
 /- English proof (translation)
-The claim follows from `valuativeRel_eq_of_isAlgebraic K inferInstance (finiteExtensionStructure_valuativeExtension K L)`.
+A detailed English derivation is pending.
 -/
 theorem valuativeRel_eq_finiteExtensionStructure {L : Type*} [Field L] [Algebra K L]
     [FiniteDimensional K L] [v : ValuativeRel L] [ValuativeExtension K L] :
@@ -432,9 +428,9 @@ instance intermediateField_isNonarchimedeanLocalField_of_finiteDimensional
   exact h1
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero σ.toRingEquiv.toAddEquiv.toAddMonoidHom ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Tendsto σ (𝓝 0) (𝓝 (σ 0))`. Rewrite using `[map_zero, (IsValuativeTopology.hasBasis_nhds_zero Ω).tendsto_iff (IsValuativeTopology.hasBasis_nhds_zero Ω)]`. Introduce `γ _`. Use `⟨γ, trivial, fun x hx ↦ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`. Rewrite using `[valuation_algEquiv_apply_of_isAlgebraic]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algEquiv_of_isAlgebraic (σ : Ω ≃ₐ[K] Ω) : Continuous σ := by
   refine continuous_of_continuousAt_zero σ.toRingEquiv.toAddEquiv.toAddMonoidHom ?_
@@ -467,19 +463,19 @@ variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   (L : IntermediateField K (SeparableClosure K)) [FiniteDimensional K L]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsNonarchimedeanLocalField L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuativeExtension K L := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : ValuativeExtension L (SeparableClosure K) := inferInstance
 /- English proof (translation)
-The claim follows from `valuation_algEquiv_apply_of_isAlgebraic σ x`.
+A detailed English derivation is pending.
 -/
 example (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : SeparableClosure K) :
     valuation (SeparableClosure K) (σ x) = valuation (SeparableClosure K) x :=

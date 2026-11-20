@@ -20,7 +20,7 @@ open GlobalTheory.CovTop GlobalTheory.BigTop
 namespace GlobalTheory.CovTop
 
 /- English proof (translation)
-Introduce `hS hX hC`. Take `⟨hSW, hP3, hPH⟩` from `GlobalTheory.CovTop.hypotheses3_of_slim hS hX.cube`. Establish `hJ` using `GlobalTheory.T.second_jets_moret_bailly hP3.base hX.mb`. Establish `hQ` using `GlobalTheory.T.known_of_published_inputs hX hX.y hP3.base hPH hSW hS.poinc hJ hC`. Conclude with `GlobalTheory.T.covolume_from_height_theorems hX hSW hP3 hPH hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covolX_of_slim : Slim → HypothesesXH → (∃ r, GlobalTheory.CovTest.Ch2Const r) → CovolX := by
   intro hS hX hC

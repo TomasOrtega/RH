@@ -7,17 +7,17 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.GlobalLocalRange
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `hu0 : u.asIdeal = ⊥` using `(Ideal.eq_bot_or_top u.asIdeal).resolve_right u.isPrime.ne_top`. Establish `hc : Ideal.comap bV v.asIdeal = ⊥`. Establish `: (spMap (algebraMap (𝓞 F) F) u).asIdeal = (spMap bV v).asIdeal` using `by rw [hu]`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 F) F) u.asIdeal = Ideal.comap bV v.asIdeal at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← this, hu0]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)`. Establish `hv0 : v.asIdeal = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) (x : F)`. Establish `hb0 : (algebraMap (𝓞 F) F b) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 (nonZeroDivisors.ne_zero hb)`. Establish `hax : bV a = x * bV b`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((bV a : V) : F) = ((x : V) : F) * ((bV b : V) : F)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbV, hbV, ← hab]`. Express the relevant statement in the definitionally equal form `(algebraMap (𝓞 F) F a) = _ / _ * (algebraMap (𝓞 F) F b)`. Clear the denominators using the available nonvanishing facts. Establish `ha : a ∈ Ideal.comap bV v.asIdeal`. Rewrite using `[Ideal.mem_comap, hax]`.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `v.asIdeal.mul_mem_right _ hx`. Rewrite `ha` using `[hc, Ideal.mem_bot]`. Rewrite `hab` using `[ha, map_zero, zero_div]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `Subtype.ext (by simpa using hab.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap V.subtype u.asIdeal = v.asIdeal`. Rewrite using `[hu0, hv0]`. Conclude with `Ideal.comap_bot_of_injective _ Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_generic {F : Type} [Field F] [NumberField F] (V : ValuationSubring F) (bV : 𝓞 F →+* V)
     (hbV : ∀ x, ((bV x : V) : F) = (x : F)) (v : Sp V)
@@ -57,11 +57,11 @@ end GlobalTheory.GlobalLocalRange
 namespace GlobalTheory.GlobalLocalRange
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hq`. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.snd Z.s (spMap bV)) (g := spMap (c.V W).subtype) q u hu.symm`. Establish `hw : pullback.fst (pullback.snd Z.s (spMap bV)) (spMap (c.V W).subtype) ≫ pullback.fst _ _ ≫ Z.s = pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[pullback.condition, ← Category.assoc, pullback.condition, hβ, Category.assoc]`. Set `L : pullback (pullback.snd Z.s (spMap bV)) (spMap (c.V W).subtype) ⟶ pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift (pullback.fst _ _ ≫ pullback.fst _ _) (pullback.snd _ _) (by rw [Category.assoc, hw])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨L z, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply]`. Establish `: L ≫ pullback.lift (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))) (pullback.snd _ _ ≫ spMap (c.V W).subtype) (by rw [pullback.condition, hβ, Category.assoc]) = pullback.fst _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.lift_snd, pullback.condition]`. Rewrite using `[this, hz1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_generic_preimage {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} {W : ValuationSubring ℂ}
@@ -96,29 +96,27 @@ end GlobalTheory.GlobalLocalRange
 namespace GlobalTheory.GlobalLocalRange
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c p W _ _ Z Y bV hbV f t m₁ m₂ hf hj _ q`. Establish `hβ : spMap (algebraMap (𝓞 c.F) c.F) = spMap (c.V W).subtype ≫ spMap bV`. Rewrite using `[← spMap_comp]`. Use `congr 1`. Conclude with `RingHom.ext fun x => (hbV x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hcond : pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ≫ Z.s = (pullback.snd Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ≫ spMap (c.V W).subtype) ≫ spMap bV`. Rewrite using `[pullback.condition, hβ, Category.assoc]`. Set `e : pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⟶ pullback Z.s (spMap bV)` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap (c.V W).subtype) hcond`. Establish `he : e ≫ pullback.fst Z.s (spMap bV) = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `hgen : ∀ w, pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) w ∈ abLocus Z.t.G → w ∈ Set.range Z.jQ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[← Z.ab_gen]`. Conclude with `hw`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : pullback.snd Z.s (spMap bV) q ∈ Set.range (spMap (c.V W).subtype)`. Use `mem_range_generic (c.V W) bV hbV _ ⟨pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) x, ?_⟩` and prove the remaining obligations. Establish `e1 : spMap bV (pullback.snd Z.s (spMap bV) q) = Z.s (pullback.fst Z.s (spMap bV) q)`. Rewrite using `[← Scheme.Hom.comp_apply, ← pullback.condition, Scheme.Hom.comp_apply]`. Establish `e2 : Z.s (Z.j x) = spMap (algebraMap (𝓞 c.F) c.F) (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Model.j_s, Scheme.Hom.comp_apply]`. Rewrite using `[e1, ← hx, e2]`. Take `⟨w, hw⟩` from `exists_generic_preimage Z bV hβ q hs`. Express the relevant statement in the definitionally equal form `e w = q at hw`. Establish `hab : pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) w ∈ abLocus Z.t.G`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Z.jQ x ∈ pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹' abLocus Z.t.G`. Rewrite using `[Z.ab_gen]`. Conclude with `⟨x, rfl⟩`. Establish `h2 : pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) w = pullback.fst Z.s (spMap bV) q`. Rewrite using `[← hw, ← Scheme.Hom.comp_apply, he]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, ← hx]`. Conclude with `h1`. Take `⟨x', hx'⟩` from `hgen w hab`. Use `⟨x', ?_⟩` and prove the remaining obligations. Establish `ha : (Z.jQ ≫ e) ≫ pullback.fst Z.s (spMap bV) = Z.j` using `by rw [Category.assoc, he]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hj _ ha, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hx', hw]`. Introduce and unpack `⟨y, hy⟩`. Establish `hs : pullback.snd Z.s (spMap bV) q ∈ Set.range (spMap (c.V W).subtype)`. Use `⟨pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) y, ?_⟩` and prove the remaining obligations. Establish `e2 : Y.s (Y.j y) = spMap (c.V W).subtype (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Model.j_s, Scheme.Hom.comp_apply]`. Rewrite using `[← hf, Scheme.Hom.comp_apply, ← hy, e2]`. Take `⟨w, hw⟩` from `exists_generic_preimage Z bV hβ q hs`. Express the relevant statement in the definitionally equal form `e w = q at hw`. Establish `hY : f q ∈ abLocus Y.t.G`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1 : Y.jQ y ∈ pullback.fst Y.s (spMap (c.V W).subtype) ⁻¹' abLocus Y.t.G`. Rewrite using `[Y.ab_gen]`. Conclude with `⟨y, rfl⟩`. Rewrite using `[← hy]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : q ∈ abLocus t.G` using `(abLocus_pullback abLocusOne Y.t.semi m₂.cart.1 q).1 hY`. Establish `hZ : pullback.fst Z.s (spMap bV) q ∈ abLocus Z.t.G` using `(abLocus_pullback abLocusOne Z.t.semi m₁.cart.1 q).2 hq`. Establish `h2 : pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) w = pullback.fst Z.s (spMap bV) q`. Rewrite using `[← hw, ← Scheme.Hom.comp_apply, he]`. Take `⟨x, hx⟩` from `hgen w (h2 ▸ hZ)`.
-
-Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, ← hx]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fst_mem_range_j_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

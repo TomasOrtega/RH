@@ -19,9 +19,9 @@ set_option autoImplicit false
 namespace GlobalTheory.SteinFibre
 
 /- English proof (translation)
-Rewrite using `[mem_under_iff, ← Scheme.mem_basicOpen X (U := ⊤) _ z trivial]`. Establish `e1 : X.basicOpen (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤ c) = ⊤ ⊓ p ⁻¹ᵁ (Sp (𝓞 F)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv c)` using `Scheme.basicOpen_appLE p ⊤ ⊤ _ _`. Rewrite using `[e1, basicOpen_eq_of_affine]`. Simplify using `only [top_inf_eq]`. Express the relevant statement in the definitionally equal form `c ∈ (p z).asIdeal ↔ ¬ (p z ∈ PrimeSpectrum.basicOpen c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨fun h h' => (PrimeSpectrum.mem_basicOpen _ _).1 h' h, fun h => by_contra fun h' => h ((PrimeSpectrum.mem_basicOpen _ _).2 h')⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_asIdeal_iff_algX_mem_under {F : Type} [Field F] [NumberField F] (X : Scheme.{0})
     (p : X ⟶ Sp (𝓞 F)) (z : X) (c : 𝓞 F) :
@@ -41,11 +41,11 @@ end GlobalTheory.SteinFibre
 namespace GlobalTheory.IsArithVar
 
 /- English proof (translation)
-Establish `hc` using `h.charZero`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `ha0`. Use `set I := RingHom.ker (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hI : I ≠ ⊥` using `fun hb => ha0 (by`. Establish `: a ∈ I` using `ha`. Rewrite `this` using `[hb]`. Conclude with `this)`. Establish `hn : Ideal.absNorm I ≠ 0` using `fun h0 => hI (Ideal.absNorm_eq_zero_iff.1 h0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ((Ideal.absNorm I : ℕ) : 𝓞 F) ∈ I` using `by exact_mod_cast Ideal.absNorm_mem I`. Establish `: ((Ideal.absNorm I : ℕ) : Γ(X, ⊤)) = 0`. Rewrite using `[← map_natCast (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)]`. Conclude with `hm`. Conclude with `hn (Nat.cast_eq_zero.1 this)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algX_injective {F : Type} [Field F] [NumberField F] {X : Scheme.{0}} {p : X ⟶ Sp (𝓞 F)}
     {e : ℕ} (h : IsArithVar p e) : Function.Injective (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤) := by
@@ -66,7 +66,7 @@ theorem algX_injective {F : Type} [Field F] [NumberField F] {X : Scheme.{0}} {p 
   exact hn (Nat.cast_eq_zero.1 this)
 
 /- English proof (translation)
-Introduce `F _ _ X _ p e h z hz`. Establish `inj` using `algX_injective h`. Use extensionality with `c`. Rewrite using `[GlobalTheory.SteinFibre.mem_asIdeal_iff_algX_mem_under X p z c, hz, Ideal.mem_bot, Ideal.mem_bot]`. Conclude with `⟨fun h0 => inj (by rw [h0, map_zero]), fun h0 => by rw [h0, map_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem asIdeal_eq_bot_of_under_eq_bot : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0})
     [IsIntegral X] (p : X ⟶ Sp (𝓞 F)) (e : ℕ),

@@ -18,11 +18,11 @@ namespace GlobalTheory.BotPairSmall.CondXi
 open GlobalTheory.Mem.Col2.SplitChar
 
 /- English proof (translation)
-Distinguish the cases in `hW : PP ∈ G.pl.W0`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hW`. Unfold `modT`. Use `(Ideal.mul_le_inf.trans inf_le_left).trans ?_` and prove the remaining obligations. Establish `h1 : condE G.pl ≤ (G.pl.w v).asIdeal ^ condExp G.pl v` using `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hv)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.trans (Ideal.pow_le_self ?_)` and prove the remaining obligations. Apply the tactic sequence `unfold condExp; split_ifs <;> omega`. Establish `hT : PP ∈ twPl G t`. Unfold `twPl`. Rewrite using `[Finset.mem_filter]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨by unfold GlobalTheory.FunObj.locPl; exact Finset.mem_union_right _ hq, hW⟩`. Unfold `modT`. Conclude with `(Ideal.mul_le_inf.trans inf_le_right).trans (Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hT))`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem modT_le {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T)
     {PP : HeightOneSpectrum (𝓞 D.host.E)} (hq : PP ∈ L.Q t) : modT G t ≤ PP.asIdeal := by
@@ -43,9 +43,9 @@ theorem modT_le {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData 
     exact (Ideal.mul_le_inf.trans inf_le_right).trans (Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hT))
 
 /- English proof (translation)
-Use `show Ideal.map _ _ ≤ _`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Take `⟨c', hc', e⟩` from `h x hx`. Rewrite using `[Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hc'` and compare the differences between its conclusion and the goal. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[e, Formalism.BasicNotions.bridge_star_holds]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_smul_le_of_isConjPl {D : D7} {PP' PP : HeightOneSpectrum (𝓞 D.host.E)}
     (h : Formalism.IndefR.Lev.IsConjPl PP' PP) : D.host.conj • PP'.asIdeal ≤ PP.asIdeal := by
@@ -62,13 +62,11 @@ theorem conj_smul_le_of_isConjPl {D : D7} {PP' PP : HeightOneSpectrum (𝓞 D.ho
 open Formalism.L2.Host in
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ hL G t u hu hc`. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local D.host.E _ (L.xiH t).2.1 (finIdl D u) (finIdl_unit hu) (fun w => by rw [finIdl_fst]; rfl) fun PP x hx => ?_` and prove the remaining obligations. Establish `hunit : IsUnitAt PP x`. Unfold `IsUnitAt`. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finIdl_unit hu PP`. Use `show (L.xiH t).loc PP x = 1`. Distinguish the cases in `hr : (L.xiH t).UnrAt PP`. Conclude with `hr x hunit`. Establish `hle : modT G t * D.host.conj • modT G t ≤ PP.asIdeal ^ (1 : ℕ)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_one]`. Break down `(hL.Q_ram t PP).1 hr with hq | ⟨PP', hq, hcj⟩` into its components or cases. Conclude with `(Ideal.mul_le_inf.trans inf_le_left).trans (modT_le G t hq)`. Conclude with `(Ideal.mul_le_inf.trans inf_le_right).trans ((Ideal.map_mono (modT_le G t hq)).trans (conj_smul_le_of_isConjPl hcj))`. Use `hL.xi_tame t PP x hunit ?_` and prove the remaining obligations.
-
-Rewrite using `[hx, vl_sub_one]`. Conclude with `GlobalTheory.BotPairSmall.CondNu.vl_le_of_mem_hatId hle hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiH_eq_one_of_cong : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (t : T) (u : (AE D)ˣ), IntU D u → (u : AE D) - 1 ∈ hatId D (modT G t * D.host.conj • modT G t) → (L.xiH t).1 (finIdl D u) = 1 := by
   intro D T L sc μ₀ hL G t u hu hc

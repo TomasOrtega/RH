@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver mConeM
 open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `hcomp : (mConeMapOver S y).comp (rename fun p : (Σ _ : Unit, Fin (N + 1)) => (⟨k₀, e.symm p.2⟩ : Σ k, ι k)) = ((rename (R` using `Ω) fun _ : Unit => k₀).restrictScalars S).comp (mConeMapOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm))) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMapOver, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hf' : mConeMapOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm)) f = 0` using `hf`. Establish `h1` using `AlgHom.congr_fun hcomp f`. Rewrite `h1` using `[AlgHom.comp_apply, AlgHom.comp_apply, hf', map_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_mem_mIdealOver (S : Type) [CommRing S] {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
     [Algebra S Ω] (y : (Σ k, ι k) → Ω) (k₀ : K) {N : ℕ} (e : ι k₀ ≃ Fin (N + 1)) {x : Fin (N + 1) → Ω}
@@ -35,7 +35,7 @@ theorem rename_mem_mIdealOver (S : Type) [CommRing S] {K : Type} {ι : K → Typ
   exact h1
 
 /- English proof (translation)
-Rewrite using `[NumbersDVR.specialIdeal, Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Rewrite using `[Ideal.mem_comap, baseComap, Ideal.mem_comap, ← map_rename]`. Conclude with `hW (Ideal.mem_map_of_mem _ (rename_mem_mIdealOver O y k₀ e hx hf))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specialIdeal_le_baseComap (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type}
     [DecidableEq K] {ι : K → Type} {Ω : Type}
@@ -51,7 +51,7 @@ theorem specialIdeal_le_baseComap (O : Type) [CommRing O] [IsDomain O] [IsDiscre
   exact hW (Ideal.mem_map_of_mem _ (rename_mem_mIdealOver O y k₀ e hx hf))
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ Ω _ _ _ _ y k₀ N e x hx hy d`. Use `⟨fun W hW hyW hd => ⟨isMultiProjPrime_baseComap _ k₀ e hW, specialIdeal_le_baseComap O y k₀ e hx hyW, ?_⟩, fun P hP hxP hd => ?_⟩` and prove the remaining obligations. Rewrite using `[hdim O K ι Ω y k₀ N e hy W hW hyW, hd]`. Take `⟨W, hW, hyW, rfl⟩` from `hlift O K ι Ω y k₀ N e x hx hy P hP hxP`. Conclude with `⟨W, hW, hyW, by rw [← hdim O K ι Ω y k₀ N e hy W hW hyW, hd], rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SpecialCurves.proof (hdim : SpecialCurvesDim.Statement) (hlift : SpecialCurvesLift.Statement) :
     SpecialCurves.Statement := by

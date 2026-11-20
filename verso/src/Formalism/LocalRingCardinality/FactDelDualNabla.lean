@@ -13,9 +13,9 @@ open Formalism.MainNotions.G
 open scoped BigOperators
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun z => posPl D p z e)`. Introduce `z z' h`. Establish `h'` using `congrArg (fun y => posPl D p y (nP D p * e - e)) h`. Simplify using `only [posPl_add] at h'`. Establish `he : e + (nP D p * e - e) = nP D p * e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: e ≤ nP D p * e` using `Nat.le_mul_of_pos_left e (Nat.pos_of_ne_zero (NeZero.ne _))`. Use linear arithmetic over natural numbers and integers. Rewrite `h'` using `[he, posPl_mul_period, posPl_mul_period]`. Then use the resulting hypothesis. Conclude with `⟨hinj, Finite.surjective_of_injective hinj⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem posPl_bijective (D : D7) (p e : ℕ) : Function.Bijective (fun z => posPl D p z e) := by
   have hinj : Function.Injective (fun z => posPl D p z e) := by
@@ -29,13 +29,11 @@ theorem posPl_bijective (D : D7) (p e : ℕ) : Function.Bijective (fun z => posP
   exact ⟨hinj, Finite.surjective_of_injective hinj⟩
 
 /- English proof (translation)
-Establish `hI` using `D.R.toFrame.iota_bijective.1`. Establish `hP` using `factPlaces D.R.toFrame`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, t⟩ ⟨β', t'⟩ h`. Establish `h1 : plGG D (β, t) = plGG D (β', t')` using `congrArg Subtype.val (D.eTau.symm.injective h)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply the tactic sequence `cases β <;> cases β'`. Establish `h2 : D.R.tau1 t = D.R.tau1 t'` using `h1`. Rewrite using `[hI (Prod.ext_iff.1 h2).2]`. Conclude with `absurd (show D.R.tau1 t = D.R.tau2 t' from h1) (hP.2 t t')`. Conclude with `absurd (show D.R.tau1 t' = D.R.tau2 t from h1.symm) (hP.2 t' t)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : D.R.tau2 t = D.R.tau2 t'` using `h1`. Rewrite using `[hI (Prod.ext_iff.1 h2).2]`. Introduce `τ`. Break down `(hP.1 _).1 (D.eTau τ).2 with ⟨t, ht⟩ | ⟨t, ht⟩` into its components or cases. Conclude with `⟨(false, t), (Equiv.symm_apply_eq _).2 (Subtype.ext ht.symm)⟩`.
-
-Conclude with `⟨(true, t), (Equiv.symm_apply_eq _).2 (Subtype.ext ht.symm)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tauPl_bij (D : D7) : Function.Bijective (tauPl D) := by
   have hI := D.R.toFrame.iota_bijective.1
@@ -56,20 +54,20 @@ theorem tauPl_bij (D : D7) : Function.Bijective (tauPl D) := by
     · exact ⟨(true, t), (Equiv.symm_apply_eq _).2 (Subtype.ext ht.symm)⟩
 
 /- English proof (translation)
-The claim follows from `lp_lower_bound l d Ds hl hD`.
+A detailed English derivation is pending.
 -/
 theorem lpF_ge_sum (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) (hl : 2 ≤ l) (hD : ∀ s, 0 ≤ Ds s) :
     (∑ s, Ds s) / ((l : ℝ) ^ 2 - 1) ≤ lpF l d Ds :=
   lp_lower_bound l d Ds hl hD
 
 /- English proof (translation)
-Introduce `j _ p hp _ hw`. Establish `hk : 0 ≤ (D.R.k : ℝ) - 1`. Establish `h` using `D.R.m_add_three_le_k`. Establish `h1 : (1 : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ D.R.k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hwP : ∀ z, 0 ≤ wPl D j z` using `fun z => hw _`. Unfold `FInert`. Use `split_ifs with h`. Conclude with `le_rfl`. Establish `hn : (0 : ℝ) < (nP D p : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero (NeZero.ne _))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hn]`. Establish `h1 : ∀ z, (∑ s : ZMod (nP D p), ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val)) / ((p : ℝ) ^ 2 - 1) ≤ FOrb D j p z` using `fun z => lpF_ge_sum p (nP D p) _ hp.two_le (fun s => mul_nonneg hk (hwP _))`. Use `le_trans (le_of_eq ?_) (Finset.sum_le_sum fun z _ => h1 z)` and prove the remaining obligations. Establish `h2 : ∀ s : ZMod (nP D p), ∑ z : Bool × HH D, ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val) = ∑ τ : D.what₂.Tau, ((D.R.k : ℝ) - 1) * wj D j τ` using `fun s => by`. Rewrite using `[(posPl_bijective D p s.val).sum_comp (fun z => ((D.R.k : ℝ) - 1) * wPl D j z)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(tauPl_bij D).sum_comp (fun τ => ((D.R.k : ℝ) - 1) * wj D j τ)`. Establish `h3 : ∑ z : Bool × HH D, ∑ s : ZMod (nP D p), ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val) = (nP D p : ℝ) * ∑ τ : D.what₂.Tau, ((D.R.k : ℝ) - 1) * wj D j τ`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun s _ => h2 s, Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]`. Rewrite using `[← Finset.sum_div, ← Finset.sum_div, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fInertGe (D : D7) : FInertGe D := by
   intro j _ p hp _ hw
@@ -99,351 +97,351 @@ theorem fInertGe (D : D7) : FInertGe D := by
     ring
 
 /- English proof (translation)
-The claim follows from `factDelDualNabla_of Formalism.L2.DIV.weylEqDualNabla`.
+A detailed English derivation is pending.
 -/
 theorem factDelDualNabla : FactDelDualNabla := factDelDualNabla_of Formalism.L2.DIV.weylEqDualNabla
 
 section Check
 /- English proof (translation)
-The claim follows from `bridge_cols_conj_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_cols_conj := bridge_cols_conj_holds
 /- English proof (translation)
-The claim follows from `factSigYDceil`.
+A detailed English derivation is pending.
 -/
 example : FactSigYDceil := factSigYDceil
 /- English proof (translation)
-The claim follows from `factBuUnique`.
+A detailed English derivation is pending.
 -/
 example : FactBuUnique := factBuUnique
 /- English proof (translation)
-The claim follows from `factPsiCardViaTau`.
+A detailed English derivation is pending.
 -/
 example : FactPsiCardViaTau := factPsiCardViaTau
 /- English proof (translation)
-The claim follows from `anisotropicLine_indep_of_member`.
+A detailed English derivation is pending.
 -/
 example : AnisotropicLineIndepOfMember := anisotropicLine_indep_of_member
 /- English proof (translation)
-The claim follows from `factUnitRuleAgree`.
+A detailed English derivation is pending.
 -/
 example : FactUnitRuleAgree := factUnitRuleAgree
 /- English proof (translation)
-The claim follows from `bridge_ccb_unit_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_ccb_unit := bridge_ccb_unit_holds
 /- English proof (translation)
-The claim follows from `bridge_ccb_integral_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_ccb_integral := bridge_ccb_integral_holds
 /- English proof (translation)
-The claim follows from `bridge_unit_rule_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_unit_rule := bridge_unit_rule_holds
 /- English proof (translation)
-The claim follows from `factUnitNormalisation`.
+A detailed English derivation is pending.
 -/
 example : FactUnitNormalisation := factUnitNormalisation
 /- English proof (translation)
-The claim follows from `bridge_hn_mu_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_hn_mu := bridge_hn_mu_holds
 /- English proof (translation)
-The claim follows from `bridge_dual_mu_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_dual_mu := bridge_dual_mu_holds
 /- English proof (translation)
-The claim follows from `bridge_ccb_dual_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_ccb_dual := bridge_ccb_dual_holds
 /- English proof (translation)
-The claim follows from `rankBound_monotone_in_dimension`.
+A detailed English derivation is pending.
 -/
 example : RankBoundMonotoneInDimension := rankBound_monotone_in_dimension
 /- English proof (translation)
-The claim follows from `factHHcc`.
+A detailed English derivation is pending.
 -/
 example : FactHHcc := factHHcc
 /- English proof (translation)
-The claim follows from `factNc`.
+A detailed English derivation is pending.
 -/
 example : FactNc := factNc
 /- English proof (translation)
-The claim follows from `factNatW`.
+A detailed English derivation is pending.
 -/
 example : FactNatW := factNatW
 /- English proof (translation)
-The claim follows from `bridge_round_square_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_round_square := bridge_round_square_holds
 /- English proof (translation)
-The claim follows from `factSqActMul`.
+A detailed English derivation is pending.
 -/
 example : FactSqActMul := factSqActMul
 /- English proof (translation)
-The claim follows from `factSqStable`.
+A detailed English derivation is pending.
 -/
 example : FactSqStable := factSqStable
 /- English proof (translation)
-The claim follows from `factSqHighestWeight`.
+A detailed English derivation is pending.
 -/
 example : FactSqHighestWeight := factSqHighestWeight
 /- English proof (translation)
-The claim follows from `bridge_normFock_extremal_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_normFock_extremal := bridge_normFock_extremal_holds
 /- English proof (translation)
-The claim follows from `factNormFockUnitary`.
+A detailed English derivation is pending.
 -/
 example : FactNormFockUnitary := factNormFockUnitary
 /- English proof (translation)
-The claim follows from `factDelDualNabla`.
+A detailed English derivation is pending.
 -/
 example : FactDelDualNabla := factDelDualNabla
 /- English proof (translation)
-The claim follows from `bridge_hc_rho_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_hc_rho := bridge_hc_rho_holds
 /- English proof (translation)
-The claim follows from `factIota`.
+A detailed English derivation is pending.
 -/
 example : FactIota := factIota
 /- English proof (translation)
-The claim follows from `bridge_iota_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_iota := bridge_iota_holds
 /- English proof (translation)
-The claim follows from `bridge_star_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_star := bridge_star_holds
 /- English proof (translation)
-The claim follows from `factCardPsi`.
+A detailed English derivation is pending.
 -/
 example : FactCardPsi := factCardPsi
 /- English proof (translation)
-The claim follows from `factEmb`.
+A detailed English derivation is pending.
 -/
 example : FactEmb := factEmb
 /- English proof (translation)
-The claim follows from `factPlaces`.
+A detailed English derivation is pending.
 -/
 example : FactPlaces := factPlaces
 /- English proof (translation)
-The claim follows from `factTopsThick`.
+A detailed English derivation is pending.
 -/
 example : FactTopsThick := factTopsThick
 /- English proof (translation)
-The claim follows from `factRd`.
+A detailed English derivation is pending.
 -/
 example : FactRd := factRd
 /- English proof (translation)
-The claim follows from `factMMUnimodular`.
+A detailed English derivation is pending.
 -/
 example : FactMMUnimodular := factMMUnimodular
 /- English proof (translation)
-The claim follows from `factClassFrob`.
+A detailed English derivation is pending.
 -/
 example : FactClassFrob := factClassFrob
 /- English proof (translation)
-The claim follows from `factFrobGeom`.
+A detailed English derivation is pending.
 -/
 example : FactFrobGeom := factFrobGeom
 /- English proof (translation)
-The claim follows from `Formalism.L2.Col.bridge_lidx_det_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_lidx_det := Formalism.L2.Col.bridge_lidx_det_holds
 /- English proof (translation)
-The claim follows from `factWtPos`.
+A detailed English derivation is pending.
 -/
 example : FactWtPos := factWtPos
 /- English proof (translation)
-The claim follows from `factWtZero`.
+A detailed English derivation is pending.
 -/
 example : FactWtZero := factWtZero
 /- English proof (translation)
-The claim follows from `factWtInt`.
+A detailed English derivation is pending.
 -/
 example : FactWtInt := factWtInt
 /- English proof (translation)
-The claim follows from `bridge_KD_succ_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_KD_succ := bridge_KD_succ_holds
 /- English proof (translation)
-The claim follows from `bridge_thl_index_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_thl_index := bridge_thl_index_holds
 /- English proof (translation)
-The claim follows from `factSDivSharp`.
+A detailed English derivation is pending.
 -/
 example : FactSDivSharp := factSDivSharp
 /- English proof (translation)
-The claim follows from `factEInt`.
+A detailed English derivation is pending.
 -/
 example : FactEInt := factEInt
 /- English proof (translation)
-The claim follows from `factDuLe`.
+A detailed English derivation is pending.
 -/
 example : FactDuLe := factDuLe
 /- English proof (translation)
-The claim follows from `factGaussRam`.
+A detailed English derivation is pending.
 -/
 example : FactGaussRam := factGaussRam
 /- English proof (translation)
-The claim follows from `bridge_autL_not_column_holds`.
+A detailed English derivation is pending.
 -/
 example : bridge_autL_not_column := bridge_autL_not_column_holds
 /- English proof (translation)
-The claim follows from `factEtaMean`.
+A detailed English derivation is pending.
 -/
 example : FactEtaMean := factEtaMean
 /- English proof (translation)
-The claim follows from `factLpF`.
+A detailed English derivation is pending.
 -/
 example : FactLpF := factLpF
 /- English proof (translation)
-The claim follows from `Rows.factKaBlocks`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactKaBlocks := Rows.factKaBlocks
 /- English proof (translation)
-The claim follows from `Rows.factShimRange`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactShimRange := Rows.factShimRange
 /- English proof (translation)
-The claim follows from `Rows.factQZ`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactQZ := Rows.factQZ
 /- English proof (translation)
-The claim follows from `Rows.factBuDetermined`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactBuDetermined := Rows.factBuDetermined
 /- English proof (translation)
-The claim follows from `Rows.factLamPNonneg`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactLamPNonneg := Rows.factLamPNonneg
 /- English proof (translation)
-The claim follows from `Rows.factDleDall`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactDleDall := Rows.factDleDall
 /- English proof (translation)
-The claim follows from `Rows.factZeMu0`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactZeMu0 := Rows.factZeMu0
 /- English proof (translation)
-The claim follows from `Rows.factAjConj`.
+A detailed English derivation is pending.
 -/
 example : Rows.FactAjConj := Rows.factAjConj
 /- English proof (translation)
-The claim follows from `bridge_hD_holds`.
+A detailed English derivation is pending.
 -/
 example : Spaces.bridge_hD := bridge_hD_holds
 /- English proof (translation)
-The claim follows from `bridge_sigRank_holds`.
+A detailed English derivation is pending.
 -/
 example : Spaces.bridge_sigRank := bridge_sigRank_holds
 /- English proof (translation)
-The claim follows from `rank_base_space`.
+A detailed English derivation is pending.
 -/
 example : RankBaseSpaceEq := rank_base_space
 /- English proof (translation)
-The claim follows from `signature_base_space`.
+A detailed English derivation is pending.
 -/
 example : SignatureBaseSpaceSum := signature_base_space
 /- English proof (translation)
-The claim follows from `factSigW`.
+A detailed English derivation is pending.
 -/
 example : FactSigW := factSigW
 /- English proof (translation)
-The claim follows from `signature_base_space_graded`.
+A detailed English derivation is pending.
 -/
 example : SignatureBaseMiddleEq := signature_base_space_graded
 /- English proof (translation)
-The claim follows from `factWmDef`.
+A detailed English derivation is pending.
 -/
 example : FactWmDef := factWmDef
 /- English proof (translation)
-The claim follows from `factXm`.
+A detailed English derivation is pending.
 -/
 example : FactXm := factXm
 /- English proof (translation)
-The claim follows from `factYm`.
+A detailed English derivation is pending.
 -/
 example : FactYm := factYm
 /- English proof (translation)
-The claim follows from `factNStep`.
+A detailed English derivation is pending.
 -/
 example : FactNStep := factNStep
 /- English proof (translation)
-The claim follows from `factNEven`.
+A detailed English derivation is pending.
 -/
 example : FactNEven := factNEven
 /- English proof (translation)
-The claim follows from `factROdd`.
+A detailed English derivation is pending.
 -/
 example : FactROdd := factROdd
 /- English proof (translation)
-The claim follows from `factSigmaCount`.
+A detailed English derivation is pending.
 -/
 example : FactSigmaCount := factSigmaCount
 /- English proof (translation)
-The claim follows from `factSShift`.
+A detailed English derivation is pending.
 -/
 example : FactSShift := factSShift
 /- English proof (translation)
-The claim follows from `factWG`.
+A detailed English derivation is pending.
 -/
 example : FactWG := factWG
 /- English proof (translation)
-The claim follows from `factSInt`.
+A detailed English derivation is pending.
 -/
 example : FactSInt := factSInt
 /- English proof (translation)
-The claim follows from `factNV`.
+A detailed English derivation is pending.
 -/
 example : FactNV := factNV
 /- English proof (translation)
-The claim follows from `factHCMono`.
+A detailed English derivation is pending.
 -/
 example : FactHCMono := factHCMono
 
 /- English proof (translation)
-The claim follows from `factSigYD R`.
+A detailed English derivation is pending.
 -/
 example (R : Ranks) : FactSigYD R := factSigYD R
 /- English proof (translation)
-The claim follows from `baseSpace_posDef R F`.
+A detailed English derivation is pending.
 -/
 example (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] :
     BaseSpacePosDef R F E := baseSpace_posDef R F
 /- English proof (translation)
-The claim follows from `factXmDef R F`.
+A detailed English derivation is pending.
 -/
 example (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] :
     FactXmDef R F E := factXmDef R F
 /- English proof (translation)
-The claim follows from `factVSig R F`.
+A detailed English derivation is pending.
 -/
 example (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] :
     FactVSig R F E := factVSig R F
 /- English proof (translation)
-The claim follows from `factWmPosDef R F E`.
+A detailed English derivation is pending.
 -/
 example (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] :
     FactWmPosDef R F E := factWmPosDef R F E
 /- English proof (translation)
-The claim follows from `Idx.factStepBz X`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (X : DivX D) : Idx.FactStepBz X := Idx.factStepBz X
 /- English proof (translation)
-The claim follows from `fInertGe D`.
+A detailed English derivation is pending.
 -/
 example (D : D7) : FInertGe D := fInertGe D
 
 /- English proof (translation)
-The claim follows from `factPrincipalDatum_of h1 h2`.
+A detailed English derivation is pending.
 -/
 example (h1 : DiffKPrincipal) (h2 : CcNorm) : FactPrincipalDatum := factPrincipalDatum_of h1 h2
 /- English proof (translation)
-The claim follows from `DGamMink.fact h hD`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (h : DGamMink D) (hD : DGamDef D) : FactDGam D 12 := DGamMink.fact h hD
 

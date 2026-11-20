@@ -13,14 +13,14 @@ def radialTransform (d : ℕ) (a : ℝ → ℝ) (t : ℝ) : ℝ :=
   a t * t ^ d - ∫ τ in (0 : ℝ)..t, a τ * ((d : ℝ) * τ ^ (d - 1))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[radialTransform]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem radialTransform_zero (a : ℝ → ℝ) : radialTransform 0 a = a := by
   funext t
   simp [radialTransform]
 
 /- English proof (translation)
-Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, integral_pow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_const_mul_dpow (e : ℕ) (c t : ℝ) :
     ∫ τ in (0 : ℝ)..t, c * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)) = c * t ^ (e + 1) := by
@@ -31,7 +31,7 @@ theorem integral_const_mul_dpow (e : ℕ) (c t : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hint : ∫ τ in (0 : ℝ)..t, a τ * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)) = ∫ τ in (0 : ℝ)..t, a 0 * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1))`. Use `intervalIntegral.integral_congr fun τ hτ => ?_` and prove the remaining obligations. Rewrite `hτ` using `[Set.uIcc_of_le ht.1]`. Rewrite using `[ha τ ⟨hτ.1, hτ.2.trans ht.2⟩]`. Rewrite using `[radialTransform, hint, integral_const_mul_dpow, ha t ht]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

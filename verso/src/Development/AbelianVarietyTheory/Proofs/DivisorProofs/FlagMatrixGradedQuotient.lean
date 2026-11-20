@@ -16,11 +16,11 @@ namespace GlobalTheory.FlagCls.MatGr
 open Limits
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg k'`. Establish `key (k : κ) : ∑ j, φ (b.repr (b' k) j) * φ (b'.repr (b j) k') = if k = k' then 1 else 0`. Establish `h1 : ∑ j, b.repr (b' k) j * b'.repr (b j) k' = b'.repr (b' k) k'` using `by conv_rhs => rw [← b.sum_repr (b' k)]`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_mul, ← map_sum]`. Rewrite using `[h1, b'.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 (j : ι) : ∑ k, g k * φ (b.repr (b' k) j) = 0`. Simplify using `using congrFun hg j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : ∑ k, g k * ∑ j, φ (b.repr (b' k) j) * φ (b'.repr (b j) k') = 0`. Simplify using `only [Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, h2, zero_mul, Finset.sum_const_zero]`. Simplify `h3` using `[key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linearIndependent_repr {R N K : Type} [CommRing R] [AddCommGroup N] [Module R N] [Field K]
     {ι κ : Type} [Fintype ι] [Fintype κ] (b : Module.Basis ι R N) (b' : Module.Basis κ R N) (φ : R →+* K) :
@@ -44,9 +44,9 @@ theorem linearIndependent_repr {R N K : Type} [CommRing R] [AddCommGroup N] [Mod
   simpa [key] using h3
 
 /- English proof (translation)
-Use `choose cf h0 h1 using h`. Set `L : (Fin n → K) →ₗ[K] (Fin r → K)` to `Fintype.linearCombination K fun l => A (Fin.castLE hn l)`. Establish `e : v = L ∘ fun k l => cf k (Fin.castLE hn l)`. Use function extensionality and compare the values at `k`. Rewrite using `[h1, Matrix.vecMul_eq_sum, Function.comp_apply, Fintype.linearCombination_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hn) (Fin.castLE_injective hn).injOn (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) (fun j _ hj => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[h0 k j (Nat.le_of_not_lt fun hlt => hj ⟨⟨j, hlt⟩, by simp, Fin.ext rfl⟩), zero_smul]`. Rewrite `hv` using `[e]`. Simplify using `using (LinearIndependent.of_comp L hv).fintype_card_le_finrank`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le_of_rows {K : Type} [Field K] {r n : ℕ} (hn : n ≤ r) (A : Matrix (Fin r) (Fin r) K)
     {κ : Type} [Fintype κ] (v : κ → Fin r → K) (hv : LinearIndependent K v)
@@ -69,25 +69,23 @@ end GlobalTheory.FlagCls.MatGr
 open Limits GlobalTheory.FlagCls.MatGr in
 
 /- English proof (translation)
-Introduce `B Y M r hM π fl V f hf K _ y A hA i ch W hW hWV t ht hy cf hcf h0`. Use `hM.isQuasicoherent` as an intermediate fact. Set `p : Sp K` to `IsLocalRing.closedPoint K`. Establish `hp : y p ∈ W` using `hy (Set.mem_univ p)`. Take `⟨U₁, a, hp₁, ha⟩` from `fl.isVB i.castSucc (y p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U₂, c, hp₂, hc⟩` from `fl.isVB_cokernel i.succ (y p)`. Take `⟨U₃, h₃, hp₃, u, hu⟩` from `VBExt.exists_lifts (cokernel.π (fl.ι i.succ)) c hp₂`. Set `U : Y.Opens` to `W ⊓ (U₁ ⊓ U₃)`. Establish `hUW : U ≤ W` using `inf_le_left`. Establish `hU₁ : U ≤ U₁` using `inf_le_right.trans inf_le_left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₃ : U ≤ U₃` using `inf_le_right.trans inf_le_right`. Establish `hyU : ⊤ ≤ y ⁻¹ᵁ U` using `fun q _ => by`. Take `rfl : q = p` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `⟨hp, hp₁, hp₃⟩`. Establish `f₁` using `VBExt.isFrame_sumElim (S := .mk (fl.step i) (cokernel.π _) (cokernel.condition _)) { exact := ShortComplex.exact_cokernel _ } (ha.res hU₁) (t := fun _ : Fin 1 => Twist.resM _ hUW t) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `ch.isFrame.res (hUW.trans hW)`. Express the relevant statement in the definitionally equal form `IsFrame fun _ : Fin 1 => (fl.π i).app U (Twist.resM _ hUW t)`. Use `h using 2 with k` and compare the differences between its conclusion and the goal. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Rewrite using `[Twist.app_resM, ht, Twist.resM_resM])`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `f₂` using `VBExt.isFrame_sumElim (S := .mk (fl.ι i.succ) (cokernel.π _) (cokernel.condition _)) { exact := ShortComplex.exact_cokernel _ } f₁ (t := fun k => Twist.resM _ hU₃ (u k)) (by`. Establish `h` using `hc.res (hU₃.trans h₃)`. Use `h using 2 with k` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `(cokernel.π (fl.ι i.succ)).app U _ = _`. Rewrite using `[Twist.app_resM, hu, Twist.resM_resM])`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `li` using `(linearIndependent_repr ((hf.pullback π).basis (hUW.trans hWV)) (f₂.basis le_rfl) (TangentOrigin.evalPt y U hyU)).comp Sum.inl Sum.inl_injective`. Establish `hle` using `card_le_of_rows (n := i) i.2.le A _ li (by`. Introduce and unpack `(k | k)`. Take `⟨cf', h1, h2⟩` from `hA.2 i.castSucc U (hUW.trans hWV) (Twist.resM _ hU₁ (a k)) hyU`. Use `⟨cf', h1, Eq.trans ?_ h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, IsFrame.basis_apply, Twist.resM_self, Sum.elim_inl, coordAt]`. Rewrite using `[← fl.step_ι i]`. Both sides reduce to the same expression. Take `⟨cf', h1, h2⟩` from `hA.2 i.succ W hWV t hy`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : cf = cf' := by`. Use `Matrix.vecMul_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det A).2 hA.1)` as an intermediate fact. Conclude with `this (hcf.symm.trans h2)`. Use `⟨cf, fun l hl => ?_, Eq.trans ?_ hcf⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le hl with e | e` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Fin.ext e]` and apply the resulting hypothesis. Conclude with `h1 l e`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, IsFrame.basis_apply, Twist.resM_self, Sum.elim_inl, Sum.elim_inr, coordAt]`. Rewrite using `[Twist.app_resM, (hf.pullback π).repr_resM hWV hUW]`.
-
-Conclude with `TangentOrigin.evalPt_res y hUW hy hyU _)`. Simplify using `at hle`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagCls.FlagMat.coeff_ne_zero : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (y : Sp K ⟶ Y) (A : Matrix (Fin r) (Fin r) K), FlagMat hM π fl hf y A → ∀ (i : Fin r) (ch : Chart (fl.gr i) 1) (W : Y.Opens) (hW : W ≤ ch.U) (hWV : W ≤ π ⁻¹ᵁ V) (t : Γ(fl.F i.succ, W)), (fl.π i).app W t = Twist.resM _ hW (ch.e 0) → ∀ (hy : ⊤ ≤ y ⁻¹ᵁ W) (cf : Fin r → K), coordAt hM π hf y hWV hy ((fl.ι i.succ).app W t) = Matrix.vecMul cf A → cf i ≠ 0 := by
   intro B Y M r hM π fl V f hf K _ y A hA i ch W hW hWV t ht hy cf hcf h0

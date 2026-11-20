@@ -9,11 +9,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Use `Finset.sum_induction _ (fun x => ∃ n : ℕ, f ^ n * x ∈ A) ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `x z ⟨n, hn⟩ ⟨m, hm⟩`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: f ^ (n + m) * (x + z) = f ^ m * (f ^ n * x) + f ^ n * (f ^ m * z)` using `by ring`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (mul_mem (pow_mem hf _) hn) (mul_mem (pow_mem hf _) hm)`. Introduce `q _`. Take `⟨n, hn⟩` from `ha q`. Take `⟨m, hm⟩` from `ht q`. Use `⟨n + m, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: f ^ (n + m) * (a q * t q) = (f ^ n * a q) * (f ^ m * t q)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem hn hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwistedDualGensExpress.sum_mul_mem_localized {R Ω : Type*} [CommRing R] [Field Ω] [Algebra R Ω]
     (A : Subalgebra R Ω) {f : Ω} (hf : f ∈ A) {r : ℕ} (a t : Fin r → Ω)
@@ -34,35 +34,29 @@ theorem TwistedDualGensExpress.sum_mul_mem_localized {R Ω : Type*} [CommRing R]
     exact mul_mem hn hm
 
 /- English proof (translation)
-Unfold `TwistedDualGensExpress.Statement`. Introduce `R _ ϖ Ω _ _ K _ ι y N E _ _ B B' hsame a a' M M' φ φ' hφ hφ' c hc m`. Use `set A := chartRing R (segreVec y) c with hA`. Use `set w : Ω := algebraMap R Ω ϖ with hw`. Establish `hwA : w ∈ A` using `Subalgebra.algebraMap_mem _ ϖ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc k (Finset.mem_univ k)`. Use `set ψ : Module.Dual Ω E := (∏ k, y ⟨k, c k⟩ ^ (-a' k)) • φ' m with hψ`. Establish `hψA : ∀ v ∈ B'.lat c, ψ v ∈ A`. Introduce `v hv`. Take `⟨s, hs, hsv⟩` from `hφ'.sections c hc m v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: ψ v = s`. Rewrite using `[hψ, LinearMap.smul_apply, hsv, smul_eq_mul, mul_comm s, ← mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_eq_one (fun k _ => by`. Rewrite using `[zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hy k))]), one_mul]`. Rewrite using `[this]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨k0, f, cc, hf, hcc, hsum, hb⟩` from `B.frame c hc`. Use `choose b hli hsp hiff using hb`. Establish `hbq : ∀ l q, ∃ n : ℕ, f l ≠ 0 → ∃ e : ℕ, f l ^ e * (w ^ n * ψ (b l q)) ∈ A`. Introduce `l q`. Distinguish the cases in `hl : f l = 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `⟨0, fun h => (h hl).elim⟩`. Take `⟨e, he⟩` from `(hiff l (b l q)).2 ⟨Pi.single q 1, fun q' => ⟨0, by`. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[h]⟩, by simp [Pi.single_apply]⟩`. Take `⟨n, hn⟩` from `(hsame c hc).1 _ he`. Use `⟨n, fun _ => ⟨e, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `hψA _ hn`. Rewrite `h` using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show f l ^ e * (w ^ n * ψ (b l q)) = w ^ n * (f l ^ e * ψ (b l q)) by ring]`. Conclude with `h`. Use `choose nb hnb using hbq`. Use `set n := Finset.univ.sup (fun p : Fin k0 × Fin N => nb p.1 p.2) with hn`. Establish `hle : ∀ l q, nb l q ≤ n` using `fun l q => Finset.le_sup (f := fun p : Fin k0 × Fin N => nb p.1 p.2) (Finset.mem_univ (l, q))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hmain : ∀ v ∈ B.lat c, (w ^ n • ψ) v ∈ A`. Introduce `v hv`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Use `Subalgebra.mem_of_finsetSum_eq_one_of_pow_smul_mem _ Finset.univ f cc hsum hf hcc _ ?_` and prove the remaining obligations. Introduce `l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : f l = 0`. Conclude with `⟨1, by simp [hl]⟩`. Take `⟨a'', ha'', hrep⟩` from `(hiff l v).1 ⟨0, by simpa using hv⟩`. Take `⟨e, he⟩` from `TwistedDualGensExpress.sum_mul_mem_localized A (hf l) a'' (fun q => w ^ n * ψ (b l q)) ha'' (fun q => by`. Take `⟨e, he⟩` from `hnb l q hl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_sub_mul_pow w (hle l q)]`. Rewrite using `[show f l ^ e * (w ^ (n - nb l q) * w ^ nb l q * ψ (b l q)) = w ^ (n - nb l q) * (f l ^ e * (w ^ nb l q * ψ (b l q))) by ring]`. Conclude with `mul_mem (pow_mem hwA _) he)`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: w ^ n * ψ v = ∑ q, a'' q * (w ^ n * ψ (b l q))`. Rewrite using `[hrep, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, this]`. Conclude with `he`. Take `⟨u, hu, hsum'⟩` from `hφ.generate c hc (w ^ n • ψ) hmain`. Use `⟨n, u, hu, ?_⟩` and prove the remaining obligations. Establish `hY : (∏ k, y ⟨k, c k⟩ ^ a' k) * ∏ k, y ⟨k, c k⟩ ^ (-a' k) = 1`.
-
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun k _ => by rw [zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ (hy k))]`. Establish `h1 : w ^ n • φ' m = (∏ k, y ⟨k, c k⟩ ^ a' k) • (w ^ n • ψ)`. Rewrite using `[hψ, smul_comm (w ^ n) (∏ k, y ⟨k, c k⟩ ^ (-a' k)), smul_smul, hY, one_smul]`. Rewrite using `[h1, hsum', Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Rewrite using `[mul_left_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`.
-
-Conclude with `Finset.prod_congr rfl fun k _ => by rw [← zpow_add₀ (hy k), sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem TwistedDualGensExpress.proof : TwistedDualGensExpress.Statement := by
   unfold TwistedDualGensExpress.Statement

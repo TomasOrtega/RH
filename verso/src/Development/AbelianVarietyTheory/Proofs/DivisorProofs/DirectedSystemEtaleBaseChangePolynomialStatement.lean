@@ -4,7 +4,7 @@ import Mathlib
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.directedSystem_etaleBaseChange) | (exact GlobalTheory.directedSystem_etaleBaseChange) | (intros; apply GlobalTheory.directedSystem_etaleBaseChange <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.directedSystem_etale_baseChange_polynomial : ∀ (T : Type) [CommRing T] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)]
     (𝒜 : ι → Subring T) (hA : Monotone 𝒜), (∀ x : T, ∃ i, x ∈ 𝒜 i) →

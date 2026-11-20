@@ -14,27 +14,25 @@ namespace GlobalTheory.USep
 open Polynomial in
 
 /- English proof (translation)
-Introduce `V _ _ _ hV hP ϖ hϖ`. Set `K₀` to `FractionRing V`. Set `p : K₀[X]` to `X ^ 2 - C (algebraMap V K₀ ϖ)`. Set `L` to `p.SplittingField`. Establish `hdeg : (p.map (algebraMap K₀ L)).degree ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.degree_map, Polynomial.degree_X_pow_sub_C (by norm_num)]`. Evaluate the numerical expressions. Take `⟨s, hs⟩` from `(Polynomial.SplittingField.splits p).exists_eval_eq_zero hdeg`. Establish `hs2 : s ^ 2 = algebraMap K₀ L (algebraMap V K₀ ϖ)`. Simplify `hs` using `[p, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨V₁, _, _, _, ρ, σ, hCN, hinj, hfin, hloc, hcomp⟩` from `GlobalTheory.Poinc.exists_integralClosure_isCN_finite_local V hV L`. Take `⟨hN₁, hIC₁, _, _⟩` from `hCN`. Establish `hy2 : (σ s) ^ 2 = algebraMap V₁ (FractionRing V₁) (ρ ϖ)`. Rewrite using `[← map_pow, hs2, hcomp]`. Establish `hint : IsIntegral V₁ (σ s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨X ^ 2 - C (ρ ϖ), monic_X_pow_sub_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[eval₂_sub, hy2, Algebra.algebraMap_eq_smul_one]`. Take `⟨t, ht⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Establish `ht2 : t ^ 2 = ρ ϖ`. Apply `IsFractionRing.injective V₁ (FractionRing V₁)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, ht, hy2]`. Use `letI : Algebra V V₁ := ρ.toAlgebra`. Use `haveI : Module.Finite V V₁ := hfin`. Use `haveI : Algebra.IsIntegral V V₁ := Algebra.IsIntegral.of_finite V V₁`. Establish `hϖ0 : ρ ϖ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Simplify using `using h`. Establish `hϖnu : ¬ IsUnit (ρ ϖ)` using `fun h => hϖ.not_isUnit ((isUnit_map_iff ρ ϖ).mp h)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnf : ¬ IsField V₁`. Introduce `hF`. Take `⟨b, hb⟩` from `hF.mul_inv_cancel hϖ0`. Conclude with `hϖnu (IsUnit.of_mul_eq_one _ hb)`. Establish `hdvr : IsDiscreteValuationRing V₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h03` using `(IsDiscreteValuationRing.TFAE V₁ hnf).out 0 3`. Use `h03.mpr ⟨hIC₁, ⟨maximalIdeal V₁, ⟨?_, inferInstance⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Apply `hϖnu` to reduce the goal to its premises. Assume the negation of the conclusion as `hu`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: ρ ϖ ∈ maximalIdeal V₁` using `hu`. Rewrite `this` using `[h]`. Conclude with `hϖ0 ((Submodule.mem_bot _).mp this)`. Introduce and unpack `P ⟨hP0, hPp⟩`. Take `⟨x, hxP, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hc : P.comap (algebraMap V V₁) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hx0 hxP (Algebra.IsIntegral.isIntegral x)`. Use `haveI : (P.comap (algebraMap V V₁)).IsPrime := Ideal.IsPrime.comap _`. Establish `hm : (P.comap (algebraMap V V₁)).IsMaximal` using `IsPrime.to_maximal_ideal hc`. Establish `hPm : P.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hm`. Conclude with `IsLocalRing.eq_maximalIdeal hPm`.
-
-Conclude with `⟨V₁, inferInstance, inferInstance, inferInstance, ρ, t, ⟨hN₁, hIC₁, by assumption, by assumption⟩, inferInstance, hinj, hloc, hfin, ht2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_ext_sq_eq_uniformiser : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → IsPrincipalIdealRing V → ∀ ϖ : V, Irreducible ϖ → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (f : V →+* V') (t : V'), IsCN V' ∧ IsPrincipalIdealRing V' ∧ Function.Injective f ∧ IsLocalHom f ∧ f.Finite ∧ t ^ 2 = f ϖ := by
   intro V _ _ _ hV hP ϖ hϖ

@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham Glob
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.coc_mem_symCocycles | exact GlobalTheory.PtExt.coc_mem_symCocycles | (intros; apply GlobalTheory.PtExt.coc_mem_symCocycles <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rigidifiedPresentation_cocycle_mem_bialgebraSymmetricCocycles : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A) (c : primDR A) (d : Dat t c), IsSymCoc d.g → ∀ n, d.coc n ∈ symCocycles R (G.A n) := by
   first | exact @GlobalTheory.PtExt.coc_mem_symCocycles | exact GlobalTheory.PtExt.coc_mem_symCocycles | (intros; apply GlobalTheory.PtExt.coc_mem_symCocycles <;> assumption)

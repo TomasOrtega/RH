@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.LatVHat
 
 /- English proof (translation)
-Establish `hint : (1 : D.host.E) ⊗ₜ[D.host.F] α ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `right`. Use `⟨⟨α, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hα v`. Establish `hgen : (fun i => Formalism.UG.inclE (F` using `D.host.F) (Af D.host.F) (x i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) L := Submodule.subset_span ⟨x, hx, rfl⟩`. Use `Submodule.smul_mem _ (⟨_, hint⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) hgen` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul, finPart, Formalism.IndefR.Lev.swapAE, Formalism.UG.inclE]`. Use `show _ = ((1 : D.host.E) ⊗ₜ[D.host.F] α) * (x i ⊗ₜ[D.host.F] (1 : Af D.host.F))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gen_mem (D : D7) (S : HSp D) (L : Lat S) (α : Af D.host.F) (hα : α ∈ intAf D.host.F) (x : Fin S.rank → D.host.E)
     (hx : x ∈ L) :
@@ -41,9 +41,9 @@ theorem gen_mem (D : D7) (S : HSp D) (L : Lat S) (α : Af D.host.F) (hα : α �
   rfl
 
 /- English proof (translation)
-Introduce `D S L P y hy`. Set `Φ : (Fin S.rank → AE D) →+ (Fin S.rank → Formalism.IndefR.Lev.EAf D)` to `AddMonoidHom.compLeft ((Formalism.IndefR.Lev.swapAE D).comp (finPart D)).toAddMonoidHom (Fin S.rank)`. Establish `hle : latV S L P ≤ (Formalism.L2.Herm.hatL (F` using `D.host.F) L).toAddSubgroup.comap Φ := by`. Unfold `GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul`. Rewrite using `[AddSubgroup.closure_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨α, hα, -, a, ha, x, hx, rfl⟩`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Conclude with `gen_mem D S L α hα x hx`. Conclude with `hle hy`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem latV_mem_hatL : ∀ (D : D7) (S : HSp D) (L : Lat S) (P : Pl D → Prop) (y : Fin S.rank → AE D), y ∈ latV S L P →
     (fun i => Formalism.IndefR.Lev.swapAE D (finPart D (y i))) ∈ Formalism.L2.Herm.hatL (F := D.host.F) L := by

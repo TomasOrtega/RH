@@ -16,18 +16,18 @@ open GlobalTheory.AdelicU (splitProj compFin isCMExt_host)
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)}
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Theta.cA_cA z`.
+A detailed English derivation is pending.
 -/
 theorem cA_cA' (z : AE D) : cA D (cA D z) = z := Formalism.L2.Theta.cA_cA z
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a ⊗ₜ[D.host.F] D.sp.cm.sig 1 = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cA_alg (a : AF D.host.F) : cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a := by
   change a ⊗ₜ[D.host.F] D.sp.cm.sig 1 = _
   rw [map_one]; rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_cA (z : AE D) : compFin D.host.F D.host.E v (cA D z) = sigR _ D.sp.cm.sig (compFin D.host.F D.host.E v z) := by
   induction z using TensorProduct.induction_on with
@@ -38,27 +38,27 @@ theorem compFin_cA (z : AE D) : compFin D.host.F D.host.E v (cA D z) = sigR _ D.
 variable (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
 
 /- English proof (translation)
-The claim follows from `((chart_piW τ).2.1 _).2 (GlobalTheory.EmbChart.isSplitIdem_idem τ).2.1`.
+A detailed English derivation is pending.
 -/
 theorem piW_cA_idem : piW τ (cA D (idem τ)) = 0 :=
   ((chart_piW τ).2.1 _).2 (GlobalTheory.EmbChart.isSplitIdem_idem τ).2.1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `splitProj τ (compFin _ _ v (idem τ)) = 1`. Rewrite using `[GlobalTheory.EmbChart.compFin_idem, GlobalTheory.AdelicU.splitProj_splitIdem]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem piW_idem : piW τ (idem τ) = 1 := by
   change splitProj τ (compFin _ _ v (idem τ)) = 1
   rw [GlobalTheory.EmbChart.compFin_idem, GlobalTheory.AdelicU.splitProj_splitIdem]
 
 /- English proof (translation)
-Rewrite using `[(chart_piW τ).2.2.1]`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_self v a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_alg (a : Fv D.host.F v) : piW τ (algebraMap (AF D.host.F) (AE D) (atPlace v a)) = a := by
   rw [(chart_piW τ).2.2.1]
   exact GlobalTheory.AdelicU.evalV_singleFin_self v a
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `splitProj τ (compFin _ _ v (cA D z)) = _`. Rewrite using `[compFin_cA, GlobalTheory.AdelicU.splitProj_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem piW_cA (z : AE D) : piW τ (cA D z) = splitProj (τ.comp D.sp.cm.sig) (compFin D.host.F D.host.E v z) := by
   change splitProj τ (compFin _ _ v (cA D z)) = _
@@ -69,23 +69,23 @@ def plcC (y : Fv D.host.F v) : AE D := cA D (idem τ) * algebraMap (AF D.host.F)
 def plcW (y : Fv D.host.F v) : AE D := idem τ * algebraMap (AF D.host.F) (AE D) (atPlace v y)
 
 /- English proof (translation)
-Rewrite using `[plcC, map_mul, piW_cA_idem, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piW_plcC (y) : piW τ (plcC τ y) = 0 := by rw [plcC, map_mul, piW_cA_idem, zero_mul]
 /- English proof (translation)
-Rewrite using `[plcC, map_mul, cA_cA', cA_alg, map_mul, piW_idem, piW_alg, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piW_cA_plcC (y) : piW τ (cA D (plcC τ y)) = y := by
   rw [plcC, map_mul, cA_cA', cA_alg, map_mul, piW_idem, piW_alg, one_mul]
 
 /- English proof (translation)
-Rewrite using `[plcC, plcC, plcC, map_add, map_add, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plcC_add (y y') : plcC τ (y + y') = plcC τ y + plcC τ y' := by
   rw [plcC, plcC, plcC, map_add, map_add, mul_add]
 
 /- English proof (translation)
-Establish `hev : Continuous (GlobalTheory.AdelicU.evFin D.host.F v)` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`. Establish `h` using `GlobalTheory.AutFunCompare.continuous_tensNU (E := D.host.E) (GlobalTheory.AdelicU.evFin D.host.F v).toLinearMap (fun a b => map_mul (GlobalTheory.AdelicU.evFin D.host.F v) a b) hev`. Conclude with `(GlobalTheory.AdelicU.continuous_splitProj τ).comp h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_piW : Continuous (piW τ) := by
   have hev : Continuous (GlobalTheory.AdelicU.evFin D.host.F v) :=
@@ -95,7 +95,7 @@ theorem continuous_piW : Continuous (piW τ) := by
   exact (GlobalTheory.AdelicU.continuous_splitProj τ).comp h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.EmbChart.isSplitIdem_idem τ).1`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_self : idem τ * idem τ = idem τ := (GlobalTheory.EmbChart.isSplitIdem_idem τ).1
 

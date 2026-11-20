@@ -20,13 +20,11 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.PlaceInj
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hW`. Establish `lev : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0` using `hW.bot.hyp.2.2.2.1.lev`. Introduce and unpack `⟨P, hP⟩ ⟨P', hP'⟩ h`. Simplify using `only at h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show P = P'`. Establish `key : ∀ A B : Formalism.L2.DIV.Pl D.host.E, A ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg → (B ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W B) → A.under (𝓞 D.host.F) = B.under (𝓞 D.host.F) → A = B`. Introduce `A B hA hB hAB`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hAB.symm with e | e` into its components or cases. Conclude with `e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hc : Formalism.IndefR.Lev.IsConjPl A B` using `GlobalTheory.GoodPrimes.isConjPl_iff.2 e`. Break down `hB with hB | ⟨t, hB⟩` into its components or cases. Conclude with `(GlobalTheory.ChainEquiv.places_sep _ _ lev W.P.A3.A.μ0).1 A hA B (Or.inl hB) hc`. Conclude with `(GlobalTheory.ChainEquiv.places_sep _ _ lev t).1 A hA B (Or.inr hB) hc`.
-
-Break down `hP with hP | hP` into its components or cases. Conclude with `key P P' hP hP' h`. Break down `hP' with hP' | hP'` into its components or cases. Conclude with `(key P' P hP' (Or.inr hP) h.symm).symm`. Conclude with `hW.sel P P' hP hP' h`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem under_injective_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → Function.Injective (fun i : {PP // PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP} => HeightOneSpectrum.under (𝓞 D.host.F) i.1) := by
   intro D L hT Gi Gl Kc Yd cX ex W hW

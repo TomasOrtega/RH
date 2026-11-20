@@ -20,11 +20,11 @@ open Classical
 namespace GlobalTheory.FlatConst
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, ← ih fun k hk l hl hkl => h k (Finset.mem_insert_of_mem hk) l (Finset.mem_insert_of_mem hl) hkl]`. Establish `h0 : f j * (a j - 1) * ∑ k ∈ s, f k * (a k - 1) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Establish `hne : j ≠ k` using `fun e => hj (e ▸ hk)`. Use `h j (Finset.mem_insert_self j s) k (Finset.mem_insert_of_mem hk) hne` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take the linear combination `(-1 : R) * h0`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_add_sum_eq_prod {R ι : Type} [CommRing R] [DecidableEq ι] (s : Finset ι) (f a : ι → R)
     (h : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → f i * f j = 0) :
@@ -44,13 +44,13 @@ theorem one_add_sum_eq_prod {R ι : Type} [CommRing R] [DecidableEq ι] (s : Fin
     linear_combination (-1 : R) * h0
 
 /- English proof (translation)
-Rewrite using `[map_inv, Circle.coe_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chr_inv_val {D : D7} (c : (AE D)ˣ →* Circle) (x : (AE D)ˣ) : ((c x⁻¹ : Circle) : ℂ) = ((c x : Circle) : ℂ)⁻¹ := by
   rw [map_inv, Circle.coe_inv]
 
 /- English proof (translation)
-Unfold `Lift.chrTh LevCh.mu Lift.tup`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Circle.coe_mul, Circle.coe_inv]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem chrW_val {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t' : T0) (x : (AE D)ˣ) :
@@ -64,35 +64,29 @@ end GlobalTheory.FlatConst
 open GlobalTheory.FlatConst in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F hC i t es ϖ n x hes hc hϖ hx`. Use `set Q := R.Q t with hQ`. Establish `hidem : ∀ PP ∈ Q, cA D (es PP) * cA D (es PP) = cA D (es PP)` using `fun PP hP => Formalism.IndefR.Fin.LevelGroupLemmas.isIdem_cA (hes PP hP).1.1`. Establish `hϖ0 : ∀ PP ∈ Q, star ((ϖ PP : 𝓞 D.host.E) : D.host.E) ≠ 0` using `fun PP hP h0 => by`. Establish `: (ϖ PP : D.host.E) = 0` using `by rw [← star_star ((ϖ PP : 𝓞 D.host.E) : D.host.E), h0, star_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(hϖ PP hP).2 (by rw [show ϖ PP = 0 from RingOfIntegers.ext this]; exact zero_mem _)`. Set `y : Q → (AE D)ˣ` to `fun P => Formalism.L2.JoinChr.locU (hidem P.1 P.2) ((Units.mk0 (star ((ϖ P.1 : 𝓞 D.host.E) : D.host.E)) (hϖ0 P.1 P.2)) ^ n)`. Establish `hyv : ∀ P : Q, ((y P : (AE D)ˣ) : AE D) = 1 + cA D (es P.1) * (incA D (star ((ϖ P.1 : 𝓞 D.host.E) : D.host.E)) ^ n - 1)`. Introduce `P`. Use `show Formalism.L2.JoinChr.locE D _ _ = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.L2.JoinChr.locE`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, map_pow]`. Establish `horth : ∀ P ∈ Q.attach, ∀ P' ∈ Q.attach, P ≠ P' → cA D (es P.1) * cA D (es P'.1) = 0`. Introduce `P _ P' _ hne`. Rewrite using `[← map_mul, Formalism.IndefR.Fin.LevelGroupLemmas.idemSum_orth hes rfl hc P.2 P'.2 (fun e => hne (Subtype.ext e)), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hxy : x = ∏ P ∈ Q.attach, y P`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_prod, hx]`. Simplify using `only [hyv]`. Rewrite using `[← Finset.sum_attach Q (fun PP => cA D (es PP) * (incA D (star ((ϖ PP : 𝓞 D.host.E) : D.host.E)) ^ n - 1))]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_add_sum_eq_prod Q.attach (fun P => cA D (es P.1)) (fun P => incA D (star ((ϖ P.1 : 𝓞 D.host.E) : D.host.E)) ^ n) horth`. Establish `hg : ∀ PP ∈ Q, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP hP => GlobalTheory.StdFrames.g_not_mem (hC.lev.Q_pl t) hP`. Establish `hgc : ∀ PP ∈ Q, ∀ k : Fin 2, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ (Formalism.L2.DIV.conjPl PP).asIdeal`. Introduce `PP hP k hk`. Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: Formalism.L2.DIV.starOHom ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `hk`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Apply `hg PP hP` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ hk'`. Conclude with `Ideal.mul_mem_left _ _ hk'`. Establish `unrM : ∀ PP ∈ Q, (R.C.mu0 i).UnrAt (Formalism.L2.DIV.conjPl PP)` using `fun PP hP => (R.C.isMu0 i).unr _ fun k => hgc PP hP k`. Establish `unrE : ∀ PP ∈ Q, R.C.eta.UnrAt (Formalism.L2.DIV.conjPl PP)` using `fun PP _ => R.C.isEta.unr _`. Establish `hvM : ((R.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) = ∏ PP ∈ Q, (((R.C.mu0 i).val (Formalism.L2.DIV.conjPl PP) : ℂˣ) : ℂ) ^ n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `map_prod (Circle.coeHom.comp (R.mu0 ((i : ℕ) + 1))) y Q.attach` as an intermediate fact. Rewrite `this` using `[← hxy]`. Use `show (Circle.coeHom.comp (R.mu0 ((i : ℕ) + 1))) x = _`. Rewrite using `[this, ← Finset.prod_attach Q]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.heckeCharacter_value_at_conjugatePlace_pow D P.1 (es P.1) (ϖ P.1) _ _ n (y P) (hes P.1 P.2) (hϖ P.1 P.2).1 (hϖ P.1 P.2).2 (hC.lev.mu0 i) (unrM P.1 P.2) (hyv P)`. Establish `hvE : ((R.eta x : Circle) : ℂ) = ∏ PP ∈ Q, ((R.C.eta.val (Formalism.L2.DIV.conjPl PP) : ℂˣ) : ℂ) ^ n`. Use `map_prod (Circle.coeHom.comp R.eta) y Q.attach` as an intermediate fact. Rewrite `this` using `[← hxy]`. Use `show (Circle.coeHom.comp R.eta) x = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, ← Finset.prod_attach Q]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.heckeCharacter_value_at_conjugatePlace_pow D P.1 (es P.1) (ϖ P.1) _ _ n (y P) (hes P.1 P.2) (hϖ P.1 P.2).1 (hϖ P.1 P.2).2 hC.lev.eta (unrE P.1 P.2) (hyv P)`. Use `set sq : Pl D.host.E → ℂ := fun PP => ((Real.sqrt (Ideal.absNorm PP.asIdeal : ℝ) : ℝ) : ℂ) with hsq`. Use `set v : Pl D.host.E → ℂ := fun PP => (((R.C.mu0 i * R.C.eta⁻¹).val (Formalism.L2.DIV.conjPl PP) : ℂˣ) : ℂ) with hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(((R.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) * ((R.eta x : Circle) : ℂ)⁻¹)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Establish `key : (((R.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) * ((R.eta x : Circle) : ℂ)⁻¹)⁻¹ * ∏ PP ∈ Q, (sq PP)⁻¹ ^ n = ∏ PP ∈ Q, ((v PP * sq PP)⁻¹) ^ n`. Rewrite using `[hvM, hvE]`. Simplify using `only [← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [hv, Formalism.L2.Host.HChar.val_mul, Formalism.L2.Host.HChar.val_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree. Use `show τ (_ * ∏ PP ∈ Q, (sq PP)⁻¹ ^ n) = _ * ∏ PP ∈ Q, (sq PP)⁻¹ ^ n`. Rewrite using `[key, map_prod]`.
-
-Use `Finset.prod_congr rfl fun PP hP => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_inv₀]`. Use `congr 2`. Conclude with `GlobalTheory.T.fixesUntwistedLiftData_conjugatePrime_value_sqrtNorm T R i τ PP hτ (hg PP hP)`. Introduce `t'`.
-
-Establish `h1` using `chrW_val R i t' x`. Establish `h2` using `chr_inv_val (R.xi t') x`. Simplify using `only [h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t' S hS u`.
-
-Conclude with `GlobalTheory.FlatConj.prod_val (R.xi t') S (fun PP => ((R.xiR t' PP (u PP) : ℂˣ) : ℂ)) fun PP hP => GlobalTheory.FlatConj.xiR_val hC t' PP (hS hP) (u PP)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlatConst.flat_const : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (t : T0) (es : Pl D.host.E → AE D) (ϖ : Pl D.host.E → 𝓞 D.host.E) (n : ℕ) (x : (AE D)ˣ), (∀ PP ∈ R.Q t, Formalism.L2.NTheta.IsIdemAt (es PP) PP) → (∑ PP ∈ R.Q t, es PP) * cA D (∑ PP ∈ R.Q t, es PP) = 0 → (∀ PP ∈ R.Q t, ϖ PP ∈ PP.asIdeal ∧ ϖ PP ∉ PP.asIdeal ^ 2) → (x : AE D) = 1 + ∑ PP ∈ R.Q t, cA D (es PP) * (incA D (star (ϖ PP : D.host.E)) ^ n - 1) → ∃ b : ℂ, (∀ τ : ℂ ≃+* ℂ, FixBase T R i τ → τ (b * ∏ PP ∈ R.Q t, (((Real.sqrt (Ideal.absNorm PP.asIdeal : ℝ) : ℝ) : ℂ)⁻¹) ^ n) = b * ∏ PP ∈ R.Q t, (((Real.sqrt (Ideal.absNorm PP.asIdeal : ℝ) : ℝ) : ℂ)⁻¹) ^ n) ∧ (∀ t' : T0, (((Lift.chrTh (R.toLevCh.mu t') R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ)⁻¹ = b * ((R.xi t' x⁻¹ : Circle) : ℂ)) ∧ (∀ (t' : T0) (S : Finset (Pl D.host.E)), S ⊆ R.Q t' → ∀ u : ∀ PP : Pl D.host.E, (kP PP)ˣ, ∃ s : (AE D)ˣ, ∏ PP ∈ S, ((R.xiR t' PP (u PP) : ℂˣ) : ℂ) = ((R.xi t' s : Circle) : ℂ)) := by
   intro D G _ _ Pl0 T0 A T _ R F hC i t es ϖ n x hes hc hϖ hx

@@ -26,7 +26,7 @@ theorem mat_proj (v : Pl D) (g : G D n) :
       Matrix (Fin (n + n)) (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) = (mat g).map (cv D v) := rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (hA i j) (hx j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_int (v : Pl D) {m : ℕ} (A : Matrix (Fin m) (Fin m) (Fv D.host.F v ⊗[D.host.F] D.host.E))
     (x : Fin m → Fv D.host.F v ⊗[D.host.F] D.host.E) (hA : ∀ i j, A i j ∈ intLoc D.host.F D.host.E v)
@@ -35,7 +35,7 @@ theorem mulVec_int (v : Pl D) {m : ℕ} (A : Matrix (Fin m) (Fin m) (Fv D.host.F
   exact sum_mem fun j _ => mul_mem (hA i j) (hx j)
 
 /- English proof (translation)
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_int (v : Pl D) {m : ℕ} (j : Fin m) (i : Fin m) :
     (Pi.single j (1 : Fv D.host.F v ⊗[D.host.F] D.host.E) : Fin m → _) i ∈ intLoc D.host.F D.host.E v := by
@@ -45,9 +45,9 @@ theorem single_int (v : Pl D) {m : ℕ} (j : Fin m) (i : Fin m) :
   · exact zero_mem _
 
 /- English proof (translation)
-Take `⟨⟨hfin, haway⟩, hoff⟩` from `Subgroup.mem_inf.1 hk`. Use `⟨congrArg Units.val (MonoidHom.mem_ker.1 hfin), fun v hv => ?_, fun v hv i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 haway v) hv)`. Rewrite using `[← mat_proj, h1, map_one, Units.val_one]`. Establish `h1` using `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hoff v) hv)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Subgroup.mem_comap.1 h1`. Establish `hs : (Pi.single j 1 : Fin (n + n) → Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ latLoc D.host.F (stdLattice D.host.E (n + n)) v` using `mem_latLoc_stdLattice.2 (single_int v j)`. Establish `h3` using `mem_latLoc_stdLattice.1 ((h2 _).1 hs) i`. Rewrite `h3` using `[mat_proj]`. Simplify `h3` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem KOff_props {D : D7} {n : ℕ} {S : Finset (Pl D)} {k : G D n} (hk : k ∈ KOff D n S) :
     (mat k).map (infPart D) = 1 ∧ (∀ v ∈ S, (mat k).map (cv D v) = 1) ∧
@@ -66,17 +66,15 @@ theorem KOff_props {D : D7} {n : ℕ} {S : Finset (Pl D)} {k : G D n} (hk : k �
     simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h3
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 (Units.ext hinf), ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv => MonoidHom.mem_ker.2 ?_` and prove the remaining obligations. Use `matHom_injective _ _ _ (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[mat_proj, hS v hv, map_one, Units.val_one]`. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_comap.2 (Subgroup.mem_comap.2 ?_)` and prove the remaining obligations. Establish `hM : ∀ i j, ((matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g) : GL (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) : Matrix (Fin (n + n)) (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) i j ∈ intLoc D.host.F D.host.E v`. Introduce `i j`. Rewrite using `[mat_proj]`. Conclude with `(hint v hv i j).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM' : ∀ i j, ((matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g⁻¹) : GL (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) : Matrix (Fin (n + n)) (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) i j ∈ intLoc D.host.F D.host.E v`. Introduce `i j`. Rewrite using `[mat_proj]`. Conclude with `(hint v hv i j).2`. Establish `hinv : ((matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g⁻¹) : GL (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) : Matrix (Fin (n + n)) (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) * ((matHom (Fv D.host.F v) D.sp.cm.sig …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Units.val_mul, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Units.val_one]`. Introduce `x`. Rewrite using `[mem_latLoc_stdLattice, mem_latLoc_stdLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mulVec_int v _ x hM hx i`. Introduce `hx i`. Establish `e : x = ((matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g⁻¹) : GL (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) : Matrix (Fin (n + n)) (Fin (n + n)) (Fv D.host.F v ⊗[D.host.F] D.host.E)) *ᵥ (((matHom (Fv D.host.F v) D.sp.cm. …`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Rewrite using `[e]`.
-
-Conclude with `mulVec_int v _ _ hM' hx i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KOff {D : D7} {n : ℕ} {S : Finset (Pl D)} (g : G D n) (hinf : (mat g).map (infPart D) = 1)
     (hS : ∀ v ∈ S, (mat g).map (cv D v) = 1)

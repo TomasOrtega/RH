@@ -5,7 +5,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowVLift
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBH.sliceStep_of Formalism.FourierDecayAlt.P.PBH.jfStep (Formalism.FourierDecayAlt.P.PBH.asm_pointStepT Formalism.FourierDecayAlt.P.PBH.pointStep)`.
+A detailed English derivation is pending.
 -/
 theorem slice_induction_level : Formalism.FourierDecayAlt.KB.SliceStep :=
   Formalism.FourierDecayAlt.P.PBH.sliceStep_of Formalism.FourierDecayAlt.P.PBH.jfStep (Formalism.FourierDecayAlt.P.PBH.asm_pointStepT Formalism.FourierDecayAlt.P.PBH.pointStep)

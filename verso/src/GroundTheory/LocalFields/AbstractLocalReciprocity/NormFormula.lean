@@ -6,9 +6,9 @@ namespace GroundTheory.LocalField.Abstract
 variable {G : Type*} [Group G] {A : Type*} [CommGroup A] [MulDistribMulAction G A]
 
 /- English proof (translation)
-Establish `: Unique (K ⧸ L.subgroupOf K)` using `{ default := ((1 : K) : K ⧸ L.subgroupOf K) uniq := fun q => by`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Conclude with `hKL (by simp) }`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_norm, finprod_eq_single _ ((1 : K) : K ⧸ L.subgroupOf K) (fun q hq => absurd (Subsingleton.elim q _) hq), cosetSMul_mk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_norm_of_le {K L : Subgroup G} (hKL : K ≤ L) [(L.subgroupOf K).FiniteIndex]
     (a : fixedModule A L) : (norm A K L a : A) = a := by
@@ -24,7 +24,7 @@ theorem coe_norm_of_le {K L : Subgroup G} (hKL : K ≤ L) [(L.subgroupOf K).Fini
   simp
 
 /- English proof (translation)
-Substitute `hK` using the available equality. Substitute `hL` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem coe_norm_congr {K K' L L' : Subgroup G} (hK : K = K') (hL : L = L')
     [(L.subgroupOf K).FiniteIndex] [(L'.subgroupOf K').FiniteIndex] (a : fixedModule A L) :
@@ -34,7 +34,7 @@ theorem coe_norm_congr {K K' L L' : Subgroup G} (hK : K = K') (hL : L = L')
   rfl
 
 /- English proof (translation)
-Establish `: ((L.map (MulAut.conj g).toMonoidHom).subgroupOf (K.map (MulAut.conj g).toMonoidHom)).FiniteIndex`. Rewrite using `[hK, hL]`. Use `infer_instance`. Rewrite using `[smul_norm g a, coe_norm_congr hK hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_norm_of_map_eq {K L : Subgroup G} (g : G) (hK : K.map (MulAut.conj g).toMonoidHom = K)
     (hL : L.map (MulAut.conj g).toMonoidHom = L) [(L.subgroupOf K).FiniteIndex]
@@ -49,17 +49,17 @@ theorem smul_norm_of_map_eq {K L : Subgroup G} (g : G) (hK : K.map (MulAut.conj 
   rw [smul_norm g a, coe_norm_congr hK hL]
 
 /- English proof (translation)
-Set `f : Q ⧸ J.subgroupOf Q → K ⧸ S.subgroupOf K` to `Quotient.map' (fun q : Q => (⟨q, hQK q.2⟩ : K)) fun q q' h => by`. Rewrite `h`, the goal using `[QuotientGroup.leftRel_apply, Subgroup.mem_subgroupOf]`. Establish `hq : ((q⁻¹ * q' : Q) : G) ∈ Q` using `(q⁻¹ * q').2`. Simplify using `using (hJ _ hq).2 h`. Establish `hf : Function.Bijective f`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H q`. Proceed by induction on `y using QuotientGroup.induction_on with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `H q'`. Establish `h' : ((⟨q, hQK q.2⟩ : K) : K ⧸ S.subgroupOf K) = ((⟨q', hQK q'.2⟩ : K) : K ⧸ _)` using `hxy`. Rewrite `h'` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `hq : ((q⁻¹ * q' : Q) : G) ∈ Q` using `(q⁻¹ * q').2`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hJ _ hq).1 (by simpa using h')`. Introduce `y`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H k`. Take `⟨q, hq, hqk⟩` from `hmul k k.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((⟨q, hq⟩ : Q) : Q ⧸ J.subgroupOf Q), ?_⟩` and prove the remaining obligations. Use `show ((⟨q, hQK hq⟩ : K) : K ⧸ S.subgroupOf K) = _`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hqk`. Rewrite using `[coe_norm, coe_norm, ← finprod_comp_equiv (Equiv.ofBijective f hf)]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H q => rfl`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coe_norm_eq_of_mul_eq {K S Q J : Subgroup G} (hQK : Q ≤ K)
     (hmul : ∀ k ∈ K, ∃ q ∈ Q, q⁻¹ * k ∈ S) (hJ : ∀ q ∈ Q, q ∈ S ↔ q ∈ J)

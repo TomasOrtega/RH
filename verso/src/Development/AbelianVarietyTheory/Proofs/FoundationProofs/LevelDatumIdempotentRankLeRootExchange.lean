@@ -28,15 +28,15 @@ def sgOf {G : Type} [Group G] [Finite G] (S : G → Prop) (h1 : S 1) (hm : ∀ u
     rw [this]; exact hp _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sgOf {G : Type} [Group G] [Finite G] (S : G → Prop) (h1 : S 1) (hm : ∀ u v, S u → S v → S (u * v))
     (u : G) : u ∈ sgOf S h1 hm ↔ S u := Iff.rfl
 
 /- English proof (translation)
-Use `⟨⟨σ.toPEquiv.toMatrix, σ.symm.toPEquiv.toMatrix, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Simplify using the standard rewrite rules. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `u a b show (σ.toPEquiv.toMatrix * u.val * σ.symm.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) F) a b = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_perm {F : Type} [Field F] {N : ℕ} (σ : Equiv.Perm (Fin N)) :
     ∃ Q : GL (Fin N) F, ∀ (u : GL (Fin N) F) a b, (Q * u * Q⁻¹).val a b = u.val (σ a) (σ b) := by
@@ -49,7 +49,7 @@ theorem exists_perm {F : Type} [Field F] {N : ℕ} (σ : Equiv.Perm (Fin N)) :
     simp
 
 /- English proof (translation)
-Use `⟨⟨fun a => ⟨if (a : ℕ) < i then (a : ℕ) else if (a : ℕ) < i + k then a + 1 else if (a : ℕ) = i + k then i else a, ?_⟩, fun a => ⟨if (a : ℕ) < i then (a : ℕ) else if (a : ℕ) = i then i + k else if (a : ℕ) ≤ i + k then a - 1 else a, ?_⟩, ?_, ?_⟩, fun a => rfl⟩` and prove the remaining obligations. Apply the tactic sequence `have := a.2; split_ifs <;> omega`. Apply the tactic sequence `have := a.2; split_ifs <;> omega`. Apply the tactic sequence `intro a; apply Fin.ext; simp only; split_ifs <;> omega`. Apply the tactic sequence `intro a; apply Fin.ext; simp only; split_ifs <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_cycle {N : ℕ} (i k : ℕ) (h : i + k < N) :
     ∃ σ : Equiv.Perm (Fin N), ∀ a : Fin N, (σ a : ℕ) =
@@ -68,11 +68,11 @@ def tv {F : Type} [Field F] {N : ℕ} (e f : Fin N → F) (h : f ⬝ᵥ e = 0) :
     by simp [sub_mul, mul_add, Matrix.vecMulVec_mul_vecMulVec, h]⟩
 
 /- English proof (translation)
-Establish `h3 : (-(ξ ⬝ᵥ η) • f) ⬝ᵥ e = 0` using `by rw [smul_dotProduct, h2, smul_zero]`. Establish `: y⁻¹ * x⁻¹ * y * x = tv e _ h3`. Establish `: y * x = x * y * tv e _ h3`. Apply `Units.ext` to reduce the goal to its premises. Use `show y.val * x.val = x.val * y.val * (1 + Matrix.vecMulVec e (-(ξ ⬝ᵥ η) • f))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hy]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, Matrix.vecMulVec_mul_vecMulVec, smul_dotProduct, h1, h2, zero_smul, smul_zero, Matrix.vecMulVec_zero]`. Simplify using `only [neg_smul, Matrix.vecMulVec_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[mul_assoc, this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comm_val {F : Type} [Field F] {N : ℕ} (x y : GL (Fin N) F) (e f ξ η : Fin N → F)
     (hx : x.val = 1 + Matrix.vecMulVec e ξ) (hy : y.val = 1 + Matrix.vecMulVec η f)
@@ -94,7 +94,7 @@ theorem comm_val {F : Type} [Field F] {N : ℕ} (x y : GL (Fin N) F) (e f ξ η 
 variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 
 /- English proof (translation)
-Unfold `Lev.Edge`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem edge_iff (L : Lev g N) (h : L.sharp = true) (a b : Fin N) : L.Edge a b ↔
     (((b : ℕ) = a + 1 ∧ (a : ℕ) + 1 ≠ L.s ∧ ¬ (0 < L.k ∧ (a : ℕ) + 1 = L.s + L.k)) ∨
@@ -102,15 +102,15 @@ theorem edge_iff (L : Lev g N) (h : L.sharp = true) (a b : Fin N) : L.Edge a b �
   unfold Lev.Edge; rw [if_pos h]
 
 /- English proof (translation)
-Establish `hne : ∀ a b, L.Edge a b → a ≠ b`. Introduce `a b hab e`. Rewrite `hab` using `[edge_iff L h, e]`. Use linear arithmetic over natural numbers and integers. Unfold `Lev.chi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Rewrite using `[if_pos hij, hu, Matrix.add_apply, Matrix.one_apply_ne (hne _ _ hij), zero_add]`. Introduce `b _ hb split_ifs with hE`. Rewrite using `[hu, Matrix.add_apply, Matrix.one_apply_ne (hne _ _ hE), hD _ _ hE (Or.inr hb)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b _`. Use `split_ifs with hE`. Rewrite using `[hu, Matrix.add_apply, Matrix.one_apply_ne (hne _ _ hE), hD _ _ hE (Or.inl ha)]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem chi_eq (L : Lev g N) (h : L.sharp = true) (u : GG g N) (D : Matrix (Fin N) (Fin N) (ZMod g))
     (hu : u.val = 1 + D) (i j : Fin N) (hij : L.Edge i j) (hD : ∀ a b, L.Edge a b → a ≠ i ∨ b ≠ j → D a b = 0) :
@@ -153,9 +153,9 @@ def colGrp (j : Fin N) (W : Fin N → Prop) (hj : ¬ W j) : Subgroup (GG g N) :=
       simp [add_mul, mul_add, Matrix.vecMulVec_mul_vecMulVec, h' j hj, Matrix.add_vecMulVec, add_assoc])
 
 /- English proof (translation)
-Use `⟨⟨fun a => ?_, fun a b hab => ?_⟩, fun _ a b ha hb hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, Matrix.add_apply, h1 a a le_rfl]`. Simplify using the standard rewrite rules. Rewrite using `[hu, Matrix.add_apply, h1 a b hab.le, Matrix.one_apply_ne hab.ne']`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu, Matrix.add_apply, h2 a b ha hb hc, Matrix.one_apply_ne (by intro e; rw [e] at hb; omega)]; simp`.
+Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem mem_of_val (L : Lev g N) (u : GG g N) (D : Matrix (Fin N) (Fin N) (ZMod g)) (hu : u.val = 1 + D)
     (h1 : ∀ a b, b ≤ a → D a b = 0)
@@ -166,65 +166,61 @@ theorem mem_of_val (L : Lev g N) (u : GG g N) (D : Matrix (Fin N) (Fin N) (ZMod 
   · rw [hu, Matrix.add_apply, h2 a b ha hb hc, Matrix.one_apply_ne (by intro e; rw [e] at hb; omega)]; simp
 
 /- English proof (translation)
-Take `⟨m1, mm, c1, cm, -⟩` from `GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N L`. Set `j : Fin N` to `⟨L.s + L.k, L.hk⟩`. Establish `hj : (j : ℕ) = L.s + L.k` using `rfl`. Set `W : Fin N → Prop` to `fun a => L.s ≤ a ∧ (a : ℕ) < L.s + L.k`. Establish `hiW : ¬ W i` using `by simp only [W]; omega`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hjW : ¬ W j` using `by simp only [W]; omega`. Establish `hij : L.Edge i j` using `by rw [edge_iff L hL]; omega`. Establish `hji : j ≠ i` using `by intro e; rw [e] at hj; omega`. Set `J : Subgroup (GG g N)` to `sgOf L.Mem m1 mm`. Set `X : Subgroup (GG g N)` to `rowGrp i W hiW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Y : Subgroup (GG g N)` to `colGrp j W hjW`. Establish `hXJ : ∀ x ∈ X, L.Mem x ∧ L.chi x = 1`. Introduce and unpack `x ⟨ξ, h, hx⟩`. Use `⟨mem_of_val L x _ hx ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.vecMulVec_apply]`. Distinguish the cases in `ha : a = i`. Rewrite using `[h b (by simp only [W]; subst ha; have := Fin.le_def.1 hab; omega), mul_zero]`. Rewrite using `[Pi.single_eq_of_ne ha, zero_mul]`. Introduce `a b _ _ hb`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.vecMulVec_apply, h b (by simp only [W]; omega), mul_zero]`. Rewrite using `[chi_eq L hL x _ hx i j hij, Matrix.vecMulVec_apply, h j hjW]`. Simplify using the standard rewrite rules. Introduce `a b hab _`. Rewrite `hab` using `[edge_iff L hL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.vecMulVec_apply]`. Distinguish the cases in `ha : a = i`. Rewrite using `[h b (by simp only [W]; subst ha; omega), mul_zero]`. Rewrite using `[Pi.single_eq_of_ne ha, zero_mul]`. Establish `hYJ : ∀ y ∈ Y, y ∈ J' ∧ L.chi y = 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨η, h, hy⟩`. Establish `hD : ∀ a b : Fin N, b ≤ a → Matrix.vecMulVec η (Pi.single j (1 : ZMod g)) a b = 0`. Introduce `a b hab`. Rewrite using `[Matrix.vecMulVec_apply]`. Distinguish the cases in `hb : b = j`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h a (by simp only [W]; subst hb; have := Fin.le_def.1 hab; omega), zero_mul]`. Rewrite using `[Pi.single_eq_of_ne hb, mul_zero]`. Use `⟨(hJ' y).2 ⟨⟨fun a => ?_, fun a b hab => ?_⟩, fun b hb hb' => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, Matrix.add_apply, hD a a le_rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy, Matrix.add_apply, hD a b hab.le, Matrix.one_apply_ne hab.ne']`. Simplify using the standard rewrite rules. Rewrite using `[hy, Matrix.add_apply, Matrix.vecMulVec_apply, h i hiW, Matrix.one_apply_ne (by intro e; rw [← e] at hb; omega)]; simp`. Rewrite using `[chi_eq L hL y _ hy i j hij, Matrix.vecMulVec_apply, h i hiW]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b hab _`. Rewrite `hab` using `[edge_iff L hL]`. Rewrite using `[Matrix.vecMulVec_apply]`. Distinguish the cases in `hb : b = j`. Rewrite using `[h a (by simp only [W]; subst hb; omega), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hb, mul_zero]`. Establish `hdec : ∀ u, L.Mem u → ∃ x ∈ X, u * x ∈ J ⊓ J'`. Introduce `u hu`. Set `ξ : Fin N → ZMod g` to `fun a => if W a then - u.val i a else 0`. Establish `h0 : ∀ a, ¬ W a → ξ a = 0` using `fun a ha => if_neg ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : ξ ⬝ᵥ Pi.single i 1 = 0` using `by simp [h0 i hiW]`. Establish `hx : tv (Pi.single i 1) ξ hd ∈ X` using `⟨ξ, h0, rfl⟩`. Establish `hm` using `mm _ _ hu (hXJ _ hx).1`. Use `⟨_, hx, hm, (hJ' _).2 ⟨hm.1, fun b hb hb' => ?_⟩⟩` and prove the remaining obligations. Use `show (u.val * (1 + Matrix.vecMulVec (Pi.single i 1) ξ)) i b = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ξ b = - u.val i b` using `if_pos ⟨hb, hb'⟩`. Rewrite using `[mul_add, mul_one, Matrix.mul_vecMulVec, Matrix.add_apply, Matrix.vecMulVec_apply, this]`. Simplify using `[hu.1.1 i]`. Establish `hcomm : ∀ (x y : GG g N) (ξ η : Fin N → ZMod g), (∀ a, ¬ W a → ξ a = 0) → x.val = 1 + Matrix.vecMulVec (Pi.single i 1) ξ → y.val = 1 + Matrix.vecMulVec η (Pi.single j 1) → y⁻¹ * x⁻¹ * y * x ∈ J ⊓ J' ∧ L.chi (y⁻¹ * x⁻¹ * y * x) = L.ψ (L.co i * -(ξ ⬝ᵥ η))`. Introduce `x y ξ η h hx hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `comm_val x y _ _ ξ η hx hy (by simp [h i hiW]) (by simp [Pi.single_eq_of_ne hji.symm])`. Establish `hD : ∀ a b : Fin N, a ≠ i ∨ b ≠ j → Matrix.vecMulVec (Pi.single i (1 : ZMod g)) (-(ξ ⬝ᵥ η) • Pi.single j (1 : ZMod g)) a b = 0`. Introduce and unpack `a b (ha | hb)`. Rewrite using `[Matrix.vecMulVec_apply, Pi.single_eq_of_ne ha, zero_mul]`. Rewrite using `[Matrix.vecMulVec_apply, Pi.smul_apply, Pi.single_eq_of_ne hb, smul_zero, mul_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : L.Mem (y⁻¹ * x⁻¹ * y * x)`. Use `mem_of_val L _ _ hc (fun a b hab => hD a b ?_) (fun a b ha _ _ => hD a b (Or.inl ?_))` and prove the remaining obligations. Assume the negation of the conclusion as `hcon push_neg at hcon`. Rewrite `hab` using `[hcon.1, hcon.2, Fin.le_def]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Rewrite `ha` using `[e]`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨hm, (hJ' _).2 ⟨hm.1, fun b hb hb' => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, Matrix.add_apply, hD i b (Or.inr (by intro e; rw [e] at hb'; omega)), Matrix.one_apply_ne (by intro e; rw [← e] at hb; omega)]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_eq L hL _ _ hc i j hij (fun a b _ h => hD a b h), Matrix.vecMulVec_apply]`. Simplify using the standard rewrite rules. Take `⟨w, hw, hw'⟩` from `GlobalTheory.T.representation_root_subgroup_exchange (GG g N) M ρ (J ⊓ J') X Y L.chi (by`. Introduce and unpack `x ⟨ξ, h, hx⟩ hB`. Establish `: ξ = 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : W b`. Use `((hJ' x).1 hB.2).2 b hb.1 hb.2` as an intermediate fact. Rewrite `this` using `[hx, Matrix.add_apply, Matrix.one_apply_ne (by intro e; rw [← e] at hb; exact hiW hb), Matrix.vecMulVec_apply]`. Simplify using `using this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h b hb`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hx, this]`. Use the proof step `simp)`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b hb x hx`. Establish `hbx : b * x ∈ J` using `J.mul_mem hb.1 (hXJ x hx).1`. Take `⟨x', hx', hb'⟩` from `hdec _ (J.inv_mem hbx)`. Use `⟨x', hx', ((b * x)⁻¹ * x')⁻¹, Subgroup.inv_mem _ hb', by group, ?_⟩` and prove the remaining obligations. Establish `e : x' * ((b * x)⁻¹ * x')⁻¹ = b * x` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `cm _ _ (hXJ x' hx').1 (J.inv_mem hb'.1)`. Rewrite `h1` using `[e, cm _ _ hb.1 (hXJ x hx).1, (hXJ x hx).2, (hXJ x' hx').2]`. Simplify using `using h1.symm)`. Use the proof step `(by`. Introduce and unpack `x ⟨ξ, h, hx⟩ y ⟨η, _, hy⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hcomm x y ξ η h hx hy).1)`. Use the proof step `(by`. Introduce and unpack `x ⟨ξ, h, hx⟩ x' ⟨ξ', h', hx'⟩ hne`. Establish `hξ : ξ ≠ ξ'`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Apply `hne` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hx, hx', e]`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hξ`. Establish `haW : W a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc; exact ha (by rw [h a hc, h' a hc])`. Take `⟨t, ht⟩` from `AddChar.ne_one_iff.1 L.hψ`. Establish `hc : (L.co i : ZMod g) * (ξ' a - ξ a) ≠ 0` using `mul_ne_zero (L.co i).ne_zero (sub_ne_zero.2 ha.symm)`. Set `η : Fin N → ZMod g` to `Pi.single a (t / ((L.co i : ZMod g) * (ξ' a - ξ a)))`. Establish `h0 : ∀ b, ¬ W b → η b = 0` using `fun b hb => Pi.single_eq_of_ne (by intro e; rw [e] at hb; exact hb haW) _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : (Pi.single j 1 : Fin N → ZMod g) ⬝ᵥ η = 0` using `by simp [h0 j hjW]`. Use `⟨tv η (Pi.single j 1) hd, ⟨η, h0, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(hcomm x _ ξ η h hx rfl).2, (hcomm x' _ ξ' η h' hx' rfl).2]`. Introduce `e`. Apply `ht` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (L.co i : ZMod g) * -(ξ ⬝ᵥ η) = t + L.co i * -(ξ' ⬝ᵥ η)`. Simplify using `only [η, dotProduct_single]`. Establish `h3` using `left_ne_zero_of_mul hc`. Establish `h4` using `right_ne_zero_of_mul hc`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[e2, AddChar.map_add_eq_mul]`. Establish `hn : L.ψ (L.co i * -(ξ' ⬝ᵥ η)) ≠ 0`. Introduce `h5`. Use `L.ψ.map_add_eq_mul (L.co i * -(ξ' ⬝ᵥ η)) (-(L.co i * -(ξ' ⬝ᵥ η)))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h5]`. Simplify using `at this`. Conclude with `mul_right_cancel₀ hn (by rw [e, one_mul]))`. Use `n v hv`. Use the proof step `(fun m => ⟨fun b hb => he m b hb.2, fun y hy => by rw [he m y (hYJ y hy).1, (hYJ y hy).2, one_smul]⟩)`.
-
-Use `(GlobalTheory.T.subgroupCharacterIdempotent_properties (GG g N) M ρ L.Mem L.chi m1 mm c1 cm).2.2.2 n w hw ?_` and prove the remaining obligations. Introduce `m u hu`. Take `⟨x, hx, hb⟩` from `hdec u hu`. Establish `e : u = (u * x) * x⁻¹` using `by group`. Establish `h1` using `cm _ _ hu (hXJ x hx).1`.
-
-Rewrite `h1` using `[(hXJ x hx).2, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exchange (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M)
     (L : Lev g N) (hL : L.sharp = true) (i : Fin N) (hs : L.s = i + 1) (J' : Subgroup (GG g N))
@@ -381,39 +377,37 @@ theorem exchange (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional �
     _ = _ := by rw [(hw' m).2 _ (X.inv_mem hx), (hw' m).1 _ hb, h1]
 
 /- English proof (translation)
-Introduce `g _ N M _ _ _ ρ L L' hL hL' hk hs`. Establish `hN` using `L.hk`. Take `⟨σ, hσ⟩` from `exists_cycle (N := N) L'.s L'.k L'.hk`. Take `⟨Q, hQ⟩` from `exists_perm (F := ZMod g) σ`. Set `K : Lev g N` to `⟨true, L'.s, L'.k, L'.hk, L.ψ, L.hψ, fun a => L.co (σ a)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[GlobalTheory.T.rank_levelDatum_idempotent_eq_of_same_shape g N M ρ L' K hL' rfl rfl]`. Take `⟨m1, mm, c1, cm, -⟩` from `GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N K`. Establish `hE : ∀ a b, K.Edge a b ↔ L.Edge (σ a) (σ b)`. Introduce `a b`. Rewrite using `[edge_iff K rfl, edge_iff L hL, hσ, hσ, hk, hs]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (((b : ℕ) = a + 1 ∧ (a : ℕ) + 1 ≠ L'.s ∧ ¬ (0 < L'.k ∧ (a : ℕ) + 1 = L'.s + L'.k)) ∨ ((a : ℕ) + 1 = L'.s ∧ (b : ℕ) = L'.s + L'.k)) ↔ _`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hchi : ∀ u, K.chi (Q * u * Q⁻¹) = L.chi u`. Introduce `u`. Unfold `Lev.chi`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `show L.ψ _ = L.ψ _`. Use `congr 1`. Use `Fintype.sum_equiv σ _ _ fun a => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv σ _ _ fun b => ?_` and prove the remaining obligations. Rewrite using `[hQ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `if_congr (hE a b) rfl rfl`. Set `i : Fin N` to `⟨L'.s, by omega⟩`. Establish `hi : (i : ℕ) = L'.s` using `rfl`. Set `J' : Subgroup (GG g N)` to `sgOf (fun u => K.Mem (Q * u * Q⁻¹)) (by simpa using m1) (by`. Introduce `u v hu hv`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Q * (u * v) * Q⁻¹ = (Q * u * Q⁻¹) * (Q * v * Q⁻¹)` using `by group`. Rewrite using `[this]`. Conclude with `mm _ _ hu hv)`. Establish `hJ' : ∀ u, u ∈ J' ↔ IsUp g N u ∧ ∀ b : Fin N, L.s ≤ b → (b : ℕ) < L.s + L.k → u.val i b = 0`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_sgOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Simplify using `only [hQ] at h1 h2 h3`. Establish `h4 : ∀ a b : Fin N, L'.s ≤ a → (a : ℕ) < L'.s + L'.k → (b : ℕ) = L'.s + L'.k → u.val (σ a) (σ b) = 0` using `h3 rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨fun a => by simpa using h1 (σ.symm a), fun a b hab => ?_⟩, fun b hb hb' => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `σ.surjective a`. Take `⟨b, rfl⟩` from `σ.surjective b`. Distinguish the cases in `hc : b < a`. Conclude with `h2 a b hc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hab` using `[Fin.lt_def, hσ, hσ]`. Rewrite `hc` using `[Fin.lt_def]`. Apply the tactic sequence `apply h4 <;> split_ifs at hab <;> omega`. Take `⟨a, ha⟩` from `σ.surjective i`. Take `⟨b, rfl⟩` from `σ.surjective b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Apply `h2` to reduce the goal to its premises. Establish `h5` using `congrArg Fin.val ha`. Rewrite `h5`, `hb`, `hb'` using `[hσ]`. Rewrite using `[Fin.lt_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `split_ifs at h5 hb hb' <;> omega`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨⟨fun a => by rw [hQ]; exact h1 _, fun a b hab => ?_⟩, fun _ a b ha ha' hb => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ]`. Distinguish the cases in `hc : σ b < σ a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 _ _ hc`. Rewrite `hc` using `[Fin.lt_def, hσ, hσ]`. Rewrite `hab` using `[Fin.lt_def]`. Establish `: σ a = i`. Apply the tactic sequence `apply Fin.ext; rw [hσ, hi]; split_ifs at hc ⊢ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Apply the tactic sequence `apply h3 <;> rw [hσ] <;> split_ifs at hc ⊢ <;> omega`. Rewrite using `[hQ]`. Apply `h2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `L'.s ≤ a at ha`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `(a : ℕ) < L'.s + L'.k at ha'`. Express the relevant statement in the definitionally equal form `(b : ℕ) = L'.s + L'.k at hb`. Rewrite using `[Fin.lt_def, hσ, hσ]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hr` using `(GlobalTheory.T.subgroupCharacterIdempotent_properties (GG g N) M ρ K.Mem K.chi m1 mm c1 cm).2.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `bs` to `Module.finBasis ℂ (LinearMap.range (op ρ K.e))`. Establish `hinj : LinearMap.ker (ρ Q⁻¹ ∘ₗ (LinearMap.range (op ρ K.e)).subtype) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y hxy`. Use `congrArg (ρ Q) hxy` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `this` using `[← Module.End.mul_apply, ← map_mul]`. Use `exchange M ρ L hL i hs J' hJ' _ _ (bs.linearIndependent.map' _ hinj) ?_` and prove the remaining obligations. Introduce `m u hu`. Use `show ρ u (ρ Q⁻¹ (bs m).1) = L.chi u • ρ Q⁻¹ (bs m).1`.
-
-Establish `h1` using `(hr (bs m).1).1 (bs m).2 _ hu`. Rewrite using `[← map_smul, ← hchi, ← h1, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rk_le_step : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M), ∀ L L' : Lev g N, L.sharp = true → L'.sharp = true → L.k = L'.k → L.s = L'.s + 1 → rk ρ L'.e ≤ rk ρ L.e := by
   intro g _ N M _ _ _ ρ L L' hL hL' hk hs

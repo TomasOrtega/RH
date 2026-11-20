@@ -8,25 +8,23 @@ noncomputable section
 namespace GlobalTheory.FinitePowerAnnihilation
 
 /- English proof (translation)
-Use `letI : Algebra Rf Af := ψ.toAlgebra`. Use `haveI : IsNoetherianRing Rf := IsLocalization.isNoetherianRing (Submonoid.powers f) Rf inferInstance`. Establish `hfg : (Algebra.adjoin Rf T).toSubmodule.FG` using `fg_adjoin_of_finite hT hI`. Establish `hle : Submodule.span Rf (ρ '' M) ≤ (Algebra.adjoin Rf T).toSubmodule`. Rewrite using `[Submodule.span_le]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h` using `hM x hx`. Establish `: Subring.closure (Set.range ψ ∪ T) ≤ (Algebra.adjoin Rf T).toSubring`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `y (⟨a, rfl⟩ | hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(Algebra.adjoin Rf T).algebraMap_mem a`. Conclude with `Algebra.subset_adjoin hy`. Conclude with `this h`. Establish `hfg2 : (Submodule.span Rf (ρ '' M)).FG` using `hfg.of_le hle`. Take `⟨u, hu, hsp⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, hsu⟩` from `Finset.subset_set_image_iff.1 hu`. Use `⟨s, hs, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : ρ x ∈ Submodule.span Rf (u : Set Af)` using `hsp ▸ Submodule.subset_span ⟨x, hx, rfl⟩`. Establish `key : ∀ z ∈ Submodule.span Rf (u : Set Af), ∃ n : ℕ, ∃ w ∈ Submodule.span R (s : Set A), ρ w = ρ (algebraMap R A f) ^ n * z`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Rewrite `hz` using `[← hsu, Finset.coe_image]`. Take `⟨w, hw, rfl⟩` from `hz`. Conclude with `⟨0, w, Submodule.subset_span hw, by simp⟩`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, 0, Submodule.zero_mem _, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨n, w, hw, e⟩` from `ha`. Take `⟨m, v, hv, e'⟩` from `hb`. Use `⟨n + m, f ^ m • w + f ^ n • v, Submodule.add_mem _ (Submodule.smul_mem _ _ hw) (Submodule.smul_mem _ _ hv), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Algebra.smul_def, map_add, map_mul, map_pow, e, e']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c a _ ha`. Take `⟨n, w, hw, e⟩` from `ha`. Take `⟨⟨b, ⟨_, k, rfl⟩⟩, hb⟩` from `IsLocalization.surj (Submonoid.powers f) c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨n + k, b • w, Submodule.smul_mem _ _ hw, ?_⟩` and prove the remaining obligations. Establish `hb' : ψ c * ρ (algebraMap R A f) ^ k = ρ (algebraMap R A b)`. Rewrite using `[hc, hc, ← map_pow, ← map_mul, ← map_pow]`. Conclude with `congrArg ψ hb`. Establish `hs' : c • a = ψ c * a` using `rfl`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, map_mul, e, ← hb', hs']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, w, hw, e⟩` from `key _ hx1`. Take `⟨m, hm⟩` from `hk (f ^ n • x - w) (by rw [map_sub, e, Algebra.smul_def, map_mul, map_pow, map_pow, sub_self])`. Use `⟨m + n, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hm` using `[smul_sub, sub_eq_zero, ← mul_smul, ← pow_add]`. Rewrite using `[hm]`. Conclude with `Submodule.smul_mem _ _ hw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_pow_smul_mem {R A Rf Af : Type} [CommRing R] [CommRing A] [CommRing Rf] [CommRing Af]
     [IsNoetherianRing R] [Algebra R A] [Algebra R Rf] (f : R) [IsLocalization.Away f Rf]
@@ -88,9 +86,9 @@ theorem exists_finset_pow_smul_mem {R A Rf Af : Type} [CommRing R] [CommRing A] 
   exact Submodule.smul_mem _ _ hw
 
 /- English proof (translation)
-Establish `hc : IsCompact ((gp ⁻¹ᵁ W : (Sp K).Opens) : Set (Sp K))` using `(Set.subsingleton_of_subsingleton (α := PrimeSpectrum K)).isCompact`. Use `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact (Sp K) hc x ((gp.app W).hom f) ?_` and prove the remaining obligations. Establish `e : (Sp K).basicOpen ((gp.app W).hom f) ≤ gp ⁻¹ᵁ S.basicOpen f` using `(Scheme.preimage_basicOpen gp f).ge`. Establish `h` using `congrArg ((Sp K).presheaf.map (homOfLE e).op).hom hx`. Rewrite `h` using `[map_zero, resK, ← CommRingCat.comp_apply, ← Functor.map_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_eq_zero_of_res {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) (W : S.Opens) (f : Γ(S, W))
     (x : Γ(Sp K, gp ⁻¹ᵁ W)) (hx : resK gp (S.basicOpen_le f) x = 0) :
@@ -104,23 +102,21 @@ theorem pow_mul_eq_zero_of_res {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K 
   exact h
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing Γ(S, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Use `letI : Algebra Γ(S, W) Γ(Sp K, gp ⁻¹ᵁ W) := (gp.app W).hom.toAlgebra`. Establish `loc : ∀ f : Γ(S, W), (∃ i, S.basicOpen f ≤ V i) → ∃ s : Finset Γ(Sp K, gp ⁻¹ᵁ W), (s : Set Γ(Sp K, gp ⁻¹ᵁ W)) ⊆ (finFam gp V t W : Set Γ(Sp K, gp ⁻¹ᵁ W)) ∧ ∀ x ∈ (finFam gp V t W : Set Γ(Sp K, gp ⁻¹ᵁ W)), ∃ n : ℕ, f ^ n • x ∈ Submodule.span Γ(S, W) (s : Set Γ(Sp K, gp ⁻¹ᵁ W))`. Introduce and unpack `f ⟨i, hi⟩`. Use `haveI := hW.isLocalization_basicOpen f`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exists_finset_pow_smul_mem (Rf := Γ(S, S.basicOpen f)) f (gp.app (S.basicOpen f)).hom (resK gp (S.basicOpen_le f)) (fun a => resK_app gp _ a) ?_ (resK gp hi '' (t i : Set _)) ((t i).finite_toSet.image _) ?_ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨n, hn⟩` from `pow_mul_eq_zero_of_res gp W f x hx`. Conclude with `⟨n, by rw [Algebra.smul_def, map_pow]; exact hn⟩`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp, hp0⟩` from `ht i y hy`. Use `⟨p.map (S.presheaf.map (homOfLE hi).op).hom, hp.map _, ?_⟩` and prove the remaining obligations. Establish `e : (gp.app (S.basicOpen f)).hom.comp (S.presheaf.map (homOfLE hi).op).hom = (resK gp hi).comp (gp.app (V i)).hom` using `RingHom.ext fun a => (resK_app gp hi a).symm`. Rewrite using `[Polynomial.eval₂_map, e, ← Polynomial.hom_eval₂, hp0, map_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hii : S.basicOpen f ≤ W ⊓ V i` using `le_inf (S.basicOpen_le f) hi`. Establish `h1` using `(mem_finFam gp V t W x).1 hx i`. Establish `hm : resK gp hii (resK gp (inf_le_left : W ⊓ V i ≤ W) x) ∈ (Subring.closure _).map (resK gp hii)` using `⟨_, h1, rfl⟩`. Rewrite `hm` using `[RingHom.map_closure, resK_resK]`. Use `Subring.closure_mono ?_ hm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Introduce and unpack `_ ⟨y, ⟨a, rfl⟩ | ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `Or.inl ⟨_, (resK_app gp hii a).symm⟩`. Conclude with `Or.inr ⟨z, hz, by rw [resK_resK]⟩`. Establish `hspan : Ideal.span {f : Γ(S, W) | ∃ i, S.basicOpen f ≤ V i} = ⊤`. Rewrite using `[← hW.self_le_iSup_basicOpen_iff]`.
+Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx2 : x ∈ ⨆ i, V i` using `by rw [hV]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx2`. Take `⟨f, hf, hxf⟩` from `hW.exists_basicOpen_le ⟨x, hi⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, i, hf⟩, hxf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨F, hF, hFs⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset {f : Γ(S, W) | ∃ i, S.basicOpen f ≤ V i}).1 (IsNoetherian.noetherian (R := Γ(S, W)) _)`. Establish `hF1 : Ideal.span (F : Set Γ(S, W)) = ⊤` using `hFs.symm.trans hspan`. Use `choose σ hσ using loc`. Set `s : Finset Γ(Sp K, gp ⁻¹ᵁ W)` to `F.attach.biUnion fun f => σ f.1 (hF f.2)`. Use `⟨s, fun y hy => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, -, hf⟩` from `Finset.mem_biUnion.1 hy`. Conclude with `(hσ f.1 (hF f.2)).1 hf`. Establish `hxs : x ∈ Submodule.span Γ(S, W) (s : Set Γ(Sp K, gp ⁻¹ᵁ W))`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ (F : Set Γ(S, W)) hF1 x fun f => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `(hσ f.1 (hF f.2)).2 x hx`.
-
-Use `⟨n, Submodule.span_mono ?_ hn⟩` and prove the remaining obligations. Introduce `y hy`. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨⟨f.1, f.2⟩, Finset.mem_attach _ _, hy⟩)`. Take `⟨c, hc⟩` from `Submodule.mem_span_finset.1 hxs`. Conclude with `⟨c, hc.2.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finFam_finite {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) [IsLocallyNoetherian S] {r : ℕ}
     (V : Fin r → S.Opens) (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (hV : ⨆ i, V i = ⊤)

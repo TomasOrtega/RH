@@ -5,23 +5,21 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hS B G _ X m j b hnorm`. Use `haveI hN : ((X.K m).subgroupOf (X.K j)).Normal := ⟨fun n hn g => by`. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Use `push_cast`. Conclude with `hnorm g g.2 n hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite (X.K j ⧸ (X.K m).subgroupOf (X.K j)) := Nat.finite_of_card_ne_zero (X.idx m j)`. Establish `admr : ∀ c : X.K j ⧸ (X.K m).subgroupOf (X.K j), X.admitted m m ((c.out : X.K j) : G)⁻¹` using `fun c => ⟨X.K_le j _ (inv_mem c.out.2), fun u hu => hnorm _ (inv_mem c.out.2) u hu⟩`. Establish `uniq : ∀ k ∈ X.K j, ∃! c : X.K j ⧸ (X.K m).subgroupOf (X.K j), k * (((c.out : X.K j) : G))⁻¹⁻¹ ∈ X.K m`. Introduce `k hk`. Use `⟨QuotientGroup.mk ⟨k⁻¹, inv_mem hk⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul ((X.K m).subgroupOf (X.K j)) (⟨k⁻¹, inv_mem hk⟩ : X.K j)`. Simplify using `only [inv_inv]`. Rewrite using `[hu]`. Establish `hu' : ((u : X.K j) : G) ∈ X.K m` using `Subgroup.mem_subgroupOf.mp u.2`. Simplify `hu'` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Simplify using `only [inv_inv] at hc`. Rewrite using `[← QuotientGroup.out_eq' c, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `inv_mem hc` using `[mul_inv_rev]`. Establish `trc : ∀ (g1 g2 : G) (e : g1 = g2) (p1 : X.admitted m m g1) (p2 : X.admitted m m g2), X.tr m m g1 p1.1 p1.2 = X.tr m m g2 p2.1 p2.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Introduce `g1 g2 e p1 p2`. Substitute `e` using the available equality. Both sides reduce to the same expression. Establish `tl : ∀ (g k : G) (hg : X.admitted m m g) (hk : k ∈ X.K m) (hkg : X.admitted m m (k * g)), X.tr m m (k * g) hkg.1 hkg.2 = X.tr m m g hg.1 hg.2`. Introduce `g k hg hk hkg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← X.tr_mul m m m g k hg.1 hg.2 (X.K_le m k hk) (X.tower_admissible_self hk).2 hkg.1 hkg.2, X.tr_self m k _ _ hk, Category.comp_id]`. Use `⟨X.K j ⧸ (X.K m).subgroupOf (X.K j), inferInstance, inferInstance, fun c => ((c.out : X.K j) : G)⁻¹, admr, fun c => inv_mem c.out.2, uniq, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.GalV.IsGalois`. Use `⟨X.fin m j b.1 b.2, X.etale m j b.1 b.2, X.onto m j b.1 b.2, ?_, ?_, hS X m m j b b le_rfl hnorm _ _ admr (fun c => inv_mem c.out.2) uniq⟩` and prove the remaining obligations. Establish `h1 : ((1 : X.K j ⧸ (X.K m).subgroupOf (X.K j)).out : G) ∈ X.K m` using `Subgroup.mem_subgroupOf.mp ((QuotientGroup.eq_one_iff _).mp (QuotientGroup.out_eq' 1))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.tr_self m _ _ _ (inv_mem h1)`. Introduce `g g' set w : X.K j := ((g.out : X.K j) * g'.out)⁻¹ * (g * g').out with hwdef`. Establish `hw : w ∈ (X.K m).subgroupOf (X.K j)`. Rewrite using `[hwdef, ← QuotientGroup.eq, QuotientGroup.mk_mul, QuotientGroup.out_eq', QuotientGroup.out_eq', QuotientGroup.out_eq']`. Establish `hw' : ((w : X.K j) : G) ∈ X.K m` using `Subgroup.mem_subgroupOf.mp hw`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((g * g').out : X.K j) : G)⁻¹ = ((w : X.K j) : G)⁻¹ * ((((g'.out : X.K j) : G))⁻¹ * (((g.out : X.K j) : G))⁻¹)`. Simplify using `only [hwdef, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Establish `hA : X.admitted m m ((((g'.out : X.K j) : G))⁻¹ * (((g.out : X.K j) : G))⁻¹)` using `Tower.admitted.mul (admr g) (admr g')`. Establish `hB : X.admitted m m (((w : X.K j) : G)⁻¹ * ((((g'.out : X.K j) : G))⁻¹ * (((g.out : X.K j) : G))⁻¹))` using `Tower.admitted.mul hA (X.tower_admissible_self (inv_mem hw'))`.
-
-Conclude with `((trc _ _ e (admr (g * g')) hB).trans (tl _ _ hA (inv_mem hw') hB)).trans (X.tr_mul m m m _ _ (admr g).1 (admr g).2 (admr g').1 (admr g').2 hA.1 hA.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTwGal :
     TwSplit → TwGal := by

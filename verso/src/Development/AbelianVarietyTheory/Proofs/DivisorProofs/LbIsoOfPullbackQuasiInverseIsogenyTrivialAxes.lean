@@ -14,27 +14,25 @@ namespace GlobalTheory.QuasiInvPull
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `Y A B _ _ _ _ k ψ ψ' Q₁ Q₂ hB hk _ hq h₁ h₂ hiso`. Take `⟨hψ, hψ', -, hc⟩` from `hq`. Use `haveI := hψ`. Use `haveI := hψ'`. Establish `o₁ : (1 : B ⟶ B) ≫ (𝟙 B) ^ k = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hc, ← Category.assoc, GlobalTheory.BirigUniq.one_comp_monHom, GlobalTheory.BirigUniq.one_comp_monHom]`. Take `⟨hL₁, r₁₁, r₁₂⟩` from `h₁`. Take `⟨hL₂, r₂₁, r₂₂⟩` from `h₂`. Take `⟨hfl, hsu, hqc⟩` from `GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow Y B hB k hk`. Set `d` to `cls Q₁ hL₁ - cls Q₂ hL₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z₁₁ : pull (lift (1 : B ⟶ B) (𝟙 B)).left (cls Q₁ hL₁) = 0` using `(cls_eq_zero_iff (pull_isLB hL₁ _)).2 r₁₁`. Establish `z₁₂ : pull (lift (𝟙 B) (1 : B ⟶ B)).left (cls Q₁ hL₁) = 0` using `(cls_eq_zero_iff (pull_isLB hL₁ _)).2 r₁₂`. Establish `z₂₁ : pull (lift (1 : B ⟶ B) (𝟙 B)).left (cls Q₂ hL₂) = 0` using `(cls_eq_zero_iff (pull_isLB hL₂ _)).2 r₂₁`. Establish `z₂₂ : pull (lift (𝟙 B) (1 : B ⟶ B)).left (cls Q₂ hL₂) = 0` using `(cls_eq_zero_iff (pull_isLB hL₂ _)).2 r₂₂`. Establish `d₁ : pull (lift (1 : B ⟶ B) (𝟙 B)).left d = 0` using `by simp only [d, map_sub, z₁₁, z₂₁, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₂ : pull (lift (𝟙 B) (1 : B ⟶ B)).left d = 0` using `by simp only [d, map_sub, z₁₂, z₂₂, sub_zero]`. Establish `dψ : pull (lift (fst A A ≫ ψ) (snd A A ≫ ψ)).left d = 0`. Establish `e : pull (Hecke.sq2 ψ) (cls Q₁ hL₁) = pull (Hecke.sq2 ψ) (cls Q₂ hL₂)` using `(cls_eq_iff (pull_isLB hL₁ _) (pull_isLB hL₂ _)).2 hiso`. Simplify using `only [d, map_sub]`. Conclude with `sub_eq_zero.2 e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `dk : pull (lift (fst B B ≫ (𝟙 B) ^ k) (snd B B ≫ (𝟙 B) ^ k)).left d = 0`. Establish `: lift (fst B B ≫ (𝟙 B) ^ k) (snd B B ≫ (𝟙 B) ^ k) = lift (fst B B ≫ ψ') (snd B B ≫ ψ') ≫ lift (fst A A ≫ ψ) (snd A A ≫ ψ)`. Apply the tactic sequence `rw [← hc]; apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[this, GlobalTheory.BirigUniq.pull_comp_left, dψ, map_zero]`. Establish `hD : pull (lift (fst B B ≫ (𝟙 B) ^ k) (snd B B)).left d = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.BirigUniq.pic_eq_zero_of_fpqc B B B hB ((𝟙 B) ^ k) hfl hsu hqc _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.BirigUniq.pull_comp_left]`. Establish `: lift (1 : B ⟶ B) (𝟙 B) ≫ lift (fst B B ≫ (𝟙 B) ^ k) (snd B B) = lift (1 : B ⟶ B) (𝟙 B)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [o₁]`. Rewrite using `[this, d₁]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← GlobalTheory.BirigUniq.pull_comp_left]`. Establish `: lift (fst B B) (snd B B ≫ (𝟙 B) ^ k) ≫ lift (fst B B ≫ (𝟙 B) ^ k) (snd B B) = lift (fst B B ≫ (𝟙 B) ^ k) (snd B B ≫ (𝟙 B) ^ k)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[this, dk]`. Establish `hQ : pull (lift (snd B B) (fst B B)).left d = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.BirigUniq.pic_eq_zero_of_fpqc B B B hB ((𝟙 B) ^ k) hfl hsu hqc _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.BirigUniq.pull_comp_left]`. Establish `: lift (1 : B ⟶ B) (𝟙 B) ≫ lift (snd B B) (fst B B) = lift (𝟙 B) (1 : B ⟶ B)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[this, d₂]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← GlobalTheory.BirigUniq.pull_comp_left]`. Establish `: lift (fst B B) (snd B B ≫ (𝟙 B) ^ k) ≫ lift (snd B B) (fst B B) = lift (snd B B) (fst B B) ≫ lift (fst B B ≫ (𝟙 B) ^ k) (snd B B)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[this, GlobalTheory.BirigUniq.pull_comp_left, hD, map_zero]`. Establish `hsw : lift (snd B B) (fst B B) ≫ lift (snd B B) (fst B B) = 𝟙 (B ⊗ B)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `hd : d = 0`. Establish `H : pull (lift (snd B B) (fst B B) ≫ lift (snd B B) (fst B B)).left d = d`. Rewrite using `[hsw, Over.id_left, pull_id]`. Rewrite `H` using `[GlobalTheory.BirigUniq.pull_comp_left, hQ, map_zero]`.
-
-Conclude with `H.symm`. Conclude with `(cls_eq_iff hL₁ hL₂).1 (sub_eq_zero.1 hd)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_pullback_quasiInverseIsogeny_trivial_axes : ∀ (Y : Scheme.{0}) (A B : Over Y) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (k : ℕ) (ψ : A ⟶ B) (ψ' : B ⟶ A) (Q₁ Q₂ : LB (G2 B).left), IsAbelianScheme B → 0 < k →

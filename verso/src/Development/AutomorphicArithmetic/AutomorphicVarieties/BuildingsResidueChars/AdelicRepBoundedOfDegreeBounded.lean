@@ -1,9 +1,9 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TupleActions.InstMulActionTup
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `f hf`. Establish `hf0 : f = fun _ => 0` using `funext fun q => hf q (Nat.zero_le q)`. Substitute `hf0` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[Cardinal.sum_const', mul_zero, Finset.sum_range_zero]`. Consider the case `succ N ih`. Introduce `f hf`. Rewrite using `[Cardinal.sum_nat_eq_add_sum_succ, ih (fun i => f (i+1)) (fun q hq => hf (q+1) (by omega)), Finset.sum_range_succ', add_comm]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.cardinal_sum_eq_finite_sum_range (N : ℕ) : ∀ f : ℕ → Cardinal.{0}, (∀ q, N ≤ q → f q = 0) →
     Cardinal.sum f = ∑ q ∈ Finset.range N, f q := by
@@ -19,9 +19,9 @@ private theorem UpperTheory.cardinal_sum_eq_finite_sum_range (N : ℕ) : ∀ f :
       Finset.sum_range_succ', add_comm]
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.BA.BddOfDeg`. Introduce `Γ _ hc hD`. Use `choose c hc using hc`. Take `⟨D, hD⟩` from `hD`. Unfold `UpperTheory.V.Af.CohB.Bdd`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ q ∈ Finset.range D, c q, fun A => ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.Af.CohB.totCoh`. Rewrite using `[UpperTheory.cardinal_sum_eq_finite_sum_range D _ (fun q hq => hD q hq A), Nat.cast_sum, Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun q _ => hc q A`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adelic_rep_bounded_of_degree_bounded :
     UpperTheory.V.Af.BA.BddOfDeg := by

@@ -20,7 +20,7 @@ def Coeq : Prop := ∀ (A B C : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A 
     gC ≫ w = gE ∧ φE.comp w.hom = φC ∧ u ≫ w = v ≫ w
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(f ≫ g).hom.Etale`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hf hg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem et_comp {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : Et f) (hg : Et g) : Et (f ≫ g) := by
   change (f ≫ g).hom.Etale
@@ -28,7 +28,7 @@ theorem et_comp {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : Et f
   exact RingHom.Etale.stableUnderComposition _ _ hf hg
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(𝟙 A : A ⟶ A).hom.Etale`. Rewrite using `[CommRingCat.hom_id]`. Conclude with `(RingHom.etale_algebraMap (R := A) (S := A)).mpr inferInstance`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem et_id (A : CommRingCat.{0}) : Et (𝟙 A) := by
   change (𝟙 A : A ⟶ A).hom.Etale
@@ -74,27 +74,25 @@ def Dfun : Obj ι M tM ⥤ CommRingCat.{0} where
 end Cat
 
 /- English proof (translation)
-Introduce `A Ω _ ι`. Take `⟨N, M, tM, hEt, hmod⟩` from `hM A`. Establish `into : ∀ (B : CommRingCat.{0}) (g : A ⟶ B), Et g → ∀ φB : B →+* Ω, φB.comp g.hom = ι → ∃ (X : Obj ι M tM) (e : B ≅ M X.n), g ≫ e.hom = tM X.n ∧ X.φ.comp e.hom.hom = φB`. Introduce `B g hg φB hφB`. Take `⟨n, e, he⟩` from `hmod B g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨n, φB.comp e.inv.hom, ?_⟩, e, he, ?_⟩` and prove the remaining obligations. Establish `h1 : (φB.comp e.inv.hom).comp (g ≫ e.hom).hom = φB.comp (g ≫ e.hom ≫ e.inv).hom`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_assoc]`. Rewrite using `[← he, h1, Iso.hom_inv_id, Category.comp_id, hφB]`. Use `show (φB.comp e.inv.hom).comp e.hom.hom = φB`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_assoc, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, RingHom.comp_id]`. Use `haveI : IsFilteredOrEmpty (Obj ι M tM) := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `X Y`. Take `⟨E, gE, φE, p, q, hE, hφE, hp, hq, hpφ, hqφ⟩` from `hP A (M X.n) (M Y.n) Ω ι (tM X.n) (tM Y.n) (hEt _) (hEt _) X.φ Y.φ X.hφ Y.hφ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Z, e, he, heφ⟩` from `into E gE hE φE hφE`. Use `⟨Z, (⟨p ≫ e.hom, ?_, ?_⟩ : Hm X Z), (⟨q ≫ e.hom, ?_, ?_⟩ : Hm Y Z), trivial⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hp, he]`. Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hpφ]`. Rewrite using `[← Category.assoc, hq, he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hqφ]`. Introduce `X Y f g`. Take `⟨E, gE, φE, w, hE, hφE, hw, hwφ, huv⟩` from `hC A (M X.n) (M Y.n) Ω ι (tM X.n) (tM Y.n) (hEt _) (hEt _) X.φ Y.φ X.hφ Y.hφ (show Hm X Y from f).1 (show Hm X Y from g).1 (show Hm X Y from f).2.1 (show Hm X Y from g).2.1 (show Hm X Y from f).2.2 (show Hm X Y from g).2.2`. Take `⟨Z, e, he, heφ⟩` from `into E gE hE φE hφE`. Use `⟨Z, (⟨w ≫ e.hom, ?_, ?_⟩ : Hm Y Z), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hw, he]`. Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hwφ]`. Apply `Subtype.ext show (show Hm X Y from f).1 ≫ (w ≫ e.hom) = (show Hm X Y from g).1 ≫ (w ≫ e.hom)` to reduce the goal to its premises. Rewrite using `[← Category.assoc, huv, Category.assoc]`. Use `haveI : Nonempty (Obj ι M tM) := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨X, _, _, _⟩` from `into A (𝟙 A) (et_id A) ι (by simp)`. Conclude with `⟨X⟩`. Use `haveI : IsFiltered (Obj ι M tM) := {}`. Set `D : Obj ι M tM ⥤ CommRingCat.{0}` to `Dfun`. Set `t : (Functor.const (Obj ι M tM)).obj A ⟶ D` to `{ app := fun X => tM X.n naturality := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X Y f`. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map]`. Conclude with `((show Hm X Y from f).2.1).symm }`. Use `⟨Obj ι M tM, inferInstance, inferInstance, D, t, fun X => X.φ, fun X => hEt X.n, fun X => X.hφ, fun X Y f => (show Hm X Y from f).2.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `B g hg φB hφB`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨X, e, he, heφ⟩` from `into B g hg φB hφB`. Conclude with `⟨X, e.hom, he, heφ⟩`. Introduce `X B g hg φB hφB`. Set `g' : M X.n ⟶ B` to `g`. Establish `hg' : Et g'` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφB' : φB.comp g'.hom = X.φ` using `hφB`. Establish `hφ' : φB.comp (tM X.n ≫ g').hom = ι`. Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, hφB', X.hφ]`. Take `⟨Y, e, he, heφ⟩` from `into B (tM X.n ≫ g') (et_comp (hEt _) hg') φB hφ'`. Use `⟨Y, (⟨g' ≫ e.hom, by rw [← Category.assoc, he], ?_⟩ : Hm X Y), e.hom, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hφB']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sys2_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.AbsorbPf.Sys2 := by
   intro A Ω _ ι
@@ -160,7 +158,7 @@ theorem Sys2_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.AbsorbPf.
     rw [CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hφB']
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.AbsorbPf.etaleAbsorbing_of_strongFilteredEtaleSystemExists (Sys2_of hM hP hC)`.
+A detailed English derivation is pending.
 -/
 theorem Absorb_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.ColimPf.Absorb :=
   LateralTheory.E.AbsorbPf.etaleAbsorbing_of_strongFilteredEtaleSystemExists (Sys2_of hM hP hC)

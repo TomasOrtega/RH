@@ -15,7 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesCh
 namespace GlobalTheory.HarishChandraCharacterSU
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8` and use `GlobalTheory.HCChar.harishChandraCharacters_of_clauses h1 h2 (GlobalTheory.DSSU.FromSU.discreteSeriesClassification_of_SU h3) h4 (GlobalTheory.DSUFromSU.discreteSeriesCharacterOfParameter h5) h6 h7 h8`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem harishChandraCharacters_SU_of_hypotheses :
     GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic →

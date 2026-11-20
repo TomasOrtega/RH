@@ -46,7 +46,7 @@ def AbLe {z : Sp ℂ ⟶ X} (g : TanM z t.G →ₗ[ℂ] TanM z t.G →ₗ⋆[ℂ
       Real.pi * (hermForm Hm W W).re ≤ C * (g v v).re
 
 /- English proof (translation)
-Introduce `φ m hφ n e u Hm χ hA v v' W h₁ h₂` and use `by refine (h φ m hφ n e u Hm χ hA v v' W h₁ h₂).trans (mul_le_mul_of_nonneg_right hC ?_) by_cases hv : v = 0 · simp [hv] · exact (hg.2.1 v hv).le`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AbLe.mono {z : Sp ℂ ⟶ X} {g : TanM z t.G →ₗ[ℂ] TanM z t.G →ₗ⋆[ℂ] ℂ} (hg : IsBlockMetric g) {C C' : ℝ}
     (h : AbLe g C) (hC : C ≤ C') : AbLe g C' := fun φ m hφ n e u Hm χ hA v v' W h₁ h₂ => by
@@ -71,9 +71,7 @@ def Large (y : Sp Qb ⟶ Y) (Q : ∀ (K : Type) [Field K] [NumberField K], (Sp K
       ∀ yK : Sp K ⟶ Y, spMap io ≫ yK = y → Q K yK
 
 /- English proof (translation)
-Set `a₁ : K₁ →ₐ[ℚ] Qb` to `i₁.toRatAlgHom`. Set `a₂ : K₂ →ₐ[ℚ] Qb` to `i₂.toRatAlgHom`. Use `haveI : FiniteDimensional ℚ a₁.fieldRange := a₁.toLinearMap.finiteDimensional_range`. Use `haveI : FiniteDimensional ℚ a₂.fieldRange := a₂.toLinearMap.finiteDimensional_range`. Set `K : IntermediateField ℚ Qb` to `a₁.fieldRange ⊔ a₂.fieldRange`.
-
-Use `haveI : FiniteDimensional ℚ K := IntermediateField.finiteDimensional_sup _ _`. Use `haveI : NumberField K := ⟨⟩`. Use `⟨K, inferInstance, inferInstance, algebraMap K Qb, i₁.codRestrict K.toSubfield fun a => (le_sup_left : a₁.fieldRange ≤ K) ⟨a, rfl⟩, i₂.codRestrict K.toSubfield fun a => (le_sup_right : a₂.fieldRange ≤ K) ⟨a, rfl⟩, rfl, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_common {K₁ K₂ : Type} [Field K₁] [NumberField K₁] [Field K₂] [NumberField K₂] (i₁ : K₁ →+* Qb)
     (i₂ : K₂ →+* Qb) : ∃ (K : Type) (_ : Field K) (_ : NumberField K) (i : K →+* Qb) (j₁ : K₁ →+* K) (j₂ : K₂ →+* K),
@@ -92,9 +90,9 @@ theorem exists_common {K₁ K₂ : Type} [Field K₁] [NumberField K₁] [Field 
 variable {y : Sp Qb ⟶ Y} {Q Q' : ∀ (K : Type) [Field K] [NumberField K], (Sp K ⟶ Y) → Prop}
 
 /- English proof (translation)
-Take `⟨K₁, _, _, i₁, h₁⟩` from `h`. Take `⟨K₂, _, _, i₂, h₂⟩` from `h'`. Take `⟨K₀, _, _, i, j₁, j₂, e₁, e₂⟩` from `exists_common i₁ i₂`. Use `⟨K₀, _, inferInstance, i, fun K _ _ io j hj yK hy => ⟨h₁ K io (j.comp j₁) ?_ yK hy, h₂ K io (j.comp j₂) ?_ yK hy⟩⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, hj, e₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_assoc, hj, e₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Large.and (h : Large y Q) (h' : Large y Q') : Large y fun K _ _ yK => Q K yK ∧ Q' K yK := by
   obtain ⟨K₁, _, _, i₁, h₁⟩ := h
@@ -105,9 +103,7 @@ theorem Large.and (h : Large y Q) (h' : Large y Q') : Large y fun K _ _ yK => Q 
   · rw [← RingHom.comp_assoc, hj, e₂]
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Establish `h₁ : Flat (spMap f)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `inferInstanceAs (Module.Flat K L)`. Establish `h₂ : Surjective (spMap f)` using `⟨fun x => ⟨default, Subsingleton.elim _ _⟩⟩`.
-
-Conclude with `Flat.epi_of_flat_of_surjective _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_spMap {K L : Type} [Field K] [Field L] (f : K →+* L) : Epi (spMap f) := by
   letI := f.toAlgebra
@@ -118,9 +114,9 @@ theorem epi_spMap {K L : Type} [Field K] [Field L] (f : K →+* L) : Epi (spMap 
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Use `⟨K₀, _, inferInstance, io₀, fun K _ _ io j hj yK hK => ?_⟩` and prove the remaining obligations. Use `epi_spMap io` as an intermediate fact. Establish `e : yK = spMap j ≫ y₀`. Rewrite using `[← cancel_epi (spMap io), hK, ← hy, ← hj, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `e ▸ h K io j hj`.
+A detailed English derivation is pending.
 -/
 theorem Large.of_point {K₀ : Type} [Field K₀] [NumberField K₀] (io₀ : K₀ →+* Qb) (y₀ : Sp K₀ ⟶ Y)
     (hy : spMap io₀ ≫ y₀ = y)

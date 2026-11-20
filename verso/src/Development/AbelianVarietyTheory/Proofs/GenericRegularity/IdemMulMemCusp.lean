@@ -24,15 +24,13 @@ def IsIdemFn (X : Data E r) (χ : Frame X.Ψ r → ℂ) : Prop :=
   ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, χ (lact γ x) = χ x
 
 /- English proof (translation)
-Establish `hpath : Continuous fun t : ℝ => CuspCoefficientFlow.flowL X ξ (fun τ => t * s τ) x` using `((CuspCoefficientFlow.cont_flowL X ξ).comp (continuous_pi fun τ => continuous_id.mul continuous_const)).clm_apply continuous_const`. Establish `hin : ∀ t : ℝ, CuspCoefficientFlow.flowL X ξ (fun τ => t * s τ) x ∈ X.dom` using `fun t => by`. Rewrite using `[CuspCoefficientFlow.flowL_apply]`. Conclude with `(FlowCoefficientBounds.flow_real X hξ hx (fun τ => t * s τ) 0).1`. Use `set g : ℝ → ℂ := fun t => χ (CuspCoefficientFlow.flowL X ξ (fun τ => t * s τ) x) with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous g` using `hχ.2.1.continuousOn.comp_continuous hpath hin`. Establish `hzo : ∀ t : ℝ, g t = 0 ∨ g t = 1` using `fun t => hχ.1 _ (hin t)`. Establish `hre : Continuous fun t => (g t).re` using `Complex.continuous_re.comp hcont`. Establish `hsame : g 1 = g 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hhalf : (1 / 2 : ℝ) ∈ Set.uIcc (g 0).re (g 1).re`. Apply the tactic sequence `rcases hzo 0 with h0 | h0 <;> rcases hzo 1 with h1 | h1 <;>`. Apply the tactic sequence `simp_all <;> norm_num`. Take `⟨t, -, ht⟩` from `intermediate_value_uIcc hre.continuousOn hhalf`. Apply the tactic sequence `rcases hzo t with h | h <;> simp [h] at ht`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : g 1 = χ (X.flow ξ (fun τ => (s τ : ℂ)) x)`. Simplify using `only [hg, CuspCoefficientFlow.flowL_apply, one_mul]`. Establish `h0 : g 0 = χ x`. Simplify using `only [hg, CuspCoefficientFlow.flowL_apply, zero_mul, Complex.ofReal_zero]`. Conclude with `congrArg χ (EmbeddingHermitianPairs.flow_zero X ξ x)`.
-
-Rewrite using `[← h1, hsame, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flow_const (X : Data E r) {χ : Frame X.Ψ r → ℂ} (hχ : IsIdemFn X χ)
     {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (s : X.Ψ → ℝ) :
@@ -63,9 +61,9 @@ theorem flow_const (X : Data E r) {χ : Frame X.Ψ r → ℂ} (hχ : IsIdemFn X 
   rw [← h1, hsame, h0]
 
 /- English proof (translation)
-Unfold `Data.fj`. Use `split_ifs`. Simplify using `only [Pi.mul_apply, flow_const X hχ hξ hx, mul_assoc, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fj_mul (X : Data E r) {χ : Frame X.Ψ r → ℂ} (hχ : IsIdemFn X χ) (la : Wt X.Ψ r)
     {ξ : Fin r → E} (hξ : X.IsIso ξ) (P : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -78,13 +76,13 @@ theorem fj_mul (X : Data E r) {χ : Frame X.Ψ r → ℂ} (hχ : IsIdemFn X χ) 
   · simp
 
 /- English proof (translation)
-Simplify using `only [Data.SS, Set.mem_ofPred_eq] at hP ⊢`. Take `⟨⟨⟨hd, hB, hΓ⟩, C, hC⟩, hcusp⟩` from `hP`. Use `⟨⟨⟨hχ.2.1.mul hd, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩, C, fun x hx => ?_⟩, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[hχ.2.2.1 x hx b hb, hB x hx b hb]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.mul_apply]`. Rewrite using `[hχ.2.2.2 γ hγ x hx, hΓ γ hγ x hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : X.pnorm la (χ * P) x = ‖χ x‖ * X.pnorm la P x`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Data.pnorm, Pi.mul_apply, norm_mul, mul_assoc]`. Establish `h1 : ‖χ x‖ ≤ 1`. Apply the tactic sequence `rcases hχ.1 x hx with h | h <;> simp [h]`. Establish `h0 : 0 ≤ X.pnorm la P x`. Unfold `Data.pnorm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Check the signs of the components of the expression. Rewrite using `[hnorm]`. Conclude with `(mul_le_of_le_one_left h0 h1).trans (hC x hx)`. Rewrite using `[fj_mul X hχ la hξ P hx, hcusp ξ hξ x hx, mul_zero]`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_SS (X : Data E r) {χ : Frame X.Ψ r → ℂ} (hχ : IsIdemFn X χ) (la : Wt X.Ψ r)
     {P : Frame X.Ψ r → ℂ} (hP : P ∈ X.SS la) : χ * P ∈ X.SS la := by
@@ -121,9 +119,7 @@ def mulL {ι : Type} (X : ι → Data E r) (χ : Formalism.L2.PjFree.FDSec X) :
     ring
 
 /- English proof (translation)
-Establish `hle : (Formalism.L2.PjFree.holSub X la).map (mulL X χ) ≤ Formalism.L2.PjFree.holSub X la`. Unfold `Formalism.L2.PjFree.holSub`. Rewrite using `[Submodule.map_span_le]`. Introduce `Q hQ`. Conclude with `Submodule.subset_span fun k => mul_mem_SS (X k) (hχ k) (la k) (hQ k)`.
-
-Conclude with `hle (Submodule.mem_map_of_mem hP)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem_holSub {ι : Type} (X : ι → Data E r) (la : ∀ k, Wt (X k).Ψ r)
     (χ : Formalism.L2.PjFree.FDSec X) (hχ : ∀ k, IsIdemFn (X k) (χ k)) {P : Formalism.L2.PjFree.FDSec X}
@@ -136,11 +132,9 @@ theorem mul_mem_holSub {ι : Type} (X : ι → Data E r) (la : ∀ k, Wt (X k).�
   exact hle (Submodule.mem_map_of_mem hP)
 
 /- English proof (translation)
-Establish `hsq : X.χ 0 γ * X.χ 0 γ = X.χ 0 γ`. Establish `h` using `X.χ_add 0 0 γ hγ`. Rewrite `h` using `[add_zero]`. Conclude with `h.symm`. Take `⟨n, hn, hpow⟩` from `X.χ_fin 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : X.χ 0 γ ≠ 0`. Introduce `h0`. Establish `h` using `hpow γ hγ`. Rewrite `h` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one h`.
-
-Conclude with `mul_left_cancel₀ hne (by rw [hsq, mul_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_zero (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   have hsq : X.χ 0 γ * X.χ 0 γ = X.χ 0 γ := by
@@ -156,9 +150,9 @@ theorem chi_zero (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0
   exact mul_left_cancel₀ hne (by rw [hsq, mul_one])
 
 /- English proof (translation)
-Take `⟨hd, hB, hΓ⟩` from `h`. Use `⟨fun x _ => ?_, hd, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Establish `hx2 : χ x * χ x = χ x` using `congrFun hi x`. Distinguish the cases in `h0 : χ x = 0`. Conclude with `Or.inl h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inr (mul_left_cancel₀ h0 (by rw [hx2, mul_one]))`. Rewrite using `[hB x hx b hb]`. Simplify using `[bchar]`. Rewrite using `[hΓ γ hγ x hx, chi_zero X hγ, one_mul]`.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIdemFn_of_isSec (X : Data E r) {χ : Frame X.Ψ r → ℂ} (h : X.IsSec 0 χ) (hi : χ * χ = χ) :
     IsIdemFn X χ := by
@@ -183,9 +177,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k x`. Simplify using `only [Formalism.L2.PjFree.rdU, LinearMap.coe_mk, AddHom.coe_mk, Pi.mul_apply]`. Distinguish the cases in `h : x ∈ (U.X k).dom`. Simplify using `only [dif_pos h]`. Unfold `Formalism.L2.PjFree.toC evR evalAt`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h1`. Conclude with `map_mul _ _ _`. Conclude with `(mul_zero _).symm`. Simplify using `only [dif_neg h, mul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdU_mul (U : Formalism.L2.PjFree.Unf Xo c σ r) (f g : Rul Xo c) :
     Formalism.L2.PjFree.rdU U (f * g) = fun k => Formalism.L2.PjFree.rdU U f k * Formalism.L2.PjFree.rdU U g k := by
@@ -200,7 +194,7 @@ theorem rdU_mul (U : Formalism.L2.PjFree.Unf Xo c σ r) (f g : Rul Xo c) :
   · simp only [dif_neg h, mul_zero]
 
 /- English proof (translation)
-Unfold `Formalism.L2.PjFree.laU`. Use function extensionality and compare the values at `τ j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem laU_zero (U : Formalism.L2.PjFree.Unf Xo c σ r) (k : U.Comp) : Formalism.L2.PjFree.laU U 0 0 k = 0 := by
   unfold Formalism.L2.PjFree.laU
@@ -210,17 +204,17 @@ theorem laU_zero (U : Formalism.L2.PjFree.Unf Xo c σ r) (k : U.Comp) : Formalis
 end Read
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU χ hχ hi a n g hg`. Establish `hχ'` using `hχ`. Unfold `sec secW at hχ'`. Take `⟨hχn, hχw⟩` from `hχ'`. Unfold `Formalism.L2.PjFree.cusp at hg ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨hgs, hgc⟩` from `Submodule.mem_inf.mp hg`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hgs'` using `hgs`. Unfold `sec secW at hgs' ⊢`. Take `⟨hgn, hgw⟩` from `hgs'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `⟨fun p q φ y z hyz => ?_, fun p t y y' hyy => ?_⟩` and prove the remaining obligations. Use `show χ q z * g q z = φ (χ p y * g p y)`. Rewrite using `[hχn p q φ y z hyz, hgn p q φ y z hyz, map_mul]`. Use `show χ p y' * g p y' = _ * (χ p y * g p y)`. Rewrite using `[hχw p t y y' hyy, hgw p t y y' hyy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : wchar (ex Dw 0 0) t = 1` using `by simp [wchar, ex]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at hgc ⊢`. Introduce `σ hσ`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsec` using `(hU σ hσ).2.2.2.2.1 0 0 (by unfold Formalism.L2.Pj.Dom; simp [antitone_const]) χ hχ`. Rewrite using `[rdU_mul]`. Use `mul_mem_holSub (U σ).X (Formalism.L2.PjFree.laU (U σ) a n) (Formalism.L2.PjFree.rdU (U σ) χ) (fun k => ?_) (hgc σ hσ)` and prove the remaining obligations. Apply `isIdemFn_of_isSec` to reduce the goal to its premises. Establish `hk` using `hsec k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hk` using `[laU_zero]`. Then use the resulting hypothesis. Establish `hk` using `congrFun (rdU_mul (U σ) χ χ) k`. Rewrite `hk` using `[hi]`. Conclude with `hk.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_mem_cusp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ χ ∈ sec Xo c 0 0, χ * χ = χ → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ g ∈ Formalism.L2.PjFree.cusp Xo c U a n, χ * g ∈ Formalism.L2.PjFree.cusp Xo c U a n := by
   intro E _ _ _ H Dw l Xo c r U hU χ hχ hi a n g hg

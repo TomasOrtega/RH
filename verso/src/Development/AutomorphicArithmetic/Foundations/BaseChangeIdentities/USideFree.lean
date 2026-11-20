@@ -8,19 +8,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn S hS lam K' hK'`. Establish `L3` using `GlobalTheory.T.inf_fixedVectors_adelicLevel_ne_bot_of_localLevel`. Establish `L4` using `GlobalTheory.T.localComponent_levelFixedVectors_ne_bot`. Establish `L5` using `GlobalTheory.T.heckeOperator_testFamily_preserves_level_forms`. Take `⟨hfd, ι, hι, π, hπ, hind, hsup, hcomp⟩` from `GlobalTheory.T.unitaryAutForms_weight_level_finite_sum_fixed_vectors E hU n hn S hS lam K' hK'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hloc` using `fun i w => GlobalTheory.T.exists_unique_admissible_localComponent_definiteUnitary E hU n hn (π i) (hπ i).1 w`. Use `choose σ hσc hσf using fun i w => (hloc i w).1`. Use `⟨ι, hι, π, σ, fun i => ⟨(hπ i).1, (hπ i).2.1, hasLevel_of_fixed hS (hπ i).2.2, fun w hw => ⟨hσc i w, L4 E hU n hn S hS lam K' hK' (π i) (hπ i).1 (hπ i).2.1 (hπ i).2.2 w hw (σ i w) (hσc i w), hσf i w⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `π₀ h0 hw0 hl0`. Take `⟨i, hi⟩` from `hcomp π₀ h0 hw0 (L3 E n S hS K' hK' π₀ h0 hl0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, fun w _ => ?_⟩` and prove the remaining obligations. Take `⟨⟨σ₀, h₀, -⟩, -⟩` from `GlobalTheory.T.exists_unique_admissible_localComponent_definiteUnitary E hU n hn π₀ h0 w`. Take `⟨e⟩` from `(hloc i w).2 σ₀ (σ i w) (hi w σ₀ h₀) (hσc i w)`. Conclude with `isCompU_of_equiv h₀ e`. Introduce `f hf hsep`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ i, FiniteDimensional ℂ ↥(π i ⊓ fixed (RF E n) (globLev S K'))` using `fun i => Submodule.finiteDimensional_of_le (hsup ▸ le_iSup (fun i => π i ⊓ fixed (RF E n) (globLev S K')) i)`. Establish `h1` using `GlobalTheory.T.traceOnInvariantSubmodule_iSup_eq_sum _ ι (fun i => π i ⊓ fixed (RF E n) (globLev S K')) (hop S K' f) hind hM (fun i => L5 E n S hS K' hK' f hf (π i) (hπ i).1)`. Rewrite `h1` using `[hsup]`. Establish `h2` using `GlobalTheory.T.heckeTrace_weightForms_eq_dim_mul_rationalClasses E hU n hn S hS lam K' hK' f hf hsep`. Establish `h3` using `GlobalTheory.PreStabU.geomURat_eq_geomU E hU n hn S hS lam K' hK' f hf hsep`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h4 : geomURat lam (fun γ => twOrb (MonoidHom.id _) (globLev S (KL n)) (finPt γ) (globFn S f)) = geomURat lam (fun γ => ∏ᶠ w ∈ S, twOrb (MonoidHom.id _) (KL n w) (locPt w γ) (f w))`. Unfold `geomURat`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Conclude with `congrArg (_ * ·) (GlobalTheory.T.twistedOrbitalIntegral_product_eq_finprod E hU n hn S hS K' hK' f hf c.rep hc)`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h5 : ∀ i, trOn (π i ⊓ fixed (RF E n) (globLev S K')) (hop S K' f) = dimW lam * ∏ᶠ w ∈ S, twTr (σ i w).ρ (KL n w) (K' w) (f w) LinearMap.id` using `fun i => GlobalTheory.T.trace_hecke_levelVectors_eq_dim_mul_local_traces E hU n hn (π i) (hπ i).1 S hS lam (hπ i).2.1 K' hK' (σ i) (hσc i) f hf`. Establish `key : ∑ i, trOn (π i ⊓ fixed (RF E n) (globLev S K')) (hop S K' f) = dimW lam * geomU S lam f`. Rewrite using `[← h1, h2, h4, h3]`. Rewrite `key` using `[h5, ← Finset.mul_sum]`.
-
-Conclude with `mul_left_cancel₀ (dimW_ne_zero lam) key`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.BaseChangeIdentities.uSide : USide := by
   intro E _ _ _ hU n hn S hS lam K' hK'

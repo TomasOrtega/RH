@@ -20,7 +20,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 namespace GlobalTheory.DegChTwo
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil h => exact isVB_zero_iff.2 h`. Consider the case `cons S hS hL e h ih`. Establish `h3 : IsVB S.X₃ 1` using `(isVB_toMod hL).of_iso e.symm`. Simplify using `using GlobalTheory.T.short_exact_vector_bundles_rank_add _ S _ _ hS ih h3`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasFlag_isVB {X : Scheme.{0}} {E : X.Modules} {l : List (LB X)} (h : HasFlag E l) :
     IsVB E l.length := by
@@ -31,9 +31,9 @@ theorem hasFlag_isVB {X : Scheme.{0}} {E : X.Modules} {l : List (LB X)} (h : Has
     simpa using GlobalTheory.T.short_exact_vector_bundles_rank_add _ S _ _ hS ih h3
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil h => simp`. Consider the case `cons S hS hL e h ih`. Introduce `L hm`. Break down `List.mem_cons.1 hm with rfl | hm` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hL`. Conclude with `ih L hm`.
+A detailed English derivation is pending.
 -/
 theorem hasFlag_isLB {X : Scheme.{0}} {E : X.Modules} {l : List (LB X)} (h : HasFlag E l) :
     ∀ L ∈ l, L.IsLB := by
@@ -48,9 +48,9 @@ theorem hasFlag_isLB {X : Scheme.{0}} {E : X.Modules} {l : List (LB X)} (h : Has
 variable {k : Type} [Field k] {T : Scheme.{0}} [Algebra k Γ(T, ⊤)] [IsIntegral T]
 
 /- English proof (translation)
-Establish `hD` using `GlobalTheory.DualExact.shortExact_dual T S r₃ hS h₃`. Establish `c₁` using `chi_shortExact (k := k) hS (hT.finiteCoh h₁).1 (hT.finiteCoh h₃).1`. Establish `c₂` using `chi_shortExact (k := k) hD (hT.finiteCoh h₃).2.1 (hT.finiteCoh h₁).2.1`. Use `h₂.isFiniteQC` as an intermediate fact. Establish `g` using `genRank_shortExact hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `g` using `[h₁.genRank_eq, h₂.genRank_eq, h₃.genRank_eq]`. Rewrite using `[degCh2_eq h₁, degCh2_eq h₂, degCh2_eq h₃]`. Simplify using `only at c₂`. Rewrite using `[c₁, c₂, g]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,7 +70,7 @@ theorem degCh2_shortExact (hT : IsProjSurface k T) {S : ShortComplex T.Modules} 
   ring
 
 /- English proof (translation)
-Establish `hv : IsVB E 0` using `isVB_zero_iff.2 h`. Rewrite using `[degCh2_eq hv, chi_eq_zero_of_isZero k h, chi_eq_zero_of_isZero k (isVB_zero_iff.1 hv.dual)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degCh2_of_isZero {E : T.Modules} (h : IsZero E) : degCh2 k E = 0 := by
   have hv : IsVB E 0 := isVB_zero_iff.2 h
@@ -78,15 +78,15 @@ theorem degCh2_of_isZero {E : T.Modules} (h : IsZero E) : degCh2 k E = 0 := by
   simp
 
 /- English proof (translation)
-Introduce `_ hS _ _ _ h₁ h₂ h₃` and use `degCh2_shortExact hT hS h₁ h₂ h₃`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem additiveLaw (hT : IsProjSurface k T) : AdditiveLaw k T :=
   fun _ hS _ _ _ h₁ h₂ h₃ => degCh2_shortExact hT hS h₁ h₂ h₃
 
 /- English proof (translation)
-Introduce `E l h`. Proceed by induction on `h with`. Consider the case `nil h => simp [degCh2_of_isZero h]`. Consider the case `cons S hS hL e h ih`. Establish `h3 : IsVB S.X₃ 1` using `(isVB_toMod hL).of_iso e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[List.map_cons, List.sum_cons, degCh2_shortExact hT hS (hasFlag_isVB h) (by simpa using GlobalTheory.T.short_exact_vector_bundles_rank_add _ S _ _ hS (hasFlag_isVB h) h3) h3, ih, degCh2_congr e, hT.degCh2_toMod hL]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flagLaw (hT : IsProjSurface k T) : FlagLaw k T := by
   intro E l h
@@ -100,15 +100,15 @@ theorem flagLaw (hT : IsProjSurface k T) : FlagLaw k T := by
     ring
 
 /- English proof (translation)
-Introduce `E r hE`. Take `⟨T', _, _, ρ, d, l, hT', hc, hd, hfl⟩` from `GlobalTheory.T.projective_surface_flag_cover_exists (ZMod p) T hT E r hE`. Establish `hY : (p : Γ(T', ⊤)) = 0` using `natCast_eq_zero T' p (ZMod p)`. Establish `hX : (p : Γ(T, ⊤)) = 0` using `natCast_eq_zero T p (ZMod p)`. Establish `e₁` using `GlobalTheory.T.projective_surface_pullback_law (ZMod p) T hT T' hT' ρ d hc hd E r hE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `GlobalTheory.T.projective_surface_pullback_law (ZMod p) T hT T' hT' ρ d hc hd _ r (hE.frobPull p hX)`. Establish `φ : (Scheme.Modules.pullback ρ).obj ((frobPull p hX).obj E) ≅ (frobPull p hY).obj ((Scheme.Modules.pullback ρ).obj E)` using `(frobPullPullbackIso p hX ρ hY).app E`. Establish `hfl'` using `GlobalTheory.T.pullback_preserves_line_bundle_flag _ _ (frob T' p hY) _ l hfl`. Establish `f₁` using `flagLaw hT' _ l hfl`. Establish `f₂` using `flagLaw hT' _ _ hfl'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLB` using `hasFlag_isLB hfl`. Establish `key : ((l.map fun L => L.pull (frob T' p hY)).map fun L => (interNum (ZMod p) (structureModule T') ![L, L] : ℚ) / 2) = l.map fun L => (p : ℚ) ^ 2 * ((interNum (ZMod p) (structureModule T') ![L, L] : ℚ) / 2)`. Rewrite using `[List.map_map]`. Use `List.map_congr_left fun L hL => ?_` and prove the remaining obligations. Establish `hL'` using `hLB L hL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.intersection_number_scales_pic_multiple (ZMod p) T' hT' L _ hL' (Semi.LB.isLB_pull hL' _) p (cls_pull_frob p hY hL' _)` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `f₂` using `[key, List.sum_map_mul_left, ← f₁, e₁, ← degCh2_congr φ, e₂]`. Establish `hd0 : (d : ℚ) ≠ 0` using `by exact_mod_cast hd.pos.ne'`. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Take the linear combination `f₂`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem frobeniusLaw (p : ℕ) [Fact p.Prime] (T : Scheme.{0}) [Algebra (ZMod p) Γ(T, ⊤)]
     [IsIntegral T] (hT : IsProjSurface (ZMod p) T) : FrobeniusLaw (ZMod p) T p := by
@@ -143,7 +143,7 @@ theorem frobeniusLaw (p : ℕ) [Fact p.Prime] (T : Scheme.{0}) [Algebra (ZMod p)
   linear_combination f₂
 
 /- English proof (translation)
-Introduce `p _ T _ _ hT` and use `⟨additiveLaw hT, dualLaw _ T, frobeniusLaw p T hT⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem statementPrimeField : StatementPrimeField := fun p _ T _ _ hT =>
   ⟨additiveLaw hT, dualLaw _ T, frobeniusLaw p T hT⟩

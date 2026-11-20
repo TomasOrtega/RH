@@ -21,7 +21,7 @@ def Before {r : ℕ} (S : Finset (Fin r)) (n : ℕ) (p q : Fin n) : Prop :=
   ∃ k ∈ S, (p.val ≤ k.val ∧ k.val < q.val) ∨ (p.val + k.val + 1 < n ∧ n ≤ q.val + k.val + 1)
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `h`. Take `⟨k', -, h'⟩` from `h'`. Conclude with `⟨k, hk, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Before.trans {r : ℕ} {S : Finset (Fin r)} {n : ℕ} {p q s : Fin n} (h : Before S n p q) (h' : Before S n q s) :
     Before S n p s := by

@@ -13,7 +13,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Rewrite using `[L2.inner_def, integral_quotientMeasure]`. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [h] with y hy`. Rewrite using `[hy]`. Simplify using `[RCLike.inner_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inner_eq_setIntegral_of_ae (w v : Lp ℂ 2 (quotientMeasure Γ μ)) {g : G → ℂ}
     (h : ∀ᵐ y ∂μ, (v : RightCosetSpace Γ → ℂ) (mk Γ y) = g y) :
@@ -25,25 +25,21 @@ private theorem inner_eq_setIntegral_of_ae (w v : Lp ℂ 2 (quotientMeasure Γ �
   simp [RCLike.inner_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hb`. Use `choose v hvτ hvr using hrep`. Set `Φ : G → ℂ` to `fun m => ∫ u, Ψ u m ∂lam`. Establish `hΦc : Continuous Φ`. Use `continuous_of_dominated (bound := fun _ => C) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Conclude with `(hc.comp (by fun_prop : Continuous fun u : U => (u, m))).aestronglyMeasurable`. Introduce `m`. Conclude with `Eventually.of_forall fun u => hC u m`. Conclude with `Eventually.of_forall fun u => hc.comp (by fun_prop : Continuous fun m => (u, m))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hΦb : ∀ m, ‖Φ m‖ ≤ C * lam.real univ` using `fun m => norm_integral_le_of_norm_le_const (Eventually.of_forall fun u => hC u m)`. Set `f : RightCosetSpace Γ → ℂ` to `Quotient.lift Φ (by`. Introduce and unpack `a b ⟨γ, rfl⟩`. Express the relevant statement in the definitionally equal form `Φ ((γ : G) * b) = Φ b`. Simplify using `only [Φ, hinv _ _ γ.2])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfc : Continuous f` using `(isOpenQuotientMap_mk Γ).isQuotientMap.continuous_iff.2 hΦc`. Establish `hf2 : MemLp f 2 (quotientMeasure Γ μ)` using `MemLp.of_bound hfc.aestronglyMeasurable (C * lam.real univ) (Eventually.of_forall fun q => by`. Take `⟨y, rfl⟩` from `mk_surjective Γ q`. Conclude with `hΦb y)`. Establish `hrepΦ : ∀ᵐ y ∂μ, ((hf2.toLp f : Lp ℂ 2 (quotientMeasure Γ μ)) : RightCosetSpace Γ → ℂ) (mk Γ y) = Φ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(quasiMeasurePreserving_mk Γ μ).ae (MemLp.coeFn_toLp hf2)`. Use `filter_upwards [h] with y hy`. Rewrite using `[hy]`. Both sides reduce to the same expression. Use `⟨hf2.toLp f, ?_, hrepΦ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompleteSpace τ := hτ.completeSpace_coe`. Rewrite using `[← Submodule.orthogonal_orthogonal τ, Submodule.mem_orthogonal]`. Introduce `w hw`. Rewrite using `[inner_eq_setIntegral_of_ae Γ μ w _ hrepΦ]`. Establish `hw1 : Integrable (fun y => w (mk Γ y)) (μ.restrict (fundamentalDomain Γ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : Integrable w (quotientMeasure Γ μ)` using `(Lp.memLp w).integrable (by norm_num)`. Conclude with `Integrable.comp_measurable h1 (measurable_mk Γ)`. Establish `hwm : StronglyMeasurable (fun y => w (mk Γ y))` using `stronglyMeasurable_lift Γ μ w`. Establish `hint : Integrable (Function.uncurry fun (u : U) (y : G) => conj (w (mk Γ y)) * Ψ u y) (lam.prod (μ.restrict (fundamentalDomain Γ)))`. Use `Integrable.mono' ((hw1.norm.mul_const C).comp_snd lam) ?_ ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : StronglyMeasurable (fun p : U × G => conj (w (mk Γ p.2)))` using `continuous_star.comp_stronglyMeasurable (hwm.comp_measurable measurable_snd)`. Conclude with `h1.aestronglyMeasurable.mul hc.aestronglyMeasurable`. Use `Eventually.of_forall fun p => ?_` and prove the remaining obligations. Simplify using `only [Function.uncurry, norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_left (hC p.1 p.2) (norm_nonneg _)`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Φ, integral_const_mul]`. Use `_ = ∫ u, ∫ y in fundamentalDomain Γ, conj (w (mk Γ y)) * Ψ u y ∂μ ∂lam := (integral_integral_swap hint).symm`. Use `_ = 0 := by`. Establish `h0 : ∀ u, ∫ y in fundamentalDomain Γ, conj (w (mk Γ y)) * Ψ u y ∂μ = 0`.
-
-Introduce `u`. Rewrite using `[← inner_eq_setIntegral_of_ae Γ μ w (v u) (hvr u)]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (hvτ u) hw`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem closed_stable [IsFiniteMeasure (quotientMeasure Γ μ)]
     (τ : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ μ))) (hτ : IsClosed (τ : Set (Lp ℂ 2 (quotientMeasure Γ μ))))
@@ -114,7 +110,7 @@ private theorem closed_stable [IsFiniteMeasure (quotientMeasure Γ μ)]
 end Gen
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ τ hτ U _ _ _ _ lam _ Ψ hc hb hinv hrep`. Use `haveI : IsFiniteMeasure (quotientMeasure (Gam K n) μ) := isFiniteMeasure_quotientMeasure (K := K) (n := n) μ`. Conclude with `closed_stable (Gam K n) μ τ hτ U lam Ψ hc hb hinv hrep`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.reps_integral_mem_closed_submodule :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (τ : Submodule ℂ (L2 μ)), IsClosed (τ : Set (L2 μ)) →

@@ -5,17 +5,15 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Set `I : Ideal R` to `{ carrier := {r | ∀ x ∈ S, φ r x = 0} add_mem' := fun {a b} ha hb x hx => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_add, LinearMap.add_apply, ha x hx, hb x hx, add_zero]`. Use the proof step `zero_mem' := fun x _ => by simp`. Use the proof step `smul_mem' := fun c r hr x hx => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at hr ⊢`. Rewrite using `[smul_eq_mul, map_mul, Module.End.mul_apply, hr x hx, map_zero] }`. Establish `hint : ∀ r ∈ t, IsIntegral ℂ (Ideal.Quotient.mkₐ ℂ I r)`. Introduce `r hr`. Take `⟨p, hp, hx⟩` from `ht r hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `x hxS`. Establish `hx'` using `hx x hxS`. Rewrite `hx'` using `[Polynomial.aeval_algHom_apply, Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hx'`. Introduce `r hr`. Establish `h1 : Ideal.Quotient.mkₐ ℂ I r ∈ Algebra.adjoin ℂ (Ideal.Quotient.mkₐ ℂ I '' t)`. Rewrite using `[Algebra.adjoin_image]`. Conclude with `⟨r, hr, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h2 : Ideal.Quotient.mkₐ ℂ I r ∈ integralClosure ℂ (R ⧸ I)`. Use `Algebra.adjoin_le ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨r', hr', rfl⟩`. Conclude with `hint r' hr'`. Take `⟨p, hp, hev⟩` from `h2`.
-
-Use `⟨p, hp, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hev` using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Polynomial.aeval_algHom_apply, Submodule.mem_bot]`. Conclude with `hev x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adjoin_alg {V : Type} [AddCommGroup V] [Module ℂ V] {R : Type} [CommRing R] [Algebra ℂ R]
     (φ : R →ₐ[ℂ] Module.End ℂ V) (S : Submodule ℂ V) (t : Set R) (ht : ∀ r ∈ t, AlgMod S ⊥ (φ r)) :
@@ -55,9 +53,9 @@ private theorem adjoin_alg {V : Type} [AddCommGroup V] [Module ℂ V] {R : Type}
   exact hev x hx
 
 /- English proof (translation)
-Introduce `M _ _ S s hcomm hs T hT`. Use `letI : CommRing (Algebra.adjoin ℂ s) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Establish `hmem : (⟨T, hT⟩ : Algebra.adjoin ℂ s) ∈ Algebra.adjoin ℂ (((↑) : Algebra.adjoin ℂ s → Module.End ℂ M) ⁻¹' s)`. Rewrite using `[Algebra.adjoin_adjoin_coe_preimage]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Conclude with `adjoin_alg (Algebra.adjoin ℂ s).val S _ (fun r hr => hs r hr) _ hmem`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.algMod_bot_of_mem_adjoin_commuting :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) (s : Set (Module.End ℂ M)), (∀ x ∈ s, ∀ y ∈ s, x * y = y * x) → (∀ T ∈ s, AlgMod S ⊥ T) → ∀ T ∈ Algebra.adjoin ℂ s, AlgMod S ⊥ T := by

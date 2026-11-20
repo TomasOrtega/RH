@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.ZM GlobalTheory.KS
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KS.KerZero.derivation_eq_zero_of_ks_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FDerivationEqZeroOfKodairaSpencerZero.lean&line=40#L40)
 -/

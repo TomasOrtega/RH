@@ -25,7 +25,7 @@ def towerLimit : Submodule A (∀ n, E n) where
     rw [map_smul, hx n]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_towerLimit (x : ∀ n, E n) : x ∈ towerLimit τ ↔ ∀ n, τ n (x (n + 1)) = x n :=
   Iff.rfl
@@ -46,9 +46,9 @@ lemma towerComp_succ (n k : ℕ) : towerComp τ n (k + 1) = (towerComp τ n k).c
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Express the relevant statement in the definitionally equal form `towerComp τ n k (τ (n + k) (x (n + k + 1))) = x n`. Rewrite using `[hx (n + k)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih`.
+A detailed English derivation is pending.
 -/
 lemma towerComp_apply_of_mem {x : ∀ n, E n} (hx : x ∈ towerLimit τ) (n k : ℕ) :
     towerComp τ n k (x (n + k)) = x n := by
@@ -60,7 +60,7 @@ lemma towerComp_apply_of_mem {x : ∀ n, E n} (hx : x ∈ towerLimit τ) (n k : 
     exact ih
 
 /- English proof (translation)
-Rewrite using `[towerComp_succ, LinearMap.range_comp]`. Conclude with `LinearMap.map_le_range`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma range_towerComp_succ_le (n k : ℕ) :
     LinearMap.range (towerComp τ n (k + 1)) ≤ LinearMap.range (towerComp τ n k) := by
@@ -68,7 +68,7 @@ lemma range_towerComp_succ_le (n k : ℕ) :
   exact LinearMap.map_le_range
 
 /- English proof (translation)
-Proceed by induction on `l, h using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ l _ ih => exact (range_towerComp_succ_le τ n l).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma range_towerComp_antitone (n : ℕ) {k l : ℕ} (h : k ≤ l) :
     LinearMap.range (towerComp τ n l) ≤ LinearMap.range (towerComp τ n k) := by
@@ -77,7 +77,7 @@ lemma range_towerComp_antitone (n : ℕ) {k l : ℕ} (h : k ≤ l) :
   | succ l _ ih => exact (range_towerComp_succ_le τ n l).trans ih
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact hc n`. Consider the case `succ j ih`. Express the relevant statement in the definitionally equal form `(towerComp τ n (c + j)).comp (τ (n + (c + j))) = 0`. Rewrite using `[ih, LinearMap.zero_comp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma towerComp_eq_zero_of_le {c : ℕ} (hc : ∀ n, towerComp τ n c = 0) (n j : ℕ) :
     towerComp τ n (c + j) = 0 := by
@@ -88,7 +88,7 @@ lemma towerComp_eq_zero_of_le {c : ℕ} (hc : ∀ n, towerComp τ n c = 0) (n j 
     rw [ih, LinearMap.zero_comp]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `n`. Rewrite using `[← towerComp_apply_of_mem τ hx n c, hc n, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -115,7 +115,7 @@ variable {A : Type u} [CommRing A]
 
 include hι in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Express the relevant statement in the definitionally equal form `((towerComp τE n k).comp (τE (n + k))).comp (ι (n + k + 1)) = (ι n).comp ((towerComp τP n k).comp (τP (n + k)))`. Rewrite using `[LinearMap.comp_assoc, hι (n + k), ← LinearMap.comp_assoc, ih, LinearMap.comp_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma towerComp_comp_of_comm (n k : ℕ) :
     (towerComp τE n k).comp (ι (n + k)) = (ι n).comp (towerComp τP n k) := by
@@ -128,7 +128,7 @@ lemma towerComp_comp_of_comm (n k : ℕ) :
 
 include hπ in
 /- English proof (translation)
-The claim follows from `towerComp_comp_of_comm τE τQ π hπ n k`.
+A detailed English derivation is pending.
 -/
 lemma towerComp_comp_of_comm' (n k : ℕ) :
     (towerComp τQ n k).comp (π (n + k)) = (π n).comp (towerComp τE n k) :=
@@ -152,15 +152,13 @@ def towerLimitMap : towerLimit τP →ₗ[A] towerLimit τE where
 include hι hπ hinj hex in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Use extensionality with `n`. Conclude with `hinj n (congrArg (fun z : towerLimit τE => z.1 n) hxy)`. Introduce `e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hQ : ∀ n, π n (e.1 n) = 0`. Establish `hmem : (fun n => π n (e.1 n)) ∈ towerLimit τQ` using `fun n => by`. Use `congrArg (fun f => f (e.1 (n + 1))) (hπ n)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, e.2 n]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[towerLimit_eq_bot τQ hc]`. Introduce `n`. Conclude with `congrFun ((Submodule.mem_bot A).1 hmem) n`. Establish `hp : ∀ n, ∃ p, ι n p = e.1 n` using `fun n => by`. Establish `: e.1 n ∈ LinearMap.range (ι n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hex n]`. Conclude with `hQ n`. Conclude with `this`. Use `choose p hp using hp`. Use `⟨⟨p, fun n => hinj n ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Use `congrArg (fun f => f (p (n + 1))) (hι n)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[← this, hp, hp, e.2 n]`. Use extensionality with `n`. Conclude with `hp n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem bijective_towerLimitMap {c : ℕ} (hc : ∀ n, towerComp τQ n c = 0) :
     Function.Bijective (towerLimitMap τP τE ι hι) := by
@@ -206,7 +204,7 @@ omit [∀ n, AddCommGroup (E n)] [∀ n, Module A (E n)] [∀ n, AddCommGroup (Q
   [∀ n, Module A (Q n)] in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact Function.surjective_id`. Consider the case `succ k ih`. Rewrite using `[towerComp_succ, LinearMap.coe_comp]`. Conclude with `ih.comp (hsurj (n + k))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma surjective_towerComp (hsurj : ∀ n, Function.Surjective (τP n)) (n k : ℕ) :
     Function.Surjective (towerComp τP n k) := by
@@ -219,11 +217,11 @@ lemma surjective_towerComp (hsurj : ∀ n, Function.Surjective (τP n)) (n k : �
 include hι hπ hex in
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨e, rfl⟩`. Rewrite using `[hex n, LinearMap.mem_ker]`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Use `congrArg (fun f => f e) (towerComp_comp_of_comm' τE τQ π hπ n (c + j))` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[← this, towerComp_eq_zero_of_le τQ hc n j, LinearMap.zero_apply]`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨p', rfl⟩` from `surjective_towerComp τP hsurj n k p`. Use `⟨ι (n + k) p', ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun f => f p') (towerComp_comp_of_comm τP τE ι hι n k)` as an intermediate fact. Simplify `this` using `only [LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem range_towerComp_eq_of_exact (hsurj : ∀ n, Function.Surjective (τP n)) {c : ℕ}
     (hc : ∀ n, towerComp τQ n c = 0) (n k : ℕ) (hk : c ≤ k) :
@@ -252,9 +250,9 @@ def quotTower : ∀ n, (H ⧸ K (n + 1)) →ₗ[A] (H ⧸ K n) :=
   fun n => Submodule.factor (hK (Nat.le_succ n))
 
 /- English proof (translation)
-Proceed by induction on `n, h using Nat.le_induction with`. Consider the case `base`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (x m)`. Rewrite using `[← hy]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `succ n hmn ih`. Rewrite using `[ih, ← hx n]`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (x (n + 1))`. Rewrite using `[← hy]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma eq_factor_of_mem_towerLimit {x : ∀ n, H ⧸ K n} (hx : x ∈ towerLimit (E := fun n => H ⧸ K n) (quotTower K hK))
     {m n : ℕ} (h : m ≤ n) : x m = Submodule.factor (hK h) (x n) := by

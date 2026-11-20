@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.FlipRowTheta
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hSet ch hch hsc => ?_⟩⟩` and prove the remaining obligations. Introduce `t Φ τ hτ d hd i`. Take `⟨e, _he, φ, hφ, _⟩` from `hτ`. Establish `hv` using `ch.rm.vX_is i D.R.m i.2 le_rfl`. Conclude with `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt ch.W.ψ_std ch.W.θ_is ((hφ d hd).1 i).2 hv.2.theta`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row_isThetaFunO : Big fun ch => ∀ t Φ τ, IsFlipFin t ch.S.B ch.rm Φ τ → ∀ d ∈ τ.support, ∀ i,
     IsThetaFunO ch.W.ψ _ _ (d.1 i) := by

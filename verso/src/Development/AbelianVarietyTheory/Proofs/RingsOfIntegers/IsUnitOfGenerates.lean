@@ -18,9 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ThetaNu
 
 /- English proof (translation)
-Take `⟨n, a₀, τ, τF, hτ, hva, hsum⟩` from `h`. Establish `hb : ∀ i, 0 < v (a₀ i)` using `fun i => by`. Use `lt_of_lt_of_le ?_ (hva i)` and prove the remaining obligations. Conclude with `hr` after adjusting the coercions. Establish `vc : ∀ (t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k))) (x : F) {Z : Scheme.{0}} (q : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (j), q z ∈ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j → gs q z (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) ( …` using `V) F) D.toPre.P.A).left) z x * gs q z (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (t.f j) := fun t x Z q z j hz => (gs_mul q z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_res q z le_top hz _).trans (gs_pull q (fst (TF (R := V) F) D.toPre.P.A).left z ⊤ trivial _)) rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `div₁` using `H1.dvd_of_comb hϖ D.toPre F v hv g τ a₀ hb (fun Z q z J hJ => (H1.sval_scal hg q z hJ).symm.trans ((congrArg (gs _ z _) (hsum _)).trans ((H1.gs_sum q z _ (hJ.mem _ q) _).trans (Finset.sum_congr rfl fun i _ => (vc (τF i) (a₀ i) q z _ (hJ.mem _ q)).trans (congrArg₂ (· * ·) rfl (H1. …`. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Conclude with `exists_div_sec D.toPre.P.A.hom hϖ.ne_zero g div₁`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_of_vGe {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F]
@@ -49,7 +49,7 @@ theorem dvd_of_vGe {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   exact exists_div_sec D.toPre.P.A.hom hϖ.ne_zero g div₁
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `hs t`. Establish `h₁ : SecIsMul D.toPre.P.A.hom 1 s s` using `fun j => by simp only [scal, resTop, map_one, _root_.one_mul]`. Establish `h₂ : SecIsMul D.toPre.P.A.hom (a * b) s s` using `fun j => by conv_lhs => rw [h j, hb j]`. Simplify using `only [scal, resTop, map_mul, _root_.mul_assoc]`. Conclude with `IsUnit.of_mul_eq_one b ((hs s).unique h₂ h₁)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_generates {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D : DegData R I}
     {k : ℕ} {α : D.toPre.X} {s t : D.toPre.SecB k α} (hs : SecBGenerates k α s) {a : R}
@@ -62,13 +62,13 @@ theorem isUnit_of_generates {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
   exact IsUnit.of_mul_eq_one b ((hs s).unique h₂ h₁)
 
 /- English proof (translation)
-Introduce `_ V _ _ _ ϖ hϖ D Q hQ vK hv A G _ _ U ϑ hϑ s hs E hE`. Take `⟨g, hgE, hg⟩` from `GlobalTheory.T.expansion_of_integral_section_is_integral V ϖ hϖ D A G U.toUnifPre 1 ϑ s hs E hE`. Use `⟨(GlobalTheory.integralFamily_levelOne V ϖ hϖ D Q hQ _ vK hv E g hg).1, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨r, hr, hν⟩`. Establish `h0` using `hν 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h0` using `[QForm.Q_zero hϖ D hQ, Int.cast_zero, zero_div, add_zero]`. Take `⟨g', hg'⟩` from `dvd_of_vGe hϖ D _ vK hv 1 0 (E.s 0) (g 0) (hg 0) hr h0`. Take `⟨f, hfE, hf⟩` from `hϑ 0`. Establish `hd` using `GlobalTheory.expandsAt_sub V _ D A G U.toUnifPre 0 1 ϑ ϑ SecOps.secZero f g (fun α => SecOps.secAdd (f α) (SecOps.secNeg (g α))) (fun j => (sub_self _).symm) (fun α j => (sub_eq_add_neg _ _).symm) hfE (hgE 0)`. Take `⟨h, hh⟩` from `(GlobalTheory.ExtDiv.main V ϖ hϖ D A G U.toUnifPre 0 1 0 _).1 (WeightPf.weightIndep V _ D A G U.toUnifPre 0 1 _ _ (fun j => map_zero _) hd 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hh` using `[zero_add, pow_one]`. Use `hϖ.not_isUnit (isUnit_of_generates (t := SecOps.secAdd h g') hf fun j => ?_)` and prove the remaining obligations. Establish `e₁ : (f 0).f j + - (g 0).f j = _` using `hh j`. Establish `e₂` using `hg' j`. Use `show _ = _ * (h.f j + g'.f j)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, ← e₁, ← e₂, neg_add_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem main : Laws → ThetaSectionValuationZero := by
   intro _ V _ _ _ ϖ hϖ D Q hQ vK hv A G _ _ U ϑ hϑ s hs E hE

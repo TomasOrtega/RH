@@ -66,7 +66,7 @@ section Ext
 variable {P : ArithVariety n} (D : GroundTheory.Heights₂.Heights.AddBlockData P)
 
 /- English proof (translation)
-Break down `v with ⟨_ | k, i⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `(funFieldEquiv_mkF P _).symm`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem addBlockEquiv_genericPoint (v : Coord D.extSizes) : (toIndefiniteRowSideFullHecke D).yPlus v = funFieldEquiv P (D.extVal v) := by
   rcases v with ⟨_ | k, i⟩
@@ -74,9 +74,9 @@ theorem addBlockEquiv_genericPoint (v : Coord D.extSizes) : (toIndefiniteRowSide
   · exact (funFieldEquiv_mkF P _).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `aeval (fun p : Coord D.extSizes ↦ C ((toIndefiniteRowSideFullHecke D).yPlus p) * X p.1) f = _`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [GroundTheory.Heights₂.Heights.AddBlockData.extMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, map_mul, map_mul, hp]`. Simplify using `[GroundTheory.Heights₂.Heights.AddBlockData.extMap, addBlockEquiv_genericPoint]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coneMap_addBlockEquiv (f : MvPolynomial (Coord D.extSizes) ℤ) :
     mConeMap (toIndefiniteRowSideFullHecke D).yPlus f =
@@ -90,9 +90,9 @@ theorem coneMap_addBlockEquiv (f : MvPolynomial (Coord D.extSizes) ℤ) :
     simp [GroundTheory.Heights₂.Heights.AddBlockData.extMap, addBlockEquiv_genericPoint]
 
 /- English proof (translation)
-Use extensionality with `f`. Establish `h` using `coneMap_addBlockEquiv D f`. Express the relevant statement in the definitionally equal form `mConeMap (toIndefiniteRowSideFullHecke D).yPlus f = 0 ↔ D.extMap f = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `MvPolynomial.map_injective _ (funFieldEquiv P).injective ((h.symm.trans h0).trans (map_zero _).symm)`. Introduce `h0`. Conclude with `h.trans (by rw [h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem addBlockEquiv_extIdeal : (toIndefiniteRowSideFullHecke D).ext = D.extIdeal := by
   ext f
@@ -106,14 +106,14 @@ theorem addBlockEquiv_extIdeal : (toIndefiniteRowSideFullHecke D).ext = D.extIde
     exact h.trans (by rw [h0, map_zero])
 
 /- English proof (translation)
-Rewrite using `[addBlockEquiv_extIdeal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extPoints_eq : D.extPoints = conePoints (toIndefiniteRowSideFullHecke D).ext ℂ := by
   rw [addBlockEquiv_extIdeal]
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addBlockEquiv_join {F : Type*} (z : Cone n F) (z' : Fin (D.size + 1) → F) :
     (toIndefiniteRowSideFullHecke D).join z z' = D.joinPt z z' := by
@@ -127,7 +127,7 @@ section OfTwin
 variable {P : ArithVariety n} (D : AddBlockData P)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Break down `v with ⟨_ | k, i⟩` into its components or cases. Conclude with `RingEquiv.apply_symm_apply _ _`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem addBlockEquiv_symm_genericPoint : (toIndefiniteRowSideFullHecke (split_model_to_place_model D)).yPlus = D.yPlus := by
   funext v
@@ -136,13 +136,13 @@ theorem addBlockEquiv_symm_genericPoint : (toIndefiniteRowSideFullHecke (split_m
   · rfl
 
 /- English proof (translation)
-The claim follows from `(addBlockEquiv_extIdeal (split_model_to_place_model D)).symm.trans (congrArg mCoordIdeal (addBlockEquiv_symm_genericPoint D))`.
+A detailed English derivation is pending.
 -/
 theorem addBlockEquiv_symm_extIdeal : (split_model_to_place_model D).extIdeal = D.ext :=
   (addBlockEquiv_extIdeal (split_model_to_place_model D)).symm.trans (congrArg mCoordIdeal (addBlockEquiv_symm_genericPoint D))
 
 /- English proof (translation)
-Rewrite using `[extPoints_eq, addBlockEquiv_extIdeal, addBlockEquiv_symm_extIdeal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem addBlockEquiv_symm_conePoints : (split_model_to_place_model D).extPoints = conePoints D.ext ℂ := by
   rw [extPoints_eq, addBlockEquiv_extIdeal, addBlockEquiv_symm_extIdeal]

@@ -8,7 +8,7 @@ open scoped MatrixGroups ModularForm Manifold Topology
 namespace GlobalTheory.EllipticZero
 
 /- English proof (translation)
-Establish `hd : 0 < ((h : GL (Fin 2) ℝ)).det.val` using `by simp`. Use `denom_cocycle (g : GL (Fin 2) ℝ) (h : GL (Fin 2) ℝ) z.im_ne_zero` as an intermediate fact. Rewrite `this` using `[← coe_smul_of_det_pos hd, ← ModularGroup.sl_moeb]`. Rewrite using `[← this, map_mul, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma denom_mul_SL (g h : SL(2, ℤ)) (z : ℍ) :
     denom ((g * h : SL(2, ℤ)) : GL (Fin 2) ℝ) z
@@ -19,7 +19,7 @@ lemma denom_mul_SL (g h : SL(2, ℤ)) (z : ℍ) :
   rw [← this, map_mul, map_mul]
 
 /- English proof (translation)
-Use `⟨by rw [mul_smul, mul_smul, inv_smul_smul, hu], ?_⟩` and prove the remaining obligations. Establish `h1` using `denom_mul_SL (γ * u * γ⁻¹) γ σ`. Establish `h2` using `denom_mul_SL γ u σ`. Rewrite `h1` using `[inv_mul_cancel_right, h2, hu, mul_comm]`. Conclude with `(mul_right_cancel₀ (denom_ne_zero _ _) h1).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma conj_fix (γ u : SL(2, ℤ)) (σ : ℍ) (hu : u • σ = σ) :
     (γ * u * γ⁻¹) • (γ • σ) = γ • σ ∧
@@ -32,7 +32,7 @@ lemma conj_fix (γ u : SL(2, ℤ)) (σ : ℍ) (hu : u • σ = σ) :
   exact (mul_right_cancel₀ (denom_ne_zero _ _) h1).symm
 
 /- English proof (translation)
-Establish `h : f (u • σ) = denom u σ ^ k * f σ` using `SlashInvariantForm.slash_action_eqn'' f (by simp) σ`. Rewrite `h` using `[hu]`. Establish `: (denom (u : GL (Fin 2) ℝ) σ ^ k - 1) * f σ = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hk)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_fix {k : ℤ} (f : ModularForm 𝒮ℒ k) (u : SL(2, ℤ)) (σ : ℍ) (hu : u • σ = σ)
     (hk : denom (u : GL (Fin 2) ℝ) σ ^ k ≠ 1) : f σ = 0 := by
@@ -43,9 +43,7 @@ lemma eq_zero_of_fix {k : ℤ} (f : ModularForm 𝒮ℒ k) (u : SL(2, ℤ)) (σ 
   exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hk)
 
 /- English proof (translation)
-Use `⟨UpperHalfPlane.I, ModularGroup.S, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[modular_S_smul]`. Use `ext1`. Simplify using the standard rewrite rules. Rewrite using `[ModularGroup.denom_S]`.
-
-Conclude with `Complex.isPrimitiveRoot_I`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_four : ∃ (σ : ℍ) (u : SL(2, ℤ)), u • σ = σ ∧
     IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) σ) 4 := by
@@ -54,19 +52,17 @@ lemma exists_four : ∃ (σ : ℍ) (u : SL(2, ℤ)), u • σ = σ ∧
   · rw [ModularGroup.denom_S]; exact Complex.isPrimitiveRoot_I
 
 /- English proof (translation)
-Establish `hp` using `Complex.isPrimitiveRoot_exp 6 (by norm_num)`. Use `set μ := Complex.exp (2 * Real.pi * Complex.I / (6 : ℕ)) with hμ`. Establish `him : 0 < μ.im`. Establish `: μ = Complex.exp (((Real.pi / 3 : ℝ) : ℂ) * Complex.I)`. Rewrite using `[hμ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_ofReal_mul_I_im, Real.sin_pi_div_three]`. Check the signs of the components of the expression.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `h6 : μ ^ 6 = 1` using `hp.pow_eq_one`. Establish `h3 : μ ^ 3 - 1 ≠ 0` using `sub_ne_zero.2 (hp.pow_ne_one_of_pos_of_lt (by norm_num) (by norm_num))`. Establish `h1 : μ + 1 ≠ 0` using `fun h => by`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `him.ne' this`. Establish `hq : μ ^ 2 - μ + 1 = 0`. Establish `: (μ ^ 3 - 1) * ((μ + 1) * (μ ^ 2 - μ + 1)) = 0` using `by linear_combination h6`. Conclude with `(mul_eq_zero.1 ((mul_eq_zero.1 this).resolve_left h3)).resolve_left h1`. Establish `h0 : μ ≠ 0` using `hp.ne_zero (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨μ, him⟩, ModularGroup.T * ModularGroup.S, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, modular_S_smul, modular_T_smul] ext1`. Simplify using `only [coe_vadd]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `-hq`. Rewrite using `[denom_mul_SL, ModularGroup.denom_S]`. Establish `: ∀ z : ℍ, denom ((ModularGroup.T : SL(2, ℤ)) : GL (Fin 2) ℝ) z = 1` using `fun z => by`. Rewrite using `[ModularGroup.denom_apply]`. Simplify using `[ModularGroup.T]`.
-
-Rewrite using `[this, one_mul]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_six : ∃ (σ : ℍ) (u : SL(2, ℤ)), u • σ = σ ∧
     IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) σ) 6 := by
@@ -101,13 +97,13 @@ lemma exists_six : ∃ (σ : ℍ) (u : SL(2, ℤ)), u • σ = σ ∧
     exact hp
 
 /- English proof (translation)
-Introduce `τ₀`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨σ, u, hu, hp⟩` from `exists_four`. Establish `h0 : E₆ σ = 0` using `eq_zero_of_fix E₆ u σ hu (by`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ne, hp.zpow_eq_one_iff_dvd]`. Use the proof step `norm_num)`. Take `⟨γ, rfl⟩` from `GlobalTheory.T.j_invariant_equal_sl2_orbit τ₀ σ (by rw [h, h0]; ring)`. Take `⟨h1, h2⟩` from `conj_fix γ u σ hu`. Conclude with `⟨_, h1, h2 ▸ hp⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨σ, u, hu, hp⟩` from `exists_six`. Establish `h0 : E₄ σ = 0` using `eq_zero_of_fix E₄ u σ hu (by`. Rewrite using `[Ne, hp.zpow_eq_one_iff_dvd]`. Use the proof step `norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, rfl⟩` from `GlobalTheory.T.j_invariant_equal_sl2_orbit τ₀ σ (by rw [h, h0]; ring)`. Take `⟨h1, h2⟩` from `conj_fix γ u σ hu`. Conclude with `⟨_, h1, h2 ▸ hp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem elliptic_of_zero : ∀ τ₀ : ℍ,
     (E₆ τ₀ = 0 → ∃ u : SL(2, ℤ), u • τ₀ = τ₀ ∧ IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) τ₀) 4) ∧

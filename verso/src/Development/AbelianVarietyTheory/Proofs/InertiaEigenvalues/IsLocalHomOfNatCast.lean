@@ -9,11 +9,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions GlobalTheory.Twis
 namespace GlobalTheory.SelmerSameChar
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hu : ¬ IsUnit (f ϖ)` using `fun hu => h (by`. Take `⟨n, u, hn⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Rewrite using `[← map_natCast f, hn, map_mul, map_pow]`. Conclude with `(u.isUnit.map f).mul (hu.pow n))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hm : x ∈ IsLocalRing.maximalIdeal O` using `hn`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[map_mul]`. Conclude with `hu (isUnit_of_mul_isUnit_right hx)`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_natCast {O B : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing B]
     (f : O →+* B) (l : ℕ) (h0 : (l : O) ≠ 0) (h : ¬ IsUnit (l : B)) : IsLocalHom f := by
@@ -31,7 +31,7 @@ theorem isLocalHom_of_natCast {O B : Type} [CommRing O] [IsDomain O] [IsDiscrete
   exact hu (isUnit_of_mul_isUnit_right hx)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `Subsingleton.elim i₁ i₂`. Use `RingHom.IsIntegral.tower_top (algebraMap ℤ_[l₁] O₀) f ?_` and prove the remaining obligations. Rewrite using `[padicInt_hom_ext (natCast_mem_maximalIdeal O) (f.comp (algebraMap ℤ_[l₁] O₀)) (algebraMap ℤ_[l₁] O)]`. Conclude with `algebraMap_isIntegral_iff.2 inferInstance`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_finite {l₁ l₂ : ℕ} [i₁ : Fact l₁.Prime] [i₂ : Fact l₂.Prime] (h : l₁ = l₂) {O₀ O : Type}
     [CommRing O₀] [Algebra ℤ_[l₁] O₀] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l₂] O]
@@ -45,7 +45,7 @@ theorem isIntegral_of_finite {l₁ l₂ : ℕ} [i₁ : Fact l₁.Prime] [i₂ : 
 variable (D : D7)
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sT_congr (i : D.ntw.Tw) (s : D.ntw.Sig i) (Q : Finset (PlE D.host)) {O : Type} [CommRing O] [IsDomain O]
     {f f' : D.ntw.O0 i →+* O} (hf : Function.Injective f) (hf' : Function.Injective f')
@@ -55,9 +55,9 @@ theorem sT_congr (i : D.ntw.Tw) (s : D.ntw.Sig i) (Q : Finset (PlE D.host)) {O :
   rfl
 
 /- English proof (translation)
-Establish `: CharZero (FractionRing (D.ntw.O0 i))` using `((D.ntw.emb0 _).charZero_iff (D.ntw.emb0 _).injective).1 inferInstance`. Establish `: CharZero (D.ntw.O0 i)` using `(algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))).charZero`. Use `isLocalHom_of_natCast _ (D.ntw.l i) (Nat.cast_ne_zero.2 (D.ntw.lPrime i).out.ne_zero) fun hu => ?_` and prove the remaining obligations. Use `D.ntw.Ok_fin i k` as an intermediate fact. Use `RingHom.IsIntegral.isLocalHom (f := algebraMap (D.ntw.O i) (D.ntw.Ok i k)) (algebraMap_isIntegral_iff.2 inferInstance) (D.ntw.Ok_inj i k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[← map_natCast (algebraMap (D.ntw.O i) (D.ntw.Ok i k))]`. Conclude with `D.ntw.O_l i (isUnit_of_map_unit _ _ hu)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toOk_local (i : D.ntw.Tw) (k : ℕ) : IsLocalHom (toOk D.ntw i k) := by
   have : CharZero (FractionRing (D.ntw.O0 i)) :=
@@ -71,9 +71,7 @@ theorem toOk_local (i : D.ntw.Tw) (k : ℕ) : IsLocalHom (toOk D.ntw i k) := by
   exact D.ntw.O_l i (isUnit_of_map_unit _ _ hu)
 
 /- English proof (translation)
-Introduce `D a s k ψ h`. Take `⟨O₁, _, _, _, f, gA, gB, χ, iA, iB, lA, lB, cA, cB, eA, eB⟩` from `GlobalTheory.Proof.dvr_of_reflects_facts.common _ _ _ _ (D.ntw.twist₂ a) (toOk D.ntw _ k) (twO_inj D.ntw a) (isIntegral_of_finite (D.ntw.twOf_l a) _) (toOk_inj D.ntw _ k) (toOk_local D _ k) _ _ h`. Establish `hf : Function.Injective f` using `Function.Injective.of_comp (f := gA) (by`. Rewrite using `[← RingHom.coe_comp, cA]`. Conclude with `twO_inj D.ntw a)`.
-
-Conclude with `(sT_congr D _ s _ _ (iA.comp hf) cA.symm eA.symm).trans ((GlobalTheory.SelmerFlat.sT_map_eq D _ s _ O₁ _ f hf gA iA χ).trans ((GlobalTheory.SelmerFlat.sT_map_eq D _ s _ O₁ _ f hf gB iB χ).symm.trans (sT_congr D _ s _ (iB.comp hf) _ cB eB)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sTLoc_eq : ∀ (D : D7) (a : D.nd.Loc) (s : D.ntw.Sig (D.ntw.twOf a)) (k : ℕ) (ψ : Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok (D.ntw.twOf a) k)ˣ), GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.SameChar (D.ntw.twist₂ a) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk D.ntw (D.ntw.twOf a) k) (D.ntw.psiL a) ψ → GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sTLoc D a s = GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sT D.loc D.ntwbr (D.ntw.twOf a) s (D.nd.Q a) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk D.ntw (D.ntw.twOf a) k) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk_inj D.ntw (D.ntw.twOf a) k) ψ := by
   intro D a s k ψ h

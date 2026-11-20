@@ -15,11 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff.CubPair
 
 /- English proof (translation)
-Set `f : Sp K ⟶ Sp R` to `spMap (algebraMap R K)`. Set `T : Over (Sp K)` to `SpAlg K K`. Establish `hc : T.hom ≫ f = (SpAlg R K).hom` using `by show spMap (algebraMap K K) ≫ spMap (algebraMap R K) = spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `ρ : SpAlg R K ⟶ Over.mk (T.hom ≫ f)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans hc)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Φ : (T ⟶ G₀) →* (SpAlg R K ⟶ G)` to `(preHom ρ).comp (pushHom h T)`. Establish `hΦ : ∀ x, (Φ x).left = x.left ≫ F` using `fun x => Category.id_comp _`. Establish `hi : Function.Injective Φ` using `fun x y e => Over.OverMorphism.ext (h.1.hom_ext (by rw [← hΦ, ← hΦ, e]) ((Over.w x).trans (Over.w y).symm))`. Set `a : T ⟶ G₀` to `Over.homMk (h.1.lift x.1.left T.hom ((Over.w x.1).trans hc.symm)) (h.1.lift_snd _ _ _)`. Establish `ha : Φ a = x.1` using `Over.OverMorphism.ext ((hΦ _).trans (h.1.lift_fst _ _ _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨⟨a, hi (by rw [map_pow, ha, x.2, map_one])⟩, (h.1.lift_fst _ _ _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     {G₀ : Over (Sp K)} [GrpObj G₀] [IsCommMonObj G₀] {F : G₀.left ⟶ G.left}
@@ -40,9 +40,9 @@ theorem exists_lift {R K : Type} [CommRing R] [Field K] [Algebra R K] {G : Over 
   exact ⟨⟨a, hi (by rw [map_pow, ha, x.2, map_one])⟩, (h.1.lift_fst _ _ _).symm⟩
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Take `rfl : x₁ = Out.toBase m.cart.1.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₁ = Out.toBase m.cart.1.w y` from `Over.OverMorphism.ext hy`. Take `⟨z', hz', -⟩` from `GlobalTheory.UU.existsUnique_cubWeil t'.cub hx₀ hy₀`. Establish `h'` using `GlobalTheory.UU.cubWeil_of_isPullCubical _ _ f t.G t'.G m.cm m.cart.1.w (fun T a b => Over.OverMorphism.ext (m.cart.2 T a b _ _ rfl rfl).symm) _ _ _ _ m.lin k T x y z' hz'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : z = z'` from `h.unique h'`. Conclude with `hz'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cubWeil_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} {t : SAB H S}
     {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {k : ℕ} (T : Over S') (s : T.left ⟶ S) (hs : s = T.hom ≫ f)
@@ -59,21 +59,19 @@ theorem cubWeil_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   exact hz'
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ R K _ _ _ _ _ _ _ _ t t₀ mK GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP GG θ e _ hG n x x' ζ s s' hs hs' hc`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hp : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`. Take `⟨x₀, hx⟩` from `exists_lift mK.cart x`. Take `⟨x₀', hx'⟩` from `exists_lift mK.cart x'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hP.onto n K hp (θ₀.pt n K x₀')`. Establish `hb : (spMap (algebraMap R K) : (SpAlg K K).left ⟶ Sp R) = (SpAlg K K).hom ≫ spMap (algebraMap R K)` using `by show spMap (algebraMap R K) = spMap (algebraMap K K) ≫ spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hc₀ : GlobalTheory.UU.CubWeil t₀.cub (p ^ n) x₀.1 x₀'.1 (unitOn ζ)` using `cubWeil_pull mK (SpAlg K K) _ hb x₀.2 x₀'.2 hx hx' hc`. Establish `key` using `cubWeil_eq_polPairing E H Dw p K t₀ GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP n x₀ x₀' y ζ hy.symm hc₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ b, e.hom.app n (e.inv.app n b) = b` using `fun b => congrArg (fun f : GG₀ ⟶ GG₀ => f.app n b) e.hom_inv_id`. Establish `ext : ∀ (z : Tors t.G (p ^ n) K) (z₀ : Tors t₀.G (p ^ n) K) (r : GG.A n →ₐ[R] R), z.1.left = z₀.1.left ≫ mK.φ → θ.pt n K z = (Algebra.ofId R K).comp r → ∀ w : K ⊗[R] GG.A n, Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp r) (fun _ _ => .all _ _) w = θ₀.pt n K …` using `fun z z₀ r hz hr w => by`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans ((congrArg _ (map_zero (e.hom.app n))).trans (map_zero _)).symm`. Consider the case `add a b ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `(map_add _ _ _).trans ((congrArg₂ (· + ·) ha hb).trans ((congrArg _ (map_add (e.hom.app n) a b)).trans (map_add _ _ _)).symm)`. Consider the case `tmul c a`. Establish `h1 : (c ⊗ₜ[R] a : K ⊗[R] GG.A n) = c • ((1 : K) ⊗ₜ[R] a)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Establish `h2 : θ₀.pt n K z₀ (e.hom.app n (c ⊗ₜ[R] a : K ⊗[R] GG.A n)) = c • θ₀.pt n K z₀ (e.hom.app n ((1 : K) ⊗ₜ[R] a))` using `(congrArg (fun w : K ⊗[R] GG.A n => θ₀.pt n K z₀ (e.hom.app n w)) h1).trans ((congrArg _ (map_smul (e.hom.app n) c _)).trans (map_smul _ c _))`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← hG n K z z₀ hz a, hr, Algebra.TensorProduct.lift_tmul, smul_eq_mul]`. Both sides reduce to the same expression. Establish `bc : ∀ w : K ⊗[R] GG.A n, CartierDual.baseChange R K (GG.A n) ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R (GG.A n))) w = Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s) (fun _ _ => .all _ _) w` using `fun w => by`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `tmul c a`. Rewrite using `[CartierDual.baseChange_tmul_tmul, Algebra.TensorProduct.lift_tmul, _root_.one_mul, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Set `φ₀ : CartierDual K (GG₀.A n)` to `toConv (θ₀.pt n K x₀).toLinearMap`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : CartierDual.map (e.inv.app n) (CartierDual.baseChange R K (GG.A n) ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R (GG.A n)))) = φ₀` using `CartierDual.ext_apply fun b => (bc (e.inv.app n b)).trans ((ext x x₀ s hx hs _).trans (congrArg (θ₀.pt n K x₀) (he b)))`. Use `key.trans (Eq.trans ?_ (ext x' x₀' s' hx' hs' _).symm)` and prove the remaining obligations. Use `(apply_charElem _ n φ₀).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (θ₀.pt n K x₀') (he _)).symm` and prove the remaining obligations. Rewrite using `[← hy]`.
-
-Conclude with `congrArg (fun φ => (τ₀ y).pt n (pol₀.hom.app n φ)) hφ.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubWeil_eq_transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (t : SAB H (Sp R)) (t₀ : SAB H (Sp K)) (mK : SABMap t₀ t (spMap (algebraMap R K))) (GG₀ : PDivGroup p K) (act₀ : Action (𝓞 E) GG₀) (pol₀ : GG₀ ≅ GG₀.dual) (θ₀ : TorsionMap t₀.G GG₀) (ε₀ : (PDivGroup.mu p K).Tate) (τ₀ : Dw.La →+ GG₀.Tate), IsOfType Dw t₀ → IsPropG Dw t₀ GG₀ act₀ pol₀ θ₀ ε₀ τ₀ → ∀ (GG : PDivGroup p R) (θ : TorsionMap t.G GG) (e : GG₀ ≅ GG.baseChange K), IsModel K θ → GenCompat mK.φ θ θ₀ e → ∀ (n : ℕ) (x x' : Tors t.G (p ^ n) K) (ζ : Kˣ) (s s' : GG.A n →ₐ[R] R), θ.pt n K x = (Algebra.ofId R K).comp s → θ.pt n K x' = (Algebra.ofId R K).comp s' → GlobalTheory.UU.CubWeil t.cub (p ^ n) x.1 x'.1 (unitOn ζ) → (ζ : K) = Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s') (fun _ _ => .all _ _) ((e.inv ≫ pol₀.hom ≫ dualHom _ _ e.inv ≫ (dualBaseChange K GG).hom).app n ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R (GG.A n)))) := by
   intro E _ _ _ H Dw p _ R K _ _ _ _ _ _ _ _ t t₀ mK GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP GG θ e _ hG n x x' ζ s s' hs hs' hc

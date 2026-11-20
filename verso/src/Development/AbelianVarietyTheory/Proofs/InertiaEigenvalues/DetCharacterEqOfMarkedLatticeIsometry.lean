@@ -15,29 +15,29 @@ open GlobalTheory.Member
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D H Dw l V io hio A A' t t' X X' φ φ' g g' hW hW' hE hE' hL hL' hm hm' gam hgE hgm xi hxi1 hxi2`. Establish `hGm : X'.Gm = X.Gm` using `hW'.1.trans hW.1.symm`. Establish `hξ : X'.ξ0 = X.ξ0` using `hW'.2.trans hW.2.symm`. Set `φL : A.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `X.Λ.subtype ∘ₗ φ.toLinearMap`. Set `φL' : A'.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `X'.Λ.subtype ∘ₗ φ'.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hr : Set.range φL = X.Λ`. Use extensionality with `v`. Conclude with `⟨by rintro ⟨a, rfl⟩; exact (φ a).2, fun hv => ⟨φ.symm ⟨v, hv⟩, congrArg Subtype.val (φ.apply_symm_apply ⟨v, hv⟩)⟩⟩`. Establish `hr' : Set.range φL' = X'.Λ`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨by rintro ⟨a, rfl⟩; exact (φ' a).2, fun hv => ⟨φ'.symm ⟨v, hv⟩, congrArg Subtype.val (φ'.apply_symm_apply ⟨v, hv⟩)⟩⟩`. Establish `hcc : cc (-X.ξ0) = -(-X.ξ0)`. Use `X.ξ0_im` as an intermediate fact. Simplify using `only [cc, map_neg] at this ⊢`. Rewrite using `[this]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `obtain ⟨δ', hδ1, hδ2⟩ := GlobalTheory.IsoExt.exists_unitary_of_isometry _ H A A' V.rank (-X.ξ0) X.Gm φL φL' gam hcc ⟨Subtype.val_injective.comp φ.injective, by rw [hr]; exact X.Λ_span, X.Gm_herm, X.Gm_det, fun x y => hE x y⟩ ⟨Subtype.val_injective.comp φ'.injective, by rw [hr']; …`. Establish `hG0 : X.Gm = -(HSpace.gram V)ᵀ`. Rewrite using `[hW.1]`. Simplify using the standard rewrite rules. Take `⟨r1, -, r3, -⟩` from `GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩` from `r3 δ' (by rw [← hG0]; exact hδ1)`. Establish `hLg : Set.range φL = latG V g` using `hr.trans (hL.trans (Set.image_id _))`. Establish `hLg' : Set.range φL' = latG V g'` using `hr'.trans (hL'.trans (Set.image_id _))`. Take `⟨u, h1, h2, h3⟩` from `GlobalTheory.ConjMark.exists_of_matched V g g' δ δ' 1 l.M (by have := l.three_le; omega) l.Mb _ l.prod hδ (fun v => by`. Rewrite using `[← SetLike.mem_coe, ← SetLike.mem_coe, ← hLg, ← hLg']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, hδ2 a⟩`. Introduce and unpack `⟨a, ha⟩`. Use `⟨gam.symm a, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hδ2 (gam.symm a)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply, ha]`. Establish `e'` using `congrArg (fun t => ((δ'⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ t) e`. Simplify `e'.symm)` using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use the proof step `(fun v hv => by rw [Matrix.one_mulVec]; exact hv)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun b hb x hx => by`. Rewrite `hx` using `[← hio]`. Take `⟨x, rfl⟩` from `hx`. Establish `hv : b • x ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `Submodule.smul_mem_smul hb trivial`. Rewrite using `[← map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨φL (t (b • x)), φL' (t' (b • x)), hm _ hv, hm' _ hv, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hgm _ hv`. Use `⟨-φL' z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, ← hLg']`. Conclude with `⟨-z, map_neg _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_mulVec, ← hδ2, hz, map_add, map_nsmul, smul_neg] abel)`. Establish `hδQ : δ ∈ GQ V` using `(r1 δ).2 ⟨δ', hδ⟩`. Establish `h3' : (finHom V u).1.det * 1 - 1 ∈ GlobalTheory.AdLat.hat1 D.host.F ((algebraMap (𝓞 D.host.E) D.host.E) '' (l.Mb : Set (𝓞 D.host.E)))`. Simplify `h3` using `[Algebra.TensorProduct.one_def]`. Establish `hq` using `GlobalTheory.DetTranslate.quot_cong_one D.host.F (cF D) l.M l.Mb _ l.coprime l.prod (fun b hb => ⟨H.bar b, Ideal.mem_map_of_mem (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) hb, H.bar_eq b⟩) _ _ 1 (GlobalTheory.DetTranslate.det_int_of_gLat V h1) (GlobalTheory.DetTranslate.det_int_of_gLat V …`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK` using `hxi1 u h1 (by`. Take `⟨w, hw, e⟩` from `hq`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Simplify using `using e)`. Establish `h4` using `congrArg (fun g => xi (Matrix.GeneralLinearGroup.det g)) h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul] at h4`. Rewrite `h4` using `[hK, hxi2 δ hδQ, mul_one, one_mul]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem xi_det_eq_of_marked_isometry : ∀ {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} (l : Level H) (V : HSp D)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hio : LinearMap.range io = latG V 1)

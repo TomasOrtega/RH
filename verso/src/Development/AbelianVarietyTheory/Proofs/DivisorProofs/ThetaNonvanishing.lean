@@ -26,36 +26,36 @@ namespace GlobalTheory.ThKNZ
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem split2_zero {a a' d₁ : ℕ} {W : Spc F E (a + a')} (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (X : Chars F E) :
     Split2 (σ := σ) (W := W) W₁ H' X 0 0 0 :=
   ⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Rewrite using `[← Prod.one_eq_mk, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_one {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (om : Rep σ Y W) : om (1, 1) = 1 := by
   rw [← Prod.one_eq_mk, map_one]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `F E _ _ _ _ _ σ B a a' G X om om' hn hT`. Distinguish the cases in `hp : G.p = 0`. Conclude with `(GlobalTheory.T.analytic_nonvanishing hK F E σ B a a' G X om om' hT).1 hp`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : 1 ≤ G.q`. Take `⟨b, rfl⟩ : ∃ b, a' = b + 2` from `⟨a' - 2, by have := hT.geo.aBig; omega⟩`. Take `⟨V, V', W, hT', G₁, H, H', hC, om₁, om₁', hT₁⟩` from `(GlobalTheory.T.theta_tower_properties hK.base).2 F E σ B a b G X om om' hT hq`. Use `GlobalTheory.T.exists_nonzero_theta_relevant hK F E σ B a (b + 2) G X om om' V V' W hT hT' ?_` and prove the remaining obligations. Establish `hn₁ : G₁.p + G₁.q < n` using `by have := hC.ep; have := hC.eq; simp only [reG] at *; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₁, hΦ₁, hI₁⟩` from `ih _ hn₁ F E σ B a b G₁ X om₁ om₁' rfl hT₁`. Take `⟨h₁, hh₁⟩` from `Function.ne_iff.1 hI₁`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_levi_element_skew_cm F E σ B _ _ _ G₁.W H' _ _ _ _ hT'.base.cm hT'.geo.hW hC.hH' h₁`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT').1`. Take `⟨⟨e, he⟩, hmap⟩` from `(GlobalTheory.T.theta_evaluation_zero_cone hK.base).1 F E σ B _ _ (reG G V V' W).V (reG G V V' W).W (reG G V V' W).M _ _ om _ _ _ _ hP (a + b) G₁.V G₁.W H' a (a + b + 1) G₁.M hC.eV hC.hH' hT₁.geo.hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hΦ₁` using `[← hmap e he]`. Take `⟨Φ, hΦ, rfl⟩` from `hΦ₁`. Take `⟨C, hC0, hCT⟩` from `(GlobalTheory.T.constant_terms_vanish hK).1 F E σ B a b (reG G V V' W) G₁ H H' hC e he`. Take `⟨x, hx, hu⟩` from `((GlobalTheory.T.split_existence hK) F E σ B a (b + 2) (reG G V V' W) X om om' hT' (a + b) G₁.W H' a (a + b + 1) hC.hH').1 Φ hΦ`. Use `⟨Φ, hΦ, fun h0 => hh₁ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx0 : (0, 0) = x` using `hu (0, 0) (by rw [h0]; exact split2_zero _ _ _)`. Use `hCT X om om' om₁ om₁' hT' hT₁ Φ hΦ x.1 x.2 hx h₁ m hm 1` as an intermediate fact. Rewrite `this` using `[← hx0]`. Simplify using `only [LinearMap.map_zero, Prod.snd_zero] at this`. Use `erw [om_one] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[mul_one]`. Simplify `this.symm` using `[hC0]`. Establish `hq0 : G.q = 0` using `by omega`. Take `⟨b, rfl⟩ : ∃ b, a = b + 2` from `⟨a - 2, by have := hT.geo.aBig; have := hT.geo.lt; omega⟩`. Take `⟨V, V', W, hT', G₁, H, H', hC, om₁, om₁', hT₁⟩` from `(GlobalTheory.T.theta_tower_properties hK.base).1 F E σ B b a' G X om om' hT hq0 (Nat.one_le_iff_ne_zero.2 hp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.exists_nonzero_theta_relevant hK F E σ B (b + 2) a' G X om om' V V' W hT hT' ?_` and prove the remaining obligations. Establish `hn₁ : G₁.p + G₁.q < n` using `by have := hC.ep; have := hC.q1; simp only [reG] at *; omega`. Establish `hI₁` using `ih _ hn₁ F E σ B b a' G₁ X om₁ om₁' rfl hT₁`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT').1`. Take `⟨⟨e, he⟩, -⟩` from `(GlobalTheory.T.theta_evaluation_zero_cone hK.base).2 F E σ B _ _ (reG G V V' W).V (reG G V V' W).W (reG G V V' W).M _ _ om _ _ _ _ hP b (b + a') G₁.V G₁.W H H' 0 (b + 1) 0 (b + 1) G₁.M hC.hH hC.hH' hT₁.geo.hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, μK, μ, hK1, -, hK3, hK4⟩` from `(GlobalTheory.T.theta_stabilizer_exists hK.base) F E σ B _ _ _ _ hT'.base hT'.geo.hV`. Take `⟨Φ, hΦ, h, h₁, m, hm, hne⟩` from `GlobalTheory.T.config_a_triple_eigen_factor hK F E σ B b a' (reG G V V' W) G₁ H H' X om om' om₁ om₁' hC hT' hT₁ e he K μK μ hK1 hK3 hK4 hI₁`. Take `⟨C, hC0, hCT⟩` from `(GlobalTheory.T.big_constant_term_cone hK) F E σ B b a' (reG G V V' W) G₁ H H' hC e he K μK μ hK1 hK3 hK4`. Take `⟨x, hx, hu⟩` from `((GlobalTheory.T.split_existence hK) F E σ B (b + 2) a' (reG G V V' W) X om om' hT' (b + a') G₁.W H' 0 (b + 1) hC.hH').1 Φ hΦ`. Use `⟨Φ, hΦ, fun h0 => hne ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : (0, 0) = x` using `hu (0, 0) (by rw [h0]; exact split2_zero _ _ _)`. Use `hCT X om om' om₁ om₁' hT' hT₁ Φ hΦ x.1 x.2 hx h₁ m hm h` as an intermediate fact. Rewrite `this` using `[← hx0]`. Simplify `this.symm` using `[hC0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem claimV (hK : GlobalTheory.ThK.KP) (n : ℕ) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
@@ -109,15 +109,15 @@ theorem claimV (hK : GlobalTheory.ThK.KP) (n : ℕ) : ∀ (F E : Type) [Field F]
     simpa [hC0] using this.symm
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `F E _ _ _ _ _ σ B a a' G X om om' hn hT`. Distinguish the cases in `hq : G.q = 0`. Conclude with `(GlobalTheory.T.analytic_nonvanishing hK F E σ B a a' G X om om' hT).2 hq`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩ : ∃ b, a' = b + 2` from `⟨a' - 2, by have := hT.geo.aBig; omega⟩`. Take `⟨V, V', W, hT', G₁, H, H', hC, om₁, om₁', hT₁⟩` from `(GlobalTheory.T.theta_tower_properties hK.base).2 F E σ B a b G X om om' hT (Nat.one_le_iff_ne_zero.2 hq)`. Use `GlobalTheory.T.nonzero_dual_theta_relevant_so hK F E σ B a (b + 2) G X om om' V V' W hT hT' ?_` and prove the remaining obligations. Establish `hn₁ : G₁.p + G₁.q < n` using `by have := hC.ep; have := hC.eq; simp only [reG] at *; omega`. Establish `hI₁` using `ih _ hn₁ F E σ B a b G₁ X om₁ om₁' rfl hT₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT').2`. Take `⟨-, e', he'⟩` from `(GlobalTheory.T.theta_evaluation_zero_cone hK.base).2 F E σ B _ _ (reG G V V' W).V' (reG G V V' W).W (reG G V V' W).M' _ _ om' _ _ _ _ hP b (a + b) G₁.V' G₁.W H H' a (a + b + 1) 0 (b + 1) G₁.M' hC.hH hC.hH' hT₁.geo.hM'`. Take `⟨K, μK, μ, hK1, -, hK3, hK4⟩` from `(GlobalTheory.T.theta_stabilizer_exists hK.base) F E σ B _ _ _ _ hT'.base hT'.geo.hV'`. Take `⟨Φ', hΦ', h, h₁, m, hm, hne⟩` from `GlobalTheory.T.config_b_triple_eigen_factor hK F E σ B a b (reG G V V' W) G₁ H H' X om om' om₁ om₁' hC hT' hT₁ e' he' K μK μ hK1 hK3 hK4 hI₁`. Take `⟨C, hC0, hCT⟩` from `(GlobalTheory.T.small_constant_term_cone hK) F E σ B a b (reG G V V' W) G₁ H H' hC e' he' K μK μ hK1 hK3 hK4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hu⟩` from `((GlobalTheory.T.split_existence hK) F E σ B a (b + 2) (reG G V V' W) X om om' hT' (a + b) G₁.W H' a (a + b + 1) hC.hH').2 Φ' hΦ'`. Use `⟨Φ', hΦ', fun h0 => hne ?_⟩` and prove the remaining obligations. Establish `hx0 : (0, 0) = x` using `hu (0, 0) (by rw [h0]; exact split2_zero _ _ _)`. Use `hCT X om om' om₁ om₁' hT' hT₁ Φ' hΦ' x.1 x.2 hx h₁ m hm h` as an intermediate fact. Rewrite `this` using `[← hx0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[hC0]`.
+A detailed English derivation is pending.
 -/
 theorem claimV' (hK : GlobalTheory.ThK.KP) (n : ℕ) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
@@ -147,7 +147,7 @@ theorem claimV' (hK : GlobalTheory.ThK.KP) (n : ℕ) : ∀ (F E : Type) [Field F
   simpa [hC0] using this.symm
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT` and use `⟨claimV hK _ F E σ B a a' G X om om' rfl hT, claimV' hK _ F E σ B a a' G X om om' rfl hT⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nonZero : GlobalTheory.ThK.KP → GlobalTheory.ThK.NonZero := fun hK F E _ _ _ _ _ σ B a a' G X om om' hT =>
   ⟨claimV hK _ F E σ B a a' G X om om' rfl hT, claimV' hK _ F E σ B a a' G X om om' rfl hT⟩

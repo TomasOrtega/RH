@@ -7,25 +7,23 @@ noncomputable section
 namespace GlobalTheory.FibLine
 
 /- English proof (translation)
-Use `set F : ℝ → ℂ := fun r => g (1 / (1 + r ^ 2)) * ((1 / (Real.pi * (1 + r ^ 2) ^ 2) : ℝ) : ℂ) with hF`. Establish `h1 : ∫ x : ℂ, g (1 / (1 + ‖x‖ ^ 2)) * (fsDens x : ℂ) = ∫ x : ℂ, F ‖x‖` using `rfl`. Rewrite using `[h1, integral_fun_norm_addHaar (volume : Measure ℂ) F]`. Use `set f : ℝ → ℝ := fun r => (1 + r ^ 2)⁻¹ with hf`. Use `set f' : ℝ → ℝ := fun r => -(2 * r) / (1 + r ^ 2) ^ 2 with hf'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hderiv : ∀ x ∈ Set.Ioi (0:ℝ), HasDerivWithinAt f (f' x) (Set.Ioi 0) x`. Introduce `x _`. Establish `h : HasDerivAt (fun r : ℝ => 1 + r ^ 2) (2 * x) x`. Simplify using `using ((hasDerivAt_pow 2 x).const_add 1)`. Establish `hne : (1 + x ^ 2) ≠ 0` using `by positivity`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(h.inv hne).hasDerivWithinAt`. Establish `hinj : Set.InjOn f (Set.Ioi 0)`. Introduce `a ha b hb hab`. Simplify using `only [hf, inv_inj, add_right_inj] at hab`. Establish `ha' : (0:ℝ) < a` using `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hb' : (0:ℝ) < b` using `hb`. Use polynomial arithmetic with `[sq_nonneg (a - b), sq_nonneg (a + b)]`. Establish `himg : f '' Set.Ioi 0 = Set.Ioo 0 1`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨r, hr, rfl⟩`. Establish `hr' : (0:ℝ) < r` using `hr`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Conclude with `inv_lt_one_of_one_lt₀ (by nlinarith)`. Introduce and unpack `⟨h0, h1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ht : 1 < t⁻¹` using `one_lt_inv_iff₀.2 ⟨h0, h1⟩`. Use `⟨Real.sqrt (t⁻¹ - 1), Real.sqrt_pos.2 (by linarith), ?_⟩` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[Real.sq_sqrt (by linarith)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcv` using `integral_image_eq_integral_abs_deriv_smul measurableSet_Ioi hderiv hinj g`. Rewrite `hcv` using `[himg]`. Rewrite using `[intervalIntegral.integral_of_le zero_le_one, integral_Ioc_eq_integral_Ioo, hcv]`. Establish `hvol : (volume : Measure ℂ).real (Metric.ball 0 1) = Real.pi`. Simplify using `[Measure.real, Complex.volume_ball]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hvol, Complex.finrank_real_complex, nsmul_eq_mul, ← integral_smul, ← integral_const_mul]`. Use `setIntegral_congr_fun measurableSet_Ioi fun r hr => ?_` and prove the remaining obligations. Establish `hr' : (0:ℝ) < r` using `hr`. Establish `hpi : Real.pi ≠ 0` using `Real.pi_ne_zero`. Establish `hpos : (0:ℝ) < 1 + r ^ 2` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `habs : |f' r| = 2 * r / (1 + r ^ 2) ^ 2`. Simplify using `only [hf']`. Rewrite using `[abs_div, abs_neg, abs_of_pos (by positivity), abs_of_pos (by positivity)]`. Rewrite using `[habs]`. Simplify using `only [hF, hf, one_div, pow_one, Complex.real_smul, Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_pow, Complex.ofReal_add, Complex.ofReal_one, Complex.ofReal_div, Complex.ofReal_ofNat]`.
-
-Establish `hpi' : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hpi`. Establish `hpos' : ((1 : ℂ) + (r : ℂ) ^ 2) ≠ 0` using `by exact_mod_cast hpos.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_comp_fsDens (g : ℝ → ℂ) (_hg : ContinuousOn g (Set.Icc 0 1)) :
     ∫ x : ℂ, g (1 / (1 + ‖x‖ ^ 2)) * (fsDens x : ℂ) = ∫ t in (0 : ℝ)..1, g t := by

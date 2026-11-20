@@ -4,9 +4,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Use `haveI : NeZero (A.m * B.m) := ⟨(Nat.mul_pos A.pos B.pos).ne'⟩`. Establish `h1` using `A.H.index_comap_of_surjective (ZMod.unitsMap_surjective (dvd_mul_right A.m B.m))`. Establish `h2` using `B.H.index_comap_of_surjective (ZMod.unitsMap_surjective (dvd_mul_left B.m A.m))`. Unfold `AbF.deg`. Rewrite using `[← h1, ← h2]`.
-
-Conclude with `Subgroup.index_inf_le`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Two.deg_sup_le (A B : AbF) : (A.sup B).deg ≤ A.deg * B.deg := by
   haveI : NeZero (A.m * B.m) := ⟨(Nat.mul_pos A.pos B.pos).ne'⟩
@@ -17,7 +15,7 @@ private theorem UpperTheory.V.Two.deg_sup_le (A B : AbF) : (A.sup B).deg ≤ A.d
   exact Subgroup.index_inf_le
 
 /- English proof (translation)
-Use `show (⊥ : Subgroup (ZMod 4)ˣ).index = 2`. Rewrite using `[Subgroup.index_bot, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Two.deg_cyc_four : (AbF.cyc 4).deg = 2 := by
   show (⊥ : Subgroup (ZMod 4)ˣ).index = 2
@@ -25,7 +23,7 @@ private theorem UpperTheory.V.Two.deg_cyc_four : (AbF.cyc 4).deg = 2 := by
   decide
 
 /- English proof (translation)
-Use `show ((powMonoidHom 2 : (ZMod (max p 1))ˣ →* _).range).index ∣ 2`. Establish `hp' : (max p 1).Prime` using `by rwa [max_eq_left hp.pos]`. Use `haveI := Fact.mk hp'`. Rewrite using `[IsCyclic.index_powMonoidHom_range]`. Conclude with `Nat.gcd_dvd_right _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Two.deg_quad_dvd (p : ℕ) (hp : p.Prime) : (AbF.quad p).deg ∣ 2 := by
   show ((powMonoidHom 2 : (ZMod (max p 1))ˣ →* _).range).index ∣ 2
@@ -35,7 +33,7 @@ private theorem UpperTheory.V.Two.deg_quad_dvd (p : ℕ) (hp : p.Prime) : (AbF.q
   exact Nat.gcd_dvd_right _ _
 
 /- English proof (translation)
-Use `⟨deg_sup_le, deg_cyc_four, deg_quad_dvd, fun M q d hq hd => ?_⟩` and prove the remaining obligations. Establish `h1 : (withI M).deg ≤ M.deg * 2` using `deg_cyc_four ▸ deg_sup_le M (AbF.cyc 4)`. Establish `hq2` using `Nat.le_of_dvd two_pos (deg_quad_dvd q hq)`. Establish `hd2` using `Nat.le_of_dvd two_pos (deg_quad_dvd d hd)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.V.Two.degBasic :
     (∀ A B : AbF, (A.sup B).deg ≤ A.deg * B.deg) ∧ (AbF.cyc 4).deg = 2 ∧ (∀ p : ℕ, p.Prime → (AbF.quad p).deg ∣ 2) ∧ ∀ (M : AbF) (q d : ℕ), q.Prime → d.Prime → (base2 M q d).deg ≤ 8 * M.deg := by

@@ -70,7 +70,7 @@ attribute [instance] RealAt.grp RealAt.fin RealAt.fKs RealAt.nKs RealAt.aKs
 variable {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch} (X : RealAt D cf nch tp)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun μ _ i => GlobalTheory.ThetaPRead.isThetaP_toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj X.given.core.thP.thF μ i, GlobalTheory.ThetaFireLift.thetaFireL X.R X.F X.tupT X.hm X.hTop X.hinj X.given.core.lev X.given.core.grp X.given.core.models X.given.core.thP X.R.hv0 X.IL, Globa …`.
+Supply the required witnesses or components.
 -/
 theorem RealAt.fire : ThetaFireRow (toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj) X.IL :=
   ⟨fun μ _ i => GlobalTheory.ThetaPRead.isThetaP_toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj X.given.core.thP.thF μ i,
@@ -120,13 +120,13 @@ def EigString (i : D.nd.Loc) : Prop :=
 def EigGood (i : D.nd.Loc) : Prop := OnGood X i fun j t y => GlobalTheory.DownLift.GoodVt X.R j t y
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩`.
+Prove the second alternative.
 -/
 theorem used_mu (i : D.nd.Loc) : Used0 D (D.nd.mu i) :=
   Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩
 
 /- English proof (translation)
-Establish `h : ∃ y, X.R.extV j (X.tupT μ) y = X.fn hμ j f` using `(X.IL.jMt μ hμ j f).2.1`. Take `⟨y, hy⟩` from `h`. Conclude with `⟨y, hy, fun z hz => X.hinj _ _ (hz.trans hy.symm)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RealAt.existsUnique_vec {μ} (hμ : Used0 D μ) (j : Fin D.R.m) (f : D.what₂.Mt μ (j.1 + 1)) :
     ∃! y, X.R.extV j (X.tupT μ) y = X.fn hμ j f := by
@@ -135,32 +135,32 @@ theorem RealAt.existsUnique_vec {μ} (hμ : Used0 D μ) (j : Fin D.R.m) (f : D.w
   exact ⟨y, hy, fun z hz => X.hinj _ _ (hz.trans hy.symm)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.comp (X.IL.jMt μ hμ j).injective`.
+A detailed English derivation is pending.
 -/
 theorem RealAt.fn_injective {μ} (hμ : Used0 D μ) (j : Fin D.R.m) : Function.Injective (X.fn hμ j) :=
   Subtype.val_injective.comp (X.IL.jMt μ hμ j).injective
 
 /- English proof (translation)
-Introduce `hμ j hj x hx f hf y hy` and use `hpq _ _ _ (h hμ j hj x hx f hf y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem OnGood.mono {X : RealAt D cf nch tp} {i : D.nd.Loc} {p q : ∀ (j : Fin D.R.m) (t : X.T), (X.R.HV j t).H → Prop}
     (h : OnGood X i p) (hpq : ∀ j t y, p j t y → q j t y) : OnGood X i q :=
   fun hμ j hj x hx f hf y hy => hpq _ _ _ (h hμ j hj x hx f hf y hy)
 
 /- English proof (translation)
-The claim follows from `A.rep_iso σ`.
+A detailed English derivation is pending.
 -/
 theorem Agree.iso_rep {X : RealAt D cf nch tp} {M : MtFam D} {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} (A : Agree X M rep)
     (σ : D.what₂.FT) : (rep σ).Iso (X.rep σ) := A.rep_iso σ
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (map_zero (X.IL.jMt μ hμ j))`.
+A detailed English derivation is pending.
 -/
 example {μ} (hμ : Used0 D μ) (j : Fin D.R.m) : X.fn hμ j 0 = 0 :=
   congrArg Subtype.val (map_zero (X.IL.jMt μ hμ j))
 
 /- English proof (translation)
-Introduce `h` and use `by have hj := D.nd.j_range i let j : Fin D.R.m := ⟨D.nd.j i - 1, by omega⟩ have e : j.1 + 1 = D.nd.j i := by show D.nd.j i - 1 + 1 = _; omega obtain ⟨y, hy, -⟩ := X.existsUnique_vec (used_mu i) j 0 refine h (used_mu i) j e x hx 0 ?_ y hy have z : ∀ (k : ℕ) (e : j.1 + 1 = k), (e ▸ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (i : D.nd.Loc) (x) (hx : x ∈ ZgoodN D.nd D.naut i) : ¬ OnGood X i fun _ _ _ => False := fun h => by
   have hj := D.nd.j_range i
@@ -176,7 +176,7 @@ example (i : D.nd.Loc) (x) (hx : x ∈ ZgoodN D.nd D.naut i) : ¬ OnGood X i fun
   exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[A.real μ hμ, ← mul_assoc, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example {M : MtFam D} {rep} (A : Agree X M rep) {μ} (hμ : Used0 D μ) (j : Fin D.R.m) (x) (h k) :
     (M μ (j.1 + 1) (by omega) (by omega)).real x (h * k) =

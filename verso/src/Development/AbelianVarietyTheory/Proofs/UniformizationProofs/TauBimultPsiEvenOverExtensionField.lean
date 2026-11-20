@@ -18,7 +18,7 @@ namespace GlobalTheory.TauValues
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 
 /- English proof (translation)
-The claim follows from `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`.
+A detailed English derivation is pending.
 -/
 theorem val_tau {Z : Scheme.{0}} (r : Z ⟶ (TK R).left) {z : Z} {J} (hJ : Good D.P.L z J) (a b : D.X) :
     val (D.tau a b) r z J =
@@ -27,14 +27,14 @@ theorem val_tau {Z : Scheme.{0}} (r : Z ⟶ (TK R).left) {z : Z} {J} (hJ : Good 
     (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_cT {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) (χ : D.X) :
     κ ≫ toUnit (TK R) ≫ D.c χ = cT D T χ := by
   rw [← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Establish `e : κ.left ≫ (toUnit (TK R)).left = T.hom`. Rewrite using `[← Over.comp_left, comp_toUnit]`. Both sides reduce to the same expression. Conclude with `congrArg (fun q : T.left ⟶ Spec (CommRingCat.of R) => val (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig q z J) e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_rigK {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) {z : T.left} {J} (hJ : Good D.P.L z J) :
     val D.rigK κ.left z J = rigV D z J := by
@@ -45,9 +45,9 @@ theorem val_rigK {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) {z : T.l
     val (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig q z J) e
 
 /- English proof (translation)
-Establish `c : val (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 a b m)) κ.left z J = cubV D.cub z J (cT D T a) (cT D T b) (cT D T m)`. Use `(val_cub D.cub κ hJ (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b) (toUnit (TK R) ≫ D.c m)).trans ?_` and prove the remaining obligations. Rewrite using `[comp_cT, comp_cT, comp_cT]`. Establish `l` using `(val_mul hJ (D.tau (a + b) m) (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 a b m)) κ.left).trans (congrArg₂ (· * ·) (val_tau D κ.left hJ _ _) c)`. Establish `r` using `(val_mul hJ (D.tau a m) (D.tau b m) κ.left).trans (congrArg₂ (· * ·) (val_tau D κ.left hJ _ _) (val_tau D κ.left hJ _ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `l`, `r` using `[val_rigK D κ hJ]`. Rewrite using `[l, r]`. Apply the tactic sequence `constructor <;> intro h <;> apply Additive.ofMul.injective <;> have e := congrArg Additive.ofMul h <;>`. Apply the tactic sequence `simp only [ofMul_mul, ofMul_inv] at e ⊢ <;> linear_combination (norm := abel) e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bimult_iff {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) {z : T.left} {J} (hJ : Good D.P.L z J)
     (a b m : D.X) :
@@ -72,7 +72,7 @@ theorem bimult_iff {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) {z : T
     simp only [ofMul_mul, ofMul_inv] at e ⊢ <;> linear_combination (norm := abel) e
 
 /- English proof (translation)
-Use `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans ?_))` and prove the remaining obligations. Establish `e : κ.left ≫ D.xK m = (cT D T m).left`. Rewrite using `[← comp_cT D κ m]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_even {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) {z : T.left} {J} (hJ : Good D.P.L z J)
     (m : D.X) :
@@ -84,7 +84,7 @@ theorem val_even {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) {z : T.l
   rw [e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a b m => corr_of_val_flat_surjective κ.left D.P.isLB fun z J hJ => (bimult_iff D κ hJ a b m).1 (h z J hJ a b m), fun h _ _ hJ a b m => (bimult_iff D κ hJ a b m).2 (val_corr hJ (h a b m) κ.left)⟩`.
+Supply the required witnesses or components.
 -/
 theorem bimult_iff' {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) [Flat κ.left] [Surjective κ.left] :
     (∀ (z : T.left) J, Good D.P.L z J → ∀ a b m : D.X,
@@ -96,7 +96,7 @@ theorem bimult_iff' {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) [Flat
     fun h _ _ hJ a b m => (bimult_iff D κ hJ a b m).2 (val_corr hJ (h a b m) κ.left)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h m => corr_of_val_flat_surjective κ.left D.P.isLB fun z J hJ => (val_even D κ hJ m).trans (h z J hJ m), fun h _ _ hJ m => (val_even D κ hJ m).symm.trans (val_corr hJ (h m) κ.left)⟩`.
+Supply the required witnesses or components.
 -/
 theorem even_iff {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) [Flat κ.left] [Surjective κ.left] :
     (∀ (z : T.left) J, Good D.P.L z J → ∀ m : D.X,
@@ -105,9 +105,9 @@ theorem even_iff {T : Over (Spec (CommRingCat.of R))} (κ : T ⟶ TK R) [Flat κ
     fun h _ _ hJ m => (val_even D κ hJ m).symm.trans (val_corr hJ (h m) κ.left)⟩
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _`. Set `κ : TF (R` to `R) F ⟶ TK R := Over.homMk (jFK (R := R) F) rfl`. Establish `hκ : κ.left = Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) F))` using `rfl`. Establish `: Flat κ.left`. Rewrite using `[hκ]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.Flat.of_isField (Field.toIsField (FractionRing R)) _)`. Establish `: Surjective κ.left`. Establish `: Subsingleton (TK R).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R)))`. Conclude with `⟨fun y => ⟨(default : PrimeSpectrum F), Subsingleton.elim _ _⟩⟩`. Conclude with `⟨bimult_iff' D κ, even_iff D κ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F], ((∀ (z : (TF (R := R) F).left) J, Good D.P.L z J → ∀ a b m : D.X, val (Z := (TF (R := R) F).left) (D.psi (a + b + m)) (jFK (R := R) F) z J * val (Z := (TF (R := R) F).left) (D.psi (a)) (jFK (R := R) F) z J * val (Z := (TF (R := R) F).left) (D.psi (b)) (jFK (R := R) F) z J * val (Z := (TF (R := R) F).left) (D.psi (m)) (jFK (R := R) F) z J * rigV D z J * cubV D.cub z J (cT D _ a) (cT D _ b) (cT D _ m) = val (Z := (TF (R := R) F).left) (D.psi (a + b)) (jFK (R := R) F) z J * val (Z := (TF (R := R) F).left) (D.psi (a + m)) (jFK (R := R) F) z J * val (Z := (TF (R := R) F).left) (D.psi (b + m)) (jFK (R := R) F) z J) ↔ D.TauBimult) ∧ ((∀ (z : (TF (R := R) F).left) J, Good D.P.L z J → ∀ m : D.X, val (Z := (TF (R := R) F).left) (D.psi (-m)) (jFK (R := R) F) z J * val D.sym (cT D (TF (R := R) F) m).left z J = val (Z := (TF (R := R) F).left) (D.psi (m)) (jFK (R := R) F) z J) ↔ D.PsiEven) := by
   intro R _ _ D F _ _

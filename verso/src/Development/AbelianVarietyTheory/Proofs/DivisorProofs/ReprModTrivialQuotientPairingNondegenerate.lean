@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.SympQ
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `fun h => hk (by rw [h, Nat.cast_zero])`. Establish `h3 : ∀ y : N.X, ∃ p : N.QT k, p.1.1.toAdd = y` using `fun y => by`. Take `⟨b, hb⟩` from `hdiv (N.io y).b`. Take `⟨g, -, h⟩` from `QStr.root_over N hk0 (N.io y) b hb`. Conclude with `⟨⟨(Multiplicative.ofAdd y, g), h⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p₀, hq, h1, hb⟩` from `(QStr.orth_iff N hk nd p).1 fun p' _ => hp p'`. Establish `: p₀ = 1`. Use `Subtype.ext (Prod.ext h1 (NumD.Gt.ext hb (funext fun χ => ?_)))` and prove the remaining obligations. Take `⟨p', rfl⟩` from `h3 χ`. Rewrite using `[← (WpPairing.wp_pairing C N _ p₀ p' p').2.2.2.2.2.1 h1 hb, ← WpPairing.wp_congr_left N hq p', hp p']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hq` using `[this]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem qEq_one_of_wp {C : Type} [Field C] [IsAlgClosed C] (N : NumD C) {k : ℕ} (hk : (k : C) ≠ 0)
     (hdiv : ∀ x : N.A, ∃ y, y ^ k = x)
@@ -42,15 +42,15 @@ theorem qEq_one_of_wp {C : Type} [Field C] [IsAlgClosed C] (N : NumD C) {k : ℕ
   rwa [this] at hq
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D F _ _ _ N ν n hn x hx`. Take `⟨⟨h1, h2, h3, h4⟩, hc⟩` from `hR`. Establish `hL : Laws` using `GlobalTheory.lawsAndExpansions.1.1`. Establish `: CharZero F`. Establish `: CharZero (FractionRing R)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective`. Establish `h0 : (n : F) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Take `⟨hW, -⟩` from `GlobalTheory.ThetaInValues.brUth_of_laws hL R D.toPre D.psi_even D.tau_bimult F N ν`. Establish `tor : ∀ (b : N.A) (k : ℕ), ν.eA b ^ k = 1 ↔ b ^ k = 1` using `fun b k => by`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H p`. Establish `hq : N.QEq p 1`. Use `qEq_one_of_wp N h0 (fun a => ?_) (fun b hb h => ?_) p fun p' => hx (QuotientGroup.mk p')` and prove the remaining obligations. Take `⟨y, hy⟩` from `GlobalTheory.ValuesTorsion.exists_pow_eq hL D.toPre.P (jFK (R := R) F ≫ jK R) (ν.eA a) hn`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ν.eA.symm y, by rw [← map_pow, hy, MulEquiv.symm_apply_apply]⟩`. Use `ν.eA.map_eq_one_iff.1 (GlobalTheory.ThetaRep.eq_one_of_weilIs hL D.toPre.P (jFK (R := R) F ≫ jK R) h0 _ ((tor _ _).2 hb) fun y hy => ?_)` and prove the remaining obligations. Take `⟨b', rfl⟩` from `ν.eA.surjective y`. Establish `hb'` using `(tor _ _).1 hy`. Use `hW n hn b b' hb hb'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[h b' hb', show unitOn (1 : Fˣ) = 1 from map_one (Units.map _)]`. Then use the resulting hypothesis. Conclude with `(qEq_iff_mk_eq N p 1).1 hq`.
+A detailed English derivation is pending.
 -/
 theorem wpQ_nondeg : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (D : DegData R (maximalIdeal R)) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N : GlobalTheory.Ex.NumD F) (ν : GlobalTheory.Ex.NumOf D.toPre F N) (n : ℕ), 0 < n → ∀ x : GlobalTheory.SympQ.Qq N n, (∀ y, GlobalTheory.SympQ.wpQ N n x y = 1) → x = 1 := by
   intro R _ _ _ hR D F _ _ _ N ν n hn x hx

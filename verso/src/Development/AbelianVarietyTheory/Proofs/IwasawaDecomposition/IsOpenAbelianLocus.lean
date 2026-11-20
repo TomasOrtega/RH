@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbLocusOpenGlobal
 
 /- English proof (translation)
-Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (R := S.presheaf.stalk s) (a := (3 : S.presheaf.stalk s)) (b := -2) (by norm_num) with h | h` into its components or cases. Use `⟨3, by norm_num, (S.mem_basicOpen_top _ s).2 ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `h` after adjusting the coercions. Use `⟨2, le_rfl, (S.mem_basicOpen_top _ s).2 ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `(IsUnit.neg_iff _).1 h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exists_unit (S : Scheme.{0}) (s : S) :
     ∃ n : ℕ, 2 ≤ n ∧ s ∈ S.basicOpen (n : Γ(S, ⊤)) := by
@@ -29,7 +29,7 @@ theorem exists_unit (S : Scheme.{0}) (s : S) :
     rw [map_natCast]; exact_mod_cast (IsUnit.neg_iff _).1 h
 
 /- English proof (translation)
-Rewrite using `[← isClosed_compl_iff, show (connectedComponent x)ᶜ = ⋃ Z ∈ {Z ∈ irreducibleComponents X | ¬ Z ⊆ connectedComponent x}, Z from Set.ext fun y => ⟨fun h => Set.mem_biUnion ⟨irreducibleComponent_mem_irreducibleComponents y, fun k => h (k mem_irreducibleComponent)⟩ mem_irreducibleCom …`. Take `⟨Z, ⟨a, b⟩, c⟩` from `Set.mem_iUnion₂.1 h`. Conclude with `b ((a.1.isConnected.isPreconnected.subset_connectedComponent c).trans (connectedComponent_eq k).ge)⟩]`. Conclude with `(NoetherianSpace.finite_irreducibleComponents.subset fun _ h => h.1).isClosed_biUnion fun Z h => isClosed_of_mem_irreducibleComponents Z h.1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOpen_connectedComponent_of_noetherian {X : Type} [TopologicalSpace X] [NoetherianSpace X] (x : X) :
     IsOpen (connectedComponent x) := by
@@ -42,9 +42,9 @@ theorem isOpen_connectedComponent_of_noetherian {X : Type} [TopologicalSpace X] 
     isClosed_of_mem_irreducibleComponents Z h.1
 
 /- English proof (translation)
-Take `⟨U, hU, hsU, hUN⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := N) (x := s) hs`. Establish `: IsAffine U` using `hU`. Establish `: IsNoetherian U.toScheme` using `{}`. Establish `: NoetherianSpace U.toScheme` using `inferInstance`. Set `V : U.toScheme.Opens` to `⟨_, isOpen_connectedComponent_of_noetherian (X := U.toScheme) ⟨s, hsU⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: ConnectedSpace V.toScheme` using `isConnected_iff_connectedSpace.1 isConnected_connectedComponent`. Use `⟨V.toScheme, V.ι ≫ U.ι, inferInstance, this, ⟨⟨⟨s, hsU⟩, mem_connectedComponent⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hUN (V.ι v).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_connected_open {S : Scheme.{0}} [IsLocallyNoetherian S] (N : S.Opens) (s : S) (hs : s ∈ N) :
     ∃ (V : Scheme.{0}) (w : V ⟶ S), IsOpenImmersion w ∧ ConnectedSpace V ∧ s ∈ Set.range w ∧
@@ -60,15 +60,15 @@ theorem exists_connected_open {S : Scheme.{0}} [IsLocallyNoetherian S] (N : S.Op
   exact hUN (V.ι v).2
 
 /- English proof (translation)
-Use `isOpen_iff_forall_mem_open.2 fun s hs => ?_` and prove the remaining obligations. Take `⟨n, h2, hn⟩` from `exists_unit S s`. Take `⟨V, w, hw, hV, ⟨v, rfl⟩, hle⟩` from `exists_connected_open _ s hn`. Establish `hG' : IsSemiAbelian ((Over.pullback w).obj G)` using `IsSemiAbelian.pullback w G hG`. Use `hG'.smooth` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ((Over.pullback w).obj G).left` using `GeometricallyConnected.connectedSpace ((Over.pullback w).obj G).hom ((Over.pullback w).obj G).hom.isOpenMap`. Take `⟨x₀⟩ : Nonempty ((Over.pullback w).obj G).left` from `inferInstance`. Take `⟨g, hg⟩` from `exists_dim_of_preconnected ((Over.pullback w).obj G).hom x₀`. Establish `hu : IsUnit ((n : ℕ) : Γ(V, ⊤))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₀` using `RingedSpace.isUnit_res_basicOpen S.toRingedSpace ((n : ℕ) : Γ(S, ⊤))`. Establish `h₁ : (⊤ : V.Opens) ≤ w ⁻¹ᵁ S.basicOpen ((n : ℕ) : Γ(S, ⊤))` using `fun y _ => hle ⟨y, rfl⟩`. Establish `h₀' : IsUnit ((n : ℕ) : Γ(S, S.basicOpen ((n : ℕ) : Γ(S, ⊤))))`. Simplify using `only [map_natCast] at h₀`. Conclude with `h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h₀'.map (w.appLE _ ⊤ h₁).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hU` using `AbLocusOpen.isOpen_abLocus ((Over.pullback w).obj G) hG' hg h2 hu`. Establish `key : ∀ y : V, w y ∈ abLocus G ↔ y ∈ abLocus ((Over.pullback w).obj G)` using `fun y => abLocus_pullback abLocusOne hG (isGrpPullback_pullback G w).1 y`. Use `⟨w '' abLocus ((Over.pullback w).obj G), ?_, w.isOpenEmbedding.isOpenMap _ hU, ⟨v, (key v).1 hs, rfl⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(key y).2 hy`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_abLocus_of_locallyNoetherian {S : Scheme.{0}} [IsLocallyNoetherian S] (G : Over S) [GrpObj G]
     (hG : IsSemiAbelian G) : IsOpen (abLocus G) := by
@@ -99,7 +99,7 @@ theorem isOpen_abLocus_of_locallyNoetherian {S : Scheme.{0}} [IsLocallyNoetheria
 end GlobalTheory.AbLocusOpenGlobal
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z`. Establish `: IsLocallyNoetherian Z.X` using `(GlobalTheory.ModelRelCompare.densePart Z (GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).1).1`. Conclude with `GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_of_locallyNoetherian Z.t.G Z.t.semi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c), IsOpen (abLocus Z.t.G) := by
   intro E _ _ _ H D l Xo c Z

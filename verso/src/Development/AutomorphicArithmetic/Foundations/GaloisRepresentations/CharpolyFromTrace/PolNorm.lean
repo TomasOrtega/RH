@@ -16,17 +16,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel UpperTheory.Gal.TypesAndIwahori GlobalTheory.Cong UpperTheory.Gal.NearKilling
 
 /- English proof (translation)
-Take `⟨χ', hs, hN⟩` from `GlobalTheory.T.hecke_char_norm_descent K M a χ hpol.sign`. Use `⟨χ', ⟨hs, ?_⟩, hN⟩` and prove the remaining obligations. Apply `UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse hjs hgk M a ha π' (compNorm M χ')` to reduce the goal to its premises. Establish `hT` using `GlobalTheory.PolarizedSat.hasSat_conjPlace GlobalTheory.automorphicFormsFiniteGL K a π χ hpol`. Establish `hU : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, (compNorm K χ).UnrAt v` using `Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT'` using `GlobalTheory.T.eventually_cofinite_under_of_eventually_cofinite_places K M _ (hT.and hU)`. Establish `hbc'` using `(conjSrc_injective (IsCMField.complexConj M).toRingEquiv).tendsto_cofinite.eventually hbc`. Use `filter_upwards [hT', hbc, hbc'] with w ⟨hTw, hUw⟩ hw hcw`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_normV_eq_normV_under_pow K M w`. Take `⟨hu', hval⟩` from `GlobalTheory.T.unramifiedAt_value_heckeChar_comp_ideleNorm K M (compNorm K χ) (compNorm M χ') hN w f hf hUw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hu', ?_⟩` and prove the remaining obligations. Take `⟨B, hB1, hB2⟩` from `hw f hf`. Establish `hcu` using `GlobalTheory.T.under_conjugatePlace_eq_conjugatePlace_under K M w`. Establish `hnc : normV (UpperTheory.V.Af.Bc.cPl w) = normV ((UpperTheory.V.Af.Bc.cPl w).under (𝓞 K)) ^ f`. Rewrite using `[hcu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : normV (UpperTheory.V.Af.Bc.cPl w) = normV w` using `GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc _ w`. Establish `e2 : normV (UpperTheory.V.Af.Bc.cPl (w.under (𝓞 K))) = normV (w.under (𝓞 K))` using `GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc _ _`. Rewrite using `[e1, e2, hf]`. Take `⟨C, hC1, hC2⟩` from `hcw f hnc`. Rewrite `hC1` using `[hcu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.cuspRep_satakeParameters_unique K a (CG.mk π) _ _ _ hC1 (hTw B hB1)`. Use `⟨_, _, hB2, hC2, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hval]`. Simplify using `only [Multiset.map_map]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, mul_pow, inv_pow, mul_inv, inv_inv]`.
+A detailed English derivation is pending.
 -/
 private theorem pol_norm (hjs : GlobalTheory.Published.JacquetShalikaRigidity) (hgk : GlobalTheory.Published.GelfandKazhdanDual)
     (K M : Type) [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M]
@@ -64,11 +64,11 @@ private theorem pol_norm (hjs : GlobalTheory.Published.JacquetShalikaRigidity) (
   simp only [Function.comp_apply, mul_pow, inv_pow, mul_inv, inv_inv]
 
 /- English proof (translation)
-Introduce `hjs hgk K M _ _ _ _ _ _ _ a ha π P χ hpol hbc`. Take `⟨χ', hχ', hN⟩` from `pol_norm hjs hgk K M a ha π P χ hpol hbc`. Use `⟨⟨χ', hχ'⟩, fun hq => ?_⟩` and prove the remaining obligations. Establish `h1 : compNorm M χ' = 1`. Use `Subtype.ext (MonoidHom.ext fun x => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hN x, hq, map_pow, compNorm_quadChar, one_pow]`. Both sides reduce to the same expression. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (quadChar M ^ a).locInf v (-1) = (quadChar M).locInf v (-1) ^ a` using `rfl`. Rewrite using `[e, quadChar_locInf]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, compNorm_quadChar, one_pow]`. Establish `h` using `hχ'.dual`. Rewrite `h` using `[h1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Gal.NearKilling.polBC :
     GlobalTheory.Published.JacquetShalikaRigidity → GlobalTheory.Published.GelfandKazhdanDual → PolBC := by

@@ -65,11 +65,11 @@ def CechHom.amb (φ : CechHom C C') : (∀ I, C.V I) →ₗ[k] (∀ I, C'.V I) :
   LinearMap.pi fun I => (φ.app I).comp (LinearMap.proj I)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [CechHom.amb, cechD, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Distinguish the cases in `h : C.good J`. Establish `h' : C'.good J` using `(φ.good_iff J).2 h`. Simplify using `only [h, h', if_true, LinearMap.sum_apply, map_sum, LinearMap.smul_apply, map_zsmul, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.pi_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← LinearMap.comp_apply, ← φ.comm]`. Both sides reduce to the same expression. Establish `h' : ¬ C'.good J` using `fun h' => h ((φ.good_iff J).1 h')`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem CechHom.amb_cechD [LinearOrder ι] (φ : CechHom C C') (v : ∀ I, C.V I) :
     φ.amb (cechD C v) = cechD C' (φ.amb v) := by
@@ -88,9 +88,9 @@ theorem CechHom.amb_cechD [LinearOrder ι] (φ : CechHom C C') (v : ∀ I, C.V I
     simp [h, h']
 
 /- English proof (translation)
-Simplify using `only [cechC, Submodule.mem_pi, Set.mem_univ, true_implies] at hv ⊢`. Introduce `I`. Establish `hI` using `hv I`. Distinguish the cases in `h : C.good I ∧ I.card = i + 1`. Establish `h' : C'.good I ∧ I.card = i + 1` using `⟨(φ.good_iff I).2 h.1, h.2⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [h, h'] at hI ⊢`. Conclude with `φ.piece_le I ⟨_, hI, rfl⟩`. Establish `h' : ¬ (C'.good I ∧ I.card = i + 1)` using `fun h' => h ⟨(φ.good_iff I).1 h'.1, h'.2⟩`. Simplify using `only [h, h', if_false, Submodule.mem_bot] at hI ⊢`. Simplify using `[CechHom.amb, hI]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CechHom.amb_mem_cechC (φ : CechHom C C') {i : ℕ} {v : ∀ I, C.V I} (hv : v ∈ cechC C i) :
     φ.amb v ∈ cechC C' i := by
@@ -107,9 +107,9 @@ theorem CechHom.amb_mem_cechC (φ : CechHom C C') {i : ℕ} {v : ∀ I, C.V I} (
     simp [CechHom.amb, hI]
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Simplify using `only [cechB, Submodule.mem_bot] at hv ⊢`. Simplify using `[hv]`. Consider the case `succ i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨w, hw, rfl⟩` from `hv`. Conclude with `⟨φ.amb w, φ.amb_mem_cechC hw, (φ.amb_cechD w).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CechHom.amb_mem_cechB [LinearOrder ι] (φ : CechHom C C') {i : ℕ} {v : ∀ I, C.V I} (hv : v ∈ cechB C i) :
     φ.amb v ∈ cechB C' i := by
@@ -151,7 +151,7 @@ def denoms (I : Finset (Fin (N + 1))) : Submonoid (Poly S N) :=
   Submonoid.closure ((fun i => (X i : Poly S N)) '' (I : Set (Fin (N + 1))))
 
 /- English proof (translation)
-The claim follows from `Submonoid.closure_mono (Set.image_mono (by exact_mod_cast h))`.
+A detailed English derivation is pending.
 -/
 theorem denoms_mono {I J : Finset (Fin (N + 1))} (h : I ⊆ J) : denoms S N I ≤ denoms S N J :=
   Submonoid.closure_mono (Set.image_mono (by exact_mod_cast h))
@@ -159,7 +159,7 @@ theorem denoms_mono {I J : Finset (Fin (N + 1))} (h : I ⊆ J) : denoms S N I �
 def Xprod (I : Finset (Fin (N + 1))) : Poly S N := ∏ i ∈ I, X i
 
 /- English proof (translation)
-The claim follows from `Submonoid.prod_mem _ fun i hi => Submonoid.subset_closure ⟨i, hi, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Xprod_mem_denoms (I : Finset (Fin (N + 1))) : Xprod S N I ∈ denoms S N I :=
   Submonoid.prod_mem _ fun i hi => Submonoid.subset_closure ⟨i, hi, rfl⟩
@@ -169,7 +169,7 @@ variable (M : Type) [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScala
 abbrev LocM (I : Finset (Fin (N + 1))) : Type := LocalizedModule (denoms S N I) M
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (I : Finset (Fin (N + 1))) : IsScalarTower S (Poly S N) (LocM S N M I) := inferInstance
 
@@ -209,7 +209,7 @@ def locMap (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) : LocM S N M I
     (LocalizedModule.mkLinearMap (denoms S N I) M') f : LocM S N M I →ₗ[Poly S N] LocM S N M' I)).restrictScalars S
 
 /- English proof (translation)
-Simplify using `only [locMap, LinearMap.restrictScalars_apply]`. Rewrite using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.map_mk', ← IsLocalizedModule.mk_eq_mk']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem locMap_mk (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) (m : M) (s : denoms S N I) :
     locMap S N f I (LocalizedModule.mk m s) = LocalizedModule.mk (f m) s := by
@@ -217,7 +217,7 @@ theorem locMap_mk (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) (m : M)
   rw [IsLocalizedModule.mk_eq_mk', IsLocalizedModule.map_mk', ← IsLocalizedModule.mk_eq_mk']
 
 /- English proof (translation)
-The claim follows from `locMap_mk S N f I m _`.
+A detailed English derivation is pending.
 -/
 theorem locMap_locFrac (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) (m : M) (n : ℕ) :
     locMap S N f I (locFrac S N M I m n) = locFrac S N M' I (f m) n :=
@@ -225,7 +225,7 @@ theorem locMap_locFrac (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) (m
 
 omit [Module S M] [IsScalarTower S (Poly S N) M] in
 /- English proof (translation)
-Rewrite using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.mk_eq_mk']`. Conclude with `IsLocalizedModule.liftOfLE_mk' _ _ _ _ _ m s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locRes_mk {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (m : M) (s : denoms S N I) :
     (LocalizedModule.liftOfLE (denoms S N I) (denoms S N J) (denoms_mono S N h)
@@ -234,7 +234,7 @@ theorem locRes_mk {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (m : M) (s : denoms
   exact IsLocalizedModule.liftOfLE_mk' _ _ _ _ _ m s
 
 /- English proof (translation)
-Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `LocalizedModule.induction_on (fun m s => ?_) y` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, locRes, LinearMap.restrictScalars_apply]`. Rewrite using `[locMap_mk, locRes_mk _ _ h, locRes_mk _ _ h, locMap_mk]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem locRes_comp_locMap (f : M →ₗ[Poly S N] M') {I J : Finset (Fin (N + 1))} (h : I ⊆ J) :
     (locRes S N M' h).comp (locMap S N f I) = (locMap S N f J).comp (locRes S N M h) := by
@@ -244,7 +244,7 @@ theorem locRes_comp_locMap (f : M →ₗ[Poly S N] M') {I J : Finset (Fin (N + 1
   rw [locMap_mk, locRes_mk _ _ h, locRes_mk _ _ h, locMap_mk]
 
 /- English proof (translation)
-Rewrite using `[locPiece, Submodule.map_span_le]`. Introduce and unpack `_ ⟨n, m, hm, rfl⟩`. Rewrite using `[locMap_locFrac]`. Conclude with `Submodule.subset_span ⟨n, f m, hf _ m hm, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPiece_map_le {G : GradedMod S N M} {G' : GradedMod S N M'} {f : M →ₗ[Poly S N] M'}
     (hf : IsGradedHom S N G G' f) (I : Finset (Fin (N + 1))) (c : ℤ) :
@@ -284,7 +284,7 @@ def chartRingI (x : Fin (N + 1) → Ω) (I : Finset (Fin (N + 1))) : Subalgebra 
   Algebra.adjoin S {y | ∃ i ∈ I, ∃ j, y = x j / x i}
 
 /- English proof (translation)
-Unfold `chartRingI chartRing`. Use `congr 1`. Use extensionality with `y`. Simplify using `[eq_comm]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem chartRingI_singleton (x : Fin (N + 1) → Ω) (i : Fin (N + 1)) :
     chartRingI S x {i} = chartRing S x i := by
@@ -472,7 +472,7 @@ def twLaurent (x : Fin (N + 1) → Ω) (Q : Fin (N + 1) → Submodule S Ω) (I :
     q ∈ famI S x (twistA S x Q d) I' ∧ y = (LaurentPolynomial.C q * LaurentPolynomial.T d : LaurentPolynomial Ω)}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨I', hI', hne, d, q, hq, e⟩ => ⟨I', hI'.trans h, hne, d, q, hq, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem twLaurent_mono (x : Fin (N + 1) → Ω) (Q : Fin (N + 1) → Submodule S Ω) {I J : Finset (Fin (N + 1))}
     (h : I ⊆ J) : twLaurent S x Q I ≤ twLaurent S x Q J :=
@@ -497,7 +497,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 variable {S : Type} [CommRing S] {σ : Type} {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Simplify using `only [coneMap, aeval_monomial, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, Polynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coneMap_monomial (x : σ → Ω) (s : σ →₀ ℕ) (a : S) :
     coneMap S x (monomial s a) = Polynomial.C (algebraMap S Ω a * s.prod fun v e => x v ^ e) *
@@ -507,9 +507,9 @@ theorem coneMap_monomial (x : σ → Ω) (s : σ →₀ ℕ) (a : S) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Rewrite using `[coneMap_monomial, Polynomial.coeff_C_mul_X_pow, homogeneousComponent_of_mem (isHomogeneous_monomial (d := s) a (n := s.sum fun _ e => e) rfl)]`. Distinguish the cases in `h : d = s.sum fun _ e => e`. Rewrite using `[if_pos h, if_pos h, aeval_monomial]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h, map_zero]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, Polynomial.coeff_add, hp, hq, map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneMap_coeff (x : σ → Ω) (f : MvPolynomial σ S) (d : ℕ) :
     (coneMap S x f).coeff d = aeval x (homogeneousComponent d f) := by
@@ -526,7 +526,7 @@ theorem coneMap_coeff (x : σ → Ω) (f : MvPolynomial σ S) (d : ℕ) :
 open GroundTheory.Heights₂.Heights.NumbersDVR in
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isPrime (coneMap S (fun v : (Σ _ : Unit, Fin (N + 1)) => x v.2)).toRingHom multiHomog := by intro f hf b have hw : ∀ d : (Σ _ : Unit, Fin (N + 1)) →₀ ℕ, Finsupp.weight (blockWeight (fun _ : Unit => Fin (N + 1))) d = fun _ => d.sum fun _ e => e := by intro d funext u s …`.
+A detailed English derivation is pending.
 -/
 theorem coordIdeal_isMultiProjPrime {N : ℕ} (x : Fin (N + 1) → Ω) (hx : ∃ i, x i ≠ 0) :
     IsMultiProjPrime (coordIdeal S (fun v : (Σ _ : Unit, Fin (N + 1)) => x v.2)) where
@@ -588,7 +588,7 @@ def punitGraded : GradedMod S N PUnit where
   smul_mem _ _ _ _ m _ := by simp [Subsingleton.elim m 0]
 
 /- English proof (translation)
-Introduce `_ _ hm` and use `hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedHom_id {M : Type} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
     [IsScalarTower S (Poly S N) M] (G : GradedMod S N M) : IsGradedHom S N G G LinearMap.id :=
@@ -601,13 +601,13 @@ def polySysId : CechHom (polySys S N) (polySys S N) := gradedHom S N (isGradedHo
 variable {S} {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [secs, Submodule.mem_iInf]`. Introduce `i hi`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `(mem_lineLat x 1 i _).2 ⟨x k / x i, div_mem_chartRing x i k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[LineBundle.mods, Submodule.span_le]`. Introduce `e he`. Take `⟨a, ha, rfl⟩` from `(mem_lineLat x 1 i e).1 he`.
+Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨a, ha, x i, ⟨i, rfl⟩, by simp⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, _, ⟨j, rfl⟩, rfl⟩`. Use `Submodule.subset_span ((mem_lineLat x 1 i _).2 ⟨a * (x j / x i), mul_mem ha (div_mem_chartRing x i j), ?_⟩)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem bundleA_isGeneratedBy (x : Fin (N + 1) → Ω) :
     IsGeneratedBy S x (bundleA S x).mods x := by
@@ -639,11 +639,9 @@ variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω]
 open Classical in
 
 /- English proof (translation)
-Introduce `i hi`. Use `⟨{x i}, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[SubFamily.mods, Submodule.span_le]`. Introduce `e he`. Take `⟨a, ha, rfl⟩` from `(mem_lineLat x 1 i e).1 he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨a, ha, x i, by simp, by simp⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, _, hb, rfl⟩`. Rewrite `hb` using `[Finset.coe_singleton, Set.mem_singleton_iff]`. Substitute `hb` using the available equality.
-
-Conclude with `Submodule.subset_span ((mem_lineLat x 1 i _).2 ⟨a, ha, by simp⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem bundleA_isFinite (x : Fin (N + 1) → Ω) : (SubFamily.ofBundle (bundleA S x)).IsFinite := by
   intro i hi
@@ -659,13 +657,13 @@ theorem bundleA_isFinite (x : Fin (N + 1) → Ω) : (SubFamily.ofBundle (bundleA
     exact Submodule.subset_span ((mem_lineLat x 1 i _).2 ⟨a, ha, by simp⟩)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Submodule.one_le]`. Conclude with `⟨1, (Subalgebra.mem_toSubmodule _).2 (one_mem _), by simp⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[pow_succ, Submodule.mul_le]`. Introduce `m hm e he`. Take `⟨a, ha, rfl⟩` from `ih hm`. Establish `hle : (bundleA S x).mods j ≤ ((Subalgebra.toSubmodule (chartRing S x j)).map (LinearMap.mulRight S (x j ^ (n + 1)))).comap (LinearMap.mulLeft S (x j ^ n * a))`. Rewrite using `[LineBundle.mods, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `e he`. Take `⟨b, hb, rfl⟩` from `(mem_lineLat x 1 j e).1 he`. Use `⟨a * b, (Subalgebra.mem_toSubmodule _).2 (mul_mem ((Subalgebra.mem_toSubmodule _).1 ha) hb), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulRight_apply, LinearMap.mulLeft_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨y, hy, hye⟩` from `hle he`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulRight_apply, LinearMap.mulLeft_apply] at hye ⊢`. Rewrite using `[hye]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bundleA_pow_le (x : Fin (N + 1) → Ω) (j : Fin (N + 1)) (n : ℕ) :
     (bundleA S x).mods j ^ n ≤
@@ -769,7 +767,7 @@ def lineFam (k : Type) [Field k] : SubFamily k (RatFunc k) (lineX k) :=
   SubFamily.ofBundle (bundleA k (lineX k))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mem_lineLat (lineX k) 1 0 1).2 ⟨1, one_mem _, by simp [lineX]⟩, one_ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem lineFam_ne (k : Type) [Field k] : (1 : RatFunc k) ∈ (lineFam k).lat 0 ∧ (1 : RatFunc k) ≠ 0 :=
   ⟨(mem_lineLat (lineX k) 1 0 1).2 ⟨1, one_mem _, by simp [lineX]⟩, one_ne_zero⟩

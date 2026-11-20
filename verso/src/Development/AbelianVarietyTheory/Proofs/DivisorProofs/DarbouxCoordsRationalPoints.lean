@@ -16,17 +16,17 @@ noncomputable section
 namespace GlobalTheory.ModelChangeTo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair co hco`. Take `⟨e, ei, ev, hei, hmaps, hheis, hSB, hvac, hstd, hpure, hbij⟩` from `GlobalTheory.T.darboux_coords_good_model F E σ B n d X W M r s r' s' hpair.base hpair.herm hpair.skew hpair.good co hco`. Set `M₁ : Model σ X W` to `⟨co, fun v => ev v (M.vac v), M.μ, M.dom⟩`. Establish `hM₁ : M₁.IsGood B.ψ` using `⟨hco, hvac, hstd, hpair.good.haar, hpair.good.dom⟩`. Establish `hne : ∃ f : SInf F (Fin n × Fin d), f ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨φ, hφ, hθ⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F (Fin n × Fin d)`. Establish `hle : schA F (Fin n × Fin d) ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `Φ ⟨f, g, -, rfl⟩`. Rewrite using `[hall f]`. Use `show pureA F 0 g = 0`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : φ = 0` using `(Submodule.mem_bot ℂ).1 (hle hφ)`. Conclude with `hθ (by rw [h0]; simp [thetaSum])`. Establish `hev : IsEv B M M₁ 1 1 ∅ e`. Use `⟨hmaps, fun z Φ hΦ => ?_, fun u hu => hu.elim, ei, ev, ?_, fun v => ⟨rfl, hSB v⟩, hpure⟩` and prove the remaining obligations. Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`. Conclude with `hheis z Φ hΦ`. Take `⟨f, hf⟩` from `hne`. Take `⟨g, rfl⟩` from `hei f`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `hf (by rw [h]; rfl)`. Take `⟨om₁, hW, hint⟩` from `GlobalTheory.T.weil_eigen_bijective_schwartz F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij`. Take `⟨c₀, hc₀, hth⟩` from `GlobalTheory.T.weil_eigen_schwartz_surjective F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij`. Conclude with `⟨M₁, om₁, e, c₀, rfl, ⟨hpair.base, hpair.herm, hpair.skew, hM₁, hpair.hX, hpair.hW, hpair.resX, hpair.resW, hW⟩, hc₀, fun Φ hΦ => ⟨hmaps Φ hΦ, hth Φ hΦ, fun x => hint x Φ hΦ⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem change_to_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

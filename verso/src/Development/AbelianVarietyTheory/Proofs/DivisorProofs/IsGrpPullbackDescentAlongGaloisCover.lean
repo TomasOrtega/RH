@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.GaloisCartDesc
 
 /- English proof (translation)
-Use `⟨fun {Z} g₁ g₂ e ↦ ?_⟩` and prove the remaining obligations. Take `⟨f', -, hu⟩` from `h.existsUnique_desc (π ≫ g₁) (fun a ↦ by rw [← Category.assoc, h.inv])`. Conclude with `(hu g₁ rfl).trans (hu g₂ e.symm).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem epi_of_isGaloisCover {X Y : Scheme.{0}} {Ga : Type} [Group Ga] {ρ : Ga → (X ⟶ X)} {π : X ⟶ Y}
     (h : GlobalTheory.ZM.IsGaloisCover Ga ρ π) : Epi π := by
@@ -19,7 +19,7 @@ theorem epi_of_isGaloisCover {X Y : Scheme.{0}} {Ga : Type} [Group Ga] {ρ : Ga 
   exact (hu g₁ rfl).trans (hu g₂ e.symm).symm
 
 /- English proof (translation)
-Set `ρ' : Ga → (pullback t π ⟶ pullback t π)` to `fun a ↦ pullback.map t π t π (𝟙 _) (ρ a) (𝟙 _) (by simp) (by simp [h.inv])`. Establish `hg : GlobalTheory.ZM.IsGaloisCover Ga ρ' (pullback.fst t π)` using `h.of_isPullback (IsPullback.of_hasPullback t π).flip (fun a ↦ by simp only [ρ', pullback.map, pullback.lift_snd]) (fun a ↦ by simp only [ρ', pullback.map, pullback.lift_fst, Category.comp_id])`. Conclude with `epi_of_isGaloisCover hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_pullback_fst {X Y : Scheme.{0}} {Ga : Type} [Group Ga] {ρ : Ga → (X ⟶ X)} {π : X ⟶ Y}
     (h : GlobalTheory.ZM.IsGaloisCover Ga ρ π) {T : Scheme.{0}} (t : T ⟶ Y) : Epi (pullback.fst t π) := by
@@ -32,25 +32,25 @@ theorem epi_pullback_fst {X Y : Scheme.{0}} {Ga : Type} [Group Ga] {ρ : Ga → 
   exact epi_of_isGaloisCover hg
 
 /- English proof (translation)
-Introduce `S S₁ Y π₁ Ga _ ρ₁ f A' A B _ _ _ φ₁ ψ φ hG hφ₁ hψ hφ`. Set `τ : Ga → (A'.left ⟶ A'.left)` to `fun a ↦ hφ₁.1.lift φ₁ (A'.hom ≫ ρ₁ a) (by rw [hφ₁.1.w, Category.assoc, hG.inv])`. Establish `hτ₁ : ∀ a, τ a ≫ φ₁ = φ₁` using `fun a ↦ hφ₁.1.lift_fst _ _ _`. Establish `hτ₂ : ∀ a, τ a ≫ A'.hom = A'.hom ≫ ρ₁ a` using `fun a ↦ hφ₁.1.lift_snd _ _ _`. Establish `gφ₁ : GlobalTheory.ZM.IsGaloisCover Ga τ φ₁` using `hG.of_isPullback hφ₁.1.flip hτ₂ hτ₁`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eφ₁ : Epi φ₁` using `epi_of_isGaloisCover gφ₁`. Establish `w : φ ≫ B.hom = A.hom ≫ f`. Rewrite using `[← cancel_epi φ₁, reassoc_of% hφ, hψ.1.w, ← reassoc_of% hφ₁.1.w]`. Set `q : A'.left ⟶ pullback B.hom f` to `pullback.lift ψ (A'.hom ≫ π₁) (by rw [hψ.1.w, Category.assoc])`. Establish `hq₁ : q ≫ pullback.fst B.hom f = ψ` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq₂ : q ≫ pullback.snd B.hom f = A'.hom ≫ π₁` using `pullback.lift_snd _ _ _`. Establish `hsq : IsPullback q A'.hom (pullback.snd B.hom f) π₁`. Use `IsPullback.of_right ?_ hq₂ (IsPullback.of_hasPullback B.hom f)` and prove the remaining obligations. Rewrite using `[hq₁]`. Conclude with `hψ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hτq : ∀ a, τ a ≫ q = q` using `fun a ↦ by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hq₁, ← hφ, reassoc_of% hτ₁ a]`. Rewrite using `[Category.assoc, hq₂, reassoc_of% hτ₂ a, hG.inv]`. Establish `gq : GlobalTheory.ZM.IsGaloisCover Ga τ q` using `hG.of_isPullback hsq.flip hτ₂ hτq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eq : Epi q` using `epi_of_isGaloisCover gq`. Take `⟨d, hd, -⟩` from `gq.existsUnique_desc φ₁ hτ₁`. Set `c : A.left ⟶ pullback B.hom f` to `pullback.lift φ A.hom w`. Establish `hc : φ₁ ≫ c = q`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [c, Category.assoc, hq₁]`. Rewrite using `[pullback.lift_fst, hφ]`. Simplify using `only [c, Category.assoc, hq₂]`. Rewrite using `[pullback.lift_snd, hφ₁.1.w]`. Establish `hcd : c ≫ d = 𝟙 _` using `by rw [← cancel_epi φ₁, reassoc_of% hc, hd, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdc : d ≫ c = 𝟙 _` using `by rw [← cancel_epi q, reassoc_of% hd, hc, Category.comp_id]`. Set `i : A.left ≅ pullback B.hom f` to `⟨c, d, hcd, hdc⟩`. Use `⟨IsPullback.of_iso_pullback ⟨w⟩ i (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Set `e : pullback T.hom π₁ ⟶ T.left` to `pullback.fst T.hom π₁`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ee : Epi e` using `epi_pullback_fst hG T.hom`. Set `T₁ : Over S₁` to `Over.mk (pullback.snd T.hom π₁)`. Set `j : Over.mk (T₁.hom ≫ π₁) ⟶ T` to `Over.homMk e (by simp [T₁, e, pullback.condition])`. Set `j' : Over.mk (T₁.hom ≫ π₁ ≫ f) ⟶ Over.mk (T.hom ≫ f)` to `Over.homMk e (by simp [T₁, e, pullback.condition_assoc])`. Establish `lift : ∀ z : T ⟶ A, ∃ z₁ : T₁ ⟶ A', z₁.left ≫ φ₁ = e ≫ z.left` using `fun z ↦ ⟨Over.homMk (hφ₁.1.lift (e ≫ z.left) (pullback.snd T.hom π₁) (by simp [e, pullback.condition])) (hφ₁.1.lift_snd _ _ _), hφ₁.1.lift_fst _ _ _⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x₁, hx₁⟩` from `lift x`. Take `⟨y₁, hy₁⟩` from `lift y`. Establish `a₁ : ((j ≫ x) * (j ≫ y)).left = (x₁ * y₁).left ≫ φ₁` using `hφ₁.2 T₁ x₁ y₁ (j ≫ x) (j ≫ y) (by simp [j, hx₁]) (by simp [j, hy₁])`. Establish `a₂ : ((j' ≫ x₀) * (j' ≫ y₀)).left = (x₁ * y₁).left ≫ ψ` using `hψ.2 T₁ x₁ y₁ (j' ≫ x₀) (j' ≫ y₀) (by simp [j', hx, ← hφ, reassoc_of% hx₁]) (by simp [j', hy, ← hφ, reassoc_of% hy₁])`. Rewrite `a₁`, `a₂` using `[← MonObj.comp_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi e]`. Establish `b₁ : e ≫ (x * y).left = (x₁ * y₁).left ≫ φ₁` using `by simpa [j] using a₁`. Establish `b₂ : e ≫ (x₀ * y₀).left = (x₁ * y₁).left ≫ ψ` using `by simpa [j'] using a₂`. Rewrite using `[b₂, reassoc_of% b₁, hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_galoisCover : ∀ (S S₁ Y : Scheme.{0}) (π₁ : S₁ ⟶ S) (Ga : Type) [Group Ga] (ρ₁ : Ga → (S₁ ⟶ S₁)) (f : S ⟶ Y)
     (A' : Over S₁) (A : Over S) (B : Over Y) [GrpObj A'] [GrpObj A] [GrpObj B] (φ₁ : A'.left ⟶ A.left)

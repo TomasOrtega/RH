@@ -9,9 +9,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 noncomputable section
 
 /- English proof (translation)
-Establish `hm2` using `B.R.two_le_m`. Establish `hmj : B.R.m - 1 + 1 = B.R.m` using `by omega`. Establish `hL` using `hOk.idx_ok I.mu0`. Take `⟨b0x, -⟩` from `hL.last_uniq`. Set `b0 : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) (B.R.m - 1)` to `⟨some (cast (by rw [show B.R.m - 1 = B.R.m - 2 + 1 by omega]) b0x), by simp; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q0 : (I.stp u I.mu0 (B.R.m - 1)).D b0` to `⟨(DecoF.base _ _ _ _ _, {z | z - 0 ∈ locLat (rowSG (B.primes X) I.sel (I.tup I.mu0)) (DecoF.base B.fields.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs (QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K))).deco.1.N (fun P => if P.1 ∈ (B.primes X).vGs then …`. Rewrite using `[ysAt_ys_of_eq _ _ _ hmj]`. Conclude with `⟨0, zero_mem _, rfl⟩⟩`. Conclude with `⟨(I.stp u I.mu0 (B.R.m - 1)).cl b0 q0⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.Col2.TC.stepBefore_cl_nonempty {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (u : B.Word) :
     Nonempty (I.stp u I.mu0 (B.R.m - 1)).Cl := by
@@ -31,19 +31,17 @@ theorem GlobalTheory.Mem.Col2.TC.stepBefore_cl_nonempty {B : Base} {X : PreX B.t
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u Ch0 chOf0 F hF h1`. Establish `hi : B.R.m - 1 ≤ (I.rec7 l Z).R.m` using `Nat.sub_le _ _`. Establish `hgram : gramN (I.rec7 l Z) (B.R.m - 1) hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 (B.R.m - 1) hi).1`. Use `haveI : NeZero ((I.rec7 l Z).R.N (B.R.m - 1)) := ⟨by`. Use `(I.rec7 l Z).R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ranks.N]`. Use the proof step `omega⟩`. Set `s : 𝓞 (I.rec7 l Z).host.E →+* 𝓞 (I.rec7 l Z).host.E` to `RingOfIntegers.mapRingHom (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E)`. Establish `hsc : ∀ x, (s x : (I.rec7 l Z).host.E) = (I.rec7 l Z).host.conj (x : (I.rec7 l Z).host.E)` using `fun x => Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj _`. Establish `hpq : ((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) * (s F.atT.piU : (I.rec7 l Z).host.E) = (((I.rec7 l Z).mem u).A.T : (I.rec7 l Z).host.E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsc]`. Conclude with `F.atT.piU_norm`. Establish `hTp` using `((I.rec7 l Z).mem u).A.T_prime`. Establish `hp0 : ((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) ≠ 0` using `fun h => (Nat.cast_ne_zero.2 hTp.ne_zero) (by rw [← hpq, h, zero_mul])`. Take `⟨c0⟩` from `GlobalTheory.Mem.Col2.TC.stepBefore_cl_nonempty I hI u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, H⟩` from `hF.mid (B.R.m - 1) h1 (succ_pred_m _)`. Establish `hLb : ∀ x, x ∈ F.levJ.Lb ↔ x ∈ baseL B ((I.rec7 l Z).R.N (B.R.m - 1)) (X.piT u)`. Introduce `x`. Rewrite using `[← F.levJ_Lb h1 (chOf0 (B.R.m - 1) c0)]`. Conclude with `H.lb _ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : F.levJ.Lb = rll_dLat ((I.rec7 l Z).R.N (B.R.m - 1)) (((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E)⁻¹)`. Use `GlobalTheory.Mem.Col2.Lv.baseL_eq B _ F.atT.piU hp0 F.levJ.Lb ?_` and prove the remaining obligations. Rewrite using `[hF.piU]`. Conclude with `hLb`. Establish `hE` using `GlobalTheory.Mem.Col2.Lv.exists_herm_level (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X (B.R.m - 1)) (rankN (I.rec7 l Z) (B.R.m - 1) hi) (I.rec7 l Z).host.g _ _ rfl F.levJ ?_ ?_ ?_`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, e1, e2, -⟩` from `hE`. Conclude with `⟨L, e1, e2⟩`. Introduce `v h0 h1 hb`. Break down `hb with hb | hb` into its components or cases. Conclude with `h0 hb`.
-
-Conclude with `h1 hb`. Introduce `a v h x hx hp`. Conclude with `GlobalTheory.Mem.LevCong.mem_Uloc_of_cong _ F.levJ F.gl F.glevJ a v h x hx hp`. Introduce `v h x`. Conclude with `GlobalTheory.Mem.Col2.Lv.uloc_T_iff (sigD (I.rec7 l Z)) (I.rec7 l Z).sp.cm.deg2 (fun x => star_star x) (fun x hx => ((I.rec7 l Z).sp.cm.fixed x).1 hx) (I.rec7 l Z).sp.cm.cmUnram.2.2 hgram F.levJ F.atT.piU (s F.atT.piU) rfl hpq hTp hL v h (GlobalTheory.T.levelPrime_dvd_of_adicValu …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.levJ_herm_level : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch0 : ℕ → Type} {chOf0 : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch0 i} (F : FormsTiedSym (I.rec7 l Z) u Ch0 chOf0), I.StdF l Z u F → 1 ≤ B.R.m - 1 → ∃ H0 : Formalism.L2.Herm.StepLevel (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X (B.R.m - 1)) (I.rec7 l Z).host.g (B.T u) B.R.f, F.levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) H0.Lb ∧ ∀ v, F.levJ.Uloc v = (H0.Uloc v).map (reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _).toMonoidHom := by
   intro B X I hI hP l Z u Ch0 chOf0 F hF h1

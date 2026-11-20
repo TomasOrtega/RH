@@ -18,17 +18,15 @@ def El {X Y : C} (g : X ⟶ Y) (M : CochainComplex C ℤ) (k m n : ℤ) : Prop :
     ∃ (a : X ⟶ M.X k) (b : Y ⟶ M.X m), b ≫ M.d m n = β ∧ a ≫ M.d k m + g ≫ b = α
 
 /- English proof (translation)
-Rewrite using `[sub_iff M _ n m hm]`. Prove the components needed by the constructor for the conclusion. Introduce `h α β hβ hα`. Take `⟨y, hy⟩` from `h (mappingCone.descCochain φ α (n.negOnePow • β) hm) (by`. Rewrite using `[δ_desc' _ _ _ _ _ _ rfl, desc_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, by rw [δ_units_smul, hβ, smul_zero]⟩` and prove the remaining obligations. Rewrite using `[hα, Cochain.comp_units_smul, smul_smul, Int.negOnePow_succ, neg_mul, Int.units_mul_self]`. Use the proof step `simp)`. Rewrite `hy` using `[eq_desc φ M hk y, δ_desc' _ _ _ _ _ _ hm, desc_eq_iff]`. Take `⟨h1, h2⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(mappingCone.inl φ).comp y (show -1 + m = k by omega), n.negOnePow • (Cochain.ofHom (mappingCone.inr φ)).comp y (zero_add m), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_units_smul, h2, smul_smul, Int.units_mul_self, one_smul]`. Rewrite using `[Cochain.comp_units_smul]`. Conclude with `h1`. Introduce `h z hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzd` using `eq_desc φ M hm z`. Use `set α := (mappingCone.inl φ).comp z (show -1 + n = m by omega)`. Use `set β := (Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add n)`. Rewrite `hz` using `[hzd, δ_desc' _ _ _ _ _ _ rfl, desc_eq_zero_iff]`. Take `⟨hX, hY⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, h1, h2⟩` from `h α (n.negOnePow • β) (by rw [δ_units_smul, hY, smul_zero]) (by`. Rewrite using `[eq_neg_of_add_eq_zero_left hX, Cochain.comp_units_smul, Int.negOnePow_succ]`. Use the proof step `simp)`. Use `⟨mappingCone.descCochain φ a (n.negOnePow • b) hk, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_desc' _ _ _ _ _ _ hm, hzd, desc_eq_iff]`.
-
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Cochain.comp_units_smul, smul_smul, Int.units_mul_self, one_smul, h2]`. Rewrite using `[δ_units_smul, h1, smul_smul, Int.units_mul_self, one_smul]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_iff_Rl {A B : CochainComplex C ℤ} (φ : A ⟶ B) [HomologicalComplex.HasHomotopyCofiber φ]
     (M : CochainComplex C ℤ) (k m n : ℤ) (hk : k + 1 = m) (hm : m + 1 = n) :
@@ -63,9 +61,9 @@ theorem sub_iff_Rl {A B : CochainComplex C ℤ} (φ : A ⟶ B) [HomologicalCompl
     · rw [δ_units_smul, h1, smul_smul, Int.units_mul_self, one_smul]
 
 /- English proof (translation)
-Introduce `α β hβ hα`. Establish `w' : g ≫ e'.inv = e.inv ≫ g'`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, ← w, Iso.inv_hom_id_assoc]`. Take `⟨a, b, h1, h2⟩` from `h (e.inv ≫ α) (e'.inv ≫ β) (by simp [hβ]) (by`. Rewrite using `[Category.assoc, hα, ← Category.assoc, ← w', Category.assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e.hom ≫ a, e'.hom ≫ b, by simp [h1], ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc g', ← w, Category.assoc, Category.assoc, ← Preadditive.comp_add, h2, Iso.hom_inv_id_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem El_iso {X Y X' Y' : C} {g : X ⟶ Y} {g' : X' ⟶ Y'} (e : X' ≅ X) (e' : Y' ≅ Y) (w : e.hom ≫ g = g' ≫ e'.hom)
     (M : CochainComplex C ℤ) (k m n : ℤ) (h : El g M k m n) : El g' M k m n := by
@@ -78,7 +76,7 @@ theorem El_iso {X Y X' Y' : C} {g : X ⟶ Y} {g' : X' ⟶ Y'} (e : X' ≅ X) (e'
   rw [← Category.assoc g', ← w, Category.assoc, Category.assoc, ← Preadditive.comp_add, h2, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Rewrite using `[δ_v m n hm z s d hd e (s + 1) (by omega) rfl]`. Apply the tactic sequence `rcases hz d (by omega) with h | h <;> rw [h] <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem δ_top {A M : CochainComplex C ℤ} {m n : ℤ} (hm : m + 1 = n) (z : Cochain A M m) (s e d : ℤ) (he : s + m = e)
     (hd : s + n = d) (hz : ∀ q (h : s + 1 + m = q), z.v (s + 1) q h = 0 ∨ A.d s (s + 1) = 0) :
@@ -87,7 +85,7 @@ theorem δ_top {A M : CochainComplex C ℤ} {m n : ℤ} (hm : m + 1 = n) (z : Co
   rcases hz d (by omega) with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_ofHom_v {A B M : CochainComplex C ℤ} (φ : A ⟶ B) {n : ℤ} (z : Cochain B M n) (p q : ℤ) (h : p + n = q) :
     ((Cochain.ofHom φ).comp z (zero_add n)).v p q h = φ.f p ≫ z.v p q h := by
@@ -97,13 +95,13 @@ def V {A M : CochainComplex C ℤ} {n : ℤ} (s : ℤ) (z : Cochain A M n) : Pro
   ∀ p q (h : p + n = q), s < p → z.v p q h = 0
 
 /- English proof (translation)
-Introduce `_ _ _ hp` and use `Cochain.single_v_eq_zero _ _ _ _ _ (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem V_single {A M : CochainComplex C ℤ} {s e : ℤ} (g : A.X s ⟶ M.X e) (n : ℤ) : V s (Cochain.single g n) :=
   fun _ _ _ hp => Cochain.single_v_eq_zero _ _ _ _ _ (by omega)
 
 /- English proof (translation)
-Introduce `p q h hp`. Rewrite using `[δ_top hm z p (p + m) q rfl h (fun _ _ => Or.inl (hz _ _ _ (by omega))), hz _ _ _ hp, zero_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem V_δ {A M : CochainComplex C ℤ} {m n : ℤ} (hm : m + 1 = n) (s : ℤ) (z : Cochain A M m) (hz : V s z) :
     V s (δ m n z) := by
@@ -116,17 +114,17 @@ def Rs {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C ℤ) (k
     ∃ (a : Cochain A M k) (b : Cochain B M m), δ m n b = β ∧ δ k m a + (Cochain.ofHom φ).comp b (zero_add m) = α
 
 /- English proof (translation)
-Introduce `α β vα vβ hβ hα`. Take `⟨a, b, h1, h2⟩` from `hE (α.v s _ rfl) (β.v s _ rfl) (by`. Rewrite using `[← δ_top rfl β s _ (s + n + 1) rfl (by omega) (fun _ _ => Or.inl (vβ _ _ _ (by omega))), hβ]; rfl) (by`. Rewrite using `[← δ_top hm α s _ _ rfl rfl (fun _ _ => Or.inl (vα _ _ _ (by omega))), hα, comp_ofHom_v])`. Establish `va` using `V_single a k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `vb` using `V_single b m`. Take `⟨a', b', h3, h4⟩` from `h (α - (δ k m (Cochain.single a k) + (Cochain.ofHom φ).comp (Cochain.single b m) (zero_add m))) (β - δ m n (Cochain.single b m)) (by`. Introduce `p q hpq hp`. Rewrite using `[Cochain.sub_v, Cochain.add_v, comp_ofHom_v]`. Break down `lt_or_eq_of_le (show s ≤ p by omega) with h' | h'` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[vα _ _ _ h', V_δ hk s _ va _ _ _ h', vb _ _ _ h']`. Simplify using the standard rewrite rules. Substitute `h' hpq` using the available equality. Rewrite using `[δ_top hk _ s _ _ rfl rfl (fun _ _ => Or.inl (va _ _ _ (by omega))), Cochain.single_v, Cochain.single_v, h2, sub_self]) (by`. Introduce `p q hpq hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Cochain.sub_v]`. Break down `lt_or_eq_of_le (show s ≤ p by omega) with h' | h'` into its components or cases. Rewrite using `[vβ _ _ _ h', V_δ hm s _ vb _ _ _ h']`. Simplify using the standard rewrite rules. Substitute `h' hpq` using the available equality.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite using `[δ_top hm _ s _ _ rfl rfl (fun _ _ => Or.inl (vb _ _ _ (by omega))), Cochain.single_v, h1, sub_self])`. Use the proof step `(by rw [δ_sub, δ_δ, hβ, sub_zero])`. Use the proof step `(by rw [δ_sub, δ_add, δ_δ, zero_add, δ_ofHom_comp, hα, Cochain.comp_sub])`. Use `⟨a' + Cochain.single a k, b' + Cochain.single b m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[δ_add, Cochain.comp_add, add_add_add_comm, h4]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem step {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C ℤ) (k m n s : ℤ) (hk : k + 1 = m)
     (hm : m + 1 = n) (hE : El (φ.f s) M (s + k) (s + m) (s + n)) (h : Rs φ M k m n (s - 1)) : Rs φ M k m n s := by
@@ -158,9 +156,9 @@ theorem step {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C �
   · rw [δ_add, Cochain.comp_add, add_add_add_comm, h4]; abel
 
 /- English proof (translation)
-Introduce `α β vα vβ _ _`. Establish `hα : α = 0` using `Cochain.ext _ _ (fun p q hpq => by`. Break down `lt_or_ge s p with h | h` into its components or cases. Conclude with `vα p q hpq h`. Conclude with `(hM q (by omega)).eq_of_tgt _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hβ : β = 0` using `Cochain.ext _ _ (fun p q hpq => by`. Break down `lt_or_ge s p with h | h` into its components or cases. Conclude with `vβ p q hpq h`. Conclude with `(hM q (by omega)).eq_of_tgt _ _)`. Conclude with `⟨0, 0, by simp [hβ], by simp [hα]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem base {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C ℤ) (hM : ∀ q < 0, IsZero (M.X q))
     (k m n s : ℤ) (hm : m + 1 = n) (hs : s + n < 0) : Rs φ M k m n s := by
@@ -176,11 +174,11 @@ theorem base {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C �
   exact ⟨0, 0, by simp [hβ], by simp [hα]⟩
 
 /- English proof (translation)
-Establish `ind : ∀ j p : ℕ, n < p + j → Rs φ M k m n (-(p : ℤ))`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro p hp; exact base φ M hM k m n _ hm (by push_cast at hp; omega)`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `p hp`. Establish `h2` using `ih (p + 1) (by push_cast at hp ⊢; omega)`. Establish `e : (-((p + 1 : ℕ) : ℤ)) = -(p : ℤ) - 1` using `by push_cast; ring`. Rewrite `h2` using `[e]`. Conclude with `step φ M k m n _ hk hm (hE p) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α β`. Conclude with `ind (n.toNat + 1) 0 (by omega) α β (fun p q _ hp => (hA p (by simpa using hp)).eq_of_src _ _) (fun p q _ hp => (hB p (by simpa using hp)).eq_of_src _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tower {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C ℤ) (hM : ∀ q < 0, IsZero (M.X q))
     (hA : ∀ q, 0 < q → IsZero (A.X q)) (hB : ∀ q, 0 < q → IsZero (B.X q)) (k m n : ℤ) (hk : k + 1 = m) (hm : m + 1 = n)
@@ -200,13 +198,13 @@ theorem tower {A B : CochainComplex C ℤ} (φ : A ⟶ B) (M : CochainComplex C 
     (fun p q _ hp => (hB p (by simpa using hp)).eq_of_src _ _)
 
 /- English proof (translation)
-Use `El_iso (g := ((HomologicalComplex.single C (ComplexShape.up ℤ) 0).map g).f 0) (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 X).symm (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 Y).symm (by simp [HomologicalComplex.single_map_f_self]) M k m n ?_` and prove the remaining obligations. Introduce `α β hβ hα`. Establish `hz : ∀ (Z : C) (p : ℤ), p ≠ 0 → IsZero (((HomologicalComplex.single C (ComplexShape.up ℤ) 0).obj Z).X p)` using `fun Z p hp => HomologicalComplex.isZero_single_obj_X _ _ _ _ hp`. Establish `hd : ∀ (Z : C), ((HomologicalComplex.single C (ComplexShape.up ℤ) 0).obj Z).d 0 (0 + 1) = 0` using `fun Z => (hz Z _ (by norm_num)).eq_of_tgt _ _`. Take `⟨a, b, h1, h2⟩` from `h (Cochain.single α m) (Cochain.single β n) (Cochain.ext _ _ (fun p q hpq => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Take `rfl : q = n + 1` from `by omega`. Rewrite using `[δ_top rfl _ 0 n _ (zero_add n) hpq (fun _ _ => Or.inr (hd Y)), Cochain.single_v, hβ]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hz Y p hp).eq_of_src _ _)) (Cochain.ext _ _ (fun p q hpq => by`. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Take `rfl : n = q` from `by omega`. Rewrite using `[δ_top hm _ 0 m _ (zero_add m) hpq (fun _ _ => Or.inr (hd X)), Cochain.single_v, comp_ofHom_v, Cochain.single_v, hα]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hz X p hp).eq_of_src _ _))`. Use `⟨a.v 0 k (zero_add k), b.v 0 m (zero_add m), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← δ_top hm b 0 m n (zero_add m) (zero_add n) (fun _ _ => Or.inr (hd Y)), h1, Cochain.single_v]`. Rewrite using `[← δ_top hk a 0 k m (zero_add k) (zero_add m) (fun _ _ => Or.inr (hd X)), ← comp_ofHom_v, ← Cochain.add_v, h2, Cochain.single_v]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem El_of_single [HasZeroObject C] {X Y : C} (g : X ⟶ Y) (M : CochainComplex C ℤ) (k m n : ℤ) (hk : k + 1 = m)
     (hm : m + 1 = n) (h : Rl ((HomologicalComplex.single C (ComplexShape.up ℤ) 0).map g) M k m n) : El g M k m n := by
@@ -237,7 +235,7 @@ theorem El_of_single [HasZeroObject C] {X Y : C} (g : X ⟶ Y) (M : CochainCompl
       Cochain.single_v]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsZero ((((chainsN R).obj U).extend ComplexShape.embeddingDownNat).X i)`. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `j hj`. Establish `: -(j : ℤ) = i` using `hj`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem chains_zero (R : Type) [CommRing R] (U : Spc) (i : ℤ) (hi : 0 < i) : IsZero (((chains R).obj U).X i) := by
   change IsZero ((((chainsN R).obj U).extend ComplexShape.embeddingDownNat).X i)
@@ -247,16 +245,16 @@ theorem chains_zero (R : Type) [CommRing R] (U : Spc) (i : ℤ) (hi : 0 < i) : I
   omega
 
 /- English proof (translation)
-Establish `: (res R F).IsStrictlyGE 0` using `by unfold res; infer_instance`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 q (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_zero (R : Type) [CommRing R] (F : Shv R) (q : ℤ) (hq : q < 0) : IsZero ((res R F).X q) := by
   have : (res R F).IsStrictlyGE 0 := by unfold res; infer_instance
   exact CochainComplex.isZero_of_isStrictlyGE _ 0 q (by omega)
 
 /- English proof (translation)
-Use `HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := p) (i' := -(p : ℤ)) rfl` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = (HomologicalComplex.extendMap ((chainsN R).map f) ComplexShape.embeddingDownNat).f (-(p : ℤ)) ≫ _`. Rewrite using `[this]`. Unfold `chainsXIso`. Use `erw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chains_nat (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
     (chainsXIso R E p).hom ≫ (free R).map (f.app (op (SimplexCategory.mk p))) =
@@ -269,7 +267,7 @@ theorem chains_nat (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E') (p : ℕ)
   rfl
 
 /- English proof (translation)
-Use `(sub_iff_Rl _ (res R F) (n - 2) (n - 1) n (by omega) (by omega)).2 ?_` and prove the remaining obligations. Use `tower _ _ (res_zero R F) (chains_zero R E) (chains_zero R E') _ _ _ (by omega) (by omega) (fun p => ?_)` and prove the remaining obligations. Use `El_iso (chainsXIso R E p) (chainsXIso R E' p) (chains_nat R f p) _ _ _ _ ?_` and prove the remaining obligations. Use `El_of_single _ _ _ _ _ (by omega) (by omega) ?_` and prove the remaining obligations. Conclude with `(sub_iff_Rl _ (res R F) _ _ _ (by omega) (by omega)).1 (h p _ (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tower_body (R : Type) [CommRing R] (F : Shv R) (c : ℤ) {E E' : Spc} (f : E ⟶ E')
     (h : ∀ p : ℕ, ∀ n : ℤ, n < c - p →
@@ -282,7 +280,7 @@ theorem tower_body (R : Type) [CommRing R] (F : Shv R) (c : ℤ) {E E' : Spc} (f
   exact (sub_iff_Rl _ (res R F) _ _ _ (by omega) (by omega)).1 (h p _ (by omega))
 
 /- English proof (translation)
-Introduce `_ R _ F c _ _ f h n hn` and use `tower_body R F c f h n hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafFilt_of : LateralTheory.E.LeafLevelPf.LeafFilt :=
   fun _ R _ F c _ _ f h n hn => tower_body R F c f h n hn

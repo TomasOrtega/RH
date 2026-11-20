@@ -49,7 +49,7 @@ def simpleRing (j : B →+* R) (ev : X → R →+* B) (E : Clopens X → R)
 variable {j : B →+* R} {ev : X → R →+* B} {E : Clopens X → R}
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_exists_open _).2 fun z => ?_` and prove the remaining obligations. Take `⟨V, hz, h⟩` from `hx z`. Use `⟨V, V.isOpen, hz, fun z' hz' => ?_⟩` and prove the remaining obligations. Use `congrArg (ev z') h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h1 z' V hz', hj, one_mul, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lc_of_simple (hj : ∀ z b, ev z (j b) = b) (h1 : ∀ z (V : Clopens X), z ∈ V → ev z (E V) = 1) {x : R}
     (hx : Simple j ev E x) : IsLocallyConstant fun z => ev z x := by
@@ -60,15 +60,15 @@ theorem lc_of_simple (hj : ∀ z b, ev z (j b) = b) (h1 : ∀ z (V : Clopens X),
   rwa [map_mul, map_mul, h1 z' V hz', hj, one_mul, one_mul] at this
 
 /- English proof (translation)
-Establish `key : ∃ V : Clopens X, (Set.univ : Set X) ⊆ (V : Set X) ∧ E V * x = 0`. Use `isCompact_univ.induction_on (p := fun s => ∃ V : Clopens X, s ⊆ (V : Set X) ∧ E V * x = 0) ⟨⊥, Set.empty_subset _, by rw [hbot, zero_mul]⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t hst ⟨V, hV, h⟩`. Conclude with `⟨V, hst.trans hV, h⟩`. Introduce and unpack `s t ⟨V, hV, h⟩ ⟨W, hW, h'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨V ⊔ W, Set.union_subset_union hV hW, ?_⟩` and prove the remaining obligations. Establish `e : E (V ⊔ W) = E V + E W - E V * E W`. Establish `h1` using `hcompl (V ⊔ W)`. Establish `h2 : (V ⊔ W)ᶜ = Vᶜ ⊓ Wᶜ` using `compl_sup`. Rewrite `h1` using `[h2, hmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hcompl V`. Establish `h4` using `hcompl W`. Take the linear combination `h1 - (1 - E W) * h3 - E Vᶜ * h4`. Rewrite using `[e]`. Take the linear combination `(1 - E W) * h + h'`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `z _`. Take `⟨V, hz, h⟩` from `hx z`. Use `⟨V, mem_nhdsWithin_of_mem_nhds (V.isOpen.mem_nhds hz), V, subset_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[h, h0, map_zero, mul_zero]`. Take `⟨V, hV, h⟩` from `key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hT : V = ⊤` using `SetLike.coe_injective (Set.eq_univ_of_univ_subset hV)`. Rewrite `h` using `[hT, htop, one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_of_simple [CompactSpace X] (hmul : ∀ V W, E (V ⊓ W) = E V * E W) (htop : E ⊤ = 1) (hbot : E ⊥ = 0)
     (hcompl : ∀ V, E V + E Vᶜ = 1) {x : R} (hx : Simple j ev E x) (h0 : ∀ z, ev z x = 0) : x = 0 := by
@@ -98,13 +98,11 @@ theorem zero_of_simple [CompactSpace X] (hmul : ∀ V W, E (V ⊓ W) = E V * E W
   exact h
 
 /- English proof (translation)
-Establish `h0 : ∀ z (V : Clopens X), z ∉ V → ev z (E V) = 0` using `fun z V hz => by`. Establish `h` using `congrArg (ev z) (hcompl V)`. Rewrite `h` using `[map_add, h1 z Vᶜ (by rw [← SetLike.mem_coe, Clopens.coe_compl]; exact hz), map_one]`. Simplify using `using h`. Set `F : B → Clopens X` to `fun b => ⟨f ⁻¹' {b}, hf.isClopen_fiber b⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hF : ∀ z b, z ∈ F b ↔ f z = b` using `fun z b => Iff.rfl`. Use `⟨∑ b ∈ hf.range_finite.toFinset, E (F b) * j b, ?_, fun z => ?_⟩` and prove the remaining obligations. Use `Ideal.sum_mem _ fun b hb => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hf.range_finite.mem_toFinset.1 hb`. Conclude with `Ideal.mul_mem_left _ _ (hI z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_eq_single (f z)]`. Rewrite using `[map_mul, h1 z _ ((hF z _).2 rfl), hj, one_mul]`. Introduce `b _ hb`. Rewrite using `[map_mul, h0 z _ (fun h => hb ((hF z b).1 h).symm), zero_mul]`. Introduce `h`.
-
-Conclude with `absurd (hf.range_finite.mem_toFinset.2 ⟨z, rfl⟩) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_of_lc [CompactSpace X] (hcompl : ∀ V, E V + E Vᶜ = 1) (hj : ∀ z b, ev z (j b) = b)
     (h1 : ∀ z (V : Clopens X), z ∈ V → ev z (E V) = 1) (I : Ideal R) (f : X → B) (hf : IsLocallyConstant f)
@@ -130,11 +128,11 @@ theorem exists_of_lc [CompactSpace X] (hcompl : ∀ V, E V + E Vᶜ = 1) (hj : �
 end Abs
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `: Subsingleton R` using `subsingleton_of_zero_eq_one (by simpa using hn.symm)`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : (l : R) ∣ a ^ l - b ^ l`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl (a - b) b`. Rewrite `hr` using `[sub_add_cancel]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 h`. Conclude with `⟨c + (a - b) * b * r, by rw [hr, hc]; ring⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2` using `dvd_sub_pow_of_dvd_sub h1 m`. Rewrite `h2` using `[hn, zero_dvd_iff, ← pow_mul, ← pow_mul, ← pow_succ']`. Conclude with `sub_eq_zero.1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_of_pow_mem {R : Type} [CommRing R] {l n : ℕ} (hl : l.Prime) (hn : (l : R) ^ n = 0) {a b : R}
     (h : (a - b) ^ l ∈ Ideal.span {(l : R)}) : a ^ l ^ n = b ^ l ^ n := by
@@ -157,9 +155,9 @@ section Gen
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, S.zero_mem, w, by simp⟩`. Consider the case `succ k ih`. Take `⟨t, ht, r, rfl⟩` from `ih`. Establish `h0 : r - WittVector.teichmuller l (r.coeff 0) ∈ Ideal.span {(l : D.W)}`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[D.mem_span_l_iff, ← WittVector.constantCoeff_apply, map_sub, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, sub_self]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 h0`. Use `⟨t + (l : D.W) ^ k * WittVector.teichmuller l (r.coeff 0), S.add_mem ht (S.mul_mem (S.pow_mem (natCast_mem S l) k) (h2 _)), c, ?_⟩` and prove the remaining obligations. Take the linear combination `((l : D.W) ^ k) * hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem witt_mem (D : PAlg l) (S : Subring D.W) (h2 : ∀ g, WittVector.teichmuller l g ∈ S) (k : ℕ) (w : D.W) :
     ∃ t ∈ S, ∃ r, w = t + (l : D.W) ^ k * r := by
@@ -176,11 +174,9 @@ theorem witt_mem (D : PAlg l) (S : Subring D.W) (h2 : ∀ g, WittVector.teichmul
     linear_combination ((l : D.W) ^ k) * hc
 
 /- English proof (translation)
-Establish `hW : ∀ w : D.W, D.toAcr n w ∈ S` using `fun w => by`. Take `⟨t, ht, r, rfl⟩` from `witt_mem D (S.comap (D.toAcr n)) h2 n w`. Rewrite using `[map_add, map_mul, map_pow, map_natCast, D.pow_l_acr, zero_mul, add_zero]`. Conclude with `ht`. Take `⟨z, rfl⟩` from `(RL.tens D n).1 x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `S.zero_mem`. Consider the case `tmul a w`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`.
-
-Conclude with `S.mul_mem (h1 a) (hW w)`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `S.add_mem ha hb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem acr_top (D : PAlg l) (n : ℕ) (S : Subring (D.Acr n)) (h1 : ∀ a, D.cris n a ∈ S)
     (h2 : ∀ g, D.toAcr n (WittVector.teichmuller l g) ∈ S) (x : D.Acr n) : x ∈ S := by
@@ -201,11 +197,11 @@ variable {A D : PAlg l} {Γ : Type} [TopologicalSpace Γ]
 def EE (ind : Clopens Γ → D.A) (n : ℕ) (V : Clopens Γ) : D.Acr n := D.toAcr n (WittVector.teichmuller l (ind V))
 
 /- English proof (translation)
-Establish `key : WittVector.teichmuller l (ind V) + WittVector.teichmuller l (ind Vᶜ) = (1 : D.W)`. Use extensionality with `i`. Use `hinj _ _ fun z => ?_` and prove the remaining obligations. Rewrite using `[← WittVector.map_coeff, ← WittVector.map_coeff, map_add, map_one, WittVector.map_teichmuller, WittVector.map_teichmuller]`. Use `congr 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hz : z ∈ V`. Establish `hz' : z ∉ Vᶜ` using `fun h => by`. Rewrite `h` using `[← SetLike.mem_coe, Clopens.coe_compl]`. Conclude with `h hz`. Rewrite using `[h1 z V hz, h0 z _ hz', map_one, WittVector.teichmuller_zero, add_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : z ∈ Vᶜ`. Rewrite using `[← SetLike.mem_coe, Clopens.coe_compl]`. Conclude with `hz`. Rewrite using `[h0 z V hz, h1 z _ hz', map_one, WittVector.teichmuller_zero, zero_add]`. Rewrite using `[EE, EE, ← map_add, key, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EE_compl (e : Γ → (D ⟶ A)) (ind : Clopens Γ → D.A)
     (hinj : ∀ a b : D.A, (∀ z, Hom.f (e z) a = Hom.f (e z) b) → a = b)
@@ -229,19 +225,17 @@ theorem EE_compl (e : Γ → (D ⟶ A)) (ind : Clopens Γ → D.A)
   rw [EE, EE, ← map_add, key, map_one]
 
 /- English proof (translation)
-Establish `hEmul : ∀ V W, EE ind n (V ⊓ W) = EE ind n V * EE ind n W` using `fun V W => by`. Rewrite using `[EE, EE, EE, hmul, map_mul, map_mul]`. Establish `hp` using `(Fact.out : l.Prime)`. Use `acr_top D n (simpleRing _ _ _ hEmul) (fun a z => ⟨⊤, trivial, ?_⟩) (fun g z => ?_) x` and prove the remaining obligations. Rewrite using `[mapAcr_cris, mapAcr_cris]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨π, hπ, -, hπ0, -⟩` from `(GlobalTheory.CompanionTheory.AcrMod.acr_modp D n).1`. Establish `hpow` using `(GlobalTheory.CompanionTheory.AcrMod.acr_modp D n).2.2.2.2.2.1`. Establish `hperf : Function.Surjective fun y : D.A => y ^ l ^ n` using `(PerfectRing.pow D.A l n).bijective_frobenius.2`. Take `⟨h, rfl⟩` from `hperf g`. Take `⟨V, hV, hm⟩` from `hloc h z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set c : D.A := Hom.f j (Hom.f (e z) h) with hc`. Establish `hdiff : D.toAcr n (WittVector.teichmuller l (ind V * h)) - D.toAcr n (WittVector.teichmuller l (ind V * c)) ∈ D.PFil n`. Rewrite using `[← Ideal.Quotient.eq, ← hπ, ← hπ]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hm`. Rewrite using `[← sub_eq_zero, ← map_sub, ← mul_sub, ← hy, map_mul, hπ0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin` using `pow_eq_of_pow_mem hp (D.pow_l_acr n) (hpow _ hdiff).2`. Establish `hidem : EE ind n V ^ l ^ n = EE ind n V`. Establish `hi : IsIdempotentElem (EE ind n V)`. Use `hEmul V V` as an intermediate fact. Rewrite `this` using `[inf_idem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.symm`. Conclude with `hi.pow_eq (pow_ne_zero _ hp.ne_zero)`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `hval : mapAcr j n (mapAcr (e z) n (D.toAcr n (WittVector.teichmuller l (h ^ l ^ n)))) = D.toAcr n (WittVector.teichmuller l c) ^ l ^ n`. Rewrite using `[mapAcr_toAcr, mapAcr_toAcr, mapW, mapW, WittVector.map_teichmuller, WittVector.map_teichmuller, map_pow, map_pow, map_pow, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ * _ = _ * mapAcr j n (mapAcr (e z) n _)`. Rewrite using `[hval]`. Simplify using `only [map_mul, mul_pow] at hfin`. Rewrite using `[map_pow, map_pow]`. Express the relevant statement in the definitionally equal form `(EE ind n V) ^ l ^ n * _ = (EE ind n V) ^ l ^ n * _ at hfin`.
-
-Rewrite `hfin` using `[hidem]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem simple_all (j : A ⟶ D) (e : Γ → (D ⟶ A)) (ind : Clopens Γ → D.A)
     (hmul : ∀ V W, ind (V ⊓ W) = ind V * ind W)
@@ -296,21 +290,21 @@ def ind (V : Clopens Γ) : A.contR Γ :=
     exact h.comp (Ideal.Quotient.mk (Ideal.span {A.pi ^ k}))⟩
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem (s := (V : Set Γ)) h _`.
+A detailed English derivation is pending.
 -/
 theorem ind_mem (V : Clopens Γ) {z : Γ} (h : z ∈ V) : (ind A V).1 z = 1 :=
   Set.indicator_of_mem (s := (V : Set Γ)) h _
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_notMem (s := (V : Set Γ)) h _`.
+A detailed English derivation is pending.
 -/
 theorem ind_not_mem (V : Clopens Γ) {z : Γ} (h : z ∉ V) : (ind A V).1 z = 0 :=
   Set.indicator_of_notMem (s := (V : Set Γ)) h _
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun z => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ind A (V ⊓ W)).1 z = (ind A V).1 z * (ind A W).1 z`. Distinguish the cases in `hV : z ∈ V`. Distinguish the cases in `hW : z ∈ W`. Rewrite using `[ind_mem A _ (show z ∈ V ⊓ W from ⟨hV, hW⟩), ind_mem A V hV, ind_mem A W hW, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ind_not_mem A _ (show z ∉ V ⊓ W from fun h => hW h.2), ind_not_mem A W hW, mul_zero]`. Rewrite using `[ind_not_mem A _ (show z ∉ V ⊓ W from fun h => hV h.1), ind_not_mem A V hV, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_mul (V W : Clopens Γ) : ind A (V ⊓ W) = ind A V * ind A W := by
   refine Subtype.ext (funext fun z => ?_)
@@ -322,23 +316,23 @@ theorem ind_mul (V W : Clopens Γ) : ind A (V ⊓ W) = ind A V * ind A W := by
   · rw [ind_not_mem A _ (show z ∉ V ⊓ W from fun h => hV h.1), ind_not_mem A V hV, zero_mul]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun z => ind_mem A ⊤ (show z ∈ (⊤ : Clopens Γ) from trivial))`.
+A detailed English derivation is pending.
 -/
 theorem ind_top : ind A (⊤ : Clopens Γ) = 1 :=
   Subtype.ext (funext fun z => ind_mem A ⊤ (show z ∈ (⊤ : Clopens Γ) from trivial))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun z => ind_not_mem A ⊥ (show z ∉ (⊥ : Clopens Γ) from fun h => h))`.
+A detailed English derivation is pending.
 -/
 theorem ind_bot : ind A (⊥ : Clopens Γ) = 0 :=
   Subtype.ext (funext fun z => ind_not_mem A ⊥ (show z ∉ (⊥ : Clopens Γ) from fun h => h))
 
 /- English proof (translation)
-Establish `hl` using `h.2 1`. Set `V : Clopens Γ` to `⟨_, hl.isClopen_fiber (Ideal.Quotient.mk _ (h.1 z))⟩`. Use `⟨V, rfl, ?_⟩` and prove the remaining obligations. Establish `key` using `((RL.cont_ex A Γ).2.2.2 1 (ind A V * (h - A.contC Γ (h.1 z)))).2`. Rewrite `key` using `[show A.contC Γ A.pi ^ 1 = A.contC Γ A.pi from pow_one _]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key fun γ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ind A V).1 γ * (h.1 γ - h.1 z) ∈ _`. Distinguish the cases in `hγ : γ ∈ V`. Rewrite using `[ind_mem A V hγ, one_mul]`. Conclude with `Ideal.Quotient.eq.1 hγ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ind_not_mem A V hγ, zero_mul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem ind_loc (h : A.contR Γ) (z : Γ) :
     ∃ V : Clopens Γ, z ∈ V ∧ ind A V * (h - A.contC Γ (h.1 z)) ∈ Ideal.span {A.contC Γ A.pi} := by
@@ -356,20 +350,20 @@ theorem ind_loc (h : A.contR Γ) (z : Γ) :
     exact zero_mem _
 
 /- English proof (translation)
-The claim follows from `Hom.ext (RingHom.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem toCont_evCont (z : Γ) : A.toCont Γ ≫ A.evCont z = 𝟙 A := Hom.ext (RingHom.ext fun _ => rfl)
 
 end Main
 
 /- English proof (translation)
-Introduce `l _ A n`. Establish `hinj : ∀ a b : (A.cont ℤ_[l]).A, (∀ z, Hom.f (A.evCont z) a = Hom.f (A.evCont z) b) → a = b` using `fun a b h => Subtype.ext (funext h)`. Establish `h1 : ∀ z (V : Clopens ℤ_[l]), z ∈ V → Hom.f (A.evCont z) (ind A V) = 1` using `fun z V h => ind_mem A V h`. Establish `h0 : ∀ z (V : Clopens ℤ_[l]), z ∉ V → Hom.f (A.evCont z) (ind A V) = 0` using `fun z V h => ind_not_mem A V h`. Establish `hS` using `simple_all (A.toCont ℤ_[l]) (fun z => A.evCont z) (ind A) (ind_mul A) (ind_loc A) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ∀ z (b : A.Acr n), mapAcr (A.evCont z) n (mapAcr (A.toCont ℤ_[l]) n b) = b` using `fun z b => by`. Rewrite using `[← mapAcr_comp, toCont_evCont, mapAcr_id]`. Establish `hE1 : ∀ z (V : Clopens ℤ_[l]), z ∈ V → mapAcr (A.evCont z) n (EE (ind A) n V) = 1` using `fun z V h => by`. Rewrite using `[EE, mapAcr_toAcr, mapW, WittVector.map_teichmuller, h1 z V h, map_one, map_one]`. Establish `hEmul : ∀ V W : Clopens ℤ_[l], EE (D` using `A.cont ℤ_[l]) (ind A) n (V ⊓ W) = EE (ind A) n V * EE (ind A) n W := fun V W => by rw [EE, EE, EE, ind_mul, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEtop : EE (D` using `A.cont ℤ_[l]) (ind A) n ⊤ = 1 := by rw [EE, ind_top, map_one, map_one]`. Establish `hEbot : EE (D` using `A.cont ℤ_[l]) (ind A) n ⊥ = 0 := by rw [EE, ind_bot, WittVector.teichmuller_zero, map_zero]`. Establish `hEc` using `EE_compl (fun z => A.evCont z) (ind A) hinj h1 h0 n`. Use `⟨fun x => lc_of_simple hj hE1 (hS x), fun x hx => zero_of_simple hEmul hEtop hEbot hEc (hS x) hx, fun 𝔞 f hf hI => exists_of_lc hEc hj hE1 _ f hf fun z => ?_⟩` and prove the remaining obligations. Establish `hcomp : (mapAcr (A.toCont ℤ_[l]) n).comp (mapAcr A.fromBase n) = mapAcr (A.cont ℤ_[l]).fromBase n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← mapAcr_comp, fromBase_comp]`. Rewrite using `[← hcomp, ← Ideal.map_map]`. Conclude with `Ideal.mem_map_of_mem _ (hI z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acr_cont : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), (∀ x : (A.cont ℤ_[l]).Acr n, IsLocallyConstant fun z => mapAcr (A.evCont z) n x) ∧ (∀ x : (A.cont ℤ_[l]).Acr n, (∀ z, mapAcr (A.evCont z) n x = 0) → x = 0) ∧ ∀ (𝔞 : Ideal ((base l).Acr n)) (f : ℤ_[l] → A.Acr n), IsLocallyConstant f → (∀ z, f z ∈ 𝔞.map (mapAcr A.fromBase n)) → ∃ x ∈ 𝔞.map (mapAcr (A.cont ℤ_[l]).fromBase n), ∀ z, mapAcr (A.evCont z) n x = f z := by
   intro l _ A n

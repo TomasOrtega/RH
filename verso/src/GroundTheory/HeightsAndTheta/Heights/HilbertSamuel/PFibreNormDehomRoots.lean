@@ -23,7 +23,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-The claim follows from `FibreNormDehomRoots.proof (PullFormsGeneric.proof (PullRatiosAlgebraic.proof PullConeNull.proof PullConeDegree.proof PullGradedAlgebraic.proof)) PullSectionIntegral.proof CharpolyRootLift.proof`.
+A detailed English derivation is pending.
 -/
 theorem FibreNormDehomRoots.full : FibreNormDehomRoots.Statement :=
   FibreNormDehomRoots.proof

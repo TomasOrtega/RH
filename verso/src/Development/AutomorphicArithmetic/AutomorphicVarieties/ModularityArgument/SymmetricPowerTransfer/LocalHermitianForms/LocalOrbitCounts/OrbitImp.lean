@@ -5,17 +5,15 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc Matrix
 namespace UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Take `⟨a, b, c, d, rfl⟩ : ∃ a b c d, B = !![a, b; c, d]` from `⟨_, _, _, _, Matrix.eta_fin_two B⟩`. Rewrite `htr` using `[Matrix.trace_fin_two_of]`. Rewrite `hdet` using `[Matrix.det_fin_two_of]`. Substitute `htr` using the available equality. Establish `mk : ∀ (g : Matrix (Fin 2) (Fin 2) O), IsUnit g.det → !![a, b; c, d] * g = g * !![0, -1; 1, a + d] → ∃ g : GL (Fin 2) O, !![a, b; c, d] * (g : Matrix (Fin 2) (Fin 2) O) = (g : Matrix (Fin 2) (Fin 2) O) * !![0, -1; 1, a + d]` using `fun g hg h => ⟨GeneralLinearGroup.mk'' g hg, h⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `hc : IsUnit c`. Use `mk !![1, a; 0, c] (by simpa [Matrix.det_fin_two_of] using hc) ?_` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination -hdet | linear_combination hdet`. Distinguish the cases in `hb : IsUnit b`. Use `mk !![0, b; 1, d] (by simpa [Matrix.det_fin_two_of] using hb) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination -hdet | linear_combination hdet`. Establish `hm : ∀ x : O, ¬ IsUnit x → x ∈ IsLocalRing.maximalIdeal O` using `fun x hx => hx`. Establish `hdet' : IsUnit (c + d - a - b)`. Assume the negation of the conclusion as `hn`. Establish `h1` using `hm _ hn`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : a - d ∈ IsLocalRing.maximalIdeal O`. Establish `: a - d = (c - b) - (c + d - a - b)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.sub_mem _ (hm _ hc) (hm _ hb)) h1`. Establish `h3 : (a + d) ^ 2 - 4 ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (a + d) ^ 2 - 4 = (a - d) * (a - d) + 4 * b * c` using `by linear_combination 4 * hdet`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h2) (Ideal.mul_mem_left _ _ (hm _ hc))`. Conclude with `h3 hu`. Use `mk !![1, a + b; 1, c + d] (by rw [Matrix.det_fin_two_of]; convert hdet' using 1; ring) ?_` and prove the remaining obligations.
-
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination -hdet | linear_combination hdet`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem cyc {O : Type} [CommRing O] [IsLocalRing O] (B : Matrix (Fin 2) (Fin 2) O) (τ : O)
     (htr : B.trace = τ) (hdet : B.det = 1) (hu : IsUnit (τ ^ 2 - 4)) :
@@ -59,7 +57,7 @@ section
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
 
 /- English proof (translation)
-Apply the tactic sequence `conv_lhs => rw [show x = algebraMap K (Etau K τ) x.re + x.im • ω by ext <;> simp]`. Rewrite using `[map_add, map_smul, AlgHom.commutes, Algebra.algebraMap_eq_smul_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem j_eq (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (x : Etau K τ) :
     j x = x.re • (1 : Matrix (Fin 2) (Fin 2) K) + x.im • j ω := by
@@ -67,9 +65,9 @@ private theorem j_eq (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (x : Eta
   rw [map_add, map_smul, AlgHom.commutes, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Establish `h : j ω * j ω = (-1 : K) • 1 + τ • j ω`. Rewrite using `[← map_mul, omega_mul_omega_eq_add, map_add, map_smul, map_smul, map_one]`. Establish `h00` using `congrFun (congrFun h 0) 0`. Rewrite `ht` using `[Matrix.trace_fin_two]`. Rewrite using `[Matrix.det_fin_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h00`. Take the linear combination `-h00 + (j ω 0 0) * ht`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem j_det_one (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j ω).trace = τ) :
     (j ω).det = 1 := by
@@ -82,7 +80,7 @@ private theorem j_det_one (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht
   linear_combination -h00 + (j ω 0 0) * ht
 
 /- English proof (translation)
-Rewrite using `[j_eq, QuadraticAlgebra.trace_def]`. Rewrite `ht`, the goal using `[Matrix.trace_fin_two]`. Simplify using the standard rewrite rules. Take the linear combination `x.im * ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem j_tr (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j ω).trace = τ) (x : Etau K τ) :
     (j x).trace = QuadraticAlgebra.trace x := by
@@ -92,9 +90,9 @@ private theorem j_tr (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j
   linear_combination x.im * ht
 
 /- English proof (translation)
-Establish `hd` using `j_det_one j ht`. Rewrite using `[j_eq, QuadraticAlgebra.norm_def]`. Rewrite `ht` using `[Matrix.trace_fin_two]`. Rewrite `hd`, the goal using `[Matrix.det_fin_two]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(x.im ^ 2) * hd + (x.re * x.im) * ht`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem j_det (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j ω).trace = τ) (x : Etau K τ) :
     (j x).det = QuadraticAlgebra.norm x := by
@@ -119,7 +117,7 @@ private theorem coe_map' (g : GL (Fin 2) O) :
       (g : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K) := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.GeneralLinearGroup.scalar, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem coe_scal (s : Kˣ) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) s : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) =
@@ -128,7 +126,7 @@ private theorem coe_scal (s : Kˣ) :
   by_cases h : a = b <;> simp [Matrix.GeneralLinearGroup.scalar, Matrix.one_apply, h]
 
 /- English proof (translation)
-Use `choose f hf using h`. Conclude with `⟨Matrix.of f, by ext s t; exact hf s t⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem lift_mat (A : Matrix (Fin 2) (Fin 2) K) (h : ∀ s t, A s t ∈ (algebraMap O K).range) :
     ∃ A₀ : Matrix (Fin 2) (Fin 2) O, A₀.map (algebraMap O K) = A := by
@@ -136,9 +134,9 @@ private theorem lift_mat (A : Matrix (Fin 2) (Fin 2) K) (h : ∀ s t, A s t ∈ 
   exact ⟨Matrix.of f, by ext s t; exact hf s t⟩
 
 /- English proof (translation)
-Take `⟨A₀, hA⟩` from `lift_mat (O := O) _ h`. Take `⟨u, hu⟩` from `hd`. Establish `hdet : A₀.det = u` using `hinj (by`. Rewrite using `[hu, ← hA, RingHom.map_det]`. Use the proof step `rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Matrix.GeneralLinearGroup.mk'' A₀ (hdet ▸ u.isUnit), Units.ext hA⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_KG (hinj : Function.Injective (algebraMap O K)) (x : GL (Fin 2) K)
     (h : ∀ s t, (x : Matrix (Fin 2) (Fin 2) K) s t ∈ (algebraMap O K).range)
@@ -150,11 +148,11 @@ private theorem mem_KG (hinj : Function.Injective (algebraMap O K)) (x : GL (Fin
   exact ⟨Matrix.GeneralLinearGroup.mk'' A₀ (hdet ▸ u.isUnit), Units.ext hA⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg haveI : (Matrix.GeneralLinearGroup.scalar (Fin 2) : Kˣ →* GL (Fin 2) K).range.Normal := ⟨by`. Introduce and unpack `_ ⟨s, rfl⟩ x`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `comm : x * Matrix.GeneralLinearGroup.scalar (Fin 2) s = Matrix.GeneralLinearGroup.scalar (Fin 2) s * x` using `Units.ext (by rw [Units.val_mul, Units.val_mul, coe_scal]; simp)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[comm]`. Use the proof step `simp⟩`. Use `(Subgroup.normal_mul (Matrix.GeneralLinearGroup.scalar (Fin 2) : Kˣ →* GL (Fin 2) K).range (KG O K))` as an intermediate fact. Establish `hg' : g ∈ ((ZK O K : Subgroup _) : Set (GL (Fin 2) K))` using `hg`. Rewrite `hg'` using `[ZK, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨s, rfl⟩, k, hk, rfl⟩` from `Set.mem_mul.1 hg'`. Conclude with `⟨s, k, hk, rfl⟩`. Introduce and unpack `⟨s, k, hk, rfl⟩`. Conclude with `mul_mem (Subgroup.mem_sup_left ⟨s, rfl⟩) (Subgroup.mem_sup_right hk)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem mem_ZK {g : GL (Fin 2) K} :
     g ∈ ZK O K ↔ ∃ s : Kˣ, ∃ k ∈ KG O K, g = Matrix.GeneralLinearGroup.scalar (Fin 2) s * k := by
@@ -175,11 +173,11 @@ private theorem mem_ZK {g : GL (Fin 2) K} :
     exact mul_mem (Subgroup.mem_sup_left ⟨s, rfl⟩) (Subgroup.mem_sup_right hk)
 
 /- English proof (translation)
-Establish `h1 : star (z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1`. Rewrite using `[← star_mul]`. Simplify using the standard rewrite rules. Establish `h2 : star (z : Etau K τ) = algebraMap K (Etau K τ) s * star w`. Apply the tactic sequence `rw [hzw]; ext <;> simp <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hz' : (z : Etau K τ) = algebraMap K (Etau K τ) s * w` using `by rw [hzw, Algebra.smul_def]`. Establish `h3 : s • (quo z * algebraMap K (Etau K τ) (QuadraticAlgebra.norm w)) = s • w ^ 2`. Rewrite using `[algebraMap_norm_eq_mul_star, quo, Algebra.smul_def, Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Use `congrArg (fun x => s⁻¹ • x) h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify `this` using `[smul_smul, inv_mul_cancel₀ hs]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem quo_norm (z : (Etau K τ)ˣ) (s : K) (hs : s ≠ 0) (w : Etau K τ) (hzw : (z : Etau K τ) = s • w) :
     quo z * algebraMap K (Etau K τ) (QuadraticAlgebra.norm w) = w ^ 2 := by
@@ -197,9 +195,9 @@ private theorem quo_norm (z : (Etau K τ)ˣ) (s : K) (hs : s ≠ 0) (w : Etau K 
   simpa [smul_smul, inv_mul_cancel₀ hs] using this
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 - Polynomial.C a * Polynomial.X + Polynomial.C n, by monicity!, ?_⟩` and prove the remaining obligations. Use `sq_sub_trace_smul_add_norm_eq_zero w` as an intermediate fact. Rewrite `this` using `[ha, hn, Algebra.smul_def]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Etau K τ) a, IsScalarTower.algebraMap_apply O K (Etau K τ) n]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem isInt_w (w : Etau K τ) (a n : O) (ha : QuadraticAlgebra.trace w = algebraMap O K a)
     (hn : QuadraticAlgebra.norm w = algebraMap O K n) : IsIntegral O w := by
@@ -212,17 +210,15 @@ private theorem isInt_w (w : Etau K τ) (a n : O) (ha : QuadraticAlgebra.trace w
   exact this
 
 /- English proof (translation)
-Take `⟨s, k, ⟨k₀, rfl⟩, e⟩` from `mem_ZK.1 hz`. Use `set w : Etau K τ := ((s⁻¹ : Kˣ) : K) • (z : Etau K τ) with hw`. Establish `hjz : j z = (s : K) • (k₀ : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K)`. Use `congrArg Units.val e` as an intermediate fact. Rewrite `this` using `[Units.val_mul, coe_scal, coe_jU, coe_map']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hjw : j w = (k₀ : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K)`. Rewrite using `[hw, map_smul, hjz, smul_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : QuadraticAlgebra.trace w = algebraMap O K (k₀ : Matrix (Fin 2) (Fin 2) O).trace`. Rewrite using `[← j_tr j ht, hjw, Matrix.trace_fin_two, Matrix.trace_fin_two]`. Simplify using the standard rewrite rules. Establish `h2 : QuadraticAlgebra.norm w = algebraMap O K (k₀ : Matrix (Fin 2) (Fin 2) O).det`. Rewrite using `[← j_det j ht, hjw, RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hwi` using `isInt_w (O := O) w _ _ h1 h2`. Take `⟨n, hn⟩` from `Matrix.isUnits_det_units k₀`. Establish `hzw : (z : Etau K τ) = (s : K) • w` using `by rw [hw, smul_smul]; simp`. Establish `h3` using `quo_norm z s s.ne_zero w hzw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h2, ← hn]`. Establish `h4 : quo z = algebraMap O (Etau K τ) ((n⁻¹ : Oˣ) : O) * w ^ 2`. Rewrite using `[← h3, ← IsScalarTower.algebraMap_apply O K (Etau K τ), mul_comm, mul_assoc, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[h4]`.
-
-Conclude with `isIntegral_algebraMap.mul (hwi.pow 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quo_int (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j ω).trace = τ)
     (z : (Etau K τ)ˣ) (hz : jU j z ∈ ZK O K) : IsIntegral O (quo z) := by
@@ -250,9 +246,7 @@ private theorem quo_int (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht :
   exact isIntegral_algebraMap.mul (hwi.pow 2)
 
 /- English proof (translation)
-Use `haveI := h.frac`. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom O K (Etau K τ))` using `algebraMap_injective`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 ((isIntegral_algHom_iff _ hinj).1 (by`. Express the relevant statement in the definitionally equal form `IsIntegral O (algebraMap K (Etau K τ) _)`. Rewrite using `[algebraMap_trace_eq_add_star]`.
-
-Conclude with `hx.add (isIntegral_star_quad hx)))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_int (h : IsLoc O Δ) {x : Etau K τ} (hx : IsIntegral O x) :
     ∃ c : O, algebraMap O K c = QuadraticAlgebra.trace x := by
@@ -263,11 +257,11 @@ private theorem tr_int (h : IsLoc O Δ) {x : Etau K τ} (hx : IsIntegral O x) :
     rw [algebraMap_trace_eq_add_star]; exact hx.add (isIntegral_star_quad hx)))
 
 /- English proof (translation)
-Use `haveI := h.frac`. Distinguish the cases in `hx : x = 0`. Establish `hy : y ≠ 0` using `fun hy => hxy ⟨hx, hy⟩`. Conclude with `⟨y, 0, 1, hy, by simp [hx], by simp, Or.inr rfl⟩`. Break down `ValuationRing.isInteger_or_isInteger O (y / x) with ⟨b, hb⟩ | ⟨a, ha⟩` into its components or cases.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, 1, b, hx, by simp, ?_, Or.inl rfl⟩` and prove the remaining obligations. Rewrite using `[show algebraMap O K b = y / x from hb]`. Clear the denominators using the available nonvanishing facts. Establish `ha' : algebraMap O K a = x / y` using `by rw [show algebraMap O K a = (y / x)⁻¹ from ha, inv_div]`. Distinguish the cases in `hy : y = 0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, 1, 0, hx, by simp, by simp [hy], Or.inl rfl⟩` and prove the remaining obligations. Use `⟨y, a, 1, hy, ?_, by simp, Or.inr rfl⟩` and prove the remaining obligations. Rewrite using `[ha']`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem prim (h : IsLoc O Δ) (x y : K) (hxy : ¬ (x = 0 ∧ y = 0)) :
     ∃ (s : K) (a b : O), s ≠ 0 ∧ x = s * algebraMap O K a ∧ y = s * algebraMap O K b ∧ (a = 1 ∨ b = 1) := by
@@ -285,9 +279,7 @@ private theorem prim (h : IsLoc O Δ) (x y : K) (hxy : ¬ (x = 0 ∧ y = 0)) :
       rw [ha']; field_simp
 
 /- English proof (translation)
-Rewrite using `[j_eq, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Use `add_mem (mul_mem h1 ?_) (mul_mem h2 (hent s t))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ent_j (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K)
     (hent : ∀ s t, j ω s t ∈ (algebraMap O K).range) (x : Etau K τ)
@@ -301,29 +293,25 @@ private theorem ent_j (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K)
   · exact zero_mem _
 
 /- English proof (translation)
-Use `haveI := h.frac`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hz0 : ¬ ((z : Etau K τ).re = 0 ∧ (z : Etau K τ).im = 0)` using `fun h0 => z.ne_zero (QuadraticAlgebra.ext h0.1 h0.2)`. Take `⟨s, a, b, hs, ha, hb, hab⟩` from `prim h _ _ hz0`. Use `set w : Etau K τ := ⟨algebraMap O K a, algebraMap O K b⟩ with hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hzw : (z : Etau K τ) = s • w := by ext <;> simp [hw, ha, hb]`. Use `set n : O := a * a + τ₀ * a * b + b * b with hn`. Use `set t : O := 2 * a + τ₀ * b with htdef`. Establish `hnw : QuadraticAlgebra.norm w = algebraMap O K n`. Simplify using `[hw, hn, QuadraticAlgebra.norm_def, hτ₀]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htw : QuadraticAlgebra.trace w = algebraMap O K t`. Simplify using `[hw, htdef, QuadraticAlgebra.trace_def, hτ₀, map_ofNat]`. Take `⟨c, hc⟩` from `tr_int h hz.1`. Establish `key : (c + 2) * n = t * t` using `hinj (by`. Establish `h1` using `quo_norm z s hs w hzw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2` using `congrArg QuadraticAlgebra.trace h1`. Rewrite `h2` using `[mul_comm, ← Algebra.smul_def, map_smul, sq_eq_trace_smul_sub_norm, map_sub, map_smul, QuadraticAlgebra.trace_algebraMap, smul_eq_mul, smul_eq_mul, ← hc, htw, hnw]`. Simplify using `only [map_mul, map_add, map_ofNat]`. Take the linear combination `h2)`. Establish `hm : ∀ x : O, ¬ IsUnit x → x ∈ IsLocalRing.maximalIdeal O` using `fun x hx => hx`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu : IsUnit n`. Assume the negation of the conclusion as `hn'`. Establish `hnm` using `hm _ hn'`. Establish `ht2 : t * t ∈ IsLocalRing.maximalIdeal O` using `key ▸ Ideal.mul_mem_left _ _ hnm`. Establish `htm : t ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases (IsLocalRing.maximalIdeal.isMaximal O).isPrime.mem_or_mem ht2 with h' | h' <;> exact h'`. Establish `hb2 : (τ₀ ^ 2 - 4) * (b * b) ∈ IsLocalRing.maximalIdeal O`. Establish `: (τ₀ ^ 2 - 4) * (b * b) = t * t - 4 * n` using `by rw [hn, htdef]; ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ ht2 (Ideal.mul_mem_left _ _ hnm)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hbb : b * b ∈ IsLocalRing.maximalIdeal O`. Break down `(IsLocalRing.maximalIdeal.isMaximal O).isPrime.mem_or_mem hb2 with h' | h'` into its components or cases. Conclude with `absurd hu h'`. Conclude with `h'`. Establish `hbm : b ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `rcases (IsLocalRing.maximalIdeal.isMaximal O).isPrime.mem_or_mem hbb with h' | h' <;> exact h'`. Establish `h2a : 2 * a ∈ IsLocalRing.maximalIdeal O`. Establish `: 2 * a = t - τ₀ * b` using `by rw [htdef]; ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ htm (Ideal.mul_mem_left _ _ hbm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ham : a ∈ IsLocalRing.maximalIdeal O`. Break down `(IsLocalRing.maximalIdeal.isMaximal O).isPrime.mem_or_mem h2a with h' | h'` into its components or cases. Conclude with `absurd h.two h'`. Conclude with `h'`. Break down `hab with rfl | rfl` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `ham isUnit_one`. Conclude with `hbm isUnit_one`. Set `s' : Kˣ` to `Units.mk0 s hs`. Establish `hW : (((Matrix.GeneralLinearGroup.scalar (Fin 2) s')⁻¹ * jU j z : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = j w`. Rewrite using `[← map_inv, Units.val_mul, coe_scal, coe_jU, hzw, map_smul]`.
-
-Simplify using `[s', smul_smul, hs]`. Use `mem_ZK.2 ⟨s', (Matrix.GeneralLinearGroup.scalar (Fin 2) s')⁻¹ * jU j z, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Use `mem_KG hinj _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hW]`. Conclude with `ent_j j hent w ⟨a, rfl⟩ ⟨b, rfl⟩`.
-
-Rewrite using `[hW, j_det j ht, hnw]`. Take `⟨u, hu'⟩` from `hnu`. Conclude with `⟨u, by rw [hu']⟩`.
+A detailed English derivation is pending.
 -/
 private theorem cint_zk (h : IsLoc O Δ) (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j ω).trace = τ)
     (hent : ∀ s t, j ω s t ∈ (algebraMap O K).range) (τ₀ : O) (hτ₀ : algebraMap O K τ₀ = τ)
@@ -390,9 +378,9 @@ private theorem cint_zk (h : IsLoc O Δ) (j : Etau K τ →ₐ[K] Matrix (Fin 2)
     exact ⟨u, by rw [hu']⟩
 
 /- English proof (translation)
-Establish `h00` using `congrFun (congrFun h 0) 0`. Establish `h10` using `congrFun (congrFun h 1) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h00 h10`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Take the linear combination `-h00`. Take the linear combination `-h10`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem comm_C {τ : K} (M : Matrix (Fin 2) (Fin 2) K)
     (h : (!![0, -1; 1, τ] : Matrix (Fin 2) (Fin 2) K) * M = M * !![0, -1; 1, τ]) :
@@ -406,49 +394,45 @@ private theorem comm_C {τ : K} (M : Matrix (Fin 2) (Fin 2) K)
   · linear_combination -h10
 
 /- English proof (translation)
-Use `haveI := h.frac`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Take `⟨s, k, ⟨k₀, rfl⟩, E⟩` from `mem_ZK.1 hy`. Take `⟨v, hv⟩` from `hν`. Use `set A := j ω with hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y : Matrix (Fin 2) (Fin 2) K := (y : Matrix (Fin 2) (Fin 2) K) with hY`. Use `set Yi : Matrix (Fin 2) (Fin 2) K := ((y⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) with hYi`. Establish `hYiY : Yi * Y = 1` using `by rw [hYi, hY, ← Units.val_mul]; simp`. Establish `hYYi : Y * Yi = 1` using `by rw [hYi, hY, ← Units.val_mul]; simp`. Establish `hconjdet : ∀ M : Matrix (Fin 2) (Fin 2) K, (Yi * M * Y).det = M.det` using `fun M => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congrArg Matrix.det hYiY` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Take the linear combination `M.det * this`. Establish `hconjtr : ∀ M : Matrix (Fin 2) (Fin 2) K, (Yi * M * Y).trace = M.trace` using `fun M => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.trace_mul_comm, ← mul_assoc, hYYi, one_mul]`. Establish `hE : Yi * j z * Y = (s : K) • (k₀ : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K)`. Use `congrArg Units.val E` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_mul, Units.val_mul, coe_scal, coe_jU, coe_map']`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `Matrix.isUnits_det_units k₀`. Establish `hs2 : (s : K) ^ 2 = algebraMap O K (v * ((n⁻¹ : Oˣ) : O))`. Establish `h1 : (Yi * j z * Y).det = QuadraticAlgebra.norm (z : Etau K τ)`. Rewrite using `[hconjdet, j_det j ht]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[hE, Matrix.det_smul, ← hv]`. Establish `h2 : ((k₀ : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K)).det = algebraMap O K n`. Rewrite using `[hn, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : algebraMap O K (n : O) * algebraMap O K ((n⁻¹ : Oˣ) : O) = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul]`. Simplify using `only [Fintype.card_fin] at h1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take the linear combination `(algebraMap O K ((n⁻¹ : Oˣ) : O)) * h1 - (s : K) ^ 2 * h3`. Take `⟨s₀, hs₀⟩ : ∃ s₀ : O, algebraMap O K s₀ = s` from `IsIntegrallyClosed.isIntegral_iff.1 (IsIntegral.of_pow two_pos (by rw [hs2]; exact isIntegral_algebraMap))`. Take `⟨A₀, hA₀⟩` from `lift_mat (O := O) A hent`. Set `B₀ : Matrix (Fin 2) (Fin 2) O` to `s₀ • (k₀ : Matrix (Fin 2) (Fin 2) O) - e • 1`. Establish `hB₀ : B₀.map (algebraMap O K) = Yi * A * Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : j z = algebraMap O K e • (1 : Matrix (Fin 2) (Fin 2) K) + A`. Rewrite using `[hze, map_add, AlgHom.commutes, Algebra.algebraMap_eq_smul_one]`. Establish `h2 : Yi * j z * Y = algebraMap O K e • (1 : Matrix (Fin 2) (Fin 2) K) + Yi * A * Y`. Rewrite using `[h1, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, mul_one, hYiY]`. Establish `h3 : Yi * A * Y = (s : K) • (k₀ : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K) - algebraMap O K e • (1 : Matrix (Fin 2) (Fin 2) K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← hE, h2]`. Normalize the expressions using the abelian group laws. Rewrite using `[h3, ← hs₀]`. Use extensionality with `a b`. Simplify using `only [B₀, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, map_sub, smul_eq_mul, map_mul, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `tr_map : ∀ M : Matrix (Fin 2) (Fin 2) O, (M.map (algebraMap O K)).trace = algebraMap O K M.trace` using `fun M => by`. Simplify using `[Matrix.trace_fin_two]`. Establish `det_map : ∀ M : Matrix (Fin 2) (Fin 2) O, (M.map (algebraMap O K)).det = algebraMap O K M.det` using `fun M => by`. Rewrite using `[RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hAt : A₀.trace = τ₀` using `hinj (by rw [← tr_map, hA₀, hτ₀, ht])`. Establish `hAd : A₀.det = 1` using `hinj (by rw [← det_map, hA₀, map_one, hA, j_det_one j ht])`. Establish `hBt : B₀.trace = τ₀` using `hinj (by rw [← tr_map, hB₀, hconjtr, hτ₀, ht])`. Establish `hBd : B₀.det = 1` using `hinj (by rw [← det_map, hB₀, hconjdet, map_one, hA, j_det_one j ht])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨g, hg⟩` from `cyc A₀ τ₀ hAt hAd hu`. Take `⟨g', hg'⟩` from `cyc B₀ τ₀ hBt hBd hu`. Use `set C : Matrix (Fin 2) (Fin 2) K := !![0, -1; 1, τ] with hC`. Establish `hCmap : (!![0, -1; 1, τ₀] : Matrix (Fin 2) (Fin 2) O).map (algebraMap O K) = C`. Use extensionality with `a b`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [hC, hτ₀]`. Set `G : GL (Fin 2) K` to `Matrix.GeneralLinearGroup.map (algebraMap O K) g`. Set `G' : GL (Fin 2) K` to `Matrix.GeneralLinearGroup.map (algebraMap O K) g'`. Establish `hAG : A * (G : Matrix (Fin 2) (Fin 2) K) = G * C`. Use `congrArg (fun M : Matrix (Fin 2) (Fin 2) O => M.map (algebraMap O K)) hg` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, hA₀, hCmap] at this`. Conclude with `this`. Establish `hBG : (Yi * A * Y) * (G' : Matrix (Fin 2) (Fin 2) K) = G' * C`. Use `congrArg (fun M : Matrix (Fin 2) (Fin 2) O => M.map (algebraMap O K)) hg'` as an intermediate fact. Simplify using `only [Matrix.map_mul, hB₀, hCmap] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `set Gm : Matrix (Fin 2) (Fin 2) K := (G : Matrix (Fin 2) (Fin 2) K) with hGm`. Use `set Gi : Matrix (Fin 2) (Fin 2) K := ((G⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) with hGi`. Use `set Gp : Matrix (Fin 2) (Fin 2) K := (G' : Matrix (Fin 2) (Fin 2) K) with hGp`. Establish `hGiG : Gi * Gm = 1` using `by rw [hGi, hGm, ← Units.val_mul]; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hGGi : Gm * Gi = 1` using `by rw [hGi, hGm, ← Units.val_mul]; simp`. Establish `hCG : C = Gi * (A * Gm)` using `by rw [hAG, ← mul_assoc, hGiG, one_mul]`. Establish `hYA : Y * (Gp * C) = A * (Y * Gp)`. Rewrite using `[← hBG]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc Y Yi, hYYi, one_mul]`. Establish `hcomm : C * (Gi * (Y * Gp)) = (Gi * (Y * Gp)) * C`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc Gm Gi, hGGi, one_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (Gi * (Y * Gp)) * C := by rw [← hYA]; simp only [mul_assoc]`. Establish `hM` using `comm_C _ hcomm`. Use `set a := (Gi * (Y * Gp)) 0 0`. Use `set c := (Gi * (Y * Gp)) 1 0`. Set `T : GL (Fin 2) K` to `y * G' * G⁻¹`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : (T : Matrix (Fin 2) (Fin 2) K) = j ⟨a, c⟩`. Establish `h1 : (T : Matrix (Fin 2) (Fin 2) K) = Gm * (Gi * (Y * Gp)) * Gi`. Rewrite using `[← mul_assoc Gm, hGGi, one_mul]`. Both sides reduce to the same expression. Rewrite using `[h1, hM, j_eq]`.
-
-Establish `h2 : Gm * C * Gi = A` using `by rw [← hAG, mul_assoc, hGGi, mul_one]`. Rewrite using `[mul_add, add_mul, mul_smul_comm, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, mul_one, hGGi, h2]`. Establish `hTu : IsUnit (⟨a, c⟩ : Etau K τ)`. Rewrite using `[isUnit_iff_norm_isUnit, ← j_det j ht, ← hT]`. Conclude with `Matrix.isUnits_det_units T`.
-
-Take `⟨t, htt⟩` from `hTu`. Use `⟨t, G * G'⁻¹, Subgroup.mem_sup_right (mul_mem ⟨g, rfl⟩ (inv_mem ⟨g', rfl⟩)), ?_⟩` and prove the remaining obligations. Establish `: jU j t = T` using `Units.ext (by rw [coe_jU, htt, hT])`. Rewrite using `[this]`. Simplify using `[T, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem orbit_imp (h : IsLoc O Δ) (j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K) (ht : (j ω).trace = τ)
     (hent : ∀ s t, j ω s t ∈ (algebraMap O K).range) (τ₀ : O) (hτ₀ : algebraMap O K τ₀ = τ)
@@ -569,25 +553,21 @@ private theorem orbit_imp (h : IsLoc O Δ) (j : Etau K τ →ₐ[K] Matrix (Fin 
 end
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ h j ht hent ⟨u, hu⟩`. Use `haveI := h.frac`. Establish `hinj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Choose the witnesses or unpack the hypotheses as in `⟨τ₀, hτ₀⟩ : τ ∈ (algebraMap O K).range := by`. Rewrite using `[← ht, Matrix.trace_fin_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem (hent 0 0) (hent 1 1)`. Establish `hu₀ : IsUnit (τ₀ ^ 2 - 4)`. Establish `: (u : O) = τ₀ ^ 2 - 4` using `hinj (by rw [hu, ← hτ₀]; simp [map_ofNat])`. Conclude with `this ▸ u.isUnit`. Establish `h2u : IsUnit (2 + τ₀)` using `isUnit_of_mul_isUnit_left (y := τ₀ - 2) (by convert hu₀ using 1; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨quo_int j ht z hz, quo_int j ht z⁻¹ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: jU j z⁻¹ = (jU j z)⁻¹` using `map_inv _ _`. Rewrite using `[this]`. Conclude with `inv_mem hz`. Conclude with `cint_zk h j ht hent τ₀ hτ₀ hu₀ z`. Introduce `z hz`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdata : ∃ e : O, (z : Etau K τ) = algebraMap K (Etau K τ) (algebraMap O K e) + ω ∧ ∃ v : Oˣ, algebraMap O K v = QuadraticAlgebra.norm (z : Etau K τ)`. Break down `hz with hz | hz` into its components or cases. Use `⟨0, by simp [hz], 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Simplify using `[QuadraticAlgebra.norm_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨v, hv⟩` from `h2u`. Use `⟨1, by simp [hz], v, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hv]`. Simplify using `[QuadraticAlgebra.norm_def, hτ₀, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, hze, hν⟩` from `hdata`. Establish `hKG : jU j z ∈ KG O K`. Use `mem_KG hinj _ ?_ ?_` and prove the remaining obligations. Rewrite using `[coe_jU]`. Conclude with `ent_j j hent _ (by rw [hze]; simp) (by rw [hze]; simp)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[coe_jU, j_det j ht]`. Conclude with `hν`. Use `⟨hKG, fun y => ⟨orbit_imp h j ht hent τ₀ hτ₀ hu₀ e z hze hν y, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨t, k, hk, rfl⟩`. Establish `hc : (jU j t)⁻¹ * jU j z * jU j t = jU j z`.
-
-Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Rewrite using `[mul_comm, mul_inv_cancel_left]`. Establish `: (jU j t * k)⁻¹ * jU j z * (jU j t * k) = k⁻¹ * jU j z * k` using `by conv_rhs => rw [← hc]`. Simplify using `only [_root_.mul_inv_rev, mul_assoc]`.
-
-Rewrite using `[this]`. Conclude with `mul_mem (mul_mem (inv_mem hk) (Subgroup.mem_sup_right hKG)) hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneG : OneG := by
   intro O K _ _ _ _ _ Δ τ h j ht hent ⟨u, hu⟩

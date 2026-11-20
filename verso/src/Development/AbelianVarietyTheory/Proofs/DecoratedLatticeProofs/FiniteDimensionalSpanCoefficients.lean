@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 namespace GlobalTheory.CoefficientSpanFinite
 
 /- English proof (translation)
-Set `Φ : Module.Dual ℂ (W →ₗ[ℂ] W) →ₗ[ℂ] (G → ℂ)` to `{ toFun := fun φ k => φ (ρ k) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hle : GlobalTheory.Published.AutFin.coeffSpan ρ ≤ LinearMap.range Φ`. Unfold `GlobalTheory.Published.AutFin.coeffSpan`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨ℓ, w, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ℓ ∘ₗ LinearMap.applyₗ w, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_coefficients {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] (ρ : Representation ℂ G W) :

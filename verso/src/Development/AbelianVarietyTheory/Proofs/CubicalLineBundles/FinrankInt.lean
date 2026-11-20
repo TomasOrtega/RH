@@ -11,9 +11,9 @@ namespace GlobalTheory.CM.SelfDualDatum
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Set `e` to `(Fintype.equivFin {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}).symm`. Use `⟨_, fun i => (e i).1, fun τ => ⟨fun h => ?_, fun h => ?_⟩, fun i => (e i).2⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (e.injective (Subtype.ext (a.2.trans b.2.symm)))⟩, ⟨⟨e.symm ⟨τ, h⟩, by simp⟩⟩⟩`. Use `haveI : IsEmpty {i // (e i).1 = τ} := ⟨fun a => h (a.2 ▸ (e a.1).2)⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_enum (H : Host E) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H 1 0 ty ∧
     ∀ i, ty i (H.rt : E) = H.rt0 := by
@@ -27,13 +27,13 @@ theorem exists_enum (H : Host E) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)),
     simp
 
 /- English proof (translation)
-Set `e` to `(Fintype.equivFin (E →+* ℂ)).symm`. Establish `he : IsTypeFn H 1 1 e` using `fun τ => by`. Establish `: Nat.card {i // e i = τ} = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (e.injective (a.2.trans b.2.symm))⟩, ⟨⟨e.symm τ, by simp⟩⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => this, fun _ => this⟩`. Establish `h1` using `PeriodNonempty.sum_type H hty a`. Establish `h2` using `PeriodNonempty.sum_type H he a`. Establish `h3 : ((Algebra.trace ℚ E a : ℚ) : ℂ) = ∑ i, e i a`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ), Equiv.sum_comp e (fun τ => τ a)]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Equiv.sum_comp (RingHom.equivRatAlgHom E ℂ) (fun σ => σ a)).symm`. Simplify using `only [Nat.cast_one, _root_.one_mul, Nat.cast_zero, zero_mul, add_zero] at h1 h2`. Rewrite `h3` using `[h2, Finset.sum_add_distrib, ← map_sum, ← h1]`. Use `congrArg Complex.re h3` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.conj_re, Complex.ratCast_re] at this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem trace_eq (H : Host E) {g : ℕ} {ty : Fin g → (E →+* ℂ)} (hty : IsTypeFn H 1 0 ty) (a : E) :
     ((Algebra.trace ℚ E a : ℚ) : ℝ) = 2 * (∑ i, ty i a).re := by
@@ -56,25 +56,23 @@ theorem trace_eq (H : Host E) {g : ℕ} {ty : Fin g → (E →+* ℂ)} (hty : Is
   linarith
 
 /- English proof (translation)
-Use `choose f hf using fun x y : 𝔄 => (hdual x).2 x.2 y y.2`. Set `EF : LinearMap.BilinForm ℤ 𝔄` to `LinearMap.mk₂ ℤ f (fun x x' y => by`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, ← hf, ← hf, ← hf, Submodule.coe_add, mul_add, add_mul, map_add])`. Use the proof step `(fun c x y => by`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, Int.cast_mul c, ← hf, ← hf, ← zsmul_eq_mul _ c, ← map_zsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use the proof step `ring)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(fun x y y' => by`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, ← hf, ← hf, ← hf, Submodule.coe_add, map_add, mul_add, map_add])`. Use the proof step `(fun c x y => by`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, Int.cast_mul c, ← hf, ← hf, ← zsmul_eq_mul _ c, ← map_zsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use the proof step `ring)`. Establish `hEF : ∀ x y : 𝔄, (EF x y : ℚ) = Algebra.trace ℚ E (ξ * (x : E) * IsCMField.complexConj E (y : E))` using `fun x y => (hf x y).symm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨EF, ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun φ => ?_⟩, hEF⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hx0 : (x : E) ≠ 0` using `fun h => h0 (Subtype.ext h)`. Establish `hz : ∀ a : 𝓞 E, Algebra.trace ℚ E (ξ * x * IsCMField.complexConj E x * IsCMField.complexConj E a) = 0` using `fun a => by`. Use `hEF x (a • x)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[hx, Submodule.coe_smul, Algebra.smul_def, map_mul (IsCMField.complexConj E)]`. Simplify using `only [LinearMap.zero_apply, Int.cast_zero] at this`. Rewrite using `[this]`. Use `congr 1`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hall : ∀ z : E, Algebra.trace ℚ E (ξ * x * IsCMField.complexConj E x * IsCMField.complexConj E z) = 0` using `fun z => by`. Take `⟨n, hn, hi⟩` from `exists_integral_multiples ℤ ℚ {z}`. Use `hz ⟨n • z, hi z (by simp)⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `Algebra.trace ℚ E (_ * IsCMField.complexConj E (n • z)) = 0 at this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zsmul, mul_smul_comm, map_zsmul]`. Conclude with `(smul_eq_zero.1 this).resolve_left hn`. Use `(traceForm_nondegenerate ℚ E).1 (ξ * x * IsCMField.complexConj E x) fun z => by` as an intermediate fact. Simplify `hall (IsCMField.complexConj E z)` using `[Algebra.traceForm_apply]`. Simplify using `[hξ0, hx0] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩` from `(Module.Baer.of_divisible ℚ).extension_property_addMonoidHom 𝔄.subtype.toAddMonoidHom 𝔄.subtype_injective ((Int.castAddHom ℚ).comp φ.toAddMonoidHom)`. Establish `hg' : ∀ x : 𝔄, g x = φ x` using `fun x => DFunLike.congr_fun hg x`. Take `⟨z, hz⟩` from `((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).surjective (g.comp (IsCMField.complexConj E : E →+* E).toAddMonoidHom).toRatLinearMap`. Establish `hz' : ∀ y : E, Algebra.trace ℚ E (ξ * (z / ξ) * IsCMField.complexConj E y) = g y` using `fun y => by`. Use `LinearMap.congr_fun hz (IsCMField.complexConj E y)` as an intermediate fact.
-
-Rewrite using `[mul_div_cancel₀ _ hξ0]`. Conclude with `this.trans (by simp)`. Use `⟨⟨_, (hdual _).1 fun y hy => ⟨φ ⟨y, hy⟩, (hz' y).trans (hg' ⟨y, hy⟩)⟩⟩, LinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[hEF, hz', hg']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form (𝔄 : Submodule (𝓞 E) E) (ξ : E) (hξ0 : ξ ≠ 0)
     (hdual : ∀ x : E, (∀ y ∈ 𝔄, ∃ n : ℤ, Algebra.trace ℚ E (ξ * x * IsCMField.complexConj E y) = n) ↔ x ∈ 𝔄) :
@@ -140,11 +138,9 @@ theorem exists_form (𝔄 : Submodule (𝓞 E) E) (ξ : E) (hξ0 : ξ ≠ 0)
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨N, hN, ψ, hψ⟩` from `PrincipalDatum.exists_clear 𝔄 hfg`. Establish `hNE : (N : E) ≠ 0` using `by exact_mod_cast hN`. Establish `hinj : Function.Injective ψ` using `fun x y h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `mul_left_cancel₀ hNE` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hψ, ← hψ, h]`. Use `haveI : Module.Finite ℤ 𝔄 := Module.Finite.of_injective (ψ.restrictScalars ℤ) hinj`. Rewrite using `[← RingOfIntegers.rank]`. Take `⟨x₀, hx₀, h0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Use `le_antisymm (LinearMap.finrank_le_finrank_of_injective (f := ψ.restrictScalars ℤ) hinj) (LinearMap.finrank_le_finrank_of_injective (f := (LinearMap.toSpanSingleton (𝓞 E) 𝔄 ⟨x₀, hx₀⟩).restrictScalars ℤ) ?_)` and prove the remaining obligations.
-
-Conclude with `smul_left_injective (𝓞 E) (m := (⟨x₀, hx₀⟩ : 𝔄)) (by simpa using h0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finrank_int (𝔄 : Submodule (𝓞 E) E) (hfg : 𝔄.FG) (hne : 𝔄 ≠ ⊥) :
     Module.finrank ℤ 𝔄 = Module.finrank ℚ E := by
@@ -163,41 +159,39 @@ theorem finrank_int (𝔄 : Submodule (𝓞 E) E) (hfg : 𝔄.FG) (hne : 𝔄 �
   exact smul_left_injective (𝓞 E) (m := (⟨x₀, hx₀⟩ : 𝔄)) (by simpa using h0)
 
 /- English proof (translation)
-Introduce `E _ _ _ H 𝔄 ξ hfg hne hξ hneg hdual`. Take `⟨g, ty, hty, hrt⟩` from `exists_enum H`. Establish `hg` using `PeriodDatum.two_mul_eq_of_isTypeFn H hty`. Establish `hg0 : 0 < g`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hξ0 : ξ ≠ 0` using `fun h => by simpa [h] using hneg _ (hrt ⟨0, hg0⟩)`. Take `⟨EF, hbij, hEF⟩` from `exists_form 𝔄 ξ hξ0 hdual`. Establish `hre : ∀ i, (ty i ξ).re = 0` using `fun i => by`. Establish `h` using `IsCMField.complexEmbedding_complexConj E (ty i) ξ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hξ, map_neg]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `only [Complex.neg_re, Complex.conj_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Set `P : 𝔄 →+ (Fin g → ℂ)` to `{ toFun := fun x i => ty i (x : E) map_zero' := by funext i; simp map_add' := fun x y => by funext i; simp }`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `hP : ∀ x i, P x i = ty i (x : E)` using `fun _ _ => rfl`. Set `Hm : Matrix (Fin g) (Fin g) ℂ` to `Matrix.diagonal fun i => ((-2 * (ty i ξ).im : ℝ) : ℂ)`. Establish `hHm : ∀ z w, hermForm Hm z w = ∑ i, ((-2 * (ty i ξ).im : ℝ) : ℂ) * (z i * starRingEnd ℂ (w i))` using `fun z w => by`. Simplify using `only [hermForm, Hm, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [mul_left_comm]; rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hH : Hm.IsHermitian` using `Matrix.isHermitian_diagonal_of_self_adjoint _ (by`. Use function extensionality and compare the values at `i`. Conclude with `Complex.conj_ofReal _)`. Establish `hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re` using `fun z hz => by`. Rewrite using `[hHm, Complex.re_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `Function.ne_iff.1 hz`. Establish `hc : ∀ i, 0 < -2 * (ty i ξ).im` using `fun i => by linarith [hneg _ (hrt i)]`. Use `Finset.sum_pos' (fun i _ => ?_) ⟨j, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re]`. Conclude with `mul_nonneg (hc i).le (Complex.normSq_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_re]`. Conclude with `mul_pos (hc j) (Complex.normSq_pos.2 hj)`. Establish `him : ∀ x y, (hermForm Hm (P x) (P y)).im = EF x y` using `fun x y => by`. Establish `h` using `trace_eq H hty (ξ * (x : E) * IsCMField.complexConj E (y : E))`. Rewrite `h` using `[← hEF, Rat.cast_intCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[h, hHm, Complex.im_sum, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, IsCMField.complexEmbedding_complexConj, hP, hP, _root_.mul_assoc (ty i ξ)]`. Generalize the expression as in `ty i (x : E) * starRingEnd ℂ (ty i (y : E)) = u`. Simplify using `[hre]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlin : ∀ (a : 𝓞 E) x i, P (a • x) i = ty i (a : E) * P x i` using `fun a x i => by`. Rewrite using `[hP, hP, ← map_mul]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective P` using `fun x y h => Subtype.ext ((ty ⟨0, hg0⟩).injective (congrFun h ⟨0, hg0⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdisc : DiscreteTopology P.range`. Take `⟨hr0, hs⟩` from `PrincipalDatum.principal_root_re_zero_im_sq H`. Establish `hs0 : H.rt0.im ≠ 0` using `fun h => by`. Rewrite `hs` using `[h]`. Use `H.d_prime.pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Use `⟨{z | |H.rt0.im * (hermForm Hm z z).re| < 1}, ?_, ?_⟩` and prove the remaining obligations. Use `isOpen_lt ?_ continuous_const` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [hHm]`. Use `fun_prop`. Use extensionality with `⟨_, x, rfl⟩`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Assume the negation of the conclusion as `h0`. Establish `h1` using `hpos (P x) fun e => h0 (Subtype.ext e)`. Establish `h2` using `him (H.rt • x) x`. Establish `h3 : P (H.rt • x) = H.rt0 • P x` using `funext fun i => by rw [hlin, hrt]; rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[h3, PeriodDatum.hermForm_smul_left, Complex.mul_im, hr0, zero_mul, zero_add]`. Rewrite `h` using `[h2]`. Establish `h4 : EF (H.rt • x) x = 0` using `Int.abs_lt_one_iff.1 (by exact_mod_cast h)`. Rewrite `h2` using `[h4, Int.cast_zero]`. Conclude with `(mul_ne_zero hs0 h1.ne') h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite using `[show P x = 0 from congrArg Subtype.val h]`. Simplify using `[hermForm]`. Establish `hspan : Submodule.span ℝ (Set.range P) = ⊤`. Establish `hz : Submodule.span ℤ (Set.range P) = LinearMap.range P.toIntLinearMap` using `Submodule.span_eq (LinearMap.range P.toIntLinearMap)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h` using `Real.finrank_eq_int_finrank_of_discrete (s := Set.range P) (by rw [hz]; exact hdisc)`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite `h` using `[Set.finrank, Set.finrank, hz, LinearMap.finrank_range_of_inj (f := P.toIntLinearMap) hinj, finrank_int 𝔄 hfg hne]`. Rewrite using `[h, ← Module.finrank_mul_finrank ℝ ℂ, Complex.finrank_real_complex, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hadj : ∀ (a : 𝓞 E) x y, EF (a • x) y = EF x (H.bar a • y)` using `fun a x y => by`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[hEF, hEF, Submodule.coe_smul, Submodule.coe_smul, Algebra.smul_def, Algebra.smul_def, map_mul (IsCMField.complexConj E), ← RingOfIntegers.coe_eq_algebraMap, ← RingOfIntegers.coe_eq_algebraMap, H.bar_eq, IsCMField.complexConj_apply_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨D, e, hp, hq, he⟩` from `PeriodDatum.exists_datum E H 𝔄 EF 1 0 g ty P Hm hty hbij hadj hlin hinj hdisc hspan hH hpos him`. Conclude with `⟨D, e, hp, hq, fun x y => by rw [he, hEF]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_datum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (𝔄 : Submodule (𝓞 E) E) (ξ : E), 𝔄.FG → 𝔄 ≠ ⊥ → IsCMField.complexConj E ξ = -ξ → (∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → (τ ξ).im < 0) → (∀ x : E, (∀ y ∈ 𝔄, ∃ n : ℤ, Algebra.trace ℚ E (ξ * x * IsCMField.complexConj E y) = n) ↔ x ∈ 𝔄) → ∃ (D : Datum H) (e : D.La ≃ₗ[𝓞 E] 𝔄), D.p = 1 ∧ D.q = 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * (e x : E) * IsCMField.complexConj E (e y : E)) := by
   intro E _ _ _ H 𝔄 ξ hfg hne hξ hneg hdual

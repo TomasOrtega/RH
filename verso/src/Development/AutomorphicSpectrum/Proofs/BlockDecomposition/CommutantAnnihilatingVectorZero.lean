@@ -6,23 +6,21 @@ open Finset Matrix PositivityTheory.RgHe.Frame
 namespace GlobalTheory.CompanionTheory.RgHeFrame
 
 /- English proof (translation)
-Introduce `m g d v hg hd hv A hc hAv`. Establish `h1 : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hg`. Establish `h2 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hg`. Take `⟨M, hM⟩ : ∃ M, M = g⁻¹ * A * g` from `⟨_, rfl⟩`. Establish `hcomm : M * diagonal d = diagonal d * M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hM]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, Matrix.mul_one]`. Use `_ = g⁻¹ * ((g * diagonal d * g⁻¹) * A) * g := by rw [hc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = diagonal d * M := by`. Rewrite using `[hM]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc g⁻¹ g, h1, Matrix.one_mul]`. Establish `hdiag : ∀ i k, i ≠ k → M i k = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i k hik`. Establish `h` using `congrFun (congrFun hcomm i) k`. Rewrite `h` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `h3 : M i k * (d k - d i) = 0` using `by rw [mul_sub, h]; ring`. Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Conclude with `absurd (hd (sub_eq_zero.mp h4)).symm hik`. Establish `hMg : M * g⁻¹ = g⁻¹ * A`. Rewrite using `[hM, Matrix.mul_assoc, h2, Matrix.mul_one]`. Establish `hMv : M *ᵥ (g⁻¹ *ᵥ v) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Matrix.mulVec_mulVec, hMg, ← Matrix.mulVec_mulVec, hAv, Matrix.mulVec_zero]`. Establish `hM0 : M = 0`. Use extensionality with `i k`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrFun hMv i`. Establish `h5 : M i i * (g⁻¹ *ᵥ v) i = 0`. Establish `h6 : (M *ᵥ (g⁻¹ *ᵥ v)) i = M i i * (g⁻¹ *ᵥ v) i`. Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_eq_single i (fun j _ hj => by rw [hdiag i j (Ne.symm hj), zero_mul]) (fun h => absurd (Finset.mem_univ i) h)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← h6, h]`. Both sides reduce to the same expression. Simplify using `using (mul_eq_zero.mp h5).resolve_right (hv i)`. Simplify using `using hdiag i k hik`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Use `_ = 0 := by rw [← hM, hM0, Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutant_cyclic_eq_zero : ∀ {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (d : Fin m → ℂ) (v : Fin m → ℂ),
     IsUnit g.det → Function.Injective d → (∀ i, (g⁻¹ *ᵥ v) i ≠ 0) →

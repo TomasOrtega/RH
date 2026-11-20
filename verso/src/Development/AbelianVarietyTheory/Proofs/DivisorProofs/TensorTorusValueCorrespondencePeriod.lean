@@ -13,23 +13,19 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 namespace GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Introduce `F _ N N' r W φ e wv hT y'`. Take `⟨-, -, he_add, -, hc, hw0, -, hψ⟩` from `hT`. Use `⟨fun j => hc y' j, fun χ' => ?_⟩` and prove the remaining obligations. Simplify using `only [NumD.io_s, NumD.io_b]`. Set `U : N'.A → Fˣ` to `fun x => Units.mk0 (wv x) (hw0 x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hU : ∀ x, wv x = (U x : F)` using `fun x => rfl`. Set `P : N'.X → Fˣ` to `fun a => ∏ i, ∏ j, N.τ (e a i) (e a j) ^ W i j`. Establish `hψ' : ∀ a, N'.ψ a * U 1 = U (N'.c a) * P a` using `fun a => Units.ext (by`. Simplify using `only [Units.val_mul, U, Units.val_mk0, P]`. Conclude with `hψ a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ i j, N.τ (e y' j) (e χ' i) * N.τ (e y' i) (e χ' j) / (N.θ (N.c (e χ' j)) (N.c (e y' j)) (N.c (e χ' i)) * N.θ (N.c (e χ' j)) (N.c (e y' j)) (N.c (e y' i)) * N.θ (N.c (e χ' i)) (N.c (e y' i)) (N.c (e χ' j) * N.c (e y' j))) = N.τ (e (y' + χ') i) (e (y' + χ') j) / N.τ (e y' i …`. Introduce `i j`. Rewrite using `[he_add y' χ' i, he_add y' χ' j, add_comm (e y' i), add_comm (e y' j)]`. Establish `h1` using `N.τ_add_left (e χ' i) (e y' i) (e χ' j + e y' j)`. Rewrite `h1` using `[N.c_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `N.τ_add_right (e χ' i) (e χ' j) (e y' j)`. Establish `h3` using `N.τ_add_right (e y' i) (e χ' j) (e y' j)`. Establish `h4` using `N.τ_symm (e y' j) (e χ' i)`. Use `replace h1 := congrArg Additive.ofMul h1`. Use `replace h2 := congrArg Additive.ofMul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `replace h3 := congrArg Additive.ofMul h3`. Use `replace h4 := congrArg Additive.ofMul h4`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at h1 h2 h3 h4 ⊢`. Take the linear combination `(norm := abel) h4 - h1 - h2 - h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQ : (∏ i, ∏ j, (N.τ (e y' j) (e χ' i) * N.τ (e y' i) (e χ' j) / (N.θ (N.c (e χ' j)) (N.c (e y' j)) (N.c (e χ' i)) * N.θ (N.c (e χ' j)) (N.c (e y' j)) (N.c (e y' i)) * N.θ (N.c (e χ' i)) (N.c (e y' i)) (N.c (e χ' j) * N.c (e y' j)))) ^ W i j : Fˣ) = P (y' + χ') / P y' / P χ'`. Simplify using `only [key, div_zpow, Finset.prod_div_distrib, P]`. Rewrite using `[hQ, hU, hU, hU, hU]`. Establish `hS` using `hψ' (y' + χ')`. Rewrite `hS` using `[N'.c_add y' χ', mul_comm (N'.c y')]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hy` using `hψ' y'`. Establish `hx` using `hψ' χ'`. Establish `E : N'.τ y' χ' * U (N'.c χ') * U (N'.c y') = P (y' + χ') / P y' / P χ' * U (N'.c χ' * N'.c y') * U 1`. Simplify using `only [NumD.τ]`. Use `replace hS := congrArg Additive.ofMul hS`.
-
-Use `replace hy := congrArg Additive.ofMul hy`. Use `replace hx := congrArg Additive.ofMul hx`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at hS hy hx ⊢`. Take the linear combination `(norm := abel) hS - hy - hx`.
-
-Use `congrArg Units.val E` as an intermediate fact. Simplify `this` using `only [Units.val_mul]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gtRelV_io : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F), TensFacts W φ e wv → ∀ y' : N'.X, GtRelV W φ e wv (N'.io y') (fun j => N.io (e y' j)) := by
   intro F _ N N' r W φ e wv hT y'

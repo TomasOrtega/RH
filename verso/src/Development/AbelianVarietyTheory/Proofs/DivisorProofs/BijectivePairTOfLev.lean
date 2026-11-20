@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HTLat.TatePerfect
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, pow_zero, Tate.lev_zero]`. Consider the case `succ k ih => rw [succ_nsmul, Tate.lev_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lev_nsmul {p : ℕ} {M : Type} [CommGroup M] (t : Tate p M) (k n : ℕ) :
     (k • t).lev n = t.lev n ^ k := by
@@ -20,9 +20,9 @@ theorem lev_nsmul {p : ℕ} {M : Type} [CommGroup M] (t : Tate p M) (k n : ℕ) 
   | succ k ih => rw [succ_nsmul, Tate.lev_add, ih, pow_succ]
 
 /- English proof (translation)
-Establish `e : t = t' + (t - t')` using `by abel`. Establish `h3 : (t - t').lev n = 1`. Use `congrArg (·.lev n) e` as an intermediate fact. Simplify using `only [Tate.lev_add] at this`. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_mul.1 this`. Take `⟨s, hs⟩` from `(h2 n _).1 h3`. Rewrite using `[e, hs, map_add, map_smul, Tate.lev_add, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, lev_nsmul, Tate.lev_pow, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_congr {p : ℕ} [Fact p.Prime] {M M' : Type} [CommGroup M] [CommGroup M']
     (h2 : ∀ (n : ℕ) (t : Tate p M), t.lev n = 1 ↔ ∃ s : Tate p M, t = (p : ℤ_[p]) ^ n • s)
@@ -42,13 +42,13 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   (A : Out.PolAV (Sp C))
 
 /- English proof (translation)
-Use `choose! τ hτ using h1`. Set `κ : ℕ → GlobalTheory.ChTor.Pts A.A → Cˣ` to `fun n x => (φ (τ n x)).lev n`. Establish `hκ : ∀ n (t : TateA A p), κ n (t.lev n) = (φ t).lev n` using `fun n t => lev_congr h2 φ (hτ n _ (t.lev_pow n))`. Establish `hm : ∀ n z z', z ^ p ^ n = 1 → z' ^ p ^ n = 1 → κ n (z * z') = κ n z * κ n z'`. Introduce `n z z' hz hz'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : z * z' = (τ n z + τ n z').lev n` using `by rw [Tate.lev_add, hτ n z hz, hτ n z' hz']`. Rewrite using `[e, hκ, map_add, Tate.lev_add]`. Establish `hp` using `fun n => weil_perfect (A := A) (one_le_ppow p n) (κ n) (hm n)`. Use `choose s hs hu using hp`. Establish `hc : ∀ n, s (n + 1) ^ p = s n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n`. Use `hu n _ ⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_succ']`. Conclude with `(hs (n + 1)).1`. Establish `hz' : z ^ p ^ (n + 1) = 1` using `by rw [pow_succ, pow_mul, hz, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← weil_level (one_le_ppow p n) (Fact.out : p.Prime).pos hz (by rw [← pow_succ]; exact (hs (n + 1)).1), ← pow_succ, (hs (n + 1)).2 z hz']`. Establish `e : z = (p • τ n z).lev (n + 1)` using `by rw [lev_nsmul, Tate.lev_succ, hτ n z hz]`. Use `conv_lhs => rw [e, hκ, map_nsmul, lev_nsmul, Tate.lev_succ]`. Use `⟨Tate.mk s fun n => ⟨(hs n).1, hc n⟩, fun t => Tate.ext fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[lev_weilT, Tate.lev_mk, (hs n).2 _ (t.lev_pow n), hκ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilT_flip_surjective
     (h1 : ∀ (n : ℕ) (x : GlobalTheory.ChTor.Pts A.A), x ^ p ^ n = 1 → ∃ t : TateA A p, t.lev n = x)
@@ -77,9 +77,9 @@ theorem weilT_flip_surjective
   rw [lev_weilT, Tate.lev_mk, (hs n).2 _ (t.lev_pow n), hκ]
 
 /- English proof (translation)
-Use `Tate.ext fun n => ?_` and prove the remaining obligations. Establish `hp` using `weil_perfect (A := A) (one_le_ppow p n) (fun _ => 1) (fun _ _ _ _ => (_root_.mul_one _).symm)`. Use `hp.unique ⟨s.lev_pow n, fun z hz => ?_⟩ ⟨(0 : TateA A p).lev_pow n, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `h1 n z hz`. Rewrite using `[← lev_weilT, hs, Tate.lev_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, rfl⟩` from `h1 n z hz`. Rewrite using `[← lev_weilT, map_zero, Tate.lev_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_weilT
     (h1 : ∀ (n : ℕ) (x : GlobalTheory.ChTor.Pts A.A), x ^ p ^ n = 1 → ∃ t : TateA A p, t.lev n = x)
@@ -97,13 +97,11 @@ end GlobalTheory.HTLat.TatePerfect
 namespace GlobalTheory.HTLat
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ A ε h1 h2`. Establish `hb : Function.Bijective (pairT A ε).flip`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun s hs => TatePerfect.eq_zero_of_weilT A h1 s fun t => ?_` and prove the remaining obligations. Establish `: ε.equiv.symm (weilT A p t s) = 0` using `LinearMap.congr_fun hs t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ε.equiv.symm.map_eq_zero_iff.1 this`. Introduce `l`. Take `⟨s, hs⟩` from `TatePerfect.weilT_flip_surjective A h1 h2 (ε.equiv.toLinearMap ∘ₗ l)`. Use `⟨s, LinearMap.ext fun t => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ε.equiv.symm (weilT A p t s) = l t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `ε.equiv.symm_apply_apply _`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Establish `e : ⇑(pairT A ε) = Neg.neg ∘ ⇑(pairT A ε).flip`. Use function extensionality and compare the values at `s`.
-
-Conclude with `LinearMap.ext fun t => ((isAlt_pairT A ε).neg_eq t s).symm`. Rewrite using `[e]`. Conclude with `(Equiv.neg _).bijective.comp hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_pairT_of_lev : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (A : Out.PolAV (Sp C)) (ε : Eps p C), (∀ (n : ℕ) (x : GlobalTheory.ChTor.Pts A.A), x ^ p ^ n = 1 → ∃ t : TateA A p, t.lev n = x) → (∀ (n : ℕ) (t : TateA A p), t.lev n = 1 ↔ ∃ s : TateA A p, t = (p : ℤ_[p]) ^ n • s) → Function.Bijective (pairT A ε).flip ∧ Function.Bijective (pairT A ε) := by
   intro p _ C _ _ _ A ε h1 h2

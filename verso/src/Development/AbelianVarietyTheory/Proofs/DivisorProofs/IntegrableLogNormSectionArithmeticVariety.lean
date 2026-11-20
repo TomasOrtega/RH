@@ -18,15 +18,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `hP k _ X _ _ p D hX σ L M s hs`. Use `hX.isDomain` as an intermediate fact. Use `hX.finite` as an intermediate fact. Establish `hσ : Function.Injective σ`. Establish `hk : RingHom.ker σ = ⊥` using `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `n`. Simplify using `[Ideal.mem_comap, RingHom.mem_ker])`. Conclude with `(RingHom.injective_iff_ker_eq_bot σ).2 hk`. Set `K` to `FractionRing k`. Take `⟨τ, rfl⟩ : ∃ τ : K →+* ℂ, σ = τ.comp (algebraMap k K)` from `⟨IsFractionRing.lift hσ, by ext a; simp⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G` to `Limits.pullback p (spMap (algebraMap k K))`. Set `j : G ⟶ X` to `Limits.pullback.fst _ _`. Set `q : G ⟶ Sp K` to `Limits.pullback.snd _ _`. Establish `hp : IsPullback j q p (spMap (algebraMap k K))` using `IsPullback.of_hasPullback _ _`. Take `⟨hGi, hGn, hproj, hdim, hgen, -, hstalk, -, -⟩` from `GlobalTheory.T.generic_fiber_arithmetic_variety_integral_projective k K X G p q j hp D hX`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', -, -, hlog⟩` from `GlobalTheory.T.exists_section_generic_fiber_pullback_local_iso k K X G p q j hp τ hstalk M s hs hgen`. Establish `h1` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP K G q τ D hproj hdim (fun i => (L i).bc hp.w τ) (M.bc hp.w τ) s' hs'`. Establish `h2` using `((GlobalTheory.T.mixedChernMeasure_integral_eq_genericFibre k K X G p q j hp τ D hX L).2 (M.logSec s)).1`. Use `h2.1 ?_` and prove the remaining obligations. Establish `e : (M.bc hp.w τ).logSec s' = fun y => M.logSec s (bcPt hp.w τ y)` using `funext hlog`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem intg_logSec_of_arithVar : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (σ : k →+* ℂ) (L : Fin D → MLine p σ) (M : MLine p σ) (s : M.B.Sec), genericPoint X ∈ nonzeroLocus s → Intg L (M.logSec s) := by
   intro hP k _ X _ _ p D hX σ L M s hs

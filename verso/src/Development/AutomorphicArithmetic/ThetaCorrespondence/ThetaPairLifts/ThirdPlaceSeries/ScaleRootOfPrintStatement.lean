@@ -9,7 +9,7 @@ section
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis_alt | exact _root_.GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.scale_root_of_reciprocity_inputs : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis := by
   first | exact @_root_.GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis_alt | exact _root_.GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.scaleRoot_of_hypothesis_alt <;> assumption)

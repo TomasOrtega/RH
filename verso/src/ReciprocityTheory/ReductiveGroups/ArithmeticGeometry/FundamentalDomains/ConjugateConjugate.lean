@@ -8,13 +8,13 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `ht : t ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`. Take `⟨γ, rfl⟩` from `Submodule.mem_one.1 ha`. Take `⟨k, hk⟩` from `h γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `RingHom.mem_range.2 ⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply]`. Simplify using `using hk.symm`. Establish `h1 : (1 : E) ∈ (1 : Submodule (𝓞 E) E)` using `Submodule.mem_one.2 ⟨1, map_one _⟩`. Establish `hb : ∀ i, IsIntegral ℤ (NumberField.integralBasis E i)` using `fun i => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[NumberField.integralBasis_apply]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe _`. Establish `key` using `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (1 : Submodule (𝓞 E) E) hb h1 ht`. Establish `e : Algebra.discr ℚ (NumberField.integralBasis E) • (1 : E) * t = (NumberField.discr E : E) * t`. Rewrite using `[← NumberField.coe_discr, Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem d4l2_dual_int (t : E) (h : ∀ γ : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (t * γ) = k) :
     IsIntegral ℤ ((NumberField.discr E : E) * t) := by
@@ -40,9 +40,9 @@ theorem d4l2_dual_int (t : E) (h : ∀ γ : 𝓞 E, ∃ k : ℤ, Algebra.trace �
   rwa [e] at key
 
 /- English proof (translation)
-Establish `key` using `d4l2_dual_int t h`. Break down `Int.natAbs_eq (NumberField.discr E) with hd | hd` into its components or cases. Establish `e : ((NumberField.discr E).natAbs : E) = (NumberField.discr E : E)` using `by conv_rhs => rw [hd]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`. Establish `e : ((NumberField.discr E).natAbs : E) = -(NumberField.discr E : E)` using `by conv_rhs => rw [hd]`. Simplify using the standard rewrite rules. Rewrite using `[e, neg_mul]`. Conclude with `key.neg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d4l2_dual_int' (t : E) (h : ∀ γ : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (t * γ) = k) :
     IsIntegral ℤ (((NumberField.discr E).natAbs : E) * t) := by
@@ -64,7 +64,7 @@ namespace Data
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjugate_conjugate' (φ : E →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ := by
@@ -72,13 +72,13 @@ theorem conjugate_conjugate' (φ : E →+* ℂ) :
   simp only [ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]
 
 /- English proof (translation)
-Rewrite using `[X.cmType (ComplexEmbedding.conjugate φ), conjugate_conjugate']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_iff (φ : E →+* ℂ) : ComplexEmbedding.conjugate φ ∈ X.Ψ ↔ φ ∉ X.Ψ := by
   rw [X.cmType (ComplexEmbedding.conjugate φ), conjugate_conjugate']
 
 /- English proof (translation)
-Establish `h2 : ∑ φ ∈ X.Ψ, f (ComplexEmbedding.conjugate φ) = ∑ φ ∈ X.Ψᶜ, f φ` using `Finset.sum_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate (fun a ha => Finset.mem_compl.2 fun hc => (X.conj_mem_iff a).1 hc ha) (fun a ha => (X.conj_mem_iff a).2 (Finset.mem_compl.1 ha)) (fun a _ => conjugate_conjugate' a) (fun a _ => conjugate_conjugate' a) (fun a _ …`. Establish `h2' : ∑ x : X.Ψ, f (ComplexEmbedding.conjugate x.1) = ∑ φ ∈ X.Ψᶜ, f φ`. Rewrite using `[← h2]`. Conclude with `Finset.sum_coe_sort X.Ψ (fun φ => f (ComplexEmbedding.conjugate φ))`. Rewrite using `[Finset.sum_add_distrib, h2', Finset.sum_coe_sort X.Ψ f, Finset.sum_add_sum_compl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_emb_split (f : (E →+* ℂ) → ℂ) :
     ∑ φ : E →+* ℂ, f φ = ∑ τ : X.Ψ, (f τ.1 + f (ComplexEmbedding.conjugate τ.1)) := by
@@ -94,9 +94,9 @@ theorem sum_emb_split (f : (E →+* ℂ) → ℂ) :
   rw [Finset.sum_add_distrib, h2', Finset.sum_coe_sort X.Ψ f, Finset.sum_add_sum_compl]
 
 /- English proof (translation)
-Establish `h1 : ((Algebra.trace ℚ E y : ℚ) : ℂ) = ∑ φ : E →+* ℂ, φ y`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := y)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ fun σ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, X.sum_emb_split (fun φ => φ y)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trace_eq_Psi (y : E) :
     ((Algebra.trace ℚ E y : ℚ) : ℂ) = ∑ τ : X.Ψ, (τ.1 y + conj (τ.1 y)) := by
@@ -109,7 +109,7 @@ theorem trace_eq_Psi (y : E) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.re (X.trace_eq_Psi y)`. Simplify using `only [Complex.ratCast_re, Complex.re_sum, Complex.add_re, Complex.conj_re] at h`. Rewrite using `[Complex.re_sum, h, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_sum_Psi (y : E) : (∑ τ : X.Ψ, τ.1 y).re = (Algebra.trace ℚ E y : ℝ) / 2 := by
   have h := congrArg Complex.re (X.trace_eq_Psi y)
@@ -118,9 +118,9 @@ theorem re_sum_Psi (y : E) : (∑ τ : X.Ψ, τ.1 y).re = (Algebra.trace ℚ E y
   ring
 
 /- English proof (translation)
-Establish `h` using `X.sum_emb_split (fun _ => (1 : ℂ))`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at h`. Rewrite using `[← NumberField.Embeddings.card E ℂ]`. Establish `h' : ((Fintype.card (E →+* ℂ) : ℕ) : ℂ) = ((2 * Fintype.card X.Ψ : ℕ) : ℂ)`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `h`. Conclude with `(Nat.cast_injective h').symm`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_Psi : 2 * Fintype.card X.Ψ = finrank ℚ E := by
   have h := X.sum_emb_split (fun _ => (1 : ℂ))
@@ -132,27 +132,23 @@ theorem card_Psi : 2 * Fintype.card X.Ψ = finrank ℚ E := by
   exact (Nat.cast_injective h').symm
 
 /- English proof (translation)
-Set `P : (X.Ψ → ℂ) → E →ₗ[ℚ] ℝ` to `fun w => { toFun := fun x => (∑ τ : X.Ψ, w τ * τ.1 x).re map_add' := fun x y => by simp [mul_add, Finset.sum_add_distrib] map_smul' := fun q x => by`. Simplify using `only [Rat.smul_def, map_mul, map_ratCast, RingHom.id_apply]`. Rewrite using `[show ∑ τ : X.Ψ, w τ * ((q : ℂ) * τ.1 x) = (q : ℂ) * ∑ τ : X.Ψ, w τ * τ.1 x by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => by ring]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_ratCast, Complex.re_ofReal_mul] }`. Use `set b := NumberField.integralBasis E with hbdef`. Establish `hnd` using `traceForm_nondegenerate ℚ E`. Use `set d := (Algebra.traceForm ℚ E).dualBasis hnd b with hddef`. Use `choose q hq using fun i => hz (NumberField.RingOfIntegers.basis E i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set ω : E := ∑ i, (2 * q i) • d i with hωdef`. Establish `htr : ∀ j, Algebra.trace ℚ E (ω * b j) = 2 * q j`. Introduce `j`. Establish `h : Algebra.traceForm ℚ E ω (b j) = 2 * q j`. Simplify using `only [hωdef, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, hddef, LinearMap.BilinForm.apply_dualBasis_left, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h` using `[Algebra.traceForm_apply]`. Establish `hbj : ∀ j, (b j : E) = ((NumberField.RingOfIntegers.basis E j : 𝓞 E) : E)` using `fun j => by`. Rewrite using `[hbdef, NumberField.integralBasis_apply]`. Use `set w : X.Ψ → ℂ := fun τ => z τ - τ.1 ω with hwdef`. Establish `hPb : ∀ j, P w (b j) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `j`. Use `show (∑ τ : X.Ψ, (z τ - τ.1 ω) * τ.1 (b j)).re = 0`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, Complex.sub_re]`. Establish `e1 : (∑ τ : X.Ψ, z τ * τ.1 (b j)).re = q j`. Rewrite using `[hbj]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hq j`. Establish `e2 : (∑ τ : X.Ψ, τ.1 ω * τ.1 (b j)).re = q j`. Rewrite using `[show ∑ τ : X.Ψ, τ.1 ω * τ.1 (b j) = ∑ τ : X.Ψ, τ.1 (ω * b j) from Finset.sum_congr rfl fun τ _ => (map_mul τ.1 ω (b j)).symm]`. Rewrite using `[X.re_sum_Psi, htr]`. Use `push_cast`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, sub_self]`. Establish `hP0 : P w = 0` using `b.ext fun j => by rw [hPb j, LinearMap.zero_apply]`. Establish `hPw : ∀ x : E, (∑ τ : X.Ψ, w τ * τ.1 x).re = 0` using `fun x => LinearMap.congr_fun hP0 x`. Set `W : (E →+* ℂ) → ℂ` to `fun φ => if h : φ ∈ X.Ψ then w ⟨φ, h⟩ else conj (w ⟨ComplexEmbedding.conjugate φ, (X.conj_mem_iff φ).2 h⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hW1 : ∀ τ : X.Ψ, W τ.1 = w τ` using `fun τ => by`. Simplify using `only [W, dif_pos τ.2]`. Establish `hW2 : ∀ τ : X.Ψ, W (ComplexEmbedding.conjugate τ.1) = conj (w τ)` using `fun τ => by`. Establish `hn : ComplexEmbedding.conjugate τ.1 ∉ X.Ψ` using `fun hc => (X.conj_mem_iff τ.1).1 hc τ.2`. Simplify using `only [W, dif_neg hn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrArg (fun σ : X.Ψ => conj (w σ)) (Subtype.ext (conjugate_conjugate' τ.1))`. Establish `hW : ∀ x : E, ∑ φ : E →+* ℂ, W φ * φ x = 0`. Introduce `x`. Rewrite using `[X.sum_emb_split (fun φ => W φ * φ x)]`. Simplify using `only [hW1, hW2, ComplexEmbedding.conjugate_coe_eq, ← map_mul (starRingEnd ℂ), Complex.add_conj]`.
-
-Rewrite using `[← Complex.ofReal_sum, ← Finset.mul_sum, ← Complex.re_sum, hPw x, mul_zero, Complex.ofReal_zero]`. Establish `hli : LinearIndependent ℂ (fun φ : E →+* ℂ => (φ : E → ℂ))` using `(linearIndependent_monoidHom E ℂ).comp (fun φ : E →+* ℂ => (φ : E →* ℂ)) (fun a a' h => RingHom.ext fun x => congrArg (fun f : E →* ℂ => f x) h)`. Establish `hsumfun : ∑ φ : E →+* ℂ, W φ • (φ : E → ℂ) = 0`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
-
-Conclude with `hW x`. Use `⟨ω, fun τ => ?_⟩` and prove the remaining obligations. Establish `h0` using `Fintype.linearIndependent_iff.1 hli W hsumfun τ.1`. Rewrite `h0` using `[hW1]`. Conclude with `sub_eq_zero.1 h0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_eq (z : X.Ψ → ℂ)
     (hz : ∀ γ : 𝓞 E, ∃ q : ℚ, (∑ τ : X.Ψ, z τ * τ.1 (γ : E)).re = q) :
@@ -226,7 +222,7 @@ theorem exists_emb_eq (z : X.Ψ → ℂ)
   exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Establish `h` using `X.card_Psi`. Establish `hpos : 0 < finrank ℚ E` using `Module.finrank_pos`. Rewrite using `[← Fintype.card_pos_iff]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nonempty_Psi : Nonempty X.Ψ := by
   have h := X.card_Psi
@@ -235,17 +231,17 @@ theorem nonempty_Psi : Nonempty X.Ψ := by
   omega
 
 /- English proof (translation)
-Establish `hN : ∀ γ : 𝓞 E, ∃ q : ℚ, (∑ τ : X.Ψ, z τ * τ.1 (γ : E)).re = q`. Introduce `γ`. Take `⟨k, hk⟩` from `hz γ`. Establish `hne : ((2 * g * (NumberField.discr E).natAbs : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.mul_ne_zero (Nat.mul_ne_zero two_ne_zero hg.ne') (Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero E)))`. Use `⟨(k : ℚ) / ((2 * g * (NumberField.discr E).natAbs : ℕ) : ℚ), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast, eq_div_iff hne, mul_comm]`. Conclude with `hk`. Take `⟨ω, hω⟩` from `X.exists_emb_eq z hN`. Use `⟨ω, hω, ?_⟩` and prove the remaining obligations. Establish `key : ∀ γ : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (((g * (NumberField.discr E).natAbs : ℕ) : E) * ω * γ) = k`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Take `⟨k, hk⟩` from `hz γ`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hs : ∑ τ : X.Ψ, z τ * τ.1 (γ : E) = ∑ τ : X.Ψ, τ.1 (ω * γ)` using `Finset.sum_congr rfl fun τ _ => by rw [hω τ, map_mul]`. Rewrite `hk` using `[hs, X.re_sum_Psi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : Algebra.trace ℚ E (((g * (NumberField.discr E).natAbs : ℕ) : E) * ω * γ) = ((g * (NumberField.discr E).natAbs : ℕ) : ℚ) * Algebra.trace ℚ E (ω * γ)`. Rewrite using `[mul_assoc, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`. Rewrite using `[htr]`. Establish `h2 : ((((g * (NumberField.discr E).natAbs : ℕ) : ℚ) * Algebra.trace ℚ E (ω * γ) : ℚ) : ℝ) = ((k : ℚ) : ℝ)`. Move the coercions through the operations in `at hk ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hk`. Conclude with `h2` after adjusting the coercions. Establish `hint` using `d4l2_dual_int' (((g * (NumberField.discr E).natAbs : ℕ) : E) * ω) key`. Establish `e : (((g * (NumberField.discr E).natAbs ^ 2 : ℕ)) : E) * ω = ((NumberField.discr E).natAbs : E) * (((g * (NumberField.discr E).natAbs : ℕ) : E) * ω)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hint`.
+A detailed English derivation is pending.
 -/
 theorem exists_emb_int (z : X.Ψ → ℂ) (g : ℕ) (hg : 0 < g)
     (hz : ∀ γ : 𝓞 E, ∃ k : ℤ, ((2 * g * (NumberField.discr E).natAbs : ℕ) : ℝ) *

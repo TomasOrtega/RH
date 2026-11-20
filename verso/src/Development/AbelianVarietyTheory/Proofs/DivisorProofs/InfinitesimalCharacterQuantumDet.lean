@@ -24,14 +24,14 @@ def res (π : CuspSub E a) : keep π →ₐ[ℂ] Module.End ℂ π.V where
   commutes' _ := LinearMap.ext fun φ => Subtype.ext rfl
 
 /- English proof (translation)
-Establish `h : ∀ X, lie E a X ∈ keep π` using `fun X φ hφ => π.stable (.lie X) φ hφ`. Conclude with `(keep π).smul_mem ((keep π).sub_mem (h _) ((keep π).smul_mem (h _) _)) _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Eop_mem (π : CuspSub E a) (τ : E →+* ℂ) (i j : Fin a) : Eop τ i j ∈ keep π := by
   have h : ∀ X, lie E a X ∈ keep π := fun X φ hφ => π.stable (.lie X) φ hφ
   exact (keep π).smul_mem ((keep π).sub_mem (h _) ((keep π).smul_mem (h _) _)) _
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem res_Eop (π : CuspSub E a) (τ : E →+* ℂ) (i j : Fin a) :
     res π ⟨Eop τ i j, Eop_mem π τ i j⟩ = cx τ (lieOp π) i j := by
@@ -43,15 +43,15 @@ end GlobalTheory.WigCap
 open GlobalTheory.WigCap in
 
 /- English proof (translation)
-Introduce `E _ _ _ a π τ χ hχ`. Set `X : Fin a → Fin a → keep π` to `fun i j => ⟨Eop τ i j, Eop_mem π τ i j⟩`. Establish `hX : (fun i j => res π (X i j)) = cx τ (lieOp π)` using `funext fun i => funext fun j => res_Eop π τ i j`. Establish `hval : (fun i j => (keep π).val (X i j)) = Eop τ` using `rfl`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `i j k l`. Establish `h` using `glRel_Eop (a := a) τ i j k l`. Rewrite using `[← hX]`. Simplify using `only`. Establish `h2 : X i j * X k l - X k l * X i j = (if j = k then X i l else 0) - (if l = i then X k j else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_sub, Subalgebra.coe_mul]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[← map_mul, ← map_mul, ← map_sub, h2, map_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Introduce `u`. Rewrite using `[← hX, ← map_qdet]`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Establish `e1 : ((keep π).val (qdet X (u + ((a : ℂ) - 1) / 2))) = cap τ u`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_qdet, hval]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((keep π).val (qdet X (u + ((a : ℂ) - 1) / 2))) φ.1 = _`. Rewrite using `[e1, hχ.2 u φ.1 φ.2, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.capelli_cuspSub : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a) (τ : E →+* ℂ) (χ : Fin a → ℂ), π.HasInfChar τ (Multiset.map χ Finset.univ.val) → GlRel (cx τ (lieOp π)) ∧ ∀ u : ℂ, qdet (cx τ (lieOp π)) (u + ((a : ℂ) - 1) / 2) = algebraMap ℂ _ (∏ s, (u + χ s)) := by
   intro E _ _ _ a π τ χ hχ

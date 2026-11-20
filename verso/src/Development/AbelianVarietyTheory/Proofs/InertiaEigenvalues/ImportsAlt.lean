@@ -5,15 +5,15 @@ namespace GlobalTheory.TargetStatementAlt
 open Polynomial
 
 /- English proof (translation)
-Set `f : F →ₐ[R] AlgebraicClosure F` to `IsScalarTower.toAlgHom R F (AlgebraicClosure F)`. Set `φ : Matrix n n F →ₐ[R] Matrix n n (AlgebraicClosure F)` to `f.mapMatrix`. Take `⟨p, hpm, hp⟩` from `hM.map φ`. Establish `key : ∀ μ ∈ (φ M).charpoly.roots, IsIntegral R μ`. Introduce `μ hμ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hroot : IsRoot (φ M).charpoly μ` using `(mem_roots'.mp hμ).2`. Establish `hs : μ ∈ spectrum (AlgebraicClosure F) (φ M)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.mpr hroot`. Establish `h1` using `spectrum.subset_polynomial_aeval (φ M) (p.map (algebraMap R (AlgebraicClosure F))) ⟨μ, hs, rfl⟩`. Establish `h2 : aeval (φ M) (p.map (algebraMap R (AlgebraicClosure F))) = 0`. Rewrite using `[aeval_map_algebraMap, aeval_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Rewrite `h1` using `[h2, spectrum.mem_iff, sub_zero]`. Use `⟨p, hpm, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `h1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: eval μ (p.map (algebraMap R (AlgebraicClosure F))) ≠ 0`. Rewrite using `[eval_map_algebraMap, aeval_def]` and apply the resulting hypothesis. Conclude with `(Ne.isUnit this).map _`. Establish `ht : IsIntegral R (Matrix.trace (φ M))`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `IsIntegral.multiset_sum key`. Establish `he : Matrix.trace (φ M) = f (Matrix.trace M)`. Simplify using `[φ, Matrix.trace, map_sum, AlgHom.mapMatrix_apply]`. Rewrite `ht` using `[he]`. Conclude with `(isIntegral_algHom_iff f f.toRingHom.injective).mp ht`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {R F : Type} [CommRing R] [Field F] [Algebra R F] {n : Type} [Fintype n]
     [DecidableEq n] (M : Matrix n n F) (hM : IsIntegral R M) :
@@ -46,7 +46,7 @@ theorem main {R F : Type} [CommRing R] [Field F] [Algebra R F] {n : Type} [Finty
   exact (isIntegral_algHom_iff f f.toRingHom.injective).mp ht
 
 /- English proof (translation)
-Introduce `M h` and use `main M h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {R F : Type} [inst : CommRing R] [inst_1 : Field F] [inst_2 : Algebra R F] {n : Type} [inst_3 : Fintype n] [inst_4 : DecidableEq n] (M : Matrix n n F), IsIntegral R M → IsIntegral R (Matrix.trace M) :=
   fun M h => main M h

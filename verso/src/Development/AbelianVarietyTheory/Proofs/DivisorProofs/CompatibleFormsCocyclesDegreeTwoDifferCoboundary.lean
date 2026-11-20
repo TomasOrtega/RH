@@ -13,9 +13,9 @@ namespace GlobalTheory.PDForm.ClsTwo
 universe u
 
 /- English proof (translation)
-Establish `h0 : K.fnMap.h2 (QuotientAddGroup.mk ⟨z, hz⟩) = 0`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (K.fnMap.z2 ⟨z, hz⟩) : (Cx.single K.M0).H2) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`. Use `⟨(e, 0), ?_⟩` and prove the remaining obligations. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `he T T' T'' φ ψ`. Establish `h1 : (QuotientAddGroup.mk ⟨z, hz⟩ : K.H2) = 0` using `h (h0.trans (map_zero _).symm)`. Rewrite `h1` using `[QuotientAddGroup.eq_zero_iff]`. Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cob_of_fn_cob {C : Type u} [Category.{0} C] (K : Cx C) (h : Function.Injective K.fnMap.h2)
     (z : K.T2) (hz : z ∈ K.Z2) (e : K.M0.c1)
@@ -34,9 +34,9 @@ theorem cob_of_fn_cob {C : Type u} [Category.{0} C] (K : Cx C) (h : Function.Inj
   exact h1
 
 /- English proof (translation)
-Introduce `R R' _ _ I I' κ κ' X X' t t' σ φ₀ m k k' f f' hk hk' h`. Establish `h' : H2.mk _ (m.coef.pullbackTwoCocycle f) = H2.mk _ f'` using `h.symm`. Take `⟨e, he⟩` from `H2.mk_eq_mk.1 h'`. Use `cob_of_fn_cob (KK κ' t') (GlobalTheory.T.fnMap_pullbackBijective12_kk_and_res R' I' κ' X' t' X' (𝟙 X')).1.2.injective _ (AddSubgroup.sub_mem _ ((morMap m).p2_mem_Z2_of_mem_Z2 k.2) k'.2) e ?_` and prove the remaining obligations. Introduce `T T' T'' φ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun (congrFun (congrFun (congrFun (congrFun he T) T') T'') φ) ψ`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : (m.coef.pullbackTwoCocycle f).1 T T' T'' φ ψ = ((morMap m).p2 k.1).1 T T' T'' φ ψ` using `(congrFun (congrFun (congrFun (congrFun (congrFun hk _) _) _) (m.functor.map φ)) (m.functor.map ψ)).symm`. Establish `h3` using `congrFun (congrFun (congrFun (congrFun (congrFun hk' T) T') T'') φ) ψ`. Conclude with `congrArg₂ (fun a b : (O κ' t').obj T'' ↦ a - b) h2 h3.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cob_of_class_eq : ∀ (R R' : Type) [CommRing R] [CommRing R'] (I : Ideal R) (I' : Ideal R') (κ : DividedPowers I) (κ' : DividedPowers I') (X X' : Scheme.{0}) (t : X ⟶ Sp R) (t' : X' ⟶ Sp R') (σ : R →+* R') (φ₀ : X' ⟶ X) (m : IsMor κ t κ' t' σ φ₀) (k : (KK κ t).Z2) (k' : (KK κ' t').Z2) (f : Z2 (O κ t)) (f' : Z2 (O κ' t')), k.1.1 = f.1 → k'.1.1 = f'.1 → H2.mk _ f' = m.pull2 (H2.mk _ f) → ∃ g, (KK κ' t').D1 g = (morMap m).p2 k.1 - k'.1 := by
   intro R R' _ _ I I' κ κ' X X' t t' σ φ₀ m k k' f f' hk hk' h

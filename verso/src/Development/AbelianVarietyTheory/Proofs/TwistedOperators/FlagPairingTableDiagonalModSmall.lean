@@ -13,25 +13,25 @@ open GlobalTheory.SeeConjRead
 namespace GlobalTheory.SeeConjRead
 
 /- English proof (translation)
-Introduce `M A _ _ p sm ρ k n hn e f b b' z hT a c`. Take `⟨t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16⟩` from `hT`. Substitute `hn` using the available equality. Establish `ha` using `a.isLt`. Establish `hc` using `c.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : ∀ (x y : Fin ρ), x.1 = y.1 → sm (p (f x) (e y) - 1)`. Introduce `x y h`. Use `t1 x y` as an intermediate fact. Rewrite `this` using `[if_pos (Fin.ext h)]`. Then use the resulting hypothesis. Establish `o1 : ∀ (x y : Fin ρ), x.1 ≠ y.1 → sm (p (f x) (e y) - 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `x y h`. Use `t1 x y` as an intermediate fact. Rewrite `this` using `[if_neg (fun hh => h (congrArg Fin.val hh))]`. Then use the resulting hypothesis. Establish `d6 : ∀ (x y : Fin k), x.1 = y.1 → sm (p (b' x) (b y) - 1)`. Introduce `x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `t6 x y` as an intermediate fact. Rewrite `this` using `[if_pos (Fin.ext h)]`. Then use the resulting hypothesis. Establish `o6 : ∀ (x y : Fin k), x.1 ≠ y.1 → sm (p (b' x) (b y) - 0)`. Introduce `x y h`. Use `t6 x y` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg (fun hh => h (congrArg Fin.val hh))]`. Then use the resulting hypothesis. Establish `d16 : ∀ (x y : Fin ρ), x.1 = y.1 → sm (p (e x) (f y) - 1)`. Introduce `x y h`. Use `t16 x y` as an intermediate fact. Rewrite `this` using `[if_pos (Fin.ext h)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `o16 : ∀ (x y : Fin ρ), x.1 ≠ y.1 → sm (p (e x) (f y) - 0)`. Introduce `x y h`. Use `t16 x y` as an intermediate fact. Rewrite `this` using `[if_neg (fun hh => h (congrArg Fin.val hh))]`. Then use the resulting hypothesis. Establish `d11 : sm (p z z - -1)` using `by rw [sub_neg_eq_add]; exact t11`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Distinguish the cases in `hac : a.1 = c.1`. Rewrite using `[if_pos (Fin.ext hac)]`. Unfold `flagV sgnD`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `exact d11`. Consider the case `exact d1 _ _ (by dsimp only; omega)`. Consider the case `exact d6 _ _ (by dsimp only; omega)`. Consider the case `exact d16 _ _ (by dsimp only; omega)`. Rewrite using `[if_neg (fun hh => hac (congrArg Fin.val hh))]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Unfold `flagV`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `omega`. Consider the case `exact o1 _ _ (by dsimp only; omega)`. Consider the case `exact o6 _ _ (by dsimp only; omega)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact o16 _ _ (by dsimp only; omega)`. Consider the case `(rw [sub_zero]; first`. Consider the case `exact t2 _ _ | exact t3 _ | exact t4 _ _ | exact t5 _ _ | exact t7 _ | exact t8 _ _`. Consider the case `exact t9 _ | exact t10 _ | exact t12 _ | exact t13 _ _ | exact t14 _ _ | exact t15 _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem flagV_pair_table : ∀ {M A : Type} [Zero M] [Ring A] (p : M → M → A) (sm : A → Prop) (ρ k n : ℕ), n = 2 * ρ + k + 1 → ∀ (e f : Fin ρ → M) (b b' : Fin k → M) (z : M), PairTable p sm e f b b' z → ∀ a c : Fin n, sm (p (flagV ρ k n f e b' z a) (flagV ρ k n e f b z c) - if a = c then sgnD ρ k a else 0) := by
   intro M A _ _ p sm ρ k n hn e f b b' z hT a c

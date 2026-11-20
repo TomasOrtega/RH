@@ -22,7 +22,7 @@ theorem jetSubstP_mk {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S) 
       Ideal.Quotient.mk (orig S κ' ^ (m + 1)) (aeval (fun i => φ i - C (constantCoeff (φ i))) P) := rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mk_eq_iff {κ : Type} (m : ℕ) (a b : MvPolynomial κ S) :
     Ideal.Quotient.mk (orig S κ ^ (m + 1)) a = Ideal.Quotient.mk (orig S κ ^ (m + 1)) b ↔
@@ -31,13 +31,13 @@ theorem mk_eq_iff {κ : Type} (m : ℕ) (a b : MvPolynomial κ S) :
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Use `replace hp : p.1 + p.2 = x := by first`. Consider the case `exact Finset.HasAntidiagonal.mem_antidiagonal.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Finset.mem_antidiagonal.1 hp`. Consider the case `simpa using hp`. Establish `hdeg : p.1.degree + p.2.degree = x.degree`. Rewrite using `[← hp]`. Establish `e : ∀ y : τ →₀ ℕ, y.degree = y.sum (fun _ k => k)` using `fun y => by first`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp [Finsupp.degree, Finsupp.sum]`. Rewrite using `[e, e, e, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]`. Distinguish the cases in `h1 : p.1.degree < a`. Rewrite using `[hA _ h1, zero_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB _ (by omega), mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_mul_eq_zero_lemma_4 {τ : Type} (A B : MvPowerSeries τ S) (a b : ℕ)
     (hA : ∀ x : τ →₀ ℕ, x.degree < a → MvPowerSeries.coeff x A = 0)
@@ -64,17 +64,17 @@ private theorem coeff_mul_eq_zero_lemma_4 {τ : Type} (A B : MvPowerSeries τ S)
   · rw [hB _ (by omega), mul_zero]
 
 /- English proof (translation)
-Establish `hpow : ∀ s (n : ℕ) (y : τ →₀ ℕ), y.degree < n → MvPowerSeries.coeff y (σ' s ^ n) = 0`. Introduce `s n`. Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Introduce `y hy`. Rewrite using `[pow_succ]`. Use `coeff_mul_eq_zero_lemma_4 _ _ n 1 ih ?_ y (by omega)` and prove the remaining obligations. Introduce `z hz`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz0 : z = 0` using `by first`. Consider the case `exact (Finsupp.degree_eq_zero_iff z).1 (by omega)`. Consider the case `exact Finsupp.degree_eq_zero_iff.1 (by omega)`. Rewrite using `[hz0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hσ]`. Establish `hprod : ∀ (t : Finset τ') (y : τ →₀ ℕ), y.degree < ∑ s ∈ t, e s → MvPowerSeries.coeff y (∏ s ∈ t, σ' s ^ e s) = 0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `at hy`. Introduce `a t ha ih y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_insert ha]`. Rewrite `hy` using `[Finset.sum_insert ha]`. Conclude with `coeff_mul_eq_zero_lemma_4 _ _ (e a) (∑ s ∈ t, e s) (hpow a (e a)) ih y hy`. Establish `he : e.degree = ∑ s ∈ e.support, e s` using `by first`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Finsupp.degree]`. Conclude with `hprod e.support x (he ▸ hx)`.
+A detailed English derivation is pending.
 -/
 private theorem order_prod_lemma_5 {τ τ' : Type} (σ' : τ' → MvPowerSeries τ S)
     (hσ : ∀ s, MvPowerSeries.constantCoeff (σ' s) = 0) (e : τ' →₀ ℕ) (x : τ →₀ ℕ)
@@ -111,15 +111,15 @@ private theorem order_prod_lemma_5 {τ τ' : Type} (σ' : τ' → MvPowerSeries 
   exact hprod e.support x (he ▸ hx)
 
 /- English proof (translation)
-Establish `h1 : ∑ i ∈ e.support, e i = 1` using `by first`. Consider the case `exact he`. Consider the case `simpa [Finsupp.degree] using he`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : e.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `h1` using `[h, Finset.sum_empty]`. Conclude with `zero_ne_one h1`. Establish `h2` using `Finset.add_sum_erase e.support e hq`. Rewrite `h2` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : e q ≠ 0` using `Finsupp.mem_support_iff.1 hq`. Establish `h3s : ∑ i ∈ e.support.erase q, e i = 0` using `by omega`. Establish `h3` using `Finset.sum_eq_zero_iff.1 h3s`. Use `⟨q, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = q`. Substitute `hi` using the available equality. Rewrite using `[Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hi)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hne (h3 i (Finset.mem_erase.2 ⟨hi, Finsupp.mem_support_iff.2 hne⟩))`.
+A detailed English derivation is pending.
 -/
 private theorem eq_single_lemma_6 {κ : Type} (e : κ →₀ ℕ) (he : e.degree = 1) : ∃ q, e = Finsupp.single q 1 := by
   classical
@@ -148,23 +148,23 @@ private theorem eq_single_lemma_6 {κ : Type} (e : κ →₀ ℕ) (he : e.degree
     exact hne (h3 i (Finset.mem_erase.2 ⟨hi, Finsupp.mem_support_iff.2 hne⟩))
 
 /- English proof (translation)
-Establish `key : ∀ f : PS S 2 d, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (ev (n` using `1) ![0, pt S d 0] f) = MvPowerSeries.coeff (Finsupp.single ((1 : Fin 2), j) 1) f := by`. Introduce `f`. Unfold `ev`. Establish `hσ : ∀ s : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![0, pt S d 0] : Fin 2 → Pt S 1 d) s.1 s.2) = 0`. Introduce and unpack `⟨a, l⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `obtain rfl | rfl : a = 0 ∨ a = 1 := by fin_cases a <;> simp`. Simplify using the standard rewrite rules. Simplify using `[pt]`. Establish `hS : MvPowerSeries.HasSubst (fun s : Fin 2 × Fin d => (![0, pt S d 0] : Fin 2 → Pt S 1 d) s.1 s.2)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hσ`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hσ`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero`. Consider the case `exact ⟨fun s => by rw [hσ s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Rewrite using `[MvPowerSeries.coeff_subst hS]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1 : (Finsupp.single ((0 : Fin 1), j) 1).degree = 1` using `by first`. Consider the case `simp`. Consider the case `simp [Finsupp.degree]`. Rewrite using `[finsum_eq_single _ (Finsupp.single ((1 : Fin 2), j) 1)]`. Rewrite using `[Finsupp.prod_single_index (by simp)]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pt, MvPowerSeries.coeff_X]`. Introduce `e he`. Break down `lt_trichotomy e.degree 1 with hlt | heq | hgt` into its components or cases. Establish `he0 : e = 0` using `by first`. Consider the case `exact (Finsupp.degree_eq_zero_iff e).1 (by omega)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Finsupp.degree_eq_zero_iff.1 (by omega)`. Substitute `he0` using the available equality. Simplify using `[MvPowerSeries.coeff_one]`. Take `⟨⟨q1, q2⟩, rfl⟩` from `eq_single_lemma_6 e heq`. Rewrite using `[Finsupp.prod_single_index (by simp)]`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `obtain rfl | rfl : q1 = 0 ∨ q1 = 1 := by fin_cases q1 <;> simp`. Simplify using the standard rewrite rules. Establish `hq : q2 ≠ j` using `fun h => he (by rw [h])`. Simplify using `[pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, hq, Ne.symm hq]`. Establish `h0` using `order_prod_lemma_5 _ hσ e (Finsupp.single ((0 : Fin 1), j) 1) (by omega) first`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `simp only [h0, smul_zero]`. Consider the case `rw [h0, smul_zero]`. Consider the case `erw [h0, smul_zero]`. Establish `hu` using `congrArg (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1)) (G.unit i)`. Rewrite `hu` using `[key, MvPowerSeries.coeff_X]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hu]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_left_inj one_ne_zero, h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem formal_group_linear_second (G : FGLaw S d) (i j : Fin d) :
     MvPowerSeries.coeff (Finsupp.single ((1 : Fin 2), j) 1) (G.F i) = if j = i then 1 else 0 := by
@@ -222,23 +222,23 @@ theorem formal_group_linear_second (G : FGLaw S d) (i j : Fin d) :
   · simp [Finsupp.single_left_inj one_ne_zero, h]
 
 /- English proof (translation)
-Establish `key : ∀ f : PS S 2 d, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), j) 1) (ev (n` using `2) ![pt S d 1, pt S d 0] f) = MvPowerSeries.coeff (Finsupp.single ((1 : Fin 2), j) 1) f := by`. Introduce `f`. Unfold `ev`. Establish `hσ : ∀ s : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) s.1 s.2) = 0`. Introduce and unpack `⟨a, l⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `obtain rfl | rfl : a = 0 ∨ a = 1 := by fin_cases a <;> simp`. Simplify using `[pt]`. Simplify using `[pt]`. Establish `hS : MvPowerSeries.HasSubst (fun s : Fin 2 × Fin d => (![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) s.1 s.2)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hσ`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hσ`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero`. Consider the case `exact ⟨fun s => by rw [hσ s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Rewrite using `[MvPowerSeries.coeff_subst hS]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1 : (Finsupp.single ((0 : Fin 2), j) 1).degree = 1` using `by first`. Consider the case `simp`. Consider the case `simp [Finsupp.degree]`. Rewrite using `[finsum_eq_single _ (Finsupp.single ((1 : Fin 2), j) 1)]`. Rewrite using `[Finsupp.prod_single_index (by simp)]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pt, MvPowerSeries.coeff_X]`. Introduce `e he`. Break down `lt_trichotomy e.degree 1 with hlt | heq | hgt` into its components or cases. Establish `he0 : e = 0` using `by first`. Consider the case `exact (Finsupp.degree_eq_zero_iff e).1 (by omega)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Finsupp.degree_eq_zero_iff.1 (by omega)`. Substitute `he0` using the available equality. Simplify using `[MvPowerSeries.coeff_one]`. Take `⟨⟨q1, q2⟩, rfl⟩` from `eq_single_lemma_6 e heq`. Rewrite using `[Finsupp.prod_single_index (by simp)]`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `obtain rfl | rfl : q1 = 0 ∨ q1 = 1 := by fin_cases q1 <;> simp`. Simplify using `[pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero]`. Establish `hq : q2 ≠ j` using `fun h => he (by rw [h])`. Simplify using `[pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, hq, Ne.symm hq]`. Establish `h0` using `order_prod_lemma_5 _ hσ e (Finsupp.single ((0 : Fin 2), j) 1) (by omega) first`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `simp only [h0, smul_zero]`. Consider the case `rw [h0, smul_zero]`. Consider the case `erw [h0, smul_zero]`. Establish `hc` using `congrArg (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), j) 1)) (G.comm i)`. Rewrite `hc` using `[key]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hc]`. Conclude with `formal_group_linear_second G i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_group_linear_first (G : FGLaw S d) (i j : Fin d) :
     MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), j) 1) (G.F i) = if j = i then 1 else 0 := by
@@ -293,15 +293,15 @@ theorem formal_group_linear_first (G : FGLaw S d) (i j : Fin d) :
   exact formal_group_linear_second G i j
 
 /- English proof (translation)
-Establish `h1 : ∑ i ∈ e.support, e i = 1` using `by first`. Consider the case `exact he`. Consider the case `simpa [Finsupp.degree] using he`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : e.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `h1` using `[h, Finset.sum_empty]`. Conclude with `zero_ne_one h1`. Establish `h2` using `Finset.add_sum_erase e.support e hq`. Rewrite `h2` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq0 : e q ≠ 0` using `Finsupp.mem_support_iff.1 hq`. Establish `h3s : ∑ i ∈ e.support.erase q, e i = 0` using `by omega`. Establish `h3` using `Finset.sum_eq_zero_iff.1 h3s`. Use `⟨q, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = q`. Substitute `hi` using the available equality. Rewrite using `[Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hi)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hne (h3 i (Finset.mem_erase.2 ⟨hi, Finsupp.mem_support_iff.2 hne⟩))`.
+A detailed English derivation is pending.
 -/
 theorem eq_single_of_degree_one {κ : Type} (e : κ →₀ ℕ) (he : e.degree = 1) : ∃ q, e = Finsupp.single q 1 := by
   classical
@@ -330,11 +330,9 @@ theorem eq_single_of_degree_one {κ : Type} (e : κ →₀ ℕ) (he : e.degree =
     exact hne (h3 i (Finset.mem_erase.2 ⟨hi, Finsupp.mem_support_iff.2 hne⟩))
 
 /- English proof (translation)
-Establish `hle : ∀ i, x i ≤ n`. Introduce `i`. Distinguish the cases in `hi : x i = 0`. Rewrite using `[hi]`. Conclude with `Nat.zero_le n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `le_trans (Finset.single_le_sum (f := fun j => x j) (fun j _ => Nat.zero_le (x j)) (Finsupp.mem_support_iff.2 hi)) hx`. Unfold `degLE`. Rewrite using `[Finset.mem_filter, Finset.mem_image]`. Use `⟨⟨fun i => ⟨x i, Nat.lt_succ_of_le (hle i)⟩, Finset.mem_univ _, ?_⟩, hx⟩` and prove the remaining obligations. Use extensionality with `i`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_degLE_lemma {κ : Type} [Fintype κ] [DecidableEq κ] {n : ℕ} {x : κ →₀ ℕ}
     (hx : x.degree ≤ n) : x ∈ degLE n := by
@@ -352,9 +350,9 @@ private theorem mem_degLE_lemma {κ : Type} [Fintype κ] [DecidableEq κ] {n : �
   simp
 
 /- English proof (translation)
-Unfold `psTrunc`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Distinguish the cases in `h : x.degree ≤ n`. Rewrite using `[if_pos (mem_degLE_lemma h), if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : x ∉ degLE n`. Introduce `h'`. Unfold `degLE at h'`. Conclude with `h (Finset.mem_filter.1 h').2`. Rewrite using `[if_neg h', if_neg h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_psTrunc_lemma_2 {κ : Type} [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ S) (n : ℕ)
     (x : κ →₀ ℕ) : coeff x (psTrunc n f) = if x.degree ≤ n then MvPowerSeries.coeff x f else 0 := by
@@ -370,11 +368,11 @@ private theorem coeff_psTrunc_lemma_2 {κ : Type} [Fintype κ] [DecidableEq κ] 
     rw [if_neg h', if_neg h]
 
 /- English proof (translation)
-Establish `hX : ∀ i, (X i : MvPolynomial κ S) ∈ Io S κ` using `fun i => Ideal.subset_span ⟨i, rfl⟩`. Rewrite using `[p.as_sum]`. Use `Ideal.sum_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[monomial_eq]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : x.degree = ∑ a ∈ x.support, x a` using `by first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree]`. Establish `h1 : (x.prod fun n e => (X n : MvPolynomial κ S) ^ e) ∈ Io S κ ^ x.degree`. Unfold `Finsupp.prod`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun a _ => Ideal.pow_mem_pow (hX a) _`. Conclude with `Ideal.pow_le_pow_right (hp x hx) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_pow_Io_lemma_3 {κ : Type} (k : ℕ) (p : MvPolynomial κ S)
     (hp : ∀ x ∈ p.support, k ≤ x.degree) : p ∈ Io S κ ^ k := by
@@ -394,15 +392,15 @@ private theorem mem_pow_Io_lemma_3 {κ : Type} (k : ℕ) (p : MvPolynomial κ S)
   exact Ideal.pow_le_pow_right (hp x hx) h1
 
 /- English proof (translation)
-Apply `mem_pow_Io_lemma_3` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_support_iff, coeff_sub, coeff_psTrunc_lemma_2]`. Assume the negation of the conclusion as `hlt`. Establish `h1 : x.degree ≤ 1` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hx` using `[if_pos (h1.trans hm)]`. Apply `hx` to reduce the goal to its premises. Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 h1 with h0 | h0` into its components or cases. Establish `hx0 : x = 0` using `by first`. Consider the case `exact (Finsupp.degree_eq_zero_iff x).1 h0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Finsupp.degree_eq_zero_iff.1 h0`. Substitute `hx0` using the available equality. Simplify using `[coeff_X', MvPowerSeries.coeff_zero_eq_constantCoeff_apply, G.const]`. Take `⟨⟨q1, q2⟩, rfl⟩` from `eq_single_of_degree_one x h0`. Apply the tactic sequence `obtain rfl | rfl : q1 = 0 ∨ q1 = 1 := by fin_cases q1 <;> simp`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hq : q2 = j`. Substitute `hq` using the available equality. Simplify using `[coeff_X', formal_group_linear_first, Finsupp.single_left_inj one_ne_zero]`. Simplify using `[coeff_X', formal_group_linear_first, Finsupp.single_left_inj one_ne_zero, hq, Ne.symm hq]`. Distinguish the cases in `hq : q2 = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hq` using the available equality. Simplify using `[coeff_X', formal_group_linear_second, Finsupp.single_left_inj one_ne_zero]`. Simplify using `[coeff_X', formal_group_linear_second, Finsupp.single_left_inj one_ne_zero, hq, Ne.symm hq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psTrunc_law_sub_mem (G : FGLaw S d) {m : ℕ} (hm : 1 ≤ m) (j : Fin d) :
     psTrunc m (G.F j) - (X ((0 : Fin 2), j) + X ((1 : Fin 2), j)) ∈ Io S (Fin 2 × Fin d) ^ 2 := by
@@ -437,9 +435,9 @@ def bil (M : Fin d → Fin d → S) : MvPolynomial (Fin 2 × Fin d) S :=
 abbrev sil (i l : Fin d) : Fin 2 × Fin d →₀ ℕ := Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), l) 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `DFunLike.congr_fun h ((0 : Fin 2), i)`. Establish `h2` using `DFunLike.congr_fun h ((1 : Fin 2), l)`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Assume the negation of the conclusion as `hne`. Simplify using `[sil, Finsupp.single_apply, hne, Ne.symm hne] at h1`. Assume the negation of the conclusion as `hne`. Simplify using `[sil, Finsupp.single_apply, hne, Ne.symm hne] at h2`. Introduce and unpack `⟨rfl, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
 Both sides reduce to the same expression.
 -/
@@ -457,7 +455,7 @@ theorem sil_inj {i l i0 l0 : Fin d} : sil i l = sil i0 l0 ↔ i = i0 ∧ l = l0 
     rfl
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.X, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul, MvPolynomial.coeff_monomial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_XX (e : Fin 2 × Fin d →₀ ℕ) (i l : Fin d) :
     coeff e (X ((0 : Fin 2), i) * X ((1 : Fin 2), l) : MvPolynomial (Fin 2 × Fin d) S) =
@@ -465,11 +463,11 @@ theorem coeff_XX (e : Fin 2 × Fin d →₀ ℕ) (i l : Fin d) :
   rw [MvPolynomial.X, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul, MvPolynomial.coeff_monomial]
 
 /- English proof (translation)
-Simplify using `only [bil, coeff_sum, coeff_C_mul, coeff_XX, sil_inj]`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[Finset.sum_eq_single l0]`. Rewrite using `[if_pos ⟨rfl, rfl⟩, mul_one]`. Introduce `l _ hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hl]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i _ hi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _`. Simplify using `[hi]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_bil (M : Fin d → Fin d → S) (i0 l0 : Fin d) : coeff (sil i0 l0) (bil M) = M i0 l0 := by
   simp only [bil, coeff_sum, coeff_C_mul, coeff_XX, sil_inj]
@@ -488,7 +486,7 @@ theorem coeff_bil (M : Fin d → Fin d → S) (i0 l0 : Fin d) : coeff (sil i0 l0
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i l`. Establish `h'` using `congrArg (coeff (sil i l)) h`. Rewrite `h'` using `[coeff_bil, coeff_bil]`. Conclude with `h'`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bil_ext {M M' : Fin d → Fin d → S} (h : bil M = bil M') : M = M' := by
   funext i l
@@ -497,7 +495,7 @@ theorem bil_ext {M M' : Fin d → Fin d → S} (h : bil M = bil M') : M = M' := 
   exact h'
 
 /- English proof (translation)
-Establish `hX : ∀ p, (X p : MvPolynomial (Fin 2 × Fin d) S) ∈ Io S (Fin 2 × Fin d)` using `fun p => Ideal.subset_span ⟨p, rfl⟩`. Use `Ideal.sum_mem _ fun i _ => Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (hX _) (hX _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bil_mem (M : Fin d → Fin d → S) : bil M ∈ Io S (Fin 2 × Fin d) ^ 2 := by
   have hX : ∀ p, (X p : MvPolynomial (Fin 2 × Fin d) S) ∈ Io S (Fin 2 × Fin d) :=
@@ -507,11 +505,11 @@ theorem bil_mem (M : Fin d → Fin d → S) : bil M ∈ Io S (Fin 2 × Fin d) ^ 
   exact Ideal.mul_mem_mul (hX _) (hX _)
 
 /- English proof (translation)
-Unfold `bil`. Use `IsHomogeneous.sum _ _ _ fun i _ => IsHomogeneous.sum _ _ _ fun l _ => ?_` and prove the remaining obligations. Establish `h0 : (C (M i l) : MvPolynomial (Fin 2 × Fin d) S).IsHomogeneous 0` using `by first`. Consider the case `exact isHomogeneous_C _ _`. Consider the case `exact isHomogeneous_C _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `h1 : (X ((0 : Fin 2), i) : MvPolynomial (Fin 2 × Fin d) S).IsHomogeneous 1` using `by first`. Consider the case `exact isHomogeneous_X _ _`. Consider the case `exact isHomogeneous_X _`. Establish `h2 : (X ((1 : Fin 2), l) : MvPolynomial (Fin 2 × Fin d) S).IsHomogeneous 1` using `by first`. Consider the case `exact isHomogeneous_X _ _`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact isHomogeneous_X _`. Simplify using `using h0.mul (h1.mul h2)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bil_hom (M : Fin d → Fin d → S) : (bil M).IsHomogeneous 2 := by
   unfold bil
@@ -531,9 +529,9 @@ theorem bil_hom (M : Fin d → Fin d → S) : (bil M).IsHomogeneous 2 := by
   simpa using h0.mul (h1.mul h2)
 
 /- English proof (translation)
-Apply `mem_pow_Io_lemma_3` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_support_iff, coeff_sub, coeff_psTrunc_lemma_2, coeff_psTrunc_lemma_2]`. Assume the negation of the conclusion as `hlt`. Establish `h1 : x.degree ≤ k` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hx` using `[if_pos (h1.trans hkm), if_pos h1, sub_self]`. Conclude with `hx rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psTrunc_sub_mem {κ : Type} [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ S) {k m : ℕ} (hkm : k ≤ m) :
     psTrunc m f - psTrunc k f ∈ Io S κ ^ (k + 1) := by
@@ -552,20 +550,20 @@ variable [Algebra ℚ S]
 open Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrExp1
 
 /- English proof (translation)
-Simplify using `[ev2, bil, map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_pair_bilinear {τ : Type} (M : Fin d → Fin d → S) (u v : Fin d → MvPolynomial τ S) :
     ev2 (bil M) u v = ∑ i, ∑ l, C (M i l) * (u i * v l) := by
   simp [ev2, bil, map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq]
 
 /- English proof (translation)
-Establish `h1` using `const_one fF hF hph1 hu`. Establish `h2 : P - 1 ∈ Io S _ ^ 2` using `stepNo2 le_rfl (by omega) (by omega) fF hF hph1 hsym h1`. Take `⟨hA1, hs⟩` from `lead_biadd (j := 2) (by omega) hm fF hF hph1 hsym h2`. Establish `hb` using `bilin_of_biadd hA1 hs`. Use `set B := fun i l => coeff (sil i l) (homogeneousComponent 2 (P - 1)) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbB : homogeneousComponent 2 (P - 1) = bil B` using `hb`. Use `⟨h2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hbB]`. Conclude with `sub_homogeneousComponent_mem h2`. Establish `e1 : ev2 (bil B) (xs S d 1) (xs S d 0) = bil (fun i l => B l i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eval_pair_bilinear, bil, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [xs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e1` using `[← hbB, hs, hbB]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i l`. Use `congrFun (congrFun (bil_ext e1) i) l` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem lead_bil {P : MvPolynomial (Fin 2 × Fin d) S} {m : ℕ} (hm : 2 ≤ m)
     (fF : Fin d → MvPolynomial (Fin 3 × Fin d) S)
@@ -595,11 +593,11 @@ theorem lead_bil {P : MvPolynomial (Fin 2 × Fin d) S} {m : ℕ} (hm : 2 ≤ m)
     exact this
 
 /- English proof (translation)
-Establish `key : ∀ i l j, coeff (sil i0 l0) (C (B i l) * (C (A i j) * X ((0 : Fin 2), j) * X ((1 : Fin 2), l)) : MvPolynomial (Fin 2 × Fin d) S) = if j = i0 ∧ l = l0 then B i l * A i j else 0`. Introduce `i l j`. Rewrite using `[show (C (B i l) * (C (A i j) * X ((0 : Fin 2), j) * X ((1 : Fin 2), l)) : MvPolynomial (Fin 2 × Fin d) S) = C (B i l * A i j) * (X ((0 : Fin 2), j) * X ((1 : Fin 2), l)) by rw [map_mul]; ring]`. Rewrite using `[coeff_C_mul, coeff_XX]`. Distinguish the cases in `h : j = i0 ∧ l = l0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (sil_inj.2 h), if_pos h, mul_one]`. Rewrite using `[if_neg (fun h' => h (sil_inj.1 h')), if_neg h, mul_zero]`. Simplify using `only [PairEvaluation.lin, xs, Finset.sum_mul, Finset.mul_sum, coeff_sum, key]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single l0 (fun l _ hl => Finset.sum_eq_zero fun j _ => by simp [hl]) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i0 (fun j _ hj => by simp [hj]) (by simp), if_pos ⟨rfl, rfl⟩, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_linL (A B : Fin d → Fin d → S) (i0 l0 : Fin d) :
     coeff (sil i0 l0) (∑ i, ∑ l, C (B i l) * (PairEvaluation.lin A (0 : Fin 2) i * xs S d (1 : Fin 2) l)) =
@@ -619,11 +617,11 @@ theorem coeff_linL (A B : Fin d → Fin d → S) (i0 l0 : Fin d) :
   rw [Finset.sum_eq_single i0 (fun j _ hj => by simp [hj]) (by simp), if_pos ⟨rfl, rfl⟩, mul_comm]
 
 /- English proof (translation)
-Establish `key : ∀ i l j, coeff (sil i0 l0) (C (B i l) * (X ((0 : Fin 2), i) * (C (Ab l j) * X ((1 : Fin 2), j))) : MvPolynomial (Fin 2 × Fin d) S) = if i = i0 ∧ j = l0 then B i l * Ab l j else 0`. Introduce `i l j`. Rewrite using `[show (C (B i l) * (X ((0 : Fin 2), i) * (C (Ab l j) * X ((1 : Fin 2), j))) : MvPolynomial (Fin 2 × Fin d) S) = C (B i l * Ab l j) * (X ((0 : Fin 2), i) * X ((1 : Fin 2), j)) by rw [map_mul]; ring]`. Rewrite using `[coeff_C_mul, coeff_XX]`. Distinguish the cases in `h : i = i0 ∧ j = l0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (sil_inj.2 h), if_pos h, mul_one]`. Rewrite using `[if_neg (fun h' => h (sil_inj.1 h')), if_neg h, mul_zero]`. Simplify using `only [PairEvaluation.lin, xs, Finset.sum_mul, Finset.mul_sum, coeff_sum, key]`. Rewrite using `[Finset.sum_eq_single i0 (fun i _ hi => Finset.sum_eq_zero fun l _ => Finset.sum_eq_zero fun j _ => by simp [hi]) (by simp)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single l0 (fun j _ hj => by simp [hj]) (by simp), if_pos ⟨rfl, rfl⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_linR (Ab B : Fin d → Fin d → S) (i0 l0 : Fin d) :
     coeff (sil i0 l0) (∑ i, ∑ l, C (B i l) * (xs S d (0 : Fin 2) i * PairEvaluation.lin Ab (1 : Fin 2) l)) =
@@ -649,15 +647,15 @@ section Act
 open ReciprocityTheory.ChartRestriction.G.TB (dLin)
 
 /- English proof (translation)
-Apply `mem_pow_Io_lemma_3` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_support_iff, coeff_sub, coeff_psTrunc_lemma_2]`. Assume the negation of the conclusion as `hlt`. Establish `h1 : x.degree ≤ 1` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hx` using `[if_pos (h1.trans hm)]`. Apply `hx` to reduce the goal to its premises. Rewrite using `[coeff_sum]`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 h1 with h0 | h0` into its components or cases. Establish `hx0 : x = 0` using `by first`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Consider the case `exact (Finsupp.degree_eq_zero_iff x).1 h0`. Consider the case `exact Finsupp.degree_eq_zero_iff.1 h0`. Substitute `hx0` using the available equality. Simplify using `[coeff_C_mul, coeff_X', MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ]`. Take `⟨⟨q1, q2⟩, rfl⟩` from `eq_single_of_degree_one x h0`.
+Treat this case separately. Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hq1 : q1 = 0` using `Subsingleton.elim _ _`. Substitute `hq1` using the available equality. Rewrite using `[Finset.sum_eq_single q2]`. Simplify using `[coeff_C_mul, coeff_X', dLin]`. Introduce `j _ hj`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[coeff_C_mul, coeff_X', Finsupp.single_left_inj one_ne_zero, hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psTrunc_act_sub_mem (φ : Fin d → PS S 1 d) (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) {m : ℕ}
     (hm : 1 ≤ m) (i : Fin d) :
@@ -687,15 +685,15 @@ theorem psTrunc_act_sub_mem (φ : Fin d → PS S 1 d) (hφ : ∀ i, MvPowerSerie
     · simp
 
 /- English proof (translation)
-Establish `hmap : ∀ q ∈ Io S (Fin 1 × Fin d) ^ 2, rename (fun p : Fin 1 × Fin d => ((![k] : Fin 1 → Fin 2) p.1, p.2)) q ∈ Io S (Fin 2 × Fin d) ^ 2`. Introduce `q hq`. Establish `hle : Ideal.map (rename (fun p : Fin 1 × Fin d => ((![k] : Fin 1 → Fin 2) p.1, p.2)) : MvPolynomial (Fin 1 × Fin d) S →ₐ[S] MvPolynomial (Fin 2 × Fin d) S) (Io S (Fin 1 × Fin d)) ≤ Io S (Fin 2 × Fin d)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, rename_X]`. Conclude with `Ideal.subset_span ⟨_, rfl⟩`. Establish `h2` using `Ideal.mem_map_of_mem (rename (fun p : Fin 1 × Fin d => ((![k] : Fin 1 → Fin 2) p.1, p.2)) : MvPolynomial (Fin 1 × Fin d) S →ₐ[S] MvPolynomial (Fin 2 × Fin d) S) hq`. Rewrite `h2` using `[Ideal.map_pow]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_right_mono hle 2 h2`. Establish `h3` using `hmap _ (psTrunc_act_sub_mem φ hφ hm i)`. Establish `hc0 : constantCoeff (psIn d m ![k] (φ i)) = 0`. Rewrite using `[psIn, constantCoeff_rename]`. Establish `h0 : constantCoeff (psTrunc m (φ i)) = coeff 0 (psTrunc m (φ i))` using `by first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp [constantCoeff_eq]`. Rewrite using `[h0, coeff_psTrunc_lemma_2]`. Simplify using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hc0, map_zero, sub_zero, map_sub]`. Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `simp [PairEvaluation.lin, map_sum, rename_X, rename_C]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psIn_act_sub_mem (φ : Fin d → PS S 1 d) (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) {m : ℕ}
     (hm : 1 ≤ m) (k : Fin 2) (i : Fin d) :

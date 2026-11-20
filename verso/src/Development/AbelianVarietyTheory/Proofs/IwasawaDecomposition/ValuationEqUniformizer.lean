@@ -17,11 +17,11 @@ open GlobalTheory.IwaCell GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleC
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `valuation_surjective (uniformizer k)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`. Conclude with `uniformizer_pos.ne' hy.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `π₀ : kˣ` to `Units.mk0 y hy0`. Establish `h1 : ord k π₀ = 1` using `ord_eq_one (by simpa [π₀] using hy)`. Establish `h2 : ord k (ϖ * π₀⁻¹) = 0`. Rewrite using `[ord_mul, show π₀⁻¹ = π₀ ^ (-1 : ℤ) by simp, ord_zpow, h1, hϖ]; ring`. Establish `h3` using `ord_eq_zero_iff.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`. Establish `hne : valuation k (π₀ : k) ≠ 0` using `by simp`. Rewrite `h3` using `[mul_inv_eq_one₀ hne]`. Rewrite using `[h3]`. Simplify `hy` using `[π₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem valuation_eq_uniformizer {ϖ : kˣ} (hϖ : ord k ϖ = 1) : valuation k (ϖ : k) = uniformizer k := by
   obtain ⟨y, hy⟩ := valuation_surjective (uniformizer k)
@@ -41,14 +41,14 @@ theorem valuation_eq_uniformizer {ϖ : kˣ} (hϖ : ord k ϖ = 1) : valuation k (
   simpa [π₀] using hy
 
 /- English proof (translation)
-Rewrite using `[← tD_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diagT_neg (ϖ : kˣ) (d : Fin m → ℤ) : diagT k (Fin m) (fun i => ϖ ^ (-d i)) = (tD ϖ d)⁻¹ := by
   rw [← tD_neg]
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.IwahoriTraceProof.dominantContracts ϖ (valuation_eq_uniformizer hϖ) (fun i => -d i) fun _ _ h => neg_le_neg (hd h)`.
+A detailed English derivation is pending.
 -/
 theorem contracts_neg {ϖ : kˣ} (hϖ : ord k ϖ = 1) {d : Fin m → ℤ} (hd : Monotone d) :
     Contracts (fun i => ϖ ^ (-d i)) :=
@@ -56,7 +56,7 @@ theorem contracts_neg {ϖ : kˣ} (hϖ : ord k ϖ = 1) {d : Fin m → ℤ} (hd : 
     fun _ _ h => neg_le_neg (hd h)
 
 /- English proof (translation)
-Use `(contracts_neg hϖ hd).2 u hu` as an intermediate fact. Rewrite `this` using `[diagT_neg, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_mem_unipLowerOne {ϖ : kˣ} (hϖ : ord k ϖ = 1) {d : Fin m → ℤ} (hd : Monotone d) {u : GL (Fin m) k}
     (hu : u ∈ unipLowerOne k (Fin m)) : tD ϖ d * u * (tD ϖ d)⁻¹ ∈ unipLowerOne k (Fin m) := by

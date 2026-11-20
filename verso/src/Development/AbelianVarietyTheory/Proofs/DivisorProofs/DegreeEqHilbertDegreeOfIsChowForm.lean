@@ -16,7 +16,7 @@ namespace GlobalTheory.ChowDegree
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Introduce `F _ _ D N δ I f hf hp hI`. Use `haveI := hp`. Conclude with `GlobalTheory.ChowExists.degree_eq_hilbertDegree (GlobalTheory.ChowExists.isHomogeneous_of_component hI) hf.isChowFormInt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem degree_eq_hilbertDegree_of_isChowForm : ∀ (F : Type) [Field F] [CharZero F] (D N δ : ℕ) (I : Ideal (MvPolynomial (Fin N) F)) (f : MvPolynomial (Fin (D + 1) × Fin N) F), IsChowForm I D δ f → I.IsPrime → (∀ g ∈ I, ∀ n : ℕ, homogeneousComponent n g ∈ I) → δ = hilbertDegree I := by
   intro F _ _ D N δ I f hf hp hI

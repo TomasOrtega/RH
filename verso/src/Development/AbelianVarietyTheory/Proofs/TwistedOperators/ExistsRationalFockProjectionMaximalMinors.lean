@@ -16,7 +16,7 @@ def fockQ (f g : MvPolynomial σ ℚ) : ℚ :=
   ∑ m ∈ f.support, f.coeff m * g.coeff m * (Formalism.L2.DIV.mfact m : ℚ)
 
 /- English proof (translation)
-Use `Finset.sum_subset hs ?_` and prove the remaining obligations. Introduce `m _ hm`. Rewrite using `[notMem_support_iff.mp hm]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockQ_eq_sum (f g : MvPolynomial σ ℚ) (s : Finset (σ →₀ ℕ)) (hs : f.support ⊆ s) :
     fockQ f g = ∑ m ∈ s, f.coeff m * g.coeff m * (Formalism.L2.DIV.mfact m : ℚ) := by
@@ -54,7 +54,7 @@ Both sides reduce to the same expression.
 theorem fockQL_apply (f g : MvPolynomial σ ℚ) : fockQL f g = fockQ f g := rfl
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.fockS_eq_sum _ _ f.support (support_map_subset _ _), fockQ]`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[coeff_map]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fockS_map (f g : MvPolynomial σ ℚ) :
     Formalism.L2.DIV.fockS (map (algebraMap ℚ ℂ) f) (map (algebraMap ℚ ℂ) g) = (fockQ f g : ℂ) := by
@@ -64,9 +64,9 @@ theorem fockS_map (f g : MvPolynomial σ ℚ) :
   simp [coeff_map]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hf`. Establish `hf' : map (algebraMap ℚ ℂ) f ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Conclude with `map_injective _ (algebraMap ℚ ℂ).injective (by rw [h0, map_zero])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `GlobalTheory.MinorFrame.fockS_self_re_pos hf'` as an intermediate fact. Rewrite `this` using `[fockS_map, h]`. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fockQ_self {f : MvPolynomial σ ℚ} (h : fockQ f f = 0) : f = 0 := by
   by_contra hf
@@ -86,7 +86,7 @@ def prodMinorsQ {a d : ℕ} {n : ι → ℕ} (T : Tup ι a d n) : MvPolynomial (
   ∏ τ, ∏ j, (Matrix.of fun i i' : Fin a => (X (τ, (T τ j).1 i, i') : MvPolynomial (Var ι d a) ℚ)).det
 
 /- English proof (translation)
-Simplify using `only [prodMinorsQ, prodMinors, minorAt, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i i'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -100,17 +100,17 @@ theorem map_prodMinorsQ {a d : ℕ} {n : ι → ℕ} (T : Tup ι a d n) :
   simp
 
 /- English proof (translation)
-Introduce `ι _ a d n k`. Set `PQ : Tup ι a d n → MvPolynomial (Var ι d a) ℚ` to `fun T => prodMinorsQ T`. Set `W` to `Submodule.span ℚ (Set.range PQ)`. Use `haveI : FiniteDimensional ℚ W := FiniteDimensional.span_of_finite ℚ (Set.finite_range PQ)`. Set `ψ : W →ₗ[ℚ] Module.Dual ℚ W` to `(fockQL (σ := Var ι d a)).flip.compl₁₂ W.subtype W.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `w hw`. Establish `h1 : ψ w w = 0` using `by rw [LinearMap.mem_ker.mp hw]; rfl`. Establish `h2 : fockQ (w : MvPolynomial (Var ι d a) ℚ) w = 0` using `h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (eq_zero_of_fockQ_self h2)`. Establish `hsurj : Function.Surjective ψ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`. Take `⟨w₀, hw₀⟩` from `hsurj ((fockQL.flip (monomial k (1 : ℚ))).comp W.subtype)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ).1 w₀.2`. Set `e : Fin (Fintype.card (Tup ι a d n)) ≃ Tup ι a d n` to `(Fintype.equivFin _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Fintype.card (Tup ι a d n), fun p => c (e p), fun p => e p, fun T => ?_⟩` and prove the remaining obligations. Establish `hsum : (∑ p, ((c (e p) : ℚ) : ℂ) • prodMinors (e p)) = map (algebraMap ℚ ℂ) (w₀ : MvPolynomial (Var ι d a) ℚ)`. Rewrite using `[e.sum_comp (fun T => ((c T : ℚ) : ℂ) • prodMinors T), ← hc, map_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `only [PQ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_eq_C_mul (prodMinorsQ T) (c T), map_mul, map_C, map_prodMinorsQ, smul_eq_C_mul]`. Simplify using the standard rewrite rules. Establish `hmon : (monomial k (1 : ℂ)) = map (algebraMap ℚ ℂ) (monomial k (1 : ℚ))` using `by simp [map_monomial]`. Rewrite using `[hsum, ← map_prodMinorsQ T, hmon, ← map_sub, fockS_map, ← fockQL_apply, map_sub]`. Establish `h3` using `LinearMap.congr_fun hw₀ ⟨PQ T, Submodule.subset_span ⟨T, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : fockQL (PQ T) (w₀ : MvPolynomial (Var ι d a) ℚ) = fockQL (PQ T) (monomial k 1)` using `h3`. Simplify using `only [PQ] at h4`. Rewrite using `[h4, sub_self, Rat.cast_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_proj : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ) (k : GlobalTheory.MinorFrame.Var ι d a →₀ ℕ),
   ∃ (M : ℕ) (r : Fin M → ℚ) (U : Fin M → GlobalTheory.MinorFrame.Tup ι a d n), ∀ T : GlobalTheory.MinorFrame.Tup ι a d n,

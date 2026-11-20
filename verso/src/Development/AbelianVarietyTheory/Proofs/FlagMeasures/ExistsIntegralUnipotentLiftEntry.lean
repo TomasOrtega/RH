@@ -9,25 +9,25 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN.LiftEntry
 
 /- English proof (translation)
-Simplify using `[eI, Fin.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eI_inj {k r : ℕ} {a b : Fin r} : eI k r a = eI k r b ↔ a = b := by
   simp [eI, Fin.ext_iff]
 
 /- English proof (translation)
-Simplify using `only [eI, esI, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eI_ne_esI {k r : ℕ} (a b : Fin r) : eI k r a ≠ esI k r b := by
   simp only [eI, esI, ne_eq, Fin.ext_iff]; omega
 
 /- English proof (translation)
-Simplify using `only [eI, wI, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eI_ne_wI {k r : ℕ} (a : Fin r) (j : Fin (k + 1)) : eI k r a ≠ wI k r j := by
   simp only [eI, wI, ne_eq, Fin.ext_iff]; omega
 
 /- English proof (translation)
-Simplify using `only [Hpk, esI, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_esI {k r : ℕ} (b : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r b) j = if j = eI k r b then 1 else 0 := by
@@ -35,9 +35,9 @@ theorem Hpk_esI {k r : ℕ} (b : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Simplify using `only [herm, bvec, dotProduct, mulVec, Pi.star_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single (esI k r b)]`. Simplify using `only [if_true, mul_one, star_mul', star_one]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[Hpk_esI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `m _ hm`. Simplify using `[hm]`. Simplify using the standard rewrite rules. Introduce `m _ hm`. Simplify using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -54,12 +54,12 @@ theorem herm_single {k r : ℕ} (b : Fin r) (c : ℂ) (j : Fin (2 * r + k + 1)) 
   · simp
 
 /- English proof (translation)
-The claim follows from `(eI_ne_wI a j).symm`.
+A detailed English derivation is pending.
 -/
 theorem wI_ne_eI {k r : ℕ} (j : Fin (k + 1)) (a : Fin r) : wI k r j ≠ eI k r a := (eI_ne_wI a j).symm
 
 /- English proof (translation)
-The claim follows from `(eI_ne_esI b a).symm`.
+A detailed English derivation is pending.
 -/
 theorem esI_ne_eI {k r : ℕ} (a b : Fin r) : esI k r a ≠ eI k r b := (eI_ne_esI b a).symm
 
@@ -68,21 +68,21 @@ end GlobalTheory.SnMass.VolN.LiftEntry
 namespace GlobalTheory.SnMass.VolN.LiftEntry
 
 /- English proof (translation)
-Simplify using `[form, mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (c : E) (x z : Fin n → E) : form σ J (c • x) z = c * form σ J x z := by
   simp [form, mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_right {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (c : E) (x z : Fin n → E) : form σ J x (c • z) = σ c * form σ J x z := by
   simp only [form, dotProduct, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [form, pairM, cT, dotProduct, mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_col {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} {a b : Type} [Fintype a] [Fintype b]
     (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) b E) (Y : Matrix (Fin n) a E) (i : a) (j : b) :
@@ -96,33 +96,31 @@ end GlobalTheory.SnMass.VolN.LiftEntry
 namespace GlobalTheory.SnMass.VolN.LiftEntry
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV p l hl`. Establish `hV'` using `hV`. Take `⟨hcm, -, -, -, -, hdu, htup, -, hs, had⟩` from `hV'`. Establish `hi : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `τ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `τ (σ (σ x)) = _`. Rewrite using `[hcm.2.2.2, hcm.2.2.2, star_star]`. Take `⟨u, hu, hlu⟩` from `hl`. Take `⟨⟨a, b⟩, hab⟩` from `p`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hu hlu hab ⊢`. Use `set y : Fin (2 * r + k + 1) → E := (-(σ u)) • fun i => f i b with hy`. Use `⟨rowE (σ : E →+* E) J (fun i => P i a.castSucc) y 0, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.rowE_mem_GN_of_form_add_trace_eq_zero F E σ k r J Λ P f T A s hV a y 0 (fun c hc => ?_) ?_ (fun c hc => ?_) (FractionalIdeal.zero_mem _)` and prove the remaining obligations. Rewrite using `[hy, form_smul_left, form_col, hdu.1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: c.castSucc ≠ b.castSucc` using `fun h => absurd (Fin.castSucc_injective _ h ▸ hc) (not_le.2 hab)`. Simplify using `[this]`. Rewrite using `[hy, form_smul_left, form_smul_right, form_col, hdu.2]`. Simplify using the standard rewrite rules. Establish `hsu : (σ : E →+* E) u ∈ dInv E (r - a.val) * (dInv E (r - b.val))⁻¹` using `(GlobalTheory.SnMass.FrameDual.Stab.mul (GlobalTheory.SnMass.FrameDual.stab_dInv hi _) ((GlobalTheory.SnMass.FrameDual.stab_dInv hi _).inv hi (GlobalTheory.SnMass.FrameDual.dInv_ne_zero _))) u hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : c * σ u ∈ (dInv E (r - b.val))⁻¹`. Use `FractionalIdeal.mul_mem_mul hc hsu` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ (GlobalTheory.SnMass.FrameDual.dInv_ne_zero _), one_mul]`. Then use the resulting hypothesis. Establish `e : c • y = (-(c * σ u)) • fun i => sideM P f i (Fin.natAdd (r + 1) b)`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hy, sideM, mul_comm, mul_left_comm]`. Rewrite using `[e]`. Use `htup (Submodule.subset_span ⟨Fin.natAdd (r + 1) b, -(c * σ u), ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[GlobalTheory.SnMass.FrameDual.frameDualTupleIdeals_natAdd]`. Conclude with `Submodule.neg_mem _ hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : ∀ w : InfinitePlace E, (A w).mulVec (fun l => w.embedding (y l)) = (-(star (w.embedding u)) * ((s b)⁻¹ : ℂ)) • bvec (esI k r b)`. Introduce `w`. Establish `e : (fun l => w.embedding (y l)) = (-(w.embedding (σ u))) • fun l => w.embedding (f l b)`. Use extensionality with `l`. Simplify using `[hy]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, mulVec_smul, (had w b).2, smul_smul, hcm.2.2.2]`. Establish `key : ∀ (w : InfinitePlace E) (a' : Fin r) (j : Fin (2 * r + k + 1)), gM A (rowE (σ : E →+* E) J (fun i => P i a.castSucc) y 0) w (eI k r a') j = (if eI k r a' = j then 1 else 0) - (if a' = a ∧ j = eI k r b then (s a : ℂ) * star (-(star (w.embedding u)) * ((s b)⁻¹ : ℂ)) else 0)`. Introduce `w a' j`. Rewrite using `[GlobalTheory.T.rowIsometry_entries_in_modelCoordinates F E σ k r J Λ P f T A s hV a y 0 w, hv w, herm_single]`. Simplify using `[bvec, Pi.single_apply, eI_ne_esI, eI_inj, ite_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨fun w => ?_, fun β hβ _ w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gM A _ w (eI k r a) (eI k r b) = l w`. Rewrite using `[key, hlu]`. Simplify using `only [eI_inj, hab.ne, if_false, true_and, if_true, zero_sub]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [star_mul', star_neg, star_star, Complex.star_def, Complex.conj_ofReal, map_inv₀, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Break down `β with ⟨⟨a', b'⟩, hab'⟩ | a' | ⟨⟨a', b'⟩, hab'⟩ | a'` into its components or cases. Express the relevant statement in the definitionally equal form `gM A _ w (eI k r a') (eI k r b') = 0`. Rewrite using `[key]`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hne : ¬ (a' = a ∧ eI k r b' = eI k r b)`. Introduce and unpack `⟨rfl, h⟩`. Take `rfl` from `eI_inj.1 h`. Conclude with `hβ rfl`. Establish `hne' : a' ≠ b'` using `ne_of_lt hab'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[if_neg hne, if_neg (fun h => hne' (eI_inj.1 h)), sub_zero]`. Express the relevant statement in the definitionally equal form `(fun j => gM A _ w (eI k r a') (wI k r j)) = (0 : Fin (k + 1) → ℂ)`. Use function extensionality and compare the values at `j`. Rewrite using `[key]`. Simplify using `[eI_ne_wI, wI_ne_eI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `gM A _ w (eI k r a') (esI k r b') = 0`. Rewrite using `[key]`. Simplify using `[eI_ne_esI, esI_ne_eI]`. Express the relevant statement in the definitionally equal form `(gM A _ w (eI k r a') (esI k r a')).im = 0`. Rewrite using `[key]`.
-
-Simplify using `[eI_ne_esI, esI_ne_eI]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_entry : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsVolData σ J Λ P f T A s → ∀ (p : UTr r) (l : InfinitePlace E → ℂ), l ∈ ideLat (dInv E (r - p.1.1.val) * (dInv E (r - p.1.2.val))⁻¹) (s p.1.1 / s p.1.2) → ∃ γ ∈ GN (σ : E →+* E) J Λ P, (∀ w, cM k r (.inl p) (Matrix.of.symm (gM A γ w)) = l w) ∧ ∀ β : Bk r, β ≠ (.inl p) → degB r β ≤ degB r (.inl p) → ∀ w, cM k r β (Matrix.of.symm (gM A γ w)) = 0 := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hV p l hl

@@ -30,17 +30,17 @@ def eps (k : UpperTheory.V.TR.Kinf F 2) (w : InfinitePlace F) : Bool :=
   decide (0 < k.1 0 0 w * k.1 1 1 w - k.1 0 1 w * k.1 1 0 w)
 
 /- English proof (translation)
-Establish `hsq : (x * a + y * c) ^ 2 + (x * b + y * d) ^ 2 = x ^ 2 + y ^ 2`. Take the linear combination `x ^ 2 * h4 + y ^ 2 * h5 + 2 * x * y * h6`. Establish `hC : (((x * a + y * c : ℝ) : ℂ) ^ 2 + ((x * b + y * d : ℝ) : ℂ) ^ 2) = (x : ℂ) ^ 2 + (y : ℂ) ^ 2`. Conclude with `hsq` after adjusting the coercions. Rewrite using `[hC]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Complex.exp (-(Real.pi : ℂ) * ((x : ℂ) ^ 2 + (y : ℂ) ^ 2)) = E`. Establish `hs2 : (a * d - b * c) * (a * d - b * c) = 1`. Take the linear combination `(c * c + d * d) * h4 + h5 - (a * c + b * d) * h6`. Establish `hsg : ((sgn true : ℝ) : ℂ) = 1` using `by simp [sgn]`. Establish `hsg' : ((sgn false : ℝ) : ℂ) = -1` using `by simp [sgn]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_self_eq_one_iff.mp hs2 with hs | hs` into its components or cases. Establish `hc : c = -b` using `by linear_combination (-c) * h4 + a * h6 - b * hs`. Establish `hd : d = a` using `by linear_combination (-d) * h4 + b * h6 + a * hs`. Establish `hpos : 0 < a * d - b * c`. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Rewrite using `[decide_eq_true hpos, hsg]`. Substitute `hc hd` using the available equality. Use `push_cast`. Take the linear combination `(-((b : ℂ) * (y : ℂ) * E)) * Complex.I_sq`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc : c = b` using `by linear_combination (-c) * h4 + a * h6 - b * hs`. Establish `hd : d = -a` using `by linear_combination (-d) * h4 + b * h6 + a * hs`. Establish `hneg : ¬ 0 < a * d - b * c`. Rewrite using `[hs]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[decide_eq_false hneg, hsg']`. Substitute `hc hd` using the available equality. Use `push_cast`. Take the linear combination `((c : ℂ) * (y : ℂ) * E) * Complex.I_sq`.
+Substitute using the available equality. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem place (a b c d x y : ℝ) (h1 : a * a + c * c = 1) (h2 : b * b + d * d = 1) (h3 : a * b + c * d = 0)
     (h4 : a * a + b * b = 1) (h5 : c * c + d * d = 1) (h6 : a * c + b * d = 0) :
@@ -79,11 +79,11 @@ theorem place (a b c d x y : ℝ) (h1 : a * a + c * c = 1) (h2 : b * b + d * d =
     linear_combination ((c : ℂ) * (y : ℂ) * E) * Complex.I_sq
 
 /- English proof (translation)
-Establish `hA` using `Unitary.coe_star_mul_self k`. Establish `hB` using `Unitary.coe_mul_star_self k`. Establish `e : ∀ (M N : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)), M = N → ∀ i j, M i j w = N i j w` using `fun M N h i j => by rw [h]`. Establish `a1` using `e _ _ hA 0 0`. Establish `a2` using `e _ _ hA 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `e _ _ hA 0 1`. Establish `b1` using `e _ _ hB 0 0`. Establish `b2` using `e _ _ hB 1 1`. Establish `b3` using `e _ _ hB 0 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply] at a1 a2 a3 b1 b2 b3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨a1, a2, a3, b1, b2, b3⟩`.
+Supply the required witnesses or components.
 -/
 theorem rels (k : UpperTheory.V.TR.Kinf F 2) (w : InfinitePlace F) :
     k.1 0 0 w * k.1 0 0 w + k.1 1 0 w * k.1 1 0 w = 1 ∧ k.1 0 1 w * k.1 0 1 w + k.1 1 1 w * k.1 1 1 w = 1 ∧
@@ -103,7 +103,7 @@ theorem rels (k : UpperTheory.V.TR.Kinf F 2) (w : InfinitePlace F) :
   exact ⟨a1, a2, a3, b1, b2, b3⟩
 
 /- English proof (translation)
-Unfold `arch archE lam`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `rels k w`. Conclude with `place (k.1 0 0 w) (k.1 0 1 w) (k.1 1 0 w) (k.1 1 1 w) (X w) (Y w) h1 h2 h3 h4 h5 h6`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem arch_rot (k : UpperTheory.V.TR.Kinf F 2) (X Y : UpperTheory.V.TR.Rinf F) :
     arch (fun w => X w * k.1 0 0 w + Y w * k.1 1 0 w) (fun w => X w * k.1 0 1 w + Y w * k.1 1 1 w) =
@@ -115,13 +115,13 @@ theorem arch_rot (k : UpperTheory.V.TR.Kinf F 2) (X Y : UpperTheory.V.TR.Rinf F)
   exact place (k.1 0 0 w) (k.1 0 1 w) (k.1 1 0 w) (k.1 1 1 w) (X w) (Y w) h1 h2 h3 h4 h5 h6
 
 /- English proof (translation)
-Establish `hK : ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) = k.1`. Establish `h` using `congrArg Units.val (UpperTheory.V.TR.pInf_infGL (E := F) (Unitary.toUnits k))`. Conclude with `h`. Establish `hKf : ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (pFin F) = 1`. Establish `h` using `congrArg Units.val (UpperTheory.V.TR.pFin_infGL (E := F) (Unitary.toUnits k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `ef : ∀ i, pFin F ((v ᵥ* ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) i) = pFin F (v i)`. Introduce `i`. Rewrite using `[RingHom.map_vecMul, hKf, Matrix.vecMul_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : UpperTheory.V.TR.pInf F ((v ᵥ* ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) 0) = fun w => UpperTheory.V.TR.pInf F (v 0) w * k.1 0 0 w + UpperTheory.V.TR.pInf F (v 1) w * k.1 1 0 w`. Rewrite using `[RingHom.map_vecMul, hK]`. Use function extensionality and compare the values at `w`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `e1 : UpperTheory.V.TR.pInf F ((v ᵥ* ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) 1) = fun w => UpperTheory.V.TR.pInf F (v 0) w * k.1 0 1 w + UpperTheory.V.TR.pInf F (v 1) w * k.1 1 1 w`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[RingHom.map_vecMul, hK]`. Use function extensionality and compare the values at `w`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Unfold `Phi PhiE`. Rewrite using `[ef 0, ef 1, e0, e1, arch_rot k, mul_assoc]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_rot (c : HeightOneSpectrum (𝓞 F) → ℕ) (k : UpperTheory.V.TR.Kinf F 2) (v : Fin 2 → Ad F) :
     Phi c (v ᵥ* ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) =
@@ -155,7 +155,7 @@ theorem phi_rot (c : HeightOneSpectrum (𝓞 F) → ℕ) (k : UpperTheory.V.TR.K
   rw [ef 0, ef 1, e0, e1, arch_rot k, mul_assoc]
 
 /- English proof (translation)
-Unfold `absD`. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absD_mul (g h : GA F 2) : absD (g * h) = absD g * absD h := by
   unfold absD
@@ -163,16 +163,16 @@ theorem absD_mul (g h : GA F 2) : absD (g * h) = absD g * absD h := by
   rfl
 
 /- English proof (translation)
-Unfold `absD`. Conclude with `((IdeleGroup.ideleModule F) (Matrix.GeneralLinearGroup.det g)).2.le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem absD_nonneg (g : GA F 2) : 0 ≤ absD g := by
   unfold absD
   exact ((IdeleGroup.ideleModule F) (Matrix.GeneralLinearGroup.det g)).2.le
 
 /- English proof (translation)
-Unfold `Eis`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[← integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Unfold `eisInt thetaS`. Simplify using `only [tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eis_smul (ω : HChar F) (a : ℂ) (Ψ : (Fin 2 → Ad F) → ℂ) (g : GA F 2) :
     Eis ω (fun v => a * Ψ v) g = a * Eis ω Ψ g := by
@@ -188,11 +188,11 @@ theorem eis_smul (ω : HChar F) (a : ℂ) (Ψ : (Fin 2 → Ad F) → ℂ) (g : G
   ring
 
 /- English proof (translation)
-Unfold `Eis`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[← integral_const_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Unfold `eisInt thetaS`. Rewrite using `[absD_mul, Real.mul_rpow (absD_nonneg g) (absD_nonneg K)]`. Simplify using `only [← mul_assoc (Matrix.GeneralLinearGroup.scalar (Fin 2) _) g K, Units.val_mul, ← Matrix.vecMul_vecMul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eis_mul_right (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (g K : GA F 2) :
     Eis ω Ψ (g * K) = ((absD K ^ ((1 : ℝ) / 2) : ℝ) : ℂ) *
@@ -211,7 +211,7 @@ theorem eis_mul_right (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (g K : GA F
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Eis ω (Phi c) (g * UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k)) = _`. Rewrite using `[eis_mul_right, show (fun v => Phi c (v ᵥ* ((UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) = fun v => lam k * PhiE c (eps k) v from funext (phi_rot c k), eis_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpt_eq (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (hs : Eis ω (Phi c) ∈ UpperTheory.V.TR.Sm F 2)
     (k : UpperTheory.V.TR.Kinf F 2) (g : GA F 2) :
@@ -227,11 +227,9 @@ end UpperTheory.HilbertEisensteinWeightOne.KFinitenessEisenstein
 
 open UpperTheory.HilbertEisensteinWeightOne.KFinitenessEisenstein in
 /- English proof (translation)
-Introduce `_ _ _ F _ _ _ ω c _ hs`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun ε : InfinitePlace F → Bool => Eis ω (PhiE c ε))) := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `hle : (Submodule.span ℂ (Set.range fun k => UpperTheory.V.TR.cptRep F 2 k ⟨Eis ω (Phi c), hs⟩)).map (UpperTheory.V.TR.Sm F 2).subtype ≤ Submodule.span ℂ (Set.range fun ε : InfinitePlace F → Bool => Eis ω (PhiE c ε))`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (UpperTheory.V.TR.Sm F 2).subtype (UpperTheory.V.TR.cptRep F 2 k ⟨Eis ω (Phi c), hs⟩) = ((((absD (UpperTheory.V.TR.infGL F 2 (Unitary.toUnits k) : GA F 2)) ^ ((1 : ℝ) / 2) : ℝ) : ℂ) * lam k) • Eis ω (PhiE c (eps k))`. Use function extensionality and compare the values at `fun g => by rw [Pi.smul_apply, smul_eq_mul]; exact cpt_eq ω c hs k g`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨eps k, rfl⟩)`. Use `haveI := Submodule.finiteDimensional_of_le hle`.
-
-Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HilbertEisensteinWeightOne.K_finiteness_holds : SPois → SInt → SSmooth → SKfin := by
   intro _ _ _ F _ _ _ ω c _ hs

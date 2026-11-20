@@ -5,7 +5,7 @@ open MeasureTheory
 namespace GlobalTheory.IndicatorSumEncard
 
 /- English proof (translation)
-Rewrite using `[← tsum_subtype A (fun _ => (1 : ENNReal))]`. Conclude with `ENNReal.tsum_set_one A`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_indicator_one_eq_encard {ι : Type} (A : Set ι) :
     ∑' i : ι, A.indicator (fun _ => (1 : ENNReal)) i = (A.encard : ENNReal) := by
@@ -13,17 +13,15 @@ theorem tsum_indicator_one_eq_encard {ι : Type} (A : Set ι) :
   exact ENNReal.tsum_set_one A
 
 /- English proof (translation)
-Establish `key : ∀ x : G, ∑' γ : ↥Γ, S.indicator (fun _ => (1 : ENNReal)) (γ⁻¹ • x) ≤ N`. Introduce `x`. Rewrite using `[← (Equiv.inv ↥Γ).tsum_eq (fun γ => S.indicator (fun _ => (1 : ENNReal)) (γ⁻¹ • x))]`. Simplify using `only [Equiv.inv_apply, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use `_ = _ := tsum_indicator_one_eq_encard _`. Use `_ ≤ N := hcount x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hS]`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `hD.lintegral_eq_tsum' _`. Use `_ = ∑' γ : ↥Γ, ∫⁻ x in D, S.indicator (fun _ => (1 : ENNReal)) (γ⁻¹ • x) * f x ∂μ := by`. Use `congr 1`. Use extensionality with `γ`. Use `lintegral_congr_ae ((ae_restrict_of_ae hinv).mono fun x hx => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f (γ⁻¹ • x) = f x` using `hx γ⁻¹`. Simplify using `only`. Distinguish the cases in `hm : γ⁻¹ • x ∈ S`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem hm, one_mul, h1]`. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem hm, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ x in D, (∑' γ : ↥Γ, S.indicator (fun _ => (1 : ENNReal)) (γ⁻¹ • x)) * f x ∂μ := by`. Rewrite using `[← lintegral_tsum]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[ENNReal.tsum_mul_right]`.
-
-Introduce `γ`. Conclude with `(((measurable_const.indicator hS).comp (measurable_const_smul γ⁻¹)).aemeasurable).mul hf.restrict`. Use `_ ≤ ∫⁻ x in D, N * f x ∂μ := lintegral_mono fun x => by gcongr; exact key x`. Use `_ = N * ∫⁻ x in D, f x ∂μ := lintegral_const_mul' N _ hN`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_mul_of_encard_le {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {μ : Measure G}

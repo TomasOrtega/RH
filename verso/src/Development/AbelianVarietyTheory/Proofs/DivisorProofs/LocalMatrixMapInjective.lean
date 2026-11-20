@@ -17,9 +17,9 @@ namespace GlobalTheory.DblScal
 open Matrix
 
 /- English proof (translation)
-Establish `e : ((dbl J).map t).det = (t : E →+* Fv F v) (dbl J).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e, isUnit_iff_ne_zero]`. Establish `hd : (dbl J).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dbl, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`. Conclude with `mul_ne_zero hJ (mul_ne_zero (pow_ne_zero _ (by simp)) hJ)`. Conclude with `(map_ne_zero_iff _ (t : E →+* Fv F v).injective).2 hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_dbl_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
     (t : E →ₐ[F] Fv F v) {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (hJ : J.det ≠ 0) :
@@ -33,9 +33,9 @@ theorem isUnit_det_dbl_map {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact (map_ne_zero_iff _ (t : E →+* Fv F v).injective).2 hd
 
 /- English proof (translation)
-Establish `hX : (X.1.val : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E))ᵀ * dbl (incM F J) * (X.1.val : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (cA σ) = dbl (incM F J)` using `X.2`. Establish `h` using `congrArg (fun M => M.map (piW t)) hX`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at h`. Establish `eD : (dbl (incM F J)).map (piW t) = (dbl J).map t`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM, GlobalTheory.Div.CoordOpp.piW_inclR]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `eC : ((X.1.val : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (cA σ)).map (piW t) = (X.1.val : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (piW (t.comp σ))`. Use extensionality with `i j`. Simplify using `[GlobalTheory.Div.CoordOpp.piW_cA]`. Rewrite `h` using `[eD, eC]`. Simplify `h` using `[Matrix.transpose_map]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {v : Pl F} (t : E →ₐ[F] Fv F v) {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (X : UD σ J) :
@@ -57,23 +57,21 @@ end GlobalTheory.DblScal
 
 open GlobalTheory.DblScal in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm d J hJ v t c p hp q hq hpq`. Use `set P : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E) := p.1.val with hPdef`. Use `set Q : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E) := q.1.val with hQdef`. Establish `e0 : (dsum c)⁻¹ * Matrix.GeneralLinearGroup.map (piW t) p.1 * dsum c = (dsum c)⁻¹ * Matrix.GeneralLinearGroup.map (piW t) q.1 * dsum c` using `hpq`. Establish `eG` using `mul_left_cancel (mul_right_cancel e0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : P.map (piW t) = Q.map (piW t)` using `congrArg Units.val eG`. Establish `h2 : P.map (piW (t.comp σ)) = Q.map (piW (t.comp σ))`. Establish `hUp` using `unitary_at t p`. Establish `hUq` using `unitary_at t q`. Rewrite `hUp` using `[← hPdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hUq` using `[← hQdef, ← h1]`. Use `set g := Matrix.GeneralLinearGroup.map (piW t) p.1`. Establish `hg : (g : Matrix _ _ (Fv F v)) = P.map (piW t)` using `rfl`. Establish `hinv : ((g⁻¹ : GL _ (Fv F v)) : Matrix _ _ (Fv F v))ᵀ * (P.map (piW t))ᵀ = 1`. Rewrite using `[← hg, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (dbl J).map t * P.map (piW (t.comp σ)) = (dbl J).map t * Q.map (piW (t.comp σ))`. Use `hUp.trans hUq.symm` as an intermediate fact. Use `congrArg (fun M => ((g⁻¹ : GL _ (Fv F v)) : Matrix _ _ (Fv F v))ᵀ * M) this` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `hD` using `isUnit_det_dbl_map t hJ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun M => ((dbl J).map t)⁻¹ * M) e1` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hD, Matrix.one_mul]`. Use `set e := GlobalTheory.EmbChart.atPlace v (1 : Fv F v)`. Establish `hev : evFin F v (1 - e) = 0` using `by rw [map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `hp' : At (evFin F v) (P - 1)` using `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : At (evFin F v) (Q - 1)` using `hq`. Establish `hM : P - Q = e • (P - Q)`. Establish `h0 : (1 - e) • (P - Q) = 0`. Establish `: P - Q = (P - 1) - (Q - 1)` using `by abel`. Rewrite using `[this, smul_sub, hp' (1 - e) hev, hq' (1 - e) hev, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h0`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P = Q`. Rewrite using `[← sub_eq_zero, hM]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply]`. Apply `GlobalTheory.InertVacIso.smul_eq_zero_of_compFin` to reduce the goal to its premises. Apply `GlobalTheory.AdelicU.split_ext hcm t` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `piW t ((P - Q) i j) = splitProj t 0`.
-
-Rewrite using `[map_zero, Matrix.sub_apply, map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h1 i) j`. Express the relevant statement in the definitionally equal form `piW (t.comp σ) ((P - Q) i j) = splitProj (t.comp σ) 0`. Rewrite using `[map_zero, Matrix.sub_apply, map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h2 i) j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DblScal.locMatD_injOn : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (d : ℕ) (J : Matrix (Fin d) (Fin d) E), J.det ≠ 0 →

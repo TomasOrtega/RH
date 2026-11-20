@@ -8,15 +8,15 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Simplify using `only [Finsupp.sum] at h`. Establish `hge : ∀ b ∈ c.support, (1 : ℤ) ≤ c b ^ 2`. Introduce `b hb`. Establish `hb' : c b ≠ 0` using `Finsupp.mem_support_iff.mp hb`. Apply the tactic sequence `rcases lt_or_gt_of_ne hb' with hlt | hgt <;> nlinarith`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hle : (c.support.card : ℤ) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : c.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `he`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[he, Finset.sum_empty]`. Conclude with `zero_ne_one h`. Establish `hcard : c.support.card = 1`. Use `hne.card_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Finset.card_eq_one.mp hcard`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[ha, Finset.sum_singleton]`. Establish `h1 : c a ≤ 1` using `by nlinarith`. Establish `h2 : -1 ≤ c a` using `by nlinarith`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : c a ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0]`. Evaluate the numerical expressions using `at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finsupp_eq_single_of_sum_sq_eq_one {α : Type} (c : α →₀ ℤ)
     (h : (c.sum fun _ m => m ^ 2) = 1) :
@@ -50,11 +50,11 @@ theorem finsupp_eq_single_of_sum_sq_eq_one {α : Type} (c : α →₀ ℤ)
   omega
 
 /- English proof (translation)
-Take `⟨n, ρ, hρ, hχ⟩` from `h`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : IsSimpleModule (MonoidAlgebra ℂ G) ρ.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule ρ).mp hρ`. Establish `hnt : Nontrivial ρ.asModule` using `IsSimpleModule.nontrivial (MonoidAlgebra ℂ G) _`. Break down `Nat.eq_zero_or_pos n with h0 | hn` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Substitute `h0` using the available equality. Take `⟨x, y, hxy⟩` from `hnt`. Conclude with `hxy (Subsingleton.elim (α := Fin 0 → ℂ) x y)`. Conclude with `hn`.
+It suffices to derive a contradiction. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hχ, Representation.char_one]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem exists_pos_nat_apply_one_of_isIrrChar {G : Type} [Group G] (χ : G → ℂ) (h : IsIrrChar ℂ ℂ χ) :
     ∃ n : ℕ, 0 < n ∧ χ 1 = n := by
@@ -73,17 +73,17 @@ private theorem exists_pos_nat_apply_one_of_isIrrChar {G : Type} [Group G] (χ :
     simp
 
 /- English proof (translation)
-Introduce `G _ _ φ hφ hnorm`. Take `⟨c, hirr, hsum, hsq⟩` from `GlobalTheory.T.virtualCharacter_irreducible_expansion_normSq G φ hφ`. Establish `hG : (Nat.card G : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `h1 : (c.sum fun _ m => (m : ℂ) ^ 2) = 1` using `mul_right_cancel₀ hG ((hsq.symm.trans hnorm).trans (one_mul _).symm)`. Establish `h2 : (c.sum fun _ m => m ^ 2) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.sum] at h1 ⊢`. Conclude with `h1` after adjusting the coercions. Take `⟨χ, hsupp, hc⟩` from `finsupp_eq_single_of_sum_sq_eq_one c h2`. Establish `hχ : IsIrrChar ℂ ℂ χ` using `hirr χ (by rw [hsupp]; exact Finset.mem_singleton_self χ)`. Establish `hφχ : φ = c χ • χ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, Finsupp.sum, hsupp, Finset.sum_singleton]`. Establish `key : φ = χ ∨ φ = -χ`. Break down `hc with h | h` into its components or cases. Use `left`. Rewrite using `[hφχ, h, one_smul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `right`. Rewrite using `[hφχ, h, neg_smul, one_smul]`. Take `⟨n, hn, hn1⟩` from `exists_pos_nat_apply_one_of_isIrrChar χ hχ`. Break down `key with rfl | rfl` into its components or cases. Conclude with `⟨Or.inl hχ, fun _ => ⟨hχ, n, hn, hn1⟩⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `⟨Or.inr (by simpa using hχ), fun hc' => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Take `⟨-, -, m, hm, -⟩` from `GlobalTheory.isChar_restrict_conj_one ℂ ℂ G (-χ) hc'`. Establish `h3 : ((m + n : ℕ) : ℂ) = 0`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← hm, ← hn1, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : m + n = 0` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem irr_of_norm_one : ∀ (G : Type) [Group G] [Finite G] (φ : G → ℂ), φ ∈ Virt ℂ ℂ G → ∑ᶠ g, φ g * star (φ g) = (Nat.card G : ℂ) → (IsIrrChar ℂ ℂ φ ∨ IsIrrChar ℂ ℂ (-φ)) ∧ (IsChar ℂ ℂ φ → IsIrrChar ℂ ℂ φ ∧ ∃ n : ℕ, 0 < n ∧ φ 1 = n) := by
   intro G _ _ φ hφ hnorm

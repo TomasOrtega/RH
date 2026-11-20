@@ -9,7 +9,7 @@ open LateralTheory.KummerTheory.BockCut
 variable {S R T : Type} [CommRing S] [CommRing R] [CommRing T]
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `(congrArg (fun f => f.hom a) h).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_nat {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) := by
@@ -37,9 +37,9 @@ def spost {I : Cx S} {J J' : Cx R} (ρ : SemiMap I J) (u : J ⟶ J') : SemiMap I
     rw [← ρ.comm, ← sec_comp, ← sec_comp, u.comm]
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨β, hβ⟩` from `(hS S R ρ).1 E n α`. Take `⟨γ, hγ⟩` from `(hS R T σ).1 E n β`. Rewrite using `[(hS S R ρ).2 E n α β hβ, (hS R T σ).2 E n β γ hγ, (hS S T (scomp ρ σ)).2 E n α γ ?_]`. Introduce `p s h U y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hγ, hβ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scomp_op (hS : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapOnClasses) {I : Cx S} {J : Cx R} {K : Cx T} (ρ : SemiMap I J)
     (σ : SemiMap J K) (E : Spc) (n : ℤ) (x : CohomologyClass ((chains S).obj E) I n) :
@@ -74,23 +74,23 @@ theorem up_res {F : Shv S} (φ : R →+* S) {V U : Scheme.{0}} (g : V ⟶ U) (a 
     Sec.res g (up φ a) = up φ (Sec.res g a) := rfl
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sec_add {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add _ _ _
 
 /- English proof (translation)
-Introduce `Q q _ hq i π hπ E n x`. Establish `: NeZero q` using `⟨ne_zero_of_dvd_ne_zero (NeZero.ne Q) hq⟩`. Set `ρ` to `scomp (redMap Q q i) (restrMap (Int.castRingHom (ZMod q)) (tw q i))`. Set `r0` to `restrMap (Int.castRingHom (ZMod Q)) (tw Q i)`. Set `ρ'` to `spost r0 (resMap ℤ π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : restrH (Int.castRingHom (ZMod q)) E (tw q i) n (red Q q E n i x) = ρ.op.app E n x` using `(scomp_op hS _ _ E n x).symm`. Establish `h2 : HK.post ℤ ((chains ℤ).obj E) π n (restrH (Int.castRingHom (ZMod Q)) E (tw Q i) n x) = ρ'.op.app E n x` using `((hC (ZMod Q) ℤ r0 ρ' (resMap ℤ π) (fun _ _ _ => rfl)).1 E n x).symm`. Rewrite using `[h1, h2]`. Take `⟨φ1, hφ1⟩` from `hZ (TZ Q i) ((res ℤ (TZ q i)).X 0) (fun U => AddMonoidHom.mk' (fun a : Sec (TZ Q i) U => ρ.app U 0 (Sec.map (resι _ (tw Q i)) (up _ a))) (fun a b => by rw [up_add, sec_add, map_add])) (fun V U g a => by`. Express the relevant statement in the definitionally equal form `Sec.res g (ρ.app U 0 (Sec.map (resι _ (tw Q i)) (up _ a))) = ρ.app V 0 (Sec.map (resι _ (tw Q i)) (up _ (Sec.res g a)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ρ.nat, sec_nat, up_res])`. Take `⟨φ2, hφ2⟩` from `hZ (TZ Q i) ((res ℤ (TZ q i)).X 0) (fun U => AddMonoidHom.mk' (fun a : Sec (TZ Q i) U => ρ'.app U 0 (Sec.map (resι _ (tw Q i)) (up _ a))) (fun a b => by rw [up_add, sec_add, map_add])) (fun V U g a => by`. Express the relevant statement in the definitionally equal form `Sec.res g (ρ'.app U 0 (Sec.map (resι _ (tw Q i)) (up _ a))) = ρ'.app V 0 (Sec.map (resι _ (tw Q i)) (up _ (Sec.res g a)))`. Rewrite using `[ρ'.nat, sec_nat, up_res])`. Establish `heq : φ1 = φ2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hE Q i _ φ1 φ2 fun U ζ => ?_` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `(hP Q Γ(U, ⊤)).2.2.2.2.2 q hq ζ`. Rewrite using `[hφ1, hφ2]`. Express the relevant statement in the definitionally equal form `(restrMap (Int.castRingHom (ZMod q)) (tw q i)).app U 0 ((redMap Q q i).app U 0 (resGen i ζ)) = Sec.map ((resMap ℤ π).f 0) (r0.app U 0 (Sec.map (resι _ (tw Q i)) (twGen i ζ)))`. Rewrite using `[hR Q q hq i U ζ ξ hξ, hX ℤ (ZMod Q) _ (tw Q i) U (twGen i ζ)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(restrMap (Int.castRingHom (ZMod q)) (tw q i)).app U 0 (Sec.map (resι _ (tw q i)) (twGen i ξ)) = _`. Rewrite using `[hX ℤ (ZMod q) _ (tw q i) U (twGen i ξ), ← sec_comp, ((hB ℤ (TZ Q i)).2.2.2.2.2.2.2 (TZ q i) π).2, sec_comp]`. Conclude with `congrArg (Sec.map (resι ℤ (TZ q i))) (hπ U ζ ξ hξ).symm`. Use `hU (ZMod Q) (tw Q i) (TZ q i) ρ ρ' (fun U a => ?_) E n x` and prove the remaining obligations. Establish `e1` using `hφ1 U a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hφ2 U a`. Rewrite `e1` using `[heq]`. Conclude with `e1.symm.trans e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RedPost_of (hU : SemiUniq) (hE : TwExt) (hZ : ZHom) (hS : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapOnClasses)
     (hC : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapCompCompatible) (hR : LateralTheory.EtaleFoundations.EtaleRootsOfUnityReductionMapGenerator) (hX : LateralTheory.EtaleFoundations.EtaleRestrictScalarsResolutionCompatible)

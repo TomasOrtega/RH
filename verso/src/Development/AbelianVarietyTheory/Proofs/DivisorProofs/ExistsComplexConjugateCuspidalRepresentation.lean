@@ -36,9 +36,9 @@ def CuspRep.CuspSub.mapConj {E : Type} [Field E] [NumberField E] [IsTotallyCompl
     exact h.imp (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h]
 
 /- English proof (translation)
-Introduce `E _ _ _ a π`. Take `⟨C, hC, hact⟩` from `GlobalTheory.T.smooth_adelic_GL_complex_conj_commutes_operators E a`. Establish `hZ` using `GlobalTheory.T.capelli_operator_algebra_stable_under_complex_conj E a C hact`. Establish `hcusp` using `isCuspForm_of_conj_pointwise E a C hC hact hZ`. Use `⟨π.mapConj C hact hcusp, C.submoduleMap π.V, fun o φ => Subtype.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hact o φ.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_cuspSub : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a),
     ∃ (π' : CuspSub E a) (J : π.V ≃ₗ⋆[ℂ] π'.V), ∀ o φ, J (π.op o φ) = π'.op o (J φ) := by

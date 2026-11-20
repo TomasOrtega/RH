@@ -12,27 +12,25 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc.Sat
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage s).hom, Spec.map_preimage s⟩`.
+Supply the required witnesses or components.
 -/
 theorem sp_surj {A B : Type} [CommRing A] [CommRing B] (s : Sp B ⟶ Sp A) : ∃ u : A →+* B, spMap u = s :=
   ⟨(Spec.preimage s).hom, Spec.map_preimage s⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h : genericPoint X ∈ Set.range (gp X)` using `⟨closedPoint (X.presheaf.stalk (genericPoint X)), Scheme.fromSpecStalk_closedPoint⟩`. Establish `h2 : Dense ({genericPoint X} : Set X)`. Rewrite using `[dense_iff_closure_eq]`. Conclude with `genericPoint_closure X`.
-
-Conclude with `h2.mono (Set.singleton_subset_iff.mpr h)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDominant_gp (X : Scheme.{0}) [IsIntegral X] : IsDominant (gp X) := by
   constructor
@@ -43,7 +41,7 @@ theorem isDominant_gp (X : Scheme.{0}) [IsIntegral X] : IsDominant (gp X) := by
   exact h2.mono (Set.singleton_subset_iff.mpr h)
 
 /- English proof (translation)
-Take `⟨l, h1, h2⟩` from `h`. Rewrite `h1` using `[Category.comp_id]`. Rewrite using `[← h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pff_id {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] {φ : Y ⟶ X}
     {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) φ θ) : gp Y ≫ φ = spMap θ ≫ gp X := by
@@ -52,17 +50,17 @@ theorem pff_id {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] {φ : Y ⟶ X}
   rw [← h1, h2]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `sp_surj s`. Take `⟨u', rfl⟩` from `sp_surj s'`. Establish `hk : RingHom.ker u' = maximalIdeal _`. Take `rfl : o = closedPoint Ω` from `Subsingleton.elim (α := PrimeSpectrum Ω) _ _`. Establish `h1 : (maximalIdeal Ω).comap u' = maximalIdeal _` using `congrArg PrimeSpectrum.asIdeal hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h1, maximalIdeal_eq_bot]`. Both sides reduce to the same expression. Rewrite `h` using `[sp_comp, sp_comp]`. Take `⟨R', _, _, _, a, b, v, H, _, _, πa, πb, θa, θb, -, -, hab, -, hva, hvb, -, -, ⟨pa, -⟩, ⟨pb, -⟩, fa, fb, hθ⟩` from `hC x x' Ω u u' hk (sp_inj h)`. Establish `key : πa ≫ E.emb x = πb ≫ E.emb x'` using `by haveI := E.sep haveI := isDominant_gp H.left`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, -⟩` from `E.openIn x`. Take `⟨w', -⟩` from `E.openIn x'`. Use `ext_of_isDominant_of_isSeparated E.p ?_ (gp H.left) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, w, w', pa.w_assoc, pb.w_assoc, sp_comp, sp_comp, hab]`. Rewrite using `[← Category.assoc, ← Category.assoc, pff_id fa, pff_id fb, Category.assoc, Category.assoc, pff_id (E.ff x), pff_id (E.ff x'), ← Category.assoc, ← Category.assoc, sp_comp, sp_comp, ← RingHom.comp_assoc, ← RingHom.comp_assoc, hθ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ea : spMap v ≫ spMap a = spMap u` using `by rw [sp_comp, hva]`. Establish `eb : spMap v ≫ spMap b = spMap u'` using `by rw [sp_comp, hvb]`. Prove the components needed by the constructor for the conclusion. Introduce `t ht`. Use `⟨pa.lift t (spMap v) (ht.trans ea.symm) ≫ πb, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, pb.w, pa.lift_snd_assoc, eb]`. Rewrite using `[Category.assoc, ← key, pa.lift_fst_assoc]`. Introduce `t ht`. Use `⟨pb.lift t (spMap v) (ht.trans eb.symm) ≫ πa, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pa.w, pb.lift_snd_assoc, ea]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, key, pb.lift_fst_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transfer (σ : Setup) (E : Emb σ) (hC : σ.Common) (x x' : Sp σ.R) (Ω : Type) [Field Ω]
     (s : Sp Ω ⟶ Sp (σ.C x).R) (s' : Sp Ω ⟶ Sp (σ.C x').R) (o : Sp Ω) (hs' : s' o = closedPoint (σ.C x').R)
@@ -103,9 +101,9 @@ theorem transfer (σ : Setup) (E : Emb σ) (hC : σ.Common) (x x' : Sp σ.R) (Ω
     · rw [Category.assoc, key, pb.lift_fst_assoc]
 
 /- English proof (translation)
-Take `⟨z, h1, h2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := g) x y h`. Set `r : Sp ((pullback f g).residueField z) ⟶ pullback f g` to `(pullback f g).fromSpecResidueField z`. Set `o : Sp ((pullback f g).residueField z)` to `closedPoint _`. Establish `hr : r o = z` using `Scheme.fromSpecResidueField_apply z _`. Use `⟨(pullback f g).residueField z, inferInstance, r ≫ pullback.fst f g, r ≫ pullback.snd f g, o, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[Scheme.Hom.comp_apply, hr, h1]`. Rewrite using `[Scheme.Hom.comp_apply, hr, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_field_pt {X Y S : Scheme.{0}} (f : X ⟶ S) (g : Y ⟶ S) (x : X) (y : Y) (h : f x = g y) :
     ∃ (Ω : Type) (_ : Field Ω) (s : Sp Ω ⟶ X) (t : Sp Ω ⟶ Y) (o : Sp Ω), s ≫ f = t ≫ g ∧ s o = x ∧ t o = y := by
@@ -125,13 +123,13 @@ namespace GlobalTheory.Desc
 open Sat in
 
 /- English proof (translation)
-Introduce `σ E hC x w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', y', hy', e⟩`. Take `⟨Ω, _, s, t', o, hst, hs, ht⟩` from `exists_field_pt (pullback.fst E.p (spMap (σ.ρ x))) (E.emb x') w y' e.symm`. Take `⟨w', -⟩` from `E.openIn x'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, h1, h2⟩` from `(transfer σ E hC x x' Ω (s ≫ pullback.snd _ _) (t' ≫ (σ.C x').G.hom) o (by rw [Scheme.Hom.comp_apply, ht]; exact hy') (by rw [Category.assoc, Category.assoc, ← pullback.condition, ← w', reassoc_of% hst])).2 t' rfl`. Use `⟨t o, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, h2, Scheme.Hom.comp_apply, ht, e]`. Rewrite using `[← Scheme.Hom.comp_apply, h1, Scheme.Hom.comp_apply, hs]`. Introduce and unpack `⟨y, e, -⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← e]`. Set `x' : Sp σ.R` to `((σ.C x).G.hom ≫ spMap (σ.ρ x)) y`. Establish `hx' : spMap (σ.ρ x') (closedPoint _) = x'` using `by rw [← σ.hρ]; exact (σ.C x').centre`. Take `⟨Ω, _, t, s', o, hst, ht, hs⟩` from `exists_field_pt ((σ.C x).G.hom ≫ spMap (σ.ρ x)) (spMap (σ.ρ x')) y (closedPoint _) hx'.symm`. Take `⟨t', h1, h2⟩` from `(transfer σ E hC x x' Ω (t ≫ (σ.C x).G.hom) s' o hs (by rw [Category.assoc, hst])).1 t rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x', t' o, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, h1, hs]`. Rewrite using `[← Scheme.Hom.comp_apply, h2, Scheme.Hom.comp_apply, ht]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Emb.fst_mem_U_iff : ∀ (σ : Setup) (E : Emb σ), σ.Common → ∀ (x : Sp σ.R) (w : ↥(Limits.pullback E.p (spMap (σ.ρ x)))), (Limits.pullback.fst E.p (spMap (σ.ρ x)) w ∈ E.U ↔ ∃ y : (σ.C x).G.left, E.emb x y = Limits.pullback.fst E.p (spMap (σ.ρ x)) w ∧ (σ.C x).G.hom y = Limits.pullback.snd E.p (spMap (σ.ρ x)) w) := by
   intro σ E hC x w

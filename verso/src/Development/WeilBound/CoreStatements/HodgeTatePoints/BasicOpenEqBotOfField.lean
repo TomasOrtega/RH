@@ -13,19 +13,17 @@ noncomputable section
 namespace PositivityTheory.HtPt.Cf
 
 /- English proof (translation)
-Set `φ : K →+* Γ(Y, ⊤)` to `π.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `hφ : φ.IsIntegral` using `RingHom.IsIntegral.trans _ _ (RingHom.isIntegral_of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.surjective) (isIntegral_appTop_of_universallyClosed π)`. Take `⟨p, hp, hpf⟩` from `hφ f`. Take `⟨q, hq, hn⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp.ne_zero 0`. Establish `hc : q.coeff 0 ≠ 0` using `fun h => hn (by simpa using Polynomial.X_dvd_iff.2 h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g` to `Polynomial.eval₂ φ f q`. Establish `h1 : f ^ p.rootMultiplicity 0 * g = 0`. Rewrite `hpf` using `[hq, Polynomial.eval₂_mul, Polynomial.eval₂_pow]`. Simplify using `using hpf`. Establish `h2 : g = f * Polynomial.eval₂ φ f q.divX + φ (q.coeff 0)` using `by show Polynomial.eval₂ φ f q = _ conv_lhs => rw [← Polynomial.X_mul_divX_add q]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Establish `key : ∀ y : Y, y ∉ Y.basicOpen f ↔ y ∈ Y.basicOpen g` using `fun y => by`. Rewrite using `[← Y.evaluation_eq_zero_iff_notMem_basicOpen (U := ⊤) y trivial, ← Y.evaluation_ne_zero_iff_mem_basicOpen (U := ⊤) y trivial]`. Set `v` to `(Y.evaluation ⊤ y trivial).hom`. Use `show v f = 0 ↔ v g ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h2, map_add, map_mul, h, zero_mul, zero_add]`. Conclude with `(map_ne_zero (v.comp φ)).2 hc`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg v h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_zero]`. Conclude with `eq_zero_of_pow_eq_zero ((mul_eq_zero.1 this).resolve_right h)`. Establish `hcl : IsClopen (Y.basicOpen f : Set Y)`. Use `⟨⟨?_⟩, (Y.basicOpen f).isOpen⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: (Y.basicOpen f : Set Y)ᶜ = Y.basicOpen g` using `Set.ext key`. Rewrite using `[this]`. Conclude with `(Y.basicOpen g).isOpen`. Break down `isClopen_iff.1 hcl with h | h` into its components or cases. Conclude with `TopologicalSpace.Opens.ext h`.
-
-Conclude with `absurd (show y₀ ∈ (Y.basicOpen f : Set Y) from h ▸ trivial) h₀`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_eq_bot_of_field {K : Type} [Field K] {Y : Scheme.{0}} (π : Y ⟶ Sp K) [UniversallyClosed π]
     [ConnectedSpace Y] (f : Γ(Y, ⊤)) (y₀ : Y) (h₀ : y₀ ∉ Y.basicOpen f) : Y.basicOpen f = ⊥ := by
@@ -67,7 +65,7 @@ theorem basicOpen_eq_bot_of_field {K : Type} [Field K] {Y : Scheme.{0}} (π : Y 
   · exact absurd (show y₀ ∈ (Y.basicOpen f : Set Y) from h ▸ trivial) h₀
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun K _ y Z fst snd h => by have : Smooth snd := MorphismProperty.of_isPullback (P := @Smooth) h ‹_› exact isReduced_of_smooth snd⟩`.
+Supply the required witnesses or components.
 -/
 theorem geomReduced_of_smooth {X S : Scheme.{0}} (π : X ⟶ S) [Smooth π] : GeometricallyReduced π :=
   ⟨fun K _ y Z fst snd h => by
@@ -75,9 +73,9 @@ theorem geomReduced_of_smooth {X S : Scheme.{0}} (π : X ⟶ S) [Smooth π] : Ge
     exact isReduced_of_smooth snd⟩
 
 /- English proof (translation)
-Establish `hi` using `isIrreducible_irreducibleComponent (x := s)`. Establish `hg` using `hi.isGenericPoint_genericPoint isClosed_irreducibleComponent`. Use `⟨_, hg.specializes mem_irreducibleComponent, fun z' hz => ?_⟩` and prove the remaining obligations. Establish `hsub : irreducibleComponent s ⊆ closure {z'}`. Rewrite using `[← hg.def]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `closure_minimal (Set.singleton_subset_iff.2 hz.mem_closure) isClosed_closure`. Establish `he : closure {z'} = irreducibleComponent s` using `eq_irreducibleComponent isIrreducible_singleton.closure.isPreirreducible hsub`. Conclude with `(IsGenericPoint.eq (show IsGenericPoint z' _ from he) hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_generic {S : Scheme.{0}} (s : S) : ∃ z : S, z ⤳ s ∧ ∀ z' : S, z' ⤳ z → z' = z := by
   have hi := isIrreducible_irreducibleComponent (x := s)
@@ -91,19 +89,17 @@ theorem exists_generic {S : Scheme.{0}} (s : S) : ∃ z : S, z ⤳ s ∧ ∀ z' 
   exact (IsGenericPoint.eq (show IsGenericPoint z' _ from he) hg)
 
 /- English proof (translation)
-Establish `hret : ∀ a, e.appTop (π.appTop a) = a` using `fun a => by`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, he, Scheme.Hom.id_appTop]`. Both sides reduce to the same expression. Use `⟨Function.LeftInverse.injective hret, fun f => ⟨e.appTop f, ?_⟩⟩` and prove the remaining obligations. Use `geomReduced_of_smooth π` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsReduced X` using `GeometricallyReduced.isReduced_of_flat_of_isLocallyNoetherian π`. Use `symm`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Use `set f' := f - π.appTop.hom (e.appTop f) with hf'`. Establish `h0 : e.appTop f' = 0`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf', map_sub]`. Conclude with `sub_eq_zero.2 (hret _).symm`. Establish `hout : ∀ s, e s ∉ X.basicOpen f'` using `fun s hs => by`. Establish `: s ∈ e ⁻¹ᵁ X.basicOpen f'` using `hs`. Rewrite `this` using `[Scheme.preimage_basicOpen_top, h0, Scheme.basicOpen_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`. Take `⟨z, hz, hgen⟩` from `exists_generic (π x)`. Take `⟨x', hx', hxz⟩ : z ∈ π '' (X.basicOpen f' : Set X)` from `hz.mem_open (π.isOpenMap _ (X.basicOpen f').isOpen) ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, _, t, ⟨w, hw⟩, hp⟩` from `h z hgen`. Establish `: ConnectedSpace ↥(pullback π t)` using `GeometricallyConnected.geometrically_connectedSpace _ _ _ (.of_hasPullback π t)`. Take `⟨y, hy, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := t) x' w (hxz.trans hw.symm)`. Take `⟨y₀, hy₀, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := t) (e z) w (((Scheme.Hom.comp_apply e π z).symm.trans (by rw [he]; rfl)).trans hw.symm)`. Establish `hb` using `basicOpen_eq_bot_of_field (pullback.snd π t) ((pullback.fst π t).appTop f') y₀ (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.preimage_basicOpen_top]`. Use `show pullback.fst π t y₀ ∉ X.basicOpen f'`. Rewrite using `[hy₀]`. Conclude with `hout z)`. Establish `: y ∈ pullback.fst π t ⁻¹ᵁ X.basicOpen f'` using `by show pullback.fst π t y ∈ X.basicOpen f'`.
-
-Rewrite using `[hy]`. Conclude with `hx'`. Rewrite `this` using `[Scheme.preimage_basicOpen_top, hb]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_generic {X S : Scheme.{0}} (π : X ⟶ S) (e : S ⟶ X) (he : e ≫ π = 𝟙 S) [Smooth π]
     [GeometricallyConnected π] [IsReduced S] [IsLocallyNoetherian S]
@@ -146,7 +142,7 @@ theorem bijective_of_generic {X S : Scheme.{0}} (π : X ⟶ S) (e : S ⟶ X) (he
   exact this
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨inferInstanceAs (Smooth (𝟙 S)), ⟨fun K _ y Z fst snd h => by have : IsIso snd := h.isIso_snd_of_isIso (f := 𝟙 S) have : ConnectedSpace (Spec (CommRingCat.of K)) := inferInstanceAs (ConnectedSpace (PrimeSpectrum K)) exact snd.homeomorph.connectedSpace_iff.2 this⟩⟩ | n + 1 …`.
+A detailed English derivation is pending.
 -/
 theorem pow_smooth_conn {S : Scheme.{0}} (G : Over S) [Smooth G.hom] [GeometricallyConnected G.hom] :
     ∀ n : ℕ, Smooth (Out.powObj G n).hom ∧ GeometricallyConnected (Out.powObj G n).hom
@@ -160,7 +156,7 @@ theorem pow_smooth_conn {S : Scheme.{0}} (G : Over S) [Smooth G.hom] [Geometrica
     exact ⟨inferInstance, GeometricallyConnected.comp _ _⟩
 
 /- English proof (translation)
-The claim follows from `| 0 => inferInstanceAs (IsProper (𝟙 S)) | n + 1 => by have := pow_proper G n rw [show Out.powObj G (n + 1) = G ⊗ Out.powObj G n from rfl, Over.tensorObj_hom, pullback.condition] infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem pow_proper {S : Scheme.{0}} (G : Over S) [IsProper G.hom] : ∀ n : ℕ, IsProper (Out.powObj G n).hom
   | 0 => inferInstanceAs (IsProper (𝟙 S))
@@ -170,13 +166,11 @@ theorem pow_proper {S : Scheme.{0}} (G : Over S) [IsProper G.hom] : ∀ n : ℕ,
     infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t _ _ h n`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Take `⟨h1, h2⟩` from `pow_smooth_conn t.G n`. Use `bijective_of_generic (Out.powObj t.G n).hom (η[Out.powObj t.G n]).left (Over.w (η[Out.powObj t.G n])) fun z hz => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `K` to `AlgebraicClosure (X0.residueField z)`. Set `x : Sp K ⟶ X0` to `spMap (algebraMap (X0.residueField z) K) ≫ X0.fromSpecResidueField z`. Establish `hx : z ∈ Set.range x` using `⟨IsLocalRing.closedPoint K, Scheme.fromSpecResidueField_apply z _⟩`. Use `⟨K, inferInstance, x, hx, ?_⟩` and prove the remaining obligations. Establish `: IsProper ((Over.pullback x).obj t.G).hom` using `h z hz K x hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `pow_proper ((Over.pullback x).obj t.G) n` as an intermediate fact. Set `e` to `GlobalFunctionsDvrPowers.pullPowIso x t.G n`. Establish `: IsIso e.hom.left` using `isIso_inv_left e.symm`. Use `show IsProper ((Over.pullback x).obj (Out.powObj t.G n)).hom`. Rewrite using `[← Over.w e.hom]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_fns : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0), IsReduced X0 → IsLocallyNoetherian X0 → (∀ z : X0, (∀ z' : X0, z' ⤳ z → z' = z) → z ∈ abLocus t.G) → PowFns t := by
   intro E _ _ _ H X0 t _ _ h n

@@ -56,7 +56,7 @@ def avgForm (μ : @Measure Y (borel Y)) (L₁ : V →ₗ[ℂ] ℂ) (T : Y → V 
   (LinearMap.exists_extend (avg0 μ L₁ T)).choose
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (LinearMap.exists_extend (avg0 μ L₁ T)).choose_spec ⟨v, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem avgForm_apply (μ : @Measure Y (borel Y)) (L₁ : V →ₗ[ℂ] ℂ) (T : Y → V →ₗ[ℂ] V) {v : V}
     (hv : Conv μ L₁ T v) :

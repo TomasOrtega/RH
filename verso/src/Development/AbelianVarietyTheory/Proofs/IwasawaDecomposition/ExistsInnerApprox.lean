@@ -9,11 +9,9 @@ open scoped InnerProductSpace Topology
 namespace GlobalTheory.TypeSum
 
 /- English proof (translation)
-Take `⟨m, S, Λ, hS, hΛ⟩` from `exists_factor (isUnit_Jm ε) h.1 hℓ`. Use `⟨m, S, hS, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ i, ∃ x ∈ smooth (Jm ε) σ, dist ((InnerProductSpace.toDual ℂ H).symm (Λ i)) x < δ` using `fun i => Metric.mem_closure_iff.1 (h.dense_smooth _) δ hδ`. Use `choose x hxs hxd using hx`. Use `choose u hu using fun i => exists_adjoint (isUnit_Jm ε) h.1 (S i) (hS i) (x i) (hxs i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, u i, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ z hz, sum_inner, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← hu i z hz, ← InnerProductSpace.toDual_symm_apply, ← inner_sub_left]`. Use `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations.
-
-Rewrite using `[← dist_eq_norm]`. Conclude with `(hxd i).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Std.exists_inner_approx {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (h : Std ε σ) {ℓ : H →ₗ[ℂ] ℂ} (hℓ : Sobolev₂ (lieSet ε) σ ℓ) :
@@ -34,17 +32,15 @@ theorem Std.exists_inner_approx {n : ℕ} {ε : Fin n → Bool} {H : Type} [Norm
   exact (hxd i).le
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h T Z C hZ hZU hC hA ι _ ℓ w hℓ hw hTw M hM hb`. Use `choose m S hS hap using fun j => h.exists_inner_approx (hℓ j)`. Establish `hc : ContinuousOn (fun y => ∑ j, ∑ i, ‖Dw σ (S j i) (σ y (w j))‖) Z` using `continuousOn_finset_sum _ fun j _ => continuousOn_finset_sum _ fun i _ => ((h.continuousOn_Dw (hS j i) (hw j)).mono hZU).norm`. Take `⟨K₀, hK₀⟩` from `hZ.exists_bound_of_continuousOn hc`. Use `set K := max K₀ 0 with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `le_max_right _ _`. Establish `hK : ∀ y ∈ Z, ∑ j, ∑ i, ‖Dw σ (S j i) (σ y (w j))‖ ≤ K` using `fun y hy => ((le_abs_self _).trans (hK₀ y hy)).trans (le_max_left _ _)`. Use `set K' := ∑ j, ∑ i, ‖Dw σ (S j i) (T (w j))‖ with hK'`. Establish `key : ∀ δ : ℝ, 0 < δ → ‖∑ j, ℓ j (T (w j))‖ ≤ C * M + δ * (C * K + K')`. Introduce `δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose u hu using fun j => hap j δ hδ`. Establish `hd : ∀ z : ι → H, (∀ j, Sm ε σ (z j)) → ‖∑ j, ℓ j (z j) - ∑ j, ⟪u j, z j⟫_ℂ‖ ≤ δ * ∑ j, ∑ i, ‖Dw σ (S j i) (z j)‖` using `fun z hz => by`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => hu j _ (hz j))`. Establish `h1` using `hA ι u w (M + δ * K) (by positivity) fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e1` using `hd (fun j => σ y (w j)) fun j => (hw j).translate h.1 (hZU hy)`. Establish `e2` using `norm_le_norm_add_norm_sub (∑ j, ℓ j (σ y (w j))) (∑ j, ⟪u j, σ y (w j)⟫_ℂ)`. Establish `e3` using `mul_le_mul_of_nonneg_left (hK y hy) hδ.le`. Establish `e4` using `hb y hy`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hd (fun j => T (w j)) hTw`. Establish `h3` using `norm_le_norm_add_norm_sub' (∑ j, ℓ j (T (w j))) (∑ j, ⟪u j, T (w j)⟫_ℂ)`. Use the polynomial consequences of the given equalities and inequalities. Establish `ht : Tendsto (fun δ : ℝ => C * M + δ * (C * K + K')) (𝓝[>] 0) (𝓝 (C * M + 0 * (C * K + K')))` using `(Continuous.tendsto (by fun_prop) 0).mono_left nhdsWithin_le_nhds`. Rewrite `ht` using `[zero_mul, add_zero]`.
-
-Conclude with `ge_of_tendsto ht (eventually_nhdsWithin_of_forall key)`.
+A detailed English derivation is pending.
 -/
 theorem avgBd_sobCont : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ (T : H → H) (Z : Set (Mx n)) (C : ℝ), IsCompact Z →

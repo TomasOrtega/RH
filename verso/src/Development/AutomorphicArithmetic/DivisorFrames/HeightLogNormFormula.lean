@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKr
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-Use `letI : Algebra K Qb := ι.toAlgebra`. Use `letI : Algebra K Ω := θ.toAlgebra`. Use `haveI : IsScalarTower ℚ K Qb := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `halg : Algebra.IsAlgebraic ℚ Qb` using `algebraicClosure.isAlgebraic ℚ ℂ`. Use `haveI : Algebra.IsAlgebraic K Qb := Algebra.IsAlgebraic.tower_top (K := ℚ) K`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `j : Qb →ₐ[K] Ω` to `IsAlgClosed.lift`. Conclude with `⟨j.toRingHom, j.comp_algebraMap⟩`.
+A detailed English derivation is pending.
 -/
 private theorem embedding_extends_algebraicClosure {K Ω : Type} [Field K] [NumberField K] [Field Ω] [IsAlgClosed Ω] (ι : K →+* Qb)
     (θ : K →+* Ω) : ∃ θ' : Qb →+* Ω, θ'.comp ι = θ := by
@@ -22,7 +22,7 @@ private theorem embedding_extends_algebraicClosure {K Ω : Type} [Field K] [Numb
   exact ⟨j.toRingHom, j.comp_algebraMap⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun θ : K →+* ℂ => θ.comp φ)]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_embeddings_fibrewise {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] (φ : F →+* K)
     (G : (K →+* ℂ) → ℝ) :
@@ -35,11 +35,9 @@ private theorem sum_embeddings_fibrewise {F K : Type} [Field F] [NumberField F] 
   rw [finsum_eq_if]
 
 /- English proof (translation)
-Use `letI : Algebra K L := ρ.toAlgebra`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Module.Finite K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Use `⟨Module.finrank K L, by rw [mul_comm, Module.finrank_mul_finrank], fun G => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun θ : L →+* ℂ => θ.comp ρ), Finset.mul_sum]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => G σ) fun θ hθ => congrArg G (Finset.mem_filter.1 hθ).2, Finset.sum_const, nsmul_eq_mul]`. Use `congr 2`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `e : {θ : L →+* ℂ // θ.comp ρ = σ} ≃ (L →ₐ[K] ℂ)` using `⟨fun θ => ⟨θ.1, fun a => RingHom.congr_fun θ.2 a⟩, fun θ => ⟨θ.toRingHom, θ.comp_algebraMap⟩, fun _ => rfl, fun _ => rfl⟩`.
-
-Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card, Nat.card_congr e, Nat.card_eq_fintype_card, AlgHom.card]`.
+Reduce the equality to equality of the corresponding arguments. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem embedding_sum_relative_degree {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (ρ : K →+* L) :
     ∃ e : ℕ, e * Module.finrank ℚ K = Module.finrank ℚ L ∧
@@ -61,7 +59,7 @@ private theorem embedding_sum_relative_degree {K L : Type} [Field K] [NumberFiel
   rw [← Fintype.card_subtype, ← Nat.card_eq_fintype_card, Nat.card_congr e, Nat.card_eq_fintype_card, AlgHom.card]
 
 /- English proof (translation)
-Use `Fintype.ofFinite α` as an intermediate fact. Simplify using `only [finsum_eq_sum_of_fintype (α := α), finsum_eq_if, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem finsum_sub_smul {α : Type} [Finite α] (P : α → Prop) (a b : α → ℝ) (t : ℝ) :
     ∑ᶠ (x : α) (_ : P x), (a x - t * b x) = ∑ᶠ (x : α) (_ : P x), a x - t * ∑ᶠ (x : α) (_ : P x), b x := by
@@ -72,27 +70,23 @@ private theorem finsum_sub_smul {α : Type} [Finite α] (P : α → Prop) (a b :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ C Y A φ p ι β c t g hn hci hp hβ hc hinf hfin`. Take `⟨K', _, _, ι', φ', ρ, b, q, hφ, hρ, hb, hq, hqs⟩` from `UpperTheory.point_field_extension_lift F K Y φ p hp ι β`. Establish `hpq : below p = below q`. Rewrite using `[← hq]`. Establish `hsub : Subsingleton (Sp K')` using `inferInstanceAs (Subsingleton (PrimeSpectrum K'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg q (Subsingleton.elim _ _))`. Establish `hlift {Ω : Type} [Field Ω] (θ' : Qb →+* Ω) : spMap (θ'.comp ι') ≫ q = spMap θ' ≫ p`. Rewrite using `[← hq, ← Category.assoc]`. Conclude with `congrArg (· ≫ q) (Spec.map_comp (CommRingCat.ofHom ι') (CommRingCat.ofHom θ'))`. Take `⟨d, hd0, hd, hcount⟩` from `UpperTheory.algebraic_points_degree_sum F K' Y φ' q hqs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he, hsum⟩` from `embedding_sum_relative_degree ρ`. Establish `hb0 : b ≠ 0` using `by rintro rfl; exact hβ (hb.symm.trans (map_zero _))`. Establish `hc0 : ρ c ≠ 0` using `(map_ne_zero ρ).2 hc`. Set `ε : ∀ v : HeightOneSpectrum (𝓞 F), GlobalTheory.TrueGeo.Ext v` to `fun v => (GlobalTheory.TrueGeo.Ext.instNonempty v).some`. Take `⟨fb, pb⟩` from `UpperTheory.product_formula_height F K' φ' ε b hb0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fc, pc⟩` from `UpperTheory.product_formula_height F K' φ' ε (ρ c) hc0`. Establish `h1 : (d : ℝ) * ∑ σ : F →+* ℂ, ∑ᶠ (z : Pts Y σ) (_ : below z.1 = below p), (Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ)) = ∑ θ : K' →+* ℂ, Real.log ‖θ b‖ + e * ∑ σ, g σ`. Rewrite using `[← hsum g, ← Finset.sum_add_distrib, ← sum_embeddings_fibrewise φ', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `hcount ℂ σ (fun z : Pts Y σ => Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ)) (fun θ => Real.log ‖θ b‖ + g (θ.comp ρ)) (fun θ z _ hz => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨θ', rfl⟩` from `embedding_extends_algebraicClosure ι' θ`. Establish `h` using `hinf θ' σ z (hz.trans (hlift θ'))`. Rewrite `h` using `[← hb, ← hρ]`. Simplify using `only [hci, Pi.zero_apply, mul_zero, sub_zero]`. Conclude with `h)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hpq]`. Conclude with `this`. Establish `h2 : (d : ℝ) * ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ᶠ (y : AlgPt Y) (_ : below y.1 = below p), A.lg v (ε v) y = -∑ θ : K' →+* ℂ, Real.log ‖θ b‖ + t * (e * ∑ σ : K →+* ℂ, Real.log ‖σ c‖)`. Establish `hv (v : HeightOneSpectrum (𝓞 F)) : (d : ℝ) * ∑ᶠ (y : AlgPt Y) (_ : below y.1 = below p), A.lg v (ε v) y = ∑ᶠ (θ : K' →+* AlgebraicClosure F) (_ : θ.comp φ' = algebraMap F (AlgebraicClosure F)), Real.log ((ε v).w (θ b)) - t * ∑ᶠ (θ : K' →+* AlgebraicClosure F) (_ : θ.comp φ' = alg …`. Rewrite using `[← finsum_sub_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hcount (AlgebraicClosure F) (algebraMap F _) (fun y : AlgPt Y => A.lg v (ε v) y) (fun θ => Real.log ((ε v).w (θ b)) - t * Real.log ((ε v).w (θ (ρ c)))) (fun θ z _ hz => by` as an intermediate fact. Take `⟨θ', rfl⟩` from `embedding_extends_algebraicClosure ι' θ`. Establish `h` using `hfin v (ε v) θ' z (hz.trans (hlift θ'))`. Rewrite `h` using `[← hb, ← hρ]`. Conclude with `h)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[← hpq]`. Conclude with `this`. Rewrite using `[mul_finsum, finsum_congr hv, finsum_sub_distrib fb (fc.subset (Function.support_mul_subset_right _ _)), ← mul_finsum, ← hsum fun σ => Real.log ‖σ c‖]`. Simplify using `only [RingHom.comp_apply]`. Take the linear combination `pb - t * pc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (d : ℝ) * (Module.finrank ℚ F : ℝ) * (Nat.card {y : AlgPt Y // below y.1 = below p} : ℝ) = e * (Module.finrank ℚ K : ℝ)`. Rewrite using `[hpq]`. Conclude with `hd.trans he.symm` after adjusting the coercions. Establish `hK : (Module.finrank ℚ K : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `he0 : (e : ℝ) ≠ 0`.
-
-Establish `: e * Module.finrank ℚ K ≠ 0` using `he ▸ Module.finrank_pos.ne'`. Conclude with `left_ne_zero_of_mul this` after adjusting the coercions. Establish `hd' : (d : ℝ) ≠ 0` using `by exact_mod_cast hd0.ne'`. Unfold `Adl.ht`. Rewrite using `[finsum_congr fun v => dif_pos (GlobalTheory.TrueGeo.Ext.instNonempty v), ← mul_div_mul_left _ _ hd', mul_neg, mul_add, h1, h2, hn, PNat.one_coe, Nat.cast_one, one_mul, ← mul_assoc (d : ℝ), hN]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.height_log_norm_formula :
     ∀ (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] (C : CxSt F) (Y : Var F) (A : Adl C Y) (φ : F →+* Qb) (p : Sp Qb ⟶ Y.X) (ι : K →+* Qb) (β : Qb) (c : K) (t : ℝ) (g : (K →+* ℂ) → ℝ), A.n = 1 → A.ci = 0 → p ≫ Y.str = spMap φ → β ≠ 0 → c ≠ 0 → (∀ (θ : Qb →+* ℂ) (σ : F →+* ℂ) (z : Pts Y σ), z.1 = spMap θ ≫ p → Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) z) / 2 = Real.log ‖θ β‖ + g (θ.comp ι)) → (∀ (v : HeightOneSpectrum (𝓞 F)) (ε : GlobalTheory.TrueGeo.Ext v) (θ : Qb →+* AlgebraicClosure F) (z : AlgPt Y), z.1 = spMap θ ≫ p → A.lg v ε z = Real.log (ε.w (θ β)) - t * Real.log (ε.w (θ (ι c)))) → A.ht (below p) = (-(t * ∑ σ : K →+* ℂ, Real.log ‖σ c‖) - ∑ σ : K →+* ℂ, g σ) / (Module.finrank ℚ K : ℝ) := by

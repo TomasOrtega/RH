@@ -48,7 +48,7 @@ instance charZero_fnField : CharZero FnField :=
     exact_mod_cast h'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, FibreNormPullback.hyps_inhabited⟩`.
+Supply the required witnesses or components.
 -/
 theorem FibreNormCharpoly.hyps_inhabited :
     CharZero FnField ∧

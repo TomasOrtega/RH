@@ -102,13 +102,13 @@ def GTCPhase : Prop :=
       ∀ A B : M.Ty P → ℂ → ℂ, SmAB P A B → ConnF P Bs d e A B → ∃ u, PhaseEq P A B u
 
 /- English proof (translation)
-Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ)` using `by first`. Consider the case `exact contDiff_id.star`. Consider the case `exact Complex.conjCLE.contDiff`. Consider the case `simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))`. Establish `h : modA P ρ = fun ζ : ℂ => (M.aC P ρ : ℂ) * star ζ * (ζ * star ζ - (P.TT : ℂ))⁻¹`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `ζ`. Simplify using `only [modA, div_eq_mul_inv]`. Rewrite using `[← Complex.mul_conj]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `ContDiffOn.mul` to reduce the goal to its premises. Conclude with `(contDiff_const.mul hs).contDiffOn`. Apply `ContDiffOn.inv` to reduce the goal to its premises. Conclude with `((contDiff_id.mul hs).sub contDiff_const).contDiffOn`. Introduce `ζ hζ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ζ * star ζ = ((Complex.normSq ζ : ℝ) : ℂ)` using `Complex.mul_conj ζ`. Rewrite using `[hz, ← Complex.ofReal_sub]`. Conclude with `Complex.ofReal_ne_zero.mpr (sub_pos.mpr hζ).ne'`.
+A detailed English derivation is pending.
 -/
 theorem modA_smooth (P : M.Par) (ρ : M.Ty P) (hTT : 0 ≤ P.TT) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (modA P ρ) (Ann P) := by
@@ -133,9 +133,9 @@ theorem modA_smooth (P : M.Par) (ρ : M.Ty P) (hTT : 0 ≤ P.TT) :
       exact Complex.ofReal_ne_zero.mpr (sub_pos.mpr hζ).ne'
 
 /- English proof (translation)
-Simplify using `only [modA, modB]`. Use `first`. Consider the case `(rw [star_div₀, star_mul', star_sub, star_star]; simp [Complex.conj_ofReal]; done)`. Consider the case `(simp [map_div₀, Complex.conj_ofReal]; done)`. Consider the case `(rw [star_div₀, star_mul', star_sub, star_star]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Use the proof step `done)`.
+A detailed English derivation is pending.
 -/
 theorem star_modA (P : M.Par) (ρ : M.Ty P) (ζ : ℂ) : star (modA P ρ ζ) = modB P ρ ζ := by
   simp only [modA, modB]
@@ -148,13 +148,11 @@ theorem star_modA (P : M.Par) (ρ : M.Ty P) (ζ : ℂ) : star (modA P ρ ζ) = m
 def GTCPhaseOfCut : Prop := GTCReal → GTCCurv → GTCHol → GTCAnnulus → GTCTT → GTCPhase
 
 /- English proof (translation)
-Introduce `hR hC hH hA hT Wp Wq _ _ _ _ _ _ P Bs X d hyp e he hk A B hAB hConn`. Establish `hTT` using `hT Wp Wq P Bs X d hyp`. Establish `hex : ∀ ρ : M.Ty P, ∃ u : ℂ → ℂ, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) u {ζ : ℂ | P.TT < Complex.normSq ζ} ∧ ∀ ζ : ℂ, P.TT < Complex.normSq ζ → ‖u ζ‖ = 1 ∧ star (u ζ) * NF.dZ u ζ = modA P ρ ζ - A ρ ζ ∧ star (u ζ) * NF.dZb u ζ = -star (modA P ρ ζ - A ρ ζ)`. Introduce `ρ`. Use `hA P.TT (fun w => modA P ρ w - A ρ w) hTT ((modA_smooth P ρ hTT).sub (hAB ρ).1) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ζ hζ`. Conclude with `hC Wp Wq P Bs X d hyp e he hk A B hAB hConn ρ ζ hζ`. Introduce `R hR0 hR2`. Conclude with `hH Wp Wq P Bs X d hyp e he hk A B hAB hConn ρ R hR0 hR2`. Use `choose u hu using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, fun ρ => ⟨(hu ρ).1, fun ζ hζ => ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `(hu ρ).2 ζ hζ`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h3, hR Wp Wq P Bs X d hyp e he hk A B hAB hConn ρ ζ hζ, star_sub, star_modA]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gTCPhase_of_cut : GTCPhaseOfCut := by
   intro hR hC hH hA hT Wp Wq _ _ _ _ _ _ P Bs X d hyp e he hk A B hAB hConn
@@ -179,7 +177,7 @@ theorem gTCPhase_of_cut : GTCPhaseOfCut := by
 def GTConnOfCut : Prop := GTCLocal → GTCPhase → GTCGauge → GTConn
 
 /- English proof (translation)
-Introduce `hL hP hG Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk`. Take `⟨A, B', hAB, hC⟩` from `hL Wp Wq P Bs X d hH e he hk`. Take `⟨u, hu⟩` from `hP Wp Wq P Bs X d hH e he hk A B' hAB hC`. Conclude with `⟨_, hG Wp Wq P Bs X d hH e he hk A B' u hAB hC hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gTConn_of_cut : GTConnOfCut := by
   intro hL hP hG Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk

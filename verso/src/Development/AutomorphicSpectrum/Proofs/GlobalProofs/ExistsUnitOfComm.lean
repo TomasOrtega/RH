@@ -35,33 +35,33 @@ section Basic
 
 variable (s) in
 /- English proof (translation)
-Use `ext`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' {m p : Type} (M N : Matrix m p A) : cT s (M + N) = cT s M + cT s N := by
   ext; simp [cT]
 
 variable (s) in
 /- English proof (translation)
-Use `ext`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub' {m p : Type} (M N : Matrix m p A) : cT s (M - N) = cT s M - cT s N := by
   ext; simp [cT]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[cT, hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (hs : ∀ a, s (s a) = a) {m p : Type} (M : Matrix m p A) : cT s (cT s M) = M := by
   ext; simp [cT, hs]
 
 variable (s) in
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [cT, diagonal_apply, h, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_diagonal (d : Fin r → A) : cT s (diagonal d) = diagonal (fun i => s (d i)) := by
   ext i j; by_cases h : i = j <;> simp [cT, diagonal_apply, h, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, diagonal_mul_diagonal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diag_diag (d e : Fin r → A) {m : Type} (M : Matrix (Fin r) m A) :
     diagonal d * (diagonal e * M) = diagonal (d * e) * M := by
@@ -76,7 +76,7 @@ variable (hxx : cT s X * J * X = 0) (hyy : cT s Y * J * Y = 0) (hxy : cT s X * J
 
 include hyx in
 /- English proof (translation)
-Establish `h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s Y * (J * (X * M)) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hyx, Matrix.one_mul]`. Simplify using `only [prX, Matrix.mul_assoc, h, diag_diag]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prX_mul_prX (d e : Fin r → A) : prX s J X Y d * prX s J X Y e = prX s J X Y (d * e) := by
   have h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s Y * (J * (X * M)) = M := fun M => by
@@ -85,7 +85,7 @@ theorem prX_mul_prX (d e : Fin r → A) : prX s J X Y d * prX s J X Y e = prX s 
 
 include hxy in
 /- English proof (translation)
-Establish `h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s X * (J * (Y * M)) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hxy, Matrix.one_mul]`. Simplify using `only [prY, Matrix.mul_assoc, h, diag_diag]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prY_mul_prY (d e : Fin r → A) : prY s J X Y d * prY s J X Y e = prY s J X Y (d * e) := by
   have h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s X * (J * (Y * M)) = M := fun M => by
@@ -94,7 +94,7 @@ theorem prY_mul_prY (d e : Fin r → A) : prY s J X Y d * prY s J X Y e = prY s 
 
 include hyy in
 /- English proof (translation)
-Establish `h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s Y * (J * (Y * M)) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hyy, Matrix.zero_mul]`. Simplify using `only [prX, prY, Matrix.mul_assoc, h, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prX_mul_prY (d e : Fin r → A) : prX s J X Y d * prY s J X Y e = 0 := by
   have h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s Y * (J * (Y * M)) = 0 := fun M => by
@@ -103,7 +103,7 @@ theorem prX_mul_prY (d e : Fin r → A) : prX s J X Y d * prY s J X Y e = 0 := b
 
 include hxx in
 /- English proof (translation)
-Establish `h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s X * (J * (X * M)) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hxx, Matrix.zero_mul]`. Simplify using `only [prX, prY, Matrix.mul_assoc, h, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prY_mul_prX (d e : Fin r → A) : prY s J X Y d * prX s J X Y e = 0 := by
   have h : ∀ {m : Type} (M : Matrix (Fin r) m A), cT s X * (J * (X * M)) = 0 := fun M => by
@@ -112,28 +112,28 @@ theorem prY_mul_prX (d e : Fin r → A) : prY s J X Y d * prX s J X Y e = 0 := b
 
 include hyx in
 /- English proof (translation)
-Simplify using `only [prX, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT s Y), hyx, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prX_mul_X (d : Fin r → A) : prX s J X Y d * X = X * diagonal d := by
   simp only [prX, Matrix.mul_assoc]; rw [← Matrix.mul_assoc (cT s Y), hyx, Matrix.mul_one]
 
 include hyy in
 /- English proof (translation)
-Simplify using `only [prX, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT s Y), hyy, Matrix.mul_zero, Matrix.mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prX_mul_Y (d : Fin r → A) : prX s J X Y d * Y = 0 := by
   simp only [prX, Matrix.mul_assoc]; rw [← Matrix.mul_assoc (cT s Y), hyy, Matrix.mul_zero, Matrix.mul_zero]
 
 include hxx in
 /- English proof (translation)
-Simplify using `only [prY, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT s X), hxx, Matrix.mul_zero, Matrix.mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prY_mul_X (d : Fin r → A) : prY s J X Y d * X = 0 := by
   simp only [prY, Matrix.mul_assoc]; rw [← Matrix.mul_assoc (cT s X), hxx, Matrix.mul_zero, Matrix.mul_zero]
 
 include hxy in
 /- English proof (translation)
-Simplify using `only [prY, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT s X), hxy, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prY_mul_Y (d : Fin r → A) : prY s J X Y d * Y = Y * diagonal d := by
   simp only [prY, Matrix.mul_assoc]; rw [← Matrix.mul_assoc (cT s X), hxy, Matrix.mul_one]
@@ -141,52 +141,52 @@ theorem prY_mul_Y (d : Fin r → A) : prY s J X Y d * Y = Y * diagonal d := by
 end Frame
 
 /- English proof (translation)
-The claim follows from `(diagonal_add d e).symm`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_add' (d e : Fin r → A) : diagonal (d + e) = diagonal d + diagonal e := (diagonal_add d e).symm
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [diagonal_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_sub' (d e : Fin r → A) : diagonal (d - e) = diagonal d - diagonal e := by
   ext i j; by_cases h : i = j <;> simp [diagonal_apply, h]
 /- English proof (translation)
-Simplify using `only [prX, diagonal_add', Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prX_add (d e : Fin r → A) : prX s J X Y (d + e) = prX s J X Y d + prX s J X Y e := by
   simp only [prX, diagonal_add', Matrix.mul_add, Matrix.add_mul]
 /- English proof (translation)
-Simplify using `only [prX, diagonal_sub', Matrix.mul_sub, Matrix.sub_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prX_sub (d e : Fin r → A) : prX s J X Y (d - e) = prX s J X Y d - prX s J X Y e := by
   simp only [prX, diagonal_sub', Matrix.mul_sub, Matrix.sub_mul]
 /- English proof (translation)
-Simplify using `only [prY, diagonal_add', Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prY_add (d e : Fin r → A) : prY s J X Y (d + e) = prY s J X Y d + prY s J X Y e := by
   simp only [prY, diagonal_add', Matrix.mul_add, Matrix.add_mul]
 /- English proof (translation)
-Simplify using `only [prY, diagonal_sub', Matrix.mul_sub, Matrix.sub_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prY_sub (d e : Fin r → A) : prY s J X Y (d - e) = prY s J X Y d - prY s J X Y e := by
   simp only [prY, diagonal_sub', Matrix.mul_sub, Matrix.sub_mul]
 /- English proof (translation)
-Simplify using `[prX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prX_zero : prX s J X Y 0 = 0 := by simp [prX]
 /- English proof (translation)
-Simplify using `[prY]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prY_zero : prY s J X Y 0 = 0 := by simp [prY]
 
 /- English proof (translation)
-Simplify using `only [prX, prY, Formalism.UG.cT_mul, cT_cT hs, hJ, cT_diagonal, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_prX_mul (hs : ∀ a, s (s a) = a) (hJ : cT s J = J) (d : Fin r → A) :
     cT s (prX s J X Y d) * J = J * prY s J X Y (fun i => s (d i)) := by
   simp only [prX, prY, Formalism.UG.cT_mul, cT_cT hs, hJ, cT_diagonal, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [prX, prY, Formalism.UG.cT_mul, cT_cT hs, hJ, cT_diagonal, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_prY_mul (hs : ∀ a, s (s a) = a) (hJ : cT s J = J) (d : Fin r → A) :
     cT s (prY s J X Y d) * J = J * prX s J X Y (fun i => s (d i)) := by
@@ -208,7 +208,7 @@ section OnPart
 variable {Q Q' G H : Matrix (Fin n) (Fin n) A}
 
 /- English proof (translation)
-Establish `h1 : Q * (G * Q') = 0` using `by rw [hc, ← Matrix.mul_assoc, h0, Matrix.zero_mul]`. Simplify using `only [onPart, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, h0, h1, Matrix.mul_zero]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem onPart_add (h0 : Q * Q' = 0) (hc : G * Q' = Q' * G) :
     onPart Q G * onPart Q' G = onPart (Q + Q') G := by
@@ -218,7 +218,7 @@ theorem onPart_add (h0 : Q * Q' = 0) (hc : G * Q' = Q' * G) :
   abel
 
 /- English proof (translation)
-Establish `h1 : Q * (H * Q) = H * Q` using `by rw [hc, ← Matrix.mul_assoc, hQ]`. Simplify using `only [onPart, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, hQ, h1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem onPart_mul (hQ : Q * Q = Q) (hc : H * Q = Q * H) : onPart Q G * onPart Q H = onPart Q (G * H) := by
   have h1 : Q * (H * Q) = H * Q := by rw [hc, ← Matrix.mul_assoc, hQ]
@@ -227,17 +227,17 @@ theorem onPart_mul (hQ : Q * Q = Q) (hc : H * Q = Q * H) : onPart Q G * onPart Q
   abel
 
 /- English proof (translation)
-Simplify using `[onPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onPart_one_left : onPart (1 : Matrix (Fin n) (Fin n) A) G = G := by simp [onPart]
 
 /- English proof (translation)
-Simplify using `[onPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onPart_one_right : onPart Q (1 : Matrix (Fin n) (Fin n) A) = 1 := by simp [onPart]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem comm_inv (hc : G * Q = Q * G) (hGH : G * H = 1) (hHG : H * G = 1) : H * Q = Q * H := by
   calc H * Q = H * Q * (G * H) := by rw [hGH, Matrix.mul_one]
@@ -246,16 +246,16 @@ theorem comm_inv (hc : G * Q = Q * G) (hGH : G * H = 1) (hHG : H * G = 1) : H * 
     _ = Q * H := by rw [← Matrix.mul_assoc H G, hHG, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[onPart_mul hQ (comm_inv hc hGH hHG), hGH, onPart_one_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem onPart_inv (hQ : Q * Q = Q) (hc : G * Q = Q * G) (hGH : G * H = 1) (hHG : H * G = 1) :
     onPart Q G * onPart Q H = 1 := by
   rw [onPart_mul hQ (comm_inv hc hGH hHG), hGH, onPart_one_right]
 
 /- English proof (translation)
-Establish `hJH : cT s G * J = J * H`. Combine the equalities or inequalities in the displayed calculation. Establish `hHQ` using `comm_inv hc hGH hHG`. Establish `e : cT s (onPart Q G) * J = J * onPart Q H`. Rewrite using `[onPart, cT_add', cT_sub', Formalism.UG.cT_one, Formalism.UG.cT_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, onPart, Matrix.mul_add, Matrix.mul_sub, Matrix.mul_one]`. Rewrite using `[hQJ, Matrix.mul_assoc, hJH, ← Matrix.mul_assoc, hQJ, Matrix.mul_assoc, hHQ]`. Rewrite using `[e, Matrix.mul_assoc, onPart_mul hQ hc, hHG, onPart_one_right, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem onPart_unitary (hQ : Q * Q = Q) (hQJ : cT s Q * J = J * Q) (hc : G * Q = Q * G)
     (hu : cT s G * J * G = J) (hGH : G * H = 1) (hHG : H * G = 1) :
@@ -275,11 +275,11 @@ end OnPart
 section FrameComm
 
 /- English proof (translation)
-Establish `hJH : cT s G * J = J * H`. Combine the equalities or inequalities in the displayed calculation. Establish `s1 : cT s W * J * H = cT s C * (cT s W * J)`. Rewrite using `[Matrix.mul_assoc, ← hJH, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, hW, Formalism.UG.cT_mul, Matrix.mul_assoc]`. Establish `s2 : cT s W * J = cT s C * (cT s W * J) * G`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← s1, Matrix.mul_assoc, hHG, Matrix.mul_one]`. Establish `s3 : cT s C * B = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `s4 : B * cT s C = 1` using `mul_eq_one_comm.1 s3`. Establish `s5 : cT s W * J * G = B * (cT s W * J)` using `by conv_rhs => rw [s2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, s4, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem comm_of_frame {m : ℕ} {Z W : Matrix (Fin n) (Fin m) A} (hWZ : cT s W * J * Z = 1) {G H : Matrix (Fin n) (Fin n) A}
     (hu : cT s G * J * G = J) (hGH : G * H = 1) (hHG : H * G = 1) {B C : Matrix (Fin m) (Fin m) A}
@@ -307,7 +307,7 @@ theorem comm_of_frame {m : ℕ} {Z W : Matrix (Fin n) (Fin m) A} (hWZ : cT s W *
     _ = Z * cT s W * J * G := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem frame_of_comm {m : ℕ} {Z W : Matrix (Fin n) (Fin m) A} (hWZ : cT s W * J * Z = 1) {G : Matrix (Fin n) (Fin n) A}
     (hc : G * (Z * cT s W * J) = Z * cT s W * J * G) : G * Z = Z * (cT s W * J * G * Z) := by
@@ -344,12 +344,12 @@ section Comm
 variable {G : Matrix (Fin n) (Fin n) A}
 
 /- English proof (translation)
-Simplify using `[IsComm, prX_zero, prY_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isComm_zero : IsComm s J X Y G 0 := by simp [IsComm, prX_zero, prY_zero]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[prX_add, Matrix.mul_add, Matrix.add_mul, hd.1, he.1]`. Rewrite using `[prY_add, Matrix.mul_add, Matrix.add_mul, hd.2, he.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsComm.add {d e : Fin r → A} (hd : IsComm s J X Y G d) (he : IsComm s J X Y G e) : IsComm s J X Y G (d + e) := by
   refine ⟨?_, ?_⟩
@@ -357,7 +357,7 @@ theorem IsComm.add {d e : Fin r → A} (hd : IsComm s J X Y G d) (he : IsComm s 
   · rw [prY_add, Matrix.mul_add, Matrix.add_mul, hd.2, he.2]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[prX_sub, Matrix.mul_sub, Matrix.sub_mul, hd.1, he.1]`. Rewrite using `[prY_sub, Matrix.mul_sub, Matrix.sub_mul, hd.2, he.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsComm.sub {d e : Fin r → A} (hd : IsComm s J X Y G d) (he : IsComm s J X Y G e) : IsComm s J X Y G (d - e) := by
   refine ⟨?_, ?_⟩
@@ -365,7 +365,7 @@ theorem IsComm.sub {d e : Fin r → A} (hd : IsComm s J X Y G d) (he : IsComm s 
   · rw [prY_sub, Matrix.mul_sub, Matrix.sub_mul, hd.2, he.2]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← prX_mul_prX hyx, ← Matrix.mul_assoc, hd.1, Matrix.mul_assoc, he.1, Matrix.mul_assoc]`. Rewrite using `[← prY_mul_prY hxy, ← Matrix.mul_assoc, hd.2, Matrix.mul_assoc, he.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsComm.mul (hxy : cT s X * J * Y = 1) (hyx : cT s Y * J * X = 1) {d e : Fin r → A} (hd : IsComm s J X Y G d)
     (he : IsComm s J X Y G e) : IsComm s J X Y G (d * e) := by
@@ -374,13 +374,13 @@ theorem IsComm.mul (hxy : cT s X * J * Y = 1) (hyx : cT s Y * J * X = 1) {d e : 
   · rw [← prY_mul_prY hxy, ← Matrix.mul_assoc, hd.2, Matrix.mul_assoc, he.2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[prj, Matrix.mul_add, Matrix.add_mul, hd.1, hd.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsComm.comm_prj {d : Fin r → A} (hd : IsComm s J X Y G d) : G * prj s J X Y d = prj s J X Y d * G := by
   rw [prj, Matrix.mul_add, Matrix.add_mul, hd.1, hd.2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨comm_inv hd.1 hGH hHG, comm_inv hd.2 hGH hHG⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsComm.inv {H : Matrix (Fin n) (Fin n) A} (hGH : G * H = 1) (hHG : H * G = 1) {d : Fin r → A}
     (hd : IsComm s J X Y G d) : IsComm s J X Y H d := ⟨comm_inv hd.1 hGH hHG, comm_inv hd.2 hGH hHG⟩
@@ -390,16 +390,16 @@ variable (hxx : cT s X * J * X = 0) (hyy : cT s Y * J * Y = 0) (hxy : cT s X * J
 include hxx hyy hxy hyx
 
 /- English proof (translation)
-Simplify using `only [prj, Matrix.mul_add, Matrix.add_mul, prX_mul_prX hyx, prY_mul_prY hxy, prX_mul_prY hyy, prY_mul_prX hxx, add_zero, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prj_mul_prj (d e : Fin r → A) : prj s J X Y d * prj s J X Y e = prj s J X Y (d * e) := by
   simp only [prj, Matrix.mul_add, Matrix.add_mul, prX_mul_prX hyx, prY_mul_prY hxy, prX_mul_prY hyy, prY_mul_prX hxx,
     add_zero, zero_add]
 
 /- English proof (translation)
-Establish `c1 : prj s J X Y d * prX s J X Y e = prX s J X Y e * prj s J X Y d`. Simplify using `only [prj, Matrix.mul_add, Matrix.add_mul, prX_mul_prX hyx, prY_mul_prX hxx, prX_mul_prY hyy, mul_comm d e]`. Establish `c2 : prj s J X Y d * prY s J X Y e = prY s J X Y e * prj s J X Y d`. Simplify using `only [prj, Matrix.mul_add, Matrix.add_mul, prY_mul_prY hxy, prY_mul_prX hxx, prX_mul_prY hyy, mul_comm d e]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.CompanionTheory.LeviGen.onPart, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, c1]`. Rewrite using `[← Matrix.mul_assoc (prX s J X Y e) G, ← he.1, Matrix.mul_assoc]`. Simplify using `only [GlobalTheory.CompanionTheory.LeviGen.onPart, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, c2]`. Rewrite using `[← Matrix.mul_assoc (prY s J X Y e) G, ← he.2, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isComm_onPart {d e : Fin r → A} (he : IsComm s J X Y G e) :
     IsComm s J X Y (onPart (prj s J X Y d) G) e := by
@@ -418,7 +418,7 @@ theorem isComm_onPart {d e : Fin r → A} (he : IsComm s J X Y G e) :
 end Comm
 
 /- English proof (translation)
-Establish `e : (fun i => s (d i)) = d` using `funext hd`. Rewrite using `[prj, cT_add', Matrix.add_mul, cT_prX_mul hs hJ, cT_prY_mul hs hJ, e, Matrix.mul_add, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_prj_mul (hs : ∀ a, s (s a) = a) (hJ : cT s J = J) {d : Fin r → A} (hd : ∀ i, s (d i) = d i) :
     cT s (prj s J X Y d) * J = J * prj s J X Y d := by
@@ -426,11 +426,9 @@ theorem cT_prj_mul (hs : ∀ a, s (s a) = a) (hJ : cT s J = J) {d : Fin r → A}
   rw [prj, cT_add', Matrix.add_mul, cT_prX_mul hs hJ, cT_prY_mul hs hJ, e, Matrix.mul_add, add_comm]
 
 /- English proof (translation)
-Establish `e1` using `frame_of_comm hWZ hc`. Establish `e2` using `frame_of_comm hWZ hc'`. Establish `hB : (cT s W * J * G * Z) * (cT s W * J * H * Z) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = cT s W * J * (G * (Z * cT s W * J) * H) * Z := by simp only [Matrix.mul_assoc]`. Use `_ = cT s W * J * Z * (cT s W * J * Z) := by`. Rewrite using `[hc, Matrix.mul_assoc (Z * cT s W * J), hGH, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hWZ, Matrix.one_mul]`.
-
-Conclude with `⟨⟨_, _, hB, mul_eq_one_comm.1 hB⟩, e1⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_comm {m : ℕ} {Z W : Matrix (Fin n) (Fin m) A} (hWZ : cT s W * J * Z = 1)
     {G H : Matrix (Fin n) (Fin n) A} (hGH : G * H = 1) (hc : G * (Z * cT s W * J) = Z * cT s W * J * G)
@@ -453,27 +451,27 @@ namespace GlobalTheory.CompanionTheory.LeviGen
 variable {A : Type} [CommRing A] {r : ℕ}
 
 /- English proof (translation)
-Unfold `ind`. Rewrite using `[Set.indicator_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_apply (I : Set (Fin r)) (i : Fin r) [Decidable (i ∈ I)] : (ind I i : A) = if i ∈ I then 1 else 0 := by
   unfold ind; rw [Set.indicator_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; simp only [Pi.mul_apply, ind_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ind_mul_self (I : Set (Fin r)) : (ind I : Fin r → A) * ind I = ind I := by
   classical
   funext i; simp only [Pi.mul_apply, ind_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [ind_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_ind (s : A →+* A) (I : Set (Fin r)) (i : Fin r) : s (ind I i) = ind I i := by
   classical
   rw [ind_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ind]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ind_empty : (ind (∅ : Set (Fin r)) : Fin r → A) = 0 := by
   funext i; simp [ind]

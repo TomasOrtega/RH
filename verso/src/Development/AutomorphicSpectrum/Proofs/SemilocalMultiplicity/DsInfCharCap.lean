@@ -38,79 +38,79 @@ namespace GlobalTheory.CompanionTheory.TransS.InfChar
 open CompanionTheory.D.DSIC
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ChainCAR.car`.
+A detailed English derivation is pending.
 -/
 theorem hCAR : CAR := GlobalTheory.CompanionTheory.ChainCAR.car
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KoszulBd.bdFacts hCAR`.
+A detailed English derivation is pending.
 -/
 theorem hBdFacts : BdFacts := GlobalTheory.CompanionTheory.KoszulBd.bdFacts hCAR
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.GopEntries.gFacts`.
+A detailed English derivation is pending.
 -/
 theorem hGFacts : GFacts := GlobalTheory.CompanionTheory.GopEntries.gFacts
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSICKoszul.koszul hCAR`.
+A detailed English derivation is pending.
 -/
 theorem hKoszul : Koszul := GlobalTheory.CompanionTheory.DSICKoszul.koszul hCAR
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSVerma.verma`.
+A detailed English derivation is pending.
 -/
 theorem hVerma : Verma := GlobalTheory.CompanionTheory.DSVerma.verma
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSCover.cover hKoszul hVerma`.
+A detailed English derivation is pending.
 -/
 theorem hCover : Cover := GlobalTheory.CompanionTheory.DSCover.cover hKoszul hVerma
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CapelliBlocks.co0`.
+A detailed English derivation is pending.
 -/
 theorem hCO0 : CapelliDeterminantBlockProduct := GlobalTheory.CompanionTheory.CapelliBlocks.co0
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CasselmanOsborne.co_of hBdFacts hGFacts hCover hCO0`.
+A detailed English derivation is pending.
 -/
 theorem hCO : CO := GlobalTheory.CompanionTheory.CasselmanOsborne.co_of hBdFacts hGFacts hCover hCO0
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KLowSpan.lowSpan_holds`.
+A detailed English derivation is pending.
 -/
 theorem hLowSpan : LowSpan := GlobalTheory.CompanionTheory.KLowSpan.lowSpan_holds
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSICHWMap.hwMap_of_lowSpan hLowSpan`.
+A detailed English derivation is pending.
 -/
 theorem hHWMap : HWMap := GlobalTheory.CompanionTheory.DSICHWMap.hwMap_of_lowSpan hLowSpan
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSSmLin.smLin`.
+A detailed English derivation is pending.
 -/
 theorem hSmLin : SmLin := GlobalTheory.CompanionTheory.DSSmLin.smLin
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SmBracket.smBracket_of hSmLin`.
+A detailed English derivation is pending.
 -/
 theorem hSmBracket : SmBracket := GlobalTheory.CompanionTheory.SmBracket.smBracket_of hSmLin
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SmoothModule.smMod hSmLin hSmBracket`.
+A detailed English derivation is pending.
 -/
 theorem hSmMod : SmMod := GlobalTheory.CompanionTheory.SmoothModule.smMod hSmLin hSmBracket
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KFinStab.kFinStab`.
+A detailed English derivation is pending.
 -/
 theorem hKFinStab : KFinStab := GlobalTheory.CompanionTheory.KFinStab.kFinStab
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSICKExp.kExp`.
+A detailed English derivation is pending.
 -/
 theorem hKExp : KExp := GlobalTheory.CompanionTheory.DSICKExp.kExp
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSStabLink.stabLink hKExp`.
+A detailed English derivation is pending.
 -/
 theorem hStabLink : StabLink := GlobalTheory.CompanionTheory.DSStabLink.stabLink hKExp
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WtLinkPf.wtLink`.
+A detailed English derivation is pending.
 -/
 theorem hWtLink : WtLink := GlobalTheory.CompanionTheory.WtLinkPf.wtLink
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSHighestOfKType.hwOfType hStabLink hWtLink`.
+A detailed English derivation is pending.
 -/
 theorem hHWofType : HWofType := GlobalTheory.CompanionTheory.DSHighestOfKType.hwOfType hStabLink hWtLink
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.DSKType.typeOfHW hLowSpan hStabLink hWtLink`.
+A detailed English derivation is pending.
 -/
 theorem hTypeOfHW : TypeOfHW := GlobalTheory.CompanionTheory.DSKType.typeOfHW hLowSpan hStabLink hWtLink
 

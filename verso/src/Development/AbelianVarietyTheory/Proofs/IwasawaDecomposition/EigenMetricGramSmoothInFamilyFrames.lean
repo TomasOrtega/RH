@@ -16,13 +16,13 @@ namespace GlobalTheory.LieBase.GramSmooth
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {y : GlobalTheory.CxPts p σ}
 
 /- English proof (translation)
-The claim follows from `hf.comp₂ hg (G := fun x => x.1 * x.2) (contDiff_fst.mul contDiff_snd)`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_mul {f g : GlobalTheory.CxPts p σ → ℝ} (hf : CInfAt f y) (hg : CInfAt g y) : CInfAt (fun z => f z * g z) y :=
   hf.comp₂ hg (G := fun x => x.1 * x.2) (contDiff_fst.mul contDiff_snd)
 
 /- English proof (translation)
-The claim follows from `hf.comp₂ hg (G := fun x => x.1 - x.2) (contDiff_fst.sub contDiff_snd)`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_sub {f g : GlobalTheory.CxPts p σ → ℝ} (hf : CInfAt f y) (hg : CInfAt g y) : CInfAt (fun z => f z - g z) y :=
   hf.comp₂ hg (G := fun x => x.1 - x.2) (contDiff_fst.sub contDiff_snd)
@@ -33,7 +33,7 @@ def CxInf (f : GlobalTheory.CxPts p σ → ℂ) (y : GlobalTheory.CxPts p σ) : 
 variable {f g : GlobalTheory.CxPts p σ → ℂ}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Complex.mul_re]`. Conclude with `cInfAt_sub (cInfAt_mul hf.1 hg.1) (cInfAt_mul hf.2 hg.2)`. Simplify using `only [Complex.mul_im]`. Conclude with `(cInfAt_mul hf.1 hg.2).add (cInfAt_mul hf.2 hg.1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CxInf.mul (hf : CxInf f y) (hg : CxInf g y) : CxInf (fun z => f z * g z) y := by
   refine ⟨?_, ?_⟩
@@ -41,7 +41,7 @@ theorem CxInf.mul (hf : CxInf f y) (hg : CxInf g y) : CxInf (fun z => f z * g z)
   · simp only [Complex.mul_im]; exact (cInfAt_mul hf.1 hg.2).add (cInfAt_mul hf.2 hg.1)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `hf.1` using `[Complex.star_def]`. Simplify `hf.2.neg` using `[Complex.star_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CxInf.star (hf : CxInf f y) : CxInf (fun z => star (f z)) y := by
   refine ⟨?_, ?_⟩
@@ -49,9 +49,9 @@ theorem CxInf.star (hf : CxInf f y) : CxInf (fun z => star (f z)) y := by
   · simpa [Complex.star_def] using hf.2.neg
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => refine ⟨?_, ?_⟩ <;> simpa using cInfAt_const 0 y`. Consider the case `insert a s ha ih`. Establish `h1` using `h a (Finset.mem_insert_self a s)`. Establish `h2` using `ih fun b hb => h b (Finset.mem_insert_of_mem hb)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_insert ha, Complex.add_re]`. Conclude with `h1.1.add h2.1`. Simplify using `only [Finset.sum_insert ha, Complex.add_im]`. Conclude with `h1.2.add h2.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CxInf.sum {κ : Type} (s : Finset κ) {f : κ → GlobalTheory.CxPts p σ → ℂ} (h : ∀ a ∈ s, CxInf (f a) y) :
     CxInf (fun z => ∑ a ∈ s, f a z) y := by
@@ -66,7 +66,7 @@ theorem CxInf.sum {κ : Type} (s : Finset κ) {f : κ → GlobalTheory.CxPts p �
     · simp only [Finset.sum_insert ha, Complex.add_im]; exact h1.2.add h2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.GoodMetric.cInfAt_ratVal (κ := Unit) (f := fun _ => f) (fun _ => hf) (G := fun v => (v ()).re) (Complex.reCLM.contDiff.comp (contDiff_apply ℝ ℂ ())), GlobalTheory.GoodMetric.cInfAt_ratVal (κ := Unit) (f := fun _ => f) (fun _ => hf) (G := fun v => (v ()).im) (Complex …`.
+Supply the required witnesses or components.
 -/
 theorem cxInf_ratVal {F : Type} [Field F] {X : Var F} {σ : F →+* ℂ} {y : GlobalTheory.CxPts X.str σ} {f : X.Fn}
     (hf : RegAt (under y) f) : CxInf (fun z => ratVal f z) y :=
@@ -80,7 +80,7 @@ end GlobalTheory.LieBase.GramSmooth
 namespace GlobalTheory.LieBase.GramSmooth
 
 /- English proof (translation)
-Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨π ⁻¹ᵁ W, ι, inferInstance, fun a => π.app W (g a), F, O, (mem_ptsIn_preimage hm).2 h₁, h₂, ?_, h₄, ?_⟩` and prove the remaining obligations. Simplify `h₃` using `only [ev_of_comp hm]`. Simplify using `only [← ev_of_comp hm]`. Conclude with `(continuous_of_comp hm).continuousAt.eventually h₅`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cInfAt_comp {k k' : Type} [CommRing k] [CommRing k'] {Y Y' : Scheme.{0}} {p : Y ⟶ Sp k} {p' : Y' ⟶ Sp k'}
     {σ : k →+* ℂ} {σ' : k' →+* ℂ} {π : Y' ⟶ Y} {m : GlobalTheory.CxPts p' σ' → GlobalTheory.CxPts p σ} (hm : ∀ z, (m z).1 = z.1 ≫ π)
@@ -96,11 +96,9 @@ end GlobalTheory.LieBase.GramSmooth
 namespace GlobalTheory.LieBase.GramSmooth
 
 /- English proof (translation)
-Introduce `F _ X σ ι _ m S y A hA`. Take `⟨U, B, hU, hB, hS⟩` from `S.loc (under y)`. Establish `hP` using `(hS _ hU A).1 hA`. Establish `hreg : ∀ g : X.Fn, RegAt (under y) g → ∀ᶠ z in 𝓝 y, RegAt (under z) g`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`. Use `filter_upwards [(isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)] with z hz`. Conclude with `regAt_fnOf (mem_ptsIn.1 hz) _ a`. Establish `hU' : ∀ᶠ z in 𝓝 y, under z ∈ U` using `by filter_upwards [(isOpen_ptsIn U).mem_nhds (mem_ptsIn.2 hU)] with z hz`. Conclude with `mem_ptsIn.1 hz`.
-
-Establish `h1 : ∀ᶠ z in 𝓝 y, ∀ τ, (∀ i j, RegAt (under z) ((A * B⁻¹) τ i j)) ∧ RegAt (under z) ((A * B⁻¹) τ).det⁻¹` using `Filter.eventually_all.2 fun τ => (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hreg _ (mem_O_ratOf.1 ((hP τ).1 i j))).and (hreg _ (mem_O_ratOf.1 (hP τ).2.2.1))`. Use `filter_upwards [hU', h1] with z hz hz1`. Conclude with `(hS _ hz A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 ((hz1 τ).1 i j), (hP τ).2.1, mem_O_ratOf.2 (hz1 τ).2, fun i j hi => absurd hi (by simp)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_mem : ∀ (F : Type) [Field F] (X : Var F) (σ : F →+* ℂ) (ι : Type) [Finite ι] (m : ι → ℕ) (S : Fr (ratOf X) m 0) (y : GlobalTheory.CxPts X.str σ) (A : Mat m X.Fn), A ∈ S.S (under y) → ∀ᶠ z in 𝓝 y, A ∈ S.S (under z) := by
   intro F _ X σ ι _ m S y A hA
@@ -122,9 +120,9 @@ theorem eventually_mem : ∀ (F : Type) [Field F] (X : Var F) (σ : F →+* ℂ)
     fun i j hi => absurd hi (by simp)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z _ σ G hG F _ e X j hj V φ Φ hφ τ p q y hy hyV`. Take `⟨g, hre, him, hg⟩` from `hG V φ Φ τ p q hφ`. Establish `hT : IsOpen ({y | ¬ LiesIn y (genBd Z)} ∩ ptsIn (genStr Z) σ V.1)` using `(isOpen_not_liesIn _).inter (isOpen_ptsIn _)`. Establish `hm : ∀ z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), (cxOf e σ hj z).1 = z.1 ≫ j` using `fun _ => rfl`. Establish `hyT : cxOf e σ hj y ∈ {y | ¬ LiesIn y (genBd Z)} ∩ ptsIn (genStr Z) σ V.1` using `⟨mem_ptsIn.1 ((mem_ptsIn_preimage hm).1 hy), hyV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cre` using `(cInfAt_iff_smoothOn (manifold Z σ) hT).2 hre _ hyT`. Establish `cim` using `(cInfAt_iff_smoothOn (manifold Z σ) hT).2 him _ hyT`. Use `⟨fun z => g (cxOf e σ hj z), GlobalTheory.LieBase.GramSmooth.cInfAt_comp hm cre, GlobalTheory.LieBase.GramSmooth.cInfAt_comp hm cim, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(continuous_of_comp hm).continuousAt.preimage_mem_nhds (hT.mem_nhds hyT)] with z hz hz' f hf`. Conclude with `hg _ hz.1 hz' f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_entry_cInfAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (σ : c.F →+* ℂ) (G : EigMet Z σ), G.SmoothOn (manifold Z σ) {y | ¬ LiesIn y (genBd Z)} → ∀ (F : Type) [Field F] (e : F ≃+* c.F) (X : Var F) (j : X.X ⟶ gen Z) (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (Φ : EigFrame Z φ (LogKS.chart V ≫ genι Z)), LogKS.chart V ≫ genStr Z = spMap φ → ∀ (τ : E →+* ℂ) (p q : Fin (Dw.mult τ)) (y : GlobalTheory.CxPts X.str (σ.comp e.toRingHom)), y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j) → cxOf e σ hj y ∈ ptsIn (genStr Z) σ V.1 → ∃ h : GlobalTheory.CxPts X.str (σ.comp e.toRingHom) → ℂ, CInfAt (fun z => (h z).re) y ∧ CInfAt (fun z => (h z).im) y ∧ ∀ᶠ z in 𝓝 y, ∀ (hz : cxOf e σ hj z ∈ ptsIn (genStr Z) σ V.1) (f : EigFrame Z σ ((cxOf e σ hj z).1 ≫ genι Z)), Φ.IsMap (evHom hz) f → G.gram (cxOf e σ hj z) f τ p q = h z := by
   intro E _ _ _ H Dw l Xo c O _ β Z _ σ G hG F _ e X j hj V φ Φ hφ τ p q y hy hyV
@@ -143,19 +141,17 @@ theorem gram_entry_cInfAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
 end GlobalTheory.LieBase.GramSmooth
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z _ σ G hG F _ e X j f₀ S A₀ hj hoi hT y hy A hA τ a b`. Take `⟨U, hU, φ, Φ, hzU, hφ, -⟩` from `EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z ((cxOf e σ hj y).1 (IsLocalRing.closedPoint ℂ))`. Set `V : (gen Z).affineOpens` to `⟨U, hU⟩`. Establish `hφ' : LogKS.chart V ≫ genStr Z = spMap φ` using `hφ`. Establish `hyV : cxOf e σ hj y ∈ ptsIn (genStr Z) σ V.1` using `mem_ptsIn.2 hzU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `GlobalTheory.T.frame_coordinates_eq_rational_matrix_values_chart E H Dw l Xo c O β Z σ F e X j f₀ S A₀ hj hoi hT V φ Φ hφ' A`. Use `choose h hre him hev using fun p q => GlobalTheory.LieBase.GramSmooth.gram_entry_cInfAt E H Dw l Xo c O β Z σ G hG F e X j hj V φ Φ hφ' τ p q y hy hyV`. Establish `hS` using `GlobalTheory.LieBase.GramSmooth.eventually_mem F X (σ.comp e.toRingHom) (E →+* ℂ) Dw.mult S y A hA`. Establish `hpre : ∀ z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), z ∈ ptsIn X.str (σ.comp e.toRingHom) (j ⁻¹ᵁ V.1) ↔ cxOf e σ hj z ∈ ptsIn (genStr Z) σ V.1` using `fun z => mem_ptsIn_preimage (m := cxOf e σ hj) (f := j) (fun _ => rfl)`. Establish `hVn : ∀ᶠ z in 𝓝 y, cxOf e σ hj z ∈ ptsIn (genStr Z) σ V.1` using `by filter_upwards [(isOpen_ptsIn _).mem_nhds ((hpre y).2 hyV)] with z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hpre z).1 hz`. Establish `hall` using `Filter.eventually_all.2 fun pq : Fin (Dw.mult τ) × Fin (Dw.mult τ) => hev pq.1 pq.2`. Establish `hreg` using `(hM y hA hyV).1 τ`. Establish `key : ∀ᶠ z in 𝓝 y, gramOf e G hj f₀ A₀ A z τ a b = ∑ q, (∑ p, star (ratVal (M τ p b) z) * h p q z) * ratVal (M τ q a) z` using `by filter_upwards [hS, hVn, hall] with z hzS hzV hzall`. Take `⟨-, hex, hco⟩` from `hM z hzS hzV`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hov : σ = (evHom hzV).comp φ` using `GlobalTheory.ShFam.EigLoc.spMap_inj ((cxOf e σ hj z).2.symm.trans (by`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← hφ', ← Category.assoc, GlobalTheory.LieMet.spMap_evHom hzV]))`. Establish `hx : (cxOf e σ hj z).1 ≫ genι Z = spMap (evHom hzV) ≫ LogKS.chart V ≫ genι Z`. Rewrite using `[← Category.assoc, GlobalTheory.LieMet.spMap_evHom hzV]`. Take `⟨f, hf⟩` from `Φ.exists_isMap (evHom hzV) hov hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gramOf, dif_pos hex]`. Use `show (G.gram (cxOf e σ hj z) hex.choose τ)ᵀ a b = _`. Rewrite using `[Matrix.transpose_apply, G.change (cxOf e σ hj z) f, hco _ hex.choose_spec f hf τ]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hzall (p, q) hzV f hf]`. Use `open GlobalTheory.LieBase.GramSmooth in`. Establish `hC : CxInf (fun z => ∑ q, (∑ p, star (ratVal (M τ p b) z) * h p q z) * ratVal (M τ q a) z) y` using `CxInf.sum _ fun q _ => (CxInf.sum _ fun p _ => (cxInf_ratVal (hreg p b)).star.mul ⟨hre p q, him p q⟩).mul (cxInf_ratVal (hreg q a))`.
-
-Conclude with `⟨hC.1.congr (key.mono fun z hz => congrArg Complex.re hz), hC.2.congr (key.mono fun z hz => congrArg Complex.im hz)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LieBase.cInfAt_gramOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (σ : c.F →+* ℂ) (G : EigMet Z σ), G.SmoothOn (manifold Z σ) {y | ¬ LiesIn y (genBd Z)} → ∀ (F : Type) [Field F] (e : F ≃+* c.F) (X : Var F) (j : X.X ⟶ gen Z) (f₀ : EigFrame Z (constF e X) (genericPt X ≫ j ≫ genι Z)) (S : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → Tied e X j f₀ S A₀ → ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j), ∀ A ∈ S.S (under y), ∀ (τ : E →+* ℂ) (a b : Fin (Dw.mult τ)), CInfAt (fun z => (gramOf e G hj f₀ A₀ A z τ a b).re) y ∧ CInfAt (fun z => (gramOf e G hj f₀ A₀ A z τ a b).im) y := by
   intro E _ _ _ H Dw l Xo c O _ β Z _ σ G hG F _ e X j f₀ S A₀ hj hoi hT y hy A hA τ a b

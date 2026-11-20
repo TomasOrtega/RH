@@ -17,11 +17,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `hD : ((dbl J).map σ)ᵀ = -dbl J`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, Matrix.fromBlocks, hJ]`. Use `set G := bᵀ * dbl J * b.map σ with hG`. Establish `hs : (G.map σ)ᵀ = -G`. Rewrite using `[hG, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.map_map]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (⇑σ ∘ ⇑σ) = id` using `funext hc`. Rewrite using `[e, Matrix.map_id, hD, show (bᵀ.map σ)ᵀ = b.map σ by rw [Matrix.transpose_map, Matrix.transpose_transpose]]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Use `congrFun (congrFun hs (Sum.inl ⟨0, hn⟩)) (Sum.inr ⟨0, hn⟩)` as an intermediate fact. Rewrite `this` using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.fromBlocks]`.
+A detailed English derivation is pending.
 -/
 theorem eps_neg {n : ℕ} (hn : 1 ≤ n) (hc : ∀ z : E, σ (σ z) = z) {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) {b : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E} {ε : ℤˣ}
@@ -39,9 +39,9 @@ theorem eps_neg {n : ℕ} (hn : 1 ≤ n) (hc : ∀ z : E, σ (σ z) = z) {J : Ma
   simpa [Matrix.fromBlocks] using this
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or ε with e | e` into its components or cases. It suffices to derive a contradiction. Rewrite `h` using `[e]`. Establish `: (2 : E) = 0`. Establish `h' : ((1 : ℤ) : E) = -1` using `by exact_mod_cast h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h'`. Take the linear combination `h'`. Conclude with `two_ne_zero this`. Conclude with `e`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eps_neg_unit {ε : ℤˣ} (h : ((ε : ℤ) : E) = -1) : ε = -1 := by
   rcases Int.units_eq_one_or ε with e | e
@@ -55,15 +55,15 @@ theorem eps_neg_unit {ε : ℤˣ} (h : ((ε : ℤ) : E) = -1) : ε = -1 := by
   · exact e
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ`. Establish `hB` using `d.ok.good`. Establish `hσ : ∀ z, σ (σ z) = z` using `UnitA.sig_sig hB.cm`. Use `⟨fun x => ?_, val_pull h hJ hb⟩` and prove the remaining obligations. Take `⟨Y₀, b₀, K₀, a₀, hb₀, he₀, hK₀, ha₀⟩` from `exists_eigenvalueGLOne_eq_cuspidalLabel_gen hB hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, he⟩` from `hb.1`. Establish `hK : IsStdK (σ` using `σ) (Y := Y) d.B b (d.K.comap j) := Ald.kStd F E σ d n h Y b j hb hJ`. Break down `hs with ⟨-, hY⟩ | ⟨-, hY⟩` into its components or cases. Establish `hε : ε = -1` using `eps_neg_unit (eps_neg hn hσ hY he)`. Substitute `hε` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨r, hr, hrf, hri⟩` from `exists_skewUnit hB`. Use `iwa_transport (B := d.B) hσ hb hb₀ he he₀ r ?_ hrf hri hK₀ ha₀.iwa hK x` and prove the remaining obligations. Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hε : ε = 1` using `eps_unit (eps_one hn hσ hY he)`. Substitute `hε` using the available equality. Use `iwa_transport (B := d.B) hσ hb hb₀ he he₀ 1 ?_ (fun v => ?_) (fun w => ?_) hK₀ ha₀.iwa hK x` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Units.val_one, inv_one, map_one]`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨one_mem _, one_mem _⟩`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem hgtPull : Ald.HgtPull := by
   intro F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ

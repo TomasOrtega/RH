@@ -9,7 +9,7 @@ open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 namespace GlobalTheory.ColRows
 
 /- English proof (translation)
-Introduce `J Pl Emb _ _ _ _ R C CT A P hC hCT h1 h2 h3 hK hL`. Take `⟨g0, MainNotions, logOm, logth0, logh, logh', vv, logg, a1, a2, a3, a4, a5, a6, a7, a8, a9, hP⟩` from `hK`. Take `⟨bT, nτ, lam1, D0, D1, logc, logxi, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11⟩` from `hL`. Use `⟨{ hPn := A, g0 := g0, MainNotions := MainNotions, logOmτ := logOm, logth0 := logth0, logh := logh, logh' := logh', vv := vv, logg := logg, C2 := C, Cth := C, C4 := C, c5 := C, c6 := C, CT := CT, C8 := C, Ce := C, ev := 0, bT := bT, nτ := nτ, lam1 := lam1, D0 := D0, D1 := D1, log …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_htNums_of_kerSide_lastSide :
     ∀ (J Pl Emb : Type) [Fintype J] [Fintype Pl] [DecidableEq Pl] [Fintype Emb] (R : RecNums J Pl) (C CT A : ℝ)

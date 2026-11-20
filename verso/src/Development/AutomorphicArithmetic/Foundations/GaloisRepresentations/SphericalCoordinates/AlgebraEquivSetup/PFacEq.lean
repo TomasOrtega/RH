@@ -7,15 +7,15 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ A n p _ S F hc w`. Establish `h1 : IsFac F w (fac F.tr hc w)`. Use `⟨fun g => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e : F.tr.j (F.tr.sec (F.tr.j g)) = F.tr.j g` using `F.tr.j_sec _`. Use `(F.tr.j_eq _ _).1 e w.1 w.2.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[F.j_tr]`. Conclude with `this`. Rewrite using `[F.j_tr]`. Both sides reduce to the same expression. Use `⟨h1, fun L hL => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpr : L.pr = (fac F.tr hc w).pr` using `MonoidHom.ext fun h => by`. Take `⟨g, rfl⟩` from `F.surj h`. Rewrite using `[hL.1 g, h1.1 g]`. Establish `hloc : L.loc = (fac F.tr hc w).loc` using `MonoidHom.ext fun y => by`. Rewrite using `[hL.2 y, h1.2 y]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hf : fac F.tr hc w with`. Consider the case `mk pr loc pr_loc comm`. Consider the cases of `L with`. Consider the case `mk pr' loc' pr_loc' comm'`. Rewrite `hpr`, `hloc` using `[hf]`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only at hpr hloc`. Substitute `hpr hloc` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pFacEq :
     FacEq := by

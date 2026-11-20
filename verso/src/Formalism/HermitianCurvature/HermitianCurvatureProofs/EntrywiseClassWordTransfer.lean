@@ -21,44 +21,44 @@ def PG (x : Q.Pr (V1 E)) : Prop := OK μ ℓ x.1 ∧ OK μ ℓ x.2.unop
 variable {μ ℓ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok_zero, ok_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_zero : PG μ ℓ (0 : Q.Pr (V1 E)) := ⟨ok_zero, ok_zero⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok_one, ok_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_one : PG μ ℓ (1 : Q.Pr (V1 E)) := ⟨ok_one, ok_one⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok_add hℓ hx.1 hy.1, ok_add hℓ hx.2 hy.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_add (hℓ : Continuous ℓ) {x y : Q.Pr (V1 E)} (hx : PG μ ℓ x) (hy : PG μ ℓ y) : PG μ ℓ (x + y) :=
   ⟨ok_add hℓ hx.1 hy.1, ok_add hℓ hx.2 hy.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok_mul hx.1 hy.1, ok_mul hy.2 hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_mul {x y : Q.Pr (V1 E)} (hx : PG μ ℓ x) (hy : PG μ ℓ y) : PG μ ℓ (x * y) :=
   ⟨ok_mul hx.1 hy.1, ok_mul hy.2 hx.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok_neg hx.1, ok_neg hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_neg {x : Q.Pr (V1 E)} (hx : PG μ ℓ x) : PG μ ℓ (-x) := ⟨ok_neg hx.1, ok_neg hx.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hx.2, hx.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_star {x : Q.Pr (V1 E)} (hx : PG μ ℓ x) : PG μ ℓ (star x) := ⟨hx.2, hx.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok_alg c, ok_alg (conj c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem pg_alg (c : ℂ) : PG μ ℓ (algebraMap ℂ (Q.Pr (V1 E)) c) := ⟨ok_alg c, ok_alg (conj c)⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (pg_zero : PG μ ℓ (0 : Q.Pr (V1 E)))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `pg_add hℓ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pg_sum (hℓ : Continuous ℓ) {ι : Type*} (s : Finset ι) (f : ι → Q.Pr (V1 E)) (h : ∀ i ∈ s, PG μ ℓ (f i)) :
     PG μ ℓ (∑ i ∈ s, f i) := by
@@ -76,7 +76,7 @@ variable (μ ℓ) in
 def EntrywiseClass (M : Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E))) : Prop := ∀ a b, PG μ ℓ (M a b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact pg_sum hℓ _ _ fun c _ => pg_mul (hM a c) (hN c b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entrywise_class_mul (hℓ : Continuous ℓ) {M N : Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E))} (hM : EntrywiseClass μ ℓ M) (hN : EntrywiseClass μ ℓ N) :
     EntrywiseClass μ ℓ (M * N) := fun a b => by
@@ -84,7 +84,7 @@ theorem entrywise_class_mul (hℓ : Continuous ℓ) {M N : Wd.SlopeTestRemaining
   exact pg_sum hℓ _ _ fun c _ => pg_mul (hM a c) (hN c b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.sum_apply] exact pg_sum hℓ _ _ fun i hi => h i hi a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entrywise_class_sum (hℓ : Continuous ℓ) {ι : Type*} (s : Finset ι) (M : ι → Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E)))
     (h : ∀ i ∈ s, EntrywiseClass μ ℓ (M i)) : EntrywiseClass μ ℓ (∑ i ∈ s, M i) := fun a b => by
@@ -92,7 +92,7 @@ theorem entrywise_class_sum (hℓ : Continuous ℓ) {ι : Type*} (s : Finset ι)
   exact pg_sum hℓ _ _ fun i hi => h i hi a b
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.one_apply] split_ifs · exact pg_one · exact pg_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entrywise_class_one : EntrywiseClass μ ℓ (1 : Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E))) := fun a b => by
   rw [Matrix.one_apply]
@@ -101,7 +101,7 @@ theorem entrywise_class_one : EntrywiseClass μ ℓ (1 : Wd.SlopeTestRemainingCh
   · exact pg_zero
 
 /- English proof (translation)
-Introduce `x y` and use `by unfold Wd.eU rw [Matrix.of_apply] split_ifs · exact pg_one · exact pg_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entrywise_class_unit_matrix (a : S) (i j : Fin 2) : EntrywiseClass μ ℓ (Wd.eU a i j : Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E))) := fun x y => by
   unfold Wd.eU
@@ -111,7 +111,7 @@ theorem entrywise_class_unit_matrix (a : S) (i j : Fin 2) : EntrywiseClass μ �
   · exact pg_zero
 
 /- English proof (translation)
-Introduce `a b` and use `by unfold Wd.io rw [Matrix.scalar_apply, Matrix.diagonal_apply] split_ifs · exact hx · exact pg_zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem entrywise_class_scalar {x : Q.Pr (V1 E)} (hx : PG μ ℓ x) : EntrywiseClass μ ℓ (Wd.io x : Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E))) := fun a b => by
   unfold Wd.io
@@ -121,7 +121,7 @@ theorem entrywise_class_scalar {x : Q.Pr (V1 E)} (hx : PG μ ℓ x) : EntrywiseC
   · exact pg_zero
 
 /- English proof (translation)
-Unfold `Wd.ins`. Conclude with `entrywise_class_sum hℓ _ _ fun i _ => entrywise_class_sum hℓ _ _ fun j _ => entrywise_class_mul hℓ (entrywise_class_unit_matrix a i j) (hM i j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem entrywise_class_insert (hℓ : Continuous ℓ) (a : S) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Q.Pr (V1 E)))} (hM : ∀ i j, EntrywiseClass μ ℓ (M i j)) :
     EntrywiseClass μ ℓ (Wd.ins a M) := by
@@ -129,9 +129,7 @@ theorem entrywise_class_insert (hℓ : Continuous ℓ) (a : S) {M : Wd.M2 (Wd.Sl
   exact entrywise_class_sum hℓ _ _ fun i _ => entrywise_class_sum hℓ _ _ fun j _ => entrywise_class_mul hℓ (entrywise_class_unit_matrix a i j) (hM i j)
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `pg_add hℓ (pg_alg Y) hp`. Conclude with `pg_neg hc`. Conclude with `hci`.
-
-Conclude with `pg_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pg_Ts (hℓ : Continuous ℓ) (σ : Wd.Site (Q.Pr (V1 E))) (hp : PG μ ℓ σ.p) (hc : PG μ ℓ σ.c)
     (hci : PG μ ℓ σ.ci) (Y : ℂ) : ∀ i j, PG μ ℓ (Wd.Ts σ Y i j) := by
@@ -143,9 +141,9 @@ theorem pg_Ts (hℓ : Continuous ℓ) (σ : Wd.Site (Q.Pr (V1 E))) (hp : PG μ �
   · exact pg_zero
 
 /- English proof (translation)
-Unfold `Wd.vlet`. Use `entrywise_class_insert hℓ _ fun i j => ?_` and prove the remaining obligations. Unfold `Wd.lift0`. Rewrite using `[Matrix.map_apply]`. Use `entrywise_class_scalar ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Conclude with `pg_Ts hℓ σ hp hc hci _ i j`. Rewrite using `[Matrix.map_apply]`. Conclude with `pg_star (pg_Ts hℓ σ hp hc hci _ i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entrywise_class_letter (hℓ : Continuous ℓ) (σ : Wd.Site (Q.Pr (V1 E))) (hp : PG μ ℓ σ.p) (hc : PG μ ℓ σ.c)
     (hci : PG μ ℓ σ.ci) (l : Wd.Letter ℂ S) : EntrywiseClass μ ℓ (Wd.vlet σ l) := by
@@ -160,7 +158,7 @@ theorem entrywise_class_letter (hℓ : Continuous ℓ) (σ : Wd.Site (Q.Pr (V1 E
     exact pg_star (pg_Ts hℓ σ hp hc hci _ i j)
 
 /- English proof (translation)
-The claim follows from `| [] => by rw [Wd.bT]; exact entrywise_class_one | l :: w => by rw [Wd.bT] exact entrywise_class_mul hℓ (entrywise_class_letter hℓ σ hp hc hci l) (entrywise_class_word_transfer hℓ σ hp hc hci w)`.
+A detailed English derivation is pending.
 -/
 theorem entrywise_class_word_transfer (hℓ : Continuous ℓ) (σ : Wd.Site (Q.Pr (V1 E))) (hp : PG μ ℓ σ.p) (hc : PG μ ℓ σ.c)
     (hci : PG μ ℓ σ.ci) : ∀ w : List (Wd.Letter ℂ S), EntrywiseClass μ ℓ (Wd.bT σ w)
@@ -170,7 +168,7 @@ theorem entrywise_class_word_transfer (hℓ : Continuous ℓ) (σ : Wd.Site (Q.P
       exact entrywise_class_mul hℓ (entrywise_class_letter hℓ σ hp hc hci l) (entrywise_class_word_transfer hℓ σ hp hc hci w)
 
 /- English proof (translation)
-The claim follows from `entrywise_class_word_transfer hℓ _ ⟨ok_opP hℓ κ, ok_neg (ok_opPb hℓ κ)⟩ ⟨ok_opM _ cd_id, ok_opM _ cd_conj⟩ ⟨ok_opM _ cd_inv, ok_opM _ cd_conjinv⟩ w`.
+A detailed English derivation is pending.
 -/
 theorem entrywise_class_site_one (hℓ : Continuous ℓ) (κ : ℂ) (w : List (Wd.Letter ℂ S)) :
     EntrywiseClass μ ℓ (Wd.bT (site1 (E := E) κ) w) :=
@@ -178,7 +176,7 @@ theorem entrywise_class_site_one (hℓ : Continuous ℓ) (κ : ℂ) (w : List (W
     ⟨ok_opM _ cd_inv, ok_opM _ cd_conjinv⟩ w
 
 /- English proof (translation)
-Establish `hB` using `entrywise_class_site_one (μ := μ) (ℓ := ℓ) hℓ κ w`. Unfold `oneBT act1`. Conclude with `⟨good_sum _ _ fun b _ => ((hB a b).1 _ _ (hG b) (hI b)).1, int_sum hℓ _ _ _ (fun b _ => ((hB a b).1 _ _ (hG b) (hI b)).1) fun b _ => ((hB a b).1 _ _ (hG b) (hI b)).2⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem oneBT_int (hℓ : Continuous ℓ) (κ : ℂ) (w : List (Wd.Letter ℂ S)) (Φ : X → Wd.Ix S → V1 E)
     (x : Wd.Ix S → V1 E) (hG : ∀ b, Good (fun v => Φ v b)) (hI : ∀ b, IsInt μ ℓ (fun v => Φ v b) (x b))

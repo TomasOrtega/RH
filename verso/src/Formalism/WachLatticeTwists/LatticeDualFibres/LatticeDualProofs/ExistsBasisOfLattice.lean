@@ -15,7 +15,7 @@ section SlopeTestRemainingChoices
 variable {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-The claim follows from `(f.extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O)).map_smul c x`.
+A detailed English derivation is pending.
 -/
 theorem map_frac_smul {V W : Type u} [AddCommGroup V] [Module O V] [Module (FractionRing O) V]
     [IsScalarTower O (FractionRing O) V] [AddCommGroup W] [Module O W] [Module (FractionRing O) W]
@@ -30,9 +30,9 @@ variable {V V' : Type u} [AddCommGroup V] [Module O V] [Module (FractionRing O) 
   [IsScalarTower O (FractionRing O) V']
 
 /- English proof (translation)
-Establish `: Submodule.IsLattice (FractionRing O) T` using `⟨hT.1, hT.2⟩`. Set `B` to `Module.finBasis O T`. Use `⟨_, B.extendOfIsLattice (FractionRing O), ?_, rfl⟩` and prove the remaining obligations. Establish `h : Set.range (B.extendOfIsLattice (FractionRing O)) = T.subtype '' Set.range B`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[h, ← Submodule.map_span, B.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_basis_of_lattice {T : Submodule O V} (hT : IsLatticeIn T) :
     ∃ (n : ℕ) (e : Basis (Fin n) (FractionRing O) V),
@@ -48,7 +48,7 @@ theorem exists_basis_of_lattice {T : Submodule O V} (hT : IsLatticeIn T) :
   rw [h, ← Submodule.map_span, B.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range e), ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_span_of_tower, e.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLatticeIn_span_basis {n : ℕ} (e : Basis (Fin n) (FractionRing O) V) :
     IsLatticeIn (Submodule.span O (Set.range e)) := by
@@ -56,7 +56,7 @@ theorem isLatticeIn_span_basis {n : ℕ} (e : Basis (Fin n) (FractionRing O) V) 
   rw [Submodule.span_span_of_tower, e.span_eq]
 
 /- English proof (translation)
-Establish `h : LinearIndependent O e` using `(LinearIndependent.iff_fractionRing O (FractionRing O)).2 e.linearIndependent`. Rewrite using `[finrank_span_eq_card h, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_span_basis {n : ℕ} (e : Basis (Fin n) (FractionRing O) V) :
     finrank O (Submodule.span O (Set.range e)) = n := by
@@ -65,17 +65,15 @@ theorem finrank_span_basis {n : ℕ} (e : Basis (Fin n) (FractionRing O) V) :
   rw [finrank_span_eq_card h, Fintype.card_fin]
 
 /- English proof (translation)
-Use `choose f hf using fun i => (hb (e.coord i)).exists`. Establish `hexp : ∀ w : V', w = ∑ i, b (e i) w • f i`. Introduce `w`. Use `(hb ((b.flip w).extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O))).unique (fun x => rfl) (fun x => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.extendScalarsOfIsLocalization_apply', LinearMap.flip_apply, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← e.sum_repr x, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_frac_smul, hf, map_frac_smul b, LinearMap.smul_apply, Basis.coord_apply, smul_eq_mul, smul_eq_mul, mul_comm]`. Establish `hli : LinearIndependent (FractionRing O) f`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc j`. Establish `h` using `congrArg (b (e j)) hc`. Rewrite `h` using `[map_sum, map_zero]`. Rewrite using `[← h, Finset.sum_eq_single j]`. Rewrite using `[map_frac_smul, hf, Basis.coord_apply, Basis.repr_self, Finsupp.single_eq_same, smul_eq_mul, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hij`. Rewrite using `[map_frac_smul, hf, Basis.coord_apply, Basis.repr_self, Finsupp.single_eq_of_ne hij, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Establish `hsp : ⊤ ≤ Submodule.span (FractionRing O) (Set.range f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w _`. Rewrite using `[hexp w]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))`. Use `⟨Basis.mk hli hsp, fun i x => ?_, fun i w => ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.mk_apply, hf, Basis.coord_apply]`.
-
-Use `conv_lhs => rw [hexp w]`. Establish `: ∑ i, b (e i) w • f i = ∑ i, b (e i) w • (Basis.mk hli hsp) i`. Simplify using `only [Basis.mk_apply]`. Rewrite using `[this, Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_basis {b : V →ₗ[O] V' →ₗ[O] FractionRing O} (hb : PerfectRight b) {n : ℕ}
     (e : Basis (Fin n) (FractionRing O) V) :
@@ -118,11 +116,11 @@ theorem exists_dual_basis {b : V →ₗ[O] V' →ₗ[O] FractionRing O} (hb : Pe
 omit [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V] in
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[Basis.mem_span_iff_repr_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `hw i`. Rewrite using `[h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_one.1 (hw (e i) (Submodule.subset_span (Set.mem_range_self i)))`. Introduce `hw`. Establish `hle : Submodule.span O (Set.range e) ≤ (1 : Submodule O (FractionRing O)).comap (b.flip w)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hw i` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `Submodule.mem_one.2 this`. Conclude with `fun x hx => hle hx`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem dualLat_span {b : V →ₗ[O] V' →ₗ[O] FractionRing O} {n : ℕ} (e : Fin n → V)
     (f : Basis (Fin n) (FractionRing O) V') (h : ∀ i w, f.repr w i = b (e i) w) :
@@ -144,11 +142,9 @@ theorem dualLat_span {b : V →ₗ[O] V' →ₗ[O] FractionRing O} {n : ℕ} (e 
     exact fun x hx => hle hx
 
 /- English proof (translation)
-Take `⟨n, e, hTe, hn⟩` from `exists_basis_of_lattice hT`. Take `⟨f, h1, h2⟩` from `exists_dual_basis hb e`. Establish `hd : dualLat b T = Submodule.span O (Set.range f)`. Rewrite using `[hTe]`. Conclude with `dualLat_span e f h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `isLatticeIn_span_basis f`. Rewrite using `[hd, hn]`. Conclude with `finrank_span_basis f`.
-
-Rewrite using `[hd, hTe]`. Conclude with `dualLat_span (b := b.flip) f e h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_props {b : V →ₗ[O] V' →ₗ[O] FractionRing O} {T : Submodule O V}
     (hT : IsLatticeIn T) (hb : PerfectRight b) :
@@ -167,7 +163,7 @@ omit [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V]
   [Module (FractionRing O) V'] [IsScalarTower O (FractionRing O) V'] in
 
 /- English proof (translation)
-Introduce `g f hf x hx`. Establish `hx' : x = ρ g (ρ g⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[hx', he]`. Conclude with `Submodule.smul_mem _ _ (hf _ (hs g⁻¹ x hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_stable {G : Type u} [Group G] {ε : G →* Oˣ} {ρ : Representation O G V}
     {ρ' : Representation O G V'} {b : V →ₗ[O] V' →ₗ[O] FractionRing O} {T : Submodule O V}
@@ -187,7 +183,7 @@ end Lat2
 open Lat2
 
 /- English proof (translation)
-Introduce `O G V V' _ _ _ _ _ _ _ _ _ _ _ _ ε ρ ρ' b T hT hs hb he`. Take `⟨h1, h2, h3⟩` from `dualLat_props hT hb`. Conclude with `⟨h1, h2, dualLat_stable hs he, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dualLattice : StatDualLattice.{u} := by
   intro O G V V' _ _ _ _ _ _ _ _ _ _ _ _ ε ρ ρ' b T hT hs hb he
@@ -208,7 +204,7 @@ omit [IsDomain O] [IsDiscreteValuationRing O] [Module (FractionRing O) VY]
   [IsScalarTower O (FractionRing O) VY] [Module (FractionRing O) VT]
   [IsScalarTower O (FractionRing O) VT] in
 /- English proof (translation)
-Use `⟨Y.zero_mem, ?_⟩` and prove the remaining obligations. Establish `: (⟨((0 : VY), x).1, Y.zero_mem⟩ : Y) = 0` using `rfl`. Rewrite using `[this, map_zero]`. Conclude with `((Submodule.Quotient.mk_eq_zero T).2 hx).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_fibre {Y : Submodule O VY} {T : Submodule O VT} (φ : Y →ₗ[O] VT ⧸ T) {x : VT}
     (hx : x ∈ T) : ((0 : VY), x) ∈ fibre Y T φ := by
@@ -237,11 +233,11 @@ omit [IsDiscreteValuationRing O] [Module (FractionRing O) VY]
   [IsScalarTower O (FractionRing O) VT] in
 
 /- English proof (translation)
-Use extensionality with `⟨f, g⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h2⟩ ⟨y, x⟩ ⟨hy, hφ⟩`. Rewrite using `[pairB_apply]`. Conclude with `h2 ⟨y, hy⟩ x hφ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨fun x hx => ?_, fun y x hyx => ?_⟩` and prove the remaining obligations. Use `h (0, x) (zero_mem_fibre φ hx)` as an intermediate fact. Rewrite `this` using `[pairB_apply]`. Simplify using `only [map_zero, LinearMap.zero_apply, zero_sub] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Submodule.neg_mem_iff _).1 this`. Use `h (y, x) ⟨y.2, hyx⟩` as an intermediate fact. Rewrite `this` using `[pairB_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreDual_eq (bY : VY →ₗ[O] VY' →ₗ[O] FractionRing O)
     (bT : VT →ₗ[O] VT' →ₗ[O] FractionRing O) (Y : Submodule O VY) (T : Submodule O VT)
@@ -267,9 +263,9 @@ omit [IsDiscreteValuationRing O] [Module (FractionRing O) VY]
   [IsScalarTower O (FractionRing O) VT] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩ y hy`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective T (φ ⟨y, hy⟩)`. Use `h ⟨y, hy⟩ x hx.symm` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use `⟨Submodule.zero_mem _, fun y x _ => ?_⟩` and prove the remaining obligations. Use `h y y.2` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem_fibreDual_iff (bY : VY →ₗ[O] VY' →ₗ[O] FractionRing O)
     (bT : VT →ₗ[O] VT' →ₗ[O] FractionRing O) (Y : Submodule O VY) (T : Submodule O VT)

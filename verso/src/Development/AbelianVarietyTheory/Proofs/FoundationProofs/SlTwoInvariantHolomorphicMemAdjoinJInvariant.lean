@@ -16,23 +16,21 @@ namespace GlobalTheory.KZ.LevelOne
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Use `set a0 := (X.exp h).coeff 0 with ha0`. Establish `hsupp : ∀ r : ℚ, (X.exp h).coeff r ≠ 0 → ∃ n : ℕ, r = n`. Introduce `r hr`. Take `⟨m, rfl⟩` from `GlobalTheory.T.exponents_integral_of_translation_invariant X h (hinv _) r hr`. Establish `hm : 0 ≤ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hm`. Conclude with `hr (hneg _ (by exact_mod_cast (not_le.1 hm)))`. Conclude with `⟨m.toNat, by rw [← Int.cast_natCast, Int.toNat_of_nonneg hm]⟩`. Take `⟨B, t, hB⟩` from `GlobalTheory.T.modularTower_function_tendsto_constTerm_exponential X h φ hd.continuousOn ha hsupp`. Establish `hinvφ` using `GlobalTheory.T.modularTower_function_slTwoInt_invariant X h φ hd.continuousOn ha hinv`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp1 : ∀ z : ℂ, t < z.im → Real.exp (-(2 * Real.pi * (z.im - t))) ≤ 1`. Introduce `z hz`. Rewrite using `[Real.exp_le_one_iff]`. Establish `: 0 < z.im - t` using `by linarith`. Use `Real.pi_pos` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨c, hc⟩` from `GlobalTheory.T.const_of_slTwoInt_invariant_bounded_upperHalfPlane φ hd hinvφ ⟨‖ε a0‖ + |B|, t, fun z hz hzt => by`. Establish `h1` using `hB z hz hzt`. Establish `h2` using `hexp1 z hzt`. Establish `h3 : B * Real.exp (-(2 * Real.pi * (z.im - t))) ≤ |B|`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hca : c = ε a0`. Establish `hle : ∀ s : ℝ, max t 0 < s → ‖c - ε a0‖ ≤ B * Real.exp (-(2 * Real.pi * (s - t)))`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s` using `lt_of_le_of_lt (le_max_right _ _) hs`. Establish `hst : t < s` using `lt_of_le_of_lt (le_max_left _ _) hs`. Establish `hz : ((s : ℂ) * Complex.I) ∈ Hs` using `by simp [Hs, hs0]`. Use `hB _ hz (by simpa using hst)` as an intermediate fact. Rewrite `this` using `[hc _ hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `ht : Filter.Tendsto (fun s : ℝ => B * Real.exp (-(2 * Real.pi * (s - t)))) Filter.atTop (nhds 0)`. Establish `h1 : Filter.Tendsto (fun s : ℝ => 2 * Real.pi * (s - t)) Filter.atTop Filter.atTop`. Apply `Filter.Tendsto.const_mul_atTop Real.two_pi_pos` to reduce the goal to its premises. Conclude with `Filter.tendsto_atTop_add_const_right _ _ Filter.tendsto_id`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `(Real.tendsto_exp_neg_atTop_nhds_zero.comp h1).const_mul B`. Simplify using `using h2`. Establish `h0 : ‖c - ε a0‖ ≤ 0` using `ge_of_tendsto ht (Filter.eventually_gt_atTop (max t 0) |>.mono hle)`. Use `norm_le_zero_iff.1 h0` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
-
-Apply `SiegelModel.an_injective X` to reduce the goal to its premises. Rewrite using `[ha, X.an_c]`. Conclude with `SiegelModel.germ_eq_of_eqOn fun z hz => by rw [hc z hz, hca]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_const_of_nonneg [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (h : X.K) (hinv : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) h = h)
     (φ : ℂ → ℂ) (hd : DifferentiableOn ℂ φ Hs) (ha : X.an h = (φ : Mero))
@@ -88,27 +86,25 @@ theorem eq_const_of_nonneg [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (h : X.K) (hi
   exact SiegelModel.germ_eq_of_eqOn fun z hz => by rw [hc z hz, hca]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ hj`. Take `⟨ψ, hψ, hψa⟩` from `hj`. Establish `key : ∀ n : ℕ, ∀ h : X.K, (∀ γ : SL(2, ℤ), X.sl (ofSL γ) h = h) → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an h = (φ : Mero)) → (∀ r : ℚ, r < -(n : ℚ) → (X.exp h).coeff r = 0) → h ∈ Algebra.adjoin Ω {X.jK}`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `h hinv hol hneg`. Take `⟨φ, hd, ha⟩` from `hol`. Rewrite using `[eq_const_of_nonneg X h hinv φ hd ha (by simpa using hneg)]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `h hinv hol hneg`. Take `⟨φ, hd, ha⟩` from `hol`. Take `⟨c, hcdef⟩ : ∃ c : Ω, c = (X.exp h).coeff (-((n + 1 : ℕ) : ℚ))` from `⟨_, rfl⟩`. Take `⟨h', hh'⟩ : ∃ h' : X.K, h' = h - algebraMap Ω X.K c * X.jK ^ (n + 1)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj` using `GlobalTheory.T.hahnSeries_pow_of_leading_qInv (X.exp X.jK) X.j_exp.1 X.j_exp.2.1 (n + 1)`. Establish `hinv' : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) h' = h'`. Introduce `γ`. Rewrite using `[hh', map_sub, map_mul, map_pow, X.j_inv, hinv, AlgEquiv.commutes]`. Establish `hol' : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an h' = (φ : Mero)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun z => φ z - ε c * ψ z ^ (n + 1), ?_, ?_⟩` and prove the remaining obligations. Conclude with `hd.sub ((hψ.pow _).const_mul _)`. Rewrite using `[hh', map_sub, map_mul, map_pow, X.an_c, ha, hψa]`. Both sides reduce to the same expression. Establish `hneg' : ∀ r : ℚ, r < -(n : ℚ) → (X.exp h').coeff r = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `r hr`. Assume the negation of the conclusion as `hrz`. Take `⟨m, rfl⟩` from `GlobalTheory.T.exponents_integral_of_translation_invariant X h' (hinv' _) r hrz`. Apply `hrz` to reduce the goal to its premises. Establish `hcoe : (X.exp h').coeff (m : ℚ) = (X.exp h).coeff m - c * ((X.exp X.jK) ^ (n + 1)).coeff m`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh', map_sub, map_mul, AlgHom.commutes, map_pow, HahnSeries.coeff_sub, HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]`. Rewrite using `[hcoe]`. Establish `hm : m ≤ -((n : ℤ) + 1)`. Establish `: (m : ℚ) < -(n : ℚ)` using `hr`. Establish `: m < -(n : ℤ)` using `by exact_mod_cast this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Break down `hm.lt_or_eq with hlt | heq` into its components or cases. Establish `hq : (m : ℚ) < -((n + 1 : ℕ) : ℚ)` using `by push_cast; exact_mod_cast hlt`. Rewrite using `[hneg _ hq, hj.2 _ hq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (m : ℚ) = -((n + 1 : ℕ) : ℚ)` using `by rw [heq]; push_cast; ring`. Rewrite using `[hq, hj.1, hcdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem` using `ih h' hinv' hol' hneg'`. Establish `hsum : h = h' + algebraMap Ω X.K c * X.jK ^ (n + 1)` using `by rw [hh']; abel`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjm : X.jK ∈ Algebra.adjoin Ω {X.jK}` using `Algebra.self_mem_adjoin_singleton Ω X.jK`. Rewrite using `[hsum]`. Conclude with `add_mem hmem (mul_mem (Subalgebra.algebraMap_mem _ _) (pow_mem hjm _))`. Introduce `h hinv hol`. Use `key ⌈-(X.exp h).order⌉₊ h hinv hol fun r hr => HahnSeries.coeff_eq_zero_of_lt_order ?_` and prove the remaining obligations.
-
-Use `Nat.le_ceil (-(X.exp h).order)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_adjoin_j : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ h : X.K,

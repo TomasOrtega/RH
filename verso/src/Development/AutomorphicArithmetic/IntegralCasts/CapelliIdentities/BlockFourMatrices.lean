@@ -11,7 +11,7 @@ noncomputable def UpperTheory.Reformulated.B.BlockFourMatrices.blk4 :
         (⇑finSumFinEquiv.symm : Fin (n + n) → Fin n ⊕ Fin n)
 
 /- English proof (translation)
-Introduce `R S m f a b c d`. Unfold `UpperTheory.Reformulated.B.BlockFourMatrices.blk4`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.BlockFourMatrices.main :
     ∀ {R S : Type} {m : ℕ} (f : R → S) (a b c d : Matrix (Fin m) (Fin m) R),

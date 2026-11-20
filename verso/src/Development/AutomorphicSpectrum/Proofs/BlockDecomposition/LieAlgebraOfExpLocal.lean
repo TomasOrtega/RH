@@ -19,7 +19,7 @@ def unitsOf (hG : GlobalTheory.LinRed.IsLinRed G) : Subgroup (Matrix (Fin n) (Fi
     exact h
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun u hu => ?_` and prove the remaining obligations. Use `hG.closed _ u.isUnit ?_` and prove the remaining obligations. Conclude with `closure_mono (fun v hv => hv) (map_mem_closure Units.continuous_val hu (fun v hv => hv))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_unitsOf (hG : GlobalTheory.LinRed.IsLinRed G) :
     IsClosed (unitsOf hG : Set (Matrix (Fin n) (Fin n) ℂ)ˣ) := by
@@ -30,7 +30,7 @@ theorem isClosed_unitsOf (hG : GlobalTheory.LinRed.IsLinRed G) :
 open scoped Matrix.Norms.L2Operator in
 
 /- English proof (translation)
-Take `⟨𝔤, h⟩` from `GlobalTheory.CompanionTheory.ClosedSubgroupUnits.exists_isExpLieAlgebra (unitsOf hG) (isClosed_unitsOf hG)`. Take `⟨U, hUo, h0, -, hU⟩` from `h.exists_nhds`. Conclude with `⟨𝔤, fun X hX => h.expUnit_mem X hX, U, hUo, h0, fun X hXU hX => hU X hXU hX⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_subspace (hG : GlobalTheory.LinRed.IsLinRed G) :
     ∃ 𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ 𝔤, NormedSpace.exp X ∈ G) ∧
@@ -41,9 +41,9 @@ theorem exists_subspace (hG : GlobalTheory.LinRed.IsLinRed G) :
   exact ⟨𝔤, fun X hX => h.expUnit_mem X hX, U, hUo, h0, fun X hXU hX => hU X hXU hX⟩
 
 /- English proof (translation)
-Introduce `n G hG`. Take `⟨𝔤, hexp, U, hUo, h0, hU⟩` from `exists_subspace hG`. Use `⟨𝔤, fun X => ⟨fun hX t => hexp _ (𝔤.smul_mem t hX), fun hX => ?_⟩, U, hUo.mem_nhds h0, hU⟩` and prove the remaining obligations. Establish `hc : Continuous fun t : ℝ => t • X` using `continuous_id.smul continuous_const`. Establish `hev : ∀ᶠ t : ℝ in 𝓝 0, t • X ∈ U` using `hc.continuousAt.eventually_mem (by simpa using hUo.mem_nhds h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, htU, ht⟩` from `((hev.filter_mono nhdsWithin_le_nhds).and self_mem_nhdsWithin : ∀ᶠ t : ℝ in 𝓝[≠] 0, t • X ∈ U ∧ t ∈ ({0}ᶜ : Set ℝ)).exists`. Conclude with `(𝔤.smul_mem_iff ht).1 (hU _ htU (hX t))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lieAlgebra : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)}, GlobalTheory.LinRed.IsLinRed G →
     ∃ 𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ),

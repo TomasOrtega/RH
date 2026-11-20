@@ -17,11 +17,9 @@ variable {X : Scheme.{0}} {V V' : X.Opens} (h : V ≤ V') {d m : ℕ}
   (D : Fin d → Γ(X, V) → Γ(X, V)) (κ : Fin m → Fin d)
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b', bs, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨b * b', bs, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.id_apply, map_mul, mul_assoc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg _ _ h1 => rw [mul_neg]`.
-
-Conclude with `neg_mem h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rs_mul_mem_jacSpan (b : Γ(X, V')) {y : Γ(X, V)} (hy : y ∈ jacSpan h (RingHom.id _) D κ) :
     rs h b * y ∈ jacSpan h (RingHom.id _) D κ := by
@@ -50,17 +48,17 @@ def coefIdeal (y : Γ(X, V)) : Ideal Γ(X, V') where
     exact rs_mul_mem_jacSpan h D κ b ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_coefIdeal {y : Γ(X, V)} {a : Γ(X, V')} :
     a ∈ coefIdeal h D κ y ↔ rs h a * y ∈ jacSpan h (RingHom.id _) D κ := Iff.rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal 𝔠 hne`. Establish `hPp : P.IsPrime` using `hP.isPrime`. Set `p : PrimeSpectrum Γ(X, U)` to `⟨P, hPp⟩`. Establish `hxU : hU.fromSpec p ∈ U`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: hU.fromSpec p ∈ Set.range hU.fromSpec` using `⟨p, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Take `⟨f, M, hx, hf⟩` from `H _ hxU`. Establish `hfP : f ∈ P` using `hPp.mem_of_pow_mem M (hle hf)`. Establish `e : hU.fromSpec p ∈ X.basicOpen f` using `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : p ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f` using `e`. Rewrite `e2` using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `e2 hfP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_top_of_local {U : X.Opens} (hU : IsAffineOpen U) (𝔠 : Ideal Γ(X, U))
     (H : ∀ x : X, x ∈ U → ∃ (f : Γ(X, U)) (M : ℕ), x ∈ X.basicOpen f ∧ f ^ M ∈ 𝔠) : 𝔠 = ⊤ := by
@@ -81,9 +79,9 @@ theorem ideal_eq_top_of_local {U : X.Opens} (hU : IsAffineOpen U) (𝔠 : Ideal 
 end CoefIdeal
 
 /- English proof (translation)
-Introduce `K _ _ X q _ s V V' hVV hV' d c`. Introduce `D hD E ε hL σ m r hr hs ξ y hRep I`. Establish `top : coefIdeal hVV (fun k => D k) I.1 (y I) = ⊤`. Use `ideal_eq_top_of_local hV' _ fun x hx => ?_` and prove the remaining obligations. Take `⟨f, e, cu, hxf⟩` from `GlobalTheory.CompanionTheory.ConeLocal.coord_near q hV' x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `GlobalTheory.CompanionTheory.ConeLocal.CoefMemLoc.main q s hVV hV' c D hD E ε hL σ m r hr hs f e cu ξ y hRep I`. Conclude with `⟨f, M, hxf, hM⟩`. Establish `h1 : (1 : Γ(X, V')) ∈ coefIdeal hVV (fun k => D k) I.1 (y I)` using `top ▸ Submodule.mem_top`. Establish `h2` using `(mem_coefIdeal hVV _ _).1 h1`. Rewrite `h2` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coef_mem_jacSpan : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (s : ℕ) {V V' : X.Opens} (hVV : V ≤ V'), IsAffineOpen V' → ∀ {d : ℕ} (c : Coord q V d),
     letI := (strV q V).toAlgebra

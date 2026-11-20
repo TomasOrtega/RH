@@ -28,9 +28,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {Y : Scheme.{0}} {q : Y ⟶ Sp Oz}
 
 /- English proof (translation)
-Establish `e : (pullback.lift (up j hj σ y).1 (𝟙 _) ((up j hj σ y).2.trans (Category.id_comp _).symm) : Sp ℂ ⟶ genCx Z σ) = (pullback.lift y.1 (𝟙 _) (y.2.trans (Category.id_comp _).symm) : Sp ℂ ⟶ cxFib β q σ) ≫ toGenCx j hj σ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [toGenCx, toGen, up, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [toGenCx, toGen, up, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc, Category.id_comp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `(pullback.lift_snd _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `((congrArg (_ ≫ ·) (pullback.lift_snd _ _ _)).trans (pullback.lift_snd _ _ _)).symm`. Conclude with `congrArg (fun g : Sp ℂ ⟶ genCx Z σ => g (IsLocalRing.closedPoint ℂ)) e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptOf_up (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) (y : CxPts q (σ.comp β)) :
     ptOf Z (up j hj σ y) = toGenCx j hj σ
@@ -49,17 +49,17 @@ theorem ptOf_up (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) (y : C
   exact congrArg (fun g : Sp ℂ ⟶ genCx Z σ => g (IsLocalRing.closedPoint ℂ)) e
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, (ptOf_up j hj σ y).symm⟩`. Introduce and unpack `⟨w, hw⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `e : toGenCx j hj σ ≫ pullback.fst _ _ ≫ genι Z = pullback.fst _ _ ≫ j`. Simplify using `only [toGenCx, toGen, pullback.lift_fst, pullback.lift_fst_assoc]`. Establish `h1 : (x.1 ≫ genι Z) (IsLocalRing.closedPoint ℂ) = j (pullback.fst q (spMap (σ.comp β)) w)`. Establish `h2` using `congrArg (fun g : cxFib β q σ ⟶ Z.X => g w) e`. Simplify using `only [Scheme.Hom.comp_apply] at h2 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2, hw, fst_ptOf]`. Both sides reduce to the same expression. Establish `hr : Set.range (x.1 ≫ genι Z) ⊆ Set.range j`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, h1.symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Sp ℂ ⟶ Y, f ≫ j = x.1 ≫ genι Z := by`. Establish `: Surjective (pullback.snd j (x.1 ≫ genι Z))` using `⟨by`. Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd]`. Conclude with `Set.eq_univ_of_forall fun t => hr ⟨t, rfl⟩⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsIso (pullback.snd j (x.1 ≫ genι Z))` using `isIso_of_isClosedImmersion_of_surjective _`. Conclude with `⟨inv (pullback.snd j (x.1 ≫ genι Z)) ≫ pullback.fst j _, by`. Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]⟩`. Establish `hq : f ≫ q = spMap (σ.comp β)`. Rewrite using `[← hj, ← Category.assoc, hf, Category.assoc, pullback.condition, ← Category.assoc, x.2, spMap_comp_spMap]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨f, hq⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(up_ι j hj σ _).trans hf`. Conclude with `(up j hj σ _).2.trans x.2.symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem range_up_eq_ptsOf (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) :
     Set.range (up j hj σ) = ptsOf Z (Set.range (toGenCx j hj σ)) := by
@@ -96,7 +96,7 @@ theorem range_up_eq_ptsOf (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s 
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ σ _ _ _ jm _ hq _ _` and use `range_up_eq_ptsOf jm hq σ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem range_up_eq_ptsOf_range_toGenCx_of_isArithVar : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → Set.range (up jm hq σ) = ptsOf s.T.Z (Set.range (toGenCx jm hq σ)) :=
   fun _ _ _ _ _ _ _ σ _ _ _ jm _ hq _ _ => range_up_eq_ptsOf jm hq σ

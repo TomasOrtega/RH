@@ -82,7 +82,7 @@ def Parts.Inputs (P : Parts X u u') (C₄ C₆ sc : ℝ) (i0 i0' : ∀ _ : Infin
 def Parts.Energy (P : Parts X u u') (jn : ℝ) : Prop := (∏ v, Formalism.FourierDecayAlt.JCT.jvModel P.S P.j P.Cm v) = jn
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P.Wp, P.Wq, P.pN, P.pI, P.qN, P.qI, P.pF, P.qF, P.S, P.T, P.f, P.χ, P.ν', P.m₀, P.top, P.A₀, P.τ, P.Q, P.Qi, P.eP, P.eQ, P.L, P.j, P.lam, P.c, P.Cm, P.σ, P.Lw, P.Ll, P.Ll', h1.1, h1.2.1, h1.2.2.1, h1.2.2.2.1, h1.2.2.2.2.1, h1.2.2.2.2.2, h2, h3, h4, h5, h6, h7, h8⟩`.
+Supply the required witnesses or components.
 -/
 theorem carrierData_of_parts (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (FdN FdN' : Set X.B.I.Ginf) (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (C₄ jn CA : ℝ)

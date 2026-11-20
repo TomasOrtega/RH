@@ -9,9 +9,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.EnvLevel
 
 /- English proof (translation)
-Rewrite `hp` using `[MvPolynomial.mem_map_C_iff]`. Rewrite using `[MvPolynomial.as_sum p]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Establish `: MvPolynomial.monomial s (p.coeff s) = p.coeff s • MvPolynomial.monomial s (1 : R)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (hp s) Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_mem_map_C {R : Type} [CommRing R] (I : Ideal R) (p : MvPolynomial ℕ R)
     (hp : p ∈ Ideal.map (MvPolynomial.C : R →+* MvPolynomial ℕ R) I) :
@@ -25,9 +25,7 @@ theorem mem_smul_top_of_mem_map_C {R : Type} [CommRing R] (I : Ideal R) (p : MvP
   exact Submodule.smul_mem_smul (hp s) Submodule.mem_top
 
 /- English proof (translation)
-Use `⟨Units.map f.toMonoidHom v, MvPolynomial.map f a, MvPolynomial.map f b, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `ha`, the goal using `[MvPolynomial.mem_supported]`. Conclude with `(Finset.coe_subset.mpr (MvPolynomial.vars_map a f)).trans ha`. Rewrite `hb`, the goal using `[MvPolynomial.mem_supported]`. Conclude with `(Finset.coe_subset.mpr (MvPolynomial.vars_map b f)).trans hb`.
-
-Simplify using `[map_add, map_mul, map_pow, MvPolynomial.map_C, MvPolynomial.map_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tri_map {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (l i : ℕ) (v : Aˣ)
     (a b : MvPolynomial ℕ A)
@@ -46,63 +44,57 @@ theorem tri_map {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (l i : �
 end GlobalTheory.EnvLevel
 
 /- English proof (translation)
-Introduce `l _ A _ J r hr n`. Set `π : MvPolynomial ℕ A →+* MvPolynomial ℕ (A ⧸ J ^ n)` to `MvPolynomial.map (Ideal.Quotient.mk (J ^ n))`. Establish `hπs : Function.Surjective π` using `MvPolynomial.map_surjective _ Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker π = (J ^ n).map (MvPolynomial.C : A →+* MvPolynomial ℕ A)`. Simplify using `only [π]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPolynomial.ker_map, Ideal.mk_ker]`. Set `I : Ideal (A ⧸ J ^ n)` to `J.map (Ideal.Quotient.mk (J ^ n))`. Establish `hIn : I ^ n = ⊥`. Simplify using `only [I]`. Rewrite using `[← Ideal.map_pow, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `choose v a b ha hb hrab using hr`. Set `t : ℕ → MvPolynomial ℕ (A ⧸ J ^ n)` to `fun i => π (MvPolynomial.C (v i : A) * MvPolynomial.X i ^ l + a i * MvPolynomial.X i + b i)`. Establish `ht` using `fun i => GlobalTheory.EnvLevel.tri_map (Ideal.Quotient.mk (J ^ n)) l i (v i) (a i) (b i) (ha i) (hb i)`. Take `⟨htli, htsp⟩` from `GlobalTheory.T.triangular_system_monomial_products_basis l (A ⧸ J ^ n) t ht`. Set `B : Digits l × (ℕ →₀ ℕ) → MvPolynomial ℕ (A ⧸ J ^ n)` to `fun x => MvPolynomial.monomial x.1.1 (1 : A ⧸ J ^ n) * x.2.prod fun i m => π (r i) ^ m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK : ∀ i, π (r i) - t i ∈ Ideal.map (MvPolynomial.C : (A ⧸ J ^ n) →+* MvPolynomial ℕ (A ⧸ J ^ n)) I`. Introduce `i`. Establish `h1 : π (r i) - t i = π (r i - (MvPolynomial.C (v i : A) * MvPolynomial.X i ^ l + a i * MvPolynomial.X i + b i))`. Simplify using `only [t, map_sub]`. Establish `h2 : Ideal.map (MvPolynomial.C : (A ⧸ J ^ n) →+* MvPolynomial ℕ (A ⧸ J ^ n)) I = Ideal.map π (J.map (MvPolynomial.C : A →+* MvPolynomial ℕ A))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [I, π]`. Rewrite using `[Ideal.map_map, Ideal.map_map, MvPolynomial.map_comp_C]`. Rewrite using `[h1, h2]`. Conclude with `Ideal.mem_map_of_mem _ (hrab i)`. Establish `hBK : ∀ x, B x - (MvPolynomial.monomial x.1.1 (1 : A ⧸ J ^ n) * x.2.prod fun i m => t i ^ m) ∈ I • (⊤ : Submodule (A ⧸ J ^ n) (MvPolynomial ℕ (A ⧸ J ^ n)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Apply `GlobalTheory.EnvLevel.mem_smul_top_of_mem_map_C` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [B, map_mul, Finsupp.prod, map_prod, map_pow]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq.mpr (hK i)]`. Take `⟨hBli, hBsp⟩` from `GlobalTheory.T.basis_of_congr_basis_mod_nilpotent_ideal (A ⧸ J ^ n) (MvPolynomial ℕ (A ⧸ J ^ n)) (Digits l × (ℕ →₀ ℕ)) _ B I n hIn htli htsp hBK`. Establish `hBmem : ∀ k : Digits l × (ℕ →₀ ℕ), k.2 ≠ 0 → B k ∈ Ideal.span (Set.range (⇑π ∘ r))`. Introduce `k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨i, hi⟩` from `Finsupp.support_nonempty_iff.mpr hk`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Establish `hd : π (r i) ^ k.2 i ∣ k.2.prod fun i m => π (r i) ^ m` using `Finset.dvd_prod_of_mem (fun i => π (r i) ^ k.2 i) hi`. Take `⟨d, hd⟩` from `hd`. Rewrite using `[hd]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Conclude with `Ideal.pow_mem_of_mem _ (Ideal.subset_span (Set.mem_range_self (f := ⇑π ∘ r) i)) _ (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hi))`. Set `S : Submodule (A ⧸ J ^ n) (MvPolynomial ℕ (A ⧸ J ^ n))` to `Submodule.span (A ⧸ J ^ n) (B '' {x | x.2 ≠ 0})`. Establish `hmulS : ∀ i (p : MvPolynomial ℕ (A ⧸ J ^ n)), p * π (r i) ∈ S`. Introduce `i p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hp : p ∈ Submodule.span (A ⧸ J ^ n) (Set.range B)` using `by rw [hBsp]; exact Submodule.mem_top`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Establish `: B k * π (r i) = B (k.1, k.2 + Finsupp.single i 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [B]`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (by simp)]`. Simplify using `only [pow_one, mul_assoc]`. Rewrite using `[this]`. Use `Submodule.subset_span ⟨(k.1, k.2 + Finsupp.single i 1), ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `DFunLike.congr_fun h i` as an intermediate fact. Simplify using `at this`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `S.add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `S.smul_mem c hx`. Establish `hspanS : ∀ x ∈ Ideal.span (Set.range (⇑π ∘ r)), ∀ p, p * x ∈ S`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `fun p => hmulS i p`. Consider the case `zero => intro p`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add y z _ _ hy hz => intro p`. Rewrite using `[mul_add]`. Conclude with `S.add_mem (hy p) (hz p)`. Consider the case `smul c y _ hy => intro p`. Rewrite using `[smul_eq_mul, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hy (p * c)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hx : π x ∈ Submodule.span (A ⧸ J ^ n) (Set.range B)` using `by rw [hBsp]; exact Submodule.mem_top`. Take `⟨f, hf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `f0` to `f.filter fun k => k.2 = 0`. Set `f1` to `f.filter fun k => ¬ k.2 = 0`. Set `g : Digits l →₀ (A ⧸ J ^ n)` to `f0.mapDomain Prod.fst`. Establish `hsplit : π x = (f0.sum fun k a => a • B k) + (f1.sum fun k a => a • B k)`. Rewrite using `[← hf, ← Finsupp.sum_add_index' (h := fun k a => a • B k) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [f0, f1]`. Rewrite using `[Finsupp.filter_add_filter_not]`. Establish `h0sum : (f0.sum fun k a => a • B k) = g.sum fun α a => MvPolynomial.monomial α.1 a`. Simplify using `only [g]`. Rewrite using `[Finsupp.sum_mapDomain_index (h := fun (α : Digits l) (a : A ⧸ J ^ n) => MvPolynomial.monomial α.1 a) (fun (α : Digits l) => (MvPolynomial.monomial (R := A ⧸ J ^ n) α.1).map_zero) (fun (α : Digits l) _ _ => (MvPolynomial.monomial (R := A ⧸ J ^ n) α.1).map_add _ _)]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finsupp.sum_congr fun k hk => ?_` and prove the remaining obligations. Establish `hk2 : k.2 = 0`. Simplify using `only [f0] at hk`. Rewrite `hk` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hk.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [B, hk2, Finsupp.prod_zero_index, mul_one, MvPolynomial.smul_monomial, smul_eq_mul]`. Establish `h1mem : (f1.sum fun k a => a • B k) ∈ Ideal.span (Set.range (⇑π ∘ r))`. Unfold `Finsupp.sum`. Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hk2 : k.2 ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [f1] at hk`. Rewrite `hk` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hk.2`. Use `show f1 k • B k ∈ _`. Rewrite using `[MvPolynomial.smul_eq_C_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (hBmem k hk2)`. Set `sec : (A ⧸ J ^ n) → A` to `fun y => if y = 0 then 0 else Function.surjInv (Ideal.Quotient.mk_surjective (I := J ^ n)) y`. Establish `hsec0 : sec 0 = 0` using `by simp [sec]`. Establish `hsec : ∀ y, Ideal.Quotient.mk (J ^ n) (sec y) = y`. Introduce `y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : y = 0`. Simplify using `[sec, h]`. Simplify using `only [sec, h, if_false]`. Conclude with `Function.surjInv_eq _ y`. Use `⟨g.mapRange sec hsec0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmap : π ((g.mapRange sec hsec0).sum fun α a => MvPolynomial.monomial α.1 a) = g.sum fun α a => MvPolynomial.monomial α.1 a`. Rewrite using `[map_finsuppSum, Finsupp.sum_mapRange_index (h := fun (α : Digits l) (a : A) => π (MvPolynomial.monomial α.1 a)) (fun _ => by simp)]`. Simplify using `only [π, MvPolynomial.map_monomial, hsec]`. Establish `hmem : x - ((g.mapRange sec hsec0).sum fun α a => MvPolynomial.monomial α.1 a) ∈ Ideal.comap π (Ideal.map π (Ideal.span (Set.range r)))`. Rewrite using `[Ideal.mem_comap, Ideal.map_span, ← Set.range_comp, map_sub, hmap, hsplit, ← h0sum, add_sub_cancel_left]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1mem`. Rewrite `hmem` using `[Ideal.comap_map_of_surjective _ hπs, ← RingHom.ker_eq_comap_bot, hker]`. Then use the resulting hypothesis. Introduce `c hc α`. Establish `h1 : π (c.sum fun α a => MvPolynomial.monomial α.1 a) ∈ Ideal.span (Set.range (⇑π ∘ r))`. Use `Ideal.mem_map_of_mem π hc` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Ideal.map_sup, ← hker, (Ideal.map_eq_bot_iff_le_ker π).mpr le_rfl, sup_bot_eq, Ideal.map_span, ← Set.range_comp]`. Then use the resulting hypothesis. Establish `h2 : π (c.sum fun α a => MvPolynomial.monomial α.1 a) ∈ S`. Simplify using `using hspanS _ h1 1`. Establish `hinj : Function.Injective (fun α : Digits l => (α, (0 : ℕ →₀ ℕ)))` using `fun _ _ h => congrArg Prod.fst h`. Set `g' : Digits l × (ℕ →₀ ℕ) →₀ (A ⧸ J ^ n)` to `Finsupp.mapDomain (fun α => (α, (0 : ℕ →₀ ℕ))) (c.mapRange (Ideal.Quotient.mk (J ^ n)) (map_zero _))`.
-
-Establish `hg' : Finsupp.linearCombination (A ⧸ J ^ n) B g' = π (c.sum fun α a => MvPolynomial.monomial α.1 a)`. Rewrite using `[Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (h := fun i a => a • (B ∘ fun α => (α, (0 : ℕ →₀ ℕ))) i) (fun _ => zero_smul _ _), map_finsuppSum]`. Use `Finsupp.sum_congr fun β _ => ?_` and prove the remaining obligations. Simplify using `[B, π, MvPolynomial.smul_monomial]`. Take `⟨l', hl', hl'eq⟩` from `(Finsupp.mem_span_image_iff_linearCombination (A ⧸ J ^ n)).mp h2`.
-
-Establish `hl : l' = g'` using `hBli (hl'eq.trans hg'.symm)`. Establish `h3 : g' (α, 0) = 0`. Rewrite using `[← hl]; exact (Finsupp.mem_supported' (A ⧸ J ^ n) l').mp hl' _ (by simp)`. Establish `h4 : g' (α, 0) = Ideal.Quotient.mk (J ^ n) (c α)` using `Finsupp.mapDomain_apply hinj (c.mapRange (Ideal.Quotient.mk (J ^ n)) (map_zero _)) α`. Rewrite `h3` using `[h4]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.digitMonomials_basis_mod_pow : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (J : Ideal A) (r : ℕ → MvPolynomial ℕ A), (∀ i, ∃ (v : Aˣ) (a b : MvPolynomial ℕ A), a ∈ MvPolynomial.supported A (Set.Iio i) ∧ b ∈ MvPolynomial.supported A (Set.Iio i) ∧ r i - (MvPolynomial.C (v : A) * MvPolynomial.X i ^ l + a * MvPolynomial.X i + b) ∈ J.map (MvPolynomial.C : A →+* MvPolynomial ℕ A)) → ∀ n : ℕ, (∀ x : MvPolynomial ℕ A, ∃ c : Digits l →₀ A, x - c.sum (fun α a => MvPolynomial.monomial α.1 a) ∈ Ideal.span (Set.range r) ⊔ (J ^ n).map (MvPolynomial.C : A →+* MvPolynomial ℕ A)) ∧ ∀ c : Digits l →₀ A, c.sum (fun α a => MvPolynomial.monomial α.1 a) ∈ Ideal.span (Set.range r) ⊔ (J ^ n).map (MvPolynomial.C : A →+* MvPolynomial ℕ A) → ∀ α, c α ∈ J ^ n := by
   intro l _ A _ J r hr n

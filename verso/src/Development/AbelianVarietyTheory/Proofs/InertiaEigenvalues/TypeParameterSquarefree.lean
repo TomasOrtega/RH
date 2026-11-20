@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneAbo
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module GlobalTheory.Pass
 
 /- English proof (translation)
-Introduce `D P hDZ h0 h1 h2 h5`. Conclude with `GlobalTheory.T.type_local_global D P hDZ h0 (GlobalTheory.T.weil_deligne_above D h0 h1 h2 h5)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Pass.stepType_proof : StepType := by
   intro D P hDZ h0 h1 h2 h5

@@ -14,11 +14,11 @@ namespace GlobalTheory.UnitPerp
 def negFrom (N p : ℕ) : Fin N → Bool := fun i => decide (p ≤ (i : ℕ))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hJ : Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ => 1) (fun _ => -1))`. Rewrite using `[← Matrix.fromBlocks_diagonal, Formalism.UG.Jpq, Matrix.diagonal_one, ← Matrix.diagonal_neg, Matrix.diagonal_one]`. Rewrite using `[hJ, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective a`. Break down `s with s | s` into its components or cases. Establish `: ¬ p ≤ (s : ℕ)` using `not_le.2 s.2`. Simplify using `[negFrom, sgn, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[negFrom, sgn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jpq_submatrix {r p q : ℕ} (h : r = p + q) :
     (Formalism.UG.Jpq p q).submatrix ((finCongr h).trans finSumFinEquiv.symm)
@@ -38,7 +38,7 @@ theorem jpq_submatrix {r p q : ℕ} (h : r = p + q) :
   · simp [negFrom, sgn]
 
 /- English proof (translation)
-Rewrite using `[← jpq_submatrix h]`. Use `⟨(finCongr h).trans finSumFinEquiv.symm, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hasSignature_diagonal {n p q : ℕ} (h : n = p + q) : Formalism.UG.HasSignature
     (Matrix.diagonal fun a : Fin n => (sgn (negFrom n p a) : ℂ)) p q := by
@@ -53,9 +53,9 @@ section Generic
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Use `⟨rfl, fun τ => ?_, fun _ => rfl⟩` and prove the remaining obligations. Establish `hg : (stdSpace (E` using `E) star_isIntegral n (negFrom n p) p q).gram.map τ = Matrix.diagonal fun i : Fin n => (sgn (negFrom n p i) : ℂ) := by`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg τ (stdSpace_gram_apply star_isIntegral n (negFrom n p) p q i j)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `τ (if i = j then (sgn (negFrom n p i) : E) else 0) = if i = j then (sgn (negFrom n p i) : ℂ) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, map_sgn]`. Rewrite using `[hg]`. Conclude with `hasSignature_diagonal h`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofKind_stdSpace {n p q : ℕ} (h : n = p + q) :
     OfKind (stdSpace (E := E) star_isIntegral n (negFrom n p) p q) n p q := by
@@ -72,9 +72,9 @@ theorem ofKind_stdSpace {n p q : ℕ} (h : n = p + q) :
   exact hasSignature_diagonal h
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h0` using `h.2.1 τ`. Rewrite `h0` using `[h.2.2 τ]`. Take `⟨e, -⟩` from `h0`. Use `Fintype.card_congr e` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `this` using `[h.1]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rank_eq_add {W : HSpace E} {M P Q : ℕ} (h : OfKind W M P Q) : M = P + Q := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -85,35 +85,31 @@ theorem rank_eq_add {W : HSpace E} {M P Q : ℕ} (h : OfKind W M P Q) : M = P + 
   simpa [h.1] using this
 
 /- English proof (translation)
-Establish `key : ∀ i v, W.hT (b i) v = sgn (neg i) * b.repr v i`. Introduce `i v`. Use `conv_lhs => rw [← b.sum_repr v]`. Rewrite using `[map_sum, Finset.sum_eq_single i (fun j _ hj => by rw [map_smul, hb, if_neg hj.symm, smul_zero]) (by simp), map_smul, hb, if_pos rfl, smul_eq_mul, mul_comm]`. Establish `hperp : ∀ v, v ∈ perp W (b k) ↔ b.repr v k = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Express the relevant statement in the definitionally equal form `W.hT (b k) v = 0 ↔ _`. Rewrite using `[key, mul_eq_zero, or_iff_right (sgn_ne_zero _)]`. Set `L : Submodule (𝓞 E) W.V` to `Submodule.span (𝓞 E) (Set.range b)`. Establish `hL : ∀ v, v ∈ L ↔ ∀ i, b.repr v i ∈ Set.range (algebraMap (𝓞 E) E)` using `fun v => b.mem_span_iff_repr_mem (𝓞 E) v`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ y : Fin n → E, y ∈ stdLat (E` using `E) n ↔ ∀ i, y i ∈ Set.range (algebraMap (𝓞 E) E) := fun y => (Pi.basisFun E (Fin n)).mem_span_iff_repr_mem (𝓞 E) y`. Set `ι : (Fin n → E) →ₗ[E] W.V` to `Fintype.linearCombination E fun i => b (k.succAbove i)`. Establish `hι : ∀ y, ι y = ∑ i, y i • b (k.succAbove i)` using `fun y => Fintype.linearCombination_apply _ _ _`. Establish `hιk : ∀ y, b.repr (ι y) k = 0`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hι]`. Establish `hιs : ∀ y i, b.repr (ι y) (k.succAbove i) = y i`. Introduce `y i`. Simplify using `[hι, Finsupp.single_apply]`. Establish `hsur : ∀ v, b.repr v k = 0 → ι (fun i => b.repr v (k.succAbove i)) = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Use `conv_rhs => rw [← b.sum_repr v, Fin.sum_univ_succAbove _ k, hv, zero_smul, zero_add]`. Conclude with `hι _`. Establish `hx : b k ∈ L` using `Submodule.subset_span ⟨k, rfl⟩`. Use `⟨L, ⟨⟨Submodule.fg_span (Set.finite_range _), ?_⟩, ?_⟩, hx, ?_, stdSpace star_isIntegral n (fun i => neg (k.succAbove i)) p q, ι, hk, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `b.span_eq`. Establish `h` using `(Formalism.E.hermDual (𝓞 E) E W.V (Fin (n + 1)) W.hT b (IsFractionRing.injective (𝓞 E) E) (star_integral star_isIntegral)).2 (Matrix.diagonal fun i => (sgn (neg i) : 𝓞 E)) (by`. Introduce `i j`. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[map_sgn]`. Simplify using `[h]) (by`. Rewrite using `[Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => sgn_ne_zero (neg i))`. Conclude with `h.2.2 (by`. Rewrite using `[Matrix.det_diagonal]`. Use `isUnit_iff_exists_inv.2 ⟨∏ i, (sgn (neg i) : 𝓞 E), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sgn_mul_self])`. Use `le_antisymm (Submodule.span_le.2 ?_) (sup_le (Submodule.span_le.2 (Set.singleton_subset_iff.2 hx)) inf_le_left)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_sup_left (Submodule.mem_span_singleton_self _)`. Use `Submodule.mem_sup_right ⟨Submodule.subset_span ⟨i, rfl⟩, (hperp _).2 ?_⟩` and prove the remaining obligations. Simplify using `[h]`. Express the relevant statement in the definitionally equal form `∀ x y : Fin n → E, W.hT (ι x) (ι y) = diagForm n (fun i => neg (k.succAbove i)) x y`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `conv_lhs => rw [hι x]`. Rewrite using `[diagForm_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, key, hιs, smul_eq_mul, mul_assoc]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `v`. Rewrite using `[hperp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `hιk y`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `fun hv => ⟨_, hsur v hv⟩`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨(hL (ι y)).2 fun i => ?_, (hperp (ι y)).2 (hιk y)⟩` and prove the remaining obligations.
-
-Break down `eq_or_ne i k with rfl | h` into its components or cases. Conclude with `⟨0, (map_zero _).trans (hιk y).symm⟩`. Take `⟨j, rfl⟩` from `Fin.exists_succAbove_eq h`. Conclude with `(hιs y j).symm ▸ (hS y).1 hy j`. Introduce and unpack `⟨h1, h2⟩`.
-
-Conclude with `⟨fun i => b.repr v (k.succAbove i), (hS _).2 fun i => (hL v).1 h1 _, hsur v ((hperp v).1 h2)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasComplement_of_basis (W : HSpace E) {n : ℕ} (b : Module.Basis (Fin (n + 1)) E W.V)
     (neg : Fin (n + 1) → Bool)
@@ -200,15 +196,13 @@ theorem hasComplement_of_basis (W : HSpace E) {n : ℕ} (b : Module.Basis (Fin (
         hsur v ((hperp v).1 h2)⟩
 
 /- English proof (translation)
-Introduce `W M P Q hW hM`. Establish `hPQ` using `rank_eq_add hW`. Take `⟨b, hb⟩` from `H W M P Q hW`. Take `⟨n, rfl⟩ : ∃ n, M = n + 1` from `⟨M - 1, by omega⟩`. Use `⟨fun hP => ⟨b 0, ?_, ?_⟩, fun hQ => ⟨b (Fin.last n), ?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ¬ P ≤ 0` using `by omega`. Simplify using `[HSpace.hD, hb, negFrom, sgn, this]`. Use `hasComplement_of_basis W b _ hb 0 ?_` and prove the remaining obligations. Establish `: (fun i : Fin n => negFrom (n + 1) P ((0 : Fin (n + 1)).succAbove i)) = negFrom n (P - 1)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `decide_eq_decide.2 (by`. Express the relevant statement in the definitionally equal form `P ≤ (i : ℕ) + 1 ↔ P - 1 ≤ (i : ℕ)`. Use the proof step `omega)`. Rewrite using `[this]`. Conclude with `ofKind_stdSpace (by omega)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: P ≤ n` using `by omega`. Simplify using `[HSpace.hD, hb, negFrom, sgn, this]`. Use `hasComplement_of_basis W b _ hb (Fin.last n) ?_` and prove the remaining obligations. Establish `: (fun i : Fin n => negFrom (n + 1) P ((Fin.last n).succAbove i)) = negFrom n P`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[negFrom]`. Rewrite using `[this]`. Conclude with `ofKind_stdSpace (by omega)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_of_bases
     (H : ∀ (W : HSpace E) (M P Q : ℕ), OfKind W M P Q → ∃ b : Module.Basis (Fin M) E W.V,
@@ -249,23 +243,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] IsCMField.starRing
 
 /- English proof (translation)
-Use `GlobalTheory.DefiniteMass.unramified_of_isCMUnram hc` as an intermediate fact. Establish `hr` using `rank_eq_add hW`. Take `⟨-, hs, hp⟩` from `hW`. Establish `hG : ∀ a b, cc (W.gramᵀ a b) = W.gramᵀ b a` using `fun a b => W.herm.eq (W.frame b) (W.frame a)`. Establish `hd : W.gramᵀ.det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_transpose]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit W).ne_zero`. Take `⟨P, hP0, hP⟩` from `congr_signMatrix (GlobalTheory.LocalQuad.landherr_of_hasseNormSt GlobalTheory.QNorm.hasseNormSt) GlobalTheory.QNorm.hasseNormSt hG hd (isLattice_coordLat W W.L0 W.standardTuple_isLattice) (selfDual_coordLat W W.L0 W.baseLattice_isUnimodular) Set.univ (fun _ => Or.inl trivial) p f …`. Establish `h0` using `hs τ`. Rewrite `h0` using `[hp τ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, Q, hQ⟩` from `h0`. Establish `hJ` using `jpq_submatrix hr`. Use `set f := (finCongr hr).trans (finSumFinEquiv (m := p) (n := q)).symm`. Establish `h1` using `congrArg (fun M => (Matrix.submatrix M f f)ᵀ) hQ`. Simplify using `only [hJ, Matrix.diagonal_transpose] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← Matrix.submatrix_mul_equiv _ _ f e f, ← Matrix.submatrix_mul_equiv _ _ f e e, Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc]`. Establish `h2 : gram τ W.gramᵀ (Q.1.submatrix e f) = Matrix.diagonal fun a : Fin W.rank => (Examples₂.sgn (negFrom W.rank p a) : ℂ)`. Rewrite using `[Published.gram_eq]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `⟨Q.1.submatrix e f, fun h0 => ?_, h2.trans ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg Matrix.det h2`. Rewrite `h3` using `[Published.gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Finset.prod_ne_zero_iff.2 (fun a _ => sgn_ne_zero _) h3.symm`. Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : (a : ℕ) < p`. Simplify using `[negFrom, Examples₂.sgn, ReciprocityTheory.ChartRestriction.G.FD.sgn, h, not_le.2 h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[negFrom, Examples₂.sgn, ReciprocityTheory.ChartRestriction.G.FD.sgn, h, not_lt.1 h]`. Establish `h1 : signMatrix E W.rank p = Matrix.diagonal fun a => (Examples₂.sgn (negFrom W.rank p a) : E)`. Unfold `signMatrix`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : (a : ℕ) < p`. Simplify using `[negFrom, Examples₂.sgn, h, not_le.2 h]`. Simplify using `[negFrom, Examples₂.sgn, h, not_lt.1 h]`. Rewrite `hP` using `[h1]`. Use `⟨W.frame.equivFun.trans (Matrix.toLinearEquiv' P (Matrix.invertibleOfIsUnitDet P hP0.isUnit)), fun x y => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← herm_coord, hP, ← Published.LandherrSt.herm_mulVec]`. Express the relevant statement in the definitionally equal form `∑ i, cc ((P *ᵥ W.frame.equivFun x) i) * Examples₂.sgn (negFrom W.rank p i) * (P *ᵥ W.frame.equivFun y) i = _`. Rewrite using `[Published.LandherrSt.herm_eq]`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isometry (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) (W : Formalism.BasicNotions.HSpace E) {p q : ℕ}
     (hW : OfKind W W.rank p q) :
@@ -327,9 +321,9 @@ theorem exists_isometry (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) (W 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use `over_of_bases fun W M P Q hW => ?_` and prove the remaining obligations. Take `rfl` from `hW.1`. Apply the tactic sequence `obtain ⟨e, he⟩ := exists_isometry hc W hW`. Use `⟨(Pi.basisFun E (Fin W.rank)).map e.symm, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.Basis.map_apply, LinearEquiv.apply_symm_apply, Pi.basisFun_apply]`. Conclude with `diagForm_single _ _ i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitVectorPerpOver (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) : UnitVectorPerpOver E := by
   refine over_of_bases fun W M P Q hW => ?_
@@ -343,7 +337,7 @@ theorem unitVectorPerpOver (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) 
 end CM
 
 /- English proof (translation)
-The claim follows from `haveI : IsCMField D.host.E := D.host.isCMField_hostE unitVectorPerpOver (E := D.host.E) D.sp.cm.cmUnram`.
+A detailed English derivation is pending.
 -/
 theorem unitVectorPerp (D : D7) : UnitVectorPerp D :=
   haveI : IsCMField D.host.E := D.host.isCMField_hostE

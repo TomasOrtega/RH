@@ -44,9 +44,9 @@ structure IsIo (ν : Measure H) (𝓕 : Set H) (th : G → H → S → ℂ) (pt 
     liftInt ν 𝓕 th (pt φ) ((F : Ds →ₗ[ℂ] (H → ℂ)) v) g = ((io F : CCt) : Dt →ₗ[ℂ] (G → ℂ)) (T φ v) g
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => sub_eq_zero.1 (hT _ fun φ v => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `h1` using `h.eq F φ v g`. Establish `h2` using `h'.eq F φ v g`. Simplify using `only [Submodule.coe_sub, LinearMap.sub_apply, Pi.sub_apply, Pi.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsIo.unique {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {pt : Sinf → S}
     {T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt} {CCs : Submodule ℂ (Ds →ₗ[ℂ] (H → ℂ))}
@@ -85,7 +85,7 @@ def IsAdjOf (ipM : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (ipN : N →ₗ[ℂ] N �
   ∀ x y, ipN (A x) y = ipM x (B y)
 
 /- English proof (translation)
-Use `LinearMap.ext fun y => sub_eq_zero.1 (hnd _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, ← h x y, ← h' x y, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAdjOf.unique {ipM : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ} {ipN : N →ₗ[ℂ] N →ₗ⋆[ℂ] ℂ} {A : M →ₗ[ℂ] N}
     {B B' : N →ₗ[ℂ] M} (hnd : ∀ z, (∀ x, ipM x z = 0) → z = 0)
@@ -154,7 +154,7 @@ structure IsThetaP (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' → 
   eq : ∀ f : A, ∀ e g, thP f e g = thetaPInt ν 𝓕 th pt io f e g
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => LinearMap.ext fun e => funext fun g => ?_` and prove the remaining obligations. Rewrite using `[h.eq, h'.eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsThetaP.unique {ν : Measure H'} {𝓕 : Set H'} {th : G' → H' → S' → ℂ} {pt : Sinf' → S'}
     {io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf'} {A : Submodule ℂ (H' → Tau)}
@@ -176,7 +176,7 @@ def IsLamP {Sig : Type*} (thW : A →ₗ[ℂ] Amb) (adj : Amb →ₗ[ℂ] A) (pa
   ∀ σ, ∀ x ∈ part σ, thW (adj x) = (lam σ : ℂ) • x
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `h2 : ((lam σ : ℂ) - lam' σ) • x = 0` using `by rw [sub_smul, ← h σ x hx, ← h' σ x hx, sub_self]`. Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.1 h3` after adjusting the coercions. Conclude with `absurd h3 hx0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsLamP.unique {Sig : Type*} {thW : A →ₗ[ℂ] Amb} {adj : Amb →ₗ[ℂ] A} {part : Sig → Submodule ℂ Amb}
     {lam lam' : Sig → ℝ} (h : IsLamP thW adj part lam) (h' : IsLamP thW adj part lam') {σ : Sig}
@@ -198,9 +198,9 @@ def IsKap {Tup Sig : Type*} (m : ℕ) (dnup : Tup → N →ₗ[ℂ] N) (partE : 
   ∀ μ σ, ∀ x ∈ partE σ, dnup μ x = ((κ * ∏ j ∈ Finset.Icc 1 m, lam μ j σ : ℝ) : ℂ) • x
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `h2 : (((κ * ∏ j ∈ Finset.Icc 1 m, lam μ j σ : ℝ) : ℂ) - ((κ' * ∏ j ∈ Finset.Icc 1 m, lam μ j σ : ℝ) : ℂ)) • x = 0`. Rewrite using `[sub_smul, ← h μ σ x hx, ← h' μ σ x hx, sub_self]`. Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases. Establish `h4 : κ * ∏ j ∈ Finset.Icc 1 m, lam μ j σ = κ' * ∏ j ∈ Finset.Icc 1 m, lam μ j σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 h3` after adjusting the coercions. Conclude with `mul_right_cancel₀ hl h4`. Conclude with `absurd h3 hx0`.
+A detailed English derivation is pending.
 -/
 theorem IsKap.unique {Tup Sig : Type*} {m : ℕ} {dnup : Tup → N →ₗ[ℂ] N} {partE : Sig → Submodule ℂ N}
     {lam : Tup → ℕ → Sig → ℝ} {κ κ' : ℝ} (h : IsKap m dnup partE lam κ) (h' : IsKap m dnup partE lam κ')
@@ -225,7 +225,7 @@ def IsBu (dn : M →ₗ[ℂ] N) (V0 : Submodule ℂ M) (Bt : Mu → V0 → ℂ) 
   ∀ φ (x : V0), B φ (iota dn V0 (Submodule.Quotient.mk x)) = Bt φ x
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `hy`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H x => rw [h φ x, h' φ x]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 -/
 theorem IsBu.unique {dn : M →ₗ[ℂ] N} {V0 : Submodule ℂ M} {Bt : Mu → V0 → ℂ} {B B' : Mu → N → ℂ}
     (h : IsBu dn V0 Bt B) (h' : IsBu dn V0 Bt B') (φ : Mu) {y : N}

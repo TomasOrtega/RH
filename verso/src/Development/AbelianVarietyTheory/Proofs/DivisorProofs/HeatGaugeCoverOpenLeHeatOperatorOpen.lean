@@ -21,23 +21,23 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {
 def W (p : h₁.J × (Fin 2 → L.ι)) : G.left.Opens := h₁.W p.1 ⊓ LB.wchart L ![m, m₁] p.2
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem heatGaugeCoverOpen_le_heatOperatorOpen (p : h₁.J × (Fin 2 → L.ι)) : W m h₁ p ≤ h₁.W p.1 := inf_le_left
 
 /- English proof (translation)
-The claim follows from `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem W_le_wchart (p : h₁.J × (Fin 2 → L.ι)) : W m h₁ p ≤ LB.wchart L ![m, m₁] p.2 := inf_le_right
 
 /- English proof (translation)
-The claim follows from `(W_le_wchart m h₁ p).trans (LB.wchart_le L ![m, m₁] p.2 0)`.
+A detailed English derivation is pending.
 -/
 theorem W_le_m (p : h₁.J × (Fin 2 → L.ι)) : W m h₁ p ≤ m ⁻¹ᵁ L.U (p.2 0) :=
   (W_le_wchart m h₁ p).trans (LB.wchart_le L ![m, m₁] p.2 0)
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨LB.wchart_le L ![m, m₁] p.2 1 hy.2, h₁.le p.1 hy.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem W_le_m₁ (p : h₁.J × (Fin 2 → L.ι)) : W m h₁ p ≤ m₁ ⁻¹ᵁ (L.U (p.2 1) ⊓ L.U (h₁.j p.1)) :=
   fun _ hy => ⟨LB.wchart_le L ![m, m₁] p.2 1 hy.2, h₁.le p.1 hy.1⟩
@@ -69,7 +69,7 @@ def gP' (c : R) (p : h₁.J × (Fin 2 → L.ι)) : Γ(G.left, W m h₁ p) :=
     ∑ a, constFn G.hom (W m h₁ p) (h₁.u a) * gL m h₁ e a p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun W hW => h.1 W (hW.trans hle), fun W hW => h.2.1 W (hW.trans hle), fun W W' hWW' hW => h.2.2 W W' hWW' (hW.trans hle)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_mono {Z : Scheme.{0}} {W₀ W₁ : Z.Opens} {d : Fld Z} (h : IsField W₀ d) (hle : W₁ ≤ W₀) :
     IsField W₁ d :=
@@ -79,9 +79,9 @@ theorem isField_mono {Z : Scheme.{0}} {W₀ W₁ : Z.Opens} {d : Fld Z} (h : IsF
 open GlobalTheory.KS in
 
 /- English proof (translation)
-Establish `hd' : ∀ g, resG G.left h (d O g) = d O' (resG G.left h g)` using `fun g => (hd.2.2 O O' h le_rfl g).symm`. Establish `hdd' : ∀ a g, resG G.left h (dd a O g) = dd a O' (resG G.left h g)` using `fun a g => ((hdd a).2.2 O O' h le_top g).symm`. Establish `hc : ∀ r, resG G.left h (constFn G.hom O r) = constFn G.hom O' r` using `fun r => (rsT_of_le h _).symm.trans (rsT_constFn G.hom h r)`. Establish `hp : ∀ q : Γ(G.left, W₀), resG G.left h (rsT q O) = rsT q O'` using `fun q => by`. Rewrite using `[← rsT_of_le h, rsT_rsT hO h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rsT_of_le h, rsT_of_le h]`. Simplify using `only [op, map_add, map_sub, map_mul, map_sum, map_pow, map_natCast, map_ofNat, hd', hdd', hc, hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem op_rsT {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ}
     (dd : Fin n → Fld G.left) (hdd : ∀ a, IsField ⊤ (dd a)) (Θ : Matrix (Fin n) (Fin n) R) (u : Fin n → R)
@@ -100,7 +100,7 @@ theorem op_rsT {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonOb
   simp only [op, map_add, map_sub, map_mul, map_sum, map_pow, map_natCast, map_ofNat, hd', hdd', hc, hp]
 
 /- English proof (translation)
-Use `haveI : IsMonHom Y.q := Y.q_linear.isMonHom`. Use `⟨(𝟙 Q.P.A * (toUnit Q.P.A ≫ x ≫ Y.q)).left, ?_⟩` and prove the remaining obligations. Establish `e : (𝟙 Y.H * (toUnit Y.H ≫ x)) ≫ Y.q = Y.q ≫ (𝟙 Q.P.A * (toUnit Q.P.A ≫ x ≫ Y.q))`. Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, Category.id_comp, Category.comp_id, ← Category.assoc Y.q (toUnit _), toUnit_unique (Y.q ≫ toUnit Q.P.A) (toUnit Y.H), Category.assoc]`. Conclude with `congrArg (fun f => f.left) e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_factor {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] (oa : Q.OAct O) (Y : GlobalTheory.RayEv.Ray oa) (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) :

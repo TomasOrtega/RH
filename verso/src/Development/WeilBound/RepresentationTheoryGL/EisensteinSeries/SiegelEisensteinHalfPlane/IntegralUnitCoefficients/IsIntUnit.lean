@@ -12,7 +12,7 @@ namespace PositivityTheory.Rg.Sw.Glob.GenFinLocHf
 open PositivityTheory.Rg.Sw.Glob.GenFinLocAH
 
 /- English proof (translation)
-Take `⟨𝔪, h𝔪, horb⟩` from `orbit σ hσ hfix v`. Conclude with `locSub hF hS (intLoc F E v) (sigR (Fv F v) σ) (sigI σ v) (sigI_sigI σ hσ v) (fun x => sigI_coe _ v x) 𝔪 h𝔪 horb M M' hM hM' hMM hU`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locFE (hF : LocRedField) (hS : LocRedSplit) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ (algebraMap F E).range) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ}
@@ -27,7 +27,7 @@ theorem locFE (hF : LocRedField) (hS : LocRedSplit) {F E : Type} [Field F] [Numb
     hMM hU
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul]`. Use `show (mat (k * k⁻¹)).map _ = 1`. Rewrite using `[mul_inv_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hmul {D : D7} {n : ℕ} (k : G D n) (v : GlobalTheory.FinPl.Pl D) :
     (mat k).map (GlobalTheory.FinPl.compAt D v) * (mat k⁻¹).map (GlobalTheory.FinPl.compAt D v) = 1 := by
@@ -37,7 +37,7 @@ theorem hmul {D : D7} {n : ℕ} (k : G D n) (v : GlobalTheory.FinPl.Pl D) :
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Introduce `D n k hk v`. Establish `h` using `locFE hF hS D.sp.cm.sig sig_sig sig_fix v _ _ (int_of_K k hk v) (int_of_K k⁻¹ (inv_mem hk) v) (hmul k v) (uni_comp k v)`. Simplify using `only [LocGood, IsIntUnit, cTv]`. Use `with_reducible_and_instances exact h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locFin_of (hF : LocRedField) (hS : LocRedSplit) : LocFin := by
   intro D n k hk v

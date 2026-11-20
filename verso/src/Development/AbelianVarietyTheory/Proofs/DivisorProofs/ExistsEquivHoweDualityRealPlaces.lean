@@ -14,15 +14,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {om : Rep σ X W}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hA`. Use `⟨inf_le_right, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hf₁`. Take `⟨D, hD, hDf⟩` from `h1 γ hγ`. Establish `e : f₁ = D f` using `(hDf f hf f₁).1 hf₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 (hp.lie γ hγ f hf f₁ hf₁), e ▸ hD f hf⟩`. Introduce `k hk' f hf f₁ hf₁`. Take `⟨D, hD, hDf⟩` from `h2 k hk'`. Establish `e : f₁ = D f` using `(hDf f hf f₁).1 hf₁`. Establish `hP : f₁ ∈ M.Pol B.ψ B.emb` using `e ▸ hD f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 ?_, sub_mem hP hf⟩` and prove the remaining obligations. Rewrite using `[map_sub, hp.cpt k hk' f hf f₁ hf₁, sub_self]`. Introduce `γ hγ f hf f₁ hf₁`. Take `⟨hf0, hfP⟩` from `Submodule.mem_inf.1 hf`. Take `⟨D, hD, hDf⟩` from `h3 γ hγ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : f₁ = D f` using `(hDf f hfP f₁).1 hf₁`. Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 (hk.1 γ hγ f hfP f₁ hf₁ (LinearMap.mem_ker.1 hf0)), e ▸ hD f hfP⟩`. Introduce `k hk' f hf f₁ hf₁`. Take `⟨hf0, hfP⟩` from `Submodule.mem_inf.1 hf`. Take `⟨D, hD, hDf⟩` from `h4 k hk'`.
-
-Establish `e : f₁ = D f` using `(hDf f hfP f₁).1 hf₁`. Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 (hk.2 k hk' f hfP f₁ hf₁ (LinearMap.mem_ker.1 hf0)), e ▸ hD f hfP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaSub_ker (hA : GlobalTheory.RealActs.PolActs B M om) {P : Type} [AddCommGroup P] [Module ℂ P]
     {p : SInf F (Fin n × Fin d) →ₗ[ℂ] P} (hp : RealQuot B M om p) (hk : GlobalTheory.RealActs.KerStab B M om p) :
@@ -51,15 +49,13 @@ theorem thetaSub_ker (hA : GlobalTheory.RealActs.PolActs B M om) {P : Type} [Add
     exact Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 (hk.2 k hk' f hfP f₁ hf₁ (LinearMap.mem_ker.1 hf0)), e ▸ hD f hfP⟩
 
 /- English proof (translation)
-Take `⟨_, _, h3, h4⟩` from `hA`. Use `⟨sup_le hN.1 hN'.1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hf₁`. Conclude with `Submodule.mem_sup_left (hN.2.1 γ hγ f hf f₁ hf₁)`. Introduce `k hk f hf f₁ hf₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_sup_left (hN.2.2.1 k hk f hf f₁ hf₁)`. Introduce `γ hγ f hf f₁ hf₁`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`. Take `⟨D, hD, hDf⟩` from `h3 γ hγ`. Establish `hyP` using `hN.1 hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzP` using `hN'.1 hz`. Establish `e : f₁ = D (y + z)` using `(hDf _ (add_mem hyP hzP) f₁).1 hf₁`. Rewrite using `[e, map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (hN.2.2.2.1 γ hγ y hy (D y) ((hDf y hyP (D y)).2 rfl))) (Submodule.mem_sup_right (hN'.2.2.2.1 γ hγ z hz (D z) ((hDf z hzP (D z)).2 rfl)))`. Introduce `k hk f hf f₁ hf₁`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`. Take `⟨D, hD, hDf⟩` from `h4 k hk`. Establish `hyP` using `hN.1 hy`. Establish `hzP` using `hN'.1 hz`. Establish `e : f₁ = D (y + z)` using `(hDf _ (add_mem hyP hzP) f₁).1 hf₁`.
-
-Rewrite using `[e, map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (hN.2.2.2.2 k hk y hy (D y) ((hDf y hyP (D y)).2 rfl))) (Submodule.mem_sup_right (hN'.2.2.2.2 k hk z hz (D z) ((hDf z hzP (D z)).2 rfl)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSub_sup (hA : GlobalTheory.RealActs.PolActs B M om) {N N' : Submodule ℂ (SInf F (Fin n × Fin d))}
     (hN : GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N) (hN' : GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N') :
@@ -90,9 +86,9 @@ theorem thetaSub_sup (hA : GlobalTheory.RealActs.PolActs B M om) {N N' : Submodu
       (Submodule.mem_sup_right (hN'.2.2.2.2 k hk z hz (D z) ((hDf z hzP (D z)).2 rfl)))
 
 /- English proof (translation)
-Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : P)`. Establish `hx' : x ∈ (M.Pol B.ψ B.emb).map p` using `by rw [hp.onto]; exact Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hx'`. Rewrite `hf` using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hf).1)`.
+A detailed English derivation is pending.
 -/
 theorem ker_ne_pol {P : Type} [AddCommGroup P] [Module ℂ P] [Nontrivial P]
     {p : SInf F (Fin n × Fin d) →ₗ[ℂ] P} (hp : RealQuot B M om p) :
@@ -105,11 +101,11 @@ theorem ker_ne_pol {P : Type} [AddCommGroup P] [Module ℂ P] [Nontrivial P]
   exact hx (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hf).1)
 
 /- English proof (translation)
-Establish `key : ∀ f ∈ M.Pol B.ψ B.emb, p f ∈ N.map p → f ∈ N`. Introduce `f hf hpf`. Take `⟨y, hy, hyf⟩` from `Submodule.mem_map.1 hpf`. Establish `h0 : f - y ∈ LinearMap.ker p ⊓ M.Pol B.ψ B.emb` using `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 (by rw [map_sub, hyf, sub_self]), sub_mem hf (hN.1 hy)⟩`. Use `add_mem (hle h0) hy` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Break down `hi (N.map p) (fun γ hγ f hf f₁ hf₁ hpf => Submodule.mem_map_of_mem (hN.2.2.2.1 γ hγ f (key f hf hpf) f₁ hf₁)) (fun k hk f hf f₁ hf₁ hpf => Submodule.mem_map_of_mem (hN.2.2.2.2 k hk f (key f hf hpf) f₁ hf₁)) with h | h` into its components or cases. Introduce `x hx`. Establish `: p x ∈ N.map p` using `Submodule.mem_map_of_mem hx`. Rewrite `this` using `[h]`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 ((Submodule.mem_bot ℂ).1 this), hN.1 hx⟩`. Conclude with `absurd (le_antisymm hN.1 (fun f hf => key f hf (by rw [h]; exact Submodule.mem_top))) hne`.
+A detailed English derivation is pending.
 -/
 theorem le_ker_of_ge {P : Type} [AddCommGroup P] [Module ℂ P]
     {p : SInf F (Fin n × Fin d) →ₗ[ℂ] P} (hi : GlobalTheory.RealActs.Irred B M om p)
@@ -133,9 +129,9 @@ theorem le_ker_of_ge {P : Type} [AddCommGroup P] [Module ℂ P]
   · exact absurd (le_antisymm hN.1 (fun f hf => key f hf (by rw [h]; exact Submodule.mem_top))) hne
 
 /- English proof (translation)
-Establish `tp` using `thetaSub_ker hA hp hkp`. Establish `tq` using `thetaSub_ker hA hq hkq`. Establish `hS` using `thetaSub_sup hA tp tq`. Establish `hne` using `hH _ _ tp tq (ker_ne_pol hp) (ker_ne_pol hq)`. Establish `h1` using `le_ker_of_ge hip hS le_sup_left hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `le_ker_of_ge hiq hS le_sup_right hne`. Conclude with `le_antisymm (le_sup_left.trans h2) (le_sup_right.trans h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_eq {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] [Nontrivial P] [Nontrivial Q]
     {p : SInf F (Fin n × Fin d) →ₗ[ℂ] P} {q : SInf F (Fin n × Fin d) →ₗ[ℂ] Q}
@@ -154,19 +150,17 @@ theorem ker_eq {P Q : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Mo
   exact le_antisymm (le_sup_left.trans h2) (le_sup_right.trans h1)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M om P Q _ _ _ _ p q hA hH hp hq hPn hQn hkp hkq hip hiq`. Establish `hK` using `ker_eq hA hH hp hq hkp hkq hip hiq`. Use `set Pol := M.Pol B.ψ B.emb`. Set `p'` to `p.domRestrict Pol`. Set `q'` to `q.domRestrict Pol`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `sp : Function.Surjective p'`. Introduce `y`. Establish `hy : y ∈ Pol.map p` using `by rw [hp.onto]; exact Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `sq : Function.Surjective q'`. Introduce `y`. Establish `hy : y ∈ Pol.map q` using `by rw [hq.onto]; exact Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker p' = LinearMap.ker q'`. Use extensionality with `⟨f, hf⟩`. Simplify using `only [p', q', LinearMap.mem_ker, LinearMap.domRestrict_apply]`. Use `SetLike.ext_iff.1 hK f` as an intermediate fact. Simplify using `only [Submodule.mem_inf, LinearMap.mem_ker] at this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(this.1 ⟨h, hf⟩).1`. Introduce `h`. Conclude with `(this.2 ⟨h, hf⟩).1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p'.quotKerEquivOfSurjective sp).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans (q'.quotKerEquivOfSurjective sq)), fun f hf => ?_⟩` and prove the remaining obligations. Establish `e1 : (p'.quotKerEquivOfSurjective sp).symm (p f) = Submodule.Quotient.mk ⟨f, hf⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [LinearEquiv.trans_apply, e1, Submodule.quotEquivOfEq_mk]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_equiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (om : Rep σ X W) (P Q : Type) [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] (p : SInf F (Fin n × Fin d) →ₗ[ℂ] P) (q : SInf F (Fin n × Fin d) →ₗ[ℂ] Q),

@@ -18,9 +18,9 @@ def resMapRetractHomotopy (R : Type) [CommRing R] {M M' : Shv R} (i : M ⟶ M') 
   exact H2
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Establish `Hh` using `resMapRetractHomotopy R i r h`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (zcomp α (Cocycle.ofHom (resMap R i)) (add_zero n)) (Cocycle.ofHom (resMap R r)) (add_zero n)) = CohomologyClass.mk α`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨α.1.comp (Cochain.ofHomotopy Hh) (by omega), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[δ_comp _ _ _ (n + 1) 0 n (by omega) rfl (by omega), Cocycle.δ_eq_zero, δ_ofHomotopy]`. Use extensionality with `p q hpq`. Simplify using `[zcomp, Cochain.comp_v _ _ (add_zero n) p q q hpq (add_zero q)]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem post_post_of_retract (R : Type) [CommRing R] {M M' : Shv R} (i : M ⟶ M') (r : M' ⟶ M) (h : i ≫ r = 𝟙 M)
     (K : Cx R) (n : ℤ) (x : HK R K M n) : HK.post R K r n (HK.post R K i n x) = x := by
@@ -36,7 +36,7 @@ theorem post_post_of_retract (R : Type) [CommRing R] {M M' : Shv R} (i : M ⟶ M
   simp [zcomp, Cochain.comp_v _ _ (add_zero n) p q q hpq (add_zero q)]
 
 /- English proof (translation)
-Introduce `R _ M M' i r h K n hs`. Conclude with `(Function.LeftInverse.injective (g := HK.post R K r n) (f := HK.post R K i n) (post_post_of_retract R i r h K n)).subsingleton`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_retract : ∀ (R : Type) [CommRing R] (M M' : Shv R) (i : M ⟶ M') (r : M' ⟶ M), i ≫ r = 𝟙 M →
     ∀ (K : Cx R) (n : ℤ), Subsingleton (HK R K M' n) → Subsingleton (HK R K M n) := by

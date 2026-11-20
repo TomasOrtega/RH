@@ -10,29 +10,27 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Set `b0 : Module.Basis (Σ _ : InfinitePlace E, Fin 2) ℝ (Cinf E)` to `Pi.basis fun _ => Complex.basisOneI`. Establish `hb0 : ∀ w s, b0 ⟨w, s⟩ = Pi.single w (Complex.basisOneI s)`. Introduce `w s`. Simplify using `[b0]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `b1` to `b0.matrix (Fin a) (Fin a)`. Establish `hs : (0 : ℝ) < Real.sqrt 2` using `Real.sqrt_pos.2 two_pos`. Establish `hu : ∀ _ : Fin a × Fin a × (Σ _ : InfinitePlace E, Fin 2), IsUnit (Real.sqrt 2)` using `fun _ => IsUnit.mk0 _ hs.ne'`. Set `b2` to `(b1.isUnitSMul hu).map (Submodule.topEquiv (R := ℝ) (M := Matrix (Fin a) (Fin a) (Cinf E))).symm`. Set `e` to `Fintype.equivFin (Fin a × Fin a × (Σ _ : InfinitePlace E, Fin 2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨_, b2.reindex e, ?_⟩` and prove the remaining obligations. Introduce `A _ _ ρ`. Set `F : InfinitePlace E → Fin a → Fin a → A` to `fun w i j => ρ ⟨Matrix.single i j (Pi.single w 1), Submodule.mem_top⟩ ^ 2 + ρ ⟨Matrix.single i j (Pi.single w Complex.I), Submodule.mem_top⟩ ^ 2`. Set `G : InfinitePlace E → A` to `fun w => ∑ i, ∑ j, F w i j`. Establish `hsm : ∀ (r : ℝ) (X : Matrix (Fin a) (Fin a) (Cinf E)), ρ ⟨r • X, Submodule.mem_top⟩ = r • ρ ⟨X, Submodule.mem_top⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `r X`. Rewrite using `[← map_smul]`. Both sides reduce to the same expression. Establish `hb2 : ∀ i j w s, ρ (b2 (i, j, ⟨w, s⟩)) * ρ (b2 (i, j, ⟨w, s⟩)) = ρ ⟨Matrix.single i j (Pi.single w (Complex.basisOneI s)), Submodule.mem_top⟩ ^ 2 + ρ ⟨Matrix.single i j (Pi.single w (Complex.basisOneI s)), Submodule.mem_top⟩ ^ 2`. Introduce `i j w s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: b2 (i, j, ⟨w, s⟩) = ⟨Real.sqrt 2 • Matrix.single i j (Pi.single w (Complex.basisOneI s)), Submodule.mem_top⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[b2, b1, Module.Basis.isUnitSMul_apply, hb0]`. Rewrite using `[this, hsm, smul_mul_smul, Real.mul_self_sqrt (by norm_num), two_smul, sq]`. Establish `hL : ∑ k, ρ (b2.reindex e k) * ρ (b2.reindex e k) = ∑ w, (G w + G w)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Module.Basis.reindex_apply]`. Rewrite using `[Equiv.sum_comp e.symm (fun x => ρ (b2 x) * ρ (b2 x))]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_sigma, Fin.sum_univ_two, hb2, Complex.coe_basisOneI, Matrix.cons_val_zero, Matrix.cons_val_one, G, F]`. Simplify using `only [← Finset.sum_add_distrib]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Normalize the expressions using the abelian group laws. Establish `hτ : ∀ τ : E →+* ℂ, ∀ i j, ρ ⟨Matrix.single i j (atEmb τ 1), Submodule.mem_top⟩ ^ 2 + ρ ⟨Matrix.single i j (atEmb τ Complex.I), Submodule.mem_top⟩ ^ 2 = F (InfinitePlace.mk τ) i j`.
+Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ i j`. Establish `hA1 : atEmb τ 1 = Pi.single (InfinitePlace.mk τ) 1`. Apply the tactic sequence `unfold atEmb; split_ifs <;> simp`. Establish `hAI : ρ ⟨Matrix.single i j (atEmb τ Complex.I), Submodule.mem_top⟩ ^ 2 = ρ ⟨Matrix.single i j (Pi.single (InfinitePlace.mk τ) Complex.I), Submodule.mem_top⟩ ^ 2`. Unfold `atEmb`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Establish `h1 : (⟨Matrix.single i j (Pi.single (InfinitePlace.mk τ) (starRingEnd ℂ Complex.I)), Submodule.mem_top⟩ : glL E a) = -⟨Matrix.single i j (Pi.single (InfinitePlace.mk τ) Complex.I), Submodule.mem_top⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Pi.single_neg, Matrix.single_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, map_neg, neg_sq]`. Simplify using `only [F, hAI, hA1]`. Establish `hR : ∑ τ : E →+* ℂ, ∑ i : Fin a, ∑ j : Fin a, (ρ ⟨Matrix.single i j (atEmb τ 1), Submodule.mem_top⟩ ^ 2 + ρ ⟨Matrix.single i j (atEmb τ Complex.I), Submodule.mem_top⟩ ^ 2) = ∑ w, (G w + G w)`. Simplify using `only [hτ]`. Express the relevant statement in the definitionally equal form `∑ τ : E →+* ℂ, G (InfinitePlace.mk τ) = _`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise Finset.univ InfinitePlace.mk (fun τ => G (InfinitePlace.mk τ))]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => G w) (fun τ hτ' => by rw [(Finset.mem_filter.1 hτ').2]), Finset.sum_const, InfinitePlace.card_filter_mk_eq]`. Establish `: w.mult = 2`. Simplify using `[InfinitePlace.mult, InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)]`.
-
-Rewrite using `[this, two_smul]`. Rewrite using `[hL, hR]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glBasis_sum_sq : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ (glL E a)), ∀ (A : Type) [Ring A] [Algebra ℝ A] (ρ : glL E a →ₗ[ℝ] A), ∑ k, ρ (b k) * ρ (b k) = ∑ τ : E →+* ℂ, ∑ i : Fin a, ∑ j : Fin a, (ρ ⟨Matrix.single i j (atEmb τ 1), Submodule.mem_top⟩ ^ 2 + ρ ⟨Matrix.single i j (atEmb τ Complex.I), Submodule.mem_top⟩ ^ 2) := by
   intro E _ _ _ a

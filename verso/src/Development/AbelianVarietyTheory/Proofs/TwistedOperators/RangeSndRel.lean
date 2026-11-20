@@ -112,7 +112,7 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
 
 /- English proof (translation)
-Use `LinearMap.range_eq_top.2 fun b => ?_` and prove the remaining obligations. Take `⟨a, h⟩` from `ρ.onto_small i j b`. Conclude with `⟨⟨(a, b), h⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_snd_rel (ρ : RealMatch W) (i j : ℕ) :
     LinearMap.range ((LinearMap.snd ℂ _ _).comp (ρ.rel i j).subtype) = ⊤ := by
@@ -126,7 +126,7 @@ def matchLin (ρ : RealMatch W) (i j : ℕ) : PolRoute G (.grid i (j + 1)) (.gri
     (LinearMap.exists_rightInverse_of_surjective _ (range_snd_rel ρ i j)).choose)
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (LinearMap.exists_rightInverse_of_surjective _ (range_snd_rel ρ i j)).choose_spec b`. Use `set g := (LinearMap.exists_rightInverse_of_surjective _ (range_snd_rel ρ i j)).choose`. Establish `e : ((g b : PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j) × PolRoute G (.grid i (j + 1)) (.grid i j) (.grid (i + 1) j))) = (matchLin ρ i j b, b)` using `Prod.ext rfl h`. Conclude with `e ▸ (g b).2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem matchLin_mem (ρ : RealMatch W) (i j : ℕ) (b : PolRoute G (.grid i (j + 1)) (.grid i j) (.grid (i + 1) j)) :
     (matchLin ρ i j b, b) ∈ ρ.rel i j := by

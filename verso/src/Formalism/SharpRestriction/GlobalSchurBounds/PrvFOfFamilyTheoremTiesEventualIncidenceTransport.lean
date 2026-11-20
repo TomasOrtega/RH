@@ -8,9 +8,9 @@ namespace Formalism.MainNotions
 open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory
 
 /- English proof (translation)
-Take `⟨C₅, h59a⟩` from `UnusedSlot33.field_lemmas_except_seven`. Establish `h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅` using `fun x hx i => by`. Take `⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩` from `h59a (Fm.D x i) (Fm.L x i).sc`. Conclude with `⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩`. Establish `h24` using `s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h22 : TaylorLogMetric.ConclusionOnFamily Fm C22` using `s22 (TaylorLogMetric.AdmF_of Fm (fun x i => UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))`. Conclude with `s10 (product_first_zeroth_parts.AdmF_of Fm C22 100 C₅ h22 h59 (fun x hx i => (h24.2.2.2.2.2.1 x hx i).2.2.2.1) t10)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prvF_of_familyTheorem_ties_eventualIncidenceTransport {eps : ℝ} (Fm : FamP eps) (C3 crystallineComparison C22 : ℝ)
     (s59 : ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i))

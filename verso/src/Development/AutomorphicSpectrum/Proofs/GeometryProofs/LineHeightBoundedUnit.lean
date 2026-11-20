@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Ht.FlatLine
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨dg, dh, g, f, hg, hf, hd, hy, hfz, hgz⟩` from `h`. Establish `hfy : aeval y f ≠ 0` using `fun h0 => hfz (hz.2 f ((GroundTheory.Heights₂.Heights.Targets.BoundedSectionTransfer.mem_mCoordIdeal_iff y hf).2 h0))`. Use `⟨dh, dg, f, g, hf, hg, fun k => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hd k` as an intermediate fact. Simplify using `only [Pi.neg_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hy, inv_mul_cancel_left₀ hu]`. Rewrite using `[hgz]`. Conclude with `mul_ne_zero hv hfz`. Rewrite using `[hgz, inv_mul_cancel_left₀ hv]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVal_inv {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} (hu : u ≠ 0) {𝕜 : Type} [Field 𝕜]
     {z : (Σ k, ι k) → 𝕜} (hz : z ∈ ptsOver 𝕜 (mCoordIdeal y)) {val : 𝕜} (hv : val ≠ 0)
@@ -32,14 +32,14 @@ theorem hasVal_inv {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} (hu : u �
   · rw [hgz, inv_mul_cancel_left₀ hv]
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.comp_aeval_apply (R := ℤ) z σ.toIntAlgHom f).symm`.
+A detailed English derivation is pending.
 -/
 theorem aeval_embed {L 𝕜 : Type} [Field L] [Field 𝕜] (σ : L →+* 𝕜) (z : (Σ k, ι k) → L) (f : MRing ι) :
     aeval (fun p => σ (z p)) f = σ (aeval z f) :=
   (MvPolynomial.comp_aeval_apply (R := ℤ) z σ.toIntAlgHom f).symm
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, (map_ne_zero σ).2 hi⟩`. Rewrite using `[aeval_embed, hz.2 f hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptsOver_embed {L 𝕜 : Type} [Field L] [Field 𝕜] (σ : L →+* 𝕜) {P : Ideal (MRing ι)}
     {z : (Σ k, ι k) → L} (hz : z ∈ ptsOver L P) : (fun p => σ (z p)) ∈ ptsOver 𝕜 P := by
@@ -49,7 +49,7 @@ theorem ptsOver_embed {L 𝕜 : Type} [Field L] [Field 𝕜] (σ : L →+* 𝕜)
   · rw [aeval_embed, hz.2 f hf, map_zero]
 
 /- English proof (translation)
-Take `⟨dg, dh, g, f, hg, hf, hd, hy, hfz, hgz⟩` from `h`. Use `⟨dg, dh, g, f, hg, hf, hd, hy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_embed]`. Conclude with `(map_ne_zero σ).2 hfz`. Rewrite using `[aeval_embed, aeval_embed, hgz, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVal_embed {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} {L 𝕜 : Type} [Field L] [Field 𝕜] (σ : L →+* 𝕜)
     {z : (Σ k, ι k) → L} {val : L} (h : HasVal y a u z val) : HasVal y a u (fun p => σ (z p)) (σ val) := by
@@ -60,15 +60,15 @@ theorem hasVal_embed {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} {L 𝕜 
   · rw [aeval_embed, aeval_embed, hgz, map_mul]
 
 /- English proof (translation)
-The claim follows from `ContDiffOn.pow hA k`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_powH {A : HermLine ι} (hA : IsSmoothHerm A) (k : ℕ) : IsSmoothHerm (powH A k) :=
   ContDiffOn.pow hA k
 
 /- English proof (translation)
-Establish `e : ∀ v : FinitePlace L, ∑ b, (((k : ℤ) * A.a b : ℤ) : ℝ) * Real.log (⨆ i, v (w ⟨b, i⟩)) = (k : ℝ) • ∑ b, (A.a b : ℝ) * Real.log (⨆ i, v (w ⟨b, i⟩))` using `fun v => by`. Rewrite using `[smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ptHt, lineHt, e]`. Rewrite using `[← smul_finsum, ← Finset.mul_sum, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ptHt_pow (A : HermLine ι) (k : ℕ) (L : Type) [Field L] [NumberField L] (w : (Σ k, ι k) → L) :
     ptHt (fun b => (((k : ℤ) * A.a b : ℤ) : ℝ)) (fun z => (k : ℝ) * Real.log (A.h z)) L w = k * lineHt A L w := by
@@ -83,7 +83,7 @@ theorem ptHt_pow (A : HermLine ι) (k : ℕ) (L : Type) [Field L] [NumberField L
   ring
 
 /- English proof (translation)
-The claim follows from `|(k : ℝ) * Real.log (A.h z) - Real.log ‖val‖| ≤ C := by obtain ⟨hu, q, m, hq, hm, -, h1, h2⟩ := hV have hP := isSmoothHerm_powH hS k obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.archimedean_value_bound K ι Ω y d hAr hB (powH A k) q m u hP hq hm h1 obtain ⟨C₂, hC₂⟩ := GlobalTheory.T.archime …`.
+A detailed English derivation is pending.
 -/
 theorem exists_arch_bound {y : (Σ k, ι k) → Ω} {d : ℕ} (hAr : IsArithVar (mCoordIdeal y) d) (hB : Birational y)
     {A : HermLine ι} {k : ℕ} {u : Ω} {c : ℝ} (hS : IsSmoothHerm A)
@@ -118,13 +118,13 @@ end GlobalTheory.CompanionTheory.Ar.Ht.FlatLine
 open GlobalTheory.CompanionTheory.Ar.Ht.FlatLine in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y d hAr hB A k u c hS hk hG hV`. Take `⟨C, hC⟩` from `exists_arch_bound hAr hB hS hV`. Use `⟨(c + C) / k, fun L _ _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨val, hv, hval⟩` from `hG L w hw`. Establish `hU` using `GlobalTheory.T.vertical_bound_height_compare K ι Ω y d hAr hB (fun b => k * A.a b) u c hV (fun z => (k : ℝ) * Real.log (A.h z)) L w hw val hv hval`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hU` using `[ptHt_pow]`. Establish `hk' : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `hd : (0 : ℝ) < Module.finrank ℚ L` using `by exact_mod_cast Module.finrank_pos`. Use `set S := ∑ σ : L →+* ℂ, ((k : ℝ) * Real.log (A.h fun p => σ (w p)) - Real.log ‖σ val‖) with hSdef`. Establish `hSb : |S| ≤ (Module.finrank ℚ L : ℝ) * C`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, NumberField.Embeddings.card]`. Establish `hm : |(Module.finrank ℚ L : ℝ)⁻¹ * S| ≤ C`. Rewrite using `[abs_mul, abs_of_pos (inv_pos.2 hd), inv_mul_le_iff₀ hd]`. Conclude with `hSb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : |(k : ℝ) * lineHt A L w| ≤ c + C`. Use `abs_sub_abs_le_abs_sub ((k : ℝ) * lineHt A L w) ((Module.finrank ℚ L : ℝ)⁻¹ * S)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ hk']`. Rewrite `hT` using `[abs_mul, abs_of_pos hk', mul_comm]`. Then use the resulting hypothesis.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Ht.lineHt_bounded_of_genUnit : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (d : ℕ), IsArithVar (mCoordIdeal y) d → Birational y → ∀ (A : HermLine ι) (k : ℕ) (u : Ω) (c : ℝ), IsSmoothHerm A → 0 < k → GenUnit y (fun b => k * A.a b) u → VertBound y (fun b => k * A.a b) u c → ∃ C : ℝ, ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (mCoordIdeal y), |lineHt A L w| ≤ C := by
   intro K _ ι _ Ω _ y d hAr hB A k u c hS hk hG hV

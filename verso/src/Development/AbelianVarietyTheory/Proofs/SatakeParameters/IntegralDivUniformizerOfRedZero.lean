@@ -7,27 +7,25 @@ namespace GlobalTheory.TypePrimeUnif
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Use `⟨hP.g_mem hv, fun hsq => ?_⟩` and prove the remaining obligations. Establish `hdiv : ∀ Q ∈ Pr.vG i, X.conjO (Pr.piG i) ∈ Q.asIdeal` using `fun Q hQ => _root_.Formalism.L2.Col.decoFin_mem_of_mem_divs (show Q ∈ _root_.Formalism.L2.Col.divs (X.conjO (Pr.piG i)) from hQ)`. Establish `hg1 : 1 < Pr.g i` using `(hP.g_prime i).one_lt`. Establish `hN : Ideal.absNorm (Ideal.span {X.conjO (Pr.piG i)}) = Pr.g i ^ X.f`. Establish `h1 : Ideal.absNorm (Ideal.span {Pr.piG i}) * Ideal.absNorm (Ideal.span {X.conjO (Pr.piG i)}) = Pr.g i ^ (2 * X.f)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Ideal.span_singleton_mul_span_singleton, hP.piG_norm i, X.absNorm_nat, hX.rankQ]`. Rewrite `h1` using `[X.absNorm_conjO, ← sq, pow_mul']`. Rewrite using `[X.absNorm_conjO]`. Conclude with `Nat.pow_left_injective two_ne_zero h1`. Establish `hπP : Pr.piG i ∉ P.asIdeal` using `fun h => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hP.piG_cop i`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `P.asIdeal.add_mem (P.asIdeal.mul_mem_left a h) (P.asIdeal.mul_mem_left b (hdiv P hv))`. Establish `hcop : IsCoprime (P.asIdeal ^ 2) (Ideal.span {Pr.piG i})`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `IsCoprime.pow_left` to reduce the goal to its premises. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Establish `heq` using `P.isMaximal.eq_of_le h le_sup_left`. Conclude with `hπP (by rw [heq]; exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP2 : P.asIdeal ^ 2 ∣ Ideal.span {X.conjO (Pr.piG i)}`. Establish `h : P.asIdeal ^ 2 ∣ Ideal.span {Pr.piG i} * Ideal.span {X.conjO (Pr.piG i)}`. Rewrite using `[Ideal.span_singleton_mul_span_singleton, hP.piG_norm i, Ideal.dvd_span_singleton]`. Conclude with `hsq`. Use `first`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `exact hcop.dvd_of_dvd_mul_left h`. Consider the case `exact hcop.dvd_of_dvd_mul_right h`. Set `e : HeightOneSpectrum (𝓞 X.E) → ℕ` to `fun Q => if Q = P then 2 else 1`. Establish `hall : ∏ Q ∈ Pr.vG i, Q.asIdeal ^ e Q ∣ Ideal.span {X.conjO (Pr.piG i)}`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q _ Q' _ hne`. Simplify using `only [Function.onFun]`. Apply `IsCoprime.pow` to reduce the goal to its premises. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne Q.isMaximal Q'.isMaximal (fun h => hne (HeightOneSpectrum.ext h))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `Q hQ`. Distinguish the cases in `h : Q = P`. Substitute `h` using the available equality. Simplify `hP2` using `[e]`. Simplify `hdiv Q hQ` using `[e, h, Ideal.dvd_span_singleton]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hnorm` using `map_dvd Ideal.absNorm hall`. Rewrite `hnorm` using `[map_prod, hN]`. Establish `hcount : ∏ Q ∈ Pr.vG i, Ideal.absNorm (Q.asIdeal ^ e Q) = Pr.g i ^ (X.f + 1)`. Rewrite using `[Finset.prod_congr rfl (fun Q hQ => show Ideal.absNorm (Q.asIdeal ^ e Q) = Pr.g i ^ e Q by`. Rewrite using `[map_pow, hP.vG_norm i Q hQ]), Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `he : ∀ Q, e Q = 1 + if Q = P then 1 else 0` using `fun Q => by`. Apply the tactic sequence `by_cases h : Q = P <;> simp [e, h]`. Simplify using `only [he, Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul, mul_one, Finset.sum_ite_eq', hv, if_true, hP.vG_card i]`. Rewrite `hnorm` using `[hcount]`.
-
-Use `(Nat.pow_dvd_pow_iff_le_right hg1).mp hnorm` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq {X : _root_.Formalism.L2.Col.Fields} (hX : X.Ok) {Pr : _root_.Formalism.L2.Col.Primes X}
     (hP : Pr.Ok) (i : Fin 2) (P : HeightOneSpectrum (𝓞 X.E))
@@ -93,19 +91,17 @@ theorem _root_.GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq {X : _root
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Use `haveI := w.isMaximal`. Use `letI := Ideal.Quotient.field w.asIdeal`. Establish `key : ∃ c r, ∃ s ∉ w.asIdeal, algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r ∧ Ideal.Quotient.mk w.asIdeal s * c = Ideal.Quotient.mk w.asIdeal r`. Take `⟨r, s, hs, hsr⟩` from `ha`. Establish `hs0 : Ideal.Quotient.mk w.asIdeal s ≠ 0` using `fun h => hs (Ideal.Quotient.eq_zero_iff_mem.mp h)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(Ideal.Quotient.mk w.asIdeal s)⁻¹ * Ideal.Quotient.mk w.asIdeal r, r, s, hs, hsr, mul_inv_cancel_left₀ hs0 _⟩`. Unfold `_root_.Formalism.L2.Col.redP at h0`. Rewrite `h0` using `[dif_pos key]`. Establish `hspec` using `key.choose_spec`. Rewrite `hspec` using `[h0]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, s, hs, hsr, hc⟩` from `hspec`. Rewrite `hc` using `[mul_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨J, hJ⟩` from `(Ideal.dvd_span_singleton (I := w.asIdeal) (x := g)).mpr h1`. Establish `hJw : ¬ J ≤ w.asIdeal` using `fun hle => h2 (by`. Rewrite using `[sq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mono_right hle (hJ ▸ Ideal.mem_span_singleton_self g))`. Take `⟨t, htJ, htw⟩` from `Set.not_subset.mp hJw`. Establish `hrt : r * t ∈ Ideal.span {g}` using `hJ ▸ Ideal.mul_mem_mul hc htJ`. Take `⟨x, hx⟩` from `Ideal.mem_span_singleton'.mp hrt`. Establish `hg0 : algebraMap (𝓞 E) E g ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `h2` to reduce the goal to its premises. Rewrite using `[(IsFractionRing.injective (𝓞 E) E) (h.trans (map_zero _).symm)]`. Conclude with `zero_mem _`. Use `⟨x, s * t, fun hst => (w.isPrime.mem_or_mem hst).elim hs htw, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxE : algebraMap (𝓞 E) E x * algebraMap (𝓞 E) E g = algebraMap (𝓞 E) E r * algebraMap (𝓞 E) E t`. Rewrite using `[← map_mul, ← map_mul, hx]`. Establish `hmain : algebraMap (𝓞 E) E s * algebraMap (𝓞 E) E t * a = algebraMap (𝓞 E) E x * algebraMap (𝓞 E) E g`. Take the linear combination `algebraMap (𝓞 E) E t * hsr - hxE`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap (𝓞 E) E x * algebraMap (𝓞 E) E g / algebraMap (𝓞 E) E g := by rw [hmain]`. Use `_ = algebraMap (𝓞 E) E x := mul_div_cancel_right₀ _ hg0`.
+Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TypePrimeUnif.intAt_div_of_notMem_sq {E : Type} [Field E] [NumberField E]
     (w : HeightOneSpectrum (𝓞 E)) (g : 𝓞 E)
@@ -153,11 +149,11 @@ theorem _root_.GlobalTheory.TypePrimeUnif.intAt_div_of_notMem_sq {E : Type} [Fie
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `X Pr hX hP w hw a ha h0`. Establish `hw' : w ∈ Pr.vG 0 ∪ Pr.vG 1` using `hw`. Choose the witnesses or unpack the hypotheses as in `⟨i, hv⟩ : ∃ i, w ∈ Pr.vG i := by`. Break down `Finset.mem_union.mp hw' with h | h` into its components or cases. Conclude with `⟨0, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨1, h⟩`. Establish `hq : (_root_.Formalism.L2.Col.qOf w : X.E) = algebraMap (𝓞 X.E) X.E ((Pr.g i : ℕ) : 𝓞 X.E)`. Unfold `_root_.Formalism.L2.Col.qOf`. Rewrite using `[map_natCast, hP.vG_norm i w hv]`. Establish `hgw` using `_root_.GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq hX hP i w hv`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Conclude with `_root_.GlobalTheory.TypePrimeUnif.intAt_div_of_notMem_sq w _ hgw.1 hgw.2 a ha h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TypePrimeUnif.intAt_div_qOf : ∀ (X : _root_.Formalism.L2.Col.Fields) (Pr : _root_.Formalism.L2.Col.Primes X), X.Ok → Pr.Ok →
     ∀ w ∈ Pr.vGs, ∀ a : X.E, _root_.Formalism.L2.Col.IntAt w a →

@@ -22,7 +22,7 @@ private def Loc (Q : Type) [NormedAddCommGroup Q] [NormedSpace ℝ Q] {V : Type}
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {H : P → α → V} {x : P} {y : α}
 
 /- English proof (translation)
-Take `⟨h, A, hA, hh, e⟩` from `h`. Use `ContinuousAt.congr ?_ (EventuallyEq.symm e)` and prove the remaining obligations. Conclude with `ContinuousAt.comp (f := fun p : P × α => (p.1, A p.2)) hh.continuousAt (continuousAt_fst.prodMk (ContinuousAt.comp (f := Prod.snd) hA continuousAt_snd))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem Loc.cont (h : Loc Q H x y) : ContinuousAt (fun p : P × α => H p.1 p.2) (x, y) := by
   obtain ⟨h, A, hA, hh, e⟩ := h
@@ -31,7 +31,7 @@ private theorem Loc.cont (h : Loc Q H x y) : ContinuousAt (fun p : P × α => H 
     (continuousAt_fst.prodMk (ContinuousAt.comp (f := Prod.snd) hA continuousAt_snd))
 
 /- English proof (translation)
-Take `⟨h, A, -, hh, e⟩` from `h`. Establish `e' : (fun x => H x y) =ᶠ[𝓝 x] fun x => h (x, A y)` using `(Continuous.prodMk_left y).continuousAt.eventually e`. Conclude with `DifferentiableAt.congr_of_eventuallyEq ((hh.differentiableAt (by simp)).comp x (differentiableAt_id.prodMk (differentiableAt_const _))) e'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem Loc.diff (h : Loc Q H x y) : DifferentiableAt ℝ (fun x => H x y) x := by
   obtain ⟨h, A, -, hh, e⟩ := h
@@ -41,9 +41,9 @@ private theorem Loc.diff (h : Loc Q H x y) : DifferentiableAt ℝ (fun x => H x 
     ((hh.differentiableAt (by simp)).comp x (differentiableAt_id.prodMk (differentiableAt_const _))) e'
 
 /- English proof (translation)
-Take `⟨h, A, hA, hh, e⟩` from `h`. Use `⟨fun q => (_root_.fderiv ℝ h q).comp (ContinuousLinearMap.inl ℝ P Q), A, hA, (hh.fderiv_right (by simp)).clm_comp contDiffAt_const, ?_⟩` and prove the remaining obligations. Establish `hc : ContinuousAt (fun p : P × α => (p.1, A p.2)) (x, y)` using `continuousAt_fst.prodMk (ContinuousAt.comp (f := Prod.snd) hA continuousAt_snd)`. Establish `hd : ∀ᶠ q in 𝓝 (x, A y), ContDiffAt ℝ 1 h q` using `(hh.of_le (by simp)).eventually (by simp)`. Use `filter_upwards [e.eventually_nhds, hc.eventually hd] with p hp hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (fun x => H x p.2) =ᶠ[𝓝 p.1] fun x => h (x, A p.2)` using `(Continuous.prodMk_left p.2).continuousAt.eventually hp`. Rewrite using `[e'.fderiv_eq]`. Conclude with `((hq.differentiableAt (by simp)).hasFDerivAt.comp p.1 (hasFDerivAt_prodMk_left p.1 (A p.2))).fderiv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Loc.fderiv (h : Loc Q H x y) : Loc Q (fun x y => fderiv ℝ (fun x => H x y) x) x y := by
   obtain ⟨h, A, hA, hh, e⟩ := h
@@ -63,7 +63,7 @@ variable [FiniteDimensional ℝ P] [T2Space α] [SecondCountableTopology α] [Me
 
 omit [FiniteDimensional ℝ P] [T2Space α] [SecondCountableTopology α] [MeasurableSpace α] [OpensMeasurableSpace α] in
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `hs`. Use `⟨C, hC, h.eventually_nhds.mono fun x' hx' y hy => ?_⟩` and prove the remaining obligations. Establish `e : (fun x => H x y) =ᶠ[𝓝 x'] fun _ => 0` using `hx'.mono fun z hz => hz y hy`. Rewrite using `[e.fderiv_eq, fderiv_fun_const]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem supp_fderiv (hs : ∃ C : Set α, IsCompact C ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ C, H x' y = 0) :
     ∃ C : Set α, IsCompact C ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ C, fderiv ℝ (fun x => H x y) x' = 0 := by
@@ -74,11 +74,9 @@ private theorem supp_fderiv (hs : ∃ C : Set α, IsCompact C ∧ ∀ᶠ x' in �
   rfl
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `hs`. Take `⟨K, hK, hKS, hKc⟩` from `local_compact_nhds (hS.mem_nhds hx)`. Take `⟨M, hM⟩` from `(hKc.prod hC).exists_bound_of_continuousOn (f := fun p : P × α => H p.1 p.2) fun p hp => (hH p.1 (hKS hp.1) p.2).cont.continuousWithinAt`. Use `⟨C.indicator fun y => ‖f y‖ * M, (integrable_indicator_iff hC.measurableSet).2 ((hf.integrableOn_isCompact hC).norm.mul_const M), ?_⟩` and prove the remaining obligations. Use `filter_upwards [h, hK] with x' h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hf.aestronglyMeasurable.smul (Continuous.aestronglyMeasurable (continuous_iff_continuousAt.2 fun y => ?_)), fun y => ?_⟩` and prove the remaining obligations. Conclude with `ContinuousAt.comp (f := fun y => (x', y)) (hH x' (hKS h2) y).cont (Continuous.prodMk_right x').continuousAt`. Distinguish the cases in `hy : y ∈ C`. Rewrite using `[Set.indicator_of_mem hy, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hM (x', y) ⟨h2, hy⟩) (norm_nonneg _)`.
-
-Rewrite using `[Set.indicator_of_notMem hy, h1 y hy, smul_zero, norm_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dom [NormedSpace ℂ V] (hf : LocallyIntegrable f μ) (hS : IsOpen S) (hx : x ∈ S)
     (hH : ∀ x ∈ S, ∀ y, Loc Q H x y) (hs : ∃ C : Set α, IsCompact C ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ C, H x' y = 0) :
@@ -100,7 +98,7 @@ private theorem dom [NormedSpace ℂ V] (hf : LocallyIntegrable f μ) (hS : IsOp
     · rw [Set.indicator_of_notMem hy, h1 y hy, smul_zero, norm_zero]
 
 /- English proof (translation)
-Take `⟨b, hb, h⟩` from `dom hf hS hx hH hs`. Take `⟨b', hb', h'⟩` from `dom hf hS hx (fun x hx y => (hH x hx y).fderiv) (supp_fderiv hs)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := b') (F' := fun x y => f y • fderiv ℝ (fun x => H x y) x) (h'.and (hS.eventually_mem hx)) (h.mono fun _ h => h.1) (hb.mono' h.self_of_nhds.1 (.of_forall h.self_of_nhds.2)) h'.self_of_nhds.1 (.of_forall fun y x' hx' => hx'.1. …` and prove the remaining obligations. Conclude with `(hH x' hx'.2 y).diff.hasFDerivAt.const_smul (f y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hasFD [NormedSpace ℂ V] [SMulCommClass ℝ ℂ V] (hf : LocallyIntegrable f μ) (hS : IsOpen S) (hx : x ∈ S)
     (hH : ∀ x ∈ S, ∀ y, Loc Q H x y) (hs : ∃ C : Set α, IsCompact C ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ C, H x' y = 0) :
@@ -114,9 +112,9 @@ private theorem hasFD [NormedSpace ℂ V] [SMulCommClass ℝ ℂ V] (hf : Locall
   exact (hH x' hx'.2 y).diff.hasFDerivAt.const_smul (f y)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ _ H hH hs`. Conclude with `contDiffOn_zero.2 fun x hx => (hasFD hf hS hx hH (hs x hx)).continuousAt.continuousWithinAt`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V _ _ _ _ H hH hs`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hS]`. Use `⟨fun x hx => (hasFD hf hS hx hH (hs x hx)).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Conclude with `(ih _ _ (fun x hx y => (hH x hx y).fderiv) fun x hx => supp_fderiv (hs x hx)).congr fun x hx => (hasFD hf hS hx hH (hs x hx)).fderiv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem smooth_nat (hf : LocallyIntegrable f μ) (hS : IsOpen S) (n : ℕ) :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedSpace ℂ V] [SMulCommClass ℝ ℂ V] (H : P → α → V),
@@ -141,7 +139,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun q : Lie E a × Lie E a => ∑ k, q.2 i k * q.1 k j`. Use `ContDiff.sum fun k _ => ContDiff.mul ?_ ?_` and prove the remaining obligations. Conclude with `contDiff_pi.1 (contDiff_pi.1 contDiff_snd i) k`. Conclude with `contDiff_pi.1 (contDiff_pi.1 contDiff_fst k) j`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem contDiff_mulL :
     ContDiff ℝ ∞ fun q : Lie E a × Lie E a => toL (Matrix.of q.2 * Matrix.of q.1) := by
@@ -152,13 +150,11 @@ private theorem contDiff_mulL :
   · exact contDiff_pi.1 (contDiff_pi.1 contDiff_fst k) j
 
 /- English proof (translation)
-Establish `hc : Continuous fun w : GA E a => (y⁻¹ * g)⁻¹ * (w⁻¹ * g)` using `continuous_const.mul (continuous_inv.mul continuous_const)`. Establish `hA : Continuous fun w : GA E a => (GeneralLinearGroup.map (pInf E) ((y⁻¹ * g)⁻¹ * (w⁻¹ * g))).val` using `Units.continuous_val.comp (GlobalTheory.CompanionTheory.AffglAssembly.continuous_mapInf.comp hc)`. Use `⟨fun q => chart ψ.1 (y⁻¹ * g) (toL (Matrix.of q.2 * Matrix.of q.1)), fun w => toL (GeneralLinearGroup.map (pInf E) ((y⁻¹ * g)⁻¹ * (w⁻¹ * g))).val, hA.continuousAt, ?_, ?_⟩` and prove the remaining obligations. Use `ContDiffAt.comp _ (contDiffAt_chart ψ.2 _ ?_) contDiff_mulL.contDiffAt` and prove the remaining obligations. Conclude with `IsUnit.mul (Units.isUnit _) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ᶠ w in 𝓝 y, act (.fin (GeneralLinearGroup.map (pFin E) ((y⁻¹ * g)⁻¹ * (w⁻¹ * g)))) ψ = ψ` using `(GlobalTheory.CompanionTheory.AffglAssembly.continuous_mapFin.comp hc).continuousAt.eventually_mem (hψ.mem_nhds (by`. Express the relevant statement in the definitionally equal form `finRep E a _ ψ = ψ`. Use the proof step `simp))`. Rewrite using `[nhds_prod_eq]`. Use `filter_upwards [prod_mem_prod (isOpen_invSet.mem_nhds hx) h1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨x', w⟩ ⟨⟨u, hu⟩, hw⟩`. Take `rfl : x' = toL u.val` from `hu.symm`. Use `set t := (y⁻¹ * g)⁻¹ * (w⁻¹ * g) with ht`. Establish `e1` using `congrFun (congrArg Subtype.val hw) (y⁻¹ * g * infGL E a (GeneralLinearGroup.map (pInf E) t * u))`. Express the relevant statement in the definitionally equal form `ψ.1 (_ * finGL E a _) = _ at e1`.
-
-Express the relevant statement in the definitionally equal form `chart ψ.1 (w⁻¹ * g) (toL u.val) = chart ψ.1 (y⁻¹ * g) (toL (GeneralLinearGroup.map (pInf E) t * u).val)`. Rewrite using `[chart_val, chart_val, ← e1, map_mul, mul_assoc (y⁻¹ * g), mul_assoc (infGL E a _), infGL_comm u, ← mul_assoc (infGL E a _), infGL_mul_finGL, ← mul_assoc (y⁻¹ * g), ht, mul_inv_cancel_left]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem loc_chart {ψ : Sm E a} (hψ : HasLev ψ) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) (y : GA E a) :
     Loc (Lie E a) (fun x y => chart ψ.1 (y⁻¹ * g) x) x y := by
@@ -188,7 +184,7 @@ private theorem loc_chart {ψ : Sm E a} (hψ : HasLev ψ) (g : GA E a) {x : Lie 
 open scoped Matrix.Norms.Operator in
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _ (Units.isOpenEmbedding_val (R := Matrix (Fin a) (Fin a) (Cinf E))).isOpenMap`.
+A detailed English derivation is pending.
 -/
 private theorem isOpenMap_val : IsOpenMap fun u : GL (Fin a) (Cinf E) => toL u.val :=
   haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _
@@ -197,7 +193,7 @@ private theorem isOpenMap_val : IsOpenMap fun u : GL (Fin a) (Cinf E) => toL u.v
 open scoped Matrix.Norms.Operator in
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _ haveI : ProperSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.proper ℝ _ (Units.isOpenEmbedding_val (R := Matrix (Fin a) (Fin a) (Cinf E))).locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 private theorem locCpt : LocallyCompactSpace (GL (Fin a) (Cinf E)) :=
   haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _
@@ -205,11 +201,9 @@ private theorem locCpt : LocallyCompactSpace (GL (Fin a) (Cinf E)) :=
   (Units.isOpenEmbedding_val (R := Matrix (Fin a) (Fin a) (Cinf E))).locallyCompactSpace
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hx`. Take `rfl : x = toL u.val` from `hu.symm`. Use `haveI := locCpt (E := E) (a := a)`. Take `⟨K, hKc, hK⟩` from `exists_compact_mem_nhds u`. Establish `hc : Continuous fun p : GL (Fin a) (Cinf E) × GA E a => g * infGL E a p.1 * p.2⁻¹` using `(continuous_const.mul ((GlobalTheory.CompanionTheory.LieSkew.continuous_infGL_map E a).comp continuous_fst)).mul continuous_snd.inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, (hKc.prod hψ.isCompact).image hc, ?_⟩` and prove the remaining obligations. Use `filter_upwards [isOpenMap_val.image_mem_nhds hK]`. Introduce and unpack `_ ⟨v, hv, rfl⟩ y hy`. Rewrite using `[chart_val]`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hy ⟨(v, y⁻¹ * g * infGL E a v), ⟨hv, subset_tsupport _ h⟩, by simp only; group⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem supp_chart {ψ : GA E a → ℂ} (hψ : HasCompactSupport ψ) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     ∃ C : Set (GA E a), IsCompact C ∧ ∀ᶠ x' in 𝓝 x, ∀ y ∉ C, chart ψ (y⁻¹ * g) x' = 0 := by
@@ -229,9 +223,9 @@ private theorem supp_chart {ψ : GA E a → ℂ} (hψ : HasCompactSupport ψ) (g
 end Adelic
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ ψ hψ F g`. Establish `hf` using `(UpperTheory.V.Cj.H.locInt (GA E a) (latticeGL E a) μ).1 F`. Establish `h : ContDiffOn ℝ ∞ (fun x => ∫ y, GlobalTheory.AutomorphicL2Unitary.lift _ F y • chart ψ.1 (y⁻¹ * g) x ∂μ) (invSet E a)` using `contDiffOn_infty.2 fun n => smooth_nat hf isOpen_invSet n ℂ _ (fun _ hx y => loc_chart hψ.2 g hx y) fun _ hx => supp_chart hψ.1 g hx`. Use `h.congr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `rfl : x = toL u.val` from `hu.symm`. Simplify using `only [chart_val, cv, mul_assoc, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Cj.H.cvSm :
     UpperTheory.V.Cj.H.CvSm := by

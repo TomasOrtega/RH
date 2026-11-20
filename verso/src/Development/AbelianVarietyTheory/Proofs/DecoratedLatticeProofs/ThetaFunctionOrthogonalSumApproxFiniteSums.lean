@@ -19,17 +19,15 @@ open GlobalTheory.Unf
 namespace GlobalTheory.ThetaSplitApprox
 
 /- English proof (translation)
-Establish `hV : ∀ a : X, ∃ V : Set X, IsOpen V ∧ a ∈ V ∧ ∀ x ∈ V, ∀ y ∈ K, ‖F (x, y) - F (a, y)‖ < ε`. Introduce `a`. Establish `hn : IsOpen {p : X × Y | ‖F p - F (a, p.2)‖ < ε}` using `isOpen_lt (hF.sub (hF.comp (continuous_const.prodMk continuous_snd))).norm continuous_const`. Take `⟨u, v, hu, -, hau, hKv, huv⟩` from `generalized_tube_lemma (isCompact_singleton (x := a)) hK hn (by`. Introduce and unpack `⟨x, y⟩ ⟨hx, -⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `rfl : x = a` from `hx`. Simplify using `using hε)`. Conclude with `⟨u, hu, hau rfl, fun x hx y hy => @huv (x, y) ⟨hx, hKv hy⟩⟩`. Use `choose V hVo hVm hVε using hV`. Take `⟨t, -, hcov⟩` from `hC.elim_nhds_subcover V fun x _ => (hVo x).mem_nhds (hVm x)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcov' : C ⊆ ⋃ i : Fin t.card, V (t.equivFin.symm i)`. Introduce `z hz`. Take `⟨x, hx, hzx⟩` from `Set.mem_iUnion₂.1 (hcov hz)`. Conclude with `Set.mem_iUnion.2 ⟨t.equivFin ⟨x, hx⟩, by simpa using hzx⟩`. Take `⟨π, hπs, hπ1, hπ01, -⟩` from `exists_continuous_sum_one_of_isOpen_isCompact (fun i => hVo _) hC hcov'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t.card, fun i => t.equivFin.symm i, π, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ i, π i x = 1` using `by simpa using hπ1 hx`. Establish `h2 : F (x, y) - ∑ i, (π i x : ℂ) * F (t.equivFin.symm i, y) = ∑ i, (π i x : ℂ) * (F (x, y) - F (t.equivFin.symm i, y))`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul]`. Rewrite using `[← Complex.ofReal_sum, h1, Complex.ofReal_one, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum (g := fun i => π i x * ε) fun i _ => ?_).trans ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hπ01 i x).1]`. Distinguish the cases in `h0 : π i x = 0`. Simplify using `[h0]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hVε _ x (hπs i (subset_tsupport _ h0)) y hy).le (hπ01 i x).1`. Rewrite using `[← Finset.sum_mul, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_slices {X Y : Type*} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TopologicalSpace Y]
     (F : X × Y → ℂ) (hF : Continuous F) {C : Set X} {K : Set Y} (hC : IsCompact C) (hK : IsCompact K) {ε : ℝ}
@@ -66,13 +64,13 @@ theorem exists_slices {X Y : Type*} [TopologicalSpace X] [T2Space X] [LocallyCom
   · rw [← Finset.sum_mul, h1, one_mul]
 
 /- English proof (translation)
-Establish `h0 : ∀ γ ∉ hfin.toFinset, c γ = 0` using `fun γ hγ => by simpa using hγ`. Establish `h1 : ∑ γ ∈ hfin.toFinset, c γ = 1` using `(hasSum_sum_of_ne_finset_zero h0).unique hc1`. Establish `h2 : ∀ i, ∑' γ, φ γ * ((c γ * p i γ : ℝ) : ℂ) = ∑ γ ∈ hfin.toFinset, φ γ * ((c γ * p i γ : ℝ) : ℂ)` using `fun i => tsum_eq_sum fun γ hγ => by simp [h0 γ hγ]`. Establish `h3 : z - ∑ i, (∑' γ, φ γ * ((c γ * p i γ : ℝ) : ℂ)) * b i = ∑ γ ∈ hfin.toFinset, (c γ : ℂ) * (φ γ * (G γ - ∑ i, (p i γ : ℂ) * b i))`. Simplify using `only [h2, mul_sub, hG, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_mul, ← Complex.ofReal_sum, h1, Complex.ofReal_one, one_mul]`. Use `congr 1`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun γ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum (g := fun γ => c γ * ε) fun γ hγ => ?_).trans ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hφ, one_mul, Complex.norm_real, Real.norm_of_nonneg (hc0 γ)]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hε γ (by simpa using hγ)) (hc0 γ)`. Rewrite using `[← Finset.sum_mul, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_sum_tsum_le {Γ ι : Type*} [Fintype ι] {c : Γ → ℝ} (hc0 : ∀ γ, 0 ≤ c γ) (hc1 : HasSum c 1)
     (hfin : {γ | c γ ≠ 0}.Finite) {φ G : Γ → ℂ} (hφ : ∀ γ, ‖φ γ‖ = 1) {z : ℂ} (hG : ∀ γ, φ γ * G γ = z)
@@ -99,17 +97,17 @@ theorem norm_sub_sum_tsum_le {Γ ι : Type*} [Fintype ι] {c : Γ → ℝ} (hc0 
   · rw [← Finset.sum_mul, h1, one_mul]
 
 /- English proof (translation)
-Introduce `D ψ hψ S A B T o f hf ε hε`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Take `⟨-, a2, -, a4, -⟩` from `lattice_Mx D T.rank A.rank`. Take `⟨-, -, -, -, -, K, hK, hKc⟩` from `lattice_Mx D T.rank B.rank`. Establish `hFc : Continuous fun p : WO A T × WO B T => f ((o.resS T).symm p)` using `hf.cont.comp (o.continuous_resS_symm T)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hA, hB⟩` from `(GlobalTheory.T.thetaFunction_products_slices_orthogonalDecomposition D ψ hψ S A B T o).2.2.2 f hf`. Take `⟨χ, hχc, hχs, hχ0, hχ1⟩` from `GlobalTheory.RatPartition.exists_partition_one D A T`. Take `⟨n, a, π, hπ⟩` from `exists_slices _ hFc (C := tsupport χ) hχs hK hε`. Establish `hπ' : ∀ x ∈ tsupport χ, ∀ y, ‖f ((o.resS T).symm (x, y)) - ∑ i, (π i x : ℂ) * f ((o.resS T).symm (a i, y))‖ ≤ ε`. Introduce `x hx y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ, hγK⟩` from `hKc y`. Take `⟨γ₀, rfl⟩` from `mem_ratMx.1 hγ`. Establish `law : ∀ u, f ((o.resS T).symm (u, rat γ₀ + y)) = ψ (-(symplOH B T (ratW T B γ₀) y)) * f ((o.resS T).symm (u, y))` using `fun u => (hB u).quasi γ₀ y`. Establish `h` using `hπ x hx _ hγK`. Simplify using `only [law] at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_left_comm _ (ψ _)] at h`. Rewrite `h` using `[← Finset.mul_sum, ← mul_sub, norm_mul, hn, one_mul]`. Then use the resulting hypothesis. Establish `hper` using `fun i => GlobalTheory.T.poincareSeries_compactSupport_thetaLaw D ψ hψ A T (fun z => ((χ z * π i z : ℝ) : ℂ)) (Complex.continuous_ofReal.comp (hχc.mul (π i).continuous)) ((HasCompactSupport.mul_right (f' := fun z => π i z) hχs).comp_left Complex.ofReal_zero)`. Establish `hfin` using `(GlobalTheory.T.poincareSeries_compactSupport_thetaLaw D ψ hψ A T (fun z => ((χ z : ℝ) : ℂ)) (Complex.continuous_ofReal.comp hχc) (hχs.comp_left Complex.ofReal_zero)).1`. Use `⟨n, _, fun i v => f ((o.resS T).symm (a i, v)), fun i => (hper i).2.1, fun i γ u => (hper i).2.2 γ u, fun i => hB (a i), fun w => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨u, v⟩, rfl⟩` from `(o.resS T).symm.surjective w`. Rewrite using `[AddEquiv.apply_symm_apply]`. Use `norm_sub_sum_tsum_le (c := fun γ => χ (ratW T A γ + u)) (fun _ => hχ0 _) (hχ1 u) (by simpa using hfin u) (G := fun γ => f ((o.resS T).symm (ratW T A γ + u, v))) (fun _ => hn _) (fun γ => ?_) (fun i γ => π i (ratW T A γ + u)) _ fun γ hγ => hπ' _ (subset_tsupport _ hγ) v` and prove the remaining obligations. Establish `law` using `(hA v).quasi γ u`. Use `beta_reduce at law ⊢`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[law, ← mul_assoc, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_approx : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B T : HSp D) (o : OrthDec S A B)
     (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ ε : ℝ, 0 < ε → ∃ (n : ℕ) (P : Fin n → WO A T → ℂ) (g : Fin n → WO B T → ℂ),

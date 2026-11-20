@@ -16,17 +16,17 @@ namespace GlobalTheory.InertEigSat
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨C, a, xs, hC⟩` from `GlobalTheory.EigInert.heckeFunI_umax_sum Dv h0 hh0`. Use `set c := Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield D.host.E) v) h0 α₀ with hc`. Introduce `g hg`. Unfold `eigC at hg`. Use `Submodule.iSup_induction _ (motive := fun g => heckeFunI D.host.E D.R.nV (Umax D.host.E D.R.nV) Dv h0 ((P.M.loc i).real g) = c • (P.M.loc i).real g) hg ?_ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P' g' hg'`. Distinguish the cases in `hP' : D.naut.ptV i P' = some x`. Rewrite `hg'` using `[iSup_pos (show P' ∈ {P | D.naut.ptV i P = some x} from hP')]`. Take `⟨α', hα', hsv'⟩` from `GlobalTheory.EigInert.satParam hL D P i P' v w hov hns Dv`. Establish `hub : ubc D.R.nV (D.naut.satV i P' w) = ubc D.R.nV (D.naut.satV i P₀ w)`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h41i` using `(show Formalism.MainNotions.SumRepresentations.At.Conclusion41 D.nd D.naut i from h41 i).2.1 P' P₀ (by rw [hP']; simp) (by rw [hP', hP₀])`. Establish `hS : w ∉ D.nd.S i` using `fun hm => hns (D.nd.SQ_split i w (Or.inl hm))`. Establish `hQ : w ∉ D.nd.Q i` using `fun hm => hns (D.nd.SQ_split i w (Or.inr hm))`. Conclude with `(h41i.2 w hS hQ).2 hns`. Rewrite `hub` using `[hsv', hα₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW` using `GlobalTheory.T.satakeTransform_eq_of_unramifiedBaseChange_eq _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α' _ hub h0 hh0`. Rewrite using `[hc, ← hW]`. Establish `hmem : (P.M.loc i).real g' ∈ NG.isoTyp (P.H.av.rep i P').ρ (P.H.av.rep i P').S`. Establish `h2` using `hg'`. Rewrite `h2` using `[P.H.av.typeV]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Conclude with `GlobalTheory.T.isotypicFixedVector_isSatakeEigen_inertPlace _ _ (P.H.av.rep i P') v w hov Dv α' hα' _ hmem (hfix g') h0 hh0`. Rewrite `hg'` using `[iSup_neg (show P' ∉ {P | D.naut.ptV i P = some x} from hP')]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hg']`. Simplify using `[hC]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hC]`. Introduce `g1 g2 h1 h2`. Rewrite `h1`, `h2`, the goal using `[hC]`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem heckeFunI_eigC (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (h41 : Formalism.MainNotions.SumRepresentations.Conclusion41 D)
     (i : D.nd.Loc) (x : D.nd.X i) {w : HeightOneSpectrum (𝓞 D.host.E)} (hns : ¬ Formalism.BasicNotions.IsSplitPl D.host w)
@@ -74,7 +74,7 @@ theorem heckeFunI_eigC (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (
 open Formalism.IndefR Formalism.IndefR.Links in
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `⟨A.eW μ hμ j, A.real μ hμ j⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem real_cast {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     {X : GlobalTheory.NJoin.RealAt D cf nch tp} {M : MtFam D} {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r}
@@ -86,7 +86,7 @@ theorem real_cast {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D 
   exact ⟨A.eW μ hμ j, A.real μ hμ j⟩
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_eq_zero {D : D7} {μ : D.what₂.Tup} {a k : ℕ} (hk : a = k) (x : D.what₂.Mt μ a)
     (h : (hk ▸ x : D.what₂.Mt μ k) = 0) : x = 0 := by
@@ -97,9 +97,9 @@ open Formalism.BasicNotions.TH Formalism.IndefR Formalism.IndefR.Links Formalism
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨n, hB⟩` from `hβ`. Rewrite `hB` using `[one_pow]`. Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `GlobalTheory.DefLiftHecke.one_pow_notMem w 0`. Take `⟨hk, -⟩` from `GlobalTheory.LevOp.level_operators V β Λ 1 (flag1L L) hB w h1 hw`. Establish `h2` using `((GlobalTheory.SphLabelOps.label_operators V w).1 d R hR).2 _ (GlobalTheory.PRep.rightReg ℂ (GA D V) c.W) (c.ext f) fun k hkk => funext fun g => GlobalTheory.DefLiftHecke.ext_level c hc hf (hk k hkk).1 (hk k hkk).2 g`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `congrFun h2 g`. Establish `h4` using `GlobalTheory.DefLiftHecke.ext_hkF c hc w (Finsupp.single d 1) f g`. Rewrite `h4` using `[he, map_smul, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`. Rewrite `h3` using `[opOf, Finsupp.sum_single_index (by exact zero_smul _ _), one_smul, Finset.sum_apply, LinearMap.sum_apply, Finset.sum_apply]`. Conclude with `h3.trans h4.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ext {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is)
     {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsSDFrame V β Λ 1)
@@ -128,7 +128,7 @@ open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.L2.T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `have hC := X.given.core sum_ext (X.R.cV j) (hC.models.cV j) (hC.lev.βV j) (L := X.R.datVt j t) hG ((hC.models.HV j t).2.1.le (LinearMap.mem_range_self _ y)) hR c ((hh w hG _ y).symm.trans ((congrArg (X.R.HV j t).e hy).trans (map_smul _ _ _))) g`.
+A detailed English derivation is pending.
 -/
 theorem sum_extV {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (X : GlobalTheory.NJoin.RealAt D cf nch tp) (j : Fin D.R.m) (t : X.T) (h) (hh : IsOpsV X.R j t h)
@@ -143,19 +143,19 @@ theorem sum_extV {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D c
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hAF hL D P X hA h41 h7 htl i hμ j hj x hx f hf y hy hy0 h hops s hs w hG hin`. Establish `hn : (Formalism.IndefR.Links.Vc D j).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) j.2`. Establish `hns : ¬ Formalism.BasicNotions.IsSplitPl D.host w` using `GlobalTheory.T.not_isSplitPlace_of_inert_over_realSubfield D w hin`. Establish `hf0 : (hj ▸ f : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) ≠ 0` using `fun e => hy0 (X.hinj _ _ (by`. Rewrite using `[hy, cast_eq_zero hj f e, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val (map_zero (X.IL.jMt _ hμ j))))`. Choose the witnesses or unpack the hypotheses as in `⟨P₀, hP₀⟩ : ∃ P₀, D.naut.ptV i P₀ = some x := by`. Assume the negation of the conclusion as `hne`. Apply `hf0` to reduce the goal to its premises. Unfold `eigC at hf`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: (⨆ P ∈ {P | D.naut.ptV i P = some x}, D.naut.typeV i P) = ⊥` using `iSup_eq_bot.2 fun P' => iSup_eq_bot.2 fun hP' => absurd ⟨P', hP'⟩ hne`. Rewrite `hf` using `[this]`. Conclude with `(Submodule.mem_bot ℂ).1 hf`. Take `⟨v₀, Dv₀, hov₀⟩` from `GlobalTheory.T.exists_inertLocalDatum_at_inertPlace D hA.hF w hin`. Take `⟨α₀, -, hα₀⟩` from `GlobalTheory.EigInert.satParam hL D P i P₀ v₀ w hov₀ hns Dv₀`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P₀, hP₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`. Use `⟨α₀, hα₀, fun τ ϖ hU hc d t hd ht => ?_⟩` and prove the remaining obligations. Take `⟨v, Dv, hov, rfl, rfl, hq, he, hsupp⟩` from `exists_datum D.host.F hA.hF D.sp.cm.sig (fun _ => rfl) D.R.nV w hin τ ϖ hU hc`. Take `⟨R, hR, hop⟩` from `exists_sphOp hn (hA.stdV j) hin Dv hc he (triv_iff (hA.stdV j) hsupp) hd t ht`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix` using `GlobalTheory.T.operator_eigen_good_place_first hAF hL D P X hA h41 h7 htl i hμ j hj h hops w hG hin v hov`. Establish `k1` using `heckeFunI_eigC hL D P h41 i x hns hov Dv hfix P₀ hP₀ α₀ hα₀ _ (Formalism.UG.Final.DosetIndMem _ (Formalism.UG.KU Dv.σw D.R.nV) ℂ t) _ hf`. Rewrite `k1` using `[← hop _ _ (hfix _), hq]`. Establish `k2` using `sum_extV X j _ h hops hG hR y _ (hs w _ hG ⟨_, hR⟩)`. Take `⟨e, hreal⟩` from `real_cast hA hμ j _ hj (D.nd.j_range i).1 (D.nd.j_range i).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `k3 : ∑ γ ∈ R, NG.rt D.host.E D.R.nV γ ((P.M.loc i).real (hj ▸ f)) = s w (List.ofFn d) • (P.M.loc i).real (hj ▸ f)`. Use function extensionality and compare the values at `g`. Establish `k4` using `congrArg e (k2 ((hA.PV j).ψ ((hA.a j)⁻¹ * g)))`. Rewrite `k4` using `[Finset.sum_image (hA.PV j).inj.injOn, map_sum, map_smul, hy]`. Rewrite using `[Finset.sum_apply, Pi.smul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_congr rfl fun γ _ => ?_).trans (k4.trans (congrArg _ (hreal f g).symm))` and prove the remaining obligations. Use `(hreal f (g * γ)).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, map_mul]`. Establish `hne : (P.M.loc i).real (hj ▸ f) ≠ 0` using `fun e0 => hf0 ((P.M.loc i).real_inj (e0.trans (map_zero _).symm))`. Conclude with `smul_left_injective ℂ hne (k3.symm.trans k1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_eq_satU : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i), ∀ x ∈ ZgoodN D.nd D.naut i, ∀ f : D.what₂.Mt (D.nd.mu i) (j.1 + 1), (hj ▸ f : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) ∈ eigC D.nd D.naut i x → ∀ y, X.R.extV j (X.tupT (D.nd.mu i)) y = X.fn hμ j f → y ≠ 0 → ∀ h, GlobalTheory.Hk3.IsOpsV X.R j (X.tupT (D.nd.mu i)) h → ∀ (s : GlobalTheory.DownLift.Sys D), GlobalTheory.DownLift.IsEigV X.R j (X.tupT (D.nd.mu i)) h s y → ∀ w : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) w → Formalism.UG.IsInertAt D.host.F D.host.E (w.under (𝓞 D.host.F)) w → ∃ P₀, D.naut.ptV i P₀ = some x ∧ ∃ α₀ : Fin ((Formalism.IndefR.Links.Vc D j).rank / 2) → ℂ, D.naut.satV i P₀ w = Finset.univ.val.map α₀ ∧ ∀ (τ : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E) (ϖ : w.adicCompletion D.host.E), Formalism.UG.IsUnramInv ϖ τ (Formalism.UG.qV D.host.F (w.under (𝓞 D.host.F))) → GlobalTheory.LFun.IsConjAt D.sp.cm.sig (rfl : w.under (𝓞 D.host.F) = _) τ → ∀ (d : Fin (Formalism.IndefR.Links.Vc D j).rank → ℤ) (t' : Formalism.UG.GU τ (Formalism.IndefR.Links.Vc D j).rank), Antitone d → t'.1.1 = Matrix.diagonal (fun k => ϖ ^ d k) → s w (List.ofFn d) = Formalism.UG.SatU ϖ (Formalism.UG.qV D.host.F (w.under (𝓞 D.host.F))) (Formalism.UG.dosetInd ℂ (Formalism.UG.KU τ (Formalism.IndefR.Links.Vc D j).rank) t') α₀ := by
   intro hAF hL D P X hA h41 h7 htl i hμ j hj x hx f hf y hy hy0 h hops s hs w hG hin

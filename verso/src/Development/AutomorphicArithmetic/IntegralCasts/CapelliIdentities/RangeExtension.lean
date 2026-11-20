@@ -4,15 +4,15 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
 
 open AlgebraicGeometry CategoryTheory in
 /- English proof (translation)
-Use `haveI : IsAffine U.toScheme := hU`. Establish `hr : ∀ c : Spec A ⟶ X, (∀ z, c z ∈ U) → Set.range c ⊆ Set.range U.ι`. Introduce `c hc`. Introduce and unpack `_ ⟨z, rfl⟩`. Simplify using `using hc z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `a'` to `IsOpenImmersion.lift U.ι a (hr a ha)`. Set `b'` to `IsOpenImmersion.lift U.ι b (hr b hb)`. Establish `ha' : a' ≫ U.ι = a` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hb' : b' ≫ U.ι = b` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h' : Spec.map i ≫ a' = Spec.map i ≫ b'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono U.ι, Category.assoc, Category.assoc, ha', hb', h]`. Set `s` to `Spec.preimage (a' ≫ U.toScheme.isoSpec.hom)`. Set `t` to `Spec.preimage (b' ≫ U.toScheme.isoSpec.hom)`. Establish `hs : Spec.map s = a' ≫ U.toScheme.isoSpec.hom` using `Spec.map_preimage _`. Establish `ht : Spec.map t = b' ≫ U.toScheme.isoSpec.hom` using `Spec.map_preimage _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : s ≫ i = t ≫ i`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp, hs, ht, ← Category.assoc, ← Category.assoc, h']`. Establish `hm : Mono i` using `ConcreteCategory.mono_of_injective i hi`. Establish `h3 : s = t` using `(cancel_mono i).1 h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : a' = b'`. Rewrite using `[← cancel_mono U.toScheme.isoSpec.hom, ← hs, ← ht, h3]`. Rewrite using `[← ha', ← hb', h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Reformulated.B.RangeExtension.ext_aux {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
     {A B : CommRingCat.{0}} (i : A ⟶ B) (hi : Function.Injective i.hom)
@@ -44,15 +44,15 @@ private lemma UpperTheory.Reformulated.B.RangeExtension.ext_aux {X : Scheme.{0}}
 
 open AlgebraicGeometry CategoryTheory in
 /- English proof (translation)
-Establish `hi1 : Spec.map (X.presheaf.stalkSpecializes hp ≫ Scheme.stalkClosedPointTo ξ) ≫ X.fromSpecStalk p = ξ`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Generalize the expression as in `X.presheaf.stalkSpecializes hp ≫ Scheme.stalkClosedPointTo ξ = i at hinj hreg hi1`. Set `e : X.presheaf.stalk p ≃+* i.hom.range` to `RingEquiv.ofBijective i.hom.rangeRestrict ⟨fun a b hab => hinj (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : CommRingCat.of R ⟶ X.presheaf.stalk p, g ≫ i = CommRingCat.ofHom φ := by`. Use `⟨CommRingCat.ofHom (e.symm.toRingHom.comp (φ.codRestrict i.hom.range hreg)), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `congrArg Subtype.val (e.apply_symm_apply (φ.codRestrict i.hom.range hreg a))`. Establish `hi2 : Spec.map i ≫ Spec.map g ≫ x = ξ`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp_assoc, hg]`. Conclude with `hx`. Establish `key : Spec.map g ≫ x = X.fromSpecStalk p`. Use `UpperTheory.Reformulated.B.RangeExtension.ext_aux hU i hinj _ _ ?_ ?_ (hi2.trans hi1.symm)` and prove the remaining obligations. Introduce `z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hxU _`. Introduce `z`. Establish `hz : X.fromSpecStalk p z ∈ Set.range (X.fromSpecStalk p)` using `⟨z, rfl⟩`. Rewrite `hz` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open hz U.2 hpU`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hmem : p ∈ Set.range (X.fromSpecStalk p)` using `⟨_, Scheme.fromSpecStalk_closedPoint⟩`. Rewrite `hmem` using `[← key]`. Take `⟨z, hz⟩` from `hmem`. Conclude with `⟨Spec.map g z, by rw [← Scheme.Hom.comp_apply]; exact hz⟩`.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Reformulated.B.RangeExtension.finiteRing_sq_sub_mul_sq_eq_of_card {X : Scheme.{0}} {Ω : Type} [Field Ω]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens}
@@ -92,7 +92,7 @@ private lemma UpperTheory.Reformulated.B.RangeExtension.finiteRing_sq_sub_mul_sq
   exact ⟨Spec.map g z, by rw [← Scheme.Hom.comp_apply]; exact hz⟩
 
 /- English proof (translation)
-Introduce `X Ω _ ξ hξ U hU R _ φ x hx hxU q hqU hreg`. Conclude with `UpperTheory.Reformulated.B.RangeExtension.finiteRing_sq_sub_mul_sq_eq_of_card hU φ x hx hxU q.1 q.2 hqU (hξ.inj q) hreg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.RangeExtension.mem_range :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]

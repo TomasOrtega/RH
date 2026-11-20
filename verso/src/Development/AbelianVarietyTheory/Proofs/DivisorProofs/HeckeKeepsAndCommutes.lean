@@ -17,7 +17,7 @@ namespace GlobalTheory.HeckeOffLevel
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨x, hx, hQ⟩` from `hS _ hP`. Establish `hx' : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ PP.asIdeal` using `hx`. Use `⟨fun h => hQ (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) rfl (h ▸ hx'), fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `h _ hx'`. Conclude with `hQ c (e.trans ((D.sp.cm.fixed _).2 ⟨x, rfl⟩)) hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sep_of_offS {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {Q PP : HeightOneSpectrum (𝓞 D.host.E)}
     (hS : OffS D S Q) (hP : PP.under (𝓞 D.host.F) ∈ S) : PP ≠ Q ∧ ¬ Lev.IsConjPl PP Q := by
@@ -30,7 +30,7 @@ theorem sep_of_offS {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {Q PP : Hei
 variable {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
 
 /- English proof (translation)
-Introduce `k hk k' hk'`. Unfold `Lev.levChi`. Rewrite using `[MonoidHom.map_mul, ← Units.val_mul]`. Conclude with `congrArg Units.val ((levChar D.sp.cm V.gram β L).map_mul ⟨_, hk.2⟩ ⟨_, hk'.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levChi_mul : ∀ k ∈ Lev.levG V β L, ∀ k' ∈ Lev.levG V β L,
     Lev.levChi V β L (k * k') = Lev.levChi V β L k * Lev.levChi V β L k' := by
@@ -43,7 +43,7 @@ variable {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {N : ℕ}
   {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {Q : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ} {Rp : Finset (GA D V)}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SphericalOps.level_heckeLin levChi_mul (fun e f _ hi => ((GlobalTheory.LevSplit.lev_split V β Λ N L hB).2 Q e f hi hN hP).2.2) h hΦ`.
+A detailed English derivation is pending.
 -/
 theorem hasType_heckeLin (hB : Lev.IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal)
     (hP : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ Q ∧ ¬ Lev.IsConjPl PP Q)
@@ -53,15 +53,13 @@ theorem hasType_heckeLin (hB : Lev.IsBaseFrame V β Λ N) (hN : ((N : ℕ) : �
     (fun e f _ hi => ((GlobalTheory.LevSplit.lev_split V β Λ N L hB).2 Q e f hi hN hP).2.2) h hΦ
 
 /- English proof (translation)
-Establish `hT` using `hasType_heckeLin hB hN hP h hΦ`. Use `show Lev.actG0 V β L g0 _ = heckeLin V Rp (Lev.actG0 V β L g0 Φ)`. Unfold `Lev.actG0`. Use `split_ifs with hk`. Use `swap`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[LinearMap.map_zero]`. Establish `hκ` using `hk.choose_spec`. Generalize the expression as in `hk.choose = κ at hκ ⊢`. Take `⟨e, f, ϖ, α, -, hi, -, -, -, hJ, hχ, -, -, hR, -⟩` from `h`. Take `⟨a1, -, a3⟩` from `(GlobalTheory.LevSplit.lev_split V β Λ N (Lev.flagL L) hB).2 Q e f hi hN hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k₁, m₁, k₂, -, s₁, s₂, rfl⟩` from `a3 κ ⟨hκ.1, hκ.2.1, Subgroup.mem_top _⟩`. Establish `m₁' : k₁ ∈ Lev.levG V β L` using `(hJ k₁ s₁).2 ((a1 k₁ s₁).1 m₁)`. Establish `c₁` using `hχ k₁ m₁' s₁`. Establish `hff` using `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 Q e f hi).1`. Establish `hc : ∀ a, SuppF V f a → a * k₂ = k₂ * a` using `fun a ha => (GlobalTheory.IdemSupport.commute_of_suppF V (by rw [mul_sub, mul_one, hff, sub_self]) ha s₂).eq`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hc k₁ s₁, ← mul_assoc, hT k₁ m₁', c₁, one_mul]`. Use `show _ * ∑ γ ∈ Rp, _ = ∑ γ ∈ Rp, _`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations.
-
-Use `beta_reduce`. Rewrite using `[← mul_assoc (x * γ), hΦ k₁ m₁', c₁, one_mul, mul_assoc x, mul_assoc x, hc γ (hR γ hγ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actL_heckeLin (hB : Lev.IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal)
     (hP : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ Q ∧ ¬ Lev.IsConjPl PP Q)
@@ -93,13 +91,11 @@ theorem actL_heckeLin (hB : Lev.IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D
   rw [← mul_assoc (x * γ), hΦ k₁ m₁', c₁, one_mul, mul_assoc x, mul_assoc x, hc γ (hR γ hγ)]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hL _ i Q d Rp h`. Take `⟨c, hB⟩` from `hL.βW i`. Establish `hN : (((1 ^ c : ℕ) : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 Q.isPrime.ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.finS R) Q`. Take `⟨_, _, _, _, hS, -⟩` from `h`. Conclude with `hS`. Establish `hP : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → PP ≠ Q ∧ ¬ Lev.IsConjPl PP Q` using `by classical`. Introduce and unpack `PP (hP | hP)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sep_of_offS hS (by`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.finS`. Conclude with `Finset.mem_image.2 ⟨PP, hP, rfl⟩)`. Conclude with `absurd hP (Finset.notMem_empty _)`. Use `⟨fun σ U hU => ?_, fun g0 Φ hΦ => actL_heckeLin hB hN hP h g0 hΦ⟩` and prove the remaining obligations.
-
-Unfold `RealDat.Wall at hU ⊢`. Rewrite `hU`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`. Use `GlobalTheory.SphericalOps.isMultMap_heckeOn hU (fun k hk => ?_) fun v => hasType_heckeLin hB hN hP h (hU.lev v)` and prove the remaining obligations. Take `⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩` from `h`. Conclude with `(hc.1 k hk).1`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hecke_keeps_and_commutes : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.models_inf → ∀ (i : Fin D.R.m) (Q : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ) (Rp : Finset (GA D (Wc D i))), GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.IsHecke R i Q d Rp → (∀ σ, ∀ U ∈ R.Wall i σ, heckeOn (R.MW i σ) Rp U ∈ R.Wall i σ) ∧ ∀ (g0 : G0 R.Pg D.R.r) (Φ : GA D (Wc D i) → ℂ), Lev.HasType (Wc D i) (R.βW i) (R.datWp i R.triv) Φ → actL (Wc D i) (R.βW i) (R.datWp i R.triv) g0 (heckeLin (Wc D i) Rp Φ) = heckeLin (Wc D i) Rp (actL (Wc D i) (R.βW i) (R.datWp i R.triv) g0 Φ) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hL _ i Q d Rp h

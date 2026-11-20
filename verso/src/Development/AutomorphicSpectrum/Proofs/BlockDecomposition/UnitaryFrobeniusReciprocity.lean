@@ -29,7 +29,7 @@ theorem coeffMap_apply (ρ : Representation ℂ G V) (lam : Module.Dual ℂ V) (
     coeffMap ρ lam v g = lam (ρ g v) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `lam (ρ x (ρ g v)) = lam (ρ (x * g) v)`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffMap_equivariant (ρ : Representation ℂ G V) (lam : Module.Dual ℂ V) (g : G) (v : V) :
     coeffMap ρ lam (ρ g v) = rightReg ℂ G ℂ g (coeffMap ρ lam v) := by
@@ -38,11 +38,11 @@ theorem coeffMap_equivariant (ρ : Representation ℂ G V) (lam : Module.Dual �
   rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Set `S : Subrepresentation ρ` to `{ toSubmodule := LinearMap.ker (coeffMap ρ lam) apply_mem_toSubmodule := by`. Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[coeffMap_equivariant, hv, map_zero] }`. Break down `hρ.eq_bot_or_eq_top S with h | h` into its components or cases.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : LinearMap.ker (coeffMap ρ lam) = ⊥` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `LinearMap.ker_eq_bot.1 h1`. It suffices to derive a contradiction. Establish `h1 : LinearMap.ker (coeffMap ρ lam) = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Use `hlam (LinearMap.ext fun v => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : v ∈ LinearMap.ker (coeffMap ρ lam)` using `h1 ▸ Submodule.mem_top`. Establish `h3` using `congrFun (LinearMap.mem_ker.1 h2) 1`. Simplify `h3` using `[coeffMap_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeffMap_injective {ρ : Representation ℂ G V} (hρ : ρ.IsIrreducible) {lam : Module.Dual ℂ V}
     (hlam : lam ≠ 0) : Function.Injective (coeffMap ρ lam) := by
@@ -69,11 +69,11 @@ section U
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, (((t * u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i`. Introduce `i`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hu.2 i, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hj`. Rewrite using `[ht i j (Ne.symm hj), zero_mul]`. Simplify using the standard rewrite rules. Unfold `chiDeltaU`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hi`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chiDeltaU_mul_uni {m : ℕ} (q : ℕ) (α : Fin m → ℂ) {t u : GU σ n}
     (ht : IsDiagM (t : GL (Fin n) L)) (hu : IsUniM (u : GL (Fin n) L)) :
@@ -96,7 +96,7 @@ theorem chiDeltaU_mul_uni {m : ℕ} (q : ℕ) (α : Fin m → ℂ) {t u : GU σ 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `h : ρ u w - w ∈ jacU ρ` using `Submodule.subset_span ⟨u, hu, w, rfl⟩`. Establish `h0` using `hJ _ h`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem form_uni {ρ : Representation ℂ (GU σ n) V} {lam : Module.Dual ℂ V}
     (hJ : ∀ x ∈ jacU ρ, lam x = 0) {u : GU σ n} (hu : IsUniM (u : GL (Fin n) L)) (w : V) :
@@ -106,7 +106,7 @@ theorem form_uni {ρ : Representation ℂ (GU σ n) V} {lam : Module.Dual ℂ V}
   rwa [map_sub, sub_eq_zero] at h0
 
 /- English proof (translation)
-Introduce `b g hb`. Take `⟨t, u, ht, hu, rfl⟩` from `hsplit L σ n hσ b hb`. Rewrite using `[chiDeltaU_mul_uni q _ ht hu, coeffMap_apply, coeffMap_apply, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hT t ht, form_uni hJ hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffMap_mem (hsplit : BorelSplitU) (hσ : ∀ x, σ (σ x) = x) {q : ℕ} {β : Fin (n / 2) → ℂˣ}
     {ρ : Representation ℂ (GU σ n) V} {lam : Module.Dual ℂ V} (hJ : ∀ x ∈ jacU ρ, lam x = 0)
@@ -121,13 +121,11 @@ theorem coeffMap_mem (hsplit : BorelSplitU) (hσ : ∀ x, σ (σ x) = x) {q : �
 end U
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n V _ _ ρ α hU _ hIrr hSat β lam hJ hlam hT`. Establish `hmem` using `coeffMap_mem hsplit hU.1 hJ hT`. Establish `hinj` using `coeffMap_injective hIrr hlam`. Establish `heq` using `coeffMap_equivariant ρ lam`. Use `⟨?_, (coeffMap ρ lam).codRestrict (psSpaceU σ q β) hmem, ?_, fun g v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v₀, hv₀⟩` from `hSat.exists_vec`. Establish `h0 : coeffMap ρ lam v₀ ≠ 0` using `fun h => hv₀.1 (hinj (h.trans (map_zero _).symm))`. Establish `hα : IsSatVecU ϖ q (rightReg ℂ _ ℂ) (coeffMap ρ lam v₀) α` using `hv₀.map hU _ heq h0`. Establish `hsph : IsSphericalU q (fun i => (β i : ℂ)) (coeffMap ρ lam v₀)`. Introduce `b g k hb hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : coeffMap ρ lam v₀ (b * g * k) = coeffMap ρ lam v₀ (b * g)`. Rewrite using `[coeffMap_apply, coeffMap_apply, map_mul (ρ) (b * g) k, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hv₀.2.1 k hk]`. Rewrite using `[h1]`. Conclude with `hmem v₀ b g hb`. Conclude with `hα.unique hU (isSatVecU_of_isSphericalU hU hsph h0)`.
-
-Introduce `a b hab`. Conclude with `hinj (congrArg Subtype.val hab)`. Conclude with `Subtype.ext (heq g v)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frobU_of_split (hsplit : BorelSplitU) : FrobU := by
   intro L _ _ _ ϖ σ q n V _ _ ρ α hU _ hIrr hSat β lam hJ hlam hT
@@ -151,7 +149,7 @@ theorem frobU_of_split (hsplit : BorelSplitU) : FrobU := by
   · exact Subtype.ext (heq g v)
 
 /- English proof (translation)
-The claim follows from `frobU_of_split GlobalTheory.T.unitary_borel_splitting`.
+A detailed English derivation is pending.
 -/
 theorem frobU : FrobU := frobU_of_split GlobalTheory.T.unitary_borel_splitting
 

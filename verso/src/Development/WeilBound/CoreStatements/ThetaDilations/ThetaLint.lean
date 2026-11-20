@@ -15,9 +15,9 @@ noncomputable section
 namespace PositivityTheory.PlacePermOperatorBicommutantSpan
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ μ 𝓕 hμ h𝓕 n S Φ hΦ`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB n M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∀ X, Measurable fun h : HA (AF F) σ J => actW (AF F) σ J h⁻¹ X` using `fun X => ((hact n).1.comp (continuous_inv.prodMk continuous_const)).measurable`. Establish `: Countable E` using `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.symm.toEquiv`. Rewrite using `[thetaMeas, lintegral_smul_measure, lintegral_sum_measure, smul_eq_mul, lintegral_tsum (f := fun (X : S) h => Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1))) fun X => (hΦ.comp (hm _)).aemeasurable]`. Simplify using `only [lintegral_map hΦ (hm _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem theta_lint : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ (n : ℕ) (S : Set (Fin n → Fin M → E)) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞), Measurable Φ → ∫⁻ X, Φ X ∂(thetaMeas σ J μ 𝓕 S) = (μ 𝓕)⁻¹ * ∫⁻ h in 𝓕, ∑' X : S, Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) ∂μ := by
   intro F E _ _ _ _ _ σ hcm M J hJ μ 𝓕 hμ h𝓕 n S Φ hΦ
@@ -34,15 +34,15 @@ theorem theta_lint : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   simp only [lintegral_map hΦ (hm _)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ μ 𝓕 hμ h𝓕 n S Φ hΦ hint`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB n M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∀ X, Measurable fun h : HA (AF F) σ J => actW (AF F) σ J h⁻¹ X` using `fun X => ((hact n).1.comp (continuous_inv.prodMk continuous_const)).measurable`. Establish `: Countable E` using `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.symm.toEquiv`. Establish `hfin` using `((GlobalTheory.T.unitary_group_finite_volume F E σ hcm M J hJ).2 μ hμ).2 𝓕 h𝓕`. Establish `hi : (μ 𝓕)⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 hfin.ne`. Establish `: μ.IsHaarMeasure` using `hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `(GlobalTheory.T.arithmetic_unitary_group_discrete F E σ hcm M J hJ).1`. Establish `h𝓕' : IsFundamentalDomain Γ 𝓕 μ` using `h𝓕`. Establish `h0` using `(GlobalTheory.T.finite_covolume_unimodular (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin).1`. Establish `h1` using `hint.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hasFiniteIntegral_iff_enorm, theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 n S _ hΦ.enorm, lintegral_tsum (f := fun (X : S) h => ‖Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1))‖ₑ) fun X => (hΦ.enorm.comp (hm _)).aemeasurable]`. Establish `h2` using `(ENNReal.lt_top_of_mul_ne_top_right h1.ne hi).ne`. Rewrite `hint` using `[thetaMeas, integrable_smul_measure hi (ENNReal.inv_ne_top.2 h0)]`. Rewrite using `[thetaMeas, integral_smul_measure, integral_sum_measure hint, meanC, ENNReal.toReal_inv]`. Simplify using `only [integral_map (hm _).aemeasurable hΦ.aestronglyMeasurable]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg _ (integral_tsum (fun X => (hΦ.comp (hm _)).aestronglyMeasurable) h2)`.
+A detailed English derivation is pending.
 -/
 theorem theta_int : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ (n : ℕ) (S : Set (Fin n → Fin M → E)) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ), Measurable Φ → Integrable Φ (thetaMeas σ J μ 𝓕 S) → meanC μ 𝓕 (thetaS F E σ M J Φ S) = ∫ X, Φ X ∂(thetaMeas σ J μ 𝓕 S) := by
   intro F E _ _ _ _ _ σ hcm M J hJ μ 𝓕 hμ h𝓕 n S Φ hΦ hint
@@ -71,7 +71,7 @@ theorem theta_int : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   exact congrArg _ (integral_tsum (fun X => (hΦ.comp (hm _)).aestronglyMeasurable) h2)
 
 /- English proof (translation)
-Take `⟨γ, g, -, e⟩` from `γ`. Use `⟨fun a => g.val *ᵥ X a, funext fun a => funext fun i => ?_⟩` and prove the remaining obligations. Establish `e' : (HA.mat (AF F) σ J γ).val = g.val.map (inclR (AF F))` using `(congrArg Units.val e).symm`. Simplify using `only [actW, actTup, e', ratTup, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem act_rat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {M n : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (γ : HFinIn (AF F) σ J) (X : Fin n → Fin M → E) :
@@ -82,21 +82,21 @@ theorem act_rat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {
   simp only [actW, actTup, e', ratTup, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ μ 𝓕 hμ h𝓕 n T`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, hg⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB n M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ac, a1, a2, ag⟩` from `hact n`. Establish `hrat` using `(GlobalTheory.T.gram_matrix_local_global F E σ hcm M J hJ n 0 T).2`. Establish `hl` using `theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 n {X | gramE σ J X = T}`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`. Establish `hri : Function.Injective (ratTup (F` using `F) (AF F) : (Fin n → Fin M → E) → _) := fun X Y h =>`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun a => funext fun i => hinj (congrFun (congrFun h a) i)`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `hm : Measurable (actW (AF F) σ J h : (Fin n → Fin M → _) → _)` using `(ac.comp (continuous_const.prodMk continuous_id)).measurable`. Establish `hfin` using `((GlobalTheory.T.unitary_group_finite_volume F E σ hcm M J hJ).2 μ hμ).2 𝓕 h𝓕`. Establish `: μ.IsHaarMeasure` using `hμ`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `(GlobalTheory.T.arithmetic_unitary_group_discrete F E σ hcm M J hJ).1`. Establish `h𝓕' : IsFundamentalDomain Γ 𝓕 μ` using `h𝓕`. Take `⟨-, _, -⟩` from `GlobalTheory.T.finite_covolume_unimodular (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin`. Use `Measure.ext_of_lintegral _ fun Φ hΦ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_map hΦ hm, hl (fun X => Φ (actW (AF F) σ J h X)) (hΦ.comp hm), hl _ hΦ]`. Use `congr 1`. Use `set f : HA (AF F) σ J → ℝ≥0∞ := fun g => ∑' X : {X | gramE σ J X = T}, Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) with hf`. Establish `hle : ∀ (γ : Γ) g, f (γ • g) ≤ f g` using `fun γ g => by choose t ht using fun X : {X | gramE σ J X = T} => act_rat (n := n) γ⁻¹ X.1`. Establish `ht' : ∀ X, actW (AF F) σ J (γ : HA (AF F) σ J)⁻¹ (ratTup (AF F) X.1) = ratTup (AF F) (t X)` using `ht`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ X, gramE σ J (t X) = T` using `fun X => Matrix.map_injective hinj (by simp only [← hrat, ← ht', ag]; rw [hrat, X.2])`. Establish `hti : Function.Injective fun X => (⟨t X, hT X⟩ : {X | gramE σ J X = T})` using `fun X Y e => by`. Establish `h1` using `congrArg (actW (AF F) σ J γ) ((ht' X).trans ((congrArg (fun Z => ratTup (AF F) Z.1) e).trans (ht' Y).symm))`. Simplify using `only [← a2, mul_inv_cancel, a1] at h1`. Conclude with `Subtype.ext (hri h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (le_of_eq (tsum_congr fun X => ?_)) (ENNReal.tsum_comp_le_tsum_of_injective hti _)` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul, mul_inv_rev, a2, ht']`. Establish `hinv : ∀ (γ : Γ) g, f (γ • g) = f g` using `fun γ g => (hle γ g).antisymm (by simpa using hle γ⁻¹ (γ • g))`. Establish `hD` using `h𝓕'.preimage_of_equiv (measurePreserving_mul_right μ h).quasiMeasurePreserving (e := id) Function.bijective_id fun γ g => (mul_assoc _ _ _)`. Rewrite using `[h𝓕'.setLIntegral_eq hD f hinv, ← (measurePreserving_mul_right μ h).setLIntegral_comp_preimage_emb (measurableEmbedding_mulRight _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hf, mul_inv_rev, ← a2, mul_inv_cancel_left]`. Establish `hc : MeasurableSet {X : Fin n → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = T.map (inclR (AF F))}ᶜ` using `(isClosed_eq (hg n M J) continuous_const).measurableSet.compl`. Rewrite using `[← lintegral_indicator_one hc, hl _ (measurable_one.indicator hc)]`. Establish `e : ∀ (h : HA (AF F) σ J) (X : {X | gramE σ J X = T}), Set.indicator {X : Fin n → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = T.map (inclR (AF F))}ᶜ (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞) (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1)) = 0` using `fun h X => Set.indicator_of_notMem (Set.notMem_compl_iff.2 (by rw [Set.mem_setOf_eq, ag, hrat, X.2])) _`. Simplify using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E), (∀ h : HA (AF F) σ J, (thetaMeas σ J μ 𝓕 {X | gramE σ J X = T}).map (actW (AF F) σ J h) = thetaMeas σ J μ 𝓕 {X | gramE σ J X = T}) ∧ thetaMeas σ J μ 𝓕 {X | gramE σ J X = T} {X | gramR (AF F) σ J X = T.map (inclR (AF F))}ᶜ = 0 := by
   intro F E _ _ _ _ _ σ hcm M J hJ μ 𝓕 hμ h𝓕 n T

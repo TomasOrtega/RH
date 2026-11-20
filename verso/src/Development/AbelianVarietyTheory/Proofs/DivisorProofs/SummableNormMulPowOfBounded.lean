@@ -32,7 +32,7 @@ def bdd (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] :
     exact ⟨a, fun n => by simpa using ha n⟩
 
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => ?_) ((summable_geometric_of_lt_one (norm_nonneg π) hπ).mul_left b)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_right (hb n) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_norm_mul_pow_of_bounded {π : C} (hπ : ‖π‖ < 1) {a : ℕ → C} {b : ℝ} (hb : ∀ n, ‖a n‖ ≤ b) :
     Summable fun n => ‖a n * π ^ n‖ := by
@@ -42,7 +42,7 @@ theorem summable_norm_mul_pow_of_bounded {π : C} (hπ : ‖π‖ < 1) {a : ℕ 
   exact mul_le_mul_of_nonneg_right (hb n) (by positivity)
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Φ.2`. Conclude with `summable_norm_mul_pow_of_bounded hπ hb`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem summable_norm_bdd {π : C} (hπ : ‖π‖ < 1) (Φ : bdd C) :
     Summable fun n => ‖coeff n (Φ : PowerSeries C) * π ^ n‖ := by
@@ -73,7 +73,7 @@ noncomputable def ev [CompleteSpace C] {π : C} (hπ : ‖π‖ < 1) : bdd C →
 
 omit [IsUltrametricDist C] in
 /- English proof (translation)
-Rewrite using `[sub_mul, map_sub, coeff_C_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_zero_lin (π : C) (G : PowerSeries C) :
     coeff 0 ((X - PowerSeries.C π) * G) = -(π * coeff 0 G) := by
@@ -82,7 +82,7 @@ theorem coeff_zero_lin (π : C) (G : PowerSeries C) :
 
 omit [IsUltrametricDist C] in
 /- English proof (translation)
-Rewrite using `[sub_mul, map_sub, coeff_C_mul, coeff_succ_X_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_succ_lin (π : C) (G : PowerSeries C) (n : ℕ) :
     coeff (n + 1) ((X - PowerSeries.C π) * G) = coeff n G - π * coeff (n + 1) G := by
@@ -96,7 +96,7 @@ noncomputable def lin (π : C) : bdd C :=
     · rw [coeff_C]; split_ifs <;> simp⟩⟩
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (fun Φ : bdd C => coeff 1 (Φ : PowerSeries C)) h` as an intermediate fact. Simplify using `[lin, coeff_C, coeff_X] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lin_ne_zero (π : C) : lin π ≠ 0 := by
   intro h
@@ -104,9 +104,9 @@ theorem lin_ne_zero (π : C) : lin π ≠ 0 := by
   simp [lin, coeff_C, coeff_X] at this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑' n, coeff n (X - PowerSeries.C π : PowerSeries C) * π ^ n = 0`. Rewrite using `[tsum_eq_sum (s := Finset.range 2)]`. Simplify using `[Finset.sum_range_succ, coeff_C, coeff_X]`. Introduce `n hn`. Establish `h0 : n ≠ 0` using `by rintro rfl; simp at hn`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : n ≠ 1` using `by rintro rfl; simp at hn`. Simplify using `[coeff_C, coeff_X, h0, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ev_lin [CompleteSpace C] {π : C} (hπ : ‖π‖ < 1) : ev hπ (lin π) = 0 := by
   change ∑' n, coeff n (X - PowerSeries.C π : PowerSeries C) * π ^ n = 0
@@ -118,19 +118,19 @@ theorem ev_lin [CompleteSpace C] {π : C} (hπ : ‖π‖ < 1) : ev hπ (lin π)
     simp [coeff_C, coeff_X, h0, h1]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Φ.2`. Establish `hs : ∀ m, Summable fun k => ‖coeff (k + m) (Φ : PowerSeries C) * π ^ k‖` using `fun m => summable_norm_mul_pow_of_bounded hπ (a := fun k => coeff (k + m) (Φ : PowerSeries C)) (fun k => hb _)`. Set `g : ℕ → C` to `fun m => ∑' k, coeff (k + m) (Φ : PowerSeries C) * π ^ k`. Establish `hg : ∀ m, g m = coeff m (Φ : PowerSeries C) + π * g (m + 1)`. Introduce `m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [g]`. Rewrite using `[(hs m).of_norm.tsum_eq_zero_add, ← tsum_mul_left]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `tsum_congr fun k => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show k + 1 + m = k + (m + 1) by ring]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg0 : g 0 = 0` using `h`. Establish `hgb : ∀ m, ‖g m‖ ≤ ∑' k, b * ‖π‖ ^ k`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `tsum_of_norm_bounded ((summable_geometric_of_lt_one (norm_nonneg π) hπ).mul_left b).hasSum fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_right (hb _) (by positivity)`. Use `⟨⟨PowerSeries.mk fun n => g (n + 1), ⟨_, fun n => by rw [coeff_mk]; exact hgb _⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Φ : PowerSeries C) = (X - PowerSeries.C π) * PowerSeries.mk fun n => g (n + 1)`. Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[coeff_zero_lin, coeff_mk]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hg 0` as an intermediate fact. Rewrite `this` using `[hg0]`. Take the linear combination `-this`. Consider the case `succ n`. Rewrite using `[coeff_succ_lin, coeff_mk, coeff_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hg (n + 1)`.
+A detailed English derivation is pending.
 -/
 theorem lin_dvd [CompleteSpace C] {π : C} (hπ : ‖π‖ < 1) (Φ : bdd C) (h : ev hπ Φ = 0) :
     lin π ∣ Φ := by
@@ -170,13 +170,13 @@ theorem lin_dvd [CompleteSpace C] {π : C} (hπ : ‖π‖ < 1) (Φ : bdd C) (h 
     linear_combination -hg (n + 1)
 
 /- English proof (translation)
-Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans (hb 0)`. Establish `key : ∀ k m, ‖coeff m G‖ ≤ max b (‖π‖ ^ k * c)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using Or.inr (hc m)`. Consider the case `succ k ih`. Introduce `m`. Establish `e : coeff m G = coeff (m + 1) ((X - PowerSeries.C π) * G) + π * coeff (m + 1) G`. Rewrite using `[coeff_succ_lin]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((hb _).trans (le_max_left _ _)) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `(mul_le_mul_of_nonneg_left (ih (m + 1)) (norm_nonneg _)).trans ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_max_of_nonneg _ _ (norm_nonneg _)]`. Use `max_le_max (mul_le_of_le_one_left hb0 hπ.le) (le_of_eq (by ring))` and prove the remaining obligations. Establish `ht : Tendsto (fun k : ℕ => max b (‖π‖ ^ k * c)) atTop (𝓝 (max b (0 * c)))` using `tendsto_const_nhds.max ((tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hπ).mul_const c)`. Rewrite `ht` using `[zero_mul, max_eq_left hb0]`. Conclude with `ge_of_tendsto' ht fun k => key k m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_of_lin_mul {π : C} (hπ : ‖π‖ < 1) {G : PowerSeries C} {b c : ℝ}
     (hc : ∀ n, ‖coeff n G‖ ≤ c) (hb : ∀ n, ‖coeff n ((X - PowerSeries.C π) * G)‖ ≤ b) (m : ℕ) :
@@ -202,9 +202,9 @@ theorem bound_of_lin_mul {π : C} (hπ : ‖π‖ < 1) {G : PowerSeries C} {b c 
   exact ge_of_tendsto' ht fun k => key k m
 
 /- English proof (translation)
-Proceed by induction on `n generalizing m with`. Consider the case `zero => simpa using hb m`. Consider the case `succ n ih`. Use `ih (fun j => ?_) m` and prove the remaining obligations. Take `⟨c, hc⟩` from `(lin π ^ n * G).2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `bound_of_lin_mul hπ hc (fun i => ?_) j` and prove the remaining obligations. Use `hb i` as an intermediate fact. Rewrite `this` using `[pow_succ', mul_assoc, Subring.coe_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem bound_of_lin_pow_mul {π : C} (hπ : ‖π‖ < 1) {b : ℝ} (n : ℕ) (G : bdd C)
     (hb : ∀ m, ‖coeff m ((lin π ^ n * G : bdd C) : PowerSeries C)‖ ≤ b) (m : ℕ) :
@@ -219,13 +219,13 @@ theorem bound_of_lin_pow_mul {π : C} (hπ : ‖π‖ < 1) {b : ℝ} (n : ℕ) (
     rwa [pow_succ', mul_assoc, Subring.coe_mul] at this
 
 /- English proof (translation)
-Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans (hb 0)`. Proceed by induction on `n generalizing m with`. Consider the case `zero => simpa using hb m`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_assoc]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `m with`. Consider the case `zero`. Rewrite using `[coeff_zero_lin, norm_neg, norm_mul]`. Use `(mul_le_mul_of_nonneg_left (ih 0) (norm_nonneg _)).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Nat.sub_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ m`. Rewrite using `[coeff_succ_lin, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Simplify using `using ih m`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[norm_neg, norm_mul]`. Use `(mul_le_mul_of_nonneg_left (ih (m + 1)) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ']`. Use `mul_le_mul_of_nonneg_right ?_ hb0` and prove the remaining obligations. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hπ.le (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem decay {π : C} (hπ : ‖π‖ < 1) {b : ℝ} {G : PowerSeries C} (hb : ∀ m, ‖coeff m G‖ ≤ b)
     (n m : ℕ) : ‖coeff m ((X - PowerSeries.C π) ^ n * G)‖ ≤ ‖π‖ ^ (n - m) * b := by
@@ -250,11 +250,11 @@ theorem decay {π : C} (hπ : ‖π‖ < 1) {b : ℝ} {G : PowerSeries C} (hb : 
         exact pow_le_pow_of_le_one (norm_nonneg _) hπ.le (by omega)
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Φ.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`. Establish `key : ∀ n, ‖coeff m (Φ : PowerSeries C)‖ ≤ ‖π‖ ^ n * b`. Introduce `n`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨G, hG⟩` from `h (n + m)`. Establish `h1` using `bound_of_lin_pow_mul hπ (n + m) G (by rw [← hG]; exact hb)`. Establish `h2` using `decay hπ h1 (n + m) m`. Rewrite `h2` using `[Nat.add_sub_cancel]`. Rewrite using `[hG]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `ht : Tendsto (fun k : ℕ => ‖π‖ ^ k * b) atTop (𝓝 (0 * b))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hπ).mul_const b`. Rewrite `ht` using `[zero_mul]`. Use `ge_of_tendsto' ht key` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dvd {π : C} (hπ : ‖π‖ < 1) (Φ : bdd C) (h : ∀ n, lin π ^ n ∣ Φ) :
     Φ = 0 := by
@@ -276,7 +276,7 @@ theorem eq_zero_of_forall_dvd {π : C} (hπ : ‖π‖ < 1) (Φ : bdd C) (h : �
   simpa using this
 
 /- English proof (translation)
-Use `⟨bdd C, ev hπ, lin π, fun _ => Iff.rfl, fun _ => rfl, lin_ne_zero π, fun Φ => ⟨lin_dvd hπ Φ, ?_⟩, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨G, rfl⟩`. Rewrite using `[map_mul, ev_lin, zero_mul]`. Assume the negation of the conclusion as `hc push_neg at hc`. Conclude with `hΦ (eq_zero_of_forall_dvd hπ Φ hc)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem main (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C]
     (π : C) (hπ : ‖π‖ < 1) :

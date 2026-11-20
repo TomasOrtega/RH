@@ -14,9 +14,9 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Use `⟨T.symm, fun o φ ψ e => ?_⟩` and prove the remaining obligations. Establish `hm : act o (T.symm φ : Sm E N) ∈ V` using `hV o _ (T.symm φ).2`. Establish `h1` using `hT o (T.symm φ) ⟨_, hm⟩ rfl`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, ← e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : T ⟨_, hm⟩ = ψ` using `Subtype.ext h1`. Rewrite using `[← h2, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoV_symm' {V V' : Submodule ℂ (Sm E N)} (hV : IsStable V) (h : SpectralAccumulation.IsoV V V') : SpectralAccumulation.IsoV V' V := by
   obtain ⟨T, hT⟩ := h
@@ -28,7 +28,7 @@ theorem isoV_symm' {V V' : Submodule ℂ (Sm E N)} (hV : IsStable V) (h : Spectr
   rw [← h2, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Take `⟨T', hT'⟩` from `h'`. Conclude with `⟨T.trans T', fun o φ ψ e => hT' o (T φ) (T ψ) (hT o φ ψ e)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isoV_trans' {U V V' : Submodule ℂ (Sm E N)} (h : SpectralAccumulation.IsoV U V) (h' : SpectralAccumulation.IsoV V V') : SpectralAccumulation.IsoV U V' := by
   obtain ⟨T, hT⟩ := h

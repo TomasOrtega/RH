@@ -3,19 +3,19 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.NormLtOne
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Rewrite `hx` using `[not_lt]`. Establish `hx0 : y a ≠ 0`. Introduce `h`. Rewrite `hx` using `[h, norm_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hx (by norm_num)`. Establish `hu : ‖(y a)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hx`. Establish `hint : IsIntegral ℚ_[l] (y a)⁻¹` using `Algebra.IsIntegral.isIntegral _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : (minpoly ℚ_[l] (y a)⁻¹).Monic` using `minpoly.monic hint`. Establish `hc : ∀ n, ‖(minpoly ℚ_[l] (y a)⁻¹).coeff n‖ ≤ 1`. Rewrite using `[← spectralValue_le_one_iff hmon]`. Conclude with `hu`. Establish `hz` using `minpoly.aeval ℚ_[l] (y a)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Generalize the expression as in `minpoly ℚ_[l] (y a)⁻¹ = P at hmon hc hz`. Rewrite `hz` using `[Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hmon.coeff_natDegree, one_smul]`. Set `c : ℕ → ℤ_[l]` to `fun i => ⟨P.coeff i, hc i⟩`. Establish `hr : (∑ i ∈ Finset.range P.natDegree, algebraMap O R (algebraMap ℤ_[l] O (c i)) * a ^ (P.natDegree - i)) ∈ IsLocalRing.maximalIdeal R`. Use `Ideal.sum_mem _ fun i hi => Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ ha _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hunit` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ (neg_mem hr)`. Apply `(hunit.map y).ne_zero` to reduce the goal to its premises. Establish `hz'` using `congrArg (· * y a ^ P.natDegree) hz`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_mul, add_mul, Finset.sum_mul] at hz'`. Rewrite `hz'` using `[← mul_pow, inv_mul_cancel₀ hx0, one_pow]`. Rewrite using `[sub_neg_eq_add, map_add, map_one, map_sum, add_comm, ← hz']`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hi'` using `(Finset.mem_range.mp hi).le`. Rewrite using `[map_mul, map_pow, AlgHom.commutes, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), Algebra.smul_def, mul_assoc, pow_sub₀ _ hx0 hi', inv_pow, mul_comm (y a ^ P.natDegree)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem norm_lt_one {l : ℕ} [Fact l.Prime] {O R : Type} [CommRing O] [Algebra ℤ_[l] O]
     [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] [CommRing R] [IsLocalRing R] [Algebra O R]

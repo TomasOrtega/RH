@@ -7,17 +7,17 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `hs : ∀ p ∈ s, 2 ≤ p` using `fun p hp => hS p (Finset.mem_insert_of_mem hp)`. Establish `ha2 : 2 ≤ a` using `hS a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `has : a ∉ s` using `fun h => lt_irrefl a (ha a h)`. Establish `hsub : s ⊆ Finset.Ico 2 a` using `fun p hp => Finset.mem_Ico.mpr ⟨hs p hp, ha p hp⟩`. Establish `hcard : s.card + 2 ≤ a`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Nat.card_Ico]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hc : (insert a s).card = s.card + 1` using `by simp [has]`. Rewrite using `[Finset.prod_insert has, hc]`. Use `push_cast`. Establish `ih'` using `ih hs`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `ha0 : (0 : ℝ) < a` using `by exact_mod_cast (show 0 < a by omega)`. Establish `ha' : (s.card : ℝ) + 2 ≤ a` using `by exact_mod_cast hcard`. Establish `hk : (0 : ℝ) < (s.card : ℝ) + 1` using `by positivity`. Establish `hpos : (0 : ℝ) ≤ 1 - 1 / (a : ℝ)`. Establish `h1 : (1 : ℝ) / a ≤ 1` using `by rw [div_le_one ha0]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (1 - 1 / (a : ℝ)) * (1 / ((s.card : ℝ) + 1)) - 1 / ((s.card : ℝ) + 1 + 1) = ((a : ℝ) - ((s.card : ℝ) + 2)) / ((a : ℝ) * ((s.card : ℝ) + 1) * ((s.card : ℝ) + 2))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 0 ≤ ((a : ℝ) - ((s.card : ℝ) + 2)) / ((a : ℝ) * ((s.card : ℝ) + 1) * ((s.card : ℝ) + 2))` using `div_nonneg (by linarith) (by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e3 : (1 - 1 / (a : ℝ)) * (1 / ((s.card : ℝ) + 1)) ≤ (1 - 1 / (a : ℝ)) * ∏ p ∈ s, (1 - 1 / (p : ℝ))` using `mul_le_mul_of_nonneg_left ih' hpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem prod_one_sub_inv_ge_inv_card_succ (S : Finset ℕ) (hS : ∀ p ∈ S, 2 ≤ p) :
     1 / ((S.card : ℝ) + 1) ≤ ∏ p ∈ S, (1 - 1 / (p : ℝ)) := by
@@ -55,7 +55,7 @@ theorem prod_one_sub_inv_ge_inv_card_succ (S : Finset ℕ) (hS : ∀ p ∈ S, 2 
     linarith
 
 /- English proof (translation)
-Use `haveI : NeZero (q₁ * q) := ⟨mul_ne_zero (NeZero.ne q₁) (NeZero.ne q)⟩`. Use extensionality with `a`. Rewrite using `[DirichletCharacter.changeLevel_eq_cast_of_dvd, DirichletCharacter.changeLevel_eq_cast_of_dvd, ZMod.cast_eq_val, ZMod.cast_eq_val]`. Conclude with `h _ (ZMod.val_coe_unit_coprime a)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem changeLevel_eq_of_agree_coprime {q₁ q : ℕ} [NeZero q₁] [NeZero q] (χ₁ : DirichletCharacter ℂ q₁)
     (χ : DirichletCharacter ℂ q)
@@ -69,9 +69,9 @@ theorem changeLevel_eq_of_agree_coprime {q₁ q : ℕ} [NeZero q₁] [NeZero q] 
   exact h _ (ZMod.val_coe_unit_coprime a)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : ‖(p : ℂ) ^ (-(1 : ℂ))‖ = 1 / (p : ℝ)`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hp]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Real.rpow_neg_one]`. Rewrite using `[h1]`. Conclude with `mul_le_of_le_one_left (by positivity) (DirichletCharacter.norm_le_one φ _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_factor_term_norm_le {M : ℕ} (φ : DirichletCharacter ℂ M) (p : ℕ) :
     ‖φ (p : ZMod M) * (p : ℂ) ^ (-(1 : ℂ))‖ ≤ 1 / (p : ℝ) := by
@@ -85,7 +85,7 @@ theorem euler_factor_term_norm_le {M : ℕ} (φ : DirichletCharacter ℂ M) (p :
     exact mul_le_of_le_one_left (by positivity) (DirichletCharacter.norm_le_one φ _)
 
 /- English proof (translation)
-Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun p _ => norm_nonneg _) fun p _ => ?_` and prove the remaining obligations. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_one]`. Combine the linear relations using `[euler_factor_term_norm_le φ p]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem euler_factor_product_upper {M : ℕ} (φ : DirichletCharacter ℂ M) (S : Finset ℕ) :
     ‖∏ p ∈ S, (1 - φ (p : ZMod M) * (p : ℂ) ^ (-(1 : ℂ)))‖ ≤ ∏ p ∈ S, (1 + 1 / (p : ℝ)) := by
@@ -96,9 +96,9 @@ theorem euler_factor_product_upper {M : ℕ} (φ : DirichletCharacter ℂ M) (S 
   linarith [euler_factor_term_norm_le φ p]
 
 /- English proof (translation)
-Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun p hp => ?_) fun p hp => ?_` and prove the remaining obligations. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hS p hp`. Establish `h1 : (1 : ℝ) / p ≤ 1` using `by rw [div_le_one (by linarith)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `euler_factor_term_norm_le φ p`. Establish `h2` using `norm_sub_norm_le (1 : ℂ) (φ (p : ZMod M) * (p : ℂ) ^ (-(1 : ℂ)))`. Rewrite `h2` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem euler_factor_product_lower {M : ℕ} (φ : DirichletCharacter ℂ M) (S : Finset ℕ)
     (hS : ∀ p ∈ S, 2 ≤ p) :
@@ -114,9 +114,9 @@ theorem euler_factor_product_lower {M : ℕ} (φ : DirichletCharacter ℂ M) (S 
     linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_one (fun p hp => ?_) fun p hp => ?_` and prove the remaining obligations. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hS p hp`. Establish `h1 : (1 : ℝ) / p ≤ 1` using `by rw [div_le_one (by linarith)]; linarith`. Establish `h2 : (0 : ℝ) ≤ 1 / p` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (0 : ℝ) ≤ 1 / (p : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem prod_one_add_mul_one_sub_le_one (S : Finset ℕ) (hS : ∀ p ∈ S, 2 ≤ p) :
     (∏ p ∈ S, (1 + 1 / (p : ℝ))) * ∏ p ∈ S, (1 - 1 / (p : ℝ)) ≤ 1 := by
@@ -130,15 +130,15 @@ theorem prod_one_add_mul_one_sub_le_one (S : Finset ℕ) (hS : ∀ p ∈ S, 2 �
     nlinarith
 
 /- English proof (translation)
-Introduce `q₁ q _ _ χ₁ χ hχ₁ hχ h`. Use `haveI : NeZero (q₁ * q) := ⟨mul_ne_zero (NeZero.ne q₁) (NeZero.ne q)⟩`. Establish `hS : ∀ p ∈ (q₁ * q).primeFactors, 2 ≤ p` using `fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le`. Establish `hL₁` using `DirichletCharacter.LFunction_changeLevel (dvd_mul_right q₁ q) χ₁ (s := 1) (Or.inl hχ₁)`. Establish `hL` using `DirichletCharacter.LFunction_changeLevel (dvd_mul_left q q₁) χ (s := 1) (Or.inl hχ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hL₁` using `[changeLevel_eq_of_agree_coprime χ₁ χ h, hL]`. Establish `hnorm : ‖DirichletCharacter.LFunction χ₁ 1‖ * ‖∏ p ∈ (q₁ * q).primeFactors, (1 - χ₁ (p : ZMod q₁) * (p : ℂ) ^ (-(1 : ℂ)))‖ = ‖DirichletCharacter.LFunction χ 1‖ * ‖∏ p ∈ (q₁ * q).primeFactors, (1 - χ (p : ZMod q) * (p : ℂ) ^ (-(1 : ℂ)))‖`. Rewrite using `[← norm_mul, ← norm_mul, hL₁]`. Establish `hlow` using `euler_factor_product_lower χ₁ _ hS`. Establish `hup` using `euler_factor_product_upper χ (q₁ * q).primeFactors`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge` using `prod_one_sub_inv_ge_inv_card_succ _ hS`. Establish `hAB` using `prod_one_add_mul_one_sub_le_one _ hS`. Establish `hk : (0 : ℝ) < ((q₁ * q).primeFactors.card : ℝ) + 1` using `by positivity`. Establish `hA0 : (0 : ℝ) ≤ ∏ p ∈ (q₁ * q).primeFactors, (1 + 1 / (p : ℝ))` using `Finset.prod_nonneg fun p _ => by positivity`. Establish `hB' : 1 ≤ (∏ p ∈ (q₁ * q).primeFactors, (1 - 1 / (p : ℝ))) * (((q₁ * q).primeFactors.card : ℝ) + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mul_le_mul_of_nonneg_right hge hk.le`. Rewrite `h1` using `[one_div, inv_mul_cancel₀ hk.ne']`. Then use the resulting hypothesis. Establish `hx` using `norm_nonneg (DirichletCharacter.LFunction χ₁ 1)`. Establish `hy` using `norm_nonneg (DirichletCharacter.LFunction χ 1)`. Establish `h1 : ‖DirichletCharacter.LFunction χ₁ 1‖ * ∏ p ∈ (q₁ * q).primeFactors, (1 - 1 / (p : ℝ)) ≤ ‖DirichletCharacter.LFunction χ 1‖ * ∏ p ∈ (q₁ * q).primeFactors, (1 + 1 / (p : ℝ))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA : ∏ p ∈ (q₁ * q).primeFactors, (1 + 1 / (p : ℝ)) ≤ ((q₁ * q).primeFactors.card : ℝ) + 1` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lfunction_one_same_character : SameCharacterLFunctionOne := by
   intro q₁ q _ _ χ₁ χ hχ₁ hχ h

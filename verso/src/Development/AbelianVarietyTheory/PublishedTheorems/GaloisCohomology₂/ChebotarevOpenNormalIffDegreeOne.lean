@@ -17,20 +17,20 @@ def ChebotarevOpenNormal : Prop :=
           ∃ σ : G F Ω, IsFrob B (normV v) σ ∧ σ * g⁻¹ ∈ U
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem chebotarevOpenNormal_iff_cheb : ChebotarevOpenNormal ↔ GlobalTheory.TwSys.Cheb := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `chebotarevDegreeOne_iff_cheb.symm`.
+A detailed English derivation is pending.
 -/
 theorem chebotarevOpenNormal_iff_degreeOne : ChebotarevOpenNormal ↔ ChebotarevDegreeOne :=
   chebotarevDegreeOne_iff_cheb.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h F Ω _ _ _ _ _ U hU hN g hfin`. Take `⟨v, hv, hd, -, hB⟩` from `h F Ω U hU hN g hfin.toFinset`. Conclude with `hv (hfin.mem_toFinset.2 ⟨((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 v).2 hd, hB⟩)`. Introduce `h F Ω _ _ _ _ _ U hU hN g A`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin` using `(GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).2`. Take `⟨v, ⟨hp, hB⟩, hv⟩` from `((h F Ω U hU hN g).sdiff (A.finite_toSet.union hfin)).nonempty`. Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hv`. Conclude with `⟨v, hv.1, ((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 v).1 hp, by simpa using hv.2, hB⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chebotarevOpenNormal_iff_infinite : ChebotarevOpenNormal ↔
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]

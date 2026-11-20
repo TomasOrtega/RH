@@ -6,9 +6,9 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Establish `hc` using `LeviFormBoundaryTopology.continuousAt_of_holoOn A (hS.1 x) (L.mem_U x)`. Establish `hφ` using `LeviFormBoundaryTopology.continuousAt_of_smoothOn A (L.isOpen_U x) (hL.1 x) (L.mem_U x)`. Establish `hF : ContinuousAt (fun z => ‖s x z‖ * Real.exp (-L.φ x z)) x` using `hc.norm.mul (Real.continuous_exp.continuousAt.comp hφ.neg)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hF.congr ?_` and prove the remaining obligations. Use `filter_upwards [(L.isOpen_U x).mem_nhds (L.mem_U x)] with z hz`. Conclude with `hS.2 x z z ⟨hz, L.mem_U z⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_normSec {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (L : LocPot X) (s : X → X → ℂ) (hL : IsPotential A L) (hS : IsSection A L s) :
@@ -24,13 +24,13 @@ theorem continuous_normSec {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHol
   exact hS.2 x z z ⟨hz, L.mem_U z⟩
 
 /- English proof (translation)
-Introduce `e X _ _ _ A L s hL hS R`. Establish `hset : {y | y ∉ bdry s ∧ rW L s y ≤ R} = {y | Real.exp ((Real.exp 1 - R) / 2) ≤ ‖s y y‖ * Real.exp (-L.φ y y)}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, bdry, rW, logNormSec]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h0, h1⟩`. Establish `hpos : 0 < ‖s y y‖ * Real.exp (-L.φ y y)` using `mul_pos (norm_pos_iff.2 h0) (Real.exp_pos _)`. Conclude with `(Real.le_log_iff_exp_le hpos).1 (by linarith)`. Introduce `h`. Establish `hpos : 0 < ‖s y y‖ * Real.exp (-L.φ y y)` using `lt_of_lt_of_le (Real.exp_pos _) h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : s y y ≠ 0`. Introduce `h0`. Simplify using `[h0] at hpos`. Establish `h1` using `(Real.le_log_iff_exp_le hpos).2 h`. Conclude with `⟨h0, by linarith⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Conclude with `(isClosed_le continuous_const (continuous_normSec A L s hL hS)).isCompact`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_rW_sublevel : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ), IsPotential A L → IsSection A L s → ∀ R : ℝ, IsCompact {y | y ∉ bdry s ∧ rW L s y ≤ R} := by
   intro e X _ _ _ A L s hL hS R

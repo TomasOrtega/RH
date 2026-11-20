@@ -12,7 +12,7 @@ open PI.IsoInvMetric
 variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] {N : ℕ} {nu : Lt → YoungDiagram}
 
 /- English proof (translation)
-Unfold `l2 ipl`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `push_cast`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symmetricMeasure_l2Norm_eq_resolutionL2 (φ : LaC N nu) : ((l2 φ : ℝ) : ℂ) = ipl φ φ := by
   unfold l2 ipl
@@ -22,33 +22,33 @@ theorem symmetricMeasure_l2Norm_eq_resolutionL2 (φ : LaC N nu) : ((l2 φ : ℝ)
   rw [Complex.star_def, Complex.conj_mul']
 
 /- English proof (translation)
-Simplify using `[ipl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ipl_zero_left (ψ : LaC N nu) : ipl 0 ψ = 0 := by
   simp [ipl]
 
 /- English proof (translation)
-Simplify using `[ipl, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ipl_add_left (φ φ' ψ : LaC N nu) : ipl (φ + φ') ψ = ipl φ ψ + ipl φ' ψ := by
   simp [ipl, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[ipl, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ipl_smul_left (c : ℂ) (φ ψ : LaC N nu) : ipl (c • φ) ψ = starRingEnd ℂ c * ipl φ ψ := by
   simp [ipl, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `Lt _ _ N nu`. Use `⟨fun k hk => ⟨fun φ hφ => ⟨hS Lt N nu k φ hφ, ?_⟩, fun hle => ?_⟩, fun ip hip => ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[symmetricMeasure_l2Norm_eq_resolutionL2, symmetricMeasure_l2Norm_eq_resolutionL2, hU Lt N nu k hk]`. Rewrite using `[hH Lt N nu k]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[symmetricMeasure_l2Norm_eq_resolutionL2, hU Lt N nu k hk, ← symmetricMeasure_l2Norm_eq_resolutionL2, hN Lt N nu hle]`. Establish `hu : u0 N nu ∈ Vnu N nu` using `Submodule.subset_span ⟨_, rfl⟩`. Establish `key : ∀ φ ∈ Vnu N nu, ∀ ψ ∈ Vnu N nu, ip φ ψ = ipl φ ψ`. Introduce `φ hφ ψ hψ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Take `⟨k, hk, c, hc⟩` from `hG Lt N nu y`. Take `⟨ψ', hψ', e1⟩ : ∃ ψ', ψ' ∈ Vnu N nu ∧ ψ = VnuMap nu k ψ'` from `⟨_, hS Lt N nu _ ψ hψ, (hI Lt N nu k hk ψ).symm⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ip (VnuMap nu k (u0 N nu)) (VnuMap nu k ψ') = ipl (VnuMap nu k (u0 N nu)) (VnuMap nu k ψ')`. Rewrite using `[(hip k hk).1 _ hu _ hψ', hW Lt N nu ip hip ψ' hψ', hU Lt N nu k hk]`. Rewrite using `[hc, hH Lt N nu k, LinearMap.map_smulₛₗ₂, ipl_smul_left, e1, h2, smul_eq_mul]`. Consider the case `zero => simp [ipl_zero_left]`. Consider the case `add x y _ _ hx hy => rw [LinearMap.map_add₂, hx, hy, ipl_add_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ₂, hx, ipl_smul_left, smul_eq_mul]`. Introduce `φ hφ`. Rewrite using `[symmetricMeasure_l2Norm_eq_resolutionL2]`. Conclude with `key φ hφ φ hφ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoInvMetric_of (hU : Unit) (hI : InvK) (hS : Stab) (hH : HvCols) (hN : Norm1)
     (hG : Gen) (hW : HW) : IsoInvMetric := by

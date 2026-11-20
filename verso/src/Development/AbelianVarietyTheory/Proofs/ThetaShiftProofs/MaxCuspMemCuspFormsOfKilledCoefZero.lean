@@ -16,19 +16,19 @@ namespace MaxCuspBwd
 open MeasureTheory Complex GlobalTheory.TorusFourier
 
 /- English proof (translation)
-Use `set ν' : (ι → ℝ) →ₗ[ℝ] ℝ := ∑ τ, (2 * ν τ) • LinearMap.proj τ with hν'd`. Establish `hν'a : ∀ s, ν' s = 2 * ∑ τ, ν τ * s τ` using `fun s => by`. Simplify using `[hν'd, Finset.mul_sum, mul_assoc]`. Establish `hf : ∀ i x, g (x + Pi.basisFun ℝ (Fin N) i) = g x` using `fun i x => by`. Rewrite using `[← hper x (Pi.single i 1)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = i <;> simp [hk]`. Establish `hf₁ : ∀ l ∈ Γ, ∀ x, g (x + L l) = g x` using `fun l hl x => by choose z hz using hL l hl`. Rewrite using `[← hper x z]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `k`. Conclude with `hz k`. Establish `key` using `((partialCoeff_spec_cube (Pi.basisFun ℝ (Fin N)) hD h0 h1 L hc hf hf₁).1 ν' (fun l hl => by rw [hν'a]; exact hν l hl)).2.2.2.2 (fun χ hχ hχL => by choose m hm using hχ`. Establish `hsum : ∀ t : Fin N → ℝ, ∑ i, t i • Pi.basisFun ℝ (Fin N) i = t` using `fun t => by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using (Pi.basisFun ℝ (Fin N)).sum_repr t`. Establish `hχa : ∀ t : Fin N → ℝ, χ t = ∑ k, t k * (m k : ℝ)` using `fun t => by conv_lhs => rw [← hsum t]`. Simplify using `only [map_sum, map_smul, hm, smul_eq_mul]`. Establish `h2` using `h m fun s => by`. Rewrite using `[← hν'a, ← hχL, LinearMap.comp_apply, hχa]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_comm]`. Rewrite using `[← h2, cubeCoeff, cube, Set.pi_univ_Icc]`. Simplify using `only [hsum, eNeg, chr, hχa]`. Use the proof step `rfl)`. Establish `h3` using `congrFun key 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[partialCoeff, coeff_eq]`. Simplify using `only [zero_add, hν'a, Pi.zero_apply] at h3`. Rewrite using `[← h3, Measure.real]`. Use `congr 2`. Use function extensionality and compare the values at `s`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_zero_of_coeffs {ι : Type} [Fintype ι] {N : ℕ} {Γ : AddSubgroup (ι → ℝ)}
     {D : Set (ι → ℝ)} (hD : IsAddFundamentalDomain Γ D volume) (h0 : volume D ≠ 0)
@@ -84,17 +84,15 @@ end MaxCuspBwd
 open MeasureTheory Complex in
 
 /- English proof (translation)
-Introduce `E _ _ _ r ρ X hcu hbas la hchi c P hP hK`. Use `⟨hP, fun ξ hξ ν hν x hx => ?_⟩` and prove the remaining obligations. Take `⟨cu, hspan⟩` from `hcu ξ hξ`. Take `⟨η, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hspan`. Establish `hb : IsZBasis X cu (zBas X cu)` using `Classical.epsilon_spec (hbas cu)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L, hflow, hph, hLint⟩` from `GlobalTheory.T.cuspFlow_eq_torusAction E r ρ X cu hb η hξ.1`. Establish `hη : η ≠ 0`. Introduce and unpack `rfl`. Conclude with `hξ.2.2 (by simp)`. Establish `hsec : X.IsSec la P` using `hP.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Data.fj`. Use `split_ifs with hfreq hdom`. Take `⟨-, hD, h0, h1⟩` from `hdom.choose_spec`. Simplify using `only [hflow]`. Use `MaxCuspBwd.integral_eq_zero_of_coeffs hD h0.ne' h1.ne L (fun u => P (zAct X cu u x)) ?_ (maxCuspsA_periodic X cu hb la (hchi cu) P hsec x hx) (hLint la) ν hfreq fun m hm => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hsec.1.continuousOn.comp_continuous (continuous_zAct X cu x) fun t => zAct_mem_dom X cu (zBas_skew X cu (hbas cu)) t x hx`. Take `⟨χ, hχ, hχm⟩` from `GlobalTheory.T.hermitian_matrix_realizes_cusp_coords E r ρ X cu hb m`. Establish `hνχ : ∀ τ : X.Ψ, (τ.1 (hq χ η)).re = ν τ` using `fun τ => by classical`. Establish `h2` using `hph χ hχ (Pi.single τ 1)`. Simplify using `only [hχm] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[hm]`. Simplify `h2.symm` using `[Pi.single_apply]`. Establish `h3` using `hK cu χ ⟨hχ, fun k => ⟨m k, hχm k⟩⟩ ⟨η, hη, hξ.1, by simpa only [hνχ] using hν⟩ x hx`. Rewrite `h3` using `[show phZ X cu χ = fun k => (m k : ℝ) from funext hχm]`. Conclude with `h3`.
-
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem maxCusps_mem_SSgt_of_coef_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r), (∀ ξ, X.IsIso ξ → ∃ cu : CuspFD X ρ, ξ ∈ Submodule.span E (Set.range cu.e)) → (∀ cu : CuspFD X ρ, ∃ bs, IsZBasis X cu bs) → ∀ (la : Wt X.Ψ r), (∀ (cu : CuspFD X ρ) (β : Matrix (Fin ρ) (Fin ρ) E), β ∈ zGam X cu → ∀ γ ∈ X.Γ, (γ : Matrix (Fin r) (Fin r) E) = zMatE X cu.e β → X.χ la γ = 1) → ∀ (c : ℝ) (P : Frame X.Ψ r → ℂ), P ∈ X.SS la → (∀ (cu : CuspFD X ρ) (χ : Matrix (Fin ρ) (Fin ρ) E), IsExpoFD X cu χ → KilledFD X cu χ c → ∀ x ∈ X.dom, coefFn (zAct X cu) (phZ X cu χ) P x = 0) → P ∈ X.SSgt la c := by
   intro E _ _ _ r ρ X hcu hbas la hchi c P hP hK

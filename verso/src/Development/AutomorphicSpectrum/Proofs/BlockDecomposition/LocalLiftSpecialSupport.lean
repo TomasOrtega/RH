@@ -14,11 +14,11 @@ section Ring
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Set `I : Ideal R` to `LinearMap.ker (LinearMap.mulLeft R d)`. Establish `hI : ∀ x y : R, d * x = d * y → Ideal.Quotient.mk I x = Ideal.Quotient.mk I y`. Introduce `x y hxy`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d * (x - y) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_sub, hxy, sub_self]`. Establish `hmap : (Ideal.Quotient.mk I).mapMatrix A = (Ideal.Quotient.mk I).mapMatrix B`. Use extensionality with `i j`. Conclude with `hI _ _ (h i j)`. Establish `h2 : Ideal.Quotient.mk I A.det = Ideal.Quotient.mk I B.det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, RingHom.map_det, hmap]`. Establish `h3 : A.det - B.det ∈ I` using `Ideal.Quotient.eq.1 h2`. Establish `h4 : d * (A.det - B.det) = 0` using `h3`. Rewrite `h4` using `[mul_sub]`. Conclude with `sub_eq_zero.1 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_det_eq_of_mul_entries (d : R) {A B : Matrix n n R} (h : ∀ i j, d * A i j = d * B i j) :
     d * A.det = d * B.det := by
@@ -59,7 +59,7 @@ Both sides reduce to the same expression.
 theorem pB_tmul (P : PlaceMap F K) (a : AF F) (b : E) : pB P (a ⊗ₜ[F] b) = P.proj a ⊗ₜ[F] b := rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.one_def, iB_tmul, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_inj_one (P : PlaceMap F K) :
     algebraMap (AF F) (AF F ⊗[F] E) (P.inj 1) = iB P (1 : K ⊗[F] E) := by
@@ -67,9 +67,9 @@ theorem algebraMap_inj_one (P : PlaceMap F K) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[iB_tmul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Express the relevant statement in the definitionally equal form `(P.inj 1 * P.inj a) ⊗ₜ[F] b = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_mul, one_mul]`. Consider the case `add x y hx hy => rw [map_add, mul_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem eB_mul_iB (P : PlaceMap F K) (y : K ⊗[F] E) :
     algebraMap (AF F) (AF F ⊗[F] E) (P.inj 1) * iB P y = iB P y := by
@@ -82,7 +82,7 @@ theorem eB_mul_iB (P : PlaceMap F K) (y : K ⊗[F] E) :
   | add x y hx hy => rw [map_add, mul_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [iB_tmul, pB_tmul, P.proj_inj]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pB_iB (P : PlaceMap F K) (y : K ⊗[F] E) : pB P (iB P y) = y := by
   induction y using TensorProduct.induction_on with
@@ -91,9 +91,9 @@ theorem pB_iB (P : PlaceMap F K) (y : K ⊗[F] E) : pB P (iB P y) = y := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[pB_tmul, iB_tmul, P.inj_proj, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]`.
+Treat this case separately.
 -/
 theorem iB_pB (P : PlaceMap F K) (y : AF F ⊗[F] E) :
     iB P (pB P y) = algebraMap (AF F) (AF F ⊗[F] E) (P.inj 1) * y := by
@@ -106,15 +106,15 @@ theorem iB_pB (P : PlaceMap F K) (y : AF F ⊗[F] E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Use `set e := algebraMap (AF F) (AF F ⊗[F] E) (P.inj 1) with he`. Establish `hGij : ∀ i j, G i j = iB P ((X - 1) i j) + (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j`. Introduce `i j`. Rewrite using `[← hG]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmap : (pB (E` using `E) P).toRingHom.mapMatrix G = X := by`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hGij]`. Express the relevant statement in the definitionally equal form `pB P _ = _`. Rewrite using `[map_add, pB_iB]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Establish `hp : pB P G.det = 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `RingHom.map_det (pB (E := E) P).toRingHom G`. Rewrite `h` using `[hmap, hX]`. Conclude with `h`. Establish `h1 : e * G.det = e`. Rewrite using `[he, ← iB_pB, hp, algebraMap_inj_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (1 - e) * G.det = (1 - e) * (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)).det`. Use `mul_det_eq_of_mul_entries (1 - e) fun i j => ?_` and prove the remaining obligations. Rewrite using `[hGij, mul_add, sub_mul, one_mul, he, eB_mul_iB, sub_self, zero_add]`. Rewrite `h2` using `[Matrix.det_one]`. Take the linear combination `h1 + h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_eq_one_of_lift (P : PlaceMap F K) {M : ℕ} {G : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)}
     {X : Matrix (Fin M) (Fin M) (K ⊗[F] E)} (hG : ∀ i j, (G - 1) i j = iB P ((X - 1) i j)) (hX : X.det = 1) :
@@ -148,7 +148,7 @@ theorem det_eq_one_of_lift (P : PlaceMap F K) {M : ℕ} {G : Matrix (Fin M) (Fin
 end Tensor
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J K _ _ P L hL x hx`. Use `⟨StrongApprox.mem_SUAdelic.2 (det_eq_one_of_lift P (hL x) hx), fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hL x i j]`. Conclude with `eB_mul_iB P _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_det_one_mem_supp : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), ∀ {K : Type}

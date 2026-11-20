@@ -8,9 +8,9 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h0 : (D.map f).chi (MonoidAlgebra.single g 1) = (D.chi (MonoidAlgebra.single g 1)).map f`. Use `letI : Algebra A (Polynomial B) := ((algebraMap B (Polynomial B)).comp f).toAlgebra`. Set `φ : Polynomial A →ₐ[A] Polynomial B` to `{ Polynomial.mapRingHom f with commutes' := fun a => Polynomial.map_C f }`. Establish `h` using `D.nat (Polynomial A) (Polynomial B) φ (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C (MonoidAlgebra.single g 1))`. Use `Eq.trans ?_ h` and prove the remaining obligations.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `D.D (Polynomial B) _ = D.D (Polynomial B) (MonoidAlgebra.mapRingHom G (Polynomial.mapRingHom f) _)`. Use `congr 1`. Simplify using `[map_sub, MonoidAlgebra.mapRingHom_single]`. Simplify using `[W.GDet.lam, h0]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem lam_map {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (D : W.GDet n A G) (f : A →+* B)
     (g : G) (i : ℕ) : (D.map f).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1)) := by
@@ -27,17 +27,17 @@ private theorem lam_map {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Grou
   simp [W.GDet.lam, h0]
 
 /- English proof (translation)
-Establish `key : ∃ s ∈ S, f t - s ∈ I` using `by clear hk`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hU x hx`. Consider the case `algebraMap b => exact ⟨_, S.algebraMap_mem b, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs, h1⟩` from `hx`. Take `⟨s', hs', h2⟩` from `hy`. Use `⟨s + s', add_mem hs hs', ?_⟩` and prove the remaining obligations. Use `I.add_mem h1 h2` as an intermediate fact. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨s, hs, h1⟩` from `hx`. Take `⟨s', hs', h2⟩` from `hy`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s * s', mul_mem hs hs', ?_⟩` and prove the remaining obligations. Use `I.add_mem (I.mul_mem_left (f x) h2) (I.mul_mem_left s' h1)` as an intermediate fact. Rewrite using `[map_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨s, hs, h1⟩` from `key`. Establish `e : Ideal.Quotient.mk I (f t) = Ideal.Quotient.mk I s` using `Ideal.Quotient.eq.2 h1`. Establish `h2 : s ^ k ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_pow, ← e, ← map_pow, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `I.add_mem h1 (hS s hs k h2)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem red_abs {O R T : Type} [CommRing O] [CommRing R] [CommRing T] [Algebra O R] [Algebra O T] (f : R →ₐ[O] T)
     (I : Ideal T) (S : Subalgebra O T) (hS : ∀ s ∈ S, ∀ k : ℕ, s ^ k ∈ I → s ∈ I) (U : Set R)
@@ -70,15 +70,15 @@ private theorem red_abs {O R T : Type} [CommRing O] [CommRing R] [CommRing T] [A
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP x lam hl har a K _ R _ _ D₀ ψ₀ μ hμ t ht k hk y`. Break down `hμ with h0 | ⟨_, _, f, hf, hμ⟩` into its components or cases. Establish `: μ t y = 0` using `Subtype.ext ((Submodule.mem_bot A).1 (h0 ▸ (μ t y).2))`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := c.dvr`. Establish `hker : RingHom.ker ((Algebra.ofId c.O (Qbar l)).comp x) = RingHom.ker x`. Use extensionality with `b`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Conclude with `map_eq_zero_iff (algebraMap c.O (Qbar l)) Subtype.val_injective`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨I, hI, hfin⟩` from `Th.AnnihilatorQuotientFinite.annFin x (heckeAlg (H.MK θ a K) (H.op A)).val.toRingHom fun o y => by`. Rewrite using `[IsScalarTower.algebraMap_apply c.O A (H.TK θ a K)]`. Both sides reduce to the same expression. Establish `h1` using `red_abs f I (Algebra.adjoin c.O (Set.range fun p : H.Wp × Fin n => H.gen θ a K (.inl p))) (fun s hs k hk => (hI s).2 (by`. Use `Th.AnnihilatorQuotientFinite.sphRed L Ω l n c H hH A θ hθ ι P hP _ lam hl har a K s hs k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hker]`. Conclude with `this ((hI _).1 hk))) _ (by`. Introduce and unpack `_ ⟨i, g, rfl⟩`. Use `Th.AnnihilatorQuotientFinite.closedSub I _ _ fun N => ?_` and prove the remaining obligations. Use `Th.AnnihilatorQuotientFinite.frobS L Ω l n c H hH A θ a K _ _ _ hf i g N` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_map] at this) t ht k ((hI _).2 fun y => by` and apply the resulting hypothesis. Use `hk y` as an intermediate fact. Rewrite using `[hμ] at this)` and apply the resulting hypothesis. Rewrite using `[hμ]`. Conclude with `(hI _).1 h1 y`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.ctrlMu :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

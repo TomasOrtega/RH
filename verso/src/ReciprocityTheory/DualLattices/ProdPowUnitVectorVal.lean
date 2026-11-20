@@ -23,7 +23,7 @@ def bR (hv : v.Integers R) (D : Lifts H U X) (j : Ix g) : Nb p g → R :=
 def epow (D : Lifts H U X) (α : Nb p g) : R := ∏ j, D.ε j ^ (α j).val
 
 /- English proof (translation)
-Unfold `e1`. Distinguish the cases in `h : j = l`. Substitute `h` using the available equality. Simplify using `[ZMod.val_one]`. Simplify using `[Pi.single_apply, h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem unitVector_val (l j : Ix g) : ((e1 (p := p) l) j).val = if j = l then 1 else 0 := by
   unfold e1
@@ -33,7 +33,7 @@ theorem unitVector_val (l j : Ix g) : ((e1 (p := p) l) j).val = if j = l then 1 
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Simplify using `only [unitVector_val]`. Rewrite using `[Finset.prod_eq_single l (fun j _ hj => by rw [if_neg hj, pow_zero]) (by simp), if_pos rfl, pow_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_pow_unitVector_val {M : Type} [CommMonoid M] (f : Ix g → M) (l : Ix g) :
     ∏ j, f j ^ ((e1 (p := p) l) j).val = f l := by
@@ -42,9 +42,9 @@ theorem prod_pow_unitVector_val {M : Type} [CommMonoid M] (f : Ix g → M) (l : 
     pow_one]
 
 /- English proof (translation)
-Introduce `l l' h`. Establish `h1` using `congrFun h l`. Simplify using `only [e1, Pi.single_eq_same] at h1`. Assume the negation of the conclusion as `hne`. Rewrite `h1` using `[Pi.single_eq_of_ne hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem unitVector_injective : Function.Injective (e1 (p := p) (g := g)) := by
   intro l l' h
@@ -55,13 +55,13 @@ theorem unitVector_injective : Function.Injective (e1 (p := p) (g := g)) := by
   exact one_ne_zero h1
 
 /- English proof (translation)
-Conclude with `prod_pow_unitVector_val D.ε l`.
+A detailed English derivation is pending.
 -/
 theorem liftScalePow_unitVector (D : Lifts H U X) (l : Ix g) : epow D (e1 (p := p) l) = D.ε l := by
   exact prod_pow_unitVector_val D.ε l
 
 /- English proof (translation)
-Rewrite using `[bR, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_det_MuR hv hp1 D), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem MuR_mulVec_bR (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : Lifts H U X)
     (j : Ix g) : MuR hv D *ᵥ bR hv D j = hvec hv D j := by
@@ -69,7 +69,7 @@ theorem MuR_mulVec_bR (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1)
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun w => (MuR hv D)⁻¹ *ᵥ w) h`. Simplify `h1` using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_det_MuR hv hp1 D), Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_inj (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : Lifts H U X)
     {a b : Nb p g → R} (h : MuR hv D *ᵥ a = MuR hv D *ᵥ b) : a = b := by
@@ -78,15 +78,15 @@ theorem mulVec_inj (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D
     Matrix.one_mulVec] using h1
 
 /- English proof (translation)
-Establish `hdet` using `det_valM_ne hv hp1 D`. Establish `hE : ∀ α, algebraMap R C (epow D α) ≠ 0`. Introduce `α`. Simplify using `only [epow, map_prod, map_pow]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun j _ => pow_ne_zero _ (fun h0 => D.ε_ne j (hv.hom_inj (h0.trans (map_zero _).symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : (fun y => xL D j y ^ p) = valM D *ᵥ (fun α => algebraMap R C (D.ε j) ^ p * algebraMap R C (bR hv D j α) / algebraMap R C (epow D α))`. Use function extensionality and compare the values at `y`. Simplify using `only [Matrix.mulVec, dotProduct, valM_eq hv D, Matrix.mul_diagonal, Matrix.map_apply]`. Establish `h2` using `congrFun (MuR_mulVec_bR hv hp1 D j) y`. Simplify using `only [Matrix.mulVec, dotProduct, hvec] at h2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (algebraMap R C) h2`. Rewrite `h3` using `[map_sum, map_pow, uR_spec]`. Simplify using `only [map_mul] at h3`. Rewrite using `[xL, mul_pow, ← h3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `hE α`. Simplify using `only [epow] at h4 ⊢`. Clear the denominators using the available nonvanishing facts. Unfold `linX coefX`. Rewrite using `[hf, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap R C (D.ε j) ^ p * algebraMap R C (bR hv D j (e1 l)) / algebraMap R C (epow D (e1 l)) = _`. Rewrite using `[liftScalePow_unitVector]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem linX_xp (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : Lifts H U X)
     (j l : Ix g) :
@@ -123,7 +123,7 @@ theorem linX_xp (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : 
 def psi (a : O) (y : Nb p g) : Nb p g := ((H.ρ a).map PadicInt.toZMod) *ᵥ y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[red, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem red_mulVec (M : Matrix (Ix g) (Ix g) ℤ_[p]) (t : TT p g) :
     red p g (M *ᵥ t) = (M.map PadicInt.toZMod) *ᵥ red p g t := by
@@ -131,13 +131,13 @@ theorem red_mulVec (M : Matrix (Ix g) (Ix g) ℤ_[p]) (t : TT p g) :
   simp [red, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Conclude with `⟨fun i => ((y i).val : ℤ_[p]), funext fun i => by simp [red]⟩`.
+Supply the required witnesses or components.
 -/
 theorem red_surj (y : Nb p g) : ∃ t : TT p g, red p g t = y := by
   exact ⟨fun i => ((y i).val : ℤ_[p]), funext fun i => by simp [red]⟩
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `red_surj y`. Establish `h` using `D.eig j k t`. Rewrite `h` using `[red_mulVec]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_psi (D : Lifts H U X) (j : Ix g) (k : Fin D.s) (y : Nb p g) :
     D.u j (psi (H := H) (D.b k) y) = algebraMap R C (U.sg (D.κ j) (D.b k)) * D.u j y := by
@@ -147,7 +147,7 @@ theorem u_psi (D : Lifts H U X) (j : Ix g) (k : Fin D.s) (y : Nb p g) :
   exact h
 
 /- English proof (translation)
-Apply `hv.hom_inj` to reduce the goal to its premises. Rewrite using `[uR_spec, map_mul, uR_spec, u_psi]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem uR_psi (hv : v.Integers R) (D : Lifts H U X) (j : Ix g) (k : Fin D.s) (y : Nb p g) :
     uR hv D j (psi (H := H) (D.b k) y) = U.sg (D.κ j) (D.b k) * uR hv D j y := by
@@ -155,11 +155,9 @@ theorem uR_psi (hv : v.Integers R) (D : Lifts H U X) (j : Ix g) (k : Fin D.s) (y
   rw [uR_spec, map_mul, uR_spec, u_psi]
 
 /- English proof (translation)
-Establish `key : MuR hv D *ᵥ (fun α => (∏ j', U.sg (D.κ j') (D.b k) ^ (α j').val) * bR hv D j α) = MuR hv D *ᵥ (fun α => U.sg (U.φ (D.κ j)) (D.b k) * bR hv D j α)`. Use function extensionality and compare the values at `y`. Establish `h1` using `congrFun (MuR_mulVec_bR hv hp1 D j) (psi (H := H) (D.b k) y)`. Establish `h2` using `congrFun (MuR_mulVec_bR hv hp1 D j) y`. Simplify using `only [Matrix.mulVec, dotProduct, MuR, Matrix.of_apply, hvec] at h1 h2 ⊢`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [uR_psi, mul_pow, Finset.prod_mul_distrib] at h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Use `_ = ∑ α, (∏ j', uR hv D j' y ^ (α j').val) * (U.sg (U.φ (D.κ j)) (D.b k) * bR hv D j α) := by`. Rewrite using `[D.frobChar, Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun α _ => by ring`. Conclude with `congrFun (mulVec_inj hv hp1 D key) α`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bR_eig (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : Lifts H U X)
     (j : Ix g) (k : Fin D.s) (α : Nb p g) :
@@ -185,15 +183,13 @@ theorem bR_eig (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : L
   exact congrFun (mulVec_inj hv hp1 D key) α
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j'', hj''⟩ : ∃ j'', D.κ j'' = U.φ (D.κ j) := by`. Establish `h` using `D.card_phi (D.κ j)`. Establish `hpos : 0 < (Finset.univ.filter fun j' => D.κ j' = D.κ j).card` using `Finset.card_pos.mpr ⟨j, by simp⟩`. Rewrite `hpos` using `[← h]`. Take `⟨j'', hj''⟩` from `Finset.card_pos.mp hpos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j'', (Finset.mem_filter.mp hj'').2⟩`. Take `⟨k, hk⟩` from `D.sep l j'' (by rw [hj'']; exact hl)`. Establish `he` using `bR_eig hv hp1 D j k (e1 l)`. Rewrite `he` using `[prod_pow_unitVector_val, ← hj'']`. Establish `h0 : (U.sg (D.κ l) (D.b k) - U.sg (D.κ j'') (D.b k)) * bR hv D j (e1 l) = 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, he, sub_self]`. Establish `hne : U.sg (D.κ l) (D.b k) - U.sg (D.κ j'') (D.b k) ≠ 0`. Introduce `h0'`. Rewrite `hk` using `[h0', map_zero, map_zero]`. Conclude with `zero_ne_one hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (algebraMap R C) h0`. Rewrite `h2` using `[map_mul, map_zero]`. Establish `h3 : algebraMap R C (bR hv D j (e1 l)) = 0`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `absurd (hv.hom_inj (h.trans (map_zero _).symm)) hne`.
-
-Conclude with `h`. Conclude with `hv.hom_inj (h3.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem bR_off (hv : v.Integers R) (hp1 : v (algebraMap R C (p : R)) < 1) (D : Lifts H U X)
     (j l : Ix g) (hl : D.κ l ≠ U.φ (D.κ j)) : bR hv D j (e1 l) = 0 := by

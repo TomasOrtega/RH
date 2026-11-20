@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R S _ _ φ hφ σ M _ w ν f`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `MvPolynomial.IsWeightedHomogeneous`. Use `forall_congr' fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, map_ne_zero_iff φ hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ gR gS ρ hg`. Establish `hgS : gS = fun v => MvPolynomial.map φ (gR v)` using `funext fun v => (hg v).symm`. Substitute `hgS` using the available equality. Rewrite using `[MvPolynomial.aeval_eq_bind₁, MvPolynomial.aeval_eq_bind₁, ← MvPolynomial.map_bind₁, ← MvPolynomial.map_rename]`. Conclude with `(MvPolynomial.map_injective φ hφ).eq_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.aeval_map_eq_rename_map_iff :
     ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S), Function.Injective φ → ∀ (σ M : Type) [AddCommMonoid M] (w : σ → M) (ν : M) (f : MvPolynomial σ R), (MvPolynomial.IsWeightedHomogeneous w (MvPolynomial.map φ f) ν ↔ MvPolynomial.IsWeightedHomogeneous w f ν) ∧ ∀ (τ : Type) (gR : σ → MvPolynomial τ R) (gS : σ → MvPolynomial τ S) (ρ : σ → τ), (∀ v, MvPolynomial.map φ (gR v) = gS v) → (MvPolynomial.aeval gS (MvPolynomial.map φ f) = MvPolynomial.rename ρ (MvPolynomial.map φ f) ↔ MvPolynomial.aeval gR f = MvPolynomial.rename ρ f) := by

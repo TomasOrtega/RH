@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.N.Ln03.K8
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.MainNotions.WachCoordinates Formalism.MainNotions.WachCoordinates.Br Formalism.ExponentWindows Formalism.ExponentWindows.G TensorProduct
 
 /- English proof (translation)
-Establish `h1 : HahnSeries.ofPowerSeries ℤ Ks (↑w : PowerSeries Ks) * HahnSeries.ofPowerSeries ℤ Ks (↑w⁻¹ : PowerSeries Ks) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `ht : tp Ks (m : ℤ) * tp Ks (-(m : ℤ)) = 1`. Rewrite using `[tp, tp, HahnSeries.single_mul_single, add_neg_cancel, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `U : (HahnSeries ℤ Ks)ˣ` to `{ val := HahnSeries.ofPowerSeries ℤ Ks (↑w : PowerSeries Ks) * tp Ks (m : ℤ) inv := HahnSeries.ofPowerSeries ℤ Ks (↑w⁻¹ : PowerSeries Ks) * tp Ks (-(m : ℤ)) val_inv := by linear_combination (tp Ks (m : ℤ) * tp Ks (-(m : ℤ))) * h1 + ht inv_val := by linear_combination (tp Ks (m : …`. Establish `hU : HahnSeries.ofPowerSeries ℤ Ks ((w : PowerSeries Ks) * PowerSeries.X ^ m) = ↑U`. Rewrite using `[map_mul, HahnSeries.ofPowerSeries_X_pow]`. Both sides reduce to the same expression. Rewrite using `[hU, Ring.inverse_unit]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -34,7 +34,7 @@ theorem inverse_unit_mul_X_pow {Ks : Type} [CommRing Ks] (w : (PowerSeries Ks)ˣ
   rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul d f`. Rewrite using `[TensorProduct.comm_tmul, evaluation_tmul, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz', map_add, Pi.add_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem evaluation_comm_tensor {LL D ι : Type} [Field LL] [AddCommGroup D] [Module LL D] [Fintype ι]
     [DecidableEq ι] (i : ι) (z : D ⊗[LL] (ι → LL)) :
@@ -60,7 +60,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[toKsD, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.coe_coe, evaluation_comm_tensor, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evaluation_expansion_at_root (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D]
     (g : Rs LL PD.p s → D) (ζ : Rs LL PD.p s) : evK ζ (toKsD W s D g) = g ζ := by
@@ -68,11 +68,11 @@ theorem evaluation_expansion_at_root (s : ℕ) (D : Type) [AddCommGroup D] [Modu
     LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `hk1b s hs`. Establish `hrest : IsUnit (rhoL hR c s (∏ s' ∈ (Finset.range ell).erase s, (baseIdOf hR).Bs.p s' ^ E s'))`. Rewrite using `[map_prod]`. Use `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun s' hs' => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hne, hlt⟩` from `Finset.mem_erase.1 hs'`. Conclude with `((hunits s hs).2 s' (Finset.mem_range.1 hlt) hne).pow _`. Take `⟨u, hu⟩` from `hrest`. Use `⟨ε ^ E s * u, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_range.2 hs), map_mul, ← hu, map_pow, hε]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_product_unit_mul {ell : ℕ}
     (hk1b : ∀ s < ell, ∃ ε : (PowerSeries (KsW W s))ˣ,
@@ -100,9 +100,9 @@ theorem rho_product_unit_mul {ell : ℕ}
 open Classical in
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `rho_product_unit_mul hk1b hunits E s hs`. Establish `hX : Monotone fun i : ℤ => FilD W T c s (-i)` using `fun i j hij => hFil s (neg_le_neg hij)`. Rewrite using `[hw, inverse_unit_mul_X_pow, xi_unit_tp _ hX _ _ (Units.inv_mul w), xi_iff]`. Use `forall_congr' fun ζ => forall_congr' fun k => ?_` and prove the remaining obligations. Establish `hc : cf (expN Lb s T c ⟨C.t c x, hx⟩) k = coefN Lb s T c ⟨C.t c x, hx⟩ k` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hc, coefN, evaluation_expansion_at_root, show -(k + -(E s : ℤ)) = (E s : ℤ) - k by ring]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levelCond_iff (ell : ℕ)
     (hk1b : ∀ s < ell, ∃ ε : (PowerSeries (KsW W s))ˣ,

@@ -5,11 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `hs using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => exact ⟨a, by simp, by simp⟩`. Consider the case `cons a s ha hs ih`. Take `⟨i, hi, h⟩` from `ih`. Break down `ValuationRing.dvd_total (f a) (f i) with h1 | h1` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨a, by simp, fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_cons.1 hj with rfl | hj` into its components or cases. Conclude with `dvd_rfl`. Conclude with `h1.trans (h j hj)`. Use `⟨i, by simp [hi], fun j hj => ?_⟩` and prove the remaining obligations.
-
-Break down `Finset.mem_cons.1 hj with rfl | hj` into its components or cases. Conclude with `h1`. Conclude with `h j hj`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem valuationRing_exists_dvd_all {O ι : Type} [CommRing O] [IsDomain O] [ValuationRing O]
     (f : ι → O) (s : Finset ι) (hs : s.Nonempty) : ∃ i ∈ s, ∀ j ∈ s, f i ∣ f j := by
@@ -29,9 +27,9 @@ theorem valuationRing_exists_dvd_all {O ι : Type} [CommRing O] [IsDomain O] [Va
       · exact h j hj
 
 /- English proof (translation)
-Establish `h : (IsLocalRing.maximalIdeal O).map (MvPolynomial.C : O →+* MvPolynomial (Fin g) O) = RingHom.ker (MvPolynomial.map (σ` using `Fin g) (IsLocalRing.residue O)) := by`. Use extensionality with `F`. Rewrite using `[MvPolynomial.mem_map_C_iff, RingHom.mem_ker, MvPolynomial.ext_iff]`. Simplify using `only [MvPolynomial.coeff_map, MvPolynomial.coeff_zero, IsLocalRing.residue_eq_zero_iff]`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.ker_isPrime _`.
+A detailed English derivation is pending.
 -/
 theorem mvPolynomial_map_maximalIdeal_isPrime (O : Type) [CommRing O] [IsLocalRing O] (g : ℕ) :
     ((IsLocalRing.maximalIdeal O).map (MvPolynomial.C : O →+* MvPolynomial (Fin g) O)).IsPrime := by
@@ -44,11 +42,11 @@ theorem mvPolynomial_map_maximalIdeal_isPrime (O : Type) [CommRing O] [IsLocalRi
   exact RingHom.ker_isPrime _
 
 /- English proof (translation)
-Take `⟨i, hi, h⟩` from `valuationRing_exists_dvd_all (fun m => F.coeff m) F.support (MvPolynomial.support_nonempty.2 hF)`. Establish `hd : MvPolynomial.C (F.coeff i) ∣ F`. Rewrite using `[MvPolynomial.C_dvd_iff_dvd_coeff]`. Introduce `m`. Distinguish the cases in `hm : m ∈ F.support`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h m hm`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm]`. Conclude with `dvd_zero _`. Take `⟨F', hF'⟩` from `hd`. Use `⟨F.coeff i, F', hF', fun hmem => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `MvPolynomial.mem_map_C_iff.1 hmem i`. Establish `h2 : F.coeff i = F.coeff i * F'.coeff i` using `by conv_lhs => rw [hF', MvPolynomial.coeff_C_mul]`. Establish `h3 : F'.coeff i = 1` using `(mul_left_cancel₀ (MvPolynomial.mem_support_iff.1 hi) ((mul_one _).trans h2)).symm`. Rewrite `h1` using `[h3]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPolynomial_exists_content (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] (g : ℕ)
     (F : MvPolynomial (Fin g) O) (hF : F ≠ 0) :
@@ -74,13 +72,13 @@ theorem mvPolynomial_exists_content (O : Type) [CommRing O] [IsDomain O] [Valuat
   exact (IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Introduce `O _ _ _ g`. Establish `hp` using `mvPolynomial_map_maximalIdeal_isPrime O g`. Use `⟨hp, mvPolynomial_exists_content O g, fun π u F hu hdvd => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hF : F = 0`. Rewrite using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_zero _`. Take `⟨π', F', rfl, hF'⟩` from `mvPolynomial_exists_content O g F hF`. Establish `huF : u * F' ∉ (IsLocalRing.maximalIdeal O).map (MvPolynomial.C : O →+* MvPolynomial (Fin g) O)` using `fun h => (hp.mem_or_mem h).elim hu hF'`. Rewrite `huF` using `[MvPolynomial.mem_map_C_iff, not_forall]`. Take `⟨m, hm⟩` from `huF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunit : IsUnit ((u * F').coeff m)`. Assume the negation of the conclusion as `hn`. Conclude with `hm ((IsLocalRing.mem_maximalIdeal _).2 hn)`. Establish `h1 : π ∣ π' * (u * F').coeff m`. Use `(MvPolynomial.C_dvd_iff_dvd_coeff _ _).1 hdvd m` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_left_comm, MvPolynomial.coeff_C_mul]`. Then use the resulting hypothesis. Establish `h2 : π ∣ π'` using `(hunit.dvd_mul_right).1 h1`. Conclude with `Dvd.dvd.mul_right (map_dvd _ h2) _`.
+A detailed English derivation is pending.
 -/
 theorem mvPolynomial_content_valuationRing :
     ∀ (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] (g : ℕ), ((IsLocalRing.maximalIdeal O).map (MvPolynomial.C : O →+* MvPolynomial (Fin g) O)).IsPrime ∧ (∀ F : MvPolynomial (Fin g) O, F ≠ 0 → ∃ (π : O) (F' : MvPolynomial (Fin g) O), F = MvPolynomial.C π * F' ∧ F' ∉ (IsLocalRing.maximalIdeal O).map (MvPolynomial.C : O →+* MvPolynomial (Fin g) O)) ∧ ∀ (π : O) (u F : MvPolynomial (Fin g) O), u ∉ (IsLocalRing.maximalIdeal O).map (MvPolynomial.C : O →+* MvPolynomial (Fin g) O) → MvPolynomial.C π ∣ u * F → MvPolynomial.C π ∣ F := by

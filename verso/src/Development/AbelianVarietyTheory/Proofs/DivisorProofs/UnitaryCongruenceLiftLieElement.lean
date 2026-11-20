@@ -8,59 +8,57 @@ namespace GlobalTheory.CayleyUnit
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul'' (τ : R →+* R) (A B : Matrix n n R) :
     Formalism.UG.cT τ (A * B) = Formalism.UG.cT τ B * Formalism.UG.cT τ A := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.cT, Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one'' (τ : R →+* R) : Formalism.UG.cT τ (1 : Matrix n n R) = 1 := by
   simp [Formalism.UG.cT, Matrix.map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add'' (τ : R →+* R) (A B : Matrix n n R) :
     Formalism.UG.cT τ (A + B) = Formalism.UG.cT τ A + Formalism.UG.cT τ B := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub'' (τ : R →+* R) (A B : Matrix n n R) :
     Formalism.UG.cT τ (A - B) = Formalism.UG.cT τ A - Formalism.UG.cT τ B := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul'' (τ : R →+* R) (c : R) (A : Matrix n n R) :
     Formalism.UG.cT τ (c • A) = τ c • Formalism.UG.cT τ A := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Introduce `R _ n _ _ τ H X p w k hτ hp hw hu hk hX`. Use `set Z : Matrix n n R := p ^ k • X with hZ`. Use `set B : Matrix n n R := 1 + w • Z with hB`. Use `set C : Matrix n n R := 1 - τ w • Z with hC`. Establish `hdet : IsUnit C.det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f` to `Ideal.Quotient.mk (Ideal.span {p})`. Establish `hf : C.map f = 1`. Establish `hp0 : f p = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self p)`. Use extensionality with `i j`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hC, hZ, Matrix.map_apply, Matrix.one_apply, hp0, pow_succ]`. Establish `h1 : f C.det = f 1`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hf, Matrix.det_one, map_one]`. Rewrite `h1` using `[Ideal.Quotient.eq]`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: C.det = 1 + p * s` using `by rw [mul_comm, hs]; ring`. Rewrite using `[this]`. Conclude with `hu s`. Establish `hCi : C * C⁻¹ = 1` using `Matrix.mul_nonsing_inv C hdet`. Establish `hCi' : C⁻¹ * C = 1` using `Matrix.nonsing_inv_mul C hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXs : Formalism.UG.cT τ X * H = -(H * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `hZs : Formalism.UG.cT τ Z * H = -(H * Z)`. Rewrite using `[hZ, cT_smul'', map_pow, hp, Matrix.smul_mul, hXs, Matrix.mul_smul, smul_neg]`. Establish `hBH : Formalism.UG.cT τ B * H = H * C`. Rewrite using `[hB, hC, cT_add'', cT_one'', cT_smul'', Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, hZs, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_smul, smul_neg, sub_eq_add_neg, hZ, Matrix.mul_smul, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCH : Formalism.UG.cT τ C * H = H * B`. Rewrite using `[hB, hC, cT_sub'', cT_one'', cT_smul'', hτ, Matrix.sub_mul, Matrix.one_mul, Matrix.smul_mul, hZs, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, smul_neg, sub_neg_eq_add, hZ, Matrix.mul_smul, Matrix.mul_smul]`. Establish `hcomm : B * C = C * B`. Establish `hc : Commute (w • Z) (τ w • Z)` using `((Commute.refl Z).smul_left w).smul_right (τ w)`. Establish `: Commute B C` using `(Commute.one_left C).add_left ((Commute.one_right (w • Z)).sub_right hc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.eq`. Use `⟨B * C⁻¹, X * C⁻¹, p ^ (k - 1) • (τ w • (X * C⁻¹ * X)), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cT_mul'', Matrix.mul_assoc (Formalism.UG.cT τ C⁻¹), hBH, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc C B, ← hcomm, Matrix.mul_assoc B, hCi, Matrix.mul_one, ← hCH, ← Matrix.mul_assoc, ← cT_mul'', hCi, cT_one'', Matrix.one_mul]`. Establish `hBC : B = C + Z`. Establish `e : w • Z = Z - τ w • Z` using `by rw [eq_sub_iff_add_eq, ← add_smul, hw, one_smul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB, hC, e]`. Normalize the expressions using the abelian group laws. Rewrite using `[hBC, Matrix.add_mul, hCi, hZ, Matrix.smul_mul]`. Establish `h1 : C⁻¹ = 1 + C⁻¹ * (τ w • Z)`. Establish `: C⁻¹ * C = C⁻¹ - C⁻¹ * (τ w • Z)` using `by rw [hC, Matrix.mul_sub, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hCi']`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Use `conv_lhs => rw [h1]`.
-
-Rewrite using `[Matrix.mul_add, Matrix.mul_one, hZ, Nat.add_sub_cancel, smul_smul, Matrix.mul_smul, Matrix.mul_smul, smul_smul, ← Matrix.mul_assoc, smul_smul, pow_succ]`. Use `congr 1`. Rewrite using `[show τ w * (p ^ k' * p) = p * p ^ k' * τ w by ring]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayley_unit : ∀ {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (τ : R →+* R)
     (H X : Matrix n n R) (p w : R) (k : ℕ), (∀ a, τ (τ a) = a) → τ p = p → w + τ w = 1 →

@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.StandardLattice
 open NumberField Formalism.BasicNotions Finset
 
 /- English proof (translation)
-Take `⟨xa, ha⟩` from `part_five_lower_eventually eps C0 CY heps`. Take `⟨xb, hb⟩` from `logXuD_upper_bound_eventually eps C0 CY heps`. Use `⟨max xa xb, fun D sc he hx h2 h3 _ _ h4B => ?_⟩` and prove the remaining obligations. Establish `h5 : Conclusion5Sharp D sc C0 CY` using `fun Δ w hA u => ⟨ha D sc he (le_trans (le_max_left _ _) hx) h2.2.2.1 h2.2.1 h3 h4B Δ w hA u, hb D sc he (le_trans (le_max_right _ _) hx) h2.2.2.1 h2.2.1 h3 h4B Δ w hA u⟩`. Conclude with `part_five_explicit_of_propositions D sc C0 CY h5 (vandermonde_variation_holds D sc C0 CY)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem part_five_explicit_eventually (eps C0 CY : ℝ) (heps : 0 < eps) :
     ∃ x0 : ℝ, ∀ (D : D7) (sc : Scale), sc.eps = eps → x0 ≤ sc.x → VandermondeCountExplicitBound D sc C0 CY := by
@@ -20,9 +20,9 @@ theorem part_five_explicit_eventually (eps C0 CY : ℝ) (heps : 0 < eps) :
   exact part_five_explicit_of_propositions D sc C0 CY h5 (vandermonde_variation_holds D sc C0 CY)
 
 /- English proof (translation)
-Introduce `h2 h3 _ h4B C0 CY`. Establish `heps : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i]`. Conclude with `(Fm.L 0 i).sc.eps_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0⟩` from `part_five_explicit_eventually eps C0 CY heps`. Take `⟨x1, hx1⟩` from `h4B C0`. Use `⟨max x0 x1, fun x hx hxx i => ?_⟩` and prove the remaining obligations. Conclude with `hx0 (Fm.D x i) (Fm.L x i).sc (Fm.L_eps x i) (by rw [Fm.L_x x i hxx]; exact le_trans (le_max_left _ _) hx) (h2 x i) (h3 x i) (local_index_formulas_and_bounds _) (levelPartB_holds _) (hx1 x (le_trans (le_max_right _ _) hx) hxx i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem family_part_five_explicit_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : FamilyVandermondeCountBound Fm := by
   intro h2 h3 _ h4B C0 CY

@@ -11,13 +11,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ D hD b hb`. Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hGL, -, -, -, hCG, -⟩, -⟩` from `id h`. Establish `sW` using `bc_isHaarOn_sigmaFinite D.haarW`. Establish `sN` using `bc_isHaarOn_sigmaFinite D.haarN`. Establish `hfin` using `bc_lintegral_S_pow_AB h D (by rw [hD.μW_eq])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB1 : 1 ≤ AB k r`. Rewrite using `[AB]`. Use `Nat.cast_nonneg (α := ℝ) k` as an intermediate fact. Use `Nat.cast_nonneg (α := ℝ) r` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hmeas : Measurable (fun p : Mt k r × Mt k r => gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b))` using `((bc_gN_cont_mt.comp (bc_continuous_mulM.comp continuous_swap)).measurable).pow_const _`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun p => Real.rpow_nonneg (bc_gN_nonneg _) _)]`. Use `lt_of_le_of_lt (lintegral_mono_ae ?_) hfin` and prove the remaining obligations. Establish `aeS : ∀ᵐ p1 ∂(D.μW.prod D.μN), (Matrix.of p1.1 : Mat k r) ∈ UWset k r D.z ∧ (Matrix.of p1.2 : Mat k r) ∈ Nset k r` using `bc_ae_prod_and (bc_isHaarOn_ae_mem D.haarW) (bc_isHaarOn_ae_mem D.haarN)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [aeS] with p hp`. Establish `hG : (Matrix.of p.2 : Mat k r) * Matrix.of p.1 ∈ GV k r` using `(hCG k r).mul_mem _ hp.2.1 _ hp.1.1`. Express the relevant statement in the definitionally equal form `ENNReal.ofReal (gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b)) ≤ ENNReal.ofReal (gN (Matrix.of p.2 * Matrix.of p.1) ^ (-AB k r))`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_exponent_le (hGL k r _ hG) (by linarith))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem stSInt (h : UnitaryGroupStructuralFacts) : StSInt := by
   intro k r Wp _ _ _ D hD b hb

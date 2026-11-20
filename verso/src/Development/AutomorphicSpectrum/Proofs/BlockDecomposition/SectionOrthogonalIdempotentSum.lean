@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.SecAdd
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap S (Localization.Away e) e)` using `IsLocalization.Away.algebraMap_isUnit e`. Establish `h : algebraMap S (Localization.Away e) e * algebraMap S (Localization.Away e) e = algebraMap S (Localization.Away e) e * 1`. Rewrite using `[← map_mul, he.eq, mul_one]`. Conclude with `hu.mul_left_cancel h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem away_self_eq_one {e : S} (he : IsIdempotentElem e) :
     algebraMap S (Localization.Away e) e = 1 := by
@@ -20,7 +20,7 @@ theorem away_self_eq_one {e : S} (he : IsIdempotentElem e) :
   exact hu.mul_left_cancel h
 
 /- English proof (translation)
-Use `congrArg (algebraMap S (Localization.Away e)) h` as an intermediate fact. Rewrite `this` using `[map_mul, away_self_eq_one he, one_mul, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem away_orth_eq_zero {e x : S} (he : IsIdempotentElem e) (h : e * x = 0) :
     algebraMap S (Localization.Away e) x = 0 := by
@@ -28,9 +28,9 @@ theorem away_orth_eq_zero {e x : S} (he : IsIdempotentElem e) (h : e * x = 0) :
   rwa [map_mul, away_self_eq_one he, one_mul, map_zero] at this
 
 /- English proof (translation)
-Introduce `b`. Take `⟨⟨x, s⟩, hx⟩` from `IsLocalization.surj (Submonoid.powers e) b`. Take `⟨n, hn⟩` from `s.2`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `: algebraMap S (Localization.Away e) (s : S) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hn, map_pow, away_self_eq_one he, one_pow]`. Simplify using `only [this, mul_one] at hx`. Conclude with `hx.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem away_surj {e : S} (he : IsIdempotentElem e) :
     Function.Surjective (algebraMap S (Localization.Away e)) := by
@@ -44,9 +44,9 @@ theorem away_surj {e : S} (he : IsIdempotentElem e) :
   exact hx.symm
 
 /- English proof (translation)
-Take `⟨⟨_, n, rfl⟩, hc⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers e) _ x).1 h`. Break down `n with _ | n` into its components or cases. Simplify using `at hc`. Simplify using `[hc]`. Establish `: e ^ (n + 1) = e` using `he.pow_succ_eq n`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `hc` using `[this]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem away_ker {e x : S} (he : IsIdempotentElem e)
     (h : algebraMap S (Localization.Away e) x = 0) : e * x = 0 := by
@@ -58,7 +58,7 @@ theorem away_ker {e x : S} (he : IsIdempotentElem e)
     simpa [this] using hc
 
 /- English proof (translation)
-Establish `h' : e' * e = 0` using `by rw [mul_comm, h]`. Unfold `IsIdempotentElem`. Rewrite using `[add_mul, mul_add, mul_add, h, h', he.eq, he'.eq, add_zero, zero_add]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIdempotentElem_add {e e' : S} (he : IsIdempotentElem e) (he' : IsIdempotentElem e')
     (h : e * e' = 0) : IsIdempotentElem (e + e') := by
@@ -67,19 +67,19 @@ theorem isIdempotentElem_add {e e' : S} (he : IsIdempotentElem e) (he' : IsIdemp
   rw [add_mul, mul_add, mul_add, h, h', he.eq, he'.eq, add_zero, zero_add]
 
 /- English proof (translation)
-Establish `h' : e' * e = 0` using `by rw [mul_comm, h]`. Establish `key : ∀ z : S, algebraMap S (Localization.Away e × Localization.Away e') z = 0 ↔ (e + e') * z = 0`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : algebraMap S (Localization.Away e) z = 0` using `congrArg Prod.fst hz`. Establish `h2 : algebraMap S (Localization.Away e') z = 0` using `congrArg Prod.snd hz`. Rewrite using `[add_mul, away_ker he h1, away_ker he' h2, add_zero]`. Introduce `hz`. Establish `h1 : e * z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (e * ·) hz` as an intermediate fact. Simplify using `only [mul_zero] at this`. Rewrite using `[← this, ← mul_assoc, mul_add, he.eq, h, add_zero]`. Establish `h2 : e' * z = 0`. Use `congrArg (e' * ·) hz` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_zero] at this`. Rewrite using `[← this, ← mul_assoc, mul_add, he'.eq, h', zero_add]`. Conclude with `Prod.ext (away_orth_eq_zero he h1) (away_orth_eq_zero he' h2)`. Use `IsLocalization.away_of_isIdempotentElem_of_mul (isIdempotentElem_add he he' h) ?_ ?_` and prove the remaining obligations. Introduce `x y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, key, mul_sub, sub_eq_zero]`. Introduce and unpack `⟨b, c⟩`. Take `⟨x, rfl⟩` from `away_surj he b`. Take `⟨y, rfl⟩` from `away_surj he' c`. Use `⟨e * x + e' * y, Prod.ext ?_ ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap S (Localization.Away e) (e * x + e' * y) = _`. Establish `: algebraMap S (Localization.Away e) e' = 0` using `away_orth_eq_zero he h`. Rewrite using `[map_add, map_mul, map_mul, away_self_eq_one he, this, one_mul, zero_mul, add_zero]`. Express the relevant statement in the definitionally equal form `algebraMap S (Localization.Away e') (e * x + e' * y) = _`. Establish `: algebraMap S (Localization.Away e') e = 0` using `away_orth_eq_zero he' h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, map_mul, away_self_eq_one he', this, one_mul, zero_mul, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem isLocalization_prod {e e' : S} (he : IsIdempotentElem e) (he' : IsIdempotentElem e')
     (h : e * e' = 0) :
@@ -118,13 +118,13 @@ theorem isLocalization_prod {e e' : S} (he : IsIdempotentElem e) (he' : IsIdempo
       rw [map_add, map_mul, map_mul, away_self_eq_one he', this, one_mul, zero_mul, zero_add]
 
 /- English proof (translation)
-Introduce `S _ Y f e e' he he' h ⟨s, hs⟩ ⟨s', hs'⟩`. Use `haveI := isLocalization_prod he he' h`. Set `B` to `Localization.Away e`. Set `C` to `Localization.Away e'`. Set `A` to `Localization.Away (e + e')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : (B × C) ≃ₐ[S] A` to `IsLocalization.algEquiv (Submonoid.powers (e + e')) (B × C) A`. Set `t : Spec (CommRingCat.of (B × C)) ⟶ Y` to `inv (coprodSpec B C) ≫ coprod.desc s s'`. Establish `ht : t ≫ f = Spec.map (CommRingCat.ofHom (algebraMap S (B × C)))`. Rewrite using `[← cancel_epi (coprodSpec B C)]`. Simplify using `only [t, Category.assoc, IsIso.hom_inv_id_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprod.inl_desc_assoc, hs, coprodSpec_inl_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[coprod.inr_desc_assoc, hs', coprodSpec_inr_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Spec.map (CommRingCat.ofHom (φ : B × C →+* A)) ≫ t, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ht, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `φ.commutes x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem secOn_add : ∀ {S : Type} [CommRing S] (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of S)) (e e' : S), IsIdempotentElem e → IsIdempotentElem e' →

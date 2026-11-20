@@ -29,9 +29,9 @@ namespace GlobalTheory.Mem.R3.Rw.Ex
     shaLen_nonneg := GaloisStage.shaTrue_nonneg B.host }
 
 /- English proof (translation)
-Introduce `V S N G j _ _ τ`. Use `⟨fun i => ?_, fun c => ?_⟩` and prove the remaining obligations. Use `show ((W'.kaBig j τ i : ℤ) : ℚ) = _`. Rewrite using `[hb]`. Conclude with `(GlobalTheory.Mem.DfGen.aPlusB_int B j τ i).choose_spec.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `show ((W'.kaSmall j τ c : ℤ) : ℚ) = _`. Rewrite using `[hs]`. Use `show ((-(GlobalTheory.Mem.DfGen.aMinusB_int B j τ c).choose : ℤ) : ℚ) = -GlobalTheory.Mem.DfGen.aMinusB B j τ c`. Use `push_cast`. Rewrite using `[← (GlobalTheory.Mem.DfGen.aMinusB_int B j τ c).choose_spec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapDef_of_ka {B : Base} {C : Cols B} (W' : RowsRest B C) (hb : W'.kaBig = GlobalTheory.Mem.DfGen.kaBigB B)
     (hs : W'.kaSmall = GlobalTheory.Mem.DfGen.kaSmallB B) : ∀ V S N G, DV.KapDef (assemble B C W' V S N G) := by
@@ -52,15 +52,15 @@ end
 
 open GlobalTheory.Mem.R3.Rw.Ex in
 /- English proof (translation)
-Introduce `B f T w hX Wt hWt`. Take `⟨R⟩` from `GlobalTheory.Mem.Df.rowsDef_nonempty w.I w.ok w.pins w.l hX`. Establish `hmem : ∀ v, ∃ a, w.I.xi a = T.xiTw f v` using `fun v => by`. Establish `h : T.xiTw f v ∈ Set.range w.I.xi`. Rewrite using `[w.xi_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr ⟨v, rfl⟩`. Conclude with `h`. Establish `hconj : ∀ v, T.xiTw f (B.places.conj v) = T.xiTw f v` using `fun v => by`. Unfold `TwDat.xiTw`. Rewrite using `[GlobalTheory.Mem.Top.TwFin.resChar_conj, (T.conj v).1]`.
+Prove the second alternative. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `mt : B.places.Pl → w.C.Tup` to `fun v => Classical.choose (hmem v)`. Establish `hmt : ∀ v, mt (B.places.conj v) = mt v` using `fun v => by show Classical.choose (hmem (B.places.conj v)) = Classical.choose (hmem v)`. Establish `: ∀ x y (hx : ∃ a, w.I.xi a = x) (hy : ∃ a, w.I.xi a = y), x = y → Classical.choose hx = Classical.choose hy`. Introduce and unpack `x y hx hy rfl`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Conclude with `this _ _ _ _ (hconj v)`. Set `ma : B.places.Pl → w.C.Tup` to `fun v => if v ∈ Wt then mt v else w.C.mu0`. Establish `hma : ∀ v, ma (B.places.conj v) = ma v` using `fun v => by`. Simplify using `only [ma, hWt v, hmt v]`. Establish `hor : ∀ v, ma v = w.C.mu0 ∨ ma v = mt v` using `fun v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Distinguish the cases in `h : v ∈ Wt`. Conclude with `Or.inr (if_pos h)`. Conclude with `Or.inl (if_neg h)`. Use `⟨reset R.W mt ma hmt hma hor, ⟨fun v => Classical.choose_spec (hmem v), fun v h => if_pos h, fun v h => if_neg h⟩, fun W' hb hs => kapDef_of_ka W' hb hs, GlobalTheory.MemN.shaOK_shaTrue B.toPre⟩` and prove the remaining obligations.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.exists_rowsRest_muW : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (hX : B.fields.Ok) (Wt : Set B.places.Pl), (∀ v, B.places.conj v ∈ Wt ↔ v ∈ Wt) → ∃ W₀ : RowsRest B w.C, MuW w Wt W₀ ∧ (∀ W' : RowsRest B w.C, W'.kaBig = W₀.kaBig → W'.kaSmall = W₀.kaSmall → ∀ V S N G, DV.KapDef (assemble B w.C W' V S N G)) ∧ GlobalTheory.MemN.ShaOK B.toPre W₀.shaLen := by
   intro B f T w hX Wt hWt

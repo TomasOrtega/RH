@@ -5,11 +5,11 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hm : 0 ≤ (μ s).toReal` using `ENNReal.toReal_nonneg`. Establish `hδ : 0 < ε / ((μ s).toReal + 1)` using `div_pos hε (by linarith)`. Establish `hc : Continuous fun z : X × Y => f z.1 z.2 - f x₀ z.2` using `hf.sub (hf.comp (Continuous.prodMk continuous_const continuous_snd))`. Establish `htube : ∀ᶠ x in nhds x₀, ∀ y ∈ C, ‖f x y - f x₀ y‖ < ε / ((μ s).toReal + 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hC.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `y _`. Conclude with `(hc.norm.tendsto (x₀, y)).eventually (gt_mem_nhds (by simpa using hδ))`. Use `filter_upwards [htube] with x hx`. Rewrite using `[dist_eq_norm, ← integral_sub (hi x) (hi x₀)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem cont_setIntegral {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [MeasurableSpace Y]
     (μ : Measure Y) (f : X → Y → ℂ) (hf : Continuous f.uncurry) {s C : Set Y} (hs : MeasurableSet s)
@@ -33,7 +33,7 @@ private theorem cont_setIntegral {X Y : Type*} [TopologicalSpace X] [Topological
       nlinarith
 
 /- English proof (translation)
-Introduce `K _ _ n r φ hφ`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Conclude with `cont_setIntegral (unipMeasure K n r) (fun g X => φ (unipGL X * g)) (hφ.comp ((continuous_unipGL.comp continuous_snd).mul continuous_fst)) measurableSet_unipFundamentalDomain hC hDC ((measure_mono hDC).trans_lt hC.measure_lt_top) (fun g => integrableOn_constantTerm hφ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.continuous_constantTerm :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ), Continuous φ → Continuous (constantTerm r φ) := by

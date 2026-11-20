@@ -16,15 +16,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 namespace TopMean
 
 /- English proof (translation)
-Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hj' : (1 : ℝ) ≤ j'` using `by exact_mod_cast hj`. Establish `hB' : 2 * (f : ℝ) * j' ≤ B` using `by exact_mod_cast hB`. Establish `hB64' : (64 : ℝ) ≤ B` using `by exact_mod_cast hB64`. Establish `hrd0 : 0 < rd` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.log (2 * (f : ℝ) * rd) ≤ Real.log ((B : ℝ) * rd)`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hrd0.le` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : Real.log (2 * (f : ℝ) * j' * rd) ≤ Real.log ((B : ℝ) * rd)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hB' hrd0.le`. Establish `h3 : 3 ≤ Real.log ((B : ℝ) * rd)`. Establish `h128 : (128 : ℝ) ≤ (B : ℝ) * rd` using `by nlinarith`. Establish `hl : Real.log (128 : ℝ) = 7 * Real.log 2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (128 : ℝ) = 2 ^ 7 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_le_log (by norm_num) h128` as an intermediate fact. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `abs_nonneg L` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem bracket_le (f j' B : ℕ) (rd L : ℝ) (hrd : 2 ≤ rd) (hf : 1 ≤ f) (hj : 1 ≤ j')
     (hB : 2 * f * j' ≤ B) (hB64 : 64 ≤ B) :
@@ -57,29 +57,27 @@ end TopMean
 open TopMean in
 
 /- English proof (translation)
-Introduce `hG`. Use `⟨4, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ U _ _ hU`. Take `⟨Q⟩` from `GlobalTheory.T.cusp_volume_left hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or`. Take `⟨κ, hκ, htr⟩` from `GlobalTheory.T.ptsIntegral_eq_sum_ballDens_integrals E H D Xo l c Y II K J Ω W Dc Hd S₀ Or Q`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `GlobalTheory.T.cusp_volume_middle E H D Xo l c Y II K J Ω W Dc Hd S₀ Or Q U hU`. Take `⟨hrd, ⟨τ₀⟩, -⟩` from `GlobalTheory.CompanionTheory.Ar.Top.HostNumbers.host_numbers E H`. Introduce `hj' hN B hB`. Establish `hjN : Dc.j + Dc.j' = Dc.N`. Use `Dc.j_le` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Dc.two_le_N` as an intermediate fact. Use `show Dc.j + (Dc.N - Dc.j) = Dc.N`. Use linear arithmetic over natural numbers and integers. Establish `hball` using `fun k => GlobalTheory.T.cusp_weight_integrable_on_fundamental_set E (CMType H) Dc.j Dc.j' Dc.n Q.g (Q.Λ k) H (Q.F k) (Q.Γ k) (Q.FF k) (Q.arith k) (Q.fund k) hj' (by omega)`. Use `set C : ℝ := (Fintype.card (CMType H) : ℝ) * Dc.j' * (6 + Real.log (2 * Fintype.card (CMType H) * hostRd E) + Real.log (2 * Fintype.card (CMType H) * Dc.j' * hostRd E)) with hC`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : GroundTheory.Heights₂.Heights.LowerBoundFree.degMu Hd = κ * ∑ k, (Q.d k : ℝ) * ∫ t in Q.FF k, ballDens (Q.F k).q t`. Establish `e1 : GroundTheory.Heights₂.Heights.LowerBoundFree.degMu Hd = ptsIntegral (e` using `Dc.n) (mCoordIdeal Dc.y) (fun _ => phMu Hd) (fun _ => 1) := rfl`. Rewrite using `[e1, htr (fun _ => 1) (fun _ _ => 1) (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) (fun k => by simpa using (hball k).1)]`. Use `congrArg (κ * ·) (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnum : ptsIntegral (e` using `Dc.n) (mCoordIdeal Dc.y) (fun _ => phMu Hd) U = κ * ∑ k, (Q.d k : ℝ) * ∫ t in Q.FF k, ((Q.F k).R t).cuspW (Q.F k).σ * ballDens (Q.F k).q t := htr U (fun k t => ((Q.F k).R t).cuspW (Q.F k).σ) hw.1 hw.2 (fun k => (hball k).2.2.1)`. Establish `hle : ∀ k, (Q.d k : ℝ) * (∫ t in Q.FF k, ((Q.F k).R t).cuspW (Q.F k).σ * ballDens (Q.F k).q t) ≤ C * ((Q.d k : ℝ) * ∫ t in Q.FF k, ballDens (Q.F k).q t)` using `fun k => by`. Establish `h` using `mul_le_mul_of_nonneg_left (hball k).2.2.2 (Nat.cast_nonneg (α := ℝ) (Q.d k))`. Combine the equalities or inequalities in the displayed calculation. Establish `hDpos : 0 < GroundTheory.Heights₂.Heights.LowerBoundFree.degMu Hd`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hdeg]`. Apply `mul_pos hκ` to reduce the goal to its premises. Take `⟨k0, hk0⟩` from `Q.d_pos`. Conclude with `Finset.sum_pos' (fun k _ => mul_nonneg (Nat.cast_nonneg _) (hball k).2.1.le) ⟨k0, Finset.mem_univ _, mul_pos (by exact_mod_cast hk0) (hball k0).2.1⟩`. Establish `hmean : meanOf Hd U ≤ C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Unfold `meanOf`. Rewrite using `[div_le_iff₀ hDpos, hnum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdeg, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : 1 ≤ Fintype.card (CMType H)` using `Fintype.card_pos_iff.mpr ⟨τ₀⟩`. Establish `hfD : Dc.f = Fintype.card (CMType H)` using `rfl`. Establish `hN4 : 4 ≤ Dc.N` using `by omega`. Establish `hB64 : 64 ≤ B`. Establish `: 4 * 1 * 4 ^ 2 ≤ 4 * Dc.f * Dc.N ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[hfD]`. Use `gcongr`. Use linear arithmetic over natural numbers and integers. Establish `hB2 : 2 * Fintype.card (CMType H) * Dc.j' ≤ B`. Establish `hjN' : Dc.j' ≤ Dc.N ^ 2` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: 2 * Fintype.card (CMType H) * Dc.j' ≤ 4 * Dc.f * Dc.N ^ 2`. Rewrite using `[hfD]`. Combine the equalities or inequalities in the displayed calculation. Use `Nat.mul_le_mul_left (4 * Fintype.card (CMType H)) hjN'` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = _ := rfl`. Use linear arithmetic over natural numbers and integers. Establish `hbr` using `bracket_le (Fintype.card (CMType H)) Dc.j' B (hostRd E) (hostLval H) hrd hf hj' hB2 hB64`. Establish `hfj : (0 : ℝ) ≤ (Fintype.card (CMType H) : ℝ) * Dc.j'` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hC]`. Conclude with `mul_le_mul_of_nonneg_left hbr hfj`. Use `_ = 4 * Dc.f * Dc.j' * abelian₂ B (hostRd E) (hostLval H) := by`. Rewrite using `[hfD, GroundTheory.Heights₂.Heights.LowerBoundFree.abelian₂]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem top_mean_cusp_weight : Top.Given → ∃ Cu : ℝ, ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B₁ : ℕ) (U : ((Σ k, J k) → ℂ) → ℝ), IsFullIntersectionSystem II → admitted Xo l c Y Or B₁ → Or.𝔐.IsCuspWeight Or.sm U → MeanU Hd U Cu (hostRd E) (hostLval H) := by
   intro hG

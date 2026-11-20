@@ -4,7 +4,7 @@ open MeasureTheory Set UpperHalfPlane
 open scoped MatrixGroups ENNReal
 
 /- English proof (translation)
-Establish `: (fun z : ℍ => γ • z) = fun z : ℍ => ((γ : GL (Fin 2) ℝ)) • z` using `rfl`. Rewrite using `[this]`. Conclude with `measurePreserving_smul _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.V.Af.Rs.unfM_mp (γ : SL(2, ℤ)) :
     MeasurePreserving (fun z : ℍ => γ • z) volume volume := by
@@ -13,21 +13,19 @@ private lemma UpperTheory.V.Af.Rs.unfM_mp (γ : SL(2, ℤ)) :
   exact measurePreserving_smul _ _
 
 /- English proof (translation)
-Introduce `hFin hCount`. Unfold `UpperTheory.V.Af.Rs.UnfM`. Unfold `UpperTheory.V.Af.Rs.FdFin at hFin`. Unfold `UpperTheory.V.Af.Rs.FdCount at hCount`. Take `⟨hfdm, -⟩` from `hFin`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))`. Use `haveI : Countable SL(2, ℤ) := inferInstanceAs (Countable {A : Matrix (Fin 2) (Fin 2) ℤ // A.det = 1})`. Use extensionality with `s hs`. Rewrite using `[Measure.sum_apply _ hs]`. Establish `step : ∀ γ : SL(2, ℤ), Measure.map (fun z : ℍ => γ • z) (volume.restrict ModularGroup.fd) s = ∫⁻ z in s, ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • z)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `γ`. Establish `hm : Measurable (fun z : ℍ => γ • z)` using `(UpperTheory.V.Af.Rs.unfM_mp γ).measurable`. Establish `hm' : Measurable (fun z : ℍ => γ⁻¹ • z)` using `(UpperTheory.V.Af.Rs.unfM_mp γ⁻¹).measurable`. Establish `hP : MeasurableSet ((fun z : ℍ => γ⁻¹ • z) ⁻¹' ModularGroup.fd)` using `hm' hfdm`. Rewrite using `[Measure.map_apply hm hs, Measure.restrict_apply (hm hs)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hind : (fun z : ℍ => ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • z)) = ((fun z : ℍ => γ⁻¹ • z) ⁻¹' ModularGroup.fd).indicator 1`. Use extensionality with `z`. Distinguish the cases in `h : γ⁻¹ • z ∈ ModularGroup.fd`. Rewrite using `[indicator_of_mem h, indicator_of_mem (show z ∈ _ from h)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_notMem h, indicator_of_notMem (show z ∉ _ from h)]`. Rewrite using `[hind, lintegral_indicator_one hP, Measure.restrict_apply hP, ← (UpperTheory.V.Af.Rs.unfM_mp γ).measure_preimage (hP.inter hs).nullMeasurableSet]`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [mem_preimage, mem_inter_iff, inv_smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `and_comm`. Rewrite using `[tsum_congr step]`. Establish `hmeas : ∀ γ : SL(2, ℤ), AEMeasurable (fun z : ℍ => ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • z)) (volume.restrict s)` using `fun γ => ((measurable_const.indicator hfdm).comp (UpperTheory.V.Af.Rs.unfM_mp γ⁻¹).measurable).aemeasurable`. Rewrite using `[← lintegral_tsum hmeas]`. Establish `hre : ∀ z : ℍ, ∑' γ : SL(2, ℤ), ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (γ⁻¹ • z) = ∑' γ : SL(2, ℤ), ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (γ • z)` using `fun z => (Equiv.inv SL(2, ℤ)).tsum_eq (fun γ => ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (γ • z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Repeatedly rewrite using `[hre]`. Rewrite using `[lintegral_congr_ae (ae_restrict_of_ae hCount), setLIntegral_const, Measure.smul_apply]`. Use `first`. Consider the case `rw [two_mul, two_nsmul]`. Consider the case `rw [smul_eq_mul]`.
-
-Consider the case `simp [two_mul, two_smul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.unfM :
     UpperTheory.V.Af.Rs.FdFin → UpperTheory.V.Af.Rs.FdCount → UpperTheory.V.Af.Rs.UnfM := by

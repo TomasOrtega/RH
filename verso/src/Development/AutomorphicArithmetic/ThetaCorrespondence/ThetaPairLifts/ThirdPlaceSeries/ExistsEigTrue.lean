@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SCuspRows
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨Sb, h1, h2, -⟩` from `GlobalTheory.TwInputs.Eig.exists_low (ι := Empty) n.In.Sb (fun i => i.elim) (fun i => i.elim) fun i => i.elim`. Establish `h` using `_root_.GlobalTheory.TwInputs.Eig.eigTrue_of_read hL x.r.Y x.m.z.lev.is l.a.A.wdT l.a.A.row l.a.row n.rat.eig h1 h2`. Establish `hC : x.m.z.R.C = cfOf x` using `x.m.z.lev.C`. Conclude with `⟨Sb, (congrArg (fun c : CharFrame (Dof x) => GlobalTheory.TwInputs.EigTrue (Dof x) c l.a.A.row Sb n.In.eig) hC).mp h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_eigTrue_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (l : _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x) (n : InRat x.r.Y x.m.z.cG) :

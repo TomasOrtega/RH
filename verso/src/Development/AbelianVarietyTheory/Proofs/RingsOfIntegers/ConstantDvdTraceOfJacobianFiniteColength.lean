@@ -9,13 +9,13 @@ open scoped TensorProduct
 namespace GlobalTheory.TraceJacobian
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin σ`. Set `ρ : MvPowerSeries σ k ≃ₐ[k] MvPowerSeries (Fin (Fintype.card σ)) k` to `renameEquiv k e`. Establish `hX : ∀ j, ρ (X j) = X (e j)` using `fun j => by simp [ρ]`. Establish `hmap : ∀ s ∈ Ideal.span (Set.range f), ρ s ∈ Ideal.span (Set.range fun i => ρ (f (e.symm i)))`. Introduce `s hs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hs`. Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨e j, by simp⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hdet`. Use `SocleDet.det_notMem_span k _ N (fun i => ρ (f (e.symm i))) ((ρ.toAlgHom.mapMatrix a).submatrix e.symm e.symm) (fun i => ?_) (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[hf, map_sum, ← e.symm.sum_comp]`. Simplify using `[hX]`. Use `hmap _ (hN (e.symm i))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_pow, hX, e.apply_symm_apply]`. Then use the resulting hypothesis. Rewrite using `[Matrix.det_submatrix_equiv_self, ← AlgHom.map_det]`. Conclude with `hmap _ hdet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_notMem_span (k : Type) [Field k] (σ : Type) [Fintype σ] [DecidableEq σ] (N : ℕ)
     (f : σ → MvPowerSeries σ k) (a : Matrix σ σ (MvPowerSeries σ k))
@@ -44,9 +44,9 @@ theorem det_notMem_span (k : Type) [Field k] (σ : Type) [Fintype σ] [Decidable
     exact hmap _ hdet
 
 /- English proof (translation)
-Establish `h` using `SocleDet.mem_span_X_of_coeff Finset.univ (s - C (constantCoeff s)) (fun m hm => by`. Establish `: m = 0` using `Finsupp.ext fun j => hm j (Finset.mem_univ j)`. Substitute `this` using the available equality. Use the proof step `simp)`. Rewrite `h` using `[Finset.coe_univ, Set.image_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h`. Conclude with `⟨u, by simp only [mul_comm (X _), hu]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_C_add_sum {R σ : Type} [CommRing R] [Fintype σ] (s : MvPowerSeries σ R) :
     ∃ u : σ → MvPowerSeries σ R, s = C (constantCoeff s) + ∑ j, X j * u j := by
@@ -59,7 +59,7 @@ theorem exists_eq_C_add_sum {R σ : Type} [CommRing R] [Fintype σ] (s : MvPower
   exact ⟨u, by simp only [mul_comm (X _), hu]; ring⟩
 
 /- English proof (translation)
-Use `letI := ι.toAlgebra`. Take `⟨ψ, hψ⟩` from `(mvPowerSeries_eval_of_pow_mem B K σ a fun j => ⟨1, by simpa using ha j⟩).1 h A`. Conclude with `⟨ψ, fun c => ψ.commutes c, hψ⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ringHom_eval {A B σ : Type} [CommRing A] [CommRing B] [Finite σ] (ι : A →+* B)
     (K : Ideal B) [h : IsAdicComplete K B] (a : σ → B) (ha : ∀ j, a j ∈ K) :
@@ -71,43 +71,41 @@ theorem exists_ringHom_eval {A B σ : Type} [CommRing A] [CommRing B] [Finite σ
 open DiscrJacobian in
 
 /- English proof (translation)
-Set `S` to `MvPowerSeries σ A`. Establish `: Module.Finite S B` using `Module.Finite.of_restrictScalars_finite A S B`. Establish `: Module.FinitePresentation S B` using `Module.finitePresentation_of_finite S B`. Set `t : σ → S ⊗[A] B` to `fun j => (X j : S) ⊗ₜ[A] (1 : B) - (1 : S) ⊗ₜ[A] algebraMap S B (X j)`. Establish `hker : ∀ z : S ⊗[A] B, mu A S B z = 0 → z ∈ Ideal.span (Set.range t)` using `mem_span_of_mu_eq_zero (fun j => (X j : S)) X_mem_jacobson fun s => ⟨constantCoeff s, exists_eq_C_add_sum s⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose a ha using fun i => Ideal.mem_span_range_iff_exists_fun.1 (hker (f i ⊗ₜ 1) (by simp [S, hf0]))`. Set `P : Matrix σ σ (S ⊗[A] B)` to `Matrix.of a`. Establish `hmt : ∀ j, mu A S B (t j) = 0` using `fun j => by simp [t]`. Establish `hmu : ∀ i j, mu A S B (a i j) = algebraMap S B (pderiv A j (f i))`. Introduce `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (der (S := S) (B := B) (pderiv A j)) (ha i)` as an intermediate fact. Simplify using `only [map_sum, der_mul, hmt, zero_mul, add_zero, der_tmul, mul_one] at this`. Rewrite using `[← this, Finset.sum_eq_single j]`. Simplify using `[t, S]`. Introduce `l _ hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[t, S, hl]`. Simplify using the standard rewrite rules. Set `q : S →ₐ[A] B` to `IsScalarTower.toAlgHom A S B`. Set `π : S ⊗[A] B →ₐ[A] B ⊗[A] B` to `Algebra.TensorProduct.map q (AlgHom.id A B)`. Establish `hπ : ∀ s w, π (s ⊗ₜ w) = algebraMap S B s ⊗ₜ w` using `fun s w => rfl`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDt : ∀ z ∈ Ideal.span (Set.range t), π z * π P.det = 0`. Introduce `z hz`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hz`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `SocleDet.det_mul_mem (RingHom.ker π) P t j fun r => by` as an intermediate fact. Establish `: (P.mulVec t) r = f r ⊗ₜ 1` using `ha r`. Rewrite using `[this, RingHom.mem_ker, hπ, hf0, TensorProduct.zero_tmul]`. Rewrite `this` using `[RingHom.mem_ker, map_mul]`. Rewrite using `[map_mul, mul_assoc, mul_comm (π (t j)), this, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : ∀ x : B, (TensorProduct.tmul A x 1 - TensorProduct.tmul A 1 x) * π P.det = 0`. Introduce `x`. Take `⟨s, rfl⟩` from `hsurj x`. Use `hDt _ (hker (s ⊗ₜ 1 - 1 ⊗ₜ algebraMap S B s) (by simp))` as an intermediate fact. Rewrite `this` using `[map_sub, hπ, hπ, map_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hJ : Algebra.TensorProduct.lmul' (S` using `B) A (π P.det) = algebraMap S B (Matrix.of fun i j => pderiv A j (f i)).det := by`. Establish `e : ∀ z, Algebra.TensorProduct.lmul' (S` using `B) A (π z) = mu A S B z := by`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s w => simp [hπ]`. Rewrite using `[e, AlgHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmu i j`. Rewrite using `[← hJ]`. Establish `hεA : ∀ c, ε (algebraMap A B c) = residue A c` using `fun c => by`. Rewrite using `[IsScalarTower.algebraMap_apply A S B, hε]`. Simplify using `[S, MvPowerSeries.algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `m : Ideal B` to `(maximalIdeal A).map (algebraMap A B)`. Use `exists_trace_eq_form_mul_diagonal A B _ ε (RingHom.ext hεA) (fun x hx => ?_) hD ?_` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hsurj x`. Take `⟨u, hu⟩` from `exists_eq_C_add_sum s`. Rewrite `hx` using `[hε, residue_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ∈ m.radical`. Rewrite using `[hu, map_add, map_sum]`. Use `add_mem (Ideal.le_radical ?_) (Ideal.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Establish `: algebraMap S B (C (constantCoeff s)) = algebraMap A B (constantCoeff s)` using `(IsScalarTower.algebraMap_apply A S B _).symm`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mem_map_of_mem _ hx`. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (map_mem_radical hsurj (X_mem_jacobson j))`. Introduce `s hs lift hlift hmem`. Set `κ : ResidueField A →+* B ⧸ m` to `Ideal.Quotient.lift _ ((Ideal.Quotient.mk m).comp (algebraMap A B)) fun c hc => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hc)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hκ : ∀ c, κ (residue A c) = Ideal.Quotient.mk m (algebraMap A B c)` using `fun c => rfl`. Set `E : B →ₐ[A] B ⧸ m` to `{ κ.comp ε with commutes' := fun c => by simp [hεA, hκ] }`. Establish `hE : ∀ x, E x = κ (ε x)` using `fun x => rfl`. Set `cc : S →ₐ[A] B` to `{ (algebraMap A B).comp (constantCoeff : S →+* A) with commutes' := fun r => by simp [S, MvPowerSeries.algebraMap_apply] }`. Establish `hcc : ∀ s, cc s = algebraMap A B (constantCoeff s)` using `fun s => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `η : S ⊗[A] B →ₐ[A] B` to `Algebra.TensorProduct.productMap cc (AlgHom.id A B)`. Establish `hη : ∀ s w, η (s ⊗ₜ w) = algebraMap A B (constantCoeff s) * w` using `fun s w => rfl`. Establish `e : ∀ z, Algebra.TensorProduct.productMap E (Ideal.Quotient.mkₐ A m) (π z) = Ideal.Quotient.mk m (η z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s w`. Rewrite using `[hπ, hη, map_mul, ← hκ, ← hε]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `e P.det`. Rewrite `h1` using `[hs, map_sum, AlgHom.map_det]`. Use `hW (η.mapMatrix P) (fun i => ?_) ?_` and prove the remaining obligations. Use `congrArg η (ha i)` as an intermediate fact. Simplify using `only [map_sum, map_mul, hη, mul_one] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[t, hη, P, S]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← h1, ← Ideal.Quotient.eq_zero_iff_mem.2 hmem, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Algebra.smul_def, map_mul, ← hκ, hlift]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_trace_eq {A B σ : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     [CommRing B] [Fintype σ] [DecidableEq σ] [Algebra A B] [Algebra (MvPowerSeries σ A) B]
@@ -225,15 +223,13 @@ theorem exists_trace_eq {A B σ : Type} [CommRing A] [IsLocalRing A] [IsNoetheri
       rfl
 
 /- English proof (translation)
-Use `letI := ι.toAlgebra`. Use `letI := θ.toAlgebra`. Use `haveI : IsScalarTower A (MvPowerSeries σ A) B := IsScalarTower.of_algebraMap_eq fun c => (hι c).symm`. Establish `hsm : ∀ (c : A) (x : B), c • x = ι c * x` using `fun c x => rfl`. Set `β : Module.Basis (Fin r) A B` to `Module.Basis.mk (v := b) (Fintype.linearIndependent_iff.2 fun c hc => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(hb 0).unique (y₁ := c) (y₂ := 0) hc.symm (by simp)` as an intermediate fact. Conclude with `congrFun this)`. Use the proof step `(fun x _ => by`. Take `⟨c, hc, -⟩` from `hb x`. Conclude with `(Submodule.mem_span_range_iff_exists_fun A).2 ⟨c, hc.symm⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hβ : ∀ i, β i = b i` using `fun i => Module.Basis.mk_apply _ _ i`. Use `haveI : Module.Free A B := Module.Free.of_basis β`. Use `haveI : Module.Finite A B := Module.Finite.of_basis β`. Take `⟨lam, hlam⟩` from `exists_trace_eq (A := A) (B := B) hsurj f hf0 ε hε hW`. Establish `e : Algebra.leftMulMatrix β g = M`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hβ, hM]`. Simplify using `only [← hsm, ← hβ]`. Rewrite using `[β.repr_sum_self]`. Rewrite using `[← e, ← Algebra.trace_eq_matrix_trace, hlam]`.
-
-Use `⟨lam (g * U), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lam (g * θ _) = _`. Rewrite using `[hJ, mul_left_comm, ← hsm, map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_trace_of_ringHom {A B σ : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     [CommRing B] [Fintype σ] [DecidableEq σ] (θ : MvPowerSeries σ A →+* B) (ι : A →+* B)
@@ -276,23 +272,23 @@ end GlobalTheory.TraceJacobian
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ σ _ _ φ h0 hM δ U _ hJ r b hb g M hg`. Establish `hs : HasSubst φ` using `hasSubst_of_constantCoeff_zero h0`. Set `ι : MvPowerSeries σ V →ₐ[V] MvPowerSeries σ V` to `substAlgHom hs`. Establish `hι : ∀ c, ι c = subst φ c` using `fun c => substAlgHom_apply hs c`. Establish `hιX : ∀ j, ι (X j) = φ j` using `fun j => substAlgHom_X hs j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιC : ∀ c, ι (C c) = C c` using `fun c => ι.commutes c`. Establish `hcomp` using `PlaceInt.isAdicComplete_mvPowerSeries_finite (V := V) σ`. Establish `hXm : ∀ j, (X j : MvPowerSeries σ V) ∈ maximalIdeal _` using `fun j => (PlaceInt.mem_maximalIdeal_mvPowerSeries_iff _).2 (by simp)`. Take `⟨θ, hθC, hθX⟩` from `TraceJacobian.exists_ringHom_eval (ι : MvPowerSeries σ V →+* _) (maximalIdeal _) X hXm`. Establish `hθ : θ.comp (MvPowerSeries.map (C : V →+* MvPowerSeries σ V)) = RingHom.id _` using `(mvPowerSeries_eval_of_pow_mem _ (maximalIdeal _) σ X fun j => ⟨1, by simpa using hXm j⟩).2 inferInstance V _ _ (fun t => by simp [hθC, hιC]) (fun j => by simp [hθX]) (fun j => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθm : ∀ s, θ (MvPowerSeries.map C s) = s` using `fun s => RingHom.congr_fun hθ s`. Establish `hcc : ∀ c, constantCoeff (ι c) = constantCoeff c` using `fun c => by`. Take `⟨u, hu⟩` from `TraceJacobian.exists_eq_C_add_sum c`. Use `conv_lhs => rw [hu]`. Simplify using `[hιC, hιX, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `TraceJacobian.dvd_trace_of_ringHom θ (ι : MvPowerSeries σ V →+* _) hθC (fun s => ⟨_, hθm s⟩) (fun i => MvPowerSeries.map C (φ i) - C (X i)) (fun i => by simp [hθm, hθC, hιX]) ((residue _).comp ((C : V →+* MvPowerSeries σ V).comp constantCoeff)) (fun s => ?_) (fun a ha hdet => ?_) …` and prove the remaining obligations. Take `⟨u, hu⟩` from `TraceJacobian.exists_eq_C_add_sum s`. Establish `: constantCoeff (θ s) = constantCoeff (constantCoeff s)` using `by conv_lhs => rw [hu]`. Simplify using `[hθC, hθX, hcc]`. Simplify using `only [RingHom.comp_apply, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, PlaceInt.mem_maximalIdeal_mvPowerSeries_iff]`. Simplify using the standard rewrite rules. Take `⟨N, hN⟩` from `hM`. Set `red : MvPowerSeries σ V →+* MvPowerSeries σ (ResidueField V)` to `MvPowerSeries.map (residue V)`. Use `TraceJacobian.det_notMem_span (ResidueField V) σ N (fun j => red (φ j)) (red.mapMatrix a) (fun i => ?_) (fun i => hN (Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self i)) N)) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ha i`. Simplify using `only [map_sub, constantCoeff_map, h0, map_zero, constantCoeff_C, zero_sub, map_neg, RingHom.coe_coe, hιX, hθX, mul_neg, Finset.sum_neg_distrib, neg_inj] at h1`. Rewrite using `[h1]`. Simplify using `[red]`. Rewrite using `[← RingHom.map_det]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_comap.1 ((Ideal.map_le_iff_le_comap (K := Ideal.comap red _)).2 (fun c hc => ?_) hdet)` and prove the remaining obligations. Take `⟨u, hu⟩` from `TraceJacobian.exists_eq_C_add_sum c`. Rewrite `hc` using `[PlaceInt.mem_maximalIdeal_mvPowerSeries_iff, ← residue_eq_zero_iff]`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hu]`. Simplify using `only [RingHom.coe_coe, map_add, map_sum, map_mul, hιC, hιX]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem ?_ (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩))` and prove the remaining obligations. Simplify using `[red, hc]`. Rewrite using `[RingHom.coe_coe, hιC, ← hJ, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j : 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `: pderiv _ j (MvPowerSeries.map (C : V →+* MvPowerSeries σ V) (φ i) - C (X i)) = MvPowerSeries.map C (pderiv V j (φ i))`. Use extensionality with `m : 1`. Simplify using `[coeff_pderiv, coeff_C]`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[this, hθm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_dvd_trace_of_jacobian : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (σ : Type) [Fintype σ] [DecidableEq σ] (φ : σ → MvPowerSeries σ V), (∀ j, MvPowerSeries.constantCoeff (φ j) = 0) → (∃ M : ℕ, Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ (ResidueField V))) ^ M ≤ Ideal.span (Set.range fun j => MvPowerSeries.map (residue V) (φ j))) → ∀ (δ : V) (U : (MvPowerSeries σ V)ˣ), δ ≠ 0 → Matrix.det (Matrix.of fun i j : σ => MvPowerSeries.pderiv V j (φ i)) = MvPowerSeries.C δ * (U : MvPowerSeries σ V) → ∀ (r : ℕ) (b : Fin r → MvPowerSeries σ V), (∀ f, ∃! cf : Fin r → MvPowerSeries σ V, f = ∑ i, MvPowerSeries.subst φ (cf i) * b i) → ∀ (f : MvPowerSeries σ V) (M : Matrix (Fin r) (Fin r) (MvPowerSeries σ V)), (∀ j, f * b j = ∑ i, MvPowerSeries.subst φ (M i j) * b i) → MvPowerSeries.C δ ∣ M.trace := by
   intro V _ _ _ _ _ σ _ _ φ h0 hM δ U _ hJ r b hb g M hg

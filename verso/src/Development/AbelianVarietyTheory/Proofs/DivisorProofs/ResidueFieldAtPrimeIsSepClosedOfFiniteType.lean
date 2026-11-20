@@ -3,9 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k B _ _ _ _ _ P _`. Use `letI : Field (B ⧸ P) := Ideal.Quotient.field P`. Use `haveI : Module.Finite k (B ⧸ P) := finite_of_finite_type_of_isJacobsonRing k (B ⧸ P)`. Use `haveI : Algebra.IsIntegral k (B ⧸ P) := inferInstance`. Set `f : k ≃+* (B ⧸ P)` to `RingEquiv.ofBijective (algebraMap k (B ⧸ P)) IsAlgClosed.algebraMap_bijective_of_isIntegral`.
-
-Use `haveI : IsAlgClosed (B ⧸ P) := IsAlgClosed.of_ringEquiv k (B ⧸ P) f`. Set `e : (B ⧸ P) ≃+* IsLocalRing.ResidueField (Localization.AtPrime P)` to `IsLocalization.AtPrime.equivQuotMaximalIdeal P (Localization.AtPrime P)`. Use `haveI : IsAlgClosed (IsLocalRing.ResidueField (Localization.AtPrime P)) := IsAlgClosed.of_ringEquiv _ _ e`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem residueField_localization_atPrime_isSepClosed_of_finiteType :
     ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [Algebra k B] [Algebra.FiniteType k B]

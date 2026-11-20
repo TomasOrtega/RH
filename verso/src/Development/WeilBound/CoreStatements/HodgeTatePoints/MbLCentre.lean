@@ -9,9 +9,9 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb.LCentre.Centre
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `isUnit_iff_exists_inv.1 h`. Establish `hab : (a : Ω) * (b : Ω) = 1` using `congrArg Subtype.val hb`. Establish `h0 : (a : Ω) ≠ 0` using `left_ne_zero_of_mul_eq_one hab`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h0, a.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right hab]`. Conclude with `b.2`. Introduce and unpack `⟨h0, -, hi⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨(a : Ω)⁻¹, hi⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isUnit_regAt_iff {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (p : Cpt ξ) (a : regAt ξ p) : IsUnit a ↔ unitAt ξ p (a : Ω) := by
@@ -27,29 +27,25 @@ theorem isUnit_regAt_iff {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Com
     exact isUnit_iff_exists_inv.2 ⟨⟨(a : Ω)⁻¹, hi⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M X' Ω' _ ξ' i p' hp'`. Take `⟨c, hc, hreg⟩` from `hp'`. Use `haveI : IsLocalRing (regAt ξ' p') := (PositivityTheory.HtPt.Ma.reg_local X' Ω' ξ').1 p'`. Set `φ : chRing o x c →+* regAt ξ' p'` to `(i.comp (chRing o x c).val.toRingHom).codRestrict (regAt ξ' p') (fun a => hreg a a.2)`. Set `P : Ideal (chRing o x c)` to `(IsLocalRing.maximalIdeal (regAt ξ' p')).comap φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI hPp : P.IsPrime := Ideal.comap_isPrime _ _`. Take `⟨p₀, ⟨hin, hP⟩, -⟩` from `PositivityTheory.HtPt.Ma.prime_pt o Ω κ x M c hc P hPp`. Establish `key : ∀ u : chRing o x c, unitAt M.ξ p₀ (u : Ω) ↔ unitAt ξ' p' (i u)`. Introduce `u`. Establish `h` using `hP u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : u ∈ P ↔ ¬ unitAt ξ' p' (i u)`. Express the relevant statement in the definitionally equal form `φ u ∈ IsLocalRing.maximalIdeal (regAt ξ' p') ↔ _`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_regAt_iff]`. Both sides reduce to the same expression. The claim follows by propositional logic.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc` using `fun (c₁ : κ) (p : Cpt M.ξ) (h : InChart M.ξ x c₁ p) => PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c₁ p h`. Establish `hch : ∀ a ∈ chRing o x c, a ∈ regAt M.ξ p₀` using `(hloc c p₀ hin).1`. Establish `hdom : ∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p'`. Introduce `a ha`. Take `⟨u, hu, v, hv, hvu, rfl⟩` from `((hloc c p₀ hin).2 a).1 ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(key ⟨v, hv⟩).1 hvu`. Rewrite using `[map_div₀, div_eq_mul_inv]`. Conclude with `mul_mem (hreg u hu) h1.2.2`. Establish `hlift : ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a`. Introduce `a ha hu'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, v, hv, hvu, rfl⟩` from `((hloc c p₀ hin).2 a).1 ha`. Establish `hiu : unitAt ξ' p' (i u)`. Establish `h1 : i u = i (u / v) * i v` using `by rw [← map_mul, div_mul_cancel₀ _ hvu.1]`. Rewrite using `[h1]`. Conclude with `Flat.ZUnit.mul hu' ((key ⟨v, hv⟩).1 hvu)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu0 : unitAt M.ξ p₀ u` using `(key ⟨u, hu⟩).2 hiu`. Rewrite using `[div_eq_mul_inv]`. Conclude with `Flat.ZUnit.mul hu0 (Flat.ZUnit.inv hvu)`. Establish `hchart : ∀ c₁, x c₁ ≠ 0 → (∀ j, i (x j / x c₁) ∈ regAt ξ' p') → InChart M.ξ x c₁ p₀`. Introduce `c₁ h1 hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : x c₁ / x c ∈ regAt M.ξ p₀` using `hch _ (Algebra.subset_adjoin ⟨c₁, rfl⟩)`. Establish `hunit : unitAt ξ' p' (i (x c₁ / x c))`. Use `⟨(map_ne_zero i).2 (div_ne_zero h1 hc), hdom _ hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv₀, inv_div]`. Conclude with `hj c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu` using `hlift _ hmem hunit`. Use `⟨h1, fun j => ?_⟩` and prove the remaining obligations. Establish `h2 : x j / x c₁ = x j / x c * (x c₁ / x c)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_mem (hch _ (Algebra.subset_adjoin ⟨j, rfl⟩)) hu.2.2`. Use `⟨p₀, ⟨hdom, hlift⟩, ?_, hchart⟩` and prove the remaining obligations. Introduce `p hp`. Rewrite using `[← PositivityTheory.HtPt.Ma.reg_le_spec o Ω κ x M p p₀]`. Take `⟨c₁, hc₁⟩` from `M.tie.cover p`.
-
-Establish `hin₁` using `hchart c₁ hc₁.1 (fun j => hp _ (hc₁.2 j))`. Introduce `a ha`. Take `⟨u, hu, v, hv, hvu, rfl⟩` from `((hloc c₁ p hc₁).2 a).1 ha`. Establish `hch₁` using `(hloc c₁ p₀ hin₁).1`. Establish `hv' : unitAt M.ξ p₀ v` using `hlift v (hch₁ v hv) ⟨(map_ne_zero i).2 hvu.1, hp v hvu.2.1, by rw [← map_inv₀]; exact hp _ hvu.2.2⟩`.
-
-Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (hch₁ u hu) hv'.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (p' : Cpt ξ'), p' ∈ ctrSet o x i ξ' → ∃ p₀ : Cpt M.ξ, ((∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a) ∧ (∀ p : Cpt M.ξ, (∀ a ∈ regAt M.ξ p, i a ∈ regAt ξ' p') → p₀.1 ⤳ p.1) ∧ ∀ c, x c ≠ 0 → (∀ j, i (x j / x c) ∈ regAt ξ' p') → InChart M.ξ x c p₀ := by
   intro o _ Ω _ _ κ _ x M X' Ω' _ ξ' i p' hp'
@@ -118,7 +114,7 @@ end PositivityTheory.HtPt.Mb.LCentre.Centre
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.LCentre.Centre.exists_centre`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Mb.centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (p' : Cpt ξ'), p' ∈ ctrSet o x i ξ' → ∃ p₀ : Cpt M.ξ, ((∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a) ∧ (∀ p : Cpt M.ξ, (∀ a ∈ regAt M.ξ p, i a ∈ regAt ξ' p') → p₀.1 ⤳ p.1) ∧ ∀ c, x c ≠ 0 → (∀ j, i (x j / x c) ∈ regAt ξ' p') → InChart M.ξ x c p₀ :=
   @PositivityTheory.HtPt.Mb.LCentre.Centre.exists_centre

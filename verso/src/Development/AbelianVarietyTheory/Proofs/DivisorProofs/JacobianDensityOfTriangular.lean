@@ -23,13 +23,13 @@ section Frame
 open GlobalTheory.MixDens GlobalTheory.CovTest GlobalTheory.VB GlobalTheory.CxPts GlobalTheory.Points
 
 /- English proof (translation)
-Establish `hA' : ∀ b c, ContDiff ℂ 2 (fun v => (X v * T) b c)` using `fun b c => by`. Simplify using `only [mul_apply]`. Conclude with `ContDiff.sum fun d _ => (hX b d).mul contDiff_const`. Establish `hA : MContDiffAt 2 (fun v => X v * T) p` using `fun b c => (hA' b c).contDiffAt.restrict_scalars ℝ`. Establish `hX1 : MContDiffAt 1 X p` using `fun b c => ((hX b c).contDiffAt.restrict_scalars ℝ).of_le (by norm_num)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : ∀ x η, mdbar (fun v => X v * T) x η = 0` using `fun x η => by`. Use extensionality with `b c`. Rewrite using `[mdbar_apply, dbar_eq_zero (((hA' b c).differentiable (by norm_num)) x)]`. Both sides reduce to the same expression. Establish `hG' : MContDiffAt 2 Gm (bL p)` using `hbp ▸ hG`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGb : MContDiffAt 2 (fun v => Gm (bL v)) p` using `fun b c => (hG' b c).comp p (bL.contDiff.contDiffAt.restrict_scalars ℝ)`. Establish `hGu : IsUnit (Gm (bL p)).det` using `by rw [hbp]; exact hGp.self_of_nhds.det_pos.ne'.isUnit`. Use `⟨(hA.transpose.mul hGb).mul hA.conjTranspose.transpose, ?_, fun ξ => ?_, fun ξ η => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hA.eventually_isUnit hXu, bL.continuous.continuousAt.eventually (hbp ▸ hGp)] with v h1 h2`. Conclude with `posDef_chg ((isUnit_iff_isUnit_det _).2 h1) h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `conn_changeFrame (hGb.of_le one_le_two) hGu (hA.of_le one_le_two) hXu (hA0 p) ξ`. Rewrite using `[show (fun v => chg (X v * T) (Gm (bL v))) = fun v => (X v * T)ᵀ * Gm (bL v) * (X v * T)ᴴᵀ from rfl, e1, conn_comp_holo (hG'.of_le one_le_two) bL.differentiableAt, bL.fderiv, hbp, mdel_mul hX1 (mContDiffAt_const T), mdel_const, Matrix.mul_zero, zero_add]`. Establish `e1` using `curv_changeFrame hGb hGu hA hXu (.of_forall (hA0 ·)) ξ η`. Rewrite using `[show (fun v => chg (X v * T) (Gm (bL v))) = fun v => (X v * T)ᵀ * Gm (bL v) * (X v * T)ᴴᵀ from rfl, e1, curv_comp_holo hG' hGu bL.contDiff.contDiffAt, bL.fderiv, hbp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_base {n k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] (Gm : V n → Matrix (Fin k) (Fin k) ℂ) (z : V n) (hG : MContDiffAt 2 Gm z)
@@ -69,7 +69,7 @@ theorem frame_base {n k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace �
 end Frame
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `hF.smul_left 0 0 y` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hF.add_left, hF.smul_left, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem sesq_sum_left {W M : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGroup M] [Module ℂ M]
     {F : W → W → M} (hF : IsSesq F) {ι : Type*} (s : Finset ι) (c : ι → ℂ) (x : ι → W) (y : W) :
@@ -82,7 +82,7 @@ theorem sesq_sum_left {W M : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGrou
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hF.add_left, hF.smul_left, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `hF.smul_right 0 y 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hF.add_right, hF.smul_right, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem sesq_sum_right {W M : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGroup M] [Module ℂ M]
     {F : W → W → M} (hF : IsSesq F) {ι : Type*} (s : Finset ι) (c : ι → ℂ) (x : ι → W) (y : W) :
@@ -95,7 +95,7 @@ theorem sesq_sum_right {W M : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGro
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hF.add_right, hF.smul_right, ih]
 
 /- English proof (translation)
-Simplify using `only [chg, mul_apply, transpose_apply, conjTranspose_apply, submatrix_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, ← ε.symm.sum_comp]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← ε.symm.sum_comp]`. Simplify using `only [Equiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chg_submatrix_equiv_apply {ι : Type} [Fintype ι] {D : ℕ} (J : Matrix (Fin D) (Fin D) ℂ) (ε : Fin D ≃ ι)
     (N : Matrix ι ι ℂ) (j l : Fin D) :
@@ -117,81 +117,75 @@ open GlobalTheory.MixDens.NormalCoord (emb_injective chg_submatrix_emb sum_low_s
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `n r D ε G ψ u hG hP hψ x T hT hT1`. Establish `hPu : (G u).PosDef` using `hP.self_of_nhds`. Establish `hGu : IsUnit (G u).det` using `hPu.det_pos.ne'.isUnit`. Establish `hG2 : MContDiffAt 2 G u` using `hG.of_le (by norm_cast)`. Use `set p := pt ε u x with hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbp : base ε p = u` using `base_pt ε u x`. Establish `hfp : fib ε p = x` using `fib_pt ε u x`. Set `bL : V D →L[ℂ] V n` to `LinearMap.toContinuousLinearMap { toFun := base ε map_add' := fun v w => by ext a; simp [base] map_smul' := fun c v => by ext a; simp [base] }`. Establish `hbL : ∀ v, base ε v = bL v` using `fun v => rfl`. Establish `hbLv : ∀ ξ : V D, bL ξ = ∑ a, ξ (ε.symm (.inl a)) • bas n a` using `fun ξ => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `[← hbL, base, bas, EuclideanSpace.single_apply, Pi.single_apply]`. Set `X : V D → Matrix (Fin r) (Fin r) ℂ` to `fun v => uni (fib ε v)`. Establish `hX : ∀ b c, ContDiff ℂ 2 (fun v => X v b c)`. Introduce `b c`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : c < b`. Simplify using `only [X, uni, of_apply, dif_pos h, fib]`. Conclude with `(EuclideanSpace.proj (𝕜 := ℂ) (ε.symm (.inr ⟨(b, c), h⟩))).contDiff`. Simplify using `only [X, uni, of_apply, dif_neg h]`. Conclude with `contDiff_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXp : X p = uni x` using `by simp only [X, hfp]`. Establish `hA0u : IsUnit (uni x * T).det`. Establish `h` using `congrArg Matrix.det hT1`. Rewrite `h` using `[chg_chg, det_chg, det_one]`. Establish `: (uni x * T).det ≠ 0` using `fun h0 => by rw [h0] at h; simp at h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `this.isUnit`. Establish `hTu : IsUnit T.det`. Use `hA0u` as an intermediate fact. Rewrite `this` using `[det_mul, GlobalTheory.FlagFibre.det_uni, one_mul]`. Then use the resulting hypothesis. Establish `hfr` using `frame_base G u hG2 hP bL X hX p (by rw [← hbL, hbp]) T (by rw [hXp]; exact hA0u)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `H' : V D → Matrix (Fin r) (Fin r) ℂ` to `fun v => chg (X v * T) (G (bL v))`. Establish `hH'1 : H' p = 1` using `by show chg (X p * T) (G (bL p)) = 1`. Rewrite using `[hXp, ← hbL, hbp, ← chg_chg, hT1]`. Establish `hstep : ∀ i v, (H' v).submatrix (emb i) (emb i) = chg (T.submatrix (emb i) (emb i)) ((chg (uni (fib ε v)) (G (base ε v))).submatrix (emb i) (emb i))`. Introduce `i v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← chg_submatrix_emb hT, chg_chg]`. Both sides reduce to the same expression. Set `Lc : Fin n ⊕ Low r → V D → ℂ` to `fun o ξ => Sum.elim (fun a => ξ (ε.symm (.inl a))) (fun s => conn H' p ξ s.1.1 s.1.2) o`. Establish `hchg : ∀ (A : Matrix (Fin n) (Fin n) ℂ) (δ : Low r → ℂ) (j l : Fin D), chg (Matrix.of fun k j => Lc (ε k) (EuclideanSpace.single j 1)) ((fromBlocks A 0 0 (diagonal δ)).submatrix ε ε) j l = (∑ a, ∑ b, (EuclideanSpace.single j (1 : ℂ) : V D) (ε.symm (.inl a)) * A a b * star ((Eucli …`. Introduce `A δ j l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[chg_submatrix_equiv_apply]`. Simplify using `only [of_apply, Equiv.apply_symm_apply, Fintype.sum_sum_type, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, diagonal_apply, Lc, Sum.elim_inl, Sum.elim_inr]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single s]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `Or.inl (mul_comm _ _)`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hmdel : ∀ ξ (b c : Fin r), mdel X p ξ b c = if h : c < b then ξ (ε.symm (.inr ⟨(b, c), h⟩)) else 0`. Introduce `ξ b c`. Rewrite using `[mdel_apply, del_eq_fderiv (((hX b c).differentiable (by norm_num)) p)]`. Distinguish the cases in `h : c < b`. Establish `: (fun v => X v b c) = ⇑(EuclideanSpace.proj (𝕜` using `ℂ) (ε.symm (.inr ⟨(b, c), h⟩))) := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `[X, uni, h, fib]`. Rewrite using `[this, ContinuousLinearMap.fderiv, dif_pos h]`. Simplify using the standard rewrite rules. Establish `: (fun v => X v b c) = fun _ => (if b = c then 1 else 0 : ℂ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `[X, uni, h]`. Rewrite using `[this, dif_neg h]`. Simplify using the standard rewrite rules. Establish `hconn : ∀ ξ, conn H' p ξ = (uni x * T)⁻¹ * (conn G u (bL ξ) * (uni x * T) + mdel X p ξ * T)` using `fun ξ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hXp]`. Conclude with `hfr.2.2.1 ξ`. Establish `hcurv : ∀ ξ η, curv H' p ξ η = (uni x * T)⁻¹ * curv G u (bL ξ) (bL η) * (uni x * T)` using `fun ξ η => by`. Rewrite using `[← hXp]`. Conclude with `hfr.2.2.2 ξ η`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hHf : MContDiffAt 2 (fun v => chg (uni (fib ε v)) (G (base ε v))) p ∧ ∀ᶠ v in 𝓝 p, (chg (uni (fib ε v)) (G (base ε v))).PosDef`. Establish `h` using `frame_base G u hG2 hP bL X hX p (by rw [← hbL, hbp]) 1 (by rw [Matrix.mul_one, hXp, GlobalTheory.FlagFibre.det_uni]; exact isUnit_one)`. Establish `hSg : (fun v => chg (X v * 1) (G (bL v))) = fun v => chg (uni (fib ε v)) (G (base ε v))`. Use function extensionality and compare the values at `v`. Simplify using `only [Matrix.mul_one, X, hbL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by rw [← hSg]; exact h.1, h.2.1.mono fun v hv => by simpa only [Matrix.mul_one, X, hbL] using hv⟩`. Establish `hT'u : ∀ i : Fin r, IsUnit (T.submatrix (emb i) (emb i)).det` using `fun i => by`. Establish `h` using `congrArg Matrix.det (hstep i p)`. Rewrite `h` using `[hH'1, submatrix_one _ (emb_injective i), det_one, det_chg]`. Establish `: (T.submatrix (emb i) (emb i)).det ≠ 0` using `fun h0 => by rw [h0] at h; simp at h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.isUnit`. Establish `hT'21 : ∀ i : Fin r, (T.submatrix (emb i) (emb i)).toBlocks₂₁ = 0` using `fun i => by`. Use extensionality with `x y`. Simplify using `only [toBlocks₂₁, of_apply, Matrix.zero_apply, submatrix_apply, GlobalTheory.MixDens.emb, Sum.elim_inl, Sum.elim_inr]`. Conclude with `hT _ _ (by rw [Fin.lt_def, Fin.coe_castLE]; exact y.isLt)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbL0 : ∀ t : Low r, bL (EuclideanSpace.single (ε.symm (.inr t)) 1) = 0` using `fun t => by`. Rewrite using `[hbLv]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[EuclideanSpace.single_apply, if_neg (by simp), zero_smul]`. Use `⟨Matrix.of fun k j => Lc (ε k) (EuclideanSpace.single j 1), ?_, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsame : ∀ s t : Low r, conn H' p (EuclideanSpace.single (ε.symm (.inr t)) 1) s.1.1 s.1.2 = (T⁻¹ * (uni x)⁻¹) s.1.1 t.1.1 * T t.1.2 s.1.2`. Introduce `s t`. Establish `hD : mdel X p (EuclideanSpace.single (ε.symm (.inr t)) 1) = of fun b c => if b = t.1.1 ∧ c = t.1.2 then 1 else 0`. Use extensionality with `b c`. Rewrite using `[hmdel, of_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : c < b`. Rewrite using `[dif_pos h, EuclideanSpace.single_apply]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq, Sum.inr.injEq, Subtype.ext_iff, Prod.ext_iff]`. Rewrite using `[dif_neg h, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h t.2`. Rewrite using `[hconn, hbL0, conn_zero_vec, Matrix.zero_mul, zero_add, hD, Matrix.mul_inv_rev]`. Simplify using `[mul_apply, ite_and, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Establish `hM : (Matrix.of fun k j => Lc (ε k) (EuclideanSpace.single j 1)).submatrix ε.symm ε.symm = fromBlocks 1 0 (Matrix.of fun (s : Low r) (b : Fin n) => Lc (.inr s) (EuclideanSpace.single (ε.symm (.inl b)) 1)) (Matrix.of fun s t : Low r => (T⁻¹ * (uni x)⁻¹) s.1.1 t.1.1 * T t.1.2 s.1.2 …`. Use extensionality with `(a | s) (b | t)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Lc, EuclideanSpace.single_apply, one_apply]`. Simplify using `[Lc, EuclideanSpace.single_apply]`. Simplify using `[Lc]`. Simplify using `only [submatrix_apply, of_apply, Equiv.apply_symm_apply, fromBlocks_apply₂₂, Lc, Sum.elim_inr]`. Conclude with `hsame s t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← det_submatrix_equiv_self ε.symm, hM, det_fromBlocks_zero₁₂, det_one, one_mul, det_low x T hT hTu, norm_prod, ← Finset.prod_pow]`. Conclude with `norm_diag_prod_eq_jacDens _ hPu x T hT hT1`. Introduce `i`. Use `set S := fun v => (H' v).submatrix (emb i) (emb i) with hSdef`. Use `set K := fun v => (chg (uni (fib ε v)) (G (base ε v))).submatrix (emb i) (emb i) with hKdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS2 : MContDiffAt 2 S p` using `hfr.1.submatrix _ _`. Establish `hS1 : S p = 1`. Simplify using `only [hSdef]`. Rewrite using `[hH'1, submatrix_one _ (emb_injective i)]`. Establish `hs1 : subGram (1 : Matrix (Fin i ⊕ Fin 1) (Fin i ⊕ Fin 1) ℂ) = 1` using `by ext; simp [subGram, toBlocks₁₁, one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hq1' : quotGram (1 : Matrix (Fin i ⊕ Fin 1) (Fin i ⊕ Fin 1) ℂ) = 1` using `by ext; simp [quotGram, toBlocks₂₁, toBlocks₂₂, toBlocks₁₂, toBlocks₁₁, mul_apply, one_apply]`. Establish `hsub1 : IsUnit (subGram (S p)).det`. Rewrite using `[hS1, hs1, det_one]`. Conclude with `isUnit_one`. Establish `hq1 : (quotGram (S p)).det.re ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hS1, hq1', det_one]`. Simplify using the standard rewrite rules. Use `set w : V D → ℝ := fun v => -Real.log (quotGram (S v)).det.re with hwdef`. Establish `hw : ContDiffAt ℝ 2 w p` using `((Complex.reCLM.contDiff.contDiffAt.comp p (hS2.quotGram hsub1).det).log hq1).neg`. Use `set T' := T.submatrix (emb i) (emb i) with hT'def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT'b : T' = fromBlocks T'.toBlocks₁₁ T'.toBlocks₁₂ 0 T'.toBlocks₂₂`. Rewrite using `[← hT'21 i, fromBlocks_toBlocks]`. Establish `hdetT' : T'.det = T'.toBlocks₁₁.det * T i i` using `by conv_lhs => rw [hT'b]`. Rewrite using `[det_fromBlocks_zero₂₁, det_unique T'.toBlocks₂₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hA1 : IsUnit T'.toBlocks₁₁.det`. Use `hT'u i` as an intermediate fact. Rewrite `this` using `[← hT'def, hdetT', IsUnit.mul_iff]`. Conclude with `this.1`. Establish `hTii : T i i ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `hT'u i` as an intermediate fact. Rewrite `this` using `[← hT'def, hdetT', IsUnit.mul_iff]`. Conclude with `this.2.ne_zero`. Establish `he1 : (fun v => rootWt ε G i v) =ᶠ[𝓝 p] fun v => w v + Real.log (‖T i i‖ ^ 2)` using `by filter_upwards [hHf.2] with v hv`. Establish `hsv : (K v).PosDef` using `hv.submatrix (emb_injective i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : IsUnit (subGram (K v)).det` using `(posDef_subGram hsv).det_pos.ne'.isUnit`. Establish `hq : quotGram (S v) = chg T'.toBlocks₂₂ (quotGram (K v))`. Simplify using `only [hSdef]`. Rewrite using `[hstep i v, ← hT'def, hT'b]`. Conclude with `quotGram_chg _ _ hA1 hsub`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hdet : (quotGram (S v)).det.re = ‖T i i‖ ^ 2 * (quotGram (K v)).det.re`. Rewrite using `[hq, det_chg, Complex.re_ofReal_mul, det_unique]`. Both sides reduce to the same expression. Establish `hpos` using `det_re_pos (posDef_quotGram hsv)`. Establish `hT2 : ‖T i i‖ ^ 2 ≠ 0` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hwdef, rootWt, hdet]`. Rewrite using `[Real.log_mul hT2 hpos.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `hC : ∀ ξ η : V D, curv H' p ξ η i i = ∑ a, ∑ b, ξ (ε.symm (.inl a)) * ((uni x * T)⁻¹ * curv G u (bas n a) (bas n b) * (uni x * T)) i i * star (η (ε.symm (.inl b)))`. Introduce `ξ η`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hs` using `isSesq_curv hG2 hGu`. Rewrite using `[hcurv, hbLv, hbLv, sesq_sum_left hs]`. Simplify using `only [sesq_sum_right hs, Finset.smul_sum, smul_smul, Finset.mul_sum, Finset.sum_mul, Matrix.sum_apply, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `j l`. Rewrite using `[GlobalTheory.CurveDens.cHess_apply_eq_ddbar (contDiffAt_ofReal_comp ((hw.add contDiffAt_const).congr_of_eventuallyEq he1)) j l]`. Express the relevant statement in the definitionally equal form `leviForm (fun v => rootWt ε G i v) p _ _ = _`. Rewrite using `[leviForm_congr he1, leviForm_add_const _ hw]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `ddbar (fun v => ((-Real.log (quotGram ((H' v).submatrix (emb i) (emb i))).det.re : ℝ) : ℂ)) p _ _ = _`. Rewrite using `[ddbar_rootWt H' p i hfr.1 hfr.2.1 hH'1, hC, hchg]`. Establish `hsig : ∀ s : Low r, ((if i = s.1.1 then 1 else 0) - (if i = s.1.2 then 1 else 0) : ℂ) = ((((if i = s.1.1 then 1 else 0 : ℝ) - if i = s.1.2 then 1 else 0 : ℝ) : ℂ))`. Apply the tactic sequence `intro s; split_ifs <;> simp`. Simplify using `only [hsig, mul_assoc]`.
-
-Rewrite using `[sum_low_signed (fun b c => conn H' p (EuclideanSpace.single j 1) b c * star (conn H' p (EuclideanSpace.single l 1) b c)) i]`. Simplify using `only [of_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hψb : ContDiffAt ℝ 2 ψ (bL p)` using `by rw [← hbL, hbp]; exact hψ`. Establish `hψc0 : ContDiffAt ℝ 2 (fun w => (ψ w : ℂ)) u` using `contDiffAt_ofReal_comp hψ`.
-
-Establish `hψc : ContDiffAt ℝ 2 (fun v => (ψ (base ε v) : ℂ)) p` using `contDiffAt_ofReal_comp (hψb.comp p ((bL.contDiff.restrict_scalars ℝ).contDiffAt))`. Use extensionality with `j l`. Rewrite using `[GlobalTheory.CurveDens.cHess_apply_eq_ddbar hψc j l]`. Rewrite using `[show (fun v => (ψ (base ε v) : ℂ)) = fun v => (fun w => (ψ w : ℂ)) (bL v) from rfl, ddbar_comp_holo (contDiffAt_ofReal_comp hψb) bL.contDiff.contDiffAt, bL.fderiv, ← hbL, hbp, hbLv, hbLv, show (0 : Matrix (Low r) (Low r) ℂ) = diagonal 0 from diagonal_zero.symm, hchg]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, Pi.zero_apply, zero_mul, Finset.sum_const_zero, add_zero, smul_eq_mul, Finset.mul_sum]`.
-
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CurveDens.cHess_apply_eq_ddbar hψc0 a b]`. Simplify using `only [bas, Complex.star_def, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem normal_coords_base : ∀ (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (G : V n → Matrix (Fin r) (Fin r) ℂ) (ψ : V n → ℝ) (u : V n), MContDiffAt ∞ G u → (∀ᶠ v in 𝓝 u, (G v).PosDef) → ContDiffAt ℝ 2 ψ u → ∀ (x : Low r → ℂ) (T : Matrix (Fin r) (Fin r) ℂ), (∀ a c : Fin r, c < a → T a c = 0) → chg T (chg (uni x) (G u)) = 1 → ∃ J : Matrix (Fin D) (Fin D) ℂ, ‖J.det‖ ^ 2 = jacDens (G u) x ∧ (∀ i : Fin r, cHess D (fun v => (rootWt ε G i v : ℂ)) (pt ε u x) = chg J ((fromBlocks (Matrix.of fun j l : Fin n => ((uni x * T)⁻¹ * curv G u (bas n j) (bas n l) * (uni x * T)) i i) 0 0 (diagonal fun s : Low r => ((if i = s.1.1 then 1 else 0) - if i = s.1.2 then 1 else 0 : ℂ))).submatrix ε ε)) ∧ cHess D (fun v => (ψ (base ε v) : ℂ)) (pt ε u x) = chg J ((fromBlocks (cHess n (fun v => (ψ v : ℂ)) u) 0 0 (0 : Matrix (Low r) (Low r) ℂ)).submatrix ε ε) := by
   intro n r D ε G ψ u hG hP hψ x T hT hT1

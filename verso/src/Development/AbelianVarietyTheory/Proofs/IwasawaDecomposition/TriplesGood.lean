@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.HeightCounting.Up.TripFin
 
 /- English proof (translation)
-Introduce `hP hS hL`. Establish `h` using `Model.AtMem.and (Model.AtMem.and (GlobalTheory.T.exists_galois_side hP hS hL) (GlobalTheory.T.twist_of_place_in_weight_set hP hS hL)) (GlobalTheory.T.all_triples_local hP hS hL)`. Use `Model.AtMem.imp h ?_` and prove the remaining obligations. Introduce and unpack `K B f T w Z Wt p0 t nch n c ⟨⟨⟨G, -, -, -⟩, hW⟩, hA⟩ a σ Sg h1 h2`. Take `⟨s, hs⟩` from `hA a σ Sg h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hs, (GlobalTheory.Triple.satake_identity_of_isTriple _ G.triple).2.1 _ (hW a) s⟩`.
+Supply the required witnesses or components.
 -/
 theorem triplesGood : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AtMem hL fun _ _ _ _ w Z _ _ t nch n c => GlobalTheory.PtCore.TriplesGood (w.D Z) := by

@@ -266,11 +266,9 @@ def LatHom.LiftF (e : ℕ) : Prop :=
   ∀ c ∈ latticeFiniteCocycles PD L', ((PD.p : O) ^ e) • c ∈ F.ImF PD
 
 /- English proof (translation)
-Take `⟨hc1, hc2⟩` from `Submodule.mem_inf.mp hc`. Establish `hz : Continuous c ∧ ∀ g h, c (g * h) = c g + ρ g (c h)` using `(Submodule.restrictScalars_mem _ _ _).mp hc1`. Establish `hT : ∀ g, c g ∈ L.T` using `fun g => (Submodule.mem_pi.mp hc2) g (Set.mem_univ g)`. Establish `hp : F.post c = fun g => F.f (c g)` using `rfl`. Use `Submodule.mem_inf.mpr ⟨(Submodule.restrictScalars_mem _ _ _).mpr ?_, Submodule.mem_pi.mpr fun g _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Continuous (F.post c) ∧ ∀ g h, F.post c (g * h) = F.post c g + ρ' g (F.post c h)`. Rewrite using `[hp]`. Use `⟨F.cont.comp hz.1, fun g h => ?_⟩` and prove the remaining obligations. Use `show F.f (c (g * h)) = F.f (c g) + ρ' g (F.f (c h))`. Rewrite using `[hz.2, map_add, F.equiv]`.
-
-Rewrite using `[hp]`. Conclude with `F.T_le _ (hT g)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LatHom.post_Z1T (c : G → V) (hc : c ∈ latticeCocycles L) : F.post c ∈ latticeCocycles L' := by
   obtain ⟨hc1, hc2⟩ := Submodule.mem_inf.mp hc
@@ -289,7 +287,7 @@ theorem LatHom.post_Z1T (c : G → V) (hc : c ∈ latticeCocycles L) : F.post c 
     exact F.T_le _ (hT g)
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hc`. Use `Submodule.mem_map.mpr ⟨F.f x, F.T_le x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show ρ' g (F.f x) - F.f x = F.f (ρ g x - x)`. Rewrite using `[map_sub, F.equiv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LatHom.post_B1T (c : G → V) (hc : c ∈ latticeCoboundaries L) : F.post c ∈ latticeCoboundaries L' := by
   obtain ⟨x, hx, rfl⟩ := Submodule.mem_map.mp hc
@@ -522,13 +520,13 @@ def Z1ur (ρ : Representation LL G V) (I : Subgroup G) : Submodule LL (G → V) 
 variable {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'} (F : LatHom L L')
 
 /- English proof (translation)
-Take `⟨hcT, hcf⟩` from `Submodule.mem_inf.mp hc`. Use `Submodule.mem_inf.mpr ⟨F.post_Z1T c hcT, ?_⟩` and prove the remaining obligations. Establish `hf : c ∈ continuousCocycles ρ ∧ ∃ x : V ⊗[Qp] B, ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x` using `hcf`. Take `⟨-, x, hx⟩` from `hf`. Establish `hz' : F.post c ∈ continuousCocycles ρ'` using `(Submodule.restrictScalars_mem _ _ _).mp (Submodule.mem_inf.mp (F.post_Z1T c hcT)).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `M : V ⊗[Qp] B →ₗ[LL] V' ⊗[Qp] B` to `AlgebraTensorModule.map F.f LinearMap.id`. Establish `hcomm : ∀ g y, M (actVB PD ρ g y) = actVB PD ρ' g (M y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v b => simp [actVB, M, AlgebraTensorModule.map_tmul, F.equiv]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, map_add, map_add]`. Use `show F.post c ∈ continuousCocycles ρ' ∧ ∃ x : V' ⊗[Qp] B, ∀ g, F.post c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ' g x - x`. Use `⟨hz', M x, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg M (hx g)`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sub, hcomm]`. Rewrite using `[← h]`. Simplify using `[M, AlgebraTensorModule.map_tmul, LatHom.post]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LatHom.post_Z1fT (c : G → V) (hc : c ∈ latticeFiniteCocycles PD L) : F.post c ∈ latticeFiniteCocycles PD L' := by
   obtain ⟨hcT, hcf⟩ := Submodule.mem_inf.mp hc
@@ -552,7 +550,7 @@ theorem LatHom.post_Z1fT (c : G → V) (hc : c ∈ latticeFiniteCocycles PD L) :
   simp [M, AlgebraTensorModule.map_tmul, LatHom.post]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `Submodule.mem_map.mp hx`. Use `Submodule.mem_map.mpr ⟨⟨F.post c, F.post_Z1T (c : G → V) c.2⟩, Submodule.mem_comap.mpr (F.post_Z1fT PD (c : G → V) (Submodule.mem_comap.mp hc)), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem LatHom.H1map_H1fT (x : LatticeCohomology L) (hx : x ∈ latticeFiniteCohomology PD L) : F.H1map x ∈ latticeFiniteCohomology PD L' := by
   obtain ⟨c, hc, rfl⟩ := Submodule.mem_map.mp hx

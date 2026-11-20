@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal Re
 namespace GlobalTheory.EtaJoin.SpecProj
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : (⊤ : Submodule ℂ V) ≤ (⨆ P ∈ {P | T P ≤ A}, T P) ⊔ B`. Rewrite using `[← ht]`. Use `iSup_le fun P => (h P).elim (fun hP => le_sup_of_le_left ?_) le_sup_of_le_right` and prove the remaining obligations. Conclude with `le_biSup T (show P ∈ {P | T P ≤ A} from hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 (hle (Submodule.mem_top (x := x)))`. Establish `ha' : a ∈ A` using `(iSup₂_le fun P hP => hP : (⨆ P ∈ {P | T P ≤ A}, T P) ≤ A) ha`. Establish `hb0 : b = 0` using `Submodule.disjoint_def.1 hd b (by rw [← add_sub_cancel_left a b, e]; exact A.sub_mem hx ha') hb`. Rewrite using `[← e, hb0, add_zero]`. Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_iSup_of_dichotomy {V ι : Type} [AddCommGroup V] [Module ℂ V] (T : ι → Submodule ℂ V) (A B : Submodule ℂ V)
     (hd : Disjoint A B) (ht : ⨆ P, T P = ⊤) (h : ∀ P, T P ≤ A ∨ T P ≤ B) : A ≤ ⨆ P ∈ {P | T P ≤ A}, T P := by
@@ -24,11 +24,11 @@ theorem le_iSup_of_dichotomy {V ι : Type} [AddCommGroup V] [Module ℂ V] (T : 
   rw [← e, hb0, add_zero]; exact ha
 
 /- English proof (translation)
-Introduce `D i hZ hT`. Establish `hd` using `(Idx.Z0 D (D.nd.mu i) (D.nd.j i)).orthogonal_disjoint`. Establish `mono : ∀ {Y Y' : Set (D.nd.X i)}, Y ⊆ Y' → D.nd.eigSum i Y ≤ D.nd.eigSum i Y'` using `fun h => biSup_mono h`. Prove the components needed by the constructor for the conclusion. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mono ?_ (hT _ y (le_iSup_of_dichotomy _ _ _ hd (D.naut.typeV_top i) (fun P => (hZ P).1) hy))` and prove the remaining obligations. Introduce and unpack `x ⟨P, hP, hx⟩`. Assume the negation of the conclusion as `hn`. Conclude with `D.naut.typeV_ne i P (hd hP (((hZ P).2 x hx).2 hn) |> le_bot_iff.1)`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `mono ?_ (hT _ y (le_iSup_of_dichotomy _ _ _ hd.symm (D.naut.typeV_top i) (fun P => (hZ P).1.symm) hy))` and prove the remaining obligations. Introduce and unpack `x ⟨P, hP, hx⟩ hn`. Conclude with `D.naut.typeV_ne i P (hd (((hZ P).2 x hx).1 hn) hP |> le_bot_iff.1)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem specPr_of_zSpec_typeTie : ∀ (D : D7) (i : D.nd.Loc), ZSpec D i → TypeTie D i → SpecPr D i := by
   intro D i hZ hT

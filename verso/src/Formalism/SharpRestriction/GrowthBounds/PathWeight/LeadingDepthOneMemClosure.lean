@@ -9,21 +9,21 @@ namespace Formalism.MainNotions.G.symbolGeneratorData
 open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning Formalism.MainNotions.G.WittFrameLocaliserOrders
 
 /- English proof (translation)
-Establish `hstep : ∀ j, F.fr j (r - 1) < F.fr (j + 1) (r - 1)` using `fun j => lt_of_lt_of_le (hV.2.2.2.1 j) (frame_row_monotone F L₁ N₁ hV (j + 1) (r - 1) (by omega))`. Establish `hup : ∀ t : ℕ, F.fr 0 (r - 1) + t ≤ F.fr (t : ℤ) (r - 1)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ t ih`. Use `hstep t` as an intermediate fact. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hdn : ∀ t : ℕ, F.fr (-(t : ℤ)) (r - 1) + t ≤ F.fr 0 (r - 1)`.
+Treat this case separately. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Establish `h` using `hstep (-((t + 1 : ℕ) : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : -((t + 1 : ℕ) : ℤ) + 1 = -(t : ℤ)` using `by push_cast; ring`. Rewrite `h` using `[e]`. Move the coercions through the operations in `at h ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨j, hj, hmin⟩` from `Int.exists_least_of_bdd (P := fun j => x ≤ F.fr j (r - 1)) ⟨min 0 (x - F.fr 0 (r - 1)), by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Introduce `j hj`. Distinguish the cases in `h0 : 0 ≤ j`. Conclude with `le_trans (min_le_left _ _) h0`. Establish `h` using `hdn (-j).toNat`. Establish `e : -(((-j).toNat : ℕ) : ℤ) = j` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Use `le_trans (min_le_right _ _) ?_` and prove the remaining obligations. Use the proof step `omega⟩`. Use the proof step `⟨((x - F.fr 0 (r - 1)).toNat : ℤ), by`. Establish `h` using `hup (x - F.fr 0 (r - 1)).toNat`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show x ≤ F.fr _ (r - 1)`. Use the proof step `omega⟩`. Establish `hnot : ¬ x ≤ F.fr (j - 1) (r - 1)` using `fun h => by`. Use `hmin (j - 1) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨j, ?_, hnot⟩` and prove the remaining obligations. Unfold `Frames.letters`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`. Establish `h1` using `frame_row_monotone F L₁ N₁ hV (j - 1) (r - 1) (by omega)`. Conclude with `⟨⟨by omega, hj⟩, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem mn_cover {n' r : ℕ} [NeZero n'] (F : Frames n' r) (L₁ N₁ : ℕ) (hV : F.Valid L₁ N₁) (hr : 1 ≤ r) (x : ℤ)
     (hx : posOf n' x ∈ F.TT) : ∃ j : ℤ, x ∈ F.letters j ∧ ¬ F.IsW j x := by
@@ -78,11 +78,11 @@ variable {p n' r K : ℕ} [Fact p.Prime] [NeZero n'] [NeZero r] [NeZero K] {O : 
 local notation "PP" => MvPolynomial (TV n' (r + K)) (KK O)
 
 /- English proof (translation)
-Establish `hr : 1 ≤ r` using `by have := X.hH.2.1; omega`. Take `⟨j, hx, hW⟩` from `mn_cover X.Fr X.L₁ X.N₁ X.hV hr (s.val : ℤ) (by rw [posOf_natCast_self]; exact hs)`. Establish `h1` using `hmon j (s.val : ℤ) hx hW c`. Rewrite `h1` using `[posOf_natCast_self]`. Establish `h2 : X.Fr.dist j (s.val : ℤ) ≤ X.G'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `Frames.letters at hx`. Rewrite `hx` using `[Finset.mem_filter, Finset.mem_Icc]`. Establish `h3` using `X.hG j`. Unfold `zF at h3`. Unfold `Frames.dist`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `h4 : p ^ X.Fr.dist j (s.val : ℤ) ≤ p ^ X.G'` using `Nat.pow_le_pow_right (Fact.out : p.Prime).pos h2`. Unfold `Ctx.Q`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mn_label_le (mon : Fin n' × Fin (r + K) →₀ ℕ) (hmon : IsLabel p X.Fr mon) (s : Fin n') (hs : s ∈ X.Fr.TT)
     (c : Fin (r + K)) : mon (s, c) ≤ X.Q := by
@@ -104,20 +104,20 @@ theorem mn_label_le (mon : Fin n' × Fin (r + K) →₀ ℕ) (hmon : IsLabel p X
 def Ctx.Ds (s : Fin n') : PP := X.sb (Dtop p n' O X.Fr X.hH.2.2.1 X.g (s.val : ℤ))
 
 /- English proof (translation)
-Establish `hr : 1 ≤ r` using `by have := X.hH.2.1; omega`. Conclude with `bc_IT_Dtop X.S.w X.Fr X.hV X.hH.2.2.2.2 hr X.hH.2.2.1 X.hg _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mn_Ds_IT (s : Fin n') : bc_IT X.Fr (X.Ds s) := by
   have hr : 1 ≤ r := by have := X.hH.2.1; omega
   exact bc_IT_Dtop X.S.w X.Fr X.hV X.hH.2.2.2.2 hr X.hH.2.2.1 X.hg _
 
 /- English proof (translation)
-Take `⟨s, b⟩` from `v`. Take `⟨n, ka, ka0, H, hc, heq⟩` from `segment_statement_holds D p n' r (r + K) O X.S X.hO X.hH X.Fr X.L₁ X.N₁ X.hV X.Q X.hT X.g X.hg s hs b hN`. Establish `hwne : algebraMap O (KK O) X.S.w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (KK O))).2 X.S.w_irr.ne_zero`. Establish `hw1 : (C (algebraMap O (KK O) X.S.w) : PP) * C (wInv X.S.w) = 1`. Rewrite using `[← C_mul, wInv, mul_inv_cancel₀ hwne, C_1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : C (algebraMap O (KK O) X.S.w) * MvPolynomial.X (s, b) * X.Ds s = ∑ i, ka0 i * MvPolynomial.map (algebraMap O (KK O)) (H i)`. Establish `e1 : C (algebraMap O (KK O) X.S.w) * MvPolynomial.X (s, b) * X.Ds s = C (algebraMap O (KK O) X.S.w) * (MvPolynomial.X (s, b) * X.Ds s)` using `by ring`. Rewrite using `[e1]`. Unfold `Ctx.Ds Ctx.sb`. Rewrite using `[heq, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take the linear combination `(MvPolynomial.map (algebraMap O (KK O)) (H i) * ka0 i) * hw1`. Use `show C (algebraMap O (KK O) X.S.w) * MvPolynomial.X (s, b) * X.Ds s ∈ _`. Rewrite using `[hsum]`. Use `sum_mem fun i _ => AddSubmonoid.subset_closure ⟨ka0 i, _, isKeyProduct_of_isKey X.S.w X.Fr X.Q X.g (hc i).1 (hc i).2.2.1 (hc i).2.2.2.1, ⟨H i, fun v hv => ?_, (hc i).2.2.2.2, rfl⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(hc i).2.1 v hv`. Unfold `IsNormal`. Rewrite using `[if_pos h1.1]`. Use `h1.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem leading_depth_one_mem_closure (D : Formalism.BasicNotions.D7) (v : TV n' (r + K)) (hN : IsNormal r v) (hs : v.1 ∈ X.Fr.TT) :
     C (algebraMap O (KK O) X.S.w) * MvPolynomial.X v * X.Ds v.1 ∈
@@ -150,7 +150,7 @@ theorem leading_depth_one_mem_closure (D : Formalism.BasicNotions.D7) (v : TV n'
   omega
 
 /- English proof (translation)
-Unfold `Ctx.DkQ DtopProd Ctx.Ds`. Rewrite using `[map_prod]`. Simplify using `only [map_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mn_DkQ_eq : X.DkQ = ∏ s ∈ X.Fr.TT, X.Ds s ^ ((r + K) * X.Q) := by
   unfold Ctx.DkQ DtopProd Ctx.Ds
@@ -158,7 +158,7 @@ theorem mn_DkQ_eq : X.DkQ = ∏ s ∈ X.Fr.TT, X.Ds s ^ ((r + K) * X.Q) := by
   simp only [map_pow]
 
 /- English proof (translation)
-Rewrite using `[mn_DkQ_eq]`. Conclude with `bc_IT_prod _ _ fun s _ => bc_IT_pow (mn_Ds_IT X s) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mn_DkQ_IT : bc_IT X.Fr X.DkQ := by
   rw [mn_DkQ_eq]
@@ -168,13 +168,11 @@ def mn_ns (r : ℕ) {n' k : ℕ} (mon : TV n' k →₀ ℕ) (s : Fin n') : ℕ :
   ∑ v ∈ (mon.support.filter (fun v => IsNormal r v)).filter (fun v => v.1 = s), mon v
 
 /- English proof (translation)
-Unfold `mn_ns`. Establish `hcard : ((mon.support.filter (fun v => IsNormal r v)).filter (fun v => v.1 = s)).card ≤ r + K`. Establish `h` using `Finset.card_le_card_of_injOn (s := (mon.support.filter (fun v => IsNormal r v)).filter (fun v => v.1 = s)) (t := (Finset.univ : Finset (Fin (r + K)))) (fun v => v.2) (fun _ _ => Finset.mem_univ _) (by`. Introduce `a ha b hb h`. Establish `h1` using `(Finset.mem_filter.1 (Finset.mem_coe.1 ha)).2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(Finset.mem_filter.1 (Finset.mem_coe.1 hb)).2`. Conclude with `Prod.ext (h1.trans h2.symm) h)`. Simplify using `using h`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `(Finset.mem_filter.1 hv).2`. Take `⟨s', c⟩` from `v`. Simplify using `only at e`. Substitute `e` using the available equality. Conclude with `mn_label_le X mon hmon _ hs c`.
-
-Use `_ = ((mon.support.filter (fun v => IsNormal r v)).filter (fun v => v.1 = s)).card * X.Q := by`. Rewrite using `[Finset.sum_const, smul_eq_mul]`. Use `_ ≤ (r + K) * X.Q := Nat.mul_le_mul_right _ hcard`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mn_ns_le (mon : Fin n' × Fin (r + K) →₀ ℕ) (hmon : IsLabel p X.Fr mon) (s : Fin n') (hs : s ∈ X.Fr.TT) :
     mn_ns r mon s ≤ (r + K) * X.Q := by
@@ -199,7 +197,7 @@ theorem mn_ns_le (mon : Fin n' × Fin (r + K) →₀ ℕ) (hmon : IsLabel p X.Fr
     _ ≤ (r + K) * X.Q := Nat.mul_le_mul_right _ hcard
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X v, fun v' hv' => by rw [vars_X, Finset.mem_singleton] at hv' rw [hv']; exact hN, fun v' hv' => by rw [vars_X, Finset.mem_singleton] at hv' rw [hv']; exact hs, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mn_X_IT (v : TV n' (r + K)) (hN : ¬ IsNormal r v) (hs : v.1 ∈ X.Fr.TT) :
     bc_IT X.Fr (MvPolynomial.X v : PP) :=
@@ -211,21 +209,21 @@ theorem mn_X_IT (v : TV n' (r + K)) (hN : ¬ IsNormal r v) (hs : v.1 ∈ X.Fr.TT
       rw [hv']; exact hs, by simp⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hom_iff]`. Establish `h1 : IsWeightedHomogeneous (normalVariableWeight n' (r + K) r) (monomial mon (1 : KK O)) (normDeg r mon)` using `isWeightedHomogeneous_monomial _ mon 1 (weight_eq_normal_degree r mon)`. Establish `h2` using `h1.mul (IT_hom (mn_DkQ_IT X))`. Simplify using `using h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `ho : normDeg r mon = ∑ v ∈ mon.support.filter (fun v => IsNormal r v), mon v`. Unfold `normDeg`. Rewrite using `[Finset.sum_filter]`. Establish `hmonE : (monomial mon 1 : PP) = (∏ v ∈ mon.support.filter (fun v => IsNormal r v), MvPolynomial.X v ^ mon v) * ∏ v ∈ mon.support.filter (fun v => ¬ IsNormal r v), MvPolynomial.X v ^ mon v`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod, Finset.prod_filter_mul_prod_filter_not]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDfib : ∏ v ∈ mon.support.filter (fun v => IsNormal r v), X.Ds v.1 ^ mon v = ∏ s ∈ X.Fr.TT, X.Ds s ^ mn_ns r mon s`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := mon.support.filter (fun v => IsNormal r v)) (t := X.Fr.TT) (g := fun v => v.1) (fun v hv => hmonT v (Finset.mem_filter.1 hv).1)]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `mn_ns`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hv).2]`. Establish `hC : (C (algebraMap O (KK O) (X.S.w ^ normDeg r mon)) : PP) = ∏ v ∈ mon.support.filter (fun v => IsNormal r v), C (algebraMap O (KK O) X.S.w) ^ mon v`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← ho, map_pow, C_pow]`. Establish `hDk : X.DkQ = (∏ s ∈ X.Fr.TT, X.Ds s ^ mn_ns r mon s) * ∏ s ∈ X.Fr.TT, X.Ds s ^ ((r + K) * X.Q - mn_ns r mon s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mn_DkQ_eq, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, Nat.add_sub_cancel' (mn_ns_le X mon hmon s hs)]`. Establish `hid : C (algebraMap O (KK O) (X.S.w ^ normDeg r mon)) * (monomial mon 1 * X.DkQ) = (∏ v ∈ mon.support.filter (fun v => IsNormal r v), (C (algebraMap O (KK O) X.S.w) * MvPolynomial.X v * X.Ds v.1) ^ mon v) * ((∏ v ∈ mon.support.filter (fun v => ¬ IsNormal r v), MvPolynomial.X v ^ …`. Rewrite using `[hC, hmonE, hDk, ← hDfib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : (∏ v ∈ mon.support.filter (fun v => IsNormal r v), (C (algebraMap O (KK O) X.S.w) * MvPolynomial.X v * X.Ds v.1) ^ mon v) ∈ AddSubmonoid.closure (bc_agen X.S.w X.Fr X.Q X.g (∑ v ∈ mon.support.filter (fun v => IsNormal r v), mon v) 0)` using `bc_gr_prod (bc_agen_mul X.S.w X.Fr X.Q X.g) (bc_agen_one X.S.w X.Fr X.Q X.g) _ _ (fun v => mon v) (fun v hv => by`. Use `bc_gr_pow (bc_agen_mul X.S.w X.Fr X.Q X.g) (bc_agen_one X.S.w X.Fr X.Q X.g) (leading_depth_one_mem_closure X D v (Finset.mem_filter.1 hv).2 (hmonT v (Finset.mem_filter.1 hv).1)) (mon v)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this)`. Establish `hB : bc_IT X.Fr ((∏ v ∈ mon.support.filter (fun v => ¬ IsNormal r v), (MvPolynomial.X v : PP) ^ mon v) * ∏ s ∈ X.Fr.TT, X.Ds s ^ ((r + K) * X.Q - mn_ns r mon s))` using `bc_IT_mul (bc_IT_prod _ _ fun v hv => bc_IT_pow (mn_X_IT X v (Finset.mem_filter.1 hv).2 (hmonT v (Finset.mem_filter.1 hv).1)) _) (bc_IT_prod _ _ fun s _ => bc_IT_pow (mn_Ds_IT X s) _)`. Establish `hB' : ((∏ v ∈ mon.support.filter (fun v => ¬ IsNormal r v), (MvPolynomial.X v : PP) ^ mon v) * ∏ s ∈ X.Fr.TT, X.Ds s ^ ((r + K) * X.Q - mn_ns r mon s)) ∈ AddSubmonoid.closure (bc_agen X.S.w X.Fr X.Q X.g 0 0)` using `AddSubmonoid.subset_closure ⟨1, _, isKeyProduct_one X.S.w X.Fr X.Q X.g, hB, by rw [one_mul]⟩`. Establish `hAB` using `bc_gr_mul (bc_agen_mul X.S.w X.Fr X.Q X.g) hA hB'`. Rewrite `hAB` using `[add_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid, ho]`. Conclude with `hAB`.
+A detailed English derivation is pending.
 -/
 theorem mn_main (D : Formalism.BasicNotions.D7) (mon : Fin n' × Fin (r + K) →₀ ℕ) (hmon : IsLabel p X.Fr mon)
     (hmonT : ∀ v ∈ mon.support, v.1 ∈ X.Fr.TT) :
@@ -295,7 +293,7 @@ theorem mn_main (D : Formalism.BasicNotions.D7) (mon : Fin n' × Fin (r + K) →
 end Mon
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ _ O _ _ _ _ X mon hmon hmonT`. Conclude with `⟨normDeg r mon, mn_main X D mon hmon hmonT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem restMon (D : Formalism.BasicNotions.D7) : RestMon := by
   intro p n' r K _ _ _ _ O _ _ _ _ X mon hmon hmonT

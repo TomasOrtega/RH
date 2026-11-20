@@ -19,11 +19,11 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open Classical
 
 /- English proof (translation)
-Introduce `X₁`. Take `⟨m, c, hc⟩` from `RatModel.exists_isCl_of_isProjOver X₁.projM`. Establish `hc0 : ∃ j, c j ≠ 0`. Take `⟨j, hj⟩` from `hc.1 (genericPoint X₁.M.Z)`. Conclude with `⟨j, hj.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Y, U₀, EE, hO, hdiv, hE, ⟨G⟩⟩` from `GlobalTheory.zhSt_holds X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big (Fin (m + 1)) c hc0 (GlobalTheory.ZH.finite_closure_theta_ratios_of_isCl X₁.o₁ X₁.Ω₁ X₁.S X₁.M (Fin (m + 1)) c hc)`. Take `⟨q, hq⟩` from `hc.exists_isHom (M' := Y) (φ := AlgHom.id X₁.o₁ X₁.Ω₁) hdiv`. Establish `hYp : IsProper Y.s` using `((GlobalTheory.isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hO.proj).1`. Establish `hsep : IsSeparated X₁.M.s` using `X₁.M.sep`. Establish `hqp : IsProper q` using `by haveI : IsProper (q ≫ X₁.M.s) := by rw [hq.inducedModelMorphism_comp_structureMap]; exact hYp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsProper.of_comp q X₁.M.s`. Conclude with `⟨Y, q, U₀, EE, ⟨G⟩, hO, hE, hq, hqp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GSep.exists_zhAbove : ∀ (X₁ : GlobalTheory.GSep.GSet), ∃ (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z),
     GlobalTheory.GSep.ZHAbove X₁ Y πY := by

@@ -6,7 +6,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hV i, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem affine_point_comp {X Y : Scheme.{0}} (f : X ⟶ Y) {V : X.Opens} {U : Y.Opens} (hU : IsAffineOpen U)
     (hV : IsAffineOpen V) (i : V ≤ f ⁻¹ᵁ U) {Ω : Type} [Field Ω] (x : Γ(X, V) →+* Ω) :
@@ -16,7 +16,7 @@ private theorem affine_point_comp {X Y : Scheme.{0}} (f : X ⟶ Y) {V : X.Opens}
   rfl
 
 /- English proof (translation)
-Establish `h'` using `Spec.map_injective ((cancel_mono _).1 h)`. Conclude with `congrArg CommRingCat.Hom.hom h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem affine_point_injective {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) {Ω : Type} [Field Ω]
     {a b : Γ(X, V) →+* Ω}
@@ -25,15 +25,13 @@ private theorem affine_point_injective {X : Scheme.{0}} {V : X.Opens} (hV : IsAf
   exact congrArg CommRingCat.Hom.hom h'
 
 /- English proof (translation)
-Use `letI : Algebra (GlobalTheory.CechDR.Sec p U) (GlobalTheory.CechDR.Sec q (s ⁻¹ᵁ U)) := secAlg p q s U`. Use `haveI : Module.Finite (GlobalTheory.CechDR.Sec p U) (GlobalTheory.CechDR.Sec q (s ⁻¹ᵁ U)) := sec_finite hU`. Use `haveI : Algebra.Etale (GlobalTheory.CechDR.Sec p U) (GlobalTheory.CechDR.Sec q (s ⁻¹ᵁ U)) := sec_etale hU`. Use `letI : Algebra (GlobalTheory.CechDR.Sec p U) Γ(W, V) := (c.appLE U V hVU).hom.toAlgebra`. Establish `hcomp : ∀ j, s.app U ≫ (σ j).appLE (s ⁻¹ᵁ U) V (hVU.trans (GlobalTheory.GalTrace.preimage_le (hσ j) U)) = c.appLE U V hVU`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Simplify using `only [hσ j]`. Set `τ : J → GlobalTheory.CechDR.Sec q (s ⁻¹ᵁ U) →ₐ[GlobalTheory.CechDR.Sec p U] Γ(W, V)` to `fun j => { toRingHom := ((σ j).appLE (s ⁻¹ᵁ U) V (hVU.trans (GlobalTheory.GalTrace.preimage_le (hσ j) U))).hom commutes' := fun a => congrArg (fun f => CommRingCat.Hom.hom f a) (hcomp j) }`. Establish `hA' : IsAffineOpen (s ⁻¹ᵁ U)` using `hU.preimage s`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he⟩` from `hS _ _ _ J τ (by`. Introduce `Ω _ _ x y hxy`. Establish `hring : y.comp (s.appLE U (s ⁻¹ᵁ U) le_rfl).hom = x.comp (c.appLE U V hVU).hom`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpt : (Spec.map (CommRingCat.ofHom y) ≫ hA'.fromSpec) ≫ s = (Spec.map (CommRingCat.ofHom x) ≫ hV.fromSpec) ≫ c` using `(affine_point_comp s hU hA' le_rfl y).trans ((congrArg (fun f => Spec.map (CommRingCat.ofHom f) ≫ hU.fromSpec) hring).trans (affine_point_comp c hU hV hVU x).symm)`. Take `⟨j, hj, huniq⟩` from `hP s c J σ hsp Ω _ _ hpt`. Use `⟨j, ?_, fun j' hj' => huniq j' ?_⟩` and prove the remaining obligations. Conclude with `affine_point_injective hA' ((affine_point_comp (σ j) hA' hV (hVU.trans (GlobalTheory.GalTrace.preimage_le (hσ j) U)) x).symm.trans hj)`. Conclude with `(affine_point_comp (σ j') hA' hV (hVU.trans (GlobalTheory.GalTrace.preimage_le (hσ j') U)) x).trans (congrArg (fun f => Spec.map (CommRingCat.ofHom f) ≫ hA'.fromSpec) hj'))`.
-
-Conclude with `hT _ _ _ J τ e he b`.
+A detailed English derivation is pending.
 -/
 private theorem cech_section_local_split (hP : PtsOfSplits) (hS : AlgSplit) (hT : AlgTr) {k : Type} [Field k] {Z Y W : Scheme.{0}}
     (p : Z ⟶ sp k) (q : Y ⟶ sp k) (s : Y ⟶ Z) [IsFinite s] [Etale s] (c : W ⟶ Z) (J : Type) [Fintype J]
@@ -73,9 +71,9 @@ private theorem cech_section_local_split (hP : PtsOfSplits) (hS : AlgSplit) (hT 
   exact hT _ _ _ J τ e he b
 
 /- English proof (translation)
-Introduce `hP hS hT k _ Z Y W p q r s _ _ c J _ σ hσ hsp U hU b`. Use `TopCat.Sheaf.eq_of_locally_eq' W.sheaf (fun i : {V : W.Opens // IsAffineOpen V ∧ V ≤ c ⁻¹ᵁ U} => i.1) (c ⁻¹ᵁ U) (fun i => homOfLE i.2.2) ?_ _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨V, hV, hxV, hVU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp W.isBasis_affineOpens hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨V, hV, hVU⟩, hxV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨V, hV, hVU⟩`. Establish `key` using `cech_section_local_split hP hS hT p q s c J σ hσ hsp U hU V hV hVU b`. Use `key.trans ((Finset.sum_congr rfl fun j _ => ?_).trans (map_sum (W.presheaf.map (homOfLE hVU).op).hom _ _).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((σ j).app (s ⁻¹ᵁ U) ≫ W.presheaf.map (homOfLE (GlobalTheory.GalTrace.preimage_le (hσ j) U)).op ≫ W.presheaf.map (homOfLE hVU).op).hom b`. Rewrite using `[← Functor.map_comp, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pHodgeFun :
     PtsOfSplits → AlgSplit → AlgTr → ∀ (k : Type) [Field k] {Z Y W : Scheme.{0}} (p : Z ⟶ sp k) (q : Y ⟶ sp k) (r : W ⟶ sp k) (s : Y ⟶ Z) [IsFinite s] [Etale s] (c : W ⟶ Z) (J : Type) [Fintype J] (σ : J → (W ⟶ Y)) (hσ : ∀ j, σ j ≫ s = c), Splits s c σ → ∀ (U : Z.Opens) (hU : IsAffineOpen U) (b : GlobalTheory.CechDR.Sec q (s ⁻¹ᵁ U)), GlobalTheory.HodgeCoh.appSec p r c U (secTrace p q hU b) = ∑ j, GlobalTheory.CechDR.Sec.res r (GlobalTheory.GalTrace.preimage_le (hσ j) U) (GlobalTheory.HodgeCoh.appSec q r (σ j) (s ⁻¹ᵁ U) b) := by

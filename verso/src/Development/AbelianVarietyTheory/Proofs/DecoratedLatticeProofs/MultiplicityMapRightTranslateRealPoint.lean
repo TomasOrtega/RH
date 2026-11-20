@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.RealPointMove
 
 /- English proof (translation)
-Introduce `D θ hθ V S M J χ T hT k hk v`. Use `⟨fun τ => ⟨M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) k) (v τ), GlobalTheory.UnifEvery.rep_mem_sm M τ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V k τ) (v τ).2⟩, fun τ => rfl, fun x => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.RealEquiv.mult_realElt D V S θ M J χ T (Submodule.subset_span hT) (fun τ => infMat D.sp.cm.sig V.gram (θ τ) k) (fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V k τ) v (fun τ => ⟨M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) k) (v τ), GlobalTheory.UnifEvery …`. Rewrite `key` using `[← GlobalTheory.RealTransSm.eq_realElt hθ hk]`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

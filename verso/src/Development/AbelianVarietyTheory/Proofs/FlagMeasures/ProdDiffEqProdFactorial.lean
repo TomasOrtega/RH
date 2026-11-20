@@ -7,9 +7,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.FormalDegreeDatum
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ m`. Establish `h` using `Matrix.det_vandermonde_id_eq_superFactorial (R := ℝ) m`. Rewrite `h` using `[Matrix.det_vandermonde, ← Nat.prod_range_succ_factorial]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h`. Rewrite using `[← h]`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr ?_ fun b _ => rfl` and prove the remaining obligations. Use extensionality with `b`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_diff_eq_prod_factorial (n : ℕ) :
     (∏ a : Fin n, ∏ b ∈ Finset.univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) =
@@ -25,9 +25,9 @@ theorem prod_diff_eq_prod_factorial (n : ℕ) :
     ext b; simp
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Unfold `Formalism.REAL.inUJ`. Establish `: (Q * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (Q * P⁻¹) = (P⁻¹)ᴴ * (Qᴴ * Formalism.REAL.Jm ε * Q) * P⁻¹`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, h2, ← h1]`. Establish `: (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this, hPP]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inUJ_of_cayley {n : ℕ} (ε : Fin n → Bool) (P Q G : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P)
     (h1 : Pᴴ * Formalism.REAL.Jm ε * P = G) (h2 : Qᴴ * Formalism.REAL.Jm ε * Q = G) :
@@ -43,17 +43,17 @@ theorem inUJ_of_cayley {n : ℕ} (ε : Fin n → Bool) (P Q G : Matrix (Fin n) (
   rw [this, hPP]; simp
 
 /- English proof (translation)
-Establish `hmem : ∀ g : Formalism.REAL.UJ ε, umat g ∈ UJset ε` using `fun g => g.2`. Establish `hmul : ∀ g h : Formalism.REAL.UJ ε, σ₁ (umat (g * h)) w = σ₁ (umat g) (σ₁ (umat h) w)`. Introduce `g h`. Use `hu.1.2 _ (hmem g) _ (hmem h)` as an intermediate fact. Establish `e : umat (g * h) = umat g * umat h` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, this]`. Both sides reduce to the same expression. Establish `hv : ‖σ₁ (umat a) w‖ = ‖w‖` using `hu.2.1 _ (hmem a) w`. Use `set v := σ₁ (umat a) w with hvdef`. Establish `h1 : ∫ g, ‖inner ℂ w (σ₁ (umat g) w)‖ ^ 2 ∂μ = ∫ g, ‖coefOn σ₀ v w g‖ ^ 2 ∂μ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_mul_left_eq_self (fun g : Formalism.REAL.UJ ε => ‖inner ℂ w (σ₁ (umat g) w)‖ ^ 2) a]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [coefOn, hc, hvdef, ← hmul]`. Rewrite using `[inv_mul_cancel_right]`. Establish `h2` using `(hd.2 v w v w).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ g : Formalism.REAL.UJ ε, coefOn σ₀ v w g * star (coefOn σ₀ v w g) = ((‖coefOn σ₀ v w g‖ ^ 2 : ℝ) : ℂ)`. Introduce `g`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [h3] at h2`. Rewrite `h2` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ∫ g, ‖coefOn σ₀ v w g‖ ^ 2 ∂μ = ‖w‖ ^ 2 * ‖w‖ ^ 2 / d`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `hn : ‖w‖ ≠ 0` using `norm_ne_zero_iff.2 hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `hd.1.ne'`. Rewrite using `[h1, h4]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fdeg_of_conj {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (μ : Measure (Formalism.REAL.UJ ε)) [μ.IsMulLeftInvariant]
@@ -91,15 +91,15 @@ theorem fdeg_of_conj {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGr
   field_simp
 
 /- English proof (translation)
-Introduce `hF k r H _ _ _ σ ε lam cd sc P d hsc hlam hDS hP hd`. Take `⟨Q, ⟨hQ, -⟩, hDS⟩` from `hDS`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Establish `hQd : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).1 hQ.1`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPd`. Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hQd`. Establish `hQQ' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hQd`. Set `u : (Mat k r)ˣ` to `⟨Q * P⁻¹, P * Q⁻¹, by rw [Matrix.mul_assoc, ← Matrix.mul_assoc P⁻¹, hPP', Matrix.one_mul, hQQ], by rw [Matrix.mul_assoc, ← Matrix.mul_assoc Q⁻¹, hQQ', Matrix.one_mul, hPP]⟩`. Set `a : Formalism.REAL.UJ ε` to `⟨u, inUJ_of_cayley ε P Q _ hP.1 hP.2 hQ.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := hDS.2.1`. Take `⟨w, hw⟩` from `exists_ne (0 : H)`. Establish `h1` using `hF cd sc hsc _ ε lam hlam H _ w hDS hw`. Establish `h2` using `fdeg_of_conj ((sc _ ε : ℝ≥0∞) • Formalism.REAL.muG ε) (fun g => σ (P⁻¹ * g * P)) (fun g => σ (Q⁻¹ * g * Q)) a (fun g => by`. Establish `e : umat (a * g * a⁻¹) = Q * P⁻¹ * umat g * (P * Q⁻¹)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Q⁻¹ * (Q * P⁻¹ * umat g * (P * Q⁻¹)) * Q = (Q⁻¹ * Q) * (P⁻¹ * umat g * P) * (Q⁻¹ * Q)`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [e, e2, hQQ', Matrix.one_mul, Matrix.mul_one]) hDS.2.2.1 d hd w hw`. Rewrite `h1` using `[h2, prod_diff_eq_prod_factorial]`. Establish `hne : (∏ i ∈ Finset.range (2 * r + k + 1), (i.factorial : ℝ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast i.factorial_ne_zero`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, div_mul_cancel₀ _ hne]`. Unfold `vand`. Use `Finset.prod_congr rfl fun x _ => Finset.prod_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `: x < y` using `(Finset.mem_filter.1 hy).2`. Conclude with `abs_of_pos (sub_pos.2 (hlam.1 this))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fdeg_mul_prod_factorial : GlobalTheory.Published.FormalDegreeCompactDual → ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mat k r → (H →L[ℂ] H)) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (cd : Formalism.BasicNotions.CDHaar) (sc : ∀ n : ℕ, (Fin n → Bool) → NNReal) (P : Mat k r) (d : ℝ), GlobalTheory.Mem.Vol.CdScaleIs cd sc → IsHCParam lam → IsDSHpk k r ε lam σ → IsCayley k r ε P → IsFdeg ((sc _ ε : ℝ≥0∞) • Formalism.REAL.muG ε) (fun g => σ (P⁻¹ * g * P)) d → d * (∏ i ∈ Finset.range (2 * r + k + 1), (i.factorial : ℝ)) = vand lam := by
   intro hF k r H _ _ _ σ ε lam cd sc P d hsc hlam hDS hP hd

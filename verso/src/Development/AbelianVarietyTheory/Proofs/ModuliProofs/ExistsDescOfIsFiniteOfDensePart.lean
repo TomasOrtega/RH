@@ -15,11 +15,11 @@ open GlobalTheory.Models
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e` using `graphClosure.incl_fst s' p π f h`. Establish `: IsFinite (graphClosure.incl s' p π f h ≫ graphClosure.fst s' p π f h)`. Rewrite using `[e]`. Use `infer_instance`. Establish `: IsFinite (graphClosure.incl s' p π f h)` using `IsFinite.of_comp _ (graphClosure.fst s' p π f h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective (graphClosure.incl s' p π f h)` using `surjective_of_isDominant_of_isClosed_range _ (graphClosure.incl s' p π f h).isClosedMap.isClosed_range`. Establish `: UniversallyClosed (graphClosure.fst s' p π f h)` using `.of_comp_surjective (graphClosure.incl s' p π f h) _`. Establish `: IsProper (graphClosure.fst s' p π f h)` using `{}`. Establish `: LocallyQuasiFinite (graphClosure.fst s' p π f h)`. Use `.of_finite_preimage_singleton _ fun s ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((graphClosure.incl s' p π f h ≫ graphClosure.fst s' p π f h).finite_preimage_singleton s).image (graphClosure.incl s' p π f h)).subset fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(graphClosure.incl s' p π f h).surjective x`. Conclude with `⟨y, by simpa only [Set.mem_preimage, Scheme.Hom.comp_apply] using hx, rfl⟩`. Conclude with `.of_isProper_of_locallyQuasiFinite _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFinite_graphClosure_fst_of_isFinite {S X X' Y : Scheme.{0}} (π : X ⟶ X') (s' : X' ⟶ S)
     (p : Y ⟶ S) (f : X ⟶ Y) (h : π ≫ s' = f ≫ p) [IsFinite π] [IsSeparated p]
@@ -44,11 +44,11 @@ theorem isFinite_graphClosure_fst_of_isFinite {S X X' Y : Scheme.{0}} (π : X �
   exact .of_isProper_of_locallyQuasiFinite _
 
 /- English proof (translation)
-Introduce `S X X' U U' Y _ π j j' r s' p f f₀ hX' _ _ _ _ _ _ _ _ _ _ _ _ h₁ h₂ h₃ h₄`. Use `GlobalTheory.IsNormalScheme.of_pred hX'` as an intermediate fact. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks j'` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme U'` using `GlobalTheory.IsNormalScheme.of_isIso_stalkMap j'`. Use `IsSchemeTheoreticallyDominant.of_isDominant r` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isFinite_graphClosure_fst_of_isFinite π s' p f h₃.symm` as an intermediate fact. Set `g` to `graphClosure.lift s' p π f h₃.symm j' f₀ h₄.symm r j h₁.symm h₂.symm`. Establish `hg₁ : g ≫ graphClosure.fst s' p π f h₃.symm = j'` using `graphClosure.lift_fst ..`. Establish `hg₂ : g ≫ graphClosure.snd s' p π f h₃.symm = f₀` using `graphClosure.lift_snd ..`. Take `⟨σ, ⟨hσ₁, hσ₂⟩, -⟩` from `existsUnique_lift_of_densePart X' U' X' _ j' hX' ‹_› ‹_› ‹_› ‹_› (graphClosure.fst s' p π f h₃.symm) (𝟙 X') g inferInstance (by rw [hg₁, Category.comp_id])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₅ : j' ≫ σ ≫ graphClosure.snd s' p π f h₃.symm = f₀` using `by rw [reassoc_of% hσ₁, hg₂]`. Use `⟨σ ≫ graphClosure.snd s' p π f h₃.symm, h₅, ext_of_isDominant_of_isSeparated p ?_ j ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← graphClosure.condition, reassoc_of% hσ₂, h₃]`. Rewrite using `[reassoc_of% h₁, h₅, h₂]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_desc_of_isFinite_of_densePart : ∀ (S X X' U U' Y : Scheme.{0}) [IsLocallyNoetherian X'] (π : X ⟶ X') (j : U ⟶ X) (j' : U' ⟶ X') (r : U ⟶ U') (s' : X' ⟶ S) (p : Y ⟶ S) (f : X ⟶ Y) (f₀ : U' ⟶ Y), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X' → IsReduced X → IsFinite π → Surjective π → Surjective r → IsDominant j → QuasiCompact j → IsPreimmersion j' → Flat j' → IsDominant j' → QuasiCompact j' → IsSeparated p → LocallyOfFiniteType p → j ≫ π = r ≫ j' → j ≫ f = r ≫ f₀ → f ≫ p = π ≫ s' → f₀ ≫ p = j' ≫ s' → ∃ f' : X' ⟶ Y, j' ≫ f' = f₀ ∧ π ≫ f' = f := by
   intro S X X' U U' Y _ π j j' r s' p f f₀ hX' _ _ _ _ _ _ _ _ _ _ _ _ h₁ h₂ h₃ h₄

@@ -19,29 +19,27 @@ namespace GlobalTheory.PeakWeightSmooth
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[KU.lact_lact X, inv_mul_cancel, KU.lact_one X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lact_inv_lact (X : Data E r) (γ : GL (Fin r) E) (y : Frame X.Ψ r) : lact γ⁻¹ (lact γ y) = y := by
   rw [KU.lact_lact X, inv_mul_cancel, KU.lact_one X]
 
 /- English proof (translation)
-Rewrite using `[KU.lact_lact X, mul_inv_cancel, KU.lact_one X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lact_lact_inv (X : Data E r) (γ : GL (Fin r) E) (y : Frame X.Ψ r) : lact γ (lact γ⁻¹ y) = y := by
   rw [KU.lact_lact X, mul_inv_cancel, KU.lact_one X]
 
 /- English proof (translation)
-Distinguish the cases in `hS : ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧ y = lact γ (rmul (cpt X x z) b)`. Use `right`. Take `⟨γ, hγ, b, hb, z, hz, rfl⟩` from `hS`. Take `⟨Δ, zOf, bOf, hΔ, -, hzd, -, hsplit, hinv⟩` from `lu_holds r X x hx`. Establish `hUo : IsOpen {w | w ∈ X.dom ∧ Δ w ≠ 0}` using `(IW.isOpen_dom X).inter (isOpen_ne_fun hΔ.continuous continuous_const)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzO : z ∈ OmF X x` using `hR z (hz.trans hρR.le)`. Establish `hmem : lact γ⁻¹ (lact γ (rmul (cpt X x z) b)) ∈ {w | w ∈ X.dom ∧ Δ w ≠ 0}`. Rewrite using `[lact_inv_lact]`. Conclude with `⟨OntoS.dom_rmul X hzO hb, (hinv z hzO b hb).1⟩`. Use `⟨γ, zOf, _, hUo, hmem, hzd, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt (fun y' => lact γ⁻¹ y') (lact γ (rmul (cpt X x z) b))` using `(KU.cont_lact X γ⁻¹).continuousAt`. Establish `hU' : ∀ᶠ y' in 𝓝 (lact γ (rmul (cpt X x z) b)), lact γ⁻¹ y' ∈ {w | w ∈ X.dom ∧ Δ w ≠ 0}` using `hcont.preimage_mem_nhds (hUo.mem_nhds hmem)`. Establish `hzc : ContinuousAt (fun y' => zOf (lact γ⁻¹ y')) (lact γ (rmul (cpt X x z) b))` using `ContinuousAt.comp (f := fun y' => lact γ⁻¹ y') ((hzd.differentiableAt (hUo.mem_nhds hmem)).continuousAt) hcont`. Establish `hval : zOf (lact γ⁻¹ (lact γ (rmul (cpt X x z) b))) = z`. Rewrite using `[lact_inv_lact]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hinv z hzO b hb).2.1`. Establish `h2 : ‖zOf (lact γ⁻¹ (lact γ (rmul (cpt X x z) b)))‖ < R`. Rewrite using `[hval]`. Conclude with `lt_of_le_of_lt hz hρR`. Establish `hnear : ∀ᶠ y' in 𝓝 (lact γ (rmul (cpt X x z) b)), ‖zOf (lact γ⁻¹ y')‖ < R` using `hzc.norm.eventually_lt continuousAt_const h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hU', hnear] with y' hy'U hy'n`. Take `⟨hy'd, hy'Δ⟩` from `hy'U`. Take `⟨-, hbO, heq⟩` from `hsplit _ hy'd hy'Δ`. Establish `hy' : y' = lact γ (rmul (cpt X x (zOf (lact γ⁻¹ y'))) (bOf (lact γ⁻¹ y')))`. Rewrite using `[← heq, lact_lact_inv]`.
-
-Use `conv_lhs => rw [hy']`. Conclude with `hψ γ hγ _ hbO _ hy'n.le`. Use `left filter_upwards [hloc y hy hS] with y' hy'`. Conclude with `h0 y' hy'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_form (X : Data E r) (x : Frame X.Ψ r) (hx : IsOrth X x) (ρ R : ℝ) (η : V (nd X) → ℝ)
     (ψ : Frame X.Ψ r → ℝ) (hρR : ρ < R) (hR : ∀ z : V (nd X), ‖z‖ ≤ R → z ∈ OmF X x)
@@ -96,21 +94,17 @@ end GlobalTheory.PeakWeightSmooth
 namespace GlobalTheory.PeakWeightSmooth
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x ρ R η ψ hx hρR hR hη hψ h0 hloc`. Establish `hS_dom : ∀ y, (∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧ y = lact γ (rmul (cpt X x z) b)) → y ∈ X.dom`. Introduce and unpack `y ⟨γ, hγ, b, hb, z, hz, rfl⟩`. Conclude with `KU.lact_dom X hγ (OntoS.dom_rmul X (hR z (hz.trans hρR.le)) hb)`. Establish `hcont : ∀ y ∈ X.dom, ContinuousAt ψ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Break down `local_form X x hx ρ R η ψ hρR hR hψ h0 hloc hy with h | ⟨γ, zOf, U, hUo, hyU, hzd, hev⟩` into its components or cases. Conclude with `(continuousAt_const (y := (0 : ℝ))).congr (h.mono fun _ h => h.symm)`. Establish `: ContinuousAt (fun y' => η (zOf (lact γ⁻¹ y'))) y` using `hη.continuous.continuousAt.comp (((hzd.differentiableAt (hUo.mem_nhds hyU)).continuousAt).comp (KU.cont_lact X γ⁻¹).continuousAt)`. Conclude with `this.congr (hev.mono fun _ h => h.symm)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hzero : ∀ y, y ∉ X.dom → ψ y = 0` using `fun y hy => h0 y (fun h => hy (hS_dom y h))`. Prove the components needed by the constructor for the conclusion. Establish `heq : ψ = X.dom.piecewise ψ (fun _ => 0)`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ X.dom`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.piecewise, hy]`. Simplify using `[Set.piecewise, hy, hzero y hy]`. Rewrite using `[heq]`. Conclude with `ContinuousOn.measurable_piecewise (fun y hy => (hcont y hy).continuousWithinAt) continuousOn_const (IW.isOpen_dom X).measurableSet`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (cpt X x) w` using `(IW.cpt_diff X x).continuous.continuousAt`. Break down `local_form X x hx ρ R η ψ hρR hR hψ h0 hloc (y := cpt X x w) hw with h | ⟨γ, zOf, U, hUo, hyU, hzd, hev⟩` into its components or cases. Establish `h' : ∀ᶠ w' in 𝓝 w, ψ (cpt X x w') = 0` using `hc.eventually h`. Conclude with `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq h'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Differentiable ℂ (fun w' => lact γ⁻¹ (cpt X x w'))`. Establish `e : (fun w' => lact γ⁻¹ (cpt X x w')) = cpt X (lact γ⁻¹ x)`. Use function extensionality and compare the values at `w'`. Rewrite using `[KU.cpt_lact]`. Rewrite using `[e]`.
-
-Conclude with `IW.cpt_diff X _`. Establish `hN : (fun w' => lact γ⁻¹ (cpt X x w')) ⁻¹' U ∈ 𝓝 w` using `hg.continuous.continuousAt.preimage_mem_nhds (hUo.mem_nhds hyU)`. Establish `hΦd : DifferentiableOn ℂ (fun w' => zOf (lact γ⁻¹ (cpt X x w'))) ((fun w' => lact γ⁻¹ (cpt X x w')) ⁻¹' U)` using `hzd.comp hg.differentiableOn (fun _ h => h)`. Establish `hΦ : ContDiffAt ℂ ∞ (fun w' => zOf (lact γ⁻¹ (cpt X x w'))) w` using `GlobalTheory.SCV.contDiffAt_of_differentiableOn hΦd hN _`. Establish `hev' : ∀ᶠ w' in 𝓝 w, ψ (cpt X x w') = η (zOf (lact γ⁻¹ (cpt X x w')))` using `hc.eventually hev`.
-
-Conclude with `((hη.contDiffAt).comp w (hΦ.restrict_scalars ℝ)).congr_of_eventuallyEq hev'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_and_contDiffOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r) (ρ R : ℝ) (η : V (nd X) → ℝ) (ψ : Frame X.Ψ r → ℝ), IsOrth X x → ρ < R → (∀ z : V (nd X), ‖z‖ ≤ R → z ∈ OmF X x) → ContDiff ℝ ∞ η → (∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, ∀ z : V (nd X), ‖z‖ ≤ R → ψ (lact γ (rmul (cpt X x z) b)) = η z) → (∀ y, (¬ ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧ y = lact γ (rmul (cpt X x z) b)) → ψ y = 0) → (∀ y ∈ X.dom, (¬ ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧ y = lact γ (rmul (cpt X x z) b)) → ∀ᶠ y' in 𝓝 y, ¬ ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧ y' = lact γ (rmul (cpt X x z) b)) → Measurable ψ ∧ ContDiffOn ℝ ∞ (fun w => ψ (cpt X x w)) (OmF X x) := by
   intro E _ _ _ r X x ρ R η ψ hx hρR hR hη hψ h0 hloc

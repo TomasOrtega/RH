@@ -17,7 +17,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[hf_sum_l]`. Simplify using `[gramT, Matrix.mulVec, dotProduct, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hf_comb (L : LocE F E) {n m : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (y : Fin m → Fin n → E)
     (c : Fin m → E) : (fun a => hf L Hm (∑ b, c b • y b) (y a)) = gramT L Hm y *ᵥ c := by
@@ -26,11 +26,11 @@ theorem hf_comb (L : LocE F E) {n m : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (y : 
   simp [gramT, Matrix.mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1` using `hf_comb L Hm y c`. Rewrite `h1` using `[hc]`. Establish `h2 : gramT L Hm y *ᵥ c = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use function extensionality and compare the values at `a`. Simplify using `[hf]`. Establish `h3 : (gramT L Hm y)⁻¹ *ᵥ (gramT L Hm y *ᵥ c) = c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[h2, Matrix.mulVec_zero]`. Conclude with `fun i => congrFun h3.symm i`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_gram (L : LocE F E) {n m : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
     (y : Fin m → Fin n → E) (h : IsUnit (gramT L Hm y).det) : LinearIndependent E y := by
@@ -47,7 +47,7 @@ theorem linearIndependent_of_gram (L : LocE F E) {n m : ℕ} (Hm : Matrix (Fin n
 
 omit [TopologicalSpace E] in
 /- English proof (translation)
-Simplify using `only [rmul, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_rmul {n m : ℕ} (y : Fin m → Fin n → E) (B : Matrix (Fin m) (Fin m) E)
     (c : Fin m → E) : ∑ j, c j • rmul y B j = ∑ i, (B *ᵥ c) i • y i := by
@@ -56,27 +56,25 @@ theorem sum_smul_rmul {n m : ℕ} (y : Fin m → Fin n → E) (B : Matrix (Fin m
   simp only [mul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L n Hm _ m y hG Mh hy hsp hint`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Establish `hP : IsPrincipalIdealRing L.O` using `(GlobalTheory.UnramOrder.order_facts L ϖ hϖ).2.2.2.1`. Establish `hli` using `linearIndependent_of_gram L Hm y hG`. Use `⟨hli, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyM : ∀ a, y a ∈ Mh` using `fun a => hy (Submodule.subset_span ⟨a, rfl⟩)`. Set `f : (Fin m → L.O) →ₗ[L.O] (Fin n → E)` to `{ toFun := fun w => ∑ i, ((gramT L Hm y)⁻¹ *ᵥ fun a => (w a : E)) i • y i map_add' := fun v w => by`. Establish `: (fun a => ((v + w) a : E)) = (fun a => (v a : E)) + fun a => (w a : E)` using `rfl`. Rewrite using `[this, Matrix.mulVec_add]`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c v => by`. Establish `: (fun a => ((c • v) a : E)) = (c : E) • fun a => (v a : E)` using `rfl`. Rewrite using `[this, Matrix.mulVec_smul, RingHom.id_apply, Subring.smul_def, Finset.smul_sum]`. Simplify using `only [Pi.smul_apply, smul_assoc] }`. Establish `hle : Mh ≤ LinearMap.range f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 (hsp v hv)`. Use `⟨fun a => ⟨_, hint _ hv _ (hyM a)⟩, ?_⟩` and prove the remaining obligations. Use `show ∑ i, ((gramT L Hm y)⁻¹ *ᵥ fun a => hf L Hm (∑ b, c b • y b) (y a)) i • y i = _`. Rewrite using `[hf_comb, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hG, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨b, hb⟩` from `exists_eq_span_range m (Mh.comap f)`. Set `B : Matrix (Fin m) (Fin m) E` to `Matrix.of fun i j => ((gramT L Hm y)⁻¹ *ᵥ fun a => (b j a : E)) i`. Establish `hM : Mh = Submodule.span L.O (Set.range (rmul y B))`. Rewrite using `[← Submodule.map_comap_eq_of_le hle, hb, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hA : ∀ j, ∃ c : Fin m → L.O, ∑ i, c i • rmul y B i = y j` using `fun j => (Submodule.mem_span_range_iff_exists_fun L.O).1 (hM ▸ hyM j)`. Use `choose c hc using hA`. Set `A : Matrix (Fin m) (Fin m) E` to `Matrix.of fun i j => (c j i : E)`. Establish `hA : rmul (rmul y B) A = y` using `funext hc`. Establish `hBA : B * A = 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Establish `h1 : ∑ i, (B *ᵥ fun k => A k j) i • y i = y j`. Rewrite using `[← sum_smul_rmul]`. Conclude with `hc j`. Establish `h2 : ∑ i, ((B *ᵥ fun k => A k j) - (Pi.single j 1 : Fin m → E)) i • y i = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h1]`. Simplify using `[Pi.single_apply]`. Establish `h3` using `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ h2 i)`. Rewrite using `[Matrix.one_apply, ← Pi.single_apply, ← h3]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv : A⁻¹ = B` using `Matrix.inv_eq_left_inv hBA`. Use `⟨A, fun i j => (c j i).2, Matrix.isUnit_det_of_left_inverse hBA, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv]`. Use `⟨hM, ?_, hA⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d hd`. Rewrite `hd` using `[sum_smul_rmul]`. Establish `h1 : B *ᵥ d = 0` using `funext (Fintype.linearIndependent_iff.1 hli _ hd)`. Establish `h2 : A *ᵥ (B *ᵥ d) = d`. Rewrite using `[Matrix.mulVec_mulVec, mul_eq_one_comm.1 hBA, Matrix.one_mulVec]`.
-
-Rewrite `h2` using `[h1, Matrix.mulVec_zero]`. Conclude with `fun i => congrFun h2.symm i`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_basis_overlattice : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ (m : ℕ) (y : Fin m → Fin n → E), IsUnit (gramT L Hm y).det → ∀ Mh : Submodule L.O (Fin n → E), Submodule.span L.O (Set.range y) ≤ Mh → (∀ v ∈ Mh, v ∈ Submodule.span E (Set.range y)) → (∀ v ∈ Mh, ∀ w ∈ Mh, hf L Hm v w ∈ L.O) → LinearIndependent E y ∧ ∃ A : Matrix (Fin m) (Fin m) E, IsIntM L A ∧ IsUnit A.det ∧ Mh = Submodule.span L.O (Set.range (rmul y A⁻¹)) ∧ LinearIndependent E (rmul y A⁻¹) ∧ rmul (rmul y A⁻¹) A = y := by
   intro F _ _ _ _ _ E _ _ _ L n Hm _ m y hG Mh hy hsp hint

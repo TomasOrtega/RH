@@ -9,9 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.G.TB
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B a ξ η`. Simplify using `only [betaH, OactH, star_star, Finset.sum_sub_distrib]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_sesquilinear : BetaSesqSt := by
   intro R _ d O _ _ k _ _ _ B a ξ η
@@ -25,7 +25,7 @@ theorem beta_sesquilinear : BetaSesqSt := by
     exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [betaH, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem betaH_smul_left {k : Type} [CommRing k] {d : ℕ} (c : k) (ξ η : (Fin d → k) × (Fin d → k)) :
     betaH k (c • ξ) η = c * betaH k ξ η := by
@@ -33,7 +33,7 @@ theorem betaH_smul_left {k : Type} [CommRing k] {d : ℕ} (c : k) (ξ η : (Fin 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [betaH, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem betaH_smul_right {k : Type} [CommRing k] {d : ℕ} (c : k) (ξ η : (Fin d → k) × (Fin d → k)) :
     betaH k ξ (c • η) = c * betaH k ξ η := by
@@ -41,7 +41,7 @@ theorem betaH_smul_right {k : Type} [CommRing k] {d : ℕ} (c : k) (ξ η : (Fin
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B χ χ' ξ η hξ hη ⟨a, ha⟩`. Establish `h` using `beta_sesquilinear R d O k B a ξ η`. Rewrite `h` using `[hξ a, hη (star a), betaH_smul_left, betaH_smul_right]`. Establish `h2 : (χ a - χ' (star a)) * betaH k ξ η = 0` using `by rw [sub_mul, h, sub_self]`. Conclude with `ha.mul_right_eq_zero.mp h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eigen_orthogonality : EigenOrthSt := by
   intro R _ d O _ _ k _ _ _ B χ χ' ξ η hξ hη ⟨a, ha⟩

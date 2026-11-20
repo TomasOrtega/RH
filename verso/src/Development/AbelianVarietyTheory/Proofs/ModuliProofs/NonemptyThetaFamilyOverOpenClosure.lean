@@ -37,56 +37,56 @@ variable {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k} {S S' S'
 def cast {s s₁ : S ⟶ Sp o} (t : TObj g k J b s) (h : s = s₁) : TObj g k J b s₁ := h ▸ t
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tmap_cast_left {s s₁ : S ⟶ Sp o} (t : TObj g k J b s) (h : s = s₁) {s' : S' ⟶ Sp o} (u : TObj g k J b s')
     (f : S ⟶ S') : TMap (cast t h) u f ↔ TMap t u f := by
   subst h; exact Iff.rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tmap_cast_right {s s₁ : S ⟶ Sp o} (t : TObj g k J b s) (h : s = s₁) {s' : S' ⟶ Sp o} (u : TObj g k J b s')
     (f : S' ⟶ S) : TMap u (cast t h) f ↔ TMap u t f := by
   subst h; exact Iff.rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem shape_cast {s s₁ : S ⟶ Sp o} (t : TObj g k J b s) (h : s = s₁)
     (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) : (cast t h).Shape Mat κ ↔ t.Shape Mat κ := by
   subst h; exact Iff.rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hasTh_cast {N' : ℕ} {b : TBase o (N' ^ 2)} {s s₁ : S ⟶ Sp o} (t : TObj g (N' ^ 2) J b s) (h : s = s₁)
     {R : Type} [CommRing R] (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R) : (cast t h).HasTh x v ↔ t.HasTh x v := by
   subst h; exact Iff.rfl
 
 /- English proof (translation)
-The claim follows from `TMap.comp h' h`.
+A detailed English derivation is pending.
 -/
 theorem tmap_comp {s : S ⟶ Sp o} {s' : S' ⟶ Sp o} {s'' : S'' ⟶ Sp o} {t : TObj g k J b s} {t' : TObj g k J b s'}
     {t'' : TObj g k J b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'} (h' : TMap t'' t' f') (h : TMap t' t f) :
     TMap t'' t (f' ≫ f) := TMap.comp h' h
 
 /- English proof (translation)
-The claim follows from `TMap.refl t`.
+A detailed English derivation is pending.
 -/
 theorem tmap_id {s : S ⟶ Sp o} (t : TObj g k J b s) : TMap t t (𝟙 S) := TMap.refl t
 
 /- English proof (translation)
-Use `⟨(Spec.preimage x).hom, ?_⟩` and prove the remaining obligations. Simplify using `[spMap]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_spMap {R R' : Type} [CommRing R] [CommRing R'] (x : Sp R' ⟶ Sp R) : ∃ φ : R →+* R', x = spMap φ := by
   refine ⟨(Spec.preimage x).hom, ?_⟩
   simp [spMap]
 
 /- English proof (translation)
-Take `⟨K₀, hK₀, β, i, j, t₀, tx, tc, hj, hs, hx, hx0, hc, hC⟩` from `h`. Establish `e' : 𝟙 _ ≫ s' = z ≫ s` using `by rw [Category.id_comp, e]`. Use `⟨K₀, hK₀, β, i, j, t₀, cast tx e', tc, hj, ?_, ?_, ?_, hc, hC⟩` and prove the remaining obligations. Rewrite using `[← e', hs]`. Rewrite using `[tmap_cast_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using TMap.comp hx hz`. Rewrite using `[tmap_cast_left]`. Conclude with `hx0`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromC_of_tmap {em : o →+* ℂ} {C : TObj g k J b (spMap em) → Prop} {K : Type} [Field K] {s' : Sp K ⟶ Sp o}
     {t' : TObj g k J b s'} {s : S ⟶ Sp o} {t : TObj g k J b s} {z : Sp K ⟶ S} (h : FromC em C t' (𝟙 _))
@@ -99,7 +99,7 @@ theorem fromC_of_tmap {em : o →+* ℂ} {C : TObj g k J b (spMap em) → Prop} 
   · rw [tmap_cast_left]; exact hx0
 
 /- English proof (translation)
-Use `⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum K), ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(PrimeSpectrum.comap y ⟨⊥, Ideal.bot_prime⟩).asIdeal = _`. Rewrite using `[← h, RingHom.ker_eq_comap_bot]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_range_spMap {R K : Type} [CommRing R] [Field K] (y : R →+* K) (p : Sp R)
     (h : RingHom.ker y = (show PrimeSpectrum R from p).asIdeal) : p ∈ Set.range (spMap y) := by
@@ -110,7 +110,7 @@ theorem mem_range_spMap {R K : Type} [CommRing R] [Field K] (y : R →+* K) (p :
   rfl
 
 /- English proof (translation)
-Take `⟨q, hq, hle⟩` from `Ideal.exists_minimalPrimes_le (show (⊥ : Ideal R) ≤ (show PrimeSpectrum R from p).asIdeal from bot_le)`. Establish `hqp : q.IsPrime` using `hq.1.1`. Use `⟨(⟨q, hqp⟩ : PrimeSpectrum R), ?_, hq⟩` and prove the remaining obligations. Establish `hs : (⟨q, hqp⟩ : PrimeSpectrum R) ⤳ (show PrimeSpectrum R from p)` using `(PrimeSpectrum.le_iff_specializes _ _).1 hle`. Conclude with `hs.mem_open hW hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_minimal_mem {R : Type} [CommRing R] (W : Set (Sp R)) (hW : IsOpen W) {p : Sp R} (hp : p ∈ W) :
     ∃ q ∈ W, (show PrimeSpectrum R from q).asIdeal ∈ minimalPrimes R := by
@@ -121,9 +121,9 @@ theorem exists_minimal_mem {R : Type} [CommRing R] (W : Set (Sp R)) (hW : IsOpen
   exact hs.mem_open hW hp
 
 /- English proof (translation)
-Establish `hsub : Set.range z ⊆ Set.range x`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : q = p` using `by first`. Consider the case `exact Subsingleton.elim q p`. Consider the case `exact PrimeSpectrum.ext (by rw [Ideal.eq_bot_of_prime (show PrimeSpectrum K from q).asIdeal, Ideal.eq_bot_of_prime (show PrimeSpectrum K from p).asIdeal])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hq]`. Conclude with `hp`. Take `⟨y, hy⟩` from `exists_spMap (IsOpenImmersion.lift x z hsub)`. Conclude with `⟨y, by rw [← hy]; exact IsOpenImmersion.lift_fac x z hsub⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fac_field {R K : Type} [CommRing R] [Field K] (x : Sp R ⟶ S) [IsOpenImmersion x] (z : Sp K ⟶ S)
     (p : Sp K) (hp : z p ∈ Set.range x) : ∃ y : R →+* K, spMap y ≫ x = z := by
@@ -138,13 +138,13 @@ theorem exists_fac_field {R K : Type} [CommRing R] [Field K] (x : Sp R ⟶ S) [I
   exact ⟨y, by rw [← hy]; exact IsOpenImmersion.lift_fac x z hsub⟩
 
 /- English proof (translation)
-Establish `hO : IsOpen (Set.range x)` using `x.isOpenEmbedding.isOpen_range`. Establish `hO' : IsOpen ((fun q => z q) ⁻¹' Set.range x)` using `hO.preimage z.continuous`. Take `⟨V, ⟨f, rfl⟩, hpV, hVsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := T)).exists_subset_of_mem_open (a := (show PrimeSpectrum T from p)) hp hO'`. Use `⟨f, hpV, ?_⟩` and prove the remaining obligations. Establish `hsub : Set.range (spMap (algebraMap T (Localization.Away f)) ≫ z) ⊆ Set.range x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : (show PrimeSpectrum T from spMap (algebraMap T (Localization.Away f)) q) ∈ (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum T))`. Rewrite using `[SetLike.mem_coe, PrimeSpectrum.mem_basicOpen]`. Introduce `hf`. Establish `h1 : algebraMap T (Localization.Away f) f ∈ (show PrimeSpectrum (Localization.Away f) from q).asIdeal` using `hf`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(show PrimeSpectrum (Localization.Away f) from q).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (IsLocalization.Away.algebraMap_isUnit f))`. Take `⟨r, hr⟩` from `hVsub hq`. Use `⟨r, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `simp [hr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [hr]; simp)`. Consider the case `exact hr`. Take `⟨y, hy⟩` from `exists_spMap (IsOpenImmersion.lift x _ hsub)`. Conclude with `⟨y, by rw [← hy]; exact IsOpenImmersion.lift_fac x _ hsub⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fac_away {R T : Type} [CommRing R] [CommRing T] (x : Sp R ⟶ S) [IsOpenImmersion x] (z : Sp T ⟶ S)
     (p : Sp T) (hp : z p ∈ Set.range x) : ∃ f ∉ (show PrimeSpectrum T from p).asIdeal,
@@ -174,7 +174,7 @@ theorem exists_fac_away {R T : Type} [CommRing R] [CommRing T] (x : Sp R ⟶ S) 
   exact ⟨y, by rw [← hy]; exact IsOpenImmersion.lift_fac x _ hsub⟩
 
 /- English proof (translation)
-Use `haveI : IsReduced (Sp R) := isReduced_of_isOpenImmersion x`. Conclude with `(affine_isReduced_iff (CommRingCat.of R)).1 this`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_of_open {R : Type} [CommRing R] [IsReduced S] (x : Sp R ⟶ S) [IsOpenImmersion x] :
     _root_.IsReduced R := by
@@ -182,11 +182,9 @@ theorem isReduced_of_open {R : Type} [CommRing R] [IsReduced S] (x : Sp R ⟶ S)
   exact (affine_isReduced_iff (CommRingCat.of R)).1 this
 
 /- English proof (translation)
-Take `⟨N, i, hi, hqc, hcomp⟩` from `hs`. Use `haveI : IsImmersion i := hi`. Use `haveI : IsProper (PSpace.str o N) := isProper_str o N`. Use `haveI : LocallyOfFiniteType (PSpace.str o N) := inferInstance`. Use `haveI : LocallyOfFiniteType i := inferInstance`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI : IsLocallyNoetherian (Sp o) := inferInstance`. Use `haveI : LocallyOfFiniteType (x ≫ i ≫ PSpace.str o N) := inferInstance`. Use `haveI : IsLocallyNoetherian (Sp R) := LocallyOfFiniteType.isLocallyNoetherian (x ≫ i ≫ PSpace.str o N)`. Use `first`. Consider the case `exact (isLocallyNoetherian_Spec (R := CommRingCat.of R)).1 this`.
-
-Consider the case `exact isLocallyNoetherian_Spec.1 this`. Consider the case `exact (isNoetherian_Spec (R := CommRingCat.of R)).1 inferInstance`. Consider the case `exact (isNoetherian_Spec (R := CommRingCat.of R)).1 (IsNoetherian.mk)`. Consider the case `exact (isNoetherian_Spec (R := CommRingCat.of R)).1 { }`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_of_open {R : Type} [CommRing R] [IsNoetherianRing o] {s : S ⟶ Sp o} (hs : IsQProjOver s)
     (x : Sp R ⟶ S) [IsOpenImmersion x] : IsNoetherianRing R := by
@@ -230,7 +228,7 @@ variable {I : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)} {Y : MMPre n N' I}
   {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.hasTh_baseChange h₂ _ _ _ _ _ _ _ t _ _ φ (𝟙 _) v hv`. Establish `h2` using `(GlobalTheory.hasTh_iff_of_tmap _ _ _ _ _ _ _ u _ _ t x _ _ _ h).1 h1`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasTh_of_tmap (h₂ : Out.Laws2) {S : Scheme.{0}} {s : S ⟶ Sp o} {R R' : Type} [CommRing R] [CommRing R']
     {s₁ : Sp R ⟶ Sp o} {t : TObj g (N' ^ 2) J b s₁} {u : TObj g (N' ^ 2) J b s} {x : Sp R ⟶ S} (h : TMap t u x)
@@ -240,7 +238,7 @@ theorem hasTh_of_tmap (h₂ : Out.Laws2) {S : Scheme.{0}} {s : S ⟶ Sp o} {R R'
   simpa using h2
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.hasTh_baseChange h₂ _ _ _ _ _ _ _ t _ _ φ (𝟙 _) v hv`. Use `(GlobalTheory.hasTh_iff_of_tmap _ _ _ _ _ _ _ t _ _ t' _ _ _ _ h).2 ?_` and prove the remaining obligations. Simplify using `using h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasTh_pull (h₂ : Out.Laws2) {R R' : Type} [CommRing R] [CommRing R'] {s : Sp R ⟶ Sp o} {s' : Sp R' ⟶ Sp o}
     {t : TObj g (N' ^ 2) J b s} {t' : TObj g (N' ^ 2) J b s'} {φ : R →+* R'} (h : TMap t' t (spMap φ))
@@ -250,17 +248,15 @@ theorem hasTh_pull (h₂ : Out.Laws2) {R R' : Type} [CommRing R] [CommRing R'] {
   simpa using h1
 
 /- English proof (translation)
-Unfold `GenericObj`. Introduce `R _ x v hx hsc q hq`. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ Y.s)`. Take `⟨K, _, y, e, t, tc, hker, he, hC, htc, hsh, -, hth⟩` from `H R β x v hx hβ hsc q hq`. Establish `hbase : spMap em = spMap (e.comp y) ≫ x ≫ Y.s`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hβ, GlobalTheory.ThetaClosed.spMap_comp', ← he, RingHom.comp_assoc]`. Establish `hbase' : spMap em = 𝟙 _ ≫ (spMap (e.comp y) ≫ x ≫ Y.s)`. Rewrite using `[Category.id_comp]`. Conclude with `hbase`. Establish `hb1 : spMap y ≫ spMap β = spMap (y.comp β)` using `GlobalTheory.ThetaClosed.spMap_comp' β y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ℂ, inferInstance, inferInstance, e.comp y, cast tc hbase, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hker] first`. Consider the case `exact RingHom.ker_comp_of_injective y e.injective`. Consider the case `(ext a; simp [RingHom.mem_ker])`. Rewrite using `[shape_cast]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.shape_prim_pull_and_descend _ _ _ _ _ Mat κ w w' _ _ _ _ _ t tc htc).1 hsh`. Rewrite using `[hasTh_cast]`. Conclude with `hasTh_pull h₂ htc hth`. Use `⟨K, inferInstance, y.comp β, e, e, cast t hb1, cast tc hbase', tc, he, ?_, ?_, ?_, ?_, hC⟩` and prove the remaining obligations. Rewrite using `[← hbase', GlobalTheory.ThetaClosed.spMap_comp', he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tmap_cast_left, tmap_cast_right]`. Conclude with `TMap.refl tc`. Rewrite using `[tmap_cast_left, tmap_cast_right]`. Conclude with `htc`. Rewrite using `[tmap_cast_right]`.
-
-Conclude with `htc`.
+A detailed English derivation is pending.
 -/
 theorem genericObj_of (h₂ : Out.Laws2) (w w' : J)
     (H : ∀ (R : Type) [CommRing R] (β : o →+* R) (x : Sp R ⟶ Y.MM) (v : Ix g (N' ^ 2) → R), IsOpenImmersion x →
@@ -294,19 +290,19 @@ theorem genericObj_of (h₂ : Out.Laws2) (w w' : J)
     · rw [tmap_cast_right]; exact htc
 
 /- English proof (translation)
-The claim follows from `Coord.baseChange h φ`.
+A detailed English derivation is pending.
 -/
 theorem secCoord_bc {R R' : Type} [CommRing R] [CommRing R'] {x : Sp R ⟶ Y.MM} {v : Ix g (N' ^ 2) → R}
     (h : SecCoord Y.de Y.th x v) (φ : R →+* R') : SecCoord Y.de Y.th (spMap φ ≫ x) (fun a => φ (v a)) := Coord.baseChange h φ
 
 /- English proof (translation)
-The claim follows from `Coord.scale h u`.
+A detailed English derivation is pending.
 -/
 theorem secCoord_unit {R : Type} [CommRing R] {x : Sp R ⟶ Y.MM} {v : Ix g (N' ^ 2) → R}
     (h : SecCoord Y.de Y.th x v) (u : Rˣ) : SecCoord Y.de Y.th x (fun a => u * v a) := Coord.scale h u
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `Coord.unique Y.isLB h h'`. Establish `key` using `GlobalTheory.ThetaClosed.hasTh_unit_mul (u := u) (H := ht)`. Establish `hv : v' = fun a => (u : R) * v a` using `funext hu`. Rewrite using `[hv]`. Conclude with `key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTh_of_secCoord {S : Scheme.{0}} {s : S ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {R : Type} [CommRing R]
     {x : Sp R ⟶ Y.MM} {z : Sp R ⟶ S} {v v' : Ix g (N' ^ 2) → R} (h : SecCoord Y.de Y.th x v)
@@ -317,9 +313,9 @@ theorem hasTh_of_secCoord {S : Scheme.{0}} {s : S ⟶ Sp o} {t : TObj g (N' ^ 2)
   rw [hv]; exact key
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_spMap (x ≫ Y.s)`. Establish `hin` using `Y.loc R β x v hβ h`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨c, hc⟩` from `hin.2 M hM.isPrime 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hc (hle (Ideal.subset_span ⟨_, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem span_of_secCoord {R : Type} [CommRing R] {x : Sp R ⟶ Y.MM} {v : Ix g (N' ^ 2) → R}
     (h : SecCoord Y.de Y.th x v) : Ideal.span (Set.range v) = ⊤ := by
@@ -331,27 +327,23 @@ theorem span_of_secCoord {R : Type} [CommRing R] {x : Sp R ⟶ Y.MM} {v : Ix g (
   exact hc (hle (Ideal.subset_span ⟨_, rfl⟩))
 
 /- English proof (translation)
-Take `⟨R0, _, x0, v0, hx0, hp0, hsc0⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally Y.MM Y.de _ Y.th Y.isLB).2.2 (z p)`. Use `haveI : IsOpenImmersion x0 := hx0`. Use `haveI : IsReduced Y.MM := Y.reduced`. Use `haveI : _root_.IsReduced R0 := isReduced_of_open x0`. Use `haveI : IsNoetherianRing R0 := isNoetherianRing_of_open Y.qproj x0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨β, hβ⟩` from `exists_spMap (x0 ≫ Y.s)`. Take `⟨y0, hy0⟩` from `exists_fac_field x0 z p hp0`. Establish `hD : DenseP (objPrimes b Mat κ β v0)`. Introduce `f hf`. Establish `hmem : f ∈ (⊥ : Ideal R0).radical`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.sInf_minimalPrimes]`. Use `Submodule.mem_sInf.2 (fun q hq => ?_)` and prove the remaining obligations. Take `⟨K, _, _, y, t, hker, hsh, hth, -⟩` from `hG R0 x0 v0 hx0 hsc0 q hq`. Establish `hb : spMap y ≫ x0 ≫ Y.s = spMap y ≫ spMap β` using `by rw [hβ]`. Conclude with `hf q ⟨K, inferInstance, inferInstance, y, cast t hb, hker, by rw [shape_cast]; exact hsh, by rw [hasTh_cast]; exact hth⟩ hq.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `hmem`. Conclude with `IsReduced.eq_zero f ⟨n, Ideal.mem_bot.1 hn⟩`. Establish `hq0 : RingHom.ker y0 ∈ objPrimes b Mat κ β v0`. Establish `hb : z ≫ Y.s = spMap y0 ≫ spMap β` using `by rw [← hy0, Category.assoc, hβ]`. Establish `hsc1 : SecCoord Y.de Y.th z (fun a => y0 (v0 a))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy0]`. Conclude with `secCoord_bc hsc0 y0`. Use `⟨K, inferInstance, inferInstance, y0, cast t' hb, rfl, by rw [shape_cast]; exact hsh, ?_⟩` and prove the remaining obligations. Rewrite using `[hasTh_cast]`. Conclude with `hasTh_of_secCoord hv' hsc1 hth`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, t, hf, hth0, huniv⟩` from `hB R0 β v0 hD _ hq0`. Establish `hbt : spMap ((algebraMap R0 (Localization.Away f)).comp β) = (spMap (algebraMap R0 (Localization.Away f)) ≫ x0) ≫ Y.s`. Rewrite using `[Category.assoc, hβ, GlobalTheory.ThetaClosed.spMap_comp']`. Use `haveI : IsOpenImmersion (spMap (algebraMap R0 (Localization.Away f))) := by first`. Consider the case `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `(unfold spMap; infer_instance)`. Use `⟨Localization.Away f, inferInstance, spMap (algebraMap R0 (Localization.Away f)) ≫ x0, fun a => algebraMap R0 (Localization.Away f) (v0 a), cast t hbt, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsChart`. Use `⟨inferInstance, secCoord_bc hsc0 _, by rw [hasTh_cast]; exact hth0, ?_⟩` and prove the remaining obligations. Introduce `K' _ _ y s' t'' v'' hs' hsh'' hth'' hsc''`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨y', rfl⟩` from `exists_spMap y`. Establish `hb2 : s' = spMap y' ≫ spMap ((algebraMap R0 (Localization.Away f)).comp β)` using `by rw [hs', ← hbt]`. Establish `hsc2` using `secCoord_bc (secCoord_bc hsc0 (algebraMap R0 (Localization.Away f))) y'`. Establish `hth2 : t''.HasTh (𝟙 _) (fun a => y' (algebraMap R0 (Localization.Away f) (v0 a)))` using `hasTh_of_secCoord hsc'' hsc2 hth''`. Establish `key` using `huniv K' y' (cast t'' hb2) (by rw [shape_cast]; exact hsh'') (by rw [hasTh_cast]; exact hth2)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `key` using `[tmap_cast_left]`. Rewrite using `[tmap_cast_right]`. Conclude with `key`. Establish `h1 : (spMap y0 p) ∈ Set.range (spMap (algebraMap R0 (Localization.Away f)))`. Express the relevant statement in the definitionally equal form `(show PrimeSpectrum R0 from spMap y0 p) ∈ Set.range (PrimeSpectrum.comap (algebraMap R0 (Localization.Away f)))`.
-
-Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Express the relevant statement in the definitionally equal form `f ∉ Ideal.comap y0 (show PrimeSpectrum K from p).asIdeal`. Rewrite using `[Ideal.eq_bot_of_prime (show PrimeSpectrum K from p).asIdeal, ← RingHom.ker_eq_comap_bot]`. Conclude with `hf`. Take `⟨r, hr⟩` from `h1`.
-
-Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy0]`. Simplify using `[hr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chart [IsNoetherianRing o] (hG : GenericObj C Y Mat κ)
     (hB : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [_root_.IsReduced R] (β : o →+* R) (v : Ix g (N' ^ 2) → R),
@@ -425,19 +417,15 @@ theorem exists_chart [IsNoetherianRing o] (hG : GenericObj C Y Mat κ)
     simp [hr]
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `exists_spMap a`. Take `⟨β, rfl⟩` from `exists_spMap s₁`. Use `haveI : IsOpenImmersion x := hc.1`. Use `haveI : IsReduced Y.MM := Y.reduced`. Use `haveI : _root_.IsReduced R := isReduced_of_open x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsReduced (Sp R) := (affine_isReduced_iff (CommRingCat.of R)).2 inferInstance`. Use `haveI : _root_.IsReduced T := isReduced_of_open (spMap φ)`. Take `⟨u', hu'⟩` from `GlobalTheory.tObj_pull _ _ _ _ b _ _ (x' ≫ Y.s) (spMap β) a' t' (by rw [hs, ← Category.assoc, ← e, Category.assoc])`. Establish `hvT` using `secCoord_bc hc.2.1 φ`. Establish `hD : Dense {p : Sp T | ∃ (K : Type) (_ : Field K) (z : Sp K ⟶ Sp T) (w : TObj g (N' ^ 2) J b (z ≫ spMap β)), p ∈ Set.range z ∧ TMap w u z ∧ TMap w u' z}`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `V hV ⟨p, hp⟩`. Take `⟨q, hqV, hqmin⟩` from `exists_minimal_mem V hV hp`. Take `⟨K, _, _, y, tK, hker, hsh, hth, -⟩` from `hG T (spMap φ ≫ x) _ inferInstance hvT _ hqmin`. Establish `h1 : TMap tK t (spMap y ≫ spMap φ)` using `hc.2.2.2 K (spMap y ≫ spMap φ) _ tK _ (by simp only [Category.assoc]) hsh hth (by simpa only [Category.assoc] using secCoord_bc hvT y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eq2 : (spMap y ≫ a') ≫ x' = spMap y ≫ spMap φ ≫ x` using `by rw [Category.assoc, e]`. Establish `h2 : TMap tK t' (spMap y ≫ a')` using `hc'.2.2.2 K (spMap y ≫ a') _ tK _ (by simp only [Category.assoc, reassoc_of% e]) hsh hth (by rw [eq2]; exact secCoord_bc hvT y)`. Establish `h3 : TMap tK u (spMap y)` using `TMap.cancel hu h1`. Establish `h4 : TMap tK u' (spMap y)` using `TMap.cancel hu' h2`. Establish `hbK : spMap y ≫ (spMap φ ≫ x) ≫ Y.s = spMap y ≫ spMap β`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Simplify using `only [Category.assoc]`. Take `⟨pt, hpt⟩` from `mem_range_spMap y q hker`. Use `⟨q, hqV, K, inferInstance, spMap y, cast tK hbK, ⟨pt, hpt⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tmap_cast_left]`.
-
-Conclude with `h3`. Rewrite using `[tmap_cast_left]`. Conclude with `h4`. Establish `hfin` using `(GlobalTheory.T.thetaLevel_iso_unique_of_dense_common_fibres h₁ h₂ _ _ _ _ b m T β u u' hm hd ho hD).1`. Use `TMap.comp hfin hu'` as an intermediate fact.
-
-Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem chart_compat (h₁ : Out.Laws) (h₂ : Out.Laws2) {m : ℕ} (hm : 2 ≤ m) (hd : m ^ 2 ∣ N') (ho : Odd N')
     (hG : GenericObj C Y Mat κ) {R R' T : Type} [CommRing R] [CommRing R'] [CommRing T]
@@ -494,13 +482,13 @@ def Covered (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (uni
     (t : TObj g (N' ^ 2) J b ((x ≫ U.ι) ≫ Y.s)), IsChart Y Mat κ (x ≫ U.ι) v t ∧ p ∈ Set.range x ∧ TMap t univ x
 
 /- English proof (translation)
-Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `V hV ⟨p, hp⟩`. Take `⟨R, _, x, v, t, hc, ⟨r, hr⟩, hmap⟩` from `h p`. Use `haveI : IsOpenImmersion (x ≫ U.ι) := hc.1`. Establish `hW : IsOpen ((fun q => x q) ⁻¹' V)` using `hV.preimage x.continuous`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hqW, hqmin⟩` from `exists_minimal_mem _ hW (p := r) (show x r ∈ V by rw [hr]; exact hp)`. Take `⟨K, _, _, y, t'', hker, hsh, hth, hfc⟩` from `hG R (x ≫ U.ι) v hc.1 hc.2.1 _ hqmin`. Establish `hsc` using `secCoord_bc hc.2.1 y`. Establish `htm` using `hc.2.2.2 K (spMap y) _ t'' (fun a => y (v a)) rfl hsh hth hsc`. Establish `htu` using `TMap.comp htm hmap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc2` using `fromC_of_tmap hfc htu (by simp only [Category.assoc])`. Take `⟨pt, hpt⟩` from `mem_range_spMap y q hker`. Establish `e3 : (spMap y ≫ x) pt = x q`. Rewrite using `[← hpt]`. Use `first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp`. Use `⟨(spMap y ≫ x) pt, ?_, ⟨K, inferInstance, spMap y ≫ x, ⟨pt, rfl⟩, hfc2⟩⟩` and prove the remaining obligations. Rewrite using `[e3]`. Conclude with `hqW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Covered.dense (h : Covered Mat κ univ) (hG : GenericObj C Y Mat κ) : Dense (fromSet em C univ) := by
   rw [dense_iff_inter_open]
@@ -524,11 +512,9 @@ theorem Covered.dense (h : Covered Mat κ univ) (hG : GenericObj C Y Mat κ) : D
   rw [e3]; exact hqW
 
 /- English proof (translation)
-Take `⟨R', _, x, v, t, hc, hp, hmap⟩` from `h (z p)`. Use `haveI : IsOpenImmersion (x ≫ U.ι) := hc.1`. Use `haveI : IsOpenImmersion x := IsOpenImmersion.of_comp x U.ι`. Take `⟨f, hf, y, hy'⟩` from `exists_fac_away x z p hp`. Use `⟨f, hf, fun a => y (v a), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy']`. Conclude with `hasTh_of_tmap h₂ hmap hc.2.2.1 y`. Establish `e2 : spMap (algebraMap R (Localization.Away f)) ≫ z ≫ U.ι = spMap y ≫ x ≫ U.ι`. Rewrite using `[← Category.assoc, ← hy', Category.assoc]`. Rewrite using `[e2]`.
-
-Conclude with `secCoord_bc hc.2.1 y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Covered.exists_local (h : Covered Mat κ univ) (h₂ : Out.Laws2) {R : Type} [CommRing R]
     (z : Sp R ⟶ U.toScheme) (p : PrimeSpectrum R) : ∃ f ∉ p.asIdeal, ∃ w : Ix g (N' ^ 2) → Localization.Away f,
@@ -545,21 +531,19 @@ theorem Covered.exists_local (h : Covered Mat κ univ) (h₂ : Out.Laws2) {R : T
     rw [e2]; exact secCoord_bc hc.2.1 y
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ht`. Establish `loc : ∀ p : PrimeSpectrum R, ∃ f ∉ p.asIdeal, SecCoord Y.de Y.th (spMap (algebraMap R (Localization.Away f)) ≫ z ≫ U.ι) (fun a => algebraMap R (Localization.Away f) (v a))`. Introduce `p`. Take `⟨f, hf, w, hw1, hw2⟩` from `h.exists_local h₂ z p`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `GlobalTheory.hasTh_baseChange h₂ _ _ _ _ _ _ _ univ _ _ (algebraMap R (Localization.Away f)) z v ht`. Take `⟨u, hu⟩` from `GlobalTheory.T.thetaConstants_unique_up_to_unit h₁ h₂ _ _ _ _ _ _ _ univ _ _ _ _ hw1 hb (span_of_secCoord hw2)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `e : (fun a => algebraMap R (Localization.Away f) (v a)) = fun a => (u : Localization.Away f) * w a`. Use function extensionality and compare the values at `hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `secCoord_unit hw2 u`. Establish `hspan : Ideal.span (Set.range v) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hsc⟩` from `loc ⟨M, hM.isPrime⟩`. Establish `h1` using `span_of_secCoord hsc`. Establish `h2 : Ideal.map (algebraMap R (Localization.Away f)) M = ⊤`. Rewrite using `[eq_top_iff, ← h1, Ideal.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ (hle (Ideal.subset_span ⟨a, rfl⟩))`. Establish `hdis : Disjoint (Submonoid.powers f : Set R) (M : Set R)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨n, rfl⟩ hn`. Conclude with `hf (hM.isPrime.mem_of_pow_mem n hn)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers f) (Localization.Away f) M hM.isPrime hdis).ne_top h2`. Use `GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring _ Y.de _ Y.th R (z ≫ U.ι) v Y.isLB hspan (fun p => ?_)` and prove the remaining obligations. Take `⟨f, hf, hsc⟩` from `loc p`. Use `⟨Localization.Away f, inferInstance, algebraMap R (Localization.Away f), ?_, ?_, hsc⟩` and prove the remaining obligations. Use `first`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `infer_instance`. Consider the case `(unfold spMap; infer_instance)`. Express the relevant statement in the definitionally equal form `p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away f)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `hf`.
-
-Introduce `hs`. Use `GlobalTheory.ThetaClosed.hasTh_of_local univ ho (fun q hq => ?_)` and prove the remaining obligations. Take `⟨f, hf, w, hw1, hw2⟩` from `h.exists_local h₂ z ⟨q, hq⟩`. Conclude with `⟨f, hf, hasTh_of_secCoord hw2 (secCoord_bc hs _) hw1⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Covered.hasTh_iff (h : Covered Mat κ univ) (h₁ : Out.Laws) (h₂ : Out.Laws2) (ho : Odd N') (R : Type)
     [CommRing R] (z : Sp R ⟶ U.toScheme) (v : Ix g (N' ^ 2) → R) :
@@ -607,11 +591,11 @@ theorem Covered.hasTh_iff (h : Covered Mat κ univ) (h₁ : Out.Laws) (h₂ : Ou
     exact ⟨f, hf, hasTh_of_secCoord hw2 (secCoord_bc hs _) hw1⟩
 
 /- English proof (translation)
-Establish `pt : Sp K` using `(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum K)`. Take `⟨R, _, x, v, t, hc, hp, hmap⟩` from `h (z pt)`. Use `haveI : IsOpenImmersion (x ≫ U.ι) := hc.1`. Take `⟨r, hr⟩` from `hp`. Take `⟨y, hy⟩` from `exists_fac_field (x ≫ U.ι) (z ≫ U.ι) pt ⟨r, by simp [hr]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : spMap y ≫ x = z`. Rewrite using `[← cancel_mono U.ι]`. Simplify using `using hy`. Establish `hv'' : SecCoord Y.de Y.th (spMap y ≫ x ≫ U.ι) v'`. Rewrite `hv'` using `[← hz]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hv'`. Establish `key` using `hc.2.2.2 K (spMap y) s' t' v' (by rw [hs, ← hz]; simp only [Category.assoc]) hsh hth hv''`. Use `TMap.comp key hmap` as an intermediate fact. Rewrite `this` using `[hz]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Covered.tmap (h : Covered Mat κ univ) (K : Type) [Field K] [IsAlgClosed K] (z : Sp K ⟶ U.toScheme)
     {s' : Sp K ⟶ Sp o} (t' : TObj g (N' ^ 2) J b s') (hs : s' = z ≫ U.ι ≫ Y.s) (v' : Ix g (N' ^ 2) → K)
@@ -631,25 +615,21 @@ theorem Covered.tmap (h : Covered Mat κ univ) (K : Type) [Field K] [IsAlgClosed
   exact this
 
 /- English proof (translation)
-Set `W : Set Y.MM` to `{p | ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ Y.MM) (v : Ix g (N' ^ 2) → R) (t : TObj g (N' ^ 2) J b (x ≫ Y.s)), IsChart Y Mat κ x v t ∧ p ∈ Set.range x}`. Establish `hW : IsOpen W`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `p ⟨R, _, x, v, t, hc, hp⟩`. Use `haveI : IsOpenImmersion x := hc.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Set.range x, fun q hq => ⟨R, inferInstance, x, v, t, hc, hq⟩, x.isOpenEmbedding.isOpen_range, hp⟩`. Set `U : Y.MM.Opens` to `⟨W, hW⟩`. Establish `hUι : ∀ q : U.toScheme, U.ι q = q.1` using `fun q => by first`. Consider the case `rfl`. Consider the case `simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hrange : ∀ {R : Type} [CommRing R] (x : Sp R ⟶ Y.MM) (v : Ix g (N' ^ 2) → R) (t : TObj g (N' ^ 2) J b (x ≫ Y.s)), IsChart Y Mat κ x v t → Set.range x ⊆ Set.range U.ι`. Introduce `R _ x v t hc q hq`. Conclude with `⟨⟨q, ⟨R, inferInstance, x, v, t, hc, hq⟩⟩, hUι _⟩`. Establish `hmem : ∀ i : U.toScheme, ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ Y.MM) (v : Ix g (N' ^ 2) → R) (t : TObj g (N' ^ 2) J b (x ≫ Y.s)), IsChart Y Mat κ x v t ∧ i.1 ∈ Set.range x` using `fun i => i.2`. Use `choose R hR x v t hc hx using hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : ∀ i, CommRing (R i) := hR`. Set `x' : ∀ i, Sp (R i) ⟶ U.toScheme` to `fun i => IsOpenImmersion.lift U.ι (x i) (hrange (x i) (v i) (t i) (hc i))`. Establish `hx' : ∀ i, x' i ≫ U.ι = x i` using `fun i => IsOpenImmersion.lift_fac _ _ _`. Use `haveI : ∀ i, IsOpenImmersion (x' i) := fun i => by haveI : IsOpenImmersion (x i) := (hc i).1 haveI : IsOpenImmersion (x' i ≫ U.ι) := by rw [hx' i]; infer_instance`. Conclude with `IsOpenImmersion.of_comp (x' i) U.ι`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ i, x i ≫ Y.s = x' i ≫ U.ι ≫ Y.s` using `fun i => by rw [← Category.assoc, hx' i]`. Set `t' : ∀ i, TObj g (N' ^ 2) J b (x' i ≫ U.ι ≫ Y.s)` to `fun i => cast (t i) (hb i)`. Use `haveI : IsReduced Y.MM := Y.reduced`. Use `haveI : IsReduced U.toScheme := isReduced_of_isOpenImmersion U.ι`. Establish `hcov : ∀ p : U.toScheme, p ∈ Set.range (x' p)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `p`. Take `⟨r, hr⟩` from `hx p`. Use `⟨r, ?_⟩` and prove the remaining obligations. Apply `U.ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[hUι p, ← hr, ← hx' p]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `first`. Consider the case `simp`. Consider the case `rfl`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_glue_affineCover h₁ h₂ _ _ _ _ b m U.toScheme (U.ι ≫ Y.s) U.toScheme R x' t' hm hd ho (fun i => inferInstance) (fun p => ⟨p, hcov p⟩) (fun i i' T _ a a' u ha e hu => by haveI := ha`. Establish `e' : a ≫ x i = a' ≫ x i'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hx' i, ← hx' i', ← Category.assoc, e, Category.assoc]`. Establish `hu' : TMap u (t i) a` using `(tmap_cast_right (t i) (hb i) u a).1 hu`. Establish `key` using `chart_compat h₁ h₂ hm hd ho hG (hc i) (hc i') a a' u (by rw [hb i]) e' hu'`. Conclude with `(tmap_cast_right (t i') (hb i') u a').2 key)`. Use `⟨U, t₀, fun p => ?_, fun R _ x v t hc => fun q hq => ⟨R, inferInstance, x, v, t, hc, hq⟩⟩` and prove the remaining obligations.
-
-Establish `hb2 : x p ≫ Y.s = (x' p ≫ U.ι) ≫ Y.s` using `by rw [hx' p]`. Establish `tr : ∀ (x₂ : Sp (R p) ⟶ Y.MM) (e : x p = x₂), IsChart Y Mat κ x₂ (v p) (cast (t p) (by rw [e]))`. Introduce and unpack `_ rfl`. Conclude with `hc p`. Use `⟨R p, inferInstance, x' p, v p, cast (t p) hb2, tr _ (hx' p).symm, hcov p, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(tmap_cast_left _ _ _ _).2 ((tmap_cast_left (t p) (hb p) _ _).1 (ht₀ p))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_covered (h₁ : Out.Laws) (h₂ : Out.Laws2) {m : ℕ} (hm : 2 ≤ m) (hd : m ^ 2 ∣ N') (ho : Odd N')
     (hG : GenericObj C Y Mat κ) : ∃ (U : Y.MM.Opens) (univ : TObj g (N' ^ 2) J b (U.ι ≫ Y.s)), Covered Mat κ univ ∧
@@ -713,17 +693,17 @@ theorem exists_covered (h₁ : Out.Laws) (h₂ : Out.Laws2) {m : ℕ} (hm : 2 �
 end Glue
 
 /- English proof (translation)
-Introduce `h₁ h₂ g J _ Mat κ n w w' hn hodd`. Take `⟨j₁, hj₁⟩` from `GlobalTheory.T.exists_generic_object_minimalPrime_moduli_chart h₁ h₂ g J Mat κ n w w' hn hodd`. Take `⟨j₂, hj₂⟩` from `GlobalTheory.T.exists_thetaObject_near_good_prime h₁ h₂ g J Mat κ n hn hodd`. Use `⟨max (max j₁ j₂) 2, fun j hj o _ b em C d har hgood => ?_⟩` and prove the remaining obligations. Establish `hj1 : j ≥ j₁` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj2 : j ≥ j₂` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hj`. Establish `hj3 : 2 ≤ j` using `le_trans (le_max_right _ _) hj`. Use `haveI : IsDedekindDomain o := har.1`. Take `⟨hrad, hhom, htf⟩` from `GlobalTheory.ZM.ThIdeal.thIdeal_radical_homogeneous_torsionFree o g (n ^ j) J b em C har.2.2`. Take `⟨Y⟩` from `GlobalTheory.T.nonempty_thetaCoordinateSchemeData o g n (n ^ j) (thIdeal em C) (pow_pos hn.pos j) hrad hhom htf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG : GenericObj C Y Mat κ` using `genericObj_of h₂ w w' (hj₁ j hj1 o b em C d har hgood Y)`. Establish `hB` using `hj₂ j hj2 o b`. Establish `ho : Odd (n ^ j)` using `hodd.pow`. Take `⟨U, univ, hcov, hsub⟩` from `exists_covered h₁ h₂ hn.two_le (pow_dvd_pow n hj3) ho hG`. Use `⟨WFam.mk Y U univ (hcov.dense hG) (fun R _ x v => hcov.hasTh_iff h₁ h₂ ho R x v) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _ _ x t' v hsh hth hsc`. Establish `pt : Sp K` using `(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum K)`. Take `⟨R, _, x1, v1, t1, hc, hx1⟩` from `exists_chart hG hB K x t' v hsh hth hsc pt`. Establish `hU : x pt ∈ (U : Set Y.MM)` using `hsub R x1 v1 t1 hc hx1`. Establish `hrange : Set.range x ⊆ Set.range U.ι`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : q = pt` using `by first`. Consider the case `exact Subsingleton.elim q pt`. Consider the case `exact PrimeSpectrum.ext (by rw [Ideal.eq_bot_of_prime (show PrimeSpectrum K from q).asIdeal, Ideal.eq_bot_of_prime (show PrimeSpectrum K from pt).asIdeal])`. Rewrite using `[hq]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `(rw [Scheme.Opens.range_ι]; exact hU)`. Consider the case `exact ⟨⟨_, hU⟩, rfl⟩`. Use `⟨IsOpenImmersion.lift U.ι x hrange, IsOpenImmersion.lift_fac _ _ _, ?_⟩` and prove the remaining obligations. Conclude with `hcov.tmap K _ t' (by rw [← Category.assoc, IsOpenImmersion.lift_fac]) v hsh hth (by rw [IsOpenImmersion.lift_fac]; exact hsc)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nonempty_wFam : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ) (w w' : J), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ) (C : TObj g ((n ^ j) ^ 2) J b (spMap em) → Prop) (d : ℕ), ArBase em → GoodClass em C Mat κ w w' d → Nonempty (WFam n em C Mat κ) := by
   intro h₁ h₂ g J _ Mat κ n w w' hn hodd

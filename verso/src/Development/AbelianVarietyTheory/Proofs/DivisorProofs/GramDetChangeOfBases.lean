@@ -4,7 +4,7 @@ open Matrix Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramChange_gram_eq_mul {K : Type} [Field K] (σ : K →+* K) {n : ℕ} {ι : Type} [Fintype ι]
     (u : ι → Fin n → K) :
@@ -13,17 +13,15 @@ theorem gramChange_gram_eq_mul {K : Type} [Field K] (σ : K →+* K) {n : ℕ} {
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.span hu`. Set `P : Matrix ι ι K` to `Matrix.of fun i a => b.repr ⟨v i, hvu i⟩ a`. Establish `hV : ∀ i, v i = ∑ a, P i a • u a`. Introduce `i`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨v i, hvu i⟩)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, b, Module.Basis.span_apply] at h`. Conclude with `h.symm`. Establish `hVm : Matrix.of v = P * Matrix.of u`. Use extensionality with `i k`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Matrix.of_apply, show v i k = (∑ a, P i a • u a) k from congrFun (hV i) k]`. Simplify using `[Finset.sum_apply]`. Use `⟨P.det, ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hd`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : w ᵥ* Matrix.of v = 0`. Rewrite using `[hVm, ← Matrix.vecMul_vecMul, hw, Matrix.zero_vecMul]`. Establish `h2 : ∑ i, w i • v i = 0`. Rewrite using `[← h1]`. Use extensionality with `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`. Conclude with `hw0 (funext fun i => Fintype.linearIndependent_iff.mp hv w h2 i)`. Rewrite using `[gramChange_gram_eq_mul, gramChange_gram_eq_mul, hVm, Matrix.map_mul, transpose_mul, show P.map σ * (Matrix.of u).map σ * ((Matrix.of u)ᵀ * Pᵀ) = P.map σ * ((Matrix.of u).map σ * (Matrix.of u)ᵀ) * Pᵀ by`. Simplify using `only [Matrix.mul_assoc],`. Use the proof step `det_mul, det_mul, det_transpose, RingHom.map_det,`.
-
-Use the proof step `RingHom.mapMatrix_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gramChange_square {K : Type} [Field K] (σ : K →+* K) {n : ℕ} {ι : Type}
     [Fintype ι] [DecidableEq ι] (u v : ι → Fin n → K) (hu : LinearIndependent K u)
@@ -63,11 +61,11 @@ theorem gramChange_square {K : Type} [Field K] (σ : K →+* K) {n : ℕ} {ι : 
     ring
 
 /- English proof (translation)
-Introduce `hu hsu hu' hsu'`. Establish `hc : Fintype.card ι' = Fintype.card ι`. Rewrite using `[← finrank_span_eq_card hu', ← finrank_span_eq_card hu, hsu', hsu]`. Set `e : ι' ≃ ι` to `Fintype.equivOfCardEq hc`. Establish `hvu : ∀ i, (u' ∘ e.symm) i ∈ Submodule.span K (Set.range u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hsu, ← hsu']`. Conclude with `Submodule.subset_span ⟨e.symm i, rfl⟩`. Take `⟨d, hd, hdet⟩` from `gramChange_square σ u (u' ∘ e.symm) hu (hu'.comp e.symm e.symm.injective) hvu`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdet, ← det_submatrix_equiv_self e.symm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gram_det_change_of_bases {K : Type} [Field K] (σ : K →+* K) {n : ℕ}
     (W : Submodule K (Fin n → K)) {ι ι' : Type} [Fintype ι] [Fintype ι'] [DecidableEq ι]

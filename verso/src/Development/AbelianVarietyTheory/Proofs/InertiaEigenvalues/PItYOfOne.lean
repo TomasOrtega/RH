@@ -18,7 +18,7 @@ namespace GlobalTheory.Chain.ItAllTuples
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `smul_ne_zero hc h.ne bdd := by intro φ w obtain ⟨b, hb⟩ := h.bdd φ w refine ⟨‖c‖ * b, fun v => ?_⟩ have e : ellT M w (inclT M ((c • It) φ (PiTensorProduct.tprod ℂ v))) = c * ellT M w (inclT M (It φ (PiTensorProduct.tprod ℂ v))) := by rw [LinearMap.smul_apply, LinearMap.smul_apply …`.
+A detailed English derivation is pending.
 -/
 theorem isItW_smul {V W : HSp D} {S S' : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {M' : DSModel W S'}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {pt : PolF D W.rank V.rank → (WO V W → ℂ)}
@@ -53,13 +53,11 @@ theorem isItW_smul {V W : HSp D} {S S' : D.what₂.Tau → SPar} {θ : InfFam D}
       h.invg τ X hX φ φ' v v' hφ hv, smul_zero]
 
 /- English proof (translation)
-Introduce `h1 h2 D G _ _ Pl0 T A Ks _ _ _ R hC hL hM hωY hωX hvY hvX k hk t₀ y hy`. Establish `hk0 : k < D.R.m` using `by omega`. Establish `hSt` using `GlobalTheory.Chain.StepVac.stepsOK D G Pl0 T A Ks R hL hM.inf hωY hωX hvY hvX`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.Chain.innerIntertwiners_of_pair D G Pl0 T A Ks R (GlobalTheory.T.exists_uniformRealThetaIntertwiner_chainStep h1 h2 D) hC hM.inf hSt k hk`. Establish `hS` using `hSt.1 t₀ ⟨k, hk0⟩ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (V W : HSp D) (a b : ℕ) (_ : a = k) (_ : b = k + 1) (M : DSModel V (parB (Ptw D) a)) (M' : DSModel W (parB (Ptw D) b)) ω f, GlobalTheory.Chain.IsStepWeil ⟨k, hk0⟩ R.ψ V W ω → GlobalTheory.Chain.IsVacVec R.ψ R.θ M M' f → ∀ It It' : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] S …`. Introduce `V W a b ha hb M M' ω f`. Substitute `ha hb` using the available equality. Conclude with `GlobalTheory.T.realThetaIntertwiners_proportional_of_discreteSeries h1 h2 D ⟨a, hk0⟩ V W M M' R.θ R.ψ hM.inf (hC _) ω f`. Take `⟨c, hc⟩` from `key _ _ _ _ (min_eq_left hk0.le) (min_eq_left hk.le) (R.MY k) (R.MY (k + 1)) _ _ hS.1 hS.2 y₀ y (hy₀ t₀) hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy.ne (by rw [hc, zero_smul])`. Introduce `t`. Rewrite using `[hc]`.
-
-Conclude with `isItW_smul (hy₀ t) hc0`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pItY_of_one : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), (∀ k, GlobalTheory.Chain.ChainPar D k) → R.toLevCh.Is A.μ0 → R.IsModels → R.chain_ωY → R.chain_ωX → R.chain_vY → R.chain_vX → ∀ (k : ℕ), k + 1 < D.R.m → ∀ (t₀ : T) (y : PolF D (Yc D (k + 1)).rank (Yc D k).rank →ₗ[ℂ] SmT (R.MY (k + 1)) →ₗ[ℂ] SmT (R.MY k)), IsItW R.θ (R.MY k) (R.MY (k + 1)) (R.ωY t₀ k) (R.ptY t₀ k) y → R.PItY k y := by
   intro h1 h2 D G _ _ Pl0 T A Ks _ _ _ R hC hL hM hωY hωX hvY hvX k hk t₀ y hy

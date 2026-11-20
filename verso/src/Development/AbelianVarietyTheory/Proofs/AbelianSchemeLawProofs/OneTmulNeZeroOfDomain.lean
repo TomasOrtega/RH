@@ -9,13 +9,9 @@ namespace GlobalTheory.FlatFibreInjective
 open TensorProduct
 
 /- English proof (translation)
-Introduce `h1`. Use `letI : Algebra (FractionRing A) k := (IsFractionRing.lift hinj).toAlgebra`. Use `haveI : IsScalarTower A (FractionRing A) k := IsScalarTower.of_algebraMap_eq (fun a => (IsFractionRing.lift_algebraMap hinj a).symm)`. Use `haveI : Module.Flat A (FractionRing A) := IsLocalization.flat _ (nonZeroDivisors A)`. Use `haveI : Module.Free (FractionRing A) k := Module.Free.of_divisionRing _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Flat (FractionRing A) k := Module.Flat.of_free`. Use `haveI : Module.Flat A k := Module.Flat.trans _ (FractionRing A) _`. Establish `hi : Function.Injective (LinearMap.toSpanSingleton A P y)`. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `hy`.
-
-Establish `h2 : (1 : k) ⊗ₜ[A] (1 : A) = 0`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := k) _ hi` to reduce the goal to its premises. Rewrite using `[LinearMap.lTensor_tmul, LinearMap.toSpanSingleton_apply, one_smul, map_zero, h1]`. Establish `h3` using `congrArg (TensorProduct.rid A k) h2`. Rewrite `h3` using `[TensorProduct.rid_tmul, one_smul, map_zero]`.
-
-Conclude with `one_ne_zero h3`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_ne_zero_of_domain {A P k : Type} [CommRing A] [IsDomain A] [AddCommGroup P]
     [Module A P] [Field k] [Algebra A k] (hinj : Function.Injective (algebraMap A k)) (y : P)
@@ -39,13 +35,13 @@ theorem one_tmul_ne_zero_of_domain {A P k : Type} [CommRing A] [IsDomain A] [Add
   exact one_ne_zero h3
 
 /- English proof (translation)
-Introduce `h`. Establish `hker : p = RingHom.ker (algebraMap R₀ k)`. Use extensionality with `a`. Simplify using `[RingHom.mem_ker, hk]`. Use `haveI : p.IsPrime := hker ▸ RingHom.ker_isPrime _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Use `letI : Module (R₀ ⧸ p) P := hP.module`. Use `haveI : IsScalarTower R₀ (R₀ ⧸ p) P := hP.isScalarTower`. Use `letI : Algebra (R₀ ⧸ p) k := (Ideal.Quotient.lift p (algebraMap R₀ k) (fun a ha => (hk a).2 ha)).toAlgebra`. Use `haveI : IsScalarTower R₀ (R₀ ⧸ p) k := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hinj : Function.Injective (algebraMap (R₀ ⧸ p) k)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((hk a).1 ha)`. Use `one_tmul_ne_zero_of_domain (A := R₀ ⧸ p) hinj y ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hy a ha)`. Use `congrArg (TensorProduct.mapOfCompatibleSMul (R₀ ⧸ p) R₀ R₀ k P) h` as an intermediate fact. Rewrite `this` using `[TensorProduct.mapOfCompatibleSMul_tmul, map_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_ne_zero {R₀ P k : Type} [CommRing R₀] [AddCommGroup P] [Module R₀ P]
     [Field k] [Algebra R₀ k] (p : Ideal R₀) (hk : ∀ a, algebraMap R₀ k a = 0 ↔ a ∈ p)
@@ -73,11 +69,11 @@ theorem one_tmul_ne_zero {R₀ P k : Type} [CommRing R₀] [AddCommGroup P] [Mod
     rwa [TensorProduct.mapOfCompatibleSMul_tmul, map_zero] at this
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(φ.baseChange k).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hφ)`. Establish `key : ∀ z : M ⊗[R₀] C₀, TensorProduct.leftComm R₀ M k C₀ ((g.restrictScalars R₀).lTensor M ((TensorProduct.mk R₀ k C₁ 1).lTensor M (φ.lTensor M z))) = (1 : k) ⊗ₜ[R₀] z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul m c`. Use `LinearMap.congr_fun hg ((1 : k) ⊗ₜ[R₀] c)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearMap.id_apply] at this`. Simplify using `[this]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, tmul_add]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[← key, hy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_tmul_eq_zero {R₀ M C₀ C₁ k : Type} [CommRing R₀] [AddCommGroup M] [Module R₀ M]
     [AddCommGroup C₀] [Module R₀ C₀] [AddCommGroup C₁] [Module R₀ C₁]
@@ -100,13 +96,13 @@ theorem one_tmul_eq_zero {R₀ M C₀ C₁ k : Type} [CommRing R₀] [AddCommGro
   simp
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hp`. Set `g : N →ₗ[R₀] (s → N)` to `LinearMap.pi fun a => (a : R₀) • LinearMap.id`. Establish `hex : Function.Exact (Submodule.torsionBySet R₀ N (Ideal.span (s : Set R₀))).subtype g`. Rewrite using `[LinearMap.exact_iff, Submodule.range_subtype, ← Submodule.torsionBySet_eq_torsionBySet_span]`. Use extensionality with `n`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[g, funext_iff, LinearMap.mem_ker]`. Establish `h` using `Module.Flat.rTensor_exact C hex x`. Use `h.1 ?_` and prove the remaining obligations. Apply `(TensorProduct.piLeft R₀ C (fun _ : s => N)).injective` to reduce the goal to its premises. Establish `key : ∀ z : N ⊗[R₀] C, ∀ a : s, TensorProduct.piLeft R₀ C (fun _ : s => N) (g.rTensor C z) a = (a : R₀) • z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `z a`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul n c => simp [g, smul_tmul']`. Consider the case `add u v hu hv => simp only [map_add, Pi.add_apply, hu, hv, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[key, hx _ (Ideal.subset_span a.2)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_torsion {R₀ N C : Type} [CommRing R₀] [AddCommGroup N] [Module R₀ N]
     [AddCommGroup C] [Module R₀ C] [Module.Flat R₀ C] (p : Ideal R₀) (hp : p.FG)
@@ -134,25 +130,23 @@ theorem exists_of_torsion {R₀ N C : Type} [CommRing R₀] [AddCommGroup N] [Mo
   simp
 
 /- English proof (translation)
-Introduce `R₀ R C₀ C₁ _ _ _ _ _ _ _ _ _ _ φ H`. Express the relevant statement in the definitionally equal form `Function.Injective (φ.lTensor R)`. Rewrite using `[← LinearMap.ker_eq_bot]`. Assume the negation of the conclusion as `hne`. Use `haveI : Nontrivial (LinearMap.ker (φ.lTensor R)) := Submodule.nontrivial_iff_ne_bot.2 hne`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `associatedPrimes.nonempty R₀ (LinearMap.ker (φ.lTensor R))`. Rewrite `hp` using `[AssociatedPrimes.mem_iff, isAssociatedPrime_iff]`. Take `⟨hp, ⟨x, hx0⟩, hx⟩` from `hp`. Establish `hann : ∀ a : R₀, a • x = 0 ↔ a ∈ p`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Simplify using `[Submodule.mem_colon_singleton]`. Set `M` to `Submodule.torsionBySet R₀ R p`. Take `⟨y, rfl⟩ : ∃ y, M.subtype.rTensor C₀ y = x` from `exists_of_torsion p (IsNoetherian.noetherian p) x (fun a ha => (hann a).2 ha)`. Establish `hy0 : φ.lTensor M y = 0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Module.Flat.rTensor_preserves_injective_linearMap (M := C₁) M.subtype M.injective_subtype` to reduce the goal to its premises. Rewrite using `[map_zero, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, ← LinearMap.lTensor_comp_rTensor]`. Conclude with `hx0`. Establish `hkill : ∀ a : R₀, (∀ m : M, a • m = 0) → ∀ z : M ⊗[R₀] C₀, a • z = 0`. Introduce `a ha z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m c => rw [smul_tmul', ha, zero_tmul]`. Consider the case `add u v hu hv => rw [smul_add, hu, hv, add_zero]`. Establish `hy : ∀ a : R₀, a • y = 0 → a ∈ p`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Rewrite using `[← hann, ← map_smul, ha, map_zero]`. Establish `hcm : (p.map (algebraMap R₀ R)).comap (algebraMap R₀ R) = p`. Use `le_antisymm ?_ Ideal.le_comap_map` and prove the remaining obligations. Introduce `a ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hy a (hkill a (fun m => ?_) y)` and prove the remaining obligations. Establish `hle : p.map (algebraMap R₀ R) ≤ LinearMap.ker (LinearMap.toSpanSingleton R R m)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Use `(Submodule.mem_torsionBySet_iff _ _).1 m.2 ⟨b, hb⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Algebra.smul_def]`. Use `hle ha` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `this` using `[Algebra.smul_def]`. Take `⟨q, hq, hqp⟩` from `(Ideal.comap_map_eq_self_iff_of_isPrime p).1 hcm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `one_tmul_ne_zero (k := q.ResidueField) p ?_ ?_ y hy (one_tmul_eq_zero φ (H q.ResidueField) y hy0)` and prove the remaining obligations. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply R₀ R q.ResidueField, Ideal.algebraMap_residueField_eq_zero, ← hqp]`. Both sides reduce to the same expression. Introduce `z a`.
-
-Use `hkill a (fun m => Subtype.ext ?_) z` and prove the remaining obligations. Conclude with `(Submodule.mem_torsionBySet_iff _ _).1 m.2 a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem injective_baseChange :
     ∀ (R₀ R C₀ C₁ : Type) [CommRing R₀] [IsNoetherianRing R₀] [CommRing R] [Algebra R₀ R]

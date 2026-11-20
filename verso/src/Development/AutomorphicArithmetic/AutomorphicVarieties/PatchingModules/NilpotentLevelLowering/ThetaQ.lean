@@ -9,17 +9,15 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `key : ∃ c : kˣ, ∀ s : Fin n → kˣ, (s = 1 ∨ s = t) → ∀ i j : Fin n, i ≤ j → valuation k ((s i * c ^ (n - i) : kˣ) : k) ≤ valuation k ((s j * c ^ (n - j) : kˣ) : k)`. Break down `isEmpty_or_nonempty (Fin n) with h | h` into its components or cases. Conclude with `⟨1, fun _ _ i => h.elim i⟩`. Take `⟨p, hp⟩` from `Finite.exists_min (fun p : Fin n × Fin n => valuation k ((t p.2 * (t p.1)⁻¹ : kˣ) : k))`. Use `set c : kˣ := t p.2 * (t p.1)⁻¹ with hc`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : valuation k (c : k) ≤ 1` using `by simpa using hp (p.1, p.1)`. Use `⟨c, fun s hs i j hij => ?_⟩` and prove the remaining obligations. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `h2 : valuation k (s i : k) * valuation k (c : k) ≤ valuation k (s j : k)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `hs with rfl | rfl` into its components or cases. Simplify using `using h1`. Use `mul_le_mul_right (hp (i, j)) (valuation k (s i : k))` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using the standard rewrite rules. Establish `hj` using `j.2`. Establish `hlt' : (i : ℕ) < j` using `hlt`. Establish `e : n - (i : ℕ) = 1 + ((n - j) + (j - i - 1))` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, pow_add, pow_one]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))`. Take `⟨c, hc⟩` from `key`.
-
-Use `⟨t * (fun i : Fin n => c ^ (n - (i : ℕ))), (1 : Fin n → kˣ) * (fun i : Fin n => c ^ (n - (i : ℕ))), hc t (Or.inr rfl), hc 1 (Or.inl rfl), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dom_gen {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (t : Fin n → kˣ) : ∃ a b : Fin n → kˣ, Dom a ∧ Dom b ∧ t = a * b⁻¹ := by
@@ -54,7 +52,7 @@ private theorem dom_gen {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   simp
 
 /- English proof (translation)
-The claim follows from `finsum_induction (fun e => Commute φ e) (Commute.zero_right φ) (fun _ _ h1 h2 => h1.add_right h2) fun _ => h _`.
+A detailed English derivation is pending.
 -/
 private theorem comm_dc {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K K' : Subgroup H) (x : H) (φ : Module.End A M) (h : ∀ g, Commute φ (ρ g)) :
@@ -67,45 +65,41 @@ variable {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin q → Plc L} 
   (ρ : Representation A (GV n w) M) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ)
 
 /- English proof (translation)
-The claim follows from `(Pi.mulSingle_commute (f := fun j => GLw n (w j)) h g g').map ρ`.
+A detailed English derivation is pending.
 -/
 private theorem comm_at {j j' : Fin q} (h : j ≠ j') (g : GLw n (w j)) (g' : GLw n (w j')) :
     Commute (ρ (atJ n w j g)) (ρ (atJ n w j' g')) :=
   (Pi.mulSingle_commute (f := fun j => GLw n (w j)) h g g').map ρ
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Gr34.mem_UC <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mem_UC (m : M) :
     m ∈ fixd ρ (UC n w C) ↔ ∀ j, m ∈ fixd (ρ.comp (atJ n w j)) (iwC _ n (C j)) :=
   by apply _root_.UpperTheory.Reformulated.B.Gr34.mem_UC <;> assumption
 
 /- English proof (translation)
-Take `⟨hmul, hunit, -⟩` from `domMul _ n (C j) A M (ρ.comp (atJ n w j))`. Establish `happ : ∀ x (v : fixd (ρ.comp (atJ n w j)) (iwC _ n (C j))), (hk (ρ.comp (atJ n w j)) (iwC _ n (C j)) x v : M) = dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) x v` using `fun x => (hkApply A _ M (ρ.comp (atJ n w j)) _ _ x ((heckePairIwC _ n (C j)).1 x)).1`. Establish `hcomm : ∀ j', j' ≠ j → ∀ g x, Commute (ρ (atJ n w j' g)) (dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) x)` using `fun j' h g x => comm_dc _ _ _ _ _ fun g' => comm_at ρ h g g'`. Establish `hpres : ∀ x, ∀ m ∈ fixd ρ (UC n w C), dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) x m ∈ fixd ρ (UC n w C)`. Introduce `x m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm`, the goal using `[mem_UC]`. Introduce `j'`. Distinguish the cases in `e : j' = j`. Substitute `e` using the available equality. Conclude with `happ x ⟨m, hm _⟩ ▸ (hk (ρ.comp (atJ n w j')) (iwC _ n (C j')) x ⟨m, hm _⟩).2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `h1` using `LinearMap.congr_fun (hcomm j' e u x).eq m`. Rewrite `h1` using `[Module.End.mul_apply, Module.End.mul_apply, show ρ (atJ n w j' u) m = m from hm j' u hu]`. Conclude with `h1`. Set `f : (Fin n → ((w j).adicCompletion L)ˣ) → Module.End A (fixd ρ (UC n w C))` to `fun t => (dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) (diagT _ (Fin n) t)).restrict (hpres _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ t m, (f t m : M) = dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) (diagT _ (Fin n) t) m` using `fun _ _ => rfl`. Establish `fmul : ∀ a b, Dom a → Dom b → f (a * b) = f a * f b`. Introduce `a b ha hb`. Use extensionality with `m`. Establish `h1` using `congrArg Subtype.val (LinearMap.congr_fun (hmul a b ha hb) ⟨m, (mem_UC ρ C _).1 m.2 j⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Module.End.mul_apply, happ, happ, happ]`. Conclude with `h1.symm`. Establish `funit : ∀ a, Dom a → IsUnit (f a)`. Introduce `a ha`. Take `⟨hi, hs⟩` from `(Module.End.isUnit_iff _).1 (hunit hq a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Module.End.isUnit_iff _).2 ⟨fun m m' h => ?_, fun m => ?_⟩` and prove the remaining obligations. Use `@hi ⟨m, (mem_UC ρ C _).1 m.2 j⟩ ⟨m', (mem_UC ρ C _).1 m'.2 j⟩ (Subtype.ext (by` as an intermediate fact. Rewrite using `[happ, happ]`. Conclude with `congrArg Subtype.val h))`. Establish `h2` using `congrArg Subtype.val this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.ext h2`. Take `⟨v, hv⟩` from `hs ⟨m, (mem_UC ρ C _).1 m.2 j⟩`. Establish `hv'` using `congrArg Subtype.val hv`. Rewrite `hv'` using `[happ]`. Use `⟨⟨v, (mem_UC ρ C _).2 fun j' => ?_⟩, Subtype.ext hv'⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `e : j' = j`. Substitute `e` using the available equality. Conclude with `v.2`. Introduce `u hu`. Establish `hm : ρ (atJ n w j' u) v ∈ fixd (ρ.comp (atJ n w j)) (iwC _ n (C j))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `h1` using `LinearMap.congr_fun (comm_at ρ e u g).eq v`. Rewrite `h1` using `[Module.End.mul_apply, Module.End.mul_apply, show ρ (atJ n w j g) v = v from v.2 g hg]`. Conclude with `h1.symm`. Use `@hi ⟨_, hm⟩ v (Subtype.ext (by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[happ, happ]`. Establish `h1` using `LinearMap.congr_fun (hcomm j' e u (diagT _ (Fin n) a)).eq v`. Rewrite `h1` using `[Module.End.mul_apply, Module.End.mul_apply, hv']`. Rewrite using `[hv']`. Conclude with `h1.symm.trans ((mem_UC ρ C _).1 m.2 j' u hu)))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `congrArg Subtype.val this`. Set `P : Submonoid (Fin n → ((w j).adicCompletion L)ˣ)` to `{ carrier := {t | Dom t} one_mem' := dom_one mul_mem' := fun {a b} ha hb i j hij => by`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Conclude with `mul_le_mul' (ha i j hij) (hb i j hij) }`. Take `⟨θ, hθ, -⟩` from `monoidExt _ _ P f (fun t => by`.
-
-Take `⟨a, b, ha, hb, h⟩` from `dom_gen t`. Conclude with `⟨a, ha, b, hb, h⟩)`. Use the proof step `(by`. Establish `h` using `fmul 1 1 dom_one dom_one`. Rewrite `h` using `[mul_one]`.
-
-Conclude with `(funit 1 dom_one).mul_left_cancel (h.symm.trans (mul_one _).symm))`. Use the proof step `(fun a ha b hb => fmul a b ha hb) (fun a ha => funit a ha)`. Conclude with `⟨θ, fun t ht m => by rw [hθ t ht, hf]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem one_place (j : Fin q) (hq : IsUnit (qj w j : A)) :
     ∃ θ : (Fin n → ((w j).adicCompletion L)ˣ) →* (Module.End A (fixd ρ (UC n w C)))ˣ, ∀ t, Dom t →
@@ -188,11 +182,11 @@ private theorem one_place (j : Fin q) (hq : IsUnit (qj w j : A)) :
 end
 
 /- English proof (translation)
-Introduce `L _ _ n q w A M _ _ _ ρ C hq`. Use `choose Θ hΘ using fun j => one_place ρ C j (hq j)`. Use `⟨Θ, hΘ, fun j j' t t' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : j = j'`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `(Commute.all t t').map _`. Establish `hd : ∀ a b, Dom a → Dom b → Commute (Θ j a) (Θ j' b)`. Introduce `a b ha hb`. Use `Units.ext (LinearMap.ext fun m => Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply, hΘ j a ha, hΘ j' b hb, hΘ j' b hb, hΘ j a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `LinearMap.congr_fun (comm_dc _ _ _ _ _ fun g' => (comm_dc _ _ _ _ _ fun g => comm_at ρ (Ne.symm e) g' g).symm).eq (m : M)`. Take `⟨a, b, ha, hb, rfl⟩` from `dom_gen t`. Take `⟨c, d, hc, hd', rfl⟩` from `dom_gen t'`. Rewrite using `[map_mul, map_mul, map_inv, map_inv]`. Conclude with `((hd a c ha hc).mul_right (hd a d ha hd').inv_right).mul_left ((hd b c hb hc).mul_right (hd b d hb hd').inv_right).inv_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.thetaQ :
     ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GV n w) M) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ), (∀ j, IsUnit (qj w j : A)) → ∃ Θ, IsThetaQ ρ C Θ := by

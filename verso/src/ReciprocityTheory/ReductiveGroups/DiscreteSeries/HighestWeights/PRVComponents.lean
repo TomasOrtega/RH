@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `parthasarathy_tensor_matrix_alt ε hF hV hG hGu hf0 hfw hfl hdom`.
+A detailed English derivation is pending.
 -/
 theorem parthasarathy_tensor_matrix (ε : Fin n → Bool) {M : Type*} [AddCommGroup M] [Module ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hF : Formalism.REAL.KRel ε F)
@@ -30,7 +30,7 @@ theorem parthasarathy_tensor_matrix (ε : Fin n → Bool) {M : Type*} [AddCommGr
   parthasarathy_tensor_matrix_alt ε hF hV hG hGu hf0 hfw hfl hdom
 
 /- English proof (translation)
-The claim follows from `kIrrHW_int' ε hF hV`.
+A detailed English derivation is pending.
 -/
 theorem kIrrHW_int (ε : Fin n → Bool) {M : Type*} [AddCommGroup M] [Module ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hF : Formalism.REAL.KRel ε F) {Λ : Fin n → ℝ} {V : Submodule ℂ M}

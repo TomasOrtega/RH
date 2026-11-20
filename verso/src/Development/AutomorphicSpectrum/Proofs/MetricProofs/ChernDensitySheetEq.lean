@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.ZDens
 
 /- English proof (translation)
-Introduce `k _ _ _ _ X p t τ σ D B φ ψ hW hφ hψ c c' hm y hy`. Take `⟨hy', he⟩` from `hm y hy`. Establish `hi` using `GlobalTheory.CxPts.mem_pick (φ σ).isLB y`. Use `set i := GlobalTheory.CxPts.pick (φ σ).isLB y`. Establish `hi' : sheet t τ y ∈ ptsIn t τ (B.U i)` using `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c'.chernDens_eq hψ hy' hi', c.chernDens_eq (hφ σ) hy hi, AlgChart.hess, AlgChart.hess, he]`. Establish `ho` using `GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i))`. Establish `hmem` using `GlobalTheory.ChartGlue.mem_over c.e hy hi`. Establish `e : (fun v => ((ψ.φ i (c'.e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v => (((φ σ).φ i (c.e.symm v) : ℝ) : ℂ)` using `by filter_upwards [ho.mem_nhds hmem] with v hv`. Establish `hw` using `c.e.map_target hv.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `hm _ hw`. Establish `hs : c'.e.symm v = sheet t τ (c.e.symm v)`. Rewrite using `[← c'.e.left_inv h₁, h₂, c.e.right_inv hv.1]`. Rewrite using `[hs, hW σ i _ hv.2]`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernDens_sheet : ∀ (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (σ : k →+* ℂ) (D : ℕ) (B : LB X) (φ : ∀ σ : k →+* ℂ, Weight p σ B) (ψ : Weight t τ B), WOver φ ψ → (∀ σ, (φ σ).IsCInf) → ψ.IsCInf → ∀ (c : AlgChart p σ D) (c' : AlgChart t τ D), (∀ y ∈ c.e.source, sheet t τ y ∈ c'.e.source ∧ c'.e (sheet t τ y) = c.e y) → ∀ y ∈ c.e.source, c'.chernDens ψ (sheet t τ y) = c.chernDens (φ σ) y := by
   intro k _ _ _ _ X p t τ σ D B φ ψ hW hφ hψ c c' hm y hy

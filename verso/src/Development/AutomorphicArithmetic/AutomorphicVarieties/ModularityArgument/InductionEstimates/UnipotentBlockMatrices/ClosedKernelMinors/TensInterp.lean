@@ -8,19 +8,17 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Set `ev : X → Module.Dual ℂ E` to `fun u => (LinearMap.proj u).comp E.subtype`. Establish `hspan : Submodule.span ℂ (Set.range ev) = ⊤`. Apply `Submodule.span_eq_top_of_ne_zero` to reduce the goal to its premises. Introduce `z hz`. Assume the negation of the conclusion as `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hz` to reduce the goal to its premises. Use extensionality with `u`. Assume the negation of the conclusion as `hu`. Conclude with `h ⟨ev u, ⟨u, rfl⟩, hu⟩`. Take `⟨κ, c, -, hc, hli⟩` from `exists_linearIndependent' ℂ ev`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite κ := hli.finite`. Take `⟨a, ⟨e⟩⟩` from `Finite.exists_equiv_fin κ`. Set `b0 : Module.Basis κ ℂ (Module.Dual ℂ E)` to `Module.Basis.mk hli (by rw [hc, hspan])`. Set `b : Module.Basis (Fin a) ℂ (Module.Dual ℂ E)` to `b0.reindex e`. Establish `hb : ∀ i, b i = ev (c (e.symm i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `[b, b0]`. Use `⟨a, fun i => ((Module.evalEquiv ℂ E).symm (b.coord i) : E), fun i => c (e.symm i), fun i => Subtype.property _, ?_⟩` and prove the remaining obligations. Introduce `f hf u`. Establish `h1` using `b.sum_repr (ev u)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun l : Module.Dual ℂ E => l ⟨f, hf⟩) h1`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hb] at h2`. Establish `h3 : ∀ i, (((Module.evalEquiv ℂ E).symm (b.coord i) : E) : X → ℂ) u = b.repr (ev u) i`. Introduce `i`. Establish `: ev u ((Module.evalEquiv ℂ E).symm (b.coord i)) = b.coord i (ev u)` using `Module.apply_evalEquiv_symm_apply ℂ E _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Express the relevant statement in the definitionally equal form `ev u ⟨f, hf⟩ = _`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← h3, mul_comm]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem tens_interp {X : Type} (E : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ E] :
     ∃ (a : ℕ) (φ : Fin a → X → ℂ) (x : Fin a → X), (∀ i, φ i ∈ E) ∧
@@ -61,13 +59,13 @@ private theorem tens_interp {X : Type} (E : Submodule ℂ (X → ℂ)) [FiniteDi
   rfl
 
 /- English proof (translation)
-Introduce `X Y E₁ E₂ _ _`. Take `⟨a, φ, x, hφ, hx⟩` from `tens_interp E₁`. Take `⟨b, ψ, y, hψ, hy⟩` from `tens_interp E₂`. Use `⟨a, b, φ, ψ, fun _ p => x p, fun _ q => y q, fun i p => if p = i then 1 else 0, fun j q => if q = j then 1 else 0, hφ, hψ, ?_⟩` and prove the remaining obligations. Introduce `Φ h1 h2 u v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ i j, (∑ p, ∑ q, (if p = i then (1 : ℂ) else 0) * (if q = j then (1 : ℂ) else 0) * Φ (x p) (y q)) = Φ (x i) (y j)`. Introduce `i j`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `q _ hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hq]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Simplify using `[hp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hs]`. Rewrite using `[hx _ (h1 v) u]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hy _ (h2 (x i)) v, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

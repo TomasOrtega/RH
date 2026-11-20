@@ -20,21 +20,21 @@ def chi (w : ℂ) : ℂ := ((bump0 w : ℝ) : ℂ)
 def chin (n : ℕ) (w : ℂ) : ℂ := chi (((n : ℝ) + 1)⁻¹ • w)
 
 /- English proof (translation)
-Unfold `chi`. Conclude with `Complex.ofRealCLM.contDiff.comp bump0.contDiff`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem chi_contDiff : ContDiff ℝ ∞ chi := by
   unfold chi
   exact Complex.ofRealCLM.contDiff.comp bump0.contDiff
 
 /- English proof (translation)
-Unfold `chin`. Conclude with `chi_contDiff.comp (contDiff_const_smul _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem chin_contDiff (n : ℕ) : ContDiff ℝ ∞ (chin n) := by
   unfold chin
   exact chi_contDiff.comp (contDiff_const_smul _)
 
 /- English proof (translation)
-Unfold `chin chi`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg bump0.nonneg]`. Conclude with `bump0.le_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_chin_le (n : ℕ) (w : ℂ) : ‖chin n w‖ ≤ 1 := by
   unfold chin chi
@@ -42,7 +42,7 @@ theorem norm_chin_le (n : ℕ) (w : ℂ) : ‖chin n w‖ ≤ 1 := by
   exact bump0.le_one
 
 /- English proof (translation)
-Unfold `chin chi`. Rewrite using `[bump0.zero_of_le_dist, Complex.ofReal_zero]`. Use `show (2 : ℝ) ≤ dist (((n : ℝ) + 1)⁻¹ • w) 0`. Rewrite using `[dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_pos (by positivity : (0 : ℝ) < ((n : ℝ) + 1)⁻¹), inv_mul_eq_div, le_div_iff₀ (by positivity)]`. Conclude with `hw`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chin_zero (n : ℕ) (w : ℂ) (hw : 2 * ((n : ℝ) + 1) ≤ ‖w‖) : chin n w = 0 := by
   unfold chin chi
@@ -53,9 +53,9 @@ theorem chin_zero (n : ℕ) (w : ℂ) (hw : 2 * ((n : ℝ) + 1) ≤ ‖w‖) : c
   exact hw
 
 /- English proof (translation)
-Establish `hopen : IsOpen {v : ℂ | ‖v‖ < (n : ℝ) + 1}` using `isOpen_lt continuous_norm continuous_const`. Use `filter_upwards [hopen.mem_nhds hw] with v hv`. Use `show chin n v = 1`. Unfold `chin chi`. Rewrite using `[bump0.one_of_mem_closedBall, Complex.ofReal_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_pos (by positivity : (0 : ℝ) < ((n : ℝ) + 1)⁻¹)]`. Use `show ((n : ℝ) + 1)⁻¹ * ‖v‖ ≤ 1`. Rewrite using `[inv_mul_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chin_eventually_one (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) : chin n =ᶠ[𝓝 w] fun _ => 1 := by
   have hopen : IsOpen {v : ℂ | ‖v‖ < (n : ℝ) + 1} := isOpen_lt continuous_norm continuous_const
@@ -70,14 +70,14 @@ theorem chin_eventually_one (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) :
   linarith
 
 /- English proof (translation)
-Rewrite using `[(chin_eventually_one n w hw).fderiv_eq]`. Conclude with `fderiv_const_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_chin_zero (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) : fderiv ℝ (chin n) w = 0 := by
   rw [(chin_eventually_one n w hw).fderiv_eq]
   exact fderiv_const_apply _
 
 /- English proof (translation)
-Establish `hcs : HasCompactSupport chi` using `by show HasCompactSupport ((fun x : ℝ => (x : ℂ)) ∘ bump0)`. Conclude with `bump0.hasCompactSupport.comp_left Complex.ofReal_zero`. Conclude with `(chi_contDiff.continuous_fderiv (by simp)).bounded_above_of_compact_support (hcs.fderiv ℝ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fderiv_chi_bound : ∃ C : ℝ, ∀ w, ‖fderiv ℝ chi w‖ ≤ C := by
   have hcs : HasCompactSupport chi := by
@@ -86,11 +86,11 @@ theorem exists_fderiv_chi_bound : ∃ C : ℝ, ∀ w, ‖fderiv ℝ chi w‖ ≤
   exact (chi_contDiff.continuous_fderiv (by simp)).bounded_above_of_compact_support (hcs.fderiv ℝ)
 
 /- English proof (translation)
-Establish `hs0 : (0 : ℝ) < ((n : ℝ) + 1)⁻¹` using `by positivity`. Establish `hs1 : ((n : ℝ) + 1)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)])`. Establish `hd : HasFDerivAt (chin n) ((fderiv ℝ chi (((n : ℝ) + 1)⁻¹ • w)).comp (((n : ℝ) + 1)⁻¹ • ContinuousLinearMap.id ℝ ℂ)) w`. Establish `h1` using `(chi_contDiff.differentiable (by simp) (((n : ℝ) + 1)⁻¹ • w)).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun v : ℂ => ((n : ℝ) + 1)⁻¹ • v) (((n : ℝ) + 1)⁻¹ • ContinuousLinearMap.id ℝ ℂ) w` using `(((n : ℝ) + 1)⁻¹ • ContinuousLinearMap.id ℝ ℂ).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.comp w h2`. Establish `hn : ‖((n : ℝ) + 1)⁻¹ • ContinuousLinearMap.id ℝ ℂ‖ ≤ 1`. Rewrite using `[norm_smul, Real.norm_of_nonneg hs0.le]`. Use `(ContinuousLinearMap.norm_id_le : ‖ContinuousLinearMap.id ℝ ℂ‖ ≤ 1)` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (ContinuousLinearMap.id ℝ ℂ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd.fderiv]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_fderiv_chin_le {C : ℝ} (hC : ∀ w, ‖fderiv ℝ chi w‖ ≤ C) (n : ℕ) (w : ℂ) :
     ‖fderiv ℝ (chin n) w‖ ≤ C := by
@@ -113,9 +113,9 @@ theorem norm_fderiv_chin_le {C : ℝ} (hC : ∀ w, ‖fderiv ℝ chi w‖ ≤ C)
     _ = C := mul_one C
 
 /- English proof (translation)
-Use `show ‖(1 / 2 : ℂ) * (fderiv ℝ f w 1 - Complex.I * fderiv ℝ f w Complex.I)‖ ≤ _`. Use `set L := fderiv ℝ f w`. Establish `h1 : ‖L 1‖ ≤ ‖L‖` using `by simpa using L.le_opNorm 1`. Establish `h2 : ‖L Complex.I‖ ≤ ‖L‖` using `by simpa using L.le_opNorm Complex.I`. Establish `h3 : ‖L 1 - Complex.I * L Complex.I‖ ≤ ‖L 1‖ + ‖L Complex.I‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hh : ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by norm_num`. Rewrite using `[norm_mul, hh]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_dZ_le (f : ℂ → ℂ) (w : ℂ) : ‖NF.dZ f w‖ ≤ ‖fderiv ℝ f w‖ := by
   show ‖(1 / 2 : ℂ) * (fderiv ℝ f w 1 - Complex.I * fderiv ℝ f w Complex.I)‖ ≤ _
@@ -130,9 +130,9 @@ theorem norm_dZ_le (f : ℂ → ℂ) (w : ℂ) : ‖NF.dZ f w‖ ≤ ‖fderiv �
   linarith
 
 /- English proof (translation)
-Use `show ‖(1 / 2 : ℂ) * (fderiv ℝ f w 1 + Complex.I * fderiv ℝ f w Complex.I)‖ ≤ _`. Use `set L := fderiv ℝ f w`. Establish `h1 : ‖L 1‖ ≤ ‖L‖` using `by simpa using L.le_opNorm 1`. Establish `h2 : ‖L Complex.I‖ ≤ ‖L‖` using `by simpa using L.le_opNorm Complex.I`. Establish `h3 : ‖L 1 + Complex.I * L Complex.I‖ ≤ ‖L 1‖ + ‖L Complex.I‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hh : ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by norm_num`. Rewrite using `[norm_mul, hh]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_dZb_le (f : ℂ → ℂ) (w : ℂ) : ‖NF.dZb f w‖ ≤ ‖fderiv ℝ f w‖ := by
   show ‖(1 / 2 : ℂ) * (fderiv ℝ f w 1 + Complex.I * fderiv ℝ f w Complex.I)‖ ≤ _
@@ -147,7 +147,7 @@ theorem norm_dZb_le (f : ℂ → ℂ) (w : ℂ) : ‖NF.dZb f w‖ ≤ ‖fderiv
   linarith
 
 /- English proof (translation)
-Establish `hd : ContDiff ℝ ∞ (fderiv ℝ f)` using `(contDiff_infty_iff_fderiv.1 hf).2`. Establish `h1 : ContDiff ℝ ∞ (fun w => fderiv ℝ f w 1)` using `hd.clm_apply contDiff_const`. Establish `hI : ContDiff ℝ ∞ (fun w => fderiv ℝ f w Complex.I)` using `hd.clm_apply contDiff_const`. Use `show ContDiff ℝ ∞ (fun w => (1 / 2 : ℂ) * (fderiv ℝ f w 1 - Complex.I * fderiv ℝ f w Complex.I))`. Conclude with `contDiff_const.mul (h1.sub (contDiff_const.mul hI))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dZ_contDiff {f : ℂ → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (NF.dZ f) := by
   have hd : ContDiff ℝ ∞ (fderiv ℝ f) := (contDiff_infty_iff_fderiv.1 hf).2
@@ -157,7 +157,7 @@ theorem dZ_contDiff {f : ℂ → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ �
   exact contDiff_const.mul (h1.sub (contDiff_const.mul hI))
 
 /- English proof (translation)
-Establish `hd : ContDiff ℝ ∞ (fderiv ℝ f)` using `(contDiff_infty_iff_fderiv.1 hf).2`. Establish `h1 : ContDiff ℝ ∞ (fun w => fderiv ℝ f w 1)` using `hd.clm_apply contDiff_const`. Establish `hI : ContDiff ℝ ∞ (fun w => fderiv ℝ f w Complex.I)` using `hd.clm_apply contDiff_const`. Use `show ContDiff ℝ ∞ (fun w => (1 / 2 : ℂ) * (fderiv ℝ f w 1 + Complex.I * fderiv ℝ f w Complex.I))`. Conclude with `contDiff_const.mul (h1.add (contDiff_const.mul hI))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dZb_contDiff {f : ℂ → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (NF.dZb f) := by
   have hd : ContDiff ℝ ∞ (fderiv ℝ f) := (contDiff_infty_iff_fderiv.1 hf).2
@@ -167,7 +167,7 @@ theorem dZb_contDiff {f : ℂ → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ 
   exact contDiff_const.mul (h1.add (contDiff_const.mul hI))
 
 /- English proof (translation)
-Use `show (1 / 2 : ℂ) * (fderiv ℝ (chin n) w 1 - Complex.I * fderiv ℝ (chin n) w Complex.I) = 0`. Rewrite using `[fderiv_chin_zero n w hw]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dZ_chin_zero (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) : NF.dZ (chin n) w = 0 := by
   show (1 / 2 : ℂ) * (fderiv ℝ (chin n) w 1 - Complex.I * fderiv ℝ (chin n) w Complex.I) = 0
@@ -175,7 +175,7 @@ theorem dZ_chin_zero (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) : NF.dZ 
   simp
 
 /- English proof (translation)
-Use `show (1 / 2 : ℂ) * (fderiv ℝ (chin n) w 1 + Complex.I * fderiv ℝ (chin n) w Complex.I) = 0`. Rewrite using `[fderiv_chin_zero n w hw]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dZb_chin_zero (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) : NF.dZb (chin n) w = 0 := by
   show (1 / 2 : ℂ) * (fderiv ℝ (chin n) w 1 + Complex.I * fderiv ℝ (chin n) w Complex.I) = 0
@@ -183,7 +183,7 @@ theorem dZb_chin_zero (n : ℕ) (w : ℂ) (hw : ‖w‖ < (n : ℝ) + 1) : NF.dZ
   simp
 
 /- English proof (translation)
-Use `filter_upwards [tendsto_natCast_atTop_atTop.eventually_gt_atTop ‖w‖] with n hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eventually_lt (w : ℂ) : ∀ᶠ n : ℕ in atTop, ‖w‖ < (n : ℝ) + 1 := by
   filter_upwards [tendsto_natCast_atTop_atTop.eventually_gt_atTop ‖w‖] with n hn

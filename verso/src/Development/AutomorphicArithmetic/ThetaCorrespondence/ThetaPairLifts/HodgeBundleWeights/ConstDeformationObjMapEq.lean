@@ -11,31 +11,27 @@ open AlgebraicGeometry CategoryTheory MonObj MonoidalCategory
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ConstDeform
 /- English proof (translation)
-Introduce `hP hGD E _ _ _ H Dw l Xo c K _ _ y x' hpq hT A _ A' _ π π' i q hi hπ hπ' hiπ hiq hq o ⟨m⟩`. Establish `hw : m.cm.F ≫ Xo.univ.t.G.hom = o.t.G.hom ≫ x'` using `m.cart.1.w`. Set `g : o.t.G.left ⟶ A'.left` to `hπ'.1.lift m.cm.F o.t.G.hom hw`. Establish `hg : g ≫ π' = m.cm.F` using `hπ'.1.lift_fst _ _ _`. Establish `hgw : g ≫ A'.hom = o.t.G.hom` using `hπ'.1.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : IsGrpPullback o.t.G A' (𝟙 _) g` using `hπ'.cancel (m.cart.congr (Category.id_comp _).symm hg.symm) (by rw [hgw, Category.comp_id])`. Establish `hred : spMap (algebraMap K (DualNumber K)) ≫ y.x = constPt x'`. Rewrite using `[← hT.2]`. Both sides reduce to the same expression. Establish `hF : IsGrpPullback o.t.G Xo.univ.t.G (constPt x') (g ≫ q ≫ π)` using `(hgc.comp (hq.comp hπ)).congr (by rw [Category.id_comp, hred]) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `haveI : CharZero K := (RingHom.charZero_iff (algebraMap c.F K).injective).1 inferInstance`. Establish `hgq` using `hgc.comp hq`. Establish `hcomm : ∀ (T : Over (Sp K)) (x y : T ⟶ A), x * y = y * x`. Introduce `T x y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hπ.1.hom_ext` to reduce the goal to its premises. Establish `e1` using `hπ.2 T x y (pushPt hπ.1.w x) (pushPt hπ.1.w y) rfl rfl`. Establish `e2` using `hπ.2 T y x (pushPt hπ.1.w y) (pushPt hπ.1.w x) rfl rfl`. Rewrite using `[← e1, ← e2, _root_.mul_comm]`. Rewrite using `[Over.w (x * y), Over.w (y * x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (σ : 𝟙_ (Over (Sp (DualNumber K))) ⟶ o.t.G) (τ : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G) (n : ℕ), 0 < n → σ ^ n = 1 → σ.left ≫ m.cm.F = x' ≫ τ.left → σ.left ≫ (g ≫ q ≫ π) = constPt x' ≫ τ.left`. Introduce `σ τ n hn hσ hστ`. Set `u` to `pushHom hgq (𝟙_ (Over (Sp (DualNumber K)))) σ`. Establish `hu : u ^ n = 1` using `by rw [← map_pow, hσ, map_one]`. Establish `e` using `GlobalTheory.T.torsion_dualNumber_point_eq_constant_charZero K A _ (by simp) (hcomm _) u n hn hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hul : u.left = σ.left ≫ g ≫ q` using `by show σ.left ≫ (g ≫ q) = _; rfl`. Rewrite `e` using `[hul]`. Set `w` to `spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ σ.left ≫ g`. Establish `hw' : w ≫ A'.hom = 𝟙 _ ≫ GlobalTheory.DeRham.epsRed K`. Simplify using `only [w, Category.assoc, hgw, Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w σ]`. Both sides reduce to the same expression. Set `s₀` to `hi.1.lift w (𝟙 _) hw'`. Establish `hs₀ : s₀ ≫ i = w` using `hi.1.lift_fst _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs₀]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hiq, hiπ]`. Use `_ = spMap (algebraMap K (DualNumber K)) ≫ spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ σ.left ≫ m.cm.F := by`. Rewrite using `[reassoc_of% hs₀]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [w, Category.assoc, hg]`. Use `_ = constPt x' ≫ τ.left := by rw [hστ]; rfl`. Establish `hpow : ∀ (f : Dw.La → (𝟙_ (Over (Sp (DualNumber K))) ⟶ o.t.G)), (∀ a b, f (a + b) = f a * f b) → ∀ (n : ℕ) a, f (n • a) = f a ^ n`. Introduce `f hf n a`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `zero`. Establish `h0` using `hf 0 0`. Rewrite `h0` using `[add_zero]`. Rewrite using `[zero_smul, pow_zero]`. Conclude with `mul_left_cancel (h0.symm.trans (_root_.mul_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih => rw [succ_nsmul, hf, ih, pow_succ]`. Establish `hM : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb`. Establish `h1 : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
-
-Conclude with `Ideal.mul_le_left (I := l.Mb) (J := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) h1`. Conclude with `⟨{ cm := cubeMapOf hF cart := hF base := rfl act := _root_.GlobalTheory.T.const_deformation_action_trivial hP hGD E H Dw l Xo c K y x' hpq hT A A' π π' i q hi hπ hπ' hiπ hiq hq o m g hg hgw hF lin := _root_.GlobalTheory.T.cubical_structure_const_section_pullback hP hGD E H Dw l X …`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top))`. Use the proof step `(m.eta a)`.
-
-Use `etaA := fun a => key (o.etaA a) (Xo.univ.etaA a) l.A l.A_pos (by rw [← hpow _ o.etaA_add]; exact o.etaA_ker a) (m.etaA a) }⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constDeformation_objMap_eq : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' : Sp (DualNumber K) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → ∀ (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (π : A.left ⟶ Xo.univ.t.G.left) (π' : A'.left ⟶ Xo.univ.t.G.left) (i : A.left ⟶ A'.left) (q : A'.left ⟶ A.left), IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i → IsGrpPullback A Xo.univ.t.G y.x π → IsGrpPullback A' Xo.univ.t.G x' π' → i ≫ π' = π → i ≫ q = 𝟙 _ → IsGrpPullback A' A (spMap (algebraMap K (DualNumber K))) q → ∀ o : Obj Dw l (baseKA l) (x' ≫ Xo.s), Nonempty (ObjMap o Xo.univ x') → Nonempty (ObjMap o Xo.univ (constPt x')) := by
   intro hP hGD E _ _ _ H Dw l Xo c K _ _ y x' hpq hT A _ A' _ π π' i q hi hπ hπ' hiπ hiq hq o ⟨m⟩
@@ -117,7 +113,7 @@ open AlgebraicGeometry CategoryTheory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ConstDeform.constDeformation_objMap_eq | exact _root_.GlobalTheory.ConstDeform.constDeformation_objMap_eq | (intros; apply _root_.GlobalTheory.ConstDeform.constDeformation_objMap_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.const_deformation_obj_eq : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' : Sp (DualNumber K) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → ∀ (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (π : A.left ⟶ Xo.univ.t.G.left) (π' : A'.left ⟶ Xo.univ.t.G.left) (i : A.left ⟶ A'.left) (q : A'.left ⟶ A.left), IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i → IsGrpPullback A Xo.univ.t.G y.x π → IsGrpPullback A' Xo.univ.t.G x' π' → i ≫ π' = π → i ≫ q = 𝟙 _ → IsGrpPullback A' A (spMap (algebraMap K (DualNumber K))) q → ∀ o : Obj Dw l (baseKA l) (x' ≫ Xo.s), Nonempty (ObjMap o Xo.univ x') → Nonempty (ObjMap o Xo.univ (constPt x')) := by
   first | exact @_root_.GlobalTheory.ConstDeform.constDeformation_objMap_eq | exact _root_.GlobalTheory.ConstDeform.constDeformation_objMap_eq | (intros; apply _root_.GlobalTheory.ConstDeform.constDeformation_objMap_eq <;> assumption)

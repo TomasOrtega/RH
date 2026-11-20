@@ -15,7 +15,7 @@ section
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.L2.SG.PoincareInHH.Cut.wuDefinite_holds X u`. Consider the case `exact Formalism.L2.SG.PoincareInHH.Cut.wuDefinite_holds (X := X) (u := u)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem WuDefinite_holds : Formalism.L2.SG.PoincareInHH.Cut.WuDefinite X u := by
   first
@@ -23,7 +23,7 @@ theorem WuDefinite_holds : Formalism.L2.SG.PoincareInHH.Cut.WuDefinite X u := by
   | exact Formalism.L2.SG.PoincareInHH.Cut.wuDefinite_holds (X := X) (u := u)
 
 /- English proof (translation)
-Establish `hg : 1 ≤ X.B.g`. Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Conclude with `stabClassFinite X.B.I (fixSet X u) (WuDefinite_holds X u) (Ku X u hK) X.B.g (X.xu u) hg (fun h hh => ((Formalism.L2.SG.Closed.level_subgroup_properties X).1 _ hh).1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ClassFin_holds (hK : X.LevelSubgroupCharacter) : Formalism.L2.SG.PoincareInHH.Cut.ClassFin X u hK := by
   have hg : 1 ≤ X.B.g := by
@@ -33,7 +33,7 @@ theorem ClassFin_holds (hK : X.LevelSubgroupCharacter) : Formalism.L2.SG.Poincar
     (fun h hh => ((Formalism.L2.SG.Closed.level_subgroup_properties X).1 _ hh).1)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.L2.SG.Pf.colBound_of X u hK (ClassFin_holds X u hK)`. Consider the case `exact Formalism.L2.SG.Pf.colBound_of (X := X) (u := u) hK (ClassFin_holds X u hK)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ColBound_holds (hK : X.LevelSubgroupCharacter) : Formalism.L2.SG.Pf.ColBound X u hK := by
   first
@@ -41,7 +41,7 @@ theorem ColBound_holds (hK : X.LevelSubgroupCharacter) : Formalism.L2.SG.Pf.ColB
   | exact Formalism.L2.SG.Pf.colBound_of (X := X) (u := u) hK (ClassFin_holds X u hK)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.L2.SG.Pf.omCover_holds I`. Consider the case `exact Formalism.L2.SG.Pf.omCover_holds (I := I)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem OmCover_holds (I : AutInst) : Formalism.L2.SG.Pf.OmCover I := by
   first
@@ -49,7 +49,7 @@ theorem OmCover_holds (I : AutInst) : Formalism.L2.SG.Pf.OmCover I := by
   | exact Formalism.L2.SG.Pf.omCover_holds (I := I)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.multPoly_holds_of'' X (OmCover_holds _)`.
+A detailed English derivation is pending.
 -/
 theorem MultPoly_holds : Formalism.L2.SG.PoincareInHH.Cut.MultPoly X :=
   Formalism.L2.SG.Pf.multPoly_holds_of'' X (OmCover_holds _)

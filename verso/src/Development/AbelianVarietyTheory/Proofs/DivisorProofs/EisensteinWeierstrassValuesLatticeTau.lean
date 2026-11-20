@@ -13,9 +13,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.WpFam.TauVal
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[zero_pow h.ne']`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem complex_div_pow_div_div_pow (a x k : ℂ) (n : ℕ) (hk : k ≠ 0) :
     a / k ^ n / (x / k) ^ n = a / x ^ n := by
@@ -27,16 +27,16 @@ theorem complex_div_pow_div_div_pow (a x k : ℂ) (n : ℕ) (hk : k ≠ 0) :
   · rw [div_pow]; field_simp
 
 /- English proof (translation)
-Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `[this, Complex.I_ne_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem two_pi_I_ne_zero : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0 := by
   have : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
   simp [this, Complex.I_ne_zero]
 
 /- English proof (translation)
-Introduce `Λ c Ω τ h`. Take `⟨_, hP, hD, hs, _⟩` from `GlobalTheory.T.weierstrassP_homogeneity_of_isTauOf Λ c τ h`. Establish `hG` using `(GlobalTheory.WpFam.LatConst.main τ).1`. Establish `hk` using `two_pi_I_ne_zero`. Use `⟨?_, fun N x => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[complex_div_pow_div_div_pow _ _ _ _ hk, hs, hG, mul_pow, inv_mul_eq_div, div_div, mul_comm]`. Rewrite using `[wp, complex_div_pow_div_div_pow _ _ _ _ hk, hP, mul_pow, inv_mul_eq_div, div_div, mul_comm]`. Rewrite using `[wpd, complex_div_pow_div_div_pow _ _ _ _ hk, hD, mul_pow, inv_mul_eq_div, div_div, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (Λ : PeriodPair) (c Ω : ℂ) (τ : ℍ), IsTauOf Λ c τ → (G2s τ / (2 * (Real.pi : ℂ) * Complex.I) ^ 2 / (Ω * c / (2 * Real.pi * Complex.I)) ^ 2 = s2 Λ / Ω ^ 2) ∧ ∀ (N : ℕ) (x : Fin 2 → ZMod N), wp N x τ / (Ω * c / (2 * Real.pi * Complex.I)) ^ 2 = Λ.weierstrassP (c * tors N τ x) / Ω ^ 2 ∧ wpd N x τ / (Ω * c / (2 * Real.pi * Complex.I)) ^ 3 = Λ.derivWeierstrassP (c * tors N τ x) / Ω ^ 3 := by
   intro Λ c Ω τ h

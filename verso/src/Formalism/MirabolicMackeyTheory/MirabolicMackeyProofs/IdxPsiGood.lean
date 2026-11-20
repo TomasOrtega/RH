@@ -9,7 +9,7 @@ namespace Formalism.EigenvalueLevelCeiling
 open Formalism.DivisionValues
 
 /- English proof (translation)
-Unfold `sc`. Rewrite using `[Submodule.mem_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_sc {K : Type} [Field K] {Z : Type} [AddCommGroup Z] [Module K Z]
     [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z] (a : K) (A : Submodule (𝓞 K) Z) (x : Z) :
@@ -19,43 +19,39 @@ theorem mem_sc {K : Type} [Field K] {Z : Type} [AddCommGroup Z] [Module K Z]
   rfl
 
 /- English proof (translation)
-Unfold `IdxPsiGood`. Introduce `K _ _ _ Z _ _ _ _ _ w Zψ V₀ M Th ThK Th0 hM hTh hThK hThM hTh0fg hTh0Z σ hσ hThσ u hu hucut a E r ha hE hr δ hδ hδi`. Establish `hVB` using `valuation_basic_properties K w`. Establish `hcc : ∀ (W W' : Submodule K Z) (A : Submodule (𝓞 K) Z), W' ≤ W → cut W' (cut W A) = cut W' A`. Introduce `W W' A hWW`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `only [cut, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, _⟩, h3⟩`. Conclude with `⟨h1, h3⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h3⟩`. Conclude with `⟨⟨h1, hWW h3⟩, h3⟩`. Use `set L : Submodule K Z := Zψ ⊓ V₀ with hL`. Establish `hLZ : L ≤ Zψ` using `inf_le_left`. Use `set N : Submodule (𝓞 K) Z := M ⊓ sc a⁻¹ Th with hN`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNl : IsLatIn ⊤ N` using `hInt K Z M Th hM hTh a⁻¹ (inv_ne_zero ha)`. Establish `hNM : N ≤ M` using `inf_le_left`. Establish `hX : IsLatIn L (cut L M)` using `(hCut K Z w ⊤ L M M hM hM le_rfl le_top).1`. Establish `hB0 : IsLatIn L (cut L N)` using `(hCut K Z w ⊤ L N N hNl hNl le_rfl le_top).1`. Establish `hMψ : IsLatIn Zψ (cut Zψ M)` using `(hCut K Z w ⊤ Zψ M M hM hM le_rfl le_top).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNψ : IsLatIn Zψ (cut Zψ N)` using `(hCut K Z w ⊤ Zψ N N hNl hNl le_rfl le_top).1`. Establish `hThKψ : IsLatIn Zψ (cut Zψ ThK)` using `(hCut K Z w ⊤ Zψ ThK ThK hThK hThK le_rfl le_top).1`. Establish `hu' : (u : K) ≠ 0` using `by exact_mod_cast hu`. Establish `hc : a * σ⁻¹ ≠ 0` using `mul_ne_zero ha (inv_ne_zero hσ)`. Establish `hTh0 : IsLatIn Zψ Th0` using `by show Th0.FG ∧ Submodule.span K (Th0 : Set Z) = Zψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hTh0fg, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_le.mpr (fun x hx => hTh0Z hx)`. Establish `h1` using `(hSc K Z w Zψ (cut Zψ ThK) (cut Zψ ThK) hThKψ hThKψ (u : K) hu').1`. Establish `h2 : Submodule.span K ((sc (u : K) (cut Zψ ThK) : Submodule (𝓞 K) Z) : Set Z) = Zψ` using `h1.2`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.span_mono (SetLike.coe_subset_coe.mpr hucut)`. Establish `hcutTh0 : cut V₀ Th0 = cut L Th0`. Use extensionality with `x`. Simplify using `only [cut, Submodule.mem_inf, Submodule.restrictScalars_mem, hL]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, hTh0Z h1, h2⟩`. Introduce and unpack `⟨h1, _, h2⟩`. Conclude with `⟨h1, h2⟩`. Establish `hT : IsLatIn L (cut V₀ Th0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcutTh0]`. Conclude with `(hCut K Z w Zψ L Th0 Th0 hTh0 hTh0 le_rfl hLZ).1`. Use `⟨hT, ?_⟩` and prove the remaining obligations. Establish `hB1` using `hSc K Z w L (cut L M) (cut L N) hX hB0 (a * σ⁻¹) hc`. Establish `hB2` using `hSc K Z w L (cut L M) (sc (a * σ⁻¹) (cut L N)) hX hB1.1 (u : K) hu'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle2 : sc (u : K) (sc (a * σ⁻¹) (cut L N)) ≤ cut V₀ Th0`. Introduce `x hx`. Rewrite `hx` using `[mem_sc]`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite `hy` using `[mem_sc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, rfl⟩` from `hy`. Simplify using `only [cut, Submodule.mem_inf, Submodule.restrictScalars_mem, hN, hL] at hz ⊢`. Take `⟨⟨_, hz2⟩, hzψ, hzV⟩` from `hz`. Rewrite `hz2` using `[mem_sc]`. Take `⟨t, ht, rfl⟩` from `hz2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, rfl⟩` from `(mem_sc σ ThK t).1 (hThσ ht)`. Establish `hkey : (a * σ⁻¹) • a⁻¹ • σ • k = k`. Rewrite using `[smul_smul, smul_smul]`. Establish `h1 : a * σ⁻¹ * a⁻¹ * σ = 1` using `by field_simp`. Rewrite using `[h1, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkψ : k ∈ Zψ`. Establish `h1` using `Zψ.smul_mem (a * σ⁻¹) hzψ`. Rewrite `h1` using `[hkey]`. Then use the resulting hypothesis. Establish `hkV : k ∈ V₀`. Establish `h1` using `V₀.smul_mem (a * σ⁻¹) hzV`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite `h1` using `[hkey]`. Then use the resulting hypothesis. Rewrite using `[hkey]`. Establish `hkc : k ∈ cut Zψ ThK`. Simplify using `only [cut, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Conclude with `⟨hk, hkψ⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `⟨hucut ((mem_sc _ _ _).2 ⟨k, hkc, rfl⟩), V₀.smul_mem _ hkV⟩`. Establish `hmono` using `hMono K Z w L (cut L M) (sc (u : K) (sc (a * σ⁻¹) (cut L N))) (cut V₀ Th0) hX hB2.1 hT hle2`. Establish `hNMψ : cut Zψ N ≤ cut Zψ M`. Unfold `cut`. Conclude with `inf_le_inf_right _ hNM`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcut2` using `(hCut K Z w Zψ L (cut Zψ M) (cut Zψ N) hMψ hNψ hNMψ hLZ).2.2`. Rewrite `hcut2` using `[hcc Zψ L M hLZ, hcc Zψ L N hLZ]`. Establish `hv : vw w (a * σ⁻¹) = (E : ℤ) - vw w σ`. Rewrite using `[hVB.1 a σ⁻¹ ha (inv_ne_zero hσ), hVB.2.2.2.2.2.1 σ, hE]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hmono` using `[hB2.2, hB1.2, hv]`. Establish `h1 : (δ : ℝ) * (lix w (cut Zψ M) (cut Zψ N) : ℝ) ≤ (lix w M N : ℝ) + (finrank K Z : ℝ) * (vw w (u : K) : ℝ)`. Conclude with `hδi` after adjusting the coercions. Establish `hJ : (lix w (cut Zψ M) (cut Zψ N) : ℝ) ≤ (r + (finrank K Z : ℝ) * (vw w (u : K) : ℝ)) / (δ : ℝ)`. Rewrite using `[le_div_iff₀ (by exact_mod_cast hδ)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : (lix w (cut L M) (cut V₀ Th0) : ℝ) ≤ (lix w (cut L M) (cut L N) : ℝ) + (finrank K L : ℝ) * ((E : ℝ) - (vw w σ : ℝ)) + (finrank K L : ℝ) * (vw w (u : K) : ℝ)`. Conclude with `hmono` after adjusting the coercions. Establish `hc2 : (lix w (cut L M) (cut L N) : ℝ) ≤ lix w (cut Zψ M) (cut Zψ N)`. Conclude with `hcut2` after adjusting the coercions.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem idxPsiGood_of (hMono : IdxMono) (hSc : IdxScaleIn) (hCut : IdxCutLe) (hInt : LatInter) :
     IdxPsiGood := by

@@ -16,7 +16,7 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-The claim follows from `fStarC_of_beta Zd hC (betaRat_holds Zd u u' F0 what₂) hInt`.
+A detailed English derivation is pending.
 -/
 theorem fStarC_of_int (hC : CtxP u u' F0 what₂) (hInt : BetaInt Zd u u' F0 what₂) : FStarC Zd u u' F0 what₂ :=
   fStarC_of_beta Zd hC (betaRat_holds Zd u u' F0 what₂) hInt

@@ -28,13 +28,11 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨ho', hle'⟩` from `isOpen_map_invT ho hle`. Establish `hK : (KO k n).map invT = KO k n`. Use `le_antisymm ?_ fun g hg => ⟨invT g, invT_mem_KO hg, GlobalTheory.SplitFlip.invT_invT g⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `invT_mem_KO hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (invT : GL n k →* GL n k)` using `Function.LeftInverse.injective GlobalTheory.SplitFlip.invT_invT`. Establish `hi : (J.map invT).relIndex (KO k n) = J.relIndex (KO k n)` using `by conv_lhs => rw [← hK]`. Conclude with `Subgroup.relIndex_map_map_of_injective _ _ hinj`. Use `haveI : CompactSpace (KO k n) := isCompact_iff_compactSpace.1 GlobalTheory.SplitFlip.isCompact_KO`. Establish `ho2 : IsOpen (((J.map invT).subgroupOf (KO k n) : Subgroup (KO k n)) : Set (KO k n))` using `ho'.preimage continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite (KO k n ⧸ (J.map invT).subgroupOf (KO k n)) := Subgroup.quotient_finite_of_isOpen _ ho2`. Use `haveI : ((J.map invT).subgroupOf (KO k n)).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `h` using `GlobalTheory.IndexVolume.relIndex_mul_measure_subgroup _ (KO k n) hle' ho'.measurableSet (haarVol (KO k n))`. Rewrite `h` using `[haarVol_self GlobalTheory.SplitFlip.isOpen_KO le_rfl, hi]`. Establish `h2` using `congrArg ENNReal.toReal h`.
-
-Rewrite `h2` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.toReal_one, mul_comm]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_mul_relIndex [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] (J : Subgroup (GL n k))
     (ho : IsOpen (J : Set (GL n k))) (hle : J ≤ KO k n) :
@@ -60,11 +58,11 @@ theorem vol_mul_relIndex [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype 
   exact h2
 
 /- English proof (translation)
-Introduce `g`. Use `choose f hf using (IsLocalRing.residue_surjective (R := O))`. Establish `hM : (IsLocalRing.residue O).mapMatrix (g.val.map f) = g.val`. Use extensionality with `a b`. Simplify using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd : IsUnit (g.val.map f).det`. Use `(isUnit_map_iff (IsLocalRing.residue O) _).1 ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, hM]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hM, ← hu]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gl_residue_surjective (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
     Function.Surjective (GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue O)) := by
@@ -83,9 +81,9 @@ theorem gl_residue_surjective (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) 
   rfl
 
 /- English proof (translation)
-Establish `e : J.comap (GeneralLinearGroup.map (n` using `Fin n) (algebraMap (valuation k).integer k)) = (blockTri (blk2 r) : Subgroup (GL (Fin n) 𝓀[k])).comap (GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue (valuation k).integer)) := by`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_comap, hJ, mem_blockTri]`. Establish `key : ∀ x : (valuation k).integer, IsLocalRing.residue (valuation k).integer x = 0 ↔ valuation k (x : k) < 1` using `fun x => by`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h a b hab => (key _).2 (h.2 a b hab), fun h => ⟨⟨g, rfl⟩, fun a b hab => (key _).1 (h a b hab)⟩⟩` and prove the remaining obligations. Rewrite using `[KO, ← Subgroup.index_comap, e, Subgroup.index_comap_of_surjective _ (gl_residue_surjective _ n)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_parahoric {n : ℕ} (r : ℕ) (J : Subgroup (GL (Fin n) k))
     (hJ : ∀ g, g ∈ J ↔ g ∈ KO k (Fin n) ∧ ∀ a b, blk2 r b < blk2 r a → valuation k (g.1 a b) < 1) :
@@ -107,9 +105,9 @@ end Local
 variable {D : D7}
 
 /- English proof (translation)
-Use `letI : Field (kP w) := Ideal.Quotient.field _`. Establish `hq : Nat.card (kP w) = Ideal.absNorm w.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hq' : Nat.card 𝓀[Kw w] = Ideal.absNorm w.asIdeal` using `GlobalTheory.LocalResidue.card_residue_of_ringEquiv D.host.E w (Kw w) (RingEquiv.refl _) fun a => (GivenAdm.isEquiv_val w).le_one_iff_le_one.symm`. Use `(GlobalTheory.ParabIndex.index_maxParabolic_GL_finiteField 𝓀[Kw w] n r s h).trans (Eq.trans ?_ (GlobalTheory.ParabIndex.index_maxParabolic_GL_finiteField (kP w) n' r s h').symm)` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hq, hq', h, h']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_residue (w : Pl D.host.E) {n n' r s : ℕ} (h : n = r + s) (h' : n' = r + s) :
     ((blockTri (blk2 r) : Subgroup (GL (Fin n) 𝓀[Kw w])).index : ℝ) =
@@ -127,27 +125,23 @@ theorem index_residue (w : Pl D.host.E) {n n' r s : ℕ} (h : n = r + s) (h' : n
 open Classical in
 
 /- English proof (translation)
-Establish `hmem` using `fun x => GlobalTheory.TwistIndex.mem_datY_iff V β hr hr Pg Q χ χ ξ ξ' (r := r) (t := t) (j := j) x`. Use `⟨fun x hx => ((hmem x).1 hx).1, ?_⟩` and prove the remaining obligations. Establish `hSt : lev D.sp.cm V.gram β (Lev.datY V.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B) ≤ St β` using `fun x hx => parLev_St hx.1`. Set `φ : lev D.sp.cm V.gram β (Lev.datY V.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B) →* (∀ PP : Q, GL (Fin V.rank) (kP PP.1))` to `MonoidHom.pi fun PP => (redAt β PP.1).comp (Subgroup.inclusion hSt)`. Establish `hφ : ∀ x PP, φ x PP = redFn β PP.1 x.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x PP`. Unfold `redFn`. Rewrite using `[extendOne_of_mem _ (hSt x.2)]`. Both sides reduce to the same expression. Establish `hcomap : (lev D.sp.cm V.gram β (Lev.datY V.rank r t j hr Pg Q (LevelP.triv _ _ _) χ ξ Lev.Frm.B)).subgroupOf (lev D.sp.cm V.gram β (Lev.datY V.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B)) = (Subgroup.pi Set.univ fun PP : Q => (blockTri (blk2 r) : Subgroup (GL (Fin V.ra …`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi, hmem]`. Simplify using `only [hφ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ PP -`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `h PP.1 PP.2`. Introduce `h`. Conclude with `⟨x.2, fun PP hP => h ⟨PP, hP⟩ (Set.mem_univ _)⟩`. Establish `hsurj : Function.Surjective φ`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `L' : LevDat D.host.E ℂ V.rank` to `Lev.datW V.rank (Pg ∪ Q) (LevelP.triv (Pg ∪ Q) V.rank ℂ) Lev.Frm.B`. Establish `hlift : Lev.LiftsExist V β L'` using `GlobalTheory.ParahoricLift.liftsExist V β L' Λ N hN (fun PP hP PP' hP' => by`. Break down `hP' with h | h` into its components or cases. Conclude with `hnc PP hP PP' h`. Conclude with `absurd h (Finset.notMem_empty _)) (Finset.disjoint_empty_right _)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g0 : G0 L'.Pg L'.r` to `fun PP => if h : PP.1 ∈ Q then g ⟨PP.1, h⟩ else 1`. Take `⟨κ, hκ⟩` from `hlift g0`. Establish `hκ1 : Lev.finE V κ ∈ parLev D.sp.cm V.gram β L'` using `hκ.2.1`. Establish `hκ2 : rTup β L' (Lev.finE V κ) = g0` using `hκ.2.2`. Establish `hred : ∀ PP (h : PP ∈ Pg ∪ Q), redFn β PP (Lev.finE V κ) = g0 ⟨PP, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `PP h`. Conclude with `(GlobalTheory.TwistIndex.restrictedBlock_self_apply _).symm.trans (congrFun hκ2 ⟨PP, h⟩)`. Establish `hPg : ∀ PP ∈ Pg, redFn β PP (Lev.finE V κ) = 1`. Introduce `PP hP`. Rewrite using `[hred PP (Finset.mem_union_left _ hP)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : PP ∉ Q` using `Finset.disjoint_left.1 hd hP`. Use `show (if h : PP ∈ Q then g ⟨PP, h⟩ else (1 : GL (Fin V.rank) (kP PP))) = 1`. Conclude with `dif_neg hq`. Establish `hSt'` using `parLev_St hκ1`. Establish `hxbig : Lev.finE V κ ∈ lev D.sp.cm V.gram β (Lev.datY V.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨⟨⟨parLev_UA hκ1, hSt'⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_parah.2 ⟨hSt', by rw [hPg PP hP]; exact Subgroup.one_mem _⟩`. Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => absurd hP (Finset.notMem_empty _)`. Use `show rTup β (Lev.datY V.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B) (Lev.finE V κ) ∈ (⊥ : Subgroup (G0 Pg r))`. Use `Subgroup.mem_bot.2 (funext fun PP => ?_)` and prove the remaining obligations.
-
-Use `show upperLeftBlock hr (redFn β PP.1 (Lev.finE V κ)) = 1`. Rewrite using `[hPg PP.1 PP.2]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`. Use `⟨⟨_, hxbig⟩, funext fun PP => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hred PP.1 (Finset.mem_union_right _ PP.2)]`.
-
-Use `show (if h : PP.1 ∈ Q then g ⟨PP.1, h⟩ else 1) = g PP`. Rewrite using `[dif_pos PP.2]`. Rewrite using `[Subgroup.relIndex, hcomap, Subgroup.index_comap_of_surjective _ hsurj, GlobalTheory.TwistIndex.index_pi_univ]`. Conclude with `Finset.prod_coe_sort Q fun PP => (blockTri (blk2 r) : Subgroup (GL (Fin V.rank) (kP PP))).index`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_lev (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ)
     (hN : Lev.IsBaseFrame V β Λ N) {r t j : ℕ} (hr : r ≤ V.rank) (Pg Q : Finset (Pl D.host.E))
@@ -226,7 +220,7 @@ theorem relIndex_lev (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submod
 variable {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}
 
 /- English proof (translation)
-Use `Finset.eq_empty_of_forall_notMem fun PP hPP => ?_` and prove the remaining obligations. Establish `h1` using `(h.Q_ram μ₀ PP).2 (Or.inl hPP)`. Rewrite `h1` using `[h.xi_base]`. Conclude with `h1 fun _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Q_base (h : L.Is μ₀) : L.Q μ₀ = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun PP hPP => ?_
@@ -237,11 +231,9 @@ theorem Q_base (h : L.Is μ₀) : L.Q μ₀ = ∅ := by
 open Classical in
 
 /- English proof (translation)
-Introduce `P hP P' hP' hc`. Apply the tactic sequence `rcases Finset.mem_union.1 hP with hP | hP <;> rcases Finset.mem_union.1 hP' with hP' | hP'`. Take `⟨k, hk⟩` from `(h.Pg P).1 hP`. Take `⟨k', hk'⟩` from `(h.Pg P').1 hP'`. Conclude with `GlobalTheory.ProjectedLift.not_isConjPl L.C.P hk hk' hc`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(h.Pg P).1 hP`. Take `⟨q, hq, hm, hne⟩` from `GlobalTheory.LevelRamif.exists_prime_mem (h.Q_pl t) hP'`. Conclude with `GlobalTheory.LevelRamif.not_two_primes P' hq (D.host.g_prime k) (hne k) hm (GlobalTheory.LevelRamif.natCast_mem_conj hc (GlobalTheory.LevelRamif.typePrime_mem hk))`. Take `⟨k, hk⟩` from `(h.Pg P').1 hP'`. Take `⟨q, hq, hm, hne⟩` from `GlobalTheory.LevelRamif.exists_prime_mem (h.Q_pl t) hP`.
-
-Conclude with `GlobalTheory.LevelRamif.not_two_primes P' hq (D.host.g_prime k) (hne k) (GlobalTheory.LevelRamif.natCast_mem_conj hc hm) (GlobalTheory.LevelRamif.typePrime_mem hk)`. Conclude with `(h.Q_pl t P hP).2 P' hP' hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_conj (h : L.Is μ₀) (t : T) : ∀ P ∈ L.Pg ∪ L.Q t, ∀ P' ∈ L.Pg ∪ L.Q t, ¬ Lev.IsConjPl P P' := by
   intro P hP P' hP' hc
@@ -260,11 +252,11 @@ theorem not_conj (h : L.Is μ₀) (t : T) : ∀ P ∈ L.Pg ∪ L.Q t, ∀ P' ∈
   · exact (h.Q_pl t P hP).2 P' hP' hc
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.βY (j + 1) hj`. Establish `H` using `relIndex_lev (Yc D (j + 1)) (L.βY (j + 1)) _ _ hc (t := D.R.t) (j := j + 1) (r_le_Y (j + 1)) L.Pg (L.Q t) (not_conj h t) (GlobalTheory.LevelRamif.ramif_at_levels D T L μ₀ h t ⟨j + 1, hj⟩).1 L.chi (L.xiR t) (L.xiR μ₀)`. Establish `e0 : L.datYt μ₀ (j + 1) L.triv = Lev.datY _ D.R.r D.R.t (j + 1) (r_le_Y (j + 1)) L.Pg ∅ (LevelP.triv _ _ _) L.chi (L.xiR μ₀) Lev.Frm.B`. Rewrite using `[LevCh.datYt, Q_base h]`. Rewrite `H` using `[← e0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ (Y : LSp D) (V : HSp D) Λ (K K₀ : Subgroup (GL (Fin Y.sp.rank) (Lev.EAf D))) (K' K₀' : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (n : ℕ), Y = ⟨V, Λ⟩ → HEq K K' → HEq K₀ K₀' → K' ≤ K₀' → K₀' ≤ UA D.sp.cm V.gram → K'.relIndex K₀' = n → K ≤ K₀ ∧ K₀ ≤ UA D.sp.cm Y.sp.gram ∧ K.r …`. Introduce and unpack `_ V Λ K K₀ K' K₀' n rfl e e' a b c`. Take `rfl` from `eq_of_heq e`. Take `rfl` from `eq_of_heq e'`. Conclude with `⟨a, b, c⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `key _ _ _ _ _ _ _ _ (colY_lt L hj) (levCol_lt L t hj) (levCol_lt L μ₀ hj) H.1 lev_le_UA H.2`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_levCol (h : L.Is μ₀) (t : T) {j : ℕ} (hj : j + 1 < D.R.m) :
     levCol L t j ≤ levCol L μ₀ j ∧ levCol L μ₀ j ≤ UA D.sp.cm (columnBlock L (j + 1)).sp.gram ∧
@@ -287,7 +279,7 @@ theorem relIndex_levCol (h : L.Is μ₀) (t : T) {j : ℕ} (hj : j + 1 < D.R.m) 
   exact key _ _ _ _ _ _ _ _ (colY_lt L hj) (levCol_lt L t hj) (levCol_lt L μ₀ hj) H.1 lev_le_UA H.2
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)`. Unfold `GlobalTheory.FunObj.Vol.IsAt at h₁ h₀`. Use `split_ifs at h₁ h₀`. Conclude with `GlobalTheory.ChainTw.VolScale.scale _ _ (fun _ _ hm => hm.1) _ _ _ _ hle hU hne ho.measurableSet h₁.1 h₀.1`. Conclude with `GlobalTheory.ChainTw.VolScale.scale _ _ (fun _ _ hm => hm.1) _ _ _ _ hle hU hne ho.measurableSet h₁.1 h₀.1`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nu_scale {M M₀ : Vol G} {X : Node} {K₁ K₀ : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))}
     (h₁ : M.IsAt X K₁) (h₀ : M₀.IsAt X K₀) (hle : K₁ ≤ K₀) (hU : K₀ ≤ UA D.sp.cm (G.V X).gram) (hne : K₁.relIndex K₀ ≠ 0)
@@ -300,7 +292,7 @@ theorem nu_scale {M M₀ : Vol G} {X : Node} {K₁ K₀ : Subgroup (GL (Fin (G.V
   · exact GlobalTheory.ChainTw.VolScale.scale _ _ (fun _ _ hm => hm.1) _ _ _ _ hle hU hne ho.measurableSet h₁.1 h₀.1
 
 /- English proof (translation)
-Use `vol_mul_relIndex (KO (Kw w) (Fin ((locGrid G t w).rank (i, j)))) GlobalTheory.SplitFlip.isOpen_KO le_rfl` as an intermediate fact. Rewrite `this` using `[Subgroup.relIndex_self, Nat.cast_one, mul_one]`. Rewrite using `[levVol, h]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levVol_of_KO {t : T} {i j : Fin D.R.m} {w : Pl D.host.E} (h : givenLevel G t w (i, j) = KO (Kw w) _) :
     levVol G t i j w = 1 := by
@@ -310,7 +302,7 @@ theorem levVol_of_KO {t : T} {i j : Fin D.R.m} {w : Pl D.host.E} (h : givenLevel
   exact this
 
 /- English proof (translation)
-Establish `h` using `GivenAdm.givenLevel_open (G := G) hL hw ((i : ℕ), (j : ℕ))`. Conclude with `left_ne_zero_of_mul_eq_one (vol_mul_relIndex _ h.1 h.2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levVol_ne_zero (hL : L.Is μ₀) {t : T} (i j : Fin D.R.m) {w : Pl D.host.E} (hw : w ∈ locPl G t) :
     levVol G t i j w ≠ 0 := by
@@ -318,7 +310,7 @@ theorem levVol_ne_zero (hL : L.Is μ₀) {t : T} (i j : Fin D.R.m) {w : Pl D.hos
   exact left_ne_zero_of_mul_eq_one (vol_mul_relIndex _ h.1 h.2)
 
 /- English proof (translation)
-Use extensionality with `g`. Use `(GlobalTheory.Adopt.thetaGridBlockCongruence_offTypePrime_description G μ₀ w hw (j + 1) g).trans ?_` and prove the remaining obligations. Simplify using `[Q_base hL]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem givenLevel_base (hL : L.Is μ₀) (j : ℕ) {w : Pl D.host.E} (hw : w ∉ L.Pg) :
     givenLevel G μ₀ w (0, j + 1) = KO (Kw w) _ := by
@@ -327,11 +319,11 @@ theorem givenLevel_base (hL : L.Is μ₀) (j : ℕ) {w : Pl D.host.E} (hw : w �
   simp [Q_base hL]
 
 /- English proof (translation)
-Use `levVol_of_KO ?_` and prove the remaining obligations. Establish `hP : w ∉ L.Pg` using `Finset.disjoint_right.1 (GlobalTheory.LevelRamif.ramif_at_levels D T L μ₀ hL t i).1 hw`. Take `⟨i, hi⟩` from `i`. Take `⟨_ | j, hj⟩` from `j`. Use extensionality with `g show g ∈ glLatCong (unifAt w ^ cosExp G w) (GlobalTheory.SplitFlip.stdLat (Kw w) _) ↔ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Rewrite using `[(depthAt_of_notMem G hw').1, pow_zero, GivenAdm.mem_glLatCong]`. Use `and_iff_left_of_imp fun hg a b => ?_` and prove the remaining obligations. Use `((GlobalTheory.SplitFlip.mem_KO_iff g).1 hg).1 a b` as an intermediate fact. Simplify using `only [Units.val_one, map_one, Matrix.sub_apply]`. Use `Valuation.map_sub_le _ this ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Break down `i with _ | i` into its components or cases. Conclude with `givenLevel_base hL j hP`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levVol_base (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) {w : Pl D.host.E} (hw : w ∈ L.Q t) (hw' : w ∉ G.pl.W0) :
     levVol G μ₀ i j w = 1 := by
@@ -353,7 +345,7 @@ theorem levVol_base (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) {w : Pl D.host.E
     · rfl
 
 /- English proof (translation)
-Establish `e : stepGroup L t w (j + 1) = stepGroup L μ₀ w (j + 1)`. Simplify using `[stepGroup, hw, Q_base hL]`. Establish `a : ∀ t' : T, levVol G t' ⟨0, hi⟩ ⟨j + 1, hj⟩ w = (haarVol (KO (Kw w) (Fin ((locGrid G μ₀ w).rank (0, j + 1))))).real (((stepGroup L t' w (j + 1)).map (GlobalTheory.StepData.reGL (ixFin G μ₀ w (j + 1))).toMonoidHom).map invT : Subgroup _)` using `fun _ => rfl`. Rewrite using `[a, a, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levVol_col (hL : L.Is μ₀) (t : T) {j : ℕ} (hi : 0 < D.R.m) (hj : j + 1 < D.R.m) {w : Pl D.host.E} (hw : w ∉ L.Q t) :
     levVol G t ⟨0, hi⟩ ⟨j + 1, hj⟩ w = levVol G μ₀ ⟨0, hi⟩ ⟨j + 1, hj⟩ w := by
@@ -366,17 +358,13 @@ theorem levVol_col (hL : L.Is μ₀) (t : T) {j : ℕ} (hi : 0 < D.R.m) (hj : j 
   rw [a, a, e]
 
 /- English proof (translation)
-Establish `hX : (Node.grid i j).InRange D.R.m` using `⟨i.2.le, j.2.le⟩`. Establish `easy : levJ G t (.grid i j) = levJ G μ₀ (.grid i j) → (∀ w, levVol G t i j w = levVol G μ₀ i j w) → ∃ n : Pl D.host.E → ℕ, M.ν (.grid i j) = ((∏ w ∈ L.Q t, n w : ℕ) : ℝ≥0∞) • M₀.ν (.grid i j) ∧ (∀ w ∈ L.Q t, levVol G t i j w * n w = levVol G μ₀ i j w) ∧ ∀ w ∉ L.Q t, levVol G t i …`. Introduce `e h`. Use `⟨fun _ => 1, ?_, fun w _ => by rw [h, Nat.cast_one, mul_one], fun w _ => h w⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_const_one, Nat.cast_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.HaarNorm.vol_nu_eq_of_isAt M M₀ _ _ (hM.vtx _ hX) (e ▸ hM₀.vtx _ hX)`. Take `⟨i, hi⟩` from `i`. Take `⟨_ | j, hj⟩` from `j`. Conclude with `easy ((levJ_row G t i).trans (levJ_row G μ₀ i).symm) fun _ => rfl`. Break down `i with _ | i` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `swap`. Conclude with `easy rfl fun _ => rfl`. Take `⟨h1, h2, h3⟩` from `relIndex_levCol hL t hj`. Establish `hne : (levCol L t j).relIndex (levCol L μ₀ j) ≠ 0`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => Subgroup.index_ne_zero_of_finite`. Use `⟨fun PP => (blockTri (blk2 D.R.r) : Subgroup (GL (Fin (Yc D (j + 1)).rank) (kP PP))).index, ?_, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `nu_scale (X := .grid 0 (j + 1)) (hM.vtx _ hX) (hM₀.vtx _ hX) h1 h2 hne (levJ_open_compact G hL t hX).1`. Establish `hP : w ∉ L.Pg` using `Finset.disjoint_right.1 (GlobalTheory.LevelRamif.ramif_at_levels D T L μ₀ hL t ⟨0, hi⟩).1 hw`.
-
-Establish `ho` using `GivenAdm.givenLevel_open (G := G) hL (t := t) (w := w) (by unfold locPl; simp [hw]) (0, j + 1)`. Establish `hv` using `vol_mul_relIndex _ ho.1 ho.2`. Rewrite `hv` using `[relIndex_parahoric D.R.r (givenLevel G t w (0, j + 1)) (fun g => (GlobalTheory.Adopt.thetaGridBlockCongruence_offTypePrime_description G t w hP (j + 1) g).trans (by simp [hw])), index_residue w (s := (j + 1) * D.R.t) (n' := (Yc D (j + 1)).rank) (by change D.R.r + (j + 1) * D.R.t …`. Rewrite using `[levVol_of_KO (t := μ₀) (givenLevel_base hL j hP)]`. Conclude with `hv`.
-
-Conclude with `levVol_col hL t hi hj hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factors (hL : L.Is μ₀) (i j : Fin D.R.m) (t : T) {M M₀ : Vol G} (hM : M.Is t) (hM₀ : M₀.Is μ₀) :
     ∃ n : Pl D.host.E → ℕ, M.ν (.grid i j) = ((∏ w ∈ L.Q t, n w : ℕ) : ℝ≥0∞) • M₀.ν (.grid i j) ∧
@@ -416,17 +404,17 @@ theorem exists_factors (hL : L.Is μ₀) (i j : Fin D.R.m) (t : T) {M M₀ : Vol
   · exact levVol_col hL t hi hj hw
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL _ i j m hm`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (spW₁ G i j)`. Take `⟨M₀, hM₀⟩` from `exists_vol G hL μ₀`. Establish `hX : (Node.grid i j).InRange D.R.m` using `⟨i.2.le, j.2.le⟩`. Use `haveI := (hM₀.vtx _ hX).haar_fund.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₀` using `Measure.isMulLeftInvariant_eq_smul (M₀.ν (.grid i j)) m`. Establish `p₀` using `Measure.haarScalarFactor_pos_of_isHaarMeasure (M₀.ν (.grid i j)) m`. Use `set s₀ := Measure.haarScalarFactor (M₀.ν (.grid i j)) m`. Use `⟨s₀ * ∏ w ∈ locPl G μ₀, levVol G μ₀ i j w, mul_ne_zero (by exact_mod_cast p₀.ne') (Finset.prod_ne_zero_iff.2 fun w hw => levVol_ne_zero hL i j hw), fun t M hM s hs => ?_⟩` and prove the remaining obligations. Take `⟨n, h1, h2, h3⟩` from `exists_factors hL i j t hM hM₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsn : (s : ℝ) = (∏ w ∈ L.Q t, n w : ℕ) * (s₀ : ℝ)`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : GA D (spW₁ G i j))`. Establish `h0 : m C ≠ 0` using `(Measure.measure_pos_of_mem_nhds m hC1).ne'`. Establish `h` using `congrArg (fun μ : Measure (GA D (spW₁ G i j)) => μ C) (hs.symm.trans h1)`. Rewrite `h` using `[e₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ← mul_assoc] at h`. Establish `h'` using `congrArg ENNReal.toReal ((ENNReal.mul_left_inj h0 hC.measure_lt_top.ne).1 h)`. Simplify using `using h'`. Establish `hsub : locPl G μ₀ ⊆ locPl G t`. Unfold `locPl`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Q_base hL]`. Simplify using the standard rewrite rules. Establish `hQ : L.Q t ⊆ locPl G t`. Unfold `locPl`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∏ w ∈ locPl G μ₀, levVol G μ₀ i j w = ∏ w ∈ locPl G t, levVol G μ₀ i j w` using `Finset.prod_subset hsub fun w hw hw' => by`. Establish `a : w ∉ G.pl.W0` using `fun h => hw' (by unfold locPl; simp [h])`. Conclude with `levVol_base hL t i j (by unfold locPl at hw; simpa [a] using hw) a`. Rewrite using `[hsn, e1, ← Finset.prod_sdiff hQ, ← Finset.prod_sdiff hQ (f := levVol G μ₀ i j), ← Finset.prod_congr rfl h2, Finset.prod_mul_distrib, Finset.prod_congr rfl fun w hw => h3 w (Finset.mem_sdiff.1 hw).2, Nat.cast_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem measure_mul_levVol : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → (∀ t, SquareStanding G t) → ∀ (i j : Fin D.R.m) (m : Measure (GA D (spW₁ G i j))), m.IsHaarMeasure →
       ∃ c : ℝ, c ≠ 0 ∧ ∀ (t : T) (M : Vol G), M.Is t → ∀ s : NNReal, M.ν (.grid i j) = s • m →

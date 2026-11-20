@@ -17,27 +17,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h0`. Establish `himg : ∀ x : Fin n → M, x '' {b | b.val < r} = Set.range (fun b : Fin r => x (Fin.castLE hrn b))`. Introduce `x`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b.val, hb⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨Fin.castLE hrn b, b.2, rfl⟩`. Establish `hadj1 : adj 1 = 1`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `hadj 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.mp this.symm)`. Set `f : (Fin r → M) → F` to `fun z => if h : Submodule.span R (Set.range z) = ⊤ then (((ψ (adj (h1 y z hy h).exists.choose))⁻¹ : Fˣ) : F) else 0`. Establish `hf : ∀ (z : Fin r → M) (g : M ≃ₗ[R] M), Submodule.span R (Set.range z) = ⊤ → (∀ b, g (y b) = z b) → f z = (((ψ (adj g))⁻¹ : Fˣ) : F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z g hz hg`. Establish `: (h1 y z hy hz).exists.choose = g` using `(h1 y z hy hz).unique (h1 y z hy hz).exists.choose_spec hg`. Simplify using `only [f, dif_pos hz, this]`. Establish `hspan : ∀ (z : Fin r → M) (k : M ≃ₗ[R] M), Submodule.span R (Set.range z) = ⊤ → Submodule.span R (Set.range fun b => k (z b)) = ⊤`. Introduce `z k hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (Set.range fun b => k (z b)) = (k : M →ₗ[R] M) '' Set.range z`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e, ← Submodule.map_span, hz, Submodule.map_top, LinearEquiv.range]`. Set `x₀ : Fin n → M` to `fun b => if h : b.val < r then y ⟨b.val, h⟩ else 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx₀ : (fun b : Fin r => x₀ (Fin.castLE hrn b)) = y`. Use function extensionality and compare the values at `b`. Simplify using `[x₀]`. Use `⟨fun x => f (fun b => x (Fin.castLE hrn b)), x₀, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x x' h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (fun b : Fin r => x (Fin.castLE hrn b)) = fun b => x' (Fin.castLE hrn b)`. Use function extensionality and compare the values at `fun b => h _ b.2`. Simplify using `only [this]`. Introduce `x hx`. Rewrite using `[himg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hz`. Conclude with `hx (by simp only [f, dif_neg hz])`. Introduce `k x set z : Fin r → M := fun b => x (Fin.castLE hrn b) with hzdef`. Express the relevant statement in the definitionally equal form `f (fun b => k (z b)) = _ * f z`. Distinguish the cases in `hz : Submodule.span R (Set.range z) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨g, hg, -⟩` from `h1 y z hy hz`. Rewrite using `[hf z g hz hg, hf _ (k * g) (hspan z k hz) (fun b => by simp [hg b]), hadj, map_mul, mul_inv, Units.val_mul, mul_comm]`. Establish `hz' : ¬ Submodule.span R (Set.range fun b => k (z b)) = ⊤`. Introduce `h`. Use `hspan _ k.symm h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.symm_apply_apply] at this`. Conclude with `hz this`. Simplify using `only [f, dif_neg hz, dif_neg hz', mul_zero]`. Express the relevant statement in the definitionally equal form `f (fun b : Fin r => x₀ (Fin.castLE hrn b)) = 1`. Rewrite using `[hx₀, hf y 1 hy (fun b => rfl), hadj1]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[himg, hx₀, hy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equivariant_fun_on_spanning_families {R M G F : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Group G] [Field F] {r n : ℕ} (hrn : r ≤ n)
@@ -110,9 +108,9 @@ theorem exists_equivariant_fun_on_spanning_families {R M G F : Type} [CommRing R
   · rw [himg, hx₀, hy]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d hd hn ψ`. Take `⟨h0, h1, adj, hadj, hiff⟩` from `GlobalTheory.HalfPairing.halves_free_and_adjoint E H Dw l Xo c n d hd`. Take `⟨ph, x₀, ha, hb, hc, hd1, hd2⟩` from `exists_equivariant_fun_on_spanning_families hn h0 h1 adj hadj ψ`. Use `⟨fun q => d.eF.symm (∑ᶠ x : Fin n → LaJ Xo c d, d.eF (ph x) * ((⟨zeta d.l₂.M', d.c₂.zeta_mem⟩ : d.c₂.F) ^ (d.l₂.M' / d.pd)) ^ (∑ b, Dw.EF (qRep (x b)) (cHalf H d.I • levRep (q b)))), ph, x₀, ha, hb, ?_, hd1, hd2, ?_⟩` and prove the remaining obligations. Introduce `k kst h x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hiff k kst).mp h` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hc kst x`. Introduce `q`. Conclude with `d.eF.apply_symm_apply _`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_phiPin_of_character : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (n : ℕ) (d : DeltaDat Xo c n), d.IsLev → Dw.p + Dw.q ≤ n → ∀ ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ, ∃ (φ : (Fin n → LevQ Dw d.l₂) → c.F) (ph : (Fin n → LaJ Xo c d) → c.F) (x₀ : Fin n → LaJ Xo c d), DeltaDat.PhiPin { d with φδ := φ } ph ψ x₀ := by
   intro E _ _ _ H Dw l Xo c n d hd hn ψ

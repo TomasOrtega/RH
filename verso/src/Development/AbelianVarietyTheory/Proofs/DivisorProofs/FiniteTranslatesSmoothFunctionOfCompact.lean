@@ -6,13 +6,13 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hn : ∀ f ∈ Kf, {g | finRep E a g φ = finRep E a f φ} ∈ nhds f`. Introduce `f _`. Establish `hc : Continuous (fun g : GL (Fin a) (Af E) => f⁻¹ * g)` using `continuous_const.mul continuous_id`. Establish `ho` using `h.preimage hc`. Use `Filter.mem_of_superset (ho.mem_nhds ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Introduce `g hg`. Establish `hg' : finRep E a (f⁻¹ * g) φ = φ` using `hg`. Establish `e : g = f * (f⁻¹ * g)` using `by simp`. Use `show finRep E a g φ = finRep E a f φ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun f => {g | finRep E a g φ = finRep E a f φ}) hn`. Use `⟨t, fun f hf => ?_⟩` and prove the remaining obligations. Use `ht hf` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf', h'⟩` from `this`. Conclude with `⟨f', hf', h'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_translates_of_isCompact (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (a : ℕ) (φ : Sm E a) (h : IsOpen {k | finRep E a k φ = φ})

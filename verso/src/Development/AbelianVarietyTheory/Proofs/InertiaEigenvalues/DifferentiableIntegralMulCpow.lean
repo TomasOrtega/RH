@@ -16,15 +16,13 @@ open scoped ComplexConjugate nonZeroDivisors ENNReal
 namespace GlobalTheory.RSTheta
 
 /- English proof (translation)
-Establish `hT0 : 0 < T` using `one_pos.trans hT`. Establish `hq : T ^ (-s) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hT (by linarith)`. Establish `hq0 : 0 ≤ T ^ (-s)` using `by positivity`. Establish `hsum : Summable fun k : ℤ => (T ^ (-s)) ^ k.natAbs` using `Summable.of_nat_of_neg (by simpa using summable_geometric_of_lt_one hq0 hq) (by simpa using summable_geometric_of_lt_one hq0 hq)`. Use `⟨∑' k : ℤ, ENNReal.ofReal ((T ^ (-s)) ^ k.natAbs), hsum.tsum_ofReal_ne_top, fun u hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, h1, h2⟩` from `exists_mem_Ico_zpow hu hT`. Rewrite using `[← (Equiv.subRight m).tsum_eq]`. Use `ENNReal.tsum_le_tsum fun k => ?_` and prove the remaining obligations. Rewrite using `[Equiv.subRight_apply]`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : T ^ (0 : ℤ) < T ^ (k + 1)`. Rewrite using `[zpow_zero, show k + 1 = k - m + (m + 1) by ring, zpow_add₀ hT0.ne']`. Conclude with `h.trans_lt (mul_lt_mul_of_pos_left h2 (by positivity))`. Establish `h4 : 0 ≤ k` using `by have := (zpow_lt_zpow_iff_right₀ hT).1 h3; omega`. Take `⟨j, rfl⟩` from `Int.eq_ofNat_of_zero_le h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_natCast, ← Real.rpow_mul_natCast hT0.le, mul_comm (-s), Real.rpow_natCast_mul hT0.le]`. Use `Real.rpow_le_rpow_of_nonpos (by positivity) ?_ (by linarith)` and prove the remaining obligations. Rewrite using `[← zpow_natCast, show (j : ℤ) = j - m + m by ring, zpow_add₀ hT0.ne', add_sub_cancel_right]`. Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`.
-
-Conclude with `zero_le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tsum_zpow_le {T s : ℝ} (hT : 1 < T) (hs : 0 < s) : ∃ B : ℝ≥0∞, B ≠ ⊤ ∧ ∀ u : ℝ, 0 < u →
     ∑' n : ℤ, (if 1 ≤ T ^ n * u then ENNReal.ofReal ((T ^ n * u) ^ (-s)) else 0) ≤ B := by
@@ -56,15 +54,15 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_absDet : Continuous fun g : GA E a => (ideleModule E (GeneralLinearGroup.det g) : ℝ) :=
   continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))
 
 /- English proof (translation)
-Establish `h` using `ideleModule_det_diagUnits_posIdele (K := E) (fun _ : Fin a => Real.exp n) fun _ => Real.exp_pos _`. Rewrite `h` using `[GlobalTheory.CuspBoundSiegel.diagUnits_posIdele a (Real.exp_pos _), Real.log_exp, splitCentre_intCast]`. Rewrite using `[map_mul, map_mul, Positive.val_mul]`. Use `congr 1`. Use `h.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, ← Real.exp_one_rpow n, Real.rpow_intCast, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm n]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absDet_zpow_mul (n : ℤ) (g : GA E a) :
     (ideleModule E (GeneralLinearGroup.det (splitCentre E a 1 ^ n * g)) : ℝ) =
@@ -78,21 +76,19 @@ theorem absDet_zpow_mul (n : ℤ) (g : GA E a) :
     ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm n]
 
 /- English proof (translation)
-Use `set δ : GA E a → ℝ := fun g => (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ`. Establish `hδc : Continuous δ` using `continuous_absDet`. Establish `hδ0 : ∀ g, 0 < δ g` using `fun g => (ideleModule E _).2`. Establish `hδr : ∀ γ g, δ (ratGL E a γ * g) = δ g` using `fun γ g => by`. Simplify using `only [hδ, map_mul, ideleModule_det_rat, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set T : ℝ := Real.exp 1 ^ (a * Module.finrank ℚ E) with hT`. Establish `hT1 : 1 < T` using `one_lt_pow₀ (Real.one_lt_exp_iff.2 one_pos) (Nat.mul_pos ha Module.finrank_pos).ne'`. Establish `hδz : ∀ (n : ℤ) g, δ (splitCentre E a 1 ^ n * g) = T ^ n * δ g` using `absDet_zpow_mul`. Establish `hm : MeasurableSet {g | 1 ≤ δ g}` using `(isClosed_le continuous_const hδc).measurableSet`. Establish `hc : Continuous fun g => δ g ^ (-s)` using `hδc.rpow_const fun g => Or.inl (hδ0 g).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (.of_forall fun g => Real.rpow_nonneg (hδ0 g).le _)).2 ?_⟩` and prove the remaining obligations. Rewrite using `[Set.inter_comm, ← Measure.restrict_restrict hm, ← lintegral_indicator hm]`. Set `φ : (ratGL E a).range × ℤ → latticeGL E a` to `fun p => ⟨p.1 * splitCentre E a 1 ^ p.2, mul_mem (Subgroup.mem_sup_left p.1.2) (zpow_mem_latticeGL _)⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨_, γ, rfl⟩, n⟩ ⟨⟨_, γ', rfl⟩, n'⟩ h`. Establish `h1 : ratGL E a γ * splitCentre E a 1 ^ n = ratGL E a γ' * splitCentre E a 1 ^ n'` using `congrArg Subtype.val h`. Establish `h2` using `congrArg (fun x => δ (x * 1)) h1`. Simplify using `only [mul_assoc, hδr, hδz] at h2`. Take `rfl : n = n'` from `zpow_right_injective₀ (one_pos.trans hT1) hT1.ne' (mul_right_cancel₀ (hδ0 1).ne' h2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext (Subtype.ext (mul_right_cancel h1)) rfl`. Introduce and unpack `⟨g, hg⟩`. Take `⟨γ, n, rfl⟩` from `mem_latticeGL_iff.1 hg`. Conclude with `⟨⟨⟨_, γ, rfl⟩, n⟩, rfl⟩`. Use `haveI : Countable (latticeGL E a) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hd` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom (latticeGL E a) μ`. Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `h1 : μ (GlobalTheory.AutomorphicL2Unitary.stdDom (latticeGL E a)) ≠ ⊤`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ hd]`. Conclude with `measure_ne_top _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.ThetaUnfold.lintegral_unfold μ (latticeGL E a) (ratGL E a).range (fun n : ℤ => splitCentre E a 1 ^ n) (Equiv.ofBijective φ hφ) (fun _ => rfl) hd h𝓕 _ (by rintro _ ⟨γ, rfl⟩ g; simp only [Set.indicator_apply, Set.mem_setOf_eq]; rw [show δ (ratGL E a γ * g) = δ g fro …`. Take `⟨B, hB, h⟩` from `exists_tsum_zpow_le hT1 hs`. Use `(lintegral_mono (g := fun _ => B) fun g => ?_).trans_lt ?_` and prove the remaining obligations. Use `le_of_eq_of_le (tsum_congr fun n => ?_) (h _ (hδ0 g))` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq]`.
-
-Rewrite using `[hδz]`. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top hB.lt_top h1.lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_absDet_rpow_neg (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ) {s : ℝ} (hs : 0 < s) :
@@ -149,14 +145,14 @@ def IsSmallKernel (Ψ : GA E a → (Fin a → Ad E) → ℂ) : Prop :=
           (1 + ‖fun i => pInf E (y i)‖) ^ (-(M : ℝ))
 
 /- English proof (translation)
-Rewrite using `[(toMixedPi E a).toLinearEquiv.finrank_eq, Module.finrank_pi_fintype]`. Simplify using `only [mixedEmbedding.finrank, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_pi_Cinf : Module.finrank ℝ (Fin a → Cinf E) = a * Module.finrank ℚ E := by
   rw [(toMixedPi E a).toLinearEquiv.finrank_eq, Module.finrank_pi_fintype]
   simp only [mixedEmbedding.finrank, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨δ, hδ, h⟩` from `exists_le_norm_vecMul (isCompact_singleton (x := g)) (isCompact_singleton (x := (1 : GA E a))) hL`. Use `⟨δ, hδ, fun ξ hξ hm => ?_⟩` and prove the remaining obligations. Use `h g rfl 1 rfl (fun _ => 1) (fun _ => one_pos) 1 one_pos (fun _ => le_rfl) ξ hξ _ (by` as an intermediate fact. Rewrite using `[GlobalTheory.CuspBoundSiegel.diagUnits_posIdele a one_pos, Real.log_one, splitCentre_zero, mul_one, mul_one]) hm`. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_le_norm (g : GA E a) {L : Set (Fin a → Af E)} (hL : IsCompact L) : ∃ δ : ℝ, 0 < δ ∧
     ∀ ξ : Fin a → E, ξ ≠ 0 → (fun i => pFin E (((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val) i)) ∈ L →
@@ -168,35 +164,31 @@ theorem exists_le_norm (g : GA E a) {L : Set (Fin a → Af E)} (hL : IsCompact L
   rwa [mul_one] at this
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Use `haveI : IsEmpty {ξ : Fin 0 → E // ξ ≠ 0} := ⟨fun ξ => ξ.2 (Subsingleton.elim _ _)⟩`. Conclude with `⟨0, fun g => ⟨summable_empty, by simp⟩⟩`. Take `⟨⟨L, hL, hsupp⟩, hb⟩` from `hΨ`. Take `⟨J, hJ⟩` from `exists_subset_idealFiniteAdeles (isCompact_iUnion fun i : Fin a => hL.image (continuous_apply i))`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLJ : L ⊆ latt a J` using `fun z hz i => hJ (Set.mem_iUnion.2 ⟨i, z, hz, rfl⟩)`. Use `set D := a * Module.finrank ℚ E with hD`. Establish `hD1 : 1 ≤ D` using `Nat.mul_pos ha Module.finrank_pos`. Take `⟨C, hC⟩` from `hb _ (isCompact_latt J) N (D * N + D + 1)`. Take `⟨K, hK, hlat⟩` from `GlobalTheory.LatticeCount.tsum_one_add_norm_rpow_neg_le_regimes (V := Fin a → Cinf E) (by rwa [finrank_pi_Cinf]) (M := ((D * N + D + 1 : ℕ) : ℝ)) (by rw [finrank_pi_Cinf]; exact_mod_cast (by omega))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hlat` using `[finrank_pi_Cinf, ← hD]`. Use `⟨|C| * 2 ^ (D * N) * K, fun g => ?_⟩` and prove the remaining obligations. Use `set Δ : ℝ := (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hΔ`. Establish `hΔ0 : 0 < Δ` using `(ideleModule E _).2`. Set `T : (Fin a → E) →+ (Fin a → Ad E)` to `{ toFun := fun ξ => (fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val map_zero' := by simp only [Pi.zero_apply, map_zero]; exact zero_vecMul _ map_add' := fun x y => by simp only [Pi.add_apply, map_add]; exact add_vecMul _ _ _ }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `TI : (Fin a → E) →+ (Fin a → Cinf E)` to `((pInf E).toAddMonoidHom.compLeft (Fin a)).comp T`. Set `TF : (Fin a → E) →+ (Fin a → Af E)` to `((pFin E).toAddMonoidHom.compLeft (Fin a)).comp T`. Set `P : AddSubgroup (Fin a → E)` to `(AddSubgroup.pi Set.univ fun _ => idealFiniteAdeles J).comap TF`. Establish `hP : ∀ ξ, ξ ∈ P ↔ TF ξ ∈ latt a J` using `fun ξ => ⟨fun h i => h i trivial, fun h i _ => h i⟩`. Take `⟨δ, hδ, hδle⟩` from `exists_le_norm g (isCompact_latt J)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `replace hδle : ∀ ξ ∈ P, ξ ≠ 0 → δ ≤ ‖TI ξ‖ := fun ξ h h0 => hδle ξ h0 ((hP ξ).1 h)`. Express the relevant statement in the definitionally equal form `Summable (fun ξ : {ξ : Fin a → E // ξ ≠ 0} => ‖Ψ g (T ξ.1)‖) ∧ ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖Ψ g (T ξ.1)‖ ≤ _`. Establish `hsP : ∀ ξ, Ψ g (T ξ) ≠ 0 → ξ ∈ P` using `fun ξ h => (hP ξ).2 (hLJ (hsupp g _ h))`. Use `set S : Set ℝ := (fun ξ => ‖TI ξ‖) '' {ξ | ξ ∈ P ∧ ξ ≠ 0} with hS`. Break down `S.eq_empty_or_nonempty with hS0 | hS0` into its components or cases.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: ∀ ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖Ψ g (T ξ.1)‖ = 0` using `fun ξ => by`. Assume the negation of the conclusion as `h`. Conclude with `Set.eq_empty_iff_forall_notMem.1 hS0 _ ⟨ξ.1, ⟨hsP _ (norm_ne_zero_iff.1 h), ξ.2⟩, rfl⟩`. Simplify using `only [this, tsum_zero]`. Conclude with `⟨summable_zero, by positivity⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Establish `hr : 0 < sInf S` using `hδ.trans_le (le_csInf hS0 (by rintro _ ⟨ξ, hξ, rfl⟩; exact hδle ξ hξ.1 hξ.2))`. Establish `hrle : ∀ ξ ∈ P, ξ ≠ 0 → sInf S ≤ ‖TI ξ‖` using `fun ξ h h0 => csInf_le ⟨0, by rintro _ ⟨ξ, -, rfl⟩; exact norm_nonneg _⟩ ⟨ξ, ⟨h, h0⟩, rfl⟩`. Take `⟨_, ⟨ξ₀, hξ₀, rfl⟩, hlt⟩` from `exists_lt_of_csInf_lt hS0 (show sInf S < 2 * sInf S by linarith)`. Generalize the expression as in `sInf S = r at hr hrle hlt`. Take `⟨hsum, hlo, hhi⟩` from `hlat (P.map TI) r hr (by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨ξ, hξ, rfl⟩ h0`. Conclude with `hrle ξ hξ fun e => h0 (by rw [e, map_zero]))`. Use `set A : ℝ := |C| * ((2 * r) ^ D / Δ) ^ N with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Establish `hterm : ∀ y, ‖Ψ g y‖ ≤ A * (1 + ‖fun i => pInf E (y i)‖) ^ (-((D * N + D + 1 : ℕ) : ℝ))` using `fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Use `(hC g ξ₀ hξ₀.2 ((hP _).1 hξ₀.1) y).trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations. Use `mul_le_mul (le_abs_self C) ?_ (by positivity) (abs_nonneg C)` and prove the remaining obligations. Establish `: ‖TI ξ₀‖ ^ D ≤ (2 * r) ^ D` using `pow_le_pow_left₀ (norm_nonneg _) hlt.le _`. Conclude with `pow_le_pow_left₀ (by positivity) (div_le_div_of_nonneg_right this hΔ0.le) _`. Set `j : {ξ // ξ ∈ P ∧ ξ ≠ 0} → {ξ : Fin a → E // ξ ≠ 0}` to `fun ξ => ⟨ξ.1, ξ.2.2⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hj : Function.Injective j` using `fun x y h => Subtype.ext (congrArg (fun z : {ξ : Fin a → E // ξ ≠ 0} => z.1) h)`. Establish `hjs : ∀ ξ ∉ Set.range j, ‖Ψ g (T ξ.1)‖ = 0` using `fun ξ h => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨⟨ξ.1, hsP _ (norm_ne_zero_iff.1 h'), ξ.2⟩, rfl⟩`. Set `ι : {ξ // ξ ∈ P ∧ ξ ≠ 0} → ((P.map TI : Set (Fin a → Cinf E)) \ {0} : Set (Fin a → Cinf E))` to `fun ξ => ⟨TI ξ.1, ⟨ξ.1, ξ.2.1, rfl⟩, norm_pos_iff.1 (hr.trans_le (hrle _ ξ.2.1 ξ.2.2))⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hι : Function.Injective ι` using `fun x y h => Subtype.ext (by`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hrle _ (P.sub_mem x.2.1 y.2.1) (sub_ne_zero.2 hne)`. Rewrite `h1` using `[map_sub, show TI x.1 = TI y.1 from congrArg Subtype.val h, sub_self, norm_zero]`. Conclude with `h1.not_gt hr)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs1` using `(hsum.mul_left A).comp_injective hι`. Establish `hs2 : Summable ((fun ξ : {ξ : Fin a → E // ξ ≠ 0} => ‖Ψ g (T ξ.1)‖) ∘ j)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => hterm (T ξ.1)) hs1`. Use `⟨(hj.summable_iff hjs).1 hs2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj.tsum_eq (f := fun ξ : {ξ : Fin a → E // ξ ≠ 0} => ‖Ψ g (T ξ.1)‖) fun ξ h => by_contra fun h' => h (hjs ξ h')]`. Use `(Summable.tsum_le_tsum_of_inj ι hι (fun _ _ => by positivity) (fun ξ => hterm (T ξ.1)) hs2 (hsum.mul_left A)).trans ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[tsum_mul_left]`. Establish `hAe : A = |C| * 2 ^ (D * N) * Δ ^ (-(N : ℝ)) * r ^ ((D * N : ℕ) : ℝ)`. Rewrite using `[hA, Real.rpow_neg hΔ0.le, Real.rpow_natCast, Real.rpow_natCast, div_pow, ← pow_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ e : ℝ, r ^ (((D * N : ℕ) : ℝ) + e) ≤ 1 → A * (K * r ^ e) ≤ |C| * 2 ^ (D * N) * K * Δ ^ (-(N : ℝ))`.
-
-Introduce `e he`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAe, Real.rpow_add hr]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_of_le_one_right (by positivity) he`.
-
-Establish `hDN : (D : ℝ) ≤ ((D * N : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_mul_of_pos_right D hN`. Break down `le_total r 1 with h1 | h1` into its components or cases. Conclude with `(mul_le_mul_of_nonneg_left (hlo h1) hA0).trans (key _ (Real.rpow_le_one hr.le h1 (by linarith)))`. Conclude with `(mul_le_mul_of_nonneg_left (hhi h1) hA0).trans (key _ (Real.rpow_le_one_of_one_le_of_nonpos h1 (by push_cast; linarith)))`.
+A detailed English derivation is pending.
 -/
 theorem IsSmallKernel.tsum_le {Ψ : GA E a → (Fin a → Ad E) → ℂ} (hΨ : IsSmallKernel Ψ) {N : ℕ} (hN : 1 ≤ N) :
     ∃ C : ℝ, ∀ g : GA E a,
@@ -287,11 +279,11 @@ theorem IsSmallKernel.tsum_le {Ψ : GA E a → (Fin a → Ad E) → ℂ} (hΨ : 
       (key _ (Real.rpow_le_one_of_one_le_of_nonpos h1 (by push_cast; linarith)))
 
 /- English proof (translation)
-Establish `hδ' : Measurable fun g => (δ g : ℂ)` using `Complex.measurable_ofReal.comp hδ`. Establish `hm : ∀ s : ℂ, AEStronglyMeasurable (fun g => Θ g * (δ g : ℂ) ^ s) ν` using `fun s => hΘ.mul (hδ'.pow_const s).aestronglyMeasurable`. Establish `hI : ∀ s : ℂ, Integrable (fun g => Θ g * (δ g : ℂ) ^ s) ν` using `fun s => (hi s.re).mono' (hm s) (h1.mono fun g hg => by`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (one_pos.trans_le hg)])`. Use `⟨hI, fun s₀ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (F := fun s g => Θ g * (δ g : ℂ) ^ s) (F' := fun s g => Θ g * ((δ g : ℂ) ^ s * Complex.log (δ g))) (Metric.ball_mem_nhds s₀ one_pos) (.of_forall hm) (hI s₀) (hΘ.mul ((hδ'.pow_const s₀).mul hδ'.clog).aestronglyMeasurable) (h1.mono …` and prove the remaining obligations. Establish `h0` using `one_pos.trans_le hg`. Rewrite using `[norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos h0, ← Complex.ofReal_log h0.le, Complex.norm_real, Real.norm_of_nonneg (Real.log_nonneg hg), Real.rpow_add_one h0.ne']`. Use `mul_le_mul_of_nonneg_left (mul_le_mul (Real.rpow_le_rpow_of_exponent_le hg ?_) (Real.log_le_self h0.le) (Real.log_nonneg hg) (by positivity)) (norm_nonneg _)` and prove the remaining obligations. Use `(Complex.re_le_norm (s - s₀)).trans (mem_ball_iff_norm.1 hs).le` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Complex.hasStrictDerivAt_const_cpow (Or.inl (Complex.ofReal_ne_zero.2 (one_pos.trans_le hg).ne'))).hasDerivAt.const_mul _`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem differentiable_integral_mul_cpow {X : Type*} [MeasurableSpace X] {ν : Measure X} {Θ : X → ℂ} {δ : X → ℝ}
     (hΘ : AEStronglyMeasurable Θ ν) (hδ : Measurable δ) (h1 : ∀ᵐ g ∂ν, 1 ≤ δ g)
@@ -320,15 +312,13 @@ theorem differentiable_integral_mul_cpow {X : Type*} [MeasurableSpace X] {ν : M
       (one_pos.trans_le hg).ne'))).hasDerivAt.const_mul _
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `set δ : GA E a → ℝ := fun g => (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ`. Establish `hδc : Continuous δ` using `continuous_absDet`. Establish `hδ0 : ∀ g, 0 < δ g` using `fun g => (ideleModule E _).2`. Establish `h1 : ∀ᵐ g ∂μ.restrict (𝓕 ∩ {g | 1 ≤ δ g}), 1 ≤ δ g` using `ae_restrict_of_ae_restrict_of_subset Set.inter_subset_right (ae_restrict_mem (isClosed_le continuous_const hδc).measurableSet)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : ∀ x : ℝ, AEStronglyMeasurable (fun g => δ g ^ x) (μ.restrict (𝓕 ∩ {g | 1 ≤ δ g}))` using `fun x => (hδc.rpow_const fun g => Or.inl (hδ0 g).ne').aestronglyMeasurable`. Establish `hI : ∀ x : ℝ, IntegrableOn (fun g : GA E a => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖Ψ g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)‖) * δ g ^ x) (𝓕 ∩ {g | 1 ≤ δ g}) μ`. Introduce `x`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Use `haveI : IsEmpty {ξ : Fin 0 → E // ξ ≠ 0} := ⟨fun ξ => ξ.2 (Subsingleton.elim _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨C, hC⟩` from `hΨ.tsum_le (N := ⌈x⌉₊ + 1) (by omega)`. Establish `hΘ : AEStronglyMeasurable (fun g : GA E a => ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖Ψ g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)‖) (μ.restrict (𝓕 ∩ {g | 1 ≤ δ g}))` using `AEStronglyMeasurable.tsum fun ξ => (hm ξ.1 ξ.2).norm.restrict`. Use `((integrableOn_absDet_rpow_neg ha μ h𝓕 (s := (⌈x⌉₊ + 1 : ℕ) - x) (by push_cast; linarith [Nat.le_ceil x])).const_mul C).mono' (hΘ.mul (hpow x)) (.of_forall fun g => ?_)` and prove the remaining obligations. Establish `h0` using `hδ0 g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_of_nonneg (mul_nonneg (tsum_nonneg fun _ => norm_nonneg _) (by positivity)), neg_sub, sub_eq_neg_add, Real.rpow_add h0, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hC g).2 (by positivity)`. Take `⟨C, hC⟩` from `hΨ.tsum_le (N := 1) le_rfl`. Establish `hΘ : AEStronglyMeasurable (fun g : GA E a => ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, Ψ g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) (μ.restrict (𝓕 ∩ {g | 1 ≤ δ g}))` using `AEStronglyMeasurable.tsum fun ξ => (hm ξ.1 ξ.2).restrict`. Use `⟨hI, differentiable_integral_mul_cpow hΘ hδc.measurable h1 fun x => (hI x).mono' (hΘ.norm.mul (hpow x)) (.of_forall fun g => ?_)⟩` and prove the remaining obligations.
-
-Establish `h0` using `hδ0 g`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_right (norm_tsum_le_tsum_norm (hC g).1) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSmallKernel.integrableOn {Ψ : GA E a → (Fin a → Ad E) → ℂ} (hΨ : IsSmallKernel Ψ) (μ : Measure (GA E a))
     [μ.IsHaarMeasure] {𝓕 : Set (GA E a)} (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ)
@@ -383,15 +373,15 @@ theorem IsSmallKernel.integrableOn {Ψ : GA E a → (Fin a → Ad E) → ℂ} (h
   exact mul_le_mul_of_nonneg_right (norm_tsum_le_tsum_norm (hC g).1) (by positivity)
 
 /- English proof (translation)
-Use `⟨⟨(η + ·) '' latt a J, (isCompact_latt J).image (continuous_const_add η), fun g y hy => ⟨_, by_contra fun hn => hy (by rw [rsPsi, thetaFn, Set.indicator_of_notMem hn, mul_zero]), add_sub_cancel _ _⟩⟩, fun L hL N M => ?_⟩` and prove the remaining obligations. Establish `hK` using `hc.isCompact.image_of_continuousOn ((continuousOn_inv_rowGL ℓ).mono hs)`. Take `⟨C, hC⟩` from `h L hL _ hK N`. Take `⟨C', hC'⟩` from `h' L hL _ hK 0`. Take `⟨B, hB⟩` from `(show Continuous fun u => ‖Φ u‖ * (1 + ‖u‖) ^ M by fun_prop).bounded_above_of_compact_support hc.norm.mul_right`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨|C| * |C'| * |B|, fun g ξ hξ hm y => ?_⟩` and prove the remaining obligations. Establish `hΔ : 0 < (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `(ideleModule E _).2`. Establish `e : ‖rsPsi ℓ φ φ' Φ J η g y‖ ≤ ‖rsInf ℓ φ φ' Φ g fun i => pInf E (y i)‖`. Rewrite using `[rsPsi, thetaFn, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) ((norm_indicator_le_norm_self _ _).trans_eq norm_one)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `e.trans ?_` and prove the remaining obligations. Generalize the expression as in `(fun i => pInf E (y i)) = u`. Distinguish the cases in `hu : u ∈ tsupport Φ`. Establish `h1` using `(hC g _ ⟨u, hu, rfl⟩ ξ hξ hm).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Establish `h2` using `(hC' g _ ⟨u, hu, rfl⟩ ξ hξ hm).trans (mul_le_mul_of_nonneg_right (le_abs_self C') (by positivity))`.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖Φ u‖ ≤ |B| * (1 + ‖u‖) ^ (-(M : ℝ))`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Conclude with `(le_abs_self _).trans ((hB u).trans (le_abs_self B))`. Rewrite using `[rsInf, norm_mul, norm_mul, Complex.norm_conj]`. Use `(mul_le_mul (mul_le_mul h1 h2 (norm_nonneg _) (by positivity)) h3 (norm_nonneg _) (by positivity)).trans_eq ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rsInf, image_eq_zero_of_notMem_tsupport hu, mul_zero, norm_zero]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem isSmallKernel_rsPsi {ℓ : Fin a} {φ φ' : GA E a → ℂ} {Φ : (Fin a → Cinf E) → ℂ} (h : Decays φ) (h' : Decays φ')
     (hΦ : Continuous Φ) (hc : HasCompactSupport Φ) (hs : tsupport Φ ⊆ rowSet E ℓ)

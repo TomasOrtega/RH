@@ -9,7 +9,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_map p' (U := ⊤) (V := ⊤) (by simp) (homOfLE (le_top : V ≤ ⊤)).op]`. Rewrite using `[CommRingCat.comp_apply]`. Use `(X'.presheaf.germ_res_apply (homOfLE (le_top : V ≤ ⊤)) _ hV ((p'.appLE ⊤ ⊤ (by simp)) z)).trans ?_` and prove the remaining obligations. Establish `e : p'.appLE ⊤ ⊤ (by simp) = p'.appTop` using `(Scheme.Hom.app_eq_appLE p').symm`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -24,19 +24,19 @@ theorem fnOf_appLE_top (D : Type) [CommRing D] {X' : Scheme.{0}} [IsIntegral X']
   rfl
 
 /- English proof (translation)
-Introduce `T D _ _ a X X' _ _ p p' π θ H hθ U hU hU' hAff s`. Use `letI : Algebra D X'.functionField := (GlobalTheory.Desc.cst p').toAlgebra`. Use `set M : Submonoid X'.functionField := ((θ.comp (fnOf U hU)).rangeS).toSubmonoid with hM`. Establish `hMset : (M : Set X'.functionField) = θ '' Set.range (fnOf U hU)`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hM, Set.range_comp]`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := U) (UY := π ⁻¹ᵁ U) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hAff)`. Establish `hcl` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`. Set `S : Subring Γ(X', π ⁻¹ᵁ U)` to `(Algebra.adjoin D (M : Set X'.functionField)).toSubring.comap (fnOf (π ⁻¹ᵁ U) hU')`. Establish `hle : (⊤ : Subring _) ≤ S`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcl, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨z, rfl⟩)`. Use `show fnOf (π ⁻¹ᵁ U) hU' _ ∈ Algebra.adjoin D (M : Set X'.functionField)`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Rewrite using `[hMset]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fnOf U hU y, ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GaussPt.theta_fnOf hθ U hU hU', Scheme.Hom.app_eq_appLE]`. Use `show fnOf (π ⁻¹ᵁ U) hU' _ ∈ Algebra.adjoin D (M : Set X'.functionField)`. Establish `e : fnOf (π ⁻¹ᵁ U) hU' ((p'.appLE ⊤ (π ⁻¹ᵁ U) (by simp)) z) = algebraMap D X'.functionField ((Scheme.ΓSpecIso (CommRingCat.of D)).hom z)`. Rewrite using `[RingHom.algebraMap_toAlgebra]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.Desc.cst, RingHom.comp_apply]`. Use `(fnOf_appLE_top D p' _ hU' _ z).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : fnOf (π ⁻¹ᵁ U) hU' s ∈ Algebra.adjoin D (M : Set X'.functionField)` using `hle (Subring.mem_top s)`. Establish `hsp : fnOf (π ⁻¹ᵁ U) hU' s ∈ Submodule.span D (M : Set X'.functionField)`. Use `Algebra.adjoin_eq_span D (M : Set X'.functionField)` as an intermediate fact. Rewrite `this` using `[Submonoid.closure_eq]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hs`. Take `⟨n, f, g, hfg⟩` from `Submodule.mem_span_set'.1 hsp`. Use `⟨n, f, fun i => g i, fun i => hMset ▸ (g i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfg]`. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_preimage_mem_spanBy : ∀ (T D : Type) [CommRing T] [CommRing D] (a : T →+* D) (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (p : X ⟶ Sp T) (p' : X' ⟶ Sp D) (π : X' ⟶ X) (θ : X.functionField →+* X'.functionField), IsPullback π p' p (spMap a) → PFF (𝟙 _) π θ → ∀ (U : X.Opens) (hU : genericPoint X ∈ U) (hU' : genericPoint X' ∈ π ⁻¹ᵁ U), IsAffineOpen U → ∀ s : Γ(X', π ⁻¹ᵁ U), GlobalTheory.Cartier.fnOf (π ⁻¹ᵁ U) hU' s ∈ spanBy (GlobalTheory.Desc.cst p') (θ '' Set.range (GlobalTheory.Cartier.fnOf U hU)) := by
   intro T D _ _ a X X' _ _ p p' π θ H hθ U hU hU' hAff s

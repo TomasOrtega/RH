@@ -13,7 +13,7 @@ variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 def W (n k : ℕ) : Finset (List (Fin n × Fin n)) := (List.finite_length_le (Fin n × Fin n) k).toFinset
 
 /- English proof (translation)
-Simplify using `[W]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_W {k : ℕ} {l : List (Fin n × Fin n)} : l ∈ W n k ↔ l.length ≤ k := by
   simp [W]
@@ -24,24 +24,24 @@ def wd (E : Fin n → Fin n → Module.End ℂ V) (l : List (Fin n × Fin n)) : 
 def N (E : Fin n → Fin n → Module.End ℂ V) (k : ℕ) (v : V) : ℝ := ∑ l ∈ W n k, ‖wd E l v‖
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma N_nonneg (E : Fin n → Fin n → Module.End ℂ V) (k : ℕ) (v : V) : 0 ≤ N E k v :=
   Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun l => ‖wd E l v‖) (fun _ _ => norm_nonneg _) (mem_W.2 hl)`.
+A detailed English derivation is pending.
 -/
 lemma le_N (E : Fin n → Fin n → Module.End ℂ V) {k : ℕ} {l : List (Fin n × Fin n)} (hl : l.length ≤ k)
     (v : V) : ‖wd E l v‖ ≤ N E k v :=
   Finset.single_le_sum (f := fun l => ‖wd E l v‖) (fun _ _ => norm_nonneg _) (mem_W.2 hl)
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Conclude with `⟨1, zero_le_one, fun v => by simpa [wd] using le_N E hl v⟩`. Consider the case `zero => exact ⟨0, le_rfl, fun v => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, h⟩` from `hx`. Take `⟨d, hd, h'⟩` from `hy`. Use `⟨c + d, add_nonneg hc hd, fun v => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Consider the case `smul a x _ hx`. Take `⟨c, hc, h⟩` from `hx`. Use `⟨‖a‖ * c, mul_nonneg (norm_nonneg _) hc, fun v => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 lemma U_bound (E : Fin n → Fin n → Module.End ℂ V) (k : ℕ) (u : Module.End ℂ V) (hu : u ∈ U E k) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ v, ‖u v‖ ≤ c * N E k v := by
@@ -65,9 +65,9 @@ lemma U_bound (E : Fin n → Fin n → Module.End ℂ V) (k : ℕ) (u : Module.E
       _ = ‖a‖ * c * N E k v := by ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hs` using `Real.sq_sqrt hP`. Establish `hs0` using `Real.sqrt_nonneg P`. Establish `hxpos : 0 < x` using `lt_of_le_of_lt (mul_nonneg (add_nonneg hQ hs0) hy) hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.sqrt P * y ≤ x` using `by nlinarith [mul_nonneg hQ hy]`. Use polynomial arithmetic with `[mul_pos hxpos (sub_pos.2 hc), mul_le_mul_of_nonneg_left h1 (mul_nonneg hs0 hy)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma quad {x y P Q : ℝ} (_hx : 0 ≤ x) (hy : 0 ≤ y) (hP : 0 ≤ P) (hQ : 0 ≤ Q)
     (h : x ^ 2 ≤ P * y ^ 2 + Q * x * y) : x ≤ (Q + Real.sqrt P) * y := by
@@ -80,31 +80,29 @@ lemma quad {x y P Q : ℝ} (_hx : 0 ≤ x) (hy : 0 ≤ y) (hP : 0 ≤ P) (hQ : 0
   nlinarith [mul_pos hxpos (sub_pos.2 hc), mul_le_mul_of_nonneg_left h1 (mul_nonneg hs0 hy)]
 
 /- English proof (translation)
-Establish `hx : 0 ≤ N E (k + 1) v` using `N_nonneg E _ v`. Establish `hy : 0 ≤ N E k v` using `N_nonneg E _ v`. Use `set x := N E (k + 1) v with hxdef`. Use `set y := N E k v with hydef`. Use `set M : ℝ := ((W n (k + 1)).card : ℝ) with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `Nat.cast_nonneg _`. Establish `hκ` using `abs_nonneg κ`. Establish `key : ∀ l : List (Fin n × Fin n), l.length ≤ k + 1 → ‖wd E l v‖ ^ 2 ≤ (2 * μ + |κ| + 1) * y ^ 2 + 2 * c * x * y`. Introduce `l hl`. Consider the cases of `l with`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `nil`. Establish `h1 : ‖wd E [] v‖ ≤ y` using `le_N E (l := []) (k := k) (Nat.zero_le _) v`. Establish `h2 : 0 ≤ ‖wd E [] v‖` using `norm_nonneg _`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hc0 hx) hy, mul_nonneg (add_nonneg (mul_nonneg zero_le_two hμ) hκ) (sq_nonneg y)]`. Consider the case `cons p l'`.
+Use the polynomial consequences of the given equalities and inequalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : l'.length ≤ k` using `by simpa using hl`. Establish `hwy : ‖wd E l' v‖ ≤ y` using `le_N E hl' v`. Establish `hz` using `hc l' hl' v`. Establish `hOw : casimirK ε E (wd E l' v) = (casimirK ε E * wd E l' - wd E l' * casimirK ε E) v + (μ : ℂ) • wd E l' v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hv, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `hsplit : wd E (p :: l') v = E p.1 p.2 (wd E l' v)`. Simplify using `[wd, Module.End.mul_apply]`. Rewrite using `[hsplit]`. Establish `hle : ‖E p.1 p.2 (wd E l' v)‖ ^ 2 ≤ ∑ a, ∑ b, ‖E a b (wd E l' v)‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hin : (inner ℂ (wd E l' v) (casimirK ε E (wd E l' v))).re ≤ ‖wd E l' v‖ * ‖(casimirK ε E * wd E l' - wd E l' * casimirK ε E) v‖ + μ * ‖wd E l' v‖ ^ 2`. Establish `hself : (inner ℂ (wd E l' v) (wd E l' v)).re = ‖wd E l' v‖ ^ 2`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hOw, inner_add_right, Complex.add_re, inner_smul_right, Complex.re_ofReal_mul, hself]`. Use `(Complex.re_le_norm (inner ℂ (wd E l' v) ((casimirK ε E * wd E l' - wd E l' * casimirK ε E) v))).trans (norm_inner_le_norm _ _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hle` using `[hcas]`. Establish `hw0` using `norm_nonneg (wd E l' v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0` using `norm_nonneg ((casimirK ε E * wd E l' - wd E l' * casimirK ε E) v)`. Establish `e1` using `mul_le_mul hwy hz hz0 hy`. Establish `e2 : ‖wd E l' v‖ ^ 2 ≤ y ^ 2` using `by nlinarith`. Establish `e3` using `mul_le_mul_of_nonneg_left e2 hμ`. Establish `e4` using `mul_le_mul_of_nonneg_left e2 hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hk : -κ * ‖wd E l' v‖ ^ 2 ≤ |κ| * ‖wd E l' v‖ ^ 2` using `mul_le_mul_of_nonneg_right (by linarith [neg_abs_le κ]) (sq_nonneg _)`. Use polynomial arithmetic with `[sq_nonneg y]`. Establish `hR0 : 0 ≤ (2 * μ + |κ| + 1) * y ^ 2 + 2 * c * x * y` using `by positivity`. Establish `hsum : x ≤ M * Real.sqrt ((2 * μ + |κ| + 1) * y ^ 2 + 2 * c * x * y)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : x ^ 2 ≤ M ^ 2 * ((2 * μ + |κ| + 1) * y ^ 2 + 2 * c * x * y)`. Use `Real.sq_sqrt hR0` as an intermediate fact. Establish `h0` using `mul_nonneg hM0 (Real.sqrt_nonneg ((2 * μ + |κ| + 1) * y ^ 2 + 2 * c * x * y))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : 0 ≤ 2 * μ + |κ| + 1` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq` using `quad (P := M ^ 2 * (2 * μ + |κ| + 1)) (Q := 2 * M ^ 2 * c) hx hy (by positivity) (by positivity) (by linarith)`. Rewrite `hq` using `[Real.sqrt_mul (sq_nonneg M), Real.sqrt_sq hM0]`. Establish `ha : Real.sqrt (2 * μ + |κ| + 1) ≤ Real.sqrt (2 + |κ|) * Real.sqrt (1 + μ)`. Rewrite using `[← Real.sqrt_mul (by positivity)]`. Conclude with `Real.sqrt_le_sqrt (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ht : 1 ≤ Real.sqrt (1 + μ)`. Use `Real.sqrt_le_sqrt (show (1 : ℝ) ≤ 1 + μ by linarith)` as an intermediate fact. Rewrite `this` using `[Real.sqrt_one]`. Then use the resulting hypothesis. Establish `h1` using `mul_le_mul_of_nonneg_left ht (mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * M ^ 2 * c) hy)`. Establish `h2` using `mul_le_mul_of_nonneg_left ha (mul_nonneg hM0 hy)`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma step (E : Fin n → Fin n → Module.End ℂ V) (ε : Fin n → Bool) (κ μ c : ℝ) (k : ℕ)
     (hcas : ∀ w : V, ∑ a, ∑ b, ‖E a b w‖ ^ 2 = 2 * (inner ℂ w (casimirK ε E w)).re - κ * ‖w‖ ^ 2)
@@ -194,21 +192,21 @@ end IdentityFiltrationBound
 
 open IdentityFiltrationBound in
 /- English proof (translation)
-Introduce `h0 h1 h3 n ε V _ _ E hE`. Take `⟨κ, hκ⟩` from `h3 n ε V E hE`. Take `⟨-, -, -, h0c⟩` from `h0 n ε V E hE`. Take `⟨hmono, -, -, -, hcomm, hK2, -⟩` from `h1 n ε V E hE`. Establish `hcas : ∀ w : V, ∑ a, ∑ b, ‖E a b w‖ ^ 2 = 2 * (inner ℂ w (casimirK ε E w)).re - κ * ‖w‖ ^ 2` using `fun w => (h0c κ hκ w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `grow : ∀ k : ℕ, ∃ G : ℝ, 0 ≤ G ∧ ∀ μ v, 0 ≤ μ → Eig ε E μ v → N E k v ≤ G * Real.sqrt (1 + μ) ^ k * ‖v‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨(W n 0).card, Nat.cast_nonneg _, fun μ v _ _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `mem_W.1 hl` as an intermediate fact. Consider the cases of `l with`. Consider the case `nil => simp [wd]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cons p l => simp at this`. Use `_ = _ := by simp`. Consider the case `succ k ih`. Take `⟨G, hG, hG'⟩` from `ih`. Establish `hc : ∀ l : List (Fin n × Fin n), ∃ c : ℝ, 0 ≤ c ∧ (l.length ≤ k → ∀ v, ‖(casimirK ε E * wd E l - wd E l * casimirK ε E) v‖ ≤ c * N E (k + 1) v)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Distinguish the cases in `hl : l.length ≤ k`. Establish `hmem : wd E l ∈ U E k` using `hmono _ _ hl (Submodule.subset_span ⟨l, le_rfl, rfl⟩)`. Establish `hin` using `hcomm 2 k _ hK2 _ hmem`. Establish `h' : 2 + k - 1 = k + 1` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hin` using `[h']`. Take `⟨c, hc, hc'⟩` from `U_bound E (k + 1) _ hin`. Conclude with `⟨c, hc, fun _ => hc'⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hl⟩`. Use `choose c hc0 hc using hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ l : List (Fin n × Fin n), l.length ≤ k → ∀ v, ‖(casimirK ε E * wd E l - wd E l * casimirK ε E) v‖ ≤ (∑ l ∈ W n k, c l) * N E (k + 1) v` using `fun l hl v => (hc l hl v).trans (mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := c) (fun i _ => hc0 i) (mem_W.2 hl)) (N_nonneg _ _ _))`. Establish `hC0 : 0 ≤ ∑ l ∈ W n k, c l` using `Finset.sum_nonneg fun i _ => hc0 i`. Use `⟨(2 * ((W n (k + 1)).card : ℝ) ^ 2 * (∑ l ∈ W n k, c l) + ((W n (k + 1)).card : ℝ) * Real.sqrt (2 + |κ|)) * G, by positivity, fun μ v hμ hv => ?_⟩` and prove the remaining obligations. Establish `hst` using `step E ε κ μ _ k hcas hC0 hC v hv hμ`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k u hu`. Take `⟨c, hc, hc'⟩` from `U_bound E k u hu`. Take `⟨G, hG, hG'⟩` from `grow k`. Use `⟨c * G, mul_nonneg hc hG, fun μ v hμ hv => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem SymmetricPowerMatrix : A0 → A1 → CasimirIsRealScalar → A6 := by
   intro h0 h1 h3 n ε V _ _ E hE

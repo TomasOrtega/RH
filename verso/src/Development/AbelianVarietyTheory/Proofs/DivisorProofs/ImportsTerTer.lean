@@ -5,15 +5,15 @@ namespace GlobalTheory.LocalUnitApproximation
 open NumberField
 
 /- English proof (translation)
-Introduce `K _ _ n M y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x z _ _ hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d₁, hd₁, h₁⟩` from `hx`. Take `⟨d₂, hd₂, h₂⟩` from `hz`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Establish `e : (d₁ * d₂) • (x + z) = d₂ • (d₁ • x) + d₁ • (d₂ • z)`. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm d₁ d₂ x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `M.add_mem (M.smul_mem _ h₁) (M.smul_mem _ h₂)`. Consider the case `smul a x _ hx`. Take `⟨d, hd, h⟩` from `hx`. Take `⟨⟨num, den⟩, hnd⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 K)) a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hnd`. Establish `hden : (den : 𝓞 K) ≠ 0` using `nonZeroDivisors.coe_ne_zero den`. Use `⟨(den : 𝓞 K) * d, mul_ne_zero hden hd, ?_⟩` and prove the remaining obligations. Establish `e : ((den : 𝓞 K) * d) • (a • x) = num • (d • x)`. Rewrite using `[← algebraMap_smul K ((den : 𝓞 K) * d) (a • x), ← algebraMap_smul K num (d • x), ← algebraMap_smul K d x, smul_smul, smul_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[map_mul, ← hnd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `M.smul_mem _ h`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [inst : Field K] [NumberField K] {n : ℕ} (M : Submodule (NumberField.RingOfIntegers K) (Fin n → K)) {y : Fin n → K}, y ∈ Submodule.span K (↑M : Set (Fin n → K)) → ∃ (d : NumberField.RingOfIntegers K), d ≠ (0 : NumberField.RingOfIntegers K) ∧ d • y ∈ M := by
   intro K _ _ n M y hy

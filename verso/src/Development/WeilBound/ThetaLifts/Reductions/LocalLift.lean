@@ -21,7 +21,7 @@ theorem bl_apply (i j : l → l ⊕ l) (g : Matrix (l ⊕ l) (l ⊕ l) ℝ) (x :
     bl i j g x a = ∑ b, g (i a) (j b) * x b := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[bl_apply, pPart, qPart, mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pPart_mulVec (g : Matrix (l ⊕ l) (l ⊕ l) ℝ) (w : l ⊕ l → ℝ) :
     pPart (g *ᵥ w) = bl Sum.inl Sum.inl g (pPart w) + bl Sum.inl Sum.inr g (qPart w) := by
@@ -29,7 +29,7 @@ theorem pPart_mulVec (g : Matrix (l ⊕ l) (l ⊕ l) ℝ) (w : l ⊕ l → ℝ) 
   simp [bl_apply, pPart, qPart, mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[bl_apply, pPart, qPart, mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qPart_mulVec (g : Matrix (l ⊕ l) (l ⊕ l) ℝ) (w : l ⊕ l → ℝ) :
     qPart (g *ᵥ w) = bl Sum.inr Sum.inl g (pPart w) + bl Sum.inr Sum.inr g (qPart w) := by
@@ -37,34 +37,34 @@ theorem qPart_mulVec (g : Matrix (l ⊕ l) (l ⊕ l) ℝ) (w : l ⊕ l → ℝ) 
   simp [bl_apply, pPart, qPart, mulVec, dotProduct]
 
 /- English proof (translation)
-The claim follows from `LinearMap.det_toLin (EuclideanSpace.basisFun l ℝ).toBasis _`.
+A detailed English derivation is pending.
 -/
 theorem det_bl (i j : l → l ⊕ l) (g : Matrix (l ⊕ l) (l ⊕ l) ℝ) : (bl i j g).det = (g.submatrix i j).det :=
   LinearMap.det_toLin (EuclideanSpace.basisFun l ℝ).toBasis _
 
 /- English proof (translation)
-Use extensionality with `x a`. Simplify using `[bl_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block_inl_inl_one : bl Sum.inl Sum.inl (1 : Matrix (l ⊕ l) (l ⊕ l) ℝ) = 1 := by
   ext x a
   simp [bl_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `x a`. Simplify using `[bl_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block_inl_inr_one : bl Sum.inl Sum.inr (1 : Matrix (l ⊕ l) (l ⊕ l) ℝ) = 0 := by
   ext x a
   simp [bl_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `x a`. Simplify using `[bl_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem block_inr_inl_one : bl Sum.inr Sum.inl (1 : Matrix (l ⊕ l) (l ⊕ l) ℝ) = 0 := by
   ext x a
   simp [bl_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use `letI := Matrix.linftyOpNormedRing (n := l ⊕ l) (α := ℝ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := l ⊕ l) (R := ℝ) (α := ℝ)`. Conclude with `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt t (hasDerivAt_exp_smul_const (𝕂 := ℝ) X t)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_lin_exp {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (L : Matrix (l ⊕ l) (l ⊕ l) ℝ →ₗ[ℝ] F)
     (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (t : ℝ) :
@@ -74,15 +74,15 @@ theorem hasDerivAt_lin_exp {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
   exact (LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt t (hasDerivAt_exp_smul_const (𝕂 := ℝ) X t)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_right, add_neg_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_mul_exp_neg (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) : NormedSpace.exp X * NormedSpace.exp (-X) = 1 := by
   rw [← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_right, add_neg_cancel, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Establish `h : Xᵀ * Matrix.J l ℝ = Matrix.J l ℝ * -X` using `(mem_skewAdjointMatricesSubmodule _ _).1 ((mem_skewAdjointMatricesLieSubalgebra _ _).1 hX)`. Establish `hu : IsUnit (Matrix.J l ℝ)` using `⟨⟨Matrix.J l ℝ, -Matrix.J l ℝ, by rw [mul_neg, J_squared, neg_neg], by rw [neg_mul, J_squared, neg_neg]⟩, rfl⟩`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Establish `h1 : Xᵀ = Matrix.J l ℝ * -X * (Matrix.J l ℝ)⁻¹`. Rewrite using `[← h, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (NormedSpace.exp X)ᵀ * (Matrix.J l ℝ * NormedSpace.exp X) = Matrix.J l ℝ`. Use `exp_mul_exp_neg (-X)` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Rewrite using `[← Matrix.exp_transpose, h1, Matrix.exp_conj _ _ hu, Matrix.mul_assoc, ← Matrix.mul_assoc _ (Matrix.J l ℝ), Matrix.nonsing_inv_mul _ hd, Matrix.one_mul, Matrix.mul_assoc, this, Matrix.mul_one]`. Rewrite using `[sympl_eq, sympl_eq, mulVec_mulVec, ← Matrix.vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_exp {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X ∈ LieAlgebra.Symplectic.sp l ℝ) (w w' : l ⊕ l → ℝ) :
     sympl (NormedSpace.exp X *ᵥ w) (NormedSpace.exp X *ᵥ w') = sympl w w' := by
@@ -101,11 +101,11 @@ theorem sympl_exp {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X ∈ LieAlgebra.Sy
   rw [sympl_eq, sympl_eq, mulVec_mulVec, ← Matrix.vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, h2]
 
 /- English proof (translation)
-Establish `key : ∀ p q p' q' : Eu l, ⟪bl Sum.inl Sum.inl g p + bl Sum.inl Sum.inr g q, bl Sum.inr Sum.inl g p' + bl Sum.inr Sum.inr g q'⟫ - ⟪bl Sum.inr Sum.inl g p + bl Sum.inr Sum.inr g q, bl Sum.inl Sum.inl g p' + bl Sum.inl Sum.inr g q'⟫ = ⟪p, q'⟫ - ⟪q, p'⟫` using `fun p q p' q' => by`. Use `hg (Sum.elim (fun i => p i) fun i => q i) (Sum.elim (fun i => p' i) fun i => q' i)` as an intermediate fact. Simplify using `only [sympl, pPart_mulVec, qPart_mulVec] at this`. Conclude with `this`. Rewrite using `[pPart_mulVec, qPart_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `intw_big h.ringInverse (fun x => ?_) (fun x => ?_) (fun y z => ?_) (fun y z => ?_) (fun y z => ?_) c _ _` and prove the remaining obligations. Rewrite using `[← ContinuousLinearMap.mul_apply, Ring.mul_inverse_cancel _ h, ContinuousLinearMap.one_apply]`. Rewrite using `[← ContinuousLinearMap.mul_apply, Ring.inverse_mul_cancel _ h, ContinuousLinearMap.one_apply]`. Simplify `key y 0 z 0` using `[sub_eq_zero]`. Simplify `key 0 y 0 z` using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key y 0 0 z`.
+A detailed English derivation is pending.
 -/
 theorem intw_of_sympl {g : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hg : ∀ w w', sympl (g *ᵥ w) (g *ᵥ w') = sympl w w')
     (h : IsUnit (bl Sum.inl Sum.inl g)) (c : ℝ) (w : l ⊕ l → ℝ) :
@@ -126,11 +126,11 @@ theorem intw_of_sympl {g : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hg : ∀ w w', sympl
   · simpa using key y 0 0 z
 
 /- English proof (translation)
-Establish `e : ∀ u : Sch l, fou l (fouInv l u) = u` using `fun u => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, fou_mul_fouInv, ContinuousLinearMap.one_apply]`. Rewrite using `[← e (_ • _)]`. Use `congr 1`. Establish `h : ∀ j (u : Sch l), fouInv l (dRho (Pi.single (Sum.inl j) 1) u) = -dRho (Pi.single (Sum.inr j) 1) (fouInv l u)` using `fourierInv_dRho_inl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [← dRho_single_inl, map_smul, map_sum, h, map_neg, neg_neg]`. Use extensionality with `x`. Establish `hπ : (π : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Simplify using `only [mq_apply, SchwartzMap.smul_apply, SchwartzMap.sum_apply, dRho_single_inr, smul_eq_mul, ContinuousLinearMap.neg_apply, inner_neg_right, inner_toEuclideanCLM, dotProduct, mulVec, Finset.mul_sum]`. Use `push_cast`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [mul_neg, neg_mul, neg_neg, Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [← Finset.sum_neg_distrib, neg_neg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hI : (I : ℂ) ≠ 0` using `I_ne_zero`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -159,15 +159,15 @@ theorem fou_mq_fouInv (B : Matrix l l ℝ) (f : Sch l) :
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h` using `quad_fromBlocks (A := X.toBlocks₁₁) (B := X.toBlocks₁₂) (C := X.toBlocks₂₁) (D := X.toBlocks₂₂) (by rwa [fromBlocks_toBlocks]) f x`. Rewrite `h` using `[fromBlocks_toBlocks]`. Establish `h2` using `fou_mq_fouInv X.toBlocks₁₂ f`. Establish `h3 : vf (-bl Sum.inl Sum.inl X) f x = -∑ j, ∑ k, (X.toBlocks₁₁ j k : ℂ) * x k * (∂_{(EuclideanSpace.single j 1 : Eu l)} f) x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: bl Sum.inl Sum.inl X x = ∑ j, ∑ k, (X.toBlocks₁₁ j k * x k) • (EuclideanSpace.single j 1 : Eu l)`. Use extensionality with `a`. Simplify using `[bl_apply, Pi.single_apply, toBlocks₁₁, Finset.sum_apply]`. Rewrite using `[vf_apply, ContinuousLinearMap.neg_apply, this]`. Simplify using `[lineDerivOp_apply_eq_fderiv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : mq (bl Sum.inr Sum.inl X) f x = -(π * I * ∑ j, ∑ k, (X.toBlocks₂₁ j k : ℂ) * x j * x k * f x)`. Establish `: ⟪x, bl Sum.inr Sum.inl X x⟫ = x ⬝ᵥ X.toBlocks₂₁ *ᵥ x` using `inner_toEuclideanCLM _ _ _`. Rewrite using `[mq_apply, this]`. Simplify using `only [dotProduct, mulVec]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`. Simplify using `only [SchwartzMap.sub_apply, SchwartzMap.add_apply]`. Rewrite using `[h, h3, h4]`. Use `erw [h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.sum_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quad_eq {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X ∈ LieAlgebra.Symplectic.sp l ℝ) (f : Sch l) :
     quad X f = mq (bl Sum.inr Sum.inl X) f + vf (-bl Sum.inl Sum.inl X) f +
@@ -199,7 +199,7 @@ theorem quad_eq {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X ∈ LieAlgebra.Symp
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `DifferentiableAt.fun_sum fun σ _ => (DifferentiableAt.fun_finset_prod fun i _ => h _ _).const_mul _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_det {M : ℝ → Matrix l l ℝ} {t : ℝ} (h : ∀ i j, DifferentiableAt ℝ (fun t => M t i j) t) :
     DifferentiableAt ℝ (fun t => (M t).det) t := by
@@ -213,31 +213,27 @@ namespace PositivityTheory.ThKR
 open LL
 
 /- English proof (translation)
-Introduce `l _ _ X hX`. Set `g : ℝ → Matrix (l ⊕ l) (l ⊕ l) ℝ` to `fun t => NormedSpace.exp (t • X)`. Establish `g0 : g 0 = 1` using `by simp [g]`. Establish `hd` using `fun i j t => hasDerivAt_lin_exp (bl i j) X t`. Set `A : ℝ → Eu l →L[ℝ] Eu l` to `fun t => bl Sum.inl Sum.inl (g t)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : ℝ → ℝ` to `fun t => (√|(A t).det|)⁻¹`. Set `V : ℝ → Sch l →L[ℂ] Sch l` to `fun t => big (Ring.inverse (A t)) (bl Sum.inl Sum.inr (g t)) (bl Sum.inr Sum.inl (g t)) (c t)`. Establish `A0 : A 0 = 1` using `by simp only [A, g0, block_inl_inl_one]`. Establish `hopen : ∀ t, IsUnit (A t) → ∀ᶠ u in 𝓝 t, IsUnit (A u)` using `fun t ht => (hd _ _ t).continuousAt.eventually (Units.isOpen.mem_nhds ht)`. Establish `hdet : ∀ t, IsUnit (A t) → (Ring.inverse (A t)).det * (A t).det = 1` using `fun t ht => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg ContinuousLinearMap.det (Ring.inverse_mul_cancel _ ht)` as an intermediate fact. Simplify `this` using `[ContinuousLinearMap.det]`. Establish `hne : ∀ t, IsUnit (A t) → (A t).det ≠ 0` using `fun t ht => right_ne_zero_of_mul_eq_one (hdet t ht)`. Establish `hc : ∀ t, IsUnit (A t) → c t ^ 2 = |(Ring.inverse (A t)).det|` using `fun t ht => by`. Rewrite using `[eq_inv_of_mul_eq_one_left (hdet t ht), abs_inv, inv_pow, Real.sq_sqrt (abs_nonneg _)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : ∀ t, IsUnit (A t) → c t ≠ 0` using `fun t ht => inv_ne_zero (Real.sqrt_pos.2 (abs_pos.2 (hne t ht))).ne'`. Establish `hcd : ∀ t, IsUnit (A t) → DifferentiableAt ℝ c t` using `fun t ht => by`. Establish `h1 : DifferentiableAt ℝ (fun t => (A t).det) t`. Simplify using `only [A, det_bl]`. Conclude with `differentiableAt_det fun i j => (hasDerivAt_lin_exp (Matrix.entryLinearMap ℝ ℝ (Sum.inl i) (Sum.inl j)) X t).differentiableAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `((h1.abs (hne t ht)).sqrt (abs_pos.2 (hne t ht)).ne').inv (Real.sqrt_pos.2 (abs_pos.2 (hne t ht))).ne'`. Establish `c0 : c 0 = 1` using `by simp [c, A0, ContinuousLinearMap.det]`. Establish `V0 : V 0 = 1` using `by simp only [V, A0, g0, c0, block_inl_inr_one, block_inr_inl_one, Ring.inverse_one, big_one]`. Establish `hU : ∀ t, IsUnit (A t) → IsUnit (V t)` using `fun t ht => isUnit_big ht.ringInverse _ _ (hc0 t ht)`. Establish `hI : ∀ t, IsUnit (A t) → Impl (fun w => g t *ᵥ w) (V t).toLinearMap` using `fun t ht => ⟨iso_big ht.ringInverse _ _ (hc t ht), fun w => intw_of_sympl (sympl_exp (SMulMemClass.smul_mem t hX)) ht _ w⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ)` to `fun t w => NormedSpace.exp (t • -X) *ᵥ w`. Establish `hv : ∀ t w a, HasDerivAt (fun t => v t w a) (((NormedSpace.exp (t • -X) * -X) *ᵥ w) a) t` using `fun t w a => hasDerivAt_lin_exp ((LinearMap.proj a).comp ((Matrix.mulVecBilin ℝ ℝ).flip w)) (-X) t`. Establish `hw : ∀ t, IsUnit (A t) → ∀ w f, dRho w (V t f) = V t (dRho (v t w) f)` using `fun t ht w f => by`. Establish `hs : Function.Surjective (V t).toLinearMap` using `fun f => ⟨Ring.inverse (V t) f, by show (V t * Ring.inverse (V t)) f = f`. Rewrite using `[Ring.mul_inverse_cancel _ (hU t ht), ContinuousLinearMap.one_apply]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Impl.dRho (s := Matrix.mulVecLin (g t)) (hI t ht) hs (v t w) f` as an intermediate fact. Simplify using `only [v, g, Matrix.mulVecLin_apply, mulVec_mulVec, smul_neg, exp_mul_exp_neg, one_mulVec] at this`. Simplify using `only [v, smul_neg]`. Conclude with `this.symm`. Establish `hL` using `fun t (ht : IsUnit (A t)) (Ai' : Eu l →L[ℝ] Eu l) (h : HasDerivAt (fun t => Ring.inverse (A t)) Ai' t) => ld_big h (hd Sum.inl Sum.inr t) (hd Sum.inr Sum.inl t) (hcd t ht).hasDerivAt ((hopen t ht).mono fun u hu => ⟨hu.ringInverse, hc u hu⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h0 : IsUnit (A 0)` using `A0 ▸ isUnit_one`. Take `⟨ε, hε, hA⟩` from `Metric.eventually_nhds_iff.1 (hopen 0 h0)`. Simplify using `only [dist_zero_right, Real.norm_eq_abs] at hA`. Use `⟨ε, V, fun t => Ring.inverse (V t), (deriv c 0 : ℝ) + ((X.toBlocks₁₁.trace / 2 : ℝ) : ℂ), hε, fun f => by rw [V0]; rfl, fun t ht => ⟨fun f => ?_, fun f => ?_, hI t (hA ht)⟩, fun t ht f lam => ?_, fun f lam => ?_⟩` and prove the remaining obligations. Rewrite using `[← ContinuousLinearMap.mul_apply, Ring.mul_inverse_cancel _ (hU t (hA ht)), ContinuousLinearMap.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, Ring.inverse_mul_cancel _ (hU t (hA ht)), ContinuousLinearMap.one_apply]`. Take `⟨Q, hQ, -⟩` from `hL t (hA ht) _ ((hd Sum.inl Sum.inl t).differentiableAt.inverse (hA ht)).hasDerivAt`. Conclude with `hQ.differentiableAt v (fun w a => (hv t w a).differentiableAt) ((hopen t (hA ht)).mono hw) f lam`. Establish `h1 : HasDerivAt (fun t => Ring.inverse (A t)) (-bl Sum.inl Sum.inl X) 0`. Establish `h2` using `(hasFDerivAt_ringInverse (𝕜 := ℝ) (1 : (Eu l →L[ℝ] Eu l)ˣ)).comp_hasDerivAt_of_eq 0 (hd Sum.inl Sum.inl 0) A0.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2.congr_deriv (by`. Simplify using `only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.mulLeftRight_apply, inv_one, Units.val_one, one_mul, mul_one, zero_smul, NormedSpace.exp_zero])`. Take `⟨Q, hQ, hQ'⟩` from `hL 0 h0 _ h1`. Establish `h3` using `hQ' (by rw [A0, Ring.inverse_one]) (by rw [← block_inl_inr_one, ← g0]) (by rw [← block_inr_inl_one, ← g0]) c0`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h3`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set z : ℂ := (deriv c 0 : ℝ) + ((X.toBlocks₁₁.trace / 2 : ℝ) : ℂ) with hz`. Establish `h4 : Q = ⇑(quad X + z • (1 : Sch l →L[ℂ] Sch l))`. Use function extensionality and compare the values at `f`. Rewrite using `[h3, ContinuousLinearMap.add_apply, quad_eq hX, hz, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, add_smul]`. Normalize the expressions using the abelian group laws.
-
-Rewrite `hQ` using `[h4]`. Use `hQ.hasDerivAt (fun f => ?_) v (fun w => X *ᵥ w) (fun w => by simp [v]) (fun w a => ?_) (fun w => ?_) ((hopen 0 h0).mono hw) f lam` and prove the remaining obligations. Conclude with `congrArg (fun T : Sch l →L[ℂ] Sch l => T f) V0`. Simplify `hv 0 w a` using `[neg_mulVec]`. Rewrite using `[← quad_comm hX, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem localLift_holds : LocalLift := by
   intro l _ _ X hX

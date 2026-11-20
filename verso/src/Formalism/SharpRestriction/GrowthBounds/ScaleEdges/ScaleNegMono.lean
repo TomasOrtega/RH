@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.Pf14
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `h`. Use `hS.frac_alt` as an intermediate fact. Establish `h2 : algebraMap O Kf ((p : ℕ) : O) = 0`. Rewrite using `[← hS.w_sq, map_pow, h, zero_pow two_ne_zero]`. Establish `h3 : ι (algebraMap W Qq ((p : ℕ) : W)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hS.ι_comp, map_natCast j]`. Conclude with `h2`. Establish `h4 : algebraMap W Qq ((p : ℕ) : W) = 0` using `(map_eq_zero ι).mp h3`. Establish `h5 : ((p : ℕ) : W) = 0` using `IsFractionRing.injective W Qq (by rw [h4, map_zero])`. Conclude with `hS.p_unif.ne_zero h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem w_ne_zero {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -32,13 +32,13 @@ variable {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X
   [IsScalarTower O Kf X]
 
 /- English proof (translation)
-Simplify using `only [scale, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_scale {c : Kf} {M : Submodule O X} {x : X} : x ∈ scale c M ↔ ∃ y ∈ M, c • y = x := by
   simp only [scale, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_scale]`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨w ^ (t - s) • y, M.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul Kf (w ^ (t - s)) y, smul_smul, map_pow, ← zpow_natCast, ← zpow_add₀ hw, show -(t : ℤ) + ((t - s : ℕ) : ℤ) = -(s : ℤ) by omega]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_neg_mono (w : O) (hw : algebraMap O Kf w ≠ 0) {s t : ℕ} (hst : s ≤ t) (M : Submodule O X) :
     scale (algebraMap O Kf w ^ (-(s : ℤ))) M ≤ scale (algebraMap O Kf w ^ (-(t : ℤ))) M := by
@@ -50,7 +50,7 @@ theorem scale_neg_mono (w : O) (hw : algebraMap O Kf w ≠ 0) {s t : ℕ} (hst :
     show -(t : ℤ) + ((t - s : ℕ) : ℤ) = -(s : ℤ) by omega]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[mem_scale]`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[zpow_natCast, ← map_pow, algebraMap_smul]`. Conclude with `M.smul_mem _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_pos_le (w : O) (c : ℕ) (M : Submodule O X) : scale (algebraMap O Kf w ^ (c : ℤ)) M ≤ M := by
   intro x hx
@@ -62,7 +62,7 @@ theorem scale_pos_le (w : O) (c : ℕ) (M : Submodule O X) : scale (algebraMap O
 end Scale
 
 /- English proof (translation)
-Take `⟨a, b, hx, hab⟩` from `h`. Use `⟨a, b * π ^ (D' - D), hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hab, ← pow_add, Nat.add_sub_cancel' hD]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ValLe.mono {O Kf : Type*} [CommRing O] [Field Kf] [Algebra O Kf] {π : O} {D D' : ℕ} {x : Kf}
     (h : ValLe π D x) (hD : D ≤ D') : ValLe π D' x := by
@@ -71,19 +71,17 @@ theorem ValLe.mono {O Kf : Type*} [CommRing O] [Field Kf] [Algebra O Kf] {π : O
   rw [← mul_assoc, hab, ← pow_add, Nat.add_sub_cancel' hD]
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m r lam0 t D κ cStar L E nE hE hF hcard`. Establish `hw` using `w_ne_zero hS`. Unfold `EdgeFam at hF`. Use `choose tS tT D1 htS htT hD1 F hF1 hF2 hF3 using hF`. Unfold `SrcTests`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E, nE, fun e => if h : e ∈ E then F e h else fun _ => 0, hE, ?_, ?_, ?_, hcard⟩` and prove the remaining obligations. Introduce `e he i`. Simplify using `only [dif_pos he]`. Unfold `Nsrc`. Use `Submodule.mem_inf.mpr ⟨scale_neg_mono w hw (htS e he) _ (hF1 e he i).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_iInf _).mpr fun e' => (Submodule.mem_iInf _).mpr fun he' => ?_` and prove the remaining obligations. Distinguish the cases in `hee : e' = e`. Substitute `hee` using the available equality. Conclude with `(hF1 e' he i).2`. Conclude with `scale_pos_le w cStar _ (hF2 e he i e' he'.1 he'.2 hee)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he i e' he' hsrc hne`. Simplify using `only [dif_pos he]`. Conclude with `hF2 e he i e' he' hsrc hne`. Introduce `e he c hc`. Take `⟨G, hG1, hG2, hG3, hG4⟩` from `hF3 e he c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hG1` using `[(hE e he).2]`. Unfold `Ntgt`. Use `Submodule.mem_inf.mpr ⟨scale_neg_mono w hw (htT e he) _ hG1, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).mpr fun e' => (Submodule.mem_iInf _).mpr fun he' => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hee : e' = e`. Substitute `hee` using the available equality. Conclude with `hG2`. Conclude with `scale_pos_le w cStar _ (hG3 e' he'.1 (he'.2.trans (hE e he).2.symm) hee)`. Simplify using `only [dif_pos he]`.
-
-Conclude with `ValLe.mono hG4 (hD1 e he)`. Introduce `e' he' hne`. Conclude with `hG3 e' (hE e' he').1 ((hE e' he').2.trans (hE e he).2.symm) hne`.
+A detailed English derivation is pending.
 -/
 theorem asm : Asm := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m r lam0 t D κ cStar L E nE hE hF hcard

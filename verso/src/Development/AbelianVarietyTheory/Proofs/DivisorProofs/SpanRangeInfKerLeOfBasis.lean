@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [D.perCol_base_eq_PtilCol, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perCol_base_smul_form (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u) (c : ℂ)
     (F : D.what₂.Amb D.what₂.mu0) :
@@ -16,9 +16,9 @@ theorem perCol_base_smul_form (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u
   simp only [D.perCol_base_eq_PtilCol, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use `set n : D.what₂.Amb D.what₂.mu0 := (D.what₂.Usp D.what₂.mu0).starProjection F with hn`. Establish `hnU : n ∈ D.what₂.Usp D.what₂.mu0` using `Submodule.starProjection_apply_mem _ _`. Establish `hq : F - n ∈ D.what₂.Qsp D.what₂.mu0` using `⟨Submodule.sub_mem _ hF hnU.1, Submodule.sub_starProjection_mem_orthogonal F⟩`. Establish `hι : D.what₂.iota D.what₂.mu0 F = D.what₂.iota D.what₂.mu0 (F - n)`. Establish `: D.what₂.iota D.what₂.mu0 n = 0` using `hnU.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, this, sub_zero]`. Establish `hF' : F = (F - n) + n` using `by abel`. Rewrite using `[h u φ, hι, D.what₂.sec_iota _ _ hq]`. Use `conv_lhs => rw [hF']`. Rewrite using `[D.perCol_add, hK n hnU, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perCol_eq_pairing_of_kills (D : D7) (h : Formalism.BasicNotions.Rows.BuDefQ D.what₂) (u : D.what₂.Word)
     (φ : D.what₂.Mu u)
@@ -38,13 +38,13 @@ theorem perCol_eq_pairing_of_kills (D : D7) (h : Formalism.BasicNotions.Rows.BuD
   rw [D.perCol_add, hK n hnU, add_zero]
 
 /- English proof (translation)
-Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin I`. Set `b'` to `b.reindex e`. Set `M` to `LinearMap.toMatrix' (b'.equivFun.toLinearMap ∘ₗ g)`. Establish `hM : ∀ x, M.mulVec x = b'.equivFun (g x)` using `fun x => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key` using `span_range_inf_ker_eq_span_rational_ker σ j (j'.comp b'.equivFun.symm.toLinearMap) f M ?_ ?_`. Rewrite using `[key]`. Use `congr 2`. Use extensionality with `x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, hM, EmbeddingLike.map_eq_zero_iff]`. Establish `h1 : (fun l => (j'.comp b'.equivFun.symm.toLinearMap) (Pi.single l 1)) = (fun i => j' (b i)) ∘ e.symm`. Use function extensionality and compare the values at `l`. Simplify using `[b', Pi.single_apply]`. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hli.comp _ e.symm.injective`. Introduce `x`. Rewrite using `[hf, hM]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_range_inf_ker_le_of_basis {K : Type} [Field K] (σ : K →+* ℂ) {W E A I : Type}
     [AddCommGroup W] [Module ℂ W] [AddCommGroup E] [Module ℂ E] [AddCommGroup A] [Module K A]

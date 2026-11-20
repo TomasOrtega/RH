@@ -4,15 +4,13 @@ import GroundTheory.AutomorphicForms.Satake
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `n Φ`. Use `⟨polyEmb n (∏ σ : Equiv.Perm (Fin n), MvPolynomial.rename σ Φ), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ τ : Equiv.Perm (Fin n), permAct τ _ = _`. Introduce `τ`. Rewrite using `[← polyEmb_rename]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[map_prod]`. Repeatedly rewrite using `[MvPolynomial.rename_rename]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft τ) _ _ (fun σ => rfl)`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[evalAt_polyEmb, map_prod]`. Use `Finset.prod_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_rename]`. Both sides reduce to the same expression. Introduce `hΦ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∏ σ : Equiv.Perm (Fin n), MvPolynomial.rename σ Φ, ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `σ _ h`. Apply `hΦ` to reduce the goal to its premises. Conclude with `MvPolynomial.rename_injective _ σ.injective (by rw [h, map_zero])`.
-
-Rewrite using `[evalAt_polyEmb]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.symEx_pf :
     UpperTheory.Gal.Gen.SymEx := by

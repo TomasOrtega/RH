@@ -10,17 +10,15 @@ namespace PI.UnitaryGroupMassFormula.LSC.NormProd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hc.deg2]; norm_num)`. Establish `hfix : ∀ r : F, starRingAut (algebraMap F E r) = algebraMap F E r` using `fun r => (hc.fixed _).mpr ⟨r, rfl⟩`. Set `σ : E ≃ₐ[F] E` to `AlgEquiv.ofRingEquiv (f := starRingAut) hfix`. Establish `hσ : ∀ a, σ a = star a` using `fun _ => rfl`. Establish `hne : (1 : E ≃ₐ[F] E) ≠ σ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hall : ∀ a : E, a ∈ (algebraMap F E).range` using `fun a => by`. Rewrite using `[← hc.fixed, ← hσ, ← h]`. Both sides reduce to the same expression. Establish `hbot : (⊥ : Subalgebra F E) = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify `hall a` using `[Algebra.mem_bot]`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.mp hbot`. Rewrite `h1` using `[hc.deg2]`. Evaluate the numerical expressions using `at h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hle : Fintype.card (E ≃ₐ[F] E) ≤ 2`. Rewrite using `[← hc.deg2]`. Conclude with `(Fintype.card_le_of_injective (fun e : E ≃ₐ[F] E => (e : E →ₐ[F] E)) (fun a b h => AlgEquiv.coe_algHom_injective h)).trans AlgHom.card_le`. Establish `hge : 2 ≤ Fintype.card (E ≃ₐ[F] E)`. Rewrite using `[← Finset.card_pair hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.card_le_univ _`. Establish `hcard : Fintype.card (E ≃ₐ[F] E) = Module.finrank F E`. Rewrite using `[hc.deg2]`. Use linear arithmetic over natural numbers and integers. Use `haveI : IsGalois F E := IsGalois.of_card_aut_eq_finrank F E (by rw [Nat.card_eq_fintype_card]; exact hcard)`.
-
-Establish `huniv : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, σ}` using `(Finset.eq_of_subset_of_card_le (Finset.subset_univ _) (by rw [Finset.card_univ, Finset.card_pair hne]; omega)).symm`. Rewrite using `[Algebra.norm_eq_prod_automorphisms, huniv, Finset.prod_pair hne]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq (hc : Formalism.BasicNotions.CMData F E) (m : E) :
     algebraMap F E (Algebra.norm F m) = m * star m := by
@@ -60,13 +58,13 @@ namespace PI.UnitaryGroupMassFormula.LSC
 open PI.UnitaryGroupMassFormula.LSC.NormProd
 
 /- English proof (translation)
-Introduce `I m`. Use `letI := I.fF`. Use `letI := I.nF`. Use `letI := I.fE`. Use `letI := I.nE`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := I.sE`. Use `letI := I.aFE`. Establish `hc` using `I.cm`. Use `set N := Algebra.norm I.F m with hN`. Establish `hv : ∀ v : InfinitePlace I.F, ‖I.φ v m‖ ^ 2 = v N`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `h1 : I.φ v (m * star m) = v.embedding N`. Rewrite using `[← algebraMap_norm_eq hc m, I.φ_over]`. Rewrite `h1` using `[map_mul, hc.cmUnram.2.1, Complex.mul_conj]`. Rewrite using `[← InfinitePlace.norm_embedding_eq, ← h1, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hv]`. Establish `hmult : ∀ v : InfinitePlace I.F, v.mult = 1` using `fun v => InfinitePlace.mult_isReal ⟨v, hc.totReal.isReal v⟩`. Use `InfinitePlace.prod_eq_abs_norm N` as an intermediate fact. Simplify using `only [hmult, pow_one] at this`. Rewrite using `[this, hN, Algebra.norm_norm, Rat.cast_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_product_formula : NormProd := by
   intro I m

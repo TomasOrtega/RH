@@ -15,7 +15,7 @@ open GroundTheory.Global GJMatrix
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Establish `hF` using `continuous_of_mem_schwartzBruhatPi (mem_matrixSchwartzBruhat.mp hΦ)`. Establish `h : Φ = (fun z : Fin n × Fin n → 𝔸[K] => Φ (Matrix.of fun i j => z (i, j))) ∘ (fun X : Matrix (Fin n) (Fin n) 𝔸[K] => fun p : Fin n × Fin n => X p.1 p.2)` using `rfl`. Rewrite using `[h]`. Conclude with `hF.comp (continuous_pi fun p => continuous_id.matrix_elem p.1 p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem_matrixSchwartzBruhat {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) : Continuous Φ := by
@@ -26,7 +26,7 @@ theorem continuous_of_mem_matrixSchwartzBruhat {Φ : Matrix (Fin n) (Fin n) 𝔸
   exact hF.comp (continuous_pi fun p => continuous_id.matrix_elem p.1 p.2)
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : AdelicGLn.AdelicGL K n => ((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])` using `Units.continuous_val.comp continuous_inv`. Unfold `infNorm`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => continuous_finsetSum _ fun w _ => continuous_norm.comp ?_` and prove the remaining obligations. Conclude with `(continuous_apply w).comp (continuous_fst.comp (hc.matrix_elem i j))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_infNorm_coe_inv : Continuous fun g : AdelicGLn.AdelicGL K n =>
     infNorm ((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) := by
@@ -39,26 +39,22 @@ theorem continuous_infNorm_coe_inv : Continuous fun g : AdelicGLn.AdelicGL K n =
   exact (continuous_apply w).comp (continuous_fst.comp (hc.matrix_elem i j))
 
 /- English proof (translation)
-The claim follows from `Real.rpow_le_rpow s.2.le h (inv_nonneg.2 (by positivity))`.
+A detailed English derivation is pending.
 -/
 theorem centralScale_mono {s t : {r : ℝ // 0 < r}} (h : (s : ℝ) ≤ t) :
     centralScale (K := K) n s ≤ centralScale (K := K) n t :=
   Real.rpow_le_rpow s.2.le h (inv_nonneg.2 (by positivity))
 
 /- English proof (translation)
-Use `set M : ℕ := Module.finrank ℝ (Fin n × Fin n → mixedEmbedding.mixedSpace K) + 1 with hM`. Take `⟨C₁, hC₁, I, hmaj⟩` from `exists_majorant hΦ M`. Use `set Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K]) := (fun g : AdelicGLn.AdelicGL K n => finMat ((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])) '' (A ∪ B) with hQ`. Establish `hQc : IsCompact Q` using `(hA.union hB).image (continuous_finMat_coe.comp continuous_inv)`. Take `⟨J, hJ⟩` from `exists_ideal_mul_mul hQc I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R, hR⟩` from `(hA.union hB).exists_bound_of_continuousOn (continuous_infNorm_coe_inv (K := K) (n := n)).continuousOn`. Use `set m : ℝ := (max 1 (centralScale (K := K) n t₁)⁻¹) ^ M with hm`. Establish `hm0 : 0 ≤ m` using `pow_nonneg (zero_le_one.trans (le_max_left _ _)) M`. Use `set R' : ℝ := 1 + max R 0 with hR'`. Use `⟨fun ξ => C₁ * m * (R' * R') ^ M * latticeWeight J M ξ, (summable_latticeWeight J (by omega)).mul_left _, fun t ht a ha b hb ξ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt` using `norm_le_twistedWeight hC₁ hmaj t a⁻¹ b ξ`. Rewrite `hpt` using `[inv_inv]`. Establish `hxQ : finMat ((a⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) ∈ Q` using `⟨a, Or.inl ha, rfl⟩`. Establish `hyQ : finMat ((b⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) ∈ Q` using `⟨b, Or.inr hb, rfl⟩`. Establish `htw` using `twistedWeight_le hJ M hxQ hyQ ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hRa : infNorm ((a⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) ≤ max R 0`. Use `hR a (Or.inl ha)` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg (infNorm_nonneg _)]`. Conclude with `this.trans (le_max_left _ _)`. Establish `hRb : infNorm ((b⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) ≤ max R 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hR b (Or.inr hb)` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg (infNorm_nonneg _)]`. Conclude with `this.trans (le_max_left _ _)`. Establish `hmt : (max 1 (centralScale (K` using `K) n t)⁻¹) ^ M ≤ m := by`. Use `pow_le_pow_left₀ (zero_le_one.trans (le_max_left _ _)) (max_le_max le_rfl ?_) M` and prove the remaining obligations.
-
-Conclude with `inv_anti₀ (centralScale_pos n t₁) (centralScale_mono ht)`. Establish `hlw` using `latticeWeight_nonneg J M ξ`. Establish `hcomb : ((1 + infNorm ((a⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])) * (1 + infNorm ((b⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))) ^ M ≤ (R' * R') ^ M`. Use `pow_le_pow_left₀ (mul_nonneg (by linarith [infNorm_nonneg ((a⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])]) (by linarith [infNorm_nonneg ((b⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])])) ?_ M` and prove the remaining obligations. Conclude with `mul_le_mul (by linarith) (by linarith) (by linarith [infNorm_nonneg ((b⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])]) (by linarith [le_max_right R 0])`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_summable_bound {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) (t₁ : {r : ℝ // 0 < r})
@@ -117,7 +113,7 @@ theorem exists_summable_bound {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     _ = C₁ * m * (R' * R') ^ M * latticeWeight J M ξ := by ring
 
 /- English proof (translation)
-Establish `h : Continuous fun p : {r : ℝ // 0 < r} × AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n => (Reduction.centralSection K n p.1 * p.2.1 : AdelicGLn.AdelicGL K n)` using `(Reduction.continuous_centralSection.comp continuous_fst).mul (continuous_fst.comp continuous_snd)`. Conclude with `Units.continuous_val.comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_centralSection_mul_coe : Continuous fun p : {r : ℝ // 0 < r} ×
     AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n =>
@@ -130,7 +126,7 @@ theorem continuous_centralSection_mul_coe : Continuous fun p : {r : ℝ // 0 < r
   exact Units.continuous_val.comp h
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (continuous_snd.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_snd_snd_coe : Continuous fun p : {r : ℝ // 0 < r} ×
     AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n =>
@@ -138,9 +134,9 @@ theorem continuous_snd_snd_coe : Continuous fun p : {r : ℝ // 0 < r} ×
   Units.continuous_val.comp (continuous_snd.comp continuous_snd)
 
 /- English proof (translation)
-Use `AdelicGLn.locallyCompactSpace K n` as an intermediate fact. Take `⟨A, hA, hAn⟩` from `exists_compact_mem_nhds p₀.2.1`. Take `⟨B, hB, hBn⟩` from `exists_compact_mem_nhds p₀.2.2`. Use `⟨A, B, hA, hB, ?_⟩` and prove the remaining obligations. Establish `h1 : {p : {r : ℝ // 0 < r} × AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n | (p₀.1 : ℝ) / 2 < p.1} ∈ 𝓝 p₀` using `(isOpen_lt continuous_const (continuous_subtype_val.comp continuous_fst)).mem_nhds (half_lt_self p₀.1.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (Prod.snd ⁻¹' (A ×ˢ B) : Set ({r : ℝ // 0 < r} × AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n)) ∈ 𝓝 p₀` using `continuous_snd.continuousAt.preimage_mem_nhds (prod_mem_nhds hAn hBn)`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Conclude with `⟨hp1, hp2.1, hp2.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nhds_compact (p₀ : {r : ℝ // 0 < r} × AdelicGLn.AdelicGL K n ×
     AdelicGLn.AdelicGL K n) :
@@ -162,9 +158,9 @@ theorem exists_nhds_compact (p₀ : {r : ℝ // 0 < r} × AdelicGLn.AdelicGL K n
   exact ⟨hp1, hp2.1, hp2.2⟩
 
 /- English proof (translation)
-Establish `hΦc` using `continuous_of_mem_matrixSchwartzBruhat hΦ`. Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Take `⟨A, B, hA, hB, hU⟩` from `exists_nhds_compact (K := K) (n := n) p₀`. Take `⟨u, hu, hbd⟩` from `exists_summable_bound hΦ ⟨(p₀.1 : ℝ) / 2, half_pos p₀.1.2⟩ hA hB`. Use `(continuousOn_tsum (fun ξ => ?_) hu (fun ξ p hp => hbd p.1 hp.1.le p.2.1 hp.2.1 p.2.2 hp.2.2 ξ)).continuousAt hU` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hΦc.comp ((continuous_centralSection_mul_coe.matrix_mul continuous_const).matrix_mul continuous_snd_snd_coe)).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tsum_ratMat {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) :
@@ -182,9 +178,9 @@ theorem continuous_tsum_ratMat {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     continuous_snd_snd_coe)).continuousOn
 
 /- English proof (translation)
-Establish `hΦc` using `continuous_of_mem_matrixSchwartzBruhat hΦ`. Establish `heq : ∀ (p : {r : ℝ // 0 < r} × AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n) (γ : GL (Fin n) K), ((Reduction.centralSection K n p.1 * p.2.1 * AdelicGLn.diagonal K n γ * p.2.2 : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = ((Reduction.centralSection K n p.1 * p.2.1 …` using `fun p γ => by`. Simplify using `only [Units.val_mul, coe_diagonal]`. Repeatedly rewrite using `[heq]`. Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A, B, hA, hB, hU⟩` from `exists_nhds_compact (K := K) (n := n) p₀`. Take `⟨u, hu, hbd⟩` from `exists_summable_bound hΦ ⟨(p₀.1 : ℝ) / 2, half_pos p₀.1.2⟩ hA hB`. Use `(continuousOn_tsum (u := fun γ : GL (Fin n) K => u (γ : Matrix (Fin n) (Fin n) K)) (fun γ => ?_) (hu.comp_injective (fun _ _ h => Units.ext h)) (fun γ p hp => hbd p.1 hp.1.le p.2.1 hp.2.1 p.2.2 hp.2.2 _)).continuousAt hU` and prove the remaining obligations. Conclude with `(hΦc.comp ((continuous_centralSection_mul_coe.matrix_mul continuous_const).matrix_mul continuous_snd_snd_coe)).continuousOn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_tsum_GL {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) :

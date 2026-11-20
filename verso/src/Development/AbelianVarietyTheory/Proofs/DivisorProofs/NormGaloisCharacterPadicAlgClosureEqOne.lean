@@ -6,7 +6,7 @@ namespace GlobalTheory.ExpFrame.CharUnit
 
 open NumberField Polynomial in
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Use `push_neg at ha`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C ha`. Conclude with `absurd (h n) (not_le.mpr hn)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem le_one_of_forall_pow_le {a C : ℝ} (h : ∀ n : ℕ, a ^ n ≤ C) : a ≤ 1 := by
   by_contra ha
@@ -17,11 +17,11 @@ private theorem le_one_of_forall_pow_le {a C : ℝ} (h : ∀ n : ℕ, a ^ n ≤ 
 open NumberField Polynomial in
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(isCompact_range hc).isBounded.exists_norm_le`. Establish `hb : ∀ h : Γ, ∀ n : ℕ, ‖((χ h : Kˣ) : K)‖ ^ n ≤ C` using `fun h n => by`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, ← map_pow]`. Conclude with `hC _ ⟨h ^ n, rfl⟩`. Establish `h1` using `le_one_of_forall_pow_le (hb g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `le_one_of_forall_pow_le (hb g⁻¹)`. Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`. Establish `hpos : 0 < ‖((χ g : Kˣ) : K)‖` using `norm_pos_iff.mpr (χ g).ne_zero`. Establish `: 1 ≤ ‖((χ g : Kˣ) : K)‖`. Assume the negation of the conclusion as `hlt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hlt`. Use `one_lt_inv₀ hpos |>.mpr hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ExpFrame.CharUnit.norm_eq_one_of_compact {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ]
     [NormedField K] (χ : Γ →* Kˣ) (hc : Continuous fun g => ((χ g : Kˣ) : K)) (g : Γ) :
@@ -44,9 +44,9 @@ theorem _root_.GlobalTheory.ExpFrame.CharUnit.norm_eq_one_of_compact {Γ K : Typ
 open NumberField Polynomial in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ χ hχ g`. Use `_root_.GlobalTheory.ExpFrame.CharUnit.norm_eq_one_of_compact χ ?_ g` and prove the remaining obligations. Establish `h` using `(Units.continuous_val.comp hχ).matrix_elem 0 0`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[_root_.GlobalTheory.TripleGal.rk1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ExpFrame.CharUnit.norm_char_eq_one : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (χ : _root_.Formalism.ConjugateSelfDual.G E Ω →* (PadicAlgCl l)ˣ), Continuous (_root_.GlobalTheory.TripleGal.rk1 χ) → ∀ g, ‖((χ g : (PadicAlgCl l)ˣ) : PadicAlgCl l)‖ = 1 := by
   intro E Ω _ _ _ _ _ l _ χ hχ g

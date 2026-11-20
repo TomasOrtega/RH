@@ -17,7 +17,7 @@ open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `by rintro rfl; exact hk Nat.cast_zero`. Establish `h₁` using `(GlobalTheory.GtCount.card_gtTors hL hL2 R D₀ F k hk).1`. Simplify using `only [GlobalTheory.GtCount.gtTors_iff] at h₁`. Rewrite using `[GlobalTheory.UT.card_qk_eq_mul hB hk0 fun y => exists_nsmul_eq hL.mulN (Or.inl inferInstance) hk0 _, h₁, ← pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -33,13 +33,13 @@ theorem card_qk_pre (hL : Out.Laws) (hL2 : Out.Laws2) {R : Type} [CommRing R] [I
   ring
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Use `datum_free_int D` as an intermediate fact. Set `K : AddSubgroup D.La` to `(nsmulAddMonoidHom k : D.La →+ D.La).range`. Establish `hK : Nat.card (D.La ⧸ K) = k ^ Module.finrank ℤ D.La` using `AddSubgroup.index_range_nsmul D.La k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE` using `equiv_equivalence (D := D₀) (F := F) (k := k) hB`. Set `f : D.La ⧸ K → Quot (Out.QkPt.Equiv D₀ F (k` to `k)) := fun x => Quot.mk _ (I.ev k x.out)`. Rewrite using `[← hK]`. Use `(Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce `x x' h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he⟩` from `(I.ker k hk _ _).1 (hE.symm (hE.eqvGen_iff.1 (Quot.eqvGen_exact h)))`. Rewrite using `[← QuotientAddGroup.out_eq' x, ← QuotientAddGroup.out_eq' x', QuotientAddGroup.eq]`. Conclude with `⟨e, by rw [he, neg_add_cancel_left]; rfl⟩`. Introduce and unpack `⟨p⟩`. Take `⟨v, hv⟩` from `I.onto k hk p`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : -v + (QuotientAddGroup.mk v : D.La ⧸ K).out ∈ K := by`. Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`. Use `⟨QuotientAddGroup.mk v, Quot.sound (hE.trans ((I.ker k hk _ _).2 ⟨e, ?_⟩) hv)⟩` and prove the remaining obligations. Rewrite using `[show k • e = _ from he, add_neg_cancel_left]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_qk_of_tateIsoQ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {R : Type} [CommRing R] [IsDomain R] {D₀ : Out.DegPre R} [Module (𝓞 E) D₀.X]
@@ -67,9 +67,9 @@ theorem card_qk_of_tateIsoQ {E : Type} [Field E] [NumberField E] [IsCMField E] {
     rw [show k • e = _ from he, add_neg_cancel_left]
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H _ D l c O _ β _ _ b a Λ g ty hty ⟨r, z, hr, hz⟩`. Take `⟨-, I, -⟩` from `a.geom ℂ r z hr hz _ rfl`. Establish `h₁` using `card_qk_pre hL hL2 a.D₀ a.bimult ℂ 2 (by norm_num)`. Rewrite `h₁` using `[card_qk_of_tateIsoQ a.bimult I 2 two_pos, datum_finrank_int, ← (GlobalTheory.PeriodExists.period_of_isTypeFn H D g ty hty).1]`. Establish `h₂` using `Nat.pow_right_injective le_rfl h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₃ : Module.finrank ℤ Λ.A.X = a.D₀.rank` using `(Λ.ε.toAddEquiv.toIntLinearEquiv).finrank_eq`. Rewrite using `[Λ.A.finrank_V, h₃, Λ.gB_eq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_V_eq : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a) (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty → (∃ r z : O, ((β r : c.F) : ℂ) = H.rt0 ∧ ((β z : c.F) : ℂ) = zeta l.A) → Module.finrank ℂ Λ.A.V = g := by
   intro hL hL2 E _ _ _ H _ D l c O _ β _ _ b a Λ g ty hty ⟨r, z, hr, hz⟩

@@ -8,9 +8,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysPrism.Decay
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨x, y, by simp, by simp⟩`. Consider the case `succ n ih`. Take `⟨p, g, hp, hg⟩` from `ih`. Take `⟨p', hp'⟩` from `hm p x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z1, h1⟩` from `hm p y`. Take `⟨z2, h2⟩` from `hm g x`. Take `⟨z3, h3⟩` from `hm g y`. Use `⟨p', z1 + z2 + c • z3, by rw [hp', hp]; ring, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, hg, map_add, map_add, map_nsmul, h1, h2, h3, hp, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem ofWHom_apply (w : ℕ × ℕ → Wq l a) : ofWHom t K e w = ofW t K e w := rfl
 
 /- English proof (translation)
-Rewrite `h` using `[coeff_ofW, div_eq_zero_iff]`. Establish `h2 : (dpDen e i n : K) ≠ 0` using `Nat.cast_ne_zero.2 (dpDen_pos e i n).ne'`. Apply `hinj 0` to reduce the goal to its premises. Simplify using `using h.resolve_right h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_coeff [CharZero K]
     (hinj : ∀ τ : ZMod a, Function.Injective fun c : Wq l a => algebraMap O K (emb t τ c))
@@ -56,7 +56,7 @@ theorem eq_zero_of_coeff [CharZero K]
   simpa using h.resolve_right h2
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Use function extensionality and compare the values at `⟨i, n⟩`. Apply `eq_zero_of_coeff t K e hinj` to reduce the goal to its premises. Rewrite using `[← ofWHom_apply, hw]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -71,7 +71,7 @@ theorem ofWHom_injective [CharZero K]
   simp
 
 /- English proof (translation)
-Rewrite using `[Filter.eventually_cofinite]`. Use `((Set.finite_Iic M).prod (Set.finite_Iic M)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨i, n⟩ h`. Simplify using `only [Set.mem_setOf_eq, not_or, not_lt] at h`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem box_cofinite (M : ℕ) : ∀ᶠ p : ℕ × ℕ in cofinite, M < p.1 ∨ M < p.2 := by
   rw [Filter.eventually_cofinite]
@@ -86,33 +86,31 @@ namespace GlobalTheory.CrysPrism
 open Decay
 
 /- English proof (translation)
-Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hl0 : (l : K) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Establish `hl2 : (l : K⟦X⟧⟦X⟧) ≠ 0` using `natCast_ne_zero_ps (natCast_ne_zero_ps hl0)`. Establish `hI` using `ofWHom_injective t K e hinj`. Establish `key : ∀ r : ℕ, ∀ᶠ p in cofinite, (l : Wq l a) ^ r ∣ v p ∧ (l : Wq l a) ^ r ∣ b p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Establish `hS` using `hw (r + 1)`. Rewrite `hS` using `[Filter.eventually_cofinite]`. Take `⟨⟨N1, N2⟩, hN⟩` from `hS.bddAbove`. Set `w1 : ℕ × ℕ → Wq l a` to `fun p => if (l : Wq l a) ^ (r + 1) ∣ w p then 0 else w p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hex : ∀ p, ∃ c, w p = w1 p + (l ^ (r + 1) : ℕ) • c`. Introduce `p`. Distinguish the cases in `h : (l : Wq l a) ^ (r + 1) ∣ w p`. Take `⟨c, hc⟩` from `id h`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [w1, if_pos h]`. Simplify using `[hc]`. Conclude with `⟨0, by simp only [w1, if_neg h]; simp⟩`. Use `choose w2 hw2 using hex`. Establish `hw12 : w = w1 + (l ^ (r + 1) : ℕ) • w2` using `funext hw2`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw1 : ∀ i n, max N1 N2 < i ∨ max N1 N2 < n → w1 (i, n) = 0`. Introduce `i n h`. Distinguish the cases in `h' : (l : Wq l a) ^ (r + 1) ∣ w (i, n)`. Simplify using `only [w1, if_pos h']`. Establish `h3 : (i, n) ≤ (N1, N2)` using `hN h'`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨h4, h5⟩` from `h3`. Simplify using `only at h4 h5`. Use linear arithmetic over natural numbers and integers. Take `⟨M, hM⟩` from `hsupp _ w1 hw1`. Take `⟨-, ⟨v1, hv1⟩, _, ⟨b1, rfl⟩, hb1⟩` from `hQ _ ⟨w1, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨v2, hv2⟩, -⟩` from `hQ _ ⟨w2, rfl⟩`. Take `⟨k, hk⟩ : ∃ k, l = k + 1` from `Nat.exists_eq_succ_of_ne_zero hl.out.ne_zero`. Take `⟨-, g, -, hg⟩` from `pow_add_mul_range (ofWHom t K e) (fun x y => hmul _ ⟨x, rfl⟩ _ ⟨y, rfl⟩) w1 w2 (l ^ (r + 1)) k`. Rewrite `hg` using `[← hk]`. Establish `hF : ofW t K e w = ofW t K e w1 + ((l ^ (r + 1) : ℕ) : ZMod a → K⟦X⟧⟦X⟧) * ofW t K e w2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← ofWHom_apply, hw12, map_add, map_nsmul, nsmul_eq_mul]`. Both sides reduce to the same expression. Establish `hφ : frob2 φ₂ (ofW t K e w) = ofW t K e v1 + ((l ^ (r + 1) : ℕ) : ZMod a → K⟦X⟧⟦X⟧) * ofW t K e v2`. Rewrite using `[hF, map_add, map_mul, map_natCast, hv1, hv2]`. Establish `e1 : v = v1 + (l ^ (r + 1) : ℕ) • v2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hI` to reduce the goal to its premises. Rewrite using `[map_add, map_nsmul, nsmul_eq_mul, ofWHom_apply, ← hv, hφ]`. Both sides reduce to the same expression. Establish `e2 : b = b1 + (l ^ r : ℕ) • (v2 - g)`. Apply `hI` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_add, map_nsmul, map_sub, nsmul_eq_mul, ← sub_eq_zero]`. Apply `tf_pi hl2` to reduce the goal to its premises. Simplify using `only [ofWHom_apply] at hg ⊢`. Rewrite `hg` using `[← hF]`. Rewrite `hb1` using `[← hv1]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at hg hφ ⊢`. Take the linear combination `hφ - hb - hg + hb1`. Use `filter_upwards [box_cofinite M] with ⟨i, n⟩ hp`. Take `⟨m1, m2⟩` from `hM 0 i n hp`. Establish `z1 : v1 (i, n) = 0` using `eq_zero_of_coeff t K e hinj v1 i n (by rw [hv1]; exact m1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `z2 : b1 (i, n) = 0`. Apply `eq_zero_of_coeff t K e hinj` to reduce the goal to its premises. Rewrite `m1` using `[hb1, ← nsmul_eq_mul, Pi.add_apply, map_add, map_add, m2, zero_add, Pi.smul_apply, map_nsmul, map_nsmul, nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 m1).resolve_left hl0`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, z1, zero_add, nsmul_eq_mul, Nat.cast_pow]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ (Nat.le_succ r)) _`. Rewrite using `[e2]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, z2, zero_add, nsmul_eq_mul, Nat.cast_pow]`.
-
-Conclude with `Dvd.intro _ rfl`. Conclude with `⟨fun r => (key r).mono fun _ h => h.1, fun r => (key r).mono fun _ h => h.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frob_keeps_decay (l : ℕ) [hl : Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O]
     [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]

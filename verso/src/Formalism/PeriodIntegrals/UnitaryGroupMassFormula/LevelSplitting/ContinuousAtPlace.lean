@@ -13,7 +13,7 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) (A := fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evalV (v : HeightOneSpectrum (𝓞 F)) : Continuous (evalV F v) :=
   RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F)
@@ -23,7 +23,7 @@ def phiV (v : HeightOneSpectrum (𝓞 F)) : Af F ⊗[F] E →ₐ[F] Fv F v ⊗[F
   Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem phiV_smul (v : HeightOneSpectrum (𝓞 F)) (a : Af F) (x : Af F ⊗[F] E) :
     phiV (E := E) v (a • x) = evalV F v a • phiV v x := by
@@ -37,7 +37,7 @@ def phiSL (v : HeightOneSpectrum (𝓞 F)) :
   map_smul' := fun a x => phiV_smul v a x
 
 /- English proof (translation)
-Establish `: IsModuleTopology (Af F) (Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (Fv F v ⊗[F] E)` using `IsModuleTopology.toContinuousAdd (Fv F v) _`. Establish `: ContinuousSMul (Fv F v) (Fv F v ⊗[F] E)` using `IsModuleTopology.toContinuousSMul (Fv F v) _`. Conclude with `IsModuleTopology.continuous_of_linearMapₛₗ (continuous_evalV v) (phiSL v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_phiV (v : HeightOneSpectrum (𝓞 F)) : Continuous (phiV (E := E) v) := by
   have : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩
@@ -49,7 +49,7 @@ theorem continuous_phiV (v : HeightOneSpectrum (𝓞 F)) : Continuous (phiV (E :
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J v`. Establish `h1 : Continuous (fun g : HA (Af F) σ J => (incAf σ J g : GL (Fin n) (Af F ⊗[F] E)))` using `continuous_subtype_val`. Establish `h2 : Continuous (fun g : HA (Af F) σ J => ((incAf σ J g : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)))` using `Units.continuous_val.comp h1`. Use `(h2.matrix_map (continuous_phiV (E := E) v)).congr ?_` and prove the remaining obligations. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/

@@ -32,47 +32,47 @@ section Calc
 open PI.PhNormUnits.UnitaryGroupMassFormula.PAdicPowerSeriesCoefficients
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem simeq_iff_lemma {σ : Type*} (f g : MvPowerSeries σ ℂ_[p]) :
     Simeq f g ↔ PI.PhNormUnits.Simeq f g := Iff.rfl
 
 /- English proof (translation)
-Conclude with `(simeq_iff_lemma f f).2 (simeq_refl f)`.
+A detailed English derivation is pending.
 -/
 theorem sRefl {σ : Type*} (f : MvPowerSeries σ ℂ_[p]) : Simeq f f := by
   exact (simeq_iff_lemma f f).2 (simeq_refl f)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `sRefl f`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sOfEq {σ : Type*} {f g : MvPowerSeries σ ℂ_[p]} (h : f = g) : Simeq f g := by
   subst h
   exact sRefl f
 
 /- English proof (translation)
-Conclude with `(simeq_iff_lemma _ _).2 (simeq_symm ((simeq_iff_lemma _ _).1 h))`.
+A detailed English derivation is pending.
 -/
 theorem sSymm {σ : Type*} {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq g f := by
   exact (simeq_iff_lemma _ _).2 (simeq_symm ((simeq_iff_lemma _ _).1 h))
 
 /- English proof (translation)
-Conclude with `(simeq_iff_lemma _ _).2 (simeq_trans ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))`.
+A detailed English derivation is pending.
 -/
 theorem sTrans {σ : Type*} {f g k : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq g k) : Simeq f k := by
   exact (simeq_iff_lemma _ _).2 (simeq_trans ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))
 
 /- English proof (translation)
-Conclude with `(simeq_iff_lemma _ _).2 (simeq_add ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))`.
+A detailed English derivation is pending.
 -/
 theorem sAdd {σ : Type*} {f g h k : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq h k) :
     Simeq (f + h) (g + k) := by
   exact (simeq_iff_lemma _ _).2 (simeq_add ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `sRefl 0`. Consider the case `@insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `sAdd (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem sSum {σ ι : Type*} (s : Finset ι) {f g : ι → MvPowerSeries σ ℂ_[p]} (h : ∀ i ∈ s, Simeq (f i) (g i)) :
     Simeq (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
@@ -85,14 +85,14 @@ theorem sSum {σ ι : Type*} (s : Finset ι) {f g : ι → MvPowerSeries σ ℂ_
     exact sAdd (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Conclude with `integral_subst s (fun i => (hs i).1) (fun i => (hs i).2) hf`.
+A detailed English derivation is pending.
 -/
 theorem integral_subst' {σ τ : Type*} [Finite τ] (s : τ → MvPowerSeries σ ℂ_[p]) (hs : ∀ i, Good (s i))
     {f : MvPowerSeries τ ℂ_[p]} (hf : IntegralMv f) : IntegralMv (MvPowerSeries.subst s f) := by
   exact integral_subst s (fun i => (hs i).1) (fun i => (hs i).2) hf
 
 /- English proof (translation)
-Conclude with `(simeq_iff_lemma _ _).2 (simeq_subst s (fun i => (hs i).1) (fun i => (hs i).2) ((simeq_iff_lemma _ _).1 h))`.
+A detailed English derivation is pending.
 -/
 theorem sSubst {σ τ : Type*} [Finite τ] (s : τ → MvPowerSeries σ ℂ_[p]) (hs : ∀ i, Good (s i))
     {f g : MvPowerSeries τ ℂ_[p]} (h : Simeq f g) :

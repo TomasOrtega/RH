@@ -27,7 +27,7 @@ def sub (E₀ E B : Type) [Field E₀] [Field E] [Algebra E₀ E] [CommRing B] [
 
 omit [CharZero O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] in
 /- English proof (translation)
-Unfold `Dat3.rz`. Rewrite using `[← show push x U.r.hom = r0 D.η D.Ψ from hx]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_base {x : U.R →ₐ[O] O} (hx : IsBase D.η D.Ψ U.r.hom x) (F : Type) [Field F] [Algebra O F] :
     push ((Algebra.ofId O F).comp x) U.r.hom = D.rz F := by
@@ -36,23 +36,21 @@ theorem push_base {x : U.R →ₐ[O] O} (hx : IsBase D.η D.Ψ U.r.hom x) (F : T
   rfl
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `univEx D U`. Establish `hfx : ∀ a, π (f a) = algebraMap O E (x a)`. Introduce `a`. Set `y : U.R →ₐ[O] E` to `(π.restrictScalars O).comp f`. Take `⟨g, -, hu⟩` from `unramified_lift_deformation D U E E (AlgHom.id E E) (fun a ha => by simpa using ha) y (push y U.r.hom) (fun g => U.r.hasMult g) rfl (fun a b => (ptCont (l := l) U.R E y).1 (GQ l) (fun g => (U.r.hom g).mat a b) (U.r.cont a b))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(hu y rfl).trans (hu ((Algebra.ofId O E).comp x) ((push_base D U hx E).trans hD.red.symm)).symm`. Conclude with `congrArg (fun φ : U.R →ₐ[O] E => φ a) h`. Establish `hinj : Function.Injective (algebraMap E₀ E)` using `(algebraMap E₀ E).injective`. Set `B₀` to `sub E₀ E B π`. Establish `hmem : ∀ a, f a ∈ B₀` using `fun a => ⟨algebraMap O E₀ (x a), by rw [hfx, IsScalarTower.algebraMap_apply O E₀ E]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f₀ : U.R →ₐ[O] B₀` to `{ toFun := fun a => ⟨f a, hmem a⟩ map_one' := Subtype.ext (map_one f) map_mul' := fun a b => Subtype.ext (map_mul f a b) map_zero' := Subtype.ext (map_zero f) map_add' := fun a b => Subtype.ext (map_add f a b) commutes' := fun c => Subtype.ext (f.commutes c) }`. Establish `hb : ∀ b : B₀, ∃ y, algebraMap E₀ E y = π (b : B)` using `fun b => b.2`. Use `choose p hp using hb`. Set `π₀ : B₀ →ₐ[E₀] E₀` to `{ toFun := p map_one' := hinj (by rw [hp]; simp) map_mul' := fun a b => hinj (by rw [hp, map_mul, hp, hp]; simp) map_zero' := hinj (by rw [hp]; simp) map_add' := fun a b => hinj (by rw [hp, map_add, hp, hp]; simp) commutes' := fun c => hinj (by`. Rewrite using `[hp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show π (algebraMap E₀ B c) = algebraMap E₀ E (algebraMap E₀ E₀ c)`. Rewrite using `[IsScalarTower.algebraMap_apply E₀ E B, π.commutes]`. Use the proof step `rfl) }`. Establish `hπ₀ : ∀ a, π₀ a = 0 → IsNilpotent a`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : π (a : B) = 0`. Rewrite using `[← hp]`. Express the relevant statement in the definitionally equal form `algebraMap E₀ E (π₀ a) = 0`. Rewrite using `[ha, map_zero]`. Take `⟨n, hn⟩` from `hπ _ h0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨n, Subtype.ext (by simpa using hn)⟩`. Set `val' : B₀ →ₐ[ℚ_[l]] B` to `{ toFun := Subtype.val map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Use `haveI : Module.Finite ℚ_[l] B₀ := Module.Finite.of_injective val'.toLinearMap Subtype.val_injective`. Establish `hD' : D.InDcrAt (π : B →+* E) (D.rz E) ((GG.map (val' : B₀ →+* B)).comp (push f₀ U.r.hom))` using `hD`. Establish `hq` using `OrdinaryDeformation.dcr_pair val' val' (fun a b h _ => Subtype.ext h) hD' hD'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (π₀.restrictScalars O).comp f₀ = (Algebra.ofId O E₀).comp x` using `AlgHom.ext fun a => hinj (by`. Express the relevant statement in the definitionally equal form `algebraMap E₀ E (p (f₀ a)) = algebraMap E₀ E (algebraMap O E₀ (x a))`. Rewrite using `[hp, ← IsScalarTower.algebraMap_apply O E₀ E]`. Conclude with `hfx a)`. Establish `hred : (GG.map (π₀ : B₀ →+* E₀)).comp (push f₀ U.r.hom) = D.rz E₀`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← push_base D U hx E₀, ← h1]`. Both sides reduce to the same expression. Establish `hD₀ : D.InDcr (π₀ : B₀ →+* E₀) (push f₀ U.r.hom)` using `⟨hq.mult, hred, hq.cont, hq.cr⟩`. Introduce `a ha`. Establish `h2` using `GlobalTheory.T.crystallineDeformation_points_saturatedOrdinaryIdeal_fracO hP D U E₀ B₀ π₀ hπ₀ f₀ hD₀ ha`.
-
-Rewrite `h2`, the goal using `[RingHom.mem_ker]`. Conclude with `congrArg Subtype.val h2`.
+A detailed English derivation is pending.
 -/
 theorem reduce (hP : LocalPublishedTheorems)
     (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E]
@@ -136,21 +134,17 @@ end GlobalTheory.OrdLoc.CriticalPoints
 open GlobalTheory.OrdLoc.CriticalPoints in
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D U`. Introduce `E _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ f hD`. Establish `hi : Function.Injective (algebraMap ℤ_[l] O)`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hp : (Ideal.comap (algebraMap ℤ_[l] O) ⊥).IsPrime` using `inferInstance`. Establish `hm : (Ideal.comap (algebraMap ℤ_[l] O) ⊥).IsMaximal` using `hp.isMaximal h`. Establish `h2 : (⊥ : Ideal O).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[l]) _ hm`. Conclude with `IsDiscreteValuationRing.not_a_field O (IsLocalRing.eq_maximalIdeal h2).symm`. Use `haveI : FaithfulSMul ℤ_[l] O := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi2 : Function.Injective (algebraMap ℤ_[l] (FractionRing O))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] O (FractionRing O)]`. Conclude with `(IsFractionRing.injective O _).comp hi`. Use `letI : Algebra ℚ_[l] (FractionRing O) := (IsFractionRing.lift hi2).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] (FractionRing O) := IsScalarTower.of_algebraMap_eq fun x => (IsFractionRing.lift_algebraMap hi2 x).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid O (nonZeroDivisors ℤ_[l])) (FractionRing O) := inferInstance`. Use `haveI : Module.Finite ℚ_[l] (FractionRing O) := Module.Finite.of_isLocalization ℤ_[l] O (nonZeroDivisors ℤ_[l])`. Establish `hOE : Function.Injective (algebraMap O E)`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ_[l]) ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comap_ker, ← IsScalarTower.algebraMap_eq, ← RingHom.injective_iff_ker_eq_bot, IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`. Conclude with `(algebraMap ℚ_[l] E).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Use `letI : Algebra (FractionRing O) E := (IsFractionRing.lift hOE).toAlgebra`. Use `haveI : IsScalarTower O (FractionRing O) E := IsScalarTower.of_algebraMap_eq fun c => (IsFractionRing.lift_algebraMap hOE c).symm`. Use `letI : Algebra (FractionRing O) B := ((algebraMap E B).comp (algebraMap (FractionRing O) E)).toAlgebra`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsScalarTower (FractionRing O) E B := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower O (FractionRing O) B := IsScalarTower.of_algebraMap_eq fun c => by`. Express the relevant statement in the definitionally equal form `_ = algebraMap E B (algebraMap (FractionRing O) E (algebraMap O (FractionRing O) c))`. Rewrite using `[← IsScalarTower.algebraMap_apply O (FractionRing O) E, ← IsScalarTower.algebraMap_apply O E B]`. Establish `hQ : (algebraMap (FractionRing O) E).comp (algebraMap ℚ_[l] (FractionRing O)) = algebraMap ℚ_[l] E` using `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => by`.
-
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (FractionRing O), IsScalarTower.algebraMap_apply ℤ_[l] O (FractionRing O), ← IsScalarTower.algebraMap_apply O (FractionRing O) E, ← IsScalarTower.algebraMap_apply ℤ_[l] O E, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] E])`. Use `haveI : IsScalarTower ℚ_[l] (FractionRing O) B := IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] E B, ← hQ]`. Both sides reduce to the same expression.
-
-Use `haveI : IsScalarTower ℤ_[l] (FractionRing O) B := IsScalarTower.of_algebraMap_eq fun z => by`. Express the relevant statement in the definitionally equal form `_ = algebraMap E B (algebraMap (FractionRing O) E (algebraMap ℤ_[l] (FractionRing O) z))`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] O (FractionRing O), ← IsScalarTower.algebraMap_apply O (FractionRing O) E, ← IsScalarTower.algebraMap_apply O E B, ← IsScalarTower.algebraMap_apply ℤ_[l] O B]`. Conclude with `reduce D U hP E B π hπ f hD (FractionRing O)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OrdLoc.crPts_IY : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ), GlobalTheory.OrdLoc.CrPts D U (GlobalTheory.OrdLoc.IY D U) := by
   intro hP l _ O _ _ _ _ _ _ _ D U

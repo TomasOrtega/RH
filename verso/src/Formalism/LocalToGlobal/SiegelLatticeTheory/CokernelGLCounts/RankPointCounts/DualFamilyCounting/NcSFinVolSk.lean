@@ -64,15 +64,15 @@ def BoxVol : Prop :=
                 (C v ∩ {X | gramR (Fv F v) σ J X = (gramE σ J X0).map (inclR (Fv F v))})).toReal)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ a X0 hT νX Λ μf hStd hdet ha hn hSWa hSWc hLat hOm _ _ _`. Take `⟨hKYm, hKYiff⟩` from `h1 F E σ n J a X0 Λ hStd.1 hStd.2.1 hLat`. Use `⟨hKYm, ?_⟩` and prove the remaining obligations. Introduce `μinf νinf fibInf hμ hν hfib hne ωf hdec`. Take `⟨hsupp, hbox⟩` from `h3 F E σ n J ψ a X0 hT νX hStd hdet ha hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib hne ωf hdec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, b, C, hSB, hCm, hCeq, hCa⟩` from `h2 F E σ n J a X0 Λ hStd.1 hStd.2.1 hdet hLat`. Establish `hae : ∀ᵐ x ∂ωf, ∀ v : HeightOneSpectrum (𝓞 F), gramR (Fv F v) σ J (projV v x) = (gramE σ J X0).map (inclR (Fv F v))` using `ae_iff.2 hsupp`. Establish `hset : ωf {x | ∃ k ∈ Kf σ J Λ, x = k • ratTup (Af F) X0} = ωf {x | ∀ v, projV v x ∈ C v}`. Apply `measure_congr` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `propext` to reduce the goal to its premises. Use `show (∃ k ∈ Kf σ J Λ, x = k • ratTup (Af F) X0) ↔ ∀ v, projV v x ∈ C v`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Establish `h'` using `(hKYiff x).1 h v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h'` using `[← hCeq v]`. Conclude with `h'.1`. Introduce `h`. Use `(hKYiff x).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[← hCeq v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨h v, hx v⟩`. Rewrite using `[hset, hbox d b C hSB hCm hCa]`. Use `congr 1`. Conclude with `tprod_congr fun v => by rw [hCeq v]`.
+A detailed English derivation is pending.
 -/
 theorem omFinVol_of (h1 : KfOrb) (h2 : LocSB) (h3 : BoxVol) : Formalism.L2.SG.Pf.NcS.SplitSk.OmFinVol := by
   intro F E _ _ _ _ _ σ n J ψ a X0 hT νX Λ μf hStd hdet ha hn hSWa hSWc hLat hOm _ _ _

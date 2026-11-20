@@ -22,11 +22,11 @@ open Classical
 namespace GlobalTheory.FrameOff
 
 /- English proof (translation)
-Introduce `D W β f k PP hS hf a b`. Use `set M := Formalism.L2.Theta.mt W k with hMdef`. Establish `hmap : M.map (toEAf D) - 1 = (M - 1).map (toEAf D)`. Rewrite using `[Matrix.map_sub (toEAf D) (fun x y => (toEAf D).map_sub x y), Matrix.map_one _ (toEAf D).map_zero (toEAf D).map_one]`. Establish `hM : ((M - 1).map (toEAf D)).map (GlobalTheory.StdFrames.cpt PP) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.StdFrames.cpt PP (toEAf D ((M - 1) i j)) = 0`. Rewrite using `[← hS i j, RingHom.map_mul, RingHom.map_mul, hf, zero_mul]`. Establish `hk : (HMul.hMul (HMul.hMul ((β)⁻¹).val (M.map (toEAf D))) (β).val : Matrix (Fin (W).rank) (Fin (W).rank) (Formalism.IndefR.Datum.EAf D)) - 1 = ((β)⁻¹).val * (M.map (toEAf D) - 1) * (β).val`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Units.inv_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Express the relevant statement in the definitionally equal form `((((β)⁻¹).val * (M.map (toEAf D) - 1) * (β).val).map (GlobalTheory.StdFrames.cpt PP)) a b = 0`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hmap, hM, Matrix.mul_zero, Matrix.zero_mul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cpt_frame_sub_one_eq_zero_of_suppF : ∀ (D : D7) (W : HSp D) (β : GL (Fin W.rank) (Formalism.IndefR.Lev.EAf D)) (f : AE D) (k : GA D W) (PP : Pl D.host.E), SuppF W f k → GlobalTheory.StdFrames.cpt PP (toEAf D f) = 0 → ∀ a b, GlobalTheory.StdFrames.cpt PP (((HMul.hMul (HMul.hMul ((β)⁻¹).val ((Formalism.L2.Theta.mt W k).map (toEAf D))) (β).val : Matrix (Fin (W).rank) (Fin (W).rank) (Formalism.IndefR.Datum.EAf D)) - 1) a b) = 0 := by
   intro D W β f k PP hS hf a b

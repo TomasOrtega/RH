@@ -12,7 +12,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct DirectSum GlobalTheory.LogCr
 namespace GlobalTheory.CompanionTheory.KunGlue
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.pairing_iso_of_component_isos (P := fun a => CH.cx (U₁.ι ⋙ E.F₁ a)) (Q := fun a => CH.cx (U₂.ι ⋙ E.F₂ a)) (T := fun a => CH.cx (U₃.ι ⋙ E.F₃ a)) (P' := fun a => CH.cx (U₁'.ι ⋙ E.F₁ a)) (Q' := fun a => CH.cx (U₂'.ι ⋙ E.F₂ a)) (T' := fun a => CH.cx (U₃'.ι ⋙ E.F₃ a)) ( …`.
+A detailed English derivation is pending.
 -/
 theorem kun_res {K : Type} [Field K] (E : XD K) {U₁ U₁' : ObjectProperty E.C₁} {U₂ U₂' : ObjectProperty E.C₂} {U₃ U₃' : ObjectProperty E.D} (h₁ : ∀ T, U₃ T → U₁ (E.L₁.obj T)) (h₂ : ∀ T, U₃ T → U₂ (E.L₂.obj T)) (h₁' : ∀ T, U₃' T → U₁' (E.L₁.obj T)) (h₂' : ∀ T, U₃' T → U₂' (E.L₂.obj T)) (k₁ : U₁' ≤ U₁) (k₂ : U₂' ≤ U₂) (k₃ : U₃' ≤ U₃) (b₁ : ∀ a n, Function.Bijective ((resU (E.F₁ a) k₁).pull n)) (b₂ : ∀ a n, Function.Bijective ((resU (E.F₂ a) k₂).pull n)) (b₃ : ∀ a n, Function.Bijective ((resU (E.F₃ a) k₃).pull n)) : (E.Kun U₁ U₂ U₃ h₁ h₂ ↔ E.Kun U₁' U₂' U₃' h₁' h₂') :=
   GlobalTheory.T.pairing_iso_of_component_isos (P := fun a => CH.cx (U₁.ι ⋙ E.F₁ a)) (Q := fun a => CH.cx (U₂.ι ⋙ E.F₂ a)) (T := fun a => CH.cx (U₃.ι ⋙ E.F₃ a))

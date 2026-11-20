@@ -13,11 +13,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z Cn φ hC hL z`. Take `⟨U0, hz0, f0, hreg0, -, hgen0⟩` from `GlobalTheory.T.exists_local_regular_fn_ordinary Z Cn φ hC hL z`. Take `⟨U, hUU0, hzU, hcod⟩` from `GlobalTheory.T.regular_fn_unit_near_generization Z Cn φ hC hL z U0 f0 hz0 hreg0 hgen0`. Use `⟨U, hzU, resG Z.X hUU0 f0, hreg0.resG hUU0, traitOrd_of_traitOrdPt fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨V0, hxV0, g0, hregg, hgx, hgen'⟩` from `GlobalTheory.T.exists_local_regular_fn_ordinary Z Cn φ hC hL x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hVV0, hxV, hcodV⟩` from `GlobalTheory.T.regular_fn_unit_near_generization Z Cn φ hC hL x V0 g0 hxV0 hregg hgen'`. Establish `ha` using `GlobalTheory.T.regular_fn_agree_on_overlap Z Cn φ hC U V (resG Z.X hUU0 f0) (resG Z.X hVV0 g0) (hreg0.resG hUU0) (hregg.resG hVV0) (fun q hq hq' hd => ⟨hcod q hq hd, hcodV q hq' hd⟩) x hx hxV`. Establish `ha' : Associated ((Z.X.presheaf.germ U x hx).hom (resG Z.X hUU0 f0)) ((Z.X.presheaf.germ V0 x hxV0).hom g0)`. Rewrite `ha` using `[germ_resG (X := Z.X) hVV0 x hxV g0]`. Conclude with `ha`.
-
-Conclude with `TraitOrdPt.of_associated hx hxV0 ha' hgx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_regularFn_traitOrd : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ), (Fin m → LinearMap.BilinForm ℤ X) → Prop) (φ : InvFun (𝓞 E)), HasCones Cn Z → HasLinForms Cn φ → ∀ z : Z.X, ∃ (U : Z.X.Opens) (_ : z ∈ U) (f : Γ(Z.X, U)), IsRegularFn f ∧ TraitOrd φ Z U f := by
   intro E _ _ _ H D l Xo c Z Cn φ hC hL z

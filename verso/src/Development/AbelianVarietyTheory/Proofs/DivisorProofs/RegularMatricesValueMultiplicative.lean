@@ -16,7 +16,7 @@ namespace GlobalTheory.ConstLat.CramerValues
 variable {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z]
 
 /- English proof (translation)
-Use `choose A hA using hP`. Conclude with `⟨Matrix.of A, by ext a b; exact (hA a b).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_germ_matrix {x : Z} {n m : ℕ} (P : Matrix (Fin n) (Fin m) Z.functionField)
     (hP : ∀ a b, RegAt x (P a b)) :
@@ -25,7 +25,7 @@ theorem exists_germ_matrix {x : Z} {n m : ℕ} (P : Matrix (Fin n) (Fin m) Z.fun
   exact ⟨Matrix.of A, by ext a b; exact (hA a b).symm⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `Base.valAt_stalk z (A a b)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_valAt_germ (z : Sp K ⟶ Z) {n m : ℕ} (A : Matrix (Fin n) (Fin m) (Z.presheaf.stalk (below z))) :
     (A.map (algebraMap _ Z.functionField)).map (valAt z) = A.map (Scheme.stalkClosedPointTo z).hom := by
@@ -33,7 +33,7 @@ theorem map_valAt_germ (z : Sp K ⟶ Z) {n m : ℕ} (A : Matrix (Fin n) (Fin m) 
   exact Base.valAt_stalk z (A a b)
 
 /- English proof (translation)
-Unfold `minorAt`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem minorAt_map_ringHom {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n g : ℕ}
     (A : Matrix (Fin n) (Fin g) R) (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin n) :
@@ -43,13 +43,13 @@ theorem minorAt_map_ringHom {R S : Type} [CommRing R] [CommRing S] (f : R →+* 
   rfl
 
 /- English proof (translation)
-Introduce `K _ Z _ z`. Use `⟨fun P Q hP hQ => ?_, fun P hP k hk τ => ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨A, rfl⟩` from `exists_germ_matrix P hP`. Take `⟨B, rfl⟩` from `exists_germ_matrix Q hQ`. Rewrite using `[← Matrix.map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a b => ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_valAt_germ, map_valAt_germ, map_valAt_germ]`. Conclude with `Matrix.map_mul`. Take `⟨A, rfl⟩` from `exists_germ_matrix P hP`. Rewrite using `[minorAt_map_ringHom, map_valAt_germ, Base.valAt_stalk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, rfl⟩, (minorAt_map_ringHom _ A k hk τ).symm⟩`. Take `⟨a, rfl⟩` from `ha`. Take `⟨_, ⟨u, rfl⟩, rfl⟩` from `hb`. Establish `e {S : Type} [Field S] (ψ : Z.presheaf.stalk (below z) →+* S) : ψ a / ψ u = ψ (a * (u⁻¹ : _ˣ))`. Rewrite using `[map_mul, map_units_inv, div_eq_mul_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk]`. Conclude with `⟨⟨_, rfl⟩, (e _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem values_regular : ∀ {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (z : Sp K ⟶ Z), (∀ {n m l : ℕ} (P : Matrix (Fin n) (Fin m) Z.functionField) (Q : Matrix (Fin m) (Fin l) Z.functionField), (∀ a b, RegAt (below z) (P a b)) → (∀ a b, RegAt (below z) (Q a b)) → (∀ a b, RegAt (below z) ((P * Q) a b)) ∧ (P * Q).map (valAt z) = P.map (valAt z) * Q.map (valAt z)) ∧ (∀ {n g : ℕ} (P : Matrix (Fin n) (Fin g) Z.functionField), (∀ a b, RegAt (below z) (P a b)) → ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin n), RegAt (below z) (minorAt P k hk τ) ∧ valAt z (minorAt P k hk τ) = minorAt (P.map (valAt z)) k hk τ) ∧ ∀ (a b : Z.functionField), RegAt (below z) a → UnitAt (below z) b → RegAt (below z) (a / b) ∧ valAt z (a / b) = valAt z a / valAt z b := by
   intro K _ Z _ z

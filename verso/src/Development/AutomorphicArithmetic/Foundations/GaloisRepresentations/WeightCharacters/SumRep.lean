@@ -8,19 +8,17 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `E _ _ _ a S hfin hS`. Take `⟨B₀, -, -, hd, hi⟩` from `GlobalTheory.T.exists_invariant_positive_petersson_form E a`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (autU E a).subtype (autU E a).ker_subtype`. Establish `hpv : ∀ (φ : UA E a → ℂ) (h : IsAutFormU φ), p φ = ⟨φ, h⟩` using `fun φ h => LinearMap.congr_fun hp (⟨φ, h⟩ : autU E a)`. Set `B : (UA E a → ℂ) →ₗ⋆[ℂ] (UA E a → ℂ) →ₗ[ℂ] ℂ` to `(B₀.compl₂ p).comp p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hB : ∀ φ φ', B φ φ' = B₀ (p φ) (p φ')` using `fun _ _ => rfl`. Establish `hsum : ∀ φ : UA E a → ℂ, IsAutFormU φ → φ ∈ sSup {U : Submodule ℂ (UA E a → ℂ) | IsAutRepU U}`. Introduce `φ hφ`. Establish `h` using `UpperTheory.mem_iSup_automorphicReps_of_invariant_form E a B (fun f hf h0 => by`. Rewrite `h0` using `[hB, hpv f hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Subtype.val (hd _ h0))`. Use the proof step `(fun x f g hf hg => by`. Rewrite using `[hB, hB, hpv f hf, hpv g hg, hpv _ (RU_mem_autU x f hf), hpv _ (RU_mem_autU x g hg)]`. Conclude with `hi x ⟨f, hf⟩ ⟨g, hg⟩) φ hφ`. Conclude with `(iSup_le fun σ => le_sSup σ.2 : _ ≤ sSup {U : Submodule ℂ (UA E a → ℂ) | IsAutRepU U}) h`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis ℂ S`. Establish `hex : ∀ i, ∃ s : Finset (Submodule ℂ (UA E a → ℂ)), (↑s ⊆ {U : Submodule ℂ (UA E a → ℂ) | IsAutRepU U}) ∧ (b i : UA E a → ℂ) ∈ ⨆ U ∈ s, U` using `fun i => Submodule.mem_sSup_iff_exists_finset.1 (hsum _ (hS _ (b i).2))`. Use `choose s hsA hsm using hex`. Set `s0` to `Finset.univ.biUnion s`. Establish `hs0A : ∀ U ∈ s0, IsAutRepU U`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U hU`. Take `⟨i, -, hi'⟩` from `Finset.mem_biUnion.1 hU`. Conclude with `hsA i hi'`. Take `⟨t, hts, hti, htS⟩` from `GlobalTheory.EigenDecomp.exists_indep s0 hs0A`. Use `⟨t, fun U hU => hs0A U (hts hU), hti, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ hφ`. Rewrite using `[htS]`. Establish `e : φ = ∑ i, (b.repr ⟨φ, hφ⟩ i) • (b i : UA E a → ℂ)`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨φ, hφ⟩)`. Rewrite `h` using `[Submodule.coe_sum]`.
-
-Conclude with `h.symm`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `(iSup₂_le fun U hU => le_sSup ?_ : (⨆ U ∈ s i, U) ≤ sSup (s0 : Set (Submodule ℂ (UA E a → ℂ)))) (hsm i)` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hU⟩)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.sumRep_of :
     UpperTheory.Gal.Wt.SumRep := by

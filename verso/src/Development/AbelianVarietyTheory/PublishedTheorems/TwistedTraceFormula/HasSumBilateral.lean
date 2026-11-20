@@ -12,9 +12,9 @@ namespace GlobalTheory.GLDoubling.Model
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `ho : IsOpen (KO k (Fin n) : Set (GL (Fin n) k))` using `SplitFlip.isOpen_KO`. Establish `hc : IsCompact (KO k (Fin n) : Set (GL (Fin n) k))` using `SplitFlip.isCompact_KO`. Set `K : TopologicalSpace.PositiveCompacts (GL (Fin n) k)` to `⟨⟨_, hc⟩, by`. Rewrite using `[show interior ((⟨_, hc⟩ : TopologicalSpace.Compacts (GL (Fin n) k)).carrier) = _ from ho.interior_eq]`. Conclude with `⟨1, one_mem _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_haar (n : ℕ) [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)] :
     ∃ μ : Measure (GL (Fin n) k), μ.IsHaarMeasure ∧ μ (KO k (Fin n)) = 1 := by
@@ -26,15 +26,15 @@ theorem exists_haar (n : ℕ) [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (
   exact ⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self⟩
 
 /- English proof (translation)
-Establish `s1` using `hasSum_geometric_of_norm_lt_one h1`. Establish `s2` using `(hasSum_geometric_of_norm_lt_one h2).mul_left (a⁻¹ * Y)`. Establish `n1 : 1 - a * Y ≠ 0` using `sub_ne_zero.2 fun h => by rw [← h] at h1; simp at h1`. Establish `n2 : 1 - a⁻¹ * Y ≠ 0` using `sub_ne_zero.2 fun h => by rw [← h] at h2; simp at h2`. Establish `t1 : (fun m : ℕ => Y ^ |(m : ℤ)| * a ^ (m : ℤ)) = fun m => (a * Y) ^ m` using `funext fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mul_pow, mul_comm]`. Establish `t2 : (fun m : ℕ => Y ^ |-((m : ℤ) + 1)| * a ^ (-((m : ℤ) + 1))) = fun m => a⁻¹ * Y * (a⁻¹ * Y) ^ m`. Use function extensionality and compare the values at `fun m => by`. Rewrite using `[abs_neg, abs_of_nonneg (by positivity), ← pow_succ', mul_pow, _root_.zpow_neg, inv_pow, mul_comm]`. Use `norm_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `HasSum.of_nat_of_neg_add_one (f := fun e : ℤ => Y ^ |e| * a ^ e) (t1 ▸ s1) (t2 ▸ s2)` as an intermediate fact. Establish `hb : a * a⁻¹ = 1` using `mul_inv_cancel₀ ha`. Establish `e : (1 - a * Y)⁻¹ * (1 - a⁻¹ * Y)⁻¹ * (1 - Y ^ 2) = (1 - a * Y)⁻¹ + a⁻¹ * Y * (1 - a⁻¹ * Y)⁻¹`. Establish `i1` using `mul_inv_cancel₀ n1`. Establish `i2` using `mul_inv_cancel₀ n2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(1 - a * Y)⁻¹ = u at *`. Generalize the expression as in `(1 - a⁻¹ * Y)⁻¹ = w at *`. Generalize the expression as in `a⁻¹ = b at *`. Take the linear combination `u * i2 + b * Y * w * i1 + u * w * Y ^ 2 * hb`. Rewrite using `[e]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_bilateral {a Y : ℂ} (ha : a ≠ 0) (h1 : ‖a * Y‖ < 1) (h2 : ‖a⁻¹ * Y‖ < 1) :
     HasSum (fun e : ℤ => Y ^ |e| * a ^ e) ((1 - a * Y)⁻¹ * (1 - a⁻¹ * Y)⁻¹ * (1 - Y ^ 2)) := by
@@ -64,11 +64,11 @@ theorem hasSum_bilateral {a Y : ℂ} (ha : a ≠ 0) (h1 : ‖a * Y‖ < 1) (h2 :
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `GlobalTheory.SmGL.Model.scalar_of_isSubquotient ha.2.2 (fun f => ?_) v` and prove the remaining obligations. Use extensionality with `x`. Establish `h1` using `parInd_law (points (Fin 1)) _ f ⟨_, leviEmb_mem_parab k _ (leviTorus k _ fun _ => y)⟩ x`. Rewrite `h1` using `[leviProj_leviEmb]`. Establish `hc : x * (diagT k (Fin 1) fun _ => y) = (diagT k (Fin 1) fun _ => y) * x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Use `show f.1.1 (x * (diagT k (Fin 1) fun _ => y)) = (unrChar k (a 0) y : ℂ) • f.1.1 x`. Rewrite using `[hc]`. Use `h1.trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : modExp (fun _ : Fin 1 => Unit) 0 = 0` using `by rw [modExp_fin _ (fun _ => by simp)]; simp`. Simplify using `[deltaHalf_apply, hm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_one {π : Representation ℂ (GL (Fin 1) k) V} {a : Fin 1 → ℂˣ} (ha : HasSatake π a) (y : kˣ) (v : V) :
     π (diagT k (Fin 1) fun _ => y) v = (unrChar k (a 0) y : ℂ) • v := by
@@ -86,42 +86,40 @@ theorem act_one {π : Representation ℂ (GL (Fin 1) k) V} {a : Fin 1 → ℂˣ}
   simp [deltaHalf_apply, hm]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Conclude with `⟨Units.mk0 x (by rintro rfl; simp at hx; exact uniformizer_ne_zero hx.symm), hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unif : ∃ ϖ : kˣ, valuation k (ϖ : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
   exact ⟨Units.mk0 x (by rintro rfl; simp at hx; exact uniformizer_ne_zero hx.symm), hx⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `exists_unif (k := k)`. Establish `hq1 : (1 : ℝ) < resCard k` using `by exact_mod_cast one_lt_resCard k`. Establish `hq0 : 0 < resCard k` using `zero_lt_one.trans (one_lt_resCard k)`. Establish `hqc : (resCard k : ℂ) ≠ 0` using `by exact_mod_cast hq0.ne'`. Use `set M : ℝ := max ‖(α 0 : ℂ)‖ ‖(α 0 : ℂ)⁻¹‖ with hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 < M` using `lt_max_of_lt_left (norm_pos_iff.2 (α 0).ne_zero)`. Use `⟨Real.logb (resCard k) M, fun s hs => ?_⟩` and prove the remaining obligations. Use `set Y : ℂ := (resCard k : ℂ) ^ (-(s + 1 / 2)) with hY`. Establish `hMY : M * ‖Y‖ < 1`. Rewrite using `[hY, Complex.norm_natCast_cpow_of_pos hq0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: M < (resCard k : ℝ) ^ (s.re + 1 / 2)`. Rewrite using `[← Real.logb_lt_iff_lt_rpow hq1 hM0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (-(s + 1 / 2)).re = -(s.re + 1 / 2)` using `by simp`. Rewrite using `[e, Real.rpow_neg (by positivity), mul_inv_lt_iff₀ (by positivity), one_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h1 : ‖(α 0 : ℂ) * Y‖ < 1`. Rewrite using `[norm_mul]; exact lt_of_le_of_lt (by gcongr; exact le_max_left _ _) hMY`. Establish `h2 : ‖(α 0 : ℂ)⁻¹ * Y‖ < 1`. Rewrite using `[norm_mul]; exact lt_of_le_of_lt (by gcongr; exact le_max_right _ _) hMY`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS` using `hasSum_bilateral (α 0).ne_zero h1 h2`. Set `E : {e : Fin 1 → ℤ // Antitone e} ≃ ℤ` to `{ toFun := fun e => e.1 0 invFun := fun m => ⟨fun _ => m, antitone_const⟩ left_inv := fun e => by ext i; simp [Subsingleton.elim i 0] right_inv := fun _ => rfl }`. Use `set f : GL (Fin 1) k → ℂ := fun g => sphSection k (Fin 1) s (io k (Fin 1) (g, 1)) * ω g with hf`. Establish `hb : ∀ g, ∀ x ∈ KO k (Fin 1), ∀ y ∈ KO k (Fin 1), f (x * g * y) = f g` using `fun g x hx y hy => by`. Simplify using `only [hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sphSection_io_biinv s g hx hy, zonal_biinv hω g hx hy]`. Establish `hval : ∀ e : Fin 1 → ℤ, f (torusElt k (Fin 1) ϖ e) = Y ^ |e 0| * (α 0 : ℂ) ^ e 0` using `fun e => by`. Simplify using `only [hf]`. Rewrite using `[sphSection_torusElt hϖ]`. Take `⟨v, -, l, -, hl, hω⟩` from `hω`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : torusElt k (Fin 1) ϖ e = diagT k (Fin 1) fun _ => ϖ ^ e 0`. Unfold `torusElt`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hω, e1, act_one hπ, map_smul, hl, map_zpow, unrChar_uniformizer k _ hϖ, hY, ← Complex.cpow_mul_int]`. Simplify using `[add_comm]`. Establish `hvol : ∀ e : Fin 1 → ℤ, μ (cell k (Fin 1) ϖ e) = 1` using `fun e => by`. Establish `: cell k (Fin 1) ϖ e = torusElt k (Fin 1) ϖ e • (KO k (Fin 1) : Set (GL (Fin 1) k))`. Use extensionality with `g`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cell, DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Use `⟨x * y, mul_mem hx hy, ?_⟩` and prove the remaining obligations. Establish `hc : x * torusElt k (Fin 1) ϖ e = torusElt k (Fin 1) ϖ e * x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Use `show torusElt k (Fin 1) ϖ e * (x * y) = _`. Rewrite using `[hc, mul_assoc]`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨1, one_mem _, y, hy, by simp⟩`. Rewrite using `[this, measure_smul, hμ]`. Establish `hconst : ∀ e : Fin 1 → ℤ, Set.EqOn f (fun _ => f (torusElt k (Fin 1) ϖ e)) (cell k (Fin 1) ϖ e)` using `fun e g hg => by`. Take `⟨x, hx, y, hy, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`. Conclude with `hb _ x hx y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hint : Integrable f μ`. Rewrite using `[← integrableOn_univ, ← iUnion_cell hϖ]`. Use `integrableOn_iUnion_of_summable_integral_norm (fun e => ?_) ?_` and prove the remaining obligations. Conclude with `(integrableOn_const (by simp [hvol])).congr_fun (hconst e.1).symm (isOpen_cell ϖ e.1).measurableSet`. Use `((E.summable_iff (f := fun m : ℤ => ‖Y ^ |m| * (α 0 : ℂ) ^ m‖)).2 hS.summable.norm).congr fun e => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[setIntegral_congr_fun (isOpen_cell ϖ e.1).measurableSet (g := fun _ => ‖f (torusElt k (Fin 1) ϖ e)‖) fun g hg => congrArg norm (hconst e.1 hg)]`. Simplify using `[Measure.real, hvol, hval, E]`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `h3` using `hasSum_cell μ hϖ hint hb`. Simplify using `only [Measure.real, hvol, hval, ENNReal.toReal_one, Complex.ofReal_one, one_mul] at h3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3.unique ((E.hasSum_iff (f := fun m : ℤ => Y ^ |m| * (α 0 : ℂ) ^ m)).2 hS)]`. Establish `hY2 : Y ^ 2 = (resCard k : ℂ) ^ (-(2 * s + 1))`. Rewrite using `[hY, ← Complex.cpow_mul_nat]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hY2]`. Simplify using `only [lFactor, invNormFactor, Finset.Icc_self, Finset.prod_singleton, Fin.prod_univ_one, Pi.inv_apply, Units.val_inv_eq_inv_val, Nat.cast_one, ← hY]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_one [MeasurableSpace (GL (Fin 1) k)] [BorelSpace (GL (Fin 1) k)]
     (μ : Measure (GL (Fin 1) k)) [μ.IsHaarMeasure] (hμ : μ (KO k (Fin 1)) = 1)
@@ -208,9 +206,9 @@ theorem rank_one [MeasurableSpace (GL (Fin 1) k)] [BorelSpace (GL (Fin 1) k)]
     Units.val_inv_eq_inv_val, Nat.cast_one, ← hY]
 
 /- English proof (translation)
-Establish `hs : ∀ g : GL (Fin 0) k, g = 1` using `fun g => by ext i; exact i.elim0`. Establish `hu : (KO k (Fin 0) : Set (GL (Fin 0) k)) = Set.univ` using `Set.eq_univ_of_forall fun g => by rw [hs g]; exact one_mem _`. Rewrite `hμ` using `[hu]`. Use `haveI : IsProbabilityMeasure μ := ⟨hμ⟩`. Take `⟨v, -, l, -, hl, hω⟩` from `hω`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (fun g => sphSection k (Fin 0) s (io k (Fin 0) (g, 1)) * ω g) = fun _ => 1` using `funext fun g => by`. Rewrite using `[hs g, hω, show ((1 : GL (Fin 0) k), (1 : GL (Fin 0) k)) = 1 from rfl, map_one, sphSection_one]`. Simplify using `using hl`. Rewrite using `[this]`. Simplify using `[lFactor, invNormFactor]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_zero [MeasurableSpace (GL (Fin 0) k)] [BorelSpace (GL (Fin 0) k)]
     (μ : Measure (GL (Fin 0) k)) [μ.IsHaarMeasure] (hμ : μ (KO k (Fin 0)) = 1)

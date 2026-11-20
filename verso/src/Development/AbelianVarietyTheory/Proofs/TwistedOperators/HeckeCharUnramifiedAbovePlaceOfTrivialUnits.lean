@@ -12,15 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.UnrOverPlace
 
 /- English proof (translation)
-Introduce `D χ v ε hε hu w hw x hx`. Take `⟨h1, h2⟩` from `(GlobalTheory.LFun.EulerTie.isUnitAt_iff w x).1 hx`. Establish `hc` using `GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E)`. Take `⟨k0, k1, -⟩` from `GlobalTheory.CMPrimeIdele.place_comp hc hε`. Establish `key : χ (GlobalTheory.LFun.locIdele D.host.F w x) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hu _ ?_ ((GlobalTheory.LFun.EulerTie.locIdele_int_iff w x).2 h1) (by` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(GlobalTheory.LFun.EulerTie.locIdele_int_iff w x⁻¹).2 h2)`. Use `hc.ext' ?_ fun Q ↦ ?_` and prove the remaining obligations. Establish `k0' : GlobalTheory.CMPrimeIdele.infPart D.host.F D.host.E (algebraMap (AF D.host.F) (AE D) ε) = 0` using `k0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : GlobalTheory.CMPrimeIdele.infPart D.host.F D.host.E ((GlobalTheory.LFun.locIdele D.host.F w x : AE D) - 1) = 0`. Rewrite using `[map_sub, (GlobalTheory.LFun.EulerTie.parts_locIdele w x).1, map_one, sub_self]`. Rewrite using `[map_mul, k0', zero_mul, k2]`. Rewrite using `[GlobalTheory.CMPrimeIdele.ev_mul]`. Distinguish the cases in `hQ : Q = w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hQ` using the available equality. Rewrite using `[k1 Q hw, one_mul]`. Establish `e : GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E ((GlobalTheory.LFun.locIdele D.host.F w x : AE D) - 1) Q = 0`. Rewrite using `[map_sub, map_one]`. Use `show GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E (GlobalTheory.LFun.locIdele D.host.F w x : AE D) Q - 1 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LFun.EulerTie.finComp_locIdele_ne hQ, sub_self]`. Rewrite using `[e, mul_zero]`. Use `show Circle.toUnits (χ (GlobalTheory.LFun.locIdele D.host.F w x)) = 1`. Rewrite using `[key, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrAt_of_unramAt : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F),
     IsPlaceIdem D v ε → GlobalTheory.WeilParts.UnramAt ε χ → ∀ w : HeightOneSpectrum (𝓞 D.host.E),

@@ -29,7 +29,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.inf, h.vpos, h.cX, h.cV, h.prX, h.HX, h.HV, h.HE, h.HW, h.gE, h.gW, h.jX, h.jV, h.νY, h.νY', h.ν0, h.νX, h.νV, h.νW, h.BV, h.order⟩`.
+Supply the required witnesses or components.
 -/
 theorem models_with (h : R.IsModels) (ioY ioX Th thF thG) :
     ({ R with ioY := ioY, ioX := ioX, Th := Th, thF := thF, thG := thG } : RealDat D A Ks).IsModels :=
@@ -38,14 +38,14 @@ theorem models_with (h : R.IsModels) (ioY ioX Th thF thG) :
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.tie, h.Sb, h.roots, h.pl_onto, h.degR, h.degL, h.muVal, h.etaVal⟩`.
+Supply the required witnesses or components.
 -/
 theorem fam_with (h : R.IsFam) (ioY ioX Th thF thG) :
     ({ R with ioY := ioY, ioX := ioX, Th := Th, thF := thF, thG := thG } : RealDat D A Ks).IsFam :=
   ⟨h.tie, h.Sb, h.roots, h.pl_onto, h.degR, h.degL, h.muVal, h.etaVal⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hωY, hωX, hvY, hvX, a, b, c, d, e, f, g⟩`.
+Supply the required witnesses or components.
 -/
 theorem chain_with (hωY : R.chain_ωY) (hωX : R.chain_ωX) (hvY : R.chain_vY) (hvX : R.chain_vX) (a : R.chain_ptY)
     (b : R.chain_ptX) (c : R.chain_ItY) (d : R.chain_ItX) (ioY ioX Th) (e : ({ R with ioY := ioY } : RealDat D A Ks).chain_ioY)
@@ -55,7 +55,7 @@ theorem chain_with (hωY : R.chain_ωY) (hωX : R.chain_ωX) (hvY : R.chain_vY) 
   ⟨hωY, hωX, hvY, hvX, a, b, c, d, e, f, g⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ProjectedLift.exists_chain_Th D G Pl0 T A Ks { R with ioY := ioY, ioX := ioX } hL (fam_with hF ioY ioX R.Th R.thF R.thG) (models_with hM ioY ioX R.Th R.thF R.thG) hr`.
+A detailed English derivation is pending.
 -/
 theorem exists_th (hL : R.toLevCh.Is A.μ0) (hr : R.grp_record) (hF : R.IsFam) (hM : R.IsModels) (ioY ioX) :
     ∃ Th, ({ R with ioY := ioY, ioX := ioX, Th := Th } : RealDat D A Ks).chain_Th :=
@@ -65,9 +65,9 @@ theorem exists_th (hL : R.toLevCh.Is A.μ0) (hr : R.grp_record) (hF : R.IsFam) (
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hS` using `GlobalTheory.Chain.StepVac.stepsOK D G Pl0 T A Ks R hL hM.inf hωY hωX hvY hvX`. Establish `hW` using `GlobalTheory.T.chainSteps_levelCharacter_conditions_hold D G Pl0 T A Ks R hL hM.inf hωY hωX hvY hvX`. Establish `hIY : R.chain_ItY` using `fun t k hk => GlobalTheory.Chain.ItAllTuples.pItY_of_one h₁ h₂ D G Pl0 T A Ks R hP hL hM hωY hωX hvY hvX k hk t₀ _ (hY k hk) t`. Establish `hIX : R.chain_ItX` using `GlobalTheory.T.lastStep_intertwiner_one_tuple_all_tuples D G Pl0 T A Ks R hL hM hωX hvX t₀ _ hX`. Establish `hpY : R.chain_ptY` using `fun t k hk P => GlobalTheory.Chain.InnerSteps.theta_pureTensorO (hωY t k hk).std hM.inf _ _ _ _ (hS.1 t ⟨k, by omega⟩ hk).2.theta P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpX : R.chain_ptX` using `(GlobalTheory.T.definite_lastStep_real_intertwiner D G Pl0 T A Ks R hL hF hM hωX hvX).1`. Conclude with `(GlobalTheory.Chain.InnerLift.exists_ioY_of_pair R (GlobalTheory.T.exists_thetaLift_multiplicitySpaces_of_hypotheses h₁ h₂ h₃ h₄ D) hP hS.1 hW.1 hM hIY).elim fun ioY hioY => (GlobalTheory.T.exists_multiplicityLift_lastChainStep D G Pl0 T A Ks R hL hF hM hωX hvX hpX hIX).elim fun …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_chain (h₁ : GlobalTheory.Published.DiscreteSeriesCover) (h₂ : GlobalTheory.Published.HarishChandraModules) (h₃ : GlobalTheory.Published.CuspRapidDecay)
     (h₄ : GlobalTheory.Published.CasselmanWallach) (hP : ∀ k, GlobalTheory.Chain.ChainPar D k) (hL : R.toLevCh.Is A.μ0) (hr : R.grp_record)
@@ -91,7 +91,7 @@ theorem exists_chain (h₁ : GlobalTheory.Published.DiscreteSeriesCover) (h₂ :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hp : R.thP_pt_theta` using `(GlobalTheory.T.exists_lowestKType_fockMap_thetaVectors D G Pl0 T A Ks R hL hF hM hω hv).1`. Establish `hio : R.thP_ioP` using `fun i => GlobalTheory.IoAllTuples.ioP_of_isIoW_at D G Pl0 T A Ks R hL hF hM hω hv i t₀ _ (hI i)`. Take `⟨thF, h1, h2⟩` from `GlobalTheory.T.exists_thetaLift_linearMap_cuspFormMultiplicity h₃ D G Pl0 T A Ks R hL hF hM hω hv hp hio`. Take `⟨thG, h3⟩` from `GlobalTheory.GoodProjLift.exists_thG D G Pl0 T A Ks { R with thF := thF } hL (fam_with hF R.ioY R.ioX R.Th thF R.thG) (models_with hM R.ioY R.ioX R.Th thF R.thG) h1`. Conclude with `⟨thF, thG, hω, hv, hp, hio, h1, h2, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_thP (h₃ : GlobalTheory.Published.CuspRapidDecay) (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) (hM : R.IsModels) (hω : R.thP_ωP)
     (hv : R.thP_vP) (t₀ : T)

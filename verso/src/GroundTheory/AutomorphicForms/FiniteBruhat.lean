@@ -25,7 +25,7 @@ def borel : Subgroup (GL (Fin n) k) where
     exact blockTriangular_inv_of_blockTriangular ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_borel_iff (g : GL (Fin n) k) :
     g ∈ borel n k ↔ ∀ i j : Fin n, j < i → (g : Matrix (Fin n) (Fin n) k) i j = 0 :=
@@ -37,7 +37,7 @@ noncomputable def permGL : Equiv.Perm (Fin n) →* GL (Fin n) k :=
   (Matrix.permMatrixHom (n := Fin n) (R := k)).toHomUnits
 
 /- English proof (translation)
-Simplify using `only [permGL, MonoidHom.coe_toHomUnits, permMatrixHom_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Equiv.Perm.inv_eq_iff_eq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma permGL_apply (σ : Equiv.Perm (Fin n)) (i j : Fin n) :
     (permGL k σ : Matrix (Fin n) (Fin n) k) i j = if i = σ j then 1 else 0 := by
@@ -45,16 +45,16 @@ lemma permGL_apply (σ : Equiv.Perm (Fin n)) (i j : Fin n) :
     Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Equiv.Perm.inv_eq_iff_eq]
 
 /- English proof (translation)
-Simplify using `[mul_apply, permGL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mul_permGL_apply (M : Matrix (Fin n) (Fin n) k) (σ : Equiv.Perm (Fin n)) (r c : Fin n) :
     (M * (permGL k σ : Matrix (Fin n) (Fin n) k)) r c = M r (σ c) := by
   simp [mul_apply, permGL_apply]
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Fintype.sum_eq_single (σ⁻¹ r)]`. Simplify using `[permGL_apply]`. Introduce `a ha`. Rewrite using `[permGL_apply, if_neg, zero_mul]`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `ha (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma permGL_mul_apply (M : Matrix (Fin n) (Fin n) k) (σ : Equiv.Perm (Fin n)) (r c : Fin n) :
     ((permGL k σ : Matrix (Fin n) (Fin n) k) * M) r c = M (σ⁻¹ r) c := by
@@ -66,7 +66,7 @@ lemma permGL_mul_apply (M : Matrix (Fin n) (Fin n) k) (σ : Equiv.Perm (Fin n)) 
     exact ha (by simp)
 
 /- English proof (translation)
-Establish `hdet : (b : Matrix (Fin n) (Fin n) k).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp b.isUnit).ne_zero`. Rewrite `hdet` using `[det_of_isUpperTriangular hb]`. Conclude with `Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma borel_diag_ne_zero {b : GL (Fin n) k} (hb : b ∈ borel n k) (i : Fin n) :
     (b : Matrix (Fin n) (Fin n) k) i i ≠ 0 := by
@@ -76,9 +76,9 @@ lemma borel_diag_ne_zero {b : GL (Fin n) k} (hb : b ∈ borel n k) (i : Fin n) :
   exact Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `hdet : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_of_isUpperTriangular hM, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hd i`. Take `⟨u, hu⟩` from `hdet`. Use `⟨u, ?_, hu⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (u : Matrix (Fin n) (Fin n) k).IsUpperTriangular`. Rewrite using `[hu]`. Conclude with `hM`.
+A detailed English derivation is pending.
 -/
 lemma exists_borel_of_isUpperTriangular (M : Matrix (Fin n) (Fin n) k)
     (hM : M.IsUpperTriangular) (hd : ∀ i, M i i ≠ 0) :
@@ -93,7 +93,7 @@ lemma exists_borel_of_isUpperTriangular (M : Matrix (Fin n) (Fin n) k)
   exact hM
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_add, mul_vecMulVec, vecMulVec_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mul_one_add_vecMulVec_apply (M : Matrix (Fin n) (Fin n) k) (j : Fin n) (v : Fin n → k)
     (r c : Fin n) :
@@ -101,7 +101,7 @@ lemma mul_one_add_vecMulVec_apply (M : Matrix (Fin n) (Fin n) k) (j : Fin n) (v 
   simp [Matrix.mul_add, mul_vecMulVec, vecMulVec_apply]
 
 /- English proof (translation)
-Simplify using `[Matrix.add_mul, vecMulVec_mul, vecMulVec_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma one_add_vecMulVec_mul_apply (M : Matrix (Fin n) (Fin n) k) (i : Fin n) (u : Fin n → k)
     (r c : Fin n) :
@@ -109,7 +109,7 @@ lemma one_add_vecMulVec_mul_apply (M : Matrix (Fin n) (Fin n) k) (i : Fin n) (u 
   simp [Matrix.add_mul, vecMulVec_mul, vecMulVec_apply]
 
 /- English proof (translation)
-Establish `hsum : ∑ x, ((π x : Fin n) : ℕ) = ∑ x : Fin n, (x : ℕ)` using `Equiv.sum_comp π (fun x : Fin n => (x : ℕ))`. Establish `heq` using `(Finset.sum_eq_sum_iff_of_le (fun x _ => Fin.le_iff_val_le_val.mp (h x))).mp hsum`. Conclude with `Equiv.ext fun x => by simpa using Fin.ext (heq x (Finset.mem_univ _))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma perm_eq_one_of_forall_le (π : Equiv.Perm (Fin n)) (h : ∀ x, π x ≤ x) : π = 1 := by
   have hsum : ∑ x, ((π x : Fin n) : ℕ) = ∑ x : Fin n, (x : ℕ) :=
@@ -123,57 +123,49 @@ def RowsReduced (M : Matrix (Fin n) (Fin n) k) (t : ℕ) : Prop :=
     M i (p i) ≠ 0 ∧ (∀ c, c ≠ p i → M i c = 0) ∧ (∀ r, r ≠ i → M r (p i) = 0)
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hred`. Use `set H : Matrix (Fin n) (Fin n) k := (h : Matrix (Fin n) (Fin n) k) with hH`. Use `set i₀ : Fin n := ⟨t, ht⟩ with hi₀`. Establish `hne : ∀ i : Fin n, t + 1 ≤ i.val → i₀ ≠ i`. Introduce `i hi e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[i₀] at this`. Use linear arithmetic over natural numbers and integers. Establish `hrow : ∃ c, H i₀ c ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hcon`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp h.isUnit).ne_zero (Matrix.det_eq_zero_of_row_eq_zero i₀ hcon)`. Use `set s := Finset.univ.filter (fun c => H i₀ c ≠ 0) with hs_def`. Establish `hs : s.Nonempty` using `let ⟨c, hc⟩ := hrow; ⟨c, by simp [s, hc]⟩`. Use `set j := s.min' hs with hj_def`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : H i₀ j ≠ 0` using `(Finset.mem_filter.mp (s.min'_mem hs)).2`. Establish `hjmin : ∀ c, c < j → H i₀ c = 0` using `fun c hc => by`. Assume the negation of the conclusion as `hc0`. Conclude with `absurd (s.min'_le c (by simp [s, hc0])) (not_le.mpr hc)`. Establish `hpS : ∀ i : Fin n, t + 1 ≤ i.val → H i₀ (p i) = 0` using `fun i hi => (hp i hi).2.2 i₀ (hne i hi)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hjp : ∀ i : Fin n, t + 1 ≤ i.val → p i ≠ j` using `fun i hi e => hj (e ▸ hpS i hi)`. Establish `hHj : ∀ r : Fin n, t + 1 ≤ r.val → H r j = 0` using `fun r hr => (hp r hr).2.1 j (hjp r hr).symm`. Use `set v : Fin n → k := fun c => if j < c then -(H i₀ c / H i₀ j) else 0 with hv`. Use `set E₂ : Matrix (Fin n) (Fin n) k := 1 + vecMulVec (Pi.single j 1) v with hE₂`. Establish `hE₂up : E₂.IsUpperTriangular`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c hca`. Use `replace hca : c < a := hca`. Simplify using `only [E₂, Matrix.add_apply, one_apply, vecMulVec_apply, Pi.single_apply]`. Rewrite using `[if_neg (ne_of_lt hca).symm]`. Distinguish the cases in `haj : a = j`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `haj` using the available equality. Simplify using `[v, not_lt.mpr hca.le]`. Simplify using `[haj]`. Establish `hE₂d : ∀ a, E₂ a a ≠ 0`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [E₂, Matrix.add_apply, one_apply_eq, vecMulVec_apply, Pi.single_apply]`. Distinguish the cases in `haj : a = j`. Substitute `haj` using the available equality. Simplify using `[v]`. Simplify using `[haj]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨b₂, hb₂, hb₂E⟩` from `exists_borel_of_isUpperTriangular E₂ hE₂up hE₂d`. Use `set M₁ : Matrix (Fin n) (Fin n) k := H * E₂ with hM₁_def`. Establish `hM₁ : ∀ r c, M₁ r c = H r c + H r j * v c` using `fun r c => mul_one_add_vecMulVec_apply H j v r c`. Establish `hM₁i₀ : ∀ c, M₁ i₀ c = if c = j then H i₀ j else 0`. Introduce `c`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM₁]`. Break down `lt_trichotomy c j with hc | rfl | hc` into its components or cases. Simplify using `[v, hjmin c hc, not_lt.mpr hc.le, (ne_of_lt hc)]`. Simplify using `[v]`. Simplify using `only [v, if_pos hc, if_neg (ne_of_lt hc).symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hM₁S : ∀ r : Fin n, t + 1 ≤ r.val → ∀ c, M₁ r c = H r c`. Introduce `r hr c`. Rewrite using `[hM₁, hHj r hr, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hvp : ∀ i : Fin n, t + 1 ≤ i.val → v (p i) = 0`. Introduce `i hi`. Simplify using `[v, hpS i hi]`. Use `set u : Fin n → k := fun r => if r < i₀ then -(M₁ r j / H i₀ j) else 0 with hu_def`. Use `set E₁ : Matrix (Fin n) (Fin n) k := 1 + vecMulVec u (Pi.single i₀ 1) with hE₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hE₁up : E₁.IsUpperTriangular`. Introduce `a c hca`. Use `replace hca : c < a := hca`. Simplify using `only [E₁, Matrix.add_apply, one_apply, vecMulVec_apply, Pi.single_apply]`. Rewrite using `[if_neg (ne_of_lt hca).symm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hci : c = i₀`. Substitute `hci` using the available equality. Simplify using `[u, not_lt.mpr hca.le]`. Simplify using `[hci]`. Establish `hE₁d : ∀ a, E₁ a a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `a`. Simplify using `only [E₁, Matrix.add_apply, one_apply_eq, vecMulVec_apply, Pi.single_apply]`. Distinguish the cases in `hai : a = i₀`. Substitute `hai` using the available equality. Simplify using `[u]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hai]`. Take `⟨b₁, hb₁, hb₁E⟩` from `exists_borel_of_isUpperTriangular E₁ hE₁up hE₁d`. Use `set M₂ : Matrix (Fin n) (Fin n) k := E₁ * M₁ with hM₂_def`. Establish `hM₂ : ∀ r c, M₂ r c = M₁ r c + u r * M₁ i₀ c` using `fun r c => one_add_vecMulVec_mul_apply M₁ i₀ u r c`. Establish `hu0 : ∀ r : Fin n, t ≤ r.val → u r = 0`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `r hr`. Establish `: ¬ r < i₀`. Rewrite using `[Fin.lt_def]`. Simplify using `[i₀]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[u, this]`. Establish `hM₂j : ∀ r : Fin n, r.val < t → M₂ r j = 0`. Introduce `r hr`. Establish `hlt : r < i₀`. Rewrite using `[Fin.lt_def]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hr` using `[i₀]`. Rewrite using `[hM₂, hM₁i₀ j, if_pos rfl]`. Simplify using `only [u, if_pos hlt]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hval : ((b₁ * h * b₂ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = M₂`. Rewrite using `[Units.val_mul, Units.val_mul, hb₁E, hb₂E, mul_assoc]`. Use `⟨b₁, hb₁, b₂, hb₂, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Use `⟨Function.update p i₀ j, fun i hi => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `Nat.eq_or_lt_of_le hi with hti | hti` into its components or cases. Establish `hii : i = i₀` using `Fin.ext (by simp [i₀, hti])`. Substitute `hii` using the available equality. Rewrite using `[Function.update_self]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hM₂, hu0 _ le_rfl, zero_mul, add_zero, hM₁i₀, if_pos rfl]`. Conclude with `hj`. Introduce `c hc`. Rewrite using `[hM₂, hu0 _ le_rfl, zero_mul, add_zero, hM₁i₀, if_neg hc]`. Introduce `r hr`.
-
-Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne hr) with hlt | hgt` into its components or cases. Conclude with `hM₂j r (by simpa [i₀] using hlt)`. Establish `hr' : t + 1 ≤ r.val` using `by simp [i₀] at hgt; omega`. Rewrite using `[hM₂, hu0 r (by omega), zero_mul, add_zero, hM₁S r hr', hHj r hr']`. Establish `hi' : t + 1 ≤ i.val` using `hti`.
-
-Rewrite using `[Function.update_of_ne (hne i hi').symm]`. Take `⟨h1, h2, h3⟩` from `hp i hi'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM₂, hu0 i hi, zero_mul, add_zero, hM₁S i hi']`. Conclude with `h1`.
-
-Introduce `c hc`. Rewrite using `[hM₂, hu0 i hi, zero_mul, add_zero, hM₁S i hi']`. Conclude with `h2 c hc`. Introduce `r hr`. Rewrite using `[hM₂, hM₁i₀, if_neg (hjp i hi'), mul_zero, add_zero, hM₁, hvp i hi', mul_zero, add_zero]`.
-
-Conclude with `h3 r hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rowsReduced_step (h : GL (Fin n) k) (t : ℕ) (ht : t < n)
     (hred : RowsReduced (h : Matrix (Fin n) (Fin n) k) (t + 1)) :
@@ -318,13 +310,13 @@ lemma rowsReduced_step (h : GL (Fin n) k) (t : ℕ) (ht : t < n)
       exact h3 r hr
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hred`. Establish `hinj : Function.Injective p`. Introduce `i i' e`. Assume the negation of the conclusion as `hii`. Conclude with `(hp i' (Nat.zero_le _)).1 (e ▸ (hp i (Nat.zero_le _)).2.2 i' (Ne.symm hii))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set τ : Equiv.Perm (Fin n) := Equiv.ofBijective p (Finite.injective_iff_bijective.mp hinj)`. Establish `hτ : ∀ i, τ i = p i` using `fun i => rfl`. Use `set d : Fin n → k := fun i => (g : Matrix (Fin n) (Fin n) k) i (p i)`. Take `⟨b, hb, hbD⟩` from `exists_borel_of_isUpperTriangular (diagonal d) (blockTriangular_diagonal d) (fun i => by simpa [d] using (hp i (Nat.zero_le _)).1)`. Use `⟨τ⁻¹, b, hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `r c`. Rewrite using `[Units.val_mul, mul_permGL_apply, hbD, diagonal_apply]`. Distinguish the cases in `hc : c = p r`. Substitute `hc` using the available equality. Rewrite using `[if_pos (by rw [← hτ]; simp)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[(hp r (Nat.zero_le _)).2.1 c hc, if_neg]`. Introduce `e`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hτ, e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_eq_mul_permGL_of_rowsReduced (g : GL (Fin n) k)
     (hred : RowsReduced (g : Matrix (Fin n) (Fin n) k) 0) :
@@ -353,15 +345,15 @@ lemma exists_eq_mul_permGL_of_rowsReduced (g : GL (Fin n) k)
     simp
 
 /- English proof (translation)
-Establish `key : ∀ d, d ≤ n → ∃ b₁ ∈ borel n k, ∃ b₂ ∈ borel n k, RowsReduced ((b₁ * g * b₂ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (n - d)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1, (borel n k).one_mem, 1, (borel n k).one_mem, id, fun i hi => ?_⟩` and prove the remaining obligations. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `succ d ih`. Introduce `hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b₁, hb₁, b₂, hb₂, hred⟩` from `ih (by omega)`. Establish `ht : n - (d + 1) + 1 = n - d` using `by omega`. Rewrite `hred` using `[← ht]`. Take `⟨c₁, hc₁, c₂, hc₂, hred'⟩` from `rowsReduced_step _ (n - (d + 1)) (by omega) hred`. Use `⟨c₁ * b₁, (borel n k).mul_mem hc₁ hb₁, b₂ * c₂, (borel n k).mul_mem hb₂ hc₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hred'` using `only [mul_assoc]`. Take `⟨b₁, hb₁, b₂, hb₂, hred⟩` from `key n le_rfl`. Rewrite `hred` using `[Nat.sub_self]`. Take `⟨σ, b, hb, hgb⟩` from `exists_eq_mul_permGL_of_rowsReduced _ hred`. Use `⟨σ, mem_doubleCoset.mpr ⟨b₁⁻¹ * b, (borel n k).mul_mem ((borel n k).inv_mem hb₁) hb, b₂⁻¹, (borel n k).inv_mem hb₂, ?_⟩⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc b₁⁻¹, ← hgb]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_doubleCoset_permGL (g : GL (Fin n) k) :
     ∃ σ : Equiv.Perm (Fin n), g ∈ doubleCoset (permGL k σ) (borel n k) (borel n k) := by
@@ -391,13 +383,13 @@ theorem exists_mem_doubleCoset_permGL (g : GL (Fin n) k) :
   group
 
 /- English proof (translation)
-Take `⟨x, hx, y, hy, hxy⟩` from `mem_doubleCoset.mp h`. Establish `hy' : y⁻¹ ∈ borel n k` using `(borel n k).inv_mem hy`. Establish `hmat : (x : Matrix (Fin n) (Fin n) k) * (permGL k σ : Matrix (Fin n) (Fin n) k) = (permGL k τ : Matrix (Fin n) (Fin n) k) * ((y⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hxy]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Establish `hle : ∀ a, τ a ≤ σ a`. Introduce `a`. Establish `hent` using `congrFun (congrFun hmat (τ a)) a`. Rewrite `hent` using `[mul_permGL_apply, permGL_mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `h0` using `(mem_borel_iff x).mp hx (τ a) (σ a) hlt`. Rewrite `h0` using `[hent, show τ⁻¹ (τ a) = a from τ.symm_apply_apply a]`. Conclude with `borel_diag_ne_zero hy' a h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hπ` using `perm_eq_one_of_forall_le (τ * σ⁻¹) (fun x => by`. Simplify using `using hle (σ⁻¹ x))`. Use `congrArg (· * σ) hπ` as an intermediate fact. Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_permGL_mem_doubleCoset {σ τ : Equiv.Perm (Fin n)}
     (h : permGL k τ ∈ doubleCoset (permGL k σ) (borel n k) (borel n k)) : σ = τ := by
@@ -423,7 +415,7 @@ theorem eq_of_permGL_mem_doubleCoset {σ τ : Equiv.Perm (Fin n)}
   simpa using this.symm
 
 /- English proof (translation)
-Establish `e : doubleCoset (permGL k σ) (borel n k) (borel n k) = doubleCoset (permGL k τ) (borel n k) (borel n k)` using `(doubleCoset_eq_of_mem hσ).symm.trans (doubleCoset_eq_of_mem hτ)`. Establish `hmem` using `mem_doubleCoset_self (borel n k) (borel n k) (permGL k τ)`. Rewrite `hmem` using `[← e]`. Conclude with `eq_of_permGL_mem_doubleCoset hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubleCoset_permGL_injective {σ τ : Equiv.Perm (Fin n)} {g : GL (Fin n) k}
     (hσ : g ∈ doubleCoset (permGL k σ) (borel n k) (borel n k))
@@ -436,7 +428,7 @@ theorem doubleCoset_permGL_injective {σ τ : Equiv.Perm (Fin n)} {g : GL (Fin n
   exact eq_of_permGL_mem_doubleCoset hmem
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_mem_doubleCoset_permGL g`. Conclude with `⟨σ, hσ, fun τ hτ => (doubleCoset_permGL_injective hσ hτ).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bruhat_decomposition (g : GL (Fin n) k) :
     ∃! σ : Equiv.Perm (Fin n), g ∈ doubleCoset (permGL k σ) (borel n k) (borel n k) := by
@@ -444,14 +436,14 @@ theorem bruhat_decomposition (g : GL (Fin n) k) :
   exact ⟨σ, hσ, fun τ hτ => (doubleCoset_permGL_injective hσ hτ).symm⟩
 
 /- English proof (translation)
-The claim follows from `Set.eq_univ_of_forall fun g => Set.mem_iUnion.mpr (exists_mem_doubleCoset_permGL g)`.
+A detailed English derivation is pending.
 -/
 theorem iUnion_doubleCoset_permGL :
     ⋃ σ : Equiv.Perm (Fin n), doubleCoset (permGL k σ) (borel n k) (borel n k) = Set.univ :=
   Set.eq_univ_of_forall fun g => Set.mem_iUnion.mpr (exists_mem_doubleCoset_permGL g)
 
 /- English proof (translation)
-Introduce `σ τ hστ`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `g hσ hτ`. Conclude with `hστ (doubleCoset_permGL_injective hσ hτ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pairwise_disjoint_doubleCoset_permGL :
     Pairwise (Function.onFun Disjoint fun σ : Equiv.Perm (Fin n) =>
@@ -462,9 +454,9 @@ theorem pairwise_disjoint_doubleCoset_permGL :
   exact hστ (doubleCoset_permGL_injective hσ hτ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `σ τ hστ`. Take `⟨x, hx, y, hy, hxy⟩` from `(DoubleCoset.eq _ _ _ _).mp hστ`. Conclude with `eq_of_permGL_mem_doubleCoset (mem_doubleCoset.mpr ⟨x, hx, y, hy, hxy⟩)`. Introduce `q`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `exists_mem_doubleCoset_permGL (k := k) q.out`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← mk_eq_of_doubleCoset_eq (doubleCoset_eq_of_mem hσ), out_eq']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_mk_permGL :
     Function.Bijective fun σ : Equiv.Perm (Fin n) =>
@@ -480,7 +472,7 @@ theorem bijective_mk_permGL :
     rw [← mk_eq_of_doubleCoset_eq (doubleCoset_eq_of_mem hσ), out_eq']
 
 /- English proof (translation)
-Introduce `σ τ h`. Apply `eq_of_permGL_mem_doubleCoset (k := k)` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `mem_doubleCoset_self _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permGL_injective : Function.Injective (permGL k : Equiv.Perm (Fin n) → GL (Fin n) k) := by
   intro σ τ h

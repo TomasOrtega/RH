@@ -7,13 +7,13 @@ noncomputable section
 namespace PositivityTheory.Xgn.TestGroupPoint
 
 /- English proof (translation)
-Use `letI : Algebra R RC := σ.toAlgebra`. Set `k₀ : L →ₗ[R] ReciprocityTheory.PGsh.Up.LieDualModP p RC g` to `{ toFun := fun w => Submodule.Quotient.mk (io (j w)) map_add' := fun a b => by rw [map_add, map_add, Submodule.Quotient.mk_add] map_smul' := fun r a => by`. Rewrite using `[map_smul, io.map_smulₛₗ, Submodule.Quotient.mk_smul]`. Conclude with `algebraMap_smul RC r _ }`. Establish `hk : LinearMap.ker θ ≤ LinearMap.ker k₀`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨u, rfl⟩` from `hθk w hw`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (io (j (p • u))) = 0`. Rewrite using `[map_nsmul, map_nsmul, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul RC]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `d₀ : omega A →ₗ[R] ReciprocityTheory.PGsh.Up.LieDualModP p RC g` to `((LinearMap.ker θ).liftQ k₀ hk) ∘ₗ (θ.quotKerEquivOfSurjective hθs).symm.toLinearMap`. Establish `hd₀ : ∀ w, d₀ (θ w) = k₀ w` using `fun w => by`. Establish `: (θ.quotKerEquivOfSurjective hθs).symm (θ w) = Submodule.Quotient.mk w` using `(LinearEquiv.symm_apply_eq _).2 rfl`. Simplify using `only [d₀, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Take `⟨Dv, hD1, hD2⟩` from `exists_der_ext h1 h2 φ hφ hA (d₀ ∘ₗ cotMap A) (fun a b => by simp only [LinearMap.comp_apply, cotMap_mul, map_add, map_smul]) M hM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Dv, hD1, fun a f w hf hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hD2 a f hf, LinearMap.comp_apply, hw, hd₀]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_der_gen {R RC C N L U : Type} [CommRing R] [IsDomain R] [CommRing RC] [IsDomain RC] [Field C]
     [Algebra RC C] [AddCommGroup N] [Finite N] [AddCommGroup L] [Module R L] [AddCommGroup U] [Module R U]
@@ -52,7 +52,7 @@ theorem exists_der_gen {R RC C N L U : Type} [CommRing R] [IsDomain R] [CommRing
   rfl
 
 /- English proof (translation)
-Establish `ha1 : a.1.1 1 = 0` using `a.2`. Conclude with `cotMap_apply _ _ a (by rw [ha1, map_zero, sub_zero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cotMap_aug {R T : Type} [CommRing R] [CommGroup T] (A : Subalgebra R (T → R)) (a : augIdeal A) :
     cotMap A a.1 = (augIdeal A).toCotangent a := by
@@ -60,7 +60,7 @@ theorem cotMap_aug {R T : Type} [CommRing R] [CommGroup T] (A : Subalgebra R (T 
   exact cotMap_apply _ _ a (by rw [ha1, map_zero, sub_zero])
 
 /- English proof (translation)
-Rewrite using `[OrderApi.dlogChar_of_mem _ _ hm]`. Use `cotMap_apply _ _ _ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cotMap_char {R T : Type} [CommRing R] [CommGroup T] (A : Subalgebra R (T → R)) (χ : T →* Rˣ)
     (hm : (fun t => ((χ t : Rˣ) : R)) ∈ A) : cotMap A ⟨_, hm⟩ = dlogChar A χ := by

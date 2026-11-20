@@ -16,15 +16,15 @@ variable (R : Type) [CommRing R] (B M : Type) [CommRing B] [Algebra R B] [AddCom
   [Module Bᵐᵒᵖ M] [IsCentralScalar B M] [Module R M] [IsScalarTower R B M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M]
 
 /- English proof (translation)
-Establish `n1` using `congrArg (fun k => k.hom c) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R M).toRingHom))`. Establish `n2` using `congrArg (fun k => k.hom c) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom β))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n1 n2`. Establish `h1' : (Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R M).toRingHom)).appTop.hom c = 0` using `h1`. Establish `h2' : (Spec.map (CommRingCat.ofHom β)).appTop.hom c = 0` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `n1` using `[h1', map_zero]`. Rewrite `n2` using `[h2', map_zero]`. Use `set c' := (Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt R M))).hom.hom c with hc'`. Establish `e1 : TrivSqZeroExt.fst c' = 0` using `n1.symm`. Establish `e2 : TrivSqZeroExt.snd c' = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: β c' = TrivSqZeroExt.inl (algebraMap R B (TrivSqZeroExt.fst c')) + TrivSqZeroExt.inr (TrivSqZeroExt.snd c')` using `by conv_lhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq c']`. Rewrite using `[map_add, hβ.1, hβ.2]`. Both sides reduce to the same expression. Use `congrArg TrivSqZeroExt.snd this` as an intermediate fact. Rewrite `this` using `[← n2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`. Establish `hc0 : c' = 0` using `TrivSqZeroExt.ext e1 e2`. Establish `: c = (Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt R M))).inv.hom c'`. Rewrite using `[hc']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hc0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem appTop_joint_inj (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M) (hβ : IsSum β (algebraMap R B) id)
     (c : Γ(Sp (TrivSqZeroExt R M), ⊤))
@@ -53,11 +53,11 @@ theorem appTop_joint_inj (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M) (hβ :
   rw [this, hc0, map_zero]
 
 /- English proof (translation)
-Establish `hspec` using `IsLocalization.mk'_spec Γ(Sp A, (Sp A).basicOpen s) a (⟨s ^ n, n, rfl⟩ : Submonoid.powers s)`. Establish `h3 : (f.appLE _ _ le_rfl).hom (algebraMap Γ(Sp A, ⊤) Γ(Sp A, (Sp A).basicOpen s) a) = 0`. Rewrite using `[← hspec, map_mul, hf, zero_mul]`. Establish `h4 : (f.appLE ⊤ (f ⁻¹ᵁ (Sp A).basicOpen s) (by simp)).hom a = 0`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (((Sp A).presheaf.map (homOfLE le_top).op) ≫ f.appLE _ _ le_rfl).hom a`. Rewrite using `[Scheme.Hom.map_appLE]`. Establish `hle : Y.basicOpen (f.appTop.hom s) ≤ f ⁻¹ᵁ (Sp A).basicOpen s` using `(Scheme.preimage_basicOpen_top f s).ge`. Establish `h6 : (f.appLE ⊤ (Y.basicOpen (f.appTop.hom s)) (by simp)).hom a = 0`. Rewrite using `[← Scheme.Hom.appLE_map (i := (homOfLE hle).op), CommRingCat.comp_apply, h4, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h5 : f.appTop.hom a |_ (Y.basicOpen (f.appTop.hom s)) = 0` using `h6`. Take `⟨N, hN⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Y (isAffineOpen_top Y) _ _ h5`. Conclude with `⟨N, by rw [map_mul, map_pow]; exact hN⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_appLE_eq_zero {A : Type} [CommRing A] (s a : Γ(Sp A, ⊤)) (n : ℕ)
     {Y : Scheme.{0}} [IsAffine Y] (f : Y ⟶ Sp A)
@@ -80,9 +80,9 @@ theorem exists_pow_of_appLE_eq_zero {A : Type} [CommRing A] (s a : Γ(Sp A, ⊤)
   exact ⟨N, by rw [map_mul, map_pow]; exact hN⟩
 
 /- English proof (translation)
-Take `⟨⟨a, ⟨_, n, rfl⟩⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers s) t`. Take `⟨N₁, hN₁⟩` from `exists_pow_of_appLE_eq_zero s a n _ h1`. Take `⟨N₂, hN₂⟩` from `exists_pow_of_appLE_eq_zero s a n _ h2`. Establish `hc : s ^ (N₁ + N₂) * a = 0`. Apply `appTop_joint_inj R B M β hβ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pow_add, mul_comm (s ^ N₁), _root_.mul_assoc, map_mul, hN₁, mul_zero]`. Rewrite using `[pow_add, _root_.mul_assoc, map_mul, hN₂, mul_zero]`. Rewrite using `[IsLocalization.mk'_eq_zero_iff]`. Conclude with `⟨⟨_, N₁ + N₂, rfl⟩, hc⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem appLE_basicOpen_joint_inj (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M) (hβ : IsSum β (algebraMap R B) id)
     (s : Γ(Sp (TrivSqZeroExt R M), ⊤)) (t : Γ(Sp (TrivSqZeroExt R M), (Sp (TrivSqZeroExt R M)).basicOpen s))
@@ -99,9 +99,9 @@ theorem appLE_basicOpen_joint_inj (β : TrivSqZeroExt R M →+* TrivSqZeroExt B 
   exact ⟨⟨_, N₁ + N₂, rfl⟩, hc⟩
 
 /- English proof (translation)
-Establish `conv : ∀ {Y : Scheme.{0}} (f : Y ⟶ Sp (TrivSqZeroExt R M)) (c : Γ(((Sp (TrivSqZeroExt R M)).basicOpen s).toScheme, ⊤)), (f.resLE ((Sp (TrivSqZeroExt R M)).basicOpen s) (f ⁻¹ᵁ (Sp (TrivSqZeroExt R M)).basicOpen s) le_rfl).appTop.hom c = (f ⁻¹ᵁ (Sp (TrivSqZeroExt R M)).basicOpen s) …`. Introduce `Y f c`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.resLE_app_top]`. Both sides reduce to the same expression. Rewrite `h1`, `h2` using `[conv, conv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `replace h1 := congrArg (spMap (TrivSqZeroExt.fstHom R R M).toRingHom ⁻¹ᵁ (Sp (TrivSqZeroExt R M)).basicOpen s).topIso.hom.hom h1`. Use `replace h2 := congrArg (spMap β ⁻¹ᵁ (Sp (TrivSqZeroExt R M)).basicOpen s).topIso.hom.hom h2`. Simplify using `only [Iso.inv_hom_id_apply] at h1 h2`. Establish `hz` using `appLE_basicOpen_joint_inj R B M β hβ s (((Sp (TrivSqZeroExt R M)).basicOpen s).topIso.hom.hom a - ((Sp (TrivSqZeroExt R M)).basicOpen s).topIso.hom.hom b) (by rw [map_sub, h1, sub_self]) (by rw [map_sub, h2, sub_self])`. Conclude with `(((Sp (TrivSqZeroExt R M)).basicOpen s).topIso.commRingCatIsoToRingEquiv).injective (sub_eq_zero.mp hz)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resLE_appTop_joint_inj (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M) (hβ : IsSum β (algebraMap R B) id)
     (s : Γ(Sp (TrivSqZeroExt R M), ⊤)) (a b : Γ(((Sp (TrivSqZeroExt R M)).basicOpen s).toScheme, ⊤))
@@ -128,17 +128,17 @@ theorem resLE_appTop_joint_inj (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M) 
 end
 
 /- English proof (translation)
-Introduce `R _ B M _ _ _ _ _ _ _ _ _ _ β hβ X x V s hV U hU g₁ g₂ h₁ h₂ h₃`. Substitute `hV` using the available equality. Establish `hrange : ∀ g : ((Sp (TrivSqZeroExt R M)).basicOpen s).toScheme ⟶ X, (spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE _ _ le_rfl ≫ g = (spMap (TrivSqZeroExt.fstHom R R M).toRingHom ⁻¹ᵁ (Sp (TrivSqZeroExt R M)).basicOpen s).ι ≫ x → Set.range g ⊆ Set.range U.1.ι`. Introduce and unpack `g hg _ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `GlobalTheory.Pinch.spMap_fst_surjective R M p.1`. Establish `hwV : w ∈ spMap (TrivSqZeroExt.fstHom R R M).toRingHom ⁻¹ᵁ (Sp (TrivSqZeroExt R M)).basicOpen s`. Rewrite using `[Scheme.Hom.mem_preimage, hw]`. Conclude with `p.2`. Establish `hp : (spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE _ _ le_rfl ⟨w, hwV⟩ = p` using `Subtype.ext (by rw [Scheme.Hom.coe_resLE_apply]; exact hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Express the relevant statement in the definitionally equal form `((spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE _ _ le_rfl ≫ g) ⟨w, hwV⟩ ∈ (U.1 : Set X)`. Rewrite using `[hg]`. Conclude with `hU hwV`. Use `haveI : IsAffine U.1.toScheme := U.2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f₁` using `IsOpenImmersion.lift_fac U.1.ι g₁ (hrange g₁ h₁)`. Establish `f₂` using `IsOpenImmersion.lift_fac U.1.ι g₂ (hrange g₂ h₂)`. Establish `ei : (spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE _ _ le_rfl ≫ IsOpenImmersion.lift U.1.ι g₁ (hrange g₁ h₁) = (spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE _ _ le_rfl ≫ IsOpenImmersion.lift U.1.ι g₂ (hrange g₂ h₂)`. Rewrite using `[← cancel_mono U.1.ι, Category.assoc, Category.assoc, f₁, f₂, h₁, h₂]`. Establish `ej : (spMap β).resLE _ _ le_rfl ≫ IsOpenImmersion.lift U.1.ι g₁ (hrange g₁ h₁) = (spMap β).resLE _ _ le_rfl ≫ IsOpenImmersion.lift U.1.ι g₂ (hrange g₂ h₂)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← cancel_mono U.1.ι, Category.assoc, Category.assoc, f₁, f₂, h₃]`. Establish `hl : IsOpenImmersion.lift U.1.ι g₁ (hrange g₁ h₁) = IsOpenImmersion.lift U.1.ι g₂ (hrange g₂ h₂)`. Apply `ext_of_isAffine` to reduce the goal to its premises. Use extensionality with `u`. Apply `resLE_appTop_joint_inj R B M β hβ s` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun φ => φ.appTop.hom u) ei` as an intermediate fact. Simplify `this` using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Use `congrArg (fun φ => φ.appTop.hom u) ej` as an intermediate fact. Simplify `this` using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Rewrite using `[← f₁, ← f₂, hl]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq : ∀ (R : Type) [CommRing R] (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] [Module R M] [IsScalarTower R B M] [Module Rᵐᵒᵖ M] [IsCentralScalar R M] (β : TrivSqZeroExt R M →+* TrivSqZeroExt B M), IsSum β (algebraMap R B) id → ∀ (X : Scheme.{0}) (x : Sp R ⟶ X) (V : (Sp (TrivSqZeroExt R M)).Opens) (s : Γ((Sp (TrivSqZeroExt R M)), ⊤)), V = (Sp (TrivSqZeroExt R M)).basicOpen s → ∀ (U : X.affineOpens), spMap (TrivSqZeroExt.fstHom R R M).toRingHom ⁻¹ᵁ V ≤ x ⁻¹ᵁ U.1 → ∀ g₁ g₂ : V.toScheme ⟶ X, (spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE V _ le_rfl ≫ g₁ = (spMap (TrivSqZeroExt.fstHom R R M).toRingHom ⁻¹ᵁ V).ι ≫ x → (spMap (TrivSqZeroExt.fstHom R R M).toRingHom).resLE V _ le_rfl ≫ g₂ = (spMap (TrivSqZeroExt.fstHom R R M).toRingHom ⁻¹ᵁ V).ι ≫ x → (spMap β).resLE V _ le_rfl ≫ g₁ = (spMap β).resLE V _ le_rfl ≫ g₂ → g₁ = g₂ := by
   intro R _ B M _ _ _ _ _ _ _ _ _ _ β hβ X x V s hV U hU g₁ g₂ h₁ h₂ h₃

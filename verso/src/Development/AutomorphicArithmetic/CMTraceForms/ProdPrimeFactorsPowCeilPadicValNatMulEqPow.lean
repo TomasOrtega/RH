@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Q T a b hQ`. Establish `hc : ∀ m n : ℕ, ⌈(m : ℝ) * (n : ℝ)⌉.toNat = m * n`. Introduce `m n`. Rewrite using `[← Nat.cast_mul, Int.ceil_natCast, Int.toNat_natCast]`. Establish `hf : Q.primeFactors.filter Nat.Prime = Q.primeFactors` using `Finset.filter_true_of_mem fun p hp => Nat.prime_of_mem_primeFactors hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ' : ∏ p ∈ Q.primeFactors, p ^ (Q.factorization p) = Q`. Use `Nat.factorization_prod_pow_eq_self hQ` as an intermediate fact. Rewrite `this` using `[Finsupp.prod, Nat.support_factorization]`. Then use the resulting hypothesis. Rewrite using `[hf]`. Use `conv_rhs => rw [← hQ', ← Finset.prod_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hc, hc, ← pow_mul, Nat.factorization_def Q (Nat.prime_of_mem_primeFactors hp)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.prod_primeFactors_pow_ceil_padicValNat_mul_eq_pow :
     ∀ (Q T a b : ℕ), Q ≠ 0 → ∏ p ∈ Q.primeFactors.filter Nat.Prime,

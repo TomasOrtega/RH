@@ -6,7 +6,7 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.FormalCalc
 
 /- English proof (translation)
-Introduce `hg i`. Establish `h` using `congrArg (coeff (0 : Fin d →₀ ℕ)) (mul_pderiv_formalLog hg i)`. Rewrite `h` using `[coeff_zero_eq_constantCoeff_apply, map_mul, hg, one_mul, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, coeff_pderiv]`. Simplify `h` using `[lin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lin_formalLog (Q : Type) [CommRing Q] [Algebra ℚ Q] (d : ℕ) (g : MvPowerSeries (Fin d) Q) :
     constantCoeff g = 1 → ∀ i, lin (formalLog g) i = lin g i := by

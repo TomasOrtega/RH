@@ -6,7 +6,7 @@ namespace Formalism.FourierDecayAlt.P
 def PBI.HeadTopOfParts : Prop := PBI.HighestUnipotentIntegral → PBI.Exh → PBI.HeadWeightAt → KB.HeadTop
 
 /- English proof (translation)
-Introduce `hU5 hExh hW` and use `head_top_of_correspondence (head_correspondence_of_parts levFrameExists_statement (head_vector_of_parts hU5 hExh) (head_types_of_types_at (head_types_at_of_weight hW)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem head_top_of_parts : PBI.HeadTopOfParts := fun hU5 hExh hW =>
   head_top_of_correspondence (head_correspondence_of_parts levFrameExists_statement (head_vector_of_parts hU5 hExh)

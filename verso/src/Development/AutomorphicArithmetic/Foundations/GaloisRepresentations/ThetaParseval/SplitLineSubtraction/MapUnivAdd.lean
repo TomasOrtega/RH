@@ -6,7 +6,7 @@ namespace UpperTheory.Gal.TP.Sub
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Rewrite using `[Fin.univ_val_map, List.ofFn_add, ← Multiset.coe_add, Fin.univ_val_map, Fin.univ_val_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem multiset_map_fin_add_eq_add {n t : ℕ} (f : Fin (n + t) → ℤ) :
     Multiset.map f Finset.univ.val =
@@ -16,7 +16,7 @@ private theorem multiset_map_fin_add_eq_add {n t : ℕ} (f : Fin (n + t) → ℤ
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Multiset.map_univ_val_equiv (Fin.revPerm : Equiv.Perm (Fin n)), Multiset.map_map]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem multiset_map_fin_rev_eq {n : ℕ} (f : Fin n → ℤ) :
     Multiset.map f Finset.univ.val = Multiset.map (fun k : Fin n => f k.rev) Finset.univ.val := by
@@ -24,25 +24,25 @@ private theorem multiset_map_fin_rev_eq {n : ℕ} (f : Fin n → ℤ) :
   rfl
 
 /- English proof (translation)
-Introduce `n t lam lam' mX mW hL`. Use `⟨fun m p hm hp => ?_, fun m p hm hp => ?_⟩` and prove the remaining obligations. Unfold `wtJumps`. Rewrite using `[multiset_map_fin_add_eq_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Multiset.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `h1` using `hL (Fin.castAdd t k)`. Simplify using `only [Fin.coe_castAdd, k.2, dif_pos, Fin.eta] at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Fin.coe_castAdd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[multiset_map_fin_rev_eq (fun i : Fin t => -p i)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hL (Fin.natAdd n i)`. Establish `h2` using `hp i.rev`. Simplify using `only [Fin.coe_natAdd, Fin.val_rev] at h1 h2 ⊢`. Rewrite `h1` using `[dif_neg (by omega)]`. Establish `hi` using `i.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers. Unfold `wtJumps`. Rewrite using `[multiset_map_fin_rev_eq, multiset_map_fin_rev_eq (fun k : Fin n => ((k : ℕ) : ℤ) - lam.dual.w k)]`. Simplify using `only [DomWeight.dual, Fin.rev_rev, Fin.val_rev]`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[multiset_map_fin_add_eq_add]`. Use `congr 1`. Rewrite using `[Multiset.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hL (Fin.castAdd t k)`. Simplify using `only [Fin.coe_castAdd, k.2, dif_pos, Fin.eta] at h1`. Simplify using `only [Function.comp_apply, Fin.coe_castAdd]`. Establish `hk` using `k.2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h1` using `hL (Fin.natAdd n i)`. Establish `h2` using `hp i`. Simplify using `only [Fin.coe_natAdd] at h1 h2 ⊢`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[dif_neg (by omega)]`. Establish `hi` using `i.2`. Establish `hc : ((n + t - (n + (i : ℕ) + 1) : ℕ) : ℤ) = (t : ℤ) - 1 - (i : ℕ)`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Move the coercions through the operations in `at h1`. Rewrite using `[hc]`. Use linear arithmetic over natural numbers and integers.
+Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem wtId_holds : WtId := by
   intro n t lam lam' mX mW hL

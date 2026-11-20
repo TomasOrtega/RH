@@ -18,9 +18,7 @@ def fbHom (m n : Type*) [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] 
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hc : Continuous fun M : Matrix m m ℂ => Matrix.reindexAlgEquiv ℂ ℂ e M`. Simplify using `only [Matrix.coe_reindexAlgEquiv]`. Conclude with `continuous_id.matrix_reindex e e`. Use `open scoped Matrix.Norms.Operator in`. Establish `h` using `NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) hc M`.
-
-Simplify using `only [Matrix.coe_reindexAlgEquiv] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_reindex (e : m ≃ n) (M : Matrix m m ℂ) :
     NormedSpace.exp (Matrix.reindex e e M) = Matrix.reindex e e (NormedSpace.exp M) := by
@@ -33,11 +31,9 @@ theorem exp_reindex (e : m ≃ n) (M : Matrix m m ℂ) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hc : Continuous fun p : Matrix m m ℂ × Matrix n n ℂ => fbHom m n p` using `by show Continuous fun p : Matrix m m ℂ × Matrix n n ℂ => Matrix.fromBlocks p.1 0 0 p.2`. Conclude with `Continuous.matrix_fromBlocks continuous_fst continuous_const continuous_const continuous_snd`. Use `open scoped Matrix.Norms.Operator in`. Establish `h` using `NormedSpace.map_exp (fbHom m n) hc (A, D)`. Use `open scoped Matrix.Norms.Operator in`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `Prod.fst_exp (A, D)`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `Prod.snd_exp (A, D)`. Express the relevant statement in the definitionally equal form `Matrix.fromBlocks _ 0 0 _ = NormedSpace.exp (Matrix.fromBlocks _ 0 0 _) at h`. Rewrite `h` using `[h1, h2]`.
-
-Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_fromBlocks (A : Matrix m m ℂ) (D : Matrix n n ℂ) :
     NormedSpace.exp (Matrix.fromBlocks A 0 0 D) = Matrix.fromBlocks (NormedSpace.exp A) 0 0 (NormedSpace.exp D) := by

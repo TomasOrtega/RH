@@ -22,26 +22,26 @@ namespace GlobalTheory.ThetaDens.WeilCompact
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mt_mul_eq (V : HSp D) (g h : GA D V) :
     Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
   unfold Formalism.L2.Theta.mt; rw [map_mul]; rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mt_one_eq (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
   unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mt_eq (V : HSp D) : Continuous (Formalism.L2.Theta.mt V) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Datum.actO`. Rewrite using `[inv_inv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.L2.Theta.mt T h), ← mt_mul_eq, ← mt_mul_eq, mul_inv_cancel, mul_inv_cancel, mt_one_eq, mt_one_eq, Matrix.one_mul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_actO_inv {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     Formalism.IndefR.Datum.actO S T g h (Formalism.IndefR.Datum.actO S T g⁻¹ h⁻¹ x) = x := by
@@ -54,9 +54,9 @@ theorem actO_actO_inv {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
 open GlobalTheory.Size in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.OrientedHeis.om_dRho hom hθ g h τ _ hf]`. Use `congr 1`. Establish `e1` using `GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ h`. Establish `e2` using `GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ g`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, Matrix.mul_one, ← Matrix.mul_assoc, e1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dRho_om {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
@@ -80,9 +80,9 @@ def dirSize (θ : InfFam D) (S T : HSp D) (x : GA D S × GA D T) : ℝ :=
       compAt θ a.1 (Formalism.L2.Theta.mt S x.1)) i j).im|)
 
 /- English proof (translation)
-Unfold `dirSize`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun x : GA D S × GA D T => compAt θ a.1 (Formalism.L2.Theta.mt T x.2⁻¹)` using `(GlobalTheory.RealWeil.continuous_compAt hθ a.1 _ _).comp ((continuous_mt_eq T).comp continuous_snd.inv)`. Establish `h2 : Continuous fun x : GA D S × GA D T => compAt θ a.1 (Formalism.L2.Theta.mt S x.1)` using `(GlobalTheory.RealWeil.continuous_compAt hθ a.1 _ _).comp ((continuous_mt_eq S).comp continuous_fst)`. Establish `h3` using `((h1.matrix_mul (continuous_const (y := Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)))).matrix_mul h2).matrix_elem i j`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_abs.comp (Complex.continuous_re.comp h3)).add (continuous_abs.comp (Complex.continuous_im.comp h3))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dirSize {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) : Continuous (dirSize θ S T) := by
   unfold dirSize
@@ -96,7 +96,7 @@ theorem continuous_dirSize {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) : C
   exact (continuous_abs.comp (Complex.continuous_re.comp h3)).add (continuous_abs.comp (Complex.continuous_im.comp h3))
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Datum.actO`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_add' {S T : HSp D} (g : GA D S) (h : GA D T) (x y : WO S T) :
     Formalism.IndefR.Datum.actO S T g h (x + y) = Formalism.IndefR.Datum.actO S T g h x + Formalism.IndefR.Datum.actO S T g h y := by
@@ -104,14 +104,14 @@ theorem actO_add' {S T : HSp D} (g : GA D S) (h : GA D T) (x y : WO S T) :
   rw [Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Datum.actO`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_zero' {S T : HSp D} (g : GA D S) (h : GA D T) : Formalism.IndefR.Datum.actO S T g h 0 = 0 := by
   unfold Formalism.IndefR.Datum.actO
   rw [Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Unfold `Formalism.IndefR.Datum.actO`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_neg' {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     Formalism.IndefR.Datum.actO S T g h (-x) = -Formalism.IndefR.Datum.actO S T g h x := by
@@ -121,15 +121,15 @@ theorem actO_neg' {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
 open GlobalTheory.Size in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨1, fun l hl x _ g hg => ?_⟩` and prove the remaining obligations. Take `rfl : l = []` from `List.eq_nil_of_length_eq_zero hl`. Rewrite using `[wordAct_nil, l2O_om_apply_eq_of_isThetaFunO hom hμ.1 hμ.2.1 hg, sobO_zero, ENNReal.coe_one, one_mul]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Take `⟨C, hC⟩` from `ih`. Use `⟨C * B, fun l hl x hx g hg => ?_⟩` and prove the remaining obligations. Take `⟨g1, h1⟩` from `x`. Establish `hne : l ≠ []` using `by rintro rfl; simp at hl`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← List.dropLast_append_getLast hne, wordAct_append, wordAct_cons, wordAct_nil]`. Use `set a := l.getLast hne`. Establish `e` using `dRho_om hom hθ g1 h1 a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)) hg`. Establish `e' : heisDer ψ θ a (om (g1, h1) g) = Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)) (om (g1, h1) g)` using `rfl`. Rewrite using `[e', e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg'` using `GlobalTheory.OrientedHeis.theta_dRho hθ hom.std a.1 (compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) * compAt θ a.1 (Formalism.L2.Theta.mt S g1)) hg`. Establish `hs : ENNReal.ofReal (∑ i, ∑ j, (|((compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) * compAt θ a.1 (Formalism.L2.Theta.mt S g1)) i j).re| + |((compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if …`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `ENNReal.ofReal_le_ofReal (le_trans ?_ (hB _ hx))` and prove the remaining obligations. Unfold `dirSize`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Finset.single_le_sum (f := fun a : D.what₂.Tau × Fin T.rank × Fin S.rank × Bool => ∑ i, ∑ j, (|((compAt θ a.1 (Formalism.L2.Theta.mt T h1⁻¹) * Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) * compAt θ a.1 (Formalism.L2.Theta.mt S g1)) i j).re| + |((compAt θ a.1 (F …`. Combine the equalities or inequalities in the displayed calculation. Conclude with `sobO_dRho_le hom.std hθ hg a.1 _ k`. Use `_ ≤ C * (B * sobO ψ θ μ 𝓕 (k + 1) g) := by gcongr`. Use `_ = ((C * B : ℝ≥0) : ℝ≥0∞) * sobO ψ θ μ 𝓕 (k + 1) g := by push_cast; ring`.
+A detailed English derivation is pending.
 -/
 theorem word_om_le {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
@@ -181,23 +181,19 @@ end GlobalTheory.ThetaDens.WeilCompact
 open GlobalTheory.ThetaDens.WeilCompact GlobalTheory.Size in
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hom θ hθ μ 𝓕 hμ K hK U hU`. Set `U' : AddSubgroup (WO S T)` to `{ carrier := {u | ∀ x ∈ K, Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ u ∈ U} add_mem' := fun {a b} ha hb x hx => by`. Rewrite `ha`, `hb` using `[Set.mem_setOf_eq]`. Use `show Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ (a + b) ∈ U`. Rewrite using `[actO_add']`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.add_mem (ha x hx) (hb x hx)`. Use the proof step `zero_mem' := fun x _ => by show Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ 0 ∈ U`. Rewrite using `[actO_zero']`. Conclude with `U.zero_mem`. Use the proof step `neg_mem' := fun {a} ha x hx => by show Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ (-a) ∈ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[actO_neg']`. Conclude with `U.neg_mem (ha x hx) }`. Establish `hU' : IsOpen (U' : Set (WO S T))`. Use `U'.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Use `hK.eventually_forall_of_forall_eventually (x₀ := (0 : WO S T)) (P := fun u x => Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ u ∈ U) fun x _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : Continuous fun p : WO S T × (GA D S × GA D T) => Formalism.IndefR.Datum.actO S T p.2.1⁻¹ p.2.2⁻¹ p.1`. Unfold `Formalism.IndefR.Datum.actO`. Conclude with `(((continuous_mt_eq T).comp continuous_snd.snd.inv).matrix_mul continuous_fst).matrix_mul ((continuous_mt_eq S).comp continuous_snd.fst.inv.inv)`. Use `(hU.preimage hc).mem_nhds ?_` and prove the remaining obligations. Use `show Formalism.IndefR.Datum.actO S T x.1⁻¹ x.2⁻¹ 0 ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[actO_zero']`. Conclude with `U.zero_mem`. Take `⟨B0, hB0⟩` from `hK.bddAbove_image (continuous_dirSize hθ S T).continuousOn`. Establish `hB : ∀ x ∈ K, dirSize θ S T x ≤ (B0.toNNReal : ℝ)` using `fun x hx => (hB0 ⟨x, hx, rfl⟩).trans (Real.le_coe_toNNReal B0)`. Use `⟨U', hU', fun f hf x hx => ⟨hom.om_pres x f hf.1, fun u hu h0 => ?_⟩, fun d => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, h⟩` from `x`. Establish `hv : Formalism.IndefR.Datum.actO S T g⁻¹ h⁻¹ u ∈ U` using `hu (g, h) hx`. Establish `hv0 : (Formalism.IndefR.Datum.actO S T g⁻¹ h⁻¹ u).map (infPart D) = 0`. Unfold `Formalism.IndefR.Datum.actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[actO_actO_inv]`. Use `_ = om (g, h) (heisO ψ S T (Formalism.IndefR.Datum.actO S T g⁻¹ h⁻¹ u) f) := (hom.om_heis g h _ f hf.1).symm`. Use `_ = om (g, h) f := by rw [hf.2 _ hv hv0]`.
-
-Use `choose C hC using word_om_le hom hθ hμ _ hB`. Use `⟨d, ∑ k ∈ Finset.range (d + 1), ∑ _a : Fin k → D.what₂.Tau × Fin T.rank × Fin S.rank × Bool, C k, fun f hf x hx => ?_⟩` and prove the remaining obligations. Use `show wordSum (heisDer ψ θ) (l2O μ 𝓕) d (om x f) ≤ _`. Unfold `wordSum`. Rewrite using `[ENNReal.coe_finset_sum, Finset.sum_mul]`.
-
-Use `Finset.sum_le_sum fun k hk => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.coe_finset_sum, Finset.sum_mul]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `sobO_mono (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaDens.om_compact_sobCont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ K : Set (GA D S × GA D T), IsCompact K → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∃ U' : AddSubgroup (WO S T), IsOpen (U' : Set (WO S T)) ∧ (∀ f ∈ thetaLevel ψ S T U, ∀ x ∈ K, om x f ∈ thetaLevel ψ S T U') ∧ ∀ d : ℕ, ∃ (d' : ℕ) (C : ℝ≥0), ∀ f ∈ thetaLevel ψ S T U, ∀ x ∈ K, sobO ψ θ μ 𝓕 d (om x f) ≤ C * sobO ψ θ μ 𝓕 d' f := by
   intro D ψ S T χS χT om hom θ hθ μ 𝓕 hμ K hK U hU

@@ -13,13 +13,11 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 noncomputable section
 namespace UpperTheory.GalS
 /- English proof (translation)
-Establish `h2` using `_root_.UpperTheory.GalS.weak' h2'`. Establish `all : ∀ i r, GoodR D.nd i r → ∀ x, ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i (mapRep (iotaOQ D.nd D.naut i) (r x)) w ∧ ∀ τ, InducesW D.nd i τ w → D.naut.jumpsW i (mapRep (iotaOQ D.nd D.naut i) (r x)) τ = D.naut.locAutHodgeTateWeightsLevelZero i τ`. Introduce `i r hr x w hw`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hB⟩` from `h1 i P`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : Nc D.nd D.naut (isoLoc D.nd D.naut Pa w)`. Establish `hg : ∀ k, D.nd.l i = D.host.g k → Nc D.nd D.naut (isoLoc D.nd D.naut Pa w)` using `fun k hk => by`. Establish `hw' : w ∈ placesOver D.host.E (D.host.g k)` using `hk ▸ hw`. Rewrite using `[hB.2.2.2.1 w (GlobalTheory.DepthZeroType.isSplitPl_of_over D k w hw')]`. Conclude with `hC i P (by rw [hP]; simp) k w hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `a : D.nd.l i = D.host.g 0`. Conclude with `hg 0 a`. Distinguish the cases in `b : D.nd.l i = D.host.g 1`. Conclude with `hg 1 b`. Conclude with `.of_unr (Parts.iso_unr_l D i P Pa w hB hw a b)`.
-
-Establish `h` using `compatR D h0 h2 h5 i r hr x P Pa hP hB w hw hn`. Conclude with `⟨h.1, h.2.2⟩`. Conclude with `⟨fun i r hr => (Parts.crys_unram_of_lgc D h0 h1 (Parts.lgc D h0 h2 h5) i r fun x => GlobalTheory.T.isHeckeGaloisQ_of_isHeckeGalois' D i x (r x) (hr x)).1, fun i r hr _ w hw x => all i r hr x w hw, fun i r hr => Parts.constituentCondition_of_hodgeJumps D h0 i r hr (all i r hr)⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem de_rham_points_weight_jumps_alt (D : D7) (h0 : SumRepresentations.tie0 D) (h1 : SumRepresentations.adm1 D) (h2' : _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D) (h5 : SumRepresentations.adm5 D)
     (hC : UpperTheory.GalC.CutRec D) : (∀ i r, GoodR D.nd i r → G2a D.nd D.naut i r) ∧ DeRhamJumpsDistinctCondition D := by

@@ -22,7 +22,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨_, not_not.mp (mt (X.cmType τ).mpr h)⟩⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem nonempty_type (X : Data E r) : Nonempty X.Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -31,22 +31,22 @@ theorem nonempty_type (X : Data E r) : Nonempty X.Ψ := by
   · exact ⟨⟨_, not_not.mp (mt (X.cmType τ).mpr h)⟩⟩
 
 /- English proof (translation)
-Introduce `τ` and use `(X.signature τ).choose_spec.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrth_x0F (X : Data E r) : IsOrth X (x0F X) := fun τ => (X.signature τ).choose_spec.2
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h0, hne⟩`. Take `⟨τ⟩` from `nonempty_type X`. Establish `hx : X.IsOrtho (x0F X)` using `isOrth_x0F X`. Establish `hdet : (mat (x0F X) τ).det ≠ 0` using `(X.signature τ).choose_spec.1`. Use `set y : Fin r → ℂ := Data.emb τ.1 ξ with hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyy : hermC τ.1 X.Gm y y = 0` using `by rw [hy, hermC_emb, h0, map_zero]`. Establish `hre` using `PositiveSpanMatrices.re_self X hx τ hdet y`. Rewrite `hre` using `[hyy, Complex.zero_re]`. Establish `hsq : ∑ c : Fin r, ‖hermC τ.1 X.Gm y (col (mat (x0F X) τ) c)‖ ^ 2 = 0`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hs : ∀ c : Fin r, sgn X.p0 (c : ℕ) = -1` using `fun c => by simp [sgn, h]`. Simplify using `only [hs, neg_one_mul, Finset.sum_neg_distrib] at hre`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∀ c : Fin r, sgn X.p0 (c : ℕ) = 1` using `fun c => by simp [sgn, h, c.isLt]`. Simplify using `only [hs, one_mul] at hre`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hall : ∀ c, hermC τ.1 X.Gm y (col (mat (x0F X) τ) c) = 0`. Introduce `c`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun c _ => sq_nonneg ‖hermC τ.1 X.Gm y (col (mat (x0F X) τ) c)‖)).mp hsq c (Finset.mem_univ c)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hy0 : y = 0`. Rewrite using `[PositiveSpanMatrices.expand X hx τ hdet y]`. Simplify using `[hall]`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `: τ.1 (ξ a) = 0` using `congrFun hy0 a`. Conclude with `(map_eq_zero τ.1).mp this`.
+A detailed English derivation is pending.
 -/
 theorem not_isIso_of_definite (X : Data E r) (h : X.p0 = 0 ∨ X.p0 = r) (ξ : Fin r → E) :
     ¬ X.IsIso ξ := by

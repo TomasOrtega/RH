@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.JR.UnitsHaar
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace F := @Unram.lcF F E _ _ _ _ ‹_›`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F (E := F)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_base (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] : SecondCountableTopology F := by
@@ -23,9 +23,9 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
   [Unram F E] (A : Et F E)
 
 /- English proof (translation)
-Use `haveI := secondCountable_base F E`. Set `e` to `(Module.finBasis F A.K).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `h : A.K ≃ₜ (Fin _ → F)` to `⟨e.toEquiv, h1, h2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Conclude with `⟨h.isEmbedding.t2Space, h.isEmbedding.isInducing.secondCountableTopology⟩`.
+A detailed English derivation is pending.
 -/
 theorem top_K : T2Space A.K ∧ SecondCountableTopology A.K := by
   haveI := secondCountable_base F E
@@ -37,21 +37,21 @@ theorem top_K : T2Space A.K ∧ SecondCountableTopology A.K := by
 
 omit [Unram F E] in
 /- English proof (translation)
-The claim follows from `GlobalTheory.GaugeEx.isOpenUnits_of_basis (Module.finBasis F A.K)`.
+A detailed English derivation is pending.
 -/
 theorem openUnits : IsOpenUnits A.K :=
   GlobalTheory.GaugeEx.isOpenUnits_of_basis (Module.finBasis F A.K)
 
 omit [Unram F E] in
 /- English proof (translation)
-Apply the tactic sequence `unfold Et.absK GlobalTheory.GaugeEx.modu; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem absK_eq (t : A.K) : A.absK t = (GlobalTheory.GaugeEx.modu A.K t : ℝ) := by
   unfold Et.absK GlobalTheory.GaugeEx.modu; split_ifs <;> simp
 
 omit [Unram F E] in
 /- English proof (translation)
-Establish `hemb` using `(openUnits A).isOpenEmbedding_unitsVal`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[hemb.isEmbedding.isInducing.eq_induced, borel_comap, ← BorelSpace.measurable_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem borel_units : BorelSpace A.Kˣ := by
   have hemb := (openUnits A).isOpenEmbedding_unitsVal
@@ -61,7 +61,7 @@ theorem borel_units : BorelSpace A.Kˣ := by
 
 omit [Unram F E] in
 /- English proof (translation)
-Distinguish the cases in `ht : IsUnit t`. Take `⟨u, rfl⟩` from `ht`. Rewrite using `[← Units.val_mul, GlobalTheory.GaugeEx.modu_units, GlobalTheory.GaugeEx.modu_units, GlobalTheory.GaugeEx.modu_units, map_mul]`. Establish `hct : ¬ IsUnit ((c : A.K) * t)` using `fun h => ht (IsUnit.mul_iff.1 h).2`. Simplify using `[GlobalTheory.GaugeEx.modu, ht, hct]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem modu_mul_left (c : A.Kˣ) (t : A.K) :
     GlobalTheory.GaugeEx.modu A.K ((c : A.K) * t) = GlobalTheory.GaugeEx.modu A.K c * GlobalTheory.GaugeEx.modu A.K t := by
@@ -74,7 +74,7 @@ theorem modu_mul_left (c : A.Kˣ) (t : A.K) :
 
 omit [Unram F E] in
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GaugeEx.modu_units, map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modu_units_inv (u : A.Kˣ) :
     (GlobalTheory.GaugeEx.modu A.K u)⁻¹ = distribHaarChar A.K u⁻¹ := by
@@ -84,7 +84,7 @@ def dens (t : A.K) : ℝ≥0 := (GlobalTheory.GaugeEx.modu A.K t)⁻¹
 
 omit [Unram F E] in
 /- English proof (translation)
-Establish `: ∀ t, ENNReal.ofReal (A.absK t)⁻¹ = (dens A t : ℝ≥0∞)` using `fun t => by`. Rewrite using `[absK_eq, dens, ← NNReal.coe_inv, ENNReal.ofReal_coe_nnreal]`. Unfold `LinDesc.unitsMeas`. Simplify using `only [this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem unitsMeas_eq (μK : Measure A.K) :
     LinDesc.unitsMeas A μK = (μK.withDensity fun t => (dens A t : ℝ≥0∞)).comap Units.val := by
@@ -94,41 +94,35 @@ theorem unitsMeas_eq (μK : Measure A.K) :
   simp only [this]
 
 /- English proof (translation)
-Take `⟨hT2, hSC⟩` from `top_K A`. Establish `hOU` using `openUnits A`. Use `haveI hB := borel_units A`. Establish `hemb` using `hOU.isOpenEmbedding_unitsVal`. Establish `hme : MeasurableEmbedding (Units.val : A.Kˣ → A.K)` using `hemb.measurableEmbedding`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen {t : A.K | IsUnit t}` using `hemb.isOpen_range`. Establish `hmod : Measurable (GlobalTheory.GaugeEx.modu A.K)`. Establish `hc` using `(GlobalTheory.GaugeEx.modu_basic A.K).2.2.2 hOU`. Use `hc.measurable_piecewise (g := fun _ => 0) continuousOn_const hU.measurableSet` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : IsUnit u`. Simplify using `[Set.piecewise, hu]`. Simplify using `[Set.piecewise, GlobalTheory.GaugeEx.modu, hu]`. Establish `hdm : Measurable (dens A)` using `hmod.inv`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ν := μK.withDensity fun t => (dens A t : ℝ≥0∞) with hν`. Rewrite using `[unitsMeas_eq]`. Use `⟨hB, ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : Set.range (Units.val : A.Kˣ → A.K) = {t : A.K | IsUnit t}` using `Set.ext fun _ => Iff.rfl`. Rewrite using `[← hme.integral_map, hme.map_comap, hr, restrict_withDensity hU.measurableSet, integral_withDensity_eq_integral_smul hdm]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[NNReal.smul_def, Complex.real_smul, absK_eq, dens, NNReal.coe_inv, Complex.ofReal_inv, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hμ`. Establish `hc0 : ∀ c : A.Kˣ, 0 < GlobalTheory.GaugeEx.modu A.K c` using `fun c => ((GlobalTheory.GaugeEx.modu_basic A.K).1 c c.isUnit).1`. Establish `hscale : ∀ (c : A.Kˣ) (G : A.K → ℝ≥0∞), ∫⁻ t, G t ∂μK = (GlobalTheory.GaugeEx.modu A.K c : ℝ≥0∞) * ∫⁻ t, G ((c : A.K) * t) ∂μK`. Introduce `c G`. Establish `e` using `((GlobalTheory.GaugeEx.modu_basic A.K).1 c c.isUnit).2 μK hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hm : MeasurableEmbedding (fun z : A.K => (c : A.K) * z)` using `(Homeomorph.smul c).measurableEmbedding`. Use `conv_lhs => rw [e]`. Rewrite using `[lintegral_smul_measure, hm.lintegral_map]`. Both sides reduce to the same expression. Establish `hinv : ∀ (c : A.Kˣ) (T : Set A.K), MeasurableSet T → ν ((fun t => (c : A.K) * t) ⁻¹' T) = ν T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c T hT`. Establish `hT' : MeasurableSet ((fun t => (c : A.K) * t) ⁻¹' T)` using `(measurable_const_mul _) hT`. Rewrite using `[hν, withDensity_apply _ hT, withDensity_apply _ hT', ← lintegral_indicator hT, ← lintegral_indicator hT']`. Use `conv_rhs => rw [hscale c]`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : (c : A.K) * t ∈ T`. Rewrite using `[Set.indicator_of_mem ht, Set.indicator_of_mem (show t ∈ (fun t => (c : A.K) * t) ⁻¹' T from ht)]`. Rewrite using `[← ENNReal.coe_mul, ENNReal.coe_inj, dens, dens, modu_mul_left, mul_inv, ← mul_assoc, mul_inv_cancel₀ (hc0 c).ne', one_mul]`. Rewrite using `[Set.indicator_of_notMem ht, Set.indicator_of_notMem (show t ∉ (fun t => (c : A.K) * t) ⁻¹' T from ht), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hL : (ν.comap Units.val).IsMulLeftInvariant`. Use `⟨fun c => ?_⟩` and prove the remaining obligations. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (measurable_const_mul c) hS, hme.comap_apply, hme.comap_apply]`. Establish `hset : Units.val '' ((fun x => c * x) ⁻¹' S) = (fun t : A.K => (c : A.K) * t) ⁻¹' (Units.val '' S)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨c * u, hu, Units.val_mul c u⟩`. Introduce and unpack `⟨s, hs, hst⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c⁻¹ * s, by simpa [Set.mem_preimage] using hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hst, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`. Rewrite using `[hset, hinv c _ (hme.measurableSet_image.2 hS)]`. Establish `hF : IsFiniteMeasureOnCompacts (ν.comap Units.val)`. Use `⟨fun C hC => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hme.comap_apply]`. Establish `hcont : Continuous fun u : A.Kˣ => distribHaarChar A.K u⁻¹` using `(GlobalTheory.GaugeEx.continuous_distribHaarChar_units A.K).comp continuous_inv`. Take `⟨M, hM⟩` from `(hC.image hcont).bddAbove`. Establish `hC' : IsCompact (Units.val '' C)` using `hC.image Units.continuous_val`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_mono measurable_const fun t ht => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `ht`. Rewrite using `[ENNReal.coe_le_coe, dens, modu_units_inv]`. Conclude with `hM ⟨u, hu, rfl⟩`. Use `_ = M * μK (Units.val '' C) := setLIntegral_const _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.coe_lt_top hC'.measure_lt_top`. Establish `hP : (ν.comap Units.val).IsOpenPosMeasure`. Use `⟨fun U hUo hne => ?_⟩` and prove the remaining obligations. Rewrite using `[hme.comap_apply]`. Establish `hVo : IsOpen (Units.val '' U)` using `hemb.isOpenMap U hUo`.
-
-Introduce `h0`. Rewrite `h0` using `[hν, withDensity_apply _ hVo.measurableSet, lintegral_eq_zero_iff hdm.coe_nnreal_ennreal]`. Establish `h1 : ∀ᵐ t ∂(μK.restrict (Units.val '' U)), False` using `by filter_upwards [h0, ae_restrict_mem hVo.measurableSet] with t ht hV`. Take `⟨u, -, rfl⟩` from `hV`. Establish `: (dens A u : ℝ≥0∞) ≠ 0`.
-
-Rewrite using `[ENNReal.coe_ne_zero, dens, modu_units_inv]`. Conclude with `distribHaarChar_pos.ne'`. Conclude with `this (by simpa using ht)`. Establish `h2 : μK.restrict (Units.val '' U) = 0` using `ae_eq_bot.1 (eventually_false_iff_eq_bot.1 h1)`. Rewrite `h2` using `[Measure.restrict_eq_zero]`.
-
-Conclude with `(hVo.measure_pos μK (hne.image _)).ne' h2`. Conclude with `{ toIsFiniteMeasureOnCompacts := hF, toIsMulLeftInvariant := hL, toIsOpenPosMeasure := hP }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (μK : Measure A.K) (hμ : μK.IsAddHaarMeasure) :
     BorelSpace A.Kˣ ∧ (LinDesc.unitsMeas A μK).IsHaarMeasure ∧ ∀ h : A.K → ℂ,
@@ -232,7 +226,7 @@ end GlobalTheory.JR.UnitsHaar
 namespace GlobalTheory.JR.LinDesc
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ A μK hμ` and use `GlobalTheory.JR.UnitsHaar.finiteRing_sq_sub_mul_sq_eq_of_card A μK hμ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitsMeas_isHaar : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (μK : Measure A.K), μK.IsAddHaarMeasure → BorelSpace A.Kˣ ∧ (LinDesc.unitsMeas A μK).IsHaarMeasure ∧ ∀ h : A.K → ℂ, ∫ s, h (s : A.K) ∂(LinDesc.unitsMeas A μK) = ∫ t in {t : A.K | IsUnit t}, h t * ((A.absK t : ℂ))⁻¹ ∂μK :=
   fun _ _ _ _ _ _ _ A μK hμ => GlobalTheory.JR.UnitsHaar.finiteRing_sq_sub_mul_sq_eq_of_card A μK hμ

@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Filter Topology Formalism.MainNotions.GlobalTh
 open GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.DblEval
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SBRestrProd.sb_eq_sum_restrProd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicSchwartzFunctionFactorizableSum.lean&line=256#L256)
 -/

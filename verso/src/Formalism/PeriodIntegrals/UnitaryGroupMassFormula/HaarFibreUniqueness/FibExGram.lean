@@ -31,23 +31,19 @@ def FiltConcl {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
           H (n + 1)
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsArtinianRing (Fv F v ⊗[F] E)` using `IsArtinianRing.of_finite (Fv F v) (Fv F v ⊗[F] E)`. Establish `: IsReduced (Fv F v ⊗[F] E)` using `isReduced_tens_field F E (Fv F v)`. Establish `hss : IsSemisimpleRing (Fv F v ⊗[F] E)` using `IsArtinianRing.isSemisimpleRing_of_isReduced _`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `secGram_holds F E σ hσ M J hJ hdet (Fv F v) hss a x hx`. Use `set T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) → (Fin a → Fin M → Fv F v ⊗[F] E) := fun S j k => ∑ i', (algebraMap F (Fv F v ⊗[F] E) (1 / 2) * S i' j) * q k i' with hT`. Establish `hTc : Continuous T`. Use `continuous_pi fun j => continuous_pi fun k => continuous_finsetSum _ fun i' _ => ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul (continuous_id.matrix_elem i' j)).mul continuous_const`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hT0 : T 0 = 0`. Use function extensionality and compare the values at `j k`. Simplify using `[hT]`. Use `set L := latSub b v a M with hL`. Establish `hLo : IsOpen (L : Set (Fin a → Fin M → Fv F v ⊗[F] E))` using `(PositiveNearLattice.isClopen_latV b v a M).isOpen`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set Dx : (Fin a → Fin M → Fv F v ⊗[F] E) → HermR (Fv F v) σ a := fun W => gramH (Fv F v) σ hσ J hJ (x + W) - gramH (Fv F v) σ hσ J hJ x - gramH (Fv F v) σ hσ J hJ W with hDx`. Establish `hDB : ∀ W, (Dx W : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) = gramB (Fv F v) σ J x W`. Introduce `W`. Rewrite using `[← gramR_add_sub]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hDadd : ∀ W W', Dx (W + W') = Dx W + Dx W'`. Introduce `W W'`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubgroup.coe_add, hDB, hDB, hDB, gramB_add_right]`. Establish `hDT : ∀ S : HermR (Fv F v) σ a, Dx (T S) = S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `S`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hDB]`. Conclude with `hq S.1 S.2`. Use `show IsOpen (Dx '' (L : Set (Fin a → Fin M → Fv F v ⊗[F] E)))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `hU : IsOpen {S : HermR (Fv F v) σ a | T ((S - Dx l : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) ∈ L}` using `hLo.preimage (hTc.comp (continuous_subtype_val.comp (continuous_id.sub continuous_const)))`. Use `Filter.mem_of_superset (hU.mem_nhds ?_) ?_` and prove the remaining obligations. Use `show T ((Dx l - Dx l : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) ∈ L`.
-
-Rewrite using `[sub_self, AddSubgroup.coe_zero, hT0]`. Conclude with `L.zero_mem`. Introduce `S hS`. Use `⟨l + T ((S - Dx l : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)), L.add_mem hl hS, ?_⟩` and prove the remaining obligations. Rewrite using `[hDadd, hDT]`.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem dxOpen_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
@@ -107,55 +103,47 @@ theorem dxOpen_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     abel
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_basis b`. Use `locallyCompact_Fv F v` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `: T2Space (Fv F v ⊗[F] E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ι, _, ⟨h⟩⟩` from `PI.AdicCompletionValuation.exists_homeomorph_tens (F := F) (E := E) (Fv F v)`. Conclude with `h.isEmbedding.t2Space`. Establish `: ContinuousSMul (Fv F v) (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (ContinuousSMul (Fv F v) (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: ContinuousSMul (Fv F v) (HermR (Fv F v) σ a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨continuous_induced_rng.2 ?_⟩` and prove the remaining obligations. Use `show Continuous fun p : Fv F v × HermR (Fv F v) σ a => p.1 • (p.2 : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))`. Conclude with `continuous_fst.smul (continuous_subtype_val.comp continuous_snd)`. Take `⟨π, hπ0, hπ, hπO⟩` from `exists_unif_Fv v`. Use `set L := latSub b v a M with hLdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLo : IsOpen (L : Set (Fin a → Fin M → Fv F v ⊗[F] E))` using `(PositiveNearLattice.isClopen_latV b v a M).isOpen`. Establish `hLc : IsCompact (L : Set (Fin a → Fin M → Fv F v ⊗[F] E))` using `PositiveNearLattice.isCompact_latV b v a M`. Establish `hπL : ∀ w ∈ L, π • w ∈ L`. Introduce `w hw i j k`. Establish `h` using `hw i j k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr (π • w i j) k ∈ v.adicCompletionIntegers F`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hπO h`. Set `β : (Fin a → Fin M → Fv F v ⊗[F] E) → (Fin a → Fin M → Fv F v ⊗[F] E) → HermR (Fv F v) σ a` to `fun u w => ⟨gramB (Fv F v) σ J u w, gramB_mem (Fv F v) σ hσ J hJ u w⟩`. Establish `hβc : Continuous fun q : (Fin a → Fin M → Fv F v ⊗[F] E) × (Fin a → Fin M → Fv F v ⊗[F] E) => β q.1 q.2` using `(continuous_gramB (Fv F v) σ J).subtype_mk _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hβ1 : ∀ u u' w, β (u + u') w = β u w + β u' w`. Introduce `u u' w`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show gramB (Fv F v) σ J (u + u') w i j = gramB (Fv F v) σ J u w i j + gramB (Fv F v) σ J u' w i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [gramB, Pi.add_apply, hR_add_left, hR_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβ2 : ∀ u w w', β u (w + w') = β u w + β u w'`. Introduce `u w w'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Use `show gramB (Fv F v) σ J u (w + w') i j = gramB (Fv F v) σ J u w i j + gramB (Fv F v) σ J u w' i j`. Simplify using `only [gramB, Pi.add_apply, hR_add_left, hR_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβs : ∀ (t : Fv F v) u w, β u (t • w) = t • β u w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `t u w`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show gramB (Fv F v) σ J u (t • w) i j = t • gramB (Fv F v) σ J u w i j`. Simplify using `only [gramB, Pi.smul_apply, hR_smul_left, hR_smul_right, smul_add]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set G := gramH (Fv F v) σ hσ J hJ (n := a) with hGdef`. Establish `hG : ∀ u W, G (u + W) = G u + β u W + G W`. Introduce `u W`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show gramR (Fv F v) σ J (u + W) i j = gramR (Fv F v) σ J u i j + gramB (Fv F v) σ J u W i j + gramR (Fv F v) σ J W i j`. Simplify using `only [gramR, gramB, Pi.add_apply, hR_add_left, hR_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGs : ∀ (t : Fv F v) w, G (t • w) = t • t • G w`. Introduce `t w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show gramR (Fv F v) σ J (t • w) i j = t • t • gramR (Fv F v) σ J w i j`. Simplify using `only [gramR, Pi.smul_apply, hR_smul_left, hR_smul_right]`. Establish `hGc : Continuous G` using `continuous_gramH (Fv F v) σ hσ J hJ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hxo : IsOpen (β x '' (L : Set (Fin a → Fin M → Fv F v ⊗[F] E)))`. Establish `h` using `dxOpen_gen σ hσ M J hJ hdet a v d b x hx`. Establish `e : (fun W => gramH (Fv F v) σ hσ J hJ (x + W) - gramH (Fv F v) σ hσ J hJ x - gramH (Fv F v) σ hσ J hJ W) = β x`. Use function extensionality and compare the values at `W`. Rewrite using `[← hGdef, hG]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Normalize the expressions using the abelian group laws. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hd : 0 < d`. Break down `Nat.eq_zero_or_pos d with h0 | h0` into its components or cases. Substitute `h0` using the available equality.
+It suffices to derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-It suffices to derive a contradiction. Establish `: (1 : E) = 0`. Rewrite using `[← b.sum_repr (1 : E)]`. Simplify using the standard rewrite rules. Conclude with `one_ne_zero this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `hM : 0 < M`. Break down `Nat.eq_zero_or_pos M with h0 | h0` into its components or cases. Substitute `h0` using the available equality. It suffices to derive a contradiction.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: Nontrivial (Fv F v ⊗[F] E)` using `inferInstance`. Conclude with `hx.ne_zero ⟨0, ha1⟩ (funext fun j => j.elim0)`. Conclude with `h0`. Set `i0 : Fin a` to `⟨0, ha1⟩`. Set `j0 : Fin M` to `⟨0, hM⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `k0 : Fin d` to `⟨0, hd⟩`. Set `φ : (Fin a → Fin M → Fv F v ⊗[F] E) → Fv F v` to `fun Y => PositiveNearLattice.crd b (Fv F v) (Y i0 j0) k0`. Establish `hφc : Continuous φ` using `(PositiveNearLattice.continuous_crd b (Fv F v) k0).comp ((continuous_apply j0).comp (continuous_apply i0))`. Establish `hφs : ∀ (t : Fv F v) Y, φ (t • Y) = t * φ Y`. Introduce `t Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr (t • Y i0 j0) k0 = t * (Algebra.TensorProduct.basis (Fv F v) b).repr (Y i0 j0) k0`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Set `e0 : Fin a → Fin M → Fv F v ⊗[F] E` to `fun i j => if i = i0 ∧ j = j0 then inclR (Fv F v) (b k0) else 0`. Establish `he0L : e0 ∈ L`. Introduce `i j k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `show PositiveNearLattice.crd b (Fv F v) (e0 i j) k ∈ v.adicCompletionIntegers F`. Distinguish the cases in `hij : i = i0 ∧ j = j0`. Simplify using `only [e0, if_pos hij, PositiveNearLattice.crd_incl, b.repr_self, Finsupp.single_apply] split_ifs`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [e0, if_neg hij, PositiveNearLattice.crd, map_zero, Finsupp.zero_apply]`. Conclude with `zero_mem _`. Establish `hφe : φ e0 = 1` using `by show PositiveNearLattice.crd b (Fv F v) (e0 i0 j0) k0 = 1`. Simplify using `[e0, PositiveNearLattice.crd_incl, b.repr_self]`. Establish `hsmall : ∀ U ∈ 𝓝 (0 : HermR (Fv F v) σ a), ∃ N2 ∈ 𝓝 (0 : Fin a → Fin M → Fv F v ⊗[F] E), ∀ c : Fv F v, (∀ w ∈ L, c • w ∈ N2) → ∀ w ∈ L, c • G w ∈ U`.
-
-Introduce `U hU`. Establish `hT : ∀ᶠ t in 𝓝 (0 : Fv F v), ∀ w ∈ (L : Set (Fin a → Fin M → Fv F v ⊗[F] E)), t • G w ∈ U`. Establish `hP : ∀ w ∈ (L : Set (Fin a → Fin M → Fv F v ⊗[F] E)), ∀ᶠ q : Fv F v × (Fin a → Fin M → Fv F v ⊗[F] E) in 𝓝 ((0 : Fv F v), w), q.1 • G q.2 ∈ U`. Introduce `w _`. Establish `h : Tendsto (fun q : Fv F v × (Fin a → Fin M → Fv F v ⊗[F] E) => q.1 • G q.2) (𝓝 ((0 : Fv F v), w)) (𝓝 (0 : HermR (Fv F v) σ a))`.
-
-Establish `hc : Continuous (fun q : Fv F v × (Fin a → Fin M → Fv F v ⊗[F] E) => q.1 • G q.2)` using `continuous_fst.smul (hGc.comp continuous_snd)`. Use `hc.tendsto ((0 : Fv F v), w)` as an intermediate fact. Simplify using `using this`. Conclude with `h hU`. Conclude with `hLc.eventually_forall_of_forall_eventually (P := fun (t : Fv F v) (w : Fin a → Fin M → Fv F v ⊗[F] E) => t • G w ∈ U) hP`.
-
-Use `⟨φ ⁻¹' {t | ∀ w ∈ (L : Set (Fin a → Fin M → Fv F v ⊗[F] E)), t • G w ∈ U}, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : φ 0 = 0`. Use `hφs 0 0` as an intermediate fact. Simplify using `using this`. Conclude with `hφc.continuousAt.preimage_mem_nhds (by rw [h0]; exact hT)`.
-
-Introduce `c hc w hw`. Establish `h` using `hc e0 he0L`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, hφs, hφe, mul_one] at h`. Conclude with `h w hw`. Conclude with `filt_abstract π hπ0 hπ L hLo hLc hπL β hβc hβ1 hβ2 hβs G hG hGs x hxo hsmall`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramFilt_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
@@ -312,15 +300,13 @@ theorem gramFilt_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   exact filt_abstract π hπ0 hπ L hLo hLc hπL β hβc hβ1 hβ2 hβs G hG hGs x hxo hsmall
 
 /- English proof (translation)
-Use `haveI hH : Subsingleton (HermR (Fv F v) σ 0) := by`. Unfold `HermR`. Use `infer_instance`. Establish `hsub : ∀ S : AddSubgroup (Fin 0 → Fin M → Fv F v ⊗[F] E), S = ⊤` using `fun S => by`. Use extensionality with `w`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddSubgroup.mem_top, iff_true]`. Rewrite using `[Subsingleton.elim w 0]`. Conclude with `S.zero_mem`. Establish `hsubH : ∀ S : AddSubgroup (HermR (Fv F v) σ 0), S = ⊤` using `fun S => by`. Use extensionality with `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [AddSubgroup.mem_top, iff_true]`. Rewrite using `[Subsingleton.elim w 0]`. Conclude with `S.zero_mem`. Use `⟨Set.univ, Filter.univ_mem, fun y _ Λ0 _ _ => ?_⟩` and prove the remaining obligations. Use `⟨fun _ => Λ0, fun _ => ⊤, 0, rfl, fun _ => ?_, fun _ => ?_, antitone_const, fun _ => isOpen_univ, fun _ => ?_, fun N' hN' => ⟨0, ?_⟩, fun _ => hsubH _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsub Λ0]`. Conclude with `isOpen_univ`. Conclude with `Set.subsingleton_of_subsingleton.isCompact`. Conclude with `Set.subsingleton_of_subsingleton.isCompact`. Introduce `w _`.
-
-Rewrite using `[Subsingleton.elim w 0]`. Conclude with `mem_of_mem_nhds hN'`. Introduce `n Z _ W _`. Rewrite using `[hsubH (⊤ : AddSubgroup (HermR (Fv F v) σ 0))]`. Conclude with `AddSubgroup.mem_top _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramFilt_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
@@ -354,7 +340,7 @@ theorem gramFilt_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     exact AddSubgroup.mem_top _
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `gramFilt_zero σ hσ M J hJ v d b x`. Conclude with `gramFilt_gen σ hσ M J hJ hdet a ha v d b x hx`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem gramFilt_all {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)

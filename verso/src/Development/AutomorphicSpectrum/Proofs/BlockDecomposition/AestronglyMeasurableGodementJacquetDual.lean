@@ -13,9 +13,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `Continuous.matrix_det Units.continuous_val`. Establish `: Continuous fun g : GL (Fin 2) F => ((g⁻¹ : GL (Fin 2) F).val).det` using `Continuous.matrix_det (Units.continuous_val.comp continuous_inv)`. Use `this using 2 with g` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_detUnit : Continuous (GeneralLinearGroup.det : GL (Fin 2) F → Fˣ) := by
   rw [Units.continuous_iff]
@@ -28,9 +28,9 @@ theorem continuous_detUnit : Continuous (GeneralLinearGroup.det : GL (Fin 2) F �
     rfl
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hopen : IsOpen ((fun x : GL (Fin 2) F => g⁻¹ * x) ⁻¹' (U : Set (GL (Fin 2) F)))` using `U.isOpen.preimage (continuous_const.mul continuous_id)`. Establish `hmem : ((fun x : GL (Fin 2) F => g⁻¹ * x) ⁻¹' (U : Set (GL (Fin 2) F))) ∈ nhds g` using `hopen.mem_nhds (by simpa using U.one_mem)`. Establish `hev : (fun _ : GL (Fin 2) F => W g) =ᶠ[nhds g] W` using `by filter_upwards [hmem] with x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h g (g⁻¹ * x) hx` as an intermediate fact. Simplify using `using this.symm`. Conclude with `(continuousAt_const).congr hev`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_of_rightInvariant (W : GL (Fin 2) F → ℂ) (U : OpenSubgroup (GL (Fin 2) F))
     (h : ∀ g, ∀ u ∈ U, W (g * u) = W g) : Continuous W := by
@@ -47,9 +47,7 @@ theorem continuous_of_rightInvariant (W : GL (Fin 2) F → ℂ) (U : OpenSubgrou
   exact (continuousAt_const).congr hev
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GL (Fin 2) F => ((modulus (((GeneralLinearGroup.det g : Fˣ)) : F) : ℝ) : ℂ)`. Establish `h2 : Continuous fun g : GL (Fin 2) F => modulus (((GeneralLinearGroup.det g : Fˣ)) : F)` using `continuous_modulus.comp (Units.continuous_val.comp continuous_detUnit)`. Conclude with `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp h2)`. Use `h1.cpow continuous_const fun g => ?_` and prove the remaining obligations. Use `Complex.ofReal_mem_slitPlane.2 ?_` and prove the remaining obligations.
-
-Conclude with `modulus_pos (Units.ne_zero _)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_mp_det (z : ℂ) :
     Continuous fun g : GL (Fin 2) F => mp (GeneralLinearGroup.det g) z := by
@@ -63,27 +61,23 @@ theorem continuous_mp_det (z : ℂ) :
   exact_mod_cast modulus_pos (Units.ne_zero _)
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hΦ`. Establish `hΦc : Continuous Φ` using `hlc.continuous`. Take `⟨C, hC⟩` from `hcs.exists_bound_of_continuous hΦc`. Establish `hrow : Continuous fun X : Matrix (Fin 2) (Fin 2) F => (X 0 : Fin 2 → F)` using `continuous_pi fun j => continuous_id.matrix_elem 0 j`. Use `set K : Set (Fin 2 → F) := (fun X : Matrix (Fin 2) (Fin 2) F => (X 0 : Fin 2 → F)) '' tsupport Φ with hKdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact K` using `hcs.isCompact.image hrow`. Establish `hcoe : Continuous fun z : Circle => (z : ℂ)` using `by first`. Consider the case `fun_prop`. Consider the case `exact continuous_subtype_val`. Consider the case `exact continuous_induced_dom`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hψi : Continuous fun x : F => ((ψ⁻¹ x : Circle) : ℂ)`. Establish `: (fun x : F => ((ψ⁻¹ x : Circle) : ℂ)) = fun x : F => ((ψ (-x) : Circle) : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[AddChar.inv_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcoe.comp (hψ.comp continuous_neg)`. Establish `hrows : ∀ r : Fin 2 → F, Continuous fun g : GL (Fin 2) F => what₂ r (fun j => g.val 0 j / (g.val).det)`. Introduce `r`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `continuous_const` using `[what₂]`. Establish `hdet : Continuous fun g : GL (Fin 2) F => (g.val).det` using `Continuous.matrix_det Units.continuous_val`. Establish `hent : Continuous fun g : GL (Fin 2) F => g.val 0 j` using `Units.continuous_val.matrix_elem 0 j`. Establish `h : Continuous fun g : GL (Fin 2) F => g.val 0 j / (g.val).det` using `hent.div hdet fun g => (Matrix.GeneralLinearGroup.det g).ne_zero`. Simplify `h` using `[what₂]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont2 : ∀ g : GL (Fin 2) F, Continuous fun r : Fin 2 → F => Φ (what₂ r (fun j => g.val 0 j / (g.val).det)) * ((ψ⁻¹ (r 0 * g.val 1 1 - r 1 * g.val 1 0) : Circle) : ℂ)`. Introduce `g`. Use `(hΦc.comp ?_).mul (hψi.comp ?_)` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_ fin_cases i` and prove the remaining obligations. Simplify `continuous_apply j` using `[what₂]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `continuous_const` using `[what₂]`. Conclude with `((continuous_apply 0).mul continuous_const).sub ((continuous_apply 1).mul continuous_const)`. Unfold `phd`. Use `continuous_of_dominated (bound := K.indicator fun _ => C) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun g => (hcont2 g).aestronglyMeasurable`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `fun g => Filter.Eventually.of_forall fun r => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r ∈ K`. Rewrite using `[Set.indicator_of_mem hr, norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hC _`. Rewrite using `[Set.indicator_of_notMem hr]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : Φ (what₂ r (fun j => g.val 0 j / (g.val).det)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hr ⟨_, subset_tsupport _ hne, rfl⟩`. Simplify using `[h0]`. Use `haveI : IsFiniteMeasureOnCompacts (LFS.vol2 ψ) := by`.
-
-Unfold `LFS.vol2`. Use `infer_instance`. Use `(integrable_indicator_iff hK.measurableSet).2 ?_` and prove the remaining obligations. Conclude with `integrableOn_const hK.measure_lt_top.ne`. Use `Filter.Eventually.of_forall fun r => ?_` and prove the remaining obligations.
-
-Use `(hΦc.comp (hrows r)).mul (hψi.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_const.mul (Units.continuous_val.matrix_elem 1 1)).sub (continuous_const.mul (Units.continuous_val.matrix_elem 1 0))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_phd (ψ : AddChar F Circle) (hψ : Continuous ψ)
     (Φ : Matrix (Fin 2) (Fin 2) F → ℂ) (hΦ : SB2 Φ) : Continuous (phd ψ Φ) := by
@@ -151,9 +145,9 @@ theorem continuous_phd (ψ : AddChar F Circle) (hψ : Continuous ψ)
       (continuous_const.mul (Units.continuous_val.matrix_elem 1 0))
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : GL (Fin 2) F => ((((ω * μ) (GeneralLinearGroup.det g))⁻¹ : ℂˣ) : ℂ)`. Establish `hωμ : Continuous (ω * μ : Fˣ →* ℂˣ)`. Establish `: ((ω * μ : Fˣ →* ℂˣ) : Fˣ → ℂˣ) = fun a => ω a * μ a` using `rfl`. Rewrite using `[this]`. Conclude with `hω.mul hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Units.continuous_val.comp (continuous_inv.comp (hωμ.comp continuous_detUnit))`. Unfold `gjdI`. Conclude with `(((continuous_phd ψ hψ Φ hΦ).mul hW).mul hc).mul (continuous_mp_det _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gjdI (ψ : AddChar F Circle) (hψ : Continuous ψ)
     (Φ : Matrix (Fin 2) (Fin 2) F → ℂ) (hΦ : SB2 Φ) (W : GL (Fin 2) F → ℂ) (hW : Continuous W)
@@ -170,7 +164,7 @@ theorem continuous_gjdI (ψ : AddChar F Circle) (hψ : Continuous ψ)
   exact (((continuous_phd ψ hψ Φ hΦ).mul hW).mul hc).mul (continuous_mp_det _)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ω G V' hω hV W hWV μ hμ Φ hΦ s`. Take `⟨U, hU⟩` from `hV.smooth W hWV`. Conclude with `(continuous_gjdI ψ hψ.1 Φ hΦ W (continuous_of_rightInvariant W U hU) ω μ hω.1 hμ.1 s).aestronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_gjdI : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),

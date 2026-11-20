@@ -6,33 +6,31 @@ open GlobalTheory.Col PowerSeries
 namespace GlobalTheory.Col
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `GlobalTheory.Col.exists_basis_one_add_X_pow R p hR`. Use `letI iA : Algebra (PowerSeries R) (PowerSeries R) := (phi (R := R) p hp.out.pos).toRingHom.toAlgebra`. Use `letI iM : Module (PowerSeries R) (PowerSeries R) := @Algebra.toModule _ _ _ _ iA`. Use `letI iS : SMul (PowerSeries R) (PowerSeries R) := iM.toSMul`. Establish `F1 : ∀ x : PowerSeries R, ∑ i, phi (R` using `R) p hp.out.pos (b.repr x i) * (1 + X) ^ (i : ℕ) = x := by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Introduce `x`. Use `conv_rhs => rw [← b.sum_repr x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb i]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `F3 : ∀ (d : Fin p → PowerSeries R) (i : Fin p), b.repr (∑ j, phi (R` using `R) p hp.out.pos (d j) * (1 + X) ^ (j : ℕ)) i = d i := by`. Introduce `d i`. Establish `h1 : (∑ j, phi (R` using `R) p hp.out.pos (d j) * (1 + X) ^ (j : ℕ)) = b.equivFun.symm d := by`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb j]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `F2 : ∀ (a x : PowerSeries R) (i : Fin p), b.repr (phi (R` using `R) p hp.out.pos a * x) i = a * b.repr x i := by`. Introduce `a x i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: phi (R` using `R) p hp.out.pos a * x = a • x := rfl`. Rewrite using `[this, LinearEquiv.map_smul]`. Both sides reduce to the same expression. Use `letI iU : Algebra (lev R p m) (lev R p (m + 1)) := (up (R := R) p m hm).toAlgebra`. Establish `hup : ∀ a : PowerSeries R, up (R` using `R) p m hm (ev R p m a) = ev R p (m + 1) (phi (R := R) p hp.out.pos a) := fun a => rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ (a : PowerSeries R) (y : PowerSeries R), ev R p (m + 1) (phi (R` using `R) p hp.out.pos a * y) = (ev R p m a) • ev R p (m + 1) y := by`. Introduce `a y`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, hup, map_mul]`. Set `v : Fin p → lev R p (m + 1)` to `fun i => ev R p (m + 1) ((1 + X) ^ (i : ℕ))`. Establish `hli : LinearIndependent (lev R p m) v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations. Use `choose d hd using fun i => Ideal.Quotient.mk_surjective (g i)`. Establish `hx : ev R p (m + 1) (∑ j, phi (R` using `R) p hp.out.pos (d j) * (1 + X) ^ (j : ℕ)) = 0 := by`. Rewrite using `[← hg, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsm, ← hd j]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 hx)`. Rewrite `ha` using `[← phi_cyc (R := R) p m hm, mul_comm]`. Use `F3 d i` as an intermediate fact. Rewrite `this` using `[← ha, F2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hd i, ← this, map_mul]`. Establish `h0 : ev R p m (cyc R p m) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Rewrite using `[h0, zero_mul]`. Establish `hsp : ⊤ ≤ Submodule.span (lev R p m) (Set.range v)`. Introduce `z _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Use `show ev R p (m + 1) y ∈ _`. Rewrite using `[← F1 y, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `b' : Module.Basis (Fin p) (lev R p m) (lev R p (m + 1))` to `Module.Basis.mk hli hsp`. Establish `G : ∀ (y : PowerSeries R) (i : Fin p), b'.repr (ev R p (m + 1) y) i = ev R p m (b.repr y i)`. Introduce `y i`. Establish `e1 : ev R p (m + 1) y = b'.equivFun.symm (fun i => ev R p m (b.repr y i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.equivFun_symm_apply]`. Use `conv_lhs => rw [← F1 y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply, hsm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[e1, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Unfold `nrm normOp`. Rewrite using `[Algebra.norm_eq_matrix_det b', Algebra.norm_eq_matrix_det b, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
-
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Module.Basis.mk_apply, ← map_mul, G, hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_normOp_eq_nrm (R : Type) [CommRing R] (p m : ℕ) [hp : Fact p.Prime] (hm : 1 ≤ m)
     (hR : IsAdicComplete (Ideal.span {(p : R)}) R) (h : PowerSeries R) :

@@ -13,7 +13,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OrbitSep.fromSpecResidueField_comp_eq_of_fixes` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFromSpecResidueFieldCompAutEqOfFixes.lean&line=26#L26)
 -/

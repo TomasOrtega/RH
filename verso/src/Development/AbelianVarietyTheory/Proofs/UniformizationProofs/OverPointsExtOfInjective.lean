@@ -9,11 +9,11 @@ namespace GlobalTheory
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry in
 
 /- English proof (translation)
-Set `d : Over.mk (Spec.map (CommRingCat.ofHom φ) ≫ p) ⟶ Over.mk p` to `Over.homMk (Spec.map (CommRingCat.ofHom φ)) rfl`. Establish `hd : d ≫ y = d ≫ y'` using `by ext1`. Simplify `h` using `[d]`. Set `l` to `equalizer.lift d hd`. Establish `hl : l ≫ equalizer.ι y y' = d` using `equalizer.lift_ι d hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfac : l.left ≫ (equalizer.ι y y').left = Spec.map (CommRingCat.ofHom φ)`. Rewrite using `[← Over.comp_left, hl]`. Both sides reduce to the same expression. Establish `hdom : IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom φ))` using `(_root_.GlobalTheory.schemeDominant_specMap_iff _).2 (by simpa using hφ)`. Establish `hdomι : IsSchemeTheoreticallyDominant (equalizer.ι y y').left` using `⟨eq_bot_iff.2 ((Scheme.Hom.le_ker_comp l.left _).trans (by rw [hfac, hdom.ker_eq_bot]))⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : IsIso (equalizer.ι y y').left` using `_root_.GlobalTheory.isIso_of_isClosedImmersion_of_schemeDominant _`. Use `ext1`. Rewrite using `[← cancel_epi (equalizer.ι y y').left, ← Over.comp_left, ← Over.comp_left, equalizer.condition]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.over_points_ext_of_injective (S : Scheme.{0}) (G : Over S) [IsSeparated G.hom]
     (W F : Type) [CommRing W] [CommRing F] (φ : W →+* F) (hφ : Function.Injective φ)

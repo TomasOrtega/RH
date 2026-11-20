@@ -20,7 +20,7 @@ open Classical
 namespace GlobalTheory.FlagPush.Gen
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (h : B →+* C) :
     spMap h ≫ spMap g = spMap (h.comp g) := by
@@ -28,21 +28,21 @@ theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A 
   rfl
 
 /- English proof (translation)
-Introduce `F _ X Y ι _ m E E' φ f hf B hB τ a b hab`. Take `⟨V, c, t, hc, ht, hr⟩` from `GlobalTheory.T.exists_valuationSubring_ratFunc_X_residue_zero Y.Fn`. Take `⟨A, hA⟩` from `E.nonempty (f (genericPoint Y.X))`. Establish `hM : Par 0 ((ratOf Y).O (genericPoint Y.X)).toSubring (B * (A.map φ)⁻¹)` using `hf.sub _ B hB A hA`. Take `⟨pt, hpt⟩ : ∃ pt : Sp Y.Fn ⟶ Y.X, pt = (ratOf Y).pt` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpa (w) : pt w = genericPoint Y.X` using `hpt ▸ (ratOf Y).pt_apply w`. Establish `hps : pt ≫ Y.str = spMap (algebraMap F Y.Fn)` using `hpt ▸ (ratOf Y).pt_s`. Establish `hq : spMap (algebraMap V (RatFunc Y.Fn)) ≫ spMap c ≫ pt = spMap (algebraMap Y.Fn (RatFunc Y.Fn)) ≫ pt`. Rewrite using `[← Category.assoc, spMap_comp, hc]`. Establish `hh : Par 0 ⊤ (shear τ a b (RatFunc.X : RatFunc Y.Fn) * (B * (A.map φ)⁻¹).map (algebraMap Y.Fn (RatFunc Y.Fn)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Par.mul (ClosedPt.par_zero_top fun σ => ?_) (hM.map _ fun _ _ => trivial)` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.blockMatrixElementaryShear_properties ι m τ a b hab _ _).1 σ]`. Conclude with `one_ne_zero`. Establish `hx : ((spMap (algebraMap Y.Fn (RatFunc Y.Fn)) ≫ pt) ≫ f) (IsLocalRing.closedPoint (RatFunc Y.Fn)) = f (genericPoint Y.X)` using `congrArg f (hpa _)`. Establish `hA' : A ∈ E.S (((spMap (algebraMap Y.Fn (RatFunc Y.Fn)) ≫ pt) ≫ f) (IsLocalRing.closedPoint (RatFunc Y.Fn)))` using `(congrArg (fun z : X.X => A ∈ E.S z) hx).mpr hA`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q₂, hq₂, hb⟩ : ∃ q₂ : Sp (RatFunc Y.Fn) ⟶ Y.X, q₂ ≫ f = (spMap (algebraMap Y.Fn (RatFunc Y.Fn)) ≫ pt) ≫ f ∧ Bears E' φ A (shear τ a b (RatFunc.X : RatFunc Y.Fn) * (B * (A.map φ)⁻¹).map (algebraMap Y.Fn (RatFunc Y.Fn))) q₂` from `(hf.lifts (RatFunc Y.Fn) _ A hA' _ hh).exists`. Establish `hs : f ≫ X.str = Y.str` using `hf.hom.inducedModelMorphism_comp_structureMap`. Take `⟨v₂, hv₂, hv₂f⟩` from `GlobalTheory.T.exists_lift_valuative_criterion_varieties F X Y f hs _ V (spMap c ≫ pt) q₂ (by`. Rewrite using `[hq₂, ← hq]`. Simplify using `only [Category.assoc])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmeet : spMap (IsLocalRing.residue V) ≫ spMap c ≫ pt = spMap (IsLocalRing.residue V) ≫ v₂`. Substitute `hpt` using the available equality. Conclude with `GlobalTheory.T.shearedGenericFlag_eq_genericFlag_at_special F X Y ι m E E' φ f hf B hB A hA τ a b hab _ V c t hr v₂ (hv₂f.trans (Category.assoc _ _ _)) (by subst hv₂; rw [hc, ht]; exact hb)`. Establish `h1 : (spMap c ≫ pt) (IsLocalRing.closedPoint V) = genericPoint Y.X` using `hpa _`. Establish `h2 : v₂ (IsLocalRing.closedPoint V) = genericPoint Y.X`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[← ClosedPt.closedPt_comp v₂, ← hmeet, ClosedPt.closedPt_comp, h1]`. Use `letI : Algebra F (RatFunc Y.Fn) := ((algebraMap Y.Fn (RatFunc Y.Fn)).comp (algebraMap F Y.Fn)).toAlgebra`. Establish `hsp : q₂ (IsLocalRing.closedPoint (RatFunc Y.Fn)) ⤳ genericPoint Y.X`. Use `ClosedPt.gen_specializes v₂ (IsLocalRing.closedPoint (RatFunc Y.Fn))` as an intermediate fact. Rewrite `this` using `[hv₂, h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hstr : q₂ ≫ Y.str = spMap ((algebraMap Y.Fn (RatFunc Y.Fn)).comp (algebraMap F Y.Fn))`. Rewrite using `[← hs, ← Category.assoc, hq₂, Category.assoc, hs, Category.assoc, ← spMap_comp, hps]`. Take `⟨ψ, hψ⟩` from `exists_algHom_of_specializes_genericPoint F Y (RatFunc Y.Fn) q₂ hsp hstr`. Substitute `hpt` using the available equality. Establish `hcv` using `GlobalTheory.T.flag_of_dominant_point_as_triangular_matrix F X Y ι m E E' φ f hf B hB A hA _ (algebraMap Y.Fn (RatFunc Y.Fn)) ψ.toRingHom (shear τ a b RatFunc.X) (by`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hψ` using the available equality. Conclude with `(Category.assoc _ _ _).symm.trans (hq₂.symm.trans (Category.assoc _ _ _))) (by subst hψ; exact hb)`. Use `⟨ψ.toRingHom, ⟨?_, V, spMap c ≫ (ratOf Y).pt, v₂, hq, hv₂.trans hψ, hmeet, h1⟩, hcv.1, hcv.2⟩` and prove the remaining obligations. Conclude with `RingHom.ext fun r => (ψ.commutes r).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_genPair : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ B ∈ E'.S (genericPoint Y.X), ∀ (τ : ι) (a b : Fin (m τ)), a < b → ∃ ψ₂ : Y.Fn →+* RatFunc Y.Fn, GenPair Y (algebraMap Y.Fn (RatFunc Y.Fn)) ψ₂ ∧ (∀ u : X.Fn, algebraMap Y.Fn (RatFunc Y.Fn) (φ u) = ψ₂ (φ u)) ∧ Par m ⊤ (shear τ a b (RatFunc.X : RatFunc Y.Fn) * (B.map (algebraMap Y.Fn (RatFunc Y.Fn)) * (B.map ψ₂)⁻¹)) := by
   intro F _ X Y ι _ m E E' φ f hf B hB τ a b hab

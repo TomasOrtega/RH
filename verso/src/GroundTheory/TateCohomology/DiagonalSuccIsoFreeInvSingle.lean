@@ -23,7 +23,7 @@ lemma linearYonedaObjMap_f_apply {X Y : ChainComplex C ℕ} (f : X ⟶ Y) (B : C
     (x : Y.X n ⟶ B) : (linearYonedaObjMap (R := R) f B).f n x = f.f n ≫ x := rfl
 
 /- English proof (translation)
-Use extensionality with `n x`. Express the relevant statement in the definitionally equal form `(f ≫ g).f n ≫ x = f.f n ≫ g.f n ≫ x`. Rewrite using `[HomologicalComplex.comp_f]`. Conclude with `Category.assoc _ _ _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma linearYonedaObjMap_comp {X Y Z : ChainComplex C ℕ} (f : X ⟶ Y) (g : Y ⟶ Z) (B : C) :
     linearYonedaObjMap (R := R) (f ≫ g) B = linearYonedaObjMap g B ≫ linearYonedaObjMap f B := by
@@ -33,7 +33,7 @@ lemma linearYonedaObjMap_comp {X Y Z : ChainComplex C ℕ} (f : X ⟶ Y) (g : Y 
   exact Category.assoc _ _ _
 
 /- English proof (translation)
-Use extensionality with `n x`. Express the relevant statement in the definitionally equal form `(𝟙 X : X ⟶ X).f n ≫ x = x`. Rewrite using `[HomologicalComplex.id_f]`. Conclude with `Category.id_comp _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma linearYonedaObjMap_id (X : ChainComplex C ℕ) (B : C) :
     linearYonedaObjMap (R := R) (𝟙 X) B = 𝟙 _ := by
@@ -68,9 +68,9 @@ set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Simplify using `only [diagonalSuccIsoFree, diagonalSuccIsoTensorTrivial, Iso.trans_inv, Rep.hom_comp, Representation.IntertwiningMap.comp_apply]`. Establish `step1 : (Hom.hom (leftRegularTensorTrivialIsoFree k G (Fin m → G)).inv) (Finsupp.single f (.single g r)) = .single g 1 ⊗ₜ[k] .single f r` using `Representation.leftRegularTensorTrivialIsoFree_symm_apply_single_single f g r`. Rewrite using `[step1]`. Simplify using `only [mkIso_inv, Representation.linearizeOfMulActionIso, Representation.Equiv.mk_symm, LinearEquiv.refl_symm, ConcreteCategory.hom_ofHom, Action.tensorObj_V, Action.trivial_V, Functor.mapIso_inv, tensor_V, tensor_ρ, Iso.symm_inv, Functor.Monoidal.μIso_hom, μ_hom, MonoidalCategory …`. Establish `key₁` using `Representation.linearizeMap_single (k := k) (Action.diagonalSuccIsoTensorTrivial G m).inv (g, f) ((1 : k) * r)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key₂` using `Representation.LinearizeMonoidal.μ_apply_single_single (k := k) (X := Action.leftRegular G) (Y := Action.trivial G (Fin m → G)) g f 1 r`. Conclude with `((congrArg (fun z => (Representation.linearizeMap (Action.diagonalSuccIsoTensorTrivial G m).inv) z) key₂).trans key₁).trans (by simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma diagonalSuccIsoFree_inv_single (m : ℕ) (f : Fin m → G) (g : G) (r : k) :
     (diagonalSuccIsoFree k G m).inv.hom (Finsupp.single f (MonoidAlgebra.single g r)) =
@@ -95,7 +95,7 @@ lemma diagonalSuccIsoFree_inv_single (m : ℕ) (f : Fin m → G) (g : G) (r : k)
     (Action.diagonalSuccIsoTensorTrivial G m).inv) z) key₂).trans key₁).trans (by simp)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(standardComplex.ε k G).hom ((diagonalSuccIsoFree k G 0).inv.hom (Finsupp.single v (MonoidAlgebra.single g r))) = r`. Rewrite using `[diagonalSuccIsoFree_inv_single]`. Simplify using `[standardComplex.ε]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma barResolution_π_f_zero_single (v : Fin 0 → G) (g : G) (r : k) :
     ((barResolution k G).π.f 0).hom (Finsupp.single v (MonoidAlgebra.single g r)) = r := by
@@ -111,7 +111,7 @@ section Norm
 variable {k H : Type u} [CommRing k] [Group H] [Fintype H]
 
 /- English proof (translation)
-Rewrite using `[Representation.norm, LinearMap.sum_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft s) _ _ fun t => ?_` and prove the remaining obligations. Simplify using `[← Module.End.mul_apply, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma ρ_apply_norm (B : Rep.{u} k H) (b : B) (s : H) : B.ρ s (B.ρ.norm b) = B.ρ.norm b := by
   rw [Representation.norm, LinearMap.sum_apply, map_sum]

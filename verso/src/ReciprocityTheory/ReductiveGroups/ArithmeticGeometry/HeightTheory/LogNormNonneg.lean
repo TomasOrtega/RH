@@ -22,16 +22,16 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Unfold `logNorm`. Conclude with `Real.log_natCast_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem logNorm_nonneg (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) : 0 ≤ logNorm la := by
   unfold logNorm
   exact Real.log_natCast_nonneg _
 
 /- English proof (translation)
-Introduce `la1 h1 la2 h2`. Establish `h1' : IsOver (K` using `K) v la1 := h1`. Establish `h2' : IsOver (K` using `K) v la2 := h2`. Apply `IsDedekindDomain.HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `(h1' a).symm.trans (h2' a)`.
+A detailed English derivation is pending.
 -/
 theorem over_unique {c : ι} (v : AddValuation (Ω c) (WithTop ℤ)) :
     {la : IsDedekindDomain.HeightOneSpectrum (𝓞 K) | IsOver (K := K) v la}.Subsingleton := by
@@ -43,7 +43,7 @@ theorem over_unique {c : ι} (v : AddValuation (Ω c) (WithTop ℤ)) :
   exact (h1' a).symm.trans (h2' a)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun c _ => finsum_nonneg fun w => finsum_nonneg fun hw => mul_nonneg (Nat.cast_nonneg _) (by exact_mod_cast hd.ord_nonneg_et c _ (d.admissible_over_prime hd h la c w hw).1)`.
+A detailed English derivation is pending.
 -/
 theorem NlaG_nonneg (hd : d.AxH 𝒜) (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
     0 ≤ d.NlaG h (d.n1 • d.wde) d.et la :=
@@ -51,19 +51,19 @@ theorem NlaG_nonneg (hd : d.AxH 𝒜) (h : d.S1) (la : IsDedekindDomain.HeightOn
     mul_nonneg (Nat.cast_nonneg _) (by exact_mod_cast hd.ord_nonneg_et c _ (d.admissible_over_prime hd h la c w hw).1)
 
 /- English proof (translation)
-Establish `hnn` using `d.NlaG_nonneg hd h la`. Establish `hi : (0 : ℝ) ≤ d.cc / d.i` using `div_nonneg hd.cc_nonneg (Nat.cast_nonneg _)`. It suffices to establish `key : d.NlaG h d.wL f la ≤ d.NlaMM h f la + d.del * d.nu la + d.cc / (2 * d.i) * d.NlaG h (d.n1 • d.wde) d.et la by`. Establish `: d.cc / (2 * d.i) * d.NlaG h (d.n1 • d.wde) d.et la ≤ d.cc / d.i * d.NlaG h (d.n1 • d.wde) d.et la`. Establish `: d.cc / (2 * d.i) = (d.cc / d.i) / 2` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `NlaG NlaMM del`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Establish `hfin` using `(d.places_over_la hd h la c).1`. Establish `hsum` using `(d.places_over_la hd h la c).2`. Rewrite `hsum`, the goal using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hsumR : (d.delc c : ℝ) = ∑ w ∈ hfin.toFinset, (d.fze h c w : ℝ) * (ramIdx (K` using `K) (d.Wres c w) la : ℝ) := by`. Establish `e` using `congrArg (fun z : ℤ => (z : ℝ)) hsum`. Move the coercions through the operations in `at e`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hsumR, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Establish `hs` using `d.admissible_over_prime hd h la c w hw`. Establish `h3` using `hH1.2.2.2 c (d.Wres c w) la hs.1 hs.2.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (0 : ℝ) ≤ d.fze h c w` using `Nat.cast_nonneg _`. Unfold `ordMM`. Use `push_cast`. Establish `e : ((⨅ j : {j // d.w j c ≠ 0}, d.ord c (d.Wres c w) d.wL (d.w j c) : ℤ) : ℝ) = (d.Emin c (d.Wres c w) : ℝ)` using `rfl`. Rewrite `h3`, the goal using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hf]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Nla_le (hd : d.AxH 𝒜) (h : d.S1) (hH1 : d.FinitePlaceHyp) (f : ∀ c, A c)
     (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :

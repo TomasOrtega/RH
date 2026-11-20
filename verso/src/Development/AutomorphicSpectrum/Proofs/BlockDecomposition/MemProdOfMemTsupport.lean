@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.FinPol
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `ht` using `ThBasic.continuous_thL hU n w`. Distinguish the cases in `hs : IsSplitAt w`. Establish `e : nrmL n w = id` using `funext fun y => by simp [nrmL, hs]`. Rewrite using `[e]`. Conclude with `continuous_id`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : nrmL n w = fun y => y * thL n w y` using `funext fun y => by simp [nrmL, thL, hs]`. Rewrite using `[e]`. Conclude with `continuous_id.mul ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (nrmL n w) := by
   have ht := ThBasic.continuous_thL hU n w
@@ -28,16 +28,14 @@ theorem continuous_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (nrmL n w
     exact continuous_id.mul ht
 
 /- English proof (translation)
-The claim follows from `(ThBasic.twist_basic E hU n w).2.2.2.2.2.1.isClosed`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_KGL (hU : Unr E) (n : ℕ) (w : Pl E) :
     IsClosed (GlobalTheory.LFun.KGL w n : Set (GLw n w)) :=
   (ThBasic.twist_basic E hU n w).2.2.2.2.2.1.isClosed
 
 /- English proof (translation)
-Establish `ht` using `ThBasic.thL_mem_KGL hU n w y hy`. Unfold `nrmL`. Unfold `thL at ht`. Use `split_ifs at ht ⊢ with hs`. Conclude with `hy`.
-
-Conclude with `mul_mem hy ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nrmL_mem_KGL (hU : Unr E) (n : ℕ) (w : Pl E) {y : GLw n w} (hy : y ∈ GlobalTheory.LFun.KGL w n) :
     nrmL n w y ∈ GlobalTheory.LFun.KGL w n := by
@@ -49,7 +47,7 @@ theorem nrmL_mem_KGL (hU : Unr E) (n : ℕ) (w : Pl E) {y : GLw n w} (hy : y ∈
   · exact mul_mem hy ht
 
 /- English proof (translation)
-Establish `hcl : IsClosed (((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(isClosed_KGL hU a w).prod (isClosed_KGL hU b w)`. Establish `h` using `closure_minimal Set.support_indicator_subset hcl hy`. Conclude with `Subgroup.mem_prod.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_prod_of_mem_tsupport (hU : Unr E) (a b : ℕ) (w : Pl E) {y : GLw a w × GLw b w}
     (hy : y ∈ tsupport ((((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) : Set (GLw a w × GLw b w)).indicator
@@ -62,13 +60,13 @@ theorem mem_prod_of_mem_tsupport (hU : Unr E) (a b : ℕ) (w : Pl E) {y : GLw a 
   exact Subgroup.mem_prod.1 h
 
 /- English proof (translation)
-Introduce `E _ _ _ hU a b S hS φ hc hφ`. Set `C₁ : ∀ w : Pl E, Set (GLw a w)` to `fun w => nrmL a w '' (Prod.fst '' tsupport (φ w))`. Set `C₂ : ∀ w : Pl E, Set (GLw b w)` to `fun w => nrmL b w '' (Prod.snd '' tsupport (φ w))`. Establish `hC₁ : ∀ w, IsCompact (C₁ w)` using `fun w => ((hc w).isCompact.image continuous_fst).image (continuous_nrmL hU a w)`. Establish `hC₂ : ∀ w, IsCompact (C₂ w)` using `fun w => ((hc w).isCompact.image continuous_snd).image (continuous_nrmL hU b w)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK₁ : ∀ᶠ w in cofinite, C₁ w ⊆ GlobalTheory.LFun.KGL w a` using `by filter_upwards [hφ] with w hw`. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Rewrite `hy` using `[hw]`. Conclude with `nrmL_mem_KGL hU a w (mem_prod_of_mem_tsupport hU a b w hy).1`. Establish `hK₂ : ∀ᶠ w in cofinite, C₂ w ⊆ GlobalTheory.LFun.KGL w b` using `by filter_upwards [hφ] with w hw`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Rewrite `hy` using `[hw]`. Conclude with `nrmL_mem_KGL hU b w (mem_prod_of_mem_tsupport hU a b w hy).2`. Use `((GlobalTheory.T.finite_ellipticCharpoly_compact_section E a S hS C₁ hC₁ hK₁).prod (GlobalTheory.T.finite_ellipticCharpoly_compact_section E b S hS C₂ hC₂ hK₂)).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨h₁, h₂, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨h₁, fun w hw => ?_⟩, ⟨h₂, fun w hw => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy, e₁, -⟩` from `h w hw`. Conclude with `⟨_, ⟨y.1, ⟨y, subset_tsupport _ hy, rfl⟩, rfl⟩, e₁⟩`. Take `⟨y, hy, -, e₂⟩` from `h w hw`. Conclude with `⟨_, ⟨y.2, ⟨y, subset_tsupport _ hy, rfl⟩, rfl⟩, e₂⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_pairs : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (a b : ℕ) (S : Set (Pl E)), IsSection S → ∀ φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ, (∀ w, HasCompactSupport (φ w)) → (∀ᶠ w in cofinite, φ w = (((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) : Set (GLw a w × GLw b w)).indicator 1) → {p : E[X] × E[X] | p.1 ∈ Ell E a ∧ p.2 ∈ Ell E b ∧ ∀ w ∈ S, ∃ y : GLw a w × GLw b w, φ w y ≠ 0 ∧ (nrmL a w y.1).val.charpoly = atPl w p.1 ∧ (nrmL b w y.2).val.charpoly = atPl w p.2}.Finite := by
   intro E _ _ _ hU a b S hS φ hc hφ

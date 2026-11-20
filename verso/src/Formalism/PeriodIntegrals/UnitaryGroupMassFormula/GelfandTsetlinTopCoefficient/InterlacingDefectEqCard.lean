@@ -11,32 +11,32 @@ open Formalism.BasicNotions PI Finset
 variable {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
 
 /- English proof (translation)
-The claim follows from `lam.anti (Fin.mk_le_mk.2 (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem lam_le_last (k : ℕ) (hk : k < N) : lam.w ⟨N - 1, by omega⟩ ≤ lam.w ⟨k, hk⟩ :=
   lam.anti (Fin.mk_le_mk.2 (by omega))
 
 /- English proof (translation)
-The claim follows from `sg.anti (Fin.le_iff_val_le_val.2 (Nat.zero_le _))`.
+A detailed English derivation is pending.
 -/
 theorem sg_le_first (hn : 0 < n) (j : Fin n) : sg.w j ≤ sg.w ⟨0, hn⟩ :=
   sg.anti (Fin.le_iff_val_le_val.2 (Nat.zero_le _))
 
 /- English proof (translation)
-Use `(hI i).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem term_nonneg (hI : Interlace h lam sg) (i : Fin n) : 0 ≤ sg.w i - lam.w ⟨i.1 + 1, by omega⟩ := by
   have := (hI i).2
   omega
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg (fun i _ => term_nonneg h lam sg hI i)`.
+A detailed English derivation is pending.
 -/
 theorem determinantWeight_nonneg (hI : Interlace h lam sg) : 0 ≤ D0 h lam sg :=
   Finset.sum_nonneg (fun i _ => term_nonneg h lam sg hI i)
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun i : Fin n => sg.w i - lam.w ⟨i.1 + 1, by omega⟩) (fun j _ => term_nonneg h lam sg hI j) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 theorem term_le_D0 (hI : Interlace h lam sg) (i : Fin n) :
     sg.w i - lam.w ⟨i.1 + 1, by omega⟩ ≤ D0 h lam sg :=
@@ -44,19 +44,19 @@ theorem term_le_D0 (hI : Interlace h lam sg) (i : Fin n) :
     (fun j _ => term_nonneg h lam sg hI j) (Finset.mem_univ i)
 
 /- English proof (translation)
-The claim follows from `le_trans (lam_le_last h lam (j.1 + 1) (by omega)) (hI j).2`.
+A detailed English derivation is pending.
 -/
 theorem last_le_sg (hI : Interlace h lam sg) (j : Fin n) : lam.w ⟨N - 1, by omega⟩ ≤ sg.w j :=
   le_trans (lam_le_last h lam (j.1 + 1) (by omega)) (hI j).2
 
 /- English proof (translation)
-Set `t : ℕ → ℤ` to `fun k => if hk : k < n then sg.w ⟨k, hk⟩ else lam.w ⟨N - 1, by omega⟩`. Set `a : ℕ → ℤ` to `fun k => if hk : k < n then sg.w ⟨k, hk⟩ - lam.w ⟨k + 1, by omega⟩ else 0`. Establish `hD : D0 h lam sg = ∑ k ∈ range n, a k`. Unfold `D0`. Rewrite using `[← Fin.sum_univ_eq_sum_range a n]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [a, dif_pos i.2]`. Establish `ht0 : t 0 = sg.w ⟨0, hn⟩` using `by simp only [t, dif_pos hn]`. Establish `htn : t n = lam.w ⟨N - 1, by omega⟩` using `by simp only [t, dif_neg (lt_irrefl n)]`. Rewrite using `[hD, ← ht0, ← htn]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_range_le_tele n a t (fun k hk => ?_)` and prove the remaining obligations. Simplify using `only [a, t, dif_pos hk]`. Distinguish the cases in `hk1 : k + 1 < n`. Rewrite using `[dif_pos hk1]`. Use `(hI ⟨k + 1, hk1⟩).1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : lam.w ⟨(⟨k + 1, hk1⟩ : Fin n).1, by omega⟩ = lam.w ⟨k + 1, by omega⟩` using `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hk1]`. Establish `e : lam.w ⟨k + 1, by omega⟩ = lam.w ⟨N - 1, by omega⟩` using `congrArg lam.w (Fin.ext (by simp; omega))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem interlacing_defect_le_gap (hI : Interlace h lam sg) (hn : 0 < n) :
     D0 h lam sg ≤ sg.w ⟨0, hn⟩ - lam.w ⟨N - 1, by omega⟩ := by
@@ -82,7 +82,7 @@ theorem interlacing_defect_le_gap (hI : Interlace h lam sg) (hn : 0 < n) :
     omega
 
 /- English proof (translation)
-Unfold `Rset`. Establish `h1` using `hI i`. Establish `h2` using `term_le_D0 h lam sg hI i`. Rewrite using `[Finset.mem_Icc]`. Use `⟨h1.2, le_min h1.1 (by omega)⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sg_mem_R (hI : Interlace h lam sg) (i : Fin n) : sg.w i ∈ Rset h lam sg i := by
   unfold Rset
@@ -92,13 +92,13 @@ theorem sg_mem_R (hI : Interlace h lam sg) (i : Fin n) : sg.w i ∈ Rset h lam s
   refine ⟨h1.2, le_min h1.1 (by omega)⟩
 
 /- English proof (translation)
-The claim follows from `lam.anti (Fin.mk_le_mk.2 (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem lam_succ_le (i : Fin n) : lam.w ⟨i.1 + 1, by omega⟩ ≤ lam.w ⟨i.1, by omega⟩ :=
   lam.anti (Fin.mk_le_mk.2 (by omega))
 
 /- English proof (translation)
-Establish `hm` using `sg_mem_R h lam sg hI i`. Unfold `Rset at hm ⊢`. Conclude with `card_erase_Icc_min _ _ _ _ (lam_succ_le h lam i) (determinantWeight_nonneg h lam sg hI) hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem card_R_erase (hI : Interlace h lam sg) (i : Fin n) :
     ((((Rset h lam sg i).erase (sg.w i)).card : ℕ) : ℤ) =
@@ -108,7 +108,7 @@ theorem card_R_erase (hI : Interlace h lam sg) (i : Fin n) :
   exact card_erase_Icc_min _ _ _ _ (lam_succ_le h lam i) (determinantWeight_nonneg h lam sg hI) hm
 
 /- English proof (translation)
-Unfold `D1`. Use `push_cast`. Conclude with `Finset.sum_congr rfl (fun i _ => (card_R_erase h lam sg hI i).symm)`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem interlacing_defect_eq_card (hI : Interlace h lam sg) :
     D1 h lam sg = ((∑ i : Fin n, ((Rset h lam sg i).erase (sg.w i)).card : ℕ) : ℤ) := by
@@ -117,16 +117,16 @@ theorem interlacing_defect_eq_card (hI : Interlace h lam sg) :
   exact Finset.sum_congr rfl (fun i _ => (card_R_erase h lam sg hI i).symm)
 
 /- English proof (translation)
-Rewrite using `[interlacing_defect_eq_card h lam sg hI]`. Conclude with `Nat.cast_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interlacing_defect_nonneg (hI : Interlace h lam sg) : 0 ≤ D1 h lam sg := by
   rw [interlacing_defect_eq_card h lam sg hI]
   exact Nat.cast_nonneg _
 
 /- English proof (translation)
-Unfold `Rset at hv`. Rewrite `hv` using `[Finset.mem_Icc]`. Establish `h1` using `lam_le_last h lam (i.1 + 1) (by omega)`. Establish `h2` using `(hI i).2`. Establish `h3` using `sg_le_first sg hn i`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `interlacing_defect_le_gap h lam sg hI hn`. Establish `h5` using `min_le_right (lam.w ⟨i.1, by omega⟩) (lam.w ⟨i.1 + 1, by omega⟩ + D0 h lam sg)`. Apply the tactic sequence `constructor <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_R_bounds (hI : Interlace h lam sg) (hn : 0 < n) (i : Fin n) (v : ℤ)
     (hv : v ∈ Rset h lam sg i) :

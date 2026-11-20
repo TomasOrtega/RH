@@ -13,9 +13,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `HermSp.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h a`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [H.h_herm 0 _, H.h_zero_left, map_zero]`. Consider the case `add x y _ _ hx hy => rw [H.h_herm (x + y) _, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_herm (c • x) _, H.h_smul_left, map_mul, ← H.h_herm, hx, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem perpX_of (Fr : FrameD H r) {k : V} (h : ∀ a : Fin r, H.h k (Fr.f a.castSucc) = 0) :
     k ∈ H.perp (H.X Fr.f) := by
@@ -28,15 +28,15 @@ theorem perpX_of (Fr : FrameD H r) {k : V} (h : ∀ a : Fin r, H.h k (Fr.f a.cas
   | smul c x _ hx => rw [H.h_herm (c • x) _, H.h_smul_left, map_mul, ← H.h_herm, hx, mul_zero]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_X (Fr : FrameD H r) (a : Fin r) : Fr.e a ∈ H.X Fr.f :=
   Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ a, H.h y (Fr.e a) = 0` using `fun a => hy _ (e_mem_X Fr a)`. Establish `e : y - Fr.prF y = ∑ a, H.h y (Fr.es a) • Fr.e a`. Unfold `FrameD.prF`. Simplify using `only [h0, zero_smul, Finset.sum_const_zero, sub_zero, sub_sub_cancel]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X Fr a))`.
+A detailed English derivation is pending.
 -/
 theorem sub_prF_mem (Fr : FrameD H r) {y : V} (hy : y ∈ H.perp (H.X Fr.f)) : y - Fr.prF y ∈ H.X Fr.f := by
   have h0 : ∀ a, H.h y (Fr.e a) = 0 := fun a => hy _ (e_mem_X Fr a)
@@ -47,13 +47,13 @@ theorem sub_prF_mem (Fr : FrameD H r) {y : V} (hy : y ∈ H.perp (H.X Fr.f)) : y
   exact Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X Fr a))
 
 /- English proof (translation)
-The claim follows from `perpX_of Fr (fun a => ng_prF_e (Fr := Fr) y a)`.
+A detailed English derivation is pending.
 -/
 theorem prF_mem_perp (Fr : FrameD H r) (y : V) : Fr.prF y ∈ H.perp (H.X Fr.f) :=
   perpX_of Fr (fun a => ng_prF_e (Fr := Fr) y a)
 
 /- English proof (translation)
-Unfold `HermSp.mkW`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkW_eq (Fr : FrameD H r) {x y : ↥(H.perp (H.X Fr.f))} (h : (x : V) - y ∈ H.X Fr.f) :
     H.mkW Fr.f x = H.mkW Fr.f y := by
@@ -62,11 +62,11 @@ theorem mkW_eq (Fr : FrameD H r) {x y : ↥(H.perp (H.X Fr.f))} (h : (x : V) - y
   exact h
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun a => ?_, fun a => ?_, ⟨Fr.prF (Fr.prF y), prF_mem_perp Fr _⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[ng_prF_es]`. Conclude with `M.L.O.zero_mem`. Rewrite using `[ng_prF_e]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `M.L.O.zero_mem`. Establish `e : H.mkW Fr.f ⟨Fr.prF (Fr.prF y), prF_mem_perp Fr _⟩ = H.mkW Fr.f ⟨y, hy⟩`. Apply `mkW_eq` to reduce the goal to its premises. Establish `h1` using `sub_prF_mem Fr hy`. Establish `h2` using `sub_prF_mem Fr (prF_mem_perp Fr y)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Fr.prF (Fr.prF y) - y = -((y - Fr.prF y) + (Fr.prF y - Fr.prF (Fr.prF y)))` using `by abel`. Rewrite using `[show ((⟨Fr.prF (Fr.prF y), prF_mem_perp Fr _⟩ : ↥(H.perp (H.X Fr.f))) : V) = Fr.prF (Fr.prF y) from rfl, show ((⟨y, hy⟩ : ↥(H.perp (H.X Fr.f))) : V) = y from rfl, this]`. Conclude with `Submodule.neg_mem _ (Submodule.add_mem _ h1 h2)`. Rewrite using `[e]`. Conclude with `hyL`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prF_mem_LamStd (Fr : FrameD H r) {L : Submodule M.L.O (H.Wb Fr.f)} {y : V}
     (hy : y ∈ H.perp (H.X Fr.f)) (hyL : H.mkW Fr.f ⟨y, hy⟩ ∈ L) : Fr.prF y ∈ Fr.LamStd L := by
@@ -87,19 +87,19 @@ theorem prF_mem_LamStd (Fr : FrameD H r) {L : Submodule M.L.O (H.Wb Fr.f)} {y : 
 variable {P : FPair H r}
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (u + y) k, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_add_right' (k u y : V) : H.h k (u + y) = H.h k u + H.h k y := by
   rw [H.h_herm (u + y) k, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
 /- English proof (translation)
-Establish `ht'` using `ht`. Take `⟨_, _, ⟨n, hn, -, hL⟩, _, _⟩` from `ht'`. Establish `hN` using `mem_NSet_of_mem_N P.A hn`. Use `((d.hL.2.1 ⟨k, hkp⟩).2) (fun y hyL => ?_)` and prove the remaining obligations. Establish `hy` using `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hyL' : H.mkW P.A.f ⟨(y : V), hy⟩ ∈ d.L` using `hyL`. Establish `h0` using `prF_mem_LamStd P.A hy hyL'`. Establish `hny : n (P.A.prF y) ∈ t.abelian₂` using `by rw [hL]; exact ⟨_, h0, rfl⟩`. Establish `hint` using `ng_term_int ht hk hny`. Establish `hu : n (P.A.prF y) - y ∈ H.X P.A.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hN.2.2 _ (prF_mem_perp P.A (y : V))`. Establish `h2` using `sub_prF_mem P.A hy`. Establish `: n (P.A.prF y) - y = (n (P.A.prF y) - P.A.prF y) - ((y : V) - P.A.prF y)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : n (P.A.prF y) = (n (P.A.prF y) - y) + y` using `by abel`. Rewrite `hint` using `[e, h_add_right', hkp _ hu, zero_add]`. Conclude with `hint`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_mem {d : Datum P} {t : Term V M r} (ht : IsTermOver P d t) {k : V} (hk : k ∈ t.abelian₂)
     (hkp : k ∈ H.perp (H.X P.A.f)) : H.mkW P.A.f ⟨k, hkp⟩ ∈ d.L := by
@@ -122,19 +122,17 @@ theorem cls_mem {d : Datum P} {t : Term V M r} (ht : IsTermOver P d t) {k : V} (
   exact hint
 
 /- English proof (translation)
-Establish `ht'` using `ht`. Take `⟨_, _, ⟨n, hn, -, hL⟩, _, _⟩` from `ht'`. Establish `hN` using `mem_NSet_of_mem_N P.A hn`. Establish `hkp` using `ng_orth_perp P.A ho.1`. Establish `h0` using `prF_mem_LamStd P.A hkp hkL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hny : n (P.A.prF k) ∈ t.abelian₂` using `by rw [hL]; exact ⟨_, h0, rfl⟩`. Take `⟨m0, hm0, hk', hko⟩` from `ng_term_split hP ht hny`. Establish `hXle : H.X P.A.f ≤ Submodule.span E (Set.range (Sum.elim P.A.f P.B.f))`. Unfold `HermSp.X`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl a.castSucc, rfl⟩`. Establish `hx : n (P.A.prF k) - k ∈ H.X P.A.f`. Establish `h1` using `hN.2.2 _ (prF_mem_perp P.A k)`. Establish `h2` using `sub_prF_mem P.A hkp`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: n (P.A.prF k) - k = (n (P.A.prF k) - P.A.prF k) - (k - P.A.prF k)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ h1 h2`. Establish `hz : k - (n (P.A.prF k) - m0) = 0`. Use `ng_zero (H := H) (Sum.elim P.A.f P.B.f) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ng_gram_base]`. Conclude with `IsUnit.mul (IsUnit.pow _ isUnit_one.neg) (ng_G_unit (by`. Introduce `h0`. Take `⟨_, y, _, hy⟩` from `hP.2.1`. Rewrite `hy` using `[h0, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.MainNotions.LocalModelPeriodLattices.nontrivial_E M.L` as an intermediate fact. Conclude with `zero_ne_one hy))`. Establish `e : k - (n (P.A.prF k) - m0) = m0 - (n (P.A.prF k) - k)` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (ng_span_base ht hm0) (hXle hx)`.
-
-Introduce and unpack `(b | b)`. Rewrite using `[Sum.elim_inl, h_sub_left, ho.1, hko.1, sub_zero]`. Rewrite using `[Sum.elim_inr, h_sub_left, ho.2, hko.2, sub_zero]`. Rewrite using `[sub_eq_zero.1 hz]`. Conclude with `hk'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_cls (hP : P.PrimeTo) {d : Datum P} {t : Term V M r} (ht : IsTermOver P d t) {k : V}
     (ho : NgOrth P k) (hkL : H.mkW P.A.f ⟨k, ng_orth_perp P.A ho.1⟩ ∈ d.L) : k ∈ t.abelian₂ := by
@@ -173,13 +171,11 @@ theorem mem_of_cls (hP : P.PrimeTo) {d : Datum P} {t : Term V M r} (ht : IsTermO
   rw [sub_eq_zero.1 hz]; exact hk'
 
 /- English proof (translation)
-Unfold `FPair.UW0 at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨fun x y => rfl, fun b => ⟨rfl, rfl⟩⟩`. Consider the case `mul x y _ _ hx hy`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨fun u v => ?_, fun b => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show H.h (x (y u)) (x (y v)) = H.h u v`. Rewrite using `[hx.1, hy.1]`. Use `show x (y (P.A.f b)) = P.A.f b`. Rewrite using `[(hy.2 b).1, (hx.2 b).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `show x (y (P.B.f b)) = P.B.f b`. Rewrite using `[(hy.2 b).2, (hx.2 b).2]`. Consider the case `inv x _ hx`. Establish `e : ∀ u, x ((x⁻¹ : V ≃ₗ[E] V) u) = u` using `fun u => LinearEquiv.apply_symm_apply x u`. Use `⟨fun u v => ?_, fun b => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[← hx.1, e, e]`. Use `conv_lhs => rw [← (hx.2 b).1]`. Conclude with `LinearEquiv.symm_apply_apply x _`. Use `conv_lhs => rw [← (hx.2 b).2]`. Conclude with `LinearEquiv.symm_apply_apply x _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complementUnitary_isUnitary_fixes_frames {g : V ≃ₗ[E] V} (hg : g ∈ P.UW0) :
     IsUnitary H g ∧ ∀ b, g (P.A.f b) = P.A.f b ∧ g (P.B.f b) = P.B.f b := by
@@ -205,19 +201,17 @@ theorem complementUnitary_isUnitary_fixes_frames {g : V ≃ₗ[E] V} (hg : g ∈
       exact LinearEquiv.symm_apply_apply x _
 
 /- English proof (translation)
-Establish `hf` using `ng_term_f ht`. Establish `hM : Submodule.span M.L.O (Set.range (Sum.elim t.f t.f')) ≤ t.abelian₂`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Break down `j with b | b` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hf b).1`. Conclude with `(hf b).2`. Establish `hfixME : ∀ x ∈ Submodule.span E (Set.range (Sum.elim P.A.f P.B.f)), g x = x`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Break down `j with b | b` into its components or cases. Conclude with `(hfix b).1`. Conclude with `(hfix b).2`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Consider the case `zero => exact map_zero g`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Take `⟨m0, hm0, hk, hko⟩` from `ng_term_split hP ht hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `show g v ∈ t.abelian₂`. Establish `e : g v = m0 + g (v - m0)`. Rewrite using `[map_sub, hfixME m0 (ng_span_base ht hm0)]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `t.abelian₂.add_mem (hM hm0) ?_` and prove the remaining obligations. Establish `hgo : NgOrth P (g (v - m0))`. Prove the components needed by the constructor for the conclusion. Introduce `b`. Rewrite using `[← (hfix b).1, hU, hko.1]`.
-
-Introduce `b`. Rewrite using `[← (hfix b).2, hU, hko.2]`. Apply `mem_of_cls hP ht hgo` to reduce the goal to its premises. Conclude with `hmov ⟨v - m0, ng_orth_perp P.A hko.1⟩ _ rfl (cls_mem ht hk _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem img_le (hP : P.PrimeTo) {d : Datum P} {t : Term V M r} (ht : IsTermOver P d t) {g : V ≃ₗ[E] V}
     (hU : IsUnitary H g) (hfix : ∀ b, g (P.A.f b) = P.A.f b ∧ g (P.B.f b) = P.B.f b)
@@ -256,15 +250,13 @@ theorem img_le (hP : P.PrimeTo) {d : Datum P} {t : Term V M r} (ht : IsTermOver 
   exact hmov ⟨v - m0, ng_orth_perp P.A hko.1⟩ _ rfl (cls_mem ht hk _)
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M _ V _ _ H r k P _ _ hP d τ ht`. Unfold `Datum.Stab`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `g ⟨hg, hmv⟩`. Take `⟨hU, hfix⟩` from `complementUnitary_isUnitary_fixes_frames hg`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SetLike.mem_coe, ng_mem_Aut]`. Establish `e : ∀ u, g ((g⁻¹ : V ≃ₗ[E] V) u) = u` using `fun u => LinearEquiv.apply_symm_apply g u`. Establish `h1` using `img_le hP ht hU hfix (fun x y hxy hx => (hmv.1 x y hxy).1 hx)`. Establish `hU' : IsUnitary H g⁻¹` using `fun u v => by rw [← hU, e, e]`. Establish `hfix' : ∀ b, (g⁻¹ : V ≃ₗ[E] V) (P.A.f b) = P.A.f b ∧ (g⁻¹ : V ≃ₗ[E] V) (P.B.f b) = P.B.f b` using `fun b => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `conv_lhs => rw [← (hfix b).1]`. Conclude with `LinearEquiv.symm_apply_apply g _`. Use `conv_lhs => rw [← (hfix b).2]`. Conclude with `LinearEquiv.symm_apply_apply g _`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `img_le hP ht hU' hfix' (fun x y hxy hx => by`. Use `(hmv.1 y x ?_).2 hx` and prove the remaining obligations. Rewrite using `[hxy]`. Conclude with `(e x).symm)`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
-
-Establish `h3` using `ng_img_mono g h2`. Rewrite `h3` using `[← ng_img_mul, mul_inv_cancel, ng_img_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stab_le_aut : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (LocNG.theta M) → P.PrimeTo → ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ → LocNG.Datum.Stab d ≤ LocNG.Aut τ.abelian₂ := by
   intro F _ _ _ E _ _ _ _ M _ V _ _ H r k P _ _ hP d τ ht

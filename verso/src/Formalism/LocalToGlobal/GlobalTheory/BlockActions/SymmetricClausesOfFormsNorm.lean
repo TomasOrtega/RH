@@ -12,11 +12,11 @@ open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `c γ hγ v x hx`. Establish `hF` using `Tf.fv D.R.m le_rfl (Or.inr rfl)`. Establish `hγ'` using `((Tf.cls D.R.m le_rfl (Or.inr rfl)).stabI_range _ γ).1 hγ`. Take `⟨κ, hκ, hκe⟩` from `Subgroup.mem_map.mp hγ'`. Establish `hbc : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 = ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)).1 * κ * ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)).1⁻¹ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hκe]`. Both sides reduce to the same expression. Establish `hκv` using `((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.U_eq κ).1 hκ |>.2 (Tf.atT.eV v).1`. Rewrite `hκv` using `[(Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.UlocAlt (Tf.atT.eV v).1 (Tf.atT.eV v).2]`. Take `⟨_, hfix⟩` from `(Subgroup.mem_inf.mp hκv).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hzx` using `dualLoc_of (Tf.cls D.R.m le_rfl (Or.inr rfl)) (Tf.atT.eV v).1 ((D.fm u).til c) x.1 x.2`. Establish `hzg` using `dualLoc_of (Tf.cls D.R.m le_rfl (Or.inr rfl)) (Tf.atT.eV v).1 ((D.fm u).til c) _ hx`. Establish `key` using `conj_stepA (Tf.atT.eV v).1 _ κ γ.1 hbc x.1`. Conclude with `(hF v ((D.fm u).til c) ⟨_, hx⟩ hzg).trans ((congrArg _ ((congrArg _ (Subtype.ext key)).trans (hfix ⟨_, hzx⟩))).trans (hF v ((D.fm u).til c) x hzx).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fvStab_holds {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
     (Tf : FormsTiedSym D u Ch chOf) : FvStab Tf := by
@@ -38,13 +38,13 @@ theorem fvStab_holds {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : �
     (hF v ((D.fm u).til c) x hzx).symm)
 
 /- English proof (translation)
-The claim follows from `class_injective_of_self_dual (fun _ _ _ _ Tf => selfDualP_of_formsTiedSym Tf)`.
+A detailed English derivation is pending.
 -/
 theorem class_injective_holds : ClassMapInjective :=
   class_injective_of_self_dual (fun _ _ _ _ Tf => selfDualP_of_formsTiedSym Tf)
 
 /- English proof (translation)
-The claim follows from `stabiliser_bijective_self_dual (fun _ _ _ _ Tf => selfDualP_of_formsTiedSym Tf) (fun _ _ _ _ Tf => fvStab_holds Tf)`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_bijective_holds : StabiliserMapBijective :=
   stabiliser_bijective_self_dual (fun _ _ _ _ Tf => selfDualP_of_formsTiedSym Tf) (fun _ _ _ _ Tf => fvStab_holds Tf)

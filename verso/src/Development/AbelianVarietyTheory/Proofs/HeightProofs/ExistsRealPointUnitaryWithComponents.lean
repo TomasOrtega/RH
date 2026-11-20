@@ -16,25 +16,23 @@ section Abstract
 variable {A B T : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Set `m : (T → Matrix n n ℂ) → Matrix n n A` to `fun g => 1 + Matrix.of fun i j => s fun τ => (g τ - 1) i j`. Establish `m1 : ∀ g, (m g).map φ = 1`. Introduce `g`. Use extensionality with `i j`. Simplify using `only [m, Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, map_add, hfin, add_zero, Matrix.one_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `m2 : ∀ g τ, (m g).map (p τ) = g τ`. Introduce `g τ`. Use extensionality with `i j`. Simplify using `only [m, Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, map_add, hcomp, Matrix.sub_apply, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `mext : ∀ x y : Matrix n n A, x.map φ = y.map φ → (∀ τ, x.map (p τ) = y.map (p τ)) → x = y`. Introduce `x y h1 h2`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `hext _ ?_ fun τ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h1 i) j`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun (h2 τ) i) j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdet : ∀ τ, IsUnit (g τ).det`. Introduce `τ`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Use `congrArg Matrix.det (hg τ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `hJ τ this.symm`. Establish `o1 : (1 : Matrix n n A).map φ = 1` using `Matrix.map_one _ (map_zero φ) (map_one φ)`. Establish `o2 : ∀ τ, (1 : Matrix n n A).map (p τ) = 1` using `fun τ => Matrix.map_one _ (map_zero _) (map_one _)`. Use `⟨⟨m g, m fun τ => (g τ)⁻¹, ?_, ?_⟩, ?_, ?_, m2 g⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `mext _ _ ?_ fun τ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, m1, m1, o1, Matrix.one_mul]`. Rewrite using `[Matrix.map_mul, m2, m2, o2, Matrix.mul_nonsing_inv _ (hdet τ)]`. Use `mext _ _ ?_ fun τ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, m1, m1, o1, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, m2, m2, o2, Matrix.nonsing_inv_mul _ (hdet τ)]`. Use `show Formalism.UG.cT c (m g) * J * m g = J`. Use `mext _ _ ?_ fun τ => ?_` and prove the remaining obligations. Establish `e : (Formalism.UG.cT c (m g)).map φ = Formalism.UG.cT cB ((m g).map φ)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, m1, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Establish `e : (Formalism.UG.cT c (m g)).map (p τ) = ((m g).map (p τ))ᴴ`. Use extensionality with `i j`. Conclude with `hp τ _`.
-
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, m2, hg]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `m1 g`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem lift_abstract (φ : A →+* B) (p : T → A →+* ℂ) (s : (T → ℂ) → A) (c : A →+* A) (cB : B →+* B)
     (hfin : ∀ z, φ (s z) = 0) (hcomp : ∀ z τ, p τ (s z) = z τ)
@@ -90,7 +88,7 @@ theorem lift_abstract (φ : A →+* B) (p : T → A →+* ℂ) (s : (T → ℂ) 
 end Abstract
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add a b ha hb => simp only [RingHom.map_add, ha, hb]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem snd_sigR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
     (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom (sigR (AF F) σ z) =
@@ -101,11 +99,9 @@ theorem snd_sigR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] 
   | tmul a x => rfl
 
 /- English proof (translation)
-Establish `hJ : ∀ τ, (V.gram.map (incA D)).map ((θ τ).comp (infPart D)) = gramAt D V τ`. Introduce `τ`. Use extensionality with `i j`. Conclude with `comp_incA h.inf τ _`. Take `⟨k, hk, hf, hi⟩` from `lift_abstract (finPart D) (fun τ => (θ τ).comp (infPart D)) σ (cA D) (sigR (Af D.host.F) D.sp.cm.sig) h.fin h.comp h.ext (snd_sigR D.sp.cm.sig) (comp_cA h.inf) (V.gram.map (incA D)) (fun τ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Establish `e : (gramAt D V τ).det = tauE D τ V.gram.det` using `(RingHom.map_det (tauE D τ) V.gram).symm`. Rewrite using `[e]`. Conclude with `(map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V))`. Use `g (fun τ => by rw [hJ]; exact hg τ)`.
-
-Conclude with `⟨⟨k, hk⟩, hf, hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_unitary (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D) (h : Chart θ σ) (V : HSp D)
     (g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : ∀ τ, g τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :

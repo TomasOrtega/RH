@@ -15,7 +15,7 @@ def crd (r : Fin 2) (i : Fin 3) (p : M23 × (Fin 2 → ℂ)) : ℂ := p.1 r i
 def crdc (r : Fin 2) (i : Fin 3) (p : M23 × (Fin 2 → ℂ)) : ℂ := (starRingEnd ℂ) (p.1 r i)
 
 /- English proof (translation)
-Establish `: crd r i = fun p => ((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin 3 => ℂ) i).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 2 => Fin 3 → ℂ) r).comp (ContinuousLinearMap.fst ℝ M23 (Fin 2 → ℂ)))) p := by`. Use extensionality with `p`. Simplify using `[crd]`. Rewrite using `[this]`. Conclude with `ContinuousLinearMap.hasTemperateGrowth _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_temperate (r : Fin 2) (i : Fin 3) : (crd r i).HasTemperateGrowth := by
   have : crd r i = fun p => ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 3 => ℂ) i).comp
@@ -26,7 +26,7 @@ theorem crd_temperate (r : Fin 2) (i : Fin 3) : (crd r i).HasTemperateGrowth := 
   exact ContinuousLinearMap.hasTemperateGrowth _
 
 /- English proof (translation)
-Establish `: crdc r i = fun p => (Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin 3 => ℂ) i).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 2 => Fin 3 → ℂ) r).comp (ContinuousLinearMap.fst ℝ M23 (Fin 2 → ℂ))))) p := by`. Use extensionality with `p`. Simplify using `[crdc]`. Rewrite using `[this]`. Conclude with `ContinuousLinearMap.hasTemperateGrowth _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crdc_temperate (r : Fin 2) (i : Fin 3) : (crdc r i).HasTemperateGrowth := by
   have : crdc r i = fun p => (Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 3 => ℂ) i).comp

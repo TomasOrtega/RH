@@ -7,19 +7,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `W _ _ Λ _ n b P hinj hsurj`. Set `Φ : W →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi (fun i => P (b i))`. Establish `hΦ : ∀ w i, Φ w i = P (b i) w` using `fun w i => rfl`. Establish `h1 : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Apply `hinj` to reduce the goal to its premises. Introduce `l`. Rewrite using `[← b.sum_repr l, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul, LinearMap.smul_apply, ← hΦ, hw]`. Simplify using the standard rewrite rules. Establish `h2 : Function.Surjective Φ`. Introduce `v`. Take `⟨w, hw⟩` from `hsurj (b.constr ℤ v).toAddMonoidHom`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨w, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hw]`. Simplify using the standard rewrite rules. Set `e : W ≃ₗ[ℂ] (Fin n → ℂ)` to `LinearEquiv.ofBijective Φ ⟨h1, h2⟩`. Set `c : Module.Basis (Fin n) ℂ W` to `Module.Basis.ofEquivFun e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc : ∀ i, c.dualBasis i = P (b i)`. Introduce `i`. Use extensionality with `w`. Rewrite using `[Module.Basis.dualBasis_apply]`. Conclude with `hΦ w i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← c.dualBasis.span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨b i, (hc i).symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Module.finrank_eq_card_basis c.dualBasis`.
+A detailed English derivation is pending.
 -/
 theorem span_eval_eq_top_and_finrank_dual : ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] (Λ : Type) [AddCommGroup Λ] (n : ℕ) (b : Module.Basis (Fin n) ℤ Λ) (P : Λ →+ Module.Dual ℂ W), (∀ w, (∀ l, P l w = 0) → w = 0) → (∀ p : Λ →+ ℂ, ∃ w, ∀ l, P l w = p l) → Submodule.span ℂ (Set.range P) = ⊤ ∧ Module.finrank ℂ (Module.Dual ℂ W) = n := by
   intro W _ _ Λ _ n b P hinj hsurj

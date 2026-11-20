@@ -178,13 +178,13 @@ def Conclusion2 (C δ : ℝ) : Prop :=
       2 * D.R.f * (D.R.r : ℝ) ^ 2 ≤ (12 * C + 2) * b ^ (6 * δ)
 
 /- English proof (translation)
-Introduce `hC hδ b eta hb he0 he hf hn`. Establish `hx1 : 1 ≤ b ^ δ` using `Real.one_le_rpow hb hδ`. Establish `h6 : b ^ (6 * δ) = (b ^ δ) ^ 6`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]; congr 1; push_cast; ring`. Rewrite using `[h6]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `b ^ δ = x at *`. Establish `ht : (D.R.t : ℝ) ≤ D.R.nV`. Establish `: D.R.t ≤ D.R.nV` using `by unfold Ranks.nV; omega`. Conclude with `this` after adjusting the coercions. Establish `hr : (D.R.r : ℝ) ≤ D.R.nV`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: D.R.r ≤ D.R.nV` using `by unfold Ranks.nV; omega`. Conclude with `this` after adjusting the coercions. Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `A1 : 4 * (D.R.f : ℝ) * D.R.nV * (C * (D.R.nV : ℝ) ^ 2 * ((D.R.nV : ℝ) + eta + D.R.t)) ≤ 4 * x * x * (C * x ^ 2 * (x + x + x))` using `by gcongr`. Conclude with `ht.trans hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A2 : 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 ≤ 2 * x * x ^ 2` using `by gcongr`. Conclude with `hr.trans hn`. Establish `p5 : x ^ 5 ≤ x ^ 6` using `pow_le_pow_right₀ hx1 (by norm_num)`. Establish `p3 : x ^ 3 ≤ x ^ 6` using `pow_le_pow_right₀ hx1 (by norm_num)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left p5 hC]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem second_proposition_every_localisation (C δ : ℝ) : Conclusion2 (D := D) C δ := by
   intro hC hδ b eta hb he0 he hf hn

@@ -11,31 +11,29 @@ open GlobalTheory.ArchDecay
 namespace GlobalTheory.ArchDecay
 
 /- English proof (translation)
-Introduce `F _ _ κ _ N`. Set `b` to `Module.finBasis ℝ (κ → mixedEmbedding.mixedSpace F)`. Set `K` to `Module.finrank ℝ (κ → mixedEmbedding.mixedSpace F)`. Set `c : Fin K → (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ` to `fun j => LinearMap.toContinuousLinearMap (b.coord j)`. Set `w : Fin K → ℝ` to `fun j => (1 + ‖c j‖) * ‖b j‖`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw : ∀ j, 0 ≤ w j` using `fun j => by positivity`. Set `W : ℝ` to `1 + ∑ j, w j`. Establish `hW1 : 1 ≤ W`. Use `Finset.sum_nonneg (fun j (_ : j ∈ Finset.univ) => hw j)` as an intermediate fact. Simplify using `only [W]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwW : ∀ j, w j ≤ W` using `fun j => by`. Use `Finset.single_le_sum (f := w) (fun j _ => hw j) (Finset.mem_univ j)` as an intermediate fact. Simplify using `only [W]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Set `l : Fin K → (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ` to `fun j => (1 + ‖c j‖)⁻¹ • c j`. Establish `hl : ∀ j, ‖l j‖ ≤ 1` using `fun j => by`. Establish `h0 : 0 < 1 + ‖c j‖` using `by positivity`. Simplify using `only [l, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos h0]`. Rewrite using `[inv_mul_le_iff₀ h0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlw : ∀ j y, |l j y| * w j = |b.repr y j| * ‖b j‖` using `fun j y => by`. Establish `h0 : 0 < 1 + ‖c j‖` using `by positivity`. Simplify using `only [l, w, c, ContinuousLinearMap.smul_apply, LinearMap.coe_toContinuousLinearMap', Module.Basis.coord_apply, smul_eq_mul, abs_mul, abs_inv, abs_of_pos h0]`. Clear the denominators using the available nonvanishing facts.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `hnorm : ∀ y, ‖y‖ ≤ ∑ j, |l j y| * w j` using `fun y => by`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hlw, norm_smul, Real.norm_eq_abs]`. Use `⟨K, l, ((K : ℝ) + 1) ^ N * W ^ N, hl, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : 0 ≤ ∑ j, |l j y| ^ N` using `Finset.sum_nonneg fun j _ => by positivity`. Break down `N with _ | n` into its components or cases. Simplify using `only [pow_zero, one_mul]`. Establish `: (0:ℝ) ≤ ∑ _x : Fin K, (1:ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Set `f : Option (Fin K) → ℝ` to `fun o => Option.elim o 1 fun j => |l j y| * w j`. Establish `hf : ∀ o ∈ (Finset.univ : Finset (Option (Fin K))), 0 ≤ f o`. Introduce `o _`. Consider the cases of `o with`. Consider the case `none => simp [f]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some j => simp only [f, Option.elim_some]`. Conclude with `mul_nonneg (abs_nonneg _) (hw j)`. Establish `h1 : 1 + ‖y‖ ≤ ∑ o, f o`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [f, Option.elim_none, Option.elim_some]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hnorm y]`. Establish `h2` using `pow_sum_le_card_mul_sum_pow hf n`. Rewrite `h2` using `[Finset.card_univ, Fintype.card_option, Fintype.card_fin, Fintype.sum_option]`. Simplify using `only [f, Option.elim_none, Option.elim_some, one_pow] at h2`. Establish `h3 : ∑ j, (|l j y| * w j) ^ (n + 1) ≤ W ^ (n + 1) * ∑ j, |l j y| ^ (n + 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (hw j) (hwW j) _) (by positivity)`. Establish `hW : 1 ≤ W ^ (n + 1)` using `one_le_pow₀ hW1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ((K : ℝ) + 1) ^ n ≤ ((K : ℝ) + 1) ^ (n + 1)` using `pow_le_pow_right₀ (by linarith [(K.cast_nonneg : (0:ℝ) ≤ K)]) (Nat.le_succ n)`. Establish `hKn : 0 ≤ ((K : ℝ) + 1) ^ n` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.sum_option]`. Simplify `h2` using `[f]`.
-
-Use `_ ≤ ((K : ℝ) + 1) ^ n * (W ^ (n + 1) * (1 + ∑ j, |l j y| ^ (n + 1))) := by gcongr; nlinarith`. Use `_ ≤ ((K : ℝ) + 1) ^ (n + 1) * W ^ (n + 1) * (1 + ∑ j, |l j y| ^ (n + 1)) := by`. Rewrite using `[← mul_assoc]`. Use `gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onePlusNormPow_le_sum_linearForm_pow : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (N : ℕ), ∃ (K : ℕ) (l : Fin K → (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (C : ℝ), (∀ j, ‖l j‖ ≤ 1) ∧ ∀ y, (1 + ‖y‖) ^ N ≤ C * (1 + ∑ j, |l j y| ^ N) := by
   intro F _ _ κ _ N

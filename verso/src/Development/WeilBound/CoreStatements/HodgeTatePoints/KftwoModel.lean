@@ -10,9 +10,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels Formalism.L2.Pj
 namespace PositivityTheory.HtPt.Kftwo
 
 /- English proof (translation)
-Establish `h : Ideal.span {(2 : (⊥ : Subring ℂ))} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨⟨b, hb⟩, e⟩` from `hu.exists_right_inv`. Take `⟨n, rfl⟩` from `Subring.mem_bot.1 hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e' : (2 : ℂ) * n = 1` using `congrArg Subtype.val e`. Establish `e'' : (2 : ℤ) * n = 1` using `by exact_mod_cast e'`. Use linear arithmetic over natural numbers and integers. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ h`. Conclude with `⟨W, hW ⟨2, Ideal.mem_span_singleton_self _, (map_ofNat _ 2).trans (by simp)⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_valuationSubring_two : ∃ W : ValuationSubring ℂ, ((2 : ℕ) : ℂ) ∈ W.nonunits := by
   have h : Ideal.span {(2 : (⊥ : Subring ℂ))} ≠ ⊤ := by
@@ -27,19 +27,17 @@ theorem exists_valuationSubring_two : ∃ W : ValuationSubring ℂ, ((2 : ℕ) :
   exact ⟨W, hW ⟨2, Ideal.mem_span_singleton_self _, (map_ofNat _ 2).trans (by simp)⟩⟩
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective V K`. Set `U : ValuationSubring F` to `{ (algebraMap V K).range.comap io with mem_or_inv_mem' := fun a => by`. Use `ValuationRing.isInteger_or_isInteger V (io a)` as an intermediate fact. Rewrite `this` using `[← map_inv₀]`. Conclude with `this }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p, W, hp, hW, hle⟩ : ∃ (p : ℕ) (W : ValuationSubring ℂ), p.Prime ∧ (p : ℂ) ∈ W.nonunits ∧ W.comap F.val.toRingHom ≤ U := by`. Distinguish the cases in `h : ∃ p : ℕ, p.Prime ∧ (p : F) ∈ U.nonunits`. Take `⟨p, hp, hpU⟩` from `h`. Take `⟨W, hWe, hWn⟩` from `GlobalTheory.Reg.exists_valuationSubring_comap_eq_nonunits F.val.toRingHom U`. Conclude with `⟨p, W, hp, by simpa using hWn _ hpU, hWe.le⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩` from `exists_valuationSubring_two`. Use `⟨2, W, Nat.prime_two, hW, fun a _ => ?_⟩` and prove the remaining obligations. Establish `hn : ∀ n : ℕ, (n : F)⁻¹ ∈ U` using `fun n => by`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `one => simp`. Consider the case `prime p hp`. Assume the negation of the conclusion as `hc`. Use `h ⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`.
+Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Conclude with `Or.inr hc`. Consider the case `mul a b ha hb => rw [Nat.cast_mul, mul_inv]`. Conclude with `U.mul_mem _ _ ha hb`. Establish `hq : ∀ q : ℚ, algebraMap ℚ F q ∈ U` using `fun q => by`. Rewrite using `[eq_ratCast, Rat.cast_def, div_eq_mul_inv]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `U.mul_mem _ _ (intCast_mem U _) (hn _)`. Set `_ : Algebra ℚ U` to `((algebraMap ℚ F).codRestrict U.toSubring hq).toAlgebra`. Establish `: IsScalarTower ℚ U F` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hi : IsIntegral U a` using `(Algebra.IsIntegral.isIntegral (R := ℚ) a).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hi`.
-
-Conclude with `hy ▸ y.2`. Set `e` to `RingEquiv.ofBijective (algebraMap V K).rangeRestrict ⟨fun a a' h => hinj (congrArg Subtype.val h), (algebraMap V K).rangeRestrict_surjective⟩`. Use `⟨p, W, e.symm.toRingHom.comp ((io.comp (W.comap F.val.toRingHom).subtype).codRestrict (algebraMap V K).range fun a => hle a.2), hp, hW, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_place (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] {V K : Type} [CommRing V] [IsDomain V]
     [ValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (io : F →+* K) :
@@ -88,17 +86,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨io, hzs⟩ : ∃ io : c.F →+* T.Fr, spMap io = z ≫ pullback.snd _ _` from `⟨_, Spec.map_preimage _⟩`. Use `c.fin` as an intermediate fact. Take `⟨p, W, b, hp, hW, hb⟩` from `exists_place c.F (V := T.V) io`. Establish `key : ∀ X : ∀ l : Level H, Moduli Dw l, ∃ Y : Model (X l) c (c.V W).subtype, Y.LevelStructureConditions p ∧ Y.N3 ∧ Y.N4 ∧ Y.SplitFibres` using `fun X => by`. Take `⟨Y, hY, -⟩` from `GlobalTheory.partI_closed.2 E H Dw hpq X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hY p W hp hW`. Take `⟨h3, h4, h5⟩` from `h2 ⟨l, c, hg p hp⟩`. Conclude with `⟨_, h1.1 ⟨l, c, hg p hp⟩, h4, h5, h3⟩`. Establish `h` using `key (Function.update (fun l' => Classical.choice (GlobalTheory.Moduli.moduli_scheme_exists E H Dw l' hpq)) l Xo)`. Rewrite `h` using `[Function.update_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Y, h2, h3, h4, h5⟩` from `h`. Establish `hx : z ≫ Y.j ≫ Y.s = Out.jK T.V ≫ spMap b` using `by show z ≫ (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, ← hzs]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) hb.symm`. Take `⟨yt, h1, -⟩` from `extPt Y T b z hx`. Choose the witnesses or unpack the hypotheses as in `⟨tP, ⟨mP'⟩⟩ : ∃ t : SAB H (Sp T.V), Nonempty (SABMap t Y.t yt) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull yt Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mF, -⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Y.oF.t t' (pullback.fst _ _) z Y.m0.toSABMap m1`. Take `⟨mJ, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t t' (Y.jQ ≫ pullback.fst _ _) z Y.m mF`. Establish `hj : z ≫ Y.jQ ≫ pullback.fst _ _ = Out.jK T.V ≫ yt` using `h1.symm`. Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t tP t' yt (Out.jK T.V) mP' (PullbackSections.sabMapCast mJ hj)`. Establish `hprop : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G tP t' hprop m2 mK`. Take `⟨n', -⟩` from `sabComp pullCubComp E H _ _ _ Y.t tP G yt (𝟙 _) mP' ψ`. Conclude with `(((GlobalTheory.T.thetaKeyScalar_isUnit_on_integralModels κ hκ E H Dw l Xo c _ _ Y p hpq (isBaseRing_local c W) hp h2 h3 h4 h5).1 T.V T.Fr z yt h1 G (PullbackSections.sabMapCast n' (Category.id_comp yt)) n w hw θ k hk).1 hθ).1`.
+A detailed English derivation is pending.
 -/
 theorem key_unit {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p)
     {T : CDVR} (z : Sp T.Fr ⟶ Xo.XF c) {G : SAB H (Sp T.V)} {t' : SAB H (Sp T.Fr)}

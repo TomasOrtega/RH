@@ -167,7 +167,7 @@ variable (N : ∀ j ka, (B.KO →+* ℂ) → B.Cusp j ka → ℝ)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem concl_xplusN (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) :
@@ -175,7 +175,7 @@ theorem concl_xplusN (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (S : Sca
       Concl X S ka wL wF T nus β := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem concl_xplus (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     (T : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) :
@@ -201,7 +201,7 @@ variable (h0 : ∀ j ka, cov j ka → ∀ σ F, 0 ≤ Nn j ka σ F)
 
 include h0 in
 /- English proof (translation)
-Introduce `j ka σ F` and use `by unfold l2nOn; split_ifs with h · exact h0 j ka h σ F · exact B.supN_nonneg j ka σ F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l2nOn_nonneg : ∀ j ka σ F, 0 ≤ l2nOn cov Nn j ka σ F := fun j ka σ F => by
   unfold l2nOn; split_ifs with h
@@ -210,7 +210,7 @@ theorem l2nOn_nonneg : ∀ j ka σ F, 0 ≤ l2nOn cov Nn j ka σ F := fun j ka �
 
 include h1 in
 /- English proof (translation)
-Introduce `j ka σ F` and use `by unfold l2nOn; split_ifs with h · exact h1 j ka h σ F · exact B.supN_eq_zero j ka σ F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l2nOn_eq_zero : ∀ j ka σ F, l2nOn cov Nn j ka σ F = 0 ↔ F = 0 := fun j ka σ F => by
   unfold l2nOn; split_ifs with h
@@ -219,7 +219,7 @@ theorem l2nOn_eq_zero : ∀ j ka σ F, l2nOn cov Nn j ka σ F = 0 ↔ F = 0 := f
 
 include h2 in
 /- English proof (translation)
-Introduce `j ka σ a F` and use `by unfold l2nOn; split_ifs with h · exact h2 j ka h σ a F · exact B.supN_smul j ka σ a F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l2nOn_smul : ∀ j ka σ (a : B.KO) F, l2nOn cov Nn j ka σ (a • F) = ‖σ a‖ * l2nOn cov Nn j ka σ F :=
   fun j ka σ a F => by
@@ -229,7 +229,7 @@ theorem l2nOn_smul : ∀ j ka σ (a : B.KO) F, l2nOn cov Nn j ka σ (a • F) = 
 
 include h3 in
 /- English proof (translation)
-Introduce `j ka σ F G` and use `by unfold l2nOn; split_ifs with h · exact h3 j ka h σ F G · exact B.supN_add j ka σ F G`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l2nOn_add : ∀ j ka σ F G, l2nOn cov Nn j ka σ (F + G) ≤ l2nOn cov Nn j ka σ F + l2nOn cov Nn j ka σ G :=
   fun j ka σ F G => by
@@ -239,7 +239,7 @@ theorem l2nOn_add : ∀ j ka σ F G, l2nOn cov Nn j ka σ (F + G) ≤ l2nOn cov 
 
 include h4 in
 /- English proof (translation)
-Introduce `j ka σ F` and use `by unfold l2nOn; split_ifs with h · exact h4 j ka h σ F · exact le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l2nOn_le : ∀ j ka σ F, l2nOn cov Nn j ka σ F ≤ B.supN j ka σ F := fun j ka σ F => by
   unfold l2nOn; split_ifs with h

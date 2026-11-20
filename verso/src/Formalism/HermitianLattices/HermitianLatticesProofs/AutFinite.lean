@@ -14,13 +14,13 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (NumberField.RingOfIntegers K) V] [IsScalarTower (NumberField.RingOfIntegers K) K V]
 
 /- English proof (translation)
-Establish `hs` using `thetaSummable_main h hpos L 0 Complex.I (by simp)`. Establish `hnorm : ∀ x : L, ‖Complex.exp (Real.pi * Complex.I * Complex.I * ((Algebra.trace ℚ K (h (0 + (x : V)) (0 + (x : V))) : ℚ) : ℂ))‖ = Real.exp (-Real.pi * ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ))`. Introduce `x`. Rewrite using `[Complex.norm_exp, zero_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (Real.pi : ℂ) * Complex.I * Complex.I = -(Real.pi : ℂ)`. Rewrite using `[mul_assoc, Complex.I_mul_I]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hev` using `(tendsto_zero_iff_norm_tendsto_zero.1 hs.tendsto_cofinite_zero).eventually (gt_mem_nhds (Real.exp_pos (-Real.pi * (R : ℝ))))`. Rewrite `hev` using `[Filter.eventually_cofinite]`. Use `(hev.image Subtype.val).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hvL, hvR⟩`. Use `⟨⟨v, hvL⟩, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ¬ (‖Complex.exp (Real.pi * Complex.I * Complex.I * ((Algebra.trace ℚ K (h (0 + v) (0 + v)) : ℚ) : ℂ))‖ < Real.exp (-Real.pi * (R : ℝ)))`. Rewrite using `[not_lt, hnorm ⟨v, hvL⟩]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hR : ((Algebra.trace ℚ K (h v v) : ℚ) : ℝ) ≤ (R : ℝ)` using `by exact_mod_cast hvR`. Use polynomial arithmetic with `[Real.pi_pos]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma autFinite_short (h : V →ₗ⋆[K] V →ₗ[K] K)
     (hpos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x))
@@ -54,17 +54,15 @@ lemma autFinite_short (h : V →ₗ⋆[K] V →ₗ[K] K)
 end AutFiniteSec
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h _ hpos L hL`. Take `⟨S, hS⟩` from `Submodule.IsLattice.fg (A := K) (M := L)`. Use `set R : ℚ := ∑ s ∈ S, Algebra.trace ℚ K (h s s) with hR`. Establish `hSL : ∀ s ∈ S, s ∈ L` using `fun s hs => hS ▸ Submodule.subset_span hs`. Establish `hsR : ∀ s ∈ S, Algebra.trace ℚ K (h s s) ≤ R` using `fun s hs => Finset.single_le_sum (f := fun s => Algebra.trace ℚ K (h s s)) (fun x _ => thetaSummable_nonneg h hpos x) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `autFinite_short h hpos L R`. Establish `hspan : Submodule.span K (S : Set V) = ⊤`. Rewrite using `[eq_top_iff, ← Submodule.IsLattice.span_eq_top (A := K) (M := L), Submodule.span_le]`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Submodule.span_le_restrictScalars (NumberField.RingOfIntegers K) K (S : Set V) hx`. Set `Φ : (V ≃ₗ[K] V) → (S → V)` to `fun g s => g s`. Apply `Set.Finite.of_finite_image (f := Φ)` to reduce the goal to its premises. Use `(Set.Finite.pi (t := fun _ : S => {v : V | v ∈ L ∧ Algebra.trace ℚ K (h v v) ≤ R}) (fun _ => hT)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨hg, hgL⟩, rfl⟩ s _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : ∀ x y, h (g x) (g y) = h x y` using `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hm : g s ∈ Formalism.HermitianLatticesTheory.gmap g L` using `Submodule.mem_map_of_mem (hSL s s.2)`. Rewrite `hm` using `[hgL]`. Then use the resulting hypothesis. Use `show Algebra.trace ℚ K (h (g s) (g s)) ≤ R`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hg']`. Conclude with `hsR s s.2`. Introduce `g₁ _ g₂ _ hg`. Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Apply `LinearMap.ext_on hspan` to reduce the goal to its premises.
-
-Introduce `x hx`. Conclude with `congrFun hg ⟨x, hx⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem autFinite : AutFinite := by
   intro K V _ _ _ _ _ _ _ _ h _ hpos L hL

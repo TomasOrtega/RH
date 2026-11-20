@@ -20,23 +20,19 @@ namespace GlobalTheory.UPel.HT.ES.OrdCount
 open GlobalTheory.IwLevel GlobalTheory.IwLevel.KerGrp in
 
 /- English proof (translation)
-Introduce `S A A' _ _ _ _ ψ fx _ _ hfin hfl hyp`. Use `letI gH : GrpObj (IwLevel.ker ψ) := grp ψ`. Use `haveI : IsMonHom (pullback.fst ψ η[A']) := isMonHom_fst ψ`. Establish `hPB` using `(IsPullback.of_hasPullback ψ η[A']).map (Over.forget S)`. Establish `hHfin : IsFinite (IwLevel.ker ψ).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w (pullback.snd ψ η[A'])]`. Use `haveI : IsFinite (pullback.snd ψ η[A']).left := MorphismProperty.of_isPullback (P := @IsFinite) hPB hfin`. Conclude with `inferInstanceAs (IsFinite (_ ≫ 𝟙 S))`. Establish `hHflat : Flat (IwLevel.ker ψ).hom`. Rewrite using `[← Over.w (pullback.snd ψ η[A'])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Flat (pullback.snd ψ η[A']).left := MorphismProperty.of_isPullback (P := @Flat) hPB hfl`. Conclude with `inferInstanceAs (Flat (_ ≫ 𝟙 S))`. Use `set jH := pullback.fst ψ η[A'] with hjH`. Establish `hj : jH ≫ ψ = 1` using `fst_comp ψ`. Set `g : IwLevel.ker ψ ⟶ IwLevel.ker ψ` to `KerGrp.lift ψ (jH ≫ fx) (hyp _ jH hj).1`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g ≫ jH = jH ≫ fx` using `KerGrp.lift_fst _ _ _`. Establish `hxx' : jH ≫ fx ≫ fx = jH ≫ fx` using `by rw [← Category.assoc]; exact (hyp _ jH hj).2`. Use `letI gK : GrpObj (IwLevel.ker (jH ≫ fx)) := grp (jH ≫ fx)`. Use `haveI : IsMonHom (pullback.fst (jH ≫ fx) η[A]) := isMonHom_fst (jH ≫ fx)`. Use `set iK := pullback.fst (jH ≫ fx) η[A] with hiK`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : iK ≫ jH ≫ fx = 1` using `fst_comp (jH ≫ fx)`. Establish `hrk : (𝟙 (IwLevel.ker ψ) / g) ≫ jH ≫ fx = 1`. Rewrite using `[← Category.assoc, GrpObj.div_comp, Category.id_comp, hg, GrpObj.div_comp, Category.assoc, hxx', div_self']`. Set `r : IwLevel.ker ψ ⟶ IwLevel.ker (jH ≫ fx)` to `KerGrp.lift (jH ≫ fx) (𝟙 (IwLevel.ker ψ) / g) hrk`. Establish `hr : r ≫ iK = 𝟙 (IwLevel.ker ψ) / g` using `KerGrp.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hiKg : iK ≫ g = 1` using `KerGrp.hom_ext ψ (by`. Rewrite using `[Category.assoc, hg, hk, MonObj.one_comp])`. Establish `hir : iK ≫ r = 𝟙 _` using `KerGrp.hom_ext (jH ≫ fx) (by`. Rewrite using `[Category.assoc, hr, GrpObj.comp_div, Category.comp_id, hiKg, div_one, Category.id_comp])`. Establish `hirl : iK.left ≫ r.left = 𝟙 _` using `by rw [← Over.comp_left, hir, Over.id_left]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hKfin : IsFinite (IwLevel.ker (jH ≫ fx)).hom` using `by haveI : IsFinite (r.left ≫ (IwLevel.ker (jH ≫ fx)).hom) := by rw [Over.w r]; exact hHfin haveI : IsSeparated (r.left ≫ (IwLevel.ker (jH ≫ fx)).hom) := by rw [Over.w r]; infer_instance haveI : IsSeparated r.left := IsSeparated.of_comp _ (IwLevel.ker (jH ≫ fx)).hom haveI : IsFin …`. Rewrite using `[← Over.w iK]`. Use `infer_instance`. Establish `hKflat : Flat (IwLevel.ker (jH ≫ fx)).hom` using `by haveI : Flat (r.left ≫ (IwLevel.ker (jH ≫ fx)).hom) := by rw [Over.w r]; exact hHflat`. Conclude with `HTTorsionFF.flat_of_retract _ iK.left r.left hirl`.
-
-Use `⟨IwLevel.ker (jH ≫ fx), gK, iK ≫ jH, inferInstance, inferInstance, hKfin, hKflat, fun T z => ?_⟩` and prove the remaining obligations. Use `⟨?_, fun ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hj, MonObj.comp_one, MonObj.comp_one]`.
-
-Rewrite using `[Category.assoc, Category.assoc, hk, MonObj.comp_one]`. Use `⟨KerGrp.lift (jH ≫ fx) (KerGrp.lift ψ z h1) (by rw [← Category.assoc, KerGrp.lift_fst, h2]), ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, KerGrp.lift_fst, KerGrp.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem_kernel : ∀ (S : Scheme.{0}) (A A' : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (ψ : A ⟶ A') (f : A ⟶ A), IsMonHom ψ → IsMonHom f → IsFinite ψ.left → Flat ψ.left → (∀ (T : Over S) (z : T ⟶ A), z ≫ ψ = 1 → (z ≫ f) ≫ ψ = 1 ∧ (z ≫ f) ≫ f = z ≫ f) → ∃ (K : Over S) (_ : GrpObj K) (i : K ⟶ A), IsMonHom i ∧ Mono i ∧ IsFinite K.hom ∧ Flat K.hom ∧ ∀ (T : Over S) (z : T ⟶ A), GlobalTheory.IwLevel.InSub i z ↔ (z ≫ ψ = 1 ∧ z ≫ f = 1) := by
   intro S A A' _ _ _ _ ψ fx _ _ hfin hfl hyp
@@ -105,9 +101,9 @@ def fibreEquiv {S T : Scheme.{0}} (K : Over S) (y : T ⟶ S) :
   right_inv s := Subtype.ext (pullback.hom_ext (pullback.lift_fst _ _ _) ((pullback.lift_snd _ _ _).trans s.2.symm))
 
 /- English proof (translation)
-Take `⟨U, j, hj, hu⟩` from `GlobalTheory.T.exists_dominant_natCast_isUnit_of_nonZeroDivisor T.left c hc`. Set `j' : Over.mk (j ≫ T.hom) ⟶ T` to `Over.homMk j`. Establish `h1 : j' ≫ x = 1` using `GlobalTheory.T.abelianScheme_torsionPoint_trivial_of_geometric S A hA _ (j' ≫ x) c hu (by rw [← MonObj.comp_pow, hx, MonObj.comp_one]) (fun k _ _ hk z g => by rw [← Category.assoc]; exact h k hk z _)`. Establish `h2 : j' ≫ x = j' ≫ 1` using `by rw [h1, MonObj.comp_one]`. Use `hA.proper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Over.OverMorphism.ext (GlobalTheory.hom_ext_of_isSchemeTheoreticallyDominant j A.hom (congrArg CommaMorphism.left h2) (by rw [Over.w, Over.w]))`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_reg {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     {T : Over S} (x : T ⟶ A) (c : ℕ)

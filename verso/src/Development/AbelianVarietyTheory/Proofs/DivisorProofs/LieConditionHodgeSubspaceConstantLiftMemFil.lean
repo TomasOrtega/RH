@@ -11,14 +11,14 @@ noncomputable section
 namespace GlobalTheory.HTCount.LieZFil
 
 /- English proof (translation)
-Rewrite using `[← D.tr_eq, ← D.nm_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omega_sq {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) :
     D.ω * D.ω = (D.tr : 𝓞 D.F) * D.ω - (D.nm : 𝓞 D.F) := by
   rw [← D.tr_eq, ← D.nm_eq]; ring
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun x => act (algebraMap (𝓞 D.F) D.O x) h) (omega_sq D)`. Simplify using `only [map_mul, map_sub, map_intCast, Module.End.mul_apply, LinearMap.sub_apply] at e`. Rewrite using `[e]`. Simplify using `[Module.End.intCast_apply, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem end_sq {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {C H : Type*} [CommRing C] [AddCommGroup H]
     [Module C H] (act : D.O →+* Module.End C H) (h : H) :
@@ -30,7 +30,7 @@ theorem end_sq {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {C H 
   simp [Module.End.intCast_apply, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, end_sq]`. Establish `hn : (D.nm : C) = ρ * (D.tr - ρ)` using `by linear_combination hρ`. Rewrite using `[hn]`. Use `module`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_part_eig {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {C H : Type*} [CommRing C] [AddCommGroup H]
     [Module C H] (act : D.O →+* Module.End C H) (ρ : C) (hρ : ρ ^ 2 - D.tr * ρ + D.nm = 0) (y : H) :
@@ -42,17 +42,15 @@ theorem rho_part_eig {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p}
   module
 
 /- English proof (translation)
-Use `set act := GlobalTheory.HTSummand.crysAct (dp0 C) (𝟙 _) o.act with hact`. Use `set u := (act (algebraMap (𝓞 D.F) D.O D.ω) - ((D.tr : C) - β b.ρ) • 1) y with hu`. Establish `hfil : ∀ (x : D.O) {h : HdR o.A}, h ∈ Fil o.A → act x h ∈ Fil o.A` using `fun x h hh => by haveI := o.act.hom x`. Conclude with `push_mem_Fil (o.act.act x) hh`. Establish `hρ : β b.ρ ^ 2 - D.tr * β b.ρ + D.nm = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg β b.ρ_root` as an intermediate fact. Simplify using `using this`. Establish `hω : act (algebraMap (𝓞 D.F) D.O D.ω) u - β b.ρ • u ∈ Fil o.A`. Rewrite using `[hu, rho_part_eig act (β b.ρ) hρ y]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw, hsum⟩` from `GlobalTheory.HTSummand.lie_mod_fil p D R b N C β s hs o u hω`. Use `set c' := fun l => algebraMap (𝓞 D.F) D.O (c l)`. Establish `h1 : ∀ l, act (c' l) u - ∑ i, act (c' l) (w i) ∈ Fil o.A` using `fun l => by`. Rewrite using `[← map_sum, ← map_sub]`. Conclude with `hfil _ hsum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : ∀ i, ∑ l, lam l • act (c' l) (w i) ∈ Fil o.A` using `fun i => by`. Establish `e : ∑ l, lam l • act (c' l) (w i) = ∑ l, lam l • (act (c' l) (w i) - β (b.t i (c l)) • w i) + (∑ l, lam l * β (b.t i (c l))) • w i`. Rewrite using `[Finset.sum_smul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_sub, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, hlam i, zero_smul, add_zero]`. Conclude with `sum_mem fun l _ => Submodule.smul_mem _ _ (hw i (c l))`. Establish `e : ∑ l, lam l • act (c' l) u = ∑ l, lam l • (act (c' l) u - ∑ i, act (c' l) (w i)) + ∑ i, ∑ l, lam l • act (c' l) (w i)`. Rewrite using `[Finset.sum_comm (f := fun i l => lam l • act (c' l) (w i)), ← Finset.sum_add_distrib]`.
-
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, ← smul_add, sub_add_cancel]`. Use `show ∑ l, lam l • act (c' l) u ∈ Fil o.A`. Rewrite using `[e]`. Conclude with `add_mem (sum_mem fun l _ => Submodule.smul_mem _ _ (h1 l)) (sum_mem fun i _ => h2 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mem_fil {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} [CommRing R]
     {b : GlobalTheory.UPel.HT.Base D R} {N : ℕ} {C : Type} [CommRing C] [IsLocalRing C] (β : R →+* C)
@@ -93,7 +91,7 @@ theorem sum_mem_fil {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} 
   exact add_mem (sum_mem fun l _ => Submodule.smul_mem _ _ (h1 l)) (sum_mem fun i _ => h2 i)
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x ↦ by by_cases h : TrivSqZeroExt.fst x = 0 · right rw [TrivSqZeroExt.isUnit_iff_isUnit_fst] simp [h] · left rw [TrivSqZeroExt.isUnit_iff_isUnit_fst] exact isUnit_iff_ne_zero.2 h`.
+A detailed English derivation is pending.
 -/
 theorem dualNumber_local (k : Type) [Field k] : IsLocalRing (DualNumber k) :=
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x ↦ by
@@ -113,23 +111,21 @@ open LieZFil in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `p _ D R _ b N k _ t o₀ β ht o' m' z hz`. Prove the components needed by the constructor for the conclusion. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨r, lam, c, y, ⟨y', rfl⟩, hlam, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `sum_mem_fil β ht o₀ lam c hlam y'`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`. Establish `hbc` using `GlobalTheory.HTRealise.isBC_constMor o₀.ab`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `H : ∀ z ∈ lieZ o₀ β, hbc.bcMap z ∈ liftFil (epsDP k) m'.cart by`. Use `⟨hbc.bcMap z, H z hz, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[(hbc.corr_iff.2 rfl) c]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hE : ∀ (x : D.O) (h : HdR o₀.A), crysToDR (epsDP k) m'.cart (hbc.bcMap (crysAct o₀ x h)) = GlobalTheory.HTSummand.crysAct (dp0 (DualNumber k)) (𝟙 _) o'.act x (crysToDR (epsDP k) m'.cart (hbc.bcMap h))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x h`. Use `haveI := o₀.act.hom x`. Use `haveI := o'.act.hom x`. Establish `e1 : hbc.bcMap (crysAct o₀ x h) = push (epsDP k) (GlobalTheory.DeRham.epsRed k) (o₀.act.act x) (hbc.bcMap h)`. Rewrite using `[← hbc.corr_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GrpMor.Corr.push (m := constMor o₀.A) (constMor o₀.A) (o₀.act.act x) (o₀.act.act x) (by rfl) (hbc.corr_iff.2 rfl)`. Establish `e2` using `crysToDR_push (epsDP k) m'.cart m'.cart (o₀.act.act x) (o'.act.act x) (m'.act x).symm (hbc.bcMap h)`. Conclude with `(congrArg (crysToDR (epsDP k) m'.cart) e1).trans e2`. Establish `hs : spMap (algebraMap k (DualNumber k)) ≫ t = spMap ((algebraMap k (DualNumber k)).comp β)`. Rewrite using `[ht]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Take `⟨r, lam, c, y, ⟨y', rfl⟩, hlam, rfl⟩` from `hx`. Establish `hlam' : ∀ i, ∑ l, algebraMap k (DualNumber k) (lam l) * ((algebraMap k (DualNumber k)).comp β) (b.t i (c l)) = 0` using `fun i => by`. Simplify using `only [RingHom.comp_apply, ← map_mul, ← map_sum, hlam i, map_zero]`. Use `haveI : IsLocalRing (DualNumber k) := dualNumber_local k`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Establish `key` using `sum_mem_fil ((algebraMap k (DualNumber k)).comp β) hs o' (fun l => algebraMap k _ (lam l)) c hlam' (crysToDR (epsDP k) m'.cart (hbc.bcMap y'))`. Rewrite using `[liftFil, Submodule.mem_comap]`. Use `key using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_sum, map_smulₛₗ, hE, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, RingHom.comp_apply, map_intCast, RingHom.id_apply, map_smul]`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lieZ_mem_fil_and_lift : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ (o' : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (DualNumber k)) ≫ t)) (m' : GlobalTheory.UPel.HT.ObjMap o₀ o' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)), ∀ z ∈ GlobalTheory.HTCount.lieZ o₀ β, z ∈ Fil o₀.A ∧ IsFilLift m'.cart z 0 := by
   intro p _ D R _ b N k _ t o₀ β ht o' m' z hz

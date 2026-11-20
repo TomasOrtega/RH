@@ -24,9 +24,9 @@ def tateDefect (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pu
   ((L.pow 4).φ σ).φ a y - ((L.pull f hf).φ σ).φ b y - Real.log (‖ev p σ _ (w.s (a, b)).val y‖ ^ 2)
 
 /- English proof (translation)
-Establish `t4` using `((L.pow 4).φ σ).trans a a' y ha ha'`. Establish `tP` using `((L.pull f hf).φ σ).trans b b' y hb hb'`. Establish `r` using `ev_iso_rel hw hb hb' ha ha'`. Establish `e` using `congrArg (fun z : ℂ => Real.log (‖z‖ ^ 2)) r`. Rewrite `e` using `[log_normSq_mul (ev_iso_ne_zero w hb ha) (gv_ne_zero hb hb'), log_normSq_mul (gv_ne_zero ha ha') (ev_iso_ne_zero w hb' ha')]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `tateDefect`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem tateDefect_eq {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ : k →+* ℂ}
@@ -48,7 +48,7 @@ def tateFn (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pull f
   tateDefect f hf L w σ (pick (L.pow 4).isLB y) (pick (L.pull f hf).isLB y) y
 
 /- English proof (translation)
-The claim follows from `tateDefect_eq hw ha (mem_pick _ y) hb (mem_pick _ y)`.
+A detailed English derivation is pending.
 -/
 theorem tateFn_eq {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ : k →+* ℂ}
@@ -58,9 +58,9 @@ theorem tateFn_eq {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
   tateDefect_eq hw ha (mem_pick _ y) hb (mem_pick _ y)
 
 /- English proof (translation)
-Establish `hab : y ∈ ptsIn p σ ((L.pow 4).B.U a ⊓ (L.pull f hf).B.U b)` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Establish `hev : ContinuousAt (fun z => ev p σ _ (w.s (a, b)).val z) y` using `(continuousOn_ev _).continuousAt ((isOpen_ptsIn _).mem_nhds hab)`. Establish `hne : ‖ev p σ _ (w.s (a, b)).val y‖ ^ 2 ≠ 0`. Use `ev_iso_ne_zero w hb ha` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `((((L.pow 4).cInf σ a y ha).continuousAt).sub (((L.pull f hf).cInf σ b y hb).continuousAt)).sub ((hev.norm.pow 2).log hne)`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_tateDefect (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p)
     (w : LB.Iso (L.pull f hf).B (L.pow 4).B) {σ : k →+* ℂ}
@@ -77,7 +77,7 @@ theorem continuousAt_tateDefect (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p)
     (((L.pull f hf).cInf σ b y hb).continuousAt)).sub ((hev.norm.pow 2).log hne)
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun y => by have ha := mem_pick (L.pow 4).isLB y have hb := mem_pick (L.pull f hf).isLB y refine (continuousAt_tateDefect f hf L w ha hb).congr ?_ have ho : ptsIn p σ ((L.pow 4).B.U (pick (L.pow 4).isLB y)) ∩ ptsIn p σ ((L.pull f hf).B.U (pick (L.pul …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tateFn {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) (σ : k →+* ℂ) :
@@ -91,7 +91,7 @@ theorem continuous_tateFn {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
   exact eventually_of_mem ho fun z hz => (tateFn_eq hw hz.1 hz.2).symm
 
 /- English proof (translation)
-Establish `ha` using `mem_pick (L.pow 4).isLB y`. Establish `hb` using `mem_pick (L.pull f hf).isLB y`. Rewrite using `[tateFn_eq hw ((mem_ptsIn_iff_of_conj h).2 ha) ((mem_ptsIn_iff_of_conj h).2 hb)]`. Unfold `tateFn tateDefect`. Rewrite using `[(L.pow 4).conj σ σ' _ y y' h ha, (L.pull f hf).conj σ σ' _ y y' h hb, ev_conj' h, norm_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tateFn_conj {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ σ' : k →+* ℂ}
@@ -108,7 +108,7 @@ def tateSum (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pull 
   ∑' n : ℕ, (1 / 4 : ℝ) ^ n * tateFn f hf L w σ ((PtsOver.map f hf (spMap σ))^[n] y)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CxPts.compactSpace σ hX.isProjOver`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (continuous_tateFn hw σ).continuousOn`. Conclude with `⟨C, fun y => hC y (mem_univ y)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bound_tateFn {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : f ≫ p = p}
     {L : HermLB p} {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) (σ : k →+* ℂ) :
@@ -118,13 +118,11 @@ theorem exists_bound_tateFn {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : 
   exact ⟨C, fun y => hC y (mem_univ y)⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_bound_tateFn hX hw σ`. Use `set F := PtsOver.map f hf (spMap σ)`. Establish `hF : Continuous F` using `PtsOver.continuous_map f hf _`. Establish `hg : Summable fun n : ℕ => C * (1 / 4 : ℝ) ^ n` using `(summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left C`. Establish `hb : ∀ (n : ℕ) y, ‖(1 / 4 : ℝ) ^ n * tateFn f hf L w σ (F^[n] y)‖ ≤ C * (1 / 4 : ℝ) ^ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n y`. Rewrite using `[norm_mul, norm_pow, Real.norm_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 4), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC _) (by positivity)`. Use `⟨continuous_tsum (fun n => continuous_const.mul ((continuous_tateFn hw σ).comp (hF.iterate n))) hg hb, fun y => ?_⟩` and prove the remaining obligations. Establish `hs : Summable fun n : ℕ => (1 / 4 : ℝ) ^ n * tateFn f hf L w σ (F^[n] y)` using `Summable.of_norm_bounded hg fun n => hb n y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `tateSum`. Rewrite using `[hs.tsum_eq_zero_add, ← tsum_mul_left]`. Simplify using `only [pow_zero, one_mul, Function.iterate_zero, id_eq, Function.iterate_succ_apply]`. Use `congr 1`. Use `tsum_congr fun n => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tateSum_spec {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : f ≫ p = p}
     {L : HermLB p} {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) (σ : k →+* ℂ) :
@@ -151,9 +149,9 @@ theorem tateSum_spec {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : f ≫ p
   ring
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ((PtsOver.map f hf (spMap σ'))^[n] y').1 = spMap (starRingEnd ℂ) ≫ ((PtsOver.map f hf (spMap σ))^[n] y).1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', PtsOver.map_val, PtsOver.map_val, ih, Category.assoc]`. Unfold `tateSum`. Conclude with `tsum_congr fun n => by rw [tateFn_conj hw (key n)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tateSum_conj {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ σ' : k →+* ℂ}
@@ -171,9 +169,9 @@ theorem tateSum_conj {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
   exact tsum_congr fun n => by rw [tateFn_conj hw (key n)]
 
 /- English proof (translation)
-Introduce `k _ X p D hX f hf L w hw`. Use `⟨fun σ y => -(1 / 4) * tateSum f hf L w σ y, fun σ => continuous_const.mul (tateSum_spec hX hw σ).1, fun σ σ' i y y' h _ => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(1 / 4) * tateSum f hf L w σ' y' = -(1 / 4) * tateSum f hf L w σ y`. Rewrite using `[tateSum_conj hw h]`. Introduce `σ a b y ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `(tateSum_spec hX hw σ).2 y`. Establish `d` using `tateFn_eq hw ha hb`. Unfold `tateDefect at d`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_isTate_continuous : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p)

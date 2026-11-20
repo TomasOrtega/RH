@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Γ M _ _ _ _ _ f h`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Use `(h.comp continuous_inv).congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.ContinuousHomomorphism.cont_hom :
     ∀ {Γ M : Type} [inst : Group Γ]

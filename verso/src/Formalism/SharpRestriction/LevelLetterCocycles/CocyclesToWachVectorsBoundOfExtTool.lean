@@ -20,7 +20,7 @@ def B1 (l h η S : ℕ) : ℝ :=
 def B2 (l h η : ℕ) : ℝ := 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η + 2
 
 /- English proof (translation)
-Unfold `B1 B2 cocyclesToWachVectorsExponent`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bound_sum_eq (l h η S : ℕ) : B1 l h η S + B2 l h η = cocyclesToWachVectorsExponent l h η S := by
   unfold B1 B2 cocyclesToWachVectorsExponent; ring
@@ -76,13 +76,13 @@ def Step2 [NeZero n] (W : LocWach PD LL O v n) : Prop :=
             ((PD.p : O) ^ (s₁ + sg)) • (g (f : FF) : G → T₂.V) + (∑ c ∈ evens n d, κ c) ∈ latticeCoboundaries T₂.L)
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS`. Take `⟨s₁, hs₁, H1⟩` from `h1 d T₁ T₂ F b S η m hS`. Take `⟨sg, hsg, H2⟩` from `h2 d T₁ T₂ F b S η m hS`. Use `⟨s₁ + sg, ?_, ?_⟩` and prove the remaining obligations. Use `bound_sum_eq PD.p (hpar n b S) η S` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `FF _ _ _ _ g`. Take `⟨N, y, z, μ, ν, hX⟩` from `hE d T₁ T₂ F b S η m hS FF g`. Take `⟨F₁, ms, hc1, hm1, ho⟩` from `H1 FF g N y z μ ν hX`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F₂, w, hc2, hm2, h36, hid⟩` from `H2 s₁ FF g N y z μ ν hX F₁ ms ho`. Use `⟨F₂, w, ?_, ?_, h36, hid⟩` and prove the remaining obligations. Establish `hn : Even n` using `hS.2.2.1`. Use `two_mul_card_evens_le hn d` as an intermediate fact. Conclude with `(hc1.trans hc2).mono (by omega) le_rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite using `[hm2 h0, hm1 h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocyclesToWachVectorsBound_of_extTool [NeZero n] (W : LocWach PD LL O v n) (hE : Sh.ExtTool W) (h1 : Step1 W)
     (h2 : Step2 W) : CocyclesToWachVectorsBound W := by

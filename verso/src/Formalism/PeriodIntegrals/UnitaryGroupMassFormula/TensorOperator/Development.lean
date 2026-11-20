@@ -64,9 +64,9 @@ def StepSpan : Prop :=
     ∀ β ∈ tensorLat K K M, ∀ s ∈ tensorLat K K M, Ok K n' m vec TT d c β s
 
 /- English proof (translation)
-Introduce `hFP hSB K _ _ n' m hm vec TT d c ν hν hc h0 β hβ s hs`. Take `⟨f, hf, heq⟩` from `hS K n' m vec TT d c (fun t => PI.TO.dualWeyl K (m + 1) (m + 1) (ν t)) (fun B S hB hS' => hP hFP hSB K n' m hm vec TT d c ν hν hc h0 B S hB hS') β hβ s hs`. Establish `hsum : ∀ G, (∑ l ∈ f.support, f l • PI.TO.opWord l G) = combo f G` using `fun G => rfl`. Use `⟨f.support, f, hf, fun G hG => ⟨?_, fun H hH => ?_⟩⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hD K n' (m + 1) d l G hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Conclude with `heq G hG H hH`.
+A detailed English derivation is pending.
 -/
 theorem tenOp_of_steps (hD : StepDeg) (hP : StepPure) (hS : StepSpan) : PI.TenOp := by
   intro hFP hSB K _ _ n' m hm vec TT d c ν hν hc h0 β hβ s hs

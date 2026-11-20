@@ -9,9 +9,9 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory.OTY
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Take `⟨r, hr, hsub⟩` from `Metric.isOpen_iff.1 e.open_target (e x) (e.map_source hx)`. Use `⟨e.symm '' ball (e x) r, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `e.symm.image_mem_nhds (x := e x) (e.map_source hx) (ball_mem_nhds (e x) hr)`. Rewrite `h` using `[e.left_inv hx]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(convex_ball (e x) r).isPreconnected.image _ (e.continuousOn_symm.mono hsub)`. Use `Set.Infinite.image (e.symm.injOn.mono hsub) ?_ haveI : NeBot (𝓝[≠] (e x)) := Module.punctured_nhds_neBot ℂ (V n) (e x)` and prove the remaining obligations. Conclude with `infinite_of_mem_nhds (e x) (ball_mem_nhds (e x) hr)`.
+A detailed English derivation is pending.
 -/
 theorem exists_preconnected_infinite_nhds {n : ℕ} {Y : Type} [TopologicalSpace Y]
     (hn : 1 ≤ n) (e : OpenPartialHomeomorph Y (V n)) (x : Y) (hx : x ∈ e.source) :
@@ -27,11 +27,11 @@ theorem exists_preconnected_infinite_nhds {n : ℕ} {Y : Type} [TopologicalSpace
     exact infinite_of_mem_nhds (e x) (ball_mem_nhds (e x) hr)
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ _ ι La _ A hn S hS`. Establish `h1 : ∀ x : Y, ∃ B : Set Y, B ∈ 𝓝 x ∧ IsPreconnected B ∧ ∃ P ∈ B, P ∉ S`. Introduce `x`. Take `⟨B, hB, hc, hi⟩` from `exists_preconnected_infinite_nhds hn (A.chart (A.pick x)) x (A.mem_pick x)`. Take `⟨P, hP, hPS⟩` from `(hi.diff hS).nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, hB, hc, P, hP, hPS⟩`. Use `choose B hB hc P hP hPS using h1`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover B (fun x _ => hB x)`. Use `⟨P '' (t : Set Y), t.finite_toSet.image P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `hPS x`. Introduce `y`. Take `⟨x, hx, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `⟨P x, ⟨x, hx, rfl⟩, (hc x).subset_connectedComponent hy (hP x)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_disjoint_meets_components :
     ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), 1 ≤ n → ∀ S : Set Y, S.Finite → ∃ T : Set Y, T.Finite ∧ Disjoint T S ∧ ∀ y, ∃ P ∈ T, P ∈ connectedComponent y := by

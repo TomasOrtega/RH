@@ -16,11 +16,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ G _ E g hG`. Use `letI := E.addCommGroup`. Use `haveI := E.free`. Use `haveI := E.finite`. Use `letI := E.grpB`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsSeparated E.B.hom := E.isAbelian.proper.toIsSeparated`. Establish `hη : IsClosedImmersion (η : 𝟙_ (Over (Sp k)) ⟶ E.B).left` using `isClosedImmersion_of_comp_eq_id (Y := Sp k) E.B.hom _ (Over.w _)`. Establish `hpb : IsPullback E.i.left (toUnit (splitTorus (Sp k) E.X)).left E.q.left (η : 𝟙_ (Over (Sp k)) ⟶ E.B).left` using `E.isKernel.map (Over.forget _)`. Establish `hi : IsClosedImmersion E.i.left` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip hη`. Establish `pt : Sp k` using `Classical.choice inferInstance`.
-
-Establish `hne : Nonempty (splitTorus (Sp k) E.X).left` using `⟨(η : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) E.X).left ((toUnit (Over.mk (𝟙 (Sp k)))).left pt)⟩`. Conclude with `relDim_le_of_isClosedImmersion k _ G E.i hi hne g _ hG (ReciprocityTheory.ChartRestriction.G.H1.torus_dim (Sp k) E.X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_torusExtension_le : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G] (E : TorusExtension G) (g : ℕ), SmoothOfRelativeDimension g G.hom → (letI := E.addCommGroup; Module.finrank ℤ E.X) ≤ g := by
   intro k _ G _ E g hG

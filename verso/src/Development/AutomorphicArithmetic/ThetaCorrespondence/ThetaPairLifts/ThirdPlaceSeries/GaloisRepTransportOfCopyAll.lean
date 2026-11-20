@@ -10,9 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 /- English proof (translation)
-Establish `hp : (M.map fun a => Polynomial.X - Polynomial.C a).prod = (M'.map fun a => Polynomial.X - Polynomial.C a).prod`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm, h1, h2]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify using `[Multiset.esymm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[h k hk0 (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))]`. Rewrite using `[← Polynomial.roots_multiset_prod_X_sub_C M, hp, Polynomial.roots_multiset_prod_X_sub_C]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem multiset_eq_of_esymm_pz (M M' : Multiset ℂ) (r : ℕ) (h1 : M.card = r) (h2 : M'.card = r)
     (h : ∀ k, 1 ≤ k → k ≤ r → M.esymm k = M'.esymm k) : M = M' := by
@@ -24,7 +24,7 @@ private theorem multiset_eq_of_esymm_pz (M M' : Multiset ℂ) (r : ℕ) (h1 : M.
     · rw [h k hk0 (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))]
   rw [← Polynomial.roots_multiset_prod_X_sub_C M, hp, Polynomial.roots_multiset_prod_X_sub_C]
 /- English proof (translation)
-Establish `hinj : Function.Injective fun a : ℂ => a⁻¹ * u⁻¹ * (q ^ n)⁻¹` using `fun a b hab => inv_injective (mul_right_cancel₀ (inv_ne_zero hu) (mul_right_cancel₀ (inv_ne_zero (pow_ne_zero _ hq)) hab))`. Use `Multiset.map_injective hinj (multiset_eq_of_esymm_pz _ _ r (by rw [Multiset.card_map, h1]) (by rw [Multiset.card_map, h2]) fun k a b => mul_left_cancel₀ (pow_ne_zero _ hq) (h k a b))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem multiset_eq_of_norm_pz (M M' : Multiset ℂ) (r : ℕ) (h1 : M.card = r) (h2 : M'.card = r) (q u : ℂ) (n : ℕ)
     (hq : q ≠ 0) (hu : u ≠ 0)
@@ -35,11 +35,11 @@ private theorem multiset_eq_of_norm_pz (M M' : Multiset ℂ) (r : ℕ) (h1 : M.c
   refine Multiset.map_injective hinj (multiset_eq_of_esymm_pz _ _ r (by rw [Multiset.card_map, h1])
     (by rw [Multiset.card_map, h2]) fun k a b => mul_left_cancel₀ (pow_ne_zero _ hq) (h k a b))
 /- English proof (translation)
-Take `⟨c₂, s₂, f₂⟩` from `h₂`. Establish `hfin` using `(Filter.eventually_cofinite.mp f₁).union (Filter.eventually_cofinite.mp f₂)`. Establish `hcp` using `GlobalTheory.TwistLG.charpoly_eq_of_dense ρ₁ ρ₂ c₁ c₂ _ (hC hfin.toFinset).closure_eq (by`. Introduce and unpack `g ⟨w, hw, hs, B, hB, hg⟩`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hw`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[hw.1 hs B g hB hg, hw.2 B g hB hg])`. Use `⟨c₁, s₁, f₂.mono fun w hw B σ hB hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[hcp σ]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw B σ hB hσ`.
+A detailed English derivation is pending.
 -/
 private theorem isRepOf_of_split_pz (D : D7) {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : ℕ} (π : D.naut.CG n) (s : ℝ)
     (hC : GlobalTheory.RowTie.ChebSplit D.nd) (ρ₁ ρ₂ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin n) (Qbar l))
@@ -61,11 +61,11 @@ private theorem isRepOf_of_split_pz (D : D7) {l : ℕ} [Fact l.Prime] (ι : Qbar
   rw [hcp σ]
   exact hw B σ hB hσ
 /- English proof (translation)
-Take `⟨hu, he⟩` from `hE j (rowS i s) (by rw [hj]; exact hi) hg P hP h1`. Rewrite `hu`, `he` using `[← hπ P hP]`. Use `⟨D.naut.frobEig (D.naut.locG π P), by rw [D.naut.frobEig_card _ hu, D.naut.locG_dim], ?_, fun k a b => ?_⟩` and prove the remaining obligations. Establish `hue : D.naut.unr (D.naut.locG D.naut.etaTinv P)` using `(D.naut.etaTinv_def P).1`. Establish `hfe : D.naut.frobEig (D.naut.locG D.naut.etaTinv P) = {((cf.eta.val P : ℂˣ) : ℂ)}`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hCS.frob _ P ((hCS.unr_iff _ P).1 hue), hCS.etaTinv, HChar.val_inv, inv_inv]`. Establish `hd : D.naut.lpDim (D.naut.locG D.naut.etaTinv P) = 1` using `D.naut.locG_dim _ P`. Rewrite using `[galPol, D.naut.locG_tw, D.naut.frobEig_tw _ _ (D.naut.unr_char _ _ hd hu hue), D.naut.frobEig_char _ _ _ hu hue hd hfe]`. Use `⟨eig (D.ntw.jS i s) (rowS i s) k P, ?_, hR i s k P a b hP h2⟩` and prove the remaining obligations. Use `he k a b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hj]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem side_data_pz (D : D7) (cf : CharFrame D) (hCS : CharSide D cf) (Rw : RowSide D) (Sb : Finset (PlE D.host))
     (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (hE : GlobalTheory.TwInputs.EigTrue D cf Rw Sb eig) (S : RatDat D.ntw)
@@ -99,7 +99,7 @@ private theorem side_data_pz (D : D7) (cf : CharFrame D) (hCS : CharSide D cf) (
     rw [hj] at this
     exact this
 /- English proof (translation)
-The claim follows from `RingHom.injective _ (RingHom.injective _ (mul_left_cancel₀ (pow_ne_zero _ (u.isUnit.map _).ne_zero) h))`.
+A detailed English derivation is pending.
 -/
 private theorem read_cancel_pz (D : D7) (i : D.ntw.Tw) (b : Bool) (u : (D.ntw.O i)ˣ) (k : ℕ) (x y : ↥D.LL0)
     (h : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) u ^ k *
@@ -110,23 +110,21 @@ private theorem read_cancel_pz (D : D7) (i : D.ntw.Tw) (b : Bool) (u : (D.ntw.O 
           (L := FractionRing (D.ntw.O i)) (D.ntw.O_inj i) ((if b then D.ntw.emb0 i else D.ntw.emb0b i) y)) : x = y :=
   RingHom.injective _ (RingHom.injective _ (mul_left_cancel₀ (pow_ne_zero _ (u.isUnit.map _).ne_zero) h))
 /- English proof (translation)
-Introduce `hGA D D' ι e h cf cf' hF hCS Rw jE' A' hRC hGal hCh Sb Sb' eig eig' hE hE' S S' c c' hU rowS rowS' hR hR' hρ hgood`. Take `⟨r, rfl⟩` from `h.cp.exists_rest`. Introduce `i s`. Use `⟨(hgood i s).1, (hgood i s).2, fun π' hc hr hloc φ ιq hφ hι => ?_⟩` and prove the remaining obligations. Take `⟨hi, hg, hspec⟩` from `hρ i s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hjr` using `D.ntw.jS_range i s`. Take `⟨π, pc, pr, ploc, -⟩` from `hRC _ hjr.1 hjr.2 _ hi hg`. Establish `hemb : ∀ x, (if D.ntw.side i s then D.ntw.emb0 i else D.ntw.emb0b i) (e x) = (if (overD D r).ntw.side i s then (overD D r).ntw.emb0 i else (overD D r).ntw.emb0b i) x`. Introduce `x`. Establish `e1` using `eq_of_heq (h.cp.emb0 i i HEq.rfl x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `eq_of_heq (h.cp.emb0b i i HEq.rfl x)`. Establish `e3 : (overD D r).ntw.side i s = D.ntw.side i s` using `rfl`. Rewrite using `[e3]`. Consider the cases of `D.ntw.side i s`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Conclude with `e1`. Establish `hι0 : ∀ x : ↥D.LL0, ιq (φ ((if D.ntw.side i s then D.ntw.emb0 i else D.ntw.emb0b i) x)) = embLL0 D x`. Introduce `x`. Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[hemb y, h.cp.embLL0_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hι y`. Take `⟨c1, s1, f1⟩` from `hspec π pc pr ploc φ ιq hφ hι0`. Take `⟨ρ', hρ'⟩` from `_root_.GlobalTheory.HeightCounting.TwistAny.exists_isRepOf_tw_alt hGA _ cf' jE' A' hGal _ ιq π' hc hr`. Use `isRepOf_of_split_pz _ ιq _ _ hCh _ ρ' hρ' c1 s1 ?_` and prove the remaining obligations. Establish `hmu : cf.mu0 = cf'.mu0` using `eq_of_heq hF.mu0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heta : cf.eta = cf'.eta` using `eq_of_heq hF.eta`. Establish `hcc : ∀ b P, c' i b P = c i b P` using `fun b P => eq_of_heq (hU i i b P P HEq.rfl HEq.rfl)`. Establish `hj : (⟨D.ntw.jS i s - 1, by omega⟩ : Fin D.R.m).1 + 1 = D.ntw.jS i s` using `Nat.sub_add_cancel hjr.1`. Use `filter_upwards [f1, Sb.eventually_cofinite_notMem, Sb'.eventually_cofinite_notMem, (D.ntw.S0 i).eventually_cofinite_notMem] with P hP n1 n2 n3 hs B σ hB hσ`. Take `⟨M, m1, m2, m3⟩` from `side_data_pz D cf hCS Rw Sb eig hE S c rowS hR i s hi hg π ploc _ hj ((1 - (D.R.nV : ℝ)) / 2) P hs n1 n3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M', m1', m2', m3'⟩` from `side_data_pz _ cf' A'.chr A'.row Sb' eig' hE' S' c' rowS' hR' i s (hgood i s).1 (hgood i s).2 π' hloc _ hj ((1 - (D.R.nV : ℝ)) / 2) P hs n2 n3`. Establish `hq : ((normV P : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0)`. Establish `hM : M = M'`. Use `multiset_eq_of_norm_pz M M' D.R.r m1 m1' _ _ (D.R.nV / 2) hq ((cf.mu0 ⟨D.ntw.jS i s - 1, by omega⟩).val P).ne_zero fun k a b => ?_` and prove the remaining obligations. Take `⟨x, x1, x2⟩` from `m3 k a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, y1, y2⟩` from `m3' k a b`. Rewrite `y1` using `[← hmu]`. Rewrite `y2` using `[← hemb y, hcc]`. Establish `hxy : x = e y` using `read_cancel_pz D i _ _ k _ _ (x2.symm.trans y2)`. Use `x1.symm.trans (Eq.trans ?_ y1)` and prove the remaining obligations.
-
-Rewrite using `[hxy, h.cp.embLL0_eq]`. Substitute `hM` using the available equality. Rewrite `m2'` using `[← heta]`. Conclude with `(hP B σ hB hσ).trans (m2.trans m2'.symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galoisRep_transport_of_copyAll_alt :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}, CopyAll D D' ι e → ∀ {cf : CharFrame D} {cf' : CharFrame D'}, SameFrame cf cf' → CharSide D cf → ∀ (Rw : RowSide D) (jE' : D'.host.E →+* Qb) (A' : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D' cf' jE'), RowCusp D Rw → GalEx D' → GlobalTheory.RowTie.ChebSplit D'.nd → ∀ (Sb : Finset (PlE D.host)) (Sb' : Finset (PlE D'.host)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (eig' : ℕ → D'.what₂.FT → ℕ → PlE D'.host → ↥D'.LL0), GlobalTheory.TwInputs.EigTrue D cf Rw Sb eig → GlobalTheory.TwInputs.EigTrue D' cf' A'.row Sb' eig' → ∀ (S : RatDat D.ntw) (S' : RatDat D'.ntw) (c : ∀ (i : D.ntw.Tw) (_b : Bool) (_P : PlE D.host), (D.ntw.O i)ˣ) (c' : ∀ (i : D'.ntw.Tw) (_b : Bool) (_P : PlE D'.host), (D'.ntw.O i)ˣ), SameUnits c c' → ∀ (rowS : ∀ i, D.ntw.Sig i → D.what₂.FT) (rowS' : ∀ i, D'.ntw.Sig i → D'.what₂.FT), RowEig D S eig c rowS → RowEig D' S' eig' c' rowS' → RhoSpec D Rw rowS → (∀ i s, D'.what₂.isot (D'.ntw.jS i s) (rowS' i s) ≠ ⊥ ∧ D'.nd.goodRow (rowS' i s)) → RhoSpec D' A'.row rowS' := by

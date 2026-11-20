@@ -5,11 +5,11 @@ open CategoryTheory AlgebraicGeometry
 namespace LateralTheory.CohomologicalPurity.Cl
 
 /- English proof (translation)
-Introduce `d P F`. Apply `le_antisymm F.h` to reduce the goal to its premises. Introduce `y hy`. Express the relevant statement in the definitionally equal form `y ∉ PrimeSpectrum.zeroLocus (F.I : Set F.B)`. Introduce `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : RingHom.ker (Ideal.Quotient.mk F.I) = F.I` using `Ideal.mk_ker`. Establish `hr : y ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk F.I))`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, hk]`. Conclude with `hz`. Take `⟨y0, rfl⟩` from `hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw` using `congrArg (fun g => g.base y0) F.cart.w`. Simplify using `only [Scheme.Hom.comp_base] at hw`. Establish `hU : F.w.base ((Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk F.I))).base y0) ∈ (P.U : Set P.X)` using `hy`. Rewrite `hU` using `[P.hU]`. Conclude with `hU ⟨F.z.base y0, hw.symm⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafOff_of : LeafOff := by
   intro d P F

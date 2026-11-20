@@ -21,9 +21,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin m₁)) k₁) Γ(X₁, U₁)` to `c.algebra`. Establish `instT : IsScalarTower k₁ (MvPolynomial (ULift.{u} (Fin m₁)) k₁) Γ(X₁, U₁)` using `IsScalarTower.of_algebraMap_eq fun a => by`. Rewrite using `[hk, MvPolynomial.algebraMap_eq]`. Conclude with `(c.coordRingHom_C a).symm`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m₁)) k₁) Γ(X₁, U₁)` using `c.algebra_formallyEtale hU`.
-
-Conclude with `Algebra.FormallySmooth.comp k₁ (MvPolynomial (ULift.{u} (Fin m₁)) k₁) Γ(X₁, U₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem formallySmooth_of_etaleChart {X₁ : Scheme.{u}} {k₁ : Type u} [Field k₁]
     {p₁ : X₁ ⟶ Spec (CommRingCat.of k₁)} {U₁ : X₁.Opens} {m₁ : ℕ}
@@ -41,9 +39,9 @@ private theorem formallySmooth_of_etaleChart {X₁ : Scheme.{u}} {k₁ : Type u}
   exact Algebra.FormallySmooth.comp k₁ (MvPolynomial (ULift.{u} (Fin m₁)) k₁) Γ(X₁, U₁)
 
 /- English proof (translation)
-Introduce `hy`. Establish `h1 : (⟨y, hyU⟩ : ↥U) ∈ (I.comap U.ι).support`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `hy`. Rewrite `h1` using `[← restrictIdeal_eq_comap_ι, h, AlgebraicGeometry.Scheme.IdealSheafData.support_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (⟨y, hyU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U)` using `h1`. Simplify using `at h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem notMem_support_of_restrictIdeal_eq_top_of_mem {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {U : Y.Opens} (h : restrictIdeal I U = ⊤) {y : Y} (hyU : y ∈ U) : y ∉ I.support := by
@@ -56,13 +54,13 @@ private theorem notMem_support_of_restrictIdeal_eq_top_of_mem {Y : Scheme.{u}} (
   simp at h2
 
 /- English proof (translation)
-Establish `hz : z ∈ Ideal.span {y}`. Rewrite using `[← hsp]`. Conclude with `Ideal.mem_span_singleton_self z`. Establish `hy' : y ∈ Ideal.span {z}`. Rewrite using `[hsp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton_self y`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.mp hz`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp hy'`. Establish `hsub : (b * u - 1) * y = 0`. Rewrite using `[sub_mul, one_mul, mul_assoc, hu, hb, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcancel : ∀ w : R, w * y = 0 → w = 0` using `(mem_nonZeroDivisors_iff.mp hy).2`. Establish `h1 : b * u - 1 = 0` using `hcancel _ hsub`. Establish `h2 : b * u = 1`. Rewrite `h1` using `[sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h3 : u * b = 1`. Rewrite using `[mul_comm]`. Conclude with `h2`. Conclude with `⟨u, ⟨⟨u, b, h3, h2⟩, rfl⟩, hu.symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_isUnit_mul_of_span_singleton_eq {R : Type*} [CommRing R] {y z : R}
     (hy : y ∈ nonZeroDivisors R) (hsp : Ideal.span {z} = Ideal.span {y}) :
@@ -88,7 +86,7 @@ private theorem exists_isUnit_mul_of_span_singleton_eq {R : Type*} [CommRing R] 
   exact ⟨u, ⟨⟨u, b, h3, h2⟩, rfl⟩, hu.symm⟩
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem repr_sum_smul_apply {ι₀ : Type*} [Fintype ι₀]
     {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
@@ -97,11 +95,11 @@ private theorem repr_sum_smul_apply {ι₀ : Type*} [Fintype ι₀]
   rw [Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Establish `hb : ∀ j : ι₀, KaehlerDifferential.map k₀ k₀ S S' (EtaleCoordinates.basisKaehler k₀ ι₀ S j) = EtaleCoordinates.basisKaehler k₀ ι₀ S' j`. Introduce `j`. Simplify using `only [EtaleCoordinates.basisKaehler_apply, KaehlerDifferential.map_D, EtaleCoordinates.algebraMap_coord]`. Establish `hω : ω = ∑ j : ι₀, (EtaleCoordinates.basisKaehler k₀ ι₀ S).repr ω j • EtaleCoordinates.basisKaehler k₀ ι₀ S j` using `((EtaleCoordinates.basisKaehler k₀ ι₀ S).sum_repr ω).symm`. Establish `key : KaehlerDifferential.map k₀ k₀ S S' ω = ∑ j : ι₀, algebraMap S S' ((EtaleCoordinates.basisKaehler k₀ ι₀ S).repr ω j) • EtaleCoordinates.basisKaehler k₀ ι₀ S' j` using `by conv_lhs => rw [hω]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `j _`. Rewrite using `[map_smul, hb j]`. Conclude with `algebra_compatible_smul S' ((EtaleCoordinates.basisKaehler k₀ ι₀ S).repr ω j) (EtaleCoordinates.basisKaehler k₀ ι₀ S' j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `repr_sum_smul_apply (EtaleCoordinates.basisKaehler k₀ ι₀ S') (fun j => algebraMap S S' ((EtaleCoordinates.basisKaehler k₀ ι₀ S).repr ω j)) i`.
+A detailed English derivation is pending.
 -/
 private theorem basisKaehler_repr_kaehlerMap (k₀ : Type*) [CommRing k₀] (ι₀ : Type*) [Fintype ι₀]
     [DecidableEq ι₀] (S : Type*) [CommRing S] (S' : Type*) [CommRing S']
@@ -141,7 +139,7 @@ variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of
   [AlgebraicGeometry.Smooth p] {V : X.Opens} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `c.isScalarTower haveI : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.algebra_formallyEtale hV IsUnit ((EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, V)).det fun i : ULift.{u} (Fin n) => KaehlerDifferential.D k Γ(X, V) (w i)) → ∃ c' : EtaleCha …`.
+A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_coord_eq_of_isUnit_jacobianDet (hV : IsAffineOpen V)
     (c : EtaleChart p V n) (w : ULift.{u} (Fin n) → Γ(X, V)) :
@@ -180,7 +178,7 @@ theorem exists_etaleChart_coord_eq_of_isUnit_jacobianDet (hV : IsAffineOpen V)
     (ringHom_etale_of_formallyEtale p hV f hfC hfEtale)
 
 /- English proof (translation)
-The claim follows from `c.isScalarTower haveI : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.algebra_formallyEtale hV ((EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, V)).det fun i : ULift.{u} (Fin n) => KaehlerDifferential.D k Γ(X, V) (w i)) ∉ (hV.primeIdealOf ⟨x, h …`.
+A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_restrict_coord_eq_of_jacobianDet_notMem
     (hV : IsAffineOpen V) (c : EtaleChart p V n) {x : X} (hx : x ∈ V)
@@ -262,21 +260,19 @@ theorem exists_etaleChart_restrict_coord_eq_of_jacobianDet_notMem
   exact ⟨X.basicOpen g, hVg, hle, hxg, c', fun j => (hc' j).trans (halg _)⟩
 
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, V)` to `sectionsAlgebra k p V`. Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` to `c.algebra`. Establish `instT : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.isScalarTower`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.algebra_formallyEtale hV`. Establish `hk : algebraMap k Γ(X, V) = sectionsAlgebraMap k p V` using `algebraMap_sectionsAlgebra k p V`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr : algebraMap (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) = c.coordRingHom` using `c.algebraMap_eq_coordRingHom`. Establish `hcoord : ∀ j : Fin n, EtaleCoordinates.coord k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) = c.coord j` using `fun j => c.etaleCoordinates_coord j`. Establish `h1 : EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₂) (c.coord j₂) = 1`. Rewrite using `[← hcoord j₂]`. Conclude with `EtaleCoordinates.partialDeriv_coord_self k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₂) (c.coord j₁) = 0`. Rewrite using `[← hcoord j₁]`. Use `EtaleCoordinates.partialDeriv_coord_of_ne k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₂) (ULift.up j₁) ?_` and prove the remaining obligations. Introduce `hcon`. Conclude with `hj (congrArg ULift.down hcon).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₂) (sectionsAlgebraMap k p V t) = 0`. Rewrite using `[← hk]`. Simplify using the standard rewrite rules. Establish `hpd : EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₂) (c.coord j₂ + sectionsAlgebraMap k p V t * c.coord j₁) = 1`. Simplify using `[Derivation.leibniz, h1, h2, h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hwj, hwne, hwupd⟩ : ∃ w : ULift.{u} (Fin n) → Γ(X, V), w (ULift.up j₂) = c.coord j₂ + sectionsAlgebraMap k p V t * c.coord j₁ ∧ (∀ j : Fin n, j ≠ j₂ → w (ULift.up j) = c.coord j) ∧ (fun i : ULift.{u} (Fin n) => KaehlerDifferential.D k Γ(X, V) (w i)) = Function.update (⇑(Etale …`. Use `⟨Function.update (fun i : ULift.{u} (Fin n) => c.coord i.down) (ULift.up j₂) (c.coord j₂ + sectionsAlgebraMap k p V t * c.coord j₁), ?_, fun j hjne => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.update_apply]`. Conclude with `if_pos rfl`. Rewrite using `[Function.update_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `if_neg (fun hcon : ULift.up j = ULift.up j₂ => hjne (congrArg ULift.down hcon))`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.update_apply, Function.update_apply]`. Distinguish the cases in `hi : i = ULift.up j₂`. Rewrite using `[if_pos hi, if_pos hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hi, if_neg hi]`. Conclude with `(basisKaehler_apply_eq_D_coord c hk hcr i.down).symm`. Establish `hdet : IsUnit ((EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, V)).det fun i : ULift.{u} (Fin n) => KaehlerDifferential.D k Γ(X, V) (w i))`. Rewrite using `[hwupd, det_update_eq_repr, ← EtaleCoordinates.partialDeriv_apply, hpd]`. Conclude with `isUnit_one`.
-
-Take `⟨c', hc'⟩` from `exists_etaleChart_coord_eq_of_isUnit_jacobianDet hV c w hdet`. Use `⟨c', ?_, fun j hjne => ?_⟩` and prove the remaining obligations. Rewrite using `[hc' j₂, hwj]`. Rewrite using `[hc' j, hwne j hjne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_coord_add_smul (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j₁ j₂ : Fin n) (hj : j₁ ≠ j₂) (t : k) :
@@ -342,7 +338,7 @@ theorem exists_etaleChart_coord_add_smul (hV : IsAffineOpen V) (c : EtaleChart p
   · rw [hc' j, hwne j hjne]
 
 /- English proof (translation)
-The claim follows from `c.isScalarTower haveI : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.algebra_formallyEtale hV EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j₁) x' ∉ (hV.primeIdealOf ⟨x, hx⟩).asIdeal → ∃ (V' : X.Opens) (_ : IsAffineOpen V') (hV'V …`.
+A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_update_coord_of_partialDeriv_notMem
     (hV : IsAffineOpen V) (c : EtaleChart p V n) {x : X} (hx : x ∈ V) (j₁ : Fin n)
@@ -410,7 +406,7 @@ def chartPartialDeriv (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-The claim follows from `c.isScalarTower haveI : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.algebra_formallyEtale hV chartPartialDeriv hV c j f = EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) f := rfl`.
+A detailed English derivation is pending.
 -/
 theorem chartPartialDeriv_eq (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
     (f : Γ(X, V)) :
@@ -424,7 +420,7 @@ theorem chartPartialDeriv_eq (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : F
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Simplify using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem derivation_sum_apply {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     {ι : Type*} [DecidableEq ι] (s : Finset ι) (D : ι → Derivation R A A) (a : A) :
@@ -437,17 +433,17 @@ private theorem derivation_sum_apply {R A : Type*} [CommRing R] [CommRing A] [Al
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, W)` to `sectionsAlgebra k p W`. Choose the witnesses or unpack the hypotheses as in `⟨D, hD⟩ : ∃ D : Derivation k Γ(X, W) Γ(X, W), ∀ z : Γ(X, W), D z = chartPartialDeriv hW c₂ j z := by`. Set `instc₂ : Algebra (MvPolynomial (ULift.{u} (Fin n₂)) k) Γ(X, W)` to `c₂.algebra`. Establish `instT₂ : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n₂)) k) Γ(X, W)` using `c₂.isScalarTower`. Establish `instFE₂ : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n₂)) k) Γ(X, W)` using `c₂.algebra_formallyEtale hW`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n₂)) Γ(X, W) (ULift.up j), fun _ => rfl⟩`. Set `instc₁ : Algebra (MvPolynomial (ULift.{u} (Fin n₁)) k) Γ(X, W)` to `c₁.algebra`. Establish `instT₁ : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n₁)) k) Γ(X, W)` using `c₁.isScalarTower`. Establish `instFE₁ : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n₁)) k) Γ(X, W)` using `c₁.algebra_formallyEtale hW`. Establish `hcoord : ∀ i : ULift.{u} (Fin n₁), EtaleCoordinates.coord k (ULift.{u} (Fin n₁)) Γ(X, W) i = c₁.coord i.down`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨i⟩`. Conclude with `c₁.etaleCoordinates_coord i`. Establish `hpd : ∀ i : ULift.{u} (Fin n₁), EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n₁)) Γ(X, W) i f = chartPartialDeriv hW c₁ i.down f`. Introduce and unpack `⟨i⟩`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsum` using `EtaleCoordinates.eq_sum_smul_partialDeriv k (ULift.{u} (Fin n₁)) Γ(X, W) D`. Establish `happ : D f = ∑ i : ULift.{u} (Fin n₁), D (EtaleCoordinates.coord k (ULift.{u} (Fin n₁)) Γ(X, W) i) * EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n₁)) Γ(X, W) i f` using `by conv_lhs => rw [hsum]`. Rewrite using `[derivation_sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective (fun i : ULift.{u} (Fin n₁) => i.down)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a⟩ ⟨b⟩ hab`. Conclude with `congrArg ULift.up hab`. Introduce `b`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ULift.up b, rfl⟩`. Rewrite using `[← hD f, happ]`. Use `Fintype.sum_bijective (fun i : ULift.{u} (Fin n₁) => i.down) hbij _ _ ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[hcoord i, hpd i, hD]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_chainRule {W : X.Opens} (hW : IsAffineOpen W) {n₁ n₂ : ℕ}
     (c₁ : EtaleChart p W n₁) (c₂ : EtaleChart p W n₂) (j : Fin n₂) (f : Γ(X, W)) :
@@ -499,9 +495,9 @@ private theorem chartPartialDeriv_chainRule {W : X.Opens} (hW : IsAffineOpen W) 
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, V)` to `sectionsAlgebra k p V`. Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` to `c.algebra`. Establish `instT : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.isScalarTower`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.algebra_formallyEtale hV`. Establish `hcoord : EtaleCoordinates.coord k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) = c.coord j` using `c.etaleCoordinates_coord j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) (c.coord j) = 1`. Rewrite using `[← hcoord]`. Conclude with `EtaleCoordinates.partialDeriv_coord_self k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_coord_self (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j : Fin n) : chartPartialDeriv hV c j (c.coord j) = 1 := by
@@ -518,9 +514,9 @@ private theorem chartPartialDeriv_coord_self (hV : IsAffineOpen V) (c : EtaleCha
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, V)` to `sectionsAlgebra k p V`. Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` to `c.algebra`. Establish `instT : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.isScalarTower`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.algebra_formallyEtale hV`. Establish `hcoord : EtaleCoordinates.coord k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up i) = c.coord i` using `c.etaleCoordinates_coord i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) (c.coord i) = 0`. Rewrite using `[← hcoord]`. Use `EtaleCoordinates.partialDeriv_coord_of_ne k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) (ULift.up i) ?_` and prove the remaining obligations. Introduce `hcon`. Conclude with `h (congrArg ULift.down hcon)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_coord_of_ne (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j i : Fin n) (h : j ≠ i) : chartPartialDeriv hV c j (c.coord i) = 0 := by
@@ -540,7 +536,7 @@ private theorem chartPartialDeriv_coord_of_ne (hV : IsAffineOpen V) (c : EtaleCh
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, ← h]`. Conclude with `chartPartialDeriv_coord_self hV c i`. Rewrite using `[if_neg h]`. Conclude with `chartPartialDeriv_coord_of_ne hV c j i (fun hc => h hc.symm)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_coord (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j i : Fin n) :
@@ -553,9 +549,9 @@ private theorem chartPartialDeriv_coord (hV : IsAffineOpen V) (c : EtaleChart p 
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, V)` to `sectionsAlgebra k p V`. Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` to `c.algebra`. Establish `instT : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.isScalarTower`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.algebra_formallyEtale hV`. Establish `hk : algebraMap k Γ(X, V) = sectionsAlgebraMap k p V` using `algebraMap_sectionsAlgebra k p V`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) (sectionsAlgebraMap k p V t) = 0`. Rewrite using `[← hk]`. Simplify using the standard rewrite rules. Use `show EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) (a + sectionsAlgebraMap k p V t * b) = EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) a + sectionsAlgebraMap k p V t * EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, …`. Simplify using `[Derivation.leibniz, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_add_algebraMap_mul (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j : Fin n) (a b : Γ(X, V)) (t : k) :
@@ -580,9 +576,9 @@ private theorem chartPartialDeriv_add_algebraMap_mul (hV : IsAffineOpen V) (c : 
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, V)` to `sectionsAlgebra k p V`. Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` to `c.algebra`. Establish `instT : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.isScalarTower`. Establish `instFormallyEtale : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.algebra_formallyEtale hV`. Use `show EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) (a * b) = a * EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) b + b * EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_mul (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
     (a b : Γ(X, V)) :
@@ -600,7 +596,7 @@ private theorem chartPartialDeriv_mul (hV : IsAffineOpen V) (c : EtaleChart p V 
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-The claim follows from `chartPartialDeriv_chainRule hV c c' j f`.
+A detailed English derivation is pending.
 -/
 private theorem chartPartialDeriv_chainRule_of_same_rank (hV : IsAffineOpen V)
     (c c' : EtaleChart p V n) (j : Fin n) (f : Γ(X, V)) :
@@ -609,21 +605,21 @@ private theorem chartPartialDeriv_chainRule_of_same_rank (hV : IsAffineOpen V)
   chartPartialDeriv_chainRule hV c c' j f
 
 /- English proof (translation)
-Take `⟨c', h1, h2⟩` from `exists_etaleChart_coord_add_smul hV c j₁ j₂ hj t`. Establish `hc1 : c'.coord j₁ = c.coord j₁` using `h2 j₁ hj`. Establish `hB : ∀ j : Fin n, chartPartialDeriv hV c' j (c.coord j₂) = chartPartialDeriv hV c' j (c'.coord j₂) - sectionsAlgebraMap k p V t * chartPartialDeriv hV c' j (c.coord j₁)`. Introduce `j`. Establish `happ : chartPartialDeriv hV c' j (c'.coord j₂) = chartPartialDeriv hV c' j (c.coord j₂) + sectionsAlgebraMap k p V t * chartPartialDeriv hV c' j (c.coord j₁)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `chartPartialDeriv_add_algebraMap_mul hV c' j (c.coord j₂) (c.coord j₁) t`. Conclude with `eq_sub_of_add_eq happ.symm`. Establish `hgen : ∀ j i : Fin n, chartPartialDeriv hV c' j (c.coord i) = (if i = j then (1 : Γ(X, V)) else 0) - (if i = j₂ then (if j = j₁ then sectionsAlgebraMap k p V t else 0) else 0)`. Introduce `j i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i = j₂`. Rewrite using `[hi, hB j, ← hc1, chartPartialDeriv_coord hV c' j j₂, chartPartialDeriv_coord hV c' j j₁]`. Distinguish the cases in `hjj : j = j₁`. Simplify using `[hjj]`. Simplify using `[hjj, Ne.symm hjj]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2 i hi, chartPartialDeriv_coord hV c' j i, if_neg hi, sub_zero]`. Use `⟨c', h1, h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Rewrite using `[chartPartialDeriv_chainRule_of_same_rank hV c c' j₁ f]`. Establish `hterm : ∀ i : Fin n, chartPartialDeriv hV c' j₁ (c.coord i) * chartPartialDeriv hV c i f = (if i = j₁ then chartPartialDeriv hV c j₁ f else 0) + (if i = j₂ then -(sectionsAlgebraMap k p V t * chartPartialDeriv hV c j₂ f) else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hgen j₁ i]`. Distinguish the cases in `hi1 : i = j₁`. Simplify using `[hi1, hj]`. Distinguish the cases in `hi2 : i = j₂`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hi2, Ne.symm hj]`. Simplify using `[hi1, hi2]`. Simplify using `only [hterm]`. Simplify using `[Finset.sum_add_distrib, sub_eq_add_neg]`. Introduce `j f hjne`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[chartPartialDeriv_chainRule_of_same_rank hV c c' j f]`. Establish `hterm : ∀ i : Fin n, chartPartialDeriv hV c' j (c.coord i) * chartPartialDeriv hV c i f = (if i = j then chartPartialDeriv hV c j f else 0)`. Introduce `i`. Rewrite using `[hgen j i, if_neg hjne, ite_self, sub_zero]`. Distinguish the cases in `hi : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`. Simplify using `[hi]`. Simplify using `only [hterm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_etaleChart_coord_add_smul_chartPartialDeriv (hV : IsAffineOpen V)
     (c : EtaleChart p V n) (j₁ j₂ : Fin n) (hj : j₁ ≠ j₂) (t : k) :
@@ -691,7 +687,7 @@ theorem exists_etaleChart_coord_add_smul_chartPartialDeriv (hV : IsAffineOpen V)
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, EtaleChart.coordRingHom_C, EtaleChart.coordRingHom_C, FunctorialResolution.EmbeddedResolution.sectionsAlgebraMap_restrict_apply]`. Take `⟨i⟩` from `i`. Rewrite using `[RingHom.comp_apply, EtaleChart.coordRingHom_X, EtaleChart.coordRingHom_X]`. Conclude with `FunctorialResolution.EmbeddedResolution.EtaleChart.coord_restrict c hWV i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem etaleChart_restrict_coordRingHom (c : EtaleChart p V n) {W : X.Opens}
     (hWV : W ≤ V) :
@@ -706,15 +702,15 @@ private theorem etaleChart_restrict_coordRingHom (c : EtaleChart p V n) {W : X.O
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-Set `instkV : Algebra k Γ(X, V)` to `sectionsAlgebra k p V`. Set `instkW : Algebra k Γ(X, W)` to `sectionsAlgebra k p W`. Set `instcV : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` to `c.algebra`. Set `instcW : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, W)` to `(c.restrict hWV).algebra`. Set `instVW : Algebra Γ(X, V) Γ(X, W)` to `(X.presheaf.map (homOfLE hWV).op).hom.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `instScalarTowerMvPolynomial : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.isScalarTower`. Establish `instTW : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, W)` using `(c.restrict hWV).isScalarTower`. Establish `instFEV : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V)` using `c.algebra_formallyEtale hV`. Establish `instFEW : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, W)` using `(c.restrict hWV).algebra_formallyEtale hW`. Establish `halg : ∀ z : Γ(X, V), algebraMap Γ(X, V) Γ(X, W) z = (X.presheaf.map (homOfLE hWV).op).hom z` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `instTkVW : IsScalarTower k Γ(X, V) Γ(X, W)` using `IsScalarTower.of_algebraMap_eq fun a => by`. Rewrite using `[halg]`. Conclude with `(FunctorialResolution.EmbeddedResolution.sectionsAlgebraMap_restrict_apply k p hWV a).symm`. Establish `instTPVW : IsScalarTower (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) Γ(X, W)` using `IsScalarTower.of_algebraMap_eq fun z => by`. Rewrite using `[halg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (c.restrict hWV).coordRingHom z = (X.presheaf.map (homOfLE hWV).op).hom (c.coordRingHom z)`. Rewrite using `[etaleChart_restrict_coordRingHom c hWV]`. Both sides reduce to the same expression. Establish `key : algebraMap Γ(X, V) Γ(X, W) ((EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, V)).repr (KaehlerDifferential.D k Γ(X, V) f) (ULift.up j)) = (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, W)).repr (KaehlerDifferential.D k Γ(X, W) (algebraMap Γ(X, V) Γ(X, W) …`. Rewrite using `[← KaehlerDifferential.map_D k k Γ(X, V) Γ(X, W)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(basisKaehler_repr_kaehlerMap k (ULift.{u} (Fin n)) Γ(X, V) Γ(X, W) (KaehlerDifferential.D k Γ(X, V) f) (ULift.up j)).symm`. Establish `hl : chartPartialDeriv hV c j f = (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, V)).repr (KaehlerDifferential.D k Γ(X, V) f) (ULift.up j)` using `rfl`. Establish `hr : chartPartialDeriv hW (c.restrict hWV) j ((X.presheaf.map (homOfLE hWV).op).hom f) = (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin n)) Γ(X, W)).repr (KaehlerDifferential.D k Γ(X, W) ((X.presheaf.map (homOfLE hWV).op).hom f)) (ULift.up j)` using `rfl`. Rewrite using `[hl, hr, ← halg]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_chartPartialDeriv_restrict (hV : IsAffineOpen V) (c : EtaleChart p V n)
     {W : X.Opens} (hW : IsAffineOpen W) (hWV : W ≤ V) (j : Fin n) (f : Γ(X, V)) :
@@ -769,9 +765,9 @@ private theorem map_chartPartialDeriv_restrict (hV : IsAffineOpen V) (c : EtaleC
   exact key
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `h1 : y ∈ X.basicOpen ((X.presheaf.map (homOfLE hle).op).hom f)` using `mem_basicOpen_of_notMem_primeIdealOf hW₁ hyW _ hcon`. Establish `hgerm : (X.presheaf.germ W₁ y hyW).hom ((X.presheaf.map (homOfLE hle).op).hom f) = (X.presheaf.germ V₁ y hyV).hom f`. Simplify using the standard rewrite rules. Establish `h2 : y ∈ X.basicOpen f`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[X.mem_basicOpen f y hyV, ← hgerm]`. Conclude with `(X.mem_basicOpen _ y hyW).mp h1`. Conclude with `notMem_basicOpen_of_mem_primeIdealOf hV₁ hyV f hf h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_mem_primeIdealOf_of_mem_of_le {V₁ W₁ : X.Opens} (hV₁ : IsAffineOpen V₁)
     (hW₁ : IsAffineOpen W₁) (hle : W₁ ≤ V₁) {y : X} (hyV : y ∈ V₁) (hyW : y ∈ W₁)
@@ -790,7 +786,7 @@ private theorem map_mem_primeIdealOf_of_mem_of_le {V₁ W₁ : X.Opens} (hV₁ :
 
 omit [AlgebraicGeometry.Smooth p] in
 /- English proof (translation)
-The claim follows from `c.isScalarTower haveI : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, V) := c.algebra_formallyEtale hV ∃ j : Fin n, (∀ i : ℕ, i < N.length → γ i ≠ some j) ∧ EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) g ∉ (hV.primeIdealOf ⟨x, hx⟩).as …`.
+A detailed English derivation is pending.
 -/
 theorem exists_unlabeled_index_partialDeriv_notMem_primeIdealOf
     (hV : IsAffineOpen V) (c : EtaleChart p V n) {x : X} (hx : x ∈ V)

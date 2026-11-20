@@ -72,7 +72,7 @@ noncomputable def degZeroμ (β : E →ₗ[k] N.X 0 →ₗ[k] E') :
   | _, _, _, _ => 0
 
 /- English proof (translation)
-Apply the tactic sequence `cases r <;> cases n <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem degZeroμ_succ (β : E →ₗ[k] N.X 0 →ₗ[k] E') (r s n : ℕ) (h : r + (s + 1) = n) :
     degZeroμ β r (s + 1) n h = 0 := by
@@ -165,11 +165,11 @@ variable (hη : ∀ {r s n : ℕ} (h : r + s = n) (x : K.X r) (z : N.X s),
       (-1 : k) ^ r • η (by omega) x ((N.d s (s + 1)).hom z))
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `homologyπ_hom_surjective _ r ξ`. Take `⟨w, rfl⟩` from `homologyπ_hom_surjective _ s z`. Take `⟨c', hc'1, hc'2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f r c`. Rewrite using `[homologyMap_homologyπ_apply, homology_homologyπ]`. Take `⟨c'', hc''1, hc''2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f' n (μL.cycles h c ((HomologicalComplex.cyclesMap ρ s).hom w))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc'1, hc''1, homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[iCycles_cycles, hc'2, hc''2, iCycles_cycles, iCycles_cyclesMap_apply]`. Use `Prod.ext (LinearMap.map_zero₂ _ _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `μL.shiftLeft (r + 1) s (n + 1) h' _ _ + η h' 0 _ = _`. Rewrite using `[LinearMap.map_zero₂, add_zero]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coconeLeftHtpy_homology_homologyδ {r s n : ℕ} (h : r + s = n) (h' : r + 1 + s = n + 1)
     (ξ : L.homology r) (z : N.homology s) :

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Edge1
 open GlobalTheory.WH GlobalTheory.PD GlobalTheory.W1 GlobalTheory.CechDR KaehlerDifferential
 open scoped TensorProduct
 /- English proof (citation)
-Apply `UpperTheory.Cb.exists_chart_lift_of_finite_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FEtaleClopenDescent%2FExistsChartLiftOfFiniteCover.lean&line=199#L199)
 -/

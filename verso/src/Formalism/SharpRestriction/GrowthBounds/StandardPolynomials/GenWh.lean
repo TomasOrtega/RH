@@ -11,31 +11,27 @@ section Gen
 variable {s r : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ a : Fin N, (∑ i, if (a : ℕ) = pos i ∨ (a : ℕ) = pos i + 1 then j i else 0) + (if a = u then jp else 0) ≤ deg a`. Introduce `a`. Distinguish the cases in `hau : a = u`. Substitute `hau` using the available equality. Establish `hn : ∀ i, ¬ ((a : ℕ) = pos i ∨ (a : ℕ) = pos i + 1)` using `fun i h => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hu i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [hn, if_false, Finset.sum_const_zero, if_true, zero_add]`. Conclude with `hjp`. Rewrite using `[if_neg hau, add_zero]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hex : ∃ i0, (a : ℕ) = pos i0 ∨ (a : ℕ) = pos i0 + 1`. Take `⟨i0, h0⟩` from `hex`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos h0]`. Break down `h0 with h0 | h0` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h'` using `(hj i0).1`. Establish `ha : a = ⟨pos i0, by have` using `hpos i0; omega⟩ := Fin.ext h0`. Rewrite using `[ha]`. Conclude with `h'`. Establish `h'` using `(hj i0).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = ⟨pos i0 + 1, hpos i0⟩` using `Fin.ext h0`. Rewrite using `[ha]`. Conclude with `h'`. Introduce `i _ hi`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Use `hdis i i0 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ i0) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `push_neg at hex`. Rewrite using `[Finset.sum_eq_zero]`. Conclude with `Nat.zero_le _`. Introduce `i _`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `(h | h)`. Conclude with `(hex i).1 h`. Conclude with `(hex i).2 h`. Establish `split : ∀ i, ∑ a : Fin N, (if (a : ℕ) = pos i ∨ (a : ℕ) = pos i + 1 then j i else 0) * w a = j i * (w ⟨pos i, by have` using `hpos i; omega⟩ + w ⟨pos i + 1, hpos i⟩) := by`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hs : ∀ a : Fin N, (if (a : ℕ) = pos i ∨ (a : ℕ) = pos i + 1 then j i else 0) = (if a = ⟨pos i, by have` using `hpos i; omega⟩ then j i else 0) + (if a = ⟨pos i + 1, hpos i⟩ then j i else 0) := by`. Introduce `a`. Distinguish the cases in `h1 : (a : ℕ) = pos i`. Establish `h2 : a ≠ ⟨pos i + 1, hpos i⟩` using `fun h => by`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at h1`. Rewrite using `[if_pos (Or.inl h1), if_pos (Fin.ext h1), if_neg h2, add_zero]`. Distinguish the cases in `h3 : (a : ℕ) = pos i + 1`. Establish `h2 : a ≠ ⟨pos i, by have` using `hpos i; omega⟩ := fun h => h1 (by rw [h])`. Rewrite using `[if_pos (Or.inr h3), if_neg h2, if_pos (Fin.ext h3), zero_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : a ≠ ⟨pos i, by have` using `hpos i; omega⟩ := fun h => h1 (by rw [h])`. Establish `h4 : a ≠ ⟨pos i + 1, hpos i⟩` using `fun h => h3 (by rw [h])`. Rewrite using `[if_neg (by tauto), if_neg h2, if_neg h4, add_zero]`. Simplify using `only [hs, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_add]`. Establish `hB : ∑ a : Fin N, (if a = u then jp else 0) * w a = jp * w u`.
-
-Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hA : ∑ a : Fin N, (∑ i, if (a : ℕ) = pos i ∨ (a : ℕ) = pos i + 1 then j i else 0) * w a = ∑ i, j i * (w ⟨pos i, by have` using `hpos i; omega⟩ + w ⟨pos i + 1, hpos i⟩) := by`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun i _ => split i)`.
-
-Rewrite using `[← hA, ← hB, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← add_mul, ← add_mul, Nat.sub_sub, Nat.sub_add_cancel (key a)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_wh_of_pos_separated_of_le_deg {N T : ℕ} (deg : Fin N → ℕ) (pos : Fin T → ℕ) (j : Fin T → ℕ) (u : Fin N) (jp : ℕ)
     (w : Fin N → ℕ) (hpos : ∀ i, pos i + 1 < N) (hu : ∀ i, pos i + 1 < (u : ℕ))
@@ -116,31 +112,29 @@ private theorem gen_wh_of_pos_separated_of_le_deg {N T : ℕ} (deg : Fin N → �
   rw [← add_mul, ← add_mul, Nat.sub_sub, Nat.sub_add_cancel (key a)]
 
 /- English proof (translation)
-Establish `hE : ∀ i : Fin (blockData p S aTop aPlus mm b).T.t, IsWeightedHomogeneous ω ((blockData p S aTop aPlus mm b).Ehat O (r` using `r) i) (ωL (finPos (2 * s + 1) (2 * (uTop S i : ℕ))) + ωL (finPos (2 * s + 1) (2 * (uTop S i : ℕ) + 1))) := by`. Introduce `i`. Use `IsWeightedHomogeneous.add ?_ (IsWeightedHomogeneous.sum _ _ _ (fun c _ => ?_))` and prove the remaining obligations. Use `wh_congr ((isWeightedHomogeneous_X (KK O) ω _).mul (isWeightedHomogeneous_X (KK O) ω _)) ?_` and prove the remaining obligations. Conclude with `h2 i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `wh_congr ((isWeightedHomogeneous_X (KK O) ω _).mul (isWeightedHomogeneous_X (KK O) ω _)) ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (h1 _ c) (h1 _ c)`. Establish `hP : IsWeightedHomogeneous ω ((blockData p S aTop aPlus mm b).Eplus O (r` using `r)) (ωL (Fin.castSucc ⟨2 * s, by omega⟩) + ωL (Fin.last _)) := by`. Use `IsWeightedHomogeneous.add ?_ (IsWeightedHomogeneous.sum _ _ _ (fun c _ => ?_))` and prove the remaining obligations. Use `wh_congr ((isWeightedHomogeneous_X (KK O) ω _).mul (isWeightedHomogeneous_X (KK O) ω _)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h3`. Use `wh_congr ((isWeightedHomogeneous_X (KK O) ω _).mul (isWeightedHomogeneous_X (KK O) ω _)) ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (h1 _ c) (h1 _ c)`. Establish `hEp` using `IsWeightedHomogeneous.prod Finset.univ _ _ (fun i _ => (hE i).pow (jl i))`. Establish `hZp` using `IsWeightedHomogeneous.prod Finset.univ (fun i => X (scalZ (2 * s + 1) r (blockData p S aTop aPlus mm b).T.t (Fin.castSucc i)) ^ (blockData p S aTop aPlus mm b).T.z i) _ (fun i _ => (isWeightedHomogeneous_X (KK O) ω _).pow _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hC` using `wh_chain ω ωL h1 _ y hy`. Use `wh_congr ((((((hEp.mul (hP.pow jp)).mul hZp).mul ((isWeightedHomogeneous_X (KK O) ω _).pow _)).mul hC)).mul hG) ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, OmB]`. Establish `hpos : ∀ i : Fin (blockData p S aTop aPlus mm b).T.t, 2 * (uTop S i : ℕ) + 1 < 2 * s + 1`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(uTop S i).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu : ∀ i : Fin (blockData p S aTop aPlus mm b).T.t, 2 * (uTop S i : ℕ) + 1 < ((⟨2 * s, by omega⟩ : Fin (2 * s + 1)) : ℕ)`. Introduce `i`. Use `(uTop S i).isLt` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show _ < 2 * s`. Use linear arithmetic over natural numbers and integers. Establish `hdis : ∀ i i' : Fin (blockData p S aTop aPlus mm b).T.t, i ≠ i' → 2 * (uTop S i : ℕ) ≠ 2 * (uTop S i' : ℕ) ∧ 2 * (uTop S i : ℕ) ≠ 2 * (uTop S i' : ℕ) + 1 ∧ 2 * (uTop S i : ℕ) + 1 ≠ 2 * (uTop S i' : ℕ)`. Introduce `i i' h`. Establish `hv : (i : ℕ) ≠ i'` using `fun e => h (Fin.ext e)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (uTop S i : ℕ) = S.sigma + i` using `rfl`. Establish `e2 : (uTop S i' : ℕ) = S.sigma + i'` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hj : ∀ i : Fin (blockData p S aTop aPlus mm b).T.t, jl i ≤ (segChain p S aTop b).deg ⟨2 * (uTop S i : ℕ), by have` using `hpos i; omega⟩ ∧ jl i ≤ (segChain p S aTop b).deg ⟨2 * (uTop S i : ℕ) + 1, hpos i⟩ := by`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a1, a2⟩` from `hlev.1 i`. Establish `hu'` using `(uTop S i).isLt`. Establish `e1 : (blockData p S aTop aPlus mm b).letterAt ((blockData p S aTop aPlus mm b).T.pos i) = ⟨2 * (uTop S i : ℕ), by omega⟩` using `Fin.ext (by show min (2 * (uTop S i : ℕ)) (2 * s + 1 - 1) = 2 * (uTop S i : ℕ); omega)`. Establish `e2 : (blockData p S aTop aPlus mm b).letterAt ((blockData p S aTop aPlus mm b).T.pos i + 1) = ⟨2 * (uTop S i : ℕ) + 1, by omega⟩` using `Fin.ext (by show min (2 * (uTop S i : ℕ) + 1) (2 * s + 1 - 1) = 2 * (uTop S i : ℕ) + 1; omega)`. Rewrite `a1` using `[e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a2` using `[e2]`. Conclude with `⟨a1, a2⟩`. Establish `hjp : jp ≤ (segChain p S aTop b).deg ⟨2 * s, by omega⟩` using `(le_min_iff.mp hlev.2).1`. Establish `hBj : jp ≤ (blockData p S aTop aPlus mm b).B` using `(le_min_iff.mp hlev.2).2`. Establish `hk` using `gen_wh_of_pos_separated_of_le_deg (segChain p S aTop b).deg (fun l : Fin (blockData p S aTop aPlus mm b).T.t => 2 * (uTop S l : ℕ)) jl ⟨2 * s, by omega⟩ jp (fun a => ωL a.castSucc) hpos hu hdis hj hjp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce at hk`. Establish `hf : ∀ k (hk' : k < 2 * s + 1), finPos (2 * s + 1) k = Fin.castSucc ⟨k, hk'⟩`. Introduce `k hk'`. Conclude with `Fin.ext (by show min k (2 * s + 1) = k; omega)`. Establish `eE : ∑ x : Fin (blockData p S aTop aPlus mm b).T.t, jl x * (ωL (finPos (2 * s + 1) (2 * ↑(uTop S x))) + ωL (finPos (2 * s + 1) (2 * ↑(uTop S x) + 1))) = ∑ x : Fin (blockData p S aTop aPlus mm b).T.t, jl x * (ωL (Fin.castSucc ⟨2 * (uTop S x : ℕ), by have` using `hpos x; omega⟩) + ωL (Fin.castSucc ⟨2 * (uTop S x : ℕ) + 1, hpos x⟩)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[hf _ (by have := hpos x; omega), hf _ (hpos x)]`. Establish `eL : ∑ a : Fin (2 * s + 1), ((blockData p S aTop aPlus mm b).lettersAt jl jp).deg a * ωL a.castSucc = ∑ a : Fin (2 * s + 1), (((segChain p S aTop b).deg a - ∑ i : Fin (blockData p S aTop aPlus mm b).T.t, if (a : ℕ) = 2 * (uTop S i : ℕ) ∨ (a : ℕ) = 2 * (uTop S i : ℕ) + 1 then jl i …` using `rfl`. Establish `eZ : ∑ x : Fin (blockData p S aTop aPlus mm b).T.t, (blockData p S aTop aPlus mm b).T.z x * ω (scalZ (2 * s + 1) r (blockData p S aTop aPlus mm b).T.t x.castSucc) = ∑ l : Fin S.t, (coarseA p S b (uTop S l) - b.o (uTop S l)) * ω (Sum.inr (l.castSucc, false))` using `rfl`. Establish `eZl : (blockData p S aTop aPlus mm b).zPlus * ω (scalZ (2 * s + 1) r (blockData p S aTop aPlus mm b).T.t (Fin.last (blockData p S aTop aPlus mm b).T.t)) = (aPlus - b.oPlus) * ω (Sum.inr (Fin.last S.t, false))` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `eB : (blockData p S aTop aPlus mm b).B = S.bPlus` using `rfl`. Rewrite using `[eE, eZ, eZl, eL, ← hk]`. Rewrite `hBj` using `[eB]`. Rewrite using `[eB]`. Take `⟨k, hk2⟩` from `Nat.exists_eq_add_of_le hBj`.
-
-Rewrite using `[hk2, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gen_wh (O : Type) [CommRing O] [IsDomain O] [NeZero r] (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ)
     (mm : ℝ) (b : SegBlock s r) (ω : BVar (2 * s + 1) r S.t → ℕ) (ωL : Fin (2 * s + 1 + 1) → ℕ)

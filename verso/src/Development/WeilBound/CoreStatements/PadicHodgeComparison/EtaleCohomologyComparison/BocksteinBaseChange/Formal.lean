@@ -18,7 +18,7 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.EtC.quasiIso_hypercohomology_bijective', GlobalTheory.EtC.a6nat_holds, GlobalTheory.EtC.a6ring_holds, GlobalTheory.EtC.coefSeq_exact, GlobalTheory.EtC.a8, GlobalTheory.EtC.etale_cohomology_vanishing_negative_degree_zero, GlobalTheory.EtC.a10, E.etIn⟩`.
+Supply the required witnesses or components.
 -/
 theorem formalIn : FormalIn :=
   ⟨GlobalTheory.EtC.quasiIso_hypercohomology_bijective', GlobalTheory.EtC.a6nat_holds, GlobalTheory.EtC.a6ring_holds, GlobalTheory.EtC.coefSeq_exact, GlobalTheory.EtC.a8,

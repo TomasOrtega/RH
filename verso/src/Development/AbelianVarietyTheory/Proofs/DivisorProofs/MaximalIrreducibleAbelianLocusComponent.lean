@@ -26,17 +26,15 @@ open TensorProduct ReciprocityTheory.CA
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Take `⟨n, π, hπ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp (inferInstance : Algebra.FiniteType O A)`. Use `haveI : Module.Flat (MvPolynomial (Fin n) O) (MvPolynomial (Fin n) K) := Module.Flat.isBaseChange O (MvPolynomial (Fin n) O) K (MvPolynomial (Fin n) K) (Algebra.IsPushout.out (R := O) (S := MvPolynomial (Fin n) O) (R' := K) (S' := MvPolynomial (Fin n) K))`. Set `e` to `(MvPolynomial.algebraTensorAlgEquiv (σ := Fin n) O K).toRingEquiv`. Set `m` to `Algebra.TensorProduct.map (AlgHom.id O K) π`. Establish `hm : Function.Surjective m` using `Algebra.TensorProduct.map_surjective _ _ Function.surjective_id hπ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ p : MvPolynomial (Fin n) O, e.symm (algebraMap _ (MvPolynomial (Fin n) K) p) = 1 ⊗ₜ p`. Introduce `p`. Rewrite using `[RingEquiv.symm_apply_eq]`. Simplify using `[e, MvPolynomial.algebraTensorAlgEquiv_tmul]`. Establish `hkm : RingHom.ker m = (RingHom.ker π).map (Algebra.TensorProduct.includeRight : _ →ₐ[O] K ⊗[O] MvPolynomial (Fin n) O)` using `Algebra.TensorProduct.lTensor_ker π hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.FieldExtHeight.height_comap_le_one (S := MvPolynomial (Fin n) K) π.toRingHom (m.toRingHom.comp e.symm.toRingHom) (Algebra.TensorProduct.includeRight : A →ₐ[O] K ⊗[O] A).toRingHom hπ (hm.comp e.symm.surjective) ?_ ?_ ?_ P Q f hP hQ` and prove the remaining obligations. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m (e.symm (algebraMap _ _ p)) = 1 ⊗ₜ π p`. Rewrite using `[he]`. Simplify using `[m]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : RingHom.ker (m.toRingHom.comp e.symm.toRingHom) = (RingHom.ker m).comap e.symm` using `rfl`. Rewrite using `[h1, hkm, Ideal.comap_symm]`. Establish `h2 : algebraMap (MvPolynomial (Fin n) O) (MvPolynomial (Fin n) K) = e.toRingHom.comp (Algebra.TensorProduct.includeRight : _ →ₐ[O] K ⊗[O] MvPolynomial (Fin n) O).toRingHom`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e.symm_apply_eq.mp (he p))`. Rewrite using `[h2, ← Ideal.map_map]`. Both sides reduce to the same expression. Introduce `𝔔 h𝔔`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal 𝔔 h𝔔.ne_top`.
-
-Conclude with `GlobalTheory.FinTypeIntCatenary.isCM_atPrime_of_le 𝔔 M hle (height_maximal_mvPolynomial_field K n M).1`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem height_comap_le_one_of_flat (O K A : Type) [CommRing O] [IsNoetherianRing O] [Field K] [Algebra O K]
     [Module.Flat O K] [CommRing A] [IsDomain A] [Algebra O A] [Algebra.FiniteType O A]
@@ -89,25 +87,23 @@ end Algebra
 open Limits TensorProduct in
 
 /- English proof (translation)
-Take `⟨U, hU, hx, hUV⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hV`. Use `replace hU : IsAffineOpen U := hU`. Establish `: Nonempty U` using `⟨⟨_, hx⟩⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (hU.fromSpec ≫ q)`. Use `letI : Algebra O Γ(Y, U) := φ.hom.toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hft : Algebra.FiniteType O Γ(Y, U)`. Establish `: LocallyOfFiniteType (Spec.map φ)` using `by rw [hφ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 this`. Establish `hp` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct O K Γ(Y, U))).flip`. Set `r : Sp (K ⊗[O] Γ(Y, U)) ⟶ Spec Γ(Y, U)` to `Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : Γ(Y, U) →ₐ[O] K ⊗[O] Γ(Y, U)).toRingHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `l : Sp (K ⊗[O] Γ(Y, U)) ⟶ Sp K` to `Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : K →+* K ⊗[O] Γ(Y, U)))`. Establish `hp' : IsPullback r l (hU.fromSpec ≫ q) (spMap (algebraMap O K))`. Rewrite using `[← hφ]`. Conclude with `hp`. Set `h : Sp (K ⊗[O] Γ(Y, U)) ⟶ pullback q (spMap (algebraMap O K))` to `pullback.lift (r ≫ hU.fromSpec) l (by rw [Category.assoc]; exact hp'.w)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : IsPullback r h hU.fromSpec (pullback.fst q (spMap (algebraMap O K)))`. Use `IsPullback.of_bot ?_ (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_snd]`. Conclude with `hp'`. Establish `ho : IsOpenImmersion h` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hh inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hfr : ∀ z, pullback.fst q (spMap (algebraMap O K)) (h z) = hU.fromSpec (r z)` using `fun z => congrArg (fun g : Sp (K ⊗[O] Γ(Y, U)) ⟶ Y => g z) hh.w.symm`. Choose the witnesses or unpack the hypotheses as in `⟨Q, rfl⟩ : w ∈ Set.range h := by`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : pullback.fst q (spMap (algebraMap O K)) w ∈ Set.range hU.fromSpec := by`. Rewrite using `[hU.range_fromSpec]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨z, -, hz⟩` from `Scheme.exists_preimage_of_isPullback hh u w hu`. Conclude with `⟨z, hz⟩`. Take `⟨P, rfl⟩ : c ∈ Set.range h` from `hcw.mem_open h.isOpenEmbedding.isOpen_range ⟨Q, rfl⟩`. Establish `hs : ∀ a b : Sp (K ⊗[O] Γ(Y, U)), h a ⤳ h b ↔ a.asIdeal ≤ b.asIdeal` using `fun a b => h.isOpenEmbedding.isInducing.specializes_iff.trans (PrimeSpectrum.le_iff_specializes a b).symm`. Set `g : Γ(Y, U)` to `Y.presheaf.map (homOfLE hUV).op f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hg : ∀ z, pullback.fst q (spMap (algebraMap O K)) (h z) ∉ Y.basicOpen f ↔ (1 : K) ⊗ₜ[O] g ∈ z.asIdeal`. Introduce `z`. Establish `h1 : hU.fromSpec (r z) ∈ U`. Use `Set.mem_range_self (f := hU.fromSpec) (r z)` as an intermediate fact. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : hU.fromSpec (r z) ∈ Y.basicOpen g ↔ r z ∈ PrimeSpectrum.basicOpen g`. Rewrite using `[← hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Rewrite using `[hfr, ← not_iff_not, not_not]`. Use `Iff.trans ?_ h2` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [g, Scheme.basicOpen_res]`. Conclude with `⟨fun h => ⟨h1, h⟩, fun h => h.2⟩`. Establish `hP : P.asIdeal ∈ minimalPrimes (K ⊗[O] Γ(Y, U))` using `⟨⟨P.2, bot_le⟩, fun J hJ hle => (hs P ⟨J, hJ.1⟩).1 (hc _ ((hs ⟨J, hJ.1⟩ P).2 hle))⟩`. Establish `hQ : Q.asIdeal ∈ (P.asIdeal ⊔ Ideal.span {(1 : K) ⊗ₜ[O] g}).minimalPrimes`. Use `⟨⟨Q.2, sup_le ((hs _ _).1 hcw) ((Ideal.span_singleton_le_iff_mem _).2 ((hg Q).1 hf))⟩, fun J hJ hle => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hs Q ⟨J, hJ.1⟩).1 (hw _ ((hs P ⟨J, hJ.1⟩).2 (le_sup_left.trans hJ.2)) ((hs ⟨J, hJ.1⟩ Q).2 hle) ((hg ⟨J, hJ.1⟩).2 ((Ideal.span_singleton_le_iff_mem _).1 (le_sup_right.trans hJ.2))))`. Establish `key` using `height_comap_le_one_of_flat O K Γ(Y, U) _ _ _ hP hQ`. Rewrite using `[hfr, GlobalTheory.coheight_apply_of_isOpenImmersion, ← idealHeight_eq_coheight]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coheight_fst_le_one {O K : Type} [CommRing O] [IsNoetherianRing O] [Field K] [Algebra O K] [Module.Flat O K]
     {Y : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ Sp O) [LocallyOfFiniteType q] (V : Y.Opens) (f : Γ(Y, V))
@@ -172,11 +168,11 @@ theorem coheight_fst_le_one {O K : Type} [CommRing O] [IsNoetherianRing O] [Fiel
 open Limits in
 
 /- English proof (translation)
-Use `congrArg (fun g : Sp ℂ ⟶ genCx Z σ => g (IsLocalRing.closedPoint ℂ)) (a₂ := p ≫ toGenCx j hj σ) ?_` and prove the remaining obligations. Establish `e1 : toGenCx j hj σ ≫ pullback.fst (genStr Z) (spMap σ) = toGen j hj σ` using `pullback.lift_fst _ _ _`. Establish `e2 : toGenCx j hj σ ≫ pullback.snd (genStr Z) (spMap σ) = pullback.snd q (spMap (σ.comp β))` using `pullback.lift_snd _ _ _`. Establish `e3 : toGen j hj σ ≫ pullback.fst Z.s (spMap β) = pullback.fst q (spMap (σ.comp β)) ≫ j` using `pullback.lift_fst _ _ _`. Establish `e4 : toGen j hj σ ≫ pullback.snd Z.s (spMap β) = pullback.snd q (spMap (σ.comp β)) ≫ spMap σ` using `pullback.lift_snd _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pullback.hom_ext ((pullback.lift_fst _ _ _).trans ?_) ((pullback.lift_snd _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, e1]`. Use `pullback.hom_ext ((pullback.lift_fst _ _ _).trans ?_) ((pullback.lift_snd _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, e3, hy, Category.assoc]`. Rewrite using `[Category.assoc, e4, ← Category.assoc, hp, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, e2, hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptOf_up_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -204,29 +200,27 @@ theorem ptOf_up_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
 open Limits in
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ Y _ q jm hjm hq n hY hgen C hC W hW T hT hWT`. Use `letI : Algebra (𝓞 κ.c.F) ℂ := (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)).toAlgebra`. Establish `hinj : Function.Injective (algebraMap (𝓞 κ.c.F) ℂ)` using `σ.injective.comp (IsFractionRing.injective (𝓞 κ.c.F) κ.c.F)`. Establish `: FaithfulSMul (𝓞 κ.c.F) ℂ` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `: Module.Flat (𝓞 κ.c.F) ℂ` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper s.T.Z.s` using `isProper_toroidalModel_structureMap s.T.Z`. Establish `: LocallyOfFiniteType q` using `by rw [← hq]; infer_instance`. Establish `hi : IsClosedImmersion (toGenCx jm hq σ)` using `isClosedImmersion_toGenCx D A N j S κ s σ Y q jm hq n hY`. Establish `hemb` using `(toGenCx jm hq σ).isClosedEmbedding`. Use `set π := pullback.fst q (spMap (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))) with hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ∀ z, genι s.T.Z (pullback.fst (genStr s.T.Z) (spMap σ) (toGenCx jm hq σ z)) = jm (π z)` using `fun z => congrArg (fun g : cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ ⟶ s.T.Z.X => g z) (isPullback_toGenCx jm hq σ).w.symm`. Establish `hbd : ∀ z, toGenCx jm hq σ z ∈ bdCx s.T.Z σ ↔ jm (π z) ∉ abLocus s.T.Z.t.G` using `fun z => by`. Rewrite using `[← hsq]`. Conclude with `mem_genBd_iff`. Establish `hbd' : ∀ z, toGenCx jm hq σ z ∈ bdCx s.T.Z σ ↔ jm (π z) ∈ s.T.BD.idealSheaf.support` using `fun z => ⟨fun h => hsq z ▸ s.T.BD_pos _ h, fun h => (hbd z).2 (s.T.BD_supp _ h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCc : IsClosed C` using `isClosed_of_mem_irreducibleComponents C hC`. Establish `hK : IsClosed (toGenCx jm hq σ '' C ∩ bdCx s.T.Z σ)` using `(hemb.isClosedMap _ hCc).inter ((genBd s.T.Z).isClosed.preimage (pullback.fst (genStr s.T.Z) (spMap σ)).continuous)`. Establish `hWc : IsClosed W`. Use `hW.eq_of_le (y := closure W) ⟨hW.1.1.closure, closure_minimal hW.1.2 hK⟩ subset_closure` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `isClosed_closure`. Take `⟨w₀, hw₀⟩` from `QuasiSober.sober hW.1.1 hWc`. Take `⟨⟨w, hwC, rfl⟩, hwb⟩` from `hW.1.2 hw₀.mem`. Take `⟨c, hc⟩` from `QuasiSober.sober hC.1 hCc`. Establish `hnab` using `(hbd w).1 hwb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨π w, ?_, hnab, ?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Establish `: JacobsonSpace (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd q (spMap (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))))`. Establish `h1` using `closure_inter_closedPoints (isClosed_closure (s := {w}))`. Use `closure_minimal (t := π ⁻¹' T) ?_ (hT.preimage π.continuous) (h1.ge (subset_closure rfl))` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzc⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p` to `pointOfClosedPoint (pullback.snd q (spMap (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)))) z hzc`. Establish `hp : p ≫ pullback.snd q (spMap (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))) = 𝟙 _` using `pointOfClosedPoint_comp _ z hzc`. Establish `hpz : p (IsLocalRing.closedPoint ℂ) = z` using `pointOfClosedPoint_apply _ z hzc _`. Set `y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))` to `⟨p ≫ π, by rw [Category.assoc, hπ, pullback.condition, ← Category.assoc, hp, Category.id_comp]⟩`. Establish `e : ptOf s.T.Z (up jm hq σ y) = toGenCx jm hq σ z` using `(ptOf_up_eq jm hq σ p hp y rfl).trans (congrArg _ hpz)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : toGenCx jm hq σ z ∈ W` using `hw₀.specializes_iff_mem.1 ((specializes_iff_mem_closure.2 hz).map (toGenCx jm hq σ).continuous)`. Establish `h3` using `hWT y (show ptOf s.T.Z (up jm hq σ y) ∈ W from e ▸ h2)`. Rewrite using `[Set.mem_preimage, ← hpz]`. Conclude with `h3`. Set `t` to `pullback.snd q (spMap (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: CharZero ((cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ).residueField w)` using `charZero_of_injective_ringHom (f := ((Scheme.ΓSpecIso (.of ℂ)).inv ≫ t.appTop ≫ Scheme.Γevaluation _ w).hom) (RingHom.injective _)`. Conclude with `(π.residueFieldMap w).hom.charZero`. Take `⟨i, hi⟩` from `s.T.BD.exists_mem (jm (π w))`. Establish `hloc : ∀ z, π z ∈ jm ⁻¹ᵁ s.T.BD.U i → (toGenCx jm hq σ z ∈ bdCx s.T.Z σ ↔ π z ∉ Y.basicOpen (jm.app _ (s.T.BD.f i)))` using `fun z hz => by`. Rewrite using `[hbd', s.T.BD.mem_support_iff i hz, ← Scheme.preimage_basicOpen]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `coheight_fst_le_one q (jm ⁻¹ᵁ s.T.BD.U i) (jm.app _ (s.T.BD.f i)) c w (fun c' h => ?_) (hc.specializes hwC) hi ((hloc w hi).1 hwb) fun w' h1 h2 h3 => ?_` and prove the remaining obligations. Use `hc.specializes (hC.2 (isIrreducible_singleton.closure (s := {c'})) ?_ (subset_closure rfl))` and prove the remaining obligations. Rewrite using `[← hc.def]`. Conclude with `specializes_iff_closure_subset.1 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4 : π w' ∈ jm ⁻¹ᵁ s.T.BD.U i` using `(h2.map π.continuous).mem_open (jm ⁻¹ᵁ s.T.BD.U i).isOpen hi`. Establish `h5 : toGenCx jm hq σ w' ∈ toGenCx jm hq σ '' C ∩ bdCx s.T.Z σ` using `⟨⟨w', hc.specializes_iff_mem.1 h1, rfl⟩, (hloc w' h4).2 h3⟩`. Use `hemb.isInducing.specializes_iff.1 (hw₀.specializes (hW.2 (y := closure {toGenCx jm hq σ w'}) ⟨isIrreducible_singleton.closure, closure_minimal (Set.singleton_subset_iff.2 h5) hK⟩ ?_ (subset_closure rfl)))` and prove the remaining obligations. Rewrite using `[← hw₀.def]`. Conclude with `specializes_iff_closure_subset.1 (h2.map (toGenCx jm hq σ).continuous)`.
-
-Use `Order.one_le_iff_pos.2 (pos_iff_ne_zero.2 fun h0 => hnab ?_)` and prove the remaining obligations. Establish `h1 : π w ⤳ genericPoint Y` using `Order.coheight_eq_zero.1 h0 (genericPoint_specializes (π w))`. Rewrite using `[(h1.antisymm (genericPoint_specializes _)).eq]`. Conclude with `hgen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coheight_eq_one_of_maximal : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → jm (genericPoint Y) ∈ abLocus s.T.Z.t.G → ∀ C ∈ irreducibleComponents (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ), ∀ W : Set (genCx s.T.Z σ), Maximal (fun W : Set (genCx s.T.Z σ) => _root_.IsIrreducible W ∧ W ⊆ toGenCx jm hq σ '' C ∩ bdCx s.T.Z σ) W → ∀ T : Set Y, IsClosed T → (∀ y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)), up jm hq σ y ∈ ptsOf s.T.Z W → y.1 (IsLocalRing.closedPoint ℂ) ∈ T) → ∃ v ∈ T, jm v ∉ abLocus s.T.Z.t.G ∧ CharZero (Y.residueField v) ∧ Order.coheight v = 1 := by
   intro D A N j S κ s x σ Y _ q jm hjm hq n hY hgen C hC W hW T hT hWT

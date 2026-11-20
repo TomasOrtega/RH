@@ -23,7 +23,7 @@ section Prism
 variable (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Break down `Nat.even_or_odd k with h | h` into its components or cases. Simplify using `[h.neg_one_pow]`. Simplify using `[h.neg_one_pow]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem neg_one_pow_smul_int {A : Type} [AddCommGroup A] [Module R A] (k : ℕ) (a : A) :
     ((-1 : R) ^ k) • a = ((-1 : ℤ) ^ k) • a := by
@@ -32,13 +32,13 @@ theorem neg_one_pow_smul_int {A : Type} [AddCommGroup A] [Module R A] (k : ℕ) 
   · simp [h.neg_one_pow]
 
 /- English proof (translation)
-Establish `e1 : S F (q + 1) (dn (box F) (q + 1) w) = ∑ i : Fin (q + 2), ∑ j : Fin (q + 3), ((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ))) • bi F ((th (q + 1) i).comp (Fin.succAboveOrderEmb j).toOrderHom) ((sg (q + 1) i).comp (Fin.succAboveOrderEmb j).toOrderHom) w`. Rewrite using `[S_apply]`. Simplify using `only [dn, LinearMap.sum_apply, LinearMap.smul_apply, cof_eq]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, bi_act, smul_smul, ← pow_add, neg_one_pow_smul_int (R := R)]`. Establish `e2 : ∑ j : Fin (q + 2), ((-1 : R) ^ (j : ℕ)) • a2 F (Fin.succAboveOrderEmb j).toOrderHom (S F q w) = ∑ j : Fin (q + 2), ∑ i : Fin (q + 1), ((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ))) • bi F (th q i) ((Fin.succAboveOrderEmb j).toOrderHom.comp (sg q i)) w`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[S_apply, map_sum, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, bisimplicial_action_second_factor, smul_smul, ← pow_add, neg_one_pow_smul_int (R := R), Nat.add_comm (j : ℕ) (i : ℕ)]`. Establish `e3 : a1 F (cst 0 (1 : Fin 2)) (S0 F (q + 1) w) = bi F (cst (q + 1) 1) OrderHom.id w` using `bisimplicial_action_first_factor F _ _ _ w`. Establish `e4 : a1 F (cst 0 (0 : Fin 2)) (S0 F (q + 1) w) = bi F (cst (q + 1) 0) OrderHom.id w` using `bisimplicial_action_first_factor F _ _ _ w`. Rewrite using `[e1, e2, e3, e4]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PrismComb.prism_faces q (fun θ ψ ↦ bi F θ ψ w)`.
+A detailed English derivation is pending.
 -/
 theorem S_dn (q : ℕ) (w : Cn (box F) (q + 1)) :
     S F (q + 1) (dn (box F) (q + 1) w) =
@@ -67,13 +67,13 @@ theorem S_dn (q : ℕ) (w : Cn (box F) (q + 1)) :
   exact PrismComb.prism_faces q (fun θ ψ ↦ bi F θ ψ w)
 
 /- English proof (translation)
-Establish `e : ρ ∘ₗ dn F 0 = ρ ∘ₗ act F (cst 0 (1 : Fin 2)) - ρ ∘ₗ act F (cst 0 (0 : Fin 2))`. Establish `d : dn F 0 = act F (cst 0 (1 : Fin 2)) - act F (cst 0 (0 : Fin 2))`. Establish `c0 : (Fin.succAboveOrderEmb (0 : Fin 2)).toOrderHom = cst 0 (1 : Fin 2)`. Use extensionality with `j`. Use `fin_cases j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[cst_apply]`. Establish `c1 : (Fin.succAboveOrderEmb (1 : Fin 2)).toOrderHom = cst 0 (0 : Fin 2)`. Use extensionality with `j`. Use `fin_cases j`. Simplify using `[cst_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0' : cof F 0 0 = act F (cst 0 (1 : Fin 2))` using `(cof_eq F 0 0).trans (congrArg (act F) c0)`. Establish `c1' : cof F 0 1 = act F (cst 0 (0 : Fin 2))` using `(cof_eq F 0 1).trans (congrArg (act F) c1)`. Rewrite using `[← c0', ← c1']`. Conclude with `LinearMap.ext fun f ↦ funext fun c ↦ GlobalTheory.CompanionTheory.Dict.dn0 F f c`. Rewrite using `[d, LinearMap.comp_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `sl F (q + 1) ρ (S F (q + 1) _) = sl F (q + 1) (ρ ∘ₗ dn F 0) (S0 F (q + 1) w) - dn F q (sl F q ρ (S F q w))`. Rewrite using `[S_dn, e, map_sub, map_sub, map_sum, slant_product_first_action, slant_product_first_action, sl_sub]`. Use `congr 1`. Simplify using `only [dn, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, slant_product_second_action, cof_eq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_dn [Fintype (Fin 1 ⥤ C)] [Fintype (Fin 2 ⥤ C)] (q : ℕ) (ρ : Cn F 1 →ₗ[R] R) (w : Cn (box F) (q + 1)) :
     T F (q + 1) ρ (dn (box F) (q + 1) w) = U F (q + 1) (ρ ∘ₗ dn F 0) w - dn F q (T F q ρ w) := by
@@ -109,9 +109,9 @@ def IsB {n : ℕ} : Cn F n → Prop :=
   | k + 1 => fun z ↦ ∃ y, z = dn F k y
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : z = 0` using `h`. Conclude with `⟨0, by rw [h0, cup1_zero, map_zero]⟩`. Consider the case `succ k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨y, rfl⟩` from `h`. Conclude with `⟨- cup1 F x y, by rw [map_neg, DnCup.coboundary_cup1 F x y hx, neg_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cup1_boundary_of_boundary {n : ℕ} (x : Cn F 1) (hx : dn F 1 x = 0) (z : Cn F n) (h : IsB F z) :
     ∃ y, cup1 F x z = dn F n y := by
@@ -124,9 +124,9 @@ theorem cup1_boundary_of_boundary {n : ℕ} (x : Cn F 1) (hx : dn F 1 x = 0) (z 
     exact ⟨- cup1 F x y, by rw [map_neg, DnCup.coboundary_cup1 F x y hx, neg_neg]⟩
 
 /- English proof (translation)
-Establish `h1 : evz F T₀ ε 1 = 1`. Express the relevant statement in the definitionally equal form `ε 1 = 1`. Conclude with `map_one ε`. Take `⟨ρ, hρ⟩` from `exists_rho_of_exact F hR hS (nu F Λ x) (evz F T₀ ε) h1`. Establish `hA` using `T_dn F q ρ w`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[hw, map_zero]`. Use `⟨T F q ρ w, ?_⟩` and prove the remaining obligations. Rewrite using `[T_cup_L F q Λ x hx w, hρ, U_add, U_smul, U_evz, nu_one]`. Establish `: U F (q + 1) (ρ ∘ₗ dn F 0) w = dn F q (T F q ρ w)` using `(sub_eq_zero.1 hA.symm)`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_cup_L' [Fintype (Fin 1 ⥤ C)] [Fintype (Fin 2 ⥤ C)] (hR : IsField R)
     (hS : Function.Exact (Algebra.linearMap R (Cn F 0)) (dn F 0)) (T₀ : C) (ε : F.obj T₀ →ₐ[R] R) (q : ℕ)
@@ -149,39 +149,37 @@ variable {F}
 variable {D : Type} [Category.{0} D] {G : D ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Establish `cmπ : ∀ n u, pulln π (n + 1) (dn (box F) n u) = dn G n (pulln π n u)` using `fun n u ↦ LinearMap.congr_fun (GlobalTheory.CompanionTheory.HodgeCx.pulln_dn π n) u`. Establish `cmm : ∀ n u, pulln m (n + 1) (dn F n u) = dn G n (pulln m n u)` using `fun n u ↦ LinearMap.congr_fun (GlobalTheory.CompanionTheory.HodgeCx.pulln_dn m n) u`. Establish `cmL : ∀ (y : Cn F 1), dn F 1 y = 0 → dn (box F) 1 (pulln (boxL F) 1 y) = 0` using `fun y hy ↦ by`. Use `LinearMap.congr_fun (GlobalTheory.CompanionTheory.HodgeCx.pulln_dn (boxL F) 1) y` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, hy, map_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Establish `cmR : ∀ (y : Cn F 1), dn F 1 y = 0 → dn (box F) 1 (pulln (boxR F) 1 y) = 0` using `fun y hy ↦ by`. Use `LinearMap.congr_fun (GlobalTheory.CompanionTheory.HodgeCx.pulln_dn (boxR F) 1) y` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, hy, map_zero] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s with`. Consider the case `zero`. Take `⟨u, hu⟩` from `hprim (Fin.last g)`. Use `⟨x (Fin.last g), pulln (boxL F) 1 (x (Fin.last g)) + pulln (boxR F) 1 (x (Fin.last g)), hx _, by rw [map_add, cmL _ (hx _), cmR _ (hx _), add_zero], ⟨u, hu⟩, ?_, fun i hi ↦ ?_, fun h ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, tau_L F T₀ ε _ (hx _), tau_R F T₀ ε 1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_add _`. Establish `hne : i ≠ Fin.last g` using `fun e ↦ by`. Rewrite `hi` using `[e]`. Simplify using `at hi`. Express the relevant statement in the definitionally equal form `T F 0 (Λ i) _ = 0`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[T_base F _ _ (hx _), hΛ0 i _ hne, zero_smul]`. Conclude with `h`. Consider the case `succ s ih`. Take `⟨z, w, hz, hw, ⟨v, hv⟩, hτ, hB, hI⟩` from `ih (by omega)`. Establish `hj : g - s - 1 < g + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set j : Fin (g + 1) := ⟨g - s - 1, hj⟩ with hjdef`. Use `set xj := x j with hxj`. Establish `hxj0 : dn F 1 xj = 0` using `hx j`. Use `set pj := pulln (boxL F) 1 xj with hpj`. Use `set qj := pulln (boxR F) 1 xj with hqj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hpq : dn (box F) 1 (pj + qj) = 0`. Rewrite using `[map_add, cmL _ hxj0, cmR _ hxj0, add_zero]`. Establish `hT : ∀ i : Fin (g + 1), ∃ y, T F (s + 1) (Λ i) (cup1 (box F) (pj + qj) w) = Λ i xj • z + dn F s y - cup1 F xj (T F s (Λ i) w)` using `fun i ↦ by`. Take `⟨y, hy⟩` from `T_cup_L' F hR hS T₀ ε s (Λ i) xj hxj0 w hw`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cup1_add_left, map_add, hy, T_cup_R F s (Λ i) xj hxj0 w, hτ]`. Normalize the expressions using the abelian group laws. Establish `hw' : dn (box F) (s + 1 + 1) (cup1 (box F) (pj + qj) w) = 0`. Rewrite using `[DnCup.coboundary_cup1 _ _ _ hpq, hw, cup1_zero, neg_zero]`. Establish `hW : ∃ v', pulln π (s + 1 + 1) (cup1 (box F) (pj + qj) w) - pulln m (s + 1 + 1) (cup1 F xj z) = dn G (s + 1) v'`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hprim j`. Establish `e1 : pulln π 1 (pj + qj) = pulln m 1 xj + dn G 0 u`. Rewrite using `[← hu]`. Normalize the expressions using the abelian group laws. Establish `e2 : pulln π (s + 1) w = pulln m (s + 1) z + dn G s v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hv]`. Normalize the expressions using the abelian group laws. Establish `hmx : dn G 1 (pulln m 1 xj) = 0`. Rewrite using `[← cmm, hxj0, map_zero]`. Establish `hmz : dn G (s + 1) (pulln m (s + 1) z) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cmm, hz, map_zero]`. Establish `hcup : cup1 G (dn G 0 u) (pulln π (s + 1) w) = dn G (s + 1) (cup0 G u (pulln π (s + 1) w))`. Establish `hd : dn G (s + 1) (pulln π (s + 1) w) = 0`. Rewrite using `[← cmπ, hw, map_zero]`. Rewrite using `[coboundary_cup0, hd]`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[cup0]`. Use `⟨- cup1 G (pulln m 1 xj) v + cup0 G u (pulln π (s + 1) w), ?_⟩` and prove the remaining obligations. Rewrite using `[pullback_cup1, pullback_cup1, e1, cup1_add_left, hcup, e2, cup1_add_right, map_add, map_neg, DnCup.coboundary_cup1 G _ _ hmx, ← e2]`. Normalize the expressions using the abelian group laws. Use `⟨cup1 F xj z, cup1 (box F) (pj + qj) w, ?_, hw', hW, ?_, fun i hi ↦ ?_, fun h ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[DnCup.coboundary_cup1 F _ _ hxj0, hz, cup1_zero, neg_zero]`. Rewrite using `[pullback_cup1, map_add, tau_L F T₀ ε _ hxj0, tau_R F T₀ ε 1, zero_add, hτ]`. Establish `hij : i ≠ j` using `fun e ↦ by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [hjdef] at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨y, hy⟩` from `hT i`. Take `⟨y', hy'⟩` from `cup1_boundary_of_boundary F xj hxj0 _ (hB i (by omega))`. Use `⟨y - y', ?_⟩` and prove the remaining obligations. Rewrite using `[hy, hΛ0 i j hij, zero_smul, hy', map_sub, zero_add]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨t, ht⟩` from `h`. Take `⟨v', hv'⟩` from `hW`. Take `⟨r, hr⟩` from `(hπ.2 (s + 1)).1 _ hw' ⟨pulln m (s + 1) t + v', by`. Rewrite using `[map_add, ← cmm, ← ht, ← hv']`. Use the proof step `abel⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `hT j`. Establish `hjs : (j : ℕ) + s < g`. Simplify using `only [hjdef]`. Use linear arithmetic over natural numbers and integers. Take `⟨y', hy'⟩` from `cup1_boundary_of_boundary F xj hxj0 _ (hB j hjs)`.
-
-Establish `hA` using `T_dn F s (Λ j) r`. Rewrite `hA` using `[hr, hy, hΛ j, U_zero, hΛ1, one_smul, hy', zero_sub]`. Use `hI ⟨y' - y - T F s (Λ j) r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sub]`. Take the linear combination `(exp := 1) hA`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core_step [Fintype (Fin 1 ⥤ C)] [Fintype (Fin 2 ⥤ C)] (hR : IsField R)
     (hS : Function.Exact (Algebra.linearMap R (Cn F 0)) (dn F 0))
@@ -290,7 +288,7 @@ end Core
 section Top
 
 /- English proof (translation)
-Establish `: Finite Pᵒᵖ` using `Finite.of_equiv P Opposite.equivToOpposite`. Use `Finite.of_injective (fun (c : Fin (n + 1) ⥤ Pᵒᵖ) (i : Fin (n + 1)) ↦ c.obj i) fun c c' h ↦ ?_` and prove the remaining obligations. Conclude with `CategoryTheory.Functor.ext (fun i ↦ congrFun h i) (fun _ _ _ ↦ Subsingleton.elim _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chains_finite (P : Type) [PartialOrder P] [Finite P] (n : ℕ) : Finite (Fin (n + 1) ⥤ Pᵒᵖ) := by
   have : Finite Pᵒᵖ := Finite.of_equiv P Opposite.equivToOpposite
@@ -298,7 +296,7 @@ theorem chains_finite (P : Type) [PartialOrder P] [Finite P] (n : ℕ) : Finite 
   exact CategoryTheory.Functor.ext (fun i ↦ congrFun h i) (fun _ _ _ ↦ Subsingleton.elim _ _)
 
 /- English proof (translation)
-Use `letI := hR.toField`. Conclude with `LinearMap.exists_extend f`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_isField (hR : IsField R) {V : Type} [AddCommGroup V] [Module R V] (p : Submodule R V)
     (f : p →ₗ[R] R) : ∃ g : V →ₗ[R] R, g ∘ₗ p.subtype = f := by
@@ -308,7 +306,7 @@ theorem exists_extend_of_isField (hR : IsField R) {V : Type} [AddCommGroup V] [M
 variable {D : Type} [Category.{0} D] {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' φ`. Express the relevant statement in the definitionally equal form `m.α T' (f (ComposableArrows.mk₁ φ ⋙ m.G)) = m.α T' (f (ComposableArrows.mk₁ (m.G.map φ)))`. Conclude with `congrArg (m.α T') (eq_of_heq (GlobalTheory.CompanionTheory.HodgeLow.cn_heq f (GlobalTheory.CompanionTheory.HodgeLow.mk₁_comp m.G φ)))`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem L1_pullback_naturality (m : CoefMap (RingHom.id R) F G) (f : Cn F 1) :
     GlobalTheory.CompanionTheory.Dict.L1 G (pulln m 1 f) = GlobalTheory.CompanionTheory.HodgeLow.pullbackOneCochains m (GlobalTheory.CompanionTheory.Dict.L1 F f) := by
@@ -317,11 +315,11 @@ theorem L1_pullback_naturality (m : CoefMap (RingHom.id R) F G) (f : Cn F 1) :
   exact congrArg (m.α T') (eq_of_heq (GlobalTheory.CompanionTheory.HodgeLow.cn_heq f (GlobalTheory.CompanionTheory.HodgeLow.mk₁_comp m.G φ)))
 
 /- English proof (translation)
-Establish `hal : ∀ r : R, GlobalTheory.CompanionTheory.Dict.L0 F (algebraMap R (Cn F 0) r) = algebraMap R (C0 F) r` using `fun r ↦ rfl`. Introduce `y`. Use `⟨fun h ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : d0 F (GlobalTheory.CompanionTheory.Dict.L0 F y) = 0`. Rewrite using `[← GlobalTheory.CompanionTheory.Dict.L1_dn_zero_eq_d0_L0, h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `(hSt.1 _).1 h0`. Conclude with `⟨r, (GlobalTheory.CompanionTheory.Dict.L0_bijective_cochain F).1 ((hal r).trans hr)⟩`. Introduce and unpack `⟨r, rfl⟩`. Use `(GlobalTheory.CompanionTheory.Dict.L1_bijective_cochain F).1 ?_` and prove the remaining obligations. Rewrite using `[map_zero, GlobalTheory.CompanionTheory.Dict.L1_dn_zero_eq_d0_L0]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hSt.1 _).2 ⟨r, (hal r).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exact_of_stein (hSt : Stein F) : Function.Exact (Algebra.linearMap R (Cn F 0)) (dn F 0) := by
   have hal : ∀ r : R, GlobalTheory.CompanionTheory.Dict.L0 F (algebraMap R (Cn F 0) r) = algebraMap R (C0 F) r := fun r ↦ rfl
@@ -339,25 +337,23 @@ theorem exact_of_stein (hSt : Stein F) : Function.Exact (Algebra.linearMap R (Cn
 end Top
 
 /- English proof (translation)
-Introduce `_ _ _ R _ P _ _ F g hR hSt hvan hH x hx`. Take `⟨D, _, G, π, m, hπ, hprim, hb⟩` from `hH`. Take `⟨T₀, ε, -⟩` from `hb trivial`. Use `haveI : Nontrivial R := ⟨hR.exists_pair_ne⟩`. Use `letI : Fintype (Fin 1 ⥤ Pᵒᵖ) := @Fintype.ofFinite _ (chains_finite P 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Fintype (Fin 2 ⥤ Pᵒᵖ) := @Fintype.ofFinite _ (chains_finite P 1)`. Establish `hS` using `exact_of_stein hSt`. Use `choose f hf using fun i ↦ H1.mk_surjective F (x i)`. Use `choose xt hxt using fun i ↦ (GlobalTheory.CompanionTheory.Dict.L1_bijective_cochain F).2 (f i).1`. Establish `hxc : ∀ i, dn F 1 (xt i) = 0` using `fun i ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(GlobalTheory.CompanionTheory.Dict.L2_bijective_cochain F).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Dict.L2_dn_one_eq_d1_L1, hxt, map_zero]`. Conclude with `LinearMap.mem_ker.1 (commAlgFunctorCocyclesOne_eq_ker F ▸ (f i).2)`. Take `⟨l, hl⟩` from `exists_dual_functionals_of_linearIndependent hR x hx`. Establish `hZ : ∀ t : LinearMap.ker (dn F 1), GlobalTheory.CompanionTheory.Dict.L1 F t.1 ∈ Z1 F` using `fun t ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker, ← GlobalTheory.CompanionTheory.Dict.L2_dn_one_eq_d1_L1, LinearMap.mem_ker.1 t.2, map_zero]`. Set `Φ : LinearMap.ker (dn F 1) →ₗ[R] H1 F` to `H1.mk F ∘ₗ ((GlobalTheory.CompanionTheory.Dict.L1 F) ∘ₗ (LinearMap.ker (dn F 1)).subtype).codRestrict (Z1 F) hZ`. Use `choose Λ hΛ using fun i ↦ exists_extend_of_isField hR (LinearMap.ker (dn F 1)) (l i ∘ₗ Φ)`. Establish `hΛv : ∀ i (t : Cn F 1) (ht : dn F 1 t = 0), Λ i t = l i (Φ ⟨t, ht⟩)` using `fun i t ht ↦ LinearMap.congr_fun (hΛ i) ⟨t, ht⟩`. Establish `hΦx : ∀ j, Φ ⟨xt j, hxc j⟩ = x j` using `fun j ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf j]`. Conclude with `congrArg (H1.mk F) (Subtype.ext (hxt j))`. Establish `hdd : ∀ y : Cn F 0, dn F 1 (dn F 0 y) = 0` using `fun y ↦ LinearMap.congr_fun (GlobalTheory.CompanionTheory.HodgeCx.dn_comp_dn F 0) y`. Establish `hΦd : ∀ y : Cn F 0, Φ ⟨dn F 0 y, hdd y⟩ = 0` using `fun y ↦ H1.mk_eq_zero.2 ⟨GlobalTheory.CompanionTheory.Dict.L0 F y, (GlobalTheory.CompanionTheory.Dict.L1_dn_zero_eq_d0_L0 F y).symm⟩`. Establish `hΛ0 : ∀ i, Λ i ∘ₗ dn F 0 = 0` using `fun i ↦ LinearMap.ext fun y ↦ by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, hΛv i _ (hdd y), hΦd, map_zero]`. Both sides reduce to the same expression. Establish `hΛ1 : ∀ i, Λ i (xt i) = 1` using `fun i ↦ by`. Rewrite using `[hΛv i _ (hxc i), hΦx, hl, if_pos rfl]`. Establish `hΛn : ∀ i j, i ≠ j → Λ i (xt j) = 0` using `fun i j h ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΛv i _ (hxc j), hΦx, hl, if_neg h]`. Establish `hpr : ∀ i, ∃ u, pulln π 1 (pulln (boxL F) 1 (xt i) + pulln (boxR F) 1 (xt i)) - pulln m 1 (xt i) = dn G 0 u` using `fun i ↦ by`. Establish `h` using `hprim (x i)`. Rewrite `h` using `[← hf i, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, ← map_add, CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Take `⟨a, ha⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `(GlobalTheory.CompanionTheory.Dict.L0_bijective_cochain G).2 a`. Use `⟨-u, (GlobalTheory.CompanionTheory.Dict.L1_bijective_cochain G).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_neg, GlobalTheory.CompanionTheory.Dict.L1_dn_zero_eq_d0_L0, ha, map_sub, L1_pullback_naturality, map_add, L1_pullback_naturality, L1_pullback_naturality, L1_pullback_naturality, hxt]`. Rewrite using `[neg_sub]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, w, hz, -, -, -, -, hI⟩` from `core_step hR hS π m hπ T₀ ε g xt hxc hpr Λ hΛ0 hΛ1 hΛn g le_rfl`. Take `⟨y, hy⟩` from `hI (by`. Take `⟨y, hy⟩` from `(hvan g le_rfl z).1 hz`. Conclude with `⟨y, hy.symm⟩)`. Use `hx.ne_zero (Fin.last g) ?_` and prove the remaining obligations.
-
-Rewrite using `[← hf]`. Use `H1.mk_eq_zero.2 ⟨GlobalTheory.CompanionTheory.Dict.L0 F y, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CompanionTheory.Dict.L1_dn_zero_eq_d0_L0, ← hy, hxt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hopfLeSt : CxSt → DictSt → LowSt → HopfLeSt := by
   intro _ _ _ R _ P _ _ F g hR hSt hvan hH x hx

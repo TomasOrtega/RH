@@ -20,7 +20,7 @@ variable {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Complet
   [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
 
 /- English proof (translation)
-Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `u`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adjoint_comp_isometry (T : H' →ₗᵢ[ℂ] H) (v : H') :
     (ContinuousLinearMap.adjoint T.toContinuousLinearMap) (T v) = v := by
@@ -30,11 +30,11 @@ theorem adjoint_comp_isometry (T : H' →ₗᵢ[ℂ] H) (v : H') :
   simp
 
 /- English proof (translation)
-Distinguish the cases in `hf : DifferentiableAt ℝ f t`. Use `(T.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t hf.hasDerivAt` as an intermediate fact. Conclude with `this.deriv`. Establish `hTf : ¬ DifferentiableAt ℝ (fun s => T (f s)) t`. Introduce `h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf` to reduce the goal to its premises. Establish `h2` using `((ContinuousLinearMap.adjoint T.toContinuousLinearMap).restrictScalars ℝ).differentiableAt.comp t h`. Establish `e : f = (⇑(ContinuousLinearMap.restrictScalars ℝ (ContinuousLinearMap.adjoint T.toContinuousLinearMap)) ∘ fun s ↦ T (f s))`. Use function extensionality and compare the values at `s`. Simplify using `[adjoint_comp_isometry]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h2`. Rewrite using `[deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hTf, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_isometry_comp (T : H' →ₗᵢ[ℂ] H) (f : ℝ → H') (t : ℝ) :
     deriv (fun s => T (f s)) t = T (deriv f t) := by
@@ -59,11 +59,11 @@ variable {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Complet
   [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
 
 /- English proof (translation)
-Establish `hJ` using `Jm_conjTranspose ε`. Establish `hJJ` using `Jm_mul_self ε`. Unfold `inG PI.DSInfCharCap.thetaJ`. Use `set J := Jm ε`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add]`. Establish `: (Y + -(J * Yᴴ * J))ᴴ * J + J * (Y + -(J * Yᴴ * J)) = 0`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, hJ, Matrix.conjTranspose_conjTranspose, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc J J, hJJ, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inG_smul_add_theta {n : ℕ} (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) :
     inG ε ((1 / 2 : ℂ) • (Y + PI.DSInfCharCap.thetaJ ε Y)) := by
@@ -82,11 +82,11 @@ theorem inG_smul_add_theta {n : ℕ} (ε : Fin n → Bool) (Y : Matrix (Fin n) (
   rw [this, smul_zero]
 
 /- English proof (translation)
-Establish `hJ` using `Jm_conjTranspose ε`. Establish `hJJ` using `Jm_mul_self ε`. Unfold `inG PI.DSInfCharCap.thetaJ`. Use `set J := Jm ε`. Establish `hs : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.conj_I]`. Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, neg_smul, neg_add_eq_sub, ← smul_sub]`. Establish `: J * (Y - -(J * Yᴴ * J)) - (Y - -(J * Yᴴ * J))ᴴ * J = 0`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, hJ, Matrix.conjTranspose_conjTranspose, Matrix.sub_mul, Matrix.mul_sub, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc J J, hJJ, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_smul_sub_theta {n : ℕ} (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) :
     inG ε ((1 / (2 * Complex.I)) • (Y - PI.DSInfCharCap.thetaJ ε Y)) := by
@@ -106,9 +106,9 @@ theorem inG_smul_sub_theta {n : ℕ} (ε : Fin n → Bool) (Y : Matrix (Fin n) (
   rw [this, smul_zero]
 
 /- English proof (translation)
-Unfold `PI.PhMeasCore.dsig`. Establish `e : (fun t : ℝ => ρ (NormedSpace.exp ((t : ℂ) • X)) (T w)) = fun t : ℝ => T (ρ' (NormedSpace.exp ((t : ℂ) • X)) w)`. Use function extensionality and compare the values at `t`. Establish `h` using `hT (expG ε X t) w`. Establish `h2 : uMat (expG ε X t) = NormedSpace.exp ((t : ℂ) • X)` using `toM_expG ε X t hX`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[h2]`. Conclude with `h.symm`. Rewrite using `[e, deriv_isometry_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsig_intertwine {n : ℕ} (ε : Fin n → Bool)
     (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ρ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H'))
@@ -126,7 +126,7 @@ theorem dsig_intertwine {n : ℕ} (ε : Fin n → Bool)
   rw [e, deriv_isometry_comp]
 
 /- English proof (translation)
-Unfold `PI.DSInfCharCap.dsigC`. Rewrite using `[dsig_intertwine ε ρ ρ' T hT _ (inG_smul_add_theta ε Y), dsig_intertwine ε ρ ρ' T hT _ (inG_smul_sub_theta ε Y), map_add, map_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dsigC_intertwine {n : ℕ} (ε : Fin n → Bool)
     (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ρ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H'))
@@ -138,7 +138,7 @@ theorem dsigC_intertwine {n : ℕ} (ε : Fin n → Bool)
     dsig_intertwine ε ρ ρ' T hT _ (inG_smul_sub_theta ε Y), map_add, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons Y l ih`. Simplify using `only [PI.DSInfCharCap.dsigCW]`. Rewrite using `[ih, dsigC_intertwine ε ρ ρ' T hT]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dsigCW_intertwine {n : ℕ} (ε : Fin n → Bool)
     (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ρ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H'))
@@ -152,7 +152,7 @@ theorem dsigCW_intertwine {n : ℕ} (ε : Fin n → Bool)
     rw [ih, dsigC_intertwine ε ρ ρ' T hT]
 
 /- English proof (translation)
-Introduce `n ε H H' _ _ _ _ _ _ ρ ρ' T hT p w`. Unfold `actU`. Simplify using `only [Finsupp.sum, map_sum, map_smul, dsigCW_intertwine ε ρ ρ' T hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem actU_isometry : ∀ {n : ℕ} (ε : Fin n → Bool) {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H'] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ρ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')) (T : H' →ₗᵢ[ℂ] H), (∀ (g : UJ ε) (w : H'), T (ρ' (uMat g) w) = ρ (uMat g) (T w)) → ∀ (p : FreeAlgebra ℂ (Fin n × Fin n)) (w : H'), actU ε ρ p (T w) = T (actU ε ρ' p w) := by
   intro n ε H H' _ _ _ _ _ _ ρ ρ' T hT p w

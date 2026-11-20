@@ -15,7 +15,7 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 namespace GlobalTheory.CoreOfWeak
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h e`. Establish `hc` using `Formalism.IndefR.Links.RealDat3.characterisation_of_weak h e`. Use `⟨⟨hc.lev, hc.grp, hc.fam, hc.models, hc.chain, hc.thP⟩, ?_, fun c => rfl, fun i c => rfl⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[h.inert.SF v, h.allPl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem core_of_weak : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → Core R.toRealDat F.lv2 ∧ IsSF R.toRealDat R.SF ∧ (∀ c, R.EEc c = EEc R.toRealDat R.SF c) ∧ ∀ i c, R.Wc' i c = Wcc R.toRealDat R.SF i c := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h e

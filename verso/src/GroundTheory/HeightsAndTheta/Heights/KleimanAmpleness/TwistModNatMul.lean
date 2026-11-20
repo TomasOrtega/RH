@@ -16,9 +16,9 @@ section Charts
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_eq_span_mul_set]`. Use `show Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_mul, SetLike.mem_coe, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, g, hg, rfl⟩`. Conclude with `⟨q, hq, g, hg, rfl⟩`. Introduce and unpack `⟨q, hq, g, hg, rfl⟩`. Conclude with `⟨q, hq, g, hg, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PowRealises.twist_sub (G Q : Kleiman.SubSystem F x Ω) (I : Kleiman.Chart x) :
     (G.twist Q).sub I = Q.sub I * G.sub I := by
@@ -38,7 +38,7 @@ theorem PowRealises.twistSys_sub (c : ℤ) (I : Kleiman.Chart x) :
     (Kleiman.twistSys F x c).sub I = Kleiman.twistMod F x c I := rfl
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).mp (I.2.2 hi)`. Rewrite using `[Kleiman.twistMod_eq_span a I hi, Kleiman.twistMod_eq_span b I hi, Kleiman.twistMod_eq_span (a + b) I hi, Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem PowRealises.twistMod_mul (a b : ℤ) (I : Kleiman.Chart x) :
     Kleiman.twistMod F x a I * Kleiman.twistMod F x b I = Kleiman.twistMod F x (a + b) I := by
@@ -48,14 +48,14 @@ theorem PowRealises.twistMod_mul (a b : ℤ) (I : Kleiman.Chart x) :
     Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `I.2.1`. Rewrite using `[Kleiman.twistMod_eq_span 0 I hi, zpow_zero, Submodule.one_eq_span]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem PowRealises.twistMod_zero (I : Kleiman.Chart x) : Kleiman.twistMod F x 0 I = 1 := by
   obtain ⟨i, hi⟩ := I.2.1
   rw [Kleiman.twistMod_eq_span 0 I hi, zpow_zero, Submodule.one_eq_span]
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [Nat.cast_zero, zero_mul, pow_zero]; exact PowRealises.twistMod_zero I | p + 1 => by rw [pow_succ', ← PowRealises.twistMod_nat_mul c I p, PowRealises.twistMod_mul] congr 1 push_cast ring`.
+A detailed English derivation is pending.
 -/
 theorem PowRealises.twistMod_nat_mul (c : ℤ) (I : Kleiman.Chart x) :
     ∀ p : ℕ, Kleiman.twistMod F x ((p : ℤ) * c) I = Kleiman.twistMod F x c I ^ p
@@ -67,7 +67,7 @@ theorem PowRealises.twistMod_nat_mul (c : ℤ) (I : Kleiman.Chart x) :
     ring
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [pow_zero]; exact PowRealises.twistMod_zero I | p + 1 => by show ((Q.pow p).twist Q).sub I = _ rw [PowRealises.twist_sub, PowRealises.pow_sub Q I p, pow_succ']`.
+A detailed English derivation is pending.
 -/
 theorem PowRealises.pow_sub (Q : Kleiman.SubSystem F x Ω) (I : Kleiman.Chart x) :
     ∀ p : ℕ, (Q.pow p).sub I = Q.sub I ^ p
@@ -83,9 +83,9 @@ section Model
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hu, mul_one]`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨⟨z * u, h⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Conclude with `mul_inv_cancel_right₀ hu z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PowRealises.mem_span_inv_iff (A : Subalgebra F Ω) {u z : Ω} (hu : u ≠ 0) :
     z ∈ Submodule.span A {u⁻¹} ↔ z * u ∈ A := by
@@ -102,7 +102,7 @@ theorem PowRealises.mem_span_inv_iff (A : Subalgebra F Ω) {u z : Ω} (hu : u �
 variable {K : Type} [Fintype K] {ι : K → Type}
 
 /- English proof (translation)
-Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`.
+Simplify using the standard rewrite rules.
 -/
 theorem PowRealises.mem_secOver (y : (Σ k, ι k) → Ω) (n : K → ℤ) (s : Ω) :
     s ∈ secOver F y n ↔ ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) →
@@ -111,11 +111,11 @@ theorem PowRealises.mem_secOver (y : (Σ k, ι k) → Ω) (n : K → ℤ) (s : �
     Subalgebra.mem_toSubmodule]
 
 /- English proof (translation)
-Establish `hu : (∏ k, y ⟨k, c k⟩ ^ (-n k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `t ht`. Conclude with `(PowRealises.mem_span_inv_iff _ hu).mpr ((PowRealises.mem_secOver y n t).mp ht c hc)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`. Take `⟨m, s, hs, hgen⟩` from `hg`. Take `⟨u, hu', hsum⟩` from `hgen c hc`. Establish `key : (∏ k, y ⟨k, c k⟩ ^ (-n k))⁻¹ = ∑ j, (⟨u j, hu' j⟩ : chartRingOver F y c) • s j`. Rewrite using `[← one_mul (_⁻¹), ← hsum, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_assoc, mul_inv_cancel_right₀ hu]`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (hs j))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PowRealises.span_secOver_eq (y : (Σ k, ι k) → Ω) (n : K → ℤ) (hg : IndefiniteRowSideFullHecke.Kleiman2.IsGenerated F y n)
     (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
@@ -139,11 +139,11 @@ theorem PowRealises.span_secOver_eq (y : (Σ k, ι k) → Ω) (n : K → ℤ) (h
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (hs j))
 
 /- English proof (translation)
-Establish `h0 : y ⟨k₀, cc k₀⟩ ^ (-d) = ∏ k, y ⟨k, cc k⟩ ^ (-(d • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k)`. Rewrite using `[Finset.prod_eq_single k₀]`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Introduce `k _ hk`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg, hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[h0, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_add₀ (hc k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PowRealises.prod_exp [DecidableEq K] (y : (Σ k, ι k) → Ω) (k₀ : K) (β : K → ℤ) (p : ℕ) (c d : ℤ)
     (cc : ∀ k, ι k) (hc : ∀ k, y ⟨k, cc k⟩ ≠ 0) :
@@ -166,15 +166,15 @@ theorem PowRealises.prod_exp [DecidableEq K] (y : (Σ k, ι k) → Ω) (k₀ : K
 end Model
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod Q β hQ p ct`. Take `⟨c₀, hc₀⟩` from `Kleiman.Generated.full F Ω N x Q`. Take `⟨c₁, hc₁⟩` from `hG F K ι Ω y k₀ hmod β`. Take `⟨c, hc0, hc1⟩ : ∃ c, c₀ ≤ c ∧ c₁ ≤ c` from `⟨max c₀ c₁, le_max_left _ _, le_max_right _ _⟩`. Establish `hgenQ` using `hc₀ c hc0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgenY` using `hc₁ c hc1`. Take `⟨d, rfl⟩ : ∃ d, ct = (p : ℤ) * c + d` from `⟨ct - (p : ℤ) * c, by ring⟩`. Establish `hchart : ∀ I : Kleiman.Chart x, (Kleiman.twistMul Q.toSubSystem p ((p : ℤ) * c + d)).sub I = Submodule.span (Kleiman.chartRing F x I) ((secOver F y (β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) : Set Ω) ^ p) * Kleiman.twistMod F x d I`. Introduce `I`. Establish `h1 : (Q.toSubSystem.twist (Kleiman.twistSys F x c)).sub I = Submodule.span (Kleiman.chartRing F x I) (secOver F y (β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) : Set Ω)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hgenQ I, hQ c]`. Rewrite `h1` using `[PowRealises.twist_sub, PowRealises.twistSys_sub]`. Use `show ((Q.toSubSystem.pow p).twist (Kleiman.twistSys F x ((p : ℤ) * c + d))).sub I = _`. Rewrite using `[PowRealises.twist_sub, PowRealises.twistSys_sub, PowRealises.pow_sub, ← PowRealises.twistMod_mul, PowRealises.twistMod_nat_mul, ← Submodule.span_pow, ← h1, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hsecs : (Kleiman.twistMul Q.toSubSystem p ((p : ℤ) * c + d)).secs = ⨅ I : Kleiman.Chart x, (Submodule.span (Kleiman.chartRing F x I) ((secOver F y (β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) : Set Ω) ^ p) * Kleiman.twistMod F x d I).restrictScalars F`. Simplify using `only [Kleiman.SubSystem.secs, hchart]`. Use extensionality with `s`. Rewrite using `[hsecs, hS F K ι Ω y k₀ N e x hx hmod _ d s, PowRealises.mem_secOver]`. Use `forall_congr' fun cc => forall_congr' fun hc => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu : (∏ k, y ⟨k, cc k⟩ ^ (-(β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Rewrite using `[← Submodule.span_pow, PowRealises.span_secOver_eq y _ hgenY cc hc, Submodule.span_pow, Set.singleton_pow, inv_pow, PowRealises.mem_span_inv_iff _ (pow_ne_zero _ hu), mul_assoc, PowRealises.prod_exp y k₀ β p c d cc hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PowRealises.proof (hG : ModelGenerated.Statement) (hS : SpanSecs.Statement) : PowRealises.Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod Q β hQ p ct

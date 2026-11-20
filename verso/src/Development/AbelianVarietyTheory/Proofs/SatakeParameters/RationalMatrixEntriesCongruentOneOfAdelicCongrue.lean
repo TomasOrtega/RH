@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.TwU
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ Q n N g h a b`. Use `set e : E := (((Formalism.L2.Col.qOf Q : ℕ) : E) ^ n)⁻¹ * ((g : Matrix (Fin N) (Fin N) E) a b - (1 : Matrix (Fin N) (Fin N) E) a b) with he`. Establish `hm : ((GlobalTheory.TwU.ratA F g : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) - 1 = ((g : Matrix (Fin N) (Fin N) E) - 1).map (Formalism.L2.Col.iA F E)`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1` using `h a b`. Rewrite `h1` using `[hm, Matrix.map_apply, ← map_mul]`. Take `⟨s, hs, hmem⟩` from `h1`. Rewrite `hmem` using `[← map_mul]`. Establish `h2` using `((GlobalTheory.St.G.IntAd.integral_adeles_properties F E).2.2.2.2 (algebraMap (𝓞 E) E s * e)).1 hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `h2`. Conclude with `⟨r, s, hs, hr.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratA_congAt_entry : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (Q : HeightOneSpectrum (𝓞 E)) (n N : ℕ) (g : GL (Fin N) E), GlobalTheory.TwU.CongAt (F := F) Q n (GlobalTheory.TwU.ratA F g) → ∀ a b : Fin N, Formalism.L2.Col.IntAt Q ((((Formalism.L2.Col.qOf Q : ℕ) : E) ^ n)⁻¹ * ((g : Matrix (Fin N) (Fin N) E) a b - (1 : Matrix (Fin N) (Fin N) E) a b)) := by
   intro F E _ _ _ _ _ Q n N g h a b

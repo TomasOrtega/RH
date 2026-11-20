@@ -16,12 +16,12 @@ variable {F : Type*} [Field F]
 def SqNorm (s u : F) : Prop := ∃ x y : F, x ^ 2 - s * y ^ 2 = u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, 0, by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem sqNorm_sq (s : F) (x : F) : SqNorm s (x ^ 2) := ⟨x, 0, by ring⟩
 
 /- English proof (translation)
-Take `⟨x, y, rfl⟩` from `ha`. Take `⟨z, w, rfl⟩` from `hb`. Conclude with `⟨x * z + s * y * w, x * w + y * z, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SqNorm.mul {s a b : F} (ha : SqNorm s a) (hb : SqNorm s b) : SqNorm s (a * b) := by
   obtain ⟨x, y, rfl⟩ := ha
@@ -29,7 +29,7 @@ theorem SqNorm.mul {s a b : F} (ha : SqNorm s a) (hb : SqNorm s b) : SqNorm s (a
   exact ⟨x * z + s * y * w, x * w + y * z, by ring⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0, inv_zero]; exact ⟨0, 0, by ring⟩`. Take `⟨x, y, rfl⟩` from `ha`. Use `⟨x / (x ^ 2 - s * y ^ 2), y / (x ^ 2 - s * y ^ 2), ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem SqNorm.inv {s a : F} (ha : SqNorm s a) : SqNorm s a⁻¹ := by
   by_cases h0 : a = 0
@@ -39,7 +39,7 @@ theorem SqNorm.inv {s a : F} (ha : SqNorm s a) : SqNorm s a⁻¹ := by
   field_simp
 
 /- English proof (translation)
-Take `⟨x, y, rfl⟩` from `h`. Conclude with `⟨φ x, φ y, by simp [map_sub, map_mul, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SqNorm.map {F' : Type*} [Field F'] (φ : F →+* F') {s u : F} (h : SqNorm s u) :
     SqNorm (φ s) (φ u) := by
@@ -50,7 +50,7 @@ variable (h2 : (2 : F) ≠ 0)
 include h2
 
 /- English proof (translation)
-Use `⟨(1 + u) / 2, (u - 1) / (2 * r), ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sqNorm_of_eq_sq {s r : F} (hs : s = r ^ 2) (hr : r ≠ 0) (u : F) : SqNorm s u := by
   refine ⟨(1 + u) / 2, (u - 1) / (2 * r), ?_⟩
@@ -59,11 +59,11 @@ theorem sqNorm_of_eq_sq {s r : F} (hs : s = r ^ 2) (hr : r ≠ 0) (u : F) : SqNo
   ring
 
 /- English proof (translation)
-Take `⟨x, y, hxy⟩` from `h`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `hux : u = x ^ 2` using `by rw [← hxy]; ring`. Establish `hx : x ≠ 0`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hu (by rw [hux]; ring)`. Conclude with `sqNorm_of_eq_sq h2 hux hx s`. Use `⟨x / y, 1 / y, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hxy]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem SqNorm.symm {s u : F} (hu : u ≠ 0) (h : SqNorm s u) : SqNorm u s := by
   obtain ⟨x, y, hxy⟩ := h
@@ -80,7 +80,7 @@ theorem SqNorm.symm {s u : F} (hu : u ≠ 0) (h : SqNorm s u) : SqNorm u s := by
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SqNorm.symm h2 hu, SqNorm.symm h2 hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem sqNorm_comm {s u : F} (hs : s ≠ 0) (hu : u ≠ 0) : SqNorm s u ↔ SqNorm u s :=
   ⟨SqNorm.symm h2 hu, SqNorm.symm h2 hs⟩
@@ -93,9 +93,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] [CharZero F]
 
 /- English proof (translation)
-Establish `: Fact (∀ r : F, r ^ 2 ≠ s + 0 * r)` using `⟨by simpa using hs⟩`. Establish `: Algebra.IsQuadraticExtension F (QuadraticAlgebra F s 0)` using `⟨QuadraticAlgebra.finrank_eq_two s 0⟩`. Use `⟨(normUnits F (QuadraticAlgebra F s 0)).range, natCard_quotient_range_normUnits_eq_two, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_normUnits_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z.re, z.im, by rw [← algebraNorm_quadraticAlgebra, hz]⟩`. Introduce and unpack `⟨x, y, h⟩`. Conclude with `⟨⟨x, y⟩, by rw [algebraNorm_quadraticAlgebra]; exact h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_index_two {s : F} (hs : ∀ r : F, r ^ 2 ≠ s) :
     ∃ N : Subgroup Fˣ, Nat.card (Fˣ ⧸ N) = 2 ∧ ∀ u : Fˣ, u ∈ N ↔ SqNorm s (u : F) := by
@@ -114,11 +114,11 @@ theorem exists_index_two {s : F} (hs : ∀ r : F, r ^ 2 ≠ s) :
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Introduce `b hb`. Assume the negation of the conclusion as `hbA`. Establish `hBtop : B ≠ ⊤`. Introduce and unpack `rfl`. Establish `: Nat.card (G ⧸ (⊤ : Subgroup G)) = 1` using `Subgroup.index_top`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, g ∉ B := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `hBtop (eq_top_iff.2 fun g _ => H g)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hgA : g ∉ A` using `fun h => hg (hAB h)`. Break down `mem_or_mul_inv_mem_of_natCard_eq_two hA hbA g with h | h` into its components or cases. Conclude with `hgA h`. Conclude with `hg (by simpa using B.mul_mem (hAB h) hb)`.
+A detailed English derivation is pending.
 -/
 theorem le_of_le_of_natCard_eq_two {G : Type*} [CommGroup G] {A B : Subgroup G}
     (hA : Nat.card (G ⧸ A) = 2) (hB : Nat.card (G ⧸ B) = 2) (hAB : A ≤ B) : B ≤ A := by
@@ -138,35 +138,31 @@ theorem le_of_le_of_natCard_eq_two {G : Type*} [CommGroup G] {A B : Subgroup G}
   · exact hg (by simpa using B.mul_mem (hAB h) hb)
 
 /- English proof (translation)
-Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Establish `h2' : (2 : F') ≠ 0` using `by rw [← map_ofNat φ 2]; exact (map_ne_zero φ).2 h2`. Establish `he0 : e ≠ 0` using `fun h => he 0 (by rw [h]; ring)`. Distinguish the cases in `hdsq : ∃ r : F, r ^ 2 = d`. Take `⟨r, rfl⟩` from `hdsq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hr : r ≠ 0` using `by rintro rfl; exact hd (by ring)`. Conclude with `sqNorm_of_eq_sq h2' (by rw [map_pow]) ((map_ne_zero φ).2 hr) _`. Distinguish the cases in `hdesq : ∃ r : F, r ^ 2 = d * e`. Take `⟨r, hr⟩` from `hdesq`. Establish `hr0 : r ≠ 0` using `by rintro rfl; exact mul_ne_zero hd he0 (by rw [← hr]; ring)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφe : φ e ≠ 0` using `(map_ne_zero φ).2 he0`. Use `sqNorm_of_eq_sq h2' (r := φ r * s / φ e) ?_ ?_ _` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[hs, ← map_pow, ← map_pow, ← map_mul, ← map_mul, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hφe (by rw [← hs]; ring)`. Conclude with `div_ne_zero (mul_ne_zero ((map_ne_zero φ).2 hr0) hs0) hφe`. Use `push Not at hdsq hdesq`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hβd : SqNorm d β`. Conclude with `hβd.map φ`. Take `⟨Nd, hNd, hmemd⟩` from `exists_index_two hdsq`. Take `⟨Nde, hNde, hmemde⟩` from `exists_index_two hdesq`. Take `⟨Ne, hNe, hmeme⟩` from `exists_index_two he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hde0 : d * e ≠ 0` using `mul_ne_zero hd he0`. Choose the witnesses or unpack the hypotheses as in `⟨n, hnde, hnd⟩ : ∃ n : Fˣ, n ∈ Nde ∧ n ∉ Nd := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `hle : Nd ≤ Nde` using `le_of_le_of_natCard_eq_two hNde hNd H`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ b : Fˣ, SqNorm (b : F) e`. Introduce `b`. Distinguish the cases in `hbsq : ∃ r : F, r ^ 2 = b`. Take `⟨r, hr⟩` from `hbsq`. Establish `hr0 : r ≠ 0` using `by rintro rfl; exact b.ne_zero (by rw [← hr]; ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sqNorm_of_eq_sq h2 hr.symm hr0 e`. Use `push Not at hbsq`. Take `⟨Nb, hNb, hmemb⟩` from `exists_index_two hbsq`. Establish `hiff : Units.mk0 d hd ∈ Nb ↔ Units.mk0 (d * e) hde0 ∈ Nb`. Rewrite using `[hmemb, hmemb, Units.val_mk0, Units.val_mk0, sqNorm_comm h2 b.ne_zero hd, sqNorm_comm h2 b.ne_zero hde0, ← hmemd b, ← hmemde b]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => hle h, fun h => H _ h⟩`. Establish `hem : Units.mk0 e he0 ∈ Nb`. Establish `hq : Units.mk0 (d * e) hde0 * (Units.mk0 d hd)⁻¹ = Units.mk0 e he0`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hdb : Units.mk0 d hd ∈ Nb`. Rewrite using `[← hq]`. Conclude with `Nb.mul_mem (hiff.1 hdb) (Nb.inv_mem hdb)`. Break down `mem_or_mul_inv_mem_of_natCard_eq_two hNb hdb (Units.mk0 (d * e) hde0) with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hiff.2 h) hdb`. Rewrite `h` using `[hq]`. Then use the resulting hypothesis. Simplify using `using (hmemb _).1 hem`. Establish `htop : Ne = ⊤`. Use `eq_top_iff.2 fun b _ => (hmeme b).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(key b).symm h2 he0`. Rewrite `hNe` using `[htop]`. Establish `: Nat.card (Fˣ ⧸ (⊤ : Subgroup Fˣ)) = 1` using `Subgroup.index_top`. Use linear arithmetic over natural numbers and integers. Establish `hβNd : Units.mk0 β hβ ∉ Nd` using `fun h => hβd (by simpa using (hmemd _).1 h)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hq : Units.mk0 β hβ * n⁻¹ ∈ Nd` using `(mem_or_mul_inv_mem_of_natCard_eq_two hNd hnd (Units.mk0 β hβ)).resolve_left hβNd`. Take `⟨a, b, hab⟩` from `(hmemd _).1 hq`. Take `⟨c, f, hcf⟩` from `(hmemde _).1 hnde`. Establish `h1 : SqNorm (φ d) (φ ((Units.mk0 β hβ * n⁻¹ : Fˣ) : F))` using `SqNorm.map φ ⟨a, b, hab⟩`. Establish `h2n : SqNorm (φ d) (φ (n : F))`.
-
-Use `⟨φ c, φ f * s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcf, mul_pow, hs]`. Simplify using `only [map_sub, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `h1.mul h2n` as an intermediate fact.
-
-Rewrite `this` using `[← map_mul, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, mul_assoc, inv_mul_cancel₀ n.ne_zero, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem sqNorm_of_quadratic {F' : Type*} [Field F'] (φ : F →+* F') {e : F}
     (he : ∀ r : F, r ^ 2 ≠ e) {s : F'} (hs : s ^ 2 = φ e) {d β : F} (hd : d ≠ 0)

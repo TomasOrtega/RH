@@ -36,7 +36,7 @@ def repE {K G : Type} [Field K] [Group G] {N : ℕ} (σ : K →+* ℂ) (ρ : Rep
     rw [map_mul, LinearMap.toMatrix'_mul, Matrix.map_mul, Matrix.toLin'_mul]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(Matrix.toLin' ((LinearMap.toMatrix' (ρ g)).map σ)) (fun j => σ (v j)) k = σ (ρ g v k)`. Establish `h` using `RingHom.map_mulVec σ (LinearMap.toMatrix' (ρ g)) v k`. Rewrite `h` using `[LinearMap.toMatrix'_mulVec]`. Rewrite using `[Matrix.toLin'_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -50,9 +50,9 @@ theorem repE_embV {K G : Type} [Field K] [Group G] {N : ℕ} (σ : K →+* ℂ) 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `σ ((Pi.single k (1 : K) : Fin N → K) j) = (Pi.single k (1 : ℂ) : Fin N → ℂ) j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embV_single {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) (k : Fin N) :
     embV σ N (Pi.single k 1) = Pi.single k 1 := by
@@ -63,7 +63,7 @@ theorem embV_single {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) (k : Fin N
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Use `(Pi.basisFun ℂ (Fin N)).linearIndependent using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[embV_single]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem embV_li {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) :
     LinearIndependent ℂ fun k => embV σ N (Pi.single k 1) := by
@@ -72,7 +72,7 @@ theorem embV_li {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) :
   simp [embV_single]
 
 /- English proof (translation)
-Use `eq_top_iff.2 ((Pi.basisFun ℂ (Fin N)).span_eq.ge.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨Pi.single k 1, by simp [embV_single]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem embV_span {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) :
     Submodule.span ℂ (Set.range (embV σ N)) = ⊤ := by
@@ -83,7 +83,7 @@ theorem embV_span {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) :
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Use `⟨fun u c => χ u⁻¹ * a u c, fun u F hF c x => ?_⟩` and prove the remaining obligations. Rewrite using `[twist_apply, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, ha u F hF c x]`. Simplify using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isPullRep_twist {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U]
     [MulAction U C] {M : TwoLevels E r U C} {la : Wt M.Ψ r} {ρ : Representation ℂ U (M.cusp la)}

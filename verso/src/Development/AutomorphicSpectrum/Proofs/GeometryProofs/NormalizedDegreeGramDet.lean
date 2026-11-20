@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyDegFree
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hd : B.gramDet σ e = (Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det` using `rfl`. Establish `hp : 0 < (Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det` using `(Matrix.posDef_gram_of_linearIndependent (linearIndependent_fibreVec B.metric σ hli)).det_pos`. Take `⟨h1, h2⟩` from `Complex.lt_def.mp hp`. Establish `hz : (((Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det).re : ℂ) = (Matrix.gram ℂ fun i => fibreVec B.metric σ (e i)).det` using `Complex.ext (by simp) (by simpa using h2)`. Rewrite using `[hd, ← hz, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by simpa using h1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -33,15 +33,13 @@ theorem gramDet_eq_norm {L : Type} [Field L] [NumberField L] (B : HermitianBundl
   rfl
 
 /- English proof (translation)
-Introduce `L _ _ B n e hli hspan`. Set `s : Fin n → (⊤ : Submodule (𝓞 L) B.carrier)` to `fun i => ⟨e i, Submodule.mem_top⟩`. Establish `hs : LinearIndependent (𝓞 L) s` using `LinearIndependent.of_comp (⊤ : Submodule (𝓞 L) B.carrier).subtype hli`. Establish `hcard : Fintype.card (Fin n) = B.rank ⊤`. Rewrite using `[Fintype.card_fin, HermitianBundle.rank, finrank_top, Module.finrank_eq_card_basis (Module.Basis.mk hli hspan.ge), Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : Submodule.span (𝓞 L) (Set.range s) = ⊤`. Establish `hmap : (Submodule.span (𝓞 L) (Set.range s)).map (⊤ : Submodule (𝓞 L) B.carrier).subtype = ⊤`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `hspan`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩ -`. Establish `hx' : x ∈ (Submodule.span (𝓞 L) (Set.range s)).map (⊤ : Submodule (𝓞 L) B.carrier).subtype`. Rewrite using `[hmap]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, rfl⟩` from `hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Establish `hone : Nat.card ((⊤ : Submodule (𝓞 L) B.carrier) ⧸ Submodule.span (𝓞 L) (Set.range s)) = 1`. Rewrite using `[hsp]`. Conclude with `Nat.card_unique`. Establish `hg : ∀ σ : L →+* ℂ, GroundTheory.Heights₂.Heights.gramDet B.metric σ (fun i => ((s i : (⊤ : Submodule (𝓞 L) B.carrier)) : B.carrier)) = ‖B.gramDet σ e‖` using `fun σ => gramDet_eq_norm B σ hli`.
-
-Rewrite using `[HermitianBundle.normDegree, B.degree_eq_of_linearIndependent ⊤ hs hcard, hone, Nat.cast_one, Real.log_one, zero_sub, mean]`. Simplify using `only [hg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normDegree_top_eq_mean_gramDet : ∀ (L : Type) [Field L] [NumberField L] (B : HermitianBundle.{0} L) (n : ℕ) (e : Fin n → B.carrier), LinearIndependent (𝓞 L) e → Submodule.span (𝓞 L) (Set.range e) = ⊤ → B.normDegree ⊤ = -(1 / 2) * mean L (fun σ => Real.log ‖B.gramDet σ e‖) := by
   intro L _ _ B n e hli hspan

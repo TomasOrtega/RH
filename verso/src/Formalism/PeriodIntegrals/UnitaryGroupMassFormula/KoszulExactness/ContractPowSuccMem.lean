@@ -12,13 +12,13 @@ section General
 variable {R : Type u} [CommRing R] {M : Type v} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx` using `[pow_zero, Submodule.mem_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, rfl⟩` from `hx`. Conclude with `CliffordAlgebra.contractLeft_algebraMap _ f y`. Consider the case `succ j ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ']`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨m, hm, rfl⟩` from `ha`. Rewrite using `[CliffordAlgebra.contractLeft_ι_mul, hf m hm, ih b hb, zero_smul, mul_zero, sub_zero]`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, ha, hb, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem contract_pow_eq_zero (N : Submodule R M) (f : Module.Dual R M) (hf : ∀ m ∈ N, f m = 0) :
     ∀ (j : ℕ) (x : ExteriorAlgebra R M), x ∈ (N.map (ExteriorAlgebra.ι R)) ^ j →
@@ -47,7 +47,7 @@ section Koszul
 variable {R : Type u} [CommRing R] {D : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Li_eq_map (R : Type u) [CommRing R] (D : ℕ) (i : ℕ) :
     Li R D i = (Submodule.span R ((fun k : Fin D => (Pi.single k (1 : R) : Fin D → R)) ''
@@ -56,7 +56,7 @@ theorem Li_eq_map (R : Type u) [CommRing R] (D : ℕ) (i : ℕ) :
   rfl
 
 /- English proof (translation)
-Simplify using `[form, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_single (s : Fin D → R) (k : Fin D) : form s (Pi.single k 1) = s k := by
   simp [form, Pi.single_apply]

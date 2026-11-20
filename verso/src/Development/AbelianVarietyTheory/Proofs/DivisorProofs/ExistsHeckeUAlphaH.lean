@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ hL _ i j`. Take `⟨χ₁, h1, -⟩` from `GlobalTheory.Mem.Col2.SplitChar.exists_of_isMu0 (N := 0) ⟨0, rfl⟩ (L.C.isMu0 j) fun g => (D.hc _).e_int j`. Establish `hr` using `(ranks_exact D i j).2.1`. Break down `Nat.mod_two_eq_zero_or_one (rankV D i j) with h | h` into its components or cases. Use `⟨GlobalTheory.AlphaSplit.mulU _ χ₁ (GlobalTheory.Mem.Col2.SplitChar.trivial D (N := 0) ⟨0, rfl⟩) (Int.even_iff.2 (by omega)), fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.AlphaSplit.mulU_f, h1]`. Simplify using `[alphaH, h, hL.xi_base, GlobalTheory.Mem.Col2.SplitChar.trivial]`. Use `⟨GlobalTheory.AlphaSplit.mulU _ χ₁ (GlobalTheory.AlphaSplit.etaU L.C.isEta) (Int.even_iff.2 (by omega)), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AlphaSplit.mulU_f, h1, GlobalTheory.AlphaSplit.etaU_f]`. Simplify using `[alphaH, h, hL.xi_base]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_heckeU_alphaH : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ →
     ∀ (G : GridData L sc) (i j : Fin D.R.m), ∃ χ : HeckeU D (botSmall D i j),

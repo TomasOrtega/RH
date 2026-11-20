@@ -8,17 +8,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X S f e hf hef x x' hxx' hx`. Take `⟨V, _, _, _, g, hgc, hgb⟩` from `GlobalTheory.T.exists_valuationRing_dominating_specialization X x' x hxx'`. Use `set p : Spec (CommRingCat.of V) ⟶ S := g ≫ f with hp`. Establish `hpb : IsPullback (pullback.fst f p) (pullback.snd f p) f p` using `IsPullback.of_hasPullback f p`. Set `σ : Spec (CommRingCat.of V) ⟶ pullback f p` to `pullback.lift g (𝟙 _) (by simp [hp])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e' : Spec (CommRingCat.of V) ⟶ pullback f p` to `pullback.lift (p ≫ e) (𝟙 _) (by simp [Category.assoc, hef])`. Establish `hσf : σ ≫ pullback.snd f p = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hσq : σ ≫ pullback.fst f p = g` using `pullback.lift_fst _ _ _`. Establish `he'f : e' ≫ pullback.snd f p = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `he'q : e' ≫ pullback.fst f p = p ≫ e` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Smooth f := hf`. Establish `hf' : Smooth (pullback.snd f p)` using `inferInstance`. Establish `key` using `GlobalTheory.T.preimage_section_connectedComponentIn_of_isPullback X S (pullback f p) (Spec (CommRingCat.of V)) f (pullback.snd f p) p (pullback.fst f p) e e' hf hpb hef he'f he'q`. Establish `hc : σ (IsLocalRing.closedPoint V) ∈ {y : ↥(pullback f p) | y ∈ connectedComponentIn (pullback.snd f p ⁻¹' {pullback.snd f p y}) (e' (pullback.snd f p y))}`. Rewrite using `[← key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage]`. Establish `h1 : (pullback.fst f p) (σ (IsLocalRing.closedPoint V)) = x`. Rewrite using `[← hgc, ← hσq]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`. Establish `hb` using `GlobalTheory.T.section_mem_component_generic_of_closed_valuation V (pullback f p) (pullback.snd f p) e' σ hf' he'f hσf hc`. Rewrite `hb` using `[← key]`. Establish `: (pullback.fst f p) (σ (⊥ : PrimeSpectrum V)) = x'`. Rewrite using `[← hgb, ← hσq]`.
-
-Both sides reduce to the same expression. Rewrite using `[← this]`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stableUnderGeneralization_sectionComponents :
     ∀ (X S : Scheme.{0}) (f : X ⟶ S) (e : S ⟶ X), Smooth f → e ≫ f = 𝟙 _ →

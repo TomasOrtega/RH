@@ -19,7 +19,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hx⟩` from `hx`. Conclude with `⟨s, hs, h hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem c3eqv_loc_mono {P : Ideal (𝓞 E)} [P.IsPrime] {L L' : Submodule (𝓞 E) S.V} (h : L ≤ L') :
     Formalism.HermitianLatticesTheory.localization₂ P L ≤ Formalism.HermitianLatticesTheory.localization₂ P L' := by
@@ -28,7 +28,7 @@ theorem c3eqv_loc_mono {P : Ideal (𝓞 E)} [P.IsPrime] {L L' : Submodule (𝓞 
   exact ⟨s, hs, h hx⟩
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `⟨1, P.primeCompl.one_mem, by rwa [one_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem c3eqv_le_loc {P : Ideal (𝓞 E)} [hP : P.IsPrime] (L : Submodule (𝓞 E) S.V) : L ≤ Formalism.HermitianLatticesTheory.localization₂ P L := by
   intro x hx

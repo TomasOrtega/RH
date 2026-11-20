@@ -9,15 +9,15 @@ local macro "opens_le" : tactic =>
   `(tactic| (rw [SetLike.le_def]; intro y hy; simp only [TopologicalSpace.Opens.mem_inf] at hy ⊢; aesop))
 
 /- English proof (translation)
-Introduce `Y I J Uc c hc V σ hV hVt B hB`. Establish `hV' : ∀ p y, y ∈ V p → y ∈ Uc (σ p)` using `fun p y h => hV p h`. Establish `cov : ∀ O : Y.Opens, O ≤ ⨆ p, O ⊓ V p`. Introduce `O x hx`. Establish `: x ∈ ⨆ p, V p` using `by rw [hVt]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p, hx, hp⟩`. Establish `glue : ∀ i, ∃ t : Γ(Y, Uc i), ∀ p, rsT t (Uc i ⊓ V p) = rsT (B p) (Uc i ⊓ V p) + rsT (c (σ p) i) (Uc i ⊓ V p)`. Introduce `i`. Use `exists_rsT_eq (fun p => Uc i ⊓ V p) (fun p => inf_le_left) (cov _) _ fun p p' => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun s => rsT s ((Uc i ⊓ V p) ⊓ (Uc i ⊓ V p'))) (hB p p')`. Establish `h2` using `congrArg (fun s => rsT s ((Uc i ⊓ V p) ⊓ (Uc i ⊓ V p'))) (hc (σ p) (σ p') i)`. Simplify using `only [rsT_add, rsT_sub] at h1 h2 ⊢`. Simplify using `(disch := opens_le) only [rsT_rsT] at h1 h2 ⊢`. Take the linear combination `h1 - h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose t ht using glue`. Use `⟨t, fun i j => ?_⟩` and prove the remaining obligations. Use `eq_of_rsT_eq (fun p => Uc i ⊓ Uc j ⊓ V p) (fun p => inf_le_left) (cov _) _ _ fun p => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (ht i p)`. Establish `h2` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (ht j p)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (hc (σ p) i j)`. Simplify using `only [rsT_add, rsT_sub] at h1 h2 h3 ⊢`. Simplify using `(disch := opens_le) only [rsT_rsT] at h1 h2 h3 ⊢`. Take the linear combination `h1 - h2 + h3`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCob_of_refine : ∀ {Y : Scheme.{0}} {I J : Type} (Uc : I → Y.Opens) (c : GlobalTheory.KS.C1 Uc),
     GlobalTheory.KS.IsCoc Uc c → ∀ (V : J → Y.Opens) (σ : J → I), (∀ p, V p ≤ Uc (σ p)) → (⨆ p, V p = ⊤) →

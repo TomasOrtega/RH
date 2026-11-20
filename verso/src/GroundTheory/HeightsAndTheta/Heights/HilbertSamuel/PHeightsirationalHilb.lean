@@ -17,7 +17,7 @@ def blockSum (γ : (Σ k, ι k) →₀ ℕ) : K → ℕ := fun k => ∑ i, γ �
 
 omit [Fintype K] in
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm)]`. Conclude with `congrFun h k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_monomial {γ : (Σ k, ι k) →₀ ℕ} {a : K → ℕ} (h : blockSum γ = a) (r : ℤ) :
     IsMultiHomog (monomial γ r : MRing ι) a := by
@@ -27,7 +27,7 @@ theorem isMultiHomog_monomial {γ : (Σ k, ι k) →₀ ℕ} {a : K → ℕ} (h 
 
 omit [Fintype K] in
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, hm₁, m₂, hm₂, rfl⟩` from `Finset.mem_add.mp (support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf m₁ hm₁ k, hg m₂ hm₂ k, ← habc, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul {f g : MRing ι} {a b c : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b)
     (habc : a + b = c) : IsMultiHomog (f * g) c := by
@@ -38,9 +38,9 @@ theorem isMultiHomog_mul {f g : MRing ι} {a b c : K → ℕ} (hf : IsMultiHomog
 
 omit [Fintype K] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h1` using `isMultiHomog_monomial (ι := ι) (γ := 0) (a := 0) (by funext k; simp [blockSum]) 1`. Simplify using `using h1`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `isMultiHomog_mul (h j (Finset.mem_insert_self j s)) (ih fun j' hj' => h j' (Finset.mem_insert_of_mem hj')) rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_prod {J : Type} (s : Finset J) (f : J → MRing ι) (d : J → K → ℕ)
     (h : ∀ j ∈ s, IsMultiHomog (f j) (d j)) : IsMultiHomog (∏ j ∈ s, f j) (∑ j ∈ s, d j) := by
@@ -60,7 +60,7 @@ def monoSet (a : K → ℕ) : Finset ((Σ k, ι k) →₀ ℕ) :=
   (Finset.Icc 0 (Finsupp.equivFunOnFinite.symm fun p : (Σ k, ι k) => a p.1)).filter (blockSum · = a)
 
 /- English proof (translation)
-Unfold `monoSet`. Rewrite using `[Finset.mem_filter]`. Use `⟨fun h => h.2, fun h => ⟨Finset.mem_Icc.mpr ⟨by simp, fun p => ?_⟩, h⟩⟩` and prove the remaining obligations. Rewrite using `[Finsupp.coe_equivFunOnFinite_symm, ← h]`. Conclude with `Finset.single_le_sum (f := fun i => γ ⟨p.1, i⟩) (fun _ _ => Nat.zero_le _) (Finset.mem_univ p.2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_monoSet {a : K → ℕ} {γ : (Σ k, ι k) →₀ ℕ} : γ ∈ monoSet a ↔ blockSum γ = a := by
   classical
@@ -72,7 +72,7 @@ theorem mem_monoSet {a : K → ℕ} {γ : (Σ k, ι k) →₀ ℕ} : γ ∈ mono
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [CharZero Ω] in
 /- English proof (translation)
-Simplify using `[aeval_monomial]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_monomial_int (y : (Σ k, ι k) → Ω) (γ : (Σ k, ι k) →₀ ℕ) (r : ℤ) :
     aeval y (monomial γ r : MRing ι) = ((r : ℚ) : Ω) * aeval y (monomial γ (1 : ℤ) : MRing ι) := by
@@ -81,9 +81,9 @@ theorem aeval_monomial_int (y : (Σ k, ι k) → Ω) (γ : (Σ k, ι k) →₀ �
 omit [Fintype K] in
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite using `[g.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial_int, ← Rat.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.smul_mem _ (hW γ (funext fun k => hg γ hγ k))`.
+A detailed English derivation is pending.
 -/
 theorem valueSpan_le (y : (Σ k, ι k) → Ω) (a : K → ℕ) (W : Submodule ℚ Ω)
     (hW : ∀ γ : (Σ k, ι k) →₀ ℕ, blockSum γ = a → aeval y (monomial γ (1 : ℤ) : MRing ι) ∈ W) :
@@ -96,7 +96,7 @@ theorem valueSpan_le (y : (Σ k, ι k) → Ω) (a : K → ℕ) (W : Submodule �
   exact W.smul_mem _ (hW γ (funext fun k => hg γ hγ k))
 
 /- English proof (translation)
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℚ (((monoSet a).image fun γ => aeval y (monomial γ (1 : ℤ) : MRing ι) : Finset Ω) : Set Ω)) (valueSpan_le y a _ fun γ hγ => Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe]`. Conclude with `⟨γ, mem_monoSet.mpr hγ, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem finiteDimensional_valueSpan (y : (Σ k, ι k) → Ω) (a : K → ℕ) :
     FiniteDimensional ℚ (valueSpan y a) := by
@@ -110,7 +110,7 @@ theorem finiteDimensional_valueSpan (y : (Σ k, ι k) → Ω) (a : K → ℕ) :
 omit [Fintype K] [∀ k, Fintype (ι k)] [CharZero Ω] in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (LinearMap.mulLeft ℚ t)` using `fun a b hab => mul_left_cancel₀ ht hab`. Rewrite using `[LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj V)]`. Conclude with `Submodule.finrank_mono (Submodule.map_le_iff_le_comap.mpr h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_of_mul [CharZero Ω] {V W : Submodule ℚ Ω} [FiniteDimensional ℚ W] {t : Ω} (ht : t ≠ 0)
     (h : V ≤ W.comap (LinearMap.mulLeft ℚ t)) : Module.finrank ℚ V ≤ Module.finrank ℚ W := by
@@ -123,33 +123,29 @@ end BlockBirationalHilbert
 open BlockBirationalHilbert in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ _ y k₀ hy hbir m`. Use `choose i hi using hy`. Establish `hV'` using `hV K ι Ω y`. Use `finiteDimensional_valueSpan (Ω := Ω) y` as an intermediate fact. Establish `L : ∀ n : ℕ, GroundTheory.Heights₂.Heights.NumbersDVR.hilbFn ((mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ))) (fun k => if k = k₀ then (n : ℤ) else 0) = (Module.finrank ℚ (valueSpan y (blockDeg k₀ n)) : ℤ)` using `fun n => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [← hV']; congr 1; funext k; by_cases hk : k = k₀ <;> simp [hk, blockDeg]`. Establish `M : ∀ n : ℕ, GroundTheory.Heights₂.Heights.NumbersDVR.hilbFn ((mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ))) (fun k => if k = k₀ then (n : ℤ) else m k) = (Module.finrank ℚ (valueSpan y (fun k => if k = k₀ then n else m k)) : ℤ)` using `fun n => by`. Apply the tactic sequence `rw [← hV']; congr 1; funext k; by_cases hk : k = k₀ <;> simp [hk]`. Use `set m₀ : K → ℕ := fun k => if k = k₀ then 0 else m k with hm₀`. Set `β : (Σ k, ι k) →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun p => if p.1 ≠ k₀ ∧ p.2 = i p.1 then m p.1 else 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hβ : blockSum β = m₀`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = k₀ <;> simp [blockSum, β, hk, m₀]`. Use `set u : Ω := aeval y (monomial β (1 : ℤ) : MRing ι) with hu_def`. Establish `hu : u ≠ 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hu_def, aeval_monomial, map_one, one_mul, Finsupp.prod]`. Use `Finset.prod_ne_zero_iff.mpr fun p hp => pow_ne_zero _ ?_` and prove the remaining obligations. Break down `p with ⟨k, j⟩` into its components or cases. Establish `h0 : β ⟨k, j⟩ ≠ 0` using `Finsupp.mem_support_iff.mp hp`. Simplify using `only [β, Finsupp.coe_equivFunOnFinite_symm] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs at h0 with h`. Take `⟨_, rfl⟩` from `h`. Conclude with `hi k`. Conclude with `absurd rfl h0`. Establish `key : ∀ α ∈ monoSet (ι` using `ι) m₀, ∃ (c : ℕ) (g h : MRing ι), IsMultiHomog g (blockDeg k₀ c) ∧ IsMultiHomog h (blockDeg k₀ c) ∧ aeval y h ≠ 0 ∧ aeval y (monomial α (1 : ℤ) : MRing ι) * aeval y h = aeval y g * u := fun α hα => hbir m₀ _ _ (isMultiHomog_monomial (mem_monoSet.mp hα) 1) (isMultiHomog_monomial h …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `choose c g h hg hh hh0 hgh using key`. Use `⟨∑ a ∈ (monoSet (ι := ι) m₀).attach, c a.1 a.2, fun n => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[L, M]`. Use `Nat.cast_le.mpr (finrank_le_of_mul hu (valueSpan_le y _ _ fun γ hγ => ?_))` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨monomial β 1 * monomial γ 1, isMultiHomog_mul (isMultiHomog_monomial hβ 1) (isMultiHomog_monomial hγ 1) ?_, by` and prove the remaining obligations. Simplify using `only [map_mul, hu_def]⟩`. Apply the tactic sequence `funext k; by_cases hk : k = k₀ <;> simp [hk, m₀, blockDeg]`. Rewrite using `[M, L]`. Establish `hH : aeval y (∏ a ∈ (monoSet (ι` using `ι) m₀).attach, h a.1 a.2) ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => hh0 a.1 a.2`. Use `Nat.cast_le.mpr (finrank_le_of_mul (mul_ne_zero (inv_ne_zero hu) hH) (valueSpan_le y _ _ fun γ hγ => ?_))` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply]`. Use `set γ₀ := γ.filter (fun p => p.1 = k₀) with hγ₀`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set α := γ.filter (fun p => ¬ p.1 = k₀) with hα_def`. Establish `hsplit : γ₀ + α = γ` using `Finsupp.filter_add_filter_not γ _`. Establish `hα : blockSum α = m₀`. Use function extensionality and compare the values at `k`. Use `congrFun hγ k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `by_cases hk : k = k₀ <;> simp_all [blockSum, m₀]`. Establish `hγ₀' : blockSum γ₀ = blockDeg k₀ n`. Use function extensionality and compare the values at `k`. Use `congrFun hγ k` as an intermediate fact. Apply the tactic sequence `by_cases hk : k = k₀ <;> simp_all [blockSum, blockDeg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hαS : α ∈ monoSet (ι` using `ι) m₀ := mem_monoSet.mpr hα`. Establish `hmem : (⟨α, hαS⟩ : {x // x ∈ monoSet (ι` using `ι) m₀}) ∈ (monoSet (ι := ι) m₀).attach := Finset.mem_attach _ _`. Use `Submodule.subset_span ⟨monomial γ₀ 1 * g α hαS * ∏ a ∈ (monoSet (ι := ι) m₀).attach.erase ⟨α, hαS⟩, h a.1 a.2, isMultiHomog_mul (isMultiHomog_mul (isMultiHomog_monomial hγ₀' 1) (hg α hαS) rfl) (isMultiHomog_prod _ _ (fun a => blockDeg k₀ (c a.1 a.2)) fun a _ => hh a.1 a.2) ?_, ?_ …` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = k₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Finset.sum_apply, blockDeg, hk, if_true]`. Rewrite using `[← Finset.add_sum_erase _ _ hmem]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[blockDeg, hk, Finset.sum_apply]`. Establish `e1 : aeval y (monomial γ (1 : ℤ) : MRing ι) = aeval y (monomial γ₀ (1 : ℤ) : MRing ι) * aeval y (monomial α (1 : ℤ) : MRing ι)`.
-
-Rewrite using `[← map_mul, monomial_mul, hsplit, mul_one]`. Rewrite using `[map_mul, map_mul, e1, map_prod, map_prod, ← Finset.mul_prod_erase _ _ hmem]`. Establish `e2` using `hgh α hαS`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hu, one_mul]`.
-
-Use `_ = u⁻¹ * (aeval y (g α hαS) * u) * (aeval y (monomial γ₀ (1 : ℤ) : MRing ι) * ∏ a ∈ (monoSet (ι := ι) m₀).attach.erase ⟨α, hαS⟩, aeval y (h a.1 a.2)) := by ring`. Use `_ = u⁻¹ * (aeval y (monomial α (1 : ℤ) : MRing ι) * aeval y (h α hαS)) * (aeval y (monomial γ₀ (1 : ℤ) : MRing ι) * ∏ a ∈ (monoSet (ι := ι) m₀).attach.erase ⟨α, hαS⟩, aeval y (h a.1 a.2)) := by rw [e2]`. Use `_ = u⁻¹ * (aeval y (h α hαS) * ∏ a ∈ (monoSet (ι := ι) m₀).attach.erase ⟨α, hαS⟩, aeval y (h a.1 a.2)) * (aeval y (monomial γ₀ (1 : ℤ) : MRing ι) * aeval y (monomial α (1 : ℤ) : MRing ι)) := by ring`.
+A detailed English derivation is pending.
 -/
 theorem BlockBirationalHilbert.proof (hV : HilbFnValueSpan.Statement) : BlockBirationalHilbert.Statement := by
   intro K _ _ ι _ Ω _ _ y k₀ hy hbir m

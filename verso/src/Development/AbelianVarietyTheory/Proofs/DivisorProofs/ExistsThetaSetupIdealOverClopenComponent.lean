@@ -16,13 +16,13 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F Z z i hθ φ hφ W hWc hWi`. Take `⟨hproj, hnorm, hopen, hcomp, hdense, W8, hE8, hTI⟩` from `id hθ`. Take `⟨η, hη, hcl⟩` from `GlobalTheory.exists_mem_genericPoints_closure_eq_of_isClopen F.X Z i hopen hdense W hWc hWi`. Take `⟨X₁, -, hX₁⟩` from `GlobalTheory.Poinc.GSetup.exists_setup g n hg hn hodd F Z z i hproj (fun x => ⟨hnorm.isDomain_stalk x, hnorm.isIntegrallyClosed_stalk x⟩) hopen hcomp hdense W8 hE8 hTI η hη 0`. Establish `hr` using `GlobalTheory.Poinc.Setup.range_π_eq g n F W8 Z i X₁ η W hX₁ hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι, Y, πY, D, hι, hhom, hprop, hnY, hsupp, hord⟩` from `GlobalTheory.T.exists_normal_model_cartierDivisor_thetaSetup g n hg hn hodd F Z z i hθ φ hφ W8 hE8 hTI X₁`. Take `⟨ι', J₁, hι', hsupp', hord'⟩` from `GlobalTheory.T.exists_idealSheaf_descending_divisor_power_thetaSetup g n hg hn hodd F Z z i hθ φ hφ W8 hE8 hTI X₁ ι Y πY D hι X₁.projM hhom hprop hnY hsupp hord`. Establish `hhomog : ∀ (T : Trait F) (k : ℕ), 1 ≤ k → φ.evalZ ((k : ℤ) • T.β) = k * φ.evalZ T.β`. Introduce `T k _`. Establish `hrk : Module.finrank ℤ T.D.toPre.X ≤ g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.Poinc.Trait.dim_add_rank (by omega : 2 ≤ n) F T` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hβ : T.β ∈ balForms (id : ℤ → ℤ) T.D.toPre.X` using `⟨T.symm, fun a y z => by simp⟩`. Rewrite using `[natCast_zsmul, StrictData.evalZ_eq, StrictData.evalZ_eq, StrictData.toReal_nsmul]`. Conclude with `(hφ _ hrk).homog _ (StrictData.toReal_mem_psdCone hβ fun y => T.mono.nonneg 0 y) _ (Nat.cast_nonneg k)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, ho⟩` from `GlobalTheory.Poinc.ideal_orders_of_proper_model g n F W8 Z i φ X₁ Y πY hhom hprop ι' J₁ hsupp' hord' hhomog`. Conclude with `⟨W8, X₁, ι', J₁, hι', hr, hs, ho⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Poinc.exists_setup_ideal_over_component : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z), IsThetaCompact F z i → ∀ φ : InvFun ℤ, IsPolFan id g φ → ∀ W : Set Z, IsClopen W → IsIrreducible W → ∃ (W8 : Matrix (Fin 8) (Fin 8) ℤ) (X₁ : Setup F W8 i) (ι : ℕ) (J₁ : X₁.M.Z.IdealSheafData), 1 ≤ ι ∧ Set.range X₁.π = W ∧ (∀ x ∈ J₁.support, X₁.π x ∉ Set.range i) ∧ ∀ (T : Trait F) (ξ₁ : Sp T.V ⟶ X₁.M.Z), jK T.V ≫ ξ₁ ≫ X₁.π = T.y ≫ i → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.β ∧ idlAlong J₁ ξ₁ = Ideal.span {T.ϖ ^ a} := by
   intro g n hg hn hodd F Z z i hθ φ hφ W hWc hWi

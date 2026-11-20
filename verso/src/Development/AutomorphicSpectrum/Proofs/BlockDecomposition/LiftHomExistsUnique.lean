@@ -7,19 +7,17 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.EtaleLift
 
 /- English proof (translation)
-Introduce `hEt h g u hIJ hg hu`. Take `⟨g0, ⟨hg0i, hg0j⟩, hg0u⟩` from `𝓛.univ (B ⧸ J) ((Ideal.Quotient.mk J).comp h) g (fun x hx => Ideal.Quotient.eq_zero_iff_mem.mpr (hIJ hx)) (fun o x hx => hg o x hx)`. Establish `hcomm : g0.comp (MvPolynomial.eval₂Hom 𝓛.i 𝓛.t) = (Ideal.Quotient.mk J).comp (MvPolynomial.eval₂Hom h u)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Conclude with `RingHom.congr_fun hg0i c`. Introduce `k`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`. Rewrite using `[hu k]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hg0j (T k) (𝓛.t k) (𝓛.hT k).symm`. Take `⟨F, ⟨hFψ, hFg⟩, hFu⟩` from `hEt _ _ (MvPolynomial.eval₂Hom 𝓛.i 𝓛.t) 𝓛.et (MvPolynomial.eval₂Hom h u) g0 hcomm`. Use `⟨F, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.ext fun c => by simpa using RingHom.congr_fun hFψ (MvPolynomial.C c)`. Conclude with `fun k => by simpa using RingHom.congr_fun hFψ (MvPolynomial.X k)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `r z hz`. Rewrite using `[← hg0j r z hz]`. Conclude with `RingHom.congr_fun hFg z`. Introduce and unpack `f' ⟨hf'i, hf't, hf'j⟩`. Apply `hFu` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Conclude with `RingHom.congr_fun hf'i c`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`. Conclude with `hf't k`. Apply `hg0u` to reduce the goal to its premises. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[RingHom.comp_assoc, hf'i]`. Introduce `r z hz`. Conclude with `hf'j r z hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_hom_existsUnique {O R Λ : Type} [CommRing O] [CommRing R] [CommRing Λ] (a : O →+* R) {d : ℕ}
     (T : Fin d → R) (I : Ideal Λ) (κ : O →+* Λ ⧸ I) (𝓛 : Lift a T Λ I κ) {B : Type} [CommRing B]

@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.LeviSectionCont
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC _ hG _ m hm`. Establish `hL : Submodule.span E (G.V.L : Set (Fin (b + 2) → E)) = ⊤` using `hG.hV.lat.span_eq_top`. Use `choose s t u hdec using fun j : Fin (b + 2) => GlobalTheory.IterBochner.exists_decomp B H G.V G₁.V hC.hH hL (Pi.single j 1)`. Conclude with `GlobalTheory.IterBochner.continuous_of_isLevi H s t u hdec m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_levi_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

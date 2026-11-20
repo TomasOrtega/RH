@@ -15,13 +15,13 @@ namespace GlobalTheory.CompanionTheory.WaveFc.Asm
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 /- English proof (translation)
-Establish `: GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ` using `rfl`. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem open_GLs : IsOpen (GLs n) := by
   have : GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ := rfl
@@ -29,7 +29,7 @@ theorem open_GLs : IsOpen (GLs n) := by
   exact isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)
 
 /- English proof (translation)
-Establish `h1 : h.val.det ≠ 0` using `val_mem h`. Establish `h2 : y.det ≠ 0` using `hy`. Use `show (y * h.val).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero h2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_GLs {y : Mat n} (hy : y ∈ GLs n) (h : G n) : y * h.val ∈ GLs n := by
   have h1 : h.val.det ≠ 0 := val_mem h
@@ -43,7 +43,7 @@ section Rw
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `g hg`. Establish `e : f =ᶠ[𝓝 g] f'` using `Filter.eventuallyEq_of_mem (open_GLs.mem_nhds hg) h`. Simplify using `only [Rd, e.fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Rd_congr (X : Mat n) {f f' : Mat n → V} (h : ∀ y ∈ GLs n, f y = f' y) :
     ∀ g ∈ GLs n, Rd X f g = Rd X f' g := by
@@ -52,7 +52,7 @@ theorem Rd_congr (X : Mat n) {f f' : Mat n → V} (h : ∀ y ∈ GLs n, f y = f'
   simp only [Rd, e.fderiv_eq]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons p w ih => exact Rd_congr _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Rw_congr (w : List (Bool × Fin n × Fin n)) {f f' : Mat n → V} (h : ∀ y ∈ GLs n, f y = f' y) :
     ∀ g ∈ GLs n, Rw w f g = Rw w f' g := by
@@ -69,25 +69,25 @@ variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsH
 
 variable {μ} in
 /- English proof (translation)
-The claim follows from `hf.2 []`.
+A detailed English derivation is pending.
 -/
 theorem sob_memLp {f : Mat n → V} (hf : Sob μ f) : MemLp (fun y : G n => f y.val) 2 μ := hf.2 []
 
 variable {μ} in
 /- English proof (translation)
-The claim follows from `hf.1.continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem sob_cont {f : Mat n → V} (hf : Sob μ f) : ContinuousOn f (GLs n) := hf.1.continuousOn
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, hf, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem cls_mem {f : Mat n → V} (hf : Sob μ f) : cls μ f ∈ Msob μ V :=
   Submodule.subset_span ⟨f, hf, rfl⟩
 
 variable {μ} in
 /- English proof (translation)
-The claim follows from `(hC n μ V hU).1 f f' (sob_cont hf) (sob_cont hf') (sob_memLp hf) (sob_memLp hf') h`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq_of_sob (hC : ClsFacts) (hU : Unimod) {f f' : Mat n → V} (hf : Sob μ f) (hf' : Sob μ f')
     (h : cls μ f = cls μ f') : ∀ g ∈ GLs n, f g = f' g :=
@@ -95,7 +95,7 @@ theorem cls_eq_of_sob (hC : ClsFacts) (hU : Unimod) {f f' : Mat n → V} (hf : S
 
 variable {μ} in
 /- English proof (translation)
-The claim follows from `(hC n μ V hU).2.2.1 f f' h`.
+A detailed English derivation is pending.
 -/
 theorem cls_congr (hC : ClsFacts) (hU : Unimod) {f f' : Mat n → V} (h : ∀ g ∈ GLs n, f g = f' g) :
     cls μ f = cls μ f' :=
@@ -104,14 +104,14 @@ theorem cls_congr (hC : ClsFacts) (hU : Unimod) {f f' : Mat n → V} (h : ∀ g 
 variable {μ}
 
 /- English proof (translation)
-The claim follows from `((hO n μ V hL hU hR f hf).2.2.2.2 h (ContinuousLinearMap.id ℂ V)).1`.
+A detailed English derivation is pending.
 -/
 theorem sob_trans (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc) {f : Mat n → V} (hf : Sob μ f)
     (h : G n) : Sob μ (fun y => f (y * h.val)) :=
   ((hO n μ V hL hU hR f hf).2.2.2.2 h (ContinuousLinearMap.id ℂ V)).1
 
 /- English proof (translation)
-The claim follows from `(hC n μ V hU).2.2.2.1 h f (sob_memLp hf)`.
+A detailed English derivation is pending.
 -/
 theorem rR_cls (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc) {f : Mat n → V}
     (hf : Sob μ f) (h : G n) : rR μ V h (cls μ f) = cls μ (fun y => f (y * h.val)) :=
@@ -120,9 +120,9 @@ theorem rR_cls (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : 
 variable {Ω : Msob μ V →ₗ[ℂ] Msob μ V} {T : Lp V 2 μ →L[ℂ] Lp V 2 μ} [CompleteSpace V]
 
 /- English proof (translation)
-Use `F.comm S (fun x => ?_) g` and prove the remaining obligations. Take `⟨f, hf, hx⟩` from `hrep x x.2`. Take `⟨hOm, -, -, -, htr⟩` from `hO n μ V hL hU hR f hf`. Take `⟨hs1, hs2⟩` from `htr h A`. Establish `hxe : x = ⟨cls μ f, cls_mem μ hf⟩` using `Subtype.ext hx.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨_, cls_mem μ hs1⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, hS f hf]`. Rewrite using `[hΩ _ _ hs1, hxe, hΩ _ _ hf, hS _ hOm]`. Conclude with `cls_congr hC hU hs2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_of (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc)
     (F : FCalc (Lp V 2 μ) (Msob μ V) Ω T) (hrep : ∀ x ∈ Msob μ V, ∃ f, Sob μ f ∧ cls μ f = x)
@@ -141,7 +141,7 @@ theorem comm_of (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR :
     exact cls_congr hC hU hs2
 
 /- English proof (translation)
-The claim follows from `(comm_of hC hO hL hU hR F hrep hΩ (rR μ V h) (ContinuousLinearMap.id ℂ V) h (fun _ hf => rR_cls hC hO hL hU hR hf h) g).symm`.
+A detailed English derivation is pending.
 -/
 theorem comm_rR (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc)
     (F : FCalc (Lp V 2 μ) (Msob μ V) Ω T) (hrep : ∀ x ∈ Msob μ V, ∃ f, Sob μ f ∧ cls μ f = x)
@@ -151,7 +151,7 @@ theorem comm_rR (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR :
     (fun _ hf => rR_cls hC hO hL hU hR hf h) g).symm
 
 /- English proof (translation)
-The claim follows from `hP n μ V (F.Φ g) hL hU hR hSG (comm_rR hC hO hL hU hR F hrep hΩ g) f hf`.
+A detailed English derivation is pending.
 -/
 theorem pres (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hSG : SobG) (hP : PresSob)
     (F : FCalc (Lp V 2 μ) (Msob μ V) Ω T) (hrep : ∀ x ∈ Msob μ V, ∃ f, Sob μ f ∧ cls μ f = x)
@@ -175,29 +175,29 @@ variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsH
 def kk (k : Matrix.unitaryGroup (Fin n) ℂ) : G n := Unitary.toUnits k
 
 /- English proof (translation)
-Establish `h : E.ρ k⁻¹ * E.ρ k = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Conclude with `congrArg (fun L : E.V →L[ℂ] E.V => L v) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_inv_rho (E : KMod n) (k : Matrix.unitaryGroup (Fin n) ℂ) (v : E.V) : E.ρ k⁻¹ (E.ρ k v) = v := by
   have h : E.ρ k⁻¹ * E.ρ k = 1 := by rw [← map_mul, inv_mul_cancel, map_one]
   exact congrArg (fun L : E.V →L[ℂ] E.V => L v) h
 
 /- English proof (translation)
-Establish `h : E.ρ k * E.ρ k⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `congrArg (fun L : E.V →L[ℂ] E.V => L v) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_rho_inv (E : KMod n) (k : Matrix.unitaryGroup (Fin n) ℂ) (v : E.V) : E.ρ k (E.ρ k⁻¹ v) = v := by
   have h : E.ρ k * E.ρ k⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   exact congrArg (fun L : E.V →L[ℂ] E.V => L v) h
 
 /- English proof (translation)
-Introduce `y hy k`. Set `S : Lp E.V 2 μ →L[ℂ] Lp E.V 2 μ` to `((E.ρ k).compLpL 2 μ).comp (rR μ E.V (kk k))`. Establish `hS : ∀ f : Mat n → E.V, Sob μ f → S (cls μ f) = cls μ (fun y => E.ρ k (f (y * (kk k).val)))`. Introduce `f hf`. Use `show (E.ρ k).compLpL 2 μ (rR μ E.V (kk k) (cls μ f)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rR_cls hC hO hL hU hR hf, (hC n μ E.V hU).2.2.2.2 _ _ (sob_memLp (sob_trans hO hL hU hR hf _))]`. Establish `hsob : ∀ f : Mat n → E.V, Sob μ f → Sob μ (fun y => E.ρ k (f (y * (kk k).val)))` using `fun f hf => ((hO n μ E.V hL hU hR f hf).2.2.2.2 (kk k) (E.ρ k)).1`. Establish `hfix : S (cls μ f) = cls μ f`. Use `(hS f hf).trans (cls_congr hC hU fun y hy => ?_)` and prove the remaining obligations. Establish `: (kk k).val = k.1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hs y hy k, rho_rho_inv]`. Establish `hc` using `comm_of hC hO hL hU hR F hrep hΩ S (E.ρ k) (kk k) hS g`. Establish `h2 : S (cls μ f') = cls μ f'`. Rewrite using `[hcl]`. Use `congrArg (fun L : Lp E.V 2 μ →L[ℂ] Lp E.V 2 μ => L (cls μ f)) hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[this, hfix]`. Establish `hu` using `cls_eq_of_sob hC hU (hsob f' hf') hf' ((hS f' hf').symm.trans h2) y hy`. Establish `: (kk k).val = k.1` using `rfl`. Rewrite `hu` using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, rho_inv_rho]`.
+A detailed English derivation is pending.
 -/
 theorem sec_pres (E : KMod n) [CompleteSpace E.V] {Ω : Msob μ E.V →ₗ[ℂ] Msob μ E.V} {T : Lp E.V 2 μ →L[ℂ] Lp E.V 2 μ}
     (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc)
@@ -239,7 +239,7 @@ def Bop (f : Mat n → V) : Mat n → V := f + Om (Om f)
 def Bn (f : Mat n → V) (N : ℕ) : Mat n → V := Nat.rec f (fun _ g => Bop g) N
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `h`. Take `⟨R', hR'⟩` from `h'`. Use `⟨max R R', fun y hy hl => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hR y hy (lt_of_le_of_lt (le_max_left _ _) hl), hR' y hy (lt_of_le_of_lt (le_max_right _ _) hl), add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cpt_add {f f' : Mat n → V} (h : Cpt f) (h' : Cpt f') : Cpt (f + f') := by
   obtain ⟨R, hR⟩ := h
@@ -251,27 +251,27 @@ theorem cpt_add {f f' : Mat n → V} (h : Cpt f) (h' : Cpt f') : Cpt (f + f') :=
 end Bop
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add h'.1, fun g hg k => by rw [Pi.add_apply, Pi.add_apply, h.2 g hg k, h'.2 g hg k, map_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem CE_add (E : KMod n) {f f' : Mat n → E.V} (h : f ∈ CE E) (h' : f' ∈ CE E) : f + f' ∈ CE E :=
   ⟨h.1.add h'.1, fun g hg k => by rw [Pi.add_apply, Pi.add_apply, h.2 g hg k, h'.2 g hg k, map_add]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.const_smul a, fun g hg k => by rw [Pi.smul_apply, Pi.smul_apply, h.2 g hg k, map_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem CE_smul (E : KMod n) (a : ℂ) {f : Mat n → E.V} (h : f ∈ CE E) : a • f ∈ CE E :=
   ⟨h.1.const_smul a, fun g hg k => by rw [Pi.smul_apply, Pi.smul_apply, h.2 g hg k, map_smul]⟩
 
 /- English proof (translation)
-The claim follows from `CE_smul E 2 (CE_add E ((hR n).2.1 E f h true 2) ((hR n).2.1 E f h false 2))`.
+A detailed English derivation is pending.
 -/
 theorem CE_Om (hR : RCalc) (E : KMod n) {f : Mat n → E.V} (h : f ∈ CE E) : Om f ∈ CE E :=
   CE_smul E 2 (CE_add E ((hR n).2.1 E f h true 2) ((hR n).2.1 E f h false 2))
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact ⟨hf, hc⟩`. Consider the case `succ N ih`. Establish `h1` using `CE_Om hR E ih.1`. Establish `c1` using `(hCp n μ E.V hL hR _ ih.1.1 ih.2).2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `(hCp n μ E.V hL hR _ h1.1 c1).2`. Conclude with `⟨CE_add E ih.1 (CE_Om hR E h1), cpt_add ih.2 c2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Bn_props [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (hL : LgFacts) (hR : RCalc) (hCp : CptSob) (E : KMod n) {f : Mat n → E.V} (hf : f ∈ CE E) (hc : Cpt f) (N : ℕ) :
@@ -287,7 +287,7 @@ theorem Bn_props [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
 section Fn
 
 /- English proof (translation)
-Unfold `toC0`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_toC0 {f : ℝ → ℂ} (h : Continuous f ∧ Tendsto f (cocompact ℝ) (𝓝 0)) : ⇑(toC0 f) = f := by
   unfold toC0
@@ -297,11 +297,11 @@ theorem coe_toC0 {f : ℝ → ℂ} (h : Continuous f ∧ Tendsto f (cocompact �
 def rf (y : ℝ) : ℂ := (((1 + y ^ 2)⁻¹ : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `hpos : ∀ y : ℝ, 1 + y ^ 2 ≠ 0` using `fun y => by positivity`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `rf`. Conclude with `Complex.continuous_ofReal.comp (Continuous.inv₀ (by fun_prop) hpos)`. Establish `h1 : Tendsto (fun y : ℝ => ‖y‖) (cocompact ℝ) atTop` using `tendsto_norm_cocompact_atTop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun y : ℝ => 1 + y ^ 2) (cocompact ℝ) atTop`. Establish `h3 : Tendsto (fun y : ℝ => ‖y‖ ^ 2) (cocompact ℝ) atTop` using `(tendsto_pow_atTop (by norm_num)).comp h1`. Use `tendsto_atTop_mono (fun y => ?_) h3` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, sq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4` using `(Complex.continuous_ofReal.tendsto 0).comp (tendsto_inv_atTop_zero.comp h2)`. Rewrite using `[show (0 : ℂ) = ((0 : ℝ) : ℂ) from Complex.ofReal_zero.symm]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resolvent_function_vanishes_at_infinity : Continuous rf ∧ Tendsto rf (cocompact ℝ) (𝓝 0) := by
   have hpos : ∀ y : ℝ, 1 + y ^ 2 ≠ 0 := fun y => by positivity
@@ -328,11 +328,9 @@ variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsH
   {Ω : Msob μ V →ₗ[ℂ] Msob μ V} {T : Lp V 2 μ →L[ℂ] Lp V 2 μ}
 
 /- English proof (translation)
-Establish `hOm` using `(hO n μ V hL hU hR g hg).1`. Establish `hOOm` using `(hO n μ V hL hU hR _ hOm).1`. Establish `e1 : Ω ⟨cls μ g, cls_mem μ hg⟩ = ⟨cls μ (Om g), cls_mem μ hOm⟩` using `Subtype.ext (hΩ _ _ hg)`. Establish `e2 : (Ω (Ω ⟨cls μ g, cls_mem μ hg⟩) : Lp V 2 μ) = cls μ (Om (Om g))`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΩ _ _ hOm`. Establish `e3 : cls μ (Bop g) = cls μ g + cls μ (Om (Om g))`. Use `(hC n μ V hU).2.1 1 g (Om (Om g)) (sob_memLp hg) (sob_memLp hOOm)` as an intermediate fact. Simplify `this` using `[Bop]`. Rewrite using `[e3, ← e2]`.
-
-Conclude with `hT ⟨_, _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_B (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCalc)
     (hΩ : ∀ (f : Mat n → V) (hf : cls μ f ∈ Msob μ V), Sob μ f → (Ω ⟨cls μ f, hf⟩ : Lp V 2 μ) = cls μ (Om f))
@@ -351,7 +349,7 @@ theorem T_B (hC : ClsFacts) (hO : SobOps) (hL : LgFacts) (hU : Unimod) (hR : RCa
   exact hT ⟨_, _⟩
 
 /- English proof (translation)
-Establish `e : toC0 (wv c (N + 1) j t) = toC0 (wv c N j t) * toC0 rf`. Use extensionality with `y`. Rewrite using `[ZeroAtInftyContinuousMap.coe_mul, Pi.mul_apply, coe_toC0 h1, coe_toC0 h2, coe_toC0 resolvent_function_vanishes_at_infinity, (hW c N t y).2.2.2 j, rf, mul_comm]`. Rewrite using `[e, F.map_mul, F.res (toC0 rf) (fun y => by rw [coe_toC0 resolvent_function_vanishes_at_infinity]; rfl)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wv_step (hW : WvAlg) (F : FCalc (Lp V 2 μ) (Msob μ V) Ω T) {c : ℝ} {N j : ℕ} {t : ℝ}
     (h1 : Continuous (wv c N j t) ∧ Tendsto (wv c N j t) (cocompact ℝ) (𝓝 0))
@@ -364,7 +362,7 @@ theorem wv_step (hW : WvAlg) (F : FCalc (Lp V 2 μ) (Msob μ V) Ω T) {c : ℝ} 
   rw [e, F.map_mul, F.res (toC0 rf) (fun y => by rw [coe_toC0 resolvent_function_vanishes_at_infinity]; rfl)]
 
 /- English proof (translation)
-Establish `h` using `(hFc c N j hj t).2`. Set `L : C₀(ℝ, ℂ) →L[ℂ] Lp V 2 μ` to `(ContinuousLinearMap.apply ℂ (Lp V 2 μ) x).comp F.Φ`. Conclude with `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem curve_deriv (hFc : Fcurve) (F : FCalc (Lp V 2 μ) (Msob μ V) Ω T) (c : ℝ) {N j : ℕ} (hj : j + 2 ≤ 4 * N) (t : ℝ)
     (x : Lp V 2 μ) :
@@ -386,7 +384,7 @@ section Main
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `h : MemLp (fun y : G n => (0 : Mat n → V) y.val) 2 μ` using `MemLp.zero`. Unfold `cls`. Rewrite using `[dif_pos h]`. Conclude with `MemLp.toLp_zero h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_zero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] : cls μ (0 : Mat n → V) = 0 := by
   have h : MemLp (fun y : G n => (0 : Mat n → V) y.val) 2 μ := MemLp.zero
@@ -395,44 +393,40 @@ theorem cls_zero {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] : c
   exact MemLp.toLp_zero h
 
 /- English proof (translation)
-Unfold `cut`. Rewrite using `[min_eq_left (by linarith), max_eq_right zero_le_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cut_eq_one {c y : ℝ} (h : y ≤ c) : cut c y = 1 := by
   unfold cut
   rw [min_eq_left (by linarith), max_eq_right zero_le_one]
 
 /- English proof (translation)
-Establish `hbp` using `fun N => Bn_props μ hL hR hCp E hf hcf N`. Establish `hbS : ∀ N, Sob μ (Bn f N)` using `fun N => (hCp n μ E.V hL hR _ (hbp N).1.1 (hbp N).2).1`. Establish `hbE : ∀ N, IsSec E (Bn f N)` using `fun N => (hbp N).1.2`. Establish `hC0 : ∀ N j t, j + 2 ≤ 4 * N → (Continuous (wv c N j t) ∧ Tendsto (wv c N j t) (cocompact ℝ) (𝓝 0))` using `fun N j t hj => (hFc c N j hj t).1`. Establish `hstep : ∀ N j t, j + 2 ≤ 4 * N → F.Φ (toC0 (wv c (N + 1) j t)) (cls μ (Bn f (N + 1))) = F.Φ (toC0 (wv c N j t)) (cls μ (Bn f N))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `N j t hj`. Rewrite using `[wv_step hW F (hC0 N j t hj) (hC0 (N + 1) j t (by omega)), ContinuousLinearMap.mul_apply]`. Conclude with `congrArg _ (T_B hC hO hL hU hR hΩ hT (hbS N))`. Establish `hpres` using `fun g (N : ℕ) => pres hC hO hL hU hR hSG hP F hrep hΩ g (hbS N)`. Establish `hex : ∀ (j : ℕ) (t : ℝ), ∃ u, Sob μ u ∧ IsSec E u ∧ cls μ u = F.Φ (toC0 (wv c (j + 2) j t)) (cls μ (Bn f (j + 2))) ∧ ∀ w, cls μ (Rw w u) = F.Φ (toC0 (wv c (j + 2) j t)) (cls μ (Rw w (Bn f (j + 2))))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j t`. Take `⟨u, h1, h2, h3⟩` from `hpres (toC0 (wv c (j + 2) j t)) (j + 2)`. Conclude with `⟨u, h1, sec_pres E hC hO hL hU hR F hrep hΩ _ (hbS _) (hbE _) h1 h2, h2, h3⟩`. Use `choose U hUS hUE hUc hUw using hex`. Establish `hd : ∀ j w t, HasDerivAt (fun s => cls μ (Rw w (U j s))) (cls μ (Rw w (U (j + 1) t))) t`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j w t`. Establish `e : (fun s => cls μ (Rw w (U j s))) = fun s => F.Φ (toC0 (wv c (j + 2) j s)) (cls μ (Rw w (Bn f (j + 2))))` using `funext fun s => hUw j s w`. Rewrite using `[e]`. Establish `hd` using `curve_deriv hFc F c (N := j + 2) (j := j) (by omega) t (cls μ (Rw w (Bn f (j + 2))))`. Take `⟨f'', hf'', hc'', hw''⟩` from `hpres (toC0 (wv c (j + 2) (j + 1) t)) (j + 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : cls μ (Rw w (U (j + 1) t)) = F.Φ (toC0 (wv c (j + 2) (j + 1) t)) (cls μ (Rw w (Bn f (j + 2))))`. Rewrite using `[← hw'' w]`. Use `cls_congr hC hU (Rw_congr w (cls_eq_of_sob hC hU (hUS (j + 1) t) hf'' ?_))` and prove the remaining obligations. Rewrite using `[hUc, hc'']`. Conclude with `hstep (j + 2) (j + 1) t (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2]`. Conclude with `hd`. Take `⟨hjoint, hder⟩` from `hCJ n μ E.V U hL hR hSG hUS hd`. Use `⟨U 0, ⟨hjoint, fun t => ⟨(hUS 0 t).1, hUE 0 t⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `t g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `d1 : deriv (fun s => U 0 s g) = fun s => U 1 s g` using `funext fun s => (hder 0 s g hg).deriv`. Establish `d2 : iteratedDeriv 2 (fun s => U 0 s g) t = U 2 t g`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one, d1]`. Conclude with `(hder 1 t g hg).deriv`. Rewrite using `[d2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hOmS` using `(hO n μ E.V hL hU hR _ (hUS 0 t)).1`. Establish `h0 : cls μ (U 0 t) = F.Φ (toC0 (wv c 4 0 t)) (cls μ (Bn f 4))`. Rewrite using `[hUc, hstep 3 0 t (by omega), hstep 2 0 t (by omega)]`. Establish `hom` using `F.omega (toC0 (wv c 4 0 t)) (toC0 (wv c 4 2 t)) (fun y => by`. Rewrite using `[coe_toC0 (hC0 4 0 t (by omega)), coe_toC0 (hC0 4 2 t (by omega))]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(hW c 4 t y).1)`. Use the proof step `(cls μ (Bn f 4)) ⟨cls μ (U 0 t), cls_mem μ (hUS 0 t)⟩ h0`. Rewrite `hom` using `[hΩ _ _ (hUS 0 t)]`. Conclude with `cls_eq_of_sob hC hU (hUS 2 t) hOmS ((hUc 2 t).trans hom.symm) g hg`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[(hder 0 0 g hg).deriv]`. Establish `hz : toC0 (wv c 3 1 0) = 0`. Use extensionality with `y`. Rewrite using `[coe_toC0 (hC0 3 1 0 (by omega))]`. Conclude with `(hW c 3 0 y).2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : cls μ (U 1 0) = cls μ (0 : Mat n → E.V)`. Rewrite using `[hUc, cls_zero]`. Use `show F.Φ (toC0 (wv c 3 1 0)) _ = 0`. Rewrite using `[hz, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC n μ E.V hU).1 _ 0 (sob_cont (hUS 1 0)) continuousOn_const (sob_memLp (hUS 1 0)) MemLp.zero h1 g hg`. Establish `hcut : F.Φ (toC0 rf * toC0 rf - toC0 (wv c 2 0 0)) (cls μ (Bn f 2)) = 0`. Use `hAC (Lp E.V 2 μ) (Msob μ E.V) Ω T F c _ (fun g => ?_) _ (fun y hy => ?_)` and prove the remaining obligations. Take `⟨u, h1, h2, -⟩` from `hpres g 2`. Use `⟨⟨cls μ u, cls_mem μ h1⟩, h2, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hΩ _ _ h1]`. Conclude with `hc u h1 (sec_pres E hC hO hL hU hR F hrep hΩ _ (hbS _) (hbE _) h1 h2)`. Establish `e1` using `(hW c 2 0 y).2.2.1`. Rewrite `e1` using `[cut_eq_one hy]`. Establish `e2 : (toC0 rf * toC0 rf - toC0 (wv c 2 0 0)) y = rf y * rf y - wv c 2 0 0 y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ZeroAtInftyContinuousMap.sub_apply, ZeroAtInftyContinuousMap.mul_apply, coe_toC0 resolvent_function_vanishes_at_infinity, coe_toC0 (hC0 2 0 0 (by omega))]`. Rewrite using `[e2, e1, rf, ← Complex.ofReal_mul, sub_eq_zero]`. Use `congr 1`. Rewrite using `[one_mul, pow_two (1 + y ^ 2), mul_inv]`. Establish `hr : F.Φ (toC0 rf * toC0 rf) (cls μ (Bn f 2)) = cls μ f`.
-
-Rewrite using `[F.map_mul, F.res (toC0 rf) (fun y => by rw [coe_toC0 resolvent_function_vanishes_at_infinity]; rfl), ContinuousLinearMap.mul_apply]`. Establish `a1 : T (cls μ (Bn f 2)) = cls μ (Bn f 1)` using `T_B hC hO hL hU hR hΩ hT (hbS 1)`. Establish `a2 : T (cls μ (Bn f 1)) = cls μ (Bn f 0)` using `T_B hC hO hL hU hR hΩ hT (hbS 0)`. Rewrite using `[a1, a2]`. Both sides reduce to the same expression.
-
-Establish `hw : F.Φ (toC0 (wv c 2 0 0)) (cls μ (Bn f 2)) = cls μ f`. Rewrite `hcut` using `[map_sub, ContinuousLinearMap.sub_apply, hr, sub_eq_zero]`. Conclude with `hcut.symm`. Conclude with `cls_eq_of_sob hC hU (hUS 0 0) (hbS 0) ((hUc 0 0).trans hw)`.
+A detailed English derivation is pending.
 -/
 theorem core (E : KMod n) [CompleteSpace E.V] {Ω : Msob μ E.V →ₗ[ℂ] Msob μ E.V} {T : Lp E.V 2 μ →L[ℂ] Lp E.V 2 μ}
     (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hSG : SobG)
@@ -534,11 +528,9 @@ theorem core (E : KMod n) [CompleteSpace E.V] {Ω : Msob μ E.V →ₗ[ℂ] Msob
 end Main
 
 /- English proof (translation)
-Introduce `hFC hAC hFc hW hC hO hCp hSB hP hCT hCJ hFr hOF hIbp hD hL hU hR hSG n E f hf hcf`. Use `letI : MeasurableSpace (G n) := borel _`. Use `haveI : BorelSpace (G n) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Mat n) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Use `haveI : LocallyCompactSpace (G n) := inferInstanceAs (LocallyCompactSpace (Mat n)ˣ)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `μ : Measure (G n)` to `Measure.haar`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨c, hc⟩` from `hSB n μ E hL hU hR`. Take `⟨hrep, Ω, T, hden, hsym, hinv, hT, hΩ⟩` from `hCT n μ E.V hL hU hR hSG hP hFr hC hO hCp hOF hIbp hD`. Take `⟨F⟩` from `hFC (Lp E.V 2 μ) (Msob μ E.V) Ω T hden hsym hinv hT`.
-
-Conclude with `core E hL hU hR hSG hAC hFc hW hC hO hCp hP hCJ F hrep hΩ hT c hc hf hcf`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem asm1 : Asm1 := by
   intro hFC hAC hFc hW hC hO hCp hSB hP hCT hCJ hFr hOF hIbp hD hL hU hR hSG n E f hf hcf

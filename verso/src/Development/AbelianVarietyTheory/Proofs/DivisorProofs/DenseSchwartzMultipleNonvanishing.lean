@@ -4,11 +4,11 @@ open SchwartzMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `hd.mono ?_` and prove the remaining obligations. Introduce `φ hφ`. Establish `hφ' : HasCompactSupport (⇑φ)` using `hφ`. Establish `hinv : ContDiff ℝ (⊤ : ℕ∞) (fun x => (g x)⁻¹)`. Rewrite using `[contDiff_iff_contDiffAt]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `h1 : ContDiffAt ℂ (⊤ : ℕ∞) (fun z : ℂ => z⁻¹) (g x)` using `contDiffAt_inv ℂ (hg x)`. Conclude with `(h1.restrict_scalars ℝ).comp x (g.smooth ⊤).contDiffAt`. Establish `hs : ContDiff ℝ (⊤ : ℕ∞) (fun x => φ x * (g x)⁻¹)` using `(φ.smooth ⊤).mul hinv`. Establish `hc : HasCompactSupport (fun x => φ x * (g x)⁻¹)` using `hφ'.mul_right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc.toSchwartzMap hs, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ x = φ x * (g x)⁻¹ * g x`. Rewrite using `[mul_assoc, inv_mul_cancel₀ (hg x), mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_schwartz_mul_of_ne_zero (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (g : SchwartzMap V ℂ) (hg : ∀ x, g x ≠ 0)

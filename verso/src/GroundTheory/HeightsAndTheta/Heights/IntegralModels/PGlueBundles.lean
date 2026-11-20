@@ -13,14 +13,14 @@ noncomputable section
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[hP.mul_mem_iff_mem_or_mem, not_or]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mul_not_mem_prime_iff {P : Ideal ℤ} (hP : P.IsPrime) (a b : ℤ) :
     a * b ∉ P ↔ a ∉ P ∧ b ∉ P := by
   rw [hP.mul_mem_iff_mem_or_mem, not_or]
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `a * b ∉ _ ↔ a ∉ _ ∧ b ∉ _`. Conclude with `mul_not_mem_prime_iff (PrimeSpectrum.isPrime _) a b`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 lemma invOpen_mul_eq_inf (f : X ⟶ SpecZ) (a b : ℤ) :
     invOpen f (a * b) = invOpen f a ⊓ invOpen f b := by
@@ -29,14 +29,14 @@ lemma invOpen_mul_eq_inf (f : X ⟶ SpecZ) (a b : ℤ) :
   exact mul_not_mem_prime_iff (PrimeSpectrum.isPrime _) a b
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Conclude with `invOpen_mul_le_left f a c`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma invOpen_le_of_dvd' (f : X ⟶ SpecZ) {a b : ℤ} (h : a ∣ b) : invOpen f b ≤ invOpen f a := by
   obtain ⟨c, rfl⟩ := h
   exact invOpen_mul_le_left f a c
 
 /- English proof (translation)
-Introduce `h`. Take `⟨q, hq, hpq⟩` from `(Prime.dvd_finsetProd_iff p.2.prime _).1 h`. Establish `: p = q` using `Subtype.ext ((Nat.prime_dvd_prime_iff_eq p.2 q.2).1 hpq)`. Substitute `this` using the available equality. Conclude with `Finset.notMem_erase _ _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma not_dvd_prod_erase (S : Finset Nat.Primes) (p : Nat.Primes) :
     ¬ (p : ℕ) ∣ ∏ q ∈ S.erase p, (q : ℕ) := by
@@ -47,46 +47,42 @@ lemma not_dvd_prod_erase (S : Finset Nat.Primes) (p : Nat.Primes) :
   exact Finset.notMem_erase _ _ hq
 
 /- English proof (translation)
-Simplify using `[primeProd]`.
+Simplify using the standard rewrite rules.
 -/
 lemma primeProd_eq_cast (S : Finset Nat.Primes) :
     primeProd S = ((∏ q ∈ S, (q : ℕ) : ℕ) : ℤ) := by
   simp [primeProd]
 
 /- English proof (translation)
-Take `⟨pp, hpS⟩` from `p`. Take `⟨m₀, hm₀pos, hpm₀, hspread⟩` from `hSB X f pp Ep hEp`. Use `set M : ℕ := ∏ q ∈ S, (q : ℕ) with hMdef`. Use `set N : ℕ := m₀ * ∏ q ∈ S.erase pp, (q : ℕ) with hNdef`. Establish `hpNnat : ¬ (pp : ℕ) ∣ N` using `fun h => ((Nat.Prime.dvd_mul pp.2).1 h).elim hpm₀ (not_dvd_prod_erase S pp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpN : ¬ ((pp : ℕ) : ℤ) ∣ (N : ℤ)` using `by exact_mod_cast hpNnat`. Take `⟨E', hE', ⟨σ⟩⟩` from `hspread N (dvd_mul_right _ _) hpN`. Establish `hMpos : 0 < M` using `Finset.prod_pos fun q _ => q.2.pos`. Establish `hNpos : 0 < N` using `Nat.mul_pos hm₀pos (Finset.prod_pos fun q _ => q.2.pos)`. Use `set a : ℕ := N * M with hadef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 0 < a` using `Nat.mul_pos hNpos hMpos`. Establish `hm : primeProd S = (M : ℤ)` using `primeProd_eq_cast S`. Establish `haN : invOpen f (a : ℤ) ≤ invOpen f (N : ℤ)` using `invOpen_le_of_dvd' f (by exact_mod_cast dvd_mul_right N M)`. Establish `haM : invOpen f (a : ℤ) ≤ invOpen f (primeProd S)`. Rewrite using `[hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `invOpen_le_of_dvd' f (by exact_mod_cast dvd_mul_left M N)`. Establish `hFa : IsVectorBundle ((Scheme.Modules.pullback (X.homOfLE haN)).obj E')` using `hVR _ _ (X.homOfLE haN) E' hE'`. Establish `hGa : IsVectorBundle ((Scheme.Modules.pullback (X.homOfLE haM)).obj E₀)` using `hVR _ _ (X.homOfLE haM) E₀ hE₀`. Establish `uQa : IsUnit ((a : ℤ) : ℚ)` using `isUnit_intCast_rat a (by exact_mod_cast ha.ne')`. Establish `uQm : IsUnit ((primeProd S : ℤ) : ℚ)` using `isUnit_intCast_rat _ (primeProd_ne_zero S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `uPN : IsUnit ((N : ℤ) : ZLoc pp)` using `isUnit_intCast_zLoc pp N hpN`. Establish `uQN : IsUnit ((N : ℤ) : ℚ)` using `isUnit_intCast_rat N (by exact_mod_cast hNpos.ne')`. Establish `e1 : toInvOpen f ℚ a uQa ≫ X.homOfLE haN = ratToLoc f pp ≫ toInvOpen f (ZLoc pp) N uPN`. Rewrite using `[toInvOpen_homOfLE f ℚ uQa uQN haN, ← cancel_mono (invOpen f N).ι, Category.assoc, toInvOpen_ι, toInvOpen_ι, ratToLoc_baseChangeMap]`. Establish `e2 : toInvOpen f ℚ a uQa ≫ X.homOfLE haM = toInvOpen f ℚ (primeProd S) uQm` using `toInvOpen_homOfLE f ℚ uQa uQm haM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m', hm', ψ, hψ⟩` from `hSI X f a ha _ _ hFa hGa ((pullbackCompIso e1 (Iso.refl ((Scheme.Modules.pullback (X.homOfLE haN)).obj E'))).symm ≪≫ pullbackCompIso (rfl : ratToLoc f pp ≫ toInvOpen f (ZLoc pp) N uPN = _) σ ≪≫ β ≪≫ pullbackCompIso e2 (Iso.refl ((Scheme.Modules.pullback (X.homOfLE haM)).obj E₀)))`. Take `⟨k, m'', hpm'', hm'eq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm'.ne' (pp : ℕ) pp.2.one_lt.ne'`. Use `set n : ℕ := N * m'' with hndef`. Establish `hpn : ¬ ((pp : ℕ) : ℤ) ∣ (n : ℤ)`. Establish `: ¬ (pp : ℕ) ∣ n` using `fun h => ((Nat.Prime.dvd_mul pp.2).1 h).elim hpNnat hpm''`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hqn : ∀ q ∈ S, q ≠ pp → ((q : ℕ) : ℤ) ∣ (n : ℤ)`. Introduce `q hq hne`. Establish `: (q : ℕ) ∣ n` using `Dvd.dvd.mul_right (Dvd.dvd.mul_left (Finset.dvd_prod_of_mem (fun r : Nat.Primes => (r : ℕ)) (Finset.mem_erase.2 ⟨hne, hq⟩)) _) _`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hUN : invOpen f (n : ℤ) ≤ invOpen f (N : ℤ)` using `invOpen_le_of_dvd' f (by exact_mod_cast dvd_mul_right N m'')`. Establish `hF : IsVectorBundle ((Scheme.Modules.pullback (X.homOfLE hUN)).obj E')` using `hVR _ _ (X.homOfLE hUN) E' hE'`. Establish `hWam : invOpen f n ⊓ invOpen f (primeProd S) ≤ invOpen f ((a : ℤ) * (m' : ℤ))`. Introduce and unpack `x ⟨hxU, hxV⟩`. Establish `hP` using `PrimeSpectrum.isPrime (f.base x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(n : ℤ) ∉ (f.base x).asIdeal at hxU`. Express the relevant statement in the definitionally equal form `primeProd S ∉ (f.base x).asIdeal at hxV`. Express the relevant statement in the definitionally equal form `(a : ℤ) * (m' : ℤ) ∉ (f.base x).asIdeal`. Rewrite `hxV` using `[hm]`. Rewrite `hxU` using `[hndef, Nat.cast_mul, mul_not_mem_prime_iff hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpP : ((pp : ℕ) : ℤ) ∉ (f.base x).asIdeal` using `fun h => hxV (by`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ((pp : ℕ) : ℤ) ∣ (M : ℤ) := by`. Conclude with `Finset.dvd_prod_of_mem (fun q : Nat.Primes => (q : ℕ)) hpS` after adjusting the coercions. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ h)`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk : ((pp : ℕ) : ℤ) ^ k ∉ (f.base x).asIdeal` using `fun h => hpP (hP.mem_of_pow_mem k h)`. Rewrite using `[hadef, hm'eq]`. Use `push_cast`. Rewrite using `[mul_not_mem_prime_iff hP, mul_not_mem_prime_iff hP, mul_not_mem_prime_iff hP]`. Conclude with `⟨⟨hxU.1, hxV⟩, hk, hxU.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e7 : (X.homOfLE hWam ≫ X.homOfLE (invOpen_mul_le_left f a m')) ≫ X.homOfLE haN = X.homOfLE (inf_le_left : invOpen f n ⊓ invOpen f (primeProd S) ≤ invOpen f n) ≫ X.homOfLE hUN`. Simplify using `only [Scheme.homOfLE_homOfLE]`. Establish `e8 : (X.homOfLE hWam ≫ X.homOfLE (invOpen_mul_le_left f a m')) ≫ X.homOfLE haM = X.homOfLE (inf_le_right : invOpen f n ⊓ invOpen f (primeProd S) ≤ invOpen f (primeProd S))`. Simplify using `only [Scheme.homOfLE_homOfLE]`. Establish `uPn : IsUnit ((n : ℤ) : ZLoc pp)` using `isUnit_intCast_zLoc pp n hpn`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : toInvOpen f (ZLoc pp) n uPn ≫ X.homOfLE hUN = toInvOpen f (ZLoc pp) N uPN` using `toInvOpen_homOfLE f _ uPn uPN hUN`. Use `⟨n, hpn, hqn, _, hF, starIso rfl e7 e8 ψ, (pullbackCompIso h5 (Iso.refl ((Scheme.Modules.pullback (X.homOfLE hUN)).obj E'))).symm ≪≫ σ, ?_⟩` and prove the remaining obligations. Introduce `E e₀ eU hglue`. Establish `hm''0 : m'' ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hm'eq` using `[mul_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hnm : ((n : ℤ) * primeProd S : ℤ) ≠ 0` using `mul_ne_zero (by exact_mod_cast (Nat.mul_pos hNpos (Nat.pos_of_ne_zero hm''0)).ne') (primeProd_ne_zero S)`. Establish `hrange : Set.range (baseChangeMap f ℚ) ⊆ Set.range (invOpen f n ⊓ invOpen f (primeProd S)).ι`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `range_baseChangeMap_subset f ℚ ((n : ℤ) * primeProd S) (isUnit_intCast_rat _ hnm) hy` as an intermediate fact. Rewrite `this`, the goal using `[Scheme.Opens.range_ι]`. Rewrite `this` using `[invOpen_mul_eq_inf]`. Then use the resulting hypothesis. Establish `qW : IsOpenImmersion.lift _ _ hrange ≫ (invOpen f n ⊓ invOpen f (primeProd S)).ι = baseChangeMap f ℚ` using `IsOpenImmersion.lift_fac _ _ _`. Establish `qV : IsOpenImmersion.lift _ _ hrange ≫ X.homOfLE (inf_le_right : invOpen f n ⊓ invOpen f (primeProd S) ≤ invOpen f (primeProd S)) = toInvOpen f ℚ (primeProd S) uQm`.
-
-Rewrite using `[← cancel_mono (invOpen f (primeProd S)).ι, Category.assoc, Scheme.homOfLE_ι, qW, toInvOpen_ι]`. Establish `qU : IsOpenImmersion.lift _ _ hrange ≫ X.homOfLE (inf_le_left : invOpen f n ⊓ invOpen f (primeProd S) ≤ invOpen f n) = ratToLoc f pp ≫ toInvOpen f (ZLoc pp) n uPn`. Rewrite using `[← cancel_mono (invOpen f n).ι, Category.assoc, Scheme.homOfLE_ι, qW, Category.assoc, toInvOpen_ι, ratToLoc_baseChangeMap]`. Establish `qt : IsOpenImmersion.lift _ _ hrange ≫ X.homOfLE hWam = toInvOpen f ℚ ((a : ℤ) * (m' : ℤ)) (isUnit_intCast_rat ((a : ℤ) * m') (by positivity))`. Rewrite using `[← cancel_mono (invOpen f ((a : ℤ) * (m' : ℤ))).ι, Category.assoc, Scheme.homOfLE_ι, qW, toInvOpen_ι]`.
-
-Conclude with `glue_compat_chase (X.homOfLE_ι _) (X.homOfLE_ι _) (toInvOpen_ι f ℚ _ _) (ratToLoc_baseChangeMap f pp) (toInvOpen_ι f (ZLoc pp) n uPn) h5 e1 e2 (toInvOpen_homOfLE f ℚ _ _ _) rfl e7 e8 qV qU qt qW e₀ eU σ β ψ hψ hglue`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlueBundles.localPiece (hSB : SpreadBundle.Statement) (hSI : SpreadIso.Statement)
     (hVR : VectorBundleRestrict.Statement) (f : X ⟶ SpecZ) [LocallyOfFiniteType f] [QuasiCompact f]
@@ -227,17 +223,15 @@ theorem GlueBundles.localPiece (hSB : SpreadBundle.Statement) (hSI : SpreadIso.S
     (toInvOpen_homOfLE f ℚ _ _ _) rfl e7 e8 qV qU qt qW e₀ eU σ β ψ hψ hglue
 
 /- English proof (translation)
-Introduce `X f _ _ S E₀ Ep hE₀ hEp β`. Establish `key` using `fun p : S => GlueBundles.localPiece hSB hSI hVR f S E₀ hE₀ p (Ep p) (hEp p) (β p)`. Use `choose n hn hqdiv F hF ψ' δ hcompat using key`. Set `mp : Nat.Primes → ℤ` to `fun q => if h : q ∈ S then (n ⟨q, h⟩ : ℤ) else 1`. Establish `hmp : ∀ p : S, mp p = (n p : ℤ)` using `fun p => dif_pos p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hcover, hpair⟩` from `hPC X f S mp (fun p hp => by rw [show mp p = (n ⟨p, hp⟩ : ℤ) from dif_pos hp]; exact hn ⟨p, hp⟩) (fun p hp q hq hqp => by`. Rewrite using `[show mp p = (n ⟨p, hp⟩ : ℤ) from dif_pos hp]`. Conclude with `hqdiv ⟨p, hp⟩ q hq hqp)`. Set `U : S → X.Opens` to `fun p => invOpen f (n p)`. Establish `hUsup : (⨆ q ∈ S, invOpen f (mp q)) = ⨆ p : S, U p`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[iSup_subtype']`. Conclude with `iSup_congr fun p => by rw [hmp]`. Establish `hcov : invOpen f (primeProd S) ⊔ ⨆ p : S, U p = ⊤`. Rewrite using `[← hUsup]`. Conclude with `hcover`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hpairU : ∀ i j : S, i ≠ j → U i ⊓ U j ≤ invOpen f (primeProd S)`. Introduce `i j hij`. Use `(hpair i i.2 j j.2 (fun h => hij (Subtype.ext h))).1` as an intermediate fact. Rewrite `this` using `[hmp, hmp]`. Then use the resulting hypothesis. Take `⟨E, e₀, e, hglue⟩` from `hGS X (invOpen f (primeProd S)) S U hcov hpairU E₀ F ψ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVB : IsVectorBundle E`. Use `hVL X (Option S) (fun o => o.elim (invOpen f (primeProd S)) U) ?_ E ?_` and prove the remaining obligations. Rewrite using `[iSup_option]`. Conclude with `hcov`. Introduce `o`.
-
-Consider the cases of `o with`. Consider the case `none => exact hE₀.of_iso e₀.symm`. Consider the case `some p => exact (hF p).of_iso (e p).symm`. Conclude with `⟨E, hVB, e₀, fun p => pullbackCompIso (toInvOpen_ι f (ZLoc p) (n p) (isUnit_intCast_zLoc p (n p) (hn p))) (e p) ≪≫ δ p, fun p => hcompat p E e₀ (e p) (hglue p)⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlueBundles.proof (hSB : SpreadBundle.Statement) (hSI : SpreadIso.Statement)
     (hPC : PrimeOpensCover.Statement) (hGS : GlueModulesStar.Statement)

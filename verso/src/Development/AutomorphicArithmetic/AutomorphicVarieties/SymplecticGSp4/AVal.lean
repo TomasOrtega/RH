@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Ent
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ M g`. Use `choose f hf hπ using fun i : Fin 4 => M.hom g i i`. Establish `hf0 : ∀ i, f i ∈ M.aPart 0`. Introduce `i`. Establish `h` using `hf i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[(wt_eq_zero i i).mpr rfl]`. Conclude with `h`. Set `fA : Fin 4 → M.A` to `fun i => ⟨f i, M.aPart_le (hf0 i)⟩`. Establish `hx0 : ∀ i, M.x0 (fA i) = D.r0 g i i` using `fun i => M.at0 g i i (f i) (hπ i)`. Establish `hss : ∀ i, M.toSS (fA i) = M.ent g i i` using `fun i => Subtype.ext (hπ i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨∑ i, fA i - algebraMap c.O M.A (Matrix.trace (D.r0 g)), ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.sub_mem` to reduce the goal to its premises. Conclude with `Submodule.sum_mem _ fun i _ => hf0 i`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Apply `Submodule.smul_mem` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (1 : M.R) ∈ M.aPart 0`. Conclude with `SetLike.GradedOne.one_mem`. Rewrite using `[map_sub, map_sum, AlgHom.commutes]`. Simplify using `only [hx0, Algebra.algebraMap_self, RingHom.id_apply, Matrix.trace, Matrix.diag]`. Conclude with `sub_self _`.
-
-Introduce `ξ`. Rewrite using `[map_sub, map_sub, map_sum, map_sum, AlgHom.commutes, AlgHom.commutes]`. Simplify using `only [hss, Raw.aVal, Matrix.trace, Matrix.diag, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.aElt :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ g, ∃ a ∈ M.gr 0, M.x0 a = 0 ∧ ∀ ξ : M.SS →ₐ[c.O] PadicAlgCl l, ξ (M.toSS a) = D.aVal g (M.rep ξ) := by

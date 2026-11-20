@@ -5,25 +5,21 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B _ X s hlift U hU V hV e C C₀ _ _ _ _ π hπ hk β φ₀ hcomp`. Use `haveI : Nontrivial C₀ := by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Establish `h1 : (1 : C) ∈ RingHom.ker π`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Establish `h2 : (1 : C) ∈ RingHom.ker π ^ 2`. Use `Ideal.mul_mem_mul h1 h1` as an intermediate fact. Simplify `this` using `[pow_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hk, Ideal.mem_bot]`. Conclude with `one_ne_zero h2`. Establish `hsub : ∀ a b : PrimeSpectrum C, a = b`. Introduce `a b`. Use `ext1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime a.asIdeal), IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime b.asIdeal)]`. Establish `hA` using `IsAffineOpen.SpecMap_appLE_fromSpec s hU hV e`. Establish `hx₀ : (Spec.map (CommRingCat.ofHom φ₀) ≫ hV.fromSpec) ≫ s = spMap π ≫ (Spec.map (CommRingCat.ofHom β) ≫ hU.fromSpec)`. Rewrite using `[Category.assoc, ← hA, ← Category.assoc, ← Spec.map_comp, ← Category.assoc, spMap, ← Spec.map_comp]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `ext1`. Conclude with `hcomp`. Take `⟨x, hx1, hx2⟩` from `hlift C C₀ π hπ hk _ _ hx₀`. Establish `hrange : Set.range x ⊆ Set.range hV.fromSpec`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Take `⟨q⟩` from `(inferInstance : Nonempty (PrimeSpectrum C₀))`. Establish `hp : p = (spMap π) q` using `hsub _ _`. Use `⟨(Spec.map (CommRingCat.ofHom φ₀)) q, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Use `congrArg (fun f : Sp C₀ ⟶ X => f q) hx1` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `exact this.symm`. Consider the case `(rw [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply] at this; exact this.symm)`. Consider the case `(simp only [Scheme.Hom.comp_base, TopCat.comp_app] at this; exact this.symm)`. Establish `hyx : IsOpenImmersion.lift hV.fromSpec x hrange ≫ hV.fromSpec = x` using `IsOpenImmersion.lift_fac _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩ : ∃ φ, Spec.map φ = IsOpenImmersion.lift hV.fromSpec x hrange` from `⟨_, Spec.map_preimage _⟩`. Rewrite `hyx` using `[← hφ]`. Use `⟨φ.hom, ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : Spec.map (CommRingCat.ofHom (π.comp φ.hom)) ≫ hV.fromSpec = Spec.map (CommRingCat.ofHom φ₀) ≫ hV.fromSpec`. Rewrite using `[← hx1, ← hyx, spMap, ← Category.assoc, ← Spec.map_comp]`.
-
-Both sides reduce to the same expression. Establish `h4` using `Spec.map_injective ((cancel_mono hV.fromSpec).1 h3)`. Conclude with `congrArg CommRingCat.Hom.hom h4`. Establish `h3 : Spec.map (CommRingCat.ofHom (φ.hom.comp (s.appLE U V e).hom)) ≫ hU.fromSpec = Spec.map (CommRingCat.ofHom β) ≫ hU.fromSpec`. Rewrite using `[← hx2, ← hyx, Category.assoc, ← hA, ← Category.assoc, ← Spec.map_comp]`.
-
-Both sides reduce to the same expression. Establish `h4` using `Spec.map_injective ((cancel_mono hU.fromSpec).1 h3)`. Conclude with `congrArg CommRingCat.Hom.hom h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_ringHom_of_scheme_lift : ∀ (B : Type) [CommRing B] (X : Scheme.{0}) (s : X ⟶ Sp B), (∀ (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (t : Sp C ⟶ Sp B) (x₀ : Sp C₀ ⟶ X), x₀ ≫ s = spMap π ≫ t → ∃ x : Sp C ⟶ X, spMap π ≫ x = x₀ ∧ x ≫ s = t) → ∀ (U : (Sp B).Opens), IsAffineOpen U → ∀ (V : X.Opens), IsAffineOpen V → ∀ (e : V ≤ s ⁻¹ᵁ U), (∀ (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (β : Γ(Sp B, U) →+* C) (φ₀ : Γ(X, V) →+* C₀), φ₀.comp ((s.appLE U V e).hom) = π.comp β → ∃ φ : Γ(X, V) →+* C, π.comp φ = φ₀ ∧ φ.comp ((s.appLE U V e).hom) = β) := by
   intro B _ X s hlift U hU V hV e C C₀ _ _ _ _ π hπ hk β φ₀ hcomp

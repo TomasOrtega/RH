@@ -14,43 +14,37 @@ noncomputable section
 namespace GlobalTheory.Hk3.HoweG
 
 /- English proof (translation)
-Introduce `L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP s hs hvac hspan x hx`. Take `⟨C, c, hxC, hC, hpw, hsum⟩` from `GlobalTheory.T.gram_class_translate_sum_mem_span_selfDual_lattice_vacua L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac x hx`. Establish `hψ0 : ∀ e : L, ψ e ≠ 0` using `fun e h => by`. Establish `h2 : ψ e * ψ (-e) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite `h2` using `[h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h2`. Establish `hint_mul : ∀ (u : Matrix (Fin n') (Fin n) L) (k : GL (Fin n) L), (∀ i j, u i j ∈ Formalism.UG.intL L) → k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → ∀ i j, (u * (k : Matrix (Fin n) (Fin n) L)) i j ∈ Formalism.UG.intL L`. Introduce `u k hu hk i j`. Take `⟨k0, rfl⟩` from `hk`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hu i l) ((k0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) l j).2`. Establish `hvacSS : Submodule.span ℂ {w : M | ∃ a : GL (Fin n) L, GlobalTheory.Hk3.HoweG.SelfDual σ JS a ∧ ∀ u : Matrix (Fin n') (Fin n) L, (∀ i j, u i j ∈ Formalism.UG.intL L) → ρ (u * ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) w = w} ≤ Submodule.span ℂ (Set.range fun g : Formalism …`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨a, ha, hw⟩`. Take `⟨g, k, hk, hak⟩` from `GlobalTheory.T.selfDual_lattice_eq_unitary_mul_integralGL L ϖ σ q n JS hP.unr hP.odd hP.intS hP.hermS a ha`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw' : GlobalTheory.Hk3.LocVac ρ (ω (g⁻¹, 1) w)`. Introduce `u hu`. Establish `h1` using `hP.norm g⁻¹ 1 (u * (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L))`. Establish `h2 : ρ (u * (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) w = w`. Use `hw (u * (k : Matrix (Fin n) (Fin n) L)) (hint_mul u k hu hk)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hak]`. Simplify `this` using `[Matrix.mul_assoc, mul_inv_rev]`. Establish `h3` using `congrArg (fun F : Module.End ℂ M => F w) h1`. Simplify using `only [Module.End.mul_apply, h2] at h3`. Establish `e : (((1 : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L)) : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * (u * (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) * ((((g⁻¹ : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L)) : GL (Fin n) L)⁻¹ : GL (Fin n) …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Subgroup.coe_inv, inv_inv, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite `h3` using `[e]`. Conclude with `h3.symm`. Take `⟨t, ht⟩` from `Submodule.mem_span_singleton.1 (GlobalTheory.T.localLatticeVacuum_mem_span_fixed L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac hspan _ hw')`. Establish `hww : w = t • ω (g, 1) s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ω (g, 1) (ω (g⁻¹, 1) w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_one, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[← e1, ← ht, map_smul]`. Rewrite using `[SetLike.mem_coe, hww]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨∑ y ∈ C, c y • ρ y s, hvacSS hsum, ∑ y ∈ C.filter (fun y => GlobalTheory.Hk3.HoweDuality.latIdx y ≠ GlobalTheory.Hk3.HoweDuality.latIdx x), c y • ρ y s, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun y hy => Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, ?_, rfl⟩)` and prove the remaining obligations. Take `⟨hyC, hne⟩` from `Finset.mem_filter.1 hy`. Conclude with `lt_of_le_of_ne (GlobalTheory.T.matrixLatticeIndex_le_of_integral_kernel L ϖ σ q n' n x y hP.unr (hC y hyC).2.1.1) hne`. Establish `hsplit : ∑ y ∈ C, c y • ρ y s - ∑ y ∈ C.filter (fun y => GlobalTheory.Hk3.HoweDuality.latIdx y ≠ GlobalTheory.Hk3.HoweDuality.latIdx x), c y • ρ y s = ∑ y ∈ C.filter (fun y => GlobalTheory.Hk3.HoweDuality.latIdx y = GlobalTheory.Hk3.HoweDuality.latIdx x), c y • ρ y s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not C (fun y => GlobalTheory.Hk3.HoweDuality.latIdx y = GlobalTheory.Hk3.HoweDuality.latIdx x)]`. Conclude with `add_sub_cancel_right _ _`. Rewrite using `[hsplit]`. Establish `hshift : ∀ y y' : Matrix (Fin n') (Fin n) L, (∀ i j, (y - y') i j ∈ Formalism.UG.intL L) → ∃ ζ : ℂ, ζ ≠ 0 ∧ ρ y' s = ζ • ρ y s`. Introduce `y y' hl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ ((GlobalTheory.Hk3.locH σ δ JS JT y' (y - y') + σ (GlobalTheory.Hk3.locH σ δ JS JT y' (y - y'))) / 2), hψ0 _, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun F : Module.End ℂ M => F s) (hP.rho_mul y' (y - y'))`. Simplify using `only [Module.End.mul_apply, hvac _ hl, LinearMap.smul_apply, add_sub_cancel] at h1`. Conclude with `h1`. Use `⟨Submodule.sum_mem _ fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hyC, heq⟩` from `Finset.mem_filter.1 hy`. Take `⟨h, hh, hyl⟩` from `GlobalTheory.T.exists_intUnitary_of_gramClass_alt L ϖ σ q n n' JS JT hP.unr hP.odd hP.intS hP.intT hP.hermS hP.hermT x y hx (hC y hyC).2.1 (hC y hyC).2.2 heq`. Take `⟨ζ, hζ, hζe⟩` from `hshift y (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x) hyl`. Establish `: ρ y s = ζ⁻¹ • ρ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x) s`. Rewrite using `[hζe, smul_smul, inv_mul_cancel₀ hζ, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, smul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨h, hh, rfl⟩)`. Establish `hI` using `GlobalTheory.Hk3.locVac_span_classes_indep L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac`. Use `set P := C.filter (fun y => GlobalTheory.Hk3.HoweDuality.latIdx y = GlobalTheory.Hk3.HoweDuality.latIdx x) with hPdef`. Establish `hxP : x ∈ P` using `Finset.mem_filter.2 ⟨hxC, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set F := fun cl : Matrix (Fin n') (Fin n) L ⧸ GlobalTheory.Hk3.HoweDuality.intMat L n' n => Submodule.span ℂ {w : M | ∃ x : Matrix (Fin n') (Fin n) L, (QuotientAddGroup.mk x : Matrix (Fin n') (Fin n) L ⧸ GlobalTheory.Hk3.HoweDuality.intMat L n' n) = cl ∧ w = ρ x s} with hF`. Establish `hmem : ∀ y : Matrix (Fin n') (Fin n) L, ∀ t : ℂ, t • ρ y s ∈ F (QuotientAddGroup.mk y)` using `fun y t => Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl, rfl⟩)`. Establish `hrest : ∑ y ∈ P.erase x, c y • ρ y s ∈ ⨆ (j) (_ : j ≠ (QuotientAddGroup.mk x : Matrix (Fin n') (Fin n) L ⧸ GlobalTheory.Hk3.HoweDuality.intMat L n' n)), F j`. Use `Submodule.sum_mem _ fun y hy => ?_` and prove the remaining obligations. Establish `hyx : y ≠ x` using `Finset.ne_of_mem_erase hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hyC : y ∈ C` using `(Finset.mem_filter.1 (Finset.mem_of_mem_erase hy)).1`. Establish `hne : (QuotientAddGroup.mk y : Matrix (Fin n') (Fin n) L ⧸ GlobalTheory.Hk3.HoweDuality.intMat L n' n) ≠ QuotientAddGroup.mk x`. Introduce `he`. Apply `hpw y hyC x hxC hyx` to reduce the goal to its premises. Use `(QuotientAddGroup.eq).1 he.symm` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : y - x = -x + y` using `by abel`. Rewrite using `[h2]`. Conclude with `this`. Conclude with `(le_iSup₂_of_le (QuotientAddGroup.mk y) hne le_rfl : F (QuotientAddGroup.mk y) ≤ _) (hmem y (c y))`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h0` using `[← Finset.add_sum_erase P _ hxP]`. Establish `hxx : c x • ρ x s = 0`. Establish `hd` using `(hI (QuotientAddGroup.mk x))`. Rewrite `hd` using `[Submodule.disjoint_def]`. Apply `hd _ (hmem x (c x))` to reduce the goal to its premises.
-
-Establish `: c x • ρ x s = -(∑ y ∈ P.erase x, c y • ρ y s)` using `eq_neg_of_add_eq_zero_left h0`. Rewrite using `[this]`. Conclude with `neg_mem hrest`. Establish `hcx` using `(hC x hxC).1`. Rewrite `hxx` using `[smul_eq_zero]`.
-
-Break down `hxx with h | h` into its components or cases. Conclude with `hcx h`. Apply `hs` to reduce the goal to its premises. Establish `h1` using `congrArg (fun F : Module.End ℂ M => F s) (hP.rho_mul (-x) x)`. Simplify using `only [Module.End.mul_apply, h, map_zero, neg_add_cancel, hP.rho_zero, LinearMap.smul_apply, Module.End.one_apply] at h1`.
-
-Conclude with `(smul_eq_zero.1 h1.symm).resolve_left (hψ0 _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramClass_orbit_mod_lower : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]

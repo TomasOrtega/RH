@@ -11,7 +11,7 @@ open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ a U w B h`. Take `⟨σ, -, hB⟩` from `h`. Conclude with `GlobalTheory.LFun.HasSatGL.card hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.satCard :
     UpperTheory.Gal.Int.Geo.SatCard := by

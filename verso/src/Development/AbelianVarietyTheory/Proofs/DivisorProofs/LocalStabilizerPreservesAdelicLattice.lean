@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def finToAd : Af F →ₗ[F] AF F := LinearMap.inr F (Ainf F) (Af F)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (zero_mul _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem finToAd_mul (c : Af F) (a : AF F) : finToAd c * a = finToAd (c * a.2) :=
   Prod.ext (zero_mul _) rfl
@@ -31,9 +31,9 @@ theorem putAt_tmul (v : Pl F) (b : Fv F v) (y : E) :
     putAt (E := E) v (b ⊗ₜ[F] y) = finToAd (singleFin v b) ⊗ₜ[F] y := rfl
 
 /- English proof (translation)
-Use `af_ext fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleFin_self, evalV_singleFin_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evalV_singleFin_ne h, evalV_singleFin_ne h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem singleFin_mul_eq (v : Pl F) (b : Fv F v) (c : Af F) :
     singleFin v b * c = singleFin v (b * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v c) := by
@@ -44,14 +44,14 @@ theorem singleFin_mul_eq (v : Pl F) (b : Fv F v) (c : Af F) :
   · rw [evalV_singleFin_ne h, evalV_singleFin_ne h, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[finToAd_mul, singleFin_mul_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem single_mul_eq (v : Pl F) (b : Fv F v) (a : AF F) :
     finToAd (singleFin v b) * a = finToAd (singleFin v (b * evFin F v a)) := by
   rw [finToAd_mul, singleFin_mul_eq]; rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b e`. Rewrite using `[putAt_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, putAt_tmul, single_mul_eq]`. Consider the case `add x y hx hy => rw [map_add, add_mul, hx, hy, add_mul, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem putAt_mul (v : Pl F) (t : Fv F v ⊗[F] E) (a : AF F) (y : E) :
     putAt v t * (a ⊗ₜ[F] y) = putAt v (t * (evFin F v a ⊗ₜ[F] y)) := by
@@ -67,13 +67,11 @@ namespace GlobalTheory.LatHatStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `e1 : ∀ t, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (LinearMap.inr F (Ainf F) (Af F)) (fun _ _ => Prod.ext (mul_zero _).symm rfl) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E` using `E) (singleFin v) (singleFin_mul v) t) = putAt v t := fun t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Both sides reduce to the same expression. Consider the case `tmul b e => rfl`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(HA.mat (AF F) σ J (ofFin σ J (embLocFin σ J v k))).1 r s = _`. Use `erw [GlobalTheory.AutFunCompare.mat_extH]`. Rewrite using `[embLocFin, GlobalTheory.AutFunCompare.mat_extH, map_add]`.
+Treat this case separately. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `erw [e1]`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `only [Matrix.one_apply_eq, mul_one, map_sub]`. Use `erw [e1]`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.one_apply_ne h, mul_zero, map_zero, zero_add]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_emb (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (k : GLoc σ J v) (r s : Fin n) :
     (HA.mat (AF F) σ J (emb σ J v k)).1 r s =
@@ -100,13 +98,13 @@ namespace GlobalTheory.LatHatStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[incV, inclR, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_incV {n : ℕ} (c : AF F) (x : Fin n → E) (i : Fin n) : (c • incV F x) i = c ⊗ₜ[F] x i := by
   simp [incV, inclR, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) 0 = 0`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem evI_finToAd (c : Af F) : evI F (finToAd c) = 0 := by
   show (InfiniteAdeleRing.ringEquiv_mixedSpace F) 0 = 0
@@ -118,16 +116,16 @@ Both sides reduce to the same expression.
 theorem evFin_finToAd (u : Pl F) (c : Af F) : evFin F u (finToAd c) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u c := rfl
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨c, h0, h1, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem {n : ℕ} (X : Spc F E n) {c : AF F} (h0 : evI F c = 0)
     (h1 : ∀ u, evFin F u c ∈ u.adicCompletionIntegers F) {x : Fin n → E} (hx : x ∈ X.L) : c • incV F x ∈ latHat X :=
   AddSubgroup.subset_closure ⟨c, h0, h1, x, hx, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[evFin_finToAd]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleFin_self]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evalV_singleFin_ne h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem single_int (v u : Pl F) {b : Fv F v} (hb : b ∈ v.adicCompletionIntegers F) :
     evFin F u (finToAd (singleFin v b)) ∈ u.adicCompletionIntegers F := by
@@ -137,13 +135,11 @@ theorem single_int (v u : Pl F) {b : Fv F v} (hb : b ∈ v.adicCompletionInteger
   · rw [evalV_singleFin_ne h]; exact zero_mem _
 
 /- English proof (translation)
-Use `latLoc_induction (p := fun y => (fun i => putAt v (y i)) ∈ latHat X) (fun b hb x hx => ?_) ?_ ?_ ?_ hy` and prove the remaining obligations. Establish `e : (fun i => putAt v (b ⊗ₜ[F] x i)) = finToAd (singleFin v b) • incV F x` using `funext fun i => by`. Rewrite using `[smul_incV, putAt_tmul]`. Rewrite using `[e]`. Conclude with `gen_mem X (evI_finToAd _) (fun u => single_int v u hb) hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun i => putAt v ((0 : Fin n → Fv F v ⊗[F] E) i)) = 0` using `funext fun i => map_zero _`. Rewrite using `[e]`. Conclude with `zero_mem _`. Introduce `y z hy hz`. Establish `e : (fun i => putAt v ((y + z) i)) = (fun i => putAt v (y i)) + fun i => putAt v (z i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun i => map_add _ _ _`. Rewrite using `[e]`. Conclude with `add_mem hy hz`. Introduce `y hy`. Establish `e : (fun i => putAt v ((-y) i)) = -fun i => putAt v (y i)` using `funext fun i => map_neg _ _`.
-
-Rewrite using `[e]`. Conclude with `neg_mem hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem putVec_mem {n : ℕ} (X : Spc F E n) (v : Pl F) {y : Fin n → Fv F v ⊗[F] E} (hy : y ∈ latLoc F X.L v) :
     (fun i => putAt v (y i)) ∈ latHat X := by
@@ -163,13 +159,13 @@ theorem putVec_mem {n : ℕ} (X : Spc F E n) (v : Pl F) {y : Fin n → Fv F v �
     rw [e]; exact neg_mem hy
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.one_def, putAt_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem putAt_one (v : Pl F) : putAt (E := E) v 1 = finToAd (singleFin v 1) ⊗ₜ[F] (1 : E) := by
   rw [Algebra.TensorProduct.one_def, putAt_tmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, mat_emb, add_mul, Finset.sum_add_distrib, smul_incV, putAt_mul, map_sum, Pi.add_apply]`. Use `congr 1`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[putAt_one, Algebra.TensorProduct.one_def, ← TensorProduct.sub_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_gen (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (k : GLoc σ J v) (a : AF F)
     (x : Fin n → E) :
@@ -190,15 +186,13 @@ namespace GlobalTheory.LatHatStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J X v k hk z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha0, ha1, x, hx, rfl⟩` from `hz`. Rewrite using `[mulVec_gen]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem (gen_mem X ?_ (fun u => ?_) hx) (putVec_mem X v ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F) ((1 - finToAd (singleFin v 1)).1 * a.1) = 0`. Rewrite using `[map_mul]`. Conclude with `mul_eq_zero_of_right _ ha0`. Rewrite using `[map_mul, map_sub, map_one, evFin_finToAd]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleFin_self, sub_self, zero_mul]`. Conclude with `zero_mem _`. Rewrite using `[evalV_singleFin_ne h, sub_zero, one_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `ha1 u`. Conclude with `(mem_stabLoc.1 hk _).1 (tmul_mem_latLoc (ha1 v) hx)`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_latHat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (X : Spc F E n) (v : Pl F), ∀ k ∈ stabLoc σ J X.L v,

@@ -18,21 +18,21 @@ namespace GlobalTheory.FrobStick.SubstLog
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero hx _ (GlobalTheory.SerTransport.const_l g)`.
+A detailed English derivation is pending.
 -/
 theorem cc_lg (g : GL3Theta.G1 p) {x : MvPowerSeries (Fin 3) ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (g.lg x) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero hx _ (GlobalTheory.SerTransport.const_l g)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero hx _ hg.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem cc_pt {g : GL3Theta.G1 p} (hg : g.Ok) {x : MvPowerSeries (Fin 3) ℂ_[p]}
     (hx : MvPowerSeries.constantCoeff x = 0) : MvPowerSeries.constantCoeff (g.pt x) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero hx _ hg.2.2.1
 
 /- English proof (translation)
-Establish `hx' : PowerSeries.HasSubst x` using `PowerSeries.HasSubst.of_constantCoeff_zero hx`. Establish `he : PowerSeries.HasSubst g.ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hg.2.2.1`. Unfold `GL3Theta.G1.lg GL3Theta.G1.pt`. Rewrite using `[← PowerSeries.subst_comp_subst_apply he hx', hg.2.2.2, PowerSeries.subst_X hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lg_pt {g : GL3Theta.G1 p} (hg : g.Ok) {x : MvPowerSeries (Fin 3) ℂ_[p]}
     (hx : MvPowerSeries.constantCoeff x = 0) : g.lg (g.pt x) = x := by
@@ -42,7 +42,7 @@ theorem lg_pt {g : GL3Theta.G1 p} (hg : g.Ok) {x : MvPowerSeries (Fin 3) ℂ_[p]
   rw [← PowerSeries.subst_comp_subst_apply he hx', hg.2.2.2, PowerSeries.subst_X hx']
 
 /- English proof (translation)
-Rewrite using `[map_add, cc_lg g hx, cc_lg g hy, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_sum (g : GL3Theta.G1 p) {x y : MvPowerSeries (Fin 3) ℂ_[p]}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
@@ -50,7 +50,7 @@ theorem cc_sum (g : GL3Theta.G1 p) {x y : MvPowerSeries (Fin 3) ℂ_[p]}
   rw [map_add, cc_lg g hx, cc_lg g hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[map_sub, cc_lg g hx, cc_lg g hy, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_diff (g : GL3Theta.G1 p) {x y : MvPowerSeries (Fin 3) ℂ_[p]}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
@@ -58,13 +58,13 @@ theorem cc_diff (g : GL3Theta.G1 p) {x y : MvPowerSeries (Fin 3) ℂ_[p]}
   rw [map_sub, cc_lg g hx, cc_lg g hy, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[map_mul, GlobalTheory.SerTransport.const_l, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_Cl (g : GL3Theta.G1 p) (c : ℂ_[p]) : PowerSeries.constantCoeff (PowerSeries.C c * g.l) = 0 := by
   rw [map_mul, GlobalTheory.SerTransport.const_l, mul_zero]
 
 /- English proof (translation)
-Establish `hw' : PowerSeries.HasSubst w` using `PowerSeries.HasSubst.of_constantCoeff_zero hw`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' (cc_Cl g c)) hw', PowerSeries.subst_mul hw', PowerSeries.subst_C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_Cl (g : GL3Theta.G1 p) (c : ℂ_[p]) {w : MvPowerSeries (Fin 3) ℂ_[p]}
     (hw : MvPowerSeries.constantCoeff w = 0) (h : PowerSeries ℂ_[p]) :
@@ -77,7 +77,7 @@ theorem subst_Cl (g : GL3Theta.G1 p) (c : ℂ_[p]) {w : MvPowerSeries (Fin 3) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coe_substAlgHom]`. Conclude with `MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hy).const ha h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_subst {a : Fin 3 → MvPowerSeries (Fin 3) ℂ_[p]} (ha : MvPowerSeries.HasSubst a)
     {y : MvPowerSeries (Fin 3) ℂ_[p]} (hy : MvPowerSeries.constantCoeff y = 0) (h : PowerSeries ℂ_[p]) :
@@ -87,11 +87,11 @@ theorem hom_subst {a : Fin 3 → MvPowerSeries (Fin 3) ℂ_[p]} (ha : MvPowerSer
   exact MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hy).const ha h
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Establish `hX : ∀ i, MvPowerSeries.substAlgHom (R` using `ℂ_[p]) ha (MvPowerSeries.X i) = a i := fun i => by`. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X ha]`. Establish `h1` using `congrArg (MvPowerSeries.substAlgHom (R := ℂ_[p]) ha) (sub_eq_zero.mp h)`. Rewrite `h1` using `[AlgHom.map_det, map_mul, map_mul, map_mul, map_mul, map_ofNat, hom_subst ha (by simp), hom_subst ha (by simp), hom_subst ha (by simp), hom_subst ha (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_add, map_sub, hX] at h1`. Rewrite using `[← h1]`. Use `congr 1`. Use `ext1 i j`. Simplify using `only [Matrix.of_apply, AlgHom.mapMatrix_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hom_subst ha (by simp), hX]`.
+A detailed English derivation is pending.
 -/
 theorem formula_at {a : Fin 3 → MvPowerSeries (Fin 3) ℂ_[p]}
     (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (f : Fin 3 → PowerSeries ℂ_[p]) (s : PowerSeries ℂ_[p])
@@ -113,11 +113,11 @@ theorem formula_at {a : Fin 3 → MvPowerSeries (Fin 3) ℂ_[p]}
   rw [hom_subst ha (by simp), hX]
 
 /- English proof (translation)
-Introduce `p _ g hg`. Establish `hX : ∀ i : Fin 3, MvPowerSeries.constantCoeff (GL3Theta.Xv i : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `fun i => MvPowerSeries.constantCoeff_X i`. Establish `h01 : MvPowerSeries.constantCoeff (g.add (GL3Theta.Xv 0) (GL3Theta.Xv 1) : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `cc_pt hg (cc_sum g (hX 0) (hX 1))`. Establish `hs : MvPowerSeries.constantCoeff (g.add (g.add (GL3Theta.Xv 0) (GL3Theta.Xv 1)) (GL3Theta.Xv 2) : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `cc_pt hg (cc_sum g h01 (hX 2))`. Establish `hd : ∀ i j : Fin 3, MvPowerSeries.constantCoeff (g.sub (GL3Theta.Xv i) (GL3Theta.Xv j) : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `fun i j => cc_pt hg (cc_diff g (hX i) (hX j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hs, hd 0 1, hd 1 2, hd 2 0, fun c f s h => ?_⟩` and prove the remaining obligations. Establish `ld : ∀ i j : Fin 3, g.lg (g.sub (GL3Theta.Xv i) (GL3Theta.Xv j) : MvPowerSeries (Fin 3) ℂ_[p]) = g.lg (GL3Theta.Xv i) - g.lg (GL3Theta.Xv j)` using `fun i j => lg_pt hg (cc_diff g (hX i) (hX j))`. Establish `l01 : g.lg (g.add (GL3Theta.Xv 0) (GL3Theta.Xv 1) : MvPowerSeries (Fin 3) ℂ_[p]) = g.lg (GL3Theta.Xv 0) + g.lg (GL3Theta.Xv 1)` using `lg_pt hg (cc_sum g (hX 0) (hX 1))`. Establish `ls : g.lg (g.add (g.add (GL3Theta.Xv 0) (GL3Theta.Xv 1)) (GL3Theta.Xv 2) : MvPowerSeries (Fin 3) ℂ_[p]) = g.lg (GL3Theta.Xv 0) + g.lg (GL3Theta.Xv 1) + g.lg (GL3Theta.Xv 2)`. Rewrite using `[← l01]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lg_pt hg (cc_sum g h01 (hX 2))`. Establish `key` using `formula_at (a := fun i => MvPowerSeries.C c * g.lg (GL3Theta.Xv i)) (fun i => by rw [map_mul, cc_lg g (hX i), mul_zero]) f s h`. Simplify using `only [subst_Cl g c (hX _), subst_Cl g c hs, subst_Cl g c (hd _ _), ld, ls, mul_add, mul_sub]`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_log_formula : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p), g.Ok → MvPowerSeries.constantCoeff (g.add (g.add (GL3Theta.Xv 0) (GL3Theta.Xv 1)) (GL3Theta.Xv 2) : MvPowerSeries (Fin 3) ℂ_[p]) = 0 ∧ MvPowerSeries.constantCoeff (g.sub (GL3Theta.Xv 0) (GL3Theta.Xv 1) : MvPowerSeries (Fin 3) ℂ_[p]) = 0 ∧ MvPowerSeries.constantCoeff (g.sub (GL3Theta.Xv 1) (GL3Theta.Xv 2) : MvPowerSeries (Fin 3) ℂ_[p]) = 0 ∧ MvPowerSeries.constantCoeff (g.sub (GL3Theta.Xv 2) (GL3Theta.Xv 0) : MvPowerSeries (Fin 3) ℂ_[p]) = 0 ∧ ∀ (c : ℂ_[p]) (f : Fin 3 → PowerSeries ℂ_[p]) (s : PowerSeries ℂ_[p]), GlobalTheory.FrobStick.defect f s = 0 → Matrix.det (Matrix.of fun i j => (PowerSeries.subst (GL3Theta.Xv i : MvPowerSeries (Fin 3) ℂ_[p]) (PowerSeries.subst (PowerSeries.C c * g.l) (f j) : PowerSeries ℂ_[p]) : MvPowerSeries (Fin 3) ℂ_[p])) = 2 * PowerSeries.subst (g.add (g.add (GL3Theta.Xv 0) (GL3Theta.Xv 1)) (GL3Theta.Xv 2) : MvPowerSeries (Fin 3) ℂ_[p]) (PowerSeries.subst (PowerSeries.C c * g.l) s : PowerSeries ℂ_[p]) * PowerSeries.subst (g.sub (GL3Theta.Xv 0) (GL3Theta.Xv 1) : MvPowerSeries (Fin 3) ℂ_[p]) (PowerSeries.subst (PowerSeries.C c * g.l) s : PowerSeries ℂ_[p]) * PowerSeries.subst (g.sub (GL3Theta.Xv 1) (GL3Theta.Xv 2) : MvPowerSeries (Fin 3) ℂ_[p]) (PowerSeries.subst (PowerSeries.C c * g.l) s : PowerSeries ℂ_[p]) * PowerSeries.subst (g.sub (GL3Theta.Xv 2) (GL3Theta.Xv 0) : MvPowerSeries (Fin 3) ℂ_[p]) (PowerSeries.subst (PowerSeries.C c * g.l) s : PowerSeries ℂ_[p]) := by
   intro p _ g hg

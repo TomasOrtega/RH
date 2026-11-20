@@ -24,7 +24,7 @@ section Alg
 variable {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S')
 
 /- English proof (translation)
-Unfold `psTrunc`. Rewrite using `[map_sum]`. Simplify using `only [MvPolynomial.map_monomial, MvPowerSeries.coeff_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_psTrunc {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPowerSeries κ S) :
     MvPolynomial.map ψ (psTrunc m f) = psTrunc m (MvPowerSeries.map ψ f) := by
@@ -33,7 +33,7 @@ theorem map_psTrunc {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvP
   simp only [MvPolynomial.map_monomial, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Unfold `psIn`. Rewrite using `[MvPolynomial.map_rename, map_psTrunc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_psIn (d : ℕ) {n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : MvPowerSeries (Fin n × Fin d) S) :
     MvPolynomial.map ψ (psIn d m r f) = psIn d m r (MvPowerSeries.map ψ f) := by
@@ -41,7 +41,7 @@ theorem map_psIn (d : ℕ) {n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : Mv
   rw [MvPolynomial.map_rename, map_psTrunc]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_eq {A B C D : Type} [CommRing A] [CommRing B] [CommRing C] [CommRing D]
     (f : A →+* B) (g : B →+* D) (f' : A →+* C) (g' : C →+* D) (h : g.comp f = g'.comp f') :
@@ -49,7 +49,7 @@ theorem spMap_comp_eq {A B C D : Type} [CommRing A] [CommRing B] [CommRing C] [C
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h]
 
 /- English proof (translation)
-Unfold `toΓ`. Establish `h2` using `congrArg (fun g => CommRingCat.Hom.hom g a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Conclude with `h2.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem appTop_toΓ_spMap (a : S) : (spMap ψ).appTop.hom (toΓ S a) = toΓ S' (ψ a) := by
   unfold toΓ
@@ -65,7 +65,7 @@ variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `(LBPull.isPullSec_congr A L a (MonoidalCategory.comp_whiskerRight h2 h1 A) _ _ s1 s3).2 (LBPull.isPullSec_comp A L a e1 e2)`.
+A detailed English derivation is pending.
 -/
 theorem isPullSec_whisker_comp (a : ℤ) {T1 T2 T3 : Over S0} (h1 : T2 ⟶ T1) (h2 : T3 ⟶ T2)
     {s1 : LB.Sec (LPow A L a T1)} {s2 : LB.Sec (LPow A L a T2)} {s3 : LB.Sec (LPow A L a T3)}
@@ -84,7 +84,7 @@ variable {Xo : Moduli Dw l}
 variable {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X) (d : ℕ)
 
 /- English proof (translation)
-Establish `hφ : φ' = fun p => MvPolynomial.map ψ (φ p)` using `funext h`. Substitute `hφ` using the available equality. Unfold `rjBC Formalism.L2.Pj.homAt`. Simplify using `only [Over.homMk_left]`. Conclude with `spMap_comp_eq _ _ _ _ (PullbackSections.jetSubstP_comp_jetBC ψ m φ)`.
+Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_rjBC (m n n' : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S)
     (φ' : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S') (h : ∀ p, φ' p = MvPolynomial.map ψ (φ p)) :
@@ -97,7 +97,7 @@ theorem subst_rjBC (m n n' : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' 
   exact spMap_comp_eq _ _ _ _ (PullbackSections.jetSubstP_comp_jetBC ψ m φ)
 
 /- English proof (translation)
-Unfold `rjBC Formalism.L2.Pj.homAt`. Simplify using `only [Over.homMk_left]`. Conclude with `spMap_comp_eq _ _ _ _ (PullbackSections.jetAug_comp_jetBC ψ (Fin n × Fin d) m)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aug_rjBC (m n : ℕ) :
     (Formalism.L2.Pj.homAt (spMap ψ ≫ x0) (jetAug : Jet S' (Fin n × Fin d) m →ₐ[S'] S')).left ≫ (rjBC ψ x0 d m n).left =
@@ -107,9 +107,9 @@ theorem aug_rjBC (m n : ℕ) :
   exact spMap_comp_eq _ _ _ _ (PullbackSections.jetAug_comp_jetBC ψ (Fin n × Fin d) m)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Unfold `rjBC ptBC rjBase`. Simplify using `only [Over.comp_left, Over.homMk_left]`. Use `spMap_comp_eq _ _ _ _ (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[show algebraMap S (Jet S (Fin n × Fin d) m) a = Ideal.Quotient.mk _ (MvPolynomial.C a) from rfl, PullbackSections.jetBC_mk, MvPolynomial.map_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem base_rjBC (m n : ℕ) :
     rjBase (spMap ψ ≫ x0) d m n ≫ ptBC ψ x0 = rjBC ψ x0 d m n ≫ rjBase x0 d m n := by
@@ -123,7 +123,7 @@ theorem base_rjBC (m n : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `overAt`. Simplify using `[spMap]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem overAt_hom_bc :
     (overAt (spMap ψ ≫ x0) S').hom = spMap ψ ≫ (overAt x0 S).hom := by
@@ -131,7 +131,7 @@ theorem overAt_hom_bc :
   simp [spMap]
 
 /- English proof (translation)
-Unfold `genPow val`. Conclude with `map_pow _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_genPow {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ Xo.univ.t.G.left)) (ε : K → ℤ)
     (g : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)) (k : ℕ) (r : Z ⟶ Y) (z : Z) (J) :
@@ -140,13 +140,13 @@ theorem val_genPow {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ 
   exact map_pow _ _ _
 
 /- English proof (translation)
-Establish `hφ : ∀ p : Fin 2 × Fin d, (![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn d m ![0] (MvPowerSeries.map ψ (act H.w0 j))] : Fin 2 → Fin d → MvPolynomial (Fin 1 × Fin d) S') p.1 p.2 = MvPolynomial.map ψ ((![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn d m ![0] ( …`. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> simp [map_psIn]`. Establish `hxl : (x' m).left = (rjBC ψ x0 d m 1).left ≫ (x m).left`. Rewrite using `[hx m]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `reL rpe`. Simplify using `only [val_mul hJ, val_pull hJ]`. Use `congr 1`. Rewrite using `[hxl, Category.assoc]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `(val_pull hJ _ _ r).trans ?_` and prove the remaining obligations. Use `(val_corr hJ (he m) _).trans ?_` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (val_pull hJ _ _ _).symm` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[subst_rjBC ψ x0 d m 2 1 _ _ hφ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_reL_bc (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S)
     (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G)
@@ -188,17 +188,17 @@ namespace GlobalTheory
 open RawChartGermBC in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S S' _ _ ψ x0 d _ act x x' hx e e' hge hge' he wP hwP`. Take `rfl : x' = fun m => rjBC ψ x0 d m 1 ≫ x m` from `funext hx`. Use `⟨fun hrig => ?_, fun k Fs Fs' f hpull hgerm => ?_⟩` and prove the remaining obligations. Use `corr_of_val Xo.univ.t.PP.isLB (fun y J hJ => ?_)` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(val_reL_bc ψ x0 d act x _ (fun _ => rfl) e e' he wP 0 _ y hJ).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, aug_rjBC ψ x0 d 0 1, ← Category.assoc]`. Use `(val_pull hJ _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(val_corr hJ hrig _).trans ?_` and prove the remaining obligations. Rewrite using `[GermB.val_rigT _ _ _ _ _ _ _ hJ, GermB.val_rigT _ _ _ _ _ _ _ hJ, overAt_hom_bc ψ x0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.id_comp]`. Introduce `m`. Take `⟨F0, τ0, hF0, hτ0, hv0⟩` from `hgerm m`. Take `⟨F1, hF1⟩` from `GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (rjBase (spMap ψ ≫ x0) d m 1 ▷ Xo.univ.t.G) (whiskerRight_snd _ _) Fs'`. Take `⟨F2, hF2⟩` from `GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (rjBC ψ x0 d m 1 ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `isPullSec_whisker_comp _ _ (k : ℤ) (rjBase x0 d m 1) (rjBC ψ x0 d m 1) hF0 hF2`. Establish `hB` using `isPullSec_whisker_comp _ _ (k : ℤ) (ptBC ψ x0) (rjBase (spMap ψ ≫ x0) d m 1) hpull hF1`. Establish `hB'` using `(LBPull.isPullSec_congr Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (congrArg (· ▷ Xo.univ.t.G) (base_rjBC ψ x0 d m 1)) _ (whiskerRight_snd _ _) Fs F1).1 hB`. Establish `h12 : F1 = F2` using `LBPull.isPullSec_unique _ _ _ hB' hA`. Substitute `h12` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hv` using `LBPull.isValueAt_pull Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (rjBC ψ x0 d m 1) (x m) hF2 hv0`. Establish `hvb : (rjBC ψ x0 d m 1).left.appTop.hom (toΓ _ (psJet m f)) = toΓ _ (psJet m (MvPowerSeries.map ψ f))`. Rewrite using `[← PullbackSections.jetBC_psJet]`. Conclude with `appTop_toΓ_spMap (jetBC ψ (Fin 1 × Fin d) m) (psJet m f)`. Rewrite `hv` using `[hvb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F1, LB.pullGen Xo.univ.t.PP.L _ _ τ0 (rjBC ψ x0 d m 1).left, hF1, ?_, hv⟩` and prove the remaining obligations. Use `corr_of_val Xo.univ.t.PP.isLB (fun y J hJ => ?_)` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Use `(val_corr hJ hτ0 _).trans ?_` and prove the remaining obligations. Rewrite using `[val_genPow, val_genPow, val_reL_bc ψ x0 d act x _ (fun _ => rfl) e e' he wP m _ y hJ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rawChart_baseChange_rig_germ :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G), (∀ m, x' m = rjBC ψ x0 d m 1 ≫ x m) → ∀ (e : ∀ m, RFrTy x0 d x m) (e' : ∀ m, RFrTy (spMap ψ ≫ x0) d x' m), (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → (∀ m, LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (e' m) (LB.pullGen Xo.univ.t.PP.L (cφ ![rjpt x0 d x m (0 : Fin 2), rjpt x0 d x m (1 : Fin 2)]) (cε 2) (e m) (rjBC ψ x0 d m 2).left)) → ∀ (wP : PrimTy H Xo), wP.IsGen → (LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L _ _ (reL x0 d x act e wP 0) (homAt x0 (jetAug : Jet S (Fin 1 × Fin d) 0 →ₐ[S] S)).left) (rigT Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (overAt x0 S) 1) → LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L _ _ (reL (spMap ψ ≫ x0) d x' (fun a i => MvPowerSeries.map ψ (act a i)) e' wP 0) (homAt (spMap ψ ≫ x0) (jetAug : Jet S' (Fin 1 × Fin d) 0 →ₐ[S'] S')).left) (rigT Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (overAt (spMap ψ ≫ x0) S') 1)) ∧ ∀ (k : ℕ) (Fs : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo x0))) (Fs' : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo (spMap ψ ≫ x0)))) (f : MvPowerSeries (Fin 1 × Fin d) S), IsPullSec Xo.univ.t.G Xo.univ.t.PP.L k (ptBC ψ x0 ▷ Xo.univ.t.G) (whiskerRight_snd _ _) Fs Fs' → RIsGerm x0 d x act e wP k Fs f → RIsGerm (spMap ψ ≫ x0) d x' (fun a i => MvPowerSeries.map ψ (act a i)) e' wP k Fs' (MvPowerSeries.map ψ f) := by

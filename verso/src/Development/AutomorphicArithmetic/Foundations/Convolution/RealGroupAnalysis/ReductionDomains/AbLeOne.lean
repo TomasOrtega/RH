@@ -9,9 +9,9 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp [M.nU_zero, M.mD_one]⟩`. Consider the case `succ n ih`. Take `⟨c, hc⟩` from `ih`. Use `⟨c + ((a ^ n : (A F)ˣ) : A F) ^ 2 * b, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ (nU b * mD a), hc, pow_succ a, M.mD_mul, M.nU_add]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (mD (a ^ n)) (nU b), M.mD_mul_nU]`. Simplify using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.R2.M.pow_form {F : Type} [Field F] [NumberField F] (b : A F) (a : (A F)ˣ) (n : ℕ) :
     ∃ c : A F, (nU b * mD a) ^ n = nU c * mD (a ^ n) := by
@@ -26,7 +26,7 @@ private theorem UpperTheory.ConvolutionTheory.R2.M.pow_form {F : Type} [Field F]
     simp only [mul_assoc]
 
 /- English proof (translation)
-Use `⟨((a⁻¹ : (A F)ˣ) : A F) ^ 2 * (-b), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, ← M.mD_inv, ← M.nU_neg, M.mD_mul_nU]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.ConvolutionTheory.R2.M.inv_form {F : Type} [Field F] [NumberField F] (b : A F) (a : (A F)ˣ) :
     ∃ c : A F, (nU b * mD a)⁻¹ = nU c * mD a⁻¹ := by
@@ -34,7 +34,7 @@ private theorem UpperTheory.ConvolutionTheory.R2.M.inv_form {F : Type} [Field F]
   rw [_root_.mul_inv_rev, ← M.mD_inv, ← M.nU_neg, M.mD_mul_nU]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [M.ab_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, M.ab_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem UpperTheory.ConvolutionTheory.R2.M.ab_pow {F : Type} [Field F] [NumberField F] (a : (A F)ˣ) (n : ℕ) :
     ab (a ^ n) = ab a ^ n := by
@@ -43,9 +43,9 @@ private theorem UpperTheory.ConvolutionTheory.R2.M.ab_pow {F : Type} [Field F] [
   | succ n ih => rw [pow_succ, pow_succ, M.ab_mul, ih]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(hU.image (M.continuous_ab (F := F))).bddAbove`. Assume the negation of the conclusion as `hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C (not_le.mp hlt)`. Use `hC (Set.mem_image_of_mem _ (h n))` as an intermediate fact. Rewrite `this` using `[M.ab_pow]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hn (not_lt.mpr this)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.R2.M.ab_le_one {F : Type} [Field F] [NumberField F] (U : Set (IdeleGroup F)) (hU : IsCompact U)
     (a : (A F)ˣ) (h : ∀ n : ℕ, a ^ n ∈ U) : ab a ≤ 1 := by
@@ -57,17 +57,17 @@ private theorem UpperTheory.ConvolutionTheory.R2.M.ab_le_one {F : Type} [Field F
   exact absurd hn (not_lt.mpr this)
 
 /- English proof (translation)
-Introduce `F _ _ _`. Take `⟨hK, hKc⟩` from `M.kkCpt F`. Take `⟨hB, e, he⟩` from `M.borHomeo F`. Establish `hemb : IsClosedEmbedding (Subtype.val : M.Bor F → G1 F)` using `hB.isClosedEmbedding_subtypeVal`. Establish `hK' : IsCompact ((Subtype.val : M.Bor F → G1 F) ⁻¹' KK F)` using `hemb.isCompact_preimage hKc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : Set (IdeleGroup F)` to `Prod.fst '' (e.symm '' ((Subtype.val : M.Bor F → G1 F) ⁻¹' KK F))`. Establish `hU : IsCompact U` using `(hK'.image e.symm.continuous).image continuous_fst`. Establish `mem : ∀ (b : A F) (a : (A F)ˣ), nU b * mD a ∈ KK F → a ∈ U`. Introduce `b a h`. Use `⟨(a, b), ⟨e (a, b), ?_, e.symm_apply_apply _⟩, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((e (a, b) : M.Bor F) : G1 F) ∈ KK F`. Rewrite using `[he]`. Conclude with `h`. Establish `le : ∀ (b : A F) (a : (A F)ˣ), nU b * mD a ∈ KK F → ab a ≤ 1`. Introduce `b a h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `M.ab_le_one U hU a fun n => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `M.pow_form b a n`. Use `mem c _ ?_` and prove the remaining obligations. Rewrite using `[← hc, hK]`. Rewrite `h` using `[hK]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(M.Ks F).pow_mem h n`. Use `⟨U, hU, fun b a h => ⟨mem b a h, le_antisymm (le b a h) ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `M.inv_form b a`. Establish `h2 : nU c * mD a⁻¹ ∈ KK F`. Rewrite using `[← hc, hK]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hK]`. Conclude with `(M.Ks F).inv_mem h`. Establish `h3` using `le c _ h2`. Rewrite `h3` using `[M.ab_inv]`. Conclude with `(inv_le_one₀ (M.ab_pos a)).mp h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.borK :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], ∃ U : Set (IdeleGroup F), IsCompact U ∧ ∀ (b : A F) (a : (A F)ˣ), nU b * mD a ∈ KK F → a ∈ U ∧ ab a = 1 := by

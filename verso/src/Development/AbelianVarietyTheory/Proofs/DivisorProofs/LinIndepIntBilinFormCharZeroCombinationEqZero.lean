@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hli hsum`. Set `L : LinearMap.BilinForm ℤ X →ₗ[ℤ] (X → X → ℚ)` to `{ toFun := fun B y z => ((B y z : ℤ) : ℚ) map_add' := by intro B C; funext y z; simp map_smul' := by intro n B; funext y z; simp }`. Establish `hker : LinearMap.ker L = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y z`. Use `congrFun (congrFun hB y) z` as an intermediate fact. Simplify `this` using `[L]`. Establish `hZ : LinearIndependent ℤ (L ∘ gam)` using `hli.map' L hker`. Establish `hQ : LinearIndependent ℚ (L ∘ gam)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hZ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Assume the negation of the conclusion as `hj`. Take `⟨ℓ, hℓ⟩` from `Module.Projective.exists_dual_ne_zero ℚ (V := k) hj`. Establish `hrel : ∑ i, ℓ (a i) • (L ∘ gam) i = 0`. Use function extensionality and compare the values at `y z`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0` using `congrArg ℓ (hsum y z)`. Rewrite `h0` using `[map_sum, map_zero]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, Pi.zero_apply, smul_eq_mul, L, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm (a i), ← zsmul_eq_mul, map_zsmul, zsmul_eq_mul, mul_comm]`. Use `(Fintype.linearIndependent_iff.mp hQ) _ hrel j` as an intermediate fact. Conclude with `hℓ this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linIndep_intBilinForm_charZero_comb_eq_zero
     {X : Type} [AddCommGroup X] {m : ℕ} (gam : Fin m → LinearMap.BilinForm ℤ X)

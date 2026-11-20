@@ -20,25 +20,23 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d T io io₂ y hio y₂ hy`. Use `letI := io.toAlgebra`. Use `letI := io₂.toAlgebra`. Take `⟨y, hInt⟩` from `y`. Establish `hy' : FrOver d y₂ y` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, t', m1, m2, ⟨ub, b1, b2, b3, b4⟩, θ, hθ, w1, w2, σ, s1, θ2, r1, r2, i1, i2, p2, hg⟩` from `hInt.2`. Take `⟨e, hu, w, p, hw, p₁, p₂, R⟩` from `(FrameLift.frOver_iff d y₂ y).1 hy'`. Establish `key : ∀ (x : Sp T.Fr ⟶ Xo.X) (m : SABMap t' Xo.univ.t x), x = y₂.x ≫ d.r → ∃ m' : SABMap t' d.Xo₂.univ.t y₂.x, m.φ = m'.φ ≫ d.m.φ`. Introduce `x m hx`. Substitute `hx` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ d.m m`. Take `⟨m', e₁⟩` from `key _ m1 e.symm`. Establish `eig : ∀ τ v, Formalism.L2.Pj.IsEigV d.c₂ io₂ G τ v ↔ Formalism.L2.Pj.IsEigV c io G τ v` using `fun τ v => forall_congr' fun a => forall_congr' fun z => by rw [← FrameLift.embK_eF d τ a, hio]`. Establish `he : m1.cm.e = m'.cm.e ≫ d.m.cm.e` using `by rw [m1.base, m'.base, d.m.base]; exact e.symm`. Take `⟨w', r', tri⟩` from `ArcQ.FrBC.exists_rigIso_cancel d.m.cm m'.cm m1.cm e₁ he t'.PP d.Xo₂.univ.t.PP Xo.univ.t.PP w w1 hw r1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs'⟩` from `thf_secUp ((isGen_iff w').1 r'.1) d.Xo₂.univ.t.PP.isLB t'.PP.isLB σ`. Use `⟨G, t', m', m2, ⟨ub, b1, fun τ i => (eig τ _).2 (b2 τ i), fun τ v h1 h2 => b3 τ v h1 ((eig τ v).1 h2), fun τ i => ?_⟩, θ, hθ, w', w2, σ, s', θ2, r', r2, (ArcQ.FrUniq.isoMaps_iff w' σ s').2 fun Z r z j k hj hk => hs' Z r z (fun _ => j) k (mem_pull.2 hj) hk, i2, p2, ?_⟩` and prove the remaining obligations. Take `⟨q, h2, h3⟩` from `b4 τ i`. Establish `ubo : (ub τ i).left ≫ G.G.hom = spMap (algebraMap T.V (DualNumber T.V))` using `Over.w (ub τ i)`. Establish `h4 : q ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono (spMap (algebraMap T.V T.Fr))` using `haveI := IsPreimmersion.of_isLocalization (R := CommRingCat.of T.V) (S := CommRingCat.of T.Fr) (nonZeroDivisors T.V) inferInstanceAs (Mono (Spec.map (CommRingCat.ofHom (algebraMap T.V T.Fr))))`. Rewrite using `[← cancel_mono (spMap (algebraMap T.V T.Fr)), Category.assoc, ← m2.cart.1.w, ← Category.assoc, h3, Category.assoc]`. Conclude with `(congrArg _ ubo).trans (ArcQ.FrBC.dual_alg _)`. Use `⟨q, d.m.cart.1.hom_ext ?_ ?_, h3⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (q ≫ ·) e₁.symm).trans (h2.trans (hu τ i).symm))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, h4]`. Conclude with `(y₂.tan τ i).1.symm`. Introduce `g g₁ g₂ (J : PUnit → d.Xo₂.univ.t.PP.L.ι) hJ`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart t'.PP.isLB z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_chart Xo.univ.t.PP.isLB (d.m.φ (m'.φ z))`. Establish `hi : m'.φ z ∈ d.Xo₂.univ.t.PP.L.U (J PUnit.unit)` using `mem_pull.1 hz`. Establish `hj' : m1.φ z ∈ Xo.univ.t.PP.L.U j` using `(congrArg (· ∈ Xo.univ.t.PP.L.U j) (FrameLift.pt_eq e₁ z)).mpr hj`. Establish `a₁ : (g ≫ p) ≫ (snd (Over.mk y.x) Xo.univ.t.G).left = m1.φ`. Rewrite using `[Category.assoc, p₁, ← Category.assoc, g₁, e₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂ : (g ≫ p) ≫ (fst (Over.mk y.x) Xo.univ.t.G).left = t'.G.hom`. Rewrite using `[Category.assoc, p₂, g₂]`. Establish `le : (Xo.univ.t.PP.L.pull m1.φ).U (fun _ => j) ≤ (g ≫ p) ⁻¹ᵁ (PPx y.x).U (fun _ => j)` using `fun q hq => Set.mem_iInter.2 fun _ => (congrArg (· ∈ Xo.univ.t.PP.L.U j) (FrameLift.pt_eq a₁ q)).mpr (mem_pull.1 hq)`. Establish `u₁` using `(ArcQ.FrUniq.isoMaps_iff w1 σ s1).1 i1 _ (𝟙 _) z j k hj' hk`. Rewrite `u₁` using `[hg (g ≫ p) a₁ a₂ (fun _ => j) le, gs_appLE (g ≫ p) _ _ le (𝟙 _) z (mem_pull.2 hj'), tri _ (𝟙 _) z j (J PUnit.unit) k hj hi hk, Category.id_comp, Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `u₂` using `R _ g z j (J PUnit.unit) ((congrArg (fun t => d.m.φ t ∈ Xo.univ.t.PP.L.U j) (FrameLift.pt_eq g₁ z)).mpr hj) ((congrArg (· ∈ d.Xo₂.univ.t.PP.L.U (J PUnit.unit)) (FrameLift.pt_eq g₁ z)).mpr hi)`. Rewrite `u₂` using `[g₁]`. Establish `u₃` using `u₁.symm.trans u₂`. Rewrite `u₃` using `[Units.val_mul, _root_.mul_assoc, Units.mul_right_inj]`. Rewrite using `[hs' _ (𝟙 _) z J k hz hk, gs_appLE _ _ _ hJ (𝟙 _) z hz, Category.id_comp]`.
-
-Conclude with `u₃`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_frOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (T : CDVR) (io : c.F →+* T.Fr) (io₂ : d.c₂.F →+* T.Fr) (y : IntFr Xo c T io), letI := io.toAlgebra; letI := io₂.toAlgebra; (∀ a : c.F, io₂ (d.eF a) = io a) → ∀ y₂ : FrPt d.Xo₂ d.c₂ T.Fr, FrOver d y₂ y.1 → Integral T io₂ y₂ := by
   intro E _ _ _ H Dw l Xo c n d T io io₂ y hio y₂ hy

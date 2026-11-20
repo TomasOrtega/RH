@@ -6,13 +6,13 @@ namespace GlobalTheory.PsChar
 open Matrix
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply', Finset.univ_perm_fin_succ, Finset.sum_map, Fintype.sum_prod_type, Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Rewrite using `[Matrix.det_apply', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, Equiv.Perm.decomposeFin.symm_sign]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_apply', Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Establish `h : ∀ i : Fin m, N (Equiv.swap 0 c.succ (e i).succ) i.succ = (N.submatrix Fin.succ Fin.succ).updateRow c (fun b => N 0 b.succ) (e i) i`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `hc : e i = c`. Simplify using `[hc]`. Rewrite using `[Matrix.updateRow_ne hc, Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) (fun h => hc (Fin.succ_injective _ h))]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[Fin.prod_univ_succ, Equiv.Perm.decomposeFin.symm_sign, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_succ_eq_sub_sum_updateRow {A : Type*} [CommRing A] {m : ℕ} (N : Matrix (Fin (m + 1)) (Fin (m + 1)) A) :
     N.det = N 0 0 * (N.submatrix Fin.succ Fin.succ).det -
@@ -39,7 +39,7 @@ theorem det_succ_eq_sub_sum_updateRow {A : Type*} [CommRing A] {m : ℕ} (N : Ma
     ring
 
 /- English proof (translation)
-The claim follows from `| 0, x => by simp [alt] | m + 1, x => by rw [alt, ← (Fin.consEquiv (fun _ : Fin (m + 1) => Fin n)).sum_comp, Fintype.sum_prod_type] simp only [alt_trace_eq_sum_det r m, det_succ_eq_sub_sum_updateRow, Finset.sum_sub_distrib] congr 1 · rw [Matrix.trace, Finset.sum_mul_sum] rfl · rw …`.
+A detailed English derivation is pending.
 -/
 theorem alt_trace_eq_sum_det {M A : Type*} [Monoid M] [CommRing A] {n : ℕ} (r : M →* Matrix (Fin n) (Fin n) A) :
     ∀ (m : ℕ) (x : Fin m → M), alt (fun g => (r g).trace) m x =
@@ -78,7 +78,7 @@ theorem alt_trace_eq_sum_det {M A : Type*} [Monoid M] [CommRing A] {n : ℕ} (r 
       rfl
 
 /- English proof (translation)
-Simplify using `comm x y := by simp only [map_mul]; exact Matrix.trace_mul_comm _ _ alt_eq_zero x := by`. Rewrite using `[alt_trace_eq_sum_det]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Take `⟨b, b', hne, hb⟩` from `Fintype.exists_ne_map_eq_of_card_lt i (by simp)`. Conclude with `Matrix.det_zero_of_column_eq hne (fun a => by simp [hb])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPsChar_trace (M A : Type) [Monoid M] [CommRing A] (n : ℕ) (r : M →* Matrix (Fin n) (Fin n) A) :
     IsPsChar n (fun g => (r g).trace) where

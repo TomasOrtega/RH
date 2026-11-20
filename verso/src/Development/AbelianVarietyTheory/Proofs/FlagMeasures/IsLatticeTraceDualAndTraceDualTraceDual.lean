@@ -24,16 +24,16 @@ theorem halfTraceForm_apply (x y : Fin j → E) :
     halfTraceForm E j x y = Algebra.trace ℚ E (x ⬝ᵥ y) / 2 := rfl
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[halfTraceForm_apply, halfTraceForm_apply, dotProduct_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem halfTraceForm_symm : (halfTraceForm E j).IsSymm := by
   refine ⟨fun x y => ?_⟩
   rw [halfTraceForm_apply, halfTraceForm_apply, dotProduct_comm]
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[Pi.zero_apply]`. Assume the negation of the conclusion as `hx`. Establish `h1` using `h (Pi.single i (x i)⁻¹)`. Rewrite `h1` using `[halfTraceForm_apply, dotProduct_single, mul_inv_cancel₀ hx, ← map_one (algebraMap ℚ E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (0 : ℚ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem halfTraceForm_left (x : Fin j → E) (h : ∀ y, halfTraceForm E j x y = 0) : x = 0 := by
   ext i
@@ -47,7 +47,7 @@ theorem halfTraceForm_left (x : Fin j → E) (h : ∀ y, halfTraceForm E j x y =
   linarith
 
 /- English proof (translation)
-Use `⟨halfTraceForm_left E j, fun y hy => halfTraceForm_left E j y fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[(halfTraceForm_symm E j).eq]`. Conclude with `hy x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfTraceForm_nondegenerate : (halfTraceForm E j).Nondegenerate := by
   refine ⟨halfTraceForm_left E j, fun y hy => halfTraceForm_left E j y fun x => ?_⟩
@@ -55,11 +55,11 @@ theorem halfTraceForm_nondegenerate : (halfTraceForm E j).Nondegenerate := by
   exact hy x
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Submodule.restrictScalars_mem, mem_trDual, LinearMap.BilinForm.mem_dualSubmodule, Submodule.mem_one, halfTraceForm_apply, eq_intCast]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Take `⟨z, hz⟩` from `hy x hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_comm, hz]`. Expand and normalize the polynomial expressions, which then agree. Introduce `hy x hx`. Take `⟨z, hz⟩` from `hy x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem restrict_trDual (Λ : Submodule (𝓞 E) (Fin j → E)) :
     (trDual E j Λ).restrictScalars ℤ =
@@ -80,11 +80,11 @@ theorem restrict_trDual (Λ : Submodule (𝓞 E) (Fin j → E)) :
     linarith
 
 /- English proof (translation)
-Take `⟨m, s, hm, hms⟩` from `(IsFractionRing.isAlgebraic_iff ℤ ℚ E |>.mpr (.of_finite ℚ a)).exists_nsmul_eq (𝓞 E)`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `hsy : s • y ∈ Λ` using `Λ.smul_mem s hy`. Establish `key : a • y = (m : ℚ)⁻¹ • (s • y)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E s y, ← hms, smul_assoc, ← Nat.cast_smul_eq_nsmul ℚ, inv_smul_smul₀ (by exact_mod_cast hm)]`. Rewrite using `[key]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsy)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul q y _ hy`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_mem_span_rat_restrictScalars (Λ : Submodule (𝓞 E) (Fin j → E)) (a : E) {x : Fin j → E}
     (hx : x ∈ Submodule.span ℚ ((Λ.restrictScalars ℤ : Submodule ℤ (Fin j → E)) : Set (Fin j → E))) :
@@ -108,7 +108,7 @@ private theorem smul_mem_span_rat_restrictScalars (Λ : Submodule (𝓞 E) (Fin 
     exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-The claim follows from `Submodule.FG.restrictScalars h.fg span_eq_top := by refine Submodule.eq_top_iff'.mpr fun v => ?_ have hv : v ∈ Submodule.span E (Λ : Set (Fin j → E)) := by rw [h.span_eq_top] trivial induction hv using Submodule.span_induction with | mem y hy => exact Submodule.subset_span hy | z …`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_restrict (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodule.IsLattice E Λ) :
     Submodule.IsLattice ℚ (Λ.restrictScalars ℤ) where
@@ -125,9 +125,9 @@ theorem isLattice_restrict (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodul
     | smul a y _ hy => exact smul_mem_span_rat_restrictScalars E j Λ a hy
 
 /- English proof (translation)
-Use `isLattice_restrict E j Λ h` as an intermediate fact. Set `bF` to `Module.finBasis ℤ (Λ.restrictScalars ℤ)`. Use `⟨_, bF.extendOfIsLattice ℚ, ?_⟩` and prove the remaining obligations. Establish `hb : ⇑(bF.extendOfIsLattice ℚ) = (Λ.restrictScalars ℤ).subtype ∘ bF`. Use function extensionality and compare the values at `fun k => bF.extendOfIsLattice_apply ℚ k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hb, Set.range_comp, ← Submodule.map_span, bF.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_basis (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodule.IsLattice E Λ) :
     ∃ (n : ℕ) (b : Module.Basis (Fin n) ℚ (Fin j → E)),
@@ -142,15 +142,13 @@ theorem exists_basis (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodule.IsLa
     Submodule.range_subtype]
 
 /- English proof (translation)
-Introduce `E _ _ j Λ h`. Take `⟨n, b, hb⟩` from `exists_basis E j Λ h`. Establish `hB` using `halfTraceForm_nondegenerate E j`. Establish `hS` using `halfTraceForm_symm E j`. Establish `hD : (trDual E j Λ).restrictScalars ℤ = Submodule.span ℤ (Set.range ((halfTraceForm E j).dualBasis hB b))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[restrict_trDual, hb, LinearMap.BilinForm.dualSubmodule_span_of_basis _ hB]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Submodule.FG.of_restrictScalars ℤ` to reduce the goal to its premises. Rewrite using `[hD]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_top_iff.mpr fun v _ => ?_` and prove the remaining obligations. Establish `hv : v ∈ Submodule.span ℚ (Set.range ((halfTraceForm E j).dualBasis hB b))`. Rewrite using `[((halfTraceForm E j).dualBasis hB b).span_eq]`. Discharge the goal by the elementary cases of `trivial`. Establish `h1 : Set.range ((halfTraceForm E j).dualBasis hB b) ⊆ (trDual E j Λ : Set (Fin j → E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk : (halfTraceForm E j).dualBasis hB b k ∈ (trDual E j Λ).restrictScalars ℤ`. Rewrite using `[hD]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Conclude with `hk`.
-
-Conclude with `Submodule.span_le_restrictScalars ℚ E _ (Submodule.span_mono h1 hv)`. Apply `Submodule.restrictScalars_injective ℤ _ _` to reduce the goal to its premises. Rewrite using `[restrict_trDual, restrict_trDual, hb, LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis _ hB hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_trDual_and_trDual_trDual :
     ∀ (E : Type) [Field E] [NumberField E] (j : ℕ) (Λ : Submodule (𝓞 E) (Fin j → E)),

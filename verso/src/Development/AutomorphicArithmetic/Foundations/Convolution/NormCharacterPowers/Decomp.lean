@@ -11,7 +11,7 @@ section
 variable (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 M) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_inertia (w : HeightOneSpectrum (𝓞 M)) :
     normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -23,9 +23,9 @@ private theorem normV_inertia (w : HeightOneSpectrum (𝓞 M)) :
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
 /- English proof (translation)
-Establish `hfin : {w : HeightOneSpectrum (𝓞 M) | w.asIdeal ∣ differentIdeal (𝓞 K) (𝓞 M)}.Finite` using `Ideal.finite_factors differentIdeal_ne_bot`. Use `Filter.eventually_cofinite.2 ((hfin.image fun w => w.under (𝓞 K)).subset ?_)` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hn`. Use `hv fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `w.isPrime` as an intermediate fact. Establish `hnd : ¬ w.asIdeal ∣ differentIdeal (𝓞 K) (𝓞 M)` using `fun h => hn ⟨w, h, hw⟩`. Conclude with `Ideal.ramificationIdx_eq_one_iff.2 (not_dvd_differentIdeal_iff.1 hnd)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem unram_ae : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
     ∀ w : HeightOneSpectrum (𝓞 M), w.under (𝓞 K) = v → w.asIdeal.ramificationIdx (𝓞 K) = 1 := by
@@ -40,7 +40,7 @@ private theorem unram_ae : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofin
   exact Ideal.ramificationIdx_eq_one_iff.2 (not_dvd_differentIdeal_iff.1 hnd)
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_coe_set_eq]`. Use `Nat.card_congr (Equiv.ofBijective (fun w => ⟨w.1.asIdeal, w.1.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal w.2).symm⟩⟩) ⟨fun a b h => ?_, fun P => ?_⟩)` and prove the remaining obligations. Conclude with `Subtype.ext (HeightOneSpectrum.ext (congrArg Subtype.val h))`. Take `⟨P, hP, hPv⟩` from `P`. Conclude with `⟨⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, HeightOneSpectrum.ext hPv.over.symm⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem card_fibre (v : HeightOneSpectrum (𝓞 K)) :
     Nat.card {w : HeightOneSpectrum (𝓞 M) // w.under (𝓞 K) = v} = (v.asIdeal.primesOver (𝓞 M)).ncard := by
@@ -55,13 +55,13 @@ private theorem card_fibre (v : HeightOneSpectrum (𝓞 K)) :
 end
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ _ hl`. Use `filter_upwards [unram_ae K M] with v hv`. Use `v.isPrime` as an intermediate fact. Establish `hfund` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn v.asIdeal (𝓞 M) Gal(M/K)`. Take `⟨⟨P, hP, hPv⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 M)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : v.asIdeal.ramificationIdxIn (𝓞 M) = 1`. Rewrite using `[Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal P Gal(M/K)]`. Conclude with `hv ⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩ (HeightOneSpectrum.ext hPv.over.symm)`. Establish `hn : ∀ w : HeightOneSpectrum (𝓞 M), w.under (𝓞 K) = v → normV w = normV v ^ v.asIdeal.inertiaDegIn (𝓞 M)`. Introduce and unpack `w rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `w.isPrime` as an intermediate fact. Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Rewrite using `[Ideal.inertiaDegIn_eq_inertiaDeg _ w.asIdeal Gal(M/K)]`. Conclude with `normV_inertia K M w`. Rewrite `hfund` using `[he, one_mul, IsGalois.card_aut_eq_finrank, ← card_fibre]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 
-Break down `hl.eq_one_or_self_of_dvd _ (Dvd.intro_left _ hfund) with h | h` into its components or cases. Rewrite `hfund` using `[h, mul_one]`. Conclude with `Or.inl ⟨hfund, fun w hw => by rw [hn w hw, h, pow_one]⟩`. Rewrite `hfund` using `[h]`. Conclude with `Or.inr ⟨Nat.eq_of_mul_eq_mul_right hl.pos (hfund.trans (one_mul _).symm), fun w hw => by rw [hn w hw, h]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R.decomp :
     Decomp := by

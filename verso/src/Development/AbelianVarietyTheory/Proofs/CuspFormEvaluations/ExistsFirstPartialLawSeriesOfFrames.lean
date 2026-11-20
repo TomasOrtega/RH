@@ -27,7 +27,7 @@ def jetRen (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') : Jet S (Fin n × Fin d
   jetMap (fun q : Fin n × Fin d => MvPolynomial.X (r q.1, q.2)) fun _ => X_mem_orig _
 
 /- English proof (translation)
-Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, jetRen, jetCopy, jetMap_mk, MvPolynomial.aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ren_copy (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (i : Fin n) :
     (jetRen (S := S) d m r).comp (jetCopy d m i) = jetCopy d m (r i) := by
@@ -36,7 +36,7 @@ theorem ren_copy (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (i : Fin n) :
   simp only [AlgHom.comp_apply, jetRen, jetCopy, jetMap_mk, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Establish `hr : (MvPolynomial.aeval fun q : Fin n × Fin d => (MvPolynomial.X (r q.1, q.2) : MvPolynomial (Fin n' × Fin d) S)) = MvPolynomial.rename fun p : Fin n × Fin d => (r p.1, p.2)` using `MvPolynomial.algHom_ext fun q => by simp`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [jetSubstP, jetRen, AlgHom.comp_apply, jetMap_mk, MvPolynomial.aeval_X, map_sub, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, psIn, MvPolynomial.constantCoeff_rename, hr, MvPolynomial.rename_C]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem subst_psIn (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (g : Fin d → MvPowerSeries (Fin n × Fin d) S) :
     jetSubstP m (fun p : Fin 1 × Fin d => psIn d m r (g p.2)) =
@@ -58,7 +58,7 @@ variable {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin 
   {κ : Type} [Fintype κ] {tg : κ → (Sp (DualNumber S) ⟶ t.G.left)} {uvec : κ → Fin d → S}
 
 /- English proof (translation)
-Establish `hk : ∀ i, homAt x0 (jetRen d m r) ≫ jptG t x0 d x m i = jptG t x0 d x m (r i)` using `fun i => by`. Rewrite using `[jptG, jptG, ← Category.assoc, homAt_comp, ren_copy]`. Rewrite using `[subst_psIn, ← homAt_comp, Category.assoc, hch.law m, MonObj.comp_mul, hk, hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_law (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (r : Fin 2 → Fin n) :
     homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => psIn d m r (F p.2))) ≫ x m =
@@ -68,9 +68,9 @@ theorem pt_law (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (r : 
   rw [subst_psIn, ← homAt_comp, Category.assoc, hch.law m, MonObj.comp_mul, hk, hk]
 
 /- English proof (translation)
-Simplify using `only [thφ, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Use `show lift a (lift b c) ≫ fst t.G (t.G ⊗ t.G) = a`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lift_fst _ _`. Use `show lift a (lift b c) ≫ (snd t.G (t.G ⊗ t.G) ≫ fst t.G t.G) = b`. Rewrite using `[lift_snd_assoc, lift_fst]`. Use `show lift a (lift b c) ≫ (snd t.G (t.G ⊗ t.G) ≫ snd t.G t.G) = c`. Rewrite using `[lift_snd_assoc, lift_snd]`.
+A detailed English derivation is pending.
 -/
 theorem th_pt {T : Over X0} (a b c : T ⟶ t.G) (I : thK) :
     (lift a (lift b c)).left ≫ thφ t.G (x3 t.G) I = (psum t.G ![a, b, c] I.down).left := by
@@ -86,7 +86,7 @@ theorem th_pt {T : Over X0} (a b c : T ⟶ t.G) (I : thK) :
     rw [lift_snd_assoc, lift_snd]
 
 /- English proof (translation)
-Establish `hc : (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _).comp (jetCopy d (m + 1) i) = (jetCopy d m i).comp (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _)`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression. Rewrite using `[jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetPt_trunc (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :
     homAt x0 (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _) ≫ jptG t x0 d x (m + 1) i = jptG t x0 d x m i := by
@@ -101,7 +101,7 @@ abbrev threePts (m : ℕ) (i j k : Fin 3) : jOG x0 d m 3 ⟶ t.G ⊗ t.G ⊗ t.G
   lift (jptG t x0 d x m i) (lift (jptG t x0 d x m j) (jptG t x0 d x m k))
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, Category.id_comp, threePts, threePts, comp_lift, comp_lift, jetPt_trunc hch, jetPt_trunc hch, jetPt_trunc hch]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem threePts_trunc (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) (i j k : Fin 3) :
     (ρn x0 d 3 m).left ≫ (threePts (x := x) (m + 1) i j k).left = 𝟙 _ ≫ (threePts (x := x) m i j k).left := by
@@ -117,13 +117,13 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.GermB Formalism.MainNotions.M
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S _ x0 d F act κ _ tg uvec x _ _ hch e heg htr _`. Establish `hL` using `t.PP.isLB`. Establish `hpe : ∀ m {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S), (peG t x0 d x e m φ).IsGen` using `fun m n φ => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ (heg m) _`. Establish `hXX : ∀ (m : ℕ) {n : ℕ} (k : Fin n) (j : Fin d), (MvPolynomial.X (k, j) : MvPolynomial (Fin n × Fin d) S) - MvPolynomial.X (k, j) ∈ orig S (Fin n × Fin d) ^ (m + 1)` using `fun m n k j => by simp`. Establish `hB3 : ∀ (φ1 φ2 φ3 : ℕ → Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S), (∀ m i j, φ1 (m + 1) i j - φ1 m i j ∈ orig S (Fin 3 × Fin d) ^ (m + 1)) → (∀ m i j, φ2 (m + 1) i j - φ2 m i j ∈ orig S (Fin 3 × Fin d) ^ (m + 1)) → (∀ m i j, φ3 (m + 1) i j - φ3 m i j ∈ orig S (Fin 3 × Fin d …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `φ1 φ2 φ3 h1 h2 h3 m y J hJ`. Rewrite using `[val_mul hJ, val_mul hJ, val_inv, val_inv, val_mul hJ, val_mul hJ, val_inv, val_inv, pe_trunc t x0 d htr φ1 h1 m y J hJ, pe_trunc t x0 d htr φ2 h2 m y J hJ, pe_trunc t x0 d htr φ3 h3 m y J hJ]`. Take `⟨ph, hph⟩` from `exists_series t x0 d (n := 3) _ _ _ _ (fun m => LB.pullGen t.PP.L (thφ t.G (x3 t.G)) thε t.cub.t (threePts (x := x) m 0 1 2).left) (fun m => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ t.cub.isGen _) (fun m => LB.mulGen t.PP.L _ _ _ _ (peG t x0 d x e m ![fun j …`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, th_pt, pe_pt, pt_sub, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]`. Use `erw [prod_cube3 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]`. Establish `ha : jptG t x0 d x m (0 : Fin 3) * jptG t x0 d x m (1 : Fin 3) * jptG t x0 d x m (2 : Fin 3) = jptG t x0 d x m (0 : Fin 3) * (jptG t x0 d x m (1 : Fin 3) * jptG t x0 d x m (2 : Fin 3))` using `_root_.mul_assoc _ _ _`. Apply `ofMul_eq` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, _root_.mul_one]`. Use `erw [ha]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Use the proof step `abel!)`. Use the proof step `(fun m y J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun r => val t.cub.t r y J) (threePts_trunc hch m 0 1 2)).trans (val_pull hJ _ _ _).symm))`. Apply the tactic sequence `(fun m y J hJ => hB3 (fun m => ![fun j => psIn d m ![0, 1] (F j), fun j => MvPolynomial.X ((2 : Fin 3), j)]) (fun m => ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomial.X ((2 : Fin 3), j)]) (fun m => ![fun j => MvPolynomial.X ((1 : Fin 3), j), fun j => MvPolynomia …`. Conclude with `⟨_, hph⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_firstPartialLaw_series_of_frames :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (κ : Type) [Fintype κ] (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (uvec : κ → Fin d → S) (x : ∀ m, jOG x0 d m 1 ⟶ t.G), (∀ j, MvPowerSeries.constantCoeff (F j) = 0) → (∀ a j, MvPowerSeries.constantCoeff (act a j) = 0) → IsChartG t x0 d F act tg uvec x → ∀ e : ∀ m, FrTyG t x0 d x m, (∀ m, (e m).IsGen) → FrTrunc t x0 d x e → FrAxes t x0 d x e → ∃ ph1 : PS S 3 d, ∀ m, ∃ u : (Jet S (Fin 3 × Fin d) m)ˣ, (u : Jet S (Fin 3 × Fin d) m) = psJet m ph1 ∧ LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L (thφ t.G (x3 t.G)) thε t.cub.t (lift (jptG t x0 d x m (0 : Fin 3)) (lift (jptG t x0 d x m (1 : Fin 3)) (jptG t x0 d x m (2 : Fin 3)))).left) (scaleGenG t _ _ (unitΓ u) (LB.mulGen t.PP.L _ _ _ _ (peG t x0 d x e m ![fun j => psIn d m ![0, 1] (F j), fun j => X ((2 : Fin 3), j)]) (LB.mulGen t.PP.L _ _ _ _ (LB.invGen t.PP.L _ _ (peG t x0 d x e m ![fun j => X ((0 : Fin 3), j), fun j => X ((2 : Fin 3), j)])) (LB.invGen t.PP.L _ _ (peG t x0 d x e m ![fun j => X ((1 : Fin 3), j), fun j => X ((2 : Fin 3), j)]))))) := by

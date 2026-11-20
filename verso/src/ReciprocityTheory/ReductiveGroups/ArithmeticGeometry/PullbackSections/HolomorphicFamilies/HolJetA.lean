@@ -11,7 +11,7 @@ open AlgebraicGeometry CategoryTheory Opposite TopologicalSpace
 variable {Y : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[Scheme.germ_stalkClosedPointTo, Scheme.Hom.appLE]`. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Category.assoc]`. Use `first`. Consider the case `rfl`. Consider the case `congr 3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem germ_stalkClosedPointTo_eq {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ Y) (U : Y.Opens)
     (hU : f (IsLocalRing.closedPoint R) ∈ U) :
@@ -26,7 +26,7 @@ theorem germ_stalkClosedPointTo_eq {R : CommRingCat.{0}} [IsLocalRing R] (f : Sp
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Apply `(SpecToEquivOfLocalRing Y R).injective` to reduce the goal to its premises. Use `SpecToEquivOfLocalRing_eq_iff.mpr ⟨hpt, ?_⟩` and prove the remaining obligations. Use `TopCat.Presheaf.stalk_hom_ext _ fun U hU => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Y.presheaf.germ U (f₁ (IsLocalRing.closedPoint R)) hU ≫ Scheme.stalkClosedPointTo f₁ = Y.presheaf.germ U (f₁ (IsLocalRing.closedPoint R)) hU ≫ (Y.presheaf.stalkCongr _).hom ≫ Scheme.stalkClosedPointTo f₂`. Rewrite using `[TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.germ_stalkSpecializes_assoc, germ_stalkClosedPointTo_eq, germ_stalkClosedPointTo_eq, happ]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_ext_of_local {R : CommRingCat.{0}} [IsLocalRing R] {f₁ f₂ : Spec R ⟶ Y}
     (hpt : f₁ (IsLocalRing.closedPoint R) = f₂ (IsLocalRing.closedPoint R))
@@ -58,7 +58,7 @@ def nbhdLift (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
 variable {y₀ A}
 
 /- English proof (translation)
-Conclude with `Limits.colimit.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 theorem germ_nbhdLift (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -72,9 +72,9 @@ def nbhdPt (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
   Spec.map (nbhdLift y₀ A ψ hψ) ≫ Y.fromSpecStalk y₀
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Take `⟨U, hU, f, rfl⟩` from `Y.presheaf.germ_exist a`. Establish `e : (nbhdLift y₀ A ψ hψ).hom (Y.presheaf.germ U y₀ hU f) = ψ U hU f` using `by first`. Consider the case `simpa using congrArg (fun g => g.hom f) (germ_nbhdLift ψ hψ U hU)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `rw [← CommRingCat.comp_apply, germ_nbhdLift]`. Rewrite `ha` using `[e]`. Use `first`. Consider the case `exact (Y.mem_basicOpen f ⟨y₀, hU⟩).mp (hloc U hU f ha)`. Consider the case `exact (Y.mem_basicOpen f y₀ hU).mp (hloc U hU f ha)`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isLocalHom_nbhdLift [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -95,9 +95,7 @@ theorem isLocalHom_nbhdLift [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U �
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `haveI := isLocalHom_nbhdLift ψ hψ hloc`. Use `show (Y.fromSpecStalk y₀) ((Spec.map (nbhdLift y₀ A ψ hψ)) (IsLocalRing.closedPoint A)) = y₀`. Establish `e : (Spec.map (nbhdLift y₀ A ψ hψ)) (IsLocalRing.closedPoint A) = IsLocalRing.closedPoint (Y.presheaf.stalk y₀)` using `by first`. Consider the case `exact IsLocalRing.comap_closedPoint (nbhdLift y₀ A ψ hψ).hom`. Consider the case `simp`.
-
-Rewrite using `[e, Scheme.fromSpecStalk_closedPoint]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nbhdPt_closedPoint [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -116,9 +114,9 @@ theorem nbhdPt_closedPoint [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U →
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Use `isLocalHom_nbhdLift ψ hψ hloc` as an intermediate fact. Establish `hpt` using `nbhdPt_closedPoint ψ hψ hloc`. Establish `hU' : nbhdPt ψ hψ (IsLocalRing.closedPoint A) ∈ U` using `by rw [hpt]; exact hU`. Establish `k` using `germ_stalkClosedPointTo_eq (nbhdPt ψ hψ) U hU'`. Establish `k2` using `Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (nbhdLift y₀ A ψ hψ) U hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k2` using `[germ_nbhdLift]`. Establish `k3 : (nbhdPt ψ hψ).appLE U ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem _ hU').ge ≫ (Scheme.ΓSpecIso A).hom = ψ U hU` using `k.symm.trans k2`. Rewrite using `[← k3]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nbhdPt_appLE [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -138,7 +136,7 @@ theorem nbhdPt_appLE [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y
   simp
 
 /- English proof (translation)
-Use `TopCat.Presheaf.stalk_hom_ext _ fun U hU => ?_` and prove the remaining obligations. Rewrite using `[germ_nbhdLift, ← Category.assoc, germ_nbhdLift]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nbhdLift_comp {B : CommRingCat.{0}} (χ : A ⟶ B) (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -149,7 +147,7 @@ theorem nbhdLift_comp {B : CommRingCat.{0}} (χ : A ⟶ B) (ψ : ∀ U : Y.Opens
   rw [germ_nbhdLift, ← Category.assoc, germ_nbhdLift]
 
 /- English proof (translation)
-Simplify using `only [nbhdPt]`. Rewrite using `[nbhdLift_comp, Spec.map_comp, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_comp_nbhdPt {B : CommRingCat.{0}} (χ : A ⟶ B) (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -160,7 +158,7 @@ theorem spec_comp_nbhdPt {B : CommRingCat.{0}} (χ : A ⟶ B) (ψ : ∀ U : Y.Op
   rw [nbhdLift_comp, Spec.map_comp, Category.assoc]
 
 /- English proof (translation)
-Take `rfl : ψ = ψ'` from `funext fun U => funext fun hU => e U hU`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem nbhdPt_congr {ψ ψ' : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A)}
     (hψ : ∀ (U V : Y.Opens) (hU : y₀ ∈ U) (hV : y₀ ∈ V) (h : V ≤ U),
@@ -174,7 +172,7 @@ theorem nbhdPt_congr {ψ ψ' : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A)}
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appLE]`. Use `first`. Consider the case `rw [nbhdPt_appLE ψ hψ hloc (φ ⁻¹ᵁ U') hU']`. Consider the case `erw [nbhdPt_appLE ψ hψ hloc (φ ⁻¹ᵁ U') hU']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nbhdPt_comp_appLE [IsLocalRing A] {Y' : Scheme.{0}} (φ : Y ⟶ Y')
     (ψ : ∀ U : Y.Opens, y₀ ∈ U → (Γ(Y, U) ⟶ A))
@@ -197,7 +195,7 @@ variable (K : Type) [Field K] (ι : Type) (m : ℕ)
 open Formalism.L2.Pj MvPolynomial
 
 /- English proof (translation)
-Use `⟨m + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hp _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_nilpotent_of_orig {p : MvPolynomial ι K} (hp : p ∈ orig K ι) :
     IsNilpotent (Ideal.Quotient.mk (orig K ι ^ (m + 1)) p) := by

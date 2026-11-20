@@ -18,7 +18,7 @@ open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.ZEul.decomp_lastRow) | (exact GlobalTheory.ZEul.decomp_lastRow) | (intros; apply GlobalTheory.ZEul.decomp_lastRow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.mirabolicCell_decomposition_lastRow : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ),

@@ -23,7 +23,7 @@ namespace GlobalTheory.UnipHaar
 open GlobalTheory.Mem.UnipCocompact
 
 /- English proof (translation)
-Take `⟨⟨𝓕, h𝓕⟩, h2⟩` from `GlobalTheory.Mem.Vol.fundamentalDomain_exists_measure_eq_of_discrete (Γ.subgroupOf N) (Measure.haar : Measure N)`. Establish `h0 : (Measure.haar : Measure N) 𝓕 ≠ 0` using `(h2 𝓕 𝓕 h𝓕 h𝓕).2`. Establish `ht : (Measure.haar : Measure N) 𝓕 ≠ ⊤` using `hc.measure_ne_top h𝓕`. Use `⟨((Measure.haar : Measure N) 𝓕)⁻¹ • Measure.haar, 𝓕, Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 ht) (ENNReal.inv_ne_top.2 h0), h𝓕.mono Measure.smul_absolutelyContinuous, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 ht]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_mass_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (Γ N : Subgroup G) [DiscreteTopology Γ] [LocallyCompactSpace N]
@@ -41,29 +41,25 @@ namespace GlobalTheory.UnipHaar
 open GlobalTheory.Mem.UnipCocompact
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hH`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n W.J`. Use `haveI : DiscreteTopology (ratU σ W.J) := GlobalTheory.RatUDiscrete.discreteTopology_ratU F E σ n W.J`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinv` using `sigma_invol hB.cm`. Establish `hdet` using `GlobalTheory.T.skew_hermitian_det_ne_zero F E σ B n W r s hW`. Take `⟨hcont, hm, hi, h0, hU⟩` from `GlobalTheory.T.hermitian_adjoint_involution F E σ n W.J hinv hW.skew hdet`. Take `⟨he, he0, hs⟩` from `GlobalTheory.T.adapted_plane_orthogonal_idempotents F E σ B n d₁ W W₁ H' i₀ i₁ hinv hW.skew hdet hH`. Establish `hmem` using `GlobalTheory.T.unipotent_mem_iff_weight_raising F E σ B n d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨eA⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := eA.isEmbedding.t2Space`. Establish `hRc : IsClosed (raise (idem3 σ W.J H') wt3 0 : Set (Matrix (Fin n) (Fin n) (AE F E)))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (raise (idem3 σ W.J H') wt3 0 : Set (Matrix (Fin n) (Fin n) (AE F E))) = ⋂ a, ⋂ b, ⋂ (_ : wt3 a ≤ wt3 b + ((0 : ℕ) : ℤ)), {X | idem3 σ W.J H' a * X * idem3 σ W.J H' b = 0}`. Use extensionality with `X`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun _ => isClosed_eq ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) continuous_const`. Establish `hmat : Continuous (fun g : UA σ W.J => mat g)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hNc : IsClosed (unip σ W H' : Set (UA σ W.J))`. Establish `e : (unip σ W H' : Set (UA σ W.J)) = (fun g => mat g - 1) ⁻¹' (raise (idem3 σ W.J H') wt3 0 : Set _)`. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hmem g`. Rewrite using `[e]`. Conclude with `hRc.preimage (hmat.sub continuous_const)`. Use `haveI : LocallyCompactSpace (unip σ W H') := hNc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haar_mass_one (ratU σ W.J) (unip σ W H') ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨K, hK, hKs⟩` from `GlobalTheory.AutFunCompare.tens_cocompact (F := F) (E := E)`. Use `set φ := inclR (F := F) (E := E) (AF F) with hφ`. Apply the tactic sequence `obtain ⟨K', hK', k1, k2⟩ := compact_mod_of_weights (st := adj σ W.J) (w := wt3) (φ.mapMatrix (m := Fin n)).range (Matrix.scalar _ (φ (1 / 2))) (Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K) hcont hm hi h0 ⟨Matrix.scalar _ (1 / 2), by ext i j; by_cases h : i = j <;> simp [h …`. Conclude with `⟨_, ⟨Matrix.of y, rfl⟩, fun i _ j _ => hy i j⟩) he he0 hs`. Set `lift : ∀ x : Matrix (Fin n) (Fin n) (AE F E), (adj σ W.J x * x = 1 ∧ x * adj σ W.J x = 1) ∧ x - 1 ∈ raise (idem3 σ W.J H') wt3 0 → unip σ W H'` to `fun x hx => ⟨⟨⟨x, adj σ W.J x, hx.1.2, hx.1.1⟩, (hU x).1 hx.1.1⟩, (hmem _).2 hx.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : unip σ W H' → _` to `fun u => Units.embedProduct _ u.1.1`. Establish `hf : Topology.IsInducing f` using `Units.isInducing_embedProduct.comp (Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal)`. Use `⟨f ⁻¹' ((fun x => (x, MulOpposite.op (adj σ W.J x))) '' K'), hf.isCompact_preimage' (hK'.image (continuous_id.prodMk (MulOpposite.continuous_op.comp hcont))) ?_, fun u => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨lift x (k1 x hx), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `u1 : adj σ W.J (mat u.1) * mat u.1 = 1` using `(hU _).2 u.1.2`. Take `⟨γ, ⟨a, ha⟩, p1, k, hk, p2⟩` from `k2 (mat u.1) ⟨⟨u1, mul_eq_one_comm.1 u1⟩, (hmem _).1 u.2⟩`. Take `⟨b, hb⟩` from `h0 γ ⟨a, ha⟩`. Establish `inj : Function.Injective (φ.mapMatrix (m` using `Fin n)) := Matrix.map_injective GlobalTheory.AutFunCompare.inclA_injective`. Establish `hab : a * b = 1` using `inj (by rw [map_mul, ha, hb, map_one, p1.1.2])`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hrat : (lift γ p1 : UA σ W.J) ∈ ratU σ W.J`. Use `⟨⟨a, b, hab, mul_eq_one_comm.1 hab⟩, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `ha`. Use `⟨(lift γ p1)⁻¹, Subgroup.mem_subgroupOf.2 (inv_mem hrat), ?_⟩` and prove the remaining obligations. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `(k, MulOpposite.op (adj σ W.J k)) = Units.embedProduct _ ((((lift γ p1)⁻¹ * u : unip σ W H') : UA σ W.J) : GL (Fin n) (AE F E))`. Establish `hv : ((((lift γ p1)⁻¹ * u : unip σ W H') : UA σ W.J) : GL (Fin n) (AE F E)) = ((lift k (k1 k hk) : UA σ W.J) : GL (Fin n) (AE F E))`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `adj σ W.J γ * mat u.1 = k`. Rewrite using `[p2, ← mul_assoc, p1.1.1, one_mul]`.
-
-Rewrite using `[hv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_haar_fundamentalDomain_mass_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E d₁) (H' : Plane E n d₁) (i₀ i₁ r s r₁ s₁ : ℕ), B.IsGood σ → W.IsSkew σ B r s → W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ → ∃ (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')), μ.IsHaarMeasure ∧ IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H')) 𝓕 μ ∧ μ 𝓕 = 1 := by
   intro F E _ _ _ _ _ σ B n d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hH

@@ -30,9 +30,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Rk.UpInjRow
 
 /- English proof (translation)
-Introduce `hDS hHCF hHCM hCW hCRD hHowe hWS hHecke hSEC hUD D G _ _ Pl0 T A Ks _ _ _ R F hGiv hcc _hSb hFix SF hSF`. Establish `hSc` using `GlobalTheory.T.thetaChainStep_positive_scalar_standingHypotheses hDS hHCF hHCM hCW hCRD hHowe hWS hHecke hSEC hUD R F hGiv hcc`. Establish `hK` using `GlobalTheory.T.thetaLift_adjoint_keeps_spherical_parts_off_tuple hCRD hHowe R F hGiv.core hFix`. Establish `hS` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R`. Establish `hB` using `GlobalTheory.ChainScalar.bForm R F hGiv.core hS hSc hK SF hSF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hB, GlobalTheory.Core.Rk.upInj_of_bForm R F hGiv.core hS hGiv.irr hSc SF hSF hB⟩`.
+Supply the required witnesses or components.
 -/
 theorem upInj : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilSiegelFormulaUnitary → (∀ D' : Formalism.BasicNotions.D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D') → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.UnramifiedDoublingGL → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → D.host.ccK = ⊤ → R.Sb = R.Pg → (∀ t P, GlobalTheory.Hk3.Good R t P → Formalism.DivisionValues.conjPl P = P → GlobalTheory.Hk3.FixAll R t P) → ∀ SF, GlobalTheory.Hk3.IsSF R SF → BForm R SF ∧ UpInj R := by
   intro hDS hHCF hHCM hCW hCRD hHowe hWS hHecke hSEC hUD D G _ _ Pl0 T A Ks _ _ _ R F hGiv hcc _hSb hFix SF hSF

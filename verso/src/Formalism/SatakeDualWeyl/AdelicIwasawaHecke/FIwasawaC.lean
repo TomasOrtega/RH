@@ -24,11 +24,11 @@ private theorem antiJ_apply_adelic_iwasawa_hecke (i j : Fin n) :
     antiJ L n i j = if (i : ℕ) + j + 1 = n then 1 else 0 := rfl
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev j)]`. Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_pos (by rw [Fin.val_rev]; omega), mul_one]`. Introduce `k _ hk`. Establish `hk'` using `k.isLt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_neg, mul_zero]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mul_antiJ_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (N * antiJ L n) i j = N i (Fin.rev j) := by
@@ -47,11 +47,11 @@ private theorem mul_antiJ_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_pos (by rw [Fin.val_rev]; omega), one_mul]`. Introduce `k _ hk`. Establish `hk'` using `k.isLt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_neg, zero_mul]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem antiJ_mul_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (antiJ L n * N) i j = N (Fin.rev i) j := by
@@ -76,7 +76,7 @@ private theorem cT_apply_eq_sigma_transpose (N : Matrix (Fin n) (Fin n) L) (i j 
     cT σ N i j = σ (N j i) := rfl
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cT_mul_reverse (A B : Matrix (Fin n) (Fin n) L) :
     cT σ (A * B) = cT σ B * cT σ A := by
@@ -84,9 +84,9 @@ private theorem cT_mul_reverse (A B : Matrix (Fin n) (Fin n) L) :
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[cT_apply_eq_sigma_transpose]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cT_one_eq_one : cT σ (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   ext i j
@@ -97,11 +97,11 @@ private theorem cT_one_eq_one : cT σ (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   · rw [Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h), map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[antiJ_mul_apply', antiJ_apply_adelic_iwasawa_hecke, Matrix.one_apply]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `h : i = j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (by rw [Fin.val_rev, ← h]; omega)]`. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `ext`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite `h'` using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem antiJ_mul_antiJ : antiJ L n * antiJ L n = 1 := by
   ext i j
@@ -118,11 +118,11 @@ private theorem antiJ_mul_antiJ : antiJ L n * antiJ L n = 1 := by
     omega
 
 /- English proof (translation)
-Unfold `fIwasawaKm fIwasawaUn fIwasawaInt at *`. Take `⟨hAu, hAi⟩` from `hA`. Take `⟨hBu, hBi⟩` from `hB`. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[cT_mul_reverse]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = antiJ L n := by rw [hAu, hBu]`. Rewrite using `[Matrix.mul_apply]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hAi i k) (hBi k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_Km_mul {A B : Matrix (Fin n) (Fin n) L} (hA : fIwasawaKm σ A) (hB : fIwasawaKm σ B) :
     fIwasawaKm σ (A * B) := by
@@ -141,9 +141,9 @@ theorem fIwasawa_Km_mul {A B : Matrix (Fin n) (Fin n) L} (hA : fIwasawaKm σ A) 
     exact mul_le_one' (hAi i k) (hBi k j)
 
 /- English proof (translation)
-Unfold `fIwasawaKm fIwasawaUn fIwasawaInt`. Use `⟨by rw [cT_one_eq_one, Matrix.one_mul, Matrix.mul_one], fun i j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.one_apply_ne h, map_zero]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_Km_one : fIwasawaKm σ (1 : Matrix (Fin n) (Fin n) L) := by
   unfold fIwasawaKm fIwasawaUn fIwasawaInt
@@ -155,15 +155,13 @@ theorem fIwasawa_Km_one : fIwasawaKm σ (1 : Matrix (Fin n) (Fin n) L) := by
     exact zero_le'
 
 /- English proof (translation)
-Unfold `fIwasawaKm at hA ⊢`. Take `⟨hAu, hAi⟩` from `hA`. Establish `hu` using `hAu`. Unfold `fIwasawaUn at hu`. Establish `hBA : fIwasawaInv σ A * A = 1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `fIwasawaInv`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu, antiJ_mul_antiJ]`. Establish `hAB : A * fIwasawaInv σ A = 1` using `mul_eq_one_comm.mp hBA`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `fIwasawaUn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul_reverse]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `_ = antiJ L n := by rw [hAB, cT_one_eq_one, Matrix.one_mul, Matrix.mul_one]`. Unfold `fIwasawaInt at hAi ⊢`. Introduce `i j`. Unfold `fIwasawaInv`. Rewrite using `[mul_antiJ_apply', antiJ_mul_apply', cT_apply_eq_sigma_transpose, hσv]`.
-
-Conclude with `hAi _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_Km_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {A : Matrix (Fin n) (Fin n) L}
     (hA : fIwasawaKm σ A) : fIwasawaKm σ (fIwasawaInv σ A) := by
@@ -192,13 +190,13 @@ theorem fIwasawa_Km_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {A : Matrix
     exact hAi _ _
 
 /- English proof (translation)
-Unfold `fIwasawaUn at hM`. Establish `h` using `congrFun (congrFun hM a) b`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [mul_antiJ_apply', cT_apply_eq_sigma_transpose, antiJ_apply_adelic_iwasawa_hecke] at h`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Distinguish the cases in `hab : b = Fin.rev a`. Rewrite using `[if_pos, if_pos hab]`. Rewrite using `[hab, Fin.val_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg, if_neg hab]`. Introduce `h'`. Apply `hab` to reduce the goal to its premises. Use `ext`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fIwasawa_gram_un (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (a b : Fin n) :
     ∑ j, σ (M (Fin.rev j) a) * M j b = if b = Fin.rev a then 1 else 0 := by
@@ -221,19 +219,19 @@ theorem fIwasawa_gram_un (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (
     omega
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `s hsm hs`. Establish `key : ∀ b : Fin n, b ≤ Fin.rev s → σ (M s s) * M (Fin.rev s) b = if b = Fin.rev s then 1 else 0`. Introduce `b hb`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← fIwasawa_gram_un σ M hM s b, Finset.sum_eq_single (Fin.rev s)]`. Rewrite using `[Fin.rev_rev]`. Introduce `j _ hj`. Establish `hne : Fin.rev j ≠ s` using `fun h => hj (by rw [← h, Fin.rev_rev])`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hjs : (Fin.rev j).val < m`. Rewrite using `[← hsm]`. Conclude with `h`. Establish `hjr : (Fin.rev j).val < r` using `by omega`. Establish `hjb : b < Fin.rev (Fin.rev j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `b.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Use `s.isLt` as an intermediate fact. Rewrite using `[Fin.rev_rev]`. Rewrite `hb` using `[Fin.le_def, Fin.val_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Fin.lt_def, Fin.val_rev]`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `(ih _ hjs (Fin.rev j) rfl hjr).2 b hjb`. Rewrite `h0` using `[Fin.rev_rev]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, mul_zero]`. Rewrite using `[hT (Fin.rev j) s hs h, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h1` using `key (Fin.rev s) le_rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[if_pos rfl]`. Use `⟨h1, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h2` using `key b hb.le`. Rewrite `h2` using `[if_neg (ne_of_lt hb)]`. Conclude with `(mul_eq_zero.mp h2).resolve_left (left_ne_zero_of_mul_eq_one h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sigma_diag_mul_rev_diag_and_rev_entries_zero (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r : ℕ)
     (hT : fIwasawaTri r M) (m : ℕ) : ∀ s : Fin n, s.val = m → s.val < r →
@@ -277,7 +275,7 @@ private theorem sigma_diag_mul_rev_diag_and_rev_entries_zero (M : Matrix (Fin n)
     exact (mul_eq_zero.mp h2).resolve_left (left_ne_zero_of_mul_eq_one h1)
 
 /- English proof (translation)
-Conclude with `sigma_diag_mul_rev_diag_and_rev_entries_zero σ M hM r hT s.val s rfl hs`.
+A detailed English derivation is pending.
 -/
 theorem fIwasawa_rows (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r : ℕ)
     (hT : fIwasawaTri r M) (s : Fin n) (hs : s.val < r) :
@@ -286,9 +284,9 @@ theorem fIwasawa_rows (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r :
   exact sigma_diag_mul_rev_diag_and_rev_entries_zero σ M hM r hT s.val s rfl hs
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hi'` using `i.isLt`. Establish `hρ'` using `ρ.isLt`. Establish `hs : (Fin.rev i).val < r`. Rewrite using `[Fin.val_rev, ← hρr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[Fin.lt_def, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `(fIwasawa_rows σ M hM r hT (Fin.rev i) hs).2 ρ (by rw [Fin.rev_rev]; exact lt_trans hρ hi)`. Rewrite `h` using `[Fin.rev_rev]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fIwasawa_col_zero (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r : ℕ)
     (hT : fIwasawaTri r M) (ρ : Fin n) (hρr : ρ.val = r) (hρ : ρ < Fin.rev ρ) :
@@ -304,20 +302,20 @@ theorem fIwasawa_col_zero (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) 
   rwa [Fin.rev_rev] at h
 
 /- English proof (translation)
-Rewrite using `[fIwasawa_gram_un σ M hM ρ ρ, if_neg (ne_of_lt hρ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fIwasawa_iso (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (ρ : Fin n)
     (hρ : ρ < Fin.rev ρ) : ∑ j, σ (M (Fin.rev j) ρ) * M j ρ = 0 := by
   rw [fIwasawa_gram_un σ M hM ρ ρ, if_neg (ne_of_lt hρ)]
 
 /- English proof (translation)
-Establish `hρn` using `ρ.isLt`. Establish `han` using `a.isLt`. Distinguish the cases in `haρ : a = Fin.rev ρ`. Substitute `haρ` using the available equality. Use `⟨Equiv.swap ρ (Fin.rev ρ), Equiv.swap_apply_left _ _, fun i => ?_, fun i hi => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hin` using `i.isLt`. Simplify using `only [Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> fIwasawa_omega`. Establish `hin` using `i.isLt`. Simplify using `only [Equiv.swap_apply_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> fIwasawa_omega`. Use `⟨Equiv.swap ρ a * Equiv.swap (Fin.rev ρ) (Fin.rev a), ?_, fun i => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def] split_ifs <;> fIwasawa_omega`. Establish `hin` using `i.isLt`. Simplify using `only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> fIwasawa_omega`. Establish `hin` using `i.isLt`. Simplify using `only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> fIwasawa_omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIwasawa_perm (ρ a : Fin n) (hρ : ρ < Fin.rev ρ) (ha1 : ρ ≤ a) (ha2 : a ≤ Fin.rev ρ)
     (haa : a ≠ Fin.rev a) :

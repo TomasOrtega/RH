@@ -14,7 +14,7 @@ open Formalism.L2.GlobalTheoryTheory Formalism.MainNotions
 open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ`. Conclude with `lattice_ideal_lattice_holds D.host.K D.host.d (discriminant_mod_four D) ⟨D.host.sqrtMinusD, br_sqrt_mem D⟩ (br_sqrt_sq D) (br_finrank_K D) (brPhi D) cc δ hcc hδ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lambda_of_lattice_holds : LamOfLat := by
   intro D cc δ hcc hδ
@@ -23,13 +23,13 @@ theorem lambda_of_lattice_holds : LamOfLat := by
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `K _ _ d _ hd4 x hx hK φ 𝔞 δ h𝔞 hdisc M _ h2 h3 ρ`. Establish `hδ0 : δ ≠ 0` using `brcc_discr_delta_ne K φ 𝔞 δ hdisc`. Establish `hjδ : IntegralLatticeDensity.jL (latI φ 𝔞 1) = IntegralLatticeDensity.jL (latI φ 𝔞 δ)`. Rewrite using `[latI_eq_smul _ _ δ, br_jL_smul _ _ hδ0]`. Establish `hjM : IntegralLatticeDensity.jL (latI φ 𝔞 δ) ∈ M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[br_jL_eq]`. Establish `hd1 : discr (latI φ 𝔞 δ) = 1` using `hdisc`. Rewrite using `[hd1, div_one]`. Establish `h0 : (1728 : ℂ) ∈ M` using `by simp`. Conclude with `M.mul_mem h0 (M.pow_mem h2 3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjM1 : IntegralLatticeDensity.jL (latI φ 𝔞 1) ∈ M` using `by rw [hjδ]; exact hjM`. Take `⟨𝔟, h𝔟, hρ⟩` from `(ComplexMultiplicationLFunction.cmConjSetF_proved K d hd4 x hx hK φ 𝔞 h𝔞 M hjM1).1 ρ`. Establish `hj : ρ ⟨IntegralLatticeDensity.jL (latI φ 𝔞 δ), hjM⟩ = IntegralLatticeDensity.jL (latI φ 𝔟 1)`. Rewrite using `[← hρ]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Conclude with `hjδ.symm`. Take `⟨c, hc0, hlc, -⟩` from `br_lamConj_eq uniqInv_holds M ρ (latI φ 𝔞 δ) (latI φ 𝔟 1) h2 h3 hdisc (discr_latI_ne_zero K d hd4 x hx hK φ 𝔟 h𝔟) hjM hj`. Take `⟨h1, h2'⟩` from `lattice_ideal_lattice_holds K d hd4 x hx hK φ 𝔟 1 h𝔟 one_ne_zero`. Rewrite using `[hlc]`. Conclude with `⟨is_lattice_smul_holds _ c hc0 h1, has_cm_smul_holds _ _ c h2'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lattice_ideal_conj_holds : LatIConj := by
   intro K _ _ d _ hd4 x hx hK φ 𝔞 δ h𝔞 hdisc M _ h2 h3 ρ
@@ -54,13 +54,13 @@ theorem lattice_ideal_conj_holds : LatIConj := by
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `D` and use `lambda_conj_lattice_holds D uniqInv_holds (ComplexMultiplicationLFunction.cmConjSet_holds D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lambda_conj_lattice_uniform : LamConjLat0 := fun D => lambda_conj_lattice_holds D uniqInv_holds (ComplexMultiplicationLFunction.cmConjSet_holds D)
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `D` and use `lambda_conj_theta_holds D uniqInv_holds (ComplexMultiplicationLFunction.cmConjSet_holds D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lambda_conj_theta_uniform : LamConjTheta0 := fun D => lambda_conj_theta_holds D uniqInv_holds (ComplexMultiplicationLFunction.cmConjSet_holds D)
 

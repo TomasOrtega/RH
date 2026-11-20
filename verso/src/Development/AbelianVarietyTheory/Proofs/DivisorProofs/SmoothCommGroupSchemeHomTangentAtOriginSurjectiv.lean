@@ -19,23 +19,21 @@ noncomputable section
 namespace GlobalTheory.LieSurjLocal
 
 /- English proof (translation)
-Introduce `R _ _ G B _ _ _ _ q _ hsm u`. Establish `: Nontrivial (DualNumber R)` using `(TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial`. Establish `: IsLocalRing (DualNumber R)` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Set `π : CommRingCat.of (DualNumber R) ⟶ CommRingCat.of R` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom`. Establish `hπ : Function.Surjective π` using `fun x => ⟨TrivSqZeroExt.inl x, rfl⟩`. Establish `hn : IsNilpotent (RingHom.ker π.hom)` using `⟨2, by`. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : x.fst = 0` using `hx`. Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx', hy']⟩`. Establish `hu : Spec.map π ≫ (tv u).left = η[B].left` using `GlobalTheory.RayBasis.isTangent_pt u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h0 : η[G].left ≫ q.left = Spec.map π ≫ (tv u).left` using `(congrArg (·.left) (IsMonHom.one_hom q)).trans hu.symm`. Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `GlobalTheory.exists_isAffineOpen_pair q.left (η[G].left (IsLocalRing.closedPoint R)) (O := ⊤) trivial`. Take `⟨x, hx, hq⟩` from `GlobalTheory.exists_lift_of_smooth_of_isAffineOpen q.left hU hV hVU π (tv u).left η[G].left h0 (GlobalTheory.range_subset_opens_of_isLocalRing _ (by`. Establish `: IsLocalHom π.hom` using `.of_surjective _ hπ`. Establish `e : q.left (η[G].left (IsLocalRing.closedPoint R)) = (tv u).left (Spec.map π (IsLocalRing.closedPoint R))` using `congr($h0 (IsLocalRing.closedPoint R))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec_closedPoint (f := π), ← e]`. Conclude with `hVU hxV))`. Use the proof step `(GlobalTheory.range_subset_opens_of_isLocalRing _ hxV) (by`. Introduce `R' S _ _ _ _ _ _ p hp φ`. Establish `hs : Function.Surjective p` using `fun c => (hπ c).imp fun b hb => (hp b).trans hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hk : IsNilpotent (RingHom.ker p.toRingHom)`. Use `hn using 1` and compare the differences between its conclusion and the goal. Conclude with `Ideal.ext fun b => Eq.congr_left (hp b)`. Conclude with `⟨Algebra.FormallySmooth.liftOfSurjective φ p hs hk, Algebra.FormallySmooth.comp_liftOfSurjective φ p hs hk⟩)`. Set `xo : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G` to `Over.homMk x (by rw [← Over.w q, reassoc_of% hq]; exact Over.w (tv u))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : smT (𝟙 (Sp R)) 0 xo = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[smT_left, Hom.one_def, Over.comp_left, Over.toUnit_left]`. Use `show spMap _ ≫ x = (spMap (algebraMap R (DualNumber R)) ≫ 𝟙 _) ≫ _`. Rewrite using `[Category.comp_id, ← hx, ← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises.
-
-Introduce `r`. Apply the tactic sequence `ext <;> simp [π, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.mkT xo hz, Over.OverMorphism.ext hq⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_surjective : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G B : Over (Sp R)) [GrpObj G] [GrpObj B] [IsCommMonObj G] [IsCommMonObj B] (q : G ⟶ B) [IsMonHom q], Smooth q.left → ∀ u : TanM (𝟙 (Sp R)) B, ∃ v : TanM (𝟙 (Sp R)) G, tv v ≫ q = tv u := by
   intro R _ _ G B _ _ _ _ q _ hsm u

@@ -18,15 +18,15 @@ namespace GlobalTheory.LagrForm
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hint : ∀ h : SchwartzMap D ℂ, Integrable (fun y => ph y * h y) μ` using `fun h => h.integrable.bdd_mul hph (Eventually.of_forall hb)`. Use `⟨SchwartzMap.mkCLMtoNormedSpace (σ := RingHom.id ℂ) (fun h => ∫ y, ph y * h y ∂μ) (fun h h' => ?_) (fun a h => ?_) ?_, fun h => rfl⟩` and prove the remaining obligations. Simplify using `only [SchwartzMap.add_apply, mul_add]`. Conclude with `integral_add (hint h) (hint h')`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Break down `hμ.exists_integrable with ⟨n, hn⟩` into its components or cases.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Set `m` to `(n, 0)`. Use `⟨Finset.Iic m, 2 ^ n * ∫ x : D, (1 + ‖x‖) ^ (- (n : ℝ)) ∂μ, by positivity, fun f => ?_⟩` and prove the remaining obligations. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `h' : ∀ x, ‖ph x * f x‖ ≤ (1 + ‖x‖) ^ (-(n : ℝ)) * (2 ^ n * ((Finset.Iic m).sup (fun m' => SchwartzMap.seminorm ℂ m'.1 m'.2) f))`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_mul_le _ _).trans ((mul_le_of_le_one_left (norm_nonneg _) (hb x)).trans ?_)` and prove the remaining obligations. Rewrite using `[Real.rpow_neg (by positivity), ← div_eq_inv_mul, le_div_iff₀' (by positivity), Real.rpow_natCast]`. Simplify using `using SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := m) (k := n) (n := 0) le_rfl le_rfl f x`. Use `(integral_mono (hint f).norm (hn.mul_const _) h').trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `schwartzSeminormFamily`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_mul_const, ← mul_assoc, mul_comm (2 ^ n)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_weighted_clm {D : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [MeasurableSpace D] [BorelSpace D]
     [SecondCountableTopology D] (μ : Measure D) [hμ : μ.HasTemperateGrowth] (ph : D → ℂ)
@@ -71,13 +71,13 @@ def linP {r : ℕ} {κ : Type} [Fintype κ] (a : Fin r → κ → mixedEmbedding
   map_smul' a y := by funext k; simp [Finset.smul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Set `V : (Fin r → F) →ₗ[F] (κ → F)` to `{ toFun := fun c => ∑ j, c j • w j map_add' := fun c c' => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun a c => by simp [Finset.smul_sum, smul_smul] }`. Establish `hker : LinearMap.ker V = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Fintype.linearIndependent_iff.1 hw c hc i`. Take `⟨Q, hQ⟩` from `V.exists_leftInverse_of_injective hker`. Use `⟨LinearMap.toMatrix' Q, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : Q (w j) = Pi.single j 1`. Use `congrArg (fun φ => φ (Pi.single j 1)) hQ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[← this]`. Use `congr 1`. Simplify using `[V, Pi.single_apply, ite_smul]`. Establish `h2` using `congrFun (LinearMap.toMatrix'_mulVec Q (w j)) i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Simplify `h2` using `[Matrix.mulVec, dotProduct, Pi.single_apply, eq_comm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_leftInv {r : ℕ} {κ : Type} [Fintype κ] (w : Fin r → κ → F) (hw : LinearIndependent F w) :
     ∃ A : Matrix (Fin r) κ F, ∀ i j, ∑ k, A i k * w j k = if i = j then 1 else 0 := by
@@ -133,7 +133,7 @@ Both sides reduce to the same expression.
 theorem sndH_apply (a : AF F) : sndH F a = a.2 := rfl
 
 /- English proof (translation)
-Simplify using `only [Xv, Prod.fst_sum, Prod.smul_fst, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← fstH_apply, map_sum]`. Simplify using `only [map_mul, fstH_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Xv_fst_fst (u : Fin r → (κ → F) × (κ → F)) (x : Fin r → AF F) (k : κ) :
     ((Xv u x).1 k).1 = ∑ j, (x j).1 * algebraMap F (InfiniteAdeleRing F) ((u j).1 k) := by
@@ -141,7 +141,7 @@ theorem Xv_fst_fst (u : Fin r → (κ → F) × (κ → F)) (x : Fin r → AF F)
   rw [← fstH_apply, map_sum]; simp only [map_mul, fstH_apply]; rfl
 
 /- English proof (translation)
-Simplify using `only [Xv, Prod.fst_sum, Prod.smul_fst, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← sndH_apply, map_sum]`. Simplify using `only [map_mul, sndH_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Xv_fst_snd (u : Fin r → (κ → F) × (κ → F)) (x : Fin r → AF F) (k : κ) :
     ((Xv u x).1 k).2 = ∑ j, (x j).2 * algebraMap F (FiniteAdeleRing (𝓞 F) F) ((u j).1 k) := by
@@ -149,7 +149,7 @@ theorem Xv_fst_snd (u : Fin r → (κ → F) × (κ → F)) (x : Fin r → AF F)
   rw [← sndH_apply, map_sum]; simp only [map_mul, sndH_apply]; rfl
 
 /- English proof (translation)
-Simplify using `only [sc, Xv, dotProduct, Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← fstH_apply, ← fstH_apply]`. Simplify using `only [map_mul, map_sum, fstH_apply, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sc_fst_congr (u : Fin r → (κ → F) × (κ → F)) (x x' : Fin r → AF F) (h : ∀ j, (x j).1 = (x' j).1) :
     (sc u x).1 = (sc u x').1 := by
@@ -157,7 +157,7 @@ theorem sc_fst_congr (u : Fin r → (κ → F) × (κ → F)) (x x' : Fin r → 
   rw [← fstH_apply, ← fstH_apply]; simp only [map_mul, map_sum, fstH_apply, h]
 
 /- English proof (translation)
-Simplify using `only [sc, Xv, dotProduct, Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← sndH_apply, ← sndH_apply]`. Simplify using `only [map_mul, map_sum, sndH_apply, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sc_snd_congr (u : Fin r → (κ → F) × (κ → F)) (x x' : Fin r → AF F) (h : ∀ j, (x j).2 = (x' j).2) :
     (sc u x).2 = (sc u x').2 := by
@@ -165,7 +165,7 @@ theorem sc_snd_congr (u : Fin r → (κ → F) × (κ → F)) (x x' : Fin r → 
   rw [← sndH_apply, ← sndH_apply]; simp only [map_mul, map_sum, sndH_apply, h]
 
 /- English proof (translation)
-Unfold `sc Xv`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_sc (u : Fin r → (κ → F) × (κ → F)) : Continuous (sc u) := by
   unfold sc Xv
@@ -179,45 +179,35 @@ namespace GlobalTheory.LagrForm
 open GlobalTheory.WeilAdm.HaarSplit in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ r u hu μ hμ g hg`. Use `letI mA : MeasurableSpace (Fin r → AF F) := borel _`. Use `haveI : BorelSpace (Fin r → AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI := volume_isAddHaar F (Fin r)`. Use `haveI : BorelSpace (Fin r → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : LocallyCompactSpace (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI mY : MeasurableSpace (Fin r → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (Fin r → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `haveI : SigmaCompactSpace (Fin r → FiniteAdeleRing (𝓞 F) F) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `set ν : Measure (Fin r → FiniteAdeleRing (𝓞 F) F) := Measure.addHaar with hν`. Use `haveI : MeasurableAdd (Fin r → mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : MeasurableAdd (Fin r → FiniteAdeleRing (𝓞 F) F) := ContinuousAdd.measurableAdd`. Use `haveI : ν.IsAddHaarMeasure := by rw [hν]; infer_instance`. Use `haveI := Measure.prod.instIsAddHaarMeasure (volume : Measure (Fin r → mixedEmbedding.mixedSpace F)) ν`. Use `haveI hρ : Measure.IsAddHaarMeasure ((volume.prod ν).map (splitE F (Fin r))) := (splitE F (Fin r)).isAddHaarMeasure_map _ (continuous_splitE F (Fin r)) (continuous_splitE_symm F (Fin r))`. Set `em : ((Fin r → mixedEmbedding.mixedSpace F) × (Fin r → FiniteAdeleRing (𝓞 F) F)) ≃ᵐ (Fin r → AF F)` to `(Homeomorph.mk (splitE F (Fin r)).toEquiv (continuous_splitE F (Fin r)) (continuous_splitE_symm F (Fin r))).toMeasurableEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `haveI : (volume : Measure (Fin r → mixedEmbedding.mixedSpace F)).HasTemperateGrowth := MeasureTheory.Measure.IsAddHaarMeasure.instHasTemperateGrowth`. Take `⟨A, hA⟩` from `exists_leftInv (fun j => (u j).1) hu`. Set `c : Fin r → κ → mixedEmbedding.mixedSpace F` to `fun j k => iotaI F ((u j).1 k)`. Set `a : Fin r → κ → mixedEmbedding.mixedSpace F` to `fun i k => iotaI F (A i k)`. Set `L` to `LinearMap.toContinuousLinearMap (linI c)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Set `P` to `LinearMap.toContinuousLinearMap (linP a)`. Establish `hPL : ∀ y, P (L y) = y`. Introduce `y`. Use function extensionality and compare the values at `i`. Use `show ∑ k, a i k * (∑ j, y j * c j k) = y i`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h1 : ∀ j, ∑ k, a i k * (y j * c j k) = y j * iotaI F (∑ k, A i k * (u j).1 k)`. Introduce `j`. Rewrite using `[map_sum, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, a, c]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, hA]`. Simplify using `[apply_ite (iotaI F)]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : ∃ (k : ℕ) (C : ℝ), ∀ y, ‖y‖ ≤ C * (1 + ‖L y‖) ^ k`. Use `⟨1, ‖P‖, fun y => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_one]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Set `Cm` to `SchwartzMap.compCLM ℂ (F := ℂ) (g := ⇑L) L.hasTemperateGrowth hup`. Set `ph : (Fin r → mixedEmbedding.mixedSpace F) → ℂ` to `fun y => ψ (pairA F (sc u (splitE F (Fin r) (y, 0))).1 0)`. Establish `hphc : Continuous ph`. Use `hψ.1.comp ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h0 : Continuous fun y : Fin r → mixedEmbedding.mixedSpace F => (sc u (splitE F (Fin r) (y, 0))).1` using `continuous_fst.comp ((continuous_sc u).comp ((continuous_splitE F (Fin r)).comp (continuous_id.prodMk continuous_const)))`. Conclude with `h0.prodMk continuous_const`. Take `⟨Λ, hΛ⟩` from `exists_weighted_clm volume ph hphc.aestronglyMeasurable (fun y => (GlobalTheory.StdCharFromIsStd.norm_psi hψ _).le)`. Set `B : (Fin r → FiniteAdeleRing (𝓞 F) F) → ℂ` to `fun z => ψ (pairA F 0 (sc u (splitE F (Fin r) (0, z))).2) * g (fun k => ((Xv u (splitE F (Fin r) (0, z))).1 k).2)`. Use `set ρ := (volume.prod ν).map (splitE F (Fin r)) with hρdef`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set s := Measure.addHaarScalarFactor μ ρ with hs`. Use `⟨(((s : ℝ) : ℂ) * ∫ z, B z ∂ν) • Λ.comp Cm, fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ x, schr ψ (Xv u x) (pureA F (⇑f) g) 0 ∂μ = _`. Establish `hsplit : ∀ y z, schr ψ (Xv u (splitE F (Fin r) (y, z))) (pureA F (⇑f) g) 0 = (ph y * f (L y)) * B z`. Introduce `y z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ψ (sc u (splitE F (Fin r) (y, z))) = ψ (pairA F (sc u (splitE F (Fin r) (y, z))).1 0) * ψ (pairA F 0 (sc u (splitE F (Fin r) (y, z))).2)` using `by conv_lhs => rw [GlobalTheory.StdCharFromIsStd.pairA_split (sc u (splitE F (Fin r) (y, z)))]`. Conclude with `AddChar.map_add_eq_mul ψ _ _`. Establish `h2 : (sc u (splitE F (Fin r) (y, z))).1 = (sc u (splitE F (Fin r) (y, 0))).1` using `sc_fst_congr u _ _ (fun j => rfl)`. Establish `h3 : (sc u (splitE F (Fin r) (y, z))).2 = (sc u (splitE F (Fin r) (0, z))).2` using `sc_snd_congr u _ _ (fun j => rfl)`. Establish `h4 : (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F ((Xv u (splitE F (Fin r) (y, z))).1 k).1) = L y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[Xv_fst_fst]`. Use `show _ = ∑ j, y j * c j k`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Simplify using `only [splitE_apply, RingEquiv.apply_symm_apply, c]`. Both sides reduce to the same expression. Establish `h5 : (fun k => ((Xv u (splitE F (Fin r) (y, z))).1 k).2) = (fun k => ((Xv u (splitE F (Fin r) (0, z))).1 k).2)`. Use function extensionality and compare the values at `k`.
-
-Rewrite using `[Xv_fst_snd, Xv_fst_snd]`. Both sides reduce to the same expression. Simplify using `only [schr, zero_dotProduct, zero_add, pureA]`. Express the relevant statement in the definitionally equal form `ψ (sc u (splitE F (Fin r) (y, z))) * (f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((Xv u (splitE F (Fin r) (y, z))).1 i).1) * g (fun i => ((Xv u (splitE F (Fin r) (y, z))).1 i).2)) = _`. Rewrite using `[h1, h2, h3, h4, h5]`.
-
-Simplify using `only [ph, B]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Measure.isAddLeftInvariant_eq_smul μ ρ, integral_smul_nnreal_measure]`. Establish `hmap : ρ = (volume.prod ν).map em` using `rfl`. Establish `hint : ∫ x, schr ψ (Xv u x) (pureA F (⇑f) g) 0 ∂ρ = ∫ p, schr ψ (Xv u (em p)) (pureA F (⇑f) g) 0 ∂(volume.prod ν)`.
-
-Rewrite using `[hmap, integral_map_equiv em]`. Rewrite using `[hint]`. Establish `hI : (fun p => schr ψ (Xv u (em p)) (pureA F (⇑f) g) 0) = fun p => (ph p.1 * f (L p.1)) * B p.2`. Use function extensionality and compare the values at `p`. Conclude with `hsplit p.1 p.2`.
-
-Rewrite using `[hI, integral_prod_mul (fun y => ph y * f (L y)) B]`. Apply the tactic sequence `try rw [← hs]`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, hΛ]`. Establish `hC : ∀ y, (Cm f) y = f (L y)` using `fun y => rfl`. Simplify using `only [hC]`.
-
-Rewrite using `[NNReal.smul_def, Complex.real_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lagr_form_admitted : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), LinearIndependent F (fun j => (u j).1) →
     ∀ μ : @Measure (Fin r → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

@@ -271,7 +271,7 @@ def HodgeDerivative.Statement : Prop :=
           C' * rPer a z ^ C' * Real.exp (rPer a z / 2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_univ, (ReciprocityTheory.AnForm.A.isPshInhabit_thm D).1, Set.subset_univ _, le_rfl, one_pos, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem polydisc_hyps_inhabited (D : ℕ) :
     IsOpen (Set.univ : Set (Fin D → ℂ)) ∧
@@ -281,9 +281,9 @@ theorem polydisc_hyps_inhabited (D : ℕ) :
     by norm_num⟩
 
 /- English proof (translation)
-Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm D`. Establish `hc : HasCompactSupport ρ.toFun`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : Fin D → ℂ) 1) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (ball_subset_closedBall (ρ.support_subset (Function.mem_support.2 h)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `ρ.contDiff.continuous.bddAbove_range_of_hasCompactSupport hc`. Conclude with `⟨ρ, B, fun w => hB ⟨w, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mollifier_bounded_inhabited (D : ℕ) : ∃ (ρ : Mollifier D) (B : ℝ), ∀ w, ρ.toFun w ≤ B := by
   obtain ⟨ρ⟩ := ReciprocityTheory.AnForm.A.mollifierInhabit_thm D
@@ -295,7 +295,7 @@ theorem mollifier_bounded_inhabited (D : ℕ) : ∃ (ρ : Mollifier D) (B : ℝ)
   exact ⟨ρ, B, fun w => hB ⟨w, rfl⟩⟩
 
 /- English proof (translation)
-Establish `hπ : (Real.pi : ℝ) ≠ 0` using `Real.pi_ne_zero`. Simplify using `[Complex.mul_im, Complex.mul_re, Complex.inv_re, Complex.inv_im, Complex.normSq_apply]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem im_mul_inv_two_pi_I (x : ℝ) (w : ℂ) :
     ((x : ℂ) * (2 * Real.pi * Complex.I)⁻¹ * w).im = -x * w.re / (2 * Real.pi) := by
@@ -350,21 +350,21 @@ def periodGenusOne : PeriodPolydisc 1 1 1 := diagPeriod 1 ![1]
 def periodGenusTwo : PeriodPolydisc 1 1 2 := diagPeriod 2 ![1, 0]
 
 /- English proof (translation)
-Use extensionality with `p q`. Use `fin_cases p`. Use `fin_cases q`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem periodGenusOne_B : periodGenusOne.B 0 = 1 := by
   ext p q; fin_cases p; fin_cases q; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext p q; fin_cases p <;> fin_cases q <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem periodGenusTwo_B : periodGenusTwo.B 0 = diagonal ![1, 0] := by
   ext p q; fin_cases p <;> fin_cases q <;> rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [PeriodPolydisc.tau0Cov, PeriodPolydisc.Bc, diagPeriod, Fin.sum_univ_one, Matrix.sub_apply, Matrix.smul_apply, Matrix.map_apply, diagonal_apply]`. Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem diagPeriod_tau0Cov (g : ℕ) (d : Fin g → ℕ) (w : Fin 1 → ℂ) :
     (diagPeriod g d).tau0Cov w = diagonal (fun _ => Complex.I) := by
@@ -377,9 +377,9 @@ theorem diagPeriod_tau0Cov (g : ℕ) (d : Fin g → ℕ) (w : Fin 1 → ℂ) :
   · simp
 
 /- English proof (translation)
-Use `⟨fun _ => diagonal (fun _ => Complex.I), fun p q => fun _ _ => analyticAt_const, fun w _ => (diagPeriod_tau0Cov 2 ![1, 0] w).symm, ![0, 1], ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `congrFun h 1` as an intermediate fact. Simplify using `at this`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi0 : i = 0` using `Subsingleton.elim _ _`. Substitute `hi0` using the available equality. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [PeriodPolydisc.Br, periodGenusTwo, diagPeriod, mulVec, dotProduct, diagonal_apply]`.
+Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kernelPositive_hyps_inhabited :
     ∃ τ₀ : (Fin 1 → ℂ) → Matrix (Fin 2) (Fin 2) ℂ,
@@ -399,7 +399,7 @@ theorem kernelPositive_hyps_inhabited :
       diagonal_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => analyticAt_const, by simp [rank_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem hodgeFrame_hyps_inhabited :
     (∀ p q, AnalyticOnNhd ℂ (fun _ : Fin 1 → ℂ => (1 : Matrix (Fin 1) (Fin 1) ℂ) p q) (ball 0 1)) ∧
@@ -411,13 +411,13 @@ section ProjectiveLine
 open ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem projLine_chart_target (j : Fin 2) : (p1.chart j).target = Set.univ := by
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Establish `h : y = fun _ => y 0` using `funext fun i => by fin_cases i; rfl`. Use `conv_lhs => rw [h]`. Conclude with `pi_norm_const _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_fin_one_eq_alt (y : Fin 1 → ℂ) : ‖y‖ = ‖y 0‖ := by
   have h : y = fun _ => y 0 := funext fun i => by fin_cases i; rfl
@@ -427,13 +427,13 @@ theorem norm_fin_one_eq_alt (y : Fin 1 → ℂ) : ‖y‖ = ‖y 0‖ := by
 def crdj (j : Fin 2) : OnePoint ℂ → ℂ := ![crd0, crd1] j
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem projLine_chart_apply (j : Fin 2) (x : OnePoint ℂ) : p1.chart j x = fun _ => crdj j x := by
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Use `fin_cases j`. Both sides reduce to the same expression. Conclude with `infiniteCoord_projLineChart1_symm y`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem crdj_symm_self (j : Fin 2) (y : Fin 1 → ℂ) : crdj j ((p1.chart j).symm y) = y 0 := by
   fin_cases j
@@ -441,7 +441,7 @@ theorem crdj_symm_self (j : Fin 2) (y : Fin 1 → ℂ) : crdj j ((p1.chart j).sy
   · exact infiniteCoord_projLineChart1_symm y
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> fin_cases k`. Conclude with `(hjk rfl).elim`. Conclude with `finiteCoord_projLineChart1_symm y`. Both sides reduce to the same expression. Conclude with `(hjk rfl).elim`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem crdj_symm_other (j k : Fin 2) (hjk : j ≠ k) (y : Fin 1 → ℂ) :
     crdj j ((p1.chart k).symm y) = (y 0)⁻¹ := by
@@ -452,7 +452,7 @@ theorem crdj_symm_other (j k : Fin 2) (hjk : j ≠ k) (y : Fin 1 → ℂ) :
   · exact (hjk rfl).elim
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> fin_cases k`. Conclude with `(hjk rfl).elim`. Conclude with `projLineChart1_symm_mem_range.1 h`. Conclude with `projLineChart0_symm_ne_zero.1 h`. Conclude with `(hjk rfl).elim`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem symm_other_ne (j k : Fin 2) (hjk : j ≠ k) (y : Fin 1 → ℂ)
     (h : (p1.chart k).symm y ∈ (p1.chart j).source) : y 0 ≠ 0 := by
@@ -463,13 +463,13 @@ theorem symm_other_ne (j k : Fin 2) (hjk : j ≠ k) (y : Fin 1 → ℂ)
   · exact (hjk rfl).elim
 
 /- English proof (translation)
-Establish `ht : 0 ≤ ‖y 0‖ ^ 2` using `by positivity`. Break down `fsPot_chart x k with h | ⟨h, hs⟩` into its components or cases. Rewrite using `[h] show levi (fun w : Fin 1 → ℂ => fubiniStudyProfile (‖w 0‖ ^ 2)) y v = _`. Establish `h0 : (1 : ℝ) + ‖y 0‖ ^ 2 ≠ 0` using `ne_of_gt (by linarith)`. Rewrite using `[projLine_leviForm_radial (G := fubiniStudyProfile) (G' := fun t => (1 / 2) * (1 + t)⁻¹) (G'' := 1 / 2 * (-1 / (1 + ‖y 0‖ ^ 2) ^ 2)) (Filter.Eventually.of_forall fun w => rfl) ?_ (((((hasDerivAt_id _).const_add 1).inv h0).const_mul (1 / 2)).congr_deriv (by simp)) v]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [Ioi_mem_nhds (show (-1 : ℝ) < ‖y 0‖ ^ 2 by linarith)] with t ht'`. Conclude with `hasDerivAt_fubiniStudyProfile ht'`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h] show levi (fun w : Fin 1 → ℂ => fubiniStudyProfileInv (‖w 0‖ ^ 2)) y v = _`. Establish `hy0 : y 0 ≠ 0` using `hs y hy`. Establish `htp : 0 < ‖y 0‖ ^ 2` using `by have := norm_pos_iff.2 hy0; positivity`. Establish `h0 : ‖y 0‖ ^ 2 * (‖y 0‖ ^ 2 + 1) ≠ 0` using `ne_of_gt (by positivity)`. Rewrite using `[projLine_leviForm_radial (G := fubiniStudyProfileInv) (G' := fun t => -(1 / 2) * (t * (t + 1))⁻¹) (G'' := -(1 / 2) * (-(1 * (‖y 0‖ ^ 2 + 1) + ‖y 0‖ ^ 2 * 1) / (‖y 0‖ ^ 2 * (‖y 0‖ ^ 2 + 1)) ^ 2)) (Filter.Eventually.of_forall fun w => rfl) ?_ (((((hasDerivAt_id _).mul ((hasDerivAt …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [Ioi_mem_nhds htp] with t ht'`. Conclude with `hasDerivAt_fubiniStudyProfileInv ht'`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_fsPot (x : OnePoint ℂ) (k : Fin 2) (y : Fin 1 → ℂ)
     (hy : y ∈ (p1.chart k).target ∩ (p1.chart k).symm ⁻¹' fsPot.U x) (v : Fin 1 → ℂ) :
@@ -505,7 +505,7 @@ theorem levi_fsPot (x : OnePoint ℂ) (k : Fin 2) (y : Fin 1 → ℂ)
       exact hasDerivAt_fubiniStudyProfileInv ht'
 
 /- English proof (translation)
-Introduce `x j y hy v hv`. Rewrite using `[levi_fsPot x j y hy v]`. Establish `h0 : v 0 ≠ 0` using `fun h => hv (funext fun i => by fin_cases i; exact h)`. Establish `: 0 < ‖v 0‖` using `norm_pos_iff.2 h0`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem projLine_fubiniStudy_isPosPot : IsPosPot p1 fsPot := by
   intro x j y hy v hv
@@ -517,7 +517,7 @@ theorem projLine_fubiniStudy_isPosPot : IsPosPot p1 fsPot := by
 def cutG (s : ℝ) : ℝ := -Real.smoothTransition ((s - 25 / 16) * (64 / 21))
 
 /- English proof (translation)
-The claim follows from `(Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).mul contDiff_const)).neg`.
+A detailed English derivation is pending.
 -/
 theorem cutG_contDiff : ContDiff ℝ ∞ cutG :=
   (Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).mul contDiff_const)).neg
@@ -527,29 +527,29 @@ def cutoffDeriv : ℝ → ℝ := deriv cutG
 def cutoffSecondDeriv : ℝ → ℝ := deriv cutoffDeriv
 
 /- English proof (translation)
-The claim follows from `(contDiff_infty_iff_deriv.mp cutG_contDiff).2`.
+A detailed English derivation is pending.
 -/
 theorem cutoffDeriv_contDiff : ContDiff ℝ ∞ cutoffDeriv := (contDiff_infty_iff_deriv.mp cutG_contDiff).2
 
 /- English proof (translation)
-The claim follows from `((contDiff_infty_iff_deriv.mp cutG_contDiff).1 s).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cutG (s : ℝ) : HasDerivAt cutG (cutoffDeriv s) s :=
   ((contDiff_infty_iff_deriv.mp cutG_contDiff).1 s).hasDerivAt
 
 /- English proof (translation)
-The claim follows from `((contDiff_infty_iff_deriv.mp cutoffDeriv_contDiff).1 s).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cutoffDeriv (s : ℝ) : HasDerivAt cutoffDeriv (cutoffSecondDeriv s) s :=
   ((contDiff_infty_iff_deriv.mp cutoffDeriv_contDiff).1 s).hasDerivAt
 
 /- English proof (translation)
-The claim follows from `(contDiff_infty_iff_deriv.mp cutoffDeriv_contDiff).2.continuous`.
+A detailed English derivation is pending.
 -/
 theorem cutoffSecondDeriv_continuous : Continuous cutoffSecondDeriv := (contDiff_infty_iff_deriv.mp cutoffDeriv_contDiff).2.continuous
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `(isCompact_Icc (a := (0 : ℝ)) (b := 9 / 4)).bddBelow_image (f := fun s => s * cutoffSecondDeriv s + cutoffDeriv s) ((continuous_id.mul cutoffSecondDeriv_continuous).add cutoffDeriv_contDiff.continuous).continuousOn`. Use `⟨max 0 (-m), le_max_left _ _, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : m ≤ s * cutoffSecondDeriv s + cutoffDeriv s` using `hm ⟨s, hs, rfl⟩`. Establish `h2 : -m ≤ max 0 (-m)` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cut_bound : ∃ M : ℝ, 0 ≤ M ∧ ∀ s ∈ Set.Icc (0 : ℝ) (9 / 4), -M ≤ s * cutoffSecondDeriv s + cutoffDeriv s := by
   obtain ⟨m, hm⟩ := (isCompact_Icc (a := (0 : ℝ)) (b := 9 / 4)).bddBelow_image
@@ -563,14 +563,14 @@ theorem cut_bound : ∃ M : ℝ, 0 ≤ M ∧ ∀ s ∈ Set.Icc (0 : ℝ) (9 / 4)
 def projLineCutoff (j : Fin 2) (x : OnePoint ℂ) : ℝ := cutG (‖crdj j x‖ ^ 2)
 
 /- English proof (translation)
-The claim follows from `funext fun y => by simp only [Function.comp_apply, projLineCutoff, crdj_symm_self]`.
+A detailed English derivation is pending.
 -/
 theorem cut_comp_self (j : Fin 2) :
     projLineCutoff j ∘ (p1.chart j).symm = fun y => cutG (‖y 0‖ ^ 2) :=
   funext fun y => by simp only [Function.comp_apply, projLineCutoff, crdj_symm_self]
 
 /- English proof (translation)
-The claim follows from `funext fun y => by simp only [Function.comp_apply, projLineCutoff, crdj_symm_other j k hjk, norm_inv, inv_pow]`.
+A detailed English derivation is pending.
 -/
 theorem cut_comp_other (j k : Fin 2) (hjk : j ≠ k) :
     projLineCutoff j ∘ (p1.chart k).symm = fun y => cutG ((‖y 0‖ ^ 2)⁻¹) :=
@@ -578,7 +578,7 @@ theorem cut_comp_other (j k : Fin 2) (hjk : j ≠ k) :
     inv_pow]
 
 /- English proof (translation)
-The claim follows from `projLine_leviForm_radial (G := cutG) (G' := cutoffDeriv) (Filter.Eventually.of_forall fun _ => rfl) (Filter.Eventually.of_forall fun t => hasDerivAt_cutG t) (hasDerivAt_cutoffDeriv _) w`.
+A detailed English derivation is pending.
 -/
 theorem levi_cut_self (y w : Fin 1 → ℂ) :
     levi (fun y : Fin 1 → ℂ => cutG (‖y 0‖ ^ 2)) y w =
@@ -587,11 +587,9 @@ theorem levi_cut_self (y w : Fin 1 → ℂ) :
     (Filter.Eventually.of_forall fun t => hasDerivAt_cutG t) (hasDerivAt_cutoffDeriv _) w
 
 /- English proof (translation)
-Establish `htp : 0 < ‖y 0‖ ^ 2` using `by have := norm_pos_iff.2 hy; positivity`. Establish `hG : ∀ s : ℝ, s ≠ 0 → HasDerivAt (fun s => cutG s⁻¹) (cutoffDeriv s⁻¹ * -(s ^ 2)⁻¹) s` using `fun s hs => (hasDerivAt_cutG s⁻¹).comp s (hasDerivAt_inv hs)`. Establish `h1 : HasDerivAt (fun s : ℝ => cutoffDeriv s⁻¹) (cutoffSecondDeriv (‖y 0‖ ^ 2)⁻¹ * -((‖y 0‖ ^ 2) ^ 2)⁻¹) (‖y 0‖ ^ 2)` using `(hasDerivAt_cutoffDeriv _).comp _ (hasDerivAt_inv htp.ne')`. Establish `h2 : HasDerivAt (fun s : ℝ => -(s ^ 2)⁻¹) (2 * ‖y 0‖ ^ 2 / ((‖y 0‖ ^ 2) ^ 2) ^ 2) (‖y 0‖ ^ 2)`. Use `((hasDerivAt_pow 2 (‖y 0‖ ^ 2)).inv (pow_ne_zero 2 htp.ne')).neg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.congr_deriv (by norm_num [neg_div])`. Rewrite using `[projLine_leviForm_radial (G := fun s => cutG s⁻¹) (G' := fun s => cutoffDeriv s⁻¹ * -(s ^ 2)⁻¹) (Filter.Eventually.of_forall fun _ => rfl) ?_ (h1.mul h2) w]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Use `filter_upwards [eventually_ne_nhds htp.ne'] with s hs`. Conclude with `hG s hs`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_cut_other (y w : Fin 1 → ℂ) (hy : y 0 ≠ 0) :
     levi (fun y : Fin 1 → ℂ => cutG ((‖y 0‖ ^ 2)⁻¹)) y w =
@@ -616,9 +614,9 @@ theorem levi_cut_other (y w : Fin 1 → ℂ) (hy : y 0 ≠ 0) :
     exact hG s hs
 
 /- English proof (translation)
-Establish `hp : 0 < (1 + t) ^ 2` using `by positivity`. Establish `h1 : (1 + t) ^ 2 ≤ (13 / 4) ^ 2` using `by nlinarith`. Establish `h2 : -(2 * M * (13 / 4) ^ 2) * (2 * (1 + t) ^ 2)⁻¹ = -(M * (13 / 4) ^ 2 / (1 + t) ^ 2)`. Clear the denominators using the available nonvanishing facts. Establish `h3 : M ≤ M * (13 / 4) ^ 2 / (1 + t) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hp]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ineq_self (M t H : ℝ) (hM : 0 ≤ M) (ht0 : 0 ≤ t) (ht : t ≤ 9 / 4) (h : -M ≤ H) :
     -(2 * M * (13 / 4) ^ 2) * (2 * (1 + t) ^ 2)⁻¹ ≤ H := by
@@ -631,11 +629,11 @@ theorem ineq_self (M t H : ℝ) (hM : 0 ≤ M) (ht0 : 0 ≤ t) (ht : t ≤ 9 / 4
   linarith
 
 /- English proof (translation)
-Take `⟨s, hs0, rfl⟩ : ∃ s : ℝ, 0 < s ∧ t = s⁻¹` from `⟨t⁻¹, inv_pos.2 ht0, (inv_inv t).symm⟩`. Rewrite `hs`, the goal using `[inv_inv]`. Establish `hp : 0 < (1 + s) ^ 2` using `by positivity`. Establish `h1 : (1 + s) ^ 2 ≤ (13 / 4) ^ 2` using `by nlinarith`. Establish `h2 : -(2 * M * (13 / 4) ^ 2) * (2 * (1 + s⁻¹) ^ 2)⁻¹ = -(M * (13 / 4) ^ 2 * s ^ 2 / (1 + s) ^ 2)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : M * s ^ 2 ≤ M * (13 / 4) ^ 2 * s ^ 2 / (1 + s) ^ 2`. Rewrite using `[le_div_iff₀ hp]`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hM (sq_nonneg s)) (sub_nonneg.2 h1)]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h4 : -(M * s ^ 2) ≤ s ^ 2 * H`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg s) (by linarith : 0 ≤ H + M)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ineq_other (M t H : ℝ) (hM : 0 ≤ M) (ht0 : 0 < t) (hs : t⁻¹ ≤ 9 / 4) (h : -M ≤ H) :
     -(2 * M * (13 / 4) ^ 2) * (2 * (1 + t) ^ 2)⁻¹ ≤ (t⁻¹) ^ 2 * H := by
@@ -703,14 +701,14 @@ theorem ineq_other (M t H : ℝ) (hM : 0 ≤ M) (ht0 : 0 < t) (hs : t⁻¹ ≤ 9
     fun x _ _ => by simp [LocPot.ofFun]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuousOn_const.upperSemicontinuousOn, fun _ _ _ => ⟨circleIntegrable_const c 0 1, (Real.circleAverage_const c 0 1).ge⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPsh_const (U : Set (Fin D → ℂ)) (c : ℝ) : ReciprocityTheory.AnForm.A.IsPsh U (fun _ => c) :=
   ⟨continuousOn_const.upperSemicontinuousOn,
     fun _ _ _ => ⟨circleIntegrable_const c 0 1, (Real.circleAverage_const c 0 1).ge⟩⟩
 
 /- English proof (translation)
-The claim follows from `funext fun z => by simp [RegCharts.u]`.
+A detailed English derivation is pending.
 -/
 theorem projLineCharts_potential_zero (j : Fin 2) : projLineCharts.u (fun _ => 0) j = fun _ => (0 : ℝ) :=
   funext fun z => by simp [RegCharts.u]
@@ -781,7 +779,7 @@ def projLineChartData : RegChartData p1 where
     simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨projLineChartData⟩`.
+Supply the required witnesses or components.
 -/
 theorem regChartData_inhabited : Nonempty (RegChartData p1) := ⟨projLineChartData⟩
 
@@ -793,29 +791,27 @@ def projLineBoundedPotential : BoundedThPsh projLineCharts where
     exact isPsh_const _ 0
 
 /- English proof (translation)
-Take `⟨M, hM, hb⟩` from `cut_bound`. Use `⟨2 * M * (13 / 4) ^ 2, fun j => ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `k`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[cut_comp_self]`. Conclude with `(cutG_contDiff.comp ((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ 0))).contDiffOn`. Rewrite using `[cut_comp_other j k hjk]`. Introduce `y hy`. Establish `hy0 : y 0 ≠ 0` using `symm_other_ne j k hjk y hy.2.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ‖y 0‖ ^ 2 ≠ 0` using `(pow_pos (norm_pos_iff.2 hy0) 2).ne'`. Establish `: ContDiffAt ℝ ∞ (fun y : Fin 1 → ℂ => cutG ((‖y 0‖ ^ 2)⁻¹)) y` using `cutG_contDiff.contDiffAt.comp y ((((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ 0)).contDiffAt).inv hne)`. Conclude with `this.contDiffWithinAt`. Introduce `x _`. Establish `h1` using `Real.smoothTransition.nonneg ((‖crdj j x‖ ^ 2 - 25 / 16) * (64 / 21))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `Real.smoothTransition.le_one ((‖crdj j x‖ ^ 2 - 25 / 16) * (64 / 21))`. Simplify using `only [projLineCutoff, cutG]`. Apply the tactic sequence `constructor <;> linarith`. Introduce `x hx`. Establish `hb' : p1.chart j x ∈ ball (0 : Fin 1 → ℂ) (5 / 4)` using `hx.2`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb'` using `[projLine_chart_apply, mem_ball_zero_iff, norm_fin_one_eq_alt]`. Establish `hlt : ‖crdj j x‖ < 5 / 4` using `hb'`. Simplify using `only [projLineCutoff, cutG]`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by nlinarith [norm_nonneg (crdj j x)]), neg_zero]`. Use `⟨closedBall 0 (11 / 8), isCompact_closedBall _ _, closedBall_subset_ball (by norm_num), fun x _ hK => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hK' : p1.chart j x ∉ closedBall (0 : Fin 1 → ℂ) (11 / 8)` using `hK`. Rewrite `hK'` using `[projLine_chart_apply, mem_closedBall_zero_iff, norm_fin_one_eq_alt, not_le]`. Establish `hgt : 11 / 8 < ‖crdj j x‖` using `hK'`. Simplify using `only [projLineCutoff, cutG]`. Rewrite using `[Real.smoothTransition.one_of_one_le (by nlinarith)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _ k y hy w`. Rewrite using `[levi_fsPot x k y ⟨hy.1, hy.2.2⟩ w]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Rewrite using `[cut_comp_self, levi_cut_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy1 : p1.chart j ((p1.chart j).symm y) ∈ ball (0 : Fin 1 → ℂ) (3 / 2)` using `hy.2.1.2`. Rewrite `hy1` using `[(p1.chart j).right_inv hy.1, mem_ball_zero_iff, norm_fin_one_eq_alt]`. Establish `ht : ‖y 0‖ ^ 2 ≤ 9 / 4` using `by nlinarith [norm_nonneg (y 0)]`. Establish `hH` using `hb _ ⟨by positivity, ht⟩`. Use `ineq_self M _ (cutoffSecondDeriv (‖y 0‖ ^ 2) * ‖y 0‖ ^ 2 + cutoffDeriv (‖y 0‖ ^ 2)) hM (by positivity) ht (by linarith [mul_comm (‖y 0‖ ^ 2) (cutoffSecondDeriv (‖y 0‖ ^ 2))])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`. Establish `hy0 : y 0 ≠ 0` using `symm_other_ne j k hjk y hy.2.1.1`. Rewrite using `[cut_comp_other j k hjk, levi_cut_other y w hy0]`. Establish `hy1 : p1.chart j ((p1.chart k).symm y) ∈ ball (0 : Fin 1 → ℂ) (3 / 2)` using `hy.2.1.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy1` using `[projLine_chart_apply, mem_ball_zero_iff, norm_fin_one_eq_alt]`. Establish `hy2 : ‖crdj j ((p1.chart k).symm y)‖ < 3 / 2` using `hy1`. Rewrite `hy2` using `[crdj_symm_other j k hjk, norm_inv]`. Establish `htp : 0 < ‖y 0‖ ^ 2` using `by have := norm_pos_iff.2 hy0; positivity`. Establish `hs : (‖y 0‖ ^ 2)⁻¹ ≤ 9 / 4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[← inv_pow]`. Use polynomial arithmetic with `[inv_nonneg.2 (norm_nonneg (y 0))]`. Establish `hH` using `hb _ ⟨by positivity, hs⟩`. Use `ineq_other M _ _ hM htp hs hH` as an intermediate fact. Rewrite using `[← mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projLine_cutoffFamily : ∃ C : ℝ, projLineCharts.IsCutoffFamily C projLineCutoff := by
   obtain ⟨M, hM, hb⟩ := cut_bound
@@ -879,7 +875,7 @@ theorem projLine_cutoffFamily : ∃ C : ℝ, projLineCharts.IsCutoffFamily C pro
       exact mul_le_mul_of_nonneg_right this (by positivity)
 
 /- English proof (translation)
-The claim follows from `projLine_cutoffFamily`.
+A detailed English derivation is pending.
 -/
 theorem glue_hyps_inhabited : ∃ C : ℝ, projLineChartData.IsCutoffFamily C projLineCutoff := projLine_cutoffFamily
 

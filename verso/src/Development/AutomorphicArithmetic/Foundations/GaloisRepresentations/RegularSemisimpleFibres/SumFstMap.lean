@@ -9,7 +9,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem hcL_cons' {F : Type} [Field F] (p : Σ m : ℕ, GL (Fin m) F → ℂ)
     (Y : List (Σ m : ℕ, GL (Fin m) F → ℂ)) (b n : ℕ) (h : (Y.map Sigma.fst).sum = b) :
@@ -17,7 +17,7 @@ private theorem hcL_cons' {F : Type} [Field F] (p : Σ m : ℕ, GL (Fin m) F →
   subst h; rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons p L ih`. Simplify using `only [List.map_cons, List.sum_cons, ih, hf]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem sum_fst_map {F : Type} [Field F] (f : ℕ × ℕ → (Σ m : ℕ, GL (Fin m) F → ℂ))
     (hf : ∀ p, (f p).1 = p.1) (L : List (ℕ × ℕ)) :
@@ -29,9 +29,9 @@ private theorem sum_fst_map {F : Type} [Field F] (f : ℕ × ℕ → (Σ m : ℕ
     rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro n`. Both sides reduce to the same expression. Consider the case `cons p L ih`. Introduce `n`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[J_cons, List.map_cons, hcL_cons' _ _ (deg L) n (sum_fst_map _ (fun _ => rfl) L), ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem J_eq {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (L : List (ℕ × ℕ)) :
     ∀ n, J θ L n = hcL (L.map fun p => ⟨p.1, cusp θ p.1 p.2⟩) n := by
@@ -42,9 +42,9 @@ private theorem J_eq {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (L 
     rw [J_cons, List.map_cons, hcL_cons' _ _ (deg L) n (sum_fst_map _ (fun _ => rfl) L), ih]
 
 /- English proof (translation)
-Proceed by induction on `D with`. Consider the case `nil => intro n`. Simplify `J_eq θ L n` using `[JD_nil]`. Consider the case `cons p D ih`. Introduce `n`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : (((D.map (fun p : ℕ × ℕ => (⟨p.1, detc θ p.1 p.2⟩ : Σ m : ℕ, GL (Fin m) F → ℂ))) ++ L.map (fun p : ℕ × ℕ => (⟨p.1, cusp θ p.1 p.2⟩ : Σ m : ℕ, GL (Fin m) F → ℂ))).map Sigma.fst).sum = deg D + deg L`. Rewrite using `[List.map_append, List.sum_append, sum_fst_map _ (fun _ => rfl) D, sum_fst_map _ (fun _ => rfl) L]`. Rewrite using `[JD_cons, List.map_cons, List.cons_append, hcL_cons' _ _ (deg D + deg L) n hs, ih]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem JD_eq {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (D L : List (ℕ × ℕ)) :
     ∀ n, JD θ D L n =
@@ -60,9 +60,9 @@ private theorem JD_eq {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (D
     rw [JD_cons, List.map_cons, List.cons_append, hcL_cons' _ _ (deg D + deg L) n hs, ih]
 
 /- English proof (translation)
-Use `haveI : Fintype F := Fintype.ofFinite F`. Use function extensionality and compare the values at `x`. Establish `hcp : Matrix.charpoly (x : Matrix (Fin 1) (Fin 1) F) = X - C ((x : Matrix (Fin 1) (Fin 1) F) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.charmatrix, Matrix.det_fin_one]`. Establish `hval` using `GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_of_irreducible F (Fin 1 → F) _ (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F θ k).1 (Matrix.toLin' (x : Matrix (Fin 1) (Fin 1) F)) (by rw [Matrix.charpoly_toLin', hcp]; exact irreducible_X_sub_C _)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hval` using `[Matrix.charpoly_toLin', hcp]`. Simplify using `only [cusp, psiG, detc, Nat.sub_self, pow_zero, one_mul]`. Rewrite using `[hval, Matrix.det_fin_one]`. Simplify using `[GlobalTheory.CuspGL.rootSum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cusp_one {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (k : ℕ) :
     cusp θ 1 k = detc θ 1 k := by
@@ -79,9 +79,9 @@ private theorem cusp_one {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure 
   simp [GlobalTheory.CuspGL.rootSum]
 
 /- English proof (translation)
-Introduce `F _ _ θ`. Use `⟨fun D L n => JD_eq θ D L n, cusp_one θ, ?_⟩` and prove the remaining obligations. Introduce `D L n`. Consider the cases of `D with`. Consider the case `nil`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `L with`. Consider the case `nil => intro x y`. Both sides reduce to the same expression. Consider the case `cons p L => exact (GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) _ _ n _ _).2.1`. Consider the case `cons p D => exact (GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) _ _ n _ _).2.1`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.jdEq :
     JDEq := by

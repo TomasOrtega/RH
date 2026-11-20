@@ -19,7 +19,7 @@ namespace GlobalTheory.LevelFieldApprox
 open Formalism.L2.Host
 
 /- English proof (translation)
-Establish `e : y = (y - 1) + 1` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right _ (by rwa [map_one])]`. Conclude with `map_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_one_of_close {E : Type} [Field E] [NumberField E] {v : HeightOneSpectrum (𝓞 E)} {y : E}
     (h : v.valuation E (y - 1) < 1) : v.valuation E y = 1 := by
@@ -28,11 +28,9 @@ theorem val_eq_one_of_close {E : Type} [Field E] [NumberField E] {v : HeightOneS
   exact map_one _
 
 /- English proof (translation)
-Establish `hlt : v.valuation E ((y : E) - 1) < 1` using `lt_of_le_of_lt h (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`. Establish `hv` using `val_eq_one_of_close hlt`. Establish `e1 : ((atFin v y : (v.adicCompletion E)ˣ) : v.adicCompletion E) = algebraMap E (v.adicCompletion E) (y : E)` using `rfl`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (v.adicCompletion E) x) = v.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Use `⟨?_, hv⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show χ.loc v (atFin v y) = 1`. Use `hn _ ?_ ?_` and prove the remaining obligations. Use `show Valued.v ((atFin v y : (v.adicCompletion E)ˣ) : v.adicCompletion E) = 1`. Rewrite using `[e1, hval, hv]`. Rewrite using `[e1, ← map_one (algebraMap E (v.adicCompletion E)), ← map_sub, hval]`.
-
-Conclude with `h.trans (WithZero.exp_le_exp.mpr (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq_one {E : Type} [Field E] [NumberField E] (χ : HChar E) (v : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     (hn : χ.LevelLe v n) (y : Eˣ) (h : v.valuation E ((y : E) - 1) ≤ WithZero.exp (-((n : ℤ) + 1))) :
@@ -52,31 +50,27 @@ theorem locK_eq_one {E : Type} [Field E] [NumberField E] (χ : HChar E) (v : Hei
     exact h.trans (WithZero.exp_le_exp.mpr (by omega))
 
 /- English proof (translation)
-Introduce `E _ _ χ M₀ u hu T`. Establish `hM0 : M₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `u.ne_zero (by rw [hu]; simp)`. Establish `hM : ((M₀ : ℕ) : 𝓞 E) ≠ 0` using `by exact_mod_cast hM0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMe : ((M₀ : ℕ) : E) ≠ 0` using `by exact_mod_cast hM0`. Establish `hfin : {v : HeightOneSpectrum (𝓞 E) | ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {((M₀ : ℕ) : 𝓞 E)}) ?_).subset fun v hv => ?_` and prove the remaining obligations. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set S : Finset (HeightOneSpectrum (𝓞 E)) := T ∪ hfin.toFinset with hS`. Use `choose n hn using GlobalTheory.Mem.UnrAe.exists_levelLe χ`. Establish `hm : ∀ v : HeightOneSpectrum (𝓞 E), ∃ m : ℕ, v.intValuation ((M₀ : ℕ) : 𝓞 E) = WithZero.exp (-(m : ℤ))` using `fun v => ⟨_, v.intValuation_if_neg hM⟩`. Use `choose m hm using hm`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun v => v.asIdeal) (fun v => if v ∈ T then m v + n v + 1 else n v + 1) (fun v _ => v.prime) (fun v _ w _ h h' => h (HeightOneSpectrum.ext h')) (fun v => if (v : HeightOneSpectrum (𝓞 E)) ∈ T then ((M₀ : ℕ) : 𝓞 E) else 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hvz : ∀ v : HeightOneSpectrum (𝓞 E), ∀ z : 𝓞 E, v.valuation E (z : E) = v.intValuation z` using `fun v z => HeightOneSpectrum.valuation_of_algebraMap (K := E) v z`. Establish `hT : ∀ v ∈ T, v.valuation E ((y : E) - ((M₀ : ℕ) : E)) ≤ WithZero.exp (-((m v : ℤ) + n v + 1))`. Introduce `v hv`. Establish `h1` using `(v.intValuation_le_pow_iff_mem _ _).2 (hy v (Finset.mem_union_left _ hv))`. Simplify using `only [hv, if_true] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (y : E) - ((M₀ : ℕ) : E) = ((y - ((M₀ : ℕ) : 𝓞 E) : 𝓞 E) : E)` using `by push_cast; rfl`. Rewrite using `[e, hvz]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hO : ∀ v : HeightOneSpectrum (𝓞 E), ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal → v ∉ T → v.valuation E ((y : E) - 1) ≤ WithZero.exp (-((n v : ℤ) + 1))`. Introduce `v hv hvT`. Establish `h1` using `(v.intValuation_le_pow_iff_mem _ _).2 (hy v (Finset.mem_union_right _ (hfin.mem_toFinset.2 hv)))`. Simplify using `only [hvT, if_false] at h1`. Establish `e : (y : E) - 1 = ((y - 1 : 𝓞 E) : E)` using `by push_cast; rfl`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e, hvz]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hMv : ∀ v, v.valuation E ((M₀ : ℕ) : E) = WithZero.exp (-(m v : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[← hm v, ← hvz]`. Simplify using the standard rewrite rules. Establish `hTv : ∀ v ∈ T, v.valuation E (y : E) = v.valuation E ((M₀ : ℕ) : E)`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e : (y : E) = ((y : E) - ((M₀ : ℕ) : E)) + ((M₀ : ℕ) : E)` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right]`. Rewrite using `[hMv]`. Conclude with `lt_of_le_of_lt (hT v hv) (WithZero.exp_lt_exp.mpr (by omega))`. Establish `hOv : ∀ v : HeightOneSpectrum (𝓞 E), ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal → v ∉ T → v.valuation E (y : E) = 1` using `fun v hv hvT => val_eq_one_of_close (lt_of_le_of_lt (hO v hv hvT) (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hy0 : (y : E) = 0`. Use `⟨1, by simpa using isIntegral_one, fun v hv => ?_, fun v hv hvT => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hTv v hv) (by rw [hy0, map_zero, hMv]; exact (WithZero.exp_ne_zero).symm)`. Conclude with `absurd (hOv v hv hvT) (by rw [hy0, map_zero]; exact zero_ne_one)`. Use `set a : Eˣ := Units.mk0 (y : E) hy0 with ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, y.isIntegral_coe, fun v hv => ?_, fun v hv hvT => ?_⟩` and prove the remaining obligations. Establish `hw` using `(locK_eq_one χ v (hn v) (a * u⁻¹) ?_).1`. Use `⟨?_, hTv v hv⟩` and prove the remaining obligations. Establish `: a = (a * u⁻¹) * u` using `by group`. Rewrite using `[this, map_mul, hw, one_mul]`.
-
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, hu, ha, Units.val_mk0]`. Establish `e : (y : E) * ((M₀ : ℕ) : E)⁻¹ - 1 = ((y : E) - ((M₀ : ℕ) : E)) / ((M₀ : ℕ) : E)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_div₀, hMv]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `locK_eq_one χ v (hn v) a (by rw [ha, Units.val_mk0]; exact hO v hv hvT)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_approx : ∀ (E : Type) [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) (M₀ : ℕ) (u : Eˣ), (u : E) = ((M₀ : ℕ) : E) → ∀ (T : Finset (HeightOneSpectrum (𝓞 E))), ∃ a : Eˣ, IsIntegral ℤ (a : E) ∧ (∀ v ∈ T, χ.locK v a = χ.locK v u ∧ v.valuation E (a : E) = v.valuation E ((M₀ : ℕ) : E)) ∧ ∀ v : HeightOneSpectrum (𝓞 E), ((M₀ : ℕ) : 𝓞 E) ∈ v.asIdeal → v ∉ T → χ.locK v a = 1 ∧ v.valuation E (a : E) = 1 := by
   intro E _ _ χ M₀ u hu T

@@ -5,15 +5,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro r _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `r h`. Establish `hr0 : ∀ i, f i r = 0`. Introduce `i`. Take `⟨s, hs, t, ht⟩` from `h i`. Establish `h1 : f i (s * r) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ht, map_mul, map_pow, hf i, zero_pow (Nat.succ_ne_zero n), zero_mul]`. Rewrite `h1` using `[map_mul]`. Conclude with `(mul_eq_zero.mp h1).resolve_left hs`. Take `⟨r1, rfl⟩` from `hker r hr0`. Establish `h2 : ∀ i, ∃ s : R, f i s ≠ 0 ∧ ξ ^ n ∣ s * r1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨s, hs, t, ht⟩` from `h i`. Use `⟨s, hs, t, ?_⟩` and prove the remaining obligations. Establish `: ξ * (s * r1) = ξ * (ξ ^ n * t)`. Rewrite using `[← mul_assoc, mul_comm ξ s, mul_assoc, ht]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hξ).mp this`. Take `⟨u, hu⟩` from `ih r1 h2`. Conclude with `⟨u, by rw [hu]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DetInv.dvd_pow_of_local_dvd_pow (R C ι : Type) [CommRing R] [Field C] (f : ι → (R →+* C)) (ξ : R)
     (hξ : ξ ∈ nonZeroDivisors R) (hf : ∀ i, f i ξ = 0) (hker : ∀ r : R, (∀ i, f i r = 0) → ξ ∣ r) :
@@ -42,7 +42,7 @@ theorem DetInv.dvd_pow_of_local_dvd_pow (R C ι : Type) [CommRing R] [Field C] (
     exact ⟨u, by rw [hu]; ring⟩
 
 /- English proof (translation)
-The claim follows from `@DetInv.dvd_pow_of_local_dvd_pow`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R C ι : Type) [CommRing R] [Field C] (f : ι → (R →+* C)) (ξ : R), ξ ∈ nonZeroDivisors R → (∀ i, f i ξ = 0) → (∀ r : R, (∀ i, f i r = 0) → ξ ∣ r) → ∀ (n : ℕ) (r : R), (∀ i, ∃ s : R, f i s ≠ 0 ∧ ξ ^ n ∣ s * r) → ξ ^ n ∣ r :=
   @DetInv.dvd_pow_of_local_dvd_pow

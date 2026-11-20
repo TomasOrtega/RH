@@ -10,21 +10,19 @@ variable {K A O F : Type} [Field K] [CommRing A] [Algebra K A] [CommRing O] [IsD
   [IsScalarTower K O F]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace K A`. Set `bF` to `Algebra.TensorProduct.basis F b`. Set `bk` to `Algebra.TensorProduct.basis (IsLocalRing.ResidueField O) b`. Set `x` to `bF.repr t`. Establish `hx : x.support.Nonempty`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.support_nonempty_iff]`. Introduce `h`. Conclude with `ht (bF.repr.map_eq_zero_iff.mp h)`. Take `⟨i₀, hi₀, hmax⟩` from `x.support.exists_max_image (fun i => ValuationRing.valuation O F (x i)) hx`. Establish `hc : x i₀ ≠ 0` using `Finsupp.mem_support_iff.mp hi₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ i, ∃ a : O, i ∈ x.support → algebraMap O F a = x i / x i₀`. Introduce `i`. Distinguish the cases in `hi : i ∈ x.support`. Establish `: x i / x i₀ ∈ (ValuationRing.valuation O F).integer`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `div_le_one_of_le₀ (hmax i hi) zero_le`. Take `⟨a, ha⟩` from `(ValuationRing.mem_integer_iff O F _).mp this`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h => (hi h).elim⟩`. Use `choose g hg using hg`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x i₀, ∑ i ∈ x.support, g i ⊗ₜ[K] b i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.mul_sum] conv_lhs => rw [← bF.linearCombination_repr t, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.map_tmul, IsScalarTower.coe_toAlgHom', hg i hi, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, bF, Algebra.TensorProduct.basis_apply, smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[mul_div_cancel₀ _ hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Establish `h1 : g i₀ = 1`. Apply `IsFractionRing.injective O F` to reduce the goal to its premises. Rewrite using `[hg i₀ hi₀, div_self hc, map_one]`. Establish `h2` using `congrArg (fun z => bk.repr z i₀) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, Algebra.TensorProduct.map_tmul, IsScalarTower.coe_toAlgHom', AlgHom.id_apply, map_zero, Finsupp.coe_zero, Pi.zero_apply, bk, Algebra.TensorProduct.basis_repr_tmul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, Fi …`. Rewrite `h2` using `[Finset.sum_eq_single i₀]`. Simplify using `[h1] at h2`. Introduce `j _ hj`. Simplify using `[hj]`.
-
-Introduce `h`. Conclude with `(h hi₀).elim`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_primitive (t : F ⊗[K] A) (ht : t ≠ 0) :
     ∃ (c : F) (t' : O ⊗[K] A),
@@ -79,23 +77,23 @@ theorem exists_primitive (t : F ⊗[K] A) (ht : t ≠ 0) :
     · intro h; exact (h hi₀).elim
 
 /- English proof (translation)
-Establish `: Nontrivial A`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `not_subsingleton (IsLocalRing.ResidueField O ⊗[K] A) inferInstance`. Establish `: Nontrivial (F ⊗[K] A)` using `inferInstance`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, u', hu, hu'⟩` from `exists_primitive (O := O) u (left_ne_zero_of_mul_eq_one huv)`. Take `⟨d, v', hv, hv'⟩` from `exists_primitive (O := O) v (right_ne_zero_of_mul_eq_one huv)`. Use `set m := Algebra.TensorProduct.map (IsScalarTower.toAlgHom K O F) (AlgHom.id K A) with hm`. Establish `minj : Function.Injective m` using `Module.Flat.rTensor_preserves_injective_linearMap (M := A) (IsScalarTower.toAlgHom K O F).toLinearMap (IsFractionRing.injective O F)`. Establish `key : ((c * d) ⊗ₜ[K] (1 : A)) * m (u' * v') = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← huv, hu, hv, map_mul, show ((c * d) ⊗ₜ[K] (1 : A)) = (c ⊗ₜ[K] (1 : A)) * (d ⊗ₜ[K] (1 : A)) by simp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hunit : IsUnit (u' * v')`. Take `⟨a, ha | ha⟩` from `ValuationRing.isInteger_or_isInteger O (c * d) |>.elim (fun ⟨a, ha⟩ => (⟨a, Or.inl ha⟩ : ∃ a : O, algebraMap O F a = c * d ∨ algebraMap O F a = (c * d)⁻¹)) (fun ⟨a, ha⟩ => ⟨a, Or.inr ha⟩)`. Use `IsUnit.of_mul_eq_one_right (a ⊗ₜ[K] (1 : A)) (minj ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_one, ← key]`. Simplify using `[m, ha]`. Establish `hcd : c * d ≠ 0`. Introduce `h`. Rewrite `key` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at key`. Establish `h1 : u' * v' = a ⊗ₜ[K] (1 : A)`. Apply `minj` to reduce the goal to its premises. Establish `: m (a ⊗ₜ[K] (1 : A)) * ((c * d) ⊗ₜ[K] (1 : A)) = 1`. Simplify using `only [m, Algebra.TensorProduct.map_tmul, IsScalarTower.coe_toAlgHom', ha, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, inv_mul_cancel₀ hcd, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← one_mul (m (u' * v')), ← this, mul_assoc, key, mul_one]`. Establish `h2` using `mul_ne_zero hu' hv'`. Rewrite `h2` using `[← map_mul, h1]`. Establish `ha' : IsUnit a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hn`. Apply `h2` to reduce the goal to its premises. Establish `: algebraMap O (IsLocalRing.ResidueField O) a = 0` using `(IsLocalRing.residue_eq_zero_iff a).mpr hn`. Simplify using `only [Algebra.TensorProduct.map_tmul, IsScalarTower.coe_toAlgHom', this, zero_tmul]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha'.map (Algebra.TensorProduct.includeLeftRingHom (R := K) (A := O) (B := A))`. Use `⟨c, fun φ => ⟨Algebra.TensorProduct.lift (AlgHom.id K O) φ (fun _ _ => Commute.all _ _) u', (isUnit_of_mul_isUnit_left hunit).map _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hu, map_mul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `clear hu hu' key hunit`. Proceed by induction on `u' using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [m]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_unit_value [IsDomain (IsLocalRing.ResidueField O ⊗[K] A)]
     (u v : F ⊗[K] A) (huv : u * v = 1) :
@@ -159,19 +157,19 @@ theorem exists_unit_value [IsDomain (IsLocalRing.ResidueField O ⊗[K] A)]
 end Gauss
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hu.exists_right_inv`. Set `R : Subring F` to `(algebraMap Ω F).range`. Assume the negation of the conclusion as `hn`. Establish `: IsIntegrallyClosedIn R F`. Rewrite using `[Subring.isIntegrallyClosedIn_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Set `e : Ω ≃+* R` to `RingEquiv.ofBijective (algebraMap Ω F).rangeRestrict ⟨fun a b h => (algebraMap Ω F).injective (congrArg Subtype.val h), (algebraMap Ω F).rangeRestrict_surjective⟩`. Establish `hx' : IsIntegral Ω x` using `(IsIntegral.map_of_comp_eq (e.symm : R →+* Ω) (RingHom.id F) (by`. Use extensionality with `y`. Take `⟨y, rfl⟩` from `e.surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Use the proof step `rfl) hx)`. Take `⟨y, hy⟩` from `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := Ω) (K := integralClosure Ω F) |>.2 ⟨x, hx'⟩`. Conclude with `⟨y, congrArg Subtype.val hy⟩`. Take `⟨V, hV, hxV⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn (R := R) hn`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ω : Ω →+* V` to `(algebraMap Ω F).codRestrict V (fun y => hV ⟨y, rfl⟩)`. Set `_ : Algebra K V` to `(ω.comp (algebraMap K Ω)).toAlgebra`. Establish `: IsScalarTower K V F` using `IsScalarTower.of_algebraMap_eq fun k => IsScalarTower.algebraMap_apply K Ω F k`. Use `H (IsLocalRing.ResidueField V)` as an intermediate fact. Take `⟨c, hc⟩` from `exists_unit_value (O := V) u v hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ : A →ₐ[K] V` to `{ ω.comp ι.toRingHom with commutes' := fun k => congrArg ω (ι.commutes k) }`. Set `ψ : A →ₐ[K] V` to `{ ω.comp κ.toRingHom with commutes' := fun k => congrArg ω (κ.commutes k) }`. Take `⟨w, -, hw⟩` from `hc φ`. Take `⟨w', hw'u, hw'⟩` from `hc ψ`. Establish `e₁ : (IsScalarTower.toAlgHom K V F).comp φ = (IsScalarTower.toAlgHom K Ω F).comp ι` using `AlgHom.ext fun _ => rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : (IsScalarTower.toAlgHom K V F).comp ψ = (IsScalarTower.toAlgHom K Ω F).comp κ` using `AlgHom.ext fun _ => rfl`. Simplify using `only [e₁] at hw`. Simplify using `only [e₂, h] at hw'`. Take `⟨z, hz⟩` from `hw'u.exists_right_inv`. Apply `hxV` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: c * algebraMap V F w = algebraMap V F (z * w)`. Rewrite using `[map_mul, ← one_mul (algebraMap V F z), hw', mul_assoc c, ← map_mul _ w' z, hz, map_one, mul_one]`. Rewrite using `[hw, this]`. Conclude with `(z * w).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_mem_range {K A Ω F : Type} [Field K] [CommRing A] [Algebra K A]
     [Field Ω] [IsAlgClosed Ω] [Field F] [Algebra K Ω] [Algebra K F] [Algebra Ω F]
@@ -229,25 +227,25 @@ theorem value_mem_range {K A Ω F : Type} [Field K] [CommRing A] [Algebra K A]
   exact (z * w).2
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure (FractionRing A)`. Set `ι : A →ₐ[K] Ω` to `IsScalarTower.toAlgHom K A Ω`. Establish `hι : Function.Injective ι` using `(algebraMap (FractionRing A) Ω).injective.comp (IsFractionRing.injective A (FractionRing A))`. Establish `: IsDomain (Ω ⊗[K] A)` using `H Ω`. Set `F` to `FractionRing (Ω ⊗[K] A)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `θ : A ⊗[K] A →ₐ[K] Ω ⊗[K] A` to `Algebra.TensorProduct.map ι (AlgHom.id K A)`. Establish `hθ : Function.Injective θ` using `Module.Flat.rTensor_preserves_injective_linearMap (M := A) ι.toLinearMap hι`. Set `j : A →ₐ[K] F` to `(IsScalarTower.toAlgHom K (Ω ⊗[K] A) F).comp Algebra.TensorProduct.includeRight`. Set `σ : A ⊗[K] A →ₐ[K] F ⊗[K] A` to `(Algebra.TensorProduct.map j (AlgHom.id K A)).comp (Algebra.TensorProduct.comm K A A).toAlgHom`. Establish `hσ : ∀ a b, σ (a ⊗ₜ b) = j b ⊗ₜ a` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : ∀ t, Algebra.TensorProduct.lift (AlgHom.id K F) ((IsScalarTower.toAlgHom K Ω F).comp ι) (fun _ _ => Commute.all _ _) (σ t) = algebraMap (Ω ⊗[K] A) F (θ t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: algebraMap (Ω ⊗[K] A) F (θ (a ⊗ₜ b)) = algebraMap (Ω ⊗[K] A) F ((1 : Ω) ⊗ₜ[K] b) * algebraMap (Ω ⊗[K] A) F (algebraMap Ω (Ω ⊗[K] A) (ι a))`. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `[θ]`. Rewrite using `[this, ← IsScalarTower.algebraMap_apply, hσ, Algebra.TensorProduct.lift_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `e₂ : ∀ t, Algebra.TensorProduct.lift (AlgHom.id K F) ((IsScalarTower.toAlgHom K Ω F).comp ((Algebra.ofId K Ω).comp ε)) (fun _ _ => Commute.all _ _) (σ t) = j (p₂ t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b`. Rewrite using `[hp₂, map_mul, j.commutes, mul_comm, hσ, Algebra.TensorProduct.lift_tmul, IsScalarTower.algebraMap_apply K Ω F]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨c, hc⟩` from `value_mem_range H ι ((Algebra.ofId K Ω).comp ε) (σ u) (hu.map σ) (by rw [e₂, h₂, map_one])`. Rewrite `hc` using `[e₁]`. Establish `hc' : algebraMap Ω (Ω ⊗[K] A) c = θ u`. Apply `IsFractionRing.injective (Ω ⊗[K] A) F` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply, hc]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `q : Ω ⊗[K] A →ₐ[Ω] Ω` to `Algebra.TensorProduct.lift (AlgHom.id Ω Ω) ((Algebra.ofId K Ω).comp ε) (fun _ _ => Commute.all _ _)`. Establish `e₃ : ∀ t, q (θ t) = ι (p₁ t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Rewrite using `[hp₁, map_mul, ι.commutes]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hc1 : c = 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Use `congrArg q hc'` as an intermediate fact. Rewrite `this` using `[e₃, h₁, map_one, q.commutes]`. Then use the resulting hypothesis. Apply `hθ` to reduce the goal to its premises. Rewrite using `[← hc', hc1, map_one, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_eq_one {K A : Type} [Field K] [CommRing A] [Algebra K A] [IsDomain A]
     (H : ∀ (L : Type) [Field L] [Algebra K L], IsDomain (L ⊗[K] A)) (ε : A →ₐ[K] K)
@@ -320,55 +318,53 @@ theorem unit_eq_one {K A : Type} [Field K] [CommRing A] [Algebra K A] [IsDomain 
   rw [← hc', hc1, map_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_comp_apply {X Y Z : Scheme} (f : X ⟶ Y) (g : Y ⟶ Z) (s : Γ(Z, ⊤)) :
     (f ≫ g).appTop s = f.appTop (g.appTop s) := by
   rw [Scheme.Hom.comp_appTop]; rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun t => t.hom s) (Scheme.ΓSpecIso_naturality φ)`.
+A detailed English derivation is pending.
 -/
 theorem specMap_appTop_apply {R S : CommRingCat} (φ : R ⟶ S) (s : Γ(Spec R, ⊤)) :
     (Scheme.ΓSpecIso S).hom ((Spec.map φ).appTop s) = φ ((Scheme.ΓSpecIso R).hom s) :=
   congrArg (fun t => t.hom s) (Scheme.ΓSpecIso_naturality φ)
 
 /- English proof (translation)
-Establish `: IsIntegral X` using `GeometricallyIntegral.isIntegral_of_subsingleton f`. Establish `: IsReduced (pullback f f)`. Establish `: Finite (irreducibleComponents X)`. Rewrite using `[irreducibleComponents_eq_singleton]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GeometricallyReduced.isReduced_of_flat_of_finite_irreducibleComponents (pullback.fst f f)`. Establish `: IsIntegral (pullback f f)` using `isIntegral_of_irreducibleSpace_of_isReduced _`. Choose the witnesses or unpack the hypotheses as in `⟨A, g, hg, hge⟩ : ∃ (A : CommRingCat) (g : Spec A ⟶ X), IsOpenImmersion g ∧ Set.range e ⊆ Set.range g := by`. Set `x` to `e (IsLocalRing.closedPoint K)`. Use `⟨_, X.affineOpenCover.f (X.affineOpenCover.idx x), inferInstance, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim y (IsLocalRing.closedPoint K)]`. Conclude with `X.affineOpenCover.covers x`. Take `⟨α, hα⟩` from `Spec.map_surjective (g ≫ f)`. Take `⟨ε₀, hε₀⟩` from `Spec.map_surjective (IsOpenImmersion.lift g e hge)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hε : Spec.map ε₀ ≫ g = e` using `by rw [hε₀, IsOpenImmersion.lift_fac]`. Establish `hαε : α ≫ ε₀ = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hα, reassoc_of% hε, he, Spec.map_id]`. Set `_ : Algebra K A` to `α.hom.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hα' : Spec.map (CommRingCat.ofHom (algebraMap K A)) = g ≫ f` using `hα`. Set `ε : A →ₐ[K] K` to `{ ε₀.hom with commutes' := fun k => congrArg (fun t => t.hom k) hαε }`. Establish `hA : Nontrivial A` using `ε₀.hom.domain_nontrivial`. Establish `: Nonempty (Spec A)` using `inferInstanceAs (Nonempty (PrimeSpectrum A))`. Establish `: IsIntegral (Spec A)` using `isIntegral_of_isOpenImmersion g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: IsDomain A` using `(affine_isIntegral_iff A).mp inferInstance`. Establish `H : ∀ (L : Type) [Field L] [Algebra K L], IsDomain (L ⊗[K] A)`. Introduce `L _ _`. Set `y` to `Spec.map (CommRingCat.ofHom (algebraMap K L))`. Establish `: IsIntegral (pullback y f)` using `pullback_of_geometrically' GeometricallyIntegral.geometrically_isIntegral L y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `i : Spec (.of (L ⊗[K] A)) ⟶ pullback y f` to `(pullbackSpecIso K L A).inv ≫ pullback.map _ _ _ _ (𝟙 _) g (𝟙 _) (by simp [y]) (by simp [hα'])`. Establish `: Nonempty (Spec (.of (L ⊗[K] A)))` using `inferInstanceAs (Nonempty (PrimeSpectrum _))`. Establish `: IsIntegral (Spec (.of (L ⊗[K] A)))` using `isIntegral_of_isOpenImmersion i`. Conclude with `(affine_isIntegral_iff (.of (L ⊗[K] A))).mp inferInstance`. Set `i : Spec (.of (A ⊗[K] A)) ⟶ pullback f f` to `(pullbackSpecIso K A A).inv ≫ pullback.map _ _ _ _ g g (𝟙 _) (by simp [hα']) (by simp [hα'])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hi₁ : i ≫ pullback.fst f f = Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) ≫ g`. Simplify using `only [i, Category.assoc, pullback.lift_fst, pullbackSpecIso_inv_fst_assoc]`. Establish `hi₂ : i ≫ pullback.snd f f = Spec.map (CommRingCat.ofHom (RingHomClass.toRingHom (Algebra.TensorProduct.includeRight (R` using `K) (A := A) (B := A)))) ≫ g := by`. Simplify using `only [i, Category.assoc, pullback.lift_snd, pullbackSpecIso_inv_snd_assoc]`. Set `p₁ : A ⊗[K] A →ₐ[K] A` to `Algebra.TensorProduct.lift (AlgHom.id K A) ((Algebra.ofId K A).comp ε) (fun _ _ => Commute.all _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `p₂ : A ⊗[K] A →ₐ[K] A` to `Algebra.TensorProduct.lift ((Algebra.ofId K A).comp ε) (AlgHom.id K A) (fun _ _ => Commute.all _ _)`. Establish `hgfe : g ≫ f ≫ e = Spec.map (ε₀ ≫ α) ≫ g`. Rewrite using `[Spec.map_comp, Category.assoc, hε, hα, Category.assoc]`. Establish `c₁ : Spec.map (CommRingCat.ofHom p₁.toRingHom) ≫ i = g ≫ a₁`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, hi₁, Category.assoc, h₁₁, ← Spec.map_comp_assoc, Category.comp_id] conv_rhs => rw [← Category.id_comp g, ← Spec.map_id]`. Use `congr 2`. Use extensionality with `a`. Simplify using `[p₁]`. Rewrite using `[Category.assoc, hi₂, Category.assoc, h₁₂, ← Spec.map_comp_assoc, hgfe]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `congr 2`. Use extensionality with `a`. Simplify using `[p₁]`. Both sides reduce to the same expression. Establish `c₂ : Spec.map (CommRingCat.ofHom p₂.toRingHom) ≫ i = g ≫ a₂`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hi₁, Category.assoc, h₂₁, ← Spec.map_comp_assoc, hgfe]`. Use `congr 2`. Use extensionality with `a`. Simplify using `[p₂]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[Category.assoc, hi₂, Category.assoc, h₂₂, ← Spec.map_comp_assoc, Category.comp_id] conv_rhs => rw [← Category.id_comp g, ← Spec.map_id]`. Use `congr 2`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `p₂ (1 ⊗ₜ a) = a`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[p₂]`. Set `u' : A ⊗[K] A` to `(Scheme.ΓSpecIso (.of (A ⊗[K] A))).hom (i.appTop u)`. Establish `hu' : u' = 1`. Use `unit_eq_one H ε u' ((hu.map _).map _) p₁.toRingHom p₂.toRingHom (fun _ _ => rfl) (fun _ _ => rfl) ?_ ?_` and prove the remaining obligations. Use `specMap_appTop_apply (CommRingCat.ofHom p₁.toRingHom) (i.appTop u)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← appTop_comp_apply, c₁, appTop_comp_apply, hu₁, map_one, map_one]`. Conclude with `this.symm`. Use `specMap_appTop_apply (CommRingCat.ofHom p₂.toRingHom) (i.appTop u)` as an intermediate fact. Rewrite `this` using `[← appTop_comp_apply, c₂, appTop_comp_apply, hu₂, map_one, map_one]`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : i.appTop u = 1`. Apply `(Scheme.ΓSpecIso (.of (A ⊗[K] A))).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `hu'`. Establish `: Nonempty (Spec (.of (A ⊗[K] A)))` using `inferInstanceAs (Nonempty (PrimeSpectrum _))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: IsOpenImmersion i` using `inferInstance`. Establish `hd : Dense (Set.range i)` using `i.isOpenEmbedding.isOpen_range.dense (Set.range_nonempty _)`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, y, rfl⟩` from `hd.inter_open_nonempty _ ((pullback f f).basicOpen (u - 1)).isOpen (TopologicalSpace.Opens.ne_bot_iff_nonempty _ |>.mp hne)`.
-
-Establish `hy : y ∈ i ⁻¹ᵁ (pullback f f).basicOpen (u - 1)` using `hx`. Rewrite `hy` using `[Scheme.preimage_basicOpen_top, map_sub, h1, map_one, sub_self, Scheme.basicOpen_zero]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem unit_on_product_eq_one {K : Type} [Field K] [IsAlgClosed K] {X : Scheme}
     (f : X ⟶ Spec (CommRingCat.of K)) [GeometricallyIntegral f]

@@ -32,7 +32,7 @@ def conjN (M : TRep R G) (N : Subgroup G) [N.Normal] (s : G) : Pair (M.resSub N)
     exact key g m
 
 /- English proof (translation)
-Rewrite using `[Cx.Hom.H_cls, Cx.cls_eq_iff, mem_oneCoboundaries_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_fix_iff (M : TRep R G) (N : Subgroup G) [N.Normal] (s : G) (f0 : (M.resSub N).coch.X 1)
     (hf : (M.resSub N).coch.d 1 f0 = 0) :
@@ -42,9 +42,9 @@ theorem conj_fix_iff (M : TRep R G) (N : Subgroup G) [N.Normal] (s : G) (f0 : (M
   rfl
 
 /- English proof (translation)
-Rewrite using `[Cx.Hom.H_cls, Cx.cls_eq_iff, mem_oneCoboundaries_iff]`. Use `⟨m, fun n => ?_⟩` and prove the remaining obligations. Establish `he : (fun i => c.φ (e1 n i)) = e1 (cj N s n)`. Use function extensionality and compare the values at `i`. Conclude with `Subtype.ext (hφ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show c.u (f0.1 fun i => c.φ (e1 n i)) - f0.1 (e1 n) = _`. Rewrite using `[he, hu]`. Conclude with `hm n`.
+A detailed English derivation is pending.
 -/
 theorem pair_fix (M : TRep R G) (N : Subgroup G) [N.Normal] (s : G) (c : Pair (M.resSub N) (M.resSub N))
     (hφ : ∀ g, (c.φ g : G) = s⁻¹ * g * s) (hu : ∀ m, c.u m = M.rho s m) (f0 : (M.resSub N).coch.X 1)
@@ -66,16 +66,16 @@ variable (M : TRep R G) (N : Subgroup G) [N.Normal] (Q : TRep R (G ⧸ N)) (P : 
 include hP
 
 /- English proof (translation)
-Rewrite using `[hP.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phi_apply (a : G) : P.φ a = (a : G ⧸ N) := by
   rw [hP.1]
   rfl
 
 /- English proof (translation)
-Introduce `f f' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨g, rfl⟩ : ∃ g : Fin n → G, (fun i => (g i : G ⧸ N)) = x` from `⟨fun i => (x i).out, funext fun i => QuotientGroup.out_eq' (x i)⟩`. Establish `h1 : P.u (f.1 fun i => P.φ (g i)) = P.u (f'.1 fun i => P.φ (g i))` using `congrArg (fun F => F.1 g) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hP.2.1.injective h1`. Simplify `h2` using `[phi_apply M N Q P hP]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_f_injective (n : ℕ) : Injective (P.hom.f n) := by
   intro f f' h
@@ -88,7 +88,7 @@ theorem hom_f_injective (n : ℕ) : Injective (P.hom.f n) := by
   simpa [phi_apply M N Q P hP] using h2
 
 /- English proof (translation)
-Use `show P.u (z.1 fun i => P.φ (![a, b] i)) = _`. Establish `e : (fun i => P.φ (![a, b] i)) = ![(a : G ⧸ N), (b : G ⧸ N)]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [phi_apply M N Q P hP]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inflation_hom_degree_two_apply (z : Q.coch.X 2) (a b : G) :
     (P.hom.f 2 z).1 ![a, b] = P.u (z.1 ![(a : G ⧸ N), b]) := by
@@ -99,7 +99,7 @@ theorem inflation_hom_degree_two_apply (z : Q.coch.X 2) (a b : G) :
   rw [e]
 
 /- English proof (translation)
-Use `show P.u (v.1 fun i => P.φ (e1 a i)) = _`. Establish `e : (fun i => P.φ (e1 a i)) = e1 (a : G ⧸ N)`. Use function extensionality and compare the values at `i`. Simplify using `[e1, phi_apply M N Q P hP]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inflation_hom_degree_one_apply (v : Q.coch.X 1) (a : G) :
     (P.hom.f 1 v).1 (e1 a) = P.u (v.1 (e1 (a : G ⧸ N))) := by
@@ -110,9 +110,9 @@ theorem inflation_hom_degree_one_apply (v : Q.coch.X 1) (a : G) :
   rw [e]
 
 /- English proof (translation)
-Establish `key : ∀ a b, D1 M (fun g => y.1 (e1 g)) a b = P.u (z.1 ![(a : G ⧸ N), b])`. Introduce `a b`. Use `show M.rho a (y.1 (e1 b)) - y.1 (e1 (a * b)) + y.1 (e1 a) = _`. Rewrite using `[← oneDifferential_val, h, inflation_hom_degree_two_apply M N Q P hP z a b]`. Use `⟨fun a b n => ?_, fun a b n => ?_, fun a b n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, QuotientGroup.mk_mul_of_mem b n.2]`. Rewrite using `[key, key, QuotientGroup.mk_mul_of_mem a n.2]`. Rewrite using `[key]`. Conclude with `(hP.2.2 _).1 ⟨_, rfl⟩ n n.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inflD_of_d (y : M.coch.X 1) (z : Q.coch.X 2) (h : M.coch.d 1 y = P.hom.f 2 z) :
     InflD M N (D1 M fun g => y.1 (e1 g)) := by
@@ -127,15 +127,15 @@ theorem inflD_of_d (y : M.coch.X 1) (z : Q.coch.X 2) (h : M.coch.d 1 y = P.hom.f
     exact (hP.2.2 _).1 ⟨_, rfl⟩ n n.2
 
 /- English proof (translation)
-Use `letI : Setoid G := QuotientGroup.leftRel N`. Establish `hw' : ∀ a b : G, a ≈ b → w a = w b`. Introduce `a b hab`. Establish `hab' : a⁻¹ * b ∈ N` using `QuotientGroup.leftRel_apply.mp hab`. Establish `e` using `hr a ⟨a⁻¹ * b, hab'⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_inv_cancel_left] at e`. Conclude with `e.symm`. Set `wq : G ⧸ N → M.V` to `Quotient.lift w hw'`. Establish `hwq : Continuous wq` using `hw.quotient_lift hw'`. Establish `hmem : ∀ x : G ⧸ N, wq x ∈ LinearMap.range P.u`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a => exact (hP.2.2 (w a)).2 fun g hg => hi a ⟨g, hg⟩`. Set `v0 : G ⧸ N → Q.V` to `fun x => (LinearEquiv.ofInjective P.u hP.2.1.injective).symm ⟨wq x, hmem x⟩`. Establish `hv0u : ∀ x, P.u (v0 x) = wq x`.
+Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `(LinearEquiv.ofInjective P.u hP.2.1.injective).apply_symm_apply ⟨wq x, hmem x⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hv0 : Continuous v0`. Rewrite using `[hP.2.1.continuous_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (P.u ∘ v0) = wq` using `funext hv0u`. Rewrite using `[e]`. Conclude with `hwq`. Use `⟨⟨fun g => v0 (g 0), hv0.comp (continuous_apply 0)⟩, fun a => ?_⟩` and prove the remaining obligations. Conclude with `hv0u _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem descend1 (w : G → M.V) (hw : Continuous w) (hr : ∀ a (n : N), w (a * n) = w a)
     (hi : ∀ a (n : N), M.rho n (w a) = w a) :
@@ -167,17 +167,15 @@ theorem descend1 (w : G → M.V) (hw : Continuous w) (hr : ∀ a (n : N), w (a *
   exact hv0u _
 
 /- English proof (translation)
-Establish `hout : ∀ a b : G, D (Quotient.out (a : G ⧸ N)) (Quotient.out (b : G ⧸ N)) = D a b`. Introduce `a b`. Take `⟨h1, e1'⟩` from `QuotientGroup.mk_out_eq_mul N a`. Take `⟨h2, e2'⟩` from `QuotientGroup.mk_out_eq_mul N b`. Rewrite using `[e1', e2', hI.left, hI.right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `Dq : (G ⧸ N) × (G ⧸ N) → M.V` to `fun x => D x.1.out x.2.out`. Establish `hq : Topology.IsQuotientMap (Prod.map (QuotientGroup.mk : G → G ⧸ N) (QuotientGroup.mk : G → G ⧸ N))` using `(QuotientGroup.isOpenMap_coe.prodMap QuotientGroup.isOpenMap_coe).isQuotientMap (continuous_quot_mk.prodMap continuous_quot_mk) (QuotientGroup.mk_surjective.prodMap QuotientGroup.mk_surjective)`. Establish `hDq : Continuous Dq`. Rewrite using `[hq.continuous_iff]`. Establish `e : Dq ∘ Prod.map (QuotientGroup.mk : G → G ⧸ N) (QuotientGroup.mk : G → G ⧸ N) = fun p : G × G => D p.1 p.2` using `funext fun p => hout p.1 p.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hD`. Establish `hmem : ∀ x, Dq x ∈ LinearMap.range P.u` using `fun x => (hP.2.2 (Dq x)).2 fun g hg => hI.inv _ _ ⟨g, hg⟩`. Set `z0 : (G ⧸ N) × (G ⧸ N) → Q.V` to `fun x => (LinearEquiv.ofInjective P.u hP.2.1.injective).symm ⟨Dq x, hmem x⟩`. Establish `hz0u : ∀ x, P.u (z0 x) = Dq x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `(LinearEquiv.ofInjective P.u hP.2.1.injective).apply_symm_apply ⟨Dq x, hmem x⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hz0 : Continuous z0`. Rewrite using `[hP.2.1.continuous_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (P.u ∘ z0) = Dq` using `funext hz0u`. Rewrite using `[e]`. Conclude with `hDq`. Use `⟨⟨fun g => z0 (g 0, g 1), hz0.comp ((continuous_apply 0).prodMk (continuous_apply 1))⟩, fun a b => ?_⟩` and prove the remaining obligations. Use `show P.u (z0 ((a : G ⧸ N), (b : G ⧸ N))) = D a b`.
-
-Rewrite using `[hz0u]`. Conclude with `hout a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend2 (D : G → G → M.V) (hD : Continuous fun p : G × G => D p.1 p.2) (hI : InflD M N D) :
     ∃ z : Q.coch.X 2, ∀ a b : G, P.u (z.1 ![(a : G ⧸ N), b]) = D a b := by
@@ -216,13 +214,11 @@ theorem descend2 (D : G → G → M.V) (hD : Continuous fun p : G × G => D p.1 
   exact hout a b
 
 /- English proof (translation)
-Establish `hfc` using `(wach_d1_eq_zero_iff (M.resSub N) f0).1 hf`. Take `⟨y0, hy0c, hy0N, h2, h3⟩` from `exists_ext_cochain M N hNc (ev1 M N f0) ((show Continuous f0.1 from f0.2).comp (continuous_pi fun _ => continuous_id)) (fun a b => hfc a b) hinv`. Establish `hDc : Continuous fun p : G × G => D1 M y0 p.1 p.2` using `((M.cont.comp (continuous_fst.prodMk (hy0c.comp continuous_snd))).sub (hy0c.comp (continuous_fst.mul continuous_snd))).add (hy0c.comp continuous_fst)`. Take `⟨z, hz⟩` from `descend2 M N Q P hP (D1 M y0) hDc (inflD_of_ext M N _ y0 h2 h3)`. Set `y : M.coch.X 1` to `⟨fun g => y0 (g 0), hy0c.comp (continuous_apply 0)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hd : M.coch.d 1 y = P.hom.f 2 z` using `Subtype.ext (funext fun g => by`. Apply the tactic sequence `have hg : g = ![g 0, g 1] := by funext i; fin_cases i <;> rfl`. Rewrite using `[hg, oneDifferential_val, inflation_hom_degree_two_apply M N Q P hP, hz]`. Use the proof step `rfl)`. Establish `hzc : Q.coch.d 2 z = 0` using `hom_f_injective M N Q P hP 3 (by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, P.hom.comm, ← hd]`. Conclude with `M.coch.dd 1 y)`. Use `⟨y, z, hzc, hd, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Use `show y0 (g 0 : G) = f0.1 g`. Rewrite using `[hy0N]`.
-
-Conclude with `(oneCochain_apply_fin_one _ f0 g).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [DiscreteTopology M.V]
     (hNc : IsClosed (N : Set G)) (f0 : (M.resSub N).coch.X 1) (hf : (M.resSub N).coch.d 1 f0 = 0)
@@ -248,15 +244,15 @@ theorem exists_lift [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [D
   exact (oneCochain_apply_fin_one _ f0 g).symm
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m : M.V, ∀ n : N, y.1 (e1 (n : G)) - y'.1 (e1 (n : G)) = M.rho n m - m` from `(mem_oneCoboundaries_iff _ _).1 hr`. Take `⟨w, hw⟩ : ∃ w : M.coch.X 1, w = y - y' - M.coch.d 0 (const0 M m)` from `⟨_, rfl⟩`. Establish `hwv : ∀ a, w.1 (e1 a) = y.1 (e1 a) - y'.1 (e1 a) - (M.rho a m - m)` using `fun a => by`. Rewrite using `[hw]`. Use `show y.1 (e1 a) - y'.1 (e1 a) - (M.coch.d 0 (const0 M m)).1 (e1 a) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zeroDifferential_val]`. Both sides reduce to the same expression. Establish `hwN : ∀ n : N, w.1 (e1 n) = 0` using `fun n => by`. Rewrite using `[hwv, hm n, sub_self]`. Establish `hdw : M.coch.d 1 w = P.hom.f 2 (z - z')`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, map_sub, map_sub, M.coch.dd, sub_zero, hd, hd', map_sub]`. Establish `hI` using `inflD_of_d M N Q P hP w (z - z') hdw`. Establish `h1 : (fun g => w.1 (e1 g)) 1 = 0`. Establish `e` using `hwN 1`. Rewrite `e` using `[OneMemClass.coe_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨hr1, hr2⟩` from `inflD_of_zero M N (fun g => w.1 (e1 g)) h1 hI hwN`. Take `⟨v, hv⟩` from `descend1 M N Q P hP (fun g => w.1 (e1 g)) ((show Continuous w.1 from w.2).comp (continuous_pi fun _ => continuous_id)) hr1 hr2`. Establish `hvw : P.hom.f 1 v = w` using `Subtype.ext (funext fun g => by`. Rewrite using `[oneCochain_apply_fin_one M _ g, oneCochain_apply_fin_one M w g, inflation_hom_degree_one_apply M N Q P hP, hv])`. Establish `hdv : Q.coch.d 1 v = z - z'` using `hom_f_injective M N Q P hP 2 (by rw [P.hom.comm, hvw, hdw])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_eq_iff]`. Conclude with `⟨v, hdv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cls_unique (y y' : M.coch.X 1) (z z' : Q.coch.X 2) (hz : Q.coch.d 2 z = 0)
     (hz' : Q.coch.d 2 z' = 0) (hd : M.coch.d 1 y = P.hom.f 2 z) (hd' : M.coch.d 1 y' = P.hom.f 2 z')

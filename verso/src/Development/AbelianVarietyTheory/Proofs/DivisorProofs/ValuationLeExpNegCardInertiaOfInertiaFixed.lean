@@ -4,37 +4,25 @@ open IsDedekindDomain
 namespace GlobalTheory.InertiaFixedVal
 
 /- English proof (translation)
-Introduce `hy hv`. Set `H : Subgroup (L ≃ₐ[K] L)` to `P.asIdeal.inertia (L ≃ₐ[K] L)`. Set `E : IntermediateField K L` to `FixedPoints.intermediateField H`. Use `haveI : IsGaloisGroup H E L := IsGaloisGroup.subgroup (L ≃ₐ[K] L) K L H`. Use `haveI : IsScalarTower R E L := IsScalarTower.of_algebraMap_eq fun r => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R K L, IsScalarTower.algebraMap_apply R K E]`. Both sides reduce to the same expression. Set `OE` to `integralClosure R E`. Use `haveI : IsFractionRing OE E := integralClosure.isFractionRing_of_finite_extension K E`. Use `haveI : IsDedekindDomain OE := integralClosure.isDedekindDomain R K E`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : OE →ₐ[R] integralClosure R L` to `((IsScalarTower.toAlgHom R E L).comp OE.val).codRestrict _ (fun x => x.2.map (IsScalarTower.toAlgHom R E L))`. Use `letI : Algebra OE (integralClosure R L) := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower OE (integralClosure R L) L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower R OE (integralClosure R L) := IsScalarTower.of_algebraMap_eq fun r => (f.commutes r).symm`. Use `haveI : Algebra.IsIntegral OE (integralClosure R L) := Algebra.IsIntegral.tower_top R`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FaithfulSMul OE (integralClosure R L) := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Introduce `a b hab`. Use `congrArg (fun x : integralClosure R L => (x : L)) hab` as an intermediate fact. Conclude with `Subtype.ext (FaithfulSMul.algebraMap_injective E L this)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.IsTorsionFree OE (integralClosure R L) := Module.isTorsionFree_iff_faithfulSMul.mpr inferInstance`. Use `haveI : Module.Finite R (integralClosure R L) := IsIntegralClosure.finite R K L (integralClosure R L)`. Use `haveI : Module.Finite OE (integralClosure R L) := Module.Finite.of_restrictScalars_finite R OE _`. Use `haveI : Module.Flat OE (integralClosure R L) := inferInstance`. Use `haveI : SMulDistribClass H (integralClosure R L) L := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsGaloisGroup H OE (integralClosure R L) := IsGaloisGroup.of_isFractionRing H OE (integralClosure R L) E L`. Set `Q : Ideal OE` to `P.asIdeal.under OE`. Establish `hPne : P.asIdeal ≠ ⊥` using `P.ne_bot`. Establish `hQne : Q ≠ ⊥`. Conclude with `Ideal.under_ne_bot OE hPne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `haveI hQmax : Q.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hQne`. Establish `hQR : (Q.under R).IsMaximal` using `Ideal.IsMaximal.under R Q`. Use `haveI : Q.LiesOver (IsLocalRing.maximalIdeal R) := ⟨(IsLocalRing.eq_maximalIdeal hQR).symm⟩`. Use `letI : Field (OE ⧸ Q) := Ideal.Quotient.field Q`. Use `letI : Field (R ⧸ IsLocalRing.maximalIdeal R) := Ideal.Quotient.field _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Algebra.IsIntegral R OE := ⟨fun x => integralClosure.isIntegral x⟩`. Use `haveI : Algebra.IsIntegral (R ⧸ IsLocalRing.maximalIdeal R) (OE ⧸ Q) := inferInstance`. Use `haveI : Algebra.IsAlgebraic (R ⧸ IsLocalRing.maximalIdeal R) (OE ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Use `haveI : PerfectField (OE ⧸ Q) := by haveI : PerfectField (R ⧸ IsLocalRing.maximalIdeal R) := ‹PerfectField (IsLocalRing.ResidueField R)›`. Conclude with `Algebra.IsAlgebraic.perfectField (R ⧸ IsLocalRing.maximalIdeal R)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : PerfectField Q.ResidueField := PerfectField.of_ringEquiv (RingEquiv.ofBijective _ (Ideal.bijective_algebraMap_quotient_residueField Q))`. Establish `htop : P.asIdeal.inertia H = ⊤`. Rewrite using `[Subgroup.eq_top_iff']`. Introduce `σ`. Conclude with `AddSubgroup.mem_inertia.mpr fun x => AddSubgroup.mem_inertia.mp σ.2 x`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card H = P.asIdeal.ramificationIdx OE`. Establish `h` using `Ideal.card_inertia_eq_ramificationIdxIn (G := H) Q P.asIdeal`. Rewrite `h` using `[Ideal.ramificationIdxIn_eq_ramificationIdx Q P.asIdeal H, htop, Subgroup.card_top]`. Conclude with `h`. Establish `hyE : y ∈ E` using `fun σ => hy σ σ.2`.
-
-Set `z : E` to `⟨y, hyE⟩`. Set `w : HeightOneSpectrum OE` to `⟨Q, inferInstance, hQne⟩`. Use `haveI : P.asIdeal.LiesOver w.asIdeal := inferInstance`. Establish `hval` using `HeightOneSpectrum.valuation_liesOver L w P z`. Rewrite `hval` using `[Ideal.ramificationIdx'_eq_ramificationIdx w.asIdeal P.asIdeal hQne, ← hcard]`.
-
-Express the relevant statement in the definitionally equal form `w.valuation E z ^ Nat.card H = P.valuation L y at hval`. Establish `hn : Nat.card H ≠ 0` using `Nat.card_pos.ne'`. Establish `hz : w.valuation E z < 1`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`.
-
-Use `one_le_pow₀ (n := Nat.card H) h` as an intermediate fact. Rewrite `this` using `[hval]`. Conclude with `absurd hv (not_lt.mpr this)`. Establish `hz1 : w.valuation E z ≤ WithZero.exp (-1)`. Distinguish the cases in `h0 : w.valuation E z = 0`.
-
-Rewrite using `[h0]`. Conclude with `zero_le`. Rewrite `hz`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hz` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← hval]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`.
-
-Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_le_exp_neg_card_inertia (R K L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (IsLocalRing.ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] [Algebra R L] [IsScalarTower R K L] [SMulCommClass (L ≃ₐ[K] L) R L] [IsDedekindDomain (integralClosure R L)] [IsFractionRing (integralClosure R L) L] (P : IsDedekindDomain.HeightOneSpectrum (integralClosure R L)) (y : L) :
     (∀ σ ∈ P.asIdeal.inertia (L ≃ₐ[K] L), σ y = y) → P.valuation L y < 1 →

@@ -77,19 +77,19 @@ def DSConj : Prop :=
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ), IsDS ε lam σ → IsDS (revE ε) (revP lam) (sigC σ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[revP]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dualWeight_dualWeight {n : ℕ} (lam : Fin n → ℝ) : revP (revP lam) = lam := by
   funext a; simp [revP]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[revE]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem revE_revE {n : ℕ} (ε : Fin n → Bool) : revE (revE ε) = ε := by
   funext a; simp [revE]
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ lam ⟨hc, hn, hu, hi, hs, ⟨S, hS⟩, hmin⟩`. Use `⟨inferInstanceAs (CompleteSpace H), inferInstanceAs (Nontrivial H), h1 n ε H σ hu, h2 n ε H σ hi, h3 n ε H σ hs, ⟨cjSub S, by rw [h6]; exact h4 n ε H σ _ S hS⟩, fun μ S' hS' => ?_⟩` and prove the remaining obligations. Use `hmin (revP μ) (cjSubInv S') (h5 n ε H σ μ S' hS')` as an intermediate fact. Rewrite using `[h6, h7]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem dsConj_of (h1 : URepConj) (h2 : IrredConj) (h3 : SqIntConj) (h4 : KTypeConj) (h5 : KTypeConjInv)
     (h6 : LowKRev) (h7 : VNormRev) : DSConj := by

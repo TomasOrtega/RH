@@ -47,13 +47,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelKlingenDelign
 namespace PositivityTheory.Prw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GreenSeries.green_series h`.
+A detailed English derivation is pending.
 -/
 theorem greenSeriesSt_of (h : GlobalTheory.Published.GreenCuspidal) : GlobalTheory.Published.GreenSeriesSt :=
   GlobalTheory.GreenSeries.green_series h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.siegelKlingenDeligneRibet_of_both h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem siegelKlingenDeligneRibet_of (h₁ : GlobalTheory.Published.SiegelKlingen) (h₂ : GlobalTheory.Published.DeligneRibet) :
     GlobalTheory.Published.SiegelKlingenDeligneRibet :=

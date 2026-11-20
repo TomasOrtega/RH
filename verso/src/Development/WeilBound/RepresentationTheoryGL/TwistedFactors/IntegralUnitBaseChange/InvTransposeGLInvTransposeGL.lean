@@ -19,34 +19,34 @@ def twNorm (θ : Monoid.End G) (m : ℕ) (δ : G) : G :=
   ((List.range m).map fun i => (θ ^ i) δ).prod
 
 /- English proof (translation)
-Simplify using `[twNorm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem twNorm_zero (θ : Monoid.End G) (δ : G) : twNorm θ 0 δ = 1 := by
   simp [twNorm]
 
 /- English proof (translation)
-Simplify using `[twNorm, List.range_succ, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twNorm_succ (θ : Monoid.End G) (m : ℕ) (δ : G) :
     twNorm θ (m + 1) δ = twNorm θ m δ * (θ ^ m) δ := by
   simp [twNorm, List.range_succ, List.prod_append]
 
 /- English proof (translation)
-Rewrite using `[pow_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pow_succ_apply (θ : Monoid.End G) (m : ℕ) (g : G) :
     (θ ^ (m + 1)) g = (θ ^ m) (θ g) := by
   rw [pow_succ]; rfl
 
 /- English proof (translation)
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pow_succ_apply' (θ : Monoid.End G) (m : ℕ) (g : G) :
     (θ ^ (m + 1)) g = θ ((θ ^ m) g) := by
   rw [pow_succ']; rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[twNorm_succ, twNorm_succ, ih, twConj, map_mul, map_mul, map_inv, pow_succ_apply θ m g]`. Use `group`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twNorm_twConj (θ : Monoid.End G) (m : ℕ) (g δ : G) :
     twNorm θ m (twConj θ g δ) = g⁻¹ * twNorm θ m δ * (θ ^ m) g := by
@@ -57,14 +57,14 @@ theorem twNorm_twConj (θ : Monoid.End G) (m : ℕ) (g δ : G) :
     group
 
 /- English proof (translation)
-Rewrite using `[twNorm_twConj, hℓ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twNorm_twConj_of_pow_eq_one (θ : Monoid.End G) {ℓ : ℕ} (hℓ : θ ^ ℓ = 1) (g δ : G) :
     twNorm θ ℓ (twConj θ g δ) = g⁻¹ * twNorm θ ℓ δ * g := by
   rw [twNorm_twConj, hℓ]; rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[twNorm_succ, map_mul, ih, ← pow_succ_apply']`. Use `group`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_twNorm (θ : Monoid.End G) (m : ℕ) (δ : G) :
     θ (twNorm θ m δ) = δ⁻¹ * twNorm θ m δ * (θ ^ m) δ := by
@@ -75,7 +75,7 @@ theorem map_twNorm (θ : Monoid.End G) (m : ℕ) (δ : G) :
     group
 
 /- English proof (translation)
-Rewrite using `[map_twNorm, hℓ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_twNorm_of_pow_eq_one (θ : Monoid.End G) {ℓ : ℕ} (hℓ : θ ^ ℓ = 1) (δ : G) :
     θ (twNorm θ ℓ δ) = δ⁻¹ * twNorm θ ℓ δ * δ := by
@@ -95,12 +95,12 @@ def twCent (θ : Monoid.End G) (δ : G) : Subgroup G where
       _ = δ := by group
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_twCent (θ : Monoid.End G) (δ g : G) : g ∈ twCent θ δ ↔ g⁻¹ * δ * θ g = δ := Iff.rfl
 
 /- English proof (translation)
-Establish `hh' : h⁻¹ * δ * θ h = δ` using `hh`. Simplify using `only [twConj, map_mul]`. Rewrite using `[show (h * g)⁻¹ * δ * (θ h * θ g) = g⁻¹ * (h⁻¹ * δ * θ h) * θ g by group, hh']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem twConj_mul_left (θ : Monoid.End G) (δ : G) {h : G} (hh : h ∈ twCent θ δ) (g : G) :
     twConj θ (h * g) δ = twConj θ g δ := by
@@ -109,7 +109,7 @@ theorem twConj_mul_left (θ : Monoid.End G) (δ : G) {h : G} (hh : h ∈ twCent 
   rw [show (h * g)⁻¹ * δ * (θ h * θ g) = g⁻¹ * (h⁻¹ * δ * θ h) * θ g by group, hh']
 
 /- English proof (translation)
-Establish `h1` using `twNorm_twConj_of_pow_eq_one θ hℓ g δ`. Establish `hg' : twConj θ g δ = δ` using `hg`. Rewrite `h1` using `[hg']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem twCent_commute_twNorm (θ : Monoid.End G) {ℓ : ℕ} (hℓ : θ ^ ℓ = 1) (δ : G) {g : G}
     (hg : g ∈ twCent θ δ) : g * twNorm θ ℓ δ = twNorm θ ℓ δ * g := by
@@ -120,7 +120,7 @@ theorem twCent_commute_twNorm (θ : Monoid.End G) {ℓ : ℕ} (hℓ : θ ^ ℓ =
     _ = twNorm θ ℓ δ * g := by group
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_commute_of_commute {x h c : G} (hx : x * (h * c * h⁻¹) = (h * c * h⁻¹) * x) :
     (h⁻¹ * x * h) * c = c * (h⁻¹ * x * h) := by
@@ -129,7 +129,7 @@ theorem conj_commute_of_commute {x h c : G} (hx : x * (h * c * h⁻¹) = (h * c 
     _ = c * (h⁻¹ * x * h) := by group
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Use `twCent_commute_twNorm θ hℓ δ hx` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `conj_commute_of_commute this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_twCent_mem_centralizer (θ : Monoid.End G) {ℓ : ℕ} (hℓ : θ ^ ℓ = 1) {δ h c : G}
     (hN : twNorm θ ℓ δ = h * c * h⁻¹) {x : G} (hx : x ∈ twCent θ δ) :
@@ -150,13 +150,13 @@ def quotLIntegral (μG : Measure G) (H : Subgroup G) (μH : Measure H) (F : G �
   if hρ : ∃ ρ, IsQuotNormaliser H μH ρ then ∫⁻ g, F g * hρ.choose g ∂μG else 0
 
 /- English proof (translation)
-Establish `: MeasurableInv H` using `⟨(measurable_subtype_coe.inv).subtype_mk⟩`. Establish `hmulH : Measurable fun p : H × G => (p.1 : G) * p.2` using `(measurable_subtype_coe.comp measurable_fst).mul measurable_snd`. Establish `e1 : ∫⁻ g, F g * ρ g ∂μG = ∫⁻ h, ∫⁻ g, F g * ρ g * ρ' ((h : G) * g) ∂μG ∂μH`. Rewrite using `[lintegral_lintegral_swap]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_const_mul, hρ'.2 g, mul_one]`. Conclude with `hρ'.1.comp (measurable_subtype_coe.mul_const g)`. Conclude with `((hF.comp measurable_snd).mul (hρ.1.comp measurable_snd)).mul (hρ'.1.comp hmulH) |>.aemeasurable`. Establish `e2 : ∀ h : H, ∫⁻ g, F g * ρ g * ρ' ((h : G) * g) ∂μG = ∫⁻ g, F g * ρ' g * ρ (((h⁻¹ : H) : G) * g) ∂μG`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← lintegral_mul_left_eq_self _ ((h : G)⁻¹)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[hFH _ (H.inv_mem h.2), mul_inv_cancel_left, Subgroup.coe_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, lintegral_congr e2, ← lintegral_lintegral_swap]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul, lintegral_inv_eq_self (fun h : H => ρ ((h : G) * g)), hρ.2 g, mul_one]`. Conclude with `hρ.1.comp ((measurable_subtype_coe.comp measurable_inv).mul_const g)`. Establish `: Measurable fun p : G × H => ((p.2⁻¹ : H) : G) * p.1` using `(measurable_subtype_coe.comp (measurable_snd.inv)).mul measurable_fst`. Conclude with `((hF.comp measurable_fst).mul (hρ'.1.comp measurable_fst)).mul (hρ.1.comp this) |>.aemeasurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lintegral_normaliser_eq [MeasurableMul₂ G] [MeasurableInv G]
     {μG : Measure G} [μG.IsMulLeftInvariant] [SFinite μG]
@@ -194,7 +194,7 @@ theorem lintegral_normaliser_eq [MeasurableMul₂ G] [MeasurableInv G]
       (hρ.1.comp this) |>.aemeasurable
 
 /- English proof (translation)
-Establish `hex : ∃ ρ, IsQuotNormaliser H μH ρ` using `⟨ρ, hρ⟩`. Rewrite using `[quotLIntegral, dif_pos hex]`. Conclude with `lintegral_normaliser_eq hF hFH hex.choose_spec hρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotLIntegral_eq [MeasurableMul₂ G] [MeasurableInv G]
     {μG : Measure G} [μG.IsMulLeftInvariant] [SFinite μG]
@@ -231,7 +231,7 @@ theorem sigmaGL_val (τ : E ≃ₐ[k] E) (g : GL n E) :
     ((sigmaGL τ g : GL n E) : Matrix n n E) = (g : Matrix n n E).map τ := rfl
 
 /- English proof (translation)
-Use extensionality with `g i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem sigmaGL_mul (τ τ' : E ≃ₐ[k] E) :
     (sigmaGL (τ * τ') : Monoid.End (GL n E)) = sigmaGL τ * sigmaGL τ' := by
@@ -239,14 +239,14 @@ theorem sigmaGL_mul (τ τ' : E ≃ₐ[k] E) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `g i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem sigmaGL_one : (sigmaGL (1 : E ≃ₐ[k] E) : Monoid.End (GL n E)) = 1 := by
   ext g i j
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using sigmaGL_one`. Consider the case `succ m ih => rw [pow_succ, sigmaGL_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sigmaGL_pow (τ : E ≃ₐ[k] E) (m : ℕ) :
     (sigmaGL (τ ^ m) : Monoid.End (GL n E)) = sigmaGL τ ^ m := by
@@ -260,7 +260,7 @@ def normGL (σ : E ≃ₐ[k] E) (δ : GL n E) : GL n E :=
   twNorm (sigmaGL σ) (Module.finrank k E) δ
 
 /- English proof (translation)
-Establish `hθ : (sigmaGL σ : Monoid.End (GL n E)) ^ ℓ = 1` using `by rw [← sigmaGL_pow, hℓ, sigmaGL_one]`. Rewrite using `[← Matrix.charpoly_map]`. Establish `h` using `map_twNorm_of_pow_eq_one (sigmaGL σ) hθ δ`. Establish `h2 : ((twNorm (sigmaGL σ) ℓ δ : GL n E) : Matrix n n E).map σ.toAlgHom.toRingHom = ((sigmaGL σ (twNorm (sigmaGL σ) ℓ δ) : GL n E) : Matrix n n E)` using `rfl`. Rewrite using `[h2, h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_twNorm_map (σ : E ≃ₐ[k] E) {ℓ : ℕ} (hℓ : σ ^ ℓ = 1) (δ : GL n E) :
     ((twNorm (sigmaGL σ) ℓ δ : GL n E) : Matrix n n E).charpoly.map (σ.toAlgHom.toRingHom) =
@@ -273,7 +273,7 @@ theorem charpoly_twNorm_map (σ : E ≃ₐ[k] E) {ℓ : ℕ} (hℓ : σ ^ ℓ = 
   rw [h2, h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun p => Polynomial.coeff p i) (charpoly_twNorm_map σ hℓ δ)`. Simplify `h` using `[normGL, Polynomial.coeff_map]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_charpoly_normGL_fixed (σ : E ≃ₐ[k] E) (hℓ : σ ^ Module.finrank k E = 1)
     (δ : GL n E) (i : ℕ) :
@@ -283,13 +283,11 @@ theorem coeff_charpoly_normGL_fixed (σ : E ≃ₐ[k] E) (hℓ : σ ^ Module.fin
   simpa [normGL, Polynomial.coeff_map] using h
 
 /- English proof (translation)
-Establish `hℓ : σ ^ Module.finrank k E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Establish `hfix : ∀ i, ((normGL σ δ : GL n E) : Matrix n n E).charpoly.coeff i ∈ Set.range (algebraMap k E)`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set x := ((normGL σ δ : GL n E) : Matrix n n E).charpoly.coeff i`. Establish `hσ : σ ∈ MulAction.stabilizer (E ≃ₐ[k] E) x`. Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `coeff_charpoly_normGL_fixed σ hℓ δ i`. Establish `hall : ∀ τ : E ≃ₐ[k] E, τ x = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `τ`. Use `(Subgroup.zpowers_le.mpr hσ) (hgen τ)` as an intermediate fact. Rewrite `this` using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Then use the resulting hypothesis. Use `(IsGalois.mem_bot_iff_fixed x).mpr hall` as an intermediate fact. Rewrite `this` using `[IntermediateField.mem_bot]`. Then use the resulting hypothesis.
-
-Conclude with `(Polynomial.lifts_iff_coeff_lifts _).mpr hfix`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem charpoly_normGL_lifts [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E)
     (hgen : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) (δ : GL n E) :
@@ -511,7 +509,7 @@ variable {k E : Type*} [Field k] [Field E] [Algebra k E]
 def theta1 (σ : E ≃ₐ[k] E) : Monoid.End (GL n E) := thetaGL σ 1
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (Matrix.transpose ((g⁻¹ : GL n E) : Matrix n n E)).map τ.toAlgHom.toRingHom = Matrix.transpose (((sigmaGL τ g)⁻¹ : GL n E) : Matrix n n E)`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigmaGL_invTransposeGL (τ : E ≃ₐ[k] E) (g : GL n E) :
     sigmaGL τ (invTransposeGL g) = invTransposeGL (sigmaGL τ g) := by
@@ -522,18 +520,18 @@ theorem sigmaGL_invTransposeGL (τ : E ≃ₐ[k] E) (g : GL n E) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.transpose_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem invTransposeGL_invTransposeGL (g : GL n E) :
     invTransposeGL (invTransposeGL g) = g :=
   Units.ext (Matrix.transpose_transpose _)
 
 /- English proof (translation)
-Establish `hθ : ∀ g : GL n E, theta1 σ g = invTransposeGL (sigmaGL σ g)` using `fun g => by`. Rewrite using `[theta1, thetaGL_apply, one_mul, inv_one, mul_one]`. Establish `h2 : (sigmaGL σ : Monoid.End (GL n E)) ^ 2 = 1`. Rewrite using `[← sigmaGL_pow, hσ, sigmaGL_one]`. Establish `hσσ : ∀ g : GL n E, sigmaGL σ (sigmaGL σ g) = g` using `fun g => by show (sigmaGL σ * sigmaGL σ : Monoid.End (GL n E)) g = g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_two, h2]`. Both sides reduce to the same expression. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[pow_two]`. Use `show theta1 σ (theta1 σ g) = g`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hθ, hθ, sigmaGL_invTransposeGL, invTransposeGL_invTransposeGL, hσσ]`.
+A detailed English derivation is pending.
 -/
 theorem theta1_sq (σ : E ≃ₐ[k] E) (hσ : σ ^ 2 = 1) :
     (theta1 σ : Monoid.End (GL n E)) ^ 2 = 1 := by

@@ -13,7 +13,7 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Take `⟨a', rfl⟩ : ∃ a', a = a' + 1` from `⟨a - 1, by omega⟩`. Use polynomial arithmetic with `[Nat.zero_le (r' * a')]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem OtherFactorBound.add_le_mul_add_one {r a : ℕ} (hr : 1 ≤ r) (ha : 1 ≤ a) :
     r + a ≤ r * a + 1 := by
@@ -22,7 +22,7 @@ theorem OtherFactorBound.add_le_mul_add_one {r a : ℕ} (hr : 1 ≤ r) (ha : 1 �
   nlinarith [Nat.zero_le (r' * a')]
 
 /- English proof (translation)
-The claim follows from `|coeff (Finsupp.single (⟨k - 1, by omega⟩ : Fin (r + a)) 1) S| ≤ (Nat.choose (r * a + k) k : ℚ) * 2 ^ (k - 1) * numStandardTable (rectangle r a) / k := by set e := Finsupp.single (⟨k - 1, by omega⟩ : Fin (r + a)) 1 with he have hs : c.sign = 1 ∨ c.sign = -1 := by cases c <;> simp …`.
+A detailed English derivation is pending.
 -/
 theorem OtherFactorBound.coeff_bound (hS : SchurSignCoefficient.Statement)
     (hH : HookSumBound.Statement) (r a k : ℕ) (c : SmallBlock) (hk1 : 1 ≤ k) (hkN : k ≤ r + a)
@@ -87,35 +87,31 @@ theorem OtherFactorBound.coeff_bound (hS : SchurSignCoefficient.Statement)
           (fun nu _ => by simp)
 
 /- English proof (translation)
-Introduce `f r a c hf hr ha`. Establish `hP : (0 : ℚ) < numStandardTable (rectangle r a)` using `by exact_mod_cast hR r a`. Establish `hkey` using `OtherFactorBound.add_le_mul_add_one hr ha`. Use `⟨?_, hD f r a c, ?_⟩` and prove the remaining obligations. Take `⟨C₀, hC₀, hJ, -⟩` from `hF f r a c hf hr ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hJ]`. Establish `h1 : ((f * (r * a)).factorial : ℚ) ≠ 0` using `by positivity`. Establish `h2 : ((r * a).factorial : ℚ) ≠ 0` using `by positivity`. Use `hP.ne'` as an intermediate fact. Simplify the hypotheses and the goal together.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify the hypotheses and the goal together.
 
-Introduce `Q hQ k hk2 hkN τ τ' hne`. Establish `hk1 : k - 1 ≤ r * a` using `by omega`. Use `⟨fun h => absurd h (by omega), ?_⟩` and prove the remaining obligations. Establish `hf2 : 2 ≤ f`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: f = 1` using `by omega`. Substitute `this` using the available equality. Conclude with `hne (Subsingleton.elim _ _)`. Take `⟨C₀, hC₀, hJ, hT⟩` from `hO f r a c hf2 hr ha`. Take `⟨S, hSeq, hTk⟩` from `hT Q hQ k hk2 hkN τ τ' hne`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcoef` using `OtherFactorBound.coeff_bound hS hH r a k c (by omega) hkN S hSeq`. Establish `hchi` using `hB r (rectangle r a) ((k - 1) :: List.replicate (r * a - (k - 1)) 1) (fun _ _ _ => le_rfl) (by`. Introduce `q hq`. Simplify using `only [List.mem_cons, List.mem_replicate] at hq`. Use the proof step `omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hTk, hJ]`. Use `set y := coeff (Finsupp.single (⟨k - 1, by omega⟩ : Fin (r + a)) 1) S`. Use `set z := symmetricGroupCharacter (rectangle r a) ((k - 1) :: List.replicate (r * a - (k - 1)) 1)`. Use `set P : ℚ := (numStandardTable (rectangle r a) : ℚ) with hPdef`. Take `⟨g, rfl⟩ : ∃ g, f = g + 2` from `⟨f - 2, by omega⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g + 2 - 2 = g` using `by omega`. Rewrite using `[hg]`. Use `set n1 := r * a with hn1`. Use `set n := (g + 2) * n1 with hn`. Establish `hD1 : ((n1 + k).factorial : ℚ) = (Nat.choose (n1 + k) k : ℚ) * (k.factorial : ℚ) * (n1.factorial : ℚ)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.add_choose_mul_factorial_mul_factorial n1 k` as an intermediate fact. Rewrite using `[← this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : (n1.factorial : ℚ) = ((n1 - (k - 1)).factorial : ℚ) * (n1.descFactorial (k - 1) : ℚ)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.factorial_mul_descFactorial hk1).symm` after adjusting the coercions. Establish `hM : ((n + 1).factorial : ℚ) = ((n + 1 : ℕ) : ℚ) * (n.factorial : ℚ)`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdesc : (0 : ℚ) < n1.descFactorial (k - 1)`. Conclude with `Nat.descFactorial_pos.mpr hk1` after adjusting the coercions. Establish `hchoose : (0 : ℚ) < Nat.choose (n1 + k) k`. Conclude with `Nat.choose_pos (by omega)` after adjusting the coercions. Establish `hBpos : (0 : ℚ) < (n1 - (k - 1)).factorial` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hKpos : (0 : ℚ) < k.factorial` using `by positivity`. Establish `hnpos : (0 : ℚ) < n.factorial` using `by positivity`. Establish `hkpos : (0 : ℚ) < k` using `by exact_mod_cast (show 0 < k by omega)`. Establish `hstep : |C₀ * k * ((n + 1).factorial : ℚ) / (((n1 + k).factorial : ℚ) * ((n1 - (k - 1)).factorial : ℚ) * ((n1).factorial : ℚ) ^ g) * P ^ g * z * y| ≤ ((n + 1 : ℕ) : ℚ) * |C₀ * (n.factorial : ℚ) / ((n1).factorial : ℚ) ^ (g + 2) * P ^ (g + 2)| * ((n1.descFactorial (k - 1) : ℚ) * 2 …`. Rewrite using `[hD1, hM]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hApos : (0 : ℚ) < n1.factorial` using `by positivity`. Simplify using `only [abs_mul, abs_div, abs_pow, Nat.abs_cast, abs_of_pos hP]`. Establish `hX1 : 0 ≤ |C₀| * (k : ℚ) * (((n + 1 : ℕ) : ℚ) * (n.factorial : ℚ)) / ((Nat.choose (n1 + k) k : ℚ) * (k.factorial : ℚ) * (n1.factorial : ℚ) * ((n1 - (k - 1)).factorial : ℚ) * (n1.factorial : ℚ) ^ g) * P ^ g` using `by positivity`. Use `(mul_le_mul (mul_le_mul_of_nonneg_left hchi hX1) hcoef (abs_nonneg _) (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hA]`. Expand and normalize the polynomial expressions, which then agree. Use `hstep.trans ?_` and prove the remaining obligations. Establish `hX : (n1.descFactorial (k - 1) : ℚ) * 2 ^ (k - 1) ≤ restX r a ^ (k - 1)`. Establish `h1 : (n1.descFactorial (k - 1) : ℚ) ≤ (n1 : ℚ) ^ (k - 1)`.
-
-Conclude with `Nat.descFactorial_le_pow n1 (k - 1)` after adjusting the coercions. Establish `h2 : (2 * (n1 : ℚ)) ≤ restX r a`. Simplify using `only [restX, hn1]`. Use `push_cast`. Use polynomial arithmetic with `[(Nat.cast_nonneg (r + a : ℕ) : (0 : ℚ) ≤ _)]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hpos1 : 0 ≤ ((n + 1 : ℕ) : ℚ)` using `by positivity`. Use `gcongr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem OtherFactorBound.proof (hO : OtherFactorFormula.Statement)
     (hF : SameFactorFormula.Statement) (hS : SchurSignCoefficient.Statement)

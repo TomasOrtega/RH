@@ -31,7 +31,7 @@ def fixedBy (W : Wt E a) (C : Subgroup (UA E a)) : Submodule ℂ (algForms W) wh
     simp only [Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, hf k hk v g]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixedBy {W : Wt E a} {C : Subgroup (UA E a)} {f : algForms W} :
     f ∈ fixedBy W C ↔ ∀ k ∈ C, ∀ v g, f.1 v (g * k) = f.1 v g := Iff.rfl

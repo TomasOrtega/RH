@@ -11,13 +11,13 @@ section General
 variable {M : Type*} [Field M] [NumberField M]
 
 /- English proof (translation)
-Set `f : 𝓞 M →+ (Submodule.span (𝓞 M) {d}).toAddSubgroup` to `{ toFun := fun x => ⟨x • d, Submodule.smul_mem _ x (Submodule.mem_span_singleton_self d)⟩ map_zero' := by ext; simp map_add' := by intro x y; ext; simp [add_smul] }`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Conclude with `⟨x, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcomap : ((Submodule.span (𝓞 M) {a • d}).toAddSubgroup.addSubgroupOf (Submodule.span (𝓞 M) {d}).toAddSubgroup).comap f = (Ideal.span {a} : Ideal (𝓞 M)).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup, Submodule.mem_toAddSubgroup]`. Use `show x • d ∈ Submodule.span (𝓞 M) {a • d} ↔ x ∈ Ideal.span {a}`. Rewrite using `[Submodule.mem_span_singleton, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[smul_smul]`. Conclude with `RingOfIntegers.coe_injective (mul_right_cancel₀ hd (by simpa only [Algebra.smul_def] using hc))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c, by rw [smul_smul]⟩`. Rewrite using `[← AddSubgroup.index_comap_of_surjective _ hsurj, hcomap, ← Ideal.absNorm_span_singleton, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem index_span_smul (d : M) (hd : d ≠ 0) (a : 𝓞 M) :
     ((Submodule.span (𝓞 M) {a • d}).toAddSubgroup.addSubgroupOf
@@ -49,11 +49,11 @@ theorem index_span_smul (d : M) (hd : d ≠ 0) (a : 𝓞 M) :
   rfl
 
 /- English proof (translation)
-Establish `ha' : (a : M) ≠ 0` using `fun h => ha (by exact_mod_cast h)`. Establish `hne : ∀ ρ : M →ₐ[ℚ] ℂ, ‖ρ (a : M)‖ ≠ 0` using `fun ρ => by`. Rewrite using `[norm_ne_zero_iff, map_ne_zero]`. Conclude with `ha'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 2 * Real.log (∏ ρ : M →ₐ[ℚ] ℂ, ‖ρ (a : M)‖) := by`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.mul_sum, Real.log_prod (fun ρ _ => hne ρ)]`. Use `_ = 2 * Real.log ((Algebra.norm ℤ a).natAbs : ℝ) := by`. Use `congr 2`. Rewrite using `[← norm_prod, ← Algebra.norm_eq_prod_embeddings ℚ ℂ, ← Algebra.coe_norm_int]`. Simplify using `[Nat.cast_natAbs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_log_emb (a : 𝓞 M) (ha : a ≠ 0) :
     ∑ ρ : M →ₐ[ℚ] ℂ, Real.log (‖ρ (a : M)‖ ^ 2) = 2 * Real.log ((Algebra.norm ℤ a).natAbs : ℝ) := by
@@ -94,27 +94,25 @@ def OmegaCompatible (D : D7) (δ : ℂ) : Prop :=
         (Real.pi * ‖conjOf e s d‖ ^ 2 / TaylorLogMetric.area (TaylorLogMetric.lamConj M (conjOf e s) (TaylorLogMetric.lamOf D D.host.ccK δ)))⁻¹
 
 /- English proof (translation)
-Take `⟨M, hM, e, -, hData, hτ⟩` from `h`. Use `⟨M, hM, hData, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hOm⟩` from `hτ τ`. Use `set Λ := TaylorLogMetric.lamOf D D.host.ccK δ with hΛ`. Establish `hX : ∀ ρ : M →ₐ[ℚ] ℂ, 0 < Real.pi * ‖ρ d‖ ^ 2 / TaylorLogMetric.area (TaylorLogMetric.lamConj M ρ Λ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ`. Establish `h1` using `D.gx.Om_pos τ ((conjEquiv e).symm ρ)`. Rewrite `h1` using `[hOm]`. Establish `h2 : conjOf e ((conjEquiv e).symm ρ) = ρ` using `(conjEquiv e).apply_symm_apply ρ`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_pos.mp h1`. Establish `hcardM : Fintype.card (M →ₐ[ℚ] ℂ) = Module.finrank ℚ M` using `AlgHom.card ℚ M ℂ`. Establish `hcardLL : Fintype.card (D.what₂.LL →+* ℂ) = Fintype.card (M →ₐ[ℚ] ℂ)` using `Fintype.card_congr (conjEquiv e)`. Establish `hpos : 0 < Fintype.card (M →ₐ[ℚ] ℂ)` using `by rw [hcardM]; exact Module.finrank_pos`. Take `⟨ρ0⟩ : Nonempty (M →ₐ[ℚ] ℂ)` from `Fintype.card_pos_iff.mp hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd0 : d ≠ 0`. Introduce `h0`. Establish `h1` using `hX ρ0`. Rewrite `h1` using `[h0, map_zero, norm_zero]`. Simplify using `at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hL : D.gx.logOmMean τ = -(∑ ρ : M →ₐ[ℚ] ℂ, TaylorLogMetric.logMet M Λ ρ d) / (Module.finrank ℚ M : ℝ)`. Unfold `Formalism.BasicNotions.GlobalExtra.logOmMean`. Rewrite using `[hcardLL, hcardM]`. Use `congr 1`. Rewrite using `[← Finset.sum_neg_distrib, ← (conjEquiv e).sum_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hOm, Real.log_inv]`. Both sides reduce to the same expression. Establish `hR : TaylorLogMetric.meanLogOm D Λ M τ = -(∑ ρ : M →ₐ[ℚ] ℂ, TaylorLogMetric.logMet M Λ ρ d) / (Module.finrank ℚ M : ℝ)`. Simplify using `only [TaylorLogMetric.meanLogOm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hspec` using `Classical.epsilon_spec (p := fun s : M => s ≠ 0 ∧ s ∈ TaylorLogMetric.ellT D M τ) ⟨d, hd0, by rw [hd]; exact Submodule.mem_span_singleton_self d⟩`. Use `set s₀ := Classical.epsilon (fun s : M => s ≠ 0 ∧ s ∈ TaylorLogMetric.ellT D M τ) with hs₀`. Take `⟨hs0, hsmem⟩` from `hspec`. Rewrite `hsmem` using `[hd]`. Take `⟨x, hx⟩` from `Submodule.mem_span_singleton.mp hsmem`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hs0 (by rw [← hx, zero_smul])`. Rewrite using `[hd, ← hx, index_span_smul d hd0 x]`. Establish `hsplit : ∀ ρ : M →ₐ[ℚ] ℂ, TaylorLogMetric.logMet M Λ ρ (x • d) = Real.log (‖ρ (x : M)‖ ^ 2) + TaylorLogMetric.logMet M Λ ρ d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `ρ`. Establish `hxM : (x : M) ≠ 0` using `fun h => hx0 (RingOfIntegers.coe_injective (by simpa using h))`. Establish `hρx : ρ (x : M) ≠ 0` using `(map_ne_zero ρ).mpr hxM`. Simplify using `only [TaylorLogMetric.logMet]`. Rewrite using `[Algebra.smul_def, map_mul, norm_mul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `e1 : Real.pi * (‖ρ (algebraMap (𝓞 M) M x)‖ ^ 2 * ‖ρ d‖ ^ 2) / TaylorLogMetric.area (TaylorLogMetric.lamConj M ρ Λ) = ‖ρ (x : M)‖ ^ 2 * (Real.pi * ‖ρ d‖ ^ 2 / TaylorLogMetric.area (TaylorLogMetric.lamConj M ρ Λ))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Real.log_mul (pow_ne_zero 2 (norm_ne_zero_iff.mpr hρx)) (hX ρ).ne']`. Repeatedly rewrite using `[hsplit, Finset.sum_add_distrib, sum_log_emb x hx0]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hL]`. Conclude with `hR.symm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omLink_of_tied {D : D7} {δ : ℂ} (h : OmegaCompatible D δ) : OmLink D (TaylorLogMetric.tor0 D D.host.ccK δ) := by
   obtain ⟨M, hM, e, -, hData, hτ⟩ := h

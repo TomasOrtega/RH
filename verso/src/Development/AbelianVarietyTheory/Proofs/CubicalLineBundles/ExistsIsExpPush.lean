@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `U s`. Establish `hfun : (fun b => valAt' (y b ≫ φ) U s) = fun b => valAt' (y b) (φ ⁻¹ᵁ U) ((φ.app U).hom s)`. Use function extensionality and compare the values at `fun b => (valAt'_comp _ φ U s).symm`. Rewrite using `[hfun]`. Conclude with `h (φ ⁻¹ᵁ U) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHolTo_comp_hom {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X Y : Scheme.{0}} {B : Set V}
     {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (φ : X ⟶ Y) : IsHolTo B (fun b => y b ≫ φ) := by
@@ -23,13 +23,11 @@ theorem isHolTo_comp_hom {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {
   exact h (φ ⁻¹ᵁ U) _
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ σ T T' m D g ty Pe e' ⟨hP, hol, hadd, hon, hker, hlin, hw⟩`. Establish `hL : LBIso T'.t.PP.L (T.t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hT : (Over.mk (spMap (RingHom.id ℂ))).hom ≫ spMap σ = spMap σ` using `by show spMap (RingHom.id ℂ) ≫ spMap σ = spMap σ`. Rewrite using `[hid, Category.id_comp]`. Take `⟨p, hp⟩` from `LiePull.exists_pushEquiv m.cart (Over.mk (spMap (RingHom.id ℂ))) (spMap σ) hT.symm`. Use `⟨fun z => p (e' z), ⟨hP, ?_, fun z w => (congrArg p (hadd z w)).trans (map_mul p _ _), p.surjective.comp hon, fun z => ?_, fun a z => ?_, fun k a b c hk hc => ?_⟩, fun z => hp _⟩` and prove the remaining obligations. Establish `h : (fun z => (p (e' z)).left) = fun z => (e' z).left ≫ m.φ` using `funext fun z => hp _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h ▸ isHolTo_comp_hom hol m.φ`. Conclude with `(map_eq_one_iff p p.injective).trans (hker z)`. Apply `Over.OverMorphism.ext beta_reduce` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hp, hp, hlin, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (m.act a)`.
-
-Establish `key : ∀ (y : Sp ℂ ⟶ Sp R) (_ : y = (Over.mk (spMap (RingHom.id ℂ))).hom ≫ spMap σ) (x₀ y₀ : Over.mk y ⟶ T.t.G) (x x' : Over.mk (spMap (RingHom.id ℂ)) ⟶ T'.t.G), x₀.left = x.left ≫ m.φ → y₀.left = x'.left ≫ m.φ → Out.WeilIs T'.t.G T'.t.PP.L k x x' (unitOn c) → Out.WeilIs T.t.G T.t …`. Introduce and unpack `y rfl x₀ y₀ x x' h₁ h₂ h₃`. Conclude with `(weilIs_grpPullback_of_comm _ _ _ _ _ m.φ _ _ T.t.PP.isLB T'.t.PP.isLB m.cart hL _ k x x' x₀ y₀ _ h₁ h₂).1 h₃`. Conclude with `key _ hT.symm _ _ _ _ (hp _) (hp _) (hw k a b c hk hc)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_isExp_push : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (σ : R →+* ℂ) (T : PAT H (Sp R)) (T' : PAT H (Sp ℂ)) (m : SABMap T'.t T.t (spMap σ)) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ)) (e' : (Fin g → ℂ) → (Over.mk (spMap (RingHom.id ℂ)) ⟶ T'.t.G)), IsExp T' (RingHom.id ℂ) D ty Pe e' → ∃ e : (Fin g → ℂ) → (Over.mk (spMap σ) ⟶ T.t.G), IsExp T σ D ty Pe e ∧ ∀ z, (e z).left = (e' z).left ≫ m.φ := by
   intro E _ _ _ H R _ σ T T' m D g ty Pe e' ⟨hP, hol, hadd, hon, hker, hlin, hw⟩

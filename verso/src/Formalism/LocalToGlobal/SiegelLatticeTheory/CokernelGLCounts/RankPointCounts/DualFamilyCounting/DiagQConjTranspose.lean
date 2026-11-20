@@ -25,7 +25,7 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
   [Fact (IsFixF K F)] {m : ℕ}
 
 /- English proof (translation)
-Establish `h` using `Formalism.HermitianLattices.Ext.L3.localizedQuotients.star_ι (K := K) (F := F) Fact.out x`. Conclude with `FaithfulSMul.algebraMap_injective (𝓞 K) K h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem star_algebraMap_ringOfIntegers (x : 𝓞 F) :
     star (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap (𝓞 F) (𝓞 K) x := by
@@ -33,7 +33,7 @@ private theorem star_algebraMap_ringOfIntegers (x : 𝓞 F) :
   exact FaithfulSMul.algebraMap_injective (𝓞 K) K h
 
 /- English proof (translation)
-Unfold `diagQ`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.star_apply, star_mk, star_algebraMap_ringOfIntegers]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagQ_conjTranspose (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : Fin m → 𝓞 F) :
     (diagQ K 𝔭 k a)ᴴ = diagQ K 𝔭 k a := by
@@ -44,7 +44,7 @@ theorem diagQ_conjTranspose (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : Fin m → �
   rw [Pi.star_apply, star_mk, star_algebraMap_ringOfIntegers]
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_mul, hPY, Matrix.mul_add, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     {Y P : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)}
@@ -53,11 +53,9 @@ theorem hom_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
   rw [Matrix.add_mul, hPY, Matrix.mul_add, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hH` using `diagQ_conjTranspose (K := K) 𝔭 k a`. Establish `h1 : Yᴴ * diagQ K 𝔭 k a = diagQ K 𝔭 k a * Pᴴ`. Establish `h` using `congrArg Matrix.conjTranspose hPY`. Rewrite `h` using `[conjTranspose_mul, conjTranspose_mul, hH]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_add, conjTranspose_mul, hH, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = _ := by`. Rewrite using `[hW, h1, ← hPY]`.
-
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     {Y P W : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)}
@@ -81,7 +79,7 @@ theorem form_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
         simp only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [conjTranspose_add, conjTranspose_mul, diagQ_conjTranspose, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem eq_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     (P W Z Z' : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)) :
@@ -93,7 +91,7 @@ theorem eq_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
   abel
 
 /- English proof (translation)
-Use `show (Y + Z * diagQ K 𝔭 k a)ᴴ * diagQ K 𝔭 k a * (Y + Z * diagQ K 𝔭 k a) = diagQ K 𝔭 k a`. Establish `h` using `form_shift hPY hW Z`. Rewrite `h` using `[hZ, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_skSet_of_solve {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     {Y P W Z : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)}
@@ -107,7 +105,7 @@ theorem mem_skSet_of_solve {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞
   exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Introduce `K F _ _ _ _ _ _ _ hK 𝔭 h𝔭 m a ha k hk Y`. Take `⟨Y', P, W, Z, Z₀, hY, hPY, hW, hZ⟩` from `hS K F hK 𝔭 h𝔭 m a ha k hk Y`. Use `⟨Y' + Z * diagQ K 𝔭 k a, mem_skSet_of_solve hPY hW hZ, Z₀ + Z, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_mul, ← hY]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem liftOnto_of_solve (hS : SolveOnto) : LiftOnto := by
   intro K F _ _ _ _ _ _ _ hK 𝔭 h𝔭 m a ha k hk Y
@@ -117,7 +115,7 @@ theorem liftOnto_of_solve (hS : SolveOnto) : LiftOnto := by
   abel
 
 /- English proof (translation)
-The claim follows from `discOnto_of_lift hU (liftOnto_of_solve hS)`.
+A detailed English derivation is pending.
 -/
 theorem discOnto_of_solve (hU : UDModel) (hS : SolveOnto) : DiscOnto :=
   discOnto_of_lift hU (liftOnto_of_solve hS)

@@ -4,9 +4,9 @@ import Formalism.LocalToGlobal.PairingIndexBounds.HalvesRecursion.RecursiveLatti
 namespace Formalism.L2.PairingIndexBounds.Eq.SqG
 
 /- English proof (translation)
-Establish `hδ0 : δ ≠ 0`. Introduce `h0`. Apply `Formalism.L2.PairingIndexBounds.Rec.discrNZ D cc hcc` to reduce the goal to its premises. Rewrite using `[← hδ, h0]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `eqP_gen B hcc hδ hδ0 hS χ hχ hP`.
+A detailed English derivation is pending.
 -/
 theorem eqP_all {D : Formalism.BasicNotions.D7} {cc : Ideal (NumberField.RingOfIntegers D.host.K)} {δ : ℂ}
     (B : Formalism.L2.Ker.Base D cc δ) (hcc : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ)

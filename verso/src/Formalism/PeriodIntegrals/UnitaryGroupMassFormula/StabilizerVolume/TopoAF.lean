@@ -17,7 +17,7 @@ instance countable_field : Countable F := Finsupp.Countable.of_moduleFinite (R :
 instance countable_ringOfIntegers : Countable (𝓞 F) := Finsupp.Countable.of_moduleFinite (R := ℤ)
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F)))`. Introduce `I`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian I)`. Conclude with `⟨s, hs⟩`. Conclude with `hs.countable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem countable_ideal : Countable (Ideal (𝓞 F)) := by
   have hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F))) := by
@@ -46,7 +46,7 @@ instance secondCountable_adicCompletion (v : HeightOneSpectrum (𝓞 F)) :
   UniformSpace.secondCountable_of_separable _
 
 /- English proof (translation)
-The claim follows from `Valued.isOpen_valuationSubring _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F)) :=
@@ -88,7 +88,7 @@ variable {F} {E : Type} [Field E] [Algebra F E] [FiniteDimensional F E]
 instance secondCountable_tensAF : SecondCountableTopology (AF F ⊗[F] E) := inferInstance
 
 /- English proof (translation)
-Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin M → Fin M → R ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (GL (Fin M) (R ⊗[F] E))` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `h1 : SecondCountableTopology (HR R σ J)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Conclude with `inferInstanceAs (SecondCountableTopology (HR R σ J))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secondCountable_HA_of (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] [SecondCountableTopology R] (σ : E →ₐ[F] E) {M : ℕ}

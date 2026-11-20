@@ -37,7 +37,7 @@ def exF : IntermediateField ℚ ℂ :=
   IntermediateField.adjoin ℚ {((Real.sqrt 21 : ℝ) : ℂ), ((Real.sqrt 33 : ℝ) : ℂ)}
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `isIntegral_algebraMap (R := ℚ) (A := ℂ) (x := a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isIntegral_of_sq {x : ℂ} {a : ℚ} (h : x ^ 2 = (a : ℂ)) : IsIntegral ℚ x := by
   refine IsIntegral.of_pow (n := 2) (by norm_num) ?_
@@ -45,14 +45,14 @@ lemma isIntegral_of_sq {x : ℂ} {a : ℚ} (h : x ^ 2 = (a : ℂ)) : IsIntegral 
   exact isIntegral_algebraMap (R := ℚ) (A := ℂ) (x := a)
 
 /- English proof (translation)
-Rewrite using `[mul_pow, I_sq, ← ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sqrtNeg_sq (n : ℕ) : (I * (Real.sqrt n : ℝ) : ℂ) ^ 2 = ((-n : ℚ) : ℂ) := by
   rw [mul_pow, I_sq, ← ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n)]
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[← ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sqrt_sq_nat (n : ℕ) : ((Real.sqrt n : ℝ) : ℂ) ^ 2 = ((n : ℚ) : ℂ) := by
   rw [← ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n)]
@@ -92,7 +92,7 @@ instance : NumberField exE where
 instance : NumberField exF where
 
 /- English proof (translation)
-Establish `h : (I * (Real.sqrt m : ℝ)) * (I * (Real.sqrt n : ℝ)) = I ^ 2 * ((Real.sqrt m * Real.sqrt n : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h, I_sq, ← Real.sqrt_mul (Nat.cast_nonneg m)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sqrt_mul_nat (m n : ℕ) :
     ((Real.sqrt ((m * n : ℕ) : ℝ) : ℝ) : ℂ) =
@@ -104,13 +104,11 @@ lemma sqrt_mul_nat (m n : ℕ) :
   push_cast; ring
 
 /- English proof (translation)
-Unfold `exF`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Establish `h3 : sqrtNeg3 ∈ exE` using `IntermediateField.subset_adjoin _ _ (by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h7 : sqrtNeg7 ∈ exE` using `IntermediateField.subset_adjoin _ _ (by simp)`. Establish `h11 : sqrtNegEleven ∈ exE` using `IntermediateField.subset_adjoin _ _ (by simp)`. Break down `hx with rfl | rfl` into its components or cases. Establish `e` using `sqrt_mul_nat 3 7`. Evaluate the numerical expressions using `at e`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `neg_mem (mul_mem h3 h7)`. Establish `e` using `sqrt_mul_nat 3 11`. Evaluate the numerical expressions using `at e`. Rewrite using `[SetLike.mem_coe, e]`.
-
-Conclude with `neg_mem (mul_mem h3 h11)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exF_le_exE : exF ≤ exE := by
   unfold exF

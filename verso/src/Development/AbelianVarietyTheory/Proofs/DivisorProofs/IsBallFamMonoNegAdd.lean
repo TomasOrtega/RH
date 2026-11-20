@@ -4,11 +4,11 @@ open Filter Topology GlobalTheory.VolBr
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `G _ Λ B hB`. Establish `hneg : ∀ r x, x ∈ B r → -x ∈ B r`. Introduce `r x hx`. Establish `h` using `hB.sub_mem 0 r 0 x (hB.zero_mem 0 le_rfl) hx`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, hneg, ?_⟩` and prove the remaining obligations. Introduce `r r' hrr' x hx`. Establish `h` using `hB.sub_mem r (r' - r) x 0 hx (hB.zero_mem _ (sub_nonneg.mpr hrr'))`. Simplify using `using h`. Introduce `r r' x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hB.sub_mem r r' x (-y) hx (hneg r' y hy)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isBallFam_mono_neg_add :
     ∀ (G : Type) [AddCommGroup G] (Λ : AddSubgroup G) (B : ℝ → Set G), IsBallFam Λ B →

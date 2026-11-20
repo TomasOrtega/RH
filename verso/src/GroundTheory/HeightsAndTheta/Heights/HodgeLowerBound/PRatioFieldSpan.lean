@@ -11,11 +11,9 @@ namespace RatioFieldSpan
 variable {F M : Type} [Field F] [Field M] [Algebra F M]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨i, rfl⟩` from `h`. Conclude with `IntermediateField.subset_adjoin F _ ⟨i, rfl⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[add_div]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, mul_div_assoc]`.
-
-Conclude with `mul_mem (IntermediateField.algebraMap_mem _ a) hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_adjoin {I : Type} (u : I → M) (v : M) {x : M}
     (hx : x ∈ Submodule.span F (Set.range u)) :
@@ -33,9 +31,9 @@ theorem div_mem_adjoin {I : Type} (u : I → M) (v : M) {x : M}
     exact mul_mem (IntermediateField.algebraMap_mem _ a) hx
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h1` using `div_mem_adjoin (F := F) u v (hw j)`. Establish `h2` using `div_mem_adjoin (F := F) u v hv'`. Establish `key : w j / v' = (w j / v) / (v' / v)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `show w j / v' ∈ IntermediateField.adjoin F (Set.range fun i => u i / v)`. Rewrite using `[key]`. Conclude with `div_mem h1 h2`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_le {I J : Type} (u : I → M) (w : J → M) (v v' : M)
     (hw : ∀ j, w j ∈ Submodule.span F (Set.range u)) (hv' : v' ∈ Submodule.span F (Set.range u))
@@ -53,13 +51,9 @@ theorem adjoin_le {I J : Type} (u : I → M) (w : J → M) (v v' : M)
   exact div_mem h1 h2
 
 /- English proof (translation)
-Introduce `F M _ _ _ I J u w v v' hspan hv hv' hv0 hv'0`. Apply `le_antisymm` to reduce the goal to its premises. Apply `adjoin_le w u v' v` to reduce the goal to its premises. Introduce `i`. Rewrite using `[← hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[← hspan]`. Conclude with `hv`. Conclude with `hv'0`. Conclude with `hv0`.
-
-Apply `adjoin_le u w v v'` to reduce the goal to its premises. Introduce `j`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Conclude with `hv'`.
-
-Conclude with `hv0`. Conclude with `hv'0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem full : RatioFieldSpan.Statement := by
   intro F M _ _ _ I J u w v v' hspan hv hv' hv0 hv'0

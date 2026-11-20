@@ -4,7 +4,7 @@ open GlobalTheory Matrix Filter Topology Set GlobalTheory.HermFrame GlobalTheory
 open scoped ComplexOrder ContDiff
 
 /- English proof (translation)
-The claim follows from `|deriv χ y| ≤ M ∧ |deriv (deriv χ) y| ≤ M ∧ deriv χ y ^ 2 ≤ M * χ y := by intro χ h have hs : ContDiffOn ℝ ∞ χ (Ioi 0) := h.smooth.mono Ioi_subset_Ici_self have hq : ContDiffOn ℝ ∞ (fun y => √(χ y)) (Ioi 0) := h.smooth_sqrt.mono Ioi_subset_Ici_self have h11 : (1 : WithTop ℕ∞) + 1 …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cutoff_deriv_bounds : ∀ χ : ℝ → ℝ, IsCutoff χ → ∃ M : ℝ, 0 ≤ M ∧ ∀ y : ℝ, 0 < y →
     |deriv χ y| ≤ M ∧ |deriv (deriv χ) y| ≤ M ∧ deriv χ y ^ 2 ≤ M * χ y := by

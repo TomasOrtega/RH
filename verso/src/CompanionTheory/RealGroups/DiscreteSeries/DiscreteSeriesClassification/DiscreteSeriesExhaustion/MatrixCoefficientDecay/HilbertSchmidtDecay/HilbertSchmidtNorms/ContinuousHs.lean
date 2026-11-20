@@ -44,9 +44,9 @@ def PsiK (ε : Fin n → Bool) (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `PsiK`. Rewrite using `[hs_mul_K]`. Use `congr 1`. Establish `e : ∀ k' : S7.KG ε, S7.toM g * S7.toMK k * S7.toMK k' = S7.toM g * S7.toMK (k * k')`. Introduce `k'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression. Repeatedly rewrite using `[e]`. Conclude with `(Equiv.mulLeft k).iSup_comp (g := fun k' => ‖q (S7.toM g * S7.toMK k')‖ₑ ^ 2)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiK_inv (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (g : S7.UJ ε) (k : S7.KG ε) :
     PsiK ε q w (S7.toM g * S7.toMK k) = PsiK ε q w (S7.toM g) := by
@@ -61,7 +61,7 @@ theorem psiK_inv (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (g : S7.UJ �
   exact (Equiv.mulLeft k).iSup_comp (g := fun k' => ‖q (S7.toM g * S7.toMK k')‖ₑ ^ 2)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_id.matrix_elem i j).norm).pow 2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hs : Continuous (fun X : Matrix (Fin n) (Fin n) ℂ => Formalism.REAL.hs X) := by
   unfold Formalism.REAL.hs
@@ -69,9 +69,9 @@ theorem continuous_hs : Continuous (fun X : Matrix (Fin n) (Fin n) ℂ => Formal
     ((continuous_id.matrix_elem i j).norm).pow 2
 
 /- English proof (translation)
-Establish `h1 : ∀ k : S7.KG ε, Continuous fun g : S7.UJ ε => ‖q (S7.toM g * S7.toMK k)‖ₑ ^ 2`. Introduce `k`. Establish `hc : Continuous fun g : S7.UJ ε => q (S7.toM (g * (k : S7.UJ ε)))` using `hq.comp (continuous_mul_const (k : S7.UJ ε))`. Conclude with `(ENNReal.continuous_pow 2).comp hc.enorm`. Establish `hsup : Measurable fun g : S7.UJ ε => ⨆ k : S7.KG ε, ‖q (S7.toM g * S7.toMK k)‖ₑ ^ 2` using `(lowerSemicontinuous_iSup fun k => (h1 k).lowerSemicontinuous).measurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : Measurable fun g : S7.UJ ε => ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ w)` using `ENNReal.measurable_ofReal.comp ((continuous_hs.comp (S7.continuous_toM ε)).measurable.pow_const w)`. Conclude with `hsup.mul hw`.
+A detailed English derivation is pending.
 -/
 theorem psiK_meas (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (hq : Continuous fun g : S7.UJ ε => q (S7.toM g)) :
     Measurable fun g : S7.UJ ε => PsiK ε q w (S7.toM g) := by
@@ -87,7 +87,7 @@ theorem psiK_meas (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (hq : Conti
   exact hsup.mul hw
 
 /- English proof (translation)
-Unfold `PsiK`. Use `gcongr`. Use `le_iSup_of_le (1 : S7.KG ε) ?_` and prove the remaining obligations. Establish `: S7.toMK (1 : S7.KG ε) = 1` using `rfl`. Rewrite using `[this, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiK_ge (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (g : S7.UJ ε) :
     ‖q (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ w) ≤ PsiK ε q w (S7.toM g) := by
@@ -98,11 +98,11 @@ theorem psiK_ge (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (g : S7.UJ ε
   rw [this, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `PsiK`. Rewrite using `[← Finset.sum_mul, ← mul_assoc]`. Use `gcongr`. Use `iSup_le fun k => ?_` and prove the remaining obligations. Establish `h` using `hd g 1 k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : S7.toMK (1 : S7.KG ε) = 1` using `rfl`. Rewrite `h` using `[e1, Matrix.one_mul]`. Establish `hn : ∀ z : ℂ, ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2)` using `fun z => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Rewrite using `[hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Repeatedly rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiK_le (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (T : Finset (Matrix (Fin n) (Fin n) ℂ → ℂ)) (Cf : ℝ)
     (hd : ∀ (g : S7.UJ ε) (k k' : S7.KG ε), ‖q (S7.toMK k * S7.toM g * S7.toMK k')‖ ^ 2 ≤ Cf * ∑ h ∈ T, ‖h (S7.toM g)‖ ^ 2)
@@ -127,7 +127,7 @@ theorem psiK_le (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (T : Finset (
         simp_rw [hn]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_finsetSum']`. Introduce `h hh`. Conclude with `(((ENNReal.continuous_pow 2).comp (hTc h hh).enorm).measurable.mul (ENNReal.measurable_ofReal.comp ((continuous_hs.comp (S7.continuous_toM ε)).measurable.pow_const w))).aemeasurable`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.sum_lt_top.2 fun h hh => hT h hh)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiK_lint (q : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : ℝ) (T : Finset (Matrix (Fin n) (Fin n) ℂ → ℂ)) (Cf : ℝ)
     (hd : ∀ (g : S7.UJ ε) (k k' : S7.KG ε), ‖q (S7.toMK k * S7.toM g * S7.toMK k')‖ ^ 2 ≤ Cf * ∑ h ∈ T, ‖h (S7.toM g)‖ ^ 2)

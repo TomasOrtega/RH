@@ -13,13 +13,13 @@ set_option autoImplicit false
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Establish `hA` using `A.ab`. Establish `: IsProper A.X.hom` using `hA.proper`. Establish `hs : SmoothOfRelativeDimension 0 A.X.hom` using `h ▸ A.smooth`. Establish `: Etale A.X.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 hs`. Set `e : Sp K ⟶ A.X.left` to `(1 : 𝟙_ (Over (Sp K)) ⟶ A.X).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : e ≫ A.X.hom = 𝟙 _` using `Over.w (1 : 𝟙_ (Over (Sp K)) ⟶ A.X)`. Establish `: IsOpenImmersion e` using `isOpenImmersion_of_section_of_etale A.X.hom e he`. Establish `: IsClosedImmersion e`. Establish `: IsClosedImmersion (e ≫ A.X.hom)` using `by rw [he]; infer_instance`. Conclude with `IsClosedImmersion.of_comp e A.X.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hI, -, -⟩` from `isIntegral_isLocallyNoetherian_compactSpace K A`. Establish `: ConnectedSpace A.X.left` using `inferInstance`. Establish `hne : (Set.range e).Nonempty` using `⟨_, (default : PrimeSpectrum K), rfl⟩`. Establish `hsurj : Function.Surjective e` using `Set.range_eq_univ.1 (IsClopen.eq_univ ⟨e.isClosedEmbedding.isClosed_range, e.isOpenEmbedding.isOpen_range⟩ hne)`. Establish `: Surjective e` using `⟨hsurj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso e` using `IsOpenImmersion.isIso e`. Establish `: IsIso (e ≫ A.X.hom)` using `by rw [he]; infer_instance`. Conclude with `IsIso.of_isIso_comp_left e A.X.hom`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_hom_of_dim_eq_zero {K : Type} [Field K] (A : AbVar K) (h : A.dim = 0) : IsIso A.X.hom := by
   have hA := A.ab
@@ -43,7 +43,7 @@ theorem isIso_hom_of_dim_eq_zero {K : Type} [Field K] (A : AbVar K) (h : A.dim =
   exact IsIso.of_isIso_comp_left e A.X.hom
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[← cancel_mono A.X.hom, Over.w, Over.w]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_eq_of_isIso {K : Type} [Field K] {A : AbVar K} (h : IsIso A.X.hom) {T : Over (Sp K)}
     (g₁ g₂ : T ⟶ A.X) : g₁ = g₂ := by
@@ -51,9 +51,9 @@ theorem hom_eq_of_isIso {K : Type} [Field K] {A : AbVar K} (h : IsIso A.X.hom) {
   rw [← cancel_mono A.X.hom, Over.w, Over.w]
 
 /- English proof (translation)
-Introduce `K _ A B h f`. Break down `h with h | h` into its components or cases. Establish `hi` using `isIso_hom_of_dim_eq_zero A h`. Use `hom_ext ?_` and prove the remaining obligations. Rewrite using `[zero_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : f.hom = (1 : A.X ⟶ A.X) ≫ f.hom`. Rewrite using `[hom_eq_of_isIso hi (1 : A.X ⟶ A.X) (𝟙 A.X), Category.id_comp]`. Rewrite using `[e1, CategoryTheory.Hom.one_def, CategoryTheory.Hom.one_def, Category.assoc, IsMonHom.one_hom]`. Establish `hi` using `isIso_hom_of_dim_eq_zero B h`. Conclude with `hom_ext (hom_eq_of_isIso hi _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dim_eq_zero :
     ∀ (K : Type) [Field K] (A B : AbVar K), (A.dim = 0 ∨ B.dim = 0) → ∀ f : A ⟶ B, f = 0 := by

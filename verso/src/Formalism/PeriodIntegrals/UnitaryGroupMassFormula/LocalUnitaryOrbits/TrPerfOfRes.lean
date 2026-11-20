@@ -15,13 +15,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Take `⟨-, htc, -, hst⟩` from `hcm`. Establish `hne : Nonempty (E →+* ℂ)`. Rewrite using `[← Fintype.card_pos_iff, NumberField.Embeddings.card]`. Conclude with `Module.finrank_pos`. Take `⟨φ⟩` from `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `htc.isComplex (NumberField.InfinitePlace.mk φ)`. Rewrite `hc` using `[NumberField.InfinitePlace.isComplex_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hc` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `hx` using `hst φ x`. Rewrite `hx` using `[h x]`. Rewrite using `[starRingEnd_apply]`.
-
-Conclude with `hx.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_nt (hcm : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
   obtain ⟨-, htc, -, hst⟩ := hcm
@@ -42,15 +40,15 @@ theorem sig_nt (hcm : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
   exact hx.symm
 
 /- English proof (translation)
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn ⟨0, Orb.oev_zero v, by simp [sc]⟩`. Use `⟨hr0, ?_⟩` and prove the remaining obligations. Establish `hv0 : Valued.v r ≠ 0` using `(Valuation.ne_zero_iff _).mpr hr0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, inv_le_one₀ (zero_lt_iff.mpr hv0)]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hn` to reduce the goal to its premises. Establish `hle : Valued.v r ≤ ↑(Multiplicative.ofAdd (-1 : ℤ))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[WithZero.le_ofAdd_iff hv0]`. Rewrite `hlt` using `[← WithZero.coe_one, ← ofAdd_zero, WithZero.lt_ofAdd_iff hv0]`. Use linear arithmetic over natural numbers and integers. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `IsUnif at hϖ`. Simplify using `at hϖ`. Use `⟨sc v (r * ϖ⁻¹), NormOneUnitFixedPoints.sc_mem v ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀]`. Unfold `IsUnif at hϖ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hϖ]`. Rewrite using `[mul_inv_le_iff₀ (zero_lt_iff.mpr (by simp)), one_mul]`. Conclude with `hle`. Rewrite using `[NormOneUnitFixedPoints.sc_mul_sc, mul_comm r, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sc_of_isUnif_of_mem_integers {ϖ r : Fv F v} (hϖ : IsUnif v ϖ)
     (hr : r ∈ v.adicCompletionIntegers F) (hn : sc (E := E) v r ∉ PO (E := E) v ϖ) :
@@ -81,17 +79,15 @@ private theorem sc_of_isUnif_of_mem_integers {ϖ r : Fv F v} (hϖ : IsUnif v ϖ)
   · rw [NormOneUnitFixedPoints.sc_mul_sc, mul_comm r, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]
 
 /- English proof (translation)
-Establish `hσσ` using `b_sig_sig σ hcm`. Establish `htr` using `trace_v v σ hσσ (sig_nt σ hcm) hcm.2.2.1`. Establish `hsθ` using `UnN.sigR_mem σ v hθ`. Establish `hδ : θ - sigR (Fv F v) σ θ ∈ OEv (E` using `E) v := by`. Rewrite using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Orb.oev_add v hθ (Orb.oev_neg v hsθ)`. Establish `hfix : sigR (Fv F v) σ ((θ - sigR (Fv F v) σ θ) * (θ - sigR (Fv F v) σ θ)) = (θ - sigR (Fv F v) σ θ) * (θ - sigR (Fv F v) σ θ)`. Rewrite using `[map_mul, map_sub, sigR_sigR v σ hσσ θ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr, hreq⟩` from `NormOneUnitFixedPoints.fix_int_sc σ v hcm (b_mul_mem v hδ hδ) hfix`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hr0, hrinv⟩` from `sc_of_isUnif_of_mem_integers v hϖ hr (hreq ▸ hnd)`. Establish `ha` using `hz 1 (b_one_mem v)`. Rewrite `ha` using `[one_mul]`. Establish `hb` using `hz θ hθ`. Establish `key : (θ - sigR (Fv F v) σ θ) * z = algebraMap (Fv F v) _ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (θ * z)) - sigR (Fv F v) σ θ * algebraMap (Fv F v) _ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htr, htr, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : (θ - sigR (Fv F v) σ θ) * z ∈ OEv (E` using `E) v := by`. Rewrite using `[key, sub_eq_add_neg]`. Use `Orb.oev_add v ?_ (Orb.oev_neg v (b_mul_mem v hsθ ?_))` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b_sc_eq]`. Conclude with `b_sc_mem v hb`. Rewrite using `[← b_sc_eq]`. Conclude with `b_sc_mem v ha`. Establish `hz' : z = sc v r⁻¹ * ((θ - sigR (Fv F v) σ θ) * ((θ - sigR (Fv F v) σ θ) * z))`.
-
-Rewrite using `[← mul_assoc (θ - sigR (Fv F v) σ θ), hreq, ← mul_assoc, NormOneUnitFixedPoints.sc_mul_sc, inv_mul_cancel₀ hr0, NormOneUnitFixedPoints.sc_one, one_mul]`. Rewrite using `[hz']`. Conclude with `b_mul_mem v (b_sc_mem v hrinv) (b_mul_mem v hδ hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_theta (hcm : IsCMExt F E σ) {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (θ : Fv F v ⊗[F] E)
     (hθ : θ ∈ OEv (E := E) v) (hnd : (θ - sigR (Fv F v) σ θ) * (θ - sigR (Fv F v) σ θ) ∉ PO (E := E) v ϖ)
@@ -132,7 +128,7 @@ theorem mem_of_theta (hcm : IsCMExt F E σ) {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (�
   exact b_mul_mem v (b_sc_mem v hrinv) (b_mul_mem v hδ hy)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `⟨(π : Fv F v), ?_⟩` and prove the remaining obligations. Unfold `IsUnif`. Rewrite using `[HeightOneSpectrum.adicCompletion.valued_coe, hπ]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem exists_isUnif' : ∃ ϖ : Fv F v, IsUnif v ϖ := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
@@ -142,7 +138,7 @@ private theorem exists_isUnif' : ∃ ϖ : Fv F v, IsUnif v ϖ := by
   rfl
 
 /- English proof (translation)
-Introduce `hstd hun z hz`. Establish `hcm : IsCMExt F E σ` using `hstd.1`. Take `⟨ϖ, hϖ⟩` from `exists_isUnif' v`. Take `⟨θ, hθ, hnd⟩` from `NormOneUnitFixedPoints.exists_theta σ J ψ v hR hstd hun hϖ`. Conclude with `mem_of_theta σ v hcm hϖ θ hθ hnd z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trPerf_of_res (hR : Red.ResAlg σ J ψ v) : TrPerf σ J ψ v := by
   intro hstd hun z hz

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WHyp
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JR.Hyp.isLocallyConstant_psiK_kerL` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIsLocallyConstantEtaleTraceAddCharHermitianKerne.lean&line=29#L29)
 -/

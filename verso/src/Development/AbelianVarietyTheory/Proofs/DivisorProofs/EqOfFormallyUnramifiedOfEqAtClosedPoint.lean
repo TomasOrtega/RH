@@ -20,15 +20,15 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 namespace GlobalTheory.TorsSpec
 
 /- English proof (translation)
-Introduce `S T f _ _ R _ u₁ u₂ h K _ k hk hku`. Set `g : Spec R ⟶ pullback f f` to `pullback.lift u₁ u₂ h`. Establish `hkg : k ≫ g = (k ≫ u₁) ≫ pullback.diagonal f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[g, pullback.lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[g, hku, pullback.lift_snd]`. Take `⟨x⟩ : Nonempty (Sp K)` from `(inferInstance : Nonempty (PrimeSpectrum K))`. Establish `hc : g (IsLocalRing.closedPoint R) ∈ Set.range (pullback.diagonal f)`. Use `⟨(k ≫ u₁) x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk x, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hkg]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hopen : IsOpen (Set.range (pullback.diagonal f))` using `(pullback.diagonal f).isOpenEmbedding.isOpen_range`. Establish `hr : Set.range g ⊆ Set.range (pullback.diagonal f)`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hs : y ⤳ IsLocalRing.closedPoint R` using `IsLocalRing.specializes_closedPoint y`. Conclude with `(hs.map g.continuous).mem_open hopen hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `IsOpenImmersion.lift_fac (pullback.diagonal f) g hr`. Establish `h1 : u₁ = IsOpenImmersion.lift (pullback.diagonal f) g hr`. Establish `e : (IsOpenImmersion.lift (pullback.diagonal f) g hr ≫ pullback.diagonal f) ≫ pullback.fst f f = g ≫ pullback.fst f f` using `by rw [hl]`. Rewrite `e` using `[Category.assoc, pullback.diagonal_fst, Category.comp_id, pullback.lift_fst]`. Conclude with `e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : u₂ = IsOpenImmersion.lift (pullback.diagonal f) g hr`. Establish `e : (IsOpenImmersion.lift (pullback.diagonal f) g hr ≫ pullback.diagonal f) ≫ pullback.snd f f = g ≫ pullback.snd f f` using `by rw [hl]`. Rewrite `e` using `[Category.assoc, pullback.diagonal_snd, Category.comp_id, pullback.lift_snd]`. Conclude with `e.symm`. Conclude with `h1.trans h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_unramified_of_closedPoint : ∀ {S T : Scheme.{0}} (f : T ⟶ S) [FormallyUnramified f]
     [LocallyOfFiniteType f] (R : CommRingCat.{0}) [IsLocalRing R] (u₁ u₂ : Spec R ⟶ T) (h : u₁ ≫ f = u₂ ≫ f)

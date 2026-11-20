@@ -9,15 +9,15 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Rewrite using `[AddMonoidAlgebra.coeff_mul, Finsupp.sum, Finset.sum_eq_single a]`. Rewrite using `[Finsupp.sum, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `k₂ hk₂ hne`. Distinguish the cases in `ha : a ∈ f.coeff.support`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg]`. Introduce `he`. Conclude with `hne (h a ha k₂ hk₂ he).2`. Establish `: f.coeff a = 0` using `by simpa using ha`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hb`. Establish `: g.coeff b = 0` using `by simpa using hb`. Simplify using `[this]`. Introduce `k₁ hk₁ hne`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k₂ hk₂`. Simplify using `only`. Rewrite using `[if_neg]`. Introduce `he`. Conclude with `hne (h k₁ hk₁ k₂ hk₂ he).1`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ha`. Establish `: f.coeff a = 0` using `by simpa using ha`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem laurent_mul_coeff_of_unique_decomp {B : Type*} [CommRing B] (f g : LaurentPolynomial B) (a b : ℤ)
     (h : ∀ k₁ ∈ f.coeff.support, ∀ k₂ ∈ g.coeff.support, k₁ + k₂ = a + b → k₁ = a ∧ k₂ = b) :
@@ -43,13 +43,11 @@ private theorem laurent_mul_coeff_of_unique_decomp {B : Type*} [CommRing B] (f g
     simp [this]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Break down `f.coeff.support.eq_empty_or_nonempty with hf | hf` into its components or cases. Rewrite using `[hf, Finset.inf_empty, top_add]`. Conclude with `le_top`. Break down `g.coeff.support.eq_empty_or_nonempty with hg | hg` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, Finset.inf_empty, add_top]`. Conclude with `le_top`. Establish `hc` using `laurent_mul_coeff_of_unique_decomp f g (f.coeff.support.min' hf) (g.coeff.support.min' hg) (by`. Introduce `k₁ hk₁ k₂ hk₂ he`. Establish `h1` using `Finset.min'_le _ _ hk₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Finset.min'_le _ _ hk₂`. Use the proof step `omega)`. Establish `hmem : f.coeff.support.min' hf + g.coeff.support.min' hg ∈ (f * g).coeff.support`. Rewrite using `[Finsupp.mem_support_iff, hc]`. Conclude with `mul_ne_zero (Finsupp.mem_support_iff.mp (Finset.min'_mem _ hf)) (Finsupp.mem_support_iff.mp (Finset.min'_mem _ hg))`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `AddMonoidAlgebra.le_infDegree_mul { toFun := fun k : ℤ => (k : WithTop ℤ), map_add' := fun a b => WithTop.coe_add a b } f g`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_laurent_inf {B : Type*} [CommRing B] [IsDomain B] (f g : LaurentPolynomial B) :
     ((f * g).coeff.support.inf fun k => (k : WithTop ℤ)) =
@@ -76,15 +74,11 @@ theorem mul_laurent_inf {B : Type*} [CommRing B] [IsDomain B] (f g : LaurentPoly
   · exact AddMonoidAlgebra.le_infDegree_mul { toFun := fun k : ℤ => (k : WithTop ℤ), map_add' := fun a b => WithTop.coe_add a b } f g
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `AddMonoidAlgebra.supDegree_mul_le (D := fun k : ℤ => (k : WithBot ℤ)) (fun a b => WithBot.coe_add a b) (p := f) (q := g)`. Break down `f.coeff.support.eq_empty_or_nonempty with hf | hf` into its components or cases. Rewrite using `[hf, Finset.sup_empty, WithBot.bot_add]`. Conclude with `bot_le`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `g.coeff.support.eq_empty_or_nonempty with hg | hg` into its components or cases. Rewrite using `[hg, Finset.sup_empty, WithBot.add_bot]`. Conclude with `bot_le`. Establish `hc` using `laurent_mul_coeff_of_unique_decomp f g (f.coeff.support.max' hf) (g.coeff.support.max' hg) (by`. Introduce `k₁ hk₁ k₂ hk₂ he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Finset.le_max' _ _ hk₁`. Establish `h2` using `Finset.le_max' _ _ hk₂`. Use the proof step `omega)`. Establish `hmem : f.coeff.support.max' hf + g.coeff.support.max' hg ∈ (f * g).coeff.support`. Rewrite using `[Finsupp.mem_support_iff, hc]`.
-
-Conclude with `mul_ne_zero (Finsupp.mem_support_iff.mp (Finset.max'_mem _ hf)) (Finsupp.mem_support_iff.mp (Finset.max'_mem _ hg))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.max'_eq_sup', Finset.coe_sup']`. Both sides reduce to the same expression. Use `_ = (((f.coeff.support.max' hf + g.coeff.support.max' hg : ℤ)) : WithBot ℤ) := (WithBot.coe_add _ _).symm`.
-
-Use `_ ≤ _ := Finset.le_sup (f := fun k : ℤ => ((k : ℤ) : WithBot ℤ)) (b := f.coeff.support.max' hf + g.coeff.support.max' hg) hmem`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mul_laurent_sup {B : Type*} [CommRing B] [IsDomain B] (f g : LaurentPolynomial B) :
     ((f * g).coeff.support.sup fun k => (k : WithBot ℤ)) =
@@ -116,11 +110,11 @@ def mul_Phi (σ A : Type*) [CommRing A] :
     (fun i => LaurentPolynomial.C (X i))
 
 /- English proof (translation)
-Establish `hCc : ∀ j : ℤ, (LaurentPolynomial.C q).coeff j = if j = 0 then q else 0`. Introduce `j`. Simplify using `[LaurentPolynomial.C_apply, Finsupp.single_apply, eq_comm]`. Establish `h` using `laurent_mul_coeff_of_unique_decomp y (LaurentPolynomial.C q) k 0 (by`. Introduce `k₁ _ k₂ hk₂ he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: k₂ = 0`. Assume the negation of the conclusion as `hne`. Rewrite `hk₂` using `[Finsupp.mem_support_iff, hCc, if_neg hne]`. Conclude with `hk₂ rfl`. Use the proof step `omega)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[add_zero]`. Rewrite using `[h, hCc, if_pos rfl]`.
+A detailed English derivation is pending.
 -/
 private theorem laurent_mul_C_coeff {B : Type*} [CommRing B] (y : LaurentPolynomial B) (q : B) (k : ℤ) :
     (y * LaurentPolynomial.C q).coeff k = y.coeff k * q := by
@@ -138,11 +132,11 @@ private theorem laurent_mul_C_coeff {B : Type*} [CommRing B] (y : LaurentPolynom
   rw [h, hCc, if_pos rfl]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial m' c`. Simplify using `only [mul_Phi, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_monomial]`. Establish `hprod : (m'.prod fun i e => (LaurentPolynomial.C (X i) : LaurentPolynomial (MvPolynomial σ A)) ^ e) = LaurentPolynomial.C (monomial m' 1)`. Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul, map_finsuppProd]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_pow]`. Rewrite using `[hprod, laurent_mul_C_coeff]`. Establish `hmap : (AddMonoidAlgebra.mapRingHom ℤ (C : A →+* MvPolynomial σ A) c).coeff k = C (c.coeff k)`. Simplify using `[AddMonoidAlgebra.mapRingHom]`. Rewrite using `[hmap, MvPolynomial.C_mul_monomial, mul_one, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq => simp [map_add, hp, hq]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 -/
 theorem mul_Phi_coeff {σ A : Type*} [CommRing A] (P : MvPolynomial σ (LaurentPolynomial A)) (m : σ →₀ ℕ) (k : ℤ) :
     coeff m ((mul_Phi σ A P).coeff k) = (coeff m P).coeff k := by
@@ -165,11 +159,11 @@ def mul_degs {σ A : Type*} [CommRing A] (P : MvPolynomial σ (LaurentPolynomial
   P.support.biUnion fun m => (P.coeff m).coeff.support
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [mul_degs, Finset.mem_biUnion, MvPolynomial.mem_support_iff, Finsupp.mem_support_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -, hm⟩ h`. Apply `hm` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_Phi_coeff, h]`. Simplify using the standard rewrite rules. Introduce `h`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, coeff m ((mul_Phi σ A P).coeff k) ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `h (by ext m; simpa using hc m)`. Rewrite `hm` using `[mul_Phi_coeff]`. Conclude with `⟨m, fun h0 => hm (by rw [h0]; simp), hm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_degs_eq {σ A : Type*} [CommRing A] (P : MvPolynomial σ (LaurentPolynomial A)) :
     mul_degs P = (mul_Phi σ A P).coeff.support := by
@@ -194,7 +188,7 @@ instance mul_domGL (R : Type*) [Field R] (n : ℕ) : IsDomain (GLCoord R n) :=
     (Matrix.det_mvPolynomialX_ne_zero (Fin n) R))
 
 /- English proof (translation)
-Establish `key : ∀ H : MvPolynomial (ι × Fin n) R, valS LL S H = ((mul_Phi _ _ (twistSub LL S (lastIdx n) H)).coeff.support.inf fun k => (k : WithTop ℤ))`. Introduce `H`. Rewrite using `[← mul_degs_eq]`. Both sides reduce to the same expression. Rewrite using `[key, key, key, map_mul, map_mul, mul_laurent_inf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_valS_mul {R : Type*} [Field R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : valS LL S (F * G) = valS LL S F + valS LL S G := by
@@ -204,7 +198,7 @@ theorem mul_valS_mul {R : Type*} [Field R] {ι : Type*} {n : ℕ} [NeZero n] (LL
   rw [key, key, key, map_mul, map_mul, mul_laurent_inf]
 
 /- English proof (translation)
-Establish `key : ∀ H : MvPolynomial (ι × Fin n) R, lam1S LL S H = ((mul_Phi _ _ (twistSub LL S (0 : Fin n) H)).coeff.support.sup fun k => (k : WithBot ℤ))`. Introduce `H`. Rewrite using `[← mul_degs_eq]`. Both sides reduce to the same expression. Rewrite using `[key, key, key, map_mul, map_mul, mul_laurent_sup]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_lam1S_mul {R : Type*} [Field R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F G : MvPolynomial (ι × Fin n) R) : lam1S LL S (F * G) = lam1S LL S F + lam1S LL S G := by

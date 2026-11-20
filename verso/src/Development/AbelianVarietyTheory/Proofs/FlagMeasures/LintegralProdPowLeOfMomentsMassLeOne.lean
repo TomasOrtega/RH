@@ -12,39 +12,35 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω _ ν r q ρ Ph Rr s hρm hρ0 hPm hP0 hP1 hR hbd`. Establish `hR0 : (0:ℝ) ≤ Rr` using `le_trans zero_le_one hR`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Establish `hs : s = ∅` using `Finset.eq_empty_of_isEmpty s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hs` using the available equality. Simplify using `using hP1`. Use `set N : ℕ := 2 * (r * q) with hN`. Set `u : Fin r → Ω → ℝ` to `fun a x => if a ∈ s then ρ a x else Rr`. Establish `hrR : (0:ℝ) < r` using `by exact_mod_cast hr`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : r ≠ 0` using `Nat.pos_iff_ne_zero.mp hr`. Establish `hpt : ∀ᵐ x ∂ν, ENNReal.ofReal ((∏ a ∈ s, ρ a x) ^ (2 * q) * Ph x) ≤ ∑ a : Fin r, ENNReal.ofReal ((r:ℝ)⁻¹) * ENNReal.ofReal (u a x ^ N * Ph x)`. Establish `hall : ∀ᵐ x ∂ν, ∀ a, 0 ≤ ρ a x` using `ae_all_iff.mpr hρ0`. Use `filter_upwards [hall] with x hx`. Establish `hu0 : ∀ a, 0 ≤ u a x` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases ha : a ∈ s <;> simp [u, ha, hx a, hR0]`. Establish `h1 : (∏ a ∈ s, ρ a x) ^ (2 * q) ≤ ∏ a : Fin r, u a x ^ (2 * q)`. Establish `: (∏ a ∈ s, ρ a x) ^ (2 * q) = ∏ a : Fin r, (if a ∈ s then ρ a x ^ (2 * q) else 1)`. Rewrite using `[Finset.prod_ite_mem, Finset.univ_inter, Finset.prod_pow]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `a _`. Distinguish the cases in `ha : a ∈ s`. Simplify using `[ha, pow_nonneg (hx a)]`. Simplify using `[ha]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `a _`. Distinguish the cases in `ha : a ∈ s`. Simplify using `[u, ha]`. Simplify using `[u, ha, one_le_pow₀ hR]`. Establish `h2 : ∏ a : Fin r, u a x ^ (2 * q) ≤ ∑ a : Fin r, (r:ℝ)⁻¹ * u a x ^ N`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hw : ∑ _a : Fin r, (r:ℝ)⁻¹ = 1`. Simplify using `[Finset.card_univ, Fintype.card_fin, hrR.ne']`. Establish `key` using `Real.geom_mean_le_arith_mean_weighted (Finset.univ : Finset (Fin r)) (fun _ => (r:ℝ)⁻¹) (fun a => (u a x ^ (2 * q)) ^ r) (fun _ _ => inv_nonneg.mpr hrR.le) hw (fun a _ => pow_nonneg (pow_nonneg (hu0 a) _) _)`. Establish `e1 : ∀ a, ((u a x ^ (2 * q)) ^ r) ^ ((r:ℝ)⁻¹) = u a x ^ (2 * q)` using `fun a => Real.pow_rpow_inv_natCast (pow_nonneg (hu0 a) _) hr0`. Establish `e2 : ∀ a, (u a x ^ (2 * q)) ^ r = u a x ^ N` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← pow_mul, hN]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1] at key`. Simplify using `only [e2] at key`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key`. Establish `hP : 0 ≤ Ph x` using `hP0 x`. Establish `h3 : (∏ a ∈ s, ρ a x) ^ (2 * q) * Ph x ≤ ∑ a : Fin r, (r:ℝ)⁻¹ * (u a x ^ N * Ph x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use extensionality with `a`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_sum_of_nonneg]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a`. Rewrite using `[ENNReal.ofReal_mul (inv_nonneg.mpr hrR.le)]`. Introduce `a _`. Conclude with `mul_nonneg (inv_nonneg.mpr hrR.le) (mul_nonneg (pow_nonneg (hu0 a) _) hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `hum : ∀ a, AEMeasurable (u a) ν` using `fun a => by`. Distinguish the cases in `ha : a ∈ s`. Simplify `hρm a` using `[u, ha]`. Simplify using `only [u, ha, if_false]`. Conclude with `aemeasurable_const`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `hint : ∀ a, ∫⁻ x, ENNReal.ofReal (u a x ^ N * Ph x) ∂ν ≤ ENNReal.ofReal (Rr ^ N)`. Introduce `a`. Distinguish the cases in `ha : a ∈ s`. Simplify `hbd a` using `[u, ha]`. Simplify using `only [u, ha, if_false]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `hRN : (0:ℝ) ≤ Rr ^ N` using `pow_nonneg hR0 _`. Repeatedly rewrite using `[ENNReal.ofReal_mul hRN]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lintegral_finset_sum']`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Introduce `a _`.
-
-Conclude with `(((hum a).pow_const N).mul hPm).ennreal_ofReal.const_mul _`. Use `_ ≤ ∑ _a : Fin r, ENNReal.ofReal ((r:ℝ)⁻¹) * ENNReal.ofReal (Rr ^ N) := by gcongr with a`. Conclude with `hint a`. Use `_ = ENNReal.ofReal (Rr ^ N) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_assoc]`.
-
-Establish `: (r : ℝ≥0∞) * ENNReal.ofReal ((r:ℝ)⁻¹) = 1`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg r), mul_inv_cancel₀ hrR.ne', ENNReal.ofReal_one]`. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_prod_pow_le_of_moments : ∀ (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) (r q : ℕ) (ρ : Fin r → Ω → ℝ) (Ph : Ω → ℝ) (Rr : ℝ) (s : Finset (Fin r)), (∀ a, AEMeasurable (ρ a) ν) → (∀ a, ∀ᵐ x ∂ν, 0 ≤ ρ a x) → AEMeasurable Ph ν → (∀ x, 0 ≤ Ph x) → ∫⁻ x, ENNReal.ofReal (Ph x) ∂ν ≤ 1 → 1 ≤ Rr → (∀ a, ∫⁻ x, ENNReal.ofReal (ρ a x ^ (2 * (r * q)) * Ph x) ∂ν ≤ ENNReal.ofReal (Rr ^ (2 * (r * q)))) → ∫⁻ x, ENNReal.ofReal ((∏ a ∈ s, ρ a x) ^ (2 * q) * Ph x) ∂ν ≤ ENNReal.ofReal (Rr ^ (2 * (r * q))) := by
   classical

@@ -14,9 +14,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU
 namespace GlobalTheory.StabBounded
 
 /- English proof (translation)
-Establish `e : compInf F E w (cA σ z) = sigR w.Completion σ (compInf F E w z)`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [piInf, RingHom.comp_apply, e]`. Conclude with `(infEmb_sigR h τ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
@@ -30,21 +30,19 @@ theorem cA_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   exact (infEmb_sigR h τ _).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX`. Establish `hcm : IsCMExt F E σ` using `hB.cm`. Establish `hJ : X.J.det ≠ 0`. Introduce `h0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hd : (X.J.map (B.emb w).1).det = 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Establish `hx : star v ≠ 0` using `by simpa using hv`. Use `(hX.cartan w).2.2 (star v) hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[star_star, hMv, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `choose Rw hRw using fun w => GlobalTheory.T.cartan_commuting_isometries_bounded _ _ (hX.cartan w)`. Use `set R : ℝ := ∑ w, |Rw w|`. Establish `hlat` using `hX.lat`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Cf, hCf, hCfe⟩` from `GlobalTheory.StabCompact.exists_compact_entries F E X.L hlat.fg hlat.span_eq_top`. Take `⟨K, hK, hKe⟩` from `GlobalTheory.T.bounded_norm_compact_preimage F E σ hcm B.emb Cf hCf R`. Take `⟨C, hC, hCe⟩` from `GlobalTheory.T.unitary_group_bounded_entries_compact F E σ n X.J hJ K hK`. Use `⟨C, hC, fun g hg => hCe g fun i j => hKe _ ?_ ?_⟩` and prove the remaining obligations. Conclude with `hCfe _ (GlobalTheory.T.lattice_completion_stable_base_change F E n X (mat g) fun z hz => (hg.2 z hz).1) i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `w`. Establish `hu : ((mat g).map (piInf (B.emb w))).transpose * X.J.map (B.emb w).1 * ((mat g).map (piInf (B.emb w))).map star = X.J.map (B.emb w).1`. Establish `h2` using `congrArg (fun Y : Matrix (Fin n) (Fin n) (AE F E) => Y.map (piInf (B.emb w))) (show (mat g).transpose * incM F X.J * (mat g).map (cA σ) = incM F X.J from g.2)`. Simplify using `only [Matrix.map_mul] at h2`. Establish `e1 : (incM F X.J).map (piInf (B.emb w)) = X.J.map (B.emb w).1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`. Establish `e2 : ((mat g).map (cA σ)).map (piInf (B.emb w)) = ((mat g).map (piInf (B.emb w))).map star`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `cA_piInf hcm _ _`. Rewrite `h2` using `[e1]`. Rewrite using `[← e2, ← Matrix.transpose_map]`. Conclude with `h2`. Establish `hb` using `hRw w _ hu (hg.1 w).eq i j`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_superset_stabK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s → ∃ C : Set (UA σ X.J), IsCompact C ∧ ((GlobalTheory.StabHaar.stabK B X : Subgroup (UA σ X.J)) : Set (UA σ X.J)) ⊆ C := by
   intro F E _ _ _ _ _ σ B n X r s hB hX

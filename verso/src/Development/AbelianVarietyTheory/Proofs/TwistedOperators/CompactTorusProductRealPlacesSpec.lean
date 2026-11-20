@@ -12,17 +12,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdSpan.ConjHol
 
 /- English proof (translation)
-Introduce `D S T C B hB s`. Establish `R : GlobalTheory.SmoothForms.RealPoints C.θ T` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 C.θ C.inf T`. Establish `hu : ∀ ρ, IsAtTau C.θ T ρ (B ρ * diagonal (fun c => cexp ((s ρ c : ℂ) * I)) * (B ρ)⁻¹) (torAt C.θ T B ρ (s ρ))`. Introduce `ρ`. Establish `hS : (diagonal fun c => cexp ((s ρ c : ℂ) * I))ᴴ * sgnM C.X * (diagonal fun c => cexp ((s ρ c : ℂ) * I)) = sgnM C.X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `sgnM`. Conclude with `GlobalTheory.HolRead.AdExt.diag_unitary _ _`. Conclude with `GlobalTheory.HolRead.AdExt.atTau_spec R ρ (GlobalTheory.HolRead.AdExt.conj_mem_unitary (isUnit_det_B C hB ρ) (hB ρ) hS)`. It suffices to establish `H : ∀ l : List D.what₂.Tau, l.Nodup → (l.map fun ρ => torAt C.θ T B ρ (s ρ)).prod ∈ GinfC T ∧ ∀ ρ, infMat D.sp.cm.sig T.gram (C.θ ρ) (l.map fun ρ => torAt C.θ T B ρ (s ρ)).prod = if ρ ∈ l then B ρ * diagonal (fun c => cexp ((s ρ c : ℂ) * I)) * (B ρ)⁻¹ else 1 by`. Take `⟨h1, h2⟩` from `H (Finset.univ : Finset D.what₂.Tau).toList (Finset.nodup_toList _)`.
+Replace the relevant objects with their definitions. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h1, fun ρ => ?_⟩` and prove the remaining obligations. Use `h2 ρ` as an intermediate fact. Rewrite `this` using `[if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Conclude with `this`. Introduce `l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨one_mem _, fun ρ => ?_⟩` and prove the remaining obligations. Simplify using `using R.2.2.2.2.1 1 (one_mem _) ρ`. Consider the case `cons τ l ih`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl` using `[List.nodup_cons]`. Take `⟨i1, i2⟩` from `ih hl.2`. Rewrite using `[List.map_cons, List.prod_cons]`. Use `⟨mul_mem (hu τ).1 i1, fun ρ => ?_⟩` and prove the remaining obligations. Rewrite using `[R.2.2.2.1, i2 ρ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Rewrite using `[(hu ρ).2.1, if_neg hl.1, if_pos List.mem_cons_self, Matrix.mul_one]`. Rewrite using `[(hu τ).2.2 ρ c, Matrix.one_mul]`. Simplify using `only [List.mem_cons, c, false_or]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torProd_spec : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.Bas), C.IsB B → ∀ (s : D.what₂.Tau → Fin T.rank → ℝ), GlobalTheory.AdSpan.ConjHol.torProd C.θ T B s ∈ GinfC T ∧ ∀ ρ, compAt C.θ ρ (Formalism.L2.Theta.mt T (GlobalTheory.AdSpan.ConjHol.torProd C.θ T B s)) = B ρ * diagonal (fun c => cexp ((s ρ c : ℂ) * I)) * (B ρ)⁻¹ := by
   intro D S T C B hB s

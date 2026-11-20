@@ -12,9 +12,7 @@ open scoped CategoryTheory.Obj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hφ' : ψ.hom.left ≫ m₂.cm.F = m₁.cm.F` using `hφ`. Establish `h3 : m₁.cm.F3 = (CubeMap.ofHom ψ.hom).F3 ≫ m₂.cm.F3` using `hom_ext_triple _ fun i => by`. Rewrite using `[cubeMap_comp_proj_three, Category.assoc, cubeMap_comp_proj_three]`. Use `show _ = (ψ.hom ⊗ₘ ψ.hom ⊗ₘ ψ.hom).left ≫ _`. Rewrite using `[← Category.assoc, ← Over.comp_left, ← cubeProj_comp_map, Over.comp_left, Category.assoc, hφ']`.
-
-Conclude with `pullCubCancel _ _ _ _ _ _ m₂.cm (CubeMap.ofHom ψ.hom) m₁.cm _ _ _ t.cub t₂.cub t₁.cub hφ'.symm h3 (by show m₁.cm.e = 𝟙 _ ≫ m₂.cm.e; rw [Category.id_comp, m₁.base, m₂.base]) m₂.lin m₁.lin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sabMap_cubical {S S' : Scheme.{0}} {t : SAB H S} {t₁ t₂ : SAB H S'} {f : S' ⟶ S} (m₁ : SABMap t₁ t f)
     (m₂ : SABMap t₂ t f) (ψ : t₁.G ≅ t₂.G) [IsMonHom ψ.hom] (hφ : ψ.hom.left ≫ m₂.φ = m₁.φ) :
@@ -28,11 +26,11 @@ theorem sabMap_cubical {S S' : Scheme.{0}} {t : SAB H S} {t₁ t₂ : SAB H S'} 
     (by show m₁.cm.e = 𝟙 _ ≫ m₂.cm.e; rw [Category.id_comp, m₁.base, m₂.base]) m₂.lin m₁.lin
 
 /- English proof (translation)
-Substitute `h₁ h₂` using the available equality. Take `⟨ψ, hψ, hφ⟩` from `grpPullback_iso m₁.cart m₂.cart`. Establish `hφ' : ψ.hom.left ≫ m₂.cm.F = m₁.cm.F` using `hφ`. Use `⟨ψ, hψ, hφ, fun x => ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, m₂.act, reassoc_of% hφ', hφ', m₁.act]`. Rewrite using `[Over.w, Over.w]`. Use `hψ` as an intermediate fact. Take `⟨w, h₀, hg, hm⟩` from `rigIso_congr rfl (CubeMap.ofHom ψ.hom) (sabMap_cubical m₁ m₂ ψ hφ) rfl rfl`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h₀, w, hg, hm⟩`.
+Supply the required witnesses or components.
 -/
 theorem sabMap_iso {S S' : Scheme.{0}} {t : SAB H S} {t₁ t₂ : SAB H S'} {f : S' ⟶ S} (m₁ : SABMap t₁ t f)
     (m₂ : SABMap t₂ t f) {L₁ : RigLB t₁.G} {L₂ : RigLB t₂.G} (h₁ : L₁ = t₁.PP) (h₂ : L₂ = t₂.PP) :
@@ -56,9 +54,9 @@ theorem sabMap_iso {S S' : Scheme.{0}} {t : SAB H S} {t₁ t₂ : SAB H S'} {f :
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Take `⟨ψ, hmon, hφ, hact, he, wL, hgen, hmaps⟩` from `sabMap_iso W.m W'.m (L₁ := W.P.U.LG) (L₂ := W'.P.U.LG) W.P.bundle W'.P.bundle`. Use `⟨ψ, hφ, hmon, hact, fun T g g₁ g₂ h1 h2 h3 => ?_, he, wL, hgen, hmaps⟩` and prove the remaining obligations. Rewrite using `[hφ, h1]`. Establish `hc` using `Y.m0.toSABMap.cart`. Unfold `IsGrpPullback at hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `SABMap.φ at h2`. Rewrite using `[hc.1.hom_ext h2 h3]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ArcWit.uwIso {Y : Model Xo c β} {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'} {a : ArcIn D l β O' b}
     {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {f : O' →+* R} {u : R} {χ : Sp R ⟶ Y.X}

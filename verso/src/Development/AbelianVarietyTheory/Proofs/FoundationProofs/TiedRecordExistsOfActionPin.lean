@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem RunData.full_J {J : CoreJ D} (r : RunData J) : r.full.J = J := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro ⟨r, rfl⟩; rfl, by rintro rfl; exact ⟨RunData.ofFull T, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem RunData.exists_full_eq_iff (J : CoreJ D) (T : Full D) : (∃ r : RunData J, r.full = T) ↔ T.J = J :=
   ⟨by rintro ⟨r, rfl⟩; rfl, by rintro rfl; exact ⟨RunData.ofFull T, rfl⟩⟩
@@ -70,7 +70,7 @@ def cuspRep (z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w) {P : Type} [Gro
 
 omit [NumberField K] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `z.symm ((ρ g).baseChange K (z (z.symm _))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearMap.baseChange_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cuspRep_tmul (z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w) {P : Type} [Group P]
     (ρ : Representation B.KO P (B.Cusp j w)) (g : P) (F : B.Cusp j w) :
@@ -81,9 +81,9 @@ theorem cuspRep_tmul (z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w) {P : T
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `⟨{ toFun := fun g => { toFun := a g map_add' := fun F F' => hf (by rw [map_add, ha, ha, ha, map_add, map_add]) map_smul' := fun c F => hf ?_ } map_one' := LinearMap.ext fun F => hf ?_ map_mul' := fun g g' => LinearMap.ext fun F => hf ?_ }, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, map_smul, ha, ha, map_smul, LinearMap.map_smul_of_tower]`. Express the relevant statement in the definitionally equal form `f (a 1 F) = f F`. Rewrite using `[ha, map_one, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `f (a (g * g') F) = f (a g (a g' F))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ha, ha, ha, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cuspRep_of_injective (f : B.Cusp j w →ₗ[B.KO] (Fin n → K)) (hf : Function.Injective f) {P : Type} [Group P]
     (σ : Representation K P (Fin n → K)) (a : P → B.Cusp j w → B.Cusp j w) (ha : ∀ g F, f (a g F) = σ g (f F)) :
@@ -113,7 +113,7 @@ def toFormsEquiv (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R.m) 
   LinearEquiv.ofBijective (toForms h fw i z) (toForms_bijective h fw i z)
 
 /- English proof (translation)
-The claim follows from `(toFormsEquiv h fw i z).apply_symm_apply x`.
+A detailed English derivation is pending.
 -/
 theorem toForms_symm (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R.m) {n : ℕ}
     (z : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.LL ⊗[(recB h.toLawsCore).KO] (recB h.toLawsCore).Cusp ((i : ℕ) + 1) (κ i))
@@ -121,7 +121,7 @@ theorem toForms_symm (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R
   (toFormsEquiv h fw i z).apply_symm_apply x
 
 /- English proof (translation)
-Take `⟨m, b, -, h1, h2, h3, h4⟩` from `fw.ks i`. Establish `hb` using `cusp_liftBaseChange_bijective (recB h.toLawsCore) (cuspTo h fw i) (cutTo_spec fw i).1 b h1 (h2.trans (cutTo_spec fw i).2.symm) h3 h4`. Conclude with `⟨(LinearEquiv.ofBijective _ hb).symm, fun x => (LinearEquiv.ofBijective _ hb).apply_symm_apply x⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_toForms_eq_id (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R.m) :
     ∃ z : (Fin (R.nW i) → D.what₂.LL) ≃ₗ[D.what₂.LL]
@@ -132,7 +132,7 @@ theorem exists_toForms_eq_id (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i :
   exact ⟨(LinearEquiv.ofBijective _ hb).symm, fun x => (LinearEquiv.ofBijective _ hb).apply_symm_apply x⟩
 
 /- English proof (translation)
-Take `⟨a, h1, h2⟩` from `ha`. Take `⟨ρ, hρ⟩` from `exists_cuspRep_of_injective (recB h.toLawsCore) (cuspTo h fw i) (cutTo_spec fw i).1 ((R.FW i).ρ.comp inc) (fun g => a (inc g)) fun g F => h2 (inc g) F`. Conclude with `⟨ρ, fun g F => (congrArg Subtype.val (hρ g F)).trans (h1 (inc g) F)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ActionPin.exists_rep {h : LawsP T.toTop} {fw : FWTie T.J R κ v₀} {i : Fin D.R.m}
     {ℓ : G → (LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l)}
@@ -171,7 +171,7 @@ def classSumCoord (i : Fin D.R.m) {n : ℕ}
   if H : ClassSumRational R i t U ψ c then (toFormsEquiv h fw i z).symm.toLinearMap ∘ₗ H.choose else 0
 
 /- English proof (translation)
-Introduce `x` and use `have e : classSumCoord h fw U ψ i z t c = (toFormsEquiv h fw i z).symm.toLinearMap ∘ₗ H.choose := dif_pos H (congrArg (adForm R i) ((congrArg (toForms h fw i z) (LinearMap.congr_fun e x)).trans (toForms_symm h fw i z (H.choose x)))).trans (H.choose_spec x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isClassSum_classSumCoord (i : Fin D.R.m) {n : ℕ}
     (z : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.LL ⊗[(recB h.toLawsCore).KO] (recB h.toLawsCore).Cusp ((i : ℕ) + 1) (κ i))
@@ -209,7 +209,7 @@ def objectActionInstance : OnObj S P oc :=
     Mt := fun v i => (A.MtCSD (ι i) (R.mu v)).lvlNab (A.leftGroupActionLift (ι i) (R.mu v)) U ψ }
 
 /- English proof (translation)
-The claim follows from `rfl rho_eq := cuspRep_tmul (recB h.toLawsCore) (z i) (ρ i) Th_eq := rfl σ_eq := rfl ThK_eq := rfl act_eq := hρ i U_eq := rfl ψ_eq := charInt_coe inc U ψ e_eq := LinearMap.ext fun _ => toForms_symm h fw (ι i) (z i) _ V₀_eq := rfl Th0_eq := rfl ThJ_eq := rfl X₃_eq := rfl Mt_eq := r …`.
+A detailed English derivation is pending.
 -/
 theorem onTie_tiedObj
     (hρ : ∀ i, IsLevAct T.toTop h ((ι i : ℕ) + 1) (κ (ι i)) (fun g => ℓ i (inc g)) fun g F => ρ i g F)
@@ -239,7 +239,7 @@ theorem onTie_tiedObj
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tiedObj_keeps :
     let O' := objectActionInstance h fw hinj EX r hr p ι wL wF nT inc ℓ U ψ ph ρ O z
@@ -324,7 +324,7 @@ def EquivariantLatticeCharacterDatumExists
         inc (ℓ i) U ψ (ph v i) (y v i)
 
 /- English proof (translation)
-Use `choose ρ hρ using hρ`. Use `choose z _ using fun i => exists_toForms_eq_id h fw (ι i)`. Conclude with `⟨objectActionInstance h fw hinj EX r hr p ι wL wF nT inc ℓ U ψ ph ρ (blankObj D S P oc fun i => R.nW (ι i)) z, z, fun i g F => ρ i g F, fun _ _ => LinearEquiv.refl _ _, rfl, fun _ => rfl, onTie_tiedObj h fw hinj EX r hr p ι wL wF nT inc ℓ U ψ ph ρ (blankObj D S P oc fun i => R.nW …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tiedRecordExists_of_rep
     (ℓ : ∀ i, G → (LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l))
@@ -339,7 +339,7 @@ theorem tiedRecordExists_of_rep
     onTie_tiedObj h fw hinj EX r hr p ι wL wF nT inc ℓ U ψ ph ρ (blankObj D S P oc fun i => R.nW (ι i)) z hρ⟩
 
 /- English proof (translation)
-The claim follows from `tiedRecordExists_of_rep h fw hinj EX r hr p S P oc ι wL wF nT inc ℓ (fun i => (ha i).exists_rep inc) U ψ ph`.
+A detailed English derivation is pending.
 -/
 theorem tiedRecordExists_of_actionPin
     (ℓ : ∀ i, G → (LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l))
@@ -349,7 +349,7 @@ theorem tiedRecordExists_of_actionPin
   tiedRecordExists_of_rep h fw hinj EX r hr p S P oc ι wL wF nT inc ℓ (fun i => (ha i).exists_rep inc) U ψ ph
 
 /- English proof (translation)
-The claim follows from `tiedRecordExists_of_rep h fw hinj EX r hr p S P oc ι wL wF nT inc (fun i g => ℓ i g) (fun i => exists_rep_isLevAct D T.toTop h _ (inR_succ (ι i)) (κ (ι i)) P ((ℓ i).comp inc)) U ψ ph`.
+A detailed English derivation is pending.
 -/
 theorem exists_tied_record
     (ℓ : ∀ i, G →* (LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l))
@@ -365,7 +365,7 @@ theorem exists_tied_record
     (fun i => exists_rep_isLevAct D T.toTop h _ (inR_succ (ι i)) (κ (ι i)) P ((ℓ i).comp inc)) U ψ ph
 
 /- English proof (translation)
-The claim follows from `exists_tied_record h fw hinj EX (fun _ => RunData.ofFull T) (fun _ => h) p S P oc ι wL wF nT inc ℓ U ψ ph`.
+A detailed English derivation is pending.
 -/
 theorem exists_tied_record_one_run
     (ℓ : ∀ i, G →* (LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((ι i : ℕ) + 1)) T.Q.l))

@@ -6,7 +6,7 @@ namespace PI.EF.PK
 open Complex MeasureTheory intervalIntegral Real ArithmeticFunction LSeries
 
 /- English proof (translation)
-Establish `h` using `Real.log_pos (by linarith : (1:ℝ) < u)`. Establish `h2` using `one_div_pos.mpr h`. Use `show 1 < 1 + 1 / Real.log u`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma one_lt_cLine {u : ℝ} (hu : 2 ≤ u) : 1 < cLine u := by
   have h := Real.log_pos (by linarith : (1:ℝ) < u)
@@ -15,9 +15,9 @@ lemma one_lt_cLine {u : ℝ} (hu : 2 ≤ u) : 1 < cLine u := by
   linarith
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hK y c T hy hc hT`. Distinguish the cases in `h : T * |Real.log y| ≤ 1`. Rewrite using `[kb, if_pos h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[kb, if_neg h] push_neg`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_one_div, le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma kernel_le_kb (hK : PerronKernel) (y c T : ℝ) (hy : 0 < y) (hc : 0 < c) (hT : 0 < T) :
     ‖perronK y c T - (if 1 ≤ y then 1 else 0)‖ ≤ y ^ c * kb T y := by
@@ -31,7 +31,7 @@ lemma kernel_le_kb (hK : PerronKernel) (y c T : ℝ) (hy : 0 < y) (hc : 0 < c) (
     linarith
 
 /- English proof (translation)
-Rewrite using `[LSeries.term_of_ne_zero hn, Complex.ofReal_div, Complex.div_cpow_ofReal_nonneg hu.le (Nat.cast_nonneg n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma term_mul_kernel (a : ℕ → ℂ) (u : ℝ) (hu : 0 < u) (n : ℕ) (hn : n ≠ 0) (s : ℂ) :
     term a s n * ((u : ℂ) ^ s / s) = a n * (((u / n : ℝ) : ℂ) ^ s / s) := by
@@ -41,47 +41,41 @@ lemma term_mul_kernel (a : ℕ → ℂ) (u : ℝ) (hu : 0 < u) (n : ℕ) (hn : n
   ring
 
 /- English proof (translation)
-Introduce `a ha u T hu hT`. Establish `hc1 : 1 < cLine u` using `one_lt_cLine hu`. Use `set c := cLine u with hcdef`. Establish `hc0 : 0 < c` using `by linarith`. Establish `hu0 : 0 < u` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : 0 < T` using `by linarith`. Take `⟨hSs, hSle⟩` from `hS u T hu hT`. Establish `ha0 : a 0 = 0`. Establish `h` using `ha 0`. Rewrite `h` using `[ArithmeticFunction.map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_le_zero_iff.mp h`. Establish `hΛsum : Summable (fun n : ℕ => ArithmeticFunction.vonMangoldt n / (n : ℝ) ^ c)`. Establish `h` using `ArithmeticFunction.LSeriesSummable_vonMangoldt (s := (c : ℂ)) (by simpa using hc1)`. Use `Complex.summable_ofReal.mp (h.congr (fun n => ?_))` and prove the remaining obligations. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[LSeries.term_of_ne_zero hn, Complex.ofReal_div, Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hterm : ∀ (n : ℕ) (s : ℂ), s.re = c → ‖LSeries.term a s n‖ ≤ ArithmeticFunction.vonMangoldt n / (n : ℝ) ^ c`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n s hs`. Rewrite using `[LSeries.norm_term_eq, hs]`. Use `split_ifs with hn`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `div_le_div_of_nonneg_right (ha n) (by positivity)`. Establish `hre : ∀ t : ℝ, ((c : ℂ) + t * I).re = c` using `by intro t; simp`. Establish `hkern : ∀ t : ℝ, ‖(u : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)‖ ≤ u ^ c / c`. Introduce `t`. Rewrite using `[norm_div, Complex.norm_cpow_eq_rpow_re_of_pos hu0, hre]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `div_le_div_of_nonneg_left (by positivity) hc0` to reduce the goal to its premises. Establish `h` using `Complex.abs_re_le_norm ((c : ℂ) + t * I)`. Rewrite `h` using `[hre, abs_of_pos hc0]`. Conclude with `h`. Establish `hDC` using `intervalIntegral.hasSum_integral_of_dominated_convergence (μ := MeasureTheory.volume) (a := -T) (b := T) (F := fun (n : ℕ) (t : ℝ) => LSeries.term a ((c : ℂ) + t * I) n * ((u : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I))) (f := fun t : ℝ => LSeries a ((c : ℂ) + t * I) * ((u : ℂ) …`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `only [LSeries.term_zero, zero_mul]`. Conclude with `MeasureTheory.aestronglyMeasurable_const`. Simplify using `only [LSeries.term_of_ne_zero hn]`. Apply `Measurable.aestronglyMeasurable` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `fun_prop)`. Use the proof step `(fun n => Filter.Eventually.of_forall (fun t _ => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hterm n _ (hre t)) (hkern t) (norm_nonneg _) (div_nonneg ArithmeticFunction.vonMangoldt_nonneg (by positivity))))`. Use the proof step `(Filter.Eventually.of_forall (fun t _ => hΛsum.mul_right _))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `intervalIntegrable_const`. Use the proof step `(Filter.Eventually.of_forall (fun t _ => by`. Establish `hsum : LSeriesSummable a ((c : ℂ) + t * I)` using `Summable.of_norm_bounded hΛsum (fun n => hterm n _ (hre t))`. Conclude with `hsum.hasSum.mul_right _))`. Establish `hG : HasSum (fun n : ℕ => a n * perronK (u / n) c T) ((1 / (2 * Real.pi) : ℂ) * ∫ t : ℝ in (-T)..T, LSeries a ((c : ℂ) + t * I) * ((u : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun n : ℕ => a n * perronK (u / n) c T) = fun n : ℕ => (1 / (2 * Real.pi) : ℂ) * ∫ t : ℝ in (-T)..T, LSeries.term a ((c : ℂ) + t * I) n * ((u : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I))`. Use function extensionality and compare the values at `n`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[ha0, LSeries.term_zero]`. Establish `h1 : (∫ t : ℝ in (-T)..T, LSeries.term a ((c : ℂ) + t * I) n * ((u : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I))) = a n * ∫ t : ℝ in (-T)..T, ((u / n : ℝ) : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `term_mul_kernel a u hu0 n hn _`. Rewrite using `[h1, perronK]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `hDC.mul_left _`. Establish `hind : HasSum (fun n : ℕ => a n * (if 1 ≤ u / n then (1 : ℂ) else 0)) (∑ n ∈ Finset.Icc 1 ⌊u⌋₊, a n)`. Establish `h : HasSum (fun n : ℕ => a n * (if 1 ≤ u / n then (1 : ℂ) else 0)) (∑ n ∈ Finset.Icc 1 ⌊u⌋₊, a n * (if 1 ≤ u / n then (1 : ℂ) else 0))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `hasSum_sum_of_ne_finset_zero` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Icc, not_and_or]`. Break down `hn with hn | hn` into its components or cases. Establish `hn0 : n = 0` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hn0` using the available equality. Simplify using `[ha0]`. Use `push_neg at hn`. Establish `hlt : u < n`. Establish `h1` using `Nat.lt_floor_add_one u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (⌊u⌋₊ : ℝ) + 1 ≤ n` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ¬ (1 ≤ u / n)`. Rewrite using `[not_le, div_lt_one (by linarith)]`. Conclude with `hlt`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h3]`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Icc]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn.1`. Establish `hnu : (n : ℝ) ≤ u` using `le_trans (by exact_mod_cast hn.2) (Nat.floor_le hu0.le)`. Establish `h4 : 1 ≤ u / n`. Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Simplify using `[h4]`. Establish `hdiff` using `hind.sub hG`. Rewrite using `[← hdiff.tsum_eq]`. Combine the equalities or inequalities in the displayed calculation. Apply `tsum_of_norm_bounded hSs.hasSum` to reduce the goal to its premises.
-
-Introduce `n`. Rewrite using `[← mul_sub, norm_mul]`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[ha0]`. Establish `hy : 0 < u / n` using `div_pos hu0 (by exact_mod_cast Nat.pos_of_ne_zero hn)`.
-
-Establish `h1` using `kernel_le_kb hK (u / n) c T hy hc0 hT0`. Rewrite `h1` using `[norm_sub_rev]`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul (ha n) h1 (norm_nonneg _) ArithmeticFunction.vonMangoldt_nonneg`. Use `_ ≤ _ := hSle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perronTrunc_of {C : ℝ} (hK : PerronKernel) (hS : PerronSumBound C) : PerronTrunc C := by
   intro a ha u T hu hT

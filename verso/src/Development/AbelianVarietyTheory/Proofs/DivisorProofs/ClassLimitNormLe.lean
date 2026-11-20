@@ -18,17 +18,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `p _ X Y _ _ e β be sc sc' hsc hid m t ht v ν hv μ hμν hmin`. Use `set R := Real.exp (-(sc * (β μ μ : ℝ)) / 2) with hR`. Establish `hR0 : 0 ≤ R` using `(Real.exp_pos _).le`. Establish `hterm : ∀ μ' : Y, CongMod m μ' ν → ‖t μ'‖ ≤ R`. Introduce `μ' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w1, hw1⟩` from `h'`. Take `⟨w2, hw2⟩` from `hμν`. Establish `hc : CongMod m (e.symm μ') μ`. Use `⟨e.symm (w1 - w2), ?_⟩` and prove the remaining obligations. Establish `: μ' = e μ + m • (w1 - w2)` using `by rw [hw1, hw2, smul_sub]; abel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_add, map_nsmul, AddEquiv.symm_apply_apply]`. Establish `hle` using `hmin _ hc`. Establish `hle' : sc * (β μ μ : ℝ) ≤ sc' * (be μ' μ' : ℝ)`. Establish `h2` using `hid (e.symm μ') (e.symm μ')`. Rewrite `h2` using `[AddEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `mul_le_mul_of_nonneg_left (by exact_mod_cast hle) hsc.le`. Use `(ht μ').trans ?_` and prove the remaining obligations. Rewrite using `[hR]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations. Take `⟨S₀, hS₀⟩` from `hv δ hδ`. Establish `h1` using `hS₀ (S₀.filter (fun x => CongMod m x ν)) (fun x hx => (Finset.mem_filter.mp hx).2) (fun x hx hc => Finset.mem_filter.mpr ⟨hx, hc⟩)`. Establish `h2 : ‖∑ x ∈ S₀.filter (fun x => CongMod m x ν), t x‖ ≤ R` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hR0 fun x hx => hterm x (Finset.mem_filter.mp hx).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_add_cancel]`. Use `_ ≤ ‖v - ∑ x ∈ S₀.filter (fun x => CongMod m x ν), t x‖ + ‖∑ x ∈ S₀.filter (fun x => CongMod m x ν), t x‖ := norm_add_le _ _`. Use `_ ≤ R + δ := by linarith`.
+A detailed English derivation is pending.
 -/
 theorem class_limit_norm_le : ∀ (p : ℕ) [Fact p.Prime] (X Y : Type) [AddCommGroup X] [AddCommGroup Y] (e : X ≃+ Y) (β : LinearMap.BilinForm ℤ X) (be : LinearMap.BilinForm ℤ Y) (sc sc' : ℝ), 0 < sc → (∀ a b, sc * (β a b : ℝ) = sc' * (be (e a) (e b) : ℝ)) → ∀ (m : ℕ) (t : Y → PadicAlgCl p), (∀ μ, ‖t μ‖ ≤ Real.exp (-(sc' * (be μ μ : ℝ) / 2))) → ∀ (v : PadicAlgCl p) (ν : Y), (∀ δ : ℝ, 0 < δ → ∃ S₀ : Finset Y, ∀ S : Finset Y, (∀ μ ∈ S, CongMod m μ ν) → (∀ μ ∈ S₀, CongMod m μ ν → μ ∈ S) → ‖v - ∑ μ ∈ S, t μ‖ ≤ δ) → ∀ μ : X, CongMod m (e μ) ν → (∀ μ' : X, CongMod m μ' μ → β μ μ ≤ β μ' μ') → ‖v‖ ≤ Real.exp (-(sc * (β μ μ : ℝ)) / 2) := by
   intro p _ X Y _ _ e β be sc sc' hsc hid m t ht v ν hv μ hμν hmin

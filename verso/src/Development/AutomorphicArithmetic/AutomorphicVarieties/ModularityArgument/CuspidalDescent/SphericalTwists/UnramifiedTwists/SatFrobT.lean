@@ -15,9 +15,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨a, ha, H⟩` from `H`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hL` using `GlobalTheory.T.spherical_satake_eq_langlandsQuotient_unramified Pr.exh Pr.multi Pr.cos Pr.zel GlobalTheory.RecT.geometricLemma_holds Pr.bz (w.adicCompletion E) x α hα`. Rewrite `hL` using `[Fin.univ_val_map]`. Rewrite using `[H.langlands _ x hL, segSum, List.map_ofFn, ← SatakeLaw.sumList_ofFn_diag]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, H.one]`. Conclude with `Test.lpOfChar_unrChar ha (α i) _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rec_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) (x : IrrGL (w.adicCompletion E))
     (α : Fin x.1 → ℂˣ) (hα : HasSatake x.rep α) : rc x = WD.mk (WDRep.diag h fun i => (α i)⁻¹) := by
@@ -33,9 +33,9 @@ private theorem rec_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT 
   exact Test.lpOfChar_unrChar ha (α i) _
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨α, hαB, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ B).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hB⟩)`. Use `⟨α, hαB.symm, ?_⟩` and prove the remaining obligations. Establish `φ` using `IrrGL.equivOf σ.ρ σ.smooth σ.irred`. Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `rec_diag H (IrrGL.of σ.ρ σ.smooth σ.irred) α ⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hα.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hα.2.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, L⟩` from `H`. Rewrite using `[algNorm, L.nu, e, WD.lpTw_mk]`. Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rec_algNorm_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) :
@@ -55,9 +55,9 @@ private theorem rec_algNorm_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H :
   simp [mul_zpow, mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun s t => ?_, WD.unr_mono0 _ ((WD.unr_mk _).2 (WDRep.unr_diag _))⟩` and prove the remaining obligations. Establish `hd : deg (⁅s, t⁆ : Weil h) = 0`. Rewrite using `[commutatorElement_def, deg_mul, deg_mul, deg_mul, deg_inv, deg_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `show WD.charPol _ _ = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gd_diag {n : ℕ} (c : Fin n → ℂˣ) : Z.Win.Gd (WD.mk (WDRep.diag h c)) := by
   refine ⟨fun s t => ?_, WD.unr_mono0 _ ((WD.unr_mk _).2 (WDRep.unr_diag _))⟩
@@ -69,7 +69,7 @@ private theorem gd_diag {n : ℕ} (c : Fin n → ℂˣ) : Z.Win.Gd (WD.mk (WDRep
   simp
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), zpow_neg_one, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val, inv_inv, coe_qPow, ← Complex.cpow_neg, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem val_inv_eq (n : ℕ) (a : ℂˣ) :
     (((a⁻¹ * qPow w ((1 - (n : ℝ)) / 2) : ℂˣ) : ℂ)) ^ (-1 : ℤ) =
@@ -84,11 +84,11 @@ end UpperTheory.V.Z.Desc.W.SatakeFrobeniusEigenvalues
 
 open UpperTheory.V.Z.Desc.W.SatakeFrobeniusEigenvalues in
 /- English proof (translation)
-Introduce `_ F Ω _ _ _ _ _ l _ ι n r _ w hl σ B hB H A h`. Take `⟨rc, hrec⟩` from `recTExists F Ω A w h`. Take `⟨α, rfl, e⟩` from `rec_algNorm_diag hrec σ B hB`. Establish `hx` using `(H A h rc hrec).isWDOf (e ▸ gd_diag _)`. Establish `hw` using `(hx.wdOf_eq hl).trans e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, φ, hφ, N', a, hN, -⟩` from `hx`. Use `⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw, WD.unr_mk]; exact WDRep.unr_diag _), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1` using `deg_eq_one_iff.2 hs`. Use `hN.charPol_wdOf hl ht ι (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹` as an intermediate fact. Rewrite `this` using `[hw, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, deg_inv, hd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this.symm.trans ?_` and prove the remaining obligations. Simplify using `only [val_inv_eq, algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Z.Desc.W.satFrobT :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]

@@ -18,7 +18,7 @@ section Analytic
 variable {B : NumB ℂ} {g : ℕ} (d : AB B g)
 
 /- English proof (translation)
-Establish `h` using `d.ex_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero' : d.ex 0 = 1 := by
   have h := d.ex_add 0 0
@@ -26,7 +26,7 @@ theorem ex_zero' : d.ex 0 = 1 := by
   exact mul_eq_left.1 h.symm
 
 /- English proof (translation)
-Simplify using `only [autV, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem autV_cube (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (M N : Fin g → ℤ) (x y z : Fin g → ℂ) :
     autV τ a b M N (x + y + z) * autV τ a b M N z = autV τ a b M N (x + z) * autV τ a b M N (y + z) := by
@@ -36,26 +36,26 @@ theorem autV_cube (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (M N :
   ring
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem autV_ne (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (M N : Fin g → ℤ) (w : Fin g → ℂ) :
     autV τ a b M N w ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Rewrite using `[d.fr_per M N w, mul_div_cancel_left₀ _ (autV_ne _ _ _ _ _ _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fr_shift (M N : Fin g → ℤ) (w : Fin g → ℂ) :
     (d.fr (w + perV d.τ M N) : ℂ) = d.fr w / autV d.τ d.a d.b M N w := by
   rw [d.fr_per M N w, mul_div_cancel_left₀ _ (autV_ne _ _ _ _ _ _)]
 
 /- English proof (translation)
-Establish `hP : d.ex (perV d.τ M N) = 1` using `(d.ker _).2 ⟨M, N, rfl⟩`. Establish `e1 : x + (z + perV d.τ M N) = x + z + perV d.τ M N` using `by abel`. Establish `e2 : y + (z + perV d.τ M N) = y + z + perV d.τ M N` using `by abel`. Establish `e3 : x + y + (z + perV d.τ M N) = x + y + z + perV d.τ M N` using `by abel`. Unfold `cubF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[d.ex_add, hP, _root_.mul_one, e1, e2, e3, fr_shift, fr_shift, fr_shift, fr_shift]`. Establish `A` using `autV_cube d.τ d.a d.b M N x y z`. Establish `h1` using `autV_ne d.τ d.a d.b M N (x + z)`. Establish `h2` using `autV_ne d.τ d.a d.b M N (y + z)`. Establish `h3` using `autV_ne d.τ d.a d.b M N (x + y + z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `autV_ne d.τ d.a d.b M N z`. Establish `u1` using `(d.fr (x + y + z)).ne_zero`. Establish `u2` using `(d.fr x).ne_zero`. Establish `u3` using `(d.fr y).ne_zero`. Establish `u4` using `(d.fr z).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `A`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cubF_per (x y : Fin g → ℂ) (M N : Fin g → ℤ) (z : Fin g → ℂ) :
     cubF d x y (z + perV d.τ M N) = cubF d x y z := by
@@ -86,11 +86,11 @@ variable {B : NumB ℂ} {g : ℕ}
 def rv (s : Fin g → ℝ) : Fin g → ℂ := fun i => (s i : ℂ)
 
 /- English proof (translation)
-Establish `hT : IsUnit (τ.map Complex.im).det` using `isUnit_iff_ne_zero.2 hpos.det_pos.ne'`. Use `set t : Fin g → ℝ := (τ.map Complex.im)⁻¹ *ᵥ (fun i => (z i).im) with ht`. Use `⟨(fun i => (z i).re) - (τ.map Complex.re) *ᵥ t, t, ?_⟩` and prove the remaining obligations. Establish `hIm : (τ.map Complex.im) *ᵥ t = fun i => (z i).im`. Rewrite using `[ht, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hT, Matrix.one_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun hIm i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply] at hi`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[rv, Matrix.mulVec, dotProduct, Complex.re_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[rv, Matrix.mulVec, dotProduct, Complex.im_sum, hi]`.
+A detailed English derivation is pending.
 -/
 theorem exists_real_coords (τ : Matrix (Fin g) (Fin g) ℂ) (hpos : (τ.map Complex.im).PosDef) (z : Fin g → ℂ) :
     ∃ s t : Fin g → ℝ, z = rv s + τ *ᵥ rv t := by
@@ -107,11 +107,11 @@ theorem exists_real_coords (τ : Matrix (Fin g) (Fin g) ℂ) (hpos : (τ.map Com
   · simp [rv, Matrix.mulVec, dotProduct, Complex.im_sum, hi]
 
 /- English proof (translation)
-Take `⟨s, t, rfl⟩` from `exists_real_coords d.τ d.pos z`. Use `⟨fun i => ⌊s i⌋, fun i => ⌊t i⌋, fun i => Int.fract (s i), fun i => Int.fract (t i), fun i => ⟨Int.fract_nonneg _, (Int.fract_lt_one _).le⟩, fun i => ⟨Int.fract_nonneg _, (Int.fract_lt_one _).le⟩, ?_⟩` and prove the remaining obligations. Establish `hs : rv s = rv (fun i => Int.fract (s i)) + cv (fun i => ⌊s i⌋)`. Use function extensionality and compare the values at `i`. Simplify using `only [rv, cv, Pi.add_apply, Int.fract]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ht : rv t = rv (fun i => Int.fract (t i)) + cv (fun i => ⌊t i⌋)`. Use function extensionality and compare the values at `i`. Simplify using `only [rv, cv, Pi.add_apply, Int.fract]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, ht, perV, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_reduce (d : AB B g) (z : Fin g → ℂ) : ∃ (M N : Fin g → ℤ) (s t : Fin g → ℝ),
     (∀ i, s i ∈ Set.Icc (0 : ℝ) 1) ∧ (∀ i, t i ∈ Set.Icc (0 : ℝ) 1) ∧ z = rv s + d.τ *ᵥ rv t + perV d.τ M N := by
@@ -126,9 +126,9 @@ theorem exists_reduce (d : AB B g) (z : Fin g → ℂ) : ∃ (M N : Fin g → �
   abel
 
 /- English proof (translation)
-Establish `hrv : Continuous (fun s : Fin g → ℝ => rv s)` using `continuous_pi fun i => Complex.continuous_ofReal.comp (continuous_apply i)`. Establish `hΦ : Continuous (fun p : (Fin g → ℝ) × (Fin g → ℝ) => rv p.1 + d.τ *ᵥ rv p.2)` using `(hrv.comp continuous_fst).add (continuous_const.matrix_mulVec (hrv.comp continuous_snd))`. Establish `hK : IsCompact ((Set.univ.pi fun _ : Fin g => Set.Icc (0 : ℝ) 1) ×ˢ (Set.univ.pi fun _ : Fin g => Set.Icc (0 : ℝ) 1))` using `(isCompact_univ_pi fun _ => isCompact_Icc).prod (isCompact_univ_pi fun _ => isCompact_Icc)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hc.comp hΦ).continuousOn`. Use `isBounded_iff_forall_norm_le.2 ⟨C, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨M, N, s, t, hs, ht, rfl⟩` from `exists_reduce d z`. Rewrite using `[hper]`. Conclude with `hC (s, t) ⟨fun i _ => hs i, fun i _ => ht i⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_of_per (d : AB B g) (F : (Fin g → ℂ) → ℂ) (hc : Continuous F)
     (hper : ∀ M N z, F (z + perV d.τ M N) = F z) : Bornology.IsBounded (Set.range F) := by
@@ -146,13 +146,13 @@ theorem bounded_of_per (d : AB B g) (F : (Fin g → ℂ) → ℂ) (hc : Continuo
   exact hC (s, t) ⟨fun i _ => hs i, fun i _ => ht i⟩
 
 /- English proof (translation)
-Introduce `x y z`. Establish `hb` using `bounded_of_per d _ (h x y).continuous (cubF_per d x y)`. Establish `e` using `(h x y).apply_eq_apply_of_bounded hb z 0`. Establish `u1` using `(d.fr (x + y + z)).ne_zero`. Establish `u2` using `(d.fr x).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u3` using `(d.fr y).ne_zero`. Establish `u4` using `(d.fr z).ne_zero`. Establish `u5` using `(d.fr (x + y)).ne_zero`. Establish `h0 : cubF d x y 0 = 1`. Unfold `cubF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ex_zero', B.cub.face₃, add_zero, add_zero, add_zero, d.fr_zero]`. Simplify using `only [Units.val_one, _root_.one_mul, _root_.mul_one]`. Clear the denominators using the available nonvanishing facts. Rewrite `e` using `[h0]`. Unfold `cubF at e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `e` using `[div_eq_one_iff_eq (by simp [u1, u2, u3, u4])]`. Apply `Units.ext` to reduce the goal to its premises. Simplify `e` using `only [Units.val_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cub_of_diff (d : AB B g) (h : ∀ x y : Fin g → ℂ, Differentiable ℂ (cubF d x y)) : d.Cub := by
   intro x y z
@@ -177,7 +177,7 @@ theorem cub_of_diff (d : AB B g) (h : ∀ x y : Fin g → ℂ, Differentiable �
 end Bound
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D hψ hτ _ N ν g d hG`. Conclude with `cub_of_diff d (GlobalTheory.T.cubeValueTimesThetaFrames_entire R D hψ hτ N ν g d hG)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cub_of_geo : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g : ℕ) (d : AB N.toNumB g), Nonempty (Geo ν d) → d.Cub := by
   intro R _ _ _ _ D hψ hτ _ N ν g d hG

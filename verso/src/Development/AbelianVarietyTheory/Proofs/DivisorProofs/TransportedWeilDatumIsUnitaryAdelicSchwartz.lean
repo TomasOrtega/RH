@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.WeilUnitaryTransport
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unitaryPair_partner_inverse_transpose`.
+A detailed English derivation is pending.
 -/
 theorem pair_of_ug : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E)
     (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -33,7 +33,7 @@ theorem pair_of_ug : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T
   GlobalTheory.T.unitaryPair_partner_inverse_transpose
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant`.
+A detailed English derivation is pending.
 -/
 theorem theta_quasi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -48,7 +48,7 @@ theorem theta_quasi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D
   GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg`.
+A detailed English derivation is pending.
 -/
 theorem theta_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -63,7 +63,7 @@ theorem theta_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D
   GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.continuous_thetaTransform_adelicSchwartz`.
+A detailed English derivation is pending.
 -/
 theorem theta_cont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -77,7 +77,7 @@ theorem theta_cont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D 
   GlobalTheory.T.continuous_thetaTransform_adelicSchwartz
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.contDiff_thetaTransform_adelicSchwartz_realDirections`.
+A detailed English derivation is pending.
 -/
 theorem theta_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -92,7 +92,7 @@ theorem theta_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
   GlobalTheory.T.contDiff_thetaTransform_adelicSchwartz_realDirections
 
 /- English proof (translation)
-Introduce `D ψ hψ S T JA JB ξ hA hB κ _ co hrat Φ hΦ`. Conclude with `⟨theta_quasi D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_level D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_cont D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_smooth D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isThetaFunO_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -108,7 +108,7 @@ theorem isThetaFunO_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsS
     theta_cont D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_smooth D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform`.
+A detailed English derivation is pending.
 -/
 theorem theta_isometry_coord : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →
     ∀ (κ : Type) [Fintype κ] (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
@@ -120,7 +120,7 @@ theorem theta_isometry_coord : ∀ (F : Type) [Field F] [NumberField F] (ψ : Ad
   GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rationalDarboux_transfers_haar_fundamentalDomain`.
+A detailed English derivation is pending.
 -/
 theorem theta_transfer : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -140,7 +140,7 @@ theorem theta_transfer : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
   GlobalTheory.T.rationalDarboux_transfers_haar_fundamentalDomain
 
 /- English proof (translation)
-Introduce `D ψ hψ S T JA JB ξ hA hB κ _ co hrat μ hμ ν 𝓕 hν h𝓕`. Take `⟨ν', 𝓕', hν', h𝓕', heq⟩` from `theta_transfer D ψ hψ S T JA JB ξ hA hB κ co hrat ν 𝓕 hν h𝓕`. Take `⟨c, hc⟩` from `theta_isometry_coord D.host.F ψ hψ.1 κ μ hμ ν' hν' 𝓕' h𝓕'`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc Φ hΦ, ← heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -164,9 +164,9 @@ theorem theta_isometry : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
   rfl
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat ω hω om hom`. Introduce and unpack `μ hμ ⟨a, b⟩ Φ hΦ`. Take `⟨g, h, hh, hg⟩` from `pair_of_ug D S T JA JB ξ hA hB a b`. Take `⟨ν, 𝓕, hν, h𝓕⟩` from `GlobalTheory.TowerRestrictScalar.exists_fd S T`. Apply the tactic sequence `obtain ⟨c, hc⟩ := theta_isometry D ψ hψ S T JA JB ξ hA hB κ co hrat μ hμ ν 𝓕 hν h𝓕`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ht` using `hom a b g h hh hg Φ hΦ`. Rewrite using `[hc _ ht.1, hc _ hΦ, ht.2, hω.om_unit ν 𝓕 hν h𝓕 _ _ (isThetaFunO_thetaTr D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnitaryOn_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

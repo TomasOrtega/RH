@@ -35,9 +35,9 @@ namespace GlobalTheory.PosOne
 open GlobalTheory.PosOne.SrcAction
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ a b _ _ _ _ μ hμ`. Use `⟨⟨srcRep μ, fun g Φ => rfl⟩, fun ρ' hρ' Φ => ?_⟩` and prove the remaining obligations. Establish `hO` using `(om_isSmoothRepresentation k a b μ hμ).2.2.2.2 Φ.1 Φ.2`. Establish `hc : Continuous fun g : GL a k => ((g, 1) : GL a k × GL b k)` using `continuous_id.prodMk continuous_const`. Use `hO.preimage hc using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Rewrite using `[← hρ' g Φ]`. Conclude with `Subtype.ext_iff`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSrc_exists_isSmoothRep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (a b : Type) [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) (_ : IsOpen (μ.ker : Set kˣ)), (∃ ρ' : Representation ℂ (GL a k) (SB (Matrix b a k)), IsSrc μ ρ') ∧ ∀ ρ' : Representation ℂ (GL a k) (SB (Matrix b a k)), IsSrc μ ρ' → IsSmoothRep ρ' := by
   intro k _ _ _ _ _ _ a b _ _ _ _ μ hμ

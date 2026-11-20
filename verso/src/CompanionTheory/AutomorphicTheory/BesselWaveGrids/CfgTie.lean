@@ -12,7 +12,7 @@ section cfg
 variable (c : Sz.Cfg)
 
 /- English proof (translation)
-Simplify using `only [Sz.Cfg.v]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cfg_v_step (i : ℕ) : c.v i = c.v (i + 1) + 4 * c.Del := by
   simp only [Sz.Cfg.v]
@@ -20,9 +20,9 @@ theorem cfg_v_step (i : ℕ) : c.v i = c.v (i + 1) + 4 * c.Del := by
   ring
 
 /- English proof (translation)
-Establish `hD : (1:ℝ) ≤ c.Del` using `hok.hDel`. Establish `h1 : (1:ℝ) ≤ i` using `by exact_mod_cast hi1`. Establish `h2 : (i:ℝ) + 1 ≤ c.k` using `by exact_mod_cast hi`. Simplify using `only [Sz.Cfg.v, Nat.cast_one]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ 4 * c.Del) (by linarith : (0:ℝ) ≤ (c.k:ℝ) - 1 - i)]`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ 4 * c.Del) (by linarith : (0:ℝ) ≤ (i:ℝ) - 1)]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cfg_v_mem (hok : c.Ok) (i : ℕ) (hi1 : 1 ≤ i) (hi : i + 1 ≤ c.k) : c.vlast ≤ c.v i ∧ c.v i ≤ c.v 1 := by
   have hD : (1:ℝ) ≤ c.Del := hok.hDel
@@ -34,16 +34,16 @@ theorem cfg_v_mem (hok : c.Ok) (i : ℕ) (hi1 : 1 ≤ i) (hi : i + 1 ≤ c.k) : 
   · nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ 4 * c.Del) (by linarith : (0:ℝ) ≤ (i:ℝ) - 1)]
 
 /- English proof (translation)
-Simplify using `only [Sz.Cfg.v, Nat.cast_sub hk, Nat.cast_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cfg_v_last (hk : 1 ≤ c.k) : c.v (c.k - 1) = c.vlast := by
   simp only [Sz.Cfg.v, Nat.cast_sub hk, Nat.cast_one]
   ring
 
 /- English proof (translation)
-Introduce `j hj`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `hok.hb1`. Consider the case `succ n hn ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hnm`. Establish `h1` using `hok.hgap n hn (by omega)`. Establish `h2` using `ih (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cfg_b_pos (hok : c.Ok) : ∀ j : ℕ, 1 ≤ j → j ≤ c.m → 1 ≤ c.b j := by
   intro j hj
@@ -56,19 +56,19 @@ theorem cfg_b_pos (hok : c.Ok) : ∀ j : ℕ, 1 ≤ j → j ≤ c.m → 1 ≤ c.
     linarith
 
 /- English proof (translation)
-Establish `hk4 : 4 ≤ c.k` using `hok.hk`. Establish `hD : (1:ℝ) ≤ c.Del` using `hok.hDel`. Establish `hk' : (4:ℝ) ≤ c.k` using `by exact_mod_cast hk4`. Establish `hlam : c.lam s = c.v s`. Rewrite using `[Sz.Cfg.lam, if_pos (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlam]`. Prove the components needed by the constructor for the conclusion. Break down `Nat.lt_or_ge s 2 with h | h` into its components or cases. Establish `hs : s = 1` using `by omega`. Substitute `hs` using the available equality.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[Sz.Cfg.u, if_pos rfl]`. Use `hok.ha` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hk') (sub_nonneg.2 hD)]`. Rewrite using `[Sz.Cfg.u, if_neg (by omega), if_neg (by omega)]`. Establish `hstep` using `cfg_v_step c (s - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hstep` using `[Nat.sub_add_cancel hs1]`. Apply the tactic sequence `rcases hde (s - 1) with h0 | h0 <;> rw [h0] <;> linarith`. Rewrite using `[Sz.Cfg.u, if_neg (by omega)]`. Distinguish the cases in `hks : s + 1 = c.k`. Rewrite using `[if_pos hks, Sz.Cfg.ulast]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : c.v s = c.vlast`. Use `cfg_v_last c (by omega : 1 ≤ c.k)` as an intermediate fact. Rewrite using `[show s = c.k - 1 by omega]`. Conclude with `this`. Rewrite using `[hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with ht`. Take `⟨h1, _⟩` from `hok.htop ht`. Use `hok.hb1` as an intermediate fact. Use `hok.hv0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hks, Nat.add_sub_cancel]`. Apply the tactic sequence `rcases hde s with h0 | h0 <;> rw [h0] <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cfg_inter (hok : c.Ok) (de : ℕ → ℝ) (hde : ∀ i, de i = 0 ∨ de i = 1) (s : ℕ) (hs1 : 1 ≤ s)
     (hsk : s ≤ c.k - 1) : c.lam s + 1 / 2 ≤ c.u de s ∧ c.u de (s + 1) ≤ c.lam s - 1 / 2 := by
@@ -107,13 +107,13 @@ theorem cfg_inter (hok : c.Ok) (de : ℕ → ℝ) (hde : ∀ i, de i = 0 ∨ de 
       rcases hde s with h0 | h0 <;> rw [h0] <;> linarith
 
 /- English proof (translation)
-Establish `hk4 : 4 ≤ c.k` using `hok.hk`. Establish `hD : (1:ℝ) ≤ c.Del` using `hok.hDel`. Establish `hk' : (4:ℝ) ≤ c.k` using `by exact_mod_cast hk4`. Establish `hprod : 16 * c.Del ≤ 4 * c.k * c.Del`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hk') (by linarith : (0:ℝ) ≤ c.Del)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hv1 : c.vlast ≤ c.v 1` using `(cfg_v_mem c hok 1 le_rfl (by omega)).1`. Establish `hv0` using `hok.hv0`. Establish `hav` using `hok.ha`. Establish `hb1` using `hok.hb1`. Rewrite using `[Sz.Cfg.u, abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[Sz.Cfg.ulast] split_ifs with ht`. Take `⟨h3, h4⟩` from `hok.htop ht`. Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Establish `hm` using `cfg_v_mem c hok (i - 1) (by omega) (by omega)`. Apply the tactic sequence `rcases hde (i - 1) with h0 | h0 <;> rw [h0] <;> constructor <;> linarith [hm.1, hm.2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cfg_u_le (hok : c.Ok) (de : ℕ → ℝ) (hde : ∀ i, de i = 0 ∨ de i = 1) (b : ℝ) (ha : c.a ≤ b)
     (hb1 : c.b 1 ≤ b) (i : ℕ) (hi1 : 1 ≤ i) (hik : i ≤ c.k) : |c.u de i| ≤ b := by
@@ -138,21 +138,21 @@ theorem cfg_u_le (hok : c.Ok) (de : ℕ → ℝ) (hde : ∀ i, de i = 0 ∨ de i
     rcases hde (i - 1) with h0 | h0 <;> rw [h0] <;> constructor <;> linarith [hm.1, hm.2]
 
 /- English proof (translation)
-Establish `hk4 : 4 ≤ c.k` using `hok.hk`. Establish `hD : (1:ℝ) ≤ c.Del` using `hok.hDel`. Establish `hk' : (4:ℝ) ≤ c.k` using `by exact_mod_cast hk4`. Establish `hprod : 16 * c.Del ≤ 4 * c.k * c.Del`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hk') (by linarith : (0:ℝ) ≤ c.Del)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hkD : (c.k:ℝ) ≤ 4 * c.k * c.Del`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ c.k) (sub_nonneg.2 hD)]`. Establish `hv1 : c.vlast ≤ c.v 1` using `(cfg_v_mem c hok 1 le_rfl (by omega)).1`. Establish `hv0` using `hok.hv0`. Establish `hav` using `hok.ha`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbpos` using `cfg_b_pos c hok`. Use `⟨hc0, hc, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (c.k:ℝ) ≤ b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s hs1 hs2`. Express the relevant statement in the definitionally equal form `s ≤ c.k + 2 * r + 1 at hs2`. Rewrite using `[Sz.Cfg.lam]`. Use `split_ifs with hsk`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `cfg_v_mem c hok s hs1 (by omega)` as an intermediate fact. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Establish `hj1 : 1 ≤ s + 1 - c.k` using `by omega`. Establish `hj2 : s + 1 - c.k ≤ c.m` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hbpos _ hj1 hj2`. Establish `h2` using `hb _ hj1 hj2`. Rewrite using `[abs_neg, abs_of_pos (by linarith)]`. Conclude with `h2`. Introduce `s hs1 hs2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `s + 1 ≤ c.k - 1 at hs2`. Rewrite using `[Sz.Cfg.lam, Sz.Cfg.lam, if_pos (by omega), if_pos (by omega)]`. Use `cfg_v_step c s` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `s hs1 hs2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨cfg_inter c hok de hde s hs1 hs2, cfg_inter c hok de' hde' s hs1 hs2⟩`. Introduce `i hi1 hi2`. Establish `hb1` using `hb 1 le_rfl (by omega)`. Conclude with `⟨cfg_u_le c hok de hde b ha hb1 i hi1 hi2, cfg_u_le c hok de' hde' b ha hb1 i hi1 hi2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lamData_cfg (r : ℕ) (hm : c.m = 2 * r + 2) (hok : c.Ok) (T T' : ℝ) (de de' : ℕ → ℝ)
     (hde : ∀ i, de i = 0 ∨ de i = 1) (hde' : ∀ i, de' i = 0 ∨ de' i = 1) (cs b : ℝ) (hc0 : 0 < cs)
@@ -211,11 +211,9 @@ noncomputable def cfg₀ : Sz.Cfg where
   bp := 0
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[cfg₀]`. Use `hm := by norm_num [cfg₀]`. Use `hDel := by norm_num [cfg₀]`. Use `hv0 := by norm_num [cfg₀]`. Use `hv1 := by norm_num [cfg₀, Sz.Cfg.v]`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hb1 := by norm_num [cfg₀]`. Use `hgap := by`. Introduce `j _ _`. Simplify using `only [cfg₀]`. Use `push_cast`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `ha := by norm_num [cfg₀, Sz.Cfg.v]`. Use `htop := by simp [cfg₀]`.
+A detailed English derivation is pending.
 -/
 theorem cfg₀_ok : cfg₀.Ok where
   hk := by
@@ -234,7 +232,7 @@ theorem cfg₀_ok : cfg₀.Ok where
   htop := by simp [cfg₀]
 
 /- English proof (translation)
-Use `lamData_cfg cfg₀ 0 (by norm_num [cfg₀]) cfg₀_ok 1 1 _ _ (fun _ => Or.inl rfl) ?_ 10 400 (by norm_num) (by norm_num [cfg₀]) (by norm_num [cfg₀]) ?_` and prove the remaining obligations. Apply the tactic sequence `intro i split_ifs <;> simp`. Introduce `j _ hj`. Simplify using `only [cfg₀] at hj ⊢`. Establish `: (j:ℝ) ≤ 2` using `by exact_mod_cast hj`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

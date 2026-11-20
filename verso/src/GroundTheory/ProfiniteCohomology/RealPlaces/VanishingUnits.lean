@@ -46,7 +46,7 @@ abbrev unitsTateCohomology (n : ℕ) : ModuleCat (ULift.{0} ℤ) :=
     (finUnitsMor S ιs) realUnits (realUnitsMor S ιr) n
 
 /- English proof (translation)
-The claim follows from `subsingleton_cohomology_galUnits_of_three_le _ _ hn`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_finLocal (v : S) {n : ℕ} (hn : 3 ≤ n) :
     Subsingleton (cohomology (galUnits.{0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
@@ -64,7 +64,7 @@ abbrev finLocalEquiv (v : HeightOneSpectrum (𝓞 K.1)) (n : ℕ) :
   cohomologyULiftIntAddEquiv (galUnits.{0} (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))) n
 
 /- English proof (translation)
-Use `subsingleton_localGaloisCohomology_of_isReal_of_odd w.1 w.2 hn` as an intermediate fact. Conclude with `(realLocalEquiv w n).injective.subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_realLocal_of_odd (w : {v : InfinitePlace K.1 // v.IsReal}) {n : ℕ} (hn : Odd n) :
     Subsingleton (cohomology (galUnits.{0} w.1.Completion (AlgebraicClosure w.1.Completion)) n) := by
@@ -74,9 +74,9 @@ theorem subsingleton_realLocal_of_odd (w : {v : InfinitePlace K.1 // v.IsReal}) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Break down `Nat.even_or_odd n with he | ho` into its components or cases. Establish `hc` using `natCard_localGaloisCohomology_of_isReal_of_even w.1 w.2 (by omega) he`. Establish `: Finite (localGaloisCohomology K n (.inl w.1))` using `Nat.finite_of_card_ne_zero (by rw [hc]; norm_num)`. Apply `(realLocalEquiv w n).injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `card_nsmul_eq_zero' (G := localGaloisCohomology K n (.inl w.1)) (x := realLocalEquiv w n t)`. Rewrite `h` using `[hc]`. Conclude with `h`. Use `subsingleton_realLocal_of_odd w ho` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_nsmul_realLocal (w : {v : InfinitePlace K.1 // v.IsReal}) {n : ℕ} (hn : 1 ≤ n)
     (t : cohomology (galUnits.{0} w.1.Completion (AlgebraicClosure w.1.Completion)) n) : 2 • t = 0 := by
@@ -113,7 +113,7 @@ theorem realUnitsRes_eq (r : ℕ) (w : {v : InfinitePlace K.1 // v.IsReal}) :
   rfl
 
 /- English proof (translation)
-Use `(idelesLimitCohomologyEquiv_unitsToIdeles_inl ι hr w.1 (sUnitsInfl K S r y)).trans ?_` and prove the remaining obligations. Use `(congrArg (fun f => f.hom (sUnitsInfl K S r y)) (unitsLocalRes_eq_of_algHom w.1.Completion (ιr w) (ι.inf w.1) r)).trans ?_` and prove the remaining obligations. Conclude with `(unitsLocalRes_sUnitsInfl S (ιr w) r y).trans (congrArg (realLocalEquiv w r) (congrArg (fun f => f.hom y) (realUnitsRes_eq S ιr r w).symm))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem realLocalEquiv_realUnitsRes (ι : LocalEmbeddings K) {r : ℕ} (hr : 1 ≤ r)
     (w : {v : InfinitePlace K.1 // v.IsReal}) (y : cohomology (galSUnitsMax K.1 ℚ̄ S) r) :
@@ -128,9 +128,9 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-Establish `hinj` using `(sUnitsRealPrimaryEquiv K S (nonempty_localEmbeddings K).some h2S hr).injective`. Establish `h0 : (⟨y, k, hk⟩ : AddCommGroup.primaryComponent (cohomology (galSUnitsMax K.1 ℚ̄ S) r) 2) = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[sUnitsRealPrimaryEquiv_apply, realLocalEquiv_realUnitsRes S ιr (nonempty_localEmbeddings K).some (by omega) w y, h w, map_zero]`. Both sides reduce to the same expression. Conclude with `congrArg Subtype.val h0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_realUnitsRes_eq_zero {r : ℕ} (hr : 4 ≤ r) (y : cohomology (galSUnitsMax K.1 ℚ̄ S) r)
     {k : ℕ} (hk : 2 ^ k • y = 0) (h : ∀ w, (realUnitsRes S ιr r w).hom y = 0) : y = 0 := by
@@ -147,7 +147,7 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-Take `⟨⟨y, _⟩, hy⟩` from `(sUnitsRealPrimaryEquiv K S (nonempty_localEmbeddings K).some h2S hr).surjective (fun w => realLocalEquiv w r (t w))`. Use `⟨y, fun w => (realLocalEquiv w r).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← realLocalEquiv_realUnitsRes S ιr (nonempty_localEmbeddings K).some (by omega) w y]`. Rewrite `hy` using `[sUnitsRealPrimaryEquiv_apply]`. Conclude with `congrFun hy w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_realUnitsRes_eq {r : ℕ} (hr : 4 ≤ r)
     (t : ∀ w : {v : InfinitePlace K.1 // v.IsReal},
@@ -163,7 +163,7 @@ theorem exists_realUnitsRes_eq {r : ℕ} (hr : 4 ≤ r)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg Prod.snd (hom_apply_hom_apply_of_comp_eq (tateToGlobal_tateGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) (galSUnitsMax K.1 ℚ̄ S) (finUnits S) (finUnitsMor S ιs) realUnits (realUnitsMor S ιr) n) x)) w`.
+A detailed English derivation is pending.
 -/
 theorem realUnitsRes_tateToGlobal (n : ℕ) (x : unitsTateCohomology S ιr ιs (n + 1))
     (w : {v : InfinitePlace K.1 // v.IsReal}) :
@@ -178,7 +178,7 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-Break down `Nat.even_or_odd (m + 1) with he | ho` into its components or cases. Conclude with `exists_realUnitsRes_eq S ιr h2S (r := m + 1) (by obtain ⟨j, hj⟩ := he; omega) t`. Conclude with `⟨0, fun w => @Subsingleton.elim _ (subsingleton_realLocal_of_odd w ho) _ _⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_realUnitsRes_eq_of_three_le {m : ℕ} (hm : 3 ≤ m + 1)
     (t : ∀ w : {v : InfinitePlace K.1 // v.IsReal}, cohomology (realUnits w) (m + 1)) :
@@ -190,7 +190,7 @@ theorem exists_realUnitsRes_eq_of_three_le {m : ℕ} (hm : 3 ≤ m + 1)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `h1 : (globalToLocal (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) (finUnits S) (finUnitsMor S ιs) (m + 1)).hom y = t.1` using `funext fun v => @Subsingleton.elim _ (subsingleton_finLocal S v hm) _ _`. Conclude with `Prod.ext h1 (funext hy)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tateGlobalToLocal_units_eq {m : ℕ} (hm : 3 ≤ m + 1)
     (t : (∀ v : S, cohomology (finUnits S v) (m + 1)) ×
@@ -205,7 +205,7 @@ theorem tateGlobalToLocal_units_eq {m : ℕ} (hm : 3 ≤ m + 1)
 include h2S in
 
 /- English proof (translation)
-The claim follows from `(exists_realUnitsRes_eq_of_three_le S ιr h2S hm t.2).imp fun y hy => tateGlobalToLocal_units_eq S ιr ιs hm t y hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_tateGlobalToLocal_eq {m : ℕ} (hm : 3 ≤ m + 1)
     (t : (∀ v : S, cohomology (finUnits S v) (m + 1)) ×
@@ -220,7 +220,7 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-Use `eq_zero_of_realUnitsRes_eq_zero S ιr h2S (by omega) _ (k := k) ?_ fun w => ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, hk, map_zero]`. Conclude with `realUnitsRes_tateToGlobal S ιr ιs n x w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateToGlobal_units_eq_zero {n : ℕ} (hn : 3 ≤ n) (x : unitsTateCohomology S ιr ιs (n + 1))
     {k : ℕ} (hk : 2 ^ k • x = 0) :
@@ -234,7 +234,7 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactCohomology_exact_compact (gsFinFamily S ιs) (gsRealFamily S ιr) (galSUnitsMax K.1 ℚ̄ S) (finUnits S) (finUnitsMor S ιs) realUnits (realUnitsMor S ιr) (m + 1)) x hx`. Take `⟨g, hg⟩` from `exists_tateGlobalToLocal_eq S ιr ιs h2S hm t`. Rewrite using `[← ht, ← hg]`. Conclude with `hom_apply_hom_apply_of_comp_eq (tateGlobalToLocal_tateLocalToCompact (gsFinFamily S ιs) (gsRealFamily S ιr) (galSUnitsMax K.1 ℚ̄ S) (finUnits S) (finUnitsMor S ιs) realUnits (realUnitsMor S ιr) m) g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_tateToGlobal_units_eq_zero {m : ℕ} (hm : 3 ≤ m + 1)
     (x : unitsTateCohomology S ιr ιs (m + 1 + 1))
@@ -252,7 +252,7 @@ theorem eq_zero_of_tateToGlobal_units_eq_zero {m : ℕ} (hm : 3 ≤ m + 1)
 include h2S in
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, r = m + 1 + 1` from `⟨r - 2, by omega⟩`. Conclude with `eq_zero_of_tateToGlobal_units_eq_zero S ιr ιs h2S (by omega) x (tateToGlobal_units_eq_zero S ιr ιs h2S (by omega) x hk)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_unitsTateCohomology_of_two_pow_nsmul {r : ℕ} (hr : 4 ≤ r) (x : unitsTateCohomology S ιr ιs r)
     {k : ℕ} (hk : 2 ^ k • x = 0) : x = 0 := by

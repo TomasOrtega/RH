@@ -11,13 +11,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.AmpleGen
 
 /- English proof (translation)
-Introduce `K _ A _ P hP U _ κ _ _ W hW hWU n`. Distinguish the cases in `hU : U = ⊤`. Substitute `hU` using the available equality. Establish `hWU' : ⨆ i, W i = ⊤` using `by rw [hWU]; simp`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hP n ⟨κ, inferInstance, inferInstance, W, hW, hWU', h⟩`. Establish `hb : U = ⊥`. Use `eq_bot_iff.2 fun x hx => (hU (eq_top_iff.2 fun y _ => ?_)).elim` and prove the remaining obligations. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Rewrite using `[Subsingleton.elim y x]` and apply the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Substitute using the available equality.
 
-Substitute `hb` using the available equality. Use `HomologicalComplex.ExactAt.of_isZero ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AbLaw.cechLB_X, ModuleCat.isZero_iff_subsingleton]`. Use `⟨fun a b => funext fun s => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.AbLaw.SecOnR.ext_of_cover _ (I := PEmpty) (fun i => i.elim) (fun i => i.elim) ?_ fun i => i.elim` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `Finset.card_pos.1 (by rw [s.2]; exact Nat.succ_pos _ : 0 < s.1.card)`. Use `(biInf_le W hi).trans (((le_iSup W i).trans hWU.le).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isRelAcyclic_of_not_NV : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (P : LB A.left),
     (∀ j : ℕ, ¬ NV A P (j + 1)) → GlobalTheory.CxForm.IsRelAcyclic A.hom A.hom P := by

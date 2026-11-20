@@ -5,7 +5,7 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `⟨((Ideal.quotientKerAlgEquivOfSurjective hf).symm.trans (Ideal.quotientEquivAlgOfEq K h)).trans (Ideal.quotientKerAlgEquivOfSurjective hg), fun a => ?_⟩` and prove the remaining obligations. Establish `: (Ideal.quotientKerAlgEquivOfSurjective hf).symm (f a) = Ideal.Quotient.mk _ a`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[AlgEquiv.trans_apply, AlgEquiv.trans_apply, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -20,9 +20,9 @@ private theorem UpperTheory.V.Pa.BC.equiv_of_ker {K A B C : Type} [CommRing K] [
   rfl
 
 /- English proof (translation)
-Use `Submodule.fg_span ?_` and prove the remaining obligations. Establish `key : ∀ (S : Type) [CommRing S] (Q : Fin q → Polynomial S), {z | ∃ j k, z = (Q j).coeff k}.Finite`. Introduce `S _ Q`. Use `((Set.finite_iUnion fun j => (Q j).coeffs.finite_toSet).insert 0).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨j, k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `h : (Q j).coeff k = 0`. Conclude with `Or.inl h`. Conclude with `Or.inr (Set.mem_iUnion.2 ⟨j, Polynomial.coeff_mem_coeffs h⟩)`. Conclude with `key _ _`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.BC.spIdeal_fg {R : Type} [CommRing R] {q n : ℕ} (P : Fin q → Polynomial R)
     (ut : Fin q → Fin n → R) : (spIdeal P ut).FG := by
@@ -37,13 +37,13 @@ private theorem UpperTheory.V.Pa.BC.spIdeal_fg {R : Type} [CommRing R] {q n : �
   exact key _ _
 
 /- English proof (translation)
-Establish `key : ∀ j k, MvPowerSeries.map φ (((∏ i, (Polynomial.X - Polynomial.C (MvPowerSeries.C (ut j i) + MvPowerSeries.X (j, i)))) - (P j).map (MvPowerSeries.C : R →+* MvPowerSeries (Fin q × Fin n) R)).coeff k) = ((∏ i, (Polynomial.X - Polynomial.C (MvPowerSeries.C (φ (ut j i)) + MvPowe …`. Introduce `j k`. Rewrite using `[← Polynomial.coeff_map, Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_map, Polynomial.map_map]`. Establish `: (MvPowerSeries.map φ).comp (MvPowerSeries.C : R →+* MvPowerSeries (Fin q × Fin n) R) = (MvPowerSeries.C : R' →+* MvPowerSeries (Fin q × Fin n) R').comp φ` using `by ext1 a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Unfold `spIdeal`. Rewrite using `[Ideal.map_span]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨j, k, rfl⟩, rfl⟩`. Conclude with `⟨j, k, key j k⟩`. Introduce and unpack `⟨j, k, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨j, k, rfl⟩, key j k⟩`.
+Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.Pa.BC.spIdeal_map {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {q n : ℕ}
     (P : Fin q → Polynomial R) (ut : Fin q → Fin n → R) :
@@ -72,21 +72,19 @@ private theorem UpperTheory.V.Pa.BC.spIdeal_map {R R' : Type} [CommRing R] [Comm
     exact ⟨_, ⟨j, k, rfl⟩, key j k⟩
 
 /- English proof (translation)
-Introduce `O O' _ _ _ _ _ B _ _ q n P ut`. Take `⟨τ0, h1, -, h3, -⟩` from `UpperTheory.V.Pa.BC.til_mvps O O' B (Fin q × Fin n)`. Take `⟨hs, hk⟩` from `UpperTheory.V.Pa.BC.til_quot O O' _ (spIdeal P ut) (UpperTheory.V.Pa.BC.spIdeal_fg P ut)`. Set `f : Til O O' (MvPowerSeries (Fin q × Fin n) B) →ₐ[O'] Til O O' (Sp P ut)` to `Til.map O' ((Sp.mk P ut).restrictScalars O)`. Set `g : Til O O' (MvPowerSeries (Fin q × Fin n) B) →ₐ[O'] Sp (fun j => (P j).map (Til.ι O O' B)) (fun j i => Til.ι O O' B (ut j i))` to `((Sp.mk _ _).restrictScalars O').comp τ0.toAlgHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : Function.Surjective f` using `hs`. Establish `hg : Function.Surjective g` using `Ideal.Quotient.mk_surjective.comp τ0.surjective`. Establish `hfk : RingHom.ker f = (spIdeal P ut).map (Til.ι O O' _)` using `hk`. Establish `hI : ((spIdeal P ut).map (Til.ι O O' _)).map τ0.toRingEquiv.toRingHom = spIdeal (fun j => (P j).map (Til.ι O O' B)) (fun j i => Til.ι O O' B (ut j i))`. Rewrite using `[Ideal.map_map, ← UpperTheory.V.Pa.BC.spIdeal_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `RingHom.ext h1`. Establish `hfg : RingHom.ker f = RingHom.ker g`. Rewrite using `[hfk]`. Use extensionality with `a`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e1 : a ∈ RingHom.ker g ↔ τ0 a ∈ spIdeal (fun j => (P j).map (Til.ι O O' B)) (fun j i => Til.ι O O' B (ut j i))` using `Ideal.Quotient.eq_zero_iff_mem`. Rewrite using `[e1, ← hI]`. Conclude with `(Ideal.apply_mem_of_equiv_iff (f := τ0.toRingEquiv)).symm`. Take `⟨τ, hτ⟩` from `UpperTheory.V.Pa.BC.equiv_of_ker f g hf hg hfg`. Use `⟨τ, fun a => ?_, fun j i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Til.map O' (IsScalarTower.toAlgHom O B (Sp P ut)) a = f (Til.map O' (IsScalarTower.toAlgHom O B (MvPowerSeries (Fin q × Fin n) B)) a)`. Establish `hc : IsScalarTower.toAlgHom O B (Sp P ut) = ((Sp.mk P ut).restrictScalars O).comp (IsScalarTower.toAlgHom O B (MvPowerSeries (Fin q × Fin n) B))` using `AlgHom.ext fun b => ((Sp.mk P ut).commutes b).symm`. Rewrite using `[hc]`. Use `PowerSeries.ext fun k => ?_` and prove the remaining obligations. Use `show Algebra.TensorProduct.map _ _ (Til.coeff O O' B k a) = Algebra.TensorProduct.map _ _ (Algebra.TensorProduct.map _ _ (Til.coeff O O' B k a))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `Til.coeff O O' B k a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[e, hτ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Sp.mk _ _ (τ0 _) = _`. Rewrite using `[h3]`. Conclude with `(Sp.mk _ _).commutes a`. Establish `e : Til.ι O O' _ (Sp.u P ut j i) = f (Til.ι O O' _ (MvPowerSeries.C (ut j i) + MvPowerSeries.X (j, i)))` using `(Til.map_ι O' ((Sp.mk P ut).restrictScalars O) (MvPowerSeries.C (ut j i) + MvPowerSeries.X (j, i))).symm`. Rewrite using `[e, hτ]`.
-
-Use `show Sp.mk _ _ (τ0 _) = Sp.mk _ _ _`. Rewrite using `[h1, map_add, MvPowerSeries.map_C, MvPowerSeries.map_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.til_sp :
     ∀ (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Module.Finite O O'] [Module.Free O O'] (B : Type) [CommRing B] [Algebra O B] (q n : ℕ) (P : Fin q → Polynomial B) (ut : Fin q → Fin n → B), ∃ τ : Til O O' (Sp P ut) ≃ₐ[O'] Sp (fun j => (P j).map (Til.ι O O' B)) (fun j i => Til.ι O O' B (ut j i)), (∀ a, τ (Til.map O' (IsScalarTower.toAlgHom O B (Sp P ut)) a) = algebraMap (Til O O' B) _ a) ∧ ∀ j i, τ (Til.ι O O' _ (Sp.u P ut j i)) = Sp.u _ _ j i := by

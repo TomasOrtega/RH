@@ -13,9 +13,9 @@ open PI.ScRefExists.Sk
 variable (I : Formalism.MainNotions.S.AutInst)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `hint : IsIntegral ℤ (starRingEnd I.E (t : I.E))` using `by first`. Consider the case `exact (RingOfIntegers.isIntegral_coe t).map (starRingEnd I.E).toIntAlgHom`. Consider the case `exact (t.2).map (starRingEnd I.E).toIntAlgHom`. Use `⟨⟨starRingEnd I.E (t : I.E), hint⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ht]`. Use `first`. Consider the case `(rw [star_mul', star_natCast]; rfl)`. Consider the case `simp [star_mul']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GE_star (g : ℕ) {x : I.E} (h : GE I g x) : GE I g (star x) := by
   obtain ⟨t, ht⟩ := h
@@ -30,57 +30,51 @@ theorem GE_star (g : ℕ) {x : I.E} (h : GE I g x) : GE I g (star x) := by
   | simp [star_mul']
 
 /- English proof (translation)
-Use `set N : Submodule (𝓞 I.E) (Fin I.n → I.E) := Submodule.span (𝓞 I.E) Sset ⊔ gL I (p ^ m) with hN`. Establish `hsm : ∀ (c : 𝓞 I.E) (v : Fin I.n → I.E), c • v = (c : I.E) • v` using `fun c v => rfl`. Establish `hS : ∀ v ∈ Sset, v ∈ N` using `fun v hv => Submodule.mem_sup_left (Submodule.subset_span hv)`. Establish `hE : ∀ (c : 𝓞 I.E) (v : Fin I.n → I.E), v ∈ N → (c : I.E) • v ∈ N` using `fun c v hv => by`. Rewrite using `[← hsm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `N.smul_mem c hv`. Establish `hnat : ∀ (s : ℕ) (v : Fin I.n → I.E), v ∈ N → (s : I.E) • v ∈ N` using `fun s v hv => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hv s`. Establish `hgl : ∀ x ∈ I.L, ∀ t : 𝓞 I.E, (((p ^ m : ℕ) : I.E) * (t : I.E)) • x ∈ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx t`. Establish `h1 : ((p ^ m : ℕ) : I.E) • x ∈ N` using `Submodule.mem_sup_right (Submodule.subset_span ⟨x, hx, rfl⟩)`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `hE t _ h1`. Establish `hbez : ∀ z ∈ I.L, ∀ s : ℕ, Nat.Coprime s p → (s : I.E) • z ∈ N → z ∈ N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz s hs hsz`. Establish `hcop : IsCoprime (s : ℤ) ((p ^ m : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.mpr (Nat.Coprime.pow_right m hs)`. Take `⟨u, v, huv⟩` from `hcop`. Establish `hpz : ((p ^ m : ℕ) : I.E) • z ∈ N` using `Submodule.mem_sup_right (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `hc : (u : I.E) * (s : I.E) + (v : I.E) * ((p ^ m : ℕ) : I.E) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `congrArg (Int.cast : ℤ → I.E) huv`. Move the coercions through the operations in `at h ⊢`. Take the linear combination `h`. Establish `e : z = u • ((s : I.E) • z) + v • (((p ^ m : ℕ) : I.E) • z)`. Rewrite using `[← Int.cast_smul_eq_zsmul I.E u, ← Int.cast_smul_eq_zsmul I.E v, smul_smul, smul_smul, ← add_smul, hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `N.add_mem (zsmul_mem hsz u) (zsmul_mem hpz v)`. Establish `hclr : ∀ v ∈ LA I p, ∃ s : ℕ, Nat.Coprime s p ∧ (s : I.E) • v ∈ I.L`. Introduce `v hv`. Take `⟨s, hs, h⟩` from `span_clear I p (I.L : Set (Fin I.n → I.E)) hv`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hs, by rwa [Submodule.span_eq] at h⟩`. Establish `gen : ∀ (φ φ' : 𝓞 I.E) (u u' : Fin (k + 1) → Fin I.n → I.E), (∀ i, u i ∈ LA I p) → (∀ i, u' i ∈ LA I p) → (∀ i : Fin k, (φ : I.E) • ((T : I.E) • u i.castSucc) ∈ Sset) → (T : I.E) • ((φ : I.E) • u (Fin.last k) - (φ' : I.E) • u' (Fin.last k)) ∈ N → GE I (p ^ m) ((φ : I.E) * φ - φ) …`. Introduce `φ φ' u u' hu hu' hSu hz h1 h2 y hy hyA`. Take `⟨s2, hs2, hs2L⟩` from `hclr _ (hu (Fin.last k))`. Take `⟨s3, hs3, hs3L⟩` from `hclr _ (hu' (Fin.last k))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t1, ht1⟩` from `h1`. Take `⟨t2, ht2⟩` from `h2`. Take `⟨s1, hs1, hs1y⟩` from `span_clear I p _ hyA`. Establish `key : ∀ v ∈ Submodule.span (𝓞 I.E) (Set.range e ∪ Set.range f ∪ Set.range u), ((M * T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • v) ∈ N`. Introduce `v hv`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Break down `hv with (⟨a, rfl⟩ | ⟨a, rfl⟩) | ⟨i, rfl⟩` into its components or cases. Establish `h` using `hS _ (hSe a)`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul I.E]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : ((M * T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • e a) = ((T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • ((M : I.E) • e a))`. Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Conclude with `hnat _ _ (hE φ _ h)`. Establish `h` using `hS _ (hSf a)`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul I.E]`. Establish `e1 : ((M * T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • f a) = ((T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • ((M : I.E) • f a))`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hnat _ _ (hE φ _ h)`. Consider the cases of `i using Fin.lastCases with`. Consider the case `last`. Establish `hA : ((M * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • ((T : I.E) • ((φ : I.E) • u (Fin.last k) - (φ' : I.E) • u' (Fin.last k)))) ∈ N` using `hnat _ _ (hE φ _ hz)`. Establish `hB : ((M * s3 * T : ℕ) : I.E) • ((((p ^ m : ℕ) : I.E) * (t1 : I.E)) • ((s2 : I.E) • u (Fin.last k))) ∈ N` using `hnat _ _ (hgl _ hs2L t1)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hC : ((M * s2 * T : ℕ) : I.E) • ((((p ^ m : ℕ) : I.E) * (t2 : I.E)) • ((s3 : I.E) • u' (Fin.last k))) ∈ N` using `hnat _ _ (hgl _ hs3L t2)`. Establish `e1 : ((M * T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • u (Fin.last k)) = ((M * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • ((T : I.E) • ((φ : I.E) • u (Fin.last k) - (φ' : I.E) • u' (Fin.last k)))) - ((M * s3 * T : ℕ) : I.E) • ((((p ^ m : ℕ) : I.E) * (t1 : I.E)) • ((s2 : I.E) • u (Fin.last k)) …`. Rewrite using `[← ht1, ← ht2]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `N.add_mem (N.sub_mem hA hB) hC`. Consider the case `cast j`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `h` using `hS _ (hSu j)`. Establish `e1 : ((M * T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • u j.castSucc) = ((M * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • ((T : I.E) • u j.castSucc))`. Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `hnat _ _ h`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_add, smul_add]`. Conclude with `N.add_mem hv hw`. Consider the case `smul c v _ hv`. Rewrite using `[hsm, smul_comm (φ : I.E) (c : I.E) v, smul_comm ((M * T * s2 * s3 : ℕ) : I.E) (c : I.E)]`. Conclude with `hE c _ hv`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hk` using `key _ hs1y`. Establish `hφy : (φ : I.E) • y ∈ I.L`. Rewrite using `[← hsm]`. Conclude with `I.L.smul_mem φ hy`. Use `hbez _ hφy (M * T * s2 * s3 * s1) (Nat.Coprime.mul (Nat.Coprime.mul (Nat.Coprime.mul (Nat.Coprime.mul hM hT) hs2) hs3) hs1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ((M * T * s2 * s3 * s1 : ℕ) : I.E) • ((φ : I.E) • y) = ((M * T * s2 * s3 : ℕ) : I.E) • ((φ : I.E) • ((s1 : I.E) • y))`. Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `hk`. Choose the witnesses or unpack the hypotheses as in `⟨θb, hθb⟩ : ∃ θb : 𝓞 I.E, (θb : I.E) = star (θ : I.E) := by`. Establish `hint : IsIntegral ℤ (starRingEnd I.E (θ : I.E))` using `by first`. Consider the case `exact (RingOfIntegers.isIntegral_coe θ).map (starRingEnd I.E).toIntAlgHom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact (θ.2).map (starRingEnd I.E).toIntAlgHom`. Conclude with `⟨⟨starRingEnd I.E (θ : I.E), hint⟩, rfl⟩`. Introduce `y hy`. Establish `hyN1 : (θ : I.E) • y ∈ N` using `gen θ θb w wd (fun i => (hw i).1) (fun i => (hw i).2) hSb (by rw [hθb]; exact hS _ hSz) hθ1 (by rw [hθb]; exact hθ2) y hy (hspan y hy).1`. Establish `hz2 : (T : I.E) • ((θb : I.E) • wd (Fin.last k) - (θ : I.E) • w (Fin.last k)) ∈ N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (T : I.E) • ((θb : I.E) • wd (Fin.last k) - (θ : I.E) • w (Fin.last k)) = -((T : I.E) • ((θ : I.E) • w (Fin.last k) - star (θ : I.E) • wd (Fin.last k)))`. Rewrite using `[hθb, ← smul_neg, neg_sub]`. Rewrite using `[e]`. Conclude with `N.neg_mem (hS _ hSz)`. Establish `h1' : GE I (p ^ m) ((θb : I.E) * θb - θb)`.
-
-Establish `h` using `GE_star I (p ^ m) hθ1`. Rewrite `h` using `[star_sub, star_mul', ← hθb]`. Then use the resulting hypothesis. Establish `h2' : GE I (p ^ m) ((θb : I.E) * θ)`. Rewrite using `[hθb, mul_comm]`. Conclude with `hθ2`.
-
-Establish `hyN2 : (θb : I.E) • y ∈ N` using `gen θb θ wd w (fun i => (hw i).2) (fun i => (hw i).1) (fun i => by rw [hθb]; exact hSbd i) hz2 h1' h2' y hy (hspan y hy).2`. Take `⟨t3, ht3⟩` from `hθ3`. Establish `h3 : ((1 : I.E) - θ - star (θ : I.E)) • y ∈ N`. Rewrite using `[ht3]`. Conclude with `hgl y hy t3`.
-
-Establish `e : y = (θ : I.E) • y + (θb : I.E) • y + ((1 : I.E) - θ - star (θ : I.E)) • y`. Rewrite using `[hθb, ← add_smul, ← add_smul, show (θ : I.E) + star (θ : I.E) + (1 - θ - star (θ : I.E)) = 1 by ring, one_smul]`. Rewrite using `[e]`. Conclude with `N.add_mem (N.add_mem hyN1 hyN2) h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_part (p m r k : ℕ) (θ : 𝓞 I.E) (e f : Fin r → Fin I.n → I.E) (M T : ℕ)
     (w wd : Fin (k + 1) → Fin I.n → I.E)

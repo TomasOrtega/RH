@@ -5,13 +5,11 @@ open scoped Topology ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ i, ‖star (u i) * ∑ j, A i j * u j‖ ≤ ∑ j, ‖A i j‖ * ‖u‖ ^ 2`. Introduce `i`. Rewrite using `[norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_le_pi_norm u i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `gcongr`. Conclude with `norm_le_pi_norm u j`. Use `_ = ∑ j, ‖A i j‖ * ‖u‖ ^ 2 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Simplify using `[dotProduct, mulVec]`.
-
-Use `_ ≤ ∑ i, ‖star (u i) * ∑ j, A i j * u j‖ := norm_sum_le _ _`. Use `_ ≤ ∑ i, ∑ j, ‖A i j‖ * ‖u‖ ^ 2 := Finset.sum_le_sum fun i _ => key i`. Use `_ = (∑ i, ∑ j, ‖A i j‖) * ‖u‖ ^ 2 := by simp [Finset.sum_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_star_dotProduct_mulVec_le {n : Type} [Fintype n] (A : Matrix n n ℂ) (u : n → ℂ) :
     ‖star u ⬝ᵥ A *ᵥ u‖ ≤ (∑ i, ∑ j, ‖A i j‖) * ‖u‖ ^ 2 := by
@@ -34,7 +32,7 @@ theorem norm_star_dotProduct_mulVec_le {n : Type} [Fintype n] (A : Matrix n n �
     _ = (∑ i, ∑ j, ‖A i j‖) * ‖u‖ ^ 2 := by simp [Finset.sum_mul]
 
 /- English proof (translation)
-Rewrite using `[star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_star_dotProduct_mulVec_ofReal_smul {n : Type} [Fintype n] (A : Matrix n n ℂ) (t : ℝ)
     (w : n → ℂ) :
@@ -44,21 +42,19 @@ theorem re_star_dotProduct_mulVec_ofReal_smul {n : Type} [Fintype n] (A : Matrix
   ring
 
 /- English proof (translation)
-Use `set f : (n → ℂ) → ℝ := fun u => (star u ⬝ᵥ A *ᵥ u).re with hf`. Establish `hfc : Continuous f`. Simplify using `only [hf]`. Use `fun_prop`. Establish `hsc : ∀ u : n → ℂ, u ≠ 0 → ‖((‖u‖⁻¹ : ℝ) : ℂ) • u‖ = 1 ∧ f u = ‖u‖ ^ 2 * f (((‖u‖⁻¹ : ℝ) : ℂ) • u)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hn : ‖u‖ ≠ 0` using `norm_ne_zero_iff.mpr hu`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hn]`. Simplify using `only [hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[re_star_dotProduct_mulVec_ofReal_smul]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hne : (Metric.sphere (0 : n → ℂ) 1).Nonempty`. Take `⟨v, hv, hmin⟩` from `(isCompact_sphere (0 : n → ℂ) 1).exists_isMinOn hne hfc.continuousOn`. Establish `hv0 : v ≠ 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hv` using `[h, mem_sphere_iff_norm, sub_zero, norm_zero]`. Conclude with `zero_ne_one hv`. Use `⟨f v, ?_, fun u => ?_⟩` and prove the remaining obligations. Use `hA.re_dotProduct_pos hv0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `this` using `[hf]`. Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Simplify using `[hf]`. Take `⟨h1, h2⟩` from `hsc u hu`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : ((‖u‖⁻¹ : ℝ) : ℂ) • u ∈ Metric.sphere (0 : n → ℂ) 1`. Rewrite using `[mem_sphere_iff_norm, sub_zero]`. Conclude with `h1`. Use `hmin hw` as an intermediate fact. Express the relevant statement in the definitionally equal form `f u ≥ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h2, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right this (sq_nonneg _)`. Use `⟨1, one_pos, fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality.
-
-Simplify using the standard rewrite rules. Conclude with `absurd ⟨_, by rw [mem_sphere_iff_norm, sub_zero]; exact (hsc u hu).1⟩ hne`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pos_mul_sq_norm_le_re_of_posDef {n : Type} [Fintype n] (A : Matrix n n ℂ)
     (hA : A.PosDef) : ∃ m : ℝ, 0 < m ∧ ∀ u : n → ℂ, m * ‖u‖ ^ 2 ≤ (star u ⬝ᵥ A *ᵥ u).re := by
@@ -101,21 +97,19 @@ theorem exists_pos_mul_sq_norm_le_re_of_posDef {n : Type} [Fintype n] (A : Matri
     · exact absurd ⟨_, by rw [mem_sphere_iff_norm, sub_zero]; exact (hsc u hu).1⟩ hne
 
 /- English proof (translation)
-Introduce `Y _ n _ K y₀ hK hpd`. Take `⟨m, hm, hlow⟩` from `exists_pos_mul_sq_norm_le_re_of_posDef (K y₀) hpd`. Establish `hent : ∀ i j, ContinuousAt (fun y => K y i j) y₀` using `fun i j => ((Continuous.matrix_elem continuous_id i j).continuousAt).comp hK`. Use `set S : Y → ℝ := fun y => ∑ i, ∑ j, ‖K y i j‖ with hS`. Use `set D : Y → ℝ := fun y => ∑ i, ∑ j, ‖(K y - K y₀) i j‖ with hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hSc : ContinuousAt S y₀`. Simplify using `only [hS]`. Conclude with `tendsto_finset_sum _ fun i _ => tendsto_finset_sum _ fun j _ => (hent i j).norm`. Establish `hDc : ContinuousAt D y₀`. Simplify using `only [hD, Matrix.sub_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `tendsto_finset_sum _ fun i _ => tendsto_finset_sum _ fun j _ => ((hent i j).sub continuousAt_const).norm`. Establish `hD0 : D y₀ = 0` using `by simp [hD]`. Establish `hev1 : ∀ᶠ y in 𝓝 y₀, D y < m / 2`. Use `hDc.eventually (gt_mem_nhds (show D y₀ < m / 2 by rw [hD0]; linarith))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev2 : ∀ᶠ y in 𝓝 y₀, S y < S y₀ + 1` using `hSc.eventually (gt_mem_nhds (lt_add_one (S y₀)))`. Establish `hS0 : 0 ≤ S y₀` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Use `⟨m / 2, S y₀ + 1, by linarith, by linarith, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev1, hev2] with y hy1 hy2 u`. Establish `hsq : 0 ≤ ‖u‖ ^ 2` using `sq_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hsplit : (star u ⬝ᵥ K y *ᵥ u).re = (star u ⬝ᵥ K y₀ *ᵥ u).re + (star u ⬝ᵥ (K y - K y₀) *ᵥ u).re`. Rewrite using `[sub_mulVec, dotProduct_sub, Complex.sub_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hE` using `norm_star_dotProduct_mulVec_le (K y - K y₀) u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hre` using `Complex.abs_re_le_norm (star u ⬝ᵥ (K y - K y₀) *ᵥ u)`. Establish `h3 : D y * ‖u‖ ^ 2 ≤ m / 2 * ‖u‖ ^ 2` using `mul_le_mul_of_nonneg_right hy1.le hsq`. Establish `h4` using `hlow u`. Establish `h5` using `neg_abs_le (star u ⬝ᵥ (K y - K y₀) *ᵥ u).re`. Rewrite using `[hsplit]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hD] at h3`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE` using `norm_star_dotProduct_mulVec_le (K y) u`. Establish `hre` using `Complex.re_le_norm (star u ⬝ᵥ K y *ᵥ u)`. Establish `h3 : S y * ‖u‖ ^ 2 ≤ (S y₀ + 1) * ‖u‖ ^ 2` using `mul_le_mul_of_nonneg_right hy2.le hsq`.
-
-Simplify using `only [hS] at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem posDef_uniform_bounds_nhds : ∀ (Y : Type) [TopologicalSpace Y] (n : Type) [Fintype n]
     (K : Y → Matrix n n ℂ) (y₀ : Y), ContinuousAt K y₀ → (K y₀).PosDef →

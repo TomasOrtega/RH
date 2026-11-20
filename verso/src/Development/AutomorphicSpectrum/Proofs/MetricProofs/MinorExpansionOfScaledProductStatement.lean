@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul | exact GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.minor_expansion_of_scaled_product : ∀ {Ψ : Type} {p q : ℕ} {Ω : Type} [Field Ω] {n : Ψ ⊕ Ψ → ℕ}
     (A C : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω)

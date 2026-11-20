@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.DblSchr
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hξ κ _ co hco`. Establish `h1 : Formalism.L2.Theta.IsHeckeChar D 1` using `⟨continuous_const, fun _ => rfl⟩`. Establish `r0 : Formalism.L2.Theta.ResEta D 1 0` using `⟨rT.1, fun _ _ _ => by simp⟩`. Establish `r1 : Formalism.L2.Theta.ResEta D 1 (GlobalTheory.Doubling.dblSp S).rank` using `Formalism.L2.Theta.resEta_parity r0 (by show 0 % 2 = (S.rank + S.rank) % 2; omega)`. Take `⟨ωd, hωd⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ (GlobalTheory.Doubling.dblSp S) T 1 χT hψ h1 hT r1 rT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ωd, hωd, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.exists_weilDatum_transport_adelicSchwartz_thetaTransform D ψ hψ (GlobalTheory.Doubling.dblSp S) T 1 χT h1 hT r1 rT JA (JBd S JB) ξ hJA (GlobalTheory.T.doubledGram_satisfies_xi_relation D S JB ξ hξ) (κ ⊕ κ) (ddr co) (GlobalTheory.T.doubledDarbouxCoords_rational_of_r …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_dbl_weilDatum_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

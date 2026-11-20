@@ -7,9 +7,9 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `hH.apply j i`. Simplify using `only [Complex.star_def, Complex.conj_conj] at h ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermitian_dotProduct_mulVec_star_swap {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ)
     (hH : H.IsHermitian) (x y : Fin g → ℂ) :
@@ -23,9 +23,9 @@ theorem hermitian_dotProduct_mulVec_star_swap {g : ℕ} (H : Matrix (Fin g) (Fin
   ring
 
 /- English proof (translation)
-Rewrite using `[hermitian_dotProduct_mulVec_star_swap H hH x y]`. Use `set a := x ⬝ᵥ H.mulVec (star y)`. Establish `h` using `Complex.sub_conj a`. Move the coercions through the operations in `at h`. Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(Real.pi : ℂ)) * h`.
+A detailed English derivation is pending.
 -/
 theorem pi_mul_hermitian_alternation {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ)
     (hH : H.IsHermitian) (x y : Fin g → ℂ) :

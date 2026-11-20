@@ -11,47 +11,43 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit
 
 /- English proof (translation)
-Introduce `E _ _ _ n a g Λ _ _ Ψ _ L σ m b hσ hb`. Take `⟨bas, A, T0, B, c, ρ, h⟩` from `exists_isChart L.toLogPeriods`. Take `⟨Pr, hPr⟩` from `GlobalTheory.T.exists_isKerProj' g (∑ j, B j)`. Take `⟨hsat, hs, hinj, hspan⟩` from `GlobalTheory.T.chartW_saturated_and_continuous_section n a g Λ L.toLogPeriods bas A T0 B c ρ h`. Take `⟨hext, hlim⟩` from `GlobalTheory.T.mem_chartW_of_continuous_period n a g Λ L.toLogPeriods bas A T0 B c ρ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hHerm, hIm, hKill, hPos⟩` from `GlobalTheory.T.chartQ_hermitian_and_real_pairing n a g Λ L.toLogPeriods bas A T0 B c ρ Pr h hPr`. Take `⟨hQc, ρ', hρ', hrep⟩` from `GlobalTheory.T.chartQ_continuousAt_and_local_solution n a g Λ L.toLogPeriods bas A T0 B c ρ Pr h hPr`. Establish `h0ball : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Establish `hBc : ∀ (c' : 𝓞 E) (t : (Fin n → ℂ) → Fin g → ℂ), ContinuousAt t 0 → ContinuousAt (fun z => L.B z c' (t z)) 0` using `fun c' t ht => contAt_act L c' t ht`. Establish `hstab : ∀ (c' : 𝓞 E) (x : Λ), x ∈ chartW bas B → c' • x ∈ chartW bas B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c' x hx`. Use `hext (c' • x) (fun z => L.B z c' (chartS bas A T0 x z)) (hBc c' _ (hs x hx).1) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[L.act w hw, (hs x hx).2 w hw]`. Establish `hconj : ∀ c' : 𝓞 E, ∃ c'' : 𝓞 E, (c'' : E) = IsCMField.complexConj E (c' : E)`. Introduce `c'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨IsCMField.complexConj E (c' : E), ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe c').map (IsCMField.complexConj E)`. Set `W : Submodule (𝓞 E) Λ` to `{ carrier := chartW bas B add_mem' := fun hx hy => (chartW bas B).add_mem hx hy zero_mem' := (chartW bas B).zero_mem smul_mem' := fun c' x hx => hstab c' x hx }`. Establish `hW : ∀ x, x ∈ W ↔ x ∈ chartW bas B` using `fun x => Iff.rfl`. Set `I : Submodule (𝓞 E) Λ` to `{ carrier := {x | x ∈ chartW bas B ∧ ∀ y ∈ chartW bas B, L.toLogPeriods.E x y = 0} add_mem' := fun {x y} hx hy => ⟨(chartW bas B).add_mem hx.1 hy.1, fun u hu => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, LinearMap.add_apply, hx.2 u hu, hy.2 u hu, add_zero]⟩`. Use the proof step `zero_mem' := ⟨(chartW bas B).zero_mem, fun u _ => by simp⟩`. Use the proof step `smul_mem' := fun c' x hx => ⟨hstab c' x hx.1, fun u hu => by`. Take `⟨c'', hc⟩` from `hconj c'`. Rewrite using `[L.adj c' c'' hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hx.2 _ (hstab c'' u hu)⟩ }`. Establish `hI : ∀ x, x ∈ I ↔ x ∈ W ∧ ∀ y ∈ W, L.toLogPeriods.E x y = 0` using `fun x => Iff.rfl`. Set `toZ : W →+ chartW bas B` to `AddMonoidHom.mk' (fun x => ⟨x.1, x.2⟩) (fun _ _ => rfl)`. Establish `hrad : ∀ x : chartW bas B, (∀ x' : chartW bas B, L.toLogPeriods.E x x' = 0) ↔ (x : Λ) ∈ I` using `fun x => ⟨fun hx => ⟨x.2, fun y hy => hx ⟨y, hy⟩⟩, fun hx x' => hx.2 _ x'.2⟩`. Set `per : W →+ (Fin g → ℂ)` to `(chartPer bas A T0 B).comp toZ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hper : ∀ x : W, per x = chartS bas A T0 (x : Λ) 0` using `fun _ => rfl`. Set `s : W → (Fin n → ℂ) → Fin g → ℂ` to `fun x => chartS bas A T0 (x : Λ)`. Establish `hs' : ∀ x : W, ContinuousAt (s x) 0 ∧ s x 0 = per x ∧ ∀ w ∈ logCover L.a_le, s x (expCover a w) = L.P w x` using `fun x => ⟨(hs x.1 x.2).1, rfl, (hs x.1 x.2).2⟩`. Establish `hinj' : Function.Injective per` using `fun x y hxy => Subtype.ext (congrArg Subtype.val (hinj hxy))`. Establish `hseq : ∃ ws : ℕ → Fin n → ℂ, (∀ m, ws m ∈ logCover L.a_le) ∧ Tendsto (fun m => expCover a (ws m)) atTop (𝓝 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun m k => if k.val < a then -(((m : ℝ) + 1 : ℝ) : ℂ) else 0, fun m => ⟨fun i => ?_, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hi : (Fin.castLE L.a_le i).val < a` using `i.2`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Simplify using `only [hi, if_true, Complex.neg_re, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk' : ¬ k.val < a` using `not_lt.2 hk`. Simplify using `[hk']`. Rewrite using `[tendsto_pi_nhds]`. Introduce `k`. Distinguish the cases in `hk : k.val < a`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [expCover, hk, if_true, Pi.zero_apply]`. Establish `h1 : Tendsto (fun m : ℕ => Real.exp (-((m : ℝ) + 1))) atTop (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp (tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop))`. Establish `h2` using `(Complex.continuous_ofReal.tendsto 0).comp h1`. Simplify `h2` using `only [Function.comp_def, Complex.ofReal_zero, Complex.ofReal_exp, Complex.ofReal_neg]`. Simplify using `[expCover, hk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hact : ∀ (c' : 𝓞 E) (x : W), per (c' • x) = L.B 0 c' (per x)`. Introduce `c' x`. Take `⟨ws, hws, hlim0⟩` from `hseq`. Establish `h1 : Tendsto (fun m => chartS bas A T0 ((c' • x : W) : Λ) (expCover a (ws m))) atTop (𝓝 (per (c' • x)))` using `(hs' (c' • x)).1.tendsto.comp hlim0 |>.congr fun _ => rfl`. Establish `h2 : Tendsto (fun m => L.B (expCover a (ws m)) c' (chartS bas A T0 (x : Λ) (expCover a (ws m)))) atTop (𝓝 (L.B 0 c' (per x)))` using `(hBc c' _ (hs' x).1).tendsto.comp hlim0 |>.congr fun _ => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `tendsto_nhds_unique h1 (h2.congr fun m => ?_)` and prove the remaining obligations. Rewrite using `[(hs x.1 x.2).2 _ (hws m), ← L.act _ (hws m)]`. Conclude with `((hs _ (hstab c' x.1 x.2)).2 _ (hws m)).symm`. Establish `hset : {p | ∃ x : chartW bas B, (∀ x' : chartW bas B, L.toLogPeriods.E x x' = 0) ∧ p = chartPer bas A T0 B x} = {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}`. Use extensionality with `p`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x.1, x.2⟩, (hrad x).1 hx, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x.1, x.2⟩, (hrad ⟨x.1, x.2⟩).2 hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨W, I, per, chartQ Pr A T0 0, (A 0)ᵀ, uCo bas, hI, ?_, hinj', hact, by rw [det_transpose]; exact h.A_det, ?_, ?_⟩` and prove the remaining obligations. Introduce `x k hk hx`. Establish `h2 : x ∈ chartW bas B` using `hsat x k hk hx.1`. Use `⟨h2, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h3` using `hx.2 y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_zsmul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h3).resolve_left hk`. Introduce `x hx`. Establish `hv : vCo bas (x : Λ) = 0`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hv0 : vCo bas (bas (.inl i)) = 0`. Use function extensionality and compare the values at `j`. Simplify using `[vCo]`. Establish `hu0 : uCo bas (bas (.inl i)) = Pi.single i 1`. Use function extensionality and compare the values at `j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[uCo]`. Simplify using `[uCo, hj, Finsupp.single_apply, Ne.symm hj]`. Establish `h1` using `hx.2 (bas (.inl i)) (by simp [chartW, hv0])`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[form_coords bas _ h.form L.alt, hv0, hu0]`. Simplify using `using h1`. Rewrite using `[hper, chartS, hv]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[cst, mulVec, dotProduct]`. Use `limit_of_data E n a g Λ Ψ L σ m b W I per s (chartQ Pr A T0 0) (chartQ Pr A T0) ρ' hσ hb (fun x hx => hx.1) (fun x hx y hy => hx.2 y hy.1) hinj' hact hs' hHerm ?_ hQc rfl hρ' ?_` and prove the remaining obligations. Introduce `v`. Rewrite using `[← hset]`. Conclude with `hPos v`.
-
-Introduce `w hw hwρ y`. Take `⟨p, h1, h2, h3⟩` from `hrep w hw hwρ y`. Use `⟨p, ?_, fun x hx => ?_, h3⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
-
-Conclude with `⟨x, (hrad x).1 hx, rfl⟩`. Conclude with `h2 ⟨x, hx.1⟩ ((hrad ⟨x, hx.1⟩).2 hx)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limit_strong : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (L : ActPeriods E n a g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (b : Ψ → Fin m → (Fin n → ℂ) → Fin g → ℂ), IsCMFam σ → IsEigFrames (Metric.ball 0 1) L.B σ b → ∃ (W : Submodule (𝓞 E) Λ) (I : Submodule (𝓞 E) Λ) (per : W →+ (Fin g → ℂ)) (Hb M : Matrix (Fin g) (Fin g) ℂ) (u : Λ →ₗ[ℤ] (Fin g → ℤ)), (∀ x, x ∈ I ↔ x ∈ W ∧ ∀ y ∈ W, L.toLogPeriods.E x y = 0) ∧ IsSaturated I ∧ Function.Injective per ∧ (∀ (c : 𝓞 E) (x : W), per (c • x) = L.B 0 c (per x)) ∧ M.det ≠ 0 ∧ (∀ x : W, (x : Λ) ∈ I → per x = M *ᵥ cst (u x)) ∧ ∀ ν : ℝ, PhiNormSq (L.B 0) (fun x y => y ⬝ᵥ Hb *ᵥ star x) (AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) 1 σ (fun τ i => b τ i 0) ν → 0 < ν ∧ ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ w (hw : w ∈ logCover L.a_le), ‖expCover a w‖ < δ → |(L.riem w hw).logDet (fun τ i => b τ i (expCover a w)) - Real.log ((L.riem w hw).nz σ I) - Real.log ν| < ε := by
   intro E _ _ _ n a g Λ _ _ Ψ _ L σ m b hσ hb
@@ -175,25 +171,23 @@ theorem limit_strong : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n
       · exact h2 ⟨x, hx.1⟩ ((hrad ⟨x, hx.1⟩).2 hx)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.T.exists_eigenComponent_polynomial E s`. Take `⟨hc1, -, hc3⟩` from `hc _ ρ`. Set `e` to `RingOfIntegers.basis E`. Set `γ : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℂ` to `fun k => ∑ x ∈ c.support, c x * (e.repr x k : ℂ)`. Establish `hγ : ∀ v, eigComp ρ s v = ∑ k, γ k • ρ (e k) v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[hc1]`. Simplify using `only [γ, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ρ x = ρ (∑ k, e.repr x k • e k)` using `by rw [e.sum_repr]`. Rewrite using `[hx]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum, mul_smul, Int.cast_smul_eq_zsmul]`. Establish `hk : ∃ k, γ k ≠ 0`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hn`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hc3 x₀ hx₀, hγ]`. Simplify using `[hn]`. Take `⟨k₀, hk₀⟩` from `hk`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : LinearIndependent ℤ fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin r => e p.1 • y p.2` using `linearIndependent_smul e.linearIndependent hli`. Establish `hmem : ∀ p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin r, ((e p.1 • y p.2 : W) : Λ) ∈ I` using `fun p => I.smul_mem _ (hy p.2)`. Establish `h2 : LinearIndependent ℤ fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin r => u ((e p.1 • y p.2 : W) : Λ)`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 l (hinj ?_)` and prove the remaining obligations. Rewrite using `[hu _ (by rw [Submodule.coe_sum]; exact I.sum_mem fun p _ => zsmul_mem (hmem p) _), map_zero]`. Establish `: u ((∑ p, l p • e p.1 • y p.2 : W) : Λ) = 0`. Rewrite using `[← hl, Submodule.coe_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => map_zsmul u _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `: cst (0 : Fin g → ℤ) = 0` using `by funext k; simp [cst]`. Rewrite using `[this, mulVec_zero]`. Establish `h3 : LinearIndependent ℂ fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin r => cst (u ((e p.1 • y p.2 : W) : Λ))` using `(linearIndependent_algebraMap_comp_iff (R := ℤ) (S := ℂ)).2 h2`. Establish `h4 : LinearIndependent ℂ fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin r => ρ (e p.1) (per (y p.2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h3.map' M.mulVecLin (LinearMap.ker_eq_bot.2 (mulVec_injective_of_det_ne_zero hM))` as an intermediate fact. Establish `e4 : (fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin r => ρ (e p.1) (per (y p.2))) = M.mulVecLin ∘ fun p => cst (u ((e p.1 • y p.2 : W) : Λ))`. Use function extensionality and compare the values at `p`. Rewrite using `[← hact, hu _ (hmem p)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e4]`. Conclude with `this`. Rewrite `h4`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `l hl a`. Use `h4 (fun p => l p.2 * γ p.1) (by` as an intermediate fact.
-
-Rewrite using `[← hl, Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `only [hγ, Finset.smul_sum, mul_smul]) (k₀, a)`. Conclude with `(mul_eq_zero.1 this).resolve_right hk₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eig_indep {E : Type} [Field E] [NumberField E] {g r : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     {W I : Submodule (𝓞 E) Λ} (per : W →+ (Fin g → ℂ)) (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ))
@@ -260,23 +254,19 @@ theorem eig_indep {E : Type} [Field E] [NumberField E] {g r : ℕ} {Λ : Type} [
   exact (mul_eq_zero.1 this).resolve_right hk₀
 
 /- English proof (translation)
-Use `set J : Submodule (𝓞 E) W := I.comap W.subtype with hJ`. Establish `hS : AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x} = J.toAddSubgroup.map per`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `p ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `p ⟨x, hx, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨x, hx, rfl⟩`. Establish `hsum : ∀ c : Fin r → 𝓞 E, per (∑ i, c i • y i) = ∑ i, ρ (c i) (per (y i))`. Introduce `c`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hact _ _`. Use `⟨fun a => AddSubgroup.subset_closure ⟨y a, hy a, rfl⟩, fun c hc => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hli c (hinj (by rw [hsum, hc, map_zero])) i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `set P : Submodule (𝓞 E) W := Submodule.span (𝓞 E) (Set.range y) with hP`. Establish `hspan : oSpan ρ (fun a => per (y a)) = P.toAddSubgroup.map per`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[oSpan, AddSubgroup.closure_le]`. Introduce and unpack `p ⟨a, i, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨a • y i, P.smul_mem a (Submodule.subset_span ⟨i, rfl⟩), hact _ _⟩`. Introduce and unpack `p ⟨x, hx, rfl⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hx`. Use `show per _ ∈ _`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `sum_mem fun i _ => AddSubgroup.subset_closure ⟨c i, i, rfl⟩`. Establish `hPΛ : (Submodule.span (𝓞 E) (Set.range fun a => (y a : Λ))).toAddSubgroup = P.toAddSubgroup.map W.subtype.toAddMonoidHom`. Establish `: Submodule.span (𝓞 E) (Set.range fun a => (y a : Λ)) = P.map W.subtype`. Rewrite using `[hP, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hIΛ : I.toAddSubgroup = J.toAddSubgroup.map W.subtype.toAddMonoidHom`. Use extensionality with `x`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, hIW hx⟩, hx, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz`.
-
-Rewrite `hidx` using `[hPΛ, hIΛ, AddSubgroup.relIndex_map_map_of_injective _ _ W.injective_subtype]`. Rewrite using `[hspan, hS, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Conclude with `hidx`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oFamily_image {E : Type} [Field E] [NumberField E] {g r : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     {W I : Submodule (𝓞 E) Λ} (per : W →+ (Fin g → ℂ)) (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (hIW : I ≤ W)
@@ -331,17 +321,17 @@ theorem oFamily_image {E : Type} [Field E] [NumberField E] {g r : ℕ} {Λ : Typ
     exact hidx
 
 /- English proof (translation)
-Establish `h1` using `fun τ => GlobalTheory.T.exists_extend_linearIndependent_of_span g m r _ (b τ) (hli τ) (hbi τ) fun a => by rw [hbs]; exact hmem τ a`. Take `⟨k, -, rfl, -⟩` from `h1 (Classical.arbitrary Ψ)`. Establish `h2 : ∀ τ, ∃ q : Fin k → Fin g → ℂ, (∀ c, q c ∈ eigSp ρ (σ τ)) ∧ ∃ T : Matrix (Fin (r + k)) (Fin (r + k)) ℂ, (∀ i, Fin.append (fun a => eigComp ρ (σ τ) (v a)) q i = ∑ j, T j i • b τ j) ∧ T.det ≠ 0`. Introduce `τ`. Take `⟨k', J, hk, hl⟩` from `h1 τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : k' = k` from `by omega`. Establish `hq : ∀ c, b τ (J c) ∈ eigSp ρ (σ τ)` using `fun c => by`. Rewrite using `[← hbs]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Establish `hT : ∀ i, ∃ t : Fin (r + k') → ℂ, ∑ j, t j • b τ j = Fin.append (fun a => eigComp ρ (σ τ) (v a)) (fun c => b τ (J c)) i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[← Submodule.mem_span_range_iff_exists_fun, hbs]`. Use `Fin.addCases (fun a => ?_) (fun c => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hmem τ a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.append_right]`. Conclude with `hq c`. Use `choose t ht using hT`. Use `⟨_, hq, Matrix.of fun j i => t i j, fun i => (ht i).symm, fun hd => ?_⟩` and prove the remaining obligations. Take `⟨l, hl0, hl1⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hl0 (funext (Fintype.linearIndependent_iff.1 hl l ?_))` and prove the remaining obligations. Simplify using `only [← ht, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `congrFun hl1 j` as an intermediate fact. Simplify using `only [mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[show ∑ i, l i * t i j = 0 from by rw [← this]; exact Finset.sum_congr rfl fun _ _ => mul_comm _ _, zero_smul]`. Use `choose q hq T hT hd using h2`. Conclude with `⟨_, r, k, rfl, v, q, T, hv, hq, hT, hd, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_phiNormSq {O Ψ : Type} [CommRing O] [Fintype Ψ] {g m r : ℕ} [Nonempty Ψ]
     (ρ : O →+* Module.End ℂ (Fin g → ℂ)) (hb : (Fin g → ℂ) → (Fin g → ℂ) → ℂ) (I : AddSubgroup (Fin g → ℂ)) (κ : ℝ)
@@ -383,23 +373,21 @@ theorem exists_phiNormSq {O Ψ : Type} [CommRing O] [Fintype Ψ] {g m r : ℕ} [
   exact ⟨_, r, k, rfl, v, q, T, hv, hq, hT, hd, rfl⟩
 
 /- English proof (translation)
-Establish `hne : Nonempty Ψ`. Assume the negation of the conclusion as `hn`. Take `⟨s⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨τ, -⟩` from `(hσ.2 (s.comp (algebraMap (𝓞 E) E))).2 fun ⟨τ, _⟩ => hn ⟨τ⟩`. Conclude with `hn ⟨τ⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, I, per, Hb, M, u, hI, hsat, hinj, hact, hM, hu, hν⟩` from `limit_strong E n a g Λ Ψ L σ m b hσ hb`. Establish `hIW : I ≤ W` using `fun x hx => ((hI x).1 hx).1`. Establish `hiso : ∀ w (hw : w ∈ logCover L.a_le), IsIsoSub (L.riem w hw).form I` using `fun w hw x hx y hy => ((hI x).1 hx).2 y (hIW hy)`. Establish `hw₀ : (fun k : Fin n => if k.val < a then (-1 : ℂ) else 0) ∈ logCover L.a_le`. Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi : (Fin.castLE L.a_le i).val < a` using `i.2`. Simplify using `only [hi, if_true]`. Evaluate the numerical expressions. Simplify using `[not_lt.2 hk]`. Establish `hfam : ∃ (r : ℕ) (y : Fin r → Λ), (∀ i, y i ∈ I) ∧ LinearIndependent (𝓞 E) y ∧ (Submodule.span (𝓞 E) (Set.range y)).toAddSubgroup.relIndex I.toAddSubgroup ≠ 0`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : I = ⊥`. Use `⟨0, Fin.elim0, fun i => i.elim0, linearIndependent_empty_type, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Simplify using the standard rewrite rules. Take `⟨r, y, -, h1⟩` from `(GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ (L.riem _ hw₀) σ I hσ (hiso _ hw₀) h).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨r, y, h1⟩`. Take `⟨r, y, hy, hli, hidx⟩` from `hfam`. Set `y' : Fin r → W` to `fun i => ⟨y i, hIW (hy i)⟩`. Establish `hli' : LinearIndependent (𝓞 E) y'` using `LinearIndependent.of_comp W.subtype hli`. Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν'⟩` from `exists_phiNormSq (L.B 0) (fun x y => y ⬝ᵥ Hb *ᵥ star x) _ 1 σ (fun τ i => b τ i 0) _ (oFamily_image per (L.B 0) hIW hinj hact y' hy hli' hidx) (fun τ => (hb.2 0 h0 τ).1) (fun τ => (hb.2 0 h0 τ).2) (fun τ a => ((GlobalTheory.T.exists_eigenComponent_polynomial E (σ τ)).choose_spec …`. Take `⟨δ, hδ, h⟩` from `(hν ν hν').2 1 one_pos`. Use `⟨min δ 1, lt_min hδ one_pos, 1 - Real.log ν, fun w hw hwδ => ?_⟩` and prove the remaining obligations. Establish `h1` using `(abs_lt.1 (h w hw (hwδ.trans_le (min_le_left _ _)))).1`. Establish `hz : expCover a w ∈ Metric.ball (0 : Fin n → ℂ) 1` using `mem_ball_zero_iff.2 (hwδ.trans_le (min_le_right _ _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrk : (L.riem w hw).HasRank σ m` using `fun τ => by show Module.finrank ℂ (eigSp (L.B (expCover a w)) (σ τ)) = m`. Rewrite using `[← (hb.2 _ hz τ).2, finrank_span_eq_card (hb.2 _ hz τ).1, Fintype.card_fin]`. Take `⟨-, -, h2, h3, -⟩` from `GlobalTheory.T.first_minimum_and_cusp_weight_bounds E g Λ Ψ (L.riem w hw) σ m hσ hrk hm`. Establish `h4 : -Real.log ((L.riem w hw).nz σ I) ≤ (L.riem w hw).cuspW σ`. Distinguish the cases in `hI0 : I = ⊥`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: (L.riem w hw).nz σ I = 1`. Use `dif_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨r, v, hr, hv, hl, -⟩`. Conclude with `hl.ne_zero ⟨0, hr⟩ (by simpa [hI0] using hv ⟨0, hr⟩)`. Rewrite using `[this, Real.log_one, neg_zero]`.
-
-Conclude with `h3`. Conclude with `(h2 I ⟨hI0, hsat, hiso w hw⟩).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lower_centre {E : Type} [Field E] [NumberField E] [IsCMField E] {n a g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {Ψ : Type} [Fintype Ψ] (L : ActPeriods E n a g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) {m : ℕ}

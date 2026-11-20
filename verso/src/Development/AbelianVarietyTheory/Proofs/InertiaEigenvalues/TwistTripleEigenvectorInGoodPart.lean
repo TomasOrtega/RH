@@ -13,19 +13,17 @@ namespace GlobalTheory.TwInputs
 open Formalism.IndefR.NX
 
 /- English proof (translation)
-Introduce `D cf Rw low Pq S hL eig θ Bs Sb hSb hKs hOcc i s`. Take `⟨h1, h2⟩` from `D.ntw.jS_range i s`. Take `⟨hiso, hgood, -⟩` from `Bs.rhoS i s`. Take `⟨x, hxg, hx0, hxe⟩` from `hOcc _ h1 h2 _ hiso hgood`. Take `⟨Φ, hΦ0, hΦs, hΦT⟩` from `GlobalTheory.T.exists_descent_map_nonzero_of_small_field_form D S _ (hKs _ h1 h2) i (D.ntw.side i s) x hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set e := Bs.eF i (D.ntw.jS i s) (D.ntw.side i s) h1 h2 with he`. Use `⟨e.symm (Φ x), by simpa using hΦ0, ?_, ?_⟩` and prove the remaining obligations. Use `letI : Fintype (G0g D.nd) := Formalism.MainNotions.PrimeDegreeVariant.finiteLevelGroupFintype D`. Establish `hx1` using `Module.End.mem_eigenspace_iff.1 (Submodule.mem_inf.1 hxg).1`. Rewrite `hx1` using `[one_smul, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum_fintype _ _ (by intros; simp), LinearMap.sum_apply, map_sum, e.apply_symm_apply]`. Use `conv_rhs => rw [← hx1]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, LinearMap.smul_apply, hΦs, D.nexp.eAlg_def]`. Express the relevant statement in the definitionally equal form `readLL0 S i _ (D.nexp.eLL0 g) • e (D.nexp.actG i _ _ g (e.symm (Φ x))) = _`. Rewrite using `[Bs.act i _ _ h1 h2 g, e.apply_symm_apply]`. Use `congr 1`. Establish `hc : ((((S.A (D.ntw.jS i s)).chi (S.eG.symm g) : D.what₂.LLˣ) : D.what₂.LL))⁻¹ = (((chiL S _ (Bs.chiL _ h1 h2) (S.eG.symm g))⁻¹ : ↥D.LL0) : D.what₂.LL)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[chiL]`. Express the relevant statement in the definitionally equal form `_ = Φ (((((S.A (D.ntw.jS i s)).chi (S.eG.symm g) : D.what₂.LLˣ) : D.what₂.LL))⁻¹ • (S.A (D.ntw.jS i s)).ρ (S.eG.symm g) x)`. Rewrite using `[hc, hΦs, hΦT _ (Bs.rho _ h1 h2 (S.eG.symm g)), map_inv₀]`. Both sides reduce to the same expression. Introduce `k P hk1 hk2 hsp hP`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Bs.hkEq i _ _ h1 h2 k P _ hP hsp hk2, e.apply_symm_apply, map_smul, e.apply_symm_apply, Bs.rowS_eig i s k P hk1 hk2 hsp hP]`. Establish `h3` using `hΦT (hL (D.ntw.jS i s) k P) (Bs.hs _ h1 h2 k P) x`. Rewrite `h3` using `[hxe k P hk1 hk2 hsp (fun h => hP (hSb i h)), hΦs]`. Rewrite using `[mul_smul]`.
-
-Use `congr 1`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem goodE_of_eigOcc : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf Rw low Pq S hL eig θ), ∀ Sb : Finset (PlE D.host), (∀ i, Sb ⊆ D.ntw.S0 i) → (∀ j, 1 ≤ j → j ≤ D.R.m → (S.A j).IsKsForm) → EigOcc D S θ hL Sb eig → ∀ i (s : D.ntw.Sig i), Formalism.MainNotions.BlochKatoReduction.Gen.goodE D.nexp i s := by
   intro D cf Rw low Pq S hL eig θ Bs Sb hSb hKs hOcc i s

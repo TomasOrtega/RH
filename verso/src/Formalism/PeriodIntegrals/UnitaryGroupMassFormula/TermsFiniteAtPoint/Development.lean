@@ -33,9 +33,9 @@ def FixedZhatFinite : Prop :=
           {y | Gval (lf D F0) y.1 ≠ 0 ∧ ZhatL (lf D F0) y.1 = Z}).Finite
 
 /- English proof (translation)
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hmk⟩, hG, hc⟩`. Conclude with `⟨⟨F', h⟩, ⟨hG, hc⟩, hmk⟩`. Introduce and unpack `⟨x, ⟨hG, hc⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x.1, ⟨x.2, rfl⟩, hG, hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem atPt_set_eq (D : D7) (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (w : Point D.host.E (D.R.rS + 1)) :
@@ -49,9 +49,9 @@ theorem atPt_set_eq (D : D7) (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (
     exact ⟨x.1, ⟨x.2, rfl⟩, hG, hc⟩
 
 /- English proof (translation)
-Introduce `hsig F0 Λ hΛ w`. Take `⟨Zs, hZs, hred⟩` from `hR D u u' hsig F0 Λ hΛ w`. Rewrite using `[atPt_set_eq]`. Use `(hZs.biUnion fun Z _ => hF D u u' hsig F0 Λ hΛ Z).subset ?_` and prove the remaining obligations. Introduce and unpack `t ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hxy, hG, hZ⟩` from `hred x hx`. Conclude with `Set.mem_biUnion hZ ⟨y, ⟨hG, rfl⟩, hxy.symm⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem termsAtFinite_of (hR : ZhatReduce) (hF : FixedZhatFinite) (D : D7) (u u' : D.what₂.Word) :
     TermsAtFinite D u u' := by

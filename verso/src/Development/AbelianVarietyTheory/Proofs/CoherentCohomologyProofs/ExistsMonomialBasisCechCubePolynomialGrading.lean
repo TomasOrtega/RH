@@ -8,7 +8,7 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨m + ∑ i ∈ s, Finsupp.single i j, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[smul_eq_mul, xProd, ← Finset.prod_pow, add_comm]`. Simplify using `only [X_pow_eq_monomial]`. Rewrite using `[← monomial_sum_one, monomial_mul, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_xProd_pow_smul_monomial {ι : Type} [DecidableEq ι] (R : Type) [CommRing R]
     (s : Finset ι) (j : ℕ) (m : ι →₀ ℕ) :
@@ -21,11 +21,11 @@ theorem exists_xProd_pow_smul_monomial {ι : Type} [DecidableEq ι] (R : Type) [
     rw [← monomial_sum_one, monomial_mul, one_mul]
 
 /- English proof (translation)
-Use `awayFrac_eq_iff.2 ⟨0, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, eu⟩` from `exists_xProd_pow_smul_monomial R s (0 + j) m`. Take `⟨w, hw, ew⟩` from `exists_xProd_pow_smul_monomial R s (0 + k) m'`. Rewrite using `[eu, ew]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Establish `h1` using `hu i`. Establish `h2` using `hw i`. Establish `h3` using `hm i`. Establish `h4` using `hm' i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at h1 h2 h3 h4 <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem awayFrac_monomial_congr {ι : Type} [DecidableEq ι] (R : Type) [CommRing R]
     (s : Finset ι) (a : ι → ℤ) {k j : ℕ} {m m' : ι →₀ ℕ}
@@ -46,7 +46,7 @@ theorem awayFrac_monomial_congr {ι : Type} [DecidableEq ι] (R : Type) [CommRin
   split_ifs at h1 h2 h3 h4 <;> omega
 
 /- English proof (translation)
-Use `⟨Finset.univ.sup fun i => (a i).natAbs, Finsupp.equivFunOnFinite.symm fun i => (a i + if i ∈ s then ((Finset.univ.sup fun i => (a i).natAbs : ℕ) : ℤ) else 0).toNat, fun i => Int.toNat_of_nonneg ?_⟩` and prove the remaining obligations. Establish `hk` using `Finset.le_sup (f := fun i => (a i).natAbs) (Finset.mem_univ i)`. Use `split_ifs with hi`. Use linear arithmetic over natural numbers and integers. Simplify using `using ha i hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_laurent_numerator {ι : Type} [DecidableEq ι] [Fintype ι] (s : Finset ι)
     (a : ι → ℤ) (ha : ∀ i, i ∉ s → 0 ≤ a i) :
@@ -60,15 +60,15 @@ theorem exists_laurent_numerator {ι : Type} [DecidableEq ι] [Fintype ι] (s : 
   · simpa using ha i hi
 
 /- English proof (translation)
-Introduce `ι _ _ R _ n`. Establish `hiff : ∀ (s : Finset ι) (a : ι → ℤ), Finset.univ.filter (fun i => a i < 0) ⊆ s ↔ ∀ i, i ∉ s → 0 ≤ a i`. Introduce `s a`. Simplify using `only [Finset.subset_iff, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `forall_congr' fun i => by rw [← not_lt]; exact not_imp_not.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ s : Finset ι, ∃ b : Module.Basis {a : {a : ι → ℤ // ∑ i, a i = n} // Finset.univ.filter (fun i => a.1 i < 0) ⊆ s} R (homLoc (polyGrading ι R) s n), ∀ a (k : ℕ) (m : ι →₀ ℕ), (∀ i, (m i : ℤ) = a.1.1 i + if i ∈ s then (k : ℤ) else 0) → (b a).1 = awayFrac (MvPolynomial ι R) …`. Introduce `s`. Use `choose k m hm using fun a : {a : ι → ℤ // ∑ i, a i = n ∧ ∀ i, i ∉ s → 0 ≤ a i} => exists_laurent_numerator s a.1 a.2.2`. Set `v` to `fun a => awayFrac (MvPolynomial ι R) (xProd R s) (k a) (monomial (m a) 1)`. Establish `hv : ∀ a (j : ℕ) (m' : ι →₀ ℕ), (∀ i, (m' i : ℤ) = a.1 i + if i ∈ s then (j : ℤ) else 0) → v a = awayFrac (MvPolynomial ι R) (xProd R s) j (monomial m' 1)` using `fun a j m' h => awayFrac_monomial_congr R s a.1 (hm a) h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : {a : ι → ℤ // ∑ i, a i = n ∧ ∀ i, i ∉ s → 0 ≤ a i} ≃ {a : {a : ι → ℤ // ∑ i, a i = n} // Finset.univ.filter (fun i => a.1 i < 0) ⊆ s}` to `{ toFun := fun a => ⟨⟨a.1, a.2.1⟩, (hiff s a.1).2 a.2.2⟩ invFun := fun a => ⟨a.1.1, a.1.2, (hiff s a.1.1).1 a.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Use `⟨((Module.Basis.span (linearIndependent_laurentMonomial ι R s n v hv)).map (LinearEquiv.ofEq _ _ (span_laurentMonomial_eq_homLoc ι R s n v hv))).reindex e, fun a j m' h => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]`. Conclude with `hv _ j m' h`. Use `choose b hb using key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨b, fun s t h a => Subtype.ext ?_⟩` and prove the remaining obligations. Take `⟨k, m, hm⟩` from `exists_laurent_numerator s a.1.1 ((hiff s _).1 a.2)`. Take `⟨u, hu, eu⟩` from `exists_xProd_pow_smul_monomial R (t \ s) k m`. Express the relevant statement in the definitionally equal form `locRes X (MvPolynomial ι R) h (b s a).1 = (b t ⟨a.1, a.2.trans h⟩).1`. Rewrite using `[hb s a k m hm, locRes_awayFrac X h (Finset.prod_sdiff h).symm, eu]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hb t _ k u fun i => ?_).symm` and prove the remaining obligations. Establish `h1` using `hu i`. Establish `h2` using `hm i`. Establish `h3` using `@h i`. Apply the tactic sequence `by_cases hs : i ∈ s <;> by_cases ht : i ∈ t <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_basis_grCube_polyGrading :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (n : ℤ), ∃ b : ∀ s : Finset ι, Module.Basis {a : {a : ι → ℤ // ∑ i, a i = n} // Finset.univ.filter (fun i => a.1 i < 0) ⊆ s} R ((grCube ι (polyGrading ι R) n).obj s), ∀ (s t : Finset ι) (h : s ⊆ t) (a : {a : {a : ι → ℤ // ∑ i, a i = n} // Finset.univ.filter (fun i => a.1 i < 0) ⊆ s}), Cube.res (grCube ι (polyGrading ι R) n) h (b s a) = b t ⟨a.1, a.2.trans h⟩ := by

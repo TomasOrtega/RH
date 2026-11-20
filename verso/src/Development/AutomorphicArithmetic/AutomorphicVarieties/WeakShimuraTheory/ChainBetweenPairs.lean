@@ -10,9 +10,9 @@ section Abs
 variable {O Γ k : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [Field k] {Φ : Fr O Γ} {a : O →+* k}
 
 /- English proof (translation)
-Establish `h3 : Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹`. Establish `h0 : Φ.χ 0 g * Φ.χ 3 g = Φ.ν g` using `h.mul 0 g`. Establish `h1 : Φ.χ 1 g * Φ.χ 2 g = Φ.ν g` using `h.mul 1 g`. Rewrite using `[h1, ← h0, mul_inv_cancel_comm]`. Use `show (Φ.χ 0 g * (Φ.χ 1 g)⁻¹) ^ (wt i j).1 * (Φ.χ 0 g * (Φ.χ 2 g)⁻¹) ^ (wt i j).2 * Φ.χ j g = Φ.χ i g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, h3, wt, lamW, muW, ofMul_mul, ofMul_zpow, ofMul_inv, Matrix.cons_val] <;> module`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rt_wt (h : Φ.Ok a) (i j : Fin 4) (g : Γ) : Φ.rt (wt i j) g * Φ.χ j g = Φ.χ i g := by
   have h3 : Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹ := by
@@ -26,9 +26,9 @@ theorem rt_wt (h : Φ.Ok a) (i j : Fin 4) (g : Γ) : Φ.rt (wt i j) g * Φ.χ j 
       Matrix.cons_val] <;> module
 
 /- English proof (translation)
-Introduce `w hw e`. Establish `: ∃ i j, i ≠ j ∧ wt i j = w` using `by clear e; revert w; decide`. Take `⟨i, j, hij, rfl⟩` from `this`. Establish `h1` using `(h.dist i j hij).ne_zero`. Rewrite `h1` using `[← rt_wt h i j, Units.val_mul, map_mul, e, one_mul, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1 rfl`.
+A detailed English derivation is pending.
 -/
 theorem rt_ne (h : Φ.Ok a) : ∀ w ∈ roots, a (Φ.rt w Φ.g0) ≠ 1 := by
   intro w hw e
@@ -39,13 +39,13 @@ theorem rt_ne (h : Φ.Ok a) : ∀ w ∈ roots, a (Φ.rt w Φ.g0) ≠ 1 := by
   exact h1 rfl
 
 /- English proof (translation)
-Rewrite using `[h.res.diag]`. Conclude with `((Φ.χ i g).isUnit.map a).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_ne {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (g : Γ) (i : Fin 4) : P.r g i i ≠ 0 := by
   rw [h.res.diag]; exact ((Φ.χ i g).isUnit.map a).ne_zero
 
 /- English proof (translation)
-Establish `x01` using `hs g 0 1 (by decide) (by decide)`. Establish `x21` using `hs g 2 1 (by decide) (by decide)`. Establish `e'` using `congrFun (congrFun (h.pair.mult g) 3) 1`. Simplify `e'` using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, x01, x21, h0, diag_ne h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ps_zero {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nP P.r) {g : Γ} (h0 : P.r g 2 0 = 0) : P.r g 3 1 = 0 := by
   have x01 := hs g 0 1 (by decide) (by decide)
@@ -54,7 +54,7 @@ theorem ps_zero {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nP P.r) {g : �
   simpa [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, x01, x21, h0, diag_ne h] using e'
 
 /- English proof (translation)
-Establish `x12` using `hs g 1 2 (by decide) (by decide)`. Establish `x02` using `hs g 0 2 (by decide) (by decide)`. Establish `e` using `congrFun (congrFun (h.pair.mult g) 1) 0`. Simplify `e` using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, x12, x02, h0, diag_ne h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem al_zero {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nM P.r) {g : Γ} (h0 : P.r g 1 0 = 0) : P.r g 3 2 = 0 := by
   have x12 := hs g 1 2 (by decide) (by decide)
@@ -63,9 +63,9 @@ theorem al_zero {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nM P.r) {g : �
   simpa [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, x12, x02, h0, diag_ne h] using e
 
 /- English proof (translation)
-Use `⟨?_, fun ⟨g, hg⟩ => ⟨g, 2, 0, by decide, hg⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨g, i, j, hw, hg⟩`. Establish `: i = 2 ∧ j = 0 ∨ i = 3 ∧ j = 1` using `by clear hg; revert hw; revert i j; decide`. Break down `this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `⟨g, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨g, fun h0 => hg (ps_zero h hs h0)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ent_ps {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nP P.r) : Ent P.r (-wPs) ↔ ∃ g, P.r g 2 0 ≠ 0 := by
   refine ⟨?_, fun ⟨g, hg⟩ => ⟨g, 2, 0, by decide, hg⟩⟩
@@ -76,9 +76,9 @@ theorem ent_ps {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nP P.r) : Ent P
   · exact ⟨g, fun h0 => hg (ps_zero h hs h0)⟩
 
 /- English proof (translation)
-Use `⟨?_, fun ⟨g, hg⟩ => ⟨g, 1, 0, by decide, hg⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨g, i, j, hw, hg⟩`. Establish `: i = 1 ∧ j = 0 ∨ i = 3 ∧ j = 2` using `by clear hg; revert hw; revert i j; decide`. Break down `this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `⟨g, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨g, fun h0 => hg (al_zero h hs h0)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ent_al {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nM P.r) : Ent P.r (-wAl) ↔ ∃ g, P.r g 1 0 ≠ 0 := by
   refine ⟨?_, fun ⟨g, hg⟩ => ⟨g, 1, 0, by decide, hg⟩⟩
@@ -89,23 +89,21 @@ theorem ent_al {P : PD Φ.ι Γ k} (h : Φ.IsRes a P) (hs : Supp nM P.r) : Ent P
   · exact ⟨g, fun h0 => hg (al_zero h hs h0)⟩
 
 /- English proof (translation)
-Simplify using `only [ent_ps h hs, ent_ps h' hs', e.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem samePs_ent {P P' : PD Φ.ι Γ k} (h : Φ.IsRes a P) (h' : Φ.IsRes a P') (hs : Supp nP P.r) (hs' : Supp nP P'.r)
     (e : P.SamePs P') : Ent P.r (-wPs) ↔ Ent P'.r (-wPs) := by
   simp only [ent_ps h hs, ent_ps h' hs', e.1]
 
 /- English proof (translation)
-Simplify using `only [ent_al h hs, ent_al h' hs', e.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sameAl_ent {P P' : PD Φ.ι Γ k} (h : Φ.IsRes a P) (h' : Φ.IsRes a P') (hs : Supp nM P.r) (hs' : Supp nM P'.r)
     (e : P.SameAl P') : Ent P.r (-wAl) ↔ Ent P'.r (-wAl) := by
   simp only [ent_al h hs, ent_al h' hs', e.1]
 
 /- English proof (translation)
-Use `⟨fun g i j hij hw => ?_, fun v => ⟨hs'.2 v, e.2 v ▸ (hv.2 v).2⟩⟩` and prove the remaining obligations. Establish `h0 : P'.r g 2 0 = 0` using `(e.1 g).symm.trans (hv.1 g 2 0 (by decide) (by decide))`. Establish `: wt i j ∉ nP ∨ i = 2 ∧ j = 0 ∨ i = 3 ∧ j = 1` using `by revert hw; revert i j; decide`. Break down `this with h1 | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `hs'.1 g i j hij h1`.
-
-Conclude with `h0`. Conclude with `ps_zero h' hs'.1 h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem samePs_inV {P P' : PD Φ.ι Γ k} (h' : Φ.IsRes a P') (hs' : P'.In nP) (e : P.SamePs P') (hv : Fr.InV P) :
     Fr.InV P' := by
@@ -124,24 +122,24 @@ section In
 variable {ι Γ R : Type} [Group Γ] [CommRing R] {P P' : PD ι Γ R}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g i j hij hw => h.1 g i j hij fun hq => hw (by revert hq; revert i j; decide), h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem qP (h : P.In qQ) : P.In nP :=
   ⟨fun g i j hij hw => h.1 g i j hij fun hq => hw (by revert hq; revert i j; decide), h.2⟩
 
 /- English proof (translation)
-Introduce `g i j hij hw` and use `h g i j hij fun hq => hw (by revert hq; revert i j; decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qM (h : Supp qQ P.r) : Supp nM P.r :=
   fun g i j hij hw => h g i j hij fun hq => hw (by revert hq; revert i j; decide)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => (h.1 g).symm, fun v => (h.2 v).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem samePs_symm (h : P.SamePs P') : P'.SamePs P := ⟨fun g => (h.1 g).symm, fun v => (h.2 v).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => (h.1 g).symm, fun v => (h.2 v).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameAl_symm (h : P.SameAl P') : P'.SameAl P := ⟨fun g => (h.1 g).symm, fun v => (h.2 v).symm⟩
 
@@ -152,13 +150,9 @@ section Map
 variable {O Γ R R' : Type} [CommRing O] [Group Γ] [CommRing R] [CommRing R'] {Φ : Fr O Γ} {a : O →+* R}
 
 /- English proof (translation)
-Establish `cj : ∀ n X : M4 R, adj (n.map f) * X.map f * n.map f = (adj n * X * n).map f` using `fun n X => by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, adj_map]`. Use `⟨fun g => gsp_map f (h.mult g), fun g hg => ?_, fun i j hij => ?_, fun v => ⟨?_, fun i => ?_, fun i j hij => ?_⟩, fun v s hs i j hij => ?_, fun v s hs i => ?_⟩` and prove the remaining obligations. Use `show (P.r g).map f = 1`. Rewrite using `[h.kill g hg, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show f (P.r Φ.g0 i j) = 0`. Rewrite using `[h.nrm hij, map_zero]`. Conclude with `map_one f ▸ gsp_map f (h.low v).1`. Use `show f (P.n v i i) = 1`. Rewrite using `[(h.low v).2.1, map_one]`.
-
-Use `show f (P.n v i j) = 0`. Rewrite using `[(h.low v).2.2 i j hij, map_zero]`. Use `show (adj ((P.n v).map f) * (P.r s).map f * (P.n v).map f : M4 R') i j = 0`. Rewrite using `[cj, Matrix.map_apply, h.flag v s hs i j hij, map_zero]`. Use `show (adj ((P.n v).map f) * (P.r s).map f * (P.n v).map f : M4 R') i i = 1`.
-
-Rewrite using `[cj, Matrix.map_apply]`. Conclude with `(congrArg f (h.mu v s hs i)).trans (map_one f)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_map {P : PD Φ.ι Γ R} (h : Φ.IsPair a P) (f : R →+* R') : Φ.IsPair (f.comp a) (P.map f) := by
   have cj : ∀ n X : M4 R, adj (n.map f) * X.map f * n.map f = (adj n * X * n).map f := fun n X => by
@@ -187,7 +181,7 @@ section Gal
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
 /- English proof (translation)
-Use `⟨⟨hs.pair.mult, fun g hg => hs.pair.kill g ?_, hs.pair.nrm, hs.pair.low, hs.pair.flag, hs.pair.mu⟩, ⟨hs.res.diag, hs.res.char, hs.res.shape⟩, hs.cont⟩` and prove the remaining obligations. Take `⟨A, h1, h2, h3⟩` from `hg`. Conclude with `⟨A, fun p hp => h1 p (Finset.insert_subset_insert l h hp), h2, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem res_mono (T : Tower D) {k : Type} [Field k] {a : c.O →+* k} {W W' : Finset ℕ} (h : W ⊆ W')
     {s : PD T.ι (G T.F Ω) k} (hs : (T.fr W).IsRes a s) : (T.fr W').IsRes a s := by
@@ -197,7 +191,7 @@ theorem res_mono (T : Tower D) {k : Type} [Field k] {a : c.O →+* k} {W W' : Fi
   exact ⟨A, fun p hp => h1 p (Finset.insert_subset_insert l h hp), h2, h3⟩
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[RingHom.comp_apply, residue_eq_zero_iff]`. Conclude with `map_nonunit (𝔞.a c) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_zero (𝔞 : Amb l) (c : Coef l) : ∀ x ∈ maximalIdeal c.O, 𝔞.red c x = 0 := by
   intro x hx
@@ -205,15 +199,15 @@ theorem red_zero (𝔞 : Amb l) (c : Coef l) : ∀ x ∈ maximalIdeal c.O, 𝔞.
   exact map_nonunit (𝔞.a c) x hx
 
 /- English proof (translation)
-Introduce `θ h1 h2` and use `(IntermediateField.fixingSubgroup_antitone h).trans (hd θ h1 h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dies_mono {w : ℕ} {F F' : IntermediateField ℚ Ω} (h : F ≤ F') (hd : Dies l w F) : Dies l w F' :=
   fun θ h1 h2 => (IntermediateField.fixingSubgroup_antitone h).trans (hd θ h1 h2)
 
 /- English proof (translation)
-Establish `h1 : (T.fr ∅).IsRes ((residue c₁.O).comp (inc h)) (Q.map (residue c₁.O))`. Use `⟨pair_map hQ.pair _, hQ.res, fun i j n => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hQ.cont i j 1).comp (Ideal.Quotient.lift (maximalIdeal c₁.O ^ 1) (residue c₁.O) fun x hx => (residue_eq_zero_iff x).2 (by rwa [pow_one] at hx))`. Conclude with `h2.comp (Ideal.Quotient.mk ((⊥ : Ideal (ResidueField c₁.O)) ^ n))`. Establish `h2` using `(chainMap (T.fr ∅) _ (𝔞.j c₁) _).1.2 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (𝔞.j c₁).comp ((residue c₁.O).comp (inc h)) = 𝔞.red c` using `RingHom.ext fun x => congrArg (residue 𝔞.V) (𝔞.compat c c₁ h x)`. Rewrite `h2` using `[e1]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seed_res (T : Tower D) (𝔞 : Amb l) {ι : PadicAlgCl l ≃+* ℂ} {c₁ : Coef l} {h : c.O ≤ c₁.O}
     {Q : PD T.ι (G T.F Ω) c₁.O} (hQ : T.SeedPair ι h Q) : (T.fr ∅).IsRes (𝔞.red c) (Q.map (𝔞.red c₁)) := by

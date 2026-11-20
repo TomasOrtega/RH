@@ -19,27 +19,21 @@ namespace PositivityTheory.HtPt.Mf
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `X Ω _ ξ hgen hall`. Establish `hdom : ∀ x : X, IsDomain (X.presheaf.stalk x)` using `fun x => Function.Injective.isDomain (genMap ξ ⟨x, hall x⟩) (hgen.inj ⟨x, hall x⟩)`. Use `haveI : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by haveI := hdom x infer_instance`. Use `haveI : AlgebraicGeometry.IsReduced X := isReduced_of_isReduced_stalk X`. Use `haveI : IrreducibleSpace X := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[irreducibleSpace_def]`. Establish `hcl : closure {GlobalTheory.CompanionTheory.Ar.genPt ξ} = (Set.univ : Set X)` using `Set.eq_univ_of_forall fun q => specializes_iff_mem_closure.mp (hall q)`. Rewrite using `[Set.top_eq_univ, ← hcl]`. Conclude with `isIrreducible_singleton.closure`. Use `haveI hI : AlgebraicGeometry.IsIntegral X := isIntegral_of_irreducibleSpace_of_isReduced X`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `⟨hI, ?_⟩` and prove the remaining obligations. Establish `key : ∀ p : Cpt ξ, IsIntegrallyClosedIn (regAt ξ p) Ω ↔ IsIntegrallyClosed (X.presheaf.stalk p.1)`. Introduce `p`. Set `ψ : X.functionField →+* Ω` to `(X.presheaf.stalkSpecializes (hall (genericPoint X)) ≫ Scheme.stalkClosedPointTo ξ).hom`. Use `letI : Algebra (X.presheaf.stalk p.1) Ω := (genMap ξ p).toAlgebra`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ r : X.presheaf.stalk p.1, ψ (algebraMap _ X.functionField r) = algebraMap _ Ω r`. Introduce `r`. Establish `hc : X.presheaf.stalkSpecializes (genericPoint_specializes p.1) ≫ X.presheaf.stalkSpecializes (hall (genericPoint X)) = X.presheaf.stalkSpecializes p.2` using `TopCat.Presheaf.stalkSpecializes_comp _ _ _`. Establish `h1 : algebraMap (X.presheaf.stalk p.1) X.functionField r = (X.presheaf.stalkSpecializes (genericPoint_specializes p.1)).hom r` using `rfl`. Establish `h2 : algebraMap (X.presheaf.stalk p.1) Ω r = (X.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo ξ).hom r` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Establish `h3` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom r) hc`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h3`. Simplify using `only [ψ, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective ψ`. Introduce `a`. Take `⟨g, rfl⟩` from `hgen.bij.2 a`. Use `⟨(X.presheaf.stalkSpecializes (genericPoint_specializes (GlobalTheory.CompanionTheory.Ar.genPt ξ))).hom g, ?_⟩` and prove the remaining obligations. Establish `hc2 : X.presheaf.stalkSpecializes (genericPoint_specializes (GlobalTheory.CompanionTheory.Ar.genPt ξ)) ≫ X.presheaf.stalkSpecializes (hall (genericPoint X)) = 𝟙 _` using `(TopCat.Presheaf.stalkSpecializes_comp _ _ _).trans (TopCat.Presheaf.stalkSpecializes_refl _ _)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `h3` using `congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom g) hc2`. Simplify using `only [Category.id_comp, CommRingCat.hom_comp, RingHom.comp_apply] at h3`. Simplify using `only [ψ, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `h3`. Set `e : X.functionField ≃ₐ[X.presheaf.stalk p.1] Ω` to `AlgEquiv.ofBijective { ψ with commutes' := hcomm } ⟨ψ.injective, hsurj⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[isIntegrallyClosed_iff_isIntegrallyClosedIn X.functionField, e.isIntegrallyClosedIn]`. Use `letI : Algebra (X.presheaf.stalk p.1) (regAt ξ p) := (genMap ξ p).rangeRestrict.toAlgebra`. Use `haveI : IsScalarTower (X.presheaf.stalk p.1) (regAt ξ p) Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.IsIntegral (X.presheaf.stalk p.1) (regAt ξ p) := Algebra.isIntegral_of_surjective (genMap ξ p).rangeRestrict_surjective`. Rewrite using `[Subring.isIntegrallyClosedIn_iff, isIntegrallyClosedIn_iff]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨hgen.inj p, fun {x} hx => ?_⟩` and prove the remaining obligations. Conclude with `RingHom.mem_range.mp (h hx.tower_top)`. Introduce and unpack `⟨-, h⟩ x hx`.
-
-Conclude with `RingHom.mem_range.mpr (h (isIntegral_trans x hx))`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `⟨inferInstance, (key ⟨x, hall x⟩).mp (Subring.isIntegrallyClosedIn_iff.mpr (fun a ha => h ⟨x, hall x⟩ a ha))⟩`. Introduce `h p a ha`.
-
-Conclude with `Subring.isIntegrallyClosedIn_iff.mp ((key p).mpr (h p.1).2) ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xr_normal : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → (∀ q : X, GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q) → IsIntegral X ∧ (Flat.NormalCpt ξ ↔ IsNormalScheme X) := by
   intro X Ω _ ξ hgen hall
@@ -112,7 +106,7 @@ theorem xr_normal : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `rfl : x = IsLocalRing.closedPoint Ω` from `Subsingleton.elim _ _`. Rewrite using `[← isIso_comp_right_iff (ξ.stalkMap _) (AlgebraicGeometry.stalkClosedPointIso (CommRingCat.of Ω)).hom]`. Conclude with `(ConcreteCategory.isIso_iff_bijective _).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_iff_isIso_stalkMap (ξ : Sp Ω ⟶ X) (x : Sp Ω) :
     Function.Bijective (Scheme.stalkClosedPointTo ξ).hom ↔ IsIso (ξ.stalkMap x) := by
@@ -124,7 +118,7 @@ def push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) (q : Cpt ξ) : Cpt (�
   ⟨f q.1, q.2.map f.continuous⟩
 
 /- English proof (translation)
-Use `show (X.presheaf.stalkSpecializes _ ≫ Scheme.stalkClosedPointTo (ξ ≫ f)).hom = (W.presheaf.stalkSpecializes q.2 ≫ Scheme.stalkClosedPointTo ξ).hom.comp (f.stalkMap q.1).hom`. Rewrite using `[← CommRingCat.hom_comp]`. Use `congr 1`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `Scheme.Hom.stalkSpecializes_stalkMap_assoc f _ q.1 q.2 _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMap_push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) (q : Cpt ξ) :
     genMap (ξ ≫ f) (push ξ f q) = (genMap ξ q).comp (f.stalkMap q.1).hom := by
@@ -136,9 +130,9 @@ theorem genMap_push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) (q : Cpt �
   exact Scheme.Hom.stalkSpecializes_stalkMap_assoc f _ q.1 q.2 _
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [regAt, genMap_push, RingHom.mem_range, RingHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `f.stalkMap_surjective q.1 y`. Conclude with `⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regAt_push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) [SurjectiveOnStalks f] (q : Cpt ξ) :
     regAt (ξ ≫ f) (push ξ f q) = regAt ξ q := by
@@ -152,11 +146,11 @@ theorem regAt_push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) [Surjective
     exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ {A B C : Type} (g : B → C) (s : A → B), Function.Injective (g ∘ s) → Function.Surjective s → Function.Injective g`. Introduce `A B C g s hi hs y y' hy`. Take `⟨x, rfl⟩` from `hs y`. Take `⟨x', rfl⟩` from `hs y'`. Conclude with `congrArg s (hi hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : Function.Bijective ((Scheme.stalkClosedPointTo ξ).hom ∘ (f.stalkMap (ξ (closedPoint Ω))).hom)`. Establish `hb0` using `h.bij`. Rewrite `hb0` using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `hb0`. Use `⟨⟨key _ _ hb.1 (f.stalkMap_surjective _), Function.Surjective.of_comp hb.2⟩, fun p => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Function.Injective ((genMap ξ p) ∘ (f.stalkMap p.1).hom)`. Establish `hi0` using `h.inj (push ξ f p)`. Rewrite `hi0` using `[genMap_push]`. Conclude with `hi0`. Conclude with `key _ _ hi (f.stalkMap_surjective p.1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCptGen_of_comp {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) [SurjectiveOnStalks f]
     (h : IsCptGen (ξ ≫ f)) : IsCptGen ξ := by

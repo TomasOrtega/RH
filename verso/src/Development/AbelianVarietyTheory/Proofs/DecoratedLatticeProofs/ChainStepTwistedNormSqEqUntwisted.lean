@@ -30,9 +30,9 @@ noncomputable section
 namespace GlobalTheory.TwistNorm
 
 /- English proof (translation)
-Establish `hH : (Subgroup.pi Set.univ fun PP : ↥Pg => (⊥ : Subgroup (GL (Fin r) (kP PP.1)))) = ⊥`. Use extensionality with `g`. Simplify using `[Subgroup.mem_pi, funext_iff]`. Use `haveI : Subsingleton (↥(⊥ : Subgroup (G0 Pg r)) →* ℂˣ) := ⟨fun f g => MonoidHom.ext fun y => by rw [Subsingleton.elim y 1, map_one, map_one]⟩`. Unfold `LevelP.triv LevelP.ofLocal`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `hH.symm`. Conclude with `Subsingleton.helim (congrArg (fun H : Subgroup (G0 Pg r) => (↥H →* ℂˣ)) hH.symm) _ _`.
+A detailed English derivation is pending.
 -/
 theorem level_trivial_eq_ofLocal {E : Type} [Field E] [NumberField E] (Pg : Finset (Pl E)) (r : ℕ) :
     LevelP.triv Pg r ℂ = LevelP.ofLocal (fun _ => ⊥) (fun _ => 1) := by
@@ -47,7 +47,7 @@ theorem level_trivial_eq_ofLocal {E : Type} [Field E] [NumberField E] (Pg : Fins
   · exact Subsingleton.helim (congrArg (fun H : Subgroup (G0 Pg r) => (↥H →* ℂˣ)) hH.symm) _ _
 
 /- English proof (translation)
-Unfold `nrm2 ipO`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_eq_inner_product {D : D7} {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (g : WO S T → ℂ) :
     ((nrm2 μ 𝓕 g : ℝ) : ℂ) = ipO μ 𝓕 g g := by
@@ -58,41 +58,37 @@ theorem norm_sq_eq_inner_product {D : D7} {S T : HSp D} (μ : Measure (WO S T)) 
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT βS βT f₀ m X hB hC hFS hFT r t j t' hr ht Pg Q hdisj hQ2 χ χj ξ ξ' f f' hf hf'`. Establish `hP : (Lev.datY S.rank r t j hr Pg Q (LevelP.triv _ _ _) χ ξ Lev.Frm.B).P = LevelP.ofLocal (Pg` using `Pg) (r := r) (LL := ℂ) (fun _ => ⊥) (fun _ => 1) := by show (if Lev.Frm.B = Lev.Frm.B then LevelP.triv Pg r ℂ else (LevelP.triv Pg r ℂ).conj) = _`. Rewrite using `[if_pos rfl]`. Conclude with `level_trivial_eq_ofLocal Pg r`. Establish `hP' : (Lev.datY S.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B).P = LevelP.ofLocal (Pg` using `Pg) (r := r) (LL := ℂ) (fun _ => ⊥) (fun _ => 1) := by show (if Lev.Frm.B = Lev.Frm.B then LevelP.triv Pg r ℂ else (LevelP.triv Pg r ℂ).conj) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Conclude with `level_trivial_eq_ofLocal Pg r`. Take `⟨⟨x, hx⟩, hall⟩` from `GlobalTheory.StepVec.stepVecLocal D ψ θ S T sS sT ΛS ΛT βS βT _ χj Q ξ f₀ f m X t' ht _ _ hP hB hC hFS hFT hdisj hf`. Establish `hall'` using `(GlobalTheory.StepVec.stepVecLocal D ψ θ S T sS sT ΛS ΛT βS βT _ χj ∅ ξ' f₀ f' m X t' ht _ _ hP' hB hC hFS hFT (Finset.disjoint_empty_right _) hf').2`. Take `⟨hvac, e, ⟨⟨es, hes, rfl⟩, hce⟩, -⟩` from `hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes' : ∀ PP ∈ Pg ∪ Q, Formalism.L2.NTheta.IsIdemAt (es PP) PP` using `hes`. Establish `hce' : (∑ PP ∈ Pg ∪ Q, es PP) * cA D (∑ PP ∈ Pg ∪ Q, es PP) = 0` using `hce`. Establish `hsum` using `GlobalTheory.SplitIdemDict.idem_dictionary D`. Use `choose vA φA hφA hprA using fun i : ↥(Pg ∪ Q) => hsum.1 (es i.1) i.1 (hes' i.1 i.2)`. Establish `hunder : ∀ i : ↥(Pg ∪ Q), (i.1).asIdeal.under (𝓞 D.host.F) = (vA i).asIdeal` using `fun i => (hsum.2 _ _ _ (hprA i)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcross` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es (Pg ∪ Q) (fun i hi => (hes' i hi).1.1) hce'`. Establish `hinj : Function.Injective vA`. Introduce `i j hij`. Establish `h1` using `(hφA i).2.1`. Establish `h2` using `(hφA j).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hij]`. Establish `h3` using `GlobalTheory.PlaceDatum.idempotent_eq_of_orthogonal_decomp (hes' i.1 i.2).1.1 (hes' i.1 i.2).1.2.1 (hes' j.1 j.2).1.1 (hes' j.1 j.2).1.2.1 (h1.trans h2.symm) (hcross _ i.2 _ j.2) (hcross _ j.2 _ i.2)`. Conclude with `Subtype.ext (GlobalTheory.StepVec.prime_eq_of_idem (hes' i.1 i.2) (h3 ▸ hes' j.1 j.2))`. Take `⟨x', hx'l, hx'r⟩ : ∃ x' : Place D → WO S T → ℂ, (∀ τ, x' (.inr τ) = f₀) ∧ ∀ v, x' (.inl v) = if ∃ PP ∈ Pg, PP.asIdeal.under (𝓞 D.host.F) = v.asIdeal then x (.inl v) else f₀` from `⟨Sum.elim (fun v => if ∃ PP ∈ Pg, PP.asIdeal.under (𝓞 D.host.F) = v.asIdeal then x (.inl v) else f₀) fun _ => f₀, fun _ => rfl, fun _ => rfl⟩`. Establish `hpure'` using `hall' x' ⟨⟨hx'l, fun v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx'r, if_neg]`. Introduce and unpack `⟨PP, h1, h2⟩`. Conclude with `hv PP (Finset.mem_union_left _ h1) h2⟩,`. Use `fun v φ e' he' mu => ⟨fun PP hpp hmu J lam hJ => by`. Establish `h` using `(hx.2 v φ e' he' mu).1 PP hpp hmu J lam hJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx'r, if_pos ⟨PP.1, PP.2, (hsum.2 v φ PP.1 hpp).1⟩]`. Conclude with `h, fun PP hq => by simp at hq⟩⟩`. Establish `hpure` using `hall x hx`. Take `⟨hfin, hxx⟩` from `GlobalTheory.PlaceTensor.PureScalar.ip_pure_eq_finprod D ψ θ S T sS sT ΛS ΛT f₀ m X hB hC x x f f hpure hpure`. Take `⟨-, hxx'⟩` from `GlobalTheory.PlaceTensor.PureScalar.ip_pure_eq_finprod D ψ θ S T sS sT ΛS ΛT f₀ m X hB hC x' x' f' f' hpure' hpure'`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : ipO m X f₀ f₀ = 1`. Rewrite using `[← norm_sq_eq_inner_product, hvac.2.norm.2 (m, X) hC]`. Simplify using the standard rewrite rules. Set `iq : ↥Q → ↥(Pg ∪ Q)` to `fun i => ⟨i.1, Finset.mem_union_right _ i.2⟩`. Set `U : Finset (Place D)` to `Q.attach.image fun i => (Sum.inl (vA (iq i)) : Place D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hnotPg : ∀ i : ↥Q, ¬ ∃ PP ∈ Pg, PP.asIdeal.under (𝓞 D.host.F) = (vA (iq i)).asIdeal`. Introduce and unpack `i ⟨PP, hPP, hu⟩`. Establish `h1 : vA ⟨PP, Finset.mem_union_left _ hPP⟩ = vA (iq i)` using `HeightOneSpectrum.ext ((hunder _).symm.trans hu)`. Establish `h2 : PP = i.1` using `congrArg Subtype.val (hinj h1)`. Conclude with `Finset.disjoint_left.1 hdisj hPP (by rw [h2]; exact i.2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hpt : ∀ p, ipO m X (x p) (x p) = ipO m X (x' p) (x' p) * (if p ∈ U then ipO m X (x p) (x p) else 1)`. Introduce `p`. Distinguish the cases in `hp : p ∈ U`. Rewrite using `[if_pos hp]`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hp`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx'r, if_neg (hnotPg i), h0, one_mul]`. Rewrite using `[if_neg hp, mul_one]`. Break down `p with v | τ` into its components or cases. Rewrite using `[hx'r]`. Distinguish the cases in `hv : ∃ PP ∈ Pg, PP.asIdeal.under (𝓞 D.host.F) = v.asIdeal`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[if_pos hv]`. Rewrite using `[if_neg hv]`. Establish `hxv : x (.inl v) = f₀` using `hx.1.2 v fun PP hPP hu => by`. Break down `Finset.mem_union.1 hPP with h | h` into its components or cases. Conclude with `hv ⟨PP, h, hu⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hp (Finset.mem_image.2 ⟨⟨PP, h⟩, Finset.mem_attach _ _, congrArg Sum.inl (HeightOneSpectrum.ext ((hunder _).symm.trans hu))⟩)`. Rewrite using `[hxv]`. Rewrite using `[hx'l, hx.1.1 τ]`. Set `s0 : Finset (Place D)` to `hfin.toFinset ∪ U`. Establish `hA : ∏ᶠ p, ipO m X (x p) (x p) = ∏ p ∈ s0, ipO m X (x p) (x p)` using `finprod_eq_prod_of_mulSupport_subset _ fun p hp => Finset.mem_union_left _ (hfin.mem_toFinset.2 hp)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA' : ∏ᶠ p, ipO m X (x' p) (x' p) = ∏ p ∈ s0, ipO m X (x' p) (x' p)`. Use `finprod_eq_prod_of_mulSupport_subset _ fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hU : p ∈ U`. Conclude with `Finset.mem_union_right _ hU`. Use `Finset.mem_union_left _ (hfin.mem_toFinset.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hpt p`. Rewrite `h` using `[if_neg hU, mul_one]`. Rewrite `hp`, the goal using `[Function.mem_mulSupport]`. Rewrite using `[h]` and apply the resulting hypothesis. Establish `hsplit : ∏ p ∈ s0, ipO m X (x p) (x p) = (∏ p ∈ s0, ipO m X (x' p) (x' p)) * ∏ p ∈ U, ipO m X (x p) (x p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.prod_congr rfl fun p _ => hpt p, Finset.prod_mul_distrib, Finset.prod_ite_mem, Finset.inter_eq_right.2 Finset.subset_union_right]`. Establish `hU : ∏ p ∈ U, ipO m X (x p) (x p) = ∏ i ∈ Q.attach, ipO m X (x (.inl (vA (iq i)))) (x (.inl (vA (iq i))))`. Use `Finset.prod_image fun i _ j _ h => ?_` and prove the remaining obligations. Establish `h1` using `hinj (Sum.inl_injective h)`. Establish `h2 : (iq i).1 = (iq j).1` using `congrArg Subtype.val h1`.
-
-Conclude with `Subtype.ext h2`. Establish `hloc : ∀ i : ↥Q, ipO m X (x (.inl (vA (iq i)))) (x (.inl (vA (iq i)))) = ((zinv i.1 0 r * ((Ideal.absNorm i.1.asIdeal : ℝ) ^ (r * (T.rank - r)))⁻¹ : ℝ) : ℂ)`. Introduce `i`. Take `⟨mu, hmu⟩` from `(GlobalTheory.PlaceRed.red_dict D (vA (iq i)) (φA (iq i)) i.1 (hprA (iq i))).2 (ξ i.1)⁻¹`. Establish `hθ` using `(hx.2 (vA (iq i)) (φA (iq i)) (es i.1) (hφA (iq i)) mu).2 i.1 i.2 (hprA (iq i)) hmu`.
-
-Rewrite using `[← norm_sq_eq_inner_product, GlobalTheory.T.normSq_thetaLocalDatum_at_twistPlace D ψ θ S T sS sT ΛS ΛT βS βT f₀ m X hB hC hFS hFT i.1 (vA (iq i)) (φA (iq i)) (es i.1) (hφA (iq i)) (hprA (iq i)) (GlobalTheory.T.homLatticeIdeal_isUnit_splitPlace D i.1 (hQ2 i.1 i.2) (vA (iq i)) (φA …`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_prod, norm_sq_eq_inner_product, norm_sq_eq_inner_product, hxx, hxx', hA, hA', hsplit, hU, Finset.prod_congr rfl fun i _ => hloc i, Finset.prod_attach Q fun PP => ((zinv PP 0 r * ((Ideal.absNorm PP.asIdeal : ℝ) ^ (r * (T.rank - r)))⁻¹ : ℝ) : ℂ)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainStep_twisted_normSq_eq_untwisted_mul_localFactors : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (f₀ : WO S T → ℂ) (m : Measure (WO S T)) (X : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) m X → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (r t j t' : ℕ) (hr : r ≤ S.rank), S.rank + t' = T.rank → ∀ (Pg Q : Finset (Pl D.host.E)), Disjoint Pg Q → (∀ PP ∈ Q, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (χj ξ ξ' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (f f' : WO S T → ℂ), IsStepVecOf ψ θ S T sS sT ΛS ΛT βS βT (Lev.datY S.rank r t j hr Pg Q (LevelP.triv _ _ _) χ ξ Lev.Frm.B) χj Q ξ f₀ f → IsStepVecOf ψ θ S T sS sT ΛS ΛT βS βT (Lev.datY S.rank r t j hr Pg ∅ (LevelP.triv _ _ _) χ ξ' Lev.Frm.B) χj ∅ ξ' f₀ f' → nrm2 m X f = nrm2 m X f' * ∏ PP ∈ Q, (zinv PP 0 r * ((Ideal.absNorm PP.asIdeal : ℝ) ^ (r * (T.rank - r)))⁻¹) := by
   classical

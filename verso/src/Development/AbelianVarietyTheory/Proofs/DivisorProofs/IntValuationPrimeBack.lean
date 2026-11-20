@@ -20,9 +20,9 @@ abbrev primeBack (s : K ≃+* K) (la : HeightOneSpectrum (𝓞 K)) : HeightOneSp
   HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s).symm la
 
 /- English proof (translation)
-Establish `hI' : I.comap e.symm ≠ ⊥`. Rewrite using `[← Ideal.map_comap_of_equiv]`. Conclude with `fun h => hI ((Ideal.map_eq_bot_iff_of_injective e.injective).1 h)`. Use `eq_of_forall_le_iff fun k => ?_` and prove the remaining obligations. Rewrite using `[← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hI') (HeightOneSpectrum.associates_irreducible _), ← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hI) (HeightOneSpectrum.associates_irreducible _), ← Associates.mk_pow, ← Associates.mk_pow, Associates.mk_le_m …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (HeightOneSpectrum.equivOfRingEquiv e p).asIdeal = p.asIdeal.map (e : R →+* S)`. Rewrite using `[Ideal.map_comap_of_equiv]`. Both sides reduce to the same expression. Rewrite using `[this, ← Ideal.map_pow, Ideal.map_comap_of_equiv]`. Conclude with `Ideal.comap_le_comap_iff_of_surjective e.symm e.symm.surjective _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_equiv {R S : Type} [CommRing R] [IsDedekindDomain R] [CommRing S] [IsDedekindDomain S]
     [DecidableEq (Associates (Ideal R))] [∀ p : Associates (Ideal R), Decidable (Irreducible p)]
@@ -44,11 +44,11 @@ theorem count_equiv {R S : Type} [CommRing R] [IsDedekindDomain R] [CommRing S] 
   exact Ideal.comap_le_comap_iff_of_surjective e.symm e.symm.surjective _ _
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `ha' : RingOfIntegers.mapRingEquiv s a ≠ 0` using `by simpa using ha`. Rewrite using `[HeightOneSpectrum.intValuation_if_neg _ ha, HeightOneSpectrum.intValuation_if_neg _ ha']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (Ideal.span {RingOfIntegers.mapRingEquiv s a}).comap (RingOfIntegers.mapRingEquiv s).symm.symm = Ideal.span {a}`. Rewrite using `[← Ideal.map_comap_of_equiv, Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules. Use `count_equiv (RingOfIntegers.mapRingEquiv s).symm la (I := Ideal.span {RingOfIntegers.mapRingEquiv s a}) (by simpa using ha')` as an intermediate fact. Rewrite `this` using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intValuation_primeBack (s : K ≃+* K) (la : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
     (primeBack s la).intValuation a = la.intValuation (RingOfIntegers.mapRingEquiv s a) := by
@@ -67,7 +67,7 @@ theorem intValuation_primeBack (s : K ≃+* K) (la : HeightOneSpectrum (𝓞 K))
   rw [this]
 
 /- English proof (translation)
-Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `hs : ∀ z : 𝓞 K, s (algebraMap (𝓞 K) K z) = algebraMap (𝓞 K) K (RingOfIntegers.mapRingEquiv s z)` using `fun _ => rfl`. Rewrite using `[map_div₀, map_div₀, map_div₀, hs, hs, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, intValuation_primeBack, intValuation_primeBack]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_primeBack (s : K ≃+* K) (la : HeightOneSpectrum (𝓞 K)) (x : K) :
     (primeBack s la).valuation K x = la.valuation K (s x) := by
@@ -79,7 +79,7 @@ theorem valuation_primeBack (s : K ≃+* K) (la : HeightOneSpectrum (𝓞 K)) (x
     HeightOneSpectrum.valuation_of_algebraMap, intValuation_primeBack, intValuation_primeBack]
 
 /- English proof (translation)
-Simplify using `only [vLa, valuation_primeBack]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vLa_primeBack (s : K ≃+* K) (la : HeightOneSpectrum (𝓞 K)) (x : K) :
     vLa (primeBack s la) x = vLa la (s x) := by
@@ -106,7 +106,7 @@ def changeEmbedding {L : Type} [CommRing L] (ι₀ ι₁ : c'.F →+* L) (κ : c
   y₀.ext hle h₁
 
 /- English proof (translation)
-Use `letI : Algebra c.F L := κ.toAlgebra`. Use `letI := ι₀.toAlgebra`. Conclude with `((rulBC_sec_val_linear E H Dw l Xo c c' hle).1 a n f hf).2 L h₀ y`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem evR_rulBC {L : Type} [CommRing L] (ι₀ : c'.F →+* L) (κ : c.F →+* L)
     (h₀ : ∀ a, ι₀ (incF c c' hle a) = κ a) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n)
@@ -118,9 +118,9 @@ theorem evR_rulBC {L : Type} [CommRing L] (ι₀ : c'.F →+* L) (κ : c.F →+*
   exact ((rulBC_sec_val_linear E H Dw l Xo c c' hle).1 a n f hf).2 L h₀ y
 
 /- English proof (translation)
-Establish `key : ∀ (τ : E →+* ℂ) (b : 𝓞 E), ι₁ (embK c' τ b) = ι₀ (embK c' τ b)` using `fun τ b => by`. Rewrite using `[← embK_incF hle τ b, h₀, h₁]`. Establish `eig : ∀ (G : SAB H (Sp T.V)) τ (w : epsOver T.V T.V ⟶ G.G), IsEigV c' ι₁ G τ w ↔ IsEigV c' ι₀ G τ w` using `fun G τ w => by`. Unfold `IsEigV`. Simplify using `only [key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Take `⟨G, t', m1, m2, ⟨ub, h1, h2, h3, h4⟩, rest⟩` from `hy`. Conclude with `⟨G, t', m1, m2, ⟨ub, h1, fun τ i => (eig G τ _).2 (h2 τ i), fun τ w ht he => h3 τ w ht ((eig G τ w).1 he), h4⟩, rest⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem integral_reread {T : CDVR} (ι₀ ι₁ : c'.F →+* T.Fr) (κ : c.F →+* T.Fr)
     (h₀ : ∀ a, ι₀ (incF c c' hle a) = κ a) (h₁ : ∀ a, ι₁ (incF c c' hle a) = κ a)
@@ -144,7 +144,7 @@ namespace GlobalTheory.GalSup
 open ReciprocityTheory.ChartRestriction.G
 
 /- English proof (translation)
-Establish `h` using `map_sum (AddMonoidHom.mk' (evI y) (evI_add y)) (fun i => b i • g i) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply] at h`. Rewrite using `[h]`. Simplify using `only [evI_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evI_sum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) {m : ℕ}
@@ -156,15 +156,15 @@ theorem evI_sum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
   simp only [evI_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c c' hle a n s hs m as fs hfs hint la v hv`. Take `⟨⟨q, T, ι, e, ho, y, hy, eta, heta, hq⟩, rfl⟩` from `hv`. Substitute `hq` using the available equality. Use `show 0 ≤ nval T.V e (evI y _)`. Set `κ : c.F →+* T.Fr` to `ι.comp (incF c c' hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι₁ : c'.F →+* T.Fr` to `ι.comp (s : c'.F →+* c'.F)`. Establish `h₀ : ∀ x, ι (incF c c' hle x) = κ x` using `fun _ => rfl`. Establish `h₁ : ∀ x, ι₁ (incF c c' hle x) = κ x` using `fun x => by show ι (s (incF c c' hle x)) = ι (incF c c' hle x)`. Rewrite using `[hs x]`. Set `y₁ : IntFr Xo c' T ι₁` to `⟨changeEmbedding hle ι ι₁ κ h₀ h₁ y.1, (letI := ι₁.toAlgebra; GlobalTheory.FlagTan.fromTest_of_isLocalRing _), integral_reread hle ι ι₁ κ h₀ h₁ y.1 y.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ho₁ : OverLa (primeBack s la) T.V ι₁ e` using `⟨ho.1, fun x => by`. Rewrite using `[vLa_primeBack]`. Conclude with `ho.2 (s x)⟩`. Establish `key : 0 ≤ nval T.V e (evI y₁ (∑ i, as i • rulBC hle (fs i)))` using `hint (primeBack s la) _ ⟨PtV.mk (primeBack s la) ho₁ y₁ hy () trivial, rfl⟩`. Establish `e1 : evI y (∑ i, s (as i) • rulBC hle (fs i)) = evI y₁ (∑ i, as i • rulBC hle (fs i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[evI_sum, evI_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `evI`. Rewrite using `[evR_rulBC hle ι κ h₀ (hfs i), evR_rulBC hle ι₁ κ h₁ (hfs i)]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem intAt_galois : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (s : c'.F ≃+* c'.F), (∀ x : c.F, s (incF c c' hle x) = incF c c' hle x) → ∀ (m : ℕ) (as : Fin m → c'.F) (fs : Fin m → Rul Xo c), (∀ i, fs i ∈ sec Xo c a n) → IntAt Xo c' (∑ i, as i • rulBC hle (fs i)) → IntAt Xo c' (∑ i, s (as i) • rulBC hle (fs i)) := by
   intro E _ _ _ H Dw l Xo c c' hle a n s hs m as fs hfs hint la v hv

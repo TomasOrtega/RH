@@ -17,9 +17,9 @@ namespace GlobalTheory.CxForm.FormMul
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas n).sum_repr a, ← (bas n).sum_repr b]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_mul_sum, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun U _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_smul_comm, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem repr_mul (a b : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (a * b) S = ∑ p : Finset (Fin (n + n)) × Finset (Fin (n + n)),
@@ -32,16 +32,16 @@ theorem repr_mul (a b : Alt n) (S : Finset (Fin (n + n))) :
   rw [smul_mul_smul_comm, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[coefwise, map_sum, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr_coefwise (T : (V n → ℂ) → ℂ) (H : V n → Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (coefwise T H) S = T (fun x => (bas n).repr (H x) S) := by
   simp [coefwise, map_sum, Finsupp.single_apply]
 
 /- English proof (translation)
-Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Establish `e : (fun x => (bas n).repr (F x * G x) S) = fun x => ∑ p : Finset (Fin (n + n)) × Finset (Fin (n + n)), (bas n).repr (F x) p.1 * (bas n).repr (G x) p.2 * (bas n).repr (bas n p.1 * bas n p.2) S`. Use function extensionality and compare the values at `fun x => repr_mul _ _ _`. Rewrite using `[repr_coefwise, e, map_add, Finsupp.add_apply, repr_mul (coefwise T F), repr_mul (F v)]`. Simplify using `only [repr_coefwise]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum (fun p x => (bas n).repr (F x) p.1 * (bas n).repr (G x) p.2 * (bas n).repr (bas n p.1 * bas n p.2) S) (fun p => ((hF p.1).mul (hG p.2)).mul (differentiableAt_const _)), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hmul (fun x => (bas n).repr (F x) p.1 * (bas n).repr (G x) p.2) (fun _ => (bas n).repr (bas n p.1 * bas n p.2) S) ((hF p.1).mul (hG p.2)) (differentiableAt_const _), hconst, hmul (fun x => (bas n).repr (F x) p.1) (fun x => (bas n).repr (G x) p.2) (hF p.1) (hG p.2)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coefwise_mul {v : V n} {T : (V n → ℂ) → ℂ}
     (hsum : ∀ f : Finset (Fin (n + n)) × Finset (Fin (n + n)) → V n → ℂ, (∀ p, DifferentiableAt ℝ (f p) v) →
@@ -67,11 +67,11 @@ theorem coefwise_mul {v : V n} {T : (V n → ℂ) → ℂ}
   ring
 
 /- English proof (translation)
-Proceed by induction on `y using ExteriorAlgebra.induction with`. Consider the case `algebraMap r => exact ⟨algebraMap ℂ _ r, fun m => (Algebra.commutes r _).symm⟩`. Consider the case `ι x => exact ⟨-ExteriorAlgebra.ι ℂ x, fun m => by`. Rewrite using `[neg_mul]`. Conclude with `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap m x)⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul a b ha hb`. Take `⟨a', ha⟩` from `ha`. Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' * b', fun m => by rw [← mul_assoc, ha, mul_assoc, hb, mul_assoc]⟩`. Consider the case `add a b ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha⟩` from `ha`. Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' + b', fun m => by rw [mul_add, ha, hb, add_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ι_mul (y : Alt n) : ∃ y' : Alt n, ∀ m, ExteriorAlgebra.ι ℂ m * y = y' * ExteriorAlgebra.ι ℂ m := by
   induction y using ExteriorAlgebra.induction with
@@ -88,7 +88,7 @@ theorem exists_ι_mul (y : Alt n) : ∃ y' : Alt n, ∀ m, ExteriorAlgebra.ι �
     exact ⟨a' + b', fun m => by rw [mul_add, ha, hb, add_mul]⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_ι_mul (F v)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h (a : Fin n) : ExteriorAlgebra.ι ℂ (g a) * coefwise (T a) (fun x => F x * G x) = ExteriorAlgebra.ι ℂ (g a) * coefwise (T a) F * G v + y * (ExteriorAlgebra.ι ℂ (g a) * coefwise (T a) G)`. Simplify using `only [coefwise_mul (hsum a) (hmul a) (hconst a) hF hG, mul_add, ← mul_assoc, hy]`. Rewrite using `[Finset.sum_congr rfl fun a _ => h a, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_leibniz {v : V n} (g : Fin n → (Fin n ⊕ Fin n → ℂ)) (T : Fin n → (V n → ℂ) → ℂ)
     (hsum : ∀ a, ∀ f : Finset (Fin (n + n)) × Finset (Fin (n + n)) → V n → ℂ, (∀ p, DifferentiableAt ℝ (f p) v) →
@@ -109,7 +109,7 @@ theorem sum_mul_leibniz {v : V n} (g : Fin n → (Fin n ⊕ Fin n → ℂ)) (T :
   rw [Finset.sum_congr rfl fun a _ => h a, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]
 
 /- English proof (translation)
-The claim follows from `sum_mul_leibniz (fun a => Pi.single (.inl a) 1) (fun a f => del f v (coordVec a)) (fun a f hf => by rw [del_sum (fun p _ => hf p), ContinuousLinearMap.sum_apply]) (fun a f g hf hg => del_mul hf hg _) (fun a c => by rw [del_const]; rfl) hF hG`.
+A detailed English derivation is pending.
 -/
 theorem delAt_mul {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v)
     (hG : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) :
@@ -119,7 +119,7 @@ theorem delAt_mul {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt 
     (fun a f g hf hg => del_mul hf hg _) (fun a c => by rw [del_const]; rfl) hF hG
 
 /- English proof (translation)
-The claim follows from `sum_mul_leibniz (fun a => Pi.single (.inr a) 1) (fun a f => dbar f v (coordVec a)) (fun a f hf => by rw [dbar_sum (fun p _ => hf p), ContinuousLinearMap.sum_apply]) (fun a f g hf hg => dbar_mul hf hg _) (fun a c => by rw [dbar_const]; rfl) hF hG`.
+A detailed English derivation is pending.
 -/
 theorem dbarAt_mul {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v)
     (hG : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) :
@@ -131,7 +131,7 @@ theorem dbarAt_mul {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt
 variable {M : Type} [TopologicalSpace M]
 
 /- English proof (translation)
-Unfold `HolAtlas.loc`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_mul (A : HolAtlas M n) (α β : A.Fld) (i : A.ι) (v : V n) :
     A.loc (α * β) i v = A.loc α i v * A.loc β i v := by
@@ -141,7 +141,7 @@ theorem loc_mul (A : HolAtlas M n) (α β : A.Fld) (i : A.ι) (v : V n) :
   · simp
 
 /- English proof (translation)
-The claim follows from `((h.smooth x.1.1 S).contDiffAt ((A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2))).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_coef {A : HolAtlas M n} {α : A.Fld} (h : A.IsForm α) (x : A.Pt) (S : Finset (Fin (n + n))) :
     DifferentiableAt ℝ (fun v => (bas n).repr (A.loc α x.1.1 v) S) x.crd :=

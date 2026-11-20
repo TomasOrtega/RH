@@ -28,7 +28,7 @@ private noncomputable def UpperTheory.V.Af.CuspFin.vermaRep {n : ℕ} (lam : Fin
 
 open GroundTheory.Automorphic.HarishChandra in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (x * 1) = _`. Rewrite using `[mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Af.CuspFin.vermaRep_one {n : ℕ} (lam : Fin n → ℂ) (x : U n) :
     UpperTheory.V.Af.CuspFin.vermaRep lam x (Submodule.Quotient.mk 1) = Submodule.Quotient.mk x := by
@@ -37,9 +37,9 @@ private theorem UpperTheory.V.Af.CuspFin.vermaRep_one {n : ℕ} (lam : Fin n →
 
 open GroundTheory.Automorphic.HarishChandra in
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `vermaCoord_vermaIdeal lam h`. Establish `hnu : ¬ HasUpper (0 : Fin n × Fin n →₀ ℕ)`. Introduce and unpack `⟨b, -, hne⟩`. Conclude with `hne rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hd : diagExp (0 : Fin n × Fin n →₀ ℕ) = 0` using `by ext; simp`. Rewrite `h0` using `[← canon_zero, vermaCoord_canon_of_not lam hnu, hd, Finsupp.single_eq_zero]`. Simplify using `at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.CuspFin.one_notMem_vermaIdeal {n : ℕ} (lam : Fin n → ℂ) :
     (1 : U n) ∉ vermaIdeal lam := by
@@ -54,13 +54,13 @@ private theorem UpperTheory.V.Af.CuspFin.one_notMem_vermaIdeal {n : ℕ} (lam : 
 
 open GroundTheory.Automorphic.HarishChandra UpperTheory.V.Af.CuspFin in
 /- English proof (translation)
-Introduce `n u`. Use `MvPolynomial.funext fun lam => ?_` and prove the remaining obligations. Establish `hgl : Formalism.REAL.GlRel (fun i j : Fin n => e (i, j))` using `fun a b c d => e_mul_sub_mul (a, b) (c, d)`. Establish `hgl' : Formalism.REAL.GlRel (fun i j : Fin n => vermaRep lam (e (i, j)))` using `fun a b c d => by`. Establish `h` using `congrArg (vermaRep lam) (hgl a b c d)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, apply_ite (vermaRep lam), map_zero] at h`. Conclude with `h`. Establish `hup : ∀ a, IsUpper a → vermaRep lam (e a) (Submodule.Quotient.mk 1) = 0` using `fun a ha => by`. Rewrite using `[vermaRep_one, Submodule.Quotient.mk_eq_zero]`. Conclude with `nPlusU_le_vermaIdeal lam (Submodule.subset_span ⟨1, a, ha, one_mul _⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : ∀ k, vermaRep lam (e (k, k)) (Submodule.Quotient.mk 1) = lam k • (Submodule.Quotient.mk 1 : U n ⧸ vermaIdeal lam)` using `fun k => by`. Rewrite using `[vermaRep_one, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← Algebra.algebraMap_eq_smul_one]`. Simplify using `using mul_e_sub_mem_vermaIdeal lam 1 k`. Establish `h1` using `rep_apply_of_highestWeight (vermaRep lam) lam hup hH (z := Formalism.REAL.qdet (fun i j : Fin n => e (i, j)) u) (fun k => (Formalism.REAL.qDetCentral _ n _ hgl u k k).symm)`. Establish `h2` using `Formalism.REAL.qDetHW _ n _ lam (Submodule.Quotient.mk 1) hgl' ⟨hH, fun a b hab => hup (a, b) hab⟩ u`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_qdet, h2]`. Establish `hv : (Submodule.Quotient.mk 1 : U n ⧸ vermaIdeal lam) ≠ 0` using `fun h => one_notMem_vermaIdeal lam ((Submodule.Quotient.mk_eq_zero _).1 h)`. Rewrite using `[← smul_left_injective ℂ hv h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.harishChandraProj_quantumDet_eq_prod :
     ∀ (n : ℕ) (u : ℂ), GroundTheory.Automorphic.HarishChandra.hcProjLin (Formalism.REAL.qdet (fun i j : Fin n => GroundTheory.Automorphic.HarishChandra.e (i, j)) u) = ∏ k : Fin n, (MvPolynomial.C (u - (k : ℂ)) + MvPolynomial.X k) := by

@@ -24,7 +24,7 @@ variable (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ 
 def bU : Basis ι ℝ (UU M L e) := Basis.span (psi_e_linInd S hσ hsig hpos M L e)
 
 /- English proof (translation)
-Simplify using `[bU, Basis.span_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bU_coe (i : ι) : ((bU S hσ hsig hpos M L e i : UU M L e) : EuclideanSpace ℝ (Idx S)) = psi M (e i : S.V) :=
   by simp [bU, Basis.span_apply]
@@ -32,9 +32,7 @@ theorem bU_coe (i : ι) : ((bU S hσ hsig hpos M L e i : UU M L e) : EuclideanSp
 abbrev abelian₂ : Submodule ℤ (UU M L e) := Submodule.span ℤ (Set.range (bU S hσ hsig hpos M L e))
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun t : L ↦ (t : S.V)) (e.sum_repr ⟨l, hl⟩)`. Simplify using `only [Submodule.coe_sum] at h`. Establish `h' : ∑ i, (e.repr ⟨l, hl⟩ i) • (e i : S.V) = l`. Combine the equalities or inequalities in the displayed calculation. Use `conv_lhs => rw [← h']`.
-
-Conclude with `psi_sum_int M L e _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem psi_eq_sum (l : S.V) (hl : l ∈ L) :
     psi M l = ∑ i, (e.repr ⟨l, hl⟩ i) • psi M (e i : S.V) := by
@@ -48,14 +46,14 @@ theorem psi_eq_sum (l : S.V) (hl : l ∈ L) :
   exact psi_sum_int M L e _
 
 /- English proof (translation)
-Rewrite using `[psi_eq_sum S M L e l hl]`. Conclude with `Submodule.sum_mem _ fun i _ ↦ zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_mem_U (l : S.V) (hl : l ∈ L) : psi M l ∈ UU M L e := by
   rw [psi_eq_sum S M L e l hl]
   exact Submodule.sum_mem _ fun i _ ↦ zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun i ↦ e.repr ⟨l, hl⟩ i, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, bU_coe]`. Rewrite using `[psi_eq_sum S M L e l hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Lam_of (l : S.V) (hl : l ∈ L) :
     (⟨psi M l, psi_mem_U S M L e l hl⟩ : UU M L e) ∈ abelian₂ S hσ hsig hpos M L e := by
@@ -65,7 +63,7 @@ theorem mem_Lam_of (l : S.V) (hl : l ∈ L) :
   rw [psi_eq_sum S M L e l hl]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hu`. Use `⟨∑ i, c i • (e i : S.V), Submodule.sum_mem _ fun i _ ↦ zsmul_mem (e i).2 _, ?_⟩` and prove the remaining obligations. Rewrite using `[psi_sum_int M L e, ← hc]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, bU_coe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_mem_Lam (u : UU M L e) (hu : u ∈ abelian₂ S hσ hsig hpos M L e) :
     ∃ l ∈ L, (u : EuclideanSpace ℝ (Idx S)) = psi M l := by
@@ -75,25 +73,21 @@ theorem exists_of_mem_Lam (u : UU M L e) (hu : u ∈ abelian₂ S hσ hsig hpos 
   simp only [Submodule.coe_sum, Submodule.coe_smul_of_tower, bU_coe]
 
 /- English proof (translation)
-Use `set b := bU S hσ hsig hpos M L e with hb`. Establish `hbmem : ∀ j, b j ∈ abelian₂ S hσ hsig hpos M L e` using `fun j ↦ Submodule.subset_span ⟨j, rfl⟩`. Use `choose n hn using fun j ↦ hy (b j) (hbmem j)`. Use `set c : ι → ℝ := fun i ↦ b.repr y i with hc`. Establish `hyc : (y : EuclideanSpace ℝ (Idx S)) = ∑ i, c i • psi M (e i : S.V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun t : UU M L e ↦ (t : EuclideanSpace ℝ (Idx S))) (b.sum_repr y)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, hb, bU_coe] at this`. Rewrite using `[← this]`. Establish `hGc : (GR S L e) *ᵥ c = fun j ↦ (n j : ℝ)`. Use extensionality with `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn j]`. Express the relevant statement in the definitionally equal form `_ = ⟪(b j : EuclideanSpace ℝ (Idx S)), (y : EuclideanSpace ℝ (Idx S))⟫_ℝ`. Rewrite using `[hyc, inner_sum, hb, bU_coe]`. Simplify using `only [real_inner_smul_right, inner_e hσ M L e, Matrix.mulVec, dotProduct, GR_apply]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set c' : ι → ℚ := (GQ S L e)⁻¹ *ᵥ fun j ↦ (n j : ℚ) with hc'`. Establish `hdet` using `GQ_det S hσ hsig hpos M L e`. Establish `hGc' : (GQ S L e) *ᵥ c' = fun j ↦ (n j : ℚ)`. Rewrite using `[hc', Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`. Establish `hGR' : (GR S L e) *ᵥ (fun i ↦ (c' i : ℝ)) = fun j ↦ (n j : ℝ)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use extensionality with `j`. Use `RingHom.map_mulVec (Rat.castHom ℝ) (GQ S L e) c' j` as an intermediate fact. Rewrite `this` using `[hGc']`. Simplify `this.symm` using `[GR, Function.comp_def]`. Establish `hcc : c = fun i ↦ (c' i : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (GR S L e) *ᵥ (c - fun i ↦ (c' i : ℝ)) = 0`. Rewrite using `[Matrix.mulVec_sub, hGc, hGR', sub_self]`. Conclude with `sub_eq_zero.1 (Matrix.eq_zero_of_mulVec_eq_zero (GR_det S hσ hsig hpos M L e) h0)`. Use `set z : S.V := ∑ i, (c' i : E) • (e i : S.V) with hz`. Establish `hyz : (y : EuclideanSpace ℝ (Idx S)) = psi M z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hyc, hz, psi_sum_rat M L e, hcc]`. Use `⟨z, ?_, ?_, hyz⟩` and prove the remaining obligations. Introduce `l hl`. Take `⟨m, hm⟩` from `hy _ (mem_Lam_of S hσ hsig hpos M L e l hl)`. Establish `h1 : ⟪psi M l, psi M z⟫_ℝ = (m : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hyz]`. Conclude with `hm`. Rewrite `h1` using `[inner_psi hσ, trR_eq]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `: ((Algebra.trace ℚ E (S.hT l z) : ℚ) : ℝ) = ((m : ℚ) : ℝ)` using `by rw [h1]; simp`.
-
-Rewrite using `[eq_intCast]`. Conclude with `this.symm` after adjusting the coercions. Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[hyz, h0, map_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dual_vector_of_integral_pairing (y : UU M L e) (hy0 : y ≠ 0)
     (hy : ∀ x ∈ abelian₂ S hσ hsig hpos M L e, ∃ n : ℤ, ⟪x, y⟫_ℝ = (n : ℝ)) :

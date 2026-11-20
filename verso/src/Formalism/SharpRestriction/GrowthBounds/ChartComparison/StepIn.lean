@@ -51,14 +51,14 @@ def raw (β : S.Ch) (x : (M.lat i).V) : {c // S.chOf c = β} → Fr D i hi → �
 def kTw (β : S.Ch) : ℂ := ∏ τ, (embT D τ (S.loc β).B.1.det) ^ (-(cTw D i))
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `(((Matrix.isUnit_iff_isUnit_det _).1 (S.loc β).B.isUnit).map (embT D τ)).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kTw_ne (β : S.Ch) : S.kTw β ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ ?_
   exact (((Matrix.isUnit_iff_isUnit_det _).1 (S.loc β).B.isUnit).map (embT D τ)).ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∏ τ, (tEL D τ (S.loc β).B.1.det) ^ (-(cTw D i)), by rw [map_prod] exact Finset.prod_congr rfl fun τ _ => by rw [map_zpow₀, tEL_emb]⟩`.
+Supply the required witnesses or components.
 -/
 theorem kTw_rat (β : S.Ch) : ∃ r : D.what₂.LL, D.what₂.embLL r = S.kTw β :=
   ⟨∏ τ, (tEL D τ (S.loc β).B.1.det) ^ (-(cTw D i)), by
@@ -102,11 +102,11 @@ def charts : Charts (sigD D) (gramN D i hi) S.T D.R.f S.bad (embT D) D.what₂.e
 def cmpJ (e : D.what₂.LL →+* G.Kf) (x : (M.lat i).V) : G.Fn := S.charts.cmpGl e S.pos x
 
 /- English proof (translation)
-Apply `M.emb_inj i` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c y`. Establish `h0 : S.kTw (S.chOf c) • nrm (S.tw (S.chOf c)) (S.K (S.chOf c)).y (S.raw (S.chOf c) x) = 0` using `h (S.chOf c)`. Establish `h1 : nrm (S.tw (S.chOf c)) (S.K (S.chOf c)).y (S.raw (S.chOf c) x) = 0` using `(smul_eq_zero.1 h0).resolve_left (S.kTw_ne _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : S.raw (S.chOf c) x = 0`. Apply `(nrm (S.tw (S.chOf c)) (S.K (S.chOf c)).y).injective` to reduce the goal to its premises. Rewrite using `[h1, map_zero]`. Establish `h3` using `congrFun (congrFun h2 ⟨c, rfl⟩) (S.eY y)`. Unfold `raw at h3`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h3` using `[Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem embN_joint (x : (M.lat i).V) (h : ∀ β, S.embN β x = 0) : x = 0 := by
   apply M.emb_inj i
@@ -123,9 +123,9 @@ theorem embN_joint (x : (M.lat i).V) (h : ∀ β, S.embN β x = 0) : x = 0 := by
   rwa [Equiv.symm_apply_apply] at h3
 
 /- English proof (translation)
-Introduce `x`. Establish `h1 : M.emb i x ∈ M.Fi i` using `((S.val.rat _).1 ⟨x, rfl⟩).1`. Take `⟨g, hg, e⟩` from `(S.val.Fi _).1 h1 β`. Use `⟨S.kTw β • nrmA (S.tw β) g, Submodule.smul_mem _ _ ((nrmA_mem_AdFun (S.tw β) g).2 hg.1), fun c => ?_⟩` and prove the remaining obligations. Establish `h2 : res (embT D) (S.K β).y (S.kTw β • nrmA (S.tw β) g) = S.kTw β • nrm (S.tw β) (S.K β).y (S.raw β x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_smul, res_nrmA, e]`. Both sides reduce to the same expression. Conclude with `congrFun h2 c`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adExt (β : S.Ch) : AdExt (S.K β).lev (embT D) D.what₂.embLL (S.embN β) (S.K β).y := by
   intro x
@@ -142,9 +142,9 @@ def ChRat (β : S.Ch) : Prop := ∀ cl, ∃ r : D.what₂.LL, D.what₂.embLL r 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `x cl`. Take `⟨Pp, hPp, e⟩` from `((S.val.rat _).1 ⟨x, rfl⟩).2 cl.1`. Take `⟨Q, hQ, hev⟩` from `evRat_of_blocks hb Pp hPp`. Take `⟨r, hr⟩` from `hr cl`. Take `⟨k, hk⟩` from `S.kTw_rat β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(k * r) • Q, Submodule.smul_mem _ _ hQ, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.G.Cmp.map_smul', map_smul, Pi.smul_apply, hev z, S.embN_apply, e, Equiv.apply_symm_apply, map_mul, hr, hk, smul_eq_mul, mul_assoc, mul_assoc]`. Use `congr 2`. Conclude with `(detF_fnOf_one (D.R.N_pos i) _ (M.lam i) (cTw D i) Pp z).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evRatRep (β : S.Ch) (hr : S.ChRat β)
     (hb : BlockRational G.P (S.loc β).rk S.pos (gramC (gramN D i hi) (embT D)) (crdB (embT D) (S.loc β).B) D.what₂.embLL (M.lam i)) :
@@ -202,7 +202,7 @@ structure Core (e : D.what₂.LL →+* G.Kf) (β : S.Ch) : Prop where
 variable {S}
 
 /- English proof (translation)
-Use `hS G.P (S.loc β).rk S.pos _ _ D.what₂.embLL (M.lam i) H.wt fun τ => ⟨bc (tEL D τ) ((S.loc β).B)⁻¹, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `(tEL_emb D τ _).symm`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem Core.blk {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (hS : BlockRationalityField) :
     BlockRational G.P (S.loc β).rk S.pos (gramC (gramN D i hi) (embT D)) (crdB (embT D) (S.loc β).B) D.what₂.embLL (M.lam i) := by
@@ -211,7 +211,7 @@ theorem Core.blk {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (hS
   exact (tEL_emb D τ _).symm
 
 /- English proof (translation)
-The claim follows from `H.std actB := H.actB gamU := H.gamU away := awayEx_of H.good (S.K β).lev H.gam ex := valEx_of_rep' (tEL D) (tEL_emb D) (embT_conj D) H.std (S.adExt β) (ptEx_of H.good (S.K β).lev (S.K β).y (S.K β).y_bij.2) (ptOne_of (S.K β).lev H.int H.hypP H.bad_p) (S.evRatRep β H.chRat (H.blk h …`.
+A detailed English derivation is pending.
 -/
 theorem Core.toHyp {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (hS : BlockRationalityField) :
     S.charts.Hyp e S.pos (tEL D) β where
@@ -236,9 +236,7 @@ def IntAtJ (w : D.what₂.places.Pl) (β : S.Ch) (x : (M.lat i).V) (cl : {c // S
       fnOf _ (shiftOf (lamTG M i)) (atInf (embT D) (B⁻¹ : GL (Fin (D.R.N i)) D.host.E).1) Pp (S.eY z)
 
 /- English proof (translation)
-Establish `h` using `S.val.lat w hw x`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Conclude with `h.2 fun c B hB => h1 (S.chOf c) ⟨c, rfl⟩ B hB`. Introduce `h1 β cl B hB`.
-
-Conclude with `h.1 h1 cl.1 B hB`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intAtJ_iff (w : D.what₂.places.Pl) (hw : S.okW w) (x : (M.lat i).V) :
     (∀ β cl, S.IntAtJ w β x cl) ↔ x ∈ locW D.what₂.places w (M.lat i).L := by
@@ -264,18 +262,18 @@ theorem cmpJL_apply (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hS 
     cmpJL e H hS x = S.cmpJ e x := rfl
 
 /- English proof (translation)
-The claim follows from `Charts.cmpGl_rat x`.
+A detailed English derivation is pending.
 -/
 theorem cmpJ_rat (e : D.what₂.LL →+* G.Kf) (x : (M.lat i).V) : RatFn G e (S.cmpJ e x) := Charts.cmpGl_rat x
 
 /- English proof (translation)
-The claim follows from `Charts.cmpGl_inj (X := S.charts) (tEL D) (embT_conj D) (fun β => (H β).toHyp hS) S.embN_joint`.
+A detailed English derivation is pending.
 -/
 theorem cmpJ_inj (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hS : BlockRationalityField) : Function.Injective (cmpJL e H hS) :=
   Charts.cmpGl_inj (X := S.charts) (tEL D) (embT_conj D) (fun β => (H β).toHyp hS) S.embN_joint
 
 /- English proof (translation)
-Rewrite using `[← S.intAtJ_iff w hw x]`. Conclude with `Charts.cmpGl_mem_M_iff (X := S.charts) (tEL D) (tEL_emb D) (embT_conj D) (fun β => (H β).toHyp hS) (S.IntAtJ w) hloc x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpJ_lat (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hS : BlockRationalityField) (w : D.what₂.places.Pl) (hw : S.okW w)
     (hloc : S.ValIntJ e w) (x : (M.lat i).V) : S.cmpJ e x ∈ G.M ↔ x ∈ locW D.what₂.places w (M.lat i).L := by

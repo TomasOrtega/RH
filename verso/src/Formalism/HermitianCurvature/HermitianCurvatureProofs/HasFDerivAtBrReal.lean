@@ -11,7 +11,7 @@ variable {TT : ℝ} {α : ℂ → ℂ}
 def ug (TT : ℝ) (α : ℂ → ℂ) (s : Bool) (z : ℂ) : ℂ := Complex.exp (I * (th TT α (br s z) : ℂ))
 
 /- English proof (translation)
-Establish `h : HasFDerivAt (br s) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) ζ⁻¹).restrictScalars ℝ) ζ` using `(hasDerivAt_br s hs).hasFDerivAt.restrictScalars ℝ`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hasFDerivAt_br_real (s : Bool) {ζ : ℂ} (hs : ζ ∈ brD s) :
     HasFDerivAt (br s) ((ContinuousLinearMap.mul ℝ ℂ) ζ⁻¹) ζ := by
@@ -23,9 +23,9 @@ theorem hasFDerivAt_br_real (s : Bool) {ζ : ℂ} (hs : ζ ∈ brD s) :
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun z => th TT α (br s z)) ((om α (br s ζ)).comp ((ContinuousLinearMap.mul ℝ ℂ) ζ⁻¹)) ζ` using `(hasFDerivAt_th hTT hα hcurv (br_mem_Hh s hTT hζ)).comp ζ (hasFDerivAt_br_real s hs)`. Establish `h2 : HasFDerivAt (fun z => ((th TT α (br s z) : ℝ) : ℂ)) (Complex.ofRealCLM.comp ((om α (br s ζ)).comp ((ContinuousLinearMap.mul ℝ ℂ) ζ⁻¹))) ζ` using `Complex.ofRealCLM.hasFDerivAt.comp ζ h1`. Establish `h3 : HasFDerivAt (fun z => I * ((th TT α (br s z) : ℝ) : ℂ)) (I • Complex.ofRealCLM.comp ((om α (br s ζ)).comp ((ContinuousLinearMap.mul ℝ ℂ) ζ⁻¹))) ζ` using `h2.const_smul I`. Establish `h4` using `h3.cexp`. Use `show HasFDerivAt (fun z => Complex.exp (I * (th TT α (br s z) : ℂ))) _ ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h4.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`. Simplify using `[ug]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_ug (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0) (s : Bool) {ζ : ℂ} (hs : ζ ∈ brD s)
@@ -49,9 +49,9 @@ theorem hasFDerivAt_ug (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : 
   simp [ug]
 
 /- English proof (translation)
-Establish `hne` using `ne_zero_of_An hTT hζ`. Take `⟨s, hs⟩` from `exists_br hne`. Establish `hev : uu TT α =ᶠ[𝓝 ζ] ug TT α s` using `by filter_upwards [(isOpen_An TT).mem_nhds hζ] with z hz`. Conclude with `uu_eq_br hTT hα hcurv hhol s hz`. Establish `hu : ug TT α s ζ = uu TT α ζ` using `(uu_eq_br hTT hα hcurv hhol s hζ).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev.fderiv_eq, (hasFDerivAt_ug hTT hα hcurv s hs hζ).fderiv]`. Establish `hb : α ζ * ζ * (ζ⁻¹ * v) = α ζ * v` using `by field_simp`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.mul_apply', ContinuousLinearMap.smul_apply, Complex.ofRealCLM_apply, om_apply, bet, exp_br s hne, smul_eq_mul, hu, hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_uu_apply (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0)
@@ -70,11 +70,11 @@ theorem fderiv_uu_apply (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) :
     smul_eq_mul, hu, hb]
 
 /- English proof (translation)
-Establish `h1` using `fderiv_uu_apply hTT hα hcurv hhol hζ 1`. Establish `h2` using `fderiv_uu_apply hTT hα hcurv hhol hζ I`. Establish `e1 : (1 / 2 : ℂ) * (I * ((2 * (α ζ * 1).im : ℝ) : ℂ) - I * (I * ((2 * (α ζ * I).im : ℝ) : ℂ))) = α ζ`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `e2 : (1 / 2 : ℂ) * (I * ((2 * (α ζ * 1).im : ℝ) : ℂ) + I * (I * ((2 * (α ζ * I).im : ℝ) : ℂ))) = -(starRingEnd ℂ) (α ζ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[wZ, h1, h2]`. Take the linear combination `(uu TT α ζ) * e1`. Rewrite using `[wZb, h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(uu TT α ζ) * e2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wZ_uu (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0)
@@ -95,9 +95,9 @@ theorem wZ_uu (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop �
     linear_combination (uu TT α ζ) * e2
 
 /- English proof (translation)
-Introduce `ζ hζ`. Take `⟨s, hs⟩` from `exists_br (ne_zero_of_An hTT hζ)`. Establish `hev : uu TT α =ᶠ[𝓝 ζ] fun z => Complex.exp (I * (th TT α (br s z) : ℂ))` using `by filter_upwards [(isOpen_An TT).mem_nhds hζ] with z hz`. Conclude with `uu_eq_br hTT hα hcurv hhol s hz`. Establish `hth : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (th TT α) (br s ζ)` using `(contDiffOn_th hTT hα hcurv).contDiffAt ((isOpen_Hh TT).mem_nhds (br_mem_Hh s hTT hζ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbr : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (br s) ζ` using `(contDiffAt_br s hs).restrict_scalars ℝ`. Establish `h2 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => ((th TT α (br s z) : ℝ) : ℂ)) ζ` using `Complex.ofRealCLM.contDiff.contDiffAt.comp ζ (hth.comp ζ hbr)`. Conclude with `((contDiffAt_const.mul h2).cexp.congr_of_eventuallyEq hev).contDiffWithinAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_uu (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0)

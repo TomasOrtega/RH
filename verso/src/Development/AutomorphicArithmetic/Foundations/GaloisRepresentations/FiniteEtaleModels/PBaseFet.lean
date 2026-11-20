@@ -13,27 +13,27 @@ open UpperTheory.Gal.Int.Geo
 namespace UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Establish `hε' : (j ≫ ε) ≫ pk = 𝟙 X ≫ j` using `by simp [hε]`. Set `ε₀ : X ⟶ P'` to `hp.lift (j ≫ ε) (𝟙 X) hε'`. Establish `h₁ : ε₀ ≫ pw = j ≫ ε` using `hp.lift_fst _ _ _`. Establish `h₂ : ε₀ ≫ pk' = 𝟙 X` using `hp.lift_snd _ _ _`. Establish `hE : (pullback.fst sY g ≫ ε) ≫ pk ≫ sY = pullback.snd sY g ≫ g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, reassoc_of% hε, pullback.condition]`. Set `εE : pullback sY g ⟶ pullback (pk ≫ sY) g` to `pullback.lift (pullback.fst sY g ≫ ε) (pullback.snd sY g) hE`. Establish `F₁ : pullback.lift (e.hom ≫ pw) q h ≫ pullback.fst _ _ = e.hom ≫ pw` using `pullback.lift_fst _ _ _`. Establish `F₂ : pullback.lift (e.hom ≫ pw) q h ≫ pullback.snd _ _ = q` using `pullback.lift_snd _ _ _`. Establish `f₁ : pullback.lift j sX ov ≫ pullback.fst _ _ = j` using `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f₂ : pullback.lift j sX ov ≫ pullback.snd _ _ = sX` using `pullback.lift_snd _ _ _`. Establish `E₁ : εE ≫ pullback.fst _ _ = pullback.fst sY g ≫ ε` using `pullback.lift_fst _ _ _`. Establish `E₂ : εE ≫ pullback.snd _ _ = pullback.snd sY g` using `pullback.lift_snd _ _ _`. Establish `sq : IsPullback (ε₀ ≫ e.inv) (pullback.lift j sX ov) (pullback.lift (e.hom ≫ pw) q h) εE`. Establish `hcomm : (ε₀ ≫ e.inv) ≫ pullback.lift (e.hom ≫ pw) q h = pullback.lift j sX ov ≫ εE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, F₁, E₁, Iso.inv_hom_id_assoc, h₁]`. Rewrite using `[reassoc_of% f₁]`. Simplify using `only [Category.assoc, F₂, E₂, f₂]`. Rewrite using `[← hq, Iso.inv_hom_id_assoc, reassoc_of% h₂]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hcomm⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => s.fst ≫ e.hom ≫ pk') ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Establish `c` using `s.condition`. Establish `c₁ : s.fst ≫ e.hom ≫ pw = s.snd ≫ pullback.fst sY g ≫ ε`. Simplify `c =≫ pullback.fst _ _` using `only [Category.assoc, F₁, E₁]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c₃ : s.fst ≫ e.hom ≫ pk' ≫ j = s.snd ≫ pullback.fst sY g`. Use `c₁ =≫ pk` as an intermediate fact. Simplify `this` using `only [Category.assoc, hp.w, hε, Category.comp_id]`. Establish `key : (s.fst ≫ e.hom ≫ pk') ≫ ε₀ = s.fst ≫ e.hom`. Apply `hp.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Category.assoc, h₁]`. Rewrite using `[reassoc_of% c₃, c₁]`. Simplify using `only [Category.assoc, h₂, Category.comp_id]`. Rewrite using `[← Category.assoc, key, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Introduce `s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c` using `s.condition`. Establish `c₁ : s.fst ≫ e.hom ≫ pw = s.snd ≫ pullback.fst sY g ≫ ε`. Simplify `c =≫ pullback.fst _ _` using `only [Category.assoc, F₁, E₁]`. Establish `c₂ : s.fst ≫ q = s.snd ≫ pullback.snd sY g`. Simplify `c =≫ pullback.snd _ _` using `only [Category.assoc, F₂, E₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c₃ : s.fst ≫ e.hom ≫ pk' ≫ j = s.snd ≫ pullback.fst sY g`. Use `c₁ =≫ pk` as an intermediate fact. Simplify `this` using `only [Category.assoc, hp.w, hε, Category.comp_id]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `c₃` using `only [Category.assoc, f₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Category.assoc, f₂]`. Rewrite using `[hq]`. Conclude with `c₂`. Introduce `s m h₃ _`. Use `h₃ =≫ (e.hom ≫ pk')` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, h₂, Category.comp_id] at this`. Conclude with `this`. Conclude with `MorphismProperty.of_isPullback sq hF`.
+A detailed English derivation is pending.
 -/
 private theorem of_section {𝒞 : Type*} [Category 𝒞] [HasPullbacks 𝒞] (W : MorphismProperty 𝒞) [W.IsStableUnderBaseChange]
     {Y X P P' Z B V : 𝒞} (pk : P ⟶ Y) (pk' : P' ⟶ X) (j : X ⟶ Y) (pw : P' ⟶ P) (hp : IsPullback pw pk' pk j)
@@ -94,9 +94,9 @@ private theorem of_section {𝒞 : Type*} [Category 𝒞] [HasPullbacks 𝒞] (W
   exact MorphismProperty.of_isPullback sq hF
 
 /- English proof (translation)
-Introduce `hPow hPi p _ D G L _ E _ _ gb w q _ r 𝔴 𝔫 S k T M c a hN C`. Take `⟨e, hfin, het⟩` from `hPi p D G L E gb w q r 𝔴 𝔫 S k T M c a hN C`. Establish `hp : IsPullback (C.pw k) (GlobalTheory.KS.pow (T.M M).univ.A k).hom (GlobalTheory.KS.pow S.Y.univ.A k).hom C.j` using `((hPow _ _ _ _ _ _ C.j (𝟙 _) C.m.φ (𝟙 _) C.m.cart.1.w (by simp) k).1 C.m.cart.1)`. Set `ε : S.Y.X ⟶ (GlobalTheory.KS.pow S.Y.univ.A k).left` to `(Pi.lift (fun _ : Fin k => (1 : 𝟙_ (Over S.Y.X) ⟶ S.Y.univ.A))).left`. Establish `hε : ε ≫ (GlobalTheory.KS.pow S.Y.univ.A k).hom = 𝟙 _` using `Over.w (Pi.lift (fun _ : Fin k => (1 : 𝟙_ (Over S.Y.X) ⟶ S.Y.univ.A)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ (W : MorphismProperty Scheme.{0}) [W.IsStableUnderBaseChange], W (pullback.lift (S.pi T C) (T.X.q _) e) → W (pullback.lift C.j (T.M M).s C.ov)` using `fun W _ hF => of_section W _ _ C.j (C.pw k) hp ε hε S.Y.s (gen (Ow w) E) (T.M M).s C.ov (T.e M) _ (T.e_q M) e hF`. Conclude with `⟨key @IsFinite hfin, key @Etale het⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem baseFet_holds : PowCart → PiFet → BaseFet := by
   intro hPow hPi p _ D G L _ E _ _ gb w q _ r 𝔴 𝔫 S k T M c a hN C

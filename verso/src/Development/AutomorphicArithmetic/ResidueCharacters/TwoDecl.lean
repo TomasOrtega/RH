@@ -14,9 +14,9 @@ open GlobalTheory.SplitRowProbe GlobalTheory.SplitType GlobalTheory.SplitDecl
 namespace UpperTheory.N.Two
 
 /- English proof (translation)
-Introduce `w hw w' h`. Establish `hw'` using `GlobalTheory.SplitCount.mem_placesOver_of_conj D.host hw h`. Establish `n1` using `GlobalTheory.SplitRowProbe.not_both_columns D i w hw`. Establish `n2` using `GlobalTheory.SplitRowProbe.not_both_columns D i w' hw'`. Apply the tactic sequence `rcases Two.place_type_conj D i h2 w w' hw hw' h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> cases s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Or.inr ⟨⟨hw', h2⟩, fun ⟨_, h3⟩ => n1 ⟨h1, h3⟩⟩`. Conclude with `Or.inl ⟨⟨hw, h1⟩, fun ⟨_, h3⟩ => n2 ⟨h3, h2⟩⟩`. Conclude with `Or.inl ⟨⟨hw, h1⟩, fun ⟨_, h3⟩ => n2 ⟨h2, h3⟩⟩`. Conclude with `Or.inr ⟨⟨hw', h2⟩, fun ⟨_, h3⟩ => n1 ⟨h3, h1⟩⟩`.
+Prove the second alternative. Prove the first alternative. Prove the first alternative. Prove the second alternative.
 -/
 theorem columns_xor (D : D7) (i : D.nd.Loc) (h2 : D.nd.l i = 2) (s : Bool) :
     ∀ w ∈ placesOver D.host.E (D.nd.l i), ∀ w', IsConjPl D.host w w' →
@@ -32,21 +32,17 @@ theorem columns_xor (D : D7) (i : D.nd.Loc) (h2 : D.nd.l i = 2) (s : Bool) :
   · exact Or.inr ⟨⟨hw', h2⟩, fun ⟨_, h3⟩ => n1 ⟨h3, h1⟩⟩
 
 /- English proof (translation)
-Establish `hl : D.nd.l i ≠ 0` using `(D.nd.lPrime i).out.ne_zero`. Establish `hx` using `columns_xor D i h2 ep`. Use `⟨⟨decl D i hl ep, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[mem_col, plTypeUe_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨_, _, h⟩ => h, fun h => ⟨hv, hv, h⟩⟩`. Introduce `v`. Rewrite using `[mem_row]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hnc⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨v', hv', hc⟩` from `GlobalTheory.SplitPlaces.exists_conjPl D.host _ v hv`. Establish `hv'c : v' ∈ columns (N` using `D.nd) D.nbr i ep := by`. Break down `hx v hv v' hc with h | h` into its components or cases. Conclude with `absurd h.1 hnc`. Conclude with `h.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨v', (mem_col D i hl ep v').2 ⟨hv', hv'c⟩, GlobalTheory.Proof.ConjugatePlaces.isConjPl_symm hc⟩`. Introduce and unpack `⟨u, hu, hc⟩`. Take `⟨hu, huc⟩` from `(mem_col D i hl ep u).1 hu`. Use `⟨GlobalTheory.SplitCount.mem_placesOver_of_conj D.host hu hc, fun hvc => ?_⟩` and prove the remaining obligations. Break down `hx u hu v hc with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h.2 hvc`. Conclude with `h.2 huc`. Introduce `u hu hU w hw hc τ₀ hτ`. Establish `hnb : ∀ v hv τ, ¬ (EmbIn (N` using `D.nd) D.nbr i true v hv τ ∧ EmbIn (N := D.nd) D.nbr i false v hv τ) := by`. Introduce and unpack `v hv τ ⟨a, b⟩`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `embIn_xor D i v hv τ with h | h` into its components or cases. Conclude with `h.2 b`. Conclude with `h.2 a`. Establish `hUin : ∀ τ, EmbIn (N` using `D.nd) D.nbr i ep u hu τ := fun τ => (embTypeUe_iff ep τ).1 (hU τ)`. Establish `hwin : EmbIn (N` using `D.nd) D.nbr i ep w hw τ₀ := (embTypeUe_iff ep τ₀).1 hτ`.
-
-Apply the tactic sequence `rcases Two.place_type_conj D i h2 u w hu hw hc with ⟨hpu, hpw⟩ | ⟨hpu, hpw⟩ <;> cases ep`. Take `⟨τ⟩` from `hpu.1`. Conclude with `hnb u hu τ ⟨hpu.2 τ, hUin τ⟩`. Conclude with `hnb w hw τ₀ ⟨hwin, hpw.2 τ₀⟩`. Conclude with `hnb w hw τ₀ ⟨hpw.2 τ₀, hwin⟩`.
-
-Take `⟨τ⟩` from `hpu.1`. Conclude with `hnb u hu τ ⟨hUin τ, hpu.2 τ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem decl_split (D : D7) (i : D.nd.Loc) (h2 : D.nd.l i = 2) (ep : Bool) :
     (∃ dc : TruncatedSeriesCountingIdentities.Decl D i, EmbeddingTypes.hypDecl i dc ep) ∧ EmbeddingTypes.ambTypeD (D := D) i ep := by

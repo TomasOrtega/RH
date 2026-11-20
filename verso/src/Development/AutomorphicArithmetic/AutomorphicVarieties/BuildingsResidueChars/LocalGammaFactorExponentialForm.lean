@@ -18,23 +18,23 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h` using `mem_valBall_iff_le_ord (n := 1) hx`. Rewrite `h` using `[mem_valBall_one_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem lt_one_iff {x : k} (hx : x ≠ 0) : ValuativeRel.valuation k x < 1 ↔ 1 ≤ ord x := by
   have h := mem_valBall_iff_le_ord (n := 1) hx
   rwa [mem_valBall_one_iff] at h
 
 /- English proof (translation)
-Establish `h` using `mem_valBall_iff_le_ord (n := 0) hx`. Rewrite `h` using `[mem_valBall_zero_iff, Valuation.mem_integer_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem le_one_iff {x : k} (hx : x ≠ 0) : ValuativeRel.valuation k x ≤ 1 ↔ 0 ≤ ord x := by
   have h := mem_valBall_iff_le_ord (n := 0) hx
   rwa [mem_valBall_zero_iff, Valuation.mem_integer_iff] at h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `(le_one_iff hx).1 h.le`. Establish `h2 : ¬ 1 ≤ ord x` using `fun h3 => absurd ((lt_one_iff hx).2 h3) (by rw [h]; exact lt_irrefl _)`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Use `le_antisymm ((le_one_iff hx).2 h.ge) (not_lt.1 fun h3 => ?_)` and prove the remaining obligations. Use `(lt_one_iff hx).1 h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem val_eq_one_iff {x : k} (hx : x ≠ 0) : ValuativeRel.valuation k x = 1 ↔ ord x = 0 := by
   constructor
@@ -48,16 +48,16 @@ private theorem val_eq_one_iff {x : k} (hx : x ≠ 0) : ValuativeRel.valuation k
     omega
 
 /- English proof (translation)
-Rewrite using `[isUnramifiedChar_iff]`. Conclude with `⟨fun h u hu => h u ((val_eq_one_iff u.ne_zero).2 hu), fun h u hu => h u ((val_eq_one_iff u.ne_zero).1 hu)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem unram_iff (μ : kˣ →* ℂˣ) : IsUnram μ ↔ IsUnramifiedChar μ := by
   rw [isUnramifiedChar_iff]
   exact ⟨fun h u hu => h u ((val_eq_one_iff u.ne_zero).2 hu), fun h u hu => h u ((val_eq_one_iff u.ne_zero).1 hu)⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(polFacts k).1`. Establish `a` using `(lt_one_iff (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k).ne_zero).1 h1`. Establish `b` using `h2 _ ((lt_one_iff (unifUnit k).ne_zero).2 ord_unifUnit.ge)`. Establish `c : ValuativeRel.valuation k ((unifUnit k * (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k)⁻¹ : kˣ) : k) ≤ 1`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_le_one_of_le₀ b zero_le'`. Establish `d` using `(le_one_iff (Units.ne_zero _)).1 c`. Rewrite `d` using `[ord_units_mul, ord_units_inv, ord_unifUnit]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem ord_unif_eq : ord ((UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif k : kˣ) : k) = 1 := by
   obtain ⟨h1, h2⟩ := (polFacts k).1
@@ -73,13 +73,13 @@ private theorem ord_unif_eq : ord ((UpperTheory.V.Z.ImaginaryQuadraticEtaCharact
 end Loc
 
 /- English proof (translation)
-Establish `hy : A * (q * X) ≠ 0` using `mul_ne_zero hA (mul_ne_zero hq hX)`. Establish `e : (1 - A⁻¹ * (q * X)⁻¹)⁻¹ = -(A * (q * X)) / (1 - A * (q * X))`. Rewrite using `[← mul_inv]`. Distinguish the cases in `h : A * (q * X) = 1`. Simplify using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h' : 1 - A * (q * X) ≠ 0` using `sub_ne_zero.2 (Ne.symm h)`. Establish `h'' : 1 - (A * (q * X))⁻¹ ≠ 0`. Introduce `h3`. Apply `h` to reduce the goal to its premises. Use `sub_eq_zero.1 h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[eq_comm, inv_eq_one]`. Conclude with `this`. Rewrite using `[eq_div_iff h', inv_mul_eq_div, div_eq_iff h'']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, zpow_add_one₀ hX, div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem alg (a A q X : ℂ) (n : ℤ) (hA : A ≠ 0) (hq : q ≠ 0) (hX : X ≠ 0) :
     a * X ^ n * (1 - A⁻¹ * (q * X)⁻¹)⁻¹ / (1 - A * X)⁻¹ =
@@ -103,7 +103,7 @@ private theorem alg (a A q X : ℂ) (n : ℤ) (hA : A ≠ 0) (hq : q ≠ 0) (hX 
   ring
 
 /- English proof (translation)
-Establish `h0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Rewrite using `[Complex.cpow_def_of_ne_zero h0, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem zpow_qpow (n : ℕ) (hn : 1 < n) (m : ℤ) (s : ℂ) :
     ((n : ℂ) ^ (-s)) ^ m = Complex.exp (((-(m * Real.log n) : ℝ) : ℂ) * s) := by
@@ -117,19 +117,19 @@ end UpperTheory.V.T.GamFac
 
 open UpperTheory.V.T.GamFac in
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ μ _`. Take `⟨a, n, hε⟩` from `exists_localEpsilon_eq_mul_zpow (χ := μ) (ψ := ψ)`. Establish `hq1 : 1 < residueCard F` using `one_lt_residueCard`. Establish `hq0 : (residueCard F : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Distinguish the cases in `h : IsUnram μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hu` using `(unram_iff μ).1 h`. Establish `hu' : IsUnramifiedChar μ⁻¹` using `isUnramifiedChar_iff.2 fun u hu2 => by`. Rewrite using `[MonoidHom.inv_apply, isUnramifiedChar_iff.1 hu u hu2, inv_one]`. Establish `hval : μ (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.unif F) = μ (unifUnit F)` using `quasiChar_apply_eq_of_isUnramified hu ord_unif_eq`. Use `set A : ℂ := ((μ (unifUnit F) : ℂˣ) : ℂ) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : A ≠ 0` using `Units.ne_zero _`. Use `⟨-(A * (residueCard F : ℂ) * a), -((n + 1 : ℤ) * Real.log (residueCard F)), fun s => ?_⟩` and prove the remaining obligations. Establish `hX : (residueCard F : ℂ) ^ (-s) ≠ 0`. Rewrite using `[Complex.cpow_def_of_ne_zero hq0]`. Conclude with `Complex.exp_ne_zero _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (residueCard F : ℂ) ^ (1 - s) = (residueCard F : ℂ) * (residueCard F : ℂ) ^ (-s)`. Rewrite using `[sub_eq_add_neg, Complex.cpow_add _ _ hq0, Complex.cpow_one]`. Establish `e2 : (residueCard F : ℂ) ^ (-(1 - s)) = ((residueCard F : ℂ) * (residueCard F : ℂ) ^ (-s))⁻¹`. Rewrite using `[Complex.cpow_neg, e1]`. Establish `e3 : ((μ⁻¹ (unifUnit F) : ℂˣ) : ℂ) = A⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Establish `e4 : lin μ = 1 - C A * X`. Rewrite using `[lin, if_pos h, hval]`. Rewrite using `[Ad3.gam, fac, hε s, localLFactor_of_isUnramified hu, localLFactor_of_isUnramified hu', e2, e3, Complex.ofReal_natCast, e4, alg _ _ _ _ _ hA0 hq0 hX, zpow_qpow _ hq1]`. Simplify using `only [eval_sub, eval_one, eval_mul, eval_C, eval_X, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ¬ IsUnramifiedChar μ` using `fun h2 => h ((unram_iff μ).2 h2)`. Establish `hu' : ¬ IsUnramifiedChar μ⁻¹` using `fun h2 => hu (isUnramifiedChar_iff.2 fun u hu2 => by`. Use `isUnramifiedChar_iff.1 h2 u hu2` as an intermediate fact. Rewrite using `[MonoidHom.inv_apply, inv_eq_one] at this)` and apply the resulting hypothesis. Use `⟨a, -(n * Real.log (residueCard F)), fun s => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : lin μ = 1` using `by rw [lin, if_neg h]`. Rewrite using `[Ad3.gam, fac, hε s, localLFactor_of_not_isUnramified hu, localLFactor_of_not_isUnramified hu', e4, zpow_qpow _ hq1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_gamma_factor_exponential_form :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]

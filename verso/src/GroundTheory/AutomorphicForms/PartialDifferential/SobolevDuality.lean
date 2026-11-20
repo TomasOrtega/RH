@@ -19,7 +19,7 @@ section Duality
 variable {s : ℝ}
 
 /- English proof (translation)
-Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [Lp.coeFn_star (f + g), Lp.coeFn_star f, Lp.coeFn_star g, Lp.coeFn_add (star f) (star g), Lp.coeFn_add f g] with x h1 h2 h3 h4 h5`. Rewrite using `[h1, h4, Pi.add_apply, h2, h3]`. Simplify using `only [Pi.star_apply]`. Rewrite using `[h5, Pi.add_apply, star_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_add_lpTwo (f g : Lp ℂ 2 (volume : Measure E)) :
     (star (f + g) : Lp ℂ 2 (volume : Measure E)) = star f + star g := by
@@ -31,7 +31,7 @@ theorem star_add_lpTwo (f g : Lp ℂ 2 (volume : Measure E)) :
   rw [h5, Pi.add_apply, star_add]
 
 /- English proof (translation)
-Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [Lp.coeFn_star (c • f), Lp.coeFn_star f, Lp.coeFn_smul (starRingEnd ℂ c) (star f), Lp.coeFn_smul c f] with x h1 h2 h3 h4`. Rewrite using `[h1, h3, Pi.smul_apply, h2]`. Simplify using `[h4]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_smul_lpTwo (c : ℂ) (f : Lp ℂ 2 (volume : Measure E)) :
     (star (c • f) : Lp ℂ 2 (volume : Measure E)) = (starRingEnd ℂ c) • star f := by
@@ -42,7 +42,7 @@ theorem star_smul_lpTwo (c : ℂ) (f : Lp ℂ 2 (volume : Measure E)) :
   simp [h4]
 
 /- English proof (translation)
-Rewrite using `[Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (Lp.coeFn_star f)]`. Use `congr 1`. Apply `eLpNorm_congr_norm_ae` to reduce the goal to its premises. Conclude with `ae_of_all _ fun x ↦ by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem norm_star_lpTwo (f : Lp ℂ 2 (volume : Measure E)) :
     ‖(star f : Lp ℂ 2 (volume : Measure E))‖ = ‖f‖ := by
@@ -63,7 +63,7 @@ theorem dualPairing_apply' (v : SobolevSpace E ℂ (-s)) (u : SobolevSpace E ℂ
       (SobolevSpace.bessel s u) := rfl
 
 /- English proof (translation)
-Rewrite using `[dualPairing, ContinuousLinearMap.opNorm_comp_linearIsometryEquiv, innerSL_apply_norm, norm_star_lpTwo]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_dualPairing (v : SobolevSpace E ℂ (-s)) : ‖dualPairing (s := s) v‖ = ‖v‖ := by
   rw [dualPairing, ContinuousLinearMap.opNorm_comp_linearIsometryEquiv, innerSL_apply_norm,
@@ -83,11 +83,9 @@ def dualPairingₗᵢ : SobolevSpace E ℂ (-s) →ₗᵢ[ℂ] StrongDual ℂ (S
   norm_map' v := norm_dualPairing v
 
 /- English proof (translation)
-Introduce `ℓ`. Use `set L : StrongDual ℂ (Lp ℂ 2 (volume : Measure E)) := ℓ.comp (SobolevSpace.besselₗᵢ s).symm.toLinearIsometry.toContinuousLinearMap`. Use `set y := (InnerProductSpace.toDual ℂ (Lp ℂ 2 (volume : Measure E))).symm L`. Use `⟨(SobolevSpace.besselₗᵢ (-s)).symm (star y), ?_⟩` and prove the remaining obligations. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ∀ g, inner ℂ y g = L g` using `fun g ↦ by`. Rewrite using `[← InnerProductSpace.toDual_apply_apply, LinearIsometryEquiv.apply_symm_apply]`. Rewrite using `[dualPairing_apply', ← SobolevSpace.besselₗᵢ_apply, LinearIsometryEquiv.apply_symm_apply, star_star, hy]`. Simplify using `only [L, ContinuousLinearMap.comp_apply]`. Rewrite using `[← SobolevSpace.besselₗᵢ_apply]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualPairing_surjective :
     Function.Surjective (dualPairing : SobolevSpace E ℂ (-s) → StrongDual ℂ (SobolevSpace E ℂ s)) := by
@@ -115,7 +113,7 @@ Both sides reduce to the same expression.
     dualEquiv v = dualPairing v := rfl
 
 /- English proof (translation)
-Apply `toTemperedDistribution_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[SobolevSpace.toDistribution_bessel, SobolevSpace.toDistribution_ofSchwartz, Lp.toTemperedDistribution_toLp_eq, besselPotential_eq_fourierMultiplierCLM, fourierMultiplierCLM_toTemperedDistributionCLM_eq (weight_hasTemperateGrowth _)]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bessel_ofSchwartz (φ : 𝓢(E, ℂ)) :
     SobolevSpace.bessel s (SobolevSpace.ofSchwartz s φ) =

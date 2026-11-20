@@ -21,9 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open MvPolynomial Formalism.L2.Ker in
 /- English proof (translation)
-Establish `h : jetLin (fun m => c * J m) = c • jetLin J`. Use `(basisMonomials _ ℂ).ext fun m => ?_` and prove the remaining obligations. Rewrite using `[coe_basisMonomials]`. Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[GlobalTheory.KerT.RatLaw.jetLin_monomial, GlobalTheory.KerT.RatLaw.jetLin_monomial, smul_monomial, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [jetMap, LinearMap.comp_apply, h, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem jetMap_smul' {ι : Type} [Fintype ι] {a b : ℕ} (c : ℂ) (J : (DVar ι a b →₀ ℕ) → ℂ) (n : ι → ℕ) (P : Pol ℂ ι a) :
     jetMap (fun m => c * J m) n P = c • jetMap J n P := by
@@ -36,9 +36,9 @@ private theorem jetMap_smul' {ι : Type} [Fintype ι] {a b : ℕ} (c : ℂ) (J :
 
 open MvPolynomial Formalism.L2.Ker in
 /- English proof (translation)
-Establish `e1 : GlobalTheory.KerT.RatLaw.tabFn (fun m => ℓ (monomial m 1)) = ℓ`. Use `(basisMonomials _ ℂ).ext fun m => ?_` and prove the remaining obligations. Rewrite using `[coe_basisMonomials]`. Conclude with `GlobalTheory.KerT.RatLaw.tabFn_monomial _ m`. Establish `e2 : GlobalTheory.CompactHowe.substF h (fun τ => (g τ)ᵀ) = aeval (GlobalTheory.KerT.RatLaw.subst g h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `algHom_ext fun v => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CompactHowe.substF_X, aeval_X, Matrix.transpose_apply]`. Rewrite using `[jetMap_smul', GlobalTheory.KerT.RatLaw.jetMap_subst (J := fun m => ℓ (monomial m 1)) g h (fun m => by rw [e1, e2]), mul_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem jetMap_substF {ι : Type} [Fintype ι] {a b : ℕ} (c : ℂ) (ℓ : MvPolynomial (DVar ι a b) ℂ →ₗ[ℂ] ℂ)
     (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b) (Fin b) ℂ) (n : ι → ℕ) (P : Pol ℂ ι a) :
@@ -56,27 +56,25 @@ private theorem jetMap_substF {ι : Type} [Fintype ι] {a b : ℕ} (c : ℂ) (�
 
 open GlobalTheory.ColKer GlobalTheory.RowHoweAvg in
 /- English proof (translation)
-Introduce `D T L sc G W U₀ N μ₀ hL t j hj a b ha hb e₁ e₂ he₁ he₂ ℓ k _ k' _`. Establish `hp : DefPair D.R.m (Pair.top t j)` using `hj`. Establish `hj' : j < D.R.m` using `hj`. Establish `hJ` using `(wtOK_of_defPair G _ hp).2`. Establish `hr0 : Even (G.V (.top j)).rank` using `by rw [rank_top G (j := j) (by omega)]; exact rankX_even D j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : Even (G.V (.top (j + 1))).rank` using `by rw [rank_top G (j := j + 1) (by omega)]; exact rankX_even D (j + 1)`. Establish `hS : G.chrS (.top t j) = L.mu t (j + 1)`. Simplify using `only [GridData.chrS, Formalism.IndefR.Lift.attChr, GridData.chr, GridData.pS, Nat.not_odd_iff_even.2 hr0, if_false]`. Establish `hT : G.chrT (.top t j) = L.mu t (j + 1)`. Simplify using `only [GridData.chrT, Formalism.IndefR.Lift.attChr, GridData.chr, GridData.pT, Nat.not_odd_iff_even.2 hr1, if_false]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ τ, e₁ τ = (wt G (.top (j + 1)) τ).detShift` using `fun τ => by`. Establish `ea` using `GlobalTheory.Mem.HeckeExp.hasInfExp_unique (hS ▸ ha τ) (mu_exp hL t j hj' τ)`. Use `(detShift_top G t j hj' τ).1` as an intermediate fact. Establish `h : (e₁ τ : ℚ) = ((wt G (.top (j + 1)) τ).detShift : ℤ)`. Rewrite using `[he₁, this, ea]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.FockReal.sgnP, one_mul]`. Conclude with `h` after adjusting the coercions. Establish `h2 : ∀ τ, e₂ τ = (nuEnd G (.top t j) τ : ℤ) - (wt G (.top j) τ).detShift` using `fun τ => by`. Establish `eb` using `GlobalTheory.Mem.HeckeExp.hasInfExp_unique (hT ▸ hb τ) (mu_exp hL t j hj' τ)`. Use `(detShift_top G t j hj' τ).2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (e₂ τ : ℚ) = (((nuEnd G (.top t j) τ : ℤ) - (wt G (.top j) τ).detShift : ℤ) : ℚ)`. Rewrite using `[he₂, this, eb]`. Simplify using `only [GlobalTheory.FockReal.sgnP, one_mul]`. Conclude with `h` after adjusting the coercions. Establish `hinv : GlobalTheory.SeeSaw.inB W.θ (G.V (.top j)) (N.frC (.top j)) k⁻¹ = fun τ => (GlobalTheory.SeeSaw.inB W.θ (G.V (.top j)) (N.frC (.top j)) k τ)⁻¹`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[← realIn_coe, ← realIn_coe, map_inv, Pi.inv_apply, Matrix.coe_units_inv]`. Establish `hne : ∀ τ, (compAt W.θ τ (Formalism.L2.Theta.mt (G.V (.top j)) k)).det ≠ 0` using `fun τ => by`. Rewrite using `[← det_inB W.θ N, ← realIn_coe]`. Conclude with `(Matrix.isUnits_det_units _).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdi : ∀ τ, (compAt W.θ τ (Formalism.L2.Theta.mt (G.V (.top j)) k⁻¹)).det = (compAt W.θ τ (Formalism.L2.Theta.mt (G.V (.top j)) k)).det⁻¹` using `fun τ => by`. Rewrite using `[← det_inB W.θ N, ← det_inB W.θ N, hinv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hm : ∀ m : Formalism.L2.Ker.DVar D.what₂.Tau (G.V (Pair.top t j).small).rank (G.V (Pair.top t j).big).rank →₀ ℕ, Finsupp.mapDomain (fvar G (Pair.top t j)) m = m` using `fun m => Finsupp.mapDomain_id`. Establish `hs : GlobalTheory.FockReal.realSubst W N.frC (Pair.top t j) k k' = GlobalTheory.CompactHowe.substF (GlobalTheory.SeeSaw.inB W.θ (G.V (.top (j + 1))) (N.frC (.top (j + 1))) k') (fun τ => (GlobalTheory.SeeSaw.inB W.θ (G.V (.top j)) (N.frC (.top j)) k⁻¹ τ)ᵀ)`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Establish `e0` using `realAct_inv_coe W.θ N (.top j) k⁻¹ v`. Rewrite `e0` using `[inv_inv]`. Simplify using `only [hm, hs, LinearMap.comp_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jetOp_coe hJ, realAct_inv_coe, jetOp_coe hJ]`. Use `(jetMap_substF _ ℓ _ _ _ _).trans ?_` and prove the remaining obligations. Use `erw [e0]`. Rewrite using `[map_smul, map_smul, smul_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.FockReal.realChar, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[det_inB, hdi, h1, h2]`. Use `show (compAt W.θ τ (Formalism.L2.Theta.mt (G.V (.top j)) k)).det ^ _ * _ * _ = _`. Rewrite using `[zpow_sub₀ (hne τ), zpow_natCast, inv_pow, _root_.inv_zpow]`.
-
-Use `pow_ne_zero (nuEnd G (.top t j) τ) (hne τ)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.realTop :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil} {U₀ : Set T} (N : Std G U₀) {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (j : ℕ), j + 1 ≤ D.R.m →

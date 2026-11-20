@@ -11,9 +11,9 @@ namespace GlobalTheory.StdCharSep
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite `h` using `[GlobalTheory.PsiNontriv.isStd_fin_rat hψ, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `h2 : ((Algebra.trace ℚ F x : ℚ) : ℂ) = ((n : ℚ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hn` using `[mul_comm (2 * Real.pi * Complex.I : ℂ)]`. Use `push_cast`. Conclude with `mul_right_cancel₀ hne hn`. Conclude with `h2` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem trace_int_of_psi {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (x : F)
     (h : ψ (pairA F 0 (algebraMap F (Af F) x)) = 1) : ∃ z : ℤ, Algebra.trace ℚ F x = z := by
@@ -28,7 +28,7 @@ theorem trace_int_of_psi {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.Indefinit
   exact_mod_cast h2
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Rewrite using `[GlobalTheory.PsiNontriv.isStd_fin_rat hψ, hz, Complex.exp_eq_one_iff]`. Conclude with `⟨z, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem psi_of_trace_int {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (x : F)
     (h : ∃ z : ℤ, Algebra.trace ℚ F x = z) : ψ (pairA F 0 (algebraMap F (Af F) x)) = 1 := by
@@ -37,7 +37,7 @@ theorem psi_of_trace_int {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.Indefinit
   exact ⟨z, by push_cast; ring⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hψ.1 s (fun a => psi_of_trace_int hψ _ (hs a)) w hw`.
+A detailed English derivation is pending.
 -/
 theorem psi_int_mul {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (s : F)
     (hs : ∀ a : 𝓞 F, ∃ z : ℤ, Algebra.trace ℚ F ((a : F) * s) = z)
@@ -46,11 +46,11 @@ theorem psi_int_mul {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowS
   GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hψ.1 s (fun a => psi_of_trace_int hψ _ (hs a)) w hw
 
 /- English proof (translation)
-Establish `h1 : k ∈ FractionalIdeal.dual ℤ ℚ (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F))`. Rewrite using `[FractionalIdeal.mem_dual (FractionalIdeal.dual_ne_zero ℤ ℚ (GlobalTheory.AdLat.one_ne_zero_fracIdeal F))]`. Introduce `s hs`. Rewrite `hs` using `[FractionalIdeal.mem_dual (GlobalTheory.AdLat.one_ne_zero_fracIdeal F)]`. Take `⟨z, hz⟩` from `h s (fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hs (a : F) ((FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[Algebra.traceForm_apply]`. Rewrite using `[mul_comm, ← hy]`. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨z, by rw [Algebra.traceForm_apply, hz]; simp⟩`. Rewrite `h1` using `[FractionalIdeal.dual_dual]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_dual (k : F) (h : ∀ s : F, (∀ a : 𝓞 F, ∃ z : ℤ, Algebra.trace ℚ F ((a : F) * s) = z) →
     ∃ z : ℤ, Algebra.trace ℚ F (k * s) = z) : ∃ c : 𝓞 F, algebraMap (𝓞 F) F c = k := by
@@ -70,15 +70,13 @@ theorem mem_of_dual (k : F) (h : ∀ s : F, (∀ a : 𝓞 F, ∃ z : ℤ, Algebr
   exact (FractionalIdeal.mem_one_iff _).1 h1
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ b hb`. Assume the negation of the conclusion as `H`. Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) b`. Establish `hbk : b = algebraMap F (Af F) k + (b - algebraMap F (FiniteAdeleRing (𝓞 F) F) k)` using `by abel`. Take `⟨o, ho⟩` from `mem_of_dual k (fun s hs => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb1 : ψ (pairA F 0 (b * algebraMap F (Af F) s)) = 1`. Assume the negation of the conclusion as `hne`. Conclude with `H ⟨s, hne, fun w hw => psi_int_mul hψ s hs w hw⟩`. Establish `hc1` using `psi_int_mul hψ s hs _ hk`. Establish `e : pairA F 0 (b * algebraMap F (Af F) s) = pairA F 0 (algebraMap F (Af F) (k * s)) + pairA F 0 ((b - algebraMap F (FiniteAdeleRing (𝓞 F) F) k) * algebraMap F (Af F) s)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext (add_zero 0).symm ?_` and prove the remaining obligations. Use `show b * algebraMap F (Af F) s = algebraMap F (Af F) (k * s) + (b - algebraMap F (FiniteAdeleRing (𝓞 F) F) k) * algebraMap F (Af F) s`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hb1` using `[e, AddChar.map_add_eq_mul, hc1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `trace_int_of_psi hψ _ hb1)`. Apply `hb` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hbk]`. Use `add_mem ?_ (hk v)` and prove the remaining obligations.
-
-Use `show ((k : F) : v.adicCompletion F) ∈ v.adicCompletionIntegers F`. Rewrite using `[← ho]`. Conclude with `GroundTheory.Global.coe_algebraMap_mem_adicCompletionIntegers v o`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ b : FiniteAdeleRing (𝓞 F) F, ¬ (∀ v : HeightOneSpectrum (𝓞 F), b v ∈ v.adicCompletionIntegers F) →

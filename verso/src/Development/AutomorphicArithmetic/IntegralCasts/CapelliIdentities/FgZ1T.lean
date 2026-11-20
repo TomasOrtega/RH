@@ -4,23 +4,21 @@ import Formalism.WeaklyAdmissibleFiltrations.StatementTor
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CompactQuotientSubmodule
 
 /- English proof (translation)
-Introduce `G _ _ LL O V _ _ _ _ _ _ _ ρ _ _ _ _ _ _ _ L ϖ hϖ hb hc hI hfin`. Establish `hmem : ∀ x : L.T, x ∈ (Ideal.span {ϖ ^ 1} • (⊤ : Submodule O L.T)) ↔ ∃ y ∈ L.T, ϖ • y = (x : V)`. Introduce `x`. Rewrite using `[pow_one, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, y.2, rfl⟩`. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨⟨y, hy⟩, trivial, Subtype.ext h⟩`. Establish `hred : ∀ c : Formalism.WeaklyAdmissibleFiltrations.latticeCocycles L, Formalism.WeaklyAdmissibleFiltrations.redT L _ c ∈ Formalism.WeaklyAdmissibleFiltrations.quotientCocycles L _ hI`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `c`. Establish `hcont : Continuous (c : G → V)` using `c.2.1.1`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `h0 : Filter.Tendsto (fun y => (c : G → V) y - (c : G → V) g) (nhds g) (nhds 0)`. Use `(hcont.sub (continuous_const (y := (c : G → V) g))).tendsto g` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Pi.sub_apply, sub_self]`. Conclude with `this`. Use `filter_upwards [h0 (hb.mem_of_mem (i := 1) trivial)] with y hy`. Take `⟨v, hv, hvy⟩` from `hy`. Use `(Submodule.Quotient.eq _).2 ((hmem _).2 ⟨v, hv, ?_⟩)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_one ϖ]`. Conclude with `hvy`. Establish `: Formalism.WeaklyAdmissibleFiltrations.evT L (g * h) c = Formalism.WeaklyAdmissibleFiltrations.evT L g c + Formalism.WeaklyAdmissibleFiltrations.actT L g (Formalism.WeaklyAdmissibleFiltrations.evT L h c)` using `Subtype.ext (c.2.1.2 g h)`. Express the relevant statement in the definitionally equal form `Submodule.mkQ _ (Formalism.WeaklyAdmissibleFiltrations.evT L (g * h) c) = _`. Rewrite using `[this, map_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Use `UpperTheory.compact_quotient_submodule (LL := LL) (Formalism.WeaklyAdmissibleFiltrations.latticeCocycles L) ϖ ((Formalism.WeaklyAdmissibleFiltrations.redT L _).codRestrict (Formalism.WeaklyAdmissibleFiltrations.quotientCocycles L _ hI) hred) hc ?_ ?_` and prove the remaining obligations. Introduce `U hU`. Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hIf, t, ht, hsub⟩` from `hU`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, -, hn⟩` from `hb.mem_iff.1 ((Filter.biInter_mem hIf).2 fun i _ => ht i)`. Use `⟨n, fun z hz => hsub fun i hi => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter₂.1 (hn ⟨z i, hz.2 i trivial, rfl⟩) i hi`. Introduce `z hz`. Establish `hz' : ∀ g, ∃ y ∈ L.T, ϖ • y = (z : G → V) g` using `fun g => (hmem (Formalism.WeaklyAdmissibleFiltrations.evT L g z)).1 ((Submodule.Quotient.mk_eq_zero _).1 (congrFun (congrArg Subtype.val hz) g))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(algebraMap O LL ϖ)⁻¹ • (z : G → V), ⟨(Formalism.WeaklyAdmissibleFiltrations.continuousCocycles ρ).smul_mem _ z.2.1, fun g _ => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, h⟩` from `hz' g`. Establish `: ((algebraMap O LL ϖ)⁻¹ • (z : G → V)) g = y`. Rewrite using `[Pi.smul_apply, ← h, ← algebraMap_smul LL ϖ y, inv_smul_smul₀ hϖ]`. Rewrite using `[this]`.
-
-Conclude with `hy`. Rewrite using `[← algebraMap_smul LL ϖ, smul_inv_smul₀ hϖ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gub2.fg_Z1T :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G] {LL O V : Type} [inst_2 : Field LL] [inst_3 : CommRing O]

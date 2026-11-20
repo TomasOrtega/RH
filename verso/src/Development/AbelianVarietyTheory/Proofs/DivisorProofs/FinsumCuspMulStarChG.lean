@@ -8,9 +8,9 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Rewrite using `[← finsum_mem_univ]`. Use `finsum_mem_eq_of_bijOn (fun x : GL (Fin m) F => (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F) : Module.End F (Fin m → F))) ⟨?_, ?_, ?_⟩ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `x _`. Conclude with `(Units.isUnit x).map (Matrix.toLinAlgEquiv' (R := F) (n := Fin m))`. Introduce `x _ y _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Units.ext (Matrix.toLin'.injective h)`. Introduce `g hg`. Establish `h : IsUnit ((Matrix.toLinAlgEquiv' (R` using `F) (n := Fin m)).symm g) := IsUnit.map _ hg`. Use `⟨h.unit, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.toLinAlgEquiv' (R := F) (n := Fin m)).apply_symm_apply g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finsum_GL_toLin' {F : Type} [Field F] (m : ℕ) (f : Module.End F (Fin m → F) → ℂ) :
     ∑ᶠ x : GL (Fin m) F, f (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F)) =
@@ -29,9 +29,9 @@ theorem finsum_GL_toLin' {F : Type} [Field F] (m : ℕ) (f : Module.End F (Fin m
     exact (Matrix.toLinAlgEquiv' (R := F) (n := Fin m)).apply_symm_apply g
 
 /- English proof (translation)
-Introduce `F _ _ θ hθ m k l hm`. Establish `hr : Module.finrank F (Fin m → F) = m` using `by simp`. Establish `h` using `ipGL_psi_rootSum F (Fin m → F) θ hθ (by rw [hr]; exact hm) k l`. Rewrite `h` using `[hr, ipGL, ← finsum_GL_toLin', glCard]`. Rewrite using `[mul_assoc, ← h, mul_finsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [cusp, psiG, chG, Matrix.charpoly_toLin', mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem finsum_cusp_mul_star_chG : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ), (∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) → ∀ m k l : ℕ, 0 < m → ∑ᶠ x, cusp θ m k x * star (chG (rootSum θ l) m x) = (-1) ^ (m - 1) * (Nat.card (GL (Fin m) F) : ℂ) * (((Finset.range m).filter (fun i => k * Nat.card F ^ i ≡ l [MOD (Nat.card F ^ m - 1)])).card : ℂ) := by
   intro F _ _ θ hθ m k l hm

@@ -13,7 +13,7 @@ variable {n : ℕ}
 abbrev Up (M : Matrix (Fin n) (Fin n) ℂ) : Prop := M.BlockTriangular id
 
 /- English proof (translation)
-Use `letI := invertibleOfIsUnitDet T hu`. Conclude with `blockTriangular_inv_of_blockTriangular hT`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem up_inv {T : Matrix (Fin n) (Fin n) ℂ} (hT : Up T) (hu : IsUnit T.det) : Up T⁻¹ := by
   letI := invertibleOfIsUnitDet T hu
@@ -23,13 +23,13 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ E] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Simplify using `using mdel_smul_vec A z 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mdel_zero_vec {m k : Type*} (A : E → Matrix m k ℂ) (z : E) : mdel A z 0 = 0 := by
   simpa using mdel_smul_vec A z 0 0
 
 /- English proof (translation)
-Establish `: conn H (π y) 0 = 0` using `by simp [conn, mdel_zero_vec]`. Simplify using `[thetaOneZero, h, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem theta_vert (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E → ι → ℂ)
     (e : E → Matrix (Fin n) (Fin n) ℂ) (y ξ : E) (h : fderiv ℂ π y ξ = 0) :
@@ -38,11 +38,11 @@ theorem theta_vert (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E →
   simp [thetaOneZero, h, this]
 
 /- English proof (translation)
-Use `set r := ∑ i, ∑ l ∈ Finset.Ioi i, (lam i - lam l) * normSq (thetaOneZero H π e y ξ l i)`. Establish `h : vertForm H π e lam y ξ ξ = kappa * (r : ℂ)`. Simplify using `only [vertForm, thetaSq, mul_conj, r, ofReal_sum, ofReal_mul]`. Rewrite using `[diagVal, h, kappa]`. Establish `: -I * (I / (2 * (Real.pi : ℂ)) * (r : ℂ)) = ((r / (2 * Real.pi) : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem diagVal_vertForm (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E → ι → ℂ)
     (e : E → Matrix (Fin n) (Fin n) ℂ) (lam : Fin n → ℝ) (y ξ : E) :
@@ -66,9 +66,9 @@ variable {n : ℕ} {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (
   {π : E → ι → ℂ} {A e : E → Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `h1 : (e x)ᵀ * (H (π x) * (e x)ᴴᵀ) = 1`. Use extensionality with `k l`. Use `hE.unitary x hx k l` as an intermediate fact. Rewrite `this` using `[form_eq_sum]`. Rewrite using `[one_apply, ← this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_apply, transpose_apply, conjTranspose_apply, star_def, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Establish `h2` using `congrArg det h1`. Rewrite `h2` using `[det_mul, det_one, det_transpose]`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, h2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_isUnit (hE : IsUnitaryFlagFrame Y H π A e) {x : E} (hx : x ∈ Y) :
     IsUnit (e x).det := by
@@ -84,13 +84,13 @@ theorem e_isUnit (hE : IsUnitaryFlagFrame Y H π A e) {x : E} (hx : x ∈ Y) :
   exact isUnit_iff_exists_inv.2 ⟨_, h2⟩
 
 /- English proof (translation)
-Introduce `a i hia`. Establish `hmem` using `hE.mem x hx i`. Establish `key : ∀ v ∈ Submodule.span ℂ {v : Fin n → ℂ | ∃ j ≤ i, v = fun a => A x a j}, ((A x)⁻¹ *ᵥ v) a = 0`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem v hv`. Take `⟨j, hj, rfl⟩` from `hv`. Establish `hc : (fun a => A x a j) = A x *ᵥ Pi.single j 1`. Use extensionality with `b`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, mulVec_mulVec, nonsing_inv_mul _ (hF.isUnit x hx), one_mulVec]`. Establish `: a ≠ j` using `fun h => by subst h; exact absurd (lt_of_le_of_lt hj hia) (lt_irrefl _)`. Simplify using `[Pi.single_apply, this]`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => simp [mulVec_add, hv, hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c v _ hv => simp [mulVec_smul, hv]`. Use `key _ hmem` as an intermediate fact. Simplify `this` using `[mul_apply, mulVec, dotProduct]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem T_up (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A e) {x : E}
     (hx : x ∈ Y) : Up ((A x)⁻¹ * e x) := by
@@ -114,7 +114,7 @@ theorem T_up (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A e) {
   simpa [mul_apply, mulVec, dotProduct] using this
 
 /- English proof (translation)
-Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Conclude with `(((hF.hol_frame a b).contDiffAt (hF.isOpen.mem_nhds hy)).restrict_scalars ℝ).of_le (by norm_cast)`. Conclude with `((hE.smooth a b).contDiffAt (hF.isOpen.mem_nhds hy)).of_le (by norm_cast)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smooth_at (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A e) {y : E}
     (hy : y ∈ Y) : MContDiffAt 1 A y ∧ MContDiffAt 1 e y := by
@@ -124,11 +124,11 @@ theorem smooth_at (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A
   · exact ((hE.smooth a b).contDiffAt (hF.isOpen.mem_nhds hy)).of_le (by norm_cast)
 
 /- English proof (translation)
-Take `⟨hA, he⟩` from `smooth_at hF hE hy`. Establish `hAu` using `hF.isUnit y hy`. Establish `hT : MContDiffAt 1 (fun x => (A x)⁻¹ * e x) y` using `(hA.inv hAu).mul he`. Establish `heq : e =ᶠ[𝓝 y] fun x => A x * ((A x)⁻¹ * e x)` using `Filter.mem_of_superset (hF.isOpen.mem_nhds hy) fun x hx => (mul_nonsing_inv_cancel_left _ _ (hF.isUnit x hx)).symm`. Establish `hm : mdel e y ξ = A y * mdel (fun x => (A x)⁻¹ * e x) y ξ + mdel A y ξ * ((A y)⁻¹ * e y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mdel_congr heq, mdel_mul hA hT]`. Establish `hey : e y = A y * ((A y)⁻¹ * e y)` using `(mul_nonsing_inv_cancel_left _ _ hAu).symm`. Rewrite using `[theta_vert H π e y ξ hv, hm]`. Use `conv_lhs => rw [hey]`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_add, flagDeriv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hAu]`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hAu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_decomp (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A e) {y ξ : E}
     (hy : y ∈ Y) (hv : fderiv ℂ π y ξ = 0) :
@@ -152,7 +152,7 @@ theorem theta_decomp (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H �
   · simp only [Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hAu]
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[mdel_apply, del_congr (g := fun _ => (0 : ℂ))]`. Simplify using the standard rewrite rules. Conclude with `Filter.mem_of_superset (hF.isOpen.mem_nhds hy) fun x hx => T_up hF hE hx hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mdel_T_up (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A e) {y : E}
     (hy : y ∈ Y) (ξ : E) : Up (mdel (fun x => (A x)⁻¹ * e x) y ξ) := by
@@ -164,37 +164,33 @@ theorem mdel_T_up (hF : IsFlagFamily Y U π A) (hE : IsUnitaryFlagFrame Y H π A
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ ι _ n U H Y π A e _ hF hE y hy lam hC`. Use `set T := (A y)⁻¹ * e y with hTdef`. Establish `hTu : IsUnit T.det`. Rewrite using `[det_mul]`. Conclude with `(isUnit_nonsing_inv_det _ (hF.isUnit y hy)).mul (e_isUnit hE hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTup : Up T` using `T_up hF hE hy`. Establish `hTi : Up T⁻¹` using `up_inv hTup hTu`. Establish `hD : ∀ ξ, fderiv ℂ π y ξ = 0 → Up (thetaOneZero H π e y ξ - T⁻¹ * flagDeriv A y ξ * T)`. Introduce `ξ hv`. Rewrite using `[theta_decomp hF hE hy hv, add_sub_cancel_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hTi.mul (mdel_T_up hF hE hy ξ)`. Prove the components needed by the constructor for the conclusion. Introduce `hP b a hba`. Take `⟨ξ, hv, hξ⟩` from `hC.2 0 (T * Matrix.single a b 1 * T⁻¹)`. Establish `hFX : Up (flagDeriv A y ξ - T * Matrix.single a b 1 * T⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l i hil`. Rewrite using `[Matrix.sub_apply, hξ i l hil, sub_self]`. Establish `hconj : T⁻¹ * (T * Matrix.single a b 1 * T⁻¹) * T = Matrix.single a b 1`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul _ hTu, Matrix.mul_one, nonsing_inv_mul_cancel_left _ _ hTu]`. Establish `hup : Up (thetaOneZero H π e y ξ - Matrix.single a b 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Up (T⁻¹ * (flagDeriv A y ξ - T * Matrix.single a b 1 * T⁻¹) * T)` using `(hTi.mul hFX).mul hTup`. Rewrite `h2` using `[Matrix.mul_sub, Matrix.sub_mul, hconj]`. Use `(hD ξ hv).add h2` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hθ : ∀ l i, i < l → thetaOneZero H π e y ξ l i = Matrix.single a b (1 : ℂ) l i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `l i hil`. Use `hup hil` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hθ a b hba` as an intermediate fact. Simplify using `[thetaOneZero, mdel_zero_vec, conn] at this`. Establish `h` using `hP ξ hξ0 hv`. Rewrite `h` using `[diagVal_vertForm]`. Establish `hS : (∑ i, ∑ l ∈ Finset.Ioi i, (lam i - lam l) * normSq (thetaOneZero H π e y ξ l i)) = lam b - lam a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single b, Finset.sum_eq_single a]`. Rewrite using `[hθ a b hba]`. Simplify using the standard rewrite rules. Introduce `l hl hla`. Rewrite using `[hθ l b (Finset.mem_Ioi.1 hl)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.single_apply, Ne.symm hla]`. Introduce `h`. Conclude with `absurd (Finset.mem_Ioi.2 hba) h`. Introduce `i _ hib`. Use `Finset.sum_eq_zero fun l hl => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hθ l i (Finset.mem_Ioi.1 hl)]`. Simplify using `[Matrix.single_apply, Ne.symm hib]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Rewrite `h` using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpi : 0 < 2 * Real.pi` using `by positivity`. Use `(div_pos_iff_of_pos_right hpi).1 h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hS ξ hξ0 hv`. Rewrite using `[diagVal_vertForm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `div_pos ?_ (by positivity)` and prove the remaining obligations. Establish `hex : ∃ b a, b < a ∧ thetaOneZero H π e y ξ a b ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hθup : Up (thetaOneZero H π e y ξ)` using `fun a b hab => hne b a hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hM : Up (T⁻¹ * flagDeriv A y ξ * T)`. Use `hθup.sub (hD ξ hv)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hFup : Up (flagDeriv A y ξ)`. Use `(hTup.mul hM).mul hTi` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show T * (T⁻¹ * flagDeriv A y ξ * T) * T⁻¹ = flagDeriv A y ξ by` and apply the resulting hypothesis. Simplify using `only [Matrix.mul_assoc, mul_nonsing_inv _ hTu, Matrix.mul_one, mul_nonsing_inv_cancel_left _ _ hTu]] at this`. Conclude with `hξ0 (hC.1 ξ hv fun i l hil => hFup hil)`. Take `⟨b, a, hba, hne⟩` from `hex`. Apply `Finset.sum_pos'` to reduce the goal to its premises.
-
-Introduce `i _`. Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `l hl`. Conclude with `mul_nonneg (sub_nonneg.2 (hS (Finset.mem_Ioi.1 hl)).le) (normSq_nonneg _)`. Use `⟨b, Finset.mem_univ _, Finset.sum_pos' ?_ ⟨a, Finset.mem_Ioi.2 hba, ?_⟩⟩` and prove the remaining obligations.
-
-Introduce `l hl`. Conclude with `mul_nonneg (sub_nonneg.2 (hS (Finset.mem_Ioi.1 hl)).le) (normSq_nonneg _)`. Conclude with `mul_pos (sub_pos.2 (hS hba)) (normSq_pos.2 hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vert_chart_iff : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ)

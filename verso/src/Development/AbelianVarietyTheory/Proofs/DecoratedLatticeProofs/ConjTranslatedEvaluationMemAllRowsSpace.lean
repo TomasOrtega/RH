@@ -30,15 +30,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi.SeeHH
 
 /- English proof (translation)
-Establish `hI : ∀ z : E, U (Complex.I • z) = (-Complex.I) • U z`. Introduce `z`. Rewrite using `[map_smulₛₗ]`. Simplify using the standard rewrite rules. Establish `h1 : ‖U x + U y‖ = ‖y + x‖` using `by rw [← map_add, U.norm_map, add_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ‖U x - U y‖ = ‖y - x‖` using `by rw [← map_sub, U.norm_map, norm_sub_rev]`. Establish `h3 : ‖U x - Complex.I • U y‖ = ‖y - Complex.I • x‖`. Establish `e1 : U x - Complex.I • U y = U (x + Complex.I • y)`. Rewrite using `[map_add, hI, neg_smul, sub_eq_add_neg]`. Establish `e2 : y - Complex.I • x = (-Complex.I) • (x + Complex.I • y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_add, smul_smul, neg_mul, Complex.I_mul_I, neg_neg, one_smul, neg_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, U.norm_map, e2, norm_smul]`. Simplify using the standard rewrite rules. Establish `h4 : ‖U x + Complex.I • U y‖ = ‖y + Complex.I • x‖`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : U x + Complex.I • U y = U (x - Complex.I • y)`. Rewrite using `[map_sub, hI, neg_smul, sub_neg_eq_add]`. Establish `e2 : y + Complex.I • x = Complex.I • (x - Complex.I • y)`. Rewrite using `[smul_sub, smul_smul, Complex.I_mul_I, neg_smul, one_smul, sub_neg_eq_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e1, U.norm_map, e2, norm_smul]`. Simplify using the standard rewrite rules. Rewrite using `[inner_eq_sum_norm_sq_div_four (U x) (U y), inner_eq_sum_norm_sq_div_four y x]`. Simplify using `only [RCLike.I_to_complex]`. Rewrite using `[h1, h2, h3, h4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_antiunitary_swap {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup F]
     [InnerProductSpace ℂ F] (U : E ≃ₗᵢ⋆[ℂ] F) (x y : E) : ⟪U x, U y⟫_ℂ = ⟪y, x⟫_ℂ := by
@@ -67,7 +67,7 @@ end GlobalTheory.Core.Mi.SeeHH
 namespace GlobalTheory.Core.Mi.SeeHH
 
 /- English proof (translation)
-Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [Lp.coeFn_star (hm.toLp f), hm.coeFn_toLp, hs.coeFn_toLp] with x a1 a2 a3`. Rewrite using `[a1, a3, Pi.star_apply, a2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_toLp_eq {D : D7} (X : HidaSetting D) {f : X.B.I.GA → ℂ} (hm : MemLp f 2 (muX X))
     (hs : MemLp (fun x => star (f x)) 2 (muX X)) :
@@ -77,19 +77,19 @@ theorem star_toLp_eq {D : D7} (X : HidaSetting D) {f : X.B.I.GA → ℂ} (hm : M
   rw [a1, a3, Pi.star_apply, a2]
 
 /- English proof (translation)
-Establish `hs : MemLp (fun x => star (f x)) 2 (muX X)` using `hm.star`. Rewrite using `[star_toLp_eq X hm hs]`. Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hKL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hKM : MeasurableSet X.K2` using `(Formalism.L2.SG.PoincareInHH.Cut.level_subgroup_isClopen X hK hKL).isOpen.measurableSet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol : (X.B.μf X.K2).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hKL.2.2.1.ne', hKL.2.2.2.ne⟩`. Use `Formalism.L2.SG.Pf.idempotent_fixes_invariant_L2 X (fun x => star (f x)) ?_ ?_ hs ?_` and prove the remaining obligations. Conclude with `(continuous_star.comp hf.cont).measurable`. Introduce `γ hγ y`. Rewrite using `[hf.left γ hγ y]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Establish `hfun : (fun g => X.B.e g * star (f (y * (1, g)))) = X.K2.indicator (fun _ => star (f y) / ((X.B.μf X.K2).toReal : ℂ))`. Use function extensionality and compare the values at `g`. Rewrite using `[X.e_eq g]`. Distinguish the cases in `hg : g ∈ X.K2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hg' : g ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `hg`. Rewrite using `[if_pos hg', Set.indicator_of_mem hg, hf.right g hg y]`. Establish `hn : ‖X.chi2 g‖ = 1` using `hK.2.2.2.2 g hg`. Establish `hc : star (X.chi2 g) * X.chi2 g = 1`. Rewrite using `[← starRingEnd_apply, Complex.conj_mul', hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e2 : chi2f X.B.I X.psiEf X.B.g X.e0 X.f0 X.z0 X.bw X.bwd g = X.chi2 g` using `rfl`. Establish `ev : X.B.μf (K2set X.B.I X.B.g X.e0 X.z0 X.bw) = X.B.μf X.K2` using `rfl`. Rewrite using `[e2, ev, star_mul', star_star, div_eq_mul_inv, div_eq_mul_inv]`. Take the linear combination `(star (f y) * (((X.B.μf X.K2).toReal : ℂ))⁻¹) * hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hg' : g ∉ K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `hg`. Rewrite using `[if_neg hg', Set.indicator_of_notMem hg, zero_mul]`. Rewrite using `[hfun, integral_indicator hKM, setIntegral_const]`. Simplify using `only [Measure.real]`. Rewrite using `[Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvc : ((X.B.μf X.K2).toReal : ℂ) ≠ 0` using `by exact_mod_cast hvol`. Rewrite using `[mul_comm, div_mul_cancel₀ _ hvc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_fix_of_row {D : D7} (X : HidaSetting D) {f : X.B.I.GA → ℂ} (hf : RowFun X f) (hm : MemLp f 2 (muX X)) :
     X.B.Re (star (hm.toLp f)) = star (hm.toLp f) := by
@@ -131,23 +131,23 @@ end GlobalTheory.Core.Mi.SeeHH
 namespace GlobalTheory.Core.Mi.SeeHH
 
 /- English proof (translation)
-Use `choose a ha hb using fun τ => hR.2.2.2 τ (g (X.pl.symm τ))`. Establish `hsm : ∀ τ, M.rep τ (a τ) (v₀ τ : M.H τ) ∈ M.sm τ` using `fun τ => GlobalTheory.SmoothStable.rep_mem_sm D (D.sp.Y 0) S M τ (a τ) (ha τ) _ (v₀ τ).2`. Set `gs : Finset D.what₂.Tau → X.B.I.GA` to `fun s => ((fun v => if X.pl v ∈ s then g v else 1), 1)`. Set `ws : Finset D.what₂.Tau → M.Vec` to `fun s τ => if τ ∈ s then ⟨_, hsm τ⟩ else v₀ τ`. Establish `key : ∀ s : Finset D.what₂.Tau, ∀ U ∈ Mult θ M J χ, ∀ x, U v₀ ((iotaX X h).symm (x * gs s) * t) = U (ws s) ((iotaX X h).symm x * t)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `U _ x`. Establish `e1 : gs ∅ = 1` using `Prod.ext (funext fun v => by simp [gs]) rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ws ∅ = v₀` using `funext fun τ => by simp [ws]`. Rewrite using `[e1, e2, mul_one]`. Consider the case `insert τ s hτ ih`. Introduce `U hU x`. Take `⟨he2, hoth, -⟩` from `hR.2.2.1 τ (a τ) (ha τ)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hws : ws s τ = v₀ τ` using `by simp [ws, hτ]`. Establish `hupd : ws (insert τ s) = Function.update (ws s) τ ⟨_, hsm τ⟩`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ws]`. Simplify using `[ws, hσ, Function.update_of_ne hσ]`. Establish `hE` using `Formalism.IndefR.Eqv.KerDiag.mult_equiv θ M J χ hU τ (ha τ) (ws s) ⟨_, hsm τ⟩ (by simp only [hws])`. Establish `hmul : iotaX X h (atTau θ (D.sp.Y 0) τ (a τ)) * gs s = gs (insert τ s)`. Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [gs, Prod.fst_mul, Pi.mul_apply]`. Distinguish the cases in `hv : v = X.pl.symm τ`. Substitute `hv` using the available equality. Establish `hm : X.pl (X.pl.symm τ) ∈ insert τ s` using `by simp`. Establish `hn : X.pl (X.pl.symm τ) ∉ s` using `by simpa using hτ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hm, if_neg hn, hb τ, mul_one]`. Establish `hpv : X.pl v ≠ τ` using `fun e => hv (by rw [← e, Equiv.symm_apply_apply])`. Rewrite using `[hoth v hv, one_mul]`. Simplify using `[Finset.mem_insert, hpv]`. Simplify using `only [gs, Prod.snd_mul, he2, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hupd, hE]`. Use `show U v₀ ((iotaX X h).symm (x * gs (insert τ s)) * t) = U (ws s) ((iotaX X h).symm x * t * atTau θ (D.sp.Y 0) τ (a τ))`. Rewrite using `[mul_assoc, ← GlobalTheory.HeckeParts.comm_atTau ht τ (a τ), ← mul_assoc]`. Establish `hι : (iotaX X h).symm x * atTau θ (D.sp.Y 0) τ (a τ) = (iotaX X h).symm (x * iotaX X h (atTau θ (D.sp.Y 0) τ (a τ)))`. Rewrite using `[map_mul, ContinuousMulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hι, ← ih U hU, mul_assoc, hmul]`. Establish `eu : gs Finset.univ = (g, 1)` using `Prod.ext (funext fun v => by simp [gs]) rfl`. Use `⟨a, ha, hb, ws Finset.univ, fun τ => by simp [ws], fun U hU x => ?_⟩` and prove the remaining obligations. Rewrite using `[← key Finset.univ U hU x, eu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_shift {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D)
     {S : D.what₂.Tau → SPar} (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ)
@@ -208,9 +208,9 @@ theorem real_shift {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.Ins
   rw [← key Finset.univ U hU x, eu]
 
 /- English proof (translation)
-Take `⟨c, hc1, hc2⟩` from `hCV`. Establish `e : ∀ τ, ⟪(w τ : M.H τ), (v₀ τ : M.H τ)⟫_ℂ = ⟪X.B.w (X.pl.symm τ), X.B.σ (X.pl.symm τ) (uMat (g (X.pl.symm τ))) (X.B.w (X.pl.symm τ))⟫_ℂ`. Introduce `τ`. Rewrite using `[← inner_antiunitary_swap (c τ) (v₀ τ : M.H τ) (w τ : M.H τ), hw τ, hc1 τ (a τ) (ha τ), hb τ, hc2 τ]`. Repeatedly rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Fintype.prod_equiv X.pl.symm _ _ (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem coef_eq {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D)
     {S : D.what₂.Tau → SPar} (M : DSModel (D.sp.Y 0) S) (v₀ : M.Vec) (hCV : ConjVec X h θ M v₀) (g : X.B.I.Ginf)
@@ -233,27 +233,25 @@ end GlobalTheory.Core.Mi.SeeHH
 open GlobalTheory.Core.Mi.SeeHH in
 
 /- English proof (translation)
-Introduce `hP D X h θ S M J χ t v₀ hS hθ hGap hIdE hMat hCV T hT φ hφ`. Take `⟨-, -, -, -, -, hL⟩` from `GlobalTheory.T.discreteSeriesTestData_of_noncompactGaps D X hGap`. Establish `hR` using `GlobalTheory.T.modelIdentification_respects_real_and_finite D X h θ hθ hIdE`. Establish `hTm : PiTensorProduct.lift.symm T ∈ Mult θ M J χ` using `(mem_multT θ M J χ T).1 hT`. Take `⟨hRow, hMem⟩` from `GlobalTheory.T.translateToSecondModel_cuspFormMap_value_automorphic hP D X h θ S M J χ t hθ hMat T hT (PiTensorProduct.tprod ℂ v₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfx : ∀ x, evS X h t (T (PiTensorProduct.tprod ℂ v₀)) x = (PiTensorProduct.lift.symm T) v₀ ((iotaX X h).symm x * t)` using `fun x => rfl`. Generalize the expression as in `PiTensorProduct.lift.symm T = U at hTm hfx`. Generalize the expression as in `evS X h t (T (PiTensorProduct.tprod ℂ v₀)) = f at hRow hMem hφ hfx`. Establish `hφ' : φ = hMem.toLp f` using `Lp.ext (hφ.trans hMem.coeFn_toLp.symm)`. Establish `hRe` using `re_fix_of_row X hRow hMem`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : ∀ g, g ∈ GQ (D.sp.Y 0) ↔ iotaX X h g ∈ X.B.I.GFset`. Introduce `g`. Rewrite using `[Formalism.IndefR.RationalEmbedding.iota_rat]`. Conclude with `GlobalTheory.Mem.SJ.SchurMove.castGA_mem_GFset _ _`. Take `⟨κ, hκ⟩` from `GlobalTheory.Mem.SJ.HaarMove.schur_of_bridge M θ J χ (fun μ 𝓕 => GlobalTheory.MultFinite.schurMult hP μ 𝓕) hθ X.B.I X.B.μf X.B.fund X.B.fund_spec (iotaX X h) hι t U hTm U hTm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv₀ : ∏ τ, ⟪(v₀ τ : M.H τ), (v₀ τ : M.H τ)⟫_ℂ = 1`. Take `⟨c, -, hc2⟩` from `hCV`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `hn : ‖(v₀ τ : M.H τ)‖ = 1`. Rewrite using `[← (c τ).norm_map, hc2 τ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(X.low _).1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hn]`. Simplify using the standard rewrite rules. Establish `hs : MemLp (fun x => star (f x)) 2 (muX X)` using `hMem.star`. Establish `hinv : ∀ γ ∈ X.B.I.GFset, ∀ y, star (f (γ * y)) = star (f y)` using `fun γ hγ y => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hRow.left γ hγ y]`. Establish `hnorm : (((‖hs.toLp (fun x => star (f x))‖ ^ 2 : ℝ)) : ℂ) = κ`. Rewrite using `[Formalism.IndefR.AutomorphicEvaluation.norm_sq_toLp hs, ← integral_complex_ofReal]`. Establish `e` using `hκ v₀ v₀`. Rewrite `e` using `[hv₀, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[norm_star, hfx x, ← starRingEnd_apply, Complex.conj_mul']`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRph : X.Rph (star (hMem.toLp f)) = star (hMem.toLp f)`. Rewrite using `[star_toLp_eq X hMem hs]`. Use `Formalism.L2.SG.EvalTRph.rph_fix_of_coef X hL _ (fun g => ?_)` and prove the remaining obligations. Take `⟨a, ha, hb, w, hw, hsh⟩` from `real_shift X h θ M J χ t hMat.1 hR v₀ g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco` using `coef_eq X h θ M v₀ hCV g a ha hb w hw`. Establish `hRg` using `Formalism.L2.SG.EvalTReg.reg_toLp_X X (fun x => star (f x)) hinv hs (g, 1)`. Establish `hpair : ⟪hs.toLp (fun x => star (f x)), X.B.R (g, 1) (hs.toLp (fun x => star (f x)))⟫_ℂ = ∫ x, star (U w ((iotaX X h).symm x * t)) * U v₀ ((iotaX X h).symm x * t) ∂(muX X)`. Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hs.coeFn_toLp, hRg] with x a1 a2`. Rewrite using `[a1, a2]`. Simplify using `only [RCLike.inner_apply, hfx]`. Rewrite using `[hsh U hTm x, starRingEnd_apply, star_star, mul_comm]`. Rewrite using `[hpair, hκ w v₀, hco, hnorm]`.
-
-Rewrite using `[hφ']`. Use `⟨star (hMem.toLp f), ?_⟩` and prove the remaining obligations. Use `show X.B.Re (X.Rph _) = _`. Rewrite using `[hRph, hRe]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.SeeHH.conj_evS_mem_HHX : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)) (v₀ : M.Vec), S = parB (Ptw D) 0 → IsInfFam θ → GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4) → IdE X → Matches X h J χ t → ConjVec X h θ M v₀ → ∀ T ∈ MultT θ M J χ, ∀ φ : L2X X, (φ : X.B.I.GA → ℂ) =ᵐ[muX X] evS X h t (T (PiTensorProduct.tprod ℂ v₀)) → star φ ∈ HHX X := by
   intro hP D X h θ S M J χ t v₀ hS hθ hGap hIdE hMat hCV T hT φ hφ

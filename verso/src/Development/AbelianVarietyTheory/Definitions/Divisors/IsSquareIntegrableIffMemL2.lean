@@ -65,7 +65,7 @@ variable {σ J} {r : ℕ} {H H' K K' N : Subgroup (GAd σ J)} {φ c c' : GAd σ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[show (Set.range fun k : K => fun g => φ (g * k)) = {Ψ | ∃ k ∈ K, Ψ = fun g => φ (g * k)} from Set.ext fun Ψ => ⟨fun ⟨k, e⟩ => ⟨k, k.2, e.symm⟩, fun ⟨k, hk, e⟩ => ⟨⟨k, hk⟩, e.symm⟩⟩]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kfin_iff : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K => fun g => φ (g * k))) ↔
     GlobalTheory.Doubling.IsKFinite K φ := by
@@ -74,14 +74,14 @@ theorem kfin_iff : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.mod.left, h.mod.level, h.mod.cont, h.mod.smooth, h.mod.growth, kfin_iff.1 h.kfin, h.zfin⟩, fun h => ⟨⟨h.left, h.level, h.cont, h.smooth, h.growth⟩, kfin_iff.2 h.kfin, h.zfin⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAut_iff_isAutOn : IsAut σ J K φ ↔ IsAutOn σ J (ratPts σ J) K φ :=
   ⟨fun h => ⟨h.mod.left, h.mod.level, h.mod.cont, h.mod.smooth, h.mod.growth, kfin_iff.1 h.kfin, h.zfin⟩,
     fun h => ⟨⟨h.left, h.level, h.cont, h.smooth, h.growth⟩, kfin_iff.2 h.kfin, h.zfin⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ => h.left γ (hH hγ), h.level, h.cont, h.smooth, h.growth, let ⟨W, hW, e⟩ := GlobalTheory.Doubling.isKFinite_iff.1 h.kfin GlobalTheory.Doubling.isKFinite_iff.2 ⟨W, hW, fun k hk => e k (hK hk)⟩, h.zfin⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAutOn.mono (h : IsAutOn σ J H K φ) (hH : H' ≤ H) (hK : K' ≤ K) : IsAutOn σ J H' K' φ :=
   ⟨fun γ hγ => h.left γ (hH hγ), h.level, h.cont, h.smooth, h.growth,
@@ -91,9 +91,9 @@ theorem IsAutOn.mono (h : IsAutOn σ J H K φ) (hH : H' ≤ H) (hK : K' ≤ K) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨a, rfl⟩`. Consider the case `cons γ l ih`. Take `⟨b, h⟩` from `ih`. Use `⟨b * deriv (fun t => φ (γ t)) 0, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[List.foldr_cons, h]`. Use function extensionality and compare the values at `g`. Simplify using `only [lineDer, Pi.smul_apply, smul_eq_mul, hφ, ← mul_assoc, deriv_const_mul_field']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem foldr_lineDer_char (hφ : ∀ g h, φ (g * h) = φ g * φ h) (a : ℂ) (l : List (ℝ → GAd σ J)) :
     ∃ b : ℂ, l.foldr lineDer (a • φ) = b • φ := by
@@ -108,9 +108,7 @@ theorem foldr_lineDer_char (hφ : ∀ g h, φ (g * h) = φ g * φ h) (a : ℂ) (
     ring
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨hm, ?_, ?_⟩ <;> refine Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.mem_span_singleton.2 ⟨a * φ k, funext fun g => by simp only [Pi.smul_apply, smul_eq_mul, hφ]; ring⟩`. Introduce and unpack `_ ⟨z, -, rfl⟩ choose b hb using foldr_lineDer_char hφ a`. Conclude with `Submodule.mem_span_singleton.2 ⟨z.sum fun l x => x * b l, funext fun g => by`.
-
-Simplify using `[dop, hb, Finsupp.sum, Finset.sum_mul, mul_assoc]⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAut_of_char (K : Subgroup (GAd σ J)) (hφ : ∀ g h, φ (g * h) = φ g * φ h) (a : ℂ)
     (hm : IsSmoothModerate σ J (a • φ)) : IsAut σ J K (a • φ) := by
@@ -125,7 +123,7 @@ theorem isAut_of_char (K : Subgroup (GAd σ J)) (hφ : ∀ g h, φ (g * h) = φ 
 variable (σ J) in
 
 /- English proof (translation)
-Establish `e : (fun _ => a) = a • fun _ : GAd σ J => (1 : ℂ)` using `funext fun _ => by simp`. Conclude with `e ▸ isAut_of_char K (by simp) a (e ▸ isSmoothModerate_const σ J a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAut_const (K : Subgroup (GAd σ J)) (a : ℂ) : IsAut σ J K fun _ => a := by
   have e : (fun _ => a) = a • fun _ : GAd σ J => (1 : ℂ) := funext fun _ => by simp
@@ -134,13 +132,13 @@ theorem isAut_const (K : Subgroup (GAd σ J)) (a : ℂ) : IsAut σ J K fun _ => 
 variable (σ J) in
 
 /- English proof (translation)
-The claim follows from `{ isAut_iff_isAutOn.1 (isAut_const σ J K a) with left := fun _ _ _ => rfl }`.
+A detailed English derivation is pending.
 -/
 theorem isAutOn_const (H K : Subgroup (GAd σ J)) (a : ℂ) : IsAutOn σ J H K fun _ => a :=
   { isAut_iff_isAutOn.1 (isAut_const σ J K a) with left := fun _ _ _ => rfl }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun f _ a _ g => by simp [dop]⟩`.
+Supply the required witnesses or components.
 -/
 example : IsCentral σ J (Finsupp.single [] 1) :=
   ⟨by simp, fun f _ a _ g => by simp [dop]⟩
@@ -148,13 +146,13 @@ example : IsCentral σ J (Finsupp.single [] 1) :=
 omit [NumberField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨le_rfl, h⟩, fun _ hK _ => hK.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMaxCpt_infPts (h : IsCompact (infPts σ J : Set (GAd σ J))) : IsMaxCpt σ J (infPts σ J) :=
   ⟨⟨le_rfl, h⟩, fun _ hK _ => hK.1⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ht`. Take `⟨k, hk⟩` from `((tendsto_pow_atTop_atTop_of_one_lt (not_le.1 ht)).atTop_mul_const ha).eventually_gt_atTop M |>.exists`. Conclude with `hk.not_ge (h k)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_one_of_pow_mul_le {t a M : ℝ} (ha : 0 < a) (h : ∀ k : ℕ, t ^ k * a ≤ M) : t ≤ 1 := by
   by_contra ht
@@ -164,15 +162,15 @@ theorem le_one_of_pow_mul_le {t a M : ℝ} (ha : 0 < a) (h : ∀ k : ℕ, t ^ k 
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hP` using `Matrix.posSemidef_conjTranspose_mul_self b`. Establish `key : ∀ (A : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (v : Fin n → ℂ), (∀ k : ℕ, A ^ k ∈ S) → v ≠ 0 → A *ᵥ v = t • v → t ≤ 1` using `fun A t v hA hv e => by`. Take `⟨M, hM⟩` from `hS.exists_bound_of_continuousOn (f := fun X => X *ᵥ v) (continuous_id.matrix_mulVec continuous_const).continuousOn`. Establish `hk : ∀ k : ℕ, A ^ k *ᵥ v = t ^ k • v` using `fun k => by`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_smul, ih, smul_smul, pow_succ']`. Use `(le_abs_self t).trans (le_one_of_pow_mul_le (M := M) (norm_pos_iff.2 hv) fun k => ?_)` and prove the remaining obligations. Use `hM _ (hA k)` as an intermediate fact. Rewrite `this` using `[hk, norm_smul, norm_pow, Real.norm_eq_abs]`. Then use the resulting hypothesis.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hev : ∀ j, hP.1.eigenvalues j = 1` using `fun j => by`. Establish `e` using `hP.1.mulVec_eigenvectorBasis j`. Establish `hv : (hP.1.eigenvectorBasis j).ofLp ≠ 0` using `fun h => hP.1.eigenvectorBasis.orthonormal.ne_zero j ((WithLp.ofLp_eq_zero 2).1 h)`. Establish `e2` using `congrArg (Q *ᵥ ·) e`. Simplify using `only [Matrix.mulVec_mulVec, hQ, Matrix.one_mulVec, Matrix.mulVec_smul] at e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : hP.1.eigenvalues j ≠ 0` using `fun h => hv (by rw [e2, h, zero_smul])`. Establish `hpos` using `lt_of_le_of_ne (hP.eigenvalues_nonneg j) h0.symm`. Establish `e3 : Q *ᵥ (hP.1.eigenvectorBasis j).ofLp = (hP.1.eigenvalues j)⁻¹ • (hP.1.eigenvectorBasis j).ofLp` using `by conv_rhs => rw [e2, inv_smul_smul₀ h0]`. Conclude with `le_antisymm (key _ _ _ h1 hv e) ((inv_le_one₀ hpos).1 (key _ _ _ h2 hv e3))`. Rewrite using `[hP.1.spectral_theorem, show hP.1.eigenvalues = fun _ => 1 from funext hev]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.comp_def]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_powers_compact {b Q : Matrix (Fin n) (Fin n) ℂ} {S : Set (Matrix (Fin n) (Fin n) ℂ)} (hS : IsCompact S)
     (hQ : Q * (bᴴ * b) = 1) (h1 : ∀ k : ℕ, (bᴴ * b) ^ k ∈ S) (h2 : ∀ k : ℕ, Q ^ k ∈ S) : bᴴ * b = 1 := by
@@ -203,9 +201,9 @@ theorem eq_one_of_powers_compact {b Q : Matrix (Fin n) (Fin n) ℂ} {S : Set (Ma
   simp [Function.comp_def]
 
 /- English proof (translation)
-Establish `h1 : Formalism.UG.cT s (c⁻¹).1 * Formalism.UG.cT s c.1 = 1` using `by rw [← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]`. Establish `e : Formalism.UG.cT s (c⁻¹ * g * c).1 * D * (c⁻¹ * g * c).1 = Formalism.UG.cT s c.1 * (Formalism.UG.cT s g.1 * A * g.1) * c.1`. Rewrite using `[← hc]`. Simplify using `only [Units.val_mul, Formalism.UG.cT_mul, Matrix.mul_assoc, Units.mul_inv_cancel_left]`. Rewrite using `[← Matrix.mul_assoc (Formalism.UG.cT s (c⁻¹).1), h1, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT s _ * D * _ = D ↔ Formalism.UG.cT s g.1 * A * g.1 = A`. Rewrite using `[e, ← hc]`. Use `⟨fun h => ?_, fun h => by rw [h]⟩` and prove the remaining obligations. Use `congrArg (fun X => Formalism.UG.cT s (c⁻¹).1 * X * (c⁻¹).1) h` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, h1, Matrix.one_mul, Units.mul_inv_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_mem_UJ {R : Type} [CommRing R] {s : R →+* R} {A D : Matrix (Fin n) (Fin n) R} {c : GL (Fin n) R}
     (hc : Formalism.UG.cT s c.1 * A * c.1 = D) (g : GL (Fin n) R) : c⁻¹ * g * c ∈ Formalism.UG.UJ s D ↔ g ∈ Formalism.UG.UJ s A := by
@@ -226,34 +224,30 @@ def majCpt (c : ∀ w : InfinitePlace F, GL (Fin n) (w.Completion ⊗[F] E)) : S
   infPts σ J ⊓ ⨅ w, (stabArch σ J w (c w)).comap (projArch σ J w)
 
 /- English proof (translation)
-Simplify using `[majCpt, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_majCpt {c : ∀ w : InfinitePlace F, GL (Fin n) (w.Completion ⊗[F] E)} {g : GAd σ J} :
     g ∈ majCpt σ J c ↔ g ∈ infPts σ J ∧ ∀ w, projArch σ J w g ∈ stabArch σ J w (c w) := by
   simp [majCpt, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Use `⟨⟨inf_le_left, ?_⟩, fun K' hK' hle g hg => mem_majCpt.2 ⟨hK'.1 hg, fun w => ?_⟩⟩` and prove the remaining obligations. Use `(isCompact_univ_pi fun w => Frames.isCompact_stabArch h J w (c w)).image ((continuous_ofInf σ J).comp (continuous_embArchPi σ J)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Use `⟨fun hg => ⟨fun w => projArch σ J w g, fun w _ => (mem_majCpt.1 hg).2 w, GAd_ext σ J (fun w => by simp) fun v => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mem_infPts_iff_forall.1 hg.1 v]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `mem_majCpt.2 ⟨mem_infPts.2 (projFin_ofInf _ _ _), fun w => by simpa using hx w trivial⟩`. Take `⟨ε, hε⟩` from `hc w`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Use `set D : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E) := Matrix.diagonal fun i => if ε i then 1 else -1 with hD`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hDD : D * D = 1`. Apply the tactic sequence `rw [hD, diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; split_ifs <;> simp`. Establish `hcD : Formalism.UG.cT (sigR _ σ) D = D`. Rewrite using `[hD, Formalism.UG.cT, diagonal_map (map_zero _), diagonal_transpose]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp only [map_one, map_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : GL (Fin n) (w.Completion ⊗[F] E)` to `⟨D, D, hDD, hDD⟩`. Establish `hu : (c w)⁻¹ * (c w * u * (c w)⁻¹) * c w = u` using `by group`. Set `s₀ : GArch σ J w` to `⟨c w * u * (c w)⁻¹, (conj_mem_UJ hε _).1 (hu.symm ▸ show _ * D * D = D by rw [hcD, hDD, one_mul])⟩`. Establish `hs : embArch σ J w s₀ ∈ K'` using `hle (mem_majCpt.2 ⟨mem_infPts.2 (projFin_embArch _ _ _ _), fun v => by`. Distinguish the cases in `e : v = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Rewrite using `[projArch_embArch_self, mem_stabArch]`. Conclude with `hu.symm ▸ show _ * 1 * D = 1 by rw [hcD, mul_one, hDD]`. Rewrite using `[projArch_embArch_ne σ J e]`. Conclude with `one_mem _⟩)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m : GAd σ J →* GL (Fin n) (w.Completion ⊗[F] E)` to `(MulAut.conj (c w)⁻¹).toMonoidHom.comp ((matHom _ σ J).comp (projArch σ J w))`. Establish `hm : ∀ x, m x = (c w)⁻¹ * matHom _ σ J (projArch σ J w x) * c w` using `fun x => by simp [m]`. Set `f : GAd σ J →* Matrix (Fin n) (Fin n) ℂ` to `(infEmb τ).mapMatrix.toMonoidHom.comp ((Units.coeHom _).comp m)`. Establish `hf : Continuous f`. Establish `: IsTopologicalRing (w.Completion ⊗[F] E)` using `GlobalTheory.Doubling.isTopologicalRing_tens`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : f = fun x => (((c w)⁻¹).1 * (matHom _ σ J (projArch σ J w x)).1 * (c w).1).map (infEmb τ)`. Use function extensionality and compare the values at `fun x => congrArg (fun y : GL (Fin n) _ => y.1.map (infEmb τ)) (hm x)`. Rewrite using `[e]`. Conclude with `((continuous_const.matrix_mul (Units.continuous_val.comp ((isEmbedding_matHom _ σ J).continuous.comp (continuous_projArch σ J w)))).matrix_mul continuous_const).matrix_map (GlobalTheory.Orb.continuous_infEmb τ)`. Establish `h1 : Formalism.UG.cT (sigR _ σ) (m g).1 * D * (m g).1 = D` using `hm g ▸ (conj_mem_UJ hε _).2 (projArch σ J w g).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `p` to `embArch σ J w s₀ * g⁻¹ * embArch σ J w s₀ * g`. Establish `hp : p ∈ K'` using `mul_mem (mul_mem (mul_mem hs (inv_mem hg)) hs) hg`. Establish `h2 : (m p).1 = Formalism.UG.cT (sigR _ σ) (m g).1 * (m g).1`. Establish `e : m (embArch σ J w s₀) = u` using `by rw [hm, projArch_embArch_self]; exact hu`. Simplify using `only [p, map_mul, map_inv, e, Units.val_mul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e2 : D * ((m g)⁻¹).1 = Formalism.UG.cT (sigR _ σ) (m g).1 * D` using `by conv_lhs => rw [← h1, Units.mul_inv_cancel_right]`. Conclude with `(congrArg (· * D) e2).trans (by rw [Matrix.mul_assoc, hDD, Matrix.mul_one])`. Establish `h3 : f p = (f g)ᴴ * f g`. Express the relevant statement in the definitionally equal form `(m p).1.map (infEmb τ) = ((m g).1.map (infEmb τ))ᴴ * (m g).1.map (infEmb τ)`.
-
-Rewrite using `[h2, Matrix.map_mul, Frames.map_cT_sigR h]`. Establish `h4 : f p = 1` using `h3 ▸ eq_one_of_powers_compact (Q := f p⁻¹) (hK'.2.image hf) (by rw [← h3, ← map_mul, inv_mul_cancel, map_one]) (fun k => ⟨p ^ k, pow_mem hp k, by rw [map_pow, h3]⟩) fun k => ⟨p⁻¹ ^ k, pow_mem (inv_mem hp) k, map_pow _ _ _⟩`. Rewrite using `[mem_stabArch, ← hm]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (m g).1 * 1 * (m g).1 = 1`. Rewrite using `[mul_one, ← h2]`.
-
-Conclude with `Matrix.map_injective (infEmb_bijective h τ).1 (h4.trans (Matrix.map_one _ (map_zero _) (map_one _)).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaxCpt_majCpt (h : IsCMExt F E σ) {c : ∀ w : InfinitePlace F, GL (Fin n) (w.Completion ⊗[F] E)}
     (hc : ∀ w, ∃ ε : Fin n → Bool, Formalism.UG.cT (sigR _ σ) (c w).1 * JR w.Completion J * (c w).1 =
@@ -316,14 +310,14 @@ theorem isMaxCpt_majCpt (h : IsCMExt F E σ) {c : ∀ w : InfinitePlace F, GL (F
   exact Matrix.map_injective (infEmb_bijective h τ).1 (h4.trans (Matrix.map_one _ (map_zero _) (map_one _)).symm)
 
 /- English proof (translation)
-Use `choose c ε hc using Frames.exists_arch_frame h hJ`. Conclude with `⟨_, isMaxCpt_majCpt h fun w => ⟨ε w, hc w⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isMaxCpt (h : IsCMExt F E σ) (hJ : IsHermND σ J) : ∃ K, IsMaxCpt σ J K := by
   choose c ε hc using Frames.exists_arch_frame h hJ
   exact ⟨_, isMaxCpt_majCpt h fun w => ⟨ε w, hc w⟩⟩
 
 /- English proof (translation)
-Set `γ : GRat σ (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E)` to `⟨⟨!![1, ξ; 0, 1], !![1, -ξ; 0, 1], by simp [one_fin_two], by simp [one_fin_two]⟩, show _ * _ * _ = _ by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Formalism.UG.cT, Matrix.mul_apply, Fin.sum_univ_two, hξ]⟩`. Establish `e : (matHom _ σ _ (ratEmb σ _ γ)).1 = adMat F !![1, ξ; 0, 1]` using `rfl`. Apply the tactic sequence `refine ⟨ratEmb σ _ γ, ⟨range_ratEmb σ _ ▸ ⟨γ, rfl⟩, Subgroup.subset_closure ⟨fun i => ⟨0, fun _ _ => rfl, ?_⟩, fun x _ => ⟨fun _ => inclR (AF F) (ξ * x 1), ?_⟩⟩⟩, e⟩ <;> rw [e] <;> funext k <;> fin_cases k <;>`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, Subsingleton.elim _ (0 : Fin 1)]`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 example (ξ : E) (hξ : σ ξ = -ξ) : ∃ g ∈ ratPts σ !![0, 1; 1, 0] ⊓
     unipFlag σ !![0, 1; 1, 0] (!![1; 0] : Matrix (Fin 2) (Fin 1) E) fun _ => 0,
@@ -339,12 +333,12 @@ example (ξ : E) (hξ : σ ξ = -ξ) : ∃ g ∈ ratPts σ !![0, 1; 1, 0] ⊓
 omit [NumberField E] in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isConstTerm_iff : IsConstTerm σ J C φ c ↔ IsConstTermOn σ J (unipRad σ J C) φ c := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[unipFlag_const]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isConstTerm_iff_unipFlag : IsConstTerm σ J C φ c ↔ IsConstTermOn σ J (unipFlag σ J C fun _ => 0) φ c := by
   rw [unipFlag_const]; rfl
@@ -352,13 +346,13 @@ theorem isConstTerm_iff_unipFlag : IsConstTerm σ J C φ c ↔ IsConstTermOn σ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Introduce `μ 𝓕 _ _ h _` and use `by simp [Measure.real, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConstTermOn_const (N : Subgroup (GAd σ J)) (a : ℂ) : IsConstTermOn σ J N (fun _ => a) fun _ => a :=
   fun μ 𝓕 _ _ h _ => by simp [Measure.real, h]
 
 /- English proof (translation)
-Introduce `μ 𝓕 _ h h1 g` and use `by have hl : LeftInv ((ratPts σ J).subgroupOf N) fun u : N => φ (u * g) := fun γ hγ u => by simp only [Subgroup.coe_mul, mul_assoc]; exact hφ _ ⟨hγ, γ.2⟩ _ rw [constTermOn, GlobalTheory.Cusp.probMeasure_eq μ, integral_smul_measure, GlobalTheory.AutomorphicL2Unitary.quotMeasure_un …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConstTermOn_constTermOn [LocallyCompactSpace N] (hφ : LeftInv (ratPts σ J ⊓ N) φ) :
     IsConstTermOn σ J N φ (constTermOn (ratPts σ J) N φ) := fun μ 𝓕 _ h h1 g => by
@@ -369,7 +363,7 @@ theorem isConstTermOn_constTermOn [LocallyCompactSpace N] (hφ : LeftInv (ratPts
   exact integral_congr_ae (.of_forall hl.descend_mk)
 
 /- English proof (translation)
-Establish `h` using `isFundamentalDomain_stdDom ((ratPts σ J).subgroupOf N) (Measure.haar : Measure N)`. Establish `h0` using `h.measure_ne_zero (NeZero.ne _)`. Establish `h1` using `hc.measure_ne_top h`. Conclude with `⟨(Measure.haar (stdDom ((ratPts σ J).subgroupOf N)))⁻¹ • Measure.haar, _, Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0), h.mono Measure.smul_absolutelyContinuous, by simp [ENNReal.inv_mul_cancel h0 h1]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_mass_one [LocallyCompactSpace N] (hc : Cocompact (ratPts σ J) N) : ∃ (μ : Measure N) (𝓕 : Set N),
     μ.IsHaarMeasure ∧ IsFundamentalDomain ((ratPts σ J).subgroupOf N) 𝓕 μ ∧ μ 𝓕 = 1 := by
@@ -381,7 +375,7 @@ theorem exists_mass_one [LocallyCompactSpace N] (hc : Cocompact (ratPts σ J) N)
     h.mono Measure.smul_absolutelyContinuous, by simp [ENNReal.inv_mul_cancel h0 h1]⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨μ, 𝓕, h1, h2, h3⟩ := exists_mass_one hc funext fun g => (h μ 𝓕 h1 h2 h3 g).trans (h' μ 𝓕 h1 h2 h3 g).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsConstTermOn.unique [LocallyCompactSpace N] (hc : Cocompact (ratPts σ J) N) (h : IsConstTermOn σ J N φ c)
     (h' : IsConstTermOn σ J N φ c') : c = c' :=
@@ -389,7 +383,7 @@ theorem IsConstTermOn.unique [LocallyCompactSpace N] (hc : Cocompact (ratPts σ 
   funext fun g => (h μ 𝓕 h1 h2 h3 g).trans (h' μ 𝓕 h1 h2 h3 g).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.unique hc (isConstTermOn_constTermOn hφ), fun h => h ▸ isConstTermOn_constTermOn hφ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isConstTermOn_iff [LocallyCompactSpace N] (hc : Cocompact (ratPts σ J) N) (hφ : LeftInv (ratPts σ J ⊓ N) φ) :
     IsConstTermOn σ J N φ c ↔ c = constTermOn (ratPts σ J) N φ :=
@@ -405,7 +399,7 @@ variable (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hC : IsIsoCols σ J C)
 include h hJ hC
 
 /- English proof (translation)
-The claim follows from `haveI := locallyCompact_unipFlag hJ (sigma_sigma h) hC d ⟨_, isConstTermOn_constTermOn hφ, fun _ hc => (isConstTermOn_iff (cocompact_unipFlag hJ (sigma_sigma h) hC d) hφ).1 hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isConstTermOn (d : Fin r → ℕ) (hφ : LeftInv (ratPts σ J ⊓ unipFlag σ J C d) φ) :
     ∃! c, IsConstTermOn σ J (unipFlag σ J C d) φ c :=
@@ -414,26 +408,26 @@ theorem existsUnique_isConstTermOn (d : Fin r → ℕ) (hφ : LeftInv (ratPts σ
     (isConstTermOn_iff (cocompact_unipFlag hJ (sigma_sigma h) hC d) hφ).1 hc⟩
 
 /- English proof (translation)
-The claim follows from `unipFlag_const (σ := σ) (J := J) C 0 ▸ locallyCompact_unipFlag hJ (sigma_sigma h) hC _`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_unipRad : LocallyCompactSpace (unipRad σ J C) :=
   unipFlag_const (σ := σ) (J := J) C 0 ▸ locallyCompact_unipFlag hJ (sigma_sigma h) hC _
 
 /- English proof (translation)
-The claim follows from `unipFlag_const (σ := σ) (J := J) C 0 ▸ cocompact_unipFlag hJ (sigma_sigma h) hC _`.
+A detailed English derivation is pending.
 -/
 theorem cocompact_unipRad : Cocompact (ratPts σ J) (unipRad σ J C) :=
   unipFlag_const (σ := σ) (J := J) C 0 ▸ cocompact_unipFlag hJ (sigma_sigma h) hC _
 
 /- English proof (translation)
-Simplify using `only [isConstTerm_iff_unipFlag]`. Conclude with `existsUnique_isConstTermOn h hJ hC _ fun γ hγ => hφ γ hγ.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_isConstTerm (hφ : LeftInv (ratPts σ J) φ) : ∃! c, IsConstTerm σ J C φ c := by
   simp only [isConstTerm_iff_unipFlag]
   exact existsUnique_isConstTermOn h hJ hC _ fun γ hγ => hφ γ hγ.1
 
 /- English proof (translation)
-Establish `hco` using `cocompact_unipFlag hJ (sigma_sigma h) hC d`. Establish `e : (ratPts σ J ⊓ parFlag σ J C d).subgroupOf (unipFlag σ J C d) = (ratPts σ J).subgroupOf (unipFlag σ J C d)` using `Subgroup.ext fun u => and_iff_left (unipFlag_le_parFlag hJ (sigma_sigma h) hC d u.2)`. Take `⟨μ, 𝓕, h1, h2, h3⟩` from `exists_mass_one hco`. Use `⟨by rw [Cocompact, e]; exact hco, funext fun g => (hc μ 𝓕 h1 h2 h3 g).trans ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h2) h3 hφ g).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsConstTermOn.eq_constTermOn_par {d : Fin r → ℕ} (hc : IsConstTermOn σ J (unipFlag σ J C d) φ c)
     (hφ : LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ) [LocallyCompactSpace (unipFlag σ J C d)] :
@@ -447,9 +441,9 @@ theorem IsConstTermOn.eq_constTermOn_par {d : Fin r → ℕ} (hc : IsConstTermOn
   exact (GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h2) h3 hφ g).symm
 
 /- English proof (translation)
-Use `haveI := locallyCompact_unipFlag hJ (sigma_sigma h) hC d`. Take `⟨hco, e⟩` from `hc.eq_constTermOn_par h hJ hC hφ`. Set `S : Subgroup (GAd σ J)` to `MulAction.stabilizer (GAd σ J)ᵈᵐᵃ c |>.comap ((MulEquiv.inv' (GAd σ J)).toMonoidHom)`. Establish `hS : ∀ γ, γ ∈ S ↔ ∀ g, c (γ⁻¹ * g) = c g` using `fun γ => funext_iff`. Establish `: leftGrp σ J C d ≤ S` using `sup_le (fun u hu => (hS u).2 (e ▸ hco.constTermOn_mul_left hφ (inv_mem hu))) fun γ hγ => (hS γ).2 (e ▸ GlobalTheory.Cusp.constTermOn_mul_left_of_normalizer hφ (inv_mem hγ) fun u => ⟨conj_mem_unipFlag hJ (sigma_sigma h) hC d (inv_mem hγ.2), fun hu => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `conj_mem_unipFlag hJ (sigma_sigma h) hC d hγ.2 hu⟩)` using `[mul_assoc]`. Conclude with `fun γ hγ g => by simpa using (hS _).1 (this (inv_mem hγ)) g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem IsConstTermOn.leftInv {d : Fin r → ℕ} (hc : IsConstTermOn σ J (unipFlag σ J C d) φ c)
     (hφ : LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ) : LeftInv (leftGrp σ J C d) c := by
@@ -464,7 +458,7 @@ theorem IsConstTermOn.leftInv {d : Fin r → ℕ} (hc : IsConstTermOn σ J (unip
   exact fun γ hγ g => by simpa using (hS _).1 (this (inv_mem hγ)) g
 
 /- English proof (translation)
-Use `haveI := locallyCompact_unipFlag hJ (sigma_sigma h) hC d`. Take `⟨hco, e⟩` from `hc.eq_constTermOn_par h hJ hC hφ`. Conclude with `e ▸ hco.continuous_constTermOn hφ hφc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsConstTermOn.continuous {d : Fin r → ℕ} (hc : IsConstTermOn σ J (unipFlag σ J C d) φ c)
     (hφ : LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ) (hφc : Continuous φ) : Continuous c := by
@@ -477,9 +471,9 @@ end Flag
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `yx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1`. Use `congrArg (Formalism.UG.cT (σ : E →+* E)) hW.xy` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, show Formalism.UG.cT (σ : E →+* E) (Formalism.UG.cT (σ : E →+* E) X) = X from Matrix.ext fun i j => hσ _, cT_form hJ, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hX : LinearIndependent E Xᵀ` using `Matrix.mulVec_injective_iff.1 fun a b e => by`. Simplify `congrArg ((Formalism.UG.cT (σ : E →+* E) Y * J) *ᵥ ·) e` using `only [Matrix.mulVec_mulVec, yx, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨hX.comp _ (Fin.castLE_injective hk), Matrix.ext fun i j => congrFun (congrFun hW.xx _) _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIsoCols_of_isWittFrame {X Y : Matrix (Fin n) (Fin r) E} (hW : IsWittFrame σ J X Y) (hσ : ∀ x, σ (σ x) = x)
     (hJ : IsHermND σ J) {k : ℕ} (hk : k ≤ r) : IsIsoCols σ J (X.submatrix id (Fin.castLE hk)) := by
@@ -492,7 +486,7 @@ theorem isIsoCols_of_isWittFrame {X Y : Matrix (Fin n) (Fin r) E} (hW : IsWittFr
   exact ⟨hX.comp _ (Fin.castLE_injective hk), Matrix.ext fun i j => congrFun (congrFun hW.xx _) _⟩
 
 /- English proof (translation)
-Apply the tactic sequence `have hJ : IsHermND σ (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) := ⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩`. Conclude with `⟨fun hc => (existsUnique_isConstTerm h hJ (isIsoCols_of_isWittFrame isWittFrame_plane (sigma_sigma h) hJ le_rfl) fun _ _ _ => rfl).unique hc (isConstTermOn_const _ a), fun e => e ▸ isConstTermOn_const _ a⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 example (h : IsCMExt F E σ) (a : ℂ) (c : GAd σ !![0, 1; 1, 0] → ℂ) :
     IsConstTerm σ !![0, 1; 1, 0] ((!![1; 0] : Matrix (Fin 2) (Fin 1) E).submatrix id (Fin.castLE le_rfl)) (fun _ => a) c ↔
@@ -503,7 +497,7 @@ example (h : IsCMExt F E σ) (a : ℂ) (c : GAd σ !![0, 1; 1, 0] → ℂ) :
     fun _ _ _ => rfl).unique hc (isConstTermOn_const _ a), fun e => e ▸ isConstTermOn_const _ a⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Measure.haar, _, inferInstance, isFundamentalDomain_stdDom _ _⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ (μ : Measure (GAd σ J)) (𝓕 : Set (GAd σ J)), μ.IsHaarMeasure ∧ IsFundamentalDomain (ratPts σ J) 𝓕 μ :=
   ⟨Measure.haar, _, inferInstance, isFundamentalDomain_stdDom _ _⟩

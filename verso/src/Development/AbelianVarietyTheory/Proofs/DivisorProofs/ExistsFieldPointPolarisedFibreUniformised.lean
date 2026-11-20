@@ -27,13 +27,13 @@ noncomputable section
 namespace GlobalTheory.PolPoint
 
 /- English proof (translation)
-Establish `hr : Set.range g ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hg y`. Establish `hr' : Set.range φ ⊆ Set.range (A.hom ⁻¹ᵁ W).ι`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `show A.hom (φ y) ∈ W`. Rewrite using `[← Scheme.Hom.comp_apply, h.w, Scheme.Hom.comp_apply]`. Conclude with `hg _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `l` to `IsOpenImmersion.lift W.ι _ hr`. Set `ψ` to `IsOpenImmersion.lift (A.hom ⁻¹ᵁ W).ι φ hr'`. Establish `hl : l ≫ W.ι = g` using `IsOpenImmersion.lift_fac _ _ hr`. Establish `hψ : ψ ≫ (A.hom ⁻¹ᵁ W).ι = φ` using `IsOpenImmersion.lift_fac _ _ hr'`. Establish `big : IsPullback (ψ ≫ (A.hom ⁻¹ᵁ W).ι) B.hom A.hom (l ≫ W.ι)` using `by rw [hψ, hl]; exact h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `sq : IsPullback ψ B.hom (A.hom ∣_ W) l`. Use `IsPullback.of_right big ?_ (isPullback_morphismRestrict A.hom W).flip` and prove the remaining obligations. Rewrite using `[← cancel_mono W.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hψ, h.w, Category.assoc, hl]`. Conclude with `MorphismProperty.of_isPullback (P := @IsProper) sq hpr`.
+A detailed English derivation is pending.
 -/
 theorem isProper_of_image {S T : Scheme.{0}} (A : Over S) (B : Over T) (g : T ⟶ S) (φ : B.left ⟶ A.left)
     (h : IsPullback φ B.hom A.hom g) (W : S.Opens) (hg : ∀ t, g t ∈ W) (hpr : IsProper (A.hom ∣_ W)) :
@@ -59,31 +59,27 @@ theorem isProper_of_image {S T : Scheme.{0}} (A : Over S) (B : Over T) (g : T �
   exact MorphismProperty.of_isPullback (P := @IsProper) sq hpr
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U W hW y hyW hy`. Take `⟨⟨hN, -, -, -⟩, -⟩` from `hR`. Set `O` to `Localization.AtPrime y.asIdeal`. Establish `hiO : Function.Injective (algebraMap R O)` using `IsLocalization.injective O y.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDomain O := IsLocalization.isDomain_localization y.asIdeal.primeCompl_le_nonZeroDivisors`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing O := IsLocalization.isNoetherianRing y.asIdeal.primeCompl O hN`. Establish `hf : ¬ IsField O`. Introduce `hfO`. Apply `hy` to reduce the goal to its premises. Establish `h1 : maximalIdeal O = ⊥` using `(IsLocalRing.isField_iff_maximalIdeal_eq).1 hfO`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Localization.AtPrime.comap_maximalIdeal (I := y.asIdeal)`. Rewrite using `[← h2, Ideal.under, h1]`. Conclude with `Ideal.comap_bot_of_injective _ hiO`. Take `⟨V, _, _, _, ρ, hρ, hloc⟩` from `GlobalTheory.KTrivSpread.exists_dvr O hf`. Set `a : R →+* V` to `ρ.comp (algebraMap R O)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : Function.Injective a` using `hρ.comp hiO`. Establish `hgen : ∀ q : PrimeSpectrum V, spMap a q ∈ W`. Introduce `q`. Establish `hle : PrimeSpectrum.comap a q ≤ y` using `by show Ideal.comap a q.asIdeal ≤ y.asIdeal`. Introduce `s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Localization.AtPrime.comap_maximalIdeal (I := y.asIdeal)]`. Conclude with `IsLocalRing.le_maximalIdeal (q.isPrime.comap ρ).ne_top hs`. Conclude with `((PrimeSpectrum.le_iff_specializes _ _).1 hle).mem_open W.isOpen hyW`. Set `B` to `(Over.pullback (spMap a)).obj G`. Establish `hcart : IsPullback (pullback.fst G.hom (spMap a)) B.hom G.hom (spMap a)` using `IsPullback.of_hasPullback _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hpB : IsProper B.hom` using `isProper_of_image G B (spMap a) _ hcart W hgen hW`. Establish `hsB` using `IsSemiAbelian.pullback (spMap a) G hG`. Establish `hAb : IsAbelianScheme B` using `⟨hsB.comm, hsB.smooth, hpB, hsB.geomConnected⟩`. Take `⟨hL, hL2, -⟩` from `GlobalTheory.allSixLaws`. Set `M` to `GlobalTheory.ValueForm.modelCP U.toUnifPre hL.globalFns`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `φ` to `U.gen.inv.left ≫ pullback.fst G.hom (jK R)`. Establish `hφ : IsGrpPullback A.A G (spMap (algebraMap R (FractionRing R))) φ` using `GlobalTheory.ThetaBaseChange.grp_generic U.toUnifPre`. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hLφ : LBIso A.L (M.L.L.pull φ)` using `LBIso.chartPull (h := U.gen.inv.left) (chartPullSec A.L _ _ hgi) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => rfl) U.ext`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P', M', φ', hφ', hL', hM'⟩` from `GlobalTheory.PolExtendDVR.exists_baseChange (K' := FractionRing V) hL.polBaseChange a ha A G M φ hφ hLφ`. Take `⟨hAB, hKB⟩` from `GlobalTheory.polarisation_extends_dvr hL hL2 V (FractionRing V) P' B M' φ' hAb hφ' hL'`. Set `r` to `IsLocalRing.residue V`. Take `⟨z, hz0⟩ : ∃ z : Sp (IsLocalRing.ResidueField V) ⟶ Sp R, z = spMap (r.comp a)` from `⟨_, rfl⟩`. Establish `hz : z = spMap r ≫ spMap a`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[hz0]`. Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `ψ : pullback G.hom z ⟶ B.left` to `pullback.lift (pullback.fst G.hom z) (pullback.snd G.hom z ≫ spMap r) (by rw [pullback.condition, hz, Category.assoc])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ψ ≫ pullback.fst G.hom (spMap a) = pullback.fst G.hom z` using `pullback.lift_fst _ _ _`. Establish `hψ2 : ψ ≫ B.hom = ((Over.pullback z).obj G).hom ≫ spMap r` using `pullback.lift_snd _ _ _`. Establish `hgz : IsGrpPullback ((Over.pullback z).obj G) B (spMap r) ψ` using `(isGrpPullback_pullback G (spMap a)).cancel ((isGrpPullback_pullback G z).congr hz hψ.symm) hψ2`. Establish `hiso : LBIso (U.LG.L.pull (pullback.fst G.hom z)) (M'.L.L.pull ψ)`. Establish `e` using `GlobalTheory.PolExtendDVR.lbIso_pull_comp hM' ψ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[hψ]`. Conclude with `e.symm`. Take `⟨w, hw⟩` from `hiso`. Establish `hw'` using `(isGen_iff w).1 hw`. Use `⟨IsLocalRing.ResidueField V, inferInstance, z, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `e1 : PrimeSpectrum.comap r (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)) = IsLocalRing.closedPoint V` using `IsLocalRing.comap_closedPoint r`. Establish `e2 : PrimeSpectrum.comap ρ (IsLocalRing.closedPoint V) = IsLocalRing.closedPoint O` using `IsLocalRing.comap_closedPoint ρ`. Establish `e3 : PrimeSpectrum.comap (algebraMap R O) (IsLocalRing.closedPoint O) = y` using `PrimeSpectrum.ext Localization.AtPrime.under_maximalIdeal`. Rewrite using `[hz0]`. Use `show PrimeSpectrum.comap (algebraMap R O) (PrimeSpectrum.comap ρ (PrimeSpectrum.comap r (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)))) = y`.
-
-Rewrite using `[e1, e2, e3]`. Conclude with `MorphismProperty.of_isPullback (P := @IsProper) hgz.1 hpB`. Conclude with `relAmple_pull hgz.1 M'.L.isLB (pull_isLB U.LG.isLB _) hw' ⊤ (isAffineOpen_top _) (fun _ => trivial) hAB`. Conclude with `kTriv_pull hgz M'.L.isLB (pull_isLB U.LG.isLB _) hw' hKB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_field_point_polarised : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ W : (Sp R).Opens, IsProper (G.hom ∣_ W) → ∀ y : PrimeSpectrum R, y ∈ W → y.asIdeal ≠ ⊥ → ∃ (K₁ : Type) (_ : Field K₁) (z : Sp K₁ ⟶ Sp R), z (closedPoint K₁) = y ∧ IsProper (pullback.snd G.hom z) ∧ RelAmple ((Over.pullback z).obj G) (U.LG.L.pull (pullback.fst G.hom z)) ∧ KTriv ((Over.pullback z).obj G) (U.LG.L.pull (pullback.fst G.hom z)) := by
   intro R _ _ _ hR D A G _ _ hG U W hW y hyW hy

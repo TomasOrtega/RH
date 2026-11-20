@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.LocDual.CobDetect
 open CategoryTheory in
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYdc6.main f`.
+A detailed English derivation is pending.
 -/
 theorem exists_compat {X : ℕ → Type} [∀ n, Finite (X n)] [∀ n, Nonempty (X n)]
     (f : ∀ n, X (n + 1) → X n) : ∃ x : ∀ n, X n, ∀ n, f n (x (n + 1)) = x n :=
@@ -31,9 +31,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {LL : Type} [Field LL] {O : T
 abbrev pw (n : ℕ) : Submodule O ↥L.T := Ideal.span {ϖ ^ n} • ⊤
 
 /- English proof (translation)
-Rewrite using `[pw, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, trivial, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_pw {n : ℕ} {x : ↥L.T} : x ∈ pw L ϖ n ↔ ∃ y : ↥L.T, x = ϖ ^ n • y := by
   rw [pw, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
@@ -44,7 +44,7 @@ theorem mem_pw {n : ℕ} {x : ↥L.T} : x ∈ pw L ϖ n ↔ ∃ y : ↥L.T, x = 
     exact ⟨y, trivial, rfl⟩
 
 /- English proof (translation)
-Introduce `g x hx`. Take `⟨y, rfl⟩` from `(mem_pw L ϖ).1 hx`. Conclude with `(mem_pw L ϖ).2 ⟨actT L g y, map_smul _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stable_pw (n : ℕ) : StableSub L (pw L ϖ n) := by
   intro g x hx
@@ -52,7 +52,7 @@ theorem stable_pw (n : ℕ) : StableSub L (pw L ϖ n) := by
   exact (mem_pw L ϖ).2 ⟨actT L g y, map_smul _ _ _⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `(mem_pw L ϖ).1 hx`. Conclude with `(mem_pw L ϖ).2 ⟨ϖ • y, by rw [pow_succ, mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pw_succ_le (n : ℕ) : pw L ϖ (n + 1) ≤ pw L ϖ n := by
   intro x hx
@@ -63,14 +63,14 @@ def proj (n : ℕ) : (↥L.T ⧸ pw L ϖ (n + 1)) →ₗ[O] (↥L.T ⧸ pw L ϖ 
   Submodule.mapQ _ _ LinearMap.id (pw_succ_le L ϖ n)
 
 /- English proof (translation)
-The claim follows from `Submodule.mapQ_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem proj_mk (n : ℕ) (y : ↥L.T) :
     proj L ϖ n (Submodule.Quotient.mk y) = Submodule.Quotient.mk y :=
   Submodule.mapQ_apply _ _ _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.mapQ_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem actQ_mk (I : Submodule O ↥L.T) (hI : StableSub L I) (g : G) (y : ↥L.T) :
     actQ L I hI g (Submodule.Quotient.mk y) = Submodule.Quotient.mk (actT L g y) :=
@@ -81,9 +81,9 @@ def Sol (w : G × G → ↥L.T) (n : ℕ) (c : G → ↥L.T ⧸ pw L ϖ n) : Pro
     Submodule.Quotient.mk (w (g, h))
 
 /- English proof (translation)
-Use `⟨hc.1.comp _, fun g h => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (CobDetect.proj L ϖ n) (hc.2 g h)`. Rewrite `h1` using `[map_add, map_sub, proj_mk]`. Rewrite using `[← h1]`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (c h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `beta_reduce`. Rewrite using `[← hy, proj_mk, actQ_mk, actQ_mk, proj_mk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sol.proj {w : G × G → ↥L.T} {n : ℕ} {c : G → ↥L.T ⧸ pw L ϖ (n + 1)} (hc : Sol L ϖ w (n + 1) c) :
     Sol L ϖ w n fun g => proj L ϖ n (c g) := by
@@ -96,11 +96,9 @@ theorem Sol.proj {w : G × G → ↥L.T} {n : ℕ} {c : G → ↥L.T ⧸ pw L ϖ
   rw [← hy, proj_mk, actQ_mk, actQ_mk, proj_mk]
 
 /- English proof (translation)
-Distinguish the cases in `hne : Nonempty {c // Sol L ϖ w n c}`. Take `⟨c₀, h₀⟩` from `hne`. Establish `hm : ∀ c : {c // Sol L ϖ w n c}, c.1 - c₀ ∈ quotientCocycles L (pw L ϖ n) (stable_pw L ϖ n)`. Introduce and unpack `⟨c, hc⟩`. Use `⟨hc.1.sub h₀.1, fun g h => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hc.2 g h).trans (h₀.2 g h).symm`. Simplify using `only [Pi.sub_apply, map_sub]`. Use `grind`. Use `Finite.of_injective (fun c => (⟨c.1 - c₀, hm c⟩ : ↥(quotientCocycles L (pw L ϖ n) (stable_pw L ϖ n)))) fun a b hab => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (sub_left_injective (congrArg Subtype.val hab))`.
-
-Use `haveI := not_nonempty_iff.1 hne infer_instance`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_sol (w : G × G → ↥L.T) (n : ℕ) (hfin : Finite ↥(quotientCocycles L (pw L ϖ n) (stable_pw L ϖ n))) :
     Finite {c // Sol L ϖ w n c} := by
@@ -119,15 +117,13 @@ theorem finite_sol (w : G × G → ↥L.T) (n : ℕ) (hfin : Finite ↥(quotient
     infer_instance
 
 /- English proof (translation)
-Use `haveI : ∀ n, Finite {c // Sol L ϖ w n c} := fun n => finite_sol L ϖ w n (hfin n)`. Use `haveI : ∀ n, Nonempty {c // Sol L ϖ w n c} := fun n =>`. Set `⟨c, hc⟩` to `hne n`. Use the proof step `⟨⟨c, hc⟩⟩`. Take `⟨x, hx⟩` from `exists_compat (X := fun n => {c // Sol L ϖ w n c}) (fun n c => ⟨fun g => proj L ϖ n (c.1 g), c.2.proj⟩)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose a ha using fun n g => Submodule.Quotient.mk_surjective (pw L ϖ n) ((x n).1 g)`. Establish `step : ∀ g n, a (n + 1) g - a n g ∈ pw L ϖ n`. Introduce `g n`. Rewrite using `[← Submodule.Quotient.eq]`. Establish `h1 : proj L ϖ n ((x (n + 1)).1 g) = (x n).1 g` using `congrFun (congrArg Subtype.val (hx n)) g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha n g, ← h1, ← ha (n + 1) g, proj_mk]`. Use `choose F hF using fun g => hC (fun n => a n g) (step g)`. Establish `hmk : ∀ n g, (Submodule.Quotient.mk (F g) : ↥L.T ⧸ pw L ϖ n) = (x n).1 g`. Introduce `n g`. Rewrite using `[← ha n g]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.Quotient.eq _).2 (hF g n)`. Use `⟨F, fun n => ?_, fun g h => ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hmk n]`. Conclude with `(x n).2.1`. Rewrite using `[← sub_eq_zero]`.
-
-Use `hS _ fun n => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_add, Submodule.Quotient.mk_sub, sub_eq_zero, hmk n, hmk n, ← (x n).2.2 g h, ← hmk n h, actQ_mk]`.
+A detailed English derivation is pending.
 -/
 theorem exists_limit (w : G × G → ↥L.T)
     (hfin : ∀ n, Finite ↥(quotientCocycles L (pw L ϖ n) (stable_pw L ϖ n)))
@@ -168,18 +164,18 @@ section Adic
 variable {O : Type} [CommRing O] (ϖ : O)
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_top (m : ℕ) :
     ((Ideal.span {ϖ}) ^ m • ⊤ : Submodule O O) = Ideal.span {ϖ ^ m} := by
   rw [smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]
 
 /- English proof (translation)
-Establish `hle : ∀ m n, m ≤ n → a n - a m ∈ Ideal.span {ϖ ^ m}`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : Ideal.span {ϖ ^ n} ≤ Ideal.span {ϖ ^ m}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ hmn)`. Establish `h2` using `Ideal.add_mem _ (h1 (h n)) ih`. Simplify using `using h2`. Take `⟨L, hL⟩` from `hc.toIsPrecomplete.prec (f := a) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, pow_smul_top, ← neg_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.neg_mem_iff _ |>.2 (hle m n hmn))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `SModEq.sub_mem.1 (hL n)`. Rewrite `h1` using `[pow_smul_top, ← neg_sub]`. Conclude with `(Ideal.neg_mem_iff _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lim_O (hc : IsAdicComplete (Ideal.span {ϖ}) O) (a : ℕ → O)
     (h : ∀ n, a (n + 1) - a n ∈ Ideal.span {ϖ ^ n}) :
@@ -202,7 +198,7 @@ theorem lim_O (hc : IsAdicComplete (Ideal.span {ϖ}) O) (a : ℕ → O)
   exact (Ideal.neg_mem_iff _).1 h1
 
 /- English proof (translation)
-Use `hc.toIsHausdorff.haus' x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, pow_smul_top]`. Conclude with `h n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_O (hc : IsAdicComplete (Ideal.span {ϖ}) O) (x : O)
     (h : ∀ n, x ∈ Ideal.span {ϖ ^ n}) : x = 0 := by
@@ -223,7 +219,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL]
 
 /- English proof (translation)
-Simplify using `[charRep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charRep_apply (g : G) (y : LL) :
     charRep (cycLL PD LL) g y = ((cycLL PD LL g : LLˣ) : LL) * y := by
@@ -240,11 +236,11 @@ theorem repD_mk {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalar
 variable {PD} (L1 : WeaklyAdmissibleFiltrations.Lattice (O := O) (charRep (cycLL PD LL)))
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `h`. Unfold `CobO`. Use `Submodule.mem_map.2 ⟨fun g => Submodule.Quotient.mk (a * f g), ⟨?_, fun _ => trivial⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g₀`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Continuous fun g => a * f g - a * f g₀` using `(continuous_const.mul hf).sub continuous_const`. Establish `h0 : (L1.T : Set LL) ∈ nhds ((fun g => a * f g - a * f g₀) g₀)`. Simplify using `using hop.mem_nhds L1.T.zero_mem`. Use `filter_upwards [hc.continuousAt h0] with g hg`. Conclude with `(Submodule.Quotient.eq _).2 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `repD L1 x.1 (Submodule.Quotient.mk (a * f x.2)) - Submodule.Quotient.mk (a * f (x.1 * x.2)) + Submodule.Quotient.mk (a * f x.1) = Submodule.Quotient.mk (a * (charRep (cycLL PD LL) x.1 (f x.2) - f (x.1 * x.2) + f x.1))`. Rewrite using `[repD_mk, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add, charRep_apply, charRep_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cobO_of_cobL [IsTopologicalRing LL] (hop : IsOpen (L1.T : Set LL)) {z : G × G → LL}
     (h : CobL PD z) (a : LL) : CobO PD L1 (a • z) := by
@@ -268,7 +264,7 @@ theorem cobO_of_cobL [IsTopologicalRing LL] (hop : IsOpen (L1.T : Set LL)) {z : 
     ring
 
 /- English proof (translation)
-Rewrite using `[hT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_T (hT : L1.T = LinearMap.range (Algebra.linearMap O LL)) {y : LL} :
     y ∈ L1.T ↔ ∃ o : O, algebraMap O LL o = y := by
@@ -284,9 +280,9 @@ def eT (hT : L1.T = LinearMap.range (Algebra.linearMap O LL))
       exact ⟨o, Subtype.ext ho⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mem_pw, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨(eT L1 hT hinj).symm y, (eT L1 hT hinj).injective ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← smul_eq_mul, map_smul, LinearEquiv.apply_symm_apply, hy]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨c, rfl⟩`. Use `⟨eT L1 hT hinj c, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← smul_eq_mul, map_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eT_mem_pw_iff (hT : L1.T = LinearMap.range (Algebra.linearMap O LL))
     (hinj : Function.Injective (algebraMap O LL)) (ϖ : O) (n : ℕ) (o : O) :
@@ -301,9 +297,9 @@ theorem eT_mem_pw_iff (hT : L1.T = LinearMap.range (Algebra.linearMap O LL))
     rw [mul_comm, ← smul_eq_mul, map_smul]
 
 /- English proof (translation)
-Use `set e := eT L1 hT hinj with he`. Take `⟨b, hb⟩` from `lim_O ϖ hc (fun n => e.symm (a n)) fun n => by`. Rewrite using `[← eT_mem_pw_iff L1 hT hinj, ← he, map_sub, e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `h n`. Use `⟨e b, fun n => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `(eT_mem_pw_iff L1 hT hinj ϖ n _).2 (hb n)`. Rewrite `h1` using `[← he, map_sub, e.apply_symm_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_limit_of_cauchy_adic_filtration (hT : L1.T = LinearMap.range (Algebra.linearMap O LL))
     (hinj : Function.Injective (algebraMap O LL)) (ϖ : O) (hc : IsAdicComplete (Ideal.span {ϖ}) O)
@@ -318,7 +314,7 @@ theorem exists_limit_of_cauchy_adic_filtration (hT : L1.T = LinearMap.range (Alg
   rwa [← he, map_sub, e.apply_symm_apply] at h1
 
 /- English proof (translation)
-Use `set e := eT L1 hT hinj with he`. Establish `h0 : e.symm x = 0` using `sep_O ϖ hc _ fun n => by`. Rewrite using `[← eT_mem_pw_iff L1 hT hinj, ← he, e.apply_symm_apply]`. Conclude with `h n`. Simplify using `using h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sep_T (hT : L1.T = LinearMap.range (Algebra.linearMap O LL))
     (hinj : Function.Injective (algebraMap O LL)) (ϖ : O) (hc : IsAdicComplete (Ideal.span {ϖ}) O)
@@ -330,15 +326,15 @@ theorem sep_T (hT : L1.T = LinearMap.range (Algebra.linearMap O LL))
   simpa using h0
 
 /- English proof (translation)
-Set `U : ℕ → Set LL` to `fun n => {y | algebraMap O LL ϖ ^ n * y ∈ Set.range (algebraMap O LL)}`. Establish `hU : ∀ n, IsOpen (U n)` using `fun n => hop.preimage (continuous_const.mul continuous_id)`. Establish `hmono : Monotone U`. Use `monotone_nat_of_le_succ fun n y hy => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨ϖ * o, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ho, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcov : Set.range z ⊆ ⋃ n, U n`. Introduce `y _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) y`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hb0 hϖ`. Establish `hb1 : algebraMap O LL b ≠ 0` using `fun h0 => hb0 (IsFractionRing.injective O LL (h0.trans (map_zero _).symm))`. Use `Set.mem_iUnion.2 ⟨n, (u : O) * a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu' : algebraMap O LL b * algebraMap O LL (u : O) = algebraMap O LL ϖ ^ n`. Rewrite using `[← map_mul, hu, map_pow]`. Rewrite using `[← hu', map_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨s, hs⟩` from `(isCompact_range hz).elim_directed_cover U hU hcov hmono.directed_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, fun x => hs ⟨x, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_scale {X : Type} [TopologicalSpace X] [CompactSpace X] [IsTopologicalRing LL] [IsDomain O]
     [IsDiscreteValuationRing O] [IsFractionRing O LL] {ϖ : O} (hϖ : Irreducible ϖ)
@@ -368,17 +364,15 @@ theorem exists_scale {X : Type} [TopologicalSpace X] [CompactSpace X] [IsTopolog
   exact ⟨s, fun x => hs ⟨x, rfl⟩⟩
 
 /- English proof (translation)
-Use `set u := algebraMap O LL ϖ with hudef`. Use `set a : LL := u⁻¹ ^ n * u ^ s with ha`. Establish `hna : u ^ n * a = u ^ s`. Rewrite using `[ha, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hu, one_pow, one_mul]`. Take `⟨f, hf1, hf2, hf3⟩` from `hTop n (a • z) (fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : u ^ n * (a • z) x = ((w x : ↥L1.T) : LL)`. Rewrite using `[hw, Pi.smul_apply, smul_eq_mul, ← mul_assoc, hna]`. Rewrite using `[h1]`. Conclude with `(w x).2) (h a)`. Establish `hsm : ∀ y : ↥L1.T, ((ϖ ^ n • y : ↥L1.T) : LL) = u ^ n * (y : LL)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, map_pow]`. Use `⟨fun g => Submodule.Quotient.mk (⟨u ^ n * f g, hf1 g⟩ : ↥L1.T), ?_, fun g h' => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 hf2 g₀] with g hg`. Establish `h1 : f g - f g₀ ∈ L1.T` using `(Submodule.Quotient.eq _).1 hg`. Use `(Submodule.Quotient.eq _).2 ((mem_pw L1 ϖ).2 ⟨⟨_, h1⟩, Subtype.ext ?_⟩)` and prove the remaining obligations. Rewrite using `[hsm]`. Express the relevant statement in the definitionally equal form `u ^ n * f g - u ^ n * f g₀ = _`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[actQ_mk, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_add]`. Use `(Submodule.Quotient.eq _).2 ((mem_pw L1 ϖ).2 ⟨⟨_, hf3 (g, h')⟩, Subtype.ext ?_⟩)` and prove the remaining obligations. Rewrite using `[hsm]`. Express the relevant statement in the definitionally equal form `charRep (cycLL PD LL) g (u ^ n * f h') - u ^ n * f (g * h') + u ^ n * f g - ((w (g, h') : ↥L1.T) : LL) = u ^ n * (charRep (cycLL PD LL) g (f h') - f (g * h') + f g - (a • z) (g, h'))`.
-
-Rewrite using `[hw, charRep_apply, charRep_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(z (g, h')) * hna`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sol (hT : L1.T = LinearMap.range (Algebra.linearMap O LL)) {ϖ : O}
     (hu : algebraMap O LL ϖ ≠ 0) {z : G × G → LL}
@@ -419,17 +413,15 @@ theorem exists_sol (hT : L1.T = LinearMap.range (Algebra.linearMap O LL)) {ϖ : 
     linear_combination (z (g, h')) * hna
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Establish `hu : algebraMap O LL ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (hinj (h0.trans (map_zero _).symm))`. Take `⟨s, hs⟩` from `exists_scale hϖ hop hz`. Establish `hs' : ∀ x, algebraMap O LL ϖ ^ s * z x ∈ L1.T` using `fun x => (mem_T L1 hT).2 (hs x)`. Set `w : G × G → ↥L1.T` to `fun x => ⟨_, hs' x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨F, hF1, hF2⟩` from `exists_limit L1 ϖ w hfin (exists_sol L1 hT hu h s w (fun _ => rfl) hTop) (exists_limit_of_cauchy_adic_filtration L1 hT hinj ϖ hc) (sep_T L1 hT hinj ϖ hc)`. Establish `hFc : Continuous fun g => ((F g : ↥L1.T) : LL)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[ContinuousAt, ← tendsto_sub_nhds_zero_iff, hb.tendsto_right_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n _`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 (hF1 n) g₀] with g hg`. Take `⟨y, hy⟩` from `(mem_pw L1 ϖ).1 ((Submodule.Quotient.eq _).1 hg)`. Take `⟨o, ho⟩` from `(mem_T L1 hT).1 y.2`. Use `⟨o, trivial, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Subtype.val hy`. Rewrite `h1` using `[Submodule.coe_smul, Algebra.smul_def, ← ho, ← map_mul]`. Conclude with `h1.symm`. Use `⟨fun g => (algebraMap O LL ϖ)⁻¹ ^ s * (F g : LL), continuous_const.mul hFc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : charRep (cycLL PD LL) g (F h' : LL) - (F (g * h') : LL) + (F g : LL) = algebraMap O LL ϖ ^ s * z (g, h')` using `congrArg Subtype.val (hF2 g h')`. Express the relevant statement in the definitionally equal form `charRep (cycLL PD LL) g ((algebraMap O LL ϖ)⁻¹ ^ s * (F h' : LL)) - (algebraMap O LL ϖ)⁻¹ ^ s * (F (g * h') : LL) + (algebraMap O LL ϖ)⁻¹ ^ s * (F g : LL) = z (g, h')`. Rewrite `h1`, the goal using `[charRep_apply]`. Establish `h2 : (algebraMap O LL ϖ)⁻¹ ^ s * algebraMap O LL ϖ ^ s = 1`. Rewrite using `[← mul_pow, inv_mul_cancel₀ hu, one_pow]`.
-
-Take the linear combination `((algebraMap O LL ϖ)⁻¹ ^ s) * h1 + z (g, h') * h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cobL_of_all [CompactSpace G] [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationRing O]
     [IsFractionRing O LL] (hT : L1.T = LinearMap.range (Algebra.linearMap O LL)) {ϖ : O}
@@ -476,15 +468,13 @@ theorem cobL_of_all [CompactSpace G] [IsTopologicalRing LL] [IsDomain O] [IsDisc
 end Cyc
 
 /- English proof (translation)
-Introduce `D l _ K hfin htop LL _ _ _ O _ _ hO L1 hL1 z hz`. Establish `hO'` using `hO`. Take `⟨⟨hdom, hdvr, hfr⟩, hfd, hmt, htr, hop⟩` from `hO'`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨hc, -, -, -, hb, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CompactSpace ↥(GK K) := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K`. Use `haveI : ContinuousSMul ℚ_[l] LL := IsModuleTopology.toContinuousSMul ℚ_[l] LL`. Establish `hAlg : Continuous (algebraMap ℚ_[l] LL)` using `continuous_algebraMap ℚ_[l] LL`. Establish `hχ : Continuous fun g : ↥(GK K) => ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL)`. Establish `h1 : (fun g : ↥(GK K) => ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL)) = fun g : ↥(GK K) => algebraMap ℚ_[l] LL ((D.loc l).χQ (g : GQ l) : ℚ_[l])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[← (D.loc l).PD_χ K g]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hAlg.comp ((GlobalTheory.Cyc.IsCyc.continuous (D.loc l).χQ_cyc).comp continuous_subtype_val)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `A : GRep ↥(GK K) ℚ_[l] LL O` to `{ V := LL ρ := charRep (cycLL ((D.loc l).PD K) LL) cont := fun x => by`. Simplify using `only [charRep_apply]`. Conclude with `hχ.mul continuous_const }`. Establish `hopT : IsOpen (L1.T : Set LL)`. Establish `h1 : (L1.T : Set LL) = Set.range (algebraMap O LL)`.
-
-Use extensionality with `y`. Conclude with `mem_T L1 hL1`. Rewrite using `[h1]`. Conclude with `hop`. Conclude with `⟨fun h a => cobO_of_cobL L1 hopT h a, fun h => cobL_of_all L1 hL1 hϖ hop hc hb (fun n => hfin LL O hO A L1 ϖ hϖ n (stable_pw L1 ϖ n)) (fun r z hr hz' => htop LL O hO L1 hL1 ϖ hϖ r z hr hz') hz h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cobLO_of_fin_inj : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), FinZQ ((D.loc l).PD K) → TopInj ((D.loc l).PD K) → CobLO ((D.loc l).PD K) := by
   intro D l _ K hfin htop LL _ _ _ O _ _ hO L1 hL1 z hz

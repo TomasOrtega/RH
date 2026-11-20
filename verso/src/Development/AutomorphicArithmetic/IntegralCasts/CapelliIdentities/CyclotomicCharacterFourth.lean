@@ -30,7 +30,7 @@ noncomputable def UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.cycBa
         (UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.cycZ E Ω l)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ l _`. Establish `h1 : Continuous (UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.cycZ E Ω l)` using `cyclotomicCharacter.continuous l E Ω`. Establish `h2 : Continuous ((Algebra.algebraMap ℚ_[l] (UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.Qbar l)).comp (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]))` using `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val`. Conclude with `(Continuous.units_map _ h2).comp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.cyc_cont :
     ∀ {E Ω : Type} [inst : Field E] [NumberField E] [inst_2 : Field Ω] [inst_3 : Algebra E Ω] {l : ℕ}

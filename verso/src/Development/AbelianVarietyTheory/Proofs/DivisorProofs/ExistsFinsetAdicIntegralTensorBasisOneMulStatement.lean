@@ -9,7 +9,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AdicSpan.isIntB_one_mul_cofinite) | (exact GlobalTheory.AdicSpan.isIntB_one_mul_cofinite) | (intros; apply GlobalTheory.AdicSpan.isIntB_one_mul_cofinite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_finset_adicIntegralTensorBasis_one_mul : ∀ (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] (κ : Type) (b : Module.Basis κ ℚ C),
     ∃ S : Finset (HeightOneSpectrum ℤ), ∀ v ∉ S,

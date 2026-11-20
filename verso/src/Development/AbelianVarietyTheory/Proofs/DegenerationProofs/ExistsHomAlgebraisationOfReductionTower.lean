@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.MorAlgTower
 
 /- English proof (translation)
-Establish `key : β ≫ hb'.isoPullback.hom = hb.isoPullback.hom ≫ pullback.map p t p t' (𝟙 _) τ (𝟙 _) e₁ e₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[h₁, pullback.map, pullback.lift_fst]`. Simplify using `[h₂, pullback.map, pullback.lift_snd]`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, ← key, Category.assoc, Iso.hom_inv_id_assoc, hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem step_comm {C : Type*} [Category C] {Y Y' B S S' T : C} {p : B ⟶ T} {t : S ⟶ T}
     {t' : S' ⟶ T} [HasPullback p t] [HasPullback p t'] {τ : S ⟶ S'} {β : Y ⟶ Y'} {b : Y ⟶ B}
@@ -32,7 +32,7 @@ theorem step_comm {C : Type*} [Category C] {Y Y' B S S' T : C} {p : B ⟶ T} {t 
   rw [Iso.eq_inv_comp, ← Category.assoc, ← key, Category.assoc, Iso.hom_inv_id_assoc, hc]
 
 /- English proof (translation)
-Rewrite using `[← hb.isoPullback_inv_fst, Category.assoc, Category.assoc, hc, hb.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem base_comm {C : Type*} [Category C] {Y B S T Z : C} {p : B ⟶ T} {t : S ⟶ T}
     [HasPullback p t] {b : Y ⟶ B} {y : Y ⟶ S} (hb : IsPullback b y p t) {c : Y ⟶ Z} {z : Z ⟶ T}
@@ -40,7 +40,7 @@ theorem base_comm {C : Type*} [Category C] {Y B S T Z : C} {p : B ⟶ T} {t : S 
   rw [← hb.isoPullback_inv_fst, Category.assoc, Category.assoc, hc, hb.w]
 
 /- English proof (translation)
-Establish `h` using `hb.isoPullback_hom_fst`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem final_comm {C : Type*} [Category C] {Y B S T Z : C} {p : B ⟶ T} {t : S ⟶ T}
     [HasPullback p t] {b : Y ⟶ B} {y : Y ⟶ S} (hb : IsPullback b y p t) {c : Y ⟶ Z} {g : B ⟶ Z}
@@ -50,7 +50,7 @@ theorem final_comm {C : Type*} [Category C] {Y B S T Z : C} {p : B ⟶ T} {t : S
     _ = c := by rw [Category.assoc, hg, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Introduce `R _ _ _ I hI hc Y β hβ B b hB hfl hb hβb Z hZ c hcZ hβc`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_hom_algebraising_thickenings_projective R I hI hc B Z hB hZ hfl (fun e => (hb e).isoPullback.inv ≫ c e) (fun e => base_comm (hb e) (hcZ e)) (fun e => step_comm (hb e) (hb (e + 1)) (hβb e) (hβ e).w _ _ (hβc e))`. Conclude with `⟨g, fun e => final_comm (hb e) (hg e)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hom_of_tower : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → IsAdicComplete I R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (B : Over (Spec (CommRingCat.of R))) (b : ∀ e, (Y e).left ⟶ B.left), IsProjBy B.hom → Flat B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ Z : Over (Spec (CommRingCat.of R)), IsProjBy Z.hom → ∀ c : ∀ e, (Y e).left ⟶ Z.left, (∀ e, c e ≫ Z.hom = (Y e).hom ≫ thick R I e) → (∀ e, β e ≫ c (e + 1) = c e) → ∃ g : B ⟶ Z, ∀ e, b e ≫ g.left = c e := by
   intro R _ _ _ I hI hc Y β hβ B b hB hfl hb hβb Z hZ c hcZ hβc

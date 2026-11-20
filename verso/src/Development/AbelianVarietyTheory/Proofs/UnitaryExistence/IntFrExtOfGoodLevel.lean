@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Exist
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists (IsLocalRing.ResidueField V)`. Use `⟨p, CharP.char_is_prime (IsLocalRing.ResidueField V) p, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem_maximalIdeal_of_finite_residue (V : Type) [CommRing V] [IsLocalRing V]
     [Finite (IsLocalRing.ResidueField V)] : ∃ p : ℕ, p.Prime ∧ (p : V) ∈ IsLocalRing.maximalIdeal V := by
@@ -30,11 +30,11 @@ theorem exists_prime_mem_maximalIdeal_of_finite_residue (V : Type) [CommRing V] 
   exact CharP.cast_eq_zero _ p
 
 /- English proof (translation)
-Introduce `hP hN hB hT E _ _ _ H Dw l Xo c hpq hgood T io hfin x hx`. Establish `: Finite (IsLocalRing.ResidueField T.V)` using `hfin`. Take `⟨p, hp, hpm⟩` from `exists_prime_mem_maximalIdeal_of_finite_residue T.V`. Take `⟨O, _, β, Y, hPI, b, hb⟩` from `GlobalTheory.T.exists_model_pushInvertible_over_completeDVR hP hN E H Dw l Xo c hpq T io p hp hpm (hgood p hp)`. Establish `hIF` using `GlobalTheory.T.exists_integralFrames_model_invertible_pushforward hB hT E H Dw l Xo c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `_` to `io.toAlgebra`. Take `⟨y₀, -, h0, -, -⟩` from `gfp_frPt_gen (Xo := Xo) (c := c) (L := T.Fr) (L' := T.Fr) hT (fun _ => rfl) x hx (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')`. Take `⟨y, t, hbor⟩` from `intFr_of_model hIF T io Y hPI b hb y₀`. Use `⟨T, RingHom.id _, 1, one_pos, fun z => by simp, hfin, y, ?_⟩` and prove the remaining obligations. Establish `h1 : y.1.x = y₀.x` using `hbor.1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : spMap (RingHom.id T.Fr) = 𝟙 _` using `Spec.map_id _`. Use `show y.1.x = _`. Rewrite using `[h2, Category.id_comp, h1, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intFrExt_of_good : PartI → N1ab → Out.SecBaseChangeSt → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → IntFrExt Xo c := by
   intro hP hN hB hT E _ _ _ H Dw l Xo c hpq hgood T io hfin x hx

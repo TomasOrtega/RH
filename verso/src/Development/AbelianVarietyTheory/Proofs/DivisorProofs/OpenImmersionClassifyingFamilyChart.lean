@@ -13,27 +13,27 @@ noncomputable section
 namespace GlobalTheory.RepChart
 
 /- English proof (translation)
-Introduce `S A B S' U _ b P M hP hM φ hφb hsame hopen T t N hN`. Establish `hP'` using `hP.fam.isLB`. Establish `hM'` using `hM.isLB`. Establish `hN'` using `hN.isLB`. Take `⟨x, ⟨hxb, hxN⟩, -⟩` from `hP.univ T t N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ex : cls N hN' = evc hP' (fst A T) (snd A T ≫ x)` using `(cls_eq_iff hN' (pull_isLB hP' _)).2 hxN`. Establish `eφ : evc hM' (fst A (U ⊗ S')) (snd A (U ⊗ S') ≫ fst U S') = evc hP' (fst A (U ⊗ S')) (snd A (U ⊗ S') ≫ φ)` using `(same_iff hM' hP' _ _).1 hsame`. Establish `eY : ∀ (Y : Over S) (y : Y ⟶ T), evc hN' (fst A Y) (snd A Y ≫ y) = evc hP' (fst A Y) (snd A Y ≫ y ≫ x)`. Introduce `Y y`. Establish `e` using `congrArg (CechPic.pull (lift (fst A Y) (snd A Y ≫ y)).left) ex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[pull_evc, lift_fst, lift_snd_assoc]`. Conclude with `e`. Establish `eV : ∀ (Y : Over S) (v : Y ⟶ U ⊗ S'), evc hM' (fst A Y) (snd A Y ≫ v ≫ fst U S') = evc hP' (fst A Y) (snd A Y ≫ v ≫ φ)`. Introduce `Y v`. Establish `e` using `congrArg (CechPic.pull (lift (fst A Y) (snd A Y ≫ v)).left) eφ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc]`. Conclude with `e`. Establish `uniq : ∀ (Y : Over S) (y : Y ⟶ T) (x₁ x₂ : Y ⟶ B), x₁ ≫ b = y ≫ t → x₂ ≫ b = y ≫ t → evc hP' (fst A Y) (snd A Y ≫ x₁) = evc hN' (fst A Y) (snd A Y ≫ y) → evc hP' (fst A Y) (snd A Y ≫ x₂) = evc hN' (fst A Y) (snd A Y ≫ y) → x₁ = x₂`. Introduce `Y y x₁ x₂ h₁ h₂ e₁ e₂`. Establish `hL : (ev N (fst A Y) (snd A Y ≫ y)).IsLB` using `pull_isLB hN' _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : Fam A (ev N (fst A Y) (snd A Y ≫ y))`. Use `⟨hL, (isAdditive_iff hL).2 fun Z a a' z ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [evc_ev hN', lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff hN').1 hN.add Z a a' (z ≫ y)`. Use `(hP.univ Y (y ≫ t) _ hF).unique ⟨h₁, (cls_eq_iff hL (pull_isLB hP' _)).1 ?_⟩ ⟨h₂, (cls_eq_iff hL (pull_isLB hP' _)).1 ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cls_ev hN', cls_ev hP', e₁]`. Rewrite using `[cls_ev hN', cls_ev hP', e₂]`. Use `⟨x.left ⁻¹ᵁ φ.left.opensRange, fun Y y ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu⟩`. Rewrite `hu` using `[same_iff hN' hM']`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `v : Y ⟶ U ⊗ S'` to `lift u (y ≫ t)`. Establish `hvx : v ≫ φ = y ≫ x`. Use `uniq Y y _ _ ?_ ?_ ?_ (by rw [eY])` and prove the remaining obligations. Rewrite using `[Category.assoc, hφb, lift_snd]`. Rewrite using `[Category.assoc, hxb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← eV, lift_fst, hu]`. Introduce `z`. Establish `e` using `congrArg (fun q : Y ⟶ B ↦ q.left z) hvx`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply] at e`. Simplify using `only [Scheme.Hom.mem_preimage, Scheme.Hom.mem_opensRange]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨_, e⟩`. Introduce `h`. Establish `hr : Set.range (y.left ≫ x.left) ⊆ Set.range φ.left`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `h z` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `only [Scheme.Hom.mem_preimage, Scheme.Hom.mem_opensRange] at this`. Simplify `this` using `[Scheme.Hom.comp_apply]`. Set `l` to `IsOpenImmersion.lift φ.left (y.left ≫ x.left) hr`. Establish `hl : l ≫ φ.left = y.left ≫ x.left` using `IsOpenImmersion.lift_fac _ _ _`. Set `v : Y ⟶ U ⊗ S'` to `Over.homMk l (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Over.w φ, ← Category.assoc, hl, Category.assoc, Over.w x, Over.w y])`. Establish `hvx : v ≫ φ = y ≫ x` using `Over.OverMorphism.ext (by simpa [v] using hl)`. Use `⟨v ≫ fst U S', (same_iff hN' hM' _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[eV, hvx, eY]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repChart : ∀ (S : Scheme.{0}) (A B S' U : Over S) [GrpObj A] (b : B ⟶ S') (P : LB (A ⊗ B).left) (M : LB (A ⊗ U).left), Rep A b P → Fam A M → ∀ φ : U ⊗ S' ⟶ B, φ ≫ b = snd U S' → Same A M P (fst U S') φ → IsOpenImmersion φ.left → ∀ (T : Over S) (_ : T ⟶ S') (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N := by
   intro S A B S' U _ b P M hP hM φ hφb hsame hopen T t N hN

@@ -9,19 +9,19 @@ def ee (p n : ℕ) : ℕ := ∑ j ∈ range n, p ^ j
 def cnt (p n x c : ℕ) : ℕ := #((range n).filter (fun i => c ≤ p ^ i * x % (p ^ n - 1) / ee p n))
 
 /- English proof (translation)
-The claim follows from `(Stick.geom_sum_mul_pred p n hp).symm`.
+A detailed English derivation is pending.
 -/
 theorem N_eq {p n : ℕ} (hp : 2 ≤ p) : p ^ n - 1 = (p - 1) * ee p n :=
   (Stick.geom_sum_mul_pred p n hp).symm
 
 /- English proof (translation)
-Rewrite using `[N_eq hp, Nat.mul_div_cancel_left _ (by omega : 0 < p - 1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ee_eq {p n : ℕ} (hp : 2 ≤ p) : (p ^ n - 1) / (p - 1) = ee p n := by
   rw [N_eq hp, Nat.mul_div_cancel_left _ (by omega : 0 < p - 1)]
 
 /- English proof (translation)
-Unfold `ee`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem ee_pos {p n : ℕ} (hn : 1 ≤ n) : 0 < ee p n := by
   unfold ee
@@ -31,13 +31,13 @@ theorem ee_pos {p n : ℕ} (hn : 1 ≤ n) : 0 < ee p n := by
         single_le_sum (f := fun j => p ^ j) (fun j _ => Nat.zero_le _) (by simp; omega)
 
 /- English proof (translation)
-Rewrite using `[N_eq hp]; exact Nat.mul_pos (by omega) (ee_pos hn)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem N_pos {p n : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n) : 0 < p ^ n - 1 := by
   rw [N_eq hp]; exact Nat.mul_pos (by omega) (ee_pos hn)
 
 /- English proof (translation)
-Establish `h` using `Stick.dsum_frac hp ha`. Establish `hpos : 0 < p - 1` using `by omega`. Apply `Nat.eq_of_mul_eq_mul_left hpos` to reduce the goal to its premises. Rewrite using `[h, N_eq hp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem e_mul_dsum {p n a : ℕ} (hp : 2 ≤ p) (ha : a < p ^ n - 1) :
     ee p n * Stick.dsum p a = ∑ i ∈ range n, p ^ i * a % (p ^ n - 1) := by
@@ -48,7 +48,7 @@ theorem e_mul_dsum {p n a : ℕ} (hp : 2 ≤ p) (ha : a < p ^ n - 1) :
   ring
 
 /- English proof (translation)
-Establish `h2 : p ^ i - 1 = (p - 1) * ee p i` using `N_eq hp`. Establish `h3 : 0 < p ^ i` using `pow_pos (by omega) i`. Establish `h4 : p ^ i = (p - 1) * ee p i + 1` using `by omega`. Rewrite using `[N_eq (n := n) hp, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_mul_ee {p n : ℕ} (hp : 2 ≤ p) (i : ℕ) :
     p ^ i * ee p n = ee p n + (p ^ n - 1) * ee p i := by
@@ -59,7 +59,7 @@ theorem pow_mul_ee {p n : ℕ} (hp : 2 ≤ p) (i : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Nat.mul_mod_mod, Nat.mod_add_mod]`. Establish `h : p ^ i * (x + b * ee p n) = p ^ i * x + b * ee p n + (p ^ n - 1) * (b * ee p i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Nat.add_mul_mod_self_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem mod_shift {p n x b : ℕ} (hp : 2 ≤ p) (i : ℕ) :
     p ^ i * ((x + b * ee p n) % (p ^ n - 1)) % (p ^ n - 1)
@@ -71,13 +71,13 @@ theorem mod_shift {p n x b : ℕ} (hp : 2 ≤ p) (i : ℕ) :
   rw [h, Nat.add_mul_mod_self_left]
 
 /- English proof (translation)
-Establish `hM : 0 < M`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases. Simplify using `[h] at hr`. Conclude with `h`. Establish `h1` using `Nat.div_add_mod r e`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.div_add_mod (r / e + b) M`. Establish `h3 : (r / e + b) % M < M` using `Nat.mod_lt _ hM`. Establish `h4 : r % e < e` using `Nat.mod_lt _ he`. Establish `h5 : r + b * e = (((r / e + b) % M) * e + r % e) + (M * e) * ((r / e + b) / M)`. Establish `h6 : r + b * e = (r / e + b) * e + r % e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul]`. Combine the linear relations using `[h1]`. Rewrite using `[h6]`. Use `conv_lhs => rw [← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h5, Nat.add_mul_mod_self_left]`. Apply `Nat.mod_eq_of_lt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem shift_mod {M e r b : ℕ} (he : 0 < e) (hr : r < M * e) :
     (r + b * e) % (M * e) = ((r / e + b) % M) * e + r % e := by
@@ -102,11 +102,11 @@ theorem shift_mod {M e r b : ℕ} (he : 0 < e) (hr : r < M * e) :
     _ ≤ M * e := Nat.mul_le_mul_right _ (Nat.succ_le_of_lt h3)
 
 /- English proof (translation)
-Rewrite using `[shift_mod he hr]`. Establish `hq : r / e < M` using `Nat.div_lt_of_lt_mul (by rwa [mul_comm] at hr)`. Establish `h1` using `Nat.div_add_mod r e`. Use `split_ifs with h`. Take `⟨D, hD⟩ : ∃ D, r / e + b = D + M` from `⟨r / e + b - M, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : (r / e + b) % M = D`. Rewrite using `[hD, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Rewrite using `[hm]`. Use `conv_rhs => rw [← h1]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (r / e + b) % M = r / e + b` using `Nat.mod_eq_of_lt (by omega)`. Rewrite using `[hm]`. Use `conv_rhs => rw [← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem point {M e r b : ℕ} (he : 0 < e) (hr : r < M * e) (hb : b < M) :
     (r + b * e) % (M * e) + M * e * (if M - b ≤ r / e then 1 else 0) = r + b * e := by
@@ -128,13 +128,13 @@ theorem point {M e r b : ℕ} (he : 0 < e) (hr : r < M * e) (hb : b < M) :
     ring
 
 /- English proof (translation)
-Establish `he` using `ee_pos (p := p) hn`. Establish `hN` using `N_eq (n := n) hp`. Establish `hNpos` using `N_pos hp hn`. Establish `h1` using `e_mul_dsum hp (Nat.mod_lt (x + b * ee p n) hNpos)`. Establish `h2` using `e_mul_dsum hp hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ i ∈ range n, p ^ i * ((x + b * ee p n) % (p ^ n - 1)) % (p ^ n - 1) + (p - 1) * ee p n * cnt p n x (p - 1 - b) = ∑ i ∈ range n, p ^ i * x % (p ^ n - 1) + n * (b * ee p n)`. Unfold `cnt`. Rewrite using `[card_filter, mul_sum, ← sum_add_distrib]`. Establish `: n * (b * ee p n) = ∑ i ∈ range n, b * ee p n` using `by simp`. Rewrite using `[this, ← sum_add_distrib]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[mod_shift hp i, hN]`. Conclude with `point he (Nat.mod_lt _ (by rw [← hN]; exact hNpos)) hb`. Apply `Nat.eq_of_mul_eq_mul_left he` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem count_shift {p n x b : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n) (hx : x < p ^ n - 1) (hb : b < p - 1) :
     Stick.dsum p ((x + b * ee p n) % (p ^ n - 1)) + (p - 1) * cnt p n x (p - 1 - b)
@@ -164,16 +164,16 @@ theorem count_shift {p n x b : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n) (hx : x < p ^ 
     _ = ee p n * (Stick.dsum p x + n * b) := by ring
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[filter_true_of_mem (fun i _ => Nat.zero_le _), card_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnt_zero (p n y : ℕ) : cnt p n y 0 = n := by
   unfold cnt
   rw [filter_true_of_mem (fun i _ => Nat.zero_le _), card_range]
 
 /- English proof (translation)
-Unfold `cnt`. Establish `hNpos` using `N_pos hp hn`. Rewrite using `[filter_false_of_mem, card_empty]`. Introduce `i _ hle`. Establish `hlt : p ^ i * y % (p ^ n - 1) < ee p n * (p - 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_comm (ee p n), ← N_eq hp]`. Conclude with `Nat.mod_lt _ hNpos`. Use `Nat.div_lt_of_lt_mul hlt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem cnt_top {p n y : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n) : cnt p n y (p - 1) = 0 := by
   unfold cnt
@@ -186,17 +186,17 @@ theorem cnt_top {p n y : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n) : cnt p n y (p - 1) 
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hA : (range n).filter (fun i => x' / ee p n ≤ p ^ i * x % (p ^ n - 1) / ee p n) = (range n).filter (fun i => x' / ee p n + 1 ≤ p ^ i * x % (p ^ n - 1) / ee p n)`. Apply `filter_congr` to reduce the goal to its premises. Introduce `i hi`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hne i (mem_range.mp hi)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hz : p ^ 0 * x' % (p ^ n - 1) = x'`. Rewrite using `[pow_zero, one_mul, Nat.mod_eq_of_lt hx']`. Establish `hB : (range n).filter (fun i => x' / ee p n + 1 ≤ p ^ i * x' % (p ^ n - 1) / ee p n) ⊆ ((range n).filter (fun i => x' / ee p n ≤ p ^ i * x' % (p ^ n - 1) / ee p n)).erase 0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite `hi` using `[mem_filter, mem_range]`. Rewrite using `[mem_erase, mem_filter, mem_range]`. Use `⟨?_, hi.1, by omega⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2` using `hi.2`. Rewrite `h2` using `[hz]`. Use linear arithmetic over natural numbers and integers. Establish `h0mem : 0 ∈ (range n).filter (fun i => x' / ee p n ≤ p ^ i * x' % (p ^ n - 1) / ee p n)`. Rewrite using `[mem_filter, mem_range, hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨by omega, le_refl _⟩`. Establish `hle` using `card_le_card hB`. Rewrite `hle` using `[card_erase_of_mem h0mem]`. Establish `hpos` using `card_pos.mpr ⟨0, h0mem⟩`. Unfold `cnt at h0 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hA]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_match {p n x x' : ℕ} (hx' : x' < p ^ n - 1)
     (h0 : cnt p n x (x' / ee p n) = cnt p n x' (x' / ee p n))
@@ -233,15 +233,13 @@ theorem exists_match {p n x x' : ℕ} (hx' : x' < p ^ n - 1)
   omega
 
 /- English proof (translation)
-Establish `hNpos` using `N_pos hp hn`. Establish `hx : u * k % (p ^ n - 1) < p ^ n - 1` using `Nat.mod_lt _ hNpos`. Establish `hx' : u * k' % (p ^ n - 1) < p ^ n - 1` using `Nat.mod_lt _ hNpos`. Establish `hcnt : ∀ c, c ≤ p - 1 → cnt p n (u * k % (p ^ n - 1)) c = cnt p n (u * k' % (p ^ n - 1)) c`. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.eq_zero_or_pos c with rfl | hc0` into its components or cases. Rewrite using `[cnt_zero, cnt_zero]`. Break down `Nat.eq_or_lt_of_le hc with rfl | hc1` into its components or cases. Rewrite using `[cnt_top hp hn, cnt_top hp hn]`. Establish `hb : p - 1 - c < p - 1` using `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcb : p - 1 - (p - 1 - c) = c` using `by omega`. Establish `s1` using `count_shift (b := p - 1 - c) hp hn hx hb`. Establish `s2` using `count_shift (b := p - 1 - c) hp hn hx' hb`. Rewrite `s1`, `s2` using `[hcb, Nat.mod_add_mod]`. Establish `s3` using `H (p - 1 - c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (p - 1) * cnt p n (u * k % (p ^ n - 1)) c = (p - 1) * cnt p n (u * k' % (p ^ n - 1)) c` using `by omega`. Conclude with `Nat.eq_of_mul_eq_mul_left (by omega) key`. Establish `hlt : u * k' % (p ^ n - 1) / ee p n < p - 1`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises. Rewrite using `[mul_comm (ee p n), ← N_eq hp]`.
-
-Conclude with `hx'`. Conclude with `exists_match hx' (hcnt _ hlt.le) (hcnt _ hlt) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem match_of_hyp {p n k k' u : ℕ} (hp : 2 ≤ p) (hn : 1 ≤ n)
     (H : ∀ b : ℕ, Stick.dsum p ((u * k + b * ee p n) % (p ^ n - 1)) + Stick.dsum p (u * k' % (p ^ n - 1))

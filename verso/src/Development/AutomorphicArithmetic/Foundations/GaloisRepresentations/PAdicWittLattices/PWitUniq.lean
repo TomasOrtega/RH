@@ -8,15 +8,13 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hG hE hS hP p _ D G L R _ _ gb N' N X' X h ih ah π Φ π' Φ' w w'`. Establish `hsm : Smooth X'.s` using `(hG p D R gb N' X').1`. Use `haveI : IsSeparated X.s := (hG p D R gb N X).2.1`. Use `haveI : AlgebraicGeometry.IsReduced X'.X := GlobalTheory.isReduced_of_smooth_of_isReduced X'.s`. Establish `pt : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : Sp Ω ⟶ X'.X), ∃ ox : GObj gb N' (x ≫ X'.s), ∃ mx : GObjMap ox X'.univ x, x ≫ π = x ≫ π' ∧ mx.φ ≫ Φ = mx.φ ≫ Φ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `Ω _ _ x`. Take `⟨ox, ⟨mx⟩⟩` from `UpperTheory.exists_levelObj_pullback_of_charZero (x ≫ X'.s) x rfl X'.univ`. Establish `t` using `(hS p D G L R gb (Sp Ω) (x ≫ X'.s) N').1 ox 1 (L.KN N').one_mem`. Establish `e` using `hP p D G L R gb N' N' N X' X' X h h 1 1 π Φ π' Φ' w w' ih ih ah ah (L.KN N).one_mem (by simp) Ω (x ≫ X'.s) x x rfl rfl ox ox mx mx (𝟙 _) t`. Conclude with `⟨ox, mx, e.1, by simpa using e.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hπ : π = π'` using `hE X.s π π' (by rw [w.1, w'.1]) fun Ω _ _ x => by`. Take `⟨_, _, e, _⟩` from `pt Ω x`. Conclude with `e`. Use `⟨hπ, ?_⟩` and prove the remaining obligations. Use `haveI := X'.univ.ab`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Use `haveI := X.univ.ab`. Use `haveI : Smooth X'.univ.A.hom := IsAbelianScheme.smooth`. Use `haveI : AlgebraicGeometry.IsReduced X'.univ.A.left := GlobalTheory.isReduced_of_smooth_of_isReduced X'.univ.A.hom`. Use `haveI : IsProper X.univ.A.hom := IsAbelianScheme.proper`. Use `hE X.univ.A.hom Φ Φ' (by rw [w.w, w'.w, hπ]) fun Ω _ _ z => ?_` and prove the remaining obligations.
-
-Take `⟨ox, mx, -, e⟩` from `pt Ω (z ≫ X'.univ.A.hom)`. Take `⟨l, hl, -⟩` from `mx.cart.1.exists_lift z (𝟙 _) (by simp)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pWitUniq :
     GenSm → ExtPts → TransSelf → PtEq → WitUniq := by

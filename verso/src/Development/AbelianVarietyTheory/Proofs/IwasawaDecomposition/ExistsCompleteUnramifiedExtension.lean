@@ -7,13 +7,11 @@ open IsLocalRing
 namespace GlobalTheory.CompletionEtale
 
 /- English proof (translation)
-Introduce `B C _ _ _ _ ψ hC _ hflat hm hfin hfu`. Use `haveI := hC`. Set `R'` to `AdicCompletion (maximalIdeal C) C`. Set `ι` to `algebraMap C R'`. Use `haveI : Module.Flat C R' := AdicCompletion.flat_of_isNoetherian _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : Function.Surjective (ResidueField.map ι)` using `(AdicCompletion.residueField_map_bijective C).2`. Establish `hcomp : (residue R').comp (ι.comp ψ) = (ResidueField.map ι).comp ((residue C).comp ψ)`. Use extensionality with `b`. Simplify using `[ResidueField.map_residue]`. Use `⟨R', inferInstance, inferInstance, ι, GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion C _, inferInstance, inferInstance, AdicCompletion.of_injective (maximalIdeal C) C, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.Flat.comp hflat (RingHom.flat_algebraMap_iff.2 inferInstance)`. Rewrite using `[← Ideal.map_map, hm, AdicCompletion.maximalIdeal_eq_map]`. Rewrite using `[hcomp]`. Conclude with `RingHom.Finite.comp (RingHom.Finite.of_surjective _ hres) hfin`. Rewrite using `[hcomp]`.
-
-Conclude with `RingHom.FormallyUnramified.comp hfu (RingHom.FormallyUnramified.of_surjective hres)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_completion : ∀ (B C : Type) [CommRing B] [IsLocalRing B] [CommRing C] [IsLocalRing C] (ψ : B →+* C),
     IsNoetherianRing C → IsLocalHom ψ → ψ.Flat → (IsLocalRing.maximalIdeal B).map ψ = IsLocalRing.maximalIdeal C →

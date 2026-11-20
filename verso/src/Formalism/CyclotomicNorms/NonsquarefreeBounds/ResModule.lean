@@ -11,13 +11,11 @@ section SNF
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp at hs`. Consider the case `insert a s ha ih`. Break down `s.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨a, by simp, by simp [h]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨i, hi, hij⟩` from `ih h`. Break down `hR (f a) (f i) with h' | h'` into its components or cases. Use `⟨a, by simp, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `dvd_refl _`. Conclude with `h'.trans (hij j hj)`. Use `⟨i, by simp [hi], ?_⟩` and prove the remaining obligations. Introduce `j hj`. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases.
-
-Conclude with `h'`. Conclude with `hij j hj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma exists_dvd_all_of_total (hR : ∀ x y : R, x ∣ y ∨ y ∣ x) {ι : Type*} (s : Finset ι)
     (hs : s.Nonempty) (f : ι → R) : ∃ i ∈ s, ∀ j ∈ s, f i ∣ f j := by
@@ -62,7 +60,7 @@ Both sides reduce to the same expression.
     ext1 P i.succ j.succ = P i j := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Simplify using `only [blockExtend_zero_succ, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, blockExtend_zero_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma det_blockExtend {a : ℕ} (P : Matrix (Fin a) (Fin a) R) : (ext1 P).det = P.det := by
   rw [Matrix.det_succ_row_zero, Fin.sum_univ_succ]
@@ -71,11 +69,11 @@ lemma det_blockExtend {a : ℕ} (P : Matrix (Fin a) (Fin a) R) : (ext1 P).det = 
   congr 1
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hd' : ∀ i j, (P * (Matrix.of fun i j : Fin a => E i.succ j.succ) * Q) i j = diagonal d i j`. Rewrite using `[hd]`. Use `intros`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume the hypotheses. Both sides reduce to the same expression.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, h1, h2]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, h1, h2, diagonal_apply, (Fin.succ_ne_zero j).symm]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, h1, h2, diagonal_apply, (Fin.succ_ne_zero i)]`. Use `hd' i j` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply] at this`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, h1, h2, diagonal_apply]`. Rewrite using `[this, diagonal_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockExtend_mul_mul_eq_diagonal {a : ℕ} (P Q : Matrix (Fin a) (Fin a) R) (E : Matrix (Fin (a+1)) (Fin (a+1)) R)
     (h1 : ∀ j : Fin a, E 0 j.succ = 0) (h2 : ∀ i : Fin a, E i.succ 0 = 0) (d : Fin a → R)
@@ -94,41 +92,39 @@ lemma blockExtend_mul_mul_eq_diagonal {a : ℕ} (P Q : Matrix (Fin a) (Fin a) R)
     rw [this, diagonal_apply]
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_exists_inv.mpr ⟨(Matrix.swap R i j).det, by rw [← Matrix.det_mul, swap_mul_self, det_one]⟩`.
+A detailed English derivation is pending.
 -/
 lemma isUnit_det_swap {a : ℕ} (i j : Fin a) : IsUnit (Matrix.swap R i j).det :=
   isUnit_iff_exists_inv.mpr ⟨(Matrix.swap R i j).det, by rw [← Matrix.det_mul, swap_mul_self, det_one]⟩
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro M; exact ⟨1, 1, by simp, by simp, fun i => i.elim0, by ext i; exact i.elim0⟩`. Consider the case `succ a ih`. Introduce `M`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨i0, j0⟩, -, hp⟩` from `exists_dvd_all_of_total hR (Finset.univ : Finset (Fin (a+1) × Fin (a+1))) Finset.univ_nonempty (fun p => M p.1 p.2)`. Use `set M1 := Matrix.swap R 0 i0 * M * Matrix.swap R 0 j0 with hM1`. Establish `h00 : M1 0 0 = M i0 j0` using `by simp [hM1]`. Establish `hdvd : ∀ i j, M1 0 0 ∣ M1 i j`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h00, hM1, Matrix.mul_apply]`. Use `Finset.dvd_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.dvd_sum fun k _ => ?_` and prove the remaining obligations. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left (hp (k, l) (Finset.mem_univ _)) _) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose c hc using hdvd`. Set `Bl : Matrix (Fin (a+1)) (Fin (a+1)) R` to `Matrix.of fun i k => if i ≠ 0 ∧ k = 0 then c i 0 else 0`. Set `Br : Matrix (Fin (a+1)) (Fin (a+1)) R` to `Matrix.of fun k j => if k = 0 ∧ j ≠ 0 then c 0 j else 0`. Establish `hL : (1 - Bl).det = 1`. Rewrite using `[Matrix.det_of_isLowerTriangular]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[Bl]`. Introduce `i j hij`. Establish `hj : j ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Substitute `h` using the available equality. Conclude with `(Fin.not_lt_zero i) hij`. Simplify using `[Bl, hj, Matrix.one_apply]`. Introduce and unpack `rfl`. Conclude with `absurd hij (lt_irrefl _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : (1 - Br).det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[Br]`. Introduce `i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Establish `hi : i ≠ 0`. Introduce `h`. Substitute `h` using the available equality. Conclude with `(Fin.not_lt_zero j) hij`. Simplify using `[Br, hi, Matrix.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `absurd hij (lt_irrefl _)`. Use `set E := (1 - Bl) * M1 * (1 - Br) with hE`. Establish `hBl : ∀ i j, (Bl * M1) i j = if i ≠ 0 then c i 0 * M1 0 j else 0`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Bl, Matrix.mul_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`. Establish `hBr : ∀ (X : Matrix (Fin (a+1)) (Fin (a+1)) R) i j, (X * Br) i j = if j ≠ 0 then X i 0 * c 0 j else 0`. Introduce `X i j`. Simplify using `only [Br, Matrix.mul_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs with h <;> simp [h]`. Establish `hEij : ∀ i j, E i j = (M1 i j - if i ≠ 0 then c i 0 * M1 0 j else 0) - (if j ≠ 0 then (M1 i 0 - if i ≠ 0 then c i 0 * M1 0 0 else 0) * c 0 j else 0)`. Introduce `i j`. Rewrite using `[hE, Matrix.mul_sub, Matrix.mul_one, Matrix.sub_apply, hBr, Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, Matrix.sub_apply, hBl, hBl]`. Establish `hE00 : E 0 0 = M1 0 0` using `by rw [hEij]; simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE1 : ∀ j : Fin a, E 0 j.succ = 0`. Introduce `j`. Rewrite using `[hEij]`. Simplify using `[Fin.succ_ne_zero]`. Rewrite using `[hc 0 j.succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hE2 : ∀ i : Fin a, E i.succ 0 = 0`. Introduce `i`. Rewrite using `[hEij]`. Simplify using `[Fin.succ_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc i.succ 0]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨P', Q', hP', hQ', d', hd'⟩` from `ih (Matrix.of fun i j : Fin a => E i.succ j.succ)`. Use `⟨ext1 P' * (1 - Bl) * Matrix.swap R 0 i0, Matrix.swap R 0 j0 * (1 - Br) * ext1 Q', ?_, ?_, Fin.cons (E 0 0) d', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_mul, det_blockExtend, hL, mul_one]`.
-
-Conclude with `hP'.mul (isUnit_det_swap _ _)`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, det_blockExtend, hU, mul_one]`. Conclude with `(isUnit_det_swap _ _).mul hQ'`. Rewrite using `[← blockExtend_mul_mul_eq_diagonal P' Q' E hE1 hE2 d' hd', hE, hM1]`. Simplify using `only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_diag (hR : ∀ x y : R, x ∣ y ∨ y ∣ x) : ∀ (a : ℕ) (M : Matrix (Fin a) (Fin a) R),
     ∃ P Q : Matrix (Fin a) (Fin a) R, IsUnit P.det ∧ IsUnit Q.det ∧
@@ -208,26 +204,26 @@ variable {K' : Type} [Field K'] {n : ℕ}
 local notation "TT" => (Ideal.Quotient.mk (Ideal.span {(X : K'[X]) ^ n}) X : TruncK K' n)
 
 /- English proof (translation)
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tt_pow_n : (TT) ^ n = 0 := by
   rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Rewrite using `[← Nat.add_sub_cancel' hm, pow_add, tt_pow_n, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tt_pow_ge {m : ℕ} (hm : n ≤ m) : (TT) ^ m = 0 := by
   rw [← Nat.add_sub_cancel' hm, pow_add, tt_pow_n, zero_mul]
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Distinguish the cases in `hp : p = 0`. Conclude with `⟨n, le_rfl, 1, isUnit_one, by simp [hp, tt_pow_n]⟩`. Take `⟨q, hpq, hq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp 0`. Simplify using `only [map_zero, sub_zero] at hpq hq`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `set m := rootMultiplicity 0 p`. Distinguish the cases in `hm : n ≤ m`. Use `⟨n, le_rfl, 1, isUnit_one, ?_⟩` and prove the remaining obligations. Rewrite using `[hpq, map_mul, map_pow, tt_pow_ge hm, tt_pow_n]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `replace hm := not_le.mp hm`. Use `⟨m, hm.le, Ideal.Quotient.mk _ q, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : IsCoprime ((X : K'[X]) ^ n) q` using `IsCoprime.pow_left ((Polynomial.irreducible_X).coprime_iff_not_dvd.mpr hq)`. Take `⟨u, v, huv⟩` from `hc`. Use `isUnit_iff_exists_inv'.mpr ⟨Ideal.Quotient.mk _ v, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.Quotient.mk (Ideal.span {(X : K'[X]) ^ n}) (u * X ^ n + v * q) = 1`. Rewrite using `[huv, map_one]`. Rewrite `this` using `[map_add, map_mul, map_mul, map_pow, tt_pow_n, mul_zero, zero_add]`. Conclude with `this`. Rewrite using `[hpq, map_mul, map_pow, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma trunc_normal (x : TruncK K' n) : ∃ k ≤ n, ∃ u : TruncK K' n, IsUnit u ∧ x = u * (TT) ^ k := by
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -252,13 +248,13 @@ lemma trunc_normal (x : TruncK K' n) : ∃ k ≤ n, ∃ u : TruncK K' n, IsUnit 
     · rw [hpq, map_mul, map_pow, mul_comm]
 
 /- English proof (translation)
-Take `⟨k, hk, u, hu, rfl⟩` from `trunc_normal x`. Take `⟨l, hl, v, hv, rfl⟩` from `trunc_normal y`. Break down `le_total k l with h | h` into its components or cases. Use `left`. Use `⟨hu.unit⁻¹ * v * (TT) ^ (l - k), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.add_sub_cancel' h, pow_add]`. Simplify using `only [Nat.add_sub_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsUnit.mul_val_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = _ := by ring`. Use `right`. Use `⟨hv.unit⁻¹ * u * (TT) ^ (k - l), ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.add_sub_cancel' h, pow_add]`. Simplify using `only [Nat.add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsUnit.mul_val_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 lemma trunc_total (x y : TruncK K' n) : x ∣ y ∨ y ∣ x := by
   obtain ⟨k, hk, u, hu, rfl⟩ := trunc_normal x
@@ -280,11 +276,11 @@ lemma trunc_total (x y : TruncK K' n) : x ∣ y ∨ y ∣ x := by
       _ = _ := by ring
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton]`. Introduce and unpack `⟨y, hy⟩`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[← map_pow, ← map_pow, ← map_mul, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Establish `h1 : (X : K'[X]) ^ (C + 1) ∣ X ^ m - X ^ (C + 1) * q` using `(pow_dvd_pow X (by omega : C + 1 ≤ n)).trans hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (X : K'[X]) ^ (C + 1) ∣ X ^ m`. Use `h1.add (dvd_mul_right ((X : K'[X]) ^ (C + 1)) q)` as an intermediate fact. Simplify using `using this`. Rewrite `h2` using `[Polynomial.X_pow_dvd_iff]`. Use `h2 m (by omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Polynomial.coeff_X_pow_self]`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tt_pow_notMem {m C : ℕ} (hm : m ≤ C) (hC : C < n) :
     (TT) ^ m ∉ Ideal.span {(TT) ^ (C + 1)} := by
@@ -309,11 +305,9 @@ def pbT (K' : Type) [Field K'] (n : ℕ) : PowerBasis K' (TruncK K' n) :=
 instance (K' : Type) [Field K'] (n : ℕ) : FiniteDimensional K' (TruncK K' n) := (pbT K' n).finite
 
 /- English proof (translation)
-Establish `h` using `(pbT K' n).basis.linearIndependent`. Establish `hd : (pbT K' n).dim = n` using `by simp [pbT]`. Establish `e : ∀ i : Fin (pbT K' n).dim, (pbT K' n).basis i = (TT) ^ (i : ℕ)`. Introduce `i`. Rewrite using `[PowerBasis.basis_eq_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : LinearIndependent K' (fun i : Fin (pbT K' n).dim => (TT) ^ (i : ℕ))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `(e i).symm`.
-
-Apply the tactic sequence `all_goals rfl`. Conclude with `h2.comp (Fin.cast hd.symm) (Fin.cast_injective _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma tt_linIndep : LinearIndependent K' (fun i : Fin n => (TT) ^ (i : ℕ)) := by
   have h := (pbT K' n).basis.linearIndependent
@@ -338,7 +332,7 @@ instance finite_sub {a : ℕ} (p : Submodule (TruncK K' n) (Fin a → TruncK K' 
   Module.Finite.of_injective (p.subtype.restrictScalars K') Subtype.val_injective
 
 /- English proof (translation)
-Establish `e1` using `(Submodule.Quotient.restrictScalarsEquiv K' (N.comap W.subtype)).finrank_eq`. Establish `e2` using `((Submodule.comapSubtypeEquivOfLe h).restrictScalars K').finrank_eq`. Rewrite using `[← e1, ← e2]`. Conclude with `Submodule.finrank_quotient_add_finrank ((N.comap W.subtype).restrictScalars K')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finrank_split {a : ℕ} (W N : Submodule (TruncK K' n) (Fin a → TruncK K' n)) (h : N ≤ W) :
     Module.finrank K' (W ⧸ N.comap W.subtype) + Module.finrank K' N = Module.finrank K' W := by
@@ -348,11 +342,11 @@ lemma finrank_split {a : ℕ} (W N : Submodule (TruncK K' n) (Fin a → TruncK K
   exact Submodule.finrank_quotient_add_finrank ((N.comap W.subtype).restrictScalars K')
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ∀ y ∈ N, (TT) ^ m • y = 0 → y = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y _ hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `y hy h0`. Apply `ih y hy` to reduce the goal to its premises. Apply `h _ (N.smul_mem _ hy)` to reduce the goal to its premises. Rewrite using `[← mul_smul, ← pow_succ']`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Rewrite using `[Submodule.mem_bot]`. Conclude with `key n y hy (by rw [tt_pow_n, zero_smul])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_bot_of_noTorsion {a : ℕ} (N : Submodule (TruncK K' n) (Fin a → TruncK K' n))
     (h : ∀ x ∈ N, (TT) • x = 0 → x = 0) : N = ⊥ := by
@@ -371,13 +365,13 @@ lemma eq_bot_of_noTorsion {a : ℕ} (N : Submodule (TruncK K' n) (Fin a → Trun
   exact key n y hy (by rw [tt_pow_n, zero_smul])
 
 /- English proof (translation)
-Establish `hle : (Submodule.span (TruncK K' n) {x}).restrictScalars K' ≤ Submodule.span K' (Set.range (fun j : Fin m => (TT) ^ (j : ℕ) • x))`. Introduce `y hy`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Proceed by induction on `p using Polynomial.induction_on' with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, add_smul]`. Conclude with `Submodule.add_mem _ (hp (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x))) (hq (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)))`. Consider the case `monomial j c`. Establish `e : (Ideal.Quotient.mk (Ideal.span {(X : K'[X]) ^ n}) (monomial j c) : TruncK K' n) = algebraMap K' (TruncK K' n) c * (TT) ^ j`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← C_mul_X_pow_eq_monomial, map_mul, map_pow]`. Both sides reduce to the same expression. Rewrite using `[e, mul_smul, algebraMap_smul]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Distinguish the cases in `hj : j < m`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩`. Rewrite using `[← Nat.sub_add_cancel (not_lt.mp hj), pow_add, mul_smul, hx, smul_zero]`. Conclude with `Submodule.zero_mem _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma finrank_span_le {a m : ℕ} (x : Fin a → TruncK K' n) (hx : (TT) ^ m • x = 0) :
     Module.finrank K' ↥(Submodule.span (TruncK K' n) {x}) ≤ m := by
@@ -417,31 +411,29 @@ variable {K' : Type} [Field K'] {n : ℕ}
 local notation "TT" => (Ideal.Quotient.mk (Ideal.span {(X : K'[X]) ^ n}) X : TruncK K' n)
 
 /- English proof (translation)
-Use `set S := N ⊓ LinearMap.ker ((TT) • LinearMap.id : (Fin a → TruncK K' n) →ₗ[TruncK K' n] (Fin a → TruncK K' n)) with hS`. Establish `memS : ∀ y, y ∈ S ↔ y ∈ N ∧ (TT) • y = 0`. Introduce `y`. Simplify using `[hS]`. Take `⟨v, hv⟩` from `finrank_le_one_iff.mp hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∃ h : ℕ, ∀ y ∈ N, (TT) ^ h • y = 0` using `⟨n, fun y _ => by rw [tt_pow_n, zero_smul]⟩`. Distinguish the cases in `hz : Nat.find hex = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h0` using `Nat.find_spec hex`. Rewrite `h0` using `[hz]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_singleton_eq_bot.mpr rfl, eq_bot_iff]`. Introduce `y hy`. Simplify using `using h0 y hy`. Take `⟨h, hh⟩` from `Nat.exists_eq_succ_of_ne_zero hz`. Establish `hspec : ∀ y ∈ N, (TT) ^ (h + 1) • y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[hh]`. Conclude with `this`. Establish `hmin : ¬ ∀ y ∈ N, (TT) ^ h • y = 0` using `Nat.find_min hex (by omega)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxN, hx⟩ : ∃ x ∈ N, (TT) ^ h • x ≠ 0 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hc`. Apply `hmin` to reduce the goal to its premises. Introduce `y hy`. Assume the negation of the conclusion as `hy'`. Conclude with `hc ⟨y, hy, hy'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x, le_antisymm ?_ ((Submodule.span_singleton_le_iff_mem _ _).mpr hxN)⟩` and prove the remaining obligations. Establish `hw : (TT) ^ h • x ∈ S` using `(memS _).mpr ⟨N.smul_mem _ hxN, by rw [← mul_smul, ← pow_succ']; exact hspec x hxN⟩`. Take `⟨c2, hc2⟩` from `hv ⟨_, hw⟩`. Establish `e2 : c2 • (v : Fin a → TruncK K' n) = (TT) ^ h • x`. Rewrite using `[← Submodule.coe_smul_of_tower, hc2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc2ne : c2 ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← e2, zero_smul]`. Establish `key : ∀ m : ℕ, ∀ y ∈ N, (TT) ^ m • y = 0 → y ∈ Submodule.span (TruncK K' n) {x}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y _ hy`. Rewrite `hy` using `[pow_zero, one_smul]`. Rewrite using `[hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ m ih`. Introduce `y hy h0`. Distinguish the cases in `hz : (TT) ^ m • y = 0`. Conclude with `ih y hy hz`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmh : m ≤ h`. Assume the negation of the conclusion as `hlt`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← Nat.sub_add_cancel (not_le.mp hlt : h + 1 ≤ m), pow_add, mul_smul, hspec y hy, smul_zero]`. Establish `hz' : (TT) ^ m • y ∈ S` using `(memS _).mpr ⟨N.smul_mem _ hy, by rw [← mul_smul, ← pow_succ']; exact h0⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c1, hc1⟩` from `hv ⟨_, hz'⟩`. Establish `e1 : c1 • (v : Fin a → TruncK K' n) = (TT) ^ m • y`. Rewrite using `[← Submodule.coe_smul_of_tower, hc1]`. Establish `hy'N : y - (c1 / c2) • ((TT) ^ (h - m) • x) ∈ N` using `N.sub_mem hy (N.smul_of_tower_mem _ (N.smul_mem _ hxN))`. Establish `hy' : (TT) ^ m • (y - (c1 / c2) • ((TT) ^ (h - m) • x)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_sub, smul_comm ((TT) ^ m) (c1 / c2), ← mul_smul, ← pow_add, Nat.add_sub_cancel' hmh, ← e1, ← e2, smul_smul, div_mul_cancel₀ _ hc2ne, sub_self]`. Establish `hmem` using `ih _ hy'N hy'`. Establish `hyeq : y = (y - (c1 / c2) • ((TT) ^ (h - m) • x)) + (c1 / c2) • ((TT) ^ (h - m) • x)`. Rewrite using `[sub_add_cancel]`. Rewrite using `[hyeq]`.
-
-Conclude with `Submodule.add_mem _ hmem (Submodule.smul_of_tower_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)))`. Introduce `y hy`. Conclude with `key (h + 1) y hy (hspec y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma cyclic_of_socle {a : ℕ} (N : Submodule (TruncK K' n) (Fin a → TruncK K' n))
     (hN : Module.finrank K' ↥(N ⊓ LinearMap.ker ((TT) • LinearMap.id :
@@ -518,28 +510,28 @@ variable {K' : Type} [Field K'] {n : ℕ}
 local notation "TT" => (Ideal.Quotient.mk (Ideal.span {(X : K'[X]) ^ n}) X : TruncK K' n)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc P, ← Matrix.mul_assoc P⁻¹, nonsing_inv_mul _ hP, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mul_eq_inv_mul {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (hP : IsUnit P.det) :
     Φ * Q = P⁻¹ * (P * Φ * Q) := by
   rw [Matrix.mul_assoc P, ← Matrix.mul_assoc P⁻¹, nonsing_inv_mul _ hP, Matrix.one_mul]
 
 /- English proof (translation)
-Set `f : ∀ i, Fin (k i) → Fin n` to `fun i j => ⟨n - 1 - j, by have := hk i; have := j.2; omega⟩`. Set `v : ∀ i, Fin (k i) → TruncK K' n` to `fun i => (fun l : Fin n => (TT) ^ (l : ℕ)) ∘ f i`. Establish `hv : ∀ i, LinearIndependent K' (v i)`. Introduce `i`. Establish `hinj : Function.Injective (f i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j j' hjj`. Simplify using `only [f, Fin.mk.injEq] at hjj`. Use `hk i` as an intermediate fact. Use `j.2` as an intermediate fact. Use `j'.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Use linear arithmetic over natural numbers and integers. Conclude with `tt_linIndep.comp (f i) hinj`. Establish `hS` using `Pi.linearIndependent_single v hv`. Establish `hmem : ∀ s : (Σ i, Fin (k i)), Q *ᵥ Pi.single s.1 (v s.1 s.2) ∈ LinearMap.ker (Matrix.toLin' Φ)`.
+By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, j⟩`. Rewrite using `[LinearMap.mem_ker, Matrix.toLin'_apply, mulVec_mulVec, mul_eq_inv_mul Φ P Q hP, hD, ← mulVec_mulVec]`. Establish `h0 : diagonal (fun i => (TT) ^ k i) *ᵥ Pi.single (M` using `fun _ => TruncK K' n) i (v i j) = 0 := by`. Use function extensionality and compare the values at `l`. Rewrite using `[mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using `only [Pi.single_eq_same, v, f, Function.comp_apply, Pi.zero_apply]`. Rewrite using `[← pow_add]`. Conclude with `tt_pow_ge (by have := j.2; omega)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hl]`. Rewrite using `[h0, mulVec_zero]`. Establish `hker : LinearMap.ker ((Matrix.toLin' Q).restrictScalars K') = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `z1 z2 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_restrictScalars, Matrix.toLin'_apply] at hz`. Use `congrArg (fun z => Q⁻¹ *ᵥ z) hz` as an intermediate fact. Simplify `this` using `only [mulVec_mulVec, nonsing_inv_mul _ hQ, one_mulVec]`. Establish `hw : LinearIndependent K' (fun s : (Σ i, Fin (k i)) => Q *ᵥ Pi.single s.1 (v s.1 s.2))` using `hS.map' ((Matrix.toLin' Q).restrictScalars K') hker`. Establish `hw' : LinearIndependent K' (fun s : (Σ i, Fin (k i)) => (⟨_, hmem s⟩ : ↥(LinearMap.ker (Matrix.toLin' Φ))))` using `LinearIndependent.of_comp ((LinearMap.ker (Matrix.toLin' Φ)).subtype.restrictScalars K') hw`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hw'.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[Fintype.card_sigma, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 lemma ker_lower {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : Fin a → ℕ)
     (hk : ∀ i, k i ≤ n) (hP : IsUnit P.det) (hQ : IsUnit Q.det)
@@ -589,11 +581,11 @@ lemma ker_lower {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : F
   simpa [Fintype.card_sigma, Fintype.card_fin] using this
 
 /- English proof (translation)
-Rewrite `hy` using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Establish `hz : diagonal (fun i => (TT) ^ k i) *ᵥ (Q⁻¹ *ᵥ y) = 0`. Rewrite using `[← hD, mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hQ, Matrix.mul_one, ← mulVec_mulVec, hy, mulVec_zero]`. Establish `hz' : (TT) ^ m • (Q⁻¹ *ᵥ y) = 0`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun hz i` as an intermediate fact. Rewrite `this` using `[mulVec_diagonal, Pi.zero_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← Nat.sub_add_cancel (hm i), pow_add, mul_assoc, this, mul_zero]`. Establish `hy' : y = Q *ᵥ (Q⁻¹ *ᵥ y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ hQ, one_mulVec]`. Rewrite using `[hy', ← mulVec_smul, hz', mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ker_kill {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : Fin a → ℕ)
     (hP : IsUnit P.det) (hQ : IsUnit Q.det)
@@ -614,7 +606,7 @@ lemma ker_kill {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : Fi
   rw [hy', ← mulVec_smul, hz', mulVec_zero]
 
 /- English proof (translation)
-Rewrite using `[← det_mul, ← det_mul, hD, det_diagonal, Finset.prod_pow_eq_pow_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma det_eq {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : Fin a → ℕ)
     (hD : P * Φ * Q = diagonal (fun i => (TT) ^ k i)) :
@@ -622,11 +614,9 @@ lemma det_eq {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : Fin 
   rw [← det_mul, ← det_mul, hD, det_diagonal, Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Establish `h1 : adjugate (P * Φ * Q) = adjugate Q * (adjugate Φ * adjugate P)`. Rewrite using `[adjugate_mul_distrib, adjugate_mul_distrib]`. Establish `h2 : ∀ i j, adjugate (P * Φ * Q) i j ∈ I`. Introduce `i j`. Rewrite using `[h1, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun l _ => I.mul_mem_left _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun m _ => I.mul_mem_right _ (hI l m)`. Establish `h3` using `h2 i0 i0`. Rewrite `h3` using `[hD, adjugate_diagonal, diagonal_apply_eq, Finset.prod_pow_eq_pow_sum]`.
-
-Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma adj_mem {a : ℕ} (Φ P Q : Matrix (Fin a) (Fin a) (TruncK K' n)) (k : Fin a → ℕ)
     (hD : P * Φ * Q = diagonal (fun i => (TT) ^ k i)) (I : Ideal (TruncK K' n))
@@ -651,25 +641,21 @@ end residueMatrixData
 open residueMatrixData in
 
 /- English proof (translation)
-Introduce `K' _ n a C Φ N hC hN hdim`. Take `⟨P, Q, hP, hQ, d, hd⟩` from `exists_diag (trunc_total (K' := K') (n := n)) a Φ`. Use `choose k hk u hu hdu using fun i => trunc_normal (K' := K') (n := n) (d i)`. Use `set T : TruncK K' n := Ideal.Quotient.mk (Ideal.span {(X : K'[X]) ^ n}) X with hT`. Set `w : Fin a → TruncK K' n` to `fun i => (((hu i).unit⁻¹ : (TruncK K' n)ˣ) : TruncK K' n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP2 : IsUnit (diagonal w * P).det`. Rewrite using `[det_mul, det_diagonal]`. Establish `: ∏ i, w i = ((∏ i, (hu i).unit⁻¹ : (TruncK K' n)ˣ) : TruncK K' n)`. Rewrite using `[Units.coe_prod]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(Units.isUnit _).mul hP`. Establish `hD2 : diagonal w * P * Φ * Q = diagonal (fun i => T ^ k i)`. Rewrite using `[show diagonal w * P * Φ * Q = diagonal w * (P * Φ * Q) by simp only [Matrix.mul_assoc], hd, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [w]`. Rewrite using `[hdu i, ← mul_assoc, IsUnit.val_inv_mul, one_mul]`. Establish `hkerL` using `ker_lower Φ _ Q k hk hP2 hQ hD2`. Establish `hsplit` using `finrank_split (LinearMap.ker (Matrix.toLin' Φ)) N hN`. Use `⟨fun hTor => ?_, fun ha hsoc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hNb` using `eq_bot_of_noTorsion N hTor`. Use `⟨hNb, fun hdet => ?_⟩` and prove the remaining obligations. Establish `h0 : Module.finrank K' ↥N = 0` using `by rw [hNb]; exact Module.finrank_zero_of_subsingleton`. Establish `hsum : ∑ i, k i ≤ C` using `by omega`. Establish `hmem : T ^ (∑ i, k i) ∈ Ideal.span {T ^ (C + 1)}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← det_eq Φ _ Q k hD2]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hdet)`. Conclude with `tt_pow_notMem hsum hC hmem`. Take `⟨x, hx⟩` from `cyclic_of_socle N hsoc`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a', rfl⟩ : ∃ a', a = a' + 1` from `⟨a - 1, by omega⟩`. Take `⟨i0, -, hi0⟩` from `Finset.exists_max_image Finset.univ k Finset.univ_nonempty`. Assume the negation of the conclusion as `hcon`. Establish `hall : ∀ i j, adjugate Φ i j ∈ Ideal.span {T ^ (C + 1)}`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[adjugate_fin_succ_eq_det_submatrix]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Assume the negation of the conclusion as `hm`. Conclude with `hcon ⟨j, i, a', rfl, by simpa using hm⟩`. Establish `hmem` using `adj_mem Φ _ Q k hD2 _ hall i0`.
-
-Establish `hxN : x ∈ N` using `by rw [hx]; exact Submodule.mem_span_singleton_self x`. Establish `hNle : Module.finrank K' ↥N ≤ k i0`. Rewrite using `[hx]`. Conclude with `finrank_span_le x (ker_kill Φ _ Q k hP2 hQ hD2 (k i0) (fun i => hi0 i (Finset.mem_univ i)) x (hN hxN))`. Establish `hsum` using `Finset.add_sum_erase Finset.univ k (Finset.mem_univ i0)`.
-
-Establish `hle : ∑ j ∈ Finset.univ.erase i0, k j ≤ C` using `by omega`. Conclude with `tt_pow_notMem hle hC hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residue_module_structure : RESModule := by
   intro K' _ n a C Φ N hC hN hdim

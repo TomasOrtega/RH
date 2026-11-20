@@ -43,7 +43,7 @@ structure IsSemiAbelianScheme {S : Scheme.{u}} (G : Over S) [GrpObj G] : Prop wh
     IsTorusExtension ((Over.pullback s).obj G)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Smooth (𝟙 S)) proper := inferInstanceAs (IsProper (𝟙 S)) geometricallyConnected := by change GeometricallyConnected (𝟙 S) refine ⟨fun K _ y Z fst snd h => ?_⟩ have : IsIso snd := h.isIso_snd_of_isIso exact (Scheme.homeoOfIso (asIso snd)).symm.surjective.connected …`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_unit (S : Scheme.{u}) : IsAbelianScheme (𝟙_ (Over S)) where
   smooth := inferInstanceAs (Smooth (𝟙 S))
@@ -61,9 +61,9 @@ section SplitTorus
 variable (X : Type u) [AddCommGroup X]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Flat (Spec.map (CommRingCat.ofHom (algebraMap ZU (torusRing ZU X))))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Express the relevant statement in the definitionally equal form `(algebraMap (ULift.{u} ℤ) (AddMonoidAlgebra (ULift.{u} ℤ) X)).Flat`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Establish `: Module.Free (ULift.{u} ℤ) (AddMonoidAlgebra (ULift.{u} ℤ) X)` using `inferInstance`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem flat_splitTorusAff : Flat (splitTorusAff ZU X).hom := by
   change Flat (Spec.map (CommRingCat.ofHom (algebraMap ZU (torusRing ZU X))))
@@ -74,9 +74,9 @@ theorem flat_splitTorusAff : Flat (splitTorusAff ZU X).hom := by
   infer_instance
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `LocallyOfFinitePresentation (Spec.map (CommRingCat.ofHom (algebraMap ZU (torusRing ZU X))))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)]`. Express the relevant statement in the definitionally equal form `(algebraMap (ULift.{u} ℤ) (AddMonoidAlgebra (ULift.{u} ℤ) X)).FinitePresentation`. Rewrite using `[RingHom.finitePresentation_algebraMap]`. Establish `: IsNoetherianRing (ULift.{u} ℤ)` using `isNoetherianRing_of_ringEquiv ℤ ULift.ringEquiv.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: AddGroup.FG X` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Establish `: AddMonoid.FG X` using `AddGroup.fg_iff_addMonoid_fg.1 inferInstance`. Conclude with `Algebra.FinitePresentation.of_finiteType.1 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finitePresentation_splitTorusAff [Module.Finite ℤ X] :
     LocallyOfFinitePresentation (splitTorusAff ZU X).hom := by
@@ -92,13 +92,11 @@ theorem finitePresentation_splitTorusAff [Module.Finite ℤ X] :
   exact Algebra.FinitePresentation.of_finiteType.1 inferInstance
 
 /- English proof (translation)
-Establish `hc : IsCommMonObj (splitTorus (Spec (CommRingCat.of k)) X)`. Unfold `splitTorus`. Use `infer_instance`. Establish `h1` using `flat_splitTorusAff X`. Establish `h2` using `finitePresentation_splitTorusAff X`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (toUnit (splitTorus (Spec (CommRingCat.of k)) X)).left = (splitTorus (Spec (CommRingCat.of k)) X).hom`. Simplify using `using Over.w (toUnit (splitTorus (Spec (CommRingCat.of k)) X))`. Use `⟨hc, X, inferInstance, inferInstance, inferInstance, 𝟙_ _, inferInstance, 𝟙 _, toUnit _, isAbelianScheme_unit _, inferInstance, inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: IsIso (η : 𝟙_ (Over (Spec (CommRingCat.of k))) ⟶ 𝟙_ _)`. Rewrite using `[toUnit_unique (η : 𝟙_ (Over (Spec (CommRingCat.of k))) ⟶ 𝟙_ _) (𝟙 _)]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `IsPullback.of_horiz_isIso ⟨toUnit_unique _ _⟩`. Rewrite using `[e]`. Conclude with `inferInstanceAs (Flat (pullback.snd _ _))`. Rewrite using `[e]`.
-
-Conclude with `⟨fun y => ⟨(η : 𝟙_ _ ⟶ splitTorus (Spec (CommRingCat.of k)) X).left y, by`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`. Use the proof step `rfl⟩⟩`. Rewrite using `[e]`. Conclude with `inferInstanceAs (LocallyOfFinitePresentation (pullback.snd _ _))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTorusExtension_splitTorus (k : Type u) [Field k] [Module.Free ℤ X] [Module.Finite ℤ X] :
     IsTorusExtension (splitTorus (Spec (CommRingCat.of k)) X) := by

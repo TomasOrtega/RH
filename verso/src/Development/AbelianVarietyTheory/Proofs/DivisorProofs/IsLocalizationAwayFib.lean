@@ -6,43 +6,41 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite
 namespace GlobalTheory.FerrandPush
 
 /- English proof (translation)
-Use `letI := ρB.toAlgebra`. Use `letI := ρC.toAlgebra`. Use `letI := ρA.toAlgebra`. Use `letI := φ.toAlgebra`. Take `⟨⟨b, c⟩, hx⟩` from `x`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `hx' : f b = g c` using `hx`. Establish `eB : ∀ y, f' (ρB y) = ρA (f y)` using `fun y ↦ RingHom.congr_fun hB y`. Establish `eC : ∀ y, g' (ρC y) = ρA (g y)` using `fun y ↦ RingHom.congr_fun hC y`. Establish `hfst : ∀ y, ((φ y : B' × C')).1 = ρB (y : B × C).1` using `fun y ↦ by rw [hφ]`. Establish `hsnd : ∀ y, ((φ y : B' × C')).2 = ρC (y : B × C).2` using `fun y ↦ by rw [hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : ∀ (y : RingHom.eqLocus (f.comp (RingHom.fst B C)) (g.comp (RingHom.snd B C))) (k : ℕ), ((y ^ k : RingHom.eqLocus (f.comp (RingHom.fst B C)) (g.comp (RingHom.snd B C))) : B × C) = ((y : B × C).1 ^ k, (y : B × C).2 ^ k)` using `fun y k ↦ by rw [SubmonoidClass.coe_pow, Prod.pow_def]`. Use `(isLocalization_iff _ _).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (φ ⟨(b, c), hx⟩)`. Take `⟨u₁, hu₁⟩` from `IsLocalization.Away.algebraMap_isUnit (S := B') b`. Take `⟨u₂, hu₂⟩` from `IsLocalization.Away.algebraMap_isUnit (S := C') c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu₁' : (u₁ : B') = ρB b` using `hu₁`. Establish `hu₂' : (u₂ : C') = ρC c` using `hu₂`. Establish `e0 : f' u₁ = g' u₂` using `by rw [hu₁', hu₂', eB, eC, hx']`. Establish `e1 : f' ↑u₁⁻¹ = g' ↑u₂⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← map_mul, Units.mul_inv, map_one, mul_one]`. Use `_ = f' ↑u₁⁻¹ * f' u₁ * g' ↑u₂⁻¹ := by rw [e0, mul_assoc]`. Use `_ = g' ↑u₂⁻¹ := by rw [← map_mul, Units.inv_mul, map_one, one_mul]`. Use `isUnit_iff_exists_inv.mpr ⟨⟨(↑u₁⁻¹, ↑u₂⁻¹), e1⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(φ ⟨(b, c), hx⟩ : B' × C') * ((↑u₁⁻¹ : B'), (↑u₂⁻¹ : C')) = (1 : B' × C')`. Rewrite using `[hφ]`. Use `ext`. Express the relevant statement in the definitionally equal form `ρB b * ↑u₁⁻¹ = 1`. Rewrite using `[← hu₁', Units.mul_inv]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρC c * ↑u₂⁻¹ = 1`. Rewrite using `[← hu₂', Units.mul_inv]`. Introduce and unpack `⟨_, n, rfl⟩`. Express the relevant statement in the definitionally equal form `IsUnit (φ (⟨(b, c), hx⟩ ^ n))`. Rewrite using `[map_pow]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hu.pow n`. Introduce and unpack `⟨⟨z₁, z₂⟩, hz⟩`. Establish `hz' : f' z₁ = g' z₂` using `hz`. Take `⟨n₁, y₁, h₁⟩` from `IsLocalization.Away.surj b z₁`. Take `⟨n₂, y₂, h₂⟩` from `IsLocalization.Away.surj c z₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁' : z₁ * ρB b ^ (n₁ + n₂) = ρB (y₁ * b ^ n₂)`. Express the relevant statement in the definitionally equal form `z₁ * ρB b ^ n₁ = ρB y₁ at h₁`. Rewrite using `[pow_add, ← mul_assoc, h₁, map_mul, map_pow]`. Establish `h₂' : z₂ * ρC c ^ (n₁ + n₂) = ρC (y₂ * c ^ n₁)`. Express the relevant statement in the definitionally equal form `z₂ * ρC c ^ n₂ = ρC y₂ at h₂`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[add_comm, pow_add, ← mul_assoc, h₂, map_mul, map_pow]`. Establish `hA : algebraMap A A' (f (y₁ * b ^ n₂)) = algebraMap A A' (g (y₂ * c ^ n₁))`. Express the relevant statement in the definitionally equal form `ρA _ = ρA _`. Establish `k₁` using `congrArg f' h₁'`. Establish `k₂` using `congrArg g' h₂'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k₁` using `[map_mul, map_pow, eB, eB]`. Rewrite `k₂` using `[map_mul, map_pow, eC, eC]`. Rewrite using `[← k₁, ← k₂, hz', hx']`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (f b)) hA`. Express the relevant statement in the definitionally equal form `f b ^ m * f (y₁ * b ^ n₂) = f b ^ m * g (y₂ * c ^ n₁) at hm`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : f (b ^ m * (y₁ * b ^ n₂)) = g (c ^ m * (y₂ * c ^ n₁))`. Rewrite using `[map_mul f (b ^ m), map_pow f, hm, map_mul g (c ^ m), map_pow g, hx']`. Use `⟨(⟨(b ^ m * (y₁ * b ^ n₂), c ^ m * (y₂ * c ^ n₁)), hmem⟩, ⟨⟨(b, c), hx⟩ ^ (m + (n₁ + n₂)), m + (n₁ + n₂), rfl⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((⟨(z₁, z₂), hz⟩ : RingHom.eqLocus _ _) : B' × C') * (φ (⟨(b, c), hx⟩ ^ (m + (n₁ + n₂))) : B' × C') = (φ _ : B' × C')`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hφ, hφ, hpow]`. Use `ext`. Express the relevant statement in the definitionally equal form `z₁ * ρB (b ^ (m + (n₁ + n₂))) = ρB (b ^ m * (y₁ * b ^ n₂))`. Rewrite using `[map_mul, ← h₁']`. Simplify using `only [map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `z₂ * ρC (c ^ (m + (n₁ + n₂))) = ρC (c ^ m * (y₂ * c ^ n₁))`. Rewrite using `[map_mul, ← h₂']`. Simplify using `only [map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y y' e`. Establish `e' : φ y = φ y'` using `e`. Establish `e₁ : algebraMap B B' (y : B × C).1 = algebraMap B B' (y' : B × C).1`. Express the relevant statement in the definitionally equal form `ρB _ = ρB _`. Rewrite using `[← hfst, ← hfst]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun t : RingHom.eqLocus (f'.comp (RingHom.fst B' C')) (g'.comp (RingHom.snd B' C')) ↦ (t : B' × C').1) e'`. Establish `e₂ : algebraMap C C' (y : B × C).2 = algebraMap C C' (y' : B × C).2`. Express the relevant statement in the definitionally equal form `ρC _ = ρC _`. Rewrite using `[← hsnd, ← hsnd]`. Conclude with `congrArg (fun t : RingHom.eqLocus (f'.comp (RingHom.fst B' C')) (g'.comp (RingHom.snd B' C')) ↦ (t : B' × C').2) e'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨_, n, rfl⟩, hn⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers b) e₁`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers c) e₂`. Express the relevant statement in the definitionally equal form `b ^ n * _ = b ^ n * _ at hn`. Express the relevant statement in the definitionally equal form `c ^ k * _ = c ^ k * _ at hk`. Use `⟨⟨⟨(b, c), hx⟩ ^ (n + k), n + k, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((⟨(b, c), hx⟩ ^ (n + k) : RingHom.eqLocus _ _) : B × C) * (y : B × C) = ((⟨(b, c), hx⟩ ^ (n + k) : RingHom.eqLocus _ _) : B × C) * (y' : B × C)`. Rewrite using `[hpow]`. Use `ext`. Express the relevant statement in the definitionally equal form `b ^ (n + k) * _ = b ^ (n + k) * _`.
-
-Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `c ^ (n + k) * _ = c ^ (n + k) * _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_eqLocus {A B C A' B' C' : Type*} [CommRing A] [CommRing B]
     [CommRing C] [CommRing A'] [CommRing B'] [CommRing C'] (f : B →+* A) (g : C →+* A)
@@ -170,7 +168,7 @@ section Geo
 variable {Y₀ Y₁ Y₂ : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h1 : Y₀.basicOpen ((res i U).hom s) = U ⊓ i ⁻¹ᵁ Y₁.basicOpen s` using `Scheme.basicOpen_appLE i U (upOpen i U) (preimage_upOpen i U).ge s`. Establish `h2 : i ⁻¹ᵁ Y₁.basicOpen s ≤ U` using `le_trans ((Scheme.Hom.preimage_mono i) (Y₁.basicOpen_le s)) (preimage_upOpen i U).le`. Rewrite using `[h1, inf_eq_right.mpr h2, upOpen_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem upOpen_basicOpen (i : Y₀ ⟶ Y₁) [IsClosedImmersion i] [Surjective i] (U : Y₀.Opens)
     (s : Γ(Y₁, upOpen i U)) : upOpen i (Y₀.basicOpen ((res i U).hom s)) = Y₁.basicOpen s := by
@@ -196,9 +194,9 @@ end GlobalTheory.FerrandPush
 namespace GlobalTheory.FerrandPush
 
 /- English proof (translation)
-Introduce `Y₀ Y₁ Y₂ i₁ i₂ _ _ _ _ U hU a`. Take `⟨hU0, hU1, hU2⟩` from `hU`. Establish `hD : Y₀.basicOpen (((fibπ i₁ i₂).app (op U)).hom a) ≤ U` using `Y₀.basicOpen_le _`. Establish `hs2 : ((fibπ i₁ i₂).app (op U)).hom a = (res i₂ U).hom ((cone i₁ i₂ U).snd.hom a)` using `a.2`. Establish `e1 : upOpen i₁ (Y₀.basicOpen (((fibπ i₁ i₂).app (op U)).hom a)) = Y₁.basicOpen ((cone i₁ i₂ U).fst.hom a)` using `upOpen_basicOpen i₁ U _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : upOpen i₂ (Y₀.basicOpen (((fibπ i₁ i₂).app (op U)).hom a)) = Y₂.basicOpen ((cone i₁ i₂ U).snd.hom a)`. Rewrite using `[hs2]`. Conclude with `upOpen_basicOpen i₂ U _`. Conclude with `isLocalization_away_eqLocus (res i₁ U).hom (res i₂ U).hom (res i₁ _).hom (res i₂ _).hom (Y₀.presheaf.map (homOfLE hD).op).hom (Y₁.presheaf.map (homOfLE (upOpen_mono i₁ hD)).op).hom (Y₂.presheaf.map (homOfLE (upOpen_mono i₂ hD)).op).hom (congrArg CommRingCat.Hom.hom (res_naturalit …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_fib : ∀ {Y₀ Y₁ Y₂ : Scheme.{0}} (i₁ : Y₀ ⟶ Y₁) (i₂ : Y₀ ⟶ Y₂)
     [IsClosedImmersion i₁] [Surjective i₁] [IsClosedImmersion i₂] [Surjective i₂],

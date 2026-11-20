@@ -8,7 +8,7 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ H _ _ hH _ _ ν _ μ hμ`. Conclude with `GlobalTheory.T.existsUnique_haar_of_invariantRadonOnCosets G H hH ν μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem normaliseGroupClause_holds : NormaliseGroupClause := by
   intro G _ _ _ _ _ _ _ _ H _ _ hH _ _ ν _ μ hμ

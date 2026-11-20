@@ -14,21 +14,21 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M Filter Topology
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R Ψ V BV hB hΨ j u hu hmax`. Use `set x : V := (BV.chart j).symm u with hxdef`. Establish `hx : x ∈ (BV.chart j).source` using `(BV.chart j).map_target hu`. Establish `hxu : BV.chart j x = u` using `(BV.chart j).right_inv hu`. Take `⟨i, hi⟩` from `Function.ne_iff.1 (hΨ x.1 x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set G : (Fin n → ℂ) → Fin (n + 1) → ℂ := fun y => Ψ (segre (R.lift x.1 ((BV.chart j).symm y).1)) with hG`. Use `set τ : (Fin n → ℂ) → Fin (n + 1) → ℂ := fun y l => G y l / G y i with hτ`. Establish `hGa : AnalyticAt ℂ G u`. Establish `h` using `ProjRegular.proj_analyticAt Ψ hB x hx`. Rewrite `h` using `[hxu]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ l, AnalyticAt ℂ (fun y => G y l) u` using `fun l => analyticAt_pi_iff.1 hGa l`. Establish `hGi : G u i ≠ 0` using `hi`. Establish `hτa : AnalyticAt ℂ τ u` using `AnalyticAt.pi fun l => (hc l).div (hc i) hGi`. Establish `hrk : Module.finrank ℂ (LinearMap.range (fderiv ℂ τ u).toLinearMap) < n`. Use `lt_of_le_of_ne ((LinearMap.finrank_range_le _).trans (Module.finrank_fin_fun ℂ).le) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Apply `hmax` to reduce the goal to its premises. Use `⟨i, hi, j, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hxu]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ' : (Fin (n + 1) → ℂ) → ℝ` to `fun w => Real.log (∑ l, ‖w l‖ ^ 2)`. Establish `hsum_pos : ∀ w : Fin (n + 1) → ℂ, w i = 1 → 0 < ∑ l, ‖w l‖ ^ 2` using `fun w hw => lt_of_lt_of_le (by rw [hw]; norm_num) (Finset.single_le_sum (f := fun l => ‖w l‖ ^ 2) (fun l _ => sq_nonneg _) (Finset.mem_univ i))`. Establish `hτ1 : ∀ y, G y i ≠ 0 → τ y i = 1` using `fun y hy => div_self hy`. Establish `hφ' : ContDiffAt ℝ 2 φ' (τ u)` using `((ContDiff.sum fun l _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ l)).contDiffAt.log (hsum_pos _ (hτ1 u hGi)).ne')`. Set `g : (Fin n → ℂ) → ℂ` to `fun y => G y i ^ 2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hga : AnalyticAt ℂ g u` using `(hc i).pow 2`. Establish `hg0 : g u ≠ 0` using `pow_ne_zero 2 hGi`. Establish `hev : ∀ᶠ y in 𝓝 u, G y i ≠ 0` using `(hc i).continuousAt.eventually_ne hGi`. Establish `hgerm : (fun y' => (projPot R Ψ V).φ ((BV.chart j).symm u) ((BV.chart j).symm y')) =ᶠ[𝓝 u] fun y => (φ' ∘ τ) y + Real.log ‖g y‖` using `by filter_upwards [hev] with y hy show Real.log (∑ l, ‖G y l‖ ^ 2) = Real.log (∑ l, ‖τ y l‖ ^ 2) + Real.log ‖G y i ^ 2‖`. Establish `hn : ‖G y i‖ ≠ 0` using `norm_ne_zero_iff.2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hs : ∑ l, ‖G y l‖ ^ 2 = ‖G y i‖ ^ 2 * ∑ l, ‖τ y l‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [τ, norm_div, div_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, norm_pow, Real.log_mul (pow_ne_zero 2 hn) (hsum_pos _ (hτ1 y hy)).ne', add_comm]`. Unfold `locDens`. Use `(maDens_congr_hessC _ (fun _ => φ' ∘ τ) u fun _ => ?_).trans (ReciprocityTheory.AnForm.maDens_comp_eq_zero_of_rank_lt (fun _ => φ') τ u hτa (fun _ => hφ') hrk)` and prove the remaining obligations. Use `(hessC_congr_of_eventuallyEq hgerm).trans ?_` and prove the remaining obligations. Conclude with `ReciprocityTheory.AnForm.A.hessC_add_log_norm _ g u (hφ'.comp u (hτa.contDiffAt.restrict_scalars ℝ)) hga hg0`.
+A detailed English derivation is pending.
 -/
 theorem ProjPotDensVanish.proof : ProjPotDensVanish.Statement := by
   intro K _ ι _ P J n R Ψ V BV hB hΨ j u hu hmax

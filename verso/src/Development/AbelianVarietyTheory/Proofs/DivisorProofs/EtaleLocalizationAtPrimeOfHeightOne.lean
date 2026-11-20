@@ -4,11 +4,9 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ p _ H q _ hq`. Use `set P : Ideal R := q.comap (algebraMap R (Localization.AtPrime p)) with hPdef`. Use `haveI : P.IsPrime := Ideal.comap_isPrime _ _`. Establish `hP : P.height = 1`. Rewrite using `[← hq, ← IsLocalization.height_comap p.primeCompl q]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI := H P hP`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime q) P := IsLocalization.isLocalization_atPrime_localization_atPrime p.primeCompl q`. Set `e : Localization.AtPrime P ≃ₐ[R] Localization.AtPrime q` to `IsLocalization.algEquiv P.primeCompl _ _`. Use `letI : Algebra (Localization.AtPrime P) (Localization.AtPrime q) := e.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (Localization.AtPrime P) (Localization.AtPrime q) := IsScalarTower.of_algebraMap_eq (fun r => (e.commutes r).symm)`.
-
-Use `haveI : Algebra.Etale (Localization.AtPrime q) (TensorProduct (Localization.AtPrime P) (Localization.AtPrime q) (TensorProduct R (Localization.AtPrime P) A)) := Algebra.Etale.baseChange _ _ _`. Set `e1` to `Algebra.TensorProduct.cancelBaseChange R (Localization.AtPrime P) (Localization.AtPrime q) (Localization.AtPrime q) A`. Set `e2` to `Algebra.TensorProduct.cancelBaseChange R (Localization.AtPrime p) (Localization.AtPrime q) (Localization.AtPrime q) A`. Conclude with `Algebra.Etale.of_equiv (e1.trans e2.symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem etale_localization_atPrime_of_height_one :
     ∀ (R A : Type) [CommRing R] [IsNoetherianRing R] [IsDomain R] [CommRing A] [Algebra R A]

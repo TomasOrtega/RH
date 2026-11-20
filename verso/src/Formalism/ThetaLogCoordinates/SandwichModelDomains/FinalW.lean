@@ -8,53 +8,51 @@ import Formalism.ThetaLogCoordinates.SandwichModelDomains.SandwichModelProofs.As
 namespace Formalism.InvariantFactorPaths.INST.Top
 
 /- English proof (translation)
-The claim follows from `spread_top_holds`.
+A detailed English derivation is pending.
 -/
 theorem spreadTop : SpreadTop := spread_top_holds
 /- English proof (translation)
-The claim follows from `spread_square_holds`.
+A detailed English derivation is pending.
 -/
 theorem spreadSquare : SpreadSquare := spread_square_holds
 /- English proof (translation)
-The claim follows from `gl_one_first_line_action`.
+A detailed English derivation is pending.
 -/
 theorem rowGlOne : RowGlOne := gl_one_first_line_action
 /- English proof (translation)
-The claim follows from `gl_first_line_divided_powers`.
+A detailed English derivation is pending.
 -/
 theorem rowGlDiv : RowGlDiv := gl_first_line_divided_powers
 /- English proof (translation)
-The claim follows from `swap_weight_compat`.
+A detailed English derivation is pending.
 -/
 theorem swpWt : SwpWt := swap_weight_compat
 /- English proof (translation)
-The claim follows from `swap_polynomial_compat`.
+A detailed English derivation is pending.
 -/
 theorem swpPol : SwpPol := swap_polynomial_compat
 /- English proof (translation)
-The claim follows from `swpInt_statement`.
+A detailed English derivation is pending.
 -/
 theorem swpInt : SwpInt := swpInt_statement
 /- English proof (translation)
-The claim follows from `coreQp_of rowGlOne rowGlDiv swpWt swpPol swpInt`.
+A detailed English derivation is pending.
 -/
 theorem coreQp : CoreQp := coreQp_of rowGlOne rowGlDiv swpWt swpPol swpInt
 /- English proof (translation)
-The claim follows from `descent_over_integers`.
+A detailed English derivation is pending.
 -/
 theorem descentZ : DescentZ := descent_over_integers
 /- English proof (translation)
-The claim follows from `ascent_domain_holds`.
+A detailed English derivation is pending.
 -/
 theorem ascentDomain : AscentDomain := ascent_domain_holds
 /- English proof (translation)
-Introduce `p hp O _ _ hpu c hc`. Assume the negation of the conclusion as `hcu`. Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp.out`. Establish `hcop : IsCoprime (p : ℤ) c` using `by first`. Consider the case `exact (Irreducible.coprime_iff_not_dvd hpz.irreducible).2 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (Prime.coprime_iff_not_dvd hpz).2 hc`. Take `⟨u, v, huv⟩` from `hcop`. Establish `h1 : (u : O) * (p : O) + (v : O) * (c : O) = 1`. Use `congrArg (fun z : ℤ => (z : O)) huv` as an intermediate fact. Move the coercions through the operations in `at this`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`. Establish `hmp : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hpu`. Establish `hmc : (c : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hcu`. Establish `h1m : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← h1]`.
-
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hmp) (Ideal.mul_mem_left _ _ hmc)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsOfLocal : UnitsOfLocal := by
   intro p hp O _ _ hpu c hc
@@ -76,9 +74,7 @@ theorem unitsOfLocal : UnitsOfLocal := by
     exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hmp) (Ideal.mul_mem_left _ _ hmc)
   exact (IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1m)
 /- English proof (translation)
-Introduce `p hp r n hn ν hν l hL x hx`. Establish `hS : Spread (Padic p) r n ν l`. Break down `hL with h | ⟨rfl, h⟩` into its components or cases. Conclude with `spreadTop _ r n ν l h`. Conclude with `spreadSquare _ _ ν l h`.
-
-Conclude with `coreQp p r n hn ν hν l hS x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sandwichZp : SandwichZp := by
   intro p hp r n hn ν hν l hL x hx
@@ -88,27 +84,27 @@ theorem sandwichZp : SandwichZp := by
     · exact spreadSquare _ _ ν l h
   exact coreQp p r n hn ν hν l hS x hx
 /- English proof (translation)
-Introduce `p hp r n hn ν hν l hL f hf`. Conclude with `descentZ p r n hn ν hν (sExp p r l) (sandwichZp p r n hn ν hν l hL) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sandwichZ : SandwichZ := by
   intro p hp r n hn ν hν l hL f hf
   exact descentZ p r n hn ν hν (sExp p r l) (sandwichZp p r n hn ν hν l hL) f hf
 /- English proof (translation)
-The claim follows from `sandwichDomain_of sandwichZ ascentDomain`.
+A detailed English derivation is pending.
 -/
 theorem sandwichDomain : SandwichDomain := sandwichDomain_of sandwichZ ascentDomain
 /- English proof (translation)
-Introduce `p hp r n hn ν hν l hL O _ _ _ hpu`. Conclude with `sandwichDomain p r n hn ν hν l hL O (unitsOfLocal p O hpu)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sandwichLocal : SandwichLocal := by
   intro p hp r n hn ν hν l hL O _ _ _ hpu
   exact sandwichDomain p r n hn ν hν l hL O (unitsOfLocal p O hpu)
 /- English proof (translation)
-Introduce `p hp O Kf _ _ _ _ hO m lam hlam`. Establish `hanti : Antitone (fun t : Fin (m + 1) => (lam t - lam (Fin.last m)).toNat)`. Introduce `s t hst`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (hlam hst) _)`. Establish `hL : LBound (m + 1) (fun t : Fin (m + 1) => (lam t - lam (Fin.last m)).toNat) ((lam 0 - lam (Fin.last m)).toNat)` using `by left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (hlam (Fin.zero_le t)) _)`. Take `⟨h1, h2⟩` from `sandwichDomain p (m + 1) (m + 1) le_rfl _ hanti _ hL O hO`. Use `⟨?_, Submodule.map_mono h2⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`. Use `Submodule.mem_map.2 ⟨_, h1 y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sandwichModel : SandwichModel := by
   intro p hp O Kf _ _ _ _ hO m lam hlam
@@ -128,7 +124,7 @@ theorem sandwichModel : SandwichModel := by
   rw [map_smul]
   all_goals rfl
 /- English proof (translation)
-Introduce `p hp O Kf _ _ _ _ _ hpu m lam hlam`. Conclude with `sandwichModel p O Kf (unitsOfLocal p O hpu) m lam hlam`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sandwichModelLocal : SandwichModelLocal := by
   intro p hp O Kf _ _ _ _ _ hpu m lam hlam

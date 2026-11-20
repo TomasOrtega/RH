@@ -23,11 +23,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp hc N _ M hM K`. Take `⟨A, _, L, hA, hL, hamp, T, N', _, pt, hpt, i, π, hiπ, hst, rfl⟩` from `hM`. Use `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hv.hom_inj`. Use `haveI : IsCommMonObj A := hA.comm`. Use `haveI : Finite N' := GlobalTheory.T.torsion_points_finite R p A T N' pt hpt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Fintype N' := Fintype.ofFinite N'`. Establish `hi : Function.Injective i` using `Function.LeftInverse.injective (g := π) hiπ`. Use `haveI : Finite N := Finite.of_injective i hi`. Use `letI : Fintype N := Fintype.ofFinite N`. Take `⟨⟨AA, hAA⟩, -⟩` from `GlobalTheory.T.torsion_points_hopf_order p C v R hv hp A T N' pt hpt`.
-
-Establish `hgen` using `GlobalTheory.T.abelian_scheme_torsion_augmentation hQ hZ hH p C v R hv hp hc A L hA hL hamp T N' pt hpt (K.map i)`. Establish `hret` using `GlobalTheory.T.hopf_order_retract_restriction p C v R hv hp N' AA N i π hiπ (by rw [hAA]; exact hst)`. Rewrite using `[← hAA]`. Conclude with `hret.2.2 K (by rw [hAA]; exact hgen)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subquotientStatement_of_quotient_zarhin_hodgeTate
     (hQ : QuotientByFiniteFlatStatement) (hZ : ZarhinStatement) (hH : HodgeTateDatumStatement) :
@@ -49,7 +47,7 @@ theorem subquotientStatement_of_quotient_zarhin_hodgeTate
   exact hret.2.2 K (by rw [hAA]; exact hgen)
 
 /- English proof (translation)
-The claim follows from `subquotientStatement_of_quotient_zarhin_hodgeTate`.
+A detailed English derivation is pending.
 -/
 example : QuotientByFiniteFlatStatement → ZarhinStatement → HodgeTateDatumStatement →
     SubquotientStatement := subquotientStatement_of_quotient_zarhin_hodgeTate

@@ -26,27 +26,27 @@ noncomputable section
 namespace GlobalTheory.KSRelSymm
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.Heat.FieldCompat.invField_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem fieldCompat : ∀ {R : Type} [CommRing R] {K : Type} [Field K] (x₀ : R →+* K) {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] (m : A.left ⟶ G.left), IsGrpPullback A G (spMap x₀) m → ∀ (w : TanM (𝟙 (Sp R)) G) (e : Fld G.left), IsInv G w e → ∀ (v : epsR K ⟶ A), IsTangent v → v.left ≫ m = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR x₀) ≫ (tv w).left → ∀ (dd : ∀ O : A.left.Opens, Γ(A.left, O) → Γ(A.left, O)), GlobalTheory.KS.IsInvDer v dd → ∀ (O : G.left.Opens) (f : Γ(G.left, O)), dd (m ⁻¹ᵁ O) ((m.app O).hom f) = pbT m (e O f) (m ⁻¹ᵁ O) := @GlobalTheory.Heat.FieldCompat.invField_baseChange
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.KSCechData.exists_ksCoc_of_ksRel`.
+A detailed English derivation is pending.
 -/
 theorem cechData : ∀ {R : Type} [CommRing R] {K : Type} [Field K] (x₀ : R →+* K) (P : Out.PolAV (Sp R)) {A : Over (Sp K)} [GrpObj A] (m : A.left ⟶ P.A.left), m ≫ P.A.hom = A.hom ≫ spMap x₀ → ∀ {g : ℕ} (e : Fin g → Fld P.A.left) (dd : Fin g → ∀ O : A.left.Opens, Γ(A.left, O) → Γ(A.left, O)), (∀ a, IsField ⊤ (e a)) → (∀ a (O : P.A.left.Opens) (f : Γ(P.A.left, O)), dd a (m ⁻¹ᵁ O) ((m.app O).hom f) = pbT m (e a O f) (m ⁻¹ᵁ O)) → ∀ (D : Derivation ℤ R R) (M : Matrix (Fin g) (Fin g) R), KSRel P.A (𝟙 P.A.left) P.L e ⇑D M → ∃ L : LB P.A.left, Finite L.ι ∧ L.IsLB ∧ (∀ i, IsAffineOpen (L.U i)) ∧ LBIso P.L L ∧ ∃ d : L.ι → ∀ O : P.A.left.Opens, Γ(P.A.left, O) → Γ(A.left, m ⁻¹ᵁ O), ∀ φ, GlobalTheory.KS.IsDlog m L dd φ → GlobalTheory.KS.KSCoc A.hom P.A.hom m (fun r => x₀ (D r)) L.U dd d (fun a => GlobalTheory.KS.lc A.hom (fun b => -x₀ (M a b)) φ) := @GlobalTheory.KSCechData.exists_ksCoc_of_ksRel
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ P g w e he D M hKS`. Set `K` to `FractionRing R`. Set `x₀ : R →+* K` to `algebraMap R K`. Set `P₀ : Out.PolAV (Sp K)` to `GlobalTheory.StrictPull.polPull P (spMap x₀)`. Set `m : P₀.A.left ⟶ P.A.left` to `pullback.fst P.A.hom (spMap x₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm : IsGrpPullback P₀.A P.A (spMap x₀) m` using `isGrpPullback_pullback P.A (spMap x₀)`. Use `P.isAb.comm` as an intermediate fact. Use `P₀.isAb.comm` as an intermediate fact. Establish `hs : Smooth P.A.hom` using `P.isAb.smooth`. Take `⟨u, hu, hul⟩` from `GlobalTheory.Heat.CoeffWt.exists_isLieBasis w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, hvl⟩` from `GlobalTheory.exists_isLieBasis_baseChange R K x₀ P.A P₀.A m hm hs g u hu`. Use `choose dd hdd using fun a => (GlobalTheory.KS.InvField.main K P₀.A (v a) (hv.1 a)).1`. Establish `hcomp : ∀ a (O : P.A.left.Opens) (f : Γ(P.A.left, O)), dd a (m ⁻¹ᵁ O) ((m.app O).hom f) = pbT m (e a O f) (m ⁻¹ᵁ O)` using `fun a => fieldCompat x₀ m hm (w a) (e a) (he a) (v a) (hv.1 a) (by rw [hvl, hul]) (dd a) (hdd a)`. Take `⟨L, hfin, hL, haff, hPL, d, hd⟩` from `cechData x₀ P m hm.1.w e dd (fun a => (he a).1) hcomp D M hKS`. Establish `hI : LBIso P₀.L (L.pull m)` using `LBIso.trans P₀.isLB (pull_isLB P.isLB m) (pull_isLB hL m) (GlobalTheory.PolBaseChange.lbIso_refl P₀.isLB) (hPL.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨φ, hφ⟩, hφ'⟩` from `GlobalTheory.KS.DlogPol.dlog_independent K P₀ g v dd hv hdd _ m L hL hI`. Take `⟨Θ', hsy, hΘ'⟩` from `GlobalTheory.KS.Sym.exists_symm_of_ksCoc GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 GlobalTheory.Moduli.cube_of_isLB K P₀ g v dd hv hdd R x₀ P m L _ d _ φ hm hL haff hI (hd φ hφ) hφ`. Establish `e1 : Θ' = -M.map x₀`. Rewrite using `[eq_comm, ← sub_eq_zero]`. Use function extensionality and compare the values at `b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hφ' φ hφ).2 _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LogKSBal.lc_sub]`. Conclude with `hΘ' b`. Establish `h1 : (M.map x₀)ᵀ = M.map x₀`. Establish `h : Θ'ᵀ = Θ'` using `hsy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components.
 
-Rewrite `h` using `[e1, Matrix.transpose_neg, neg_inj]`. Then use the resulting hypothesis. Use extensionality with `a b`. Use `congrFun (congrFun h1 a) b` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at this`. Conclude with `IsFractionRing.injective R K this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ksRel_symm : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (P : Out.PolAV (Sp R)) (g : ℕ) (w : Module.Basis (Fin g) R (TanM (𝟙 (Sp R)) P.A)) (e : Fin g → Fld P.A.left), (∀ c, IsInv P.A (w c) (e c)) → ∀ (D : Derivation ℤ R R) (M : Matrix (Fin g) (Fin g) R), KSRel P.A (𝟙 P.A.left) P.L e ⇑D M → Mᵀ = M := by
   intro R _ _ _ _ _ _ P g w e he D M hKS

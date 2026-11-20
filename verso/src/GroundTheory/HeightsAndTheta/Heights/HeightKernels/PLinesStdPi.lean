@@ -9,7 +9,7 @@ open NumberField
 namespace KLinesStdPi
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Pi.single_apply, Algebra.smul_def, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_smul_single {K : Type*} [Field K] {k : ℕ} (y : Fin k → 𝓞 K) :
     (fun i => algebraMap (𝓞 K) K (y i)) = ∑ j, y j • (Pi.single j 1 : Fin k → K) := by
@@ -21,15 +21,13 @@ theorem eq_sum_smul_single {K : Type*} [Field K] {k : ℕ} (y : Fin k → 𝓞 K
 end KLinesStdPi
 
 /- English proof (translation)
-Introduce `K _ k`. Use extensionality with `v`. Simplify using `only [Submodule.mem_toAddSubgroup, AddSubgroup.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Introduce `i`. Simplify using `only`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Conclude with `Submodule.zero_mem _`. Consider the case `zero => intro i`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => intro i`. Conclude with `Submodule.add_mem _ (hx i) (hy i)`. Consider the case `smul a x _ hx => intro i`. Conclude with `Submodule.smul_mem _ a (hx i)`.
-
-Introduce `hv choose y hy using fun i => Submodule.mem_one.mp (hv i)`. Establish `hv' : v = fun i => algebraMap (𝓞 K) K (y i)` using `funext fun i => (hy i).symm`. Rewrite using `[hv', KLinesStdPi.eq_sum_smul_single]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinesStdPi.proof : LinesStdPi.Statement := by
   intro K _ k

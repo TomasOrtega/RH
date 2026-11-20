@@ -5,15 +5,13 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (Λ : Set (Fin n → E))`. Rewrite using `[Submodule.IsLattice.span_eq_top (self := hΛ)]`. Discharge the goal by the elementary cases of `trivial`. Establish `key : ∀ c : E, c • x ∈ S`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem y hy`. Introduce `c`. Rewrite using `[← (integralBasis E).sum_repr c, Finset.sum_smul]`. Use `S.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `S.smul_mem _ (hS _ ?_)` and prove the remaining obligations. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Conclude with `Λ.smul_mem _ hy`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => intro c`. Rewrite using `[smul_add]`. Conclude with `S.add_mem (hy c) (hz c)`. Consider the case `smul a y _ hy => intro c`. Rewrite using `[smul_smul]`.
-
-Conclude with `hy _`. Simplify using `using key 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_ratSpan_of_isLattice_pi (E : Type) [Field E] [NumberField E] (n : ℕ)
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ)
@@ -36,15 +34,15 @@ theorem mem_ratSpan_of_isLattice_pi (E : Type) [Field E] [NumberField E] (n : �
   simpa using key 1
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (self := hΛ))`. Establish `: Module.Finite ℤ Λ` using `Module.Finite.trans (𝓞 E) Λ`. Establish `: Module.Free ℤ Λ` using `inferInstance`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `f : Λ →ₗ[ℤ] (Fin n → E)` to `Λ.subtype.toAddMonoidHom.toIntLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `v : Module.Free.ChooseBasisIndex ℤ Λ → Fin n → E` to `f ∘ b`. Establish `hZ : LinearIndependent ℤ v` using `b.linearIndependent.map' f (LinearMap.ker_eq_bot.2 hf)`. Establish `hspan : ∀ x, x ∈ Λ ↔ x ∈ Submodule.span ℤ (Set.range v)`. Introduce `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (Submodule.map f) b.span_eq`. Rewrite `h` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top]`. Express the relevant statement in the definitionally equal form `x ∈ Λ ↔ x ∈ Submodule.span ℤ (Set.range (f ∘ b))`. Rewrite using `[h]`. Conclude with `⟨fun hx => ⟨⟨x, hx⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hQ : Submodule.span ℚ (Set.range v) = ⊤` using `eq_top_iff.2 fun x _ => mem_ratSpan_of_isLattice_pi E n Λ hΛ _ (fun y hy => Submodule.span_le_restrictScalars ℤ ℚ _ ((hspan y).1 hy)) x`. Establish `hQi : LinearIndependent ℚ v` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hZ`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ Λ) = Module.finrank ℚ E * n`. Rewrite using `[← finrank_span_eq_card hQi, hQ, finrank_top, Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `e` to `Fintype.equivFinOfCardEq hcard`. Establish `hr : Set.range (v ∘ e.symm) = Set.range v` using `e.symm.surjective.range_comp v`. Conclude with `⟨v ∘ e.symm, by rw [hr]; exact hspan, by rw [hr]; exact hQ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_intGenerators_card_eq_of_isLattice_pi (E : Type) [Field E] [NumberField E] (n : ℕ)
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ) :

@@ -18,11 +18,11 @@ abbrev op {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin g)
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun u => ?_` and prove the remaining obligations. Set `u' : EuclideanSpace ℂ (Fin n)` to `WithLp.toLp 2 fun i => starRingEnd ℂ (u i)`. Establish `h1 : ‖u'‖ = ‖u‖` using `by simp [u', EuclideanSpace.norm_eq]`. Establish `h2 : ‖op (g.map (starRingEnd ℂ)) u‖ = ‖op g u'‖`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: op (g.map (starRingEnd ℂ)) u i = starRingEnd ℂ (op g u' i)`. Simplify using `[op, u', Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[this, RCLike.norm_conj]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← h1]`. Conclude with `(op g).le_opNorm u'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_op_conj_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     ‖op (g.map (starRingEnd ℂ))‖ ≤ ‖op g‖ := by
@@ -40,7 +40,7 @@ theorem norm_op_conj_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   exact (op g).le_opNorm u'
 
 /- English proof (translation)
-Use `le_antisymm (norm_op_conj_le g) ?_` and prove the remaining obligations. Establish `h` using `norm_op_conj_le (g.map (starRingEnd ℂ))`. Establish `e : (g.map (starRingEnd ℂ)).map (starRingEnd ℂ) = g` using `by ext i j; simp`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_op_conj {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     ‖op (g.map (starRingEnd ℂ))‖ = ‖op g‖ := by
@@ -50,7 +50,7 @@ theorem norm_op_conj {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   rwa [e] at h
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ, Complex.finrank_real_complex, ← (LinearMap.toContinuousLinearMap (𝕜 := ℂ) (E := EuclideanSpace ℂ (Fin n)) (F' := EuclideanSpace ℂ (Fin n))).finrank_eq, Module.finrank_linearMap]`. Simplify using `[sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_op (n : ℕ) :
     Module.finrank ℝ (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) = 2 * n ^ 2 := by
@@ -62,9 +62,9 @@ theorem finrank_op (n : ℕ) :
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `key : ∀ w : InfinitePlace I.E, w = InfinitePlace.mk (I.φ (w.comap (algebraMap I.F I.E)))`. Introduce `w`. Break down `GlobalTheory.Count.Test.embedding_cases I w with h | h` into its components or cases. Rewrite using `[← h, InfinitePlace.mk_embedding]`. Rewrite using `[← InfinitePlace.mk_conjugate_eq, ← h, InfinitePlace.mk_embedding]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun w w' h => ?_, InfinitePlace.comap_surjective⟩` and prove the remaining obligations. Rewrite using `[key w, key w']`. Conclude with `congrArg (fun v => InfinitePlace.mk (I.φ v)) h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_bijective :
     Function.Bijective (fun w : InfinitePlace I.E => w.comap (algebraMap I.F I.E)) := by
@@ -78,7 +78,7 @@ theorem comap_bijective :
   exact congrArg (fun v => InfinitePlace.mk (I.φ v)) h
 
 /- English proof (translation)
-Establish `hR` using `I.cm.totReal`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, AutInst.f, IsTotallyReal.finrank, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_places : Fintype.card (InfinitePlace I.F) = I.f := by
   have hR := I.cm.totReal
@@ -86,13 +86,11 @@ theorem card_places : Fintype.card (InfinitePlace I.F) = I.f := by
     IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]
 
 /- English proof (translation)
-Establish `e : LinearMap.toMatrix (bas I) (bas I) (Matrix.toLin' δ) = δ` using `by simp [bas]`. Unfold `opNormAt frm`. Rewrite using `[e]`. Use `split_ifs with h`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `(GlobalTheory.Count.Test.embedding_cases I w).resolve_left h set v := w.comap (algebraMap I.F I.E)`. Establish `hu : IsUnit (I.P v * uMat (x.1 v)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 ((I.P_unit v).mul (Units.isUnit _))`. Establish `hJ : δ.map w.embedding = (δ.map (I.φ v)).map (starRingEnd ℂ)`. Rewrite using `[h']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hi : ((I.P v * uMat (x.1 v)).map (starRingEnd ℂ))⁻¹ = (I.P v * uMat (x.1 v))⁻¹.map (starRingEnd ℂ)`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu]`. Simplify using `[Matrix.map_one]`. Rewrite using `[hJ, hi, ← Matrix.map_mul, ← Matrix.map_mul]`.
-
-Conclude with `norm_op_conj _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opNormAt_eq (x y : I.GA) (δ : Matrix (Fin I.n) (Fin I.n) I.E) (w : InfinitePlace I.E) :
     opNormAt (bas I) (frm I y) (bas I) (frm I x) w (Matrix.toLin' δ) =
@@ -118,7 +116,7 @@ theorem opNormAt_eq (x y : I.GA) (δ : Matrix (Fin I.n) (Fin I.n) I.E) (w : Infi
     exact norm_op_conj _
 
 /- English proof (translation)
-Establish `e : uMat ((x⁻¹ * a * y).1 v) = (uMat (x.1 v))⁻¹ * uMat (a.1 v) * uMat (y.1 v)`. Simplify using `[uMat]`. Rewrite using `[e, h, Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uMat_eq (x y a : I.GA) (γ : Matrix (Fin I.n) (Fin I.n) I.E) (v : InfinitePlace I.F)
     (h : uMat (a.1 v) = (I.P v)⁻¹ * γ.map (I.φ v) * I.P v) :
@@ -129,9 +127,9 @@ theorem uMat_eq (x y a : I.GA) (γ : Matrix (Fin I.n) (Fin I.n) I.E) (v : Infini
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.Count.Test.lamX_equivariant I a y γ h z).2 hz`. Rewrite `h1`, the goal using `[GlobalTheory.Count.Test.mem_lamX]`. Establish `h2` using `(hK _).1 h1`. Establish `h3 : I.fmat (x⁻¹ * a * y).2 * I.fmat (a * y).2⁻¹ = I.fmat x.2⁻¹`. Establish `: (x⁻¹ * a * y).2 * (a * y).2⁻¹ = x.2⁻¹` using `by simp [mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Rewrite `h2` using `[Matrix.mulVec_mulVec]`. Rewrite using `[← h3]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem (x y a : I.GA) (γ : GL (Fin I.n) I.E)
     (h : I.fmat a.2 = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)))
@@ -148,7 +146,7 @@ theorem mulVec_mem (x y a : I.GA) (γ : GL (Fin I.n) I.E)
   exact h2
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `(GlobalTheory.NearLowerCompare.lamX_isLattice I x).span_eq_top`. Rewrite `h1` using `[h0]`. Establish `: Nonempty (Fin I.n)` using `⟨⟨0, hn⟩⟩`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lamX_ne_bot (hn : 1 ≤ I.n) (x : I.GA) : lamX I x ≠ ⊥ := by
   intro h0
@@ -158,26 +156,24 @@ theorem lamX_ne_bot (hn : 1 ≤ I.n) (x : I.GA) : lamX I x ≠ ⊥ := by
   simp at h1
 
 /- English proof (translation)
-The claim follows from `lt_min (by norm_num) (GlobalTheory.StepDualityCompare.least_pos I x (GlobalTheory.NearLowerCompare.lamX_isLattice I x).fg (lamX_ne_bot I hn x))`.
+A detailed English derivation is pending.
 -/
 theorem truncatedLeastLatticeSize_pos (hn : 1 ≤ I.n) (x : I.GA) : 0 < tau1 I x :=
   lt_min (by norm_num) (GlobalTheory.StepDualityCompare.least_pos I x
     (GlobalTheory.NearLowerCompare.lamX_isLattice I x).fg (lamX_ne_bot I hn x))
 
 /- English proof (translation)
-Establish `: IsTotallyComplex I.E` using `I.cm.cmUnram.1`. Take `⟨γ, -, hγ1, hγ2⟩` from `ha`. Take `⟨η, -, hη1, hη2⟩` from `hb`. Establish `hne : (γ : Matrix (Fin I.n) (Fin I.n) I.E) - η ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (γ : Matrix (Fin I.n) (Fin I.n) I.E) = η` using `sub_eq_zero.1 h`. Use `hab (Prod.ext (funext fun v => Subtype.ext (Units.ext ?_)) (Subtype.ext (Units.ext ?_)))` and prove the remaining obligations. Conclude with `(hγ1 v).trans (h' ▸ (hη1 v).symm)`. Conclude with `hγ2.trans (h' ▸ hη2.symm)`. Establish `hx` using `GlobalTheory.NearLowerCompare.lamX_isLattice I x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `GlobalTheory.NearLowerCompare.lamX_isLattice I y`. Establish `h` using `sizeIneq I.E _ _ _ _ (bas I) (frm I y) (bas I) (frm I x) (GlobalTheory.NearLowerCompare.frm_isUnit I y) (GlobalTheory.NearLowerCompare.frm_isUnit I x) (Matrix.toLin' ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - η)) (lamX I y) (lamX I x) hy.fg hx.fg (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `sub_mem (mulVec_mem I x y a γ hγ2 haK z hz) (mulVec_mem I x y b η hη2 hbK z hz)` as an intermediate fact. Simplify `this)` using `[Matrix.sub_mulVec]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(by`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext_on hy.span_eq_top fun z hz => ?_` and prove the remaining obligations. Conclude with `(Submodule.eq_bot_iff _).1 h0 _ ⟨z, hz, rfl⟩)`. Rewrite `h` using `[(GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I y).2.1 hn, div_inv_eq_mul]`. Establish `e1 : (nPl I.E : ℝ) = Fintype.card (InfinitePlace I.F)`. Rewrite using `[nPl, Fintype.card_of_bijective (comap_bijective I)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ∏ w, opNormAt (bas I) (frm I y) (bas I) (frm I x) w (Matrix.toLin' ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - η)) = ∏ v, ‖op (uMat ((x⁻¹ * a * y).1 v)) - op (uMat ((x⁻¹ * b * y).1 v))‖`. Use `Fintype.prod_bijective _ (comap_bijective I) _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[opNormAt_eq, uMat_eq I x y a γ _ (hγ1 _), uMat_eq I x y b η _ (hη1 _), op, op, op, ← map_sub, ← map_sub, Matrix.map_sub _ (map_sub _), Matrix.mul_sub, Matrix.sub_mul]`. Rewrite `h` using `[e1, e2]`. Use `le_trans ?_ h` and prove the remaining obligations.
-
-Conclude with `mul_le_mul (min_le_right _ _) (min_le_right _ _) (truncatedLeastLatticeSize_pos I hn y).le ((truncatedLeastLatticeSize_pos I hn x).le.trans (min_le_right _ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem separated (hn : 1 ≤ I.n) (x y a b : I.GA) (ha : a ∈ I.GFset) (hb : b ∈ I.GFset)
     (haK : (x⁻¹ * a * y).2 ∈ I.Kset) (hbK : (x⁻¹ * b * y).2 ∈ I.Kset) (hab : a ≠ b) :
@@ -223,17 +219,15 @@ theorem separated (hn : 1 ≤ I.n) (x y a b : I.GA) (ha : a ∈ I.GFset) (hb : b
     ((truncatedLeastLatticeSize_pos I hn x).le.trans (min_le_right _ _))
 
 /- English proof (translation)
-Use `set A := {a : I.GA | a ∈ I.GFset ∧ (x⁻¹ * a * y).2 ∈ I.Kset ∧ ∀ v, dOp (uMat ((x⁻¹ * a * y).1 v)) ≤ r v}`. Set `s : I.GA → InfinitePlace I.F → (EuclideanSpace ℂ (Fin I.n) →L[ℂ] EuclideanSpace ℂ (Fin I.n))` to `fun a v => op (uMat ((x⁻¹ * a * y).1 v))`. Establish `hla : 0 < tau1 I x * tau1 I y` using `mul_pos (truncatedLeastLatticeSize_pos I hn x) (truncatedLeastLatticeSize_pos I hn y)`. Establish `hsep : ∀ a ∈ A, ∀ b ∈ A, a ≠ b → tau1 I x * tau1 I y ≤ (∏ v, ‖s a v - s b v‖) ^ ((1 : ℝ) / Fintype.card (InfinitePlace I.F))` using `fun a ha b hb hab => separated I hn x y a b ha.1 hb.1 ha.2.1 hb.2.1 hab`. Establish `hcard : (0 : ℝ) < Fintype.card (InfinitePlace I.F)` using `by exact_mod_cast Fintype.card_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn s A`. Introduce `a ha b hb h`. Assume the negation of the conclusion as `hab`. Use `hsep a ha b hb hab` as an intermediate fact. Rewrite `this` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_self, norm_zero, Finset.prod_const, Finset.card_univ] at this`. Rewrite `this` using `[zero_pow Fintype.card_ne_zero, Real.zero_rpow (one_div_pos.2 hcard).ne']`. Conclude with `absurd this (not_le.2 hla)`. Establish `: FiniteDimensional ℝ (EuclideanSpace ℂ (Fin I.n) →L[ℂ] EuclideanSpace ℂ (Fin I.n))` using `Module.Finite.trans ℂ _`. Take `⟨hfin, hle⟩` from `GlobalTheory.packing_geometric_mean_separated (InfinitePlace I.F) (fun _ => EuclideanSpace ℂ (Fin I.n) →L[ℂ] EuclideanSpace ℂ (Fin I.n)) (2 * I.n ^ 2) (by nlinarith) (fun _ => finrank_op I.n) (tau1 I x * tau1 I y) (s '' A) (fun v => Real.exp (r v)) hla (fun v => Real.exp_pos _) ( …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩ hab`. Conclude with `hsep a ha b hb fun h => hab (by rw [h]))`. Establish `hA : {t ∈ s '' A | ∀ v, ‖t v‖ ≤ Real.exp (r v)} = s '' A`. Use `Set.sep_eq_self_iff_mem_true.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩ v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Real.le_exp_log _).trans (Real.exp_le_exp.2 (ha.2.2 v))`. Rewrite `hfin`, `hle` using `[hA]`. Use `⟨hfin.of_finite_image hinj, ?_⟩` and prove the remaining obligations. Rewrite `hle` using `[hinj.ncard_image, ← Real.exp_sum, ← Real.exp_mul, card_places, mul_one_div, mul_assoc 2 (I.n ^ 2)]`. Use `hle.trans (pow_le_pow_left₀ (by positivity) ?_ _)` and prove the remaining obligations.
-
-Establish `h1 : (1 : ℝ) ≤ Real.sqrt I.n` using `Real.one_le_sqrt.2 (by exact_mod_cast hn)`. Establish `h2` using `Real.exp_pos ((∑ v, r v) / I.f)`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem count_le (I : AutInst) (x y : I.GA) (r : InfinitePlace I.F → ℝ) (hn : 1 ≤ I.n) (_hr : ∀ v, 0 ≤ r v) :
     {a : I.GA | a ∈ I.GFset ∧ (x⁻¹ * a * y).2 ∈ I.Kset ∧ ∀ v, dOp (uMat ((x⁻¹ * a * y).1 v)) ≤ r v}.Finite ∧

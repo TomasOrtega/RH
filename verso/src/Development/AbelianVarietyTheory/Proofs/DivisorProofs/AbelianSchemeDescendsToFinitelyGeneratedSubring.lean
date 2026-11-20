@@ -23,21 +23,19 @@ namespace GlobalTheory.AbelianLimit
 open RationalPoint in
 
 /- English proof (translation)
-Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: IsNoetherian G.left` using `{}`. Establish `key (f : G ⟶ G) {x y : 𝟙_ (Over (Sp k)) ⟶ G} (hx : pt x ∈ connectedComponent (pt y)) : pt (x ≫ f) ∈ connectedComponent (pt (y ≫ f))` using `f.left.continuous.image_connectedComponent_subset (pt y) ⟨_, hx, rfl⟩`. Establish `tr (x z : 𝟙_ (Over (Sp k)) ⟶ G) : x ≫ (𝟙 G * (toUnit G ≫ z)) = x * z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (x ≫ toUnit G) (𝟙 _), Category.id_comp]`. Establish `key' (z : 𝟙_ (Over (Sp k)) ⟶ G) {x y : 𝟙_ (Over (Sp k)) ⟶ G} (hx : pt x ∈ connectedComponent (pt y)) : pt (x * z) ∈ connectedComponent (pt (y * z))`. Simplify `key (𝟙 G * (toUnit G ≫ z)) hx` using `only [tr]`. Set `H : Subgroup (𝟙_ (Over (Sp k)) ⟶ G)` to `{ carrier := {x | pt x ∈ connectedComponent (pt (1 : 𝟙_ (Over (Sp k)) ⟶ G))} one_mem' := mem_connectedComponent mul_mem' := fun {x y} hx hy => by`. Use `key' y hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[_root_.one_mul, ← connectedComponent_eq hy]`. Conclude with `this`. Use the proof step `inv_mem' := fun {x} hx => by`. Use `key (𝟙 G)⁻¹ hx` as an intermediate fact. Rewrite using `[GrpObj.comp_inv, GrpObj.comp_inv, Category.comp_id, Category.comp_id, inv_one] at this }` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: H.Normal` using `⟨fun x hx g => by rwa [_root_.mul_comm g x, mul_inv_cancel_right]⟩`. Establish `: DiscreteTopology (_root_.ConnectedComponents G.left)` using `ConnectedComponents.discreteTopology_iff.2 isOpen_connectedComponent_of_noetherianSpace`. Establish `: Finite (_root_.ConnectedComponents G.left)` using `finite_of_compact_of_discrete`. Establish `: Finite ((𝟙_ (Over (Sp k)) ⟶ G) ⧸ H)`. Use `Finite.of_injective (fun q => ConnectedComponents.mk (pt q.out)) fun q q' e => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← q.out_eq, ← q'.out_eq]`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Use `key' q.out⁻¹ (ConnectedComponents.coe_eq_coe'.1 e.symm)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, _root_.mul_comm]`. Then use the resulting hypothesis. Establish `: H.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `all (x : 𝟙_ (Over (Sp k)) ⟶ G) : x ∈ H`. Use `h H.index (Nat.one_le_iff_ne_zero.2 Subgroup.FiniteIndex.index_ne_zero)` as an intermediate fact. Take `⟨z, hz⟩` from `((𝟙 G) ^ H.index : G ⟶ G).left.surjective (pt x)`. Take `⟨y, -, rfl⟩` from `(pt_mem_image_iff ((𝟙 G) ^ H.index) isClosed_univ x).1 ⟨z, trivial, hz⟩`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `H.pow_index_mem y`. Establish `hu : connectedComponent (pt (1 : 𝟙_ (Over (Sp k)) ⟶ G)) = Set.univ`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `exists_pt_mem (isOpen_connectedComponent_of_noetherianSpace _).isClosed_compl (Set.nonempty_compl.2 hne)`. Conclude with `hx (all x)`.
-
-Conclude with `connectedSpace_iff_connectedComponent.2 ⟨_, hu⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem connectedSpace_of_surjective_pow {k : Type} [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G]
     [IsCommMonObj G] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom]
@@ -88,9 +86,9 @@ theorem connectedSpace_of_surjective_pow {k : Type} [Field k] [IsAlgClosed k] (G
   exact connectedSpace_iff_connectedComponent.2 ⟨_, hu⟩
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.left) (map_pow (pushHom h G') (𝟙 G') n)`. Establish `e' (x : Over.mk (G'.hom ≫ f) ⟶ G) : x ^ n = x ≫ (𝟙 G) ^ n`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Rewrite `e` using `[e']`. Use `Eq.trans e ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (n : ℕ) :
@@ -104,7 +102,7 @@ theorem pow_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Grp
   rw [Category.id_comp]
 
 /- English proof (translation)
-Use `IsPullback.of_bot ?_ (pow_comm h n).symm h.1` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Conclude with `h.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_pow {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (n : ℕ) :
@@ -114,15 +112,13 @@ theorem isPullback_pow {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
   exact h.1
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K` to `AlgebraicClosure (S.residueField (A.hom x))`. Set `t : Sp K ⟶ S` to `spMap (algebraMap (S.residueField (A.hom x)) K) ≫ S.fromSpecResidueField (A.hom x)`. Establish `ht : A.hom x = t (IsLocalRing.closedPoint K)`. Conclude with `(Scheme.fromSpecResidueField_apply _ _).symm`. Set `B` to `(Over.pullback t).obj A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : IsAbelianScheme B` using `{ comm := inferInstance smooth := inferInstanceAs (Smooth (pullback.snd A.hom t)) proper := inferInstanceAs (IsProper (pullback.snd A.hom t)) geomConnected := inferInstanceAs (GeometricallyConnected (pullback.snd A.hom t)) }`. Establish `hm : IsMonHom ((𝟙 B) ^ n : B ⟶ B)`. Use `hB.comm` as an intermediate fact. Use `clear hn`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit B ≫ η[B]))`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift ((𝟙 B) ^ n) (𝟙 B) ≫ μ[B]))`. Establish `hs` using `(flat_and_surjective_of_isFinite_abelianEnd (fun _ _ f _ _ => (geometricallyIntegral_of_smooth_of_geometricallyConnected.1 f).1) K B hB ((𝟙 B) ^ n) hm (MulFiniteAny.isFinite_mulA K B hB n hn)).2`.
-
-Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback (.of_hasPullback A.hom t) x _ ht`. Take `⟨z, rfl⟩` from `((𝟙 B) ^ n : B ⟶ B).left.surjective y`. Conclude with `⟨pullback.fst A.hom t z, (congrArg (fun g => g z) (pow_comm (isGrpPullback_pullback A t) n)).symm.trans hy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (n : ℕ) (hn : 1 ≤ n) :
     Surjective ((𝟙 A) ^ n : A ⟶ A).left := by
@@ -155,13 +151,13 @@ theorem surjective_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianS
   exact ⟨pullback.fst A.hom t z, (congrArg (fun g => g z) (pow_comm (isGrpPullback_pullback A t) n)).symm.trans hy⟩
 
 /- English proof (translation)
-Establish `hd : DenseRange φ`. Rewrite using `[DenseRange, ProperLimit.range_eq_of_isPullback h.1.flip]`. Conclude with `f.denseRange.preimage B.hom.isOpenMap`. Establish `hs (n : ℕ) (hn : 1 ≤ n) : Surjective ((𝟙 B) ^ n : B ⟶ B).left`. Use `surjective_pow A hA n hn` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (((𝟙 B) ^ n : B ⟶ B).left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper ((𝟙 B) ^ n : B ⟶ B).left` using `IsProper.of_comp _ B.hom`. Use `⟨Set.range_eq_univ.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← ((𝟙 B) ^ n : B ⟶ B).left.isClosedMap.isClosed_range.closure_eq]`. Use `(Dense.mono ?_ hd).closure_eq` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, rfl⟩` from `((𝟙 A) ^ n : A ⟶ A).left.surjective y`. Conclude with `⟨φ z, (congrArg (fun g => g z) (pow_comm h n)).symm⟩`. Use `⟨‹_›, ‹_›, ‹_›, SemiAbelianCompare.geometricallyConnected_of_isAlgClosed _ fun k _ _ s => ?_⟩` and prove the remaining obligations. Establish `: LocallyOfFiniteType ((Over.pullback s).obj B).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd B.hom s))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact ((Over.pullback s).obj B).hom` using `inferInstanceAs (QuasiCompact (pullback.snd B.hom s))`. Conclude with `connectedSpace_of_surjective_pow ((Over.pullback s).obj B) fun n hn => MorphismProperty.of_isPullback (isPullback_pow (isGrpPullback_pullback B s) n) (hs n hn)`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_isDominant {S S' : Scheme.{0}} {B : Over S} {A : Over S'} [GrpObj B] [GrpObj A]
     [IsCommMonObj B] [Smooth B.hom] [IsProper B.hom] {f : S' ⟶ S} [IsDominant f] {φ : A.left ⟶ B.left}
@@ -187,13 +183,13 @@ theorem isAbelianScheme_of_isDominant {S S' : Scheme.{0}} {B : Over S} {A : Over
     MorphismProperty.of_isPullback (isPullback_pow (isGrpPullback_pullback B s) n) (hs n hn)
 
 /- English proof (translation)
-Introduce `R _ g A _ F hA hg`. Use `hA.comm` as an intermediate fact. Use `hA.proper` as an intermediate fact. Take `⟨k, A₀, _, _, φ₀, hF, hk, _, _, _, h₀⟩` from `smooth_grpScheme_descends_to_fg_subring R A F hA.smooth inferInstance inferInstance`. Establish `: IsNoetherianRing k` using `Algebra.FiniteType.isNoetherianRing ℤ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁ : IsPullback φ₀ A.hom A₀.hom (spMap (algebraMap k R))` using `h₀.1`. Establish `: UniversallyClosed (pullback.snd A₀.hom (spMap (algebraMap k R)))`. Rewrite using `[← h₁.isoPullback_inv_snd]`. Use `infer_instance`. Take `⟨s, hs⟩` from `ProperLimit.exists_finset_isProper k R A₀.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `S : Subalgebra k R` to `Algebra.adjoin k (s : Set R)`. Set `t : Sp S.toSubring ⟶ Sp k` to `spMap (algebraMap k S)`. Establish `e : spMap S.toSubring.subtype ≫ t = spMap k.subtype` using `Spread.spMap_algHom_comp S.val`. Take `⟨φ, hφ⟩` from `GoodVal.exists_isGrpPullback_of_comp A₀ t (spMap S.toSubring.subtype) (e ▸ h₀)`. Establish `hsm : Smooth ((Over.pullback t).obj A₀).hom` using `inferInstanceAs (Smooth (pullback.snd A₀.hom t))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper ((Over.pullback t).obj A₀).hom` using `hs`. Establish `hd : IsDominant (spMap S.toSubring.subtype)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical S.toSubring.subtype).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 Subtype.val_injective]`. Conclude with `bot_le)⟩`. Conclude with `⟨S.toSubring, (Over.pullback t).obj A₀, inferInstance, φ, fun x hx => S.algebraMap_mem ⟨x, hF hx⟩, SpreadGroup.finiteType_of_fg hk (Subalgebra.fg_adjoin_finset s), isAbelianScheme_of_isDominant hφ hA, smoothOfRelativeDimension_of_isPullback_isDominant _ _ _ _ _ _ _ _ g hφ.1 hd hs …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem abelianScheme_descends_to_fg_subring :
     ∀ (R : Type) [CommRing R] (g : ℕ) (A : Over (Sp R)) [GrpObj A] (F : Finset R), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

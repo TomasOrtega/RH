@@ -64,11 +64,11 @@ theorem kbarRep_apply (σ : GK p K) (x : (PadicAlgCl p)ˣ) :
       (Additive.ofMul (Units.map (σ : PadicAlgCl p →* PadicAlgCl p) x) : KbarMult p) := rfl
 
 /- English proof (translation)
-Use `show Continuous fun q : GK p K × KbarMult p => kbarRep p K q.1 q.2`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `x`. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun σ₀ => ?_)` and prove the remaining obligations. Establish `hx` using `stabilizer_isOpen_of_isIntegral (K := K) (L := PadicAlgCl p) ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hx.preimage (continuous_const_mul σ₀⁻¹), ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `σ hσ`. Establish `h1 : (σ₀⁻¹ * σ) ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) = (Additive.toMul x : (PadicAlgCl p)ˣ)` using `hσ`. Establish `h2 : σ ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) = σ₀ (Additive.toMul x : (PadicAlgCl p)ˣ)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg σ₀ h1` as an intermediate fact. Simplify `this` using `[AlgEquiv.mul_apply]`. Conclude with `Units.ext h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem contAction_kbarRep : ReciprocityTheory.Gal.ContAction (kbarRep p K) := by
   show Continuous fun q : GK p K × KbarMult p => kbarRep p K q.1 q.2
@@ -122,9 +122,9 @@ theorem muMap_apply (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) (k : ZMod n) :
     muMap ζ hζ k = (Additive.ofMul (ζ ^ k.val) : KbarMult p) := rfl
 
 /- English proof (translation)
-Rewrite using `[muMap_apply, muMap_apply, kbarRep_apply, muRep_apply]`. Use `congrArg Additive.ofMul (Units.ext ?_)` and prove the remaining obligations. Establish `h1 : ((ζ ^ k.val : (PadicAlgCl p)ˣ) : PadicAlgCl p) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← pow_mul, mul_comm, pow_mul, hζ, one_pow, Units.val_one]`. Establish `h2` using `cycN_spec (K := K) g _ h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show _ = g ((ζ ^ k.val : (PadicAlgCl p)ˣ) : PadicAlgCl p)`. Rewrite using `[h2, ← Units.val_pow_eq_pow_val, ZMod.val_mul, ← pow_eq_pow_mod _ hζ, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muMap_equiv (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) (g : GK p K) (k : ZMod n) :
     muMap ζ hζ (muRep p K n g k) = kbarRep p K g (muMap ζ hζ k) := by
@@ -137,7 +137,7 @@ theorem muMap_equiv (ζ : (PadicAlgCl p)ˣ) (hζ : ζ ^ n = 1) (g : GK p K) (k :
   rw [h2, ← Units.val_pow_eq_pow_val, ZMod.val_mul, ← pow_eq_pow_mod _ hζ, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `a b hab`. Conclude with `ZMod.val_injective n (hζ.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) hab)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem muMap_injective {ζ : (PadicAlgCl p)ˣ} (hζ : IsPrimitiveRoot ζ n) : Function.Injective (muMap ζ hζ.pow_eq_one) := by
   intro a b hab
@@ -148,7 +148,7 @@ variable (p n) in
 def powMap : KbarMult p →ₗ[ℤ] KbarMult p := (n : ℤ) • LinearMap.id
 
 /- English proof (translation)
-Use `show (n : ℤ) • (Additive.ofMul x : Additive (PadicAlgCl p)ˣ) = _`. Rewrite using `[natCast_zsmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem powMap_apply (x : (PadicAlgCl p)ˣ) :
     powMap p n (Additive.ofMul x : KbarMult p) = (Additive.ofMul (x ^ n) : KbarMult p) := by
@@ -156,9 +156,9 @@ theorem powMap_apply (x : (PadicAlgCl p)ˣ) :
   rw [natCast_zsmul]; rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p) (NeZero.pos n)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow (NeZero.ne n)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Additive.toMul y : (PadicAlgCl p)ˣ).ne_zero hz.symm`. Use `⟨(Additive.ofMul (Units.mk0 z hz0) : KbarMult p), ?_⟩` and prove the remaining obligations. Rewrite using `[powMap_apply]`. Conclude with `congrArg Additive.ofMul (Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hz))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powMap_surjective : Function.Surjective (powMap p n) := by
   intro y
@@ -172,13 +172,13 @@ theorem powMap_surjective : Function.Surjective (powMap p n) := by
   exact congrArg Additive.ofMul (Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hz))
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h1 : (Additive.toMul y : (PadicAlgCl p)ˣ) ^ n = 1`. Use `powMap_apply (p := p) (n := n) (Additive.toMul y)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(this.symm.trans hy : _)`. Establish `h2 : ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Take `⟨i, hi, hi'⟩` from `(IsPrimitiveRoot.coe_units_iff.2 hζ).eq_pow_of_pow_eq_one h2`. Establish `hi'' : ζ ^ i = (Additive.toMul y : (PadicAlgCl p)ˣ)` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hi')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(i : ZMod n), ?_⟩` and prove the remaining obligations. Rewrite using `[muMap_apply, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hi'']`. Both sides reduce to the same expression. Introduce and unpack `⟨k, rfl⟩`. Rewrite using `[muMap_apply, powMap_apply, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exact_muMap_powMap {ζ : (PadicAlgCl p)ˣ} (hζ : IsPrimitiveRoot ζ n) :
     Function.Exact (muMap ζ hζ.pow_eq_one) (powMap p n) := by

@@ -27,17 +27,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hU : {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} = Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_integer _`. Establish `hC : IsClosed (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isClosed_integer _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Rewrite using `[hU]`. Establish `hUo : IsOpen (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isOpen_set_pi Set.finite_univ (fun _ _ => hO)`. Establish `hUc : IsClosed (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isClosed_set_pi (fun _ _ => hC)`. Establish `hUk : IsCompact (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isCompact_univ_pi (fun _ => hK)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))) = U at hUo hUc hUk ⊢`. Use `⟨IsLocallyConstant.iff_isOpen_fiber.2 fun y => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : (1 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = U`. Use extensionality with `x`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h1]`. Rewrite using `[this]`. Conclude with `hUo`. Distinguish the cases in `h0 : (0 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = Uᶜ`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h0]`. Rewrite using `[this]`. Conclude with `hUc.isOpen_compl`. Establish `: U.indicator 1 ⁻¹' {y} = ∅`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx] <;> assumption`. Rewrite using `[this]`. Conclude with `isOpen_empty`. Conclude with `hUk.of_isClosed_subset (isClosed_tsupport _) (closure_minimal Set.support_indicator_subset hUc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem_SB {κ : Type} [Fintype κ] (v : HeightOneSpectrum (𝓞 F)) :
     Set.indicator {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} 1 ∈ GlobalTheory.WeilM.SB (κ → Fv F v) := by
@@ -85,9 +85,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h1` using `h (1 - GlobalTheory.EmbChart.atPlace v 1) (by rw [map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self])`. Rewrite `h1` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Establish `h3 : a = GlobalTheory.EmbChart.atPlace v (evFin F v a)` using `by conv_lhs => rw [h1]`. Rewrite using `[GlobalTheory.EmbChart.atPlace_mul_right, one_mul]`. Use `conv_lhs => rw [h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem psi_eq_psiLoc (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (a : AF F) (h : At (evFin F v) a) :
     ψ a = psiLoc ψ v (evFin F v a) := by
@@ -100,19 +100,19 @@ theorem psi_eq_psiLoc (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F))
   rfl
 
 /- English proof (translation)
-Establish `hAt : ∀ {z : AF F}, At (evFin F v) z → ∀ y : AF F, At (evFin F v) (y * z)` using `fun hz y u hu => by`. Use `hz u hu` as an intermediate fact. Rewrite `this`, the goal using `[smul_eq_mul]`. Rewrite using `[mul_left_comm, this, mul_zero]`. Establish `hAtAdd : ∀ {z z' : AF F}, At (evFin F v) z → At (evFin F v) z' → At (evFin F v) (z + z')` using `fun hz hz' u hu => by rw [smul_add, hz u hu, hz' u hu, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAtSum : ∀ f : κ → AF F, (∀ i, At (evFin F v) (f i)) → At (evFin F v) (∑ i, f i)` using `fun f hf u hu => by rw [Finset.smul_sum]; exact Finset.sum_eq_zero fun i _ => hf i u hu`. Establish `h2' : evFin F v (⅟(2 : AF F)) = algebraMap F (Fv F v) 2⁻¹` using `by show evFin F v (algebraMap F (AF F) 2⁻¹) = _`. Conclude with `AlgHom.commutes _ _`. Establish `hpsi1 : ∀ z : AF F, At (evFin F v) z → evFin F v z ∈ v.adicCompletionIntegers F → ψ z = 1` using `fun z hz hz' => by rw [psi_eq_psiLoc ψ v z hz]; exact hψ _ hz'`. Establish `hcψ : ψ (⅟(2 : AF F) * c) = 1` using `hpsi1 _ (hAt hc.1 _) (by rw [map_mul, h2']; exact mul_mem h2 hc.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : At (evFin F v) w.1` using `fun u hu => funext fun k => by`. Use `(hw k).1 u hu` as an intermediate fact. Simplify using `using this`. Introduce `r hr`. Rewrite using `[hcψ, one_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, schr]`. Rewrite using `[hr.1 x w.1 hw1]`. Distinguish the cases in `hx : ∀ k, evFin F v (x k) ∈ v.adicCompletionIntegers F`. Establish `hx' : (fun i => evFin F v ((x + w.1) i)) ∈ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F}` using `fun k => by simp only [Pi.add_apply, map_add]; exact add_mem (hx k) (hw k).2.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx', Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} from hx)]`. Establish `hA : At (evFin F v) (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))` using `hAtAdd (hAtSum _ fun i => hAt (hw i).2.2.1 _) (hAt (hAtSum _ fun i => hAt (hw i).2.2.1 _) _)`. Establish `hI : evFin F v (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) ∈ v.adicCompletionIntegers F`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, h2']`. Conclude with `add_mem (sum_mem fun i _ => mul_mem (hx i) (hw i).2.2.2) (mul_mem h2 (sum_mem fun i _ => mul_mem (hw i).2.1 (hw i).2.2.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpsi1 _ hA hI, one_mul]`. Simplify using the standard rewrite rules. Establish `hx' : (fun i => evFin F v ((x + w.1) i)) ∉ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F}`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Use `sub_mem (h k) (hw k).2.1` as an intermediate fact. Simplify using `using this`. Rewrite using `[Set.indicator_of_notMem hx', Set.indicator_of_notMem (show (fun i => evFin F v (x i)) ∉ {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} from hx)]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem acts_indicator {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F))
     (hψ : ∀ x ∈ v.adicCompletionIntegers F, psiLoc ψ v x = 1)
@@ -178,7 +178,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨indicator_mem_SB v, fun h => ?_, θ, hθ, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `congrFun h 0` as an intermediate fact. Simplify using `[Set.indicator, zero_mem] at this`. Take `⟨h1, h3⟩` from `GlobalTheory.T.coords_and_symplectic_integral_on_placeLattice σ X.J Y.J (θ : E) v M.co.e.toLinearMap T₀ yf zf hyz hc hs γ (hgen hγ)`. Conclude with `acts_indicator ψ v hψ h2 (M.co.e γ) h1 _ h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isVac_of_good {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} (M : Model σ X Y)
     (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (θ : 𝓞 E) (hθ : (θ : E) + σ θ = 1)
@@ -202,21 +202,17 @@ end GlobalTheory.StdVacuum
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X Y r s r' s' hB hX hY M hrat`. Take `⟨θ, hθ⟩` from `GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified F E σ hB.cm (by haveI := hB.unram; infer_instance)`. Use `choose yf zf hyz using hrat`. Take `⟨sX, hsX⟩` from `hX.lat.fg.restrictScalars (R := ℤ)`. Take `⟨sY, hsY⟩` from `hY.lat.fg.restrictScalars (R := ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : (Fin n → E) →ₗ[ℤ] (Fin d → E) →ₗ[ℤ] Matrix (Fin n) (Fin d) E` to `LinearMap.mk₂ ℤ (fun x y => Matrix.vecMulVec x y) (fun x x' y => by ext i j; simp [Matrix.vecMulVec_apply, add_mul]) (fun c x y => by ext i j; simp [Matrix.vecMulVec_apply, mul_assoc]) (fun x y y' => by ext i j; simp [Matrix.vecMulVec_apply, mul_add]) (fun c x y => by ext i j; si …`. Use `set T₀ : Set (Matrix (Fin n) (Fin d) E) := Set.image2 (fun x y => f x y) (sX : Set _) (sY : Set _) with hT₀def`. Establish `hT₀ : T₀.Finite` using `sX.finite_toSet.image2 _ sY.finite_toSet`. Establish `hmem : ∀ x ∈ X.L, ∀ y ∈ Y.L, Matrix.vecMulVec x y ∈ Submodule.span ℤ T₀`. Introduce `x hx y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x ∈ Submodule.span ℤ (sX : Set (Fin n → E))`. Rewrite using `[hsX]`. Conclude with `hx`. Establish `hy' : y ∈ Submodule.span ℤ (sY : Set (Fin d → E))`. Rewrite using `[hsY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `hy`. Use `Submodule.apply_mem_map₂ f hx' hy'` as an intermediate fact. Rewrite `this` using `[Submodule.map₂_span_span]`. Then use the resulting hypothesis. Establish `hgen : ∀ v : HeightOneSpectrum (𝓞 F), latAtV X Y v ≤ AddSubgroup.closure {z | ∃ a : AF F, At (evFin F v) a ∧ evFin F v a ∈ v.adicCompletionIntegers F ∧ ∃ t ∈ T₀, z = a • incM F t}`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, hav, x, hx, y, hy, rfl⟩`. Set `g : Matrix (Fin n) (Fin d) E →+ Matrix (Fin n) (Fin d) (AE F E)` to `(DistribSMul.toAddMonoidHom _ a).comp (AddMonoidHom.mapMatrix (inclR (F := F) (E := E) (AF F)).toAddMonoidHom)`. Establish `h1 : Matrix.vecMulVec x y ∈ AddSubgroup.closure T₀`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hmem x hx y hy`. Establish `h2 : g (Matrix.vecMulVec x y) ∈ (AddSubgroup.closure T₀).map g` using `AddSubgroup.mem_map_of_mem g h1`. Rewrite `h2` using `[AddMonoidHom.map_closure]`. Use `AddSubgroup.closure_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
-
-Conclude with `⟨a, ha, hav, t, ht, rfl⟩`. Establish `hV : ∀ᶠ v in Filter.cofinite, (∀ x ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F, psiLoc B.ψ v x = 1) ∧ algebraMap F (Fv F v) 2⁻¹ ∈ v.adicCompletionIntegers F ∧ (∀ t ∈ T₀, ∀ k, algebraMap F (Fv F v) (yf t k) ∈ v.adicCompletionIntegers F ∧ algebraMap F (Fv F v) (zf t k) …`. Establish `hint : ∀ a : F, ∀ᶠ v in Filter.cofinite, algebraMap F (Fv F v) a ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F` using `fun a => (algebraMap F (FiniteAdeleRing (𝓞 F) F) a).2`. Use `(GlobalTheory.T.localAddCharComponent_trivial_integers_eventually B.ψ hB.std.1).and ((hint _).and (((Filter.eventually_all_finite hT₀).2 fun t _ => Filter.eventually_all.2 fun k => (hint _).and (hint _)).and ?_))` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finite hT₀).2 fun t _ => (Filter.eventually_all_finite hT₀).2 fun t' _ => hint _`.
-
-Use `filter_upwards [hV] with v hv`. Conclude with `GlobalTheory.StdVacuum.isVac_of_good M B.ψ v θ hθ T₀ yf zf hyz (hgen v) hv.1 hv.2.1 hv.2.2.1 hv.2.2.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StdVacuum.eventually_isVac_indicator : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → Y.IsSkew σ B r' s' →

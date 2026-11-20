@@ -16,9 +16,9 @@ namespace GlobalTheory.UpKeep3
 section Abstract
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span ℂ (Set.range fun k => j (b k))` using `hsp ▸ Submodule.mem_top`. Establish `h : Submodule.span ℂ (Set.range fun k => j (b k)) ≤ (Submodule.span ℂ (Set.range fun z => j (φ z))).comap C`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show C (j (b k)) ∈ Submodule.span ℂ (Set.range fun z => j (φ z))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC]`. Conclude with `Submodule.subset_span ⟨b k, rfl⟩`. Conclude with `h hv`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_op {K : Type} [Field K] {σ : K →+* ℂ} {V H : Type} [AddCommGroup V] [Module K V] [AddCommGroup H]
     [Module ℂ H] (j : V →ₛₗ[σ] H) {ι : Type} (b : ι → V) (hsp : Submodule.span ℂ (Set.range fun k => j (b k)) = ⊤)
@@ -34,7 +34,7 @@ theorem mem_span_of_op {K : Type} [Field K] {σ : K →+* ℂ} {V H : Type} [Add
   exact h hv
 
 /- English proof (translation)
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_apply_j {K : Type} [Field K] {σ : K →+* ℂ} {G V H : Type} [Group G] [Fintype G] [AddCommGroup V] [Module K V]
     [AddCommGroup H] [Module ℂ H] (j : V →ₛₗ[σ] H) (r : Representation K G V) (ρ : Representation ℂ G H)
@@ -43,7 +43,7 @@ theorem sum_apply_j {K : Type} [Field K] {σ : K →+* ℂ} {G V H : Type} [Grou
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hj]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ρ` using `(injective_iff_map_eq_zero ρ).2 fun y hy => by`. Rewrite using `[← norm_eq_zero, ← hρ, hy, norm_zero]`. Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `LinearMap.surjective_of_injective hinj v`. Rewrite using `[(LinearMap.norm_map_iff_inner_map_map ρ).1 hρ, LinearMap.adjoint_inner_right, LinearMap.adjoint_inner_right, h, (LinearMap.norm_map_iff_inner_map_map π).1 hπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_comm {E H : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (Θ : E →ₗ[ℂ] H) (π : H →ₗ[ℂ] H)
@@ -57,7 +57,7 @@ theorem adjoint_comm {E H : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ 
     (LinearMap.norm_map_iff_inner_map_map π).1 hπ]
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ (Set.range fun i => Tw.mk s (f i)) ≤ Tw.sub s (Submodule.span ℂ (Set.range f))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span (R := ℂ) (M := E) ⟨i, rfl⟩`. Conclude with `hle h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_span_untwist {s : Bool} {E ι : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (f : ι → E) (z : E)
     (h : Tw.mk s z ∈ Submodule.span ℂ (Set.range fun i => Tw.mk s (f i))) : z ∈ Submodule.span ℂ (Set.range f) := by
@@ -68,9 +68,9 @@ theorem mem_span_untwist {s : Bool} {E ι : Type} [NormedAddCommGroup E] [InnerP
   exact hle h
 
 /- English proof (translation)
-Take `⟨ρ, hj, hn, hΘ⟩` from `hρ`. Establish `e1 : ∀ g, ρ g (LinearMap.adjoint Θ u) = LinearMap.adjoint Θ (π g u)` using `fun g => adjoint_comm Θ (π g) ((LinearMap.norm_map_iff_inner_map_map (π g)).2 (hπ g)) (ρ g) (hn g) (hΘ g) u`. Establish `fix : ∀ c : G → K, ∑ g, σ (c g) • π g u = u → (∑ g, σ (c g) • ρ g) (LinearMap.adjoint Θ u) = LinearMap.adjoint Θ u` using `fun c hc => by conv_rhs => rw [← hc]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, e1, map_sum, map_smul]`. Establish `h` using `mem_span_of_op j b hsp ((∑ g, σ (a g) • ρ g) ∘ₗ (∑ g, σ (l g) • ρ g)) (fun z => (∑ g, a g • r g) ((∑ g, l g • r g) z)) (fun z => by rw [LinearMap.comp_apply, sum_apply_j j r ρ hj, sum_apply_j j r ρ hj]) (LinearMap.adjoint Θ u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.comp_apply, fix l hl, fix a ha]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adjoint_mem_span {K G V E H ι : Type} [Field K] {σ : K →+* ℂ} [Group G] [Fintype G] [AddCommGroup V] [Module K V]
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
@@ -93,7 +93,7 @@ theorem adjoint_mem_span {K G V E H ι : Type} [Field K] {σ : K →+* ℂ} [Gro
   rwa [LinearMap.comp_apply, fix l hl, fix a ha] at h
 
 /- English proof (translation)
-Rewrite `h` using `[Tw.adjoint_map]`. Use `Submodule.span_mono ?_ (mem_span_untwist (s := s) f _ h)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(hf i).elim fun k hk => ⟨k, hk.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem untwist_adjoint {s : Bool} {E H ι κ : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (Θ : E →ₗ[ℂ] H) (u : H) (f : ι → E) (f' : κ → E)
@@ -106,9 +106,9 @@ theorem untwist_adjoint {s : Bool} {E H ι κ : Type} [NormedAddCommGroup E] [In
   exact (hf i).elim fun k hk => ⟨k, hk.symm⟩
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `S.basis.equivFun.symm.surjective z`. Establish `h : S.gaMat r (lvlIdem P ψ) *ᵥ w ∈ LinearMap.range (imE (S.gaMat r (lvlIdem P ψ))).mulVecLin`. Rewrite using `[(image_idempotent_spec K _ _).2]`. Conclude with `⟨w, rfl⟩`. Take `⟨x, hx⟩` from `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, (GlobalTheory.Mem.LiftForms.gaOp_coord S r _ w).trans (congrArg _ hx.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lvl_coord {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) {G : Type} [Group G] [Fintype G]
     (r : Representation K G S.Forms) (P : Subgroup G) (ψ : P →* Kˣ) (z : S.Forms) :
@@ -125,7 +125,7 @@ end Abstract
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
 
 /- English proof (translation)
-The claim follows from `(exists_lvl_coord (A.MtildeCSD t) (A.leftGroupActionRight t) P ψ z).elim fun x hx => ⟨x, (congrArg ((A.MtildeCSD t).gaOp (A.leftGroupActionRight t) (idemOf A.X)) hx).trans (GoodProj.rowForm_rE ok P ψ t x).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_rowForm {A : FamIn D.what₂.LL G Pl0 T D.R.m} {s : ℕ} (ok : A.fam.Ok s) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ)
     (t : T) (z : (A.MtildeCSD t).Forms) :
@@ -137,7 +137,7 @@ theorem exists_rowForm {A : FamIn D.what₂.LL G Pl0 T D.R.m} {s : ℕ} (ok : A.
 variable {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Rewrite `hu` using `[(GlobalTheory.LevelRows3.eel_eq_typeSp3 R F hC).2]`. Use `GlobalTheory.RowsNonzero.sum_lvlIdem (R.gEx F) F.P1 F.ψ1 fun h => ?_` and prove the remaining obligations. Use `(Submodule.mem_iInf _).1 hu h` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_lvl_fix (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : R.WeakCharacterisation F) (u : (R.toCx3 F).EE) (hu : u ∈ (R.toCx3 F).EEl true) :
     ∑ g, A3.A.fam.v0.embedding ((lvlIdem F.P1 F.ψ1).coeff g) • R.gEx F g u = u := by
@@ -148,7 +148,7 @@ theorem sum_lvl_fix (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : R.WeakCharacte
   exact this
 
 /- English proof (translation)
-The claim follows from `adjoint_mem_span (V := (A3.A.fam.R A3.A.fam.μ0).S.Forms) (E := (R.toCx3 F).FC A3.A.fam.μ0) ((R.toCx3 F).jR A3.A.fam.μ0) (Formalism.IndefR.Cx.CxData.bR (A := A3.fam3.amb3) A3.A.fam.μ0) (RealDat3.kFormR_of (F := F) hC.base.models A3.A.fam.μ0).2 (A3.A.fam.R A3.A.fam.μ0).r (R.gEx F) …`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_mem_tw (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : R.WeakCharacterisation F) (hH : Holds R F) (u : (R.toCx3 F).EE)
     (hu : u ∈ (R.toCx3 F).EEl true) :
@@ -163,7 +163,7 @@ theorem adjoint_mem_tw (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : R.WeakChara
     (GlobalTheory.RowsPosRed.sum_idem_gEx R F (GlobalTheory.CoreOfWeak.core_of_weak R F hC hH.aux.ex).1 u) (sum_lvl_fix R F hC u hu)
 
 /- English proof (translation)
-The claim follows from `untwist_adjoint (s := twAt D.what₂.embLL A3.A.v0) (R.Th A3.A.μ0) w (fun z => R.jX A3.A.μ0 ((A3.A.MtildeCSD A3.A.μ0).gaOp (A3.A.leftGroupActionRight A3.A.μ0) (idemOf A3.A.X) ((A3.A.MtildeCSD A3.A.μ0).gaOp (A3.A.leftGroupActionRight A3.A.μ0) (lvlIdem F.P1 F.ψ1) z))) _ (fun z => (ex …`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_mem_of_row (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : R.WeakCharacterisation F) (hH : Holds R F) (w : R.HE.H)
     (hw : R.HE.e w ∈ R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) :
@@ -180,9 +180,9 @@ end GlobalTheory.UpKeep3
 namespace GlobalTheory.UpKeep3
 
 /- English proof (translation)
-Introduce `_ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH uE hread y`. Establish `hrow : R.HE.e (uE y) ∈ R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)`. Establish `h1` using `(Y.Ish.jE y).2`. Rewrite `h1` using `[hread y]`. Take `⟨m, hm, hm'⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : m = R.HE.e (uE y)` using `(PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).injective hm'`. Rewrite using `[← e]`. Conclude with `hm`. Conclude with `adjoint_mem_of_row R F hP.char hH (uE y) hrow`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_mem_span_rowForm : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → ∀ (uE : D.what₂.EE →ₗ[ℂ] R.HE.H), (∀ y, (Y.Ish.jE y).1 = PiTensorProduct.lift (R.HE.e (uE y))) → ∀ y, LinearMap.adjoint (R.Th A3.A.μ0) (uE y) ∈ Submodule.span ℂ (Set.range fun x => R.jX A3.A.μ0 (rowForm A3.A F.P1 F.ψ1 A3.A.μ0 ((rE D A3.A F.P1 F.ψ1 A3.A.μ0).mulVec x))) := by
   intro _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH uE hread y

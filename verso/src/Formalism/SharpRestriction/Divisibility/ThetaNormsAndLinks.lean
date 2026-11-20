@@ -328,34 +328,34 @@ theorem runConditions_eq (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) :
     RunConditions D L X H C2 A2 CR CT CRd = LiftErrorLocal.adm11 D L X H C2 A2 CR CT CRd := rfl
 
 /- English proof (translation)
-Introduce `_ w _` and use `h w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gg_of_everyPlace (C : NChoice D) (h : GGEveryPlace D C) : Conclusion5 D C := fun _ w _ => h w
 /- English proof (translation)
-Introduce `_ w _` and use `h w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem share_of_everyPlace (C : NChoice D) (h : ShareEveryPlace D C) : Conclusion6 D C := fun _ w _ => h w
 /- English proof (translation)
-Introduce `_ w _` and use `h w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem shareRank_of_everyPlace (C : NChoice D) (h : ShareRankEveryPlace D C) : ShareLatticeRanks D C := fun _ w _ => h w
 
 /- English proof (translation)
-Introduce `w _ _` and use `⟨h5 w, h6 w, h6b w, fun _ => hL w, fun _ => hL' w⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem offTypePrime_of {Xd : DivX D} (O : PDVN.ONObj D nch Xd) (h5 : GGEveryPlace D nch) (h6 : ShareEveryPlace D nch) (h6b : ShareRankEveryPlace D nch)
     (hL : LinkLatticesEveryPlace D O.X) (hL' : LinkLatticesEveryPlace D O.X') : PDVN.OffTypePrimeConditions O :=
   fun w _ _ => ⟨h5 w, h6 w, h6b w, fun _ => hL w, fun _ => hL' w⟩
 
 /- English proof (translation)
-Introduce `i j hj b g` and use `by by_cases hi : D.ntw.NonzeroIndexPlace i · exact (h i hi j hj b).1 g · exact hO i hi j hj b g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supGroupStable_of (E : IntegralHeckeForms.XD D) (h : IntegralHeckeForms.adm3 D E) (hO : SupStableOffPairs D) : SupLatticeGroupStable D := fun i j hj b g => by
   by_cases hi : D.ntw.NonzeroIndexPlace i
   · exact (h i hi j hj b).1 g
   · exact hO i hi j hj b g
 /- English proof (translation)
-Introduce `i j hj b` and use `by by_cases hi : D.ntw.NonzeroIndexPlace i · exact (h i hi j hj b).2.2.1 · exact hO i hi j hj b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supSpans_of (E : IntegralHeckeForms.XD D) (h : IntegralHeckeForms.adm3 D E) (hO : SupSpansOffPairs D) : SupSpansPsiPart D := fun i j hj b => by
   by_cases hi : D.ntw.NonzeroIndexPlace i
@@ -411,17 +411,15 @@ def Stmt (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : Prop :=
 end Stmt
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Introduce `y La`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(M.nrm_def y La 1 _).2 (by rintro _ ⟨x, rfl⟩; exact h1 y La x)`. Introduce `n s`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Set.range (M.nAt y La (p * n) (G.pull y La n s)) = Set.range (M.nAt y La n s)`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨M.mulP y La x, (h2 y La n s x).symm⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, rfl⟩`. Take `⟨x', rfl⟩` from `M.mulP_surjective y La x`. Conclude with `⟨x', h2 y La n s x'⟩`. Conclude with `IsLUB.unique (M.nrm_def y La (p * n) _) (e ▸ M.nrm_def y La n s)`. Introduce and unpack `n γ s ⟨k, hk, hγ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc, hcs⟩` from `h3 y La n`. Establish `c1 : c γ = 1`. Establish `: c γ ^ k = 1` using `by rw [← map_pow, hγ, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (hc γ).le hk.ne').1 this`. Establish `e : Set.range (M.nAt y La n (Lc.act y La n γ s)) = Set.range (M.nAt y La n s)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩; exact ⟨M.trP y La n γ x, by rw [hcs, c1, one_mul]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨(M.trP y La n γ).symm x, by rw [hcs, c1, one_mul, Equiv.apply_symm_apply]⟩`.
-
-Conclude with `IsLUB.unique (M.nrm_def y La n _) (e ▸ M.nrm_def y La n s)`. Introduce `n s hs DF`. Conclude with `h4 y La n s (fun x _ => ((M.nrm_def y La n s).1 ⟨x, rfl⟩).trans hs) DF`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MetX.int {D : D7} {r j p : ℕ} {Lc : ModuliIntegralCharts.Loc D r j p} {G : LiftErrorLocal.GeoX Lc} (M : MetX G) (h : M.All) :
     G.INT := by
@@ -452,17 +450,15 @@ theorem MetX.int {D : D7} {r j p : ℕ} {Lc : ModuliIntegralCharts.Loc D r j p} 
     exact h4 y La n s (fun x _ => ((M.nrm_def y La n s).1 ⟨x, rfl⟩).trans hs) DF
 
 /- English proof (translation)
-Introduce `h` and use `⟨fun d i => (Z.mg d i).int (h.1 d i), fun N i => (Z.mc N i).int (h.2 N i)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stmt1 (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (Z : Loc8 X) : IntegralityFromMetric D X Z :=
   fun h => ⟨fun d i => (Z.mg d i).int (h.1 d i), fun N i => (Z.mc N i).int (h.2 N i)⟩
 
 /- English proof (translation)
-Unfold `ModuliIntegralCharts.Ospan at *`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, s, hs, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * b, by rw [norm_mul]; exact mul_le_one₀ ha (norm_nonneg _) hb, s, hs, by rw [mul_smul]⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ospan_smul {C V : Type} [NormedField C] [AddCommGroup V] [Module C V] {S : Set V} {a : C}
     (ha : ‖a‖ ≤ 1) {v : V} (hv : v ∈ ModuliIntegralCharts.Ospan (C := C) S) : a • v ∈ ModuliIntegralCharts.Ospan (C := C) S := by
@@ -477,25 +473,21 @@ theorem ospan_smul {C V : Type} [NormedField C] [AddCommGroup V] [Module C V] {S
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `key : ∀ t : Q.TA, Q.red ⟨Q.i t, Q.i_mem t⟩ ∈ ModuliIntegralCharts.Ospan (C` using `(Lc.fld y).C) (Set.range (Lc.ht y)) := by`. Introduce `t`. Establish `ht : t ∈ Submodule.span Q.A (Set.range Q.iT)` using `by rw [Q.iT_span]; trivial`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨s, rfl⟩` from `hx`. Rewrite using `[← Q.ht_eq]`. Conclude with `AddSubgroup.subset_closure ⟨1, by simp, _, ⟨s, rfl⟩, by simp⟩`. Consider the case `zero`. Establish `: (⟨Q.i 0, Q.i_mem 0⟩ : Q.FilM) = 0` using `Subtype.ext (map_zero _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (⟨Q.i (a + b), Q.i_mem _⟩ : Q.FilM) = ⟨Q.i a, Q.i_mem a⟩ + ⟨Q.i b, Q.i_mem b⟩` using `Subtype.ext (map_add _ _ _)`. Rewrite using `[this, map_add]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a x _ hx`. Establish `: (⟨Q.i (a • x), Q.i_mem _⟩ : Q.FilM) = a • ⟨Q.i x, Q.i_mem x⟩` using `Subtype.ext (map_smul _ _ _)`. Rewrite using `[this, Q.red_smul]`. Conclude with `ospan_smul ((Q.th_range _).2 ⟨a, rfl⟩) hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, _, ⟨t, rfl⟩, rfl⟩`. Take `⟨a', rfl⟩` from `(Q.th_range a).1 ha`. Rewrite using `[Q.ht_eq, ← Q.red_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Q.red_range _).2 ⟨_, rfl⟩`. Introduce `x hx c hc`. Take `⟨m, rfl⟩` from `(Q.red_range x).1 hx`. Take `⟨t, ht⟩` from `Q.k_Fil m.1 m.2`. Establish `h1 : Q.nu • m.1 = Q.i t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Q.xi • (Q.nu • m.1 - Q.i t) = 0`. Rewrite using `[smul_sub, smul_smul, ← Q.ik, ht, map_smul, sub_self]`. Conclude with `sub_eq_zero.1 (Q.tf _ this)`. Distinguish the cases in `h0 : Q.th Q.nu = 0`. Establish `: c = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hc` using `[← Q.th_nu, h0, norm_zero]`. Conclude with `norm_le_zero_iff.1 hc`. Rewrite using `[this, zero_smul]`. Conclude with `zero_mem _`. Establish `hc' : ‖c / Q.th Q.nu‖ ≤ 1`.
-
-Rewrite using `[norm_div]; exact div_le_one_of_le₀ (by rw [Q.th_nu]; exact hc) (norm_nonneg _)`. Take `⟨a, ha⟩` from `(Q.th_range _).1 hc'`. Establish `e : c = Q.th (a * Q.nu)` using `by rw [map_mul, ha, div_mul_cancel₀ _ h0]`. Rewrite using `[e, ← Q.red_smul]`. Establish `: ((a * Q.nu) • m : Q.FilM) = ⟨Q.i (a • t), Q.i_mem _⟩` using `Subtype.ext (by show (a * Q.nu) • m.1 = Q.i (a • t)`.
-
-Rewrite using `[mul_smul, h1, map_smul])`. Rewrite using `[this]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QPack.htb_at {D : D7} {r j p : ℕ} {Lc : ModuliIntegralCharts.Loc D r j p} {y : Lc.Pt Lc.Xm} (Q : QPack Lc y) :
     ModuliIntegralCharts.Ospan (C := (Lc.fld y).C) (Set.range (Lc.ht y)) ≤ Lc.om y ∧
@@ -547,17 +539,15 @@ theorem QPack.htb_at {D : D7} {r j p : ℕ} {Lc : ModuliIntegralCharts.Loc D r j
       rw [this]; exact key _
 
 /- English proof (translation)
-Introduce `h` and use `⟨fun d i y => (h.1 d i y).elim fun Q => Q.htb_at, fun N i y => (h.2 N i y).elim fun Q => Q.htb_at⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stmt2 (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) : HodgeTateFromSandwich D X :=
   fun h => ⟨fun d i y => (h.1 d i y).elim fun Q => Q.htb_at, fun N i y => (h.2 N i y).elim fun Q => Q.htb_at⟩
 
 /- English proof (translation)
-Take `⟨hg, hr, ho, he⟩` from `h`. Distinguish the cases in `hd : laDiv X (2 * (NumberField.discr D.host.E).natAbs * D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') la`. Establish `hp` using `la.isPrime`. Unfold `laDiv at hd`. Move the coercions through the operations in `at hd`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Break down `hp.mem_or_mem hd with hd | hd` into its components or cases. Break down `hp.mem_or_mem hd with hd | hd` into its components or cases. Break down `hp.mem_or_mem hd with hd | hd` into its components or cases. Break down `hp.mem_or_mem hd with hd | hd` into its components or cases. Conclude with `hr j h1 h2 la (by unfold laDiv; push_cast; exact hd)`.
-
-Conclude with `hg j h1 h2 0 la hd`. Conclude with `hg j h1 h2 1 la hd`. Conclude with `ho j h1 h2 la (by unfold laDiv; push_cast; exact Ideal.mul_mem_right _ _ hd)`. Conclude with `ho j h1 h2 la (by unfold laDiv; push_cast; exact Ideal.mul_mem_left _ _ hd)`. Conclude with `he j h1 h2 la hd`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem integral_all_places (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch)
     (h : AdditiveCharacterIntegrality D X ∧ ScalingIntegrality D X ∧ CrudeIntegrality D X ∧ ThetaLevelPrimeIntegrality D X) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
@@ -580,9 +570,7 @@ theorem integral_all_places (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D
   · exact he j h1 h2 la hd
 
 /- English proof (translation)
-Introduce `h j h1 h2`. Establish `H` using `fun la => integral_all_places D X h j h1 h2 la`. Use `⟨fun F hF => ?_, fun F hF => ?_, fun F hF => ?_, fun F hF => ?_⟩` and prove the remaining obligations. Conclude with `((X.W j h1 h2).Mlat_eq _ F).2 fun la y => (H la).1 F hF y`. Conclude with `((X.W j h1 h2).Mlat_eq _ F).2 fun la y => (H la).2.1 F hF y`.
-
-Conclude with `((X.W j h1 h2).Mlat_eq _ F).2 fun la y => (H la).2.2.1 F hF y`. Conclude with `((X.W j h1 h2).Mlat_eq _ F).2 fun la y => (H la).2.2.2 F hF y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stmtS (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) : ScaledGeneratorsIntegral D X := by
   intro h j h1 h2
@@ -594,9 +582,9 @@ theorem stmtS (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) : Scaled
   · exact ((X.W j h1 h2).Mlat_eq _ F).2 fun la y => (H la).2.2.2 F hF y
 
 /- English proof (translation)
-Introduce and unpack `⟨hc, hn, h4, hs, hd, hS⟩ j h1 h2`. Take `⟨c1, c2⟩` from `hc j h1 h2`. Take `⟨nA, nC, n3, nT, nR⟩` from `hn j h1 h2`. Take `⟨d0, d1, d2, d3⟩` from `hd j h1 h2`. Use `⟨c1, fun i0 => ⟨(nR i0).1, (nR i0).2.1, (nR i0).2.2, c2 i0⟩, fun hg => ⟨nA, nC, hs j h1 h2, ⟨d0, d1, d2, fun la y => ?_⟩, hS j h1 h2, n3, h4 j h1 h2, nT⟩⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ∃ i0, X.laOver i0 la`. Take `⟨i0, hi⟩` from `h`. Conclude with `hg i0 la hi y`. Conclude with `d3 la (not_exists.1 h) y`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem run_conditions_holds (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (H : WeightAlgebra.KHyp)
     (C2 A2 CR CT CRd : ℝ) : RunFromInputs D L X H C2 A2 CR CT CRd := by
@@ -611,14 +599,14 @@ theorem run_conditions_holds (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X :
   · exact d3 la (not_exists.1 h) y
 
 /- English proof (translation)
-Unfold `eSh`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem eSh_nonneg (D : D7) : 0 ≤ eSh D := by unfold eSh; positivity
 
 /- English proof (translation)
-Unfold `eSh`. Establish `: (((D.R.f : ℝ) * D.R.k) ^ 3)⁻¹ ≤ 1`. Break down `Nat.eq_zero_or_pos (D.R.f * D.R.k) with h | h` into its components or cases. Establish `h' : ((D.R.f : ℝ) * D.R.k) = 0` using `by exact_mod_cast h`. Rewrite using `[h']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h' : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.k` using `by exact_mod_cast h`. Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ h')`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eSh_le (D : D7) : eSh D ≤ 1 / 4 := by
   unfold eSh
@@ -631,11 +619,11 @@ theorem eSh_le (D : D7) : eSh D ≤ 1 / 4 := by
   linarith
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [IntegralHeckeForms.zO, MonoidAlgebra.map_zero]`. Consider the case `add f g hf hg`. Establish `: IntegralHeckeForms.zO D.nexp i j b (f + g) x = IntegralHeckeForms.zO D.nexp i j b f x + IntegralHeckeForms.zO D.nexp i j b g x`. Simplify using `[IntegralHeckeForms.zO, MonoidAlgebra.map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `add_mem hf hg`. Consider the case `single g a`. Establish `: IntegralHeckeForms.zO D.nexp i j b (MonoidAlgebra.single g a) x = a • (D.nexp.actG i j b g x)`. Simplify using `[IntegralHeckeForms.zO, MonoidAlgebra.map_single, MonoidAlgebra.lift_single]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hS g ⟨x, hx, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem zO_mem (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     (hS : ∀ g : G0g D.nd, (D.nexp.Bsup i j b).map
@@ -654,21 +642,19 @@ theorem zO_mem (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     rw [this]; exact Submodule.smul_mem _ _ (hS g ⟨x, hx, rfl⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨hR, hG, hB, hT, hA, hS⟩ w j hj b`. Establish `e0` using `eSh_nonneg D`. Establish `e1` using `eSh_le D`. Establish `r` using `hR w j hj b`. Establish `bd` using `hB w j hj b`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tr` using `hT w j hj b`. Establish `k0 : 0 ≤ dK D (C.twI w) j b` using `Nat.cast_nonneg _`. Establish `z0 : 0 ≤ d0 D (C.twI w) j b` using `Nat.cast_nonneg _`. Use `⟨?_, tr, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dK D (C.twI w) j b / LiftErrorLocal.delq D ≤ 2 * d0 D (C.twI w) j b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `le_or_gt (LiftErrorLocal.delq D) 0 with hδ | hδ` into its components or cases. Conclude with `(div_nonpos_of_nonneg_of_nonpos k0 hδ).trans (by positivity)`. Rewrite using `[div_le_iff₀ hδ]`. Establish `a1 : (1 - eSh D) * ((1 - eSh D) * dK D (C.twI w) j b) ≤ (1 - eSh D) * ((Nat.card D.nexp.U : ℝ) * d0 D (C.twI w) j b)` using `mul_le_mul_of_nonneg_left r (by linarith)`. Establish `a2 : ((1 - eSh D) * (Nat.card D.nexp.U : ℝ)) * d0 D (C.twI w) j b ≤ LiftErrorLocal.delq D * d0 D (C.twI w) j b` using `mul_le_mul_of_nonneg_right hG z0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : (1 / 2) * dK D (C.twI w) j b ≤ (1 - eSh D) * ((1 - eSh D) * dK D (C.twI w) j b)`. Establish `: (1 / 2 : ℝ) ≤ (1 - eSh D) * (1 - eSh D)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Express the relevant statement in the definitionally equal form `d0 D (C.twI w) j b ≤ 2 * (D.what₂.D0 : ℝ)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hx : (1 : ℝ) ≤ L.sc.x ^ (L.sc.ez / 7)` using `Real.one_le_rpow L.sc.one_lt_alt.le (by have := L.sc.ez_pos; positivity)`. Establish `hE : Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) ≤ 1 / 2`. Establish `h1 : Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) ≤ Real.exp (-1)` using `Real.exp_le_exp.2 (by linarith)`. Establish `h2 : (2 : ℝ) ≤ Real.exp 1` using `by have := Real.add_one_le_exp (1 : ℝ); linarith`. Establish `h3 : Real.exp (-1) ≤ 1 / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.exp_neg, one_div]; exact inv_anti₀ (by norm_num) h2`. Conclude with `h1.trans h3`. Establish `: Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) * d0 D (C.twI w) j b ≤ (1 / 2) * d0 D (C.twI w) j b` using `mul_le_mul_of_nonneg_right hE z0`. Establish `tr' : (dG D (C.twI w) j b : ℝ) = (D.what₂.D0 : ℝ)` using `by exact_mod_cast tr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `hA.1 (C.twI w) b`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: IntegralHeckeForms.AO D.nexp (C.twI w) j b x = IntegralHeckeForms.zO D.nexp (C.twI w) j b c x`. Simplify using `only [IntegralHeckeForms.AO, IntegralHeckeForms.zO, IntegralHeckeForms.eO, IntegralHeckeForms.eG, hc, LinearMap.smul_apply, LinearMap.coe_restrictScalars, Nat.cast_smul_eq_nsmul]`. Rewrite using `[map_nsmul, LinearMap.smul_apply]`.
-
-Rewrite using `[this]`. Conclude with `zO_mem D _ j b (fun g => hS _ j hj b g) c x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stmt6 (D : D7) (L : SizeData₂ D) (C : NChoice D) : ShareFromInputs D L C := by
   rintro ⟨hR, hG, hB, hT, hA, hS⟩ w j hj b
@@ -718,7 +704,7 @@ theorem stmt6 (D : D7) (L : SizeData₂ D) (C : NChoice D) : ShareFromInputs D L
     exact zO_mem D _ j b (fun g => hS _ j hj b g) c x hx
 
 /- English proof (translation)
-Establish `h` using `congrArg (MonoidAlgebra.lift (FractionRing (D.ntw.O i)) (Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) (G0g D.nd) (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (D.nexp.actG i j b))) (D.nexp.eAlg_central i b (MonoidAlgebra.single g 1))`. Rewrite `h` using `[map_mul, map_mul, MonoidAlgebra.lift_single, one_smul]`. Establish `h2` using `congrArg (fun f => f x) h`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eG_comm (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (g : G0g D.nd) (x : D.nexp.Fm i j b) :
     D.nexp.actG i j b g (IntegralHeckeForms.eG D.nexp i j b x) = IntegralHeckeForms.eG D.nexp i j b (D.nexp.actG i j b g x) := by
@@ -731,7 +717,7 @@ theorem eG_comm (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (g : G0g D.nd) (x :
   exact h2.symm
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [IntegralHeckeForms.Fm0, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, SetLike.mem_coe, LinearEquiv.coe_coe] at hy ⊢`. Introduce `u`. Rewrite using `[eG_comm, hy u, map_smul]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermFramePairNormalForm_frameSpan_le_of_generators (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) : IntegralHeckeForms.V0 D.nexp i j b ≤ IntegralHeckeForms.Fm0 D.nexp i j b := by
   rintro _ ⟨y, hy, rfl⟩
@@ -741,11 +727,9 @@ theorem hermFramePairNormalForm_frameSpan_le_of_generators (D : D7) (i : D.ntw.T
   rw [eG_comm, hy u, map_smul]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun x hx => hx.2`. Introduce `x hx`. Establish `h1 : x ∈ Submodule.span (FractionRing (D.ntw.O i)) (IntegralHeckeForms.Mall D.nexp i j b : Set (D.nexp.Fm i j b))`. Rewrite using `[hS]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hermFramePairNormalForm_frameSpan_le_of_generators D i j b hx`. Take `⟨y, hy, z, rfl⟩` from `(IsLocalization.mem_span_iff (nonZeroDivisors (D.ntw.O i))).1 h1`. Rewrite `hy` using `[Submodule.span_eq]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨hy, ?_⟩)` and prove the remaining obligations. Use `Submodule.smul_mem (IntegralHeckeForms.V0 D.nexp i j b) (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) z) hx` as an intermediate fact.
-
-Rewrite `this` using `[smul_smul, IsLocalization.mk'_spec', map_one, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_Mj (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     (hS : Submodule.span (FractionRing (D.ntw.O i)) (IntegralHeckeForms.Mall D.nexp i j b : Set (D.nexp.Fm i j b)) =
@@ -762,9 +746,9 @@ theorem span_Mj (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     rwa [smul_smul, IsLocalization.mk'_spec', map_one, one_smul] at this
 
 /- English proof (translation)
-Introduce and unpack `⟨hS, hT⟩ w j hj b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `LiftErrorLocal.rkK LiftErrorLocal.spK`. Rewrite using `[hS _ j hj b]`. Unfold `LiftErrorLocal.rkK`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[span_Mj D _ j b (hS _ j hj b)]`. Conclude with `hT w j hj b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stmt6b (D : D7) (C : NChoice D) : ShareRankFromInputs D C := by
   rintro ⟨hS, hT⟩ w j hj b
@@ -776,9 +760,9 @@ theorem stmt6b (D : D7) (C : NChoice D) : ShareRankFromInputs D C := by
     exact hT w j hj b
 
 /- English proof (translation)
-Unfold `vAdd`. Establish `h` using `la.valuation_le_one (K := K) a`. Distinguish the cases in `h0 : la.valuation K (a : K) = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(WithZero.log_le_log h0 one_ne_zero).2 h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vAdd_nonneg_int {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
     0 ≤ vAdd la (a : K) := by
@@ -799,9 +783,9 @@ def HomI (f : W.Forms) : Prop := (∃ w H, f = W.inc w H) ∧ ∀ la (y : W.Pt l
 def SI : AddSubmonoid W.Forms := AddSubmonoid.closure {f | HomI W f}
 
 /- English proof (translation)
-Unfold `SI at hf`. Proceed by induction on `hf using AddSubmonoid.closure_induction with`. Consider the case `mem x hx => exact hx.2`. Consider the case `zero => intro la y`. Rewrite using `[W.vAt_zero]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Consider the case `add x y _ _ hx hy => intro la z`. Conclude with `(le_min (hx la z) (hy la z)).trans (W.vAt_add la z x y)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem SI_int {f : W.Forms} (hf : f ∈ SI W) : ∀ la (y : W.Pt la), 0 ≤ W.vAt la y f := by
   unfold SI at hf
@@ -811,9 +795,9 @@ theorem SI_int {f : W.Forms} (hf : f ∈ SI W) : ∀ la (y : W.Pt la), 0 ≤ W.v
   | add x y _ _ hx hy => intro la z; exact (le_min (hx la z) (hy la z)).trans (W.vAt_add la z x y)
 
 /- English proof (translation)
-Take `⟨⟨w, F, rfl⟩, h1⟩` from `hf`. Take `⟨⟨w', G, rfl⟩, h2⟩` from `hg`. Use `⟨?_, fun la y => ?_⟩` and prove the remaining obligations. Take `⟨H, hH⟩` from `W.inc_mul w w' F G`. Conclude with `⟨_, H, hH⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[W.vAt_mul]`. Conclude with `add_nonneg (h1 la y) (h2 la y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomI_mul {f g : W.Forms} (hf : HomI W f) (hg : HomI W g) : HomI W (f * g) := by
   obtain ⟨⟨w, F, rfl⟩, h1⟩ := hf
@@ -824,9 +808,9 @@ theorem HomI_mul {f g : W.Forms} (hf : HomI W f) (hg : HomI W g) : HomI W (f * g
   · rw [W.vAt_mul]; exact add_nonneg (h1 la y) (h2 la y)
 
 /- English proof (translation)
-Unfold `SI at *`. Proceed by induction on `hg using AddSubmonoid.closure_induction with`. Consider the case `mem x hx => exact AddSubmonoid.subset_closure (HomI_mul W hf hx)`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem SI_mul {f g : W.Forms} (hf : HomI W f) (hg : g ∈ SI W) : f * g ∈ SI W := by
   unfold SI at *
@@ -836,7 +820,7 @@ theorem SI_mul {f g : W.Forms} (hf : HomI W f) (hg : g ∈ SI W) : f * g ∈ SI 
   | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Take `⟨F, hF, rfl⟩` from `hf`. Conclude with `⟨⟨w, F, rfl⟩, (W.Mlat_eq w F).1 (hN hF)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem emb_HomI {w : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp j w)} (hN : N ≤ B.Mlat j w) {f : W.Forms}
     (hf : f ∈ W.emb w N) : HomI W f := by
@@ -844,11 +828,11 @@ theorem emb_HomI {w : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp 
   exact ⟨⟨w, F, rfl⟩, (W.Mlat_eq w F).1 (hN hF)⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf`. Rewrite `hf` using `[pow_zero, one_mul]`. Conclude with `AddSubmonoid.subset_closure (emb_HomI W hN' hf)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `f hf`. Rewrite `hf` using `[pow_succ', mul_assoc]`. Proceed by induction on `hf using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem a ha g hg => exact SI_mul W (emb_HomI W hN ha) (ih g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x _ y _ hx hy => exact add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_SI {w w' : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp j w)}
     {N' : Submodule (𝓞 B.KO) (B.Cusp j w')} (hN : N ≤ B.Mlat j w) (hN' : N' ≤ B.Mlat j w') (n : ℕ) :
@@ -868,11 +852,11 @@ theorem pow_mul_SI {w w' : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.
 end Forms
 
 /- English proof (translation)
-Use `⟨by simp, by simp, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ`. Introduce `g g' _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Simplify using `[one_mem]`. Introduce `v A hA`. Simplify using the standard rewrite rules. Introduce `v _ A' _ σ _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem twOK_one (D : D7) (i : D.ntw.Tw) (k : ℕ) :
     IntegralHeckeForms.TwOK (X := D.ntw) i k ∅ (1 : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) := by
@@ -884,21 +868,19 @@ theorem twOK_one (D : D7) (i : D.ntw.Tw) (k : ℕ) :
   · intro v _ A' _ σ _; rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨hM, hG, hS⟩ w j h1 h2 b`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[X.toFm_sup w j b h1 h2]`. Take `⟨S, hS'⟩` from `(hM j h1 h2 (X.run j).ka).fg`. Establish `: Submodule.span (D.ntw.O (nch.twI w)) (X.toFm w j b '' (X.B.Mlat j (X.run j).ka : Set _)) = Submodule.span (D.ntw.O (nch.twI w)) (X.toFm w j b '' (S : Set _))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Rewrite `hF` using `[SetLike.mem_coe, ← hS']`. Proceed by induction on `hF using Submodule.span_induction with`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul a x _ hx`. Take `⟨o, ho⟩` from `(X.embK_int w b (a : X.B.KO)).1 (vAdd_nonneg_int _ a)`. Establish `: X.toFm w j b (a • x) = o • X.toFm w j b x`. Rewrite using `[← algebraMap_smul X.B.KO a x, map_smulₛₗ, ← algebraMap_smul (FractionRing (D.ntw.O (nch.twI w))) o, ho]`. Rewrite using `[SetLike.mem_coe, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Rewrite using `[← hS']`. Conclude with `Submodule.subset_span`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.fg_span (S.finite_toSet.image _)`. Introduce `g x hx`. Conclude with `hG _ j (Finset.mem_Icc.2 ⟨h1, h2⟩) b g ⟨x, hx, rfl⟩`. Rewrite using `[X.toFm_sup w j b h1 h2]`. Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `F hF`. Take `⟨s1, s2, s3, s4⟩` from `hS j h1 h2`. Use `((X.W j h1 h2).Mlat_eq _ F).2 (SI_int (X.W j h1 h2) ?_)` and prove the remaining obligations. Take `⟨pq, hpq, r, hr, e⟩` from `Submodule.mem_sup.1 hF`. Take `⟨p, hp, q, hq, e'⟩` from `Submodule.mem_sup.1 hpq`.
-
-Rewrite using `[← e, ← e']`. Conclude with `add_mem (add_mem (pow_mul_SI _ s1 s2 _ p hp) (pow_mul_SI _ s1 s3 _ q hq)) (AddSubmonoid.subset_closure (emb_HomI _ s4 hr))`.
+A detailed English derivation is pending.
 -/
 theorem stmtLK (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) : LinkLatticesFromInputs D X := by
   rintro ⟨hM, hG, hS⟩ w j h1 h2 b
@@ -939,15 +921,15 @@ theorem stmtLK (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) : LinkL
       (AddSubmonoid.subset_closure (emb_HomI _ s4 hr))
 
 /- English proof (translation)
-Introduce and unpack `⟨hM, hG, hS, hT, hN, hK, hDt, hW⟩`. Establish `hLK` using `stmtLK D X ⟨hM, hG, hS⟩`. Use `⟨fun i0 w hw j h1 h2 => ⟨fun b => ⟨(hLK w j h1 h2 b).1, (hLK w j h1 h2 b).2.1, (hLK w j h1 h2 b).2.2, ?_⟩, ?_⟩, hW⟩` and prove the remaining obligations. Conclude with `Submodule.map_mono (hT.2 _ (hT.1 i0 w hw) j (Finset.mem_Icc.2 ⟨h1, h2⟩) b _ ∅ 1 (twOK_one D _ _) _ subset_rfl)`. Take `⟨c, c0, cv, cN⟩` from `hN i0 w hw j h1 h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj : j ∈ LiftErrorLocal.lifts D` using `Finset.mem_Icc.2 ⟨h1, h2⟩`. Use `⟨c, c0, cv, fun b x hx => ?_⟩` and prove the remaining obligations. Establish `hle : LiftErrorLocal.GSpan (X.ThN w j h1 h2 b) ≤ (Z.ThK w j b).map (c b • (LinearMap.id : D.nexp.Fm (nch.twI w) j b →ₗ[D.ntw.O (nch.twI w)] _))`. Use `iSup_le fun g => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, rfl⟩` from `cN b n hn`. Use `⟨D.nexp.actG (nch.twI w) j b g z, hK i0 w hw j hj b g z hz, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨z, hz, rfl⟩` from `hle hx.1`. Establish `hz0 : z ∈ IntegralHeckeForms.Fm0 D.nexp (nch.twI w) j b`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : (c b • z) ∈ IntegralHeckeForms.Fm0 D.nexp (nch.twI w) j b` using `by simpa using hx.2`. Establish `hc : algebraMap (D.ntw.O (nch.twI w)) (FractionRing (D.ntw.O (nch.twI w))) (c b) ≠ 0`. Simplify using `using (c0 b)`. Use `Submodule.smul_mem _ (algebraMap (D.ntw.O (nch.twI w)) (FractionRing (D.ntw.O (nch.twI w))) (c b))⁻¹ h2'` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul (FractionRing (D.ntw.O (nch.twI w))) (c b) z, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hDt i0 w hw j hj b z ⟨hz, hz0⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_coe, id_eq]`. Rewrite using `[smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem link_from_inputs_holds (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (Z : Loc8 X) : LinkFromInputs D X Z := by
   rintro ⟨hM, hG, hS, hT, hN, hK, hDt, hW⟩
@@ -976,9 +958,9 @@ theorem link_from_inputs_holds (D : D7) {nch : NChoice D} (X : LiftErrorLocal.Lo
     rw [smul_comm]
 
 /- English proof (translation)
-Introduce and unpack `hC ⟨aI, aQ, aB, aRk, aG, a6, aSp, aS, ⟨aM, aT4, aNN, aK, aD, aW⟩, ⟨aRc, aRn, aR4, aRs, aRd⟩⟩`. Establish `hS` using `stmtS D X aS`. Establish `p5` using `h5 aG`. Establish `p6` using `stmt6 D L nch a6`. Establish `p6b` using `stmt6b D nch ⟨aSp, a6.2.2.2.1⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨stmt1 D X Z aI, stmt2 D X aQ, h3 aB aRk hC, gg_of_everyPlace D nch p5, share_of_everyPlace D nch p6, shareRank_of_everyPlace D nch p6b, hS, link_from_inputs_holds D X Z ⟨aM, a6.2.2.2.2.2, hS, aT4, aNN, aK, aD, aW⟩, run_conditions_holds D L X H C2 A2 CR CT CRd ⟨aRc, aRn, aR4, aRs …`.
+Supply the required witnesses or components.
 -/
 theorem stmt_of (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (Z : Loc8 X) (H : WeightAlgebra.KHyp)
     (C2 A2 CR CT CRd : ℝ) (h3 : CoveringRadiusFromTransference D X CRd) (h5 : GGFromIrreducibility D nch) : Stmt D L X Z H C2 A2 CR CT CRd := by
@@ -1019,7 +1001,7 @@ Both sides reduce to the same expression.
 theorem jointLAF : FamilyConclusionLA Fm XF = LiftErrorLocal.AdmLAF Fm XF := rfl
 
 /- English proof (translation)
-Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx h0 i => ⟨stmt1 _ _ _ (h x hx h0 i).1, stmt2 _ _ (h x hx h0 i).2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stmtLAF (h : AdmLAF Fm XF ZF) : FamilyConclusionLA Fm XF := by
   obtain ⟨x0, h⟩ := h
@@ -1036,7 +1018,7 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
   Formalism.MainNotions.Closed 𝒞 (fun Fm CH => ∀ (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : ℝ), 2 ≤ CRd → KudlaFamilyStatement H C2h A2 CR CRd Fm CH)
 
 /- English proof (translation)
-Introduce and unpack `XF ZF ⟨x0, h0⟩`. Conclude with `⟨x0, fun x hx hx0 i => h _ _ _ _ _ _ hC (h0 x hx hx0 i)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem familyStatement_of_pointwise {H : WeightAlgebra.KHyp} {C2h A2 CR CRd : ℝ} (hC : 2 ≤ CRd)
     (h : ∀ (D : D7) (L : SizeData₂ D) (nch : NChoice D) (X : LiftErrorLocal.Loc D nch) (Z : Loc8 X) (CT : ℝ),
@@ -1046,7 +1028,7 @@ theorem familyStatement_of_pointwise {H : WeightAlgebra.KHyp} {C2h A2 CR CRd : �
   exact ⟨x0, fun x hx hx0 i => h _ _ _ _ _ _ hC (h0 x hx hx0 i)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ H C2h A2 CR CRd hC => familyStatement_of_pointwise hC (h H C2h A2 CR CRd hC) Fm CH⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem closedStatement_of_pointwise (𝒞 : Formalism.MainNotions.FamClass)
     (h : ∀ (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : ℝ), 2 ≤ CRd → ∀ (D : D7) (L : SizeData₂ D) (nch : NChoice D) (X : LiftErrorLocal.Loc D nch)

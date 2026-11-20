@@ -12,16 +12,16 @@ def coord {ι : Type} (b : Module.Basis ι F E) (i : ι) : AE F E →ₗ[F] AF F
   (TensorProduct.lid F (AF F)).toLinearMap ∘ₗ LinearMap.rTensor (AF F) (b.coord i)
 
 /- English proof (translation)
-Simplify using `[coord, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Module.Basis.coord_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_tmul {ι : Type} (b : Module.Basis ι F E) (i : ι) (e : E) (a : AF F) :
     coord b i (e ⊗ₜ[F] a) = b.repr e i • a := by
   simp [coord, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Module.Basis.coord_apply]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Simplify using `only [coord_tmul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', ← TensorProduct.sum_tmul, Module.Basis.sum_repr]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_coord {ι : Type} [Fintype ι] (b : Module.Basis ι F E) (x : AE F E) :
     ∑ i, b i ⊗ₜ[F] coord b i x = x := by
@@ -34,9 +34,9 @@ theorem sum_coord {ι : Type} [Fintype ι] (b : Module.Basis ι F E) (x : AE F E
     simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, coord_tmul, coord_tmul, smul_mul_assoc]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[add_mul, map_add, map_add, hx, hy, add_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_mul_tmul {ι : Type} (b : Module.Basis ι F E) (i : ι) (x : AE F E) (a : AF F) :
     coord b i (x * ((1 : E) ⊗ₜ[F] a)) = coord b i x * a := by
@@ -48,9 +48,9 @@ theorem coord_mul_tmul {ι : Type} (b : Module.Basis ι F E) (i : ι) (x : AE F 
     rw [add_mul, map_add, map_add, hx, hy, add_mul]
 
 /- English proof (translation)
-Use `letI := tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Use `letI : Algebra (AF F) (AE F E) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Set `f : AE F E →ₗ[AF F] AF F` to `{ toFun := coord b i map_add' := map_add _ map_smul' := fun r x => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, mul_comm, show algebraMap (AF F) (AE F E) r = (1 : E) ⊗ₜ[F] r from rfl, coord_mul_tmul, mul_comm] }`. Conclude with `IsModuleTopology.continuous_of_linearMap f`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord {ι : Type} (b : Module.Basis ι F E) (i : ι) :
     letI := tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)

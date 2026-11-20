@@ -14,7 +14,7 @@ section Pi
 variable (p : ℕ) [hp : Fact p.Prime] (K' : Type) [Field K'] [Algebra (K0 p) K']
 
 /- English proof (translation)
-Introduce `h`. Apply `WittVector.FractionRing.p_nonzero p (kb p)` to reduce the goal to its premises. Apply `(algebraMap (K0 p) K').injective` to reduce the goal to its premises. Rewrite using `[map_natCast, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pK'_ne : ((p : ℕ) : K') ≠ 0 := by
   intro h
@@ -23,21 +23,21 @@ theorem pK'_ne : ((p : ℕ) : K') ≠ 0 := by
   rw [map_natCast, h, map_zero]
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Set.mem_union_left _ ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem W_mem_Rp (vp : K') (x : WW p) : algebraMap (K0 p) K' (algebraMap (WW p) (K0 p) x) ∈ Rp p K' vp :=
   Subring.subset_closure (Set.mem_union_left _ ⟨x, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Set.mem_union_right _ (Set.mem_singleton vp))`.
+A detailed English derivation is pending.
 -/
 theorem vp_mem_Rp (vp : K') : vp ∈ Rp p K' vp :=
   Subring.subset_closure (Set.mem_union_right _ (Set.mem_singleton vp))
 
 /- English proof (translation)
-Establish `h` using `map_natCast (WittVector.constantCoeff (p := p) (R := kb p)) m`. Establish `h' : ((m : WW p)).coeff 0 = (m : kb p)` using `h`. Establish `hc : ((m : WW p)).coeff 0 ≠ 0`. Rewrite using `[h']`. Conclude with `(CharP.cast_eq_zero_iff (kb p) p m).not.mpr hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (m : WW p)` using `WittVector.isUnit_of_coeff_zero_ne_zero (p := p) _ hc`. Use `⟨↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (K0 p) K') m, ← map_natCast (algebraMap (WW p) (K0 p)) m, ← map_mul, ← map_mul, hu.mul_val_inv, map_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_unit (m : ℕ) (hm : ¬ p ∣ m) :
     ∃ w : WW p, (m : K') * algebraMap (K0 p) K' (algebraMap (WW p) (K0 p) w) = 1 := by
@@ -52,7 +52,7 @@ theorem natCast_unit (m : ℕ) (hm : ¬ p ∣ m) :
     ← map_mul, hu.mul_val_inv, map_one, map_one]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `natCast_unit p K' m hm`. Rewrite using `[inv_eq_of_mul_eq_one_right hw]`. Conclude with `W_mem_Rp p K' vp w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_inv_mem_Rp (vp : K') (m : ℕ) (hm : ¬ p ∣ m) : ((m : K'))⁻¹ ∈ Rp p K' vp := by
   obtain ⟨w, hw⟩ := natCast_unit p K' m hm
@@ -60,7 +60,7 @@ theorem natCast_inv_mem_Rp (vp : K') (m : ℕ) (hm : ¬ p ∣ m) : ((m : K'))⁻
   exact W_mem_Rp p K' vp w
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `(pow_padicValNat_dvd : p ^ padicValNat p n ∣ n)`. Use `⟨m, fun ⟨c, hc⟩ => pow_succ_padicValNat_not_dvd (p := p) hn ⟨c, ?_⟩, hm⟩` and prove the remaining obligations. Use `conv_lhs => rw [hm]`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma exists_not_dvd_eq_pow_padicValNat_mul (n : ℕ) (hn : n ≠ 0) : ∃ m, ¬ p ∣ m ∧ n = p ^ padicValNat p n * m := by
   obtain ⟨m, hm⟩ := (pow_padicValNat_dvd : p ^ padicValNat p n ∣ n)
@@ -70,13 +70,11 @@ private lemma exists_not_dvd_eq_pow_padicValNat_mul (n : ℕ) (hn : n ≠ 0) : �
   ring
 
 /- English proof (translation)
-Establish `hle : (p - 1) * padicValNat p k.factorial ≤ k`. Rewrite using `[sub_one_mul_padicValNat_factorial]`. Conclude with `Nat.sub_le _ _`. Take `⟨m, hmp, hm⟩` from `exists_not_dvd_eq_pow_padicValNat_mul p k.factorial (Nat.factorial_ne_zero k)`. Generalize the expression as in `padicValNat p k.factorial = v at hle hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩ : ∃ r, k = (p - 1) * v + r` from `⟨k - (p - 1) * v, by omega⟩`. Establish `hp0 : ((p : K')) ≠ 0` using `pK'_ne p K'`. Establish `e : p ^ 2 - 1 = (p + 1) * (p - 1)`. Establish `h1` using `hp.out.one_le`. Establish `h2 : 1 ≤ p ^ 2` using `Nat.one_le_pow 2 p hp.out.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Use `zify [h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : (vp ^ (p + 1)) ^ ((p - 1) * v + r) = (p : K') ^ v * vp ^ ((p + 1) * r)`. Rewrite using `[← pow_mul, mul_add, pow_add, ← mul_assoc, ← e, pow_mul vp (p ^ 2 - 1) v, hvp]`. Rewrite using `[hm, Nat.cast_mul, Nat.cast_pow, hr, hpow, mul_inv, mul_comm ((p : K') ^ v), mul_assoc, ← mul_assoc ((p : K') ^ v), mul_inv_cancel₀ (pow_ne_zero _ hp0), one_mul]`.
-
-Conclude with `Subring.mul_mem _ (Subring.pow_mem _ (vp_mem_Rp p K' vp) _) (natCast_inv_mem_Rp p K' vp m hmp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piFact (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (k : ℕ) :
     (vp ^ (p + 1)) ^ k * ((k.factorial : K'))⁻¹ ∈ Rp p K' vp := by
@@ -101,9 +99,9 @@ theorem piFact (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (k : ℕ) :
 end Pi
 
 /- English proof (translation)
-Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨m, hmp, hm⟩` from `exists_not_dvd_eq_pow_padicValNat_mul p n h0`. Take `⟨w, hw⟩` from `natCast_unit p K' m hmp`. Rewrite `hn` using `[hm, Nat.cast_mul, Nat.cast_pow]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((p : K') ^ padicValNat p n * (m : K')) * algebraMap (K0 p) K' (algebraMap (WW p) (K0 p) w) = (p : K') ^ padicValNat p n`. Rewrite using `[mul_assoc, hw, mul_one]`. Rewrite `h1` using `[hn, zero_mul]`. Conclude with `pow_ne_zero _ (pK'_ne p K') h1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charZero_K' (p : ℕ) [hp : Fact p.Prime] (K' : Type) [Field K'] [Algebra (K0 p) K'] : CharZero K' := by
   refine charZero_of_inj_zero fun n hn => ?_

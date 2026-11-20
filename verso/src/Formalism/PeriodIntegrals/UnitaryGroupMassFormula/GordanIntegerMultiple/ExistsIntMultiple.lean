@@ -14,7 +14,7 @@ def hcone {n : ℕ} {ι : Type*} (A : Finset ι) (f : ι → Fin n → ℚ) : Se
   {x | ∀ a ∈ A, 0 ≤ f a ⬝ᵥ x}
 
 /- English proof (translation)
-Introduce and unpack `x ⟨c, hc, rfl⟩`. Conclude with `Finset.sum_induction _ (· ∈ X) (fun a b ha hb => hadd a ha b hb) h0 (fun i hi => hsmul _ (hc i hi) _ (hf i hi))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gcone_sub {n : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℚ) (X : Set (Fin n → ℚ))
     (h0 : (0 : Fin n → ℚ) ∈ X) (hadd : ∀ x ∈ X, ∀ y ∈ X, x + y ∈ X)
@@ -25,14 +25,14 @@ theorem gcone_sub {n : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Fin n → �
     (fun i hi => hsmul _ (hc i hi) _ (hf i hi))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ => le_rfl, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_gcone {n : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℚ) :
     (0 : Fin n → ℚ) ∈ gcone s f :=
   ⟨0, fun _ _ => le_rfl, by simp⟩
 
 /- English proof (translation)
-Use `⟨fun j => if j = i then 1 else 0, fun j _ => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : j = i <;> simp [h]`. Simplify using `[ite_smul, hi]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mem_gcone {n : ℕ} {ι : Type*} {s : Finset ι} {f : ι → Fin n → ℚ} {i : ι} (hi : i ∈ s) :
     f i ∈ gcone s f := by
@@ -42,13 +42,13 @@ theorem mem_gcone {n : ℕ} {ι : Type*} {s : Finset ι} {f : ι → Fin n → �
   · simp [ite_smul, hi]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨c w, hc w (Finset.mem_insert_self w s), c, fun i hi => hc i (Finset.mem_insert_of_mem hi), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hw]`. Normalize the expressions using the abelian group laws.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce and unpack `⟨t, ht, c, hc, hx⟩`. Use `⟨fun j => if j = w then t else c j, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with h | h` into its components or cases. Substitute `h show 0 ≤ (if i = i then t else c i)` using the available equality. Rewrite using `[if_pos rfl]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`. Use `show 0 ≤ (if i = w then t else c i)`. Rewrite using `[if_neg (ne_of_mem_of_not_mem h hw)]`. Conclude with `hc i h`. Use `show x = ∑ j ∈ insert w s, (if j = w then t else c j) • f j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Finset.sum_insert hw, if_pos rfl]`. Establish `hs : ∑ j ∈ s, (if j = w then t else c j) • f j = ∑ j ∈ s, c j • f j` using `Finset.sum_congr rfl fun j hj => by rw [if_neg (ne_of_mem_of_not_mem hj hw)]`. Rewrite using `[hs, ← hx]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem mem_gcone_insert {n : ℕ} {ι : Type*} [DecidableEq ι] {s : Finset ι} {f : ι → Fin n → ℚ}
     {w : ι} (hw : w ∉ s) (x : Fin n → ℚ) :
@@ -76,25 +76,23 @@ theorem mem_gcone_insert {n : ℕ} {ι : Type*} [DecidableEq ι] {s : Finset ι}
       abel
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Use `⟨fun p hp hc => by simpa [hc] using ht p hp, fun p hp q hq hcp hcq => ?_⟩` and prove the remaining obligations. Establish `h1` using `ht p hp`. Establish `h2` using `ht q hq`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (neg_nonneg.2 hcq.le) h1, mul_nonneg hcp.le h2]`. Introduce and unpack `⟨h0, h1⟩`. Take `⟨b, eb⟩ : ∃ b : κ → ℚ, ∀ p, c p ≠ 0 → c p * b p = -u p` from `⟨fun p => -u p * (c p)⁻¹, fun p hp => by show c p * (-u p * (c p)⁻¹) = -u p`. Rewrite using `[mul_left_comm, mul_inv_cancel₀ hp, mul_one]⟩`. Establish `key : ∀ p ∈ P, ∀ q ∈ P, 0 < c p → c q < 0 → b p ≤ b q`.
+Use the polynomial consequences of the given equalities and inequalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp q hq hcp hcq`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `e1 : c p * b p * c q = -u p * c q` using `by rw [eb p hcp.ne']`. Establish `e2 : c q * b q * c p = -u q * c p` using `by rw [eb q hcq.ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `mul_pos (mul_pos hcp (neg_pos.2 hcq)) (sub_pos.2 hlt)`. Establish `h3` using `h1 p hp q hq hcp hcq`. Use the polynomial consequences of the given equalities and inequalities. Establish `good : ∀ t : ℚ, (∀ p ∈ P, 0 < c p → b p ≤ t) → (∀ q ∈ P, c q < 0 → t ≤ b q) → ∀ p ∈ P, 0 ≤ u p + c p * t`. Introduce `t hlo hhi p hp`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (c p) 0 with hn | hz | hpos` into its components or cases. Establish `h4` using `mul_le_mul_of_nonpos_left (hhi p hp hn) hn.le`. Rewrite `h4` using `[eb p hn.ne]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hz, zero_mul, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0 p hp hz`. Establish `h4` using `mul_le_mul_of_nonneg_left (hlo p hp hpos) hpos.le`. Rewrite `h4` using `[eb p hpos.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hL : ∃ p ∈ P, 0 < c p`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p0, hp0, hcp0, hmax⟩ : ∃ p0 ∈ P, 0 < c p0 ∧ ∀ p ∈ P, 0 < c p → b p ≤ b p0 := by`. Take `⟨p, hp, hc⟩` from `hL`. Establish `hne : (P.filter (fun p => 0 < c p)).Nonempty` using `⟨p, Finset.mem_filter.2 ⟨hp, hc⟩⟩`. Take `⟨p0, hp0, hm⟩` from `Finset.exists_max_image _ b hne`. Rewrite `hp0` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨p0, hp0.1, hp0.2, fun p hp hc => hm p (Finset.mem_filter.2 ⟨hp, hc⟩)⟩`. Conclude with `⟨b p0, good _ hmax (fun q hq hcq => key p0 hp0 q hq hcp0 hcq)⟩`. Use `push_neg at hL`. Distinguish the cases in `hU : ∃ q ∈ P, c q < 0`. Choose the witnesses or unpack the hypotheses as in `⟨q0, hq0, hcq0, hmin⟩ : ∃ q0 ∈ P, c q0 < 0 ∧ ∀ q ∈ P, c q < 0 → b q0 ≤ b q := by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hc⟩` from `hU`. Establish `hne : (P.filter (fun q => c q < 0)).Nonempty` using `⟨q, Finset.mem_filter.2 ⟨hq, hc⟩⟩`. Take `⟨q0, hq0, hm⟩` from `Finset.exists_min_image _ b hne`. Rewrite `hq0` using `[Finset.mem_filter]`. Conclude with `⟨q0, hq0.1, hq0.2, fun q hq hc => hm q (Finset.mem_filter.2 ⟨hq, hc⟩)⟩`.
-
-Conclude with `⟨b q0, good _ (fun p hp hcp => absurd hcp (not_lt.2 (hL p hp))) hmin⟩`. Use `push_neg at hU`. Conclude with `⟨0, good 0 (fun p hp hcp => absurd hcp (not_lt.2 (hL p hp))) (fun q hq hcq => absurd hcq (not_lt.2 (hU q hq)))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fm_scalar {κ : Type*} (P : Finset κ) (u c : κ → ℚ) :
     (∃ t : ℚ, ∀ p ∈ P, 0 ≤ u p + c p * t) ↔
@@ -160,7 +158,7 @@ def fmSet {n : ℕ} (P : Finset ((Fin n → ℚ) × ℚ)) : Finset (Fin n → �
       (fun pq => pq.1.2 • pq.2.1 - pq.2.2 • pq.1.1)
 
 /- English proof (translation)
-Use `show ∑ i, (a • u - b • v) i * x i = a * ∑ i, u i * x i - b * ∑ i, v i * x i`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fm_dot {n : ℕ} (a b : ℚ) (u v x : Fin n → ℚ) :
     (a • u - b • v) ⬝ᵥ x = a * (u ⬝ᵥ x) - b * (v ⬝ᵥ x) := by
@@ -171,13 +169,13 @@ theorem fm_dot {n : ℕ} (a b : ℚ) (u v x : Fin n → ℚ) :
     ring
 
 /- English proof (translation)
-Use `(fm_scalar P (fun p => p.1 ⬝ᵥ x) (fun p => p.2)).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1⟩ show ∀ a ∈ fmSet P, 0 ≤ id a ⬝ᵥ x`. Introduce `a ha`. Break down `Finset.mem_union.1 ha with ha | ha` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 ha`. Rewrite `hp` using `[Finset.mem_filter]`. Conclude with `h0 p hp.1 hp.2`. Take `⟨⟨p, q⟩, hpq, rfl⟩` from `Finset.mem_image.1 ha`. Simplify using `only [Finset.mem_product, Finset.mem_filter] at hpq`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show 0 ≤ (p.2 • q.1 - q.2 • p.1) ⬝ᵥ x`. Rewrite using `[fm_dot]`. Conclude with `h1 p hpq.1.1 q hpq.2.1 hpq.1.2 hpq.2.2`. Introduce `h`. Establish `h' : ∀ a ∈ fmSet P, 0 ≤ a ⬝ᵥ x` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun p hp hz => h' p.1 (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_filter.2 ⟨hp, hz⟩))), fun p hp q hq hcp hcq => ?_⟩` and prove the remaining obligations. Establish `h2` using `h' (p.2 • q.1 - q.2 • p.1) (Finset.mem_union_right _ (Finset.mem_image.2 ⟨(p, q), Finset.mem_product.2 ⟨Finset.mem_filter.2 ⟨hp, hcp⟩, Finset.mem_filter.2 ⟨hq, hcq⟩⟩, rfl⟩))`. Rewrite `h2` using `[fm_dot]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem fm_vec {n : ℕ} (P : Finset ((Fin n → ℚ) × ℚ)) (x : Fin n → ℚ) :
     (∃ t : ℚ, ∀ p ∈ P, 0 ≤ p.1 ⬝ᵥ x + p.2 * t) ↔ x ∈ hcone (fmSet P) id := by
@@ -209,20 +207,18 @@ def stdIneq (n : ℕ) : Finset (Fin n → ℚ) :=
     (Finset.univ.image fun i : Fin n => -(Pi.single i 1 : Fin n → ℚ))
 
 /- English proof (translation)
-Use `show ∑ j, a j * (0 : Fin n → ℚ) j = 0`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_zero_right {n : ℕ} (a : Fin n → ℚ) : a ⬝ᵥ (0 : Fin n → ℚ) = 0 := by
   show ∑ j, a j * (0 : Fin n → ℚ) j = 0
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`. Establish `h1 : 0 ≤ (Pi.single i (1 : ℚ) : Fin n → ℚ) ⬝ᵥ x` using `h (Pi.single i 1) (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Establish `h2 : 0 ≤ (-(Pi.single i (1 : ℚ)) : Fin n → ℚ) ⬝ᵥ x` using `h (-(Pi.single i 1)) (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (Pi.single i (1 : ℚ) : Fin n → ℚ) ⬝ᵥ x = x i` using `by show ∑ j, (Pi.single i (1 : ℚ) : Fin n → ℚ) j * x j = x i`. Simplify using `[Pi.single_apply]`. Establish `e2 : (-(Pi.single i (1 : ℚ)) : Fin n → ℚ) ⬝ᵥ x = -x i`. Rewrite using `[← e1]`. Use `show ∑ j, (-(Pi.single i (1 : ℚ)) : Fin n → ℚ) j * x j = -∑ j, (Pi.single i (1 : ℚ) : Fin n → ℚ) j * x j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => neg_mul _ _`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Use `show x i = 0`.
-
-Conclude with `le_antisymm (by linarith) h1`. Introduce and unpack `rfl show ∀ a ∈ stdIneq n, 0 ≤ id a ⬝ᵥ (0 : Fin n → ℚ)`. Introduce `a _`. Conclude with `le_of_eq (rat_dotProduct_zero_right _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_hcone_stdIneq (n : ℕ) (x : Fin n → ℚ) : x ∈ hcone (stdIneq n) id ↔ x = 0 := by
   constructor
@@ -250,7 +246,7 @@ theorem mem_hcone_stdIneq (n : ℕ) (x : Fin n → ℚ) : x ∈ hcone (stdIneq n
     exact le_of_eq (rat_dotProduct_zero_right _).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, -, hx⟩`. Simplify using `using hx`. Introduce and unpack `rfl`. Conclude with `zero_mem_gcone _ _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_gcone_empty {n : ℕ} (x : Fin n → ℚ) :
     x ∈ gcone (∅ : Finset (Fin n → ℚ)) id ↔ x = 0 := by
@@ -261,14 +257,14 @@ theorem mem_gcone_empty {n : ℕ} (x : Fin n → ℚ) :
     exact zero_mem_gcone _ _
 
 /- English proof (translation)
-Use `show ∑ j, (0 : Fin n → ℚ) j * x j = 0`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_zero_left {n : ℕ} (x : Fin n → ℚ) : (0 : Fin n → ℚ) ⬝ᵥ x = 0 := by
   show ∑ j, (0 : Fin n → ℚ) j * x j = 0
   simp
 
 /- English proof (translation)
-Use `show ∑ j, a j * (x - t • w) j = ∑ j, a j * x j - t * ∑ j, a j * w j`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_sub_smul_right {n : ℕ} (a x w : Fin n → ℚ) (t : ℚ) :
     a ⬝ᵥ (x - t • w) = a ⬝ᵥ x - t * (a ⬝ᵥ w) := by
@@ -279,21 +275,19 @@ private theorem rat_dotProduct_sub_smul_right {n : ℕ} (a x w : Fin n → ℚ) 
     ring
 
 /- English proof (translation)
-Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Conclude with `⟨stdIneq n, Set.ext fun x => by`. Rewrite using `[mem_gcone_empty, mem_hcone_stdIneq]⟩`. Introduce `w T hw ih`. Take `⟨A, hA⟩` from `ih`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fmSet (A.image (fun a => (a, -(a ⬝ᵥ w))) ∪ {((0 : Fin n → ℚ), (1 : ℚ))}), Set.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← fm_vec, mem_gcone_insert hw, hA]`. Use `exists_congr fun t => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ht, h⟩ p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Break down `Finset.mem_union.1 hp with hp | hp` into its components or cases. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hp`. Establish `h1 : 0 ≤ a ⬝ᵥ (x - t • w)` using `h a ha`. Rewrite `h1` using `[rat_dotProduct_sub_smul_right]`. Use `show 0 ≤ a ⬝ᵥ x + -(a ⬝ᵥ w) * t`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : -(a ⬝ᵥ w) * t = -(t * (a ⬝ᵥ w))` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Finset.mem_singleton.1 hp] show 0 ≤ (0 : Fin n → ℚ) ⬝ᵥ x + 1 * t`. Rewrite using `[rat_dotProduct_zero_left, one_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht`. Introduce `h`. Establish `ht : 0 ≤ t`. Establish `h0` using `h ((0 : Fin n → ℚ), (1 : ℚ)) (Finset.mem_union_right _ (Finset.mem_singleton_self _))`. Establish `h0' : 0 ≤ (0 : Fin n → ℚ) ⬝ᵥ x + 1 * t` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0'` using `[rat_dotProduct_zero_left, one_mul, zero_add]`. Conclude with `h0'`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Use `show ∀ a ∈ A, 0 ≤ id a ⬝ᵥ (x - t • id w)`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h (a, -(a ⬝ᵥ w)) (Finset.mem_union_left _ (Finset.mem_image_of_mem _ ha))`. Establish `h2' : 0 ≤ a ⬝ᵥ x + -(a ⬝ᵥ w) * t` using `h2`. Use `show 0 ≤ a ⬝ᵥ (x - t • w)`. Rewrite using `[rat_dotProduct_sub_smul_right]`. Establish `e : -(a ⬝ᵥ w) * t = -(t * (a ⬝ᵥ w))` using `by ring`.
-
-Rewrite `h2'` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem minkowskiQ {n : ℕ} (T : Finset (Fin n → ℚ)) :
     ∃ A : Finset (Fin n → ℚ), gcone T id = hcone A id := by
@@ -338,14 +332,14 @@ theorem minkowskiQ {n : ℕ} (T : Finset (Fin n → ℚ)) :
       linarith
 
 /- English proof (translation)
-Use `show ∑ j, a j * b j = ∑ j, b j * a j`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_comm {n : ℕ} (a b : Fin n → ℚ) : a ⬝ᵥ b = b ⬝ᵥ a := by
   show ∑ j, a j * b j = ∑ j, b j * a j
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Use `show ∑ j, (a + b) j * x j = ∑ j, a j * x j + ∑ j, b j * x j`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => add_mul (a j) (b j) (x j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_add_left {n : ℕ} (a b x : Fin n → ℚ) : (a + b) ⬝ᵥ x = a ⬝ᵥ x + b ⬝ᵥ x := by
   show ∑ j, (a + b) j * x j = ∑ j, a j * x j + ∑ j, b j * x j
@@ -353,7 +347,7 @@ private theorem rat_dotProduct_add_left {n : ℕ} (a b x : Fin n → ℚ) : (a +
   exact Finset.sum_congr rfl fun j _ => add_mul (a j) (b j) (x j)
 
 /- English proof (translation)
-Use `show ∑ j, a j * (x + y) j = ∑ j, a j * x j + ∑ j, a j * y j`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_add (a j) (x j) (y j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_add_right {n : ℕ} (a x y : Fin n → ℚ) : a ⬝ᵥ (x + y) = a ⬝ᵥ x + a ⬝ᵥ y := by
   show ∑ j, a j * (x + y) j = ∑ j, a j * x j + ∑ j, a j * y j
@@ -361,7 +355,7 @@ private theorem rat_dotProduct_add_right {n : ℕ} (a x y : Fin n → ℚ) : a �
   exact Finset.sum_congr rfl fun j _ => mul_add (a j) (x j) (y j)
 
 /- English proof (translation)
-Use `show ∑ j, (r • a) j * x j = r * ∑ j, a j * x j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_assoc r (a j) (x j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_smul_left {n : ℕ} (r : ℚ) (a x : Fin n → ℚ) : (r • a) ⬝ᵥ x = r * (a ⬝ᵥ x) := by
   show ∑ j, (r • a) j * x j = r * ∑ j, a j * x j
@@ -369,7 +363,7 @@ private theorem rat_dotProduct_smul_left {n : ℕ} (r : ℚ) (a x : Fin n → �
   exact Finset.sum_congr rfl fun j _ => mul_assoc r (a j) (x j)
 
 /- English proof (translation)
-Use `show ∑ j, a j * (r • x) j = r * ∑ j, a j * x j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_left_comm (a j) r (x j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rat_dotProduct_smul_right {n : ℕ} (r : ℚ) (a x : Fin n → ℚ) : a ⬝ᵥ (r • x) = r * (a ⬝ᵥ x) := by
   show ∑ j, a j * (r • x) j = r * ∑ j, a j * x j
@@ -377,11 +371,9 @@ private theorem rat_dotProduct_smul_right {n : ℕ} (r : ℚ) (a x : Fin n → �
   exact Finset.sum_congr rfl fun j _ => mul_left_comm (a j) r (x j)
 
 /- English proof (translation)
-Establish `hsub : gcone A id ⊆ {e | 0 ≤ e ⬝ᵥ x}` using `gcone_sub A id _ (by show 0 ≤ (0 : Fin n → ℚ) ⬝ᵥ x; exact le_of_eq (rat_dotProduct_zero_left x).symm) (fun a ha b hb => by`. Establish `ha' : 0 ≤ a ⬝ᵥ x` using `ha`. Establish `hb' : 0 ≤ b ⬝ᵥ x` using `hb`. Use `show 0 ≤ (a + b) ⬝ᵥ x`. Rewrite using `[rat_dotProduct_add_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_nonneg ha' hb')`. Use the proof step `(fun r hr a ha => by`. Establish `ha' : 0 ≤ a ⬝ᵥ x` using `ha`. Use `show 0 ≤ (r • a) ⬝ᵥ x`. Rewrite using `[rat_dotProduct_smul_left]`.
-
-Conclude with `mul_nonneg hr ha')`. Use the proof step `(fun a ha => hx a ha)`. Conclude with `hsub hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dotProduct_nonneg_of_mem_hcone_of_mem_gcone {n : ℕ} {A : Finset (Fin n → ℚ)} {x d : Fin n → ℚ}
     (hx : x ∈ hcone A id) (hd : d ∈ gcone A id) : 0 ≤ d ⬝ᵥ x := by
@@ -403,23 +395,19 @@ private theorem dotProduct_nonneg_of_mem_hcone_of_mem_gcone {n : ℕ} {A : Finse
   exact hsub hd
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `minkowskiQ A`. Take `⟨D, hD⟩` from `minkowskiQ B`. Use `⟨B, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hD]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ∀ d ∈ D, 0 ≤ id d ⬝ᵥ x`. Introduce `d hd`. Establish `hdA : d ∈ gcone A id`. Rewrite using `[hB]`. Use `show ∀ b ∈ B, 0 ≤ id b ⬝ᵥ d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb`. Establish `hb' : id b ∈ gcone B id` using `mem_gcone hb`. Rewrite `hb'` using `[hD]`. Establish `h2 : 0 ≤ id d ⬝ᵥ id b` using `hb' d hd`. Use `show 0 ≤ b ⬝ᵥ d`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[rat_dotProduct_comm]`. Conclude with `h2`. Conclude with `dotProduct_nonneg_of_mem_hcone_of_mem_gcone hx hdA`. Use `gcone_sub B id _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `show ∀ a ∈ A, 0 ≤ id a ⬝ᵥ (0 : Fin n → ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _`. Conclude with `le_of_eq (rat_dotProduct_zero_right _).symm`. Introduce `x hx y hy`. Establish `hx' : ∀ a ∈ A, 0 ≤ id a ⬝ᵥ x` using `hx`. Establish `hy' : ∀ a ∈ A, 0 ≤ id a ⬝ᵥ y` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∀ a ∈ A, 0 ≤ id a ⬝ᵥ (x + y)`. Introduce `a ha`. Rewrite using `[rat_dotProduct_add_right]`. Conclude with `add_nonneg (hx' a ha) (hy' a ha)`. Introduce `r hr x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : ∀ a ∈ A, 0 ≤ id a ⬝ᵥ x` using `hx`. Use `show ∀ a ∈ A, 0 ≤ id a ⬝ᵥ (r • x)`. Introduce `a ha`. Rewrite using `[rat_dotProduct_smul_right]`. Conclude with `mul_nonneg hr (hx' a ha)`.
-
-Introduce `b hb show ∀ a ∈ A, 0 ≤ id a ⬝ᵥ id b`. Introduce `a ha`. Establish `h1 : id a ∈ gcone A id` using `mem_gcone ha`. Rewrite `h1` using `[hB]`. Establish `h2 : 0 ≤ id b ⬝ᵥ id a` using `h1 b hb`.
-
-Rewrite using `[rat_dotProduct_comm]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem weylQ {n : ℕ} (A : Finset (Fin n → ℚ)) :
     ∃ B : Finset (Fin n → ℚ), hcone A id = gcone B id := by
@@ -468,9 +456,9 @@ theorem weylQ {n : ℕ} (A : Finset (Fin n → ℚ)) :
       exact h2
 
 /- English proof (translation)
-Establish `hden : ∀ q : ℚ, 0 < q.den` using `fun q => q.den_pos`. Establish `key : ∀ q : ℚ, q * (q.den : ℚ) = (q.num : ℚ)` using `fun q => Rat.mul_den_eq_num q`. Use `⟨∏ j, ((v j).den : ℚ), Finset.prod_pos fun j _ => by exact_mod_cast hden (v j), fun i => (v i).num * ∏ j ∈ Finset.univ.erase i, ((v j).den : ℤ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show ((((v i).num * ∏ j ∈ Finset.univ.erase i, ((v j).den : ℤ) : ℤ)) : ℚ) = (∏ j, ((v j).den : ℚ)) * v i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun j => ((v j).den : ℚ)) (Finset.mem_univ i)]`. Use `push_cast`. Rewrite using `[← key (v i)]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_int_multiple {n : ℕ} (v : Fin n → ℚ) :
     ∃ N : ℚ, 0 < N ∧ ∃ z : Fin n → ℤ, GordanCones.toQ z = N • v := by
@@ -494,13 +482,13 @@ noncomputable def mulOf {n : ℕ} (v : Fin n → ℚ) : ℚ :=
   (exists_int_multiple v).choose
 
 /- English proof (translation)
-The claim follows from `(exists_int_multiple v).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem mulOf_pos {n : ℕ} (v : Fin n → ℚ) : 0 < mulOf v :=
   (exists_int_multiple v).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_int_multiple v).choose_spec.2.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem toQ_intOf {n : ℕ} (v : Fin n → ℚ) : GordanCones.toQ (intOf v) = mulOf v • v :=
   (exists_int_multiple v).choose_spec.2.choose_spec

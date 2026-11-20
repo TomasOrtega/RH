@@ -8,13 +8,13 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.ProjBlowup
 
 /- English proof (translation)
-Introduce `K _ _ X s V hs hV hflat`. Establish `: LocallyOfFiniteType s`. Take `⟨n, i, hi, rfl⟩` from `hs`. Use `isProper_str (𝓞 K) n` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `hN : GlobalTheory.IsNormalScheme V.toScheme` using `.of_pred hV`. Establish `hfin : IsFinite V.ι.fromNormalization` using `isFinite_fromNormalization_of_locallyOfFiniteType (o := .of (𝓞 K)) V.ι s fun x hx => GlobalTheory.GraphClosure.charZero_residueField_of_flat (V.ι ≫ s) hx`. Establish `H` using `isPullback_toNormalization_of_mono (𝟙 _) V.ι V.ι (Category.id_comp _).symm`. Establish `: Flat (V.ι.toNormalization ≫ V.ι.fromNormalization ≫ s)` using `by simpa`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, V.ι.fromNormalization, hfin, IsNormalScheme.pred _, isProjOver_comp_of_isFinite _ hs, flat_normalization V.ι _, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `IsPullback.isoIsPullback_hom_fst _ _ (isPullback_morphismRestrict V.ι.fromNormalization V) H.flip`. Rewrite using `[← e]`. Use `infer_instance`. Use `V.ι.toNormalization.denseRange.mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `V.ι.fromNormalization (V.ι.toNormalization x) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.Hom.toNormalization_fromNormalization]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normal_model_ringOfIntegers : ∀ (K : Type) [Field K] [NumberField K] (X : Scheme.{0}) (s : X ⟶ Sp (𝓞 K))
     (V : X.Opens), IsProjOver s →

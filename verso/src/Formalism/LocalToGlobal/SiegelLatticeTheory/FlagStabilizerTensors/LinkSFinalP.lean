@@ -44,9 +44,9 @@ def TheoremSClosedConclusion : Prop :=
       L.hsSq u u' ≤ (1 + L.sc.b ^ (-(6 : ℝ))) * (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar
 
 /- English proof (translation)
-Introduce `Cthr`. Take `⟨C₄, CA, C, a1, a2, a3, a4, a5, hrest⟩` from `h Cthr`. Use `⟨C₄, CA, C, a1, a2, a3, a4, a5, fun C0 CG CDel cT Cb b1 b2 b3 b4 b5 b6 => ?_⟩` and prove the remaining obligations. Take `⟨k0, hk⟩` from `hrest C0 CG CDel cT Cb b1 b2 b3 b4 b5 b6`. Use `⟨k0, fun Cg cb Cw cTf CT C0f hcb hcT => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Cn, C'₀, Cl₀, hn, hh⟩` from `hk Cg cb Cw cTf CT C0f hcb hcT`. Conclude with `⟨Cn, C'₀, Cl₀, hn, fun C' Cl c1 c2 D L T u u' hTs hne hb hS hH0 hSt hK hG hL hT hR1 hR2 => (hh C' Cl c1 c2 D L T u u' hTs hne hb hS hH0 hSt hK hG hL hT hR1 hR2).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theoremS_distinct_of_closed (h : TheoremSClosedConclusion) : TheoremSDistinctWords := by
   intro Cthr
@@ -61,23 +61,21 @@ theorem theoremS_distinct_of_closed (h : TheoremSClosedConclusion) : TheoremSDis
 variable (C0 : ℝ)
 
 /- English proof (translation)
-Take `⟨-, CA, -, -, -, hCA, -, -, hrest⟩` from `hT 1`. Establish `H : ∀ l : List ℝ, ∃ k0 : ℕ, 0 ≤ l.getD 17 0 → ∃ Cn C'₀ Cl₀ : ℝ, 0 ≤ Cn ∧ ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl → TheoremSAtData CA C0 (l.getD 17 0) 5 (1 / 2) 3 Cn k0 C' Cl (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) C0`. Introduce `l`. Distinguish the cases in `h : 0 ≤ l.getD 17 0`. Take `⟨k0, hk⟩` from `hrest C0 (l.getD 17 0) 5 (1 / 2) 3 h1 h (by norm_num) (by norm_num) (by norm_num) (by norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k0, fun _ => hk _ _ _ _ _ _ (by norm_num) (by norm_num)⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose k0f hk0 using H`. Establish `G : ∀ l : List ℝ, ∃ Cn C'₀ Cl₀ : ℝ, 0 ≤ l.getD 17 0 → 0 ≤ Cn ∧ ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl → TheoremSAtData CA C0 (l.getD 17 0) 5 (1 / 2) 3 Cn (k0f l) C' Cl (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) C0`. Introduce `l`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : 0 ≤ l.getD 17 0`. Take `⟨Cn, a, b, hn, hh⟩` from `hk0 l h`. Conclude with `⟨Cn, a, b, fun _ => ⟨hn, hh⟩⟩`. Conclude with `⟨0, 0, 0, fun h' => absurd h' h⟩`. Use `choose cnf c'f clf hG using G`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `closed_with (hOK.and ((hSz CA hCA k0f cnf).and ((hLp aF).and hA))) (fun _ => 0) (fun l => max (max (c'f l) (clf l)) 29) fun Fm CH _ hQ _ ht1 ht2 hc => ?_` and prove the remaining obligations. Take `⟨hQ1, hQ2, hQ3, hA1, hQ4⟩` from `hQ`. Take `⟨xa, Ha⟩` from `hQ1 hc`. Take `⟨xb, Hb⟩` from `hQ2 hc`. Take `⟨xc, Hc⟩` from `hQ3 hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨xd, Hd⟩` from `hQ4`. Use `⟨max (max xa xb) (max xc xd), fun x hx i hH hx1 h0 u u' hne => ?_⟩` and prove the remaining obligations. Establish `hxa : xa ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hxb : xb ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hxc : xc ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxd : xd ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Establish `e17 : (Fm.cOut ++ Fm.cMid CH).getD 17 0 = Fm.CGam` using `rfl`. Establish `hCG : 0 ≤ (Fm.cOut ++ Fm.cMid CH).getD 17 0`. Rewrite using `[e17, ← Fm.CGam_eq x i]`. Conclude with `(Fm.L x i).CGam_pos.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hrow⟩` from `hG (Fm.cOut ++ Fm.cMid CH) hCG`. Establish `hC'a : c'f (Fm.cOut ++ Fm.cMid CH) ≤ sC' Fm` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) ht1`. Establish `hCla : clf (Fm.cOut ++ Fm.cMid CH) ≤ sCl Fm` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) ht2`. Establish `hC'29 : (29 : ℝ) ≤ sC' Fm` using `le_trans (le_max_right _ _) ht1`. Establish `hCl29 : (29 : ℝ) ≤ sCl Fm` using `le_trans (le_max_right _ _) ht2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ok` using `Ha x hxa i hH hx1 h0`. Establish `tie : ConcTie ((sel Fm hc).2 x hx1 h0 i).X ((sel Fm hc).2 x hx1 h0 i).Y` using `(concKOf ((sel Fm hc).2 x hx1 h0 i) ok).tie`. Establish `hCnt` using `Formalism.MainNotions.count_hypotheses_of_sizes (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 (aF Fm.cOut) hH.1 hH.2.1 hH.2.2 (by linarith) (by linarith) hA1 (Hd x hxd i hH) u u'`. Establish `hAC` using `hAbs _ _ _ u u' tie`. Take `⟨hRB, hRNS⟩` from `Hc x hxc i hx1 h0 u u' hCnt tie hAC`.
-
-Establish `hb0 : 0 ≤ (Fm.L x i).sc.b` using `le_trans zero_le_two (Formalism.MainNotions.S.two_le_scb _)`. Conclude with `hrow (sC' Fm) (sCl Fm) hC'a hCla (Fm.D x i) (Fm.L x i) ((sel Fm hc).2 x hx1 h0 i) u u' (Fm.ties x i) hne hb0 (Hb x hxb i hH hx1 h0 u u' hne) ⟨hH.2.1, hH.1, hH.2.2⟩ (Formalism.MainNotions.Stand_of _ _ _ _ _ _ _ _ _ _ hH.1 hH.2.1 (by linarith) u u') (Formalism.MainNotions.NonGeneri …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem offDiagonalK0_of_rows (hT : TheoremSDistinctWords) (h1 : 1 ≤ C0) {𝒞 : FamClass} (sel : SSel 𝒞)
     (hOK : Closed 𝒞 fun Fm _ => ∀ hc : 𝒞 Fm, SelOK C0 Fm (sel Fm hc))
@@ -140,7 +138,7 @@ theorem offDiagonalK0_of_rows (hT : TheoremSDistinctWords) (h1 : 1 ≤ C0) {𝒞
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `have hTF := Formalism.L2.SG.Pf.SzHypFam.hTF_of_ranks C0 hRk have hOK := selOK_of C0 (Formalism.L2.SG.Pf.finXC_of hWu hRF) hWu sel hLoc hTF theoremS_transport_link_zero C0 𝒞 sel hWu hRF hLoc hInst hQ hTF c30 h1 hc30 hRes hTy hNG hM hLp (offDiagonalK0_of_rows C0 hT h1 sel hOK (Form …`.
+A detailed English derivation is pending.
 -/
 theorem theoremS_transport_link_partner (𝒞 : FamClass) (sel : SSel 𝒞)
     (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) (hRF : Formalism.L2.SG.RowsDef.RowsFinDim)

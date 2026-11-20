@@ -10,11 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D X C hB hG u`. Use `choose hsfN hsfH hN hH hH1 hconc β hβm hβ1 hloc using Formalism.L2.SG.Pf.AmpWinGlob.place_all C u hG.1 hB`. Establish `hpiN : Set.pi Set.univ (Nloc X u) = X.NinfU u`. Use extensionality with `s`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Conclude with `Iff.rfl`. Take `⟨h1, h2, h3, h4⟩` from `X.muN_haar u`. Take `⟨cN, hcN0, hcNt, hcN⟩` from `QPK.haar_measure_uniqueness X.B.I.Ginf (Set.pi Set.univ (Nloc X u)) (isClosed_set_pi fun v _ => (place_facts X u v).1) (QPK.isGrp_pi _ fun v => (place_facts X u v).2.2.1) (X.muN u) (Measure.pi (Formalism.L2.SG.Pf.AmpWinGlob.muNv C)) ⟨h1, h2, by rw [hpiN]; exact h3, by rw [hpiN]; …`. Take `⟨hemb, hmapT⟩` from `Formalism.L2.SG.Pf.AmpWinGlob.map_trInf C (fun v => hsfN v) one_pos`. Use `⟨cN, hcN0, hcNt, fun A _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htr : trI C = Formalism.L2.SG.LoopTerm.trInf C` using `rfl`. Establish `hcov : Measure.pi (Formalism.L2.SG.Pf.AmpWinGlob.muNv C) A = Measure.pi (fun _ : D.what₂.Tau => muNB D 1) (trI C '' A)`. Rewrite using `[htr, show Measure.pi (fun _ : D.what₂.Tau => muNB D 1) = Formalism.L2.SG.LoopTerm.dnB D 1 from rfl, ← hmapT, hemb.map_apply, Set.preimage_image_eq _ hemb.injective]`. Rewrite using `[hcN, Measure.smul_apply, smul_eq_mul, hcov]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muN_eq_const_mul_pi_trI : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (hB : WuBessel C), GoodLoc C hB →
     ∀ u : D.what₂.Word, ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ ∀ A : Set X.B.I.Ginf, MeasurableSet A →

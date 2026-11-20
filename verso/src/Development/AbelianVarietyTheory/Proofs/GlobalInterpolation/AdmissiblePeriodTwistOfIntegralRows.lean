@@ -12,9 +12,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.PerTwClose
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z l0 hRow nch tp hxi Y`. Take `⟨C, hC, hLv⟩` from `GlobalTheory.T.exists_standardColumnComparisons_trueColumns I hOk hPins l Z`. Take `⟨t, ht⟩` from `GlobalTheory.T.trueColumnChoice_exists_standardChainData I hOk hPins l Z l0 nch tp C hxi hC hLv`. Establish `hT` using `GlobalTheory.PerTwClose.perDecTwT_of_std I hOk l Z l0 hRow (I.cf l Z) nch tp C t Y ht`. Use `GlobalTheory.T.admissiblePeriodTwists_reduction_placeTuples (I.rec7 l Z) Y (I.tw l l0 Z) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u μ hμ _`. Conclude with `GlobalTheory.T.twistedPeriodDecomposition_of_classwiseTwistedPairingIntegral (I.rec7 l Z) (I.cf l Z) nch tp C (I.tw l l0 Z) t Y u μ hμ (hT u μ hμ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twistedPeriodAdmissible_of_rowInt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l), GlobalTheory.PerQ.RowInt I l Z → ∀ (nch : NChoice (I.rec7 l Z)) (tp : Formalism.L2.Host.TupTied (I.rec7 l Z) (I.cf l Z) nch), tp.xi = I.xi → ∀ Y : DivX (I.rec7 l Z), Formalism.L2.G.Adm2InU.TwistedPeriodAdmissible (I.rec7 l Z) Y (I.tw l l0 Z) := by
   intro B X I hOk hPins l Z l0 hRow nch tp hxi Y

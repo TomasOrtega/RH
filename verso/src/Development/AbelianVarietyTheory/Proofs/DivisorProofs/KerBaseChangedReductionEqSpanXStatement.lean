@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapMaximalIdealEq
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.KeyOriginBC.ker_reduceLoc_eq_span_X) | (exact GlobalTheory.KeyOriginBC.ker_reduceLoc_eq_span_X) | (intros; apply GlobalTheory.KeyOriginBC.ker_reduceLoc_eq_span_X <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ker_baseChangedReduction_eq_span_X : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
     [IsScalarTower T T[X] O]

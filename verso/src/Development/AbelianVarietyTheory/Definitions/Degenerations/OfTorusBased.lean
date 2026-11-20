@@ -26,7 +26,7 @@ def Charts.KerIs (C : Charts H.left) {d : ℕ} (a : {i // C.wt i = C.c₀}) (j :
         t.left.appTop.hom (charUnit S (Fin d → ℤ) (Pi.single n 1)).val * ((1 : Y ⟶ H).left.appLE _ ⊤ h₁).hom (C.r a (j n))
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem appLE_univ_univ_apply_eq_appTop {X Y : Scheme.{0}} (g : Y ⟶ X) (h : ⊤ ≤ g ⁻¹ᵁ (⊤ : X.Opens)) :
     g.appLE ⊤ ⊤ h = g.appTop := by

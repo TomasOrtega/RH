@@ -12,13 +12,13 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.DualIndexPow
 
 /- English proof (translation)
-Introduce `F _ _ ψ v c h`. Take `⟨a, ha⟩` from `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (-c))`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero ha.symm`. Establish `hu : ∀ hx : WithZero.exp (-c) ≠ 0, Multiplicative.toAdd (WithZero.unzero hx) = -c` using `fun _ => rfl`. Establish `hd : GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.psiDual F ψ v = GlobalTheory.LocalDensityProduct.colonV v a`. Use extensionality with `t`. Rewrite using `[GlobalTheory.LocalDensityProduct.mem_colonV]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(∀ s ∈ v.adicCompletionIntegers F, psiV F ψ v (t * s) = 1) ↔ _`. Rewrite using `[h t, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, ha, WithZero.exp_neg, mul_inv_le_iff₀ (by simp), one_mul]`. Establish `hi : GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.intV F v = GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.intV F v` using `rfl`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.nIdx`. Rewrite using `[hd, hi, (GlobalTheory.LocalDensityProduct.index_colonV v a ha0).2, NumberField.FinitePlace.norm_def, ha, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.resCard]`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hu]`. Simplify using `[_root_.zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nIdx_eq_zpow : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (c : ℤ), (∀ t : Fv F v, (∀ s ∈ v.adicCompletionIntegers F, psiV F ψ v (t * s) = 1) ↔ Valued.v t ≤ WithZero.exp c) → LocalAdditiveCharacterDual.nIdx F ψ v = (PlaceSplittingTypes.resCard F v : ℝ) ^ c := by
   intro F _ _ ψ v c h

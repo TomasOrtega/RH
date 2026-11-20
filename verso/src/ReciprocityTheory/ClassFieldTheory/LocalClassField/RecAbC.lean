@@ -14,7 +14,7 @@ open scoped commutatorElement
 variable {p : ℕ} [Fact p.Prime] {K L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1 : (((Additive.toMul a : Kˣ) : K) : PadicAlgCl p) = (((Additive.toMul b : Kˣ) : K) : PadicAlgCl p)` using `congrArg (fun y : KbarMult p => ((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p)) hab`. Conclude with `Additive.toMul.injective (Units.ext (Subtype.ext h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofK_injective : Injective (ofK p K) := by
   intro a b hab
@@ -23,7 +23,7 @@ theorem ofK_injective : Injective (ofK p K) := by
   exact Additive.toMul.injective (Units.ext (Subtype.ext h1))
 
 /- English proof (translation)
-Establish `hne : (⟨((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p), hy⟩ : K) ≠ 0` using `fun h0 => (Additive.toMul y : (PadicAlgCl p)ˣ).ne_zero (congrArg Subtype.val h0)`. Conclude with `⟨Units.mk0 _ hne, Additive.toMul.injective (Units.ext rfl)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ofK_eq (y : KbarMult p) (hy : y ∈ multOf p K) : ∃ a : Kˣ, ofK p K (Additive.ofMul a) = y := by
   have hne : (⟨((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p), hy⟩ : K) ≠ 0 := fun h0 =>
@@ -31,7 +31,7 @@ theorem exists_ofK_eq (y : KbarMult p) (hy : y ∈ multOf p K) : ∃ a : Kˣ, of
   exact ⟨Units.mk0 _ hne, Additive.toMul.injective (Units.ext rfl)⟩
 
 /- English proof (translation)
-Use `choose ν hν using fun b : Lˣ => exists_ofK_eq _ (normHom_mem hL h _ (ofK_mem p L (Additive.ofMul b)))`. Use `⟨MonoidHom.mk' ν fun a b => ?_, hν⟩` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Apply `ofK_injective (p := p) (K := K)` to reduce the goal to its premises. Rewrite using `[hν, ofMul_mul, ofMul_mul, map_add, map_add, map_add, hν, hν]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normUnits (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
     ∃ ν : Lˣ →* Kˣ, ∀ b, ofK p K (Additive.ofMul (ν b)) = normHom p K L (ofK p L (Additive.ofMul b)) := by
@@ -42,9 +42,9 @@ theorem exists_normUnits (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
   rw [hν, ofMul_mul, ofMul_mul, map_add, map_add, map_add, hν, hν]
 
 /- English proof (translation)
-Rewrite using `[mem_normGrp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hya⟩`. Take `⟨b, rfl⟩` from `exists_ofK_eq y hy`. Conclude with `⟨b, hya.symm⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨_, ofK_mem p L _, hb.symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_normGrp_iff_exists (a : Kˣ) :
     a ∈ normGrp p K L ↔ ∃ b : Lˣ, ofK p K (Additive.ofMul a) = normHom p K L (ofK p L (Additive.ofMul b)) := by
@@ -57,9 +57,9 @@ theorem mem_normGrp_iff_exists (a : Kˣ) :
     exact ⟨_, ofK_mem p L _, hb.symm⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_normGrp_iff_exists, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨b, Additive.ofMul.injective (ofK_injective ((hν b).trans hb.symm))⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, hν b⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem normGrp_eq_range (ν : Lˣ →* Kˣ)
     (hν : ∀ b, ofK p K (Additive.ofMul (ν b)) = normHom p K L (ofK p L (Additive.ofMul b))) :
@@ -73,9 +73,9 @@ theorem normGrp_eq_range (ν : Lˣ →* Kˣ)
     exact ⟨b, hν b⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_normGrp_iff_exists, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Take `⟨b, hb⟩` from `exists_ofK_eq _ (normHom_mem (K := L) hL' h' _ (ofK_mem p L' (Additive.ofMul c)))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨b, (mem_normGrp_iff_exists b).2 ⟨c, hb⟩, Additive.ofMul.injective (ofK_injective ?_)⟩` and prove the remaining obligations. Rewrite using `[hν, hb, normHom_trans hL' h h' _ (ofK_mem p L' _), hc]`. Introduce and unpack `⟨b, hb, rfl⟩`. Take `⟨c, hc⟩` from `(mem_normGrp_iff_exists b).1 hb`. Conclude with `⟨c, by rw [hν, hc, normHom_trans hL' h h' _ (ofK_mem p L' _)]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normGrp_eq_map {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : FiniteDimensional ℚ_[p] L') (h : K ≤ L) (h' : L ≤ L')
     (ν : Lˣ →* Kˣ) (hν : ∀ b, ofK p K (Additive.ofMul (ν b)) = normHom p K L (ofK p L (Additive.ofMul b))) :
@@ -92,7 +92,7 @@ theorem normGrp_eq_map {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : Fi
     exact ⟨c, by rw [hν, hc, normHom_trans hL' h h' _ (ofK_mem p L' _)]⟩
 
 /- English proof (translation)
-Take `⟨ν, hν⟩` from `exists_normUnits hL h`. Rewrite using `[normGrp_eq_map hL' h h' ν hν, normGrp_eq_range ν hν, Subgroup.index_map]`. Use `finiteIndex_normGrp hL hL' h'` as an intermediate fact. Conclude with `Nat.mul_le_mul_right _ (Nat.le_of_dvd (Nat.pos_of_ne_zero this.index_ne_zero) (Subgroup.index_dvd_of_le le_sup_left))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem index_normGrp_tower_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : FiniteDimensional ℚ_[p] L) (hL' : FiniteDimensional ℚ_[p] L')
     (h : K ≤ L) (h' : L ≤ L') :
@@ -104,9 +104,9 @@ theorem index_normGrp_tower_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (
     (Subgroup.index_dvd_of_le le_sup_left))
 
 /- English proof (translation)
-Use `⟨h', hL.fin, ?_⟩` and prove the remaining obligations. Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `g₁ _ g₂ _`. Establish `h1 : ⁅resGK h g₁, resGK h g₂⁆ ∈ subG p K L` using `hL.comm (Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _))`. Rewrite `h1` using `[← map_commutatorElement]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem IsAbLK.base {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : IsAbLK p K L) (h : K ≤ M) (h' : M ≤ L) : IsAbLK p M L := by
   refine ⟨h', hL.fin, ?_⟩
@@ -118,7 +118,7 @@ theorem IsAbLK.base {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : IsAbLK 
   exact h1
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AddMonoidHom.ext` to reduce the goal to its premises. Introduce `s`. Conclude with `hχ (resGK h (Additive.toMul s)) ((range_resGK h).le ⟨_, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem resChar_eq_zero (h : K ≤ L) (χ : charGrp (GK p K)) (hχ : TrivOn p K L χ) : resChar h χ = 0 := by
   apply Subtype.ext
@@ -127,7 +127,7 @@ theorem resChar_eq_zero (h : K ≤ L) (χ : charGrp (GK p K)) (hχ : TrivOn p K 
   exact hχ (resGK h (Additive.toMul s)) ((range_resGK h).le ⟨_, rfl⟩)
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(mem_normGrp_iff_exists a).1 ha`. Rewrite using `[pairK_norm hK hL h b a hb χ, resChar_eq_zero h χ hχ, pairK_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_pairing_eq_zero_of_mem_normGroup (hK : FiniteDimensional ℚ_[p] K) (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (a : Kˣ)
     (ha : a ∈ normGrp p K L) (χ : charGrp (GK p K)) (hχ : TrivOn p K L χ) : pairK p K a χ = 0 := by
@@ -135,13 +135,11 @@ theorem local_pairing_eq_zero_of_mem_normGroup (hK : FiniteDimensional ℚ_[p] K
   rw [pairK_norm hK hL h b a hb χ, resChar_eq_zero h χ hχ, pairK_zero]
 
 /- English proof (translation)
-Take `⟨M, hKM, hM, hMχ⟩` from `exists_field_of_char hK χ`. Establish `hn` using `normal_of_char χ hMχ`. Take `⟨g₀, hg₀⟩` from `cyclic_of_char hM χ hMχ`. Establish `hML : M ≤ L`. Use `(subG_le_iff (L' := L) hKM).1 fun s hs => (hMχ s).1 (hχ s hs)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sup_eq_right.2 hL.le]`. Then use the resulting hypothesis. Establish `hdeg` using `degLK_mul hKM hML`. Establish `h1 : degLK p K M ≠ 1` using `fun h1 => by`. Establish `: subG p K M = ⊤` using `Subgroup.index_eq_one.1 h1`. Conclude with `hg ((hMχ g).2 (this ▸ Subgroup.mem_top g))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 < degLK p K M` using `lt_of_le_of_ne (degLK_pos hM) (Ne.symm h1)`. Use `⟨M, hM, hL.base hKM hML, ?_, hdeg, ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg]`. Conclude with `lt_mul_of_one_lt_left (degLK_pos hL.fin) h2`. Rewrite using `[← index_normGrp_cyclic hK hM hKM g₀ hg₀]`.
-
-Conclude with `index_normGrp_tower_le hM hL.fin hKM hML`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_normGrp_le_step (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) (g : GK p K) (χ : charGrp (GK p K))
     (hχ : TrivOn p K L χ) (hg : χ.1 (Additive.ofMul g) ≠ 0) :

@@ -11,23 +11,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D c hc j hj s hs ι x B hpar hB`. Establish `hlat` using `(GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc j hj s hs).2`. Rewrite using `[linearIndependent_iff']`. Introduce `t a hsum i₀ hi₀`. Take `⟨hne0, _⟩` from `hpar i₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, PiLocalization₂.val (x i₀) v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hne0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Simplify `h w` using `[PiLocalization₂.val]`. Set `p : ι → Prop` to `fun i => PiLocalization₂.val (x i) v ≠ 0`. Set `f : {i // p i} → (GA D s.V → ℂ)` to `fun i g => conj (PiLocalization₂.val (x i.1) v g)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℂ f`. Use `GlobalTheory.T.linearIndependent_of_ne_zero_of_isParamFunV_of_separated D s.V c.S {i // p i} f (fun i => B i.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i h0`. Apply `i.2` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h0 g` as an intermediate fact. Simplify `this` using `[f]`. Introduce `i`. Establish `h1` using `(hpar i.1).2 v i.2`. Unfold `ParFun at h1`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hlat _ _).1 h1`. Introduce `i i' hii'`. Conclude with `hB i.1 i'.1 (fun h => hii' (Subtype.ext h))`. Rewrite `hli` using `[linearIndependent_iff']`. Establish `hsum' : ∀ g, ∑ i ∈ t, a i * PiLocalization₂.val (x i) v g = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g`. Use `congrArg (fun y : s.CC c => PiLocalization₂.val y v g) hsum` as an intermediate fact. Simplify `this` using `[PiLocalization₂.val, Finset.sum_apply]`. Establish `key` using `hli (t.subtype p) (fun i => conj (a i.1)) ?_ ⟨i₀, hv⟩ (by simp [Finset.mem_subtype, hi₀])`. Simplify using `using key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, f, Pi.zero_apply]`. Rewrite using `[Finset.sum_subtype_eq_sum_filter (f := fun i => conj (a i) * conj (PiLocalization₂.val (x i) v g)) (p := p)]`. Rewrite using `[Finset.sum_filter_of_ne]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_zero (starRingEnd ℂ), ← hsum' g, map_sum]`. Simplify using `[map_mul]`. Introduce `i _ hne h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parIndep : ∀ D : D7, ParIndep D := by
   intro D c hc j hj s hs ι x B hpar hB

@@ -22,20 +22,20 @@ def eich (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (x w : Fin n → R) (k :
 variable (c : R →+* R) (J : Matrix (Fin n) (Fin n) R)
 
 /- English proof (translation)
-Simplify using `only [eich, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec', smul_smul, sf, dotProduct_comm z]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eich_mulVec (x w : Fin n → R) (k : R) (z : Fin n → R) :
     eich c J x w k *ᵥ z = z - sf c J z w • x - sf c J z x • w - (k * sf c J z x) • x := by
   simp only [eich, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec', smul_smul, sf, dotProduct_comm z]
 
 /- English proof (translation)
-Rewrite using `[show -v = (-1 : R) • v by simp, sf_smul_right, map_neg, map_one, neg_one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sf_neg_right (u v : Fin n → R) : sf c J u (-v) = -sf c J u v := by
   rw [show -v = (-1 : R) • v by simp, sf_smul_right, map_neg, map_one, neg_one_mul]
 
 /- English proof (translation)
-Rewrite using `[show -u = (-1 : R) • u by simp, sf_smul_left, neg_one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sf_neg_left (u v : Fin n → R) : sf c J (-u) v = -sf c J u v := by
   rw [show -u = (-1 : R) • u by simp, sf_smul_left, neg_one_mul]
@@ -43,9 +43,9 @@ theorem sf_neg_left (u v : Fin n → R) : sf c J (-u) v = -sf c J u v := by
 variable {c J}
 
 /- English proof (translation)
-Substitute `hw'` using the available equality. Use `ext_mulVec fun u => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, eich_mulVec, eich_mulVec, one_mulVec]`. Simplify using `only [sf_sub_left, sf_smul_left, sf_neg_right, hxx, hxw, hwx]`. Use extensionality with `i`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Take the linear combination `(-(sf c J u x * x i)) * hk`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eich_neg_mul {x w : Fin n → R} {k : R} (hxx : sf c J x x = 0) (hxw : sf c J x w = 0) (hwx : sf c J w x = 0)
     (hk : 2 * k + sf c J w w = 0) (w' : Fin n → R) (hw' : w' = -w) :
@@ -59,9 +59,9 @@ theorem eich_neg_mul {x w : Fin n → R} {k : R} (hxx : sf c J x x = 0) (hxw : s
   linear_combination (-(sf c J u x * x i)) * hk
 
 /- English proof (translation)
-Substitute `hw'` using the available equality. Use `ext_mulVec fun u => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, eich_mulVec, eich_mulVec, one_mulVec]`. Simplify using `only [sf_sub_left, sf_smul_left, sf_neg_right, sf_neg_left, hxx, hxw, hwx]`. Use extensionality with `i`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Take the linear combination `(-(sf c J u x * x i)) * hk`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eich_mul_neg {x w : Fin n → R} {k : R} (hxx : sf c J x x = 0) (hxw : sf c J x w = 0) (hwx : sf c J w x = 0)
     (hk : 2 * k + sf c J w w = 0) (w' : Fin n → R) (hw' : w' = -w) :
@@ -75,13 +75,13 @@ theorem eich_mul_neg {x w : Fin n → R} {k : R} (hxx : sf c J x x = 0) (hxw : s
   linear_combination (-(sf c J u x * x i)) * hk
 
 /- English proof (translation)
-Establish `hwx : sf c J w x = 0` using `by rw [sf_skew c J hc hJ, hxw, map_zero, neg_zero]`. Use `ext_form fun u v => ?_` and prove the remaining obligations. Use `set v' : Fin n → R := fun i => c (v i) with hv'`. Establish `hv : v = fun i => c (v' i)` using `funext fun i => (hc (v i)).symm`. Establish `key : (eich c J x w k).map c *ᵥ v = fun i => c ((eich c J x w k *ᵥ v') i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Rewrite using `[RingHom.map_mulVec, hv]`. Both sides reduce to the same expression. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, key]`. Express the relevant statement in the definitionally equal form `sf c J (eich c J x w k *ᵥ u) (eich c J x w k *ᵥ v') = u ⬝ᵥ J *ᵥ v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Express the relevant statement in the definitionally equal form `_ = sf c J u v'`. Rewrite using `[eich_mulVec, eich_mulVec]`. Simplify using `only [sf_sub_left, sf_smul_left, sf_sub_right, sf_smul_right, map_mul, map_sub, hxx, hxw, hwx]`. Rewrite using `[sf_skew c J hc hJ x v', sf_skew c J hc hJ w v']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(sf c J u x * c (sf c J v' x)) * hk`.
+A detailed English derivation is pending.
 -/
 theorem eich_unitary (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = -J i j) {x w : Fin n → R} {k : R}
     (hxx : sf c J x x = 0) (hxw : sf c J x w = 0) (hk : k - c k + sf c J w w = 0) :
@@ -112,7 +112,7 @@ open Matrix GlobalTheory.LeviLine
 variable {R : Type} [CommRing R] {n m : ℕ}
 
 /- English proof (translation)
-Establish `h : (fun i => c ((A *ᵥ v) i)) = A.map c *ᵥ fun i => c (v i)` using `funext fun i => RingHom.map_mulVec _ _ _ _`. Simplify using `only [sf, h, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sf_mulVec_mulVec (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (A : Matrix (Fin n) (Fin m) R) (u v : Fin m → R) :
     sf c J (A *ᵥ u) (A *ᵥ v) = sf c (Aᵀ * J * A.map c) u v := by
@@ -120,7 +120,7 @@ theorem sf_mulVec_mulVec (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (A : Mat
   simp only [sf, h, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecMulVec_mulVec_rect (x : Fin n → R) (a z : Fin m → R) : vecMulVec x a *ᵥ z = (a ⬝ᵥ z) • x := by
   ext i
@@ -132,43 +132,39 @@ end GlobalTheory.ThK.UnipRat
 open Matrix GlobalTheory.LeviLine GlobalTheory.ThK.UnipRat GlobalTheory.ThK.UnipDom.Additive in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ Y Y₁ H hcm hskew hP α`. Take `⟨_, hxx, _, hxy, horth, hgram, _, hcart₁⟩` from `hP`. Use `set c : E →+* E := (σ : E →ₐ[F] E).toRingHom with hcdef`. Establish `hc : ∀ r, c (c r) = r` using `fun r => sigma_invol hcm r`. Establish `hJ : ∀ i j, c (Y.J j i) = -Y.J i j` using `hskew`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsf : ∀ u v, sf c Y.J u v = form σ Y.J u v` using `fun _ _ => rfl`. Establish `hdet : IsUnit Y₁.J.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set τ : E →+* ℂ := (B.emb w).1`. Establish `hx : (fun i => star (τ (v i))) ≠ 0`. Introduce `hx0`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `congrFun hx0 i` as an intermediate fact. Simplify using `using this`. Establish `hpos` using `(hcart₁ w).2.2 _ hx`. Establish `hz : (Complex.I • Y₁.J.map τ) *ᵥ star (fun i => star (τ (v i))) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : star (fun i => star (τ (v i))) = fun i => τ (v i)` using `funext fun i => by simp`. Rewrite using `[hs, smul_mulVec]`. Establish `: Y₁.J.map τ *ᵥ (fun i => τ (v i)) = fun i => τ ((Y₁.J *ᵥ v) i)`. Use function extensionality and compare the values at `fun i => (RingHom.map_mulVec _ _ _ _).symm`. Rewrite using `[this, hv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `hpos` using `[hz, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ hpos`. Use `set b' : Fin n₁ → E := Y₁.J⁻¹ *ᵥ (-α) with hb'def`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : Y₁.J *ᵥ b' = -α`. Rewrite using `[hb'def, mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, one_mulVec]`. Use `set b : Fin n₁ → E := fun i => σ (b' i) with hbdef`. Establish `hσb : (fun i => c (b i)) = b'` using `funext fun i => hc (b' i)`. Use `set w : Fin n → E := H.ι *ᵥ b with hwdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k : E := -(sf c Y.J w w) / 2 with hkdef`. Establish `hwx : sf c Y.J w H.x = 0` using `(horth b).1`. Establish `hxw : sf c Y.J H.x w = 0` using `by rw [sf_skew c _ hc hJ, hwx, map_zero, neg_zero]`. Establish `hxx' : sf c Y.J H.x H.x = 0` using `hxx`. Establish `hk2 : 2 * k + sf c Y.J w w = 0` using `by rw [hkdef]; ring`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcs : c (sf c Y.J w w) = -sf c Y.J w w`. Use `sf_skew c _ hc hJ w w` as an intermediate fact. Take the linear combination `this`. Establish `hku : k - c k + sf c Y.J w w = 0`. Establish `h2 : c 2 = 2` using `map_ofNat c 2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hkdef, map_div₀, map_neg, hcs, h2]`. Expand and normalize the polynomial expressions, which then agree. Use `set U := eich c Y.J H.x w k with hUdef`. Establish `hU : Uᵀ * Y.J * U.map c = Y.J` using `eich_unitary hc hJ hxx' hxw hku`. Set `g₀ : GL (Fin n) E` to `⟨U, eich c Y.J H.x (-w) k, eich_mul_neg hxx' hxw hwx hk2 _ rfl, eich_neg_mul hxx' hxw hwx hk2 _ rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `g : GL (Fin n) (AE F E)` to `Matrix.GeneralLinearGroup.map (inclR (F := F) (E := E) (AF F)) g₀`. Establish `hgmat : (g : Matrix (Fin n) (Fin n) (AE F E)) = incM F U` using `rfl`. Establish `hmapc : (incM F U).map (cA σ) = incM F (U.map c)`. Use extensionality with `i j`. Simplify using `[incM, GlobalTheory.LeviLine.cA_inclR, hcdef]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgU : g ∈ UG (cA σ) (incM F Y.J)` using `by show (incM F U)ᵀ * incM F Y.J * (incM F U).map (cA σ : AE F E →ₐ[AF F] AE F E).toRingHom = incM F Y.J`. Establish `h1 : (incM F U).map (cA σ : AE F E →ₐ[AF F] AE F E).toRingHom = incM F (U.map c)` using `hmapc`. Rewrite using `[h1]`. Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hU]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `γ : UA σ Y.J` to `⟨g, hgU⟩`. Establish `hmat : mat γ = incM F U` using `rfl`. Establish `hιx : ∀ u, sf c Y.J (H.ι *ᵥ u) H.x = 0` using `fun u => (horth u).1`. Use `set ρ : Fin n₁ → E := fun j => sf c Y.J (H.ι *ᵥ Pi.single j 1) w with hρdef`. Establish `hUι : U * H.ι = H.ι - vecMulVec H.x ρ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ext_mulVec_single fun j => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, hUdef, eich_mulVec, sub_mulVec, vecMulVec_mulVec_rect, hιx]`. Simplify using `[hρdef, dotProduct_single]`. Establish `hincvv : incM F (vecMulVec H.x ρ) = vecMulVec (incV F H.x) (incV F ρ)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `[incM, incV, vecMulVec_apply]`. Use `⟨γ, Subgroup.subset_closure ⟨?_, fun z => ⟨-(incV F ρ ⬝ᵥ z), ?_⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmat, incM_mulVec_incV, hUdef, eich_mulVec, hxw, hxx']`. Simplify using the standard rewrite rules. Rewrite using `[hmat, mulVec_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [incM] at hincvv ⊢`. Rewrite using `[← Matrix.map_mul, hUι, Matrix.map_sub _ (map_sub _), hincvv, sub_mulVec, vecMulVec_mulVec_rect, neg_smul, sub_eq_add_neg]`. Rewrite using `[ratU, Subgroup.mem_subgroupOf]`. Conclude with `⟨g₀, rfl⟩`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [coA]`. Rewrite using `[hmat, single_eq_incV, incM_mulVec_incV, incM_mulVec_incV, fA_incV]`. Use `congr 1`. Rewrite using `[← hsf, hUdef, eich_mulVec, hιx]`. Establish `hy : sf c Y.J H.x H.y = 1` using `hxy`.
-
-Establish `hιy : sf c Y.J (H.ι *ᵥ Pi.single j 1) H.y = 0` using `(horth _).2`. Simplify using `only [sf_sub_left, sf_smul_left, hy, hιy, zero_mul, mul_zero, sub_zero, mul_one, zero_sub]`. Rewrite using `[hwdef, sf_mulVec_mulVec]`. Establish `hg' : H.ιᵀ * Y.J * H.ι.map c = Y₁.J` using `hgram`. Rewrite using `[hg']`.
-
-Simplify using `only [sf, hσb, hb', single_one_dotProduct, Pi.neg_apply, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.UnipRat.exists_rat_unip_coA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁), IsCMExt F E σ → (∀ i j, σ (Y.J j i) = -Y.J i j) → IsIsoPlane σ B H Y Y₁ → ∀ α : Fin n₁ → E, ∃ γ ∈ unip σ Y H, γ ∈ ratU σ Y.J ∧ coA σ Y.J H γ = fun j => inclR (F := F) (AF F) (α j) := by
   intro F E _ _ _ _ _ σ B n n₁ Y Y₁ H hcm hskew hP α

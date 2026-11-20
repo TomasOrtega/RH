@@ -11,13 +11,13 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr M`. Take `⟨Θ, hΘ, hid⟩` from `hI Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Proceed by induction on `M with`. Consider the case `zero`. Introduce `F F' hF hF'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, _, -, hFc, -⟩` from `hF`. Take `⟨_, _, -, hFc', -⟩` from `hF'`. Take `⟨K, hK⟩` from `radial_boundedness P.k P.r Wp Wq D F F' hFc hFc'`. Conclude with `⟨K, fun s => by simpa using hK s⟩`. Consider the case `succ M ih`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `F F' hF hF'`. Take `⟨K1, hK1⟩` from `ih (Θ 1 F) (Θ 0 F') (hΘ 1 F hF) (hΘ 0 F' hF')`. Take `⟨K2, hK2⟩` from `ih (Θ 3 F) (Θ 2 F') (hΘ 3 F hF) (hΘ 2 F' hF')`. Use `⟨K1 + K2, fun s => ?_⟩` and prove the remaining obligations. Establish `e` using `hid s F F' hF hF'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem rd_iter_pow (hI : RDIdent) : RDHyp fun k r Wp Wq _ _ _ _ _ _ D =>
     ∀ (M : ℕ) (F F' : B.Mat k r → (Wq →L[ℂ] Wp)), NiceAll D F → NiceAll D F' →
@@ -47,7 +47,7 @@ theorem rd_iter_pow (hI : RDIdent) : RDHyp fun k r Wp Wq _ _ _ _ _ _ D =>
       _ ≤ K1 + K2 := by rw [mul_add]; exact add_le_add (hK1 s) (hK2 s)
 
 /- English proof (translation)
-Break down `le_total x 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem rd_pow_le (x : ℝ) (hx : 0 ≤ x) (N : ℕ) : (1 + x) ^ N ≤ 2 ^ N * (1 + x ^ N) := by
   rcases le_total x 1 with h | h
@@ -58,13 +58,13 @@ theorem rd_pow_le (x : ℝ) (hx : 0 ≤ x) (N : ℕ) : (1 + x) ^ N ≤ 2 ^ N * (
       _ ≤ 2 ^ N * (1 + x ^ N) := mul_le_mul_of_nonneg_left (by linarith) (by positivity)
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr F F' hF hF' n`. Establish `hp` using `rd_iter_pow hI Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Take `⟨K0, hK0⟩` from `hp 0 F F' hF hF'`. Take `⟨KN, hKN⟩` from `hp (n + 3) F F' hF hF'`. Use `⟨2 ^ (n + 3) * (K0 + KN), fun s => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : 0 ≤ ‖s‖` using `norm_nonneg _`. Establish `hb : 0 ≤ ‖B.beta D (wvG D.z D.z' s F) F'‖` using `norm_nonneg _`. Establish `hb0 : ‖B.beta D (wvG D.z D.z' s F) F'‖ ≤ K0` using `by simpa using hK0 s`. Establish `hbN` using `hKN s`. Establish `hpos : 0 < 1 + ‖s‖` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `main : (1 + ‖s‖) ^ (n + 3) * ‖B.beta D (wvG D.z D.z' s F) F'‖ ≤ 2 ^ (n + 3) * (K0 + KN)`. Combine the equalities or inequalities in the displayed calculation. Establish `hr' : (1 + ‖s‖) ^ (-((n : ℝ) + 3)) = ((1 + ‖s‖) ^ (n + 3))⁻¹`. Rewrite using `[Real.rpow_neg hpos.le]`. Use `congr 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[show ((n : ℝ) + 3) = ((n + 3 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Rewrite using `[hr', ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Combine the linear relations using `[main]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rd_decay (hI : RDIdent) : RDHyp fun k r Wp Wq _ _ _ _ _ _ D =>
     ∀ (F F' : B.Mat k r → (Wq →L[ℂ] Wp)), NiceAll D F → NiceAll D F' → ∀ n : ℕ,
@@ -94,11 +94,11 @@ theorem rd_decay (hI : RDIdent) : RDHyp fun k r Wp Wq _ _ _ _ _ _ D =>
   linarith [main]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl ε G H hε hG hH Φ Ψ hΦ hΨ c hc n`. Establish `hr : 0 < P.r` using `lt_of_le_of_lt (Nat.zero_le _) l.isLt`. Establish `hl' : l = ⟨0, hr⟩` using `Fin.ext hl`. Establish `hl0 : l.castSucc = (0 : Fin (P.r + 1))` using `Fin.ext (by simp [hl])`. Take `⟨C', hC'⟩` from `rd_decay hI Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr G H ⟨ε, hε, hG⟩ ⟨ε, hε, hH⟩ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨C1, -, hC1⟩` from `radial_beta_identity P.k P.r Wp Wq D μ hD.2.1`. Use `⟨‖C1‖ * C', fun s Wv hW => ?_⟩` and prove the remaining obligations. Establish `hwv` using `radial_wave_identity P.k P.r Wp Wq D hr ε s G`. Establish `hΦ' : ∀ y ∈ DomR P.k P.r D.z D.z', ((Wv Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D (wvG D.z D.z' s G)) y.1 y.2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[hW Φ y.1 y.2, hΦ y hy, hwv.2 y hy, hl']`. Rewrite using `[hl0, hC1 (wvG D.z D.z' s G) H (Wv Φ) Ψ (hwv.1 hG).2.1 hH.2.1 hΦ' hΨ c, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC' s) (norm_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radDecay_of_cut (hI : RDIdent) : RadDecay := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl ε G H hε hG hH Φ Ψ hΦ hΨ

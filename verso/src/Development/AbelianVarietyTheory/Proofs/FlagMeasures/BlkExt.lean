@@ -21,33 +21,33 @@ def blk {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (b r : Fin k → ℂ) (d : �
     (fun i' => Fin.lastCases (motive := fun _ => ℂ) (b i') (A i') j) i
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_ll {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (b r : Fin k → ℂ) (d : ℂ) :
     blk A b r d (Fin.last k) (Fin.last k) = d := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_lc {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (b r : Fin k → ℂ) (d : ℂ) (j : Fin k) :
     blk A b r d (Fin.last k) j.castSucc = r j := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_cl {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (b r : Fin k → ℂ) (d : ℂ) (i : Fin k) :
     blk A b r d i.castSucc (Fin.last k) = b i := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_cc {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (b r : Fin k → ℂ) (d : ℂ) (i j : Fin k) :
     blk A b r d i.castSucc j.castSucc = A i j := by simp [blk]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MatrixExtLast.matrix_ext_last`. Consider the case `exact _root_.GlobalTheory.MatrixExtLast.matrix_ext_last`. Consider the case `(apply _root_.GlobalTheory.MatrixExtLast.matrix_ext_last <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MatrixExtLast.matrix_ext_last <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MatrixExtLast.matrix_ext_last <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MatrixExtLast.matrix_ext_last ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blk_ext {k : ℕ} {M N : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (h1 : ∀ i j : Fin k, M i.castSucc j.castSucc = N i.castSucc j.castSucc)
@@ -63,7 +63,7 @@ theorem blk_ext {k : ℕ} {M N : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
   | (intros; exact _root_.GlobalTheory.MatrixExtLast.matrix_ext_last ..)
 
 /- English proof (translation)
-Use `blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_` and prove the remaining obligations. Simplify using `[Hd, Matrix.diagonal_apply, Matrix.one_apply, Fin.castSucc_ne_last]`. Simplify using `[Hd, Matrix.diagonal_apply, Fin.castSucc_ne_last]`. Simplify using `[Hd, Matrix.diagonal_apply, (Fin.castSucc_ne_last _).symm]`. Simplify using `[Hd]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Hd_eq (k : ℕ) (η : ℝ) : Hd k η = blk 1 0 0 (η : ℂ) := by
   refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_
@@ -73,7 +73,7 @@ theorem Hd_eq (k : ℕ) (η : ℝ) : Hd k η = blk 1 0 0 (η : ℂ) := by
   · simp [Hd]
 
 /- English proof (translation)
-Use `GlobalTheory.GramExp.diag_sq fun i => ?_` and prove the remaining obligations. Use `split_ifs`. Apply the tactic sequence `rcases hη with h | h <;> simp [h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hd_sq (k : ℕ) {η : ℝ} (hη : η = 1 ∨ η = -1) : Hd k η * Hd k η = 1 := by
   refine GlobalTheory.GramExp.diag_sq fun i => ?_

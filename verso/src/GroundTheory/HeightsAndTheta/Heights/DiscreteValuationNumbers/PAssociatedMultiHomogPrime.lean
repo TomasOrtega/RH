@@ -9,21 +9,19 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ J hJ hJtop`. Set `A : Set (Ideal (MRing ι F))` to `{Q | ∃ (f : MRing ι F) (s : K → ℕ), IsMultiHomog f s ∧ f ∉ J ∧ Q = J.colon {f}}`. Establish `hne : A.Nonempty`. Use `⟨J.colon {1}, 1, 0, ?_, ?_, rfl⟩` and prove the remaining obligations. Conclude with `isWeightedHomogeneous_one F (blockWeight ι)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hJtop ((Ideal.eq_top_iff_one J).2 h)`. Establish `hnoeth : IsNoetherianRing (MRing ι F)` using `inferInstance`. Take `⟨Q, ⟨f, s, hf, hfJ, rfl⟩, hmax⟩` from `(set_has_maximal_iff_noetherian (R := MRing ι F) (M := MRing ι F)).2 hnoeth A hne`. Use `⟨f, s, hf, hfJ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h1 F K ι (J.colon {f}) (h2 F K ι J f s hJ hf)` to reduce the goal to its premises. Introduce `htop`. Apply `hfJ` to reduce the goal to its premises. Establish `h1mem : (1 : MRing ι F) ∈ J.colon {f}` using `by rw [htop]; exact Submodule.mem_top`. Simplify using `using (Submodule.mem_colon_singleton.1 h1mem)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `a b sa sb _ hb hab`. Distinguish the cases in `hbQ : b ∈ J.colon {f}`. Conclude with `Or.inr hbQ`. Use `left`. Establish `hbf : b * f ∉ J`.
+Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h`. Apply `hbQ` to reduce the goal to its premises. Conclude with `Submodule.mem_colon_singleton.2 (by simpa [smul_eq_mul] using h)`. Establish `hform : IsMultiHomog (b * f) (sb + s)` using `hb.mul hf`. Establish `hle : J.colon {f} ≤ J.colon {b * f}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x * f ∈ J` using `by simpa [smul_eq_mul] using Submodule.mem_colon_singleton.1 hx`. Use `Submodule.mem_colon_singleton.2 ?_` and prove the remaining obligations. Establish `: b * (x * f) ∈ J` using `J.mul_mem_left b hx'`. Simplify `this` using `[smul_eq_mul, mul_comm, mul_left_comm, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq : J.colon {f} = J.colon {b * f}`. Assume the negation of the conclusion as `hne'`. Conclude with `hmax _ ⟨b * f, sb + s, hform, hbf, rfl⟩ (lt_of_le_of_ne hle hne')`. Rewrite using `[heq]`. Use `Submodule.mem_colon_singleton.2 ?_` and prove the remaining obligations.
-
-Establish `hab' : a * b * f ∈ J` using `by simpa [smul_eq_mul] using Submodule.mem_colon_singleton.1 hab`. Simplify `hab'` using `[smul_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem AssociatedMultiHomogPrime.proof (h1 : MultiHomogPrimeCriterion.Statement.{u})
     (h2 : ColonMultiHomog.Statement.{u}) : AssociatedMultiHomogPrime.Statement.{u} := by

@@ -5,7 +5,7 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDualChangeOfVariablesIdentities.lean&line=86#L86)
 -/

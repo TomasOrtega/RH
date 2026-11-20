@@ -20,7 +20,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeOperatorInverseCosetConjEigenvalue.lean&line=104#L104)
 -/

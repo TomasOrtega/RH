@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsEtaleTrivializ
 open CategoryTheory TensorProduct UpperTheory.PicD
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective _ h`. Set `e'` to `LinearEquiv.ofBijective _ h'`. Set `F : C ⊗[A] (M ⊗[A] M') ≃ₗ[C] C` to `TensorProduct.AlgebraTensorModule.distribBaseChange A C M M' ≪≫ₗ TensorProduct.congr e e' ≪≫ₗ TensorProduct.lid C C`. Establish `hF : ∀ x, F x = LinearMap.liftBaseChange C ((Algebra.TensorProduct.lmul' A (S` using `C)).toLinearMap ∘ₗ TensorProduct.map t t') x := by`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul c y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => rw [TensorProduct.tmul_add, map_add, map_add, h1, h2]`. Consider the case `tmul m m'`. Simplify using `[F, e, e', LinearMap.liftBaseChange_tmul, smul_eq_mul, mul_assoc]`. Establish `: ⇑(LinearMap.liftBaseChange C ((Algebra.TensorProduct.lmul' A (S` using `C)).toLinearMap ∘ₗ TensorProduct.map t t')) = F := by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `(hF x).symm`. Rewrite using `[this]`. Conclude with `F.bijective`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cotangentAtUnit_tangentBijection {A C M M' : Type} [CommRing A] [CommRing C] [Algebra A C]
     [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M']
@@ -43,13 +43,13 @@ private theorem cotangentAtUnit_tangentBijection {A C M M' : Type} [CommRing A] 
   exact F.bijective
 
 /- English proof (translation)
-Introduce `P A _ z z' M M' _ _ _ _ hz hz'`. Take `⟨C, i1, i2, hff, het, w, g, t, w', g', t', T, T'⟩` from `UpperTheory.exists_etale_trivialization_of_two_invertibleModuleTorsors P A z z' M M' hz hz'`. Use `⟨C, i1, i2, hff, het, w + w', g * g', (Algebra.TensorProduct.lmul' A (S := C)).toLinearMap ∘ₗ TensorProduct.map t t', ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, cotangentAtUnit_tangentBijection t t' T.bij T'.bij⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, T.dw, T'.dw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[P.un_mul, T.hg, T'.hg, map_add, map_add]`. Normalize the expressions using the abelian group laws. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, add_smul, hx, hy, TensorProduct.tmul_add]`. Consider the case `tmul m m'`. Establish `h1` using `T.ht m`. Establish `h2` using `T'.ht m'`. Simplify using `only [LinearMap.comp_apply, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, Algebra.TensorProduct.lmul'_apply_tmul, Units.val_mul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, `h2`, the goal using `[Algebra.smul_def]`. Rewrite using `[map_mul, show ∀ a b c d : C ⊗[A] C, a * b * (c * d) = (a * c) * (b * d) from fun a b c d => by ring, h1, h2, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem UpperTheory.rel_add_tensorProduct_of_rel :
     ∀ (P : Data) (A : Type) [CommRing A] (z z' : P.S1.obj (CommRingCat.of A)) (M M' : Type) [AddCommGroup M] [Module A M]

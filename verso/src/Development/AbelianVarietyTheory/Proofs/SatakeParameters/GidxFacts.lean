@@ -14,9 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwU.XdInert
 
 /- English proof (translation)
-Introduce `D T p h`. Take `⟨hp, h5, hc, hn, hl, hT⟩` from `h`. Use `⟨h5, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.TwU.Served.served_facts D p hp hc hn).2.1`. Conclude with `((Nat.Prime.coprime_iff_not_dvd hp).2 hT).symm`.
-
-Introduce `i hi`. Conclude with `hl (hi ▸ D.host.g_level i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gidx_facts : ∀ (D : D7) (T p : ℕ), GIdx D.host T p →
     5 ≤ p ∧ GL3Theta.InertK D p ∧ Nat.Coprime T p ∧ ∀ i, p ≠ D.host.g i := by

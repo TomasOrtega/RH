@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.AxisTriv
 
 /- English proof (translation)
-Establish `k₁ : (lift a b).left ≫ (fst B B).left = a.left` using `congrArg (fun z => z.left) (lift_fst a b)`. Establish `k₂ : (lift a' b').left ≫ (fst A A).left = a'.left` using `congrArg (fun z => z.left) (lift_fst a' b')`. Establish `l₁ : (lift a b).left ≫ (snd B B).left = b.left` using `congrArg (fun z => z.left) (lift_snd a b)`. Establish `l₂ : (lift a' b').left ≫ (snd A A).left = b'.left` using `congrArg (fun z => z.left) (lift_snd a' b')`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `((lift a b).left ≫ β₂) ≫ (fst A A).left = (β ≫ (lift a' b').left) ≫ (fst A A).left`. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, k₁, Category.assoc, k₂, ha]`. Express the relevant statement in the definitionally equal form `((lift a b).left ≫ β₂) ≫ (snd A A).left = (β ≫ (lift a' b').left) ≫ (snd A A).left`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, l₁, Category.assoc, l₂, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comp_sq {S T : Scheme.{0}} {A : Over S} {B : Over T} {β : B.left ⟶ A.left}
     {β₂ : (B ⊗ B).left ⟶ (A ⊗ A).left} (hs : IsSquare β β₂) (a b : B ⟶ B) (a' b' : A ⟶ A)
@@ -37,9 +37,9 @@ theorem lift_comp_sq {S T : Scheme.{0}} {A : Over S} {B : Over T} {β : B.left �
     rw [Category.assoc, hs.2, ← Category.assoc, l₁, Category.assoc, l₂, hb]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `i₁ : LBIso ((P.pull β₂).pull a.left) (P.pull (a.left ≫ β₂))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP β₂)) a.left`. Establish `i₂ : LBIso ((P.pull a'.left).pull β) (P.pull (β ≫ a'.left))` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP a'.left)) β`. Rewrite `i₁` using `[e]`. Establish `i` using `LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) i₁ i₂.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `i.symm`. Take `⟨v, hv, -⟩` from `GlobalTheory.WtTower.exists_gen_of_iso (pull_isLB (pull_isLB hP _) _) (pull_isLB (pull_isLB hP _) _) w hw (pullGenLB u β) (pullGenLB_isGen hu β)`. Conclude with `⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gen_pull {S T : Scheme.{0}} {A : Over S} {B : Over T} {β : B.left ⟶ A.left}
     {β₂ : (B ⊗ B).left ⟶ (A ⊗ A).left} {P : LB (A ⊗ A).left} (hP : P.IsLB) (a : B ⟶ B ⊗ B) (a' : A ⟶ A ⊗ A)
@@ -58,7 +58,7 @@ theorem exists_gen_pull {S T : Scheme.{0}} {A : Over S} {B : Over T} {β : B.lef
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Introduce `S T A _ P hP h₁ h₂ t B _ β β₂ h hs`. Establish `e₁` using `GlobalTheory.PPAS.one_comp_of_isGrpPullback h`. Conclude with `⟨exists_gen_pull hP _ _ (lift_comp_sq hs _ _ _ _ e₁ rfl) h₁, exists_gen_pull hP _ _ (lift_comp_sq hs _ _ _ _ rfl e₁) h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem axes_pull : ∀ (S T : Scheme.{0}) (A : Over S) [GrpObj A] (P : LB (G2 A).left), P.IsLB → (∃ u : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, u.IsGen) → (∃ u : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, u.IsGen) → ∀ (t : T ⟶ S) (B : Over T) [GrpObj B] (β : B.left ⟶ A.left) (β₂ : (G2 B).left ⟶ (G2 A).left), IsGrpPullback B A t β → IsSquare β β₂ → (∃ u : ((P.pull β₂).pull (lift (1 : B ⟶ B) (𝟙 B)).left).Gen, u.IsGen) ∧ (∃ u : ((P.pull β₂).pull (lift (𝟙 B) (1 : B ⟶ B)).left).Gen, u.IsGen) := by
   intro S T A _ P hP h₁ h₂ t B _ β β₂ h hs

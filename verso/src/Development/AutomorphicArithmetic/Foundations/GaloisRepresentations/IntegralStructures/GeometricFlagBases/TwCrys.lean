@@ -12,11 +12,11 @@ open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι dd ρ χ _ _ w c m hχ hρ P AI hT A h O _ _ _ Bw hj`. Take `⟨c1, -, -, -⟩` from `hχ.2 P AI hT A h O Bw hj`. Establish `c2` using `hρ P AI hT A h O Bw hj`. Establish `e1 : (rk1 χ).comp (Dec (F` using `E) A).subtype = rk1 (χ.comp (Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `e2 : (tw ρ χ).comp (Dec (F` using `E) A).subtype = tw (ρ.comp (Dec (F := E) A).subtype) (χ.comp (Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`. Simplify using `[UpperTheory.V.Af.tw_val]`. Rewrite `c1` using `[e1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `(UpperTheory.Gal.TP.Sub.twLoc_holds l P AI hT E Ω A O Bw dd (ρ.comp (Dec (F := E) A).subtype) (χ.comp (Dec (F := E) A).subtype)).2 c2 c1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.twCrys :
     UpperTheory.Gal.Int.Geo.TwCrys := by

@@ -18,21 +18,19 @@ noncomputable section
 namespace GlobalTheory.HTDim
 
 /- English proof (translation)
-Use `haveI : NeZero ℓ := ⟨by omega⟩`. Set `f : La →+ Additive Q` to `AddMonoidHom.mk' (fun x => Additive.ofMul (ev x)) fun x y => by`. Rewrite using `[hadd]`. Both sides reduce to the same expression. Set `r` to `Module.finrank ℤ La`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b` to `Module.finBasis ℤ La`. Set `g : La →+ (Fin r → ZMod ℓ)` to `AddMonoidHom.mk' (fun x i => ((b.repr x i : ℤ) : ZMod ℓ)) fun x y => by`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hg : Function.Surjective g`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Use `choose w hw using fun i => ZMod.intCast_surjective (v i)`. Use `⟨b.equivFun.symm w, funext fun i => ?_⟩` and prove the remaining obligations. Use `show ((b.repr (b.equivFun.symm w) i : ℤ) : ZMod ℓ) = v i`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : f.ker = g.ker`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Additive.ofMul (ev x) = 0 ↔ _`. Rewrite using `[ofMul_eq_zero, hker]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use extensionality with `i`. Simplify using `[g]`. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ∀ i, (ℓ : ℤ) ∣ b.repr x i` using `fun i => by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `congrFun h i`. Use `choose c hc using hd`. Use `⟨b.equivFun.symm c, b.ext_elem fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcy : b.repr (b.equivFun.symm c) i = c i`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[map_nsmul, Finsupp.smul_apply, hcy, hc i, nsmul_eq_mul]`. Establish `e1 : Nat.card {q : Q // q ^ ℓ = 1} = Nat.card f.range`. Use `Nat.card_congr (Equiv.subtypeEquiv Additive.ofMul fun q => ?_)` and prove the remaining obligations.
-
-Rewrite using `[honto, AddMonoidHom.mem_range]`. Both sides reduce to the same expression. Rewrite using `[e1, ← Nat.card_congr (QuotientAddGroup.quotientKerEquivRange f).toEquiv, Nat.card_congr (QuotientAddGroup.quotientAddEquivOfEq hk).toEquiv, Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective g hg).toEquiv]`. Simplify using `[Nat.card_eq_fintype_card, r]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_torsion_of_ev {La Q : Type} [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] [Group Q]
     (ev : La → Q) (ℓ : ℕ) (hℓ : 0 < ℓ) (hadd : ∀ x y, ev (x + y) = ev x * ev y)
@@ -81,23 +79,21 @@ theorem card_torsion_of_ev {La Q : Type} [AddCommGroup La] [Module.Free ℤ La] 
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `o.ab.smooth` as an intermediate fact. Use `choose n W hW hd using H1.exists_dim o.A.hom`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension D.g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension D.g) W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) fun y => ?_` and prove the remaining obligations. Set `k` to `AlgebraicClosure (o.A.left.residueField y)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `z : Sp k ⟶ o.A.left` to `Spec.map (CommRingCat.ofHom (algebraMap (o.A.left.residueField y) k)) ≫ o.A.left.fromSpecResidueField y`. Establish `hz : ∀ u, z u = y` using `fun u => Scheme.fromSpecResidueField_apply y _`. Set `x : Sp k ⟶ S` to `z ≫ o.A.hom`. Set `β : R →+* k` to `(Spec.preimage (x ≫ s)).hom`. Establish `hβ : x ≫ s = spMap β` using `(Spec.map_preimage (x ≫ s)).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B` to `(Over.pullback x).obj o.A`. Use `letI : GrpObj B := Functor.grpObjObj`. Establish `hB : IsAbelianScheme B` using `GlobalTheory.isAbelianScheme_pullback_obj x o.A o.ab`. Take `⟨m, hm⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k B hB`. Set `z' : Sp k ⟶ pullback o.A.hom x` to `pullback.lift z (𝟙 _) (Category.id_comp _).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : n y = m` using `H1.dim_base (IsPullback.of_hasPullback _ _) (hd y) hm (z' (default : PrimeSpectrum k)) (by`. Establish `e : z' ≫ pullback.fst o.A.hom x = z` using `pullback.lift_fst _ _ _`. Establish `e'` using `(congrArg (fun q : Sp k ⟶ o.A.left => q (default : PrimeSpectrum k)) e).trans (hz _)`. Conclude with `(congrArg (fun u => u ∈ W y) e').mpr (hW y))`. Establish `hℓp : (p + 1).Coprime p` using `Nat.coprime_self_add_left.2 (Nat.coprime_one_left p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hℓk : ((p + 1 : ℕ) : k) ≠ 0`. Introduce `h0`. Use `(b.unit (p + 1) hℓp).map β` as an intermediate fact. Rewrite `this` using `[map_natCast, h0]`. Conclude with `not_isUnit_zero this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Take `⟨I, -⟩` from `o.geom k x β hβ`. Establish `c1` using `card_torsion_of_ev (I.ev (p + 1)) (p + 1) (by omega) (I.add (p + 1)) (I.ker (p + 1) (by omega) hℓp) (I.onto (p + 1) (by omega) hℓp)`. Establish `c2` using `GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional k B m (p + 1) hB hm hℓk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨e, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback o.A x) (𝟙 (Sp k)) x (Category.id_comp x).symm`. Establish `c3 : Nat.card {q : 𝟙_ (Over (Sp k)) ⟶ B // q ^ (p + 1) = 1} = Nat.card {q : Over.mk x ⟶ o.A // q ^ (p + 1) = 1}` using `Nat.card_congr (Equiv.subtypeEquiv e.toEquiv fun q => by`. Express the relevant statement in the definitionally equal form `q ^ (p + 1) = 1 ↔ e q ^ (p + 1) = 1`. Rewrite using `[← map_pow, map_eq_one_iff e e.injective])`. Establish `hr` using `D.rankLa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 2 * m = Module.finrank ℤ D.La` using `Nat.pow_right_injective (by have := (Fact.out : p.Prime).two_le; omega : 2 ≤ p + 1) (by show (p + 1) ^ (2 * m) = (p + 1) ^ Module.finrank ℤ D.La`. Rewrite using `[← c2, c3, c1])`. Establish `hg : D.g = m` using `by show D.m * D.n * Module.finrank ℚ D.F / 2 = m`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hg, ← e₁]`.
-
-Conclude with `hd y`.
+A detailed English derivation is pending.
 -/
 theorem relDim {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R}
     (o : Obj b N s) : SmoothOfRelativeDimension D.g o.A.hom := by
@@ -155,7 +151,7 @@ theorem relDim {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S
   exact hd y
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ o` and use `⟨relDim o, LB.isLB_pull o.isLB _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem relDim_and_isLB : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s), SmoothOfRelativeDimension D.g o.A.hom ∧ (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB :=
   fun _ _ _ _ _ _ _ _ _ o => ⟨relDim o, LB.isLB_pull o.isLB _⟩

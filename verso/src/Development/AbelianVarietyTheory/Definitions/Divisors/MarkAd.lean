@@ -57,7 +57,7 @@ def SerOf (O : OMDat C R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (v
             rdU (unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c')) f (O.dict g).1 (O.dict g).2
 
 /- English proof (translation)
-The claim follows from `h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem SerOf.norm {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : (R.MW i (sg0 D A)).Vec}
     {cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} {ph : ℂ} (h : SerOf O κ v₀ cc ph) : ‖ph‖ = 1 := h.2.1

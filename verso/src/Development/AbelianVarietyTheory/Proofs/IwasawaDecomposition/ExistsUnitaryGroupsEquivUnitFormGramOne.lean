@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftBrg.StdGroups
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL, Formalism.UG.bc, Matrix.reindexAlgEquiv_apply]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_bc {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {m n : ℕ} (h : m = n) (x : GL (Fin m) A) :
     castGL h (Formalism.UG.bc f x) = Formalism.UG.bc f (castGL h x) := by
@@ -27,7 +27,7 @@ theorem castGL_bc {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {m n : 
   simp [castGL, Formalism.UG.bc, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL, Matrix.reindexAlgEquiv_apply]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_symm_castGL' {A : Type} [CommRing A] {m n : ℕ} (h : m = n) (x : GL (Fin m) A) :
     castGL h.symm (castGL h x) = x := by
@@ -36,7 +36,7 @@ theorem castGL_symm_castGL' {A : Type} [CommRing A] {m n : ℕ} (h : m = n) (x :
   simp [castGL, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : castGL (rfl : m = m) x = x`. Use extensionality with `i j`. Simplify using `[castGL, Matrix.reindexAlgEquiv_apply]`. Rewrite using `[e]` and apply the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem castGL_mem_UJ_one {A : Type} [CommRing A] (σ : A →+* A) {m n : ℕ} (h : m = n) (x : GL (Fin m) A)
     (hx : x ∈ Formalism.UG.UJ σ (1 : Matrix (Fin m) (Fin m) A)) : castGL h x ∈ Formalism.UG.UJ σ (1 : Matrix (Fin n) (Fin n) A) := by
@@ -47,7 +47,7 @@ theorem castGL_mem_UJ_one {A : Type} [CommRing A] (σ : A →+* A) {m n : ℕ} (
   rwa [e]
 
 /- English proof (translation)
-Introduce `x y hxy`. Use extensionality with `i j`. Conclude with `hf (congrArg (fun z : GL (Fin m) B => (z : Matrix (Fin m) (Fin m) B) i j) hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem bc_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Injective f) {m : ℕ} :
     Function.Injective (Formalism.UG.bc (n := Fin m) f) := by
@@ -74,7 +74,7 @@ theorem phiG_val (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1)
     (phiG X i hg g : GL (Fin X.B.R.nV) (LiftBrg.EA X)) = castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) g.1) := rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `congrArg (fun z : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV => (z : GL (Fin X.B.R.nV) (LiftBrg.EA X))) hab`. Simplify using `only [phiG_val] at h1`. Establish `h2` using `(castGL (rkEq X i).symm).injective h1`. Conclude with `Subtype.ext (bc_injective _ (Algebra.TensorProduct.comm _ _ _).injective h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phiG_injective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) :
     Function.Injective (phiG X i hg) := by
@@ -85,9 +85,9 @@ theorem phiG_injective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gra
   exact Subtype.ext (bc_injective _ (Algebra.TensorProduct.comm _ _ _).injective h2)
 
 /- English proof (translation)
-Introduce `x`. Establish `hy : castGL (rkEq X i) (x : GL (Fin X.B.R.nV) (LiftBrg.EA X)) ∈ Formalism.L2.DIV.UA X.toD7.sp.cm (Vc X.toD7 i).gram`. Rewrite using `[hg]`. Conclude with `castGL_mem_UA_std _ _ _ x.2`. Use `⟨⟨finHom (Vc X.toD7 i) (GlobalTheory.StdFrameExist.liftF (Vc X.toD7 i) _ hy), _, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phiG_val]`. Establish `e` using `GlobalTheory.StdFrameExist.finE_liftF (Vc X.toD7 i) _ hy`. Express the relevant statement in the definitionally equal form `castGL (rkEq X i).symm (finE (Vc X.toD7 i) (GlobalTheory.StdFrameExist.liftF (Vc X.toD7 i) _ hy)) = _`. Rewrite using `[e, castGL_symm_castGL']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiG_surjective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) :
     Function.Surjective (phiG X i hg) := by
@@ -106,9 +106,9 @@ end GlobalTheory.Mem.R3.LiftBrg.StdGroups
 namespace GlobalTheory.Mem.R3.LiftBrg.StdGroups
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (σ : E →+* E) (γ : Matrix (Fin m) (Fin m) E) * J * γ = J` using `hγ`. Use `show Formalism.UG.cT (sigR R σ) ((γ : Matrix (Fin m) (Fin m) E).map (inclR R)) * J.map (inclR R) * (γ : Matrix (Fin m) (Fin m) E).map (inclR R) = J.map (inclR R)`. Establish `h2 : Formalism.UG.cT (sigR R σ) ((γ : Matrix (Fin m) (Fin m) E).map (inclR R)) = (Formalism.UG.cT (σ : E →+* E) (γ : Matrix (Fin m) (Fin m) E)).map (inclR (F` using `F) R) := by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+A detailed English derivation is pending.
 -/
 theorem bc_inclR_mem_HR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (γ : GL (Fin m) E) (hγ : γ ∈ Formalism.UG.UJ (σ : E →+* E) J) :
@@ -144,11 +144,11 @@ theorem psiQ_mat (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1)
       Formalism.UG.bc (incA X.toD7) (castGL (rkEq X i) (γ : GL (Fin X.B.R.nV) X.toD7.host.E)) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[phiG_val, Formalism.L2.Col.ratIn_val]`. Establish `e1 : ((Bridge.ratF (Vc X.toD7 i) (psiQ X i hg γ)) : GL (Fin (Vc X.toD7 i).rank) _) = Formalism.UG.bc (inclR (F` using `X.toD7.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F)) (castGL (rkEq X i) (γ : GL (Fin X.B.R.nV) X.toD7.host.E)) := by`. Express the relevant statement in the definitionally equal form `finHom (Vc X.toD7 i) _ = _`. Rewrite using `[finHom, MonoidHom.comp_apply, Subgroup.coe_subtype, psiQ_mat]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.HLatMove.bc_map_bc_inclR _ _`. Rewrite using `[e1]`. Establish `e2 : Formalism.UG.bc (swapAE X.toD7) (Formalism.UG.bc (inclR (F` using `X.toD7.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F)) (castGL (rkEq X i) (γ : GL (Fin X.B.R.nV) X.toD7.host.E))) = Formalism.UG.bc (Formalism.L2.Col.iA X.toD7.host.F X.toD7.host.E) (castGL (rkEq X i) (γ : GL (Fin X.B.R.nV) X.toD7.host.E)) := …`. Use extensionality with `a b`. Simplify using `[Formalism.UG.bc, swapAE, inclR, Formalism.UG.inclE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, ← castGL_bc, castGL_symm_castGL']`.
+A detailed English derivation is pending.
 -/
 theorem phiG_ratF_psiQ (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) (γ : Formalism.L2.Col.URat X.toD7.sp.cm X.B.R.nV) :
     phiG X i hg (Bridge.ratF (Vc X.toD7 i) (psiQ X i hg γ)) = Formalism.L2.Col.ratIn X.toD7.sp.cm X.B.R.nV γ := by
@@ -168,9 +168,9 @@ theorem phiG_ratF_psiQ (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gra
   rw [e2, ← castGL_bc, castGL_symm_castGL']
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1 : Formalism.L2.Col.ratIn X.toD7.sp.cm X.B.R.nV a = Formalism.L2.Col.ratIn X.toD7.sp.cm X.B.R.nV b`. Rewrite using `[← phiG_ratF_psiQ X i hg a, ← phiG_ratF_psiQ X i hg b, hab]`. Establish `h2` using `congrArg (fun z : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV => (z : GL (Fin X.B.R.nV) (LiftBrg.EA X))) h1`. Simplify using `only [Formalism.L2.Col.ratIn_val] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext (Formalism.L2.DIV.incl_inj _ _ _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem psiQ_injective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) :
     Function.Injective (psiQ X i hg) := by
@@ -182,9 +182,9 @@ theorem psiQ_injective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gra
   exact Subtype.ext (Formalism.L2.DIV.incl_inj _ _ _ h2)
 
 /- English proof (translation)
-Introduce `δ`. Take `⟨γE, hγE, e⟩` from `Subgroup.mem_subgroupOf.1 δ.2`. Establish `hγ : castGL (rkEq X i).symm γE ∈ Formalism.L2.Col.URat X.toD7.sp.cm X.B.R.nV`. Rewrite `hγE` using `[hg]`. Conclude with `castGL_mem_UJ_one _ _ _ hγE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hγ⟩, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.bc (inclR (F := X.toD7.host.F) (AF X.toD7.host.F)) (castGL (rkEq X i) (castGL (rkEq X i).symm γE)) = _`. Rewrite using `[castGL_symm_castGL' (rkEq X i).symm γE]`. Conclude with `e`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiQ_surjective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) :
     Function.Surjective (psiQ X i hg) := by
@@ -199,9 +199,9 @@ theorem psiQ_surjective (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gr
   exact e
 
 /- English proof (translation)
-Introduce `X i hg`. Set `eG0` to `MulEquiv.ofBijective (phiG X i hg) ⟨phiG_injective X i hg, phiG_surjective X i hg⟩`. Set `eQ` to `MulEquiv.ofBijective (psiQ X i hg) ⟨psiQ_injective X i hg, psiQ_surjective X i hg⟩`. Use `⟨eG0.symm, eQ, fun x => ?_, fun γ => ?_, fun γ => ?_⟩` and prove the remaining obligations. Establish `h` using `eG0.apply_symm_apply x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV => (z : GL (Fin X.B.R.nV) (LiftBrg.EA X))) h`. Rewrite using `[MulEquiv.eq_symm_apply]`. Conclude with `phiG_ratF_psiQ X i hg γ`. Conclude with `psiQ_mat X i hg γ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdGroups_equiv : ∀ (X : Stages) (i : Fin X.toD7.R.m), (Vc X.toD7 i).gram = 1 →
     ∃ (eG : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i))

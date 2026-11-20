@@ -37,9 +37,9 @@ def PartDiag : Prop := ∀ (q : ℕ) (B : Type) [CommRing B] [IsDomain B] (I : I
         a - (D.map f).hom a₀ ∈ I.map (β.app j').hom)
 
 /- English proof (translation)
-Introduce `q B _ _ I hB hq`. Take `⟨J, _, _, D, β, hst, ha, hb, hc⟩` from `hD q B I hB hq`. Take `⟨K, hK, he⟩` from `hC B I J D β (colimit.cocone D) (colimit.isColimit D) ha hb hc`. Use `⟨J, inferInstance, inferInstance, D, colimit.cocone D, colimit.isColimit D, hst, ?_, K, hK, he⟩` and prove the remaining obligations. Take `⟨j⟩` from `IsFiltered.nonempty (C := J)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IsUnit ((q : B))` using `hq`. Establish `h2` using `h1.map ((β.app j) ≫ (colimit.cocone D).ι.app j).hom`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem goal_of (_hL : LocAIC) (_hM : MonicSplits) (_hI : IdemPart) (hC : ColimHens) (hD : PartDiag) :
     LateralTheory.E.QuotAcycCut.Hens := by

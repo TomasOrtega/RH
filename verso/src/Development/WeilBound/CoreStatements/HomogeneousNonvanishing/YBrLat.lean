@@ -35,7 +35,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `hab τ i i.2`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exZ_congr {a b : WZ E} (hab : WEq Dw a b) : Rec.exZ Dw a = Rec.exZ Dw b := by
   funext i
@@ -44,16 +44,16 @@ theorem exZ_congr {a b : WZ E} (hab : WEq Dw a b) : Rec.exZ Dw a = Rec.exZ Dw b 
   · exact hab τ i i.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k τ j`. Simplify using `[Rec.laZ, GlobalTheory.AllWt.modelWt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem laZ_eq {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : WZ E) : Rec.laZ U a = GlobalTheory.AllWt.modelWt U (a, 0) := by
   funext k τ j
   simp [Rec.laZ, GlobalTheory.AllWt.modelWt]
 
 /- English proof (translation)
-Rewrite using `[laZ_eq, laZ_eq]`. Use `GlobalTheory.AllWt.modelWt_congr U hσ hU ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Conclude with `hab τ i i.2`.
+A detailed English derivation is pending.
 -/
 theorem laZ_congr {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) {a b : WZ E}
     (hab : WEq Dw a b) : Rec.laZ U a = Rec.laZ U b := by
@@ -65,9 +65,9 @@ theorem laZ_congr {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) 
   · exact hab τ i i.2
 
 /- English proof (translation)
-Establish `he : Lat.exZ Dw a 0 = Rec.exZ Dw a`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with _ | _ <;> rfl`. Use extensionality with `f`. Unfold `Lat.secZ Rec.secZ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Rewrite using `[he]`. Use `and_congr Iff.rfl (forall_congr' fun p => forall_congr' fun t => forall_congr' fun y => forall_congr' fun y' => forall_congr' fun _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.coe_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lat_secZ (a : WZ E) : Lat.secZ Xo c a 0 = Rec.secZ Xo c a := by
   have he : Lat.exZ Dw a 0 = Rec.exZ Dw a := by
@@ -81,14 +81,14 @@ theorem lat_secZ (a : WZ E) : Lat.secZ Xo c a 0 = Rec.secZ Xo c a := by
   rw [Units.coe_prod]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k τ j`. Simplify using `[Lat.laZ, Rec.laZ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lat_laZ {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : WZ E) : Lat.laZ U a 0 = Rec.laZ U a := by
   funext k τ j
   simp [Lat.laZ, Rec.laZ]
 
 /- English proof (translation)
-Unfold `Lat.cuspZ Rec.cuspZ`. Simplify using `only [lat_secZ, lat_laZ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lat_cuspZ (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (a : WZ E) : Lat.cuspZ U a 0 = Rec.cuspZ Xo c U a := by
   unfold Lat.cuspZ Rec.cuspZ
@@ -98,17 +98,15 @@ end YBrLat
 
 open YBrLat in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U h e L a x`. Use `⟨⟨lat_secZ a, lat_cuspZ U a, rfl, fun f => ?_⟩, fun b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Lat.mem_latZ, lat_cuspZ]`. Establish `h1 : Rec.secZ Xo c a = Rec.secZ Xo c b`. Unfold `Rec.secZ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[exZ_congr hab]`. Establish `h2 : ∀ σ, GoodEmb c σ → Rec.laZ (U σ) a = Rec.laZ (U σ) b` using `fun σ hσ => laZ_congr (U σ) hσ (L.unf σ hσ) hab`. Establish `h3 : Rec.cuspZ Xo c U a = Rec.cuspZ Xo c U b`. Unfold `Rec.cuspZ`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Rec.secZ Xo c b ⊓ ·) (iInf_congr fun σ => iInf_congr fun hσ => by rw [h2 σ hσ])`. Establish `h4 : ∀ Z, Rec.cuspOn U h a Z = Rec.cuspOn U h b Z` using `fun Z => by`. Unfold `Rec.cuspOn`. Rewrite using `[h3]`. Use `⟨h1, h3, ?_, ?_, h2, fun Z => ⟨h4 Z, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), (a (τ, i) : ℝ)) = ∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), (b (τ, i) : ℝ)` using `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => by rw [hab τ i i.2]`. Unfold `Rec.lieFacZ`. Rewrite using `[this]`. Use function extensionality and compare the values at `τ n`. Establish `hn` using `n.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `towerWt`. Use `split_ifs with hp`. Rewrite using `[hab τ.1 n (by rw [Datum.mult, if_pos τ.2]; exact hp)]`. Rewrite using `[hab (conjEmb τ.1) _ (by rw [Datum.mult, if_neg (GlobalTheory.AllWt.conj_not_mem τ)]; omega)]`. Unfold `Rec.latOn`.
-
-Rewrite using `[h4 Z]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem y_br_lat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (a : WZ E) (x : ℝ), (Lat.secZ Xo c a 0 = secZ Xo c a ∧ Lat.cuspZ U a 0 = cuspZ Xo c U a ∧ Lat.lieZ Dw x a = lieFacZ Dw x a ∧ ∀ f, f ∈ Lat.latZ U a 0 ↔ f ∈ cuspZ Xo c U a ∧ ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f) ∧ ∀ b, WEq Dw a b → secZ Xo c a = secZ Xo c b ∧ cuspZ Xo c U a = cuspZ Xo c U b ∧ lieFacZ Dw x a = lieFacZ Dw x b ∧ towerWt Dw a = towerWt Dw b ∧ (∀ σ, GoodEmb c σ → laZ (U σ) a = laZ (U σ) b) ∧ ∀ Z, cuspOn U h a Z = cuspOn U h b Z ∧ latOn U h a Z = latOn U h b Z := by
   intro E _ _ _ H Dw l Xo c r U h e L a x

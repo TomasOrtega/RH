@@ -14,7 +14,7 @@ def uMap {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim)) : Vsp dim �
     (((-Complex.I) • LinearMap.id : Vsp dim →ₗ[ℂ] Vsp dim).restrictScalars ℝ)
 
 /- English proof (translation)
-Simplify using `only [real_inner_eq_re_inner ℂ, PiLp.inner_apply, Hf, Complex.re_sum, Complex.im_sum, PiLp.smul_apply, smul_eq_mul, RCLike.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tof_re_inner_negI {ι : Type} [Fintype ι] (a x : EuclideanSpace ℂ ι) :
     inner ℝ a ((-Complex.I) • x) = (Hf x a).im := by
@@ -24,9 +24,7 @@ theorem tof_re_inner_negI {ι : Type} [Fintype ι] (a x : EuclideanSpace ℂ ι)
   simp [Complex.mul_re, Complex.mul_im]
 
 /- English proof (translation)
-Use `⟨(IR I).starProjection_apply_mem _, fun a ha => ?_⟩` and prove the remaining obligations. Use `show inner ℝ ((IR I).starProjection ((-Complex.I) • x)) a = (Hf x a).im`. Establish `h0` using `Submodule.starProjection_inner_eq_zero (K := IR I) ((-Complex.I) • x) a ha`. Rewrite `h0` using `[inner_sub_left, sub_eq_zero]`. Rewrite using `[← h0, real_inner_comm]`.
-
-Conclude with `tof_re_inner_negI a x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isU_uMap {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim)) (x : Vsp dim) :
     IsU I x (uMap I x) := by
@@ -38,7 +36,7 @@ theorem isU_uMap {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim)) (x 
   exact tof_re_inner_negI a x
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[act, mul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tof_act_add {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (v w : Vsp dim) :
     act α (v + w) = act α v + act α w := by
@@ -46,7 +44,7 @@ theorem tof_act_add {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (v w : Vsp dim) 
   simp [act, mul_add]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[act]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tof_act_smul {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (c : ℂ) (v : Vsp dim) :
     act α (c • v) = c • act α v := by
@@ -55,19 +53,19 @@ theorem tof_act_smul {dim : (E →+* ℂ) → ℕ} (α : 𝓞 E) (c : ℂ) (v : 
   ring
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tof_natc_smul {dim : (E →+* ℂ) → ℕ} (n : ℕ) (z : Vsp dim) : (n : ℂ) • z = (n : ℝ) • z := by
   rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Take `⟨a, ha1, ha⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul (Ideal.span {(r : ℤ)}) M hM (by`. Introduce `m hm`. Take `⟨m', hm', rfl⟩` from `hdiv m hm`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hm')`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha1` using `[Ideal.mem_span_singleton]`. Establish `h1 : (r : ℤ) ∣ 1` using `by simpa using ha1`. Establish `h2` using `Int.eq_one_of_dvd_one (by positivity) h1`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[eq_bot_iff]`. Introduce `m hm`. Establish `h` using `ha m hm`. Rewrite `h` using `[← Int.cast_smul_eq_zsmul ℝ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `(smul_eq_zero.mp h).resolve_left (by exact_mod_cast ha0)`.
+A detailed English derivation is pending.
 -/
 theorem tof_fg_div_eq_bot {Q : Type*} [NormedAddCommGroup Q] [InnerProductSpace ℝ Q]
     (M : Submodule ℤ Q) (hM : M.FG)
@@ -92,31 +90,27 @@ theorem tof_fg_div_eq_bot {Q : Type*} [NormedAddCommGroup Q] [InnerProductSpace 
   exact (smul_eq_zero.mp h).resolve_left (by exact_mod_cast ha0)
 
 /- English proof (translation)
-Establish `huniq : ∀ x w, IsU I x w → w = uMap I x`. Introduce and unpack `x w ⟨hw, hwa⟩`. Establish `hu` using `isU_uMap I x`. Establish `hd : w - uMap I x ∈ IR I` using `(IR I).sub_mem hw hu.1`. Establish `horth : ∀ b ∈ IR I, inner ℝ (w - uMap I x) b = 0` using `fun b hb => by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inner_sub_left, hwa b hb, hu.2 b hb, sub_self]`. Conclude with `sub_eq_zero.mp (inner_self_eq_zero (𝕜 := ℝ).mp (horth _ hd))`. Establish `hset : {w | ∃ j, ∃ α : 𝓞 E, IsU I (act α (((r1 : ℂ) ^ 2) • a j - ((r1 : ℂ) ^ 2) • yb j)) w} = Set.range (fun p : Fin X.r × 𝓞 E => uMap I (act p.2 (((r1 : ℂ) ^ 2) • a p.1 - ((r1 : ℂ) ^ 2) • yb p.1)))`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨j, α, h⟩`. Conclude with `⟨(j, α), (huniq _ _ h).symm⟩`. Introduce and unpack `⟨⟨j, α⟩, rfl⟩`. Conclude with `⟨j, α, isU_uMap I _⟩`. Use `set T : Submodule ℝ (Vsp X.dim) := Submodule.span ℝ (Set.range fun p : Fin X.r × 𝓞 E => act p.2 (((r1 : ℂ) ^ 2) • a p.1 - ((r1 : ℂ) ^ 2) • yb p.1)) with hT`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f0 : Vsp X.dim →ₗ[ℝ] Vsp X.dim` to `LinearMap.id - (T.starProjection : Vsp X.dim →ₗ[ℝ] Vsp X.dim)`. Establish `hf0T : ∀ v ∈ T, f0 v = 0` using `fun v hv => by`. Establish `h` using `Submodule.starProjection_mem_subspace_eq_self (K := T) ⟨v, hv⟩`. Use `show v - T.starProjection v = 0`. Rewrite `h` using `[show ((⟨v, hv⟩ : T) : Vsp X.dim) = v from rfl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, sub_self]`. Establish `hf0inv : ∀ v, f0 v = 0 → v ∈ T` using `fun v hv => by`. Establish `h : v - T.starProjection v = 0` using `hv`. Rewrite using `[sub_eq_zero.mp h]`. Conclude with `T.starProjection_apply_mem v`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `f : Vsp X.dim →ₗ[ℤ] Vsp X.dim` to `f0.toAddMonoidHom.toIntLinearMap`. Establish `hsq : ∀ z : Vsp X.dim, ((r1 : ℂ) ^ 2) • z = r1 • r1 • z` using `fun z => by`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul ℂ, sq, mul_smul]`. Establish `hLfg : X.L.FG` using `Submodule.fg_span (Set.finite_range X.b)`. Establish `hM` using `tof_fg_div_eq_bot (X.L.map f) (hLfg.map f) r1 hr1 (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `m ⟨x, hx, rfl⟩`. Take `⟨c, y, hy, hxe⟩` from `hgen x hx`. Use `⟨f (y + ∑ j, r1 • act (c j) (yb j)), ⟨_, X.L.add_mem hy (X.L.sum_mem fun j _ => nsmul_mem (X.stable _ _ (hyb j)) r1), rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ j, act (c j) (((r1 : ℂ) ^ 2) • a j) = act (c j) (((r1 : ℂ) ^ 2) • a j - ((r1 : ℂ) ^ 2) • yb j) + r1 • r1 • act (c j) (yb j)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← hsq, ← tof_act_smul, ← tof_act_add, sub_add_cancel]`. Establish `hz : ∀ j, f (act (c j) (((r1 : ℂ) ^ 2) • a j - ((r1 : ℂ) ^ 2) • yb j)) = 0` using `fun j => hf0T _ (Submodule.subset_span ⟨(j, c j), rfl⟩)`. Rewrite using `[hxe]`. Repeatedly rewrite using `[e1]`. Rewrite using `[Finset.sum_add_distrib, Nat.cast_smul_eq_nsmul ℂ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_add, map_sum, map_nsmul, hz, Finset.sum_const_zero, zero_add, smul_add, Finset.smul_sum]`. Use the proof step `abel)`. Establish `hLT : ∀ x ∈ X.L, x ∈ T` using `fun x hx => hf0inv x (by`. Establish `h : f x ∈ X.L.map f` using `⟨x, hx, rfl⟩`. Rewrite `h` using `[hM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Submodule.mem_bot ℤ).mp h)`. Establish `hTtop : T = ⊤`. Rewrite using `[eq_top_iff, ← X.b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hLT _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(isU_uMap I _).1`.
-
-Introduce `v hv`. Establish `hv' : uMap I (Complex.I • v) = v` using `by show (IR I).starProjection ((-Complex.I) • Complex.I • v) = v`. Rewrite using `[smul_smul, neg_mul, Complex.I_mul_I, neg_neg, one_smul]`. Conclude with `Submodule.starProjection_mem_subspace_eq_self (K := IR I) ⟨v, hv⟩`. Rewrite using `[← hv']`.
-
-Establish `hIv : Complex.I • v ∈ T` using `by rw [hTtop]; exact Submodule.mem_top`. Establish `h2 : uMap I (Complex.I • v) ∈ T.map (uMap I)` using `⟨_, hIv, rfl⟩`. Rewrite `h2` using `[hT, Submodule.map_span, ← Set.range_comp]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tof_span_condition [IsCMField E] {X : PT E} (I : Submodule ℤ (Vsp X.dim)) (r1 : ℕ) (hr1 : 2 ≤ r1)
     (a yb : Fin X.r → Vsp X.dim) (hyb : ∀ j, yb j ∈ X.L)

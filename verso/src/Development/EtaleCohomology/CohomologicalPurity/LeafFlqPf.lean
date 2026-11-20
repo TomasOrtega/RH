@@ -41,9 +41,9 @@ def LeafRs : Prop := ∀ (R : Type) [CommRing R] (G : Shv R) (X : Scheme.{0}) (T
   (a b : Sec G W.toScheme), rs h (a - b) = rs h a - rs h b ∧ rs h' (rs h a) = rs (h'.trans h) a
 
 /- English proof (translation)
-Introduce `R _ G X T V W h h' a b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ((G.obj.map (X.homOfLE h).op).hom (a - b)) = _`. Conclude with `map_sub _ a b`. Use `show ((G.obj.map (X.homOfLE h').op).hom ((G.obj.map (X.homOfLE h).op).hom a)) = (G.obj.map (X.homOfLE (h'.trans h)).op).hom a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : X.homOfLE (h'.trans h) = X.homOfLE h' ≫ X.homOfLE h` using `(Scheme.homOfLE_homOfLE X h' h).symm`. Rewrite using `[e, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem LeafRs_of : LeafRs := by
   intro R _ G X T V W h h' a b
@@ -56,31 +56,29 @@ theorem LeafRs_of : LeafRs := by
     rfl
 
 /- English proof (translation)
-Introduce `R _ K hinj hneg X U m H`. Establish `hR` using `LeafRs_of`. Establish `key : ∀ n, n < m → OK (ZN K U (n - 1)) → OK (ZN K U n)`. Introduce `n hn hprev`. Establish `hB` using `hS R K hZ hinj X U n hprev`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `eq : ZN K U n = BN K U n`. Use function extensionality and compare the values at `W`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hB.2.1 W a` to reduce the goal to its premises. Introduce `x hx`. Take `⟨V, h, hxV, hb⟩` from `H n hn W a ha x hx`. Conclude with `⟨V, h, hxV, AddSubgroup.subset_closure hb⟩`. Introduce `ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hBZ R K X U n W a (hA R K X U n W a ha)`. Rewrite using `[eq]`. Conclude with `hB`. Establish `P : ∀ k : ℕ, (k : ℤ) < m → OK (ZN K U (k : ℤ))`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero => intro h; exact key _ h (h0 R K X U _ (hneg _ (by norm_num)))`. Consider the case `succ k ih`. Introduce `h`. Apply `key _ h` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((k + 1 : ℕ) : ℤ) - 1 = (k : ℤ)` using `by push_cast; ring`. Rewrite using `[e]; exact ih (by omega)`. Establish `hm : OK (ZN K U (m - 1))`. Distinguish the cases in `hc : m - 1 < 0`. Conclude with `h0 R K X U _ (hneg _ hc)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((m - 1).toNat : ℤ) = m - 1` using `Int.toNat_of_nonneg (by omega)`. Use `P (m - 1).toNat (by omega)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Establish `hBm` using `hS R K hZ hinj X U m hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun W a hloc => hA R K X U m W a (hBm.2.1 W a fun x hx => ?_), ?_⟩` and prove the remaining obligations. Take `⟨V, h, hxV, hb⟩` from `hloc x hx`. Conclude with `⟨V, h, hxV, AddSubgroup.subset_closure hb⟩`. Introduce `A V a ha hcov hagree`. Take `⟨c', hc'⟩` from `hZ R (K.X m) X (BN K U m) hBm.1 hBm.2.1 hBm.2.2 ⊤ A V (fun _ => le_top) a (fun x _ => hcov x) (by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k l`. Apply `hBm.2.1` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hxk, hxl⟩` from `hx`. Take `⟨T, hk, hl, hxT, hb⟩` from `hagree k l x hxk hxl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨T, le_inf hk hl, hxT, ?_⟩` and prove the remaining obligations. Establish `e : rs (le_inf hk hl) (rs (inf_le_left : V k ⊓ V l ≤ V k) (a k) - rs (inf_le_right : V k ⊓ V l ≤ V l) (a l)) = rs hk (a k) - rs hl (a l)`. Establish `rsub : ∀ {V W : X.Opens} (h : V ≤ W) (x y : Sec (K.X m) W.toScheme), rs h (x - y) = rs h x - rs h y` using `fun {V W} h x y => (hR R _ X V V W h le_rfl x y).1`. Establish `rrs : ∀ {T V W : X.Opens} (h : V ≤ W) (h' : T ≤ V) (x : Sec (K.X m) W.toScheme), rs h' (rs h x) = rs (h'.trans h) x` using `fun {T V W} h h' x => (hR R _ X T V W h h' x x).2`. Rewrite using `[rsub, rrs, rrs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure hb)`. Establish `hmem : c' ∈ ZN K U m ⊤`. Apply `(hL R K X U m).2 ⊤ c'` to reduce the goal to its premises. Introduce `x _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨k, hk⟩` from `hcov x`. Use `⟨V k, le_top, hk, ?_⟩` and prove the remaining obligations. Establish `h1` using `hBZ R K X U m (V k) _ (hA R K X U m (V k) _ (hc' k))`. Establish `h2 : a k ∈ ZN K U m (V k)` using `ha k`. Simplify using `using add_mem h1 h2`.
-
-Take `⟨c, hc, hcV⟩` from `hT R K X U m c' hmem`. Use `⟨c, hc, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hcV]`. Conclude with `hA R K X U m (V k) _ (hc' k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafFlq_of (hZ : LateralTheory.CohomologicalPurity.Cl.LeafZorn) (hA : LeafBdAdd) (hBZ : LeafBZ) (hL : LeafZloc) (h0 : LeafZero)
     (hS : LeafStep) (hT : LeafTop) : LateralTheory.CohomologicalPurity.Cl.LeafFlq := by

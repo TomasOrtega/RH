@@ -9,28 +9,28 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.S
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `bessel_integral_convergence_of_growth growth_spherical_bound`.
+A detailed English derivation is pending.
 -/
 theorem bessel_convergence : Formalism.FourierDecayAlt.ThreeDimData.BeConv := bessel_integral_convergence_of_growth growth_spherical_bound
 
 /- English proof (translation)
-The claim follows from `PI.WBL.NIS.normIdSm_of_growth growth_spherical_bound growth_group_bound`.
+A detailed English derivation is pending.
 -/
 theorem norm_identity_smooth : Formalism.FourierDecayAlt.ThreeDimData.NormIdSm :=
   PI.WBL.NIS.normIdSm_of_growth growth_spherical_bound growth_group_bound
 
 /- English proof (translation)
-The claim follows from `PI.WBL.NIS.schurH`.
+A detailed English derivation is pending.
 -/
 theorem schur_hermitian : Formalism.FourierDecayAlt.ThreeDimData.SchurH := PI.WBL.NIS.schurH
 
 /- English proof (translation)
-The claim follows from `PI.WBL.S5.beBessel_of growth_spherical_bound`.
+A detailed English derivation is pending.
 -/
 theorem bessel_function_bound : Formalism.FourierDecayAlt.ThreeDimData.BeBessel := PI.WBL.S5.beBessel_of growth_spherical_bound
 
 /- English proof (translation)
-The claim follows from `PI.WBL.S5.psiConst`.
+A detailed English derivation is pending.
 -/
 theorem psi_constant : Formalism.FourierDecayAlt.ThreeDimData.PsiConst := PI.WBL.S5.psiConst
 

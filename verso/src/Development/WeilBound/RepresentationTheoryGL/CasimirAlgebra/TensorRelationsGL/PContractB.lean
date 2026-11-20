@@ -28,9 +28,9 @@ def semiS {ι Γ : Type} [Fintype ι] (m : ℕ) (τ0 : ι) (κ : ι → Γ → M
     rw [map_smul, ha γ, smul_comm]
 
 /- English proof (translation)
-Establish `hsplit : ∀ f : ι → ℂ, ∏ τ, f τ = f τ0 * ∏ τ ∈ Finset.univ.erase τ0, f τ`. Introduce `f`. Rewrite using `[Finset.mul_prod_erase _ _ (Finset.mem_univ τ0)]`. Rewrite using `[hsplit, hsplit (fun τ => d τ ^ c τ)]`. Establish `hrest : ∏ τ ∈ Finset.univ.erase τ0, d τ ^ (Function.update c τ0 (c τ0 - 1)) τ = ∏ τ ∈ Finset.univ.erase τ0, d τ ^ c τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl (fun τ hτ => ?_)` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hτ)]`. Rewrite using `[hrest, Function.update_self, zpow_sub_one₀ hd]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_update_zpow {ι : Type} [Fintype ι] [DecidableEq ι] (d : ι → ℂ) (c : ι → ℤ) (τ0 : ι) (hd : d τ0 ≠ 0) :
     ∏ τ, d τ ^ (Function.update c τ0 (c τ0 - 1)) τ = (d τ0)⁻¹ * ∏ τ, d τ ^ c τ := by
@@ -45,68 +45,64 @@ theorem prod_update_zpow {ι : Type} [Fintype ι] [DecidableEq ι] (d : ι → �
   ring
 
 /- English proof (translation)
-Conclude with `Matrix.det_ne_zero_of_right_inverse (hK.unit τ γ)`.
+A detailed English derivation is pending.
 -/
 theorem det_ne {ι Γ : Type} {bar : ι → ι} {κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ} [Group Γ] [TopologicalSpace Γ]
     (hK : IsKD bar κ) (τ : ι) (γ : Γ) : (κ τ γ).det ≠ 0 := by
   exact Matrix.det_ne_zero_of_right_inverse (hK.unit τ γ)
 
 /- English proof (translation)
-Take `⟨hGK, hcomm⟩` from `hT n M ι Γ bar κ E ρ hK hG (Fin m) (fun _ => τ0)`. Set `χ : Γ → ℂ` to `fun γ => ∏ τ, (κ τ γ).det ^ c τ`. Set `Y : Submodule ℂ (TV n M (Fin m))` to `semiS m τ0 κ ρ c`. Establish `hY : ∀ y, y ∈ Y ↔ ∀ γ, actT (fun _ : Fin m => τ0) κ ρ γ y = χ γ • y` using `fun y => Iff.rfl`. Set `Q : TV n M (Fin m) →ₗ[ℂ] TV n M0 (Fin m)` to `LinearMap.compLeft q (Fin m → Fin n)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hQap : ∀ y I, Q y I = q (y I)` using `fun _ _ => rfl`. Establish `hpmY : ∀ σ : Equiv.Perm (Fin m), ∀ y ∈ Y, pm σ y ∈ Y`. Introduce `σ y hy`. Rewrite `hy`, the goal using `[hY]`. Introduce `γ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (fun T : Module.End ℂ (TV n M (Fin m)) => T y) (hcomm σ (fun _ => rfl) γ).eq`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[← h, hy γ, map_smul]`. Establish `hOmY : ∀ j : Fin m, ∀ y ∈ Y, Om (E τ0) j y ∈ Y`. Introduce `j y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy`, the goal using `[hY]`. Introduce `γ`. Rewrite using `[actT_Om τ0 κ (E τ0) ρ γ (hK.unit τ0 γ) (hG.ad γ τ0) j y, hy γ, map_smul]`. Establish `hQpm : ∀ (σ : Equiv.Perm (Fin m)) y, Q (pm σ y) = pm σ (Q y)`. Introduce `σ y`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `I`. Both sides reduce to the same expression. Establish `hQlift : ∀ (B : Module.End ℂ M) (B' : Module.End ℂ M0), q ∘ₗ B = B' ∘ₗ q → ∀ y, Q (lift B y) = lift B' (Q y)`. Introduce `B B' hB y`. Use function extensionality and compare the values at `I`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hQap, lift, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Conclude with `LinearMap.congr_fun hB (y I)`. Establish `hQeAt : ∀ (p : Fin m) (a b : Fin n) y, Q (eAt p a b y) = eAt p a b (Q y)`. Introduce `p a b y`. Use function extensionality and compare the values at `I`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hQap, eAt, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp [hQap]`. Establish `hQOm : ∀ (j : Fin m) y, Q (Om (E τ0) j y) = Om F1 j (Q y)`. Introduce `j y`. Simplify using `only [Om, LinearMap.sum_apply, map_sum, Module.End.mul_apply, hQeAt]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[hQlift _ _ (hq1 a b), hQeAt]`. Establish `hfib1 : fib (fun _ : Fin m => τ0) τ0 = Finset.univ`. Use extensionality with `p`. Simplify using `[fib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfib2 : fib (fun _ : Fin m => τ0) (bar τ0) = ∅`. Use extensionality with `p`. Simplify using `[fib, (hK.ne τ0).symm]`. Set `c' : ℂ` to `((c τ0 - c (bar τ0) : ℤ) : ℂ)`. Establish `hQtE : ∀ y ∈ Y, ∀ a b : Fin n, tE Finset.univ (fun a b => F1 a b + -F2 b a) a b (Q y) = if a = b then c' • Q y else 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy a b`. Establish `h` using `hL n (TV n M (Fin m)) ι Γ bar κ (fun τ => tE (fib (fun _ : Fin m => τ0) τ) (E τ)) (actT (fun _ : Fin m => τ0) κ ρ) hK hGK c y ((hY y).1 hy) τ0 a b`. Simplify using `only [hfib1, hfib2, tE, Finset.sum_empty, add_zero] at h`. Establish `h'` using `congrArg Q h`. Rewrite `h'` using `[map_sub, LinearMap.add_apply, map_add, LinearMap.sum_apply, map_sum, hQlift _ _ (hq1 a b), hQlift _ _ (hq2 b a)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hQeAt] at h'`. Establish `hl : ∀ (B1 B2 : Module.End ℂ M0) (v : TV n M0 (Fin m)), lift (B1 + -B2) v = lift B1 v - lift B2 v`. Introduce `B1 B2 v`. Use function extensionality and compare the values at `I`. Simplify using `[lift, sub_eq_add_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [tE, LinearMap.add_apply, hl, LinearMap.sum_apply]`. Rewrite using `[sub_add_eq_add_sub, h']`. Apply the tactic sequence `split_ifs <;> simp [c']`. Set `X : Submodule ℂ (TV n M0 (Fin m))` to `Y.map Q`. Establish `hζY : ζ ∈ Y` using `(hY ζ).2 hζ`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXne : X ≠ ⊥`. Take `⟨I, hI⟩` from `hz`. Introduce `hX`. Establish `hmem : Q ζ ∈ X` using `Submodule.mem_map_of_mem hζY`. Rewrite `hmem` using `[hX, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hI (by rw [← hQap, hmem]; rfl)`. Establish `hXpm : ∀ σ : Equiv.Perm (Fin m), ∀ ξ ∈ X, pm σ ξ ∈ X`. Introduce `σ ξ hξ`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hξ`. Rewrite using `[← hQpm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_map_of_mem (hpmY σ y hy)`. Establish `hXOm : ∀ j : Fin m, ∀ ξ ∈ X, Om F1 j ξ ∈ X`. Introduce `j ξ hξ`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hξ`. Rewrite using `[← hQOm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_map_of_mem (hOmY j y hy)`. Establish `hXtE : ∀ a b : Fin n, ∀ ξ ∈ X, tE Finset.univ (fun a b => F1 a b + -F2 b a) a b ξ = if a = b then c' • ξ else 0`. Introduce `a b ξ hξ`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hξ`. Conclude with `hQtE y hy a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hgl2, hch2⟩` from `hQ n M0 F2 hF2`. Establish `hcomm12 : ∀ a b c d : Fin n, Commute (F1 a b) (-F2 d c)` using `fun a b c d => (hc a b d c).neg_right`. Take `⟨-, hwall⟩` from `hW n M0 F1 (fun a b => -F2 b a) hF1 hgl2 hcomm12 s (-((n : ℂ) - 1) - s) c' hs1 (hch2 _ hs2) m X hXne hXpm hXOm hXtE`. Take `⟨hnm, ξ, hξX, hξalt⟩` from `hwall hm`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hξX`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQalt : Q (alt (firstG m n) y) = alt (firstG m n) (Q y)`. Simplify using `only [alt, LinearMap.sum_apply, map_sum, LinearMap.smul_apply, map_smul, hQpm]`. Set `ζ' : TV n M (Fin m)` to `alt (firstG m n) y`. Establish `hζ'Y : ζ' ∈ Y` using `by show (∑ σ ∈ firstG m n, ((Equiv.Perm.sign σ : ℤ) : ℂ) • pm σ) y ∈ Y`. Rewrite using `[LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ (fun σ _ => Submodule.smul_mem _ _ (hpmY σ y hy))`. Establish `hanti : ∀ τ ∈ firstG m n, pm τ ζ' = ((Equiv.Perm.sign τ : ℤ) : ℂ) • ζ'` using `fun τ hτ => pm_alt_firstG τ hτ y`. Establish `hnz : ∃ I, q (ζ' I) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `hξalt` to reduce the goal to its premises. Rewrite using `[← hQalt]`. Use function extensionality and compare the values at `I`. Rewrite using `[hQap]`. Conclude with `hcon I`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set e := splitE m n hnm with he`. Set `g : TV n M (Fin (m - n) ⊕ Fin n)` to `reIx e ζ'`. Set `F : TV n (TV n M (Fin (m - n))) (Fin n)` to `cur g`. Establish `hFanti : ∀ σ : Equiv.Perm (Fin n), pm σ F = ((Equiv.Perm.sign σ : ℤ) : ℂ) • F` using `cur_anti hnm ζ' hanti`. Use `⟨m - n, by omega, F id, fun γ => ?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : actT (fun _ : Fin (m - n) ⊕ Fin n => τ0) κ ρ γ g = χ γ • g`. Establish `h0` using `actT_reIx e (fun _ : Fin m => τ0) κ ρ γ ζ'`. Rewrite `h0` using `[(hY ζ').1 hζ'Y γ, reIx_smul]`. Conclude with `h0`. Establish `h2 : (fun _ : Fin (m - n) ⊕ Fin n => τ0) = Sum.elim (fun _ : Fin (m - n) => τ0) (fun _ : Fin n => τ0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`. Establish `h3 : actT (fun _ : Fin n => τ0) κ (actT (fun _ : Fin (m - n) => τ0) κ ρ) γ F = χ γ • F`. Apply `unc_inj` to reduce the goal to its premises. Rewrite using `[← actT_unc, unc_smul, unc_cur, ← h2, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h4` using `actT_anti_id τ0 κ (actT (fun _ : Fin (m - n) => τ0) κ ρ) γ F hFanti`. Rewrite `h4` using `[h3]`. Establish `hdet` using `det_ne hK τ0 γ`. Rewrite using `[prod_update_zpow (fun τ => (κ τ γ).det) c τ0 hdet, mul_smul]`. Establish `h5` using `congrArg (fun v => ((κ τ0 γ).det)⁻¹ • v) h4`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_smul, inv_mul_cancel₀ hdet, one_smul, Pi.smul_apply] at h5`. Rewrite using `[← h5, smul_smul]`. Take `⟨I, hI⟩` from `hnz`. Set `K : Fin (m - n) → Fin n` to `fun k => I (e.symm (Sum.inl k))`. Set `J : Fin n → Fin n` to `fun j => I (e.symm (Sum.inr j))`.
+Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨a, ha⟩` from `anti_span F hFanti J`. Use `⟨K, fun hK0 => hI ?_⟩` and prove the remaining obligations. Establish `hIe : Sum.elim K J ∘ e = I`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`.
-
-Generalize the expression as in `hy : e x = w`. Consider the cases of `w with`. Consider the case `inl k => show I (e.symm (Sum.inl k)) = I x`. Rewrite using `[← hy, Equiv.symm_apply_apply]`. Consider the case `inr k => show I (e.symm (Sum.inr k)) = I x`.
-
-Rewrite using `[← hy, Equiv.symm_apply_apply]`. Establish `h6 : ζ' I = F J K` using `by show ζ' I = ζ' (Sum.elim K J ∘ e)`. Rewrite using `[hIe]`. Rewrite using `[h6, ha, Pi.smul_apply, map_smul, hK0, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hQ : QdetFacts) (hW : WallAlg) (hT : TensorGK) (hL : LieInv)
     {ι Γ : Type} [Fintype ι] [DecidableEq ι] [Group Γ] [TopologicalSpace Γ]

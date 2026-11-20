@@ -13,7 +13,7 @@ Both sides reduce to the same expression.
 theorem sumN_eq {σ : Type*} (β : σ →₀ ℕ) : (β.sum fun _ n => n) = Finsupp.degree β := rfl
 
 /- English proof (translation)
-Establish `h1 : y ∈ Jid X la w ^ b • (⊤ : Submodule ↥(Frac0 X la w) ↥(HK X la w u))` using `(mem_Jid_pow_smul_top X la w).2 ((mem_JHfr X la w).1 hy)`. Conclude with `Submodule.smul_mono_left (Ideal.pow_le_self (by omega)) h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_Jid_smul_top_of_JHfr {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j)
     (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL) (u : WeightFamilies.Wt D j)
@@ -24,7 +24,7 @@ theorem mem_Jid_smul_top_of_JHfr {D : D7} {B : WeightFamilies.Prov D} {P : Modul
   exact Submodule.smul_mono_left (Ideal.pow_le_self (by omega)) h1
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la a x hx β hβ h`. Rewrite using `[reduction_eq_zero_iff_mem_ideal_smul]`. Establish `hx' : (x : Lw X la G.w) ∈ JHfr X la G.w wF a` using `(mem_JHfr X la G.w).2 ((mem_Jid_pow_smul_top X la G.w).1 hx)`. Establish `h2` using `hasse_jid_power X la G.w wF β a _ hx'`. Conclude with `mem_Jid_smul_top_of_JHfr X la G.w wF (b := a - β.sum fun _ n => n) (by omega) ⟨_, h⟩ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasseVan_holds : HasseVan := by
   intro D B P j X ka wL wF G la a x hx β hβ h

@@ -11,15 +11,13 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Alg
 variable (k : Type) [Field k] [CharZero k]
 
 /- English proof (translation)
-Introduce `n x`. Take `⟨N, -, S, hS, hN, hSs, hx⟩` from `Module.End.exists_isNilpotent_isSemisimple (K := k) (f := Matrix.toLin' x)`. Establish `hsx : Matrix.toLinAlgEquiv' (Matrix.toLinAlgEquiv'.symm S) = S` using `AlgEquiv.apply_symm_apply _ _`. Use `⟨Matrix.toLinAlgEquiv'.symm S, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hmap` using `AlgHom.map_adjoin (Matrix.toLinAlgEquiv'.symm : _ ≃ₐ[k] Matrix (Fin n) (Fin n) k).toAlgHom {Matrix.toLin' x}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hmap` using `[Set.image_singleton]`. Establish `hx' : (Matrix.toLinAlgEquiv'.symm : _ ≃ₐ[k] Matrix (Fin n) (Fin n) k).toAlgHom (Matrix.toLin' x) = x` using `Matrix.toLinAlgEquiv'.symm_apply_apply x`. Rewrite `hmap` using `[hx']`. Rewrite using `[← hmap]`. Conclude with `Subalgebra.mem_map.mpr ⟨S, hS, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Matrix.toLin' (Matrix.toLinAlgEquiv'.symm S) = S` using `hsx`. Rewrite using `[this]`. Conclude with `hSs`. Establish `hdiff : x - Matrix.toLinAlgEquiv'.symm S = Matrix.toLinAlgEquiv'.symm N`. Apply `Matrix.toLinAlgEquiv'.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hsx, AlgEquiv.apply_symm_apply]`. Establish `: Matrix.toLinAlgEquiv' x = Matrix.toLin' x` using `rfl`. Rewrite using `[this, hx]`. Normalize the expressions using the abelian group laws. Rewrite using `[hdiff]`.
-
-Conclude with `hN.map _`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jc : JC k := by
   intro n x
@@ -46,11 +44,11 @@ theorem jc : JC k := by
     exact hN.map _
 
 /- English proof (translation)
-Introduce `n x s z hs hn hz j`. Establish `hxs : Commute x s` using `Algebra.commute_of_mem_adjoin_self hs`. Establish `hzs : Commute z s` using `Algebra.commute_of_mem_adjoin_singleton_of_commute hs hz`. Establish `hdx : Commute (x - s) x` using `(Commute.refl x).sub_left hxs.symm`. Establish `hds : Commute (x - s) s` using `hxs.sub_left (Commute.refl s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hxs.mul_geom_sum₂ j`. Establish `hc : Commute (x - s) (∑ i ∈ Finset.range j, x ^ i * s ^ (j - 1 - i))` using `Commute.sum_right _ _ _ fun i _ => (hdx.pow_right i).mul_right (hds.pow_right _)`. Establish `hzd : Commute z (x - s)` using `hz.sub_right hzs`. Establish `hnil : IsNilpotent (z * x ^ j - z * s ^ j)`. Rewrite using `[← mul_sub, ← hg, ← mul_assoc, hzd.eq, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.isNilpotent_mul_right (hzd.symm.mul_right hc) hn`. Establish `ht` using `Matrix.isNilpotent_trace_of_isNilpotent hnil`. Rewrite `ht` using `[Matrix.trace_sub]`. Conclude with `sub_eq_zero.mp ht.eq_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trNil : TrNil k := by
   intro n x s z hs hn hz j

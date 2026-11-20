@@ -23,9 +23,9 @@ section General
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le`. Consider the case `exact _root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le`. Consider the case `(apply _root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem (L L' : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
     (hsp : Submodule.span E (L' : Set (Fin n → E)) = ⊤) :
@@ -39,17 +39,15 @@ theorem exists_nat_smul_mem (L L' : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG
   | (intros; exact _root_.GlobalTheory.NatMultipleIntegralSmulBound.exists_nat_smul_le ..)
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem fg_colLat (B : GL (Fin n) E) : (colLat B).FG :=
   Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x = ∑ j, ((B⁻¹).1 *ᵥ x) j • (fun a : Fin n => (B : Matrix (Fin n) (Fin n) E) a j)`. Establish `e : x = B.1 *ᵥ ((B⁻¹).1 *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [e]`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[hx]`.
-
-Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_colLat (B : GL (Fin n) E) : Submodule.span E (colLat B : Set (Fin n → E)) = ⊤ := by
   rw [eq_top_iff]
@@ -86,13 +84,13 @@ def stabG (V : HSp D) (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hl` using `(GlobalTheory.Member.latHat_eq_hat_and_gram D V).1`. Establish `hcong : ∀ z ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.Member.latC V), ∃ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) (GlobalTheory.Member.latC V), (Formalism.IndefR.Lev.finE V a).1 *ᵥ z - z = (c * c) • y := by`. Unfold `GlobalTheory.Member.FinCong at ha`. Rewrite `ha` using `[hl]`. Conclude with `GlobalTheory.PrincInLevel.cong_swap _ _ _ ha`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨y, hy, e⟩` from `hcong _ (GlobalTheory.LevSplit.hatL_smul _ _ c h1 z hz)`. Establish `hcE : IsUnit (c : D.host.E)` using `(Nat.cast_ne_zero.2 hc.ne').isUnit`. Establish `hu : IsUnit (c : Formalism.IndefR.Lev.EAf D)`. Use `hcE.map (eToEAf D)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `e2 : (Formalism.IndefR.Lev.finE V a).1 *ᵥ z - z = (c : Formalism.IndefR.Lev.EAf D) • y`. Use `(hu.smul_left_cancel).1 ?_` and prove the remaining obligations. Rewrite using `[smul_sub, ← Matrix.mulVec_smul, e, ← Nat.cast_smul_eq_nsmul (Formalism.IndefR.Lev.EAf D), Nat.cast_mul, mul_smul]`. Rewrite `e2` using `[sub_eq_iff_eq_add']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `Submodule.add_mem _ hz (GlobalTheory.LevSplit.hatL_smul _ _ c h2 y hy)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_finCong (V : HSp D) (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (c : ℕ) (hc : 0 < c)
     (h1 : ∀ x ∈ M, (c : D.host.E) • x ∈ GlobalTheory.Member.latC V)
@@ -122,7 +120,7 @@ theorem mulVec_mem_of_finCong (V : HSp D) (M : Submodule (𝓞 D.host.E) (Fin V.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `v`. Use `⟨mulVec_mem_of_finCong V M c hc h1 h2 a ha v, fun hv => ?_⟩` and prove the remaining obligations. Use `mulVec_mem_of_finCong V M c hc h1 h2 a⁻¹ (GlobalTheory.Member.PrincLevel.finCong_inv ha) _ hv` as an intermediate fact. Rewrite `this` using `[map_inv, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_stabG_of_finCong (V : HSp D) (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (c : ℕ) (hc : 0 < c)
     (h1 : ∀ x ∈ M, (c : D.host.E) • x ∈ GlobalTheory.Member.latC V)
@@ -136,21 +134,19 @@ theorem mem_stabG_of_finCong (V : HSp D) (M : Submodule (𝓞 D.host.E) (Fin V.r
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D V fr S hS x hx`. Take `⟨-, -, hfg, hsp, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Take `⟨c1, hc1, h1⟩` from `exists_nat_smul_mem (colLat fr) (GlobalTheory.Member.latC V) (fg_colLat fr) hsp`. Take `⟨c2, hc2, h2⟩` from `exists_nat_smul_mem (GlobalTheory.Member.latC V) (colLat fr) hfg (span_colLat fr)`. Establish `h1' : ∀ y ∈ colLat fr, ((c1 * c2 : ℕ) : D.host.E) • y ∈ GlobalTheory.Member.latC V` using `fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul D.host.E c2]`. Conclude with `(GlobalTheory.Member.latC V).toAddSubmonoid.nsmul_mem (h1 y hy) c2`. Establish `h2' : ∀ y ∈ GlobalTheory.Member.latC V, ((c1 * c2 : ℕ) : D.host.E) • y ∈ colLat fr` using `fun y hy => by`. Rewrite using `[Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul D.host.E c1]`. Conclude with `(colLat fr).toAddSubmonoid.nsmul_mem (h2 y hy) c1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : 0 < c1 * c2` using `Nat.mul_pos hc1 hc2`. Set `J' : Subgroup (Formalism.IndefR.Bridge.Gf V)` to `(GfC V ⊓ stabG V (colLat fr)).map (finHom V).rangeRestrict`. Establish `hK : ∀ k ∈ GfC V, GlobalTheory.Member.FinCong V ((c1 * c2) * (c1 * c2)) k → Formalism.IndefR.FWT.fin V k ∈ J'` using `fun k hk hck => ⟨k, ⟨hk, mem_stabG_of_finCong V (colLat fr) _ hc h1' h2' k hck⟩, rfl⟩`. Establish `hbad : 0 < ∏ q ∈ S, q` using `Finset.prod_pos fun q hq => (hS q hq).pos`. Take `⟨h, ⟨hh, hs⟩, γ, k, e⟩` from `GlobalTheory.SplitReps.exists_split_rep V (Nat.mul_pos hc hc) hK hbad (Formalism.IndefR.FWT.fin V x)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k0, ⟨hk0, hk0s⟩, hk0e⟩` from `Subgroup.mem_map.1 k.2`. Take `⟨-, e0, P, he0, hP, hsupp⟩` from `GlobalTheory.SplitReps.splitOffBad_of_suppSplit V _ h hh hs`. Take `⟨γE, hU, hγ⟩` from `γ.2`. Establish `hm : matHom V γ.1 = Formalism.UG.bc (inclR (F` using `D.host.F) (AF D.host.F)) γE := hγ.symm`. Establish `hfγ : finHom V γ.1 = Formalism.UG.bc (inclR (F` using `D.host.F) (Af D.host.F)) γE := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finHom, MonoidHom.comp_apply, hm]`. Conclude with `GlobalTheory.HLatMove.bc_map_bc_inclR _ _`. Establish `ef : finHom V x = finHom V γ.1 * finHom V h * finHom V k0`. Use `congrArg Subtype.val e` as an intermediate fact. Rewrite `this` using `[← hk0e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `⟨γE, h, k0, hU, hh, ⟨P, e0, he0, hsupp, fun w hw q hq hqw => hP w hw ?_⟩, hk0, hk0s, ?_⟩` and prove the remaining obligations. Take `⟨m, hm'⟩` from `Finset.dvd_prod_of_mem (fun q : ℕ => q) hq`. Rewrite using `[hm', Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hqw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `eE : Formalism.IndefR.Lev.finE V x = Formalism.IndefR.Lev.finE V γ.1 * Formalism.IndefR.Lev.finE V h * Formalism.IndefR.Lev.finE V k0`. Simplify using `only [Formalism.IndefR.Lev.finE, MonoidHom.comp_apply, ef, map_mul]`. Establish `eγ : (Formalism.IndefR.Lev.finE V γ.1).1 = γE.1.map (eToEAf D)`. Simplify using `only [Formalism.IndefR.Lev.finE, MonoidHom.comp_apply, hfγ]`. Use extensionality with `i j`.
-
-Both sides reduce to the same expression. Rewrite using `[eE, Units.val_mul, Units.val_mul, eγ]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep_std : ∀ (D : D7) (V : HSp D) (fr : GL (Fin V.rank) D.host.E) (S : Finset ℕ), (∀ q ∈ S, q.Prime) →
     ∀ x : GA D V, x ∈ GfC V →

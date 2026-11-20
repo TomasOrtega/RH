@@ -12,17 +12,17 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 variable {M : Type} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Take `⟨r, hr⟩ : ∃ r, r = Module.finrank R N` from `⟨_, rfl⟩`. Establish `b : Basis (Fin (Module.finrank R N)) R N` using `Module.finBasis R N`. Establish `hmax : IsLocalRing.maximalIdeal R = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hI : ∀ x ∈ IsLocalRing.maximalIdeal R ^ e, ∀ n : N, x • n ∈ T`. Introduce `x hx n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[hmax, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[mul_smul]`. Conclude with `hT _`. Set `comp : Fin (Module.finrank R N) → (R ⧸ IsLocalRing.maximalIdeal R ^ e) →ₗ[R] N ⧸ T` to `fun i => (IsLocalRing.maximalIdeal R ^ e).liftQ (LinearMap.toSpanSingleton R (N ⧸ T) (T.mkQ (b i))) (fun x hx => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hI x hx (b i))`. Set `ψ : (Fin (Module.finrank R N) → R ⧸ IsLocalRing.maximalIdeal R ^ e) →ₗ[R] N ⧸ T` to `∑ i, (comp i).comp (LinearMap.proj i)`. Establish `hsurj : Function.Surjective ψ`. Introduce `q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, rfl⟩` from `Submodule.Quotient.mk_surjective T q`. Use `⟨fun i => Submodule.Quotient.mk (b.repr n i), ?_⟩` and prove the remaining obligations. Simplify using `only [ψ, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, comp, Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smul]`. Use `_ = Submodule.Quotient.mk n := by rw [b.sum_repr]; rfl`. Establish `hlen` using `Module.length_le_of_surjective ψ hsurj`. Rewrite `hlen` using `[Module.length_pi, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`. Use `hlen.trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ENat.card_eq_coe_fintype_card, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem length_quot_le_of_pow_smul (ϖ : R) (hϖ : Irreducible ϖ) (N : Type) [AddCommGroup N]
     [Module R N] [Module.Free R N] [Module.Finite R N] (T : Submodule R N) (e : ℕ)

@@ -31,7 +31,7 @@ def Coords (e : ℕ) (g : GtPt D T) {Z : Scheme.{0}} (r : Z ⟶ T.left)
     ∀ (χ : D.X) (z : Z) (J), Good D.P.L z J → val ((U.gt e).t χ) y z J = val (g.s χ) r z J
 
 /- English proof (translation)
-Unfold `PreU.Red Coords`. Conclude with `⟨fun h e Z r y hy => h e Z r y hy, fun h e Z r y hy => h e Z r y hy⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem red_iff (x : T ⟶ G) (g : GtPt D T) :
     U.Red x g ↔ ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ T.left) (y : Z ⟶ (thickObj R I e G).left),
@@ -42,9 +42,9 @@ theorem red_iff (x : T ⟶ G) (g : GtPt D T) :
 variable {U}
 
 /- English proof (translation)
-Unfold `Coords at h ⊢`. Take `⟨h1, h2⟩` from `h`. Use `⟨by rw [Category.assoc, h1, Category.assoc], fun χ w J hJ => ?_⟩` and prove the remaining obligations. Establish `hc : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ ((U.gt e).t χ) y) (LB.pullGen D.P.L _ _ (g.s χ) r)` using `corr_of_val D.P.isLB fun z J' hJ' => by`. Rewrite using `[val_pull hJ', val_pull hJ', Category.id_comp, Category.id_comp]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 χ z J' hJ'`. Establish `hk` using `val_corr hJ hc k`. Rewrite `hk` using `[val_pull hJ, val_pull hJ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Coords.comp {e : ℕ} {g : GtPt D T} {Z W : Scheme.{0}} {r : Z ⟶ T.left}
     {y : Z ⟶ (thickObj R I e G).left} (h : Coords U e g r y) (k : W ⟶ Z) :
@@ -61,7 +61,7 @@ theorem Coords.comp {e : ℕ} {g : GtPt D T} {Z W : Scheme.{0}} {r : Z ⟶ T.lef
   rwa [val_pull hJ, val_pull hJ] at hk
 
 /- English proof (translation)
-Unfold `Coords at h h'`. Conclude with `GlobalTheory.TorusCoord.ext_of_val (U.gt e) y y' (h.1.trans h'.1.symm) fun χ w J hJ => (h.2 χ w J hJ).trans (h'.2 χ w J hJ).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Coords.unique {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} {r : Z ⟶ T.left}
     {y y' : Z ⟶ (thickObj R I e G).left} (h : Coords U e g r y) (h' : Coords U e g r y') : y = y' := by
@@ -72,9 +72,9 @@ theorem Coords.unique {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} {r : Z ⟶ T.lef
 variable (U) in
 
 /- English proof (translation)
-Take `⟨x, hx1, hx2⟩` from `GlobalTheory.FormalPoint.exists_point (U.gt e) g (Z := Over.mk σ) (Over.homMk r h.symm)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Unfold `Coords`. Use `⟨hx1, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Establish `hv` using `hx2 χ Z (𝟙 Z) z J hJ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hv` using `[Category.id_comp, Category.id_comp]`. Conclude with `hv`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coords (e : ℕ) (g : GtPt D T) {Z : Scheme.{0}} (r : Z ⟶ T.left)
     (σ : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (h : σ ≫ thick R I e = r ≫ T.hom) :
@@ -89,7 +89,7 @@ theorem exists_coords (e : ℕ) (g : GtPt D T) {Z : Scheme.{0}} (r : Z ⟶ T.lef
   exact hv
 
 /- English proof (translation)
-Unfold `Coords at h ⊢`. Take `⟨h1, h2⟩` from `h`. Use `⟨by rw [Category.assoc, U.gt_q e]; exact h1, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_pull hJ ((U.gt (e + 1)).t χ) (thickMap R I e G) y, val_corr hJ (U.gt_t e χ) y]`. Conclude with `h2 χ z J hJ`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Coords.succ {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} {r : Z ⟶ T.left}
     {y : Z ⟶ (thickObj R I e G).left} (h : Coords U e g r y) :
@@ -101,7 +101,7 @@ theorem Coords.succ {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} {r : Z ⟶ T.left}
   exact h2 χ z J hJ
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `h`. Establish `e1 : g.b.left ≫ D.P.A.hom = T.hom` using `Over.w g.b`. Establish `e2 : (U.gt e).pG.left ≫ D.P.A.hom = (thickObj R I e G).hom ≫ thick R I e` using `Over.w (U.gt e).pG`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem comp_hom_eq_of_coords {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} {r : Z ⟶ T.left}
     {y : Z ⟶ (thickObj R I e G).left} (h : Coords U e g r y) :
@@ -114,9 +114,9 @@ private theorem comp_hom_eq_of_coords {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} 
     _ = y ≫ (thickObj R I e G).hom ≫ thick R I e := by rw [Category.assoc, e2]
 
 /- English proof (translation)
-Establish `hb` using `comp_hom_eq_of_coords h`. Establish `ex : x.left ≫ G.hom = T.hom` using `Over.w x`. Take `⟨a, ha⟩` from `GlobalTheory.FormalPoint.exists_lift_fstG (Z := Over.mk (y ≫ (thickObj R I e G).hom)) (Over.homMk (r ≫ x.left) (by show (r ≫ x.left) ≫ G.hom = (y ≫ (thickObj R I e G).hom) ≫ thick R I e`. Rewrite using `[Category.assoc, ex, hb, Category.assoc]))`. Establish `ha' : a.left ≫ (fstG I e G).left = r ≫ x.left` using `congrArg CommaMorphism.left ha`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Coords U e g r a.left` using `hx e Z r a.left ha'`. Rewrite using `[← Coords.unique hc h]`. Conclude with `ha'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_fstG_eq {g : GtPt D T} {x : T ⟶ G} (hx : U.Red x g) {e : ℕ} {Z : Scheme.{0}}
     {r : Z ⟶ T.left} {y : Z ⟶ (thickObj R I e G).left} (h : Coords U e g r y) :
@@ -142,11 +142,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {S : Type} [CommRing
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : PreU I D A G)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx e`. Conclude with `hx e _ _ _ (GlobalTheory.FormalPoint.reduction_fstG I x e)`. Introduce `h e Z r xe hxe`. Establish `ex : x.left ≫ G.hom = spMap φ` using `Over.w x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ef : (fstG I e G).left ≫ G.hom = (thickObj R I e G).hom ≫ thick R I e` using `Over.w (fstG I e G)`. Establish `hs : r ≫ spMap φ = (xe ≫ (thickObj R I e G).hom) ≫ thick R I e`. Rewrite using `[← ex, ← Category.assoc, ← hxe]`. Simplify using `only [Category.assoc, ef]`. Take `⟨l, hl⟩` from `GlobalTheory.FormalPoint.exists_factor_level I φ r _ hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc` using `Coords.comp (h e) l`. Establish `hred : l ≫ GlobalTheory.FormalPoint.reduction I x e = xe`. Rewrite using `[← cancel_mono (fstG I e G).left, Category.assoc, GlobalTheory.FormalPoint.reduction_fstG, ← Category.assoc, hl, hxe]`. Rewrite `hc` using `[hl, hred]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_iff_reduction (g : GtPt D (Over.mk (spMap φ))) (x : Over.mk (spMap φ) ⟶ G) :
     U.Red x g ↔ ∀ e, Coords U e g (adicLevelι (I.map φ) (e + 1)) (reduction I x e) := by
@@ -173,9 +173,9 @@ variable [IsLocalRing S]
 variable {U} in
 
 /- English proof (translation)
-Establish `hr` using `(red_iff_reduction U g x).1 h`. Establish `hr'` using `(red_iff_reduction U g x').1 h'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `GlobalTheory.hom_ext_of_isHausdorff (I.map φ)` to reduce the goal to its premises. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← GlobalTheory.FormalPoint.reduction_fstG I x n, ← GlobalTheory.FormalPoint.reduction_fstG I x' n, Coords.unique (hr n) (hr' n)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_unique [IsHausdorff (I.map φ) S] {g : GtPt D (Over.mk (spMap φ))}
     {x x' : Over.mk (spMap φ) ⟶ G} (h : U.Red x g) (h' : U.Red x' g) : x = x' := by
@@ -187,17 +187,15 @@ theorem red_unique [IsHausdorff (I.map φ) S] {g : GtPt D (Over.mk (spMap φ))}
   rw [← GlobalTheory.FormalPoint.reduction_fstG I x n, ← GlobalTheory.FormalPoint.reduction_fstG I x' n, Coords.unique (hr n) (hr' n)]
 
 /- English proof (translation)
-Establish `hy : ∀ e, ∃ y, Coords U e g (adicLevelι (I.map φ) (e + 1)) y` using `fun e => exists_coords U e g (adicLevelι (I.map φ) (e + 1)) (GlobalTheory.FormalPoint.levelMap I φ e) (GlobalTheory.FormalPoint.levelMap_thick I φ e)`. Use `choose y hy using hy`. Establish `htf : ∀ n, thickMap R I n G ≫ (fstG I (n + 1) G).left = (fstG I n G).left`. Introduce `n`. Unfold `thickMap fstG`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [pullback.map, Category.comp_id]`. Conclude with `pullback.lift_fst _ _ _`. Establish `hcomp : ∀ n, GlobalTheory.adicLevelMap (I.map φ) (Nat.le_succ (n + 1)) ≫ y (n + 1) = y n ≫ thickMap R I n G`. Introduce `n`. Use `Coords.unique ?_ (Coords.succ (hy n))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hk` using `Coords.comp (hy (n + 1)) (GlobalTheory.adicLevelMap (I.map φ) (Nat.le_succ (n + 1)))`. Rewrite `hk` using `[GlobalTheory.adicLevelMap_ι]`. Then use the resulting hypothesis. Establish `hf : GlobalTheory.IsAdicFamily (I.map φ) (fun n => y n ≫ (fstG I n G).left)`. Introduce `n`. Use `show GlobalTheory.adicLevelMap (I.map φ) (Nat.le_succ (n + 1)) ≫ y (n + 1) ≫ (fstG I (n + 1) G).left = y n ≫ (fstG I n G).left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Category.assoc, hcomp n, Category.assoc, htf n]`. Establish `hs : ∀ n, (y n ≫ (fstG I n G).left) ≫ G.hom = adicLevelι (I.map φ) (n + 1) ≫ spMap φ`. Introduce `n`. Establish `ef : (fstG I n G).left ≫ G.hom = (thickObj R I n G).hom ≫ thick R I n` using `Over.w (fstG I n G)`. Rewrite using `[Category.assoc, ef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(comp_hom_eq_of_coords (hy n)).symm`. Take `⟨x₀, ⟨hx₀, hxn⟩, -⟩` from `GlobalTheory.existsUnique_over_of_isAdicFamily (spMap φ) G.hom hf hs`. Establish `hred : U.Red (Over.homMk x₀ hx₀ : Over.mk (spMap φ) ⟶ G) g`. Use `(red_iff_reduction U g _).2 fun e => ?_` and prove the remaining obligations. Establish `he : GlobalTheory.FormalPoint.reduction I (Over.homMk x₀ hx₀ : Over.mk (spMap φ) ⟶ G) e = y e`.
-
-Rewrite using `[← cancel_mono (fstG I e G).left, GlobalTheory.FormalPoint.reduction_fstG]`. Conclude with `hxn e`. Rewrite using `[he]`. Conclude with `hy e`. Conclude with `⟨_, hred, fun x' hx' => red_unique hx' hred⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_red [IsAdicComplete (I.map φ) S] (g : GtPt D (Over.mk (spMap φ))) :
     ∃! x : Over.mk (spMap φ) ⟶ G, U.Red x g := by
@@ -240,7 +238,7 @@ theorem existsUnique_red [IsAdicComplete (I.map φ) S] (g : GtPt D (Over.mk (spM
 end Complete
 
 /- English proof (translation)
-Introduce `V _ _ _ _ D A G _ _ U W _ _ _ hW g`. Take `⟨-, -, -, -, hc⟩` from `hW`. Conclude with `existsUnique_red (φ := algebraMap V W) U g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : (AllPre fun {V} _ _ _ {D} {_} {G} _ _ U => ∀ (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], FinExt V W → ∀ g : GtPt D (TA V W), ∃! x : TA V W ⟶ G, U.Red x g) := by
   intro V _ _ _ _ D A G _ _ U W _ _ _ hW g

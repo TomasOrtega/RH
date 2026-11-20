@@ -30,39 +30,39 @@ Both sides reduce to the same expression.
 theorem mat_one' {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← h, Matrix.mulVec_mulVec, ← mat_mul', inv_mul_cancel, mat_one', Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mulVec {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) {x y : Fin n → AE F E} (h : mat g *ᵥ x = y) :
     mat g⁻¹ *ᵥ y = x := by
   rw [← h, Matrix.mulVec_mulVec, ← mat_mul', inv_mul_cancel, mat_one', Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `(IsUWeilPair.isUSplitting hp.weil).pres x Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem pair_pres (hp : IsPair B M χX χW om r s r' s') (x) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) : om x Φ ∈ schA F _ :=
   (IsUWeilPair.isUSplitting hp.weil).pres x Φ hΦ
 
 /- English proof (translation)
-The claim follows from `(IsUWeilPair.isUSplitting hp.weil).cont l hl Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem pair_cont (hp : IsPair B M χX χW om r s r' s') {l} (hl : l ∈ (adeleClass F).adm (Fin n × Fin d)) {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) : Continuous fun x => l (om x Φ) :=
   (IsUWeilPair.isUSplitting hp.weil).cont l hl Φ hΦ
 
 /- English proof (translation)
-The claim follows from `(IsUWeilPair.isUSplitting hp.weil).adm x l hl`.
+A detailed English derivation is pending.
 -/
 theorem pair_adm (hp : IsPair B M χX χW om r s r' s') (x) {l} (hl : l ∈ (adeleClass F).adm (Fin n × Fin d)) :
     l ∘ₗ om x ∈ (adeleClass F).adm (Fin n × Fin d) :=
   (IsUWeilPair.isUSplitting hp.weil).adm x l hl
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem om_mul (om : Rep σ X W) (x y) (Φ) : om x (om y Φ) = om (x * y) Φ := by rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[(IsUWeilPair.isUSplitting hp.weil).impl (g, h) _ Φ hΦ]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `_ = mat g * _ * (mat h)ᵀ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← mat_mul', ← mat_mul', mul_inv_cancel, mul_inv_cancel, mat_one', mat_one', Matrix.one_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_om (hp : IsPair B M χX χW om r s r' s') (g h) (a : Fin n → AE F E) (b : Fin d → AE F E) (c : AE F E) {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
@@ -76,7 +76,7 @@ theorem rho_om (hp : IsPair B M χX χW om r s r' s') (g h) (a : Fin n → AE F 
     Matrix.one_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_linear (M : Model σ X W) (ψ) (u) {ι : Type} (t : Finset ι) (c : ι → ℂ) (Φ : ι → Fn F n d) :
     M.co.rho ψ u (∑ i ∈ t, c i • Φ i) = ∑ i ∈ t, c i • M.co.rho ψ u (Φ i) := by
@@ -85,7 +85,7 @@ theorem rho_linear (M : Model σ X W) (ψ) (u) {ι : Type} (t : Finset ι) (c : 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (y i).2) • ((BoundedContinuousFunction.evalCLM ℂ fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `[pureA, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ev_adm {κ : Type} [Fintype κ] (y : κ → AF F) : (LinearMap.proj y : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -95,15 +95,15 @@ theorem ev_adm {κ : Type} [Fintype κ] (y : κ → AF F) : (LinearMap.proj y : 
   simp [pureA, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaSum_smul' {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) : thetaSum F (c • Φ) = c * thetaSum F Φ := by
   simp only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]
 
 /- English proof (translation)
-Use `set V := Submodule.span ℂ (Set.range fun k : K => om (k.1, 1) Φ)`. Use `haveI : FiniteDimensional ℂ V := hK`. Set `b` to `Module.finBasis ℂ V`. Establish `hc : Continuous fun k : K => (⟨om (k.1, 1) Φ, Submodule.subset_span ⟨k, rfl⟩⟩ : V)`. Use `Continuous.subtype_mk (continuous_pi fun y => ?_) _` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(pair_cont hp (ev_adm y) hΦ).comp (continuous_subtype_val.prodMk continuous_const)`. Use `⟨_, fun i => (b i).1, fun i k => b.repr ⟨om (k.1, 1) Φ, Submodule.subset_span ⟨k, rfl⟩⟩ i, fun i => Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hS k) (b i).2, fun i => (b.coord i).continuous_of_finiteDimensional.comp hc, fun k => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (b.sum_repr ⟨om (k.1, 1) Φ, Submodule.subset_span ⟨k, rfl⟩⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin_dec (hp : IsPair B M χX χW om r s r' s') {K : Subgroup (UA σ X.J)} {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d))
     (hK : KFinite om K Φ) (S : Submodule ℂ (Fn F n d)) (hS : ∀ k : K, om (k.1, 1) Φ ∈ S) :

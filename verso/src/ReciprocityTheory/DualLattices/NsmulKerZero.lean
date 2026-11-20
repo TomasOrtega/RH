@@ -15,9 +15,9 @@ namespace ATower
 variable {p : ℕ} (Tw : ATower R₀ p)
 
 /- English proof (translation)
-Introduce and unpack `⟨k, hk⟩`. Establish `hk' : k ∈ Ideal.span {Tw.ξ n}`. Rewrite using `[← Tw.ker_eq n]`. Simplify using `using hk`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp hk'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Tw.ξ n * a = k`. Rewrite using `[← ha, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ξmul_surj (n : ℕ) : Function.Surjective (ξmul (Tw.π n) (Tw.ξ n) (Tw.ξ_mem n)) := by
   rintro ⟨k, hk⟩
@@ -30,11 +30,11 @@ lemma ξmul_surj (n : ℕ) : Function.Surjective (ξmul (Tw.π n) (Tw.ξ n) (Tw.
   rw [← ha, mul_comm]
 
 /- English proof (translation)
-Establish `hle : LinearMap.ker (ξmul (Tw.π n) (Tw.ξ n) (Tw.ξ_mem n)) ≤ LinearMap.ker (Tw.π n).1.toLinearMap`. Introduce `a ha`. Rewrite `ha`, the goal using `[LinearMap.mem_ker]`. Establish `h0 : Tw.ξ n * a = 0` using `congrArg Subtype.val ha`. Establish `hm : a ∈ Ideal.span {Tw.ξ n}` using `Tw.ann n a (by rw [mul_comm]; exact h0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[← Tw.ker_eq n, RingHom.mem_ker]`. Conclude with `hm`. Establish `hs` using `Tw.ξmul_surj n`. Use `⟨(LinearMap.ker _).liftQ _ hle ∘ₗ (LinearMap.quotKerEquivOfSurjective _ hs).symm.toLinearMap, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (LinearMap.quotKerEquivOfSurjective _ hs).symm (ξmul (Tw.π n) (Tw.ξ n) (Tw.ξ_mem n) a) = Submodule.Quotient.mk a`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, h1, Submodule.liftQ_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_factor (n : ℕ) : ∃ g' : (Tw.π n).ker →ₗ[R₀] (Tw.R n : Type u),
     g' ∘ₗ ξmul (Tw.π n) (Tw.ξ n) (Tw.ξ_mem n) = (Tw.π n).1.toLinearMap := by
@@ -62,9 +62,9 @@ namespace BX
 variable (B : BX R₀) {p : ℕ}
 
 /- English proof (translation)
-Establish `hc : ((p : (Tw.R' n : Type u))) ^ (n + 1) = 0` using `by exact_mod_cast Tw.char n`. Proceed by induction on `V using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul g k`. Establish `hk : (p ^ (n + 1)) • k = 0`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[nsmul_eq_mul, hc]`. Rewrite using `[← TensorProduct.tmul_smul, hk, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 lemma nsmul_ker_zero (Tw : ATower R₀ p) (n : ℕ) (V : B.gg ⊗[R₀] (Tw.π n).ker) :
     (p ^ (n + 1)) • V = 0 := by
@@ -79,7 +79,7 @@ lemma nsmul_ker_zero (Tw : ATower R₀ p) (n : ℕ) (V : B.gg ⊗[R₀] (Tw.π n
   | add x y hx hy => rw [smul_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Take `⟨th, hth⟩` from `B.surj (Tw.π n) (Tw.sqZero n) y`. Establish `h0 : B.map (Tw.π n) ((p ^ (n + 1)) • th) = 0` using `by rw [map_nsmul, hth, hy]`. Take `⟨v, hv⟩` from `(B.tg_ker (Tw.π n) (Tw.sqZero n) _).1 h0`. Take `⟨w, hw⟩` from `LinearMap.lTensor_surjective B.gg (Tw.ξmul_surj n) v`. Conclude with `⟨th, w, hth, by rw [← hv, ← hw]; rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_lift (Tw : ATower R₀ p) (n : ℕ) (y : B.G (Tw.R n)) (hy : (p ^ (n + 1)) • y = 0) :
     ∃ (th : B.G (Tw.R' n)) (w : B.gg ⊗[R₀] (Tw.R' n : Type u)), B.map (Tw.π n) th = y ∧
@@ -92,11 +92,11 @@ lemma exists_lift (Tw : ATower R₀ p) (n : ℕ) (y : B.G (Tw.R n)) (hy : (p ^ (
   exact ⟨th, w, hth, by rw [← hv, ← hw]; rfl⟩
 
 /- English proof (translation)
-Establish `hd : B.map (Tw.π n) (th - th') = 0` using `by rw [map_sub, he, sub_self]`. Take `⟨v0, hv0⟩` from `(B.tg_ker (Tw.π n) (Tw.sqZero n) _).1 hd`. Establish `hp : (p ^ (n + 1)) • th = (p ^ (n + 1)) • th'`. Establish `h : (p ^ (n + 1)) • (th - th') = 0`. Rewrite using `[← hv0, ← map_nsmul, B.nsmul_ker_zero Tw n v0, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[smul_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite `hp` using `[hw, hw']`. Establish `hx` using `B.tg_inj (Tw.π n) (Tw.sqZero n) hp`. Take `⟨g', hg'⟩` from `Tw.exists_factor n`. Rewrite using `[← hg', LinearMap.lTensor_comp, LinearMap.comp_apply, LinearMap.comp_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (LinearMap.lTensor B.gg g') hx`.
+A detailed English derivation is pending.
 -/
 lemma lift_indep (Tw : ATower R₀ p) (n : ℕ) (th th' : B.G (Tw.R' n)) (w w' : B.gg ⊗[R₀] (Tw.R' n : Type u))
     (he : B.map (Tw.π n) th = B.map (Tw.π n) th')

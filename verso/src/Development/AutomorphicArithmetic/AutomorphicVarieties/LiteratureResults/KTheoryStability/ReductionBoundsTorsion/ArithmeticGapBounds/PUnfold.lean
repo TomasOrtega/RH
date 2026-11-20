@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB.SpectralGap
 
 /- English proof (translation)
-Introduce `Λ S _ _ _ _ _ μ _ j hj B K hBK hi`. Conclude with `⟨fun u hu => UnfoldA.avg_linv j B K hi u hu, fun u hu => UnfoldA.avg_of_linv j B K hi u hu, fun u hu => UnfoldA.avg_meas j B K hi u hu, fun E hBE hEK u hu => UnfoldA.avg_tower j B E K hBE hEK hi u hu, UnfoldB.unfold_fd Λ S μ j hj B K hBK hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem unfold_holds : Unfold := by
   intro Λ S _ _ _ _ _ μ _ j hj B K hBK hi

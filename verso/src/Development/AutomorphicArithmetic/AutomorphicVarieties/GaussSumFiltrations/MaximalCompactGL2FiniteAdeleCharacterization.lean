@@ -8,14 +8,14 @@ namespace GlobalTheory.HilbertThetaSeries.KMem
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `only [Ohat, Subring.mem_iInf, Subring.mem_comap, ValuationSubring.mem_toSubring, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Ohat_iff {x : Af F} : x ∈ Ohat F ↔ ∀ w, Valued.v (pLoc F w x) ≤ 1 := by
   simp only [Ohat, Subring.mem_iInf, Subring.mem_comap, ValuationSubring.mem_toSubring,
     HeightOneSpectrum.mem_adicCompletionIntegers]
 
 /- English proof (translation)
-Use `le_antisymm ha ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem eq_one_of_mul {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {a b : Γ} (ha : a ≤ 1) (hb : b ≤ 1)
     (h : a * b = 1) : a = 1 := by
@@ -25,7 +25,7 @@ theorem eq_one_of_mul {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {a b : Γ
     _ = a := mul_one a
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Apply the tactic sequence `refine (v.map_sub _ _).trans (max_le ?_ ?_) <;> rw [v.map_mul]`. Conclude with `mul_le_one' (h 0 0) (h 1 1)`. Conclude with `mul_le_one' (h 0 1) (h 1 0)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem det_le {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ)
     (A : Matrix (Fin 2) (Fin 2) K) (h : ∀ i j, v (A i j) ≤ 1) : v A.det ≤ 1 := by
@@ -35,14 +35,14 @@ theorem det_le {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (v :
   · exact mul_le_one' (h 0 1) (h 1 0)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_mul_det_inv (g : GL (Fin 2) (Af F)) :
     (g : Matrix (Fin 2) (Fin 2) (Af F)).det * ((g⁻¹ : GL (Fin 2) (Af F)) : Matrix (Fin 2) (Fin 2) (Af F)).det = 1 := by
   rw [← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Conclude with `det_le _ _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_det (g : GL (Fin 2) (Af F)) (w : HeightOneSpectrum (𝓞 F)) (h : ∀ i j, Valued.v (pLoc F w (g.val i j)) ≤ 1) :
     Valued.v (pLoc F w g.val.det) ≤ 1 := by
@@ -50,15 +50,13 @@ theorem v_det (g : GL (Fin 2) (Af F)) (w : HeightOneSpectrum (𝓞 F)) (h : ∀ 
   exact det_le _ _ h
 
 /- English proof (translation)
-Rewrite using `[mem_KLev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb, -⟩`. Establish `ha' : ∀ w i j, Valued.v (pLoc F w (u.val i j)) ≤ 1` using `fun w i j => mem_Ohat_iff.1 (ha i j) w`. Establish `hb' : ∀ w i j, Valued.v (pLoc F w ((u⁻¹ : GL (Fin 2) (Af F)).val i j)) ≤ 1` using `fun w i j => mem_Ohat_iff.1 (hb i j) w`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ha', fun w => eq_one_of_mul (v_det u w (ha' w)) (v_det _ w (hb' w)) ?_⟩` and prove the remaining obligations. Rewrite using `[← Valuation.map_mul, ← map_mul, det_mul_det_inv, map_one, Valuation.map_one]`. Introduce and unpack `⟨ha, hd⟩`. Establish `hinv : ∀ w, Valued.v (pLoc F w (((Matrix.GeneralLinearGroup.det u)⁻¹ : (Af F)ˣ) : Af F)) = 1`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Valued.v (pLoc F w ((Matrix.GeneralLinearGroup.det u : (Af F)ˣ) : Af F)) * Valued.v (pLoc F w (((Matrix.GeneralLinearGroup.det u)⁻¹ : (Af F)ˣ) : Af F)) = 1`. Rewrite using `[← Valuation.map_mul, ← map_mul, Units.mul_inv, map_one, Valuation.map_one]`. Rewrite `h1` using `[Matrix.GeneralLinearGroup.val_det_apply, hd w, one_mul]`. Conclude with `h1`. Establish `hO : ∀ a b, u a b ∈ Ohat F` using `fun a b => mem_Ohat_iff.2 fun w => ha w a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hO, fun a b => mem_Ohat_iff.2 fun w => ?_, fun a b => ⟨u a b - (1 : Matrix (Fin 2) (Fin 2) (Af F)) a b, ?_, by simp⟩⟩` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.coe_units_inv, Matrix.inv_def, ← Matrix.GeneralLinearGroup.val_det_apply, Ring.inverse_unit, Matrix.smul_apply, smul_eq_mul, map_mul, Valuation.map_mul, hinv w, one_mul, Matrix.adjugate_fin_two] fin_cases a <;> fin_cases b <;> simp [ha w]`. Use `sub_mem (hO a b) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KLev_iff (u : GL (Fin 2) (Af F)) :
     u ∈ KLev F 2 1 ↔ (∀ w i j, Valued.v (pLoc F w (u.val i j)) ≤ 1) ∧ ∀ w, Valued.v (pLoc F w u.val.det) = 1 := by
@@ -93,21 +91,19 @@ end GlobalTheory.HilbertThetaSeries.KMem
 open GlobalTheory.HilbertThetaSeries.KMem in
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨mem_KLev_iff, fun u x hu hx => ⟨?_, ?_⟩, fun w g hg => ?_, fun x w => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `(mem_KLev_iff _).2 ⟨fun w i j => ?_, fun w => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, (hu w).le, hx w]`. Simplify using `[aff, Matrix.det_fin_two, hu w]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `(mem_KLev_iff _).2 ⟨fun w i j => ?_, fun w => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar, (hu w).le]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.det_fin_two, hu w]`. Take `⟨k, -, rfl⟩` from `Subgroup.mem_map.1 hg`. Establish `hk : ∀ i j, Valued.v ((k.val i j : w.adicCompletionIntegers F) : w.adicCompletion F) ≤ 1` using `fun i j => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (k.val i j).2`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(mem_KLev_iff _).2 ⟨fun v i j => ?_, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v ((Matrix.GeneralLinearGroup.map (pLoc F v) (locGL F 2 w _)).val i j) ≤ 1`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk i j`. Apply the tactic sequence `rw [pLoc_locGL_of_ne hv, Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[RingHom.map_det]`. Express the relevant statement in the definitionally equal form `Valued.v ((Matrix.GeneralLinearGroup.map (pLoc F v) (locGL F 2 w _)).val.det) = 1`. Distinguish the cases in `hv : v = w`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL]`. Establish `e : ((Matrix.GeneralLinearGroup.map (v.adicCompletionIntegers F).subtype k).val).det = (((Matrix.GeneralLinearGroup.det k : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `((v.adicCompletionIntegers F).subtype.map_det k.val).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `eq_one_of_mul ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (Matrix.GeneralLinearGroup.det k : (v.adicCompletionIntegers F)ˣ).val.2) ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((Matrix.GeneralLinearGroup.det k)⁻¹ : (v.adicCompletionIntegers F)ˣ).val.2) ?_` and prove the remaining obligations. Rewrite using `[← Valuation.map_mul]`. Establish `h` using `congrArg (fun y : v.adicCompletionIntegers F => (y : v.adicCompletion F)) (Matrix.GeneralLinearGroup.det k).mul_inv`. Conclude with `(congrArg Valued.v h).trans (Valuation.map_one _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pLoc_locGL_of_ne hv, Units.val_one, Matrix.det_one, Valuation.map_one]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨r, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F x h`.
-
-Conclude with `NumberField.RingOfIntegers.isIntegral_coe r`. Introduce `h w`. Establish `e : x = algebraMap (𝓞 F) F ⟨x, h⟩` using `rfl`. Rewrite using `[e]`. Conclude with `HeightOneSpectrum.valuation_le_one w _`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbertThetaSeries.kMem : ∀ (F : Type) [Field F] [NumberField F], (∀ u : GL (Fin 2) (Af F), u ∈ KLev F 2 1 ↔ (∀ w i j, Valued.v (pLoc F w (u.val i j)) ≤ 1) ∧ ∀ w, Valued.v (pLoc F w u.val.det) = 1) ∧ (∀ (u : (Af F)ˣ) (x : Af F), (∀ w, Valued.v (pLoc F w (u : Af F)) = 1) → (∀ w, Valued.v (pLoc F w x) ≤ 1) → aff u x ∈ KLev F 2 1 ∧ Matrix.GeneralLinearGroup.scalar (Fin 2) u ∈ KLev F 2 1) ∧ (∀ w, ∀ g ∈ K1 w 0, locGL F 2 w g ∈ KLev F 2 1) ∧ (∀ (x : F) w, Valued.v (pLoc F w (algebraMap F (Af F) x)) = w.valuation F x) ∧ ∀ x : F, (∀ w : HeightOneSpectrum (𝓞 F), w.valuation F x ≤ 1) ↔ IsIntegral ℤ x := by
   intro F _ _
@@ -156,7 +152,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.kMem | exact GlobalTheory.HilbertThetaSeries.kMem | (intros; apply GlobalTheory.HilbertThetaSeries.kMem <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.maximalCompactGL2_finiteAdele_characterization : ∀ (F : Type) [Field F] [NumberField F], (∀ u : GL (Fin 2) (Af F), u ∈ KLev F 2 1 ↔ (∀ w i j, Valued.v (pLoc F w (u.val i j)) ≤ 1) ∧ ∀ w, Valued.v (pLoc F w u.val.det) = 1) ∧ (∀ (u : (Af F)ˣ) (x : Af F), (∀ w, Valued.v (pLoc F w (u : Af F)) = 1) → (∀ w, Valued.v (pLoc F w x) ≤ 1) → aff u x ∈ KLev F 2 1 ∧ Matrix.GeneralLinearGroup.scalar (Fin 2) u ∈ KLev F 2 1) ∧ (∀ w, ∀ g ∈ K1 w 0, locGL F 2 w g ∈ KLev F 2 1) ∧ (∀ (x : F) w, Valued.v (pLoc F w (algebraMap F (Af F) x)) = w.valuation F x) ∧ ∀ x : F, (∀ w : HeightOneSpectrum (𝓞 F), w.valuation F x ≤ 1) ↔ IsIntegral ℤ x := by
   first | exact @GlobalTheory.HilbertThetaSeries.kMem | exact GlobalTheory.HilbertThetaSeries.kMem | (intros; apply GlobalTheory.HilbertThetaSeries.kMem <;> assumption)

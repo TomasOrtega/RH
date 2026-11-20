@@ -43,11 +43,11 @@ theorem indFun_apply (φ : H →* G) (ψ : H → ℂ) (s : G) :
     indFun φ ψ s = (Nat.card H : ℂ)⁻¹ * ∑ t : G, ∑ h : H, if φ h = t⁻¹ * s * t then ψ h else 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[indFun_apply]`. Establish `h1 : ∀ t : G, ∑ h : H, (if φ h = t⁻¹ * 1 * t then ψ h else 0) = ψ 1`. Introduce `t`. Establish `hiff : ∀ h : H, φ h = t⁻¹ * 1 * t ↔ h = 1` using `fun h ↦ by`. Rewrite using `[show t⁻¹ * 1 * t = 1 by group, ← map_one φ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hφ.eq_iff`. Repeatedly rewrite using `[hiff]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem indFun_apply_one (φ : H →* G) (hφ : Function.Injective φ) (ψ : H → ℂ) :
     indFun φ ψ 1 = (Nat.card G : ℂ) / Nat.card H * ψ 1 := by
@@ -66,9 +66,9 @@ theorem indFun_apply_one (φ : H →* G) (hφ : Function.Injective φ) (ψ : H �
   ring
 
 /- English proof (translation)
-Introduce `s k`. Rewrite using `[indFun_apply, indFun_apply]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft k⁻¹) _ _ fun t ↦ ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun h _ ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulLeft]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Rewrite using `[show (k⁻¹ * t)⁻¹ * s * (k⁻¹ * t) = t⁻¹ * (k * s * k⁻¹) * t by group]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isClassFun_indFun (φ : H →* G) (ψ : H → ℂ) : IsClassFun (indFun φ ψ) := by
   classical
@@ -83,15 +83,15 @@ theorem isClassFun_indFun (φ : H →* G) (ψ : H → ℂ) : IsClassFun (indFun 
   rw [show (k⁻¹ * t)⁻¹ * s * (k⁻¹ * t) = t⁻¹ * (k * s * k⁻¹) * t by group]
 
 /- English proof (translation)
-Establish `hG : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `hinner : ∀ (t : G) (h : H), ∑ s : G, (if φ h = t⁻¹ * s * t then ψ h else 0) * χ s⁻¹ = ψ h * χ (φ h⁻¹)`. Introduce `t h`. Establish `hiff : ∀ s : G, (φ h = t⁻¹ * s * t) ↔ (s = t * φ h * t⁻¹)`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `hs`. Rewrite using `[hs]`. Use `group`. Introduce and unpack `rfl group`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[ite_mul, zero_mul, hiff]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Use `congr 1`. Rewrite using `[show (t * φ h * t⁻¹)⁻¹ = t * φ h⁻¹ * t⁻¹ by simp [mul_assoc], hχ]`. Establish `hpt : ∀ s : G, indFun φ ψ s * χ s⁻¹ = (Nat.card H : ℂ)⁻¹ * ∑ t : G, ∑ h : H, (if φ h = t⁻¹ * s * t then ψ h else 0) * χ s⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[indFun_apply, mul_assoc, Finset.sum_mul]`. Repeatedly rewrite using `[Finset.sum_mul]`. Establish `hsum : ∑ s : G, indFun φ ψ s * χ s⁻¹ = (Nat.card H : ℂ)⁻¹ * (Nat.card G * ∑ h : H, ψ h * χ (φ h⁻¹))`. Rewrite using `[Finset.sum_congr rfl fun s _ ↦ hpt s, ← Finset.mul_sum, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.sum_congr rfl fun t _ ↦ (Finset.sum_comm.trans (Finset.sum_congr rfl fun h _ ↦ hinner t h)), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Rewrite using `[charInner_apply, hsum, charInner_apply]`. Simplify using `only [Function.comp_apply]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem charInner_indFun (φ : H →* G) (ψ : H → ℂ) {χ : G → ℂ} (hχ : IsClassFun χ) :
     charInner G (indFun φ ψ) χ = charInner H ψ (χ ∘ φ) := by
@@ -128,7 +128,7 @@ theorem charInner_indFun (φ : H →* G) (ψ : H → ℂ) {χ : G → ℂ} (hχ 
   field_simp
 
 /- English proof (translation)
-Rewrite using `[charInner_comm, charInner_indFun φ ψ hχ, charInner_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charInner_indFun_right (φ : H →* G) (ψ : H → ℂ) {χ : G → ℂ} (hχ : IsClassFun χ) :
     charInner G χ (indFun φ ψ) = charInner H (χ ∘ φ) ψ := by
@@ -137,7 +137,7 @@ theorem charInner_indFun_right (φ : H →* G) (ψ : H → ℂ) {χ : G → ℂ}
 omit [Fintype G] [Fintype H] in
 
 /- English proof (translation)
-Introduce `h k`. Simplify using `only [Function.comp_apply, map_mul, map_inv]`. Conclude with `hχ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsClassFun.comp {χ : G → ℂ} (hχ : IsClassFun χ) (φ : H →* G) : IsClassFun (χ ∘ φ) := by
   intro h k
@@ -145,7 +145,7 @@ theorem IsClassFun.comp {χ : G → ℂ} (hχ : IsClassFun χ) (φ : H →* G) :
   exact hχ _ _
 
 /- English proof (translation)
-Apply `eq_of_isClassFun_of_charInner (isClassFun_indFun _ _) (isClassFun_indFun _ _)` to reduce the goal to its premises. Introduce `χ hχ`. Establish `hcl` using `(mem_irrChars.mp hχ).isCharacter.isClassFun`. Rewrite using `[charInner_indFun _ _ hcl, charInner_indFun _ _ (hcl.comp φ), charInner_indFun _ _ hcl]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem indFun_indFun (φ : H →* G) (φ' : K →* H) (ψ : K → ℂ) :
     indFun φ (indFun φ' ψ) = indFun (φ.comp φ') ψ := by
@@ -156,11 +156,11 @@ theorem indFun_indFun (φ : H →* G) (φ' : K →* H) (ψ : K → ℂ) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [indFun_apply, Pi.mul_apply, Function.comp_apply]`. Rewrite using `[mul_assoc, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ ↦ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun h _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with hh`. Rewrite using `[hh]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hχ s t⁻¹`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indFun_mul_comp (φ : H →* G) (ψ : H → ℂ) {χ : G → ℂ} (hχ : IsClassFun χ) :
     indFun φ (ψ * (χ ∘ φ)) = indFun φ ψ * χ := by
@@ -181,7 +181,7 @@ theorem indFun_mul_comp (φ : H →* G) (ψ : H → ℂ) {χ : G → ℂ} (hχ :
 omit [Fintype G] [Fintype H] in
 
 /- English proof (translation)
-Take `⟨V, _, _, _, ρ, rfl⟩` from `hχ`. Conclude with `⟨V, inferInstance, inferInstance, inferInstance, ρ.comp φ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCharacter.comp {χ : G → ℂ} (hχ : IsCharacter χ) (φ : H →* G) : IsCharacter (χ ∘ φ) := by
   obtain ⟨V, _, _, _, ρ, rfl⟩ := hχ
@@ -190,7 +190,7 @@ theorem IsCharacter.comp {χ : G → ℂ} (hχ : IsCharacter χ) (φ : H →* G)
 omit [Fintype G] in
 
 /- English proof (translation)
-Take `⟨V, _, _, _, ρ, rfl⟩` from `hχ`. Take `⟨W, _, _, _, σ, rfl⟩` from `hψ`. Conclude with `⟨_, charInner_character_character σ ρ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCharacter.exists_nat_charInner {χ ψ : H → ℂ} (hχ : IsCharacter χ) (hψ : IsCharacter ψ) :
     ∃ n : ℕ, charInner H χ ψ = n := by
@@ -199,7 +199,7 @@ theorem IsCharacter.exists_nat_charInner {χ ψ : H → ℂ} (hχ : IsCharacter 
   exact ⟨_, charInner_character_character σ ρ⟩
 
 /- English proof (translation)
-Rewrite using `[isCharacter_iff]`. Use `⟨isClassFun_indFun φ ψ, fun χ hχ ↦ ?_⟩` and prove the remaining obligations. Establish `hc` using `(mem_irrChars.mp hχ).isCharacter`. Rewrite using `[charInner_indFun φ ψ hc.isClassFun]`. Conclude with `hψ.exists_nat_charInner (hc.comp φ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCharacter.indFun {ψ : H → ℂ} (hψ : IsCharacter ψ) (φ : H →* G) :
     IsCharacter (indFun φ ψ) := by
@@ -250,7 +250,7 @@ def indResEquiv : IntertwiningMap (ind φ ρ) σ ≃ₗ[ℂ] IntertwiningMap ρ 
 variable [Fintype G] [Fintype H] [FiniteDimensional ℂ A]
 
 /- English proof (translation)
-Apply `eq_of_isClassFun_of_charInner (isCharacter_character _).isClassFun (isClassFun_indFun _ _)` to reduce the goal to its premises. Introduce `χ hχ`. Take `⟨W, _, _, _, σ, hσ, rfl⟩` from `mem_irrChars.mp hχ`. Rewrite using `[charInner_indFun _ _ (isCharacter_character σ).isClassFun, charInner_comm, charInner_character_character, charInner_comm, show σ.character ∘ φ = Representation.character (σ.comp φ) from rfl, charInner_character_character, (indResEquiv φ ρ σ).finrank_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem character_ind : (ind φ ρ).character = indFun φ ρ.character := by
   apply eq_of_isClassFun_of_charInner (isCharacter_character _).isClassFun (isClassFun_indFun _ _)

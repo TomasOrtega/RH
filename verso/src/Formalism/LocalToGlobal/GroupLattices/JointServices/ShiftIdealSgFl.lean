@@ -15,9 +15,9 @@ def sgFl (L : SizeData₂ D) (u : D.what₂.Word) (z : HeightOneSpectrum (𝓞 D
   ((⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ : ℤ) : ℝ)
 
 /- English proof (translation)
-Unfold `SizeData₂.sg`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h1 : L.gain j w = 0` using `L.gain_supp j w hw`. Establish `h2` using `L.F_supp j w hw`. Establish `h3` using `L.E_supp u j w hw`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[SizeData₂.gainD, h1, h2, h3]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sg_off (L : SizeData₂ D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hw : w ∉ L.supp) : L.sg u w = 0 := by
   unfold SizeData₂.sg
@@ -28,7 +28,7 @@ theorem sg_off (L : SizeData₂ D) (u : D.what₂.Word) (w : D.what₂.places.Pl
   simp [SizeData₂.gainD, h1, h2, h3]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(simp [shiftZ, sgFl])`. Consider the case `(unfold shiftZ sgFl; simp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem shiftZ_sgFl (L : SizeData₂ D) (u : D.what₂.Word) (z : HeightOneSpectrum (𝓞 D.what₂.LL)) :
     shiftZ (sgFl L u) z = ⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ := by
@@ -38,11 +38,11 @@ theorem shiftZ_sgFl (L : SizeData₂ D) (u : D.what₂.Word) (z : HeightOneSpect
   | (unfold shiftZ sgFl; simp)
 
 /- English proof (translation)
-Unfold `Formalism.DivisionValues.shiftIdeal Iu`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := L.supp.map D.plEq.toEmbedding)]`. Rewrite using `[Finset.prod_map]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[shiftZ_sgFl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `z hz`. Rewrite `hz` using `[Function.mem_mulSupport]`. Rewrite using `[Finset.coe_map, Set.mem_image]`. Use `⟨D.plEq.symm z, ?_, by simp⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hz` to reduce the goal to its premises. Rewrite using `[shiftZ_sgFl, sg_off L u _ h]`. Simplify using `[ur]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shiftIdeal_sgFl (L : SizeData₂ D) (u : D.what₂.Word) : Formalism.DivisionValues.shiftIdeal (shiftZ (sgFl L u)) = Iu D L u := by
   unfold Formalism.DivisionValues.shiftIdeal Iu
@@ -60,9 +60,9 @@ theorem shiftIdeal_sgFl (L : SizeData₂ D) (u : D.what₂.Word) : Formalism.Div
     simp [ur]
 
 /- English proof (translation)
-Unfold `Iu`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `x _`. Apply `zpow_ne_zero` to reduce the goal to its premises. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately.
 
-Consider the case `exact FractionalIdeal.coeIdeal_ne_zero.mpr (D.plEq x).ne_bot`. Consider the case `exact (FractionalIdeal.coeIdeal_ne_zero).2 (HeightOneSpectrum.ne_bot _)`. Consider the case `simp [(D.plEq x).ne_bot]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Iu_ne_zero (L : SizeData₂ D) (u : D.what₂.Word) : Iu D L u ≠ 0 := by
   unfold Iu
@@ -75,15 +75,15 @@ theorem Iu_ne_zero (L : SizeData₂ D) (u : D.what₂.Word) : Iu D L u ≠ 0 := 
   | simp [(D.plEq x).ne_bot]
 
 /- English proof (translation)
-Use `set f := ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)) with hf`. Establish `hmap : ∀ (I : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (N : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL)), (Formalism.HermitianLatticesTheory.idealSmul I N).map f = Formalism.HermitianLatticesTheory.idealSmul I (N.map f)`. Introduce `I N`. Unfold `Formalism.HermitianLatticesTheory.idealSmul`. Rewrite using `[Submodule.map_span]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, f x, Submodule.mem_map_of_mem hx, by simp [hf]⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a • x, ⟨a, ha, x, hx, rfl⟩, by simp [hf]⟩`. Establish `hN' : (D.div.Nu u).L = Formalism.HermitianLatticesTheory.idealSmul (Iu D L u : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (L.NuLat u)`. Rewrite using `[hN u]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : Formalism.HermitianLatticesTheory.idealSmul (Iu D L u : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (Nu.map f) = Formalism.HermitianLatticesTheory.idealSmul (Iu D L u : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (L.NuLat u)`. Rewrite using `[← hmap, ← hN', hlat, hshift, shiftLat, shiftIdeal_sgFl]`. Establish `hIu : Iu D L u ≠ 0` using `Iu_ne_zero L u`. Establish `hone : ∀ X : Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V, Formalism.HermitianLatticesTheory.idealSmul ((((Iu D L u)⁻¹ * Iu D L u : FractionalIdeal (nonZeroDivisors (𝓞 D.what₂.LL)) D.what₂.LL)) : Submodule (𝓞 D.what₂.LL) D.what₂.LL) X = X`. Introduce `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel₀ hIu, FractionalIdeal.coe_one, Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_one]`. Rewrite using `[← hone (Nu.map f), ← hone (L.NuLat u), FractionalIdeal.coe_mul, Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_mul, Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_mul, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_map_eq (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word) {d : ℕ}
     (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (NuC Nu : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL))
@@ -120,7 +120,7 @@ theorem nu_map_eq (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word) 
     Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_mul, h1]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← nu_map_eq L hN u e NuC Nu hlat hshift]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_into (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word) {d : ℕ}
     (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (NuC Nu : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL))

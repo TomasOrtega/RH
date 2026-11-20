@@ -18,14 +18,14 @@ structure Gen1 (x : Etau K τ) : Prop where
   disc : ∃ u : Oˣ, algebraMap O K u = x.im ^ 2 * (τ ^ 2 - 4)
 
 /- English proof (translation)
-Use `haveI := L.frac`. Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.of_pow (n := 2) (by norm_num) (h ▸ isIntegral_algebraMap))`.
+A detailed English derivation is pending.
 -/
 theorem sq_int (L : IsLoc O Δ) (x : K) (a : O) (h : x ^ 2 = algebraMap O K a) : ∃ b : O, algebraMap O K b = x := by
   haveI := L.frac
   exact IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.of_pow (n := 2) (by norm_num) (h ▸ isIntegral_algebraMap))
 
 /- English proof (translation)
-Use `haveI := L.frac`. Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral ((isIntegral_algebraMap_iff (algebraMap K (Etau K τ)).injective).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem int_down (L : IsLoc O Δ) (a : K) (h : IsIntegral O (algebraMap K (Etau K τ) a)) : ∃ b : O, algebraMap O K b = a := by
   haveI := L.frac
@@ -33,7 +33,7 @@ theorem int_down (L : IsLoc O Δ) (a : K) (h : IsIntegral O (algebraMap K (Etau 
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h.tr`. Take `⟨n, hn⟩` from `h.nm`. Conclude with `isIntegral_of_trace_norm t n ht.symm hn.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Gen1.int {x : Etau K τ} (h : Gen1 O x) : IsIntegral O x := by
   obtain ⟨t, ht⟩ := h.tr
@@ -42,22 +42,22 @@ theorem Gen1.int {x : Etau K τ} (h : Gen1 O x) : IsIntegral O x := by
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨u, hu⟩ := h.disc exact (u.isUnit.map (algebraMap O K)).ne_zero (by rw [hu, h0]; ring)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Gen1.im_ne [Nontrivial O] {x : Etau K τ} (h : Gen1 O x) : x.im ≠ 0 := fun h0 => by
   obtain ⟨u, hu⟩ := h.disc
   exact (u.isUnit.map (algebraMap O K)).ne_zero (by rw [hu, h0]; ring)
 
 /- English proof (translation)
-Use `⟨fun hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `h.im_ne`. Take `⟨u, hu⟩` from `h.disc`. Take `⟨d, hd⟩` from `int_down L (y.im ^ 2 * (τ ^ 2 - 4)) (by`. Use `(hy.sub (isIntegral_star hy)).pow 2 using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `ext <;> simp [sq] <;> ring)`. Establish `hi : algebraMap O K u * algebraMap O K (u⁻¹ : Oˣ) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Take `⟨b, hb⟩` from `sq_int L (y.im / x.im) (d * (u⁻¹ : Oˣ)) (by`. Rewrite using `[map_mul, hd]`. Rewrite `hi` using `[hu]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(-y.im ^ 2) * hi)`. Take `⟨a, ha⟩` from `int_down (τ := τ) L (y.re - y.im / x.im * x.re) (by`. Use `hy.sub ((isIntegral_algebraMap (x := b)).mul h.int) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[algebraMap_etau (O := O), hb]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_etau a, algebraMap_etau b, ha, hb]`.
+Apply the first step, then apply the next step to every resulting obligation. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨a, b, rfl⟩`. Conclude with `isIntegral_algebraMap.add (isIntegral_algebraMap.mul h.int)`.
+Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Gen1.int_iff (L : IsLoc O Δ) {x : Etau K τ} (h : Gen1 O x) (y : Etau K τ) :
     IsIntegral O y ↔ ∃ a b : O, y = algebraMap O _ a + algebraMap O _ b * x := by
@@ -83,15 +83,13 @@ theorem Gen1.int_iff (L : IsLoc O Δ) {x : Etau K τ} (h : Gen1 O x) (y : Etau K
     exact isIntegral_algebraMap.add (isIntegral_algebraMap.mul h.int)
 
 /- English proof (translation)
-Use `haveI := L.frac`. Take `⟨y, x', h0, ⟨t, ht⟩, ⟨n, hn⟩, rfl⟩` from `latCls O K Δ τ L hτ S hS`. Establish `hi : IsIntegral O x'` using `isIntegral_of_trace_norm t n ht.symm hn.symm`. Take `⟨_, hw, e⟩` from `hx _ ⟨1, Submodule.subset_span (by simp), rfl⟩`. Take `⟨p, q, rfl⟩` from `Submodule.mem_span_pair.1 hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : p • (1 : Etau K τ) + q • x' = x`. Use `(Units.mul_right_inj y).1 ?_` and prove the remaining obligations. Simplify `e` using `[mul_comm]`. Use `⟨y, fun w => ⟨?_, fun hw => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_, hw, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, rfl⟩` from `Submodule.mem_span_pair.1 hw`. Rewrite using `[Units.inv_mul_cancel_left]`. Conclude with `(isIntegral_one.smul a).add (hi.smul b)`. Take `⟨a, b, e⟩` from `(h.int_iff L _).1 hw`. Use `⟨_, Submodule.mem_span_pair.2 ⟨a + b * p, b * q, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (a + b * p) • (1 : Etau K τ) + (b * q) • x' = ((y⁻¹ : (Etau K τ)ˣ) : Etau K τ) * w`. Rewrite using `[e, ← e']`. Simplify using `only [Algebra.smul_def, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(y : Etau K τ) * _ = w`.
-
-Rewrite using `[this, Units.mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen1.princ (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {x : Etau K τ} (h : Gen1 O x) {S : Set (Etau K τ)} (hS : IsLat O τ S) (hx : ∀ w ∈ S, x * w ∈ S) :
     ∃ u : (Etau K τ)ˣ, ∀ w, w ∈ S ↔ IsIntegral O (((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * w) := by
@@ -116,23 +114,21 @@ theorem Gen1.princ (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {x : Etau K τ} (h 
     rw [this, Units.mul_inv_cancel_left]
 
 /- English proof (translation)
-Use `haveI := L.frac`. Establish `h0` using `h.im_ne`. Establish `key : ∀ (s : K) (a b : O), (IsUnit a ∨ IsUnit b) → (c : Etau K τ) = algebraMap K _ s * (algebraMap O _ a + algebraMap O _ b * x) → ∃ (s : Kˣ) (u : (Etau K τ)ˣ), IsIntegral O (u : Etau K τ) ∧ IsIntegral O ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) ∧ c = PS.sc τ s * u`. Introduce `s a b hab e`. Establish `hs : s ≠ 0` using `fun h => c.ne_zero (by rw [e, h]; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u : (Etau K τ)ˣ` to `(PS.sc τ (Units.mk0 s hs))⁻¹ * c`. Establish `hu : (u : Etau K τ) = algebraMap O _ a + algebraMap O _ b * x`. Rewrite using `[Units.val_mul, e]`. Conclude with `Units.inv_mul_cancel_left (PS.sc τ (Units.mk0 s hs)) _`. Establish `huc : u ∈ Cint O τ` using `mul_mem (inv_mem (PS.sc_mem _)) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IsIntegral O (((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * star (u : Etau K τ))` using `by simpa [quo] using huc.2`. Take `⟨d, hd⟩` from `h.disc`. Establish `hxx : (x - star x) ^ 2 = algebraMap O _ (d : O)`. Apply the tactic sequence `rw [algebraMap_etau (O := O), hd]; ext <;> simp [sq] <;> ring`. Establish `hsu : star (u : Etau K τ) = algebraMap O _ a + algebraMap O _ b * star x`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hu, algebraMap_etau a, algebraMap_etau b]; ext <;> simp <;> ring`. Establish `hui` using `u.inv_mul`. Use `set i := ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ)`. Establish `hdi : algebraMap O (Etau K τ) (d : O) * algebraMap O _ ((d⁻¹ : Oˣ) : O) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `h2 : IsIntegral O (i * algebraMap O _ b)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `((isIntegral_one.sub h1).mul (h.int.sub (isIntegral_star h.int))).mul (isIntegral_algebraMap (x := ((d⁻¹ : Oˣ) : O))) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hsu]`. Rewrite `hui` using `[hu]`. Take the linear combination `(-(i * algebraMap O _ b)) * hdi - (i * algebraMap O _ b * algebraMap O _ ((d⁻¹ : Oˣ) : O)) * hxx + ((x - star x) * algebraMap O _ ((d⁻¹ : Oˣ) : O)) * hui`. Establish `h3 : IsIntegral O (i * algebraMap O _ a)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `isIntegral_one.sub (h2.mul h.int) using 1` and compare the differences between its conclusion and the goal. Rewrite `hui` using `[hu]`. Take the linear combination `hui`. Establish `h4 : ∀ e : O, IsUnit e → IsIntegral O (i * algebraMap O _ e) → IsIntegral O i` using `fun e he hi => by`. Take `⟨f, hf⟩` from `he.exists_right_inv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Use `hi.mul (isIntegral_algebraMap (x := f))` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← map_mul, hf, map_one, mul_one]`. Then use the resulting hypothesis. Conclude with `⟨Units.mk0 s hs, u, hu ▸ isIntegral_algebraMap.add (isIntegral_algebraMap.mul h.int), hab.elim (h4 a · h3) (h4 b · h2), by simp [u]⟩`. Apply the tactic sequence `obtain ⟨α, β, e⟩ : ∃ α β : K, (c : Etau K τ) = algebraMap K _ α + algebraMap K _ β * x := ⟨(c : Etau K τ).re - (c : Etau K τ).im / x.im * x.re, (c : Etau K τ).im / x.im, by ext <;> simp; field_simp⟩`. Distinguish the cases in `hβ : β = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key α 1 0 (.inl isUnit_one) (by simp [e, hβ])`. Break down `ValuationRing.isInteger_or_isInteger O (α / β) with ⟨r, hr⟩ | ⟨r, hr⟩` into its components or cases. Use `key β r 1 (.inr isUnit_one) ?_` and prove the remaining obligations. Rewrite using `[e, algebraMap_etau (O := O), hr, map_one, one_mul, mul_add, ← map_mul, mul_div_cancel₀ _ hβ]`. Distinguish the cases in `hα : α = 0`.
-
-Conclude with `key β 0 1 (.inr isUnit_one) (by simp [e, hα])`. Use `key α 1 r (.inl isUnit_one) ?_` and prove the remaining obligations. Rewrite using `[e, algebraMap_etau r, hr, map_one, mul_add, mul_one, ← mul_assoc, ← map_mul, inv_div, mul_div_cancel₀ _ hα]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen1.cint (L : IsLoc O Δ) {x : Etau K τ} (h : Gen1 O x) {c : (Etau K τ)ˣ} (hc : c ∈ Cint O τ) :
     ∃ (s : Kˣ) (u : (Etau K τ)ˣ), IsIntegral O (u : Etau K τ) ∧ IsIntegral O ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) ∧ c = PS.sc τ s * u := by
@@ -187,7 +183,7 @@ def Mx : Set (Etau K τ) := {w | IsIntegral O w}
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[PS.mem_ml]`. Conclude with `⟨fun hw => show IsIntegral O w by simpa using h.mul hw, fun hw => h'.mul hw⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ml_Mx {u : (Etau K τ)ˣ} (h : IsIntegral O (u : Etau K τ)) (h' : IsIntegral O ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ)) : PS.ml u (Mx O τ) = Mx O τ := by
   ext w
@@ -195,7 +191,7 @@ theorem ml_Mx {u : (Etau K τ)ˣ} (h : IsIntegral O (u : Etau K τ)) (h' : IsInt
   exact ⟨fun hw => show IsIntegral O w by simpa using h.mul hw, fun hw => h'.mul hw⟩
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[SetLike.mem_coe, Submodule.mem_span_pair, Mx, Set.mem_setOf_eq, h.int_iff L]`. Simplify using `only [Algebra.smul_def, mul_one, eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Gen1.span (L : IsLoc O Δ) {x : Etau K τ} (h : Gen1 O x) : Mx O τ = (Submodule.span O {1, x} : Submodule O (Etau K τ)) := by
   ext w
@@ -203,7 +199,7 @@ theorem Gen1.span (L : IsLoc O Δ) {x : Etau K τ} (h : Gen1 O x) : Mx O τ = (S
   simp only [Algebra.smul_def, mul_one, eq_comm]
 
 /- English proof (translation)
-Use `⟨⟨{1, x}, by rw [h.span L]; simp⟩, eq_top_iff.2 fun w _ => ?_⟩` and prove the remaining obligations. Establish `h0` using `h.im_ne`. Rewrite using `[show w = (w.re - w.im / x.im * x.re) • (1 : Etau K τ) + (w.im / x.im) • x by`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]; field_simp]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span isIntegral_one)) (Submodule.smul_mem _ _ (Submodule.subset_span h.int))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Gen1.lat (L : IsLoc O Δ) {x : Etau K τ} (h : Gen1 O x) : IsLat O τ (Mx O τ) := by
   classical

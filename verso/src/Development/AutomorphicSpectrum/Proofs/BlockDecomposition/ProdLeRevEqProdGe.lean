@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.FinReversal
 
 /- English proof (translation)
-Use `Finset.prod_nbij' Fin.rev Fin.rev ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Conclude with `Fin.rev_le_rev.mpr ha`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Rewrite using `[← Fin.rev_le_rev, Fin.rev_rev]`. Conclude with `ha`. Introduce `a _`. Conclude with `Fin.rev_rev a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `a _`. Conclude with `Fin.rev_rev a`. Introduce `a _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem prod_filter_le_rev {M : Type*} [CommMonoid M] (h : ℕ) (f : Fin h → M) (j : Fin h) :
     ∏ a ∈ Finset.univ.filter (fun a => a ≤ j), f (Fin.rev a)

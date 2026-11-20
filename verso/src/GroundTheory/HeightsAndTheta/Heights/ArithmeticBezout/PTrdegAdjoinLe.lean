@@ -13,9 +13,9 @@ section TrdegRank
 variable {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
 
 /- English proof (translation)
-Use `Matroid.ext_indep (by simp) fun I _ => ?_` and prove the remaining obligations. Establish `hinj : InjOn ((↑) : S → Ω) I` using `Subtype.val_injective.injOn`. Rewrite using `[Matroid.comap_indep_iff, matroid_indep_iff, matroid_indep_iff]`. Simplify using `only [hinj, and_true]`. Express the relevant statement in the definitionally equal form `AlgebraicIndependent K (fun i : I => (i : S)) ↔ AlgebraicIndependent K (fun x : (((↑) : S → Ω) '' I) => (x : Ω))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← algebraicIndependent_image hinj]`. Conclude with `(S.val.algebraicIndependent_iff Subtype.val_injective).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matroid_subalgebra_eq_comap (S : Subalgebra K Ω) :
     AlgebraicIndependent.matroid K S = (AlgebraicIndependent.matroid K Ω).comap ((↑) : S → Ω) := by
@@ -29,9 +29,9 @@ theorem matroid_subalgebra_eq_comap (S : Subalgebra K Ω) :
   exact (S.val.algebraicIndependent_iff Subtype.val_injective).symm
 
 /- English proof (translation)
-Rewrite using `[← matroid_cRank_eq, matroid_subalgebra_eq_comap, ← Matroid.cRk_ground, Matroid.comap_ground_eq, Matroid.cRk_comap, matroid_e, preimage_univ, image_univ, Subtype.range_coe]`. Use `le_antisymm ?_ (Matroid.cRk_le_of_subset _ Algebra.subset_adjoin)` and prove the remaining obligations. Use `(Matroid.cRk_le_of_subset _ ?_).trans_eq (Matroid.cRk_closure _ A)` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[matroid_closure_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAlgebraic_algebraMap (⟨x, hx⟩ : Algebra.adjoin K A)`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_adjoin_eq_cRk (A : Set Ω) :
     Algebra.trdeg K (Algebra.adjoin K A) = (AlgebraicIndependent.matroid K Ω).cRk A := by
@@ -46,9 +46,9 @@ theorem trdeg_adjoin_eq_cRk (A : Set Ω) :
 end TrdegRank
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ s ι _ t ι' w hw`. Use `set M := AlgebraicIndependent.matroid K Ω`. Rewrite using `[trdeg_adjoin_eq_cRk, trdeg_adjoin_eq_cRk]`. Establish `hcl : range w ⊆ M.closure (s ∪ range t)`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[matroid_closure_eq]`. Conclude with `hw i`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem TrdegAdjoinLe.proof : TrdegAdjoinLe.Statement := by
   intro K Ω _ _ _ s ι _ t ι' w hw

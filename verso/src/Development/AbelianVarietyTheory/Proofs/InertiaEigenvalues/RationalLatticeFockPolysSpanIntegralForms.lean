@@ -15,15 +15,15 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 /- English proof (translation)
-Introduce `D X X0 Y S YS Z c w j H ι hι u hu κ hκ hs`. Establish `key` using `UpperTheory.KN.scaled_fock_form_mem_mtLat_iff D X X0 Y S YS Z c w j H ι hι u hu κ hκ hs`. Establish `hrat` using `UpperTheory.KN.exists_fock_form_eq_of_mem_mtLat D X X0 Y S YS Z c w j H ι hι u hu κ hκ hs`. Take `⟨e, -, htie, -⟩` from `UpperTheory.KN.exists_rational_structure_lowest_form_space D X X0 Y (D.what₂.muTw w) (used_of_tw H.tw) j`. Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F hF`. Take `⟨m, rfl⟩` from `hrat F hF`. Take `⟨a, ha⟩` from `(key m).1 hF`. Rewrite using `[ha, map_sum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun v hv => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, smul_comm]`. Use `Submodule.smul_mem _ (⟨D.what₂.embLL (a v : D.what₂.LL), a v, rfl⟩ : intLL D) (Submodule.subset_span ?_)` and prove the remaining obligations. Take `⟨x, hx⟩` from `htie.1 v hv`. Establish `hx' : D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) (e x) = v` using `hx`. Conclude with `⟨e x, by show D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) (e x) ∈ (D.what₂.MtLat (D.what₂.muTw w) (j.1 + 1)).gen; rw [hx']; exact hv, by simp only [hx']⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `(key m).2 ⟨fun v => if v = D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) m then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) m)]`. Simplify using the standard rewrite rules. Introduce `v _ hv`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hv]`. Conclude with `fun h => absurd hm h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.rational_lattice_fock_polys_span_integral_forms : ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
   ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

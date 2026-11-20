@@ -22,11 +22,9 @@ noncomputable section
 namespace GlobalTheory.Pdv
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Establish `hs : _ = _` using `s.2`. Use `⟨s.1, congrArg (fun p => p.1.1) hs, congrArg (fun p => p.1.2) hs, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Conclude with `GlobalTheory.KerJ.ufGL_val s.1.1`. Introduce and unpack `⟨b, hb, hq, rfl⟩`. Use `⟨⟨b, Subtype.ext (Prod.ext hb hq)⟩, ?_⟩` and prove the remaining obligations. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
-
-Conclude with `(GlobalTheory.KerJ.ufGL_val b.1).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stabStd_eq_stabSet {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) (c : ((I.rec7 l Z).chTw u a).cls i) :
@@ -46,7 +44,7 @@ theorem stabStd_eq_stabSet {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Law
     exact (GlobalTheory.KerJ.ufGL_val b.1).symm
 
 /- English proof (translation)
-Establish `key : ∀ y : Ys B.fields (B.R.N i), y = Ys.triv _ _ → ∀ s N, s ∈ y.ys N → s = ∅`. Introduce and unpack `y rfl s N hs`. Conclude with `hs`. Conclude with `key _ (by unfold ysAt; exact if_neg hi) _ _ ((I.stp u a i).rep c).2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rep_coset_empty {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i + 1 ≠ B.R.m)
     (c : (I.stp u a i).Cl) : ((I.stp u a i).rep c).1.2 = ∅ := by
@@ -56,7 +54,7 @@ theorem rep_coset_empty {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) 
   exact key _ (by unfold ysAt; exact if_neg hi) _ _ ((I.stp u a i).rep c).2
 
 /- English proof (translation)
-Rewrite using `[stabStd_eq_stabSet, rep_coset_empty I u a i hi c]`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem stabStd_eq_stabSet_triv {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) (hi : i + 1 ≠ B.R.m) (c : ((I.rec7 l Z).chTw u a).cls i) :
@@ -69,37 +67,35 @@ theorem stabStd_eq_stabSet_triv {B : Base} {X : PreX B.toPre} (I : TC B X) (l : 
   simp
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z L hT Gi Gl K Y cX ex t hN hK hR u a`. Express the relevant statement in the definitionally equal form `B.Word at u`. Express the relevant statement in the definitionally equal form `I.ι at a`. Take `⟨cc, cc_rec, cc_ok, δ', δ_ok, B', χ, χ_ok, idl, idl_ok, χ_rec, cD, X', seam, seam_ok, Pr, pr_ok, g_rec, Ch, sel, S', word, T_rec, tup, Q_rec, cst, idx, m2, glob, glob_σ, glob_xi, idx_ok, O, rd, rd_chain, O_dgen, O_S, O_lat, O_Th, unf, ent, ent_lam, kf, kf_un, served⟩` from `t`. Take `⟨hX, hseam, hPr, hCh, hsel, hS, hword, htup, hcst, hidx, hm2, -, -, -, -⟩` from `hK`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hX` using the available equality. Take `rfl` from `eq_of_heq hseam`. Take `rfl` from `eq_of_heq hPr`. Take `rfl` from `eq_of_heq hCh`. Take `rfl` from `eq_of_heq hsel`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hS` using the available equality. Take `rfl` from `eq_of_heq hword`. Take `rfl` from `eq_of_heq htup`. Take `rfl` from `eq_of_heq hcst`. Take `rfl` from `eq_of_heq hidx`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hm2` using the available equality. Take `⟨r, hr, hrs⟩` from `hR u a`. Take `rfl` from `eq_of_heq hr`. Unfold `GlobalTheory.KerJ.StabPin`. Simplify using `only`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Establish `hm : B.R.m = B.R.m - 2 + 2` using `(hI.idx_ok a).hm`. Establish `h1 : B.R.m - 2 + 1 + 1 = B.R.m` using `by omega`. Take `⟨hXo, hPro, -⟩` from `base_fields_primes_ok B X`. Establish `hG : ∀ j (b : Idx I.sel (I.tup a) (I.idx a) j) (h : j < B.R.m), levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) j b = (I.idx a).levG j (b.get h)`. Introduce `j b h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `levGAt`. Rewrite using `[← Idx.some_get b h]`. Both sides reduce to the same expression. Establish `hQ : ∀ j (b : Idx I.sel (I.tup a) (I.idx a) j) (h : j < B.R.m), levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) j b = (I.idx a).levQ j (b.get h)`. Introduce `j b h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `levQAt`. Rewrite using `[← Idx.some_get b h]`. Both sides reduce to the same expression. Establish `hGt : ∀ b : Idx I.sel (I.tup a) (I.idx a) B.R.m, levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) B.R.m b = twLt I.Ch B.R.m`. Introduce `b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : b.1 = none` using `Option.not_isSome_iff_eq_none.1 fun h => lt_irrefl _ (b.2.1 h)`. Unfold `levGAt`. Rewrite using `[hb]`. Conclude with `(topLev_levG_m _ _ _ _ _).trans (GlobalTheory.T.typePrimeLevel_lastStep_symmetricRows_eq_twistLevel B.fields (B.primes X) B.R I.Ch hXo hPro hI.ch_ok)`. Establish `hQt : ∀ b : Idx I.sel (I.tup a) (I.idx a) B.R.m, levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) B.R.m b = twTt (R` using `B.R) I.sel (I.tup a) B.R.m := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Establish `hb : b.1 = none` using `Option.not_isSome_iff_eq_none.1 fun h => lt_irrefl _ (b.2.1 h)`. Unfold `levQAt`. Rewrite using `[hb]`. Use `(topLev_levQ_m _ _ _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : topDep B.R (I.cst a).M = 4 * B.R.m`. Use `(hN a).2.1` as an intermediate fact. Unfold `topDep`. Conclude with `max_eq_left (by omega)`. Rewrite using `[hd]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.T.level_quotient_eq_twisted_top B.fields (B.primes X) B.R I.Ch I.sel I.S (I.tup a) hXo hPro hI.sel_ok (fun i => hI.g_mem i) (fun v => hI.T_mem v)`. Establish `hTop : ∀ j (hj : j = B.R.m) (c : ((I.rec7 l Z).chTw u a).cls j), stabStd I l Z u a j c = GlobalTheory.KerJ.stabSet (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) (twLt I.Ch j) (twTt (R` using `B.R) I.sel (I.tup a) j) ((I.stp u a j).rep c).1.1 (fun _ => True) := by`. Introduce `j hj c`. Substitute `hj` using the available equality. Rewrite using `[stabStd_eq_stabSet_triv I l Z u a _ (by omega) c, hGt, hQt]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i _ c => ((I.stp u a i).rep c).1.1, fun i hi c => c.1.get (by omega), fun c => ((I.stp u a (B.R.m - 2 + 1)).rep c).1.2, fun c => ((I.stp u a (B.R.m - 2 + 1 + 1)).rep c).1.1, fun i _ c => hrs.1 i c, fun c => PtAt.mem_ybSet _ h1, ?_, ?_, ⟨fun c' => hrs.1 _ c', ?_⟩, ?_, ?_, fun …` and prove the remaining obligations. Introduce `i hi c c' x`. Rewrite using `[hrs.2 i (by omega) c c' x]`. Use `show B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1 c'.1 _ _ x) = _`. Apply the tactic sequence `rw [xiAt_entry I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega) (Idx.some_get c.1 (by omega)).symm (Idx.some_get c'.1 (by omega)).symm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `c c' x`. Rewrite using `[hrs.2 _ (by omega) c c' x]`. Use `show B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u (B.R.m - 2) c.1 c'.1 _ _ x) = _`. Rewrite using `[xiAt_penultimate_eq_xiCpl1 I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega) (Idx.some_get c.1 (by omega)).symm]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `c c' x`. Rewrite using `[hrs.2 _ (by omega) c c' x]`. Use `show B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u (B.R.m - 2 + 1) c.1 c'.1 _ _ x) = _`. Rewrite using `[xiAt_last I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) h1, GlobalTheory.T.lastColumnStepDatum_eq_twistTopDatum B.fields (B.primes X) B.R I.Ch I.sel I.S (I.tup a) (I.cst a) u (B.R.m - 2) h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Introduce `i _ hi c`. Rewrite using `[stabStd_eq_stabSet_triv I l Z u a i (by omega) c, hG i c.1 (by omega), hQ i c.1 (by omega)]`. Both sides reduce to the same expression. Introduce `b c`.
-
-Take `⟨b0, hb0⟩` from `(hI.idx_ok a).last_uniq`. Establish `hcb : c.1.get (by omega) = b` using `(hb0 _).trans (hb0 b).symm`. Rewrite using `[stabStd_eq_stabSet, hG _ c.1 (by omega), hQ _ c.1 (by omega), hcb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stab_pin : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), GlobalTheory.Pdv.ColNorm I → I.StdKer l Z t → GlobalTheory.Pdv.StdRd I l Z t → ∀ u a, GlobalTheory.KerJ.StabPin t u a (GlobalTheory.Pdv.stabStd I l Z u a) := by
   intro B X I hI hP l Z L hT Gi Gl K Y cX ex t hN hK hR u a

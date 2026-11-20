@@ -18,7 +18,7 @@ def ev (Q : Poly Φ) (T : C) : (ℕ →₀ Φ.A.obj T) →+ Φ.A.obj (Q.P T) whe
   map_add' c c' := Finsupp.sum_add_index' (fun k => by simp) (fun k y y' => by simp [add_mul])
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Finsupp.single k y).sum (fun k y => (Φ.A.map (Q.j T)).hom y * Φ.dp k (Q.X T)) = _`. Rewrite using `[Finsupp.sum_single_index]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_single (Q : Poly Φ) (T : C) (k : ℕ) (y : Φ.A.obj T) :
     ev Q T (Finsupp.single k y) = (Φ.A.map (Q.j T)).hom y * Φ.dp k (Q.X T) := by
@@ -27,7 +27,7 @@ theorem ev_single (Q : Poly Φ) (T : C) (k : ℕ) (y : Φ.A.obj T) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [smul_add, map_add, map_add, hf, hg, smul_add]`. Consider the case `single k y => rw [Finsupp.smul_single, ev_single, ev_single, map_smul, smul_mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ev_smul (Q : Poly Φ) (T : C) (s : R) (c : ℕ →₀ Φ.A.obj T) : ev Q T (s • c) = s • ev Q T c := by
   induction c using Finsupp.induction_linear with
@@ -46,20 +46,20 @@ Both sides reduce to the same expression.
 @[simp] theorem sh_apply {M : Type} [AddCommMonoid M] (c : ℕ →₀ M) (k : ℕ) : sh c k = c (k + 1) := rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sh_single_zero {M : Type} [AddCommMonoid M] (y : M) : sh (Finsupp.single 0 y) = 0 := by
   ext k; simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sh_single_succ {M : Type} [AddCommMonoid M] (n : ℕ) (y : M) :
     sh (Finsupp.single (n + 1) y) = Finsupp.single n y := by
   ext k; simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sh_smul {M : Type} [AddCommMonoid M] [Module R M] (s : R) (c : ℕ →₀ M) : sh (s • c) = s • sh c := by
   ext k; simp
@@ -71,7 +71,7 @@ def tr {T T' : C} (φ : T ⟶ T') (t : Φ.A.obj T') : (ℕ →₀ Φ.A.obj T) �
       map_add' := fun y y' => by simp [add_mul, Finsupp.single_add, Finset.sum_add_distrib] }
 
 /- English proof (translation)
-Simplify using `[tr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tr_single {T T' : C} (φ : T ⟶ T') (t : Φ.A.obj T') (n : ℕ) (y : Φ.A.obj T) :
     tr φ t (Finsupp.single n y) =
@@ -79,11 +79,9 @@ theorem tr_single {T T' : C} (φ : T ⟶ T') (t : Φ.A.obj T') (n : ℕ) (y : Φ
   simp [tr]
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single n y`. Consider the cases of `n with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Rewrite using `[sh_single_zero, tr_single, map_zero, Finset.Nat.antidiagonal_zero, Finset.sum_singleton]`. Conclude with `sh_single_zero _`. Consider the case `succ n`. Rewrite using `[sh_single_succ, tr_single, tr_single, map_sum, Finset.Nat.sum_antidiagonal_succ, sh_single_zero, zero_add]`.
-
-Conclude with `Finset.sum_congr rfl fun p _ => sh_single_succ _ _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_tr {T T' : C} (φ : T ⟶ T') (t : Φ.A.obj T') (c : ℕ →₀ Φ.A.obj T) :
     sh (tr φ t c) = tr φ t (sh c) := by
@@ -100,9 +98,9 @@ theorem sh_tr {T T' : C} (φ : T ⟶ T') (t : Φ.A.obj T') (c : ℕ →₀ Φ.A.
       exact Finset.sum_congr rfl fun p _ => sh_single_succ _ _
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single n y`. Establish `hy : (Φ.A.map ψ).hom ((Φ.A.map (Q.j T)).hom y) = (Φ.A.map (Q.j T')).hom ((Φ.A.map φ).hom y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← Cut.mapA_comp, ← Cut.mapA_comp, hj]`. Establish `hjt : (Φ.A.map (Q.j T')).hom t ∈ Φ.J.S (Q.P T')` using `Φ.J.map_mem _ ht`. Rewrite using `[ev_single, map_mul, hy, Φ.dp_map ψ n (Q.X_mem T), hX, Φ.dp_add n (Q.X_mem T') hjt, tr_single, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_single, map_mul, Φ.dp_map (Q.j T') p.2 ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -124,7 +122,7 @@ theorem ev_tr (Q : Poly Φ) {T T' : C} (φ : T ⟶ T') (ψ : Q.P T ⟶ Q.P T') (
     ring
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Take `⟨c, rfl⟩` from `Q.span T y`. Conclude with `⟨c, hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (Q : Poly Φ) (a b : IdF Φ.A) {T : C} (x : sqM a b (Q.P T)) :
     ∃ c : ℕ →₀ Φ.A.obj T, ev Q T c ∈ a.S (Q.P T) ∧ x.1 = Ideal.Quotient.mk _ (ev Q T c) := by
@@ -134,7 +132,7 @@ theorem exists_rep (Q : Poly Φ) (a b : IdF Φ.A) {T : C} (x : sqM a b (Q.P T)) 
   exact ⟨c, hy, rfl⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `z`. Take `rfl : z = _` from `h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem sqMap_val {T T' : C} (a b : IdF Φ.A) (φ : T ⟶ T') (z : sqM a b T) (y : Φ.A.obj T)
     (h : z.1 = Ideal.Quotient.mk _ y) : (sqMap a b φ z).1 = Ideal.Quotient.mk _ ((Φ.A.map φ).hom y) := by
@@ -143,7 +141,7 @@ theorem sqMap_val {T T' : C} (a b : IdF Φ.A) (φ : T ⟶ T') (z : sqM a b T) (y
   rfl
 
 /- English proof (translation)
-The claim follows from `(h' T (sh c)).2 fun k => by have e : r - 1 - (k : ℤ) = r - ((k + 1 : ℕ) : ℤ) := by push_cast; ring rw [e, sh_apply] exact (h T c).1 hc (k + 1)`.
+A detailed English derivation is pending.
 -/
 theorem ev_sh_mem (Q : Poly Φ) {a : ℤ → IdF Φ.A} {r : ℤ} (h : Q.Crit a r) (h' : Q.Crit a (r - 1)) {T : C}
     {c : ℕ →₀ Φ.A.obj T} (hc : ev Q T c ∈ (a r).S (Q.P T)) : ev Q T (sh c) ∈ (a (r - 1)).S (Q.P T) :=
@@ -153,7 +151,7 @@ theorem ev_sh_mem (Q : Poly Φ) {a : ℤ → IdF Φ.A} {r : ℤ} (h : Q.Crit a r
     exact (h T c).1 hc (k + 1)
 
 /- English proof (translation)
-Rewrite `e`, the goal using `[Ideal.Quotient.eq]`. Rewrite `e` using `[← map_sub]`. Rewrite using `[← map_sub, ← map_sub]`. Conclude with `ev_sh_mem Q h h' e`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wd (Q : Poly Φ) {b : ℤ → IdF Φ.A} {r : ℤ} (h : Q.Crit b r) (h' : Q.Crit b (r - 1)) {T : C}
     {c c' : ℕ →₀ Φ.A.obj T}
@@ -171,13 +169,13 @@ variable (Q : Poly Φ) {a b : ℤ → IdF Φ.A} {r : ℤ}
 def rep (a b : IdF Φ.A) {T : C} (x : sqM a b (Q.P T)) : ℕ →₀ Φ.A.obj T := (exists_rep Q a b x).choose
 
 /- English proof (translation)
-The claim follows from `(exists_rep Q a b x).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem (a b : IdF Φ.A) {T : C} (x : sqM a b (Q.P T)) : ev Q T (rep Q a b x) ∈ a.S (Q.P T) :=
   (exists_rep Q a b x).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_rep Q a b x).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem rep_eq (a b : IdF Φ.A) {T : C} (x : sqM a b (Q.P T)) :
     x.1 = Ideal.Quotient.mk _ (ev Q T (rep Q a b x)) :=
@@ -207,7 +205,7 @@ def dX (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r) (h₄ :
     exact this)
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `wd Q h₃ h₄ ((rep_eq Q _ _ x).symm.trans hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dX_eq (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r) (h₄ : Q.Crit b (r - 1)) {T : C}
     (x : sqM (a r) (b r) (Q.P T)) (z : sqM (a (r - 1)) (b (r - 1)) (Q.P T)) (c : ℕ →₀ Φ.A.obj T)
@@ -218,15 +216,15 @@ theorem dX_eq (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r) 
   exact wd Q h₃ h₄ ((rep_eq Q _ _ x).symm.trans hx)
 
 /- English proof (translation)
-Rewrite using `[ev_single, Φ.dp_zero (Q.X_mem T), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_single_zero {T : C} (w : Φ.A.obj T) : ev Q T (Finsupp.single 0 w) = (Φ.A.map (Q.j T)).hom w := by
   rw [ev_single, Φ.dp_zero (Q.X_mem T), mul_one]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (sqMap a' (b r) (Q.j T))).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨x, hxm⟩` from `x`. Take `⟨w, hw, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hxm`. Establish `h0` using `sqMap_val a' (b r) (Q.j T) ⟨_, hxm⟩ w rfl`. Rewrite `h0` using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Φ.A.map (Q.j T)).hom w ∈ (b r).S (Q.P T)` using `Ideal.Quotient.eq_zero_iff_mem.1 h0.symm`. Rewrite `h1` using `[← ev_single_zero]`. Establish `h2` using `(h₃ T (Finsupp.single 0 w)).1 h1 0`. Simplify using `only [Finsupp.single_eq_same, Nat.cast_zero, sub_zero] at h2`. Conclude with `Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sqMap_j_inj (h₃ : Q.Crit b r) (a' : IdF Φ.A) (T : C) :
     Function.Injective (sqMap a' (b r) (Q.j T)) := by
@@ -242,15 +240,13 @@ theorem sqMap_j_inj (h₃ : Q.Crit b r) (a' : IdF Φ.A) (T : C) :
   exact Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 h2)
 
 /- English proof (translation)
-Introduce `z`. Take `⟨c', hm, hz⟩` from `exists_rep Q _ _ z`. Establish `inj : Function.Injective (· + 1 : ℕ → ℕ)` using `add_left_injective 1`. Set `c : ℕ →₀ Φ.A.obj T` to `Finsupp.mapDomain (· + 1) c'`. Establish `hs : sh c = c'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `k`. Conclude with `Finsupp.mapDomain_apply inj c' k`. Establish `hc : ev Q T c ∈ (a r).S (Q.P T)`. Use `(h₁ T c).2 fun k => ?_` and prove the remaining obligations. Consider the cases of `k with`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero`. Establish `: c 0 = 0` using `Finsupp.mapDomain_notin_range _ _ (by simp)`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Consider the case `succ k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : r - ((k + 1 : ℕ) : ℤ) = r - 1 - (k : ℤ)` using `by push_cast; ring`. Rewrite using `[e]`. Establish `: c (k + 1) = c' k` using `Finsupp.mapDomain_apply inj c' k`. Rewrite using `[this]`. Conclude with `(h₂ T c').1 hm k`.
-
-Conclude with `⟨⟨_, Ideal.mem_map_of_mem _ hc⟩, dX_eq Q h₁ h₂ h₃ h₄ _ z c rfl (by rw [hs, hz])⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dX_surj (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r) (h₄ : Q.Crit b (r - 1)) (T : C) :
     Function.Surjective (dX Q h₁ h₂ h₃ h₄ T) := by
@@ -277,17 +273,17 @@ theorem dX_surj (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r
   exact ⟨⟨_, Ideal.mem_map_of_mem _ hc⟩, dX_eq Q h₁ h₂ h₃ h₄ _ z c rfl (by rw [hs, hz])⟩
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨c, hm, hc⟩` from `exists_rep Q _ _ y`. Establish `hy0 : ev Q T (sh c) ∈ (b (r - 1)).S (Q.P T)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `dX_eq Q h₁ h₂ h₃ h₄ y ⟨_, Ideal.mem_map_of_mem _ (ev_sh_mem Q h₁ h₂ hm)⟩ c hc rfl`. Rewrite `e` using `[hy]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (congrArg Subtype.val e).symm`. Establish `h0 : c 0 ∈ (a r).S T` using `by simpa using (h₁ T c).1 hm 0`. Establish `hd : ev Q T (c - Finsupp.single 0 (c 0)) ∈ (b r).S (Q.P T)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h₃ T _).2 fun k => ?_` and prove the remaining obligations. Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ k`. Establish `e : r - ((k + 1 : ℕ) : ℤ) = r - 1 - (k : ℤ)` using `by push_cast; ring`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify `(h₄ T (sh c)).1 hy0 k` using `[Finsupp.single_apply]`. Use `⟨⟨_, Ideal.mem_map_of_mem _ h0⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[sqMap_val (a r) (b r) (Q.j T) _ (c 0) rfl, hc, ← ev_single_zero]`. Use `(Ideal.Quotient.eq.2 ?_)` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub]`. Use `Ideal.neg_mem_iff _ |>.2 hd` as an intermediate fact. Rewrite `this` using `[← map_neg, neg_sub]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨x, hxm⟩, rfl⟩`. Take `⟨w, hw, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hxm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `dX_eq Q h₁ h₂ h₃ h₄ _ 0 (Finsupp.single 0 w) ?_ ?_` and prove the remaining obligations. Rewrite using `[sqMap_val (a r) (b r) (Q.j T) ⟨_, hxm⟩ w rfl, ev_single_zero]`. Rewrite using `[sh_single_zero, map_zero, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dX_exact (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r) (h₄ : Q.Crit b (r - 1)) (T : C) :
     Function.Exact (sqMap (a r) (b r) (Q.j T)) (dX Q h₁ h₂ h₃ h₄ T) := by
@@ -322,9 +318,9 @@ theorem dX_exact (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b 
       rfl
 
 /- English proof (translation)
-Take `⟨c, hm, hc⟩` from `exists_rep Q _ _ z`. Establish `key : ∀ c : ℕ →₀ Φ.A.obj X.T, (Φ.A.map (Cut.Pmap Q φ)).hom (ev Q X.T c) = ev Q Y.T (tr φ (E.τ 0 (X.s ≫ φ) Y.s) c)` using `fun c => ev_tr Q φ (Cut.Pmap Q φ) _ (Cut.Pmap_j Q φ) (E.mem 0 _ _) (Cut.Pmap_X Q φ) c`. Use `dX_eq Q h₁ h₂ h₃ h₄ _ _ (tr φ (E.τ 0 (X.s ≫ φ) Y.s) c) ?_ ?_` and prove the remaining obligations. Rewrite using `[sqMap_val _ _ _ z _ hc, key]`. Establish `e : dX Q h₁ h₂ h₃ h₄ X.T z = ⟨_, Ideal.mem_map_of_mem _ (ev_sh_mem Q h₁ h₂ hm)⟩` using `dX_eq Q h₁ h₂ h₃ h₄ z _ c hc rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, sqMap_val _ _ _ _ (ev Q X.T (sh c)) rfl, key, sh_tr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dX_nat {d : ℕ} {E : Frame Φ (d + 1)} (h₁ : Q.Crit a r) (h₂ : Q.Crit a (r - 1)) (h₃ : Q.Crit b r)
     (h₄ : Q.Crit b (r - 1)) {X Y : Pt E} (φ : X.T ⟶ Y.T) (z : sqM (a r) (b r) (Q.P X.T)) :
@@ -343,9 +339,9 @@ theorem dX_nat {d : ℕ} {E : Frame Φ (d + 1)} (h₁ : Q.Crit a r) (h₂ : Q.Cr
 end
 
 /- English proof (translation)
-Introduce `R _ C _ Φ Q d E a b r hle h₁ h₂ h₃ h₄`. Use `⟨{ app := fun X => ModuleCat.ofHom (dX Q h₁ h₂ h₃ h₄ X.T) naturality := fun X Y φ => ?_ }, fun X => ?_, fun X => ?_, fun X => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Conclude with `dX_nat Q h₁ h₂ h₃ h₄ φ z`. Conclude with `sqMap_j_inj Q h₃ _ X.T`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `dX_exact Q h₁ h₂ h₃ h₄ X.T`. Conclude with `dX_surj Q h₁ h₂ h₃ h₄ X.T`. Introduce `X c c' z z' hk hz hz'`. Establish `e : sh c = c'` using `Finsupp.ext fun k => (hk k).symm`. Conclude with `dX_eq Q h₁ h₂ h₃ h₄ z z' c hz (by rw [e]; exact hz')`.
+A detailed English derivation is pending.
 -/
 theorem ses : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ) {d : ℕ} (E : Frame Φ (d + 1))
     (a b : ℤ → IdF Φ.A) (r : ℤ), (∀ r' T, (b r').S T ≤ (a r').S T) → Q.Crit a r → Q.Crit a (r - 1) → Q.Crit b r → Q.Crit b (r - 1) →

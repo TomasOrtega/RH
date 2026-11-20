@@ -305,7 +305,7 @@ def MtLow (i : N.Loc) (Z' : Finset (N.X i)) :
   MtIn N i ⊓ (VS N i (Z' : Set (N.X i))).restrictScalars (N.O i)
 
 /- English proof (translation)
-Introduce `u v h`. Use function extensionality and compare the values at `j`. Conclude with `IsFractionRing.injective (N.O i) (KK N i) (congrFun h j)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stdO_inj (i : N.Loc) (k : ℕ) :
     Function.Injective (LinearMap.compLeft (Algebra.linearMap (N.O i) (KK N i)) (Fin k)) := by
@@ -622,7 +622,7 @@ def stdG (O LL : Type) [CommRing O] [Field LL] [Algebra O LL] (k : ℕ) : Submod
 variable {O LL : Type} [CommRing O] [Field LL] [Algebra O LL]
 
 /- English proof (translation)
-Introduce `u v h`. Use function extensionality and compare the values at `j`. Conclude with `hinj (congrFun h j)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stdG_inj (hinj : Function.Injective (algebraMap O LL)) (k : ℕ) :
     Function.Injective (LinearMap.compLeft (Algebra.linearMap O LL) (Fin k)) := by
@@ -684,14 +684,14 @@ abbrev LLw : Type := ↥Bw.LL.1
 abbrev Ow : Type := ↥(OL Bw.LL)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Bw.eO.injective (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toLL_inj : Function.Injective Bw.toLL := fun _ _ h => Bw.eO.injective (Subtype.ext h)
 
 def ι : ↥(GK Bw.Kw) →* ↥Gw := Bw.e.symm.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `Bw.e_symm_cont`.
+A detailed English derivation is pending.
 -/
 theorem ι_cont : Continuous (ι Bw) := Bw.e_symm_cont
 
@@ -712,7 +712,7 @@ variable [IsDomain O]
 def toLLK : FractionRing O →+* LLw Bw := IsFractionRing.lift (toLL_inj Bw)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap _ _`.
+A detailed English derivation is pending.
 -/
 theorem toLLK_alg (c : O) :
     toLLK Bw (algebraMap O (FractionRing O) c) = algebraMap (Ow Bw) (LLw Bw) (Bw.eO c) :=
@@ -756,7 +756,7 @@ def bkG (P : LocPrime l) {k : ℕ} (rho : Representation O ↥Gw (KOG O k))
   ((HfD (P.PD Bw.Kw) (lat Bw M)).comap (Phi Bw rho)).map (Submodule.mkQ _)
 
 /- English proof (translation)
-The claim follows from `Bw.e.symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem ι_bijective : Function.Bijective (ι Bw) := Bw.e.symm.bijective
 
@@ -833,14 +833,14 @@ def PD : PeriodData (G nbr i w hw) ℚ_[N.l i] (K0 nbr i w hw) (Kw nbr i w hw) (
   (L (N.l i)).PD (nbr i w hw).Kw
 
 /- English proof (translation)
-The claim follows from `(L (N.l i)).PD_p _`.
+A detailed English derivation is pending.
 -/
 theorem PD_p : (PD L nbr i w hw).p = N.l i := (L (N.l i)).PD_p _
 
 def iota : G nbr i w hw →* Gw N w := ι (nbr i w hw)
 
 /- English proof (translation)
-The claim follows from `ι_cont (nbr i w hw)`.
+A detailed English derivation is pending.
 -/
 theorem iota_cont : Continuous (iota nbr i w hw) := ι_cont (nbr i w hw)
 

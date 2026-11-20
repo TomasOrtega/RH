@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.EvZeroStd
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply]`. Establish `h2 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[Matrix.det_mul, Matrix.det_mul, h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_of_hasSig' {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -40,9 +40,9 @@ theorem det_ne_of_hasSig' {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Ha
   rw [Matrix.det_mul, Matrix.det_mul, h0]; simp
 
 /- English proof (translation)
-Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Use `det_ne_of_hasSig' (h w)` as an intermediate fact. Introduce `h0`. Apply `this` to reduce the goal to its premises. Establish `e` using `RingHom.map_det (B.emb w).1 J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.det_smul, ← e, h0, map_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_of_sig_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n r s : ℕ}
     (B : Base F E) (J : Matrix (Fin n) (Fin n) E) (c : ℂ) (h : ∀ w, HasSig (c • J.map (B.emb w).1) r s) : J.det ≠ 0 := by
@@ -54,7 +54,7 @@ theorem det_ne_of_sig_smul {F E : Type} [Field F] [NumberField F] [Field E] [Num
   rw [Matrix.det_smul, ← e, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation (Fv F v)), ← Valuation.Compatible.vle_iff_le, HeightOneSpectrum.mem_adicCompletionIntegers, ← map_one (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_integer_iff' {F : Type} [Field F] [NumberField F] (v : Pl F) (a : Fv F v) :
     a ∈ 𝒪[Fv F v] ↔ a ∈ v.adicCompletionIntegers F := by
@@ -64,70 +64,70 @@ theorem mem_integer_iff' {F : Type} [Field F] [NumberField F] (v : Pl F) (a : Fv
   exact Iff.rfl
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.FlipMatch.pairM, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_neg_right {k A C : Type} [CommRing k] [Fintype A] [Fintype C] (X Y : Matrix A C k) :
     GlobalTheory.FlipMatch.pairM X (-Y) = -GlobalTheory.FlipMatch.pairM X Y := by
   simp [GlobalTheory.FlipMatch.pairM, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.FlipMatch.pairM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_zero_right {k A C : Type} [CommRing k] [Fintype A] [Fintype C] (X : Matrix A C k) :
     GlobalTheory.FlipMatch.pairM X 0 = 0 := by
   simp [GlobalTheory.FlipMatch.pairM]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.FlipMatch.pairM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_zero_left {k A C : Type} [CommRing k] [Fintype A] [Fintype C] (X : Matrix A C k) :
     GlobalTheory.FlipMatch.pairM 0 X = 0 := by
   simp [GlobalTheory.FlipMatch.pairM]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ e' ei' ev' hEv hLP v hv ι' ι₁' hι hι₁ hvac hvac₁ φ' hφ' hφ'eq φ₁' hφ₁' hφ₁'eq`. Establish `hcm` using `hT.base.cm`. Establish `hstd` using `hT.base.std`. Establish `hMg` using `hT.geo.hM'`. Establish `hM₁g` using `hT₁.geo.hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dV' : G.V'.J.det ≠ 0` using `det_ne_of_sig_smul B _ 1 (fun w => by rw [one_smul]; exact hT.geo.hV'.sig w)`. Establish `dW : G.W.J.det ≠ 0` using `det_ne_of_sig_smul B _ Complex.I hT.geo.hW.sig`. Establish `dV₁' : G₁.V'.J.det ≠ 0` using `det_ne_of_sig_smul B _ 1 (fun w => by rw [one_smul]; exact hT₁.geo.hV'.sig w)`. Establish `dW₁ : G₁.W.J.det ≠ 0` using `det_ne_of_sig_smul B _ Complex.I hT₁.geo.hW.sig`. Take `⟨hinv, hheis⟩` from `GlobalTheory.T.embedding_evaluation_compatible B G.M' G₁.M' 1 H'.ι (iso0 a' H') e' ei' ev' hMg hM₁g hEv hLP v.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hco, hy⟩` from `GlobalTheory.T.config_A_triple_theta_lift B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ v`. Establish `act : ∀ {n d : ℕ} {Y : Spc F E n} {Z : Spc F E d} (M : Model σ Y Z) (u : Matrix (Fin n) (Fin d) (AE F E)), At (evFin F v.1) u → ∀ φ ∈ SB (Fin n × Fin d → Fv F v.1), ∃ φ₁ ∈ SB (Fin n × Fin d → Fv F v.1), Acts (evFin F v.1) (M.co.rho B.ψ u) φ φ₁`. Introduce `n d Y Z M u hu φ hφ`. Establish `h` using `(locOp_rho M.co hstd.1 v.1 u hφ).1`. Rewrite `h` using `[partFin_of_at hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, locOp_mem _ _ _, h⟩`. Establish `hbij` using `Model.IsLin.bij hι`. Establish `hbij₁` using `Model.IsLin.bij hι₁`. Establish `hlinv : Set.LeftInvOn (Function.invFunOn ι' (SB (Fin a' × Fin (b + 2 + a') → Fv F v.1) : Set _)) ι' (SB (Fin a' × Fin (b + 2 + a') → Fv F v.1) : Set _)` using `hbij.injOn.leftInvOn_invFunOn`. Use `set S : (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1) → ℂ) → Matrix (Fin a') (Fin (b + a')) (Fv F v.1) → ℂ := fun f => ι₁' (ev' v.1 (Function.invFunOn ι' (SB (Fin a' × Fin (b + 2 + a') → Fv F v.1) : Set _) f)) with hSdef`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ φ ∈ SB (Fin a' × Fin (b + 2 + a') → Fv F v.1), S (ι' φ) = ι₁' (ev' v.1 φ)` using `fun φ hφ => by`. Rewrite using `[hSdef]`. Simplify using `only`. Rewrite using `[hlinv hφ]`. Establish `hevSB : ∀ φ ∈ SB (Fin a' × Fin (b + 2 + a') → Fv F v.1), ev' v.1 φ ∈ SB (Fin a' × Fin (b + a') → Fv F v.1)` using `fun φ hφ => (hLP.2.1 v.1).2 ▸ Submodule.mem_map_of_mem hφ`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpsi0 : ∀ x : Fv F v.1, x = 0 → psiLoc B.ψ v.1 x = 1` using `fun x hx => by`. Rewrite using `[hx, ← GlobalTheory.LatVac.psiAt_apply, AddChar.map_zero_eq_one]`. Establish `hlin : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1)), ∀ g ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1)), ∀ z : ℂ, S (z • f + g) = z • S f + S g`. Introduce `f hf g hg z`. Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ, rfl⟩` from `hbij.surjOn hg`. Establish `hm : z • φ + χ ∈ SB (Fin a' × Fin (b + 2 + a') → Fv F v.1)` using `add_mem (Submodule.smul_mem _ z hφ) hχ`. Rewrite using `[← map_smul, ← map_add, hS _ hm, hS _ hφ, hS _ hχ, map_add, map_smul, map_add, map_smul]`. Establish `hT3 : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1)), ∀ r : Fin a' → Fv F v.1, S (fun Z => f (Z + Matrix.vecMulVec r (Pi.single ⟨b + 1, by omega⟩ 1))) = S f`. Introduce `f hf r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hf`. Take `⟨y, hyat, hyX, hyY⟩` from `hy 0 r`. Take `⟨φ₁, hφ₁, hact⟩` from `act G.M' _ hyat φ hφ`. Establish `h62` using `(GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G.V' G.W hT.geo.hV'.herm hT.geo.hW.skew dV' dW G.M' B.ψ hstd (B.τ v) (G.V'.bas v) (G.W.bas v) _ hyat (by rw [hyX, Matrix.zero_vecMulVec, pairM_zero_left]) φ hφ φ₁ hφ₁ hact).2 ι' hι`. Establish `e1 : (fun Z => ι' φ (Z + Matrix.vecMulVec r (Pi.single ⟨b + 1, by omega⟩ 1))) = ι' φ₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Z`. Rewrite using `[h62 Z, hyX, hyY, Matrix.zero_vecMulVec, pairM_zero_right, hpsi0 _ neg_zero, one_mul]`. Rewrite using `[e1, hS _ hφ₁, hS _ hφ, hinv _ ⟨y, rfl⟩ φ hφ φ₁ hφ₁ hact]`. Establish `hT4 : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1)), ∀ s : Fin a' → Fv F v.1, S (fun Z => GlobalTheory.LatVac.psiAt B.ψ v.1 (GlobalTheory.FlipMatch.pairM Z (Matrix.vecMulVec s (Pi.single 0 1))) * f Z) = S f`. Introduce `f hf s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hf`. Take `⟨y, hyat, hyX, hyY⟩` from `hy (-s) 0`. Take `⟨φ₁, hφ₁, hact⟩` from `act G.M' _ hyat φ hφ`. Establish `h62` using `(GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G.V' G.W hT.geo.hV'.herm hT.geo.hW.skew dV' dW G.M' B.ψ hstd (B.τ v) (G.V'.bas v) (G.W.bas v) _ hyat (by rw [hyY, Matrix.zero_vecMulVec, pairM_zero_right]) φ hφ φ₁ hφ₁ hact).2 ι' hι`. Establish `e1 : (fun Z => GlobalTheory.LatVac.psiAt B.ψ v.1 (GlobalTheory.FlipMatch.pairM Z (Matrix.vecMulVec s (Pi.single 0 1))) * ι' φ Z) = ι' φ₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Z`. Rewrite using `[h62 Z, hyX, hyY, Matrix.zero_vecMulVec, add_zero, Matrix.neg_vecMulVec, pairM_neg_right, neg_neg, GlobalTheory.LatVac.psiAt_apply]`. Rewrite using `[e1, hS _ hφ₁, hS _ hφ, hinv _ ⟨y, rfl⟩ φ hφ φ₁ hφ₁ hact]`. Establish `hAt : ∀ z : Matrix (Fin a') (Fin (b + a')) (AE F E), At (evFin F v.1) z → At (evFin F v.1) (incM F (1 : Matrix (Fin a') (Fin a') E) * z * (incM F H'.ι)ᵀ)`. Introduce `z hz a ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz a ha, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hT1 : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1)), ∀ Y : Matrix (Fin a') (Fin (b + a')) (Fv F v.1), S (fun Z => f (Z + Y * (insP (Fv F v.1) b a')ᵀ)) = fun Z => S f (Z + Y)`. Introduce `f hf Y`. Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hf`. Take `⟨z, hzat, hzX, hzY⟩` from `GlobalTheory.T.local_flip_match_surjective hcm G₁.V' G₁.W dV₁' dW₁ (B.τ v) (G₁.V'.bas v) (G₁.W.bas v) 0 Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `hAt z hzat`. Take `⟨φ₁, hφ₁, hact⟩` from `act G.M' _ hu φ hφ`. Take `⟨χ₁, hχ₁, hactχ⟩` from `act G₁.M' z hzat (ev' v.1 φ) (hevSB φ hφ)`. Establish `hX0` using `(hco z).1`. Establish `hY0` using `(hco z).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hX0` using `[hzX, Matrix.zero_mul]`. Rewrite `hY0` using `[hzY]`. Establish `h62` using `(GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G.V' G.W hT.geo.hV'.herm hT.geo.hW.skew dV' dW G.M' B.ψ hstd (B.τ v) (G.V'.bas v) (G.W.bas v) _ hu (by rw [hX0, pairM_zero_left]) φ hφ φ₁ hφ₁ hact).2 ι' hι`. Establish `h62'` using `(GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G₁.V' G₁.W hT₁.geo.hV'.herm hT₁.geo.hW.skew dV₁' dW₁ G₁.M' B.ψ hstd (B.τ v) (G₁.V'.bas v) (G₁.W.bas v) z hzat (by rw [hzX, pairM_zero_left]) (ev' v.1 φ) (hevSB φ hφ) χ₁ hχ₁ hactχ).2 ι₁' hι₁`. Establish `e1 : (fun Z => ι' φ (Z + Y * (insP (Fv F v.1) b a')ᵀ)) = ι' φ₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Z`. Rewrite using `[h62 Z, hX0, hY0, pairM_zero_right, hpsi0 _ neg_zero, one_mul]`. Rewrite using `[e1, hS _ hφ₁, hS _ hφ, hheis z φ hφ φ₁ hφ₁ hact χ₁ hχ₁ hactχ]`. Use function extensionality and compare the values at `Z`. Rewrite using `[h62' Z, hzX, hzY, pairM_zero_right, hpsi0 _ neg_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT2 : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) (Fv F v.1)), ∀ Y : Matrix (Fin a') (Fin (b + a')) (Fv F v.1), S (fun Z => GlobalTheory.LatVac.psiAt B.ψ v.1 (GlobalTheory.FlipMatch.pairM Z (Y * (insP (Fv F v.1) b a')ᵀ)) * f Z) = fun Z => GlobalTheory.LatVac.psiAt B.ψ v.1 (Globa …`. Introduce `f hf Y`. Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hf`. Take `⟨z, hzat, hzX, hzY⟩` from `GlobalTheory.T.local_flip_match_surjective hcm G₁.V' G₁.W dV₁' dW₁ (B.τ v) (G₁.V'.bas v) (G₁.W.bas v) (-Y) 0`. Establish `hu` using `hAt z hzat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₁, hφ₁, hact⟩` from `act G.M' _ hu φ hφ`. Take `⟨χ₁, hχ₁, hactχ⟩` from `act G₁.M' z hzat (ev' v.1 φ) (hevSB φ hφ)`. Establish `hX0` using `(hco z).1`. Establish `hY0` using `(hco z).2`. Rewrite `hX0` using `[hzX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hY0` using `[hzY, Matrix.zero_mul]`. Establish `h62` using `(GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G.V' G.W hT.geo.hV'.herm hT.geo.hW.skew dV' dW G.M' B.ψ hstd (B.τ v) (G.V'.bas v) (G.W.bas v) _ hu (by rw [hY0, pairM_zero_right]) φ hφ φ₁ hφ₁ hact).2 ι' hι`. Establish `h62'` using `(GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G₁.V' G₁.W hT₁.geo.hV'.herm hT₁.geo.hW.skew dV₁' dW₁ G₁.M' B.ψ hstd (B.τ v) (G₁.V'.bas v) (G₁.W.bas v) z hzat (by rw [hzY, pairM_zero_right]) (ev' v.1 φ) (hevSB φ hφ) χ₁ hχ₁ hactχ).2 ι₁' hι₁`. Establish `e1 : (fun Z => GlobalTheory.LatVac.psiAt B.ψ v.1 (GlobalTheory.FlipMatch.pairM Z (Y * (insP (Fv F v.1) b a')ᵀ)) * ι' φ Z) = ι' φ₁`. Use function extensionality and compare the values at `Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h62 Z, hX0, hY0, add_zero, Matrix.neg_mul, pairM_neg_right, neg_neg, GlobalTheory.LatVac.psiAt_apply]`. Rewrite using `[e1, hS _ hφ₁, hS _ hφ, hheis z φ hφ φ₁ hφ₁ hact χ₁ hχ₁ hactχ]`. Use function extensionality and compare the values at `Z`. Rewrite using `[h62' Z, hzX, hzY, add_zero, pairM_neg_right, neg_neg, GlobalTheory.LatVac.psiAt_apply]`. Establish `hset : ∀ (p q : ℕ), {Z : Matrix (Fin p) (Fin q) (Fv F v.1) | ∀ i j, Z i j ∈ 𝒪[Fv F v.1]} = {Y | ∀ i j, Y i j ∈ v.1.adicCompletionIntegers F}` using `fun p q => by`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `Z`. Simplify using `only [Set.mem_setOf_eq, mem_integer_iff']`. Establish `hvacS : S (Set.indicator {Z | ∀ i j, Z i j ∈ 𝒪[Fv F v.1]} 1) = Set.indicator {Z | ∀ i j, Z i j ∈ 𝒪[Fv F v.1]} 1`. Rewrite using `[hset, hset, ← hvac, ← hvac₁, hS _ (hMg.vac v.1).1, (hLP.2.1 v.1).1]`. Establish `hψ : ∀ x : Fv F v.1, (∀ y ∈ 𝒪[Fv F v.1], GlobalTheory.LatVac.psiAt B.ψ v.1 (x * y) = 1) ↔ x ∈ 𝒪[Fv F v.1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify `hT.base.psiP v.1 v.2 x` using `only [mem_integer_iff', GlobalTheory.LatVac.psiAt_apply]`. Establish `hϖ : GlobalTheory.SplitFlip.IsUnif (unifAt v.1)` using `GlobalTheory.SplitFlip.exists_isUnif.choose_spec`. Establish `key` using `GlobalTheory.T.split_local_schwartz_intertwine (Fv F v.1) (GlobalTheory.LatVac.psiAt B.ψ v.1) hψ (chrW X.ν (B.τ v)) (unifAt v.1) hϖ (condExp (chrW X.ν (B.τ v))) b a' S hlin hT3 hT4 hT1 hT2 hvacS (hφ'eq ▸ hbij.mapsTo hφ')`. Establish `hq : Nat.card 𝓀[Fv F v.1] = Ideal.absNorm v.1.asIdeal` using `GlobalTheory.LocalResidue.card_residue_of_ringEquiv F v.1 (Fv F v.1) (RingEquiv.refl _) fun a => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_integer_iff', HeightOneSpectrum.mem_adicCompletionIntegers]`. Both sides reduce to the same expression. Establish `hsm : ((Ideal.absNorm v.1.asIdeal : ℂ) ^ (-(((condExp (chrW X.ν (B.τ v))) * a' : ℕ) : ℤ))) • φ₁' ∈ SB (Fin a' × Fin (b + a') → Fv F v.1)` using `Submodule.smul_mem _ _ hφ₁'`. Use `hbij₁.injOn (hevSB φ' hφ') hsm ?_` and prove the remaining obligations. Rewrite using `[← hS _ hφ', hφ'eq, key, hq, map_smul, hφ₁'eq]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evZero_stdB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

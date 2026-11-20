@@ -24,7 +24,7 @@ def bc (f : M →ₗ[R] N →ₗ[R] P) : A ⊗[R] M →ₗ[A] A ⊗[R] N →ₗ[
       (TensorProduct.AlgebraTensorModule.distribBaseChange R A M N).symm.toLinearMap)
 
 /- English proof (translation)
-Simplify using `[bc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bc_tmul (f : M →ₗ[R] N →ₗ[R] P) (m : M) (n : N) :
     bc A f ((1 : A) ⊗ₜ[R] m) ((1 : A) ⊗ₜ[R] n) = (1 : A) ⊗ₜ[R] f m n := by
@@ -56,7 +56,7 @@ end Lim
 section One
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `CrystallineSemistableComparison.P.mapH_cls φ n a ha hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mapH_cls' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w₁} R} {L : Cx.{w₂} R'}
     (φ : Cx.Hom K L σ) (n : ℕ) (a : K.X n) (ha : K.d n a = 0) (b : L.X n) (hb : L.d n b = 0) (e : φ.f n a = b) :
@@ -65,7 +65,7 @@ theorem mapH_cls' {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K 
   exact CrystallineSemistableComparison.P.mapH_cls φ n a ha hb
 
 /- English proof (translation)
-The claim follows from `mapH_cls' m.hom 0 _ _ _ _ (funext fun _ => h1 _)`.
+A detailed English derivation is pending.
 -/
 theorem pull_one {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C : Type u₁} [Category.{u₂} C]
     {C' : Type u₃} [Category.{w₃} C'] {A : C ⥤ CommAlgCat.{w₁} R} {A' : C' ⥤ CommAlgCat.{w₂} R'}

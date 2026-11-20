@@ -11,27 +11,27 @@ namespace GlobalTheory.CompanionTheory.Wedge
 variable {ι κ κ' : Type} [Fintype ι] [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ']
 
 /- English proof (translation)
-Conclude with `(Matrix.posSemidef_conjTranspose_mul_self A).det_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem gram_det_nonneg (A : Matrix ι κ ℂ) : 0 ≤ (Aᴴ * A).det := by
   exact (Matrix.posSemidef_conjTranspose_mul_self A).det_nonneg
 
 /- English proof (translation)
-Conclude with `(Complex.nonneg_iff.1 (gram_det_nonneg A)).2.symm`.
+A detailed English derivation is pending.
 -/
 theorem gram_det_im (A : Matrix ι κ ℂ) : (Aᴴ * A).det.im = 0 := by
   exact (Complex.nonneg_iff.1 (gram_det_nonneg A)).2.symm
 
 /- English proof (translation)
-Conclude with `(Complex.nonneg_iff.1 (gram_det_nonneg A)).1`.
+A detailed English derivation is pending.
 -/
 theorem nI_nonneg (A : Matrix ι κ ℂ) : 0 ≤ nI A := by
   exact (Complex.nonneg_iff.1 (gram_det_nonneg A)).1
 
 /- English proof (translation)
-Establish `him` using `gram_det_im A`. Use `show (Aᴴ * A).det.re ≠ 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, Complex.zero_re]`. Introduce `h h0`. Apply `h` to reduce the goal to its premises. Conclude with `Complex.ext (by rw [h0, Complex.zero_re]) (by rw [him, Complex.zero_im])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem nI_ne_zero_iff_det (A : Matrix ι κ ℂ) : nI A ≠ 0 ↔ (Aᴴ * A).det ≠ 0 := by
   have him := gram_det_im A
@@ -45,7 +45,7 @@ theorem nI_ne_zero_iff_det (A : Matrix ι κ ℂ) : nI A ≠ 0 ↔ (Aᴴ * A).de
     exact Complex.ext (by rw [h0, Complex.zero_re]) (by rw [him, Complex.zero_im])
 
 /- English proof (translation)
-Rewrite using `[← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit, ← Matrix.coe_mulVecLin, ← LinearMap.ker_eq_bot, Matrix.ker_mulVecLin_conjTranspose_mul_self, LinearMap.ker_eq_bot, Matrix.coe_mulVecLin]`. Conclude with `Matrix.mulVec_injective_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero_iff (A : Matrix ι κ ℂ) :
     (Aᴴ * A).det ≠ 0 ↔ LinearIndependent ℂ Aᵀ := by
@@ -55,7 +55,7 @@ theorem gram_det_ne_zero_iff (A : Matrix ι κ ℂ) :
   exact Matrix.mulVec_injective_iff
 
 /- English proof (translation)
-Use `show ((A.submatrix id e)ᴴ * A.submatrix id e).det.re = (Aᴴ * A).det.re`. Rewrite using `[Matrix.conjTranspose_submatrix, ← Matrix.submatrix_mul Aᴴ A (⇑e) id (⇑e) Function.bijective_id, Matrix.det_submatrix_equiv_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nI_submatrix (e : κ' ≃ κ) (A : Matrix ι κ ℂ) : nI (A.submatrix id e) = nI A := by
   show ((A.submatrix id e)ᴴ * A.submatrix id e).det.re = (Aᴴ * A).det.re
@@ -63,9 +63,7 @@ theorem nI_submatrix (e : κ' ≃ κ) (A : Matrix ι κ ℂ) : nI (A.submatrix i
     Matrix.det_submatrix_equiv_self]
 
 /- English proof (translation)
-Establish `h' : Dᴴ * B = 0`. Establish `h2` using `congrArg Matrix.conjTranspose h`. Rewrite `h2` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_zero]`. Conclude with `h2`. Use `show ((fromCols B D)ᴴ * fromCols B D).det.re = (Bᴴ * B).det.re * (Dᴴ * D).det.re`.
-
-Rewrite using `[Matrix.conjTranspose_fromCols_eq_fromRows_conjTranspose, Matrix.fromRows_mul_fromCols, h, h', Matrix.det_fromBlocks_zero₂₁, Complex.mul_re, gram_det_im B, gram_det_im D, mul_zero, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nI_fromCols_of_orth (B : Matrix ι κ ℂ) (D : Matrix ι κ' ℂ) (h : Bᴴ * D = 0) :
     nI (fromCols B D) = nI B * nI D := by
@@ -78,9 +76,9 @@ theorem nI_fromCols_of_orth (B : Matrix ι κ ℂ) (D : Matrix ι κ' ℂ) (h : 
     Matrix.det_fromBlocks_zero₂₁, Complex.mul_re, gram_det_im B, gram_det_im D, mul_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hu : IsUnit (Bᴴ * B).det` using `isUnit_iff_ne_zero.2 ((gram_det_ne_zero_iff B).2 hB)`. Establish `hG : (Bᴴ * B)ᴴ = Bᴴ * B`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Use `⟨(Bᴴ * B)⁻¹ * Bᴴ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, hG, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_proj (B : Matrix ι κ ℂ) (hB : LinearIndependent ℂ Bᵀ) :
     ∃ Y : Matrix κ ι ℂ, Y * B = 1 ∧ (B * Y)ᴴ = B * Y := by
@@ -93,15 +91,15 @@ theorem exists_proj (B : Matrix ι κ ℂ) (hB : LinearIndependent ℂ Bᵀ) :
       Matrix.conjTranspose_nonsing_inv, hG, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hPP : B * Y * (B * Y) = B * Y`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Y, hYB, Matrix.one_mul]`. Establish `hQB : (1 - B * Y) * B = 0`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hYB, Matrix.mul_one, sub_self]`. Establish `hQh : (1 - B * Y)ᴴ = 1 - B * Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hQ]`. Establish `hQQ : (1 - B * Y) * (1 - B * Y) = 1 - B * Y`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, hPP, sub_self, sub_zero]`. Establish `hPh : (B * Y)ᴴ * (B * Y) = B * Y`. Rewrite using `[hQ, hPP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, hQB⟩` and prove the remaining obligations. Establish `hcols : fromCols B C = (fromCols B ((1 - B * Y) * C) : Matrix ι (κ ⊕ κ') ℂ) * (fromBlocks (1 : Matrix κ κ ℂ) (Y * C) (0 : Matrix κ' κ ℂ) (1 : Matrix κ' κ' ℂ))`. Rewrite using `[Matrix.fromCols_mul_fromBlocks]`. Use `congr 1`. Rewrite using `[Matrix.mul_one, Matrix.mul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_one, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `horth : Bᴴ * ((1 - B * Y) * C) = 0`. Rewrite using `[← Matrix.mul_assoc, ← hQh, ← Matrix.conjTranspose_mul, hQB, Matrix.conjTranspose_zero, Matrix.zero_mul]`. Rewrite using `[hcols, (hM ι ι (κ ⊕ κ') (fromCols B ((1 - B * Y) * C))).2.1, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one, norm_one, one_pow, mul_one, nI_fromCols_of_orth B _ horth]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hX : ((1 - B * Y) * C)ᴴ * ((1 - B * Y) * C) = Cᴴ * ((1 - B * Y) * C)`. Rewrite using `[Matrix.conjTranspose_mul, hQh, Matrix.mul_assoc, ← Matrix.mul_assoc (1 - B * Y), hQQ]`. Establish `hYX : Cᴴ * C - ((1 - B * Y) * C)ᴴ * ((1 - B * Y) * C) = (B * Y * C)ᴴ * (B * Y * C)`. Rewrite using `[hX, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (B * Y)ᴴ, hPh, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, sub_sub_cancel]`. Conclude with `hD κ' (((1 - B * Y) * C)ᴴ * ((1 - B * Y) * C)) (Cᴴ * C) (Matrix.posSemidef_conjTranspose_mul_self _) (by rw [hYX]; exact Matrix.posSemidef_conjTranspose_mul_self _)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commGroup_mul_mul_eq_mul_inv_mul_mul_mul [DecidableEq ι] (hD : DetMono) (hM : MulI) (B : Matrix ι κ ℂ) (Y : Matrix κ ι ℂ)
     (hYB : Y * B = 1) (hQ : (B * Y)ᴴ = B * Y) (C : Matrix ι κ' ℂ) :
@@ -140,7 +138,7 @@ theorem commGroup_mul_mul_eq_mul_inv_mul_mul_mul [DecidableEq ι] (hD : DetMono)
       (by rw [hYX]; exact Matrix.posSemidef_conjTranspose_mul_self _)
 
 /- English proof (translation)
-Introduce `hD hM ι _ _`. Use `⟨fun κ _ _ A => nI_nonneg A, fun κ _ _ A => (nI_ne_zero_iff_det A).trans (gram_det_ne_zero_iff A), fun κ κ' _ _ _ _ e A => nI_submatrix e A, fun κ _ _ B hB => ?_⟩` and prove the remaining obligations. Take `⟨Y, hYB, hQ⟩` from `exists_proj B hB`. Conclude with `⟨Y, fun κ' _ _ C => commGroup_mul_mul_eq_mul_inv_mul_mul_mul hD hM B Y hYB hQ C⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wedgeI_of_detMono_mulI : DetMono → MulI → WedgeI := by
   intro hD hM ι _ _

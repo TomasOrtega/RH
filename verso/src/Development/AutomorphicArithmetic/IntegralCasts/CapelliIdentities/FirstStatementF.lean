@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `p`. Conclude with `⟨p.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.PadicComplexProdXSubCCoeffNorm.aux1 :
     ∀ (p : Nat.Primes), Fact (Nat.Prime (↑p : ℕ)) := by
@@ -11,15 +11,13 @@ theorem UpperTheory.Reformulated.B.PadicComplexProdXSubCCoeffNorm.aux1 :
 attribute [local instance] UpperTheory.Reformulated.B.PadicComplexProdXSubCCoeffNorm.aux1
 
 /- English proof (translation)
-Introduce `p s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `_ i`. Simplify using `only [Multiset.map_zero, Multiset.prod_zero, Polynomial.coeff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `cons a s ih`. Introduce `h i`. Establish `ha : ‖a‖ ≤ 1` using `h a (Multiset.mem_cons_self a s)`. Establish `hs` using `ih (fun r hr => h r (Multiset.mem_cons_of_mem hr))`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Multiset.map_cons, Multiset.prod_cons, sub_mul, Polynomial.coeff_sub, Polynomial.coeff_C_mul]`. Establish `h2 : ‖a * (Multiset.map (fun r => Polynomial.X - Polynomial.C r) s).prod.coeff i‖ ≤ 1`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) (hs i)`. Establish `h1 : ‖(Polynomial.X * (Multiset.map (fun r => Polynomial.X - Polynomial.C r) s).prod).coeff i‖ ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `i with`. Consider the case `zero => simp`. Consider the case `succ n => rw [Polynomial.coeff_X_mul]`. Conclude with `hs n`. Rewrite using `[sub_eq_add_neg]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 (by rwa [norm_neg]))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.PadicComplexProdXSubCCoeffNorm.main :
     ∀ {p : Nat.Primes} (s : Multiset ℂ_[(↑p : ℕ)]),

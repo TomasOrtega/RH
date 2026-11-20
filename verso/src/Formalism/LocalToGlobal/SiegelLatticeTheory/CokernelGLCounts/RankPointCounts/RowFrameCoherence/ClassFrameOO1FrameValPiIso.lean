@@ -19,7 +19,7 @@ namespace ClassFrameUnitaryProducts
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hm` using `(X.piU_rep u).2.1 s hs s⁻¹ (Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u hs)`. Rewrite `hm` using `[mul_inv_cancel, (X.piU_rep u).1]`. Use `show (X.piU u s * X.piU u s⁻¹) y = y`. Rewrite using `[← hm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piU_mul_inv_apply (u : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (y : X.Vpi u) :
     X.piU u s (X.piU u s⁻¹ y) = y := by
@@ -30,9 +30,9 @@ theorem piU_mul_inv_apply (u : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ X.Si
   rfl
 
 /- English proof (translation)
-Establish `h1 : O = (X.piU u h).comp (((X.piU u h⁻¹).comp (O.comp (X.piU u' h'))).comp (X.piU u' h'⁻¹))`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply, piU_mul_inv_apply X u' hh', piU_mul_inv_apply X u hh]`. Rewrite using `[h1, hE]`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_alg (u u' : D.what₂.Word) {h h' : X.B.I.Ginf} (hh : h ∈ X.SinfU u) (hh' : h' ∈ X.SinfU u')
     (O V : X.Vpi u' →L[ℂ] X.Vpi u) (c : ℂ)
@@ -46,7 +46,7 @@ theorem frame_alg (u u' : D.what₂.Word) {h h' : X.B.I.Ginf} (hh : h ∈ X.Sinf
   simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comp_smul_mid (u u' : D.what₂.Word) (h h' : X.B.I.Ginf) (O : X.Vpi u' →L[ℂ] X.Vpi u) (a : ℂ) :
     (X.piU u h⁻¹).comp ((a • O).comp (X.piU u' h')) = a • (X.piU u h⁻¹).comp (O.comp (X.piU u' h')) := by
@@ -68,11 +68,11 @@ def nrm2 (ε : Fin n → Bool) (f f' : Fin (r + 1) → Fin n → ℂ) (g gi : Ma
     Formalism.L2.SG.RealObj.wCoord ε wb' (gi *ᵥ Formalism.L2.SG.RealObj.xUn (Formalism.L2.SG.RealObj.Zhat ε f f' g) f)
 
 /- English proof (translation)
-Take `⟨hu, hu', h1, h2, h3⟩` from `hD`. Use `⟨hu, hu', ?_, ?_, fun y ha hb => ?_⟩` and prove the remaining obligations. Establish `e1 : nrm1 ε f f' g₁ wb = nrm1 ε f f' g₂ wb` using `hN1`. Unfold `nrm1 at e1`. Rewrite using `[← e1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `e2 : nrm2 ε f f' g₁ gi₁ wb' = nrm2 ε f f' g₂ gi₂ wb'` using `hN2`. Unfold `nrm2 at e2`. Rewrite using `[← e2]`. Conclude with `h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y₁, ha1, hb1, hw1, hw⟩` from `hU y ha hb`. Rewrite using `[← hw, ← hw1]`. Conclude with `h3 y₁ ha1 hb1`.
+A detailed English derivation is pending.
 -/
 theorem isDFrame_transfer (ε : Fin n → Bool) (f f' : Fin (r + 1) → Fin n → ℂ) (g₁ gi₁ g₂ gi₂ : Matrix (Fin n) (Fin n) ℂ)
     (wb wb' : Fin k → Fin n → ℂ) (i0 i0' : Fin k) (h h' : Matrix (Fin k) (Fin k) ℂ)
@@ -176,7 +176,7 @@ def ScalarAgreeC : Prop :=
               Formalism.L2.SG.RealObj.wCoord (X.B.I.ε v) (X.wfr u' v) (uMat ((s₂.1.pt.1 v)⁻¹) *ᵥ y₂)
 
 /- English proof (translation)
-Introduce `R ρ s₁ s₂ h₁ h₂ h h' hD`. Use `⟨hD.1, hD.2.1, fun v => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3⟩` from `hS R ρ s₁ s₂ h₁ h₂ v`. Conclude with `ClassFrameUnitaryProducts.isDFrame_transfer _ _ _ _ _ _ _ _ _ _ _ _ _ e1 e2 e3 (hD.2.2 v)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairDFrameC_of (hS : ScalarAgreeC X Y u u' κ) : PairDFrameC X Y u u' i0 i0' κ := by
   intro R ρ s₁ s₂ h₁ h₂ h h' hD
@@ -185,16 +185,16 @@ theorem pairDFrameC_of (hS : ScalarAgreeC X Y u u' κ) : PairDFrameC X Y u u' i0
   exact ClassFrameUnitaryProducts.isDFrame_transfer _ _ _ _ _ _ _ _ _ _ _ _ _ e1 e2 e3 (hD.2.2 v)
 
 /- English proof (translation)
-Introduce `v x _`. Simplify using `[uMat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem classFrameOO1_one_mem (w : D.what₂.Word) : (1 : X.B.I.Ginf) ∈ Formalism.L2.SG.RealObj.HsetU X w := by
   intro v x _
   simp [uMat]
 
 /- English proof (translation)
-Introduce `R ρ`. Distinguish the cases in `hex : ∃ s₀ : LiftT X Y u u' κ R ρ, s₀.1.relevant`. Take `⟨s₀, h₀⟩` from `hex`. Take `⟨h, h', hD, -⟩` from `hP R ρ s₀ h₀`. Conclude with `⟨h, hD.1, h', hD.2.1, fun s hs => hPair R ρ s₀ s h₀ hs h h' hD⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, classFrameOO1_one_mem X u, 1, classFrameOO1_one_mem X u', fun s hs => absurd ⟨s, hs⟩ hex⟩`.
+Supply the required witnesses or components.
 -/
 theorem commonDFrameExactC_of (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hPair : PairDFrameC X Y u u' i0 i0' κ) :
     CommonDFrameExactC X Y u u' i0 i0' κ := by
@@ -206,7 +206,7 @@ theorem commonDFrameExactC_of (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hPair :
   · exact ⟨1, classFrameOO1_one_mem X u, 1, classFrameOO1_one_mem X u', fun s hs => absurd ⟨s, hs⟩ hex⟩
 
 /- English proof (translation)
-Introduce `R ρ`. Take `⟨h, hh, h', hh', hs⟩` from `hE R ρ`. Conclude with `⟨h, hh, h', hh', 1, by simp, fun s hrel => ⟨h, h', hs s hrel, (one_smul ℂ _).symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem commonDFrameC_of_exact (hE : CommonDFrameExactC X Y u u' i0 i0' κ) :
     CommonDFrameC X Y u u' vR i0 i0' νq κ := by
@@ -215,7 +215,7 @@ theorem commonDFrameC_of_exact (hE : CommonDFrameExactC X Y u u' i0 i0' κ) :
   exact ⟨h, hh, h', hh', 1, by simp, fun s hrel => ⟨h, h', hs s hrel, (one_smul ℂ _).symm⟩⟩
 
 /- English proof (translation)
-Introduce `R ρ s hrel h₁ h₁' h₂ h₂' hD₁ hD₂`. Take `⟨a, ha⟩` from `hF R ρ s hrel`. Establish `hV` using `hVI hNu s.1.pt.1 h₁ h₁' h₂ h₂' hD₁ hD₂`. Unfold `chiOO`. Rewrite using `[ha, smul_smul, ClassFrameUnitaryProducts.comp_smul_mid, ClassFrameUnitaryProducts.comp_smul_mid, hV]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vIndepLiftC_of (hF : OOtNuC X Y u u' νq κ) (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq)
     (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq) : VIndepLiftC X Y u u' i0 i0' κ := by
@@ -226,7 +226,7 @@ theorem vIndepLiftC_of (hF : OOtNuC X Y u u' νq κ) (hNu : Formalism.L2.SG.Real
   rw [ha, smul_smul, ClassFrameUnitaryProducts.comp_smul_mid, ClassFrameUnitaryProducts.comp_smul_mid, hV]
 
 /- English proof (translation)
-Take `⟨h0, h0', hD0, hEq⟩` from `hP R ρ s hrel`. Rewrite `hEq` using `[hVL R ρ s hrel h0 h0' hs hs' hD0 hD]`. Conclude with `ClassFrameUnitaryProducts.frame_alg X u u' (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hD.1) (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hD.2.1) _ _ _ hEq`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classFrameOO1_liftFrame (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL : VIndepLiftC X Y u u' i0 i0' κ)
     (R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR) (ρ : ℕ) (s : LiftT X Y u u' κ R ρ) (hrel : s.1.relevant)
@@ -238,7 +238,7 @@ theorem classFrameOO1_liftFrame (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL :
     (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hD.2.1) _ _ _ hEq
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem classFrameOO1_piIso_coe (w : D.what₂.Word) (g : X.B.I.Ginf) (hg : g ∈ X.SinfU w) :
     ((Formalism.L2.SG.RealObj.InfCut.piIso X w g hg : X.Vpi w ≃ₗᵢ[ℂ] X.Vpi w) : X.Vpi w →L[ℂ] X.Vpi w) = X.piU w g := by
@@ -246,7 +246,7 @@ theorem classFrameOO1_piIso_coe (w : D.what₂.Word) (g : X.B.I.Ginf) (hg : g �
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Formalism.L2.SG.RealObj.InfCut.piIso_symm X w g hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem classFrameOO1_piIso_symm (w : D.what₂.Word) (g : X.B.I.Ginf) (hg : g ∈ X.SinfU w) :
     (((Formalism.L2.SG.RealObj.InfCut.piIso X w g hg).symm : X.Vpi w ≃ₗᵢ[ℂ] X.Vpi w) : X.Vpi w →L[ℂ] X.Vpi w) =
@@ -254,7 +254,7 @@ theorem classFrameOO1_piIso_symm (w : D.what₂.Word) (g : X.B.I.Ginf) (hg : g �
   rw [← Formalism.L2.SG.RealObj.InfCut.piIso_symm X w g hg]
 
 /- English proof (translation)
-Unfold `frameVal dVal`. Rewrite using `[classFrameOO1_piIso_coe, classFrameOO1_piIso_symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem classFrameOO1_frameVal_piIso (h h' : X.B.I.Ginf) (hh : h ∈ X.SinfU u) (hh' : h' ∈ X.SinfU u')
     (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
@@ -264,13 +264,13 @@ theorem classFrameOO1_frameVal_piIso (h h' : X.B.I.Ginf) (hh : h ∈ X.SinfU u) 
   rw [classFrameOO1_piIso_coe, classFrameOO1_piIso_symm]
 
 /- English proof (translation)
-Introduce `R ρ`. Take `⟨h, hh, h', hh', ζ, hζ, hcom⟩` from `hCD R ρ`. Establish `hS` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hh`. Establish `hS'` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hh'`. Use `⟨Formalism.L2.SG.RealObj.InfCut.piIso X u h hS, Formalism.L2.SG.RealObj.InfCut.piIso X u' h' hS', ζ, hζ, fun s A B hAB => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hAB, classFrameOO1_frameVal_piIso]`. Distinguish the cases in `hrel : s.1.relevant`. Take `⟨hs, hs', hDs, hv⟩` from `hcom s hrel`. Rewrite using `[← hv]`. Conclude with `classFrameOO1_liftFrame X Y u u' vR i0 i0' νq κ hP hVL R ρ s hrel hs hs' hDs`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h0, hc⟩` from `hZ R ρ s hrel`. Rewrite using `[h0]`. Unfold `dVal`. Break down `hc with hc | hc` into its components or cases. Rewrite using `[hc, zero_smul, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commonFrameC_of (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL : VIndepLiftC X Y u u' i0 i0' κ)
     (hCD : CommonDFrameC X Y u u' vR i0 i0' νq κ) (hZ : IrrelZeroC X Y u u' vR i0 i0' νq κ) :
@@ -295,7 +295,7 @@ theorem commonFrameC_of (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL : VIndepL
       simp
 
 /- English proof (translation)
-Introduce `R ρ s hrel`. Use `⟨?_, Or.inl (cTerm_irrel X Y u u' vR hAt s.1.toTerm hrel)⟩` and prove the remaining obligations. Unfold `chiOO`. Rewrite using `[hV R ρ s hrel, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem irrelZeroC_of (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u u') :
     IrrelZeroC X Y u u' vR i0 i0' νq κ := by
@@ -305,7 +305,7 @@ theorem irrelZeroC_of (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u 
   rw [hV R ρ s hrel, smul_zero]
 
 /- English proof (translation)
-The claim follows from `commonFrameC_of X Y u u' vR i0 i0' νq κ hP (vIndepLiftC_of X Y u u' i0 i0' νq κ hF hNu hVI) hCD hZ`.
+A detailed English derivation is pending.
 -/
 theorem commonFrameC_of_vIndep (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
     (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
@@ -314,7 +314,7 @@ theorem commonFrameC_of_vIndep (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : O
   commonFrameC_of X Y u u' vR i0 i0' νq κ hP (vIndepLiftC_of X Y u u' i0 i0' νq κ hF hNu hVI) hCD hZ
 
 /- English proof (translation)
-The claim follows from `commonFrameC_of_vIndep X Y u u' vR i0 i0' νq κ hP hF hNu hVI hCD (irrelZeroC_of X Y u u' vR i0 i0' νq κ hV hAt)`.
+A detailed English derivation is pending.
 -/
 theorem commonFrameC_of_cut (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
     (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
@@ -323,7 +323,7 @@ theorem commonFrameC_of_cut (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtN
   commonFrameC_of_vIndep X Y u u' vR i0 i0' νq κ hP hF hNu hVI hCD (irrelZeroC_of X Y u u' vR i0 i0' νq κ hV hAt)
 
 /- English proof (translation)
-The claim follows from `commonFrameC_of_cut X Y u u' vR i0 i0' νq κ hP hF hNu hVI (commonDFrameC_of_exact X Y u u' vR i0 i0' νq κ (commonDFrameExactC_of X Y u u' vR i0 i0' νq κ hP hPair)) hV hAt`.
+A detailed English derivation is pending.
 -/
 theorem commonFrameC_of_pair (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
     (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
@@ -333,7 +333,7 @@ theorem commonFrameC_of_pair (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOt
     (commonDFrameC_of_exact X Y u u' vR i0 i0' νq κ (commonDFrameExactC_of X Y u u' vR i0 i0' νq κ hP hPair)) hV hAt
 
 /- English proof (translation)
-The claim follows from `commonFrameC_of_pair X Y u u' vR i0 i0' νq κ hP hF hNu hVI (pairDFrameC_of X Y u u' i0 i0' κ hS) hV hAt`.
+A detailed English derivation is pending.
 -/
 theorem commonFrameC_of_scalar (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
     (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)

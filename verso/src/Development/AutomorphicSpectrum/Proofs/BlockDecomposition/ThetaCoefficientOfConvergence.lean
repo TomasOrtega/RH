@@ -32,17 +32,13 @@ instance countable_hermE (D : D7) (r : ℕ) : Countable (HermE D r) := by
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI : IsTopologicalAddGroup (Mx D r r) := i1`. Use `haveI : SecondCountableTopology (Mx D r r) := i3`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D r) := Topology.IsInducing.subtypeVal.secondCountableTopology`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : BorelSpace (hermA D r) := Subtype.borelSpace _`. Use `haveI : lam.IsAddHaarMeasure := hl.1`. Use `haveI : VAddInvariantMeasure (hermA D r) (hermA D r) lam := ⟨fun c s _ => measure_preimage_add lam c s⟩`. Use `haveI : VAddInvariantMeasure (ratHerm D r) (hermA D r) lam := ⟨fun c s _ => measure_preimage_add lam c.1 s⟩`. Use `haveI : Countable (ratHerm D r) := (GlobalTheory.CompanionTheory.HermPoisson.ofHermE_bijective (D := D) (r := r)).2.countable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hF` using `hl.2.1`. Establish `hF' : IsAddFundamentalDomain (ratHerm D r) (b₀ +ᵥ 𝓖) lam` using `hF.vadd_of_comm b₀`. Establish `h1 : ∫ b in b₀ +ᵥ 𝓖, e b ∂lam = ∫ b in 𝓖, e b ∂lam`. Use `hF'.setIntegral_eq hF fun γ x => ?_` and prove the remaining obligations. Use `show e (γ.1 + x) = e x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hadd, hΓ _ γ.2, one_mul]`. Establish `h2 : ∫ b in 𝓖, e (b₀ + b) ∂lam = ∫ b in b₀ +ᵥ 𝓖, e b ∂lam`. Use `(measurePreserving_add_left lam b₀).setIntegral_preimage_emb (measurableEmbedding_addLeft b₀) e (b₀ +ᵥ 𝓖)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 2`.
-
-Use extensionality with `x`. Simplify using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Establish `h3 : ∫ b in 𝓖, e (b₀ + b) ∂lam = e b₀ * ∫ b in 𝓖, e b ∂lam`. Simplify using `only [hadd, integral_const_mul]`. Establish `h4 : (e b₀ - 1) * ∫ b in 𝓖, e b ∂lam = 0`.
-
-Rewrite using `[sub_mul, ← h3, h2, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h4).resolve_left (sub_ne_zero.2 hb₀)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_char_eq_zero {lam : Measure (hermA D r)} {𝓖 : Set (hermA D r)} (hl : IsCovolOneH lam 𝓖)
     (e : hermA D r → ℂ) (hadd : ∀ x y, e (x + y) = e x * e y)
@@ -79,7 +75,7 @@ theorem setIntegral_char_eq_zero {lam : Measure (hermA D r)} {𝓖 : Set (hermA 
   exact (mul_eq_zero.1 h4).resolve_left (sub_ne_zero.2 hb₀)
 
 /- English proof (translation)
-Unfold `pairH`. Rewrite using `[show trF (S + S').1 x.1 = trF S.1 x.1 + trF S'.1 x.1 from trF_add_left _ _ _, mul_add, AddChar.map_add_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairH_add_left (ψ : AddChar (AF D.host.F) ℂ) (S S' x : hermA D r) :
     pairH ψ (S + S') x = pairH ψ S x * pairH ψ S' x := by
@@ -88,7 +84,7 @@ theorem pairH_add_left (ψ : AddChar (AF D.host.F) ℂ) (S S' x : hermA D r) :
     AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Unfold `pairH`. Rewrite using `[show trF S.1 (x + y).1 = trF S.1 x.1 + trF S.1 y.1 from trF_add_right _ _ _, mul_add, AddChar.map_add_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairH_add_right (ψ : AddChar (AF D.host.F) ℂ) (S x y : hermA D r) :
     pairH ψ S (x + y) = pairH ψ S x * pairH ψ S y := by
@@ -97,7 +93,7 @@ theorem pairH_add_right (ψ : AddChar (AF D.host.F) ℂ) (S x y : hermA D r) :
     AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Introduce `h`. Use `hψ.2.1 (algebraMap D.host.F (AF D.host.F) (1 / 2) * trF S.1 x.1)` as an intermediate fact. Unfold `pairH at h`. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairH_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (S x : hermA D r) :
     pairH ψ S x ≠ 0 := by
@@ -108,13 +104,11 @@ theorem pairH_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F 
   simp at this
 
 /- English proof (translation)
-Use `set S := (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 with hS`. Use `set S' := (GlobalTheory.CompanionTheory.HermPoisson.ofHermE β).1 with hS'`. Take `⟨h1, h2⟩` from `pairH_annih (r := r) hψ`. Establish `hne : S - S' ≠ 0` using `fun h => hT ((GlobalTheory.CompanionTheory.HermPoisson.ofHermE_bijective (D := D) (r := r)).1 (Subtype.ext (sub_eq_zero.1 h)))`. Establish `hex : ∃ b₀, pairH ψ (S - S') b₀ ≠ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (h2 _ (sub_mem (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).2 (GlobalTheory.CompanionTheory.HermPoisson.ofHermE β).2) hcon)`. Take `⟨b₀, hb₀⟩` from `hex`. Establish `hdec : ∀ b, pairH ψ S b = pairH ψ (S - S') b * pairH ψ S' b` using `fun b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← pairH_add_left, sub_add_cancel]`. Use `setIntegral_char_eq_zero hl _ (fun x y => ?_) (fun γ hγ => ?_) b₀ ?_` and prove the remaining obligations. Rewrite using `[pairH_add_right, pairH_add_right, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(h1 γ).2 hγ S (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).2, (h1 γ).2 hγ S' (GlobalTheory.CompanionTheory.HermPoisson.ofHermE β).2]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hdec, mul_assoc, mul_inv_cancel₀ (pairH_ne_zero hψ _ _), mul_one]`. Conclude with `hb₀`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_pairH {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {lam : Measure (hermA D r)} {𝓖 : Set (hermA D r)} (hl : IsCovolOneH lam 𝓖) {T β : HermE D r} (hT : T ≠ β) :
@@ -149,7 +143,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 variable {D : D7} {r : ℕ}
 
 /- English proof (translation)
-Establish `h : gramQ V x = xᴴ * (HSpace.gram V * x)` using `rfl`. Express the relevant statement in the definitionally equal form `rat (gramQ V x) = HMul.hMul (adj (rat x)) (HMul.hMul (gA V) (rat x) : Mx D V.rank r)`. Rewrite using `[h, rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rat_gramQ (V : HSp D) (x : Matrix (Fin V.rank) (Fin r) D.host.E) :
     ((gramQ V x).map (incA D) : Mx D r r) =
@@ -160,9 +154,9 @@ theorem rat_gramQ (V : HSp D) (x : Matrix (Fin V.rank) (Fin r) D.host.E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[rat_gramQ]`. Unfold `GlobalTheory.StdUnn.inner GlobalTheory.SiegelFormula.invPt`. Establish `u` using `GlobalTheory.MixModel.mt_unitary V h⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[adj_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [u]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_invPt (V : HSp D) (h : GA D V) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E) :
     inner V (GlobalTheory.SiegelFormula.invPt V h ξ) (GlobalTheory.SiegelFormula.invPt V h ξ) = (gramQ V ξ).map (incA D) := by
@@ -176,9 +170,9 @@ theorem inner_invPt (V : HSp D) (h : GA D V) (ξ : Matrix (Fin V.rank) (Fin r) D
     _ = _ := by rw [u]
 
 /- English proof (translation)
-Use `le_antisymm (Matrix.rank_le_width x) ?_` and prove the remaining obligations. Establish `h1 : (gramQ V x).rank = r`. Use `Matrix.rank_of_isUnit (gramQ V x) ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 h))` as an intermediate fact. Simplify using `using this`. Establish `h2 : gramQ V x = ((x.map (D.sp.cm.sig : D.host.E → D.host.E)).transpose * HSpace.gram V) * x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[gramQ, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Conclude with `Matrix.rank_mul_le_right _ _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_of_gramQ (V : HSp D) (x : Matrix (Fin V.rank) (Fin r) D.host.E)
     (h : (gramQ V x).det ≠ 0) : x.rank = r := by
@@ -215,7 +209,7 @@ def allEquiv (V : HSp D) (r : ℕ) :
   right_inv _ := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SplitGram.leftInv_subtypeSum V φ (fun x => gramQ V x = T.1) (fun _ hδ ξ h => (GlobalTheory.CompanionTheory.SplitGram.gramQ_mul V hδ ξ).trans h)`.
+A detailed English derivation is pending.
 -/
 theorem leftInv_fibreSum (V : HSp D) (φ : Mx D V.rank r → ℂ) (T : HermE D r) :
     LeftInv (GQ V) (fibreSum V φ T) :=
@@ -223,17 +217,15 @@ theorem leftInv_fibreSum (V : HSp D) (φ : Mx D V.rank r → ℂ) (T : HermE D r
     (fun _ hδ ξ h => (GlobalTheory.CompanionTheory.SplitGram.gramQ_mul V hδ ξ).trans h)
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Use `haveI := hν`. Use `haveI := GlobalTheory.ThetaTransformMeas.countable_field D.host.E`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin r) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin r → D.host.E))`. Establish `hcont : Continuous φ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hab : (fun h => ∑' ξ : Matrix (Fin V.rank) (Fin r) D.host.E, ‖u (gramOf V ξ) * φ (GlobalTheory.SiegelFormula.invPt V h ξ)‖ₑ) = GlobalTheory.SiegelFormula.absTheta V φ`. Use function extensionality and compare the values at `h`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, ← ofReal_norm_eq_enorm (u _), hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ (T : HermE D r) (k : {x : Matrix (Fin V.rank) (Fin r) D.host.E // gramQ V x = T.1}), gramOf V (allEquiv V r ⟨T, k⟩) = T` using `fun T k => Subtype.ext k.2`. Establish `hfun : ∀ T : HermE D r, (fun h => ∑' k : {x : Matrix (Fin V.rank) (Fin r) D.host.E // gramQ V x = T.1}, u (gramOf V (allEquiv V r ⟨T, k⟩)) * φ (GlobalTheory.SiegelFormula.invPt V h (allEquiv V r ⟨T, k⟩))) = fun h => u T * fibreSum V φ T h`. Introduce `T`. Use function extensionality and compare the values at `h`. Simplify using `only [hterm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[fibreSum, tsum_mul_left]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.CompanionTheory.ThetaOrbit.hasSum_average_descend (Γ := GQ V) (μ := ν) (allEquiv V r) (fun h ξ => u (gramOf V ξ) * φ (GlobalTheory.SiegelFormula.invPt V h ξ)) (fun ξ => (hcont.comp (GlobalTheory.AbsThetaSemi.continuous_invPt V ξ)).measurable.const_mul _) (by rw [hab] …`. Rewrite using `[hfun T]`. Introduce `γ hγ h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show u T * _ = u T * _`. Rewrite using `[leftInv_fibreSum V φ T γ hγ h])`. Use the proof step `(by rw [hab]; exact habs)`. Establish `e : (fun T => u T * fibreMean V ν φ T) = fun T : HermE D r => ⨍ q, descend (GQ V) (fun h => ∑' k : {x : Matrix (Fin V.rank) (Fin r) D.host.E // gramQ V x = T.1}, u (gramOf V (allEquiv V r ⟨T, k⟩)) * φ (GlobalTheory.SiegelFormula.invPt V h (allEquiv V r ⟨T, k⟩))) q ∂autMeasure V ν`. Use function extensionality and compare the values at `T`.
-
-Rewrite using `[hfun T]`. Use `show _ = ⨍ q, u T * descend (GQ V) (fibreSum V φ T) q ∂autMeasure V ν`. Simplify using `only [fibreMean, average_eq, integral_const_mul, mul_smul_comm]`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_twist {V : HSp D} {θ : InfFam D} (hθ : IsInfFam θ) {ν : Measure (GA D V)} (hν : ν.IsHaarMeasure)
     {φ : Mx D V.rank r → ℂ} (hφ : φ ∈ schwartzA θ V.rank r) (habs : GlobalTheory.SiegelFormula.absThetaInt V ν φ < ⊤)
@@ -285,9 +277,9 @@ theorem hasSum_twist {V : HSp D} {θ : InfFam D} (hθ : IsInfFam θ) {ν : Measu
   exact key
 
 /- English proof (translation)
-Establish `h : fibreSum V φ β = fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}, φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D)))`. Use function extensionality and compare the values at `h`. Set `e : {x : Matrix (Fin V.rank) (Fin r) D.host.E // gramQ V x = β.1} ≃ {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1}` to `Equiv.subtypeEquivRight fun x => ⟨fun hx => ⟨rank_of_gramQ V x (by rw [hx]; exact hβ), hx⟩, And.right⟩`. Conclude with `e.tsum_eq (fun x => φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D))))`. Unfold `fibreMean IfrB`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem fibreMean_eq_IfrB (V : HSp D) (ν : Measure (GA D V)) (φ : Mx D V.rank r → ℂ) (β : HermE D r)
     (hβ : β.1.det ≠ 0) : fibreMean V ν φ β = IfrB V ν φ β := by
@@ -302,9 +294,9 @@ theorem fibreMean_eq_IfrB (V : HSp D) (ν : Measure (GA D V)) (φ : Mx D V.rank 
   rw [h]
 
 /- English proof (translation)
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Use `show (ω (nb b * g) Φ).1 (GlobalTheory.SiegelFormula.invPt V h ξ) = _`. Rewrite using `[map_mul, Module.End.mul_apply, hω.unip (nb b) b.1 (hnb b), inner_invPt]`. Use `congr 1`. Unfold `pairH trF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.trace_mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem theta_mul_nb {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {V : HSp D}
     {μ : Measure (Mx D V.rank r)} {ω : G D r →* Module.End ℂ (schwartzA θ V.rank r)} (hω : IsWeilSch ψ χ θ V μ ω)
@@ -320,9 +312,7 @@ theorem theta_mul_nb {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle
   rfl
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Unfold `pairH trF`.
-
-Conclude with `hψ.1.comp (continuous_const.mul (ht.comp ((continuous_const.matrix_mul continuous_subtype_val).matrix_trace)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_pairH {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (S : hermA D r) :
     Continuous (pairH ψ S) := by
@@ -336,33 +326,27 @@ theorem continuous_pairH {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host
     ((continuous_const.matrix_mul continuous_subtype_val).matrix_trace)))
 
 /- English proof (translation)
-Introduce `hP D n V ψ χ θ μ ω H l s ν Φ hS hR nb lam 𝓖 hC β hβ g`. Establish `hn : 1 ≤ n`. Take `⟨h1, h2, -⟩` from `hR`. Use linear arithmetic over natural numbers and integers. Establish `hψ` using `hS.hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hθ` using `hS.hθ`. Establish `hν` using `hS.hν`. Establish `hω` using `hS.hω`. Establish `habs` using `hP D n V hn (Or.inr hR.2.2) θ hθ ν hν (ω g Φ)`. Take `⟨hnb, hl⟩` from `hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set A : HermE D n → ℂ := fibreMean V ν (ω g Φ).1 with hA`. Establish `hsumA : Summable fun T => ‖A T‖`. Establish `h` using `(hasSum_twist hθ hν (ω g Φ).2 habs (fun _ => 1) (fun _ => norm_one)).summable`. Simplify using `only [one_mul] at h`. Conclude with `h.norm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : ∀ b, HasSum (fun T => pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b * A T) (thetaInt ω ν Φ (nb b * g))` using `fun b => by`. Establish `h` using `hasSum_twist hθ hν (ω g Φ).2 habs (fun T => pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b) (fun T => hψ.2.1 _)`. Establish `e : thetaInt ω ν Φ (nb b * g) = ⨍ q, descend (GQ V) (fun h => ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE (gramOf V ξ)).1 b * (ω g Φ).1 (GlobalTheory.SiegelFormula.invPt V h ξ)) q ∂autMeasure V ν`. Establish `hth : theta ω Φ (nb b * g) = fun h => ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE (gramOf V ξ)).1 b * (ω g Φ).1 (GlobalTheory.SiegelFormula.invPt V h ξ)`. Use function extensionality and compare the values at `fun h => theta_mul_nb hω hnb Φ g b h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[thetaInt, hth]`. Rewrite using `[e]`. Conclude with `h`. Use `set χβ : hermA D n → ℂ := fun b => (pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE β).1 b)⁻¹ with hχβ`. Establish `hχ : ∀ b : hermA D n, ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) = χβ b` using `fun b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AddChar.map_neg_eq_inv]`. Both sides reduce to the same expression. Establish `hpn : ∀ (S b : hermA D n), ‖pairH ψ S b‖ = 1` using `fun S b => hψ.2.1 _`. Establish `hχc : Continuous χβ` using `(continuous_pairH hψ _).inv₀ (pairH_ne_zero hψ _)`. Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := ⟨by rw [Measure.restrict_apply_univ, hl.2.2]; exact ENNReal.one_lt_top⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`. Use `set F : HermE D n → hermA D n → ℂ := fun T b => pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b * A T * χβ b with hF`. Establish `hFc : ∀ T, Continuous (F T)` using `fun T => ((continuous_pairH hψ _).mul continuous_const).mul hχc`. Establish `hFn : ∀ T b, ‖F T b‖ = ‖A T‖` using `fun T b => by`. Simplify using `only [hF, hχβ, norm_mul, norm_inv, hpn, one_mul, inv_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hvol : (lam.restrict 𝓖).real Set.univ = 1`. Rewrite using `[measureReal_def, Measure.restrict_apply_univ, hl.2.2]`. Evaluate the numerical expressions. Establish `hint : ∀ T, Integrable (F T) (lam.restrict 𝓖)` using `fun T => Integrable.of_bound (hFc T).aestronglyMeasurable ‖A T‖ (Filter.Eventually.of_forall fun b => (hFn T b).le)`. Establish `hsn : Summable fun T => ∫ b, ‖F T b‖ ∂(lam.restrict 𝓖)`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hFn, integral_const, hvol, one_smul]`. Conclude with `hsumA`. Establish `key` using `hasSum_integral_of_summable_integral_norm hint hsn`. Establish `hval : (fun T => ∫ b, F T b ∂(lam.restrict 𝓖)) = fun T => if T = β then A β else 0`. Use function extensionality and compare the values at `T`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e1 : ∀ b, F T b = pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b * (pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE β).1 b)⁻¹ * A T` using `fun b => by`. Simplify using `only [hF, hχβ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, integral_mul_const]`. Use `split_ifs with h`.
-
-Substitute `h` using the available equality. Establish `e2 : ∀ b, pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b * (pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b)⁻¹ = 1` using `fun b => mul_inv_cancel₀ (pairH_ne_zero hψ _ _)`. Simplify using `only [e2, integral_const, hvol, one_smul, one_mul]`. Rewrite using `[setIntegral_pairH hψ hl h, zero_mul]`. Rewrite `key` using `[hval]`.
-
-Establish `hfin` using `key.unique (hasSum_ite_eq β (A β))`. Establish `hlhs : fc ψ lam 𝓖 nb (thetaInt ω ν Φ) β g = ∫ b, ∑' T, F T b ∂(lam.restrict 𝓖)`. Unfold `fc`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Use `show thetaInt ω ν Φ (nb b * g) * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) = ∑' T, F T b`.
-
-Rewrite using `[hχ b]`. Conclude with `(((hexp b).mul_right (χβ b)).tsum_eq).symm`. Rewrite using `[hlhs, hfin, hA]`. Conclude with `fibreMean_eq_IfrB V ν _ β hβ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaCoef : GlobalTheory.Published.WeilThetaConvergence → PositivityTheory.PfSWUS.ThetaCoef := by
   classical

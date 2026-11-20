@@ -20,9 +20,9 @@ open scoped ComplexOrder
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Take `⟨hm, s, hs⟩` from `hι`. Set `S : ShortComplex X.Modules` to `ShortComplex.mk ι (Limits.cokernel.π ι) (Limits.cokernel.condition ι)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_cokernel ι, mono_f := hm }`. Establish `: Nonempty X` using `⟨y.1 (IsLocalRing.closedPoint ℂ)⟩`. Take `⟨h₂, -⟩` from `VBExt.isVB_and_cls_det_of_shortExact X S 1 s hS hF hs`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = 1 + s` from `h.isVB.rank_unique h₂`. Take `⟨a, hy⟩` from `Met.exists_adapted (p := p) hS hF hs y`. Establish `hpos` using `(h.posDef_gram_frame (S := S) hS a hy).diag_pos (i := Sum.inl 0)`. Use `⟨a.U, a.e 0, hy, (Complex.pos_iff.1 hpos).1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_sec_form_pos {E F : X.Modules} {n : ℕ} (h : Met p σ E n) (ι : F ⟶ E)
     (hF : IsVB F 1) (hι : IsSubbundle ι) (y : CxPts p σ) :
@@ -39,7 +39,7 @@ theorem exists_sec_form_pos {E F : X.Modules} {n : ℕ} (h : Met p σ E n) (ι :
   refine ⟨a.U, a.e 0, hy, (Complex.pos_iff.1 hpos).1⟩
 
 /- English proof (translation)
-The claim follows from `(H.gram ![s, t] hy 0 1).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_form {E : X.Modules} {n : ℕ} {h : Met p σ E n} (H : h.IsCInf) {U : X.Opens}
     (s t : Γ(E, U)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) :
@@ -54,17 +54,15 @@ open TopologicalSpace Filter Topology
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d _ _ π w E h H flB fl _ _ σ v hv`. Establish `Hm : ((h.pull π w).met σ).IsCInf` using `H.pull π w σ`. Use `Continuous.measurable (continuous_iff_continuousAt.2 fun y => ?_)` and prove the remaining obligations. Take `⟨U₁, t₁, hy₁, hp₁⟩` from `exists_sec_form_pos ((h.pull π w).met σ) (fl.ι 1) (fl.isVB 1) (fl.isSubbundle 1) y`. Take `⟨U₂, t₂, hy₂, hp₂⟩` from `exists_sec_form_pos ((h.pull π w).met σ) ((Scheme.Modules.pullback π).map (flB.ι 1)) ((flB.isVB 1).pullback π) (SubPull.isSubbundle_pullback B Y π _ E (flB.ι 1) 1 (flB.isVB 1) (flB.isSubbundle 1)) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy : y ∈ ptsIn p σ (U₁ ⊓ U₂)` using `mem_ptsIn_inf.2 ⟨hy₁, hy₂⟩`. Use `set m := (h.pull π w).met σ`. Use `set l := fl.ι 1`. Use `set l' := (Scheme.Modules.pullback π).map (flB.ι 1)`. Use `set u₁ := Twist.resM _ (inf_le_left : U₁ ⊓ U₂ ≤ U₁) t₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set u₂ := Twist.resM _ (inf_le_right : U₁ ⊓ U₂ ≤ U₂) t₂`. Establish `e₁ : m.form (l.app _ u₁) (l.app _ u₁) y = m.form (l.app U₁ t₁) (l.app U₁ t₁) y`. Rewrite using `[Twist.app_resM, m.form_resM _ _ _ hy]`. Establish `e₂ : m.form (l'.app _ u₂) (l'.app _ u₂) y = m.form (l'.app U₂ t₂) (l'.app U₂ t₂) y`. Rewrite using `[Twist.app_resM, m.form_resM _ _ _ hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `Complex.continuous_re.continuousAt.comp (continuousAt_form Hm (l.app _ u₁) (l.app _ u₁) hy)`. Establish `c₂` using `Complex.continuous_re.continuousAt.comp (continuousAt_form Hm (l'.app _ u₂) (l'.app _ u₂) hy)`. Establish `c₃` using `(continuousAt_form Hm (l'.app _ u₂) (l.app _ u₁) hy).norm.pow 2`. Establish `hp₁' : 0 < (m.form (l.app _ u₁) (l.app _ u₁) y).re` using `by rw [e₁]; exact hp₁`. Establish `hp₂' : 0 < (m.form (l'.app _ u₂) (l'.app _ u₂) y).re` using `by rw [e₂]; exact hp₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(c₃.div (c₁.mul c₂) (mul_pos hp₁' hp₂').ne').congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hy, c₁.eventually (lt_mem_nhds hp₁'), c₂.eventually (lt_mem_nhds hp₂')] with z hz h₁ h₂`. Use `hv _ u₁ u₂ z hz` as an intermediate fact. Simplify using `only [Function.comp_apply] at h₁ h₂`. Simplify using `only [Pi.div_apply, Pi.mul_apply, Pi.pow_apply, Function.comp_apply]`.
-
-Rewrite using `[this, mul_assoc, mul_div_cancel_right₀ _ (mul_pos h₁ h₂).ne']`.
+A detailed English derivation is pending.
 -/
 theorem measurable_cosSq : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)

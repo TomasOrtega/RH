@@ -17,9 +17,9 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[SequenceOfBlowups.projectionToBase_zero, SequenceOfBlowups.baseChange_isoObjZero_hom]`. Consider the case `succ n ih`. Establish `hb : (s.baseChange φ).transitionMapSucc n ≫ (s.baseChange φ).projectionToBase n = (s.baseChange φ).projectionToBase (n + 1)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `SequenceOfBlowups.transitionMap_comp_projectionToBase _ _`. Rewrite using `[← hb, ih, SequenceOfBlowups.baseChange_blowupMorphism]`. Conclude with `SequenceOfBlowups.pullbackTransitionMap_comp_fst s φ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem baseChange_projectionToBase_eq_fst {X X' : Scheme.{u}} (s : SequenceOfBlowups X)
     (φ : X' ⟶ X) [AlgebraicGeometry.Flat φ] (i : ℕ) :
@@ -158,11 +158,9 @@ private def descendedSequenceOfBlowups {W Y : Scheme.{u}} (g : W ⟶ Y) [Algebra
     exact (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hblow hi
 
 /- English proof (translation)
-Use `⟨descendedSequenceOfBlowups g t D, rfl, fun i _ => (descendedSchemeDataAt g t D i).gam, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (descendedSchemeDataAt g t D 0).gam ≫ (descendedSequenceOfBlowups g t D).isoZero.hom = t.isoZero.hom ≫ g`. Establish `h0 : (descendedSchemeDataAt g t D 0).gam = t.projectionToBase 0 ≫ g` using `rfl`. Rewrite using `[h0, SequenceOfBlowups.projectionToBase_zero]`. Conclude with `Category.comp_id _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hmap : (descendedSequenceOfBlowups g t D).transitionMapSucc i = descendedBlowupMorphism g t D i`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_def]`. Conclude with `Functor.ofOpSequence_map_homOfLE_succ (descendedBlowupMorphism g t D) i`. Rewrite using `[hmap]`.
-
-Conclude with `(descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hpb hi`. Introduce `i hi`. Conclude with `(descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hcen hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_isStrictPullbackSequenceOfBlowups_of_descentDatum {W Y : Scheme.{u}} (g : W ⟶ Y)
     [AlgebraicGeometry.Flat g] [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W)
@@ -182,11 +180,11 @@ private theorem exists_isStrictPullbackSequenceOfBlowups_of_descentDatum {W Y : 
     exact (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hcen hi
 
 /- English proof (translation)
-Take `⟨-, e, hzero, hstep, hcen⟩` from `h`. Establish `hlp : (t.baseChange (pullback.fst g g)).length = t.length` using `t.baseChange_length (pullback.fst g g)`. Use `exists_isStrictPullbackSequenceOfBlowups_of_descentDatum g t { iso := fun i hi => e i (by rw [hlp]; exact hi) comp_fst := ?_ center_comap := ?_ comp_step := ?_ }` and prove the remaining obligations. Introduce `i hi`. Establish `key` using `SequenceOfBlowups.iso_hom_comp_projectionToBase (t.baseChange (pullback.fst g g)) (t.baseChange (pullback.snd g g)) _ e hstep hzero i (by rw [hlp]; exact hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `key` using `[baseChange_projectionToBase_eq_fst, baseChange_projectionToBase_eq_fst]`. Conclude with `key`. Introduce `i hi`. Establish `key` using `hcen i (by rw [hlp]; exact hi)`. Rewrite `key` using `[SequenceOfBlowups.baseChange_center, SequenceOfBlowups.baseChange_center]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key`. Introduce `i hi`. Establish `key` using `hstep i (by rw [hlp]; exact hi)`. Rewrite `key` using `[SequenceOfBlowups.baseChange_blowupMorphism, SequenceOfBlowups.baseChange_blowupMorphism]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isStrictPullback_of_isomorphic_baseChange {W Y : Scheme.{u}}
     (g : W ⟶ Y) [AlgebraicGeometry.Flat g] [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W)

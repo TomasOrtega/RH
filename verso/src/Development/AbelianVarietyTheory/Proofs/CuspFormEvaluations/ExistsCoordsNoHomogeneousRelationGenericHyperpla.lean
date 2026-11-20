@@ -6,9 +6,9 @@ namespace GlobalTheory
 open MvPolynomial in
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hd` using `hQ.degree_eq_sum_deg_support hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [aeval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← hd]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem aeval_mul_of_isHomogeneous_cone {K L ι : Type} [CommRing K] [CommRing L] [Algebra K L]
     {Q : MvPolynomial ι K} {d : ℕ} (hQ : Q.IsHomogeneous d) (c : L) (x : ι → L) :
@@ -26,11 +26,11 @@ theorem aeval_mul_of_isHomogeneous_cone {K L ι : Type} [CommRing K] [CommRing L
 open MvPolynomial in
 
 /- English proof (translation)
-Use `set y : Fin m → L := fun a => x a.succ / x 0 with hy`. Establish `hx' : x = fun a => x 0 * (Fin.cons 1 y : Fin (m + 1) → L) a`. Use function extensionality and compare the values at `a`. Use `Fin.cases ?_ (fun j => ?_) a` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_succ, hy]`. Clear the denominators using the available nonvanishing facts. Establish `key : (fun i => aeval y ((Fin.cons 1 X : Fin (m + 1) → MvPolynomial (Fin m) K) i)) = (Fin.cons 1 y : Fin (m + 1) → L)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hx']`. Rewrite using `[aeval_mul_of_isHomogeneous_cone hQ, aeval_eq_bind₁ (Fin.cons 1 X : Fin (m + 1) → MvPolynomial (Fin m) K), aeval_bind₁, key]`.
+A detailed English derivation is pending.
 -/
 theorem aeval_eq_pow_mul_aeval_dehomogenise {K L : Type} [CommRing K] [Field L] [Algebra K L]
     {m : ℕ} {Q : MvPolynomial (Fin (m + 1)) K} {d : ℕ} (hQ : Q.IsHomogeneous d)
@@ -55,9 +55,9 @@ theorem aeval_eq_pow_mul_aeval_dehomogenise {K L : Type} [CommRing K] [Field L] 
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `h`. Establish `hinj` using `IsFractionRing.injective (MvPolynomial (Fin (m + 1)) K) (FractionRing (MvPolynomial (Fin (m + 1)) K))`. Establish `hx0 : (algebraMap (MvPolynomial (Fin (m + 1)) K) (FractionRing (MvPolynomial (Fin (m + 1)) K)) ∘ X) 0 ≠ 0`. Simplify using `only [Function.comp_apply]`. Conclude with `(map_ne_zero_iff _ hinj).mpr (X_ne_zero 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `aeval_eq_pow_mul_aeval_dehomogenise (L := FractionRing (MvPolynomial (Fin (m + 1)) K)) hQ (algebraMap (MvPolynomial (Fin (m + 1)) K) (FractionRing (MvPolynomial (Fin (m + 1)) K)) ∘ X) hx0`. Rewrite `e` using `[h, map_zero, mul_zero, aeval_algebraMap_apply, aeval_X_left_apply]`. Conclude with `h0 (hinj (by rw [e, map_zero]))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehomogenise_ne_zero_of_isHomogeneous {K : Type} [Field K]
     {m : ℕ} {Q : MvPolynomial (Fin (m + 1)) K} {d : ℕ} (hQ : Q.IsHomogeneous d) (h0 : Q ≠ 0) :
@@ -75,13 +75,13 @@ theorem dehomogenise_ne_zero_of_isHomogeneous {K : Type} [Field K]
   exact h0 (hinj (by rw [e, map_zero]))
 
 /- English proof (translation)
-Introduce `K _ σ m N t ζ ht hζ hrel`. Set `_ : Algebra K ℂ` to `σ.toAlgebra`. Take `_ | N` from `N`. Conclude with `absurd (funext fun j => j.elim0) hζ`. Take `⟨j0, hj0⟩` from `Function.ne_iff.mp hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hj0' : ζ j0 ≠ 0` using `hj0`. Establish `hind : AlgebraicIndependent K t`. Rewrite using `[algebraicIndependent_iff]`. Introduce `p hp`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `ht p hne hp`. Take `⟨J, hJ⟩` from `exists_algebraicIndependent_ratios_of_generic_zero K ℂ m N t ζ j0 hind hj0' hrel`. Use `⟨Fin.cons j0 J, fun Q d hQ0 hQ => ?_⟩` and prove the remaining obligations. Establish `e` using `aeval_eq_pow_mul_aeval_dehomogenise (L := ℂ) hQ (fun a => ζ ((Fin.cons j0 J : Fin (m + 1) → Fin (N + 1)) a)) (by simpa using hj0')`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval _ Q ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Use `mul_ne_zero (pow_ne_zero _ hj0') ?_` and prove the remaining obligations. Introduce `h`. Conclude with `dehomogenise_ne_zero_of_isHomogeneous hQ hQ0 ((algebraicIndependent_iff.mp hJ) _ h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_coordinates_no_homogeneous_relation_of_generic_zero :
     ∀ (K : Type) [Field K] (σ : K →+* ℂ) (m N : ℕ) (t : Fin m × Fin N → ℂ) (ζ : Fin N → ℂ),

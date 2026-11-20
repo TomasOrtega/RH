@@ -15,41 +15,41 @@ noncomputable section
 namespace GlobalTheory.LocVal
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valR_eq {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)) : valR x U f = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((x.appLE U ⊤ h).hom f) := dif_pos h
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_mul {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f g : Γ(X, U)) : valR x U (f * g) = valR x U f * valR x U g := by
   simp only [valR_eq x U h, map_mul]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_add {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f g : Γ(X, U)) : valR x U (f + g) = valR x U f + valR x U g := by
   simp only [valR_eq x U h, map_add]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_pow {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)) (n : ℕ) : valR x U (f ^ n) = valR x U f ^ n := by
   simp only [valR_eq x U h, map_pow]
 
 /- English proof (translation)
-Simplify using `only [valR_eq x U h, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_one {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     valR x U (1 : Γ(X, U)) = 1 := by
   simp only [valR_eq x U h, map_one]
 
 /- English proof (translation)
-Rewrite using `[valR_eq x V h, valR_eq x U (h.trans (x.preimage_mono e))]`. Use `congr 1`. Rewrite using `[resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_res {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U V : X.Opens} (e : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) : valR x V (resG X e f) = valR x U f := by
@@ -58,21 +58,19 @@ theorem valR_res {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U V 
   rw [resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Introduce `Z U hU F _ ξ _ d hd D _ hDm hDU O hOU hξO h`. Take `⟨p₀⟩ : Nonempty (Sp F)` from `inferInstance`. Establish `hp₀ : ξ.base p₀ ∈ O` using `hξO (Set.mem_univ p₀)`. Take `⟨g, hgO, hg⟩` from `hU.exists_basicOpen_le (V := O) ⟨_, hp₀⟩ (hOU hp₀)`. Use `set B := Z.basicOpen g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBU : B ≤ U` using `hgO.trans hOU`. Establish `hξB : ⊤ ≤ ξ ⁻¹ᵁ B`. Introduce `p _`. Establish `: p = p₀` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `hg`. Use `hU.isLocalization_basicOpen g` as an intermediate fact. Take `⟨m, f, hf⟩` from `IsLocalization.Away.surj g (resG Z hgO h)`. Establish `hf' : resG Z hgO h * resG Z hBU g ^ m = resG Z hBU f` using `hf`. Establish `hgu : IsUnit (resG Z hBU g)` using `Z.toRingedSpace.isUnit_res_basicOpen g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg0 : valR ξ U g ≠ 0`. Take `⟨u, hu⟩` from `hgu`. Introduce `h0`. Establish `e1` using `congrArg (valR ξ B) u.mul_inv`. Rewrite `e1` using `[valR_mul ξ B hξB, valR_one ξ B hξB, hu, valR_res ξ hBU hξB, h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one e1`. Establish `hL` using `congrArg (d B) hf'`. Rewrite `hL` using `[hd.2.1 B hBU, ← map_pow, hd.2.2 U B hBU le_rfl, hd.2.2 U B hBU le_rfl, hd.2.2 O B hgO hOU]`. Establish `hV` using `congrArg (valR ξ B) hL`. Rewrite `hV` using `[valR_add ξ B hξB, valR_mul ξ B hξB, valR_mul ξ B hξB, valR_res ξ hgO hξB, valR_res ξ hBU hξB, valR_res ξ hBU hξB, valR_res ξ hBU hξB, hDU, hDU]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfv : valR ξ U f = valR ξ O h * valR ξ U g ^ m`. Use `congrArg (valR ξ B) hf'` as an intermediate fact. Rewrite `this` using `[valR_mul ξ B hξB, valR_res ξ hgO hξB, valR_res ξ hBU hξB, valR_pow ξ B hξB, valR_res ξ hBU hξB]`. Conclude with `this.symm`. Rewrite `hV` using `[hfv, hDm, valR_pow ξ U (hξB.trans (ξ.preimage_mono hBU))]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `key : valR ξ U g ^ m * (valR ξ B (resG Z hgO (d O h)) - D (valR ξ O h)) = 0`. Take the linear combination `hV`. Break down `mul_eq_zero.1 key with h1 | h1` into its components or cases. Conclude with `absurd (pow_eq_zero_iff'.1 h1).1 hg0`. Rewrite using `[← valR_res ξ hgO hξB]`.
-
-Conclude with `sub_eq_zero.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem valR_field_of_le : ∀ (Z : Scheme.{0}) (U : Z.Opens), IsAffineOpen U → ∀ (F : Type) [Field F] (ξ : Sp F ⟶ Z),
     ⊤ ≤ ξ ⁻¹ᵁ U → ∀ (d : Fld Z), IsField U d → ∀ (D : F → F), (∀ x y, D (x + y) = D x + D y) →

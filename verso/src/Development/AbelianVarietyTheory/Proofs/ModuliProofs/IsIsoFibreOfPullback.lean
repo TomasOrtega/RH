@@ -22,7 +22,7 @@ def Near (Q : MorphismProperty Scheme.{0}) (x : X) : Prop :=
     IsPullback f' g' g f ∧ IsOpenImmersion g ∧ x ∈ Set.range g ∧ Q f'
 
 /- English proof (translation)
-Take `⟨T₀, T₀', g₀, g₀', f₀, H₀, hg₀, ⟨z, rfl⟩, hQ⟩` from `h`. Use `hg₀` as an intermediate fact. Use `⟨T₀, T₀', g₀ ≫ g, g₀' ≫ g', f₀, H₀.paste_vert H, inferInstance, ⟨z, ?_⟩, hQ⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Near.of_pullback {Q : MorphismProperty Scheme.{0}} {T T' : Scheme.{0}} {g : T ⟶ X}
     {g' : T' ⟶ Y} {f' : T' ⟶ T} (H : IsPullback f' g' g f) [IsOpenImmersion g] {y : T}
@@ -33,7 +33,7 @@ theorem Near.of_pullback {Q : MorphismProperty Scheme.{0}} {T T' : Scheme.{0}} {
   simp
 
 /- English proof (translation)
-Establish `H' : IsPullback (pullback.snd f' (pullback.fst (g ≫ s) t)) (pullback.fst f' (pullback.fst (g ≫ s) t) ≫ g') (pullback.fst (g ≫ s) t ≫ g) f` using `(IsPullback.of_hasPullback _ _).flip.paste_vert H`. Use `DenseFibreIso.isIso_of_fibre s f t H' (pullback.snd _ _) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIso_fibre_of_pullback {S : Scheme.{0}} (t : S ⟶ Sp R)
     [IsIso (pullback.snd f (pullback.fst s t))] {T T' : Scheme.{0}} {g : T ⟶ X} {g' : T' ⟶ Y}
@@ -48,11 +48,11 @@ theorem isIso_fibre_of_pullback {S : Scheme.{0}} (t : S ⟶ Sp R)
 variable (K : Type) [Field K] [Algebra R K]
 
 /- English proof (translation)
-Establish `hsub : (f ⁻¹' {x}).Subsingleton`. Set `k : Sp K` to `IsLocalRing.closedPoint K`. Establish `hk : s x = spMap (algebraMap R K) k`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[← hx, RingHom.ker_eq_comap_bot, ← Ideal.eq_bot_of_prime k.asIdeal]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨x', hx', -⟩` from `Scheme.Pullback.exists_preimage_pullback x k hk`. Introduce `y₁ hy₁ y₂ hy₂`. Take `⟨z₁, hz₁, hz₁'⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := pullback.fst s (spMap (algebraMap R K))) y₁ x' (hy₁.trans hx'.symm)`. Take `⟨z₂, hz₂, hz₂'⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := pullback.fst s (spMap (algebraMap R K))) y₂ x' (hy₂.trans hx'.symm)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : z₁ = z₂` using `(pullback.snd f (pullback.fst s (spMap (algebraMap R K)))).isOpenEmbedding.injective (hz₁'.trans hz₂'.symm)`. Rewrite using `[← hz₁, ← hz₂, hz]`. Take `⟨V, hxV, hV⟩` from `exists_isFinite_morphismRestrict_of_finite_preimage_singleton f x hsub.finite`. Use `⟨V, f ⁻¹ᵁ V, V.ι, (f ⁻¹ᵁ V).ι, f ∣_ V, isPullback_morphismRestrict f V, inferInstance, ?_, hV⟩` and prove the remaining obligations. Simplify using `using hxV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem near_isFinite [IsProper f]
     [IsIso (pullback.snd f (pullback.fst s (spMap (algebraMap R K))))]
@@ -78,9 +78,9 @@ theorem near_isFinite [IsProper f]
   simpa using hxV
 
 /- English proof (translation)
-Use `DenseFibreIso.local_of_ring s f @IsClosedImmersion K ?_ x hx` and prove the remaining obligations. Introduce `A B _ _ _ _ _ _ j j' _ H _ hbij m`. Establish `hf : IsFinite (spMap (algebraMap A B))` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsFinite) H.flip hfin`. Establish `: Module.Finite A B` using `RingHom.finite_algebraMap.mp ((IsFinite.SpecMap_iff _).mp hf)`. Take `⟨a, ha, hsurj⟩` from `DenseFibreIso.exists_away_surjective (A ⊗[R] K) hbij.2 m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha, IsClosedImmersion.spec_of_surjective _ hsurj⟩`.
+Supply the required witnesses or components.
 -/
 theorem near_isClosedImmersion [hfin : IsFinite f]
     [IsIso (pullback.snd f (pullback.fst s (spMap (algebraMap R K))))]
@@ -96,17 +96,17 @@ theorem near_isClosedImmersion [hfin : IsFinite f]
 
 set_option backward.isDefEq.respectTransparency.types false in
 /- English proof (translation)
-Use `DenseFibreIso.local_of_ring s f (MorphismProperty.isomorphisms _) K ?_ x hx` and prove the remaining obligations. Introduce `A B _ _ _ _ _ _ j j' hj H hjs hbij m`. Establish `: IsOpenImmersion j'` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsOpenImmersion) H hj`. Establish `hci : IsClosedImmersion (spMap (algebraMap A B))` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsClosedImmersion) H.flip hcl`. Establish `hs : Function.Surjective (algebraMap A B)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(spMap (algebraMap A B)).app_surjective ⊤ (isAffineOpen_top _)`. Establish `h2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap A B))`. Introduce `b`. Take `⟨c, hc⟩` from `h1 ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b)`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of A)).hom c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `congr_arg (fun k => (ConcreteCategory.hom k) c) h2`. Simplify using `only [CategoryTheory.comp_apply, CommRingCat.hom_ofHom] at h3`. Rewrite using `[← h3]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of B)).hom ((spMap (algebraMap A B)).app ⊤ c) = b`. Rewrite using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `: IsLocallyNoetherian (Sp A)` using `isLocallyNoetherian_of_isOpenImmersion j`. Establish `: IsNoetherian (Sp A)` using `{}`. Establish `: IsNoetherianRing A` using `isNoetherian_Spec.mp this`. Establish `hflat : Flat (spMap (algebraMap R B))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : spMap (algebraMap R B) = spMap (algebraMap A B) ≫ spMap (algebraMap R A)`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (algebraMap R B)) = Spec.map (CommRingCat.ofHom (algebraMap A B)) ≫ Spec.map (CommRingCat.ofHom (algebraMap R A))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[e, ← hjs, reassoc_of% H.w]`. Use `infer_instance`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Module.Flat R B` using `RingHom.flat_algebraMap_iff.mp (Flat.SpecMap_iff.mp hflat)`. Take `⟨a, ha, hb⟩` from `DenseFibreIso.exists_away_bijective R K hs hbij.1 m`. Conclude with `⟨a, ha, isIso_SpecMap_iff.mpr hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem near_isIso [hcl : IsClosedImmersion f] [IsLocallyNoetherian X] [Flat (f ≫ s)]
     [IsIso (pullback.snd f (pullback.fst s (spMap (algebraMap R K))))]
@@ -145,13 +145,13 @@ theorem near_isIso [hcl : IsClosedImmersion f] [IsLocallyNoetherian X] [Flat (f 
   exact ⟨a, ha, isIso_SpecMap_iff.mpr hb⟩
 
 /- English proof (translation)
-Take `⟨T, T', g, g', f', H, hg, ⟨y, rfl⟩, hQ⟩` from `near_isFinite s f K x hx`. Use `hg` as an intermediate fact. Establish `: IsFinite f'` using `hQ`. Establish `: IsIso (pullback.snd f' (pullback.fst (g ≫ s) (spMap (algebraMap R K))))` using `isIso_fibre_of_pullback s f _ H`. Establish `hy : RingHom.ker (algebraMap R K) = ((g ≫ s) y).asIdeal` using `by simpa using hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T₂, T₂', g₂, g₂', f₂, H₂, hg₂, ⟨y₂, rfl⟩, hQ₂⟩` from `near_isClosedImmersion (g ≫ s) f' K y hy`. Use `hg₂` as an intermediate fact. Establish `: IsClosedImmersion f₂` using `hQ₂`. Establish `: IsIso (pullback.snd f₂ (pullback.fst (g₂ ≫ g ≫ s) (spMap (algebraMap R K))))` using `isIso_fibre_of_pullback (g ≫ s) f' _ H₂`. Establish `: IsLocallyNoetherian T₂` using `isLocallyNoetherian_of_isOpenImmersion (g₂ ≫ g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion g'` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsOpenImmersion) H hg`. Establish `: IsOpenImmersion g₂'` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsOpenImmersion) H₂ hg₂`. Establish `: Flat (f₂ ≫ g₂ ≫ g ≫ s)`. Rewrite using `[reassoc_of% H₂.w, reassoc_of% H.w]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy₂ : RingHom.ker (algebraMap R K) = ((g₂ ≫ g ≫ s) y₂).asIdeal` using `by simpa using hy`. Conclude with `Near.of_pullback f H (Near.of_pullback f' H₂ (near_isIso (g₂ ≫ g ≫ s) f₂ K y₂ hy₂))`.
+A detailed English derivation is pending.
 -/
 theorem near_isIso_of_isProper [IsProper f] [IsLocallyNoetherian X] [Flat (f ≫ s)]
     [IsIso (pullback.snd f (pullback.fst s (spMap (algebraMap R K))))]
@@ -180,7 +180,7 @@ theorem near_isIso_of_isProper [IsProper f] [IsLocallyNoetherian X] [Flat (f ≫
   exact Near.of_pullback f H (Near.of_pullback f' H₂ (near_isIso (g₂ ≫ g ≫ s) f₂ K y₂ hy₂))
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `x ⟨T, T', g, g', f', H, hg, hx, hQ⟩`. Use `hg` as an intermediate fact. Conclude with `⟨Set.range g, fun z hz => ⟨T, T', g, g', f', H, hg, hz, hQ⟩, g.isOpenEmbedding.isOpen_range, hx⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isOpen_near (Q : MorphismProperty Scheme.{0}) : IsOpen {x : X | Near f Q x} := by
   rw [isOpen_iff_forall_mem_open]
@@ -189,11 +189,11 @@ theorem isOpen_near (Q : MorphismProperty Scheme.{0}) : IsOpen {x : X | Near f Q
   exact ⟨Set.range g, fun z hz => ⟨T, T', g, g', f', H, hg, hz, hQ⟩, g.isOpenEmbedding.isOpen_range, hx⟩
 
 /- English proof (translation)
-Use `choose T T' g g' f' H hg hx hQ using h`. Rewrite using `[← MorphismProperty.isomorphisms.iff]`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top (fun y => t ⁻¹ᵁ (g y).opensRange) ?_ fun y => ?_` and prove the remaining obligations. Use `eq_top_iff.mpr fun z _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨z, ?_⟩` and prove the remaining obligations. Simplify using `using hx z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hg y` as an intermediate fact. Establish `: IsIso (f' y)` using `hQ y`. Establish `hle : Set.range (Scheme.Opens.ι (t ⁻¹ᵁ (g y).opensRange) ≫ t) ⊆ Set.range (g y)`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `z.2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `IsOpenImmersion.lift_fac (g y) _ hle`. Establish `big` using `(isPullback_morphismRestrict (pullback.snd f t) (t ⁻¹ᵁ (g y).opensRange)).paste_vert (IsPullback.of_hasPullback f t).flip`. Rewrite `big` using `[← hu]`. Rewrite using `[MorphismProperty.isomorphisms.iff]`. Conclude with `(big.of_bot' (H y)).isIso_fst_of_isIso`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_near {S : Scheme.{0}} (t : S ⟶ X)
     (h : ∀ y : S, Near f (MorphismProperty.isomorphisms _) (t y)) : IsIso (pullback.snd f t) := by
@@ -215,15 +215,15 @@ theorem isIso_of_near {S : Scheme.{0}} (t : S ⟶ X)
     exact (big.of_bot' (H y)).isIso_fst_of_isIso
 
 /- English proof (translation)
-Introduce `R _ _ Y X s φ K _ x hs _ hφ hflat hiso`. Set `: Algebra R K` to `x.toAlgebra`. Establish `: IsIso (pullback.snd φ (pullback.fst s (spMap (algebraMap R K))))` using `hiso`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `hU : IsOpen {z : X | Near φ (MorphismProperty.isomorphisms _) z}` using `isOpen_near φ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : IsClosed (s '' {z : X | Near φ (MorphismProperty.isomorphisms _) z}ᶜ)` using `s.isClosedMap _ hU.isClosed_compl`. Set `p : PrimeSpectrum R` to `⟨RingHom.ker x, RingHom.ker_isPrime x⟩`. Establish `hp : p ∉ s '' {z : X | Near φ (MorphismProperty.isomorphisms _) z}ᶜ`. Introduce and unpack `⟨z, hz, hsz⟩`. Use `hz (near_isIso_of_isProper s φ K z ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsz]`. Both sides reduce to the same expression. Take `⟨_, ⟨f, rfl⟩, hpf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hp hZ.isOpen_compl`. Use `⟨f, fun h0 => (PrimeSpectrum.mem_basicOpen _ _).mp hpf (RingHom.mem_ker.mpr h0), ?_⟩` and prove the remaining obligations. Use `isIso_of_near φ _ fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hy`. Establish `hmem : s (pullback.fst s (spMap (algebraMap R (Localization.Away f))) y) ∈ PrimeSpectrum.basicOpen f`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Use `(PrimeSpectrum.mem_basicOpen _ _).mpr fun hf => ?_` and prove the remaining obligations. Establish `hf' : algebraMap R (Localization.Away f) f ∈ (pullback.snd s (spMap (algebraMap R (Localization.Away f))) y).asIdeal` using `hf`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(pullback.snd s (spMap (algebraMap R (Localization.Away f))) y).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hf' (IsLocalization.Away.algebraMap_isUnit f))`. Conclude with `hsub hmem ⟨_, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Y X : Scheme.{0}) (s : X ⟶ Sp R) (φ : Y ⟶ X) (K : Type) [Field K] (x : R →+* K), IsProper s → Flat s → IsProper φ → Flat (φ ≫ s) → IsIso (pullback.snd φ (pullback.fst s (spMap x))) → ∃ f : R, x f ≠ 0 ∧ IsIso (pullback.snd φ (pullback.fst s (spMap (algebraMap R (Localization.Away f))))) := by
   intro R _ _ Y X s φ K _ x hs _ hφ hflat hiso

@@ -25,14 +25,14 @@ namespace GlobalTheory.ArcChartExt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sabMap_cast_φ {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f₁ f₂ : S' ⟶ S} (h : f₁ = f₂)
     (n : SABMap t' t f₁) : (h ▸ n).φ = n.φ := by
   subst h; rfl
 
 /- English proof (translation)
-Take `⟨m', hm'⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel (g := 𝟙 S') m ((Category.id_comp f).symm ▸ n)`. Conclude with `⟨m', (sabMap_cast_φ (Category.id_comp f).symm n).symm.trans hm'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sab_cancel_id {S S' : Scheme.{0}} {t : SAB H S} {t' t'' : SAB H S'} {f : S' ⟶ S}
     (m : SABMap t' t f) (n : SABMap t'' t f) : ∃ m' : SABMap t'' t' (𝟙 S'), n.φ = m'.φ ≫ m.φ := by
@@ -40,7 +40,7 @@ theorem exists_sab_cancel_id {S S' : Scheme.{0}} {t : SAB H S} {t' t'' : SAB H S
   exact ⟨m', (sabMap_cast_φ (Category.id_comp f).symm n).symm.trans hm'⟩
 
 /- English proof (translation)
-Take `⟨m', hm'⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m n`. Conclude with `⟨Category.id_comp f ▸ m', (sabMap_cast_φ (Category.id_comp f) m').trans hm'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sab_comp_id {S S' : Scheme.{0}} {t : SAB H S} {t' t'' : SAB H S'} {f : S' ⟶ S}
     (m : SABMap t' t f) (n : SABMap t'' t' (𝟙 S')) : ∃ m' : SABMap t'' t f, m'.φ = n.φ ≫ m.φ := by
@@ -48,33 +48,29 @@ theorem exists_sab_comp_id {S S' : Scheme.{0}} {t : SAB H S} {t' t'' : SAB H S'}
   exact ⟨Category.id_comp f ▸ m', (sabMap_cast_φ (Category.id_comp f) m').trans hm'⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c p W hp hpW Z Y bV hbV O' _ _ _ b' ϖ a χ₀ hO hχ₀ x₀ hx₀ χ hχ`. Establish `hPS : IsNoetherianRing (PowerSeries O') ∧ IsIntegrallyClosed (PowerSeries O')`. Break down `hO with ⟨hF, -⟩ | ⟨hD, -, -⟩` into its components or cases. Use `letI := hF.toField`. Conclude with `⟨inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Supply the required witnesses or components.
 
-Conclude with `⟨inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩`. Use `haveI := hPS.1`. Use `haveI := hPS.2`. Take `⟨t, m₁, m₂, hc⟩` from `GlobalTheory.T.integral_point_pullback_comparison E H D l Xo c W Z Y bV hbV (PowerSeries O') χ χ₀ x₀ hχ hx₀`. Use `haveI := GlobalTheory.PolArcData.mono_spMap_incl bV hbV`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eF` using `GlobalTheory.PolArcData.spMap_algebraMap_eq bV hbV`. Use `haveI : Mono (spMap (algebraMap (𝓞 c.F) c.F)) := by`. Rewrite using `[eF]`. Use `haveI := mono_spMap_subtype (c.V W)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZj : Mono Z.j` using `GlobalTheory.ThetaShiftProofs.mono_j Z inferInstance`. Establish `hab : ∀ x, χ x ∈ abLocus Z.t.G ↔ χ₀ x ∈ abLocus Y.t.G` using `fun x => (abLocus_pullback abLocusOne Z.t.semi m₁.cart.1 x).trans (abLocus_pullback abLocusOne Y.t.semi m₂.cart.1 x).symm`. Establish `h1 : χ ≫ Z.s = spMap (PowerSeries.C (R` using `O')) ≫ spMap (b'.comp bV) := by`. Use `ext_of_isDominant_of_isSeparated (terminal.from _) (terminal.hom_ext _ _) (Out.jK (PowerSeries O')) ?_` and prove the remaining obligations. Establish `e1 : Out.jK (PowerSeries O') ≫ χ ≫ Z.s = x₀ ≫ pullback.snd _ _ ≫ spMap (c.V W).subtype ≫ spMap bV`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hχ, Category.assoc, Model.j_s, eF]`. Establish `e2 : Out.jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap (b'.comp bV) = x₀ ≫ pullback.snd _ _ ≫ spMap (c.V W).subtype ≫ spMap bV := by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[spMap_comp, Category.assoc, ← Category.assoc χ₀, hχ₀.1]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = x₀ ≫ pullback.snd _ _ ≫ spMap (c.V W).subtype ≫ spMap bV := by`. Rewrite using `[hx₀, Category.assoc, ← Category.assoc Y.j, Model.j_s]`. Simplify using `only [Category.assoc]`. Rewrite using `[e1, e2]`. Establish `h2 : ∀ x : Sp (PowerSeries O'), χ x ∈ abLocus Z.t.G ↔ PowerSeries.X ∉ x.asIdeal` using `fun x => (hab x).trans (hχ₀.2.1 x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ x : Sp (PowerSeries O'), PowerSeries.C ϖ * PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Z.j`. Introduce `x hx`. Take `⟨q, hq⟩` from `hχ₀.2.2.1 x hx`. Establish `hab' : χ x ∈ abLocus Z.t.G` using `(hab x).2 (hq ▸ GlobalTheory.ThetaShiftProofs.j_mem_abLocus Y q)`. Establish `k1 : (χ ≫ Z.s) x = (χ₀ ≫ Y.s ≫ spMap bV) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← Category.assoc, hχ₀.1, spMap_comp, Category.assoc]`. Establish `k2 : (Y.j ≫ Y.s ≫ spMap bV) q = (pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c.F) c.F)) q`. Rewrite using `[← Category.assoc, Model.j_s, eF, Category.assoc]`. Establish `hs : Z.s (χ x) ∈ Set.range (spMap (algebraMap (𝓞 c.F) c.F))`. Use `⟨pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) q, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Scheme.Hom.comp_apply] at k1 k2`. Rewrite using `[← k2, hq, k1]`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : χ x ∈ Set.range (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))) := by`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hs`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr' : r ∈ Set.range Z.jQ`. Rewrite using `[← Z.ab_gen, Set.mem_preimage, hr]`. Conclude with `hab'`. Take `⟨z, rfl⟩` from `hr'`. Conclude with `⟨z, by rw [Model.j, Scheme.Hom.comp_apply, hr]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Take `⟨t', m', P, φ, he, w, e, s1, s2, s3, s4, s5, s6⟩` from `hχ₀.2.2.2`. Take `⟨n, hn⟩` from `exists_sab_cancel_id m₂ m'`. Take `⟨mZ, hmZ⟩` from `exists_sab_comp_id m₁ n`. Use `⟨t', mZ, P, φ, he, w, e, s1, s2, s3, s4, s5, fun F _ _ _ _ uF ha hu => ⟨(s6 F uF ha hu).1, fun yF hyF k p₀ σ hσ q₀ q x e1 e2 e3 e4 => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : yF = Out.jFK (R` using `PowerSeries O') F ≫ x₀ := by`. Rewrite using `[← cancel_mono Z.j, hyF, Category.assoc, hχ]`. Establish `hyY : yF ≫ Y.j = Out.jFK (R` using `PowerSeries O') F ≫ Out.jK (PowerSeries O') ≫ χ₀ := by`. Rewrite using `[hyx, Category.assoc, ← hx₀]`. Establish `go : ∀ σY : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G, σ.left ≫ Z.m0.toSABMap.φ = σY.left ≫ Y.m0.toSABMap.φ → x.left ≫ P.U.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK (PowerSeries O')) ≫ m'.φ = yF ≫ σY.left ≫ Y.m.φ`.
-
-Introduce `σY h0`. Establish `b₁ : σ.left ≫ Z.oF.t.G.hom = 𝟙 _` using `Over.w σ`. Establish `b₂ : σY.left ≫ Y.oF.t.G.hom = 𝟙 _` using `Over.w σY`. Use `hc _ (x.left ≫ P.U.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK (PowerSeries O')) ≫ n.φ) (yF ≫ σ.left) (yF ≫ σY.left) (by rw [hmZ] at e4; simpa only [Category.assoc] using e4) (by rw [Category.assoc, h0, Category.assoc]) (by rw [Category.assoc, b₁, Category.assoc, b₂])` as an intermediate fact. Rewrite using `[hn]`.
-
-Simplify `this` using `only [Category.assoc]`. Break down `hσ with ⟨hk, v, hv, rfl⟩ | ⟨hk, v, hvm, hv, rfl⟩` into its components or cases. Conclude with `(s6 F uF ha hu).2 yF hyY k p₀ (Y.oF.etaA v) (Or.inl ⟨hk, v, hv, rfl⟩) q₀ q x e1 e2 e3 (go _ ((Z.m0.etaA v).trans (Y.m0.etaA v).symm))`. Conclude with `(s6 F uF ha hu).2 yF hyY k p₀ (Y.oF.eta v) (Or.inr ⟨hk, v, hvm, hv, rfl⟩) q₀ q x e1 e2 e3 (go _ ((Z.m0.eta v).trans (Y.m0.eta v).symm))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isArcChart_extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

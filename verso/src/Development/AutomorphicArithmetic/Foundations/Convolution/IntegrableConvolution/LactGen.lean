@@ -25,11 +25,11 @@ private def compR (D : InfD σ m) (i : Fin (m + 1)) :
       (D.e.toRingHom.comp (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm.toRingHom))
 
 /- English proof (translation)
-Establish `he : ⇑(GroundTheory.Global.homeomorphMixedSpace E).symm = ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace E).symm`. Use function extensionality and compare the values at `x`. Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace E).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, ← GroundTheory.Global.homeomorphMixedSpace_apply, Homeomorph.apply_symm_apply]`. Establish `h1 : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace E).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← he]`. Conclude with `(GroundTheory.Global.homeomorphMixedSpace E).symm.continuous`. Establish `h2 : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `: ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace F) = ⇑(GroundTheory.Global.homeomorphMixedSpace F)`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Global.homeomorphMixedSpace_apply]`. Rewrite using `[this]`. Conclude with `(GroundTheory.Global.homeomorphMixedSpace F).continuous`. Conclude with `h2.comp ((continuous_apply i).comp (D.cont.comp h1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_compR (D : InfD σ m) (i : Fin (m + 1)) : Continuous (compR D i) := by
   have he : ⇑(GroundTheory.Global.homeomorphMixedSpace E).symm =
@@ -50,7 +50,7 @@ private def compM (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) : ArchMatrix E n �
   RingHom.mapMatrix (m := Fin n) (compR D i)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun M : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace E) => M.map (compR D i)`. Conclude with `continuous_id.matrix_map (continuous_compR D i)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem continuous_compM (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) : Continuous (compM D n i) := by
   change Continuous fun M : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace E) => M.map (compR D i)
@@ -65,7 +65,7 @@ private theorem coe_compA (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (g : archG
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_compA, IsExpLieAlgebra.coe_expG, IsExpLieAlgebra.coe_expG, ← h]`. Conclude with `NormedSpace.map_exp_of_mem_ball (𝕂 := ℝ) (compM D n i) (continuous_compM D n i) _ ((NormedSpace.expSeries_radius_eq_top ℝ (ArchMatrix E n)).symm ▸ edist_lt_top _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compA_expG (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (Y : archLie E n) (Y' : archLie F n)
     (h : compM D n i (Y : ArchMatrix E n) = Y') :
@@ -77,9 +77,9 @@ private theorem compA_expG (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (Y : arch
     ((NormedSpace.expSeries_radius_eq_top ℝ (ArchMatrix E n)).symm ▸ edist_lt_top _ _)
 
 /- English proof (translation)
-Establish `e : D.e ((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm (along τ z)) = Pi.single k ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (along (τ.comp (algebraMap F E)) z))`. Rewrite using `[h z, RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (D.e ((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm (along τ z)) i) = _`. Rewrite using `[e]`. Distinguish the cases in `hik : i = k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hik` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hik, map_zero, if_neg hik]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem compR_along (D : InfD σ m) {τ : E →+* ℂ} {k : Fin (m + 1)} (h : InSlot D τ k) (z : ℂ)
     (i : Fin (m + 1)) :
@@ -99,11 +99,11 @@ private def xL {K : Type} [Field K] [NumberField K] (n : ℕ) (τ : K →+* ℂ)
   ⟨(Matrix.single p q (along τ z) : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K)), Submodule.mem_top⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Matrix.single p q (along τ z) : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace E)).map (compR D i) = _`. Distinguish the cases in `hik : i = k`. Rewrite using `[if_pos hik] ext1 a b`. Express the relevant statement in the definitionally equal form `_ = (Matrix.single p q (along (τ.comp (algebraMap F E)) z) : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace F)) a b`. Simplify using `only [Matrix.map_apply, Matrix.single_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[compR_along D h, if_pos hik]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hik] ext1 a b`. Express the relevant statement in the definitionally equal form `_ = (0 : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace F)) a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.single_apply, Matrix.zero_apply]`. Use `split_ifs`. Rewrite using `[compR_along D h, if_neg hik]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem compM_xL (D : InfD σ m) (n : ℕ) {τ : E →+* ℂ} {k : Fin (m + 1)} (h : InSlot D τ k)
     (p q : Fin n) (z : ℂ) (i : Fin (m + 1)) :
@@ -127,7 +127,7 @@ private theorem compM_xL (D : InfD σ m) (n : ℕ) {τ : E →+* ℂ} {k : Fin (
     · simp
 
 /- English proof (translation)
-Apply `compA_expG` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `compM D n k (t • (xL n τ p q z : ArchMatrix E n)) = t • (xL n (τ.comp (algebraMap F E)) p q z : ArchMatrix F n)`. Rewrite using `[map_real_smul (compM D n k) (continuous_compM D n k), compM_xL D n h, if_pos rfl]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem compA_exp_self (D : InfD σ m) (n : ℕ) {τ : E →+* ℂ} {k : Fin (m + 1)} (h : InSlot D τ k)
     (p q : Fin n) (z : ℂ) (t : ℝ) :
@@ -138,7 +138,7 @@ private theorem compA_exp_self (D : InfD σ m) (n : ℕ) {τ : E →+* ℂ} {k :
   rw [map_real_smul (compM D n k) (continuous_compM D n k), compM_xL D n h, if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[compA_expG D n i _ 0, IsExpLieAlgebra.expG_zero]`. Express the relevant statement in the definitionally equal form `compM D n i (t • (xL n τ p q z : ArchMatrix E n)) = 0`. Rewrite using `[map_real_smul (compM D n i) (continuous_compM D n i), compM_xL D n h, if_neg hi, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem compA_exp_ne (D : InfD σ m) (n : ℕ) {τ : E →+* ℂ} {k i : Fin (m + 1)} (h : InSlot D τ k)
     (hi : i ≠ k) (p q : Fin n) (z : ℂ) (t : ℝ) :
@@ -148,7 +148,7 @@ private theorem compA_exp_ne (D : InfD σ m) (n : ℕ) {τ : E →+* ℂ} {k i :
   rw [map_real_smul (compM D n i) (continuous_compM D n i), compM_xL D n h, if_neg hi, smul_zero]
 
 /- English proof (translation)
-Take `⟨h, -, -, -, -, -, -, e⟩` from `UpperTheory.ConvolutionTheory.Tf.lactSpec K n β hβ`. Rewrite using `[e, inv_inv, elem, IsExpLieAlgebra.rightUAction_ι]`. Conclude with `(isExpLieAlgebra K n).hasDerivAt_rightDeriv (f := fun g => β g⁻¹) h (xL n τ p q z) x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lact_elem {K : Type} [Field K] [NumberField K] {n : ℕ} (β : TI K n) (hβ : SmoothT β)
     (τ : K →+* ℂ) (p q : Fin n) (z : ℂ) (x : archGroup K n) :
@@ -160,15 +160,13 @@ private theorem lact_elem {K : Type} [Field K] [NumberField K] {n : ℕ} (β : T
     (f := fun g => β g⁻¹) h (xL n τ p q z) x
 
 /- English proof (translation)
-Establish `hsm : SmoothT β` using `(UpperTheory.ConvolutionTheory.L1.tensSmooth F E σ m D n φ β hβ).1 hφ`. Introduce `g`. Use `set x := g⁻¹ with hx`. Establish `hg : g = x⁻¹` using `by rw [hx, inv_inv]`. Use `set τ' := τ.comp (algebraMap F E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : ℂ := ∏ i ∈ Finset.univ.erase k, φ i (compA D n i g) with hC`. Establish `h1` using `lact_elem β hsm τ p q z x`. Establish `h2` using `lact_elem (φ k) (hφ k) τ' p q z (compA D n k x)`. Establish `e : (fun t : ℝ => β (x * (isExpLieAlgebra E n).expG (t • xL n τ p q z))⁻¹) = fun t : ℝ => φ k (compA D n k x * (isExpLieAlgebra F n).expG (t • xL n τ' p q z))⁻¹ * C`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hβ, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), map_inv (compA D n k), map_mul (compA D n k), compA_exp_self D n hk]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_inv (compA D n i), map_mul (compA D n i), compA_exp_ne D n hk (Finset.ne_of_mem_erase hi), mul_one, hx, map_inv (compA D n i), inv_inv]`. Rewrite `h1` using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `h1.unique (h2.mul_const C)`. Establish `hxk : (compA D n k x)⁻¹ = compA D n k g` using `by rw [hx, map_inv (compA D n k), inv_inv]`. Rewrite `h3` using `[hxk, ← hg]`. Rewrite using `[h3, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), Function.update_self]`. Use `congr 1`.
-
-Rewrite using `[hC]`. Conclude with `Finset.prod_congr rfl fun i hi => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem leftAction_tensor_generator (D : InfD σ m) [IsTotallyComplex F] (n : ℕ) (τ : E →+* ℂ) (k : Fin (m + 1)) (hk : InSlot D τ k)
     (φ : Fin (m + 1) → TI F n) (β : TI E n) (hφ : ∀ i, SmoothT (φ i)) (hβ : IsTens D φ β) (p q : Fin n) (z : ℂ) :
@@ -205,7 +203,7 @@ end
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ m D n τ k hk φ β hφ hβ p q z`. Conclude with `UpperTheory.ConvolutionTheory.L1.leftAction_tensor_generator D n τ k hk φ β hφ hβ p q z`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.lactGen :
     UpperTheory.ConvolutionTheory.L1.LactGen := by

@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 open NumberField Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.Tw.Descend`. Introduce `F Ω B _ _ _ _ _ _ _ _ art hart ψ hψc hdiag hfin`. Establish `hq` using `hart.quot`. Establish `hker : art.ker ≤ ψ.ker`. Rewrite using `[hart.ker]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.topologicalClosure_minimal _ ?_ ?_` and prove the remaining obligations. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hdiag k`. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `infConn at hz`. Take `⟨w, _, rfl⟩` from `hz`. Conclude with `hfin _ rfl`. Conclude with `isClosed_singleton.preimage hψc`. Set `fC : C(Ideles F, Gab F Ω)` to `⟨art, hq.continuous⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `gC : C(Ideles F, B)` to `⟨ψ, hψc⟩`. Establish `hfact : Function.FactorsThrough gC fC`. Introduce `a b hab`. Establish `hab' : a / b ∈ art.ker`. Rewrite using `[MonoidHom.mem_ker, map_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_eq_one.2 hab`. Use `hker hab'` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, map_div]`. Conclude with `div_eq_one.1 this`. Establish `hQ : Topology.IsQuotientMap fC` using `hq.isQuotientMap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `κC` to `hQ.lift gC hfact`. Establish `hκ : ∀ x, κC (art x) = ψ x` using `fun x => DFunLike.congr_fun (hQ.lift_comp gC hfact) x`. Set `κ₀ : Gab F Ω →* B` to `MonoidHom.mk' κC (by`. Introduce `a b`. Take `⟨x, rfl⟩` from `hq.surjective a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Take `⟨y, rfl⟩` from `hq.surjective b`. Rewrite using `[← map_mul, hκ, hκ, hκ, map_mul])`. Use `⟨κ₀.comp (GlobalTheory.HeckeGal.toAb F Ω), ?_, ?_⟩` and prove the remaining obligations. Conclude with `κC.continuous.comp (by first`. Consider the case `exact QuotientGroup.continuous_mk`.
-
-Consider the case `exact continuous_quot_mk)`. Introduce `x σ h show κC (GlobalTheory.HeckeGal.toAb F Ω σ) = ψ x`. Rewrite using `[← h, hκ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.descend :
     UpperTheory.V.Af.Tw.Descend := by

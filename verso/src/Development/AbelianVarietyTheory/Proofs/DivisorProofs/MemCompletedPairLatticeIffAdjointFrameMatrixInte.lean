@@ -22,11 +22,11 @@ variable {D : D7}
 open scoped Matrix
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, GlobalTheory.ConjHalfInt.map_gen, GlobalTheory.ConjHalfInt.adj_shape, Matrix.mul_smul, Matrix.smul_mul]`. Use `GlobalTheory.ConjHalfInt.isIntM_smul (GlobalTheory.PlaceVec.cF_mem_int (mul_mem hca hα)) ?_` and prove the remaining obligations. Establish `hA : (S.gram⁻¹).map (eToEAf D) * ((Matrix.of fun (_ : Fin 1) j => eToEAf D (∑ k, star (s k) * S.gram k j)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ = Matrix.of fun m (_ : Fin 1) => eToEAf D (s m)`. Use extensionality with `m z`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, GlobalTheory.ConjHalfInt.cF_eToEAf, ← map_mul, ← map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.ConjHalfInt.gram_inv_star]`. Establish `hB : ((Matrix.of fun i (_ : Fin 1) => eToEAf D (t i)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ * T.gram.map (eToEAf D) = Matrix.of fun (_ : Fin 1) m => eToEAf D (∑ l, star (t l) * T.gram l m)`. Use extensionality with `z m`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, GlobalTheory.ConjHalfInt.cF_eToEAf, ← map_mul, ← map_sum]`. Establish `e : (βS⁻¹).val * (S.gram⁻¹).map (eToEAf D) * (((Matrix.of fun (_ : Fin 1) j => eToEAf D (∑ k, star (s k) * S.gram k j)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ * ((Matrix.of fun i (_ : Fin 1) => eToEAf D (t i)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ) * (T.gram.map (eToEAf D) * β …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hA, hB]`. Conclude with `GlobalTheory.ConjHalfInt.isIntM_mul (GlobalTheory.ConjHalfInt.frame_col_int fS hs) (GlobalTheory.ConjHalfInt.pair_row_int hT fT ht)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapAdj_gen {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
@@ -63,17 +63,17 @@ theorem frMapAdj_gen {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank 
   exact GlobalTheory.ConjHalfInt.isIntM_mul (GlobalTheory.ConjHalfInt.frame_col_int fS hs) (GlobalTheory.ConjHalfInt.pair_row_int hT fT ht)
 
 /- English proof (translation)
-Establish `hx' : c • x = x` using `Matrix.ext hx`. Rewrite using `[← hx']`. Use `GlobalTheory.LatVac.latO_induction (p := fun u => IsIntM (frMapAdj S T βS βT (c • u))) ?_ ?_ ?_ ?_ hl` and prove the remaining obligations. Introduce `α hα M hM`. Establish `hα' : ((1 : D.host.E) ⊗ₜ[D.host.F] α : EAf D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `Subring.subset_closure (Or.inr ⟨⟨α, hα⟩, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hM using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, hs, t, ht, rfl⟩` from `hw`. Conclude with `frMapAdj_gen hS hT fS fT hα' (hc a ha) hs ht`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LatVac.finTens_zero, smul_zero, GlobalTheory.ConjHalfInt.frMapAdj_zero]`. Conclude with `fun _ _ => zero_mem _`. Consider the case `add M N _ _ hM hN`. Rewrite using `[GlobalTheory.LatVac.finTens_add, smul_add, GlobalTheory.PlaceVec.frMapAdj_add]`. Conclude with `fun i j => add_mem (hM i j) (hN i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Consider the case `neg M _ hM`. Rewrite using `[GlobalTheory.LatVac.finTens_neg, smul_neg, GlobalTheory.ConjHalfInt.frMapAdj_neg]`. Conclude with `fun i j => neg_mem (hM i j)`. Rewrite using `[smul_zero, GlobalTheory.ConjHalfInt.frMapAdj_zero]`. Conclude with `fun _ _ => zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v hu hv`. Rewrite using `[smul_add, GlobalTheory.PlaceVec.frMapAdj_add]`. Conclude with `fun i j => add_mem (hu i j) (hv i j)`. Introduce `u hu`. Rewrite using `[smul_neg, GlobalTheory.ConjHalfInt.frMapAdj_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i j => neg_mem (hu i j)`.
+A detailed English derivation is pending.
 -/
 theorem isIntM_adj_of_mem {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
@@ -111,9 +111,9 @@ theorem isIntM_adj_of_mem {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.
     exact fun i j => neg_mem (hu i j)
 
 /- English proof (translation)
-Use `⟨⟨Q, subset_rfl, Finset.empty_subset _, (⟨e, he⟩ : ∃ e : AE D, IsIdemSum e Q)⟩, Finset.disjoint_empty_right _, ?_⟩` and prove the remaining obligations. Introduce and unpack `PP (hPP | hPP) PP' hPP'`. Break down `hPP' with rfl | hc` into its components or cases. Conclude with `GlobalTheory.HalfCompare.primeToAA_of_not_mem (hQ _ hPP)`. Rewrite using `[(GlobalTheory.IdemSupport.isConjPl_iff PP PP').1 hc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.HalfCompare.primeToAA_of_not_mem ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Conclude with `hQ PP hPP`. Simplify using `at hPP`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem placesOK_of {e : AE D} {Q : Finset (Pl D.host.E)} (he : IsIdemSum e Q)
     (hQ : ∀ PP ∈ Q, ((GlobalTheory.HalfCompare.badInt D : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) : GlobalTheory.ExportSeries.PlacesOK Q ∅ := by
@@ -132,13 +132,13 @@ end GlobalTheory.QHalfLat
 open GlobalTheory.QHalfLat in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i _ Q hQt eQ he t ht`. Establish `hSV : IsSelfDualC (Vc D i) (R.ΛV i)` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)`. Establish `hSW : IsSelfDualC (Wc D i) (R.ΛW i)` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βW i)`. Take `⟨cV, hBV⟩` from `hC.lev.βV i`. Take `⟨cW, hBW⟩` from `hC.lev.βW i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hFV : Formalism.L2.DIV.IsFrame (R.βV i) (R.ΛV i)` using `hBV.1`. Establish `hFW : Formalism.L2.DIV.IsFrame (R.βW i) (R.ΛW i)` using `hBW.1`. Take `⟨t0, ht0⟩` from `hQt`. Establish `hbad : ∀ PP ∈ Q, ((GlobalTheory.HalfCompare.badInt D : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP hPP => hG.2 t0 PP (ht0 hPP)`. Establish `hP` using `placesOK_of he hbad`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : GlobalTheory.ExportSeries.idem Q = eQ` using `GlobalTheory.DatumFourier.idemSum_unique (Vc D i) he (show GlobalTheory.ExportSeries.SplitSet Q from ⟨eQ, he⟩).isIdemSum`. Establish `ht' : IsHalf (cA D (GlobalTheory.ExportSeries.idem Q)) t` using `by rw [hid]; exact ht`. Prove the components needed by the constructor for the conclusion. Introduce `hi`. Conclude with `GlobalTheory.ConjLatAdj.mem_latO_of_adj_int hSV hSW hFV hFW hP ht' hi`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hl`. Conclude with `isIntM_adj_of_mem hSV hSW hFV hFW (fun a ha => GlobalTheory.ConjHalfInt.toEAf_cA_idem_mul_mem hP ha) ht' hl`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (Q : Finset (Pl D.host.E)), (∃ t, Q ⊆ R.Q t) → ∀ eQ : AE D, IsIdemSum eQ Q → ∀ t : WO (Vc D i) (Wc D i), IsHalf (cA D eQ) t → (IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) (t)) ↔ t ∈ lattice₂ R i) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i _ Q hQt eQ he t ht

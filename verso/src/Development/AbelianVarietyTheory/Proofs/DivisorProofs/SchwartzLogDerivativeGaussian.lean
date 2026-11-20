@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hg : ∀ s : ℝ, HasDerivAt (fun s : ℝ => f (s • x)) ((s : ℂ) * P x x * f (s • x)) s`. Introduce `s`. Establish `h1 : HasDerivAt (fun s : ℝ => s • x) x s`. Simplify using `using (hasDerivAt_id s).smul_const x`. Establish `h2` using `(hf (s • x)).hasFDerivAt.comp_hasDerivAt s h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[hP, map_smul, Complex.real_smul]`. Conclude with `h2`. Establish `he : ∀ s : ℝ, HasDerivAt (fun s : ℝ => Complex.exp (-((s : ℂ) ^ 2 / 2 * P x x))) (Complex.exp (-((s : ℂ) ^ 2 / 2 * P x x)) * (-((s : ℂ) * P x x))) s`. Introduce `s`. Establish `h0 : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 s` using `Complex.ofRealCLM.hasDerivAt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun s : ℝ => -((s : ℂ) ^ 2 / 2 * P x x)) (-((s : ℂ) * P x x)) s`. Establish `h2` using `((((h0.mul h0)).div_const 2).mul_const (P x x)).neg`. Establish `e : (fun s : ℝ => -((s : ℂ) ^ 2 / 2 * P x x)) = -fun y : ℝ => ((fun s : ℝ => (s : ℂ)) * fun s : ℝ => (s : ℂ)) y / 2 * P x x`. Use extensionality with `s`. Simplify using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h2.congr_deriv (by ring)`. Conclude with `h1.cexp`. Establish `hd : ∀ s : ℝ, HasDerivAt (fun s : ℝ => f (s • x) * Complex.exp (-((s : ℂ) ^ 2 / 2 * P x x))) 0 s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `((hg s).mul (he s)).congr_deriv (by ring)`. Establish `hc` using `is_const_of_deriv_eq_zero (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) t 0`. Simplify using `only [zero_smul, Complex.ofReal_zero] at hc`. Establish `hc' : f (t • x) * Complex.exp (-((t : ℂ) ^ 2 / 2 * P x x)) = f 0`. Simplify using `using hc`.
-
-Rewrite using `[← hc', mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussian_ray_of_fderiv_eq_linear_mul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (f : V → ℂ) (hf : Differentiable ℝ f) (P : V → V →ₗ[ℝ] ℂ)
@@ -51,27 +49,25 @@ theorem gaussian_ray_of_fderiv_eq_linear_mul {V : Type} [NormedAddCommGroup V] [
   simp
 
 /- English proof (translation)
-Establish `ray` using `gaussian_ray_of_fderiv_eq_linear_mul (⇑f) f.differentiable P hP`. Establish `h1 : ∀ x, f x = f 0 * Complex.exp (1 / 2 * P x x)`. Introduce `x`. Simplify using `using ray x 1`. Establish `h0 : f 0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h`. Apply `hf` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[h1 x, h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : ∀ x, f x ≠ 0` using `fun x => by`. Rewrite using `[h1 x]`. Conclude with `mul_ne_zero h0 (Complex.exp_ne_zero _)`. Establish `hadd : ∀ x a b, P (a + b) x = P a x + P b x`. Introduce `x a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ (hne x)` to reduce the goal to its premises. Rewrite using `[add_mul, ← hP, ← hP, ← hP, map_add]`. Establish `hsmul : ∀ x (c : ℝ) a, P (c • a) x = c • P a x`. Introduce `x c a`. Apply `mul_right_cancel₀ (hne x)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc, ← hP, ← hP, map_smul]`. Set `Q : V →ₗ[ℝ] V →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun x y => -(1 / 2 * P y x)) (fun a b y => by rw [map_add]; ring) (fun c a y => by rw [map_smul]; simp only [Complex.real_smul]; ring) (fun x a b => by rw [hadd]; ring) (fun c x a => by rw [hsmul]; simp only [Complex.real_smul]; ring)`. Establish `hQ : ∀ x, Q x x = -(1 / 2 * P x x)` using `fun x => rfl`. Use `⟨Q, f 0, ?_, fun x => by rw [hQ, neg_neg]; exact h1 x⟩` and prove the remaining obligations. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `hre : 0 ≤ (P x x).re`. Rewrite `hle` using `[hQ]`. Simplify using `at hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨C, -, hC⟩` from `f.decay 1 0`. Establish `hlow : ∀ t : ℝ, ‖f 0‖ ≤ ‖f (t • x)‖`. Introduce `t`. Rewrite using `[ray x t, norm_mul, Complex.norm_exp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ ((t : ℂ) ^ 2 / 2 * P x x).re`. Establish `e : ((t : ℂ) ^ 2 / 2 * P x x) = ((t ^ 2 / 2 : ℝ) : ℂ) * P x x` using `by push_cast; ring`. Rewrite using `[e, Complex.re_ofReal_mul]`. Check the signs of the components of the expression. Conclude with `le_mul_of_one_le_right (norm_nonneg _) (Real.one_le_exp this)`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxp : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Establish `hzp : 0 < ‖f 0‖` using `norm_pos_iff.mpr h0`. Establish `hC0 : 0 ≤ C` using `le_trans (by positivity) (hC 0)`. Use `set t : ℝ := (C + 1) / (‖x‖ * ‖f 0‖) with ht`. Establish `htp : 0 < t` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hC (t • x)`. Rewrite `h2` using `[pow_one, norm_iteratedFDeriv_zero, norm_smul, Real.norm_of_nonneg htp.le]`. Establish `h3 : t * ‖x‖ * ‖f 0‖ ≤ C` using `le_trans (mul_le_mul_of_nonneg_left (hlow t) (by positivity)) h2`. Establish `h4 : t * ‖x‖ * ‖f 0‖ = C + 1`. Rewrite using `[ht]`.
-
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem schwartz_gaussian_of_fderiv_eq_linear_mul {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (f : SchwartzMap V ℂ) (hf : f ≠ 0)

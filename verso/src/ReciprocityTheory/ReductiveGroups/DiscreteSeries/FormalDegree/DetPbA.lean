@@ -8,7 +8,7 @@ variable {V W : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V]
   [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
 
 /- English proof (translation)
-Set `bV` to `Module.finBasis ℝ V`. Set `bW` to `Module.finBasis ℝ W`. Rewrite using `[← LinearMap.det_toMatrix bV, ← LinearMap.det_toMatrix bW, map_add, map_add, LinearMap.toMatrix_comp bV bW bV, LinearMap.toMatrix_comp bW bV bW, LinearMap.toMatrix_one, LinearMap.toMatrix_one]`. Conclude with `Matrix.det_one_add_mul_comm _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpb_sylv (f : W →ₗ[ℝ] V) (g : V →ₗ[ℝ] W) :
     LinearMap.det (1 + f ∘ₗ g : V →ₗ[ℝ] V) = LinearMap.det (1 + g ∘ₗ f : W →ₗ[ℝ] W) := by
@@ -21,7 +21,7 @@ theorem dpb_sylv (f : W →ₗ[ℝ] V) (g : V →ₗ[ℝ] W) :
   exact Matrix.det_one_add_mul_comm _ _
 
 /- English proof (translation)
-Establish `h : a * p * (a * q) = 0`. Rewrite using `[mul_assoc, ← mul_assoc p a q, hc, mul_assoc, h0, mul_zero, mul_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem dpb_ring {R : Type*} [Ring R] (a p q : R) (h0 : p * q = 0) (hc : p * a = a * p) :
     (1 + a * p) * (1 + a * q) = 1 + a * (p + q) := by
@@ -31,17 +31,17 @@ theorem dpb_ring {R : Type*} [Ring R] (a p q : R) (h0 : p * q = 0) (hc : p * a =
     _ = 1 + a * (p + q) := by rw [h, add_zero, mul_add, add_assoc]
 
 /- English proof (translation)
-Establish `hsy : ∀ X Y : Module.End ℝ V, LinearMap.det (1 + X * Y) = LinearMap.det (1 + Y * X)` using `fun X Y => dpb_sylv X Y`. Establish `hA : 1 + a = (1 + a * p) * (1 + a * q)` using `by rw [dpb_ring a p q hpq0 hpa, hpq, mul_one]`. Establish `hq : q = 1 - p` using `eq_sub_of_add_eq' hpq`. Establish `hqa : q * a = a * q` using `by rw [hq, sub_mul, mul_sub, one_mul, mul_one, hpa]`. Establish `hB1 : a * p = N * (q * C)` using `by rw [← hpa, ← hNC, ← mul_assoc, hpN, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB2 : q * C * N = a * q` using `by rw [mul_assoc, hCN, hqa]`. Establish `hB : LinearMap.det (1 + a * p) = LinearMap.det (1 + a * q)`. Rewrite using `[hB1, hsy N (q * C), hB2]`. Establish `hC : 1 + a * q = (1 + a * r) * (1 + a * s)` using `by rw [dpb_ring a r s hrs0 hra, hrs]`. Establish `hs : s = ι * r * κ` using `by rw [hιr, mul_assoc, hι, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1 : 1 + a * s = ι * (1 + a * r) * κ`. Rewrite using `[hs, mul_add, add_mul, mul_one, hι, ← mul_assoc ι a r, hιa]`. Simplify using `only [mul_assoc]`. Establish `hdet : LinearMap.det ι * LinearMap.det κ = 1` using `by rw [← map_mul, hι, map_one]`. Establish `hD : LinearMap.det (1 + a * s) = LinearMap.det (1 + a * r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hD1, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : LinearMap.det (1 + P ∘ₗ a ∘ₗ E : W →ₗ[ℝ] W) = LinearMap.det (1 + a * r)`. Establish `h` using `dpb_sylv E (P ∘ₗ a)`. Establish `h2 : E ∘ₗ (P ∘ₗ a) = a * r` using `by show (E ∘ₗ P) ∘ₗ a = a * r`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hEP, ← hra]`. Both sides reduce to the same expression. Rewrite `h` using `[h2]`. Conclude with `h.symm`. Rewrite using `[hA, map_mul, hB, hC, map_mul, hD, hE]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem det_one_add_compression (a p q r s ι κ N C : Module.End ℝ V) (E : W →ₗ[ℝ] V) (P : V →ₗ[ℝ] W)
     (hpq : p + q = 1) (hpq0 : p * q = 0) (hpa : p * a = a * p)
@@ -82,9 +82,9 @@ theorem det_one_add_compression (a p q r s ι κ N C : Module.End ℝ V) (E : W 
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `have key := det_one_add_compression (t - 1) ((1 / 2 : ℝ) • (1 + θ)) ((1 / 2 : ℝ) • (1 - θ)) ((1 / 4 : ℝ) • (1 + α - θ - α * θ)) ((1 / 4 : ℝ) • (1 - α - θ + α * θ)) ι (-ι) N C E P (by ext v; simp; module) (by ext v; simp [hθ]; try module) (by ext v; simp [htθ]; try module) (by ext …`. Establish `e1 : (1 : Module.End ℝ V) + (t - 1) = t` using `by abel`. Establish `e2 : (1 + P ∘ₗ (t - 1) ∘ₗ E : W →ₗ[ℝ] W) = P ∘ₗ t ∘ₗ E`. Use extensionality with `w`. Simplify using `[hPE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[e1, e2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dpb_abs (t θ α ι N C : Module.End ℝ V) (E : W →ₗ[ℝ] V) (P : V →ₗ[ℝ] W)
     (hθ : ∀ v, θ (θ v) = v) (hα : ∀ v, α (α v) = v) (hθα : ∀ v, θ (α v) = α (θ v))

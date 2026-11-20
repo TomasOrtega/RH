@@ -11,9 +11,9 @@ namespace PositivityTheory.HtPt.Gb
 open Module NumberField GlobalTheory.CompanionTheory.Ar.HT
 
 /- English proof (translation)
-Use `latIn_isLattice C v O hv Ω _ _ (hX.fg.map _) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← LatBasic.eigProj_of_mem hx]`. Establish `h : x ∈ Submodule.span C (X : Set Ω)` using `by rw [hX.span_eq_top]; trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := eigProj ρ σ) h`. Rewrite `h2` using `[Submodule.map_span]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem eigQuot_lattice {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O]
     [Algebra O C] (hv : v.Integers O) {E : Type} [Field E] [NumberField E]
@@ -28,9 +28,9 @@ theorem eigQuot_lattice {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
   exact h2
 
 /- English proof (translation)
-Introduce `C _ v O _ _ hv _ _ E _ _ c hc κ N V _ _ _ _ Ω _ _ _ _ P σ`. Use `⟨Submodule.map_mono ?_, ?_, eigQuot_lattice hv _ _ _ (PtBasic.om'_lattice P), eigQuot_lattice hv _ _ _ P.om_lat⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `P.ht_mem x hx`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `P.κ_mem y hy`. Conclude with `⟨κ • y, ⟨x, hx, e⟩, map_smul _ _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pt_om_block : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [IsAlgClosed C] [CharZero C] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (κ : O) (N : ℕ) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (Ω : Type) [AddCommGroup Ω] [Module C Ω] [Module O Ω] [IsScalarTower O C Ω] (P : HTPoint C O c κ N V Ω) (σ : E →+* C), P.omHT σ ≤ P.omRec σ ∧ (∀ x ∈ P.omRec σ, κ • x ∈ P.omHT σ) ∧ (latIn (P.omHT σ) (P.Ωsp σ)).IsLattice C ∧ (latIn (P.omRec σ) (P.Ωsp σ)).IsLattice C := by
   intro C _ v O _ _ hv _ _ E _ _ c hc κ N V _ _ _ _ Ω _ _ _ _ P σ
@@ -51,11 +51,11 @@ variable {C O : Type} [Field C] [CommRing O] [Algebra O C] {E : Type} [Field E] 
   (P : HTPoint C O c κ N V Ω)
 
 /- English proof (translation)
-Establish `h : ∀ a : 𝓞 E, P.e x (P.ρ a y) = σ (c (a : E)) * P.e x y`. Introduce `a`. Establish `h1` using `P.adj (RingOfIntegers.mapRingEquiv c a) x y`. Establish `h2 : RingOfIntegers.mapRingEquiv c (RingOfIntegers.mapRingEquiv c a) = a` using `by ext; exact hc _`. Rewrite `h1` using `[h2, LatBasic.mem_eigSp.1 hx, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, h, smul_eq_mul, ← mul_assoc]`. Rewrite using `[← Finset.sum_mul]`. Establish `: ∑ k, (σ.comp c.toRingHom) (dualInt E k) * σ (c ((RingOfIntegers.basis E k : 𝓞 E) : E)) = 1`. Rewrite using `[← map_one (σ.comp c.toRingHom), ← LatBasic.sum_dualInt_mul, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_eigProj (hc : ∀ x, c (c x) = x) (σ : E →+* C) {x : V} (hx : x ∈ eigSp P.ρ σ) (y : V) :
     P.e x (eigProj P.ρ (σ.comp c.toRingHom) y) = P.e x y := by
@@ -75,7 +75,7 @@ theorem e_eigProj (hc : ∀ x, c (c x) = x) (σ : E →+* C) {x : V} (hx : x ∈
   rw [this, one_mul]
 
 /- English proof (translation)
-Take `⟨h1, d, -, -, h2⟩` from `exists_diff_generator C v O hv E σ`. Take `⟨-, -, h3, h4⟩` from `SubDiffQuot.eigSub_eq_different_smul_eigQuot O C V E P.ρ P.T N P.t σ d hv.hom_inj h1 h2 P.free`. Rewrite using `[← h4, finrank_span_eq_card h3, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eigSp [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O) (σ : E →+* C) :
     finrank C (eigSp P.ρ σ) = N := by
@@ -85,13 +85,13 @@ theorem finrank_eigSp [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O) 
   rw [← h4, finrank_span_eq_card h3, Fintype.card_fin]
 
 /- English proof (translation)
-Use `haveI := PtBasic.finite_V P`. Set `f` to `P.ht ∘ₗ (eigSp P.ρ σ).subtype`. Establish `h` using `f.finrank_range_add_finrank_ker`. Establish `hr : LinearMap.range f = P.Ωsp σ`. Apply `le_antisymm` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `P.ht x ∈ eigSp _ _`. Rewrite using `[← LatBasic.eigProj_of_mem x.2, PtBasic.ht_eigProj]`. Conclude with `LatBasic.eigProj_mem _ _ _`. Introduce `y hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `PtBasic.ht_surjective P y`. Use `⟨⟨_, LatBasic.eigProj_mem P.ρ σ x⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.ht (eigProj P.ρ σ x) = _`. Rewrite using `[PtBasic.ht_eigProj, LatBasic.eigProj_of_mem hy]`. Establish `hk : finrank C (LinearMap.ker f) = finrank C (P.Wsp σ)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Submodule.finrank_map_subtype_eq, LinearMap.ker_comp, Submodule.map_comap_subtype, inf_comm]`. Both sides reduce to the same expression. Rewrite `h` using `[hr, hk, finrank_eigSp P hv]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_W_add_Ω [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O) (σ : E →+* C) :
     finrank C (P.Wsp σ) + finrank C (P.Ωsp σ) = N := by
@@ -117,19 +117,17 @@ theorem finrank_W_add_Ω [CharZero C] {v : Valuation C NNReal} (hv : v.Integers 
   omega
 
 /- English proof (translation)
-Use `haveI := PtBasic.finite_V P`. Use `set τ := σ.comp c.toRingHom`. Set `B : eigSp P.ρ σ →ₗ[C] Module.Dual C (eigSp P.ρ τ)` to `(P.e.domRestrict₁₂ (eigSp P.ρ σ) (eigSp P.ρ τ))`. Establish `hinj : Function.Injective B`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `: (x : V) = 0` using `P.nondeg _ fun y => by`. Rewrite using `[PtBasic.e_skew, ← e_eigProj P hc σ x.2, neg_eq_zero]`. Conclude with `congrArg (fun φ => φ ⟨_, LatBasic.eigProj_mem P.ρ τ y⟩) (LinearMap.mem_ker.1 hx)`. Conclude with `Subtype.ext this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsurj : Function.Surjective B` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`. Rewrite using `[Subspace.dual_finrank_eq, finrank_eigSp P hv, finrank_eigSp P hv])).1 hinj`. Set `W₁ : Submodule C (eigSp P.ρ σ)` to `P.W.comap (eigSp P.ρ σ).subtype`. Set `W₂ : Submodule C (eigSp P.ρ τ)` to `P.W.comap (eigSp P.ρ τ).subtype`. Establish `hW : W₁ = W₂.dualAnnihilator.comap B`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[Submodule.mem_comap (f := B), Submodule.mem_dualAnnihilator]`. Express the relevant statement in the definitionally equal form `P.ht x = 0 ↔ _`. Rewrite using `[P.lagr]`. Use `⟨fun h w hw => h w hw, fun h y hy => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e_eigProj P hc σ x.2]`. Use `h ⟨_, LatBasic.eigProj_mem P.ρ τ y⟩ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.ht (eigProj P.ρ τ y) = 0`. Rewrite using `[PtBasic.ht_eigProj, hy, map_zero]`. Establish `e1 : finrank C W₁ = finrank C W₂.dualAnnihilator`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← (LinearEquiv.ofBijective B ⟨hinj, hsurj⟩).finrank_map_eq W₁, hW]`. Conclude with `congrArg (fun U : Submodule C (Module.Dual C (eigSp P.ρ τ)) => finrank C U) (Submodule.map_comap_eq_of_surjective hsurj _)`. Establish `e2` using `Subspace.finrank_add_finrank_dualAnnihilator_eq W₂`. Establish `e3 : ∀ s : E →+* C, finrank C (P.W.comap (eigSp P.ρ s).subtype) = finrank C (P.Wsp s)`. Introduce `s`.
-
-Rewrite using `[← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype, inf_comm]`. Both sides reduce to the same expression. Rewrite `e2` using `[← e1, finrank_eigSp P hv, e3, e3]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_W_add_conj [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O)
     (hc : ∀ x, c (c x) = x) (σ : E →+* C) :
@@ -173,7 +171,7 @@ theorem finrank_W_add_conj [CharZero C] {v : Valuation C NNReal} (hv : v.Integer
   omega
 
 /- English proof (translation)
-Establish `h1` using `finrank_W_add_Ω P hv σ`. Establish `h2` using `finrank_W_add_Ω P hv (σ.comp c.toRingHom)`. Establish `h3` using `finrank_W_add_conj P hv hc σ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_Ω_add_Ω [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O)
     (hc : ∀ x, c (c x) = x) (σ : E →+* C) :

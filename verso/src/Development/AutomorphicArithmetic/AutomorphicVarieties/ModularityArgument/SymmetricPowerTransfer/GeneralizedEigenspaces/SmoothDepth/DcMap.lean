@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open ValuativeRel UpperTheory.V UpperTheory.V.Z.Sym
 
 /- English proof (translation)
-Establish `hJ` using `((Sig.finFacts k W).2.2.2.2.2 n).1 a`. Use `haveI := Set.Finite.to_subtype hJ`. Use `haveI := Fintype.ofFinite (MulAction.orbit (W.J n) (a : GL (Fin n) k ⧸ W.J n))`. Simplify using `only [Hi.dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, map_sum, hf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.dcMap {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (W : Sig.Lev k) {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]

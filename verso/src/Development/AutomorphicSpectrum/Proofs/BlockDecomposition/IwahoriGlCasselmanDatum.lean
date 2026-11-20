@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.IwahoriDatumGL
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: {g : GL (Fin n) k | ∀ i j, P i j → g.val i j = c i j} = ⋂ i, ⋂ j, ⋂ _ : P i j, {g : GL (Fin n) k | g.val i j = c i j}`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_entries (P : Fin n → Fin n → Prop) (c : Fin n → Fin n → k) :
     IsClosed {g : GL (Fin n) k | ∀ i j, P i j → g.val i j = c i j} := by
@@ -26,9 +26,9 @@ theorem isClosed_entries (P : Fin n → Fin n → Prop) (c : Fin n → Fin n →
     isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const
 
 /- English proof (translation)
-Use `isClosed_entries k n (fun i j => j ≤ i) (fun i j => (1 : Matrix (Fin n) (Fin n) k) i j) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_unipB, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Break down `hij.lt_or_eq with h | rfl` into its components or cases. Rewrite using `[h1 i j h, one_apply_ne h.ne']`. Rewrite using `[h2, one_apply_eq]`. Introduce `h`. Conclude with `⟨fun i j hij => by rw [h i j hij.le, one_apply_ne hij.ne'], fun i => by rw [h i i le_rfl, one_apply_eq]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isClosed_unipB' : IsClosed (unipB k (Fin n) : Set (GL (Fin n) k)) := by
   convert isClosed_entries k n (fun i j => j ≤ i) (fun i j => (1 : Matrix (Fin n) (Fin n) k) i j) using 1
@@ -44,9 +44,9 @@ theorem isClosed_unipB' : IsClosed (unipB k (Fin n) : Set (GL (Fin n) k)) := by
       fun i => by rw [h i i le_rfl, one_apply_eq]⟩
 
 /- English proof (translation)
-Use `isClosed_entries k n (fun i j => i ≤ j) (fun i j => (1 : Matrix (Fin n) (Fin n) k) i j) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, GlobalTheory.IwahoriTraceProof.mem_unipBLower, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Break down `hij.lt_or_eq with h | rfl` into its components or cases. Rewrite using `[h1 i j h, one_apply_ne h.ne]`. Rewrite using `[h2, one_apply_eq]`. Introduce `h`. Conclude with `⟨fun i j hij => by rw [h i j hij.le, one_apply_ne hij.ne], fun i => by rw [h i i le_rfl, one_apply_eq]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isClosed_unipBLower' : IsClosed (unipBLower k (Fin n) : Set (GL (Fin n) k)) := by
   convert isClosed_entries k n (fun i j => i ≤ j) (fun i j => (1 : Matrix (Fin n) (Fin n) k) i j) using 1
@@ -62,13 +62,13 @@ theorem isClosed_unipBLower' : IsClosed (unipBLower k (Fin n) : Set (GL (Fin n) 
       fun i => by rw [h i i le_rfl, one_apply_eq]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩ i j hij`. Rewrite using `[val_diagT, diagonal_apply_ne _ hij]`. Introduce `h`. Establish `hd : ∀ i, g.val i i ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `h1 : (g.val * (g⁻¹).val) i i = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i (fun j _ hj => by rw [h i j hj.symm, zero_mul]) (by simp), hi, zero_mul]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => Units.mk0 _ (hd i), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[val_diagT]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[diagonal_apply_ne _ hij, h i j hij]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_diagT_iff (g : GL (Fin n) k) :
     g ∈ (diagT k (Fin n)).range ↔ ∀ i j, i ≠ j → g.val i j = 0 := by
@@ -91,7 +91,7 @@ theorem mem_range_diagT_iff (g : GL (Fin n) k) :
     · rw [diagonal_apply_ne _ hij, h i j hij]
 
 /- English proof (translation)
-Use `isClosed_entries k n (fun i j => i ≠ j) (fun _ _ => 0) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `mem_range_diagT_iff k n g`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isClosed_diagT : IsClosed ((diagT k (Fin n)).range : Set (GL (Fin n) k)) := by
   convert isClosed_entries k n (fun i j => i ≠ j) (fun _ _ => 0) using 1
@@ -99,7 +99,7 @@ theorem isClosed_diagT : IsClosed ((diagT k (Fin n)).range : Set (GL (Fin n) k))
   exact mem_range_diagT_iff k n g
 
 /- English proof (translation)
-Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation hx`. Conclude with `⟨u, ⟨(GlobalTheory.IwahoriTraceProof.mem_unipO_iff hu.1).2 hu, hu.1⟩, _, ⟨diagT_mem_iwahori hd, ⟨d, rfl⟩⟩, c, ⟨KOne_le_iwahori k (Fin n) hc.2, hc.1⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fact_up' {x : GL (Fin n) k} (hx : x ∈ iwahori k (Fin n)) :
     ∃ c ∈ iwahori k (Fin n) ⊓ unipB k (Fin n), ∃ b ∈ iwahori k (Fin n) ⊓ (diagT k (Fin n)).range,
@@ -109,7 +109,7 @@ theorem fact_up' {x : GL (Fin n) k} (hx : x ∈ iwahori k (Fin n)) :
     ⟨diagT_mem_iwahori hd, ⟨d, rfl⟩⟩, c, ⟨KOne_le_iwahori k (Fin n) hc.2, hc.1⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, b, hb, a, ha, e⟩` from `fact_up' k n (inv_mem hx)`. Use `⟨a⁻¹, inv_mem ha, b⁻¹, inv_mem hb, c⁻¹, inv_mem hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← _root_.inv_inj, e]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fact_low' {x : GL (Fin n) k} (hx : x ∈ iwahori k (Fin n)) :
     ∃ a ∈ iwahori k (Fin n) ⊓ unipBLower k (Fin n), ∃ b ∈ iwahori k (Fin n) ⊓ (diagT k (Fin n)).range,
@@ -139,7 +139,7 @@ def iwahoriCass : CassData (GL (Fin n) k) where
   fact_up _ hx := fact_up' k n hx
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n` and use `⟨iwahoriCass k n, rfl, rfl, rfl, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem iwahoriGL : PositivityTheory.SphericalProduct.IwahoriGL := fun k _ _ _ _ n =>
   ⟨iwahoriCass k n, rfl, rfl, rfl, rfl⟩

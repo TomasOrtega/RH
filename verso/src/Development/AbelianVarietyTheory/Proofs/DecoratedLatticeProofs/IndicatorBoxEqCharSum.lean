@@ -15,9 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-Establish `h` using `hK.eventually_forall_of_forall_eventually (x₀ := (0 : k)) (P := fun c x => c • x ∈ (box Y Y' (1 : kˣ) : Set (Matrix Y Y' k))) fun x _ => (continuous_smul.tendsto' ((0 : k), x) 0 (zero_smul _ _)).eventually ((isOpen_box (Y := Y) (Y' := Y') (1 : kˣ)).mem_nhds (box Y Y' 1).zero_mem)`. Take `⟨s, hs⟩` from `exists_cball_subset h`. Use `⟨s⁻¹, fun x hx r q => ?_⟩` and prove the remaining obligations. Establish `h1 : valuation k (((s : k) • x) r q) ≤ valuation k ((1 : kˣ) : k)` using `hs (show (s : k) ∈ cball s from le_refl (valuation k (s : k))) x hx r q`. Establish `e : x r q = (s : k)⁻¹ * (((s : k) • x) r q)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ s.ne_zero]`. Rewrite using `[e, map_mul, Units.val_inv_eq_inv_val]`. Conclude with `mul_le_of_le_one_right' (by simpa only [Units.val_one, map_one] using h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box_superset {K : Set (Matrix Y Y' k)} (hK : IsCompact K) :
     ∃ R : kˣ, ∀ x ∈ K, x ∈ box Y Y' R := by

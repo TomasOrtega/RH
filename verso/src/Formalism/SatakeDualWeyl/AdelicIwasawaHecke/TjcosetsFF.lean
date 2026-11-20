@@ -33,7 +33,7 @@ theorem tjcosets_smul_apply {m n : ℕ} (g : GL (Fin n) 𝔽) (w : TjcosetsFr m 
 def tjcosets_idx (n j : ℕ) (i : Fin (n - j)) : Fin n := ⟨j + i, by omega⟩
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1` using `congrArg Fin.val h`. Simplify using `only [tjcosets_idx] at h1`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tjcosets_idx_injective (n j : ℕ) : Function.Injective (tjcosets_idx n j) := by
   intro a b h
@@ -44,7 +44,7 @@ theorem tjcosets_idx_injective (n j : ℕ) : Function.Injective (tjcosets_idx n 
 def standardBasisTuple (n j : ℕ) : TjcosetsFr (n - j) n 𝔽 := fun i => Pi.single (tjcosets_idx n j i) 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[tjcosets_smul_apply, standardBasisTuple, Matrix.mulVec_single_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem GL_smul_standard_tuple (n j : ℕ) (g : GL (Fin n) 𝔽) :
     (g • (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)) =
@@ -68,7 +68,7 @@ def tjcosets_parMon (n j : ℕ) : Submonoid (GL (Fin n) 𝔽) where
     · rw [hg a c ha (by omega), zero_mul]
 
 /- English proof (translation)
-Establish `hpos` using `(isOfFinOrder_of_finite x).orderOf_pos`. Establish `e : x ^ (orderOf x - 1) = x⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← pow_succ, Nat.sub_add_cancel hpos, pow_orderOf_eq_one])`. Rewrite using `[← e]`. Conclude with `S.pow_mem hx _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_inv_mem_of_finite {G : Type} [Group G] [Finite G] (S : Submonoid G) {x : G}
     (hx : x ∈ S) : x⁻¹ ∈ S := by
@@ -83,20 +83,20 @@ def tjcosets_par [Finite 𝔽] (n j : ℕ) : Subgroup (GL (Fin n) 𝔽) :=
     inv_mem' := fun hx => tjcosets_inv_mem_of_finite _ hx }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tjcosets_mem_par [Finite 𝔽] (n j : ℕ) (g : GL (Fin n) 𝔽) :
     g ∈ tjcosets_par n j ↔
       ∀ a b : Fin n, (a : ℕ) < j → j ≤ (b : ℕ) → (g : Matrix (Fin n) (Fin n) 𝔽) a b = 0 := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Use `⟨fun i => v (Fin.cast (Nat.zero_add k) i), hv.comp _ (Fin.cast_injective _), fun i => ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `ext`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `succ d ih`. Take `⟨s, hs, hsv⟩` from `ih (by omega)`. Take `⟨x, hx⟩` from `exists_linearIndependent_cons_of_lt_finrank hs (by rw [Module.finrank_fin_fun]; omega)`. Establish `hc : d + 1 + k = d + k + 1` using `by omega`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun i => (Fin.cons x s : Fin (d + k + 1) → Fin N → 𝔽) (Fin.cast hc i), hx.comp _ (Fin.cast_injective _), fun i => ?_⟩` and prove the remaining obligations. Establish `e : Fin.cast hc (Fin.natAdd (d + 1) i) = Fin.succ (Fin.natAdd d i)`. Use `ext`. Simplify using `only [Fin.coe_cast, Fin.coe_natAdd, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [e, Fin.cons_succ]`. Conclude with `hsv i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_linearIndependent_extension_fin (N : ℕ) (d k : ℕ) (hdk : d + k ≤ N) (v : Fin k → Fin N → 𝔽)
     (hv : LinearIndependent 𝔽 v) :
@@ -122,9 +122,9 @@ private theorem exists_linearIndependent_extension_fin (N : ℕ) (d k : ℕ) (hd
     exact hsv i
 
 /- English proof (translation)
-Take `⟨s, hs, hsw⟩` from `exists_linearIndependent_extension_fin n (n - (n - j)) (n - j) (by omega) w hw`. Establish `hc : n - (n - j) + (n - j) = n` using `by omega`. Use `⟨fun a => s (Fin.cast hc.symm a), hs.comp _ (Fin.cast_injective _), fun i => ?_⟩` and prove the remaining obligations. Establish `e : Fin.cast hc.symm (tjcosets_idx n j i) = Fin.natAdd (n - (n - j)) i`. Apply `Fin.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show j + (i : ℕ) = n - (n - j) + i`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show s (Fin.cast hc.symm (tjcosets_idx n j i)) = w i`. Rewrite using `[e, hsw]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_extend [Finite 𝔽] (n j : ℕ) (w : Fin (n - j) → Fin n → 𝔽)
     (hw : LinearIndependent 𝔽 w) :
@@ -141,16 +141,16 @@ theorem tjcosets_extend [Finite 𝔽] (n j : ℕ) (w : Fin (n - j) → Fin n →
   rw [e, hsw]
 
 /- English proof (translation)
-Conclude with `(Matrix.linearIndependent_cols_of_isUnit (Units.isUnit g)).comp _ (tjcosets_idx_injective n j)`.
+A detailed English derivation is pending.
 -/
 theorem GL_columns_linearIndependent [Finite 𝔽] (n j : ℕ) (g : GL (Fin n) 𝔽) :
     LinearIndependent 𝔽 (fun i => (g : Matrix (Fin n) (Fin n) 𝔽).col (tjcosets_idx n j i)) := by
   exact (Matrix.linearIndependent_cols_of_isUnit (Units.isUnit g)).comp _ (tjcosets_idx_injective n j)
 
 /- English proof (translation)
-Take `⟨s, hs, hsw⟩` from `tjcosets_extend n j w hw`. Set `A : Matrix (Fin n) (Fin n) 𝔽` to `Matrix.of fun a b => s b a`. Establish `hAc : A.col = s` using `by funext b a; rfl`. Establish `hA : IsUnit A` using `Matrix.linearIndependent_cols_iff_isUnit.1 (by rw [hAc]; exact hs)`. Use `⟨hA.unit, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GL_smul_standard_tuple]`. Use function extensionality and compare the values at `i`. Rewrite using `[IsUnit.unit_spec, hAc, hsw]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem tjcosets_exists_smul [Finite 𝔽] (n j : ℕ) (w : TjcosetsFr (n - j) n 𝔽)
     (hw : LinearIndependent 𝔽 (w : Fin (n - j) → Fin n → 𝔽)) :
@@ -165,9 +165,9 @@ theorem tjcosets_exists_smul [Finite 𝔽] (n j : ℕ) (w : TjcosetsFr (n - j) n
   rw [IsUnit.unit_spec, hAc, hsw]
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [MulAction.mem_orbit_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Rewrite using `[GL_smul_standard_tuple]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GL_columns_linearIndependent n j g`. Introduce `hw`. Conclude with `tjcosets_exists_smul n j w hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tjcosets_orbit_gl [Finite 𝔽] (n j : ℕ) :
     MulAction.orbit (GL (Fin n) 𝔽) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽) =
@@ -182,7 +182,7 @@ theorem tjcosets_orbit_gl [Finite 𝔽] (n j : ℕ) :
     exact tjcosets_exists_smul n j w hw
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [tjcosets_idx]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tjcosets_idx_sub (n j : ℕ) (b : Fin n) (hb : j ≤ (b : ℕ)) :
     tjcosets_idx n j ⟨b - j, by omega⟩ = b := by
@@ -191,9 +191,9 @@ theorem tjcosets_idx_sub (n j : ℕ) (b : Fin n) (hb : j ≤ (b : ℕ)) :
   omega
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `hg` using `[MulAction.mem_stabilizer_iff, GL_smul_standard_tuple]`. Rewrite using `[tjcosets_mem_par]`. Introduce `a b ha hb`. Establish `h1 : (g : Matrix (Fin n) (Fin n) 𝔽).col (tjcosets_idx n j ⟨b - j, by omega⟩) a = standardBasisTuple n j ⟨b - j, by omega⟩ a` using `congrFun (congrFun hg _) a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [standardBasisTuple] at h1`. Rewrite `h1` using `[tjcosets_idx_sub n j b hb]`. Establish `hab : a ≠ b` using `by intro h; subst h; omega`. Rewrite `h1` using `[Pi.single_eq_of_ne hab]`. Simplify `h1` using `[Matrix.col]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tjcosets_stab_le_par [Finite 𝔽] (n j : ℕ) :
     MulAction.stabilizer (GL (Fin n) 𝔽) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽) ≤
@@ -211,15 +211,15 @@ theorem tjcosets_stab_le_par [Finite 𝔽] (n j : ℕ) :
   simpa [Matrix.col] using h1
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [MulAction.mem_orbit_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp⟩`. Establish `hp' : (p : GL (Fin n) 𝔽) • (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽) = w` using `hp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hp'` using `[GL_smul_standard_tuple]`. Substitute `hp'` using the available equality. Use `⟨GL_columns_linearIndependent n j (p : GL (Fin n) 𝔽), fun i a ha => ?_⟩` and prove the remaining obligations. Establish `h0` using `(tjcosets_mem_par n j (p : GL (Fin n) 𝔽)).1 p.2 a (tjcosets_idx n j i) ha (by simp [tjcosets_idx])`. Simplify `h0` using `[Matrix.col]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨hw, hz⟩`. Take `⟨g, hg⟩` from `tjcosets_exists_smul n j w hw`. Establish `hg'` using `hg`. Rewrite `hg'` using `[GL_smul_standard_tuple]`. Establish `hgP : g ∈ tjcosets_par n j`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tjcosets_mem_par]`. Introduce `a b ha hb`. Establish `h1 : (g : Matrix (Fin n) (Fin n) 𝔽).col (tjcosets_idx n j ⟨b - j, by omega⟩) a = w ⟨b - j, by omega⟩ a` using `congrFun (congrFun hg' _) a`. Rewrite `h1` using `[tjcosets_idx_sub n j b hb]`. Establish `h2` using `h1.trans (hz _ a ha)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h2` using `[Matrix.col]`. Use `⟨⟨g, hgP⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def]`. Conclude with `hg`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_orbit_par [Finite 𝔽] (n j : ℕ) :
     MulAction.orbit (tjcosets_par (𝔽 := 𝔽) n j) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽) =
@@ -263,7 +263,7 @@ def tjcosets_pr (n j : ℕ) : (Fin n → 𝔽) →ₗ[𝔽] (Fin (n - j) → �
   map_smul' c x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `[tjcosets_pr, tjcosets_ext, tjcosets_idx]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tjcosets_pr_ext (n j : ℕ) (u : Fin (n - j) → 𝔽) :
     tjcosets_pr n j (tjcosets_ext n j u) = u := by
@@ -271,7 +271,7 @@ theorem tjcosets_pr_ext (n j : ℕ) (u : Fin (n - j) → 𝔽) :
   simp [tjcosets_pr, tjcosets_ext, tjcosets_idx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [tjcosets_pr, tjcosets_ext, LinearMap.coe_mk, AddHom.coe_mk]`. Use `split_ifs with h`. Rewrite using `[tjcosets_idx_sub n j a h]`. Conclude with `(hx a (by omega)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_ext_pr (n j : ℕ) (x : Fin n → 𝔽) (hx : ∀ a : Fin n, (a : ℕ) < j → x a = 0) :
     tjcosets_ext n j (tjcosets_pr n j x) = x := by
@@ -304,13 +304,13 @@ def tjcosets_equiv (n j : ℕ) :
     exact tjcosets_pr_ext n j _
 
 /- English proof (translation)
-Establish `hk : n - j ≤ Module.finrank 𝔽 (Fin n → 𝔽)` using `by rw [Module.finrank_fin_fun]; omega`. Establish `hk' : n - j ≤ Module.finrank 𝔽 (Fin (n - j) → 𝔽)` using `by simp`. Establish `cGL : (MulAction.orbit (GL (Fin n) 𝔽) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).ncard = ∏ i : Fin (n - j), (Fintype.card 𝔽 ^ n - Fintype.card 𝔽 ^ (i : ℕ))`. Establish `h` using `card_linearIndependent (K := 𝔽) (V := Fin n → 𝔽) hk`. Rewrite `h` using `[Module.finrank_fin_fun]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[tjcosets_orbit_gl, ← Nat.card_coe_set_eq]`. Conclude with `h`. Establish `cP : (MulAction.orbit (tjcosets_par (𝔽` using `𝔽) n j) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).ncard = ∏ i : Fin (n - j), (Fintype.card 𝔽 ^ (n - j) - Fintype.card 𝔽 ^ (i : ℕ)) := by`. Establish `h` using `card_linearIndependent (K := 𝔽) (V := Fin (n - j) → 𝔽) hk'`. Rewrite `h` using `[Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tjcosets_orbit_par, ← Nat.card_coe_set_eq, Nat.card_congr (tjcosets_equiv (𝔽 := 𝔽) n j)]`. Conclude with `h`. Establish `hstab : (MulAction.stabilizer (GL (Fin n) 𝔽) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).relIndex (tjcosets_par n j) = (MulAction.orbit (tjcosets_par (𝔽` using `𝔽) n j) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).ncard := by`. Rewrite using `[← MulAction.index_stabilizer, Subgroup.relIndex]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmul` using `Subgroup.relIndex_mul_index (tjcosets_stab_le_par (𝔽 := 𝔽) n j)`. Rewrite `hmul` using `[MulAction.index_stabilizer, cGL, hstab, cP]`. Rewrite using `[mul_comm]`. Conclude with `hmul`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_ff_count [Fintype 𝔽] (n j : ℕ) (hj : j ≤ n) :
     (tjcosets_par (𝔽 := 𝔽) n j).index *

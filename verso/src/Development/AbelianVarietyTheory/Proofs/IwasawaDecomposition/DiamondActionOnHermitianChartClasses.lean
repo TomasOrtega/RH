@@ -9,26 +9,26 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S : GStep E
   {ST : Finset (HeightOneSpectrum (𝓞 E))} {A : TDat S ST} {T : ℕ}
 
 /- English proof (translation)
-The claim follows from `congrArg (Sigma.mk b) (Quotient.sound (show (MulAction.orbitRel (S.G b) (S.D b)).r (g • d) d from ⟨g, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem cl_smul_eq (b : S.β) (g : S.G b) (d : S.D b) : S.cl b (g • d) = S.cl b d :=
   congrArg (Sigma.mk b) (Quotient.sound (show (MulAction.orbitRel (S.G b) (S.D b)).r (g • d) d from ⟨g, rfl⟩))
 
 /- English proof (translation)
-Take `⟨b, q⟩` from `c`. Conclude with `congrArg (Sigma.mk b) (S.rp_spec b q)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cl_rep_eq (c : S.Cl) : S.cl c.1 (S.rep c) = c := by
   obtain ⟨b, q⟩ := c
   exact congrArg (Sigma.mk b) (S.rp_spec b q)
 
 /- English proof (translation)
-The claim follows from `(MulAction.orbitRel (S.G b) (S.D b)).symm (Quotient.exact (S.rp_spec b (Quotient.mk _ d)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_move (b : S.β) (d : S.D b) : ∃ g : S.G b, g • S.rep (S.cl b d) = d :=
   (MulAction.orbitRel (S.G b) (S.D b)).symm (Quotient.exact (S.rp_spec b (Quotient.mk _ d)))
 
 /- English proof (translation)
-Introduce `d d' hd`. Use `congrArg (A.dia b P a⁻¹) hd` as an intermediate fact. Rewrite `this` using `[← h.dia_mul, ← h.dia_mul, inv_mul_cancel, h.dia_one, h.dia_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dia_inj (h : A.Ok T) (b : S.β) (P : ST) (a : (Res P.1)ˣ) : Function.Injective (A.dia b P a) := by
   intro d d' hd
@@ -36,7 +36,7 @@ theorem dia_inj (h : A.Ok T) (b : S.β) (P : ST) (a : (Res P.1)ˣ) : Function.In
   rwa [← h.dia_mul, ← h.dia_mul, inv_mul_cancel, h.dia_one, h.dia_one] at this
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, ← h.dia_act]`. Conclude with `(dia_inj h b P a).eq_iff`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_dia (h : A.Ok T) (b : S.β) (P : ST) (a : (Res P.1)ˣ) (d : S.D b) :
     MulAction.stabilizer (S.G b) (A.dia b P a d) = MulAction.stabilizer (S.G b) d := by
@@ -45,7 +45,7 @@ theorem stab_dia (h : A.Ok T) (b : S.β) (P : ST) (a : (Res P.1)ˣ) (d : S.D b) 
   exact (dia_inj h b P a).eq_iff
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_move (S := S) b d`. Conclude with `Nat.card_congr (MulAction.stabilizerEquivStabilizer hg.symm).toEquiv`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_stab_cl (b : S.β) (d : S.D b) :
     Nat.card (S.Stab (S.cl b d)) = Nat.card (MulAction.stabilizer (S.G b) d) := by
@@ -59,9 +59,9 @@ namespace GlobalTheory.Mem.Col2
 open DiaCl
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ n S ST A T _ h`. Use `⟨fun P c => ?_, fun P a b c => ?_, fun P a c => ?_⟩` and prove the remaining obligations. Unfold `TDat.diaPt`. Rewrite using `[h.dia_one, cl_rep_eq]`. Unfold `TDat.diaPt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨g, hg⟩` from `exists_move (S := S) c.1 (A.dia c.1 P b (S.rep c))`. Rewrite using `[← cl_smul_eq c.1 g (A.dia c.1 P a _), ← h.dia_act, hg, h.dia_mul]`. Rewrite using `[card_stab_cl]`. Unfold `TDat.diaPt`. Rewrite using `[stab_dia h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem diamond_action_on_classes : ∀ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
     {S : GStep E K n} {ST : Finset (HeightOneSpectrum (𝓞 E))} (A : TDat S ST) (T : ℕ), S.Ok → A.Ok T →

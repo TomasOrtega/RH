@@ -14,11 +14,11 @@ namespace GlobalTheory.LatFinMod
 open GlobalTheory.LatVac
 
 /- English proof (translation)
-Proceed by induction on `G, hG using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨{0}, Set.finite_singleton _, fun x hx => ⟨0, rfl, 0, zero_mem _, by simpa using hx⟩⟩`. Consider the case `@insert g G _ _ ih`. Take `⟨R, hR, h⟩` from `ih`. Use `⟨Set.image2 (fun (j : ℤ) r => j • g + r) (Set.Ico 0 k) R, (Set.finite_Ico _ _).image2 _ hR, fun x hx => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, y, hy, rfl⟩` from `Submodule.mem_span_insert.1 hx`. Take `⟨r, hr, u, hu, rfl⟩` from `h y hy`. Establish `hk' : (0 : ℤ) < k` using `by exact_mod_cast hk`. Use `⟨_, ⟨c % k, ⟨Int.emod_nonneg _ hk'.ne', Int.emod_lt_of_pos _ hk'⟩, r, hr, rfl⟩, (c / k) • g + u, Submodule.mem_span_insert.2 ⟨_, u, hu, rfl⟩, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Int.emod_add_mul_ediv c k]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_smul, mul_smul, smul_add, natCast_zsmul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_finite_mod {W : Type} [AddCommGroup W] {G : Set W} (hG : G.Finite) {k : ℕ} (hk : 0 < k) :
     ∃ R : Set W, R.Finite ∧ ∀ x ∈ Submodule.span ℤ G, ∃ r ∈ R, ∃ u ∈ Submodule.span ℤ G, x = r + k • u := by
@@ -38,9 +38,9 @@ theorem exists_finite_mod {W : Type} [AddCommGroup W] {G : Set W} (hG : G.Finite
     abel
 
 /- English proof (translation)
-Establish `h1 : Module.Finite (𝓞 E) N` using `Module.Finite.iff_fg.2 hN`. Establish `h2 : Module.Finite ℤ N` using `Module.Finite.trans (𝓞 E) N`. Take `⟨s, hs⟩` from `h2.fg_top`. Use `⟨Subtype.val '' (s : Set N), s.finite_toSet.image _, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `y.2`. Establish `: (⟨x, hx⟩ : N) ∈ Submodule.span ℤ (s : Set N)` using `by rw [hs]; trivial`. Conclude with `Submodule.apply_mem_span_image_of_mem_span (N.subtype.toAddMonoidHom.toIntLinearMap) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int_gen {E M : Type} [Field E] [NumberField E] [AddCommGroup M] [Module (𝓞 E) M]
     (N : Submodule (𝓞 E) M) (hN : N.FG) :
@@ -54,9 +54,9 @@ theorem exists_int_gen {E M : Type} [Field E] [NumberField E] [AddCommGroup M] [
     exact Submodule.apply_mem_span_image_of_mem_span (N.subtype.toAddMonoidHom.toIntLinearMap) this
 
 /- English proof (translation)
-Establish `gen : ∀ {U : Type} [AddCommGroup U] (g : U → W), (∀ u u', g (u + u') = g u + g u') → ∀ (N : Submodule ℤ W) (V : Set U), (∀ u ∈ V, g u ∈ N) → ∀ u ∈ Submodule.span ℤ V, g u ∈ N`. Introduce `U _ g hg N V hV u hu`. Establish `: Submodule.span ℤ V ≤ N.comap (AddMonoidHom.mk' g hg).toIntLinearMap` using `Submodule.span_le.2 hV`. Conclude with `this hu`. Use `gen (fun a => f a s t) (fun a a' => h1 a a' s t) _ A (fun a ha => ?_) a ha` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `gen (fun s => f a s t) (fun s s' => h2 a s s' t) _ B (fun s hs => ?_) s hs` and prove the remaining obligations. Use `gen (fun t => f a s t) (h3 a s) _ C (fun t ht => ?_) t ht` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨(a, s, t), ⟨ha, hs, ht⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem triadd_mem_span {X Y Z W : Type} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z] [AddCommGroup W]
     (f : X → Y → Z → W) (h1 : ∀ a a' s t, f (a + a') s t = f a s t + f a' s t)
@@ -75,16 +75,16 @@ theorem triadd_mem_span {X Y Z W : Type} [AddCommGroup X] [AddCommGroup Y] [AddC
   exact Submodule.subset_span ⟨(a, s, t), ⟨ha, hs, ht⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `[mul_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_sum_add {E : Type} [CommRing E] [StarRing E] {n : ℕ} (c : E) (s s' g : Fin n → E) :
     c * ∑ k, star ((s + s') k) * g k = c * ∑ k, star (s k) * g k + c * ∑ k, star (s' k) * g k := by
   simp [mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hp : pairA F 0 (ε * (algebraMap F _ x + k • β)) = x • pairA F 0 ε + k • pairA F 0 (ε * β)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) = x • 0 + k • 0`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `ε * (algebraMap F _ x + k • β) = x • ε + k • (ε * β)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_add, mul_smul_comm, Algebra.smul_def x, mul_comm ε]`. Rewrite using `[hp, TensorProduct.add_tmul, TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def x, ← mul_assoc, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_tmul_split {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (ε β : Af F) (x : F) (k : ℕ) (a t g : E) :
@@ -100,19 +100,19 @@ theorem pair_tmul_split {F E : Type} [Field F] [NumberField F] [Field E] [Algebr
     ← mul_assoc, ← mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem add_nsmul_residue_add {W : Type} [AddCommGroup W] (k : ℕ) (y u y' u' : W) :
     y + k • u + (y' + k • u') = y + y' + k • (u + u') := by rw [smul_add]; abel
 
 /- English proof (translation)
-Rewrite using `[smul_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem neg_nsmul_residue {W : Type} [AddCommGroup W] (k : ℕ) (y u : W) : -(y + k • u) = -y + k • -u := by
   rw [smul_neg]; abel
 
 /- English proof (translation)
-Rewrite using `[smul_add, add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_nsmul_residue_assoc {W : Type} [AddCommGroup W] (k : ℕ) (r u' u : W) :
     r + k • u' + k • u = r + k • (u' + u) := by rw [smul_add, add_assoc]
@@ -120,7 +120,7 @@ theorem add_nsmul_residue_assoc {W : Type} [AddCommGroup W] (k : ℕ) (r u' u : 
 variable {D : D7}
 
 /- English proof (translation)
-Use `triadd_mem_span (genMap S T) (fun a a' s t => ?_) (fun a s s' t => ?_) (fun a s t t' => ?_) ha hs ht` and prove the remaining obligations. Conclude with `Matrix.ext fun i j => (congrArg (· * _) (add_mul a a' (t i))).trans (add_mul _ _ _)`. Conclude with `Matrix.ext fun i j => star_sum_add (a * t i) s s' fun k => S.gram k j`. Conclude with `Matrix.ext fun i j => (congrArg (· * _) (mul_add a (t i) (t' i))).trans (add_mul _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genMap_mem_span (S T : HSp D) {A : Set D.host.E} {B : Set (Fin S.rank → D.host.E)}
     {C : Set (Fin T.rank → D.host.E)} {a s t} (ha : a ∈ Submodule.span ℤ A) (hs : s ∈ Submodule.span ℤ B)
@@ -147,27 +147,25 @@ theorem evalV_idemAt (F : Type) [Field F] [NumberField F] (P : HeightOneSpectrum
     (v : HeightOneSpectrum (𝓞 F)) : evalV F v (idemAt F P) = if P v then 1 else 0 := rfl
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT hS hT P k hk`. Take `⟨A, hA, hA1, hA2⟩` from `exists_int_gen (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) (FractionalIdeal.fg_of_isNoetherianRing le_rfl _)`. Take `⟨B, hB, hB1, hB2⟩` from `exists_int_gen ΛS hS`. Take `⟨C, hC, hC1, hC2⟩` from `exists_int_gen ΛT hT`. Set `ε` to `idemAt D.host.F P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hε : ε ∈ intAf D.host.F`. Introduce `v`. Rewrite using `[evalV_idemAt]`. Use `split_ifs`. Conclude with `one_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `zero_mem _`. Establish `hε0 : ∀ v, ¬ P v → evalV D.host.F v ε = 0` using `fun v hv => by rw [evalV_idemAt, if_neg hv]`. Set `φ : Matrix (Fin T.rank) (Fin S.rank) D.host.E →ₗ[ℤ] WO S T` to `(AddMonoidHom.mk' (finTens ε) (finTens_add ε)).toIntLinearMap`. Set `G` to `φ '' ((fun p : _ × _ × _ => genMap S T p.1 p.2.1 p.2.2) '' (A ×ˢ B ×ˢ C))`. Establish `hG : G.Finite` using `((hA.prod (hB.prod hC)).image _).image _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) P`. Establish `hGΛ : ∀ x ∈ Submodule.span ℤ G, x ∈ Λ`. Establish `: Submodule.span ℤ G ≤ Λ.toIntSubmodule`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨⟨a, s, t⟩, ⟨ha, hs, ht⟩, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `AddSubgroup.subset_closure ⟨ε, hε, hε0, a, hA1 ha, s, hB1 hs, t, hC1 ht, rfl⟩`. Conclude with `fun x hx => this hx`. Establish `key : ∀ w ∈ Λ, ∃ y ∈ Submodule.span ℤ G, ∃ u ∈ Λ, w = y + k • u`. Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem w hw`. Take `⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Take `⟨x, β, hβ, hx⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat D.host.F k hk).2 α hα`. Establish `e : α = ε * α`. Use `RestrictedProduct.ext _ _ fun v => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `evalV D.host.F v α = evalV D.host.F v (ε * α)`. Rewrite using `[map_mul, evalV_idemAt]`. Use `split_ifs with hv`. Rewrite using `[one_mul]`. Rewrite using `[h0 v hv, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hxa : algebraMap D.host.F D.host.E x * a ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E)` using `Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) ha`. Use `⟨φ (genMap S T (algebraMap D.host.F D.host.E x * a) s t), Submodule.apply_mem_span_image_of_mem_span φ (genMap_mem_span S T (hA2 _ hxa) (hB2 _ hs) (hC2 _ ht)), finTens (ε * β) (genMap S T a s t), AddSubgroup.subset_closure ⟨ε * β, fun v => ?_, fun v hv => ?_, a, ha, s, hs, t, ht, …` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (hε v) (hβ v)`. Rewrite using `[map_mul, hε0 v hv, zero_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[e, hx]`. Conclude with `Matrix.ext fun i j => pair_tmul_split ε β _ k a (t i) _`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`. Consider the case `add x x' _ _ h h'`. Take `⟨y, hy, u, hu, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', u', hu', rfl⟩` from `h'`. Conclude with `⟨y + y', add_mem hy hy', u + u', add_mem hu hu', add_nsmul_residue_add k y u y' u'⟩`. Consider the case `neg x _ h`. Take `⟨y, hy, u, hu, rfl⟩` from `h`. Conclude with `⟨-y, neg_mem hy, -u, neg_mem hu, neg_nsmul_residue k y u⟩`.
-
-Take `⟨R, hR, h⟩` from `exists_finite_mod hG hk`. Use `⟨R, hR, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, u, hu, rfl⟩` from `key w hw`. Take `⟨r, hr, u', hu', rfl⟩` from `h y hy`. Conclude with `⟨r, hr, u' + u, add_mem (hGΛ _ hu') hu, add_nsmul_residue_assoc k r u' u⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latO_finite_mod : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), ΛS.FG → ΛT.FG → ∀ (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (k : ℕ), 0 < k → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) P, ∃ r ∈ R, ∃ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) P, t = r + k • u := by
   intro D S T ΛS ΛT hS hT P k hk

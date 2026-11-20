@@ -18,13 +18,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀) ∧ IsUnit (algebraMap (LetA O n) W.EE (qA W)) ∧ IsUnit ((W.DelF.card : ℕ) : O)`. Conclude with `lemG_units W hcase hP9 hc₁ hO hOv hinj`. Take `⟨hπ, hq, -⟩` from `hU`. Establish `hz : InImg W F i (qA W ^ (Ai + ri) • x)`. Conclude with `q_pow_inImg W hcase hP9 hc₁ hO hOv hinj F i Ai ri hA hr hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hzN, hzx⟩` from `hz`. Use `set N := Ai + ri`. Use `set e : W.EE := (↑hq.unit⁻¹ : W.EE) ^ N with he`. Establish `key : algebraMap (LetA O n) W.EE (qA W ^ N) * e = 1`. Rewrite using `[he, map_pow, ← mul_pow, hq.mul_val_inv, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqy : qA W ^ N • (e • z) = z`. Rewrite using `[← algebraMap_smul W.EE (qA W ^ N), smul_smul, key, one_smul]`. Establish `hFy : W.map F (e • z) = x`. Rewrite using `[LinearMap.map_smul, hzx, ← algebraMap_smul W.EE (qA W ^ N) x, smul_smul, mul_comm, key, one_smul]`. Establish `hy : Formalism.MainNotions.LiftingTheory.InNΔi W T₁ i (aeval dop₁ P (e • z))`.
-
-Apply `hCONS` to reduce the goal to its premises. Rewrite using `[hqy]`. Conclude with `hzN`. Conclude with `⟨aeval dop₁ P (e • z), hy, by rw [aeval_dop_map W hπ F dop₁ hd₁ dop₂ hd₂, hFy]⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem step_ii (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) {T₁ T₂ : LocLat G Qp LL O}
     (hc₁ : IsCrys PD T₁.ρ)

@@ -32,7 +32,7 @@ def extSh.sec (φ : R →+* S) (F : Shv R) (U : Scheme.{0}) : Sec F U →+ Sec (
     ((ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).unit.app (F.obj.obj (op U))).hom.toAddMonoidHom
 
 /- English proof (translation)
-Establish `e1` using `(toSheafify Scheme.etaleTopology (F.obj ⋙ ModuleCat.extendScalars.{1, 1, 1} (uliftHom φ))).naturality g.op`. Establish `e2` using `(ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).unit.naturality (F.obj.map g.op)`. Establish `h1` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom e1) (((ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).unit.app (F.obj.obj (op U))).hom a)`. Establish `h2` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom e2) a`. Conclude with `h1.symm.trans (congrArg _ h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem extSh.sec_res (φ : R →+* S) (F : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (extSh.sec φ F U a) = extSh.sec φ F V (Sec.res g a) := by
@@ -44,7 +44,7 @@ theorem extSh.sec_res (φ : R →+* S) (F : Shv R) {V U : Scheme.{0}} (g : V ⟶
   exact h1.symm.trans (congrArg _ h2.symm)
 
 /- English proof (translation)
-Establish `e1` using `NatTrans.congr_app (toSheafify_naturality Scheme.etaleTopology (Functor.whiskerRight f.hom (ModuleCat.extendScalars.{1, 1, 1} (uliftHom φ)))) (op U)`. Establish `e2` using `(ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).unit.naturality (f.hom.app (op U))`. Establish `h1` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom e1) (((ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).unit.app (F.obj.obj (op U))).hom a)`. Establish `h2` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom e2) a`. Conclude with `h1.symm.trans (congrArg _ h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem extSh.sec_map (φ : R →+* S) {F G : Shv R} (f : F ⟶ G) (U : Scheme.{0}) (a : Sec F U) :
     Sec.map ((extSh φ).map f) (extSh.sec φ F U a) = extSh.sec φ G U (Sec.map f a) := by

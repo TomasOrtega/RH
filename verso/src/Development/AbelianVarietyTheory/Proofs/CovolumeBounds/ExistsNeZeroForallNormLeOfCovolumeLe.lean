@@ -18,9 +18,9 @@ variable [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasur
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Set `b : Basis (Fin (finrank ℝ V)) ℤ L` to `finBasisOfFinrankEq ℤ L (ZLattice.rank ℝ L)`. Set `b' : Basis (Fin (finrank ℝ V)) ℤ L'` to `finBasisOfFinrankEq ℤ L' (ZLattice.rank ℝ L')`. Rewrite using `[AddSubgroup.relIndex_eq_natAbs_det L'.toAddSubgroup L.toAddSubgroup h b' b, Nat.cast_natAbs, Int.cast_abs, ZLattice.covolume_eq_det_mul_measureReal L' μ b' (b.ofZLatticeBasis ℝ), ZLattice.covolume_eq_measure_fundamentalDomain L μ (ZLattice.isAddFundamentalDomain b μ)]`. Use `congr 2`. Rewrite using `[Basis.det_apply, Basis.det_apply, Int.cast_det]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Reduce the equality to equality of the corresponding arguments. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Basis.toMatrix_apply, Basis.toMatrix_apply]`. Conclude with `(b.ofZLatticeBasis_repr_apply ℝ L ⟨b' j, h (SetLike.coe_mem _)⟩ i)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolume_eq_relIndex_mul_of_haar (L' L : Submodule ℤ V) [DiscreteTopology L']
     [IsZLattice ℝ L'] [DiscreteTopology L] [IsZLattice ℝ L] (h : L' ≤ L) :

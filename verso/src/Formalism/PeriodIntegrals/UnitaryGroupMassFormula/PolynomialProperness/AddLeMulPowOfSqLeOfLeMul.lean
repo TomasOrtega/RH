@@ -8,16 +8,16 @@ noncomputable section
 namespace PI.PolynomialProperness
 
 /- English proof (translation)
-Simplify using `[fmul, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fmul_one (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (b : Fin (r + 1)) :
     fmul k r z 1 b = fvec k r z b := by
   simp [fmul, Matrix.one_apply]
 
 /- English proof (translation)
-Use `show σ *ᵥ (∑ a, c a b • fvec k r z a) = ∑ a, (v * c) a b • fvec k r z a`. Rewrite using `[← Matrix.mulVecLin_apply, map_sum]`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_smul, h, fmul, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (c a b)]`.
+A detailed English derivation is pending.
 -/
 lemma frame_mulVec_fmul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {σ : B.Mat k r}
     {v : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : ∀ b, σ *ᵥ fvec k r z b = fmul k r z v b)
@@ -32,24 +32,24 @@ lemma frame_mulVec_fmul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {σ : B.Ma
   rw [mul_comm (c a b)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular hv.1]`. Simplify using `[hv.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ut_det {m : ℕ} {v : Matrix (Fin m) (Fin m) ℂ} (hv : v ∈ UTset m) : v.det = 1 := by
   rw [Matrix.det_of_upperTriangular hv.1]
   simp [hv.2]
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv v (by rw [ut_det hv]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 lemma ut_mul_inv {m : ℕ} {v : Matrix (Fin m) (Fin m) ℂ} (hv : v ∈ UTset m) : v * v⁻¹ = 1 := Matrix.mul_nonsing_inv v (by rw [ut_det hv]; exact isUnit_one)
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma mx_nonneg {m : ℕ} (v : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ mx v := norm_nonneg _
 
 /- English proof (translation)
-Establish `h1 : m ^ 2 ≤ (CA * x ^ e) ^ 2` using `pow_le_pow_left₀ hm hmx 2`. Establish `h2 : C * m ^ 2 ≤ |C| * m ^ 2` using `mul_le_mul_of_nonneg_right (le_abs_self C) (sq_nonneg m)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma real_sq_bound {C CA m n x : ℝ} {e : ℕ} (hm : 0 ≤ m) (hmx : m ≤ CA * x ^ e) (hx : 1 ≤ x)
     (hn : n ≤ C * m ^ 2) : n ≤ |C| * CA ^ 2 * x ^ (2 * e) := by
@@ -61,13 +61,13 @@ lemma real_sq_bound {C CA m n x : ℝ} {e : ℕ} (hm : 0 ≤ m) (hmx : m ≤ CA 
     _ = |C| * CA ^ 2 * x ^ (2 * e) := by ring
 
 /- English proof (translation)
-Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `hs0 : 0 ≤ s` using `by linarith`. Use `set K := 2 * e + 2 with hK`. Establish `hxK : 1 ≤ x ^ K` using `one_le_pow₀ hx`. Establish `hA : 1 + D * x ^ K ≤ (1 + D) * x ^ K` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ 1 + D * x ^ K` using `by nlinarith`. Establish `hs_le : s ≤ s ^ 2` using `by nlinarith`. Establish `hs2 : s ^ 2 ≤ |Cc| * ((1 + D) * x ^ K) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hsx : s ≤ |Cc| * (1 + D) ^ 2 * x ^ (2 * K)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((1 + D) * x ^ K) ^ 2 = (1 + D) ^ 2 * x ^ (2 * K)` using `by ring`. Rewrite `hs2` using `[e2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxN : x ^ (2 * K + 1) ≤ x ^ N` using `pow_le_pow_right₀ hx (by omega)`. Establish `hB0 : 0 ≤ |Cc| * (1 + D) ^ 2` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma add_le_mul_pow_of_sq_le_of_le_mul {Cc D a s sp x : ℝ} {e N : ℕ} (hD : 0 ≤ D) (ha : 0 ≤ a) (hs1 : 1 ≤ s) (hx : 1 ≤ x)
     (hs : s ^ 2 ≤ Cc * (1 + D * x ^ (2 * e + 2)) ^ 2) (hsp : sp ≤ a * s * x) (hN : 4 * e + 5 ≤ N) :
@@ -99,25 +99,25 @@ lemma add_le_mul_pow_of_sq_le_of_le_mul {Cc D a s sp x : ℝ} {e N : ℕ} (hD : 
         mul_le_mul_of_nonneg_left hxN (mul_nonneg (by linarith) hB0)
 
 /- English proof (translation)
-Take `⟨hmul, hinv⟩` from `hG k r`. Take `⟨hnn, hsub, hvec, -⟩` from `hNF k r`. Establish `hσi` using `hinv σ hσ`. Establish `hγi` using `hinv γ hγ`. Establish `hg : σ⁻¹ * γ * s' ∈ B.GV k r` using `hmul _ (hmul _ hσi.2.1 _ hγ) _ hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : 1 ≤ B.gN (σ⁻¹ * γ * s')` using `(hN k r _ hg).2`. Establish `hσinv_f : ∀ b, σ⁻¹ *ᵥ fvec k r z b = fmul k r z v⁻¹ b`. Introduce `b`. Establish `h1 : σ *ᵥ fmul k r z v⁻¹ b = fvec k r z b`. Rewrite using `[frame_mulVec_fmul hσf, ut_mul_inv hv, fmul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Matrix.mulVec_mulVec, hσi.2.2.2, Matrix.one_mulVec]`. Establish `hσinv_f' : ∀ b, σ⁻¹ *ᵥ (γ *ᵥ fvec k r z' b) = (σ⁻¹ * γ * s') *ᵥ fmul k r z' u'⁻¹ b`. Introduce `b`. Establish `h1 : s' *ᵥ fmul k r z' u'⁻¹ b = fvec k r z' b`. Rewrite using `[frame_mulVec_fmul hsf, ut_mul_inv hu, fmul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hgv : ∀ i, nsq (σ⁻¹ *ᵥ gramVec k r z z' γ i) ≤ (|Cf| + |Cf'|) * CA ^ 2 * B.gN (σ⁻¹ * γ * s') ^ (2 * (r * (r + 1)) + 2)`. Introduce `i`. Generalize the expression as in `hxg : B.gN (σ⁻¹ * γ * s') = x at hx1 hbv hbu`. Establish `hx0 : 0 ≤ x` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hxp : x ^ (2 * (r * (r + 1))) ≤ x ^ (2 * (r * (r + 1)) + 2)` using `pow_le_pow_right₀ hx1 (by omega)`. Establish `hc0 : 0 ≤ CA ^ 2` using `sq_nonneg _`. Consider the cases of `i with`. Consider the case `inl a => show nsq (σ⁻¹ *ᵥ fvec k r z a) ≤ _`. Rewrite using `[hσinv_f]`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `real_sq_bound (mx_nonneg _) hbv hx1 (hCf v⁻¹ a)`. Establish `h2 : |Cf| * CA ^ 2 * x ^ (2 * (r * (r + 1))) ≤ |Cf| * CA ^ 2 * x ^ (2 * (r * (r + 1)) + 2)` using `mul_le_mul_of_nonneg_left hxp (by positivity)`. Establish `h3 : 0 ≤ |Cf'| * CA ^ 2 * x ^ (2 * (r * (r + 1)) + 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `inr b => show nsq (σ⁻¹ *ᵥ (γ *ᵥ fvec k r z' b)) ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Rewrite using `[hσinv_f']`. Establish `h0` using `hvec (σ⁻¹ * γ * s') (fmul k r z' u'⁻¹ b)`. Rewrite `h0` using `[hxg]`. Establish `h1` using `real_sq_bound (mx_nonneg _) hbu hx1 (hCf' u'⁻¹ b)`. Establish `h2 : x ^ 2 * nsq (fmul k r z' u'⁻¹ b) ≤ x ^ 2 * (|Cf'| * CA ^ 2 * x ^ (2 * (r * (r + 1))))` using `mul_le_mul_of_nonneg_left h1 (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : x ^ 2 * (|Cf'| * CA ^ 2 * x ^ (2 * (r * (r + 1)))) = |Cf'| * CA ^ 2 * x ^ (2 * (r * (r + 1)) + 2)` using `by ring`. Establish `h4 : 0 ≤ |Cf| * CA ^ 2 * x ^ (2 * (r * (r + 1)) + 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : 0 ≤ (|Cf| + |Cf'|) * CA ^ 2` using `by positivity`. Establish `hcore` using `hCc σ⁻¹ hσi.2.1 _ (by positivity) hgv`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNσ` using `hN k r σ hσ`. Rewrite `hcore` using `[hNσ.1]`. Establish `hs'eq : s' = γ⁻¹ * σ * (σ⁻¹ * γ * s')`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc γ⁻¹ σ σ⁻¹, hσi.2.2.1, Matrix.mul_one, hγi.2.2.2, Matrix.one_mul]`. Establish `hs'b : B.gN s' ≤ B.gN γ⁻¹ * B.gN σ * B.gN (σ⁻¹ * γ * s')` using `by conv_lhs => rw [hs'eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hN5 : 4 * (r * (r + 1)) + 5 ≤ 5 * (r + 1) ^ 2` using `by nlinarith`. Conclude with `add_le_mul_pow_of_sq_le_of_le_mul hD (hnn γ⁻¹) hNσ.2 hx1 hcore hs'b hN5`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bound_core (hG : GVGroup) (hN : NormInv) (hNF : GNFacts)
     {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {γ : B.Mat k r} (hγ : γ ∈ B.GV k r)
@@ -198,15 +198,15 @@ theorem bound_core (hG : GVGroup) (hN : NormInv) (hNF : GNFacts)
   exact add_le_mul_pow_of_sq_le_of_le_mul hD (hnn γ⁻¹) hNσ.2 hx1 hcore hs'b hN5
 
 /- English proof (translation)
-Use `⟨5, fun k r z z' γ hstd hpos hmono => ?_⟩` and prove the remaining obligations. Take `⟨CA, hA1, hA2⟩` from `hA k r z z' γ hmono`. Take `⟨Cc, hCc⟩` from `hC k r z z' γ hstd hpos`. Take `⟨Cf, hCf⟩` from `hF k r z`. Take `⟨Cf', hCf'⟩` from `hF k r z'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hγ : γ ∈ B.GV k r` using `hpos.1`. Take `⟨hmul, hinv⟩` from `hG k r`. Use `⟨(1 + B.gN γ⁻¹) * (|Cc| * (1 + (|Cf| + |Cf'|) * CA ^ 2) ^ 2), ?_, ?_⟩` and prove the remaining obligations. Introduce `σ hσ s' hs'`. Take `⟨hσG, v, hv, hvL, hσf⟩` from `hSg k r z z' γ hstd σ hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hs'G, u', hu, hsf⟩` from `hS k r z' hstd.2.2 s' hs'`. Establish `hg : σ⁻¹ * γ * s' ∈ B.GV k r` using `hmul _ (hmul _ (hinv σ hσG).2.1 _ hγ) _ hs'G`. Establish `hg1` using `(hN k r _ hg).2`. Establish `hZg` using `hZ k r z z' γ σ s' v u' hσG hs'G hσf hsf`. Take `⟨hbv, hbu⟩` from `hA1 v hv hvL u' hu _ hg1 hZg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `bound_core hG hN hNF hγ hCf hCf' hCc σ s' v u' hσG hs'G hv hu hσf hsf hbv hbu`. Introduce `s hs σ' hσ'`. Take `⟨hsG, u, hu, hsf⟩` from `hS k r z hstd.2.1 s hs`. Take `⟨hσG, v', hv', hPv, hσf⟩` from `hSg' k r z z' γ hstd σ' hσ'`. Establish `hg : s⁻¹ * γ * σ' ∈ B.GV k r` using `hmul _ (hmul _ (hinv s hsG).2.1 _ hγ) _ hσG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1` using `(hN k r _ hg).2`. Establish `hZg` using `hZ k r z z' γ s σ' u v' hsG hσG hsf hσf`. Take `⟨hbu, hbv⟩` from `hA2 u hu v' hv' hPv _ hg1 hZg`. Conclude with `bound_core hG hN hNF hγ hCf hCf' hCc s σ' u v' hsG hσG hu hv' hsf hσf hbu hbv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem polyProper_of_steps (hG : GVGroup) (hN : NormInv) (hNF : GNFacts) (hF : FmulBound)
     (hZ : ZhatMove) (hS : FrameS) (hSg : FrameSg) (hSg' : FrameSg') (hA : UnitriangularInversePolynomialBound)

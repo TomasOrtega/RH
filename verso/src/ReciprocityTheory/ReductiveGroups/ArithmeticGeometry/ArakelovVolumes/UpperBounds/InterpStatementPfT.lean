@@ -14,7 +14,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.AR.Inst
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `IW.kronHolPsi_of (extF_of lu_holds hF) measInv_holds vanishAtS_holds ortho_holds lu_holds OmFConnStatement_holds normFactor_rightBorel_holds normFactor_leftAction_holds`.
+A detailed English derivation is pending.
 -/
 theorem kronHolPsi_of_frameMeas (hF : FrameMeasStatement (E := E)) : KronHolPsiStatement (E := E) :=
   IW.kronHolPsi_of (extF_of lu_holds hF) measInv_holds vanishAtS_holds ortho_holds lu_holds

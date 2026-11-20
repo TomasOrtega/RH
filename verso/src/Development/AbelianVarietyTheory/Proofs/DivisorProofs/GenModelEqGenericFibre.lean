@@ -36,20 +36,20 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R R' : Type} [CommRing R] [Comm
   {S : Scheme.{0}}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage u).hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (u : Sp B ⟶ Sp A) : ∃ β : A →+* B, u = spMap β :=
   ⟨(Spec.preimage u).hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B) (β : B →+* C) :
     spMap β ≫ spMap φ = spMap (β.comp φ) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {β β' : A →+* B} (h : spMap β = spMap β') : β = β' :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
@@ -178,15 +178,15 @@ def toObj (hρ : gb.ρ = φ b.ρ) (ht : ∀ i, gb.t i = φ.comp (b.t i)) {t : S 
     exact ⟨tateRestrict I, hI⟩
 
 /- English proof (translation)
-Take `⟨oS, ⟨m₀⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N _ _ M.s (pullback.fst M.s (spMap φ)) M.univ`. Establish `hs : pullback.fst M.s (spMap φ) ≫ M.s = pullback.snd M.s (spMap φ) ≫ spMap φ` using `pullback.condition`. Set `gS : GObj gb N (pullback.snd M.s (spMap φ))` to `toGObj (rebase hρ ht hs oS) (hA _ _ _)`. Set `oX : Obj b N (X.s ≫ spMap φ)` to `toObj hρ ht X.univ (hB _ _ _)`. Take `⟨f, ⟨hf, ⟨mf⟩⟩, -⟩` from `X.rep _ _ gS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g, ⟨hg, ⟨mg⟩⟩, -⟩` from `M.rep _ _ oX`. Set `j : X.X ⟶ pullback M.s (spMap φ)` to `pullback.lift g X.s hg`. Establish `j₁ : j ≫ pullback.fst _ _ = g` using `pullback.lift_fst _ _ _`. Establish `j₂ : j ≫ pullback.snd _ _ = X.s` using `pullback.lift_snd _ _ _`. Establish `mf' : ObjMap oS oX f` using `⟨mf.φ, mf.φ₂, mf.cart, mf.sq, mf.act, mf.pol, mf.eta⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : f ≫ g = pullback.fst _ _` using `(M.rep _ _ oS).unique ⟨by rw [Category.assoc, hg, ← Category.assoc, hf, hs], objMap_comp p D R b N _ _ _ _ _ _ _ _ _ _ _ mf' mg⟩ ⟨rfl, ⟨m₀⟩⟩`. Take `⟨mj⟩` from `PullFactor.objMap_factor p D R b N _ _ _ _ _ _ M.univ oS oX _ j m₀ (j₁.symm ▸ mg)`. Take `⟨me⟩` from `objMap_comp p D R b N _ _ _ _ _ _ _ _ _ _ _ mj mf'`. Take `⟨mi⟩` from `RepFamModel.objMap_refl oX`. Establish `e₂ : j ≫ f = 𝟙 _` using `(X.rep _ _ X.univ).unique ⟨by rw [Category.assoc, hf, j₂], ⟨⟨me.φ, me.φ₂, me.cart, me.sq, me.act, me.pol, me.eta⟩⟩⟩ ⟨Category.id_comp _, ⟨⟨mi.φ, mi.φ₂, mi.cart, mi.sq, mi.act, mi.pol, mi.eta⟩⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₃ : f ≫ j = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, j₁, e₁, Category.id_comp]`. Rewrite using `[Category.assoc, j₂, hf, Category.id_comp]`. Use `⟨j, ⟨f, e₂, e₃⟩, j₂, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[j₁]`. Conclude with `⟨mg.φ, mg.φ₂, mg.cart, mg.sq, mg.act, ⟨mg.pol⟩, mg.eta⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cmp_of (hρ : gb.ρ = φ b.ρ) (ht : ∀ i, gb.t i = φ.comp (b.t i))
     (hA : ∀ (S : Scheme.{0}) (t : S ⟶ Sp R') (o : Obj (baseOf gb) N t), GeomFull o t)
@@ -227,23 +227,23 @@ namespace GlobalTheory.UPel.HT.GenCmp
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R' : Type} [CommRing R'] [Algebra ℚ R'] {S : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_ringHom (β.comp (algebraMap ℚ R')).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_hom {k : Type} [Field k] (β : R' →+* k) : CharZero k :=
   charZero_of_injective_ringHom (β.comp (algebraMap ℚ R')).injective
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_spMap (x₀ ≫ t)`. Use `haveI := charZero_of_hom β`. Take `⟨I, -⟩` from `o.geom k x₀ β hβ`. Take `⟨y, hy⟩ : ∃ y : D.La, I.ev M y = g` from `(I.onto M hM g).1 hn`. Establish `key : ∀ z : D.La, (M : ℤ) ∣ D.EF y z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `hm : 0 < M * 2` using `by omega`. Establish `ha : I.ev (M * 2) y ^ 2 = g` using `by rw [I.tower M 2 hM two_pos y, hy]`. Establish `hc` using `GlobalTheory.WeilSqKer.weilIs_eq_one S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ o.symm o.ample k x₀ (M * 2) (Nat.cast_ne_zero.2 hm.ne') _ _ ((I.onto _ hm _).2 ⟨y, rfl⟩) ((I.onto _ hm _).2 ⟨z, rfl⟩) (ha ▸ hg) _ (I.isom _ hm y z)`. Establish `h1 : I.ζ (M * 2) ^ (2 * D.EF y z) = 1` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 (hc.trans (map_one _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `((I.ζ_prim (M * 2) hm).zpow_eq_one_iff_dvd _).1 h1`. Establish `h4 : (M : ℤ) * 2 ∣ D.EF y z * 2`. Rewrite using `[mul_comm (D.EF y z)]`. Conclude with `h3` after adjusting the coercions. Conclude with `(mul_dvd_mul_iff_right (by norm_num : (2 : ℤ) ≠ 0)).1 h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `f : D.La →ₗ[ℤ] ℤ` to `{ toFun := fun z => D.EF y z / M map_add' := fun u v => by`. Rewrite using `[map_add, Int.add_ediv_of_dvd_left (key u)]`. Use the proof step `map_smul' := fun r u => by`. Rewrite using `[map_smul, smul_eq_mul, smul_eq_mul, RingHom.id_apply, Int.mul_ediv_assoc _ (key u)] }`. Establish `hf : ∀ z, (M : ℤ) * f z = D.EF y z` using `fun z => Int.mul_ediv_cancel' (key z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Take `⟨w, hw⟩` from `hEF f`. Establish `hyw : e • y = M • w`. Apply `D.nondeg` to reduce the goal to its premises. Use extensionality with `z`. Establish `hwz : D.EF w z = e • f z` using `by rw [hw]; rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [map_nsmul, LinearMap.smul_apply, hwz, nsmul_eq_mul]`. Rewrite using `[← hf z]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_one_geom {gb : GBase D.toG R'} {N : ℕ} {t : S ⟶ Sp R'} (o : GObj gb N t) (e : ℕ)
     (hEF : ∀ f : D.La →ₗ[ℤ] ℤ, ∃ x, D.EF x = e • f) (k : Type) [Field k] [IsAlgClosed k] (x₀ : Sp k ⟶ S)
@@ -286,13 +286,13 @@ theorem pow_eq_one_geom {gb : GBase D.toG R'} {N : ℕ} {t : S ⟶ Sp R'} (o : G
     _ = 1 := (I.ker M hM _).2 ⟨w, hyw⟩
 
 /- English proof (translation)
-Take `⟨e, he, hEF⟩` from `D.perfP`. Use `⟨e, he, fun T x hx => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `T.left.affineCover.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Take `⟨B, ⟨u⟩⟩ : ∃ B : CommRingCat.{0}, Nonempty (T.left.affineCover.X i ≅ Spec B)` from `⟨_, ⟨(T.left.affineCover.X i).isoSpec⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cancel_epi u.inv]`. Set `a : Sp B ⟶ T.left` to `u.inv ≫ T.left.affineCover.f i`. Set `a' : Over.mk (a ≫ T.hom) ⟶ T` to `Over.homMk a rfl`. Establish `hx'` using `KerBy.gen_comp S o.A o.P T _ a' x hx`. Take `⟨M, hM, hxM⟩` from `GlobalTheory.T.isTorsion_of_birigidified_bundle_trivial_on_slice S o.A o.P o.ab o.isLB o.rig₁ o.rig₂ o.symm o.ample B (a ≫ T.hom) _ hx'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit ((M : ℕ) : Γ(S, ⊤))`. Establish `h0 : IsUnit ((M : ℕ) : R')`. Simplify using `using (IsUnit.mk0 (M : ℚ) (Nat.cast_ne_zero.2 hM.ne')).map (algebraMap ℚ R')`. Simplify using `using (h0.map (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom).map t.appTop.hom`. Establish `h` using `GlobalTheory.TorsGeomPow.pow_eq_one_of_geometric_points S o.A o.ab M hu _ _ hxM e fun k _ _ ξ => pow_eq_one_geom o e hEF k _ _ M hM (by rw [← MonObj.comp_pow, hxM, MonObj.comp_one]) (KerBy.gen_comp S o.A o.P _ _ _ _ hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h' : a' ≫ x ^ e = a' ≫ 1` using `by rw [MonObj.comp_pow, h, MonObj.comp_one]`. Establish `h'' : a ≫ (x ^ e).left = a ≫ (1 : T ⟶ o.A).left` using `congrArg (fun z => z.left) h'`. Conclude with `(Category.assoc _ _ _).symm.trans (h''.trans (Category.assoc _ _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericObject_kernelCondition {gb : GBase D.toG R'} {N : ℕ} {t : S ⟶ Sp R'} (o : GObj gb N t) : KerP o := by
   obtain ⟨e, he, hEF⟩ := D.perfP
@@ -318,39 +318,35 @@ theorem genericObject_kernelCondition {gb : GBase D.toG R'} {N : ℕ} {t : S ⟶
   exact (Category.assoc _ _ _).symm.trans (h''.trans (Category.assoc _ _ _))
 
 /- English proof (translation)
-Introduce `k _ _ x β hβ`. Establish `hp : p.Prime` using `Fact.out`. Use `haveI := charZero_of_hom β`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero fun h => hp.one_lt.ne' ((Nat.coprime_zero_left p).1 (h ▸ hN))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ o.ab o.ab`. Establish `ub` using `GlobalTheory.Ex.Specialise.unitOn_bijective (R := k)`. Set `Q` to `Over.mk x ⟶ o.A`. Set `act : D.O → Q → Q` to `fun c g => g ≫ o.act.act c`. Set `E : ℕ → Q → Q → kˣ → Prop` to `fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `amul : ∀ c a b, act c (a * b) = act c a * act c b` using `fun c a b => by haveI := o.act.hom c`. Conclude with `MonObj.mul_comp _ _ _`. Establish `apow : ∀ c (a : Q) n, a ^ n = 1 → act c a ^ n = 1` using `fun c a n h => by haveI := o.act.hom c show (a ≫ _) ^ n = 1`. Rewrite using `[← MonObj.pow_comp, h, MonObj.one_comp]`. Establish `powl : ∀ (n : ℕ) (a b : Q), (lift a b) ^ n = lift (a ^ n) (b ^ n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `n a b`. Apply the tactic sequence `ext <;> simp [MonObj.pow_comp]`. Establish `ex : ∀ (n : ℕ) (a b : Q), ∃ c : kˣ, 0 < n → a ^ n = 1 → b ^ n = 1 → Out.WeilIs (G2 o.A) o.P n (lift a 1) (lift 1 b) (unitOn c)` using `fun n a b => by`. Distinguish the cases in `h : 0 < n ∧ a ^ n = 1 ∧ b ^ n = 1`. Apply the tactic sequence `obtain ⟨c, -, hc⟩ := GlobalTheory.ProdPairing.exists_weilIs_prod_root S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ o.ample n h.1 _ (lift a 1) (lift 1 b) (by rw [powl, h.2.1, one_pow]; ext <;> simp) (by rw [powl, h.2.2, one_pow]; ext <;> simp)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, rfl⟩` from `ub.2 c`. Conclude with `⟨c, fun _ _ _ => hc⟩`. Conclude with `⟨1, fun h₁ h₂ h₃ => absurd ⟨h₁, h₂, h₃⟩ h⟩`. Use `choose W hW using ex`. Establish `uq : ∀ {n : ℤ} {X Y : Over.mk x ⟶ G2 o.A} {c c' : kˣ}, Out.WeilIs (G2 o.A) o.P n X Y (unitOn c) → Out.WeilIs (G2 o.A) o.P n X Y (unitOn c') → c = c'` using `fun h h' => ub.1 (CommutatorPairing.weilIs_unique hG hB o.isLB h h')`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uqE : ∀ n, 0 < n → ∀ (a b : Q) (c c' : kˣ), E n a b c → E n a b c' → c = c'` using `fun n _ a b c c' h h' => ub.1 (CommutatorPairing.weilIs_unique hG o.ab (pull_isLB o.isLB _) h h')`. Establish `upow : ∀ (c : kˣ) (m : ℕ), unitOn (c ^ m) = unitOn c ^ m` using `fun c m => map_pow _ _ _`. Establish `umul : ∀ c c' : kˣ, unitOn (c * c') = unitOn c * unitOn c'` using `fun c m => map_mul _ _ _`. Establish `uone : unitOn (1 : kˣ) = 1` using `map_one _`. Establish `hE : ∀ n, 0 < n → ∀ a b : Q, a ^ n = 1 → b ^ n = 1 → E n a b (W n a b ^ 2)` using `fun n hn a b ha hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.DiagSqAxes.weilIs_diag_sq S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ o.symm k x n hn (Nat.cast_ne_zero.2 hn.ne') a b ha hb _ (hW n a b hn ha hb)`. Rewrite `h` using `[← upow]`. Conclude with `h`. Establish `lev : ∀ n m, 0 < n → 0 < m → ∀ a b : Q, a ^ (n * m) = 1 → b ^ (n * m) = 1 → W n (a ^ m) (b ^ m) = W (n * m) a b ^ m` using `fun n m hn hm a b ha hb => by`. Establish `h` using `GlobalTheory.LevelChangePairing.weilIs_levelChange S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ k x n m hn hm (Nat.cast_ne_zero.2 (Nat.mul_pos hn hm).ne') a b ha hb _ (hW (n * m) a b (Nat.mul_pos hn hm) ha hb)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h` using `[← upow]`. Conclude with `uq (hW n _ _ hn (by rw [← pow_mul, mul_comm, ha]) (by rw [← pow_mul, mul_comm, hb])) h`. Establish `wmul : ∀ n, 0 < n → ∀ a a' b : Q, a ^ n = 1 → a' ^ n = 1 → b ^ n = 1 → W n (a * a') b = W n a b * W n a' b` using `fun n hn a a' b ha ha' hb => by`. Establish `h` using `GlobalTheory.SiegelTypings.weilIs_mul hB o.isLB (hW n a b hn ha hb) (hW n a' b hn ha' hb)`. Apply the tactic sequence `have e : lift a (1 : Q) * lift a' 1 = lift (a * a') 1 := by ext <;> simp [MonObj.mul_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← umul, e]`. Conclude with `uq (hW n _ _ hn (by rw [mul_pow, ha, ha', _root_.mul_one]) hb) h`. Establish `wskew : ∀ n, 0 < n → ∀ a b : Q, a ^ n = 1 → b ^ n = 1 → W n a b * W n b a = 1` using `fun n hn a b ha hb => by`. Establish `h` using `GlobalTheory.SwapPairing.weilIs_swap_eq S o.A o.P o.ab o.isLB o.symm n _ a b _ _ (CommPairing.weilIs_symm o.isLB (hW n b a hn hb ha)) (hW n a b hn ha hb)`. Apply `ub.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[umul, ← h, uone, inv_mul_cancel]`. Establish `wadj : ∀ n, 0 < n → ∀ (c : D.O) (a b : Q), a ^ n = 1 → b ^ n = 1 → W n (act c a) b = W n a (act (D.star c).unop b)` using `fun n hn c a b ha hb => ub.1 (GlobalTheory.T.commutatorPairing_adjoint_eq_of_pullback_iso S o.A o.P o.ab o.isLB _ _ (o.act.hom c) (o.act.hom _) (o.rosati c) n _ a b _ _ (hW n _ b hn (apow c a n ha) hb) (hW n a _ hn ha (apow _ b n hb)))`. Establish `wnd : ∀ r, ∀ a : Q, a ^ (p ^ r) = 1 → (∀ b : Q, b ^ (p ^ r) = 1 → W (p ^ r) a b = 1) → a = 1`. Introduce `r a ha h`. Establish `hq : 0 < p ^ r` using `pow_pos hp.pos r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨e, he, hk⟩` from `o.kerP`. Establish `h1` using `hk _ a (GlobalTheory.T.lineBundle_slice_trivial_of_weilPairing_one_torsion S o.A o.P o.ab o.isLB o.rig₁ o.rig₂ k x (p ^ r) (Nat.cast_ne_zero.2 hq.ne') a ha fun b hb => by`. Use `hW _ a b hq ha hb` as an intermediate fact. Rewrite using `[h b hb, uone] at this)` and apply the resulting hypothesis. Establish `h2` using `pow_gcd_eq_one.2 ⟨h1, ha⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Nat.Coprime.gcd_eq_one (Nat.Coprime.pow_right r he), pow_one]`. Then use the resulting hypothesis. Establish `hpu : IsUnit (p : R')`. Simplify using `using (IsUnit.mk0 (p : ℚ) (Nat.cast_ne_zero.2 hp.ne_zero)).map (algebraMap ℚ R')`. Establish `aone : ∀ a, act 1 a = a` using `fun a => by simp [act, o.act.one]`. Establish `amul' : ∀ b c a, act (b * c) a = act b (act c a)` using `fun b c a => by simp [act, o.act.mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `aadd : ∀ b c a, act (b + c) a = act b a * act c a` using `fun b c a => by`. Simplify using `[act, o.act.add, MonObj.comp_mul]`. Establish `lin` using `GlobalTheory.T.exists_pPower_level_from_primes_above_p p D Q act amul aone amul' aadd fun w r hw hpw => by`. Take `⟨f, f₁, f₂, f₃, f₄⟩` from `GlobalTheory.T.torsion_points_additive_parametrization p D R' b N w r (isEtPlace_of_isUnit b hpu w hw hpw) S t o k x`. Conclude with `GlobalTheory.T.exists_morita_lattice_quotient_torsion p D w r hw hpw Q act amul aone amul' aadd f f₁ f₂ f₃ f₄`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ζ, hζ, hζ'⟩` from `GlobalTheory.T.exists_compatible_prime_power_roots p k`. Take `⟨ev, hev, hev'⟩` from `GlobalTheory.T.exists_compatible_similitude_level_tower p D k Q act (fun r => W (p ^ r)) ζ amul hζ' (fun r a b ha hb => lev (p ^ r) p (pow_pos hp.pos r) hp.pos a b ha hb) fun r => by`. Take `⟨f, hf⟩` from `lin r`. Establish `hq : 0 < p ^ r` using `pow_pos hp.pos r`. Conclude with `GlobalTheory.T.exists_level_pairing_eq_alt p D k Q act r (W (p ^ r)) (ζ r) (hζ r) (wmul _ hq) (wskew _ hq) (wadj _ hq) (wnd r) f hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨I, hI⟩` from `o.geom k x β hβ`. Take `⟨J, hJ⟩` from `GlobalTheory.T.weil_pairing_cocycle_uniqueness p D k Q act E amul (fun n hn a b ha hb => ⟨_, hE n hn a b ha hb⟩) uqE (fun n m hn hm a b c ha hb h => by`. Establish `e` using `uqE _ (Nat.mul_pos hn hm) a b _ _ h (hE _ (Nat.mul_pos hn hm) a b ha hb)`. Establish `h'` using `hE n hn (a ^ m) (b ^ m) (by rw [← pow_mul, mul_comm, ha]) (by rw [← pow_mul, mul_comm, hb])`. Rewrite `h'` using `[lev n m hn hm a b ha hb, ← pow_mul, mul_comm m 2, pow_mul, ← e]`.
-
-Conclude with `h')`. Use `I ζ ev hζ hζ' (fun r => (hev r).1) hev' fun r y z => by`. Establish `hq : 0 < p ^ r` using `pow_pos hp.pos r`. Establish `h` using `hE _ hq (ev r y) (ev r z) (((hev r).1.2.2.2 _).2 ⟨y, rfl⟩) (((hev r).1.2.2.2 _).2 ⟨z, rfl⟩)`. Establish `e` using `(hev r).2 y z`.
-
-Rewrite `h` using `[e, ← zpow_natCast, ← zpow_mul, mul_comm]`. Conclude with `h`. Conclude with `⟨J, fun y => (hI y).trans (hJ N hN0 hN y).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem geomFull {b : Base D R'} {N : ℕ} (hN : N.Coprime p) {t : S ⟶ Sp R'} (o : Obj b N t) : GeomFull o t := by
   intro k _ _ x β hβ
@@ -462,7 +458,7 @@ end GlobalTheory.UPel.HT.GenCmp
 namespace GlobalTheory.UPel.HT.GenCmp
 
 /- English proof (translation)
-Introduce `p _ D R _ _ b R' _ _ φ gb hρ ht N _ hN M X`. Take `⟨j, hj, h₁, h₂⟩` from `cmp_of hρ ht (fun S t o => geomFull hN o) (fun S t o => genericObject_kernelCondition o) M X`. Conclude with `⟨j, inferInstance, inferInstance, h₁, h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem genModel_eq_genericFibre : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (R' : Type) [CommRing R'] [Algebra ℚ R'] (φ : R →+* R') (gb : GBase D.toG R'), gb.ρ = φ b.ρ → (∀ i, gb.t i = φ.comp (b.t i)) → ∀ (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (M : Model b N) (X : GenModel gb N), ∃ j : X.X ⟶ pullback M.s (spMap φ), IsOpenImmersion j ∧ IsClosedImmersion j ∧ j ≫ pullback.snd _ _ = X.s ∧ IsGPull X.univ M.univ (j ≫ pullback.fst _ _) := by
   intro p _ D R _ _ b R' _ _ φ gb hρ ht N _ hN M X

@@ -18,7 +18,7 @@ def Rep (m : ℕ∞) (O : Set (B.Mat k r)) (φ : B.Mat k r → E) : Prop :=
   ∃ F : B.Mat k r → E, ContDiffOn ℝ (m : WithTop ℕ∞) F O ∧ ∀ x ∈ O, x ∈ B.GV k r → φ x = F x
 
 /- English proof (translation)
-Take `⟨F, hF, he⟩` from `h`. Conclude with `⟨F, hF.of_le (by exact_mod_cast hmm), he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_mono {m m' : ℕ∞} (hmm : m ≤ m') {O : Set (B.Mat k r)} {φ : B.Mat k r → E} (h : Rep m' O φ) :
     Rep m O φ := by
@@ -26,9 +26,9 @@ theorem rep_mono {m m' : ℕ∞} (hmm : m ≤ m') {O : Set (B.Mat k r)} {φ : B.
   exact ⟨F, hF.of_le (by exact_mod_cast hmm), he⟩
 
 /- English proof (translation)
-Establish `h` using `(mulRightRealCLM x).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_mul_exp_smul_zero (1 : B.Mat k r) X)`. Establish `e2 : (mulRightRealCLM x) ((1 : B.Mat k r) * X) = X * x` using `by show (1 * X) * x = X * x`. Rewrite using `[Matrix.one_mul]`. Use `(h.congr_deriv e2).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show NormedSpace.exp ((t : ℂ) • X) * x = (1 * NormedSpace.exp ((t : ℂ) • X)) * x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem curveL_hasDerivAt (x X : B.Mat k r) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) * x) (X * x) 0 := by
@@ -41,21 +41,21 @@ theorem curveL_hasDerivAt (x X : B.Mat k r) :
   rw [Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `[NormedSpace.exp_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem curveL_zero (x X : B.Mat k r) : NormedSpace.exp (((0 : ℝ) : ℂ) • X) * x = x := by
   simp [NormedSpace.exp_zero]
 
 /- English proof (translation)
-The claim follows from `WeylGroupFacts.uh_mul (Formalism.FourierDecayAlt.P.B5.exp_mem hX t) hxG`.
+A detailed English derivation is pending.
 -/
 theorem curveL_mem {x X : B.Mat k r} (hxG : x ∈ B.GV k r) (hX : B.inLie k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) * x ∈ B.GV k r := WeylGroupFacts.uh_mul (Formalism.FourierDecayAlt.P.B5.exp_mem hX t) hxG
 
 /- English proof (translation)
-Establish `hγ` using `curveL_hasDerivAt g X`. Establish `hγ0` using `curveL_zero g X`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (NormedSpace.exp ((t : ℂ) • X) * g)) (fderiv ℝ F g (X * g)) 0` using `hF.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, NormedSpace.exp ((t : ℂ) • X) * g ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hmem] with t ht`. Conclude with `he _ ht (curveL_mem hgG hX t)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_of_extL {φ F : B.Mat k r → E} {U : Set (B.Mat k r)} (hU : IsOpen U) {g X : B.Mat k r}
     (hg : g ∈ U) (hgG : g ∈ B.GV k r) (hX : B.inLie k r X) (hF : DifferentiableAt ℝ F g)
@@ -72,9 +72,9 @@ theorem hasDerivAt_of_extL {φ F : B.Mat k r → E} {U : Set (B.Mat k r)} (hU : 
   exact he _ ht (curveL_mem hgG hX t)
 
 /- English proof (translation)
-Take `⟨F, hF, he⟩` from `h`. Use `⟨fun x => fderiv ℝ F x (X * x), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hF.fderiv_of_isOpen (m := (m : WithTop ℕ∞)) hO (by push_cast; exact le_rfl)`. Conclude with `h1.clm_apply (Formalism.FourierDecayAlt.P.B5.mulLc X).contDiff.contDiffOn`. Introduce `x hx hxG`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℝ F x` using `(hF.differentiableOn (by simp)).differentiableAt (hO.mem_nhds hx)`. Conclude with `(hasDerivAt_of_extL hO hx hxG hX hd he).deriv`.
+A detailed English derivation is pending.
 -/
 theorem rep_LdV {m : ℕ∞} {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k r → E} {X : B.Mat k r}
     (hX : B.inLie k r X) (h : Rep (m + 1) O φ) : Rep m O (Q.LdV X φ) := by
@@ -88,9 +88,9 @@ theorem rep_LdV {m : ℕ∞} {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k
     exact (hasDerivAt_of_extL hO hx hxG hX hd he).deriv
 
 /- English proof (translation)
-Proceed by induction on `w generalizing m with`. Consider the case `nil => exact rep_mono (by exact_mod_cast (by simpa using hle)) h`. Consider the case `cons X w ih`. Establish `e : (X :: w).foldr Q.LdV f = Q.LdV X (w.foldr Q.LdV f)` using `rfl`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `rep_LdV hO (hw X (by simp))` to reduce the goal to its premises. Use `ih (fun Y hY => hw Y (by simp [hY])) (m + 1) (by simp at hle; omega)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_Rw {O : Set (B.Mat k r)} (hO : IsOpen O) {f : B.Mat k r → E} {N : ℕ} (h : Rep (N : ℕ∞) O f)
     (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X) (m : ℕ) (hle : m + w.length ≤ N) :
@@ -105,7 +105,7 @@ theorem rep_Rw {O : Set (B.Mat k r)} (hO : IsOpen O) {f : B.Mat k r → E} {N : 
     exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨F, hF, he⟩` from `h`. Establish `hd : DifferentiableAt ℝ F x` using `(hF.differentiableOn (by simp)).differentiableAt (hO.mem_nhds hx)`. Conclude with `(hasDerivAt_of_extL hO hx hxG hX hd he).differentiableAt.hasDerivAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k r → E} {x X : B.Mat k r}
     (hx : x ∈ O) (hxG : x ∈ B.GV k r) (hX : B.inLie k r X) (h : Rep ((1 : ℕ) : ℕ∞) O φ) :
@@ -115,9 +115,7 @@ theorem rep_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k r →
   exact (hasDerivAt_of_extL hO hx hxG hX hd he).differentiableAt.hasDerivAt
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => φ (NormedSpace.exp ((t : ℂ) • X) * x)) 0 = deriv (fun t : ℝ => ψ (NormedSpace.exp ((t : ℂ) • X) * x)) 0`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hγ` using `curveL_hasDerivAt x X`. Establish `hγ0` using `curveL_zero x X`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, NormedSpace.exp ((t : ℂ) • X) * x ∈ O` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hO.mem_nhds hx)`.
-
-Use `filter_upwards [hmem] with t ht`. Conclude with `he _ ht (curveL_mem hxG hX t)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ldV_congr {O : Set (B.Mat k r)} (hO : IsOpen O) {φ ψ : B.Mat k r → E}
     (he : ∀ y ∈ O, y ∈ B.GV k r → φ y = ψ y) {x X : B.Mat k r} (hx : x ∈ O) (hxG : x ∈ B.GV k r)
@@ -133,14 +131,14 @@ theorem ldV_congr {O : Set (B.Mat k r)} (hO : IsOpen O) {φ ψ : B.Mat k r → E
   exact he _ ht (curveL_mem hxG hX t)
 
 /- English proof (translation)
-Simplify using `[wsEvalL, List.map_append, List.sum_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wsEvalL_append (a b : List (Polynomial ℂ × List (B.Mat k r))) (u : ℂ) (f : B.Mat k r → E)
     (x : B.Mat k r) : wsEvalL (a ++ b) u f x = wsEvalL a u f x + wsEvalL b u f x := by
   simp [wsEvalL, List.map_append, List.sum_append]
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [wsEvalL] | a :: L => by rw [List.flatMap_cons, wsEvalL_append, wsEvalL_flatMap F u f x L, List.map_cons, List.sum_cons]`.
+A detailed English derivation is pending.
 -/
 theorem wsEvalL_flatMap {α : Type} (F : α → List (Polynomial ℂ × List (B.Mat k r))) (u : ℂ)
     (f : B.Mat k r → E) (x : B.Mat k r) :
@@ -150,7 +148,7 @@ theorem wsEvalL_flatMap {α : Type} (F : α → List (Polynomial ℂ × List (B.
     rw [List.flatMap_cons, wsEvalL_append, wsEvalL_flatMap F u f x L, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [wsEvalL] | t :: ws => by have ih := wsEvalL_map_mul p φ u f x ws simp only [wsEvalL, List.map_cons, List.sum_cons] at ih ⊢ rw [ih, smul_add, Polynomial.eval_mul, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem wsEvalL_map_mul (p : Polynomial ℂ) (φ : List (B.Mat k r) → List (B.Mat k r)) (u : ℂ)
     (f : B.Mat k r → E) (x : B.Mat k r) :
@@ -163,7 +161,7 @@ theorem wsEvalL_map_mul (p : Polynomial ℂ) (φ : List (B.Mat k r) → List (B.
     rw [ih, smul_add, Polynomial.eval_mul, mul_smul]
 
 /- English proof (translation)
-The claim follows from `| [], _, t, ht => by simp only [fexp, List.mem_singleton] at ht subst ht simp | gn :: gs, hL, t, ht => by have hL' : ∀ g ∈ gs, ∀ dX ∈ g.2, B.inLie k r dX.2 := fun g hg => hL g (List.mem_cons_of_mem _ hg) have ih := fexp_words gs hL' simp only [fexp, List.mem_append, List.mem_map, …`.
+A detailed English derivation is pending.
 -/
 theorem fexp_words : ∀ (gens : List (GenW k r)), (∀ gn ∈ gens, ∀ dX ∈ gn.2, B.inLie k r dX.2) →
     ∀ t ∈ fexp gens, t.2.length ≤ gens.length ∧ ∀ X ∈ t.2, B.inLie k r X
@@ -190,7 +188,7 @@ theorem fexp_words : ∀ (gens : List (GenW k r)), (∀ gn ∈ gens, ∀ dX ∈ 
         · exact (ih s hs).2 X hX
 
 /- English proof (translation)
-The claim follows from `| [], _ => by have e : ∀ y, wsEvalL ([] : List (Polynomial ℂ × List (B.Mat k r))) u f y = (0 : E) := fun y => by simp [wsEvalL] simp only [List.map_nil, e] exact hasDerivAt_const _ _ | t :: ws, h => by have h1 := (rep_hasDerivAt hO hx hxG hX (h t (by simp))).const_smul (t.1.eval …`.
+A detailed English derivation is pending.
 -/
 theorem ws_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {x X : B.Mat k r} (hx : x ∈ O)
     (hxG : x ∈ B.GV k r) (hX : B.inLie k r X) (u : ℂ) (f : B.Mat k r → E) :
@@ -217,7 +215,7 @@ theorem ws_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {x X : B.Mat k r} (h
     exact h1.add h2
 
 /- English proof (translation)
-The claim follows from `| [], O, f, _, _, _, x, _, _ => by simp [fexp, wsEvalL] | gn :: gs, O, f, hO, hL, hf, x, hx, hxG => by have hL' : ∀ g ∈ gs, ∀ dX ∈ g.2, B.inLie k r dX.2 := fun g hg => hL g (List.mem_cons_of_mem _ hg) have hf' : Rep (gs.length : ℕ∞) O f := rep_mono (by exact_mod_cast (by simp : g …`.
+A detailed English derivation is pending.
 -/
 theorem left_generator_word_evaluation (u : ℂ) : ∀ (gens : List (GenW k r)) (O : Set (B.Mat k r)) (f : B.Mat k r → E), IsOpen O →
     (∀ gn ∈ gens, ∀ dX ∈ gn.2, B.inLie k r dX.2) → Rep (gens.length : ℕ∞) O f → ∀ x ∈ O, x ∈ B.GV k r →
@@ -260,7 +258,7 @@ theorem left_generator_word_evaluation (u : ℂ) : ∀ (gens : List (GenW k r)) 
 end FExpL
 
 /- English proof (translation)
-Introduce `k r E _ _ gens u UU f hL hf g hg hgG`. Take `⟨U, f', hU, hgU, hf', he⟩` from `hf g hg`. Conclude with `FExpL.left_generator_word_evaluation u gens U f hU hL ⟨f', hf', he⟩ g hgU hgG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem left_exponential_evaluation : FExpEvalL := by
   intro k r E _ _ gens u UU f hL hf g hg hgG

@@ -13,45 +13,37 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology Mea
 noncomputable section
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨CcL, HL⟩` from `hL Cb`. Take `⟨CcN, C1N, HN⟩` from `hN Cb`. Take `⟨C1E, HE⟩` from `hE`. Use `⟨max (max CcL CcN) 0, max C1N C1E, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Wp Wq _ _ _ _ _ _ P p p₀ χ Y N w hw hwN`. Distinguish the cases in `hpre : C6.IsCut0 χ ∧ KB.InDDplus2 P p.l0 p.T.base Cb p.Θ ∧ N ≤ 2 * p₀`. Use `swap`. Use `⟨0, Fin.elim0, 0, le_rfl, fun t => t.elim0, ?_⟩` and prove the remaining obligations. Introduce `f A₀ hH`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd ⟨hH.1, hH.2.1, hH.2.2.2.2.2⟩ hpre`. Take `⟨hχ, hΘ, hNp⟩` from `hpre`. Use `set Mx := max (max CcL CcN) 0 with hMx`. Establish `thr : ∀ C : ℝ, C ≤ Mx → ∀ n : ℕ, n ≤ N → ∀ A : ℝ, Mx * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A → C * ((P.r : ℝ) + 1) ^ 4 * ((n : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A`. Introduce `C hC n hn A hA`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ Mx` using `le_max_right _ _`. Establish `hnN : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4 * ((n : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)`. Check the signs of the components of the expression. Establish `hXN : ((P.r : ℝ) + 1) ^ 4 * ((n : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)` using `by gcongr`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : ∀ (x : ℝ) (m : ℕ), x * ((P.r : ℝ) + 1) ^ 4 * ((m : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * (((P.r : ℝ) + 1) ^ 4 * ((m : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3))` using `fun x m => by ring`. Rewrite `hA`, the goal using `[e]`. Conclude with `le_trans (mul_le_mul_of_nonneg_right hC hX) (le_trans (mul_le_mul_of_nonneg_left hXN hM0) hA)`. Distinguish the cases in `hw0 : w = []`. Substitute `hw0` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Th₀, Th₁, h0, h1, hap⟩` from `HE Wp Wq P p N`. Take `⟨K, hK⟩` from `hC χ hχ 0`. Use `⟨2, ![Th₀, Th₁], K ^ 2, sq_nonneg _, Fin.forall_fin_two.mpr ⟨nfOpOK_mono h0 (le_max_right _ _), nfOpOK_mono h1 (le_max_right _ _)⟩, ?_⟩` and prove the remaining obligations. Introduce `f A₀ hH hJ ε hε c hl hG`. Establish `hK' : |χ (TBB.Gp p (TBB.bigPt P.r c) / ε)| ≤ K` using `by simpa using hK ε hε _ hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `nf_empty_bound hV p f p₀ N hNp χ K Th₀ Th₁ hap ε c hl hG hK'`. Establish `hcut : KB.CutWord P p.l0 w` using `hw.1`. Use `choose Q Lq hLs hLS hLe using fun e : Wd.Ix (Fin w.length) => HL Wp Wq P p hΘ w hcut e`. Use `choose m Th Mb hMb hok hb using fun e : Wd.Ix (Fin w.length) => HN Wp Wq P p hΘ Y w hw e (Q e) (Lq e) (hLS e) p₀ N hwN hNp`. Use `choose K hK using fun q : ℕ => hC χ hχ q`.
+Check the signs of the components of the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Ke : Wd.Ix (Fin w.length) → ℝ := fun e => ∑ q : Fin (Q e + 1), |K q| with hKe`. Use `set nT : ℝ := ((Finset.univ : Finset (M.Ty P)).card : ℝ) with hnT`. Use `set Cst : Wd.Ix (Fin w.length) → ℝ := fun e => nT * ((((Q e + 1 : ℕ) : ℝ)) ^ 2 * Ke e ^ 2 * Mb e) with hCst`. Establish `hCst0 : ∀ e, 0 ≤ Cst e` using `fun e => by`. Simplify using `only [hCst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hMb e` as an intermediate fact. Check the signs of the components of the expression. Set `ι` to `Σ e : Wd.Ix (Fin w.length), Fin (m e)`. Set `σ : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Use `⟨Fintype.card ι, fun i => Th (σ i).1 (σ i).2, ∑ e, Cst e, Finset.sum_nonneg fun e _ => hCst0 e, fun i => nfOpOK_mono (hok _ _) (le_max_left _ _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f A₀ hH hJ ε hε c hl hG`. Use `set γ := TBB.bigPt P.r c with hγ`. Use `set G := TBB.Gp p γ with hGdef`. Use `set F := TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ with hFdef`. Establish `hF : B.CkOn ⊤ (B.GV P.k P.r) F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hFdef, fpm_id]`. Conclude with `ckOn_Gpow_smul p.T.base.z p.T.base.z' p₀ hH.2.2.1`. Establish `hFcc` using `inCC_fpm_id p p₀ hH.2.2.2.1`. Establish `hthrL` using `thr CcL (le_trans (le_max_left _ _) (le_max_left _ _)) w.length hwN _ hH.2.2.2.2.1`. Establish `hthrN` using `thr CcN (le_trans (le_max_right _ _) (le_max_left _ _)) N le_rfl _ hH.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : ℝ => χ (y / ε))` using `hχ.1.comp (contDiff_id.div_const ε)`. Use `set S := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) with hS`. Establish `hS0 : 0 ≤ S` using `mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`. Use `set B' : Wd.Ix (Fin w.length) → ℝ := fun e => ∑ t, ‖B.hsVec (p.V (B.opApply (Th e t) f) γ)‖ ^ 2 with hB'`. Establish `hB'0 : ∀ e, 0 ≤ B' e` using `fun e => Finset.sum_nonneg fun t _ => sq_nonneg _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hG0 : 0 ≤ G` using `hG.le`. Establish `key : ∀ e ρ, Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 * ‖B.hsVec ((p.TP.E ρ).comp (p.V (p.Θ.Θ w e (D.cutF p.T.base χ F ε)) γ))‖ ^ 2 ≤ (((Q e + 1 : ℕ) : ℝ)) ^ 2 * Ke e ^ 2 * Mb e * (G ^ (2 * p₀ - N) * B' e)`. Introduce `e ρ`. Establish `hexp` using `hLe e (fun y => χ (y / ε)) hφ F _ hF hFcc hthrL γ hl hG`. Establish `hc : D.cutF p.T.base χ F ε = fun g => (((fun y => χ (y / ε)) (Gf P.k P.r p.T.base.z p.T.base.z' g) : ℝ) : ℂ) • F g` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hc, hexp]`. Establish `ha : ∀ q : Fin (Q e + 1), |(xD^[(q : ℕ)] (fun y => χ (y / ε))) G| ≤ Ke e`. Introduce `q`. Use `le_trans (hK q ε hε G hG) ?_` and prove the remaining obligations. Use `le_trans (le_abs_self _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.single_le_sum (f := fun q : Fin (Q e + 1) => |K q|) (fun _ _ => abs_nonneg _) (Finset.mem_univ q)`. Use `le_trans (nf_block (p.TP.E ρ) (fun q : Fin (Q e + 1) => (xD^[(q : ℕ)] (fun y => χ (y / ε))) G) (Ke e) ha (fun q => p.V (B.opApply (Lq e q) F) γ) _) ?_` and prove the remaining obligations. Establish `hq : ∀ q : Fin (Q e + 1), Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 * ‖B.hsVec ((p.TP.E ρ).comp (p.V (B.opApply (Lq e q) F) γ))‖ ^ 2 ≤ Mb e * G ^ (2 * p₀ - N) * B' e` using `fun q => hb e f A₀ hH.2.2.1 hH.2.2.2.1 hthrN hJ q ρ c hl hG`. Establish `hsum` using `Finset.sum_le_sum fun q (_ : q ∈ (Finset.univ : Finset (Fin (Q e + 1)))) => hq q`. Rewrite `hsum` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hK2 : 0 ≤ ((Q e + 1 : ℕ) : ℝ) * Ke e ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU Wp Wq P p _ w c hw0 hl hG]`. Establish `hin : ∀ e, 0 ≤ ∑ ρ : M.Ty P, Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 * ‖B.hsVec ((p.TP.E ρ).comp (p.V (p.Θ.Θ w e (D.cutF p.T.base χ F ε)) γ))‖ ^ 2` using `fun e => Finset.sum_nonneg fun ρ _ => by positivity`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg hS0 (Finset.sum_nonneg fun e _ => hin e))]`.
-
-Establish `hE : ∀ e t, TBB.Ew p (fun _ => 1) (B.opApply (Th e t) f) (P.r + 1) [] γ = S * ‖B.hsVec (p.V (B.opApply (Th e t) f) γ)‖ ^ 2` using `fun e t => TBBx2.Tri.Ew_top p _ hl`. Establish `hR : ∑ i : Fin (Fintype.card ι), ‖G‖ ^ (2 * p₀ - N) * TBB.Ew p (fun _ => 1) (B.opApply (Th (σ i).1 (σ i).2) f) (P.r + 1) [] γ = ∑ e, G ^ (2 * p₀ - N) * (S * B' e)`. Rewrite using `[Equiv.sum_comp σ (fun x : ι => ‖G‖ ^ (2 * p₀ - N) * TBB.Ew p (fun _ => 1) (B.opApply (Th x.1 x.2) f) (P.r + 1) [] γ), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `only [hE, Real.norm_of_nonneg hG0, hB', Finset.mul_sum]`.
-
-Rewrite using `[hR]`. Establish `hblock : ∀ e, ∑ ρ : M.Ty P, Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 * ‖B.hsVec ((p.TP.E ρ).comp (p.V (p.Θ.Θ w e (D.cutF p.T.base χ F ε)) γ))‖ ^ 2 ≤ Cst e * (G ^ (2 * p₀ - N) * B' e)`. Introduce `e`. Use `le_trans (Finset.sum_le_sum fun ρ _ => key e ρ) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
-
-Simplify using `only [hCst, hnT]`. Conclude with `le_of_eq (by ring)`. Establish `hGB : ∀ e, 0 ≤ G ^ (2 * p₀ - N) * (S * B' e)` using `fun e => by have := hB'0 e; positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun e _ => by ring`.
-
-Use `_ ≤ ∑ e, (∑ e', Cst e') * (G ^ (2 * p₀ - N) * (S * B' e)) := Finset.sum_le_sum fun e _ => mul_le_mul_of_nonneg_right (Finset.single_le_sum (fun e' _ => hCst0 e') (Finset.mem_univ e)) (hGB e)`. Use `_ = (∑ e, Cst e) * ∑ e, G ^ (2 * p₀ - N) * (S * B' e) := by rw [Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfDomPtwS_of_cut (hU : NFUnfoldTop) (hV : NFVMul) (hC : NFCutSup) (hL : NFLeibV) (hN : NFCoreNS)
     (hE : NFEmptyOps) : NFDomPtwS := by
@@ -184,15 +176,15 @@ theorem nfDomPtwS_of_cut (hU : NFUnfoldTop) (hV : NFVMul) (hC : NFCutSup) (hL : 
     _ = (∑ e, Cst e) * ∑ e, G ^ (2 * p₀ - N) * (S * B' e) := by rw [Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨C1, C₁, H1⟩` from `hP Cb`. Take `⟨C2, H2⟩` from `hL Cb C₁`. Take `⟨C3, H3⟩` from `hM Cb`. Use `⟨max C1 (max C2 C3), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hHS w hw hN`. Take `⟨hH, hJ, -⟩` from `hHS`. Establish `mono : ∀ c, c ≤ max C1 (max C2 C3) → NFHyp Cb c p f A₀ p₀ χ N` using `fun c hc => by`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hH`. Use `⟨a1, a2, a3, a4, le_trans ?_ a5, a6⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)`. Check the signs of the components of the expression. Establish `e : ∀ x : ℝ, x * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3))` using `fun x => by ring`. Rewrite using `[e, e]`. Conclude with `mul_le_mul_of_nonneg_right hc hX`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, Th, Mb, hMb, hok, hb⟩` from `H1 Wp Wq P p p₀ χ Y N w hw hN`. Establish `hb` using `hb f A₀ (mono C1 (le_max_left _ _)) hJ`. Use `⟨eventually_nhdsWithin_of_forall fun ε hε => H3 Wp Wq P p f A₀ p₀ χ Y N (mono C3 (le_trans (le_max_right _ _) (le_max_right _ _))) w hw hN ε hε, fun c => Mb * ∑ t, ‖TBB.Gp p (TBB.bigPt P.r c)‖ ^ (2 * p₀ - N) * TBB.Ew p (fun _ => 1) (B.opApply (Th t) f) (P.r + 1) [] (TBB.bigPt P.r …` and prove the remaining obligations. Conclude with `(integrable_finsetSum Finset.univ fun t _ => H2 Wp Wq P p f A₀ p₀ χ N (mono C2 (le_trans (le_max_left _ _) (le_max_right _ _))) (Th t) (hok t)).const_mul Mb`. Use `eventually_nhdsWithin_of_forall fun ε hε => ae_of_all _ fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)`. Conclude with `hb ε hε c hc.1 hc.2`. Rewrite using `[hZ Wp Wq P p _ w c hc, norm_zero]`. Conclude with `mul_nonneg hMb (Finset.sum_nonneg fun t _ => mul_nonneg (pow_nonneg (norm_nonneg _) _) (TBBx4.ew_nonneg p _ _))`.
+A detailed English derivation is pending.
 -/
 theorem nfTopDomAllS_of_cut (hZ : NFDomZero) (hP : NFDomPtwS) (hL : DominatedL2OperatorBound) (hM : NFDomMeas) : NFTopDomAllS := by
   intro Cb
@@ -228,25 +220,23 @@ theorem nfTopDomAllS_of_cut (hZ : NFDomZero) (hP : NFDomPtwS) (hL : DominatedL2O
         mul_nonneg (pow_nonneg (norm_nonneg _) _) (TBBx4.ew_nonneg p _ _))
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨C1, C₁, H1⟩` from `hP Cb`. Take `⟨C2, H2⟩` from `hU Cb C₁`. Use `⟨max C1 C2 + 1, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hHS w hw hN ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hH, -, hJn⟩` from `hHS`. Take `⟨hχ, hCb, hf, hfA, hth, hN2⟩` from `hH`. Use `set X : ℝ := ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) with hX`. Establish `hX1 : 1 ≤ X`. Establish `h1 : (1 : ℝ) ≤ 2 * (P.r : ℝ) + P.k + 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 1 ≤ (2 * (P.r : ℝ) + P.k + 1) ^ 3` using `one_le_pow₀ h1`. Establish `h2 : 0 ≤ (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2` using `by positivity`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 1 ≤ ((P.r : ℝ) + 1) ^ 4` using `one_le_pow₀ (by have : (0 : ℝ) ≤ P.r := Nat.cast_nonneg _; linarith)`. Establish `h5 : 1 ≤ (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3` using `by linarith`. Rewrite using `[hX]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e : ∀ x : ℝ, x * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * X` using `fun x => by rw [hX]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hth` using `[e]`. Establish `hunif : ∀ m : ℕ, ∃ b : ℝ, ∀ n, B.CCle (A₀ - 1) m (fun g => cutN P.k P.r n g • f g) b` using `fun m => by`. Take `⟨bf, hbf⟩` from `hfA m`. Conclude with `cutN_ccle_unif f A₀ m bf hbf`. Establish `h2 : (max C1 C2 + 1) * X = max C1 C2 * X + X` using `by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyp : ∀ c, c ≤ max C1 C2 → ∀ n : ℕ, NFHyp Cb c p (fun g => cutN P.k P.r n g • f g) (A₀ - 1) p₀ χ N` using `fun c hc n => by`. Use `⟨hχ, hCb, cutN_ckOn hf n, fun m => ?_, ?_, hN2⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hunif m`. Conclude with `⟨b, hb n⟩`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : c * X ≤ max C1 C2 * X` using `mul_le_mul_of_nonneg_right hc (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyp0 : NFHyp Cb C2 p f A₀ p₀ χ N`. Use `⟨hχ, hCb, hf, hfA, ?_, hN2⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : C2 * X ≤ max C1 C2 * X` using `mul_le_mul_of_nonneg_right (le_max_right _ _) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, Th, Mb, hMb, hok, hb⟩` from `H1 Wp Wq P p p₀ χ Y N w hw hN`. Use `choose hh hhi hhb using fun t => H2 Wp Wq P p f A₀ p₀ χ N hyp0 (Th t) (hok t)`. Use `⟨fun c => Mb * ∑ t, |hh t c|, (integrable_finsetSum Finset.univ fun t _ => (hhi t).abs).const_mul Mb, fun n => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [ae_all_iff.2 fun t => hhb t n] with c hc`. Rewrite using `[apx_cutF_fpm]`. Distinguish the cases in `hc' : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)`. Conclude with `le_trans (hb (fun g => cutN P.k P.r n g • f g) (A₀ - 1) (hyp C1 (le_max_left _ _) n) (hJn n) ε hε c hc'.1 hc'.2) (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun t _ => (hc t).trans (le_abs_self _)) hMb)`. Rewrite using `[hZ Wp Wq P p _ w c hc', norm_zero]`.
-
-Conclude with `mul_nonneg hMb (Finset.sum_nonneg fun t _ => abs_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem nfApxDomAllS_of_cut (hZ : NFDomZero) (hP : NFDomPtwS) (hU : DominatedL2TruncationBound) : NFApxDomAllS := by
   intro Cb
@@ -302,7 +292,7 @@ theorem nfApxDomAllS_of_cut (hZ : NFDomZero) (hP : NFDomPtwS) (hU : DominatedL2T
     exact mul_nonneg hMb (Finset.sum_nonneg fun t _ => abs_nonneg _)
 
 /- English proof (translation)
-The claim follows from `nfDomPtwS_of_cut unfolding_top_term_holds vector_multiplication_holds truncated_supremum_bound_holds hL hN empty_operator_list_holds`.
+A detailed English derivation is pending.
 -/
 theorem nfDomPtwS_of_open (hL : NFLeibV) (hN : NFCoreNS) : NFDomPtwS :=
   nfDomPtwS_of_cut unfolding_top_term_holds vector_multiplication_holds truncated_supremum_bound_holds hL hN empty_operator_list_holds

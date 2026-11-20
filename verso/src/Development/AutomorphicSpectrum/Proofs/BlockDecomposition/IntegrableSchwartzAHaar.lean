@@ -15,17 +15,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WSum
 
 /- English proof (translation)
-Introduce `D θ hθ m n μ _ φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `haveI : IsModuleTopology (Af D.host.F) (GlobalTheory.RegSch.IkSchwartz.AEf D) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (GlobalTheory.RegSch.IkSchwartz.AEf D) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField D.host.F`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (Af D.host.F)`. Use `haveI : LocallyCompactSpace (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.secondCountableTopology`. Use `haveI : T2Space (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.isEmbedding.t2Space`. Use `letI : MeasurableSpace (Fin m → Fin n → GlobalTheory.RegSch.IkSchwartz.AEf D) := borel _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `haveI : BorelSpace (Fin m → Fin n → GlobalTheory.RegSch.IkSchwartz.AEf D) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := (GlobalTheory.TowerRestrict.lattice_Mx D m n).1`. Take `⟨e, he⟩` from `GlobalTheory.RegSch.IkSchwartz.exists_split hθ m n`. Set `μr : Measure (D.what₂.Tau → Fin m → Fin n → ℂ)` to `Measure.addHaar`.
-
-Set `ν : Measure (Fin m → Fin n → GlobalTheory.RegSch.IkSchwartz.AEf D)` to `Measure.addHaar`. Take `⟨c, hc⟩` from `GlobalTheory.PartialIntegral.exists_integral_split e μ μr ν`. Establish `h` using `(hc f g (f.integrable) (hg.1.continuous.integrable_of_hasCompactSupport hg.2)).1`. Simplify `h` using `only [he]`. Consider the case `zero => exact integrable_zero _ _ _`.
-
-Consider the case `add φ ψ _ _ h1 h2 => exact h1.add h2`. Consider the case `smul c φ _ h => exact h.smul c`.
+A detailed English derivation is pending.
 -/
 theorem integrable_schwartzA_haar : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (μ : Measure (Mx D m n))
     [μ.IsAddHaarMeasure] (φ : Mx D m n → ℂ), φ ∈ schwartzA θ m n → Integrable φ μ := by

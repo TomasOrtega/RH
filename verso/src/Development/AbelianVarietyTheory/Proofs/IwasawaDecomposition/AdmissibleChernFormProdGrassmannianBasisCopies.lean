@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.GrassTopProd
 
 /- English proof (translation)
-Unfold `GlobalTheory.GrassTop.wt`. Conclude with `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by ring)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wt_add {ι : Type} (a b : ι × ℕ →₀ ℕ) :
     GlobalTheory.GrassTop.wt (a + b) = GlobalTheory.GrassTop.wt a + GlobalTheory.GrassTop.wt b := by
@@ -16,7 +16,7 @@ theorem wt_add {ι : Type} (a b : ι × ℕ →₀ ℕ) :
   exact Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by ring)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [GlobalTheory.GrassTop.wt]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, wt_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem wt_sum {ι κ : Type} (s : Finset κ) (d : κ → ι × ℕ →₀ ℕ) :
     GlobalTheory.GrassTop.wt (∑ k ∈ s, d k) = ∑ k ∈ s, GlobalTheory.GrassTop.wt (d k) := by
@@ -25,7 +25,7 @@ theorem wt_sum {ι κ : Type} (s : Finset κ) (d : κ → ι × ℕ →₀ ℕ) 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, wt_add, ih]
 
 /- English proof (translation)
-Unfold `GlobalTheory.GrassTop.wt`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by ring)]`. Simplify using `[hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wt_mapDomain {ι κ : Type} (f : ι × ℕ → κ × ℕ) (hf : ∀ x, (f x).2 = x.2) (d : ι × ℕ →₀ ℕ) :
     GlobalTheory.GrassTop.wt (d.mapDomain f) = GlobalTheory.GrassTop.wt d := by
@@ -34,19 +34,19 @@ theorem wt_mapDomain {ι κ : Type} (f : ι × ℕ → κ × ℕ) (hf : ∀ x, (
   simp [hf]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw g hg Θ hΘ`. Establish `hm : ∀ τ : GlobalTheory.AllWt.Psi H, Dw.mult τ.1 = Dw.p` using `fun τ => GlobalTheory.PointChern.mult_of_mem Dw τ.2`. Use `split_ifs with hall`. Establish `h1 : ∏ τ, GlobalTheory.GrassTop.ren τ (g τ) = ∏ τ : GlobalTheory.AllWt.Psi H, X (τ.1, Dw.p) ^ Dw.q`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hall τ, map_pow]`. Simplify using `[GlobalTheory.GrassTop.ren, GlobalTheory.GrassTop.renVar]`. Establish `h2 : GlobalTheory.LieBase.pointPoly H Dw = C ((-1 : ℝ) ^ (Dw.p * Dw.q * Fintype.card (GlobalTheory.AllWt.Psi H))) * ∏ τ : GlobalTheory.AllWt.Psi H, X (τ.1, Dw.p) ^ Dw.q`. Unfold `GlobalTheory.LieBase.pointPoly`. Rewrite using `[Finset.prod_congr rfl (fun τ _ => by rw [hm τ])]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Dw.p + Dw.q - Dw.p = Dw.q by omega]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← C_pow, ← pow_mul]`. Rewrite using `[h1, h2, ← smul_eq_C_mul, LinearMap.map_smul, smul_eq_mul, ← mul_assoc, ← mul_pow]`. Evaluate the numerical expressions. Use `push_neg at hall`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `hall`. Establish `key : ∀ τ, ∃ d : Bool × ℕ →₀ ℕ, GlobalTheory.GrassTop.wt d ≤ Dw.p * Dw.q ∧ (g τ ≠ X (true, Dw.p) ^ Dw.q → GlobalTheory.GrassTop.wt d < Dw.p * Dw.q) ∧ g τ = monomial d 1`. Introduce `τ`. Break down `hg τ with ⟨d, hd, he⟩ | he` into its components or cases. Conclude with `⟨d, hd.le, fun _ => hd, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨Finsupp.single (true, Dw.p) Dw.q, ?_, fun h => absurd he h, ?_⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.GrassTop.wt, Finsupp.sum_single_index, mul_comm]`. Rewrite using `[he, X_pow_eq_monomial]`. Use `choose d hd1 hd2 hd3 using key`. Establish `hprod : ∏ τ, GlobalTheory.GrassTop.ren τ (g τ) = monomial (∑ τ, (d τ).mapDomain (GlobalTheory.GrassTop.renVar τ)) 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monomial_sum_one]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hd3 τ, GlobalTheory.GrassTop.ren, rename_monomial]`. Establish `hw : GlobalTheory.GrassTop.wt (∑ τ, (d τ).mapDomain (GlobalTheory.GrassTop.renVar τ)) < Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q)`. Rewrite using `[wt_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h0 : Θ (monomial (∑ τ, (d τ).mapDomain (GlobalTheory.GrassTop.renVar τ)) 1) = 0` using `hΘ.2.2.2 (∑ τ, (d τ).mapDomain (GlobalTheory.GrassTop.renVar τ)) hw.ne`. Rewrite using `[hprod, h0, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem adm_apply_prod_ren_eq_ite_mul_pointPoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (g : GlobalTheory.AllWt.Psi H → MvPolynomial (Bool × ℕ) ℝ), (∀ τ, g τ ∈ GlobalTheory.GrassTop.basis Dw.p Dw.q) →

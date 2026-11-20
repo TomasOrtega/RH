@@ -20,14 +20,14 @@ def pr (f : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ U) : Γ(X
   Units.map (f.appLE U V h).hom
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 lemma res_pullU (f : Y ⟶ X) {U : X.Opens} {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ U) (a : Γ(X, U)ˣ) :
     res h (pullU f U a) = pr f h a := by
   ext; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom _ = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_res {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
     res h' (res h a) = res (h'.trans h) a := by
@@ -36,7 +36,7 @@ lemma res_res {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
   rw [← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 (op U))).hom _ = _`. Rewrite using `[X.presheaf.map_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_refl {U : X.Opens} (a : Γ(X, U)ˣ) : res le_rfl a = a := by
   ext
@@ -44,7 +44,7 @@ lemma res_refl {U : X.Opens} (a : Γ(X, U)ˣ) : res le_rfl a = a := by
   rw [X.presheaf.map_id]; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(f.appLE U V h ≫ Y.presheaf.map (homOfLE h').op).hom _ = _`. Rewrite using `[Scheme.Hom.appLE_map]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_pr (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (h : V ≤ f ⁻¹ᵁ U) (h' : W ≤ V)
     (a : Γ(X, U)ˣ) : res h' (pr f h a) = pr f (h'.trans h) a := by
@@ -53,7 +53,7 @@ lemma res_pr (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (h : V ≤ f ⁻¹ᵁ U
   rw [Scheme.Hom.appLE_map]; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op ≫ f.appLE U V h).hom _ = _`. Rewrite using `[Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma pr_res (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (h' : U ≤ U') (h : V ≤ f ⁻¹ᵁ U)
     (a : Γ(X, U')ˣ) : pr f h (res h' a) = pr f (h.trans fun _ hy => h' hy) a := by
@@ -62,7 +62,7 @@ lemma pr_res (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (h' : U ≤ U') (h : V
   rw [Scheme.Hom.map_appLE]; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(f.appLE U V h ≫ g.appLE V W h').hom _ = _`. Rewrite using `[Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma pr_pr (g : Y' ⟶ Y) (f : Y ⟶ X) {U : X.Opens} {V : Y.Opens} {W : Y'.Opens}
     (h : V ≤ f ⁻¹ᵁ U) (h' : W ≤ g ⁻¹ᵁ V) (a : Γ(X, U)ˣ) :
@@ -72,7 +72,7 @@ lemma pr_pr (g : Y' ⟶ Y) (f : Y ⟶ X) {U : X.Opens} {V : Y.Opens} {W : Y'.Ope
   rw [Scheme.Hom.appLE_comp_appLE]; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma pr_congr {f g : Y ⟶ X} (e : f = g) {U : X.Opens} {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ U)
     (h' : V ≤ g ⁻¹ᵁ U) (a : Γ(X, U)ˣ) : pr f h a = pr g h' a := by
@@ -89,7 +89,7 @@ def isoRefl (L : LB X) : LB.Iso L L where
   s := fun p => L.g p.1 p.2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (L : LB X) (s : LB.Gen L) : Carries (isoRefl L) s s ↔ s.IsGen := Iff.rfl
 
@@ -109,14 +109,14 @@ def CommSq {L L' M M' : LB X} (u : LB.Iso L L') (a : LB.Iso L M) (b : LB.Iso L' 
 variable {K : Type u} [Fintype K]
 
 /- English proof (translation)
-The claim follows from `le_inf (inf_le_left.trans (LB.wchart_le M φ j k)) (inf_le_right.trans (LB.wchart_le L φ i k))`.
+A detailed English derivation is pending.
 -/
 lemma le_pre_inf (M L : LB X) (φ : K → (Y ⟶ X)) (j : K → M.ι) (i : K → L.ι) (k : K) :
     LB.wchart M φ j ⊓ LB.wchart L φ i ≤ φ k ⁻¹ᵁ (M.U (j k) ⊓ L.U (i k)) :=
   le_inf (inf_le_left.trans (LB.wchart_le M φ j k)) (inf_le_right.trans (LB.wchart_le L φ i k))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `res h (∏ k, (res (le_pre_inf L L φ a b k) (pullU (φ k) _ (L.g (a k) (b k)))) ^ ε k) = _`. Simplify using `only [map_prod, map_zpow, res_pullU, res_pr]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma res_linComb_g (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (a b : K → L.ι) {W : Y.Opens}
     (h : W ≤ LB.wchart L φ a ⊓ LB.wchart L φ b) :
@@ -126,7 +126,7 @@ lemma res_linComb_g (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (a b : K 
   simp only [map_prod, map_zpow, res_pullU, res_pr]
 
 /- English proof (translation)
-Simplify using `only [map_prod, map_zpow, res_pr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma res_prod_pr (φ : K → (Y ⟶ X)) (ε : K → ℤ) {U : K → X.Opens} {V W : Y.Opens}
     (h : ∀ k, V ≤ φ k ⁻¹ᵁ U k) (h' : W ≤ V) (a : ∀ k, Γ(X, U k)ˣ) :
@@ -134,7 +134,7 @@ lemma res_prod_pr (φ : K → (Y ⟶ X)) (ε : K → ℤ) {U : K → X.Opens} {V
   simp only [map_prod, map_zpow, res_pr]
 
 /- English proof (translation)
-Establish `h0 : res (inf_le_left : (M.U j ⊓ L.U i) ⊓ (M.U j' ⊓ L.U i') ≤ _) (isoUnit u j i) = res (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (M.g j j') * (res (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) (L.g i i'))⁻¹ * res inf_l …` using `hu (j, i) (j', i')`. Establish `hh : W ≤ f ⁻¹ᵁ ((M.U j ⊓ L.U i) ⊓ (M.U j' ⊓ L.U i'))` using `le_inf h h'`. Use `congrArg (pr f hh) h0` as an intermediate fact. Simplify `this` using `only [map_mul, map_inv, pr_res]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma isoUnit_compat {L M : LB X} {u : LB.Iso L M} (hu : u.IsGen) (j j' : M.ι) (i i' : L.ι)
     (f : Y ⟶ X) {W : Y.Opens} (h : W ≤ f ⁻¹ᵁ (M.U j ⊓ L.U i)) (h' : W ≤ f ⁻¹ᵁ (M.U j' ⊓ L.U i'))
@@ -154,9 +154,9 @@ def isoLinComb {L M : LB X} (u : LB.Iso L M) (φ : K → (Y ⟶ X)) (ε : K → 
   s := fun p => ∏ k, (pr (φ k) (le_pre_inf M L φ p.1 p.2 k) (isoUnit u (p.1 k) (p.2 k))) ^ (ε k)
 
 /- English proof (translation)
-Establish `key (j j' : K → M.ι) (i i' : K → L.ι) (W : Y.Opens) (h : W ≤ LB.wchart M φ j ⊓ LB.wchart L φ i) (h' : W ≤ LB.wchart M φ j' ⊓ LB.wchart L φ i') (hM : W ≤ LB.wchart M φ j ⊓ LB.wchart M φ j') (hL : W ≤ LB.wchart L φ i ⊓ LB.wchart L φ i') : res h (∏ k, (pr (φ k) (le_pre_inf M L φ j i …` using `LB.wchart M φ j ⊓ LB.wchart M φ j') hM ((LB.LinComb M φ ε).g j j') * (res (U := LB.wchart L φ i ⊓ LB.wchart L φ i') hL ((LB.LinComb L φ ε).g i i'))⁻¹ * res h' (∏ k, (pr (φ k) (le_pre_inf M L φ j' i' k) (isoUnit u (j' k) (i' k))) ^ (ε k)) := by`. Rewrite using `[res_prod_pr, res_prod_pr, res_linComb_g, res_linComb_g, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← inv_zpow, ← mul_zpow, ← mul_zpow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `isoUnit_compat hu _ _ _ _ _ _ _ _ _`. Introduce `p q`. Conclude with `key p.1 q.1 p.2 q.2 _ inf_le_left inf_le_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isoLinComb_isGen {L M : LB X} {u : LB.Iso L M} (hu : u.IsGen) (φ : K → (Y ⟶ X))
     (ε : K → ℤ) : (isoLinComb u φ ε).IsGen := by
@@ -180,15 +180,13 @@ abbrev isoPull {L M : LB X} (u : LB.Iso L M) (f : Y ⟶ X) : LB.Iso (L.pull f) (
   isoLinComb u (K := PUnit) (fun _ => f) (fun _ => 1)
 
 /- English proof (translation)
-Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Establish `h : ∀ k, ∃ i, (φ k).base y ∈ L.U i` using `fun k => Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ ((φ k).base y)))`. Use `choose j hj using h`. Conclude with `Opens.mem_iSup.2 ⟨j, Set.mem_iInter.2 hj⟩`. Use `g_self := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `(res_linComb_g L φ ε j j _).trans ?_` and prove the remaining obligations. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Use `congrArg (pr (φ k) (LB.wchart_le L φ j k)) (hL.g_self (j k))` as an intermediate fact. Simplify using `only [pr_res, map_one] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· ^ ε k) this).trans (one_zpow _)`. Use `cocycle := by`. Introduce `a b c`. Use `(congrArg₂ (· * ·) (res_linComb_g L φ ε a b _) (res_linComb_g L φ ε b c _)).trans (Eq.trans ?_ (res_linComb_g L φ ε a c _).symm)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Use `congr 1`. Establish `hh : LB.wchart L φ a ⊓ LB.wchart L φ b ⊓ LB.wchart L φ c ≤ φ k ⁻¹ᵁ (L.U (a k) ⊓ L.U (b k) ⊓ L.U (c k))` using `le_inf (inf_le_left.trans (le_pre_inf L L φ a b k)) (inf_le_right.trans (LB.wchart_le L φ c k))`. Use `congrArg (pr (φ k) hh) (hL.cocycle (a k) (b k) (c k))` as an intermediate fact.
-
-Simplify using `only [map_mul, pr_res] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLB_linComb {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     (LB.LinComb L φ ε).IsLB where
@@ -222,7 +220,7 @@ theorem isLB_linComb {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K →
     exact this
 
 /- English proof (translation)
-Introduce `y hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1 : y ∈ (φ' k ≫ f) ⁻¹ᵁ L.U (j k PUnit.unit)` using `Set.mem_iInter.1 (Set.mem_iInter.1 hy k) PUnit.unit`. Rewrite `h1` using `[sq k]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wchart_square (L : LB X) {f : X' ⟶ X} {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X')} {h : Y' ⟶ Y}
     (sq : ∀ k, φ' k ≫ f = h ≫ φ k) (j : K → (L.pull f).ι) :
@@ -240,13 +238,13 @@ def genSquare (L : LB X) {f : X' ⟶ X} {φ : K → (Y ⟶ X)} {φ' : K → (Y' 
   s := fun j => pr h (wchart_square L sq j) (t.s fun k => j k PUnit.unit)
 
 /- English proof (translation)
-Introduce `a b`. Set `a' : K → L.ι` to `fun k => a k PUnit.unit`. Set `b' : K → L.ι` to `fun k => b k PUnit.unit`. Establish `h0 : res (inf_le_left : LB.wchart L φ a' ⊓ LB.wchart L φ b' ≤ _) (t.s a') = res (U` using `LB.wchart L φ a' ⊓ LB.wchart L φ b') le_rfl ((LB.LinComb L φ ε).g a' b') * res inf_le_right (t.s b') := (ht a' b').trans (congrArg (· * res inf_le_right (t.s b')) (res_refl _).symm)`. Rewrite `h0` using `[res_linComb_g]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hh : LB.wchart (L.pull f) φ' a ⊓ LB.wchart (L.pull f) φ' b ≤ h ⁻¹ᵁ (LB.wchart L φ a' ⊓ LB.wchart L φ b')` using `le_inf (inf_le_left.trans (wchart_square L sq a)) (inf_le_right.trans (wchart_square L sq b))`. Use `congrArg (pr h hh) h0` as an intermediate fact. Simplify using `only [map_mul, map_prod, map_zpow, pr_pr] at this`. Use `(res_pr h (wchart_square L sq a) inf_le_left _).trans ?_` and prove the remaining obligations. Use `((pr_res h _ _ _).symm.trans this).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) ?_ ((pr_res h _ _ _).trans (res_pr h (wchart_square L sq b) inf_le_right _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (res_refl _)` and prove the remaining obligations. Use `Eq.trans ?_ (res_linComb_g (L.pull f) φ' ε a b le_rfl).symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `(res_refl _).symm.trans (res_linComb_g L (K := PUnit) (fun _ => f) (fun _ => 1) (a k) (b k) le_rfl)`. Rewrite `h1` using `[Fintype.prod_unique, zpow_one]`. Use `Eq.trans ?_ (congrArg (pr (φ' k) _) h1).symm` and prove the remaining obligations. Use `Eq.trans ?_ (pr_pr _ _ _ _ _).symm` and prove the remaining obligations. Conclude with `pr_congr (sq k).symm _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genSquare_isGen (L : LB X) {f : X' ⟶ X} {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X')}
     {h : Y' ⟶ Y} (sq : ∀ k, φ' k ≫ f = h ≫ φ k) (ε : K → ℤ) {t : LB.Gen (LB.LinComb L φ ε)}
@@ -371,9 +369,9 @@ variable {G' : Over S'} [GrpObj G'] [IsCommMonObj G'] {G : Over S} [GrpObj G] [I
 abbrev pt {T : Over S'} (a : T ⟶ G') : (Over.map f.base).obj T ⟶ G := ptOver f.base f.tot f.w a
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => exact f.map_zero T`. Consider the case `cons k l ih => simp only [List.foldr_cons]`. Rewrite using `[← ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.map_add T _ _`.
+A detailed English derivation is pending.
 -/
 lemma pt_psum {T : Over S'} {n : ℕ} (x : Fin n → (T ⟶ G')) (I : Finset (Fin n)) :
     f.pt (psum G' x I) = psum G (fun i => f.pt (x i)) I := by
@@ -383,9 +381,9 @@ lemma pt_psum {T : Over S'} {n : ℕ} (x : Fin n → (T ⟶ G')) (I : Finset (Fi
   | cons k l ih => simp only [List.foldr_cons]; rw [← ih]; exact f.map_add T _ _
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => simp [pzero]`. Consider the case `cons k l ih => simp only [List.foldr_cons]`. Rewrite using `[← ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [padd, comp_lift_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma comp_psum {T T' : Over S} (g : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ G)) (I : Finset (Fin n)) :
     g ≫ psum G x I = psum G (fun i => g ≫ x i) I := by
@@ -400,9 +398,9 @@ def cubeOver : (Over.map f.base).obj (G3 G') ⟶ G3 G :=
 def cube : (G3 G').left ⟶ (G3 G).left := f.cubeOver.left
 
 /- English proof (translation)
-Establish `h : f.pt (psum G' (x3 G') I.down) = f.cubeOver ≫ psum G (x3 G) I.down`. Rewrite using `[pt_psum, comp_psum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [cubeOver, x3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg CommaMorphism.left h`.
+A detailed English derivation is pending.
 -/
 lemma cube_sq (I : thK.{u}) : thφ G' (x3 G') I ≫ f.tot = f.cube ≫ thφ G (x3 G) I := by
   have h : f.pt (psum G' (x3 G') I.down) = f.cubeOver ≫ psum G (x3 G) I.down := by
@@ -415,7 +413,7 @@ lemma cube_sq (I : thK.{u}) : thφ G' (x3 G') I ≫ f.tot = f.cube ≫ thφ G (x
 def unitMap : (𝟙_ (Over S')).left ⟶ (𝟙_ (Over S)).left := f.base
 
 /- English proof (translation)
-Establish `h` using `congrArg CommaMorphism.left (f.map_zero (𝟙_ (Over S')))`. Simplify `h` using `[pzero, ptOver, eSec, unitMap]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma eSec_sq : eSec G' ≫ f.tot = f.unitMap ≫ eSec G := by
   have h := congrArg CommaMorphism.left (f.map_zero (𝟙_ (Over S')))
@@ -435,7 +433,7 @@ def pullCube (L : LB G.left) (t : LB.Gen (Theta G L)) : LB.Gen (Theta G' (L.pull
   genSquare L (φ := thφ G (x3 G)) (φ' := thφ G' (x3 G')) (h := f.cube) f.cube_sq thε t
 
 /- English proof (translation)
-The claim follows from `genSquare_isGen L (φ := thφ G (x3 G)) (φ' := thφ G' (x3 G')) f.cube_sq thε ht`.
+A detailed English derivation is pending.
 -/
 theorem pullCube_isGen (L : LB G.left) {t : LB.Gen (Theta G L)} (ht : t.IsGen) :
     (f.pullCube L t).IsGen :=

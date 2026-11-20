@@ -6,31 +6,29 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set N₀ := N₁.comap (j.restrictScalars A) with hN₀`. Set `ι : N₀ →ₗ[A] N₁` to `(j.restrictScalars A).restrict (fun x hx => hx)`. Set `f : N₁ →ₗ[A] N₂` to `(q.restrictScalars A).restrict hN`. Establish `hιv : ∀ y : N₀, (ι y : D₁) = j y` using `fun _ => rfl`. Establish `hfv : ∀ y : N₁, (f y : D₂) = q y` using `fun _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hj` to reduce the goal to its premises. Use `congrArg Subtype.val hxy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ι]`. Establish `hιf : Function.Exact ι f`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy' : q (y : D₁) = 0`. Use `congrArg Subtype.val hy` as an intermediate fact. Rewrite `this` using `[hfv]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `(hex (y : D₁)).1 hy'`. Use `⟨⟨x, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show j x ∈ N₁`. Rewrite using `[hx]`. Conclude with `y.2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hx` using `[ι]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨x, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [f, ι, LinearMap.restrict_apply, LinearMap.restrictScalars_apply, ZeroMemClass.coe_zero]`. Conclude with `(hex (j x)).2 ⟨x, rfl⟩`. Establish `hιT : Function.Injective (LinearMap.lTensor E ι)` using `Module.Flat.lTensor_preserves_injective_linearMap ι hι`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfT : Function.Exact (LinearMap.lTensor E ι) (LinearMap.lTensor E f)` using `Module.Flat.lTensor_exact E hιf`. Set `Φ : E ⊗[A] N₀ →ₗ[E] D₀` to `N₀.subtype.liftBaseChange E`. Establish `hcomm₁ : ∀ t : E ⊗[A] N₀, j (Φ t) = h₁.equiv (LinearMap.lTensor E ι t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `tmul x y => simp [Φ, IsBaseChange.equiv_tmul, hιv]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hcomm₂ : ∀ t : E ⊗[A] N₁, h₂.equiv (LinearMap.lTensor E f t) = q (h₁.equiv t)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [IsBaseChange.equiv_tmul, hfv]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hΦi : Function.Injective Φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `s t hst`. Apply `hιT` to reduce the goal to its premises. Apply `h₁.equiv.injective` to reduce the goal to its premises. Rewrite using `[← hcomm₁, ← hcomm₁, hst]`. Establish `hΦs : Function.Surjective Φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `d`. Take `⟨t, ht⟩` from `h₁.equiv.surjective (j d)`. Establish `h0 : LinearMap.lTensor E f t = 0`. Apply `h₂.equiv.injective` to reduce the goal to its premises. Rewrite using `[hcomm₂, ht, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hex (j d)).2 ⟨d, rfl⟩`. Take `⟨s, hs⟩` from `(hfT t).1 h0`. Use `⟨s, hj ?_⟩` and prove the remaining obligations. Rewrite using `[hcomm₁, hs, ht]`. Use `IsBaseChange.of_equiv (LinearEquiv.ofBijective Φ ⟨hΦi, hΦs⟩) ?_` and prove the remaining obligations.
-
-Introduce `x`. Use `show Φ (1 ⊗ₜ x) = x`. Simplify using `[Φ, LinearMap.liftBaseChange_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBaseChange_comap_of_exact (A E : Type) [CommRing A] [CommRing E] [Algebra A E]
     [Module.Flat A E] (D₀ D₁ D₂ : Type) [AddCommGroup D₀] [AddCommGroup D₁] [AddCommGroup D₂]

@@ -18,7 +18,7 @@ def coneJacMat (h : HermNorm n) {k : ℕ} (g : Fin k → MvPolynomial (Fin n) �
   Matrix.of (fun i j => eval (h.pointOf y) (pderiv j (g i))) * h.mat.transpose
 
 /- English proof (translation)
-Unfold `coneJacMat`. Use `Continuous.matrix_mul ?_ continuous_const` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(MvPolynomial.continuous_eval _).comp h.continuous_pointOf`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_coneJacMat (h : HermNorm n) {k : ℕ} (g : Fin k → MvPolynomial (Fin n) ℂ) :
     Continuous (coneJacMat h g) := by
@@ -28,7 +28,7 @@ theorem continuous_coneJacMat (h : HermNorm n) {k : ℕ} (g : Fin k → MvPolyno
   exact (MvPolynomial.continuous_eval _).comp h.continuous_pointOf
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `WithLp.toLp 2 (Matrix.mulVec (coneJacMat h g y) (WithLp.ofLp v)) = 0 ↔ _`. Rewrite using `[WithLp.toLp_eq_zero, coneJacMat, ← Matrix.mulVec_mulVec, funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -44,15 +44,13 @@ theorem mem_ker_coneJacMat (h : HermNorm n) {k : ℕ} (g : Fin k → MvPolynomia
   rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[mem_ker_coneJacMat]`. Prove the components needed by the constructor for the conclusion. Introduce `hv i`. Conclude with `hv (g i) (hg ▸ Submodule.subset_span ⟨i, rfl⟩)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv q hq`. Rewrite `hq` using `[← hg]`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `hv i`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simp [add_mul, Finset.sum_add_distrib, hx, hz]`. Consider the case `smul a x hxmem hx`. Establish `hx0 : eval (h.pointOf y) x = 0` using `hy x (hg ▸ hxmem)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, pderiv_mul, map_add, map_mul, map_mul, hx0]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = 0 := by rw [hx, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coneTangent_eq_ker (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)} {k : ℕ}
     (g : Fin k → MvPolynomial (Fin n) ℂ) (hg : Submodule.span _ (Set.range g) = J)
@@ -82,13 +80,13 @@ theorem coneTangent_eq_ker (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ
         _ = 0 := by rw [hx, mul_zero]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hq0⟩ : ∃ q ∈ J, eval (h.pointOf y) q ≠ 0 := by`. Simplify `hy` using `[coneSet]`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite using `[Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `h.pointOf_eq_zero` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Establish `h1 : ∑ j, eval (h.pointOf y) (pderiv j q) * h.pointOf v j = 0` using `hv q hq`. Establish `h2 : ∑ j, eval (h.pointOf y) (pderiv j (X l * q)) * h.pointOf v j = 0` using `hv _ (J.mul_mem_left _ hq)`. Establish `h3 : ∀ j, eval (h.pointOf y) (pderiv j (X l * q)) * h.pointOf v j = h.pointOf y l * (eval (h.pointOf y) (pderiv j q) * h.pointOf v j) + if l = j then eval (h.pointOf y) q * h.pointOf v l else 0`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `hj : l = j`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[pderiv_X_of_ne hj, hj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3, Finset.sum_add_distrib, ← Finset.mul_sum, h1, mul_zero, zero_add, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h2`. Conclude with `(mul_eq_zero.1 h2).resolve_left hq0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coneTangent_eq_bot (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {y : EuclideanSpace ℂ (Fin n)} (hy : y ∉ coneSet h J) : coneTangent h J y = ⊥ := by
@@ -117,7 +115,7 @@ theorem coneTangent_eq_bot (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ
   exact (mul_eq_zero.1 h2).resolve_left hq0
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem starProjection_congr {U V : Submodule ℂ (EuclideanSpace ℂ (Fin n))} (e : U = V) :
     U.starProjection = V.starProjection := by
@@ -129,9 +127,9 @@ def gramOp {m : ℕ} (π : Fin m → Fin n → ℂ) :
   (LinearMap.toContinuousLinearMap (linProjₗ π)).adjoint ∘L LinearMap.toContinuousLinearMap (linProjₗ π)
 
 /- English proof (translation)
-Establish `hL : Continuous fun π : Fin m → Fin n → ℂ => LinearMap.toContinuousLinearMap (linProjₗ π)`. Use `continuous_clm_apply.2 fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_toContinuousLinearMap']`. Express the relevant statement in the definitionally equal form `Continuous fun π : Fin m → Fin n → ℂ => linProj π v`. Unfold `linProj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Conclude with `(ContinuousLinearMap.adjoint.continuous.comp hL).clm_comp hL`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gramOp (m : ℕ) : Continuous (gramOp (n := n) (m := m)) := by
   have hL : Continuous fun π : Fin m → Fin n → ℂ =>
@@ -148,7 +146,7 @@ def compressDet {m : ℕ} (π : Fin m → Fin n → ℂ)
   Complex.re (Q ∘L gramOp π ∘L Q + (1 - Q)).det
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_re.comp (ContinuousLinearMap.continuous_det.comp ((continuous_snd.clm_comp (((continuous_gramOp m).comp continuous_fst).clm_comp continuous_snd)).add (continuous_const.sub continuous_snd)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_compressDet (m : ℕ) :
     Continuous fun p : (Fin m → Fin n → ℂ) ×
@@ -158,7 +156,7 @@ theorem continuous_compressDet (m : ℕ) :
       continuous_snd)).add (continuous_const.sub continuous_snd)))
 
 /- English proof (translation)
-Rewrite using `[coneJac, compressDet, gramOp, ContinuousLinearMap.comp_assoc, ← hComp n m π (coneTangent h J y), Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coneJac_eq_compressDet (hComp : TangentJacCompress.Statement) (h : HermNorm n)
     (J : Ideal (MvPolynomial (Fin n) ℂ)) {m : ℕ} (π : Fin m → Fin n → ℂ)
@@ -167,15 +165,13 @@ theorem coneJac_eq_compressDet (hComp : TangentJacCompress.Statement) (h : HermN
   rw [coneJac, compressDet, gramOp, ContinuousLinearMap.comp_assoc, ← hComp n m π (coneTangent h J y), Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `n m h J _ _ _ _`. Use `Measurable.aemeasurable ?_` and prove the remaining obligations. Take `⟨k, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian J)`. Set `P : EuclideanSpace ℂ (Fin n) → (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))` to `(coneSet h J).piecewise (fun y => (LinearMap.ker (Matrix.toEuclideanLin (coneJacMat h g y))).starProjection) 0`. Establish `hP : Measurable P` using `Measurable.piecewise (isClosed_coneSet h J).measurableSet (hKer (EuclideanSpace ℂ (Fin n)) n k _ (continuous_coneJacMat h g)) measurable_const`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTP : ∀ y, (coneTangent h J y).starProjection = P y`. Introduce `y`. Distinguish the cases in `hy : y ∈ coneSet h J`. Simplify using `only [P, Set.piecewise_eq_of_mem _ _ _ hy]`. Conclude with `starProjection_congr (coneTangent_eq_ker h g hg hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [P, Set.piecewise_eq_of_notMem _ _ _ hy]`. Rewrite using `[starProjection_congr (coneTangent_eq_bot h hy), Submodule.starProjection_bot]`. Both sides reduce to the same expression. Establish `hJac : (fun p : (Fin m → Fin n → ℂ) × EuclideanSpace ℂ (Fin n) => coneJac h J p.1 p.2) = fun p => compressDet p.1 (P p.2)`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coneJac_eq_compressDet hComp, hTP]`. Establish `hM : Measurable fun q : (Fin m → Fin n → ℂ) × (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) => compressDet q.1 q.2` using `(continuous_compressDet m).measurable`. Establish `hM2 : Measurable fun p : (Fin m → Fin n → ℂ) × EuclideanSpace ℂ (Fin n) => (p.1, P p.2)` using `measurable_fst.prodMk (hP.comp measurable_snd)`. Establish `hM3` using `hM.comp hM2`. Rewrite using `[hJac]`.
-
-Conclude with `hM3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConeJacMeasurable.proof (hComp : TangentJacCompress.Statement)
     (hKer : KernelProjMeasurable.Statement) : ConeJacMeasurable.Statement := by

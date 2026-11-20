@@ -2,13 +2,13 @@ import Mathlib
 
 open Polynomial in
 /- English proof (translation)
-Set `K` to `AlgebraicClosure E`. Set `φ : Matrix (Fin N) (Fin N) E →ₐ[R] Matrix (Fin N) (Fin N) K` to `(IsScalarTower.toAlgHom R E K).mapMatrix`. Establish `hφ : IsIntegral R (φ γ)` using `h.map φ`. Establish `hdet : algebraMap E K γ.det = (φ γ).det` using `RingHom.map_det (algebraMap E K) γ`. Rewrite using `[← isIntegral_algebraMap_iff (B := K) (algebraMap E K).injective, hdet, Matrix.det_eq_prod_roots_charpoly]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsIntegral.multiset_prod fun μ hμ => ?_` and prove the remaining obligations. Establish `hspec : μ ∈ spectrum K (φ γ)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 (isRoot_of_mem_roots hμ)`. Take `⟨p, hp, hp0⟩` from `hφ`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `h1` using `spectrum.subset_polynomial_aeval (φ γ) (p.map (algebraMap R K)) ⟨μ, hspec, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[aeval_map_algebraMap, aeval_def, hp0]`. Simplify using `only [eval_map] at h1`. Assume the negation of the conclusion as `hne`. Apply `h1` to reduce the goal to its premises. Rewrite using `[spectrum.mem_resolventSet_iff, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUnit.mk0 _ hne).map _`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Ybf4.isIntegral_det_of_isIntegral {R E : Type} [CommRing R] [Field E]
     [Algebra R E] {N : ℕ} (γ : Matrix (Fin N) (Fin N) E) (h : IsIntegral R γ) :
@@ -35,19 +35,19 @@ private theorem UpperTheory.Reformulated.B.Ybf4.isIntegral_det_of_isIntegral {R 
 
 open Polynomial in
 /- English proof (translation)
-Introduce `E _ _ N L hfg hspan γ hγ`. Use `isIntegral_trans (A := NumberField.RingOfIntegers E) _ (UpperTheory.Reformulated.B.Ybf4.isIntegral_det_of_isIntegral γ ?_)` and prove the remaining obligations. Use `haveI : Module.Finite (NumberField.RingOfIntegers E) L := Module.Finite.iff_fg.2 hfg`. Set `g : (Fin N → E) →ₗ[NumberField.RingOfIntegers E] (Fin N → E)` to `(Matrix.mulVecLin γ).restrictScalars _`. Set `f : Module.End (NumberField.RingOfIntegers E) L` to `g.restrict (p := L) (q := L) hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hp0⟩` from `LinearMap.exists_monic_and_aeval_eq_zero (NumberField.RingOfIntegers E) f`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ (n : ℕ) (v : L), ((f ^ n) v : Fin N → E) = (γ ^ n).mulVec v`. Introduce `n`. Proceed by induction on `n with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro v`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `v`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, ih, ← Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `key : ∀ (q : (NumberField.RingOfIntegers E)[X]) (v : L), ((aeval f q) v : Fin N → E) = (aeval γ q).mulVec v`. Introduce `q v`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add a b ha hb => simp [ha, hb, Matrix.add_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `monomial n a`. Rewrite using `[aeval_monomial, aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, LinearMap.smul_apply, Submodule.coe_smul, hpow]`. Use extensionality with `i`. Express the relevant statement in the definitionally equal form `a • (∑ j, (γ ^ n) i j * (v : Fin N → E) j) = ∑ j, (a • (γ ^ n) i j) * (v : Fin N → E) j`. Simplify using `only [Algebra.smul_def, mul_assoc, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz : Matrix.mulVecLin (aeval γ p) = 0`. Use `LinearMap.ext_on hspan fun v hv => ?_` and prove the remaining obligations. Use `key p ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[hp0]`. Simplify using `using this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← aeval_def]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ybf4.isIntegral_det :
     ∀ {E : Type} [inst : Field E] [NumberField E] {N : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin N → E)),

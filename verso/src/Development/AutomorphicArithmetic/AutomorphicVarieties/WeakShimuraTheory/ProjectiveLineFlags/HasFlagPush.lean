@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hA i j h, zero_mul]`. Rewrite using `[hB j i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem up_diag_mul {R : Type} [CommRing R] {A B : M4 R} (hA : IsUp A) (hB : IsUp B) (i : Fin 4) :
     (A * B) i i = A i i * B i i := by
@@ -16,21 +16,21 @@ private theorem up_diag_mul {R : Type} [CommRing R] {A B : M4 R} (hA : IsUp A) (
   · rw [hB j i h, mul_zero]
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Rewrite `this` using `[IsGSp, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem low_left {R : Type} [CommRing R] {N : M4 R} (h : IsLow N) : adj N * N = 1 := by
   have := h.1
   rwa [IsGSp, one_smul] at this
 
 /- English proof (translation)
-Rewrite using `[PD.ψ, map_one, mul_one, low_left (hQ.low v), Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pair_psi_one {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] {Φ : Fr O Γ} {a : O →+* R}
     {Q : PD Φ.ι Γ R} (hQ : Φ.IsPair a Q) (v : Φ.ι) (i : Fin 4) : Q.ψ v i 1 = 1 := by
   rw [PD.ψ, map_one, mul_one, low_left (hQ.low v), Matrix.one_apply_eq]
 
 /- English proof (translation)
-Rewrite using `[PD.ψ, PD.ψ, PD.ψ, ← up_diag_mul (hQ.flag v s hs) (hQ.flag v t ht), map_mul]`. Establish `h1 : Q.n v * adj (Q.n v) = 1` using `mul_eq_one_comm.1 (low_left (hQ.low v))`. Establish `h2 : adj (Q.n v) * Q.r s * Q.n v * (adj (Q.n v) * Q.r t * Q.n v) = adj (Q.n v) * Q.r s * (Q.n v * adj (Q.n v)) * Q.r t * Q.n v`. Simplify using `only [mul_assoc]`. Rewrite using `[h2, h1, mul_one, mul_assoc (adj (Q.n v)) (Q.r s)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pair_psi_mul {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] {Φ : Fr O Γ} {a : O →+* R}
     {Q : PD Φ.ι Γ R} (hQ : Φ.IsPair a Q) (v : Φ.ι) (i : Fin 4) {s t : Γ} (hs : s ∈ Φ.Gv v) (ht : t ∈ Φ.Gv v) :
@@ -43,9 +43,9 @@ private theorem pair_psi_mul {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R
   rw [h2, h1, mul_one, mul_assoc (adj (Q.n v)) (Q.r s)]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Use `⟨Matrix.GeneralLinearGroup.map f g, fun s => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i j, (Matrix.GeneralLinearGroup.map f g * W.pushRep f r s * (Matrix.GeneralLinearGroup.map f g)⁻¹ : GL (Fin n) B) i j = f ((g * r s * g⁻¹ : GL (Fin n) A) i j)`. Introduce `i j`. Rewrite using `[MonoidHom.comp_apply, ← map_inv, ← map_mul, ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[key, (hg s).1 i j hij, map_zero]`. Rewrite using `[key, (hg s).2 i]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hasFlag_push {H A B : Type} [Group H] [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B)
     {r : H →* GL (Fin n) A} {κ : Fin n → H →* Aˣ} (h : W.HasFlag r κ) :
@@ -63,17 +63,15 @@ private theorem hasFlag_push {H A B : Type} [Group H] [CommRing A] [CommRing B] 
     rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K R _ _ Q ρ hQ hρ`. Establish `hd : ∀ (v : W.Vl l T.L) (g : Dec (F` using `T.L) (K.s.A v)), resLe T.F_le g ∈ (T.fr ∅).Gv (K.e v) := by`. Introduce `v g`. Establish `h1 : (g : G T.L Ω) ∈ Dec (F` using `T.L) (T.pl (K.e v)) := by`. Rewrite using `[← K.hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.2`. Conclude with `h1`. Set `p : ∀ v : W.Vl l T.L, Fin 4 → Dec (F` to `T.L) (K.s.A v) →* R := fun v i => { toFun := fun g => algebraMap c'.O R (K.κ g) * Q.ψ (K.e v) i (resLe T.F_le g) map_one' := by`. Rewrite using `[OneMemClass.coe_one, map_one, map_one, Units.val_one, map_one, one_mul]`. Conclude with `pair_psi_one (Φ := T.fr ∅) hQ (K.e v) i`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_mul' := fun g g' => by`. Establish `h2` using `pair_psi_mul (Φ := T.fr ∅) hQ (K.e v) i (hd v g) (hd v g')`. Rewrite using `[Subgroup.coe_mul, map_mul, map_mul, Units.val_mul, map_mul]`. Use `erw [h2]`. Conclude with `mul_mul_mul_comm _ _ _ _ }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨fun v i => (p v i).toHomUnits, fun v i g => rfl, fun R' _ f v => hasFlag_push f ?_⟩` and prove the remaining obligations. Establish `h1 : adj (Q.n (K.e v)) * Q.n (K.e v) = 1` using `low_left (hQ.low (K.e v))`. Use `⟨⟨adj (Q.n (K.e v)), Q.n (K.e v), h1, mul_eq_one_comm.mp h1⟩, fun s => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i j, ((⟨adj (Q.n (K.e v)), Q.n (K.e v), h1, mul_eq_one_comm.mp h1⟩ : GL (Fin 4) R) * (ρ.comp (K.V.frame.φ v)) s * (⟨adj (Q.n (K.e v)), Q.n (K.e v), h1, mul_eq_one_comm.mp h1⟩ : GL (Fin 4) R)⁻¹ : GL (Fin 4) R) i j = algebraMap c'.O R (K.κ s.1) * (adj (Q.n (K.e v)) * Q.r (r …`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(adj (Q.n (K.e v)) * W.mat ρ (K.V.pr s.1) * Q.n (K.e v)) i j = _`. Rewrite using `[hρ, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `hQ.flag (K.e v) _ (hd v s) i j hij` as an intermediate fact.
-
-Use `erw [this]`. Conclude with `mul_zero _`. Rewrite using `[key]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.P1.psiEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (R : Type) [CommRing R] [Algebra c'.O R] (Q : PD T.ι (G T.F Ω) R) (ρ : K.V.frame.G₀ →* GL (Fin 4) R), (T.fr ∅).IsPair ((algebraMap c'.O R).comp (inc h)) Q → K.IsRho ρ Q →

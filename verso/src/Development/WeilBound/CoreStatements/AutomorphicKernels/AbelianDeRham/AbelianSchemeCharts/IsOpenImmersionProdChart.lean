@@ -56,9 +56,9 @@ instance isOpenImmersion_prodChart : IsOpenImmersion (prodChart X Y U V) := by
   infer_instance
 
 /- English proof (translation)
-Establish `: IsOpenImmersion (affPt X.hom U)` using `U.2.isOpenImmersion_fromSpec`. Establish `: IsOpenImmersion (affPt Y.hom V)` using `V.2.isOpenImmersion_fromSpec`. Unfold `prodChart`. Rewrite using `[Scheme.Hom.opensRange_comp_of_isIso]`. Use `TopologicalSpace.Opens.ext ((Scheme.Pullback.range_map _ _ _ _ _ _ _ _ _).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show Set.range (affPt X.hom U) = U.1 from U.2.range_fromSpec, show Set.range (affPt Y.hom V) = V.1 from V.2.range_fromSpec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem opensRange_prodChart : (prodChart X Y U V).opensRange = prodW X Y U.1 V.1 := by
   have : IsOpenImmersion (affPt X.hom U) := U.2.isOpenImmersion_fromSpec
@@ -71,7 +71,7 @@ theorem opensRange_prodChart : (prodChart X Y U V).opensRange = prodW X Y U.1 V.
   rfl
 
 /- English proof (translation)
-Rewrite using `[← opensRange_prodChart, Scheme.Hom.preimage_opensRange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodChart_preimage : prodChart X Y U V ⁻¹ᵁ prodW X Y U.1 V.1 = ⊤ := by
   rw [← opensRange_prodChart, Scheme.Hom.preimage_opensRange]
@@ -83,7 +83,7 @@ def prodInv : Sec (X ⊗ Y).hom (prodW X Y U.1 V.1) →+* Sec X.hom U.1 ⊗[R] S
 end Chart
 
 /- English proof (translation)
-Rewrite using `[← opensRange_prodChart]`. Conclude with `isAffineOpen_opensRange _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_prodW (U : X.left.affineOpens) (V : Y.left.affineOpens) : IsAffineOpen (prodW X Y U.1 V.1) := by
   rw [← opensRange_prodChart]

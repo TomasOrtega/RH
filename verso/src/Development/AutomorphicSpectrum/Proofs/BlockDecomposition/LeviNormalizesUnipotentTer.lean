@@ -17,11 +17,11 @@ variable {n r : ℕ} {R : Type} [CommRing R] {s : R →+* R} {Jm : Matrix (Fin n
   {Xm Ym : Matrix (Fin n) (Fin r) R}
 
 /- English proof (translation)
-Establish `h` using `hF.inv_coef hM e`. Rewrite `h` using `[e', ← Matrix.mul_assoc, hF.xy, Matrix.one_mul]`. Establish `h2` using `congrFun (congrFun h i) i`. Establish `e3 : cT s (diagonal d') = diagonal (fun i => s (d' i))`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[cT]`. Simplify using `[cT, Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ (Ne.symm hab)]`. Rewrite `h2` using `[e3, Matrix.diagonal_mul_diagonal]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h2` using `[mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coef_inv (hF : PFr s Jm Xm Ym) {M : Matrix (Fin n) (Fin n) R} (hM : cT s M * Jm * M = Jm)
     {d d' : Fin r → R} (e : M * Xm = Xm * diagonal d) (e' : M * Ym = Ym * diagonal d') (i : Fin r) :
@@ -39,9 +39,9 @@ theorem coef_inv (hF : PFr s Jm Xm Ym) {M : Matrix (Fin n) (Fin n) R} (hM : cT s
   simpa [mul_comm] using h2
 
 /- English proof (translation)
-Establish `h1 : diagonal d * diagonal c = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Conclude with `congrArg _ (funext hdc)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc Xm, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Xm * diagonal c := by rw [hMi, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_frame {M Mi : Matrix (Fin n) (Fin n) R} (hMi : Mi * M = 1) {d c : Fin r → R}
     (hdc : ∀ i, d i * c i = 1) (e : M * Xm = Xm * diagonal d) : Mi * Xm = Xm * diagonal c := by
@@ -55,9 +55,9 @@ theorem inv_mul_frame {M Mi : Matrix (Fin n) (Fin n) R} (hMi : Mi * M = 1) {d c 
     _ = Xm * diagonal c := by rw [hMi, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : diagonal d * diagonal c = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Conclude with `congrArg _ (funext hdc)`. Establish `h` using `pgram_unitary hM (Xm * diagonal c) (1 : Matrix (Fin n) (Fin n) R)`. Rewrite `h` using `[← Matrix.mul_assoc M, e, Matrix.mul_assoc Xm, h1, Matrix.mul_one, Matrix.mul_one, Matrix.mul_one, Formalism.UG.cT_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 theorem orth_mulVec {M : Matrix (Fin n) (Fin n) R} (hM : cT s M * Jm * M = Jm) {d c : Fin r → R}
     (hdc : ∀ i, d i * c i = 1) (e : M * Xm = Xm * diagonal d) {v : Fin n → R}
@@ -71,11 +71,11 @@ theorem orth_mulVec {M : Matrix (Fin n) (Fin n) R} (hM : cT s M * Jm * M = Jm) {
   rw [Matrix.mulVec_mulVec, h, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Use `choose A hA using hc`. Establish `hUP : (U - 1) * P = Xm * (Matrix.of fun j k => A k j)`. Use extensionality with `i k`. Use `congrFun (hA k) i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hUX : (U - 1) * Xm = Xm * (B - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, hU, Matrix.mul_sub, Matrix.mul_one]`. Establish `hwd : w = P *ᵥ w + Xm *ᵥ ((cT s Ym * Jm) *ᵥ w)`. Rewrite using `[hP, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec w Ym, hw, Matrix.mulVec_zero, ← Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Matrix.of fun j k => A k j) *ᵥ w + (B - 1) *ᵥ ((cT s Ym * Jm) *ᵥ w), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hwd]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hUP, hUX, Matrix.mulVec_add]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clause_extend (hF : PFr s Jm Xm Ym) {U : Matrix (Fin n) (Fin n) R} {B : Matrix (Fin r) (Fin r) R}
     (hU : U * Xm = Xm * B) {P : Matrix (Fin n) (Fin n) R}
@@ -108,7 +108,7 @@ def orthProj (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (
   1 - X * (cT (σ : E →+* E) Y * J) - Y * (cT (σ : E →+* E) X * J)
 
 /- English proof (translation)
-Establish `e1 : cT (σ : E →+* E) X * J * (X * (cT (σ : E →+* E) Y * J)) = 0`. Rewrite using `[← Matrix.mul_assoc, hW.xx, Matrix.zero_mul]`. Establish `e2 : cT (σ : E →+* E) X * J * (Y * (cT (σ : E →+* E) X * J)) = cT (σ : E →+* E) X * J`. Rewrite using `[← Matrix.mul_assoc, hW.xy, Matrix.one_mul]`. Rewrite using `[orthProj, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -121,23 +121,21 @@ theorem orth_orthProj (hW : IsWittFrame σ J X Y) : (cT (σ : E →+* E) X * J) 
   abel
 
 /- English proof (translation)
-Establish `hF` using `pfrA h hJ hW`. Take `⟨d, d', e, e'⟩` from `hm`. Take `⟨B, hB, hB1, eU, hz⟩` from `hu`. Establish `hM` using `unitaryA_matHom m`. Use `set M := (matHom _ σ J m).1 with hMdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U := (matHom _ σ J u).1 with hUdef`. Use `set Mi := (matHom _ σ J m⁻¹).1 with hMidef`. Establish `hMi : Mi * M = 1`. Rewrite using `[hMidef, hMdef, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Take `⟨c, hdc⟩ : ∃ c : Fin r → AF F ⊗[F] E, ∀ i, d i * c i = 1` from `⟨_, coef_inv hF hM e e'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eMi` using `inv_mul_frame hMi hdc e`. Establish `hV : (matHom _ σ J (m⁻¹ * u * m)).1 = Mi * U * M`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul]`. Use `⟨diagonal c * B * diagonal d, ((Matrix.blockTriangular_diagonal _).mul hB).mul (Matrix.blockTriangular_diagonal _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, hB1, mul_one, mul_comm]`. Conclude with `hdc i`. Rewrite using `[hV, Matrix.mul_assoc, e, ← Matrix.mul_assoc, Matrix.mul_assoc Mi, eU, ← Matrix.mul_assoc Mi, eMi]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `z hzz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcol : ∀ k, ∃ a, (U - 1) *ᵥ (fun i => ((orthProj σ J X Y).map (inclR (F` using `F) (AF F))) i k) = adMat F X *ᵥ a := by`. Introduce `k`. Use `hz (fun i => orthProj σ J X Y i k) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (orth_orthProj hW) i) k` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hv : (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F X) * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J) *ᵥ (fun i => inclR (F` using `F) (AF F) (z i)) = 0 := by`. Establish `e1 : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F X) * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J = (cT (σ : E →+* E) X * J).map (inclR (F` using `F) (AF F)) := by`. Unfold `JR`. Rewrite using `[← cT_map_inclR, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e1]`. Use function extensionality and compare the values at `i`. Use `congrArg (inclR (F := F) (AF F)) (congrFun hzz i)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `clause_extend hF eU (by`. Unfold `JR`. Rewrite using `[← cT_map_inclR, ← cT_map_inclR, orthProj, Matrix.map_sub _ (map_sub _), Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul]) hcol`. Use the proof step `(orth_mulVec hM hdc e hv)`. Use `⟨diagonal c *ᵥ a, ?_⟩` and prove the remaining obligations.
-
-Establish `e4 : Mi * U * M - 1 = Mi * (U - 1) * M`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hMi]`. Rewrite using `[hV, e4, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, eMi, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviMin_normalises_unipMin (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)

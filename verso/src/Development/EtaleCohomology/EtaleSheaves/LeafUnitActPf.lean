@@ -15,7 +15,7 @@ def LeafActSheaf : Prop := ∀ (q : ℕ) [NeZero q], ∃ L : ∀ (F : Shv (ZMod 
   ∀ (F : Shv (ZMod q)) (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (b : Sec F U), L F U (twGen 0 ζ) b = b
 
 /- English proof (translation)
-Introduce `q _ i`. Take `⟨L, hU, hF, hζ⟩` from `h q`. Use `⟨fun U t => L ((res _ (tw q i)).X t) U, ⟨fun g t a b => hU _ g a b, fun U t a b => hF _ U a b⟩, fun U t ζ b => hζ _ U ζ b⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem LeafUnitAct_of (h : LeafActSheaf) : LeafUnitAct := by
   intro q _ i

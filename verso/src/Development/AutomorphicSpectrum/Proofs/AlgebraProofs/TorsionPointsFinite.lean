@@ -21,9 +21,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Introduce `R _ _ p G _ T N _ pt h`. Use `haveI := T.free`. Use `haveI := T.fin`. Establish `hx : ∀ x, ∃ φ : T.A →ₐ[R] R, spMap φ ≫ T.y = pt x` using `fun x => (T.univ R (pt x) ((h.range _).2 ⟨x, rfl⟩)).exists`. Use `choose f hf using hx`.
-
-Use `Finite.of_injective f fun x y e => h.inj ?_` and prove the remaining obligations. Rewrite using `[← hf x, ← hf y, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tors_pts_finite : ∀ (R : Type) [CommRing R] [IsDomain R] (p : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (T : TorsRep G p) (N : Type) [AddCommGroup N] (pt : N → (sp (R₀ := R) R ⟶ G)), IsTorsPts G p pt → Finite N := by
   intro R _ _ p G _ T N _ pt h

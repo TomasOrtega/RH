@@ -28,9 +28,9 @@ def conjCompl (w : HeightOneSpectrum (𝓞 E)) : (conjPerm E w).adicCompletion E
     ⟨(conjLoc (cc E) w).injective, GlobalTheory.CuspRep.ParLaws.conjLoc_surjective (cc E) w⟩
 
 /- English proof (translation)
-Establish `key : ∀ (a b : NNReal) (ha : a ≠ 0) (hb : b ≠ 0), a = b → ∀ z, WithZeroMulInt.toNNReal ha z = WithZeroMulInt.toNNReal hb z`. Introduce and unpack `a _ ha hb rfl z`. Both sides reduce to the same expression. Establish `hv : Valued.v (conjCompl w y) = Valued.v y` using `(conjLoc_spec (cc E) w).2.2 y`. Establish `hN : (Ideal.absNorm w.asIdeal : NNReal) = Ideal.absNorm (conjPerm E w).asIdeal`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show Ideal.absNorm (conjPerm E w).asIdeal = Ideal.absNorm w.asIdeal from GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc (cc E) w]`. Rewrite using `[FinitePlace.norm_def, FinitePlace.norm_def, hv, key _ _ _ _ hN]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_conjCompl (w : HeightOneSpectrum (𝓞 E)) (y : (conjPerm E w).adicCompletion E) :
     ‖conjCompl w y‖ = ‖y‖ := by
@@ -45,7 +45,7 @@ theorem norm_conjCompl (w : HeightOneSpectrum (𝓞 E)) (y : (conjPerm E w).adic
   rw [FinitePlace.norm_def, FinitePlace.norm_def, hv, key _ _ _ _ hN]
 
 /- English proof (translation)
-Introduce `E _ _ _`. Use `⟨fun v u => ?_, fun c => conjAd_algebraMap c, conjPerm E, conjCompl, norm_conjCompl, fun w u => ?_⟩` and prove the remaining obligations. Conclude with `congrFun (GlobalTheory.ThetaPull.pInf_conjAd u) v`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjPlaces : ConjPlaces := by
   intro E _ _ _

@@ -26,11 +26,11 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.WcB.CaseZero
 
 /- English proof (translation)
-Establish `hδ0 : 0 < δ` using `hδ ▸ mul_pos ha hb`. Establish `hXY : 0 < X / Y` using `div_pos hX hY`. Establish `e1 : (X * Y * δ) ^ (1 / 2 : ℝ) = (X / Y) ^ (1 / 2 : ℝ) * Y * δ ^ (1 / 2 : ℝ)`. Establish `: X * Y * δ = (X / Y) * Y ^ 2 * δ` using `by field_simp`. Rewrite using `[this, ← Real.sqrt_eq_rpow, ← Real.sqrt_eq_rpow, ← Real.sqrt_eq_rpow, Real.sqrt_mul (by positivity), Real.sqrt_mul hXY.le, Real.sqrt_sq hY.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : a⁻¹ = b * δ⁻¹` using `by rw [hδ]; field_simp`. Establish `e3 : (X * Y * δ) ^ (1 / 2 : ℝ) * (Y * a)⁻¹ * P = δ ^ (1 / 2 : ℝ) * δ⁻¹ * b * P * (X / Y) ^ (1 / 2 : ℝ)`. Rewrite using `[e1, mul_inv, e2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 0 ≤ δ ^ (1 / 2 : ℝ) * δ⁻¹` using `by positivity`. Establish `h2 : 0 ≤ (X / Y) ^ (1 / 2 : ℝ)` using `by positivity`. Establish `h3 : b * P ≤ M * S` using `mul_le_mul hbM hPS hP0 (hb.le.trans hbM)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem real_bound {X Y a b δ M S P : ℝ} (hX : 0 < X) (hY : 0 < Y) (ha : 0 < a) (hb : 0 < b)
     (hδ : δ = a * b) (hbM : b ≤ M) (hP0 : 0 ≤ P) (hPS : P ≤ S) :
@@ -56,7 +56,7 @@ theorem real_bound {X Y a b δ M S P : ℝ} (hX : 0 < X) (hY : 0 < Y) (ha : 0 < 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `e : X / Y = T * a ^ 2 / δ` using `by rw [hT]; field_simp`. Rewrite using `[e]`. Establish `hT0 : 0 ≤ T` using `by rw [hT]; positivity`. Use `gcongr`. Conclude with `hT0.trans hTR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem real_support {X Y a δ M T R : ℝ} (hX : 0 < X) (hY : 0 < Y) (ha : 0 < a) (hδ0 : 0 < δ)
     (haM : a ≤ M) (hT : T = ((Y * a) ^ 2)⁻¹ * (X * Y * δ)) (hTR : T ≤ R) :
@@ -68,37 +68,33 @@ theorem real_support {X Y a δ M T R : ℝ} (hX : 0 < X) (hY : 0 < Y) (ha : 0 < 
   exact hT0.trans hTR
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ μ lam c Φ hc hΦ hcs h₀`. Take `⟨M, hM, hMat⟩` from `GlobalTheory.T.compact_translate_entries_bounded F h₀`. Establish `hcont : Continuous Φ` using `hΦ.continuous`. Take `⟨S, hS⟩` from `hcs.exists_bound_of_continuous hcont`. Establish `hS0 : 0 ≤ S` using `(norm_nonneg _).trans (hS 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmodc : Continuous fun e : E => (modulus e : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Take `⟨R, hR⟩` from `hcs.isCompact.bddAbove_image hmodc.continuousOn`. Establish `hRΦ : ∀ e, Φ e ≠ 0 → (modulus e : ℝ) ≤ R` using `fun e he => hR (Set.mem_image_of_mem _ (subset_tsupport _ he))`. Use `set δ : ℝ := (modulus (h₀.val).det : ℝ) with hδdef`. Establish `hdet0 : (h₀.val).det ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Matrix.isUnit_iff_isUnit_det _).1 h₀.isUnit` as an intermediate fact. Conclude with `this.ne_zero`. Establish `hδ0 : 0 < δ`. Simplify `modulus_pos hdet0` using `[hδdef]`. Use `⟨δ ^ (1 / 2 : ℝ) * δ⁻¹ * M * S, max 1 (R * M ^ 2 / δ), by positivity, lt_of_lt_of_le one_pos (le_max_left _ _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x y k hk h10`. Take `⟨hent, hdetm⟩` from `hMat k hk`. Use `set m : GL (Fin 2) F := k * h₀ with hm`. Establish `hg : dg2 x y * k * h₀ = dg2 x y * m` using `by rw [hm, mul_assoc]`. Rewrite using `[hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set g : GL (Fin 2) F := dg2 x y * m with hgdef`. Establish `hg10 : g.val 1 0 = 0`. Simplify using `[hgdef, dg2, Matrix.mul_apply, Fin.sum_univ_two, h10]`. Establish `hg11 : g.val 1 1 = (y : F) * m.val 1 1`. Simplify using `[hgdef, dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgdet : (g.val).det = (x : F) * y * (m.val).det`. Rewrite using `[hgdef, Units.val_mul, Matrix.det_mul]`. Simplify using `[dg2, Matrix.det_fin_two]`. Establish `hmdet : (m.val).det = m.val 0 0 * m.val 1 1`. Simplify using `[Matrix.det_fin_two, h10]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmdet0 : (m.val).det ≠ 0`. Use `(Matrix.isUnit_iff_isUnit_det _).1 m.isUnit` as an intermediate fact. Conclude with `this.ne_zero`. Establish `h00 : m.val 0 0 ≠ 0` using `fun h => hmdet0 (by rw [hmdet, h, zero_mul])`. Establish `h11 : m.val 1 1 ≠ 0` using `fun h => hmdet0 (by rw [hmdet, h, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X : ℝ := (modulus (x : F) : ℝ) with hXdef`. Use `set Y : ℝ := (modulus (y : F) : ℝ) with hYdef`. Use `set a : ℝ := (modulus (m.val 1 1) : ℝ) with hadef`. Use `set b : ℝ := (modulus (m.val 0 0) : ℝ) with hbdef`. Establish `hX : 0 < X` using `by simpa [hXdef] using modulus_pos x.ne_zero`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hY : 0 < Y` using `by simpa [hYdef] using modulus_pos y.ne_zero`. Establish `ha : 0 < a` using `by simpa [hadef] using modulus_pos h11`. Establish `hb : 0 < b` using `by simpa [hbdef] using modulus_pos h00`. Establish `hδab : δ = a * b`. Rewrite using `[hδdef, ← hdetm, hmdet, modulus_mul, hadef, hbdef]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hxy : (modulus (((x / y : Fˣ)) : F) : ℝ) = X / Y`. Rewrite using `[Units.val_div_eq_div_val, div_eq_mul_inv, modulus_mul, modulus_inv]`. Use `push_cast`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hXdef, hYdef, div_eq_mul_inv]`. Establish `hmg : (modulus (g.val).det : ℝ) = X * Y * δ`. Rewrite using `[hgdet, modulus_mul, modulus_mul, hdetm]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hm11 : (modulus (g.val 1 1) : ℝ) = Y * a`. Rewrite using `[hg11, modulus_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hxy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hW : GL2LocalData.Wc χ σ μ lam c Φ g = 0`. Use `⟨?_, fun h => absurd hW h⟩` and prove the remaining obligations. Rewrite using `[hW, norm_zero]`. Check the signs of the components of the expression. Take `⟨t, htN, hval⟩` from `GlobalTheory.T.weil_whittaker_galois_conjugate F E χ σ μ lam c Φ hc g hg10 hW`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hval, hmg, hm11]`. Conclude with `real_bound hX hY ha hb hδab (hent 0 0) (norm_nonneg _) (hS _)`. Establish `hΦτ : Φ (algebraMap F E (g.val 1 1)⁻¹ * (t : E)) ≠ 0`. Introduce `h0`.
-
-Apply `hW` to reduce the goal to its premises. Establish `: ‖GL2LocalData.Wc χ σ μ lam c Φ g‖ = 0` using `by rw [hval, h0]; simp`. Conclude with `norm_eq_zero.1 this`. Establish `hT` using `hRΦ _ hΦτ`. Establish `hmodτ : (modulus (algebraMap F E (g.val 1 1)⁻¹ * (t : E)) : ℝ) = ((Y * a) ^ 2)⁻¹ * (X * Y * δ)`.
-
-Rewrite using `[modulus_mul, GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_algebraMap (K := F) (E := E), ← GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_norm (K := F) (E := E) (t : E), htN, modulus_inv]`. Use `push_cast`. Rewrite using `[hm11, hmg]`. Clear the denominators using the available nonvanishing facts. Conclude with `(real_support hX hY ha hδ0 (hent 1 1) hmodτ hT).trans (le_max_right _ _)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem borel_bound : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ), IsUnit1 c → IsLocallyConstant Φ → HasCompactSupport Φ → ∀ h₀ : GL (Fin 2) F, ∃ C B : ℝ, 0 ≤ C ∧ 0 < B ∧ ∀ (x y : Fˣ), ∀ k ∈ GLnLocal.integralGL F 2, (k * h₀).val 1 0 = 0 → ‖GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀)‖ ≤ C * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ) ∧ (GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀) ≠ 0 → (modulus ((x / y : Fˣ) : F) : ℝ) ≤ B) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ μ lam c Φ hc hΦ hcs h₀

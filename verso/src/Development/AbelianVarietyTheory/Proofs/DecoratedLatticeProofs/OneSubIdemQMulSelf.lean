@@ -25,11 +25,11 @@ def idemQc (D : D7) (Q : Finset (Pl D)) : AF D.host.F := pairA D.host.F 0 (1 - i
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[indQ, map_sum]`. Establish `h : ∀ v ∈ Q, evalV D.host.F w (singleV D.host.F v 1) = if w = v then 1 else 0`. Introduce `v _`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl]`. Express the relevant statement in the definitionally equal form `(singleV D.host.F w 1) w = 1`. Conclude with `RestrictedProduct.single_eq_same _ _ _`. Rewrite using `[if_neg hwv]`. Express the relevant statement in the definitionally equal form `(singleV D.host.F v 1) w = 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RestrictedProduct.single_eq_of_ne (fun u : Pl D => u.adicCompletionIntegers D.host.F) (1 : Fv D.host.F v) hwv`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_ite_eq]`.
+A detailed English derivation is pending.
 -/
 theorem evalV_indQ (Q : Finset (Pl D)) (w : Pl D) :
     evalV D.host.F w (indQ D Q) = if w ∈ Q then 1 else 0 := by
@@ -49,9 +49,9 @@ theorem evalV_indQ (Q : Finset (Pl D)) (w : Pl D) :
   rw [Finset.sum_congr rfl h, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Establish `ha : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) = (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`. Conclude with `(placeIdempotent_infinite_and_finite_components D w _ α rfl).2 w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts_pairA (α : Af D.host.F) :
     infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0 ∧
@@ -69,7 +69,7 @@ theorem parts_pairA (α : Af D.host.F) :
 
 open Classical in
 /- English proof (translation)
-Use `⟨(parts_pairA _).1, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[idemQ, (parts_pairA _).2 w, evalV_indQ]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `TensorProduct.zero_tmul _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem parts_idemQ (Q : Finset (Pl D)) :
     infPart D (algebraMap (AF D.host.F) (AE D) (idemQ D Q)) = 0 ∧
@@ -82,9 +82,9 @@ theorem parts_idemQ (Q : Finset (Pl D)) :
 
 open Classical in
 /- English proof (translation)
-Use `⟨(parts_pairA _).1, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[idemQc, (parts_pairA _).2 w, map_sub, map_one, evalV_indQ]`. Use `split_ifs`. Rewrite using `[sub_self]`. Conclude with `TensorProduct.zero_tmul _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[sub_zero]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem parts_idemQc (Q : Finset (Pl D)) :
     infPart D (algebraMap (AF D.host.F) (AE D) (idemQc D Q)) = 0 ∧
@@ -96,11 +96,11 @@ theorem parts_idemQc (Q : Finset (Pl D)) :
   · rw [sub_zero]; rfl
 
 /- English proof (translation)
-Rewrite using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha0, haw⟩`. Rewrite using `[← sub_eq_zero]`. Apply `CMAdele_eq_zero_of_infinite_and_finite_components_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.map_sub, RingHom.map_mul, h0, ha0, zero_mul, sub_zero]`. Introduce `w`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, hc w]`. Distinguish the cases in `h : P w`. Rewrite using `[if_pos h, one_mul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, haw w h, zero_mul, sub_zero]`. Introduce `ha`. Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, RingHom.map_mul, h0, zero_mul]`. Rewrite using `[← ha, RingHom.map_mul, hc w, if_neg hw, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_idAt_iff_mul (P : Pl D → Prop) [DecidablePred P] (c : AE D) (h0 : infPart D c = 0)
     (hc : ∀ w, compAt D w c = if P w then 1 else 0) (a : AE D) : a ∈ idAt D P ↔ c * a = a := by
@@ -121,11 +121,11 @@ theorem mem_idAt_iff_mul (P : Pl D → Prop) [DecidablePred P] (c : AE D) (h0 : 
     · rw [← ha, RingHom.map_mul, hc w, if_neg hw, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [idOff, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Apply `CMAdele_eq_zero_of_infinite_and_finite_components_zero` to reduce the goal to its premises. Rewrite using `[RingHom.map_mul, h0, zero_mul]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[RingHom.map_mul, hc w]`. Distinguish the cases in `h : P w`. Rewrite using `[ha w h, mul_zero]`. Rewrite using `[if_neg h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `ha w hw`. Use `congrArg (compAt D w) ha` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, hc w, if_pos hw, one_mul, RingHom.map_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_idOff_iff_mul (P : Pl D → Prop) [DecidablePred P] (c : AE D) (h0 : infPart D c = 0)
     (hc : ∀ w, compAt D w c = if P w then 1 else 0) (a : AE D) : a ∈ idOff D P ↔ c * a = 0 := by
@@ -145,7 +145,7 @@ theorem mem_idOff_iff_mul (P : Pl D → Prop) [DecidablePred P] (c : AE D) (h0 :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `mem_idAt_iff_mul (· ∈ Q) _ (parts_idemQ Q).1 (parts_idemQ Q).2 a`.
+A detailed English derivation is pending.
 -/
 theorem mem_idAt_Q_iff (Q : Finset (Pl D)) (a : AE D) :
     a ∈ idAt D (· ∈ Q) ↔ algebraMap (AF D.host.F) (AE D) (idemQ D Q) * a = a :=
@@ -153,7 +153,7 @@ theorem mem_idAt_Q_iff (Q : Finset (Pl D)) (a : AE D) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `mem_idAt_iff_mul (· ∉ Q) _ (parts_idemQc Q).1 (fun w => by rw [(parts_idemQc Q).2 w]; by_cases h : w ∈ Q <;> simp [h]) a`.
+A detailed English derivation is pending.
 -/
 theorem mem_idAt_Qc_iff (Q : Finset (Pl D)) (a : AE D) :
     a ∈ idAt D (· ∉ Q) ↔ algebraMap (AF D.host.F) (AE D) (idemQc D Q) * a = a :=
@@ -161,9 +161,9 @@ theorem mem_idAt_Qc_iff (Q : Finset (Pl D)) (a : AE D) :
     (fun w => by rw [(parts_idemQc Q).2 w]; by_cases h : w ∈ Q <;> simp [h]) a
 
 /- English proof (translation)
-Establish `e : (idemQ D Q * idemQ D Q : AF D.host.F) = pairA D.host.F 0 (indQ D Q * indQ D Q)` using `Prod.ext (mul_zero _) rfl`. Rewrite using `[e, idemQ]`. Use `congr 1`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `evalV_indQ (D := D) Q w`. Express the relevant statement in the definitionally equal form `evalV D.host.F w (indQ D Q * indQ D Q) = evalV D.host.F w (indQ D Q)`. Rewrite using `[map_mul, h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idemQ_mul_self (Q : Finset (Pl D)) : idemQ D Q * idemQ D Q = idemQ D Q := by
   have e : (idemQ D Q * idemQ D Q : AF D.host.F) = pairA D.host.F 0 (indQ D Q * indQ D Q) :=
@@ -178,7 +178,7 @@ theorem idemQ_mul_self (Q : Finset (Pl D)) : idemQ D Q * idemQ D Q = idemQ D Q :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `idemQ_mul_self (D := D) Q`. Take the linear combination `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_idemQ_mul_self (Q : Finset (Pl D)) :
     (1 - idemQ D Q) * (1 - idemQ D Q) = 1 - idemQ D Q := by
@@ -186,11 +186,11 @@ theorem one_sub_idemQ_mul_self (Q : Finset (Pl D)) :
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[congGrp, MonoidHom.mem_ker, MonoidHom.comp_apply, Units.ext_iff]`. Simplify using `only [Matrix.GeneralLinearGroup.map, Units.coe_map, Units.val_one]`. Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((matHom V g).1.map (Ideal.Quotient.mk I)) i j = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D ⧸ I)) i j ↔ _`. Rewrite using `[Matrix.map_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [Matrix.one_apply_ne hij, map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_congGrp_iff (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
     g ∈ congGrp V I ↔ ∀ i j, (Formalism.L2.Theta.mt V g - 1) i j ∈ I := by

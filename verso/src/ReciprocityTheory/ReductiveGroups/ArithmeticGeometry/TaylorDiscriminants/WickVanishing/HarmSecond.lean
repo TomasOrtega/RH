@@ -7,9 +7,9 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.G.TB
 
 /- English proof (translation)
-Establish `h : ⁅(MvPolynomial.pderiv i : Derivation k (MvPolynomial σ k) (MvPolynomial σ k)), MvPolynomial.pderiv j⁆ = (0 : Derivation k (MvPolynomial σ k) (MvPolynomial σ k))`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce `n`. Rewrite using `[Derivation.commutator_apply, MvPolynomial.pderiv_X, MvPolynomial.pderiv_X, Pi.single_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h'` using `congrArg (fun D => D p) h`. Simplify using `only [Derivation.commutator_apply, Derivation.zero_apply] at h'`. Conclude with `sub_eq_zero.mp h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvpoly_pderiv_comm {k σ : Type} [CommRing k] (i j : σ) (p : MvPolynomial σ k) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j p) = MvPolynomial.pderiv j (MvPolynomial.pderiv i p) := by
@@ -26,19 +26,17 @@ theorem mvpoly_pderiv_comm {k σ : Type} [CommRing k] (i j : σ) (p : MvPolynomi
   exact sub_eq_zero.mp h'
 
 /- English proof (translation)
-Introduce `k _ T _ r cc isX hcc hX n c hc P hP`. Use `set S : (Σ τ : T, Fin (r τ)) → (Σ τ : T, Fin (r τ)) → MvPolynomial ((Σ τ : T, Fin (r τ)) × Fin n) k := fun l l' => ∑ b : Fin n, MvPolynomial.pderiv (l, b) (MvPolynomial.pderiv (l', b) P) with hS`. Establish `hsymm : ∀ l l', S l l' = S l' l`. Introduce `l l'`. Simplify using `only [hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun b _ => mvpoly_pderiv_comm _ _ _`. Establish `hzero1 : ∀ l l' : (Σ τ : T, Fin (r τ)), isX l.1 → l'.1 = cc l.1 → S l l' = 0`. Introduce and unpack `⟨σ, i⟩ ⟨σ', i'⟩ hXσ h`. Simplify using `only at h hXσ`. Substitute `h` using the available equality.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hP σ hXσ i i'`. Establish `hzero : ∀ l l' : (Σ τ : T, Fin (r τ)), l'.1 = cc l.1 → S l l' = 0`. Introduce `l l' h`. Break down `hX l.1 with h1 | h1` into its components or cases. Conclude with `hzero1 l l' h1 h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsymm]`. Use `hzero1 l' l (by rw [h]; exact h1) ?_` and prove the remaining obligations. Rewrite using `[h, hcc]`. Establish `hterm : ∀ l l', MvPolynomial.C (c l l') * S l l' = 0`. Introduce `l l'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : l'.1 = cc l.1`. Rewrite using `[hzero l l' h, mul_zero]`. Rewrite using `[hc l l' h, map_zero, zero_mul]`. Unfold `secondOrder`. Repeatedly rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [apply_ite MvPolynomial.C, ite_mul, map_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
-
-Introduce `l' _`. Rewrite using `[← Finset.mul_sum]`. Conclude with `hterm l l'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmSecond_holds : HarmSecondSt := by
   intro k _ T _ r cc isX hcc hX n c hc P hP

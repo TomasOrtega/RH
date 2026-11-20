@@ -14,14 +14,14 @@ namespace GlobalTheory.TorsionPairTest
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
 /- English proof (translation)
-Rewrite using `[← Over.w g.b, ← Category.assoc, ← H.1, Over.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem over_of_isPull {T T' : Over (Spec (CommRingCat.of R))} {h : T'.left ⟶ T.left} {g : GtPt D T}
     {g' : GtPt D T'} (H : GtPt.IsPull h g g') : h ≫ T.hom = T'.hom := by
   rw [← Over.w g.b, ← Category.assoc, ← H.1, Over.w]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(jK R ∣_ W) ≫ W.ι ≫ (D.c χ).left = (jK R ⁻¹ᵁ W).ι ≫ jK R ≫ (D.c χ).left`. Rewrite using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem generic_maps_eq (W : (Spec (CommRingCat.of R)).Opens) (χ : D.X) :
     (jK R ∣_ W) ≫ (toUnit (TW W) ≫ D.c χ).left = (jK R ⁻¹ᵁ W).ι ≫ ptK (D.c χ) := by
@@ -29,7 +29,7 @@ theorem generic_maps_eq (W : (Spec (CommRingCat.of R)).Opens) (χ : D.X) :
   rw [← Category.assoc, morphismRestrict_ι, Category.assoc]
 
 /- English proof (translation)
-Take `⟨b, s, h, _, _⟩` from `g`. Take `⟨b', s', h', _, _⟩` from `g'`. Take `rfl : b = b'` from `hb`. Take `rfl : s = s'` from `funext fun χ => GlobalTheory.TorusCoord.gen_eq_of_corr D.P.isLB (h χ) (h' χ) (Geo.Tor.corr_of_val D.P.isLB (hs χ))`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ext_val {T : Over (Spec (CommRingCat.of R))} {g g' : GtPt D T} (hb : g.b = g'.b)
     (hs : ∀ χ y J, Geo.Tor.Good D.P.L y J → Geo.Tor.val (g.s χ) (𝟙 _) y J = Geo.Tor.val (g'.s χ) (𝟙 _) y J) :
@@ -42,7 +42,7 @@ theorem ext_val {T : Over (Spec (CommRingCat.of R))} {g g' : GtPt D T} (hb : g.b
   rfl
 
 /- English proof (translation)
-The claim follows from `ext_val (h.1.trans h'.1.symm) fun χ y J hJ => by have e := (Geo.Tor.val_corr hJ (h.2 χ) (𝟙 _)).trans (Geo.Tor.val_corr hJ (h'.2 χ) (𝟙 _)).symm exact mul_right_cancel ((Geo.Tor.val_mul hJ _ _ _).symm.trans (e.trans (Geo.Tor.val_mul hJ _ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem isAdd_unique {T : Over (Spec (CommRingCat.of R))} {g g' a a' : GtPt D T} (h : g.IsAdd g' a)
     (h' : g.IsAdd g' a') : a = a' :=
@@ -51,7 +51,7 @@ theorem isAdd_unique {T : Over (Spec (CommRingCat.of R))} {g g' a a' : GtPt D T}
     exact mul_right_cancel ((Geo.Tor.val_mul hJ _ _ _).symm.trans (e.trans (Geo.Tor.val_mul hJ _ _ _)))
 
 /- English proof (translation)
-The claim follows from `ext_val (Over.OverMorphism.ext (H.1.trans H'.1.symm)) fun χ _ _ hJ => (Geo.Tor.val_corr hJ (H.2 χ) (𝟙 _)).trans (Geo.Tor.val_corr hJ (H'.2 χ) (𝟙 _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPull_unique {T T' : Over (Spec (CommRingCat.of R))} {h : T'.left ⟶ T.left} {g : GtPt D T}
     {a a' : GtPt D T'} (H : GtPt.IsPull h g a) (H' : GtPt.IsPull h g a') : a = a' :=
@@ -59,7 +59,7 @@ theorem isPull_unique {T T' : Over (Spec (CommRingCat.of R))} {h : T'.left ⟶ T
     (Geo.Tor.val_corr hJ (H.2 χ) (𝟙 _)).trans (Geo.Tor.val_corr hJ (H'.2 χ) (𝟙 _)).symm
 
 /- English proof (translation)
-The claim follows from `ext_val (H.1.trans H'.1.symm) fun χ _ _ hJ => (Geo.Tor.val_corr hJ (H.2 χ) (𝟙 _)).trans (Geo.Tor.val_corr hJ (H'.2 χ) (𝟙 _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isIota_unique {W : (Spec (CommRingCat.of R)).Opens} (ψW : PsiOn D W) {T : Over W.toScheme} {y : D.X}
     {a a' : GtPt D (overW W T)} (H : GtPt.IsIotaW ψW y a) (H' : GtPt.IsIotaW ψW y a') : a = a' :=
@@ -67,9 +67,9 @@ theorem isIota_unique {W : (Spec (CommRingCat.of R)).Opens} (ψW : PsiOn D W) {T
     (Geo.Tor.val_corr hJ (H.2 χ) (𝟙 _)).trans (Geo.Tor.val_corr hJ (H'.2 χ) (𝟙 _)).symm
 
 /- English proof (translation)
-Take `⟨u, u0, us, rfl⟩` from `h`. Take `⟨v, v0, vs, rfl⟩` from `h'`. Establish `: ∀ i, u i = v i` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact ext_val (u0.1.trans v0.1.symm) fun χ _ _ hJ => (Geo.Tor.val_corr hJ (u0.2 χ) (𝟙 _)).trans (Geo.Tor.val_corr hJ (v0.2 χ) (𝟙 _)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih => exact isAdd_unique (us i) (ih ▸ vs i)`. Conclude with `this _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isNsmul_unique {T : Over (Spec (CommRingCat.of R))} {k : ℕ} {g a a' : GtPt D T} (h : GtPt.IsNsmul k g a)
     (h' : GtPt.IsNsmul k g a') : a = a' := by
@@ -85,7 +85,7 @@ theorem isNsmul_unique {T : Over (Spec (CommRingCat.of R))} {k : ℕ} {g a a' : 
 section Empty
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `Units.ext (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem corr_of_isEmpty {X Y : Scheme.{0}} [IsEmpty Y] (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε))
@@ -95,7 +95,7 @@ theorem corr_of_isEmpty {X Y : Scheme.{0}} [IsEmpty Y] (L : LB X) {K K' : Type} 
 variable {T : Over (Spec (CommRingCat.of R))} [IsEmpty T.left]
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (isInitialOfIsEmpty.hom_ext _ _)`.
+A detailed English derivation is pending.
 -/
 theorem hom_eq {A : Over (Spec (CommRingCat.of R))} (a b : T ⟶ A) : a = b :=
   Over.OverMorphism.ext (isInitialOfIsEmpty.hom_ext _ _)
@@ -108,9 +108,9 @@ def emptyPt (D : DegPre R) (T : Over (Spec (CommRingCat.of R))) [IsEmpty T.left]
   mult := fun _ _ => corr_of_isEmpty _ _ _ _ _ _ _
 
 /- English proof (translation)
-Take `⟨b, s, _, _, _⟩` from `g`. Take `⟨b', s', _, _, _⟩` from `g'`. Take `rfl : b = b'` from `hom_eq _ _`. Take `rfl : s = s'` from `funext fun χ => by`. Establish `: (s χ).s = (s' χ).s` using `funext fun _ => Units.ext (Subsingleton.elim _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the cases of `h : s χ`. Consider the cases of `h' : s' χ`. Rewrite `this` using `[h, h']`. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
 -/
 theorem gtPt_eq (g g' : GtPt D T) : g = g' := by
   obtain ⟨b, s, _, _, _⟩ := g
@@ -137,7 +137,7 @@ def emptyPair (y : D.X) : QkPtW D W ψW k T where
     ⟨hom_eq _ _, fun _ => corr_of_isEmpty _ _ _ _ _ _ _⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨z, hz, _⟩ => ⟨z, hz⟩, fun ⟨z, hz⟩ => ⟨z, hz, emptyPt D _, ⟨hom_eq _ _, fun _ => corr_of_isEmpty _ _ _ _ _ _ _⟩, hom_eq _ _, fun _ => corr_of_isEmpty _ _ _ _ _ _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem equiv_iff_of_isEmpty (p p' : QkPtW D W ψW k T) :
     QkPtW.Equiv p p' ↔ ∃ z : D.X, p'.y = p.y + k • z :=
@@ -145,9 +145,9 @@ theorem equiv_iff_of_isEmpty (p p' : QkPtW D W ψW k T) :
     ⟨hom_eq _ _, fun _ => corr_of_isEmpty _ _ _ _ _ _ _⟩, hom_eq _ _, fun _ => corr_of_isEmpty _ _ _ _ _ _ _⟩⟩
 
 /- English proof (translation)
-Set `T : Over W.toScheme` to `Over.mk (isInitialOfIsEmpty.to W.toScheme : (∅ : Scheme.{0}) ⟶ _)`. Establish `hT : IsEmpty T.left` using `inferInstanceAs (IsEmpty (∅ : Scheme.{0}))`. Use `⟨T, hT, emptyPair ψW 2 T (0 : ℤ), emptyPair ψW 2 T (1 : ℤ), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz, -⟩`. Establish `key : ∀ w : ℤ, (1 : ℤ) ≠ (0 : ℤ) + 2 • w` using `fun w hw => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hw` using `[two_nsmul]`. Use linear arithmetic over natural numbers and integers. Conclude with `key z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_equiv_over_empty {W : (Spec (CommRingCat.of InhTate.R)).Opens} (ψW : PsiOn InhTate.tatePre W) :
     ∃ (T : Over W.toScheme) (_ : IsEmpty T.left) (p p' : QkPtW InhTate.tatePre W ψW 2 T), ¬ QkPtW.Equiv p p' := by

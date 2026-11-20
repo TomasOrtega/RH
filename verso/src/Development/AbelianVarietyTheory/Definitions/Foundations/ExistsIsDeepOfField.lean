@@ -50,9 +50,9 @@ structure IsDeepLevel : Prop where
 variable {T j} in
 
 /- English proof (translation)
-Establish `hpos` using `GlobalTheory.CovTop.Inhab.rank_pos T.toCore hT.pins j hj`. Take `⟨l, hl, ht⟩` from `exists_deepLevel L hT.pins h5 h15`. Take `⟨Xo⟩` from `GlobalTheory.Moduli.moduli_scheme_exists _ _ (T.Q.Dw j) l hpos`. Take `⟨c, le, h1, h2, h3, h4⟩` from `exists_deepField T hpos Xo hn`. Take `⟨U, dict, h6, h7⟩` from `exists_unif hT hj hl.2.1 Xo c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨l, Xo, c, U, dict, ⟨hl, le, h1, h2, h3, h6, h7⟩, ht, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isDeepLevel (L : SizeData₂ D) (hT : LawsJ T) (hj : InR D j) (h5 : 5 ≤ D.host.splitBound)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) {n : ℕ} (hn : n ≠ 0) :
@@ -69,7 +69,7 @@ theorem exists_isDeepLevel (L : SizeData₂ D) (hT : LawsJ T) (hj : InR D j) (h5
 variable {Q T j Xo c U dict}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.level, h.le, h.galois, h.geo, h.typeNorm, hs, h.unif, h.chi⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDeepLevel.isDeep (h : IsDeepLevel L T j Xo c U dict)
     (hs : Real.log (Module.finrank ℚ c.F) ≤ (numAt Q j).dP ∧ Real.log (rootDiscr c.F) ≤ (numAt Q j).rP) :
@@ -77,7 +77,7 @@ theorem IsDeepLevel.isDeep (h : IsDeepLevel L T j Xo c U dict)
   ⟨h.level, h.le, h.galois, h.geo, h.typeNorm, hs, h.unif, h.chi⟩
 
 /- English proof (translation)
-Take `⟨U, dict, h6, h7⟩` from `exists_unif hT hj hl.2.1 Xo c`. Conclude with `⟨U, dict, hl, le, hG, hF, hK, hs, h6, h7⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isDeep_of_field (hT : LawsJ T) (hj : InR D j) (hl : l.M = levDeep D L ∧ l.A = 1 ∧ T.Q.l.Dvd l)
     (le : T.Q.c.F ≤ c.F) (hG : letI := (GlobalTheory.IndefiniteRowSideFullHecke.HalfLatticeTypes.incl (T := T) le).toAlgebra; IsGalois T.Q.c.F c.F)
@@ -88,7 +88,7 @@ theorem exists_isDeep_of_field (hT : LawsJ T) (hj : InR D j) (hl : l.M = levDeep
   exact ⟨U, dict, hl, le, hG, hF, hK, hs, h6, h7⟩
 
 /- English proof (translation)
-The claim follows from `add_le_add hs.1 hs.2`.
+A detailed English derivation is pending.
 -/
 theorem ringCost_le_o {K : Type} [Field K] [NumberField K]
     (hs : Real.log (Module.finrank ℚ K) ≤ (numAt Q j).dP ∧ Real.log (rootDiscr K) ≤ (numAt Q j).rP) :
@@ -96,7 +96,7 @@ theorem ringCost_le_o {K : Type} [Field K] [NumberField K]
   add_le_add hs.1 hs.2
 
 /- English proof (translation)
-Establish `h2 : l.M ≠ 0` using `by have := l.three_le; omega`. Rewrite using `[GlobalTheory.CompHt.htPrimes_eq, badPrimes, Level.M', hA, Nat.lcm_one_right, ← hM, Nat.primeFactors_mul (mul_ne_zero two_ne_zero (Int.natAbs_ne_zero.2 (discr_ne_zero _))) h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem htPrimes_eq_badPrimes (hM : l.M = levDeep D L) (hA : l.A = 1) (B : ℝ) :
     htPrimes l B = ↑(badPrimes D L B) := by
@@ -116,7 +116,7 @@ def restrictOr (φ : M →ₗ[K] M') (C : Submodule K M) (C' : Submodule K M') :
   if h : ∀ x ∈ C, φ x ∈ C' then φ.restrict h else 0
 
 /- English proof (translation)
-Rewrite using `[restrictOr, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_restrictOr {φ : M →ₗ[K] M'} {C : Submodule K M} {C' : Submodule K M'} (h : ∀ x ∈ C, φ x ∈ C') (x : C) :
     (restrictOr φ C C' x : M') = φ x := by
@@ -130,9 +130,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[mem_cuspW]`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[show exZ Dw (G + G') = exZ Dw G + exZ Dw G' from funext fun i => exZ_add _ _ _]`. Conclude with `mul_mem_secZ hf.1 hg.1`. Rewrite using `[AllWt.rdU_mul, show modelWt (U σ) (G + G') = fun k => modelWt (U σ) G k + modelWt (U σ) G' k from`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `(modelWt_add (U σ) hG hG')]`. Conclude with `holSub_mul siegelSpaceAlgebra_holds (hf.2 σ hσ) (hg.2 σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_cuspW {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) {f g : Rul Xo c} (hf : f ∈ cuspW Xo c U G)
     (hg : g ∈ cuspW Xo c U G') : f * g ∈ cuspW Xo c U (G + G') := by
@@ -145,7 +145,7 @@ theorem mul_mem_cuspW {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) {f g : Ru
     exact holSub_mul siegelSpaceAlgebra_holds (hf.2 σ hσ) (hg.2 σ hσ)
 
 /- English proof (translation)
-Rewrite using `[levPh_apply, levTr_apply]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hK _ _ (mul_mem_cuspW hG hG' hf (hK' _ _ hu)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levPh_mem_cuspW {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) (hK : KeepsCusp U (G + G'))
     (hK' : KeepsCusp U G') {S : Subgroup (GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms.LevelAut Dw l)} (χ : S →* (c.F)ˣ) {u f : Rul Xo c}
@@ -162,7 +162,7 @@ def IsMultiplier (x : ℝ) (S : Subgroup (GlobalTheory.IndefiniteRowSideFullHeck
 end Keeps
 
 /- English proof (translation)
-Rewrite using `[typeOp, algOp, Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hK _ _ hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeOp_mem_cuspW {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
     {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {G : WTZ D.host.E} (hK : KeepsCusp U G)
@@ -196,7 +196,7 @@ structure LiftData (T : CoreJ D) (i : Fin D.R.m) : Type 1 where
   u₀ : cuspW Xo c U (gTw T.Q ((i : ℕ) + 1))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.le_add_left _ _, i.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem inR_succ (i : Fin D.R.m) : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
 
@@ -225,7 +225,7 @@ structure Good : Prop where
     IsMultiplier Y.U (xiR D) Y.Hb (gTw T.Q ((i : ℕ) + 1)) (numAt Q ((i : ℕ) + 1)).U0 Y.u₀
 
 /- English proof (translation)
-Use `coe_restrictOr (φ := LinearMap.proj h ∘ₗ levPh Y.Xo Y.c Y.Hb (chiHR Y.fr Y.ψ) Y.u₀) (fun x hx => ?_) f` and prove the remaining obligations. Establish `e` using `thetaExp_kap (Dw := T.Q.Dw ((i : ℕ) + 1)) ((i : ℕ) + 1)`. Use `levPh_mem_cuspW (G := gKapMinus T.Q ((i : ℕ) + 1)) (G' := gTw T.Q ((i : ℕ) + 1)) (even_wtOf _ _) (even_wtOf _ _) (e ▸ hK) hK' (chiHR Y.fr Y.ψ) Y.u₀.2 hx h` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coe_Ph (hK : KeepsCusp Y.U (gKap T.Q ((i : ℕ) + 1))) (hK' : KeepsCusp Y.U (gTw T.Q ((i : ℕ) + 1)))
     (f : Y.V (gKapMinus T.Q ((i : ℕ) + 1))) (h : Y.Hb) :
@@ -238,7 +238,7 @@ theorem coe_Ph (hK : KeepsCusp Y.U (gKap T.Q ((i : ℕ) + 1))) (hK' : KeepsCusp 
   rwa [e] at this
 
 /- English proof (translation)
-The claim follows from `coe_restrictOr (fun _ hx => typeOp_mem_cuspW hK _ _ _ hx) f`.
+A detailed English derivation is pending.
 -/
 theorem coe_eGood (hK : KeepsCusp Y.U (gKap T.Q ((i : ℕ) + 1))) (f : Y.V (gKap T.Q ((i : ℕ) + 1))) :
     (Y.eGood f : Rul Y.Xo Y.c) = goodOp Y.Xo Y.c Y.typeLevel Y.fr Y.om i f :=
@@ -248,9 +248,9 @@ variable (h : T.Q.Pins) (hK : KeepsCusp Y.U (gKap T.Q ((i : ℕ) + 1))) (he : Is
 include h hK he
 
 /- English proof (translation)
-Establish `hpq : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q`. Rewrite using `[(sig_eq h (inR_succ i)).2.2]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Y.coe_eGood hK, Y.coe_eGood hK]`. Conclude with `LinearMap.congr_fun (isIdempotentElem_typeOp Y.typeLevel Y.fr hpq he).eq _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eGood_eGood (f : Y.V (gKap T.Q ((i : ℕ) + 1))) : Y.eGood (Y.eGood f) = Y.eGood f := by
   have hpq : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q := by
@@ -262,11 +262,11 @@ theorem eGood_eGood (f : Y.V (gKap T.Q ((i : ℕ) + 1))) : Y.eGood (Y.eGood f) =
   exact LinearMap.congr_fun (isIdempotentElem_typeOp Y.typeLevel Y.fr hpq he).eq _
 
 /- English proof (translation)
-Establish `hpq : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q`. Rewrite using `[(sig_eq h (inR_succ i)).2.2]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨Submodule.ext fun F => ?_, Submodule.ext fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_latGood_iff _ _ _ _ _ _ _ hpq he, ← Y.coe_eGood hK, Subtype.coe_inj]`. Use `and_congr_right fun _ => ⟨?_, fun hF => ⟨F, hF⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨f, rfl⟩`. Conclude with `Y.eGood_eGood h hK he f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_latBad_iff _ _ _ _ _ _ _ hpq he, ← Y.coe_eGood hK, ZeroMemClass.coe_eq_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem good_bad_eq :
     Y.NN ⊓ (LinearMap.range Y.eGood).restrictScalars (𝓞 Y.c.F) = latGood Y.typeLevel Y.fr Y.U _ Y.ψ Y.om i ∧
@@ -303,24 +303,24 @@ Both sides reduce to the same expression.
 theorem facOf_q : (facOf Q h Y CI C2).q' = D.R.m - ((i : ℕ) + 1) := rfl
 
 /- English proof (translation)
-Rewrite using `[facOf_q]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem facOf_q_ne_zero_iff : (facOf Q h Y CI C2).q' ≠ 0 ↔ (i : ℕ) + 1 < D.R.m := by
   rw [facOf_q]; omega
 
 /- English proof (translation)
-The claim follows from `Nat.card_pos (α := LevelGroup D.host)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_facOf_g : 1 ≤ (facOf Q h Y CI C2).g := Nat.card_pos (α := LevelGroup D.host)
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono (latN_le Y.fr Y.U _ Y.ψ)`.
+A detailed English derivation is pending.
 -/
 theorem facOf_NN_le : (facOf Q h Y CI C2).NN ≤ (facOf Q h Y CI C2).Mk :=
   Submodule.map_mono (latN_le Y.fr Y.U _ Y.ψ)
 
 /- English proof (translation)
-Rewrite using `[← (Y.good_bad_eq h hK he).1, ← (Y.good_bad_eq h hK he).2]`. Conclude with `⟨facWith_good Q h _ CI C2 _ _ _ _ _ _ hG, facWith_bad Q h _ CI C2 _ _ _ _ _ _ hG⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem facOf_good_bad (hG : HasGram (nrmAt Y.U Y.dict (gKap T.Q ((i : ℕ) + 1))))
     (hK : KeepsCusp Y.U (gKap T.Q ((i : ℕ) + 1))) (he : IsIdempotentElem (goodIdemTw Y.om i)) :
@@ -332,7 +332,7 @@ theorem facOf_good_bad (hG : HasGram (nrmAt Y.U Y.dict (gKap T.Q ((i : ℕ) + 1)
   exact ⟨facWith_good Q h _ CI C2 _ _ _ _ _ _ hG, facWith_bad Q h _ CI C2 _ _ _ _ _ _ hG⟩
 
 /- English proof (translation)
-The claim follows from `(ringCost_le_o hs).trans (ho.trans (PPpp_le Q (inR_succ i).1 (inR_succ i).2))`.
+A detailed English derivation is pending.
 -/
 theorem facOf_o_le (hs : Real.log (Module.finrank ℚ Y.c.F) ≤ (numAt Q ((i : ℕ) + 1)).dP ∧
       Real.log (rootDiscr Y.c.F) ≤ (numAt Q ((i : ℕ) + 1)).rP)
@@ -341,7 +341,7 @@ theorem facOf_o_le (hs : Real.log (Module.finrank ℚ Y.c.F) ≤ (numAt Q ((i : 
   (ringCost_le_o hs).trans (ho.trans (PPpp_le Q (inR_succ i).1 (inR_succ i).2))
 
 /- English proof (translation)
-Take `⟨l, Xo, c, U, dict, h1, ht, ζ, hζ⟩` from `exists_isDeepLevel L hT (inR_succ i) h5 h15 (n := ∏ k, D.host.g k * (D.host.g k - 1)) (Finset.prod_pos fun k _ => Nat.mul_pos (D.host.g_prime k).pos (Nat.sub_pos_of_lt (D.host.g_prime k).one_lt)).ne'`. Take `⟨⟨ψ, hψ⟩, om, hom⟩` from `exists_chars hζ`. Take `⟨fr⟩` from `ht.nonempty_typeFrame (sig_eq hT.pins (inR_succ i)).2.2`. Conclude with `⟨⟨l, ht, Xo, c, U, dict, fr, ψ, om, 0⟩, h1, hψ, hom⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LiftData.exists_deep (L : SizeData₂ D) (hT : LawsJ T) (i : Fin D.R.m) (h5 : 5 ≤ D.host.splitBound)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) :
@@ -355,7 +355,7 @@ theorem LiftData.exists_deep (L : SizeData₂ D) (hT : LawsJ T) (i : Fin D.R.m) 
   exact ⟨⟨l, ht, Xo, c, U, dict, fr, ψ, om, 0⟩, h1, hψ, hom⟩
 
 /- English proof (translation)
-Take `⟨U, dict, h1⟩` from `exists_isDeep_of_field (Xo := Xo) hT (inR_succ i) hl le hG hF hK hs`. Take `⟨⟨ψ, hψ⟩, om, hom⟩` from `exists_chars hζ`. Take `⟨fr⟩` from `ht.nonempty_typeFrame (sig_eq hT.pins (inR_succ i)).2.2`. Conclude with `⟨⟨l, ht, Xo, c, U, dict, fr, ψ, om, 0⟩, h1, hr, hψ, hom, fun h => absurd hi h.ne⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LiftData.exists_good_of_field (hT : LawsJ T) (i : Fin D.R.m) (hi : (i : ℕ) + 1 = D.R.m) {l : Level T.Q.H}
     (hl : l.M = levDeep D L ∧ l.A = 1 ∧ T.Q.l.Dvd l) (ht : IsTypeLevel l) (Xo : Moduli (T.Q.Dw ((i : ℕ) + 1)) l)
@@ -389,9 +389,9 @@ def LiftData.ofCore (hT : LawsJ T) (i : Fin D.R.m) (ψ : ∀ v : Sq D.host, AddC
   u₀ := u₀
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Take `⟨hr, g, e, F, ik, φ, th, b1, b2, b3, b4⟩` from `hT.adPin j hj σ hσ`. Take `⟨th', hr', c1, c2⟩` from `hT.dictU j hj σ hσ`. Take `⟨_, hm⟩` from `hT.modelW j hj σ hσ`. Take `rfl : th' = th` from `funext fun k => funext fun τ => GlobalTheory.LettersCheck.isInfEmb_unique _ _ _ (c1 k τ) (b3 k τ)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hT.unf j hj σ hσ, hr, T.Kf j σ, th', T.x₀ j σ, g, e, F, ik, φ, hm, hT.familyUniformisationBasePointOrthogonal j hj σ hσ, ?_, b3, c2, b1, b2, b4⟩` and prove the remaining obligations. Rewrite using `[hT.pins.2.1.1]`. Conclude with `hT.levelK j hj σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnifAt_core (hT : LawsJ T) {j : ℕ} (hj : InR D j) {σ : T.Q.c.F →+* ℂ} (hσ : GoodEmb T.Q.c σ) {V : HSp D}
     (hV : T.V j σ = V) : GlobalTheory.IndefiniteRowSideFullHecke.HalfLatticeTypes.IsUnifAt (T.U j σ) V
@@ -406,7 +406,7 @@ theorem isUnifAt_core (hT : LawsJ T) {j : ℕ} (hj : InR D j) {σ : T.Q.c.F →+
   exact hT.levelK j hj σ hσ
 
 /- English proof (translation)
-Establish `e : (LiftData.ofCore hT i ψ om u₀).dict σ = fun g => T.dict _ σ (cast (congrArg (GA D) (hT.spaceW _ (inR_succ i) σ hσ).symm) g)`. Use function extensionality and compare the values at `fun _ => dif_pos hσ`. Rewrite using `[e]`. Conclude with `isUnifAt_core hT (inR_succ i) hσ (hT.spaceW _ (inR_succ i) σ hσ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LiftData.ofCore_unif (hT : LawsJ T) (i : Fin D.R.m) (ψ om u₀) (σ : T.Q.c.F →+* ℂ) (hσ : GoodEmb T.Q.c σ) :
     GlobalTheory.IndefiniteRowSideFullHecke.HalfLatticeTypes.IsUnifAt ((LiftData.ofCore hT i ψ om u₀).U σ) (D.sp.W ((i : ℕ) + 1))
@@ -418,7 +418,7 @@ theorem LiftData.ofCore_unif (hT : LawsJ T) (i : Fin D.R.m) (ψ om u₀) (σ : T
   exact isUnifAt_core hT (inR_succ i) hσ (hT.spaceW _ (inR_succ i) σ hσ)
 
 /- English proof (translation)
-Rewrite using `[gKap, thetaExp_kap_kapTop hT.pins hκ]`. Conclude with `cuspW_wtZ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (hT : LawsJ T) (hκ : DV.KapDef D) (i : Fin D.R.m) (ψ om u₀) :
     (LiftData.ofCore hT i ψ om u₀).V (gKap T.Q ((i : ℕ) + 1)) =
@@ -427,7 +427,7 @@ example (hT : LawsJ T) (hκ : DV.KapDef D) (i : Fin D.R.m) (ψ om u₀) :
   exact cuspW_wtZ _ _
 
 /- English proof (translation)
-Establish `h1 : 0 ≤ lrd D` using `Real.log_nonneg hrd`. Establish `h2 : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`. Use `show 0 ≤ shift D`. Unfold `shift`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 example (hrd : 1 ≤ D.host.rdE) : 0 ≤ (facOf Q h Y CI C2).mv := by
   have h1 : 0 ≤ lrd D := Real.log_nonneg hrd

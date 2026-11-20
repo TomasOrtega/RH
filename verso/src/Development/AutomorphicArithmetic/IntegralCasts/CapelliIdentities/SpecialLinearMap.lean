@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-The claim follows from `Finset.prod_congr rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.SpecialLinearMap.prod_update_self {I : Type} [Fintype I] [DecidableEq I]
     {W : I → Type} [(i : I) → AddCommGroup (W i)] [(i : I) → _root_.Module ℂ (W i)]
@@ -12,7 +12,7 @@ private theorem UpperTheory.Reformulated.B.SpecialLinearMap.prod_update_self {I 
     rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_erase.2 ⟨h, Finset.mem_univ i⟩), Function.update_self]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j hj => by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.SpecialLinearMap.prod_update_ne {I : Type} [Fintype I] [DecidableEq I]
     {W : I → Type} [(i : I) → AddCommGroup (W i)] [(i : I) → _root_.Module ℂ (W i)]

@@ -13,7 +13,7 @@ namespace UpperTheory.HilbertEisensteinWeightOne.eisensteinGrowth
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `|sig p (ξ j)| ≤ max |UpperTheory.V.TR.pInf F ((rowA ξ ᵥ* ((z : Ad F) • M)) 0) p| |UpperTheory.V.TR.pInf F ((rowA ξ ᵥ* ((z : Ad F) • M)) 1) p| * |UpperTheory.V.TR.pInf F ((z⁻¹ : Ideles F) : Ad F) p| * mn M' := by set v := rowA ξ ᵥ* ((z : Ad F) • M) with hv have hz : (z : Ad F) * ( …`.
+A detailed English derivation is pending.
 -/
 theorem arch_part (ξ : Fin 2 → F) (z : Ideles F) (M M' : Matrix (Fin 2) (Fin 2) (Ad F)) (hM : M * M' = 1)
     (p : InfinitePlace F) (j : Fin 2) :
@@ -65,43 +65,35 @@ theorem arch_part (ξ : Fin 2 → F) (z : Ideles F) (M M' : Matrix (Fin 2) (Fin 
           (Finset.mem_univ j)
 
 /- English proof (translation)
-Use `set n := Fintype.card (InfinitePlace F) with hn`. Use `set z : Ideles F := moduleSection (w0 F) t * a with hzdef`. Use `set v := rowA ξ ᵥ* ((z : Ad F) • M) with hv`. Use `set ρ : InfinitePlace F → ℝ := fun p => max |UpperTheory.V.TR.pInf F (v 0) p| |UpperTheory.V.TR.pInf F (v 1) p| with hρdef`. Use `set ζ : InfinitePlace F → ℝ := fun p => |UpperTheory.V.TR.pInf F ((z⁻¹ : Ideles F) : Ad F) p| with hζdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m' := mn M' with hm'def`. Establish `hm' : 0 ≤ m'` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Use `set L := (1 + m') * B with hLdef`. Establish `hL1 : 1 ≤ L` using `by nlinarith`. Establish `hL0 : 0 < L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hρ0 : ∀ p, 0 ≤ ρ p` using `fun p => (abs_nonneg _).trans (le_max_left _ _)`. Use `set ND := |((Algebra.norm ℚ (D' : F) : ℚ) : ℝ)| with hND`. Establish `hND0 : 0 ≤ ND` using `abs_nonneg _`. Establish `ht0 : (0 : ℝ) < t` using `t.2`. Establish `hzinv : ∀ p, ζ p = (if p = w0 F then (t : ℝ)⁻¹ else 1) * ‖((a⁻¹ : Ideles F) : Ad F).1 p‖`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p`. Establish `h1 : (z⁻¹ : Ideles F) = moduleSection (w0 F) t⁻¹ * a⁻¹` using `by rw [hzdef, mul_inv, map_inv]`. Simplify using `only [hζdef]`. Rewrite using `[h1, Units.val_mul, map_mul, Pi.mul_apply, abs_mul, abs_pInf_moduleSection, abs_pInf]`. Use `congr 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζB : ∀ p, ζ p ≤ B`. Introduce `p`. Rewrite using `[hzinv]`. Establish `h1 : (if p = w0 F then (t : ℝ)⁻¹ else 1) ≤ 1` using `by split_ifs`. Conclude with `inv_le_one_of_one_le₀ ht`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Combine the equalities or inequalities in the displayed calculation. Establish `hζprod : ∏ p, ζ p ≤ (t : ℝ)⁻¹ * B ^ n`. Establish `e1 : ∏ p : InfinitePlace F, (if p = w0 F then (t : ℝ)⁻¹ else 1) = (t : ℝ)⁻¹` using `by simp`. Establish `e2 : ∏ p, ‖((a⁻¹ : Ideles F) : Ad F).1 p‖ ≤ B ^ n`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_congr rfl fun p _ => hzinv p, Finset.prod_mul_distrib, e1]`. Conclude with `mul_le_mul_of_nonneg_left e2 (inv_nonneg.2 ht0.le)`. Establish `harch : ∀ p j, |sig p (ξ j)| ≤ ρ p * ζ p * (1 + m')`. Introduce `p j`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `arch_part ξ z M M' hM p j` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hτ : ∀ p j, |sig p (ξ j)| ≤ ρ p * L`. Introduce `p j`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, ξ j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hξ (funext h)`. Establish `h1` using `one_le_norm_mul_prod hD'0 hj (hint j)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set P := ∏ p, ρ p with hP`. Establish `hP0 : 0 ≤ P` using `Finset.prod_nonneg fun p _ => hρ0 p`. Establish `h2 : ∏ p, |sig p (ξ j)| ≤ P * ((t : ℝ)⁻¹ * B ^ n) * (1 + m') ^ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ P * ((t : ℝ)⁻¹ * B ^ n) * (1 + m') ^ n := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hζprod hP0) (pow_nonneg (by linarith) _)`. Establish `htP : (t : ℝ) ≤ ND * L ^ n * P`. Establish `h3 : 1 ≤ ND * (P * ((t : ℝ)⁻¹ * B ^ n) * (1 + m') ^ n)` using `h1.trans (mul_le_mul_of_nonneg_left h2 hND0)`. Establish `e : ND * (P * ((t : ℝ)⁻¹ * B ^ n) * (1 + m') ^ n) = (ND * L ^ n * P) * (t : ℝ)⁻¹`. Rewrite using `[hLdef, mul_pow]`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e, le_mul_inv_iff₀ ht0, one_mul]`. Conclude with `h3`. Use `set Q := ∏ p, (1 + ρ p ^ 2) with hQ`. Establish `hQ0 : 0 < Q` using `Finset.prod_pos fun p _ => by positivity`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQj : ∀ j, ∏ p, (1 + sig p (ξ j) ^ 2) ≤ Q * L ^ (2 * n)`. Introduce `j`. Establish `hp : ∀ p, 1 + sig p (ξ j) ^ 2 ≤ (1 + ρ p ^ 2) * L ^ 2`. Introduce `p`. Establish `h1 : sig p (ξ j) ^ 2 ≤ (ρ p * L) ^ 2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hτ p j) 2`. Establish `h2 : 1 ≤ L ^ 2` using `one_le_pow₀ hL1`. Use polynomial arithmetic with `[sq_nonneg (ρ p)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul]`. Establish `hC` using `hCa (UpperTheory.V.TR.pInf F (v 0)) (UpperTheory.V.TR.pInf F (v 1))`. Establish `eprod : ∏ p, ((max |UpperTheory.V.TR.pInf F (v 0) p| |UpperTheory.V.TR.pInf F (v 1) p|) ^ 2 * (1 + (max |UpperTheory.V.TR.pInf F (v 0) p| |UpperTheory.V.TR.pInf F (v 1) p|) ^ 2) ^ (2 * m₁)) = P ^ 2 * Q ^ (2 * m₁)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow]`. Rewrite `hC` using `[eprod]`.
-
-Use `set X := ‖arch (UpperTheory.V.TR.pInf F (v 0)) (UpperTheory.V.TR.pInf F (v 1))‖ with hX`. Establish `hX0 : 0 ≤ X` using `norm_nonneg _`. Use `set Pi0 := ∏ p, (1 + sig p (ξ 0) ^ 2) with hPi0`. Use `set Pi1 := ∏ p, (1 + sig p (ξ 1) ^ 2) with hPi1`. Establish `hPi0p : 0 < Pi0` using `Finset.prod_pos fun p _ => by positivity`.
-
-Establish `hPi1p : 0 < Pi1` using `Finset.prod_pos fun p _ => by positivity`. Establish `hA : (t : ℝ) ^ 2 ≤ ND ^ 2 * L ^ (2 * n) * P ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hB' : Pi0 ^ m₁ * Pi1 ^ m₁ ≤ Q ^ (2 * m₁) * L ^ (4 * n * m₁)`. Establish `e0` using `pow_le_pow_left₀ hPi0p.le (hQj 0) m₁`.
-
-Establish `e1` using `pow_le_pow_left₀ hPi1p.le (hQj 1) m₁`. Combine the equalities or inequalities in the displayed calculation. Establish `key : X * ((t : ℝ) ^ 2 * (Pi0 ^ m₁ * Pi1 ^ m₁)) ≤ Ca * ND ^ 2 * L ^ (2 * n + 4 * n * m₁)`. Combine the equalities or inequalities in the displayed calculation. Establish `hden : 0 < (t : ℝ) ^ 2 * (Pi0 ^ m₁ * Pi1 ^ m₁)` using `mul_pos (pow_pos ht0 2) (mul_pos (pow_pos hPi0p _) (pow_pos hPi1p _))`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hLdef, mul_pow, div_eq_mul_inv, mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem term_bound {D' : 𝓞 F} (hD'0 : D' ≠ 0) (m₁ : ℕ) {Ca B : ℝ} (hB1 : 1 ≤ B)
     (hCa : ∀ x y : UpperTheory.V.TR.Rinf F,
@@ -244,23 +236,19 @@ theorem term_bound {D' : 𝓞 F} (hD'0 : D' ≠ 0) (m₁ : ℕ) {Ca B : ℝ} (hB
         ring
 
 /- English proof (translation)
-Take `⟨D', hD'0, hfin⟩` from `fin_part D hD hK Mf' hD0`. Take `⟨m₁, hsum⟩` from `summable_beta D' hD'0`. Take `⟨Ca, hCa0, hCa⟩` from `arch_bound (F := F) 2 (2 * m₁)`. Take `⟨B, hB1, hB⟩` from `exists_bound_inf hK`. Use `set n := Fintype.card (InfinitePlace F) with hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set N := 2 * n + 4 * n * m₁ with hN`. Use `set β : F → ℝ := fun x => if ∃ r : 𝓞 F, (D' : F) * x = r then ((∏ v, (1 + sig v x ^ 2)) ^ m₁)⁻¹ else 0 with hβ`. Establish `hβ0 : ∀ x, 0 ≤ β x`. Introduce `x`. Simplify using `only [hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `inv_nonneg.2 (pow_nonneg (Finset.prod_nonneg fun v _ => by positivity) _)`. Conclude with `le_rfl`. Establish `hG : Summable (fun ξ : Fin 2 → F => β (ξ 0) * β (ξ 1))`. Establish `h` using `hsum.mul_of_nonneg hsum hβ0 hβ0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(finTwoArrowEquiv F).summable_iff.mpr h`. Use `set S := ∑' ξ : Fin 2 → F, β (ξ 0) * β (ξ 1) with hS`. Establish `hS0 : 0 ≤ S` using `tsum_nonneg fun ξ => mul_nonneg (hβ0 _) (hβ0 _)`. Use `set ND := |((Algebra.norm ℚ (D' : F) : ℚ) : ℝ)| with hND`. Establish `hND0 : 0 ≤ ND` using `abs_nonneg _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBN : 0 ≤ B ^ N` using `pow_nonneg (by linarith) _`. Use `⟨Ca * ND ^ 2 * B ^ N * S, N, mul_nonneg (mul_nonneg (mul_nonneg hCa0.le (sq_nonneg _)) hBN) hS0, fun a ha t ht M M' hM hM' => ?_⟩` and prove the remaining obligations. Establish `hm' : 0 ≤ mn M'` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Use `set c := Ca * ND ^ 2 * B ^ N * ((t : ℝ) ^ 2)⁻¹ * (1 + mn M') ^ N with hc`. Establish `hc0 : 0 ≤ c` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hCa0.le (sq_nonneg _)) hBN) (inv_nonneg.2 (sq_nonneg _))) (pow_nonneg (by linarith) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hbound : ∀ ξ : {ξ : Fin 2 → F // ξ ≠ 0}, ‖Ψ (rowA ξ.1 ᵥ* (((moduleSection (w0 F) t * a : Ideles F) : Ad F) • M))‖ ≤ c * (β (ξ.1 0) * β (ξ.1 1))`. Introduce `ξ`. Use `(hΨ _).trans ?_` and prove the remaining obligations. Use `split_ifs with hbox`. Establish `hint` using `hfin a ha t ξ.1 M M' hM hM' hbox`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hT` using `term_bound hD'0 m₁ hB1 hCa ξ.1 ξ.2 hint a (fun v => (hB a ha v).2) t ht M M' hM`. Establish `e0 : β (ξ.1 0) = ((∏ v, (1 + sig v (ξ.1 0) ^ 2)) ^ m₁)⁻¹` using `if_pos (hint 0)`. Establish `e1 : β (ξ.1 1) = ((∏ v, (1 + sig v (ξ.1 1) ^ 2)) ^ m₁)⁻¹` using `if_pos (hint 1)`. Rewrite using `[mul_one, e0, e1, hc]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_zero]`. Conclude with `mul_nonneg hc0 (mul_nonneg (hβ0 _) (hβ0 _))`. Establish `hGs : Summable (fun ξ : {ξ : Fin 2 → F // ξ ≠ 0} => β (ξ.1 0) * β (ξ.1 1))` using `hG.subtype {ξ | ξ ≠ 0}`. Establish `hsum2` using `hGs.mul_left c`. Establish `hs : Summable (fun ξ : {ξ : Fin 2 → F // ξ ≠ 0} => ‖Ψ (rowA ξ.1 ᵥ* (((moduleSection (w0 F) t * a : Ideles F) : Ad F) • M))‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hbound hsum2`.
-
-Use `⟨hs, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem core {Ψ : (Fin 2 → Ad F) → ℂ} {e : HeightOneSpectrum (𝓞 F) → ℤ} (D : 𝓞 F) (hD0 : D ≠ 0)
     (hD : ∀ w, ∀ x : w.adicCompletion F, Valued.v x ≤ WithZero.exp (e w) →

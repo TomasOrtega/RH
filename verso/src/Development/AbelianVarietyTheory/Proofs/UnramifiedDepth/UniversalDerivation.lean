@@ -31,7 +31,7 @@ namespace SqExt
 
 omit [CommRing O] [AddCommGroup M] [Module O M] in
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 lemma ext {x y : SqExt O M} (h1 : x.fst = y.fst) (h2 : x.snd = y.snd) : x = y :=
   Prod.ext h1 h2
@@ -80,7 +80,7 @@ Both sides reduce to the same expression.
 @[simp] lemma snd_mul (x y : SqExt O M) : (x * y).snd = x.fst • y.snd + y.fst • x.snd := rfl
 
 /- English proof (translation)
-Use `letI : Module Oᵐᵒᵖ M := Module.compHom M ((RingHom.id O).fromOpposite mul_comm)`. Use `haveI : IsCentralScalar O M := ⟨fun _ _ => rfl⟩`. Conclude with `TrivSqZeroExt.isUnit_iff_isUnit_fst (R := O) (M := M)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma isUnit_iff (x : SqExt O M) : IsUnit x ↔ IsUnit x.fst := by
   letI : Module Oᵐᵒᵖ M := Module.compHom M ((RingHom.id O).fromOpposite mul_comm)
@@ -120,7 +120,7 @@ variable {R₀ : Type} [CommRing R₀] (O : LAlg R₀)
   (M : Type) [AddCommGroup M] [Module (O : Type) M]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AlgHom.ext h)`.
+A detailed English derivation is pending.
 -/
 lemma lhom_ext {R S : LAlg R₀} {f g : LHom R S} (h : ∀ a, f.1 a = g.1 a) : f = g :=
   Subtype.ext (AlgHom.ext h)
@@ -148,9 +148,9 @@ variable (O M)
 def sqIncl : LHom O (sqAlg O M) := sqLift (LHom.id O) 0 (by simp) (by simp)
 
 /- English proof (translation)
-Use `⟨fun a => ⟨SqExt.mk a 0, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `r hr s hs`. Establish `hr' : SqExt.fst (O` using `(O : Type)) (M := M) r = 0 := hr`. Establish `hs' : SqExt.fst (O` using `(O : Type)) (M := M) s = 0 := hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_bot]`. Use `SqExt.ext (O := (O : Type)) (M := M) ?_ ?_` and prove the remaining obligations. Conclude with `(SqExt.fst_mul r s).trans (by rw [hr', zero_mul]; rfl)`. Conclude with `(SqExt.snd_mul r s).trans (by rw [hr', hs', zero_smul, zero_smul, add_zero]; rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma sqProj_sqZero : (sqProj O M).SqZero := by
   refine ⟨fun a => ⟨SqExt.mk a 0, rfl⟩, ?_⟩
@@ -164,7 +164,7 @@ lemma sqProj_sqZero : (sqProj O M).SqZero := by
   · exact (SqExt.snd_mul r s).trans (by rw [hr', hs', zero_smul, zero_smul, add_zero]; rfl)
 
 /- English proof (translation)
-The claim follows from `lhom_ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 lemma sqProj_comp_sqIncl : (sqProj O M).comp (sqIncl O M) = LHom.id O := lhom_ext fun _ => rfl
 
@@ -176,20 +176,20 @@ def sqKer : M →+ (sqProj O M).ker where
   map_add' _ _ := Subtype.ext (SqExt.ext (O := (O : Type)) (M := M) (add_zero _).symm rfl)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `congrArg (fun x : (sqProj O M).ker => SqExt.snd (O := (O : Type)) (M := M) x.1) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma sqKer_injective : Function.Injective (sqKer : M → (sqProj O M).ker) := fun _ _ h =>
   congrArg (fun x : (sqProj O M).ker => SqExt.snd (O := (O : Type)) (M := M) x.1) h
 
 /- English proof (translation)
-Introduce `x` and use `⟨SqExt.snd (O := (O : Type)) (M := M) x.1, Subtype.ext (SqExt.ext (O := (O : Type)) (M := M) (Eq.symm x.2) rfl)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma sqKer_surjective : Function.Surjective (sqKer : M → (sqProj O M).ker) := fun x =>
   ⟨SqExt.snd (O := (O : Type)) (M := M) x.1,
     Subtype.ext (SqExt.ext (O := (O : Type)) (M := M) (Eq.symm x.2) rfl)⟩
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Use `(Algebra.smul_def (A := (sqAlg O M : Type)) r _).trans ?_` and prove the remaining obligations. Use `SqExt.ext (O := (O : Type)) (M := M) (mul_zero _) ?_` and prove the remaining obligations. Use `(SqExt.snd_mul _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R₀ (O : Type) r • m + (0 : (O : Type)) • (0 : M) = algebraMap R₀ (O : Type) r • m`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
 Simplify using the standard rewrite rules.
 -/
@@ -212,7 +212,7 @@ def sqMap (u : M →ₗ[(O : Type)] M') : LHom (sqAlg O M) (sqAlg O M') :=
     (fun _ => map_zero u)
 
 /- English proof (translation)
-Rewrite using `[← B.tg_nat (sqProj O M) (sqProj O M') (sqProj_sqZero O M) (sqProj_sqZero O M') (sqMap u) (fun _ h => h), map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma map_sqMap_tg (B : BX R₀) {ι : Type} [Fintype ι] (w : ι → B.gg) (m : ι → M)
     (u : M →ₗ[(O : Type)] M') :
@@ -229,7 +229,7 @@ section Lie
 variable {O : Type} [CommRing O] {p g : ℕ} {M : Type} [AddCommGroup M] [Module O M]
 
 /- English proof (translation)
-Take `⟨l, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lie_nsmul (x : LieDualModP p O g) : p • x = 0 := by
   obtain ⟨l, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -249,14 +249,14 @@ def lieLift (O : Type) [CommRing O] [Module O M] (m : Fin g → M) (hm : ∀ k, 
     rw [smul_comm, Nat.cast_smul_eq_nsmul, hm, smul_zero])
 
 /- English proof (translation)
-The claim follows from `Fintype.linearCombination_apply O m l`.
+A detailed English derivation is pending.
 -/
 lemma lieLift_mk (m : Fin g → M) (hm : ∀ k, p • m k = 0) (l : Fin g → O) :
     lieLift O m hm (Submodule.Quotient.mk l) = ∑ k, l k • m k :=
   Fintype.linearCombination_apply O m l
 
 /- English proof (translation)
-Rewrite using `[lieBasis, lieLift_mk, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma lieLift_basis (m : Fin g → M) (hm : ∀ k, p • m k = 0) (k : Fin g) :
     lieLift O m hm (lieBasis O p g k) = m k := by
@@ -266,9 +266,9 @@ lemma lieLift_basis (m : Fin g → M) (hm : ∀ k, p • m k = 0) (k : Fin g) :
   · simp
 
 /- English proof (translation)
-Establish `h : l = ∑ k, l k • (Pi.single k 1 : Fin g → O)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [h]`. Rewrite using `[← Submodule.mkQ_apply, map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma sum_lieBasis (l : Fin g → O) :
     ∑ k, l k • lieBasis O p g k = Submodule.Quotient.mk l := by
@@ -279,7 +279,7 @@ lemma sum_lieBasis (l : Fin g → O) :
   rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨l, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← sum_lieBasis, map_sum, map_sum]`. Simplify using `only [map_smul, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma lie_ext {u u' : LieDualModP p O g →ₗ[O] M}
     (h : ∀ k, u (lieBasis O p g k) = u' (lieBasis O p g k)) : u = u' := by
@@ -302,7 +302,7 @@ abbrev tgPt (B : BX R₀) (O : LAlg R₀) (w : Fin g → B.gg) {M : Type} [AddCo
 variable {M : Type} [AddCommGroup M] [Module (O : Type) M]
 
 /- English proof (translation)
-Establish `h : φ.1 (sO.1 o) = SqExt.mk (M` using `M) o 0 := congrArg (fun ψ => ψ.1 o) h1`. Rewrite using `[map_mul, h]`. Use `(SqExt.snd_mul (O := (O : Type)) (M := M) _ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma snd_smul (φ : LHom A (sqAlg O M)) (h1 : φ.comp sO = sqIncl O M) (o : (O : Type))
     (f : (A : Type)) :
@@ -314,7 +314,7 @@ lemma snd_smul (φ : LHom A (sqAlg O M)) (h1 : φ.comp sO = sqIncl O M) (o : (O 
   simp
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← h2]`. Conclude with `SqExt.snd_mul (O := (O : Type)) (M := M) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma snd_leibniz (φ : LHom A (sqAlg O M)) (h2 : (sqProj O M).comp φ = ε) (f f' : (A : Type)) :
     SqExt.snd (O := (O : Type)) (M := M) (φ.1 (f * f')) =
@@ -324,9 +324,9 @@ lemma snd_leibniz (φ : LHom A (sqAlg O M)) (h2 : (sqProj O M).comp φ = ε) (f 
   exact SqExt.snd_mul (O := (O : Type)) (M := M) _ _
 
 /- English proof (translation)
-Establish `d1 : d 1 = 0`. Establish `h` using `h2 1 1`. Simplify using `only [mul_one, map_one, one_smul] at h`. Simplify using `using h`. Establish `dO : ∀ o, d (sO.1 o) = 0` using `fun o => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `h1 o 1`. Rewrite `h` using `[mul_one, d1, smul_zero]`. Then use the resulting hypothesis. Use `⟨sqLift ε d h2 (fun r => by rw [← sO.1.commutes, dO]), lhom_ext fun o => ?_, lhom_ext fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `SqExt.ext (O := (O : Type)) (M := M) (congrArg (fun ψ => ψ.1 o) hε) (dO o)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma exists_lift (hε : ε.comp sO = LHom.id O) (d : (A : Type) →+ M)
     (h1 : ∀ o f, d (sO.1 o * f) = o • d f)
@@ -347,7 +347,7 @@ lemma exists_lift (hε : ε.comp sO = LHom.id O) (d : (A : Type) →+ M)
 variable {M' : Type} [AddCommGroup M'] [Module (O : Type) M']
 
 /- English proof (translation)
-The claim follows from `lhom_ext fun o => by have h : φ.1 (sO.1 o) = SqExt.mk (M := M) o 0 := congrArg (fun ψ => ψ.1 o) h1 change (sqMap u).1 (φ.1 (sO.1 o)) = _ rw [h] exact SqExt.ext (O := (O : Type)) (M := M') rfl (map_zero u)`.
+A detailed English derivation is pending.
 -/
 lemma sqMap_comp_sO (φ : LHom A (sqAlg O M)) (h1 : φ.comp sO = sqIncl O M)
     (u : M →ₗ[(O : Type)] M') : ((sqMap u).comp φ).comp sO = sqIncl O M' :=
@@ -358,18 +358,18 @@ lemma sqMap_comp_sO (φ : LHom A (sqAlg O M)) (h1 : φ.comp sO = sqIncl O M)
     exact SqExt.ext (O := (O : Type)) (M := M') rfl (map_zero u)
 
 /- English proof (translation)
-Rewrite using `[← h2]`. Conclude with `lhom_ext fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sqProj_comp_sqMap (φ : LHom A (sqAlg O M)) (h2 : (sqProj O M).comp φ = ε)
     (u : M →ₗ[(O : Type)] M') : (sqProj O M').comp ((sqMap u).comp φ) = ε := by
   rw [← h2]; exact lhom_ext fun _ => rfl
 
 /- English proof (translation)
-Establish `hk : ∀ k, p • (sqKer (m k) : (sqProj O M).ker) = 0` using `fun k => by`. Rewrite using `[← map_nsmul, hm, map_zero]`. Establish `hx' : x = ∑ k, (⟨B.tg (sqProj O M) (sqProj_sqZero O M) (gb k ⊗ₜ[R₀] sqKer (m k)), tg_torP B p _ _ _ _ (hk k)⟩ : torP B p (sqAlg O M))`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hx, AddSubmonoidClass.coe_finset_sum, tgPt, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', map_sum, AddSubmonoidClass.coe_finset_sum]`. Simplify using `only [Ac.act_tg a (sqIncl O M) (sqProj O M) (sqProj_sqZero O M) _ _ (hk _)]`. Rewrite using `[← map_sum, tgPt]`. Use `congr 1`. Simplify using `only [map_sum, TensorProduct.tmul_sum, ← smul_sqKer, ← TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.sum_tmul, gb.sum_repr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma tg_act {E : Type} [CommRing E] (Ac : OAct B O p E) (a : E) (gb : Module.Basis (Fin g) R₀ B.gg)
     (m : Fin g → M) (hm : ∀ k, p • m k = 0) (x : torP B p (sqAlg O M))
@@ -394,29 +394,25 @@ lemma tg_act {E : Type} [CommRing E] (Ac : OAct B O p E) (a : E) (gb : Module.Ba
 end Core
 
 /- English proof (translation)
-Introduce `hyp R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D`. Take `⟨hε, hy, huniq⟩` from `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ 0) (D.pt_p 0)))`. Express the relevant statement in the definitionally equal form `(D.ptMap 0).comp (D.fin.sO (D.ptIdx 0)) = _ at hε`. Establish `huniq' : ∀ φ' : LHom (D.fin.AAx (D.ptIdx 0)) Tw.O, φ'.comp (D.fin.sO (D.ptIdx 0)) = LHom.id Tw.O → B.map φ' (D.fin.y (D.ptIdx 0)) = 0 → φ' = D.ptMap 0` using `fun φ' h1 h2 => eq_of_heq (huniq (D.ptIdx 0) φ' h1 (h2.trans (by simp [ptOf]))).2`. Establish `H1 : ∀ (M : Type) [AddCommGroup M] [Module (Tw.O : Type) M] (m : Fin g → M), (∀ k, p • m k = 0) → ∃! φ : LHom (D.fin.AAx (D.ptIdx 0)) (sqAlg Tw.O M), φ.comp (D.fin.sO (D.ptIdx 0)) = sqIncl Tw.O M ∧ (sqProj Tw.O M).comp φ = D.ptMap 0 ∧ B.map φ (D.fin.y (D.ptIdx 0)) = tgPt B Tw.O D …` using `fun M _ _ m hm => (hyp D _ _ _ (sqProj_sqZero Tw.O M) (sqProj_comp_sqIncl Tw.O M)).1 (fun k => sqKer (m k)) (fun k => by rw [← map_nsmul, hm, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H2 : ∀ (M : Type) [AddCommGroup M] [Module (Tw.O : Type) M] (φ : LHom (D.fin.AAx (D.ptIdx 0)) (sqAlg Tw.O M)), φ.comp (D.fin.sO (D.ptIdx 0)) = sqIncl Tw.O M → (sqProj Tw.O M).comp φ = D.ptMap 0 → ∃! m : Fin g → M, (∀ k, p • m k = 0) ∧ B.map φ (D.fin.y (D.ptIdx 0)) = tgPt B Tw.O D …`. Introduce `M _ _ φ h1 h2`. Take `⟨m, ⟨hm1, hm2⟩, hm3⟩` from `(hyp D _ _ _ (sqProj_sqZero Tw.O M) (sqProj_comp_sqIncl Tw.O M)).2 φ h1 h2`. Use `choose n hn using fun k => sqKer_surjective (O := Tw.O) (M := M) (m k)`. Take `rfl : m = fun k => sqKer (n k)` from `funext fun k => (hn k).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ⟨fun k => sqKer_injective (O := Tw.O) (M := M) ?_, hm2⟩, fun n' hn' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, map_zero]`. Conclude with `hm1 k`. Establish `h` using `hm3 (fun k => sqKer (n' k)) ⟨fun k => by rw [← map_nsmul, hn'.1, map_zero], hn'.2⟩`. Conclude with `funext fun k => sqKer_injective (O := Tw.O) (M := M) (congrFun h k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ₀, ⟨h1, h2, h3⟩, -⟩` from `H1 _ (lieBasis (Tw.O : Type) p g) fun k => lie_nsmul _`. Establish `key : ∀ (M : Type) [AddCommGroup M] [Module (Tw.O : Type) M] (u : LieDualModP p (Tw.O : Type) g →ₗ[(Tw.O : Type)] M), B.map ((sqMap u).comp φ₀) (D.fin.y (D.ptIdx 0)) = tgPt B Tw.O D.ch.gb fun k => u (lieBasis (Tw.O : Type) p g k)`. Introduce `M _ _ u`. Rewrite using `[B.map_comp, h3]`. Conclude with `map_sqMap_tg B _ _ u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key2 : ∀ (M : Type) [AddCommGroup M] [Module (Tw.O : Type) M] (m : Fin g → M) (hm : ∀ k, p • m k = 0) (φ : LHom (D.fin.AAx (D.ptIdx 0)) (sqAlg Tw.O M)), φ.comp (D.fin.sO (D.ptIdx 0)) = sqIncl Tw.O M → (sqProj Tw.O M).comp φ = D.ptMap 0 → B.map φ (D.fin.y (D.ptIdx 0)) = tgPt B Tw. …`. Introduce `M _ _ m hm φ k1 k2 k3`. Use `(H1 M m hm).unique ⟨k1, k2, k3⟩ ⟨sqMap_comp_sO φ₀ h1 _, sqProj_comp_sqMap φ₀ h2 _, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `only [lieLift_basis]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(SqExt.sndHom (O := (Tw.O : Type)) (M := LieDualModP p (Tw.O : Type) g)).comp (φ₀.1.toRingHom.toAddMonoidHom), snd_smul φ₀ h1, snd_leibniz φ₀ h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `M _ _ d d1 d2`. Take `⟨φ, k1, k2, k3⟩` from `exists_lift hε d d1 d2`. Take `⟨m, ⟨hm1, hm2⟩, hm3⟩` from `H2 M φ k1 k2`. Use `⟨lieLift (Tw.O : Type) m hm1, fun f => ?_, fun u hu => lie_ext fun k => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← k3, key2 M m hm1 φ k1 k2 hm2]`. Both sides reduce to the same expression. Establish `hφ : φ = (sqMap u).comp φ₀` using `lhom_ext fun f => SqExt.ext (O := (Tw.O : Type)) (M := M) (congrArg (fun ψ => ψ.1 f) (k2.trans h2.symm)) ((k3 f).trans (hu f))`. Establish `h` using `hm3 (fun k => u (lieBasis (Tw.O : Type) p g k)) ⟨fun k => by rw [← map_nsmul, lie_nsmul, map_zero], by rw [hφ, key]⟩`. Rewrite using `[lieLift_basis]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrFun h k`. Introduce `a α hα1 hα2 f l hl`. Establish `k1 : (φ₀.comp α).comp (D.fin.sO (D.ptIdx 0)) = sqIncl Tw.O _`. Rewrite using `[← h1]`. Conclude with `congrArg φ₀.comp hα1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k3 : B.map (φ₀.comp α) (D.fin.y (D.ptIdx 0)) = tgPt B Tw.O D.ch.gb fun k => (Submodule.Quotient.mk (D.H.ρL a k) : LieDualModP p (Tw.O : Type) g)`. Rewrite using `[B.map_comp, hα2, D.A.act_nat a _ _ φ₀ h1, tg_act D.A a D.ch.gb (lieBasis (Tw.O : Type) p g) (fun k => lie_nsmul _) _ h3]`. Simplify using `only [← D.L.ρL_spec, sum_lieBasis]`. Establish `k2 : (sqProj Tw.O _).comp (φ₀.comp α) = D.ptMap 0`. Use `huniq' _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (sqProj Tw.O _).comp k1).trans (sqProj_comp_sqIncl Tw.O _)`. Rewrite using `[B.map_comp, k3]`. Conclude with `(B.tg_ker _ _ _).2 ⟨_, rfl⟩`. Establish `h` using `congrArg (fun ψ => SqExt.snd (O := (Tw.O : Type)) (M := LieDualModP p (Tw.O : Type) g) (ψ.1 f)) (key2 _ _ (fun k => lie_nsmul _) _ k1 k2 k3)`. Use `h.trans ?_` and prove the remaining obligations.
-
-Use `(congrArg (fun x => lieLift (Tw.O : Type) (fun k => (Submodule.Quotient.mk (D.H.ρL a k) : LieDualModP p (Tw.O : Type) g)) (fun k => lie_nsmul _) x) hl).trans ?_` and prove the remaining obligations. Rewrite using `[lieLift_mk]`. Establish `hρ : (D.H.ρL a)ᵀ *ᵥ l = ∑ k, l k • D.H.ρL a k`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
-
-Rewrite using `[hρ, ← Submodule.mkQ_apply, map_sum]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem universal_derivation :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp), ∀ (S : LAlg R₀) (s : LHom Tw.O S) (π : LHom S Tw.O) (hπ : π.SqZero), π.comp s = LHom.id Tw.O →

@@ -7,19 +7,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.F
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ N _ ρ hρ hN2 a ha hcop R X _ _ _ N' φ hφ σ hσ u w huw`. Take `⟨K, hKnf, hKcyc, hKgal, hKlift⟩` from `fixField E Ω N ρ hρ`. Establish `hU : fixMu E Ω N ≤ galOf E K Ω` using `le_of_eq hKgal.symm`. Establish `hφ1 : φ ∈ XDual 1 (fixMu E Ω N) R X`. Take `⟨h1, h2, h3, -⟩` from `hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Introduce `A hA`. Simplify using `at hA`. Establish `hTC : IsTotallyComplex K` using `IsCyclotomicExtension.Rat.isTotallyComplex K hN2`. Rewrite `hφ1` using `[← pullOnto E Ω K (fixMu E Ω N) hU 1 R X one_ne_zero (le_of_eq hKgal) (Or.inl hTC)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ψ, hψ, rfl⟩` from `hφ1`. Establish `hart : ∀ b, Additive.ofMul (artU K hU (w b)) = Stick.clRep K ((Stick.sg N K) b)⁻¹ (Additive.ofMul (artU K hU u))`. Introduce `b`. Establish `hl` using `hKlift b (σ b) (hσ b)`. Establish `hg : toGal K hU (w b) = conjGal hl (toGal K hU u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[conjGal_apply]`. Use `show (w b).1 x = (σ b).symm (u.1 (σ b x))`. Rewrite using `[huw b x, RingEquiv.symm_apply_apply]`. Establish `hc` using `artConj K Ω _ (σ b) hl (toGal K hU u)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[← hg]`. Use `show _ = Stick.clRep K ((Stick.sg N K) b)⁻¹ (Additive.ofMul (artCl K Ω (toGal K hU u)))`. Rewrite using `[hc]`. Use `show _ = Stick.clRep K ((Stick.sg N K) b)⁻¹ (Stick.clRep K ((Stick.sg N K) b) (Additive.ofMul (artCl K Ω (toGal K hU (w b)))))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `ψ' : Additive (ClassGroup (𝓞 K)) →+ X` to `AddMonoidHom.mk' (fun c => ψ (Additive.toMul c)) (fun c d => hψ.1 _ _)`. Establish `hsum` using `clKill N K a ha hcop (Additive.ofMul (artU K hU u))`. Establish `key : ∀ b, (clPull K hU R X ψ) (w b) = ψ' (Stick.clRep K ((Stick.sg N K) b)⁻¹ (Additive.ofMul (artU K hU u)))`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hart b]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[← map_zsmul ψ']`. Rewrite using `[← map_sum, hsum, map_zero]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.homKill :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → 2 < N → ∀ a : ℕ, Odd a → a.Coprime N → ∀ (R X : Type) [CommRing R] [AddCommGroup X] [Module R X] (N' : ℕ), ∀ φ ∈ XDual N' (fixMu E Ω N) R X, ∀ σ : (ZMod N)ˣ → Ω ≃+* Ω, (∀ b, CycLift N b (σ b)) → ∀ (u : fixMu E Ω N) (w : (ZMod N)ˣ → fixMu E Ω N), (∀ b y, u.1 (σ b y) = σ b ((w b).1 y)) → ∑ b : (ZMod N)ˣ, Eone N a b • φ (w b) = 0 := by

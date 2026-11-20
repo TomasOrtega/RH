@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PeriodSpan
 
 /- English proof (translation)
-Introduce `A _ g hA _ L u P hP`. Use `GlobalTheory.T.period_map_span_top_and_finrank_from_cech_periods A g L u hA P fun c => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.crystalline_period_eq_cechDeRham_period A g L u c.1 { toFun := fun l => P l c, map_zero' := by simp, map_add' := fun x y => by simp } _ (fun _ => rfl) (hP c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : PSpan := by
   intro A _ g hA _ L u P hP

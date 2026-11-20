@@ -13,29 +13,25 @@ open GlobalTheory.BaseCoef
 namespace GlobalTheory.CoefRetraction
 
 /- English proof (translation)
-Establish `: Module.IsTorsionFree A L` using `.trans_faithfulSMul A K L`. Establish `: Module.Free A (integralClosure A L)` using `IsIntegralClosure.module_free A K L (integralClosure A L)`. Establish `: Module.Finite A (integralClosure A L)` using `IsIntegralClosure.finite A K L (integralClosure A L)`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid (integralClosure A L) (nonZeroDivisors A)) L` using `IsIntegralClosure.isLocalization A K L (integralClosure A L)`. Set `b` to `Module.Free.chooseBasis A (integralClosure A L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `bL` to `b.localizationLocalization K (nonZeroDivisors A) L`. Establish `hrepr : ∀ (z : integralClosure A L) i, bL.repr (algebraMap (integralClosure A L) L z) i = algebraMap A K (b.repr z i)` using `fun z i => b.localizationLocalization_repr_algebraMap K (nonZeroDivisors A) L z i`. Establish `hspan : (1 : A) ∈ Ideal.span (Set.range fun i => b.repr 1 i)`. Take `⟨d, hd⟩ : ∃ d : A, Ideal.span (Set.range fun i => b.repr 1 i) = Ideal.span {d}` from `⟨Submodule.IsPrincipal.generator (Ideal.span (Set.range fun i => b.repr 1 i)), (Submodule.IsPrincipal.span_singleton_generator _).symm⟩`. Establish `hdiv : ∀ i, ∃ e : A, e * d = b.repr 1 i` using `fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi : b.repr 1 i ∈ Ideal.span (Set.range fun i => b.repr 1 i)` using `Ideal.subset_span ⟨i, rfl⟩`. Rewrite `hi` using `[hd]`. Conclude with `Ideal.mem_span_singleton'.mp hi`. Use `choose e he using hdiv`. Use `set β : integralClosure A L := ∑ i, e i • b i with hβ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdβ : d • β = 1`. Rewrite using `[hβ, Finset.smul_sum]`. Use `conv_rhs => rw [← b.sum_repr 1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm, he i]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hL : algebraMap A L d * (β : L) = 1`. Use `congrArg (fun z : integralClosure A L => (z : L)) hdβ` as an intermediate fact. Simplify `this` using `[Algebra.smul_def]`. Establish `hK : algebraMap K L (algebraMap A K d) * (β : L) = 1`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hL`. Establish `hd0 : algebraMap A K d ≠ 0`. Introduce `h0`. Rewrite `hK` using `[h0, map_zero, zero_mul]`. Conclude with `zero_ne_one hK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hint : IsIntegral A (algebraMap K L (algebraMap A K d)⁻¹)`. Rewrite using `[map_inv₀, inv_eq_of_mul_eq_one_right hK]`. Conclude with `β.2`. Establish `hint' : IsIntegral A (algebraMap A K d)⁻¹` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom A K L) (algebraMap K L).injective).mp hint`. Take `⟨u, hu⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hud : u * d = 1`. Apply `IsFractionRing.injective A K` to reduce the goal to its premises. Rewrite using `[map_mul, hu, map_one, inv_mul_cancel₀ hd0]`. Rewrite using `[hd, ← hud]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self d)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hspan`. Use `⟨∑ i, algebraMap A K (a i) • bL.coord i, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : L) = algebraMap (integralClosure A L) L 1` using `(map_one _).symm`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul]`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hrepr]`. Rewrite using `[← map_one (algebraMap A K), ← ha, map_sum]`. Simplify using `only [map_mul]`. Introduce `x hx set z : integralClosure A L := ⟨x, show x ∈ integralClosure A L from hx⟩ with hz`. Establish `hx' : x = algebraMap (integralClosure A L) L z` using `rfl`.
-
-Use `⟨∑ i, a i * b.repr z i, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul]`. Rewrite using `[hx']`. Simplify using `only [hrepr]`. Rewrite using `[map_sum]`.
-
-Simplify using `only [map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_retraction (A K L : Type) [CommRing A] [IsDomain A] [IsPrincipalIdealRing A] [Field K]
     [Algebra A K] [IsFractionRing A K] [Field L] [Algebra K L] [Algebra A L] [IsScalarTower A K L]
@@ -111,9 +107,9 @@ theorem exists_retraction (A K L : Type) [CommRing A] [IsDomain A] [IsPrincipalI
     simp only [map_mul]
 
 /- English proof (translation)
-Establish `: IsScalarTower (integralClosure R K) K L` using `inferInstance`. Establish `: IsFractionRing (integralClosure R K) K` using `integralClosure.isFractionRing_of_finite_extension F K`. Establish `: IsScalarTower R (integralClosure R K) L` using `IsScalarTower.of_algebraMap_eq fun y => by`. Rewrite using `[IsScalarTower.algebraMap_apply R K L, IsScalarTower.algebraMap_apply (integralClosure R K) K L]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨r, hr1, hr⟩` from `exists_retraction (integralClosure R K) K L`. Use `⟨r, hr1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hr x (hx.tower_top)`. Rewrite using `[← ha]`. Conclude with `a.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retraction_closure (R F K L : Type) [CommRing R] [IsDomain R] [Field F] [Algebra R F]
     [IsFractionRing R F] [Field K] [Algebra F K] [Algebra R K] [IsScalarTower R F K] [FiniteDimensional F K]
@@ -134,13 +130,13 @@ theorem exists_retraction_closure (R F K L : Type) [CommRing R] [IsDomain R] [Fi
   exact a.2
 
 /- English proof (translation)
-Introduce `l _ LL LL' hL`. Use `letI : Algebra ↥LL.1 ↥LL'.1 := (incl hL).toRingHom.toAlgebra`. Establish `hmap : ∀ y : ↥LL.1, algebraMap ↥LL.1 ↥LL'.1 y = incl hL y` using `fun _ => rfl`. Establish `: IsScalarTower ℚ_[l] ↥LL.1 ↥LL'.1` using `IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[hmap, AlgHom.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsScalarTower ℤ_[l] ↥LL.1 ↥LL'.1` using `IsScalarTower.of_algebraMap_eq fun z => by`. Rewrite using `[hmap, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL'.1, AlgHom.commutes]`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: FiniteDimensional ℚ_[l] ↥LL'.1` using `LL'.2`. Establish `: FiniteDimensional ↥LL.1 ↥LL'.1` using `FiniteDimensional.right ℚ_[l] ↥LL.1 ↥LL'.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsPrincipalIdealRing (integralClosure ℤ_[l] ↥LL.1)`. Take `⟨h, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Conclude with `h.toIsPrincipalIdealRing`. Take `⟨r, hr1, hr⟩` from `exists_retraction_closure ℤ_[l] ℚ_[l] ↥LL.1 ↥LL'.1`. Use `⟨r.restrictScalars ℚ_[l], fun a x => ?_, hr1, fun x hx => hr x hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.restrictScalars_apply, LinearMap.restrictScalars_apply, ← hmap, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_retraction : ∀ (l : ℕ) [Fact l.Prime] (LL LL' : FinExt l) (hL : LL.1 ≤ LL'.1),
     ∃ r : ↥LL'.1 →ₗ[ℚ_[l]] ↥LL.1, (∀ a x, r (incl hL a * x) = a * r x) ∧ r 1 = 1 ∧

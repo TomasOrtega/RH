@@ -16,31 +16,31 @@ def outer (k i r' : ℕ) : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r'
 variable (k i r' : ℕ)
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, incl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_incl {m : Type} (M : Matrix m (Fin (2 * (i + r') + k + 1)) ℂ) (p : m) (j) :
     (M * incl k i r') p j = M p (levPos k i r' j) := by
   simp [Matrix.mul_apply, incl]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, incl, conjTranspose_apply, apply_ite star]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inclH_mul {m : Type} (M : Matrix (Fin (2 * (i + r') + k + 1)) m ℂ) (p : m) (j) :
     ((incl k i r')ᴴ * M) j p = M (levPos k i r' j) p := by
   simp [Matrix.mul_apply, incl, conjTranspose_apply, apply_ite star]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `split_ifs with hp`. Rewrite using `[Finset.sum_eq_single ⟨p.val - i, by omega⟩]`. Establish `: p = levPos k i r' ⟨p.val - i, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [levPos]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[incl, if_pos this, one_mul]`. Introduce `b _ hb`. Establish `: ¬ p = levPos k i r' b`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [levPos] at this ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[incl, if_neg this, zero_mul]`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ¬ p = levPos k i r' b`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Establish `hb` using `b.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [levPos] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[incl, if_neg this, zero_mul]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_mul {m : Type} (M : Matrix (Fin (2 * r' + k + 1)) m ℂ) (p) (q : m) :
     (incl k i r' * M) p q =
@@ -68,9 +68,9 @@ theorem incl_mul {m : Type} (M : Matrix (Fin (2 * r' + k + 1)) m ℂ) (p) (q : m
     rw [incl, if_neg this, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[mul_incl, inclH_mul]`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hva : (levPos k i r' a).val = a.val + i` using `rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvb : (levPos k i r' b).val = b.val + i` using `rfl`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_inner : (incl k i r')ᴴ * Hpk k (i + r') * incl k i r' = Hpk k r' := by
   ext a b

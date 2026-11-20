@@ -18,11 +18,11 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.ClassUniq
 
 /- English proof (translation)
-Establish `h1` using `(F.hol k 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2`. Unfold `IsHolTo at h1 ⊢`. Introduce `U f`. Take `⟨ho, hd⟩` from `h1 U f`. Establish `hj : Continuous (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z))` using `continuous_const.prodMk continuous_id`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjd : Differentiable ℂ (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z))` using `(differentiable_const _).prodMk differentiable_id`. Establish `hset : {b | b ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (fun z => (F.ex k P z).left) b ⁻¹ᵁ U} = (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) ⁻¹' {b | b ∈ (Set.univ : Set (Fin 0 → ℂ)) ×ˢ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (fun bz : (Fin 0 → ℂ) × (Fin g → ℂ) => (F.ex k P bz.2).left) b ⁻¹ …`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[hset]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ho.preimage hj, ?_⟩` and prove the remaining obligations. Establish `h2` using `hd.comp hjd.differentiableOn (fun z hz => hz)`. Rewrite `h2` using `[Function.comp_def]`. Simplify using `only at h2 ⊢`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 lemma isHolTo_ex {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
@@ -50,15 +50,15 @@ lemma isHolTo_ex {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipro
   exact h2
 
 /- English proof (translation)
-Unfold `IsPeriod at hP ⊢`. Take `⟨hlin, hinj, hdisc, hspan, Hm, hH, hpos, him⟩` from `hP`. Establish `hrange : (P'.comp gam.toLinearMap.toAddMonoidHom).range = P'.range`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨gam a, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨gam.symm b, by simp⟩`. Establish `hr2 : Set.range (P'.comp gam.toLinearMap.toAddMonoidHom) = Set.range P'`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← AddMonoidHom.coe_range, ← AddMonoidHom.coe_range, hrange]`. Use `⟨?_, ?_, ?_, ?_, Hm, hH, hpos, ?_⟩` and prove the remaining obligations. Introduce `a x i show P' (gam (a • x)) i = (ty i) (a : E) * P' (gam x) i`. Rewrite using `[map_smul]`. Conclude with `hlin a (gam x) i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `gam.injective (hinj hab)`. Rewrite using `[hrange]`. Conclude with `hdisc`. Rewrite using `[hr2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hspan`. Introduce `x y`. Establish `h` using `him (gam x) (gam y)`. Rewrite `h` using `[hg]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 lemma isPeriod_comp_isometry {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D D' : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
@@ -93,29 +93,27 @@ lemma isPeriod_comp_isometry {E : Type} [Field E] [NumberField E] [IsCMField E]
     exact h
 
 /- English proof (translation)
-Introduce `hT hL E _ _ _ H Dw l Xo σ' g ty F r M k k' γ hpq hρ hty hMB hGm hξ hunit hΛ hcM hcA`. Establish `hmem : ∀ a : (F.Di k).La, (γ : Matrix (Fin r) (Fin r) E) *ᵥ ((M.φ k a : (M.X k).Λ) : Fin r → E) ∈ (M.X k').Λ` using `fun a => (hΛ _).1 (M.φ k a).2`. Set `gmap : (F.Di k).La →ₗ[𝓞 E] (F.Di k').La` to `(M.φ k').symm.toLinearMap ∘ₗ LinearMap.codRestrict (M.X k').Λ (((Matrix.mulVecLin (γ : Matrix (Fin r) (Fin r) E)).restrictScalars (𝓞 E)) ∘ₗ (M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap) (fun a => hmem a)`. Establish `hgmap : ∀ a, ((M.φ k' (gmap a) : (M.X k').Λ) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k a : Fin r → E)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [gmap, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hinv : ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) * (γ : Matrix (Fin r) (Fin r) E) = 1` using `Units.inv_mul γ`. Establish `hinv' : (γ : Matrix (Fin r) (Fin r) E) * ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = 1` using `Units.mul_inv γ`. Establish `hinj : Function.Injective gmap`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `h1` using `congrArg (fun x => ((M.φ k' x : (M.X k').Λ) : Fin r → E)) hab`. Simplify using `only [hgmap] at h1`. Establish `h2` using `congrArg (fun v => ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) h1`. Simplify using `only [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(M.φ k).injective (Subtype.ext h2)`. Establish `hsurj : Function.Surjective gmap`. Introduce `b`. Establish `hAv : (γ : Matrix (Fin r) (Fin r) E) *ᵥ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((M.φ k' b : (M.X k').Λ) : Fin r → E)) = ((M.φ k' b : (M.X k').Λ) : Fin r → E)`. Rewrite using `[Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvmem : ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((M.φ k' b : (M.X k').Λ) : Fin r → E) ∈ (M.X k).Λ`. Rewrite using `[hΛ, hAv]`. Conclude with `(M.φ k' b).2`. Use `⟨(M.φ k).symm ⟨_, hvmem⟩, ?_⟩` and prove the remaining obligations. Apply `(M.φ k').injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hgmap, LinearEquiv.apply_symm_apply]`. Conclude with `hAv`. Set `gam : (F.Di k).La ≃ₗ[𝓞 E] (F.Di k').La` to `LinearEquiv.ofBijective gmap ⟨hinj, hsurj⟩`. Establish `hgam : ∀ a, ((M.φ k' (gam a) : (M.X k').Λ) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k a : Fin r → E)` using `fun a => hgmap a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hiso : ∀ a b, (F.Di k').EF (gam a) (gam b) = (F.Di k).EF a b`. Introduce `a b`. Establish `h1` using `hMB.ef k' (gam a) (gam b)`. Establish `h2` using `hMB.ef k a b`. Rewrite `h1` using `[hgam, hgam, hGm, hξ, hunit]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.trans h2.symm` after adjusting the coercions. Establish `hcM' : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), ∃ x, gam (F.t k a) = F.t k' a + l.M • x`. Introduce `a ha`. Take `⟨w, hw, hweq⟩` from `hcM a ha`. Use `⟨(M.φ k').symm ⟨w, hw⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `(M.φ k').injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hgam, hweq]`. Simplify using the standard rewrite rules. Establish `hcA' : ∀ a, ∃ x, gam (F.t k a) = F.t k' a + l.A • x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Take `⟨w, hw, hweq⟩` from `hcA a`. Use `⟨(M.φ k').symm ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Apply `(M.φ k').injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgam, hweq]`. Simplify using the standard rewrite rules. Establish `htyk' : IsTypeFn H (F.Di k').p (F.Di k').q ty`. Rewrite using `[(F.sig k').1, (F.sig k').2]`. Conclude with `hty`.
-
-Take `⟨P', hP'⟩` from `(GlobalTheory.PeriodExists.period_of_isTypeFn H (F.Di k') g ty htyk').2`. Apply the tactic sequence `have hP := isPeriod_comp_isometry gam hiso hP'`. Establish `key` using `GlobalTheory.UnifPoint.point_eq_iff_isometry_closed hT hL E H Dw l Xo σ' g ty hpq hρ hty (F.Di k) (F.Di k') (F.t k) (F.t k') (P'.comp gam.toLinearMap.toAddMonoidHom) P' (F.u k (P'.comp gam.toLinearMap.toAddMonoidHom)) (F.u k' P') (F.ex k (P'.comp gam.toLinearMap.toAddMonoidHom)) …`. Establish `hu` using `key.2 ⟨gam, LinearEquiv.refl ℂ _, hiso, hcM', hcA', fun a => rfl⟩`. Conclude with `F.disj k k' _ _ hP hP' hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_matched : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (r : ℕ) (M : ModelsOf F r) (k k' : Fin F.n) (γ : GL (Fin r) E), 1 ≤ Dw.p + Dw.q → σ' (baseKA l).ρ = H.rt0 → IsTypeFn H Dw.p Dw.q ty → ModelBase M → (M.X k').Gm = (M.X k).Gm → (M.X k').ξ0 = (M.X k).ξ0 → (∀ u v, herm (M.X k).Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) = herm (M.X k).Gm u v) → (∀ v, v ∈ (M.X k).Λ ↔ (γ : Matrix (Fin r) (Fin r) E) *ᵥ v ∈ (M.X k').Λ) → (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), ∃ w ∈ (M.X k').Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k (F.t k a) : Fin r → E) = (M.φ k' (F.t k' a) : Fin r → E) + l.M • w) → (∀ a, ∃ w ∈ (M.X k').Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k (F.t k a) : Fin r → E) = (M.φ k' (F.t k' a) : Fin r → E) + l.A • w) → k = k' := by
   intro hT hL E _ _ _ H Dw l Xo σ' g ty F r M k k' γ hpq hρ hty hMB hGm hξ hunit hΛ hcM hcA

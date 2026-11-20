@@ -7,14 +7,14 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Use `⟨continuous_const, Submodule.span ℂ {fun _ => (1 : ℂ)}, FiniteDimensional.span_singleton ℂ _, fun y => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_span_singleton.2 ⟨c, by funext n; simp⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem rFin_const {a : ℕ} (c : ℂ) : RFin (fun _ : GL (Fin a) ℂ => c) := by
   refine ⟨continuous_const, Submodule.span ℂ {fun _ => (1 : ℂ)}, FiniteDimensional.span_singleton ℂ _, fun y => ?_⟩
   exact Submodule.mem_span_singleton.2 ⟨c, by funext n; simp⟩
 
 /- English proof (translation)
-Take `⟨cp, A, fA, mA⟩` from `hp`. Take `⟨cq, B, fB, mB⟩` from `hq`. Use `⟨cp.add cq, A ⊔ B, inferInstance, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `Submodule.add_mem_sup (mA y) (mB y)`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem rFin_add {a : ℕ} {p q : GL (Fin a) ℂ → ℂ} (hp : RFin p) (hq : RFin q) :
     RFin (fun h => p h + q h) := by
@@ -25,9 +25,9 @@ private theorem rFin_add {a : ℕ} {p q : GL (Fin a) ℂ → ℂ} (hp : RFin p) 
   exact h
 
 /- English proof (translation)
-Take `⟨cp, A, fA, mA⟩` from `hp`. Take `⟨cq, B, fB, mB⟩` from `hq`. Use `⟨cp.mul cq, A * B, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : A.FG` using `(Submodule.fg_iff_finiteDimensional A).2 fA`. Establish `h2 : B.FG` using `(Submodule.fg_iff_finiteDimensional B).2 fB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Submodule.fg_iff_finiteDimensional _).1 (h1.mul h2)`. Establish `h` using `Submodule.mul_mem_mul (mA y) (mB y)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem rFin_mul {a : ℕ} {p q : GL (Fin a) ℂ → ℂ} (hp : RFin p) (hq : RFin q) :
     RFin (fun h => p h * q h) := by
@@ -41,9 +41,9 @@ private theorem rFin_mul {a : ℕ} {p q : GL (Fin a) ℂ → ℂ} (hp : RFin p) 
     exact h
 
 /- English proof (translation)
-Use `⟨Units.continuous_val.matrix_elem i j, Submodule.span ℂ (Set.range fun r : Fin a => fun n : GL (Fin a) ℂ => (n : Matrix (Fin a) (Fin a) ℂ) i r), FiniteDimensional.span_of_finite ℂ (Set.finite_range _), fun y => ?_⟩` and prove the remaining obligations. Establish `h : (fun n : GL (Fin a) ℂ => ((n * y : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) i j) = ∑ r, (y : Matrix (Fin a) (Fin a) ℂ) r j • fun n : GL (Fin a) ℂ => (n : Matrix (Fin a) (Fin a) ℂ) i r`. Use function extensionality and compare the values at `n`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, mul_comm]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun r _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨r, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem rFin_entry {a : ℕ} (i j : Fin a) :
     RFin (fun h : GL (Fin a) ℂ => (h : Matrix (Fin a) (Fin a) ℂ) i j) := by
@@ -58,7 +58,7 @@ private theorem rFin_entry {a : ℕ} (i j : Fin a) :
   exact Submodule.sum_mem _ fun r _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨r, rfl⟩)
 
 /- English proof (translation)
-Use `⟨hc.comp (continuous_const.mul continuous_id), LinearMap.range (LinearMap.pi fun n : GL (Fin a) ℂ => l ∘ₗ ρ (X * n)), inferInstance, fun y => ⟨ρ y v, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `n`. Express the relevant statement in the definitionally equal form `l (ρ (X * n) (ρ y v)) = l (ρ (X * (n * y)) v)`. Rewrite using `[← mul_assoc, map_mul ρ (X * n) y]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rFin_of_rep {a : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : GL (Fin a) ℂ →* (V →ₗ[ℂ] V)) (l : V →ₗ[ℂ] ℂ) (v : V) (X : GL (Fin a) ℂ)
@@ -72,22 +72,20 @@ private theorem rFin_of_rep {a : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (nablaSq ℂ a ν) := inferInstance`. Conclude with `rFin_of_rep (sqRep ℂ a ν) (ev1 ν) (top ν) X (GlobalTheory.BCT.TrKer.continuous_coef_sqRep a ν (top ν) (ev1 ν))`.
+A detailed English derivation is pending.
 -/
 private theorem rFin_delta {a : ℕ} (ν : DomWeight a) (X : GL (Fin a) ℂ) : RFin fun n => delta ν (X * n) := by
   haveI : FiniteDimensional ℂ (nablaSq ℂ a ν) := inferInstance
   exact rFin_of_rep (sqRep ℂ a ν) (ev1 ν) (top ν) X (GlobalTheory.BCT.TrKer.continuous_coef_sqRep a ν (top ν) (ev1 ν))
 
 /- English proof (translation)
-Introduce `a`. Use `⟨rFin_delta, fun P => ?_⟩` and prove the remaining obligations. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `h : pev (MvPolynomial.C c : MvPolynomial (Fin a × Fin a) ℂ) = fun _ => c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `[pev]`. Rewrite using `[h]`. Conclude with `rFin_const c`. Consider the case `add p q hp hq`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h : pev (p + q) = fun g => pev p g + pev q g`. Use function extensionality and compare the values at `g`. Simplify using `[pev]`. Rewrite using `[h]`. Conclude with `rFin_add hp hq`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mul_X p n hp`. Establish `h : pev (p * MvPolynomial.X n) = fun g => pev p g * (g : Matrix (Fin a) (Fin a) ℂ) n.1 n.2`. Use function extensionality and compare the values at `g`. Simplify using `[pev]`. Rewrite using `[h]`.
-
-Apply the tactic sequence `exact rFin_mul hp (rFin_entry n.1 n.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.rFinEx_of :
     UpperTheory.Gal.Wt.RFinEx := by

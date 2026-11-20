@@ -7,11 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormallyUnramif
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR GlobalTheory.PD KaehlerDifferential GlobalTheory.W1 GlobalTheory.WH
 
 /- English proof (translation)
-Establish `h1 : Algebra.FormallyUnramified ℂ (A ⧸ I)` using `GlobalTheory.SepIdem.formallyUnramified_of_isReduced ℂ _`. Establish `h2 : Algebra.FormallyUnramified A (B ⧸ I.map (algebraMap A B))` using `by haveI : Algebra.FormallyUnramified B (B ⧸ I.map (algebraMap A B)) := .of_surjective (Ideal.Quotient.mkₐ B _) Ideal.Quotient.mk_surjective`. Conclude with `.comp A B _`. Establish `h3 : Algebra.FormallyUnramified (A ⧸ I) (B ⧸ I.map (algebraMap A B))` using `.of_restrictScalars A _ _`. Use `haveI : IsScalarTower ℂ (A ⧸ I) (B ⧸ I.map (algebraMap A B)) := .of_algebraMap_eq fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap ℂ (B ⧸ I.map (algebraMap A B)) c = algebraMap B (B ⧸ I.map (algebraMap A B)) (algebraMap A B (algebraMap ℂ A c))`. Rewrite using `[← IsScalarTower.algebraMap_apply ℂ A B, ← IsScalarTower.algebraMap_apply ℂ B _]`. Rewrite using `[e, IsScalarTower.algebraMap_apply ℂ A (A ⧸ I)]`. Both sides reduce to the same expression. Establish `h4 : Algebra.FormallyUnramified ℂ (B ⧸ I.map (algebraMap A B))` using `.comp ℂ (A ⧸ I) _`.
-
-Conclude with `Algebra.FormallyUnramified.isReduced_of_field ℂ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem red_of_fu {A B : Type} [CommRing A] [CommRing B] [Algebra ℂ A] [Algebra ℂ B] [Algebra A B]
     [IsScalarTower ℂ A B] [Algebra.FormallyUnramified A B] (I : Ideal A) [IsReduced (A ⧸ I)]
@@ -34,15 +32,13 @@ private theorem red_of_fu {A B : Type} [CommRing A] [CommRing B] [Algebra ℂ A]
   exact Algebra.FormallyUnramified.isReduced_of_field ℂ _
 
 /- English proof (translation)
-Take `⟨n, s, hs'⟩` from `Module.Finite.exists_fin (R := R) (M := E)`. Establish `key : ∀ e, π e ∈ Submodule.span ℂ (Set.range (π ∘ s))`. Introduce `e`. Establish `he : e ∈ Submodule.span R (Set.range s)` using `hs' ▸ Submodule.mem_top`. Proceed by induction on `he using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ iha ihb => rw [map_add]`. Conclude with `Submodule.add_mem _ iha ihb`. Consider the case `smul r y _ ih`. Take `⟨c, hc'⟩` from `hc r`. Rewrite using `[hπ, hc', ← Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ _ ih`. Establish `htop : Submodule.span ℂ (Set.range (π ∘ s)) = ⊤`. Use `top_le_iff.1 fun a _ => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hs a`. Conclude with `key b`.
-
-Conclude with `⟨htop ▸ Submodule.fg_span (Set.finite_range _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fin_of_const {R E Q : Type} [CommRing R] [CommRing E] [Algebra R E] [Module.Finite R E] [CommRing Q]
     [Algebra ℂ Q] (φ : R →+* Q) (π : E →+* Q) (hs : Function.Surjective π) (hπ : ∀ r e, π (r • e) = φ r * π e)
@@ -68,15 +64,15 @@ private theorem fin_of_const {R E Q : Type} [CommRing R] [CommRing E] [Algebra R
   exact ⟨htop ▸ Submodule.fg_span (Set.finite_range _)⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `r`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, j, rfl⟩` from `hy`. Rewrite `hi` using `[Finset.mem_singleton]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hi` using the available equality. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, ← map_one ψ]`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (div_self h0)`. Consider the case `succ j => exact ⟨0, by rw [map_zero]; exact ht j _⟩`. Consider the case `algebraMap c => exact ⟨c, ψ.commutes c⟩`. Consider the case `add a b ha hb iha ihb`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, e₁⟩` from `iha`. Take `⟨c₂, e₂⟩` from `ihb`. Conclude with `⟨c₁ + c₂, by rw [map_add, ← e₁, ← e₂]; exact map_add ψ ⟨a, ha⟩ ⟨b, hb⟩⟩`. Consider the case `mul a b ha hb iha ihb`. Take `⟨c₁, e₁⟩` from `iha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, e₂⟩` from `ihb`. Conclude with `⟨c₁ * c₂, by rw [map_mul, ← e₁, ← e₂]; exact map_mul ψ ⟨a, ha⟩ ⟨b, hb⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem rA_const {F Q : Type} [Field F] [Algebra ℂ F] [CommRing Q] [Algebra ℂ Q] {d : ℕ} (x : Fin (d + 1) → F)
     (h0 : x 0 ≠ 0) (ψ : rA ℂ x {0} →ₐ[ℂ] Q) (ht : ∀ (j : Fin d) (h : x j.succ / x 0 ∈ rA ℂ x {0}), ψ ⟨_, h⟩ = 0)
@@ -108,11 +104,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `set J := Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ K x j⟩ : rB ℂ K x {0})) with hJ`. Set `φ : rA ℂ x {0} →ₐ[ℂ] rB ℂ K x {0}` to `{ toFun := fun a => ⟨algebraMap F K a, (integralClosure (rA ℂ x {0}) K).algebraMap_mem a⟩ map_one' := Subtype.ext (map_one _) map_mul' := fun a b => Subtype.ext (map_mul _ _ _) map_zero' := Subtype.ext (map_zero _) map_add' := fun a b => Subtype.ext (map_add _ _ _) commutes' := f …`. Set `ψ : rA ℂ x {0} →ₐ[ℂ] (rB ℂ K x {0} ⧸ J)` to `(Ideal.Quotient.mkₐ ℂ J).comp φ`. Establish `hψ` using `rA_const x (hx.pd.ne 0) ψ fun j h => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨j, rfl⟩)`. Set `ι : integralClosure (rA ℂ x {0}) K →+* rB ℂ K x {0}` to `{ toFun := fun e => ⟨e.1, e.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hfin : Module.Finite (rA ℂ x {0}) (integralClosure (rA ℂ x {0}) K) := rA_finite hx (Finset.mem_singleton_self 0)`. Use `fin_of_const (R := rA ℂ x {0}) (E := integralClosure (rA ℂ x {0}) K) ψ.toRingHom ((Ideal.Quotient.mk J).comp ι) ?_ ?_ hψ` and prove the remaining obligations. Introduce `a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨⟨b.1, b.2⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r e`. Establish `e0 : ι (r • e) = φ r * ι e` using `Subtype.ext (Algebra.smul_def r (e : K))`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (ι (r • e)) = Ideal.Quotient.mk J (φ r) * Ideal.Quotient.mk J (ι e)`. Rewrite using `[e0, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_quot {K F : Type} [Field K] [Field F] [Algebra ℂ K] [Algebra ℂ F] [Algebra F K]
     [IsScalarTower ℂ F K] {d : ℕ} (x : Fin (d + 1) → F) (hx : IsFinCover ℂ K x) :
@@ -162,7 +158,7 @@ private noncomputable def upB (K L : Type) {F : Type} [Field K] [Field L] [Field
     commutes' := fun c => Subtype.ext (IsScalarTower.algebraMap_apply ℂ K L c).symm }
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `Subtype.ext (IsScalarTower.algebraMap_apply F K L _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem map_upB_span_tco (K L : Type) {F : Type} [Field K] [Field L] [Field F] [Algebra ℂ K] [Algebra ℂ L] [Algebra ℂ F]
     [Algebra F K] [Algebra F L] [Algebra K L] [IsScalarTower ℂ F K] [IsScalarTower ℂ F L] [IsScalarTower ℂ K L]
@@ -178,21 +174,21 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hne : ({0} : Finset (Fin (d + 1))).Nonempty` using `⟨0, by simp⟩`. Take `⟨V, hVdef⟩ : ∃ V, V = ({0} : Finset (Fin (d + 1))).inf U` from `⟨_, rfl⟩`. Establish `hV : genericPoint Z ∈ V` using `hVdef ▸ hU.ne {0}`. Establish `hV' : genericPoint Y ∈ c ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `c (genericPoint Y) ∈ V`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[UpperTheory.A.generic_map c]`. Conclude with `hV`. Establish `hVa : IsAffineOpen V` using `hVdef ▸ hU.affine {0} hne`. Establish `hVa' : IsAffineOpen (c ⁻¹ᵁ V)` using `hVa.preimage c`. Establish `het : (c.app V).hom.Etale`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Etale.etale_appLE (f := c) hVa hVa' le_rfl` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.app_eq_appLE]`. Then use the resulting hypothesis. Establish `hfu : (c.app V).hom.FormallyUnramified` using `het.formallyUnramified`. Establish `memK : ∀ y, y ∈ rB ℂ Z.functionField x {0} ↔ ∃ f : Γ(Z, V), (Z.presheaf.germ V (genericPoint Z) hV).hom f = y`. Substitute `hVdef` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `hU.ring {0} hne`. Establish `memL : ∀ y, y ∈ rB ℂ Y.functionField x {0} ↔ ∃ f : Γ(Y, c ⁻¹ᵁ V), (Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV').hom f = y` using `UpperTheory.A.mem_rB_pull h hK hL g hU {0} hne (c ⁻¹ᵁ V) (by rw [UpperTheory.A.preimage_inf, hVdef]) hV'`. Set `aK : Γ(Z, V) →+* rB ℂ Z.functionField x {0}` to `(Z.presheaf.germ V (genericPoint Z) hV).hom.codRestrict _ fun f => (memK _).2 ⟨f, rfl⟩`. Set `aL : Γ(Y, c ⁻¹ᵁ V) →+* rB ℂ Y.functionField x {0}` to `(Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV').hom.codRestrict _ fun f => (memL _).2 ⟨f, rfl⟩`. Establish `bK : Function.Bijective aK`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a b e => germ_injective_of_isIntegral Z _ hV (congrArg Subtype.val e), fun y => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `(memK y.1).1 y.2`. Conclude with `⟨f, Subtype.ext hf⟩`. Establish `bL : Function.Bijective aL`. Use `⟨fun a b e => germ_injective_of_isIntegral Y _ hV' (congrArg Subtype.val e), fun y => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `(memL y.1).1 y.2`. Conclude with `⟨f, Subtype.ext hf⟩`. Set `eK` to `RingEquiv.ofBijective aK bK`. Set `eL` to `RingEquiv.ofBijective aL bL`. Establish `hcomm : (upB Z.functionField Y.functionField x).toRingHom = (eL.toRingHom.comp (c.app V).hom).comp eK.symm.toRingHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `eK.surjective y`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `e1 : eK.symm (eK f) = f` using `eK.symm_apply_apply f`. Express the relevant statement in the definitionally equal form `algebraMap Z.functionField Y.functionField ((Z.presheaf.germ V (genericPoint Z) hV).hom f) = (Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c.app V).hom (eK.symm (eK f)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, g V hV hV' f]`. Rewrite using `[hcomm]`. Conclude with `RingHom.FormallyUnramified.respectsIso.2 _ _ (RingHom.FormallyUnramified.respectsIso.1 _ _ hfu)`.
+A detailed English derivation is pending.
 -/
 private theorem upB_fu {d : ℕ} {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ}
     [SmoothOfRelativeDimension d s] [SmoothOfRelativeDimension d s'] {c : Y ⟶ Z} (h : c ≫ s = s') [IsFinite c] [Etale c]
@@ -249,11 +245,9 @@ private theorem upB_fu {d : ℕ} {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `d Z Y _ _ s s' _ _ hP c1 c2 h1 h2 _ _ _ _ instK instL hK hL _ _ g1 j2 g2 F _ _ _ _ _ _ _ x U hx hU hred`. Take `⟨hxL, -⟩` from `UpperTheory.A.isFinCover_pull h1 hK hL g1 hx hU`. Establish `hfu` using `upB_fu h1 hK hL g1 x U hU`. Use `letI alg : Algebra (rB ℂ Z.functionField x {0}) (rB ℂ Y.functionField x {0}) := (upB Z.functionField Y.functionField x).toRingHom.toAlgebra`. Use `haveI : Algebra.FormallyUnramified (rB ℂ Z.functionField x {0}) (rB ℂ Y.functionField x {0}) := hfu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower ℂ (rB ℂ Z.functionField x {0}) (rB ℂ Y.functionField x {0}) := .of_algebraMap_eq fun c => ((upB Z.functionField Y.functionField x).commutes c).symm`. Establish `hI` using `map_upB_span_tco Z.functionField Y.functionField x`. Use `haveI := fin_quot x hx`. Establish `hfinL` using `fin_quot x hxL`. Rewrite `hfinL`, the goal using `[← hI]`.
-
-Conclude with `red_of_fu _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.etaleCorrespondence_fieldExtension_statement :
     ∀ (d : ℕ) (Z Y : Scheme.{0}) [IsIntegral Z] [IsIntegral Y] (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) [SmoothOfRelativeDimension d s] [SmoothOfRelativeDimension d s'] (hP : IsProjOver s) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') [IsFinite c1] [Etale c1] [IsFinite c2] [Etale c2] [instK : Algebra ℂ Z.functionField] [instL : Algebra ℂ Y.functionField] (hK : instK = ffAlg s) (hL : instL = ffAlg s') [Algebra Z.functionField Y.functionField] [IsScalarTower ℂ Z.functionField Y.functionField] (g1 : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c1 ⁻¹ᵁ V) (g : Γ(Z, V)), (Y.presheaf.germ (c1 ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c1.app V).hom g) = algebraMap Z.functionField Y.functionField ((Z.presheaf.germ V (genericPoint Z) hV).hom g)) (j2 : Z.functionField →ₐ[ℂ] Y.functionField) (g2 : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c2 ⁻¹ᵁ V) (g : Γ(Z, V)), j2 ((Z.presheaf.germ V (genericPoint Z) hV).hom g) = (Y.presheaf.germ (c2 ⁻¹ᵁ V) (genericPoint Y) hV').hom (c2.app V g)) (F : Type) [Field F] [Algebra ℂ F] [Algebra F Z.functionField] [Algebra F Y.functionField] [IsScalarTower ℂ F Z.functionField] [IsScalarTower F Z.functionField Y.functionField] [IsScalarTower ℂ F Y.functionField] (x : Fin (d + 1) → F) (U : Fin (d + 1) → Z.Opens) (hx : IsFinCover ℂ Z.functionField x) (hU : IsAffCover s U (rB ℂ Z.functionField x)), IsReduced ((rB ℂ Z.functionField x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ Z.functionField x j⟩ : rB ℂ Z.functionField x {0})))) → IsReduced ((rB ℂ Y.functionField x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ Y.functionField x j⟩ : rB ℂ Y.functionField x {0})))) := by

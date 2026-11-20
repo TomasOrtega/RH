@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `h` using `D.c_add 0 0`. Rewrite `h` using `[add_zero, padd, ← Hom.mul_def]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degPre_c_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) : D.c 0 = 1 := by
   have h := D.c_add 0 0
@@ -16,25 +16,25 @@ theorem degPre_c_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) : D.c 
   exact mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Fan.IsLimit.hom_ext T.lim` to reduce the goal to its premises. Introduce `i`. Establish `hp : ∀ k, (Fan.mk D'.P.A T.pr).proj k = T.pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, T.inc_pr']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[(T.pr_hom i).one_hom]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[comp_one, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Apply `Fan.IsLimit.hom_ext T.lim` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hp : ∀ k, (Fan.mk D'.P.A T.pr).proj k = T.pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, T.inc_pr']`. Rewrite using `[(T.pr_hom i).mul_hom, ← Category.assoc, tensorHom_comp_tensorHom, T.inc_pr']`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[comp_one]`. Establish `: ((1 : D.P.A ⟶ D.P.A) ⊗ₘ (1 : D.P.A ⟶ D.P.A)) = lift (fst _ _ ≫ 1) (snd _ _ ≫ 1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, ← Hom.mul_def, comp_one, comp_one, _root_.mul_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using T.inc_pr' i₀ i₀`. Apply `Fan.IsLimit.hom_ext T.lim` to reduce the goal to its premises. Introduce `i`. Establish `hp : ∀ k, (Fan.mk D'.P.A T.pr).proj k = T.pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, T.inc_pr', Tens.act_pr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Category.comp_id, Finset.prod_eq_single i]`. Simplify using `[Matrix.single_apply]`. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply, Ne.symm hj]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, comp_one]`. Use `symm`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j _`. Simplify using `[Matrix.single_apply, Ne.symm h]`. Introduce `y`. Apply `Fan.IsLimit.hom_ext T.lim` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp : ∀ k, (Fan.mk D'.P.A T.pr).proj k = T.pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, T.inc_pr', T.c_pr]`. Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `[Tens.xi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, comp_one]`. Simplify using `[Tens.xi, Pi.single_apply, h, degPre_c_zero]`.
+A detailed English derivation is pending.
 -/
 theorem tens_inc_pr_facts (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ}
     (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D D' W) (i₀ : Fin r) :

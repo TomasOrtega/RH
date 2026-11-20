@@ -8,13 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ThetaRad
 
 /- English proof (translation)
-Rewrite using `[mem_unipRad]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, hd⟩ i j hij`. Take `⟨⟨c, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨d, j⟩, rfl⟩` from `e.surjective j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [blk_apply] at hij`. Break down `hij.lt_or_eq with hlt | rfl` into its components or cases. Rewrite using `[mem_parab_iff.1 hp c d i j hlt, Matrix.one_apply_ne]`. Introduce `hh`. Use `congrArg Sigma.fst (e.injective hh)` as an intermediate fact.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hlt.ne' this`. Rewrite using `[hd]`. Simplify using `only [Matrix.one_apply, e.injective.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and]`. Introduce `h`. Use `⟨mem_parab.2 fun i j hij => ?_, fun c i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h i j hij.le, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`. Rewrite using `[h _ _ (by simp)]`. Simplify using `only [Matrix.one_apply, e.injective.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_iff_entries {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -42,7 +42,7 @@ theorem mem_unipRad_iff_entries {R : Type} [CommRing R] {α n : Type} {m : α �
       simp only [Matrix.one_apply, e.injective.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and]
 
 /- English proof (translation)
-Take `⟨⟨c, i⟩, rfl⟩` from `(stdBlocks ![a, b] h).surjective p`. Rewrite using `[blk_apply, stdBlocks_val]`. Use `fin_cases c`. Simplify using `using i.2`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_stdBlocks_two {a b n : ℕ} (h : ∑ i, ![a, b] i = n) (p : Fin n) :
     blk (stdBlocks ![a, b] h) p = if (p : ℕ) < a then 0 else 1 := by
@@ -53,7 +53,7 @@ theorem blk_stdBlocks_two {a b n : ℕ} (h : ∑ i, ![a, b] i = n) (p : Fin n) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [longElt, Units.val_mul, Matrix.mul_apply, Matrix.of_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single j.rev (fun x _ hx => by rw [if_neg (fun hh => hx (by rw [hh, Fin.rev_rev])), mul_zero]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem longElt_conj_apply {R : Type} [CommRing R] (n : ℕ) (g : GL (Fin n) R) (i j : Fin n) :
     ((longElt n R * g * longElt n R : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j =
@@ -66,11 +66,11 @@ theorem longElt_conj_apply {R : Type} [CommRing R] (n : ℕ) (g : GL (Fin n) R) 
 end GlobalTheory.ThetaRad
 
 /- English proof (translation)
-Introduce `R _ n a b h h' u hu`. Establish `hn : a + b = n` using `by simpa [Fin.sum_univ_two] using h`. Establish `hv` using `GlobalTheory.ThetaRad.mem_unipRad_iff_entries.1 (inv_mem hu)`. Use `GlobalTheory.ThetaRad.mem_unipRad_iff_entries.2 fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThetaRad.longElt_conj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((u⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)ᵀ i.rev j.rev = _`. Rewrite using `[Matrix.transpose_apply]`. Rewrite using `[hv j.rev i.rev ?_]`. Simplify using `[Matrix.one_apply, Fin.rev_inj, eq_comm]`. Rewrite `*` using `[GlobalTheory.ThetaRad.blk_stdBlocks_two, GlobalTheory.ThetaRad.blk_stdBlocks_two]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Fin.val_rev] at *`. Apply the tactic sequence `split_ifs at hij ⊢ <;> first | exact le_refl _ | decide | (exfalso; omega) | (exfalso; revert hij; decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.ThetaRad.longElt_invT_conj_mem_unipRad : ∀ (R : Type) [CommRing R] (n a b : ℕ) (h : ∑ i, ![a, b] i = n) (h' : ∑ i, ![b, a] i = n) (u : GL (Fin n) R), u ∈ unipRad R (stdBlocks ![a, b] h) → longElt n R * GlobalTheory.CuspRep.invT n R u * longElt n R ∈ unipRad R (stdBlocks ![b, a] h') := by
   intro R _ n a b h h' u hu

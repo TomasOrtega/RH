@@ -9,7 +9,7 @@ namespace GlobalTheory.QNorm
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Use `⟨WithZero.log (w y), ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_pow, two_mul, WithZero.exp_add, WithZero.exp_log ((Valuation.ne_zero_iff w).mpr hy), sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exists_exp_two_mul_of_eq_sq {K : Type} [Field K] (w : Valuation K ℤᵐ⁰) {u y : K}
     (hy : y ≠ 0) (h : w u = w (y ^ 2)) : ∃ n : ℤ, w u = WithZero.exp (2 * n) := by
@@ -21,17 +21,15 @@ open NumberField IsDedekindDomain in
 open scoped WithZero in
 
 /- English proof (translation)
-Introduce `K _ w ρ h2 hρ hroot a b hab`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `ha : a ≠ 0` using `hab.resolve_right (not_not.mpr rfl)`. Conclude with `exists_exp_two_mul_of_eq_sq w ha (by congr 1; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := (a - b) / (2 * b) with ht_def`. Establish `hfac : a ^ 2 - (1 + 4 * ρ) * b ^ 2 = (2 * b) ^ 2 * (t ^ 2 + t - ρ)`. Rewrite using `[ht_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `ht : w t ≤ 1`. Conclude with `exists_exp_two_mul_of_eq_sq w (mul_ne_zero h2 hb) (by rw [hfac, map_mul, hroot t ht, mul_one])`. Use `push_neg at ht`. Establish `ht0 : t ≠ 0`. Introduce and unpack `h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `ht` using `[h, map_zero]`. Conclude with `not_lt_of_ge zero_le' ht`. Establish `hlt : w (t - ρ) < w (t ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hval : w (t ^ 2 + t - ρ) = w (t ^ 2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[add_sub_assoc]`. Conclude with `Valuation.map_add_eq_of_lt_left w hlt`. Use `exists_exp_two_mul_of_eq_sq w (y := 2 * b * t) (mul_ne_zero (mul_ne_zero h2 hb) ht0) ?_` and prove the remaining obligations. Rewrite using `[hfac, map_mul, hval, ← map_mul]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.evenNorms_one_add_four_mul :
     ∀ (K : Type) [Field K] (w : Valuation K ℤᵐ⁰) (ρ : K), (2 : K) ≠ 0 → w ρ ≤ 1 →

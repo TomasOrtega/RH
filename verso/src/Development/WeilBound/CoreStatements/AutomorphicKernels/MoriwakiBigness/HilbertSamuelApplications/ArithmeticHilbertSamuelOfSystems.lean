@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hSys hU hBig hRes`. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeMultiplicative.proof (selfIntersection_le_of_boundedInjection_use hU hBig) GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.TwistIntersectionInt.proof (Global …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem arithmetic_hilbert_samuel_of_systems :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PositivityTheory.MbHsUse.HSUse →

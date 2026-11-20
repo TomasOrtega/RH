@@ -20,7 +20,7 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.UT.LL`. Take `⟨h₁, h₂, h₃, h₄, h₅, -⟩` from `_root_.GlobalTheory.allSixLaws`. Conclude with `⟨h₁, h₂, h₃, h₄, h₅⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.firstFiveLaws : _root_.GlobalTheory.UT.LL := by
   unfold _root_.GlobalTheory.UT.LL

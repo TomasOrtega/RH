@@ -13,17 +13,17 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W v k hk`. Use `⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[GlobalTheory.InertDbl.matD_inlD]`. Establish `h1` using `hk.1 u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : u • (mat k - 1) = 0` using `h1`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Use `congrFun (congrFun h1' i) j` as an intermediate fact. Simplify `this` using `[Matrix.fromBlocks, Matrix.one_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `all_goals simp [Matrix.fromBlocks, Matrix.one_apply]`. Establish `hinv : GlobalTheory.InertDbl.matD (GlobalTheory.InertDbl.inlD σ W k)⁻¹ = Matrix.fromBlocks (mat k⁻¹) 0 0 1`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[hinv, GlobalTheory.InertDbl.matD_inlD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hz1, hz2⟩` from `hz`. Take `⟨a1, a2⟩` from `hk.2 _ hz1`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Matrix.fromBlocks_mulVec]`. Use `a1 using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_def]`. Simplify `hz2` using `[Matrix.fromBlocks_mulVec]`. Simplify using `only [Matrix.fromBlocks_mulVec]`. Use `a2 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_def]`. Simplify `hz2` using `[Matrix.fromBlocks_mulVec]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertDbl.inlD_mem_KAtD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ) (W : Spc F E d) (v : Pl F),
     ∀ k ∈ GlobalTheory.InertSph.KAt σ W v, GlobalTheory.InertDbl.inlD σ W k ∈ GlobalTheory.InertDbl.KAtD σ W v := by

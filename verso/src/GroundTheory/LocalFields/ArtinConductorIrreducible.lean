@@ -17,7 +17,7 @@ section Linear
 variable (K L) in
 
 /- English proof (translation)
-Simplify using `only [charArtinConductor, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun σ _ ↦ by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charArtinConductor_sum {ι : Type*} (s : Finset ι) (c : ι → ℂ) (χ : ι → (L ≃ₐ[K] L) → ℂ) :
     charArtinConductor K L (∑ i ∈ s, c i • χ i) = ∑ i ∈ s, c i * charArtinConductor K L (χ i) := by
@@ -33,7 +33,7 @@ section ConductorDiscriminant
 variable [IsGalois K L]
 
 /- English proof (translation)
-Rewrite using `[← charArtinConductor_regular, ← charArtinConductor_sum]`. Use `congr 1`. Rewrite using `[← character_leftRegular_eq_sum]`. Use function extensionality and compare the values at `σ`. Rewrite using `[character_leftRegular_apply, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_irrChars_mul_charArtinConductor :
     ∑ χ ∈ irrChars (L ≃ₐ[K] L), χ 1 * charArtinConductor K L χ =
@@ -46,7 +46,7 @@ theorem sum_irrChars_mul_charArtinConductor :
   rw [character_leftRegular_apply, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Use `⟨_, addVal_discr_eq_artinCharacter_one b, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_irrChars_mul_charArtinConductor, artinCharacter_one, Int.toNat_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_discr_eq_sum_irrChars {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι 𝒪[K] 𝒪[L]) :
@@ -65,7 +65,7 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Valua
   [TopologicalSpace L] [IsNonarchimedeanLocalField L] [ValuativeExtension K L] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem inducedFun_eq_indFun (ψ : (L ≃ₐ[M] L) → ℂ) :
     inducedFun ψ = indFun (AlgEquiv.restrictScalarsHom K) ψ := by

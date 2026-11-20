@@ -4,12 +4,12 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.UnimodLocStd
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-The claim follows from `unimodular_local_standard`.
+A detailed English derivation is pending.
 -/
 theorem localStandard : LocalStandard := unimodular_local_standard
 
 /- English proof (translation)
-The claim follows from `quadraticSemicharacters_of_fact localStandard kappaExists`.
+A detailed English derivation is pending.
 -/
 theorem quadraticSemicharacter_identity_reformulated : quadraticSemicharacterIdentityReformulated := quadraticSemicharacters_of_fact localStandard kappaExists
 

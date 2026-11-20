@@ -20,9 +20,9 @@ def imgFam : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C) :=
   {Po | ∃ P ∈ Ls.FF n, IsImgO (fun o => Y.raw (p o)) (Ls.cp n) (Ls.uv n) P (∏ o, toAll o (Po o))}
 
 /- English proof (translation)
-Introduce `Po hPo kind hk S t ht gr hg`. Take `⟨P, hP, hQ⟩` from `hPo`. Take `⟨f, hf, he⟩` from `hv hs P hP Po hQ kind hk S t ht gr hg`. Establish `hx` using `hν _ ⟨P, hP, f, hf, rfl⟩`. Rewrite `hx` using `[he, map_prod_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem valO_of (ν : ℝ) (hν : ∀ x ∈ Y.valSet Ls n, (ν : WithTop ℝ) ≤ x) (hs : PairsSep Y p) (hv : ValEqPSt Y p H Ls n) :
     ValO (fun o => rd Y p H o) n (imgFam Y p Ls n) ν := by
@@ -34,7 +34,7 @@ theorem valO_of (ν : ℝ) (hν : ∀ x ∈ Y.valSet Ls n, (ν : WithTop ℝ) �
   exact hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : (ν : EReal) ≤ (WithBot.some x : WithBot (WithTop ℝ))` using `hν.trans (biInf_le _ hx)`. Conclude with `WithBot.coe_le_coe.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lower_of_nuPlE (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) : ∀ x ∈ Y.valSet Ls n, (ν : WithTop ℝ) ≤ x := by
   intro x hx
@@ -48,7 +48,7 @@ def BlockMembershipChart : Prop := BlockMembership (fun o => rd Y p H o) n F (im
 def BlockAdmissibleChart : Prop := BlockAdmissible (fun o => rd Y p H o) F Z ga
 
 /- English proof (translation)
-The claim follows from `valBlocks_G (valO_of Y p H Ls n ν hν hs hv) hJ F Z ga hM hA`.
+A detailed English derivation is pending.
 -/
 theorem valBlocks_of (ν : ℝ) (hν : ∀ x ∈ Y.valSet Ls n, (ν : WithTop ℝ) ≤ x) (hs : PairsSep Y p)
     (hv : ValEqPSt Y p H Ls n) (hJ : JetProdSt) (hM : BlockMembershipChart Y p H Ls n F Z ga) (hA : BlockAdmissibleChart Y p H F Z ga) :
@@ -56,7 +56,7 @@ theorem valBlocks_of (ν : ℝ) (hν : ∀ x ∈ Y.valSet Ls n, (ν : WithTop �
   valBlocks_G (valO_of Y p H Ls n ν hν hs hv) hJ F Z ga hM hA
 
 /- English proof (translation)
-The claim follows from `valBlocks_of Y p H Ls n F Z ga ν (lower_of_nuPlE Y Ls n ν hν) hs hv hJ hM hA`.
+A detailed English derivation is pending.
 -/
 theorem valBlocks_of_nuPlE (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) (hs : PairsSep Y p)
     (hv : ValEqPSt Y p H Ls n) (hJ : JetProdSt) (hM : BlockMembershipChart Y p H Ls n F Z ga) (hA : BlockAdmissibleChart Y p H F Z ga) :

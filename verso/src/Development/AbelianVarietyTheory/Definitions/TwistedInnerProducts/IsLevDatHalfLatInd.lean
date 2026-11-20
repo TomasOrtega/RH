@@ -20,9 +20,9 @@ variable {D : D7}
 export GlobalTheory.TowerCov (IsLevN LevN LevN.one modN KgW InKN IsLevDat IsCompFn IsLevG serAt TowerRat AdaptL TowerInt)
 
 /- English proof (translation)
-Distinguish the cases in `hd : p ∣ N`. Conclude with `⟨N, hN, dvd_rfl, hd⟩`. Use `⟨p * N, ⟨mul_ne_zero hp.ne_zero hN.1, fun q hq hq' => ?_, ?_⟩, dvd_mul_left _ _, dvd_mul_right _ _⟩` and prove the remaining obligations. Break down `(Nat.Prime.dvd_mul hq).1 hq' with h1 | h1` into its components or cases. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq hp).1 h1]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Conclude with `hN.2.1 q hq h1`. Conclude with `(Nat.squarefree_mul ((Nat.Prime.coprime_iff_not_dvd hp).2 hd)).2 ⟨hp.prime.squarefree, hN.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsLevN.insert {E : ExpSet D} {N p : ℕ} (hN : IsLevN E N) (hp : p.Prime)
     (h : p ≠ 2 ∧ Nat.Coprime p E.l ∧ (∀ a, p ≠ E.pde a) ∧ (∀ a, p ≠ E.gp a) ∧ D.host.cls p = .splitK ∧
@@ -37,15 +37,15 @@ theorem IsLevN.insert {E : ExpSet D} {N p : ℕ} (hN : IsLevN E N) (hp : p.Prime
     · exact (Nat.squarefree_mul ((Nat.Prime.coprime_iff_not_dvd hp).2 hd)).2 ⟨hp.prime.squarefree, hN.2.2⟩
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.TowerCov.modN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modN_eq_mul (E : ExpSet D) (N : ℕ) : modN E N = modN E 1 * N := by
   simp [GlobalTheory.TowerCov.modN]
 
 /- English proof (translation)
-Introduce `h`. Establish `hall : ∀ z : ℂ, z ∈ T.LQ (LevN.one E)` using `fun z => T.zeta _ z (by show z ^ modN E 1 = 1`. Rewrite using `[h, pow_zero])`. Use `haveI := T.numField (LevN.one E)`. Establish `hc : Countable (T.LQ (LevN.one E))` using `(Module.finBasis ℚ (T.LQ (LevN.one E))).equivFun.toEquiv.countable_iff.2 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective (fun x : T.LQ (LevN.one E) => (x : ℂ))` using `fun z => ⟨⟨z, hall z⟩, rfl⟩`. Establish `: Countable ℂ` using `hs.countable`. Conclude with `not_countable (α := ℝ) Complex.re_surjective.countable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TowerRat.modN_ne_zero {E : ExpSet D} {O : Type} [CommRing O] {C : CoefLat E O} {Base : Set (GA D E.W → ℂ)}
     {L1 FO : Subfield ℂ} (T : TowerRat E C Base L1 FO) : modN E 1 ≠ 0 := by
@@ -87,12 +87,12 @@ def halfLat (E : ExpSet D) (e : AE D) : AddSubgroup (WO E.V E.W) where
 def halfLatInd (E : ExpSet D) (e : AE D) : WO E.V E.W → ℂ := fun x => if x ∈ halfLat E e then 1 else 0
 
 /- English proof (translation)
-The claim follows from `if_pos (zero_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem halfLatInd_zero (E : ExpSet D) (e : AE D) : halfLatInd E e 0 = 1 := if_pos (zero_mem _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P1, hP, he⟩ supp x hx := by by_contra h exact hx (if_neg h) inv u hu hu' x := by have hm : modN E N • u ∈ halfLat E e := nsmul_mem (show u ∈ halfLat E e from ⟨hu, hu'⟩) _ have : x + modN E N • u ∈ halfLat E e ↔ x ∈ halfLat E e := AddSubgroup.add_mem_cancel_right _ hm show (if x …`.
+Supply the required witnesses or components.
 -/
 theorem isLevDat_halfLatInd {E : ExpSet D} {N : ℕ} {e : AE D} (P1 : Finset (Formalism.L2.DIV.Pl D.host.E))
     (hP : ∀ L ∈ P1, ((N : ℕ) : 𝓞 D.host.E) ∈ L.asIdeal) (he : IsIdemSum e (E.Pg ∪ E.Pd ∪ P1)) :
@@ -108,19 +108,19 @@ theorem isLevDat_halfLatInd {E : ExpSet D} {N : ℕ} {e : AE D} (P1 : Finset (Fo
     simp only [this]
 
 /- English proof (translation)
-The claim follows from `isLevDat_halfLatInd ∅ (fun _ h => absurd h (Finset.notMem_empty _)) (by rw [Finset.union_empty]; exact E.idempotent_sum)`.
+A detailed English derivation is pending.
 -/
 theorem isLevDat_base (E : ExpSet D) (N : ℕ) : IsLevDat E N E.e0 (halfLatInd E E.e0) :=
   isLevDat_halfLatInd ∅ (fun _ h => absurd h (Finset.notMem_empty _)) (by rw [Finset.union_empty]; exact E.idempotent_sum)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCompFn.const (E : ExpSet D) (N : ℕ) (z : ℂ) : IsCompFn E N fun _ => z :=
   ⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g g' e => by rw [h.det g g' e, h'.det g g' e], fun γ hγ g => by rw [h.left γ hγ, h'.left γ hγ], fun u hu g => by rw [h.arch u hu, h'.arch u hu], fun κ hκ g => by rw [h.right κ hκ, h'.right κ hκ]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCompFn.map₂ {E : ExpSet D} {N : ℕ} {c c' : GA D E.W → ℂ} (h : IsCompFn E N c) (h' : IsCompFn E N c')
     (f : ℂ → ℂ → ℂ) : IsCompFn E N fun g => f (c g) (c' g) :=
@@ -133,7 +133,7 @@ Both sides reduce to the same expression.
 example (E : ExpSet D) : (LevN.one E).1 = 1 := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, 1, (mul_one _).symm, fun _ _ _ _ a b => by have h1 : Formalism.L2.Theta.mt E.V 1 = 1 := by unfold Formalism.L2.Theta.mt; rw [map_one]; rfl rw [h1, sub_self] simp⟩`.
+Supply the required witnesses or components.
 -/
 example (E : ExpSet D) : AdaptL E 1 :=
   ⟨1, one_mem _, 1, (mul_one _).symm, fun _ _ _ _ a b => by
@@ -142,7 +142,7 @@ example (E : ExpSet D) : AdaptL E 1 :=
     simp⟩
 
 /- English proof (translation)
-The claim follows from `T`.
+A detailed English derivation is pending.
 -/
 example {E : ExpSet D} {O : Type} [CommRing O] {C : CoefLat E O} {Base : Set (GA D E.W → ℂ)} {L1 FO : Subfield ℂ}
     (T : GlobalTheory.TowerCov.TowerRat E C Base L1 FO) : GlobalTheory.Tow.TowerRat E C Base L1 FO := T

@@ -14,16 +14,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EigenSpread
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sum {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {l : ℕ}
     (a : Fin l → Γ(X, U)) : gs f y U (∑ i, a i) = ∑ i, gs f y U (a i) := by
   simp only [gs_eq f y U h, map_sum]
 
 /- English proof (translation)
-Use `choose f hf using fun i => EigenAll.exists_defect m s p V (t i) u`. Use `⟨∑ i, resTop _ (scal (p ≫ π) (c i)) * f i, fun Z g z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[gs_sum g z _ hz, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_mul g z _ hz, FieldBaseChange.gs_const _ g z _ hz, hf i Z g z hz, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_defect_sum {O : Type} [CommRing O] {Y G H : Scheme.{0}} (m s : Y ⟶ G) (p : Y ⟶ H)
     (π : H ⟶ Spec (CommRingCat.of O)) (V : G.Opens) {l : ℕ} (c : Fin l → O) (t : Fin l → Γ(G, V))
@@ -43,27 +43,27 @@ end GlobalTheory.EigenSpread
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V O F _ _ _ _ _ hinj β G _ hG Z hfin hflat hred jZ hj U l c s k hyp`. Set `Y : Over (Spec (CommRingCat.of O))` to `Over.mk (pullback.snd G.hom (Spec.map (CommRingCat.ofHom β)))`. Establish `hY : Flat Y.hom` using `inferInstanceAs (Flat (pullback.snd G.hom (Spec.map (CommRingCat.ofHom β))))`. Set `p : (Z ⊗ Y).left ⟶ Z.left` to `pullback.fst Z.hom Y.hom`. Set `PV : Over (Spec (CommRingCat.of V))` to `Over.mk (p ≫ Z.hom ≫ Spec.map (CommRingCat.ofHom β))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r₀ : PV ⟶ G` to `Over.homMk (pullback.snd Z.hom Y.hom ≫ pullback.fst G.hom (Spec.map (CommRingCat.ofHom β))) (by`. Express the relevant statement in the definitionally equal form `_ = pullback.fst Z.hom Y.hom ≫ Z.hom ≫ _`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition_assoc]`. Use the proof step `rfl)`. Set `g₀ : PV ⟶ G` to `Over.homMk (p ≫ jZ) (by`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = p ≫ Z.hom ≫ _`. Rewrite using `[Category.assoc, hj])`. Take `⟨f, hf⟩` from `EigenSpread.exists_defect_sum (Y := (Z ⊗ Y).left) (r₀ * g₀).left r₀.left p Z.hom U c s k`. Establish `h0 : f = 0`. Use `section_eq_zero_of_forall_geometric_point O F hinj Z Y hfin hflat hred hY _ f fun c₀ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[EigenAll.gs_zero, gs_pull (𝟙 _) (c₀ ▷ Y).left x _ hx, Category.id_comp, hf _ _ x hx, sub_eq_zero]`. Set `ρ : Over.mk ((c₀ ▷ Y).left ≫ PV.hom) ⟶ PV` to `Over.homMk (c₀ ▷ Y).left rfl`. Set `e : (Pdiv.specO O F ⊗ Y).left ⟶ Spec (CommRingCat.of F)` to `pullback.fst (Pdiv.specO O F).hom Y.hom`. Establish `e₁ : (c₀ ▷ Y).left ≫ p = e ≫ c₀.left` using `Over.whiskerRight_left_fst c₀`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : (e ≫ c₀.left) ≫ Z.hom = e ≫ Spec.map (CommRingCat.ofHom (algebraMap O F))`. Rewrite using `[Category.assoc, Over.w c₀]`. Both sides reduce to the same expression. Establish `e₃ : (ρ ≫ r₀ * ρ ≫ g₀).left = (c₀ ▷ Y).left ≫ (r₀ * g₀).left`. Rewrite using `[← MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `hyp _ e c₀ (ρ ≫ r₀) (ρ ≫ g₀) (by rw [← e₁, Category.assoc]; rfl) x hx.2 (by rw [e₃]; exact hx.1)` as an intermediate fact. Rewrite `this` using `[e₃]`. Rewrite using `[e₁, e₂]`. Simplify using `only [FieldBaseChange.constVal_specMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `T q r g hg z hr hrg`. Establish `hT : T.hom = q ≫ Z.hom ≫ Spec.map (CommRingCat.ofHom β)`. Rewrite using `[← Over.w g, hg, Category.assoc, hj]`. Set `a : T.left ⟶ (Z ⊗ Y).left` to `pullback.lift q (pullback.lift r.left (q ≫ Z.hom) (by rw [Over.w r, hT, Category.assoc])) (pullback.lift_snd _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₁ : a ≫ p = q` using `pullback.lift_fst _ _ _`. Set `ρ : T ⟶ PV` to `Over.homMk a (by`. Express the relevant statement in the definitionally equal form `a ≫ p ≫ _ = _`. Rewrite using `[← Category.assoc, e₁, hT])`. Establish `e₂ : a ≫ r₀.left = r.left`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `a ≫ pullback.snd Z.hom Y.hom ≫ pullback.fst G.hom (Spec.map (CommRingCat.ofHom β)) = _`. Rewrite using `[← Category.assoc, pullback.lift_snd, pullback.lift_fst]`. Establish `e₃ : ρ ≫ r₀ = r` using `Over.OverMorphism.ext e₂`. Establish `e₄ : ρ ≫ g₀ = g` using `Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `a ≫ p ≫ jZ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, e₁, hg])`. Establish `e₅ : a ≫ (r₀ * g₀).left = (r * g).left`. Rewrite using `[← e₃, ← e₄, ← MonObj.comp_mul]`. Both sides reduce to the same expression. Rewrite `hrg` using `[← e₅]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hr` using `[← e₂]`. Use `hf _ a z ⟨hrg, hr⟩` as an intermediate fact. Rewrite `this` using `[h0, EigenAll.gs_zero, e₁, e₂, e₅]`. Conclude with `sub_eq_zero.1 this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_eigen_equation_of_forall_geometric_point :
     ∀ (V O F : Type) [CommRing V] [CommRing O] [Field F] [IsAlgClosed F] [Algebra O F], Function.Injective (algebraMap O F) → ∀ (β : V →+* O) (G : Over (Spec (CommRingCat.of V))) [GrpObj G], Flat G.hom → ∀ (Z : Over (Spec (CommRingCat.of O))), IsFinite Z.hom → Flat Z.hom → IsReduced (Pdiv.specO O F ⊗ Z).left → ∀ (jZ : Z.left ⟶ G.left), jZ ≫ G.hom = Z.hom ≫ Spec.map (CommRingCat.ofHom β) → ∀ (U : G.left.Opens) (l : ℕ) (c : Fin l → O) (s : Fin l → Γ(G.left, U)) (k : Γ(Z.left, ⊤)), (∀ (T : Over (Spec (CommRingCat.of V))) (e : T.left ⟶ Spec (CommRingCat.of F)) (c₀ : Pdiv.specO O F ⟶ Z) (r g : T ⟶ G), g.left = (e ≫ c₀.left) ≫ jZ → ∀ z : T.left, r.left z ∈ U → (r * g).left z ∈ U → ∑ i, constVal e z (algebraMap O F (c i)) * gs (r * g).left z U (s i) = gs (e ≫ c₀.left) z ⊤ k * ∑ i, constVal e z (algebraMap O F (c i)) * gs r.left z U (s i)) → ∀ (T : Over (Spec (CommRingCat.of V))) (q : T.left ⟶ Z.left) (r g : T ⟶ G), g.left = q ≫ jZ → ∀ z : T.left, r.left z ∈ U → (r * g).left z ∈ U → ∑ i, constVal (q ≫ Z.hom) z (c i) * gs (r * g).left z U (s i) = gs q z ⊤ k * ∑ i, constVal (q ≫ Z.hom) z (c i) * gs r.left z U (s i) := by

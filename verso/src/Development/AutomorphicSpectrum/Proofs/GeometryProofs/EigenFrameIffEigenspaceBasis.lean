@@ -18,9 +18,9 @@ variable {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : S
   [AddCommGroup Em] [Module R Em]
 
 /- English proof (translation)
-Establish `hsum : M.pt (∑ i, cf i • b i) = (List.ofFn fun i => M.pt (cf i • b i)).prod` using `GlobalTheory.CompanionTheory.Ar.CombEig.pt_sum M fun i => cf i • b i`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `hue : u = fun i => M.pt (cf i • b i)`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (by rw [hu i, M.smul])`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hsum, hue]`. Introduce and unpack `rfl`. Conclude with `⟨fun i => M.pt (cf i • b i), fun i => M.smul _ _, hsum⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isComb_pt_iff (M : LieModel G x Em) {n : ℕ} (b : Fin n → Em) (cf : Fin n → R) (w : epsAt x ⟶ G) :
     IsComb cf (fun i => M.pt (b i)) w ↔ w = M.pt (∑ i, cf i • b i) := by
@@ -35,9 +35,9 @@ theorem isComb_pt_iff (M : LieModel G x Em) {n : ℕ} (b : Fin n → Em) (cf : F
     exact ⟨fun i => M.pt (cf i • b i), fun i => M.smul _ _, hsum⟩
 
 /- English proof (translation)
-Establish `hmem : e ∈ eigSp ρ τ ↔ ∀ a, ρ a e = τ a • e`. Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `M.inj (Over.OverMorphism.ext (by rw [hρ a e, M.smul]; exact h.2 a))`. Introduce `h`. Conclude with `⟨M.tan e, fun a => by rw [← hρ a e, h a, M.smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isEigVec_pt_iff {Oe : Type} [CommRing Oe] (M : LieModel G x Em) (act : OAct Oe G)
     {ρ : Oe →+* Module.End R Em} (τ : Oe →+* R) (hρ : M.IsActOf act.act ρ) (e : Em) :
@@ -52,11 +52,11 @@ theorem isEigVec_pt_iff {Oe : Type} [CommRing Oe] (M : LieModel G x Em) (act : O
     exact ⟨M.tan e, fun a => by rw [← hρ a e, h a, M.smul]⟩
 
 /- English proof (translation)
-Introduce `S R _ G _ _ x Em _ _ M Oe _ act ρ τ n b hρ`. Establish `eig` using `isEigVec_pt_iff M act τ hρ`. Establish `key` using `isComb_pt_iff M b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i => (eig _).1 (h1 i), fun e he => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hu⟩` from `h2 (M.pt e) ((eig e).2 he)`. Conclude with `⟨c, M.inj ((key c _).1 hc), fun c' hc' => hu c' ((key c' _).2 (congrArg M.pt hc'))⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i => (eig _).2 (h1 i), fun w hw => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, rfl⟩` from `M.onto w hw.1`. Take `⟨c, hc, hu⟩` from `h2 e ((eig e).1 hw)`. Conclude with `⟨c, (key c _).2 (congrArg M.pt hc), fun c' hc' => hu c' (M.inj ((key c' _).1 hc'))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isEigFrame_pt_iff : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Sp R ⟶ S) (Em : Type)
     [AddCommGroup Em] [Module R Em] (M : LieModel G x Em) (Oe : Type) [CommRing Oe] (act : OAct Oe G)

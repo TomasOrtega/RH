@@ -7,7 +7,7 @@ open scoped InnerProductSpace ComplexOrder MatrixOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `(Matrix.posSemidef_gram ℂ x).nonneg`. Take `⟨C, hC⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp h`. Use `⟨fun r l => C r l, fun l l' => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun hC l) l'` as an intermediate fact. Simplify `this` using `[Matrix.gram_apply, Matrix.mul_apply, Matrix.star_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_gram_factor {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {k : ℕ}
     (x : Fin k → E) : ∃ C : Fin k → Fin k → ℂ, ∀ l l',
@@ -19,15 +19,15 @@ theorem exists_gram_factor {E : Type*} [NormedAddCommGroup E] [InnerProductSpace
   simpa [Matrix.gram_apply, Matrix.mul_apply, Matrix.star_apply] using this
 
 /- English proof (translation)
-Use `choose D hD using fun v : {v // v ≠ v₀} => exists_gram_factor (fun l => u l v.1)`. Use `⟨fun r l => ∏ v, D v (r v) l, fun a => ?_⟩` and prove the remaining obligations. Establish `key : ∀ l l', ⟪tens (Function.update (u l) v₀ (a l)), tens (Function.update (u l') v₀ (a l'))⟫_ℂ = ∑ r : {v // v ≠ v₀} → Fin k, ⟪(∏ v, D v (r v) l) • a l, (∏ v, D v (r v) l') • a l'⟫_ℂ`. Introduce `l l'`. Rewrite using `[ht, Fintype.prod_eq_mul_prod_subtype_ne _ v₀]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.update_self]`. Establish `h1 : ∏ v : {v // v ≠ v₀}, ⟪Function.update (u l) v₀ (a l) v.1, Function.update (u l') v₀ (a l') v.1⟫_ℂ = ∏ v : {v // v ≠ v₀}, ∑ r, (starRingEnd ℂ) (D v r l) * D v r l'`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne v.2, Function.update_of_ne v.2, hD]`. Rewrite using `[h1, Fintype.prod_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right, Finset.prod_mul_distrib, map_prod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ((‖∑ l, tens (Function.update (u l) v₀ (a l))‖ ^ 2 : ℝ) : ℂ) = ((∑ r : {v // v ≠ v₀} → Fin k, ‖∑ l, (∏ v, D v (r v) l) • a l‖ ^ 2 : ℝ) : ℂ)`. Establish `hn : ∀ {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (z : E), ((‖z‖ ^ 2 : ℝ) : ℂ) = ⟪z, z⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E _ _ z`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Rewrite using `[Complex.ofReal_sum, hn]`. Simplify using `only [hn, sum_inner, inner_sum, key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `hc` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normSq_tens_update {ι : Type} [Fintype ι] [DecidableEq ι] {H : ι → Type}
     [∀ v, NormedAddCommGroup (H v)] [∀ v, InnerProductSpace ℂ (H v)]
@@ -70,11 +70,11 @@ theorem exists_normSq_tens_update {ι : Type} [Fintype ι] [DecidableEq ι] {H :
   exact_mod_cast hc
 
 /- English proof (translation)
-Introduce `B v₀ S m L β hL k u`. Take `⟨C, hC⟩` from `exists_normSq_tens_update B.tens B.tens_spec.1 v₀ (fun l v => (u l v : B.H v))`. Establish `h0` using `hC (fun l => (u l v₀ : B.H v₀))`. Establish `hu : ∀ l, Function.update (fun v => (u l v : B.H v)) v₀ (u l v₀ : B.H v₀) = fun v => (u l v : B.H v)` using `fun l => Function.update_eq_self v₀ _`. Simplify using `only [hu] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, Finset.mul_sum]`. Establish `h1 : ∀ i, _` using `fun i => hC (fun l => L i (u l v₀))`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hL (∑ l, C r l • u l v₀)` as an intermediate fact. Simplify using `only [map_sum, map_smul] at this`. Use `this.trans_eq ?_` and prove the remaining obligations. Rewrite using `[← Submodule.norm_coe]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_normSq_tens_update_le :
     ∀ (B : RowsAut) (v₀ : InfinitePlace B.I.F) (S : ∀ v, Submodule ℂ (B.H v)) (m : ℕ) (L : Fin m → (S v₀ →ₗ[ℂ] B.H v₀)) (β : ℝ), (∀ y : S v₀, ∑ i, ‖L i y‖ ^ 2 ≤ β * ‖y‖ ^ 2) → ∀ (k : ℕ) (u : Fin k → ∀ v, S v), open Classical in ∑ i, ‖∑ l, B.tens (Function.update (fun v => (u l v : B.H v)) v₀ (L i (u l v₀)))‖ ^ 2 ≤ β * ‖∑ l, B.tens (fun v => (u l v : B.H v))‖ ^ 2 := by

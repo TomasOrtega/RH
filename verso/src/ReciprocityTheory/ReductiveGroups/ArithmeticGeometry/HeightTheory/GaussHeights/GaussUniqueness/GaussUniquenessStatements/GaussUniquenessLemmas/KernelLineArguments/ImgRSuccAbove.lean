@@ -12,7 +12,7 @@ noncomputable def imgR {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (
     (fun k => MvPolynomial.X (Sum.inr (p.1, k))) p.2
 
 /- English proof (translation)
-Unfold `imgR`. Conclude with `sac_same j0 _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem imgR_same {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (ρ : Fin N → R)
     (i : Fin (D + 1)) : imgR (D := D) j0 ρ (i, j0) = if i = 0 then MvPolynomial.X (Sum.inl ())
@@ -21,7 +21,7 @@ theorem imgR_same {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (ρ : 
   exact sac_same j0 _ _
 
 /- English proof (translation)
-Unfold `imgR`. Conclude with `sac_succAbove j0 _ _ k`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem imgR_succAbove {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (ρ : Fin N → R)
     (i : Fin (D + 1)) (k : Fin N) :
@@ -30,9 +30,9 @@ theorem imgR_succAbove {R : Type*} [CommRing R] {D N : ℕ} (j0 : Fin (N + 1)) (
   exact sac_succAbove j0 _ _ k
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `t`. Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[imgR_same, imgR_same] split_ifs`. Conclude with `MvPolynomial.map_X φ _`. Simplify using `only [map_neg, map_sum, map_mul, MvPolynomial.map_X, MvPolynomial.map_C]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[imgR_succAbove, imgR_succAbove, MvPolynomial.map_X]`.
+A detailed English derivation is pending.
 -/
 theorem imgR_map {R R' : Type*} [CommRing R] [CommRing R'] {D N : ℕ} (φ : R →+* R')
     (j0 : Fin (N + 1)) (ρ : Fin N → R) (t : TVar D N) :
@@ -51,7 +51,7 @@ variable {K : Type} [Field K] {Ω : Type} [Field Ω] [Algebra K Ω] {D N : ℕ}
   (v : AddValuation Ω (WithTop ℤ))
 
 /- English proof (translation)
-Rewrite using `[mem_vRing_iff]`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hv x hx]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem alg_mem (hv : IsTrivOn K v) (x : K) : algebraMap K Ω x ∈ vRing v := by
   rw [mem_vRing_iff]
@@ -73,11 +73,11 @@ noncomputable def psiR (hv : IsTrivOn K v) (j0 : Fin (N + 1)) (ρ : Fin N → vR
   (MvPolynomial.map (IsLocalRing.residue (vRing v))).comp (psiT (D := D) v hv j0 ρ)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq]`. Use `Finset.sum_induction _ (fun x => 0 < w x) (fun a b ha hb => lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add w a b)) (by simp) ?_` and prove the remaining obligations. Introduce `d _`. Establish `hprod : 0 ≤ w (∏ s ∈ d.support, e s ^ d s)` using `Finset.prod_induction _ (fun x => 0 ≤ w x) (fun a b ha hb => by rw [AddValuation.map_mul]; exact add_nonneg ha hb) (le_of_eq (AddValuation.map_one w).symm) (fun s _ => by rw [AddValuation.map_pow]; exact nsmul_nonneg (he s) _)`. Establish `hnu : ¬ IsUnit (q.coeff d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `congrArg (MvPolynomial.coeff d) hq`. Rewrite `h0` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp ((IsLocalRing.residue_eq_zero_iff _).mp h0)`. Establish `hc : 0 < w (((algebraMap Ω (OmS Ω D N)).comp (vRing v).subtype) (q.coeff d))`. Rewrite using `[RingHom.comp_apply, hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pos_of_not_isUnit v _ hnu`. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le hc (le_add_of_nonneg_right hprod)`.
+A detailed English derivation is pending.
 -/
 theorem pos_of_ker {w : AddValuation (OmS Ω D N) (WithTop ℤ)}
     (hw : ∀ a : Ω, w (algebraMap Ω (OmS Ω D N) a) = v a)

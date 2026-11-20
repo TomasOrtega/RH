@@ -15,9 +15,9 @@ noncomputable section
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent.Cp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : (⨆ V : {V // IsSummand μ V}, V.1) ≤ (ℂ ∙ v)ᗮ` using `iSup_le fun V => by`. Rewrite using `[← (formsIrr K n μ V.1 V.2).2.2.2]`. Use `Submodule.topologicalClosure_minimal _ ?_ (Submodule.isClosed_orthogonal _)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.2 (hc _ V.2 f hf)`. Establish `h2` using `Submodule.topologicalClosure_minimal _ h1 (Submodule.isClosed_orthogonal _)`. Rewrite `h2` using `[summandsSpan K n μ]`. Conclude with `h0 (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_right.1 (h2 hv)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_form0 {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     {v : LL μ} (hv : v ∈ cuspidalL2 μ) (h0 : v ≠ 0) :
@@ -34,11 +34,11 @@ private theorem exists_form0 {K : Type} [Field K] [NumberField K] {n : ℕ} (μ 
   exact h0 (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_right.1 (h2 hv)))
 
 /- English proof (translation)
-Use `letI : Unique (AutomorphicForm.UPos 2 1) := ⟨⟨⟨(0, 1), by decide⟩⟩, by decide⟩`. Establish `hm : MeasurePreserving (MeasurableEquiv.funUnique (AutomorphicForm.UPos 2 1) (A ℚ)) (unipMeasure ℚ 2 1) (GroundTheory.Global.adeleMeasure ℚ)`. Use `measurePreserving_funUnique (GroundTheory.Global.adeleMeasure ℚ) (AutomorphicForm.UPos 2 1)` and compare the differences between its conclusion and the goal. Rewrite using `[← hm.setIntegral_preimage_emb (MeasurableEquiv.measurableEmbedding _)]`. Use `congr 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `Y`. Simplify using `[unipFundamentalDomain, Unique.forall_iff]`. Use function extensionality and compare the values at `Y`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Simplify using `[Subsingleton.elim p default]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem oneInt (f : (AutomorphicForm.UPos 2 1 → A ℚ) → ℂ) :
     ∫ y in GroundTheory.Global.fundamentalSet ℚ, f (fun _ => y) ∂GroundTheory.Global.adeleMeasure ℚ =
@@ -58,7 +58,7 @@ private theorem oneInt (f : (AutomorphicForm.UPos 2 1 → A ℚ) → ℂ) :
     simp [Subsingleton.elim p default]
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `unipMatrix (fun _ : AutomorphicForm.UPos 2 1 => y) i j = (!![1, y; 0, 1] : Matrix (Fin 2) (Fin 2) (A ℚ)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [unipMatrix, blockEntry_apply]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem unip_eq (y : A ℚ) : (unipGL (fun _ : AutomorphicForm.UPos 2 1 => y) : GL (Fin 2) (A ℚ)) = gl (nU y) := by
   ext i j
@@ -66,7 +66,7 @@ private theorem unip_eq (y : A ℚ) : (unipGL (fun _ : AutomorphicForm.UPos 2 1 
   fin_cases i <;> fin_cases j <;> simp [unipMatrix, blockEntry_apply]
 
 /- English proof (translation)
-Introduce `r hr hr2 g`. Take `rfl : r = 1` from `by omega`. Rewrite using `[constantTerm, ← oneInt (fun X => starRingEnd ℂ (F (unipGL X * g)))]`. Simplify using `only [unip_eq]`. Rewrite using `[integral_conj, h g, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cusp_conj {F : GL (Fin 2) (A ℚ) → ℂ}
     (h : ∀ x, ∫ b in GroundTheory.Global.fundamentalSet ℚ, F (gl (nU b) * x) ∂(GroundTheory.Global.adeleMeasure ℚ) = 0) :
@@ -78,7 +78,7 @@ private theorem cusp_conj {F : GL (Fin 2) (A ℚ) → ℂ}
   rw [integral_conj, h g, map_zero]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Function.ne_iff.1 h0`. Use `⟨retractOne g, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_retractOne, ← centralSection_inv_mul_comm, ← map_inv, hF.cen]`. Conclude with `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_one {F : GL (Fin 2) (A ℚ) → ℂ} (hF : Bd F) (h0 : F ≠ 0) :
     ∃ x : normOneGL ℚ 2, F (x : AdelicGLn.AdelicGL ℚ 2) ≠ 0 := by
@@ -91,19 +91,17 @@ end UpperTheory.ConvolutionTheory.RankTwoDescent.Cp
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent.Cp in
 /- English proof (translation)
-Introduce `μ _ F hF hne hct`. Establish `hfin` using `Reduction.isFiniteMeasure_quotientMeasure (K := ℚ) (n := 2) μ`. Use `set ψ : AdelicGLn.AdelicGL ℚ 2 → ℂ := fun x => starRingEnd ℂ (F x) with hψdef`. Establish `hψc : Continuous ψ` using `continuous_star.comp hF.cont`. Establish `hψl : IsLeftInvariant ψ` using `fun γ g => congrArg (starRingEnd ℂ) (hF.left γ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hF.bdd`. Establish `hbd : ∃ C, ∀ g ∈ normOneGL ℚ 2, ‖ψ g‖ ≤ C` using `⟨C, fun g _ => by simpa [hψdef] using hC g⟩`. Establish `hm` using `GJGlobal.memLp_cuspQuot_of_bounded μ hψc hψl hbd`. Establish `hv : hm.toLp _ ∈ cuspidalL2 μ` using `GJGlobal.toLp_cuspQuot_mem_cuspidalL2 μ hψc hψl (cusp_conj hct) hbd`. Establish `hv0 : hm.toLp _ ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_one hF hne`. Establish `h1 : cuspQuot hψl =ᵐ[quotientMeasure (rationalGLOne ℚ 2) μ] 0`. Use `(MemLp.coeFn_toLp hm).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Lp.coeFn_zero _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fun y : normOneGL ℚ 2 => ψ y) =ᵐ[μ] 0` using `(quasiMeasurePreserving_mk _ μ).ae_eq h1`. Establish `h3 : starRingEnd ℂ (F (x : AdelicGLn.AdelicGL ℚ 2)) = 0` using `congrFun ((Continuous.ae_eq_iff_eq μ (hψc.comp continuous_subtype_val) continuous_const).1 h2) x`. Conclude with `hx ((map_eq_zero _).1 h3)`. Take `⟨V, hV, f, hf, hi⟩` from `exists_form0 μ hv hv0`. Take `⟨π, hπ, -⟩` from `UpperTheory.ConvolutionTheory.Dr.exCusp ℚ 2 μ V hV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨π, ?_, Fb.ofCusp ℚ 2 f, Fb.mem_carrier.1 (hπ.carrier_eq ▸ hf), fun hz => hi ?_⟩` and prove the remaining obligations. Introduce `φ hφ s g`. Rewrite `hφ` using `[← Fb.map_carrier π]`. Take `⟨ψ', hψ', rfl⟩` from `hφ`. Conclude with `(hπ.carrier_eq ▸ hψ' : ψ' ∈ formsIn μ V).1 s g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[L2.inner_def, ← hz]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [MemLp.coeFn_toLp hm, (clsBasic ℚ 2 μ).2.2.2 f hf.1] with q e1 e2`. Rewrite using `[e1, e2, RCLike.inner_apply]`. Establish `e3 : cuspQuot hψl q = ψ (Quotient.out q : normOneGL ℚ 2)` using `by conv_lhs => rw [← Quotient.out_eq q]`.
-
-Both sides reduce to the same expression. Rewrite using `[e3]`. Simplify using `[hψdef]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.pairL : UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.PairL := by
   intro μ _ F hF hne hct

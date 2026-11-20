@@ -31,11 +31,11 @@ def rtOn (c : ∀ k, Bk n k) (W : (MP ℤ m n).Opens) (h : ∀ k, W ≤ blockCha
   pullRatio (prB n q.1) W (c q.1) (h q.1) q.2
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨p, rfl⟩` from `aeval_ratio_surjective ℤ N i v`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Rewrite using `[aeval_C]`. Simplify using `using intCast_mem (Subring.closure (Set.range (ratio ℤ N i))) r`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem (hp trivial) (hq trivial)`. Consider the case `mul_X p j hp`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem (hp trivial) (Subring.subset_closure ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem closure_ratio (N : ℕ) (i : Fin (N + 1)) : Subring.closure (Set.range (ratio ℤ N i)) = ⊤ := by
   rw [eq_top_iff]
@@ -51,11 +51,11 @@ theorem closure_ratio (N : ℕ) (i : Fin (N + 1)) : Subring.closure (Set.range (
     exact mul_mem (hp trivial) (Subring.subset_closure ⟨j, rfl⟩)
 
 /- English proof (translation)
-Set `ι : CommRingCat.of S ⟶ C` to `CommRingCat.ofHom S.subtype`. Set `f' : A ⟶ .of S` to `CommRingCat.ofHom (f.hom.codRestrict S hf)`. Set `g' : B ⟶ .of S` to `CommRingCat.ofHom (g.hom.codRestrict S hg)`. Establish `w : a ≫ f' = b ≫ g'`. Use extensionality with `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congr($(H.w) x)`. Set `d` to `H.desc f' g' w`. Establish `e : d ≫ ι = 𝟙 C` using `H.hom_ext (by rw [H.inl_desc_assoc]; rfl) (by rw [H.inr_desc_assoc]; rfl)`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : ι (d x) = x` using `congr($e x)`. Conclude with `h ▸ (d x).2`.
+A detailed English derivation is pending.
 -/
 theorem eq_top_of_isPushout {R A B C : CommRingCat.{0}} {a : R ⟶ A} {b : R ⟶ B} {f : A ⟶ C} {g : B ⟶ C}
     (H : IsPushout a b f g) (S : Subring C) (hf : ∀ x, f x ∈ S) (hg : ∀ x, g x ∈ S) : S = ⊤ := by
@@ -73,9 +73,9 @@ theorem eq_top_of_isPushout {R A B C : CommRingCat.{0}} {a : R ⟶ A} {b : R ⟶
   exact h ▸ (d x).2
 
 /- English proof (translation)
-Use `TopologicalSpace.Opens.ext (Set.ext fun x => ⟨fun hx => ?_, ?_⟩)` and prove the remaining obligations. Conclude with `⟨Set.mem_iInter.1 hx 0, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx k.succ⟩`. Introduce and unpack `⟨h0, h1⟩`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Proceed by induction on `k using Fin.cases with`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `zero => exact h0`. Consider the case `succ k => exact Set.mem_iInter.1 h1 k`.
+Treat this case separately. Treat this case separately.
 -/
 theorem mchart_succ {m : ℕ} {n : Fin (m + 2) → ℕ} (c : ∀ k, Bk n k) :
     mchart c = pullback.fst (toSpecBase ℤ (n 0)) (mpStr ℤ m (Fin.tail n)) ⁻¹ᵁ chart ℤ (n 0) (c 0) ⊓
@@ -90,7 +90,7 @@ theorem mchart_succ {m : ℕ} {n : Fin (m + 2) → ℕ} (c : ∀ k, Bk n k) :
     | succ k => exact Set.mem_iInter.1 h1 k
 
 /- English proof (translation)
-The claim follows from `| 0, n, c, W, hW, h => by have e : W = (chart ℤ (n 0) (c 0) : (MP ℤ 0 n).Opens) := by rw [hW] refine TopologicalSpace.Opens.ext (Set.ext fun x => ⟨fun hx => Set.mem_iInter.1 hx 0, fun hx => ?_⟩) refine Set.mem_iInter.2 fun k => ?_ obtain rfl : k = 0 := Subsingleton.elim (α := Fin …`.
+A detailed English derivation is pending.
 -/
 theorem add_one_pow_eq_ringHom_image_add_prime_mul_zero : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k) (W : (MP ℤ m n).Opens), W = mchart c →
     ∀ h : ∀ k, W ≤ blockChart n k (c k),
@@ -137,9 +137,9 @@ theorem add_one_pow_eq_ringHom_image_add_prime_mul_zero : ∀ (m : ℕ) (n : Fin
       exact hle (hc ▸ Subring.mem_top x)
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `add_one_pow_eq_ringHom_image_add_prime_mul_zero m n c _ rfl (mchart_le c)`. Use `⟨h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₂]`. Use `congr 2`. Use function extensionality and compare the values at `q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `resG_pullRatio _`.
+A detailed English derivation is pending.
 -/
 theorem gen (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k) :
     IsAffineOpen (mchart c) ∧ Subring.closure (Set.range (rt c)) = ⊤ := by
@@ -151,7 +151,7 @@ theorem gen (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k) :
   exact resG_pullRatio _
 
 /- English proof (translation)
-Take `⟨b, rfl | rfl⟩` from `a.eq_nat_or_neg`. Simplify `hf.pow b` using `only [zpow_natCast]`. Simplify using `only [zpow_neg, zpow_natCast]`. Conclude with `(hf.pow b).inv (pow_ne_zero b h0)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_zpow_of_ne' {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : E → ℝ} {x : E}
     (hf : ContDiffAt ℝ ∞ f x) (h0 : f x ≠ 0) (a : ℤ) : ContDiffAt ℝ ∞ (fun y => f y ^ a) x := by
@@ -161,9 +161,9 @@ theorem contDiffAt_zpow_of_ne' {E : Type} [NormedAddCommGroup E] [NormedSpace �
     exact (hf.pow b).inv (pow_ne_zero b h0)
 
 /- English proof (translation)
-Set `e : (ι → ℂ) ≃L[ℂ] (Fin (Module.finrank ℂ (ι → ℂ)) → ℂ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Establish `ha : AnalyticOnNhd ℂ f B`. Introduce `z hz`. Establish `h` using `ReciprocityTheory.AnForm.Osgood.osgood _ (e.symm ⁻¹' B) (f ∘ e.symm) (hB.preimage e.symm.continuous) (hf.comp e.symm.differentiableOn (fun _ h => h)) (e z) (by simpa using hz)`. Establish `h2` using `h.comp (e.analyticAt z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hc : ContDiffOn ℂ ∞ f B` using `(ha.contDiffOn hB.uniqueDiffOn).of_le le_top`. Conclude with `hc.restrict_scalars ℝ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_of_holo {ι : Type} [Fintype ι] {B : Set (ι → ℂ)} (hB : IsOpen B) {f : (ι → ℂ) → ℂ}
     (hf : DifferentiableOn ℂ f B) : ContDiffOn ℝ ∞ f B := by
@@ -181,7 +181,7 @@ theorem contDiffOn_of_holo {ι : Type} [Fintype ι] {B : Set (ι → ℂ)} (hB :
   exact hc.restrict_scalars ℝ
 
 /- English proof (translation)
-Use `mem_ptsIn.2 (Set.mem_iInter.2 fun k => ?_)` and prove the remaining obligations. Conclude with `mem_ptsIn.1 ((H k (c k)).1.2 (hc k))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_mchart {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (H : IsUnder y z)
     {c : ∀ k, Bk n k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) : y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c) := by
@@ -189,7 +189,7 @@ theorem mem_mchart {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ
   exact mem_ptsIn.1 ((H k (c k)).1.2 (hc k))
 
 /- English proof (translation)
-Rewrite using `[rt, CxPts.ev_res _ (mem_mchart H hc)]`. Conclude with `(H q.1 (c q.1)).2 q.2 ((H q.1 (c q.1)).1.2 (hc q.1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_rt {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (H : IsUnder y z)
     {c : ∀ k, Bk n k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (q : Σ k, Bk n k) :
@@ -198,15 +198,13 @@ theorem ev_rt {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (H 
   exact (H q.1 (c q.1)).2 q.2 ((H q.1 (c q.1)).1.2 (hc q.1))
 
 /- English proof (translation)
-Establish `hin : ∀ z, (∀ k, z ⟨k, c k⟩ ≠ 0) → s z ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c)` using `fun z hz => mem_mchart (hs z hz) hz`. Establish `ha : a ∈ Subring.closure (Set.range (rt c))`. Rewrite using `[(gen m n c).2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ha using Subring.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Establish `hd : DifferentiableOn ℂ (fun z : (Σ k, Bk n k) → ℂ => z q * (z ⟨q.1, c q.1⟩)⁻¹) {z | ∀ k, z ⟨k, c k⟩ ≠ 0}` using `fun z hz => ((differentiableAt_apply (𝕜 := ℂ) q z).mul ((differentiableAt_apply (𝕜 := ℂ) _ z).inv (hz q.1))).differentiableWithinAt`. Conclude with `hd.congr fun z hz => (ev_rt (hs z hz) hz q).trans (div_eq_mul_inv _ _)`. Consider the case `zero`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(differentiableOn_const 0).congr fun z hz => by`. Simplify using `only [Function.comp_apply, ev_eq (hin z hz), map_zero]`. Consider the case `one`. Conclude with `(differentiableOn_const 1).congr fun z hz => by`. Simplify using `only [Function.comp_apply, ev_eq (hin z hz), map_one]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Conclude with `(hx.add hy).congr fun z hz => by`. Simplify using `only [Function.comp_apply, Pi.add_apply, ev_add]`. Consider the case `neg x _ hx`. Conclude with `hx.neg.congr fun z hz => by`.
-
-Simplify using `only [Function.comp_apply, Pi.neg_apply, ev_eq (hin z hz), map_neg]`. Consider the case `mul x y _ _ hx hy`. Conclude with `(hx.mul hy).congr fun z hz => by`. Simplify using `only [Function.comp_apply, Pi.mul_apply, ev_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_ev {c : ∀ k, Bk n k} {s : ((Σ k, Bk n k) → ℂ) → CxPts (mpStr ℤ m n) σ₀}
     (hs : ∀ z, (∀ k, z ⟨k, c k⟩ ≠ 0) → IsUnder (s z) z) (a : Γ(MP ℤ m n, mchart c)) :
@@ -240,21 +238,17 @@ theorem differentiableOn_ev {c : ∀ k, Bk n k} {s : ((Σ k, Bk n k) → ℂ) �
       simp only [Function.comp_apply, Pi.mul_apply, ev_mul]
 
 /- English proof (translation)
-Take `⟨u, -, -, hu⟩` from `hA`. Introduce `z₀ hz₀`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `choose c hc using hz₀`. Set `T : Set ((Σ k, Bk n k) → ℂ)` to `{z | ∀ k, z ⟨k, c k⟩ ≠ 0}`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : IsOpen T`. Establish `: T = ⋂ k, {z | z ⟨k, c k⟩ ≠ 0}` using `by ext z; simp [T]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply _) continuous_const`. Establish `hmc : ∀ z ∈ T, ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0` using `fun z hz k => ⟨c k, hz k⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Nonempty (CxPts (mpStr ℤ m n) σ₀) := ⟨(Under.existsUnique_isUnder m n z₀ (hmc z₀ hc)).exists.choose⟩`. Set `s : ((Σ k, Bk n k) → ℂ) → CxPts (mpStr ℤ m n) σ₀` to `fun z => Classical.epsilon fun y => IsUnder y z`. Establish `hs : ∀ z, (∀ k, z ⟨k, c k⟩ ≠ 0) → IsUnder (s z) z` using `fun z hz => Classical.epsilon_spec (Under.existsUnique_isUnder m n z (hmc z hz)).exists`. Take `⟨hcont, hhol⟩` from `holo_of_affine (gen m n c).1 hT (fun z hz => mem_mchart (hs z hz) hz) (differentiableOn_ev hs)`. Establish `hsc : ContinuousAt s z₀` using `hcont.continuousAt (hT.mem_nhds hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi⟩` from `exists_mem_ptsIn M.isLB.cover (s z₀)`. Establish `hev : ∀ (W : (MP ℤ m n).Opens) (f : Γ(MP ℤ m n, W)), s z₀ ∈ ptsIn (mpStr ℤ m n) σ₀ W → ContDiffAt ℝ ∞ (fun z => CxPts.ev (mpStr ℤ m n) σ₀ W f (s z)) z₀`. Introduce `W f hW`. Establish `hO : T ∩ s ⁻¹' ptsIn (mpStr ℤ m n) σ₀ W ∈ 𝓝 z₀` using `Filter.inter_mem (hT.mem_nhds hc) (hsc.preimage_mem_nhds ((isOpen_ptsIn W).mem_nhds hW))`. Take `⟨B, hBs, hBo, hzB⟩` from `mem_nhds_iff.1 hO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(contDiffOn_of_holo hBo ((hhol W f).mono hBs)).contDiffAt (hBo.mem_nhds hzB)`. Establish `hφ : ContDiffAt ℝ ∞ (fun z => (M.φ σ₀).φ i (s z)) z₀`. Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `M.cInf σ₀ i (s z₀) hi`. Establish `hg : ContDiffAt ℝ ∞ (fun z a => CxPts.ev (mpStr ℤ m n) σ₀ W (g a) (s z)) z₀` using `contDiffAt_pi.2 fun a => hev W (g a) h₁`. Conclude with `((h₄.contDiffAt (h₂.mem_nhds h₃)).comp z₀ hg).congr_of_eventuallyEq (hsc.eventually h₅)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hiU : s z₀ ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c)` using `mem_ptsIn_inf.2 ⟨hi, mem_mchart (hs z₀ hc) hc⟩`. Establish `hU : ContDiffAt ℝ ∞ (fun z => ‖CxPts.ev (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c) (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)) (s z)‖) z₀` using `(hev _ _ hiU).norm ℝ (ev_ne_zero hiU (u i c).isUnit)`. Establish `hP : ContDiffAt ℝ ∞ (fun z : (Σ k, Bk n k) → ℂ => ∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k) z₀`. Use `contDiffAt_prod fun k _ => ?_` and prove the remaining obligations. Establish `hn : ContDiffAt ℝ ∞ (fun z : (Σ k, Bk n k) → ℂ => ‖z ⟨k, c k⟩‖) z₀` using `(contDiff_apply ℝ ℂ (⟨k, c k⟩ : Σ k, Bk n k)).contDiffAt.norm ℝ (hc k)`.
-
-Conclude with `contDiffAt_zpow_of_ne' hn (norm_ne_zero_iff.2 (hc k)) (A.a k)`. Establish `hE : ContDiffAt ℝ ∞ (fun z => Real.exp ((M.φ σ₀).φ i (s z) / 2)) z₀` using `(hφ.div_const 2).exp`. Use `((hP.mul hU).mul hE).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hmem : ∀ᶠ z in 𝓝 z₀, z ∈ T ∧ s z ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i)` using `(hT.eventually_mem hc).and (hsc.eventually ((isOpen_ptsIn _).eventually_mem hi))`. Use `filter_upwards [hmem] with z hz`.
-
-Conclude with `hu i c (s z) z (hs z hz.1) (mem_ptsIn_inf.2 ⟨hz.2, mem_mchart (hs z hz.1) hz.1⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_of_isHermRep (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n))
     (A : Geo.HermLine (Bk n)) (hA : IsHermRep M A) : Geo.IsSmoothHerm A := by

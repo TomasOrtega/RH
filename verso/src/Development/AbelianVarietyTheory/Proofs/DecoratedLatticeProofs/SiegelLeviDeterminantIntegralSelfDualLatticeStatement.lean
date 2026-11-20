@@ -13,7 +13,7 @@ open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Core.Rk.AInt.aH_mem_intLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSiegelLeviDeterminantIntegralSelfDualLattice.lean&line=64#L64)
 -/

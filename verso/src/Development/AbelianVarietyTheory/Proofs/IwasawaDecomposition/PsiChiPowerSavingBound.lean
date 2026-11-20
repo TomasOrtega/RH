@@ -17,7 +17,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.Mem.An.GoodBound
 
 /- English proof (translation)
-Rewrite using `[← MulChar.star_eq_inv]`. Use extensionality with `a`. Rewrite using `[MulChar.star_apply]`. Conclude with `Complex.conj_eq_iff_im.2 (h _)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_eq_self_of_real {q : ℕ} (χ : DirichletCharacter ℂ q) [NeZero q] (h : GlobalTheoryTheory.IsRealChar χ) :
     χ⁻¹ = χ := by
@@ -27,11 +27,11 @@ theorem inv_eq_self_of_real {q : ℕ} (χ : DirichletCharacter ℂ q) [NeZero q]
   exact Complex.conj_eq_iff_im.2 (h _)
 
 /- English proof (translation)
-Take `⟨hp, hr, -, hz⟩` from `hg`. Take `⟨h0, h1, h2, h3⟩` from `hρ`. Rewrite `h2` using `[sub_zero]`. Use `⟨?_, not_lt.1 fun h => hz ρ h (h2.trans hT) h3⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h4` using `(zeros_symm_one_sub q χ hp ρ h0 h1).1.1 h3`. Rewrite `h4` using `[inv_eq_self_of_real χ hr]`. Use `hz (1 - ρ) ?_ ?_ h4` and prove the remaining obligations. Simplify using `only [Complex.sub_re, Complex.one_re]`. Combine the linear relations using `[not_le.1 hlt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `using h2.trans hT`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem re_bounds {Q T : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hg : GlobalTheoryTheory.GoodFor Q χ)
     (hT : T ≤ Q) {ρ : ℂ} (hρ : ρ ∈ zerosIn χ 0 T) : 1 / 400 ≤ ρ.re ∧ ρ.re ≤ 1 - 1 / 400 := by
@@ -48,7 +48,7 @@ theorem re_bounds {Q T : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ 
   · simpa using h2.trans hT
 
 /- English proof (translation)
-Establish `h1` using `(re_bounds hg hT hρ).1`. Establish `h2 : ρ.re ≤ ‖ρ‖` using `Complex.re_le_norm ρ`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem recip_le {Q T : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hg : GlobalTheoryTheory.GoodFor Q χ)
     (hT : T ≤ Q) {ρ : ℂ} (hρ : ρ ∈ zerosIn χ 0 T) : 1 / ‖ρ‖ ≤ 400 := by
@@ -58,7 +58,7 @@ theorem recip_le {Q T : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q
   linarith
 
 /- English proof (translation)
-Establish `hf` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 1).1`. Rewrite using `[zsumR_eq_sum_toFinset χ _ _ _ hf, zsumR_eq_sum_toFinset χ _ _ _ hf, Finset.mul_sum]`. Use `Finset.sum_le_sum fun ρ hρ => ?_` and prove the remaining obligations. Use `recip_le hg hQ (by simpa using hρ : ρ ∈ zerosIn χ 0 1)` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ zmult χ ρ` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -72,7 +72,7 @@ theorem low_le {Q : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (h
   nlinarith
 
 /- English proof (translation)
-Establish `hf` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 1).1`. Rewrite using `[zsumR_eq_sum_toFinset χ _ _ _ hf]`. Conclude with `Finset.sum_nonneg fun ρ _ => by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) :
     0 ≤ zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖) := by
@@ -81,15 +81,15 @@ theorem low_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) :
   exact Finset.sum_nonneg fun ρ _ => by positivity
 
 /- English proof (translation)
-Establish `hf` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 T).1`. Establish `hf1` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 1).1`. Establish `hA : 0 ≤ u ^ (1 - (1 : ℝ) / 400)` using `by positivity`. Establish `hI` using `sum_indicator_le_zsumR χ 0 1 hf.toFinset hf1`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left (add_le_add le_rfl (mul_le_mul_of_nonneg_left hI (by norm_num))) hA)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zsumR_eq_sum_toFinset χ _ _ _ hf, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.mul_sum]`. Unfold `zsum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hf]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun ρ hρ => ?_)` and prove the remaining obligations. Establish `hρ' : ρ ∈ zerosIn χ 0 T` using `by simpa using hρ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ‖(u : ℂ) ^ ρ / ρ‖ ≤ u ^ (1 - (1 : ℝ) / 400) * (1 / ‖ρ‖)`. Rewrite using `[norm_div, Complex.norm_cpow_eq_rpow_re_of_pos (by linarith), div_eq_mul_one_div]`. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hu (re_bounds hg hT hρ').2) (by positivity)`. Establish `h3 : 1 / ‖ρ‖ ≤ (if 1 < |ρ.im| then 1 / ‖ρ‖ else 0) + 400 * (if ρ ∈ zerosIn χ 0 1 then (1 : ℝ) else 0)`. Distinguish the cases in `h : 1 < |ρ.im|`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [if_pos h] split_ifs <;> simp`. Establish `: ρ ∈ zerosIn χ 0 1` using `⟨hρ'.1, hρ'.2.1, by simpa using h, hρ'.2.2.2⟩`. Rewrite using `[if_neg h, if_pos this]`. Combine the linear relations using `[recip_le hg hT hρ']`. Establish `h0 : (0 : ℝ) ≤ zmult χ ρ` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_zsum_le {Q T u : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hg : GlobalTheoryTheory.GoodFor Q χ)
     (hT : T ≤ Q) (hu : 1 ≤ u) :
@@ -129,37 +129,33 @@ theorem norm_zsum_le {Q T u : ℝ} {q : ℕ} [NeZero q] {χ : DirichletCharacter
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hE hL hZ _ hE0`. Take `⟨C, hC⟩` from `ExplUsed.explicit_formula_used hE0 hE hL`. Take `⟨D, hD⟩` from `zsumR_recip_le hZ`. Use `⟨|C| * (5 + 800 * |D|) + 801 * |D| + 1, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Q q _ χ hQ hχ hg u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne q)`. Establish `hqQ : (q : ℝ) ≤ Q` using `hg.2.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨T, hT2, hTu, hTQ, huT⟩ : ∃ T : ℝ, 2 ≤ T ∧ T ≤ u ∧ T ≤ Q ∧ u / T ≤ 1 + u / Q := by`. Establish `: 0 ≤ u / Q` using `by positivity`. Break down `le_total u Q with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨u, hu, le_rfl, h, by rw [div_self (by linarith)]; linarith⟩`. Conclude with `⟨Q, by linarith, h, le_rfl, by linarith⟩`. Establish `h1` using `hC q χ hg.1 u T hT2 hTu`. Take `⟨h2, h3⟩` from `hD q χ hg.1 T hT2`. Establish `h4` using `norm_zsum_le hg hTQ (by linarith : (1 : ℝ) ≤ u)`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `low_le hg (by linarith : (1 : ℝ) ≤ Q)`. Establish `h6` using `low_nonneg χ`. Establish `hpsi : GlobalTheoryTheory.psi0 χ u = psiChi χ u`. Simplify using `[GlobalTheoryTheory.psi0, psiChi, hχ]`. Rewrite `h1` using `[hpsi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set S := zsum χ 0 T (fun ρ => (u : ℂ) ^ ρ / ρ)`. Use `set A := u ^ (1 - (1 : ℝ) / 400)`. Use `set L := Real.log (u * Q) with hLdef`. Use `set N := zsumR χ 0 1 (fun _ => (1 : ℝ))`. Use `set R := zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set H := zsumR χ 0 T (fun ρ => if 1 < |ρ.im| then 1 / ‖ρ‖ else 0)`. Establish `hA1 : 1 ≤ A` using `Real.one_le_rpow (by linarith) (by norm_num)`. Establish `hP : 6 ≤ u * Q` using `by nlinarith`. Establish `hL1 : 1 ≤ L`. Rewrite using `[hLdef, Real.le_log_iff_exp_le (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hLL : L ≤ L ^ 2` using `by nlinarith`. Establish `h2L : Real.log ((u * Q) ^ 2) = 2 * L` using `by rw [Real.log_pow, hLdef]; norm_num`. Establish `l1 : Real.log (q * T) ^ 2 ≤ L ^ 2` using `pow_le_pow_left₀ (Real.log_nonneg (by nlinarith)) (Real.log_le_log (by nlinarith) (by nlinarith)) 2`. Establish `hqu : (q : ℝ) * u ≤ u * Q` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqu1 : (1 : ℝ) ≤ q * u` using `by nlinarith`. Establish `l2 : Real.log (3 * q) ≤ 2 * L`. Rewrite using `[← h2L]`. Conclude with `Real.log_le_log (by linarith) (by nlinarith)`. Establish `l2' : 0 ≤ Real.log (3 * q)` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l3 : Real.log (q * u) ≤ L` using `Real.log_le_log (by linarith) hqu`. Establish `l3' : 0 ≤ Real.log (q * u)` using `Real.log_nonneg hqu1`. Establish `l4 : Real.log (q * u * T) ^ 2 ≤ (2 * L) ^ 2`. Use `pow_le_pow_left₀ (Real.log_nonneg (by nlinarith)) ?_ 2` and prove the remaining obligations. Rewrite using `[← h2L, sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Real.log_le_log (by positivity) (mul_le_mul hqu (by nlinarith) (by linarith) (by linarith))`. Establish `hB : 0 ≤ u / Q` using `by positivity`. Use `set B := u / Q`. Establish `hD0` using `abs_nonneg D`. Establish `hC0` using `abs_nonneg C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : 0 ≤ L ^ 2` using `sq_nonneg _`. Establish `hN : N ≤ 2 * (|D| * L ^ 2)`. Use `h3.trans ((mul_le_mul_of_nonneg_right (le_abs_self D) l2').trans (mul_le_mul_of_nonneg_left (l2.trans (by linarith : 2 * L ≤ 2 * L ^ 2)) hD0))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hH : H ≤ |D| * L ^ 2` using `h2.trans ((mul_le_mul_of_nonneg_right (le_abs_self D) (sq_nonneg _)).trans (mul_le_mul_of_nonneg_left l1 hD0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ‖S‖ ≤ A * (801 * (|D| * L ^ 2))` using `h4.trans (mul_le_mul_of_nonneg_left (by linarith) (by linarith))`. Establish `e1 : u * Real.log (q * u * T) ^ 2 / T ≤ (1 + B) * (2 * L) ^ 2`. Rewrite using `[mul_div_right_comm]`. Conclude with `mul_le_mul huT l4 (sq_nonneg _) (by linarith)`. Establish `e0 : 0 ≤ u * Real.log (q * u * T) ^ 2 / T` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `set M := L ^ 2`. Establish `hAM : M ≤ A * M` using `le_mul_of_one_le_left hM hA1`. Establish `hBM : 0 ≤ B * M` using `mul_nonneg hB hM`. Establish `hDM : |D| * M ≤ |D| * (A * M + B * M)` using `mul_le_mul_of_nonneg_left (by linarith) hD0`. Establish `hDM' : |D| * (A * M) ≤ |D| * (A * M + B * M)` using `mul_le_mul_of_nonneg_left (by linarith) hD0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e2 : u * Real.log (q * u * T) ^ 2 / T + Real.log (q * u) + R ≤ (5 + 800 * |D|) * (A * M + B * M)`. Establish `: (1 + B) * (2 * L) ^ 2 = 4 * M + 4 * (B * M)` using `by simp only [M]; ring`. Establish `h7 : (5 + 800 * |D|) * (A * M + B * M) = 5 * (A * M) + 5 * (B * M) + 800 * (|D| * (A * M + B * M))`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `e3` using `h1.trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (by linarith)).trans (mul_le_mul_of_nonneg_left e2 hC0))`. Establish `htri : ‖psiChi χ u‖ ≤ ‖psiChi χ u + S‖ + ‖S‖`. Simplify using `using norm_sub_le (psiChi χ u + S) S`. Establish `h8 : A * (801 * (|D| * M)) = 801 * (|D| * (A * M))` using `by ring`. Establish `h9 : (|C| * (5 + 800 * |D|) + 801 * |D| + 1) * (A * M + B * M) = |C| * ((5 + 800 * |D|) * (A * M + B * M)) + 801 * (|D| * (A * M + B * M)) + (A * M + B * M)` using `by ring`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem psiChi_bound_of_goodFor : GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.ExplZeta → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ (Q : ℝ) (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), 3 ≤ Q → χ ≠ 1 → GlobalTheoryTheory.GoodFor Q χ → ∀ u : ℝ, 2 ≤ u → ‖psiChi χ u‖ ≤ C₁ * (u ^ (1 - (1 : ℝ) / 400) * Real.log (u * Q) ^ 2 + u / Q * Real.log (u * Q) ^ 2) := by
   intro hE hL hZ _ hE0

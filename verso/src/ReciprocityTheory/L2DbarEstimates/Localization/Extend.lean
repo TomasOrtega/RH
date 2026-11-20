@@ -9,7 +9,7 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `hq' : q ∈ e.source`. Assume the negation of the conclusion as `h`. Conclude with `hq (Set.indicator_of_notMem h _)`. Rewrite `hq` using `[Set.indicator_of_mem hq']`. Conclude with `⟨e q, subset_tsupport _ hq, e.left_inv hq'⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extend_support_subset {n : ℕ} {M : Type*} [TopologicalSpace M]
     (e : OpenPartialHomeomorph M (V n)) (G : V n → ℂ) (q : M)
@@ -20,7 +20,7 @@ theorem extend_support_subset {n : ℕ} {M : Type*} [TopologicalSpace M]
   exact ⟨e q, subset_tsupport _ hq, e.left_inv hq'⟩
 
 /- English proof (translation)
-Establish `hopen : IsOpen (e'.target ∩ e'.symm ⁻¹' e.source)` using `e'.isOpen_inter_preimage_symm e.open_source`. Use `filter_upwards [hopen.mem_nhds ⟨hy, hs⟩] with w hw`. Take `⟨hw1, hw2⟩` from `hw`. Establish `hw3 : e'.symm w ∈ e'.source` using `e'.map_target hw1`. Rewrite using `[Function.comp_apply, Set.indicator_of_mem (show e'.symm w ∈ e.source from hw2), Function.comp_apply, ← he hw2, he' hw3, e'.right_inv hw1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_eventuallyEq {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (G : V n → ℂ) (he : IsChart n z e)
@@ -35,21 +35,19 @@ theorem extend_eventuallyEq {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M �
     e'.right_inv hw1]
 
 /- English proof (translation)
-Introduce `z _hz e G he hG hGc hGt`. Establish `hK : IsCompact (e.symm '' tsupport G)` using `hGc.image_of_continuousOn (e.continuousOn_symm.mono hGt)`. Establish `hKs : e.symm '' tsupport G ⊆ e.source`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `e.map_target (hGt hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hts : tsupport (e.source.indicator (G ∘ e)) ⊆ e.symm '' tsupport G` using `closure_minimal (fun q hq => extend_support_subset e G q hq) hK.isClosed`. Establish `hw : ∀ e'' : OpenPartialHomeomorph M (V n), IsChart n z e'' → ∀ x ∈ e''.source, x ∈ e.source → (e.source.indicator (G ∘ e) ∘ e''.symm) =ᶠ[𝓝 (z x)] G ∧ z x = e x`. Introduce `e'' h1 x h2 hx`. Establish `hzx : z x = e'' x` using `h1 h2`. Use `⟨?_, he hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzx]`. Use `extend_eventuallyEq z e e'' G he h1 (e'' x) (e''.map_source h2) ?_` and prove the remaining obligations. Rewrite using `[e''.left_inv h2]`. Conclude with `hx`. Use `⟨?_, hK.of_isClosed_subset (isClosed_tsupport _) hts, hts.trans hKs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `e' he' y hy`. Distinguish the cases in `hs : e'.symm y ∈ e.source`. Conclude with `(hG.contDiffAt.congr_of_eventuallyEq (extend_eventuallyEq z e e' G he he' y hy hs)).contDiffWithinAt`. Establish `hq : e'.symm y ∉ tsupport (e.source.indicator (G ∘ e))` using `fun h => hs (hKs (hts h))`. Establish `h0` using `notMem_tsupport_iff_eventuallyEq.1 hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0'` using `h0.comp_tendsto (e'.continuousAt_symm hy).tendsto`. Conclude with `(contDiffAt_const.congr_of_eventuallyEq h0').contDiffWithinAt`. Introduce `j x hx`. Establish `key : ∀ e'' : OpenPartialHomeomorph M (V n), IsChart n z e'' → x ∈ e''.source → wd n j (e.source.indicator (G ∘ e) ∘ e''.symm) (z x) = wd n j G (e x) ∧ wdb n j (e.source.indicator (G ∘ e) ∘ e''.symm) (z x) = wdb n j G (e x)`. Introduce `e'' h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hev, hzx⟩` from `hw e'' h1 x h2 hx`. Prove the components needed by the constructor for the conclusion. Unfold `wd`. Rewrite using `[hev.fderiv_eq, hzx]`. Unfold `wdb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[hev.fderiv_eq, hzx]`. Establish `hex : ∃ e'' : OpenPartialHomeomorph M (V n), IsChart n z e'' ∧ x ∈ e''.source` using `⟨e, he, hx⟩`. Prove the components needed by the constructor for the conclusion. Simplify using `only [d, dif_pos hex]`. Conclude with `(key _ (Classical.choose_spec hex).1 (Classical.choose_spec hex).2).1`.
-
-Simplify using `only [db, dif_pos hex]`. Conclude with `(key _ (Classical.choose_spec hex).1 (Classical.choose_spec hex).2).2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extend (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : ExtendStatement n M := by

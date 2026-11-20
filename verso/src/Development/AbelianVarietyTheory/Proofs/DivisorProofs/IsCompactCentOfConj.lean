@@ -12,7 +12,7 @@ open Formalism.REAL (UJ KG toM)
 namespace GlobalTheory.PsCo.NonEll
 
 /- English proof (translation)
-Unfold `IsRegSS at hs ⊢`. Rewrite using `[map_mul, Matrix.charpoly_mul_comm, ← map_mul, ← mul_assoc, mul_inv_cancel, one_mul]`. Conclude with `hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegSS_conj {n : ℕ} {ε : Fin n → Bool} (s x : UJ ε) (hs : IsRegSS (ujMat ε s)) :
     IsRegSS (ujMat ε (x⁻¹ * s * x)) := by
@@ -22,11 +22,11 @@ theorem isRegSS_conj {n : ℕ} {ε : Fin n → Bool} (s x : UJ ε) (hs : IsRegSS
   exact hs
 
 /- English proof (translation)
-Establish `hc : Continuous fun y : G => x * y * x⁻¹` using `by fun_prop`. Use `h.image hc` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_centralizer_singleton_iff, Set.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨x⁻¹ * y * x, ?_, by group⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨z, hz, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem isCompact_cent_of_conj {G : Type} [Group G] [TopologicalSpace G] [ContinuousMul G]
     (s x : G) (h : IsCompact (cent (x⁻¹ * s * x) : Set G)) : IsCompact (cent s : Set G) := by
@@ -47,13 +47,11 @@ theorem isCompact_cent_of_conj {G : Type} [Group G] [TopologicalSpace G] [Contin
       _ = s * (x * z * x⁻¹) := by group
 
 /- English proof (translation)
-Introduce `n ε s hs hnc`. Use `set r : UJ ε → ℝ := fun g => rM ε (toM g) with hr`. Establish `hcont : Continuous r` using `(GlobalTheory.offDiagBlockNorm_cont_inv n ε).1`. Establish `hsub : IsCompact {g : UJ ε | r g ≤ r s}` using `GlobalTheory.isCompact_offDiag_sublevel n ε (r s)`. Establish `hcl : IsClosed (Set.range fun x : UJ ε => x⁻¹ * s * x)` using `isClosed_class_realUJ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `hsub.inter_right hcl`. Establish `hne : ({g : UJ ε | r g ≤ r s} ∩ Set.range fun x : UJ ε => x⁻¹ * s * x).Nonempty` using `⟨s, le_refl (r s), 1, by simp⟩`. Take `⟨g, ⟨hg1, x₀, rfl⟩, hmin⟩` from `hK.exists_isMinOn hne hcont.continuousOn`. Use `⟨r (x₀⁻¹ * s * x₀), ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ r (x₀⁻¹ * s * x₀)` using `Finset.sum_nonneg fun z _ => by positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne h0 fun h => hnc ?_` and prove the remaining obligations. Establish `hk : x₀⁻¹ * s * x₀ ∈ KG ε` using `(GlobalTheory.offDiag_zero_iff_mem_K n ε _).1 h.symm`. Conclude with `isCompact_cent_of_conj s x₀ (GlobalTheory.isCompact_cent_of_mem_KG n ε _ hk (isRegSS_conj s x₀ hs))`. Express the relevant statement in the definitionally equal form `r (x₀⁻¹ * s * x₀) ≤ r (x⁻¹ * s * x)`. Distinguish the cases in `hx : r (x⁻¹ * s * x) ≤ r s`.
-
-Conclude with `hmin ⟨hx, x, rfl⟩`. Conclude with `le_trans hg1 (not_le.1 hx).le`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem stNonEll : GlobalTheory.PsCo.Pc1.StNonEll := by
   intro n ε s hs hnc

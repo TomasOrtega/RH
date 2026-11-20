@@ -9,21 +9,19 @@ noncomputable section
 namespace GlobalTheory.ParahoricVec
 
 /- English proof (translation)
-Set `f : G → ℂ` to `fun x => if hx : ∃ q : P × J, x = q.1 * q.2 then (c hx.choose.1 : ℂ) * (d hx.choose.2 : ℂ) else 0`. Establish `key : ∀ (p : P) (j : J), f (p * j) = (c p : ℂ) * (d j : ℂ)`. Introduce `p j`. Establish `hx : ∃ q : P × J, ((p : G) * j) = q.1 * q.2` using `⟨(p, j), rfl⟩`. Establish `hq` using `hx.choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [f, dif_pos hx]`. Use `set q := hx.choose`. Establish `e : ((q.1⁻¹ * p : P) : G) = ((q.2 * j⁻¹ : J) : G)`. Use `push_cast`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← hq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Use `h _ _ e` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_inv, map_inv, inv_mul_eq_iff_eq_mul]`. Establish `h2 : c p * d j = c q.1 * d q.2`. Rewrite using `[this, mul_assoc, mul_assoc, inv_mul_cancel, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← Units.val_mul, h2]`. Establish `zero : ∀ x : G, (¬ ∃ q : P × J, x = q.1 * q.2) → f x = 0` using `fun x hx => dif_neg hx`. Use `⟨f, ?_, fun p x => ?_, fun x j => ?_⟩` and prove the remaining obligations. Simplify using `using key 1 1`. Distinguish the cases in `hx : ∃ q : P × J, x = q.1 * q.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨p', j⟩, rfl⟩` from `hx`. Use `key (p * p') j` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul, mul_assoc]`. Use `show f (p * (p' * j)) = _`. Rewrite using `[this, key, map_mul, Units.val_mul, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[zero x hx, mul_zero]`. Use `zero _ fun ⟨q, hq⟩ => hx ⟨(p⁻¹ * q.1, q.2), ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc, ← hq]`. Distinguish the cases in `hx : ∃ q : P × J, x = q.1 * q.2`. Take `⟨⟨p, j'⟩, rfl⟩` from `hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `key p (j' * j)` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul, ← mul_assoc]`. Use `show f (p * j' * j) = f (p * j') * _`. Rewrite using `[this, key, map_mul, Units.val_mul, mul_assoc]`. Rewrite using `[zero x hx, zero_mul]`.
-
-Use `zero _ fun ⟨q, hq⟩ => hx ⟨(q.1, q.2 * j⁻¹), ?_⟩` and prove the remaining obligations. Simplify using `[← mul_assoc, ← hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_biequivariant {G : Type} [Group G] (P J : Subgroup G) (c : P →* ℂˣ) (d : J →* ℂˣ)
     (h : ∀ (p : P) (j : J), (p : G) = j → c p = d j) :
@@ -88,13 +86,13 @@ def leftChar (χ : kˣ →* ℂˣ) : parab k (two (stdSum (rfl : r + t = r + t))
         (leviProj k (two (stdSum (rfl : r + t = r + t)))))
 
 /- English proof (translation)
-Establish `hj : (reGL (stdSum (rfl : r + t = r + t))).symm (j : GL (Fin (r + t)) k) ∈ (parahoric (Fin r) (Fin t) χ hχ).J` using `j.2`. Take `⟨hK, hC⟩` from `mem_parahoric.1 hj`. Take `⟨⟨g, hg, hgv⟩, D, hD, hDv⟩` from `exists_diag_blocks hK hC`. Establish `eA : leviProj k (two (stdSum (rfl : r + t = r + t))) p false = g`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hgv, ← h]`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `eD : leviProj k (two (stdSum (rfl : r + t = r + t))) p true = D`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hDv, ← h]`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hl : (lev r t χ hχ).lam j = χ (GeneralLinearGroup.det D)` using `parahoric_lam (⟨_, hj⟩ : (parahoric (Fin r) (Fin t) χ hχ).J) D hDv`. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show deltaHalf k (Two (Fin r) (Fin t)) (leviProj k _ p) * χ (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : r + t = r + t))) p true)) = _`. Rewrite using `[deltaHalf_apply, Fintype.prod_bool, eA, eD]`. Establish `h1` using `isUnram_absPow k ((modExp (Two (Fin r) (Fin t)) true : ℂ) / 2) _ (valuation_det_of_mem_KO hD)`. Establish `h2` using `isUnram_absPow k ((modExp (Two (Fin r) (Fin t)) false : ℂ) / 2) _ (valuation_det_of_mem_KO hg)`. Rewrite using `[h1, h2, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftChar_eq_lam (χ : kˣ →* ℂˣ) (hχ : IsTame χ) (p : parab k (two (stdSum (rfl : r + t = r + t))))
     (j : (lev r t χ hχ).J) (h : (p : GL (Fin (r + t)) k) = j) : leftChar r t χ p = (lev r t χ hχ).lam j := by
@@ -123,9 +121,9 @@ theorem leftChar_eq_lam (χ : kˣ →* ℂˣ) (hχ : IsTame χ) (p : parab k (tw
   rw [h1, h2, one_mul, one_mul]
 
 /- English proof (translation)
-Use `show (deltaHalf k (Two (Fin r) (Fin t)) (leviProj k _ p) : ℂ) • extTensor (detRep (Fin r) (1 : kˣ →* ℂˣ)) (detRep (Fin t) χ) ((leviTwo k (Fin r) (Fin t)).symm (leviProj k _ p)) ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ)) = _`. Rewrite using `[extTensor_tmul]`. Simplify using `only [detRep, ofChar_apply, detChar_apply, MonoidHom.one_apply, Units.val_one, mul_one]`. Rewrite using `[show ∀ c : ℂ, (1 : ℂ) ⊗ₜ[ℂ] c = c • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ)) from fun c => by`. Rewrite using `[← TensorProduct.tmul_smul, smul_eq_mul, mul_one], smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem act_one (χ : kˣ →* ℂˣ) (p : parab k (two (stdSum (rfl : r + t = r + t)))) :
     ((twist ((extTensor (detRep (Fin r) (1 : kˣ →* ℂˣ)) (detRep (Fin t) χ)).comp
@@ -142,29 +140,27 @@ theorem act_one (χ : kˣ →* ℂˣ) (p : parab k (two (stdSum (rfl : r + t = r
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r t χ _ hχ`. Take `⟨f, f1, fl, fr⟩` from `exists_biequivariant (parab k (two (stdSum (rfl : r + t = r + t)))) (lev r t χ hχ).J (leftChar r t χ) (lev r t χ hχ).lam (leftChar_eq_lam χ hχ)`. Establish `hK : ∀ g ∈ KOne k (Fin (r + t)), ∃ hg : g ∈ (lev r t χ hχ).J, (lev r t χ hχ).lam ⟨g, hg⟩ = 1`. Introduce `g hg`. Establish `h1 : (reGL (stdSum (rfl : r + t = r + t))).symm g ∈ KOne k (Fin r ⊕ Fin t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hg`, the goal using `[mem_KOne]`. Introduce `a b`. Use `hg (stdSum rfl a) (stdSum rfl b)` as an intermediate fact. Simplify `this` using `[reGL_symm_val, Matrix.one_apply]`. Conclude with `⟨(parahoric (Fin r) (Fin t) χ hχ).KOne_le h1, (parahoric (Fin r) (Fin t) χ hχ).lam_eq_one _ h1⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Establish `hnat : ∀ i : Fin t, stdSum (rfl : r + t = r + t) (Sum.inr i) = Fin.natAdd r i` using `fun i => Fin.ext (by simp)`. Establish `hcast : ∀ i : Fin r, stdSum (rfl : r + t = r + t) (Sum.inl i) = Fin.castAdd t i` using `fun i => Fin.ext (by simp)`. Set `F : GL (Fin (r + t)) k → ℂ ⊗[ℂ] ℂ` to `fun g => f g • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ))`. Establish `h11 : ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ)) ≠ 0` using `fun h => by`. Use `congrArg (TensorProduct.lid ℂ ℂ) h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Use `⟨⟨⟨F, fun p g => ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show f ((p : GL (Fin (r + t)) k) * g) • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ)) = ((twist ((extTensor (detRep (Fin r) (1 : kˣ →* ℂˣ)) (detRep (Fin t) χ)).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom) (deltaHalf k (Two (Fin r) (Fin t)))).comp (leviProj k (two (stdSum (rfl : r + t = r + t)))) …`. Rewrite using `[map_smul, act_one, fl, smul_smul, mul_comm]`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (isOpen_KOne.mem_nhds (one_mem _)) fun u hu => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hg, hl⟩` from `hK u hu`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show f (x * u) • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ)) = f x • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ))`. Use `fr x ⟨u, hg⟩` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hl]`. Simplify using `only [Units.val_one, mul_one] at this`. Rewrite using `[this]`. Introduce `h`. Establish `h1 : F 1 = 0` using `congrArg (fun v => v.1.1 1) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [F, f1, one_smul] at h1`. Conclude with `h11 h1`. Introduce `h hh hC u hu`. Establish `hK' : (reGL (stdSum (rfl : r + t = r + t))).symm h ∈ KO k (Fin r ⊕ Fin t)`. Take `⟨a1, a2⟩` from `mem_KO.1 hh`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `mem_KO.2 ⟨fun a b => a1 _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `fun a b => a2 _ _`. Establish `hC' : MaxM ((reGL (stdSum (rfl : r + t = r + t))).symm h).val.toBlocks₂₁`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hC a b` as an intermediate fact. Rewrite `this` using `[← hnat, ← hcast]`. Conclude with `this`. Establish `hj0 : (reGL (stdSum (rfl : r + t = r + t))).symm h ∈ (parahoric (Fin r) (Fin t) χ hχ).J` using `mem_parahoric.2 ⟨hK', hC'⟩`. Establish `hj : h ∈ (lev r t χ hχ).J` using `hj0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨-, D, -, hDv⟩` from `exists_diag_blocks hK' hC'`. Establish `hl : (lev r t χ hχ).lam ⟨h, hj⟩ = χ u`. Establish `hu' : GeneralLinearGroup.det D = u`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, hDv, hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Rewrite using `[← hu']`. Conclude with `parahoric_lam (⟨_, hj0⟩ : (parahoric (Fin r) (Fin t) χ hχ).J) D hDv`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `x`. Use `show f (x * h) • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ)) = (χ u : ℂ) • f x • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ))`. Use `fr x ⟨h, hj⟩` as an intermediate fact. Rewrite `this` using `[hl]`. Rewrite using `[this, smul_smul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_parahoricVec_prod₂_detRep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ), IsSmoothChar χ → IsTame χ → ∃ v, v ≠ 0 ∧ IsParahoricVec χ (prod₂ (detRep (Fin r) (1 : kˣ →* ℂˣ)) (detRep (Fin t) χ)) v := by
   intro k _ _ _ _ r t χ _ hχ

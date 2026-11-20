@@ -20,15 +20,13 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.HTPotGood
 
 /- English proof (translation)
-Introduce `p _ D R _ b N V K _ _ _ _ _ _ _ _ β o h`. Break down `h with h | ⟨hdiv, hn⟩` into its components or cases. Set `Ω` to `AlgebraicClosure K`. Establish `hx : spMap (algebraMap K Ω) ≫ spMap β = spMap ((algebraMap K Ω).comp β)`. Simplify using `only [spMap, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_embedding_lie_multiplicity_zero_char_zero p D R b N (Sp K) (spMap β) o h Ω (spMap (algebraMap K Ω)) ((algebraMap K Ω).comp β) hx`. Conclude with `GlobalTheory.T.potentialGoodReduction_of_lieMult_zero V K o.A o.ab D.F (o.act.toF D) Ω (algebraMap K Ω) σ hσ`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim K o.A o.ab`. Establish `h2g` using `GlobalTheory.T.two_mul_relDim_eq_finrank_harrisTaylor_lattice p D R b N K β o g hg`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2g` using `[D.rankLa]`. Use `haveI := D.freeO`. Use `haveI := D.finO`. Establish `hd : 0 < Module.finrank ℚ D.F` using `Module.finrank_pos`. Establish `hm` using `D.m_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : g < Module.finrank ℤ D.O`. Rewrite using `[D.rankO]`. Establish `h1 : D.m * D.n * Module.finrank ℚ D.F < D.m * (2 * D.m) * Module.finrank ℚ D.F`. Apply `Nat.mul_lt_mul_of_pos_right _ hd` to reduce the goal to its premises. Conclude with `Nat.mul_lt_mul_of_pos_left hn hm`.
-
-Establish `h2 : D.m * (2 * D.m) * Module.finrank ℚ D.F = 2 * (D.m ^ 2 * Module.finrank ℚ D.F)` using `by ring`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.potentialGoodReduction_of_order_leftAction V K o.A g o.ab hg D.O o.act.act o.act.hom o.act.one o.act.mul o.act.add hdiv hlt`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem potGood : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (β : R →+* K) (o : Obj b N (spMap β)), (2 * D.a < Module.finrank ℚ D.F ∨ (D.IsDivision ∧ D.n < 2 * D.m)) → GlobalTheory.SS.PotModel V K o.A (fun _ _ _ G _ => IsAbelianScheme G) := by
   intro p _ D R _ b N V K _ _ _ _ _ _ _ _ β o h

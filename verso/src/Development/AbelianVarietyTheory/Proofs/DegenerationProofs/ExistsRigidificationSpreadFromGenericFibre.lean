@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GenSpread
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ G _ _ A _ _ φ L L₀ _ _ hL _ _ _`. Take `⟨i, hi⟩` from `exists_chart hL (eSec G (genericPoint (Sp R)))`. Take `⟨a, ha, H⟩` from `exists_forall_mem (R := R) (V := eSec G ⁻¹ᵁ L.U i) hi`. Use `⟨a, ha, fun R' _ g hg G' _ _ π L' h hL' ⟨w, hw⟩ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `AbSquare.exists_gen_of_mem_chart hL (K := PUnit) (fun _ => eSec G' ≫ π) (fun _ => 1) (fun _ => i) (fun _ y => (congrArg (fun q => q y ∈ L.U i) (PolBaseChange.eSec_comm h)).mpr (H R' g hg y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_down ((isGen_iff w).1 hw) hL hL' t ht`.
+A detailed English derivation is pending.
 -/
 theorem exists_rigidified : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (φ : A.left ⟶ G.left) (L : LB G.left) (L₀ : LB A.left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap R K)) φ → L.IsLB → L₀.IsLB → LBIso L₀ (L.pull φ) → Rigidified A L₀ → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (π : G'.left ⟶ G.left) (L' : LB G'.left), IsGrpPullback G' G (spMap g) π → L'.IsLB → LBIso L' (L.pull π) → Rigidified G' L' := by
   intro R K _ _ _ _ _ _ G _ _ A _ _ φ L L₀ _ _ hL _ _ _

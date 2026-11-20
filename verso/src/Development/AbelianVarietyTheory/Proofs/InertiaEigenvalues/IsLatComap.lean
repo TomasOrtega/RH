@@ -9,15 +9,15 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module (LaurentSeries
   [Module (PowerSeries k) V] [IsScalarTower (PowerSeries k) (LaurentSeries k) V]
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span (LaurentSeries k) (N : Set V)` using `by rw [hN]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨0, by simpa using hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨m1, h1⟩` from `hy`. Take `⟨m2, h2⟩` from `hz`. Use `⟨m1 + m2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `N.smul_mem _ h1`. Rewrite using `[pow_add, mul_smul]`. Conclude with `N.smul_mem _ h2`. Consider the case `smul a y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hy`. Take `⟨⟨p, s⟩, hps⟩` from `IsLocalization.surj (Submonoid.powers (PowerSeries.X : PowerSeries k)) a`. Take `⟨j, hj⟩` from `s.2`. Establish `hj' : (PowerSeries.X : PowerSeries k) ^ j = (s : PowerSeries k)` using `hj`. Establish `hps' : a * algebraMap (PowerSeries k) (LaurentSeries k) (s : PowerSeries k) = algebraMap (PowerSeries k) (LaurentSeries k) p` using `hps`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ((PowerSeries.X : PowerSeries k) ^ j) • a • y = p • y`. Rewrite using `[← algebraMap_smul (LaurentSeries k) ((PowerSeries.X : PowerSeries k) ^ j) (a • y), smul_smul, hj', mul_comm, hps', algebraMap_smul]`. Use `⟨m + j, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_smul, key, smul_comm]`. Conclude with `N.smul_mem _ hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem {N : Submodule (PowerSeries k) V}
     (hN : Submodule.span (LaurentSeries k) (N : Set V) = ⊤) (x : V) :
@@ -52,13 +52,11 @@ variable {W : Type} [AddCommGroup W] [Module (LaurentSeries k) W]
   [Module (PowerSeries k) W] [IsScalarTower (PowerSeries k) (LaurentSeries k) W]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (f.restrictScalars (PowerSeries k)) hf ?_ haveI : IsNoetherian (PowerSeries k) N := isNoetherian_of_fg_of_noetherian N hN.1` and prove the remaining obligations. Conclude with `isNoetherian_submodule.1 this _ (Submodule.map_comap_le _ _)`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_pow_smul_mem hN.2 (f w)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ((PowerSeries.X : PowerSeries k) ^ m) • w ∈ N.comap (f.restrictScalars (PowerSeries k))`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.map_smul_of_tower]`. Conclude with `hm`. Establish `hne : algebraMap (PowerSeries k) (LaurentSeries k) ((PowerSeries.X : PowerSeries k) ^ m) ≠ 0`. Rewrite using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `pow_ne_zero _ ?_` and prove the remaining obligations. Introduce `h`. Establish `hX : (PowerSeries.X : PowerSeries k) ≠ 0` using `PowerSeries.X_ne_zero`. Conclude with `hX (HahnSeries.ofPowerSeries_injective (Γ := ℤ) (R := k) (by rw [map_zero]; exact h))`. Rewrite using `[← Submodule.smul_mem_iff _ hne, algebraMap_smul]`.
-
-Conclude with `Submodule.subset_span hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_comap (f : W →ₗ[LaurentSeries k] V) (hf : Function.Injective f)
     {N : Submodule (PowerSeries k) V} (hN : IsLat N) :
@@ -84,7 +82,7 @@ theorem isLat_comap (f : W →ₗ[LaurentSeries k] V) (hf : Function.Injective f
 end
 
 /- English proof (translation)
-Introduce `f hf _ hN` and use `isLat_comap f hf hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [inst : Field k] {V : Type} [inst_1 : AddCommGroup V]
     [inst_2 : Module (LaurentSeries k) V] [inst_3 : Module (PowerSeries k) V]

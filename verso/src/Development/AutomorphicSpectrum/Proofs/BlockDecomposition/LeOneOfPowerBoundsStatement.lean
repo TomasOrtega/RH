@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeOneOfPowerBou
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Casselman.le_one_of_forall_sqrt_mul_rpow_lt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLeOneOfPowerBounds.lean&line=7#L7)
 -/

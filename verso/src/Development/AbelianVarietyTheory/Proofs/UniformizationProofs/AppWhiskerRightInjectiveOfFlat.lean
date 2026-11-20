@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S B T T' _ _ _ φ hφ U`. Establish `hd : IsSchemeTheoreticallyDominant φ.left`. Use `⟨Scheme.IdealSheafData.ext_of_isAffine ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.ker_apply]`. Simplify using `only [Scheme.IdealSheafData.ideal_bot, Pi.bot_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← RingHom.injective_iff_ker_eq_bot]`. Conclude with `hφ`. Establish `pb : IsPullback (pullback.fst T'.hom B.hom) (φ ▷ B).left φ.left (pullback.fst T.hom B.hom)`. Use `(IsPullback.of_right (h₁₁ := (φ ▷ B).left) (v₁₁ := pullback.fst T'.hom B.hom) (h₂₁ := φ.left) (v₁₂ := pullback.fst T.hom B.hom) ?_ (Over.whiskerRight_left_fst φ) (IsPullback.of_hasPullback T.hom B.hom).flip).flip` and prove the remaining obligations. Rewrite using `[Over.whiskerRight_left_snd, Over.w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsPullback.of_hasPullback T'.hom B.hom).flip`. Establish `: IsSchemeTheoreticallyDominant (φ ▷ B).left` using `.of_isPullback pb`. Establish `: QuasiCompact (φ ▷ B).left` using `MorphismProperty.of_isPullback pb inferInstance`. Conclude with `(φ ▷ B).left.app_injective U`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_whiskerRight_injective_of_flat :
     ∀ (S : Scheme.{0}) (B T T' : Over S) [Flat B.hom] [IsAffine T.left] [IsAffine T'.left] (φ : T' ⟶ T), Function.Injective φ.left.appTop.hom → ∀ U : (T ⊗ B).left.Opens, Function.Injective ((φ ▷ B).left.app U).hom := by

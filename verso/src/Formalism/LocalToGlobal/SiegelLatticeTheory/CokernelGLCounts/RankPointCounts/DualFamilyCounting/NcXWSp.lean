@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem dl_apply (u w : Fin n → K) : dl u w = u ⬝ᵥ w := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify `h (Pi.single i 1)` using `[dotProduct_single]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_dot (u u' : Fin n → K) (h : ∀ w, u ⬝ᵥ w = u' ⬝ᵥ w) : u = u' := by
   funext i
@@ -39,11 +39,11 @@ section Split
 variable {K S : Type*} [Field K] [CommRing S] (π π' : S →+* K)
 
 /- English proof (translation)
-Rewrite `hX`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Use `choose s hs1 hs2 using hsur`. Establish `hsum : ∑ k, s (c k) • X k = 0`. Use function extensionality and compare the values at `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Establish `h1` using `congrFun hc i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1 ⊢`. Simplify using `only [map_sum, map_mul, hs1, map_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, map_sum, map_mul, hs2, zero_mul, Finset.sum_const_zero, map_zero]`. Rewrite using `[← hs1 (c j), hX _ hsum j, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem indep_coord {n m : ℕ} (hinj : ∀ s t, π s = π t → π' s = π' t → s = t)
     (hsur : ∀ p : K, ∃ s, π s = p ∧ π' s = 0) (X : Fin m → Fin n → S) (hX : LinearIndependent S X) :
@@ -63,7 +63,7 @@ theorem indep_coord {n m : ℕ} (hinj : ∀ s t, π s = π t → π' s = π' t �
   rw [← hs1 (c j), hX _ hsum j, map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `hinj _ _ (congrArg (fun A => A i j) h1) (congrArg (fun A => A i j) h2)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mat_ext {n : ℕ} (hinj : ∀ s t, π s = π t → π' s = π' t → s = t) (M N : Matrix (Fin n) (Fin n) S)
     (h1 : M.map π = N.map π) (h2 : M.map π' = N.map π') : M = N := by
@@ -71,7 +71,7 @@ theorem mat_ext {n : ℕ} (hinj : ∀ s t, π s = π t → π' s = π' t → s =
   exact hinj _ _ (congrArg (fun A => A i j) h1) (congrArg (fun A => A i j) h2)
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec {n : ℕ} (M : Matrix (Fin n) (Fin n) S) (x : Fin n → S) (i : Fin n) :
     π ((M *ᵥ x) i) = (M.map π *ᵥ fun j => π (x j)) i := by
@@ -84,55 +84,49 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `set J1 : Matrix (Fin n) (Fin n) (Fv F v) := (JR (F := F) (Fv F v) J).map π₁ with hJ1`. Establish `hJ2 : (JR (F` using `F) (Fv F v) J).map π₂ = J1ᵀ := by`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, transpose_apply, hJ1, JR]`. Rewrite using `[← hσ1, (fun x => by simp [sigR, inclR] : ∀ x : E, sigR (Fv F v) σ (inclR (F := F) (Fv F v) x) = inclR (F := F) (Fv F v) (σ x)), hJ.1 j i]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetJ : IsUnit J1.det`. Establish `e1 : J1.det = π₁ (JR (F` using `F) (Fv F v) J).det := (RingHom.map_det π₁ _).symm`. Establish `e2 : (JR (F` using `F) (Fv F v) J).det = inclR (F := F) (Fv F v) J.det := (RingHom.map_det (inclR (F := F) (Fv F v)) J).symm`. Rewrite using `[e1, e2]`. Conclude with `((Ne.isUnit hJ.2).map (inclR (F := F) (Fv F v))).map π₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hform : ∀ x y : Fin n → (Fv F v) ⊗[F] E, π₁ (hR (Fv F v) σ J x y) = (fun i => π₂ (x i)) ⬝ᵥ (J1 *ᵥ fun i => π₁ (y i))`. Introduce `x y`. Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, hσ1, dotProduct, mulVec, Finset.mul_sum, hJ1, Matrix.map_apply, mul_assoc]`. Use `set x1 : Fin m → Fin n → (Fv F v) := fun j i => π₁ (X j i)`. Use `set y1 : Fin m → Fin n → (Fv F v) := fun j i => π₁ (Y j i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x2 : Fin m → Fin n → (Fv F v) := fun j i => π₂ (X j i)`. Use `set y2 : Fin m → Fin n → (Fv F v) := fun j i => π₂ (Y j i)`. Establish `hsur1 : ∀ p : (Fv F v), ∃ s, π₁ s = p ∧ π₂ s = 0` using `fun p => hsur p 0`. Establish `hsur2 : ∀ p : (Fv F v), ∃ s, π₂ s = p ∧ π₁ s = 0` using `fun p => (hsur 0 p).imp fun _ h => ⟨h.2, h.1⟩`. Establish `hinj' : ∀ s t, π₂ s = π₂ t → π₁ s = π₁ t → s = t` using `fun s t h2 h1 => hinj s t h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx1 : LinearIndependent (Fv F v) x1` using `indep_coord π₁ π₂ hinj hsur1 X hX`. Establish `hy1 : LinearIndependent (Fv F v) y1` using `indep_coord π₁ π₂ hinj hsur1 Y hY`. Establish `hx2 : LinearIndependent (Fv F v) x2` using `indep_coord π₂ π₁ hinj' hsur2 X hX`. Establish `hy2 : LinearIndependent (Fv F v) y2` using `indep_coord π₂ π₁ hinj' hsur2 Y hY`. Establish `hvecinj : ∀ u : Fin n → (Fv F v), u ᵥ* J1 = 0 → u = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `u hu`. Establish `: u = (u ᵥ* J1) ᵥ* J1⁻¹` using `by rw [vecMul_vecMul, mul_nonsing_inv _ hdetJ, vecMul_one]`. Rewrite using `[this, hu, zero_vecMul]`. Establish `hforms : ∀ z : Fin m → Fin n → (Fv F v), LinearIndependent (Fv F v) z → LinearIndependent (Fv F v) (fun j => dl (z j ᵥ* J1))`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Apply `hz c` to reduce the goal to its premises. Apply `hvecinj` to reduce the goal to its premises. Apply `eq_of_dot` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Establish `e` using `LinearMap.congr_fun hc w`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, dl_apply, smul_eq_mul, LinearMap.zero_apply] at e`. Establish `key : ∀ u, (u ᵥ* J1) ⬝ᵥ w = dl (J1 *ᵥ w) u` using `fun u => by`. Rewrite using `[dl_apply, ← dotProduct_mulVec, dotProduct_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, zero_dotProduct, map_sum]`. Use `(Finset.sum_congr rfl fun x _ => ?_).trans e` and prove the remaining obligations. Rewrite using `[map_smul, ← key, smul_eq_mul]`. Establish `hpair : ∀ i j, dl (x2 i ᵥ* J1) (x1 j) = dl (y2 i ᵥ* J1) (y1 j)`. Introduce `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[dl_apply, dl_apply, ← dotProduct_mulVec, ← dotProduct_mulVec]`. Establish `e` using `congrFun (congrFun hG i) j`. Simplify using `only [gramR] at e`. Establish `e1` using `hform (X i) (X j)`. Establish `e2` using `hform (Y i) (Y j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `e1` using `[e]`. Conclude with `e1.symm.trans e2`. Take `⟨A, hAx, hAη⟩` from `GLP.glPair x1 y1 (fun j => dl (x2 j ᵥ* J1)) (fun j => dl (y2 j ᵥ* J1)) hx1 hy1 (hforms x2 hx2) (hforms y2 hy2) hpair`. Use `set Am := LinearMap.toMatrix' (A : (Fin n → (Fv F v)) →ₗ[(Fv F v)] (Fin n → (Fv F v)))`. Use `set Ai := LinearMap.toMatrix' (A.symm : (Fin n → (Fv F v)) →ₗ[(Fv F v)] (Fin n → (Fv F v)))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAm : ∀ w, Am *ᵥ w = A w` using `fun w => LinearMap.toMatrix'_mulVec _ w`. Establish `hAAi : Am * Ai = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use extensionality with `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hAiA : Ai * Am = 1` using `mul_eq_one_comm.mp hAAi`. Establish `hJJ : J1 * J1⁻¹ = 1` using `mul_nonsing_inv _ hdetJ`. Establish `hJJ' : J1⁻¹ * J1 = 1` using `nonsing_inv_mul _ hdetJ`. Use `set B : Matrix (Fin n) (Fin n) (Fv F v) := (J1 * Ai * J1⁻¹)ᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Bi : Matrix (Fin n) (Fin n) (Fv F v) := (J1 * Am * J1⁻¹)ᵀ`. Establish `hBBi : B * Bi = 1`. Rewrite using `[← transpose_mul, ← transpose_one]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJJ', Matrix.mul_one, Matrix.mul_assoc J1, hAAi, Matrix.mul_one, hJJ]`. Establish `hBiB : Bi * B = 1` using `mul_eq_one_comm.mp hBBi`. Establish `hU1 : Bᵀ * J1 * Am = J1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU2 : Amᵀ * J1ᵀ * B = J1ᵀ`. Establish `: Amᵀ * J1ᵀ * B = (Bᵀ * J1 * Am)ᵀ`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[this, hU1]`. Use `choose mk hmk using hsur`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set gm : Matrix (Fin n) (Fin n) ((Fv F v) ⊗[F] E) := Matrix.of fun i j => mk (Am i j) (B i j)`. Use `set gi : Matrix (Fin n) (Fin n) ((Fv F v) ⊗[F] E) := Matrix.of fun i j => mk (Ai i j) (Bi i j)`. Establish `hg1 : gm.map π₁ = Am` using `by ext i j; simp [gm, (hmk _ _).1]`. Establish `hg2 : gm.map π₂ = B` using `by ext i j; simp [gm, (hmk _ _).2]`. Establish `hgi1 : gi.map π₁ = Ai` using `by ext i j; simp [gi, (hmk _ _).1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgi2 : gi.map π₂ = Bi` using `by ext i j; simp [gi, (hmk _ _).2]`. Establish `hone1 : (1 : Matrix (Fin n) (Fin n) ((Fv F v) ⊗[F] E)).map π₁ = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hone2 : (1 : Matrix (Fin n) (Fin n) ((Fv F v) ⊗[F] E)).map π₂ = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hm1 : gm * gi = 1` using `mat_ext π₁ π₂ hinj _ _ (by rw [Matrix.map_mul, hg1, hgi1, hAAi, hone1]) (by rw [Matrix.map_mul, hg2, hgi2, hBBi, hone2])`. Establish `hm2 : gi * gm = 1` using `mat_ext π₁ π₂ hinj _ _ (by rw [Matrix.map_mul, hg1, hgi1, hAiA, hone1]) (by rw [Matrix.map_mul, hg2, hgi2, hBiB, hone2])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set u : GL (Fin n) ((Fv F v) ⊗[F] E) := ⟨gm, gi, hm1, hm2⟩`. Establish `hcT1 : (Formalism.UG.cT (sigR (Fv F v) σ) gm).map π₁ = Bᵀ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ1, ← hg2]`. Establish `hcT2 : (Formalism.UG.cT (sigR (Fv F v) σ) gm).map π₂ = Amᵀ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ2, ← hg1]`. Establish `hu : u ∈ HR (Fv F v) σ J` using `by show Formalism.UG.cT (sigR (Fv F v) σ) gm * JR (F := F) (Fv F v) J * gm = JR (F := F) (Fv F v) J`. Apply `mat_ext π₁ π₂ hinj` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT1, hg1, ← hJ1, hU1]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT2, hg2, hJ2, hU2]`. Use `⟨⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Establish `hmul : ∀ w : Fin n → (Fv F v) ⊗[F] E, (⟨u, hu⟩ : HA (Fv F v) σ J) • (fun _ : Fin 1 => w) = fun _ => gm *ᵥ w` using `fun _ => rfl`. Establish `hB2 : ∀ j, B *ᵥ x2 j = y2 j`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdot : y2 j ᵥ* J1 ᵥ* Am = x2 j ᵥ* J1`. Apply `eq_of_dot` to reduce the goal to its premises. Introduce `w`. Establish `e` using `hAη j w`. Simplify using `only [dl_apply, ← hAm] at e`.
-
-Rewrite using `[← dotProduct_mulVec, e]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [B, mulVec_transpose, vecMul_vecMul]`. Use `_ = y2 j ᵥ* J1 ᵥ* Am ᵥ* Ai ᵥ* J1⁻¹ := by rw [hdot]`. Use `_ = y2 j := by`.
-
-Simplify using `only [vecMul_vecMul, Matrix.mul_assoc, hAAi, Matrix.mul_one, hJJ, vecMul_one]`. Use function extensionality and compare the values at `j`. Use `show gm *ᵥ X j = Y j`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises.
-
-Rewrite using `[map_mulVec, hg1] show (Am *ᵥ x1 j) i = y1 j i`. Rewrite using `[hAm, hAx]`. Rewrite using `[map_mulVec, hg2] show (B *ᵥ x2 j) i = y2 j i`. Rewrite using `[hB2]`.
+A detailed English derivation is pending.
 -/
 theorem witt_split (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J)
     (v : HeightOneSpectrum (𝓞 F)) (π₁ π₂ : Fv F v ⊗[F] E →+* Fv F v)

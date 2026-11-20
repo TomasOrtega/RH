@@ -18,9 +18,9 @@ namespace GlobalTheory.ArchIntGenSmooth
 open Set
 
 /- English proof (translation)
-Introduce `hP k _ Y _ q e hY M N r hr σ`. Take `⟨Y', ρ, _, hcov, hgs⟩` from `GlobalTheory.GenSmoothCover.exists_isCov_genSmooth hP k Y q e hY`. Establish `hη : ρ (genericPoint Y') ⤳ genericPoint Y` using `hcov.2.1 ▸ specializes_rfl`. Establish `hr'` using `MultPull.isRatSec_pull_map ρ hη hr`. Establish `hup` using `GlobalTheory.T.logNorm_rationalSection_archIntegrable hcov.1 hgs (N.restr ρ) (M.restr ρ) hr' σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl) ⊆ offSupp (ρ ≫ q) σ ((M.restr ρ).div hr')` using `fun y hy => GlobalTheory.ArchIntAlter.mem_offSupp_pull M ρ hη hr hy`. Establish `hm : MeasurableSet (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl))` using `(isOpen_ptsIn _).measurableSet`. Establish `heq : EqOn (logNorm ((M.restr ρ).φ σ) fun c => Units.map (TrueGeo.SmallSec.fnMap ρ hη).toMonoidHom (r (c PUnit.unit))) (fun y => logNorm (M.φ σ) r (PtsOver.map ρ rfl _ y)) (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl))` using `fun y hy => GlobalTheory.ArchIntAlter.logNorm_pull M ρ hη hr hy`. Conclude with `GlobalTheory.T.chernIntegrableOn_descend_genericallyFinite k Y q e hY Y' ρ hcov.1 hcov.2.1 hcov.2.2 N σ _ _ (GlobalTheory.ArchIntAlter.continuousOn_logNorm (M.φ σ) hr (M.cInf σ)) ⟨(hup.1.mono_set hsub).congr_fun heq hm, (hup.2.mono_set hsub).congr_fun heq hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem archIntegrable : Published.Principalisation → ∀ (k : Type) [CommRing k] (Y : Scheme.{0})
     [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ), IsArithVar q e → ∀ (M N : HermLB q)

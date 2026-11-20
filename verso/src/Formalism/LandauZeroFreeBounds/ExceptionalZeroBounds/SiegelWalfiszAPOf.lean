@@ -7,13 +7,13 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hu : IsUnit ((a : ZMod q))` using `(ZMod.isUnit_iff_coprime a q).mpr ha`. Unfold `psiAP psiChi`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `key : ∀ n : ℕ, ∑ χ : DirichletCharacter ℂ q, χ ((a : ZMod q)⁻¹) * (((Λ n : ℝ) : ℂ) * χ (n : ZMod q)) = ((Λ n : ℝ) : ℂ) * (if (a : ZMod q) = n then (q.totient : ℂ) else 0)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[← DirichletCharacter.sum_char_inv_mul_char_eq ℂ hu (n : ZMod q), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun χ _ => by ring)`. Repeatedly rewrite using `[key]`. Rewrite using `[Complex.ofReal_sum, Finset.sum_filter, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Establish `hiff : (n ≡ a [MOD q]) ↔ (a : ZMod q) = n`. Rewrite using `[eq_comm, ZMod.natCast_eq_natCast_iff]`. Distinguish the cases in `h : n ≡ a [MOD q]`. Rewrite using `[if_pos h, if_pos (hiff.mp h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.mpr h'))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma chebyshev_progression_orthogonality (q a : ℕ) [NeZero q] (ha : Nat.Coprime a q) (x : ℝ) :
     (q.totient : ℂ) * ((psiAP q a x : ℝ) : ℂ) =
@@ -38,7 +38,7 @@ lemma chebyshev_progression_orthogonality (q a : ℕ) [NeZero q] (ha : Nat.Copri
   · rw [if_neg h, if_neg (fun h' => h (hiff.mpr h'))]; simp
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(ZMod.isUnit_iff_coprime a q).mpr ha`. Rewrite using `[← hu, ZMod.inv_coe_unit]`. Simplify using `[mul_ite, mul_zero, Finset.sum_ite_eq', MulChar.one_apply (Units.isUnit _)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma principal_character_orthogonality_term (q a : ℕ) [NeZero q] (ha : Nat.Coprime a q) (x : ℝ) :
     ∑ χ : DirichletCharacter ℂ q, χ ((a : ZMod q)⁻¹) * (if χ = 1 then (x : ℂ) else 0) = (x : ℂ) := by
@@ -47,7 +47,7 @@ lemma principal_character_orthogonality_term (q a : ℕ) [NeZero q] (ha : Nat.Co
   simp [mul_ite, mul_zero, Finset.sum_ite_eq', MulChar.one_apply (Units.isUnit _)]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, DirichletCharacter.card_eq_totient_of_hasEnoughRootsOfUnity]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma card_dirichletCharacter_eq_totient (q : ℕ) [NeZero q] :
     ((Finset.univ : Finset (DirichletCharacter ℂ q)).card : ℝ) = (q.totient : ℝ) := by

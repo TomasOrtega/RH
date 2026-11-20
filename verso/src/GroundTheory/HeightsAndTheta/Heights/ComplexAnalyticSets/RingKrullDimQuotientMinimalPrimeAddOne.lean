@@ -12,11 +12,11 @@ open MvPolynomial Filter Topology ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Take `⟨A, O, V, g, hO, hV, hqV, hg, hAg, hYV⟩` from `h`. Use `⟨A, O ∩ g ⁻¹' U, V ∩ U, g, hg.continuousOn.isOpen_inter_preimage hO hU, hV.inter hU, ⟨hqV, hqU⟩, fun y hy => hg y hy.1, fun y hy => hAg y hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.image_inter_preimage, ← hYV]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hx, hxV, hxU⟩`. Establish `hx' : x ∈ Y ∩ U` using `by rw [← hYU]; exact ⟨hx, hxU⟩`. Conclude with `⟨⟨hx'.1, hxV⟩, hxU⟩`. Introduce and unpack `⟨⟨hx, hxV⟩, hxU⟩`. Establish `hx' : x ∈ Y' ∩ U` using `by rw [hYU]; exact ⟨hx, hxU⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨hx'.1, hxV, hxU⟩`.
+Supply the required witnesses or components.
 -/
 theorem graphChart_of_eq_on_open {n d : ℕ} {Y Y' U : Set (Fin n → ℂ)} {q : Fin n → ℂ}
     (hU : IsOpen U) (hqU : q ∈ U) (hYU : Y' ∩ U = Y ∩ U)
@@ -40,17 +40,15 @@ theorem graphChart_of_eq_on_open {n d : ℕ} {Y Y' U : Set (Fin n → ℂ)} {q :
     exact ⟨hx'.1, hxV, hxU⟩
 
 /- English proof (translation)
-Establish `hPW : V ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hfW : f ∈ W` using `hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self f))`. Establish `hq : W.map (Ideal.Quotient.mk V) ∈ (Ideal.span {Ideal.Quotient.mk V f}).minimalPrimes`. Establish `e : Ideal.span {Ideal.Quotient.mk V f} = (Ideal.span {f}).map (Ideal.Quotient.mk V)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Ideal.minimalPrimes_map_of_surjective Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_comm]`. Conclude with `⟨W, hW, rfl⟩`. Establish `: (W.map (Ideal.Quotient.mk V)).IsPrime` using `hq.1.1`. Establish `: (Ideal.span {Ideal.Quotient.mk V f}).IsPrincipal` using `⟨⟨_, rfl⟩⟩`. Establish `hh : (W.map (Ideal.Quotient.mk V)).height = 1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hq) ?_` and prove the remaining obligations. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce `h0`. Establish `: Ideal.Quotient.mk V f ∈ W.map (Ideal.Quotient.mk V)` using `Ideal.mem_map_of_mem _ hfW`. Rewrite `this` using `[h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf this`. Establish `: IsDomain (MvPolynomial (Fin n) ℂ ⧸ V)` using `Ideal.Quotient.isDomain V`. Establish `: Algebra.FiniteType ℂ (MvPolynomial (Fin n) ℂ ⧸ V)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ V) (Ideal.Quotient.mkₐ_surjective ℂ V)`. Establish `: IsNoetherianRing (MvPolynomial (Fin n) ℂ ⧸ V)` using `Algebra.FiniteType.isNoetherianRing ℂ _`. Establish `: FiniteRingKrullDim (MvPolynomial (Fin n) ℂ ⧸ V)` using `finiteRingKrullDim_iff_ne_bot_and_top.mpr ⟨fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Fin n) ℂ ⧸ V)`. Rewrite `h0` using `[h]`. Conclude with `absurd h0 (by simp), hfin⟩`. Take `⟨s, hs⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.DimF.exists_height_of_isMaximal_of_field ℂ (MvPolynomial (Fin n) ℂ ⧸ V)`. Establish `key` using `ReciprocityTheory.ChartRestriction.G.Geo.DimF.dim_quot_add_height (A := MvPolynomial (Fin n) ℂ ⧸ V) (fun M N hM hN => (hs M hM).trans (hs N hN).symm) (W.map (Ideal.Quotient.mk V))`.
-
-Rewrite `key` using `[hh, ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hPW)]`. Conclude with `key` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_minimalPrime_add_one {n : ℕ} {V W : Ideal (MvPolynomial (Fin n) ℂ)} [hVp : V.IsPrime]
     {f : MvPolynomial (Fin n) ℂ} (hf : f ∉ V) (hW : W ∈ (V ⊔ Ideal.span {f}).minimalPrimes)
@@ -88,15 +86,15 @@ theorem ringKrullDim_quotient_minimalPrime_add_one {n : ℕ} {V W : Ideal (MvPol
   exact_mod_cast key
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient, Order.krullDim_lt_coe_iff]`. Introduce `l`. Establish `hLP : L ≤ l.head.1.asIdeal` using `fun x hx => l.head.2 (Ideal.mem_sup_left hx)`. Establish `hfP : f ∈ l.head.1.asIdeal` using `l.head.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self f))`. Take `⟨W, hW, hWP⟩` from `Ideal.exists_minimalPrimes_le hLP`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `W' : PrimeSpectrum R` to `⟨W, hW.1.1⟩`. Establish `hlt : W' < l.head.1` using `lt_of_le_of_ne hWP fun h => hf W hW (by rw [← h] at hfP; exact hfP)`. Establish `h1 : (l.length : ℕ∞) ≤ Order.coheight l.head.1`. Conclude with `Order.length_le_coheight_head (p := l.map Subtype.val (fun _ _ => id))`. Establish `h2 : Order.coheight l.head.1 + 1 ≤ Order.coheight W'` using `Order.coheight_add_one_le hlt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIci : Set.Ici W' = PrimeSpectrum.zeroLocus (R` using `R) (W : Set R) := by`. Use extensionality with `p`. Conclude with `Iff.rfl`. Establish `h3 : ((Order.coheight W' : ℕ∞) : WithBot ℕ∞) = (d : WithBot ℕ∞)`. Rewrite using `[Order.coheight_eq_krullDim_Ici, hIci, ← ringKrullDim_quotient]`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd W hW`. Establish `h3' : Order.coheight W' = (d : ℕ∞)` using `by exact_mod_cast h3`. Establish `h4 : ((l.length + 1 : ℕ) : ℕ∞) ≤ (d : ℕ∞)`. Rewrite using `[← h3']`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h5 : l.length + 1 ≤ d` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_sup_span_lt {R : Type*} [CommRing R] {L : Ideal R} {f : R} {d : ℕ}
     (hf : ∀ W ∈ L.minimalPrimes, f ∉ W) (hd : ∀ W ∈ L.minimalPrimes, ringKrullDim (R ⧸ W) = d) :
@@ -127,25 +125,23 @@ theorem ringKrullDim_quotient_sup_span_lt {R : Type*} [CommRing R] {L : Ideal R}
   omega
 
 /- English proof (translation)
-Take `⟨I₀, h, hcard, hhW, hreg⟩` from `hG n e W hW he (EuclideanSpace.basisFun (Fin n) ℂ)`. Set `T : (Fin n → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `((EuclideanSpace.equiv (Fin n) ℂ).symm : (Fin n → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin n))`. Set `S : EuclideanSpace ℂ (Fin n) →L[ℂ] (Fin n → ℂ)` to `((EuclideanSpace.equiv (Fin n) ℂ : EuclideanSpace ℂ (Fin n) →L[ℂ] (Fin n → ℂ)))`. Establish `hT : ∀ x i, T x i = x i` using `fun x i => rfl`. Establish `hS : ∀ w i, S w i = w i` using `fun w i => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hST : ∀ x, S (T x) = x` using `fun x => funext fun i => by rw [hS, hT]`. Establish `hTS : ∀ w, T (S w) = w` using `fun w => by ext i; rw [hT, hS]`. Establish `hZ : ∀ x : Fin n → ℂ, x ∈ zeroSet W ↔ T x ∈ zeroSetEuc W`. Introduce `x`. Establish `hx : (fun i => T x i) = x` using `funext fun i => hT x i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [zeroSet, zeroSetEuc, Set.mem_ofPred_eq, hx]`. Use `⟨h, hhW, fun z hz hzh => ?_⟩` and prove the remaining obligations. Establish `hzh' : eval (fun i => T z i) h ≠ 0`. Establish `hx : (fun i => T z i) = z` using `funext fun i => hT z i`. Rewrite using `[hx]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨Ω, V, g, hΩ, hV, hzV, hg, hproj, hgraph⟩` from `hreg (T z) ((hZ z).mp hz) hzh'`. Set `eI : I₀ ≃ Fin e` to `I₀.equivFinOfCardEq hcard`. Set `Ψ : (Fin e → ℂ) →L[ℂ] (I₀ → ℂ)` to `ContinuousLinearMap.pi fun i : I₀ => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) (eI i)`. Set `A : (Fin n → ℂ) →L[ℂ] (Fin e → ℂ)` to `ContinuousLinearMap.pi fun k : Fin e => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) ((eI.symm k : I₀) : Fin n)`. Establish `hΨ : ∀ y i, Ψ y i = y (eI i)` using `fun y i => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : ∀ x k, A x k = x ((eI.symm k : I₀) : Fin n)` using `fun x k => rfl`. Establish `hO : IsOpen (Ψ ⁻¹' Ω)` using `hΩ.preimage Ψ.continuous`. Use `⟨A, Ψ ⁻¹' Ω, T ⁻¹' V, fun y => S (g (Ψ y)), hO, hV.preimage T.continuous, hzV, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_differentiableOn_fin hO (S.differentiable.comp_differentiableOn (hg.comp Ψ.differentiable.differentiableOn fun y hy => hy))`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Establish `h1` using `congrFun (hproj (Ψ y) hy) (eI.symm k)`. Simplify using `only [frameProj, EuclideanSpace.basisFun_inner] at h1`. Use `show A (S (g (Ψ y))) k = y k`. Rewrite using `[hA, hS, h1, hΨ, Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxZ, hxV⟩`. Establish `hmem : T x ∈ zeroSetEuc W ∩ V` using `⟨(hZ x).mp hxZ, hxV⟩`. Rewrite `hmem` using `[hgraph]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, hgw⟩` from `hmem`. Establish `hΨw : Ψ (fun k => w (eI.symm k)) = w` using `funext fun i => by simp [hΨ]`. Use `⟨fun k => w (eI.symm k), ?_, ?_⟩` and prove the remaining obligations. Use `show Ψ _ ∈ Ω`. Rewrite using `[hΨw]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [hΨw, hgw, hST]`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hmem : g (Ψ y) ∈ zeroSetEuc W ∩ V` using `hgraph ▸ Set.mem_image_of_mem g hy`. Use `⟨(hZ _).mpr ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hTS]`.
-
-Conclude with `hmem.1`. Use `show T (S (g (Ψ y))) ∈ V`. Rewrite using `[hTS]`. Conclude with `hmem.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphChart_of_frameGraphGeneric (hG : FrameGraphGeneric.Statement) {n e : ℕ}
     (W : Ideal (MvPolynomial (Fin n) ℂ)) (hW : W.IsPrime)

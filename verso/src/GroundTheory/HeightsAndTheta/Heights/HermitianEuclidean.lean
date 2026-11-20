@@ -31,7 +31,7 @@ theorem realToFibre_tmul (r : ℝ) (e : E) :
     realToFibre σ E (r ⊗ₜ e) = ofComplex σ (r : ℂ) ⊗ₜ e := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul s e`. Rewrite using `[smul_tmul', realToFibre_tmul, realToFibre_tmul, smul_tmul', complex_smul_def, smul_eq_mul, Complex.ofReal_mul, map_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem realToFibre_smul (r : ℝ) (x : ℝ ⊗[ℤ] E) :
     realToFibre σ E (r • x) = (r : ℂ) • realToFibre σ E x := by
@@ -43,7 +43,7 @@ theorem realToFibre_smul (r : ℝ) (x : ℝ ⊗[ℤ] E) :
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul r e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem realToFibre_lTensor {F : Type*} [AddCommGroup F] [Module (𝓞 K) F] (φ : E →ₗ[𝓞 K] F)
     (x : ℝ ⊗[ℤ] E) :
@@ -59,13 +59,13 @@ end RealToFibre
 variable [NumberField K]
 
 /- English proof (translation)
-Use `set b := RingOfIntegers.basis K`. Use `set B := Algebra.TensorProduct.basis ℝ b`. Establish `hxB : x = ∑ i, B.repr x i • B i` using `(B.sum_repr x).symm`. Establish `hli` using `(canonicalEmbedding.latticeBasis K).linearIndependent`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i, B.repr x i = 0`. Introduce `i`. Establish `h0` using `hli (fun j ↦ (B.repr x j : ℂ)) ?_ i`. Conclude with `h0` after adjusting the coercions. Use function extensionality and compare the values at `σ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hσ` using `congrArg (integersCoord K σ) (hx σ)`. Rewrite `hσ` using `[hxB, map_sum, map_sum, map_zero]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, canonicalEmbedding.latticeBasis_apply, canonicalEmbedding.apply_at, integralBasis_apply, Pi.zero_apply, smul_eq_mul]`. Rewrite using `[← hσ]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[realToFibre_smul, map_smul, Algebra.TensorProduct.basis_apply, realToFibre_tmul, integersCoord_tmul, smul_eq_mul]`. Rewrite using `[Complex.ofReal_one, map_one, map_one, mul_one]`. Rewrite using `[hxB]`. Simplify using `only [key, zero_smul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realToFibre_integers_eq_zero (x : ℝ ⊗[ℤ] 𝓞 K)
     (hx : ∀ σ : K →+* ℂ, realToFibre σ (𝓞 K) x = 0) : x = 0 := by
@@ -93,14 +93,14 @@ theorem realToFibre_integers_eq_zero (x : ℝ ⊗[ℤ] 𝓞 K)
   simp only [key, zero_smul, Finset.sum_const_zero]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.trans (𝓞 K) E`.
+A detailed English derivation is pending.
 -/
 theorem finite_int (K : Type*) [Field K] [NumberField K] (E : Type*) [AddCommGroup E]
     [Module (𝓞 K) E] [Module.Finite (𝓞 K) E] : Module.Finite ℤ E :=
   Module.Finite.trans (𝓞 K) E
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ E` using `finite_int K E`. Establish `: Module.Flat ℤ E` using `Module.Flat.trans ℤ (𝓞 K) E`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem free_int (K : Type*) [Field K] [NumberField K] (E : Type*) [AddCommGroup E]
     [Module (𝓞 K) E] [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] : Module.Free ℤ E := by
@@ -114,15 +114,15 @@ variable {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K
   [Module.Projective (𝓞 K) E]
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' (𝓞 K) E`. Take `⟨s, hs⟩` from `f.exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hf)`. Set `φ : Fin n → (E →ₗ[𝓞 K] 𝓞 K)` to `fun i ↦ LinearMap.proj i ∘ₗ s`. Set `g : Fin n → E` to `fun i ↦ f (fun j ↦ if i = j then 1 else 0)`. Establish `hdecomp : ∀ e : E, ∑ i, φ i e • g i = e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `e`. Establish `h1 : f (s e) = e` using `by rw [← LinearMap.comp_apply, hs, LinearMap.id_apply]`. Use `conv_rhs => rw [← h1, LinearMap.pi_apply_eq_sum_univ f (s e)]`. Both sides reduce to the same expression. Establish `hdec : ∀ y : ℝ ⊗[ℤ] E, ∑ i, LinearMap.lTensor ℝ ((LinearMap.toSpanSingleton (𝓞 K) E (g i)).restrictScalars ℤ) (LinearMap.lTensor ℝ ((φ i).restrictScalars ℤ) y) = y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Finset.sum_const_zero]`. Consider the case `tmul r e`. Simplify using `only [LinearMap.lTensor_tmul, LinearMap.restrictScalars_apply, LinearMap.toSpanSingleton_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← tmul_sum, hdecomp]`. Consider the case `add y z hy hz`. Simplify using `only [map_add, Finset.sum_add_distrib]`. Rewrite using `[hy, hz]`. Establish `hφ : ∀ i, LinearMap.lTensor ℝ ((φ i).restrictScalars ℤ) x = 0`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `realToFibre_integers_eq_zero _ fun σ ↦ ?_` and prove the remaining obligations. Rewrite using `[realToFibre_lTensor, hx σ, map_zero]`. Rewrite using `[← hdec x]`. Simplify using `only [hφ, map_zero, Finset.sum_const_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realToFibre_eq_zero (x : ℝ ⊗[ℤ] E) (hx : ∀ σ : K →+* ℂ, realToFibre σ E x = 0) :
     x = 0 := by
@@ -204,7 +204,7 @@ theorem inner_def (x y : RealSpace h) :
       (realToFibre σ E (equivTensor h y))).re := rfl
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, inner_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_eq (x : RealSpace h) :
     ‖x‖ ^ 2 = ∑ σ, ((h.form σ).inner (realToFibre σ E (equivTensor h x))
@@ -216,9 +216,9 @@ def ofModule : E →+ RealSpace h := (TensorProduct.mk ℤ ℝ E 1).toAddMonoidH
 def lattice : Submodule ℤ (RealSpace h) := LinearMap.range (ofModule h).toIntLinearMap
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ E` using `finite_int K E`. Establish `: Module.Free ℤ E` using `free_int K E`. Use `set bZ := Module.finBasis ℤ E`. Use `⟨_, (Algebra.TensorProduct.basis ℝ bZ).map (equivTensor h).symm, ?_⟩` and prove the remaining obligations. Establish `hb : ⇑((Algebra.TensorProduct.basis ℝ bZ).map (equivTensor h).symm) = (ofModule h).toIntLinearMap ∘ bZ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Module.Basis.map_apply, Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Rewrite using `[hb, Set.range_comp, ← Submodule.map_span, bZ.span_eq, Submodule.map_top]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_basis_lattice_eq :
     ∃ (n : ℕ) (b : Module.Basis (Fin n) ℝ (RealSpace h)),
@@ -250,9 +250,9 @@ instance : IsZLattice ℝ (lattice h) where
     rw [hb, Submodule.span_span_of_tower, b.span_eq]
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ E` using `finite_int K E`. Establish `: Module.Free ℤ E` using `free_int K E`. Use `set bZ := Module.finBasis ℤ E`. Introduce `e e' he`. Establish `h1` using `congrArg (Algebra.TensorProduct.basis ℝ bZ).repr (show (1 : ℝ) ⊗ₜ[ℤ] e = (1 : ℝ) ⊗ₜ[ℤ] e' from he)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.TensorProduct.basis_repr_tmul, one_smul] at h1`. Conclude with `bZ.repr.injective (Finsupp.mapRange_injective _ _ (algebraMap ℤ ℝ).injective_int h1)`.
+A detailed English derivation is pending.
 -/
 theorem ofModule_injective : Function.Injective (ofModule h) := by
   have : Module.Finite ℤ E := finite_int K E
@@ -272,7 +272,7 @@ end General
 abbrev HermitianBundle.RealSpace (A : HermitianBundle K) : Type _ := Heights.RealSpace A.metric
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsZLattice ℝ (RealSpace.lattice (HermitianMetric.standard GaussianField (Fin 2))) :=
   inferInstance

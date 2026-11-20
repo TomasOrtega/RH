@@ -23,7 +23,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.LangSumSub
 
 /- English proof (translation)
-Take `⟨𝔭, h𝔭⟩` from `hEx (IrrGL.of τ.ρ τ.smooth τ.irr)`. Conclude with `⟨𝔭, h𝔭.of_equiv (IrrGL.equivOf τ.ρ τ.smooth τ.irr).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isL_of_exhaust {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hEx : ∀ x : IrrGL k, ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 x.rep) {N : ℕ} (τ : IrrRep (GL (Fin N) k)) :
@@ -34,17 +34,17 @@ theorem isL_of_exhaust {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨n, c⟩` from `y`. Take `rfl : (x 0).1 + (x 1).1 = n` from `(Fin.sum_univ_two _).symm.trans hd`. Take `⟨φ⟩` from `nonempty_prod₂_equiv_prodIrr_rep x hd`. Establish `hPs : IsSmooth (prodIrr x hd)` using `isSmooth_prodIrr x hd`. Establish `hPf` using `GlobalTheory.CompanionTheory.ProdFL.hasFiniteLength_prodIrr hA x hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h₁, h₂, h, Δ₁, Δ₂, Δ, hΔ₁, hΔ₂, hΔ, hI⟩` from `GlobalTheory.T.ordered_forms_interleave_sum hA 𝔪 𝔫`. Establish `w0 : Wd (x 0).rep (wtW Δ₁)` using `GlobalTheory.T.langlands_rep_ordered_word_occurs hA hSoc hSeg 𝔪 (x 0).rep h0 h₁ Δ₁ hΔ₁`. Establish `w1 : Wd (x 1).rep (wtW Δ₂)` using `GlobalTheory.T.langlands_rep_ordered_word_occurs hA hSoc hSeg 𝔫 (x 1).rep h1 h₂ Δ₂ hΔ₂`. Establish `wp : Wd (prod₂ (x 0).rep (x 1).rep) (wtW Δ)` using `GlobalTheory.T.word_occurs_product_interleave hA (x 0) (x 1) _ _ _ (GlobalTheory.T.ordered_word_letters_cuspidal Δ₁) (GlobalTheory.T.ordered_word_letters_cuspidal Δ₂) w0 w1 hI`. Establish `wP : Wd (prodIrr x hd) (wtW Δ)` using `GlobalTheory.T.word_occurs_of_subquotient (prodIrr x hd) (prod₂ (x 0).rep (x 1).rep) hPs (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective) _ wp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ` using `GlobalTheory.T.word_occurs_irreducible_subquotient hA (prodIrr x hd) hPs hPf (wtW Δ) wP`. Take `⟨τ, hτP, hτW⟩` from `hτ`. Take `⟨𝔭, hτL⟩` from `isL_of_exhaust hEx τ`. Take `⟨h', z, hz, ⟨Γ, hΓ, hzL⟩, hcos⟩` from `id hτL`. Establish `s1 : InShW 𝔭 (wtW Δ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.T.segment_product_word_in_shuffle hA hSeg z hz Γ hzL (wtW Δ) (GlobalTheory.T.ordered_word_letters_cuspidal Δ) (GlobalTheory.T.word_occurs_of_subquotient _ _ (isSmooth_prodIrr z hz) hcos.isSubquotient _ hτW)` as an intermediate fact. Rewrite `this` using `[hΓ.1]`. Then use the resulting hypothesis. Establish `wΓ : Wd τ.ρ (wtW Γ)` using `GlobalTheory.T.langlands_rep_ordered_word_occurs hA hSoc hSeg 𝔭 τ.ρ hτL h' Γ hΓ`. Establish `wΓP : Wd (prodIrr x hd) (wtW Γ)` using `GlobalTheory.T.word_occurs_of_subquotient _ _ hPs hτP _ wΓ`. Establish `wΓ2 : Wd (prod₂ (x 0).rep (x 1).rep) (wtW Γ)` using `GlobalTheory.T.word_occurs_of_subquotient _ _ (isSmooth_prod₂ _ _) (.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective) _ wΓP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h'', z', Δ', hz', hz'L, hmap, hsub⟩` from `GlobalTheory.T.product_langlands_subquotient_segments hA 𝔪 𝔫 (x 0) (x 1) h0 h1`. Establish `s2 : InShW (𝔪 + 𝔫) (wtW Γ)`. Use `GlobalTheory.T.segment_product_word_in_shuffle hA hSeg z' hz' Δ' hz'L (wtW Γ) (GlobalTheory.T.ordered_word_letters_cuspidal Γ) (GlobalTheory.T.word_occurs_of_subquotient _ _ (isSmooth_prodIrr z' hz') hsub _ wΓ2)` as an intermediate fact. Rewrite `this` using `[hmap]`. Then use the resulting hypothesis. Establish `he : 𝔪 + 𝔫 = 𝔭` using `GlobalTheory.T.ordered_forms_mutual_shuffle_eq hA (𝔪 + 𝔫) 𝔭 h h' Δ Γ hΔ hΓ s1 s2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨ψ⟩` from `GlobalTheory.T.langlands_classification_order_free_equiv hFree (𝔪 + 𝔫) τ.ρ (IrrGL.rep ⟨_, c⟩) (he ▸ hτL) hy`. Conclude with `(IsSubquotient.of_surjective ψ.toIntertwiningMap ψ.toLinearEquiv.surjective).trans hτP`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSubquotient_prodIrr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hSoc : LSocleGL k)
@@ -85,7 +85,7 @@ theorem isSubquotient_prodIrr {k : Type} [Field k] [ValuativeRel k] [Topological
   exact (IsSubquotient.of_surjective ψ.toIntertwiningMap ψ.toLinearEquiv.surjective).trans hτP
 
 /- English proof (translation)
-Introduce `hA hSoc hSeg hFree hEx 𝔪 𝔫 x y hd h0 h1 hy` and use `isSubquotient_prodIrr hA hSoc hSeg hFree hEx 𝔪 𝔫 x y hd h0 h1 hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL), LSocleGL k → LSegJacquet k → LOrderFree k →

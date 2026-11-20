@@ -12,15 +12,11 @@ noncomputable def powAdjoin (M : IntermediateField F E.toAffine.FunctionField) (
   M⟮genX E ^ p ^ a, genY E ^ p ^ a⟯
 
 /- English proof (translation)
-Use `set T := powAdjoin E p M (a + 1) with hT`. Set `Q : IntermediateField M E.toAffine.FunctionField` to `(T.toSubfield.comap (frobenius E.toAffine.FunctionField p)).toIntermediateField fun m => by show (algebraMap M E.toAffine.FunctionField m) ^ p ∈ T`. Rewrite using `[← map_pow]`. Conclude with `IntermediateField.algebraMap_mem T _`. Establish `hQ : powAdjoin E p M a ≤ Q`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[powAdjoin, adjoin_le_iff]`. Introduce and unpack `w (rfl | rfl)`. Use `show (genX E ^ p ^ a) ^ p ∈ T`. Rewrite using `[← pow_mul, ← pow_succ]`. Conclude with `subset_adjoin _ _ (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (genY E ^ p ^ a) ^ p ∈ T`. Rewrite using `[← pow_mul, ← pow_succ]`. Conclude with `subset_adjoin _ _ (by simp)`. Establish `hall : ∀ z : E.toAffine.FunctionField, z ^ p ∈ T` using `fun z => hQ (show z ∈ powAdjoin E p M a by rw [ha]; trivial)`. Establish `h1le : powAdjoin E p M 1 ≤ T`.
-
-Rewrite using `[powAdjoin, adjoin_le_iff]`. Introduce and unpack `w (rfl | rfl)`. Rewrite using `[pow_one]`. Conclude with `hall _`. Rewrite using `[pow_one]`.
-
-Conclude with `hall _`. Rewrite `h1le` using `[h1]`. Conclude with `top_le_iff.mp h1le`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powAdjoin_succ_eq_top (M : IntermediateField F E.toAffine.FunctionField)
     (h1 : powAdjoin E p M 1 = ⊤) {a : ℕ} (ha : powAdjoin E p M a = ⊤) :
@@ -53,21 +49,17 @@ theorem powAdjoin_succ_eq_top (M : IntermediateField F E.toAffine.FunctionField)
 variable [PerfectRing F p]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hM`. Use `set N := M ⊔ powField E p`. Establish `t` using `relfinrank_mul_relfinrank (le_sup_right : powField E p ≤ N) (le_top : N ≤ ⊤)`. Establish `hp' : relfinrank (powField E p) ⊤ = p` using `by rw [relfinrank_top_right, finrank_powField]`. Rewrite `t` using `[hp']`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.prime_mul_iff.mp (t ▸ hp.out)) with ⟨-, h1⟩ | ⟨-, h1⟩` into its components or cases. Establish `hN : N = ⊤` using `top_le_iff.mp ((relfinrank_eq_one_iff).mp h1)`. Establish `hT1 : powAdjoin E p M 1 = ⊤`. Rewrite using `[← IntermediateField.restrictScalars_eq_top_iff (K := F)]`. Use `top_le_iff.mp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN]`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `m hm`. Conclude with `(powAdjoin E p M 1).algebraMap_mem ⟨m, hm⟩`. Rewrite using `[powField, adjoin_le_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `w (rfl | rfl)`. Conclude with `(subset_adjoin _ _ (by simp) : genX E ^ p ∈ powAdjoin E p M 1)`. Conclude with `(subset_adjoin _ _ (by simp) : genY E ^ p ∈ powAdjoin E p M 1)`. Establish `hall : ∀ a, 1 ≤ a → powAdjoin E p M a = ⊤` using `fun a ha => Nat.le_induction hT1 (fun n _ ih => powAdjoin_succ_eq_top E p M hT1 ih) a ha`. Use `set S := separableClosure M E.toAffine.FunctionField`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharP S p := charP_of_injective_algebraMap (algebraMap F S).injective p`. Use `haveI : ExpChar S p := ExpChar.prime hp.out`. Take `⟨nx, hnx⟩` from `IsPurelyInseparable.pow_mem S p (genX E)`. Take `⟨ny, hny⟩` from `IsPurelyInseparable.pow_mem S p (genY E)`. Establish `hmem : ∀ (z : E.toAffine.FunctionField) (n a : ℕ), z ^ p ^ n ∈ (algebraMap S E.toAffine.FunctionField).range → n ≤ a → z ^ p ^ a ∈ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z n a hz hn`. Take `⟨s, hs⟩` from `hz`. Establish `e : z ^ p ^ a = (z ^ p ^ n) ^ p ^ (a - n)`. Rewrite using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' hn]`. Rewrite using `[e, ← hs]`.
-
-Conclude with `pow_mem s.2 _`. Establish `hle : powAdjoin E p M (nx + ny + 1) ≤ S`. Rewrite using `[powAdjoin, adjoin_le_iff]`. Introduce and unpack `w (rfl | rfl)`. Conclude with `hmem _ nx _ hnx (by omega)`.
-
-Conclude with `hmem _ ny _ hny (by omega)`. Rewrite `hle` using `[hall _ (by omega), top_le_iff, separableClosure.eq_top_iff]`. Rewrite `h` using `[Field.finSepDegree_eq_finrank_of_isSeparable]`. Conclude with `lt_irrefl _ h`. Conclude with `hM (le_sup_left.trans ((relfinrank_eq_one_iff).mp h1))`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_powField_of_finSepDegree_lt (M : IntermediateField F E.toAffine.FunctionField)
     [FiniteDimensional M E.toAffine.FunctionField]

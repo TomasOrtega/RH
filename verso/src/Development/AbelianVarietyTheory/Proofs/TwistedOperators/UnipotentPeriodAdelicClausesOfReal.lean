@@ -19,9 +19,9 @@ namespace GlobalTheory.SepPer.AdelicFromReal
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : infHom V b = 1` using `hb`. Establish `h2` using `congrArg Units.val h1`. Simplify using `only [infHom, MonoidHom.comp_apply, Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Units.val_one] at h2`. Establish `h4 : (matHom V b).1.map (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)) = 1` using `h2`. Establish `h3 : cmp θ τ b = ((matHom V b).1.map (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E))).map (θ τ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, h4]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_of_mem_GfC (θ : InfFam D) {V : HSp D} {b : GA D V} (hb : b ∈ GfC V) (τ : D.what₂.Tau) : cmp θ τ b = 1 := by
   have h1 : infHom V b = 1 := hb
@@ -33,7 +33,7 @@ theorem cmp_of_mem_GfC (θ : InfFam D) {V : HSp D} {b : GA D V} (hb : b ∈ GfC 
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `h1 : finHom V a = 1` using `ha`. Simplify using `only [Lev.finE, MonoidHom.comp_apply, h1, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem finE_of_mem_GinfC {V : HSp D} {a : GA D V} (ha : a ∈ GinfC V) : Lev.finE V a = 1 := by
   have h1 : finHom V a = 1 := ha
@@ -46,7 +46,7 @@ namespace GlobalTheory.SepPer.AdelicFromReal
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `congrArg (fun v => φ (v i)) h` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mulVec_ratV {V : HSp D} (g : GA D V) {y y' : Fin V.rank → D.host.E} (h : mt V g *ᵥ ratV y = ratV y')
     {R : Type} [CommRing R] (φ : AE D →+* R) :
@@ -57,11 +57,11 @@ theorem map_mulVec_ratV {V : HSp D} (g : GA D V) {y y' : Fin V.rank → D.host.E
   exact this
 
 /- English proof (translation)
-Set `φ : AE D →+* Lev.EAf D` to `(Lev.swapAE D).comp (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `e1 : (Lev.finE V g).1 = (mt V g).map φ` using `by show (((matHom V g).1.map _).map _) = _`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Establish `e2 : ∀ x : D.host.E, φ (incA D x) = x ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)` using `fun x => by show Lev.swapAE D (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((1 : AF D.host.F) ⊗ₜ[D.host.F] x)) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Use `map_mulVec_ratV g h φ` as an intermediate fact. Simplify using `only [e2] at this`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem finE_mulVec {V : HSp D} (g : GA D V) {y y' : Fin V.rank → D.host.E} (h : mt V g *ᵥ ratV y = ratV y') :
     (Lev.finE V g).1 *ᵥ (fun i => y i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) =
@@ -80,11 +80,9 @@ theorem finE_mulVec {V : HSp D} (g : GA D V) {y y' : Fin V.rank → D.host.E} (h
   rw [e1]; exact this
 
 /- English proof (translation)
-Set `φ : AE D →+* ℂ` to `(θ τ).comp (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `e1 : cmp θ τ g = (mt V g).map φ` using `by show (((matHom V g).1.map _).map _) = _`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Establish `e2 : ∀ x : D.host.E, φ (incA D x) = tauE D τ x` using `fun x => by show θ τ (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((1 : AF D.host.F) ⊗ₜ[D.host.F] x)) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `(hθ τ).1 x`. Use `map_mulVec_ratV g h φ` as an intermediate fact. Simplify using `only [e2] at this`. Rewrite using `[e1]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_mulVec (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (g : GA D V) {y y' : Fin V.rank → D.host.E}
     (h : mt V g *ᵥ ratV y = ratV y') (τ : D.what₂.Tau) :
@@ -108,13 +106,13 @@ namespace GlobalTheory.SepPer.AdelicFromReal
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hq : GlobalTheory.UnitaryEmbeddingProperties.qM d *ᵥ (fun i => d.a i j) = 0`. Establish `hp : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V Y d.ι) * V.gram) *ᵥ (fun i => d.a i j) = 0`. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun d.perp k) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.qM, ← Matrix.mulVec_mulVec, hp, Matrix.mulVec_zero]`. Establish `hQ : (GlobalTheory.UnitaryEmbeddingProperties.qM d).map (incA D) *ᵥ ratV (fun i => d.a i j) = 0`. Use function extensionality and compare the values at `k`. Use `RingHom.map_mulVec (incA D) (GlobalTheory.UnitaryEmbeddingProperties.qM d) (fun i => d.a i j) k` as an intermediate fact. Rewrite `this` using `[hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ratV (fun i => d.a i j) = (incA D) ∘ (fun i => d.a i j)` using `rfl`. Rewrite using `[e]`. Simplify using `using this.symm`. Use `show (matHom V (stabilizerEmbedding d h)).1 *ᵥ _ = _`. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_matrix_formula]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.UnitaryEmbeddingProperties.ex, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hQ, Matrix.mulVec_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem unitaryEmbedding_fixes_vectors {Y V : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData Y V c ε) (h : GA D Y) (j : Fin c) :
     mt V (stabilizerEmbedding d h) *ᵥ ratV (fun i => d.a i j) = ratV (fun i => d.a i j) := by
@@ -136,9 +134,7 @@ theorem unitaryEmbedding_fixes_vectors {Y V : HSp D} {c : ℕ} {ε : D.host.E} (
   simp only [GlobalTheory.UnitaryEmbeddingProperties.ex, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hQ, Matrix.mulVec_zero, add_zero]
 
 /- English proof (translation)
-Use `show finHom V (stabilizerEmbedding d a) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((matHom V (stabilizerEmbedding d a)).1).map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = 1`. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_matrix_formula, GlobalTheory.UnitaryEmbeddingProperties.ex_map]`. Establish `h1 : ((matHom Y a).1).map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = 1` using `congrArg Units.val ha`.
-
-Rewrite using `[h1, GlobalTheory.UnitaryEmbeddingProperties.ex_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summandEmbedding_mem_infiniteCompact {Y V : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData Y V c ε) {a : GA D Y} (ha : a ∈ GinfC Y) :
     stabilizerEmbedding d a ∈ GinfC V := by
@@ -151,9 +147,7 @@ theorem summandEmbedding_mem_infiniteCompact {Y V : HSp D} {c : ℕ} {ε : D.hos
   rw [h1, GlobalTheory.UnitaryEmbeddingProperties.ex_one]
 
 /- English proof (translation)
-Use `show infHom V (stabilizerEmbedding d b) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((matHom V (stabilizerEmbedding d b)).1).map (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = 1`. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_matrix_formula, GlobalTheory.UnitaryEmbeddingProperties.ex_map]`. Establish `h1 : ((matHom Y b).1).map (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = 1` using `congrArg Units.val hb`.
-
-Rewrite using `[h1, GlobalTheory.UnitaryEmbeddingProperties.ex_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summandEmbedding_mem_finiteCompact {Y V : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData Y V c ε) {b : GA D Y} (hb : b ∈ GfC Y) :
     stabilizerEmbedding d b ∈ GfC V := by
@@ -166,14 +160,14 @@ theorem summandEmbedding_mem_finiteCompact {Y V : HSp D} {c : ℕ} {ε : D.host.
   rw [h1, GlobalTheory.UnitaryEmbeddingProperties.ex_one]
 
 /- English proof (translation)
-The claim follows from `map_inv (MonoidHom.mk' (stabilizerEmbedding d) (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul d)) x`.
+A detailed English derivation is pending.
 -/
 theorem summandEmbedding_inv {Y V : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData Y V c ε) (x : GA D Y) :
     stabilizerEmbedding d x⁻¹ = (stabilizerEmbedding d x)⁻¹ :=
   map_inv (MonoidHom.mk' (stabilizerEmbedding d) (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul d)) x
 
 /- English proof (translation)
-Unfold `coefR`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[show cmp θ τ (g * b) = cmp θ τ g * cmp θ τ b from GlobalTheory.PointAtPlaceHom.infMat_mul V (θ τ) g b, cmp_of_mem_GfC θ hb τ, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem coefR_mul_fin (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (v a : ∀ τ, M.H τ)
     (g : GA D V) {b : GA D V} (hb : b ∈ GfC V) : coefR θ M v a (g * b) = coefR θ M v a g := by
@@ -184,11 +178,11 @@ theorem coefR_mul_fin (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (
     cmp_of_mem_GfC θ hb τ, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1` using `(mem_multT θ M J 1 t).1 ht`. Establish `e : ∀ u, t (PiTensorProduct.tprod ℂ u) = (PiTensorProduct.lift.symm t) u` using `fun u => by`. Simplify using `[PiTensorProduct.lift_symm]`. It suffices to establish `key : ∀ T ∈ Mult θ M J 1, ∀ g, T w (g * k) = T w g by rw [e]; exact key _ h1 g`. Introduce `T hT`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => intro g`. Rewrite using `[hT.lev w k hk g, Pi.one_apply, one_mul]`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add T T' _ _ h h' => intro g`. Simplify using `[h g, h' g]`. Consider the case `smul a T _ h => intro g`. Simplify using `[h g]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem multT_lev (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (J : Set (GA D V))
     {t : (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] (GA D V → ℂ)} (ht : t ∈ MultT θ M J 1) (w : M.Vec) {k : GA D V} (hk : k ∈ J)
@@ -213,9 +207,9 @@ variable {D : D7}
 open Classical in
 
 /- English proof (translation)
-Establish `ha` using `summandEmbedding_mem_infiniteCompact d a.2`. Establish `hb` using `summandEmbedding_mem_finiteCompact d b.2`. Establish `e1 : g * stabilizerEmbedding d ((a : GA D Y) * b) = g * stabilizerEmbedding d a * stabilizerEmbedding d b`. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul, mul_assoc]`. Establish `e2 : Lev.finE V (g * stabilizerEmbedding d a * stabilizerEmbedding d b) = Lev.finE V (g * stabilizerEmbedding d b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, finE_of_mem_GinfC ha, mul_one, map_mul]`. Rewrite using `[e1, coef, e2, coefR_mul_fin θ M _ _ _ hb]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coef_split (θ : InfFam D) {Y V : HSp D} (d : HermitianOrthogonalExtensionData Y V 1 1) {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (u : ∀ τ, M.H τ) (g : GA D V) (a : GinfC Y) (b : GfC Y) :
@@ -233,13 +227,13 @@ theorem coef_split (θ : InfFam D) {Y V : HSp D} (d : HermitianOrthogonalExtensi
 open Classical in
 
 /- English proof (translation)
-Establish `step1 : ∫ h, coef θ M K u u (stabilizerEmbedding d x⁻¹ * stabilizerEmbedding d h) * φ h ∂ν = ∫ h, coef θ M K u u (1 * stabilizerEmbedding d h) * φ (x * h) ∂ν`. Rewrite using `[← integral_mul_left_eq_self (fun h => coef θ M K u u (stabilizerEmbedding d x⁻¹ * stabilizerEmbedding d h) * φ h) x]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[← GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul, inv_mul_cancel_left, one_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[step1, hνe, hemb.integral_map]`. Establish `pw : ∀ q : GinfC Y × GfC Y, coef θ M K u u (1 * stabilizerEmbedding d ((q.1 : GA D Y) * q.2)) * φ (x * ((q.1 : GA D Y) * q.2)) = (coefR θ M u u (stabilizerEmbedding d q.1) * φ (x * q.1)) * K'.indicator (fun _ => (1 : ℂ)) q.2`. Introduce `q`. Rewrite using `[coef_split θ d M K u 1 q.1 q.2, one_mul, one_mul, Set.indicator_apply]`. Distinguish the cases in `hq : q.2 ∈ K'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hq'` using `(hK' q.2).1 hq`. Rewrite using `[if_pos hq', if_pos hq, ← mul_assoc x, hinv q.2 hq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq' : Lev.finE V (stabilizerEmbedding d (q.2 : GA D Y)) ∉ K` using `fun h => hq ((hK' q.2).2 h)`. Rewrite using `[if_neg hq', if_neg hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[pw]`. Rewrite using `[integral_prod_mul (fun a : GinfC Y => coefR θ M u u (stabilizerEmbedding d a) * φ (x * a)) (K'.indicator (fun _ => (1 : ℂ))), hrep, integral_indicator_const _ hK'm]`. Simplify using `only [Measure.real, Complex.real_smul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem one_clause (θ : InfFam D) {Y V : HSp D} (d : HermitianOrthogonalExtensionData Y V 1 1) {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (u : ∀ τ, M.H τ) (φ : GA D Y → ℂ) (ν : Measure (GA D Y))
@@ -281,7 +275,7 @@ namespace GlobalTheory.SepPer.AdelicFromReal
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite `hk` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hC, hB]`. Rewrite using `[Matrix.mulVec_sub, hA]`. Conclude with `hk`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_sub_mem_of_triple_product_fixing {n : ℕ} {R : Type} [CommRing R] (A B C : Matrix (Fin n) (Fin n) R) (u0 u1 : Fin n → R) (H : Set (Fin n → R))
     (hk : (A * B * C) *ᵥ u0 - u0 ∈ H) (hC : C *ᵥ u0 = u0) (hB : B *ᵥ u0 = u1) (hA : A *ᵥ u0 = u0) : A *ᵥ (u1 - u0) ∈ H := by
@@ -293,11 +287,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hu0 : (fun i => zv d i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := Submodule.subset_span ⟨zv d, hz, rfl⟩`. Establish `h3` using `hk.2.2 _ hu0`. Rewrite `h3` using `[map_mul, map_mul, Units.val_mul, Units.val_mul]`. Establish `f1` using `finE_mulVec (stabilizerEmbedding d h) (unitaryEmbedding_fixes_vectors d h 0)`. Establish `f2` using `finE_mulVec (stabilizerEmbedding d x⁻¹) (unitaryEmbedding_fixes_vectors d x⁻¹ 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f3` using `finE_mulVec γ hzγ`. Establish `h4` using `mulVec_sub_mem_of_triple_product_fixing _ _ _ _ _ _ h3 f1 f3 f2`. Establish `e : (fun i => z i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) - (fun i => zv d i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) = fun i => (z - zv d) i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, TensorProduct.sub_tmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[e, summandEmbedding_inv]`. Conclude with `GlobalTheory.T.mem_ideal_smul_adelicPointRationalLattice D V Λ 𝔪 hΛ (stabilizerEmbedding d x) (z - zv d) h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish {Y V : HSp D} (d : HermitianOrthogonalExtensionData Y V 1 1) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)) (hΛ : IsSelfDualC V Λ)
     (hz : zv d ∈ Λ) (x : GA D Y) (γ : GA D V) (z : Fin V.rank → D.host.E) (hzγ : mt V γ *ᵥ ratV (zv d) = ratV z)
@@ -327,33 +321,29 @@ variable {D : D7}
 open Classical in
 
 /- English proof (translation)
-Take `⟨K, hK⟩ : ∃ K, K = congLev D.sp.cm V.gram Λ 𝔪` from `⟨_, rfl⟩`. Take `⟨g, hg⟩ : ∃ g, g = stabilizerEmbedding d x⁻¹ * γ` from `⟨_, rfl⟩`. Rewrite using `[← hK, ← hg]`. Rewrite `hK'` using `[← hK]`. Set `Sg : Set (GfC Y)` to `{b : GfC Y | Lev.finE V (g * stabilizerEmbedding d (b : GA D Y)) ∈ K}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hS : MeasurableSet Sg ∧ μ Sg ≤ μ K'`. Distinguish the cases in `hne : Sg.Nonempty`. Take `⟨b₀, hb₀⟩` from `hne`. Establish `hb₀' : Lev.finE V (g * stabilizerEmbedding d (b₀ : GA D Y)) ∈ K` using `hb₀`. Establish `e : Sg = (fun b => b₀⁻¹ * b) ⁻¹' K'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `b`. Rewrite using `[Set.mem_preimage, hK']`. Establish `e1 : g * stabilizerEmbedding d (b : GA D Y) = (g * stabilizerEmbedding d (b₀ : GA D Y)) * stabilizerEmbedding d ((b₀⁻¹ * b : GfC Y) : GA D Y)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul, summandEmbedding_inv, mul_assoc, mul_inv_cancel_left]`. Use `show Lev.finE V (g * stabilizerEmbedding d (b : GA D Y)) ∈ K ↔ _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_mul]`. Conclude with `K.mul_mem_cancel_left hb₀'`. Rewrite using `[e]`. Conclude with `⟨(measurable_const_mul b₀⁻¹) hK'm, (measure_preimage_mul μ b₀⁻¹ K').le⟩`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨MeasurableSet.empty, by simp⟩`. Establish `hSfin : μ Sg < ⊤` using `hS.2.trans_lt hK'top`. Establish `pw : ∀ q : GinfC Y × GfC Y, coef θ M K u u (g * stabilizerEmbedding d ((q.1 : GA D Y) * q.2)) = coefR θ M u u (g * stabilizerEmbedding d q.1) * Sg.indicator (fun _ => (1 : ℂ)) q.2`. Introduce `q`. Rewrite using `[coef_split θ d M K u g q.1 q.2, Set.indicator_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hF` using `hfar g`. Apply the tactic sequence `have hind : Integrable (Sg.indicator (fun _ => (1 : ℂ))) μ := (integrable_indicator_iff hS.1).2 (by first | exact integrableOn_const.2 (Or.inr hSfin) | exact integrableOn_const hSfin.ne)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hνe, hemb.integrable_map_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((fun h => coef θ M K u u (g * stabilizerEmbedding d h)) ∘ fun q : GinfC Y × GfC Y => (q.1 : GA D Y) * q.2) = fun q => coefR θ M u u (g * stabilizerEmbedding d q.1) * Sg.indicator (fun _ => (1 : ℂ)) q.2` using `funext pw`. Rewrite using `[e]`. Apply the tactic sequence `first | exact hF.1.mul_prod hind | exact hF.1.prod_mul hind`. Establish `hnorm : ∫ h, ‖coef θ M K u u (g * stabilizerEmbedding d h)‖ ∂ν = (∫ a, ‖coefR θ M u u (g * stabilizerEmbedding d a)‖ ∂m) * (μ Sg).toReal`. Rewrite using `[hνe, hemb.integral_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ q : GinfC Y × GfC Y, ‖coef θ M K u u (g * stabilizerEmbedding d ((q.1 : GA D Y) * q.2))‖ = ‖coefR θ M u u (g * stabilizerEmbedding d q.1)‖ * Sg.indicator (fun _ => (1 : ℝ)) q.2`. Introduce `q`. Rewrite using `[pw, norm_mul]`. Use `congr 1`. Simplify using `only [Set.indicator_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_prod_mul (fun a : GinfC Y => ‖coefR θ M u u (g * stabilizerEmbedding d a)‖) (Sg.indicator (fun _ => (1 : ℝ))), integral_indicator_const _ hS.1]`. Simplify using `[Measure.real]`. Establish `hN : ∏ τ, nrm θ B g⁻¹ τ (zv d) = ∏ τ, nrm θ B (stabilizerEmbedding d x) τ z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `nrm`. Rewrite using `[inv_inv, hg, show cmp θ τ (stabilizerEmbedding d x⁻¹ * γ) = cmp θ τ (stabilizerEmbedding d x⁻¹) * cmp θ τ γ from GlobalTheory.PointAtPlaceHom.infMat_mul V (θ τ) _ _, ← Matrix.mulVec_mulVec, cmp_mulVec θ hθ γ hzγ τ, summandEmbedding_inv]`. Establish `hP : 0 ≤ (∏ τ, nrm θ B (stabilizerEmbedding d x) τ z) ^ (2 * V.rank + 5)` using `pow_nonneg (Finset.prod_nonneg fun τ _ => Real.sqrt_nonneg _) _`. Establish `hI : 0 ≤ ∫ a, ‖coefR θ M u u (g * stabilizerEmbedding d a)‖ ∂m` using `integral_nonneg fun _ => norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : (μ Sg).toReal ≤ (μ K').toReal` using `ENNReal.toReal_mono hK'top.ne hS.2`. Establish `h2` using `hF.2`. Rewrite `h2` using `[hN]`. Rewrite using `[hnorm, norm_mul, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (μ K').toReal * (Real.exp Q * ‖c₀‖) := mul_le_mul hs h2 (mul_nonneg hI hP) ENNReal.toReal_nonneg`. Use `_ = Real.exp Q * ((μ K').toReal * ‖c₀‖) := by ring`. Introduce `hnot h`. Assume the negation of the conclusion as `hne`.
-
-Unfold `coef at hne`. Use `split_ifs at hne with hk`. Use `swap`. Conclude with `hne rfl`. Apply `hnot` to reduce the goal to its premises.
-
-Rewrite `hk` using `[hK, hg]`. Conclude with `vanish d Λ 𝔪 hΛ hz x γ z hzγ h hk`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_clause (θ : InfFam D) (hθ : IsInfFam θ) {Y V : HSp D} (d : HermitianOrthogonalExtensionData Y V 1 1) {S : D.what₂.Tau → SPar}
     (M : DSModel V S) (u : ∀ τ, M.H τ) (B : Fr V) (Q : ℝ) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)) (hΛ : IsSelfDualC V Λ)
@@ -455,11 +445,9 @@ end GlobalTheory.SepPer.AdelicFromReal
 namespace GlobalTheory.SepPer.AdelicFromReal
 
 /- English proof (translation)
-Introduce `hP D θ hθ Y V d S S' M₀ M p Q hp Λ 𝔪 hΛ h𝔪 hz J hJ t ht ν hν`. Take `⟨m, μ, hm, hμ, hmσ, hμσ, hemb, hνe⟩` from `GlobalTheory.T.adelicUnitaryHaar_eq_map_prod_real_finite D Y ν hν`. Use `haveI := hmσ`. Use `haveI := hμσ`. Take `⟨c₀, hc⟩` from `hp.2 m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hK'm, hK'0, hK'top⟩` from `GlobalTheory.T.congruence_preimage_volume_finite D Y V d Λ 𝔪 hΛ h𝔪 μ hμ`. Establish `hκ` using `ENNReal.toReal_pos hK'0.ne' hK'top.ne`. Establish `hα : Integrable (fun h : GinfC Y => coefR θ M (p.v θ) (p.v θ) (stabilizerEmbedding d h)) m`. Simplify using `using (hc.far 1).1`. Use `⟨_, mul_ne_zero (Complex.ofReal_ne_zero.2 hκ.ne') hc.ne, fun x => ?_, fun x γ z _ hzγ => ?_⟩` and prove the remaining obligations.
-
-Conclude with `one_clause θ d M _ (p.v θ) _ ν m μ hemb hνe _ (fun _ => Iff.rfl) hK'm (fun b hb g => multT_lev θ M₀ J ht p.w (hJ _ b.2 hb) g) c₀ (fun x => GlobalTheory.T.integrable_scalar_action_multiplicityMap_values hP D θ hθ Y S' M₀ J 1 t ht p.w m hm _ c₀ hα hc.act x) x`. Conclude with `term_clause θ hθ d M (p.v θ) p.B Q Λ 𝔪 hΛ hz ν m μ hemb hνe _ (fun _ => Iff.rfl) hK'm hK'top c₀ hc.far x γ z hzγ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adelicAt_of_real : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S') (M : DSModel V S) (p : Pack M₀ M) (Q : ℝ), p.Is θ d Q → ∀ (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → zv d ∈ Λ → ∀ (J : Set (GA D Y)), (∀ k ∈ GfC Y, Lev.finE V (stabilizerEmbedding d k) ∈ congLev D.sp.cm V.gram Λ 𝔪 → k ∈ J) → ∀ t ∈ MultT θ M₀ J 1, ∀ ν : Measure (GA D Y), ν.IsHaarMeasure → ∃ c, p.AdelicAt θ d Q Λ 𝔪 ν (t (PiTensorProduct.tprod ℂ p.w)) c := by
   intro hP D θ hθ Y V d S S' M₀ M p Q hp Λ 𝔪 hΛ h𝔪 hz J hJ t ht ν hν

@@ -6,13 +6,11 @@ namespace GlobalTheory
 namespace PDiv
 
 /- English proof (translation)
-Introduce `R C A _ _ _ _ _ f h`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Take `⟨c, rfl⟩` from `AugCot.d_surjective _ w`. Establish `hw' : dUnit R (f c) = 0` using `(cotMap_d f c).symm.trans hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hw'` using `[dUnit, AugCot.d_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `AugCot.d _ c = 0`. Rewrite using `[AugCot.d_eq_zero_iff]`. Apply `h` to reduce the goal to its premises. Establish `e : Bialgebra.counitAlgHom R A (f c) = Bialgebra.counitAlgHom R C c` using `AlgHom.congr_fun (BialgHomClass.counitAlgHom_comp f) c`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2 : f (c - algebraMap R C (Bialgebra.counitAlgHom R C c)) = f c - algebraMap R A (Bialgebra.counitAlgHom R A (f c))`. Rewrite using `[map_sub, e]`. Use `congr 1`. Conclude with `AlgHom.commutes (f : C →ₐ[R] A) _`. Rewrite using `[e2]`.
-
-Conclude with `hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cotMap_injective_of_sq : ∀ (R C A : Type) [CommRing R] [CommRing C] [CommRing A]
     [Bialgebra R C] [Bialgebra R A] (f : C →ₐc[R] A),

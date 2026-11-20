@@ -10,9 +10,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `z : zt K 0 = 1`. Rewrite using `[zt, ← map_one (centralSection K 2)]`. Use `congr 1`. Conclude with `Subtype.ext Real.exp_zero`. Establish `hs : ∀ r s : ℕ, GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) = finSumFinEquiv` using `fun r s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext (x | x) <;> simp`. Rewrite using `[(blkLaws (K := K)).1, neg_zero, z, mul_one, mul_one]`. Use `le_of_eq_of_le (congrArg _ (Units.ext ?_)) (UpperTheory.ConvolutionTheory.BW.Pair.height_lev (E := K) (r := 2) (s := 2) m₁ m₂)` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.lev, GlobalTheory.SmGL.val_emb₂, hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem height_lv {K : Type} [Field K] [NumberField K] (m₁ m₂ : G1 K 2) :
     AutomorphicForm.height ((lv m₁ m₂ 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ≤ heightConst K (2 + 2) *
@@ -29,7 +29,7 @@ private theorem height_lv {K : Type} [Field K] [NumberField K] (m₁ m₂ : G1 K
   rfl
 
 /- English proof (translation)
-Establish `h1` using `UpperTheory.ConvolutionTheory.BW.Pair.one_le_qht m`. Take `⟨γ, hγ⟩` from `exists_lt_of_ciInf_lt (show qht m < 2 * qht m by linarith)`. Conclude with `⟨γ, γ.2, hγ.le⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem near {K : Type} [Field K] [NumberField K] {n : ℕ} (m : G1 K n) :
     ∃ γ ∈ Gam K n, AutomorphicForm.height ((γ * m : G1 K n) : AdelicGLn.AdelicGL K n) ≤ 2 * qht m := by
@@ -38,7 +38,7 @@ private theorem near {K : Type} [Field K] [NumberField K] {n : ℕ} (m : G1 K n)
   exact ⟨γ, γ.2, hγ.le⟩
 
 /- English proof (translation)
-Use `h1.trans ((mul_le_mul (mul_le_mul_of_nonneg_left (h2.trans (mul_le_mul (mul_le_mul_of_nonneg_left h3 hc) h4 hb (by positivity))) hc) h5 hg (by positivity)).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem num {c x y g a b p q R : ℝ} (hc : 0 ≤ c) (h1 : x ≤ c * y * g) (h2 : y ≤ c * a * b) (h3 : a ≤ 2 * p)
     (h4 : b ≤ 2 * q) (h5 : g ≤ R) (hb : 0 ≤ b) (hg : 0 ≤ g) (hp : 0 ≤ p) (hq : 0 ≤ q) : x ≤ c * c * 4 * R * (p * q) := by
@@ -47,7 +47,7 @@ private theorem num {c x y g a b p q R : ℝ} (hc : 0 ≤ c) (h1 : x ≤ c * y *
   ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc _ ≤ x * y * (B * (A * (p * q)) ^ M) := mul_le_mul_of_nonneg_left h (by positivity) _ = B * A ^ M * (x * p ^ M * (y * q ^ M)) := by rw [mul_pow, mul_pow p]; ring _ ≤ _ := mul_le_mul_of_nonneg_left (mul_le_mul h1 h2 (by positivity) (le_trans (by positivity) h1)) (by positivity …`.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem num2 {x y w B A p q C D : ℝ} {M : ℕ} (h : w ≤ B * (A * (p * q)) ^ M) (h1 : x * p ^ M ≤ C) (h2 : y * q ^ M ≤ D)
     (hx : 0 ≤ x) (hy : 0 ≤ y) (hp : 0 ≤ p) (hq : 0 ≤ q) (hB : 0 ≤ B) (hA : 0 ≤ A) : x * y * w ≤ B * A ^ M * (C * D) :=
@@ -56,23 +56,21 @@ private theorem num2 {x y w B A p q C D : ℝ} {M : ℕ} (h : w ≤ B * (A * (p 
     _ ≤ _ := mul_le_mul_of_nonneg_left (mul_le_mul h1 h2 (by positivity) (le_trans (by positivity) h1)) (by positivity)
 
 /- English proof (translation)
-Introduce `K _ _ Φ W φ₁ φ₂ hc ⟨N, C, hN⟩ hW hrat h₁ h₂`. Prove the components needed by the constructor for the conclusion. Establish `e : W = fun g : G1 K (2 + 2) => constantTerm 2 (fun x => Φ (retractOne x)) (g : AdelicGLn.AdelicGL K (2 + 2))`. Use function extensionality and compare the values at `g`. Rewrite using `[hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Conclude with `congrArg Φ (retractOne_coe (nn X * g)).symm`. Rewrite using `[e]`. Conclude with `(UpperTheory.continuous_constantTerm K _ 2 _ (hc.comp continuous_retractOne)).comp continuous_subtype_val`. Introduce `D hD`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, M, hB⟩` from `UpperTheory.hasModerateGrowth_constantTerm K (2 + 2) 2 (fun x => if h : x ∈ normOneGL K (2 + 2) then Φ ⟨x, h⟩ else 0) ⟨|C|, N, fun g => by`. Establish `hp` using `pow_nonneg (height_pos g).le N`. Use `beta_reduce`. Use `split_ifs with h`. Conclude with `(hN ⟨g, h⟩).trans (mul_le_mul_of_nonneg_right (le_abs_self C) hp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_zero] positivity⟩`. Establish `hB' : ∀ g : G1 K (2 + 2), ‖W g‖ ≤ |B| * AutomorphicForm.height (g : AdelicGLn.AdelicGL K (2 + 2)) ^ M` using `fun g => by`. Use `le_of_eq_of_le (congrArg _ ?_) ((hB g).trans (mul_le_mul_of_nonneg_right (le_abs_self B) (pow_nonneg (height_pos _).le M)))` and prove the remaining obligations. Rewrite using `[hW]`. Use `integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : unipGL X * (g : AdelicGLn.AdelicGL K (2 + 2)) ∈ normOneGL K (2 + 2)` using `(nn X * g).2`. Use `beta_reduce`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression. Take `⟨R, hR⟩` from `exists_height_le_of_isCompact (hD.image continuous_subtype_val)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, hC₁⟩` from `h₁ M`. Take `⟨C₂, hC₂⟩` from `h₂ M`. Establish `h0 : 0 ≤ heightConst K (2 + 2)` using `zero_le_one.trans one_le_heightConst`. Take `⟨c, hc'⟩ : ∃ c, c = heightConst K (2 + 2)` from `⟨_, rfl⟩`. Use `⟨|B| * (c * c * 4 * |R|) ^ M * (C₁ * C₂), fun m₁ m₂ g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ₁, hγ₁, e₁⟩` from `near m₁`. Take `⟨γ₂, hγ₂, e₂⟩` from `near m₂`. Establish `q₁` using `zero_le_one.trans (UpperTheory.ConvolutionTheory.BW.Pair.one_le_qht m₁)`. Establish `q₂` using `zero_le_one.trans (UpperTheory.ConvolutionTheory.BW.Pair.one_le_qht m₂)`. Establish `e3 : AutomorphicForm.height ((lv (γ₁ * m₁) (γ₂ * m₂) 0 * g : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ≤ c * c * 4 * |R| * (qht m₁ * qht m₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `height_mul_le ((lv (γ₁ * m₁) (γ₂ * m₂) 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) g`. Establish `a2` using `height_lv (γ₁ * m₁) (γ₂ * m₂)`. Establish `a3 : AutomorphicForm.height (g : AdelicGLn.AdelicGL K (2 + 2)) ≤ |R|` using `(hR _ ⟨g, hg, rfl⟩).trans (le_abs_self R)`. Rewrite `a1`, `a2`, `h0` using `[← hc']`. Rewrite using `[Subgroup.coe_mul]`.
-
-Conclude with `num h0 a1 a2 e₁ e₂ a3 (height_pos _).le (height_pos _).le q₁ q₂`. Establish `e4 : ‖W (lv m₁ m₂ 0 * g)‖ ≤ |B| * (c * c * 4 * |R| * (qht m₁ * qht m₂)) ^ M`. Rewrite using `[← hrat γ₁ hγ₁ γ₂ hγ₂, ← mul_assoc, (blkLaws (K := K)).2.1, add_zero]`. Conclude with `(hB' _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le e3 M) (abs_nonneg B))`. Conclude with `num2 e4 (hC₁ m₁) (hC₂ m₂) (norm_nonneg _) (norm_nonneg _) q₁ q₂ (abs_nonneg B) (mul_nonneg (mul_nonneg (mul_self_nonneg c) (by norm_num)) (abs_nonneg R))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.ctBd :
     ∀ {K : Type} [Field K] [NumberField K] (Φ W : G1 K (2 + 2) → ℂ) (φ₁ φ₂ : G1 K 2 → ℂ), Continuous Φ →

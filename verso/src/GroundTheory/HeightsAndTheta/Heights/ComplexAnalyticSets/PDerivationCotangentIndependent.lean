@@ -7,9 +7,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open IsLocalRing Matrix
 
 /- English proof (translation)
-Rewrite `hx` using `[pow_two]`. Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `P.add_mem (P.mul_mem_right _ ha) (P.mul_mem_right _ hb)`. Rewrite using `[map_add]`.
-
-Conclude with `P.add_mem ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_mem_of_mem_sq {T : Type} [CommRing T] (P : Ideal T) (D : Derivation ℤ T T)
     {x : T} (hx : x ∈ P ^ 2) : D x ∈ P := by
@@ -20,15 +18,15 @@ theorem derivation_mem_of_mem_sq {T : Type} [CommRing T] (P : Ideal T) (D : Deri
   · rw [map_add]; exact P.add_mem ha hb
 
 /- English proof (translation)
-Use `set A : Matrix (Fin h) (Fin h) T := Matrix.of fun i j => D j (f i) with hA`. Establish `hv : ∀ j, (b ᵥ* A) j ∈ P`. Introduce `j`. Establish `h1` using `derivation_mem_of_mem_sq P (D j) hsum`. Rewrite `h1` using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (∑ i, b i * f i) * D j t ∈ P` using `P.mul_mem_right _ (P.sum_mem fun i _ => P.mul_mem_left _ (hf i))`. Establish `h3 : t * ∑ i, D j (b i * f i) ∈ P`. Use `P.sub_mem h1 h2` as an intermediate fact. Simplify using `using this`. Establish `h4 : ∑ i, D j (b i * f i) ∈ P` using `((Ideal.IsPrime.mem_or_mem inferInstance h3).resolve_left ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ∑ i, D j (b i * f i) - ∑ i, f i * D j (b i) = (b ᵥ* A) j`. Rewrite using `[← Finset.sum_sub_distrib]`. Simplify using `only [Matrix.vecMul, dotProduct, hA, Matrix.of_apply, Derivation.leibniz, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h5]`. Conclude with `P.sub_mem h4 (P.sum_mem fun i _ => P.mul_mem_right _ (hf i))`. Establish `hw : (b ᵥ* A ᵥ* A.adjugate) i = A.det * b i`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_adjugate, Matrix.vecMul_smul, Matrix.vecMul_one, Pi.smul_apply, smul_eq_mul]`. Establish `hmem : (b ᵥ* A ᵥ* A.adjugate) i ∈ P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.vecMul, dotProduct]`. Conclude with `P.sum_mem fun j _ => P.mul_mem_right _ (hv j)`. Rewrite `hmem` using `[hw]`. Conclude with `(Ideal.IsPrime.mem_or_mem inferInstance hmem).resolve_left hdet`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_derivation_det_not_mem {T : Type} [CommRing T] (P : Ideal T) [P.IsPrime] {h : ℕ}
     (D : Fin h → Derivation ℤ T T) (f : Fin h → T) (hf : ∀ i, f i ∈ P)
@@ -64,17 +62,15 @@ theorem mem_of_derivation_det_not_mem {T : Type} [CommRing T] (P : Ideal T) [P.I
   exact (Ideal.IsPrime.mem_or_mem inferInstance hmem).resolve_left hdet
 
 /- English proof (translation)
-Introduce `T _ P _ h D f hf hdet a hsum i`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples P.primeCompl (Finset.univ : Finset (Fin h)) a`. Use `choose b hb using fun k => hs k (Finset.mem_univ k)`. Establish `hmax : maximalIdeal (Localization.AtPrime P) = P.map (algebraMap T (Localization.AtPrime P))` using `(Localization.AtPrime.map_eq_maximalIdeal).symm`. Establish `hsq : algebraMap T (Localization.AtPrime P) (∑ k, b k * f k) ∈ (P ^ 2).map (algebraMap T (Localization.AtPrime P))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_pow, ← hmax]`. Establish `: algebraMap T (Localization.AtPrime P) (∑ k, b k * f k) = algebraMap T (Localization.AtPrime P) (s : T) * ∑ k, a k * algebraMap T (Localization.AtPrime P) (f k)`. Simplify using `only [map_sum, map_mul, Finset.mul_sum, hb, Algebra.smul_def]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hsum`. Take `⟨⟨⟨y, hy⟩, u⟩, hyu⟩` from `(IsLocalization.mem_map_algebraMap_iff P.primeCompl (Localization.AtPrime P)).1 hsq`. Rewrite `hyu` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists P.primeCompl (Localization.AtPrime P)).1 hyu`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbi : b i ∈ P`. Use `mem_of_derivation_det_not_mem P D f hf hdet b ((c : T) * (u : T)) ?_ ?_ i` and prove the remaining obligations. Conclude with `(P.primeCompl.mul_mem c.2 u.2 : _)`. Establish `: (c : T) * (u : T) * ∑ k, b k * f k = (c : T) * y` using `by rw [← hc]; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ hy`. Establish `hsa : algebraMap T (Localization.AtPrime P) (s : T) * a i ∈ maximalIdeal (Localization.AtPrime P)`. Rewrite using `[← Algebra.smul_def, ← hb i]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime P) P _).2 hbi`. Establish `hs' : algebraMap T (Localization.AtPrime P) (s : T) ∉ maximalIdeal (Localization.AtPrime P)`.
-
-Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime P) P]`. Conclude with `s.2`. Conclude with `((maximalIdeal.isMaximal (Localization.AtPrime P)).isPrime.mem_or_mem hsa).resolve_left hs'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DerivationCotangentIndependent.proof : DerivationCotangentIndependent.Statement := by
   intro T _ P _ h D f hf hdet a hsum i

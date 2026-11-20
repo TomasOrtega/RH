@@ -17,7 +17,7 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {n : ℕ} (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D] (hD : ∀ d : D, n • d = 0)
 
 /- English proof (translation)
-Rewrite using `[show (1 * 2 : ℕ) = 2 from rfl, neg_one_sq, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem neg_one_pow_one_mul_two_smul {R M : Type*} [Ring R] {_ : AddCommGroup M} {_ : Module R M} (x : M) :
     ((-1 : R) ^ (1 * 2)) • x = x := by
@@ -25,14 +25,14 @@ theorem neg_one_pow_one_mul_two_smul {R M : Type*} [Ring R] {_ : AddCommGroup M}
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep D] in
 /- English proof (translation)
-Rewrite using `[zmodMulPairingRight, ← Category.assoc, SymmetricCategory.symmetry, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem braiding_comp_zmodMulPairingRight :
     (β_ (zmodRep.{u} G n) D).hom ≫ zmodMulPairingRight n D hD = zmodMulPairing n D hD := by
   rw [zmodMulPairingRight, ← Category.assoc, SymmetricCategory.symmetry, Category.id_comp]
 
 /- English proof (translation)
-Use `(compactCupRes_eq_neg_one_pow_smul_compactCupRightRes φ (zmodMulPairingRight n D hD) hsurj (show 1 + 2 = 3 from rfl) (show 2 + 1 = 3 from rfl) le_rfl (by norm_num) yc _).trans ?_` and prove the remaining obligations. Use `(neg_one_pow_one_mul_two_smul _).trans ?_` and prove the remaining obligations. Use `(congrArg (fun μ => compactCupRightRes φ μ (show 2 + 1 = 3 from rfl) ((compactToGlobal φ _ (fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (fun _ => 𝟙 _) 2).hom xc) yc) (braiding_comp_zmodMulPairingRight D hD)).trans ?_` and prove the remaining obligations. Conclude with `(compactCup_eq_compactCupRight (Aᵥ := fun v => Rep.res (φ v).toMonoidHom (zmodRep.{u} G n)) (Bᵥ := fun v => Rep.res (φ v).toMonoidHom D) (Cᵥ := fun v => Rep.res (φ v).toMonoidHom D) (a := fun _ => 𝟙 _) (b := fun _ => 𝟙 _) (c := fun _ => 𝟙 _) φ (zmodMulPairing n D hD) (fun v => pa …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compactCupRes_zmodMulPairingRight_swap
     (hsurj : Function.Surjective

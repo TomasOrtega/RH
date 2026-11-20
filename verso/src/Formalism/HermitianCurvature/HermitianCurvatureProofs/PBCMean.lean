@@ -18,9 +18,9 @@ def phiRG (Y : Finset H) (κ : H → H → ℂ) (U P Q : Fin f → H × ℂ → 
   if Good x ∧ Good x' then phiR Y κ U P Q x x' else 0
 
 /- English proof (translation)
-Unfold `phiG phiRG phiR`. Distinguish the cases in `hx : Good x`. Distinguish the cases in `hx' : Good x'`. Simplify using `only [hx, hx', and_self, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hx, hx']`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem phiG_split (Y : Finset H) (κ : H → H → ℂ) (U P Q : Fin f → H × ℂ → H × ℂ → ℂ) (x x' : crystallineComparison.V f) :
     phiG Y κ U x x' = phiRG Y κ U P Q x x' + phiG Y κ P x x' + conj (phiG Y κ P x' x) - phiG Y κ Q x x' := by
@@ -33,45 +33,43 @@ theorem phiG_split (Y : Finset H) (κ : H → H → ℂ) (U P Q : Fin f → H ×
   · simp [hx]
 
 /- English proof (translation)
-Use `set T' := T.filter (fun x => Good x) with hT'`. Establish `hXs : ∀ v, ∀ z ∈ T'.image (fun x => x v), z ≠ 0`. Introduce `v z hz`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hz`. Conclude with `(Finset.mem_filter.mp hx).2 v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately.
 
-Set `kv : Fin f → (H × ℂ ⊕ H × ℂ) → (H × ℂ ⊕ H × ℂ) → ℂ` to `fun v a b => match a, b with`. Consider the case `.inl p, .inl q => U v p q`. Consider the case `.inl p, .inr q => P v p q`. Consider the case `.inr q, .inl p => conj (P v p q)`. Consider the case `.inr p, .inr q => Q v p q`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMv : ∀ v, (Matrix.of fun a b : ((Y ×ˢ T'.image (fun x => x v)).disjSum (Y ×ˢ T'.image (fun x => x v))) => kv v a b).PosSemidef`. Introduce `v`. Establish `h` using `hblk v _ (hXs v)`. Unfold `KB.BlockPSD TB.PSDOn at h`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with ⟨a | a, ha⟩ <;> rcases b with ⟨b | b, hb⟩ <;> rfl`. Set `pt : Fin f → (T' × Y) × Bool → (H × ℂ ⊕ H × ℂ)` to `fun v i => if i.2 then Sum.inl (i.1.2.1, i.1.1.1 v) else Sum.inr (i.1.2.1, i.1.1.1 v)`. Establish `hpt : ∀ v i, pt v i ∈ (Y ×ˢ T'.image (fun x => x v)).disjSum (Y ×ˢ T'.image (fun x => x v))`. Introduce `v i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hm : (i.1.2.1, i.1.1.1 v) ∈ Y ×ˢ T'.image (fun x => x v)` using `Finset.mem_product.mpr ⟨i.1.2.2, Finset.mem_image_of_mem _ i.1.1.2⟩`. Distinguish the cases in `hs : i.2`. Simplify using `only [pt, hs, if_true]`. Conclude with `Finset.inl_mem_disjSum.mpr hm`. Simplify using `only [pt, hs]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.inr_mem_disjSum.mpr hm`. Set `L : Matrix ((T' × Y) × Bool) ((T' × Y) × Bool) ℂ` to `fun i j => κ i.1.2.1 j.1.2.1 * ∏ v, kv v (pt v i) (pt v j)`. Establish `hL : L.PosSemidef`. Establish `hk : (Matrix.of fun i j : (T' × Y) × Bool => κ i.1.2.1 j.1.2.1).PosSemidef`. Use `hκ.submatrix (fun i : (T' × Y) × Bool => i.1.2)` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hprod : ∀ s : Finset (Fin f), (Matrix.of fun i j : (T' × Y) × Bool => κ i.1.2.1 j.1.2.1 * ∏ v ∈ s, kv v (pt v i) (pt v j)).PosSemidef`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hk`. Consider the case `insert a s ha ih`. Establish `hA` using `(hMv a).submatrix (fun i : (T' × Y) × Bool => (⟨pt a i, hpt a i⟩ : ((Y ×ˢ T'.image (fun x => x a)).disjSum (Y ×ˢ T'.image (fun x => x a)))))`. Establish `hh` using `hA.hadamard ih`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : (Matrix.of fun i j : (T' × Y) × Bool => κ i.1.2.1 j.1.2.1 * ∏ v ∈ insert a s, kv v (pt v i) (pt v j)) = ((Matrix.of fun a' b' : ((Y ×ˢ T'.image (fun x => x a)).disjSum (Y ×ˢ T'.image (fun x => x a))) => kv a a' b').submatrix (fun i => (⟨pt a i, hpt a i⟩ : ((Y ×ˢ T'.image (f …`. Use extensionality with `i j`. Simplify using `only [Matrix.hadamard_apply, Matrix.submatrix_apply, Matrix.of_apply, Finset.prod_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hh`. Conclude with `hprod Finset.univ`. Set `sg : Bool → ℂ` to `fun s => if s then 1 else -1`. Set `R : Matrix ((T' × Y) × Bool) T ℂ` to `fun i x => if i.1.1.1 = x.1 then sg i.2 else 0`. Establish `hR0 : ∀ x : T, ¬ Good x.1 → ∀ i, R i x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx i`. Establish `: i.1.1.1 ≠ x.1`. Introduce `he`. Conclude with `hx (he ▸ (Finset.mem_filter.mp i.1.1.2).2)`. Simplify using `[R, this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcol : ∀ x : T, ∀ hx : Good x.1, ∀ g : (T' × Y) × Bool → ℂ, ∑ i, R i x * g i = ∑ h : Y, (g ((⟨x.1, Finset.mem_filter.mpr ⟨x.2, hx⟩⟩, h), true) - g ((⟨x.1, Finset.mem_filter.mpr ⟨x.2, hx⟩⟩, h), false))`. Introduce `x hx g`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Rewrite using `[Fintype.sum_eq_single (⟨x.1, Finset.mem_filter.mpr ⟨x.2, hx⟩⟩ : T')]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[R, sg, Fintype.sum_bool]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`. Establish `: a.1 ≠ x.1` using `fun he => ha (Subtype.ext he)`. Simplify using `[R, this]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hstar : ∀ i x, star (R i x) = R i x`. Introduce `i x`. Simplify using `only [R, sg]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hconjP : ∀ x y : crystallineComparison.V f, conj (phi Y κ P y x) = ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, conj (P v (h', y v) (h, x v))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `x y`. Unfold `phi`. Simplify using `only [map_sum, map_mul, map_prod]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h hh => Finset.sum_congr rfl fun h' hh' => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `congr 1`. Use `hκ.1.apply ⟨h, hh⟩ ⟨h', hh'⟩` as an intermediate fact. Simplify using `using this`. Unfold `TB.PSDOn`. Establish `hfin` using `hL.conjTranspose_mul_mul_same R`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hfin` using `[Matrix.mul_assoc]`. Use `hfin using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, hstar, Matrix.of_apply]`. Distinguish the cases in `hx : Good x.1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hy : Good y.1`. Rewrite using `[hcol x hx]`. Simplify using `only [mul_comm (L _ _) (R _ y), hcol y hy]`. Simplify using `only [phiRG, phiR, hx, hy, and_self, if_true, hconjP]`. Unfold `phi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Finset.sum_coe_sort Y]`. Simplify using `only [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Simplify using `only [L, pt, kv, if_true, Bool.false_eq_true, if_false]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `: ∀ j, R j y = 0` using `hR0 y hy`. Simplify using `[this, phiRG, hy]`. Establish `: ∀ i, R i x = 0` using `hR0 x hx`. Simplify using `[this, phiRG, hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiRG_psd (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (U P Q : Fin f → H × ℂ → H × ℂ → ℂ)
     (hblk : ∀ v (Xs : Finset ℂ), (∀ x ∈ Xs, x ≠ 0) → KB.BlockPSD (Y ×ˢ Xs) (Y ×ˢ Xs) (U v) (P v) (Q v))
@@ -193,9 +191,9 @@ theorem phiRG_psd (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (U
     simp [this, phiRG, hx]
 
 /- English proof (translation)
-Unfold `phi`. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun h hh => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun h' hh' => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, norm_prod]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem phi_bound (Y : Finset H) (κ : H → H → ℂ) (K : Fin f → H × ℂ → H × ℂ → ℂ) (B : ℝ) (hB : 0 ≤ B)
     (x x' : crystallineComparison.V f) (hK : ∀ v, ∀ h ∈ Y, ∀ h' ∈ Y, ‖K v (h, x v) (h', x' v)‖ ≤ B) :

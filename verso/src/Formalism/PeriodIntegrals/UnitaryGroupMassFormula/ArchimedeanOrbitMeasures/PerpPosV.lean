@@ -14,7 +14,7 @@ namespace PI.AprimeInfW
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `wV rv`. Rewrite using `[tupH_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wV_idx {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : InfinitePlace X.B.I.F)
     (b : Fin (D.R.rS + 1 + D.R.rS)) : wV X u' v b = rv X.B.I v (X.crd (wF X u' b)) := by
@@ -22,29 +22,27 @@ theorem wV_idx {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : InfiniteP
   rw [tupH_eq]
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP v z hz hzo`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `hzo' : ∀ b, hJ (X.B.I.ε v) (wV X u' v b) z = 0` using `hzo`. Establish `he : ∀ a : Fin D.R.rS, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use `hzo' (Fin.castAdd D.R.rS (Fin.castSucc a))` as an intermediate fact. Rewrite `this` using `[wV_idx, wF, Fin.append_left, Fin.snoc_castSucc]`. Then use the resulting hypothesis. Establish `hf : ∀ a : Fin D.R.rS, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) z = 0`. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hzo' (Fin.natAdd (D.R.rS + 1) a)` as an intermediate fact. Rewrite `this` using `[wV_idx, wF, Fin.append_right]`. Then use the resulting hypothesis. Establish `hzz : hJ (X.B.I.ε v) (rv X.B.I v (X.zR u')) z = 0`. Use `hzo' (Fin.castAdd D.R.rS (Fin.last D.R.rS))` as an intermediate fact. Rewrite `this` using `[wV_idx, wF, Fin.append_left, Fin.snoc_last]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `nv : Fin (D.R.rS + 1) → Fin X.B.I.n → ℂ` to `fun j => if h : j.1 < D.R.rS then rv X.B.I v (X.eR ⟨j.1, h⟩) - rv X.B.I v (X.fR ⟨j.1, h⟩) else rv X.B.I v (X.zR u')`. Establish `hb` using `card_le_of_orth' (X.B.I.ε v) (D.R.rS + 1) nv z ?_ ?_ ?_ hle hz`. Rewrite `hb` using `[card_eps_false X v]`. Use linear arithmetic over natural numbers and integers. Introduce `j k hjk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [nv]`. Use `split_ifs with hj hk hk`. Rewrite using `[hJ_sub_left, hJ_sub_right, hJ_sub_right]`. Simplify using `only [HidaSetting.eR, HidaSetting.fR, hJ_crd, X.ee, X.ff, X.ef, hT_f_e]`. Establish `hne : (⟨k.1, hk⟩ : Fin D.R.rS) ≠ ⟨j.1, hj⟩` using `fun h => hjk (Fin.ext (by simpa using (congrArg Fin.val h).symm))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne' : (⟨j.1, hj⟩ : Fin D.R.rS) ≠ ⟨k.1, hk⟩` using `fun h => hne h.symm`. Simplify using `[hne, hne']`. Rewrite using `[hJ_sub_left]`. Simplify using `only [HidaSetting.eR, HidaSetting.fR, HidaSetting.zR, hJ_crd, (X.zu_orth u' _).1, (X.zu_orth u' _).2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ_sub_right]`. Establish `h1` using `hJ_crd X v (X.zu u') (X.eX ⟨k.1, hk⟩)`. Establish `h2` using `hJ_crd X v (X.zu u') (X.fY ⟨k.1, hk⟩)`. Establish `e1 : (VS D).hT (X.zu u') (X.eX ⟨k.1, hk⟩) = 0`. Rewrite using `[← (VS D).herm.eq, (X.zu_orth u' _).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e2 : (VS D).hT (X.zu u') (X.fY ⟨k.1, hk⟩) = 0`. Rewrite using `[← (VS D).herm.eq, (X.zu_orth u' _).2]`. Simplify using the standard rewrite rules. Simplify using `only [HidaSetting.eR, HidaSetting.fR, HidaSetting.zR, h1, h2, e1, e2, map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hjk` to reduce the goal to its premises. Use `ext`. Use linear arithmetic over natural numbers and integers. Introduce `j`.
+By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nv]`. Use `split_ifs with hj`. Rewrite using `[hJ_sub_left, hJ_sub_right, hJ_sub_right]`. Simplify using `only [HidaSetting.eR, HidaSetting.fR, hJ_crd, X.ee, X.ff, X.ef, hT_f_e, if_true, map_zero, map_one]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [HidaSetting.zR, hJ_crd, X.zu_norm, map_neg, map_natCast]`. Simplify using `only [Complex.neg_re, Complex.natCast_re, Left.neg_neg_iff]`. Conclude with `(D.mem u').A.T_prime.pos` after adjusting the coercions. Introduce `j`. Simplify using `only [nv]`.
-
-Use `split_ifs with hj`. Rewrite using `[hJ_sub_left, he, hf, sub_zero]`. Conclude with `hzz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perpPosV : PerpPosV := by
   intro D X u' ψ hT μinf νinf fibInf hP v z hz hzo

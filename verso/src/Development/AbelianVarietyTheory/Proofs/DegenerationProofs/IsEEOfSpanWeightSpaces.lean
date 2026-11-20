@@ -12,7 +12,7 @@ namespace GlobalTheory.ZH
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Unfold `ThetaSys.FF`. Use `finsum_induction (· ∈ S.R) (zero_mem _) (fun _ _ => add_mem) fun t => ?_` and prove the remaining obligations. Conclude with `mul_mem (S.R.algebraMap_mem _) (sum_mem fun j _ => mul_mem (S.R.algebraMap_mem _) (S.ev_mem _ _))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ThetaSys.FF_mem_ring (S : ThetaSys o Ω) (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N)
     (k : S.J × (T → ZMod ((S.r * S.N) ^ 2))) : S.FF T c k ∈ S.R := by
@@ -22,15 +22,15 @@ theorem ThetaSys.FF_mem_ring (S : ThetaSys o Ω) (T : AddSubgroup S.Gam) (c : T 
     (sum_mem fun j _ => mul_mem (S.R.algebraMap_mem _) (S.ev_mem _ _))
 
 /- English proof (translation)
-Establish `hs : ∀ w', (gPt p ≫ y) w' ⤳ (gPt p ≫ y) w` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ w)`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono (Set.image_mono Submodule.subset_span))` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. It suffices to establish `H : (∀ j, v j ∈ M.O ((gPt p ≫ y) w)) ∧ (fun j => M.val (gPt p ≫ y) (v j)) ∈ Submodule.span (OO p) ((fun (v : J → Ω) j => M.val (gPt p ≫ y) (v j)) '' G) from H.2`. Proceed by induction on `hv using Submodule.span_induction with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the argument to an intermediate assertion. Proceed by induction.
 
-Consider the case `mem v hv => exact ⟨hG v hv, Submodule.subset_span ⟨v, hv, rfl⟩⟩`. Consider the case `zero`. Use `⟨fun j => zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: (fun j => M.val (gPt p ≫ y) ((0 : J → Ω) j)) = 0` using `funext fun j => RatModel.val_zero _`. Rewrite using `[this]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv`. Use `⟨fun j => add_mem (hu.1 j) (hv.1 j), ?_⟩` and prove the remaining obligations. Establish `: (fun j => M.val (gPt p ≫ y) ((u + v) j)) = (fun j => M.val (gPt p ≫ y) (u j)) + fun j => M.val (gPt p ≫ y) (v j)`. Use function extensionality and compare the values at `fun j => RatModel.val_add hs (hu.1 j) (hv.1 j)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem hu.2 hv.2`. Consider the case `smul a v _ hv`. Establish `ha : (a : Ω) ∈ M.O ((gPt p ≫ y) w)` using `RatModel.O_le_of_specializes (RatModel.gPt_specializes h w) a.2`. Use `⟨fun j => mul_mem ha (hv.1 j), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun j => M.val (gPt p ≫ y) ((a • v) j)) = (⟨M.val (gPt p ≫ y) a, (mem_OO_iff _).2 (RatModel.norm_val_le_one h a.2)⟩ : OO p) • fun j => M.val (gPt p ≫ y) (v j)`. Use function extensionality and compare the values at `fun j => RatModel.val_mul hs ha (hv.1 j)`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hv.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RatModel.span_val_span {M : RatModel o Ω} {J : Type} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z}
     {z : M.Z} (h : y (cPt p) = z) (w : Sp (PadicAlgCl p)) (G : Set (J → Ω))
@@ -68,7 +68,7 @@ theorem RatModel.span_val_span {M : RatModel o Ω} {J : Type} {p : ℕ} [Fact p.
     exact Submodule.smul_mem _ _ hv.2
 
 /- English proof (translation)
-Establish `h1 : M.val y b⁻¹ = (M.val y b)⁻¹`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← RatModel.val_mul h hb hb', mul_inv_cancel₀ hb0, RatModel.val_one]`. Rewrite using `[div_eq_mul_inv, RatModel.val_mul h (mul_mem ha hb') hc, RatModel.val_mul h ha hb', h1, div_eq_mul_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem RatModel.val_div_mul {M : RatModel o Ω} {K : Type} [Field K] {y : Sp K ⟶ M.Z} {z : M.Z}
     (h : ∀ w, y w ⤳ z) {a b c : Ω} (ha : a ∈ M.O z) (hb : b ∈ M.O z) (hb0 : b ≠ 0) (hb' : b⁻¹ ∈ M.O z)
@@ -79,23 +79,21 @@ theorem RatModel.val_div_mul {M : RatModel o Ω} {K : Type} [Field K] {y : Sp K 
   rw [div_eq_mul_inv, RatModel.val_mul h (mul_mem ha hb') hc, RatModel.val_mul h ha hb', h1, div_eq_mul_inv]
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Set `w : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint (PadicAlgCl p)`. Establish `hw : (gPt p ≫ y) w ∈ (U₀ : Set M.Z)` using `hC.2 ⟨w, rfl⟩`. Establish `hs : ∀ w', (gPt p ≫ y) w' ⤳ (gPt p ≫ y) w` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ w)`. Establish `hR : S.R ≤ M.O ((gPt p ≫ y) w)` using `hA.1.le.trans (RatModel.ringOn_le_O hw)`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ c k, M.Div (S.FF (S.perp τ.yy.ker) c) k z → (S.FF _ c k)⁻¹ ∈ M.O ((gPt p ≫ y) w)` using `fun c k hk => RatModel.ringOn_le_O hw (hA.1.FF_unit _ c k τ.isoFree hk.1)`. Establish `hval : ∀ c k x₀ i, M.Div (S.FF (S.perp τ.yy.ker) c) k z → (fun j => M.val (gPt p ≫ y) (S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i))) = fun j => M.val (gPt p ≫ y) (S.th x₀) / M.val (gPt p ≫ y) (S.FF _ c k) * y₀ (algebraMap o S.R (S.proj _ c j i))`. Introduce `c k x₀ i hk`. Use function extensionality and compare the values at `j`. Rewrite using `[RatModel.val_div_mul hs (hR (S.th_mem _)) (hR (S.FF_mem_ring _ _ _)) hk.1 (hinv c k hk) (Subalgebra.algebraMap_mem _ _), hAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hnorm : ∀ α k x₀, M.Div (S.FF (S.perp τ.yy.ker) (τ.wt α)) k z → x₀ ∈ S.supI M z → (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) → ‖M.val (gPt p ≫ y) (S.th x₀) / M.val (gPt p ≫ y) (S.FF _ (τ.wt α) k)‖ = Real.exp (τ.q α / S.N)`. Introduce `α k x₀ hk hx hm`. Rewrite using `[norm_div, hI x₀ hx, hv _ k α hk hm fun _ _ _ => rfl, Real.exp_neg]`. Use `τ.δ_pos.ne'` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Real.exp_pos (τ.q α / S.N)).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[RatModel.span_val_span hC.1 w]`. Use `le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨c, k, x₀, i, hk, hx, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨α, hm, rfl⟩` from `hα c`. Conclude with `⟨α, _, i, hm, (hnorm α k x₀ hk hx hm).le, hval _ k x₀ i hk⟩`. Introduce and unpack `_ ⟨α, l, i, hm, hl, rfl⟩`. Take `⟨k, hk⟩` from `hA.2 _ (τ.wt α) τ.isoFree (hF _) z`. Take `⟨x₀, hx⟩` from `hA.1.div z`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn` using `hnorm α k x₀ hk hx hm`. Establish `hv'` using `hval _ k x₀ i hk`. Generalize the expression as in `M.val (gPt p ≫ y) (S.th x₀) / M.val (gPt p ≫ y) (S.FF _ (τ.wt α) k) = l₀ at hn hv'`. Establish `hpos : 0 < ‖l₀‖` using `hn ▸ Real.exp_pos _`. Establish `h0 : l₀ ≠ 0` using `norm_pos_iff.1 hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : l / l₀ ∈ OO p`. Rewrite using `[mem_OO_iff, norm_div, div_le_one hpos, hn]`. Conclude with `hl`. Establish `: (fun j => l * y₀ (algebraMap o S.R (S.proj _ (τ.wt α) j i))) = (⟨l / l₀, hq⟩ : OO p) • fun j => l₀ * y₀ (algebraMap o S.R (S.proj _ (τ.wt α) j i))`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = l / l₀ * (l₀ * _)`. Rewrite using `[← _root_.mul_assoc, div_mul_cancel₀ _ h0]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨_, k, x₀, i, hk, hx, rfl⟩, hv'⟩)`. Introduce and unpack `_ ⟨c, k, x₀, i, hk, -, rfl⟩ j`.
-
-Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (mul_mem (hR (S.th_mem _)) (hinv c k hk)) (Subalgebra.algebraMap_mem _ _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaSys.span_val_eq_testLattice (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens)
     (hA : S.admitted M U₀) {z : M.Z} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {y₀ : S.R →+* PadicAlgCl p}
@@ -162,7 +160,7 @@ theorem ThetaSys.span_val_eq_testLattice (S : ThetaSys o Ω) (M : RatModel o Ω)
     exact mul_mem (mul_mem (hR (S.th_mem _)) (hinv c k hk)) (Subalgebra.algebraMap_mem _ _)
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hb S M U₀ EE hA h0 _ hF hα hv hE hU`. Use `⟨hU, fun z p _ y y₀ τ hC hAt => ?_⟩` and prove the remaining obligations. Rewrite using `[hE z (hC.1 ▸ isClosed_singleton_cPt y)]`. Take `⟨hI, hH⟩` from `h0 z p y y₀ τ hC hAt`. Conclude with `S.span_val_eq_testLattice M U₀ hA τ hC hAt (fun x hx => (hI x).1 hx) _ (congrArg S.perp hH) (hF z) (hα p y₀ τ).1 (hv z p y y₀ τ hC hAt)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isEE_of_span_weightSpaces : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.admitted M U₀ → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → (∀ x, x ∈ S.supI M z ↔ ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ) ∧ S.HH M z = τ.yy.ker) → ((∀ ξ : M.Z, S.IsoFree (S.TT M ξ) ∧ S.perp (S.TT M ξ) = S.HH M ξ) ∧ (∀ ξ z : M.Z, ξ ⤳ z → S.supI M z ⊆ S.supI M ξ) ∧ (∀ ξ ∈ U₀, S.TT M ξ = ⊥) ∧ (∀ (ξ : M.Z) (W : M.Z.Opens), ξ ∈ W → ∃ x ∈ W, IsClosed ({x} : Set M.Z) ∧ ξ ⤳ x ∧ S.supI M x = S.supI M ξ)) → (∀ (ξ : M.Z) (c : S.TT M ξ →+ ZMod S.N), S.FF (S.TT M ξ) c ≠ 0) → (∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ c : S.perp τ.yy.ker →+ ZMod S.N, ∃ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) ∧ τ.wt α = c) ∧ ∀ (T : AddSubgroup S.Gam), S.IsoFree T → T ≤ S.perp τ.yy.ker → ∀ (w : S.Gam → τ.X), (∀ x, τ.yy x = QuotientAddGroup.mk (w x)) → ∀ (I : Set S.Gam), AddSubgroup.closure I = S.perp T → ∀ α : τ.X, (∀ (t : S.Gam) (h₂ : t ∈ S.perp τ.yy.ker), t ∈ T → τ.wt α ⟨t, h₂⟩ = 0) ↔ α ∈ AddSubgroup.closure (w '' I ∪ Set.range fun v₀ : τ.X => S.N • v₀)) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → ∀ (c : S.TT M z →+ ZMod S.N) (k : _) (α : τ.X), M.Div (S.FF (S.TT M z) c) k z → (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) → (∀ (t : S.Gam) (h₁ : t ∈ S.TT M z) (h₂ : t ∈ S.perp τ.yy.ker), c ⟨t, h₁⟩ = τ.wt α ⟨t, h₂⟩) → ‖M.val (gPt p ≫ y) (S.FF (S.TT M z) c k)‖ = τ.δ * Real.exp (-(τ.q α / S.N))) → (∀ z : M.Z, IsClosed ({z} : Set M.Z) → EE.E z = Submodule.span (M.O z) {v | ∃ (c : S.TT M z →+ ZMod S.N) (k : _) (x₀ : S.Gam) (i : S.J), M.Div (S.FF (S.TT M z) c) k z ∧ x₀ ∈ S.supI M z ∧ v = fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)}) → (∀ z ∈ U₀, EE.E z = Submodule.span (M.O z) (Set.range fun i => Pi.single i (1 : Ω))) → S.IsEE M U₀ EE := by
   intro o Ω _ _ _ hb S M U₀ EE hA h0 _ hF hα hv hE hU

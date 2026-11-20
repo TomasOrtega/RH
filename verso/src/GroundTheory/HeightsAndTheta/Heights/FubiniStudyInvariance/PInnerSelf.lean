@@ -14,9 +14,9 @@ namespace FSInv
 open CP
 
 /- English proof (translation)
-Introduce `N n P`. Rewrite using `[l2Inner, sectionL2NormSq, ← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [fsPair, fsNormPoly]`. Establish `hn : ((norm2 x.rep : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (euclideanNorm_pos x.rep_nonzero).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mul_comm (conj _), Complex.mul_conj']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem InnerSelf.proof : InnerSelf.Statement := by
   intro N n P

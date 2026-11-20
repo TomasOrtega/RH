@@ -21,9 +21,9 @@ variable {K : Type} [Field K] [NumberField K]
 omit [NumberField K] in
 
 /- English proof (translation)
-Take `⟨f₀, _, e⟩` from `HomDescent.exists_isMonHom_pull F.fib.2.1 F'.fib.2.1 f`. Use `F'.P₀.isAb.comm` as an intermediate fact. Establish `tan : ∀ i, IsTangent (F.v i ≫ f₀)` using `fun i => HomLinear.isTangent_comp f₀ (F.basis.1 i)`. Use `choose m hm using fun i => (F'.basis.2 _ (tan i)).exists`. Use `⟨Fintype.linearCombination K m, fun u c ⟨hu, w, hw, hc⟩ => ⟨HomLinear.isTangent_comp f hu, w ≫ f₀, ?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `IsVecOver at hw ⊢`. Rewrite using `[Over.comp_left, Category.assoc, e, ← Category.assoc, hw, Over.comp_left, Category.assoc]`. Use `(LieComb.lieComb_algebra K F'.P₀.A _ F'.v F'.basis.1).2.2.1 _ m _ c _ hm ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hc`. Conclude with `⟨fun i => y i ≫ f₀, fun i => by rw [Over.comp_left, hy, Category.assoc]; rfl, (map_list_prod (IsMonHom.monoidHom f₀ (epsR K)) _).trans (by rw [List.map_ofFn]; rfl)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDiffOf {P P' : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) (F' : GenFib P') (f : P.A ⟶ P'.A) [IsMonHom f] :
     ∃ M, F.IsDiffOf F' f M := by
@@ -41,9 +41,9 @@ theorem exists_isDiffOf {P P' : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) (F' : Ge
       (map_list_prod (IsMonHom.monoidHom f₀ (epsR K)) _).trans (by rw [List.map_ofFn]; rfl)⟩
 
 /- English proof (translation)
-Take `⟨rig, hr⟩` from `F.P₀.rigid`. Take `⟨b, hb⟩` from `principalPolarisation_exists_unique_section hT F.P₀`. Take `⟨a, -, hu⟩` from `hb b`. Use `⟨rig, b, hr, KeyPow.exists_mem_nonzeroLocus _ b ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hn`. Conclude with `zero_ne_one ((hu 0 fun i => by rw [hn i, mul_zero]).trans (hu 1 fun i => by rw [hn i, mul_zero]).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_key (hT : Out.SecTwistSt) {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) :
     ∃ (rig : LB.Gen (F.P₀.L.pull (eSec F.P₀.A))) (th : F.P₀.L.Sec), rig.IsGen ∧
@@ -59,15 +59,15 @@ theorem exists_key (hT : Out.SecTwistSt) {P : Out.PolAV (Sp (𝓞 K))} (F : GenF
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Take `rfl : g = 0` from `by omega`. Establish `: Etale G.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 hg`. Take `⟨v, hv, hu⟩` from `h`. Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom k k k).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom) hs` as an intermediate fact. Establish `hnil : IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `r hr s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr' : r.fst = 0` using `hr`. Establish `hs' : s.fst = 0` using `hs`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hr', hs']`. Establish `key : ∀ c : k, (v 0).left = spMap (epsScale c) ≫ (v 0).left` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `FormallyUnramified.hom_ext (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (isNilpotent_ker_specMap _ hnil) G.hom ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, spMap_comp_spMap]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [epsScale]`. Rewrite using `[Category.assoc, Over.w (v 0)] show spMap _ ≫ t = spMap _ ≫ spMap _ ≫ t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, spMap_comp_spMap]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [epsScale, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e : ∀ c : Fin 1 → k, ∃ u : Fin 1 → (epsPt t ⟶ G), (∀ i, (u i).left = spMap (epsScale (c i)) ≫ (v i).left) ∧ v 0 = (List.ofFn u).prod` using `fun c => ⟨v, fun i => by rw [Subsingleton.elim i 0]; exact key _, by simp⟩`. Conclude with `zero_ne_one (congrFun ((hu _ (hv 0)).unique (e 0) (e 1)) 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_pos_of_lieMult {S : Scheme.{0}} {O k : Type} [CommRing O] [Field k] {G : Over S} [GrpObj G] {act : OAct O G}
     {t : Sp k ⟶ S} {τ : O →+* k} (h : LieMult act t τ 1) {g : ℕ} (hg : SmoothOfRelativeDimension g G.hom) : 1 ≤ g := by
@@ -102,9 +102,9 @@ theorem dim_pos_of_lieMult {S : Scheme.{0}} {O k : Type} [CommRing O] [Field k] 
   exact zero_ne_one (congrFun ((hu _ (hv 0)).unique (e 0) (e 1)) 0)
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (𝓞 E →+* 𝓞 K)` from `(Nat.card_pos_iff.1 (hs ▸ Module.finrank_pos)).1`. Establish `e : τ H.rt ^ 2 = ρ ^ 2` using `by rw [← map_pow, H.rt_sq, hρ]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 e with e | e` into its components or cases. Conclude with `⟨τ, e⟩`. Conclude with `⟨τ.comp H.bar.toRingHom, by show τ (H.bar H.rt) = ρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite using `[Test.bar_rt, map_neg, e, neg_neg]⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_char (hs : Splits E K) {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) : ∃ τ : 𝓞 E →+* 𝓞 K, τ H.rt = ρ := by
   obtain ⟨τ⟩ : Nonempty (𝓞 E →+* 𝓞 K) := (Nat.card_pos_iff.1 (hs ▸ Module.finrank_pos)).1
@@ -116,7 +116,7 @@ theorem exists_char (hs : Splits E K) {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞
       rw [Test.bar_rt, map_neg, e, neg_neg]⟩
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_char hs hρ`. Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Conclude with `dim_pos_of_lieMult ((hT ℂ (σ.comp (algebraMap (𝓞 K) K)) (σ.injective.comp RingOfIntegers.coe_injective) ((σ.comp (algebraMap (𝓞 K) K)).comp τ)).1 (by rw [RingHom.comp_apply, hτ])) T.dim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dim_pos_of_hasType (hs : Splits E K) {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) (T : PAT H (Sp (𝓞 K))) {q : ℕ}
     (hT : HasType H T.t.act ρ 1 q) : 1 ≤ T.g := by
@@ -128,7 +128,7 @@ theorem dim_pos_of_hasType (hs : Splits E K) {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ ∑ x : I × (E →+* ℂ), ‖x.2 (a x.1 : E)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨1 + ∑ x : I × (E →+* ℂ), ‖x.2 (a x.1 : E)‖, by linarith, fun j τ => ?_⟩` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun x : I × (E →+* ℂ) => ‖x.2 (a x.1 : E)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ (j, τ))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_bound {I : Type} [Fintype I] (a : I → 𝓞 E) :
     ∃ Λ : ℝ, 0 < Λ ∧ ∀ j (τ : E →+* ℂ), ‖τ (a j : E)‖ ≤ Λ ^ 2 := by
@@ -139,9 +139,9 @@ theorem exists_bound {I : Type} [Fintype I] (a : I → 𝓞 E) :
   nlinarith
 
 /- English proof (translation)
-Establish `FA` using `fun b => (GenFib.nonempty_of_baseChange hL.polBaseChange K (X.A b).pol).some`. Take `⟨FB⟩` from `GenFib.nonempty_of_baseChange hL.polBaseChange K X.B.pol`. Use `choose hA hA' using fun b => (LieMetric.exists_unique_isHerm hU hL K _ (FA b)).1`. Take `⟨hB, hB'⟩` from `(LieMetric.exists_unique_isHerm hU hL K _ FB).1`. Use `choose M hM using fun j : Fin p ⊕ Fin q => @exists_isDiffOf K _ _ _ (FA j.isLeft) FB (X.φ j) (X.lin j).isMonHom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Λ, h₁, h₂⟩` from `exists_bound X.hh`. Use `⟨FA, FB, hA, hB, M, Λ, fun b => ⟨(FA b).fib.1 ▸ ?_, hA' b⟩, hB', hM, h₁, h₂⟩` and prove the remaining obligations. Consider the cases of `b`. Conclude with `dim_pos_of_hasType X.split (by rw [neg_sq, X.ρ_sq]) _ (Test.hasType_neg X.ρ_sq X.typeM)`. Conclude with `dim_pos_of_hasType X.split X.ρ_sq _ X.typeP`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem exists_data (hU : ThetaUnifAV) (hL : Out.Laws) {ρ : 𝓞 K} {σ₁ : K →+* ℂ} {p q : ℕ} (X : CMObj H K ρ σ₁ p q) :
     ∃ (FA : ∀ b, GenFib (X.A b).pol) (FB : GenFib X.B.pol) (hA : ∀ b, HermFam K (Fin (FA b).P₀.g → K))

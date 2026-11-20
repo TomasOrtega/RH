@@ -7,25 +7,25 @@ namespace GlobalTheory.DualFrameSpan
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[LinearMap.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma sum_comp' {ι : Type} (s : Finset ι) (f : ι → (H →ₗ[ℂ] H)) (g : H →ₗ[ℂ] H) :
     (∑ i ∈ s, f i) ∘ₗ g = ∑ i ∈ s, f i ∘ₗ g := by
   ext x; simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[LinearMap.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma comp_sum' {ι : Type} (s : Finset ι) (f : ι → (H →ₗ[ℂ] H)) (g : H →ₗ[ℂ] H) :
     g ∘ₗ (∑ i ∈ s, f i) = ∑ i ∈ s, g ∘ₗ f i := by
   ext x; simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Use `set b := stdOrthonormalBasis ℂ H`. Rewrite `h` using `[LinearMap.trace_eq_sum_inner _ b]`. Establish `h' : ∀ i, (inner ℂ (b i) ((LinearMap.adjoint B ∘ₗ B) (b i)) : ℂ) = ((‖B (b i)‖ ^ 2 : ℝ) : ℂ)`. Introduce `i`. Rewrite using `[LinearMap.comp_apply, LinearMap.adjoint_inner_right, inner_self_eq_norm_sq_to_K]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Apply the tactic sequence `first | rfl | simp | norm_cast`. Rewrite `h` using `[h']`. Establish `h2 : (∑ i, ‖B (b i)‖ ^ 2 : ℝ) = 0` using `by exact_mod_cast h`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)).1 h2`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `b.toBasis.ext` to reduce the goal to its premises. Introduce `i`. Use `h3 i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_trace_adjoint_comp_self (B : H →ₗ[ℂ] H)
     (h : LinearMap.trace ℂ H (LinearMap.adjoint B ∘ₗ B) = 0) : B = 0 := by
@@ -56,9 +56,9 @@ lemma pairing_apply (W : Submodule ℂ (H →ₗ[ℂ] H)) (X Y : W) :
     pairing W X Y = LinearMap.trace ℂ H ((X : H →ₗ[ℂ] H) ∘ₗ (Y : H →ₗ[ℂ] H)) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ y : W, (∀ x : W, pairing W x y = 0) → y = 0`. Introduce `y hy`. Use `hy ⟨LinearMap.adjoint (y : H →ₗ[ℂ] H), hW _ y.2⟩` as an intermediate fact. Rewrite `this` using `[pairing_apply]`. Conclude with `Subtype.ext (eq_zero_of_trace_adjoint_comp_self _ this)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x hx => key x (fun y => ?_), fun y hy => key y hy⟩` and prove the remaining obligations. Rewrite using `[pairing_apply, LinearMap.trace_comp_comm']`. Conclude with `hx y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pairing_nondegenerate (W : Submodule ℂ (H →ₗ[ℂ] H))
     (hW : ∀ X ∈ W, LinearMap.adjoint X ∈ W) : (pairing W).Nondegenerate := by
@@ -76,11 +76,9 @@ section span
 variable {G : Type} [Mul G] (K : Set G) (ρ : G → (H →ₗ[ℂ] H))
 
 /- English proof (translation)
-Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Take `⟨g', hg', he⟩` from `hadj g hg`. Rewrite using `[he]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨g', hg', rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma adjoint_mem_span (hadj : ∀ g ∈ K, ∃ g' ∈ K, LinearMap.adjoint (ρ g) = ρ g')
     {X : H →ₗ[ℂ] H} (hX : X ∈ Submodule.span ℂ (ρ '' K)) :
@@ -95,9 +93,9 @@ lemma adjoint_mem_span (hadj : ∀ g ∈ K, ∃ g' ∈ K, LinearMap.adjoint (ρ 
   | smul a x _ hx => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Rewrite using `[← hρ g hg h hh]`. Conclude with `Submodule.subset_span ⟨_, hmul g hg h hh, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [LinearMap.add_comp]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.smul_comp]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma comp_mem_span (hmul : ∀ g ∈ K, ∀ h ∈ K, g * h ∈ K)
     (hρ : ∀ g ∈ K, ∀ h ∈ K, ρ (g * h) = ρ g ∘ₗ ρ h) {h : G} (hh : h ∈ K)
@@ -114,25 +112,23 @@ lemma comp_mem_span (hmul : ∀ g ∈ K, ∀ h ∈ K, g * h ∈ K)
 end span
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ K ρ hmul hρ hadj`. Take `⟨t, hts, hsp, hli⟩` from `exists_linearIndependent ℂ (ρ '' K)`. Use `set W := Submodule.span ℂ (ρ '' K) with hWdef`. Establish `hWt : Submodule.span ℂ (Set.range ((↑) : t → (H →ₗ[ℂ] H))) = W`. Rewrite using `[Subtype.range_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `hsp`. Use `haveI : Finite t := hli.finite`. Use `letI : Fintype t := Fintype.ofFinite t`. Set `b0 : Basis t ℂ W` to `(Basis.span hli).map (LinearEquiv.ofEq _ _ hWt)`. Set `e` to `Fintype.equivFin t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `b : Basis (Fin (Fintype.card t)) ℂ W` to `b0.reindex e`. Establish `hb : ∀ j, ((b j : W) : H →ₗ[ℂ] H) = ((e.symm j : t) : H →ₗ[ℂ] H)`. Introduce `j`. Simplify using `[b, b0, Basis.span_apply]`. Establish `hbK : ∀ j, ∃ g ∈ K, ρ g = (b j : H →ₗ[ℂ] H)` using `fun j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hb]`. Conclude with `hts (e.symm j).2`. Use `choose k hkK hk using hbK`. Establish `hnd` using `pairing_nondegenerate W (fun X hX => adjoint_mem_span K ρ hadj hX)`. Set `D` to `(pairing W).dualBasis hnd b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `expand : ∀ X ∈ W, X = ∑ j, LinearMap.trace ℂ H (ρ (k j) ∘ₗ X) • (D j : H →ₗ[ℂ] H)`. Introduce `X hX`. Establish `h1` using `congrArg Subtype.val (D.sum_repr ⟨X, hX⟩)`. Rewrite `h1` using `[Submodule.coe_sum]`. Express the relevant statement in the definitionally equal form `_ = X at h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, LinearMap.BilinForm.dualBasis_repr_apply, pairing_apply, hk, LinearMap.trace_comp_comm' (b j : H →ₗ[ℂ] H) X]`. Establish `hdual : ∀ i j, LinearMap.trace ℂ H (ρ (k i) ∘ₗ (D j : H →ₗ[ℂ] H)) = if i = j then 1 else 0`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk, LinearMap.trace_comp_comm']`. Conclude with `LinearMap.BilinForm.apply_dualBasis_left hnd b j i`. Use `⟨Fintype.card t, k, fun j => (D j : H →ₗ[ℂ] H), hkK, ?_, ?_⟩` and prove the remaining obligations. Introduce `A g hg set A' := ∑ j, LinearMap.trace ℂ H (ρ (k j) ∘ₗ A) • (D j : H →ₗ[ℂ] H) with hA'`. Establish `hbi : ∀ i, LinearMap.trace ℂ H (ρ (k i) ∘ₗ A') = LinearMap.trace ℂ H (ρ (k i) ∘ₗ A)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `i`. Simplify using `only [A', comp_sum', LinearMap.comp_smul, map_sum, map_smul, hdual, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hvan : ∀ C ∈ W, LinearMap.trace ℂ H (C ∘ₗ A') = LinearMap.trace ℂ H (C ∘ₗ A)`. Introduce `C hC`. Establish `h1` using `congrArg Subtype.val (b.sum_repr ⟨C, hC⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[Submodule.coe_sum]`. Express the relevant statement in the definitionally equal form `_ = C at h1`. Rewrite using `[← h1]`. Simplify using `only [Submodule.coe_smul, sum_comp', LinearMap.smul_comp, map_sum, map_smul, ← hk, hbi]`. Rewrite using `[← hvan (ρ g) (Submodule.subset_span ⟨g, hg, rfl⟩)]`.
-
-Simplify using `only [A', comp_sum', LinearMap.comp_smul, map_sum, map_smul, smul_eq_mul]`. Introduce `i h hh`. Conclude with `expand _ (comp_mem_span K ρ hmul hρ hh (D i).2)`.
+A detailed English derivation is pending.
 -/
 theorem dual_frame : ∀ {G H : Type} [Mul G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (K : Set G) (ρ : G → (H →ₗ[ℂ] H)) (hmul : ∀ g ∈ K, ∀ h ∈ K, g * h ∈ K)

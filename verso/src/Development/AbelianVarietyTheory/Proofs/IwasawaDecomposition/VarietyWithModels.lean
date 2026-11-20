@@ -86,9 +86,9 @@ def atSpace (F : ShimFam D G Lev) (S : letI := D.host.cmStar; HSpace D.host.E) (
   else filler D F.jC S.rank (F.levPr κ) (F.levPr_prime κ)
 
 /- English proof (translation)
-Establish `hex : ∃ w' : Dat D Lev, w'.S = w.S ∧ w'.κ = w.κ ∧ w'.Indef` using `⟨w, rfl, rfl, h⟩`. Establish `key : ∀ (w' : Dat D Lev) (h' : w'.Indef), w' = w → ofDatum F w' h' = ofDatum F w h`. Introduce and unpack `w' h' rfl`. Both sides reduce to the same expression. Unfold `atSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `key _ _ (dat_ext D _ _ hex.choose_spec.1 hex.choose_spec.2.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atSpace_datum (F : ShimFam D G Lev) (w : Dat D Lev) (h : w.Indef) :
     atSpace F w.S w.κ = ofDatum F w h := by
@@ -101,9 +101,9 @@ theorem atSpace_datum (F : ShimFam D G Lev) (w : Dat D Lev) (h : w.Indef) :
   exact key _ _ (dat_ext D _ _ hex.choose_spec.1 hex.choose_spec.2.1)
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ w : Dat D Lev, w.S = S ∧ w.κ = κ ∧ w.Indef`. Take `⟨w, rfl, rfl, h⟩` from `hex`. Conclude with `Or.inl ⟨w, h, rfl, rfl, atSpace_datum F w h⟩`. Use `right`. Unfold `atSpace`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the first alternative. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hex]`.
+A detailed English derivation is pending.
 -/
 theorem atSpace_cases (F : ShimFam D G Lev) (S : letI := D.host.cmStar; HSpace D.host.E)
     (κ : Lev) : (∃ (w : Dat D Lev) (h : w.Indef), w.S = S ∧ w.κ = κ ∧
@@ -118,7 +118,7 @@ theorem atSpace_cases (F : ShimFam D G Lev) (S : letI := D.host.cmStar; HSpace D
     rw [dif_neg hex]
 
 /- English proof (translation)
-Break down `atSpace_cases F S κ with ⟨w, h, rfl, rfl, e⟩ | e` into its components or cases. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `max_eq_left h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atSpace_N (F : ShimFam D G Lev) (S : letI := D.host.cmStar; HSpace D.host.E) (κ : Lev)
     (h2 : letI := D.host.cmStar; 2 ≤ S.rank) :
@@ -128,7 +128,7 @@ theorem atSpace_N (F : ShimFam D G Lev) (S : letI := D.host.cmStar; HSpace D.hos
   · rw [e]; exact max_eq_left h2
 
 /- English proof (translation)
-Break down `atSpace_cases F S κ with ⟨w, h, rfl, rfl, e⟩ | e` into its components or cases. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[e]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem atSpace_lev (F : ShimFam D G Lev) (S : letI := D.host.cmStar; HSpace D.host.E) (κ : Lev) :
     (atSpace F S κ).shv.lev = F.levPr κ := by
@@ -182,7 +182,7 @@ def record (X₀ : DivX D) (F : ShimFam D G Lev)
     iMj_mem := hiM }
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `⟨fun _ => rfl, fun _ => HEq.rfl, fun _ => HEq.rfl, fun _ => HEq.rfl, fun _ => HEq.rfl, ?_⟩` and prove the remaining obligations. Introduce `c c' hc`. Take `rfl : c = c'` from `eq_of_heq hc`. Conclude with `⟨rfl, HEq.rfl⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem models_of_eq (F : ShimFam D G Lev) (w : Dat D Lev) (h : w.Indef)
     (A : VarietyWithModels D F.jC) (e : A = ofDatum F w h) (p : ℕ) [Fact p.Prime] :
@@ -200,7 +200,7 @@ theorem models_of_eq (F : ShimFam D G Lev) (w : Dat D Lev) (h : w.Indef)
   exact ⟨rfl, HEq.rfl⟩
 
 /- English proof (translation)
-The claim follows from `{ lev := rfl shv := fun w h => congrArg VarietyWithModels.shv (atSpace_datum F w h) } pl := { wt := fun _ _ _ => rfl jc := fun _ _ _ => rfl mp := fun w h p _ => (models_of_eq F w h _ (atSpace_datum F w h) p).1 md := fun w h p _ => (models_of_eq F w h _ (atSpace_datum F w h) p).2. …`.
+A detailed English derivation is pending.
 -/
 theorem record_tied (X₀ : DivX D) (F : ShimFam D G Lev)
     (iM : ∀ j (c : (F.Uw j).Comp), (X₀.MjH j).V →ₗ[D.what₂.LL] G.Fn ((F.Uw j).alg.Yv c))
@@ -232,7 +232,7 @@ end GlobalTheory.VarietyModelRecord
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D X₀ G Lev F iM hiM`. Conclude with `⟨VarietyModelRecord.record X₀ F iM hiM (fun _ _ _ => 0), rfl, rfl, rfl, rfl, rfl, rfl, F.jC, F.ng, F.U, F.levPr, F.levPr_prime, F.κg, fun _ _ => Equiv.refl _, fun _ _ _ => Equiv.refl _, HEq.rfl, HEq.rfl, VarietyModelRecord.record_tied X₀ F iM hiM _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_divX_tied : ∀ (D : D7) (X₀ : DivX D) (G : DV.Geo D.what₂.LL) (Lev : Type) (F : ShimFam D G Lev) (iM : ∀ j (c : (F.Uw j).Comp), (X₀.MjH j).V →ₗ[D.what₂.LL] G.Fn ((F.Uw j).alg.Yv c)), (∀ j c x, iM j c x ∈ G.H0 ((F.Uw j).alg.Yv c) ((F.Uw j).alg.Lw c (fun τ i => DV.kapW D j τ (Fin.cast (datW_N D F.κg j) i)))) → ∃ (X : DivX D) (hG : X.geo = G) (hL : X.Lev = Lev), X.MjH = X₀.MjH ∧ X.kapR = X₀.kapR ∧ X.logLam = X₀.logLam ∧ X.Qp = X₀.Qp ∧ ∃ (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) (ng : NgPkg) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w) (lp : X.Lev → Finset ℕ) (hl : ∀ κ, ∀ p ∈ lp κ, p.Prime) (κg : X.Lev) (ePl : ∀ (p : ℕ) [Fact p.Prime], X.PlP p ≃ PlL D p) (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp), HEq U F.U ∧ HEq κg F.κg ∧ TiedX X lp hl κg ePl U eC := by
   intro D X₀ G Lev F iM hiM

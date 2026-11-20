@@ -20,9 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `E _ _ E' _ _ α β z hz`. Establish `hz' : z ^ n = spOver (α.comp φ) ≫ x` using `by rw [hz, ← spOver_comp, Category.assoc]`. Conclude with `hs.1 E E' (α.comp φ) β z hz'`. Introduce `E _ _ α z w hz hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz' : z ^ n = spOver (α.comp φ) ≫ x` using `by rw [hz, ← spOver_comp, Category.assoc]`. Conclude with `hs.2 E (α.comp φ) z w hz' hw`.
+A detailed English derivation is pending.
 -/
 theorem isSec_pull {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (n : ℕ) (b : Fn0 A)
     {D : Type} [CommRing D] [Algebra R D] {D' : Type} [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D')
@@ -37,7 +37,7 @@ theorem isSec_pull {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (n : ℕ
     exact hs.2 E (α.comp φ) z w hz' hw
 
 /- English proof (translation)
-Introduce `R _ A _ _ n hR b _ S hS`. Establish `key : ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt A D), ∃ e : D', ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D' →ₐ[R] E) (z : Pt A E), z ^ n = spOver ψ ≫ spOver φ ≫ x → S D' (spOver φ ≫ x) E ψ z - S D x E (ψ.comp φ) …` using `fun D _ _ D' _ _ φ x ↦ (GlobalTheory.T.existsUnique_pushoutTorsorSection_difference R A n hR b D' (spOver φ ≫ x) (S D' (spOver φ ≫ x)) (fun E _ _ ψ z ↦ S D x E (ψ.comp φ) z) (hS D' _) (isSec_pull n b φ x _ (hS D x))).exists`. Use `⟨fun D _ _ D' _ _ φ x ↦ Classical.choose (key D D' φ x), ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x E _ _ ψ z hz`. Conclude with `(Classical.choose_spec (key D D' φ x) E ψ z hz).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isSecDiff : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ),
     HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ S : SecFam A,

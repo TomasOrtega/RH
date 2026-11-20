@@ -17,9 +17,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.ThetaDescent
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ em A n hn ho hyp`. Use `set J := ((n ^ 2) ^ 2) ^ A.g * A.g.factorial + 4 with hJ`. Establish `hJ4 : 4 ≤ J` using `by omega`. Establish `hb : ((n ^ 2) ^ 2) ^ A.g * A.g.factorial < n ^ J` using `lt_of_lt_of_le (by omega) (Nat.lt_pow_self hn.one_lt).le`. Take `⟨Ix, x, v, hcov, hth⟩` from `hyp J (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, lev, v', hζ, hv'⟩` from `GlobalTheory.T.exists_level_structure_rational_thetaPoint_subfield F Ω em A n J hn (by omega) Ix x v hcov hth`. Take `⟨T, _, _, _, jT, P, φ, y₀, hft, hinj, hcomp, hP, hL, hy⟩` from `GlobalTheory.T.exists_spread_polarisedAbelianVariety_finitely_many_points F Ω em A (Fin (2 * A.g)) lev.pt`. Take `⟨t⟩` from `GlobalTheory.exists_algHom_of_finiteType_of_isAlgClosed F T F`. Conclude with `GlobalTheory.T.spreadModel_fibre_at_point_isGivenVariety F Ω T em jT t hft hinj hcomp A P φ hP hL n J hn ho hJ4 hb ζ lev y₀ v' hζ hy hv'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem descends : ∀ (F Ω : Type) [Field F] [IsAlgClosed F] [CharZero F] [Field Ω] [IsAlgClosed Ω] (em : F →+* Ω) (A : PolAV (Sp Ω)) (n : ℕ), n.Prime → Odd n → (∀ j : ℕ, 1 ≤ j → ∃ (Ix : Type) (x : Ix → (baseOver (Sp Ω) ⟶ A.A)) (v : Ix → F), (∀ z : baseOver (Sp Ω) ⟶ A.A, z ^ ((n ^ j) ^ 2) = 1 → ∃ i, x i = z) ∧ IsThetaPt A (n ^ j) x fun i => (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (em (v i))) → ∃ (A₀ : PolAV (Sp F)) (a : A.A.left ⟶ A₀.A.left), IsGrpPullback A.A A₀.A (spMap em) a ∧ LBIso A.L (A₀.L.pull a) := by
   intro F Ω _ _ _ _ _ em A n hn ho hyp

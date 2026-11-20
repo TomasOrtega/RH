@@ -31,11 +31,11 @@ structure IsFinitePartOf (π : CuspSub E a) (H : Submodule ℂ (L2 (latticeGL E 
   kfin : ∀ F ∈ H, IsKFinL2 μ F → F ∈ classes π.V μ
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `(range_toL2ₗ h).ge hF`. Establish `hc` using `(π.cusp _ φ.2).1`. Establish `hi` using `toL2ₗ_injective h fun ψ hψ => ContAut.continuous_of_isOpen_stab E a ψ (π.cusp ψ hψ).1.level`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hc.level using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `k`. Conclude with `(R_toL2ₗ h φ (π.stable (.fin k) _ φ.2)).congr_left.trans (hi.eq_iff.trans Subtype.ext_iff)`. Use `hc.kfin` as an intermediate fact. Establish `: FiniteDimensional ℂ ((Submodule.span ℂ (Set.range fun k => cptRep E a k φ.1)).comap π.V.subtype)` using `(Submodule.comapSubtypeEquivOfLe (Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `π.stable (.cpt k) _ φ.2))).symm.finiteDimensional`. Use `Submodule.finiteDimensional_of_le (S₂ := ((Submodule.span ℂ (Set.range fun k => cptRep E a k φ.1)).comap π.V.subtype).map (toL2ₗ μ π.V h)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨_, π.stable (.cpt k) _ φ.2⟩, Submodule.subset_span ⟨k, rfl⟩, (R_toL2ₗ h φ (π.stable (.cpt k) _ φ.2)).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isKFinL2_of_mem_classes {π : CuspSub E a} (h : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1)
     {F : L2 (latticeGL E a) μ} (hF : F ∈ classes π.V μ) : IsKFinL2 μ F := by
@@ -62,20 +62,20 @@ namespace IsFinitePartOf
 variable {π : CuspSub E a} {H : Submodule ℂ (L2 (latticeGL E a) μ)}
 
 /- English proof (translation)
-The claim follows from `h.closure_eq ▸ Submodule.le_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 theorem classes_le (h : IsFinitePartOf μ π H) : classes π.V μ ≤ H :=
   h.closure_eq ▸ Submodule.le_topologicalClosure _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hF => ⟨h.classes_le hF, isKFinL2_of_mem_classes h.finitePartMemL2 hF⟩, fun hF => h.kfin F hF.1 hF.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_classes_iff (h : IsFinitePartOf μ π H) {F : L2 (latticeGL E a) μ} :
     F ∈ classes π.V μ ↔ F ∈ H ∧ IsKFinL2 μ F :=
   ⟨fun hF => ⟨h.classes_le hF, isKFinL2_of_mem_classes h.finitePartMemL2 hF⟩, fun hF => h.kfin F hF.1 hF.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun φ hφ => (π.cusp φ hφ).1, fun φ hφ => (memL2_iff_isSqInt (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level) (π.cusp φ hφ).1.left (h.normalised φ hφ)).1 (h.finitePartMemL2 φ hφ), π.stable, π.ne_bot, π.irred⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDiscrete (h : IsFinitePartOf μ π H) : IsDiscrete π.V :=
   ⟨fun φ hφ => (π.cusp φ hφ).1, fun φ hφ => (memL2_iff_isSqInt
@@ -83,7 +83,7 @@ theorem isDiscrete (h : IsFinitePartOf μ π H) : IsDiscrete π.V :=
       (h.finitePartMemL2 φ hφ), π.stable, π.ne_bot, π.irred⟩
 
 /- English proof (translation)
-Establish `key : ∀ {π π' : CuspSub E a}, IsFinitePartOf μ π H → IsFinitePartOf μ π' H → π.V ≤ π'.V`. Introduce `π π' h h' φ hφ`. Take `⟨ψ, hψ, e⟩` from `h'.mem_classes_iff.2 (h.mem_classes_iff.1 (toL2_mem_classes hφ (h.finitePartMemL2 φ hφ)))`. Rewrite using `[show φ = ψ from Subtype.ext ((Continuous.ae_eq_iff_eq μ (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level) (ContAut.continuous_of_isOpen_stab E a ψ (π'.cusp ψ hψ).1.level)).1 ((h.finitePartMemL2 φ hφ).lift_toL2_ae_eq.symm.trans e))]` and apply the resulting hypothesis. Conclude with `CuspSub.ext (le_antisymm (key h h') (key h' h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unique {π' : CuspSub E a} (h : IsFinitePartOf μ π H) (h' : IsFinitePartOf μ π' H) : π = π' := by
   have key : ∀ {π π' : CuspSub E a}, IsFinitePartOf μ π H → IsFinitePartOf μ π' H → π.V ≤ π'.V := by
@@ -97,9 +97,9 @@ theorem unique {π' : CuspSub E a} (h : IsFinitePartOf μ π H) (h' : IsFinitePa
 end IsFinitePartOf
 
 /- English proof (translation)
-Establish `hW` using `isSubrep_L2cusp μ`. Establish `hinj` using `Submodule.map_injective_of_injective (Submodule.injective_subtype (L2cusp μ))`. Use `⟨hW.isSubrep_rep_iff.1 h.1, fun e => h.2.1 (hinj (e.trans (Submodule.map_bot _).symm)), fun U hU hs => ?_⟩` and prove the remaining obligations. Establish `e : (U.comap (L2cusp μ).subtype).map (L2cusp μ).subtype = U`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 (hU.trans (Submodule.map_subtype_le _ _))]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.2.2 (U.comap (L2cusp μ).subtype) ((Submodule.comap_mono hU).trans (Submodule.comap_map_eq_of_injective (Submodule.injective_subtype _) W).le) (hW.isSubrep_rep_iff.2 (e.symm ▸ hs))).imp (fun h0 => by rw [← e, h0, Submodule.map_bot]) fun h0 => by rw [← e, h0]`.
+A detailed English derivation is pending.
 -/
 theorem isIrredSubrep_map {W : Submodule ℂ (L2cusp μ)} (h : IsIrredSubrep (Rcusp μ) W) :
     IsIrredSubrep (R (latticeGL E a) μ) (W.map (L2cusp μ).subtype) := by
@@ -113,7 +113,7 @@ theorem isIrredSubrep_map {W : Submodule ℂ (L2cusp μ)} (h : IsIrredSubrep (Rc
     (hW.isSubrep_rep_iff.2 (e.symm ▸ hs))).imp (fun h0 => by rw [← e, h0, Submodule.map_bot]) fun h0 => by rw [← e, h0]
 
 /- English proof (translation)
-Take `⟨K, hK, hcov⟩` from `GlobalTheory.IdeleCovolume.exists_compact_latticeGL E`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (ContAut.continuous_of_isOpen_stab E 1 φ h.1.level).continuousOn`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov g`. Conclude with `(leftInv_latticeGL (φ := fun g => ‖φ.1 g‖) (fun γ g => congrArg norm (h.1.left γ g)) h' γ hγ g).symm.trans_le (hC _ hk)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bounded_one {φ : Sm E 1} (h : IsCuspForm φ) (h' : ∀ t g, ‖φ.1 (splitCentre E 1 t * g)‖ = ‖φ.1 g‖) :
     ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C := by
@@ -146,7 +146,7 @@ def CuspidalSpectrumGL : Prop := CuspDiscreteDecompositionGL ∧ CuspFiniteVecto
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `h E a μ _ (Submodule.map_subtype_le _ _) (isIrredSubrep_map hW)`.
+A detailed English derivation is pending.
 -/
 theorem CuspFiniteVectorsGL.of_Rcusp (h : CuspFiniteVectorsGL) {μ : Measure (GA E a)} [μ.IsHaarMeasure]
     [μ.IsMulRightInvariant] {W : Submodule ℂ (L2cusp μ)} (hW : IsIrredSubrep (Rcusp μ) W) :
@@ -154,25 +154,25 @@ theorem CuspFiniteVectorsGL.of_Rcusp (h : CuspFiniteVectorsGL) {μ : Measure (GA
   h E a μ _ (Submodule.map_subtype_le _ _) (isIrredSubrep_map hW)
 
 /- English proof (translation)
-The claim follows from `h E a φ (π.cusp φ hφ) fun t g => by rw [splitCentre_eq_scalar, hπ.norm_eq hφ]`.
+A detailed English derivation is pending.
 -/
 theorem CuspFormsBoundedGL.of_isUnitary (h : CuspFormsBoundedGL) {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a}
     (hφ : φ ∈ π.V) : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C :=
   h E a φ (π.cusp φ hφ) fun t g => by rw [splitCentre_eq_scalar, hπ.norm_eq hφ]
 
 /- English proof (translation)
-The claim follows from `h E a φ hφ fun t g => by rw [h']`.
+A detailed English derivation is pending.
 -/
 theorem CuspFormsBoundedGL.of_invariant (h : CuspFormsBoundedGL) {φ : Sm E a} (hφ : IsCuspForm φ)
     (h' : ∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C :=
   h E a φ hφ fun t g => by rw [h']
 
 /- English proof (translation)
-Take `⟨ω, hω⟩` from `Central.exists_hasCentral E a π`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Take `⟨C, hC⟩` from `h.of_invariant (π.cusp φ hφ) (hπ φ hφ)`. Take `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0` from `Function.ne_iff.1 fun e => h0 (Subtype.ext e)`. Establish `hle : ∀ x, ‖((ω.1 x : ℂˣ) : ℂ)‖ ≤ 1` using `fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (C / ‖φ.1 g‖) (not_le.1 hc)`. Use `hC (GeneralLinearGroup.scalar (Fin a) (x ^ n) * g)` as an intermediate fact. Rewrite `this` using `[hω.apply hφ, norm_mul, map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `hn.not_ge ((le_div_iff₀ (norm_pos_iff.2 hg)).2 this)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ω, fun x => le_antisymm (hle x) ?_, hω⟩` and prove the remaining obligations. Use `hle x⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CuspFormsBoundedGL.isUnitary (h : CuspFormsBoundedGL) {π : CuspSub E a} (hπ : IsNormalised π) :
     π.IsUnitary := by

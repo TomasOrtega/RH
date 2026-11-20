@@ -25,13 +25,13 @@ namespace GlobalTheory.ChainTw.EulerAtTwist
 open GlobalTheory.LFun in
 
 /- English proof (translation)
-Establish `h1` using `hasProd_Lv ((hb (above E S₀)).converges hs)`. Establish `h2 : HasProd ((fun v => Lv c v s) ∘ ((↑) : ↥(Sᶜ) → HeightOneSpectrum (𝓞 F))) (LS S c s)` using `hasProd_Lv ((hb (above E S)).converges hs)`. Establish `h3` using `A.hasProd (fun v => Lv c v s)`. Establish `hdisj : Disjoint (Sᶜ) (↑A : Set (HeightOneSpectrum (𝓞 F)))` using `Set.disjoint_left.2 fun v hv hvA => hv ((hS v).2 (Or.inr hvA))`. Establish `h4` using `h2.mul_disjoint hdisj h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Sᶜ ∪ (↑A : Set (HeightOneSpectrum (𝓞 F))) = S₀ᶜ`. Use extensionality with `v`. Simplify using `only [Set.mem_union, Set.mem_compl_iff, Finset.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `fun h0 => h ((hS v).2 (Or.inl h0))`. Conclude with `hA v h`. Introduce `h`. Distinguish the cases in `hv : v ∈ S`. Conclude with `Or.inr (((hS v).1 hv).resolve_left h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl hv`. Rewrite `h4` using `[e]`. Conclude with `h1.unique h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerProd_eq_mul_prod {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {S₀ S : Set (HeightOneSpectrum (𝓞 F))} {A : Finset (HeightOneSpectrum (𝓞 F))}
@@ -62,7 +62,7 @@ theorem eulerProd_eq_mul_prod {F E : Type} [Field F] [NumberField F] [Field E] [
 open GlobalTheory.LFun in
 
 /- English proof (translation)
-Establish `e : Formalism.L2.Host.aboveF (L` using `E) F v = {P, P'} := by ext u; simp [GlobalTheory.LFun.mem_aboveF, hv]`. Rewrite using `[Lv, e, Finset.prod_pair hne.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lv_pair {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : Fam E)
     {v : HeightOneSpectrum (𝓞 F)} {P P' : HeightOneSpectrum (𝓞 E)} (hne : P' ≠ P)
@@ -74,7 +74,7 @@ theorem Lv_pair {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 
 open GlobalTheory.LFun in
 /- English proof (translation)
-Rewrite using `[norm_npow]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm P) (by simpa using hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_npow_lt_one {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) {z : ℂ} (hz : 0 < z.re) :
     ‖npow P (-z)‖ < 1 := by
@@ -83,7 +83,7 @@ theorem norm_npow_lt_one {K : Type} [Field K] [NumberField K] (P : HeightOneSpec
 
 open GlobalTheory.LFun in
 /- English proof (translation)
-Introduce `h` and use `by have h1 : b * npow P (-z) = 1 := (sub_eq_zero.1 h).symm have h2 := norm_npow_lt_one P hz have h3 := congrArg norm h1 rw [norm_mul, hb, one_mul, norm_one] at h3 linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_sub_ne_zero {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) {b : ℂ} (hb : ‖b‖ = 1)
     {z : ℂ} (hz : 0 < z.re) : 1 - b * npow P (-z) ≠ 0 := fun h => by
@@ -95,7 +95,7 @@ theorem one_sub_ne_zero {K : Type} [Field K] [NumberField K] (P : HeightOneSpect
 
 open GlobalTheory.LFun in
 /- English proof (translation)
-Rewrite using `[npow, Complex.cpow_neg, Complex.cpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem npow_neg_natCast {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     npow P (-(n : ℂ)) = ((Ideal.absNorm P.asIdeal : ℂ) ^ n)⁻¹ := by
@@ -103,7 +103,7 @@ theorem npow_neg_natCast {K : Type} [Field K] [NumberField K] (P : HeightOneSpec
 
 open GlobalTheory.LFun in
 /- English proof (translation)
-The claim follows from `(differentiable_const _).sub ((differentiable_const _).mul (differentiable_neg.const_cpow (Or.inl (by exact_mod_cast (one_lt_absNorm P).ne_bot))))`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_factor {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) (b : ℂ) :
     Differentiable ℂ fun z : ℂ => 1 - b * npow P (-z) :=
@@ -117,13 +117,13 @@ namespace GlobalTheory.ChainTw.EulerAtTwist
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨i', rfl⟩ : ∃ i' : ℕ, i = i' + 1` from `⟨i - 1, by omega⟩`. Take `⟨j', rfl⟩ : ∃ j' : ℕ, j = j' + 1` from `⟨j - 1, by omega⟩`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Establish `hexp : ∃ (τ : D.what₂.Tau) (e e' : ℚ), HasInfExp D (c.μ (i' + 1)) τ (-e) ∧ HasInfExp D (c.μ (j' + 1)) τ (-e') ∧ e ≠ e'` using `⟨τ, (D.hc τ).e ⟨i', by omega⟩, (D.hc τ).e ⟨j', by omega⟩, hc.exp ⟨i', by omega⟩ τ, hc.exp ⟨j', by omega⟩ τ, (QuotL.e_strictMono (D.hc τ) (show (⟨i', by omega⟩ : Fin D.R.m) < ⟨j', by omega⟩ from Fin.mk_lt_mk.2 (by omega))).ne⟩`. Take `⟨Λ, ⟨hd, hp⟩, hpos⟩` from `(GlobalTheory.HeckeRatio.heckeRatioPos D (c.μ (i' + 1)) (c.μ (j' + 1)) (QuotL.isHecke hc (by omega) (by omega)) (QuotL.isHecke hc (by omega) hj) (QuotL.trivialOnF hc (by omega) (by omega)) (QuotL.trivialOnF hc (by omega) hj) hexp D.R.t).2 S'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Λ, hd, fun z hz => ?_, fun n h1 h2 h0 => ?_⟩` and prove the remaining obligations. Establish `hoff : ∀ P, OffS D S' P ↔ P ∉ GlobalTheory.LFun.above D.host.E (S' : Set (HeightOneSpectrum (𝓞 D.host.F)))` using `fun P => (GlobalTheory.HeckeRatio.offS_iff S' P).trans Iff.rfl`. Set `e` to `Equiv.subtypeEquivRight hoff`. Establish `k` using `hp z hz`. Rewrite `k` using `[GlobalTheory.HeckeRatio.lfac_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k2 : HasProd (fun w : {w // w ∉ GlobalTheory.LFun.above D.host.E (S' : Set (HeightOneSpectrum (𝓞 D.host.F)))} => GlobalTheory.LFun.locL (fun w => {GlobalTheory.LFun.val (F` using `D.host.F) (c.μ (i' + 1) * (c.μ (j' + 1))⁻¹) w}) w.1 z) (Λ z) := by`. Use `(e.hasProd_iff).1 (k.congr_fun fun P => ?_)` and prove the remaining obligations. Establish `hu` using `hunr P.1 ((hoff P.1).1 P.2)`. Rewrite using `[GlobalTheory.LFun.lfac_eq_locL (Formalism.IndefR.ThmB.InputsHecke.isCMExt D)]`. Simplify using `only [Function.comp_apply, e, Equiv.subtypeEquivRight_apply_coe, GlobalTheory.LFun.locL, GlobalTheory.LFun.charFam_of_unrAt hu]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `k2.tprod_eq.symm`. Use `(hpos n h1 h2).2` as an intermediate fact. Rewrite `this` using `[h0, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotL_entire_ne_zero_off (c : Com D) (hc : c.Is) (S' : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     {i j : ℕ} (hi : 1 ≤ i) (hij : i < j) (hj : j ≤ D.R.m)
@@ -164,27 +164,25 @@ theorem quotL_entire_ne_zero_off (c : Com D) (hc : c.Is) (S' : Finset (HeightOne
 open GlobalTheory.LFun in
 
 /- English proof (translation)
-Take `⟨hS, hQS, hinj, hpair, -⟩` from `GlobalTheory.T.chainTwistPlaces_split_unramifiedQuotients D c w hw`. Establish `hpair' : ∀ PP ∈ w.Q, ∃ PP' : Pl D.host.E, PP' ≠ PP ∧ (∀ P : Pl D.host.E, P.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F) ↔ P = PP ∨ P = PP') ∧ Ideal.absNorm PP'.asIdeal = Ideal.absNorm PP.asIdeal ∧ val (F` using `D.host.F) (c.μ i * (c.μ j)⁻¹) PP' = (val (F := D.host.F) (c.μ i * (c.μ j)⁻¹) PP)⁻¹ := fun PP hPP => by`. Take `⟨-, -, PP', h1, h2, h3, h4⟩` from `hpair PP hPP`. Conclude with `⟨PP', h1, h2, h3, h4 i hi j hj⟩`. Use `clear hpair`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `c.μ i * (c.μ j)⁻¹ = χ at e e₀ hpair' ⊢`. Use `set f : Fam D.host.E := fun w => {val (F := D.host.F) χ w} with hf`. Establish `hb : ∀ T, Bounded T f 1 0` using `fun T w _ => ⟨by simp [hf], fun b hb => by`. Rewrite `hb` using `[hf]`. Rewrite using `[Multiset.mem_singleton.1 hb, Real.rpow_zero, norm_val]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ PP, ‖(val (F` using `D.host.F) χ PP : ℂ)‖ = 1 := fun PP => norm_val _ _`. Establish `hu' : ∀ PP, ‖(val (F` using `D.host.F) χ PP : ℂ)⁻¹‖ = 1 := fun PP => by rw [norm_inv, hu, inv_one]`. Set `P : ℂ → ℂ` to `fun z => ∏ PP ∈ w.Q, ((1 - (val (F := D.host.F) χ PP : ℂ) * npow PP (-z)) * (1 - (val (F := D.host.F) χ PP : ℂ)⁻¹ * npow PP (-z)))`. Establish `hPd : Differentiable ℂ P`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `DifferentiableAt.fun_finsetProd fun PP _ => ?_` and prove the remaining obligations. Conclude with `((differentiable_factor PP _).mul (differentiable_factor PP _)) z`. Establish `hPne : ∀ z : ℂ, 0 < z.re → ∀ PP, (1 - (val (F` using `D.host.F) χ PP : ℂ) * npow PP (-z)) * (1 - (val (F := D.host.F) χ PP : ℂ)⁻¹ * npow PP (-z)) ≠ 0 := fun z hz PP => mul_ne_zero (one_sub_ne_zero PP (hu PP) hz) (one_sub_ne_zero PP (hu' PP) hz)`. Set `A : Finset (HeightOneSpectrum (𝓞 D.host.F))` to `w.Q.image fun PP => PP.under (𝓞 D.host.F)`. Establish `hS' : ∀ v, v ∈ (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) ↔ v ∈ w.S₀ ∨ v ∈ A` using `fun v => (hS v).trans (or_congr_right Finset.mem_image.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : ∀ v ∈ A, v ∉ w.S₀` using `fun v hv => by`. Take `⟨PP, hPP, rfl⟩` from `Finset.mem_image.1 hv`. Conclude with `hQS PP hPP`. Establish `hrel : ∀ z : ℂ, 1 < z.re → Λ₀ z * P z = Λ z` using `fun z hz => by`. Establish `hz0 : (0 : ℝ) < z.re` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e₀ z hz, e z hz, eulerProd_eq_mul_prod hS' hA hb (by simpa using hz), Finset.prod_image hinj, mul_assoc, ← Finset.prod_mul_distrib]`. Use `conv_rhs => rw [← mul_one (eulerProd _ _ _)]`. Use `congr 1`. Use `Finset.prod_eq_one fun PP hPP => ?_` and prove the remaining obligations. Take `⟨PP', hne, hv, hN, hval⟩` from `hpair' PP hPP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Lv_pair f hne hv]`. Establish `hnp : npow PP' (-z) = npow PP (-z)` using `by simp only [npow, hN]`. Establish `l1 : locL f PP z = (1 - (val (F` using `D.host.F) χ PP : ℂ) * npow PP (-z))⁻¹ := by`. Simplify using `only [hf, locL, eulerFac_singleton]`. Establish `l2 : locL f PP' z = (1 - (val (F` using `D.host.F) χ PP : ℂ)⁻¹ * npow PP (-z))⁻¹ := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf, locL, eulerFac_singleton, hnp, hval, Units.val_inv_eq_inv_val]`. Rewrite using `[l1, l2]`. Establish `h1` using `one_sub_ne_zero PP (hu PP) hz0`. Establish `h2` using `one_sub_ne_zero PP (hu' PP) hz0`. Rewrite using `[mul_mul_mul_comm, inv_mul_cancel₀ h1, inv_mul_cancel₀ h2, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : (fun z => Λ₀ z * P z) = Λ`. Use `AnalyticOnNhd.eq_of_eventuallyEq ((hΛ₀.mul hPd).differentiableOn.analyticOnNhd isOpen_univ) (hΛ.differentiableOn.analyticOnNhd isOpen_univ) (z₀ := 2) ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)] with z hz`. Conclude with `hrel z hz`. Establish `hn0 : (0 : ℝ) < (n : ℂ).re` using `by simp; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k` using `congrFun hall n`. Establish `hPn : P n ≠ 0` using `Finset.prod_ne_zero_iff.2 fun PP _ => hPne n hn0 PP`. Rewrite using `[← k, mul_assoc]`. Establish `: ∏ PP ∈ w.Q, ((1 - (val (F` using `D.host.F) χ PP : ℂ) * ((Ideal.absNorm PP.asIdeal : ℂ) ^ n)⁻¹) * (1 - (val (F := D.host.F) χ PP : ℂ)⁻¹ * ((Ideal.absNorm PP.asIdeal : ℂ) ^ n)⁻¹))⁻¹ = (P n)⁻¹ := by`. Rewrite using `[← Finset.prod_inv_distrib]`.
-
-Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Rewrite using `[npow_neg_natCast]`. Rewrite using `[this, mul_inv_cancel₀ hPn, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_relation (c : Com D) (w : Twist D) (hw : w.Is c) {i j : ℕ} (hi : i ∈ Finset.Icc 1 D.R.m)
     (hj : j ∈ Finset.Icc 1 D.R.m) {Λ Λ₀ : ℂ → ℂ} (hΛ : Differentiable ℂ Λ) (hΛ₀ : Differentiable ℂ Λ₀)
@@ -274,17 +272,17 @@ namespace GlobalTheory.ChainTw.EulerAtTwist
 open GlobalTheory.LFun in
 
 /- English proof (translation)
-Introduce `D c w hw k hk`. Establish `hmem : ∀ i ∈ Finset.Icc 1 k, i ∈ Finset.Icc 1 D.R.m ∧ k + 1 ∈ Finset.Icc 1 D.R.m` using `fun i hi => by`. Use `Finset.mem_Icc.1 hi` as an intermediate fact. Conclude with `⟨Finset.mem_Icc.2 ⟨this.1, by omega⟩, Finset.mem_Icc.2 ⟨by omega, by omega⟩⟩`. Use `⟨fun H H₀ ⟨Λ, hΛ, hH⟩ ⟨Λ₀, hΛ₀, hH₀⟩ => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hH hH₀` using the available equality. Establish `key : ∀ i ∈ Finset.Icc 1 k, ∀ n ∈ Finset.Icc 1 D.R.t, Λ₀ i n = Λ i n * ∏ PP ∈ w.Q, ((1 - (val (F` using `D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) PP : ℂ) * ((Ideal.absNorm PP.asIdeal : ℂ) ^ n)⁻¹) * (1 - (val (F := D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) PP : ℂ)⁻¹ * ((Ideal.absNorm PP.asIdeal : ℂ) ^ n)⁻¹))⁻¹ := fun i hi n hn => eval_relation c w hw (hmem i hi).1 (hmem i hi).2 (hΛ i hi).1 (hΛ₀ …`. Rewrite using `[Finset.prod_congr rfl fun i hi => Finset.prod_congr rfl fun n hn => key i hi n hn]`. Simplify using `only [Finset.prod_mul_distrib]`. Use `congr 1`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `blockL`. Rewrite using `[Finset.prod_comm (s := w.Q)]`. Conclude with `Finset.prod_congr rfl fun i _ => Finset.prod_comm`. Take `⟨-, -, -, -, hunr⟩` from `GlobalTheory.T.chainTwistPlaces_split_unramifiedQuotients D c w hw`. Take `⟨S', hS'⟩ : ∃ S' : Finset (HeightOneSpectrum (𝓞 D.host.F)), (S' : Set _) = w.S₀` from `⟨_, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∀ i, ∃ Λ : ℂ → ℂ, i ∈ Finset.Icc 1 k → Differentiable ℂ Λ ∧ (∀ z : ℂ, 1 < z.re → Λ z = eulerProd (above D.host.E w.S₀) (fun w => {val (F` using `D.host.F) (c.μ i * (c.μ (k + 1))⁻¹) w}) z) ∧ ∀ n : ℕ, 1 ≤ n → n ≤ D.R.t → Λ n ≠ 0 := fun i => by`. Distinguish the cases in `hi : i ∈ Finset.Icc 1 k`. Establish `h` using `Finset.mem_Icc.1 hi`. Establish `hu` using `hunr i (hmem i hi).1 (k + 1) (hmem i hi).2`. Rewrite `hu`, the goal using `[← hS']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, h1, h2, h3⟩` from `quotL_entire_ne_zero_off c hw.com S' h.1 (by omega) (by omega) hu`. Conclude with `⟨Λ, fun _ => ⟨h1, h2, h3⟩⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose Λ hΛ using hex`. Use `⟨∏ i ∈ Finset.Icc 1 k, ∏ n ∈ Finset.Icc 1 D.R.t, Λ i n, ?_, ⟨Λ, fun i hi => ⟨(hΛ i hi).1, (hΛ i hi).2.1⟩, rfl⟩⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_ne_zero_iff.2 fun i hi => Finset.prod_ne_zero_iff.2 fun n hn => ?_` and prove the remaining obligations. Use `Finset.mem_Icc.1 hn` as an intermediate fact. Conclude with `(hΛ i hi).2.2 n this.1 this.2`.
+A detailed English derivation is pending.
 -/
 theorem restore_hval : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ k < D.R.m,
     (∀ H H₀, IsHval c (c.S : Set _) k H → IsHval c w.S₀ k H₀ → H₀ = H * ∏ PP ∈ w.Q, blockL c k PP) ∧
@@ -330,7 +328,7 @@ theorem restore_hval : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ k 
 end GlobalTheory.ChainTw.EulerAtTwist
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChainTw.EulerAtTwist.restore_hval`.
+A detailed English derivation is pending.
 -/
 example : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ k < D.R.m, (∀ H H₀, IsHval c (c.S : Set _) k H → IsHval c w.S₀ k H₀ → H₀ = H * ∏ PP ∈ w.Q, blockL c k PP) ∧ ∃ H₀, H₀ ≠ 0 ∧ IsHval c w.S₀ k H₀ :=
   GlobalTheory.ChainTw.EulerAtTwist.restore_hval

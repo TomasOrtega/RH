@@ -14,7 +14,7 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
 /- English proof (translation)
-Simplify using `only [ncV, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_ncV_iff_apply {k : ℕ} {F : Big n k M} :
     F ∈ ncV ε V k ↔ ∀ κ : Fin k → Fin n × Fin n,
@@ -29,18 +29,18 @@ theorem permute_apply {k : ℕ} (σ : Equiv.Perm (Fin k)) (F : Big n k M)
     (κ : Fin k → Fin n × Fin n) : permute σ F κ = F (κ ∘ σ) := rfl
 
 /- English proof (translation)
-Simplify using `only [phi, LinearMap.sum_apply, LinearMap.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem phi_apply_eq (k : ℕ) (F : Big n k M) : phi E k F = ∑ κ, word E κ (F κ) := by
   simp only [phi, LinearMap.sum_apply, LinearMap.comp_apply]
   rfl
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_ncV_iff_apply]`. Introduce `κ`. Rewrite using `[permute_apply]`. Establish `hκ` using `hF (κ ∘ σ)`. Distinguish the cases in `hc : ∀ i, ε (κ i).1 ≠ ε (κ i).2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hc' : ∀ i, ε ((κ ∘ σ) i).1 ≠ ε ((κ ∘ σ) i).2` using `fun i => hc (σ i)`. Rewrite `hκ` using `[if_pos hc']`. Rewrite using `[if_pos hc]`. Conclude with `hκ`. Establish `hc' : ¬ ∀ i, ε ((κ ∘ σ) i).1 ≠ ε ((κ ∘ σ) i).2` using `fun h => hc (fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h (σ.symm i)` as an intermediate fact. Simplify using `using this)`. Rewrite `hκ` using `[if_neg hc']`. Rewrite using `[if_neg hc]`. Conclude with `hκ`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permute_mem_ncV {k : ℕ} (σ : Equiv.Perm (Fin k)) {F : Big n k M} (hF : F ∈ ncV ε V k) :
     permute σ F ∈ ncV ε V k := by
@@ -61,13 +61,13 @@ theorem permute_mem_ncV {k : ℕ} (σ : Equiv.Perm (Fin k)) {F : Big n k M} (hF 
     exact hκ
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> cases y <;> cases z <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bool_eq_of_ne_ne {x y z : Bool} (h1 : x ≠ y) (h2 : y ≠ z) : x = z := by
   cases x <;> cases y <;> cases z <;> simp_all
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using hv`. Consider the case `cons p l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, List.length_cons, ← add_assoc]`. Conclude with `apply_mem_layer_succ hE hV p.1 p.2 ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem listProd_mem_layer (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     (l : List (Fin n × Fin n)) {j : ℕ} {v : M} (hv : v ∈ layer ε E V j) :
@@ -79,19 +79,17 @@ theorem listProd_mem_layer (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     exact apply_mem_layer_succ hE hV p.1 p.2 ih
 
 /- English proof (translation)
-Proceed by induction on `hp generalizing m with`. Consider the case `nil => simp`. Consider the case `@cons x l₁ l₂ h ih`. Break down `m with _ | m` into its components or cases. Establish `hl1 : l₁ = []` using `by simpa using hm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `hl1` using the available equality. Establish `hl2` using `List.Perm.nil_eq h`. Substitute `hl2` using the available equality. Simplify using the standard rewrite rules. Establish `hD` using `ih (fun p hp' => hnc p (List.mem_cons_of_mem _ hp')) m (by simpa using hm)`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `apply_mem_layer_succ hE hV x.1 x.2 hD` as an intermediate fact. Rewrite `this` using `[map_sub]`. Simplify `this` using `[List.map_cons, List.prod_cons, Module.End.mul_apply, add_assoc]`. Consider the case `swap x y l`. Establish `hw` using `listProd_mem_layer hE hV l hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Establish `hlen : j + l.length + 1 ≤ j + m` using `by simp at hm; omega`. Establish `h1 : ∀ a b, (E a b) ((l.map fun p => E p.1 p.2).prod v) ∈ layer ε E V (j + m)` using `fun a b => layer_mono hlen (apply_mem_layer_succ hE hV a b hw)`. Establish `key : ((y :: x :: l).map fun p => E p.1 p.2).prod v - ((x :: y :: l).map fun p => E p.1 p.2).prod v = (E y.1 y.2 * E x.1 x.2 - E x.1 x.2 * E y.1 y.2) ((l.map fun p => E p.1 p.2).prod v)`. Simplify using `only [List.map_cons, List.prod_cons, LinearMap.sub_apply, Module.End.mul_apply]`. Rewrite using `[key, hE, LinearMap.sub_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `h1 _ _`. Simplify using the standard rewrite rules. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `h1 _ _`. Simplify using the standard rewrite rules. Consider the case `trans h₁ h₂ ih₁ ih₂`. Establish `hA` using `ih₁ hnc m hm`. Establish `hB` using `ih₂ (fun p hp' => hnc p (h₁.symm.subset hp')) m (by rw [← h₁.length_eq]; exact hm)`.
-
-Use `Submodule.add_mem _ hA hB` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem listProd_perm_sub_mem (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     {l₁ l₂ : List (Fin n × Fin n)} (hp : l₁.Perm l₂) (hnc : ∀ p ∈ l₁, ε p.1 ≠ ε p.2)
@@ -134,7 +132,7 @@ theorem listProd_perm_sub_mem (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Rewrite using `[word, List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem word_eq_listProd {k : ℕ} (κ : Fin k → Fin n × Fin n) :
     word E κ = ((List.ofFn κ).map fun p => E p.1 p.2).prod := by
@@ -142,15 +140,15 @@ theorem word_eq_listProd {k : ℕ} (κ : Fin k → Fin n × Fin n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[phi_apply_eq, phi_apply_eq]`. Establish `hre : ∑ κ, word E κ ((permute σ F) κ) = ∑ κ, word E (κ ∘ σ.symm) (F κ)`. Set `e : (Fin (k + 1) → Fin n × Fin n) ≃ (Fin (k + 1) → Fin n × Fin n)` to `⟨fun κ => κ ∘ σ, fun κ => κ ∘ σ.symm, fun κ => by funext i; simp, fun κ => by funext i; simp⟩`. Use `Fintype.sum_equiv e _ _ (fun κ => ?_)` and prove the remaining obligations. Use `show word E κ (permute σ F κ) = word E ((κ ∘ σ) ∘ σ.symm) (F (κ ∘ σ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hκ : (κ ∘ σ) ∘ σ.symm = κ` using `by funext i; simp`. Rewrite using `[hκ, permute_apply]`. Rewrite using `[hre, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ (fun κ _ => ?_)` and prove the remaining obligations. Establish `hFκ` using `(mem_ncV_iff_apply.1 hF) κ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : ∀ i, ε (κ i).1 ≠ ε (κ i).2`. Rewrite `hFκ` using `[if_pos hc]`. Rewrite using `[word_eq_listProd, word_eq_listProd]`. Establish `hp : (List.ofFn κ).Perm (List.ofFn (κ ∘ σ.symm))` using `(Equiv.Perm.ofFn_comp_perm σ.symm κ).symm`. Establish `hnc : ∀ p ∈ List.ofFn κ, ε p.1 ≠ ε p.2` using `fun p hp' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp'` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hp'`. Conclude with `hc i`. Use `listProd_perm_sub_mem hE hV hp hnc (show F κ ∈ layer ε E V 0 from hFκ) k (by simp)` as an intermediate fact. Rewrite `this` using `[zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite `hFκ` using `[if_neg hc]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hFκ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_permute_sub_mem (hE : IsGlRep E) (hV : IsKStableSub ε E V) {k : ℕ}
     (σ : Equiv.Perm (Fin (k + 1))) {F : Big n (k + 1) M} (hF : F ∈ ncV ε V (k + 1)) :

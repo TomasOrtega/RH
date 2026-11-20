@@ -8,7 +8,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ n SE SF hS B B' _ _ b b' hb hb' L t hc h h'`. Conclude with `UpperTheory.ConvolutionTheory.Ci.killEx_listed UpperTheory.ConvolutionTheory.Dp.parEx F E n SE SF hS B B' b b' hb hb' L t hc h h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.killEx2 :
     KillEx2 := by

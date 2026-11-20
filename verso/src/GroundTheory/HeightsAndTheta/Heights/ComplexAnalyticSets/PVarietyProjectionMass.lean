@@ -14,19 +14,17 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Introduce `n d J hJ hd U hU B hB`. Establish `hdn : d ≤ n`. Establish `h1` using `ringKrullDim_quotient_le J`. Rewrite `h1` using `[hd, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨W, hW, hWfin⟩` from `(hG n d J hJ hd).2.2.2 1 (fun _ => 1)`. Take `⟨b, hb⟩` from `MassFinite.exists_frame W hW`. Take `⟨I₀, -, hI₀⟩` from `Finset.exists_subset_card_eq (s := (Finset.univ : Finset (Fin n))) (by simpa using hdn)`. Use `set A := W.submatrix (I₀.orderEmbOfFin hI₀) id`. Establish `hAfin : ComplexSets.IsFiniteProjection J A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hWfin 0 (I₀.orderEmbOfFin hI₀).toEmbedding`. Take `⟨P, hP0, hP⟩` from `hD n d J A hJ hd hAfin`. Use `set G := zeroSetEuc J ∩ {z | eval (A *ᵥ WithLp.ofLp z) P ≠ 0}`. Establish `hPJ : ComplexSets.pullback A P ∉ J` using `fun hmem => hP0 <| hAfin.injective <| by`. Rewrite using `[map_zero, ComplexSets.projHom, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `hbad : μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc (J ⊔ Ideal.span {ComplexSets.pullback A P})) = 0` using `NullSmaller.proof n d _ (MassFinite.dim_sup_lt J hJ hd _ hPJ)`. Establish `hsub : zeroSetEuc J ∩ B ⊆ zeroSetEuc (J ⊔ Ideal.span {ComplexSets.pullback A P}) ∪ G ∩ B`. Introduce and unpack `z ⟨hz, hzB⟩`. Distinguish the cases in `hzP : eval (A *ᵥ WithLp.ofLp z) P = 0`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `left`. Introduce `q hq`. Take `⟨j, hj, c, hc, rfl⟩` from `Submodule.mem_sup.mp hq`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hc`. Establish `hzj : eval (fun i => z i) j = 0` using `hz j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Establish `hpb : eval (fun i => z i) (ComplexSets.pullback A P) = 0`. Rewrite using `[MassFinite.eval_pullback]`. Conclude with `hzP`. Simplify using `[hzj, hpb]`. Conclude with `Or.inr ⟨⟨hz, hzP⟩, hzB⟩`.
-
-Establish `hgood` using `hL n d b I₀ G hI₀ (MassFinite.good_localGraph J W b hb I₀ hI₀ P (fun y hy x hx => (hP y hy).2.2 x hx)) U hU B hB`. Establish `hGZ : G ∩ B ⊆ zeroSetEuc J ∩ B` using `Set.inter_subset_inter_left _ Set.inter_subset_left`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun s _ => mul_le_mul' (iSup_mono fun x => ?_) (measure_mono (Set.image_mono hGZ))` and prove the remaining obligations. Conclude with `ENat.toENNReal_le.2 (Set.encard_le_encard fun z hz => ⟨hGZ hz.1, hz.2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem VarietyProjectionMass.proof (hG : ComplexSets.GenericProjectionFinite.Statement)
     (hD : ComplexSets.DiscriminantCover.Statement) (hL : LocalGraphProjectionMass.Statement) :

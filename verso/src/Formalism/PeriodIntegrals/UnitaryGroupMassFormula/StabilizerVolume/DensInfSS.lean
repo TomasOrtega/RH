@@ -9,7 +9,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable F E` using `Algebra.IsSeparable.of_integral F E`. Establish `: Algebra.FormallyUnramified F E` using `Algebra.FormallyUnramified.of_isSeparable F E`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field C (C ⊗[F] E)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_tens_field (F E C : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [Field C] [Algebra F C] : IsReduced (C ⊗[F] E) := by
@@ -18,9 +18,9 @@ theorem isReduced_tens_field (F E C : Type) [Field F] [NumberField F] [Field E] 
   exact Algebra.FormallyUnramified.isReduced_of_field C (C ⊗[F] E)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _`. Establish `: IsArtinianRing (Ainf F)` using `inferInstanceAs (IsArtinianRing ((v : InfinitePlace F) → v.Completion))`. Establish `: IsArtinianRing (Ainf F ⊗[F] E)` using `IsArtinianRing.of_finite (Ainf F) (Ainf F ⊗[F] E)`. Set `e1 : Ainf F ⊗[F] E ≃ₐ[F] E ⊗[F] Ainf F` to `Algebra.TensorProduct.comm F (Ainf F) E`. Set `e2 : E ⊗[F] ((v : InfinitePlace F) → v.Completion) ≃ₐ[F] ((v : InfinitePlace F) → E ⊗[F] v.Completion)` to `Algebra.TensorProduct.piRight F F E (fun v : InfinitePlace F => v.Completion)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: ∀ v : InfinitePlace F, IsReduced (E ⊗[F] v.Completion)` using `fun v =>`. Use `isReduced_tens_field F E v.Completion` as an intermediate fact. Use `isReduced_of_injective (Algebra.TensorProduct.comm F E v.Completion).toRingHom (Algebra.TensorProduct.comm F E v.Completion).injective`. Establish `: IsReduced (Ainf F ⊗[F] E)` using `isReduced_of_injective ((e2.toRingHom).comp e1.toRingHom) (e2.injective.comp e1.injective)`. Conclude with `IsArtinianRing.isSemisimpleRing_of_isReduced _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem semisimpleTens_holds : SemisimpleTens := by
   intro F E _ _ _ _ _ σ _
@@ -41,7 +41,7 @@ theorem semisimpleTens_holds : SemisimpleTens := by
   exact IsArtinianRing.isSemisimpleRing_of_isReduced _
 
 /- English proof (translation)
-The claim follows from `densInf_of_ss h semisimpleTens_holds`.
+A detailed English derivation is pending.
 -/
 theorem densInf_of_tensR (h : TensR) : DensInf := densInf_of_ss h semisimpleTens_holds
 

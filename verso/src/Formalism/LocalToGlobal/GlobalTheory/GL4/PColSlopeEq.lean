@@ -22,7 +22,7 @@ def QSlope (D : D7) : Prop :=
   ∀ u (CV : ColVal D u) c τ, (CV.Q c τ).mu = -Real.log (Tu D u) / D.R.k
 
 /- English proof (translation)
-Establish `hk : D.R.N 0 = D.R.k` using `by simp only [Ranks.N]; omega`. Rewrite using `[colAbs, wsum, Int.cast_sum]`. Repeatedly rewrite using `[Formalism.MainNotions.flipTwoThree.weight_eq_lamCol]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ((lamCol D u τ i : ℚ) : ℝ)) (D.R.N 0), hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wsum_eq_colAbs (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : ((wsum ((D.fm u).lam 0 τ) : ℤ) : ℝ) = colAbs D u τ := by
   have hk : D.R.N 0 = D.R.k := by simp only [Ranks.N]; omega
@@ -31,15 +31,15 @@ theorem wsum_eq_colAbs (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : ((ws
   rw [Fin.sum_univ_eq_sum_range (fun i => ((lamCol D u τ i : ℚ) : ℝ)) (D.R.N 0), hk]
 
 /- English proof (translation)
-Introduce `u CV`. Take `⟨Z, μs, hne, hμ, hdet⟩` from `h2 D.what₂.Tau (D.R.N 0) ((D.fm u).lam 0)`. Use `⟨μs, hμ, ?_⟩` and prove the remaining obligations. Use `haveI : Nonempty Z.J0 := hne`. Use `haveI := CV.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `col_mu CV (h1 D.what₂.LL D.what₂.Tau (D.R.N 0) ((D.fm u).lam 0)) Z`. Establish `key : ∑ c, ∑ τ, ((wsum ((D.fm u).lam 0 τ) * (Fintype.card Z.J0 : ℤ) : ℤ) : ℝ) * (CV.Q c τ).mu = ∑ _c : (D.mem u).C.cls 0, ∑ τ, colAbs D u τ * (Fintype.card Z.J0 : ℝ) * (-Real.log (Tu D u) / D.R.k)`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[h3 u CV c τ, ← wsum_eq_colAbs]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ τ, colAbs D u τ * (Fintype.card Z.J0 : ℝ) * (-Real.log (Tu D u) / D.R.k) = -((Fintype.card Z.J0 : ℝ) * ∑ τ, colAbs D u τ / D.R.k * Real.log (Tu D u))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[key, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, e2]`. Establish `hN : (0 : ℝ) < Fintype.card Z.J0` using `by exact_mod_cast Fintype.card_pos`. Establish `hC : (0 : ℝ) < Fintype.card ((D.mem u).C.cls 0)` using `by exact_mod_cast Fintype.card_pos`. Rewrite using `[← hdet]`. Apply `mul_left_cancel₀ (mul_ne_zero hN.ne' hC.ne')` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : (Fintype.card Z.J0 : ℝ) ≠ 0` using `hN.ne'`. Establish `e3 : (Fintype.card Z.J0 : ℝ) * Fintype.card ((D.mem u).C.cls 0) * (-Real.log (gramZ ((D.fm u).lam 0) Z).det / Fintype.card Z.J0) = -(Fintype.card ((D.mem u).C.cls 0) * Real.log (gramZ ((D.fm u).lam 0) Z).det)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hm, mul_add, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem colSlopeEq_of (h1 : TSpanEqVV) (h2 : ZBasisStd) (D : D7) (h3 : QSlope D) : ColSlopeEq D := by
   intro u CV
@@ -74,7 +74,7 @@ theorem colSlopeEq_of (h1 : TSpanEqVV) (h2 : ZBasisStd) (D : D7) (h3 : QSlope D)
   ring
 
 /- English proof (translation)
-Unfold `Link5F`. Introduce `eps Fm _ _ _`. Conclude with `Formalism.MainNotions.flipTwoThree.familySlopeLower_of_open Fm ⟨0, fun x _ _ i => Formalism.MainNotions.flipTwoThree.lower_slope_of_column_slope _ (colSlopeEq_of h1 h2 _ (h3 _))⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Link5F_of_three (h1 : TSpanEqVV) (h2 : ZBasisStd) (h3 : ∀ D, QSlope D) : Link5F := by
   unfold Link5F

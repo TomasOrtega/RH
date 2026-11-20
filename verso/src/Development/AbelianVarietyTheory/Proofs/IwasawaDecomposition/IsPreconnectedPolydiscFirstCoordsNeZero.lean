@@ -5,11 +5,11 @@ open Set
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, h0⟩`. Establish `h0' : w ≠ 0` using `h0`. Use `⟨Complex.log w, ?_, Complex.exp_log h0'⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.mem_setOf_eq, Complex.log_re]`. Rewrite `hb` using `[Metric.mem_ball, dist_zero_right]`. Conclude with `Real.log_neg (norm_pos_iff.mpr h0') hb`. Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_ball, dist_zero_right, Complex.norm_exp]`. Conclude with `Real.exp_lt_one_iff.mpr hz`. Conclude with `Complex.exp_ne_zero z`.
+A detailed English derivation is pending.
 -/
 theorem punctured_unit_disc_eq_exp_image :
     Metric.ball (0:ℂ) 1 \ {0} = Complex.exp '' {z : ℂ | z.re < 0} := by
@@ -28,7 +28,7 @@ theorem punctured_unit_disc_eq_exp_image :
     · exact Complex.exp_ne_zero z
 
 /- English proof (translation)
-Rewrite using `[punctured_unit_disc_eq_exp_image]`. Conclude with `(convex_halfSpace_re_lt 0).isPreconnected.image _ Complex.continuous_exp.continuousOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPreconnected_punctured_unit_disc :
     IsPreconnected (Metric.ball (0:ℂ) 1 \ {0}) := by
@@ -36,15 +36,13 @@ theorem isPreconnected_punctured_unit_disc :
   exact (convex_halfSpace_re_lt 0).isPreconnected.image _ Complex.continuous_exp.continuousOn
 
 /- English proof (translation)
-Introduce `n a ha`. Establish `hS : {z : Fin n → ℂ | z ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ∀ i : Fin a, z (Fin.castLE ha i) ≠ 0} = Set.pi univ (fun k : Fin n => if (k:ℕ) < a then Metric.ball (0:ℂ) 1 \ {0} else Metric.ball (0:ℂ) 1)`. Use extensionality with `z`. Rewrite using `[ball_pi _ one_pos]`. Simplify using `only [Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies, Pi.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hne⟩ k split_ifs with hk`. Conclude with `⟨hb k, fun h => hne ⟨k, hk⟩ (by simpa using h)⟩`. Conclude with `hb k`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `h k split_ifs at this` as an intermediate fact. Conclude with `this.1`. Conclude with `this`. Use `h (Fin.castLE ha i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[if_pos (by simp)]`. Conclude with `this.2`. Rewrite using `[hS]`. Apply `isPreconnected_univ_pi` to reduce the goal to its premises. Introduce `k`.
-
-Use `split_ifs`. Conclude with `isPreconnected_punctured_unit_disc`. Conclude with `(convex_ball (0:ℂ) 1).isPreconnected`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPreconnected_polydisc_first_coords_ne_zero :
     ∀ (n a : ℕ) (ha : a ≤ n), _root_.IsPreconnected {z : Fin n → ℂ | z ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ∀ i : Fin a, z (Fin.castLE ha i) ≠ 0} := by

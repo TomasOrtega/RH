@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E]
 attribute [local instance] resField
 
 /- English proof (translation)
-The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem finite_res (PP : Pl E) : Finite (kP PP) :=
   Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
@@ -34,7 +34,7 @@ def IsIndCuspChar (Pg : Finset (Pl E)) (r : ℕ) {K : Type} [Field K] (s : K →
       ∏ PP : ↥Pg, LinearMap.trace ℂ _ (parInd (F := kP PP.1) (b PP) (σ PP) (g PP))
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finite_parInd {F : Type} [Field F] [Finite F] {r : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) :
@@ -58,14 +58,14 @@ def GenericMultOneDim : Prop :=
       Module.finrank K (LinearMap.range (τ.asAlgebraHom (lvlIdem (P0 Pg r ψ).H (P0 Pg r ψ).chi))) = 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => 0, fun _ => ℂ, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance, fun _ => 1, fun PP => absurd PP.2 (Finset.notMem_empty _), fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (r : ℕ) : IsIndCuspChar (∅ : Finset (Pl E)) r (RingHom.id ℂ) (fun _ => 1) :=
   ⟨fun _ _ => 0, fun _ => ℂ, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance, fun _ => 1,
     fun PP => absurd PP.2 (Finset.notMem_empty _), fun _ => by simp⟩
 
 /- English proof (translation)
-The claim follows from `monotone_const irr := by refine { exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun a => ?_ } · have := congrArg Subrepresentation.toSubmodule h exact bot_ne_top (α := Submodule ℂ ℂ) this · rcases eq_bot_or_eq_top a.toSubmodule with h | h · exact Or.inl (Subrepresent …`.
+A detailed English derivation is pending.
 -/
 example (PP : Pl E) : IsCuspDatum (F := kP PP) (fun _ : Fin 1 => 0)
     (Representation.trivial ℂ (blockTri (κ := kP PP) (fun _ : Fin 1 => 0)) ℂ) where

@@ -23,9 +23,9 @@ namespace GlobalTheory.EndAlg
 variable {X X' : Scheme.{0}} {κ : Type}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd'` using `hP (MvPolynomial.mem_support_iff.mp hd)`. Simplify using `only [Finsupp.weight_apply, Pi.one_apply, smul_eq_mul, _root_.mul_one, Finsupp.sum] at hd'`. Rewrite using `[← hd']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval₂_scale {σ R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) (c : A) (x : σ → A)
     {P : MvPolynomial σ R} {e : ℕ} (hP : P.IsHomogeneous e) :
@@ -38,13 +38,11 @@ theorem eval₂_scale {σ R A : Type} [CommRing R] [CommRing A] (φ : R →+* A)
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, _root_.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[gs_eq φ z U h, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, MvPolynomial.eval₂_comp_left]`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← gs_eq φ z U h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.AbLaw.cst, rs, RingHom.comp_apply]`. Rewrite using `[gs_res φ z le_top h, gs_eq φ z ⊤ trivial]`. Establish `hid : X'.presheaf.map (homOfLE (le_top : (⊤ : X'.Opens) ≤ ⊤)).op = 𝟙 _`. Rewrite using `[show (homOfLE (le_top : (⊤ : X'.Opens) ≤ ⊤)) = 𝟙 _ from Subsingleton.elim _ _]`. Conclude with `X'.presheaf.map_id _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid]`. Simplify using `only [CommRingCat.hom_id, RingHom.id_apply]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply]`.
-
-Conclude with `(gs_eq φ z U h _).symm`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gs_eval {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (φ : X' ⟶ X) (z : X') (U : X.Opens)
     (h : φ z ∈ U) (x : κ → Γ(X, U)) (P : MvPolynomial κ R) :
@@ -68,7 +66,7 @@ theorem gs_eval {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (φ 
     exact (gs_eq φ z U h _).symm
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z U h a]`. Use `(X'.mem_basicOpen (U := r ⁻¹ᵁ U) ((r.app U).hom a) z h).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_gs_iff (r : X' ⟶ X) (z : X') (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ X.basicOpen a := by
@@ -78,9 +76,9 @@ theorem isUnit_gs_iff (r : X' ⟶ X) (z : X') (U : X.Opens) (h : r z ∈ U) (a :
   rfl
 
 /- English proof (translation)
-Establish `hle : ∀ j : PUnit → M.ι, LB.wchart M (fun _ : PUnit => π) j ≤ π ⁻¹ᵁ M.U (j ⟨⟩)` using `fun _ _ hy => Set.mem_iInter.1 hy ⟨⟩`. Use `⟨⟨fun j => (X'.presheaf.map (homOfLE (hle j)).op).hom ((π.app (M.U (j ⟨⟩))).hom (s.f (j ⟨⟩))), fun i j => ?_⟩, ?_⟩` and prove the remaining obligations. Use `ReciprocityTheory.ChartRestriction.G.DVR.app_compat_generic π (hle i) (hle j) (s.f _) (s.f _) _ (s.compat _ _) _ ?_ show (∏ k : PUnit, _) = _` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`. Introduce `Z r z J hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `hJ.mem (fun _ : PUnit => π) r`. Establish `hz : (r ≫ π) z ∈ M.U (J (r ≫ π))` using `hJ (r ≫ π)`. Use `show gs r z _ ((X'.presheaf.map (homOfLE (hle _)).op).hom ((π.app _).hom (s.f _))) = _`. Rewrite using `[gs_res r z (hle _) hm, gs_pull r π z _ hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull {M : LB X} (s : LB.Sec M) (π : X' ⟶ X) :
     ∃ t : LB.Sec (M.pull π), ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (J), Good M z J →
@@ -99,9 +97,9 @@ theorem exists_pull {M : LB X} (s : LB.Sec M) (π : X' ⟶ X) :
     rw [gs_res r z (hle _) hm, gs_pull r π z _ hz]
 
 /- English proof (translation)
-Take `⟨t0, ht0⟩` from `exists_pull s g`. Establish `hF : FormEq (Sum.elim (fun _ : PUnit => g) ![p, g]) (Sum.elim (fun _ : PUnit => (1 : ℤ)) ![t, -1]) (fun _ : PUnit => p) (fun _ => t)`. Introduce `U _ h`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_two]`. Take `⟨w, hw⟩` from `exists_sec hH hF (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.mulSec t0 u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨w, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hw Z r z J hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_mulSec t0 u r z hJ, ht0 Z r z J hJ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_prod {H : LB X} (hH : H.IsLB) (p g : X' ⟶ X) (t : ℤ) (s : LB.Sec H)
     (u : LB.Sec (LB.LinComb H (K := Fin 2) ![p, g] ![t, -1])) :
@@ -118,7 +116,7 @@ theorem exists_prod {H : LB X} (hH : H.IsLB) (p g : X' ⟶ X) (t : ℤ) (s : LB.
   rw [hw Z r z J hJ, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_mulSec t0 u r z hJ, ht0 Z r z J hJ]
 
 /- English proof (translation)
-Establish `hkk : ψ z ∈ H.U k ⊓ H.U k'` using `TopologicalSpace.Opens.mem_inf.2 ⟨hk, hk'⟩`. Rewrite using `[← gs_res ψ z (inf_le_left : H.U k ⊓ H.U k' ≤ H.U k) hkk, s.compat k k', gs_mul ψ z _ hkk, gs_res ψ z inf_le_right hkk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gs_sec_chart_transition {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (ψ : Z ⟶ X) (z : Z) (k k' : H.ι)
     (hk : ψ z ∈ H.U k) (hk' : ψ z ∈ H.U k') :
@@ -128,37 +126,35 @@ private theorem gs_sec_chart_transition {X Z : Scheme.{0}} {H : LB X} (s : LB.Se
     gs_res ψ z inf_le_right hkk]
 
 /- English proof (translation)
-Introduce `R _ _ _ I hI Y hsm hpr f hf hfc`. Take `⟨H, hH, n, s, hva⟩` from `id hpr`. Take `⟨t, m, u, hcov, hu⟩` from `GlobalTheory.T.exists_compatible_generatingSections_all_thickenings R I Y H n s hsm hH hva f hfc`. Establish `hw0 : ∀ e (i : Fin (n + 1)) (j : Fin (m + 1)), ∃ w : LB.Sec (LB.LinComb H (K` using `PUnit) (fun _ => pullback.fst Y.hom (thick R I e)) (fun _ => t)), ∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e Y).left) (z : Z) (J), Good H z J → sval w r z J = gs (r ≫ f e) z _ ((s i).f (J (r ≫ f e))) * sval (u e j) r z J := fun e i j => exists_prod hH (pullback.fst Y.hom (thick …`. Use `choose w hw using hw0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : ∀ (i : Fin (n + 1)) (j : Fin (m + 1)), ∃ S : LB.Sec (LB.LinComb H (K` using `PUnit) (fun _ => 𝟙 Y.left) (fun _ => t)), ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e Y).left) (z : Z) (J), Good H z J → sval S (r ≫ pullback.fst Y.hom (thick R I e)) z J = sval (w e i j) r z J := by`. Introduce `i j`. Use `GlobalTheory.T.exists_section_linearCombination_of_compatible_thickenings R I hI Y hsm hpr Y.left H PUnit (fun _ => 𝟙 Y.left) (fun _ => t) (fun e _ => pullback.fst Y.hom (thick R I e)) hH (fun e k => Category.comp_id _) (fun e => w e i j) ?_` and prove the remaining obligations. Introduce `e z J hJ`. Rewrite using `[hw (e + 1) i j _ _ z J hJ, hw e i j _ _ z J hJ, hfc e, Category.id_comp, hu e j z J hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose S hS using hS0`. Establish `hN : (LB.LinComb H (K` using `PUnit) (fun _ => 𝟙 Y.left) (fun _ => t)).IsLB := LB.isLB_linComb hH _ _`. Establish `key : ∀ e (z : (thickObj R I e Y).left) (k' : PUnit → H.ι), pullback.fst Y.hom (thick R I e) z ∈ H.U (k' ⟨⟩) → ∃ J, Good H z J ∧ f e z ∈ H.U (J (f e)) ∧ ∀ i j, gs (pullback.fst Y.hom (thick R I e)) z ((LB.LinComb H (K` using `PUnit) (fun _ => 𝟙 Y.left) (fun _ => t)).U k') ((S i j).f k') = gs (f e) z (H.U (J (f e))) ((s i).f (J (f e))) * sval (u e j) (𝟙 _) z J := by`. Introduce `e z k' hz`. Take `⟨J, hJ, hJk⟩` from `exists_good H hH z (fun _ : PUnit => 𝟙 _ ≫ pullback.fst Y.hom (thick R I e)) (fun _ => k' ⟨⟩) (fun _ _ _ => rfl) (fun _ => by simpa using hz)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨J, hJ, hJ (f e), fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hS i j e _ (𝟙 _) z J hJ).trans (hw e i j _ (𝟙 _) z J hJ)`. Rewrite `h1` using `[sval_of (S i j) _ z J k' (fun k => by cases k; simpa using hJk ⟨⟩)]`. Rewrite `h1` using `[Category.id_comp, Category.id_comp]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov' : (⨆ i, ⨆ j, nonzeroLocus (S i j)) = ⊤`. Establish `hjac : I ≤ (⊥ : Ideal R).jacobson` using `by have := hI; exact IsAdicComplete.le_jacobson_bot (I := I)`. Establish `: IsProper Y.hom` using `GlobalTheory.AbLaw.isProper_of_isProjBy R Y.left Y.hom hpr`. Use `GlobalTheory.T.open_eq_top_of_contains_special_part_universallyClosed R I hjac Y _ fun z => ?_` and prove the remaining obligations. Establish `hz1 : z ∈ ⨆ j, nonzeroLocus (u 0 j)` using `by rw [hcov]; trivial`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz1`. Unfold `nonzeroLocus at hj`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hj`. Establish `hz2 : f 0 z ∈ ⨆ i, nonzeroLocus (s i)` using `by rw [hva.1]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `nonzeroLocus at hi`. Take `⟨kk0, hkk0⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Establish `hkU : z ∈ LB.wchart H ![pullback.fst Y.hom (thick R I 0), f 0] k` using `Scheme.basicOpen_le _ _ hk`. Establish `hq : pullback.fst Y.hom (thick R I 0) z ∈ H.U (k 0)` using `Set.mem_iInter.1 hkU 0`. Take `⟨J, hJ, hJe, hv⟩` from `key 0 z (fun _ => k 0) hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hqN : pullback.fst Y.hom (thick R I 0) z ∈ (LB.LinComb H (K` using `PUnit) (fun _ => 𝟙 Y.left) (fun _ => t)).U (fun _ => k 0) := Set.mem_iInter.2 fun _ => hq`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, TopologicalSpace.Opens.mem_iSup.2 ⟨j, ?_⟩⟩` and prove the remaining obligations. Unfold `nonzeroLocus`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => k 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← isUnit_gs_iff _ _ _ hqN, hv i j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsUnit.mul ?_ ?_` and prove the remaining obligations. Establish `hm0 : f 0 z ∈ H.U kk0` using `Scheme.basicOpen_le _ _ hkk0`. Establish `hu0` using `(isUnit_gs_iff (f 0) z (H.U kk0) hm0 ((s i).f kk0)).2 hkk0`. Rewrite `hu0` using `[gs_sec_chart_transition (s i) (f 0) z kk0 (J (f 0)) hm0 hJe]`. Conclude with `isUnit_of_mul_isUnit_right hu0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `hJ.mem ![pullback.fst Y.hom (thick R I 0), f 0] (𝟙 _)`. Rewrite using `[sval_of (u 0 j) (𝟙 _) z J _ (fun _ => rfl), sec_trans (u 0 j) (𝟙 _) z hm hkU]`. Conclude with `(Units.isUnit _).mul ((isUnit_gs_iff _ _ _ hkU _).2 hk)`. Establish `hrel : ∀ i i' j j' k, (S i j).f k * (S i' j').f k = (S i j').f k * (S i' j).f k`. Introduce `i i' j j' k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hF : (MvPolynomial.X 0 * MvPolynomial.X 1 - MvPolynomial.X 2 * MvPolynomial.X 3 : MvPolynomial (Fin 4) R).IsHomogeneous 2` using `((MvPolynomial.isHomogeneous_X R 0).mul (MvPolynomial.isHomogeneous_X R 1)).sub ((MvPolynomial.isHomogeneous_X R 2).mul (MvPolynomial.isHomogeneous_X R 3))`. Establish `h` using `GlobalTheory.T.homogeneousForm_sections_eq_zero_of_thickenings R I hI Y hsm hpr _ (Fin 4) ![S i j, S i' j', S i j', S i' j] 2 _ hN hF ?_ k`. Simplify `h` using `[sub_eq_zero]`. Introduce `e z k hz`. Take `⟨J, hJ, hJe, hv⟩` from `key e z k (Set.mem_iInter.1 hz ⟨⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[gs_eval Y.hom _ z _ hz]`. Simplify using `[hv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hhom : ∀ (d : ℕ) (F : MvPolynomial (Fin (n + 1)) R), F.IsHomogeneous d → (∀ k, MvPolynomial.eval₂Hom (GlobalTheory.AbLaw.cst Y.hom (H.U k)) (fun i => (s i).f k) F = 0) → ∀ j k, MvPolynomial.eval₂Hom (GlobalTheory.AbLaw.cst Y.hom ((LB.LinComb H (K` using `PUnit) (fun _ => 𝟙 Y.left) (fun _ => t)).U k)) (fun i => (S i j).f k) F = 0 := by`. Introduce `d F hF h0 j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.homogeneousForm_sections_eq_zero_of_thickenings R I hI Y hsm hpr _ (Fin (n + 1)) (fun i => S i j) d F hN hF ?_` and prove the remaining obligations. Introduce `e z k hz`. Take `⟨J, hJ, hJe, hv⟩` from `key e z k (Set.mem_iInter.1 hz ⟨⟩)`. Rewrite using `[gs_eval Y.hom _ z _ hz]`. Simplify using `only [hv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `gs_eval Y.hom (f e) z (H.U (J (f e))) hJe (fun i => (s i).f (J (f e))) F`. Rewrite `h2` using `[h0, hf e]`. Establish `hz0 : gs (f e) z (H.U (J (f e))) 0 = 0` using `by rw [gs_eq _ _ _ hJe, map_zero, map_zero]`. Rewrite using `[eval₂_scale _ (sval (u e j) (𝟙 _) z J) (fun i => gs (f e) z (H.U (J (f e))) ((s i).f (J (f e)))) hF, ← h2, hz0, zero_mul]`. Take `⟨φ, hφ, huniq⟩` from `GlobalTheory.T.exists_morphism_to_projective_of_rank_one_sections R Y.left Y.hom H n s hH hva Y.left Y.hom _ m S hN hcov' hrel hhom`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Over.homMk φ hφ, fun e => ?_⟩` and prove the remaining obligations. Use `huniq _ (pullback.fst Y.hom (thick R I e)) (f e) (hf e) ?_` and prove the remaining obligations. Introduce `z k k' i i' j hzk hzk'`. Take `⟨J, hJ, hJe, hv⟩` from `key e z k' (Set.mem_iInter.1 hzk' ⟨⟩)`. Rewrite using `[hv, hv, gs_sec_chart_transition (s i) (f e) z k (J (f e)) hzk hJe, gs_sec_chart_transition (s i') (f e) z k (J (f e)) hzk hJe]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_end_of_thickenings : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : Over (Spec (CommRingCat.of R))), Smooth Y.hom → IsProjBy Y.hom → ∀ f : ∀ e, (thickObj R I e Y).left ⟶ Y.left, (∀ e, f e ≫ Y.hom = pullback.fst Y.hom (thick R I e) ≫ Y.hom) → (∀ e, thickMap R I e Y ≫ f (e + 1) = f e) → ∃ g : Y ⟶ Y, ∀ e, pullback.fst Y.hom (thick R I e) ≫ g.left = f e := by
   intro R _ _ _ I hI Y hsm hpr f hf hfc

@@ -21,27 +21,21 @@ namespace WickVanishing
 variable {k : Type} [CommRing k] [Algebra ℚ k]
 
 /- English proof (translation)
-Establish `huv : ∀ j i, constantCoeff ((![u, v] : Fin 2 → Pt k n d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `hu i`. Conclude with `hv i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ (m : ℕ) (j : Fin m) (i : Fin d), constantCoeff (pt k (n` using `m) d j i) = 0 := fun m j i => MvPowerSeries.constantCoeff_X _`. Establish `hp01 : ∀ j i, constantCoeff ((![pt k (n` using `2) d 0, pt k (n := 2) d 1] : Fin 2 → Pt k 2 d) j i) = 0 := by`. Introduce `j i`. Apply the tactic sequence `fin_cases j <;> exact hpt _ _ _`. Establish `hp0 : ∀ j i, constantCoeff ((![pt k (n` using `2) d 0] : Fin 1 → Pt k 2 d) j i) = 0 := by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j i`. Use `fin_cases j`. Conclude with `hpt _ _ _`. Establish `hp1 : ∀ j i, constantCoeff ((![pt k (n` using `2) d 1] : Fin 1 → Pt k 2 d) j i) = 0 := by`. Introduce `j i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `fin_cases j`. Conclude with `hpt _ _ _`. Establish `hadd01 : ∀ j i, constantCoeff ((![addOf G.F (pt k (n` using `2) d 0) (pt k (n := 2) d 1)] : Fin 1 → Pt k 2 d) j i) = 0 := by`. Introduce `j i`. Use `fin_cases j`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `cc_ev _ hp01 (G.const i)`. Establish `hc01 : ∀ j i, constantCoeff ((![comp1 (A.act a) (pt k (n` using `2) d 0), comp1 (A.act a) (pt k (n := 2) d 1)] : Fin 2 → Pt k 2 d) j i) = 0 := by`. Introduce `j i`. Use `fin_cases j`. Conclude with `cc_ev _ hp0 (A.const a i)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `cc_ev _ hp1 (A.const a i)`. Establish `hev2 : ∀ (j : Fin 2) (l : Fin d), ev (![u, v] : Fin 2 → Pt k n d) ((![pt k (n` using `2) d 0, pt k (n := 2) d 1] : Fin 2 → Pt k 2 d) j l) = (![u, v] : Fin 2 → Pt k n d) j l := by`. Introduce `j l`. Use `fin_cases j`. Conclude with `ev_X _ huv 0 l`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `ev_X _ huv 1 l`. Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (ev (![u, v] : Fin 2 → Pt k n d)) (congrFun (A.hom a) i)`. Simplify using `only [comp1, FGLaw.add, addOf] at h ⊢`. Rewrite `h` using `[ev_ev _ _ hadd01 huv, ev_ev _ _ hc01 huv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j l fin_cases j`. Simplify using `only [addOf, Matrix.cons_val_zero, Fin.zero_eta, Fin.isValue]`. Rewrite using `[ev_ev _ _ hp01 huv]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `j' l'`. Conclude with `(hev2 j' l').symm`. Use function extensionality and compare the values at `j l fin_cases j`. Simplify using `only [comp1, Matrix.cons_val_zero, Fin.zero_eta, Fin.isValue]`. Rewrite using `[ev_ev _ _ hp0 huv]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `j' l'`. Use `fin_cases j'`. Conclude with `(ev_X _ huv 0 l').symm`. Simplify using `only [comp1, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero, Fin.mk_one, Fin.isValue]`.
-
-Rewrite using `[ev_ev _ _ hp1 huv]`. Use `congr 1`. Use function extensionality and compare the values at `j' l'`. Use `fin_cases j'`. Conclude with `(ev_X _ huv 1 l').symm`.
+A detailed English derivation is pending.
 -/
 theorem hom_at {d : ℕ} {O : Type} [CommRing O] (G : FGLaw k d) (A : OAct O G) (a : O) {n : ℕ}
     (u v : Pt k n d) (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
@@ -109,9 +103,9 @@ theorem hom_at {d : ℕ} {O : Type} [CommRing O] (G : FGLaw k d) (A : OAct O G) 
       exact (ev_X _ huv 1 l').symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [dLin, pt, Matrix.one_apply, MvPowerSeries.coeff_X]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg, if_neg h]`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Establish `h3` using `(Finsupp.single_left_inj (one_ne_zero : (1 : ℕ) ≠ 0)).mp h2`. Conclude with `(Prod.mk.inj h3).2.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dLin_pt {d : ℕ} : dLin (pt k (n := 1) d 0) = 1 := by
   ext i j
@@ -127,35 +121,33 @@ theorem dLin_pt {d : ℕ} : dLin (pt k (n := 1) d 0) = 1 := by
 
 open Formalism.FG.SolveVAux in
 /- English proof (translation)
-Establish `single_of_degree : ∀ {σ : Type} (n : σ →₀ ℕ), n.degree = 1 → ∃ p, n = Finsupp.single p 1`. Introduce `σ n h`. Establish `hc : Multiset.card (Finsupp.toMultiset n) = 1`. Rewrite using `[Finsupp.card_toMultiset, ← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨p, hp⟩` from `Multiset.card_eq_one.mp hc`. Use `⟨p, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Multiset.toFinsupp hp`. Rewrite `h2` using `[Finsupp.toMultiset_toFinsupp, Multiset.toFinsupp_singleton]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ _ d O _ _ B ℓ ε hℓ0 hℓ1 hadd hinv a i`. Take `⟨hε0, -, hεℓ, hℓε⟩` from `hinv`. Establish `hA0 : ∀ i, constantCoeff (B.A.act a i) = 0` using `B.A.const a`. Establish `hcc1 : ∀ {n : ℕ} (φ : Pt k 1 d) (w : Pt k n d), (∀ i, constantCoeff (φ i) = 0) → (∀ i, constantCoeff (w i) = 0) → ∀ i, constantCoeff (comp1 φ w i) = 0` using `fun φ w hφ hw i => cc_ev _ (fun j l => by fin_cases j; exact hw l) (hφ i)`. Establish `hccA : ∀ {n : ℕ} (u v : Pt k n d), (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) → ∀ i, constantCoeff (addOf B.G.F u v i) = 0` using `fun u v hu hv i => cc_ev _ (fun j l => by fin_cases j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hu l`. Conclude with `hv l) (B.G.const i)`. Establish `hpt : ∀ {n : ℕ} (w : Pt k n d), (∀ i, constantCoeff (w i) = 0) → comp1 (pt k (n` using `1) d 0) w = w := by`. Introduce `n w hw`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ev_X _ (fun j l => by fin_cases j; exact hw l) 0 i`. Establish `hx : ∀ i, constantCoeff (pt k (n` using `2) d 0 i) = 0 := fun i => MvPowerSeries.constantCoeff_X _`. Establish `hy : ∀ i, constantCoeff (pt k (n` using `2) d 1 i) = 0 := fun i => MvPowerSeries.constantCoeff_X _`. Establish `hxy : ∀ i, constantCoeff ((pt k (n` using `2) d 0 + pt k (n := 2) d 1) i) = 0 := fun i => by`. Simplify using `[pt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεx` using `hcc1 ε _ hε0 hx`. Establish `hεy` using `hcc1 ε _ hε0 hy`. Establish `hAε : ∀ i, constantCoeff (comp1 (B.A.act a) ε i) = 0` using `hcc1 _ _ hA0 hε0`. Establish `S1 : comp1 ℓ (addOf B.G.F (comp1 ε (pt k (n` using `2) d 0)) (comp1 ε (pt k (n := 2) d 1))) = pt k (n := 2) d 0 + pt k (n := 2) d 1 := by`. Rewrite using `[add_at B.G ℓ hadd _ _ hεx hεy, germComp1_germComp1_eq_substitute ℓ ε _ hε0 hx, germComp1_germComp1_eq_substitute ℓ ε _ hε0 hy, hℓε, hpt _ hx, hpt _ hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `S2 : comp1 ε (pt k (n` using `2) d 0 + pt k (n := 2) d 1) = addOf B.G.F (comp1 ε (pt k (n := 2) d 0)) (comp1 ε (pt k (n := 2) d 1)) := by`. Rewrite using `[← S1, germComp1_germComp1_eq_substitute ε ℓ _ hℓ0 (hccA _ _ hεx hεy), hεℓ, hpt _ (hccA _ _ hεx hεy)]`. Establish `S4 : comp1 ℓ (comp1 (B.A.act a) (comp1 ε (pt k (n` using `2) d 0 + pt k (n := 2) d 1))) = comp1 ℓ (comp1 (B.A.act a) (comp1 ε (pt k (n := 2) d 0))) + comp1 ℓ (comp1 (B.A.act a) (comp1 ε (pt k (n := 2) d 1))) := by`. Rewrite using `[S2, hom_at B.G B.A a _ _ hεx hεy, add_at B.G ℓ hadd _ _ (hcc1 _ _ hA0 hεx) (hcc1 _ _ hA0 hεy)]`. Establish `hF : ∀ w : Pt k 2 d, (∀ i, constantCoeff (w i) = 0) → comp1 (comp1 ℓ (comp1 (B.A.act a) ε)) w = comp1 ℓ (comp1 (B.A.act a) (comp1 ε w))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[← germComp1_germComp1_eq_substitute _ _ _ hAε hw, ← germComp1_germComp1_eq_substitute _ _ _ hε0 hw]`. Establish `hfadd : comp1 (comp1 ℓ (comp1 (B.A.act a) ε)) (pt k (n` using `2) d 0 + pt k (n := 2) d 1) = comp1 (comp1 ℓ (comp1 (B.A.act a) ε)) (pt k (n := 2) d 0) + comp1 (comp1 ℓ (comp1 (B.A.act a) ε)) (pt k (n := 2) d 1) := by`. Rewrite using `[hF _ hxy, hF _ hx, hF _ hy]`. Conclude with `S4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlin` using `addition_linear k d (comp1 ℓ (comp1 (B.A.act a) ε) i) (congrFun hfadd i)`. Establish `hdε : dLin ε = 1`. Establish `h` using `dLin_comp1 ε ℓ hℓ0`. Rewrite `h` using `[hεℓ, dLin_pt, hℓ1, mul_one]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hdf : dLin (comp1 ℓ (comp1 (B.A.act a) ε)) = dLin (B.A.act a)`. Rewrite using `[dLin_comp1 ℓ _ hAε, dLin_comp1 _ ε hε0, hℓ1, hdε, one_mul, mul_one]`. Use extensionality with `n`. Rewrite using `[map_sum]`. Simplify using `only [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hn : n.degree = 1`. Take `⟨p, rfl⟩` from `single_of_degree n hn`. Take `⟨z, j0⟩` from `p`. Take `rfl : z = 0` from `Subsingleton.elim _ _`. Establish `h1 : MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j0) 1) (comp1 ℓ (comp1 (B.A.act a) ε) i) = dLin (B.A.act a) i j0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdf]`. Both sides reduce to the same expression. Rewrite using `[h1, Finset.sum_eq_single j0]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Establish `h2` using `(Finsupp.single_left_inj (one_ne_zero : (1 : ℕ) ≠ 0)).mp h`. Conclude with `(Prod.mk.inj h2).2.symm`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hlin n hn]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
-
-Introduce `j _`. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `rfl`. Conclude with `hn (Finsupp.degree_single _ _)`.
+A detailed English derivation is pending.
 -/
 theorem action_linear : ActLinSt := by
   have single_of_degree : ∀ {σ : Type} (n : σ →₀ ℕ), n.degree = 1 → ∃ p, n = Finsupp.single p 1 := by

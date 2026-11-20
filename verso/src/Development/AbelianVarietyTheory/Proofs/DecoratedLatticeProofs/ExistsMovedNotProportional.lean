@@ -83,9 +83,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨η, h1, h2, h3, -⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Use `⟨η ^ n, ⟨?_, fun x => ?_⟩, ⟨h3.1, fun e he a => ?_⟩, fun x a b c => ?_⟩` and prove the remaining obligations. Establish `: ((η ^ n : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ n`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `h1.1.pow n`. Rewrite using `[MonoidHom.pow_apply, h1.2 x, one_pow]`. Rewrite using `[MonoidHom.pow_apply, h3.2 e he a, pow_one]`. Rewrite using `[MonoidHom.pow_apply, h2 x a b c, one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unram_char (D : D7) (n : ℕ) :
     ∃ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ ∧ ResEta D χ n ∧ UnramEverywhere D χ := by

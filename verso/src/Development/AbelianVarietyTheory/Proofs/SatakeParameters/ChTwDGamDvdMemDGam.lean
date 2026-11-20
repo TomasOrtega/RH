@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex t u μ`. Conclude with `(ex.err.dgam.one u u μ).dvd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chTw_DGam_dvd_mem_DGam : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup), (D.chTw u μ).DGam ∣ (D.mem u).C.DGam := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ

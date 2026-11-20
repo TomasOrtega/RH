@@ -13,14 +13,14 @@ variable {K T : Type} [Field K] [CommRing T] [Algebra K T] (O : ValuationSubring
 def toO (M : Matrix n n K) (hM : IntM O M) : Matrix n n O := fun i j => ⟨M i j, hM i j⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem toO_map (M : Matrix n n K) (hM : IntM O M) : (toO O M hM).map (algebraMap O K) = M := by
   ext i j
   rfl
 
 /- English proof (translation)
-Introduce `M N h`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun h i) j`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_inj : Function.Injective fun M : Matrix n n O => M.map (algebraMap O K) := by
   intro M N h
@@ -33,7 +33,7 @@ variable (θ : T ≃ₐ[K] K × K) (J : Matrix n n T) (P : GL n K) {H : Type} [G
 
 include hK in
 /- English proof (translation)
-The claim follows from `conjP_int O θ J P (m h) fun x hx => (hK h x).mp hx`.
+A detailed English derivation is pending.
 -/
 theorem int_of (h : H) : IntM O (conjPrime₂ θ P (m h)) :=
   conjP_int O θ J P (m h) fun x hx => (hK h x).mp hx
@@ -48,7 +48,7 @@ def psiU (h : H) : GL n O :=
     exact (Matrix.map_one _ (map_zero _) (map_one _)).symm⟩
 
 /- English proof (translation)
-The claim follows from `toO_map O _ (int_of O θ J P m hK h)`.
+A detailed English derivation is pending.
 -/
 theorem psiU_map (h : H) : ((psiU O θ J P m hK h : GL n O) : Matrix n n O).map (algebraMap O K) =
     conjPrime₂ θ P (m h) :=
@@ -67,20 +67,20 @@ def psi : H →* GL n O where
     simp only [Units.val_mul, Matrix.map_mul, psiU_map, map_mul, conjP_mul]
 
 /- English proof (translation)
-The claim follows from `psiU_map O θ J P m hK h`.
+A detailed English derivation is pending.
 -/
 theorem psi_map (h : H) : ((psi O θ J P m hK h : GL n O) : Matrix n n O).map (algebraMap O K) =
     conjPrime₂ θ P (m h) :=
   psiU_map O θ J P m hK h
 
 /- English proof (translation)
-Establish `key : ∀ i j, ((((psi O θ J P m hK h : GL n O) : Matrix n n O) - 1) i j : K) = (conjPrime₂ θ P (m h) - 1) i j`. Introduce `i j`. Rewrite using `[← psi_map O θ J P m hK h]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H1 i j`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp (H1 i j)`. Use `⟨b, b.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ← hb]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `H1 i j`. Take `⟨w, hw, hwe⟩` from `H1 i j`. Use `Ideal.mem_span_singleton'.mpr ⟨⟨w, hw⟩, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key]`. Rewrite using `[hwe]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_ker_iff (c : O) (h : H) :
     (∀ i j, (((psi O θ J P m hK h : GL n O) : Matrix n n O) - 1) i j ∈ Ideal.span {c}) ↔

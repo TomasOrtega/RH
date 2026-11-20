@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.We
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ _ n r hr`. Conclude with `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l Γ n r fun i j => (Units.continuous_val.comp hr).matrix_elem i j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.finCoef :
     UpperTheory.V.Sd.FinCoef := by

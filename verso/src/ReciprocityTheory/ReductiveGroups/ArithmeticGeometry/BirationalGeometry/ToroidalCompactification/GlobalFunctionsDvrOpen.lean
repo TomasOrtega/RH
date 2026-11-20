@@ -12,16 +12,16 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.Tor.GlobalFunctionsDvrOpen
 variable {V : Type} [CommRing V] [IsDomain V]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_further.goal1 .. | (apply Bl.general_b_fact_further.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_further.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isLocalization_frac [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ) :
     IsLocalization.Away ϖ (FractionRing V) := by
   first | exact Bl.general_b_fact_further.goal1 .. | (apply Bl.general_b_fact_further.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_further.goal1 <;> assumption)
 
 /- English proof (translation)
-Use `isLocalization_frac hϖ` as an intermediate fact. Set `e` to `IsLocalization.algEquiv (Submonoid.powers ϖ) (Localization.Away ϖ) (FractionRing V)`. Establish `he : algebraMap V (FractionRing V) = (e : Localization.Away ϖ →+* FractionRing V).comp (algebraMap V (Localization.Away ϖ))` using `RingHom.ext fun x => (e.commutes x).symm`. Establish `: IsIso (CommRingCat.ofHom (e : Localization.Away ϖ →+* FractionRing V))` using `⟨⟨CommRingCat.ofHom (e.symm : FractionRing V →+* Localization.Away ϖ), by ext x; simp, by ext x; simp⟩⟩`. Use `show IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V))))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, CommRingCat.ofHom_comp, Spec.map_comp]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_frac [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ) :
     IsOpenImmersion (spMap (algebraMap V (FractionRing V))) := by
@@ -37,7 +37,7 @@ theorem isOpenImmersion_frac [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreduc
   infer_instance
 
 /- English proof (translation)
-The claim follows from `isOpenImmersion_frac hϖ (spMap (algebraMap V (FractionRing V))).opensRange = (Sp V).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of V)).inv ϖ) := by have := isLocalization_frac hϖ rw [basicOpen_eq_of_affine] ext1 exact PrimeSpectrum.localization_away_comap_range (FractionRing V) ϖ`.
+A detailed English derivation is pending.
 -/
 theorem opensRange_frac [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ) :
     haveI := isOpenImmersion_frac hϖ
@@ -49,15 +49,13 @@ theorem opensRange_frac [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible 
   exact PrimeSpectrum.localization_away_comap_range (FractionRing V) ϖ
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext X.sheaf ⊤ f 0 fun x hx => ?_` and prove the remaining obligations. Use `show X.presheaf.germ ⊤ x hx f = X.presheaf.germ ⊤ x hx 0`. Use `set r' := (Scheme.ΓSpecIso (CommRingCat.of V)).inv r with hr'def`. Establish `hr' : r' ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hr` to reduce the goal to its premises. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of V)).hom h0` as an intermediate fact. Rewrite `this` using `[hr'def, Iso.inv_hom_id_apply, map_zero]`. Then use the resulting hypothesis. Use `set g := (Sp V).presheaf.germ ⊤ (p.base x) trivial r' with hgdef`. Establish `hg : g ≠ 0` using `fun h0 => hr' (germ_injective_of_isIntegral (Sp V) (U := ⊤) (p.base x) trivial (h0.trans (map_zero _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `` to `(p.stalkMap x).hom.toAlgebra`. Establish `: Module.Flat _ (X.presheaf.stalk x)` using `Flat.stalkMap p x`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := X.presheaf.stalk x) (mem_nonZeroDivisors_of_ne_zero hg)`. Establish `key : (p.stalkMap x).hom g * X.presheaf.germ ⊤ x hx f = 0`. Establish `h1 : (p.stalkMap x).hom g = X.presheaf.germ ⊤ x hx (p.appTop r')` using `Scheme.Hom.germ_stalkMap_apply p ⊤ x trivial r'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `show X.presheaf.germ ⊤ x hx (p.appTop r') * X.presheaf.germ ⊤ x hx f = 0`. Rewrite using `[← map_mul, h, map_zero]`. Establish `h2 : g • X.presheaf.germ ⊤ x hx f = g • 0`. Rewrite using `[smul_zero, Algebra.smul_def]`.
-
-Conclude with `key`. Rewrite using `[hreg h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mul {X : Scheme.{0}} (p : X ⟶ Sp V) [Flat p] {r : V} (hr : r ≠ 0) (f : Γ(X, ⊤))
     (h : p.appTop ((Scheme.ΓSpecIso (CommRingCat.of V)).inv r) * f = 0) : f = 0 := by
@@ -88,7 +86,7 @@ theorem eq_zero_of_mul {X : Scheme.{0}} (p : X ⟶ Sp V) [Flat p] {r : V} (hr : 
   rw [hreg h2, map_zero]
 
 /- English proof (translation)
-Use `isLocalization_basicOpen_of_qcqs (X := X) (U := ⊤) (by simpa using isCompact_univ) (by simpa using isQuasiSeparated_univ) s` as an intermediate fact. Establish `hM : Submonoid.powers s ≤ nonZeroDivisors Γ(X, ⊤)` using `Submonoid.powers_le.2 (mem_nonZeroDivisors_iff_right.2 fun f hf => hs f (by rwa [mul_comm] at hf))`. Conclude with `IsLocalization.injective (Γ(X, X.basicOpen s)) hM`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restrict_basicOpen_injective {X : Scheme.{0}} [CompactSpace X] [QuasiSeparatedSpace X]
     (s : Γ(X, ⊤)) (hs : ∀ f : Γ(X, ⊤), s * f = 0 → f = 0) :
@@ -100,7 +98,7 @@ theorem restrict_basicOpen_injective {X : Scheme.{0}} [CompactSpace X] [QuasiSep
   exact IsLocalization.injective (Γ(X, X.basicOpen s)) hM
 
 /- English proof (translation)
-The claim follows from `isOpenImmersion_frac (IsDiscreteValuationRing.exists_irreducible V).choose_spec Function.Injective (pullback.fst p (spMap (algebraMap V (FractionRing V)))).appTop := by obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V haveI := isOpenImmersion_frac hϖ have : CompactS …`.
+A detailed English derivation is pending.
 -/
 theorem appTop_fst_injective [IsDiscreteValuationRing V] {X : Scheme.{0}} (p : X ⟶ Sp V) [Flat p]
     [QuasiCompact p] [QuasiSeparated p] :

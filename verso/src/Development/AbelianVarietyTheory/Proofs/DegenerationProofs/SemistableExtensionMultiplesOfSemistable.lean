@@ -24,7 +24,7 @@ open GlobalTheory.SS
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `h.comm; infer_instance smooth := by have := h.smooth; show Smooth (pullback.snd A.hom f); infer_instance proper := by have := h.proper; show IsProper (pullback.snd A.hom f); infer_instance geomConnected := by` as an intermediate fact. Use `h.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (pullback.snd A.hom f)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_overPullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A]
     (h : IsAbelianScheme A) : IsAbelianScheme ((Over.pullback f).obj A) where

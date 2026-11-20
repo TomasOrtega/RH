@@ -9,11 +9,9 @@ namespace PI.PoleLengthCount
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Unfold `Fk`. Conclude with `Submodule.span_mono (Set.image_mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hab)))`. Unfold `Fk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul, Submodule.top_coe, Set.image_univ, (toWK_surjective X la G.w wF _).range_eq, Submodule.span_univ]`. Unfold `Fk`. Rewrite using `[eq_bot_iff, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_bot]`.
-
-Conclude with `(toWK_eq_zero_iff X la G.w wF _ x).2 hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_filtration_decreasing (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (T : ℕ) : FiltOk G la T := by
   refine ⟨?_, ?_, ?_⟩

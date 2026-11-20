@@ -13,7 +13,7 @@ variable {F : Type} [NormedField F] {m : ℕ}
 open Matrix Topology in
 variable {F : Type} [NormedField F] {m : ℕ} in
 /- English proof (translation)
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.JSW.KirFin.mir_mul]`. Simplify using `[mulVec_neg, mulVec_mulVec, ← _root_.GlobalTheory.JSW.KirFin.mir_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.JSW.Cut.Block.mir_inv (a : GL (Fin m) F) (y : Fin m → F) :
     (_root_.GlobalTheory.JSW.KirFin.mir a y)⁻¹ =
@@ -23,7 +23,7 @@ theorem _root_.GlobalTheory.JSW.Cut.Block.mir_inv (a : GL (Fin m) F) (y : Fin m 
   simp [mulVec_neg, mulVec_mulVec, ← _root_.GlobalTheory.JSW.KirFin.mir_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrArg (fun p : GL (Fin (m + 1)) F => p.val i.castSucc j.castSucc) e` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mir_left_inj {g h : GL (Fin m) F} {x y : Fin m → F} (e : mir g x = mir h y) : g = h := by
   ext i j
@@ -41,15 +41,15 @@ def blocks (U : Subgroup (GL (Fin (m + 1)) F)) : Subgroup (GL (Fin m) F) where
     exact ⟨_, by rw [← mir_inv]; exact U.inv_mem hy⟩
 
 /- English proof (translation)
-Introduce `F _ m U hUc hUo`. Use `⟨blocks U, isCompact_blocks hUc, ?_, fun b hb => ⟨0, hb⟩, fun h₀ h => ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (H₁ := U.comap cor) (fun b hb => ⟨0, hb⟩) (hUo.preimage continuous_cor)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, u, hu, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨n', x, rfl⟩` from `exists_mir (lr_of_mem hn)`. Establish `hlu : lr u = lr 1`. Establish `h1 : lr (cor h) = lr (1 * u)`. Rewrite using `[e]`. Use `lr_mul_congr ?_ u` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lr_mul_congr (lr_of_mem hn) _, one_mul]`. Conclude with `lr_mir h₀ 0`. Rewrite `h1` using `[one_mul]`. Rewrite using `[← h1]`. Conclude with `lr_mir h 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨a, y, rfl⟩` from `exists_mir hlu`. Use `⟨n', mir_mem_iff.1 hn, a, ⟨y, hu⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mir h 0 = mir n' x * mir h₀ 0 * mir a y at e`. Rewrite `e` using `[mir_mul, mir_mul]`. Conclude with `mir_left_inj e`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨n', hn', a, ⟨y, hy⟩, rfl⟩`. Use `⟨mir n' (-((n' * h₀).val *ᵥ y)), mir_mem_iff.2 hn', mir a y, hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mir (n' * h₀ * a) 0 = mir n' _ * mir h₀ 0 * mir a y`. Rewrite using `[mir_mul, mir_mul, mulVec_zero, zero_add, add_neg_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_blocks_cell_cor_iff : ∀ {F : Type} [NormedField F] {m : ℕ} (U : Subgroup (GL (Fin (m + 2)) F)), IsCompact (U : Set (GL (Fin (m + 2)) F)) → IsOpen (U : Set (GL (Fin (m + 2)) F)) → ∃ B : Subgroup (GL (Fin (m + 1)) F), IsCompact (B : Set (GL (Fin (m + 1)) F)) ∧ IsOpen (B : Set (GL (Fin (m + 1)) F)) ∧ (∀ b, GlobalTheory.JSW.KirFin.cor b ∈ U → b ∈ B) ∧ ∀ h₀ h : GL (Fin (m + 1)) F, GlobalTheory.JSW.KirFin.cor h ∈ GlobalTheory.JSW.Cut.cell (GlobalTheory.JSW.KirFin.cor h₀) (U : Set (GL (Fin (m + 2)) F)) ↔ h ∈ GlobalTheory.JSW.Cut.cell h₀ (B : Set (GL (Fin (m + 1)) F)) := by
   intro F _ m U hUc hUo

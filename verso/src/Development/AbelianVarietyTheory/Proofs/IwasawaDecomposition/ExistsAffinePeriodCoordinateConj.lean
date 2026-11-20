@@ -6,27 +6,27 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ r X τ₁ h1 i hp`. Establish `hc : conjEmb τ₁ = ComplexEmbedding.conjugate τ₁`. Use extensionality with `z`. Simplify using `[conjEmb, ComplexEmbedding.conjugate_coe_eq]`. Establish `hτ : conjEmb τ₁ ∈ X.Ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hc, X.cmType]`. Establish `hcc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ₁) = τ₁`. Use extensionality with `z`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[hcc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `hr : 0 < r` using `by have := X.p0_le; omega`. Set `τ' : X.Ψ` to `⟨conjEmb τ₁, hτ⟩`. Set `c₀ : Fin r` to `⟨0, hr⟩`. Set `κ : Frame X.Ψ r → Fin r → ℂ` to `fun x b => ∑ a, x τ' a c₀ * conjEmb τ₁ (X.Gm a b)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcont : Continuous κ`. Use `continuous_pi fun b => continuous_finset_sum _ fun a _ => ?_` and prove the remaining obligations. Establish `h3 : Continuous fun x : Frame X.Ψ r => x τ' a c₀` using `by fun_prop`. Conclude with `h3.mul continuous_const`. Use `⟨κ, hcont.continuousOn, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `O hO hOd x hx ξ`. Set `Gτ : Matrix (Fin r) (Fin r) ℂ` to `X.Gm.map (conjEmb τ₁)`. Establish `hdet : IsUnit Gτ.det`. Rewrite using `[isUnit_iff_ne_zero]`. Use `show (X.Gm.map (conjEmb τ₁)).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[show X.Gm.map (conjEmb τ₁) = (conjEmb τ₁).mapMatrix X.Gm from rfl, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 X.Gm_det`. Set `η : Fin r → ℂ` to `ξ ᵥ* Gτ⁻¹`. Establish `hη : ∀ b, ∑ a, η a * conjEmb τ₁ (X.Gm a b) = ξ b`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : η ᵥ* Gτ = ξ`. Simplify using `only [η, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, Matrix.vecMul_one]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Set `d : Frame X.Ψ r` to `fun σ a c => if σ = τ' ∧ c = c₀ then η a else 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hκ : ∀ t : ℂ, κ (x + t • d) = κ x + t • ξ`. Introduce `t`. Use function extensionality and compare the values at `b`. Simplify using `only [κ, d, Pi.add_apply, Pi.smul_apply, smul_eq_mul, and_self, if_true, add_mul, Finset.sum_add_distrib]`. Rewrite using `[← hη b, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hcl : Continuous fun t : ℂ => x + t • d` using `continuous_const.add (continuous_id.smul continuous_const)`. Establish `hev : ∀ᶠ t in nhds (0 : ℂ), x + t • d ∈ O` using `hcl.continuousAt.preimage_mem_nhds (by simpa using hO.mem_nhds hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hev.filter_mono nhdsWithin_le_nhds).mono fun t ht => ⟨_, ht, hκ t⟩`. Introduce `x _ v`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_neg h1, dif_pos hτ, dif_pos (by omega : X.p0 - 1 - i < r)]`. Establish `hcol : (⟨X.p0 - 1 - i, by omega⟩ : Fin r) = c₀` using `Fin.ext (by simp [c₀]; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcj : ∀ z : E, (starRingEnd ℂ) (conjEmb τ₁ z) = τ₁ z`. Introduce `z`. Simplify using `[conjEmb]`. Simplify using `only [hermC, dotProduct, Data.emb, ReciprocityTheory.ChartRestriction.G.FD.col, mat, Matrix.of_apply, κ, hcol, hcj, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+A detailed English derivation is pending.
 -/
 theorem frame_col_top_letter : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (τ₁ : E →+* ℂ), τ₁ ∉ X.Ψ → ∀ (i : ℕ), X.p0 = i + 1 → ∃ κ : Frame X.Ψ r → Fin r → ℂ, ContinuousOn κ X.dom ∧

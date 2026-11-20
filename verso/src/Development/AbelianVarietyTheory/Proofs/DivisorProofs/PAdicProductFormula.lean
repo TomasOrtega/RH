@@ -5,9 +5,9 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' p (q : ℚ_[p])`. Rewrite `h` using `[Padic.eq_padicNorm]`. Rewrite using `[← h]`. Use `congr 1`. Rewrite using `[map_ratCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ratCast (UniformSpace.Completion.coeRingHom : PadicAlgCl p →+* ℂ_[p]) q).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_ratCast_padicComplex (p : ℕ) [Fact p.Prime] (q : ℚ) :
     ‖(q : ℂ_[p])‖ = padicNorm p q := by
@@ -19,9 +19,9 @@ theorem norm_ratCast_padicComplex (p : ℕ) [Fact p.Prime] (q : ℚ) :
   exact (map_ratCast (UniformSpace.Completion.coeRingHom : PadicAlgCl p →+* ℂ_[p]) q).symm
 
 /- English proof (translation)
-Establish `hN : Algebra.norm ℚ a ≠ 0` using `(Algebra.norm_ne_zero_iff).2 ha`. Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `hsum : ∑ j : K →+* ℂ_[p], Real.log ‖j a‖ = ∑ σ : K →ₐ[ℚ] ℂ_[p], Real.log ‖σ a‖`. Use `Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ_[p]) _ _ (fun j => rfl)` and prove the remaining obligations. Rewrite using `[hsum, ← Real.log_prod (fun σ _ => (norm_ne_zero_iff.2 ((map_ne_zero σ).2 ha))), ← norm_prod, ← Algebra.norm_eq_prod_embeddings ℚ ℂ_[p] a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (algebraMap ℚ ℂ_[p]) (Algebra.norm ℚ a) = ((Algebra.norm ℚ a : ℚ) : ℂ_[p])` using `by simp`. Rewrite using `[this, norm_ratCast_padicComplex, padicNorm.eq_zpow_of_nonzero hN]`. Use `push_cast`. Rewrite using `[Real.log_zpow]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

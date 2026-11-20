@@ -9,9 +9,9 @@ open Finset MvPolynomial
 namespace UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Establish `hmem : P * Q ∈ eSpan K n k * eSpan K n l` using `Submodule.mul_mem_mul hP hQ`. Establish `hle : eSpan K n k * eSpan K n l ≤ eSpan K n (k + l)`. Unfold `eSpan`. Rewrite using `[Submodule.span_mul_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, _, ⟨m', rfl⟩, rfl⟩`. Use `⟨Fin.append m m', ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_add, Fin.append_left, Fin.append_right]`. Conclude with `hle hmem`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem elementary_span_mul (K : Type) [CommRing K] (n k l : ℕ)
     (P Q : MvPolynomial (Fin n) K) (hP : P ∈ eSpan K n k) (hQ : Q ∈ eSpan K n l) :
@@ -27,7 +27,7 @@ private theorem elementary_span_mul (K : Type) [CommRing K] (n k l : ℕ)
   exact hle hmem
 
 /- English proof (translation)
-Unfold `eSpan`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun _ => 0, ?_⟩` and prove the remaining obligations. Simplify using `[esymm_zero]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem one_mem_eSpan (K : Type) [CommRing K] (n j : ℕ) :
     (1 : MvPolynomial (Fin n) K) ∈ eSpan K n j := by
@@ -37,7 +37,7 @@ private theorem one_mem_eSpan (K : Type) [CommRing K] (n j : ℕ) :
   simp [esymm_zero]
 
 /- English proof (translation)
-Introduce `K _ n`. Use `⟨fun k l hkl => ?_, fun k l P Q hP hQ => elementary_span_mul K n k l P Q hP hQ⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hkl`. Introduce `P hP`. Simplify using `using elementary_span_mul K n k d P 1 hP (one_mem_eSpan K n d)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eSpanMul : ESpanMul := by
   intro K _ n

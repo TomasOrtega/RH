@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ O M' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ρ' j hb hj U 𝒟`. Conclude with `length_of_isBaseChange (isBaseChange_selMap ρ ρ' j hj U hb 𝒟)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.selBase :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

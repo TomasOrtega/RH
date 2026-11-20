@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLoga
 namespace Formalism.L2.Th1.D
 
 /- English proof (translation)
-Introduce `h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => theorem_a_entry_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThmAEntryEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAEntryEvery := by
   intro h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -14,7 +14,7 @@ theorem ThmAEntryEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAEntryEv
     theorem_a_entry_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩
 
 /- English proof (translation)
-Introduce `h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => theorem_a_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThmAGaussEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAGaussEvery := by
   intro h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -23,7 +23,7 @@ theorem ThmAGaussEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : ThmAGaussEv
     theorem_a_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩
 
 /- English proof (translation)
-Introduce `h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => one_letter_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OneLetterGaussEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : OneLetterGaussEvery := by
   intro h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -32,7 +32,7 @@ theorem OneLetterGaussEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : OneLet
     one_letter_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩
 
 /- English proof (translation)
-Introduce `h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `hNR h4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => kernel_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem KernelEvery_of (hNR : Formalism.L2.Th1.CM.CM4 → NRCM) : KernelEvery := by
   intro h4 dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth

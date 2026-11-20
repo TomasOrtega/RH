@@ -23,7 +23,7 @@ def toM (x : MG G hG) : Matrix (Fin m) (Fin m) ℂ := Matrix.of x.1
 def val (x : MG G hG) : MtM m := x.1
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 theorem toM_mem (x : MG G hG) : x.toM ∈ G := x.2
 
@@ -31,25 +31,25 @@ def mk (hG : IsMatGroup G) (g : Matrix (Fin m) (Fin m) ℂ) (h : g ∈ G) : MG G
   ⟨Matrix.of.symm g, by simpa using h⟩
 
 /- English proof (translation)
-Simplify using `[mk, toM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem toM_mk (g : Matrix (Fin m) (Fin m) ℂ) (h : g ∈ G) : (mk hG g h).toM = g := by
   simp [mk, toM]
 
 /- English proof (translation)
-Introduce `x y h`. Conclude with `Subtype.ext (Matrix.of.injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem toM_injective : Function.Injective (toM : MG G hG → Matrix (Fin m) (Fin m) ℂ) := by
   intro x y h
   exact Subtype.ext (Matrix.of.injective h)
 
 /- English proof (translation)
-The claim follows from `toM_injective h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext {x y : MG G hG} (h : x.toM = y.toM) : x = y := toM_injective h
 
 /- English proof (translation)
-The claim follows from `toM_injective (toM_mk _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mk_toM (x : MG G hG) : mk hG x.toM x.toM_mem = x := toM_injective (toM_mk _ _)
 
@@ -58,25 +58,25 @@ instance : One (MG G hG) := ⟨mk hG 1 hG.2.1⟩
 instance : Inv (MG G hG) := ⟨fun x => mk hG (x.toM)⁻¹ (hG.2.2.2 _ x.2).1⟩
 
 /- English proof (translation)
-The claim follows from `toM_mk _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toM_mul (x y : MG G hG) : (x * y).toM = x.toM * y.toM := toM_mk _ _
 /- English proof (translation)
-The claim follows from `toM_mk _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toM_one : (1 : MG G hG).toM = 1 := toM_mk _ _
 /- English proof (translation)
-The claim follows from `toM_mk _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toM_inv (x : MG G hG) : x⁻¹.toM = (x.toM)⁻¹ := toM_mk _ _
 
 /- English proof (translation)
-The claim follows from `(hG.2.2.2 _ x.toM_mem).2`.
+A detailed English derivation is pending.
 -/
 theorem mul_inv_toM (x : MG G hG) : x.toM * (x.toM)⁻¹ = 1 := (hG.2.2.2 _ x.toM_mem).2
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `congrArg Matrix.det (mul_inv_toM x)`. Rewrite `e` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero (x : MG G hG) : x.toM.det ≠ 0 := by
   intro h
@@ -85,7 +85,7 @@ theorem det_ne_zero (x : MG G hG) : x.toM.det ≠ 0 := by
   exact zero_ne_one e
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (det_ne_zero x))`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_toM (x : MG G hG) : (x.toM)⁻¹ * x.toM = 1 :=
   Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (det_ne_zero x))
@@ -100,7 +100,7 @@ instance : Group (MG G hG) where
   inv_mul_cancel a := ext (by simp [inv_mul_toM])
 
 /- English proof (translation)
-The claim follows from `toM_mul x y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toM_mul' (x y : MG G hG) : (x * y).toM = x.toM * y.toM := toM_mul x y
 
@@ -119,13 +119,13 @@ end MG
 open MG
 
 /- English proof (translation)
-The claim follows from `hG.1.preimage continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_set (hG : IsMatGroup G) : IsClosed {x : MtM m | Matrix.of x ∈ G} :=
   hG.1.preimage continuous_id
 
 /- English proof (translation)
-The claim follows from `(isClosed_set hG).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_set (hG : IsMatGroup G) : MeasurableSet {x : MtM m | Matrix.of x ∈ G} :=
   (isClosed_set hG).measurableSet
@@ -142,17 +142,17 @@ instance : MeasurableSpace (MG G hG) :=
 instance : BorelSpace (MG G hG) := inferInstanceAs (BorelSpace {x : MtM m // Matrix.of x ∈ G})
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_val : Continuous (val : MG G hG → MtM m) := continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toM : Continuous (toM : MG G hG → Matrix (Fin m) (Fin m) ℂ) := continuous_subtype_val
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => continuous_toM.comp h, fun h => continuous_induced_rng.2 h⟩`.
+Supply the required witnesses or components.
 -/
 theorem continuous_iff_toM {X : Type*} [TopologicalSpace X] {f : X → MG G hG} :
     Continuous f ↔ Continuous (fun x => (f x).toM) :=
@@ -172,26 +172,26 @@ instance : IsTopologicalGroup (MG G hG) where
     exact continuousAt_inv₀ (det_ne_zero x)
 
 /- English proof (translation)
-The claim follows from `(isClosed_set hG).isClosedEmbedding_subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_val : IsClosedEmbedding (val : MG G hG → MtM m) :=
   (isClosed_set hG).isClosedEmbedding_subtypeVal
 
 /- English proof (translation)
-The claim follows from `MeasurableEmbedding.subtype_coe (measurableSet_set hG)`.
+A detailed English derivation is pending.
 -/
 theorem measEmb : MeasurableEmbedding (val : MG G hG → MtM m) :=
   MeasurableEmbedding.subtype_coe (measurableSet_set hG)
 
 /- English proof (translation)
-Unfold `lmulQ`. Conclude with `continuous_const.matrix_mul continuous_id`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_lmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (lmulQ (m := m) a) := by
   unfold lmulQ
   exact continuous_const.matrix_mul continuous_id
 
 /- English proof (translation)
-Unfold `rmulQ`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_rmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (rmulQ (m := m) a) := by
   unfold rmulQ
@@ -200,9 +200,9 @@ theorem continuous_rmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (rmulQ (m
 def onG (hG : IsMatGroup G) (μ : Measure (MtM m)) : Measure (MG G hG) := μ.comap val
 
 /- English proof (translation)
-Rewrite using `[onG, measEmb.map_comap]`. Establish `hr : Set.range (val : MG G hG → MtM m) = {x | Matrix.of x ∈ G}` using `Subtype.range_coe`. Rewrite using `[hr]`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hμ.2.2.1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_onG (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : (onG hG μ).map val = μ := by
   rw [onG, measEmb.map_comap]
@@ -213,9 +213,9 @@ theorem map_onG (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : (onG hG μ).map 
   simpa using hμ.2.2.1
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hcomp : (val ∘ (fun x : MG G hG => g * x)) = lmulQ g.toM ∘ val` using `funext fun x => rfl`. Establish `hmeasL : Measurable (lmulQ (m` using `m) g.toM) := (continuous_lmulQ _).measurable`. Establish `hmul : Measurable (fun x : MG G hG => g * x)` using `(measEmb (hG := hG)).measurable_comp_iff.1 (by rw [hcomp]; exact hmeasL.comp measEmb.measurable)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Measure.map_map measEmb.measurable hmul, hcomp, ← Measure.map_map hmeasL measEmb.measurable]`. Use `_ = Measure.comap val μ := by rw [map_onG μ hμ, hμ.2.2.2 _ g.toM_mem]`. Use `_ = onG hG μ := rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onG_left (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : Measure.IsMulLeftInvariant (onG hG μ) := by
   refine ⟨fun g => ?_⟩
@@ -232,14 +232,14 @@ theorem onG_left (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : Measure.IsMulLe
     _ = onG hG μ := rfl
 
 /- English proof (translation)
-Use `haveI := hμ.1`. Conclude with `SigmaFinite.of_map _ (measEmb (hG := hG)).measurable.aemeasurable (by rw [map_onG μ hμ]; exact hμ.1)`.
+A detailed English derivation is pending.
 -/
 theorem onG_sigmaFinite (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : SigmaFinite (onG hG μ) := by
   haveI := hμ.1
   exact SigmaFinite.of_map _ (measEmb (hG := hG)).measurable.aemeasurable (by rw [map_onG μ hμ]; exact hμ.1)
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `map_onG (hG := hG) μ hμ`. Rewrite `e` using `[h, Measure.map_zero]`. Conclude with `hμ.2.1 e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onG_ne_zero (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : onG hG μ ≠ 0 := by
   intro h

@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWe
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.hypH_of_rowRatW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDoublingInputsImply.lean&line=17#L17)
 -/

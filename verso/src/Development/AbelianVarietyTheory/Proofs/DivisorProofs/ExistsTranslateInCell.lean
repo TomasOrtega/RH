@@ -11,13 +11,13 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Use `set M : Matrix ν ν (Polynomial E) := A.map Polynomial.C + (Polynomial.X : Polynomial E) • B.map Polynomial.C with hM`. Establish `hev : ∀ x : E, M.det.eval x = (A + x • B).det`. Introduce `x`. Establish `h1` using `RingHom.map_det (Polynomial.evalRingHom x) M`. Rewrite `h1` using `[Polynomial.coe_evalRingHom]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[hM]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hp : M.det ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[← hev, h0, Polynomial.eval_zero]`. Establish `hfin` using `Polynomial.finite_setOfPred_isRoot hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hfin.preimage (f := algebraMap F E) (algebraMap F E).injective.injOn).subset ?_` and prove the remaining obligations. Introduce `r hr`. Express the relevant statement in the definitionally equal form `M.det.eval _ = 0`. Rewrite using `[hev]`. Conclude with `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_det_line_zero {F E : Type} [Field F] [Field E] [Algebra F E] {ν : Type} [Fintype ν] [DecidableEq ν]
     (A B : Matrix ν ν E) (r₀ : F) (h : (A + algebraMap F E r₀ • B).det ≠ 0) :
@@ -44,17 +44,15 @@ theorem finite_det_line_zero {F E : Type} [Field F] [Field E] [Algebra F E] {ν 
   exact hr
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by ext i j; simp, by simp⟩`. Consider the case `insert g s _ ih`. Take `⟨t₀, ht₀, h₀⟩` from `ih`. Take `⟨t₁, ht₁, h₁⟩` from `GlobalTheory.T.exists_hermitian_splitUnitary_lowerBlock_invertible F E c δ hE ν g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ k ∈ insert g s, {r : F | (((mat c k).toBlocks₂₁ + (mat c k).toBlocks₂₂ * t₀) + algebraMap F E r • ((mat c k).toBlocks₂₂ * (t₁ - t₀))).det = 0}.Finite`. Introduce `k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Use `finite_det_line_zero _ _ 1 ?_` and prove the remaining obligations. Rewrite using `[map_one, one_smul, add_assoc, ← Matrix.mul_add, add_sub_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₁`. Use `finite_det_line_zero _ _ 0 ?_` and prove the remaining obligations. Rewrite using `[map_zero, zero_smul, add_zero]`. Conclude with `h₀ k hk`. Establish `hfin` using `Set.Finite.biUnion (insert g s).finite_toSet key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `hfin.exists_notMem`. Use `⟨t₀ + algebraMap F E r • (t₁ - t₀), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `e₀ : c (t₀ j i) = t₀ i j` using `congrFun (congrFun ht₀ i) j`. Establish `e₁ : c (t₁ j i) = t₁ i j` using `congrFun (congrFun ht₁ i) j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e₀, e₁]`. Introduce `k hk h0`. Apply `hr` to reduce the goal to its premises. Use `Set.mem_biUnion (Finset.mem_coe.mpr hk) ?_` and prove the remaining obligations. Rewrite `h0` using `[Matrix.mul_add, Matrix.mul_smul, ← add_assoc]`.
-
-Conclude with `h0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_herm_transversal (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E)
     (δ : E) (hE : IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (s : Finset (UG c (stdJ ν E))) :
@@ -89,11 +87,11 @@ theorem exists_herm_transversal (F : Type) [Field F] [CharZero F] (E : Type) [Fi
       exact h0
 
 /- English proof (translation)
-Introduce `F _ _ E _ _ c δ hE ν _ _ s`. Take `⟨t, ht, h⟩` from `exists_herm_transversal F E c δ hE ν s`. Set `u : UG c (stdJ ν E)` to `⟨⟨fromBlocks 1 0 t 1, fromBlocks 1 0 (-t) 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩, by`. Rewrite using `[mem_UG_iff]`. Establish `h0 : (0 : Matrix ν ν E).map c = 0` using `Matrix.map_zero _ (map_zero c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : Matrix ν ν E).map c = 1` using `Matrix.map_one _ (map_zero c) (map_one c)`. Simplify using `[stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, h0, h1, ht]⟩`. Use `⟨u, fun g hg => (GlobalTheory.T.inCell_iff_det_lower_left_block_ne_zero F E c δ hE ν _).mpr ?_⟩` and prove the remaining obligations. Establish `e : mat c (g * u) = mat c g * fromBlocks 1 0 t 1` using `rfl`. Rewrite using `[e, ← fromBlocks_toBlocks (mat c g), fromBlocks_multiply, toBlocks_fromBlocks₂₁, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h g hg`.
+A detailed English derivation is pending.
 -/
 theorem exists_translate_inCell : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E]
     (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (s : Finset (UG c (stdJ ν E))),

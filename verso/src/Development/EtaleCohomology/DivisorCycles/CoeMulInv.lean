@@ -8,20 +8,20 @@ open LateralTheory.DivDb
 variable {Γ C : Type} [Group Γ] [Field C] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_X (x : Mat C N) (q : Fin N × Fin N) : ev x (MvPolynomial.X q) = x q.1 q.2 := by
   simp [ev]
 
 /- English proof (translation)
-Simplify using `only [img, SetLike.mem_coe, Submonoid.mem_map]`. Conclude with `⟨h, by simp, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_img (ρ : Γ →* GL (Fin N) C) (h : Γ) : ((ρ h : GL (Fin N) C) : Mat C N) ∈ (img ρ ⊤ : Set (Mat C N)) := by
   simp only [img, SetLike.mem_coe, Submonoid.mem_map]
   exact ⟨h, by simp, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [img, SetLike.mem_coe, Submonoid.mem_map] at hx`. Take `⟨h, _, rfl⟩` from `hx`. Conclude with `⟨h, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem img_cases (ρ : Γ →* GL (Fin N) C) {x : Mat C N} (hx : x ∈ (img ρ ⊤ : Set (Mat C N))) :
     ∃ h : Γ, ((ρ h : GL (Fin N) C) : Mat C N) = x := by
@@ -30,14 +30,14 @@ theorem img_cases (ρ : Γ →* GL (Fin N) C) {x : Mat C N} (hx : x ∈ (img ρ 
   exact ⟨h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_mul_inv (ρ : Γ →* GL (Fin N) C) (g : Γ) :
     ((ρ g : GL (Fin N) C) : Mat C N) * ((ρ g⁻¹ : GL (Fin N) C) : Mat C N) = 1 := by
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_inv_mul (ρ : Γ →* GL (Fin N) C) (g : Γ) :
     ((ρ g⁻¹ : GL (Fin N) C) : Mat C N) * ((ρ g : GL (Fin N) C) : Mat C N) = 1 := by
@@ -49,13 +49,13 @@ def conjL (G G' : Mat C N) : Mat C N →ₗ[C] Mat C N where
   map_smul' c x := by simp
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨f', hev, hd⟩` from `hC C N N (conjL (ρ g : Mat C N) (ρ g⁻¹ : Mat C N)) f`. Establish `hf' : f' ∈ Van (img ρ ⊤ : Set (Mat C N))`. Introduce `x hx`. Take `⟨h, rfl⟩` from `img_cases ρ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hev]`. Apply `hf` to reduce the goal to its premises. Establish `: conjL (C` using `C) (N := N) (ρ g : Mat C N) (ρ g⁻¹ : Mat C N) (ρ h : Mat C N) = ((ρ (g * h * g⁻¹) : GL (Fin N) C) : Mat C N) := by`. Simplify using `[conjL, map_mul, Units.val_mul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_img ρ _`. Establish `h1 : conjL (C` using `C) (N := N) (ρ g : Mat C N) (ρ g⁻¹ : Mat C N) 1 = 1 := by`. Simplify using `only [conjL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mul_one]`. Conclude with `coe_mul_inv ρ g`. Use `hd 1 Y` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h1]`. Use `show dAt f 1 (conjL (C := C) (N := N) (ρ g : Mat C N) (ρ g⁻¹ : Mat C N) Y) = 0`. Rewrite using `[← this]`. Conclude with `hY f' hf'`.
+A detailed English derivation is pending.
 -/
 theorem lie_conj (hC : Chain) (ρ : Γ →* GL (Fin N) C) (g : Γ) (Y : Mat C N) (hY : Y ∈ lie ρ) :
     ((ρ g : GL (Fin N) C) : Mat C N) * Y * ((ρ g⁻¹ : GL (Fin N) C) : Mat C N) ∈ lie ρ := by
@@ -79,11 +79,11 @@ theorem lie_conj (hC : Chain) (ρ : Γ →* GL (Fin N) C) (g : Γ) (Y : Mat C N)
   exact hY f' hf'
 
 /- English proof (translation)
-Introduce `g a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin (lie_conj hC ρ g x hx)`. Consider the case `algebraMap r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, coe_mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.smul_mem _ (Subalgebra.one_mem _) r`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Conclude with `Subalgebra.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ((ρ g : GL (Fin N) C) : Mat C N) * (x * y) * ((ρ g⁻¹ : GL (Fin N) C) : Mat C N) = (((ρ g : GL (Fin N) C) : Mat C N) * x * ((ρ g⁻¹ : GL (Fin N) C) : Mat C N)) * (((ρ g : GL (Fin N) C) : Mat C N) * y * ((ρ g⁻¹ : GL (Fin N) C) : Mat C N))`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((ρ g⁻¹ : GL (Fin N) C) : Mat C N), coe_inv_mul, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normd (hC : Chain) (ρ : Γ →* GL (Fin N) C) : Normd ρ (env ρ) := by
   intro g a ha
@@ -108,11 +108,11 @@ def lamL (ℓ : Module.Dual C (Fin N → C)) (v : Fin N → C) : Mat C N →ₗ[
   map_smul' c x := by ext; simp [Matrix.smul_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `ℓ hℓ`. Rewrite `hℓ` using `[Submodule.mem_dualAnnihilator]`. Take `⟨f', hev, hd⟩` from `hC C N 1 (lamL ℓ v) (MvPolynomial.X (0, 0))`. Establish `hf' : f' ∈ Van (img ρ ⊤ : Set (Mat C N))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨h, rfl⟩` from `img_cases ρ hx`. Rewrite using `[hev, ev_X]`. Simplify using `only [lamL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply]`. Conclude with `hℓ _ (hW h v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0` using `hY f' hf'`. Rewrite `h0` using `[hd]`. Simplify `h0` using `[dAt, lamL, ev, MvPolynomial.pderiv_X, Fintype.sum_unique, Pi.single_apply, Prod.ext_iff, Fin.fin_one_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lie_keeps (hC : Chain) (ρ : Γ →* GL (Fin N) C) (W : Submodule C (Fin N → C))
     (hW : ∀ g, ∀ v ∈ W, ((ρ g : GL (Fin N) C) : Mat C N) *ᵥ v ∈ W) (Y : Mat C N) (hY : Y ∈ lie ρ)
@@ -132,11 +132,11 @@ theorem lie_keeps (hC : Chain) (ρ : Γ →* GL (Fin N) C) (W : Submodule C (Fin
   simpa [dAt, lamL, ev, MvPolynomial.pderiv_X, Fintype.sum_unique, Pi.single_apply, Prod.ext_iff, Fin.fin_one_eq_zero] using h0
 
 /- English proof (translation)
-Introduce `W hW a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact fun v hv => lie_keeps hC ρ W hW x hx v hv`. Consider the case `algebraMap r`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`. Conclude with `W.smul_mem r hv`. Consider the case `add x y _ _ hx hy`. Introduce `v hv`. Rewrite using `[Matrix.add_mulVec]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `W.add_mem (hx v hv) (hy v hv)`. Consider the case `mul x y _ _ hx hy`. Introduce `v hv`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hx _ (hy v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keeps (hC : Chain) (ρ : Γ →* GL (Fin N) C) : Keeps ρ (env ρ) := by
   intro W hW a ha
@@ -156,7 +156,7 @@ end LateralTheory.DivDb.EnvStab₂
 namespace LateralTheory.DivDb
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ ρ` and use `⟨EnvStab₂.normd hC ρ, EnvStab₂.keeps hC ρ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem EnvStab_of (hC : Chain) : EnvStab := fun _ _ _ _ _ ρ =>
   ⟨EnvStab₂.normd hC ρ, EnvStab₂.keeps hC ρ⟩

@@ -11,7 +11,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace RootFieldNumerics
 
 /- English proof (translation)
-The claim follows from `|restTerm j p fr k Q| ≤ c * Real.log p / (p : ℝ) ^ 2 := by set M : ℝ := ∑ σ : Ψ ⊕ Ψ, |degFl (pLie j (k - 1) σ * Q)| with hM have hM0 : 0 ≤ M := Finset.sum_nonneg fun _ _ => abs_nonneg _ have hMle : ∀ σ, |degFl (pLie j (k - 1) σ * Q)| ≤ M := fun σ => Finset.single_le_sum (f := fun …`.
+A detailed English derivation is pending.
 -/
 theorem rest_bound (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (k : ℕ) (Q : RP Ψ N) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ (p : ℕ) (fr : ℕ → Ψ ⊕ Ψ), 2 ≤ p →
@@ -57,11 +57,11 @@ theorem rest_bound (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ)
     positivity
 
 /- English proof (translation)
-Establish `h : Summable fun p : ℕ => 2 * ((p : ℝ) ^ (3 / 2 : ℝ))⁻¹` using `(Real.summable_nat_rpow_inv.2 (by norm_num)).mul_left 2`. Use `Summable.of_nonneg_of_le (fun p => div_nonneg (Real.log_natCast_nonneg p) (by positivity)) (fun p => ?_) h` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Establish `hp' : (0 : ℝ) < p` using `by exact_mod_cast hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `Real.log_le_rpow_div hp'.le (by norm_num : (0 : ℝ) < 1 / 2)`. Establish `h2 : (p : ℝ) ^ 2 = (p : ℝ) ^ (1 / 2 : ℝ) * (p : ℝ) ^ (3 / 2 : ℝ)`. Rewrite using `[← Real.rpow_add hp']`. Evaluate the numerical expressions. Establish `h3 : 0 < (p : ℝ) ^ (1 / 2 : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `h4 : 0 < (p : ℝ) ^ (3 / 2 : ℝ)` using `by positivity`. Rewrite using `[h2, div_le_iff₀ (by positivity)]`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem summable_log_div_sq : Summable fun p : ℕ => Real.log p / (p : ℝ) ^ 2 := by
   have h : Summable fun p : ℕ => 2 * ((p : ℝ) ^ (3 / 2 : ℝ))⁻¹ :=
@@ -82,15 +82,13 @@ theorem summable_log_div_sq : Summable fun p : ℕ => Real.log p / (p : ℝ) ^ 2
   field_simp
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j bad frob τ k Q`. Take `⟨c, hc0, hc⟩` from `rest_bound Ψ N j k Q`. Use `⟨⟨c, fun p hp => hc p _ hp⟩, fun B₀ => ?_⟩` and prove the remaining obligations. Establish `hs : Summable fun p : ℕ => if p.Prime ∧ B₀ < p ∧ p ∉ bad then restTerm j p (frob p τ) k Q else 0`. Use `Summable.of_norm_bounded (summable_log_div_sq.mul_left c) fun p => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Rewrite using `[Real.norm_eq_abs, ← mul_div_assoc]`. Conclude with `hc p _ h.1.two_le`. Rewrite using `[norm_zero]`. Conclude with `mul_nonneg hc0 (div_nonneg (Real.log_natCast_nonneg p) (by positivity))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `ht` using `hs.hasSum.tendsto_sum_nat.comp (tendsto_add_atTop_nat 1)`. Use `ht.congr fun B => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ioc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨⟨h3, by omega⟩, h2, h4⟩`.
-
-Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨by omega, h3, h1, h4⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rest_term_bound_convergent : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (bad : Finset ℕ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (τ : Ψ) (k : ℕ) (Q : RP Ψ N), (∃ c : ℝ, ∀ p : ℕ, 2 ≤ p → |restTerm j p (frob p τ) k Q| ≤ c * Real.log p / (p : ℝ) ^ 2) ∧ ∀ B₀ : ℕ, Tendsto (fun B : ℕ => ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), restTerm j p (frob p τ) k Q) atTop (𝓝 (restSum j bad frob B₀ τ k Q)) := by
   intro Ψ _ _ N j bad frob τ k Q

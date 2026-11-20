@@ -13,7 +13,7 @@ namespace GlobalTheory.CuspEmb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Substitute `h1 h2 h3` using the available equality. Conclude with `⟨hG.1, hG.2.2⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem isSec_cast (X : Data E r) (Ψ : Finset (E →+* ℂ)) (Gm : Matrix (Fin r) (Fin r) E) (p0 : ℕ)
     (h1 : X.Ψ = Ψ) (h2 : X.Gm = Gm) (h3 : X.p0 = p0) (la : Wt Ψ r) (G : Frame Ψ r → ℂ)
@@ -24,7 +24,7 @@ theorem isSec_cast (X : Data E r) (Ψ : Finset (E →+* ℂ)) (Gm : Matrix (Fin 
   exact ⟨hG.1, hG.2.2⟩
 
 /- English proof (translation)
-Establish `key` using `fun c => isSec_cast (M.comp c).toData M.Ψ M.Gm M.p0 (M.comp_Ψ c) (M.comp_Gm c) (M.comp_basePoint c) la (F c) (hF c).1.1`. Use `⟨fun c => ⟨F c, (key c).1, fun x => rfl⟩, fun c γ hγ x hx => ?_⟩` and prove the remaining obligations. Use `show F c (lact γ x.1) = F c x.1`. Rewrite using `[(key c).2 γ hγ x.1 x.2, M.χ_one c _ γ hγ, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem_HA (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C]
     (M : TwoLevels E r U C) (la : Wt M.Ψ r) (F : C → Frame M.Ψ r → ℂ) (hF : F ∈ M.SS la) : M.res F ∈ HA M := by

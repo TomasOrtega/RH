@@ -23,7 +23,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.FibreAmple
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_mul]`. Conclude with `congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X)) (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pw_pw_natCast {X : Scheme.{0}} (H : LB X) (a b : ℕ) :
     pw (pw H a) b = pw H ((a * b : ℕ) : ℤ) := by
@@ -32,13 +32,13 @@ theorem pw_pw_natCast {X : Scheme.{0}} (H : LB X) (a b : ℕ) :
     (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Take `⟨u, hu⟩` from `GlobalTheory.CubeDescent.exists_gen_comp H (pullback.fst A.hom g) _ _ t ht`. Set `B` to `(Over.pullback g).obj A`. Set `T : Over S'` to `Over.mk (pullback.snd (G3 A).hom g)`. Establish `hG` using `isGrpPullback_pullback A g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y : Fin 3 → (T ⟶ B)` to `fun i => Over.homMk (pullback.lift (pullback.fst (G3 A).hom g ≫ (x3 A i).left) (pullback.snd (G3 A).hom g) (by rw [Category.assoc, Over.w, pullback.condition])) (pullback.lift_snd _ _ _)`. Set `r : T ⟶ G3 B` to `lift (y 0) (lift (y 1) (y 2))`. Apply the tactic sequence `have hr : ∀ i, r ≫ x3 B i = y i := fun i => by fin_cases i <;> simp [r, x3]`. Set `U : Over.mk (T.hom ≫ g) ⟶ G3 A` to `Over.homMk (pullback.fst (G3 A).hom g) pullback.condition`. Establish `key : ∀ I : Finset (Fin 3), r.left ≫ (psum B (x3 B) I).left ≫ pullback.fst A.hom g = pullback.fst (G3 A).hom g ≫ (psum A (x3 A) I).left` using `fun I => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : r ≫ psum B (x3 B) I = psum B y I` using `(psum_hom (preHom r) (x3 B) I).trans (congrArg (fun z => psum B z I) (funext hr))`. Establish `e₂` using `psum_push hG y (x3 A) U (fun i => Over.OverMorphism.ext (pullback.lift_fst _ _ _)) I`. Rewrite using `[← Category.assoc, ← Over.comp_left, e₁]`. Conclude with `e₂`. Use `(CubeGen.triv_pull_iff H (thφ A (x3 A)) thε _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (fun k => pullback.fst (G3 A).hom g ≫ thφ A (x3 A) k) = fun k => r.left ≫ thφ B (x3 B) k ≫ pullback.fst A.hom g` using `funext fun k => (key k.down).symm`. Unfold `CubeGen.TrivAt`. Rewrite using `[e]`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ u hu r.left⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_theta_pull {S S' : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (g : S' ⟶ S)
     (H : LB A.left) (h : Triv (Theta ((Over.pullback g).obj A) (H.pull (pullback.fst A.hom g)))) :
@@ -69,9 +69,9 @@ theorem triv_theta_pull {S S' : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonOb
   exact ⟨_, DVR.pullGen_isGen _ _ _ u hu r.left⟩
 
 /- English proof (translation)
-Take `⟨x⟩` from `‹Nonempty X›`. Establish `hx : x ∈ ⨆ i, Out.nonzeroLocus (s i)` using `by rw [h]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Use `⟨s i, k, fun e => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hk` using `[e, Scheme.basicOpen_zero]`. Conclude with `hk`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {X : Scheme.{0}} [Nonempty X] {N : LB X} {I : Type} (s : I → LB.Sec N)
     (h : ⨆ i, Out.nonzeroLocus (s i) = ⊤) : ∃ (σ : LB.Sec N) (k : N.ι), σ.f k ≠ 0 := by
@@ -84,25 +84,21 @@ theorem exists_ne_zero {X : Scheme.{0}} [Nonempty X] {N : LB X} {I : Type} (s : 
   exact hk
 
 /- English proof (translation)
-Introduce `hL O K _ _ _ _ _ _ _ _ A _ hA M hM hK hk`. Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `CubeGen.isAb_baseChange hA (spMap (algebraMap O K))`. Take `⟨d, hd, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy K _ _ (LB.isLB_pull hM _)).1 hK`. Establish `hH` using `isLB_pw hM d`. Establish `hproj : IsProjBy ((Over.pullback (spMap (algebraMap O K))).obj A).hom` using `⟨_, isLB_pw (LB.isLB_pull hM _) _, n, s, hs⟩`. Establish `cK` using `triv_theta_pull A _ (pw M d) (GlobalTheory.T.theorem_of_cube_projective_abelianScheme_affineBase hL K _ hB hproj _ (LB.isLB_pull hH (pullback.fst A.hom (spMap (algebraMap O K)))))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₂ : Smooth (A ⊗ A).hom`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst A.hom A.hom ≫ A.hom)`. Use `infer_instance`. Establish `p₂ : IsProper (A ⊗ A).hom`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst A.hom A.hom ≫ A.hom)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `c₂ : GeometricallyConnected (A ⊗ A).hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst A.hom A.hom ≫ A.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Establish `s₃ : Smooth (G3 A).hom`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Smooth (pullback.fst A.hom (A ⊗ A).hom ≫ A.hom)`. Use `infer_instance`. Establish `p₃ : IsProper (G3 A).hom`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst A.hom (A ⊗ A).hom ≫ A.hom)`. Use `infer_instance`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₃ : GeometricallyConnected (G3 A).hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst A.hom (A ⊗ A).hom ≫ A.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Establish `gi` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected`. Establish `cube : Triv (Theta A (pw M d))` using `GlobalTheory.T.generator_extends_from_genericFibre_valuationRing O K _ _ (G3 A).hom _ _ (IsPullback.of_hasPullback _ _) s₃ inferInstance (gi _ _ _ s₃ c₃) _ (LB.isLB_linComb hH _ _) cK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ne : Nonempty ((Over.pullback (spMap (algebraMap O K))).obj A).left` using `⟨(η[(Over.pullback (spMap (algebraMap O K))).obj A]).left (default : PrimeSpectrum K)⟩`. Establish `hσ : ∃ (σ : LB.Sec ((pw M d).pull (pullback.fst A.hom (spMap (algebraMap O K))))) (k : _), σ.f k ≠ 0`. Use `@exists_ne_zero _ ne _ _ s hs.1` as an intermediate fact. Rewrite using `[GlobalTheory.TrivLocus.pull_pw]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨σ, hσ⟩` from `hσ`. Take `⟨-, t, -, -, ht⟩` from `GlobalTheory.T.exists_sec_nonzero_on_special_fibre_extending_smul O K _ _ A.hom _ _ (IsPullback.of_hasPullback _ _) hA.smooth inferInstance (gi _ _ _ hA.smooth hA.geomConnected) _ hH σ hσ`. Establish `hu` using `GlobalTheory.T.exists_sections_generate_square_bundle O K A hA _ hH cube t ht`. Rewrite `hu` using `[show (2 : ℤ) = ((2 : ℕ) : ℤ) from rfl, pw_pw_natCast]`. Take `⟨m, u, hu⟩` from `hu`.
-
-Establish `aff` using `GlobalTheory.T.isAffineOpen_nonzeroLocus_of_fibrewise_ample O _ A.hom M (d * 2) m u (by omega) hA.proper hM hu (fun q hq => by`. Distinguish the cases in `h0 : q = ⊥`. Conclude with `⟨K, inferInstance, algebraMap O K, h0 ▸ (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective O K), hK⟩`. Conclude with `⟨_, inferInstance, IsLocalRing.residue O, IsLocalRing.ker_residue.trans (IsLocalRing.eq_maximalIdeal (hq.isMaximal h0)).symm, hk⟩)`. Take `⟨e, he, hv⟩` from `GlobalTheory.AbLaw.veryAmpleBy_pw_of_affine_loci O _ A.hom _ m u (isLB_pw hM _) hu aff`.
-
-Rewrite `hv` using `[pw_pw_natCast]`. Conclude with `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy O A M hM).2 ⟨d * 2 * e, Nat.mul_pos (by omega) he, hv⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_of_fibres : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Ring.DimensionLEOne O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] (A : Over (Sp O)) [GrpObj A], IsAbelianScheme A → ∀ M : LB A.left, M.IsLB → Out.RelAmple (Over.mk (pullback.snd A.hom (spMap (algebraMap O K)))) (M.pull (pullback.fst A.hom (spMap (algebraMap O K)))) → Out.RelAmple (Over.mk (pullback.snd A.hom (spMap (IsLocalRing.residue O)))) (M.pull (pullback.fst A.hom (spMap (IsLocalRing.residue O)))) → Out.RelAmple A M := by
   intro hL O K _ _ _ _ _ _ _ _ A _ hA M hM hK hk

@@ -5,19 +5,17 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Introduce `ι M _ _ _ _ s F hF n t`. Take `⟨U, htU, hfd, hst, ip, hsym, hpos, hadj⟩` from `hF (t.biUnion fun x => Finset.univ.image x)`. Establish `hmem : ∀ x ∈ t, ∀ i, x i ∈ U` using `fun x hx i => htU _ (Finset.mem_biUnion.2 ⟨x, hx, Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩⟩)`. Set `U' : Submodule ℂ (Fin n → M)` to `Submodule.pi Set.univ (fun _ => U)`. Set `ip' : (Fin n → M) →ₗ⋆[ℂ] (Fin n → M) →ₗ[ℂ] ℂ` to `∑ i : Fin n, (ip ∘ₛₗ (LinearMap.proj i : (Fin n → M) →ₗ[ℂ] M)).compl₂ (LinearMap.proj i : (Fin n → M) →ₗ[ℂ] M)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hip' : ∀ x y, ip' x y = ∑ i, ip (x i) (y i)`. Introduce `x y`. Simplify using `[ip', LinearMap.sum_apply]`. Use `⟨U', fun x hx i _ => hmem x hx i, ?_, ?_, ip', ?_, ?_, ?_⟩` and prove the remaining obligations. Set `g : (Fin n → U) →ₗ[ℂ] (Fin n → M)` to `LinearMap.pi fun i => U.subtype ∘ₗ LinearMap.proj i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hle : U' ≤ LinearMap.range g`. Introduce `x hx`. Conclude with `⟨fun i => ⟨x i, hx i (Set.mem_univ _)⟩, by ext i; rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`. Introduce `a b hab u hu i _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hst a b hab (u i) (hu i (Set.mem_univ _))`. Introduce `x hx y hy`. Rewrite using `[hip', hip', star_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hsym _ (hx i (Set.mem_univ _)) _ (hy i (Set.mem_univ _))`. Introduce `x hx hx0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hip', Complex.re_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, x j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx0 (funext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnn : ∀ i ∈ (Finset.univ : Finset (Fin n)), 0 ≤ (ip (x i) (x i)).re`. Introduce `i _`. Distinguish the cases in `h : x i = 0`. Simplify using `[h]`. Conclude with `(hpos _ (hx i (Set.mem_univ _)) h).le`.
-
-Conclude with `Finset.sum_pos' hnn ⟨j, Finset.mem_univ _, hpos _ (hx j (Set.mem_univ _)) hj⟩`. Introduce `a b hab x hx y hy`. Rewrite using `[hip', hip']`. Conclude with `Finset.sum_congr rfl fun i _ => hadj a b hab _ (hx i (Set.mem_univ _)) _ (hy i (Set.mem_univ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locU_pi_fin : ∀ (ι M : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M] (s : ι → Bool) (F : ι → ι → Module.End ℂ M), LocU s F → ∀ n : ℕ, LocU s (fun a b => (LinearMap.pi fun i : Fin n => F a b ∘ₗ LinearMap.proj i : Module.End ℂ (Fin n → M))) := by
   intro ι M _ _ _ _ s F hF n t

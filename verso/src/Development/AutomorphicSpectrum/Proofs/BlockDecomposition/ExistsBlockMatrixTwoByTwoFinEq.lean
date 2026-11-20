@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.BruhatCell
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem submatrix_fromBlocks_mul {n : ℕ} (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) K) :
     blk4 a b c d * blk4 a' b' c' d' =
@@ -18,13 +18,13 @@ theorem submatrix_fromBlocks_mul {n : ℕ} (a b c d a' b' c' d' : Matrix (Fin n)
   simp only [blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[blk4, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_one {n : ℕ} : blk4 (1 : Matrix (Fin n) (Fin n) K) 0 0 1 = 1 := by
   simp [blk4, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Establish `h'` using `congrArg (fun M => M.submatrix finSumFinEquiv finSumFinEquiv) h`. Simplify using `only [blk4, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h'`. Conclude with `Matrix.fromBlocks_inj.mp h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockMatrixTwoByTwoFin_injective {n : ℕ} {a b c d a' b' c' d' : Matrix (Fin n) (Fin n) K}
     (h : blk4 a b c d = blk4 a' b' c' d') : a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
@@ -33,7 +33,7 @@ theorem blockMatrixTwoByTwoFin_injective {n : ℕ} {a b c d a' b' c' d' : Matrix
   exact Matrix.fromBlocks_inj.mp h'
 
 /- English proof (translation)
-Rewrite using `[blk4, blk4, ← Matrix.fromBlocks_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem neg_block_matrix {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) K) :
     -blk4 a b c d = blk4 (-a) (-b) (-c) (-d) := by
@@ -41,7 +41,7 @@ theorem neg_block_matrix {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) K) :
   rfl
 
 /- English proof (translation)
-Use `⟨(g.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁, (g.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂, (g.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁, (g.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂, ?_⟩` and prove the remaining obligations. Simplify using `only [blk4, Matrix.fromBlocks_toBlocks, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_blockMatrixTwoByTwoFin_eq {n : ℕ} (g : Matrix (Fin (n + n)) (Fin (n + n)) K) :
     ∃ A B C D : Matrix (Fin n) (Fin n) K, g = blk4 A B C D := by
@@ -53,9 +53,9 @@ theorem exists_blockMatrixTwoByTwoFin_eq {n : ℕ} (g : Matrix (Fin (n + n)) (Fi
     Matrix.submatrix_id_id]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Establish `h'` using `h i j`. Simplify `h'` using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl i j`. Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem is_siegel_parabolic_block_iff {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) K) :
     IsSiegelP (blk4 a b c d) ↔ c = 0 := by
@@ -70,7 +70,7 @@ theorem is_siegel_parabolic_block_iff {n : ℕ} (a b c d : Matrix (Fin n) (Fin n
       Matrix.zero_apply]
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_block_lower_zero {n : ℕ} (a b d : Matrix (Fin n) (Fin n) K) :
     (blk4 a b 0 d).det = a.det * d.det := by
@@ -80,67 +80,67 @@ section cT
 variable (σ : K →+* K)
 
 /- English proof (translation)
-Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul {a b c : ℕ} (x : Matrix (Fin a) (Fin b) K) (y : Matrix (Fin b) (Fin c) K) :
     cT σ (x * y) = cT σ y * cT σ x := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `cT`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cT_one {a : ℕ} : cT σ (1 : Matrix (Fin a) (Fin a) K) = 1 := by
   unfold cT; simp
 
 /- English proof (translation)
-Unfold `cT`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cT_zero {a b : ℕ} : cT σ (0 : Matrix (Fin a) (Fin b) K) = 0 := by
   unfold cT; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_neg {a b : ℕ} (x : Matrix (Fin a) (Fin b) K) : cT σ (-x) = -cT σ x := by
   ext i j
   simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub {a b : ℕ} (x y : Matrix (Fin a) (Fin b) K) : cT σ (x - y) = cT σ x - cT σ y := by
   ext i j
   simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (hσ : ∀ x, σ (σ x) = x) {a b : ℕ} (x : Matrix (Fin a) (Fin b) K) : cT σ (cT σ x) = x := by
   ext i j
   simp [cT, hσ]
 
 /- English proof (translation)
-Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_cT {a : ℕ} (x : Matrix (Fin a) (Fin a) K) : (cT σ x).det = σ x.det := by
   rw [cT, Matrix.det_transpose, RingHom.map_det]
   rfl
 
 /- English proof (translation)
-Rewrite using `[det_cT]`. Conclude with `hx.map σ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_cT {a : ℕ} {x : Matrix (Fin a) (Fin a) K} (hx : IsUnit x.det) : IsUnit (cT σ x).det := by
   rw [det_cT]; exact hx.map σ
 
 /- English proof (translation)
-Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← cT_mul, Matrix.mul_nonsing_inv _ hx, cT_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_inv {a : ℕ} {x : Matrix (Fin a) (Fin a) K} (hx : IsUnit x.det) : cT σ x⁻¹ = (cT σ x)⁻¹ := by
   refine (Matrix.inv_eq_left_inv ?_).symm
   rw [← cT_mul, Matrix.mul_nonsing_inv _ hx, cT_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `finSumFinEquiv.surjective i with ⟨i, rfl⟩` into its components or cases. Break down `finSumFinEquiv.surjective j with ⟨j, rfl⟩` into its components or cases. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [cT, blk4, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cT_blk4 {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) K) :
     cT σ (blk4 a b c d) = blk4 (cT σ a) (cT σ c) (cT σ b) (cT σ d) := by
@@ -155,14 +155,14 @@ theorem cT_blk4 {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) K) :
 end cT
 
 /- English proof (translation)
-Rewrite using `[Jm, submatrix_fromBlocks_mul, ← block_matrix_one (K := K), neg_block_matrix]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_Jm (n : ℕ) : Jm K n * Jm K n = -1 := by
   rw [Jm, submatrix_fromBlocks_mul, ← block_matrix_one (K := K), neg_block_matrix]
   congr 1 <;> simp
 
 /- English proof (translation)
-Unfold `IsUnitary at hg`. Rewrite using `[neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ g), hg, Jm_mul_Jm, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_left_inv (σ : K →+* K) {n : ℕ} {g : Matrix (Fin (n + n)) (Fin (n + n)) K}
     (hg : IsUnitary σ (Jm K n) g) : (-(Jm K n * cT σ g * Jm K n)) * g = 1 := by
@@ -170,21 +170,21 @@ theorem unitary_left_inv (σ : K →+* K) {n : ℕ} {g : Matrix (Fin (n + n)) (F
   rw [neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ g), hg, Jm_mul_Jm, neg_neg]
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (unitary_left_inv σ hg)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_unitary (σ : K →+* K) {n : ℕ} {g : Matrix (Fin (n + n)) (Fin (n + n)) K}
     (hg : IsUnitary σ (Jm K n) g) : IsUnit g.det :=
   Matrix.isUnit_det_of_left_inverse (unitary_left_inv σ hg)
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (unitary_left_inv σ hg)`.
+A detailed English derivation is pending.
 -/
 theorem inv_of_unitary (σ : K →+* K) {n : ℕ} {g : Matrix (Fin (n + n)) (Fin (n + n)) K}
     (hg : IsUnitary σ (Jm K n) g) : g⁻¹ = -(Jm K n * cT σ g * Jm K n) :=
   Matrix.inv_eq_left_inv (unitary_left_inv σ hg)
 
 /- English proof (translation)
-Unfold `IsUnitary at *`. Rewrite using `[cT_mul, show cT σ h * cT σ g * J * (g * h) = cT σ h * (cT σ g * J * g) * h by`. Simplify using `only [Matrix.mul_assoc], hg, hh]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitary_mul (σ : K →+* K) {N : ℕ} {J g h : Matrix (Fin N) (Fin N) K}
     (hg : IsUnitary σ J g) (hh : IsUnitary σ J h) : IsUnitary σ J (g * h) := by
@@ -195,7 +195,7 @@ theorem unitary_mul (σ : K →+* K) {N : ℕ} {J g h : Matrix (Fin N) (Fin N) K
 section eId
 
 /- English proof (translation)
-Rewrite using `[eId, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eId_mul_eId (n r : ℕ) : eId K n r * eId K n r = eId K n r := by
   rw [eId, Matrix.diagonal_mul_diagonal]
@@ -204,7 +204,7 @@ theorem eId_mul_eId (n r : ℕ) : eId K n r * eId K n r = eId K n r := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cT, eId, Matrix.diagonal_apply, apply_ite σ]`. Simplify using `[cT, eId, Matrix.diagonal_apply, h, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cT_eId (σ : K →+* K) (n r : ℕ) : cT σ (eId K n r) = eId K n r := by
   ext i j
@@ -214,7 +214,7 @@ theorem cT_eId (σ : K →+* K) (n r : ℕ) : cT σ (eId K n r) = eId K n r := b
   · simp [cT, eId, Matrix.diagonal_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [eId, Matrix.diagonal_mul, extB]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eId_mul_extB {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) : eId K n r * extB b = extB b := by
   ext i j
@@ -222,7 +222,7 @@ theorem eId_mul_extB {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) : eId K n r * ex
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [eId, Matrix.mul_diagonal, extB]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extB_mul_eId {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) : extB b * eId K n r = extB b := by
   ext i j
@@ -230,7 +230,7 @@ theorem extB_mul_eId {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) : extB b * eId K
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, extB, Matrix.transpose_apply, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_extB (σ : K →+* K) {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) :
     cT σ (extB (n := n) b) = extB (cT σ b) := by
@@ -239,7 +239,7 @@ theorem cT_extB (σ : K →+* K) {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h'` using `congrFun (congrFun h ⟨i, by omega⟩) ⟨j, by omega⟩`. Simplify `h'` using `[extB]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem extB_injective {n r : ℕ} (hr : r ≤ n) {b b' : Matrix (Fin r) (Fin r) K}
     (h : extB (n := n) b = extB b') : b = b' := by
@@ -250,7 +250,7 @@ theorem extB_injective {n r : ℕ} (hr : r ≤ n) {b b' : Matrix (Fin r) (Fin r)
 end eId
 
 /- English proof (translation)
-Rewrite using `[repMat, wr, nB, mA, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Apply the tactic sequence `congr 1 <;> simp [sub_mul, mul_sub, add_mul, eId_mul_extB] <;> abel`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem repMat_eq (σ : K →+* K) {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) (a : Matrix (Fin n) (Fin n) K) :
     repMat σ b a = blk4 ((1 - eId K n r) * a) (eId K n r * (cT σ a)⁻¹) (-(eId K n r * a))

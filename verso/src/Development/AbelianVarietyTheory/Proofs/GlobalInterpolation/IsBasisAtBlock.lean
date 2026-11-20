@@ -6,16 +6,16 @@ open MvPolynomial NumberField IsDedekindDomain Formalism.BasicNotions Formalism.
 namespace GlobalTheory.BranchBasis
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sumLat {K : Type} [Field K] [NumberField K] {N n : ℕ} (hN : N = n + 1) (M : Submodule (𝓞 K) (Fin n → K)) (t : K)
     (x : Fin N → K) :
     x ∈ Br.sumLat hN M t ↔ (fun a => x (Br.iC hN a)) ∈ M ∧ ∃ c : 𝓞 K, x (Br.iL hN) = (c : K) * t := Iff.rfl
 
 /- English proof (translation)
-Unfold `colLat`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[funext_iff]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_colLat {K : Type} [Field K] [NumberField K] {n : ℕ} (B : GL (Fin n) K) (x : Fin n → K) :
     x ∈ colLat B ↔ ∃ c : Fin n → 𝓞 K, ∀ a, ∑ j, (c j : K) * (B : Matrix (Fin n) (Fin n) K) a j = x a := by
@@ -27,13 +27,13 @@ theorem mem_colLat {K : Type} [Field K] [NumberField K] {n : ℕ} (B : GL (Fin n
   simp only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use extensionality with `x`. Rewrite using `[mem_sumLat, mem_colLat, mem_colLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨fun j => c (Br.iC hN j), fun a => ?_⟩, c (Br.iL hN), ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, sum_split hN]`. Simplify using `only [h1, (h2 _).1, mul_zero, add_zero]`. Rewrite using `[← hc, sum_split hN]`. Simplify using `only [h3, (h2 _).2, mul_zero, Finset.sum_const_zero, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨⟨c, hc⟩, d, hd⟩`. Use `⟨fun j => if hj : j.val < n then c ⟨j.val, hj⟩ else d, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_split hN]`. Establish `e1 : ∀ j : Fin n, (if hj : (Br.iC hN j).val < n then c ⟨(Br.iC hN j).val, hj⟩ else d) = c j` using `fun j => dif_pos j.2`. Establish `e2 : (if hj : (Br.iL hN).val < n then c ⟨(Br.iL hN).val, hj⟩ else d) = d` using `dif_neg (lt_irrefl n)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, e2]`. Break down `cases_idx hN a with rfl | ⟨a, rfl⟩` into its components or cases. Simplify using `only [h3, (h2 _).2, mul_zero, Finset.sum_const_zero, zero_add, hd]`. Simplify using `only [h1, (h2 _).1, mul_zero, add_zero]`. Conclude with `hc a`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colLat_block {K : Type} [Field K] [NumberField K] {N n : ℕ} (hN : N = n + 1) (t : K) (B : GL (Fin n) K)
     (B' : GL (Fin N) K) (h : IsBlock hN (B' : Matrix (Fin N) (Fin N) K) (B : Matrix (Fin n) (Fin n) K) t) :
@@ -61,9 +61,9 @@ theorem colLat_block {K : Type} [Field K] [NumberField K] {N n : ℕ} (hN : N = 
       exact hc a
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx1, c, hc⟩`. Establish `h0 : (fun a => (s • x) (Br.iC hN a)) ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M` using `⟨1, Submonoid.one_mem _, by rw [one_smul]; exact hx1⟩`. Take `⟨u, hu, hux⟩` from `h h0`. Use `⟨u * s, Submonoid.mul_mem _ hu hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, mem_sumLat]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hux, u * c, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hc, Algebra.smul_def]`. Use `push_cast`. Conclude with `(mul_assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem localization_sumLat_le {K : Type} [Field K] [NumberField K] {N n : ℕ} (hN : N = n + 1) (w : HeightOneSpectrum (𝓞 K))
     (M M₂ : Submodule (𝓞 K) (Fin n → K)) (t : K) (h : Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M₂) :
@@ -80,7 +80,7 @@ theorem localization_sumLat_le {K : Type} [Field K] [NumberField K] {N n : ℕ} 
   exact (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Introduce `K _ _ N n hN w M t B B' hB h`. Unfold `IsBasisAt at h ⊢`. Rewrite using `[colLat_block hN t B B' hB]`. Conclude with `le_antisymm (localization_sumLat_le hN w _ _ t h.le) (localization_sumLat_le hN w _ _ t h.ge)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBasisAt_block : ∀ (K : Type) [Field K] [NumberField K] (N n : ℕ) (hN : N = n + 1) (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) (Fin n → K)) (t : K) (B : GL (Fin n) K) (B' : GL (Fin N) K), IsBlock hN (B' : Matrix (Fin N) (Fin N) K) (B : Matrix (Fin n) (Fin n) K) t → IsBasisAt w M B → IsBasisAt w (Br.sumLat hN M t) B' := by
   intro K _ _ N n hN w M t B B' hB h

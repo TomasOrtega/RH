@@ -4,7 +4,7 @@ open Metric Filter Topology Set
 namespace GlobalTheory.HyperplaneLocBound
 
 /- English proof (translation)
-Establish `: {z : Fin n → ℂ | z ∈ ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0} = ball 0 ρ ∩ ⋂ k ∈ (Finset.univ.filter fun k : Fin n => (k : ℕ) < a), (fun z : Fin n → ℂ => z k) ⁻¹' {0}ᶜ`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_ball.inter (isOpen_biInter_finset fun k _ => (continuous_apply k).isOpen_preimage _ isOpen_compl_singleton)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isOpen_offHyperplanes (n a : ℕ) (ρ : ℝ) :
     IsOpen {z : Fin n → ℂ | z ∈ ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0} := by
@@ -17,7 +17,7 @@ lemma isOpen_offHyperplanes (n a : ℕ) (ρ : ℝ) :
     (continuous_apply k).isOpen_preimage _ isOpen_compl_singleton)
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_update_eq {n : ℕ} (z : Fin n → ℂ) (m : Fin n → ℕ) (k : Fin n) (t : ℂ) :
     ∏ j, ‖Function.update z k t j‖ ^ m j =
@@ -29,23 +29,21 @@ lemma prod_update_eq {n : ℕ} (z : Fin n → ℂ) (m : Fin n → ℕ) (k : Fin 
     rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Use `set H : ℂ → ℂ := fun t => Φ (Function.update z k t) with hH`. Establish `hmem : ∀ t ∈ ball (0 : ℂ) (2 * r), Function.update z k t ∈ ball z₀ (2 * r)`. Introduce `t ht`. Rewrite using `[mem_ball, dist_pi_lt_iff (by linarith)]`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify `ht` using `[hk0]`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `lt_of_le_of_lt ((dist_le_pi_dist z z₀ j).trans (mem_closedBall.1 hz)) (by linarith)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : ∀ t ∈ ball (0 : ℂ) (2 * r), t ≠ 0 → Function.update z k t ∈ {z | z ∈ Metric.ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0}`. Introduce `t ht ht0`. Use `⟨hsub (hmem t ht), fun j _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using ht0`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `hgen j`. Establish `hHd : DifferentiableOn ℂ H (ball (0 : ℂ) (2 * r) \ {0})`. Introduce `t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `(hΦ _ (hU t ht.1 ht.2)).differentiableAt ((isOpen_offHyperplanes n a ρ).mem_nhds (hU t ht.1 ht.2))`. Conclude with `(hd.comp t (hasFDerivAt_update z t).differentiableAt).differentiableWithinAt`. Use `set P := ∏ j ∈ Finset.univ.erase k, ‖z j‖ ^ m j with hPdef`. Establish `hP : 0 < P` using `Finset.prod_pos fun j _ => pow_pos (norm_pos_iff.2 (hgen j)) _`. Establish `hHg : ∀ t ∈ ball (0 : ℂ) (2 * r), t ≠ 0 → ‖Complex.exp (2 * Real.pi * Complex.I * H t)‖ * ‖t‖ ^ m k ≤ 1 / P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht ht0`. Establish `h1` using `hgr _ (hU t ht ht0).1 (hU t ht ht0).2`. Rewrite `h1` using `[prod_update_eq, ← mul_assoc]`. Conclude with `(le_div_iff₀ hP).2 h1`. Take `⟨G, hGd, hGH⟩` from `hext H (2 * r) (1 / P) (m k) (by linarith) hHd hHg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl : closedBall (0 : ℂ) r ⊆ ball 0 (2 * r)` using `closedBall_subset_ball (by linarith)`. Establish `hzk : z k ∈ closedBall (0 : ℂ) r`. Rewrite using `[mem_closedBall]`. Use `dist_le_pi_dist z z₀ k` as an intermediate fact. Rewrite `this` using `[hk0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.trans (mem_closedBall.1 hz)`. Establish `key` using `Complex.norm_le_of_forall_mem_frontier_norm_le isBounded_ball (hGd.diffContOnCl_ball hcl) (C := B) ?_ (by rw [closure_ball 0 hr.ne']; exact hzk)`. Rewrite `key` using `[hGH _ (hcl hzk) (hgen k)]`. Simplify `key` using `[H]`. Introduce `t ht`.
-
-Rewrite `ht` using `[frontier_ball 0 hr.ne', mem_sphere, dist_zero_right]`. Establish `ht0 : t ≠ 0` using `by rintro rfl; simp at ht; linarith`. Establish `htb : t ∈ ball (0 : ℂ) (2 * r)` using `by rw [mem_ball, dist_zero_right]; linarith`. Rewrite using `[hGH t htb ht0]`. Conclude with `hB t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_le_of_circle {n a : ℕ} {ρ r : ℝ} {Φ : (Fin n → ℂ) → ℂ} {m : Fin n → ℕ}
     (hext : ∀ (H : ℂ → ℂ) (r C : ℝ) (N : ℕ), 0 < r → DifferentiableOn ℂ H (Metric.ball (0 : ℂ) r \ {0}) → (∀ t ∈ Metric.ball (0 : ℂ) r, t ≠ 0 → ‖Complex.exp (2 * Real.pi * Complex.I * H t)‖ * ‖t‖ ^ N ≤ C) → ∃ G : ℂ → ℂ, DifferentiableOn ℂ G (Metric.ball (0 : ℂ) r) ∧ ∀ t ∈ Metric.ball (0 : ℂ) r, t ≠ 0 → G t = H t)
@@ -103,47 +101,39 @@ lemma norm_le_of_circle {n a : ℕ} {ρ r : ℝ} {Φ : (Fin n → ℂ) → ℂ} 
     exact hB t ht
 
 /- English proof (translation)
-Introduce `hext n a ρ Φ m hρ hΦ hgr z₀ hz₀`. Establish `hUo` using `isOpen_offHyperplanes n a ρ`. Establish `hδ : 0 < ρ - ‖z₀‖` using `by rw [mem_ball, dist_zero_right] at hz₀; linarith`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr0, hrδ, hrk⟩ : ∃ r : ℝ, 0 < r ∧ 2 * r < ρ - ‖z₀‖ ∧ ∀ k, z₀ k ≠ 0 → r < ‖z₀ k‖ := by`. Establish `h1 : ∀ᶠ r in 𝓝[>] (0 : ℝ), 0 < r` using `self_mem_nhdsWithin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ r in 𝓝[>] (0 : ℝ), 2 * r < ρ - ‖z₀‖`. Apply `nhdsWithin_le_nhds` to reduce the goal to its premises. Establish `: Tendsto (fun r : ℝ => 2 * r) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_const_mul (2 : ℝ)).tendsto 0`. Conclude with `this.eventually (gt_mem_nhds hδ)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : ∀ᶠ r in 𝓝[>] (0 : ℝ), ∀ k, z₀ k ≠ 0 → r < ‖z₀ k‖`. Rewrite using `[eventually_all]`. Introduce `k`. Distinguish the cases in `hk : z₀ k = 0`. Conclude with `Eventually.of_forall fun _ h => absurd hk h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(show ∀ᶠ r in 𝓝[>] (0 : ℝ), r < ‖z₀ k‖ from nhdsWithin_le_nhds (gt_mem_nhds (norm_pos_iff.2 hk))).mono fun r hr _ => hr`. Conclude with `(h1.and (h2.and h3)).exists`. Establish `hsub : ball z₀ (2 * r) ⊆ ball 0 ρ` using `ball_subset_ball' (by rw [dist_zero_right]; linarith)`. Use `set K := closedBall z₀ r ∩ {ζ : Fin n → ℂ | ∀ k : Fin n, (k : ℕ) < a → z₀ k = 0 → ‖ζ k‖ = r} with hK`. Establish `hKc : IsCompact K` using `(isCompact_closedBall z₀ r).inter_right (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [setOf_forall]`. Conclude with `isClosed_iInter fun k => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (continuous_norm.comp (continuous_apply k)) continuous_const)`. Establish `hKU : K ⊆ {z | z ∈ Metric.ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0}`. Introduce and unpack `ζ ⟨hζ, hζc⟩`. Use `⟨hsub (closedBall_subset_ball (by linarith) hζ), fun k hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : z₀ k = 0`. Introduce `h`. Use `hζc k hk h0` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Establish `h1` using `dist_le_pi_dist ζ z₀ k`. Rewrite `h1` using `[h, dist_comm, dist_zero_right]`. Use `hrk k h0` as an intermediate fact. Combine the linear relations using `[mem_closedBall.1 hζ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨M, hM⟩` from `hKc.exists_bound_of_continuousOn (hΦ.continuousOn.mono hKU)`. Establish `hind : ∀ S : Finset (Fin n), ∀ z : Fin n → ℂ, (∀ j, z j ≠ 0) → z ∈ closedBall z₀ r → (∀ k : Fin n, (k : ℕ) < a → z₀ k = 0 → k ∉ S → ‖z k‖ = r) → ‖Φ z‖ ≤ M`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `z _ hz hc`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hM z ⟨hz, fun k hk h0 => hc k hk h0 (by simp)⟩`. Introduce `k S hkS ih z hgen hz hc`. Distinguish the cases in `hk : (k : ℕ) < a ∧ z₀ k = 0`. Use `norm_le_of_circle hext hΦ hgr hr0 hsub hz hgen hk.2 fun t ht => ?_` and prove the remaining obligations. Apply `ih` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `only [Function.update_self]`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `at ht`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne hj]`. Conclude with `hgen j`. Rewrite using `[mem_closedBall, dist_pi_le_iff hr0.le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hk.2, ht]`. Rewrite using `[Function.update_of_ne hj]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `(dist_le_pi_dist z z₀ j).trans (mem_closedBall.1 hz)`. Introduce `j hj h0 hjS`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using `using ht`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hjk]; exact hc j hj h0 (by simp [hjk, hjS])`. Apply `ih z hgen hz` to reduce the goal to its premises. Introduce `j hj h0 hjS`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `absurd ⟨hj, h0⟩ hk`. Conclude with `hc j hj h0 (by simp [hjk, hjS])`. Use `⟨ball z₀ r, ball_mem_nhds z₀ hr0, M, fun z hzV hzρ hza => ?_⟩` and prove the remaining obligations. Establish `hzU : z ∈ {z | z ∈ Metric.ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0}` using `⟨hzρ, hza⟩`. Set `w : ℂ → Fin n → ℂ` to `fun s j => if z j = 0 then s else z j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hwc : Continuous w` using `continuous_pi fun j => by`. Distinguish the cases in `h : z j = 0`. Simplify using `only [w, h, if_true]`. Conclude with `continuous_id`. Simplify using `only [w, h, if_false]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_const`. Apply the tactic sequence `have hw0 : w 0 = z := funext fun j => by by_cases h : z j = 0 <;> simp [w, h]`. Establish `hΦz : ContinuousAt Φ z` using `(hΦ.differentiableAt (hUo.mem_nhds hzU)).continuousAt`. Establish `hT : Tendsto (fun s => Φ (w s)) (𝓝[≠] (0 : ℂ)) (𝓝 (Φ z))`. Establish `hc : ContinuousAt (Φ ∘ w) 0` using `ContinuousAt.comp (x := 0) (by rw [hw0]; exact hΦz) hwc.continuousAt`.
-
-Establish `h` using `hc.tendsto`. Rewrite `h` using `[Function.comp_apply, hw0]`. Conclude with `h.mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ s in 𝓝[≠] (0 : ℂ), ‖Φ (w s)‖ ≤ M`. Establish `h1 : ∀ᶠ s in 𝓝 (0 : ℂ), w s ∈ ball z₀ r` using `hwc.continuousAt.preimage_mem_nhds (by rw [hw0]; exact isOpen_ball.mem_nhds hzV)`.
-
-Use `filter_upwards [nhdsWithin_le_nhds h1, self_mem_nhdsWithin] with s hs hs0`. Apply `hind Finset.univ (w s)` to reduce the goal to its premises. Introduce `j`. Simplify using `only [w]`. Use `split_ifs with h`.
-
-Conclude with `hs0`. Conclude with `h`. Conclude with `ball_subset_closedBall hs`. Introduce `k _ _ hk`. Conclude with `absurd (Finset.mem_univ k) hk`.
-
-Conclude with `le_of_tendsto hT.norm hev`.
+A detailed English derivation is pending.
 -/
 theorem locally_bounded : (∀ (H : ℂ → ℂ) (r C : ℝ) (N : ℕ), 0 < r → DifferentiableOn ℂ H (Metric.ball (0 : ℂ) r \ {0}) → (∀ t ∈ Metric.ball (0 : ℂ) r, t ≠ 0 → ‖Complex.exp (2 * Real.pi * Complex.I * H t)‖ * ‖t‖ ^ N ≤ C) → ∃ G : ℂ → ℂ, DifferentiableOn ℂ G (Metric.ball (0 : ℂ) r) ∧ ∀ t ∈ Metric.ball (0 : ℂ) r, t ≠ 0 → G t = H t) → ∀ (n a : ℕ) (ρ : ℝ) (Φ : (Fin n → ℂ) → ℂ) (m : Fin n → ℕ), 0 < ρ → DifferentiableOn ℂ Φ {z | z ∈ Metric.ball (0 : Fin n → ℂ) ρ ∧ ∀ k : Fin n, (k : ℕ) < a → z k ≠ 0} → (∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ, (∀ k : Fin n, (k : ℕ) < a → z k ≠ 0) → ‖Complex.exp (2 * Real.pi * Complex.I * Φ z)‖ * ∏ k, ‖z k‖ ^ m k ≤ 1) → ∀ z₀ ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∃ V ∈ nhds z₀, ∃ M : ℝ, ∀ z ∈ V, z ∈ Metric.ball (0 : Fin n → ℂ) ρ → (∀ k : Fin n, (k : ℕ) < a → z k ≠ 0) → ‖Φ z‖ ≤ M := by
   intro hext n a ρ Φ m hρ hΦ hgr z₀ hz₀

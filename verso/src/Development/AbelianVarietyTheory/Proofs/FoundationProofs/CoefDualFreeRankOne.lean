@@ -25,7 +25,7 @@ theorem dualModule_apply (a : c.O) (f : c.O →ₗ[ℤ_[l]] ℤ_[l]) (x : c.O) :
     (letI := dualModule l c; a • f) x = f (a * x) := rfl
 
 /- English proof (translation)
-Use `letI := dualModule l c`. Use `⟨fun r a f => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[dualModule_apply, LinearMap.smul_apply, dualModule_apply, smul_mul_assoc, map_smul]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_tower :
     letI := dualModule l c; IsScalarTower ℤ_[l] c.O (c.O →ₗ[ℤ_[l]] ℤ_[l]) := by
@@ -35,11 +35,11 @@ theorem dual_tower :
   rw [dualModule_apply, LinearMap.smul_apply, dualModule_apply, smul_mul_assoc, map_smul]
 
 /- English proof (translation)
-Use `letI := dualModule l c`. Use `Module.IsTorsionFree.of_smul_eq_zero fun a f h => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Use `right`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ_[l]) (I := Ideal.span {a}) ha (Ideal.mem_span_singleton_self a) (Algebra.IsIntegral.isIntegral a)`. Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Rewrite `hr` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `hr`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1 : r • f x = 0`. Rewrite using `[← map_smul, Algebra.smul_def, hb, mul_assoc, ← dualModule_apply, h]`. Both sides reduce to the same expression. Simplify `h1` using `[hr0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dual_torsionFree :
     letI := dualModule l c; Module.IsTorsionFree c.O (c.O →ₗ[ℤ_[l]] ℤ_[l]) := by
@@ -64,15 +64,13 @@ end GlobalTheory.Ord2.CoefDual
 open GlobalTheory.Ord2.CoefDual in
 
 /- English proof (translation)
-Introduce `l _ c`. Use `letI := dualModule l c`. Use `haveI := dual_tower l c`. Use `haveI : Module.IsTorsionFree ℤ_[l] c.O := FaithfulSMul.to_isTorsionFree ℤ_[l] c.O`. Use `haveI : Module.Free ℤ_[l] c.O := Module.free_of_finite_type_torsion_free'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite c.O (c.O →ₗ[ℤ_[l]] ℤ_[l]) := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _`. Use `haveI := dual_torsionFree l c`. Use `haveI : Module.Free c.O (c.O →ₗ[ℤ_[l]] ℤ_[l]) := Module.free_of_finite_type_torsion_free'`. Establish `h1` using `Module.finrank_linearMap ℤ_[l] ℤ_[l] c.O ℤ_[l]`. Establish `h2` using `Module.finrank_mul_finrank ℤ_[l] c.O (c.O →ₗ[ℤ_[l]] ℤ_[l])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpos : 0 < Module.finrank ℤ_[l] c.O` using `Module.finrank_pos`. Establish `hr : Module.finrank c.O (c.O →ₗ[ℤ_[l]] ℤ_[l]) = 1`. Rewrite `h2` using `[h1, Module.finrank_self, mul_one]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos (h2.trans (mul_one _).symm)`. Set `b` to `Module.finBasisOfFinrankEq c.O (c.O →ₗ[ℤ_[l]] ℤ_[l]) hr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨b 0, fun f => ⟨b.repr f 0, fun x => ?_, fun a ha => ?_⟩⟩` and prove the remaining obligations. Establish `hs` using `b.sum_repr f`. Rewrite `hs` using `[Fin.sum_univ_one]`. Rewrite using `[← dualModule_apply, hs]`. Establish `hf : f = a • b 0` using `LinearMap.ext fun x => (ha x).trans (dualModule_apply l c a (b 0) x).symm`.
-
-Rewrite using `[hf, map_smul, b.repr_self]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Ord2.coef_dual_free_rank_one :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l), ∃ τ : c.O →ₗ[ℤ_[l]] ℤ_[l],

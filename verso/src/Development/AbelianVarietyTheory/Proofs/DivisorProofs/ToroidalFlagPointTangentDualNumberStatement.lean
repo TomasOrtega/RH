@@ -18,11 +18,11 @@ section Alg
 variable {Gp Ω R Ix : Type} [CommGroup Gp] [Field Ω] [CommRing R] [Fintype Ix] [DecidableEq Ix]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.linearIndependent_rows_iff_isUnit, Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hli` using `(linearIndependent_monoidHom R Ω).comp (fun τ => (χ τ : R →* Ω)) (fun σ τ h => hχ (RingHom.coe_monoidHom_injective h))`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Apply `hli g` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `r`. Establish `hb : ∀ j, ∑ τ, g τ * χ τ (b j) = 0` using `fun j => by`. Simplify `congrFun hg j` using `[Finset.sum_apply, Matrix.row]`. Establish `: ∑ τ, g τ * χ τ r = 0`. Rewrite using `[← b.sum_repr r]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_zsmul, Finset.mul_sum, mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [← Finset.smul_sum, hb, smul_zero]`. Simplify `this` using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isUnit_chars (b : Module.Basis Ix ℤ R) (χ : Ix → R →+* Ω) (hχ : Function.Injective χ) :
     IsUnit (Matrix.of fun τ j => χ τ (b j)) := by
@@ -45,7 +45,7 @@ private theorem isUnit_chars (b : Module.Basis Ix ℤ R) (χ : Ix → R →+* Ω
 variable (sm : Ω → Gp →* Gp) (ρ : R → Gp →* Gp)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hv`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, sm_add v hv, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sm_sum (sm_add : ∀ v, sm 0 v = 1 → ∀ a a', sm (a + a') v = sm a v * sm a' v)
     {κ : Type} (s : Finset κ) (f : κ → Ω) (v : Gp) (hv : sm 0 v = 1) :
@@ -56,29 +56,25 @@ private theorem sm_sum (sm_add : ∀ v, sm 0 v = 1 → ∀ a a', sm (a + a') v =
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, sm_add v hv, ih]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `isUnit_chars b χ hχ`. Choose the witnesses or unpack the hypotheses as in `⟨B, hAB, hBA⟩ : ∃ B : Matrix Ix Ix Ω, (∀ τ σ, ∑ j, B j σ * χ τ (b j) = if τ = σ then 1 else 0) ∧ ∀ j k, ∑ τ, χ τ (b k) * B j τ = if j = k then 1 else 0 := by`. Use `⟨(A⁻¹ : (Matrix Ix Ix Ω)ˣ), fun τ σ => ?_, fun j k => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun A.mul_inv τ) σ` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, hA, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => _root_.mul_comm _ _`. Use `congrFun (congrFun A.inv_mul j) k` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, hA, Matrix.one_apply]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => _root_.mul_comm _ _`. Establish `hite : ∀ (p : Prop) [Decidable p] (v : Gp), sm 0 v = 1 → sm (if p then 1 else 0) v = if p then v else 1`. Introduce `p _ v hv`. Use `split_ifs`. Conclude with `sm_one v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hv`. Establish `hρ0 : ∀ r v, sm 0 v = 1 → sm 0 (ρ r v) = 1` using `fun r v hv => by rw [← ρ_sm, hv, map_one]`. Set `P : Ix → Gp →* Gp` to `fun σ => ∏ j, (sm (B j σ)).comp (ρ (b j))`. Establish `hP : ∀ σ v, P σ v = ∏ j, sm (B j σ) (ρ (b j) v)` using `fun σ v => by`. Simplify using `only [P, MonoidHom.finsetProd_apply, MonoidHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨P, fun σ τ v hv he => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hP, ← hite _ v hv, ← hAB, sm_sum sm sm_add _ _ v hv]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [he, sm_sm]`. Establish `hP0 : ∀ σ, sm 0 (P σ v) = 1` using `fun σ => by`. Rewrite using `[hP, map_prod]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Finset.prod_eq_one fun j _ => by rw [sm_sm, zero_mul, hρ0 _ v hv]`. Establish `key : ∀ r, ρ r v = ∏ τ, sm (χ τ r) (P τ v)`. Set `f : R →+ Additive Gp` to `AddMonoidHom.mk' (fun r => Additive.ofMul (ρ r v)) (fun r s => by rw [ρ_add, ofMul_mul])`. Set `g : R →+ Additive Gp` to `AddMonoidHom.mk' (fun r => Additive.ofMul (∏ τ, sm (χ τ r) (P τ v))) (fun r s => by`. Rewrite using `[← ofMul_mul, ← Finset.prod_mul_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [map_add, sm_add _ (hP0 τ)])`. Establish `hfg : f.toIntLinearMap = g.toIntLinearMap` using `b.ext fun k => by show Additive.ofMul (ρ (b k) v) = Additive.ofMul (∏ τ, sm (χ τ (b k)) (P τ v))`. Use `congr 1`. Simplify using `only [hP, map_prod, sm_sm]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_comm]`. Establish `: ∀ j, ∏ τ, sm (χ τ (b k) * B j τ) (ρ (b j) v) = if j = k then ρ (b j) v else 1` using `fun j => by`. Rewrite using `[← sm_sum sm sm_add _ _ _ (hρ0 _ v hv), hBA, hite _ _ (hρ0 _ v hv)]`. Simplify using `only [this, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Additive.ofMul.injective (LinearMap.congr_fun hfg r)`. Use `⟨?_, fun σ => ⟨hP0 σ, fun r => ?_⟩⟩` and prove the remaining obligations. Simplify `(key 1).symm` using `only [map_one, sm_one, ρ_one]`. Establish `h1 : ρ r (P σ v) = ∏ j, ∏ τ, sm (χ τ r * (B j σ * χ τ (b j))) (P τ v)`. Rewrite using `[hP σ, map_prod]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ρ_sm, ← ρ_mul, key, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[sm_sm, map_mul]`. Use `congr 2`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Finset.prod_comm]`. Establish `: ∀ τ, ∏ j, sm (χ τ r * (B j σ * χ τ (b j))) (P τ v) = if τ = σ then sm (χ τ r) (P τ v) else 1` using `fun τ => by`. Rewrite using `[← sm_sum sm sm_add _ _ _ (hP0 τ), ← Finset.mul_sum, hAB, ← sm_sm, hite _ _ (hP0 τ)]`. Use `split_ifs`.
-
-Both sides reduce to the same expression. Conclude with `map_one _`. Simplify using `only [this, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_projectors (b : Module.Basis Ix ℤ R) (χ : Ix → R →+* Ω) (hχ : Function.Injective χ)
     (sm_sm : ∀ a a' v, sm a (sm a' v) = sm (a * a') v) (sm_one : ∀ v, sm 1 v = v)
@@ -153,15 +149,13 @@ private theorem exists_projectors (b : Module.Basis Ix ℤ R) (χ : Ix → R →
       simp only [this, Finset.prod_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Take `⟨P, hP1, hP2⟩` from `exists_projectors sm ρ b χ hχ sm_sm sm_one sm_add ρ_sm ρ_one ρ_mul ρ_add`. Take `⟨hs, hP⟩` from `hP2 v hv`. Establish `hre : ∀ a : Fin n → Ω, ∏ k, sm (a k) (U (e k).1 (e k).2) = ∏ τ, ∏ i, sm (a (e.symm ⟨τ, i⟩)) (U τ i)` using `fun a => by`. Rewrite using `[← Fintype.prod_sigma' (fun τ i => sm (a (e.symm ⟨τ, i⟩)) (U τ i))]`. Conclude with `Fintype.prod_equiv e _ _ fun k => by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ a : Fin n → Ω, ∏ k, sm (a k) (U (e k).1 (e k).2) = v ↔ ∀ σ, ∏ i, sm (a (e.symm ⟨σ, i⟩)) (U σ i) = P σ v` using `fun a => by`. Rewrite using `[hre]`. Use `⟨fun h σ => ?_, fun h => by rw [← hs]; exact Finset.prod_congr rfl fun σ _ => h σ⟩` and prove the remaining obligations. Rewrite using `[← h, map_prod]`. Establish `: ∀ τ, P σ (∏ i, sm (a (e.symm ⟨τ, i⟩)) (U τ i)) = if τ = σ then ∏ i, sm (a (e.symm ⟨τ, i⟩)) (U τ i) else 1` using `fun τ => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hP1` to reduce the goal to its premises. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun i _ => by rw [sm_sm, zero_mul, U0]`. Introduce `r`. Rewrite using `[map_prod, map_prod]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by rw [ρ_sm, UE, sm_sm, sm_sm, _root_.mul_comm]`. Simplify using `only [this, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Use `choose g hg hu using fun σ => UB σ (P σ v) (hP σ).1 (hP σ).2`. Use `⟨fun k => g (e k).1 (e k).2, (hc _).2 fun σ => ?_, fun a ha => funext fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg σ]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => by rw [Equiv.apply_symm_apply]`. Use `congrFun (hu (e k).1 _ ((hc a).1 ha (e k).1)) (e k).2` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem unique_coords (b : Module.Basis Ix ℤ R) (χ : Ix → R →+* Ω) (hχ : Function.Injective χ)
     (sm_sm : ∀ a a' v, sm a (sm a' v) = sm (a * a') v) (sm_one : ∀ v, sm 1 v = v)
@@ -207,11 +201,11 @@ section Letters
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Unfold `letters`. Rewrite using `[List.nodup_flatMap]`. Use `⟨fun a _ => (List.nodup_finRange _).map (fun i j h => ?_), ?_⟩` and prove the remaining obligations. Simplify using `using h`. Use `(List.nodup_finRange _).pairwise_of_forall_ne fun a _ b _ hab => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hxa hxb`. Simplify using `only [List.mem_map, List.mem_finRange, true_and] at hxa hxb`. Take `⟨i, rfl⟩` from `hxa`. Take `⟨j, hj⟩` from `hxb`. Use `congrArg Sigma.fst hj` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hab ((Fintype.equivFin (E →+* ℂ)).symm.injective this.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem letters_nodup : (letters Dw).Nodup := by
   unfold letters
@@ -227,9 +221,9 @@ private theorem letters_nodup : (letters Dw).Nodup := by
     exact hab ((Fintype.equivFin (E →+* ℂ)).symm.injective this.symm)
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `x`. Unfold `letters`. Use `List.mem_flatMap.2 ⟨Fintype.equivFin (E →+* ℂ) τ, List.mem_finRange _, ?_⟩` and prove the remaining obligations. Generalize the expression as in `hσ : (Fintype.equivFin (E →+* ℂ)).symm (Fintype.equivFin (E →+* ℂ) τ) = σ`. Take `rfl : σ = τ` from `by rw [← hσ, Equiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Conclude with `List.mem_map.2 ⟨i, List.mem_finRange i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_letters (x : Letter Dw) : x ∈ letters Dw := by
   obtain ⟨τ, i⟩ := x
@@ -246,11 +240,11 @@ end GlobalTheory.EigLetters
 open GlobalTheory.EigLetters in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z Ω _ y w hw`. Set `x0` to `y.y ≫ GlobalTheory.Toroidal.genι Z`. Set `e : Fin (letters Dw).length ≃ Letter Dw` to `(letters_nodup Dw).getEquivOfForallMemList _ (mem_letters Dw)`. Set `χ : (E →+* ℂ) → 𝓞 E →+* Ω` to `fun τ => (y.fK.comp (embF c τ)).comp (algebraMap (𝓞 E) E)`. Establish `hχ : Function.Injective χ` using `fun σ τ h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val (y.fK.injective (RingHom.congr_fun h a))`. Set `ρ : 𝓞 E → (tEpsG x0 ⟶ Z.t.G) →* (tEpsG x0 ⟶ Z.t.G)` to `fun a => haveI := Z.t.act.hom a postHom x0 (Z.t.act.act a)`. Establish `hρ : ∀ a v, ρ a v = v ≫ Z.t.act.act a` using `fun _ _ => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomb : ∀ {m : ℕ} (u : Fin m → (Sp (DualNumber Ω) ⟶ Z.t.G.left)) (hu : ∀ i, IsTanAtG Z.t x0 (u i)) (a : Fin m → Ω) (W : tEpsG x0 ⟶ Z.t.G), IsCombAtG Z.t x0 u a W.left ↔ ∏ i, smHom x0 (a i) (ovT (hu i)) = W` using `fun u hu a W => (isCombAtG_iff Z.t x0 (fun i => ovT (hu i)) a W.left).trans ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (fun V => V.left) h⟩`. Establish `main` using `unique_coords (smHom x0) ρ ((RingOfIntegers.basis E).reindex (NumberField.equivReindex E).symm) χ hχ (smT_smT x0) (smT_unit x0) (smT_add x0) (fun r a v => (smT_post x0 a v _).symm) (fun v => by rw [hρ, Z.t.act.one, Category.comp_id]) (fun r s v => by rw [hρ, hρ, hρ, Z.t.act.mul, …`. Conclude with `(existsUnique_congr fun a => hcomb _ (fun k => y.tan (e k).1 (e k).2) a (ovT hw)).2 main`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.toroidal_flag_point_tangent_dual_number : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {Ω : Type} [Field Ω] (y : GlobalTheory.ShFam.Pad.FlagPt Z Ω) (w : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber Ω) ⟶ Z.t.G.left), Formalism.L2.Pj.IsTanAtG Z.t (y.y ≫ GlobalTheory.Toroidal.genι Z) w → ∃! a : Fin (GlobalTheory.ShFam.Pad.letters Dw).length → Ω, Formalism.L2.Pj.IsCombAtG Z.t (y.y ≫ GlobalTheory.Toroidal.genι Z) (fun k => y.u ((GlobalTheory.ShFam.Pad.letters Dw).get k).1 ((GlobalTheory.ShFam.Pad.letters Dw).get k).2) a w := by
   intro E _ _ _ H Dw l Xo c O _ β Z Ω _ y w hw

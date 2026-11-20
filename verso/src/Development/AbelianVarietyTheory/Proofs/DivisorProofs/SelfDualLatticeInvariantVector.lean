@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.SelfDualFirstProjAny
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `⟨(π : v.adicCompletion F) ^ (-n), ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Simplify using `[← WithZero.exp_zsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_valuation_eq (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℤ) :
     ∃ a : v.adicCompletion F, Valued.v a = WithZero.exp n := by
@@ -19,37 +19,35 @@ theorem exists_valuation_eq (F : Type) [Field F] [NumberField F] (v : HeightOneS
   simp [← WithZero.exp_zsmul]
 
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψ hcont hnorm hne Λ c hc hself hbd η hη`. Establish `hne' : ∃ t, ψ t ≠ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (by ext t; simpa using h t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `GlobalTheory.CharConductor.exists_conductor_exponent F v ψ hcont hnorm hne'`. Take `⟨a, ha⟩` from `exists_valuation_eq F v n`. Establish `ha0 : a ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `WithZero.zero_ne_coe ha`. Set `O` to `v.adicCompletionIntegers F`. Set `ψ₀ : AddChar (Fv F v) ℂ` to `ψ.mulShift a`. Establish `hψ₀ : ∀ x, ψ₀ x = ψ (a * x)` using `fun x => rfl`. Establish `hcond : ∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, ψ₀ (x * y) = 1) ↔ x ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x`. Use `hn (a * x)` as an intermediate fact. Simplify using `only [hψ₀, mul_assoc] at this ⊢`. Rewrite using `[this, map_mul, ha, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e : Valued.v x = WithZero.exp (-n) * (WithZero.exp n * Valued.v x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← mul_assoc, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Set `f : ((κ → Fv F v) × (κ → Fv F v)) →+ ((κ → Fv F v) × (κ → Fv F v))` to `{ toFun := fun w => (w.1, a • w.2) map_zero' := by simp map_add' := by intro x y; simp [smul_add] }`. Set `Λ₀` to `Λ.comap f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ w, w ∈ Λ₀ ↔ (w.1, a • w.2) ∈ Λ` using `fun w => Iff.rfl`. Establish `hback : ∀ l : (κ → Fv F v) × (κ → Fv F v), (l.1, a • (a⁻¹ • l.2)) = l`. Introduce `l`. Rewrite using `[smul_smul, mul_inv_cancel₀ ha0, one_smul]`. Establish `hself₀ : ∀ w, w ∈ Λ₀ ↔ ∀ l ∈ Λ₀, ψ₀ (w.1 ⬝ᵥ l.2 - l.1 ⬝ᵥ w.2) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `w`. Rewrite using `[hmem, hself]`. Prove the components needed by the constructor for the conclusion. Introduce `h l hl`. Use `h (l.1, a • l.2) hl` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[hψ₀]`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [mul_sub, dotProduct_smul, smul_eq_mul]`. Introduce `h l hl`. Establish `hl' : (l.1, a⁻¹ • l.2) ∈ Λ₀` using `by rw [hmem]; simpa [hback l] using hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h _ hl'` as an intermediate fact. Rewrite `this` using `[hψ₀]`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [mul_sub, dotProduct_smul, smul_eq_mul, smul_dotProduct]`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ ha0, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c', hc', hbd₀⟩ : ∃ c' : Fv F v, c' ≠ 0 ∧ ∀ l ∈ Λ₀, ∀ i, c' * l.1 i ∈ v.adicCompletionIntegers F ∧ c' * l.2 i ∈ v.adicCompletionIntegers F := by`. Break down `O.mem_or_inv_mem a with haO | haO` into its components or cases. Use `⟨c * a, mul_ne_zero hc ha0, fun l hl i => ?_⟩` and prove the remaining obligations. Establish `h` using `hbd _ ((hmem l).1 hl) i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : c * a * l.1 i = a * (c * l.1 i)` using `by ring`. Rewrite using `[e]`. Conclude with `O.toSubring.mul_mem haO h.1`. Establish `e : c * a * l.2 i = c * (a * l.2 i)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h.2`. Use `⟨c, hc, fun l hl i => ?_⟩` and prove the remaining obligations. Establish `h` using `hbd _ ((hmem l).1 hl) i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨h.1, ?_⟩` and prove the remaining obligations. Establish `e : c * l.2 i = a⁻¹ * (c * (a * l.2 i))`. Rewrite using `[mul_left_comm, ← mul_assoc a⁻¹ a, inv_mul_cancel₀ ha0, one_mul]`. Rewrite using `[e]`. Conclude with `O.toSubring.mul_mem haO h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hη₀ : ∀ b : κ → Fv F v, ((0 : κ → Fv F v), b) ∈ Λ₀ → ψ₀ (η ⬝ᵥ b) = 1`. Introduce `b hb`. Rewrite `hb` using `[hmem]`. Rewrite using `[hψ₀, ← smul_eq_mul, ← dotProduct_smul]`. Conclude with `hη _ hb`.
-
-Take `⟨y, hy⟩` from `GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator v ψ₀ Λ₀ c' hc' hcond hself₀ hbd₀ η hη₀`. Conclude with `⟨a • y, (hmem _).1 hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair_of_annihilator_any : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ] (ψ : AddChar (Fv F v) ℂ), Continuous ψ → (∀ t, ‖ψ t‖ = 1) → ψ ≠ 1 →
     ∀ (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (c : Fv F v), c ≠ 0 →

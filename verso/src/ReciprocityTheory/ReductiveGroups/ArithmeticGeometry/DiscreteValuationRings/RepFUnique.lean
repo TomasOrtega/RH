@@ -18,7 +18,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
 
 /- English proof (translation)
-Simplify using `only [gs, dif_pos h, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a - b) = gs f y U a - gs f y U b := by
@@ -31,11 +31,11 @@ def RepF {k : ℕ} {ρ : D.toPre.X} {m : ℕ}
     sval t (𝟙 _) y J = ∑ i, gs (𝟙 _) y ⊤ (gF D.toPre F (c i)) * sval (bF i) (𝟙 _) y J
 
 /- English proof (translation)
-Set `bO` to `fun i => pullSec D.toPre.P.L (DegPre.famφB D.toPre ρ) (DegPre.famε k) (b i) (snd (TO hϖ hv) D.toPre.P.A).left`. Establish `hBO` using `hb (Ov v) (fO v hϖ hv) bO (fun i j => rfl)`. Take `⟨r, hr, -⟩` from `hBO (pullSec D.toPre.P.L (DegPre.famφB D.toPre ρ) (DegPre.famε k) σ (snd (TO hϖ hv) D.toPre.P.A).left)`. Use `⟨fun i => ιr (v := v) (r i), fun i => v_ιr _, fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `sval_lin (fun i => (fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom (r i)) bO hr (jO hϖ hv (D := D)).left y hJ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[sval_pullSec _ _ _ _ _ y hJ, jO_snd]`. Rewrite using `[hσF y J hJ, e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `g` using `gs_jO hϖ hv (D := D) (𝟙 _) y (r i)`. Rewrite `g` using `[Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[g, hbF i y J hJ]`. Use `show _ * sval (pullSec _ _ _ (b i) _) _ y J = _`. Rewrite using `[sval_pullSec _ _ _ _ _ y hJ, jO_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordsO {ϖ : V} (hϖ : Irreducible ϖ) {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
     {k : ℕ} {ρ : D.toPre.X} {m : ℕ} (b : Fin m → D.toPre.SecB k ρ)
@@ -70,9 +70,9 @@ theorem coordsO {ϖ : V} (hϖ : Irreducible ϖ) {v : AddValuation F (WithTop ℚ
   rw [sval_pullSec _ _ _ _ _ y hJ, jO_snd]
 
 /- English proof (translation)
-Apply the tactic sequence `have hsub : ∀ (y : (DegPre.BF D.toPre F).left) (a b : Γ((DegPre.BF D.toPre F).left, ⊤)), gs (𝟙 _) y ⊤ (a - b) = gs (𝟙 _) y ⊤ a - gs (𝟙 _) y ⊤ b := fun y a b => gs_sub _ y ⊤ (by first | trivial | simp) a b`. Establish `h0` using `hU (c - c') (fun y J hy => by`. Establish `e1` using `h y J hy`. Establish `e2` using `h' y J hy`. Simplify using `only [Pi.sub_apply, map_sub, hsub, sub_mul, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e1, ← e2, sub_self])`. Conclude with `sub_eq_zero.mp h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repF_unique {k : ℕ} {ρ : D.toPre.X} {m : ℕ}
     {bF : Fin m → LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F ρ) (DegPre.famε k))}

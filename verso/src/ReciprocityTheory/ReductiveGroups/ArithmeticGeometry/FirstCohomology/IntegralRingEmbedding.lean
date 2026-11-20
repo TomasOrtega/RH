@@ -11,7 +11,7 @@ open Module
 variable {F : Type} [Field F] (v : AddValuation F (WithTop ℚ))
 
 /- English proof (translation)
-Use `le_antisymm ?_ ha` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `le_add_of_nonneg_right hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wt_zero_of_add {a b : WithTop ℚ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a + b = 0) : a = 0 := by
   refine le_antisymm ?_ ha
@@ -19,9 +19,9 @@ lemma wt_zero_of_add {a b : WithTop ℚ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a + 
   exact le_add_of_nonneg_right hb
 
 /- English proof (translation)
-Establish `ha' : a ≠ ⊤` using `ne_top_of_lt ha`. Use `lift a to ℚ using ha'`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe q`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : (a : ℚ) + q = 0` using `by exact_mod_cast h`. Establish `h2 : (a : ℚ) < 0` using `by exact_mod_cast ha`. Conclude with `(show (0 : ℚ) ≤ q by linarith)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma wt_inv_nonneg {a b : WithTop ℚ} (h : a + b = 0) (ha : a < 0) : 0 ≤ b := by
   have ha' : a ≠ ⊤ := ne_top_of_lt ha
@@ -56,16 +56,16 @@ def intRing : ValuationSubring F where
       exact wt_inv_nonneg this ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_intRing {a : F} : a ∈ intRing v ↔ 0 ≤ v a := Iff.rfl
 
 /- English proof (translation)
-Establish `hx0 : (x : F) ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0, AddValuation.map_zero]`. Simplify using `at hx`. Establish `hinv : 0 ≤ v (x : F)⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : v (x : F) + v (x : F)⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hx0, AddValuation.map_one]`. Rewrite `h1` using `[hx, zero_add]`. Rewrite using `[h1]`. Use `isUnit_iff_exists_inv.2 ⟨⟨(x : F)⁻¹, (mem_intRing v).2 hinv⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel₀ hx0`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma isUnit_of_val_zero (x : intRing v) (hx : v (x : F) = 0) : IsUnit x := by
   have hx0 : (x : F) ≠ 0 := by
@@ -82,7 +82,7 @@ lemma isUnit_of_val_zero (x : intRing v) (hx : v (x : F) = 0) : IsUnit x := by
   exact mul_inv_cancel₀ hx0
 
 /- English proof (translation)
-Establish `hnu : ¬ IsUnit x` using `(IsLocalRing.mem_maximalIdeal x).1 hx`. Establish `h0 : 0 ≤ v (x : F)` using `(mem_intRing v).1 x.2`. Conclude with `lt_of_le_of_ne h0 (fun h => hnu (isUnit_of_val_zero v x h.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma val_pos_of_mem_max (x : intRing v) (hx : x ∈ IsLocalRing.maximalIdeal (intRing v)) :
     0 < v (x : F) := by
@@ -91,13 +91,13 @@ lemma val_pos_of_mem_max (x : intRing v) (hx : x ∈ IsLocalRing.maximalIdeal (i
   exact lt_of_le_of_ne h0 (fun h => hnu (isUnit_of_val_zero v x h.symm))
 
 /- English proof (translation)
-Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow (by omega)]`. Conclude with `zero_ne_one hz`. Establish `h1 : v (z ^ N) = N • v z` using `AddValuation.map_pow v z N`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hz, AddValuation.map_one]`. Establish `h2 : v z + v z⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hz0, AddValuation.map_one]`. Generalize the expression as in `v z = w at h1 h2 ⊢`. Proceed by induction on `w using WithTop.recTopCoe with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `top => simp at h2`. Consider the case `coe q`. Establish `h3 : ((N • q : ℚ) : WithTop ℚ) = 0`. Rewrite using `[WithTop.coe_nsmul]`. Conclude with `h1.symm`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : N • q = 0` using `by exact_mod_cast h3`. Rewrite `h4` using `[nsmul_eq_mul]`. Establish `h5 : q = 0` using `(mul_eq_zero.1 h4).resolve_left (by exact_mod_cast (show N ≠ 0 by omega))`. Simplify using `[h5]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma val_root_unity {N : ℕ} (hN : 1 ≤ N) {z : F} (hz : z ^ N = 1) : v z = 0 := by
   have hz0 : z ≠ 0 := by
@@ -121,23 +121,21 @@ lemma val_root_unity {N : ℕ} (hN : 1 ≤ N) {z : F} (hz : z ^ N = 1) : v z = 0
     simp [h5]
 
 /- English proof (translation)
-Establish `hvz` using `val_root_unity v hN hz`. Establish `hvz'` using `val_root_unity v hN hz'`. Establish `hnn : 0 ≤ v (z - z')` using `le_trans (le_of_eq (by rw [hvz, hvz', min_self])) (AddValuation.map_sub v z z')`. Assume the negation of the conclusion as `hne0`. Take `⟨Z, rfl⟩ : ∃ Z : intRing v, (Z : F) = z` from `⟨⟨z, (mem_intRing v).2 (le_of_eq hvz.symm)⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨Z', rfl⟩ : ∃ Z' : intRing v, (Z' : F) = z'` from `⟨⟨z', (mem_intRing v).2 (le_of_eq hvz'.symm)⟩, rfl⟩`. Establish `hZN : Z ^ N = 1` using `Subtype.ext (by simpa using hz)`. Establish `hZ'N : Z' ^ N = 1` using `Subtype.ext (by simpa using hz')`. Establish `hmax : Z - Z' ∈ IsLocalRing.maximalIdeal (intRing v)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h3 : ((Z : F) - Z') * (w : F) = 1`. Use `congrArg Subtype.val hw` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : v ((Z : F) - Z') + v (w : F) = 0`. Rewrite using `[← AddValuation.map_mul, h3, AddValuation.map_one]`. Conclude with `hne0 (wt_zero_of_add hnn ((mem_intRing v).1 w.2) h1)`. Establish `hres : IsLocalRing.residue (intRing v) Z = IsLocalRing.residue (intRing v) Z'`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmax`. Establish `hsum0 : ∑ i ∈ Finset.range N, Z ^ i * Z' ^ (N - 1 - i) = 0`. Establish `h1` using `geom_sum₂_mul Z Z' N`. Rewrite `h1` using `[hZN, hZ'N, sub_self]`. Establish `hne' : Z - Z' ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite `h` using `[sub_eq_zero]`. Rewrite using `[h]`. Conclude with `(mul_eq_zero.1 h1).resolve_right hne'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmap` using `congrArg (IsLocalRing.residue (intRing v)) hsum0`. Rewrite `hmap` using `[map_sum, map_zero]`. Simplify using `only [map_mul, map_pow, ← hres] at hmap`. Rewrite `hmap` using `[geom_sum₂_self]`. Establish `hres0 : IsLocalRing.residue (intRing v) Z ≠ 0` using `((isUnit_of_val_zero v Z hvz).map (IsLocalRing.residue (intRing v))).ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN0 : ((N : ℕ) : IsLocalRing.ResidueField (intRing v)) = 0` using `(mul_eq_zero.1 hmap).resolve_right (pow_ne_zero _ hres0)`. Rewrite `hN0` using `[← map_natCast (IsLocalRing.residue (intRing v)) N, IsLocalRing.residue_eq_zero_iff]`. Establish `hpos` using `val_pos_of_mem_max v (N : intRing v) hN0`. Establish `hc : ((N : intRing v) : F) = (N : F)` using `by simp`. Rewrite `hpos` using `[hc, hvN]`.
-
-Conclude with `lt_irrefl _ hpos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_sub_roots {N : ℕ} (hN : 1 ≤ N) (hvN : v (N : F) = 0) {z z' : F} (hz : z ^ N = 1)
     (hz' : z' ^ N = 1) (hne : z ≠ z') : v (z - z') = 0 := by
@@ -197,45 +195,39 @@ def emb : (Fin n → intRing v) →+ W where
   map_add' c d := by simp [add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hUU0 : UU 0` using `(hUU 0).2 ⟨0, fun i => by simp, by simp⟩`. Establish `hUUsub : ∀ s t, UU s → UU t → UU (s - t)`. Introduce `s t hs ht`. Take `⟨c, hc, rfl⟩` from `(hUU s).1 hs`. Take `⟨d, hd, rfl⟩` from `(hUU _).1 ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(hUU _).2 ⟨c - d, fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_trans (le_min (hc i) (hd i)) (AddValuation.map_sub v (c i) (d i))`. Simplify using `[sub_smul, Finset.sum_sub_distrib]`. Establish `hUUsmul : ∀ r s, 0 ≤ v r → UU s → UU (r • s)`. Introduce `r s hr hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, rfl⟩` from `(hUU s).1 hs`. Use `(hUU _).2 ⟨fun i => r * c i, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show 0 ≤ v (r * c i)`. Rewrite using `[AddValuation.map_mul]`. Conclude with `add_nonneg hr (hc i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finset.smul_sum, mul_smul]`. Establish `hsv0 : ∀ i, sv i ≠ 0`. Introduce `i h`. Apply `hsvp i` to reduce the goal to its premises. Conclude with `hPos (sv i) (hsv i) 0 0 (by simp) hUU0 (by rw [h, zero_smul])`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχv : ∀ i γ, v (χ i γ) = 0` using `fun i γ => val_root_unity v hN (hχN i γ)`. Establish `hχd : ∀ i j γ, χ i γ ≠ χ j γ → v (χ i γ - χ j γ) = 0` using `fun i j γ h => val_sub_roots v hN hvN (hχN i γ) (hχN j γ) h`. Establish `hred : ∀ (S : Finset ι) (a : ι → F) (j : ι) (γ : Γ), j ∈ S → T γ (∑ i ∈ S, a i • sv i) - χ j γ • ∑ i ∈ S, a i • sv i = ∑ i ∈ S.erase j, (a i * (χ i γ - χ j γ)) • sv i`. Introduce `S a j γ hj`. Rewrite using `[map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hterm : ∀ i, T γ (a i • sv i) - χ j γ • (a i • sv i) = (a i * (χ i γ - χ j γ)) • sv i`. Introduce `i`. Rewrite using `[map_smul, heig, smul_smul, smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[hterm]`. Rewrite using `[← Finset.sum_erase_add _ _ hj, sub_self, mul_zero, zero_smul, add_zero]`. Establish `indep : ∀ S : Finset ι, ∀ a : ι → F, ∑ i ∈ S, a i • sv i = 0 → ∀ k ∈ S, a k = 0`. Introduce `S`. Proceed by induction on `S using Finset.strongInduction`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Name the introduced variables `S ih`. Introduce `a ha k hk`. Distinguish the cases in `hex : ∃ j ∈ S, j ≠ k`. Take `⟨j, hj, hjk⟩` from `hex`. Take `⟨γ, hγ⟩` from `hsep k j (Ne.symm hjk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ∑ i ∈ S.erase j, (a i * (χ i γ - χ j γ)) • sv i = 0`. Rewrite using `[← hred S a j γ hj, ha, map_zero, smul_zero, sub_zero]`. Establish `h1 : a k * (χ k γ - χ j γ) = 0` using `ih (S.erase j) (Finset.erase_ssubset hj) (fun i => a i * (χ i γ - χ j γ)) hz k (Finset.mem_erase.2 ⟨Ne.symm hjk, hk⟩)`. Conclude with `(mul_eq_zero.1 h1).resolve_right (sub_ne_zero.2 hγ)`. Rewrite `ha` using `[Finset.sum_eq_single k (fun j hj hjk => absurd ⟨j, hj, hjk⟩ hex) (fun h => absurd hk h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `(smul_eq_zero.1 ha).resolve_right (hsv0 k)`. Establish `key : ∀ S : Finset ι, ∀ a : ι → F, UU (∑ i ∈ S, a i • sv i) → ∀ k ∈ S, 0 ≤ v (a k)`. Introduce `S`. Proceed by induction on `S using Finset.strongInduction`. Name the introduced variables `S ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha k hk`. Distinguish the cases in `hex : ∃ j ∈ S, j ≠ k`. Take `⟨j, hj, hjk⟩` from `hex`. Take `⟨γ, hγ⟩` from `hsep k j (Ne.symm hjk)`. Establish `hmem : UU (∑ i ∈ S.erase j, (a i * (χ i γ - χ j γ)) • sv i)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hred S a j γ hj]`. Conclude with `hUUsub _ _ (hT γ _ ha) (hUUsmul _ _ (le_of_eq (hχv j γ).symm) ha)`. Establish `h1 : 0 ≤ v (a k * (χ k γ - χ j γ))` using `ih (S.erase j) (Finset.erase_ssubset hj) (fun i => a i * (χ i γ - χ j γ)) hmem k (Finset.mem_erase.2 ⟨Ne.symm hjk, hk⟩)`. Rewrite `h1` using `[AddValuation.map_mul, hχd k j γ hγ, add_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ha` using `[Finset.sum_eq_single k (fun j hj hjk => absurd ⟨j, hj, hjk⟩ hex) (fun h => absurd hk h)]`. Assume the negation of the conclusion as `hneg`. Establish `hneg' : v (a k) < 0` using `not_le.1 hneg`. Establish `hak : a k ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hneg'` using `[h0, AddValuation.map_zero]`. Conclude with `absurd hneg' (not_lt.2 le_top)`. Establish `hsum : v (a k) + v (a k)⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hak, AddValuation.map_one]`. Establish `hpos : 0 < v (a k)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne (wt_inv_nonneg hsum hneg') ?_` and prove the remaining obligations. Introduce `h0`. Rewrite `hsum` using `[← h0, add_zero]`. Rewrite `hneg'` using `[hsum]`. Conclude with `lt_irrefl _ hneg'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hsvp k (hPos (sv k) (hsv k) (a k)⁻¹ (a k • sv k) hpos ha (by rw [smul_smul, inv_mul_cancel₀ hak, one_smul]))`. Establish `hli : LinearIndependent F sv`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Conclude with `indep Finset.univ g hg i (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemb : ∀ s, UU s → s ∈ Submodule.span F (Set.range b)`. Introduce `s hs`. Take `⟨c, -, rfl⟩` from `(hUU s).1 hs`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`. Use `haveI : FiniteDimensional F (Submodule.span F (Set.range b)) := FiniteDimensional.span_of_finite F (Set.finite_range b)`.
-
-Establish `hspan : Submodule.span F (Set.range sv) = Submodule.span F (Set.range b)`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hmemb _ (hsv i)`.
-
-Rewrite using `[finrank_span_eq_card hli, finrank_span_eq_card hb, hcard, Fintype.card_fin]`. Introduce `s hs`. Establish `hs' : s ∈ Submodule.span F (Set.range sv)`. Rewrite using `[hspan]`. Conclude with `hmemb s hs`.
-
-Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hs'`. Use `⟨a, fun i => key Finset.univ a ?_ i (Finset.mem_univ i), ha.symm⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem span_of_eigen (UU Pos : W → Prop) (hb : LinearIndependent F b)
     (hUU : ∀ s, UU s ↔ ∃ c : Fin n → F, (∀ i, 0 ≤ v (c i)) ∧ s = ∑ i, c i • b i)

@@ -16,29 +16,27 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Take `⟨ω, hω, e, he, hωe⟩` from `GlobalTheory.UnramOrder.exists_sub_cj_mul_eq_one L`. Establish `hint : ∀ a : F, a ∈ 𝒪[F] → algebraMap F E a ∈ L.O` using `fun a h => (GlobalTheory.UnramOrder.algebraMap_mem_iff L a).2 h`. Establish `he' : (L.cj ω - ω) * L.cj e = 1` using `by simpa [L.cj_cj] using congrArg L.cj hωe`. Establish `hce : L.cj e = -e` using `by linear_combination (-e) * he' - (L.cj e) * hωe`. Establish `hli : LinearIndependent F ![(1 : E), ω]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Simplify using `only [Algebra.smul_def, mul_one] at h`. Establish `h'` using `congrArg L.cj h`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes, map_zero] at h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht : algebraMap F E t = 0`. Take the linear combination `e * h - e * h' - algebraMap F E t * hωe`. Establish `hs : algebraMap F E s = 0` using `by rw [ht] at h; simpa using h`. Conclude with `⟨GlobalTheory.UnramOrder.algebraMap_inj L (by simpa using hs), GlobalTheory.UnramOrder.algebraMap_inj L (by simpa using ht)⟩`. Set `b : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [L.rank])`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = ω` using `by simp [b]`. Establish `hx : ∀ x, x = algebraMap F E (b.repr x 0) + algebraMap F E (b.repr x 1) * ω`. Introduce `x`. Use `b.sum_repr x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Fin.sum_univ_two, hb0, hb1]`. Simplify `this.symm` using `[Algebra.smul_def]`. Use `⟨b, fun x => ⟨fun h => ?_, fun h => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx x`. Establish `h2` using `congrArg L.cj h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, AlgEquiv.commutes] at h2`. Establish `h3 : algebraMap F E (b.repr x 1) = (x - L.cj x) * e`. Take the linear combination `-e * h1 + e * h2 - algebraMap F E (b.repr x 1) * hωe`. Establish `h4 : algebraMap F E (b.repr x 1) ∈ L.O`. Rewrite using `[h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.O.mul_mem (L.O.sub_mem h (GlobalTheory.UnramOrder.cj_mem L h)) he`. Establish `h5 : algebraMap F E (b.repr x 0) ∈ L.O`. Establish `: algebraMap F E (b.repr x 0) = x - algebraMap F E (b.repr x 1) * ω`. Take the linear combination `-h1`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `L.O.sub_mem h (L.O.mul_mem h4 hω)`. Introduce `i`. Use `fin_cases i`. Conclude with `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).1 h5`. Conclude with `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).1 h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx x]`. Conclude with `L.O.add_mem (hint _ (h 0)) (L.O.mul_mem (hint _ (h 1)) hω)`. Rewrite using `[Algebra.norm_eq_matrix_det b, Matrix.det_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, hb0, hb1, mul_one, map_sub, map_mul]`. Establish `h1` using `hx x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `h2` using `congrArg L.cj h1`. Establish `h3` using `hx (x * ω)`. Establish `h4` using `congrArg L.cj h3`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes] at h2 h4`. Generalize the expression as in `algebraMap F E (b.repr x 0) = a at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Generalize the expression as in `algebraMap F E (b.repr x 1) = c at *`. Generalize the expression as in `algebraMap F E (b.repr (x * ω) 0) = a' at *`. Generalize the expression as in `algebraMap F E (b.repr (x * ω) 1) = c' at *`. Establish `key : (ω - L.cj ω) * (a * c' - a' * c - x * L.cj x) = 0`. Take the linear combination `(-(L.cj x)) * h3 + x * h4 + (a' + c' * L.cj ω) * h1 - (a' + c' * ω) * h2`.
-
-Take the linear combination `e * key - (a * c' - a' * c - x * L.cj x) * hωe`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E) :
     ∃ b : Module.Basis (Fin 2) F E, (∀ x, x ∈ L.O ↔ ∀ i, b.repr x i ∈ 𝒪[F]) ∧
@@ -104,9 +102,9 @@ theorem exists_basis [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E) 
     linear_combination e * key - (a * c' - a' * c - x * L.cj x) * hωe
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_span_range_iff_exists_fun, AddSubgroup.mem_map, AddSubgroup.mem_pi, Set.mem_univ, forall_true_left, LinearMap.toAddMonoidHom_coe, Fintype.linearCombination_apply, Subring.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun i => c i, fun i => (c i).2, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨fun i => ⟨c i, hc i⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_eq_map (L : LocE F E) {n m : ℕ} (y : Fin m → Fin n → E) :
     (Submodule.span L.O (Set.range y)).toAddSubgroup =
@@ -123,27 +121,25 @@ theorem span_eq_map (L : LocE F E) {n m : ℕ} (y : Fin m → Fin n → E) :
     exact ⟨fun i => ⟨c i, hc i⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n m y hy A hA hu`. Take `⟨b, hbO, hnorm⟩` from `exists_basis L`. Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.Finite.of_basis b`. Take `⟨-, -, hv3, hv4⟩` from `GlobalTheory.UnramVal.vE_valuation L ϖ hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdO : A.det ∈ L.O`. Rewrite using `[Matrix.det_apply']`. Conclude with `L.O.sum_mem fun σ _ => L.O.mul_mem (intCast_mem _ _) (L.O.prod_mem fun i _ => hA _ _)`. Establish `hN0 : Algebra.norm F A.det ≠ 0` using `(hu.map (Algebra.norm F)).ne_zero`. Establish `hNO : Algebra.norm F A.det ∈ 𝒪[F]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.UnramOrder.algebraMap_mem_iff L, hnorm]`. Conclude with `L.O.mul_mem hdO (GlobalTheory.UnramOrder.cj_mem L hdO)`. Rewrite using `[← hnorm]`. Establish `ha` using `(hv3 _ hN0).2 hNO`. Take `⟨u, hu'⟩` from `hv4 _ hN0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨ha, ?_⟩` and prove the remaining obligations. Generalize the expression as in `vE L ϖ (algebraMap F E (Algebra.norm F A.det)) = a at *`. Set `φ : (Fin m → E) ≃ₗ[F] (Fin m → E)` to `(Matrix.toLinearEquiv (Pi.basisFun E (Fin m)) A hu).restrictScalars F`. Establish `hφ : ∀ v, φ v = A.mulVec v` using `fun v => by`. Simplify using `[φ, Matrix.toLinearEquiv_apply, Matrix.toLin_eq_toLin']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : LinearMap.det (φ : (Fin m → E) →ₗ[F] (Fin m → E)) = Algebra.norm F A.det`. Establish `: (φ : (Fin m → E) →ₗ[F] (Fin m → E)) = (Matrix.toLin' A).restrictScalars F` using `by ext1 v; exact LinearMap.ext fun w => hφ _`. Rewrite using `[this, LinearMap.det_restrictScalars, LinearMap.det_toLin']`. Use `set W0 := (AddSubgroup.pi Set.univ fun _ : Fin m => L.O.toAddSubgroup) with hW0`. Establish `hmem : ∀ x, x ∈ W0 ↔ ∀ i, x i ∈ L.O` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[hW0, AddSubgroup.mem_pi]`. Take `⟨h1, -, h3⟩` from `GlobalTheory.T.relative_lattice_volume_of_det_valuation ϖ hϖ (Pi.basis fun _ : Fin m => b) φ a u (hdet.trans hu') W0 (fun x => by`. Simplify using `only [hmem, hbO, Pi.basis_repr, Sigma.forall])`. Establish `hle : W0.map φ.toAddEquiv.toAddMonoidHom ≤ W0`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hmem]`. Introduce `i`. Express the relevant statement in the definitionally equal form `φ v i ∈ _`. Rewrite using `[hφ, Matrix.mulVec, dotProduct]`. Conclude with `L.O.sum_mem fun j _ => L.O.mul_mem (hA _ _) ((hmem v).1 hv j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : (Fintype.linearCombination E (rmul y A)).toAddMonoidHom = (Fintype.linearCombination E y).toAddMonoidHom.comp φ.toAddEquiv.toAddMonoidHom`. Use `AddMonoidHom.ext fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Fintype.linearCombination E (rmul y A) v = Fintype.linearCombination E y (φ v)`. Rewrite using `[hφ]`. Simplify using `only [Fintype.linearCombination_apply, rmul, Matrix.mulVec, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Establish `hinj : Function.Injective (Fintype.linearCombination E y).toAddMonoidHom`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `funext (Fintype.linearIndependent_iff.1 hy v hv)`. Rewrite using `[span_eq_map, span_eq_map, ← hW0, hcomp, ← AddSubgroup.map_map, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Rewrite `h3` using `[relVol, AddSubgroup.relIndex_eq_one.2 hle]`. Use `lift a to ℕ using ha`. Rewrite `h3` using `[zpow_neg, zpow_natCast, Nat.cast_one, one_div, inv_inj]`.
-
-Rewrite using `[Int.toNat_natCast]`. Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem index_rmul : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ {n m : ℕ} (y : Fin m → Fin n → E), LinearIndependent E y → ∀ A : Matrix (Fin m) (Fin m) E, IsIntM L A → IsUnit A.det → 0 ≤ vE L ϖ (A.det * L.cj A.det) ∧ (Submodule.span L.O (Set.range (rmul y A))).toAddSubgroup.relIndex (Submodule.span L.O (Set.range y)).toAddSubgroup = resQ ϖ ^ (vE L ϖ (A.det * L.cj A.det)).toNat := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n m y hy A hA hu

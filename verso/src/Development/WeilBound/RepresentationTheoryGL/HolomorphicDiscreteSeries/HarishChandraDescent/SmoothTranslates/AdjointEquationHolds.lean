@@ -16,9 +16,9 @@ variable {n : ℕ}
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hJJ : Jm ε * Jm ε = 1` using `by delta Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hli : (Jm ε * gᴴ * Jm ε) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Matrix.isUnit_iff_isUnit_det g).mpr (Matrix.isUnit_det_of_left_inverse hli)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) : IsUnit g := by
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -34,15 +34,15 @@ theorem isUnit_of_mem {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg
   exact (Matrix.isUnit_iff_isUnit_det g).mpr (Matrix.isUnit_det_of_left_inverse hli)
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hX' : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).mp (isUnit_of_mem hg)`. Establish `hJ : (Jm ε)ᴴ = Jm ε` using `by delta Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1 : gᴴ * Jm ε = Jm ε * g⁻¹`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h : gᴴ * Jm ε * g * g⁻¹ = Jm ε * g⁻¹` using `by rw [hg']`. Rewrite `h` using `[Matrix.mul_assoc (gᴴ * Jm ε), Matrix.mul_nonsing_inv g hdet, Matrix.mul_one]`. Conclude with `h`. Establish `h2 : ∀ M : Matrix (Fin n) (Fin n) ℂ, Jm ε * (g * M) = (g⁻¹)ᴴ * (Jm ε * M)`. Introduce `M`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg Matrix.conjTranspose h1`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJ, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[← Matrix.mul_assoc, h, Matrix.mul_assoc]`. Use `show (g * X * g⁻¹)ᴴ * Jm ε + Jm ε * (g * X * g⁻¹) = 0`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, h2, ← Matrix.mul_add, ← Matrix.mul_assoc Xᴴ, ← Matrix.mul_assoc (Jm ε) X, ← Matrix.add_mul, hX', Matrix.zero_mul, Matrix.mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inG_conj {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hX : inG ε X) :
     inG ε (g * X * g⁻¹) := by
@@ -72,17 +72,15 @@ theorem inG_conj {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : 
     Matrix.zero_mul, Matrix.mul_zero]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[isSmoothVecU_iff]`. Establish `hmulUJ : ∀ a : Matrix (Fin n) (Fin n) ℂ, inUJ ε a → inUJ ε (a * g)`. Introduce `a ha`. Establish `ha' : aᴴ * Jm ε * a = Jm ε` using `ha`. Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (a * g)ᴴ * Jm ε * (a * g) = Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hv (g₀ * g) (hmulUJ g₀ hg₀)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ g)`. Establish `hL : ∀ a, L a = a * g` using `fun a => rfl`. Use `⟨L ⁻¹' U, F ∘ L, hU.preimage L.continuous, ?_, hF.comp L.contDiff.contDiffOn (Set.mapsTo_preimage _ _), ?_⟩` and prove the remaining obligations. Use `show L g₀ ∈ U`. Rewrite using `[hL]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hgU`. Introduce `h hhU hh`. Establish `hhU' : h * g ∈ U`. Use `hhU` as an intermediate fact. Simplify using `only [Set.mem_preimage, hL] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Simplify using `only [Function.comp_apply, hL]`. Rewrite using `[← hfF (h * g) hhU' (hmulUJ h hh)]`. Use `show (σ h) ((σ g) v) = (σ (h * g)) v`. Rewrite using `[hσ.1.2 h hh g hg]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem smooth_translate {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ}
@@ -117,11 +115,11 @@ theorem smooth_translate {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     rfl
 
 /- English proof (translation)
-Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).mp (isUnit_of_mem hg)`. Establish `h1UJ : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Establish `key : ∀ t : ℝ, (1 : Matrix (Fin n) (Fin n) ℂ) * NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹)) * g = g * NormedSpace.exp ((t : ℂ) • X)`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : (t : ℂ) • (g * X * g⁻¹) = g * ((t : ℂ) • X) * g⁻¹`. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Rewrite using `[Matrix.one_mul, hs, Matrix.exp_conj g _ (isUnit_of_mem hg), Matrix.mul_assoc (g * _), Matrix.nonsing_inv_mul g hdet, Matrix.mul_one]`. Rewrite using `[orbit_dS hσ hX hv hg, dS_eq_rdV, rdV_congr (f' := fun h => σ (h * g) v) (fun h hh => ?_) h1UJ (inG_conj hg hX)]`. Use `delta ReciprocityTheory.ChartRestriction.DS.S7.RdV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Use `show (σ h) ((σ g) v) = (σ (h * g)) v`. Rewrite using `[hσ.1.2 h hh g hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dS_conj {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {g X : Matrix (Fin n) (Fin n) ℂ}
@@ -153,15 +151,15 @@ namespace PositivityTheory.RgHe3
 open ReciprocityTheory.ChartRestriction.DS AdjointEquation
 
 /- English proof (translation)
-Use `delta AdEq ForRep`. Introduce `n ε H _ _ _ ρ hρ g hg`. Establish `hmaps : ∀ x ∈ smD ε ρ, ρ g x ∈ smD ε ρ`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_smD_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `smooth_translate hρ hg hx`. Establish `hact : ∀ (Z : Matrix (Fin n) (Fin n) ℂ) (w : smD ε ρ), ((actM (smE ε ρ) Z w : smD ε ρ) : H) = dS ρ (S7.cpart1 ε Z) w + Complex.I • dS ρ (S7.cpart2 ε Z) w`. Introduce `Z w`. Take `⟨h1, h2, hZ, -⟩` from `smc_cpart (ε := ε) Z`. Establish `hlin : actM (smE ε ρ) Z = actM (smE ε ρ) (S7.cpart1 ε Z) + Complex.I • actM (smE ε ρ) (S7.cpart2 ε Z)` using `by delta actM conv_lhs => rw [hZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]`. Rewrite using `[hlin, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, ← dS_eq_actM (isDerivedOn_smE hρ) h1, ← dS_eq_actM (isDerivedOn_smE hρ) h2]`. Use `⟨(ρ g).toLinearMap.restrict hmaps, fun x => rfl, fun X x => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx : IsSmoothVecU ε ρ (x : H)` using `(mem_smD_iff ε ρ x).mp x.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, hX, -⟩` from `smc_cpart (ε := ε) X`. Establish `hc1` using `inG_conj hg h1`. Establish `hc2` using `inG_conj hg h2`. Establish `hsplit : g * X * g⁻¹ = g * S7.cpart1 ε X * g⁻¹ + Complex.I • (g * S7.cpart2 ε X * g⁻¹)` using `by conv_lhs => rw [hX]`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨e1, e2⟩` from `smc_cpart_unique hc1 hc2`. Express the relevant statement in the definitionally equal form `ρ g ((actM (smE ε ρ) X x : smD ε ρ) : H) = _`. Rewrite using `[hact, hact, hsplit, e1, e2, map_add, map_smul, dS_conj hρ hg h1 hx, dS_conj hρ hg h2 hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adjoint_equation_holds : AdEq := by
   delta AdEq ForRep

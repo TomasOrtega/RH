@@ -12,7 +12,7 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowZUnitPf
 open PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (star (o : K))` using `(NumberField.RingOfIntegers.isIntegral_coe o).map (starRingEnd K).toIntAlgHom`. Conclude with `⟨⟨star (o : K), h1⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem star_int {K : Type} [Field K] [NumberField K] [StarRing K] (o : 𝓞 K) :
     ∃ o' : 𝓞 K, (o' : K) = star (o : K) := by
@@ -21,29 +21,25 @@ theorem star_int {K : Type} [Field K] [NumberField K] [StarRing K] (o : 𝓞 K) 
   exact ⟨⟨star (o : K), h1⟩, rfl⟩
 
 /- English proof (translation)
-Establish `memM : ∀ x : W, x ∈ M ↔ ∀ m ∈ M, ∃ y : 𝓞 K, algebraMap (𝓞 K) K y = h m x`. Introduce `x`. Use `conv_lhs => rw [← hU]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Set `I : Ideal (𝓞 K)` to `{ carrier := {o | ∃ m ∈ M, h m z = star (o : K)} add_mem' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b ⟨m₁, hm₁, e₁⟩ ⟨m₂, hm₂, e₂⟩`. Use `⟨m₁ + m₂, M.add_mem hm₁ hm₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, e₁, e₂]`. Use `show star (algebraMap (𝓞 K) K a) + star (algebraMap (𝓞 K) K b) = star (algebraMap (𝓞 K) K (a + b))`. Rewrite using `[map_add, star_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := ⟨0, M.zero_mem, by`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Use `show (0 : K) = star (algebraMap (𝓞 K) K 0)`. Rewrite using `[map_zero, star_zero]⟩`. Use the proof step `smul_mem' := by`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `a b ⟨m, hm, e⟩`. Use `⟨a • m, M.smul_mem a hm, ?_⟩` and prove the remaining obligations. Establish `ha : (a • m : W) = (algebraMap (𝓞 K) K a) • m` using `(algebraMap_smul K a m).symm`. Rewrite using `[ha, LinearMap.map_smulₛₗ, LinearMap.smul_apply, e]`. Simplify using `only [smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show star (algebraMap (𝓞 K) K a) * star (algebraMap (𝓞 K) K b) = star (algebraMap (𝓞 K) K (a * b))`. Rewrite using `[map_mul, star_mul'] }`. Establish `memI : ∀ o : 𝓞 K, o ∈ I ↔ ∃ m ∈ M, h m z = star (o : K)` using `fun o => Iff.rfl`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hI : I ≠ ⊤`. Introduce `htop`. Establish `h1 : (1 : 𝓞 K) ∈ I` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨m, hm, e⟩` from `(memI 1).1 h1`. Conclude with `hne m hm (by rw [e]; show star (algebraMap (𝓞 K) K 1) = 1; rw [map_one, star_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hPmax, hIP⟩` from `Ideal.exists_le_maximal I hI`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hPmax (NumberField.RingOfIntegers.not_isField K)`. Take `⟨c, hc, hc1⟩` from `FractionalIdeal.exists_notMem_one_of_ne_bot (K := K) hP0 hPmax.ne_top`. Establish `hPne : (P : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ≠ 0`. Rewrite using `[ne_eq, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[FractionalIdeal.mem_inv_iff hPne]`. Establish `hcz : (star c) • z ∈ M`. Rewrite using `[memM]`. Introduce `m hm`. Take `⟨t, ht⟩` from `(memM z).1 hz m hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t', ht'⟩` from `star_int t`. Establish `e1 : h m z = star (t' : K)` using `by rw [ht', star_star]; exact ht.symm`. Establish `ht'I : t' ∈ I` using `(memI t').2 ⟨m, hm, e1⟩`. Establish `hcy` using `hc _ (by rw [FractionalIdeal.mem_coeIdeal]; exact ⟨t', hIP ht'I, rfl⟩)`. Rewrite `hcy` using `[FractionalIdeal.mem_one_iff]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hcy`. Take `⟨s', hs'⟩` from `star_int s`. Use `⟨s', ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, e1, ← star_mul']`. Express the relevant statement in the definitionally equal form `(s' : K) = _`.
-
-Rewrite using `[hs']`. Use `congr 1`. Take `⟨o, ho⟩` from `hprim _ hcz`. Take `⟨o', ho'⟩` from `star_int o`. Apply `hc1` to reduce the goal to its premises.
-
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨o', by change (o' : K) = c; rw [ho', ho, star_star]⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one {K : Type} [Field K] [NumberField K] [StarRing K]
     {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
@@ -122,9 +118,9 @@ theorem exists_one {K : Type} [Field K] [NumberField K] [StarRing K]
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D u F0 Λ hrow`. Take `⟨_, hMU, hzM, hprim⟩` from `row_lattice_mass_holds D u F0 Λ hrow`. Take `⟨m, hm, hm1⟩` from `exists_one (hWb D F0) (Mof D F0 Λ) hMU hzM hprim`. Take `⟨a, haΛ, rfl⟩` from `(RowMPf.mem_Mof D F0 Λ m).1 hm`. Use `⟨a, haΛ, a.2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm1` using `[zbar, hWb_mk]`. Conclude with `hm1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_unit_condition : RowZUnit := by
   intro D u F0 Λ hrow
@@ -138,6 +134,6 @@ theorem row_unit_condition : RowZUnit := by
 end PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowZUnitPf
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowZUnitPf.row_unit_condition`.
+A detailed English derivation is pending.
 -/
 theorem PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_unit_condition : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowZUnit := PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowZUnitPf.row_unit_condition

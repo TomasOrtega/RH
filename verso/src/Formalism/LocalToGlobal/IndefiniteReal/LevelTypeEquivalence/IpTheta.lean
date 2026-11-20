@@ -18,13 +18,13 @@ section Basic
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨U1, hU1, h1⟩` from `hf.level`. Take `⟨U2, hU2, h2⟩` from `hg.level`. Prove the components needed by the constructor for the conclusion. Introduce `γ w`. Simplify using `only [Pi.add_apply, hf.quasi, hg.quasi]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨U1 ⊓ U2, ?_, fun u hu hfin => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hU1.inter hU2`. Consider the case `simpa using hU1.inter hU2`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hu' : u ∈ U1 ∧ u ∈ U2` using `by simpa using hu`. Use function extensionality and compare the values at `x`. Establish `e1x` using `congrFun (h1 u hu'.1 hfin) x`. Establish `e2x` using `congrFun (h2 u hu'.2 hfin) x`. Simplify using `only [heisO, Pi.add_apply] at e1x e2x ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, e1x, e2x]`. Conclude with `hf.cont.add hg.cont`. Introduce `k L hL hfin w`. Conclude with `(hf.smooth k L hL hfin w).add (hg.smooth k L hL hfin w)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaO_add {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (f + g) := by
@@ -50,11 +50,11 @@ theorem thetaO_add {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsTh
     exact (hf.smooth k L hL hfin w).add (hg.smooth k L hL hfin w)
 
 /- English proof (translation)
-Take `⟨U1, hU1, h1⟩` from `hf.level`. Prove the components needed by the constructor for the conclusion. Introduce `γ w`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hf.quasi]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨U1, hU1, fun u hu hfin => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `e1x` using `congrFun (h1 u hu hfin) x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at e1x ⊢`. Rewrite using `[mul_left_comm, e1x]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf.cont.const_smul c`. Introduce `k L hL hfin w`. Conclude with `(hf.smooth k L hL hfin w).const_smul c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaO_smul {f : WO S T → ℂ} (c : ℂ) (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) := by
 
@@ -86,9 +86,9 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →*
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Unfold `nrm2`. Establish `hu` using `hω.om_unit μ 𝓕 hμ h𝓕 p f hf`. Rewrite `hu` using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Establish `c1 : Continuous fun w => ‖om p f w‖ ^ 2` using `(hω.om_pres p f hf).cont.norm.pow 2`. Establish `c2 : Continuous fun w => ‖f w‖ ^ 2` using `hf.cont.norm.pow 2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun w => ‖om p f w‖ ^ 2) (Filter.Eventually.of_forall fun _ => by positivity) c1.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (f := fun w => ‖f w‖ ^ 2) (Filter.Eventually.of_forall fun _ => by positivity) c2.aestronglyMeasurab …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_weilRepresentation_thetaFunction_preserved (hω : IsWeilDatumO ψ S T χS χT om) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) (p : GA D S × GA D T)

@@ -5,7 +5,7 @@ open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core Upp
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ f`. Use `isInvInvariant_of_isMulRightInvariant μ` as an intermediate fact. Conclude with `((rightRegularRep (Gam K n) μ).adjoint_integrated μ (UnitaryRep.ccToL1 μ f)).trans (congrArg _ (ccToL1_ccStar μ f).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.ropAdj :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (f : CC K n),

@@ -6,7 +6,7 @@ open Formalism Formalism.BasicNotions
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Use `choose P A h using exists_locPrime_tied`. Conclude with `⟨fun l _ => P l, fun l _ => A l, ⟨fun l _ => (h l).some⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locTheory_tied : ∃ (L : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (L l)),
     Nonempty (∀ (l : ℕ) [Fact l.Prime], LocTied l (L l) (A l)) := by

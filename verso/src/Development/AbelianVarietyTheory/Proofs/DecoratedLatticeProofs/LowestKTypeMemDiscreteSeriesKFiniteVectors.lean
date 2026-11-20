@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LowKFin
 
 /- English proof (translation)
-Establish `hv : ((v : M.sm τ) : M.H τ) ∈ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)` using `v.2`. Use `(sSup_le ?_ : lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ≤ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) hv` and prove the remaining obligations. Introduce and unpack `T hT x hx`. Conclude with `Submodule.subset_span ⟨T, hT.1, hx, hT.2.1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lowT_mem_kfin (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau)
     (v : lowT M τ) : ((v : M.sm τ) : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ := by
@@ -21,7 +21,7 @@ theorem lowT_mem_kfin (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSM
   exact Submodule.subset_span ⟨T, hT.1, hx, hT.2.1⟩
 
 /- English proof (translation)
-The claim follows from `lowT_mem_kfin`.
+A detailed English derivation is pending.
 -/
 example : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (v : lowT M τ), ((v : M.sm τ) : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ := lowT_mem_kfin
 

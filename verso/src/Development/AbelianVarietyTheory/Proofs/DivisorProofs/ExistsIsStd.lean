@@ -11,9 +11,9 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 namespace GlobalTheory.PDA
 
 /- English proof (translation)
-Introduce `B _ J δ Q`. Take `⟨η, hη⟩` from `GlobalTheory.T.exists_dividedPowers_dividedPowerPolyAlgebra_augIdeal B Q`. Take `⟨ε, hε⟩` from `(GlobalTheory.T.exists_lift_and_augmentation_map B Q).2`. Take `⟨θ, hθ, hθη⟩` from `GlobalTheory.T.exists_dividedPowers_split_augmentation_extension B J δ Q.P ε Q.aug η hε`. Use `⟨θ, ⟨hθ, fun n ↦ ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hθη n _ (Q.e_succ_mem_aug 0), hη]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PDPoly.exists_isStd : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (Q : PDPoly B),
     ∃ η : DividedPowers (Q.ext J), Q.IsStd δ η := by

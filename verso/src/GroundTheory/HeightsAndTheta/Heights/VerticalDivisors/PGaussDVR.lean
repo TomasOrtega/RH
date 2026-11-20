@@ -14,15 +14,15 @@ section Dedekind
 variable {A : Type*} [CommRing A] [IsDedekindDomain A] (v : HeightOneSpectrum A)
 
 /- English proof (translation)
-Establish `hlt : v.intValuation a < 1`. Rewrite using `[ha, ← exp_zero, exp_lt_exp]`. Evaluate the numerical expressions. Take `⟨J, hJ⟩` from `(v.intValuation_lt_one_iff_dvd a).mp hlt`. Establish `hJv : ¬ J ≤ v.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hle`. Take `⟨J', hJ'⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `h2 : v.asIdeal ^ 2 ∣ Ideal.span {a}` using `⟨J', by rw [hJ, hJ', sq, mul_assoc]⟩`. Establish `h3` using `(v.intValuation_le_pow_iff_dvd a 2).mpr h2`. Rewrite `h3` using `[ha, exp_le_exp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h3`. Establish `hJj : ¬ J ^ j ≤ v.asIdeal` using `fun h => hJv (Ideal.IsPrime.le_of_pow_le h)`. Take `⟨t, htJ, htv⟩` from `SetLike.not_le_iff_exists.mp hJj`. Establish `hid : J ^ j * v.asIdeal ^ j = Ideal.span {a ^ j}`. Rewrite using `[← mul_pow, mul_comm, ← hJ, Ideal.span_singleton_pow]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : C t * p ∈ Ideal.span {(C a ^ j : MvPolynomial σ A)}`. Establish `h1 : C t * p ∈ Ideal.map (C : A →+* MvPolynomial σ A) (J ^ j) * Ideal.map (C : A →+* MvPolynomial σ A) (v.asIdeal ^ j)` using `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ htJ) hp`. Rewrite `h1` using `[← Ideal.map_mul, hid, Ideal.map_span, Set.image_singleton, map_pow]`. Conclude with `h1`. Take `⟨h, hh⟩` from `Ideal.mem_span_singleton'.mp hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, htv, h, by rw [← hh, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_C_mul_eq_C_pow_mul {a : A} (ha : v.intValuation a = exp (-1 : ℤ)) {σ : Type*}
     (j : ℕ) {p : MvPolynomial σ A} (hp : p ∈ Ideal.map (C : A →+* MvPolynomial σ A) (v.asIdeal ^ j)) :
@@ -58,9 +58,9 @@ section NumberField
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hg`. Apply `le_antisymm` to reduce the goal to its premises. Use `gaussNormOf_le _ zero_le_one fun d => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, ← FinitePlace.norm_embedding]`. Conclude with `FinitePlace.norm_le_one K (v := v) (g.coeff d)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `le_gaussNormOf (NumberField.HeightOneSpectrum.adicAbv K v) (g.map (algebraMap (𝓞 K) K)) m`. Rewrite `h1` using `[coeff_map, ← FinitePlace.norm_embedding, (FinitePlace.norm_eq_one_iff_notMem K (v := v) _).mpr hm]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNorm_map_of_coeff_notMem (v : HeightOneSpectrum (𝓞 K)) {σ : Type*}
     (g : MvPolynomial σ (𝓞 K)) (hg : ∃ m, g.coeff m ∉ v.asIdeal) :
@@ -77,7 +77,7 @@ theorem gaussNorm_map_of_coeff_notMem (v : HeightOneSpectrum (𝓞 K)) {σ : Typ
     exact h1
 
 /- English proof (translation)
-Rewrite using `[NumberField.HeightOneSpectrum.adicAbv_def, HeightOneSpectrum.valuation_of_algebraMap, ha, WithZeroMulInt.toNNReal_neg_apply _ exp_ne_zero]`. Establish `h1 : Multiplicative.toAdd (unzero (exp_ne_zero (a` using `(-1 : ℤ)))) = -1 := rfl`. Rewrite using `[h1, zpow_neg_one, NNReal.coe_inv, NNReal.coe_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem adicAbv_of_intValuation_eq (v : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K}
     (ha : v.intValuation a = exp (-1 : ℤ)) :
@@ -89,19 +89,17 @@ theorem adicAbv_of_intValuation_eq (v : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K}
   rw [h1, zpow_neg_one, NNReal.coe_inv, NNReal.coe_natCast]
 
 /- English proof (translation)
-Use `set φ := algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v) with hφ`. Establish `hav : a ∈ v.asIdeal` using `(v.intValuation_lt_one_iff_mem a).mp (by`. Rewrite using `[ha, ← exp_zero, exp_lt_exp]`. Use the proof step `norm_num)`. Establish `hnu : ¬ IsUnit (φ (C a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[IsLocalization.AtPrime.isUnit_to_map_iff (ParDVR e n v) (parPrime e n v)]`. Conclude with `fun h => h (Ideal.mem_map_of_mem _ hav)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (ParDVR e n v)`. Choose the witnesses or unpack the hypotheses as in `⟨x, s, rfl⟩ : ∃ (x : MvPolynomial (Par e n) (𝓞 K)) (s : (parPrime e n v).primeCompl), IsLocalization.mk' (ParDVR e n v) x s = ϖ := by`. Take `⟨⟨x, s⟩, hxs⟩` from `IsLocalization.mk'_surjective (parPrime e n v).primeCompl ϖ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x, s, hxs⟩`. Establish `hx : x ∈ Ideal.map (C : 𝓞 K →+* MvPolynomial (Par e n) (𝓞 K)) (v.asIdeal ^ 1)`. Rewrite using `[pow_one]`. Assume the negation of the conclusion as `hx`. Conclude with `hϖ.not_isUnit ((IsLocalization.AtPrime.isUnit_mk'_iff (ParDVR e n v) (parPrime e n v) x s).mpr hx)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, h, hth⟩` from `exists_C_mul_eq_C_pow_mul v ha 1 hx`. Establish `htu : IsUnit (φ (C t))`. Rewrite using `[IsLocalization.AtPrime.isUnit_to_map_iff (ParDVR e n v) (parPrime e n v)]`. Introduce `htP`. Conclude with `ht (by simpa using (MvPolynomial.mem_map_C_iff (I := v.asIdeal)).mp htP 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hx2 : φ x = φ (C a) * (↑htu.unit⁻¹ * φ h)`. Establish `h2` using `congrArg φ hth`. Rewrite `h2` using `[map_mul, map_mul, pow_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, IsUnit.val_inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = φ (C a) * (↑htu.unit⁻¹ * φ h) := by rw [h2]; ring`. Establish `hϖ' : IsLocalization.mk' (ParDVR e n v) x s = φ (C a) * (↑htu.unit⁻¹ * φ h * IsLocalization.mk' (ParDVR e n v) 1 s)`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one, hx2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hϖ` using `[hϖ']`.
-
-Break down `hϖ.isUnit_or_isUnit rfl with hu | hu` into its components or cases. Conclude with `(hnu hu).elim`. Conclude with `(irreducible_mul_isUnit hu).mp hϖ`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem irreducible_algebraMap_C (e n : ℕ) (v : HeightOneSpectrum (𝓞 K))
     [IsDiscreteValuationRing (ParDVR e n v)] {a : 𝓞 K} (ha : v.intValuation a = exp (-1 : ℤ)) :
@@ -146,29 +144,25 @@ theorem irreducible_algebraMap_C (e n : ℕ) (v : HeightOneSpectrum (𝓞 K))
 end NumberField
 
 /- English proof (translation)
-Introduce `K _ _ e n v g hg`. Use `h1 K e n v` as an intermediate fact. Take `⟨a, ha⟩` from `v.intValuation_exists_uniformizer`. Use `set φ := algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v) with hφ`. Establish `hav : a ∈ v.asIdeal` using `(v.intValuation_lt_one_iff_mem a).mp (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, ← exp_zero, exp_lt_exp]`. Use the proof step `norm_num)`. Set `μ : 𝓞 K → ℕ` to `fun b => multiplicity v.asIdeal (Ideal.span {b})`. Establish `hval : ∀ b : 𝓞 K, b ≠ 0 → ∀ k : ℕ, b ∈ v.asIdeal ^ k ↔ k ≤ μ b`. Introduce `b hb k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← v.intValuation_le_pow_iff_mem, v.intValuation_eq_exp_neg_multiplicity hb, exp_le_exp]`. Simplify using `only [μ]`. Use linear arithmetic over natural numbers and integers. Establish `hne : g.support.Nonempty` using `Finset.nonempty_iff_ne_empty.mpr (mt MvPolynomial.support_eq_empty.mp hg)`. Take `⟨d0, hd0, hmin⟩` from `g.support.exists_mem_eq_inf' hne (fun d => μ (g.coeff d))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set m := g.support.inf' hne (fun d => μ (g.coeff d)) with hm`. Establish `hgm : g ∈ Ideal.map (C : 𝓞 K →+* MvPolynomial (Par e n) (𝓞 K)) (v.asIdeal ^ m)`. Rewrite using `[MvPolynomial.mem_map_C_iff]`. Introduce `d`. Distinguish the cases in `hd : g.coeff d = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Conclude with `Ideal.zero_mem _`. Conclude with `(hval _ hd m).mpr (Finset.inf'_le _ (mem_support_iff.mpr hd))`. Take `⟨t, ht, h, hth⟩` from `exists_C_mul_eq_C_pow_mul v ha m hgm`. Establish `hb0 : g.coeff d0 ≠ 0` using `mem_support_iff.mp hd0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : h.coeff d0 ∉ v.asIdeal`. Introduce `hmem`. Establish `hc` using `congrArg (coeff d0) hth`. Rewrite `hc` using `[coeff_C_mul, ← C_pow, coeff_C_mul]`. Establish `h3 : t * g.coeff d0 ∈ v.asIdeal ^ (m + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[hc, pow_succ]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hav m) hmem`. Establish `h4` using `(v.intValuation_le_pow_iff_mem _ _).mpr h3`. Rewrite `h4` using `[map_mul, HeightOneSpectrum.intValuation_eq_one_iff.mpr ht, one_mul, v.intValuation_le_pow_iff_mem, hval _ hb0]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htu : IsUnit (φ (C t))`. Rewrite using `[IsLocalization.AtPrime.isUnit_to_map_iff (ParDVR e n v) (parPrime e n v)]`. Introduce `htP`. Conclude with `ht (by simpa using (MvPolynomial.mem_map_C_iff (I := v.asIdeal)).mp htP 0)`. Establish `hhu : IsUnit (φ h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsLocalization.AtPrime.isUnit_to_map_iff (ParDVR e n v) (parPrime e n v)]`. Introduce `hP`. Conclude with `hh ((MvPolynomial.mem_map_C_iff (I := v.asIdeal)).mp hP d0)`. Establish `hord : Ring.ord (ParDVR e n v) (φ g) = m`. Rewrite using `[Ring.ord_eq_addVal]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `congrArg φ hth`. Rewrite `h0` using `[map_mul φ, map_mul φ, map_pow φ]`. Establish `h2` using `congrArg (IsDiscreteValuationRing.addVal (ParDVR e n v)) h0`. Rewrite `h2` using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer (irreducible_algebraMap_C e n v ha), IsDiscreteValuationRing.addVal_eq_zero_iff.mpr htu, IsDiscreteValuationRing.addVal_eq_zero_ …`. Simplify using `using h2`.
-
-Establish `hK0` using `congrArg (MvPolynomial.map (algebraMap (𝓞 K) K)) hth`. Rewrite `hK0` using `[map_mul (MvPolynomial.map (algebraMap (𝓞 K) K)), map_mul (MvPolynomial.map (algebraMap (𝓞 K) K)), map_pow (MvPolynomial.map (algebraMap (𝓞 K) K)), MvPolynomial.map_C, MvPolynomial.map_C]`. Establish `hK` using `congrArg (gaussNorm v) hK0`. Rewrite `hK` using `[← C_pow, gaussNorm_C_mul, gaussNorm_C_mul, map_pow, adicAbv_of_intValuation_eq v ha, gaussNorm_map_of_coeff_notMem v h ⟨d0, hh⟩, ← FinitePlace.norm_embedding, (FinitePlace.norm_eq_one_iff_notMem K (v := v) _).mpr ht, one_mul, mul_one]`. Establish `hN : (Ideal.absNorm v.asIdeal : ℝ) ≠ 0`.
-
-Conclude with `(NumberField.HeightOneSpectrum.absNorm_ne_zero v)` after adjusting the coercions. Rewrite using `[hord, ENat.toNat_natCast, hK, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hN)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GaussDVR.proof (h1 : ParDVRIsDVR.Statement) : GaussDVR.Statement := by
   intro K _ _ e n v g hg

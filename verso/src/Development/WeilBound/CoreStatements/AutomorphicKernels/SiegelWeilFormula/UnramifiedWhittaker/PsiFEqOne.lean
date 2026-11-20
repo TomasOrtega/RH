@@ -15,7 +15,7 @@ def psiF {v : HeightOneSpectrum (𝓞 F)} (ψv : Fv F v → ℂ) (ϖ c : Fv F v)
   ψv (c * ((2 : Fv F v)⁻¹ * ((ϖ ^ k)⁻¹ * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) a)))
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `congr 1`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem sigR_smul {v : HeightOneSpectrum (𝓞 F)} (σ : E →ₐ[F] E) (c : Fv F v) (x : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • x) = c • sigR (Fv F v) σ x := by
@@ -35,14 +35,14 @@ include hG
 def pS : S := ⟨_, hG.unif_S⟩
 
 /- English proof (translation)
-Use `(hG.psi_cond 1).2 (one_mem _) x hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem psi_of_mem {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : ψv x = 1 := by
   have := (hG.psi_cond 1).2 (one_mem _) x hx
   simpa using this
 
 /- English proof (translation)
-Use `(hG.trace_dual a).2 ha 1 (one_mem _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_mem {a : Fv F v ⊗[F] E} (ha : a ∈ S) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) a ∈ v.adicCompletionIntegers F := by
@@ -50,15 +50,15 @@ theorem trace_mem {a : Fv F v ⊗[F] E} (ha : a ∈ S) :
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ← Valued.toNormedField.norm_le_one_iff, norm_inv, hG.two, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_mem : (2 : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, ← Valued.toNormedField.norm_le_one_iff, norm_inv, hG.two, inv_one]
 
 /- English proof (translation)
-Take `⟨c', rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Apply `hG.psi_of_mem` to reduce the goal to its premises. Establish `e1 : ((c' * hG.pS ^ k : S) : Fv F v ⊗[F] E) = (ϖ ^ k) • (c' : Fv F v ⊗[F] E)`. Rewrite using `[Subring.coe_mul, Subring.coe_pow, Algebra.smul_def, map_pow, mul_comm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, LinearMap.map_smul, smul_eq_mul, ← mul_assoc (ϖ ^ k)⁻¹, inv_mul_cancel₀ (pow_ne_zero _ hG.unif_ne), one_mul]`. Conclude with `mul_mem hc (mul_mem hG.half_mem (hG.trace_mem c'.2))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiF_eq_one {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) (k : ℕ) {a : S}
     (ha : a ∈ lev hG.pS k) : psiF ψv ϖ c k (a : Fv F v ⊗[F] E) = 1 := by
@@ -71,7 +71,7 @@ theorem psiF_eq_one {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) (k : �
   exact mul_mem hc (mul_mem hG.half_mem (hG.trace_mem c'.2))
 
 /- English proof (translation)
-Simplify using `only [psiF, map_add, mul_add, hG.psi_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiF_add (c : Fv F v) (k : ℕ) (a b : Fv F v ⊗[F] E) :
     psiF ψv ϖ c k (a + b) = psiF ψv ϖ c k a * psiF ψv ϖ c k b := by

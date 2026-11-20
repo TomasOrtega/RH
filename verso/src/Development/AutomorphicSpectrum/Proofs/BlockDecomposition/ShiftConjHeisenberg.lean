@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FJE
 
 /- English proof (translation)
-Establish `e : GlobalTheory.CompanionTheory.PcB.tw (z + jc y x) x y = z`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show z.1 + ((HMul.hMul y (adj x) : Mx D ρ ρ) + (HMul.hMul x (adj y) : Mx D ρ ρ)) - (HMul.hMul x (adj y) : Mx D ρ ρ) - (HMul.hMul y (adj x) : Mx D ρ ρ) = z.1`. Normalize the expressions using the abelian group laws. Establish `h` using `GlobalTheory.CompanionTheory.PcB.nzx_sh M (z + jc y x) x y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem sh_mul_nzx {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (y : Mx D ρ p)
     (z : hermA D ρ) (x : Mx D ρ p) :

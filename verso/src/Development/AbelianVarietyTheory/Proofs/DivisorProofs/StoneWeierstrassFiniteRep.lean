@@ -5,9 +5,9 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hint : ∀ F : C(K, ℂ), Integrable F μ` using `fun F => F.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `(LipschitzWith.of_dist_le_mul (K := 1) fun F G => ?_).continuous` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← integral_sub (hint F) (hint G)]`. Use `norm_integral_le_of_norm_le_const (μ := μ) (f := fun q => F q - G q) (C := dist F G) (Filter.Eventually.of_forall fun q => by` as an intermediate fact. Rewrite using `[← dist_eq_norm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContinuousMap.dist_apply_le_dist q)`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_integral_continuousMap_compact {K : Type} [TopologicalSpace K] [CompactSpace K]
     [MeasurableSpace K] [OpensMeasurableSpace K] (μ : Measure K) [IsProbabilityMeasure μ] :
@@ -22,15 +22,13 @@ theorem continuous_integral_continuousMap_compact {K : Type} [TopologicalSpace K
   simpa using this
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ V`. Set `φ : Q → V` to `fun q => ⟨fun g => P (((q⁻¹ : Q) : G) * g), hV P hP _ (q⁻¹).2⟩`. Establish `hφ : Continuous φ`. Use `Continuous.subtype_mk (continuous_pi fun g => hPc.comp ?_) _` and prove the remaining obligations. Use `fun_prop`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hco : ∀ l, Continuous fun q => b.coord l (φ q)` using `fun l => (LinearMap.continuous_of_finiteDimensional (b.coord l)).comp hφ`. Establish `hexp : ∀ q g, P (((q⁻¹ : Q) : G) * g) = ∑ l, b.coord l (φ q) * (b l : G → ℂ) g`. Introduce `q g`. Establish `h` using `congrArg (fun w : V => (w : G → ℂ) g) (b.sum_repr (φ q))`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `key : (fun g => ∫ q, c q * P (((q⁻¹ : Q) : G) * g) ∂μ) = ∑ l, (∫ q, c q * b.coord l (φ q) ∂μ) • (b l : G → ℂ)`. Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hexp, Finset.mul_sum]`. Rewrite using `[integral_finset_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_const]`. Simplify using `only [mul_assoc]`. Introduce `l _`. Conclude with `(hc.mul ((hco l).mul continuous_const)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
-
-Rewrite using `[key]`. Conclude with `V.sum_mem fun l _ => V.smul_mem _ (b l).2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_translate_mem_of_finiteDimensional {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (Q : Subgroup G) [CompactSpace Q] [MeasurableSpace Q]
@@ -67,45 +65,39 @@ theorem integral_translate_mem_of_finiteDimensional {G : Type} [Group G] [Topolo
   exact V.sum_mem fun l _ => V.smul_mem _ (b l).2
 
 /- English proof (translation)
-Introduce `G _ _ _ _ Q hQ d ρ hρ A hAc hAs hsep hfin v`. Use `haveI : CompactSpace Q := isCompact_iff_compactSpace.mp hQ`. Use `letI : MeasurableSpace Q := borel Q`. Use `haveI : BorelSpace Q := ⟨rfl⟩`. Set `μ : Measure Q` to `Measure.haarMeasure ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : IsProbabilityMeasure μ := ⟨by`. Use `Measure.haarMeasure_self (G := Q) (K₀ := ⊤)` as an intermediate fact. Simplify using `using this⟩`. Establish `hint : ∀ f : Q → ℂ, Continuous f → Integrable f μ` using `fun f hf => hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hρc : ∀ i j, Continuous fun q => ρ q i j` using `fun i j => hρ.matrix_elem i j`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Set `S : Submodule ℂ (Fin d → ℂ)` to `{ carrier := {v | ∃ f : Fin d → G → ℂ, (∀ i, f i ∈ A) ∧ (∀ i, f i 1 = v i) ∧ ∀ (q : Q) (g : G), (fun i => f i ((q : G) * g)) = Matrix.mulVec (ρ q) (fun i => f i g)} zero_mem' := ⟨0, fun _ => A.zero_mem, fun _ => rfl, fun q g => by`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `v w ⟨f, hf1, hf2, hf3⟩ ⟨h, hh1, hh2, hh3⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨f + h, fun i => A.add_mem (hf1 i) (hh1 i), fun i => by simp [hf2, hh2], fun q g => ?_⟩` and prove the remaining obligations. Establish `: (fun i => (f + h) i g) = (fun i => f i g) + (fun i => h i g)` using `rfl`. Rewrite using `[this, Matrix.mulVec_add, ← hf3, ← hh3]`. Both sides reduce to the same expression. Use the proof step `smul_mem' := by`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `c v ⟨f, hf1, hf2, hf3⟩`. Use `⟨c • f, fun i => A.smul_mem (hf1 i) c, fun i => by simp [hf2], fun q g => ?_⟩` and prove the remaining obligations. Establish `: (fun i => (c • f) i g) = c • (fun i => f i g)` using `rfl`. Rewrite using `[this, Matrix.mulVec_smul, ← hf3]`. Use `rfl }`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `v ∈ S`. Establish `hS : IsClosed (S : Set (Fin d → ℂ))` using `S.closed_of_finiteDimensional`. Set `r : Fin d → Fin d → C(Q, ℂ)` to `fun i j => ⟨fun q => ρ q i j, hρc i j⟩`. Set `ι : C(Q, Q)` to `⟨fun q => q⁻¹, continuous_inv⟩`. Set `Φ : (Fin d → C(Q, ℂ)) → (Fin d → ℂ)` to `fun F i => ∑ j, ∫ q, (r i j * (F j).comp ι) q ∂μ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Establish `hΦ : Continuous Φ`. Use `continuous_pi fun i => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Use `(continuous_integral_continuousMap_compact μ).comp ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((ContinuousMap.continuous_precomp ι).comp (continuous_apply j))`. Set `B : StarSubalgebra ℂ C(Q, ℂ)` to `{ carrier := {F | ∃ P ∈ A, ∀ q : Q, F q = P q} mul_mem' := by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `F H ⟨P, hP, h1⟩ ⟨R, hR, h2⟩`. Conclude with `⟨P * R, A.mul_mem hP hR, fun q => by simp [h1, h2]⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `F H ⟨P, hP, h1⟩ ⟨R, hR, h2⟩`. Conclude with `⟨P + R, A.add_mem hP hR, fun q => by simp [h1, h2]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `algebraMap_mem' := fun c => ⟨algebraMap ℂ _ c, A.algebraMap_mem c, fun q => rfl⟩`. Use the proof step `star_mem' := by`. Introduce and unpack `F ⟨P, hP, h1⟩`. Conclude with `⟨star P, hAs P hP, fun q => by simp [h1]⟩ }`. Establish `hBsep : B.SeparatesPoints`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hxy`. Take `⟨f, hf, hne⟩` from `hsep x x.2 y y.2 (fun h => hxy (Subtype.ext h))`. Conclude with `⟨_, ⟨⟨fun q : Q => f q, (hAc f hf).comp continuous_subtype_val⟩, ⟨f, hf, fun _ => rfl⟩, rfl⟩, hne⟩`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints B hBsep`. Establish `hBd : Dense (B : Set C(Q, ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `F`. Establish `: F ∈ B.topologicalClosure` using `htop ▸ StarSubalgebra.mem_top`. Conclude with `this`. Establish `hdense : Dense (Set.pi Set.univ fun _ : Fin d => (B : Set C(Q, ℂ)))` using `dense_pi Set.univ fun _ _ => hBd`. Establish `hmem : ∀ F ∈ Set.pi Set.univ fun _ : Fin d => (B : Set C(Q, ℂ)), Φ F ∈ S`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `F hF`. Establish `hF' : ∀ j, ∃ P ∈ A, ∀ q : Q, F j q = P q` using `fun j => hF j (Set.mem_univ j)`. Use `choose P hPA hPF using hF'`. Establish `hPc : ∀ j g, Continuous fun q : Q => P j (((q⁻¹ : Q) : G) * g)` using `fun j g => (hAc _ (hPA j)).comp (by fun_prop)`. Use `⟨fun i g => ∑ j, ∫ q, ρ q i j * P j (((q⁻¹ : Q) : G) * g) ∂μ, fun i => ?_, fun i => ?_, fun q₀ g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun g => ∑ j, ∫ q, ρ q i j * P j (((q⁻¹ : Q) : G) * g) ∂μ) = ∑ j, fun g => ∫ q, ρ q i j * P j (((q⁻¹ : Q) : G) * g) ∂μ`. Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_apply]`. Use `beta_reduce`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `A.sum_mem fun j _ => ?_` and prove the remaining obligations. Take `⟨V, hVf, hPV, hVA, hV⟩` from `hfin _ (hPA j)`. Conclude with `hVA _ (integral_translate_mem_of_finiteDimensional Q μ V hV _ hPV (hAc _ (hPA j)) _ (hρc i j))`. Simplify using `only [Φ, r, ι, mul_one, ContinuousMap.mul_apply, ContinuousMap.comp_apply, ContinuousMap.coe_mk, hPF]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_left_eq_self _ q₀]`. Simplify using `only [← integral_const_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← integral_finset_sum]`. Use `swap`. Introduce `k _`. Conclude with `hint _ (continuous_const.mul ((hρc k j).mul (hPc j g)))`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, Matrix.mul_apply, Finset.sum_mul, mul_inv_rev, Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, inv_mul_cancel_left]`. Establish `hall : ∀ F, Φ F ∈ S`. Introduce `F`. Establish `h` using `closure_minimal (s := Set.pi Set.univ fun _ : Fin d => (B : Set C(Q, ℂ))) (t := Φ ⁻¹' S) hmem (hS.preimage hΦ)`. Conclude with `h (hdense F)`.
-
-Set `F₀ : Fin d → C(Q, ℂ)` to `fun j => ⟨fun q => ∑ k, ρ q j k * v k, continuous_finset_sum _ fun k _ => (hρc j k).mul continuous_const⟩`. Establish `hv : Φ F₀ = v`. Use function extensionality and compare the values at `i`. Simplify using `only [Φ]`. Rewrite using `[← integral_finset_sum _ fun j _ => hint _ (ContinuousMap.continuous _)]`.
-
-Establish `: ∀ q : Q, ∑ j, (r i j * (F₀ j).comp ι) q = v i`. Introduce `q`. Establish `h : (ρ q).mulVec ((ρ q⁻¹).mulVec v) = v`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]`. Conclude with `congrFun h i`.
-
-Simplify using `only [this]`. Simplify using the standard rewrite rules. Conclude with `hv ▸ hall F₀`.
+A detailed English derivation is pending.
 -/
 theorem exists_equivariant_mem_subalgebra_of_compact :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (Q : Subgroup G), IsCompact (Q : Set G) →

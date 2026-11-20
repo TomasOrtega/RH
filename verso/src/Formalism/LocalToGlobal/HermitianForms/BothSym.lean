@@ -15,14 +15,14 @@ def chM {D : D7} (H : Formalism.L2.Herm.HermColsCh D) (u : D.what₂.Word) : H.C
   @default _ (H.Ch_m u).some.toInhabited
 
 /- English proof (translation)
-The claim follows from `(H.Ch_m u).some.uniq _`.
+A detailed English derivation is pending.
 -/
 theorem chOf_m {D : D7} (H : Formalism.L2.Herm.HermColsCh D) (u : D.what₂.Word) (c : (D.mem u).C.cls D.R.m) :
     H.chOf u D.R.m c = chM H u :=
   (H.Ch_m u).some.uniq _
 
 /- English proof (translation)
-Establish `h2` using `R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_m (R : Ranks) : 1 ≤ R.m := by
   have h2 := R.two_le_m

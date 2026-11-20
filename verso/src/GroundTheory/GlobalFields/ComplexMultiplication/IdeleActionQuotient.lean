@@ -13,11 +13,11 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨d, hdI, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (coeToSubmodule_ne_bot.2 hI)`. Take `⟨k', hk'⟩` from `exists_sub_mem_integralFiniteAdeles (algebraMap K (FiniteAdeleRing (𝓞 K) K) d⁻¹ * a)`. Use `⟨d * k', fun v ↦ ?_⟩` and prove the remaining obligations. Establish `ht : ((d⁻¹ : K) : v.adicCompletion K) * a v - (k' : v.adicCompletion K) ∈ v.adicCompletionIntegers K` using `(mem_integralFiniteAdeles.1 hk') v`. Establish `h1 : (d : v.adicCompletion K) * ((d⁻¹ : K) : v.adicCompletion K) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← adicCompletion.coe_mul, mul_inv_cancel₀ hd0, adicCompletion.coe_one]`. Establish `h : a v - ((d * k' : K) : v.adicCompletion K) = (⟨_, ht⟩ : v.adicCompletionIntegers K) • (d : v.adicCompletion K)`. Express the relevant statement in the definitionally equal form `_ = (((d⁻¹ : K) : v.adicCompletion K) * a v - (k' : v.adicCompletion K)) * (d : v.adicCompletion K)`. Rewrite using `[adicCompletion.coe_mul]`. Take the linear combination `-(a v) * h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (coe_mem_localIdeal v hdI)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_localIdeal {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0)
     (a : FiniteAdeleRing (𝓞 K) K) :
@@ -93,7 +93,7 @@ theorem toLocalQuotients_apply {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_iff_forall_mem_localIdeal hI, DFinsupp.ext_iff]`. Simplify using `only [toLocalQuotients_apply, DFinsupp.coe_zero, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toLocalQuotients_eq_zero_iff {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) {x : K} :
     toLocalQuotients hI x = 0 ↔ x ∈ I := by
@@ -102,7 +102,7 @@ theorem toLocalQuotients_eq_zero_iff {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I
     Submodule.Quotient.mk_eq_zero]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, toLocalQuotients_eq_zero_iff, mem_coe]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_toLocalQuotients {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) :
     LinearMap.ker (toLocalQuotients hI) = (I : Submodule (𝓞 K) K) := by
@@ -110,11 +110,11 @@ theorem ker_toLocalQuotients {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) 
   rw [LinearMap.mem_ker, toLocalQuotients_eq_zero_iff, mem_coe]
 
 /- English proof (translation)
-Introduce `f`. Use `choose y hy using fun v ↦ Submodule.Quotient.mk_surjective _ (f v)`. Set `z : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K` to `fun v ↦ if f v = 0 then 0 else y v`. Establish `hz : ∀ v, Submodule.Quotient.mk (p` using `localIdeal I v) (z v) = f v := by`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : f v = 0`. Simplify using `only [z, h, if_true, Submodule.Quotient.mk_zero]`. Simplify using `only [z, h, if_false, hy]`. Establish `hfin : {v | f v ≠ 0}.Finite` using `f.support.finite_toSet.subset fun v hv ↦ DFinsupp.mem_support_iff.2 hv`. Set `a : FiniteAdeleRing (𝓞 K) K` to `⟨z, Filter.eventually_cofinite.2 (hfin.subset fun v hv h ↦ hv (by simp only [z, h, if_true]; exact (v.adicCompletionIntegers K).zero_mem))⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_sub_mem_localIdeal hI a`. Use `⟨k, DFinsupp.ext fun v ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[toLocalQuotients_apply, ← hz v]`. Conclude with `((Submodule.Quotient.eq _).2 (hk v)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toLocalQuotients_surjective {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) :
     Function.Surjective (toLocalQuotients hI) := by
@@ -209,7 +209,7 @@ def smulQuotient (s : IdeleGroup K) (I : 𝓘) :
       (quotientEquivLocalQuotients (s • I).ne_zero).symm)
 
 /- English proof (translation)
-Rewrite using `[smulQuotient, LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotientEquivLocalQuotients_smulQuotient (s : IdeleGroup K) (I : 𝓘)
     (q : K ⧸ ((I : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) :
@@ -218,7 +218,7 @@ theorem quotientEquivLocalQuotients_smulQuotient (s : IdeleGroup K) (I : 𝓘)
   rw [smulQuotient, LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← (quotientEquivLocalQuotients (s • I).ne_zero).injective.eq_iff, quotientEquivLocalQuotients_smulQuotient, quotientEquivLocalQuotients_mk, quotientEquivLocalQuotients_mk, DFinsupp.ext_iff]`. Use `forall_congr' fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[DFinsupp.mapRange.linearEquiv_apply, DFinsupp.mapRange_apply, toLocalQuotients_apply, toLocalQuotients_apply, localMul_mk, Submodule.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smulQuotient_mk_eq_mk_iff (s : IdeleGroup K) (I : 𝓘) (x y : K) :
     smulQuotient s I (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ↔
@@ -232,7 +232,7 @@ theorem smulQuotient_mk_eq_mk_iff (s : IdeleGroup K) (I : 𝓘) (x y : K) :
     toLocalQuotients_apply, localMul_mk, Submodule.Quotient.eq]
 
 /- English proof (translation)
-Rewrite using `[localIdeal_smul]`. Conclude with `⟨w, hw, by simp only [LinearMap.mulLeft_apply, coe_finiteProj]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mul_mem_localIdeal_smul (s : IdeleGroup K) (I : 𝓘) (v : HeightOneSpectrum (𝓞 K))
     {w : v.adicCompletion K} (hw : w ∈ localIdeal (I : FractionalIdeal (𝓞 K)⁰ K) v) :
@@ -242,7 +242,7 @@ theorem mul_mem_localIdeal_smul (s : IdeleGroup K) (I : 𝓘) (v : HeightOneSpec
   exact ⟨w, hw, by simp only [LinearMap.mulLeft_apply, coe_finiteProj]⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[Submodule.quotEquivOfEq_mk, smulQuotient_mk_eq_mk_iff]`. Introduce `v`. Rewrite using `[map_one, Units.val_one, one_mul, sub_self]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulQuotient_one_apply (I : 𝓘)
     (q : K ⧸ ((I : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) :
@@ -254,11 +254,11 @@ theorem smulQuotient_one_apply (I : 𝓘)
   exact zero_mem _
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (smulQuotient t I (Submodule.Quotient.mk x))`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (smulQuotient s (t • I) (Submodule.Quotient.mk y))`. Rewrite using `[← hy, ← hz, Submodule.quotEquivOfEq_mk, smulQuotient_mk_eq_mk_iff]`. Establish `hy'` using `(smulQuotient_mk_eq_mk_iff t I x y).1 hy.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz'` using `(smulQuotient_mk_eq_mk_iff s (t • I) y z).1 hz.symm`. Introduce `v`. Establish `h` using `add_mem (mul_mem_localIdeal_smul s (t • I) v (hy' v)) (hz' v)`. Establish `e : ((finiteProj v (s * t) : (v.adicCompletion K)ˣ) : v.adicCompletion K) * (x : v.adicCompletion K) - (z : v.adicCompletion K) = (finiteProj v s : v.adicCompletion K) * ((finiteProj v t : v.adicCompletion K) * (x : v.adicCompletion K) - (y : v.adicCompletion K)) + ((finiteProj v …`. Rewrite using `[map_mul, Units.val_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mul_smul]`. Conclude with `h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulQuotient_mul_apply (s t : IdeleGroup K) (I : 𝓘)
     (q : K ⧸ ((I : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) :
@@ -285,7 +285,7 @@ theorem smulQuotient_mul_apply (s t : IdeleGroup K) (I : 𝓘)
   exact h
 
 /- English proof (translation)
-Rewrite using `[smulQuotient_mk_eq_mk_iff]`. Introduce `v`. Rewrite using `[coe_finiteProj_diagonal, ← adicCompletion.coe_mul, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulQuotient_diagonal_mk (a : Kˣ) (I : 𝓘) (x : K) :
     smulQuotient (diagonal K a) I (Submodule.Quotient.mk x) =

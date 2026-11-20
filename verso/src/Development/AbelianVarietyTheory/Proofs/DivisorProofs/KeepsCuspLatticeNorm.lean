@@ -28,9 +28,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce and unpack `la _ ⟨⟨q, S, io, n, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Set `` to `io.toAlgebra`. Establish `hmv` using `levR_move hpq hA γ y.1`. Set `y' : IntFr Xo c S io` to `⟨_, GlobalTheory.FlagTan.fromTest_of_isLocalRing _, GlobalTheory.FormTies.LevelMove.integral_of_levR _ _ _ _ _ _ (levFull Dw l γ) S io y.1 _ hmv y.2.2⟩`. Establish `h0 : 0 ≤ nval S.V n (evI y' f)` using `h la _ ⟨PtV.mk la ho y' hy () trivial, rfl⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : evI y (transl Xo c γ f) = evI y' f` using `evR_transl hpq hA γ hf y.1`. Use `show 0 ≤ nval S.V n (evI y (transl Xo c γ f))`. Rewrite using `[e1]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_transl_nonneg (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (γ : LevelAut Dw l) {e : Ix Dw → ℤ}
     {f : Rul Xo c} (hf : f ∈ secZ Xo c e) (h : ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f) :
@@ -52,15 +52,13 @@ variable {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {g : ℕ} {e : Fin g
   {ik : U.Comp → Fin F.n} {φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 E] (U.X k).Λ}
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Establish `hA' : l.A.Coprime l.M` using `by rw [hA]; exact Nat.coprime_one_left _`. Take `⟨z, hz1, hz⟩` from `exists_const_of_carries (w := 0) (n := 2) (s' := (levFull Dw l γ).2) hσ hU hpq hA hP hxi ⟨fun _ => antitone_const, even_two⟩ (transl Xo c γ) (fun f hf => by rw [← secZ_nat] at hf ⊢; exact transl_mem_secZ hpq hA' γ hf) (fun y => by`. Take `⟨ρ, ν, -, hν, hm⟩` from `levR_move hpq hA' γ y`. Conclude with `⟨ρ, ν, _, hν, hm, fun f hf => by rw [← secZ_nat] at hf; exact evR_transl hpq hA' γ hf y⟩) h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hw`. Take `⟨ρ, ν, -, hν, hmv⟩` from `levR_move hpq hA' γ (U.un k ⟨x, hx⟩)`. Take `⟨a₁, b₁⟩` from `move_eq hσ hpq hA hP h hν ⟨x, hx⟩ hmv`. Take `⟨t₀, ht⟩` from `GlobalTheory.GeoLevel.exists_frBor_gen _ _ a₁ b₁`. Establish `key : ∀ (w : Ix Dw → ℤ), ∀ f ∈ secZ Xo c w, rdU U (transl Xo c γ f) k x = toC (t₀ : CAt σ) ^ w none * rdU U f k' (lact δ (castFr h.mt.psi x))` using `fun w f hf => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v1 : rdU U (transl Xo c γ f) k x = toC (evR Xo c (transl Xo c γ f) (U.un k ⟨x, hx⟩))` using `dif_pos hx`. Establish `v2 : rdU U f k' (lact δ (castFr h.mt.psi x)) = toC (evR Xo c f (U.un k' ⟨_, h.mt.mem_dom hx⟩))` using `dif_pos (h.mt.mem_dom hx)`. Rewrite using `[v1, v2, evR_transl hpq hA' γ hf, GlobalTheory.FlagTan.evR_frBor hf ht, Fintype.prod_option]`. Simplify using `only [Option.elim, one_zpow, Finset.prod_const_one, mul_one]`. Conclude with `congrArg (· * toC (evR Xo c f (U.un k' ⟨_, h.mt.mem_dom hx⟩))) (Units.val_zpow_eq_zpow_val (α := ℂ) t₀ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f₂, hf₂, h0⟩` from `exists_sec_two hσ hU (hU.1 ▸ hpq) k' (h.mt.mem_dom hx)`. Establish `h2` using `hz f₂ hf₂ x hx`. Rewrite `hf₂` using `[← secZ_nat]`. Rewrite `h2` using `[key _ f₂ hf₂]`. Establish `h3 : toC (t₀ : CAt σ) ^ (2 : ℤ) = z` using `mul_right_cancel₀ h0 h2`.
-
-Rewrite using `[key w f hf, hm, ← two_mul, zpow_mul, h3, norm_mul, norm_zpow, hz1, one_zpow, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rdU_transl (hσ : GoodEmb c σ) (hU : IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A = 1) (hP : HasPeriods φ)
     (hxi : ∀ k k', (U.X k).ξ0 = (U.X k').ξ0) (γ : LevelAut Dw l) {k k' : U.Comp} {δ : GL (Fin r) E}
@@ -125,11 +123,11 @@ def rightEquiv (V : HSp D) (κ : GA D V) : AutQ V ≃ᵐ AutQ V :=
     measurable_invFun := hm κ⁻¹ }
 
 /- English proof (translation)
-Take `⟨hP, hV⟩` from `GlobalTheory.FinalJoin2.volPairEx_and_finVol D V hs`. Establish `hR` using `((GlobalTheory.CoreLawsCompare.invProb_iff V hP hV _).2 rfl).2`. Establish `hmap : (muQ1 V).map (rightEquiv V κ) = muQ1 V` using `Measure.ext fun s hs => by`. Rewrite using `[MeasurableEquiv.map_apply]`. Conclude with `hR κ _ (fun _ => rfl) s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hout : ∀ g, Φ (autMk V g).out = Φ g` using `fun g => by`. Establish `e : (QuotientGroup.rightRel (GQ V)) g (autMk V g).out` using `Quotient.exact (Quotient.out_eq (autMk V g)).symm`. Rewrite `e` using `[QuotientGroup.rightRel_apply]`. Rewrite using `[← hΦ _ e g, inv_mul_cancel_right]`. Use `conv_rhs => rw [← hmap, (rightEquiv V κ).measurableEmbedding.eLpNorm_map_measure]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[← hout (q.out * κ)]`. Conclude with `congrArg (fun q' : AutQ V => Φ (rightEquiv V κ q').out) (Quotient.out_eq q)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eLpNorm_right (V : HSp D) (hs : V.SigOK) (κ : GA D V) (Φ : GA D V → ℝ)
     (hΦ : ∀ γ ∈ GQ V, ∀ g, Φ (γ * g) = Φ g) (p : ENNReal) :
@@ -152,13 +150,13 @@ theorem eLpNorm_right (V : HSp D) (hs : V.SigOK) (κ : GA D V) (Φ : GA D V → 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨red, h1, -, h3⟩` from `GlobalTheory.LevelReduction.exists_isReduction D H Dw l V ι hι`. Take `⟨k, rfl⟩` from `h1 γ`. Use `⟨k, k.2.1, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `e : Formalism.L2.Pj.gLat V k = Formalism.L2.Pj.gLat V 1`. Unfold `Formalism.L2.Pj.gLat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_one, Units.val_one]`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨_, (k.2.2 y).2 hy, Matrix.one_mulVec _⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨_, ((k⁻¹).2.2 y).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, map_one, Units.val_one]`. Unfold `latGHat`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, e⟩` from `h3 k a ha`. Conclude with `⟨-w, neg_mem hw, by rw [neg_nsmul, ← e, neg_sub]; exact (add_sub_cancel _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_induces (V : HSp D) {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} (hι : LatEmb V ι)
     (γ : LevelAut Dw l) : ∃ κ, Induces V l ι (levFull Dw l γ).1 κ := by
@@ -184,13 +182,13 @@ theorem exists_induces (V : HSp D) {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨κ, hκ⟩` from `exists_induces V hι γ`. Establish `hN : ∀ (P : FDSec U.X) g, ptN (modelWt U G) P (dict g) = ‖P (dict g).1 (dict g).2‖` using `fun P g => pnorm_eq_of_unit _ _ _ _ (hu g)`. Unfold `petE`. Simplify using `only [hN]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← eLpNorm_right V hs κ (fun g => ‖rdU U f (dict g).1 (dict g).2‖) fun a ha h => by`. Take `⟨a', ha', e₁⟩` from `hD.1 a ha h`. Use `(GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ hfc (dict h).1).1.1.2.2 a' ha' _ (hD.2.2.2.1 h)` as an intermediate fact. Rewrite `this` using `[hχ _ _ ha', one_mul]`. Rewrite using `[e₁]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg norm this]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Take `⟨hx, δ, hc, e₁⟩` from `GlobalTheory.StabMove.exists_carries (V := V) (W := V) rfl rfl rfl (dict := dict) ι hU hW hL hth hD.2.2.2.1 hκ q.out`. Express the relevant statement in the definitionally equal form `(dict (q.out * κ)).2 = _ at e₁`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁]`. Conclude with `norm_rdU_transl hσ hU hpq hA hL.1.2 (fun k k' => (hW k).2.trans (hW k').2.symm) γ hc hG hf hx`.
+A detailed English derivation is pending.
 -/
 theorem petE_transl {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {V : HSp D}
     (hs : V.SigOK) (hr : V.rank = r) {dict : GA D V → Σ k, Frame (U.X k).Ψ r}
@@ -243,17 +241,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T hT j hp _ _ hj Y e o hY G hG`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `le_add_right hp`. Establish `hA` using `hY.lev.2`. Establish `hA' : Y.d.l₂.A.Coprime Y.d.l₂.M` using `by rw [hA]; exact Nat.coprime_one_left _`. Establish `hM : Y.d.l₂.M = D.host.g 0 * D.host.g 1 * Y.d.pd` using `by rw [hY.lev.1.2.1, hT.pins.2.1.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ` using `fun σ hσ => GlobalTheory.AllWt.Model.chi_modelWt (Y.U σ) (hY.chiTriv σ hσ) G hG`. Take `⟨ι, hι, -, hpin⟩` from `hY.adPin`. Use `⟨GlobalTheory.LevelKeeps.keepsCusp_of_isUnf hpq hA hG hY.unf (fun σ hσ k k' => ?_) (fun σ hσ => ?_) hχ, fun γ f g hg => ⟨fun hf => ?_, fun σ => ?_⟩⟩` and prove the remaining obligations. Take `⟨hr, hW⟩` from `hY.modelW σ hσ`. Conclude with `⟨(hW k).1.trans (hW k').1.symm, (hW k).2.trans (hW k').2.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hr, hW⟩` from `hY.modelW σ hσ`. Take `⟨th, _, hth, hD⟩` from `hY.dictU σ hσ`. Take `⟨x₀, h0, _, g, e, F, ik, φ, th', hth', hL⟩` from `hpin σ hσ`. Take `rfl : th = th'` from `funext fun k => funext fun τ => GlobalTheory.LettersCheck.isInfEmb_unique τ.1 _ _ (hth k τ) (hth' k τ)`. Conclude with `GlobalTheory.LevelKeeps.mem_group (hY.unf σ hσ) hA ((hY.unf σ hσ).1 ▸ hpq) hr hW h0 (hM ▸ hY.levelK) hth hD fun h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, -, -, -, h3⟩` from `hL.2 h`. Conclude with `⟨_, h3⟩`. Introduce `la v hv show 0 ≤ v (g : Rul Y.d.Xo₂ Y.d.c₂)`. Rewrite using `[hg]`. Conclude with `GlobalTheory.LevelIsometry.val_transl_nonneg hpq hA' γ⁻¹ (AllWt.mem_cuspW.1 f.2).1 hf la v hv`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσ` using `goodEmb_goodOf (c := Y.d.c₂) σ`. Take `⟨hr, hW⟩` from `hY.modelW _ hσ`. Take `⟨th, _, -, hD⟩` from `hY.dictU _ hσ`. Take `⟨x₀, -, _, g', e, F, ik, φ, th', hth', hL⟩` from `hpin _ hσ`. Use `GlobalTheory.LevelIsometry.petE_transl (D.sp.W_sig j) hr hσ (hY.unf _ hσ) hpq hA hW hι hL hth' hD (hY.unit _ hσ) hG (hχ _ hσ) γ⁻¹ (AllWt.mem_cuspW.1 f.2).1 ((AllWt.mem_cuspW.1 f.2).2 _ hσ)` as an intermediate fact.
-
-Use `show _ * (AllWt.petE _ _ _ _ (rdU _ (g : Rul Y.d.Xo₂ Y.d.c₂))).toReal = _`. Rewrite using `[hg]`. Conclude with `congrArg (fun t : ENNReal => AllWt.lieFacZ (T.Q.Dw j) (xiR D) G * t.toReal) this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LevelIsometry.keeps_cusp_lattice_norm : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ G : WTZ D.host.E, Even G.2 → KeepsCusp Y.U G ∧ ∀ (γ : LevelAut (T.Q.Dw j) Y.d.l₂) (f g : Y.V G), (g : Rul Y.d.Xo₂ Y.d.c₂) = pull Y.d.Xo₂ Y.d.c₂ γ f → (f ∈ AllWt.latW Y.U G → g ∈ AllWt.latW Y.U G) ∧ ∀ σ, Y.nrm G σ g = Y.nrm G σ f := by
   intro D T hT j hp _ _ hj Y e o hY G hG

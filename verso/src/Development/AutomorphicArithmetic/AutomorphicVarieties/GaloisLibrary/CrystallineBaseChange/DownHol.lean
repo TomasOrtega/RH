@@ -16,7 +16,7 @@ private def EE (i j : Fin 2) : TR.Lie ℚ 2 := TR.toL (Matrix.single i j (Pi.sin
 private def AA (w : ℂ) : TR.Lie ℚ 2 := w.im • EE 0 0 + w.re • EE 0 1 + EE 1 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j v`. Take `rfl : v = Rat.infinitePlace` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `_ = (aff (Units.mk0 w.im h) w.re).val i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [AA, EE, aff, Matrix.single]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem AA_eq (w : ℂ) (h : w.im ≠ 0) :
     AA w = TR.toL (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (aff (Units.mk0 w.im h) w.re)).val := by
@@ -26,7 +26,7 @@ private theorem AA_eq (w : ℂ) (h : w.im ≠ 0) :
   fin_cases i <;> fin_cases j <;> simp [AA, EE, aff, Matrix.single]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b v`. Take `rfl : v = Rat.infinitePlace` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `(Matrix.of (AA w) * Matrix.of (EE 0 j)) a b Rat.infinitePlace = _`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases j <;> simp [AA, EE, Matrix.single, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rmul_AA (w : ℂ) (j : Fin 2) : TR.rmul (EE 0 j) (AA w) = w.im • EE 0 j := by
   funext a b v
@@ -35,7 +35,7 @@ private theorem rmul_AA (w : ℂ) (j : Fin 2) : TR.rmul (EE 0 j) (AA w) = w.im �
   fin_cases a <;> fin_cases b <;> fin_cases j <;> simp [AA, EE, Matrix.single, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Rewrite using `[AA_eq w h, TR.chart_val, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem chart_AA (ψ : GA ℚ 2 → ℂ) (w : ℂ) (h : w.im ≠ 0) :
     TR.chart ψ 1 (AA w) = ψ (upR (aff (Units.mk0 w.im h) w.re)) := by
@@ -43,22 +43,22 @@ private theorem chart_AA (ψ : GA ℚ 2 → ℂ) (w : ℂ) (h : w.im ≠ 0) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(Complex.imCLM.smulRight (EE 0 0) + Complex.reCLM.smulRight (EE 0 1)).hasFDerivAt.add_const (EE 1 1)`.
+A detailed English derivation is pending.
 -/
 private theorem hasFDerivAt_AA (w : ℂ) :
     HasFDerivAt AA (Complex.imCLM.smulRight (EE 0 0) + Complex.reCLM.smulRight (EE 0 1)) w :=
   (Complex.imCLM.smulRight (EE 0 0) + Complex.reCLM.smulRight (EE 0 1)).hasFDerivAt.add_const (EE 1 1)
 
 /- English proof (translation)
-Establish `hm : AA w ∈ TR.invSet ℚ 2` using `by rw [AA_eq w hw.ne']; exact TR.val_mem_invSet _`. Establish `hc` using `((TR.contDiffAt_chart φ.2 1 hm).differentiableAt (by simp)).hasFDerivAt`. Use `set D := fderiv ℝ (TR.chart φ.1 1) (AA w) with hD`. Use `set g := upR (aff (Units.mk0 w.im hw.ne') w.re) with hg`. Establish `he : ∀ j, (TR.Eop Rat.infinitePlace 0 j φ).1 g = (w.im : ℂ) * D (EE 0 j)` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `TR.chart_lieD φ.2 (EE 0 j) 1 hm`. Rewrite `h1` using `[chart_AA _ w hw.ne', rmul_AA, map_smul, Complex.real_smul]`. Conclude with `h1`. Establish `h1 : (TR.Eop Rat.infinitePlace 0 1 φ).1 g - (TR.Eop Rat.infinitePlace 1 0 φ).1 g = Complex.I * k * φ.1 g` using `congrFun (congrArg Subtype.val (hφ.wt Rat.infinitePlace)) g`. Establish `h2 : (TR.Eop Rat.infinitePlace 0 0 φ).1 g - (TR.Eop Rat.infinitePlace 1 1 φ).1 g = Complex.I * ((TR.Eop Rat.infinitePlace 0 1 φ).1 g + (TR.Eop Rat.infinitePlace 1 0 φ).1 g)` using `congrFun (congrArg Subtype.val (hφ.low Rat.infinitePlace)) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (TR.Eop Rat.infinitePlace 0 0 φ).1 g + (TR.Eop Rat.infinitePlace 1 1 φ).1 g = 0` using `congrFun (congrArg Subtype.val (hφ.one Rat.infinitePlace)) g`. Rewrite `h1`, `h2`, `h3` using `[he]`. Rewrite `h2` using `[he]`. Establish `h4 : (w.im : ℂ) * D (EE 0 0) = Complex.I * (w.im * D (EE 0 1)) + k / 2 * φ.1 g`. Take the linear combination `(h2 + h3) / 2 - Complex.I / 2 * h1 - (k / 2 * φ.1 g) * Complex.I_mul_I`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `Complex.ofRealCLM.hasFDerivAt.comp w ((Complex.imCLM.hasFDerivAt (x := w)).rpow_const (p := -((k : ℝ) / 2)) (Or.inl hw.ne'))`. Establish `hF` using `hp.fun_mul (hc.comp w (hasFDerivAt_AA w))`. Use `differentiableAt_complex_iff_differentiableAt_real.2 ⟨hF.differentiableAt, ?_⟩` and prove the remaining obligations. Use `erw [hF.fderiv]`. Establish `hy : (w.im : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hw.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hr : w.im ^ (-((k : ℝ) / 2) - 1) = w.im ^ (-((k : ℝ) / 2)) / w.im` using `Real.rpow_sub_one hw.ne' _`. Simplify using `[chart_AA _ w hw.ne', ← hg, hr]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `2 * ((w.im ^ (-((k : ℝ) / 2)) : ℝ) : ℂ) * h4`.
+A detailed English derivation is pending.
 -/
 private theorem key (k : ℕ) (φ : TR.Sm ℚ 2) (hφ : IsLow k φ) (w : ℂ) (hw : 0 < w.im) :
     DifferentiableAt ℂ (fun w : ℂ => ((w.im ^ (-((k : ℝ) / 2)) : ℝ) : ℂ) * TR.chart φ.1 1 (AA w)) w := by
@@ -96,7 +96,7 @@ end UpperTheory.V.Br.DescentHolomorphic
 
 open UpperTheory.V.Br.DescentHolomorphic in
 /- English proof (translation)
-Introduce `k φ hφ`. Use `UpperHalfPlane.mdifferentiable_iff.2 ?_` and prove the remaining obligations. Use `DifferentiableOn.congr (fun w hw => (key k φ hφ w hw).differentiableWithinAt) fun w hw => ?_` and prove the remaining obligations. Establish `hw' : 0 < w.im` using `hw`. Rewrite using `[Function.comp_apply, ofComplex_apply_of_im_pos hw', chart_AA _ w hw'.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

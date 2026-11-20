@@ -42,9 +42,9 @@ section Proofs
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce `a n f hf S _ _ t y y' hy hy' hb`. Establish `key : ∀ (p q : TRing c.F) (φ : p.R →ₐ[c.F] S) (ψ : q.R →ₐ[c.F] S) (yp : FrPt Xo c p.R) (yq : FrPt Xo c q.R), FrMap φ yp y → FrMap ψ yq y' → ψ (f q yq) = wchar (ex Dw a n) t * φ (f p yp)`. Introduce `p q φ ψ yp yq hp hq`. Take `⟨r, α, β, χ, z, z', t₀, hα, hβ, hz, hz', hb₀, ht⟩` from `hD S t y y' hb p q φ ψ yp yq hp hq`. Rewrite using `[← hα, ← hβ, AlgHom.comp_apply, AlgHom.comp_apply, ← hf.1 p r α yp z hz, ← hf.1 q r β yq z' hz', hf.2 r t₀ z z' hb₀, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [wchar, map_prod, map_pow, ht]`. Unfold `evR evalAt`. Rewrite using `[dif_pos hy, dif_pos hy']`. Conclude with `key _ _ _ _ _ _ hy.choose_spec.choose_spec.choose_spec hy'.choose_spec.choose_spec.choose_spec`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtField_of (hD : BorDesc Xo c) : WtField Xo c := by
   intro a n f hf S _ _ t y y' hy hy' hb
@@ -61,7 +61,7 @@ theorem wtField_of (hD : BorDesc Xo c) : WtField Xo c := by
   exact key _ _ _ _ _ _ hy.choose_spec.choose_spec.choose_spec hy'.choose_spec.choose_spec.choose_spec
 
 /- English proof (translation)
-Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `h`. Conclude with `(IsDiscreteValuationRing.maximalIdeal T.V).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem valV_algebraMap_unit (T : CDVR) {u : T.V} (hu : IsUnit u) :
     valV T.V (algebraMap T.V T.Fr u) = 1 := by
@@ -71,15 +71,15 @@ theorem valV_algebraMap_unit (T : CDVR) {u : T.V} (hu : IsUnit u) :
   exact (IsDiscreteValuationRing.maximalIdeal T.V).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)
 
 /- English proof (translation)
-Introduce `T io y y' t hb k`. Set `` to `io.toAlgebra`. Take `⟨hx, hu, pm, h1, h2, h3⟩` from `hb`. Take `⟨hA, hG⟩` from `(show IntLatU Xo c from hL) T io y y' hx`. Break down `k with _ | ⟨τ, i⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hG (t none) pm h1 h2 h3`. Take `⟨A, hdet, hAc⟩` from `hA τ`. Establish `hrow : ∀ i', ∃ cf : Fin (Dw.mult τ) → T.Fr, cf i' = (t (some ⟨τ, i'⟩) : T.Fr) ∧ (∀ j, i' < j → cf j = 0) ∧ ∀ j, algebraMap T.V T.Fr (A i' j) = cf j`. Introduce `i'`. Take `⟨cf, hci, hcz, hcomb⟩` from `hu τ i'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htan : IsTanAt y.1.x (y'.1.u τ i')` using `hx ▸ y'.1.tan τ i'`. Take `⟨a0, -, huniq⟩` from `y.1.basis τ (y'.1.u τ i') htan (y'.1.eig τ i')`. Establish `e1` using `huniq cf hcomb`. Establish `e2` using `huniq _ (hAc i')`. Conclude with `⟨cf, hci, hcz, fun j => congrFun (e2.trans e1.symm) j⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`. Establish `hlow : A.IsLowerTriangular`. Introduce `i' j hij`. Take `⟨cf, -, hcz, hA'⟩` from `hrow i'`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA' j, hcz j hij, map_zero]`. Rewrite `hdet` using `[Matrix.det_of_isLowerTriangular A hlow, IsUnit.prod_univ_iff]`. Take `⟨cf, hci, -, hA'⟩` from `hrow i`. Rewrite using `[← hci, ← hA' i]`. Conclude with `valV_algebraMap_unit T (hdet i)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intDiagUnit_of (hL : IntLatU Xo c) : IntDiagUnit Xo c := by
   intro T io y y' t hb k

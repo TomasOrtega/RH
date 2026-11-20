@@ -21,7 +21,7 @@ theorem moveLin_apply (δ : GL (Fin r) E) (v : Fin r → E) :
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mulVec_mulVec (δ : GL (Fin r) E) (v : Fin r → E) :
     ((δ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec
@@ -30,7 +30,7 @@ theorem inv_mulVec_mulVec (δ : GL (Fin r) E) (v : Fin r → E) :
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_inv_mulVec (δ : GL (Fin r) E) (v : Fin r → E) :
     (δ : Matrix (Fin r) (Fin r) E).mulVec
@@ -39,9 +39,9 @@ theorem mulVec_inv_mulVec (δ : GL (Fin r) E) (v : Fin r → E) :
 
 omit [IsCMField E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[moveLin_apply, inv_mulVec_mulVec]`. Conclude with `hx`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨_, h, by rw [moveLin_apply, mulVec_inv_mulVec]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → E)) (y : Fin r → E) :
     y ∈ L.map (moveLin δ) ↔
@@ -55,9 +55,9 @@ theorem mem_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → E
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (δ : Matrix (Fin r) (Fin r) E).mulVecLin` using `fun y => ⟨_, mulVec_inv_mulVec δ y⟩`. Establish `: ((L.map (moveLin δ) : Submodule (𝓞 E) (Fin r → E)) : Set (Fin r → E)) = (δ : Matrix (Fin r) (Fin r) E).mulVecLin '' (L : Set (Fin r → E))`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, hL, Submodule.map_top, LinearMap.range_eq_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsurj`.
+A detailed English derivation is pending.
 -/
 theorem span_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → E))
     (hL : Submodule.span E (L : Set (Fin r → E)) = ⊤) :
@@ -71,9 +71,9 @@ theorem span_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → 
   exact hsurj
 
 /- English proof (translation)
-Establish `hval : ∀ x, (((δ⁻¹ * γ * δ : GL (Fin r) E)) : Matrix (Fin r) (Fin r) E).mulVec x = ((δ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec ((γ : Matrix (Fin r) (Fin r) E).mulVec ((δ : Matrix (Fin r) (Fin r) E).mulVec x))`. Introduce `x`. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `⟨fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hval, hval, ← hδ, mulVec_inv_mulVec, mulVec_inv_mulVec, hG, (X.Γ_stab γ hγ).1, ← hG, hδ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, ← mem_map_moveLin, ← hK, mem_map_moveLin, inv_mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUStab_conj (X₂ X : Data E r) (δ : GL (Fin r) E) (hG : X₂.Gm = X.Gm)
     (hδ : ∀ v w, herm X₂.Gm ((δ : Matrix (Fin r) (Fin r) E).mulVec v)
@@ -94,11 +94,11 @@ theorem isUStab_conj (X₂ X : Data E r) (δ : GL (Fin r) E) (hG : X₂.Gm = X.G
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Use `set H := Γ₂.map (MulAut.conj δ).toMonoidHom with hH`. Use `choose! f hfS hf using h`. Establish `hfin : Finite (A ⧸ H.subgroupOf A)`. Use `Finite.of_injective (fun q : A ⧸ H.subgroupOf A => (⟨f (q.out : A), hfS _ q.out.2⟩ : S)) ?_` and prove the remaining obligations. Introduce `p q hpq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpq' : f (p.out : A) = f (q.out : A)` using `congrArg Subtype.val hpq`. Rewrite using `[← QuotientGroup.out_eq' p, ← QuotientGroup.out_eq' q, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `ha` using `hf _ p.out.2`. Establish `hb` using `hf _ q.out.2`. Rewrite `ha` using `[hpq']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `Γ₂.mul_mem (Γ₂.inv_mem ha) hb`. Use `⟨_, hc, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_reps (Γ₂ A : Subgroup (GL (Fin r) E)) (δ : GL (Fin r) E)
     (S : Finset (GL (Fin r) E))
@@ -123,15 +123,15 @@ theorem relIndex_ne_zero_of_reps (Γ₂ A : Subgroup (GL (Fin r) E)) (δ : GL (F
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Introduce `E _ _ _ r X₂ X δ hG hδ`. Use `set Λ' := X₂.Λ.map (moveLin δ) with hΛ'`. Establish `hfg : Λ'.FG` using `X₂.Λ_fg.map _`. Establish `hsp` using `span_map_moveLin δ X₂.Λ X₂.Λ_span`. Take `⟨n₁, hn₁, h₁⟩` from `GlobalTheory.T.exists_pos_nat_smul_mem_of_fg_and_spanning_lattice X.Λ Λ' hfg X.Λ_span`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, hn₂, h₂⟩` from `GlobalTheory.T.exists_pos_nat_smul_mem_of_fg_and_spanning_lattice Λ' X.Λ X.Λ_fg hsp`. Establish `hnat : ∀ (L : Submodule (𝓞 E) (Fin r → E)) (k : ℕ) (v : Fin r → E), v ∈ L → (k : E) • v ∈ L`. Introduce `L k v hv`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hv k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ v ∈ Λ', ((n₁ * n₂ : ℕ) : E) • v ∈ X.Λ`. Introduce `v hv`. Use `hnat _ n₂ _ (h₁ v hv)` as an intermediate fact. Rewrite `this` using `[smul_smul, ← Nat.cast_mul, mul_comm n₂]`. Then use the resulting hypothesis. Establish `hB : ∀ v ∈ X.Λ, ((n₁ * n₂ : ℕ) : E) • v ∈ Λ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Use `hnat _ n₁ _ (h₂ v hv)` as an intermediate fact. Rewrite `this` using `[smul_smul, ← Nat.cast_mul]`. Then use the resulting hypothesis. Take `⟨K, hK, hKΛ⟩` from `GlobalTheory.T.exists_finite_relIndex_stabilizer_commensurable_lattice X.Λ Λ' (n₁ * n₂) (Nat.mul_pos hn₁ hn₂) X.Λ_fg hA hB X.Γ (fun γ hγ => (X.Γ_stab γ hγ).2)`. Take `⟨S, hS⟩` from `X₂.Γ_index`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAH : (X₂.Γ.map (MulAut.conj δ).toMonoidHom).relIndex (X.Γ ⊓ K) ≠ 0` using `relIndex_ne_zero_of_reps X₂.Γ (X.Γ ⊓ K) δ S fun γ hγ => hS _ (isUStab_conj X₂ X δ hG hδ hγ.1 (hKΛ γ hγ.2))`. Use `Subgroup.relIndex_ne_zero_trans hAH ?_` and prove the remaining obligations. Rewrite using `[Subgroup.inf_relIndex_left]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem relIndex_map_conj_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X₂ X : Data E r) (δ : GL (Fin r) E), X₂.Gm = X.Gm → (∀ v w, herm X₂.Gm ((δ : Matrix (Fin r) (Fin r) E).mulVec v) ((δ : Matrix (Fin r) (Fin r) E).mulVec w) = herm X₂.Gm v w) → (X₂.Γ.map (MulAut.conj δ).toMonoidHom).relIndex X.Γ ≠ 0 := by
   intro E _ _ _ r X₂ X δ hG hδ

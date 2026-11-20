@@ -9,19 +9,17 @@ open Filter Topology
 namespace GlobalTheory.KZ.Germ
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_im`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Hs : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
 /- English proof (translation)
-The claim follows from `(convex_halfSpace_im_gt 0).isPreconnected`.
+A detailed English derivation is pending.
 -/
 theorem isPreconnected_Hs : IsPreconnected Hs := (convex_halfSpace_im_gt 0).isPreconnected
 
 /- English proof (translation)
-Introduce `τ hτ`. Establish `h1` using `(mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 (Filter.Germ.coe_eq.mp h)) τ hτ`. Establish `h2 : Hs ∈ 𝓝[≠] τ` using `mem_nhdsWithin_of_mem_nhds (isOpen_Hs.mem_nhds hτ)`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Break down `hz1 with hz | hz` into its components or cases.
-
-Conclude with `hz`. Conclude with `absurd hz2 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eventually_of_germ_eq {φ ψ : ℂ → ℂ} (h : (φ : Mero) = (ψ : Mero)) :
     ∀ τ ∈ Hs, ∀ᶠ z in 𝓝[≠] τ, φ z = ψ z := by
@@ -34,11 +32,9 @@ theorem eventually_of_germ_eq {φ ψ : ℂ → ℂ} (h : (φ : Mero) = (ψ : Mer
   · exact absurd hz2 hz
 
 /- English proof (translation)
-Distinguish the cases in `hA : ∀ z ∈ Hs, a z = 0`. Conclude with `Or.inl hA`. Use `right push_neg at hA`. Take `⟨z₀, hz₀, hne⟩` from `hA`. Establish `hcont : ContinuousAt a z₀` using `(ha.continuousOn).continuousAt (isOpen_Hs.mem_nhds hz₀)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ z in 𝓝 z₀, a z ≠ 0` using `hcont.eventually_ne hne`. Establish `hb0 : b =ᶠ[𝓝 z₀] 0` using `by filter_upwards [hev, isOpen_Hs.mem_nhds hz₀] with z hz1 hz2`. Use `h z hz2` as an intermediate fact. Simplify `this` using `[hz1]`. Introduce `z hz`.
-
-Conclude with `(hb.analyticOnNhd isOpen_Hs).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_Hs hz₀ hb0 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_or_eq_zero {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
     (h : ∀ z ∈ Hs, a z * b z = 0) : (∀ z ∈ Hs, a z = 0) ∨ (∀ z ∈ Hs, b z = 0) := by
@@ -57,11 +53,11 @@ theorem eq_zero_or_eq_zero {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) 
     exact (hb.analyticOnNhd isOpen_Hs).eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_Hs hz₀ hb0 hz
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. It suffices to derive a contradiction. Establish `hI : Complex.I ∈ Hs` using `by show (0 : ℝ) < Complex.I.im; simp`. Simplify using `using h _ hI`.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert j s hj ih`. Establish `hP : DifferentiableOn ℂ (fun z => ∏ i ∈ s, f i z) Hs`. Use `DifferentiableOn.finset_prod (u := s) (f := f) (fun i hi => hf i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Rewrite using `[show (fun z => ∏ i ∈ s, f i z) = ∏ i ∈ s, f i from by funext z; simp [Finset.prod_apply]]`. Conclude with `this`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_zero_or_eq_zero (hf j (Finset.mem_insert_self j s)) hP (fun z hz => by have := h z hz; rwa [Finset.prod_insert hj] at this) with h1 | h1` into its components or cases. Conclude with `⟨j, Finset.mem_insert_self j s, h1⟩`. Take `⟨i, hi, hi'⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) h1`. Conclude with `⟨i, Finset.mem_insert_of_mem hi, hi'⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_zero_of_prod {ι : Type} [DecidableEq ι] (s : Finset ι) (f : ι → ℂ → ℂ)
     (hf : ∀ i ∈ s, DifferentiableOn ℂ (f i) Hs) (h : ∀ z ∈ Hs, ∏ i ∈ s, f i z = 0) :
@@ -83,11 +79,9 @@ theorem exists_eq_zero_of_prod {ι : Type} [DecidableEq ι] (s : Finset ι) (f :
       exact ⟨i, Finset.mem_insert_of_mem hi, hi'⟩
 
 /- English proof (translation)
-Take `⟨hH, hmul, hone, hdiff, -, -⟩` from `GlobalTheory.T.glTwoPosRatMobius_basic_laws`. Rewrite using `[tendsto_nhdsWithin_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((hdiff g).continuousOn.continuousAt (isOpen_Hs.mem_nhds hx)).tendsto.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (isOpen_Hs.mem_nhds hx)] with z hz1 hz2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `heq`. Apply `hz1` to reduce the goal to its premises. Use `show z = x`. Establish `e1 : mob g⁻¹ (mob g z) = z` using `by rw [← hmul _ _ z hz2, inv_mul_cancel, hone]`. Establish `e2 : mob g⁻¹ (mob g x) = x` using `by rw [← hmul _ _ x hx, inv_mul_cancel, hone]`.
-
-Establish `: mob g z = mob g x` using `heq`. Rewrite using `[← e1, this, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_mob (g : GQ) {x : ℂ} (hx : x ∈ Hs) : Tendsto (mob g) (𝓝[≠] x) (𝓝[≠] (mob g x)) := by
   obtain ⟨hH, hmul, hone, hdiff, -, -⟩ := GlobalTheory.T.glTwoPosRatMobius_basic_laws
@@ -104,9 +98,9 @@ theorem tendsto_mob (g : GQ) {x : ℂ} (hx : x ∈ Hs) : Tendsto (mob g) (𝓝[�
     rw [← e1, this, e2]
 
 /- English proof (translation)
-Take `⟨hH, -, -, -, -, -⟩` from `GlobalTheory.T.glTwoPosRatMobius_basic_laws`. Apply `Filter.Germ.coe_eq.mpr` to reduce the goal to its premises. Apply `mem_codiscreteWithin_iff_forall_mem_nhdsNE.2` to reduce the goal to its premises. Introduce `x hx`. Establish `h1` using `(tendsto_mob g hx).eventually (eventually_of_germ_eq h (mob g x) (hH g x hx))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [h1] with z hz`. Conclude with `Or.inl hz`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem germ_comp (g : GQ) (φ ψ : ℂ → ℂ) (h : (φ : Mero) = (ψ : Mero)) :
     ((fun z => φ (mob g z) : ℂ → ℂ) : Mero) = ((fun z => ψ (mob g z) : ℂ → ℂ) : Mero) := by
@@ -119,15 +113,13 @@ theorem germ_comp (g : GQ) (φ ψ : ℂ → ℂ) (h : (φ : Mero) = (ψ : Mero))
   exact Or.inl hz
 
 /- English proof (translation)
-Use `⟨?_, fun a b ha hb h => eq_zero_or_eq_zero ha hb h, germ_comp, fun φ ψ h => eventually_of_germ_eq h, ?_⟩` and prove the remaining obligations. Introduce `a b ha hb`. Prove the components needed by the constructor for the conclusion. Introduce `hab z hz`. Establish `hI : Complex.I ∈ Hs` using `by show (0 : ℝ) < Complex.I.im; simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(ha.analyticOnNhd isOpen_Hs).eqOn_of_preconnected_of_frequently_eq (hb.analyticOnNhd isOpen_Hs) isPreconnected_Hs hI (eventually_of_germ_eq hab _ hI).frequently hz`. Introduce `h`. Apply `Filter.Germ.coe_eq.mpr` to reduce the goal to its premises. Use `filter_upwards [Filter.self_mem_codiscreteWithin Hs] with z hz`. Conclude with `h z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m a b hm ha hb h`. Establish `hm0 : m ≠ 0` using `hm.ne'`. Use `haveI : NeZero m := ⟨hm0⟩`. Establish `hζ` using `Complex.isPrimitiveRoot_exp m hm0`. Take `⟨ξ, hξ, hξ'⟩` from `exists_eq_zero_of_prod (Polynomial.nthRootsFinset m (1 : ℂ)) (fun ξ z => a z - ξ * b z) (fun ξ _ => ha.sub (hb.const_mul ξ)) (fun z hz => by rw [← hζ.pow_sub_pow_eq_prod_sub_mul (a z) (b z) hm, h z hz, sub_self])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hξm : ξ ^ m = 1` using `(Polynomial.mem_nthRootsFinset hm (1 : ℂ)).1 hξ`. Take `⟨k, -, hk⟩` from `hζ.eq_pow_of_pow_eq_one hξm`. Use `⟨k, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) / (m : ℂ)) = ξ`. Rewrite using `[← hk, ← Complex.exp_nat_mul]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `sub_eq_zero.mp (hξ' z hz)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : (∀ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs → DifferentiableOn ℂ b Hs → (((a : Mero) = (b : Mero)) ↔ ∀ z ∈ Hs, a z = b z)) ∧ (∀ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs → DifferentiableOn ℂ b Hs → (∀ z ∈ Hs, a z * b z = 0) → (∀ z ∈ Hs, a z = 0) ∨ (∀ z ∈ Hs, b z = 0)) ∧ (∀ (g : GQ) (φ ψ : ℂ → ℂ), (φ : Mero) = (ψ : Mero) → ((fun z => φ (mob g z) : ℂ → ℂ) : Mero) = ((fun z => ψ (mob g z) : ℂ → ℂ) : Mero)) ∧ (∀ (φ ψ : ℂ → ℂ), (φ : Mero) = (ψ : Mero) → ∀ τ ∈ Hs, ∀ᶠ z in nhdsWithin τ {τ}ᶜ, φ z = ψ z) ∧ (∀ (m : ℕ) (a b : ℂ → ℂ), 0 < m → DifferentiableOn ℂ a Hs → DifferentiableOn ℂ b Hs → (∀ z ∈ Hs, a z ^ m = b z ^ m) → ∃ k : ℕ, ∀ z ∈ Hs, a z = Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) / (m : ℂ)) * b z) := by
   refine ⟨?_, fun a b ha hb h => eq_zero_or_eq_zero ha hb h, germ_comp, fun φ ψ h => eventually_of_germ_eq h, ?_⟩

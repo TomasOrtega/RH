@@ -15,17 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspStab
 
 /- English proof (translation)
-Introduce `D θ hθ V U τ X hX A φ ha hU hs hg hc`. Establish `hs' : φ ∈ SmFun θ V` using `hs`. Establish `inv : ∀ k, k ∈ GfC V → (∀ g, φ (g * k) = φ g) → ∀ g, Rder θ V τ X φ (g * k) = Rder θ V τ X φ g`. Introduce `k hk e g`. Use `congrFun (GlobalTheory.Mem.FinTranslate.Rder_rTr (θ := θ) hk τ X φ) g` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[show rTr V k φ = φ from funext e]`. Conclude with `this.symm`. Establish `hcont : Continuous (Rder θ V τ X φ)`. Use `GlobalTheory.Size.continuous_Rder_of_growth hθ hs' ha.cont hX (A := A) ?_` and prove the remaining obligations. Simplify using `using hg [(τ, X), (τ, X)] (by simp [hX])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ha' : IsAutFun V (Rder θ V τ X φ)` using `{ left := fun γ hγ => GlobalTheory.Mem.Lift.Rder_left (ha.left γ hγ) τ X level := by`. Take `⟨U₀, hU₀, e⟩` from `ha.level`. Conclude with `⟨U₀, hU₀, fun k hk hf => inv k hf (e k hk hf)⟩`. Use `cont := hcont }`. Use `⟨ha', fun k hk hf => inv k hf (hU k hk hf), Rder_mem hs' hX, fun l hl => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hg (l ++ [(τ, X)]) (by` as an intermediate fact. Introduce `p hp`. Break down `List.mem_append.1 hp with h | h` into its components or cases. Conclude with `hl p h`. Rewrite using `[List.mem_singleton.1 h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hX)`. Simplify `this` using `only [List.foldr_append, List.foldr_cons, List.foldr_nil]`. Use `(isCuspFun_iff ha'.left).2 fun W hW => funext fun x => ?_` and prove the remaining obligations. Establish `h0 : constTermOn (GQ V) (NA (.single hW)) φ = 0` using `(isCuspFun_iff ha.left).1 hc W hW`. Use `GlobalTheory.CuspLie.hasDerivAt_constTermOn (cocompact_single hW) ha.left ha.cont ha'.left ha'.cont (GlobalTheory.Mem.Lift.continuous_oneP hθ hX) (GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (GlobalTheory.Mem.Lift.hasDerivAt_Rder hs' hX)) x` as an intermediate fact.
-
-Rewrite `this` using `[h0, GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one]`. Conclude with `this.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rder_stab : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ), X ∈ lieAt V τ → ∀ (A : ℕ) (φ : GA D V → ℂ), IsAutFun V φ → (∀ k ∈ U, k ∈ GfC V → ∀ g, φ (g * k) = φ g) → SmoothW θ V φ → (∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → GlobalTheory.Grow.ModGrowthExp V A (l.foldr (fun p f => Rder θ V p.1 p.2 f) φ)) → IsCuspFun V φ → IsAutFun V (Rder θ V τ X φ) ∧ (∀ k ∈ U, k ∈ GfC V → ∀ g, Rder θ V τ X φ (g * k) = Rder θ V τ X φ g) ∧ SmoothW θ V (Rder θ V τ X φ) ∧ (∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → GlobalTheory.Grow.ModGrowthExp V A (l.foldr (fun p f => Rder θ V p.1 p.2 f) (Rder θ V τ X φ))) ∧ IsCuspFun V (Rder θ V τ X φ) := by
   intro D θ hθ V U τ X hX A φ ha hU hs hg hc

@@ -15,13 +15,13 @@ section general
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Establish `e : (fun q : ℝ × E => q.2) = ⇑(ContinuousLinearMap.snd ℝ ℝ E)` using `rfl`. Break down `l with _ | l` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← norm_iteratedFDeriv_fderiv]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : fderiv ℝ (fun q : ℝ × E => q.2) = fun _ => ContinuousLinearMap.snd ℝ ℝ E`. Use function extensionality and compare the values at `y`. Rewrite using `[e]`. Conclude with `(ContinuousLinearMap.snd ℝ ℝ E).fderiv`. Rewrite using `[hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `l with _ | l` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Combine the linear relations using `[ContinuousLinearMap.norm_snd_le ℝ ℝ E, norm_nonneg q.2]`. Rewrite using `[iteratedFDeriv_const_of_ne (by omega)]`. Simplify using `only [Pi.zero_apply, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem norm_iter_snd (q : ℝ × E) (l : ℕ) :
     ‖iteratedFDeriv ℝ l (fun q : ℝ × E => q.2) q‖ ≤ 1 + ‖q.2‖ := by
@@ -40,7 +40,7 @@ theorem norm_iter_snd (q : ℝ × E) (l : ℕ) :
       positivity
 
 /- English proof (translation)
-Establish `e : (fun q : ℝ × E => A q.1) = A ∘ ⇑(ContinuousLinearMap.fst ℝ ℝ E)` using `rfl`. Rewrite using `[e, ContinuousLinearMap.iteratedFDeriv_comp_right _ hA _ (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Use `mul_le_of_le_one_right (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => ContinuousLinearMap.norm_fst_le ℝ ℝ E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_iter_fst_comp {A : ℝ → E →L[ℝ] E} (hA : ContDiff ℝ ∞ A) (q : ℝ × E) (j : ℕ) :
     ‖iteratedFDeriv ℝ j (fun q : ℝ × E => A q.1) q‖ ≤ ‖iteratedFDeriv ℝ j A q.1‖ := by
@@ -51,35 +51,31 @@ theorem norm_iter_fst_comp {A : ℝ → E →L[ℝ] E} (hA : ContDiff ℝ ∞ A)
   exact Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => ContinuousLinearMap.norm_fst_le ℝ ℝ E
 
 /- English proof (translation)
-Take `⟨KA, hKA⟩` from `(isCompact_Icc (a := (-1 : ℝ)) (b := 1)).exists_bound_of_continuousOn (f := fun s => ∑ j ∈ Finset.range (N + 1), ‖iteratedFDeriv ℝ j A s‖) (continuous_finsetSum _ (fun j _ => (hA.continuous_iteratedFDeriv (by exact_mod_cast le_top)).norm)).continuousOn`. Establish `hj : ∀ s ∈ Icc (-1 : ℝ) 1, ∀ j ≤ N, ‖iteratedFDeriv ℝ j A s‖ ≤ KA`. Introduce `s hs j hjN`. Establish `h1` using `hKA s hs`. Rewrite `h1` using `[Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Finset.single_le_sum (f := fun j => ‖iteratedFDeriv ℝ j A s‖) (fun _ _ => norm_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hjN))).trans h1`. Establish `hKA0 : 0 ≤ KA` using `(norm_nonneg _).trans (hj 0 (by norm_num) 0 (Nat.zero_le _))`. Establish `hAn : ∀ s ∈ Icc (-1 : ℝ) 1, ‖A s‖ ≤ KA` using `fun s hs => by`. Use `hj s hs 0 (Nat.zero_le _)` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set f : ℝ × E → E := fun q => A q.1 q.2 with hfdef`. Establish `hf : ContDiff ℝ ∞ f` using `(hA.comp contDiff_fst).clm_apply contDiff_snd`. Establish `hDf : ∀ q : ℝ × E, q.1 ∈ Icc (-1 : ℝ) 1 → ∀ i ≤ N, ‖iteratedFDeriv ℝ i f q‖ ≤ 2 ^ i * KA * (1 + ‖q.2‖)`. Introduce `q hq i hi`. Establish `hb` using `(ContinuousLinearMap.id ℝ (E →L[ℝ] E)).norm_iteratedFDeriv_le_of_bilinear (f := fun q : ℝ × E => A q.1) (g := fun q : ℝ × E => q.2) (hA.comp contDiff_fst) contDiff_snd q (n := i) (by exact_mod_cast le_top)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun y : ℝ × E => (ContinuousLinearMap.id ℝ (E →L[ℝ] E)) (A y.1) y.2) = f` using `rfl`. Rewrite `hb` using `[e]`. Use `hb.trans ?_` and prove the remaining obligations. Establish `hterm : ∀ j ∈ Finset.range (i + 1), (i.choose j : ℝ) * ‖iteratedFDeriv ℝ j (fun q : ℝ × E => A q.1) q‖ * ‖iteratedFDeriv ℝ (i - j) (fun q : ℝ × E => q.2) q‖ ≤ (i.choose j : ℝ) * (KA * (1 + ‖q.2‖))`. Introduce `j hjm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjN : j ≤ N` using `(Nat.lt_succ_iff.1 (Finset.mem_range.1 hjm)).trans hi`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul ((norm_iter_fst_comp hA q j).trans (hj q.1 hq j hjN)) (norm_iter_snd q _) (norm_nonneg _) hKA0) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, ← Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.sum_range_choose i` as an intermediate fact. Establish `h2 : (∑ j ∈ Finset.range (i + 1), (i.choose j : ℝ)) = 2 ^ i` using `by exact_mod_cast this`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Use `set S := 2 ^ (k + N) * ((Finset.Iic (k + N, N)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) φ with hSdef`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ y, ∀ i ≤ N, (1 + ‖y‖) ^ (k + N) * ‖iteratedFDeriv ℝ i φ y‖ ≤ S` using `fun y i hi => SchwartzMap.one_add_le_sup_seminorm_apply (m := (k + N, N)) le_rfl hi φ y`. Establish `hS0 : 0 ≤ S` using `le_trans (by positivity) (hS 0 0 (Nat.zero_le _))`. Use `set KD := max 1 (2 ^ N * KA) with hKD`. Use `set K' := max 1 KA with hK'`. Establish `hKD1 : 1 ≤ KD` using `le_max_left _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'1 : 1 ≤ K'` using `le_max_left _ _`. Use `⟨N.factorial * S * KD ^ N * K' ^ (k + N), fun p hp x => ?_⟩` and prove the remaining obligations. Establish `hp' : p ∈ Icc (-1 : ℝ) 1`. Rewrite using `[sub_zero, Real.norm_eq_abs] at hp; exact ⟨by linarith [neg_abs_le p], (le_abs_self p).trans hp⟩`. Establish `hmp : -p ∈ Icc (-1 : ℝ) 1` using `⟨by linarith [hp'.2], by linarith [hp'.1]⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set y := f (p, x) with hy`. Establish `hxy : ‖x‖ ≤ KA * ‖y‖`. Establish `e1 : x = A (-p) y` using `(hinv p x).symm`. Combine the equalities or inequalities in the displayed calculation. Establish `h1x : 1 + ‖x‖ ≤ K' * (1 + ‖y‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : KA * ‖y‖ ≤ K' * ‖y‖` using `by gcongr; exact le_max_right _ _`. Use polynomial arithmetic with `[norm_nonneg y]`. Establish `hyp : 0 < (1 + ‖y‖) ^ (k + N)` using `by positivity`. Establish `hC : ∀ i ≤ N, ‖iteratedFDeriv ℝ i φ (f (p, x))‖ ≤ S / (1 + ‖y‖) ^ (k + N)`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[le_div_iff₀ hyp, mul_comm]`. Conclude with `hS y i hi`. Establish `hD : ∀ i, 1 ≤ i → i ≤ N → ‖iteratedFDeriv ℝ i f (p, x)‖ ≤ (KD * (1 + ‖x‖)) ^ i`. Introduce `i hi1 hiN`. Establish `hb1 : 1 ≤ KD * (1 + ‖x‖)` using `by nlinarith [norm_nonneg x]`.
+Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hDf (p, x) hp' i hiN).trans ?_` and prove the remaining obligations. Establish `h3 : 2 ^ i * KA ≤ KD`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Use `gcongr`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcomp` using `norm_iteratedFDeriv_comp_le (g := ⇑φ) (f := f) (φ.smooth ⊤) hf (n := N) (by exact_mod_cast le_top) (p, x) hC hD`. Establish `e2 : (fun q : ℝ × E => φ (A q.1 q.2)) = ⇑φ ∘ f` using `rfl`. Rewrite using `[e2]`. Establish `hxk : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k` using `by gcongr; linarith`.
-
-Establish `hpow : (1 + ‖x‖) ^ (k + N) ≤ K' ^ (k + N) * (1 + ‖y‖) ^ (k + N)`. Rewrite using `[← mul_pow]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, pow_add]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ N.factorial * S * KD ^ N * K' ^ (k + N) := by gcongr`. Rewrite using `[div_le_iff₀ hyp]`. Conclude with `hpow`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_comp (φ : SchwartzMap E ℂ) (A : ℝ → E →L[ℝ] E) (hA : ContDiff ℝ ∞ A)
     (hinv : ∀ t y, A (-t) (A t y) = y) (k N : ℕ) :

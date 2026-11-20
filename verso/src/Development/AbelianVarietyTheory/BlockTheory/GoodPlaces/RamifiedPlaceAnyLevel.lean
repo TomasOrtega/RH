@@ -43,7 +43,7 @@ def RamPlaceAnyLevel : Prop :=
             nval Tc.V e (harmVal C k P f)
 
 /- English proof (translation)
-Introduce `D T h j hj _ hs` and use `hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GoodPlaceAnyLevel.base (hG : GoodPlaceAnyLevel) :
     ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
@@ -58,7 +58,7 @@ theorem GoodPlaceAnyLevel.base (hG : GoodPlaceAnyLevel) :
   fun D T h j hj _ hs => hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c
 
 /- English proof (translation)
-Introduce `D T h j hj _ hs` and use `hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RamPlaceAnyLevel.base (hG : RamPlaceAnyLevel) :
     ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
@@ -74,7 +74,7 @@ theorem RamPlaceAnyLevel.base (hG : RamPlaceAnyLevel) :
   fun D T h j hj _ hs => hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c
 
 /- English proof (translation)
-Take `⟨F, fin, conj, zm, le⟩` from `c₂`. Simplify using `only at hF`. Substitute `hF` using the available equality. Conclude with `hG D T h j hj hs l₂ Xo₂ _ Tc io yI e la ho hy hp C k a n P hP f hf`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem GoodPlaceAnyLevel.cover (hG : GoodPlaceAnyLevel) (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     [StarRing (𝓞 D.host.E)] (hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a)
@@ -92,7 +92,7 @@ theorem GoodPlaceAnyLevel.cover (hG : GoodPlaceAnyLevel) (D : D7) (T : Top D) (h
   exact hG D T h j hj hs l₂ Xo₂ _ Tc io yI e la ho hy hp C k a n P hP f hf
 
 /- English proof (translation)
-Take `⟨F, fin, conj, zm, le⟩` from `c₂`. Simplify using `only at hF`. Substitute `hF` using the available equality. Conclude with `hG D T h j hj hs l₂ Xo₂ _ Tc io yI e la ho hy p hp hpl C k a n P hP f hf`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem RamPlaceAnyLevel.cover (hG : RamPlaceAnyLevel) (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     [StarRing (𝓞 D.host.E)] (hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a)

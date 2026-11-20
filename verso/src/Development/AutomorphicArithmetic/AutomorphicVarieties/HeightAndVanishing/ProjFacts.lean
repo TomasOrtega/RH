@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `h1 : ZMod.castHom h (ZMod d) (idem r N) = 1`. Unfold `idem`. Rewrite using `[map_natCast, ← Nat.cast_one (R := ZMod d), ZMod.natCast_eq_natCast_iff]`. Conclude with `(Nat.ModEq.pow_totient (coprime_ordProj_ordCompl r N).symm).of_dvd hd`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ZMod.castHom h (ZMod d) (idem r N * u + (1 - idem r N)) = ZMod.castHom h (ZMod d) u`. Rewrite using `[map_add, map_mul, map_sub, h1, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem projA {N : ℕ} (r d : ℕ) (h : d ∣ N) (hd : d ∣ ordProj[r] N) (u : (ZMod N)ˣ) :
     ZMod.unitsMap h (proj r N u) = ZMod.unitsMap h u := by
@@ -19,9 +19,9 @@ private theorem projA {N : ℕ} (r d : ℕ) (h : d ∣ N) (hd : d ∣ ordProj[r]
   ring
 
 /- English proof (translation)
-Establish `h1 : ZMod.castHom h (ZMod d) (idem r N) = 0`. Unfold `idem`. Rewrite using `[map_natCast, ZMod.natCast_eq_zero_iff]`. Conclude with `dvd_pow hd (Nat.totient_pos.2 (pow_pos hr.pos _)).ne'`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ZMod.castHom h (ZMod d) (idem r N * u + (1 - idem r N)) = 1`. Rewrite using `[map_add, map_mul, map_sub, h1, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem projB {N : ℕ} (r d : ℕ) (hr : r.Prime) (h : d ∣ N) (hd : d ∣ ordCompl[r] N) (u : (ZMod N)ˣ) :
     ZMod.unitsMap h (proj r N u) = 1 := by
@@ -35,9 +35,9 @@ private theorem projB {N : ℕ} (r d : ℕ) (hr : r.Prime) (h : d ∣ N) (hd : d
   ring
 
 /- English proof (translation)
-Establish `key : ∀ (d : ℕ) (h : d ∣ N), ZMod.unitsMap h u = ZMod.unitsMap h v → (u : ZMod N).val ≡ (v : ZMod N).val [MOD d]`. Introduce `d h e`. Establish `e' : ZMod.castHom h (ZMod d) (u : ZMod N) = ZMod.castHom h (ZMod d) (v : ZMod N)` using `congrArg Units.val e`. Rewrite `e'` using `[← ZMod.natCast_zmod_val (u : ZMod N), ← ZMod.natCast_zmod_val (v : ZMod N), map_natCast, map_natCast]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).1 e'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(Nat.modEq_and_modEq_iff_modEq_mul (coprime_ordProj_ordCompl r N)).1 ⟨key _ _ h1, key _ _ h2⟩`. Rewrite `h3` using `[Nat.ordProj_mul_ordCompl_eq_self]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← ZMod.natCast_zmod_val (u : ZMod N), ← ZMod.natCast_zmod_val (v : ZMod N)]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem crtExt {N : ℕ} [NeZero N] (r : ℕ) {u v : (ZMod N)ˣ}
     (h1 : ZMod.unitsMap (Nat.ordProj_dvd N r) u = ZMod.unitsMap (Nat.ordProj_dvd N r) v)
@@ -55,7 +55,7 @@ private theorem crtExt {N : ℕ} [NeZero N] (r : ℕ) {u v : (ZMod N)ˣ}
   exact (ZMod.natCast_eq_natCast_iff _ _ _).2 h3
 
 /- English proof (translation)
-Establish `hc : d.Coprime (ordProj[r] N)` using `(((Nat.Prime.coprime_iff_not_dvd hr).2 hd).symm).pow_right _`. Apply `hc.dvd_of_dvd_mul_left` to reduce the goal to its premises. Rewrite using `[Nat.ordProj_mul_ordCompl_eq_self]` and apply the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem dvdCompl {N : ℕ} [NeZero N] {r d : ℕ} (hr : r.Prime) (h : d ∣ N) (hd : ¬ r ∣ d) : d ∣ ordCompl[r] N := by
   have hc : d.Coprime (ordProj[r] N) := (((Nat.Prime.coprime_iff_not_dvd hr).2 hd).symm).pow_right _
@@ -63,24 +63,22 @@ private theorem dvdCompl {N : ℕ} [NeZero N] {r d : ℕ} (hr : r.Prime) (h : d 
   rwa [Nat.ordProj_mul_ordCompl_eq_self]
 
 /- English proof (translation)
-Rewrite using `[← ZMod.unitsMap_comp h1 h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mapMap {N M d : ℕ} (h1 : d ∣ M) (h2 : M ∣ N) (u : (ZMod N)ˣ) :
     ZMod.unitsMap h1 (ZMod.unitsMap h2 u) = ZMod.unitsMap (h1.trans h2) u := by
   rw [← ZMod.unitsMap_comp h1 h2]; rfl
 
 /- English proof (translation)
-Introduce `N _ r hr`. Establish `hA` using `projA r _ (Nat.ordProj_dvd N r) dvd_rfl`. Establish `hB` using `projB r _ hr (Nat.ordCompl_dvd N r) dvd_rfl`. Establish `hM : ∀ (r : ℕ), r.Prime → ∀ (M : ℕ) (h : M ∣ N), ¬ r ∣ M → ∀ u, ZMod.unitsMap h (proj r N u) = 1` using `fun r hr M h hM u => projB r M hr h (dvdCompl hr h hM) u`. Use `⟨hA, hB, fun u => crtExt r (hA _) (by rw [hB, hB]), fun r' hr' hne u => ?_, fun hN u => ?_, ?_, ?_, hM r hr, fun M h u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `crtExt r ?_ (by rw [hB, map_one])` and prove the remaining obligations. Rewrite using `[hA, map_one]`. Conclude with `hM r' hr' _ _ (fun hd => hne ((Nat.prime_dvd_prime_iff_eq hr' hr).1 (hr'.dvd_of_dvd_pow hd))) u`. Use `hM r hr N dvd_rfl hN u` as an intermediate fact. Rewrite `this` using `[ZMod.unitsMap_self]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Conclude with `hB v`. Introduce `hu`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. By extensionality, compare the relevant components.
 
-Conclude with `⟨u, crtExt r (hA u) ((hB u).trans (MonoidHom.mem_ker.1 hu).symm)⟩`. Use extensionality with `u`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hA, hu, map_one]`. Introduce `hu`. Conclude with `crtExt r (by rw [hA, hu, map_one]) (by rw [hB, map_one])`. Use `haveI : NeZero M := ⟨ne_zero_of_dvd_ne_zero (NeZero.ne N) h⟩`. Use `crtExt r ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[projA r _ _ dvd_rfl, mapMap, mapMap]`. Conclude with `projA r _ _ (Nat.ordProj_dvd_ordProj_of_dvd (NeZero.ne N) h r) u`. Rewrite using `[projB r _ hr _ dvd_rfl, mapMap]`. Conclude with `projB r _ hr _ (Nat.ordCompl_dvd_ordCompl_of_dvd h r) u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.projFacts :
     ∀ (N : ℕ) [NeZero N] (r : ℕ), r.Prime →

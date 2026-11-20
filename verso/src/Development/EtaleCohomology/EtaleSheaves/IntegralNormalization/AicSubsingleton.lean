@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.t_E2Cut Polynomial
 namespace LateralTheory.E.NormPf.AffPf
 
 /- English proof (translation)
-Introduce `p hp hd`. Take `⟨a, ha⟩` from `h (p.map (algebraMap (integralClosure A B) B)) (hp.map _) (by rwa [natDegree_map_eq_of_injective Subtype.val_injective])`. Establish `hint : IsIntegral (integralClosure A B) a` using `⟨p, hp, by rwa [eval₂_eq_eval_map]⟩`. Establish `hA : IsIntegral A a` using `by first`. Consider the case `exact hint.trans`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact isIntegral_trans a hint`. Consider the case `exact IsIntegral.tower_top hint`. Establish `hm : a ∈ integralClosure A B` using `hA`. Use `⟨⟨a, hm⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : ((eval (⟨a, hm⟩ : integralClosure A B) p : integralClosure A B) : B) = eval a (p.map (algebraMap (integralClosure A B) B))`. Rewrite using `[Polynomial.eval_map]`. Conclude with `(Polynomial.eval₂_hom (algebraMap (integralClosure A B) B) (⟨a, hm⟩ : integralClosure A B)).symm`. Rewrite using `[e, ha]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem aic_intClosure {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (h : GlobalTheory.EtC.AIC B) :
     GlobalTheory.EtC.AIC (integralClosure A B) := by
@@ -34,24 +34,24 @@ theorem aic_intClosure {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (h :
   rfl
 
 /- English proof (translation)
-Introduce `p _ hd`. Conclude with `IsAlgClosed.exists_root p (by rw [degree_eq_natDegree (ne_zero_of_natDegree_gt hd)]; exact_mod_cast hd.ne')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem aic_field (K : Type) [Field K] [IsAlgClosed K] : GlobalTheory.EtC.AIC K := by
   intro p _ hd
   exact IsAlgClosed.exists_root p (by rw [degree_eq_natDegree (ne_zero_of_natDegree_gt hd)]; exact_mod_cast hd.ne')
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨0, Subsingleton.elim _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem aic_subsingleton (R : Type) [CommRing R] [Subsingleton R] : GlobalTheory.EtC.AIC R :=
   fun _ _ _ => ⟨0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Distinguish the cases in `hV : (V : Set (Spec (CommRingCat.of K))).Nonempty`. Establish `h : V = ⊤`. Take `⟨y, hy⟩` from `hV`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: x = y` using `Subsingleton.elim (α := PrimeSpectrum K) x y`. Rewrite using `[this]` and apply the resulting hypothesis. Substitute `h` using the available equality. Conclude with `OpenPf.aic_of_equiv (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv (aic_field K)`. Establish `h : V = ⊥`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hx => hV ⟨x, hx⟩`. Substitute `h` using the available equality. Conclude with `aic_subsingleton _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem aic_specK (K : Type) [Field K] [IsAlgClosed K] (V : (Spec (CommRingCat.of K)).Opens) :
     GlobalTheory.EtC.AIC Γ(Spec (CommRingCat.of K), V) := by
@@ -72,7 +72,7 @@ theorem aic_specK (K : Type) [Field K] [IsAlgClosed K] (V : (Spec (CommRingCat.o
     exact aic_subsingleton _
 
 /- English proof (translation)
-Introduce `K _ _ W g _ _ U hU`. Set `` to `(g.app U).hom.toAlgebra`. Conclude with `OpenPf.aic_of_equiv (g.normalizationObjIso hU).symm.commRingCatIsoToRingEquiv (aic_intClosure (aic_specK K _))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem affAIC : AICPf.AffAIC := by
   intro K _ _ W g _ _ U hU

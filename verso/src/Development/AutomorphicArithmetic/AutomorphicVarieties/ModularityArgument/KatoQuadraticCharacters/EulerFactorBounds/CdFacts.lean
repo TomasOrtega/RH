@@ -6,14 +6,14 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 
 namespace UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Rewrite using `[ZMod.natCast_val, ZMod.cast_intCast (dvd_mul_left M₀ N)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cd_red (N M₀ : ℕ) [NeZero (N * M₀)] (a : ℤ) :
     (((a : ZMod (N * M₀)).val : ℕ) : ZMod M₀) = (a : ZMod M₀) := by
   rw [ZMod.natCast_val, ZMod.cast_intCast (dvd_mul_left M₀ N)]
 
 /- English proof (translation)
-Establish `hN : (0 : ℤ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `h1 : (((((N : ℤ) * k : ℤ) : ZMod (N * M₀)).val / N : ℕ) : ℤ) = k % (M₀ : ℤ)`. Rewrite using `[Int.natCast_div, ZMod.val_intCast, Nat.cast_mul, Int.mul_emod_mul_of_pos _ _ hN, Int.mul_ediv_cancel_left _ hN.ne']`. Rewrite using `[← Int.cast_natCast, h1, ZMod.intCast_mod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cd_div (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] (k : ℤ) :
     ((((((N : ℤ) * k : ℤ) : ZMod (N * M₀)).val / N : ℕ)) : ZMod M₀) = (k : ZMod M₀) := by
@@ -24,13 +24,11 @@ private theorem cd_div (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] (k : ℤ) :
   rw [← Int.cast_natCast, h1, ZMod.intCast_mod]
 
 /- English proof (translation)
-Establish `hN : (N : ℤ) ≠ 0` using `by exact_mod_cast NeZero.ne N`. Establish `e00` using `congrFun (congrFun e 0) 0`. Establish `e01` using `congrFun (congrFun e 0) 1`. Establish `e10` using `congrFun (congrFun e 1) 0`. Establish `e11` using `congrFun (congrFun e 1) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, zero_mul, mul_zero, add_zero, zero_add, one_mul, mul_one] at e00 e01 e10 e11`. Establish `f00 : h 0 0 = h' 0 0` using `mul_left_cancel₀ hN (e00.trans (mul_comm _ _))`. Establish `f10 : h 1 0 = (N : ℤ) * h' 1 0` using `e10.trans (mul_comm _ _)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show ((((h 0 0 : ℤ) : ZMod (N * M₀)).val : ℕ) : ZMod M₀) = ((h' 0 0 : ℤ) : ZMod M₀)`. Rewrite using `[cd_red, f00]`. Use `show ((N * ((h 0 1 : ℤ) : ZMod (N * M₀)).val : ℕ) : ZMod M₀) = ((h' 0 1 : ℤ) : ZMod M₀)`. Rewrite using `[Nat.cast_mul, cd_red, ← e01, Int.cast_mul, Int.cast_natCast]`. Use `show ((((h 1 0 : ℤ) : ZMod (N * M₀)).val / N : ℕ) : ZMod M₀) = ((h' 1 0 : ℤ) : ZMod M₀)`.
-
-Rewrite using `[f10, cd_div]`. Use `show ((((h 1 1 : ℤ) : ZMod (N * M₀)).val : ℕ) : ZMod M₀) = ((h' 1 1 : ℤ) : ZMod M₀)`. Rewrite using `[cd_red, e11]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cd_int (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] (h h' : Matrix (Fin 2) (Fin 2) ℤ)
     (e : !![(N : ℤ), 0; 0, 1] * h = h' * !![(N : ℤ), 0; 0, 1]) :
@@ -57,9 +55,9 @@ private theorem cd_int (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] (h h' : Mat
     rw [cd_red, e11]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(ZMod.natCast_eq_zero_iff _ _).1 hm`. Use `⟨m.map fun a => (a.val : ℤ), !![((m 0 0).val : ℤ), N * ((m 0 1).val : ℤ); (k : ℤ), ((m 1 1).val : ℤ)], ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j show (((m i j).val : ℤ) : ZMod M) = m i j`. Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`. Establish `hk' : ((m 1 0).val : ℤ) = (k : ℤ) * N` using `by rw [hk]; push_cast; ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, zero_mul, mul_zero, add_zero, zero_add, one_mul, mul_one, Matrix.map_apply, Fin.zero_eta, Fin.mk_one, Fin.isValue, hk', mul_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem cd_lift (N M : ℕ) [NeZero M] (m : Matrix (Fin 2) (Fin 2) (ZMod M))
     (hm : ((m 1 0).val : ZMod N) = 0) :
@@ -79,7 +77,7 @@ private theorem cd_lift (N M : ℕ) [NeZero M] (m : Matrix (Fin 2) (Fin 2) (ZMod
         Matrix.map_apply, Fin.zero_eta, Fin.mk_one, Fin.isValue, hk', mul_comm]
 
 /- English proof (translation)
-Take `⟨a, a', rfl, ha⟩` from `cd_lift N _ m hm`. Take `⟨b, b', rfl, hb⟩` from `cd_lift N _ m' hm'`. Establish `hab : !![(N : ℤ), 0; 0, 1] * (a * b) = (a' * b') * !![(N : ℤ), 0; 0, 1]`. Rewrite using `[← Matrix.mul_assoc, ha, Matrix.mul_assoc, hb, Matrix.mul_assoc]`. Rewrite using `[← Matrix.map_mul, cd_int N M₀ _ _ hab, cd_int N M₀ _ _ ha, cd_int N M₀ _ _ hb, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cd_mul (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] (m m' : Matrix (Fin 2) (Fin 2) (ZMod (N * M₀)))
     (hm : ((m 1 0).val : ZMod N) = 0) (hm' : ((m' 1 0).val : ZMod N) = 0) :
@@ -91,7 +89,7 @@ private theorem cd_mul (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] (m m' : Mat
   rw [← Matrix.map_mul, cd_int N M₀ _ _ hab, cd_int N M₀ _ _ ha, cd_int N M₀ _ _ hb, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `h` using `cd_int N M₀ 1 1 (by rw [Matrix.mul_one, Matrix.one_mul])`. Rewrite `h` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem cd_one (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] :
     cD N M₀ (1 : Matrix (Fin 2) (Fin 2) (ZMod (N * M₀))) = 1 := by
@@ -99,9 +97,9 @@ private theorem cd_one (N M₀ : ℕ) [NeZero N] [NeZero (N * M₀)] :
   rwa [Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)] at h
 
 /- English proof (translation)
-Set `φ` to `ZMod.castHom (dvd_mul_right N M₀) (ZMod N)`. Establish `hφ : ∀ a : ZMod (N * M₀), ((a.val : ℕ) : ZMod N) = φ a` using `fun a => by`. Rewrite using `[ZMod.natCast_val, ZMod.castHom_apply]`. Rewrite `hm`, the goal using `[hφ]`. Establish `e0` using `congrArg φ (congrFun (congrFun e 0) 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `congrArg φ (congrFun (congrFun e 1) 0)`. Rewrite `e0`, `e1` using `[Matrix.mul_apply, Fin.sum_univ_two, map_add, map_mul, map_mul, hm]`. Rewrite `e0` using `[Matrix.one_apply_eq, map_one]`. Rewrite `e1` using `[Matrix.one_apply_ne (by decide), map_zero]`. Take the linear combination `φ (n 0 0) * e1 - φ (n 1 0) * e0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cd_inv (N M₀ : ℕ) [NeZero (N * M₀)] (m n : Matrix (Fin 2) (Fin 2) (ZMod (N * M₀)))
     (e : n * m = 1) (hm : ((m 1 0).val : ZMod N) = 0) : ((n 1 0).val : ZMod N) = 0 := by
@@ -119,11 +117,11 @@ private theorem cd_inv (N M₀ : ℕ) [NeZero (N * M₀)] (m n : Matrix (Fin 2) 
 end UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `N M₀ M _ _ _ hM`. Substitute `hM` using the available equality. Use `⟨cd_mul N M₀, cd_one N M₀, ?_, cd_int N M₀⟩` and prove the remaining obligations. Introduce `m hm x y hxy`. Establish `hn` using `cd_inv N M₀ _ _ m.inv_mul hm`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ z : Row M₀, (2 : ZMod M₀) • z ≠ 0 → (2 : ZMod M₀) • (z ᵥ* cD N M₀ (m : Matrix (Fin 2) (Fin 2) (ZMod (N * M₀)))) ≠ 0`. Introduce `z hz h0`. Apply `hz` to reduce the goal to its premises. Establish `h1` using `congrArg (fun v => v ᵥ* cD N M₀ ((m⁻¹ : GL (Fin 2) (ZMod (N * M₀))) : Matrix (Fin 2) (Fin 2) (ZMod (N * M₀)))) h0`. Simplify using `only [Matrix.zero_vecMul] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[Matrix.smul_vecMul, Matrix.vecMul_vecMul, ← cd_mul N M₀ _ _ hm hn, m.mul_inv, cd_one, Matrix.vecMul_one]`. Then use the resulting hypothesis. Conclude with `⟨key x hxy.1, key y hxy.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sCdFacts :
     UpperTheory.V.Z.Kato.Nb.SCdFacts := by

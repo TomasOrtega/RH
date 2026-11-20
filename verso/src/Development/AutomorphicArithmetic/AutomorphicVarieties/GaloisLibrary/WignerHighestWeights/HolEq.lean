@@ -4,13 +4,13 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a N _ _ _ _ τ L x`. Set `L' : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] N` to `L`. Establish `hsum : ∀ y : Matrix (Fin a) (Fin a) ℂ, L' (y.map (atEmb τ)) = ∑ i, ∑ j, L' (Matrix.single i j (atEmb τ (y i j)))` using `fun y => by conv_lhs => rw [Matrix.matrix_eq_sum_single (y.map (atEmb τ))]`. Simplify using `only [map_sum, Matrix.map_apply]`. Establish `hL : ∀ (i j : Fin a) (w : ℂ), L' (Matrix.single i j (atEmb τ w)) = (w.re : ℂ) • L' (Matrix.single i j (atEmb τ 1)) + (w.im : ℂ) • L' (Matrix.single i j (atEmb τ Complex.I))` using `fun i j w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[atEmb_eq τ w, Matrix.single_add, ← Matrix.smul_single, ← Matrix.smul_single, map_add, map_smul, map_smul, ← algebraMap_smul ℂ w.re, ← algebraMap_smul ℂ w.im]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `∑ i, ∑ j, x i j • ((1 / 2 : ℂ) • (L' (Matrix.single i j (atEmb τ 1)) - Complex.I • L' (Matrix.single i j (atEmb τ Complex.I)))) = (1 / 2 : ℂ) • (L' (x.map (atEmb τ)) - Complex.I • L' ((Complex.I • x).map (atEmb τ)))`. Rewrite using `[hsum, hsum]`. Simplify using `only [Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, hL i j (x i j), hL i j (Complex.I * x i j)]`. Generalize the expression as in `x i j = c`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Simplify using `only [Complex.I_mul_re, Complex.I_mul_im, Complex.ofReal_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `match_scalars`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(c.im : ℂ) / 2) * Complex.I_mul_I`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.holEq :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (N : Type) [AddCommGroup N] [Module ℂ N] [Module ℝ N] [IsScalarTower ℝ ℂ N] (τ : E →+* ℂ) (L : Lie E a →ₗ[ℝ] N) (x : Matrix (Fin a) (Fin a) ℂ),

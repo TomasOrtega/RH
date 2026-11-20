@@ -11,7 +11,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.CompRat.SplitSum
 
 /- English proof (translation)
-Establish `h1` using `(TensorProduct.isBaseChange (𝓞 E) (M × N) E).finrank_eq`. Establish `h2` using `(TensorProduct.isBaseChange (𝓞 E) M E).finrank_eq`. Establish `h2'` using `(TensorProduct.isBaseChange (𝓞 E) N E).finrank_eq`. Establish `h3` using `(TensorProduct.prodRight (𝓞 E) E E M N).finrank_eq`. Rewrite using `[← h1, h3, Module.finrank_prod, h2, h2']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_prod_int {E : Type} [Field E] [NumberField E] (M N : Type) [AddCommGroup M] [Module (𝓞 E) M]
     [AddCommGroup N] [Module (𝓞 E) N] [Module.Finite (𝓞 E) M] [Module.Finite (𝓞 E) N] :
@@ -32,7 +32,7 @@ def prodSubEquiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddC
   right_inv _ := rfl
 
 /- English proof (translation)
-Rewrite using `[(prodSubEquiv A B).finrank_eq, finrank_prod_int]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_prod_sub {E : Type} [Field E] [NumberField E] {M N : Type} [AddCommGroup M] [Module (𝓞 E) M]
     [AddCommGroup N] [Module (𝓞 E) N] [Module.Finite (𝓞 E) M] [Module.Finite (𝓞 E) N]
@@ -43,21 +43,19 @@ theorem finrank_prod_sub {E : Type} [Field E] [NumberField E] {M N : Type} [AddC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨Lp, Lm, h1, h2, h3, h4, h5, h6⟩` from `h`. Take `⟨Lp', Lm', h1', h2', h3', h4', h5', h6'⟩` from `h'`. Use `D.fin` as an intermediate fact. Use `D'.fin` as an intermediate fact. Establish `hE : ∀ x y : D.La × D'.La, (DatumSum.sumDatum D D').EF x y = D.EF x.1 y.1 + D'.EF x.2 y.2` using `fun x y => DatumSum.sumForm_apply D.EF D'.EF x y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ x : D.La × D'.La, (DatumSum.sumDatum D D').EF (H.rt • x) x = D.EF (H.rt • x.1) x.1 + D'.EF (H.rt • x.2) x.2` using `fun x => hE _ _`. Use `⟨Lp.prod Lp', Lm.prod Lm', ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: Lp.prod Lp' ⊔ Lm.prod Lm' = ⊤`. Rewrite using `[Submodule.prod_sup_prod, h1, h1', Submodule.prod_top]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Use `(hE a b).trans ?_` and prove the remaining obligations. Rewrite using `[h2 _ ha.1 _ hb.1, h2' _ ha.2 _ hb.2, add_zero]`. Conclude with `(finrank_prod_sub Lp Lp').trans (by rw [h3, h3']; rfl)`. Conclude with `(finrank_prod_sub Lm Lm').trans (by rw [h4, h4']; rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Introduce `a ha hne`. Use `hR a` as an intermediate fact. Use `erw [this]`. Use `push_cast`. Rewrite using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : a.1 = 0`. Establish `h0' : a.2 ≠ 0` using `fun h0' => hne (Prod.ext h0 h0')`. Simplify `h5' _ ha.2 h0'` using `[h0]`. Distinguish the cases in `h0' : a.2 = 0`. Simplify `h5 _ ha.1 h0` using `[h0']`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_pos (h5 _ ha.1 h0) (h5' _ ha.2 h0')`. Introduce `a ha hne`. Use `hR a` as an intermediate fact. Use `erw [this]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mul_add]`. Distinguish the cases in `h0 : a.1 = 0`. Establish `h0' : a.2 ≠ 0` using `fun h0' => hne (Prod.ext h0 h0')`. Simplify `h6' _ ha.2 h0'` using `[h0]`. Distinguish the cases in `h0' : a.2 = 0`.
-
-Simplify `h6 _ ha.1 h0` using `[h0']`. Conclude with `add_neg (h6 _ ha.1 h0) (h6' _ ha.2 h0')`.
+A detailed English derivation is pending.
 -/
 theorem splitLat_sum {D D' : Datum H} (h : SplitLat D) (h' : SplitLat D') : SplitLat (DatumSum.sumDatum D D') := by
   obtain ⟨Lp, Lm, h1, h2, h3, h4, h5, h6⟩ := h
@@ -105,11 +103,11 @@ end GlobalTheory.CompRat.SplitSum
 namespace GlobalTheory.CompRat
 
 /- English proof (translation)
-Introduce `E _ _ _ H p q ⟨D, hp, hq⟩`. Use `⟨DatumSum.sumDatum (powDatum D p) (powDatum (CM.ConjDatum.conj D) q), ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p * D.p + q * D.q = p`. Simplify using `[hp, hq]`. Express the relevant statement in the definitionally equal form `p * D.q + q * D.p = q`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[hp, hq]`. Use `SplitSum.splitLat_sum (GlobalTheory.T.hermitianLatticeSignatureSplit_of_definite E H _ (Or.inr ?_)) (GlobalTheory.T.hermitianLatticeSignatureSplit_of_definite E H _ (Or.inl ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p * D.q = 0`. Simplify using `[hq]`. Express the relevant statement in the definitionally equal form `q * D.q = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[hq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_splitLat_of_signature : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q : ℕ), (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) → ∃ D₀ : Datum H, D₀.p = p ∧ D₀.q = q ∧ SplitLat D₀ := by
   intro E _ _ _ H p q ⟨D, hp, hq⟩

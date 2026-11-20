@@ -14,7 +14,7 @@ namespace GlobalTheory.GrowthOfInvariants
 open Pointwise
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_congr ((quotTensorEquivQuotSMul M I).toEquiv), Nat.card_congr (b.baseChange (O ⧸ I)).equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := ι)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_quot_smul_top_of_basis {O M ι : Type} [CommRing O] [AddCommGroup M] [Module O M]
     [Fintype ι] (b : Basis ι O M) (I : Ideal O) :
@@ -23,17 +23,15 @@ theorem card_quot_smul_top_of_basis {O M ι : Type} [CommRing O] [AddCommGroup M
     Nat.card_congr (b.baseChange (O ⧸ I)).equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := ι)]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Ideal.span_singleton_one]`. Conclude with `Nat.card_unique`. Consider the case `succ r ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression.
 
-Set `f : O →ₗ[O] O ⧸ Ideal.span {a ^ (r + 1)}` to `(Ideal.span {a ^ (r + 1)}).mkQ ∘ₗ LinearMap.mulLeft O (a ^ r)`. Establish `hker : LinearMap.ker f = Ideal.span {a}`. Use extensionality with `x`. Simplify using `only [f, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mulLeft_apply, Ideal.mem_span_singleton]`. Rewrite using `[pow_succ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_dvd_mul_iff_left (pow_ne_zero r ha)`. Establish `hrange : LinearMap.range f = Submodule.map (Ideal.span {a ^ (r + 1)}).mkQ (Ideal.span {a ^ r})`. Use extensionality with `y`. Simplify using `only [f, LinearMap.mem_range, LinearMap.comp_apply, LinearMap.mulLeft_apply, Submodule.mem_map, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨a ^ r * x, ⟨x, mul_comm _ _⟩, rfl⟩`. Introduce and unpack `⟨z, ⟨x, rfl⟩, rfl⟩; exact ⟨x, by rw [mul_comm]⟩`. Establish `hle : Ideal.span {a ^ (r + 1)} ≤ Ideal.span {a ^ r}`. Rewrite using `[Ideal.span_singleton_le_span_singleton, pow_succ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `dvd_mul_right _ _`. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Establish `h2 : Nat.card (LinearMap.range f) = Nat.card (O ⧸ Ideal.span {a})`. Rewrite using `[← hker]`. Conclude with `(Nat.card_congr f.quotKerEquivRange.toEquiv).symm`.
-
-Establish `h3 : Nat.card ((O ⧸ Ideal.span {a ^ (r + 1)}) ⧸ LinearMap.range f) = Nat.card (O ⧸ Ideal.span {a ^ r})`. Rewrite using `[hrange]`. Conclude with `Nat.card_congr (Submodule.quotientQuotientEquivQuotient _ _ hle).toEquiv`. Rewrite using `[h1, h2, h3, ih, pow_succ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_span_pow {O : Type} [CommRing O] [IsDomain O] (a : O) (ha : a ≠ 0) (r : ℕ) :
     Nat.card (O ⧸ Ideal.span {a ^ r}) = Nat.card (O ⧸ Ideal.span {a}) ^ r := by
@@ -69,9 +67,9 @@ theorem card_quot_span_pow {O : Type} [CommRing O] [IsDomain O] (a : O) (ha : a 
     rw [h1, h2, h3, ih, pow_succ, mul_comm]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7; revert G LL V h_3 h_4 h_5 h_6 h_7 ρ; exact @_root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants)`. Consider the case `exact @_root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants`. Consider the case `exact _root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants`. Consider the case `(apply _root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finset_fixed {G LL V : Type} [Group G] [Field LL] [AddCommGroup V] [Module LL V]
     [FiniteDimensional LL V] (ρ : Representation LL G V) :
@@ -86,11 +84,11 @@ theorem exists_finset_fixed {G LL V : Type} [Group G] [Field LL] [AddCommGroup V
   | (intros; exact _root_.GlobalTheory.FixedFinsetInvariants.exists_finset_fixed_mem_invariants ..)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.exists_pow_inf_eq_pow_smul (Ideal.span {a}) (LinearMap.range φ)`. Use `⟨c, fun r hr x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : φ x ∈ Ideal.span {a} ^ r • (⊤ : Submodule O P) ⊓ LinearMap.range φ`. Use `⟨?_, LinearMap.mem_range_self φ x⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite `h1` using `[hc r hr]`. Establish `h2 : φ x ∈ a ^ (r - c) • LinearMap.range φ`. Rewrite using `[← Submodule.ideal_span_singleton_smul, ← Ideal.span_singleton_pow]`. Conclude with `Submodule.smul_mono le_rfl inf_le_right h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, ⟨y, rfl⟩, hz⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h2`. Conclude with `⟨y, by rw [map_sub, map_smul, hz, sub_self]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_artinRees_pow {O M P : Type} [CommRing O] [IsNoetherianRing O] [AddCommGroup M]
     [Module O M] [AddCommGroup P] [Module O P] [Module.Finite O P] (φ : M →ₗ[O] P) (a : O) :
@@ -115,9 +113,9 @@ namespace GlobalTheory.GrowthOfInvariants
 open Pointwise
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11; revert O LL V h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 T hspan x; exact @_root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem)`. Consider the case `exact @_root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem`. Consider the case `exact _root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {O LL V : Type} [CommRing O] [IsDomain O] [Field LL] [Algebra O LL]
     [IsFractionRing O LL] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
@@ -133,19 +131,17 @@ theorem exists_smul_mem {O LL V : Type} [CommRing O] [IsDomain O] [Field LL] [Al
   | (intros; exact _root_.GlobalTheory.NonzeroScalarMembership.exists_ne_zero_smul_mem ..)
 
 /- English proof (translation)
-Use `set T₀ := (W.restrictScalars O).comap T.subtype`. Take `⟨n, b0⟩` from `Submodule.basisOfPid (Module.Free.chooseBasis O T) T₀`. Set `ι : T₀ →ₗ[O] V` to `T.subtype ∘ₗ T₀.subtype`. Establish `hι : Function.Injective ι` using `T.injective_subtype.comp T₀.injective_subtype`. Set `v : Fin n → V` to `fun i => ι (b0 i)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hvW : ∀ i, v i ∈ W` using `fun i => (b0 i).2`. Establish `hliO : LinearIndependent O v` using `b0.linearIndependent.map' ι (LinearMap.ker_eq_bot.2 hι)`. Establish `hli : LinearIndependent LL v` using `(LinearIndependent.iff_fractionRing O LL).1 hliO`. Establish `hspanW : Submodule.span LL (Set.range v) = W`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hvW i`. Introduce `x hx`. Take `⟨d, hd, hdx⟩` from `exists_smul_mem T hspan x`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hdxW : d • x ∈ W` using `by rw [← algebraMap_smul LL]; exact W.smul_mem _ hx`. Set `t0 : T₀` to `⟨⟨d • x, hdx⟩, hdxW⟩`. Establish `hmem : d • x ∈ Submodule.span O (Set.range v)`. Establish `ht : ι t0 = d • x` using `rfl`. Rewrite using `[← ht, ← b0.sum_repr t0, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hmemLL : d • x ∈ Submodule.span LL (Set.range v)` using `Submodule.span_le_restrictScalars O LL _ hmem`. Establish `hd' : algebraMap O LL d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : x = (algebraMap O LL d)⁻¹ • (d • x)`. Rewrite using `[← algebraMap_smul LL d x, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ hmemLL`. Establish `hrank : finrank LL W = n`.
-
-Rewrite using `[← hspanW, finrank_span_eq_card hli, Fintype.card_fin]`. Conclude with `⟨b0.reindex (finCongr hrank.symm)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_comap {O LL V : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [Field LL] [Algebra O LL] [IsFractionRing O LL] [AddCommGroup V] [Module LL V] [Module O V]
@@ -188,7 +184,7 @@ end GlobalTheory.GrowthOfInvariants
 namespace GlobalTheory.GrowthOfInvariants
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_finset_fixed ρ`. Use `⟨s.card, fun i => (s.equivFin.symm i).1, fun v hv => hs v fun g hg => ?_⟩` and prove the remaining obligations. Use `hv (s.equivFin ⟨g, hg⟩)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_fin_fixed {G LL V : Type} [Group G] [Field LL] [AddCommGroup V] [Module LL V]
     [FiniteDimensional LL V] (ρ : Representation LL G V) :
@@ -205,53 +201,47 @@ namespace GlobalTheory.GrowthOfInvariants
 open Pointwise
 
 /- English proof (translation)
-Use `haveI : Module.Free O LA.T := LA.free`. Use `haveI : Module.Finite O LA.T := Module.Finite.iff_fg.2 LA.fg`. Use `set T₀ : Submodule O LA.T := ((H0V ρ).restrictScalars O).comap LA.T.subtype with hT₀`. Establish `hb` using `exists_basis_comap LA.T LA.span (H0V ρ)`. Break down `hb with ⟨b0⟩` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hH0 : ∀ v : V, v ∈ H0V ρ ↔ ∀ g, ρ g v = v`. Introduce `v`. Simplify using `only [H0V, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `hsat : ∀ n (v : V), a ^ n • v ∈ H0V ρ → v ∈ H0V ρ`. Introduce `n v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : algebraMap O LL (a ^ n) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero (pow_ne_zero n ha0))`. Rewrite `hv` using `[← algebraMap_smul LL]`. Conclude with `(Submodule.smul_mem_iff _ hne).1 hv`. Establish `hposO : ∀ n, 0 < Nat.card (O ⧸ Ideal.span {a ^ n})` using `fun n => by haveI := hfinq n; exact Nat.card_pos`. Establish `hqpos : 0 < Nat.card (O ⧸ Ideal.span {a})` using `by have := hposO 1; rwa [pow_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcardT : ∀ n, Nat.card (LA.T ⧸ (Ideal.span {a ^ n} • ⊤ : Submodule O LA.T)) = Nat.card (O ⧸ Ideal.span {a ^ n}) ^ Fintype.card (Module.Free.ChooseBasisIndex O LA.T)` using `fun n => card_quot_smul_top_of_basis (Module.Free.chooseBasis O LA.T) _`. Establish `hcard0 : ∀ n, Nat.card (T₀ ⧸ (Ideal.span {a ^ n} • ⊤ : Submodule O T₀)) = Nat.card (O ⧸ Ideal.span {a}) ^ (n * finrank LL ↥(H0V ρ))`. Introduce `n`. Rewrite using `[card_quot_smul_top_of_basis b0, card_quot_span_pow a ha0, Fintype.card_fin, ← pow_mul]`. Establish `hfinT : ∀ n, Finite (LA.T ⧸ (Ideal.span {a ^ n} • ⊤ : Submodule O LA.T))` using `fun n => Nat.finite_of_card_ne_zero (by rw [hcardT]; exact pow_ne_zero _ (hposO n).ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin0 : ∀ n, Finite (T₀ ⧸ (Ideal.span {a ^ n} • ⊤ : Submodule O T₀))` using `fun n => Nat.finite_of_card_ne_zero (by rw [hcard0]; exact pow_ne_zero _ hqpos.ne')`. Establish `memI : ∀ n (x : LA.T), x ∈ (Ideal.span {a ^ n} • ⊤ : Submodule O LA.T) ↔ ∃ y : LA.T, a ^ n • y = x`. Introduce `n x`. Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs0` using `exists_fin_fixed ρ`. Break down `hs0 with ⟨k, gs, hs⟩` into its components or cases. Set `Φ : LA.T →ₗ[O] (Fin k → LA.T)` to `LinearMap.pi fun i => actT LA (gs i) - LinearMap.id`. Establish `hc0` using `exists_artinRees_pow (O := O) (M := LA.T) (P := Fin k → LA.T) Φ a`. Break down `hc0 with ⟨c, hc⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := hfinT c`. Use `⟨Nat.card (LA.T ⧸ (Ideal.span {a ^ c} • ⊤ : Submodule O LA.T)), Nat.card_pos, ?_⟩` and prove the remaining obligations. Introduce `r hI`. Use `haveI := hfinT r`. Use `haveI := hfin0 r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `Ir : Submodule O LA.T` to `Ideal.span {a ^ r} • ⊤`. Set `I0 : Submodule O T₀` to `Ideal.span {a ^ r} • ⊤`. Set `Jc : Submodule O LA.T` to `Ideal.span {a ^ c} • ⊤`. Set `f1 : T₀ →ₗ[O] LA.T ⧸ Ir` to `Ir.mkQ ∘ₗ T₀.subtype`. Establish `hf1 : I0 ≤ LinearMap.ker f1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.smul_le.2 fun b hb t _ => ?_` and prove the remaining obligations. Simplify using `only [f1, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.coe_subtype, Submodule.coe_smul]`. Conclude with `Submodule.smul_mem_smul hb Submodule.mem_top`. Set `L0` to `I0.liftQ f1 hf1`. Establish `hL0 : ∀ t : T₀, L0 (Submodule.Quotient.mk t) = Submodule.Quotient.mk (t : LA.T)` using `fun t => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hactmk : ∀ g (x : LA.T), actQ LA Ir hI g (Submodule.Quotient.mk x) = Submodule.Quotient.mk (actT LA g x)` using `fun g x => rfl`. Establish `hfix0 : ∀ (t : T₀) g, actT LA g (t : LA.T) = t`. Introduce `t g`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hH0 _).1 t.2 g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Establish `hinv : ∀ z, ∀ g, actQ LA Ir hI g (L0 z) = L0 z`. Introduce `z g`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective I0 z`. Rewrite using `[hL0, hactmk, hfix0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective L0`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective I0 z`. Rewrite `hz` using `[hL0, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `(memI r _).1 hz`. Establish `hyT : (y : V) ∈ H0V ρ`. Apply `hsat r` to reduce the goal to its premises. Establish `: ((a ^ r • y : LA.T) : V) = ((t : LA.T) : V)` using `by rw [hy]`. Rewrite using `[← Submodule.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `t.2`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `ht : t = a ^ r • (⟨y, hyT⟩ : T₀)` using `Subtype.ext hy.symm`. Rewrite using `[ht]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Rewrite using `[← hcard0 r]`. Conclude with `Nat.card_le_card_of_injective (fun z => ⟨L0 z, hinv z⟩) (fun z1 z2 h12 => hinj (congrArg Subtype.val h12))`. Set `f2 : LA.T →ₗ[O] LA.T ⧸ Ir` to `Ir.mkQ ∘ₗ (a ^ (r - c) • LinearMap.id)`. Establish `hf2 : Jc ≤ LinearMap.ker f2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `Submodule.smul_le.2 fun b hb y _ => ?_` and prove the remaining obligations. Take `⟨e, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Simplify using `only [f2, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `hk : r - c + c = r + (r - c + c - r)` using `by omega`. Establish `: a ^ (r - c) • (e * a ^ c) • y = a ^ r • ((e * a ^ (r - c + c - r)) • y)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : a ^ (r - c) * a ^ c = a ^ r * a ^ (r - c + c - r)`. Rewrite using `[← pow_add, ← pow_add, ← hk]`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Take the linear combination `e * hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Set `F` to `L0.coprod (Jc.liftQ f2 hf2)`. Establish `hsurj : ∀ x : {x : LA.T ⧸ Ir // ∀ g, actQ LA Ir hI g x = x}, ∃ d, F d = x.1`. Introduce and unpack `⟨x, hx⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, rfl⟩` from `Submodule.Quotient.mk_surjective Ir x`. Establish `hdiv : ∀ g, ∃ y : LA.T, a ^ r • y = actT LA g x0 - x0`. Introduce `g`. Use `hx g` as an intermediate fact. Rewrite `this` using `[hactmk, Submodule.Quotient.eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(memI r _).1 this`. Use `choose y hy using hdiv`. Establish `hΦ : Φ x0 ∈ a ^ r • (⊤ : Submodule O (Fin k → LA.T))`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Use `⟨fun i => y (gs i), Submodule.mem_top, funext fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Φ, Pi.smul_apply, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, hy]`. Distinguish the cases in `hrc : c ≤ r`. Take `⟨z, hz⟩` from `hc r hrc x0 hΦ`. Establish `ht : ((x0 - a ^ (r - c) • z : LA.T) : V) ∈ H0V ρ`. Use `hs _ fun i => ?_` and prove the remaining obligations.
-
-Establish `h1` using `congrFun hz i`. Simplify using `only [Φ, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, Pi.zero_apply, sub_eq_zero] at h1`. Conclude with `congrArg Subtype.val h1`. Use `⟨(Submodule.Quotient.mk ⟨x0 - a ^ (r - c) • z, ht⟩, Submodule.Quotient.mk z), ?_⟩` and prove the remaining obligations. Simplify using `only [F, LinearMap.coprod_apply, hL0, Submodule.liftQ_apply, f2, LinearMap.comp_apply, Submodule.mkQ_apply, LinearMap.smul_apply, LinearMap.id_apply]`.
-
-Rewrite using `[← Submodule.Quotient.mk_add, sub_add_cancel]`. Establish `h0 : r - c = 0` using `by omega`. Use `⟨(0, Submodule.Quotient.mk x0), ?_⟩` and prove the remaining obligations. Simplify using `only [F, LinearMap.coprod_apply, map_zero, zero_add, Submodule.liftQ_apply, f2, LinearMap.comp_apply, Submodule.mkQ_apply, LinearMap.smul_apply, LinearMap.id_apply, h0, pow_zero, one_smul]`. Use `choose σ hσ using hsurj`.
-
-Establish `hσinj : Function.Injective σ` using `fun x y hxy => Subtype.ext (by rw [← hσ x, ← hσ y, hxy])`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem growth_core {G LL O V : Type} [Group G] [Field LL] [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra O LL] [IsFractionRing O LL] [AddCommGroup V]
@@ -409,11 +399,9 @@ end GlobalTheory.GrowthOfInvariants
 namespace GlobalTheory.GrowthOfInvariants
 
 /- English proof (translation)
-Introduce `l _ K LL _ _ _ O _ _ hG A LA`. Take `⟨-, -, hfinq, -⟩` from `GlobalTheory.GoodCoeff.good_coeff_integers l LL O hG`. Take `⟨⟨hD, hDVR, hFr⟩, -, -, -, -⟩` from `hG`. Use `haveI := hD`. Use `haveI := hDVR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hFr`. Establish `ha0 : ((l : ℕ) : O) ≠ 0`. Introduce `h`. Establish `h1 : algebraMap O LL ((l : ℕ) : O) = ((l : ℕ) : LL)` using `map_natCast _ _`. Rewrite `h1` using `[h, map_zero]`.
-
-Establish `h2 : algebraMap ℚ_[l] LL ((l : ℕ) : ℚ_[l]) = 0` using `by rw [map_natCast]; exact h1.symm`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) ((map_eq_zero_iff _ (algebraMap ℚ_[l] LL).injective).1 h2)`. Conclude with `growth_core A.ρ LA _ ha0 hfinq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem growth_galois_invariants_mod_prime_power_lattice_alt : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), ∃ C : ℕ, 0 < C ∧ ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)), Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ^ (r * finrank LL ↥(H0V A.ρ)) ≤ Nat.card {x : ↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} ∧ Nat.card {x : ↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} ≤ C * Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ^ (r * finrank LL ↥(H0V A.ρ)) := by
   intro l _ K LL _ _ _ O _ _ hG A LA

@@ -21,9 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.RowClaim
 
 /- English proof (translation)
-Establish `hr : (Pair.top t j : Pair T).InRange D.R.m` using `by show j + 1 ≤ D.R.m`. Use linear arithmetic over natural numbers and integers. Establish `hω` using `W.om_is _ hr`. Take `⟨f, hf⟩` from `hd`. Establish `hf0 : IsThetaFunO W.ψ _ _ f` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is hf ((S.Z.vac_is (.top t j) (show j + 1 ≤ D.R.m by omega)).2.theta)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : IsThetaFunO W.ψ _ _ (S.Z.vec d)`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf]`. Conclude with `hω.om_pres _ _ hf0`. Establish `hm : IsThetaFunO W.ψ _ _ (movedVec t S d)` using `hω.om_pres _ _ hv`. Conclude with `GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hm Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_fock_movedVec_top {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {U : Set T} (S : GridChoice W U) {j : ℕ} (hj : j < D.R.m)
@@ -44,11 +44,9 @@ theorem isThetaFunO_fock_movedVec_top {D : D7} {T : Type} {L : LevCh D T} {sc : 
   exact GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hm Q
 
 /- English proof (translation)
-Introduce `D T L sc G W U S μ0 _ j hj Q t _ d hd`. Establish `hr : (Pair.top t j : Pair T).InRange D.R.m` using `by show j + 1 ≤ D.R.m`. Use linear arithmetic over natural numbers and integers. Establish `hω` using `W.om_is _ hr`. Establish `hF` using `isThetaFunO_fock_movedVec_top S hj Q t d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun γ hγ g h => ?_, fun z h => ?_⟩` and prove the remaining obligations. Use `show thetaKO (W.om (.top t j)) (γ * g) h _ = thetaKO (W.om (.top t j)) g h _`. Establish `e : ((γ * g, h) : GA D (G.V (.top j)) × GA D (G.V (.top (j + 1)))) = (γ, 1) * (g, h)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e, map_mul]`.
-
-Conclude with `hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hF)`. Use `show Continuous fun k : GinfC (G.V (.top j)) => thetaKO (W.om (.top t j)) (z * k) h _`. Conclude with `(hω.om_cont _ hF 0).comp ((continuous_const.mul continuous_subtype_val).prodMk continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerA_col_aut_cont : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ0 : T}, L.Is μ0 → ∀ (j : ℕ), j < D.R.m →
     ∀ (Q : PolF D (G.V (.top (j + 1))).rank (G.V (.top j)).rank) (t : T), t ∈ U → ∀ (d : FinDatum G t (.top t j)), S.Z.HasVec d →

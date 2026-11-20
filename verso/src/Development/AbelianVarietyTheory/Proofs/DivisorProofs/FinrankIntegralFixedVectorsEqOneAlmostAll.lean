@@ -16,13 +16,11 @@ noncomputable section
 namespace GlobalTheory.BCT.SphLine
 
 /- English proof (translation)
-Establish `hle : fixed τ U ≤ (fixed ρ U).map (T.toLinearEquiv : V →ₗ[ℂ] W)`. Introduce `y hy`. Use `⟨T.toLinearEquiv.symm y, ?_, T.toLinearEquiv.apply_symm_apply y⟩` and prove the remaining obligations. Use `show _ ∈ fixed ρ U`. Rewrite `hy`, the goal using `[GlobalTheory.GelfandLine.mem_fixed_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Apply `T.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h2` using `LinearMap.congr_fun (T.isIntertwining' k) (T.toLinearEquiv.symm y)`. Simplify using `only [LinearMap.comp_apply] at h2`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2.trans ?_ using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `τ k (T.toLinearEquiv (T.toLinearEquiv.symm y)) = y`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hy k hk`.
-
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fixed_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {ρ : Representation ℂ G V} {τ : Representation ℂ G W} (T : ρ.Equiv τ) (U : Subgroup G)
@@ -45,15 +43,15 @@ theorem finiteDimensional_fixed_of_equiv {G V W : Type} [Group G] [AddCommGroup 
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n w`. Distinguish the cases in `hs : IsSplitAt w`. Establish `hUL : UL n w = ⊤` using `if_pos hs`. Establish `hm : ∀ g : GLw n w, g ∈ UL n w` using `fun g => by rw [hUL]; trivial`. Use `⟨fun g => ⟨Formalism.UG.P.heckecomm_tr g.1, hm _⟩, fun x y => Subtype.ext (Formalism.UG.P.heckecomm_tr_mul _ _), fun x => Subtype.ext (Formalism.UG.P.heckecomm_tr_tr _), fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, e⟩` from `Formalism.UG.P.heckecomm_tr_dc Formalism.UG.P.cartan_decomposition_holds E w n g.1`. Conclude with `⟨⟨a, hm _⟩, Subgroup.mem_subgroupOf.2 a.2, ⟨b, hm _⟩, Subgroup.mem_subgroupOf.2 b.2, Subtype.ext e⟩`. Take `⟨-, -, -, hns, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨-, ⟨ϖ, q, hq, -⟩, -⟩` from `hns hs`. Establish `hUL : UL n w = UJ (cj w) 1` using `if_neg hs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun g => g⁻¹, fun x y => mul_inv_rev x y, fun x => inv_inv x, fun g => ?_⟩` and prove the remaining obligations. Establish `hg : (g : GLw n w) ∈ UJ (cj w) ((1 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Rewrite using `[Units.val_one, ← hUL]`. Conclude with `g.2`. Establish `hJ : ∀ i j : Fin n, cj w (((1 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) = ((1 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) j i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (Ne.symm h), map_zero]`. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `GlobalTheory.UnitarySwap.inv_mem_doubleCoset hq (one_mem _) hJ hg`. Establish `m1 : k₁ ∈ UL n w` using `by rw [hUL]; have := hk₁.1; rwa [Units.val_one] at this`. Establish `m2 : k₂ ∈ UL n w` using `by rw [hUL]; have := hk₂.1; rwa [Units.val_one] at this`. Conclude with `⟨⟨k₁, m1⟩, Subgroup.mem_subgroupOf.2 hk₁.2, ⟨k₂, m2⟩, Subgroup.mem_subgroupOf.2 hk₂.2, Subtype.ext e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gelfand_anti : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E), ∃ θ : UL n w → UL n w, (∀ x y, θ (x * y) = θ y * θ x) ∧ (∀ x, θ (θ x) = x) ∧ ∀ g, ∃ a ∈ KL n w, ∃ b ∈ KL n w, θ g = a * g * b := by
   intro E _ _ _ hU n w
@@ -83,17 +81,15 @@ theorem exists_gelfand_anti : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     exact ⟨⟨k₁, m1⟩, Subgroup.mem_subgroupOf.2 hk₁.2, ⟨k₂, m2⟩, Subgroup.mem_subgroupOf.2 hk₂.2, Subtype.ext e⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn π hπ σ hσ`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hπ.ne_bot`. Set `L : Subgroup (finU E n)` to `{ carrier := {k | RU E n k φ = φ} one_mem' := by simp mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hLo : IsOpen (L : Set (finU E n))` using `(hπ.aut φ hφ).level`. Establish `hunr : ∀ᶠ w in cofinite, IsUnramU π w` using `by filter_upwards [GlobalTheory.T.eventually_localIntegralPoints_mem_openSubgroup_definiteUnitary E n L hLo] with w hw`. Conclude with `⟨φ, hφ, hφ0, fun x hx hxK => hw x hx hxK hx.1⟩`. Establish `hadm : ∀ w, IsAdmissible (σ w).ρ`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Take `⟨⟨σ₀, hσ₀, hfd⟩, huniq⟩` from `GlobalTheory.BCT.LocCompU.exists_unique_locComp E hU n hn π hπ w`. Take `⟨T⟩` from `huniq σ₀ (σ w) hσ₀ (hσ w)`. Use `⟨(σ w).smooth, fun K hKo _ => ?_⟩` and prove the remaining obligations. Use `haveI := hfd K hKo`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `finiteDimensional_fixed_of_equiv T K`. Use `filter_upwards [hunr] with w hw`. Establish `hne` using `GlobalTheory.T.unramifiedVector_gives_localComponent_sphericalVector E hU n π hπ w (σ w) (hσ w) hw`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨θ, h1, h2, h3⟩` from `exists_gelfand_anti E hU n w`.
-
-Take `⟨hKo, hKc⟩` from `GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w`. Use `GlobalTheory.fixed_eq_span_of_gelfandPair (UL n w) (KL n w) hKo hKc θ h1 h2 h3 (σ w).V (σ w).ρ (σ w).irred (hadm w) x hx hx0` as an intermediate fact. Rewrite using `[this, finrank_span_singleton hx0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fixed_KL_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → ∀ σ : ∀ w : Pl E, SmIrr (UL n w), (∀ w, IsCompU π w (σ w)) →

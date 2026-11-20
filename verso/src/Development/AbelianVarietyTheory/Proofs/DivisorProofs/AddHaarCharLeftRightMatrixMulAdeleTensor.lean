@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.ResidueEisenstein.ModMat
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ j m _ _ _ _ g a`. Take `⟨κ, _, _, Λ, hΛ, hdet, hchar⟩` from `GlobalTheory.ModuLR.exists_matrix_restrictScalars_lrCE F E j m g a`. Rewrite using `[hchar, GlobalTheory.SiegelCov.addEquivAddHaarChar_mulVecCE_adele]`. Establish `hu : hΛ.unit = Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det g ^ m * Matrix.GeneralLinearGroup.det a ^ j)`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hdet]`. Rewrite using `[hu]`. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[GlobalTheory.ModuAdele.distribHaarChar_adeleRing, GlobalTheory.NormScaleHaar.ideleModule_norm, map_mul, map_pow, map_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem addEquivAddHaarChar_lrCE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (j m : ℕ) [LocallyCompactSpace (Matrix (Fin j) (Fin m) (AF F ⊗[F] E))] [SecondCountableTopology (Matrix (Fin j) (Fin m) (AF F ⊗[F] E))] [MeasurableSpace (Matrix (Fin j) (Fin m) (AF F ⊗[F] E))] [BorelSpace (Matrix (Fin j) (Fin m) (AF F ⊗[F] E))] (g : GL (Fin j) (AF F ⊗[F] E)) (a : GL (Fin m) (AF F ⊗[F] E)), addEquivAddHaarChar (GlobalTheory.ModuLR.lrCE g a) = absE F E (Matrix.GeneralLinearGroup.det g) ^ m * absE F E (Matrix.GeneralLinearGroup.det a) ^ j := by
   intro F E _ _ _ _ _ σ _ j m _ _ _ _ g a

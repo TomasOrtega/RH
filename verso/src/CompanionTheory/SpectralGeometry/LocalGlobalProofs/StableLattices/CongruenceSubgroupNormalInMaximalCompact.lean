@@ -8,9 +8,9 @@ namespace GlobalTheory.CompanionTheory.CartGL.Normal
 variable {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L] {n : ℕ}
 
 /- English proof (translation)
-Establish `e : A i j = (A - 1) i j + (1 : Matrix (Fin n) (Fin n) L) i j` using `by simp`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hA i j) ?_)` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Matrix.one_apply_eq, norm_one]`. Rewrite using `[Matrix.one_apply_ne h, norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_le_one {A : Matrix (Fin n) (Fin n) L} (hA : ∀ i j, ‖(A - 1) i j‖ ≤ 1) (i j : Fin n) :
     ‖A i j‖ ≤ 1 := by
@@ -24,7 +24,7 @@ theorem entry_le_one {A : Matrix (Fin n) (Fin n) L} (hA : ∀ i j, ‖(A - 1) i 
     exact zero_le_one
 
 /- English proof (translation)
-Establish `e : C * X * D - 1 = C * (X - 1) * D`. Rewrite using `[mul_sub, sub_mul, mul_one, hCD]`. Rewrite using `[e]`. Establish `h` using `entry_mul (mul_nonneg zero_le_one h0) zero_le_one (entry_mul zero_le_one h0 hC hX) hD i j`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entry_conj {C D X : Matrix (Fin n) (Fin n) L} {r : ℝ} (h0 : 0 ≤ r)
     (hC : ∀ i j, ‖C i j‖ ≤ 1) (hD : ∀ i j, ‖D i j‖ ≤ 1) (hCD : C * D = 1)
@@ -37,11 +37,9 @@ theorem entry_conj {C D X : Matrix (Fin n) (Fin n) L} {r : ℝ} (h0 : 0 ≤ r)
   simpa using h
 
 /- English proof (translation)
-Establish `hC : ∀ i j, ‖((c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j‖ ≤ 1` using `entry_le_one fun i j => (hc i j).1`. Establish `hD : ∀ i j, ‖(((c⁻¹ : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) i j‖ ≤ 1` using `entry_le_one fun i j => (hc i j).2`. Establish `hCD : ((c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (((c⁻¹ : GL (Fin n) L)) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `entry_conj h0 hC hD hCD (fun i j => (hx i j).1) i j`. Establish `e : (c * x * c⁻¹)⁻¹ = c * x⁻¹ * c⁻¹` using `by group`. Rewrite using `[e, Units.val_mul, Units.val_mul]`.
-
-Conclude with `entry_conj h0 hC hD hCD (fun i j => (hx i j).2) i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_congK (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] (n : ℕ) (r : ℝ)
     (h0 : 0 ≤ r) (h1 : r ≤ 1) (c x : GL (Fin n) L)

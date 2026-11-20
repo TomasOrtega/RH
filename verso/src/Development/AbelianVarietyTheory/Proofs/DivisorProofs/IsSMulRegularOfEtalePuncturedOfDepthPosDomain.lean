@@ -6,19 +6,17 @@ open IsLocalRing TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S _ _ _ _ A _ _ hdepth het f hf`. Take `⟨rs, hlen, hmem, hreg⟩` from `hdepth`. Take `⟨w, hw⟩ : ∃ w, rs = [w]` from `List.length_eq_one_iff.mp hlen`. Substitute `hw` using the available equality. Establish `hwm : w ∈ maximalIdeal S` using `hmem w (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hwr : IsSMulRegular A w` using `((RingTheory.Sequence.isRegular_cons_iff A w []).mp hreg).1`. Establish `hmax : maximalIdeal S ∉ associatedPrimes S A` using `ReciprocityTheory.CA.max_not_mem_ass_of_reg hwm hwr`. Use `IsSMulRegular.of_right_eq_zero_of_smul fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `ha0`. Take `⟨P, hP, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing S a ha0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hfP : f ∈ P` using `hle (Submodule.mem_colon_singleton.mpr (by simpa using ha))`. Take `⟨hPprime, b, hb⟩` from `Submodule.isAssociatedPrime_iff.mp hP`. Use `haveI := hPprime`. Establish `hPm : P ≠ maximalIdeal S` using `fun h => hmax (h ▸ hP)`. Use `haveI := het P hPm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := Localization.AtPrime P`. Use `haveI : Module.Flat L (TensorProduct S L A) := inferInstance`. Establish `hfb : f • b = 0`. Establish `: f ∈ (⊥ : Submodule S A).colon {b}` using `hb ▸ hfP`. Simplify using `using Submodule.mem_colon_singleton.mp this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hloc : IsLocalizedModule P.primeCompl (TensorProduct.mk S L A 1)` using `(isLocalizedModule_iff_isBaseChange P.primeCompl L _).mpr (TensorProduct.isBaseChange S A L)`. Establish `hfL : algebraMap S L f ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Conclude with `(IsLocalization.injective L (Ideal.primeCompl_le_nonZeroDivisors P)) (by simpa using h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : L) ⊗ₜ[S] b = 0`. Establish `: algebraMap S L f • ((1 : L) ⊗ₜ[S] b) = 0`. Rewrite using `[algebraMap_smul, ← TensorProduct.tmul_smul, hfb, TensorProduct.tmul_zero]`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := TensorProduct S L A) (mem_nonZeroDivisors_of_ne_zero hfL)`. Conclude with `hreg (show algebraMap S L f • ((1 : L) ⊗ₜ[S] b) = algebraMap S L f • 0 by rw [this, smul_zero])`.
-
-Take `⟨t, ht⟩` from `(IsLocalizedModule.eq_zero_iff P.primeCompl (TensorProduct.mk S L A 1)).mp h1`. Establish `htP : (t : S) ∈ P`. Establish `: (t : S) ∈ (⊥ : Submodule S A).colon {b}` using `Submodule.mem_colon_singleton.mpr (by simpa [Submonoid.smul_def] using ht)`. Conclude with `hb ▸ this`. Conclude with `t.2 htP`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSMulRegular_of_etale_punctured_of_depth_pos_domain :
     ∀ (S : Type) [CommRing S] [IsLocalRing S] [IsNoetherianRing S] [IsDomain S] (A : Type)

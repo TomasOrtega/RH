@@ -10,11 +10,11 @@ open scoped ContDiff
 namespace UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `V' V F _ _ _ _ _ _ _ _ q H w p hH hw`. Establish `hr : minSmoothness ℝ 2 ≤ ∞`. Rewrite using `[minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top`. Establish `hinf : (∞ : WithTop ℕ∞) + 1 ≤ ∞`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_top` after adjusting the coercions. Use `⟨?_, extDeriv_pullback (hw.differentiableAt (by simp)) hH hr⟩` and prove the remaining obligations. Apply `altSmooth V' V' F q (pb H w) p` to reduce the goal to its premises. Introduce `v`. Establish `h1 : ContDiffAt ℝ ∞ (fun y => w (H y)) p` using `hw.comp p hH`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, ContDiffAt ℝ ∞ (fun y => fderiv ℝ H y (v i)) p` using `fun i => (hH.fderiv_right hinf).clm_apply contDiffAt_const`. Establish `h3` using `applySmooth V' V F q (fun y => w (H y)) (fun i y => fderiv ℝ H y (v i)) p h1 h2`. Simplify `h3` using `[pb, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pbD : PbD := by
   intro V' V F _ _ _ _ _ _ _ _ q H w p hH hw

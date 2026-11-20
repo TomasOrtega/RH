@@ -10,16 +10,16 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le_one_of_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx
 
 /- English proof (translation)
-Establish `hle : ∀ x : c.O, ‖algebraMap c.O (PadicAlgCl l) x‖ ≤ 1` using `fun x => norm_le_one_of_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map c.O.val)`. Take `⟨u, rfl⟩` from `hx`. Establish `h1 : ‖algebraMap c.O (PadicAlgCl l) u‖ * ‖algebraMap c.O (PadicAlgCl l) (u⁻¹ : c.Oˣ)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Establish `h2` using `hle u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hle (u⁻¹ : c.Oˣ)`. Establish `h4` using `norm_nonneg (algebraMap c.O (PadicAlgCl l) u)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem norm_unit {l : ℕ} [Fact l.Prime] (c : Coef l) {x : c.O} (hx : IsUnit x) :
     ‖algebraMap c.O (PadicAlgCl l) x‖ = 1 := by
@@ -34,14 +34,14 @@ private theorem norm_unit {l : ℕ} [Fact l.Prime] (c : Coef l) {x : c.O} (hx : 
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem corner_det {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) :
     (corner X).det = X 0 0 * X 2 2 - X 0 2 * X 2 0 := by
   rw [Matrix.det_fin_two]; rfl
 
 /- English proof (translation)
-Rewrite using `[tor_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wt1, Matrix.diagonal]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tor_mat {R : Type} [CommRing R] (p : Rˣ) :
     (tor R p : Matrix (Fin 3) (Fin 3) R) = !![(p : R), 0, 0; 0, 1, 0; 0, 0, ((p⁻¹ : Rˣ) : R)] := by
@@ -50,7 +50,7 @@ private theorem tor_mat {R : Type} [CommRing R] (p : Rˣ) :
   fin_cases i <;> fin_cases j <;> simp [wt1, Matrix.diagonal]
 
 /- English proof (translation)
-Use `congrArg (Polynomial.eval t) hc` as an intermediate fact. Rewrite `this` using `[Matrix.eval_charpoly, Matrix.eval_charpoly, tor_mat, Matrix.det_fin_three, Matrix.det_fin_three]`. Simplify using `[Matrix.scalar_apply, h0, h2] at this`. Rewrite using `[Units.val_inv_eq_inv_val]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem eval_block {k : Type} [Field k] (X : Matrix (Fin 3) (Fin 3) k) (p : kˣ)
     (h0 : X 0 1 = 0) (h2 : X 2 1 = 0) (hc : X.charpoly = (tor k p : Matrix (Fin 3) (Fin 3) k).charpoly) (t : k) :
@@ -62,11 +62,11 @@ private theorem eval_block {k : Type} [Field k] (X : Matrix (Fin 3) (Fin 3) k) (
   linear_combination this
 
 /- English proof (translation)
-Use `eval_block X p h0 h2 hc (X 1 1)` as an intermediate fact. Rewrite `this` using `[sub_self, zero_mul]`. Break down `mul_eq_zero.1 this.symm with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Rewrite `h1` using `[sub_eq_zero.1 h, hp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h1 (lt_irrefl _)`. Conclude with `sub_eq_zero.1 h`. Rewrite `h1` using `[sub_eq_zero.1 h]`. Establish `e : (p : k) * (((p⁻¹ : kˣ) : k) - 1) = -((p : k) - 1)` using `by rw [mul_sub, Units.mul_inv]; ring`. Establish `e2` using `congrArg norm e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[norm_mul, norm_neg, hp, hp', one_mul]`. Rewrite `h1` using `[e2]`. Conclude with `absurd h1 (lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 private theorem mid_eq_one {k : Type} [NormedField k] [IsUltrametricDist k] (X : Matrix (Fin 3) (Fin 3) k) (p : kˣ)
     (h0 : X 0 1 = 0) (h2 : X 2 1 = 0) (hc : X.charpoly = (tor k p : Matrix (Fin 3) (Fin 3) k).charpoly)
@@ -86,13 +86,13 @@ private theorem mid_eq_one {k : Type} [NormedField k] [IsUltrametricDist k] (X :
     exact absurd h1 (lt_irrefl _)
 
 /- English proof (translation)
-Establish `h00` using `hr 0 0`. Establish `h22` using `hr 2 2`. Establish `h02` using `hr 0 2`. Rewrite `h00`, `h22`, `h02` using `[tor_mat]`. Express the relevant statement in the definitionally equal form `‖X 0 0 - p‖ < 1 at h00`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖X 2 2 - (p⁻¹ : kˣ)‖ < 1 at h22`. Express the relevant statement in the definitionally equal form `‖X 0 2 - 0‖ < 1 at h02`. Rewrite `h02` using `[sub_zero]`. Establish `e : (corner X).det - 1 = ((X 0 0 - p) * X 2 2 + p * (X 2 2 - (p⁻¹ : kˣ))) + -(X 0 2 * X 2 0)`. Rewrite using `[corner_det, mul_sub (p : k), Units.mul_inv]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt (lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h00 (hi _ _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hp', one_mul]`. Conclude with `h22`. Rewrite using `[norm_neg, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h02 (hi _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_near {k : Type} [NormedField k] [IsUltrametricDist k] (X : Matrix (Fin 3) (Fin 3) k) (p : kˣ)
     (hi : ∀ a b, ‖X a b‖ ≤ 1) (hr : ∀ a b, ‖X a b - (tor k p : Matrix (Fin 3) (Fin 3) k) a b‖ < 1)
@@ -115,7 +115,7 @@ private theorem det_near {k : Type} [NormedField k] [IsUltrametricDist k] (X : M
   · rw [norm_neg, norm_mul]; exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h02 (hi _ _)
 
 /- English proof (translation)
-Rewrite using `[← mem_nonunits_iff, ← IsLocalRing.mem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, map_sub, map_one, sub_eq_zero, Units.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem bar_iff {O Γ : Type} [CommRing O] [IsLocalRing O] [Group Γ] (Ψ : Γ →* Oˣ) (g : Γ) :
     barChar O Ψ g = 1 ↔ ¬ IsUnit ((Ψ g : O) - 1) := by
@@ -135,15 +135,15 @@ private noncomputable def midChar {G k : Type} [Group G] [Field k] (η : G →* 
         ring }
 
 /- English proof (translation)
-Take `⟨hB, hirr⟩` from `hII`. Take `⟨W, hW, hWd⟩` from `exists_lieElement_middleBlockPart η r cc hm hc hat hB hb`. Establish `hWk : ∀ g ∈ η.ker, (W g : Matrix (Fin 2) (Fin 2) k) = corner (r g).mat` using `fun g hg => by`. Rewrite using `[hW, Wfun, if_pos ((hm g).trans hg)]`. Establish `hWc : Continuous fun g => (W g : Matrix (Fin 2) (Fin 2) k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun g => (W g : Matrix (Fin 2) (Fin 2) k)) = fun g => corner (r g).mat * (fun s : ℤˣ => if s = 1 then (1 : Matrix (Fin 2) (Fin 2) k) else Matrix.diagonal ![-1, 1]) (η g)`. Use function extensionality and compare the values at `g`. Rewrite using `[hW, Wfun, hm g]`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `(hct.matrix_submatrix _ _).matrix_mul (hηc.comp fun s : ℤˣ => if s = 1 then (1 : Matrix (Fin 2) (Fin 2) k) else Matrix.diagonal ![-1, 1]).continuous`. Use `⟨W, hWk, ?_, ?_, ⟨top_ne_bot, fun _ _ _ => Submodule.mem_top, fun V _ hV => hirr V fun g hg v hv => ?_⟩, hW, hWd⟩` and prove the remaining obligations. Rewrite using `[hW, Wfun, if_neg (by rw [hm, hc]; decide), hat]`. Rewrite using `[Matrix.trace_fin_two, Matrix.mul_diagonal, Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(1 : k) * (-1) + 1 * 1 = 0`. Expand and normalize the polynomial expressions, which then agree. Use `Units.continuous_iff.2 ⟨hWc, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `hWc.comp continuous_inv`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hV g v hv` as an intermediate fact. Rewrite `this` using `[hWk g hg]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem W_facts {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [NormedField k]
     (η : Γ →* ℤˣ) (r : Γ →* GG 3 k) (cc : Γ) (hm : HasMult η r) (hc : η cc = -1) (hat : (r cc).mat = 1)
@@ -180,33 +180,31 @@ private theorem W_facts {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopolo
     rwa [hWk g hg] at this
 
 /- English proof (translation)
-Introduce `hC Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ hM r h hII`. Take `⟨hB, hirr⟩` from `hII`. Take `⟨-, -, -, hηc, -, -, -, -, -, -, habove⟩` from `dat_facts D`. Establish `h0 : ∀ g ∈ D.η.ker, (r g).mat 0 1 = 0` using `fun g hg => hB g hg 0 1 (by decide)`. Establish `h2 : ∀ g ∈ D.η.ker, (r g).mat 2 1 = 0` using `fun g hg => hB g hg 2 1 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨn : ∀ g, ‖((D.ΨQ g : (PadicAlgCl l)ˣ) : PadicAlgCl l)‖ = 1` using `fun g => norm_unit c (D.Ψ g).isUnit`. Establish `hcp : ∀ (A : ValuationSubring Ω), ∀ g ∈ D.η.ker, g ∈ Ine (F` using `ℚ) A → (r g).mat.charpoly = (tor _ (D.ΨQ g) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)).charpoly := by`. Introduce `A g hg hA`. Distinguish the cases in `hl : A.valuation (l : Ω) < 1`. Conclude with `(pt_inertia_above hC D hM h A hl).1 g hA`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM'⟩` from `pt_inertia_away D hM h A hl`. Establish `e1` using `hM' g hA hg`. Establish `e2 : (r0 D.η D.ΨQ g).mat = (M : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * (r g).mat * ((M⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))`. Rewrite using `[e1, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `_ = (r0 D.η D.ΨQ g).mat.charpoly`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hnear : ∀ g, ‖(r g).mat 1 1 - 1‖ < 1` using `fun g => by`. Use `h.red g 1 1` as an intermediate fact. Express the relevant statement in the definitionally equal form `‖_ - (tor _ (D.ΨQ g) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) 1 1‖ < 1 at this`. Rewrite `this` using `[tor_mat]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hbar : ∀ g, barChar c.O D.Ψ g = 1 ↔ ¬ IsUnit ((D.Ψ g : c.O) - 1)` using `bar_iff D.Ψ`. Establish `hfar : ∀ (A : ValuationSubring Ω), ∀ g ∈ D.η.ker, g ∈ Ine (F` using `ℚ) A → barChar c.O D.Ψ g ≠ 1 → (r g).mat 1 1 = 1 := by`. Introduce `A g hg hA hb`. Use `mid_eq_one _ _ (h0 g hg) (h2 g hg) (hcp A g hg hA) (hnear g) ?_ (hΨn g)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `norm_unit c (not_not.1 fun hn => hb ((hbar g).2 hn))` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `hcm : ∀ a b, Continuous fun g => (r g).mat a b` using `fun a b => h.cont.matrix_elem a b`. Establish `hκ : midChar D.η r h.mult hB = 1`. Use `char_eq_one D _ ((hcm 1 1).comp continuous_subtype_val) (fun g => hnear g) fun A g hA => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : barChar c.O D.Ψ g = 1`. Distinguish the cases in `hl : A.valuation (l : Ω) < 1`. Take `⟨hle, s, hs, hu⟩` from `habove A hl`. Establish `hsb : barChar c.O D.Ψ s ≠ 1` using `fun hn => (hbar s).1 hn (isUnit_of_mul_isUnit_left (y := (D.Ψ s : c.O) + 1) (by convert hu using 1; ring))`. Establish `e1 : midChar D.η r h.mult hB ⟨s, hle hs⟩ = 1` using `Units.ext (hfar A s (hle hs) hs hsb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e2 : midChar D.η r h.mult hB (g * ⟨s, hle hs⟩) = 1` using `Units.ext (hfar A _ (g * ⟨s, hle hs⟩).2 (mul_mem hA hs) (by`. Express the relevant statement in the definitionally equal form `barChar c.O D.Ψ (g * s) ≠ 1`. Rewrite using `[map_mul, hb, one_mul]))` and apply the resulting hypothesis. Rewrite `e2` using `[map_mul, e1, mul_one]`. Then use the resulting hypothesis. Establish `hk : (g : G ℚ Ω) ∈ D.Kill` using `⟨A, hl, hA, by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `SemidirectProduct.ext ?_ g.2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `tor _ (barChar c.O D.Ψ g) = 1`. Rewrite using `[hb, map_one]⟩`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r g).mat 1 1 = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.kill g hk]`. Simplify using `[GG.mat]`. Conclude with `Units.ext (hfar A g g.2 hA hb)`. Establish `ha : ∀ g ∈ D.η.ker, (r g).mat 1 1 = 1` using `fun g hg => by`. Use `congrArg Units.val (DFunLike.congr_fun hκ (⟨g, hg⟩ : D.η.ker))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this`. Establish `hdet : ∀ g ∈ D.η.ker, (r g).mat.det = (corner (r g).mat).det` using `fun g hg => by`. Rewrite using `[corner_det, Matrix.det_fin_three, h0 g hg, h2 g hg, ha g hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδ : (Matrix.GeneralLinearGroup.det).comp (glPart D.η r h.mult) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `char_eq_one D _ (h.cont.matrix_det.comp continuous_subtype_val) (fun g => ?_) fun A g hA => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(r g).mat.det - 1‖ < 1`. Rewrite using `[hdet g g.2]`. Conclude with `det_near _ _ (h.int g) (h.red g) (hΨn g)`. Use `Units.ext ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Express the relevant statement in the definitionally equal form `(r g).mat.det = 1`. Use `eval_block _ _ (h0 g g.2) (h2 g g.2) (hcp A g g.2 hA) 0` as an intermediate fact. Rewrite using `[hdet g g.2, corner_det]`. Rewrite `this` using `[ha g g.2]`. Take the linear combination `(D.ΨQ g).mul_inv - this`.
-
-Establish `hb : ∀ g ∈ D.η.ker, (corner (r g).mat).det = 1` using `fun g hg => by`. Use `congrArg Units.val (DFunLike.congr_fun hδ (⟨g, hg⟩ : D.η.ker))` as an intermediate fact. Conclude with `(hdet g hg).symm.trans this`. Take `⟨W, H1, H2, H3, H4, H5, H6⟩` from `W_facts D.η r D.cc h.mult hM.ηc h.norm.atc ⟨hB, hirr⟩ hb h.cont hηc`. Conclude with `⟨ha, hb, W, ⟨H1, H2⟩, H3, H4, H5, H6⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.typeII_facts :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

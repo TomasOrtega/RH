@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.RegAlgCharAlg
 
 /- English proof (translation)
-Establish `h` using `(CG.hasInfChar_ofChar χ τ).twist χ'`. Rewrite `h` using `[CG.twist_ofChar, Multiset.map_singleton]`. Use `h.infChar_eq` as an intermediate fact. Rewrite `this` using `[CG.infChar_ofChar]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem expo_mul' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ χ' : HChar E) (τ : E →+* ℂ) :
     expo (χ * χ') τ = expo χ τ + expo χ' τ := by
@@ -32,7 +32,7 @@ theorem expo_mul' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ 
   simpa using this
 
 /- English proof (translation)
-Use `expo_mul' χ χ⁻¹ τ` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, CG.expo_one]`. Take the linear combination `-this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem expo_inv' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E) (τ : E →+* ℂ) :
     expo χ⁻¹ τ = -expo χ τ := by
@@ -41,15 +41,13 @@ theorem expo_inv' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ 
   linear_combination -this
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha π χ hreg hpol`. Use `GlobalTheory.T.heckeChar_realSubfield_algebraic_of_comp_norm_integral E χ fun τ => ?_` and prove the remaining obligations. Establish `hcomm : ∀ (τ : E →+* ℂ) (u : ℂ) (o : Op E a), Commute (cap (a` using `a) τ u) (act o) := fun τ u o => by`. Consider the cases of `o with`. Consider the case `fin k => exact commute_cap_finRep τ u k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _`. Consider the case `lie X => exact commute_cap_lie τ u X`. Establish `hm : ∀ σ, π.HasInfChar σ ((CG.mk π).infChar σ)` using `fun σ => GlobalTheory.CuspRep.hasInfChar_infChar_of_commute E a hcomm (CG.mk π) σ`. Use `set ψ := GlobalTheory.GalOfCusp.compNorm E χ`. Establish `h1` using `(hm τ).twist ψ⁻¹`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.infChar_conjEmbedding_neg_of_invariant_pairing E a (π.twist ψ⁻¹) π hpol.dual τ _ _ h1 (hm (NumberField.ComplexEmbedding.conjugate τ))`. Take `⟨z, hz⟩ : ∃ z, z ∈ (CG.mk π).infChar τ` from `Multiset.card_pos_iff_exists_mem.1 (by rw [(hm τ).1]; omega)`. Take `⟨n, hn⟩` from `(hreg τ).2 z hz`. Establish `hz' : -(z + expo ψ⁻¹ τ) ∈ (CG.mk π).infChar (NumberField.ComplexEmbedding.conjugate τ)`. Rewrite using `[key, Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Multiset.mem_map.2 ⟨z, hz, rfl⟩`. Take `⟨n', hn'⟩` from `(hreg _).2 _ hz'`. Use `⟨n + n' + ((a : ℤ) - 1), ?_⟩` and prove the remaining obligations. Rewrite `hn'` using `[expo_inv']`. Use `push_cast`.
-
-Take the linear combination `hn' + hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isAlgPos_of_polarizedPair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a →
     ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → PolarizedPair π χ →

@@ -23,11 +23,11 @@ open GlobalTheory.TranslMove GlobalTheory.VVRank GlobalTheory.ShortValMove
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Take `⟨y₁, β₀, β, r₁, V₁, hy, oy, g₀, n₀, cβ, tw, sl₁, ac₁⟩` from `H`. Take `⟨x₁, hx₁, hx, ox⟩` from `ht y₁ hy oy`. Take `⟨α₀, gα₀, nα₀, v₀⟩` from `exists_normMul hp L₀.isLB L₁.isLB hw he hρ N g₀ n₀`. Take `⟨α, gα, cα⟩` from `NormMulUniv.exists_pull L₁.isLB α₀ gα₀ T`. Establish `v : GenRel w Ψ β α` using `fun Z r z J₀ J hJ₀ hJ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[val_corr hJ₀ cβ, val_pull hJ₀, val_corr hJ cα, val_pull hJ, Category.assoc, h₂, ← Category.assoc, v₀ Z _ z J₀ J hJ₀ hJ, Category.comp_id, Category.assoc, ← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Take `⟨s₁, tw'⟩` from `VVRank.exists_isTwistPull A (ψ := mulT A T N) (hm := lift_snd _ _) (b := 1) L₁.isLB gα s`. Establish `R₁` using `secRel_twist (lift_comm h₁ (pt_pow hp h₂ N) h₂) v tw tw' hs`. Take `⟨U₁, l₁, a₁⟩` from `exists_symLift hp L₀.isLB L₁.isLB hw h₁ h₂ hk hx₁ sl₁`. Take `⟨F, b₁, R₂⟩` from `a₁ _ _ _ ac₁ R₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F, ⟨x₁, α₀, α, s₁, U₁, hx, ox, gα₀, nα₀, cα, tw', l₁, b₁⟩, R₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isVtOver {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {A : Over S'} [GrpObj A]
     [IsCommMonObj A] {f : S' ⟶ S} {φ : A.left ⟶ G.left} (hp : IsGrpPullback A G f φ)
@@ -57,7 +57,7 @@ theorem exists_isVtOver {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonOb
   exact ⟨F, ⟨x₁, α₀, α, s₁, U₁, hx, ox, gα₀, nα₀, cα, tw', l₁, b₁⟩, R₂⟩
 
 /- English proof (translation)
-Use `UnivPol.isLocallyNoetherian Xo` as an intermediate fact. Establish `hρ` using `(maps_iff w _ (fun _ => eSec Xo.univ.t.G) _ Xo.univ.t.PP.rig Xo.univ.t.PP.rig ν.cm.e _ (rigPull_le ν.cm.F ν.cm.e ν.cm.e_comm Xo.univ.t.PP.L) (fun _ => rfl)).1 hw.2.1`. Conclude with `exists_isVtOver ν.cart (T := ptO Xo x) (T₀ := ptO Xo x') (τ := 𝟙 (Sp S)) hw.1 (h₁.trans (Category.comp_id _).symm) h₂ ν.cm.e_comm hρ N (fun θ => pt_pow_eq_one hLaw.kerPow (UnivPol.pol Xo) (N ^ 2) (Nat.cast_pow N 2).symm θ) hs (fun q hq oq => (ht q hq oq).imp fun p hp => ⟨(Categor …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isVtOver_move (hLaw : Laws) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X}
@@ -83,7 +83,7 @@ theorem isVtOver_move (hLaw : Laws) {E : Type} [Field E] [NumberField E] [IsCMFi
     (fun q hq oq => (ht q hq oq).imp fun p hp => ⟨(Category.id_comp _).trans hp.1, hp.2⟩) hF
 
 /- English proof (translation)
-Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `e : (N : ℤ) ^ 2 = (N ^ 2 : ℕ)` using `(Nat.cast_pow N 2).symm`. Use `GlobalTheory.T.harmonic_values_invariant_universal_endomorphism hLaw hCI E H Dw l Xo c nab hnab S ρ ν y y' pm w hx h₁ h₂ hw hu n a P hP N F F' fun b => ?_` and prove the remaining obligations. Establish `hc` using `@secRel_iff _ _ _ _ _ _ ν.cm.F (ptO Xo y.x) (ptO Xo y'.x) _ _ w pm hL hL h₂ ((N : ℤ) ^ 2) (N ^ 2) e`. Conclude with `(hc _ _).1 (hF b)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nab_move (hLaw : Laws) (hCI : ChartIndepSt2) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {nab : NabV Xo c}
@@ -107,11 +107,11 @@ theorem nab_move (hLaw : Laws) (hCI : ChartIndepSt2) {E : Type} [Field E] [Numbe
   exact (hc _ _).1 (hF b)
 
 /- English proof (translation)
-Take `⟨S', _, _, φ, y₁', F', hff, hfr, hV, hval⟩` from `hv`. Take `⟨y₁, hy₁⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hLaw E H Dw l Xo c S S' φ y`. Take `⟨hx, hu, pm, ω, hf, hs, hω, hR⟩` from `exists_move_baseChange hmv hy₁ hfr`. Take `⟨e, he⟩` from `exists_ptEquiv ν hx`. Establish `he' : ∀ p, p.left = (e.symm p).left ≫ ν.φ` using `fun p => by rw [← he, e.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hact : ∀ p b, e (p ≫ Xo.univ.t.act.act b) = e p ≫ Xo.univ.t.act.act b` using `fun p b => Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc, ν.act])`. Establish `hact' : ∀ p b, e.symm p ≫ Xo.univ.t.act.act b = e.symm (p ≫ Xo.univ.t.act.act b)` using `fun p b => e.injective (by rw [hact, e.apply_symm_apply, e.apply_symm_apply])`. Establish `hlv : ∀ q : Dw.La, e (levPt Xo y₁.x (gM q)) = levPt Xo y₁'.x q` using `fun q => by`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, levPt, levPt, Over.comp_left, Over.comp_left, Category.assoc, hlev.2.1, Over.toUnit_left, Over.toUnit_left]`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) hx.symm)`. Use `choose F hF hFF using fun b : Fin n => isVtOver_move hLaw hf hs hω hR l.M (ok := KilledBy Xo (l.Mb ^ 2)) (t := levPt Xo y₁.x (gM (x b))) (fun p hp op => ⟨e.symm p, he' p, by rw [← map_pow, hp, ← hlv, e.symm_apply_apply], fun r hr => by rw [hact', op r hr, map_one]⟩) (hV b)`. Use `⟨S', inferInstance, inferInstance, φ, y₁, F, hff, hy₁, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, thExpr, thExpr, nab_move hLaw hCI hnab hx hf hs hω hu hP l.M F F' hFF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thValAt_move (hLaw : Laws) (hCI : ChartIndepSt2) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {nab : NabV Xo c}
@@ -152,11 +152,11 @@ open GlobalTheory.FormTies
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hCI D T h j hj w γ f hf _`. Take `⟨x, P, hP, hf⟩` from `hf`. Take `⟨st, hnab⟩` from `h.nabPin j hj`. Establish `hr : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Take `⟨hp, hq, -⟩` from `h.pins.2.2.2 j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `h1` using `hj.1`. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hA` using `(GlobalTheory.T.actLev_full_level_group_framedPoints D T.Q j hr h.pins.2.1.2).total`. Use `⟨fun b => liftLa γ (x b), P, hP, fun p y => ?_⟩` and prove the remaining obligations. Take `⟨ρ, ν, -, hlev, hmv⟩` from `mvPt_spec hA γ y`. Conclude with `thValAt_move GlobalTheory.firstFiveLaws.1 hCI hnab hlev hmv hP.1 (hf p _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem actLev_mem_th : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (γ : LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l), ∀ f ∈ T.th j w, f ∈ sec (T.Q.Xo j) T.Q.c (wtA w) w.n → actLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l) γ f ∈ T.th j w := by
   intro hCI D T h j hj w γ f hf _

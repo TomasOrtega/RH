@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithInterProjectio
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `hF hM hP` and use `have hE : ArExists := GlobalTheory.T.arithHeightsAndForms_of_intersection_and_inductive hF hM have hC : ArChange := arChange_of_arMix hE hM ⟨hE, hC, GlobalTheory.T.arithSelfInter_constantShift_of_trivialWeightFormula hE hC, hM, GlobalTheory.T.arithInterProjectionFormula_of_height …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem arCalc_of_form_mix_projection : ArFormExists → ArMix → HeightProjection → ArCalc := fun hF hM hP =>
   have hE : ArExists := GlobalTheory.T.arithHeightsAndForms_of_intersection_and_inductive hF hM

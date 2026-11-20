@@ -10,15 +10,13 @@ namespace GlobalTheory.LocSpan
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI := p.isMaximal`. Take `⟨P, hP, hPp⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) p.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]`. Conclude with `bot_le)`. Take `⟨θ, t, ht, hθ⟩` from `hc.cmUnram.2.2 P hP`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht' : (t : E) = star (θ : E)` using `ht`. Take `⟨d0, hd0⟩` from `(hc.fixed (((θ : E) - (t : E)) ^ 2)).1 (by`. Rewrite using `[ht', star_pow, star_sub, star_star]`. Use the proof step `ring)`. Establish `hint : IsIntegral ℤ d0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : IsIntegral ℤ (algebraMap F E d0)`. Rewrite using `[hd0]`. Conclude with `(θ.isIntegral_coe.sub t.isIntegral_coe).pow 2`. Conclude with `(isIntegral_algHom_iff ((algebraMap F E).toIntAlgHom) (algebraMap F E).injective).1 h1`. Use `⟨θ, t, ⟨d0, hint⟩, ht', ?_, hd0⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `hd`. Rewrite `hd` using `[← hPp]`. Use `replace hd := Ideal.mem_comap.1 hd`. Establish `: algebraMap (𝓞 F) (𝓞 E) ⟨d0, hint⟩ = (θ - t) ^ 2`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
-
-Simplify using `only [map_pow, map_sub]`. Conclude with `hd0`. Rewrite `hd` using `[this]`. Conclude with `hθ (hP.isPrime.mem_of_pow_mem 2 hd)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_disc_notMem (hc : Formalism.BasicNotions.CMData F E) (p : HeightOneSpectrum (𝓞 F)) :
     ∃ (θ t : 𝓞 E) (d : 𝓞 F), (t : E) = star (θ : E) ∧ d ∉ p.asIdeal ∧
@@ -49,9 +47,9 @@ theorem exists_disc_notMem (hc : Formalism.BasicNotions.CMData F E) (p : HeightO
   exact hθ (hP.isPrime.mem_of_pow_mem 2 hd)
 
 /- English proof (translation)
-Establish `hθ' : star θ - θ ≠ 0` using `fun h => hθ (by rw [← neg_sub, h, neg_zero])`. Take `⟨b, hb⟩` from `(hc.fixed ((x - star x) / (θ - star θ))).1 (by`. Rewrite using `[star_div₀, star_sub, star_sub, star_star, star_star]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(hc.fixed (x - (x - star x) / (θ - star θ) * θ)).1 (by`. Rewrite using `[star_sub, star_mul, star_div₀, star_sub, star_sub, star_star, star_star]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Conclude with `⟨a, b, by rw [ha, hb]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coord (hc : Formalism.BasicNotions.CMData F E) (θ : E) (hθ : θ - star θ ≠ 0) (x : E) :
     ∃ a b : F, x = algebraMap F E a + algebraMap F E b * θ := by
@@ -64,7 +62,7 @@ theorem exists_coord (hc : Formalism.BasicNotions.CMData F E) (θ : E) (hθ : θ
 
 omit [StarRing E] in
 /- English proof (translation)
-The claim follows from `(x.isIntegral_coe.map A.ιE.toIntAlgHom).tower_top`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_ιE {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : LocAt F E sig p)
     (x : 𝓞 E) : IsIntegral 𝒪[A.Fp] (A.ιE (x : E)) :=
@@ -72,7 +70,7 @@ theorem isIntegral_ιE {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A
 
 omit [StarRing E] in
 /- English proof (translation)
-Use `haveI : Nontrivial A.Ep := Module.nontrivial_of_finrank_pos (R := A.Fp) (by rw [A.rank]; norm_num)`. Establish `h1 : IsIntegral 𝒪[A.Fp] a` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (algebraMap A.Fp A.Ep).injective).1 h`. Conclude with `(Valuation.integer.integers (valuation A.Fp)).mem_of_integral h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_integer_of_isIntegral {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
     (A : LocAt F E sig p) (a : A.Fp) (h : IsIntegral 𝒪[A.Fp] (algebraMap A.Fp A.Ep a)) :
@@ -85,9 +83,9 @@ theorem mem_integer_of_isIntegral {sig : E →ₐ[F] E} {p : HeightOneSpectrum (
 
 omit [StarRing E] in
 /- English proof (translation)
-Establish `h : p.valuation F (d : F) = 1` using `(p.valuation_eq_one_iff_notMem (K := F)).2 hd`. Establish `h1` using `(A.val (d : F) 1).2 (by rw [h, map_one])`. Establish `h2` using `(A.val 1 (d : F)).2 (by rw [h, map_one])`. Rewrite `h1`, `h2` using `[Valuation.Compatible.vle_iff_le (v := valuation A.Fp)]`. Simplify using `only [map_one] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `le_antisymm h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem valuation_ιF_eq_one {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
     (A : LocAt F E sig p) (d : 𝓞 F) (hd : d ∉ p.asIdeal) :
@@ -100,27 +98,27 @@ theorem valuation_ιF_eq_one {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 
   exact le_antisymm h1 h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc sig hsig p A y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Rewrite `hy` using `[A.O_def]`. Take `⟨θ, t, d, ht, hd, hdisc⟩` from `exists_disc_notMem hc p`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hv` using `valuation_ιF_eq_one A d hd`. Establish `hne : (θ : E) - star (θ : E) ≠ 0`. Introduce `h`. Rewrite `hdisc` using `[ht, h]`. Establish `: d = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `using hdisc`. Conclude with `hd (this ▸ p.asIdeal.zero_mem)`. Establish `hco : ∀ z : A.Ep, ∃ a b : A.Fp, z = algebraMap A.Fp A.Ep a + algebraMap A.Fp A.Ep b * A.ιE (θ : E)`. Introduce `z`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span A.Fp (Set.range A.ιE)` using `by rw [A.span]; trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem _ hx`. Take `⟨x, rfl⟩` from `hx`. Take `⟨a, b, rfl⟩` from `exists_coord hc θ hne x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨A.ιF a, A.ιF b, by rw [map_add, map_mul, A.compat, A.compat]⟩`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `add _ _ _ _ h1 h2`. Take `⟨a, b, rfl⟩` from `h1`. Take `⟨a', b', rfl⟩` from `h2`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + a', b + b', by rw [map_add, map_add]; ring⟩`. Consider the case `smul c _ _ h1`. Take `⟨a, b, rfl⟩` from `h1`. Conclude with `⟨c * a, c * b, by rw [map_mul, map_mul, Algebra.smul_def]; ring⟩`. Take `⟨a, b, rfl⟩` from `hco y`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcj` using `hy.map (A.cj.toAlgHom.restrictScalars 𝒪[A.Fp])`. Establish `hcj' : IsIntegral 𝒪[A.Fp] (algebraMap A.Fp A.Ep a + algebraMap A.Fp A.Ep b * A.ιE (t : E))`. Establish `e : A.cj (algebraMap A.Fp A.Ep a + algebraMap A.Fp A.Ep b * A.ιE (θ : E)) = algebraMap A.Fp A.Ep a + algebraMap A.Fp A.Ep b * A.ιE (t : E)`. Rewrite using `[map_add, map_mul, A.cj.commutes, A.cj.commutes, A.cj_ιE, hsig, ht]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcj`. Establish `hbd : b * A.ιF (d : F) ∈ 𝒪[A.Fp]`. Apply `mem_integer_of_isIntegral A` to reduce the goal to its premises. Use `(hy.sub hcj').mul ((isIntegral_ιE A θ).sub (isIntegral_ιE A t))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul, ← A.compat, hdisc, map_pow, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : b ∈ 𝒪[A.Fp]`. Rewrite `hbd`, the goal using `[Valuation.mem_integer_iff]`. Rewrite `hbd` using `[map_mul, hv, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbI : IsIntegral 𝒪[A.Fp] (algebraMap A.Fp A.Ep b)` using `isIntegral_algebraMap (R := 𝒪[A.Fp]) (x := ⟨b, hb⟩)`. Establish `ha : a ∈ 𝒪[A.Fp]`. Apply `mem_integer_of_isIntegral A` to reduce the goal to its premises. Use `hy.sub (hbI.mul (isIntegral_ιE A θ))` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨2, ![⟨a, ha⟩, ⟨b, hb⟩], ![1, θ], by simp [Fin.sum_univ_two]⟩`. Introduce and unpack `⟨n, c, x, rfl⟩`. Rewrite using `[A.O_def]`. Use `IsIntegral.sum _ fun i _ => IsIntegral.mul ?_ (isIntegral_ιE A _)` and prove the remaining obligations. Conclude with `isIntegral_algebraMap (R := 𝒪[A.Fp]) (x := c i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_O_iff : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E], Formalism.BasicNotions.CMData F E → ∀ (sig : E →ₐ[F] E), (∀ x, sig x = star x) → ∀ (p : HeightOneSpectrum (𝓞 F)) (A : LocAt F E sig p), ∀ y : A.Ep, y ∈ A.O ↔ ∃ (n : ℕ) (c : Fin n → 𝒪[A.Fp]) (x : Fin n → 𝓞 E), y = ∑ i, algebraMap A.Fp A.Ep (c i : A.Fp) * A.ιE (x i : E) := by
   intro F E _ _ _ _ _ _ hc sig hsig p A y

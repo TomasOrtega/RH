@@ -15,7 +15,7 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih => show Formalism.MainNotions.S.dsig (k := k) (r := r) σ X (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ W v) = PI.UpqRep.dsig (k := k) (r := r) σ X (PI.UpqRep.dsigW (k := k) (r := r) σ W v)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dsigW_eq (σ : Mx k r → (H →L[ℂ] H)) (W : List (Mx k r)) (v : H) :
     Formalism.MainNotions.S.dsigW (k := k) (r := r) σ W v = PI.UpqRep.dsigW (k := k) (r := r) σ W v := by
@@ -28,7 +28,7 @@ theorem dsigW_eq (σ : Mx k r → (H →L[ℂ] H)) (W : List (Mx k r)) (v : H) :
     rfl
 
 /- English proof (translation)
-Take `⟨C, Ws, hW, hB⟩` from `h`. Use `⟨C, Ws, hW, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `hB v hv`. Simplify using `only [dsigW_eq] at h1`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cwCont_conv {Wp : Type} [NormedAddCommGroup Wp] {σ : Mx k r → (H →L[ℂ] H)} {B : H → Wp}
     (h : Formalism.MainNotions.S.IsCWCont (k := k) (r := r) σ B) : PI.BesselMapUniq.IsCWCont (k := k) (r := r) σ B := by
@@ -39,7 +39,7 @@ theorem cwCont_conv {Wp : Type} [NormedAddCommGroup Wp] {σ : Mx k r → (H →L
   exact h1
 
 /- English proof (translation)
-Introduce `k r z c g`. Simplify using `only [Formalism.QuantumDeterminants.psi, PI.BesselMapUniq.psiGen, ← Finset.mul_sum]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem psiConst : Formalism.FourierDecayAlt.ThreeDimData.PsiConst := by
   intro k r z c g
@@ -47,17 +47,17 @@ theorem psiConst : Formalism.FourierDecayAlt.ThreeDimData.PsiConst := by
   rfl
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hSide v hv ξ`. Take `⟨-, hDI, -, -⟩` from `hIn`. Take `⟨hlam, hds, hgap, hOK, hw0, hz, hT, hc, hπ, hμW, hμN, hμG, hq⟩` from `hSide`. Establish `: SigmaFinite μN` using `hμN.1`. Establish `hds' : Formalism.MainNotions.S.IsDSHpk k r ε lam σ` using `hds`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ' : Formalism.MainNotions.S.IsHCTypeW k r z u π` using `hπ`. Establish `hw0' : Formalism.MainNotions.S.IsLowUnitH k r ε lam σ w0` using `hw0`. Establish `hM` using `Formalism.MainNotions.MeasFS.measF_side hz hT hπ hμW hμN`. Use `set a := Formalism.FourierDecayAlt.ThreeDimData.aOf r h with ha_def`. Take `⟨ha1, hAG, -⟩` from `PI.WBL.NIS.thresholds hOK.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAG0 : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r` using `by unfold Formalism.FourierDecayAlt.ThreeDimData.AG; positivity`. Establish `hAG' : Formalism.FourierDecayAlt.ThreeDimData.AG k r < a - 1` using `by linarith`. Establish `hgr0` using `hGS k r z μW μN μG νq (a - 1) hz hT hμW hμN hμG hq hAG'`. Establish `hgr : Integrable (fun p : Mt k r × Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2 : Mx k r) ^ (1 - a)) (μW.prod μN)`. Use `hgr0.congr (ae_of_all _ fun p => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_sub]`. Establish `hK : PtDec σ a (fun v => Formalism.MainNotions.S.IsKFinHpk (k` using `k) (r := r) σ v) := by`. Introduce `v0 hv0`. Take `⟨C, Ws, hWs, hb⟩` from `hDI k r ε lam h H σ hlam hds hgap hOK v0 hv0`. Use `⟨C, Ws, hWs, fun w hw x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hb w hw x hx` as an intermediate fact. Simplify `this` using `only [dsigW_eq]`. Establish `hB : Formalism.MainNotions.S.IsBesselMapSm (k` using `k) (r := r) z (psi k r z c) σ π (fun x => (∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c π σ x v p ∂(μW.prod μN)) ξ) := by`. Break down `hv with hvD | hvK` into its components or cases. Establish `h0 : PtB σ a w0` using `hK w0 (Formalism.MainNotions.DoubleDerivativeSmoothness.kfinHpk_of_lowUnitH hw0')`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Formalism.MainNotions.BeBesselW.beBessel_DD (u := u) z c π μW μN σ w0 a hds' hz hT hπ' hM hgr ha1 h0 v hvD ξ`. Conclude with `Formalism.MainNotions.BeBesselW.beBessel_K (u := u) z c π μW μN σ a hds' hz hT hπ' hM hgr hK v hvK ξ`. Take `⟨h1, h2, h3, h4⟩` from `hB`. Conclude with `⟨h1, h2, h3, cwCont_conv h4⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem beBessel_of (hGS : Formalism.FourierDecayAlt.ThreeDimData.GrowthS) : Formalism.FourierDecayAlt.ThreeDimData.BeBessel := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hSide v hv ξ

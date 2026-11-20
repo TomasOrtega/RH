@@ -7,27 +7,27 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory
 namespace GlobalTheory.ZetaWide
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `GlobalTheory.LogDerivZeros.main (4/5) (14/15) (by norm_num) (by norm_num) (by norm_num)`. Use `⟨C, hC, fun F c M hF hc hM => ?_⟩` and prove the remaining obligations. Use `set g : ℂ → ℂ := fun z => c + 15/4 * z with hg`. Establish `hgn : ∀ z, ‖g z - c‖ = 15/4 * ‖z‖` using `fun z => by simp [hg]`. Establish `hgd : ∀ z, HasDerivAt g (15/4) z` using `fun z => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((hasDerivAt_id z).const_mul (15/4 : ℂ)).const_add c` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this`. Establish `hgD : Differentiable ℂ g` using `fun z => (hgd z).differentiableAt`. Establish `hfD : Differentiable ℂ (F ∘ g)` using `hF.comp hgD`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : g 0 = c` using `by simp [hg]`. Establish `hf0 : (F ∘ g) 0 = F c` using `by simp [hg0]`. Take `⟨⟨h1, h2⟩, h3⟩` from `H (F ∘ g) M (fun z _ => hfD.analyticAt z) (by rwa [hf0]) (fun z hz => hM _ (by`. Establish `: ‖z‖ ≤ 1` using `by simpa using hz`. Rewrite using `[hgn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `linarith))`. Rewrite `h2`, `h3` using `[hf0]`. Establish `hinj : Function.Injective g` using `fun a b h => by simpa [hg] using h`. Establish `hsur : ∀ w, g ((w - c) * (4/15)) = w` using `fun w => by simp only [hg]; ring`. Establish `hset : {w : ℂ | ‖w - c‖ ≤ 7/2 ∧ F w = 0} = g '' {w : ℂ | ‖w‖ ≤ 14/15 ∧ (F ∘ g) w = 0}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb⟩`. Use `⟨(w - c) * (4/15), ⟨?_, by simp only [Function.comp, hsur, hb]⟩, hsur w⟩` and prove the remaining obligations. Use `hgn ((w - c) * (4/15))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[hsur]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨z, ⟨ha, hb⟩, rfl⟩`. Conclude with `⟨by rw [hgn]; linarith, hb⟩`. Establish `hord : ∀ z, analyticOrderNatAt (F ∘ g) z = analyticOrderNatAt F (g z)` using `fun z => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `analyticOrderNatAt`. Rewrite using `[analyticOrderAt_comp_of_deriv_ne_zero (hgD.analyticAt z) (by rw [(hgd z).deriv]; norm_num)]`. Simplify using `only [hord] at h2 h3`. Rewrite using `[hset]`. Use `⟨⟨h1.image g, by rwa [finsum_mem_image hinj.injOn]⟩, fun s hs hFs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩ : ∃ z, s = g z` from `⟨_, (hsur s).symm⟩`. Rewrite `hs` using `[hgn]`. Establish `h4` using `h3 z (by linarith) hFs`. Establish `hL : 0 ≤ C * (1 + Real.log (M / ‖F c‖))` using `(norm_nonneg _).trans h4`. Rewrite using `[finsum_mem_image hinj.injOn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4`, the goal using `[finsum_mem_eq_finite_toFinset_sum _ h1]`. Establish `hd : deriv (F ∘ g) z = deriv F (g z) * (15/4)` using `((hF (g z)).hasDerivAt.comp z (hgd z)).deriv`. Establish `e : deriv F (g z) / F (g z) - ∑ w ∈ h1.toFinset, (analyticOrderNatAt F (g w) : ℂ) / (g z - g w) = (4/15) * (deriv (F ∘ g) z / (F ∘ g) z - ∑ w ∈ h1.toFinset, (analyticOrderNatAt F (g w) : ℂ) / (z - w))`. Rewrite using `[hd, mul_sub, Finset.mul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: g z - g w = 15/4 * (z - w)` using `by simp only [hg]; ring`. Rewrite using `[this, div_eq_mul_inv, mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul]`. Establish `: ‖(4/15 : ℂ)‖ = 4/15` using `by simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem scaled : ∃ C : ℝ, 0 < C ∧ ∀ (F : ℂ → ℂ) (c : ℂ) (M : ℝ), Differentiable ℂ F → F c ≠ 0 →
     (∀ w, ‖w - c‖ ≤ 15/4 → ‖F w‖ ≤ M) →
@@ -97,15 +97,15 @@ theorem scaled : ∃ C : ℝ, 0 < C ∧ ∀ (F : ℂ → ℂ) (c : ℂ) (M : ℝ
   linarith
 
 /- English proof (translation)
-Rewrite using `[riemannZeta_eq_inv_sub_mul hs, mul_inv_cancel_left₀ (sub_ne_zero.2 hs)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zeta₁_eq {s : ℂ} (hs : s ≠ 1) : riemannZeta₁ s = (s - 1) * riemannZeta s := by
   rw [riemannZeta_eq_inv_sub_mul hs, mul_inv_cancel_left₀ (sub_ne_zero.2 hs)]
 
 /- English proof (translation)
-Unfold `analyticOrderNatAt`. Establish `hev : riemannZeta₁ =ᶠ[nhds s] (fun z => z - 1) * riemannZeta` using `by filter_upwards [isOpen_ne.mem_nhds hs] with z hz`. Conclude with `zeta₁_eq hz`. Establish `h1 : AnalyticAt ℂ (fun z : ℂ => z - 1) s` using `by fun_prop`. Establish `h2 : AnalyticAt ℂ riemannZeta s` using `analyticOn_riemannZeta s hs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[analyticOrderAt_congr hev, analyticOrderAt_mul h1 h2, h1.analyticOrderAt_eq_zero.2 (sub_ne_zero.2 hs), zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem order_zeta₁_eq {s : ℂ} (hs : s ≠ 1) :
     analyticOrderNatAt riemannZeta₁ s = analyticOrderNatAt riemannZeta s := by
@@ -119,39 +119,37 @@ theorem order_zeta₁_eq {s : ℂ} (hs : s ≠ 1) :
     h1.analyticOrderAt_eq_zero.2 (sub_ne_zero.2 hs), zero_add]
 
 /- English proof (translation)
-Take `⟨C, hC, H⟩` from `scaled`. Take `⟨B, hB, hBl⟩` from `GlobalTheory.ZetaLeft.norm_sub_one_mul_riemannZeta_le`. Use `set K : ℝ := 2 * (B + 1) * 4 ^ 5 with hK`. Establish `hK1 : 1 ≤ K` using `by rw [hK]; linarith`. Establish `hlK : 0 ≤ Real.log K` using `Real.log_nonneg hK1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C * (2 * (1 + Real.log K) + 5), by positivity, fun s hs1 hs2 hs hz => ?_⟩` and prove the remaining obligations. Use `set c : ℂ := 2 + s.im * I with hc`. Use `set T : ℝ := |s.im| + 2 with hT`. Establish `hT2 : 2 ≤ T` using `by have := abs_nonneg s.im; linarith`. Establish `hcre : c.re = 2` using `by simp [hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc1 : c ≠ 1` using `fun h => by rw [h] at hcre; norm_num at hcre`. Establish `hcn : ‖c‖ ≤ T`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[hT, add_comm]`. Establish `hlow : 1 / 2 ≤ ‖riemannZeta₁ c‖`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.LLower.norm_LFunction_ge 1 1 c (by rw [hcre]; norm_num)`. Rewrite `h` using `[LFunction_modOne_eq, hcre]`. Establish `h' : 1 ≤ ‖c - 1‖`. Use `Complex.re_le_norm (c - 1)` as an intermediate fact. Rewrite `this` using `[sub_re, hcre, one_re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[zeta₁_eq hc1, norm_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hne : riemannZeta₁ c ≠ 0` using `norm_pos_iff.1 (by linarith)`. Establish `hup : ∀ w, ‖w - c‖ ≤ 15/4 → ‖riemannZeta₁ w‖ ≤ (B + 1) * (4 * T) ^ 5`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `w hw`. Establish `hp : 1 ≤ (4 * T) ^ 5` using `one_le_pow₀ (by linarith)`. Distinguish the cases in `h1 : w = 1`. Rewrite using `[h1, riemannZeta₁_one, norm_one]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hre : -(7/4 : ℝ) ≤ w.re`. Use `Complex.abs_re_le_norm (w - c)` as an intermediate fact. Rewrite `this` using `[sub_re, hcre]`. Use `neg_abs_le (w.re - 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwn : ‖w‖ + 2 ≤ 4 * T`. Use `norm_add_le (w - c) c` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[zeta₁_eq h1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `(hBl w hre h1).trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨h1, h2⟩, h3⟩` from `H riemannZeta₁ c _ differentiable_riemannZeta₁ hne hup`. Establish `hbound : C * (1 + Real.log ((B + 1) * (4 * T) ^ 5 / ‖riemannZeta₁ c‖)) ≤ C * (2 * (1 + Real.log K) + 5) * Real.log T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlT : 1 / 2 ≤ Real.log T`. Use `Real.log_two_gt_d9` as an intermediate fact. Use `Real.log_le_log (by norm_num) hT2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha : (B + 1) * (4 * T) ^ 5 / ‖riemannZeta₁ c‖ ≤ K * T ^ 5`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `Real.log_le_log (by positivity) ha`. Rewrite `hb` using `[Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Rewrite using `[mul_assoc]`. Use `gcongr`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Move the coercions through the operations in `at hb`. Use the polynomial consequences of the given equalities and inequalities. Establish `hset : {w : ℂ | ‖w - c‖ ≤ 7/2 ∧ w ≠ 1 ∧ riemannZeta w = 0} = {w : ℂ | ‖w - c‖ ≤ 7/2 ∧ riemannZeta₁ w = 0}`. Use extensionality with `w`. Distinguish the cases in `hw : w = 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[hw]`. Simplify using `[hw, zeta₁_eq hw, sub_ne_zero.2 hw]`. Establish `hne1 : ∀ w ∈ {w : ℂ | ‖w - c‖ ≤ 7/2 ∧ riemannZeta₁ w = 0}, w ≠ 1`. Introduce and unpack `w ⟨_, hw⟩ rfl`. Simplify using `at hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs0 : s - 1 ≠ 0` using `sub_ne_zero.2 hs`. Rewrite using `[hset]`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (h2.trans hbound)` and prove the remaining obligations. Conclude with `finsum_mem_congr rfl fun w hw => by rw [order_zeta₁_eq (hne1 w hw)]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hsc : ‖s - c‖ ≤ 3`. Establish `: s - c = ((s.re - 2 : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [hc]`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hz1 : riemannZeta₁ s ≠ 0` using `by rw [zeta₁_eq hs]; exact mul_ne_zero hs0 hz`. Use `le_trans (le_of_eq ?_) ((h3 s hsc hz1).trans hbound)` and prove the remaining obligations. Use `congr 2`. Rewrite using `[deriv_riemannZeta_eq_neg_inv_sub_sq_mul_add hs, riemannZeta_eq_inv_sub_mul hs]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `finsum_mem_congr rfl fun w hw => by rw [order_zeta₁_eq (hne1 w hw)]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∃ C : ℝ, 0 < C ∧ ∀ s : ℂ, -1 ≤ s.re → s.re ≤ 2 → s ≠ 1 → riemannZeta s ≠ 0 → {w : ℂ | ‖w - (2 + s.im * I)‖ ≤ 7/2 ∧ w ≠ 1 ∧ riemannZeta w = 0}.Finite ∧ (∑ᶠ w ∈ {w : ℂ | ‖w - (2 + s.im * I)‖ ≤ 7/2 ∧ w ≠ 1 ∧ riemannZeta w = 0}, (analyticOrderNatAt riemannZeta w : ℝ)) ≤ C * Real.log (|s.im| + 2) ∧ ‖deriv riemannZeta s / riemannZeta s + 1 / (s - 1) - ∑ᶠ w ∈ {w : ℂ | ‖w - (2 + s.im * I)‖ ≤ 7/2 ∧ w ≠ 1 ∧ riemannZeta w = 0}, (analyticOrderNatAt riemannZeta w : ℂ) / (s - w)‖ ≤ C * Real.log (|s.im| + 2) := by
   obtain ⟨C, hC, H⟩ := scaled

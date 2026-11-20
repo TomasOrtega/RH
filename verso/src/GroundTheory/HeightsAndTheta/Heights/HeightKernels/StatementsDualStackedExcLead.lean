@@ -39,7 +39,7 @@ def DualStackedExcLeadForm.Statement : Prop :=
 namespace DualStackedExcLeadExample
 
 /- English proof (translation)
-Simplify using `[stackedFormEval, graphFirst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stackedFormEval_first {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i} {T : Type}
     (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F')) (t : T) :
@@ -47,7 +47,7 @@ theorem stackedFormEval_first {K : Type} [Field K] [NumberField K] {i : ℕ} {F 
   simp [stackedFormEval, graphFirst]
 
 /- English proof (translation)
-Simplify using `[stackedFormEval, graphSecond]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stackedFormEval_second {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i} {T : Type}
     (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F')) (t : T) :
@@ -55,9 +55,9 @@ theorem stackedFormEval_second {K : Type} [Field K] [NumberField K] {i : ℕ} {F
   simp [stackedFormEval, graphSecond]
 
 /- English proof (translation)
-Introduce `m hm κ`. Rewrite `hm` using `[graphFirst, support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Break down `κ with ⟨⟨⟩⟩ | ⟨⟨⟩⟩` into its components or cases. Establish `key : ∀ s : T, ((⟨Sum.inl (), t⟩ : Σ κ, stackedBlocks T κ) = ⟨Sum.inl (), s⟩ ↔ t = s)` using `fun s => ⟨fun h => by cases h; rfl, fun h => by rw [h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[bidegree, Finsupp.single_apply, key]`. Conclude with `Finset.mem_univ _`. Establish `key : ∀ s : T, (⟨Sum.inl (), t⟩ : Σ κ, stackedBlocks T κ) ≠ ⟨Sum.inr (), s⟩` using `fun s h => by cases h`. Simplify using `[bidegree, key]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_first {T : Type} [Fintype T] (t : T) :
     IsMultiHomog (graphFirst t : MRing (stackedBlocks T)) (bidegree 1 0) := by
@@ -75,7 +75,7 @@ theorem isMultiHomog_first {T : Type} [Fintype T] (t : T) :
     simp [bidegree, key]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_mul, stackedFormEval_first, stackedFormEval_second, dualBasisStandard_apply, DualStackedExcResidueExample.halfBasis_apply]`. Simplify using `only [stackedFormEval, oneDual, DualStackedExcResidueExample.halfDual]`. Simplify using the standard rewrite rules. Rewrite using `[← mul_assoc, ← map_ofNat C 2, ← C_mul, mul_inv_cancel₀ two_ne_zero, C_1, one_mul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem example_relation :
     stackedFormEval dualBasisStandard DualStackedExcResidueExample.halfBasis
@@ -87,7 +87,7 @@ theorem example_relation :
   rw [← mul_assoc, ← map_ofNat C 2, ← C_mul, mul_inv_cancel₀ two_ne_zero, C_1, one_mul, sub_self]
 
 /- English proof (translation)
-Rewrite using `[stackedFormEval_first, DualStackedExcResidueExample.halfBasis_apply]`. Introduce `h`. Establish `h2` using `congrArg (MvPolynomial.eval fun _ : Fin 1 => (1 : ℚ)) h`. Simplify using `[DualStackedExcResidueExample.halfDual] at h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem example_first_ne :
     stackedFormEval dualBasisStandard DualStackedExcResidueExample.halfBasis (graphFirst ()) ≠ 0 := by

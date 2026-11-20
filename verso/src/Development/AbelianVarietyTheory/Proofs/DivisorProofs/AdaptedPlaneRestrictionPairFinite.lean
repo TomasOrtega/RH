@@ -24,15 +24,15 @@ namespace GlobalTheory
 open GlobalTheory.DoublingEv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne d' hd' dd hdd`. Establish `hψ : ∀ x, ‖B.ψ x‖ = 1` using `GlobalTheory.StdCharFromIsStd.norm_psi hP.base.std`. Establish `hT : IsTame F e` using `GlobalTheory.T.evaluation_good_models_intertwine F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he`. Establish `hR : IsTame F (partR (κ` using `Fin n × Fin d) (conjMap e)) := GlobalTheory.T.tame_part_right F _ _ _ _ (GlobalTheory.T.tame_conj_map F _ _ e hT)`. Establish `hL : IsTame F (partL (κ'` using `Fin n₁ × Fin d) e) := GlobalTheory.T.tame_part_left F _ _ _ e hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : IsTame F (evDbl e)` using `hR.comp hL`. Use `⟨GlobalTheory.DiagForm.lDiag F _ ∘ₗ evDbl e, hE.comp_adm GlobalTheory.DiagForm.lDiag_adm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y₁ y₂ u φ hφ`. Establish `hd'' : ∀ w : Matrix (Fin d) (Fin n) (AE F E), d'.e w = M.co.e wᵀ` using `fun w => by`. Rewrite using `[← hd' wᵀ, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ∀ y : Fin d → AE F E, (Matrix.vecMulVec y (incV F H.x) + u * (incM F H.ι)ᵀ)ᵀ = Matrix.vecMulVec (incV F H.x) y + incM F H.ι * uᵀ` using `fun y => by`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_vecMulVec]`. Establish `key : dd.rho B.ψ (Matrix.fromCols (Matrix.vecMulVec y₁ (incV F H.x) + u * (incM F H.ι)ᵀ) (Matrix.vecMulVec y₂ (incV F H.x) + u * (incM F H.ι)ᵀ)) φ = schr B.ψ (Sum.elim (M.co.e (Matrix.vecMulVec (incV F H.x) y₁ + incM F H.ι * uᵀ)).1 (M.co.e (Matrix.vecMulVec (incV F H.x) y₂ + incM …`. Rewrite using `[Darboux.rho, hdd, hd'', hd'', ht, ht]`. Establish `hlaw` using `GlobalTheory.T.model_eigen_rank_one_vecMulVec F E σ B n d X W M hP.base.std n₁ X₁ H j₀ j₁ M₁ hH e he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, key, GlobalTheory.T.conj_map_part_right_equivariant F B.ψ hψ _ _ e (M.co.e (Matrix.vecMulVec (incV F H.x) y₁ + incM F H.ι * uᵀ)).1 (M.co.e (Matrix.vecMulVec (incV F H.x) y₁ + incM F H.ι * uᵀ)).2 (M.co.e (Matrix.vecMulVec (incV F H.x) y …`. Introduce `φ₁ _ φ₁' _ φ₂ _ c hc`. Simplify using `only [LinearMap.comp_apply, evDbl_boxFun, hc, GlobalTheory.SchwartzBox.boxFun_smul_left, map_smul, smul_eq_mul]`. Take `⟨Φ, hΦ, hne⟩` from `hne`. Use `⟨Φ, hΦ, star Φ, GlobalTheory.SchAConj.star_mem_schA F _ Φ hΦ, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, evDbl_boxFun, conjMap_apply, star_star]`. Conclude with `GlobalTheory.T.diag_form_box_star_ne_zero F _ (e Φ) (he.maps Φ hΦ) hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubledEv_form : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

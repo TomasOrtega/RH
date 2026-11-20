@@ -42,11 +42,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
 /- English proof (translation)
-Establish `hmap : (Submodule.span K (L : Set V)).map (φ : V →ₗ[K] W) = Submodule.span K (L' : Set W)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce `f hf`. Establish `h2` using `Submodule.smul_mem (Submodule.span K (L' : Set W)) a⁻¹ (Submodule.subset_span (R := K) (hin f hf))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ ha, one_smul]`. Conclude with `h2`. Rewrite using `[Submodule.span_le]`. Introduce `g hg`. Use `⟨a⁻¹ • (a • φ.symm g), Submodule.smul_mem _ _ (Submodule.subset_span (R := K) (hout g hg)), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (a⁻¹ • (a • φ.symm g)) = g`. Rewrite using `[smul_smul, inv_mul_cancel₀ ha, one_smul, φ.apply_symm_apply]`. Unfold `Formalism.HN.rkK`. Rewrite using `[← hmap, LinearEquiv.finrank_map_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rkK_eq_of_equiv {K V W : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
@@ -68,7 +68,7 @@ theorem rkK_eq_of_equiv {K V W : Type} [Field K] [NumberField K] [AddCommGroup V
   rw [← hmap, LinearEquiv.finrank_map_eq]
 
 /- English proof (translation)
-Take `⟨φ, -, -, hA, hB⟩` from `Mul.twSec_mulEquiv_integral E H Dw l Xo c r U x Z G₀ s G hG`. Take `⟨a, ha0, hlo, hhi⟩` from `Good.exists_twist_scalar s`. Conclude with `rkK_eq_of_equiv φ (latOn U Z G) (latOn U Z (G + G₀)) a ha0 (fun f hf => hA a ha0 hlo f hf _ (Submodule.coe_smul _ _)) (fun g hg => hB a ha0 hhi g hg _ (Submodule.coe_smul _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rankOn_twist {Z : Comp Xo c} {G₀ : WTZ E} (s : TwSec U x Z G₀) (G : WTZ E) (hG : Even G.2) :
     rankOn U Z (G + G₀) = rankOn U Z G := by
@@ -79,7 +79,7 @@ theorem rankOn_twist {Z : Comp Xo c} {G₀ : WTZ E} (s : TwSec U x Z G₀) (G : 
     (fun g hg => hB a ha0 hhi g hg _ (Submodule.coe_smul _ _))
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_cuspW, mem_cuspW, h]`. Conclude with `and_congr_right fun _ => forall₂_congr fun σ hσ => by rw [modelWt_congr (U σ) hσ (hU σ hσ) h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspW_congr (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G G' : WTZ E} (h : exZ Dw G = exZ Dw G') :
     cuspW Xo c U G = cuspW Xo c U G' := by
@@ -88,7 +88,7 @@ theorem cuspW_congr (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G G' : WTZ E} 
   exact and_congr_right fun _ => forall₂_congr fun σ hσ => by rw [modelWt_congr (U σ) hσ (hU σ hσ) h]
 
 /- English proof (translation)
-Establish `e : cuspOn U Z G = cuspOn U Z G'` using `by rw [cuspOn, cuspOn, cuspW_congr hU h]`. Unfold `rankOn latOn`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rankOn_congr (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (Z : Comp Xo c) {G G' : WTZ E}
     (h : exZ Dw G = exZ Dw G') : rankOn U Z G = rankOn U Z G' := by
@@ -97,7 +97,7 @@ theorem rankOn_congr (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (Z : Comp Xo c
   rw [e]
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : φ (H.rt : E) = H.rt0`. Conclude with `⟨⟨φ, h⟩⟩`. Conclude with `⟨⟨conjEmb φ, conj_mem h⟩⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem psi_nonempty : Nonempty (Psi H) := by
   obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -106,9 +106,9 @@ theorem psi_nonempty : Nonempty (Psi H) := by
   · exact ⟨⟨conjEmb φ, conj_mem h⟩⟩
 
 /- English proof (translation)
-Establish `sF : ∀ τ, FlatSec U x Z τ` using `fun τ => (hF Z τ).1.some`. Take `⟨τ₀⟩` from `psi_nonempty (H := H)`. Establish `hp : HasPts U Z` using `(sF τ₀).hasPts`. Set `s : ConstSec U x Z (parWt Dw w) (∑ τ, (-w τ) • flDefect_vw Dw c τ)` to `(FlatSec.shift hp sF w).copy rfl (by congr; exact Subsingleton.elim _ _)`. Use `⟨TwSec.ofConst s (GlobalTheory.FlatTwisting.finite_sum_flDefect w) (GlobalTheory.FlatTwisting.mul_sig_mem_cuspOn hK hU hpq s) fun G hG f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.FlatTwisting.mul_sig_mem_cuspOn hK hU hpq (w := -w) (s.symm.copy rfl rfl) (G + wtOf Dw (parWt Dw w) 0) (Even.add hG (even_wtOf _ _)) f hf`. Rewrite `h` using `[GlobalTheory.FlatTwisting.wtOf_parWt_neg, add_neg_cancel_right]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twSec_par (hK : Nonempty (GlobalTheory.ShFam.KeySec Xo c)) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (hpq : 1 ≤ Dw.p + Dw.q) {a : ℝ} (hF : FlatExistsAt U x a) (Z : Comp Xo c) (w : Psi H → ℤ) :
@@ -126,9 +126,9 @@ theorem exists_twSec_par (hK : Nonempty (GlobalTheory.ShFam.KeySec Xo c)) (hU : 
   exact h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [Nat.cast_zero, zero_smul]`. Conclude with `wtOf_zero`. Consider the case `succ k ih`. Rewrite using `[succ_nsmul, ← ih, ← wtOf_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem wtOf_zero_nat (k : ℕ) : wtOf Dw 0 (k : ℤ) = k • wtOf Dw 0 1 := by
   induction k with
@@ -144,25 +144,23 @@ end GlobalTheory.TwistRank
 namespace GlobalTheory.TwistRank
 
 /- English proof (translation)
-Introduce `hP D T hL j hp hq hE hj Y e o hY c₁ hF`. Establish `hU` using `hY.unf`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`. Establish `hK : Nonempty (GlobalTheory.ShFam.KeySec Y.d.Xo₂ Y.d.c₂)`. Take `⟨σ, hσ⟩ : ∃ σ, GoodEmb Y.d.c₂ σ` from `⟨Y.d.c₂.F.val.toRingHom, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, g, ee, F, -⟩` from `hY.unf σ hσ`. Conclude with `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ σ hσ ee F hpq hY.geo`. Establish `part1 : ∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, Y.rkC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z = Y.rkC la Z`. Introduce `la w Z`. Take `⟨t⟩` from `exists_twSec_par hK hU hpq hF Z w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show ((AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) 0) : ℕ) : ℝ) = ((AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) la 0) : ℕ) : ℝ)`. Rewrite using `[GlobalTheory.FlatLine.wtOf_add', rankOn_twist t _ (AllWt.even_wtOf _ _)]`. Use `⟨part1, ?_⟩` and prove the remaining obligations. Introduce `a n kc s _hdom hn hgood`. Establish `hR` using `GlobalTheory.T.supLattice_rank_eq_sum_component_ranks D T.Q.H (T.Q.Dw j) _ Y.d.Xo₂ Y.d.c₂ _ Y.U (xiR D) (fun _ => D.sp.W j) Y.dict (shiftG (T.Q.Dw j) a n s) hU hgood`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (Comp Y.d.Xo₂ Y.d.c₂) := GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum.finite_comp`. Use `letI := Fintype.ofFinite (Comp Y.d.Xo₂ Y.d.c₂)`. Use `show ((AllWt.rankW Y.U (shiftG (T.Q.Dw j) a n s) : ℕ) : ℝ) = _`. Rewrite using `[hR]`. Simplify using `only [finsum_eq_sum_of_fintype, Nat.cast_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun Z _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hn`. Establish `hn2 : n / 2 = m` using `by omega`. Use `set L := laOf (T.Q.Dw j) a n + s • hodgeWt (T.Q.Dw j) with hLdef`. Establish `h1 : AllWt.rankOn Y.U Z (shiftG (T.Q.Dw j) a n s) = AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) L (m : ℤ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `rankOn_congr hU Z ?_` and prove the remaining obligations. Rewrite using `[hLdef, ← add_zero (m : ℤ), AllWt.wtOf_add, shiftG, GlobalTheory.FlatTw.exZ_add_eq, GlobalTheory.FlatTw.exZ_add_eq]`. Use `congr 1`. Use `AllWt.exOf_weightOf (Dw := T.Q.Dw j) (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[AllWt.exOf]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `*` using `[laOf, hn2]`. Rewrite using `[this, wtZ]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `h2 : AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) L (m : ℤ)) = AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) L 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `he : wtOf (T.Q.Dw j) L (m : ℤ) = wtOf (T.Q.Dw j) L 0 + wtOf (T.Q.Dw j) 0 (m : ℤ)`. Rewrite using `[← AllWt.wtOf_add, add_zero, zero_add]`. Take `⟨t1⟩` from `GlobalTheory.T.nonempty_twisted_section_component hP D T hL j hp hq hE hj Y e o hY c₁ hF Z`. Take `⟨t, -⟩` from `GlobalTheory.FlatTw.TwSec.exists_pow t1 m`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `rankOn_twist (t.copy (wtOf_zero_nat (Dw := T.Q.Dw j) m).symm) _ (AllWt.even_wtOf _ _)`. Establish `h3 : L = (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) + GlobalTheory.FlatLine.parWt (T.Q.Dw j) (anchor (T.Q.Dw j) a n kc)`. Rewrite using `[hLdef, ← uWt_add_anchor (T.Q.Dw j) a n kc]`. Normalize the expressions using the abelian group laws. Establish `h4` using `part1 (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) (anchor (T.Q.Dw j) a n kc) Z`.
-
-Rewrite `h4` using `[← h3]`. Rewrite using `[h1, h2]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_twist_ranks : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → (∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, Y.rkC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z = Y.rkC la Z) ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n kc : ℕ) (s : ℤ), Dom a n → Even n → Y.GoodAt (shiftG (T.Q.Dw j) a n s) → (Y.rk (shiftG (T.Q.Dw j) a n s) : ℝ) = ∑ᶠ Z, Y.rkC (uWt (T.Q.Dw j) a n kc + s • hodgeWt (T.Q.Dw j)) Z := by
   intro hP D T hL j hp hq hE hj Y e o hY c₁ hF

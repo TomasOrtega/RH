@@ -8,24 +8,24 @@ import CompanionTheory.AutomorphicTheory.RankOneTori.KDense
 namespace CompanionTheory.Lime.BM
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem uniqGap_of_bmu (h : CompanionTheory.Bmu.BesselMapUniqGap) : UniqGap := h
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.wuDecayOfGap_of_uniqGap h`.
+A detailed English derivation is pending.
 -/
 theorem wuDecayOfGap (h : CompanionTheory.Bmu.BesselMapUniqGap) : Formalism.L2.SG.Pf.WuDecayOfGap :=
   Formalism.L2.SG.Pf.wuDecayOfGap_of_uniqGap h
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeCS3dBOW.besselOfW_gap h`.
+A detailed English derivation is pending.
 -/
 theorem besselOfW (h : CompanionTheory.Bmu.BesselMapUniqGap) : Formalism.L2.SG.LocWSOf.BesselOfW :=
   Formalism.MainNotions.BridgeCS3dBOW.besselOfW_gap h
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.S.Pv.AmpOrbCoef.BM.ampUnif_gap h fun k r ε lam H _ _ _ σ hl hσ v hv Ws hWs e he => Formalism.MainStatements.RankOne.KD.kDense k r ε lam H σ hl hσ v hv Ws hWs e he`.
+A detailed English derivation is pending.
 -/
 theorem ampUnif (h : CompanionTheory.Bmu.BesselMapUniqGap) : Formalism.MainNotions.S.Pv.LemmaJ.AmpUnif :=
   Formalism.L2.S.Pv.AmpOrbCoef.BM.ampUnif_gap h

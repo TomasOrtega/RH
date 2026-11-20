@@ -15,7 +15,7 @@ namespace GlobalTheory.HkIntegral
 open GlobalTheory.Spread
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, Category.assoc, pullbackLeftPullbackSndIso_hom_fst, pullbackLeftPullbackSndIso_hom_fst, bcMap_fst_assoc]`. Rewrite using `[Category.assoc, h₂, Category.assoc, pullbackLeftPullbackSndIso_hom_snd, pullbackLeftPullbackSndIso_hom_snd_assoc, bcMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibre_transition {G X : Scheme.{0}} (p : G ⟶ X) {K L : Type} [Field K] [Field L] [Algebra K L]
     (M : IntermediateField K L) (x : Sp K ⟶ X)
@@ -31,13 +31,13 @@ theorem fibre_transition {G X : Scheme.{0}} (p : G ⟶ X) {K L : Type} [Field K]
       pullbackLeftPullbackSndIso_hom_snd_assoc, bcMap_snd]
 
 /- English proof (translation)
-Set `A : Over (Sp K)` to `Over.mk (pullback.snd p x)`. Set `B : Over (Sp K)` to `Over.mk (pullback.snd p x')`. Establish `: QuasiCompact A.hom` using `inferInstanceAs (QuasiCompact (pullback.snd p x))`. Establish `: QuasiSeparated A.hom` using `inferInstanceAs (QuasiSeparated (pullback.snd p x))`. Establish `: LocallyOfFinitePresentation B.hom` using `inferInstanceAs (LocallyOfFinitePresentation (pullback.snd p x'))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g₀ : pullback (pullback.snd p x) (spMap (algebraMap K L)) ⟶ pullback (pullback.snd p x') (spMap (algebraMap K L))` to `(pullbackLeftPullbackSndIso p x (spMap (algebraMap K L))).hom ≫ g ≫ (pullbackLeftPullbackSndIso p x' (spMap (algebraMap K L))).inv`. Establish `hg₀ : g₀ ≫ pullback.snd _ _ = pullback.snd _ _`. Simplify using `only [g₀, Category.assoc, pullbackLeftPullbackSndIso_inv_snd_snd, hg, pullbackLeftPullbackSndIso_hom_snd]`. Take `⟨s, hs⟩` from `HomPairDescent.exists_descend (Ω := L) A B (Over.homMk g₀ hg₀)`. Use `⟨s, fun M hM => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, hf⟩` from `hs M hM`. Set `f₀ : pullback (pullback.snd p x) (spMap (algebraMap K M)) ⟶ pullback (pullback.snd p x') (spMap (algebraMap K M))` to `f.left`. Establish `hf₀ : f₀ ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w f`. Establish `hf₁ : bcMap (pullback.snd p x) M.val ≫ f₀ = g₀ ≫ bcMap (pullback.snd p x') M.val` using `hf`. Use `⟨(pullbackLeftPullbackSndIso p x (spMap (algebraMap K M))).inv ≫ f₀ ≫ (pullbackLeftPullbackSndIso p x' (spMap (algebraMap K M))).hom, ?_, fun π π' h₁ h₂ h₃ h₄ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Category.assoc, pullbackLeftPullbackSndIso_inv_snd_snd, hf₀, pullbackLeftPullbackSndIso_hom_snd]`. Establish `e` using `fibre_transition p M x π h₁ h₂`. Establish `e'` using `fibre_transition p M x' π' h₃ h₄`. Rewrite using `[← cancel_epi (pullbackLeftPullbackSndIso p x (spMap (algebraMap K L))).hom, reassoc_of% e, Iso.hom_inv_id_assoc, reassoc_of% hf₁, ← e']`. Simplify using `only [g₀, Category.assoc, Iso.inv_hom_id_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_descend_fibre {G X : Scheme.{0}} (p : G ⟶ X) [QuasiCompact p] [QuasiSeparated p]
     [LocallyOfFinitePresentation p] {K L : Type} [Field K] [Field L] [Algebra K L] (x x' : Sp K ⟶ X)
@@ -82,13 +82,13 @@ theorem exists_descend_fibre {G X : Scheme.{0}} (p : G ⟶ X) [QuasiCompact p] [
     simp only [g₀, Category.assoc, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo K L _ _ φ x x' w w' g g' hφ hw hw' _ _`. Set `_ : Algebra K L` to `φ.toAlgebra`. Establish `hint : Algebra.IsIntegral K L` using `⟨hφ⟩`. Substitute `hw hw'` using the available equality. Establish `hA` using `ObjDim.isAbelianScheme Xo.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Take `⟨s, hs⟩` from `exists_descend_fibre Xo.univ.t.G.hom (L := L) x x' g.left (Over.w g)`. Take `⟨t, ht⟩` from `exists_descend_fibre Xo.univ.t.G.hom (L := L) x' x g'.left (Over.w g')`. Set `M : IntermediateField K L` to `IntermediateField.adjoin K ((s ∪ t : Finset L) : Set L)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hM : ((s ∪ t : Finset L) : Set L) ⊆ M` using `IntermediateField.subset_adjoin _ _`. Take `⟨f, hf, hf'⟩` from `hs M ((Finset.coe_subset.2 Finset.subset_union_left).trans hM)`. Take `⟨r, hr, hr'⟩` from `ht M ((Finset.coe_subset.2 Finset.subset_union_right).trans hM)`. Establish `hfin : FiniteDimensional K M` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨M, inferInstance, algebraMap K M, M.val.toRingHom, RingHom.ext fun _ => rfl, RingHom.finite_algebraMap.2 hfin, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `v v' rfl rfl`. Establish `e : ∀ y : Sp K ⟶ Xo.X, spMap φ ≫ y = spMap M.val.toRingHom ≫ spMap (algebraMap K M) ≫ y` using `fun y => by`. Rewrite using `[← Category.assoc, spMap_algHom_comp]`. Conclude with `⟨Over.homMk f hf, Over.homMk r hr, ⟨e x, e x', hf'⟩, ⟨e x', e x, hr'⟩⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pair_defined_over_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (K L : Type) [Field K] [Field L] (φ : K →+* L) (x x' : Sp K ⟶ Xo.X) (w w' : Sp L ⟶ Xo.X) (g : Fib Xo w ⟶ Fib Xo w') (g' : Fib Xo w' ⟶ Fib Xo w), φ.IsIntegral → w = spMap φ ≫ x → w' = spMap φ ≫ x' → IsMonHom g → IsMonHom g' → ∃ (M : Type) (_ : Field M) (i : K →+* M) (j : M →+* L), j.comp i = φ ∧ i.Finite ∧ ∀ v v' : Sp M ⟶ Xo.X, v = spMap i ≫ x → v' = spMap i ≫ x' → ∃ (f : Fib Xo v ⟶ Fib Xo v') (f' : Fib Xo v' ⟶ Fib Xo v), IsBC j f g ∧ IsBC j f' g' := by
   classical

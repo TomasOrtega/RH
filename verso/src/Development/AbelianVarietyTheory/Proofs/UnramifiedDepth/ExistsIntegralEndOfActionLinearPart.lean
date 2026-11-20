@@ -19,7 +19,7 @@ namespace GlobalTheory.ActionEnd
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[germComp1_eq_subst]`. Conclude with `MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 1 × Fin dd => ha q.2) _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_comp1_zero_point_left {dd n : ℕ} (a : Pt C n dd) (ha : GP a) : comp1 (pt C dd (0 : Fin 1)) a = a := by
   funext i
@@ -27,7 +27,7 @@ theorem germ_comp1_zero_point_left {dd n : ℕ} (a : Pt C n dd) (ha : GP a) : co
   exact MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 1 × Fin dd => ha q.2) _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map (RingHom.id C) _ = _`. Rewrite using `[MvPowerSeries.map_id]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actK_self [CharZero C] {O : Type} [CommRing O] [StarRing O] {dd : ℕ} (B : FB C dd O) (a : O) :
     B.actK C a = B.A.act a := by
@@ -36,21 +36,21 @@ theorem actK_self [CharZero C] {O : Type} [CommRing O] [StarRing O] {dd : ℕ} (
   rw [MvPowerSeries.map_id]; rfl
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p a`. Establish `hX : ∀ i : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) = 0` using `fun i => by simp`. Establish `g : ∀ b, GP (Y.B.A.act b)` using `fun b i => Y.B.A.const b i`. Use `⟨dLin (Y.B.A.act a), dLin (Y.B.A.act (star a)), fun _ => rfl, fun _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Use `isEnd_of_hom Y p _ _ (g _) (g _) (Y.B.A.hom _) (Y.B.A.hom _) (Y.intAct _) (Y.intAct _) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `Y.gauge.ad a`. Rewrite `h` using `[actK_self, actK_self]`. Rewrite using `[← h]`. Establish `e : FB.toK C (Y.B.ad a) = Y.B.ad a` using `by show MvPowerSeries.map (RingHom.id C) _ = _`. Rewrite using `[MvPowerSeries.map_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Y.intAd a`. Establish `p0 : GP (pt C (n` using `2) dd 0) := gp_pt 0`. Establish `p1 : GP (pt C (n` using `2) dd 1) := gp_pt 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0 : GP (pt C (n` using `1) dd 0) := gp_pt 0`. Establish `hs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => (MvPowerSeries.X q.2 : MvPowerSeries (Fin dd) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hX q.2`. Establish `e1` using `matrixEnd_eq_subst Y p (pt C dd 0) q0 (by`. Rewrite using `[germ_comp1_zero_point_left _ (gp_addOf _ Y.B.G.const _ _ p0 p1), germ_comp1_zero_point_left _ p0, germ_comp1_zero_point_left _ p1]) _ hX`. Rewrite `e1` using `[germLinearPart_coordinatePoint_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `matrixEnd_eq_subst Y p _ (g a) (Y.B.A.hom a) _ hX`. Establish `e3 : comp1 (Y.B.A.act a) (pt C dd (0 : Fin 1)) = Y.B.A.act a`. Use function extensionality and compare the values at `i`. Rewrite using `[germComp1_eq_subst]`. Establish `: (fun q : Fin 1 × Fin dd => pt C dd (0 : Fin 1) q.2) = MvPowerSeries.X`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `⟨s, x⟩`. Take `rfl : s = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Rewrite using `[this, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e4 : un1 (Y.B.hL C Y.h a) = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => (MvPowerSeries.X q.2 : MvPowerSeries (Fin dd) C)) (Y.B.hL C Y.h a)`. Rewrite using `[← subst_singlePointUncurry _ hX, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Rewrite using `[e4, FB.hL, actK_self, e3, ev, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 2 × Fin dd => pair_points_zero_constant q0 (g a) q.1 q.2) hs, hEnd, hAt]`. Use `show MvPowerSeries.subst _ Y.h = MvPowerSeries.subst _ Y.h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `⟨s, x⟩`. Use `fin_cases s`. Conclude with `(e1 x).symm`. Conclude with `(e2 x).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_isEnd_act : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I) (a : O), ∃ M M' : Matrix (Fin dd) (Fin dd) C, (∀ v, M.mulVec v = linAct (Y.B.A.act a) v) ∧ (∀ v, M'.mulVec v = linAct (Y.B.A.act (star a)) v) ∧ IsEnd (Y.raw p) V M M' ∧ un1 (Y.B.hL C Y.h a) = hEnd (Y.raw p) 1 M := by
   intro C _ _ V O _ _ dd Y d _ I _ p a

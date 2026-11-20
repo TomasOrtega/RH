@@ -13,11 +13,11 @@ variable {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 h`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective a`. Take `⟨⟨c, j⟩, rfl⟩` from `e.surjective c`. Simplify using `only [blk_apply, not_lt] at hac`. Break down `hac.lt_or_eq with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[mem_parab_iff.1 h1 a c i j h, one_apply_ne]`. Introduce `h'`. Use `e.injective h'` as an intermediate fact. Conclude with `h.ne' (congrArg Sigma.fst this)`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_unipRad' {e : (Σ a, m a) ≃ n} {g : GL n R} (h : g ∈ unipRad R e) (a c : n)
     (hac : ¬ blk e a < blk e c) : (g : Matrix n n R) a c = (1 : Matrix n n R) a c := by
@@ -35,9 +35,9 @@ private theorem mem_unipRad' {e : (Σ a, m a) ≃ n} {g : GL n R} (h : g ∈ uni
     simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `a c`. Distinguish the cases in `hac : blk e a < blk e c`. Establish `h0 : (g : Matrix n n R) a c = 0` using `(mem_parab (e := opp e)).1 h' a c hac`. Rewrite using `[h0, Units.val_one, one_apply_ne]`. Introduce and unpack `rfl`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_irrefl _ hac`. Conclude with `mem_unipRad' h a c hac`.
+A detailed English derivation is pending.
 -/
 private theorem eq_one_of {e : (Σ a, m a) ≃ n} {g : GL n R} (h : g ∈ unipRad R e) (h' : g ∈ parabLower R e) :
     g = 1 := by
@@ -51,9 +51,9 @@ private theorem eq_one_of {e : (Σ a, m a) ≃ n} {g : GL n R} (h : g ∈ unipRa
 
 omit [LinearOrder α] in
 /- English proof (translation)
-Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective a`. Take `⟨⟨c, j⟩, rfl⟩` from `e.surjective c`. Simplify using `only [blk_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `leviEmb_apply_ne R e _ h i j`.
+A detailed English derivation is pending.
 -/
 private theorem levi_entry [LinearOrder α] (e : (Σ a, m a) ≃ n) (p : parab R e) (a c : n) :
     (leviEmb R e (leviProj R e p) : Matrix n n R) a c =
@@ -74,9 +74,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {C : Subgroup 𝓀[k]ˣ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨fun i j => (u.val i j).2, fun i j => ((u⁻¹).val i j).2⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `hi : Function.Injective (RingHom.mapMatrix (m` using `Fin n) (algebraMap 𝒪[k] k)) := Matrix.map_injective Subtype.val_injective`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Conclude with `g.mul_inv`. Rewrite using `[map_mul, map_one]`. Conclude with `g.inv_mul`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_KO_iff (g : GL (Fin n) k) :
     g ∈ KO k (Fin n) ↔ (∀ i j, g.val i j ∈ 𝒪[k]) ∧ ∀ i j, (g⁻¹).val i j ∈ 𝒪[k] := by
@@ -97,7 +97,7 @@ private def Good (M : Matrix (Fin n) (Fin n) k) : Prop :=
     ∀ a, ∃ c ∈ unitsC k C, (c : k) = M a a
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `((memIwC k n C).1 g).1 h`. Take `⟨h3, h4⟩` from `mem_iwahori.1 h1`. Conclude with `⟨((mem_KO_iff g).1 h3).1, h4, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem good_of_mem {g : GL (Fin n) k} (h : g ∈ iwC k n C) : Good C g.val := by
   obtain ⟨h1, h2⟩ := ((memIwC k n C).1 g).1 h
@@ -105,17 +105,17 @@ private theorem good_of_mem {g : GL (Fin n) k} (h : g ∈ iwC k n C) : Good C g.
   exact ⟨((mem_KO_iff g).1 h3).1, h4, h2⟩
 
 /- English proof (translation)
-The claim follows from `((memIwC k n C).1 g).2 ⟨mem_iwahori.2 ⟨(mem_KO_iff g).2 ⟨h.1, h'.1⟩, h.2.1⟩, h.2.2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_of_good {g : GL (Fin n) k} (h : Good C g.val) (h' : Good C (g⁻¹).val) : g ∈ iwC k n C :=
   ((memIwC k n C).1 g).2 ⟨mem_iwahori.2 ⟨(mem_KO_iff g).2 ⟨h.1, h'.1⟩, h.2.1⟩, h.2.2⟩
 
 /- English proof (translation)
-Establish `key : ∀ p : parab k e, (p : GL (Fin n) k) ∈ iwC k n C → Good C (leviEmb k e (leviProj k e p)).val`. Introduce `p hp`. Take `⟨h1, h2, h3⟩` from `good_of_mem hp`. Use `⟨fun a c => ?_, fun a c h => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[levi_entry] split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 a c`. Simplify using the standard rewrite rules. Rewrite using `[levi_entry] split_ifs`. Conclude with `h2 a c h`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[levi_entry, if_pos rfl]`. Conclude with `h3 a`. Use `mem_of_good (key p hp) ?_` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `key p⁻¹ (inv_mem hp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem levi_mem {α : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] (e : (Σ a, m a) ≃ Fin n) (p : parab k e)
@@ -139,9 +139,9 @@ private theorem levi_mem {α : Type} {m : α → Type} [Fintype α] [LinearOrder
   exact key p⁻¹ (inv_mem hp)
 
 /- English proof (translation)
-Establish `h1 : (pm k n σ⁻¹ * g * pm k n σ).val a c = g.val (σ a) (σ c)`. Simplify using `only [Units.val_mul, Matrix.mul_apply, pm_apply, Equiv.Perm.eq_inv_iff_eq]`. Simplify using `[eq_comm (a := σ a)]`. Establish `h2 : diagT k (Fin n) s * pm k n σ⁻¹ * g * (diagT k (Fin n) s * pm k n σ⁻¹)⁻¹ = diagT k (Fin n) s * (pm k n σ⁻¹ * g * pm k n σ) * diagT k (Fin n) s⁻¹`. Simplify using `only [map_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `group`. Rewrite using `[h2, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_entry (σ : Equiv.Perm (Fin n)) (s : Fin n → kˣ) (g : GL (Fin n) k) (a c : Fin n) :
     (diagT k (Fin n) s * pm k n σ⁻¹ * g * (diagT k (Fin n) s * pm k n σ⁻¹)⁻¹).val a c =
@@ -157,15 +157,13 @@ private theorem conj_entry (σ : Equiv.Perm (Fin n)) (s : Fin n → kˣ) (g : GL
   simp
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `key : ∀ g ∈ S ⊓ iwC k n C, Good C (diagT k (Fin n) s * pm k n σ⁻¹ * g * (diagT k (Fin n) s * pm k n σ⁻¹)⁻¹).val`. Introduce `g hg`. Establish `hd : ∀ a, (s a : k) * g.val (σ a) (σ a) * ((s a : k))⁻¹ = g.val (σ a) (σ a)` using `fun a => by`. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨h1, h2, h3⟩` from `good_of_mem hg.2`. Use `⟨fun a c => ?_, fun a c hc => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_entry]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hd]`. Conclude with `h1 _ _`. Conclude with `(h g hg a c hac).1`. Rewrite using `[conj_entry]`. Conclude with `(h g hg a c hc.ne').2 hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conj_entry, hd]`. Conclude with `h3 _`. Introduce `g hg`. Use `mem_of_good (key g hg) ?_` and prove the remaining obligations. Use `key g⁻¹ (inv_mem hg)` as an intermediate fact.
-
-Use `this using 2` and compare the differences between its conclusion and the goal. Use `group`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem conj_mem (S : Subgroup (GL (Fin n) k)) (σ : Equiv.Perm (Fin n)) (s : Fin n → kˣ)
     (h : ∀ g ∈ S ⊓ iwC k n C, ∀ a c, a ≠ c →
@@ -199,7 +197,7 @@ private theorem conj_mem (S : Subgroup (GL (Fin n) k)) (σ : Equiv.Perm (Fin n))
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `hz : 0 < valuation k (z : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[map_mul, map_mul, map_inv₀, mul_inv_le_iff₀ hz, mul_comm]`. Conclude with `mul_le_mul_right h _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_le {x z : kˣ} (h : valuation k (x : k) ≤ valuation k (z : k)) (y : k) :
     valuation k ((x : k) * y * (z : k)⁻¹) ≤ valuation k y := by
@@ -209,9 +207,9 @@ private theorem val_le {x z : kˣ} (h : valuation k (x : k) ≤ valuation k (z :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `a c`. Rewrite using `[Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul, pm_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem pm_diag (σ : Equiv.Perm (Fin n)) (t : Fin n → kˣ) :
     pm k n σ * diagT k (Fin n) t = diagT k (Fin n) (fun a => t (σ⁻¹ a)) * pm k n σ := by
@@ -223,11 +221,11 @@ private theorem pm_diag (σ : Equiv.Perm (Fin n)) (t : Fin n → kˣ) :
   · simp
 
 /- English proof (translation)
-Take `⟨p, hp, h⟩` from `hx`. Establish `key : ∀ x : 𝒪[k], ¬ IsUnit x ↔ valuation k (algebraMap 𝒪[k] k x) < 1`. Introduce `x`. Rewrite using `[(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨h ▸ (key p).1 hp.not_isUnit, fun y hy => ?_⟩` and prove the remaining obligations. Set `y' : 𝒪[k]` to `⟨y, hy.le⟩`. Establish `h1 : y' ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `(key y').2 hy`. Rewrite `h1` using `[hp.maximalIdeal_eq, Ideal.mem_span_singleton]`. Rewrite using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.integer.integers (valuation k)).le_of_dvd h1`.
+A detailed English derivation is pending.
 -/
 private theorem unif_val {x : kˣ} (hx : IsUnif x) :
     valuation k (x : k) < 1 ∧ ∀ y : k, valuation k y < 1 → valuation k y ≤ valuation k (x : k) := by
@@ -256,14 +254,14 @@ private def ee : (Σ x : Fin n, {a // bl i j a = x}) ≃ Fin n := Equiv.sigmaFib
 variable {i j}
 
 /- English proof (translation)
-Unfold `bl at hac`. Apply the tactic sequence `split_ifs at hac with h1 h2 h2 <;> simp only [Fin.lt_def, Fin.ext_iff] at * <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lt_of_block_lt (h : (j : ℕ) = i + 1) {a c : Fin n} (hac : bl i j a < bl i j c) : a < c := by
   unfold bl at hac
   split_ifs at hac with h1 h2 h2 <;> simp only [Fin.lt_def, Fin.ext_iff] at * <;> omega
 
 /- English proof (translation)
-Unfold `bl`. Rewrite using `[Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem block_swap₂ (a : Fin n) : bl i j (Equiv.swap i j a) = bl i j a := by
   unfold bl
@@ -271,7 +269,7 @@ private theorem block_swap₂ (a : Fin n) : bl i j (Equiv.swap i j a) = bl i j a
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Unfold `bl`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff] <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem block_ne_iff (h : (j : ℕ) = i + 1) {a c : Fin n} :
     bl i j a ≠ bl i j c ↔ a ≠ c ∧ ¬ (a = i ∧ c = j) ∧ ¬ (a = j ∧ c = i) := by
@@ -338,9 +336,9 @@ private def FF (h : (j : ℕ) = i + 1) : LeviFact (iwC k n C) where
       group
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ a c hac`. Break down `lt_or_gt_of_ne hac with h' | h'` into its components or cases. Conclude with `(mem_parab (e := opp (ee i j))).1 h2 a c h'`. Conclude with `mem_parab.1 h1 a c h'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h1`. Conclude with `⟨mem_parab.2 fun a c hac => h1 a c (ne_of_gt hac), (mem_parab (e := opp (ee i j))).2 fun a c hac => h1 a c (ne_of_lt hac)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_Mf (h : (j : ℕ) = i + 1) (g : GL (Fin n) k) :
     g ∈ (FF C h).Mf ↔ ∀ a c, bl i j a ≠ bl i j c → g.val a c = 0 := by
@@ -354,15 +352,15 @@ private theorem mem_Mf (h : (j : ℕ) = i + 1) (g : GL (Fin n) k) :
       (mem_parab (e := opp (ee i j))).2 fun a c hac => h1 a c (ne_of_lt hac)⟩
 
 /- English proof (translation)
-Use `⟨(mem_Mf C h _).2 fun a c hac => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, val_diagT, mul_diagonal, pm_apply, if_neg, zero_mul]`. Introduce and unpack `rfl`. Conclude with `hac (hb c)`. Use `conj_mem _ σ (fun a => t (σ a)) (fun g hg a c hac => ?_) (by rw [pm_diag, hσ])` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hlt : bl i j (σ a) < bl i j (σ c)`. Use `⟨(val_le (ht _ _ (lt_of_block_lt h hlt).le) _).trans ((good_of_mem hg.2).1 _ _), fun hc => ?_⟩` and prove the remaining obligations. Rewrite `hlt` using `[hb, hb]`. Conclude with `absurd (lt_of_block_lt h hlt) hc.not_gt`. Rewrite using `[mem_unipRad' hg.1 _ _ hlt, one_apply_ne (σ.injective.ne hac)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `conj_mem (C := C) (FF C h).Lf σ t⁻¹ (fun g hg a c hac => ?_) (x := (pm k n σ * diagT k (Fin n) t)⁻¹) (by simp only [map_inv]; group)` as an intermediate fact. Simplify `this` using `only [inv_inv]`. Distinguish the cases in `hlt : bl i j (σ c) < bl i j (σ a)`. Establish `h1` using `(good_of_mem hg.2).2.1 _ _ (lt_of_block_lt h hlt)`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hlt` using `[hb, hb]`. Establish `h2 : valuation k ((t⁻¹ a : kˣ) : k) ≤ valuation k ((t⁻¹ c : kˣ) : k)`. Simplify using `only [Pi.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `inv_anti₀ (zero_lt_iff.2 (by simp)) (ht _ _ (lt_of_block_lt h hlt).le)`. Establish `h3` using `(val_le h2 (g.val (σ a) (σ c))).trans_lt h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h3.le, fun _ => h3⟩`. Rewrite using `[mem_unipRad' (e := opp (ee i j)) hg.1 _ _ hlt, one_apply_ne (σ.injective.ne hac)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem pos_mono (h : (j : ℕ) = i + 1) (σ : Equiv.Perm (Fin n)) (hσ : σ⁻¹ = σ)
     (hb : ∀ a, bl i j (σ a) = bl i j a) (t : Fin n → kˣ) (ht : Dom t) :
@@ -393,11 +391,11 @@ private theorem pos_mono (h : (j : ℕ) = i + 1) (σ : Equiv.Perm (Fin n)) (hσ 
       simp
 
 /- English proof (translation)
-Use `conj_mem _ 1 s (fun g hg a c hac => ?_) (by simp)` and prove the remaining obligations. Distinguish the cases in `hb : bl i j a = bl i j c`. Establish `h1 : valuation k (s a : k) ≤ valuation k (s c : k)`. Distinguish the cases in `h2 : a = i ∧ c = j`. Rewrite using `[h2.1, h2.2, hs]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h3 : a = j ∧ c = i`. Rewrite using `[h3.1, h3.2, hs]`. Conclude with `absurd hb ((block_ne_iff h).2 ⟨hac, h2, h3⟩)`. Conclude with `⟨(val_le h1 _).trans ((good_of_mem hg.2).1 _ _), fun hc => (val_le h1 _).trans_lt ((good_of_mem hg.2).2.1 _ _ hc)⟩`. Simplify using `only [Equiv.Perm.coe_one, id]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(mem_Mf C h g).1 hg.1 a c hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_diag (h : (j : ℕ) = i + 1) (s : Fin n → kˣ)
     (hs : valuation k (s i : k) = valuation k (s j : k)) :
@@ -417,17 +415,17 @@ private theorem conj_diag (h : (j : ℕ) = i + 1) (s : Fin n → kˣ)
     simp
 
 /- English proof (translation)
-Establish `hij : i < j` using `by rw [Fin.lt_def]; omega`. Take `⟨hx1, hx2⟩` from `unif_val hx`. Establish `hx0 : 0 < valuation k (x : k)` using `zero_lt_iff.2 (by simp)`. Use `conj_mem _ (Equiv.swap i j) s (fun g hg a c hac => ?_) (by simp)` and prove the remaining obligations. Take `⟨g1, g2, -⟩` from `good_of_mem hg.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h2 : a = i ∧ c = j`. Take `⟨rfl, rfl⟩` from `h2`. Use `⟨?_, fun hc => absurd hij hc.not_gt⟩` and prove the remaining obligations. Rewrite using `[Equiv.swap_apply_left, Equiv.swap_apply_right, hs]`. Establish `: (s a : k) * g.val c a * (((s a * x : kˣ) : k))⁻¹ = g.val c a * (x : k)⁻¹`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, map_mul, map_inv₀, mul_inv_le_iff₀ hx0, one_mul]`. Conclude with `hx2 _ (g2 _ _ hij)`. Distinguish the cases in `h3 : a = j ∧ c = i`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `h3`. Rewrite using `[Equiv.swap_apply_left, Equiv.swap_apply_right, hs]`. Establish `: ((s c * x : kˣ) : k) * g.val c a * ((s c : k))⁻¹ = x * g.val c a`. Rewrite using `[Units.val_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `h4 : valuation k (x * g.val c a) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' (g1 _ _)).trans_lt hx1`. Rewrite using `[this]`. Conclude with `⟨h4.le, fun _ => h4⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb` using `(block_ne_iff h).2 ⟨hac, h2, h3⟩`. Rewrite `hb` using `[← block_swap₂ a, ← block_swap₂ c]`. Rewrite using `[(mem_Mf C h g).1 hg.1 _ _ hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conj_swap (h : (j : ℕ) = i + 1) {x : kˣ} (hx : IsUnif x) (s : Fin n → kˣ) (hs : s j = s i * x) :
     ∀ g ∈ (FF C h).Mf ⊓ iwC k n C, (diagT k (Fin n) s * pm k n (Equiv.swap i j)) * g *
@@ -468,17 +466,17 @@ end UpperTheory.V.AlgebraTools.FactBlock
 
 open UpperTheory.V.AlgebraTools.FactBlock in
 /- English proof (translation)
-Introduce `k _ _ _ _ n C i j h`. Use `⟨FF C h, fun g => ?_, ?_, fun t ht => ⟨?_, fun hv g hg => ⟨conj_diag C h t hv g hg, ?_⟩⟩, fun x hx => ⟨?_, fun g hg => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[mem_Mf]`. Conclude with `⟨fun H a b h1 h2 h3 => H a b ((block_ne_iff h).2 ⟨h1, h2, h3⟩), fun H a b hab => H a b ((block_ne_iff h).1 hab).1 ((block_ne_iff h).1 hab).2.1 ((block_ne_iff h).1 hab).2.2⟩`. Simplify using `using pos_mono C h (Equiv.swap i j) (Equiv.swap_inv i j) block_swap₂ 1 dom_one`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using pos_mono C h 1 inv_one (fun _ => rfl) t ht`. Use `conj_diag C h t⁻¹ (by simp [hv]) g hg` as an intermediate fact. Simplify `this` using `only [map_inv, inv_inv]`. Use `pos_mono C h (Equiv.swap i j) (Equiv.swap_inv i j) block_swap₂ _ fun a c hac => ?_` and prove the remaining obligations. Establish `h1` using `(unif_val hx).1.le`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hac' : (a : ℕ) ≤ c` using `hac`. Unfold `fund`. Use `split_ifs`. Conclude with `le_rfl`. Simplify using `using h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`. Unfold `pw`. Rewrite using `[pm_diag]`. Use `conj_swap C h hx _ ?_ g hg` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[fund, h]`. Use `conj_swap C h hx (fun a => x ^ fund n j a)⁻¹ (by` as an intermediate fact. Establish `hij : i < j` using `by rw [Fin.lt_def]; omega`. Simplify using `[fund, hij]) g hg`. Establish `e : (pm k n (Equiv.swap i j) * pw x (fund n j))⁻¹ = diagT k (Fin n) (fun a => x ^ fund n j a)⁻¹ * pm k n (Equiv.swap i j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[_root_.mul_inv_rev, ← map_inv (pm k n), Equiv.swap_inv, map_inv]`. Both sides reduce to the same expression. Rewrite `this` using `[← e, inv_inv]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.factBlock :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (i j : Fin n), (j : ℕ) = i + 1 → ∃ F : LeviFact (iwC k n C), (∀ g : GL (Fin n) k, g ∈ F.Mf ↔ ∀ a b : Fin n, a ≠ b → ¬ (a = i ∧ b = j) → ¬ (a = j ∧ b = i) → (g : Matrix (Fin n) (Fin n) k) a b = 0) ∧ F.Pos (pm k n (Equiv.swap i j)) ∧ (∀ t : Fin n → kˣ, Dom t → F.Pos (diagT k (Fin n) t) ∧ (valuation k (t i : k) = valuation k (t j : k) → F.NormJ (diagT k (Fin n) t))) ∧ ∀ x : kˣ, IsUnif x → F.Pos (pm k n (Equiv.swap i j) * pw x (fund n j)) ∧ F.NormJ (pm k n (Equiv.swap i j) * pw x (fund n j)) := by

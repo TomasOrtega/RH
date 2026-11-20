@@ -13,7 +13,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchProperAtP
 namespace GlobalTheory.CompanionTheory.Ar.SliceBranch
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.ParamChartInt.proof (GroundTheory.Heights₂.Heights.ChartIntCountAdd.proof GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.ChartMassCompact) GroundTheory.Heights₂.Heights.ParamPieceInt.proof GroundTheory.Heights₂.Heights.ParamCritNull.proof GroundT …`.
+A detailed English derivation is pending.
 -/
 theorem paramChartInt : GroundTheory.Heights₂.Heights.ParamChartInt.Statement :=
   GroundTheory.Heights₂.Heights.ParamChartInt.proof
@@ -23,7 +23,7 @@ theorem paramChartInt : GroundTheory.Heights₂.Heights.ParamChartInt.Statement 
     GroundTheory.Heights₂.Heights.ParamDensIntegrable.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.SliceBranchInt.proof GlobalTheory.T.branch_proper_at_point_holds paramChartInt`.
+A detailed English derivation is pending.
 -/
 theorem sliceBranchInt : GroundTheory.Heights₂.Heights.SliceBranchInt.Statement :=
   GroundTheory.Heights₂.Heights.SliceBranchInt.proof GlobalTheory.T.branch_proper_at_point_holds paramChartInt

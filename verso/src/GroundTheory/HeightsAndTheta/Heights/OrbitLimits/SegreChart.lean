@@ -19,7 +19,7 @@ def segre (y : (Σ k, ι k) → Ω) : (Σ _ : Unit, ∀ k, ι k) → Ω :=
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[segre, Finset.prod_ne_zero_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_ne_zero_iff (y : (Σ k, ι k) → Ω) (f : ∀ k, ι k) :
     segre y ⟨(), f⟩ ≠ 0 ↔ ∀ k, y ⟨k, f k⟩ ≠ 0 := by
@@ -28,7 +28,7 @@ theorem segre_ne_zero_iff (y : (Σ k, ι k) → Ω) (f : ∀ k, ι k) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Simplify using `[segre, Finset.prod_div_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_ratio (y : (Σ k, ι k) → Ω) (f g : ∀ k, ι k) :
     segre y ⟨(), g⟩ / segre y ⟨(), f⟩ = ∏ k, y ⟨k, g k⟩ / y ⟨k, f k⟩ := by
@@ -37,7 +37,7 @@ theorem segre_ratio (y : (Σ k, ι k) → Ω) (f g : ∀ k, ι k) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single p.1]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[Function.update_of_ne hk, div_self (hf k)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_ratio_update [DecidableEq K] (y : (Σ k, ι k) → Ω) (f : ∀ k, ι k) (hf : ∀ k, y ⟨k, f k⟩ ≠ 0)
     (p : Σ k, ι k) :
@@ -51,11 +51,9 @@ theorem prod_ratio_update [DecidableEq K] (y : (Σ k, ι k) → Ω) (f : ∀ k, 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[chartRingZ, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨⟨⟩, g⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `segre y ⟨(), g⟩ / segre y ⟨(), f⟩ ∈ chartRingZ y f`. Rewrite using `[segre_ratio]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prod_mem fun k _ ↦ Algebra.subset_adjoin ⟨⟨k, g k⟩, rfl⟩`. Rewrite using `[chartRingZ, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, rfl⟩`. Express the relevant statement in the definitionally equal form `y p / y ⟨p.1, f p.1⟩ ∈ chartRingZ (segre y) (fun _ ↦ f)`. Rewrite using `[← prod_ratio_update y f hf p, ← segre_ratio]`.
-
-Conclude with `Algebra.subset_adjoin ⟨⟨(), Function.update f p.1 p.2⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartRingZ_segre (y : (Σ k, ι k) → Ω) (f : ∀ k, ι k) (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) :
     chartRingZ (segre y) (fun _ ↦ f) = chartRingZ y f := by
@@ -73,9 +71,9 @@ theorem chartRingZ_segre (y : (Σ k, ι k) → Ω) (f : ∀ k, ι k) (hf : ∀ k
     exact Algebra.subset_adjoin ⟨⟨(), Function.update f p.1 p.2⟩, rfl⟩
 
 /- English proof (translation)
-Use `charZero_of_inj_zero fun n hn ↦ ?_` and prove the remaining obligations. Establish `hmem : ((n : ℤ) : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_C]`. Rewrite using `[eq_intCast, Int.cast_natCast, ← map_natCast (C : Ω →+* MvPolynomial K Ω), hn, map_zero]`. Rewrite `hmem` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing ι) = ⊥ from hP.2.2.1, Ideal.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmem` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_isArithVar {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) : CharZero Ω := by
   refine charZero_of_inj_zero fun n hn ↦ ?_
@@ -86,9 +84,9 @@ theorem charZero_of_isArithVar {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoor
   exact_mod_cast hmem
 
 /- English proof (translation)
-Establish `h : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k ↦ by`. Take `⟨i, hi⟩` from `hP.2.1.2.2 k`. Use `⟨i, fun h0 ↦ hi ?_⟩` and prove the remaining obligations. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, C_0, zero_mul]`. Use `choose f hf using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨f, hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) :
     ∃ f : ∀ k, ι k, ∀ k, y ⟨k, f k⟩ ≠ 0 := by
@@ -100,7 +98,7 @@ theorem exists_chart {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Rewrite using `[segre_ratio]`. Use `(IsIntegral.prod _ fun k _ ↦ ?_).isAlgebraic` and prove the remaining obligations. Conclude with `(IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.isAlgebraic_ratio hP f hf ⟨k, g k⟩).isIntegral`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_segre_ratio [CharZero Ω] {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1)
     (f : ∀ k, ι k) (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) :
@@ -110,7 +108,7 @@ theorem isAlgebraic_segre_ratio [CharZero Ω] {y : (Σ k, ι k) → Ω} (hP : Is
   exact (IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.isAlgebraic_ratio hP f hf ⟨k, g k⟩).isIntegral
 
 /- English proof (translation)
-Use `CoordConeArithVar.full Unit (fun _ ↦ ∀ k, ι k) Ω (segre y) (fun _ ↦ f) 0 Fin.elim0 ⟨()⟩ (fun _ ↦ (segre_ne_zero_iff y f).mpr hf) algebraicIndependent_empty_type (fun i ↦ i.elim0) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨⟩, g⟩, rfl⟩`. Conclude with `IsAlgebraic.extendScalars (RingHom.injective _) (isAlgebraic_segre_ratio hP f hf g)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isArithVar_segre [DecidableEq K] [CharZero Ω] {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1)
     (f : ∀ k, ι k) (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) : IsArithVar (mCoordIdeal (segre y)) 1 := by

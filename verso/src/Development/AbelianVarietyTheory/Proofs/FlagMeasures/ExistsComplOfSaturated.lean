@@ -6,9 +6,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SaturatedSublatticeComplement.main`. Consider the case `exact _root_.GlobalTheory.SaturatedSublatticeComplement.main`. Consider the case `(apply _root_.GlobalTheory.SaturatedSublatticeComplement.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SaturatedSublatticeComplement.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SaturatedSublatticeComplement.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SaturatedSublatticeComplement.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_compl_of_saturated {R V : Type*} [CommRing R] [IsDedekindDomain R]
     [AddCommGroup V] [Module R V] (N M : Submodule R V) (hNM : N ≤ M) (hM : M.FG)
@@ -23,11 +23,11 @@ theorem exists_compl_of_saturated {R V : Type*} [CommRing R] [IsDedekindDomain R
   | (intros; exact _root_.GlobalTheory.SaturatedSublatticeComplement.main ..)
 
 /- English proof (translation)
-Introduce `E _ _ n a S _ hmono hfg hsat`. Establish `key : ∀ i : Fin a, ∃ A : Submodule (𝓞 E) (Fin n → E), A ⊓ S i.castSucc = ⊥ ∧ A ⊔ S i.castSucc = S i.succ`. Introduce `i`. Establish `hle : S i.succ ≤ S (Fin.last a)` using `hmono (Fin.le_last _)`. Use `exists_compl_of_saturated _ _ (hmono (Fin.castSucc_lt_succ).le) (Submodule.FG.of_le hfg hle) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r y hr hy hry`. Apply `hsat _ y (hle hy)` to reduce the goal to its premises. Establish `hr' : (algebraMap (𝓞 E) E r) ≠ 0`. Simplify using `using hr`. Establish `: y = (algebraMap (𝓞 E) E r)⁻¹ • (r • y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E r y, smul_smul, inv_mul_cancel₀ hr', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hry)`. Use `choose A hA using key`. Conclude with `⟨A, hA⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem saturatedFlag_splits : ∀ (E : Type) [Field E] [NumberField E] (n a : ℕ) (S : Fin (a + 1) → Submodule (𝓞 E) (Fin n → E)), S 0 = ⊥ → Monotone S → (S (Fin.last a)).FG → (∀ i, ∀ y ∈ S (Fin.last a), y ∈ Submodule.span E (S i : Set (Fin n → E)) → y ∈ S i) → ∃ A : Fin a → Submodule (𝓞 E) (Fin n → E), ∀ i, A i ⊓ S i.castSucc = ⊥ ∧ A i ⊔ S i.castSucc = S i.succ := by
   intro E _ _ n a S _ hmono hfg hsat

@@ -13,7 +13,7 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Unfold `weightSp`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Apply the tactic sequence `all_goals exact Iff.rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_weightSpace_iff_diag_eigen {E : GLOps n K V} {mu : Fin n → ℤ} {x : V} :
     x ∈ weightSp E mu ↔ ∀ a, E a a x = (mu a : K) • x := by
@@ -22,35 +22,31 @@ theorem mem_weightSpace_iff_diag_eigen {E : GLOps n K V} {mu : Fin n → ℤ} {x
   all_goals exact Iff.rfl
 
 /- English proof (translation)
-Establish `hva : E a a v = 0` using `by simpa using (mem_weightSpace_iff_diag_eigen.mp hv) a`. Establish `hvb : E b b v = 0` using `by simpa using (mem_weightSpace_iff_diag_eigen.mp hv) b`. Establish `rAA : ∀ y, E a a (E b a y) = E b a (E a a y) - E b a y`. Introduce `y`. Establish `h` using `LinearMap.congr_fun (hE.1 a a b a) y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[if_neg hab, if_pos rfl, LinearMap.sub_apply, LinearMap.sub_apply, LinearMap.zero_apply, zero_sub]`. Rewrite using `[sub_eq_add_neg]`. Conclude with `sub_eq_iff_eq_add'.mp h`. Establish `rBB : ∀ y, E b b (E b a y) = E b a (E b b y) + E b a y`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `LinearMap.congr_fun (hE.1 b b b a) y`. Rewrite `h` using `[if_pos rfl, if_neg hab, LinearMap.sub_apply, LinearMap.sub_apply, LinearMap.zero_apply, sub_zero]`. Conclude with `sub_eq_iff_eq_add'.mp h`. Establish `rEF : ∀ y, E a b (E b a y) = E b a (E a b y) + (E a a y - E b b y)`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `LinearMap.congr_fun (hE.1 a b b a) y`. Rewrite `h` using `[if_pos rfl, if_pos rfl, LinearMap.sub_apply, LinearMap.sub_apply]`. Conclude with `sub_eq_iff_eq_add'.mp h`. Establish `hstep : ∀ j : ℕ, E b a ((⇑(E b a))^[j] v) = (⇑(E b a))^[j+1] v` using `fun j => (Function.iterate_succ_apply' _ j v).symm`. Establish `hA : ∀ k : ℕ, E a a ((⇑(E b a))^[k] v) = -(k : K) • (⇑(E b a))^[k] v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [hva]`. Consider the case `succ k ih`. Rewrite using `[← hstep k, rAA, ih, map_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Use `module`. Establish `hB : ∀ k : ℕ, E b b ((⇑(E b a))^[k] v) = (k : K) • (⇑(E b a))^[k] v`. Introduce `k`. Proceed by induction on `k with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Consider the case `zero => simp [hvb]`. Consider the case `succ k ih`. Rewrite using `[← hstep k, rBB, ih, map_smul]`. Use `push_cast`. Use `module`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : ∀ k : ℕ, E a b ((⇑(E b a))^[k+1] v) = -((k : K) * ((k : K) + 1)) • (⇑(E b a))^[k] v`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[← hstep 0, rEF]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Simplify using `[he, hva, hvb]`. Consider the case `succ k ih`. Rewrite using `[← hstep (k+1), rEF, ih, map_smul, hstep k, hA (k+1), hB (k+1)]`. Use `push_cast`. Use `module`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hex : ∃ k : ℕ, (⇑(E b a))^[k+1] v = 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hli : LinearIndependent K (fun k : ℕ => (⇑(E b a))^[k+1] v)`. Use `Module.End.eigenvectors_linearIndependent' (E a a) (fun k : ℕ => -(((k+1 : ℕ) : K))) ?_ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Simplify using `using hij`. Introduce `k`. Rewrite using `[Module.End.hasEigenvector_iff, Module.End.mem_eigenspace_iff]`. Conclude with `⟨hA (k+1), hne k⟩`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hli.finite`. Conclude with `not_finite ℕ`. Establish `hdown : ∀ j : ℕ, (⇑(E b a))^[j+1] v = 0 → E b a v = 0`. Introduce `j`. Proceed by induction on `j with`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro h`. Simplify using `using h`. Consider the case `succ j ih`. Introduce `h`. Apply `ih` to reduce the goal to its premises.
-
-Establish `h2` using `hC (j+1)`. Rewrite `h2` using `[h, map_zero]`. Establish `hc : -(((j+1 : ℕ) : K) * (((j+1 : ℕ) : K) + 1)) ≠ 0`. Rewrite using `[neg_ne_zero]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations.
-
-Conclude with `Nat.succ_ne_zero j` after adjusting the coercions. Conclude with `Nat.succ_ne_zero (j+1)` after adjusting the coercions. Conclude with `(smul_eq_zero.mp h2.symm).resolve_left hc`. Take `⟨k, hk⟩` from `hex`. Conclude with `hdown k hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weight_zero_lowering_kills_raising [CharZero K] [FiniteDimensional K V] {E : GLOps n K V} (hE : IsGLRep E) {v : V}
     (hv : v ∈ weightSp E 0) (a b : Fin n) (hab : a ≠ b) (he : E a b v = 0) : E b a v = 0 := by
@@ -136,17 +132,15 @@ theorem weight_zero_lowering_kills_raising [CharZero K] [FiniteDimensional K V] 
 def commonKernelOperators (E : GLOps n K V) : Submodule K V := ⨅ a, ⨅ b, LinearMap.ker (E a b)
 
 /- English proof (translation)
-Simplify using `only [commonKernelOperators, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_common_kernel_iff {E : GLOps n K V} {x : V} : x ∈ commonKernelOperators E ↔ ∀ a b, E a b x = 0 := by
   simp only [commonKernelOperators, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Establish `hu' : u ∈ Submonoid.closure (Set.range fun ab : Fin n × Fin n => E ab.1 ab.2)` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨⟨a, b⟩, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `show E a b y ∈ commonKernelOperators E`. Rewrite using `[mem_common_kernel_iff.mp hy a b]`. Conclude with `zero_mem _`. Consider the case `one => intro y hy`.
-
-Conclude with `hy`. Consider the case `mul x z _ _ ihx ihz => intro y hy`. Conclude with `ihx _ (ihz y hy)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem enveloping_preserves_common_kernel {E : GLOps n K V} {u : Module.End K V} (hu : u ∈ Umon E) :
     ∀ y ∈ commonKernelOperators E, u y ∈ commonKernelOperators E := by
@@ -163,11 +157,11 @@ theorem enveloping_preserves_common_kernel {E : GLOps n K V} {u : Module.End K V
   | mul x z _ _ ihx ihz => intro y hy; exact ihx _ (ihz y hy)
 
 /- English proof (translation)
-Establish `hle : isoSub E 0 ≤ commonKernelOperators E`. Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, v, hv, rfl⟩`. Use `enveloping_preserves_common_kernel hu v ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_common_kernel_iff]`. Introduce `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Conclude with `hv.2.2 a b h`. Simplify using `using (mem_weightSpace_iff_diag_eigen.mp hv.2.1) a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `weight_zero_lowering_kills_raising hE hv.2.1 b a (ne_of_lt h) (hv.2.2 b a h)`. Introduce `x hx`. Establish `hx0` using `mem_common_kernel_iff.mp (hle hx)`. Use `⟨mem_weightSpace_iff_diag_eigen.mpr fun a => ?_, fun a b _ => hx0 a b⟩` and prove the remaining obligations. Simplify using `[hx0 a a]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivial_isotypic_invariant_holds [CharZero K] [FiniteDimensional K V] {E : GLOps n K V} (hE : IsGLRep E) : TrivialIsotypicIsInvariant E := by
   have hle : isoSub E 0 ≤ commonKernelOperators E := by
@@ -193,9 +187,9 @@ def loweringWordSpan (E : GLOps n K V) (v : V) : Submodule K V :=
   Submodule.span K {x | ∃ u ∈ loweringWordMonoid E, x = u v}
 
 /- English proof (translation)
-Introduce `y hy`. Establish `key : loweringWordSpan E v ≤ (loweringWordSpan E v).comap (E a b)`. Unfold `loweringWordSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Conclude with `Submodule.subset_span ⟨E a b * u, mul_mem (Submonoid.subset_closure ⟨a, b, hab, rfl⟩) hu, rfl⟩`. Conclude with `key hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowering_word_span_lowering_stable {E : GLOps n K V} {v : V} {a b : Fin n} (hab : b < a) :
     ∀ y ∈ loweringWordSpan E v, E a b y ∈ loweringWordSpan E v := by
@@ -209,21 +203,15 @@ theorem lowering_word_span_lowering_stable {E : GLOps n K V} {v : V} {a b : Fin 
   exact key hy
 
 /- English proof (translation)
-Establish `hmem : ∀ w ∈ loweringWordMonoid E, w v ∈ loweringWordSpan E v` using `fun w hw => Submodule.subset_span ⟨w, hw, rfl⟩`. Establish `main : ∀ w ∈ loweringWordMonoid E, (∀ c d, E c d (w v) ∈ loweringWordSpan E v) → ∀ c d, E c d (u (w v)) ∈ loweringWordSpan E v`. Establish `hu' : u ∈ Submonoid.closure {F | ∃ a b : Fin n, b < a ∧ F = E a b}` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨a, b, hab, rfl⟩` from `hx`. Introduce `w hw hwY c d`. Establish `h` using `LinearMap.congr_fun (hE.1 c d a b) (w v)`. Rewrite `h` using `[LinearMap.sub_apply, LinearMap.sub_apply]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `sub_eq_iff_eq_add.mp h`. Rewrite using `[show E c d (E a b (w v)) = (E c d * E a b) (w v) from rfl, h2]`. Use `add_mem (sub_mem ?_ ?_) (lowering_word_span_lowering_stable hab _ (hwY c d))` and prove the remaining obligations. Use `split_ifs`. Conclude with `hwY c b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`. Use `split_ifs`. Conclude with `hwY a d`. Rewrite using `[LinearMap.zero_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `zero_mem _`. Consider the case `one => intro w hw hwY c d`. Conclude with `hwY c d`. Consider the case `mul x z _ hz ihx ihz`. Introduce `w hw hwY c d`.
-
-Conclude with `ihx (z * w) (mul_mem hz hw) (ihz w hw hwY) c d`. Establish `base : ∀ c d, E c d ((1 : Module.End K V) v) ∈ loweringWordSpan E v`. Introduce `c d`. Use `show E c d v ∈ _`. Break down `lt_trichotomy c d with h | rfl | h` into its components or cases.
-
-Rewrite using `[hv.2.2 c d h]`. Conclude with `zero_mem _`. Rewrite using `[(mem_weightSpace_iff_diag_eigen.mp hv.2.1) c]`. Conclude with `Submodule.smul_mem _ _ (hmem 1 (one_mem _))`. Conclude with `hmem (E c d) (Submonoid.subset_closure ⟨c, d, h, rfl⟩)`.
-
-Introduce `c d`. Conclude with `main 1 (one_mem _) base c d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowering_word_span_operator_mem {E : GLOps n K V} (hE : IsGLRep E) {mu : Fin n → ℤ} {v : V} (hv : IsHWV E mu v)
     {u : Module.End K V} (hu : u ∈ loweringWordMonoid E) : ∀ c d, E c d (u v) ∈ loweringWordSpan E v := by
@@ -263,9 +251,9 @@ theorem lowering_word_span_operator_mem {E : GLOps n K V} (hE : IsGLRep E) {mu :
   exact main 1 (one_mem _) base c d
 
 /- English proof (translation)
-Introduce `y hy`. Establish `key : loweringWordSpan E v ≤ (loweringWordSpan E v).comap (E c d)`. Unfold `loweringWordSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `lowering_word_span_operator_mem hE hv hu c d`. Conclude with `key hy`.
+A detailed English derivation is pending.
 -/
 theorem lowering_word_span_gl_stable {E : GLOps n K V} (hE : IsGLRep E) {mu : Fin n → ℤ} {v : V} (hv : IsHWV E mu v)
     (c d : Fin n) : ∀ y ∈ loweringWordSpan E v, E c d y ∈ loweringWordSpan E v := by
@@ -278,11 +266,9 @@ theorem lowering_word_span_gl_stable {E : GLOps n K V} (hE : IsGLRep E) {mu : Fi
   exact key hy
 
 /- English proof (translation)
-Establish `hu' : u ∈ Submonoid.closure (Set.range fun ab : Fin n × Fin n => E ab.1 ab.2)` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨⟨a, b⟩, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Conclude with `lowering_word_span_gl_stable hE hv a b y hy`. Consider the case `one => intro y hy`. Conclude with `hy`. Consider the case `mul x z _ _ ihx ihz => intro y hy`.
-
-Conclude with `ihx _ (ihz y hy)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lowering_word_span_enveloping_stable {E : GLOps n K V} (hE : IsGLRep E) {mu : Fin n → ℤ} {v : V} (hv : IsHWV E mu v)
     {u : Module.End K V} (hu : u ∈ Umon E) : ∀ y ∈ loweringWordSpan E v, u y ∈ loweringWordSpan E v := by
@@ -297,15 +283,13 @@ theorem lowering_word_span_enveloping_stable {E : GLOps n K V} (hE : IsGLRep E) 
   | mul x z _ _ ihx ihz => intro y hy; exact ihx _ (ihz y hy)
 
 /- English proof (translation)
-Establish `hu' : u ∈ Submonoid.closure {F | ∃ a b : Fin n, b < a ∧ F = E a b}` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction generalizing mu v with`. Consider the case `mem x hx`. Take `⟨a, b, hab, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨mu + rootW a b, hs a b mu v hv⟩, Or.inr ?_⟩` and prove the remaining obligations. Establish `hle : LinearMap.range (E a b) ≤ nMinus E`. Unfold `nMinus`. Conclude with `le_iSup_of_le a (le_iSup_of_le b (le_iSup_of_le hab le_rfl))`. Conclude with `hle (LinearMap.mem_range_self _ v)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `one => exact ⟨⟨mu, hv⟩, Or.inl rfl⟩`. Consider the case `mul x z _ _ ihx ihz`. Take `⟨⟨ν, hν⟩, h1⟩` from `ihz (mu := mu) (v := v) hv`. Take `⟨⟨ν', hν'⟩, h2⟩` from `ihx (mu := ν) (v := z v) hν`. Use `⟨⟨ν', hν'⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Break down `h2 with h2 | h2` into its components or cases. Break down `h1 with h1 | h1` into its components or cases. Use `left`. Conclude with `h2.trans h1`. Use `right`.
-
-Rewrite using `[show (x * z) v = x (z v) from rfl, h2]`. Conclude with `h1`. Use `right`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem lowering_word_weight_or_nMinus {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) {mu : Fin n → ℤ} {v : V}
     (hv : v ∈ weightSp E mu) {u : Module.End K V} (hu : u ∈ loweringWordMonoid E) :
@@ -334,17 +318,15 @@ theorem lowering_word_weight_or_nMinus {E : GLOps n K V} (hs : OperatorsShiftWei
     · right; exact h2
 
 /- English proof (translation)
-Introduce `P π hπ hP mu hmu x hx`. Establish `hY : ∀ v, IsHWV E mu v → ∀ y ∈ loweringWordSpan E v, P (π y) = 0`. Introduce `v hv`. Establish `key : loweringWordSpan E v ≤ LinearMap.ker (P * π)`. Unfold `loweringWordSpan`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨w, hw, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Use `show P (π (w v)) = 0`. Take `⟨⟨ν, hν⟩, h⟩` from `lowering_word_weight_or_nMinus hs hv.2.1 hw`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h with h | h` into its components or cases. Rewrite using `[h, hπ.2 mu hmu v hv.2.1, map_zero]`. Distinguish the cases in `hν0 : ν = 0`. Substitute `hν0` using the available equality. Rewrite using `[hπ.1 _ hν]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP _ hν h`. Rewrite using `[hπ.2 ν hν0 _ hν, map_zero]`. Introduce `y hy`. Conclude with `LinearMap.mem_ker.mp (key hy)`. Establish `hiso : isoSub E mu ≤ LinearMap.ker (P * π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Use `show P (π (u v)) = 0`.
-
-Conclude with `hY v hv (u v) (lowering_word_span_enveloping_stable hE hv hu v (Submodule.subset_span ⟨1, one_mem _, rfl⟩))`. Conclude with `LinearMap.mem_ker.mp (hiso hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_isotypic_weight_zero_killed {E : GLOps n K V} (hE : IsGLRep E) (hs : OperatorsShiftWeightsByRoots E) : NontrivialIsotypicWeightZeroKilled E := by
   intro P π hπ hP mu hmu x hx

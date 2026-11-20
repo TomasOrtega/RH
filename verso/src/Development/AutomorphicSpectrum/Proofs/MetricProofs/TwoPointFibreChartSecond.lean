@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b ca cb hb hab hca hcb X q Un Gn ΦYn ΦWn l H bp _ hF w hw`. Unfold `IsFibreData at hF`. Take `⟨-, -, -, h4, h5, -, -⟩` from `hF`. Take `⟨hbp, hH⟩` from `h4 w hw`. Take `⟨hGbd, hGpd⟩` from `BM.G_pos l τ (bp w) hbp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G₂, hG₂, hG₂eq, -⟩` from `GlobalTheory.CompanionTheory.Ar.PB.norm_three_steps N j a b ca cb (BM.G l τ (bp w)) (H τ w) M.j_le hb hab hca hcb hGbd hGpd (hH τ).1 (hH τ).2`. Establish `hEq : Gn w = G₂` using `Matrix.ext fun r s => by rw [h5 w hw r s, hG₂eq r s]`. Rewrite using `[hEq]`. Conclude with `hG₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramPlane_posDef : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (τ : Ψ) (a b ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (X : Type) (q : Fin 2 → X → FA.S.X) (Un : Set (Fin d → ℂ)) (Gn : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (ΦYn : (Fin (d + 1) → ℂ) → FA.S.X) (ΦWn : (Fin (d + 2) → ℂ) → X) (l : Fin BM.q) (H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ) (bp : (Fin d → ℂ) → BM.Rb.X), IsOpen Un → IsFibreData FA τ a ca cb q Un Gn ΦYn ΦWn l H bp → ∀ w ∈ Un, (Gn w).PosDef := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a b ca cb hb hab hca hcb X q Un Gn ΦYn ΦWn l H bp _ hF w hw

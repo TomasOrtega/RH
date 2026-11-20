@@ -8,17 +8,15 @@ open Polynomial
 namespace UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Introduce `d n t c h hinj hc hEq i`. Use `set P : ℂ[X] := ∑ a ∈ Finset.range (d + 1), C ((-1) ^ a * t a) * X ^ a with hPdef`. Use `set Q : ℂ[X] := ∑ j, C c * X ^ (h j) with hQdef`. Establish `hPQ : P = Q`. Apply `Polynomial.funext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `y`. Simplify using `only [hPdef, hQdef, eval_finset_sum, eval_mul, eval_C, eval_pow, eval_X]`. Rewrite using `[← Finset.mul_sum, ← hEq y]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[neg_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hQ : Q.coeff (h i) = c`. Simplify using `only [hQdef, finset_sum_coeff, coeff_C_mul, coeff_X_pow]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hji`. Rewrite using `[if_neg (fun e => hji (hinj e).symm), mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `hP : P.coeff (h i) = if h i ∈ Finset.range (d + 1) then (-1) ^ (h i) * t (h i) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hPdef, finset_sum_coeff, coeff_C_mul, coeff_X_pow, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Introduce `ht`. Rewrite `hP` using `[hPQ, hQ]`. Use `split_ifs at hP with hlt`.
-
-Rewrite `hP` using `[ht, mul_zero]`. Conclude with `hc hP`. Conclude with `hc hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffOcc_of : CoeffOcc := by
   intro d n t c h hinj hc hEq i

@@ -51,7 +51,7 @@ section Setup
 variable {D : D7} (O : Setup D) (c : O.s.Comp)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Proof.LetterConjugation.letters_spec D O.A O.N O.j O.S O.κ O.s).1`.
+A detailed English derivation is pending.
 -/
 theorem length_letters : (letters O.S.Dw).length = D.R.f * O.N :=
   (GlobalTheory.Proof.LetterConjugation.letters_spec D O.A O.N O.j O.S O.κ O.s).1

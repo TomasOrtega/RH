@@ -22,7 +22,7 @@ def UnitAt (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → 
 variable {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Take `⟨s', hs'⟩` from `h'`. Conclude with `⟨mulSec s s', fun J hJ => by rw [sval_mulSec s s' _ y hJ]; exact (hs J hJ).mul (hs' J hJ)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UnitAt.mul {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {y : Y}
     (h : UnitAt L φ ε y) (h' : UnitAt L φ' ε' y) : UnitAt L (Sum.elim φ φ') (Sum.elim ε ε') y := by
@@ -31,7 +31,7 @@ theorem UnitAt.mul {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ 
   exact ⟨mulSec s s', fun J hJ => by rw [sval_mulSec s s' _ y hJ]; exact (hs J hJ).mul (hs' J hJ)⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Take `⟨s', hs'⟩` from `exists_sec hL hf s`. Conclude with `⟨s', fun J hJ => by rw [hs' Y (𝟙 Y) y J hJ]; exact hs J hJ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UnitAt.congr (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {y : Y}
     (hf : FormEq φ ε φ' ε') (h : UnitAt L φ ε y) : UnitAt L φ' ε' y := by
@@ -40,7 +40,7 @@ theorem UnitAt.congr (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' 
   exact ⟨s', fun J hJ => by rw [hs' Y (𝟙 Y) y J hJ]; exact hs J hJ⟩
 
 /- English proof (translation)
-Introduce `U _ h`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify `H (Additive U) (fun ψ => Additive.ofMul (h ψ))` using `only [ofMul_prod, ofMul_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formEq_of_add {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (H : ∀ (U : Type) [AddCommGroup U] (h : (Y ⟶ X) → U), ∑ k, ε k • h (φ k) = ∑ k, ε' k • h (φ' k)) :
@@ -50,11 +50,11 @@ theorem formEq_of_add {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y �
   simpa only [ofMul_prod, ofMul_zpow] using H (Additive U) (fun ψ => Additive.ofMul (h ψ))
 
 /- English proof (translation)
-Establish `l : ∀ j : K → L.ι, LB.wchart L (fun k => h ≫ φ k) j ≤ LB.wchart (LB.LinComb L φ ε) (K` using `PUnit) (fun _ => h) (fun _ => j) := fun _ _ hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `e1 : ∀ (j : K → L.ι) (y : Y'), y ∈ LB.wchart L (fun k => h ≫ φ k) j → gs (𝟙 Y') y _ (res (l j) (c.s (fun _ => j))).val = (gm (𝟙 Y') y (LB.wchart (LB.LinComb L φ ε) (K` using `PUnit) (fun _ => h) (fun _ => j)) (c.s (fun _ => j))).val := fun j y hj => (gs_unit _ y _ hj _).trans (congrArg Units.val (gm_res _ y (l j) hj _))`. Use `⟨⟨fun j => (res (l j) (c.s (fun _ => j))).val, fun j j' => fn_ext fun y hy => ?_⟩, ?_⟩` and prove the remaining obligations. Use `((gs_res (𝟙 Y') y _ hy _).trans (e1 j y hy.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y') y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y') y _ hy _).trans (congrArg Units.val (gm_linComb L _ _ (𝟙 Y') y j j' hy.1 hy.2))) ((gs_res (𝟙 Y') y _ hy _).trans (e1 j' y hy.2)))).symm)` and prove the remaining obligations. Establish `m : ∀ j : K → L.ι, y ∈ LB.wchart L (fun k => h ≫ φ k) j → (𝟙 Y' ≫ h) y ∈ LB.wchart L φ j` using `fun j hj => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hj k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[gen_trans hc (𝟙 Y') y (l j hy.1) (l j' hy.2), Units.val_mul]`. Use `congr 2`. Simplify using `only [trF, Finset.univ_unique, Finset.prod_singleton, zpow_one]`. Conclude with `(gm_linComb L φ ε (𝟙 Y' ≫ h) y j j' (m j hy.1) (m j' hy.2)).trans (by simp only [Category.assoc])`. Introduce `r z J hJ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm` using `hJ.mem (fun k => h ≫ φ k) r`. Conclude with `(congrArg IsUnit (gs_unit r z _ hm _)).mpr (Units.isUnit _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_of_pullGen {Y' : Scheme.{0}} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y)
     (c : LB.Gen ((LB.LinComb L φ ε).pull h)) (hc : c.IsGen) :
@@ -87,7 +87,7 @@ section Square
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `h1 : PrimeSpectrum.asIdeal (R` using `k) q = ⊥ := @Ideal.eq_bot_of_prime k _ _ (PrimeSpectrum.isPrime (R := k) q)`. Establish `h2 : PrimeSpectrum.asIdeal (R` using `k) q' = ⊥ := @Ideal.eq_bot_of_prime k _ _ (PrimeSpectrum.isPrime (R := k) q')`. Conclude with `PrimeSpectrum.ext (h1.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spec_pt_eq (q q' : Spec (CommRingCat.of k)) : q = q' := by
   have h1 : PrimeSpectrum.asIdeal (R := k) q = ⊥ := @Ideal.eq_bot_of_prime k _ _ (PrimeSpectrum.isPrime (R := k) q)
@@ -95,11 +95,11 @@ theorem spec_pt_eq (q q' : Spec (CommRingCat.of k)) : q = q' := by
   exact PrimeSpectrum.ext (h1.trans h2.symm)
 
 /- English proof (translation)
-Take `⟨V, hpV, c, hc⟩` from `hsq (Spec (CommRingCat.of k)) P (baseOver (Spec (CommRingCat.of k))) x₁ x₂ (IsLocalRing.closedPoint k)`. Establish `hV : V = ⊤` using `eq_top_iff.2 fun q _ => by rw [spec_pt_eq q (IsLocalRing.closedPoint k)]; exact hpV`. Substitute `hV` using the available equality. Take `⟨s, hs⟩` from `exists_sec_of_pullGen (Z := (baseOver (Spec (CommRingCat.of k)) ⊗ P.A).left) ((fst (baseOver (Spec (CommRingCat.of k))) P.A).left ⁻¹ᵁ ⊤).ι c hc`. Set `e` to `IsOpenImmersion.lift ((fst (baseOver (Spec (CommRingCat.of k))) P.A).left ⁻¹ᵁ ⊤).ι (𝟙 _) (by rintro _ ⟨q, rfl⟩; rw [Scheme.Opens.range_ι]; trivial)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he : e ≫ ((fst (baseOver (Spec (CommRingCat.of k))) P.A).left ⁻¹ᵁ ⊤).ι = 𝟙 _` using `IsOpenImmersion.lift_fac _ _ _`. Use `UnitAt.congr P.isLB ?_ ⟨pullSec s e, fun J hJ => ?_⟩` and prove the remaining obligations. Use `formEq_of_add fun U _ hh => ?_` and prove the remaining obligations. Simplify using `only [← Category.assoc, he, Category.id_comp]`. Rewrite using `[sval_pullSec s e (𝟙 _) y hJ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs _ y J hJ`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_square (hsq : SquareSt) (P : PolAV (Spec (CommRingCat.of k)))
     (x₁ x₂ : baseOver (Spec (CommRingCat.of k)) ⟶ P.A) (y : (baseOver (Spec (CommRingCat.of k)) ⊗ P.A).left) :
@@ -122,7 +122,7 @@ theorem unitAt_square (hsq : SquareSt) (P : PolAV (Spec (CommRingCat.of k)))
     exact hs _ y J hJ
 
 /- English proof (translation)
-The claim follows from `| 0 => by refine UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) (unitAt_square hsq P b b y) simp [Fin.sum_univ_succ, pow_two] module | n + 1 => by refine UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) ((unitAt_iter hsq P b y n).mul (unitAt_square hsq P (b ^ (n + 2)) b …`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_iter (hsq : SquareSt) (P : PolAV (Spec (CommRingCat.of k)))
     (b : baseOver (Spec (CommRingCat.of k)) ⟶ P.A) (y : (baseOver (Spec (CommRingCat.of k)) ⊗ P.A).left) :

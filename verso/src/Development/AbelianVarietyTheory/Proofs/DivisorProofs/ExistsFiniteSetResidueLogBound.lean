@@ -8,11 +8,11 @@ namespace GlobalTheory.PlaceSum
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Unfold `resP`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0 : ((ringChar (𝓞 F ⧸ v.asIdeal) : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0` using `ringChar.Nat.cast_ringChar`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[h, ← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h0`. Introduce `h`. Establish `h0 : (Ideal.Quotient.mk v.asIdeal (p : 𝓞 F)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 h`. Rewrite `h0` using `[map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hd : ringChar (𝓞 F ⧸ v.asIdeal) ∣ p` using `ringChar.dvd h0`. Break down `(Nat.dvd_prime hp).1 hd with h1 | h1` into its components or cases. Conclude with `absurd h1 (CharP.ringChar_ne_one (R := 𝓞 F ⧸ v.asIdeal))`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem residueCharacteristic_eq_iff (v : HeightOneSpectrum (𝓞 F)) {p : ℕ} (hp : p.Prime) :
     resP v = p ↔ ((p : 𝓞 F) ∈ v.asIdeal) := by
@@ -32,7 +32,7 @@ theorem residueCharacteristic_eq_iff (v : HeightOneSpectrum (𝓞 F)) {p : ℕ} 
     · exact h1
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ z : ℚ) : ℝ)|⁻¹ := by have hfun : (fun v : HeightOneSpectrum (𝓞 F) => HeightOneSpectrum.adicAbv F v z) = (fun w : FinitePlace F => w z) ∘ FinitePlace.equivHeightOneSpectrum.symm := by funext v simp [FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.norm_ …`.
+A detailed English derivation is pending.
 -/
 theorem finprod_adicAbv {z : F} (hz : z ≠ 0) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 F) => HeightOneSpectrum.adicAbv F v z).Finite ∧
@@ -53,7 +53,7 @@ theorem finprod_adicAbv {z : F} (hz : z ≠ 0) :
     push_cast; rfl
 
 /- English proof (translation)
-Establish `e : (n : F) = algebraMap (𝓞 F) F (n : 𝓞 F)` using `(map_natCast _ n).symm`. Rewrite using `[e, Ne, ← not_not (a := (n : 𝓞 F) ∈ v.asIdeal)]`. Conclude with `not_congr (v.adicAbv_coe_eq_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicAbv_natCast_ne_one_iff (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
     HeightOneSpectrum.adicAbv F v (n : F) ≠ 1 ↔ (n : 𝓞 F) ∈ v.asIdeal := by
@@ -62,25 +62,25 @@ theorem adicAbv_natCast_ne_one_iff (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
   exact not_congr (v.adicAbv_coe_eq_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _)
 
 /- English proof (translation)
-The claim follows from `(finprod_adicAbv (z := (p : F)) (by exact_mod_cast hp.ne_zero)).1`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_adicAbv_natCast {p : ℕ} (hp : p.Prime) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 F) => HeightOneSpectrum.adicAbv F v (p : F)).Finite :=
   (finprod_adicAbv (z := (p : F)) (by exact_mod_cast hp.ne_zero)).1
 
 /- English proof (translation)
-Rewrite using `[Set.Finite.mem_toFinset, Function.mem_mulSupport, adicAbv_natCast_ne_one_iff, residueCharacteristic_eq_iff v hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_finite_residueChar_eq {p : ℕ} (hp : p.Prime) (v : HeightOneSpectrum (𝓞 F)) :
     v ∈ (finite_mulSupport_adicAbv_natCast (F := F) hp).toFinset ↔ resP v = p := by
   rw [Set.Finite.mem_toFinset, Function.mem_mulSupport, adicAbv_natCast_ne_one_iff, residueCharacteristic_eq_iff v hp]
 
 /- English proof (translation)
-Establish `hp0 : (p : F) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨hfin, hprod⟩` from `finprod_adicAbv (F := F) hp0`. Rewrite `hprod` using `[finprod_eq_prod _ hfin]`. Establish `hN : Algebra.norm ℚ (p : F) = (p : ℚ) ^ Module.finrank ℚ F`. Rewrite using `[← map_natCast (algebraMap ℚ F) p, Algebra.norm_algebraMap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hprod` using `[hN]`. Move the coercions through the operations in `at hprod`. Establish `hne : ∀ v ∈ hfin.toFinset, HeightOneSpectrum.adicAbv F v (p : F) ≠ 0` using `fun v _ => (AbsoluteValue.ne_zero_iff _).2 hp0`. Establish `hlog` using `congrArg Real.log hprod`. Rewrite `hlog` using `[Real.log_prod hne, abs_of_nonneg (by positivity), Real.log_inv, Real.log_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlp : 0 < Real.log p` using `Real.log_pos (by exact_mod_cast hp.one_lt)`. Rewrite using `[← Finset.sum_div, Finset.sum_neg_distrib, hlog, neg_neg, mul_div_assoc, div_self hlp.ne', mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_localDeg_eq {p : ℕ} (hp : p.Prime) :
     ∑ v ∈ (finite_mulSupport_adicAbv_natCast (F := F) hp).toFinset,
@@ -100,19 +100,19 @@ theorem sum_localDeg_eq {p : ℕ} (hp : p.Prime) :
   rw [← Finset.sum_div, Finset.sum_neg_distrib, hlog, neg_neg, mul_div_assoc, div_self hlp.ne', mul_one]
 
 /- English proof (translation)
-Introduce `F _ _ T hT g _`. Use `⟨fun v => HeightOneSpectrum.adicAbv_natCast_le_one F v _, ?_⟩` and prove the remaining obligations. Set `Sp : ℕ → Finset (HeightOneSpectrum (𝓞 F))` to `fun p => if h : p.Prime then (finite_mulSupport_adicAbv_natCast (F := F) h).toFinset else ∅`. Establish `hSp : ∀ p ∈ T, ∀ v, v ∈ Sp p ↔ resP v = p`. Introduce `p hpT v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Sp, dif_pos (hT p hpT)]`. Conclude with `mem_finite_residueChar_eq (hT p hpT) v`. Set `S` to `T.biUnion Sp`. Establish `hS : ∀ v, v ∈ S ↔ resP v ∈ T`. Introduce `v`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hpT, hv⟩`. Rewrite using `[(hSp p hpT v).1 hv]`. Conclude with `hpT`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨resP v, h, (hSp _ h v).2 rfl⟩`. Use `⟨S, hS, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := resP) (t := T) (fun v hv => (hS v).1 hv), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hpT => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hfib : S.filter (fun v => resP v = p) = (finite_mulSupport_adicAbv_natCast (F` using `F) (hT p hpT)).toFinset := by`. Use extensionality with `v`. Rewrite using `[Finset.mem_filter, mem_finite_residueChar_eq (hT p hpT), hS]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨h ▸ hpT, h⟩`. Rewrite using `[hfib]`. Establish `hc : ∀ v ∈ (finite_mulSupport_adicAbv_natCast (F` using `F) (hT p hpT)).toFinset, (-Real.log (HeightOneSpectrum.adicAbv F v (resP v : F)) / Real.log (resP v)) * g (resP v) = (-Real.log (HeightOneSpectrum.adicAbv F v (p : F)) / Real.log p) * g p := by`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(mem_finite_residueChar_eq (hT p hpT) v).1 hv]`. Rewrite using `[Finset.sum_congr rfl hc, ← Finset.sum_mul, sum_localDeg_eq (hT p hpT), mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem sum_localDeg_le : ∀ {F : Type} [Field F] [NumberField F] (T : Finset ℕ), (∀ p ∈ T, p.Prime) →
     ∀ (g : ℕ → ℝ), (∀ p, 0 ≤ g p) →

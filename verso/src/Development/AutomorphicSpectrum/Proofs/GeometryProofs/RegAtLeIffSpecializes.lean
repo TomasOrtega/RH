@@ -9,7 +9,7 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Ma.reg_le_spec`.
+A detailed English derivation is pending.
 -/
 theorem regAt_le_regAt_iff_specializes : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (p q : Cpt M.ξ), regAt M.ξ p ≤ regAt M.ξ q ↔ q.1 ⤳ p.1 :=
   @PositivityTheory.HtPt.Ma.reg_le_spec

@@ -8,14 +8,14 @@ open scoped InnerProductSpace
 namespace GlobalTheory.LowHW
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem height_root {n : ℕ} (a b : Fin n) :
     ∑ i : Fin n, ((i : ℕ) : ℝ) * Formalism.REAL.root a b i = ((a : ℕ) : ℝ) - ((b : ℕ) : ℝ) := by
   simp [Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [← height_root, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem height_sum {n : ℕ} (c : Fin n → Fin n → ℕ) :
     ∑ i : Fin n, ((i : ℕ) : ℝ) * (∑ a, ∑ b, (c a b : ℝ) • Formalism.REAL.root a b) i
@@ -27,17 +27,17 @@ theorem height_sum {n : ℕ} (c : Fin n → Fin n → ℕ) :
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Take `⟨c, hc, e1⟩` from `h1`. Take `⟨d, hd, e2⟩` from `h2`. Establish `key : ∀ (c : Fin n → Fin n → ℕ), (∀ a b, c a b ≠ 0 → a < b ∧ ε a = ε b) → ∀ a b : Fin n, (c a b : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ -(c a b : ℝ)`. Introduce `c hc a b`. Distinguish the cases in `h : c a b = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Establish `h3 : (a : ℕ) + 1 ≤ b` using `(hc a b h).1`. Establish `h4 : ((a : ℕ) : ℝ) + 1 ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast h3`. Establish `h5 : (0 : ℝ) ≤ c a b` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hs1` using `height_sum c`. Establish `hs2` using `height_sum d`. Rewrite `hs1` using `[← e1]`. Rewrite `hs2` using `[← e2]`. Establish `hz : ∑ i : Fin n, ((i : ℕ) : ℝ) * (Λ - μ) i + ∑ i : Fin n, ((i : ℕ) : ℝ) * (μ - Λ) i = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun i _ => by simp only [Pi.sub_apply]; ring`. Establish `l1 : ∑ a, ∑ b, (c a b : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ ∑ a, ∑ b, -(c a b : ℝ)` using `Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => key c hc a b`. Establish `l2 : ∑ a, ∑ b, (d a b : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ 0` using `Finset.sum_nonpos fun a _ => Finset.sum_nonpos fun b _ => (key d hd a b).trans (neg_nonpos.2 (Nat.cast_nonneg _))`. Simplify using `only [Finset.sum_neg_distrib] at l1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `l3 : ∑ a, ∑ b, (c a b : ℝ) ≤ 0` using `by linarith`. Establish `hc0 : ∀ a b, (c a b : ℝ) = 0`. Introduce `a b`. Use `le_antisymm (le_trans ?_ l3) (Nat.cast_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc0, zero_smul, Finset.sum_const_zero] at e1`. Conclude with `(sub_eq_zero.1 e1).symm`.
+A detailed English derivation is pending.
 -/
 theorem cdom_antisymm {n : ℕ} {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h1 : CDom ε μ Λ) (h2 : CDom ε Λ μ) :
     μ = Λ := by

@@ -19,13 +19,13 @@ def ratMat (ξ : Matrix (Fin n) (Fin n) K) : Matrix (Fin n) (Fin n) 𝔸[K] :=
   ξ.map (algebraMap K 𝔸[K])
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem ratMat_mul (ξ η : Matrix (Fin n) (Fin n) K) : ratMat (ξ * η) = ratMat ξ * ratMat η :=
   Matrix.map_mul
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[AdelicGLn.diagonal_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_diagonal (γ : GL (Fin n) K) :
     ((AdelicGLn.diagonal K n γ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) =

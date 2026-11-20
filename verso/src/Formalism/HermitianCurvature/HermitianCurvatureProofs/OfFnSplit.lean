@@ -16,9 +16,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `KB.mix PBD.pushTh`. Simplify using `only [Complex.ofReal_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `hmem : mk (List.ofFn fun b => grid b (n b)) ∈ PBD.pushU grid mk` using `Finset.mem_image_of_mem _ (Finset.mem_univ n)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [apply_ite, Complex.ofReal_zero, zero_mul, ite_mul]`. Rewrite using `[Finset.sum_ite_eq, if_pos hmem]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_pushT (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (ε : ℝ) (i : ℕ) {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ)
     (mk : List ℝ → List C.Letter) (P Q : C.LPt) :
@@ -38,13 +38,13 @@ end helpers
 section lists
 
 /- English proof (translation)
-Establish `hlen : K = ys₁.length + 1 + ys₂.length`. Use `congrArg List.length h` as an intermediate fact. Simplify using `only [List.length_ofFn, List.length_append, List.length_cons] at this`. Use linear arithmetic over natural numbers and integers. Establish `hb : ys₁.length < K` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `⟨⟨ys₁.length, hb⟩, rfl, ?_, hlen.symm, ?_⟩` and prove the remaining obligations. Establish `h1 : (List.ofFn f)[ys₁.length]'(by simp; omega) = (ys₁ ++ y :: ys₂)[ys₁.length]'(by simp)`. Simplify using `only [h]`. Rewrite `h1` using `[List.getElem_ofFn, List.getElem_append_right (by omega)]`. Simplify using `only [Nat.sub_self, List.getElem_cons_zero] at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h1.symm`. Introduce `y' hy'`. Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem hy'`. Use `⟨⟨ys₁.length + (i + 1), by omega⟩, by simp only [Fin.lt_def]; omega, ?_⟩` and prove the remaining obligations. Establish `h1 : (List.ofFn f)[ys₁.length + (i + 1)]'(by simp; omega) = (ys₁ ++ y :: ys₂)[ys₁.length + (i + 1)]'(by simp; omega)` using `by simp only [h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[List.getElem_ofFn]`. Simplify using `only [List.getElem_append, Nat.add_sub_cancel_left, List.getElem_cons_succ, show ¬ (ys₁.length + (i + 1) < ys₁.length) by omega, dite_false] at h1`. Conclude with `h1.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofFn_split {K : ℕ} (f : Fin K → ℝ) (ys₁ : List ℝ) (y : ℝ) (ys₂ : List ℝ)
     (h : List.ofFn f = ys₁ ++ y :: ys₂) :
@@ -72,7 +72,7 @@ theorem ofFn_split {K : ℕ} (f : Fin K → ℝ) (ys₁ : List ℝ) (y : ℝ) (y
     exact h1.symm
 
 /- English proof (translation)
-The claim follows from `| [], _ => trivial | y :: ys, H => ⟨H [] y ys rfl, rhyp_of l0 a e ρ Pv C ys fun ys₁ y' ys₂ h => H (y :: ys₁) y' ys₂ (by rw [h]; rfl)⟩`.
+A detailed English derivation is pending.
 -/
 theorem rhyp_of {P : M.Par} (l0 : ℕ) (a : List C.Letter) (e : Wd.Ix (Fin a.length)) (ρ : M.Ty P) (Pv : ℝ → ℝ)
     (C : ℝ) : ∀ ys : List ℝ, (∀ ys₁ y ys₂, ys = ys₁ ++ y :: ys₂ →

@@ -8,15 +8,15 @@ noncomputable section
 namespace GlobalTheory.FinPlaceApprox
 
 /- English proof (translation)
-Take `⟨⟨d, hd⟩, hdS⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 F)) (T.image t)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hn : ∀ v ∈ T, ∃ n : 𝓞 F, algebraMap (𝓞 F) F n = algebraMap (𝓞 F) F d * t v`. Introduce `v hv`. Take `⟨n, hn⟩` from `hdS (t v) (Finset.mem_image_of_mem t hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by rw [hn, Algebra.smul_def]⟩`. Use `choose! n hn using hn`. Establish `h0 : ∀ v : HeightOneSpectrum (𝓞 F), v.intValuation d ≠ 0` using `fun v => v.intValuation_ne_zero d hd0`. Take `⟨x, hx⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := T) (fun v => v.asIdeal) (fun v => M + ((v.intValuation d).log).natAbs) (fun v _ => v.prime) (fun v _ w _ h h' => h (HeightOneSpectrum.ext h')) (fun v => n v.1)`. Establish `dE : algebraMap (𝓞 F) F d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hd0`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (𝓞 F) F x / algebraMap (𝓞 F) F d, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hxv : x - n v ∈ v.asIdeal ^ (M + ((v.intValuation d).log).natAbs)` using `hx v hv`. Establish `key : algebraMap (𝓞 F) F x / algebraMap (𝓞 F) F d - t v = algebraMap (𝓞 F) F (x - n v) / algebraMap (𝓞 F) F d`. Rewrite using `[map_sub, hn v hv]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, div_le_iff₀ (zero_lt_iff.2 (h0 v))]`. Use `((v.intValuation_le_pow_iff_mem _ _).2 hxv).trans ?_` and prove the remaining obligations. Establish `hle : (v.intValuation d).log ≤ 0`. Use `v.intValuation_le_one d` as an intermediate fact. Rewrite `this` using `[← WithZero.exp_log (h0 v), ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `conv_rhs => rw [← WithZero.exp_log (h0 v)]`. Rewrite using `[← WithZero.exp_add, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_approx_finite_places (F : Type) [Field F] [NumberField F]
     (T : Finset (HeightOneSpectrum (𝓞 F))) (t : HeightOneSpectrum (𝓞 F) → F) (M : ℕ) :
@@ -52,7 +52,7 @@ theorem exists_approx_finite_places (F : Type) [Field F] [NumberField F]
   omega
 
 /- English proof (translation)
-Introduce `F _ _ T t M` and use `exists_approx_finite_places F T t M`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem approx_target : ∀ (F : Type) [Field F] [NumberField F] (T : Finset (HeightOneSpectrum (𝓞 F)))
     (t : HeightOneSpectrum (𝓞 F) → F) (M : ℕ),

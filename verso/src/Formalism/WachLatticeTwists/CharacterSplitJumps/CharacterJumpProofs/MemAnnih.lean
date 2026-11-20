@@ -7,7 +7,7 @@ namespace Formalism.RepresentationBoundsCohomology.JT
 open Formalism.NG
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transport {ℓ : ℕ} [Fact ℓ.Prime] (O : Type) [CommRing O] {X : Type} [AddCommGroup X]
     [Module O X] {Y : Type} [AddCommGroup Y] [Module ℤ_[ℓ] Y] (b : Y →+ X) (c : ℕ) (y : Y) :
@@ -15,7 +15,7 @@ theorem transport {ℓ : ℕ} [Fact ℓ.Prime] (O : Type) [CommRing O] {X : Type
   rw [← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]
 
 /- English proof (translation)
-Simplify using `only [annih, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_annih {O Cw Cs P : Type*} [CommRing O] [AddCommGroup Cw] [Module O Cw]
     [AddCommGroup Cs] [Module O Cs] [AddCommGroup P] [Module O P] (pr : Cw →ₗ[O] Cs →ₗ[O] P)

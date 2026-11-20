@@ -8,9 +8,9 @@ open scoped ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-Unfold `Data.opN`. Apply `Real.sSup_le _ hδ` to reduce the goal to its premises. Introduce and unpack `t ⟨v, hv, rfl⟩`. Establish `hpos : 0 < ∑ j, ‖v j‖ ^ 2`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hv`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hj) 2) (Finset.single_le_sum (fun i _ => sq_nonneg ‖v i‖) (Finset.mem_univ j))`. Rewrite using `[div_le_iff₀ (Real.sqrt_pos.2 hpos)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma opN_le {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) {δ : ℝ} (hδ : 0 ≤ δ)
     (h : ∀ v, OrthonormalChartBounds.nsq (A *ᵥ v) ≤ δ ^ 2 * OrthonormalChartBounds.nsq v) : Data.opN A ≤ δ := by
@@ -28,37 +28,35 @@ lemma opN_le {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) {δ : ℝ} (hδ : 0 �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `set Q := (mat x τ)⁻¹ with hQ`. Establish `hinv : ∀ u : Fin r → ℂ, mat x τ *ᵥ (Q *ᵥ u) = u` using `fun u => by`. Rewrite using `[hQ, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (hx τ).1), Matrix.one_mulVec]`. Use `set c : Fin X.p0 → Fin r → ℂ := fun a => Q *ᵥ y (Fin.castLE X.p0_le a) with hc`. Use `set A : Matrix (Fin X.p0) (Fin X.p0) ℂ := Matrix.of fun i a => c a (Fin.castLE X.p0_le i) with hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set B : Matrix (Fin (r - X.p0)) (Fin X.p0) ℂ := Matrix.of fun m a => c a (OrthonormalChartBounds.nI X m) with hB`. Establish `hcomb : ∀ w' : Fin X.p0 → ℂ, ∃ w : Fin r → ℂ, (∀ j : Fin r, X.p0 ≤ (j : ℕ) → w j = 0) ∧ (w' ≠ 0 → w ≠ 0) ∧ Q *ᵥ ∑ j, w j • y j = ∑ a, w' a • c a`. Introduce `w'`. Use `⟨fun j => if h : (j : ℕ) < X.p0 then w' ⟨j, h⟩ else 0, fun j hj => dif_neg (by omega), ?_, ?_⟩` and prove the remaining obligations. Introduce `hw' hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hw'` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `congrFun hw (Fin.castLE X.p0_le a)` as an intermediate fact. Simplify `this` using `[Fin.val_castLE, a.isLt]`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[PositiveSpanMatrices.sum_split X.p0_le]`. Simplify using `[PositiveSpanMatrices.kap, Fin.val_castLE, hc]`. Establish `hpa : ∀ w' : Fin X.p0 → ℂ, OrthonormalChartBounds.mjpa X (∑ a, w' a • c a) = A *ᵥ w'` using `fun w' => by`. Use function extensionality and compare the values at `i`. Simplify using `[OrthonormalChartBounds.mjpa, hA, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpb : ∀ w' : Fin X.p0 → ℂ, OrthonormalChartBounds.mjpb X (∑ a, w' a • c a) = B *ᵥ w'` using `fun w' => by`. Use function extensionality and compare the values at `m`. Simplify using `[OrthonormalChartBounds.mjpb, hB, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hpos : ∀ u : Fin r → ℂ, ReciprocityTheory.MultiplicativeHeights.posSq X.p0 u = OrthonormalChartBounds.nsq (OrthonormalChartBounds.mjpa X u)` using `fun u => by`. Unfold `ReciprocityTheory.MultiplicativeHeights.posSq OrthonormalChartBounds.nsq OrthonormalChartBounds.mjpa`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[PositiveSpanMatrices.sum_split X.p0_le]`. Simplify using `[PositiveSpanMatrices.kap, Fin.val_castLE]`. Establish `hneg : ∀ u : Fin r → ℂ, ReciprocityTheory.MultiplicativeHeights.negSq X.p0 u = OrthonormalChartBounds.nsq (OrthonormalChartBounds.mjpb X u)` using `fun u => by`. Unfold `ReciprocityTheory.MultiplicativeHeights.negSq OrthonormalChartBounds.nsq OrthonormalChartBounds.mjpb`. Rewrite using `[PositiveSpanMatrices.sum_split X.p0_le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[PositiveSpanMatrices.kap, OrthonormalChartBounds.nI, Fin.val_castLE]`. Establish `hjre : ∀ u : Fin r → ℂ, (ReciprocityTheory.MultiplicativeHeights.jForm X.p0 u u).re = ReciprocityTheory.MultiplicativeHeights.posSq X.p0 u - ReciprocityTheory.MultiplicativeHeights.negSq X.p0 u` using `fun u => by`. Unfold `ReciprocityTheory.MultiplicativeHeights.jForm ReciprocityTheory.MultiplicativeHeights.posSq ReciprocityTheory.MultiplicativeHeights.negSq ReciprocityTheory.MultiplicativeHeights.sgn`. Rewrite using `[Complex.re_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Complex.conj_mul']`. Apply the tactic sequence `split_ifs <;> simp [← Complex.ofReal_pow]`. Establish `hkey : ∀ w' : Fin X.p0 → ℂ, OrthonormalChartBounds.nsq (B *ᵥ w') ≤ δ ^ 2 * OrthonormalChartBounds.nsq (A *ᵥ w') ∧ (w' ≠ 0 → OrthonormalChartBounds.nsq (B *ᵥ w') < OrthonormalChartBounds.nsq (A *ᵥ w'))` using `fun w' => by`. Take `⟨w, hw0, hne, hw⟩` from `hcomb w'`. Take `⟨h1, h2⟩` from `hg w hw0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hw, hneg, hpos, hpb, hpa]`. Use `⟨h1, fun h => ?_⟩` and prove the remaining obligations. Use `h2 (hne h)` as an intermediate fact. Rewrite `this` using `[hw, hjre, hneg, hpos, hpb, hpa]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAdet : A.det ≠ 0`. Introduce `h0`. Take `⟨v, hv, hAv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `(hkey v).2 hv` as an intermediate fact. Rewrite `this` using `[hAv, OrthonormalChartBounds.nsq_zero']`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the linear relations using `[OrthonormalChartBounds.nsq_nonneg (B *ᵥ v)]`. Establish `hext : ∀ u u' : Fin r → ℂ, OrthonormalChartBounds.mjpa X u = OrthonormalChartBounds.mjpa X u' → OrthonormalChartBounds.mjpb X u = OrthonormalChartBounds.mjpb X u' → u = u'`. Introduce `u u' ha hb`. Use function extensionality and compare the values at `k`. Break down `PositiveSpanMatrices.fin_cases_split X.p0_le k with ⟨b, rfl⟩ | ⟨m, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrFun ha b`. Conclude with `congrFun hb m`. Use `⟨B * A⁻¹, ?_, fun Z hZ => ?_⟩` and prove the remaining obligations. Apply `opN_le _ hδ` to reduce the goal to its premises. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hAv : A *ᵥ (A⁻¹ *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit hAdet), Matrix.one_mulVec]`. Use `(hkey (A⁻¹ *ᵥ v)).1` as an intermediate fact. Rewrite `this` using `[hAv, Matrix.mulVec_mulVec]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hsgl : ∀ b : Fin X.p0, (fun a => A a b) = A *ᵥ Pi.single b 1` using `fun b => by`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `e2 : ∀ b : Fin X.p0, OrthonormalChartBounds.mjg X Z τ (fun a => A a b) = c b` using `fun b => by`. Apply `hext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[OrthonormalChartBounds.mjg_pa]`. Both sides reduce to the same expression. Rewrite using `[OrthonormalChartBounds.mjg_pb, hZ, hsgl b]`. Express the relevant statement in the definitionally equal form `(B * A⁻¹) *ᵥ (A *ᵥ Pi.single b 1) = _`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (Ne.isUnit hAdet), Matrix.mul_one]`.
-
-Use function extensionality and compare the values at `m`. Simplify using `[OrthonormalChartBounds.mjpb, hB, Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hcol : ∀ b : Fin X.p0, y (Fin.castLE X.p0_le b) = ∑ a, A a b • col (mat (X.xZ x Z) τ) (Fin.castLE X.p0_le a)` using `fun b =>`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(PositiveSpanMatrices.span_eq_of_mat _ _ A hAdet hcol).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma exists_Z (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ)
     (y : Fin r → Fin r → ℂ) {δ : ℝ} (hδ : 0 ≤ δ)

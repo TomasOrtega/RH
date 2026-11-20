@@ -11,7 +11,7 @@ abbrev pS (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {A B : CommRingCat.{0}} 
   pull R (sch.map (Spec.map f)) F n
 
 /- English proof (translation)
-Simplify using `only [pS]`. Rewrite using `[Spec.map_comp, Functor.map_comp, pull_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pS_comp (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C)
     (x : H R (sch.obj (Spec A)) F n) : pS R F n (f ≫ g) x = pS R F n g (pS R F n f x) := by
@@ -21,7 +21,7 @@ abbrev ev {ι : Type} (Y : ι → CommRingCat.{0}) (j : ι) : CommRingCat.of (�
   CommRingCat.ofHom (Pi.evalRingHom (fun k => Y k) j)
 
 /- English proof (translation)
-Establish `h1 : ∀ x, pull R (inv g) F n (pull R g F n x) = x` using `fun x => by`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Establish `h2 : ∀ x, pull R g F n (pull R (inv g) F n x) = x` using `fun x => by`. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`. Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pull_iso_bij (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {E E' : Spc} (g : E ⟶ E') [IsIso g] :
     Function.Bijective (pull R g F n) := by
@@ -32,9 +32,9 @@ theorem pull_iso_bij (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {E E' : Spc} 
   exact ⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩
 
 /- English proof (translation)
-Establish `h : (fun (x : H R (sch.obj (Spec (CommRingCat.of (∀ k, Y k)))) F n) (j : ι) => pS R F n (ev Y j) x) = (fun (x : H R (sch.obj (∐ fun k => Spec (Y k))) F n) (j : ι) => pull R (sch.map (Sigma.ι (fun k => Spec (Y k)) j)) F n x) ∘ pull R (sch.map (sigmaSpec Y)) F n`. Use function extensionality and compare the values at `x j`. Simplify using `only [Function.comp_apply, pS, ev]`. Rewrite using `[← pull_comp, ← Functor.map_comp, ι_sigmaSpec]`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC R F (fun k => Spec (Y k)) n).comp (pull_iso_bij R F n _)`.
+A detailed English derivation is pending.
 -/
 theorem pi_bij (hC : Coprod) (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {ι : Type} [Finite ι]
     (Y : ι → CommRingCat.{0}) :
@@ -49,15 +49,13 @@ theorem pi_bij (hC : Coprod) (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {ι :
   exact (hC R F (fun k => Spec (Y k)) n).comp (pull_iso_bij R F n _)
 
 /- English proof (translation)
-Use `letI : Algebra D Y' := φ'.hom.toAlgebra`. Use `letI : ∀ k, Algebra D (D₁ k) := fun k => (e k).hom.toAlgebra`. Establish `hT : IsPushout φ' (piMap D₁ e) _ _` using `CommRingCat.isPushout_tensorProduct D Y' (∀ k, D₁ k)`. Establish `hTk : ∀ k, IsPushout φ' (e k) _ _` using `fun k => CommRingCat.isPushout_tensorProduct D Y' (D₁ k)`. Set `isk : ∀ k, CommRingCat.of (Y' ⊗[D] D₁ k) ≅ Y₁ k` to `fun k => IsPushout.isoIsPushout _ _ (hTk k) (hpo k)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hl : ∀ k (y : Y'), (isk k).hom (y ⊗ₜ 1) = u k y` using `fun k y => by`. Use `IsPushout.inl_isoIsPushout_hom _ _ (hTk k) (hpo k)` as an intermediate fact. Conclude with `congrArg (fun f => f.hom y) this`. Establish `hr : ∀ k (d : D₁ k), (isk k).hom (1 ⊗ₜ d) = φ₁ k d` using `fun k d => by`. Use `IsPushout.inr_isoIsPushout_hom _ _ (hTk k) (hpo k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `congrArg (fun f => f.hom d) this`. Set `e₄ : CommRingCat.of (Y' ⊗[D] (∀ k, D₁ k)) ≅ CommRingCat.of (∀ k, Y₁ k)` to `((Algebra.TensorProduct.piRight D D Y' (fun k => D₁ k)).toRingEquiv.trans (RingEquiv.piCongrRight fun k => (isk k).commRingCatIsoToRingEquiv)).toCommRingCatIso`. Use `hT.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e₄ (by simp) (by simp) ?_ ?_` and prove the remaining obligations. Use `CommRingCat.hom_ext (RingHom.ext fun y => funext fun k => ?_)` and prove the remaining obligations. Establish `h4 : e₄.hom (y ⊗ₜ (1 : ∀ k, D₁ k)) k = (isk k).hom (y ⊗ₜ 1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[e₄, Algebra.TensorProduct.piRight_tmul]`. Both sides reduce to the same expression. Conclude with `h4.trans (hl k y)`. Use `CommRingCat.hom_ext (RingHom.ext fun d => funext fun k => ?_)` and prove the remaining obligations. Establish `h4 : e₄.hom ((1 : Y') ⊗ₜ d) k = (isk k).hom (1 ⊗ₜ d k)`.
-
-Simplify using `[e₄, Algebra.TensorProduct.piRight_tmul]`. Both sides reduce to the same expression. Conclude with `h4.trans (hr k (d k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pushout_pi {D Y' : CommRingCat.{0}} (φ' : D ⟶ Y') {ι : Type} [Fintype ι] (D₁ : ι → CommRingCat.{0})
     (e : ∀ k, D ⟶ D₁ k) (Y₁ : ι → CommRingCat.{0}) (u : ∀ k, Y' ⟶ Y₁ k) (φ₁ : ∀ k, D₁ k ⟶ Y₁ k)
@@ -90,13 +88,11 @@ theorem pushout_pi {D Y' : CommRingCat.{0}} (φ' : D ⟶ Y') {ι : Type} [Fintyp
     exact h4.trans (hr k (d k))
 
 /- English proof (translation)
-Introduce `_ q _ i D Y' φ' m y ι _ D₁ e _ hk`. Use `choose Y₁ u φ₁ hpo hz using hk`. Use `choose z hz using hz`. Take `⟨z₀, hz₀⟩` from `(pi_bij hC (ZMod q) (tw q i) m D₁).2 z`. Establish `hz₀' : ∀ j, pS _ (tw q i) m (ev D₁ j) z₀ = z j` using `fun j => congrFun hz₀ j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u'' : Y' ⟶ CommRingCat.of (∀ k, Y₁ k)` to `CommRingCat.ofHom (Pi.ringHom fun k => (u k).hom)`. Set `φ'' : CommRingCat.of (∀ k, D₁ k) ⟶ CommRingCat.of (∀ k, Y₁ k)` to `CommRingCat.ofHom (Pi.ringHom fun k => (φ₁ k).hom.comp (Pi.evalRingHom (fun k => D₁ k) k))`. Use `⟨CommRingCat.of (∀ k, Y₁ k), u'', φ'', ?_, z₀, ?_⟩` and prove the remaining obligations. Conclude with `pushout_pi φ' D₁ e Y₁ u φ₁ hpo`. Apply `(pi_bij hC (ZMod q) (tw q i) m Y₁).1` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Establish `e1 : φ'' ≫ ev Y₁ j = ev D₁ j ≫ φ₁ j` using `rfl`. Establish `e2 : u'' ≫ ev Y₁ j = u j` using `rfl`. Use `show pS _ (tw q i) m (ev Y₁ j) (pS _ (tw q i) m φ'' z₀) = pS _ (tw q i) m (ev Y₁ j) (pS _ (tw q i) m u'' y)`. Rewrite using `[← pS_comp, ← pS_comp, e1, e2, pS_comp, hz₀']`.
-
-Conclude with `hz j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PushGlue_of (hC : Coprod) : LateralTheory.E.KillCokPf.Glue.PushGlue := by
   intro _ q _ i D Y' φ' m y ι _ D₁ e _ hk

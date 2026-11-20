@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
     splitHomeo ι π hι hπ h z = (z.1 : P) * ι z.2 := rfl
 
 /- English proof (translation)
-Simplify using `only [kerPart, Subgroup.coe_mul, MulAut.conjNormal_apply, map_mul]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_split (ι : G₁ →* P) (π : P →* G₁) (h : ∀ u, π (ι u) = u) (g : P) (m : π.ker) (u : G₁) :
     g * ((m : P) * ι u) =
@@ -51,7 +51,7 @@ theorem mul_split (ι : G₁ →* P) (π : P →* G₁) (h : ∀ u, π (ι u) = 
   group
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (f := fun z : G₁ × π.ker => ι z.1 * (z.2 : P) * (ι z.1)⁻¹) ?_ _` and prove the remaining obligations. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_conj [TopologicalSpace P] [IsTopologicalGroup P] [TopologicalSpace G₁]
     (ι : G₁ →* P) (π : P →* G₁) (hι : Continuous ι) :

@@ -6,9 +6,9 @@ open Matrix GlobalTheory.LKTrip Finset
 namespace GlobalTheory.SigDiag
 
 /- English proof (translation)
-Establish `h3` using `hA.roots_charpoly_eq_eigenvalues`. Rewrite `h3` using `[Matrix.charpoly_diagonal, Polynomial.roots_prod]`. Establish `h4` using `congrArg (Multiset.map Complex.re) h3`. Simplify using `only [Polynomial.roots_X_sub_C, Multiset.map_map] at h4`. Simplify `h4.symm` using `[Function.comp_def, Multiset.bind_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Finset.prod_ne_zero_iff, Polynomial.X_sub_C_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eigenvalues_multiset_eq {n : ℕ} (r : Fin n → ℝ)
     (hA : (Matrix.diagonal (fun i => ((r i : ℝ) : ℂ))).IsHermitian) :
@@ -21,7 +21,7 @@ theorem eigenvalues_multiset_eq {n : ℕ} (r : Fin n → ℝ)
   · simp [Finset.prod_ne_zero_iff, Polynomial.X_sub_C_ne_zero]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Establish `e : ∀ k : Fin n → ℝ, (univ.filter fun i => P (k i)).card = Multiset.countP P (Multiset.map k univ.val)`. Introduce `k`. Rewrite using `[Multiset.countP_map, Finset.card_def, Finset.filter_val]`. Rewrite using `[e f, e g, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_subtype_eq_of_multiset {n : ℕ} {f g : Fin n → ℝ}
     (h : Multiset.map f univ.val = Multiset.map g univ.val) (P : ℝ → Prop) [DecidablePred P] :
@@ -38,7 +38,7 @@ end GlobalTheory.SigDiag
 namespace GlobalTheory.LKTrip
 
 /- English proof (translation)
-Introduce `n r hA`. Establish `h` using `GlobalTheory.SigDiag.eigenvalues_multiset_eq r hA`. Conclude with `⟨GlobalTheory.SigDiag.card_subtype_eq_of_multiset h (fun x => 0 < x), GlobalTheory.SigDiag.card_subtype_eq_of_multiset h (fun x => x < 0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sigPosH_sigNegH_diagonal : ∀ (n : ℕ) (r : Fin n → ℝ)
     (hA : (Matrix.diagonal (fun i => ((r i : ℝ) : ℂ))).IsHermitian),

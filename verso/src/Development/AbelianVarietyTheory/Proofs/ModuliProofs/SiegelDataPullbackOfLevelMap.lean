@@ -22,7 +22,7 @@ namespace GlobalTheory.SiegelDataPull
 open GlobalTheory.SiegelPullComp
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc]`. Rewrite using `[Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left}
     {ψ : G''.left ⟶ G'.left} {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} {ψ₂ : (G'' ⊗ G'').left ⟶ (G' ⊗ G').left}
@@ -32,21 +32,21 @@ theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' :
   · rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D O _ T T' sT f t t' ν lev lev' g p N Ag z bas w hlev hw`. Take `⟨o, φ, φ₂, hpb, hsq, hiso, hlv, hsnd, hSPB⟩` from `hw`. Take `⟨⟨o', ho'⟩, -⟩` from `GlobalTheory.siegPre_pullback _ _ _ _ _ _ _ ((f ≫ sT) ≫ spMap z) f o (Category.assoc f sT (spMap z)).symm`. Establish `hpbo` using `ho'`. Take `⟨φ₁, φ₁₂, hpb₁, hsq₁, hiso₁, hlv₁⟩` from `hpbo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hν : IsGrpPullback t'.G t.G f ν.φ` using `ν.cart`. Establish `hc : IsGrpPullback o'.A t.G f (φ₁ ≫ φ)` using `(hpb₁.comp hpb).congr (Category.comp_id f) rfl`. Take `⟨e, he, hel⟩` from `grpPullback_iso hc hν`. Use `haveI := he`. Establish `hpb' : IsGrpPullback o'.A t'.G (𝟙 T') e.hom.left` using `isGrpPullback_of_iso e`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq'` using `GlobalTheory.LamPull.exists_isSquare hpb'.1.w`. Establish `hν₂` using `GlobalTheory.LamPull.exists_isSquare hν.1.w`. Establish `hΛ : (abelian₂ t.G t.PP.L).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ t.PP.isLB _ _`. Establish `hΛ' : (abelian₂ t'.G t'.PP.L).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ t'.PP.isLB _ _`. Establish `sA` using `isSquare_comp hsq₁ hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sB` using `isSquare_comp hsq' hν₂`. Rewrite `sB` using `[hel]`. Establish `key` using `GlobalTheory.LamPull.isSquare_unique sA sB`. Use `⟨o', e.hom.left, _, hpb', hsq', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.SiegelPullComp.iso_pull φ₁₂ hiso`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.SiegelPullComp.iso_pull_pull hΛ φ₂ φ₁₂`. Rewrite `h3` using `[key]`. Establish `h4` using `(GlobalTheory.SiegelPullComp.iso_pull_pull hΛ (lift (pushPt hν.1.w (fst t'.G t'.G)) (pushPt hν.1.w (snd t'.G t'.G))).left (lift (pushPt hpb'.1.w (fst o'.A o'.A)) (pushPt hpb'.1.w (snd o'.A o'.A))).left).symm`. Establish `h5` using `GlobalTheory.SiegelPullComp.iso_pull (lift (pushPt hpb'.1.w (fst o'.A o'.A)) (pushPt hpb'.1.w (snd o'.A o'.A))).left ((GlobalTheory.LamPull.lam_pull E H T T' t t' f).2 ν _ hν₂).symm`. Establish `l0` using `o'.isLB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1` using `pull_isLB o.isLB φ₁₂`. Establish `l2` using `pull_isLB (pull_isLB hΛ φ₂) φ₁₂`. Use `LBIso.trans l0 l1 (pull_isLB hΛ' _) hiso₁ ?_` and prove the remaining obligations. Use `LBIso.trans l1 l2 (pull_isLB hΛ' _) h2 ?_` and prove the remaining obligations. Use `LBIso.trans l2 (pull_isLB hΛ _) (pull_isLB hΛ' _) h3 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.trans (pull_isLB hΛ _) (pull_isLB (pull_isLB hΛ _) _) (pull_isLB hΛ' _) h4 h5` and prove the remaining obligations. Introduce `u`. Apply `hν.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hel, ← Category.assoc, hlv₁ u, Category.assoc, hlv u, hlev]`. Rewrite using `[Category.assoc, Over.w e.hom, Over.w (o'.lev u), Over.w (lev' (bas u))]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hsnd]`. Rewrite using `[Category.assoc f w (pullback.fst Ag.s (spMap z))]`. Conclude with `GlobalTheory.SiegelPullComp.pb_comp hSPB ho'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegData_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (O : Type) [CommRing O] (T T' : Scheme.{0}) (sT : T ⟶ Sp O) (f : T' ⟶ T) (t : SAB H T) (t' : SAB H T') (ν : SABMap t' t f) (lev : D.La → (𝟙_ (Over T) ⟶ t.G)) (lev' : D.La → (𝟙_ (Over T') ⟶ t'.G)) (g p N : ℕ) (Ag : SiegelFamily g p N) (z : ZP p N →+* O) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La) (w : T ⟶ pullback Ag.s (spMap z)), (∀ x, (lev' x).left ≫ ν.φ = f ≫ (lev x).left) → SiegData sT t lev Ag z bas w → SiegData (f ≫ sT) t' lev' Ag z bas (f ≫ w) := by
   intro E _ _ _ H D O _ T T' sT f t t' ν lev lev' g p N Ag z bas w hlev hw

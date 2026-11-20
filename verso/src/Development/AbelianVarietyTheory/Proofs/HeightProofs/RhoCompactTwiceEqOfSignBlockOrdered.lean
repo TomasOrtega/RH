@@ -33,7 +33,7 @@ variable {n : ℕ}
 def ratEntry (P : SignedPar n) (a : Fin n) : ℚ := ((n : ℚ) - 1) / 2 + (P.hc.2 a).choose
 
 /- English proof (translation)
-Use `(P.hc.2 a).choose_spec` as an intermediate fact. Unfold `ratEntry`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ratEntry_cast (P : SignedPar n) (a : Fin n) : ((ratEntry P a : ℚ) : ℝ) = P.lam a := by
   have := (P.hc.2 a).choose_spec
@@ -44,9 +44,9 @@ theorem ratEntry_cast (P : SignedPar n) (a : Fin n) : ((ratEntry P a : ℚ) : �
 def toSPar (P : SignedPar n) : SPar := Finset.univ.image fun a => (ratEntry P a, P.sgn a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, q, hq, rfl⟩`. Apply the tactic sequence `have : q = ratEntry P := funext fun a => by`. Use `hq a` as an intermediate fact. Rewrite `this` using `[← ratEntry_cast]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm` after adjusting the coercions. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Apply the tactic sequence `exact ⟨P.hc.1, ratEntry P, fun a => (ratEntry_cast P a).symm, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isEnum_iff_eq (S : SPar) (P : SignedPar n) : IsEnum S P.lam P.sgn ↔ S = toSPar P := by
   constructor
@@ -60,12 +60,12 @@ theorem isEnum_iff_eq (S : SPar) (P : SignedPar n) : IsEnum S P.lam P.sgn ↔ S 
     exact ⟨P.hc.1, ratEntry P, fun a => (ratEntry_cast P a).symm, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(isEnum_iff_eq _ P).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem isEnum_toSPar (P : SignedPar n) : IsEnum (toSPar P) P.lam P.sgn := (isEnum_iff_eq _ P).2 rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨lam, ε, h1, h2, h3, h4⟩`. Conclude with `⟨⟨lam, ε, h2⟩, ⟨h3, h4⟩, (isEnum_iff_eq S ⟨lam, ε, h2⟩).1 h1⟩`. Introduce and unpack `⟨P, h, rfl⟩`. Conclude with `⟨P.lam, P.sgn, isEnum_toSPar P, P.hc, h.1, h.2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem goodPar_iff (p q : ℕ) (S : SPar) :
     GoodPar n p q S ↔ ∃ P : SignedPar n, P.IsOfSig p q ∧ S = toSPar P := by
@@ -76,9 +76,9 @@ theorem goodPar_iff (p q : ℕ) (S : SPar) :
     exact ⟨P.lam, P.sgn, isEnum_toSPar P, P.hc, h.1, h.2⟩
 
 /- English proof (translation)
-Introduce `P P' h`. Establish `h1` using `isEnum_toSPar P`. Rewrite `h1` using `[h]`. Take `⟨a, b⟩` from `GlobalTheory.SignedParTest.isEnum_unique h1 (isEnum_toSPar P')`. Consider the cases of `P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `P'`. Simplify using `only at a b`. Substitute `a b` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem toSPar_injective : Function.Injective (toSPar (n := n)) := by
   intro P P' h
@@ -103,17 +103,17 @@ section Iso
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `h`. Establish `r : ∀ a b : Fin n, ∑ x : Fin n, ((x : ℕ) : ℝ) * Formalism.REAL.root a b x = (a : ℕ) - (b : ℕ)`. Introduce `a b`. Simplify using `[Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `key : ∑ x : Fin n, ((x : ℕ) : ℝ) * μ x - ∑ x : Fin n, ((x : ℕ) : ℝ) * Λ x = ∑ a, ∑ b, (c a b : ℝ) * (((b : ℕ) : ℝ) - (a : ℕ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ∑ x : Fin n, ((x : ℕ) : ℝ) * μ x - ∑ x : Fin n, ((x : ℕ) : ℝ) * Λ x = -∑ x : Fin n, ((x : ℕ) : ℝ) * (Λ - μ) x`. Simplify using `[mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[this, e]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `r a b` as an intermediate fact. Simplify using `only [mul_left_comm _ (c a b : ℝ), ← Finset.mul_sum, this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `nn : ∀ a b, 0 ≤ (c a b : ℝ) * (((b : ℕ) : ℝ) - (a : ℕ)) ∧ ((c a b : ℝ) * (((b : ℕ) : ℝ) - (a : ℕ)) = 0 → c a b = 0)`. Introduce `a b`. Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast (hc a b h0).1`. Establish `h2 : (0 : ℝ) < c a b` using `by exact_mod_cast Nat.pos_of_ne_zero h0`. Use `mul_pos h2 (sub_pos.2 h1)` as an intermediate fact. Conclude with `⟨this.le, fun h => absurd h this.ne'⟩`. Establish `n2 : ∀ a, 0 ≤ ∑ b, (c a b : ℝ) * (((b : ℕ) : ℝ) - (a : ℕ))` using `fun a => Finset.sum_nonneg fun b _ => (nn a b).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨by have := Finset.sum_nonneg fun a (_ : a ∈ Finset.univ) => n2 a; linarith, fun h => ?_⟩` and prove the remaining obligations. Rewrite `key` using `[h, sub_self, eq_comm, Finset.sum_eq_zero_iff_of_nonneg fun a _ => n2 a]`. Establish `: ∀ a b, c a b = 0` using `fun a b => (nn a b).2 ((Finset.sum_eq_zero_iff_of_nonneg fun b _ => (nn a b).1).1 (key a (Finset.mem_univ _)) b (Finset.mem_univ _))`. Simplify `e` using `[this, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cdom_le {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h : CDom ε μ Λ) :
     ∑ x : Fin n, ((x : ℕ) : ℝ) * Λ x ≤ ∑ x : Fin n, ((x : ℕ) : ℝ) * μ x ∧
@@ -152,13 +152,13 @@ theorem cdom_le {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h : CDom ε μ Λ
   simpa [this, sub_eq_zero] using e
 
 /- English proof (translation)
-The claim follows from `(cdom_le h).2 (le_antisymm (cdom_le h).1 (cdom_le h').1)`.
+A detailed English derivation is pending.
 -/
 theorem cdom_antisymm {ε : Fin n → Bool} {μ Λ : Fin n → ℝ} (h : CDom ε μ Λ) (h' : CDom ε Λ μ) : Λ = μ :=
   (cdom_le h).2 (le_antisymm (cdom_le h).1 (cdom_le h').1)
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.DefiniteCheck.kset_const]`. Use extensionality with `g`. Simplify using `[Formalism.REAL.Kset, GlobalTheory.DefiniteCheck.jm_const]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ujset_const (s : Bool) : UJset (fun _ : Fin n => s) = (Matrix.unitaryGroup (Fin n) ℂ : Set _) := by
   rw [← GlobalTheory.DefiniteCheck.kset_const]
@@ -168,7 +168,7 @@ theorem ujset_const (s : Bool) : UJset (fun _ : Fin n => s) = (Matrix.unitaryGro
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `: Formalism.REAL.Kset (fun _ : Fin n => s) = Formalism.REAL.Kset (allPos n)`. Unfold `allPos`. Rewrite using `[GlobalTheory.DefiniteCheck.kset_const, GlobalTheory.DefiniteCheck.kset_const, ujset_const, ujset_const]`. Simplify using `only [IsKTypeOf, IsKStableOn, this, CDom, allPos]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isKTypeOf_const (s : Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Λ : Fin n → ℝ) (S : Submodule ℂ H) :
     IsKTypeOf (fun _ => s) σ Λ S ↔ IsKTypeOf (allPos n) σ Λ S := by
@@ -178,17 +178,17 @@ theorem isKTypeOf_const (s : Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[
   simp only [IsKTypeOf, IsKStableOn, this, CDom, allPos]
 
 /- English proof (translation)
-Establish `hl : Formalism.QuantumDeterminants.lowK (fun _ : Fin n => s) lam = Formalism.QuantumDeterminants.lowK (allPos n) lam`. Use function extensionality and compare the values at `a`. Unfold `allPos`. Rewrite using `[GlobalTheory.DefiniteCheck.lowK_const, GlobalTheory.DefiniteCheck.lowK_const]`. Establish `hu : UJset (fun _ : Fin n => s) = UJset (allPos n)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `allPos`. Rewrite using `[ujset_const, ujset_const]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ht` using `GlobalTheory.DefiniteCheck.isDS_const_top h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ht.1` as an intermediate fact. Use `⟨h.2.1, Module.Finite.equiv Submodule.topEquiv (M := (⊤ : Submodule ℂ H)), hu ▸ h.2.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← isKTypeOf_const s, ← hl]` and apply the resulting hypothesis. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Rewrite `h4` using `[← isKTypeOf_const s, ← hl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← hu]`. Use `⟨FiniteDimensional.complete ℂ H, h1, h3, fun S _ hS => ?_, fun v w => ?_, ⟨⊤, h4⟩, fun μ S hS => ?_⟩` and prove the remaining obligations. Conclude with `h4.2.2.1 S le_top fun g hg => hS g (by rwa [← GlobalTheory.DefiniteCheck.kset_const])`. Establish `hemb` using `Formalism.REAL.isClosedEmbeddingMatrix n (fun _ => s)`. Establish `: CompactSpace (Formalism.REAL.UJ (fun _ : Fin n => s))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isCompact_univ_iff, hemb.1.isEmbedding.isCompact_iff, Set.image_univ, hemb.2]`. Use `(Formalism.REAL.maximal_compact_facts n (fun _ => s)).2.1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DefiniteCheck.kset_const]`. Then use the resulting hypothesis. Establish `hc : Continuous (coefOn (ε` using `fun _ : Fin n => s) σ v w) := continuous_const.inner ((h3.2.2 v).comp_continuous hemb.1.continuous fun g => g.2)`. Conclude with `hc.memLp_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, hv0, hw⟩` from `hS.2.2.2.1`. Establish `hT : S = ⊤` using `(h4.2.2.1 S le_top hS.2.1).resolve_left fun h0 => hv0 (by simpa [h0] using hv)`. Substitute `hT` using the available equality. Take `⟨v', hv', hv0', hw'⟩` from `h4.2.2.2.1`. Rewrite using `[cdom_antisymm (h4.2.2.2.2 μ v hv hv0 hw) (hS.2.2.2.2 _ v' hv' hv0' hw')]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDS_const_iff (s : Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     IsDS (fun _ => s) lam σ ↔ IsHCTypeU n lam σ := by
@@ -225,9 +225,7 @@ theorem isDS_const_iff (s : Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fi
       rw [cdom_antisymm (h4.2.2.2.2 μ v hv hv0 hw) (hS.2.2.2.2 _ v' hv' hv0' hw')]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (A * B)ᴴ * Formalism.REAL.Jm ε * (A * B) := by`. Rewrite using `[h', ← h.1]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [h.2.1]; simp`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsFrame.conj_mem {ε ε' : Fin n → Bool} {J A B A' : Matrix (Fin n) (Fin n) ℂ} (h : IsFrame ε J A B)
     (h' : A'ᴴ * Formalism.REAL.Jm ε' * A' = J) : (A' * B)ᴴ * Formalism.REAL.Jm ε' * (A' * B) = Formalism.REAL.Jm ε := by
@@ -238,11 +236,11 @@ theorem IsFrame.conj_mem {ε ε' : Fin n → Bool} {J A B A' : Matrix (Fin n) (F
     _ = _ := by rw [h.2.1]; simp
 
 /- English proof (translation)
-Take `⟨e', he'⟩` from `exists_blockOrd P.sgn hP.1 hP.2`. Take `⟨e, Q, hQ⟩` from `hJ`. Establish `hQ' : (Q : Mat p q)ᴴ * J.reindex e e * (Q : Mat p q) = Formalism.BasicNotions.TH.Jm p q` using `hQ`. Establish `h1 : ((Q⁻¹ : GL _ ℂ) : Mat p q)ᴴ * Formalism.BasicNotions.TH.Jm p q * ((Q⁻¹ : GL _ ℂ) : Mat p q) = J.reindex e e`. Rewrite using `[← hQ']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.mul_inv]; simp`. Use `⟨((Q⁻¹ : GL _ ℂ) : Mat p q).submatrix e'.symm e, (Q : Mat p q).submatrix e e'.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← he'.reindex_Jm, Matrix.conjTranspose_submatrix, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h1]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_mul_equiv, Units.inv_mul, Matrix.submatrix_one_equiv]`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {p q : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Formalism.UG.HasSignature J p q) (P : SignedPar n)
     (hP : P.IsOfSig p q) : ∃ A B, IsFrame P.sgn J A B := by
@@ -286,7 +284,7 @@ def rowPar (D : D7) (τ : D.what₂.Tau) : SignedPar (2 * D.R.rS + D.R.k + 1) :=
   ⟨lamSH D.R (D.hc τ), epsSH D.R, Formalism.MainNotions.StandardLattice.line_param_harish_chandra D τ⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : H)`. Establish `e` using `(h.2 v v v v).2.symm.trans (h'.2 v v v v).2`. Establish `h0 : inner ℂ v v * inner ℂ v v ≠ 0` using `mul_ne_zero (inner_self_ne_zero.2 hv) (inner_self_ne_zero.2 hv)`. Rewrite `e` using `[div_eq_mul_inv, div_eq_mul_inv, mul_right_inj' h0, _root_.inv_inj]`. Conclude with `e` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFdeg_unique {n : ℕ} {ε : Fin n → Bool} {μ : Measure (Formalism.REAL.UJ ε)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [Nontrivial H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d d' : ℝ}
@@ -304,14 +302,14 @@ section Low
 variable {p q n : ℕ} {e : Ix p q ≃ Fin n} {ε : Fin n → Bool}
 
 /- English proof (translation)
-The claim follows from `Finset.card_equiv e (by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem card_filter_equiv (e : Ix p q ≃ Fin n) (P : Ix p q → Prop) (Q : Fin n → Prop) [DecidablePred P] [DecidablePred Q]
     (h : ∀ b, P b ↔ Q (e b)) : (Finset.univ.filter P).card = (Finset.univ.filter Q).card :=
   Finset.card_equiv e (by simp [h])
 
 /- English proof (translation)
-Unfold `rhoOfIndex Formalism.REAL.rhoC`. Rewrite using `[card_filter_equiv e _ (fun b => e a < b ∧ ε b = ε (e a)) fun b => by rw [h.posC_iff, eq_comm], card_filter_equiv e _ (fun b => b < e a ∧ ε b = ε (e a)) fun b => by rw [h.posC_iff]]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoCompact_twice_eq_of_signBlockOrdered (h : BlockOrd e ε) (a : Ix p q) : ((rhoOfIndex a : ℚ) : ℝ) = 2 * Formalism.REAL.rhoC ε (e a) := by
   classical
@@ -322,7 +320,7 @@ theorem rhoCompact_twice_eq_of_signBlockOrdered (h : BlockOrd e ε) (a : Ix p q)
   ring
 
 /- English proof (translation)
-Unfold `vogan vNormSq Formalism.REAL.nsq Formalism.REAL.dot`. Rewrite using `[← e.sum_comp]`. Use `push_cast`. Simplify using `[rhoCompact_twice_eq_of_signBlockOrdered h, sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem vogan_eq (h : BlockOrd e ε) (μ : Ix p q → ℚ) :
     ((vogan μ : ℚ) : ℝ) = vNormSq ε fun i => (μ (e.symm i) : ℝ) := by
@@ -332,11 +330,11 @@ theorem vogan_eq (h : BlockOrd e ε) (μ : Ix p q → ℚ) :
   simp [rhoCompact_twice_eq_of_signBlockOrdered h, sq]
 
 /- English proof (translation)
-Establish `lt : ∀ a b, lam b < lam a ↔ e a < e b` using `fun a b => by`. Rewrite using `[← P.hc.1.lt_iff_gt, ← hl, ← hl, Rat.cast_lt]`. Unfold `blattner rhoNC SignedPar.low Formalism.QuantumDeterminants.lowK`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Formalism.REAL.rhoN, Formalism.REAL.rhoC]`. Rewrite using `[card_filter_equiv e _ (fun b => e a < b ∧ P.sgn b ≠ P.sgn (e a)) fun b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.sameBlock_iff, lt, and_comm, eq_comm],`. Use `card_filter_equiv e _ (fun b => b < e a ∧ P.sgn b ≠ P.sgn (e a)) fun b => by`. Rewrite using `[h.sameBlock_iff, lt, and_comm, eq_comm],`. Use `card_filter_equiv e _ (fun b => e a < b ∧ P.sgn b = P.sgn (e a)) fun b => by`. Rewrite using `[h.sameBlock_iff, lt, and_comm, eq_comm],`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `card_filter_equiv e _ (fun b => b < e a ∧ P.sgn b = P.sgn (e a)) fun b => by`. Rewrite using `[h.sameBlock_iff, lt, and_comm, eq_comm]]`. Use `push_cast`. Rewrite using `[hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blattner_eq (P : SignedPar n) (h : BlockOrd e P.sgn) {lam : Ix p q → ℚ} (hl : ∀ a, (lam a : ℝ) = P.lam (e a))
     (a : Ix p q) : ((blattner lam a : ℚ) : ℝ) = P.low (e a) := by
@@ -359,9 +357,9 @@ theorem blattner_eq (P : SignedPar n) (h : BlockOrd e P.sgn) {lam : Ix p q → �
 def blockPar (P : SignedPar n) (e : Ix p q ≃ Fin n) : Ix p q → ℚ := fun a => ratEntry P (e a)
 
 /- English proof (translation)
-Use `⟨fun a b hab => e.injective (P.hc.1.injective ?_), fun a b hab => ?_, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← ratEntry_cast, ← ratEntry_cast]`. Conclude with `congrArg _ hab`. Use `P.hc.1 (h.2.2 a b hab)` as an intermediate fact. Rewrite `this` using `[← ratEntry_cast, ← ratEntry_cast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `this` after adjusting the coercions. Conclude with `⟨n - 1 + 2 * (P.hc.2 (e a)).choose, by unfold blockPar ratEntry; push_cast; ring⟩`. Conclude with `⟨(P.hc.2 (e a)).choose - (P.hc.2 (e b)).choose, by unfold blockPar ratEntry; push_cast; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isParam_blockPar (P : SignedPar n) (h : BlockOrd e P.sgn) : IsParam (blockPar P e) := by
   refine ⟨fun a b hab => e.injective (P.hc.1.injective ?_), fun a b hab => ?_, fun a => ?_, fun a b => ?_⟩
@@ -373,17 +371,17 @@ theorem isParam_blockPar (P : SignedPar n) (h : BlockOrd e P.sgn) : IsParam (blo
   · exact ⟨(P.hc.2 (e a)).choose - (P.hc.2 (e b)).choose, by unfold blockPar ratEntry; push_cast; ring⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Fin (p + q) ≃ Ix p q, ∀ i j, i < j → lam (f j) < lam (f i) := by`. Use `⟨(Tuple.sort fun i => -lam (finSumFinEquiv.symm i)).trans finSumFinEquiv.symm, fun i j hij => ?_⟩` and prove the remaining obligations. Use `(Tuple.monotone_sort fun i => -lam (finSumFinEquiv.symm i)).strictMono_of_injective ((neg_injective.comp (h.1.comp finSumFinEquiv.symm.injective)).comp (Equiv.injective _)) hij` as an intermediate fact. Conclude with `neg_lt_neg_iff.1 this`. Set `P : SignedPar (p + q)` to `⟨fun i => lam (f i), fun i => (f i).isLeft, fun i j hij => Rat.cast_lt.2 (hf i j hij), fun i => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hi (f i)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : ℚ => (x : ℝ)) hm` as an intermediate fact. Simplify using `using this⟩`. Establish `hb : BlockOrd f.symm P.sgn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => by simp [P], fun i => by simp [P], fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.2.1 a b hab`. Assume the negation of the conclusion as `hn`. Break down `(not_lt.1 hn).lt_or_eq with x | x` into its components or cases. Use `hf _ _ x` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `lt_asymm h1 this`. Rewrite `h1` using `[f.symm.injective x]`. Conclude with `lt_irrefl _ h1`. Use `⟨P, f.symm, ⟨?_, ?_⟩, hb, funext fun a => Rat.cast_injective (α := ℝ) ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `SignedPar.p`. Rewrite using `[← card_filter_equiv f.symm (fun a => a.isLeft = true) _ fun b => by simp [P], Finset.card_filter, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules. Unfold `SignedPar.q`. Rewrite using `[← card_filter_equiv f.symm (fun a => a.isLeft = false) _ fun b => by simp [P], Finset.card_filter, Fintype.sum_sum_type]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `blockPar`. Rewrite using `[ratEntry_cast]`. Simplify using `[P]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_blockPar {lam : Ix p q → ℚ} (h : IsParam lam) (hi : ∀ a, ∃ m : ℤ, lam a - (((p + q : ℕ) : ℚ) - 1) / 2 = m) :
     ∃ (P : SignedPar (p + q)) (e : Ix p q ≃ Fin (p + q)), P.IsOfSig p q ∧ BlockOrd e P.sgn ∧ lam = blockPar P e := by
@@ -423,14 +421,14 @@ theorem exists_blockPar {lam : Ix p q → ℚ} (h : IsParam lam) (hi : ∀ a, �
     simp [P]
 
 /- English proof (translation)
-Simplify using `[hwSub, wtSub, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_hwSub {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ) (v : V) :
     v ∈ hwSub act μ ↔ (∀ a, act (Eab a a) v = ((μ a : ℚ) : ℂ) • v) ∧ ∀ a b, posC a b → act (Eab a b) v = 0 := by
   simp [hwSub, wtSub, sub_eq_zero]
 
 /- English proof (translation)
-Introduce `x y hxy`. Use `Matrix.single_apply_of_ne _ _ _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hxy h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isKC_Eab {a b : Ix p q} (h : sameBlock a b) : IsKC (Eab a b) := by
   intro x y hxy
@@ -439,11 +437,9 @@ theorem isKC_Eab {a b : Ix p q} (h : sameBlock a b) : IsKC (Eab a b) := by
   exact hxy h
 
 /- English proof (translation)
-Unfold `Eab`. Rewrite using `[Complex.ofReal_sub, sub_smul]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.single_mul_single_of_ne _ _ _ _ h]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[Matrix.single_mul_single_of_ne _ _ _ _ (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eab_bracket (x a b : Ix p q) : Eab x x * Eab a b - Eab a b * Eab x x =
     (((if x = a then 1 else 0) - (if x = b then 1 else 0) : ℝ) : ℂ) • Eab a b := by
@@ -458,7 +454,7 @@ theorem Eab_bracket (x a b : Ix p q) : Eab x x * Eab a b - Eab a b * Eab x x =
     · simp [Matrix.single_mul_single_of_ne _ _ _ _ (Ne.symm h)]
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.root, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem root_apply (e : Ix p q ≃ Fin n) (x a b : Ix p q) :
     Formalism.REAL.root (e a) (e b) (e x) = (if x = a then 1 else 0) - (if x = b then 1 else 0) := by
@@ -467,9 +463,9 @@ theorem root_apply (e : Ix p q ≃ Fin n) (x a b : Ix p q) :
 variable {T : GrpData p q} (R : DSRep T) {σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.finiteDim_kStable_subspace_kFinite_lie p q n e ε T R σ h hσ`. Establish `e1 : (S.comap R.ι).map R.ι = S` using `Submodule.map_comap_eq_of_le (h1 S hf hS)`. Establish `e2 : FiniteDimensional ℂ (S.comap R.ι)`. Establish `: FiniteDimensional ℂ ((S.comap R.ι).map R.ι)` using `by rwa [e1]`. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ R.ι_inj _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨e2, e1, h2 _ e2 (by rwa [e1])⟩`.
+A detailed English derivation is pending.
 -/
 theorem comap_kstable (h : BlockOrd e ε) (hσ : Factors R.U e σ) {S : Submodule ℂ R.U.H} (hf : FiniteDimensional ℂ S)
     (hS : IsKStableOn ε σ S) : FiniteDimensional ℂ (S.comap R.ι) ∧ (S.comap R.ι).map R.ι = S ∧
@@ -482,17 +478,17 @@ theorem comap_kstable (h : BlockOrd e ε) (hσ : Factors R.U e σ) {S : Submodul
   exact ⟨e2, e1, h2 _ e2 (by rwa [e1])⟩
 
 /- English proof (translation)
-Take `⟨-, e1, hK⟩` from `comap_kstable R h hσ hS.1 hS.2.1`. Take `⟨v, hv, hv0, hw⟩` from `hS.2.2.2.1`. Rewrite `hv` using `[← e1]`. Take `⟨v, hv, rfl⟩` from `hv`. Establish `hw'` using `(GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ v).1 hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Equiv.symm_apply_apply] at hw'`. Use `⟨v, fun h0 => hv0 (by rw [h0, map_zero]), (mem_hwSub _ _ _).2 ⟨fun a => by simpa using hw' a, fun a b hab => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `hab'` using `(h.posC_iff a b).1 hab`. Establish `hm` using `hK _ (isKC_Eab ((h.sameBlock_iff a b).2 hab'.2)) v hv`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsWtOn (Formalism.REAL.Kset ε) σ ((fun i => (μ (e.symm i) : ℝ)) + Formalism.REAL.root (e a) (e b)) (R.ι (R.HK.act (Eab a b) v))`. Use `(GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ _).2 fun x => ?_` and prove the remaining obligations. Use `congrArg (fun f : Module.End ℂ R.HK.V => f v) (R.HK.lie (Eab x x) (Eab a b))` as an intermediate fact. Simplify using `only [Eab_bracket, map_smul, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.mul_apply, hw'] at this`. Rewrite using `[Pi.add_apply, root_apply, Equiv.symm_apply_apply, Complex.ofReal_add, add_smul, this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h2` using `hS.2.2.2.2 _ _ hm (fun h0 => hu (R.ι_inj (by rw [h0, map_zero]))) h1`. Establish `h3 : CDom ε (fun i => (μ (e.symm i) : ℝ)) ((fun i => (μ (e.symm i) : ℝ)) + Formalism.REAL.root (e a) (e b))`. Use `⟨fun i j => if i = e a ∧ j = e b then 1 else 0, fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Establish `: i = e a ∧ j = e b` using `by by_contra hn; exact hij (if_neg hn)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this.1, this.2]`. Conclude with `hab'`. Simplify using `[ite_and]`. Establish `h4` using `congrFun (cdom_antisymm h2 h3) (e a)`. Establish `hne : a ≠ b` using `fun x => hab'.1.ne (congrArg e x)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[root_apply, hne] at h4`.
+A detailed English derivation is pending.
 -/
 theorem isHW_of_isKTypeOf (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix p q → ℚ) {S : Submodule ℂ R.U.H}
     (hS : IsKTypeOf ε σ (fun i => (μ (e.symm i) : ℝ)) S) : ∃ v, Formalism.BasicNotions.TH.IsHW R.HK.act μ v := by
@@ -524,11 +520,11 @@ theorem isHW_of_isKTypeOf (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
   simp [root_apply, hne] at h4
 
 /- English proof (translation)
-Take `⟨⟨hm, hi, -⟩, -⟩` from `GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q n e ε T R σ h hσ`. Introduce `k hk x hx`. Rewrite `hx`, the goal using `[Submodule.mem_orthogonal]`. Introduce `y hy`. Establish `hk'` using `Formalism.REAL.Kset_star ε hk`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `u1 : k ∈ UJset ε` using `(Formalism.REAL.maximal_compact_facts n ε).1 _ hk`. Establish `u2 : star k ∈ UJset ε` using `(Formalism.REAL.maximal_compact_facts n ε).1 _ hk'`. Establish `e1` using `hm.2 _ u1 _ u2`. Rewrite `e1` using `[Unitary.mul_star_self_of_mem hk.1, hm.1]`. Establish `e2 : y = σ k (σ (star k) y)` using `congrArg (fun f : R.U.H →L[ℂ] R.U.H => f y) e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `((⟨(σ k : R.U.H →ₗ[ℂ] R.U.H), hi k u1⟩ : R.U.H →ₗᵢ[ℂ] R.U.H).inner_map_map _ _).trans (hx _ (hS _ hk' y hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kstable_orthogonal (h : BlockOrd e ε) (hσ : Factors R.U e σ) {S : Submodule ℂ R.U.H} (hS : IsKStableOn ε σ S) :
     IsKStableOn ε σ Sᗮ := by
@@ -546,31 +542,29 @@ theorem kstable_orthogonal (h : BlockOrd e ε) (hσ : Factors R.U e σ) {S : Sub
   exact ((⟨(σ k : R.U.H →ₗ[ℂ] R.U.H), hi k u1⟩ : R.U.H →ₗᵢ[ℂ] R.U.H).inner_map_map _ _).trans (hx _ (hS _ hk' y hy))
 
 /- English proof (translation)
-Set `G : Submodule ℂ R.HK.V → Prop` to `fun W => FiniteDimensional ℂ W ∧ KStable R.HK.act W ∧ ∃ v ∈ W, Formalism.BasicNotions.TH.IsHW R.HK.act μ v`. Establish `hex : ∃ m, ∃ W, G W ∧ Module.finrank ℂ W = m`. Take `⟨v, hv⟩` from `hv`. Take `⟨W, a, b, c⟩` from `R.HK.kfin v`. Conclude with `⟨_, W, ⟨a, c, v, b, hv⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨W, ⟨hf, hK, v, hvW, hv⟩, hW⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ W', W' ≤ W → KStable R.HK.act W' → ∀ v' ∈ W', Formalism.BasicNotions.TH.IsHW R.HK.act μ v' → W' = W`. Introduce `W' h1 h2 v' h3 h4`. Use `Submodule.eq_of_le_of_finrank_le h1 ?_` and prove the remaining obligations. Rewrite using `[hW]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.find_min' hex ⟨W', ⟨Submodule.finiteDimensional_of_le h1, h2, v', h3, h4⟩, rfl⟩`. Establish `hSK` using `GlobalTheory.T.isKStableOn_of_lieStable_finiteDim p q n e ε T R σ h hσ W hf hK`. Take `⟨hw1, hw2⟩` from `(mem_hwSub _ _ _).1 hv.2`. Establish `hle : ∀ S' : Submodule ℂ R.U.H, S' ≤ W.map R.ι → S'.comap R.ι ≤ W` using `fun S' h' => (Submodule.comap_mono h').trans (Submodule.comap_map_eq_of_injective R.ι_inj W).le`. Use `⟨W.map R.ι, inferInstance, hSK, fun S' h1 h2 => ?_, ⟨R.ι v, ⟨v, hvW, rfl⟩, fun h0 => hv.1 (R.ι_inj (by rw [h0, map_zero])), ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `f1 : FiniteDimensional ℂ S'` using `Submodule.finiteDimensional_of_le h1`. Establish `f2 : FiniteDimensional ℂ (S'ᗮ ⊓ W.map R.ι : Submodule ℂ R.U.H)` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `k2 : IsKStableOn ε σ (S'ᗮ ⊓ W.map R.ι)` using `fun k hk x hx => ⟨kstable_orthogonal R h hσ h2 k hk x hx.1, hSK k hk x hx.2⟩`. Take `⟨-, a1, a2⟩` from `comap_kstable R h hσ f1 h2`. Take `⟨-, b1, b2⟩` from `comap_kstable R h hσ f2 k2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz, hyz⟩` from `S'.exists_add_mem_mem_orthogonal (R.ι v)`. Establish `hz' : z ∈ W.map R.ι`. Rewrite using `[← sub_eq_iff_eq_add'.2 hyz]`. Conclude with `Submodule.sub_mem _ ⟨v, hvW, rfl⟩ (h1 hy)`. Take `⟨y, -, rfl⟩` from `h1 hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hzW, rfl⟩` from `id hz'`. Establish `hv' : v = y + z` using `R.ι_inj (by rw [hyz, map_add])`. Establish `split : ∀ X, IsKC X → ∀ c : ℂ, R.HK.act X v = c • v → R.HK.act X y = c • y ∧ R.HK.act X z = c • z`. Introduce `X hX c hc`. Establish `m1 : R.HK.act X y - c • y ∈ S'.comap R.ι` using `Submodule.sub_mem _ (a2 X hX y hy) (Submodule.smul_mem _ _ hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : R.HK.act X z - c • z ∈ (S'ᗮ ⊓ W.map R.ι).comap R.ι` using `Submodule.sub_mem _ (b2 X hX z ⟨hz, hz'⟩) (Submodule.smul_mem _ _ ⟨hz, hz'⟩)`. Establish `e0 : R.HK.act X y - c • y = -(R.HK.act X z - c • z)`. Rewrite `hc` using `[hv', map_add, smul_add]`. Rewrite using `[eq_neg_iff_add_eq_zero, sub_add_sub_comm, hc, sub_self]`. Establish `m3 : R.ι (R.HK.act X y - c • y) ∈ S' ⊓ S'ᗮ` using `⟨m1, by rw [e0, map_neg]; exact Submodule.neg_mem _ m2.1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `m3` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Establish `m4 : R.HK.act X y - c • y = 0` using `R.ι_inj (by rw [m3, map_zero])`. Conclude with `⟨sub_eq_zero.1 m4, sub_eq_zero.1 (neg_eq_zero.1 (e0.symm.trans m4))⟩`. Establish `s1` using `fun a => split _ (isKC_Eab ((h.sameBlock_iff a a).2 rfl)) _ (hw1 a)`. Establish `s2` using `fun a b hab => split _ (isKC_Eab ((h.sameBlock_iff a b).2 ((h.posC_iff a b).1 hab).2)) 0 (by rw [zero_smul]; exact hw2 a b hab)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hy0 : y = 0`. Use `left`. Establish `hz0 : z ≠ 0` using `fun h0 => hv.1 (by rw [hv', hy0, h0, add_zero])`. Use `hmin _ (hle _ inf_le_right) b2 z ⟨hz, hz'⟩ ⟨hz0, (mem_hwSub _ _ _).2 ⟨fun a => (s1 a).2, fun a b hab => by simpa using (s2 a b hab).2⟩⟩` as an intermediate fact. Rewrite `b1` using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← S'.inf_orthogonal_eq_bot]`. Conclude with `le_antisymm (le_inf le_rfl (h1.trans (b1.le.trans inf_le_left))) inf_le_left`. Use `right`. Use `hmin _ (hle _ h1) a2 y hy ⟨hy0, (mem_hwSub _ _ _).2 ⟨fun a => (s1 a).1, fun a b hab => by simpa using (s2 a b hab).1⟩⟩` as an intermediate fact. Rewrite using `[← this, a1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ v).2 fun a => by simpa using hw1 a`. Take `⟨W0, c1, c2, c3, c4⟩` from `GlobalTheory.T.highestWeight_generated_weights_below p q R.HK.V R.HK.act R.HK.lie μ v hv`. Use `hmin W0 (c3 W hvW hK) c2 v c1 hv` as an intermediate fact. Substitute `this` using the available equality. Introduce and unpack `ν _ ⟨w, hw, rfl⟩ hw0 hwt`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, d1, d2⟩` from `c4 (fun a => ν (e a)) w hw (fun h0 => hw0 (by rw [h0, map_zero])) ((GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ w).1 hwt)`. Use `⟨fun i j => c (e.symm i) (e.symm j), fun i j hij => by simpa using (h.posC_iff _ _).1 (d1 _ _ hij), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Take `⟨x, rfl⟩` from `e.surjective i`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Equiv.symm_apply_apply, d2]`.
-
-Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, root_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_of_isHW (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix p q → ℚ)
     (hv : ∃ v, Formalism.BasicNotions.TH.IsHW R.HK.act μ v) : ∃ S, IsKTypeOf ε σ (fun i => (μ (e.symm i) : ℝ)) S := by
@@ -650,22 +644,22 @@ theorem isKTypeOf_of_isHW (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
     simp only [Equiv.symm_apply_apply, root_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isKTypeOf_of_isHW R h hσ μ, fun ⟨_, hS⟩ => isHW_of_isKTypeOf R h hσ μ hS⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHW_iff_isKTypeOf (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix p q → ℚ) :
     (∃ v, Formalism.BasicNotions.TH.IsHW R.HK.act μ v) ↔ ∃ S, IsKTypeOf ε σ (fun i => (μ (e.symm i) : ℝ)) S :=
   ⟨isKTypeOf_of_isHW R h hσ μ, fun ⟨_, hS⟩ => isHW_of_isKTypeOf R h hσ μ hS⟩
 
 /- English proof (translation)
-Take `⟨v, -, hv0, hw⟩` from `hS.2.2.2.1`. Establish `e1 : Matrix.diagonal (fun a => Complex.exp (((Pi.single i (2 * Real.pi) : Fin n → ℝ) a : ℂ) * Complex.I)) = (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[ha]`. Use `hw (Pi.single i (2 * Real.pi)) (by rw [e1]; exact ⟨one_mem _, by simp⟩)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[e1, h1]`. Establish `e2 : Complex.exp (((∑ a, μ a * (Pi.single i (2 * Real.pi) : Fin n → ℝ) a : ℝ) : ℂ) * Complex.I) = 1`. Use `smul_left_injective ℂ hv0 ?_` and prove the remaining obligations. Simplify using `using this.symm`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hm`. Establish `h3 : ((μ i : ℝ) : ℂ) = m`. Use `mul_right_cancel₀ Complex.two_pi_I_ne_zero ?_` and prove the remaining obligations. Rewrite using `[← hm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h3` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weight_int {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h1 : σ 1 = 1) {μ : Fin n → ℝ} {S : Submodule ℂ H}
@@ -693,15 +687,13 @@ theorem weight_int {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   exact_mod_cast h3
 
 /- English proof (translation)
-Take `⟨u1, u2⟩` from `GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q n e _ T R σ h hσ`. Establish `u3` using `GlobalTheory.T.block_ordered_square_integrable p q n e _ T R σ h hσ`. Establish `hb : (fun i => ((blattner (blockPar P e) (e.symm i) : ℚ) : ℝ)) = Formalism.QuantumDeterminants.lowK P.sgn P.lam` using `funext fun i => by`. Rewrite using `[blattner_eq P h (lam := blockPar P e) fun a => ratEntry_cast P (e a), Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `HasParam IsDSPar IsDS`. Rewrite using `[isHW_iff_isKTypeOf R h hσ, hb]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Use `⟨inferInstance, R.nontriv, u1, u2, u3, a, fun μ S hS => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose m hm using weight_int u1.1.1 hS`. Establish `hμ : (fun i => (((fun a => (m (e a) : ℚ)) (e.symm i) : ℚ) : ℝ)) = μ` using `funext fun i => by simp [hm]`. Take `⟨v, hv⟩` from `isHW_of_isKTypeOf R h hσ (fun a => (m (e a) : ℚ)) (S := S) (by rwa [hμ])`. Rewrite using `[← hb, ← hμ, ← vogan_eq h, ← vogan_eq h fun a => (m (e a) : ℚ)]`. Conclude with `b _ v hv` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨-, -, -, -, -, a, b⟩`. Use `⟨a, fun μ v hv => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `isKTypeOf_of_isHW R h hσ μ ⟨v, hv⟩`. Use `b _ S hS` as an intermediate fact. Rewrite `this` using `[← hb, ← vogan_eq h, ← vogan_eq h]`.
-
-Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasParam_iff_isDSPar (P : SignedPar n) (h : BlockOrd e P.sgn) (hσ : Factors R.U e σ) :
     HasParam R (blockPar P e) ↔ IsDSPar P σ := by
@@ -727,15 +719,15 @@ theorem hasParam_iff_isDSPar (P : SignedPar n) (h : BlockOrd e P.sgn) (hσ : Fac
     exact_mod_cast this
 
 /- English proof (translation)
-Establish `hp` using `isParam_blockPar P h`. Establish `h1` using `GlobalTheory.SignedParTest.blattner_add_rho2C hp a`. Establish `h2 : ((Finset.univ.filter fun b => blockPar P e b < blockPar P e a).card : ℚ) + (Finset.univ.filter fun b => blockPar P e a < blockPar P e b).card + 1 = n`. Establish `h3 : (n : ℚ) = ∑ _b : Ix p q, 1` using `by simp [← Fintype.card_sum, Fintype.card_congr e]`. Establish `h4 : (1 : ℚ) = ∑ b : Ix p q, if b = a then 1 else 0` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, Finset.card_filter, Finset.card_filter]`. Use `nth_rw 1 [h4]`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (blockPar P e b) (blockPar P e a) with x | x | x` into its components or cases. Establish `: b ≠ a` using `by rintro rfl; exact lt_irrefl _ x`. Simplify using `[x, x.not_gt, this]`. Simplify using `[hp.1 x]`. Establish `: b ≠ a` using `by rintro rfl; exact lt_irrefl _ x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[x, x.not_gt, this]`. Use `⟨(P.hc.2 (e a)).choose + (Finset.univ.filter fun b => blockPar P e b < blockPar P e a).card - (Finset.univ.filter fun b => posC a b).card + (Finset.univ.filter fun b => posC b a).card, ?_⟩` and prove the remaining obligations. Establish `h5 : blockPar P e a = ((n : ℚ) - 1) / 2 + (P.hc.2 (e a)).choose` using `rfl`. Unfold `rhoOfIndex at h1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem blattner_int (P : SignedPar n) (h : BlockOrd e P.sgn) (a : Ix p q) :
     ∃ m : ℤ, blattner (blockPar P e) a = m := by
@@ -765,7 +757,7 @@ theorem blattner_int (P : SignedPar n) (h : BlockOrd e P.sgn) (a : Ix p q) :
   linarith
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `isKTypeOf_of_isHW R h hσ μ ⟨v, hv⟩`. Take `⟨m, hm⟩` from `weight_int (GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q n e ε T R σ h hσ).1.1.1 hS (e a)`. Rewrite `hm` using `[Equiv.symm_apply_apply]`. Conclude with `⟨m, by exact_mod_cast hm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isHW_int (h : BlockOrd e ε) (hσ : Factors R.U e σ) {μ : Ix p q → ℚ} {v : R.HK.V}
     (hv : Formalism.BasicNotions.TH.IsHW R.HK.act μ v) (a : Ix p q) : ∃ m : ℤ, μ a = m := by
@@ -775,11 +767,11 @@ theorem isHW_int (h : BlockOrd e ε) (hσ : Factors R.U e σ) {μ : Ix p q → �
   exact ⟨m, by exact_mod_cast hm⟩
 
 /- English proof (translation)
-Use `⟨fun hR => ?_, fun ⟨σ, h1, h2⟩ => (hasParam_iff_isDSPar R P h h1).2 h2⟩` and prove the remaining obligations. Break down `Cover.trivial_or_twist R with k | k` into its components or cases. Take `⟨σ, hσ⟩` from `exists_factors R.U e k`. Conclude with `⟨σ, hσ, (hasParam_iff_isDSPar R P h hσ).1 hR⟩`. It suffices to derive a contradiction.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Take `⟨σ, hσ⟩` from `exists_factors _ e k`. Take `⟨v, hv⟩` from `hR.1`. Establish `hv' : Formalism.BasicNotions.TH.IsHW (Cover.twist R).HK.act (fun a => blattner (blockPar P e) a - 1 / 2) v` using `(Cover.isHW_twAct R.HK.act _ v).2 (by simpa using hv)`. Take `⟨m, hm⟩` from `isHW_int (Cover.twist R) h hσ hv' (e.symm ⟨0, hn⟩)`. Take `⟨m', hm'⟩` from `blattner_int P h (e.symm ⟨0, hn⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ((2 * m' : ℤ) : ℚ) = (2 * m + 1 : ℤ)` using `by push_cast; linarith`. Establish `h2 : 2 * m' = 2 * m + 1` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hasParam_iff_factors (hn : 0 < n) (P : SignedPar n) (h : BlockOrd e P.sgn) :
     HasParam R (blockPar P e) ↔ ∃ σ, Factors R.U e σ ∧ IsDSPar P σ := by
@@ -799,7 +791,7 @@ theorem hasParam_iff_factors (hn : 0 < n) (P : SignedPar n) (h : BlockOrd e P.sg
     omega
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun x => inv_smul_eq_iff₀ (T.sq x).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem factors_twist_iff (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)) :
     Factors (Cover.twist R).U e σ ↔
@@ -807,7 +799,7 @@ theorem factors_twist_iff (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] 
   forall_congr' fun x => inv_smul_eq_iff₀ (T.sq x).ne_zero
 
 /- English proof (translation)
-Rewrite using `[← Cover.hasParam_twist, hasParam_iff_factors _ hn P h]`. Conclude with `exists_congr fun σ => and_congr_left' (factors_twist_iff R σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasParam_half_iff (hn : 0 < n) (P : SignedPar n) (h : BlockOrd e P.sgn) :
     HasParam R (fun a => blockPar P e a + 1 / 2) ↔ ∃ σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H),
@@ -817,13 +809,13 @@ theorem hasParam_half_iff (hn : 0 < n) (P : SignedPar n) (h : BlockOrd e P.sgn) 
   exact exists_congr fun σ => and_congr_left' (factors_twist_iff R σ)
 
 /- English proof (translation)
-Distinguish the cases in `hi : ∀ a, ∃ m : ℤ, lam a - (((p + q : ℕ) : ℚ) - 1) / 2 = m`. Take `⟨P, e, a, b, c⟩` from `exists_blockPar h hi`. Conclude with `⟨P, e, a, b, Or.inl c⟩`. Take `⟨a, ha⟩` from `not_forall.1 hi`. Establish `h' : IsParam fun b => lam b - 1 / 2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun x y e => h.1 (sub_left_injective e), fun x y e => sub_lt_sub_right (h.2.1 x y e) _, fun x => ?_, fun x y => by simpa using h.2.2.2 x y⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h.2.2.1 x`. Conclude with `⟨k - 1, by push_cast; linarith⟩`. Take `⟨P, e, a, b, c⟩` from `exists_blockPar h' fun b => by`. Take `⟨k, hk⟩` from `h.2.2.1 a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `h.2.2.2 b a`. Take `⟨j, hj | hj⟩` from `Int.even_or_odd' (k - (p + q : ℕ))`. Establish `: ((k - (p + q : ℕ) : ℤ) : ℚ) = (2 * j : ℤ)` using `by rw [hj]`. Conclude with `⟨j + l, by push_cast at this ⊢; linarith⟩`. Establish `: ((k - (p + q : ℕ) : ℤ) : ℚ) = (2 * j + 1 : ℤ)` using `by rw [hj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `absurd ⟨j + 1, by push_cast at this ⊢; linarith⟩ ha`. Conclude with `⟨P, e, a, b, Or.inr (funext fun x => by rw [← c]; ring)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isParam_cases {lam : Ix p q → ℚ} (h : IsParam lam) :
     ∃ (P : SignedPar (p + q)) (e : Ix p q ≃ Fin (p + q)), P.IsOfSig p q ∧ BlockOrd e P.sgn ∧
@@ -848,7 +840,7 @@ theorem isParam_cases {lam : Ix p q → ℚ} (h : IsParam lam) :
     exact ⟨P, e, a, b, Or.inr (funext fun x => by rw [← c]; ring)⟩
 
 /- English proof (translation)
-Establish `h0` using `isParam_blockPar P h`. Use `⟨fun x y e => h0.1 (add_left_injective _ e), fun x y e => by simpa using h0.2.1 x y e, fun x => ?_, fun x y => by simpa using h0.2.2.2 x y⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h0.2.2.1 x`. Conclude with `⟨k + 1, by push_cast; linarith⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isParam_half (P : SignedPar n) (h : BlockOrd e P.sgn) : IsParam fun a => blockPar P e a + 1 / 2 := by
   have h0 := isParam_blockPar P h

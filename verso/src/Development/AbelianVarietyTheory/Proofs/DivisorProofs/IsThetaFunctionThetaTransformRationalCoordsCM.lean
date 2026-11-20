@@ -21,13 +21,13 @@ open Formalism.IndefR.DatumF GlobalTheory.ThetaTransform GlobalTheory.SWQ
 open scoped ContDiff
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hasDerivAt_of_continuous_real_to_complex_exponential`.
+A detailed English derivation is pending.
 -/
 theorem charR_hasDerivAt : ∀ (χ : ℝ → ℂ), Continuous χ → (∀ s t, χ (s + t) = χ s * χ t) → χ 0 = 1 →
     ∀ s, HasDerivAt χ (deriv χ 0 * χ s) s := GlobalTheory.T.hasDerivAt_of_continuous_real_to_complex_exponential
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.contDiff_deriv_zero_of_continuous_bicharacter`.
+A detailed English derivation is pending.
 -/
 theorem biChar_contDiff : ∀ (k : ℕ) (Q : (Fin k → ℝ) → ℝ → ℂ), Continuous (Function.uncurry Q) →
     (∀ t s s', Q t (s + s') = Q t s * Q t s') → (∀ t t' s, Q (t + t') s = Q t s * Q t' s) → (∀ t, Q t 0 = 1) →
@@ -40,51 +40,51 @@ variable {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)] 
 def phase (ψ : AddChar (AF F) ℂ) (M : ℝ →+ VA F N) (w : VA F N) (s : ℝ) : ℂ := ψ (⅟(2 : AF F) * symV w (M s))
 
 /- English proof (translation)
-Simplify using `only [symV, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symV_add_left (w w' u : VA F N) : symV (w + w') u = symV w u + symV w' u := by
   simp only [symV, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]; ring
 
 /- English proof (translation)
-Simplify using `only [symV, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symV_add_right (w u u' : VA F N) : symV w (u + u') = symV w u + symV w u' := by
   simp only [symV, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]; ring
 
 /- English proof (translation)
-Simplify using `[symV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symV_zero_right (w : VA F N) : symV w 0 = 0 := by simp [symV]
 
 /- English proof (translation)
-Unfold `symV dotProduct`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_symV : Continuous fun p : VA F N × VA F N => symV p.1 p.2 := by
   unfold symV dotProduct
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [phase, map_add, symV_add_right, mul_add, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phase_add (M : ℝ →+ VA F N) (w : VA F N) (s s' : ℝ) :
     phase ψ M w (s + s') = phase ψ M w s * phase ψ M w s' := by
   simp only [phase, map_add, symV_add_right, mul_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [phase, symV_add_left, mul_add, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phase_add_left (M : ℝ →+ VA F N) (w w' : VA F N) (s : ℝ) :
     phase ψ M (w + w') s = phase ψ M w s * phase ψ M w' s := by
   simp only [phase, symV_add_left, mul_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Simplify using `[phase, symV_zero_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phase_zero (M : ℝ →+ VA F N) (w : VA F N) : phase ψ M w 0 = 1 := by
   simp [phase, symV_zero_right]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : VA F N × ℝ => (p.1, M p.2)` using `by fun_prop`. Establish `h2 : Continuous fun p : VA F N × ℝ => symV p.1 (M p.2)` using `Continuous.comp (g := fun q : VA F N × VA F N => symV q.1 q.2) (f := fun p : VA F N × ℝ => (p.1, M p.2)) continuous_symV h1`. Establish `h3 : Continuous fun p : VA F N × ℝ => ⅟(2 : AF F) * symV p.1 (M p.2)` using `continuous_const.mul h2`. Conclude with `hψ.comp h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_phase (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : Continuous M) :
     Continuous fun p : VA F N × ℝ => phase ψ M p.1 p.2 := by
@@ -112,7 +112,7 @@ section Crit
 variable {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)] {ψ : AddChar (AF F) ℂ}
 
 /- English proof (translation)
-Establish `h : Continuous fun s : ℝ => ((w, s) : VA F N × ℝ)` using `by fun_prop`. Conclude with `Continuous.comp (g := fun p : VA F N × ℝ => phase ψ M p.1 p.2) (f := fun s : ℝ => ((w, s) : VA F N × ℝ)) (continuous_phase hψ hM) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_phase_right (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : Continuous M) (w : VA F N) :
     Continuous (phase ψ M w) := by
@@ -121,18 +121,16 @@ theorem continuous_phase_right (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM :
     (continuous_phase hψ hM) h
 
 /- English proof (translation)
-The claim follows from `charR_hasDerivAt _ (continuous_phase_right hψ hM w) (phase_add M w) (phase_zero M w) s`.
+A detailed English derivation is pending.
 -/
 theorem phase_hasDerivAt (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : Continuous M) (w : VA F N) (s : ℝ) :
     HasDerivAt (phase ψ M w) (deriv (phase ψ M w) 0 * phase ψ M w s) s :=
   charR_hasDerivAt _ (continuous_phase_right hψ hM w) (phase_add M w) (phase_zero M w) s
 
 /- English proof (translation)
-Establish `e : (fun t => deriv (phase ψ M (u + L t)) 0) = fun t => deriv (phase ψ M u) 0 + deriv (phase ψ M (L t)) 0`. Use function extensionality and compare the values at `t`. Establish `hf : phase ψ M (u + L t) = fun s => phase ψ M u s * phase ψ M (L t) s` using `funext (phase_add_left M u (L t))`. Establish `hd` using `((phase_hasDerivAt hψ hM u 0).mul (phase_hasDerivAt hψ hM (L t) 0)).deriv`. Simplify using `only [phase_zero, mul_one, one_mul] at hd`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Conclude with `hd`. Rewrite using `[e]`. Establish `hQ : Continuous (Function.uncurry fun t s => phase ψ M (L t) s)`. Establish `h : Continuous fun p : (Fin k → ℝ) × ℝ => ((L p.1, p.2) : VA F N × ℝ)` using `by fun_prop`.
-
-Conclude with `Continuous.comp (g := fun p : VA F N × ℝ => phase ψ M p.1 p.2) (f := fun p : (Fin k → ℝ) × ℝ => ((L p.1, p.2) : VA F N × ℝ)) (continuous_phase hψ hM) h`. Conclude with `contDiff_const.add (biChar_contDiff k (fun t s => phase ψ M (L t) s) hQ (fun t s s' => phase_add M (L t) s s') (fun t t' s => by simp only [map_add]; exact phase_add_left M _ _ s) (fun t => phase_zero M (L t)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_phase_deriv (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : Continuous M) {k : ℕ}
     {L : (Fin k → ℝ) →+ VA F N} (hL : Continuous L) (u : VA F N) :
@@ -155,13 +153,13 @@ theorem contDiff_phase_deriv (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : C
     (fun t => phase_zero M (L t)))
 
 /- English proof (translation)
-Establish `hp` using `phase_hasDerivAt hψ hM w 0`. Establish `hne : ∀ s, phase ψ M w s ≠ 0` using `fun s h0 => by`. Use `AddChar.map_add_eq_mul ψ (⅟(2 : AF F) * symV w (M s)) (-(⅟(2 : AF F) * symV w (M s)))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `h0' : ψ (⅟(2 : AF F) * symV w (M s)) = 0` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h0', zero_mul]`. Conclude with `one_ne_zero this`. Establish `e : (fun s : ℝ => f (w + M s)) = fun s => heisV ψ (M s) f w / phase ψ M w s`. Use function extensionality and compare the values at `s`. Rewrite using `[heisV]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_div_cancel_left₀ _ (hne s)).symm`. Rewrite using `[e]`. Use `(hd.div hp (hne 0)).congr_deriv ?_` and prove the remaining obligations. Establish `h1 : heisV ψ (M 0) f w = f w`. Rewrite using `[heisV, map_zero, symV_zero_right, mul_zero, AddChar.map_zero_eq_one, one_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h1, phase_zero, mul_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_lineV (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : Continuous M) {f : VA F N → ℂ}
     {w : VA F N} {c : ℂ} (hd : HasDerivAt (fun s : ℝ => heisV ψ (M s) f w) c 0) :
@@ -186,17 +184,15 @@ theorem hasDerivAt_lineV (hψ : Continuous ψ) {M : ℝ →+ VA F N} (hM : Conti
   ring
 
 /- English proof (translation)
-Introduce `f hf k L hL hLf u`. Set `P : ((Fin k → ℝ) → ℂ) → Prop` to `fun G => ∃ f ∈ V, G = fun t => f (u + L t)`. Use `GlobalTheory.Unf.MatCoef.contDiff_of_partials P ?_ ?_ _ ⟨f, hf, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `h : Continuous fun t => u + L t` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(hc f hf).comp h`. Introduce and unpack `_ ⟨f, hf, rfl⟩ i`. Set `E : ℝ →ₗ[ℝ] (Fin k → ℝ)` to `LinearMap.toSpanSingleton ℝ (Fin k → ℝ) (Pi.single i 1)`. Set `M : ℝ →+ VA F N` to `L.comp E.toAddMonoidHom`. Establish `hM : Continuous M` using `hL.comp E.continuous_of_finiteDimensional`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf', hD⟩` from `hd f hf M ⟨hM, fun s => hLf _⟩`. Use `⟨2, ![fun _ => 1, fun t => -deriv (phase ψ M (u + L t)) 0], ![fun t => f' (u + L t), fun t => f (u + L t)], fun j => ?_, fun j => ?_, fun t => ?_⟩` and prove the remaining obligations. Use `fin_cases j`. Conclude with `contDiff_const`. Conclude with `(contDiff_phase_deriv hψ hM hL u).neg`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Conclude with `⟨f', hf', rfl⟩`. Conclude with `⟨f, hf, rfl⟩`. Establish `e : (fun s : ℝ => f (u + L (t + s • Pi.single i 1))) = fun s => f ((u + L t) + M s)`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `: E s = s • Pi.single i 1` using `rfl`. Rewrite using `[map_add, add_assoc, ← this]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `hasDerivAt_lineV hψ hM (hD (u + L t)) using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_of_heisV_closed (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (V : Set (VA F N → ℂ))
     (hc : ∀ f ∈ V, Continuous f)
@@ -252,14 +248,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ψ : AddChar (AF F) ℂ} {e : WOF F E nS nT ≃ₗ[AF F] VA F N}
 
 /- English proof (translation)
-Rewrite using `[symplOHF, he, invOf_two_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOHF_eq (he : ∀ w w', symplOF σ JS JT ξ₀ w w' = symV (e w) (e w')) (w w' : WOF F E nS nT) :
     symplOHF σ JS JT ξ₀ w w' = ⅟(2 : AF F) * symV (e w) (e w') := by
   rw [symplOHF, he, invOf_two_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisOF, heisV, Function.comp_apply, symplOHF_eq he, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisOF_comp (he : ∀ w w', symplOF σ JS JT ξ₀ w w' = symV (e w) (e w')) (u : WOF F E nS nT)
     (f : VA F N → ℂ) : heisOF σ JS JT ξ₀ ψ u (f ∘ e) = heisV ψ (e u) f ∘ e := by
@@ -271,13 +267,13 @@ end Main
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ hstd N e he hrat Φ hΦ`. Establish `hR : IsTotallyReal F` using `hB.cm.1`. Establish `hψ : IsCharAF F B.ψ` using `hstd.1`. Take `⟨hc, -, hfin, hinf⟩` from `coordF nT nS N e`. Establish `hcont : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), Continuous (thV B.ψ Φ)` using `fun Φ hΦ => GlobalTheory.T.continuous_adelicThetaTransformSymplectic_of_decay F N B.ψ hR hψ Φ (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ hΦ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun γ w => ?_, ?_, (hcont Φ hΦ).comp hc, ?_⟩` and prove the remaining obligations. Take `⟨y, z, h⟩` from `hrat γ`. Simplify using `only [Function.comp_apply, map_add, symplOHF_eq he, h]`. Conclude with `quasiV_thV B.ψ hψ.2.2.1 Φ y z (e w)`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.T.adelicSchwartz_fixed_by_schroedinger_open_finite_subgroup F N B.ψ hR hψ Φ hΦ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.comap e.toLinearMap.toAddMonoidHom, hUo.preimage hc, fun u hu h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[heisOF_comp he, ← thV_schr, hU (e u) hu ((hinf u).1 h0).1 ((hinf u).1 h0).2]`. Introduce `k L hL hL0 w`. Establish `h` using `contDiff_of_heisV_closed B.ψ hψ.1 {g | ∃ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), g = thV B.ψ Φ} (by rintro _ ⟨Φ, hΦ, rfl⟩; exact hcont Φ hΦ) (by`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ M hM`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', hΦ', hd⟩` from `GlobalTheory.T.hasDerivAt_heisenbergOperator_thetaTransform_realLine F N B.ψ hR hψ Φ hΦ M hM`. Conclude with `⟨_, ⟨Φ', hΦ', rfl⟩, hd⟩)`. Use `_ ⟨Φ, hΦ, rfl⟩ k (e.toLinearMap.toAddMonoidHom.comp L) (hc.comp hL) (fun t => (hfin _).1 (hL0 t)) (e w)`. Simplify `h` using `[Function.comp_def]`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isThetaFunOF_thV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

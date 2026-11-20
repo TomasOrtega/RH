@@ -10,7 +10,7 @@ namespace GlobalTheory.PolarU
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.PolarU Matrix MeasureTheory
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adMat, Matrix.sub_apply, Matrix.smul_apply, Matrix.kroneckerMap_apply, Matrix.transpose_apply, smul_sub]`. Use `congr 1`. Rewrite using `[smul_mul_assoc]`. Rewrite using `[mul_smul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adMat_real_smul {p q : ℕ} (u : ℝ) (Y : Mat p q) : adMat (u • Y) = u • adMat Y := by
   ext i j
@@ -33,7 +33,7 @@ def sandwichAct {p q : ℕ} (P V Q : Mat p q) :
     ext a b; simp [Matrix.smul_mulVec]
 
 /- English proof (translation)
-Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left u).smul_right v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_real_smul_add {p q : ℕ} (Y : Mat p q) (u v : ℝ) :
     NormedSpace.exp ((u + v) • Y) = NormedSpace.exp (u • Y) * NormedSpace.exp (v • Y) := by
@@ -41,11 +41,11 @@ theorem exp_real_smul_add {p q : ℕ} (Y : Mat p q) (u v : ℝ) :
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left u).smul_right v)
 
 /- English proof (translation)
-Establish `hl : (1 - s) • (Y + Y) = ((1 : ℝ) + (1 - 2 * s)) • Y`. Rewrite using `[← two_smul ℝ Y, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : s • (Y + Y) = (-(1 - 2 * s) + (1 : ℝ)) • Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← two_smul ℝ Y, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hof : ∀ W : Mat p q, (Matrix.of fun a b => vecM W (a, b)) = W` using `fun W => by`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[hl, hr, exp_real_smul_add, exp_real_smul_add, one_smul, neg_smul]`. Simplify using `only [sandwichAct, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[← adMat_real_smul, exp_adMat_mulVec, hof]`. Simplify using `only [Matrix.mul_assoc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem duhamel_integrand_eq {p q : ℕ} (Y V : Mat p q) (s : ℝ) :
     NormedSpace.exp ((1 - s) • (Y + Y)) * V * NormedSpace.exp (s • (Y + Y)) =
@@ -64,13 +64,13 @@ theorem duhamel_integrand_eq {p q : ℕ} (Y V : Mat p q) (s : ℝ) :
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Set `L : Matrix (Ix p q × Ix p q) (Ix p q × Ix p q) ℂ →L[ℝ] Mat p q` to `LinearMap.toContinuousLinearMap (sandwichAct (NormedSpace.exp Y) V (NormedSpace.exp Y))`. Establish `hcont : Continuous fun s : ℝ => NormedSpace.exp ((1 - 2 * s) • adMat Y)` using `NormedSpace.exp_continuous.comp ((by fun_prop : Continuous fun s : ℝ => 1 - 2 * s).smul continuous_const)`. Establish `hsin : sinhcAd Y = ∑' k : ℕ, (((2 * k + 1).factorial : ℝ)⁻¹) • adMat Y ^ (2 * k)`. Simplify using `only [sinhcAd]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← Complex.coe_smul]`. Use `push_cast`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Conclude with `duhamel_integrand_eq Y V s`. Use `_ = L (∫ s in (0 : ℝ)..1, NormedSpace.exp ((1 - 2 * s) • adMat Y)) := L.intervalIntegral_comp_comm (hcont.intervalIntegrable 0 1)`. Use `_ = NormedSpace.exp Y * sAd Y V * NormedSpace.exp Y := by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : ∫ s in (0 : ℝ)..1, NormedSpace.exp ((1 - 2 * s) • adMat Y) = sinhcAd Y`. Rewrite using `[hsin]`. Conclude with `integral_exp_one_sub_two_mul_smul _ (adMat Y)`. Rewrite using `[hI]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_duhamel_eq_sAd {p q : ℕ} (Y V : Mat p q) :
     ∫ s in (0 : ℝ)..1, NormedSpace.exp ((1 - s) • (Y + Y)) * V * NormedSpace.exp (s • (Y + Y)) =
@@ -103,9 +103,9 @@ theorem integral_duhamel_eq_sAd {p q : ℕ} (Y V : Mat p q) :
         rfl
 
 /- English proof (translation)
-Use `letI : NormedRing (Mat p q) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Mat p q) := Matrix.linftyOpNormedAlgebra`. Establish `hD0` using `GlobalTheory.hasDerivAt_exp_add_smul_duhamel (Mat p q) (Y + Y) V`. Establish `hD : HasDerivAt (fun t : ℝ => NormedSpace.exp (Y + Y + t • V)) (NormedSpace.exp Y * sAd Y V * NormedSpace.exp Y) 0`. Rewrite using `[← integral_duhamel_eq_sAd Y V]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD0`. Set `e : Mat p q →ₗ[ℝ] ℂ` to `{ toFun := fun M => M a b map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `(LinearMap.toContinuousLinearMap e).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hD`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_two_add_smul (p q : ℕ) (Y V : Mat p q) (a b : Ix p q) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (Y + Y + t • V) a b)

@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.FarReg.BdProd
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, LinearMap.zero_apply, Pi.zero_apply, CompanionTheory.D.LK.Car.cre_apply]`. Apply the tactic sequence `by_cases h : k ∈ A <;> simp [h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cre_sq (k : Pos n) : (cre k * cre k : Module.End ℂ (Cn n V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -23,15 +23,15 @@ theorem cre_sq (k : Pos n) : (cre k * cre k : Module.End ℂ (Cn n V)) = 0 := by
   by_cases h : k ∈ A <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `eq_neg_of_add_eq_zero_left (CompanionTheory.D.LK.Car.cre_cre i j)`.
+A detailed English derivation is pending.
 -/
 theorem cre_anti (i j : Pos n) : (cre i * cre j : Module.End ℂ (Cn n V)) = -(cre j * cre i) :=
   eq_neg_of_add_eq_zero_left (CompanionTheory.D.LK.Car.cre_cre i j)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at h`. Consider the case `cons g t ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Distinguish the cases in `hk : k = g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Rewrite using `[← mul_assoc, cre_sq, zero_mul]`. Establish `h1` using `ih ((List.mem_cons.1 h).resolve_left hk)`. Rewrite using `[← mul_assoc, cre_anti, neg_mul, mul_assoc, h1, mul_zero, neg_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cre_mul_prod_of_mem {k : Pos n} {l : List (Pos n)} (h : k ∈ l) :
     (cre k * (l.map cre).prod : Module.End ℂ (Cn n V)) = 0 := by
@@ -46,7 +46,7 @@ theorem cre_mul_prod_of_mem {k : Pos n} {l : List (Pos n)} (h : k ∈ l) :
       rw [← mul_assoc, cre_anti, neg_mul, mul_assoc, h1, mul_zero, neg_zero]
 
 /- English proof (translation)
-Establish `h1` using `CompanionTheory.D.LK.Car.ann_cre (V := V) i g`. Rewrite using `[mul_assoc, eq_sub_of_add_eq h1, mul_sub, ← mul_assoc (cre k) (cre g), cre_anti k g, neg_mul, mul_assoc (cre g), sub_neg_eq_add, add_sub_cancel_right]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem term_comm (k i g : Pos n) :
     (cre k * ann i * cre g - cre g * (cre k * ann i) : Module.End ℂ (Cn n V)) = if i = g then cre k else 0 := by
@@ -56,9 +56,9 @@ theorem term_comm (k i g : Pos n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : (adL p q * cre g - cre g * adL p q : Module.End ℂ (Cn n V)) = ∑ i : Pos n, ∑ k : Pos n, adC p q i k • (cre k * ann i * cre g - cre g * (cre k * ann i))`. Simplify using `only [adL, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_sub, ← Finset.sum_sub_distrib]`. Rewrite using `[h]`. Simplify using `only [term_comm]`. Rewrite using `[Finset.sum_eq_single g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adL_cre (p q : Fin n) (g : Pos n) :
     (adL p q * cre g - cre g * adL p q : Module.End ℂ (Cn n V)) = ∑ k : Pos n, adC p q g k • cre k := by
@@ -75,7 +75,7 @@ theorem adL_cre (p q : Fin n) (g : Pos n) :
   · simp
 
 /- English proof (translation)
-Establish `h1 : (lift n (E p q) * cre g : Module.End ℂ (Cn n V)) = cre g * lift n (E p q)` using `LinearMap.ext fun x => CompanionTheory.D.LK.lift_cre (E p q) g x`. Rewrite using `[← adL_cre, lF, add_mul, mul_add, h1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lF_cre (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (g : Pos n) :
     (lF E p q * cre g : Module.End ℂ (Cn n V)) = cre g * lF E p q + ∑ k : Pos n, adC p q g k • cre k := by
@@ -85,11 +85,11 @@ theorem lF_cre (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (g : Pos
   abel
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons g t ih`. Establish `ht` using `ih fun pre f post e k hk => h (g :: pre) f post (by rw [e]; rfl) k hk`. Establish `hz : ((∑ k : Pos n, adC p q g k • cre k) * (t.map cre).prod : Module.End ℂ (Cn n V)) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : adC p q g k = 0`. Rewrite using `[hk, zero_smul, zero_mul]`. Rewrite using `[smul_mul_assoc, cre_mul_prod_of_mem (h [] g t rfl k hk), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, ← mul_assoc, lF_cre, add_mul, hz, add_zero, mul_assoc, ht, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lF_prod (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : List (Pos n))
     (h : ∀ (pre : List (Pos n)) (f : Pos n) (post : List (Pos n)), l = pre ++ f :: post → ∀ k : Pos n,
@@ -108,13 +108,13 @@ theorem lF_prod (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (l : Li
     rw [List.map_cons, List.prod_cons, ← mul_assoc, lF_cre, add_mul, hz, add_zero, mul_assoc, ht, mul_assoc]
 
 /- English proof (translation)
-Introduce `n V _ _ E hC l x`. Proceed by induction on `l with`. Consider the case `nil => intro _ _`. Simplify using the standard rewrite rules. Consider the case `cons f t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hcl hx`. Establish `ih'` using `ih (fun pre g post e a ha k hk => hcl (f :: pre) g post (by rw [e]; rfl) a (List.mem_cons_of_mem _ ha) k hk) (fun e he => hx e (List.mem_cons_of_mem _ he))`. Establish `hf : lF E f.1.1 f.1.2 (((t.map cre).prod : Module.End ℂ (Cn n V)) x) = 0`. Establish `h1` using `lF_prod E f.1.1 f.1.2 t (fun pre g post e k hk => hcl (f :: pre) g post (by rw [e]; rfl) f List.mem_cons_self k hk)`. Establish `h2` using `LinearMap.congr_fun h1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[h2, hx f List.mem_cons_self, map_zero]`. Establish `h3` using `LinearMap.congr_fun (hC f) (((t.map cre).prod : Module.End ℂ (Cn n V)) x)`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, hf, ih'] at h3`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, List.length_cons, pow_succ, map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_neg_of_add_eq_zero_left h3, mul_neg_one, neg_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bd_prod : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V),
     (∀ e : Pos n, (bd (allT n) E * cre e + cre e * bd (allT n) E : Module.End ℂ (Cn n V)) = lF E e.1.1 e.1.2) →

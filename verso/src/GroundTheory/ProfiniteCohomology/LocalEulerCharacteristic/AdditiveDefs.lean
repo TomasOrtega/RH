@@ -18,7 +18,7 @@ theorem mem_ker_lsmul_iff {A : Type*} [AddCommGroup A] (n : ℕ) (x : A) :
   simp
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simpa using (mem_ker_lsmul_iff n (x : A)).1 x.2)`.
+A detailed English derivation is pending.
 -/
 theorem TorsN.nsmul_eq_zero {A : Type*} [AddCommGroup A] {n : ℕ} (x : TorsN A n) :
     n • x = 0 :=
@@ -37,7 +37,7 @@ instance additiveDistribMulAction {Γ M : Type*} [Monoid Γ] [Monoid M] [MulDist
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem toMul_smul_additive {Γ M : Type*} [Monoid Γ] [Monoid M] [MulDistribMulAction Γ M] (γ : Γ)
     (a : Additive M) : (γ • a).toMul = γ • a.toMul :=
@@ -87,7 +87,7 @@ theorem intRepToZMod_apply (n : ℕ) {V : Type*} [AddCommGroup V] [Module (ZMod 
 variable (Γ) (A : Type*) [AddCommGroup A] [DistribMulAction Γ A] (n : ℕ)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨γ • x, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_lsmul_le_comap (γ : Γ) :
     LinearMap.range (LinearMap.lsmul ℤ A (n : ℤ)) ≤
@@ -96,7 +96,7 @@ theorem range_lsmul_le_comap (γ : Γ) :
   exact ⟨γ • x, by simp⟩
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [LinearMap.mem_ker, LinearMap.lsmul_apply, Submodule.mem_comap, ofDistribMulAction_apply_apply] at hx ⊢`. Rewrite using `[← smul_comm γ (n : ℤ) x, hx, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_lsmul_le_comap (γ : Γ) :
     LinearMap.ker (LinearMap.lsmul ℤ A (n : ℤ)) ≤
@@ -114,7 +114,7 @@ def torsNRep : Representation (ZMod n) Γ (TorsN A n) :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem modNRep_mk (γ : Γ) (x : A) :
     modNRep Γ A n γ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (γ • x) :=
@@ -157,7 +157,7 @@ noncomputable def g (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] : ℤ 
   else 0
 
 /- English proof (translation)
-Rewrite using `[g, dif_pos ⟨‹_›, ‹_›⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g_eq (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] [Finite (ModN A l)]
     [Finite (TorsN A l)] :
@@ -165,7 +165,7 @@ theorem g_eq (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] [Finite (ModN
   rw [g, dif_pos ⟨‹_›, ‹_›⟩]
 
 /- English proof (translation)
-Rewrite using `[g, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g_of_not_finite (A : Type u) [AddCommGroup A] [DistribMulAction Γ A]
     (h : ¬ (Finite (ModN A l) ∧ Finite (TorsN A l))) : d.g A = 0 := by

@@ -11,33 +11,29 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hFM hFF hSN hAS p _ D G L hm`. Take `⟨kp, σ, hk⟩` from `hFM p D G L hm`. Take `⟨A, hdet, hskew, hform, hcomm⟩` from `hFF p D G L kp σ hk`. Use `choose S lam hS hpsi hconj hAv using fun v => UpperTheory.exists_hermitian_diagonalization_at_infinitePlace_of_skewHermitian p G σ A hSN hdet hskew hcomm v`. Set `th : VQ D →+ Arch G` to `{ toFun := fun w v => S v *ᵥ fun i => v.embedding (kp w i) map_zero' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Conclude with `Matrix.mulVec_zero _`. Use the proof step `map_add' := fun x y => by`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (fun i => v.embedding (kp (x + y) i)) = (fun i => v.embedding (kp x i)) + (fun i => v.embedding (kp y i))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [this, Matrix.mulVec_add]`. Use `rfl }`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hth : ∀ w v, th w v = S v *ᵥ fun i => v.embedding (kp w i)` using `fun _ _ => rfl`. Establish `hact : ∀ (c : G.C) w v, th (L.rep c w) v = G.psi v c *ᵥ th w v`. Introduce `c w v`. Rewrite using `[hth, hth, Matrix.mulVec_mulVec, hpsi, ← Matrix.mulVec_mulVec]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hk c w]`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Establish `hform' : ∀ u w, ((D.EF.baseChange ℚ u w : ℚ) : ℝ) = ∑ v, 2 * (lam v * hv (G.gram v) (th u v) (th w v)).re`. Introduce `u w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform u w]`. Conclude with `UpperTheory.trace_conj_dotProduct_eq_sum_infinitePlaces G.F G.n hAS A S G.gram lam hS hAv (kp u) (kp w)`. Establish `hspan : Submodule.span ℝ (Set.range th) = ⊤`. Rewrite using `[← UpperTheory.span_real_matrix_mulVec_infinitePlace_embedding_eq_top G.F G.n hAS S hS]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨kp w, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨kp.symm x, by funext v; simp [hth]⟩`. Establish `hpos` using `UpperTheory.re_mul_signature_I_pos_of_hermitian_trace_formula p D G L th lam hact hform' hspan hconj`. Take `⟨hd1, hd2⟩` from `UpperTheory.finrank_archimedean_eq_two_mul_dim p D G L hm hAS`. Establish `hs2 : ∀ v, sgnV L v * sgnV L v = 1`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `sgnV`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hlamim : ∀ v, lam v = ((lam v * sgnV L v * Complex.I).re : ℂ) * (-(sgnV L v) * Complex.I)`. Introduce `v`. Establish `hre : (lam v).re = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrArg Complex.re (hconj v)` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hreal : (lam v * sgnV L v * Complex.I).im = 0`. Unfold `sgnV`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [hre]`. Establish `hc : ((lam v * sgnV L v * Complex.I).re : ℂ) = lam v * sgnV L v * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [hreal]`. Rewrite using `[hc]`. Use `hs2 v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Take the linear combination `(lam v * Complex.I * Complex.I) * this + lam v * hI`. Conclude with `⟨{ th := th r := fun v => 2 * (lam v * sgnV L v * Complex.I).re r_pos := fun v => by have := hpos v; linarith act := hact form := by`. Introduce `u w`. Rewrite using `[hform' u w]`.
-
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `show 2 * (lam v * hv (G.gram v) (th u v) (th w v)).re = 2 * (lam v * sgnV L v * Complex.I).re * (-(sgnV L v) * Complex.I * hv (G.gram v) (th u v) (th w v)).re`. Use `conv_lhs => rw [hlamim v, mul_assoc ((lam v * sgnV L v * Complex.I).re : ℂ), Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `span := hspan`.
-
-Use `dim := hd1`. Use `dimg := hd2 }⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.archEx_of :
     UpperTheory.Gal.W2.FMat → UpperTheory.Gal.W2.FForm → UpperTheory.Gal.W2.SN → UpperTheory.Gal.W2.ArchSpan → UpperTheory.Gal.W2.ArchEx := by

@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `R _ _ n lam g`. Establish `h` using `congrArg (aeval g) (GroundTheory.Heights₂.Heights.RestTerms.Schur.det_pow_add_staircase_eq lam)`. Rewrite `h` using `[AlgHom.map_det, map_mul]`. Establish `hM : ((Matrix.of fun i j => (X j : MvPolynomial (Fin n) ℚ) ^ (lam i + (n - 1 - (i : ℕ)))).map (aeval g)) = Matrix.of fun i j => g j ^ (lam i + (n - 1 - (i : ℕ)))`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using `[AlgHom.mapMatrix_apply, GroundTheory.Heights₂.Heights.RestTerms.vandermondeOf, map_prod, hM] at h`. Simplify `h.symm` using `[sch, vdm, altn, shift]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.Gal.Schur.tie :
     Comparison₂ := by

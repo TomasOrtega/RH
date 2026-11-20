@@ -13,7 +13,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.UpperTheory.One.M.cusp_read_rec_t | exact _root_.UpperTheory.One.M.cusp_read_rec_t | (intros; apply _root_.UpperTheory.One.M.cusp_read_rec_t <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cuspReadG_recT_of_cgTrue : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), _root_.GlobalTheory.HeightCounting.CGTrueT hL D T → _root_.GlobalTheory.DefiniteBC.CuspReadG (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
   first | exact @_root_.UpperTheory.One.M.cusp_read_rec_t | exact _root_.UpperTheory.One.M.cusp_read_rec_t | (intros; apply _root_.UpperTheory.One.M.cusp_read_rec_t <;> assumption)

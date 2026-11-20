@@ -5,9 +5,9 @@ open NumberField TensorProduct
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `(FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)).prop`. Use `⟨c, nonZeroDivisors.ne_zero hc, fun η hη => ?_⟩` and prove the remaining obligations. Establish `hm : η ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Rewrite using `[FractionalIdeal.mem_dual (by simp)]`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨z, hz⟩` from `hη b`. Conclude with `⟨z, hz.symm⟩`. Take `⟨b, hb⟩` from `h η hm`. Conclude with `⟨b, by rw [Algebra.smul_def] at hb; exact hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem xi_den (E : Type) [Field E] [NumberField E] : ∃ c : 𝓞 E, c ≠ 0 ∧ ∀ η : E,
     (∀ a : 𝓞 E, ∃ z : ℤ, Algebra.trace ℚ E (η * a) = z) → ∃ b : 𝓞 E, (b : E) = c * η := by
@@ -23,9 +23,9 @@ theorem xi_den (E : Type) [Field E] [NumberField E] : ∃ c : 𝓞 E, c ≠ 0 �
   exact ⟨b, by rw [Algebra.smul_def] at hb; exact hb⟩
 
 /- English proof (translation)
-Set `f : E →ₗ[ℚ] ℚ` to `(integralBasis E).constr ℚ fun i => (lam (RingOfIntegers.basis E i) : ℚ)`. Use `⟨((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).symm f, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.traceForm_apply, LinearMap.BilinForm.apply_toDual_symm_apply]`. Establish `h : (f.restrictScalars ℤ).comp (IsScalarTower.toAlgHom ℤ (𝓞 E) E).toLinearMap = (Algebra.linearMap ℤ ℚ).comp lam`. Use `(RingOfIntegers.basis E).ext fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f (algebraMap (𝓞 E) E (RingOfIntegers.basis E i)) = _`. Rewrite using `[← integralBasis_apply]`. Conclude with `(integralBasis E).constr_basis ℚ _ i`. Conclude with `LinearMap.congr_fun h a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_rep (E : Type) [Field E] [NumberField E] (lam : 𝓞 E →ₗ[ℤ] ℤ) :
     ∃ η : E, ∀ a : 𝓞 E, Algebra.trace ℚ E (η * a) = lam a := by
@@ -41,39 +41,37 @@ theorem xi_rep (E : Type) [Field E] [NumberField E] (lam : 𝓞 E →ₗ[ℤ] �
   exact LinearMap.congr_fun h a
 
 /- English proof (translation)
-Introduce `E _ _ _ bar hbar hun p hp`. Take `⟨c0, hc0, hden⟩` from `xi_den E`. Establish `hbb` using `bar_bar bar hbar`. Establish `htr : ∀ x : E, Algebra.trace ℚ E (IsCMField.complexConj E x) = Algebra.trace ℚ E x` using `fun x => Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) x`. Use `set c : 𝓞 E := c0 * bar c0 with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : c ≠ 0` using `mul_ne_zero hc0 (by simpa using hc0)`. Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc'`. Establish `hcb : IsCMField.complexConj E (c : E) = c`. Rewrite using `[← hbar, hc, map_mul, hbb, mul_comm]`. Set `I : Ideal (𝓞 E)` to `{ carrier := {y | ∀ a : 𝓞 E, ∃ z : ℤ, Algebra.trace ℚ E ((y : E) / c * a) = z} add_mem' := fun {x y} hx hy a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hx a`. Take `⟨w, hw⟩` from `hy a`. Conclude with `⟨z + w, by push_cast; rw [add_div, add_mul, map_add, hz, hw]⟩`. Use the proof step `zero_mem' := fun a => ⟨0, by simp⟩`. Use the proof step `smul_mem' := fun r y hy a => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hy (r * a)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Use `congr 1`. Rewrite using `[smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Use `ring }`. Establish `hmem : ∀ y : 𝓞 E, y ∈ I ↔ ∀ a : 𝓞 E, ∃ z : ℤ, Algebra.trace ℚ E ((y : E) / c * a) = z` using `fun _ => Iff.rfl`. Establish `hI0 : I ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: c ∈ I` using `(hmem c).2 fun a => ⟨Algebra.trace ℤ (𝓞 E) a, by`. Rewrite using `[div_self hcE, one_mul, Algebra.coe_trace_int]⟩`. Rewrite `this` using `[h]`. Conclude with `hc' this`. Establish `hI : ∀ y ∈ I, bar y ∈ I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `(hmem _).2 fun a => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hmem y).1 hy (bar a)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← htr ((y : E) / c * _), map_mul (IsCMField.complexConj E), map_div₀, hcb, ← hbar, ← hbar, hbb]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp0 : (p : 𝓞 E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨x, hxI, hx⟩` from `anti_ded bar hbb I hI0 hI (tw_g_diff E bar hbar hun) (p : 𝓞 E) hp0`. Establish `hxI' : x - bar x ∈ I` using `sub_mem hxI (hI x hxI)`. Take `⟨J, hJ⟩ : I ∣ Ideal.span {x - bar x}` from `Ideal.dvd_span_singleton.2 hxI'`. Establish `hm : ∃ m : ℤ, ¬ (p : ℤ) ∣ m ∧ (m : 𝓞 E) ∈ J`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `: (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`. Take `⟨Q, hJQ, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := 𝓞 E) (Ideal.span {(p : ℤ)}) J (by`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Assume the negation of the conclusion as `h`. Conclude with `hne m h (by simpa using hm))`. Establish `hpQ : (p : 𝓞 E) ∈ Q`. Establish `: (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 E))` using `hQp ▸ Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hp0 hpQ`. Use `hx Q (hQ.isMaximal hQ0) hpQ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: x - bar x ∈ I * J` using `hJ ▸ Ideal.mem_span_singleton_self _`. Rewrite using `[mul_comm Q]`. Conclude with `Ideal.mul_mono_right hJQ this`. Take `⟨m, hmp, hmJ⟩` from `hm`. Use `⟨((x - bar x : 𝓞 E) : E) / c, ?_, (hmem _).1 hxI', fun lam => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, hcb, ← hbar, map_sub, hbb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨η, hη⟩` from `xi_rep E lam`. Take `⟨b, hb⟩` from `hden η fun a => ⟨lam a, hη a⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ((bar c0 * b : 𝓞 E) : E) / c = η`. Rewrite using `[div_eq_iff hcE, hc]`. Establish `e1 : ((bar c0 * b : 𝓞 E) : E) = (bar c0 : 𝓞 E) * (b : E)` using `rfl`. Establish `e2 : ((c0 * bar c0 : 𝓞 E) : E) = (c0 : E) * (bar c0 : 𝓞 E)` using `rfl`. Rewrite using `[e1, e2, hb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hyI : bar c0 * b ∈ I` using `(hmem _).2 fun a => ⟨lam a, by rw [hy, hη]⟩`. Establish `h2 : bar c0 * b * m ∈ Ideal.span {x - bar x}` using `hJ ▸ Ideal.mul_mem_mul hyI hmJ`. Take `⟨β, hβ⟩` from `Ideal.mem_span_singleton.1 h2`. Use `⟨m, β, hmp, fun a => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : ((x - bar x : 𝓞 E) : E) / c * β * a = (m : ℚ) • (η * a)`. Establish `h4 : ((bar c0 * b : 𝓞 E) : E) * m = ((x - bar x : 𝓞 E) : E) * β`. Use `congrArg (algebraMap (𝓞 E) E) hβ` as an intermediate fact. Rewrite `this` using `[map_mul _ (bar c0 * b), map_intCast, map_mul _ _ β]`. Conclude with `this`.
-
-Rewrite using `[← hy, Int.cast_smul_eq_zsmul, zsmul_eq_mul, div_mul_eq_mul_div, ← h4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, map_smul, hη]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tw_g_xi : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (bar : 𝓞 E ≃+* 𝓞 E), (∀ a : 𝓞 E, ((bar a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) → Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) → ∀ p : ℕ, p.Prime → ∃ ξ : E, IsCMField.complexConj E ξ = -ξ ∧ (∀ a : 𝓞 E, ∃ z : ℤ, Algebra.trace ℚ E (ξ * a) = z) ∧ ∀ lam : 𝓞 E →ₗ[ℤ] ℤ, ∃ (m : ℤ) (b : 𝓞 E), ¬ (p : ℤ) ∣ m ∧ ∀ a : 𝓞 E, ((m * lam a : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * b * a) := by
   intro E _ _ _ bar hbar hun p hp

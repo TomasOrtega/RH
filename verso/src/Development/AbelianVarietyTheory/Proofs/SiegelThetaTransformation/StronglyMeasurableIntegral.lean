@@ -24,7 +24,7 @@ namespace GlobalTheory.Ker.KernelCompare
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `GlobalTheory.ThetaSpace.theta_space_laws D S T C`. Conclude with `finsum_induction C.IsTh h0 (fun x y hx hy => (h1 x y hx hy).1) fun c => (h2 _ ((h2 f hf).2.1 _)).1 _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isTh_uVec (C : Ctx S T) (Lv : SW.Level C.X) (hn : T.rank ≤ S.rank) {f : WO S T → ℂ} (hf : C.IsTh f) :
     C.IsTh (C.uVec Lv hn f) := by

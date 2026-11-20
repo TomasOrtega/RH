@@ -22,15 +22,15 @@ open GlobalTheory.Unf GlobalTheory.Unf.FB
 namespace GlobalTheory.Unf.FB
 
 /- English proof (translation)
-Introduce `D hD ψ σ J B s vL Y G Φ hY hG hΦ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨hc, hi, he⟩` from `GlobalTheory.T.pairedFlatMap_family_continuous_invariant_integral D hD ψ σ J B s vL Y Φ hY hΦ`. Establish `h1` using `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D J.W₀ J.cpt J.v0 (GA D B.V) (fun h₀ h => tFlat s vL (Y h₀) (s.om (J.d.emb0 h₀, h) Φ)) hc hi).2.1`. Establish `h2 : unfF s vL Y G Φ = fun h => G h * ∫ h₀ in J.v0.𝓕, tFlat s vL (Y h₀) (s.om (J.d.emb0 h₀, h) Φ) ∂J.v0.μ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[unfF, he h]`. Rewrite using `[h2]`. Conclude with `hG.2.1.mul h1`. Introduce `γ hγ h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hq, hb⟩` from `Subgroup.mem_inf.1 hγ`. Take `⟨-, hone, -, -, hdec, -⟩` from `GlobalTheory.MixPer.charLaws D ψ s.weil.std.1 B.V B.V₀ B.A B.L σ B.d B.o B.ζ 1`. Take `⟨n, hn, h₁, rfl⟩` from `(hdec γ).1 hb`. Take `⟨hnq, hhq⟩` from `((GlobalTheory.T.besselGroup_semidirectProduct_rational D σ B).2.2.2.2 n hn h₁).1 hq`. Establish `hth : IsThetaFunO ψ J.W₀ B.V₀ (flatFB s (s.om (1, h) Φ))` using `(GlobalTheory.T.flatThetaMaps_preserve_thetaFunctions D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).2 σ J B s _ (s.weil.om_pres _ _ hΦ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv` using `(GlobalTheory.T.fourierJacobiHandOff_automorphic D ψ σ J B s vL Y _ hY hth).1 h₁ hhq 1`. Rewrite `hinv` using `[mul_one]`. Establish `e` using `GlobalTheory.T.unfoldedFunction_eq_besselPeriodIntegrand D hD ψ σ J B s vL Y G Φ hΦ h h₁ ⟨n, hn⟩`. Use `e.trans ?_` and prove the remaining obligations. Simplify using `only [besFun, rTrans, unfF]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, hone _ n hnq, hG.1 _ hq h, star_one, mul_one, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem unfF_continuous_invariant : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B), ∀ (vL : VolM D B.L.rank J.W₀.rank) (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (G : GA D B.V → ℂ) (Φ : WO J.W B.V → ℂ), IsQuasiFam ψ J.W₀ B.L Y → RapidDec B.V G → IsThetaFunO ψ J.W B.V Φ → Continuous (unfF s vL Y G Φ) ∧ ∀ γ ∈ (GQ B.V ⊓ besGrp B.d B.o : Subgroup (GA D B.V)), ∀ h, unfF s vL Y G Φ (γ * h) = unfF s vL Y G Φ h := by
   intro D hD ψ σ J B s vL Y G Φ hY hG hΦ

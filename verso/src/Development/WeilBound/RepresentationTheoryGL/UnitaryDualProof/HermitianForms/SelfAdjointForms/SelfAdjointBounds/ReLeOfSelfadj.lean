@@ -11,7 +11,7 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.ColumnElementGluing P
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h1` using `hB.2 (v - u)`. Establish `h2` using `hB.1 u v`. Rewrite `h2` using `[h]`. Simplify using `only [map_sub, LinearMap.sub_apply, Complex.sub_re] at h1`. Rewrite `h1` using `[h2, h, Complex.conj_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

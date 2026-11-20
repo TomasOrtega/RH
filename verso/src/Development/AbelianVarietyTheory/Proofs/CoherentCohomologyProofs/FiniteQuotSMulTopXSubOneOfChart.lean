@@ -15,17 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 open Pointwise in
 
 /- English proof (translation)
-Introduce `ι _ _ R _ G _ _ _ _ 𝒢 _ _ i B _ _ π P _ _ ε ⟨hπs, hπX, hεs, hker⟩`. Use `letI : Algebra (MvPolynomial ι R) B := (π : MvPolynomial ι R →+* B).toAlgebra`. Use `letI : Module (MvPolynomial ι R) P := Module.compHom P (π : MvPolynomial ι R →+* B)`. Use `haveI : IsScalarTower (MvPolynomial ι R) B P := ⟨fun a b p => by`. Express the relevant statement in the definitionally equal form `(π a * b) • p = π a • b • p`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `mul_smul _ _ _⟩`. Establish `hkerε : ∀ y, ε y = 0 ↔ ∃ w : G, y = (MvPolynomial.X i - 1 : MvPolynomial ι R) • w` using `_root_.GlobalTheory.dehomogenising_eq_zero_iff ι R G 𝒢 i B (π : MvPolynomial ι R →+* B) P ε hπX hker`. Set `ε' : G →ₗ[MvPolynomial ι R] P` to `{ toFun := ε map_add' := ε.map_add map_smul' := fun a g => ε.map_smulₛₗ a g }`. Establish `hle : ((MvPolynomial.X i : MvPolynomial ι R) - 1) • (⊤ : Submodule (MvPolynomial ι R) G) ≤ LinearMap.ker ε'`. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Conclude with `(hkerε _).2 ⟨y, rfl⟩`. Set `φ` to `Submodule.liftQ _ ε' hle`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Submodule.ker_liftQ_eq_bot` to reduce the goal to its premises. Introduce `x hx`. Take `⟨w, rfl⟩` from `(hkerε x).1 hx`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨w, trivial, rfl⟩`. Establish `hsurj : Function.Surjective φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Introduce `p`. Take `⟨g, rfl⟩` from `hεs p`. Conclude with `⟨Submodule.Quotient.mk g, rfl⟩`. Set `e` to `LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Use `haveI : Module.Finite (MvPolynomial ι R) B := Module.Finite.of_surjective (Algebra.linearMap (MvPolynomial ι R) B) hπs`.
-
-Use `⟨fun hP => ?_, fun hB hPfp => ?_⟩` and prove the remaining obligations. Use `haveI : Module.Finite (MvPolynomial ι R) P := Module.Finite.trans B P`. Conclude with `Module.Finite.equiv e.symm`. Use `haveI : IsScalarTower R (MvPolynomial ι R) B := IsScalarTower.of_algebraMap_eq (fun r => (π.commutes r).symm) haveI : Algebra.FinitePresentation (MvPolynomial ι R) B := Algebra.FinitePresentation.of_restrict_scalars_finitePresentation R (MvPolynomial ι R) B haveI : Module.FiniteP …`. Conclude with `Module.finitePresentation_of_surjective e.symm.toLinearMap e.symm.surjective (by rw [LinearEquiv.ker]; exact Submodule.fg_bot)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.finite_quotSMulTop_X_sub_one_of_chart : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     [CommRing R] (G : Type) [AddCommGroup G] [Module R G] [Module (MvPolynomial ι R) G]

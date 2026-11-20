@@ -14,21 +14,19 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hloc, hcof, hT⟩` from `hP`. Set `Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin d.n → Fin d.m → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E) → ℂ` to `fun v Y => gf v (crdV d.bs v (toMxV v Y * Av u v))`. Use `⟨fun X => ∏ᶠ v, Φv v (HeckeCharacterZeroLocus.SiegelWeilU.projV v X), Φv, ⟨fun v => isSB_comp d.bs u v (gf v) (hloc v), ?_, fun X => rfl⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hcof, int_iff (m := d.m) d.bs u] with v hv hint`. Use function extensionality and compare the values at `Y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show gf v _ = _`. Rewrite using `[hv]`. Distinguish the cases in `h : Y ∈ HeckeCharacterZeroLocus.SiegelWeilU.latV d.bs v`. Rewrite using `[Set.indicator_of_mem h]`. Use `(Set.indicator_of_mem ?_ _).trans rfl` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hint Y).2 h`. Rewrite using `[Set.indicator_of_notMem h]`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce `h'`. Conclude with `h ((hint Y).1 h')`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Introduce `X dsimp only`. Rewrite using `[hT]`. Simplify using `only`. Use `congr 1`. Unfold `Gen.phiInf`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[PureB.crd_eq R u η θ th fr frc g gc w X, hl w, mul_one]`. Both sides reduce to the same expression. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hZ : (toMx X * ((u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ).map (mapV v) = toMxV v (HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin X)) * Av u v`. Rewrite using `[map_mul_alg]`. Use `congr 1`. Use extensionality with `a j`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply, toMx, toMxV, Matrix.of_apply, HeckeCharacterZeroLocus.SiegelWeilU.projV, HeckeCharacterZeroLocus.SiegelWeilU.projFin, mapV_eq]`. Establish `h1 : HeckeCharacterZeroLocus.SiegelWeilU.evalV F v (d.crd (toMx X * ((u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ) k).2 = phiV v (d.crd (toMx X * ((u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ) k)` using `rfl`. Rewrite using `[h1, SD.crd, ← basis_repr_map']`. Simplify using `only [crdV]`. Rewrite using `[← hZ]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pure_prod_of' {d : SD σ} (R : RD d) (Φ : d.Fn) (P : InfinitePlace F → PX d.m d.n)
     (gf : ∀ v : HeightOneSpectrum (𝓞 F), (Fin d.m × Fin d.n × Fin 2 → v.adicCompletion F) → ℂ) (hP : IsPureBy R Φ P gf)

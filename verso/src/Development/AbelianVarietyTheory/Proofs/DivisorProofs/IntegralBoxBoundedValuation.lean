@@ -13,13 +13,11 @@ open GlobalTheory.SplitFlip GlobalTheory.RankCoinv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨l₁, -, hl₁⟩` from `Finset.exists_max_image Finset.univ (fun j => valuation k (s j)) ⟨l, Finset.mem_univ _⟩`. Establish `hM : t < valuation k (s l₁)` using `hlt.trans_le (hl₁ l (Finset.mem_univ _))`. Establish `hM0 : 0 < valuation k (s l₁)` using `lt_of_le_of_lt zero_le' hM`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : valuation k ((s ᵥ* E) l₁) ≤ valuation k (s l₁) * u`. Simplify using `only [Matrix.vecMul, dotProduct]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hl₁ j (Finset.mem_univ _)) (hE j l₁)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `Valuation.map_sub_le (valuation k) ((hw l₁).trans (le_max_left t (valuation k (s l₁) * u))) (h1.trans (le_max_right _ _))`. Rewrite `h3` using `[Pi.add_apply, add_sub_cancel_right]`. Establish `h4 : valuation k (s l₁) * u < valuation k (s l₁)` using `mul_lt_of_lt_one_right hM0 hu`. Break down `le_max_iff.1 h3 with h | h` into its components or cases. Conclude with `absurd h (not_le.2 hM)`.
-
-Conclude with `absurd h (not_le.2 h4)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem val_le_of_add_vecMul {r : ℕ} {u t : ValueGroupWithZero k} (hu : u < 1) (s : Fin r → k)
     (E : Matrix (Fin r) (Fin r) k) (hE : ∀ l j, valuation k (E l j) ≤ u)
@@ -43,13 +41,13 @@ theorem val_le_of_add_vecMul {r : ℕ} {u t : ValueGroupWithZero k} (hu : u < 1)
   · exact absurd h (not_le.2 h4)
 
 /- English proof (translation)
-Simplify using `[Units.val_pow_eq_pow_val, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_pow (ϖ : kˣ) (n : ℕ) : valuation k ((ϖ ^ n : kˣ) : k) = valuation k (ϖ : k) ^ n := by
   simp [Units.val_pow_eq_pow_val, map_pow]
 
 /- English proof (translation)
-Rewrite using `[pow_one, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton, ← (Valuation.integer.integers (valuation k)).le_iff_dvd]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_max_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (x : 𝒪[k]) :
     x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ 1 ↔ valuation k (x : k) ≤ valuation k (ϖ : k) := by
@@ -61,9 +59,9 @@ variable {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 omit [Fintype A] [Fintype D] [DecidableEq D] in
 
 /- English proof (translation)
-Simplify using `only [box, Set.mem_setOf_eq, val_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i hi j => by simpa [Function.update_of_ne hi] using h i j, fun j => by simpa [hC] using h i₀ j⟩`. Introduce and unpack `⟨h1, h2⟩ i j`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify `h2 j` using `[hC]`. Simplify `h1 i hi j` using `[Function.update_of_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_box_update {ϖ : kˣ} {C X : Matrix A D k} {i₀ : A} {m : ℕ} (hC : ∀ j, C i₀ j = 0) :
     X ∈ box ϖ C (Function.update (fun _ => m) i₀ (m - 1)) ↔
@@ -81,9 +79,9 @@ theorem mem_box_update {ϖ : kˣ} {C X : Matrix A D k} {i₀ : A} {m : ℕ} (hC 
 omit [Fintype A] [Fintype D] [DecidableEq D] in
 
 /- English proof (translation)
-Simplify using `only [box, Set.mem_setOf_eq, val_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i hi j => by simpa [updateRow_ne hi] using h i j, fun j => by simpa using h i₀ j⟩`. Introduce and unpack `⟨h1, h2⟩ i j`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `using h2 j`. Simplify `h1 i hi j` using `[updateRow_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_box_updateRow {ϖ : kˣ} {C X : Matrix A D k} {i₀ : A} {m : ℕ} (R : D → k) :
     X ∈ box ϖ (C.updateRow i₀ R) (fun _ => m) ↔
@@ -109,7 +107,7 @@ def shiftRow (ϖ : kˣ) (m : ℕ) {r : ℕ} (b : Fin r → Res k 1) : Fin r → 
   fun l => (ϖ : k) ^ (m - 1) * ((Quotient.out (b l) : 𝒪[k]) : k)
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, m = c + 1 + n` from `⟨m - (c + 1), by omega⟩`. Rewrite using `[pow_add, pow_succ, mul_assoc, inv_mul_cancel_left₀ (pow_ne_zero _ hu0)]`. Conclude with `mul_le_of_le_one_right' (pow_le_one' hu.le n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_pow_mul_pow_le {u : ValueGroupWithZero k} (hu : u < 1) (hu0 : u ≠ 0) {c m : ℕ} (hcm : c + 1 ≤ m) :
     (u ^ c)⁻¹ * u ^ m ≤ u := by
@@ -120,7 +118,7 @@ theorem inv_pow_mul_pow_le {u : ValueGroupWithZero k} (hu : u < 1) (hu0 : u ≠ 
 omit [DecidableEq D] in
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, dotProduct, shiftRow]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_shiftRow_le (ϖ : kˣ) {r m : ℕ} (Y : Matrix (Fin r) D k) (hY : ∀ l j, Y l j ∈ 𝒪[k])
     (b : Fin r → Res k 1) (j : D) :
@@ -136,17 +134,17 @@ theorem val_shiftRow_le (ϖ : kˣ) {r m : ℕ} (Y : Matrix (Fin r) D k) (hY : �
 omit [DecidableEq D] in
 
 /- English proof (translation)
-Establish `hu0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Set `δ : Fin r → k` to `fun l => (ϖ : k) ^ (m - 1) * (((Quotient.out (b l) : 𝒪[k]) : k) - ((Quotient.out (b' l) : 𝒪[k]) : k))`. Establish `hδ : δ ᵥ* Y = shiftRow ϖ m b ᵥ* Y - shiftRow ϖ m b' ᵥ* Y`. Rewrite using `[← Matrix.sub_vecMul]`. Use `congr 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `l`. Simplify using `[δ, shiftRow, mul_sub]`. Establish `h1 : ∀ j, valuation k ((δ ᵥ* Y) j) ≤ valuation k (ϖ : k) ^ m` using `fun j => by`. Use `Valuation.map_sub_le (valuation k) (hb' j) (hb j)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left, ← Pi.sub_apply, ← hδ]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : δ = (δ ᵥ* Y) ᵥ* Q` using `by rw [Matrix.vecMul_vecMul, hYQ, Matrix.vecMul_one]`. Establish `h3 : ∀ l, valuation k (δ l) ≤ valuation k (ϖ : k) ^ m` using `fun l => by`. Rewrite using `[h2]`. Use `show valuation k (∑ j, (δ ᵥ* Y) j * Q j l) ≤ _`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (h1 j) ((Valuation.mem_integer_iff _ _).1 (hQ j l))).trans (by rw [mul_one])`. Use function extensionality and compare the values at `l`. Establish `h4 : valuation k (((Quotient.out (b l) : 𝒪[k]) : k) - ((Quotient.out (b' l) : 𝒪[k]) : k)) ≤ valuation k (ϖ : k)`. Establish `h5` using `h3 l`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : valuation k (ϖ : k) ^ m = valuation k (ϖ : k) ^ (m - 1) * valuation k (ϖ : k)`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [δ, map_mul, map_pow] at h5`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h5` using `[hm']`. Conclude with `(mul_le_mul_iff_right₀ (zero_lt_iff.2 (pow_ne_zero _ hu0))).1 h5`. Rewrite using `[← Ideal.Quotient.mk_out (b l), ← Ideal.Quotient.mk_out (b' l)]`. Conclude with `Ideal.Quotient.eq.2 ((mem_max_iff hϖ _).2 h4)`.
+A detailed English derivation is pending.
 -/
 theorem shiftRow_unique {ϖ : kˣ} (hϖ : IsUnif ϖ) {r m : ℕ} (hm : 1 ≤ m) (Y : Matrix (Fin r) D k)
     (Q : Matrix D (Fin r) k) (hQ : ∀ j l, Q j l ∈ 𝒪[k]) (hYQ : Y * Q = 1) (x : D → k)
@@ -184,19 +182,17 @@ theorem shiftRow_unique {ϖ : kˣ} (hϖ : IsUnif ϖ) {r m : ℕ} (hm : 1 ≤ m) 
 omit [DecidableEq D] in
 
 /- English proof (translation)
-Establish `hu : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hu0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Establish `hp0 : (ϖ : k) ^ (m - 1) ≠ 0` using `pow_ne_zero _ ϖ.ne_zero`. Establish `hvp : 0 < valuation k (ϖ : k) ^ (m - 1)` using `zero_lt_iff.2 (pow_ne_zero _ hu0)`. Establish `hm' : valuation k (ϖ : k) ^ m = valuation k (ϖ : k) ^ (m - 1) * valuation k (ϖ : k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `htt : ∀ l, ((ϖ : k) ^ (m - 1))⁻¹ * s l ∈ 𝒪[k]` using `fun l => by`. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_inv₀, map_pow, inv_mul_le_iff₀ hvp, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs l`. Set `b₀ : Fin r → Res k 1` to `fun l => Ideal.Quotient.mk _ ⟨_, htt l⟩`. Establish `hb : ∀ l, valuation k (((Quotient.out (b₀ l) : 𝒪[k]) : k) - ((ϖ : k) ^ (m - 1))⁻¹ * s l) ≤ valuation k (ϖ : k)` using `fun l => (mem_max_iff hϖ _).1 (Ideal.Quotient.eq.1 (Ideal.Quotient.mk_out (b₀ l)))`. Use `⟨b₀, fun j => ?_⟩` and prove the remaining obligations. Establish `e : (s ᵥ* (Y + Z)) j - (shiftRow ϖ m b₀ ᵥ* Y) j = ((s - shiftRow ϖ m b₀) ᵥ* Y) j + (s ᵥ* Z) j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.vecMul_add, Matrix.sub_vecMul]`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_add_le _ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show valuation k (∑ l, (s - shiftRow ϖ m b₀) l * Y l j) ≤ _`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Establish `e2 : (s - shiftRow ϖ m b₀) l = -((ϖ : k) ^ (m - 1) * (((Quotient.out (b₀ l) : 𝒪[k]) : k) - ((ϖ : k) ^ (m - 1))⁻¹ * s l))`. Simplify using `only [Pi.sub_apply, shiftRow]`. Rewrite using `[mul_sub, mul_inv_cancel_left₀ hp0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, map_mul, Valuation.map_neg, map_mul, map_pow, hm']`. Conclude with `(mul_le_mul' (mul_le_mul' le_rfl (hb l)) ((Valuation.mem_integer_iff _ _).1 (hY l j))).trans (by rw [mul_one])`. Use `show valuation k (∑ l, s l * Z l j) ≤ _`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hm']`. Conclude with `mul_le_mul' (hs l) ((hZ l j).trans (inv_pow_mul_pow_le hu hu0 hcm))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftRow_exists {ϖ : kˣ} (hϖ : IsUnif ϖ) {r c m : ℕ} (hcm : c + 1 ≤ m) (Y Z : Matrix (Fin r) D k)
     (hY : ∀ l j, Y l j ∈ 𝒪[k])
@@ -240,35 +236,33 @@ namespace GlobalTheory.CountTranslates
 open GlobalTheory.SplitFlip GlobalTheory.RankCoinv
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ϖ hϖ i₀ r c m C H Q hH0 hHv hcm hY hQ hYQ hC0`. Establish `hu : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hu0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Establish `hm' : valuation k (ϖ : k) ^ m = valuation k (ϖ : k) ^ (m - 1) * valuation k (ϖ : k)`. Rewrite using `[← pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hmm : valuation k (ϖ : k) ^ m ≤ valuation k (ϖ : k) ^ (m - 1)`. Rewrite using `[hm']`. Conclude with `mul_le_of_le_one_right' hu.le`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHv' : ∀ l i, valuation k (H l i) ≤ (valuation k (ϖ : k) ^ c)⁻¹` using `fun l i => by`. Use `hHv l i` as an intermediate fact. Rewrite `this` using `[Units.val_inv_eq_inv_val, map_inv₀, val_pow]`. Then use the resulting hypothesis. Rewrite using `[mem_lowRank]`. Use `⟨sub_mem (boxFn_mem_SB _ _ _) (Submodule.sum_mem _ fun b _ => boxFn_mem_SB _ _ _), fun X hX => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hXr : X.rank ≤ r` using `Nat.lt_succ_iff.1 hX`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, boxFn]`. Rewrite using `[sub_eq_zero]`. Express the relevant statement in the definitionally equal form `_ = ∑ b : Fin r → Res k 1, (box ϖ (C.updateRow i₀ (shiftRow ϖ m b ᵥ* (H * C))) fun _ => m).indicator 1 X`. Distinguish the cases in `hrows : ∀ i, i ≠ i₀ → ∀ j, valuation k (X i j - C i j) ≤ valuation k (ϖ : k) ^ m`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi0 : ∀ j, valuation k (X i₀ j) ≤ valuation k (ϖ : k) ^ (m - 1)`. Set `E : Matrix (Fin r) (Fin r) k` to `H * (X - C) * Q`. Establish `hHXC : ∀ l j, valuation k ((H * (X - C)) l j) ≤ (valuation k (ϖ : k) ^ c)⁻¹ * valuation k (ϖ : k) ^ m`. Introduce `l j`. Rewrite using `[Matrix.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `[hH0]`. Rewrite using `[map_mul]; exact mul_le_mul' (hHv' l i) (by simpa [Matrix.sub_apply] using hrows i hi j)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : ∀ l j, valuation k (E l j) ≤ valuation k (ϖ : k)`. Introduce `l j`. Use `(?_ : _ ≤ (valuation k (ϖ : k) ^ c)⁻¹ * valuation k (ϖ : k) ^ m).trans (inv_pow_mul_pow_le hu hu0 hcm)` and prove the remaining obligations. Use `show valuation k (∑ a, (H * (X - C)) l a * Q a j) ≤ _`. Use `Valuation.map_sum_le _ fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (hHXC l a) ((Valuation.mem_integer_iff _ _).1 (hQ a j))).trans (by rw [mul_one])`. Establish `hHXQ : H * X * Q = 1 + E`. Simplify using `only [E, Matrix.mul_sub, Matrix.sub_mul, hYQ]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hunit : IsUnit (H * X * Q)`. Rewrite using `[← vecMul_injective_iff_isUnit]`. Introduce `s s' hss`. Establish `h0 : (s - s') + (s - s') ᵥ* E = 0`. Establish `: (s - s') ᵥ* (H * X * Q) = 0` using `by rw [Matrix.sub_vecMul]; exact sub_eq_zero.2 hss`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[hHXQ, Matrix.vecMul_add, Matrix.vecMul_one]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `l`. Use `val_le_of_add_vecMul hu (s - s') E hE (t := 0) (fun l => by rw [h0]; simp) l` as an intermediate fact. Conclude with `sub_eq_zero.1 ((Valuation.zero_iff _).1 (le_zero_iff.1 this))`. Take `⟨s, hs⟩` from `GlobalTheory.T.rows_in_span_of_rank_normal_form k A D r X H Q hXr hunit i₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsv : ∀ l, valuation k (s l) ≤ valuation k (ϖ : k) ^ (m - 1)`. Use `val_le_of_add_vecMul hu s E hE fun l => ?_` and prove the remaining obligations. Establish `e : s + s ᵥ* E = X i₀ ᵥ* Q`. Rewrite using `[hs, Matrix.vecMul_vecMul, hHXQ, Matrix.vecMul_add, Matrix.vecMul_one]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show valuation k (∑ j, X i₀ j * Q j l) ≤ _`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (hi0 j) ((Valuation.mem_integer_iff _ _).1 (hQ j l))).trans (by rw [mul_one])`. Establish `hXs : X i₀ = s ᵥ* (H * C + H * (X - C))`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs]`. Use `congr 1`. Rewrite using `[Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Take `⟨b₀, hb₀⟩` from `shiftRow_exists hϖ hcm (H * C) (H * (X - C)) hY hHXC s hsv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hb₀` using `[← hXs]`. Establish `hmem : ∀ b, X ∈ box ϖ (C.updateRow i₀ (shiftRow ϖ m b ᵥ* (H * C))) (fun _ => m) ↔ b = b₀` using `fun b => ⟨fun h => shiftRow_unique hϖ (by omega) (H * C) Q hQ hYQ (X i₀) b b₀ ((mem_box_updateRow _).1 h).2 hb₀, fun h => h ▸ (mem_box_updateRow _).2 ⟨hrows, hb₀⟩⟩`. Rewrite using `[Set.indicator_of_mem ((mem_box_update hC0).2 ⟨hrows, hi0⟩), Finset.sum_eq_single b₀ (fun b _ hb => Set.indicator_of_notMem (fun h => hb ((hmem b).1 h)) _) (by simp), Set.indicator_of_mem ((hmem b₀).2 rfl)]`. Rewrite using `[Set.indicator_of_notMem (fun h => hi0 ((mem_box_update hC0).1 h).2)]`. Use `(Finset.sum_eq_zero fun b _ => Set.indicator_of_notMem (fun h => hi0 fun j => ?_) _).symm` and prove the remaining obligations.
-
-Establish `h2` using `((mem_box_updateRow _).1 h).2 j`. Rewrite using `[← sub_add_cancel (X i₀ j) ((shiftRow ϖ m b ᵥ* (H * C)) j)]`. Conclude with `Valuation.map_add_le _ (h2.trans hmm) (val_shiftRow_le ϖ (H * C) hY b j)`. Rewrite using `[Set.indicator_of_notMem (fun h => hrows ((mem_box_update hC0).1 h).1)]`. Conclude with `(Finset.sum_eq_zero fun b _ => Set.indicator_of_notMem (fun h => hrows ((mem_box_updateRow _).1 h).1) _).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxFn_sub_sum_mem_lowRank : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (i₀ : A) (r c m : ℕ) (C : Matrix A D k) (H : Matrix (Fin r) A k) (Q : Matrix D (Fin r) k), (∀ l, H l i₀ = 0) → (∀ l i, valuation k (H l i) ≤ valuation k (((ϖ ^ c)⁻¹ : kˣ) : k)) → c + 1 ≤ m → (∀ l j, (H * C) l j ∈ 𝒪[k]) → (∀ j l, Q j l ∈ 𝒪[k]) → H * C * Q = 1 → (∀ j, C i₀ j = 0) → GlobalTheory.RankCoinv.boxFn ϖ C (Function.update (fun _ => m) i₀ (m - 1)) - ∑ b : Fin r → GlobalTheory.SplitFlip.Res k 1, GlobalTheory.RankCoinv.boxFn ϖ (Matrix.updateRow C i₀ ((fun l => (ϖ : k) ^ (m - 1) * ((Quotient.out (b l) : 𝒪[k]) : k)) ᵥ* (H * C))) (fun _ => m) ∈ GlobalTheory.RankCoinv.lowRank (r + 1) := by
   intro k _ _ _ _ A D _ _ _ _ ϖ hϖ i₀ r c m C H Q hH0 hHv hcm hY hQ hYQ hC0

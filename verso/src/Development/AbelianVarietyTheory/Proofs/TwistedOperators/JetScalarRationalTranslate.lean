@@ -29,9 +29,9 @@ noncomputable section
 namespace GlobalTheory.RatMoveJets
 
 /- English proof (translation)
-Take `⟨ha', -⟩` from `ha`. Take `⟨hb', -⟩` from `hb`. Introduce `lam`. Establish `hab : a * b ∈ Qbar` using `mul_mem ha' hb'`. Establish `e : lamC lam (a * b) = lamC lam a * lamC lam b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `lamC`. Rewrite using `[dif_pos hab, dif_pos ha', dif_pos hb', ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, norm_mul, hua lam, hub lam, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitAt_mul {q : ℕ} [Fact q.Prime] {a b : ℂ} (ha : Mod1All a) (hb : Mod1All b) (hua : GlobalTheory.MovedKappaEx.UnitAt q a)
     (hub : GlobalTheory.MovedKappaEx.UnitAt q b) : GlobalTheory.MovedKappaEx.UnitAt q (a * b) := by
@@ -46,17 +46,17 @@ theorem unitAt_mul {q : ℕ} [Fact q.Prime] {a b : ℂ} (ha : Mod1All a) (hb : M
   rw [e, norm_mul, hua lam, hub lam, one_mul]
 
 /- English proof (translation)
-Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y κ hJ r r' hr hr'`. Take `⟨hns, hnb⟩` from `hp.nodes`. Take `⟨U, hU⟩` from `GlobalTheory.T.exists_unitaryCoordinate_of_rationalPoint_definiteVertex ch.S.toGridChoice _ hns r hr`. Take `⟨U', hU'⟩` from `GlobalTheory.T.exists_unitaryCoordinate_of_rationalPoint_definiteVertex ch.S.toGridChoice _ hnb r' hr'`. Establish `hlx` using `GlobalTheory.T.vertexLatticeCoords_rationalPoint_mul_eq_coordMatrix ch.S.toGridChoice _ r U hU x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hly` using `GlobalTheory.T.vertexLatticeCoords_rationalPoint_mul_eq_coordMatrix ch.S.toGridChoice _ r' U' hU' y`. Establish `hd` using `GlobalTheory.MovedDict.Entire.differentiable_intertwining_moved hP hI ch hch p hp x y`. Take `⟨ε, hm, hu, hj⟩` from `GlobalTheory.T.differentiable_theta_local_sum hP hI ch hch p hp x y _ (hd.const_mul κ) ((jetKap_iff ch p x y κ).1 hJ) r r' U U' hU hU'`. Take `⟨hsd, hsd'⟩` from `GlobalTheory.MovedSD.sd_srcLat_tgtLat hP hI ch hch p hp x y`. Take `⟨ε', hm', hu', hB⟩` from `GlobalTheory.T.even_rank_self_dual_unitary hP hI ch.S.Z.crv ch.S.Z.pt0 (ch.S.Z.e0_is p hp) (GlobalTheory.FunObj.even_rank_mul ch.G p hp) _ _ hsd hsd' (srcU p U U') (tgtU p U U')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hst : GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p (r * x) (r' * y) = SDLat.smulLat (srcU p U U').1 (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) ∧ GlobalTheory.MovedDict.tgtLat ch.S.toGridChoice p (r * x) (r' * y) = SDLat.smulLat (tgtU p U U').1 (GlobalTheory.Move …`. Apply the tactic sequence `cases p <;> exact ⟨by first | exact hlx | exact hly, by first | exact hlx | exact hly⟩`. Establish `hq : ∀ (q : ℕ) [Fact q.Prime], EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.small x) (stdL D _) → EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.big y) (stdL D _) → EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.small (r * x)) (stdL D _) → EqAt D q …`. Introduce `q _ h1 h2 h3 h4`. Rewrite `h3` using `[hlx]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[hly]`. Apply the tactic sequence `cases p <;> first`. Consider the case `exact hu' q h2 h1 h4 h3`. Consider the case `exact hu' q h1 h2 h3 h4`. Use `⟨ε * ε', GlobalTheory.FamilyTieProof.mod1All_mul' hm hm', fun q _ h1 h2 h3 h4 => unitAt_mul hm hm' (hu q h1 h2 h3 h4) (hq q h1 h2 h3 h4), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[jetKap_iff, hst.1, hst.2]`. Establish `e : (fun z => ε * ((fun z => κ * Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory.MovedDict.tgtLat ch.S.toGrid …`. Use function extensionality and compare the values at `z`. Simplify using `only`. Rewrite using `[hB z]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hj` using `[e]`. Introduce `k`. Rewrite using `[hj k]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_rat_move : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

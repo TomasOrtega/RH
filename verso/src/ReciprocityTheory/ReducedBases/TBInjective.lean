@@ -8,11 +8,11 @@ namespace ReciprocityTheory.ReducedBases.T2
 open Finset InnerProductSpace Matrix
 
 /- English proof (translation)
-Establish `hterm : ∀ b, (if b = a then (1 : ℝ) else if b < a then ⟪gs v b, v a⟫_ℝ / ‖gs v b‖ ^ 2 else 0) • gs v b = (if b = a then gs v b else 0) + (if b < a then (⟪gs v b, v a⟫_ℝ / ‖gs v b‖ ^ 2) • gs v b else 0)`. Introduce `b`. Distinguish the cases in `h1 : b = a`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h2 : b < a <;> simp [h1, h2]`. Rewrite using `[Finset.sum_congr rfl (fun b _ => hterm b), Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_filter]`. Establish `hf : Finset.univ.filter (fun b => b < a) = Finset.Iio a` using `by ext; simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Use `conv_lhs => rw [gramSchmidt_def'' ℝ v a]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma eq_sum_smul_gs {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {m : ℕ}
     (v : Fin m → E) (a : Fin m) :
@@ -34,19 +34,19 @@ private lemma eq_sum_smul_gs {E : Type*} [NormedAddCommGroup E] [InnerProductSpa
   simp
 
 /- English proof (translation)
-Use `set C : Matrix (Fin m) (Fin m) ℝ := Matrix.of fun a b => if b = a then (1 : ℝ) else if b < a then ⟪gs v b, v a⟫_ℝ / ‖gs v b‖ ^ 2 else 0 with hCdef`. Establish `hexp : ∀ a, v a = ∑ b, C a b • gs v b` using `fun a => by`. Simplify `eq_sum_smul_gs v a` using `[C]`. Establish `hin : ∀ a b, ⟪v a, v b⟫_ℝ = ∑ c, C a c * ‖gs v c‖ ^ 2 * C b c`. Introduce `a b`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp a, hexp b]`. Simplify using `only [sum_inner, inner_sum, real_inner_smul_left, real_inner_smul_right]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[real_inner_self_eq_norm_sq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `d _ hdc`. Rewrite using `[gramSchmidt_orthogonal ℝ v hdc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hG : Matrix.gram ℝ v = C * Matrix.diagonal (fun c => ‖gs v c‖ ^ 2) * Cᵀ`. Use extensionality with `a b`. Rewrite using `[Matrix.gram_apply, hin, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single c]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.diagonal_apply_eq, Matrix.transpose_apply]`. Introduce `d _ hdc`. Simplify using `[Matrix.diagonal_apply_ne _ hdc]`. Simplify using the standard rewrite rules. Establish `hC : C.det = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_lowerTriangular C ?_]`. Simplify using `[C]`. Introduce `i j hij`. Establish `hlt : i < j` using `OrderDual.toDual_lt_toDual.1 hij`. Simplify using `[C, hlt.ne', not_lt.2 hlt.le]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hC, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_gram_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {m : ℕ}
     (v : Fin m → E) (hv : LinearIndependent ℝ v) :
@@ -108,13 +108,13 @@ def TB (B : Matrix (Fin d) (Fin d) ℝ) : EuclideanSpace ℝ (Fin d) →ₗ[ℝ]
   map_smul' r v := by ext i; simp [mulVec_smul]
 
 /- English proof (translation)
-Simplify using `[fB_apply, TB, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fB_eq_TB (B : Matrix (Fin d) (Fin d) ℝ) (x : Fin d → ℤ) : fB B x = TB B (fB 1 x) := by
   simp [fB_apply, TB, Matrix.one_mulVec]
 
 /- English proof (translation)
-Substitute `hAB` using the available equality. Rewrite using `[fB_apply, fB_apply, polar, Matrix.conjTranspose_eq_transpose_of_trivial, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Simplify using `[PiLp.inner_apply, dotProduct, mul_comm]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma polar_eq (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B) (x y : Fin d → ℤ) :
     polar A x y = ⟪fB B x, fB B y⟫_ℝ := by
@@ -124,14 +124,14 @@ lemma polar_eq (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B) (x y : Fi
   simp [PiLp.inner_apply, dotProduct, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Q, polar_eq A B hAB, real_inner_self_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Q_eq (A B : Matrix (Fin d) (Fin d) ℝ) (hAB : A = Bᴴ * B) (x : Fin d → ℤ) :
     Q A x = ‖fB B x‖ ^ 2 / 2 := by
   rw [Q, polar_eq A B hAB, real_inner_self_eq_norm_sq]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← e.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fB_expand (B : Matrix (Fin d) (Fin d) ℝ) (e : Module.Basis (Fin d) ℤ (Fin d → ℤ))
     (x : Fin d → ℤ) : fB B x = ∑ i, ((e.repr x i : ℤ) : ℝ) • fB B (e i) := by
@@ -141,11 +141,11 @@ lemma fB_expand (B : Matrix (Fin d) (Fin d) ℝ) (e : Module.Basis (Fin d) ℤ (
   rw [LinearMap.map_smul, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Establish `hdet : IsUnit B.det`. Establish `h1` using `hA.det_pos`. Rewrite `h1` using `[hAB, Matrix.det_mul, Matrix.det_conjTranspose]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Establish `hinj : Function.Injective B.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det B).2 hdet)`. Introduce `u w h`. Establish `h' : B *ᵥ WithLp.ofLp u = B *ᵥ WithLp.ofLp w`. Use `congrArg WithLp.ofLp h` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[TB]`. Establish `h''` using `congrArg (WithLp.toLp 2) (hinj h')`. Simplify using `using h''`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma TB_injective (A B : Matrix (Fin d) (Fin d) ℝ) (hA : A.PosDef) (hAB : A = Bᴴ * B) :
     Function.Injective (TB B) := by
@@ -165,13 +165,13 @@ lemma TB_injective (A B : Matrix (Fin d) (Fin d) ℝ) (hA : A.PosDef) (hAB : A =
   simpa using h''
 
 /- English proof (translation)
-Establish `hspan : ⊤ ≤ Submodule.span ℝ (Set.range fun i => fB 1 (e i))`. Rewrite using `[← (EuclideanSpace.basisFun (Fin d) ℝ).toBasis.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `hj : (EuclideanSpace.basisFun (Fin d) ℝ).toBasis j = fB 1 (Pi.single j 1)`. Use extensionality with `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[fB_apply, toReal]`. Simplify using `[fB_apply, toReal, hk]`. Rewrite using `[SetLike.mem_coe, hj, fB_expand 1 e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h1 : LinearIndependent ℝ (fun i => fB 1 (e i))` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan (by simp)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `h1.map' (TB B) (LinearMap.ker_eq_bot.2 (TB_injective A B hA hAB))`. Establish `hfun : (fun i => fB B (e i)) = (TB B) ∘ (fun i => fB 1 (e i))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `fB_eq_TB B (e i)`. Rewrite using `[hfun]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma li_basis (A B : Matrix (Fin d) (Fin d) ℝ) (hA : A.PosDef) (hAB : A = Bᴴ * B)
     (e : Module.Basis (Fin d) ℤ (Fin d → ℤ)) :
@@ -197,7 +197,7 @@ lemma li_basis (A B : Matrix (Fin d) (Fin d) ℝ) (hA : A.PosDef) (hAB : A = B�
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← span_gramSchmidt_Iio ℝ f j]`. Rewrite using `[sub_eq_iff_eq_add'.2 (gramSchmidt_def'' ℝ f j)]`. Conclude with `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, by simpa using hi, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sub_gs_mem_span_Iio {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (f : Fin d → E) (j : Fin d) :
@@ -208,11 +208,11 @@ private lemma sub_gs_mem_span_Iio {E : Type*} [NormedAddCommGroup E] [InnerProdu
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, by simpa using hi, rfl⟩)
 
 /- English proof (translation)
-Establish `hz : f j - gs f j - w ∈ Submodule.span ℝ (f '' Set.Iio j)` using `Submodule.sub_mem _ (sub_gs_mem_span_Iio f j) hw`. Rewrite `hz` using `[← span_gramSchmidt_Iio ℝ f j]`. Establish `hle : Submodule.span ℝ (gramSchmidt ℝ f '' Set.Iio j) ≤ (ℝ ∙ gs f j)ᗮ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `gramSchmidt_orthogonal ℝ f (ne_of_gt (Set.mem_Iio.1 hi))`. Establish `horth : ⟪gs f j, f j - gs f j - w⟫_ℝ = 0` using `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (hle hz)`. Establish `hsplit : f j - w = gs f j + (f j - gs f j - w)` using `by abel`. Establish `h2 : ‖f j - w‖ ^ 2 = ‖gs f j‖ ^ 2 + ‖f j - gs f j - w‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, norm_add_sq_real, horth]`. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[norm_nonneg (gs f j), norm_nonneg (f j - w), sq_nonneg ‖f j - gs f j - w‖]`.
+Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma norm_gs_sq_le_norm_sq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (f : Fin d → E) (j : Fin d) (w : E) (hw : w ∈ Submodule.span ℝ (f '' Set.Iio j)) :
@@ -233,9 +233,9 @@ private lemma norm_gs_sq_le_norm_sq {E : Type*} [NormedAddCommGroup E] [InnerPro
   nlinarith [norm_nonneg (gs f j), norm_nonneg (f j - w), sq_nonneg ‖f j - gs f j - w‖]
 
 /- English proof (translation)
-Establish `hp` using `sub_gs_mem_span_Iio (fun i => TB B (U i)) j`. Establish `himg : (fun i => TB B (U i)) '' Set.Iio j = (TB B) '' (U '' Set.Iio j)`. Rewrite using `[Set.image_image]`. Rewrite `hp` using `[himg, Submodule.span_image]`. Take `⟨w, hw, hTw⟩` from `Submodule.mem_map.1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hgs : gs (fun i => TB B (U i)) j = TB B (U j - w)`. Rewrite using `[map_sub, hTw]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation.
 -/
 lemma gs_TB (B : Matrix (Fin d) (Fin d) ℝ) {K : ℝ} (hK : ∀ v, ‖v‖ ≤ K * ‖TB B v‖)
     (U : Fin d → EuclideanSpace ℝ (Fin d)) (j : Fin d) :

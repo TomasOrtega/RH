@@ -39,7 +39,7 @@ variable {D : D7}
 def finIdem (D : D7) : AE D := algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 1)
 
 /- English proof (translation)
-Unfold `finIdem`. Rewrite using `[← map_mul]`. Use `congr 1`. Use `show ((0 : Ainf D.host.F) * 0, (1 : Af D.host.F) * 1) = (0, 1)`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finIdem_mul : finIdem D * finIdem D = finIdem D := by
   unfold finIdem
@@ -49,14 +49,14 @@ theorem finIdem_mul : finIdem D * finIdem D = finIdem D := by
   simp
 
 /- English proof (translation)
-Unfold `finIdem`. Simplify using `[cA, sigR, Algebra.TensorProduct.algebraMap_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cA_finIdem : cA D (finIdem D) = finIdem D := by
   unfold finIdem
   simp [cA, sigR, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Use `show fstA D.host.F (pairA D.host.F 0 1) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E) 1 = 0`. Rewrite using `[show fstA D.host.F (pairA D.host.F 0 1) = 0 from rfl, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_finIdem :
     (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (finIdem D) = 0 := by
@@ -64,7 +64,7 @@ theorem fst_finIdem :
   rw [show fstA D.host.F (pairA D.host.F 0 1) = 0 from rfl, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use `show sndA D.host.F (pairA D.host.F 0 1) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E) 1 = 1`. Rewrite using `[show sndA D.host.F (pairA D.host.F 0 1) = 1 from rfl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem snd_finIdem :
     (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (finIdem D) = 1 := by
@@ -78,7 +78,7 @@ def finPartGL (V : HSp D) (g : GA D V) : GL (Fin V.rank) (AE D) :=
     idem_mul _ finIdem_mul _ _ (matHom V g).mul_inv, idem_mul _ finIdem_mul _ _ (matHom V g).inv_mul⟩
 
 /- English proof (translation)
-Establish `hgU : Formalism.UG.cT (cA D) (Formalism.L2.Theta.mt V g) * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D)` using `(show HR (AF D.host.F) D.sp.cm.sig V.gram from g).2`. Establish `hKU` using `idem_unitary (cA D) _ cA_finIdem finIdem_mul _ _ hgU`. Conclude with `hKU`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finPartGL_mem (V : HSp D) (g : GA D V) : finPartGL V g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by
   have hgU : Formalism.UG.cT (cA D) (Formalism.L2.Theta.mt V g) * V.gram.map (incA D) * Formalism.L2.Theta.mt V g =
@@ -91,7 +91,7 @@ def finPartG (V : HSp D) (g : GA D V) : GA D V :=
   (⟨finPartGL V g, finPartGL_mem V g⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram)
 
 /- English proof (translation)
-Use `show infHom V (finPartG V g) = 1`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(finIdem D • Formalism.L2.Theta.mt V g + (1 - finIdem D) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))).map _ = 1`. Rewrite using `[map_idem, fst_finIdem, zero_smul, zero_add, sub_zero, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPartG_mem_GfC (V : HSp D) (g : GA D V) : finPartG V g ∈ GfC V := by
   show infHom V (finPartG V g) = 1
@@ -100,7 +100,7 @@ theorem finPartG_mem_GfC (V : HSp D) (g : GA D V) : finPartG V g ∈ GfC V := by
   rw [map_idem, fst_finIdem, zero_smul, zero_add, sub_zero, one_smul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(finIdem D • Formalism.L2.Theta.mt V g + (1 - finIdem D) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))).map _ = _`. Rewrite using `[map_idem, snd_finIdem, one_smul, sub_self, zero_smul, add_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finHom_finPartG (V : HSp D) (g : GA D V) : finHom V (finPartG V g) = finHom V g := by
   apply Units.ext
@@ -109,14 +109,14 @@ theorem finHom_finPartG (V : HSp D) (g : GA D V) : finHom V (finPartG V g) = fin
   rfl
 
 /- English proof (translation)
-Use `show finHom V ((finPartG V g)⁻¹ * g) = 1`. Rewrite using `[map_mul, map_inv, finHom_finPartG, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_finPartG_mul_mem_GinfC (V : HSp D) (g : GA D V) : (finPartG V g)⁻¹ * g ∈ GinfC V := by
   show finHom V ((finPartG V g)⁻¹ * g) = 1
   rw [map_mul, map_inv, finHom_finPartG, inv_mul_cancel]
 
 /- English proof (translation)
-Unfold `GlobalTheory.Member.FinCong`. Rewrite using `[finHom_finPartG]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem finCong_finPartG_iff {V : HSp D} {N : ℕ} (g : GA D V) :
     GlobalTheory.Member.FinCong V N (finPartG V g) ↔ GlobalTheory.Member.FinCong V N g := by
@@ -124,9 +124,9 @@ theorem finCong_finPartG_iff {V : HSp D} {N : ℕ} (g : GA D V) :
   rw [finHom_finPartG]
 
 /- English proof (translation)
-Introduce `D V N Kf hN hK g₀`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hU` using `GlobalTheory.Member.PrincLevel.finCong_mem_nhds V hN`. Establish `ht : Filter.Tendsto (fun x : GA D V => g₀⁻¹ * x) (𝓝 g₀) (𝓝 1)`. Use `(continuous_mul_left g₀⁻¹).tendsto g₀` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Use `Filter.mem_of_superset (ht hU) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : GlobalTheory.Member.FinCong V N (g₀⁻¹ * x)` using `hx`. Use `⟨finPartG V (g₀⁻¹ * x), (hK _).2 ⟨finPartG_mem_GfC V _, (finCong_finPartG_iff _).2 hx'⟩, (finPartG V (g₀⁻¹ * x))⁻¹ * (g₀⁻¹ * x), inv_finPartG_mul_mem_GinfC V _, ?_⟩` and prove the remaining obligations. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem level_mul_inf_mem_nhds : ∀ (D : D7) (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)), 0 < N →
     IsLevelK V N Kf → ∀ g₀ : GA D V,

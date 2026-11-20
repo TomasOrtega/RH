@@ -32,11 +32,9 @@ def linOfComb {F M N : Type} [Field F] [AddCommGroup M] [Module F M] [AddCommGro
   map_smul' c a := by simpa using h 1 ![c] ![a]
 
 /- English proof (translation)
-Take `⟨huniq, hlin, hex⟩` from `GlobalTheory.GermBasic.main V D A G U κ z hz τ hτ F q`. Establish `hbij` using `(GlobalTheory.expandsG_bijective_of_dvr hL hL2 hL4 hT V D A G U F q hq).2`. Use `choose S hS hSu using hbij`. Use `choose Γg hΓ using hex hτT`. Establish `key : ∀ t σ' h, U.ExpandsG F q σ' t → GermA U.toUnifPre z τ F q σ' h → h = Γg (S t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t σ' h he hg`. Take `rfl` from `hSu t σ' he`. Conclude with `huniq _ _ _ hg (hΓ _)`. Use `⟨linOfComb (fun t => Γg (S t)) fun l c s => ?_, key, fun t => ⟨S t, hS t, hΓ _⟩⟩` and prove the remaining obligations. Set `σ' : U.SecGF F q` to `GlobalTheory.ExpansionLinear.secComb (fun i => scal (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left (c i)) (fun i => S (s i))`.
-
-Conclude with `(key _ σ' _ (GlobalTheory.GroupExpansionLinear.expandsG_sum V D A G U F q l c (fun i => S (s i)) s σ' (fun i => hS _) (fun _ => rfl)) (hlin l c (fun i => S (s i)) _ σ' (fun i => hΓ _) (fun _ => rfl))).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_germ_linearMap (hL : Laws) (hL2 : Laws2) (hL4 : Laws4) (hT : TwistBaseChangeStatement)
     (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V]
@@ -64,13 +62,13 @@ theorem exists_germ_linearMap (hL : Laws) (hL2 : Laws2) (hL4 : Laws4) (hT : Twis
     (hlin l c (fun i => S (s i)) _ σ' (fun i => hΓ _) (fun _ => rfl))).symm
 
 /- English proof (translation)
-Introduce `hL hL2 hL4 hT E _ _ _ H Dw l Xo c n`. Use `letI := H.starRing`. Introduce `T io y _ C hTr P _ g g' hg hg' _ _ _ π π' hπ _ _ _ _ F _ _ _ _ _ _ v ϖ _ _ Q _ D' A' G' _ _ pD pA pG U' PU _ oD' hx hact p w ζ x hw _ _ _ _ Ppol`. Use `letI := io.toAlgebra`. Establish `hq : 1 ≤ g' * g` using `Nat.mul_pos hg'.pos hg.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hw0 : TraceFormTwistIso D'.toPre oD' H.w0` using `GlobalTheory.PsiWZeroProd.main T.V n P.D.toPre D'.toPre pD (𝓞 E) (fun a x => funext fun i => hx a x i) P.oD oD' hact H.w0 P.w0`. Take `⟨pl, -, hpl⟩` from `PullLin.exists_pull_linearMap hL T.V D' F (𝓞 E) oD' H.w0 hw0 (star π) g g' hg.pos hg'.pos (by rw [star_star, _root_.mul_comm]; exact hπ)`. Take `⟨Φ, hΦ⟩` from `phiFun_of hL T.V _ D' F (g' * g) hq p w hw`. Take `⟨τ, hτ, hτT, hiff⟩` from `frameNSt_holds E H T.V C.I.G P _ C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`. Establish `hz` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n _ pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨gm, hgm, hgmex⟩` from `exists_germ_linearMap hL hL2 hL4 hT T.V D' A' G' U' _ _ hz τ hτ (hτT hTr) F (g' * g) hq`. Establish `hnab` using `(nabJet T.Fr _ (𝓞 E) C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 (g' * g) n (LtN Dw n) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i))).2.1 Ppol`. Set `ν : PS F n (chD C.ch) →ₗ[F] F` to `linOfComb (fun h => nabValN C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 (g' * g) h (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i)) Ppol) fun k a f => hnab (Fin k) a f`. Use `⟨ν ∘ₗ gm ∘ₗ (ζ • Φ) ∘ₗ pl, fun s s₂ t₀ t σ' h h₁ h₂ h₃ h₄ h₅ => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hgm t σ' h h₄ ((hiff F _ σ' h).1 h₅), (DVR.isSmul_iff _ _ _).1 h₃, (hΦ _ _).1 h₂, (hpl _ _).1 h₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨σ', h₁, h₂⟩` from `hgmex (ζ • Φ (pl s))`. Conclude with `⟨pl s, Φ (pl s), _, σ', _, (hpl _ _).2 rfl, (hΦ _ _).2 rfl, (DVR.isSmul_iff _ _ _).2 rfl, h₁, (hiff F _ σ' _).2 h₂⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → GPairF := by
   intro hL hL2 hL4 hT E _ _ _ H Dw l Xo c n

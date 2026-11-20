@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.LKGeo.ModZero
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨a, x, ha, rfl⟩` from `hu`. Introduce `v`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, one_smul, eq_intCast (algebraMap ℤ ℚ), map_intCast, map_mul, map_intCast]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (ha v) (intCast_mem _ _)`. Consider the case `zero => intro v`. Rewrite using `[map_zero, Finsupp.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add u u' _ _ hu hu' => intro v`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, Finsupp.add_apply, map_add]`. Conclude with `add_mem (hu v) (hu' v)`. Consider the case `neg u _ hu => intro v`. Rewrite using `[map_neg, Finsupp.neg_apply, map_neg]`. Conclude with `neg_mem (hu v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_isIntAf {p : ℕ} [Fact p.Prime] (D : Datum p) {κ : Type} (b : Module.Basis κ ℤ D.La)
     (u : AfP p ⊗[ℚ] VQ D) (hu : u ∈ LaHat D) (i : κ) :
@@ -39,9 +39,9 @@ end GlobalTheory.LKGeo.ModZero
 open GlobalTheory.LKGeo.ModZero in
 
 /- English proof (translation)
-Introduce `p _ D z hz`. Use `D.freeLa` as an intermediate fact. Use `D.finLa` as an intermediate fact. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `bA` to `Algebra.TensorProduct.basis (AfP p) (Algebra.TensorProduct.basis ℚ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `bA.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `GlobalTheory.T.finiteAdeleAwayFromP_eq_zero_of_divisible_coprime p (bA.repr z i) fun n hn hc => ?_` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `hz n hn hc`. Conclude with `⟨bA.repr w i, repr_isIntAf D b w hw i, by rw [map_nsmul, Finsupp.smul_apply]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (z : AfP p ⊗[ℚ] VQ D),
     (∀ n : ℕ, 0 < n → n.Coprime p → ∃ w ∈ LaHat D, z = n • w) → z = 0 := by

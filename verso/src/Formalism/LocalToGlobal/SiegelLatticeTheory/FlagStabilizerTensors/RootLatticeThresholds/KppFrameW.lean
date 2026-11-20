@@ -17,7 +17,7 @@ open Formalism.MainNotions.S Formalism.L2.SG.Pf.RowDictPf PIW.AdelClassFin Forma
 variable {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {p : ℕ} {m : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [DictLat.hhat_zero_right]`. Consider the case `insert b s hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, DictLat.hhat_add_right, DictLat.hhat_smul_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem hhat_sum_right (u : Fin I.n → I.E ⊗[I.F] Af I.F) {ι : Type*} (s : Finset ι) (a : ι → I.E ⊗[I.F] Af I.F)
     (v : ι → Fin I.n → I.E ⊗[I.F] Af I.F) :
@@ -29,7 +29,7 @@ theorem hhat_sum_right (u : Fin I.n → I.E ⊗[I.F] Af I.F) {ι : Type*} (s : F
     rw [Finset.sum_insert hb, Finset.sum_insert hb, DictLat.hhat_add_right, DictLat.hhat_smul_right, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[iv, Finset.sum_apply, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem iv_sum_int (b : Fin m → Fin I.n → I.E) (c : Fin m → ℤ) :
     iv I (∑ j, ((c j : ℤ) : I.E) • b j) = ∑ j, ((c j : ℤ) : I.E ⊗[I.F] Af I.F) • iv I (b j) := by
@@ -40,7 +40,7 @@ def GramW (w : HeightOneSpectrum (𝓞 I.E)) {r : ℕ} (fr frd : Fin r → Fin I
   ∀ i j, hhat I (frd i) (fr j) - (if i = j then 1 else 0) ∈ Wq I w
 
 /- English proof (translation)
-Use `choose c hcL hc using fun j => dense I w hp hcard (hfr j)`. Conclude with `⟨c, fun j => ⟨hcL j, hc j⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lifts (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) {r : ℕ}
     {fr : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F} (hfr : ∀ j, fr j ∈ I.Lf) :
@@ -49,7 +49,7 @@ theorem exists_lifts (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) =
   exact ⟨c, fun j => ⟨hcL j, hc j⟩⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by have := sub_mem (hg i j) (hhat_Lq_right (hfrd i) (hc j)) convert this using 1 rw [hhat_sub_right] ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_lift {r : ℕ} {fr frd : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F} (hfrd : ∀ i, frd i ∈ I.Lf)
     (hg : GramW w fr frd) {c : Fin r → Fin I.n → I.E} (hc : ∀ j, fr j - iv I (c j) ∈ Lq I w) :
@@ -60,31 +60,29 @@ theorem gram_lift {r : ℕ} {fr frd : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F}
   ring
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Use `⟨hcL, ?_⟩` and prove the remaining obligations. Set `b' : Fin I.n → I.L` to `fun j => ⟨c j, hcL j⟩`. Set `f` to `Submodule.mkQ (w.asIdeal • (⊤ : Submodule (𝓞 I.E) I.L))`. Establish `hli : LinearIndependent (𝓞 I.E ⧸ w.asIdeal) (f ∘ b')`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg0 i`. Establish `hn : 0 < I.n` using `Fin.pos i`. Use `choose α hα using fun j => Ideal.Quotient.mk_surjective (g j)`. Establish `h0 : (∑ j, α j • b' j : I.L) ∈ w.asIdeal • (⊤ : Submodule (𝓞 I.E) I.L)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, mk_sum' I w, ← hg0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hα j]`. Conclude with `(Module.Quotient.mk_smul_mk _ _ _ _).symm`. Rewrite `h0` using `[← mem_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : iv I (∑ j, ((α j : 𝓞 I.E) : I.E) • c j) ∈ Lq I w`. Use `iv_mem_w I w ?_` and prove the remaining obligations. Use `h0 using 1` and compare the differences between its conclusion and the goal. Simplify using `[b']`. Establish `hiv : iv I (∑ j, ((α j : 𝓞 I.E) : I.E) • c j) = ∑ j, iE I (α j) • iv I (c j)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [iv, iE, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Establish `h2` using `hhat_Lq_right (hfrd i) h1`. Rewrite `h2` using `[hiv, hhat_sum_right]`. Establish `h3 : ∑ j, iE I (α j) * (hhat I (frd i) (iv I (c j)) - (if i = j then 1 else 0)) ∈ Wq I w` using `sum_mem fun j _ => Wq_mul (hg i j) (iE_int I (α j))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `sub_mem h2 h3`. Establish `e : ∑ j, iE I (α j) * hhat I (frd i) (iv I (c j)) - ∑ j, iE I (α j) * (hhat I (frd i) (iv I (c j)) - (if i = j then 1 else 0)) = iE I (α i)`. Rewrite using `[← Finset.sum_sub_distrib]`. Simplify using `only [mul_sub, sub_sub_cancel, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h4` using `[e]`. Establish `h5 : α i ∈ w.asIdeal` using `int_of_Wq hp hcard hn h4`. Rewrite using `[← hα i]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Distinguish the cases in `hn : I.n = 0`. Use `⟨fun _ => 0, ?_⟩` and prove the remaining obligations. Establish `: y = 0`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `absurd k.2 (by omega)`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `: Nonempty (Fin I.n)` using `⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩`. Establish `hcE : Fintype.card (Fin I.n) = Module.finrank (𝓞 I.E ⧸ w.asIdeal) (RedQ I w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.card_fin, finrank_eq I w]`. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank hcE`. Establish `hmem : f ⟨y, hy⟩ ∈ Submodule.span (𝓞 I.E ⧸ w.asIdeal) (Set.range (f ∘ b'))`. Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hmem`. Use `choose k hk using fun j => int_surj I w hp hcard (a j)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1 : ((⟨y, hy⟩ : I.L) - ∑ j, k j • b' j) ∈ (w.asIdeal • (⊤ : Submodule (𝓞 I.E) I.L))`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, sub_eq_zero, mk_sum' I w]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `f ⟨y, hy⟩ = _`. Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hk j, Submodule.Quotient.mk_smul, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression.
-
-Rewrite `h1` using `[← mem_iff]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `[b', Int.cast_smul_eq_zsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isRedBasis_of_gram (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) (hm : m = I.n)
     {frd : Fin m → Fin I.n → I.E ⊗[I.F] Af I.F} (hfrd : ∀ i, frd i ∈ I.Lf) {c : Fin m → Fin I.n → I.E}
@@ -159,13 +157,13 @@ def RepV (w : HeightOneSpectrum (𝓞 I.E)) (p : ℕ) {r : ℕ} (u : Fin r → F
   v - ∑ j, (((a j).val : ℕ) : I.E ⊗[I.F] Af I.F) • u j ∈ Lq I w
 
 /- English proof (translation)
-Establish `h1 : hhat I (frd i) v - hhat I (frd i) (∑ j, (((a j).val : ℕ) : I.E ⊗[I.F] Af I.F) • u j) ∈ Wq I w`. Rewrite using `[← hhat_sub_right]`. Conclude with `hhat_Lq_right (hfrd i) hv`. Use `congW_of_sub ?_ h1` and prove the remaining obligations. Rewrite using `[hhat_sum_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : CongW (w` using `w) p (∑ j, (((a j).val : ℕ) : I.E ⊗[I.F] Af I.F) * hhat I (frd i) (u j)) (∑ j, a j * (if i = j then 1 else 0)) := by`. Use `congW_sum _ fun j _ => ?_` and prove the remaining obligations. Use `congW_mul (dual_hat_integral I _ (hfrd i) _ (hu j)) ?_ ?_` and prove the remaining obligations. Use `congW_natCast (I := I) (w := w) (p := p) (a j).val` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `congW_of_sub (t := ((if i = j then 1 else 0 : ℤ) : I.E ⊗[I.F] Af I.F)) ?_ ?_` and prove the remaining obligations. Use `congW_intCast (I := I) (w := w) (p := p) (if i = j then 1 else 0)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `convert hg i j using 2 split_ifs <;> simp`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[mul_ite, Finset.sum_ite_eq]`.
+A detailed English derivation is pending.
 -/
 theorem coef [NeZero p] {r : ℕ} {frd u : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F} (hfrd : ∀ i, frd i ∈ I.Lf)
     (hu : ∀ j, u j ∈ I.Lf) (hg : GramW w u frd) {v : Fin I.n → I.E ⊗[I.F] Af I.F} {a : Fin r → ZMod p}
@@ -189,18 +187,18 @@ theorem coef [NeZero p] {r : ℕ} {frd u : Fin r → Fin I.n → I.E ⊗[I.F] Af
   simpa [mul_ite, Finset.sum_ite_eq] using h2
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hz k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natSmul_Lq' (k : ℕ) {z : Fin I.n → I.E ⊗[I.F] Af I.F} (hz : z ∈ Lq I w) :
     (k : I.E ⊗[I.F] Af I.F) • z ∈ Lq I w := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hz k
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Establish `h1 : iv I (∑ j, ((((a' j).val : ℤ) - (a j).val : ℤ) : I.E) • b j) ∈ Lq I w`. Rewrite using `[iv_sum_int]`. Use `sub_mem h h'` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Int.cast_sub, Int.cast_natCast, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `h2` using `redBasis_indep I w hp hcard hb _ (inter I w h1)`. Use function extensionality and compare the values at `j`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `h2 j`. Rewrite `h3` using `[← ZMod.intCast_eq_intCast_iff_dvd_sub]`. Simplify using `using h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_unique (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) (hm : m = I.n)
     {b : Fin m → Fin I.n → I.E} (hb : IsRedBasis0 I w b) {v : Fin I.n → I.E ⊗[I.F] Af I.F}
@@ -221,11 +219,11 @@ theorem rep_unique (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p
   simpa using h3
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Take `⟨c, hc⟩` from `coords I w hp hcard hb hv`. Use `⟨fun j => (c j : ZMod p), ?_⟩` and prove the remaining obligations. Establish `h2 : ∑ j, (c j : I.E ⊗[I.F] Af I.F) • iv I (b j) - ∑ j, ((((c j : ℤ) : ZMod p).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I (b j) ∈ Lq I w`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Use `neg_mem (val_sub I w hp hcard (hb.1 j) (c j))` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Use `add_mem hc h2` as an intermediate fact. Use `show v - _ ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem rep_exists (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) {b : Fin m → Fin I.n → I.E}
     (hb : IsRedBasis0 I w b) {v : Fin I.n → I.E ⊗[I.F] Af I.F} (hv : v ∈ I.Lf) :
@@ -245,17 +243,17 @@ theorem rep_exists (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p
   abel
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Establish `s2 : ∑ j, (((A j).val : ℕ) : I.E ⊗[I.F] Af I.F) • u j - ∑ j, (((A j).val : ℕ) : I.E ⊗[I.F] Af I.F) • ∑ k, (((P k j).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I (b k) ∈ Lq I w`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `natSmul_Lq' _ (hP j)`. Establish `e3 : ∑ j, (((A j).val : ℕ) : I.E ⊗[I.F] Af I.F) • ∑ k, (((P k j).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I (b k) = ∑ k, (((∑ j, (P k j).val * (A j).val : ℕ) : ℤ) : I.E ⊗[I.F] Af I.F) • iv I (b k)`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.cast_natCast, Nat.cast_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_comm]`. Establish `s3 : ∑ k, (((∑ j, (P k j).val * (A j).val : ℕ) : ℤ) : I.E ⊗[I.F] Af I.F) • iv I (b k) - ∑ k, ((((P *ᵥ A) k).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I (b k) ∈ Lq I w`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `hc : (((∑ j, (P k j).val * (A j).val : ℕ) : ℤ) : ZMod p) = (P *ᵥ A) k`. Rewrite using `[Int.cast_natCast, Nat.cast_sum, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `val_sub I w hp hcard (hb k) ((∑ j, (P k j).val * (A j).val : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[hc]`. Use `neg_mem this` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Rewrite `s2` using `[e3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `add_mem (add_mem hA s2) s3` as an intermediate fact. Use `show v - _ ∈ _`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem rep_comp (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) {r : ℕ}
     {b : Fin m → Fin I.n → I.E} (hb : ∀ k, b k ∈ I.L) {u : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F}
@@ -298,7 +296,7 @@ theorem rep_comp (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) 
   abel
 
 /- English proof (translation)
-Unfold `RepV at h ⊢`. Use `stab_w I w hx h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_sub, Matrix.mulVec_sum]`. Simplify `this` using `only [Matrix.mulVec_smul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_mulVec {x : I.Gf} (hx : x ∈ I.Kset) {r : ℕ} {u : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F}
     {v : Fin I.n → I.E ⊗[I.F] Af I.F} {a : Fin r → ZMod p} (h : RepV w p u v a) :
@@ -309,9 +307,9 @@ theorem rep_mulVec {x : I.Gf} (hx : x ∈ I.Kset) {r : ℕ} {u : Fin r → Fin I
   simpa only [Matrix.mulVec_smul] using this
 
 /- English proof (translation)
-Establish `: Fact (1 < p)` using `⟨hp.one_lt⟩`. Establish `e : ∑ i, ((((1 : Matrix (Fin r) (Fin r) (ZMod p)) i j).val : ℕ) : I.E ⊗[I.F] Af I.F) • u i = u j`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `only [Matrix.one_apply_eq, ZMod.val_one, Nat.cast_one, one_smul]`. Introduce `i _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.one_apply_ne hi]`. Simplify using the standard rewrite rules. Use `show u j - _ ∈ _`. Rewrite using `[e, sub_self]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_self [NeZero p] (hp : p.Prime) {r : ℕ} (u : Fin r → Fin I.n → I.E ⊗[I.F] Af I.F) (j : Fin r) :
     RepV w p u (u j) (fun i => (1 : Matrix (Fin r) (Fin r) (ZMod p)) i j) := by
@@ -326,22 +324,22 @@ theorem rep_self [NeZero p] (hp : p.Prime) {r : ℕ} (u : Fin r → Fin I.n → 
   exact zero_mem _
 
 /- English proof (translation)
-The claim follows from `h i`.
+A detailed English derivation is pending.
 -/
 theorem redMatB_rep {b : Fin m → Fin I.n → I.E} {x : I.Gf} {M : Matrix (Fin m) (Fin m) (ZMod p)}
     (h : RedMatB I w p b x M) (i : Fin m) :
     RepV w p (fun j => iv I (b j)) (I.fmat x *ᵥ iv I (b i)) (fun j => M j i) := h i
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Use `choose Pc hPc using fun j => rep_exists hp hcard hb (DictLat.iv_mem I (hc.1 j))`. Use `choose Qc hQc using fun j => rep_exists hp hcard hc (DictLat.iv_mem I (hb.1 j))`. Set `P : Matrix (Fin m) (Fin m) (ZMod p)` to `Matrix.of fun k j => Pc j k`. Set `Q : Matrix (Fin m) (Fin m) (ZMod p)` to `Matrix.of fun k j => Qc j k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ j, RepV w p (fun k => iv I (b k)) (iv I (c j)) (fun k => P k j)` using `hPc`. Establish `hQ : ∀ j, RepV w p (fun k => iv I (c k)) (iv I (b j)) (fun k => Q k j)` using `hQc`. Establish `hPQ : P * Q = 1`. Use extensionality with `i j`. Establish `h1` using `rep_comp hp hcard hb.1 (hQ j) hP`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `rep_self (w := w) hp (fun k => iv I (b k)) j`. Use `rep_unique hp hcard hm hb h1 h2` as an intermediate fact. Use `congrFun this i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Use `⟨P, Q, hPQ, (Matrix.mul_eq_one_comm_of_card_eq (Fin m) (Fin m) _ rfl).mp hPQ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `x hx M N hM hN`. Use extensionality with `i j`. Establish `h1` using `rep_comp hp hcard hb.1 (redMatB_rep hN j) hP`. Establish `h2` using `rep_comp hp hcard hb.1 (rep_mulVec hx (hP j)) (fun k => redMatB_rep hM k)`. Use `rep_unique hp hcard hm hb h2 h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun this i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem conj_basis (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) (hm : m = I.n)
     {b c : Fin m → Fin I.n → I.E} (hb : IsRedBasis0 I w b) (hc : IsRedBasis0 I w c) :
@@ -372,7 +370,7 @@ theorem conj_basis (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p
   simpa [Matrix.mulVec, dotProduct, Matrix.mul_apply] using this
 
 /- English proof (translation)
-Establish `h1` using `coef hfrd (fun k => DictLat.iv_mem I (hcL k)) hg (redMatB_rep hN j) i`. Use `congW_of_sub h1 ?_` and prove the remaining obligations. Rewrite using `[← hhat_sub_right, ← Matrix.mulVec_sub]`. Conclude with `hhat_Lq_right (hfrd i) (stab_w I w hx (hc j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry [NeZero p] {fr frd : Fin m → Fin I.n → I.E ⊗[I.F] Af I.F} (hfrd : ∀ i, frd i ∈ I.Lf)
     {c : Fin m → Fin I.n → I.E} (hcL : ∀ j, c j ∈ I.L) (hc : ∀ j, fr j - iv I (c j) ∈ Lq I w)

@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 def detPow (Ψ : Finset (E →+* ℂ)) (a : ℤ) (x : Frame Ψ r) : ℂ := ∏ τ, (mat x τ).det ^ a
 
 /- English proof (translation)
-The claim follows from `| 0, f, h => by rw [Fin.prod_univ_zero]; exact (div_self (h 0)).symm | n + 1, f, h => by rw [Fin.prod_univ_castSucc] have ih : ∏ i : Fin n, f i.succ.castSucc / f i.castSucc.castSucc = f (Fin.last n).castSucc / f (0 : Fin (n + 1)).castSucc := telescope n (fun i => f i.castSucc) (f …`.
+A detailed English derivation is pending.
 -/
 theorem telescope : ∀ (n : ℕ) (f : Fin (n + 1) → ℝ), (∀ i, f i ≠ 0) →
     ∏ i : Fin n, f i.succ / f i.castSucc = f (Fin.last n) / f 0
@@ -35,21 +35,21 @@ theorem telescope : ∀ (n : ℕ) (f : Fin (n + 1) → ℝ), (∀ i, f i ≠ 0) 
     field_simp
 
 /- English proof (translation)
-Unfold `lminor`. Conclude with `Matrix.det_eq_one_of_card_eq_zero (by simp; exact Fintype.card_eq_zero)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lminor_zero (M : Matrix (Fin r) (Fin r) ℂ) : lminor M 0 = 1 := by
   unfold lminor
   exact Matrix.det_eq_one_of_card_eq_zero (by simp; exact Fintype.card_eq_zero)
 
 /- English proof (translation)
-Unfold `lminor`. Conclude with `Matrix.det_submatrix_equiv_self (finCongr (Fin.val_last r)) M`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lminor_last (M : Matrix (Fin r) (Fin r) ℂ) : lminor M (Fin.last r) = M.det := by
   unfold lminor
   exact Matrix.det_submatrix_equiv_self (finCongr (Fin.val_last r)) M
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G x = x.transpose * G.map τ * x.map (starRingEnd ℂ) := by
@@ -59,7 +59,7 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (F
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Use `congr 1`. Conclude with `(RingHom.map_det (starRingEnd ℂ) x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_gram (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     (gram τ G x).det = x.det * (G.map τ).det * starRingEnd ℂ x.det := by
@@ -68,7 +68,7 @@ theorem det_gram (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (
   exact (RingHom.map_det (starRingEnd ℂ) x).symm
 
 /- English proof (translation)
-Introduce `h`. Use `(hx τ).2 i` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dmin_ne (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i ≠ 0 := by
@@ -78,13 +78,13 @@ theorem dmin_ne (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ)
   simp at this
 
 /- English proof (translation)
-Establish `hD : (mat x τ).det ≠ 0` using `(hx τ).1`. Establish `hpos : 0 < ‖(mat x τ).det‖` using `norm_pos_iff.mpr hD`. Establish `ht` using `telescope r (fun i => ‖dmin X.Gm x τ i‖) (fun i => norm_ne_zero_iff.mpr (dmin_ne X hx τ i))`. Use `beta_reduce at ht`. Establish `hprod : ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(a : ℝ) / 2) = (‖dmin X.Gm x τ (Fin.last r)‖ / ‖dmin X.Gm x τ 0‖) ^ (-(a : ℝ) / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[norm_div]`. Rewrite using `[Real.finset_prod_rpow _ _ (fun i _ => by positivity), ht]`. Rewrite using `[hprod]`. Establish `h0 : dmin X.Gm x τ 0 = 1` using `lminor_zero _`. Establish `hl : dmin X.Gm x τ (Fin.last r) = (mat x τ).det * (X.Gm.map τ.1).det * starRingEnd ℂ (mat x τ).det`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dmin`. Rewrite using `[lminor_last, det_gram]`. Rewrite using `[h0, hl, norm_one, div_one, norm_mul, norm_mul, Complex.norm_conj, norm_zpow]`. Establish `hg : 0 ≤ ‖(X.Gm.map τ.1).det‖` using `norm_nonneg _`. Rewrite using `[show ‖(mat x τ).det‖ * ‖(X.Gm.map τ.1).det‖ * ‖(mat x τ).det‖ = ‖(mat x τ).det‖ * ‖(mat x τ).det‖ * ‖(X.Gm.map τ.1).det‖ by ring, Real.mul_rpow (by positivity) hg, Real.mul_rpow hpos.le hpos.le, ← Real.rpow_intCast, ← mul_assoc, ← mul_assoc, ← Real.rpow_add hpos, ← Real.rpow_add …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (a : ℝ) + -(a : ℝ) / 2 + -(a : ℝ) / 2 = 0` using `by ring`. Rewrite using `[this, Real.rpow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_factor (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (a : ℤ) (τ : X.Ψ) :
     ‖(mat x τ).det ^ a‖ * ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(a : ℝ) / 2) =
@@ -111,7 +111,7 @@ theorem pnorm_factor (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (a : �
   rw [this, Real.rpow_zero, one_mul]
 
 /- English proof (translation)
-Unfold `Data.pnorm detPow`. Simplify using `only [hla, norm_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => pnorm_factor X hx a τ`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pnorm_detPow (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) (a : ℤ)
     (hla : ∀ τ i, la τ i = a) :
@@ -121,14 +121,14 @@ theorem pnorm_detPow (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : 
   exact Finset.prod_congr rfl fun τ _ => pnorm_factor X hx a τ
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', mat, Matrix.of_apply]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_diff (Ψ : Finset (E →+* ℂ)) (τ : Ψ) : Differentiable ℂ (fun x : Frame Ψ r => (mat x τ).det) := by
   simp only [Matrix.det_apply', mat, Matrix.of_apply]
   fun_prop
 
 /- English proof (translation)
-Introduce `x hx`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Unfold `detPow`. Establish `h : ∀ τ : X.Ψ, DifferentiableAt ℂ (fun y : Frame X.Ψ r => (mat y τ).det ^ a) x` using `fun τ => (det_diff X.Ψ τ x).zpow (Or.inl (hx τ).1)`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detPow_diff (X : Data E r) (a : ℤ) : DifferentiableOn ℂ (detPow X.Ψ a) X.dom := by
   intro x hx
@@ -139,7 +139,7 @@ theorem detPow_diff (X : Data E r) (a : ℤ) : DifferentiableOn ℂ (detPow X.Ψ
   fun_prop
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[lact, mat, Matrix.map_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact 1 x = x := by
   funext τ
@@ -147,9 +147,9 @@ theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact 1 x = x := 
   rfl
 
 /- English proof (translation)
-Establish `h1 : (1 : GL (Fin r) E) ∈ X.Γ` using `X.Γ.one_mem`. Establish `hm` using `X.χ_mul la 1 h1 1 h1`. Rewrite `hm` using `[mul_one]`. Take `⟨n, hn, hf⟩` from `X.χ_fin la`. Establish `hne : X.χ la 1 ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hf 1 h1` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one this`. Conclude with `mul_left_cancel₀ hne (hm.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_one (X : Data E r) (la : Wt X.Ψ r) : X.χ la 1 = 1 := by
   have h1 : (1 : GL (Fin r) E) ∈ X.Γ := X.Γ.one_mem
@@ -163,11 +163,11 @@ theorem chi_one (X : Data E r) (la : Wt X.Ψ r) : X.χ la 1 = 1 := by
   exact mul_left_cancel₀ hne (hm.symm.trans (mul_one _).symm)
 
 /- English proof (translation)
-Establish `sw : ∀ f : Fin r → Fin r → Fin r → Fin r → ℂ, ∑ a, ∑ b, ∑ k, ∑ l, f a b k l = ∑ k, ∑ l, ∑ a, ∑ b, f a b k l`. Introduce `f`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hermC, gram, col, Matrix.of_apply, Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [map_sum, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_comm`. Use `_ = ∑ k, ∑ l, ∑ a, ∑ b, P a k * v k * τ (G a b) * conj (P b l * w l) := sw _`. Use `_ = _ := by`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hermC_mulVec (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin r) (Fin r) ℂ)
     (v w : Fin r → ℂ) :
@@ -193,21 +193,21 @@ theorem hermC_mulVec (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matr
         rw [map_mul]; ring
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h0, hne⟩`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ : E →+* ℂ, τ ∈ X.Ψ := by`. Set `τ0 : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Distinguish the cases in `h : τ0 ∈ X.Ψ`. Conclude with `⟨τ0, h⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `⟨ComplexEmbedding.conjugate τ0, (X.cmType _).2 ?_⟩` and prove the remaining obligations. Simplify using `using h`. Take `⟨P, hP, hg⟩` from `X.signature ⟨τ, hτ⟩`. Use `set u : Fin r → ℂ := fun a => τ (ξ a) with hu_def`. Establish `hu : hermC τ X.Gm u u = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg τ h0` as an intermediate fact. Simplify using `only [herm, cc, map_sum, map_mul, map_zero, IsCMField.complexEmbedding_complexConj] at this`. Simplify `this` using `[hermC, u]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, hsg⟩ : ∃ e : ℂ, e ≠ 0 ∧ ∀ a : Fin r, ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) = e := by`. Break down `hp with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨-1, by norm_num, fun a => by simp [sgn, h]⟩`. Conclude with `⟨1, one_ne_zero, fun a => by simp [sgn, h, a.isLt]⟩`. Use `set v := P⁻¹.mulVec u with hv_def`. Establish `hPv : P.mulVec v = u`. Rewrite using `[hv_def, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hP), Matrix.one_mulVec]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : hermC τ X.Gm u u = e * ∑ a, v a * conj (v a)`. Rewrite using `[← hPv, hermC_mulVec, hg]`. Simplify using `only [Matrix.diagonal_apply, hsg, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : v = 0`. Establish `h1 : ∑ a, (Complex.normSq (v a) : ℂ) = 0`. Use `hsum.symm.trans hu` as an intermediate fact. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `absurd h he`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[Complex.mul_conj]`. Establish `h2 : ∑ a, Complex.normSq (v a) = 0` using `by exact_mod_cast h1`. Rewrite `h2` using `[Finset.sum_eq_zero_iff_of_nonneg (fun a _ => Complex.normSq_nonneg _)]`. Use function extensionality and compare the values at `a`. Simplify using `using h2 a (Finset.mem_univ _)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu0 : u = 0` using `by rw [← hPv, hv, Matrix.mulVec_zero]`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `congrFun hu0 a` as an intermediate fact. Simplify `this` using `[u]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem not_iso (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (ξ : Fin r → E) : ¬ X.IsIso ξ := by
   rintro ⟨-, h0, hne⟩
@@ -253,11 +253,11 @@ theorem not_iso (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (ξ : Fin r → E) :
   simpa [u] using this
 
 /- English proof (translation)
-Use `⟨⟨⟨detPow_diff X a, ?_, ?_⟩, ⟨_, fun x hx => (pnorm_detPow X hx la a hla).le⟩⟩, fun ξ hξ => absurd hξ (hdef ξ)⟩` and prove the remaining obligations. Introduce `x _ b hb`. Unfold `detPow bchar`. Establish `hb' : ∀ τ : X.Ψ, (mat b τ).det = ∏ i, b τ i i` using `fun τ => Matrix.det_of_upperTriangular (fun i j hij => (hb τ).2 i j hij)`. Establish `e1 : ∀ τ : X.Ψ, (mat (rmul x b) τ).det ^ a = (mat x τ).det ^ a * ∏ i, b τ i i ^ la τ i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[show mat (rmul x b) τ = mat x τ * mat b τ from rfl, Matrix.det_mul, mul_zpow, hb' τ]`. Simplify using `only [hla]`. Rewrite using `[Finset.prod_zpow]`. Simplify using `only [e1, Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ x _`. Rewrite using `[hΓ γ hγ, lact_one, chi_one, one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_mem_SS (X : Data E r) (hΓ : ∀ γ ∈ X.Γ, γ = 1) (hdef : ∀ ξ, ¬ X.IsIso ξ) (la : Wt X.Ψ r)
     (a : ℤ) (hla : ∀ τ i, la τ i = a) : detPow X.Ψ a ∈ X.SS la := by
@@ -278,9 +278,9 @@ theorem detPow_mem_SS (X : Data E r) (hΓ : ∀ γ ∈ X.Γ, γ = 1) (hdef : ∀
     rw [hΓ γ hγ, lact_one, chi_one, one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hΓ hp s x hx`. Use `⟨detPow X.Ψ (if X.p0 = 0 then ((s / 2 : ℕ) : ℤ) else -((s / 2 : ℕ) : ℤ)), detPow_mem_SS X hΓ (not_iso X hp) _ _ ?_, ?_⟩` and prove the remaining obligations. Introduce `τ i`. Distinguish the cases in `h0 : X.p0 = 0`. Simplify using `[deMul, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h : X.p0 = r` using `hp.resolve_left h0`. Establish `hr : r ≠ 0` using `h ▸ h0`. Simplify using `[deMul, h0, h, hr, i.isLt]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (hx τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (∀ γ ∈ X.Γ, γ = 1) → (X.p0 = 0 ∨ X.p0 = r) → ∀ s : ℕ, ∀ x ∈ X.dom,

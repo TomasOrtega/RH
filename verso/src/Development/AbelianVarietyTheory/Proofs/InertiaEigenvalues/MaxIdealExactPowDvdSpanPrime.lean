@@ -4,17 +4,15 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ l e _ la hmax hin hout`. Establish `hex : ∃ k, ((l : ℕ) : 𝓞 L) ∉ la ^ (k + 1)` using `⟨e, hout⟩`. Establish `hspec : ((l : ℕ) : 𝓞 L) ∉ la ^ (Nat.find hex + 1)` using `Nat.find_spec hex`. Establish `hle : Nat.find hex ≤ e` using `Nat.find_min' hex hout`. Establish `hpos : 0 < Nat.find hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos (Nat.find hex) with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hspec` using `[h, zero_add, pow_one]`. Conclude with `hspec hin`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ((l : ℕ) : 𝓞 L) ∈ la ^ Nat.find hex`. Establish `h1` using `Nat.find_min hex (Nat.sub_lt hpos one_pos)`. Rewrite `h1` using `[not_not]`. Establish `h4 : Nat.find hex - 1 + 1 = Nat.find hex` using `by omega`. Rewrite `h1` using `[h4]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : la ^ Nat.find hex ∣ Ideal.span {((l : ℕ) : 𝓞 L)}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hmem`. Take `⟨J, hJ⟩` from `hdvd`. Use `⟨Nat.find hex, J, hpos, hle, ?_, hJ⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hJle : J ≤ la`. Establish `h2` using `hmax.eq_of_le hne le_sup_left`. Combine the equalities or inequalities in the displayed calculation. Apply `hspec` to reduce the goal to its premises.
-
-Establish `h3 : Ideal.span {((l : ℕ) : 𝓞 L)} ≤ la ^ (Nat.find hex + 1)`. Rewrite using `[hJ, pow_succ]`. Conclude with `Ideal.mul_mono_right hJle`. Conclude with `h3 (Ideal.subset_span (Set.mem_singleton _))`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maxIdeal_exact_pow_dvd_span_prime : ∀ (L : Type) [Field L] [NumberField L] (l e : ℕ), l.Prime → ∀ (la : Ideal (𝓞 L)) [la.IsMaximal], ((l : ℕ) : 𝓞 L) ∈ la → ((l : ℕ) : 𝓞 L) ∉ la ^ (e + 1) → ∃ (e' : ℕ) (J : Ideal (𝓞 L)), 0 < e' ∧ e' ≤ e ∧ la ⊔ J = ⊤ ∧ Ideal.span {((l : ℕ) : 𝓞 L)} = la ^ e' * J := by
   intro L _ _ l e _ la hmax hin hout

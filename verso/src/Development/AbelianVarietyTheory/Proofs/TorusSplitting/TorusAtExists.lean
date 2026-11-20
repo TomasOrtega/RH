@@ -13,13 +13,13 @@ namespace GlobalTheory
 
 open NumberField in
 /- English proof (translation)
-Establish `hle : Submodule.span ℂ (Set.range fun a : Fin i => _root_.ReciprocityTheory.ChartRestriction.G.FD.col (M * B) (Fin.castLE hi a)) ≤ Submodule.span ℂ (Set.range fun a : Fin i => _root_.ReciprocityTheory.ChartRestriction.G.FD.col M (Fin.castLE hi a))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `hcol : _root_.ReciprocityTheory.ChartRestriction.G.FD.col (M * B) (Fin.castLE hi c) = ∑ a, B a (Fin.castLE hi c) • _root_.ReciprocityTheory.ChartRestriction.G.FD.col M a`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Finset.sum_apply, mul_comm]`. Use `show _root_.ReciprocityTheory.ChartRestriction.G.FD.col (M * B) (Fin.castLE hi c) ∈ _`. Rewrite using `[hcol]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : (a : ℕ) < i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨a, ha⟩, rfl⟩)`. Rewrite using `[hB a _ (by rw [Fin.lt_def]; simp only [Fin.coe_castLE]; omega), zero_smul]`. Conclude with `zero_mem _`. Apply `Submodule.eq_of_le_of_finrank_le hle` to reduce the goal to its premises. Establish `h1` using `finrank_span_eq_card (R := ℂ) (hli.comp _ (Fin.castLE_injective hi))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : Module.finrank ℂ (Submodule.span ℂ (Set.range fun a : Fin i => _root_.ReciprocityTheory.ChartRestriction.G.FD.col M (Fin.castLE hi a))) ≤ i` using `(finrank_range_le_card (R := ℂ) (fun a : Fin i => _root_.ReciprocityTheory.ChartRestriction.G.FD.col M (Fin.castLE hi a))).trans_eq (Fintype.card_fin i)`. Simplify using `only [Function.comp_def, Fintype.card_fin] at h1`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private lemma span_col_mul_castLE_eq_span_col {r i : ℕ} (hi : i ≤ r)
     (M B : Matrix (Fin r) (Fin r) ℂ) (hB : ∀ a c : Fin r, c < a → B a c = 0)
@@ -52,11 +52,11 @@ private lemma span_col_mul_castLE_eq_span_col {r i : ℕ} (hi : i ≤ r)
 
 open NumberField in
 /- English proof (translation)
-Introduce `x hx`. Establish `hb` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx`. Establish `ho` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.IsOrtho at ho`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Bor at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Establish `horth : ∀ (τ : X.Ψ) (a c : Fin r), _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (↑τ) X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.col (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheo …`. Introduce `τ a c`. Simplify `congrFun (congrFun (ho τ) a) c` using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.gram, Matrix.diagonal_apply]`. Use `⟨fun τ a => _root_.ReciprocityTheory.ChartRestriction.G.FD.col (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x)) τ) a, horth, fun τ i hi => ?_⟩` and prove the remaining obligations. Establish `hli` using `_root_.ReciprocityTheory.ChartRestriction.G.I2.TorusAtDataPf.e_linInd X τ _ (horth τ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `span_col_mul_castLE_eq_span_col hi (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) τ) (fun a c h => (hb τ).2 a c h) hli`.
+A detailed English derivation is pending.
 -/
 private lemma exists_frame_span_castLE_eq_span_col (E : Type) [Field E] [NumberField E]
     [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) :
@@ -84,15 +84,15 @@ private lemma exists_frame_span_castLE_eq_span_col (E : Type) [Field E] [NumberF
 
 open NumberField in
 /- English proof (translation)
-Break down `X.κ0_xi with h | h` into its components or cases. Use `⟨1, Or.inl rfl, fun u v => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.TraceFormIndependence.trace_re X, one_mul]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hy : (τ.1 X.ξ0).im < 0`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `X.κ0_sign τ` as an intermediate fact. Rewrite `this` using `[h, map_mul, map_ofNat]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre` using `_root_.GlobalTheory.re_map_xi_eq_zero X τ.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[_root_.GlobalTheory.c_eq_two_mul_abs_im, abs_of_neg hy, _root_.GlobalTheory.hermC_emb_eq_map_herm, map_mul, Complex.mul_re, hre]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-1, Or.inr rfl, fun u v => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.TraceFormIndependence.trace_re X, neg_one_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : 0 < (τ.1 X.ξ0).im`. Use `X.κ0_sign τ` as an intermediate fact. Rewrite `this` using `[h, map_neg, map_mul, map_ofNat]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hre` using `_root_.GlobalTheory.re_map_xi_eq_zero X τ.1`. Rewrite using `[_root_.GlobalTheory.c_eq_two_mul_abs_im, abs_of_pos hy, _root_.GlobalTheory.hermC_emb_eq_map_herm, map_mul, Complex.mul_re, hre]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma im_hermC_emb_eq_sign_mul_trace (E : Type) [Field E] [NumberField E]
     [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) :
@@ -128,7 +128,7 @@ private lemma im_hermC_emb_eq_sign_mul_trace (E : Type) [Field E] [NumberField E
 open NumberField in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.torusAtExists_of_parts exists_frame_span_castLE_eq_span_col _root_.GlobalTheory.CMLattice.exists_basis_lattice im_hermC_emb_eq_sign_mul_trace _root_.GlobalTheory.exists_torus_coordinates _root_.GlobalTheory.ThetaExist.exists_theta_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.torusAtExists : _root_.ReciprocityTheory.ChartRestriction.G.I2.TorusAtExistsStatement :=
   _root_.GlobalTheory.torusAtExists_of_parts exists_frame_span_castLE_eq_span_col

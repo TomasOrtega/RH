@@ -18,34 +18,32 @@ def AnnAt : Prop :=
       sc (E := E) v (dV v) * y ∈ OEv (E := E) v
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[VolTO]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem volTO_eq (ι : Type) : VolTO (E := E) v ι = Set.univ.pi fun _ => OEv (E := E) v := by
   ext x
   simp [VolTO]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `Formalism.L2.SG.Pf.NcVal.VolUH.top_facts (E := E) v ι`. Establish `hunit : Valued.v (dV v) = 1` using `Formalism.L2.SG.Pf.NcVal.VolTU.val_eq_one_of_absV v hd`. Establish `hD1 : PI.UnitaryGroupMassFormula.LocJacTyp.Sd.D1 (E` using `E) v ψ = OEv (E := E) v := by`. Use extensionality with `y`. Use `show (∀ x ∈ OEv (E := E) v, _) ↔ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hann y, Formalism.L2.SG.Pf.NcVal.VolTU.unit_mul_mem_iff v hunit]`. Establish `hone : (1 : Fv F v ⊗[F] E) ∈ OEv (E` using `E) v := by`. Use `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.inclR_mem (E := E) v 1` as an intermediate fact. Simplify using `only [OneMemClass.coe_one, map_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr1 : Algebra.trace (Fv F v) (Fv F v ⊗[F] E) 1 = 2`. Use `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.trace_inclR (E := E) v 1` as an intermediate fact. Simplify using `only [map_one] at this`. Rewrite using `[this, show (1 : E) = algebraMap F E 1 from (map_one _).symm, Algebra.trace_algebraMap, hfin]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_ofNat _ 2`. Establish `hOK : PI.UnitaryGroupMassFormula.LocJacTyp.Sd.OpenKer v ψ`. Use `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.openKer_of v ψ 2 two_ne_zero ?_` and prove the remaining obligations. Introduce `c hc`. Establish `hy : sc (E` using `E) v c * 1 ∈ OEv (E := E) v := Formalism.L2.SG.Pf.NcVal.VolTU.sc_mul_mem v hc hone`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : sc (E` using `E) v c * 1 ∈ PI.UnitaryGroupMassFormula.LocJacTyp.Sd.D1 (E := E) v ψ := by rw [hD1]; exact hy`. Use `hmem 1 hone` as an intermediate fact. Rewrite `this` using `[one_mul, Formalism.L2.SG.Pf.NcVal.VolTU.sc_mul_eq_smul, map_smul, htr1, smul_eq_mul]`. Conclude with `this`. Establish `hnt : ∃ r : Fv F v, psiV F ψ v r ≠ 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨t0, ht0⟩` from `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.exists_not_mem_oev (E := E) v`. Establish `: t0 ∉ PI.UnitaryGroupMassFormula.LocJacTyp.Sd.D1 (E` using `E) v ψ := by rw [hD1]; exact ht0`. Simplify using `only [PI.UnitaryGroupMassFormula.LocJacTyp.Sd.D1, Set.mem_setOf_eq, not_forall] at this`. Take `⟨x, _, hx⟩` from `this`. Conclude with `⟨_, hx⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hex` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.exists_sd (E := E) v ψ hOK hnt ι`. Establish `hsd : SelfDual (sdE (E` using `E) ψ v ι) (PI.UnitaryGroupMassFormula.LocJacTyp.Sd.chi v ψ ι) := by`. Establish `hex' : ∃ μ : Measure (ι → Fv F v ⊗[F] E), SelfDual μ fun x y : ι → Fv F v ⊗[F] E => psiV F ψ v (∑ i : ι, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x i * y i))` using `hex`. Unfold `sdE`. Rewrite using `[dif_pos hex']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `hex'.choose_spec`. Use `haveI : (sdE (E := E) ψ v ι).IsAddHaarMeasure := hsd.1`. Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `hDO : PI.UnitaryGroupMassFormula.LocJacTyp.Sd.Dbox (E` using `E) v ψ ι = PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι := by`. Simplify using `only [PI.UnitaryGroupMassFormula.LocJacTyp.Sd.Dbox, PI.UnitaryGroupMassFormula.LocJacTyp.Obox, hD1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hOc` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isCompact_obox (E := E) v ι`. Establish `hOo` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isOpen_obox (E := E) v ι`. Establish `hfin' : sdE (E` using `E) ψ v ι (PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι) < ⊤ := hOc.measure_lt_top`. Establish `ht` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.sd_test (E := E) v ψ ι _ hsd (by rw [hDO]; exact hOo.measurableSet) (by rw [hDO]; exact hfin')`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `ht` using `[hDO]`. Establish `hpos : 0 ≤ (sdE (E` using `E) ψ v ι).real (PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι) := measureReal_nonneg`. Establish `hr : (sdE (E` using `E) ψ v ι).real (PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι) = 1 := by`. Use polynomial arithmetic with `[sq_nonneg ((sdE (E := E) ψ v ι).real (PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι) - 1)]`. Use `show sdE (E := E) ψ v ι (VolTO (E := E) v ι) = 1`.
-
-Rewrite using `[volTO_eq]`. Express the relevant statement in the definitionally equal form `sdE (E := E) ψ v ι (PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι) = 1`. Rewrite using `[← ENNReal.ofReal_toReal hfin'.ne]`. Simplify `congrArg ENNReal.ofReal hr` using `[measureReal_def]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sd_facts (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (hann : AnnAt (E := E) ψ v)
     (hd : absV v (dV v) = 1) (ι : Type) [Fintype ι] :
@@ -110,23 +108,21 @@ theorem sd_facts (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (hann : A
   simpa [measureReal_def] using congrArg ENNReal.ofReal hr
 
 /- English proof (translation)
-Introduce `b S`. Take `⟨hH, hS, hV⟩` from `sd_facts (E := E) ψ v hψ hfin hann hd ι`. Use `set μ := sdE (E := E) ψ v ι with hμ`. Establish `hgne : ((g : Fv F v))⁻¹ ≠ 0` using `inv_ne_zero (Formalism.L2.SG.Pf.NcVal.VolTU.natCast_ne_zero v hg0)`. Use `set T : Set (ι → Fv F v ⊗[F] E) := {u | (fun i => sc (E := E) v ((g : Fv F v))⁻¹ * u i) ∈ S} with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : μ {w : ι → Fv F v ⊗[F] E | (fun i => (w i - b i) * sc (E` using `E) v ((g : Fv F v))⁻¹) ∈ S} = μ T := by`. Use `Formalism.L2.SG.Pf.NcVal.VolUH.sub_pre (E := E) v ι μ b T` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `w`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hT, Set.mem_setOf_eq, mul_comm]`. Establish `h2` using `Formalism.L2.SG.Pf.NcVal.VolUH.sc_pre (E := E) v ι μ hV (fun _ => ((g : Fv F v))⁻¹) (fun _ => hgne) S`. Rewrite using `[h1, hT, h2]`. Use `congr 1`. Establish `hset : {w : ι → Fv F v ⊗[F] E | ∀ i, sc (E` using `E) v ((g : Fv F v))⁻¹ * w i ∈ OEv (E := E) v} = Set.univ.pi fun _ : ι => {c : Fv F v ⊗[F] E | sc (E := E) v ((g : Fv F v))⁻¹ * c ∈ OEv (E := E) v} := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[hset]`. Establish `hbs` using `PI.UnitaryGroupMassFormula.LocJacTyp.boxScale (E := E) v hfin μ (fun _ => ((g : Fv F v))⁻¹) (fun _ => hgne)`. Establish `hO : μ (PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hV` as an intermediate fact. Simplify using `only [VolTOne, volTO_eq] at this`. Conclude with `this`. Establish `hsub : (Set.univ.pi fun _ : ι => {c : Fv F v ⊗[F] E | sc (E` using `E) v ((g : Fv F v))⁻¹ * c ∈ OEv (E := E) v}) ⊆ PI.UnitaryGroupMassFormula.LocJacTyp.Obox v ι := by`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_pi, Set.mem_univ, Set.mem_setOf_eq, forall_true_left] at hw`. Simplify using `only [PI.UnitaryGroupMassFormula.LocJacTyp.Obox, Set.mem_pi, Set.mem_univ, forall_true_left]`. Introduce `i`. Use `Formalism.L2.SG.Pf.NcVal.VolTU.sc_mul_mem (E := E) v (Formalism.L2.SG.Pf.NcVal.VolTU.natCast_memO v g) (hw i)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← Formalism.L2.SG.Pf.NcVal.VolTU.sc_mul, mul_inv_cancel₀ (Formalism.L2.SG.Pf.NcVal.VolTU.natCast_ne_zero v hg0), Formalism.L2.SG.Pf.NcVal.VolTU.sc_one, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `this`. Establish `hfin' : μ (Set.univ.pi fun _ : ι => {c : Fv F v ⊗[F] E | sc (E` using `E) v ((g : Fv F v))⁻¹ * c ∈ OEv (E := E) v}) ≠ ⊤ := ne_top_of_le_ne_top (by rw [hO]; exact ENNReal.one_ne_top) (measure_mono hsub)`. Rewrite using `[← ENNReal.ofReal_toReal hfin']`. Express the relevant statement in the definitionally equal form `ENNReal.ofReal (μ (Set.univ.pi fun i : ι => {c : Fv F v ⊗[F] E | PI.LocJacTyp.sc v ((fun _ => ((g : Fv F v))⁻¹) i) * c ∈ PI.LocJacTyp.OEv v})).toReal = _`. Rewrite using `[hbs, hO]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `habs : PI.LocJacTyp.absV v ((g : Fv F v))⁻¹ = (g : ℝ)`. Rewrite using `[PI.UnitaryGroupMassFormula.LocJacTyp.absV_inv]`. Express the relevant statement in the definitionally equal form `(absV v (g : Fv F v))⁻¹ = _`. Rewrite using `[hg, inv_inv]`. Simplify using `only [habs, ENNReal.toReal_one, one_mul, Finset.prod_const, Finset.card_univ]`.
-
-Rewrite using `[← inv_pow, ← pow_mul, ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_inv_of_pos (by positivity)]`. Rewrite using `[ENNReal.ofReal_natCast, ← ENNReal.inv_pow, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volTAff_of (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (hann : AnnAt (E := E) ψ v)
     (hd : absV v (dV v) = 1) {g : ℕ} (hg0 : g ≠ 0) (hg : absV v (g : Fv F v) = (g : ℝ)⁻¹)
@@ -180,13 +176,13 @@ theorem volTAff_of (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (hann :
   rw [ENNReal.ofReal_natCast, ← ENNReal.inv_pow, mul_comm]
 
 /- English proof (translation)
-Introduce `S`. Take `⟨hH, hS, hV⟩` from `sd_facts (E := E) ψ v hψ hfin hann hd (Fin (r + 1) × Fin (r + 1))`. Establish `hunit : Valued.v (dV v) = 1` using `Formalism.L2.SG.Pf.NcVal.VolTU.val_eq_one_of_absV v hd`. Establish `hz : ∀ p : Fin (r + 1) × Fin (r + 1), alp v r p.1 * alp v r p.2 ≠ 0`. Introduce `p h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Formalism.L2.SG.Pf.NcVal.VolTU.val_alp v hunit r p.1`. Establish `h2` using `Formalism.L2.SG.Pf.NcVal.VolTU.val_alp v hunit r p.2`. Establish `: Valued.v (alp v r p.1 * alp v r p.2) = 1` using `by rw [map_mul, h1, h2, one_mul]`. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `Formalism.L2.SG.Pf.NcVal.VolUH.sc_pre (E := E) v (Fin (r + 1) × Fin (r + 1)) (sdE (E := E) ψ v _) hV (fun p => alp v r p.1 * alp v r p.2) hz S`. Establish `hset : {w : Fin (r + 1) × Fin (r + 1) → Fv F v ⊗[F] E | ∀ i, sc (E` using `E) v (alp v r i.1 * alp v r i.2) * w i ∈ OEv (E := E) v} = VolTO (E := E) v _ := by`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, VolTO]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Formalism.L2.SG.Pf.NcVal.VolTU.unit_mul_mem_iff` to reduce the goal to its premises. Rewrite using `[map_mul, Formalism.L2.SG.Pf.NcVal.VolTU.val_alp v hunit, Formalism.L2.SG.Pf.NcVal.VolTU.val_alp v hunit, one_mul]`. Rewrite `key` using `[hset, hV, one_mul]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volTLocPres_of (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (hann : AnnAt (E := E) ψ v)
     (hd : absV v (dV v) = 1) (r : ℕ) : VolTLocPres (E := E) ψ v r := by
@@ -214,18 +210,16 @@ theorem volTLocPres_of (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (ha
   exact key
 
 /- English proof (translation)
-Rewrite using `[volTO_eq]`. Conclude with `MeasurableSet.univ_pi fun _ => (PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isOpen_oev (E := E) v).measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volTO_meas (ι : Type) [Fintype ι] : MeasurableSet (VolTO (E := E) v ι) := by
   rw [volTO_eq]
   exact MeasurableSet.univ_pi fun _ => (PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isOpen_oev (E := E) v).measurableSet
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `Formalism.L2.SG.Pf.NcVal.VolUH.top_facts (E := E) v (UIdx r)`. Establish `hO` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isOpen_oev (E := E) v`. Establish `hc : Continuous fun x : Fv F v ⊗[F] E => x * sc (E` using `E) v ((g : Fv F v))⁻¹ := by`. Repeatedly rewrite using `[mul_comm _ (sc (E := E) v _), Formalism.L2.SG.Pf.NcVal.VolTU.sc_mul_eq_smul]`. Conclude with `continuous_const_smul _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsOpen.measurableSet` to reduce the goal to its premises. Simplify using `only [VolTUSet, Set.setOf_and]`. Apply `IsOpen.inter` to reduce the goal to its premises. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun q => hO.preimage ((continuous_apply q).comp continuous_fst)`.
-
-Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun q => hO.preimage (hc.comp (((continuous_apply q).comp continuous_snd).sub ((continuous_apply q).comp continuous_fst)))`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volTUSet_meas {g : ℕ} (hg0 : g ≠ 0) (r : ℕ) : MeasurableSet (VolTUSet (E := E) v g r) := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := Formalism.L2.SG.Pf.NcVal.VolUH.top_facts (E := E) v (UIdx r)
@@ -243,7 +237,7 @@ theorem volTUSet_meas {g : ℕ} (hg0 : g ≠ 0) (r : ℕ) : MeasurableSet (VolTU
       (hc.comp (((continuous_apply q).comp continuous_snd).sub ((continuous_apply q).comp continuous_fst)))
 
 /- English proof (translation)
-Take `⟨-, hS, hO⟩` from `sd_facts ψ v hψ hfin hann hd (UIdx r)`. Conclude with `volTProdU_of ψ v g r (volTUSet_meas v hg0 r) (volTO_meas v (UIdx r)) (volTAff_of ψ v hψ hfin hann hd hg0 hg (UIdx r)) hO`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem volTProdU_of' (hψ : IsCharAF F ψ) (hfin : Module.finrank F E = 2) (hann : AnnAt (E := E) ψ v)
     (hd : absV v (dV v) = 1) {g : ℕ} (hg0 : g ≠ 0) (hg : absV v (g : Fv F v) = (g : ℝ)⁻¹) (r : ℕ) :

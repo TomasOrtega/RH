@@ -8,21 +8,21 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UsCost
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le one_pos (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 lemma lsz_pos {k r : ℕ} (X : B.Mat k r) : 0 < lsz X := lt_of_lt_of_le one_pos (le_max_left _ _)
 
 def sc {k r : ℕ} (X : B.Mat k r) : B.Mat k r := (((lsz X)⁻¹ : ℝ) : ℂ) • X
 
 /- English proof (translation)
-Unfold `sc`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (lsz_pos X).ne', Complex.ofReal_one, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sc_back {k r : ℕ} (X : B.Mat k r) : ((lsz X : ℝ) : ℂ) • sc X = X := by
   unfold sc
   rw [smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (lsz_pos X).ne', Complex.ofReal_one, one_smul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma entry_le_lsz {k r : ℕ} (X : B.Mat k r) (a b : Fin (2 * r + k + 1)) : ‖X a b‖ ≤ lsz X := by
   calc ‖X a b‖ = ‖(Matrix.of.symm X) a b‖ := rfl
@@ -31,7 +31,7 @@ lemma entry_le_lsz {k r : ℕ} (X : B.Mat k r) (a b : Fin (2 * r + k + 1)) : ‖
     _ ≤ lsz X := le_max_right _ _
 
 /- English proof (translation)
-Establish `hp` using `lsz_pos X`. Establish `h` using `entry_le_lsz X a b`. Establish `e : sc X a b = (((lsz X)⁻¹ : ℝ) : ℂ) * X a b` using `rfl`. Rewrite using `[e, norm_mul, Complex.norm_of_nonneg (inv_nonneg.2 hp.le), inv_mul_le_iff₀ hp, mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sc_entry {k r : ℕ} (X : B.Mat k r) (a b : Fin (2 * r + k + 1)) : ‖sc X a b‖ ≤ 1 := by
   have hp := lsz_pos X
@@ -41,9 +41,9 @@ lemma sc_entry {k r : ℕ} (X : B.Mat k r) (a b : Fin (2 * r + k + 1)) : ‖sc X
   exact h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hX`. Establish `hs : star ((((lsz X)⁻¹ : ℝ) : ℂ)) = (((lsz X)⁻¹ : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Use `⟨?_, fun i b hb hi => ?_⟩` and prove the remaining obligations. Unfold `B.inLie at h1 ⊢`. Unfold `sc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`. Establish `e : sc X i b = (((lsz X)⁻¹ : ℝ) : ℂ) * X i b` using `rfl`. Rewrite using `[e, h2 i b hb hi, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma sc_inLieP {k j ρ : ℕ} {X : B.Mat k (j + ρ)} (hX : inLieP k j ρ X) : inLieP k j ρ (sc X) := by
   obtain ⟨h1, h2⟩ := hX
@@ -58,9 +58,9 @@ lemma sc_inLieP {k j ρ : ℕ} {X : B.Mat k (j + ρ)} (hX : inLieP k j ρ X) : i
 def scx {k r : ℕ} (x : Bool × B.Mat k r) : Bool × B.Mat k r := (x.1, sc x.2)
 
 /- English proof (translation)
-Simplify using `only [B.LdV]`. Establish `e : ∀ t : ℝ, ((t : ℂ) • (((c : ℝ) : ℂ) • Y)) = (((c * t : ℝ)) : ℂ) • Y`. Introduce `t`. Rewrite using `[smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[deriv_comp_mul_left (𝕜 := ℝ) c (fun s : ℝ => F (NormedSpace.exp (-((s : ℂ) • Y)) * g)) 0, mul_zero, Complex.coe_smul]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma LdV_ofReal_smul {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (c : ℝ) (Y : B.Mat k r) (F : B.Mat k r → E) (g : B.Mat k r) :
@@ -73,9 +73,9 @@ private lemma LdV_ofReal_smul {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [No
     mul_zero, Complex.coe_smul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.RdV]`. Establish `e : ∀ t : ℝ, ((t : ℂ) • (((c : ℝ) : ℂ) • Y)) = (((c * t : ℝ)) : ℂ) • Y`. Introduce `t`. Rewrite using `[smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[deriv_comp_mul_left (𝕜 := ℝ) c (fun s : ℝ => F (g * NormedSpace.exp ((s : ℂ) • Y))) 0, mul_zero, Complex.coe_smul]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma RdV_ofReal_smul {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (c : ℝ) (Y : B.Mat k r) (F : B.Mat k r → E) (g : B.Mat k r) :
@@ -88,9 +88,7 @@ private lemma RdV_ofReal_smul {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [No
     mul_zero, Complex.coe_smul]
 
 /- English proof (translation)
-Take `⟨b, X⟩` from `x`. Establish `hX : X = ((lsz X : ℝ) : ℂ) • sc X` using `(sc_back X).symm`. Consider the cases of `b`. Use `show Formalism.REAL.RdV X F g = ((lsz X : ℝ) : ℂ) • Formalism.REAL.RdV (sc X) F g conv_lhs => rw [hX]`. Conclude with `RdV_ofReal_smul _ _ _ _`.
-
-Use `show B.LdV X F g = ((lsz X : ℝ) : ℂ) • B.LdV (sc X) F g conv_lhs => rw [hX]`. Conclude with `LdV_ofReal_smul _ _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 private lemma Dx_eq_lsz_smul_Dx_scx {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (x : Bool × B.Mat k r) (F : B.Mat k r → E) (g : B.Mat k r) :
@@ -106,9 +104,9 @@ private lemma Dx_eq_lsz_smul_Dx_scx {k r : ℕ} {E : Type*} [NormedAddCommGroup 
     exact LdV_ofReal_smul _ _ _ _
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => funext g`. Simplify using `[P.BetaSesquilinearity.Dw]`. Consider the case `cons x w ih`. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : P.BetaSesquilinearity.Dw (x :: w) f = P.BetaSesquilinearity.Dx x (P.BetaSesquilinearity.Dw w f)` using `rfl`. Establish `h2 : P.BetaSesquilinearity.Dw ((x :: w).map scx) f = P.BetaSesquilinearity.Dx (scx x) (P.BetaSesquilinearity.Dw (w.map scx) f)` using `rfl`. Rewrite using `[h1, h2, Dx_eq_lsz_smul_Dx_scx, ih]`. Establish `h3 : P.BetaSesquilinearity.Dx (scx x) (fun g => (((w.map (fun x => lsz x.2)).prod : ℝ) : ℂ) • P.BetaSesquilinearity.Dw (w.map scx) f g) = fun g => (((w.map (fun x => lsz x.2)).prod : ℝ) : ℂ) • P.BetaSesquilinearity.Dx (scx x) (P.BetaSesquilinearity.Dw (w.map scx) f) g` using `P.BetaSesquilinearity.Dw_smul _ [scx x] _`. Rewrite using `[h3, List.map_cons, List.prod_cons, Complex.ofReal_mul, mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma dw_scale {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (w : List (Bool × B.Mat k r)) (f : B.Mat k r → E) :
@@ -126,28 +124,28 @@ lemma dw_scale {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
     rw [h3, List.map_cons, List.prod_cons, Complex.ofReal_mul, mul_smul]
 
 /- English proof (translation)
-The claim follows from `congrFun (dw_scale w f) g`.
+A detailed English derivation is pending.
 -/
 lemma dw_scale_at {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (w : List (Bool × B.Mat k r)) (f : B.Mat k r → E) (g : B.Mat k r) :
     P.BetaSesquilinearity.Dw w f g = (((w.map (fun x => lsz x.2)).prod : ℝ) : ℂ) • P.BetaSesquilinearity.Dw (w.map scx) f g := congrFun (dw_scale w f) g
 
 /- English proof (translation)
-Simplify using `[P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR, List.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_lsz_LR {k r : ℕ} (u v : List (B.Mat k r)) :
     (P.BetaSesquilinearity.wL u ++ P.BetaSesquilinearity.wR v).map (fun x => lsz x.2) = (u ++ v).map lsz := by
   simp [P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR, List.map_map, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `[P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR, scx, List.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_scx_LR {k r : ℕ} (u v : List (B.Mat k r)) :
     (P.BetaSesquilinearity.wL u ++ P.BetaSesquilinearity.wR v).map scx = P.BetaSesquilinearity.wL (u.map sc) ++ P.BetaSesquilinearity.wR (v.map sc) := by
   simp [P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR, scx, List.map_map, Function.comp_def]
 
 /- English proof (translation)
-Rewrite using `[P.BetaSesquilinearity.dLR_eq, P.BetaSesquilinearity.dLR_eq, dw_scale_at (P.BetaSesquilinearity.wL u ++ P.BetaSesquilinearity.wR v), map_lsz_LR, map_scx_LR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dLR_scale {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (u v : List (B.Mat k r)) (f : B.Mat k r → E) (g : B.Mat k r) :
@@ -155,11 +153,11 @@ lemma dLR_scale {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ 
   rw [P.BetaSesquilinearity.dLR_eq, P.BetaSesquilinearity.dLR_eq, dw_scale_at (P.BetaSesquilinearity.wL u ++ P.BetaSesquilinearity.wR v), map_lsz_LR, map_scx_LR]
 
 /- English proof (translation)
-Introduce `k j ρ E _ _ F₁ A₁ Q B₁ K hS u v hu hv hl g hg`. Establish `hu' : unitP k j ρ (u.map sc)`. Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Apply the tactic sequence `exact ⟨sc_inLieP (hu Y hY), sc_entry Y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hv' : unitP k j ρ (v.map sc)`. Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Apply the tactic sequence `exact ⟨sc_inLieP (hv Y hY), sc_entry Y⟩`. Establish `hb` using `hS.2.2 (u.map sc) (v.map sc) hu' hv' (by simpa using hl) g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hP : 0 ≤ ((u ++ v).map lsz).prod` using `List.prod_nonneg (fun a ha => by obtain ⟨Y, -, rfl⟩ := List.mem_map.1 ha; exact (lsz_pos Y).le)`. Rewrite using `[dLR_scale, norm_smul, Complex.norm_of_nonneg hP]`. Use `mul_le_mul_of_nonneg_left hb hP` as an intermediate fact. Use polynomial arithmetic with `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem starScale : StarScale := by
   intro k j ρ E _ _ F₁ A₁ Q B₁ K hS u v hu hv hl g hg

@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivative
 namespace PositivityTheory.RgBcC.LfSt
 
 /- English proof (translation)
-The claim follows from `ChainPf.chain_identity_multiplier_kernels GlobalTheory.T.general_linear_group_unimodular GlobalTheory.T.right_derivative_calculus_holds GlobalTheory.T.length_function_facts_hold`.
+A detailed English derivation is pending.
 -/
 theorem chainOf'_holds : PositivityTheory.RgBcC.ChainOf' := ChainPf.chain_identity_multiplier_kernels GlobalTheory.T.general_linear_group_unimodular GlobalTheory.T.right_derivative_calculus_holds GlobalTheory.T.length_function_facts_hold
 

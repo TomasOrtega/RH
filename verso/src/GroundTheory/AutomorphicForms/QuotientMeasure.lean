@@ -9,9 +9,9 @@ namespace GroundTheory.Automorphic
 noncomputable section
 
 /- English proof (translation)
-Set `_` to `IsTopologicalGroup.rightUniformSpace G`. Establish `: IsRightUniformGroup G` using `⟨rfl⟩`. Establish `: CompleteSpace G` using `IsRightUniformGroup.completeSpace_of_weaklyLocallyCompactSpace`. Establish `: (𝓤 G).IsCountablyGenerated`. Rewrite using `[uniformity_eq_comap_nhds_one']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `{}`.
+A detailed English derivation is pending.
 -/
 theorem polishSpace_of_locallyCompact {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] :
@@ -37,20 +37,20 @@ def mk : G → RightCosetSpace Γ := Quotient.mk _
 variable {Γ}
 
 /- English proof (translation)
-The claim follows from `Quotient.eq.trans MulAction.orbitRel_apply @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_mk_iff {g h : G} : mk Γ g = mk Γ h ↔ ∃ γ : Γ, γ • h = g :=
   Quotient.eq.trans MulAction.orbitRel_apply
 
 @[simp]
 /- English proof (translation)
-The claim follows from `mk_eq_mk_iff.2 ⟨γ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mk_smul (γ : Γ) (g : G) : mk Γ (γ • g) = mk Γ g :=
   mk_eq_mk_iff.2 ⟨γ, rfl⟩
 
 /- English proof (translation)
-The claim follows from `mk_smul ⟨γ, hγ⟩ g`.
+A detailed English derivation is pending.
 -/
 theorem mk_mul_of_mem {γ : G} (hγ : γ ∈ Γ) (g : G) : mk Γ (γ * g) = mk Γ g :=
   mk_smul ⟨γ, hγ⟩ g
@@ -58,7 +58,7 @@ theorem mk_mul_of_mem {γ : G} (hγ : γ ∈ Γ) (g : G) : mk Γ (γ * g) = mk �
 variable (Γ)
 
 /- English proof (translation)
-The claim follows from `Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem mk_surjective : Function.Surjective (mk Γ) :=
   Quotient.mk_surjective
@@ -84,7 +84,7 @@ variable (Γ)
 
 @[simp]
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨x, rfl⟩` from `mk_surjective Γ x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem rightMul_one : rightMul Γ 1 = id := by
   funext x
@@ -92,7 +92,7 @@ theorem rightMul_one : rightMul Γ 1 = id := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨x, rfl⟩` from `mk_surjective Γ x`. Simplify using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem rightMul_mul (g h : G) : rightMul Γ (g * h) = rightMul Γ h ∘ rightMul Γ g := by
   funext x
@@ -100,7 +100,7 @@ theorem rightMul_mul (g h : G) : rightMul Γ (g * h) = rightMul Γ h ∘ rightMu
   simp [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[rightMul_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rightMul_rightMul (g h : G) (x : RightCosetSpace Γ) :
     rightMul Γ h (rightMul Γ g x) = rightMul Γ (g * h) x := by
@@ -113,25 +113,25 @@ variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `continuous_quotient_mk'`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mk : Continuous (mk Γ) :=
   continuous_quotient_mk'
 
 /- English proof (translation)
-The claim follows from `MulAction.isOpenQuotientMap_quotientMk`.
+A detailed English derivation is pending.
 -/
 theorem isOpenQuotientMap_mk : IsOpenQuotientMap (mk Γ) :=
   MulAction.isOpenQuotientMap_quotientMk
 
 /- English proof (translation)
-The claim follows from `(isOpenQuotientMap_mk Γ).isOpenMap`.
+A detailed English derivation is pending.
 -/
 theorem isOpenMap_mk : IsOpenMap (mk Γ) :=
   (isOpenQuotientMap_mk Γ).isOpenMap
 
 /- English proof (translation)
-Establish `hq : IsQuotientMap (Prod.map (mk Γ) (id : G → G))` using `((isOpenQuotientMap_mk Γ).prodMap IsOpenQuotientMap.id).isQuotientMap`. Rewrite using `[hq.continuous_iff]`. Conclude with `(continuous_mk Γ).comp (continuous_fst.mul continuous_snd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_rightMul_prod :
     Continuous fun p : RightCosetSpace Γ × G ↦ rightMul Γ p.2 p.1 := by
@@ -141,7 +141,7 @@ theorem continuous_rightMul_prod :
   exact (continuous_mk Γ).comp (continuous_fst.mul continuous_snd)
 
 /- English proof (translation)
-The claim follows from `(continuous_rightMul_prod Γ).comp (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rightMul (g : G) : Continuous (rightMul Γ g) :=
   (continuous_rightMul_prod Γ).comp (continuous_id.prodMk continuous_const)
@@ -161,7 +161,7 @@ instance [SecondCountableTopology G] : SecondCountableTopology (RightCosetSpace 
   ContinuousConstSMul.secondCountableTopology
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.RightCosetSpaceCompact.exists_isCompact_subset_mk_image <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_isCompact_subset_mk_image [LocallyCompactSpace G] {K : Set (RightCosetSpace Γ)}
     (hK : IsCompact K) : ∃ D : Set G, IsCompact D ∧ K ⊆ mk Γ '' D :=
@@ -180,7 +180,7 @@ instance properlyDiscontinuousSMul : ProperlyDiscontinuousSMul Γ G :=
     (Γ.tendsto_coe_cofinite_of_discrete (isDiscrete_iff_discreteTopology.2 ‹_›))
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem t2Space [LocallyCompactSpace G] : T2Space (RightCosetSpace Γ) := inferInstance
 
@@ -190,11 +190,11 @@ instance countable_of_discrete [SecondCountableTopology G] : Countable Γ :=
 end T2
 
 /- English proof (translation)
-Take `⟨U, hUo, hU⟩ : ∃ U : Set G, IsOpen U ∧ Subtype.val ⁻¹' U = ({1} : Set Γ)` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set Γ))`. Establish `h1U : (1 : G) ∈ U`. Establish `: (1 : Γ) ∈ Subtype.val ⁻¹' U` using `by rw [hU]; rfl`. Conclude with `this`. Establish `hUΓ : ∀ γ ∈ Γ, γ ∈ U → γ = 1` using `fun γ hγ hγU ↦ by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (⟨γ, hγ⟩ : Γ) ∈ Subtype.val ⁻¹' U` using `hγU`. Rewrite `this` using `[hU]`. Conclude with `congrArg Subtype.val (Set.mem_singleton_iff.1 this)`. Establish `hW : IsOpen {q : G × G | q.1 * q.2⁻¹ ∈ U}` using `hUo.preimage (continuous_fst.mul continuous_snd.inv)`. Take `⟨u, v, hu, hv, hu1, hv1, huv⟩` from `isOpen_prod_iff.1 hW 1 1 (by simpa using h1U)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨u ∩ v ∩ interior C, (hu.inter hv).inter isOpen_interior, ⟨⟨hu1, hv1⟩, mem_interior_iff_mem_nhds.2 hC⟩, fun a ha ↦ interior_subset ha.2, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb hab`. Use `hUΓ _ hab (huv (Set.mk_mem_prod ha.1.1 hb.1.2))` as an intermediate fact. Conclude with `mul_inv_eq_one.1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_one_mem_injOn {C : Set G} (hC : C ∈ 𝓝 (1 : G)) :
     ∃ V : Set G, IsOpen V ∧ (1 : G) ∈ V ∧ V ⊆ C ∧
@@ -224,27 +224,21 @@ section FundamentalDomain
 variable {Γ} [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `set B : ℕ → Set G := fun i ↦ (· * p i) '' V with hBdef`. Use `set O : ℕ → Set G := fun j ↦ ⋃ γ : Γ, (fun y : G ↦ γ • y) ⁻¹' B j with hOdef`. Use `set E : Set G := ⋃ i, (B i \ ⋃ j, ⋃ (_ : j < i), O j) with hEdef`. Establish `hBo : ∀ i, IsOpen (B i)` using `fun i ↦ isOpenMap_mul_right (p i) _ hVo`. Establish `hOo : ∀ j, IsOpen (O j)` using `fun j ↦ isOpen_iUnion fun γ ↦ (hBo j).preimage (continuous_const_smul γ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmemO : ∀ j y, y ∈ O j ↔ ∃ γ : Γ, γ • y ∈ B j`. Introduce `j y`. Simplify using `only [hOdef, Set.mem_iUnion, Set.mem_preimage]`. Establish `hmemE : ∀ y, y ∈ E ↔ ∃ i, y ∈ B i ∧ ∀ j < i, y ∉ O j`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hEdef, Set.mem_iUnion, Set.mem_sdiff, not_exists]`. Use `⟨E, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.iUnion fun i ↦ (hBo i).measurableSet.diff (MeasurableSet.iUnion fun j ↦ MeasurableSet.iUnion fun _ ↦ (hOo j).measurableSet)`. Introduce `y hy`. Take `⟨i, hi, -⟩` from `(hmemE y).1 hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Set.mem_iUnion.2 ⟨i, hi⟩`. Introduce `x`. Establish `hS : ∃ i, ∃ γ : Γ, γ • x ∈ B i`. Take `⟨γ, i, hi⟩` from `hcov x`. Conclude with `⟨i, γ, hi⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set i := Nat.find hS`. Take `⟨γ, hγi⟩` from `Nat.find_spec hS`. Establish `hEi : ∀ j < i, γ • x ∉ O j` using `fun j hj hO ↦ by`. Take `⟨γ', hB⟩` from `(hmemO j _).1 hO`. Conclude with `Nat.find_min hS hj ⟨γ' * γ, by rwa [mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨γ, (hmemE _).2 ⟨i, hγi, hEi⟩, ?_⟩` and prove the remaining obligations. Introduce `δ hδ`. Take `⟨k, hk, hkO⟩` from `(hmemE _).1 hδ`. Break down `lt_trichotomy i k with hik | rfl | hki` into its components or cases. Use `absurd ((hmemO i _).2 ⟨γ * δ⁻¹, ?_⟩) (hkO i hik)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, inv_smul_smul]` and apply the resulting hypothesis. Take `⟨v₁, hv₁, h₁⟩` from `hγi`. Take `⟨v₂, hv₂, h₂⟩` from `hk`. Establish `hmem : v₂ * v₁⁻¹ ∈ Γ`. Establish `: v₂ * v₁⁻¹ = ((δ * γ⁻¹ : Γ) : G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁' : v₁ = (γ : G) * x * (p i)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Conclude with `h₁`. Establish `h₂' : v₂ = (δ : G) * x * (p i)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
-
-Conclude with `h₂`. Rewrite using `[h₁', h₂']`. Simplify using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `(δ * γ⁻¹).2`.
-
-Establish `hv : v₂ = v₁` using `hV v₂ hv₂ v₁ hv₁ hmem`. Establish `: (δ : G) * x = (γ : G) * x`. Express the relevant statement in the definitionally equal form `δ • x = γ • x`. Rewrite using `[← h₁, ← h₂, hv]`. Conclude with `Subtype.ext (mul_right_cancel this)`.
-
-Conclude with `absurd hki (not_lt.2 (Nat.find_min' hS ⟨δ, hk⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_of_cover {V : Set G} (hVo : IsOpen V)
     (hV : ∀ a ∈ V, ∀ b ∈ V, a * b⁻¹ ∈ Γ → a = b) (p : ℕ → G)
@@ -307,11 +301,11 @@ theorem exists_fundamentalDomain_of_cover {V : Set G} (hVo : IsOpen V)
 variable (Γ) [DiscreteTopology Γ]
 
 /- English proof (translation)
-Take `⟨V, hVo, hV1, -, hV⟩` from `exists_isOpen_one_mem_injOn Γ (univ_mem (f := 𝓝 (1 : G)))`. Take `⟨r, hr, hcov⟩` from `isLindelof_univ.elim_countable_subcover (fun x : G ↦ (· * x) '' V) (fun x ↦ isOpenMap_mul_right x _ hVo) (fun x _ ↦ Set.mem_iUnion.2 ⟨x, 1, hV1, one_mul x⟩)`. Establish `hrne : r.Nonempty`. Take `⟨x, hx, -⟩` from `Set.mem_iUnion₂.1 (hcov (Set.mem_univ (1 : G)))`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p, rfl⟩` from `hr.exists_eq_range hrne`. Take `⟨E, hE, -, hEu⟩` from `exists_fundamentalDomain_of_cover hVo hV p fun x ↦ by`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (hcov (Set.mem_univ x))`. Take `⟨i, rfl⟩` from `hy`. Conclude with `⟨1, i, by simpa using hxy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨E, hE, hEu⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_fundamentalDomain [SecondCountableTopology G] :
     ∃ E : Set G, MeasurableSet E ∧ ∀ x : G, ∃! γ : Γ, γ • x ∈ E := by
@@ -339,20 +333,20 @@ def fundamentalDomain : Set G :=
   (exists_fundamentalDomain Γ).choose
 
 /- English proof (translation)
-The claim follows from `(exists_fundamentalDomain Γ).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_fundamentalDomain : MeasurableSet (fundamentalDomain Γ) :=
   (exists_fundamentalDomain Γ).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_fundamentalDomain Γ).choose_spec.2 x`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_smul_mem_fundamentalDomain (x : G) :
     ∃! γ : Γ, γ • x ∈ fundamentalDomain Γ :=
   (exists_fundamentalDomain Γ).choose_spec.2 x
 
 /- English proof (translation)
-The claim follows from `IsFundamentalDomain.mk' (measurableSet_fundamentalDomain Γ).nullMeasurableSet (existsUnique_smul_mem_fundamentalDomain Γ)`.
+A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_fundamentalDomain (μ : Measure G) :
     IsFundamentalDomain Γ (fundamentalDomain Γ) μ :=
@@ -363,9 +357,9 @@ def quotientMeasure (μ : Measure G) : Measure (RightCosetSpace Γ) :=
   Measure.map (mk Γ) (μ.restrict (fundamentalDomain Γ))
 
 /- English proof (translation)
-Introduce `x hx y hy hxy`. Take `⟨γ, rfl⟩` from `mk_eq_mk_iff.1 hxy`. Take `⟨δ, -, hδ⟩` from `existsUnique_smul_mem_fundamentalDomain Γ y`. Establish `h1` using `hδ γ hx`. Establish `h2` using `hδ 1 (by simpa using hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, ← h2, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem injOn_mk_fundamentalDomain : Set.InjOn (mk Γ) (fundamentalDomain Γ) := by
   intro x hx y hy hxy
@@ -376,7 +370,7 @@ theorem injOn_mk_fundamentalDomain : Set.InjOn (mk Γ) (fundamentalDomain Γ) :=
   rw [h1, ← h2, one_smul]
 
 /- English proof (translation)
-Use `eq_univ_of_forall fun x ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `mk_surjective Γ x`. Take `⟨γ, hγ, -⟩` from `existsUnique_smul_mem_fundamentalDomain Γ x`. Conclude with `⟨γ • x, hγ, mk_smul γ x⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mk_image_fundamentalDomain : mk Γ '' fundamentalDomain Γ = univ := by
   refine eq_univ_of_forall fun x ↦ ?_
@@ -391,7 +385,7 @@ instance borelSpace : BorelSpace (RightCosetSpace Γ) := by
   exact Quotient.borelSpace
 
 /- English proof (translation)
-The claim follows from `(continuous_mk Γ).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_mk : Measurable (mk Γ) :=
   (continuous_mk Γ).measurable
@@ -434,7 +428,7 @@ theorem fundamentalDomainEquiv_apply (x : fundamentalDomain Γ) :
 variable (μ : Measure G)
 
 /- English proof (translation)
-Rewrite using `[quotientMeasure, ← map_comap_subtype_coe (measurableSet_fundamentalDomain Γ), Measure.map_map (measurable_mk Γ) measurable_subtype_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotientMeasure_eq_map_fundamentalDomainEquiv :
     quotientMeasure Γ μ = Measure.map (fundamentalDomainEquiv Γ) (μ.comap Subtype.val) := by
@@ -443,7 +437,7 @@ theorem quotientMeasure_eq_map_fundamentalDomainEquiv :
   rfl
 
 /- English proof (translation)
-Rewrite using `[quotientMeasure_eq_map_fundamentalDomainEquiv, integral_map_equiv, ← integral_subtype_comap (measurableSet_fundamentalDomain Γ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integral_quotientMeasure {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (h : RightCosetSpace Γ → E) :
@@ -453,7 +447,7 @@ theorem integral_quotientMeasure {E : Type*} [NormedAddCommGroup E] [NormedSpace
   rfl
 
 /- English proof (translation)
-Rewrite using `[quotientMeasure_eq_map_fundamentalDomainEquiv, lintegral_map_equiv, ← lintegral_subtype_comap (measurableSet_fundamentalDomain Γ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_quotientMeasure (h : RightCosetSpace Γ → ℝ≥0∞) :
     ∫⁻ x, h x ∂quotientMeasure Γ μ = ∫⁻ g in fundamentalDomain Γ, h (mk Γ g) ∂μ := by
@@ -466,7 +460,7 @@ variable {Γ} [μ.IsMulLeftInvariant]
 omit [LocallyCompactSpace G] [T2Space G] in
 
 /- English proof (translation)
-The claim follows from `hF.quotientMeasure_eq μ (isFundamentalDomain_fundamentalDomain Γ μ)`.
+A detailed English derivation is pending.
 -/
 theorem map_restrict_eq_quotientMeasure {F : Set G} (hF : IsFundamentalDomain Γ F μ) :
     Measure.map (mk Γ) (μ.restrict F) = quotientMeasure Γ μ :=
@@ -477,7 +471,7 @@ instance quotientMeasureEqMeasurePreimage :
   (isFundamentalDomain_fundamentalDomain Γ μ).quotientMeasureEqMeasurePreimage_quotientMeasure
 
 /- English proof (translation)
-Rewrite using `[← map_restrict_eq_quotientMeasure μ hF, Measure.map_apply (measurable_mk Γ) hA, Measure.restrict_apply (measurable_mk Γ hA)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotientMeasure_apply {F : Set G} (hF : IsFundamentalDomain Γ F μ)
     {A : Set (RightCosetSpace Γ)} (hA : MeasurableSet A) :
@@ -486,16 +480,16 @@ theorem quotientMeasure_apply {F : Set G} (hF : IsFundamentalDomain Γ F μ)
     Measure.restrict_apply (measurable_mk Γ hA)]
 
 /- English proof (translation)
-Rewrite using `[quotientMeasure_apply μ hF MeasurableSet.univ, Set.preimage_univ, Set.univ_inter]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotientMeasure_univ {F : Set G} (hF : IsFundamentalDomain Γ F μ) :
     quotientMeasure Γ μ univ = μ F := by
   rw [quotientMeasure_apply μ hF MeasurableSet.univ, Set.preimage_univ, Set.univ_inter]
 
 /- English proof (translation)
-Establish `hF` using `isFundamentalDomain_fundamentalDomain Γ μ`. Rewrite using `[quotientMeasure_apply μ hF hD]`. Establish `: mk Γ ⁻¹' (mk Γ '' D) = ⋃ γ : Γ, (γ • ·) '' D` using `MulAction.quotient_preimage_image_eq_union_mul _`. Rewrite using `[this, Set.iUnion_inter, hF.measure_eq_tsum D]`. Use `(measure_iUnion_le _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.image_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quotientMeasure_mk_image_le {D : Set G} (hD : MeasurableSet (mk Γ '' D)) :
     quotientMeasure Γ μ (mk Γ '' D) ≤ μ D := by
@@ -540,11 +534,11 @@ instance isOpenPosMeasure [μ.IsOpenPosMeasure] : (quotientMeasure Γ μ).IsOpen
   simp [hU0]
 
 /- English proof (translation)
-Use `set F := fundamentalDomain Γ`. Establish `hF' : IsFundamentalDomain Γ ((· * g⁻¹) ⁻¹' F) μ` using `(isFundamentalDomain_fundamentalDomain Γ μ).preimage_of_equiv (measurePreserving_mul_right μ g⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id fun γ x ↦ mul_assoc (γ : G) x g⁻¹`. Establish `hmg : Measurable (· * g : G → G)` using `measurable_mul_const g`. Establish `h1 : (· * g : G → G) ⁻¹' ((· * g⁻¹) ⁻¹' F) = F`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hcomm : rightMul Γ g ∘ mk Γ = mk Γ ∘ (· * g)` using `rfl`. Establish `key : Measure.map (mk Γ) (μ.restrict ((· * g⁻¹) ⁻¹' F)) = quotientMeasure Γ μ` using `map_restrict_eq_quotientMeasure μ hF'`. Use `conv_rhs => rw [← key]`. Establish `h2 : Measure.map (· * g) (μ.restrict F) = μ.restrict ((· * g⁻¹) ⁻¹' F)` using `by conv_lhs => rw [← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Measure.restrict_map hmg ((measurableSet_fundamentalDomain Γ).preimage (measurable_mul_const g⁻¹)), map_mul_right_eq_self]`. Rewrite using `[show quotientMeasure Γ μ = Measure.map (mk Γ) (μ.restrict F) from rfl, Measure.map_map (continuous_rightMul Γ g).measurable (measurable_mk Γ), hcomm, ← Measure.map_map (measurable_mk Γ) hmg, h2]`.
+A detailed English derivation is pending.
 -/
 theorem map_rightMul_quotientMeasure [μ.IsMulRightInvariant] (g : G) :
     Measure.map (rightMul Γ g) (quotientMeasure Γ μ) = quotientMeasure Γ μ := by
@@ -570,14 +564,14 @@ theorem map_rightMul_quotientMeasure [μ.IsMulRightInvariant] (g : G) :
     ← Measure.map_map (measurable_mk Γ) hmg, h2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(continuous_rightMul Γ g).measurable, map_rightMul_quotientMeasure μ g⟩`.
+Supply the required witnesses or components.
 -/
 theorem measurePreserving_rightMul [μ.IsMulRightInvariant] (g : G) :
     MeasurePreserving (rightMul Γ g) (quotientMeasure Γ μ) (quotientMeasure Γ μ) :=
   ⟨(continuous_rightMul Γ g).measurable, map_rightMul_quotientMeasure μ g⟩
 
 /- English proof (translation)
-Establish `hF` using `isFundamentalDomain_fundamentalDomain Γ μ`. Rewrite using `[lintegral_quotientMeasure, hF.lintegral_eq_tsum'' f, ← lintegral_tsum]`. Both sides reduce to the same expression. Conclude with `fun γ ↦ (hf.comp_quasiMeasurePreserving (measurePreserving_smul γ μ).quasiMeasurePreserving).restrict`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_lintegral_automorphize {f : G → ℝ≥0∞} (hf : AEMeasurable f μ) :
     ∫⁻ g, f g ∂μ = ∫⁻ x, MulAction.automorphize f x ∂quotientMeasure Γ μ := by
@@ -588,9 +582,9 @@ theorem lintegral_eq_lintegral_automorphize {f : G → ℝ≥0∞} (hf : AEMeasu
       (measurePreserving_smul γ μ).quasiMeasurePreserving).restrict
 
 /- English proof (translation)
-Establish `hF` using `isFundamentalDomain_fundamentalDomain Γ μ`. Rewrite using `[integral_quotientMeasure]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_tsum]`. Conclude with `fun γ ↦ (hf.1.comp_quasiMeasurePreserving (measurePreserving_smul γ μ).quasiMeasurePreserving).restrict`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[← hF.lintegral_eq_tsum'' (‖f ·‖ₑ)]`. Conclude with `hf.2.ne`. Use `_ = ∫ g in fundamentalDomain Γ, MulAction.automorphize f (mk Γ g) ∂μ := rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_integral_automorphize {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : G → E} (hf : Integrable f μ) :
@@ -608,7 +602,7 @@ theorem integral_eq_integral_automorphize {E : Type*} [NormedAddCommGroup E] [No
     _ = ∫ g in fundamentalDomain Γ, MulAction.automorphize f (mk Γ g) ∂μ := rfl
 
 /- English proof (translation)
-Rewrite using `[integral_eq_integral_automorphize (Γ := Γ) μ h]`. Establish `H` using `MulAction.automorphize_smul_left (α := Γ) f φ`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Conclude with `congrFun H x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_mul_eq_integral_mul_automorphize {𝕜 : Type*} [RCLike 𝕜] {f : G → 𝕜}
     {φ : RightCosetSpace Γ → 𝕜} (h : Integrable (fun g ↦ φ (mk Γ g) * f g) μ) :

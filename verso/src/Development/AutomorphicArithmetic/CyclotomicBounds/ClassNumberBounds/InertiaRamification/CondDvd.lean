@@ -8,9 +8,9 @@ open DirichletCharacter
 variable {N : ℕ} [NeZero N]
 
 /- English proof (translation)
-Establish `h1 : ψ ∈ condDvd N m ↔ ψ.FactorsThrough (Nat.gcd N m)`. Rewrite using `[factorsThrough_iff_ker_unitsMap (Nat.gcd_dvd_left N m), condDvd, mem_annihilator_iff]`. Use `⟨fun h x hx => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Conclude with `h x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h hx` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Then use the resulting hypothesis. Rewrite using `[h1, ← mem_conductorSet_iff, mem_conductorSet_iff_conductor_dvd _ (Nat.gcd_dvd_left N m), Nat.dvd_gcd_iff]`. Conclude with `⟨fun h => h.2, fun h => ⟨ψ.conductor_dvd_level, h⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_conductorDvd_iff (m : ℕ) (ψ : DirichletCharacter ℂ N) :
     ψ ∈ condDvd N m ↔ ψ.conductor ∣ m := by
@@ -26,7 +26,7 @@ private theorem mem_conductorDvd_iff (m : ℕ) (ψ : DirichletCharacter ℂ N) :
   exact ⟨fun h => h.2, fun h => ⟨ψ.conductor_dvd_level, h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[fieldCond, Finset.lcm_dvd_iff]`. Use `⟨fun h ψ hψ => (mem_conductorDvd_iff m ψ).2 (h ψ ?_), fun h ψ hψ => (mem_conductorDvd_iff m ψ).1 (h ?_)⟩` and prove the remaining obligations. Simplify using `using hψ`. Simplify using `using hψ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem fieldConductor_dvd_iff (X : Subgroup (DirichletCharacter ℂ N)) (m : ℕ) :
     fieldCond X ∣ m ↔ X ≤ condDvd N m := by
@@ -37,9 +37,9 @@ private theorem fieldConductor_dvd_iff (X : Subgroup (DirichletCharacter ℂ N))
   · simpa using hψ
 
 /- English proof (translation)
-Use `⟨mem_conductorDvd_iff m ψ, fun hm => ?_⟩` and prove the remaining obligations. Establish `: NeZero m` using `⟨fun h => NeZero.ne N (Nat.eq_zero_of_zero_dvd (h ▸ hm))⟩`. Establish `h : condDvd N m = (changeLevel (R` using `ℂ) hm).range := by`. Use extensionality with `χ`. Rewrite using `[mem_conductorDvd_iff, ← mem_conductorSet_iff_conductor_dvd _ hm, mem_conductorSet_iff, MonoidHom.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun ⟨_, χ₀, h⟩ => ⟨χ₀, h.symm⟩, fun ⟨χ₀, h⟩ => ⟨hm, χ₀, h.symm⟩⟩` and prove the remaining obligations. Rewrite using `[h, ← card_eq_totient_of_hasEnoughRootsOfUnity ℂ m]`. Conclude with `(Nat.card_congr (MonoidHom.ofInjective (changeLevel_injective hm)).toEquiv).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_condDvd_iff (m : ℕ) (ψ : DirichletCharacter ℂ N) :
     (ψ ∈ condDvd N m ↔ ψ.conductor ∣ m) ∧ (m ∣ N → Nat.card (condDvd N m) = Nat.totient m) := by
@@ -54,15 +54,15 @@ theorem mem_condDvd_iff (m : ℕ) (ψ : DirichletCharacter ℂ N) :
   exact (Nat.card_congr (MonoidHom.ofInjective (changeLevel_injective hm)).toEquiv).symm
 
 /- English proof (translation)
-Establish `hmem : ∀ ψ, ψ ∈ evenPart X ↔ ψ ∈ X ∧ ψ.Even`. Introduce `ψ`. Rewrite using `[evenPart, Subgroup.mem_inf, mem_annihilator_iff]`. Simplify using `[DirichletCharacter.Even]`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨ψ, hψ, hodd⟩`. Establish `hle : evenPart X ≤ X` using `inf_le_left`. Establish `hidx : ((evenPart X).subgroupOf X).index = 2`. Rewrite using `[Subgroup.index_eq_two_iff]`. Use `⟨⟨ψ, hψ⟩, fun b => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψ' : ψ (-1) = -1` using `hodd`. Establish `e1 : b * ⟨ψ, hψ⟩ ∈ (evenPart X).subgroupOf X ↔ (b : DirichletCharacter ℂ N).Odd`. Rewrite using `[Subgroup.mem_subgroupOf, hmem]`. Simplify using `only [SetLike.coe_mem, true_and, DirichletCharacter.Even, DirichletCharacter.Odd]`. Rewrite using `[Subgroup.coe_mul, MulChar.mul_apply, hψ', mul_neg, mul_one, neg_eq_iff_eq_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : b ∈ (evenPart X).subgroupOf X ↔ (b : DirichletCharacter ℂ N).Even`. Rewrite using `[Subgroup.mem_subgroupOf, hmem]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Break down `(b : DirichletCharacter ℂ N).even_or_odd with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr ⟨h, h.not_odd⟩`. Conclude with `Or.inl ⟨h, h.not_even⟩`. Rewrite using `[← Subgroup.index_mul_card ((evenPart X).subgroupOf X), hidx, Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv]`.
+Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_evenPart (X : Subgroup (DirichletCharacter ℂ N)) :
     (∀ ψ, ψ ∈ evenPart X ↔ ψ ∈ X ∧ ψ.Even) ∧
@@ -93,9 +93,9 @@ theorem card_evenPart (X : Subgroup (DirichletCharacter ℂ N)) :
     Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv]
 
 /- English proof (translation)
-Use `⟨?_, ?_, fieldConductor_dvd_iff X⟩` and prove the remaining obligations. Use `Nat.dvd_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[fieldConductor_dvd_iff, sup_le_iff, ← fieldConductor_dvd_iff, ← fieldConductor_dvd_iff]`. Conclude with `⟨Nat.dvd_lcm_left _ _, Nat.dvd_lcm_right _ _⟩`. Rewrite using `[Nat.lcm_dvd_iff, fieldConductor_dvd_iff, fieldConductor_dvd_iff, ← sup_le_iff, ← fieldConductor_dvd_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.dvd_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[fieldConductor_dvd_iff, Subgroup.zpowers_le, mem_conductorDvd_iff]`. Rewrite using `[← mem_conductorDvd_iff, ← Subgroup.zpowers_le, ← fieldConductor_dvd_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldCond_sup (X Y : Subgroup (DirichletCharacter ℂ N)) (χ : DirichletCharacter ℂ N) :
     fieldCond (X ⊔ Y) = Nat.lcm (fieldCond X) (fieldCond Y) ∧

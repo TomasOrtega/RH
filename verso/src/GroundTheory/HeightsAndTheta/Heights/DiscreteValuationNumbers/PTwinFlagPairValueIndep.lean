@@ -14,9 +14,9 @@ open MvPolynomial
 namespace FlagPairValueIndependence
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.polyNum`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hm : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList deg₁ μ = IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList deg₂ μ`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `s`. Distinguish the cases in `hs : μ s = 0`. Simplify using `[hs]`. Rewrite using `[h s ((mem_vars_iff_mem_support s).mpr ⟨μ, hμ, Finsupp.mem_support_iff.mpr hs⟩)]`. Conclude with `congrArg (fun l : List (K → ℤ) => P.coeff μ * if h : l.length = n then I W n (fun j => l.get (Fin.cast h.symm j)) else 0) hm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyNum_congr {F : Type*} [Field F] {K : Type} [Fintype K] {κ : K → Type} [∀ k, Fintype (κ k)]
     (I : ReciprocityTheory.ChartRestriction.G.AI.I1.IFamily F κ) (W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRingOver F κ)) (n : ℕ)
@@ -36,15 +36,13 @@ theorem polyNum_congr {F : Type*} [Field F] {K : Type} [Fintype K] {κ : K → T
     I W n (fun j => l.get (Fin.cast h.symm j)) else 0) hm
 
 /- English proof (translation)
-Introduce `hs`. Take `⟨μ, hμ, hsμ⟩` from `(mem_vars_iff_mem_support _).mp hs`. Establish `he : Function.Injective (finSumFinEquiv.symm : Fin ((N + r) + (N + r)) → Fin (N + r) ⊕ Fin (N + r))` using `finSumFinEquiv.symm.injective`. Establish `h1 : Finsupp.mapDomain finSumFinEquiv.symm μ ∈ (rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff (Fin.castAdd r i) (rename (Fin.castAdd r) G * rename (Fin.natAdd N) Q))).support`. Rewrite using `[support_rename_of_injective he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_image_of_mem _ hμ`. Establish `h2 : finSumFinEquiv.symm (Fin.natAdd (N + r) (Fin.natAdd N j)) ∈ (rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff (Fin.castAdd r i) (rename (Fin.castAdd r) G * rename (Fin.natAdd N) Q))).vars`. Use `(mem_vars_iff_mem_support _).mpr ⟨_, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mem_support_iff, Finsupp.mapDomain_apply he]`. Conclude with `Finsupp.mem_support_iff.mp hsμ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h2` using `[finSumFinEquiv_symm_apply_natAdd, plainPolynomialPairNumber.rename_divDiff_castAdd_mul]`. Break down `Finset.mem_union.mp (vars_mul _ _ h2) with h3 | h3` into its components or cases. Take `⟨t, -, ht⟩` from `Finset.mem_image.mp (vars_rename _ _ h3)`. Break down `t with t | t` into its components or cases. Conclude with `Sum.inl_ne_inr ht`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.map_inr, Sum.inr.injEq] at ht`. Use `congrArg Fin.val ht` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers. Take `⟨t, -, ht⟩` from `Finset.mem_image.mp (vars_rename _ _ h3)`.
-
-Conclude with `Sum.inl_ne_inr ht`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_mem_vars_divDiff_castAdd {N r : ℕ} (i : Fin N) (j : Fin r) (G : MvPolynomial (Fin N) ℤ)
     (Q : MvPolynomial (Fin r) ℤ) :
@@ -80,13 +78,13 @@ theorem not_mem_vars_divDiff_castAdd {N r : ℕ} (i : Fin N) (j : Fin r) (G : Mv
     exact Sum.inl_ne_inr ht
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _ x d N V _ _ E E' hM hS φ₁ φ₂ I hI G hG r y y' f g hv c Q hc hGc hQ`. Establish `hz : ∀ J : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRingOver (IsLocalRing.ResidueField O) ι) → ℤ, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval O J 0 = 0` using `fun J => Finsupp.sum_zero_index`. Establish `h0 : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O x) 1 1 = 0` using `sub_self _`. Establish `split : ∀ φ : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagPair O x E E', IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum O I (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O x) d (Fin.append φ.deg y) (Fin.append φ.deg' y') (Fin.append φ.f f) (Fin.append φ.g g) …`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, h0, hz, Finset.sum_const_zero, add_zero]`. Use `congrArg (· + _) (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `congrArg (fun J => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval O J _) (funext fun W => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `polyNum_congr I W d _ fun s hs => ?_` and prove the remaining obligations. Proceed by induction on `s using Fin.addCases with`. Consider the case `left a => simp only [Fin.append_left]`. Consider the case `right b`. Proceed by induction on `b using Fin.addCases with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `left a => simp only [Fin.append_right, Fin.append_left]`. Consider the case `right j => exact absurd hs (not_mem_vars_divDiff_castAdd i j G Q)`. Rewrite using `[split φ₁, split φ₂, hPlain O Ω K ι x d N V E E' hM hS φ₁ φ₂ I hI G hG r y c Q hc hGc hQ]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun l _ => hFur O Ω K ι x d N V E E' hM hS φ₁ φ₂ I hI G hG r y y' f g hv c Q hc hGc hQ l`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem proof (hPlain : FlagPlainValueIndependence.Statement)
     (hFur : flagFurtherTerm_independent.Statement) : FlagPairValueIndependence.Statement := by

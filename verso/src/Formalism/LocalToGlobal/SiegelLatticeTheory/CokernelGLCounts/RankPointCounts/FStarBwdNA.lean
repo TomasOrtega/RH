@@ -15,48 +15,48 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 def SD (Λ : Submodule (𝓞 E) S.V) : Prop := ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, IsIntegral ℤ (S.hT y x)
 
 /- English proof (translation)
-The claim follows from `PI.ScalarPairDr.W.hT_swap S x y`.
+A detailed English derivation is pending.
 -/
 theorem hsw (x y : S.V) : S.hT y x = star (S.hT x y) := PI.ScalarPairDr.W.hT_swap S x y
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_smulL (a : E) (x v : S.V) : S.hT (a • x) v = star a * S.hT x v := by
   rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul E o x).symm`.
+A detailed English derivation is pending.
 -/
 theorem oSmul (o : 𝓞 E) (x : S.V) : o • x = (o : E) • x := (algebraMap_smul E o x).symm
 
 /- English proof (translation)
-Introduce `h`. Apply `hd` to reduce the goal to its premises. Conclude with `RingOfIntegers.coe_eq_zero_iff.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coe_ne_zero {d : 𝓞 E} (hd : d ≠ 0) : (d : E) ≠ 0 := by
   intro h; apply hd; exact RingOfIntegers.coe_eq_zero_iff.1 h
 
 /- English proof (translation)
-Establish `h2` using `h.map ((starRingEnd E : E →+* E).toIntAlgHom)`. Conclude with `h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isInt_star {a : E} (h : IsIntegral ℤ a) : IsIntegral ℤ (star a) := by
   have h2 := h.map ((starRingEnd E : E →+* E).toIntAlgHom)
   exact h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨a, h⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem intO {a : E} (h : IsIntegral ℤ a) : ∃ o : 𝓞 E, (o : E) = a := ⟨⟨a, h⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.isIntegral_coe o`.
+A detailed English derivation is pending.
 -/
 theorem isInt_coe (o : 𝓞 E) : IsIntegral ℤ (o : E) := RingOfIntegers.isIntegral_coe o
 
 variable {S}
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `intO hc`. Rewrite using `[← oSmul]`. Conclude with `Λ.smul_mem o hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_smul_mem {Λ : Submodule (𝓞 E) S.V} {c : E} (hc : IsIntegral ℤ c) {x : S.V} (hx : x ∈ Λ) :
     c • x ∈ Λ := by
@@ -65,7 +65,7 @@ theorem int_smul_mem {Λ : Submodule (𝓞 E) S.V} {c : E} (hc : IsIntegral ℤ 
   exact Λ.smul_mem o hx
 
 /- English proof (translation)
-The claim follows from `(h x).1 hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem sd_int {Λ : Submodule (𝓞 E) S.V} (h : SD S Λ) {x y : S.V} (hx : x ∈ Λ) (hy : y ∈ Λ) :
     IsIntegral ℤ (S.hT y x) := (h x).1 hx y hy
@@ -73,13 +73,13 @@ theorem sd_int {Λ : Submodule (𝓞 E) S.V} (h : SD S Λ) {x y : S.V} (hx : x �
 variable (S)
 
 /- English proof (translation)
-Set `b` to `S.frame`. Take `⟨bs, hbs⟩` from `Formalism.HermitianLatticesTheory.dualLattice_dualBasis S.hT S.nondeg b`. Use `⟨∑ j, star (F (b j)) • bs j, fun v => ?_⟩` and prove the remaining obligations. Establish `key : S.hT (∑ j, star (F (b j)) • bs j) = F`. Apply `b.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hsw S (b i) (bs i), hbs i i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[hsw S (b i) (bs j), hbs i j, if_neg (Ne.symm hj)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem riesz (F : S.V →ₗ[E] E) : ∃ w, ∀ v, S.hT w v = F v := by
   classical
@@ -99,9 +99,9 @@ theorem riesz (F : S.V →ₗ[E] E) : ∃ w, ∀ v, S.hT w v = F v := by
   rw [key]
 
 /- English proof (translation)
-Establish `hle : X ≤ orth S (orth S X)` using `fun x hx => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun u hu => by`. Rewrite using `[hsw S x u, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hu x hx, star_zero]`. Establish `h1` using `PI.UnitaryGroupMassFormula.BetaLUniq.finrank_orth_add S X`. Establish `h2` using `PI.UnitaryGroupMassFormula.BetaLUniq.finrank_orth_add S (orth S X)`. Establish `heq : X = orth S (orth S X)` using `Submodule.eq_of_le_of_finrank_eq hle (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun u hu => by rw [hsw S w u, hw u hu, star_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_orth_orth (X : Submodule E S.V) {w : S.V} (hw : ∀ u ∈ orth S X, S.hT w u = 0) : w ∈ X := by
   have hle : X ≤ orth S (orth S X) := fun x hx => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun u hu => by
@@ -113,13 +113,13 @@ theorem mem_of_orth_orth (X : Submodule E S.V) {w : S.V} (hw : ∀ u ∈ orth S 
   exact (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun u hu => by rw [hsw S w u, hw u hu, star_zero]
 
 /- English proof (translation)
-Use `set K := (Z.restrictScalars (𝓞 E)).comap P.subtype with hK`. Establish `: Module.Finite (𝓞 E) P` using `Module.Finite.iff_fg.2 hP`. Establish `htor : Submodule.torsion (𝓞 E) (P ⧸ K) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff q).1 hq`. Take `⟨x, rfl⟩` from `K.mkQ_surjective q`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite `ha` using `[Submonoid.smul_def, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Establish `ha0 : ((a : 𝓞 E) : E) ≠ 0` using `coe_ne_zero (nonZeroDivisors.coe_ne_zero a)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((a : 𝓞 E) : E) • (x : S.V) ∈ Z`. Use `ha` as an intermediate fact. Simplify using `only [hK, Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_smul, Submodule.restrictScalars_mem] at this`. Rewrite `this` using `[oSmul]`. Then use the resulting hypothesis. Establish `h2` using `Z.smul_mem ((a : 𝓞 E) : E)⁻¹ h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ ha0, one_smul]`. Simplify `h2` using `[hK]`. Establish `: Module.Flat (𝓞 E) (P ⧸ K)` using `(IsDedekindDomain.flat_iff_torsion_eq_bot).2 htor`. Establish `: Module.FinitePresentation (𝓞 E) (P ⧸ K)` using `Module.finitePresentation_of_finite _ _`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proj_quot (P : Submodule (𝓞 E) S.V) (hP : P.FG) (Z : Submodule E S.V) :
     Module.Projective (𝓞 E) (P ⧸ (Z.restrictScalars (𝓞 E)).comap P.subtype) := by
@@ -147,19 +147,17 @@ theorem proj_quot (P : Submodule (𝓞 E) S.V) (hP : P.FG) (Z : Submodule E S.V)
   exact Module.Flat.projective_of_finitePresentation
 
 /- English proof (translation)
-Use `set K := (Z.restrictScalars (𝓞 E)).comap P.subtype with hK`. Use `proj_quot S P hP Z` as an intermediate fact. Set `dif : (P × Q) →ₗ[𝓞 E] S.V` to `Q.subtype ∘ₗ LinearMap.snd _ _ _ - P.subtype ∘ₗ LinearMap.fst _ _ _`. Set `R : Submodule (𝓞 E) (P × Q)` to `(Y.restrictScalars (𝓞 E)).comap dif`. Set `g : R →ₗ[𝓞 E] (P ⧸ K)` to `K.mkQ ∘ₗ LinearMap.fst _ _ _ ∘ₗ R.subtype`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Function.Surjective g`. Introduce `q`. Take `⟨x, rfl⟩` from `K.mkQ_surjective q`. Take `⟨y, hyQ, hy⟩` from `hs x x.2`. Use `⟨⟨(x, ⟨y, hyQ⟩), ?_⟩, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hy` using `[R, dif]`. Take `⟨s, hs'⟩` from `Module.projective_lifting_property g LinearMap.id hg`. Use `⟨dif ∘ₗ R.subtype ∘ₗ s ∘ₗ K.mkQ, fun x => ?_, fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(s (K.mkQ x)).2`. Establish `: K.mkQ x = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Simplify `hx` using `[hK]`. Simplify using `[this]`. Establish `hgt : g (s (K.mkQ x)) = K.mkQ x` using `LinearMap.congr_fun hs' (K.mkQ x) set t := s (K.mkQ x) with ht`. Establish `h1 : x - (t : P × Q).1 ∈ K`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : K.mkQ (x - (t : P × Q).1) = 0`. Establish `: K.mkQ ((t : P × Q).1) = K.mkQ x` using `hgt`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero K).1 h0`. Establish `h2 : ((x : S.V) - ((t : P × Q).1 : S.V)) ∈ Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hPZ _ (P.sub_mem x.2 (t : P × Q).1.2) ?_` and prove the remaining obligations. Simplify `h1` using `[hK]`. Establish `h3 : (x : S.V) + (dif ∘ₗ R.subtype ∘ₗ s ∘ₗ K.mkQ) x = ((t : P × Q).2 : S.V) + ((x : S.V) - ((t : P × Q).1 : S.V))`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, ← ht, dif, LinearMap.sub_apply, Submodule.coe_subtype, LinearMap.snd_apply, LinearMap.fst_apply]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[h3]`. Conclude with `Q.add_mem (t : P × Q).2.2 h2`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glift (P Q : Submodule (𝓞 E) S.V) (hP : P.FG) (Y Z : Submodule E S.V)
     (hPZ : ∀ x ∈ P, x ∈ Z → x ∈ Q) (hs : ∀ x ∈ P, ∃ y ∈ Q, y - x ∈ Y) :
@@ -203,11 +201,11 @@ theorem glift (P Q : Submodule (𝓞 E) S.V) (hP : P.FG) (Y Z : Submodule E S.V)
     exact Q.add_mem (t : P × Q).2.2 h2
 
 /- English proof (translation)
-Use `set K := (Z.restrictScalars (𝓞 E)).comap P.subtype with hK`. Use `proj_quot S P hP Z` as an intermediate fact. Take `⟨s, hs'⟩` from `Module.projective_lifting_property K.mkQ LinearMap.id K.mkQ_surjective`. Use `⟨P.subtype ∘ₗ (LinearMap.id - s ∘ₗ K.mkQ), fun x => ⟨?_, ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(x - s (K.mkQ x)).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x - s (K.mkQ x) ∈ K`. Establish `h0 : K.mkQ (x - s (K.mkQ x)) = 0`. Establish `: K.mkQ (s (K.mkQ x)) = K.mkQ x` using `LinearMap.congr_fun hs' (K.mkQ x)`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero K).1 h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[hK]`. Establish `: K.mkQ x = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Simplify `hx` using `[hK]`. Simplify using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem retract (P : Submodule (𝓞 E) S.V) (hP : P.FG) (Z : Submodule E S.V) :
     ∃ π : P →ₗ[𝓞 E] S.V, (∀ x, π x ∈ P ∧ π x ∈ Z) ∧ ∀ x : P, (x : S.V) ∈ Z → π x = x := by

@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.VertSpanZero
 
 /- English proof (translation)
-Introduce `p _`. Conclude with `((IsLocalRing.specializes_closedPoint p).map y.continuous).mem_open V.isOpen h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_closedPoint {Z : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (y : Sp R ⟶ Z)
     (V : Z.Opens) (h : y.base (IsLocalRing.closedPoint R) ∈ V) : ⊤ ≤ y ⁻¹ᵁ V := by
@@ -23,7 +23,7 @@ theorem le_preimage_of_closedPoint {Z : Scheme.{0}} {R : Type} [CommRing R] [IsL
   exact ((IsLocalRing.specializes_closedPoint p).map y.continuous).mem_open V.isOpen h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Points.valR_spMap_comp (epsMul a) T O h f]`. Simplify using `[epsMul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem snd_valR_epsMul {Z : Scheme.{0}} {S : Type} [CommRing S] (T : Sp (DualNumber S) ⟶ Z) (O : Z.Opens)
     (h : ⊤ ≤ T ⁻¹ᵁ O) (a : S) (f : Γ(Z, O)) :
@@ -32,21 +32,21 @@ theorem snd_valR_epsMul {Z : Scheme.{0}} {S : Type} [CommRing S] (T : Sp (DualNu
   simp [epsMul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_comp_algebraMap {S : Type} [CommRing S] (a : S) :
     (epsMul a).comp (algebraMap S (DualNumber S)) = algebraMap S (DualNumber S) := by
   ext x <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fst_comp_epsMul {S : Type} [CommRing S] (a : S) :
     (TrivSqZeroExt.fstHom S S S).toRingHom.comp (epsMul a) = (TrivSqZeroExt.fstHom S S S).toRingHom := by
   ext x <;> simp [epsMul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_zero' {S : Type} [CommRing S] :
     epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
@@ -57,7 +57,7 @@ end GlobalTheory.VertSpanZero
 namespace GlobalTheory.VertSpanZero
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem spMap_fst_algebraMap (S : Type) [CommRing S] :
     spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _ := by
@@ -65,7 +65,7 @@ theorem spMap_fst_algebraMap (S : Type) [CommRing S] :
   congr 1
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -78,7 +78,7 @@ def redOver {X : Scheme.{0}} {S : Type} [CommRing S] (x : Sp S ⟶ X) : Over.mk 
     rw [← Category.assoc, spMap_fst_algebraMap, Category.id_comp])
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact MonObj.comp_one _`. Consider the case `cons u l ih`. Rewrite using `[List.prod_cons, MonObj.comp_mul, hl u List.mem_cons_self, ih fun u' h => hl u' (List.mem_cons_of_mem _ h), _root_.mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem redOver_comp_prod {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [CommRing S] (x : Sp S ⟶ X)
     (l : List (tEpsG x ⟶ G)) (hl : ∀ u ∈ l, redOver x ≫ u = 1) : redOver x ≫ l.prod = 1 := by
@@ -89,9 +89,9 @@ theorem redOver_comp_prod {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [C
       ih fun u' h => hl u' (List.mem_cons_of_mem _ h), _root_.mul_one]
 
 /- English proof (translation)
-Establish `h1 : redOver (g ≫ G.hom) ≫ (List.ofFn u).prod = 1`. Use `redOver_comp_prod _ _ fun w hw => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(List.mem_ofFn' u w).1 hw`. Conclude with `Over.OverMorphism.ext (hu a)`. Express the relevant statement in the definitionally equal form `(redOver (g ≫ G.hom) ≫ (g' * (List.ofFn u).prod)).left = g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, h1, _root_.mul_one]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ g'.left = g`. Rewrite using `[hg', ← Category.assoc, spMap_fst_algebraMap, Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_mul_prod {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [CommRing S] (g : Sp S ⟶ G.left)
     (g' : tEpsG (g ≫ G.hom) ⟶ G) (hg' : g'.left = spMap (algebraMap S (DualNumber S)) ≫ g) {n : ℕ}

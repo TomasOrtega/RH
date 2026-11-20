@@ -11,19 +11,17 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `X Y L α k s j W hW hWa x d hx hint`. Establish `hle : X.basicOpen d ≤ W` using `X.basicOpen_le d`. Establish `hW' : X.basicOpen d ≤ L.U j` using `hle.trans hW`. Use `⟨j, X.basicOpen d, hW', hx, hWa.basicOpen d, ?_⟩` and prove the remaining obligations. Use `set ρX := (X.presheaf.map (homOfLE hle).op).hom with hρX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set ρY := (Y.presheaf.map ((TopologicalSpace.Opens.map α.base).map (homOfLE hle)).op).hom with hρY`. Establish `hnat : ∀ r, ρY ((α.app W).hom r) = (α.app (X.basicOpen d)).hom (ρX r)`. Introduce `r`. Use `congrArg (fun g => g.hom r) (Scheme.Hom.naturality α (homOfLE hle).op)` as an intermediate fact. Simplify `this.symm` using `[ρX, ρY]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcv : chartVal L α s j (X.basicOpen d) hW' = ρY (chartVal L α s j W hW)`. Simplify using `only [chartVal, ρY]`. Express the relevant statement in the definitionally equal form `_ = (Y.presheaf.map (homOfLE (locInt_le_chart L α j W hW)).op ≫ Y.presheaf.map ((TopologicalSpace.Opens.map α.base).map (homOfLE hle)).op).hom _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint' : (α.app (X.basicOpen d)).hom.IsIntegralElem (ρY ((α.app W).hom d * chartVal L α s j W hW))`. Take `⟨p, hp, hp0⟩` from `hint`. Use `⟨p.map ρX, hp.map ρX, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `: ((α.app (X.basicOpen d)).hom.comp ρX) = ρY.comp (α.app W).hom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Conclude with `(hnat r).symm`. Rewrite using `[this, ← Polynomial.hom_eval₂, hp0, map_zero]`. Take `⟨u, hu⟩ : IsUnit (ρX d)` from `X.toRingedSpace.isUnit_res_basicOpen d`. Establish `hmul : ρY ((α.app W).hom d * chartVal L α s j W hW) = (α.app (X.basicOpen d)).hom (u : Γ(X, X.basicOpen d)) * chartVal L α s j (X.basicOpen d) hW'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, hnat, hcv]`. Use `congr 2`. Conclude with `hu.symm`. Rewrite `hint'` using `[hmul]`. Establish `key : chartVal L α s j (X.basicOpen d) hW' = (α.app (X.basicOpen d)).hom ((u⁻¹ : (Γ(X, X.basicOpen d))ˣ) : Γ(X, X.basicOpen d)) * ((α.app (X.basicOpen d)).hom (u : Γ(X, X.basicOpen d)) * chartVal L α s j (X.basicOpen d) hW')`.
-
-Rewrite using `[← _root_.mul_assoc, ← map_mul, Units.inv_mul, map_one, _root_.one_mul]`. Rewrite using `[key]`. Conclude with `RingHom.IsIntegralElem.mul _ (RingHom.isIntegralElem_map _) hint'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_of_integral_mul_basicOpen : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y ⟶ X) (k : ℕ) (s : SecK L α k) (j : L.ι) (W : X.Opens) (hW : W ≤ L.U j), IsAffineOpen W → ∀ (x : X) (d : Γ(X, W)), x ∈ X.basicOpen d → (α.app W).hom.IsIntegralElem ((α.app W).hom d * chartVal L α s j W hW) → IntAt L α s x := by
   intro X Y L α k s j W hW hWa x d hx hint

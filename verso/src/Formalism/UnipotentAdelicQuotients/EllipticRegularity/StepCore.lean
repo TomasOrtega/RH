@@ -18,18 +18,18 @@ Check the signs of the components of the expression.
 private lemma jb_pos (ξ : E d) : 0 < 1 + ‖ξ‖ ^ 2 := by positivity
 
 /- English proof (translation)
-Unfold `om`. Use `jb_pos ξ` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 private lemma om_nonneg' (s M ε : ℝ) (ξ : E d) : 0 ≤ om s M ε ξ := by
   unfold om; have := jb_pos ξ; positivity
 
 /- English proof (translation)
-Unfold `om`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma om_meas (s M ε : ℝ) : Measurable (om (d := d) s M ε) := by unfold om; fun_prop
 
 /- English proof (translation)
-Unfold `om`. Rewrite using `[add_div, Real.rpow_add (jb_pos ξ)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma om_add (s t M ε : ℝ) (ξ : E d) :
     om (s + t) M ε ξ = (1 + ‖ξ‖ ^ 2) ^ (t / 2) * om s M ε ξ := by
@@ -37,9 +37,9 @@ private lemma om_add (s t M ε : ℝ) (ξ : E d) :
   rw [add_div, Real.rpow_add (jb_pos ξ)]; ring
 
 /- English proof (translation)
-Unfold `om`. Establish `h1 : (1 : ℝ) ≤ 1 + ‖ξ‖ ^ 2` using `by nlinarith [sq_nonneg ‖ξ‖]`. Establish `h2 : 0 ≤ (1 + ε ^ 2 * ‖ξ‖ ^ 2) ^ (-(M / 2))`. Establish `: 0 ≤ 1 + ε ^ 2 * ‖ξ‖ ^ 2` using `by positivity`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le h1 (by linarith)) h2`.
+A detailed English derivation is pending.
 -/
 private lemma om_mono (s s' M ε : ℝ) (h : s ≤ s') (ξ : E d) : om s M ε ξ ≤ om s' M ε ξ := by
   unfold om
@@ -50,9 +50,9 @@ private lemma om_mono (s s' M ε : ℝ) (h : s ≤ s') (ξ : E d) : om s M ε ξ
   exact mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le h1 (by linarith)) h2
 
 /- English proof (translation)
-Unfold `om`. Establish `h1 : (1 : ℝ) ≤ 1 + ε ^ 2 * ‖ξ‖ ^ 2` using `by nlinarith [sq_nonneg ε, sq_nonneg ‖ξ‖, mul_nonneg (sq_nonneg ε) (sq_nonneg ‖ξ‖)]`. Establish `h2 : (1 + ε ^ 2 * ‖ξ‖ ^ 2) ^ (-(M / 2)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos h1 (by linarith)`. Establish `h3 : 0 ≤ (1 + ‖ξ‖ ^ 2) ^ (s / 2)` using `by have := jb_pos ξ; positivity`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul, add_zero, zero_div, neg_zero, Real.rpow_zero, mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_of_le_one_right h3 h2`.
+A detailed English derivation is pending.
 -/
 private lemma weight_le_unshifted_weight (s M ε : ℝ) (hM : 0 ≤ M) (ξ : E d) : om s M ε ξ ≤ om s 0 0 ξ := by
   unfold om
@@ -64,13 +64,13 @@ private lemma weight_le_unshifted_weight (s M ε : ℝ) (hM : 0 ≤ M) (ξ : E d
   exact mul_le_of_le_one_right h3 h2
 
 /- English proof (translation)
-Unfold `mono`. Rewrite using `[norm_prod]`. Establish `hj : ∀ j : Fin d, ‖(2 * Real.pi * Complex.I * ((ξ j : ℝ) : ℂ))‖ ≤ 2 * Real.pi * (1 + ‖ξ‖ ^ 2) ^ ((1 : ℝ) / 2)`. Introduce `j`. Establish `e : ‖(2 * Real.pi * Complex.I * ((ξ j : ℝ) : ℂ))‖ = 2 * Real.pi * |ξ j|`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Complex.norm_real, abs_of_pos Real.pi_pos]`. Rewrite using `[e]`. Establish `h1 : |ξ j| ≤ ‖ξ‖` using `by simpa using PiLp.norm_apply_le ξ j`. Establish `h2 : ‖ξ‖ ≤ (1 + ‖ξ‖ ^ 2) ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.sqrt_eq_rpow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.le_sqrt_of_sq_le (by linarith)`. Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow, ← Real.rpow_mul_natCast (jb_pos ξ).le]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma norm_mono_le {n : ℕ} (w : Fin n → Fin d) (ξ : E d) :
     ‖mono w ξ‖ ≤ (2 * Real.pi) ^ n * (1 + ‖ξ‖ ^ 2) ^ ((n : ℝ) / 2) := by
@@ -95,9 +95,9 @@ private lemma norm_mono_le {n : ℕ} (w : Fin n → Fin d) (ξ : E d) :
         congr 2; ring
 
 /- English proof (translation)
-Establish `h` using `eLpNorm_nnreal_pow_eq_lintegral (μ := (volume : Measure (E d))) (f := fun ξ => om s M ε ξ * ‖F ξ‖) (p := 2) (by norm_num)`. Unfold `wn`. Establish `e2 : ((2 : NNReal) : ℝ≥0∞) = 2` using `rfl`. Rewrite `h` using `[e2]`. Rewrite using `[← ENNReal.rpow_natCast, show ((2 : ℕ) : ℝ) = ((2 : NNReal) : ℝ) by norm_num, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `nrm`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[Real.enorm_eq_ofReal (mul_nonneg (om_nonneg' _ _ _ _) (norm_nonneg _)), ENNReal.ofReal_mul (om_nonneg' _ _ _ _), ofReal_norm, show ((2 : NNReal) : ℝ) = ((2 : ℕ) : ℝ) by norm_num, ENNReal.rpow_natCast, mul_pow]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private lemma nrm_eq_wn (s M ε : ℝ) (F : E d → ℂ) : nrm s M ε F = wn s M ε F ^ 2 := by
   have h := eLpNorm_nnreal_pow_eq_lintegral (μ := (volume : Measure (E d)))
@@ -113,15 +113,15 @@ private lemma nrm_eq_wn (s M ε : ℝ) (F : E d → ℂ) : nrm s M ε F = wn s M
     ENNReal.rpow_natCast, mul_pow]
 
 /- English proof (translation)
-Rewrite using `[nrm_eq_wn, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private lemma wn_eq_nrm (s M ε : ℝ) (F : E d → ℂ) : wn s M ε F = nrm s M ε F ^ (1 / 2 : ℝ) := by
   rw [nrm_eq_wn, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]; norm_num
 
 /- English proof (translation)
-Rewrite using `[nrm_eq_wn]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `ENNReal.pow_lt_top h`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Rewrite `h'` using `[not_lt, top_le_iff]`. Rewrite `h` using `[h']`. Simplify using `at h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma wn_lt_top_iff (s M ε : ℝ) (F : E d → ℂ) : wn s M ε F < ⊤ ↔ nrm s M ε F < ⊤ := by
   rw [nrm_eq_wn]
@@ -133,9 +133,9 @@ private lemma wn_lt_top_iff (s M ε : ℝ) (F : E d → ℂ) : wn s M ε F < ⊤
     rw [h'] at h; simp at h
 
 /- English proof (translation)
-Unfold `wn`. Establish `: eLpNorm (fun ξ => om s M ε ξ * ‖F ξ‖) 2 volume ≤ eLpNorm (c • fun ξ => om s' M' ε' ξ * ‖G ξ‖) 2 volume`. Apply `eLpNorm_mono` to reduce the goal to its premises. Introduce `ξ`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Real.norm_eq_abs]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[abs_of_nonneg (mul_nonneg (om_nonneg' _ _ _ _) (norm_nonneg _)), abs_of_nonneg (mul_nonneg hc (mul_nonneg (om_nonneg' _ _ _ _) (norm_nonneg _)))]`. Conclude with `h ξ`. Rewrite `this` using `[eLpNorm_const_smul]`. Simplify `this` using `[Real.enorm_eq_ofReal hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma wn_le_of (s s' M M' ε ε' : ℝ) (F G : E d → ℂ) (c : ℝ) (hc : 0 ≤ c)
     (h : ∀ ξ, om s M ε ξ * ‖F ξ‖ ≤ c * (om s' M' ε' ξ * ‖G ξ‖)) :
@@ -153,23 +153,23 @@ private lemma wn_le_of (s s' M M' ε ε' : ℝ) (F G : E d → ℂ) (c : ℝ) (h
   simpa [Real.enorm_eq_ofReal hc] using this
 
 /- English proof (translation)
-Simplify using `using wn_le_of s s' M M ε ε F F 1 zero_le_one (fun ξ => by rw [one_mul]; exact mul_le_mul_of_nonneg_right (om_mono s s' M ε hs ξ) (norm_nonneg _))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma wn_mono_alt (s s' M ε : ℝ) (hs : s ≤ s') (F : E d → ℂ) : wn s M ε F ≤ wn s' M ε F := by
   simpa using wn_le_of s s' M M ε ε F F 1 zero_le_one
     (fun ξ => by rw [one_mul]; exact mul_le_mul_of_nonneg_right (om_mono s s' M ε hs ξ) (norm_nonneg _))
 
 /- English proof (translation)
-Simplify using `using wn_le_of s s M 0 ε 0 F F 1 zero_le_one (fun ξ => by rw [one_mul]; exact mul_le_mul_of_nonneg_right (weight_le_unshifted_weight s M ε hM ξ) (norm_nonneg _))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma weightedNorm_le_unshifted (s M ε : ℝ) (hM : 0 ≤ M) (F : E d → ℂ) : wn s M ε F ≤ wn s 0 0 F := by
   simpa using wn_le_of s s M 0 ε 0 F F 1 zero_le_one
     (fun ξ => by rw [one_mul]; exact mul_le_mul_of_nonneg_right (weight_le_unshifted_weight s M ε hM ξ) (norm_nonneg _))
 
 /- English proof (translation)
-Apply `wn_le_of _ _ _ _ _ _ _ _ _ (by positivity)` to reduce the goal to its premises. Introduce `ξ`. Rewrite using `[norm_mul, om_add]`. Establish `h` using `norm_mono_le w ξ`. Establish `h0` using `om_nonneg' a M ε ξ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_nonneg (F ξ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma wn_mono_mul (a M ε : ℝ) {n : ℕ} (w : Fin n → Fin d) (F : E d → ℂ) :
     wn a M ε (fun ξ => mono w ξ * F ξ) ≤ ENNReal.ofReal ((2 * Real.pi) ^ n) * wn (a + n) M ε F := by
@@ -184,19 +184,19 @@ private lemma wn_mono_mul (a M ε : ℝ) {n : ℕ} (w : Fin n → Fin d) (F : E 
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (by exact continuous_inner) hf`.
+A detailed English derivation is pending.
 -/
 private lemma fourier_cont {f : E d → ℂ} (hf : Integrable f) : Continuous (𝓕 f) :=
   VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (by exact continuous_inner) hf
 
 /- English proof (translation)
-The claim follows from `fourier_cont (hf.integrable_of_hasCompactSupport hfc)`.
+A detailed English derivation is pending.
 -/
 private lemma fourier_cont_of {f : E d → ℂ} (hf : Continuous f) (hfc : HasCompactSupport f) : Continuous (𝓕 f) :=
   fourier_cont (hf.integrable_of_hasCompactSupport hfc)
 
 /- English proof (translation)
-Establish `h : StronglyMeasurable (Function.uncurry fun ξ η : E d => K (ξ - η) * F η)`. Apply `Continuous.stronglyMeasurable` to reduce the goal to its premises. Conclude with `(hK.comp (continuous_fst.sub continuous_snd)).mul (hF.comp continuous_snd)`. Conclude with `(StronglyMeasurable.integral_prod_right (ν := (volume : Measure (E d))) h).measurable`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma conv_meas {K F : E d → ℂ} (hK : Continuous K) (hF : Continuous F) : Measurable (conv K F) := by
   have h : StronglyMeasurable (Function.uncurry fun ξ η : E d => K (ξ - η) * F η) := by
@@ -205,14 +205,14 @@ private lemma conv_meas {K F : E d → ℂ} (hK : Continuous K) (hF : Continuous
   exact (StronglyMeasurable.integral_prod_right (ν := (volume : Measure (E d))) h).measurable
 
 /- English proof (translation)
-The claim follows from `((om_meas s M ε).mul hG.norm).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 private lemma wt_aesm (s M ε : ℝ) {G : E d → ℂ} (hG : Measurable G) :
     AEStronglyMeasurable (fun ξ => om s M ε ξ * ‖G ξ‖) volume :=
   ((om_meas s M ε).mul hG.norm).aestronglyMeasurable
 
 /- English proof (translation)
-Rewrite using `[wn_eq_nrm, wn_eq_nrm, wn_eq_nrm]`. Conclude with `hCB d s M ε C N hC hW K F hK hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma conv_wn (hCB : ConvBound) (s M ε C N : ℝ) (hC : 0 ≤ C)
     (hW : ∀ ξ η : E d, |om s M ε ξ - om s M ε η| ≤ C * ‖ξ - η‖ * (1 + ‖ξ - η‖) ^ N * om (s - 1) M ε η)
@@ -223,13 +223,11 @@ private lemma conv_wn (hCB : ConvBound) (s M ε C N : ℝ) (hC : 0 ≤ C)
   exact hCB d s M ε C N hC hW K F hK hF
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h` using `lintegral_weight_fourier_lt_top hg hgc 0`. Simplify using `using h`. Establish `h` using `lintegral_weight_fourier_lt_top hg hgc (⌈N⌉₊ + 1)`. Use `lt_of_le_of_lt (lintegral_mono fun ζ => ?_) h` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `gcongr`. Establish `t0 : (1 : ℝ) ≤ 1 + ‖ζ‖` using `by linarith [norm_nonneg ζ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_one]`. Use `gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (1 + ‖ζ‖) ^ (N + 1) := by rw [← Real.rpow_add (by linarith)]; ring_nf`. Use `_ ≤ (1 + ‖ζ‖) ^ ((⌈N⌉₊ + 1 : ℕ) : ℝ) := by`. Apply `Real.rpow_le_rpow_of_exponent_le t0` to reduce the goal to its premises. Use `push_cast`.
-
-Combine the linear relations using `[Nat.le_ceil N]`. Use `_ = (1 + ‖ζ‖) ^ (⌈N⌉₊ + 1) := Real.rpow_natCast _ _`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma kern_fin {g : E d → ℂ} (hg : ContDiff ℝ ∞ g) (hgc : HasCompactSupport g) (N : ℝ) :
     (∫⁻ ζ, ‖𝓕 g ζ‖ₑ) < ⊤ ∧ (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖𝓕 g ζ‖ₑ) < ⊤ := by
@@ -249,23 +247,23 @@ private lemma kern_fin {g : E d → ℂ} (hg : ContDiff ℝ ∞ g) (hgc : HasCom
       _ = (1 + ‖ζ‖) ^ (⌈N⌉₊ + 1) := Real.rpow_natCast _ _
 
 /- English proof (translation)
-Unfold `mono`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma mono_cont {n : ℕ} (w : Fin n → Fin d) : Continuous (mono (d := d) w) := by
   unfold mono; fun_prop
 
 /- English proof (translation)
-Unfold `wn`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private lemma wn_congr (s M ε : ℝ) {F G : E d → ℂ} (h : ∀ ξ, ‖F ξ‖ = ‖G ξ‖) : wn s M ε F = wn s M ε G := by
   unfold wn; congr 1; ext ξ; rw [h]
 
 /- English proof (translation)
-Take `⟨C, N, hC, -, hW⟩` from `hWD d s M hM`. Take `⟨h1, h2⟩` from `kern_fin hg hgc N`. Establish `hK : Continuous (𝓕 g)` using `fourier_cont_of hg.continuous hgc`. Use `⟨ENNReal.ofReal ((2 * Real.pi) ^ n) * ((∫⁻ ζ, ‖𝓕 g ζ‖ₑ) * wn s 0 0 F + ENNReal.ofReal C * (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖𝓕 g ζ‖ₑ) * wn s 0 0 F), ?_, ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top h1 hFs, ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top h2) hFs⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε hε0 hε1`. Establish `e : wn a M ε (fun ξ => (-1 : ℂ) ^ n * mono w ξ * conv (𝓕 g) F ξ) = wn a M ε (fun ξ => mono w ξ * conv (𝓕 g) F ξ)` using `wn_congr _ _ _ (fun ξ => by simp)`. Rewrite using `[e]`. Use `(wn_mono_mul a M ε w _).trans ?_` and prove the remaining obligations. Use `gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(wn_mono_alt _ _ M ε has _).trans ?_` and prove the remaining obligations. Use `(conv_wn hCB s M ε C N hC (hW ε hε0 hε1) _ _ hK hF).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `weightedNorm_le_unshifted s M ε hM F`. Conclude with `(wn_mono_alt _ _ M ε (by linarith) F).trans (weightedNorm_le_unshifted s M ε hM F)`.
+A detailed English derivation is pending.
 -/
 private lemma term_out (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 ≤ M) {g : E d → ℂ}
     (hg : ContDiff ℝ ∞ g) (hgc : HasCompactSupport g) {F : E d → ℂ} (hF : Continuous F) (s a : ℝ) {n : ℕ}
@@ -292,13 +290,11 @@ private lemma term_out (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 �
   · exact (wn_mono_alt _ _ M ε (by linarith) F).trans (weightedNorm_le_unshifted s M ε hM F)
 
 /- English proof (translation)
-Take `⟨C, N, hC, -, hW⟩` from `hWD d a M hM`. Take `⟨h1, h2⟩` from `kern_fin hg hgc N`. Establish `hK : Continuous (𝓕 g)` using `fourier_cont_of hg.continuous hgc`. Use `set T := ENNReal.ofReal ((2 * Real.pi) ^ n) * wn s 0 0 F with hT`. Establish `hTf : T < ⊤` using `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hFs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(∫⁻ ζ, ‖𝓕 g ζ‖ₑ) * T + ENNReal.ofReal C * (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖𝓕 g ζ‖ₑ) * T, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top h1 hTf, ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top h2) hTf⟩`. Introduce `ε hε0 hε1`. Use `(conv_wn hCB a M ε C N hC (hW ε hε0 hε1) _ _ hK ((mono_cont w).mul hF)).trans ?_` and prove the remaining obligations. Use `gcongr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(wn_mono_mul a M ε w F).trans ?_` and prove the remaining obligations. Rewrite using `[hT]`. Use `gcongr`. Conclude with `(wn_mono_alt _ _ M ε has F).trans (weightedNorm_le_unshifted s M ε hM F)`. Use `(wn_mono_mul (a - 1) M ε w F).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hT]`. Use `gcongr`. Conclude with `(wn_mono_alt _ _ M ε (by linarith) F).trans (weightedNorm_le_unshifted s M ε hM F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma term_in (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 ≤ M) {g : E d → ℂ}
     (hg : ContDiff ℝ ∞ g) (hgc : HasCompactSupport g) {F : E d → ℂ} (hF : Continuous F) (s a : ℝ) {n : ℕ}
@@ -327,13 +323,11 @@ private lemma term_in (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 ≤
     exact (wn_mono_alt _ _ M ε (by linarith) F).trans (weightedNorm_le_unshifted s M ε hM F)
 
 /- English proof (translation)
-Take `⟨C, N, hC, -, hW⟩` from `hWD d a M hM`. Establish `h2` using `hKm N`. Use `set T := ENNReal.ofReal ((2 * Real.pi) ^ n) * wn (a - 1 + n) 0 0 F with hT`. Establish `hTf : T < ⊤` using `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hFs`. Use `⟨ENNReal.ofReal C * (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖K ζ‖ₑ) * T, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top h2) hTf`. Introduce `ε hε0 hε1`. Use `(conv_wn hCB a M ε C N hC (hW ε hε0 hε1) _ _ hK ((mono_cont w).mul hF)).trans ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Establish `hA : (∫⁻ ζ, ‖K ζ‖ₑ) * wn a M ε (fun η => mono w η * F η) ≤ ENNReal.ofReal ((2 * Real.pi) ^ n) * (∫⁻ ζ, ‖K ζ‖ₑ) * wn (a + n) M ε F`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hB : ENNReal.ofReal C * (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖K ζ‖ₑ) * wn (a - 1) M ε (fun η => mono w η * F η) ≤ ENNReal.ofReal C * (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖K ζ‖ₑ) * T`. Use `mul_le_mul' le_rfl ?_` and prove the remaining obligations. Use `(wn_mono_mul (a - 1) M ε w F).trans ?_` and prove the remaining obligations. Rewrite using `[hT]`.
-
-Conclude with `mul_le_mul' le_rfl (weightedNorm_le_unshifted _ M ε hM F)`. Conclude with `add_le_add hB hA`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma term_top (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 ≤ M) {K : E d → ℂ}
     (hK : Continuous K) (hKm : ∀ N : ℝ, (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖K ζ‖ₑ) < ⊤)
@@ -366,37 +360,31 @@ private lemma term_top (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 �
   exact add_le_add hB hA
 
 /- English proof (translation)
-Use `set a : ℝ := s + 1 - m with ha`. Establish `e1 : a - 1 + m = s` using `by rw [ha]; ring`. Establish `e2 : a + m = s + 1` using `by rw [ha]; ring`. Establish `Ht : ∀ w : Fin m → Fin d, ∃ B < ⊤, ∀ ε : ℝ, 0 ≤ ε → ε ≤ 1 → wn a M ε (conv (Kt w) (fun η => mono w η * V η)) ≤ B + ENNReal.ofReal ((2 * Real.pi) ^ m) * (∫⁻ ζ, ‖Kt w ζ‖ₑ) * wn (s + 1) M ε V`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `term_top hCB hWD M hM (hKt w) (hKm w) hV a w (by rw [e1]; exact hVs)`. Rewrite `h` using `[e2]`. Conclude with `h`. Use `choose Bt hBt_fin hBt using Ht`. Establish `Hl : ∀ (n : ℕ) (w : Fin n → Fin d), ∃ B < ⊤, n < m → ∀ ε : ℝ, 0 ≤ ε → ε ≤ 1 → wn a M ε (conv (𝓕 (lo n w)) (fun η => mono w η * V η)) ≤ B`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `n w`. Distinguish the cases in `hn : n < m`. Take `⟨B, hB, h⟩` from `term_in hCB hWD M hM (hlo n w).1 (hlo n w).2 hV s a w (by rw [ha]; have : (n : ℝ) + 1 ≤ m := by exact_mod_cast hn linarith) hVs`. Conclude with `⟨B, hB, fun _ => h⟩`. Conclude with `⟨0, by simp, fun h => absurd h hn⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `choose Bl hBl_fin hBl using Hl`. Establish `Ho : ∀ (n : ℕ) (w : Fin n → Fin d), ∃ B < ⊤, n < m → ∀ ε : ℝ, 0 ≤ ε → ε ≤ 1 → wn a M ε (fun ξ => (-1 : ℂ) ^ n * mono w ξ * conv (𝓕 (c n w)) W ξ) ≤ B`. Introduce `n w`. Distinguish the cases in `hn : n < m`. Take `⟨B, hB, h⟩` from `term_out hCB hWD M hM (hc n w).1 (hc n w).2 hW s a w (by rw [ha]; have : (n : ℝ) + 1 ≤ m := by exact_mod_cast hn linarith) hWs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨B, hB, fun _ => h⟩`. Conclude with `⟨0, by simp, fun h => absurd h hn⟩`. Use `choose Bo hBo_fin hBo using Ho`. Use `⟨(∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Bo n w) + (∑ w : Fin m → Fin d, Bt w) + (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Bl n w), ?_, ?_⟩` and prove the remaining obligations. Use `ENNReal.add_lt_top.2 ⟨ENNReal.add_lt_top.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `ENNReal.sum_lt_top.2 fun n _ => ENNReal.sum_lt_top.2 fun w _ => hBo_fin n w`. Conclude with `ENNReal.sum_lt_top.2 fun w _ => hBt_fin w`. Conclude with `ENNReal.sum_lt_top.2 fun n _ => ENNReal.sum_lt_top.2 fun w _ => hBl_fin n w`. Introduce `ε hε0 hε1`. Set `Ro : (n : ℕ) → (Fin n → Fin d) → E d → ℝ` to `fun n w ξ => om a M ε ξ * ‖(-1 : ℂ) ^ n * mono w ξ * conv (𝓕 (c n w)) W ξ‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `To : (Fin m → Fin d) → E d → ℝ` to `fun w ξ => om a M ε ξ * ‖conv (Kt w) (fun η => mono w η * V η) ξ‖`. Set `Lo : (n : ℕ) → (Fin n → Fin d) → E d → ℝ` to `fun n w ξ => om a M ε ξ * ‖conv (𝓕 (lo n w)) (fun η => mono w η * V η) ξ‖`. Establish `mRo : ∀ n w, AEStronglyMeasurable (Ro n w) volume` using `fun n w => wt_aesm a M ε ((((continuous_const.mul (mono_cont w)).measurable).mul (conv_meas (fourier_cont_of (hc n w).1.continuous (hc n w).2) hW)))`. Establish `mTo : ∀ w, AEStronglyMeasurable (To w) volume` using `fun w => wt_aesm a M ε (conv_meas (hKt w) ((mono_cont w).mul hV))`. Establish `mLo : ∀ n w, AEStronglyMeasurable (Lo n w) volume` using `fun n w => wt_aesm a M ε (conv_meas (fourier_cont_of (hlo n w).1.continuous (hlo n w).2) ((mono_cont w).mul hV))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ ξ, om a M ε ξ * ‖A ξ * V ξ‖ ≤ ((∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Ro n w) + (∑ w : Fin m → Fin d, To w) + (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Lo n w)) ξ`. Introduce `ξ`. Establish `hR : ((∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Ro n w) + (∑ w : Fin m → Fin d, To w) + (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Lo n w)) ξ = om a M ε ξ * ((∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, ‖(-1 : ℂ) ^ n * mono w ξ * conv (𝓕 (c n w)) W ξ‖) + (∑ w : Fin m → Fin d, ‖ …`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Ro, To, Lo, mul_add, Finset.mul_sum]`. Rewrite using `[hR]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left ?_ (om_nonneg' a M ε ξ)` and prove the remaining obligations. Establish `h` using `hid ξ`. Establish `e : A ξ * V ξ = (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * mono w ξ * conv (𝓕 (c n w)) W ξ) - (∑ w : Fin m → Fin d, conv (Kt w) (fun η => mono w η * V η) ξ) - (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, conv (𝓕 (lo n w)) (fun η => mono w η * V η) ξ)`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(norm_sub_le _ _).trans (add_le_add ((norm_sub_le _ _).trans (add_le_add ?_ ?_)) ?_)` and prove the remaining obligations. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun n _ => norm_sum_le _ _)`. Conclude with `norm_sum_le _ _`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun n _ => norm_sum_le _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : wn a M ε (fun ξ => A ξ * V ξ) ≤ eLpNorm ((∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Ro n w) + (∑ w : Fin m → Fin d, To w) + (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Lo n w)) 2 volume`. Unfold `wn`. Apply `eLpNorm_mono` to reduce the goal to its premises. Introduce `ξ`. Establish `h0 : 0 ≤ om a M ε ξ * ‖A ξ * V ξ‖` using `mul_nonneg (om_nonneg' _ _ _ _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_of_nonneg h0]`. Conclude with `(hpt ξ).trans (le_abs_self _)`. Establish `sRo : ∀ n, AEStronglyMeasurable (∑ w : Fin n → Fin d, Ro n w) volume` using `fun n => Finset.aestronglyMeasurable_sum _ fun w _ => mRo n w`. Establish `sLo : ∀ n, AEStronglyMeasurable (∑ w : Fin n → Fin d, Lo n w) volume` using `fun n => Finset.aestronglyMeasurable_sum _ fun w _ => mLo n w`. Establish `s1 : AEStronglyMeasurable (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Ro n w) volume` using `Finset.aestronglyMeasurable_sum _ fun n _ => sRo n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s2 : AEStronglyMeasurable (∑ w : Fin m → Fin d, To w) volume` using `Finset.aestronglyMeasurable_sum _ fun w _ => mTo w`. Establish `s3 : AEStronglyMeasurable (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Lo n w) volume` using `Finset.aestronglyMeasurable_sum _ fun n _ => sLo n`. Use `hmono.trans ((eLpNorm_add_le (p := 2) (s1.add s2) s3 (by norm_num)).trans ?_)` and prove the remaining obligations. Use `(add_le_add (eLpNorm_add_le (p := 2) s1 s2 (by norm_num)) le_rfl).trans ?_` and prove the remaining obligations. Establish `k1 : eLpNorm (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Ro n w) 2 volume ≤ ∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Bo n w`.
-
-Use `(eLpNorm_sum_le (p := 2) (fun n _ => sRo n) (by norm_num)).trans (Finset.sum_le_sum fun n hn => ?_)` and prove the remaining obligations. Use `(eLpNorm_sum_le (p := 2) (fun w _ => mRo n w) (by norm_num)).trans (Finset.sum_le_sum fun w _ => ?_)` and prove the remaining obligations. Conclude with `hBo n w (Finset.mem_range.1 hn) ε hε0 hε1`. Establish `k2 : eLpNorm (∑ w : Fin m → Fin d, To w) 2 volume ≤ ∑ w : Fin m → Fin d, (Bt w + ENNReal.ofReal ((2 * Real.pi) ^ m) * (∫⁻ ζ, ‖Kt w ζ‖ₑ) * wn (s + 1) M ε V)`. Use `(eLpNorm_sum_le (p := 2) (fun w _ => mTo w) (by norm_num)).trans (Finset.sum_le_sum fun w _ => ?_)` and prove the remaining obligations.
-
-Conclude with `hBt w ε hε0 hε1`. Establish `k3 : eLpNorm (∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Lo n w) 2 volume ≤ ∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, Bl n w`. Use `(eLpNorm_sum_le (p := 2) (fun n _ => sLo n) (by norm_num)).trans (Finset.sum_le_sum fun n hn => ?_)` and prove the remaining obligations. Use `(eLpNorm_sum_le (p := 2) (fun w _ => mLo n w) (by norm_num)).trans (Finset.sum_le_sum fun w _ => ?_)` and prove the remaining obligations. Conclude with `hBl n w (Finset.mem_range.1 hn) ε hε0 hε1`.
-
-Use `(add_le_add (add_le_add k1 k2) k3).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma level_i (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 ≤ M) (s : ℝ) (m : ℕ)
     (A V W : E d → ℂ) (hV : Continuous V) (hW : Continuous W)
@@ -524,15 +512,13 @@ private lemma level_i (hCB : ConvBound) (hWD : WeightDiff) (M : ℝ) (hM : 0 ≤
   ring
 
 /- English proof (translation)
-Use `set J := 1 + ‖ξ‖ ^ 2 with hJ`. Establish `hJ0 : 0 < J` using `jb_pos ξ`. Establish `hx1 : 1 ≤ ‖ξ‖ ^ 2` using `by nlinarith`. Establish `hJ2 : J ≤ 2 * ‖ξ‖ ^ 2` using `by rw [hJ]; linarith`. Establish `hterm : ∀ i, ‖ξ‖ ^ (2 * (k - m i)) * ‖σ i‖ ^ 2 ≤ J ^ k * (((J ^ m i)⁻¹) * ‖σ i‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h1 : ‖ξ‖ ^ (2 * (k - m i)) ≤ J ^ (k - m i)`. Rewrite using `[pow_mul]; exact pow_le_pow_left₀ (by positivity) (by rw [hJ]; linarith) _`. Rewrite `h1` using `[pow_sub₀ J hJ0.ne' (hk i)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hsum : c * ‖ξ‖ ^ (2 * k) ≤ J ^ k * ∑ i, ((J ^ m i)⁻¹ * ‖σ i‖ ^ 2)`. Rewrite using `[Finset.mul_sum]`. Conclude with `hS.trans (Finset.sum_le_sum fun i _ => hterm i)`. Establish `hJk : J ^ k ≤ 2 ^ k * ‖ξ‖ ^ (2 * k)`. Rewrite using `[pow_mul, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ hJ0.le hJ2 _`. Establish `hJk0 : 0 < J ^ k` using `pow_pos hJ0 k`. Establish `h2k : (0 : ℝ) < 2 ^ k` using `by positivity`. Rewrite using `[div_le_iff₀ h2k]`. Establish `: c * J ^ k ≤ J ^ k * ((∑ i, (J ^ m i)⁻¹ * ‖σ i‖ ^ 2) * 2 ^ k)`.
-
-Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma symb_ineq {ι : Type} [Fintype ι] (m : ι → ℕ) (k : ℕ) (hk : ∀ i, m i ≤ k) (c : ℝ) (hc : 0 < c)
     (ξ : E d) (hξ : 1 ≤ ‖ξ‖) (σ : ι → ℂ)
@@ -564,43 +550,41 @@ private lemma symb_ineq {ι : Type} [Fintype ι] (m : ι → ℕ) (k : ℕ) (hk 
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, om_add, neg_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma om_sub_nat (s M ε : ℝ) (n : ℕ) (ξ : E d) :
     om (s - n) M ε ξ = (1 + ‖ξ‖ ^ 2) ^ (-(n : ℝ) / 2) * om s M ε ξ := by
   rw [sub_eq_add_neg, om_add, neg_div]
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast (J ^ (-(n : ℝ) / 2)), ← Real.rpow_mul hJ.le]`. Rewrite using `[show -(n : ℝ) / 2 * ((2 : ℕ) : ℝ) = -(n : ℝ) by push_cast; ring, Real.rpow_neg hJ.le, Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private lemma rpow_neg_half_sq (J : ℝ) (hJ : 0 < J) (n : ℕ) : (J ^ (-(n : ℝ) / 2)) ^ 2 = (J ^ n)⁻¹ := by
   rw [← Real.rpow_natCast (J ^ (-(n : ℝ) / 2)), ← Real.rpow_mul hJ.le]
   rw [show -(n : ℝ) / 2 * ((2 : ℕ) : ℝ) = -(n : ℝ) by push_cast; ring, Real.rpow_neg hJ.le, Real.rpow_natCast]
 
 /- English proof (translation)
-Use `set J := 1 + ‖ξ‖ ^ 2 with hJ`. Establish `hJ0 : 0 < J` using `jb_pos ξ`. Establish `hO` using `om_nonneg' (s + 1) M ε ξ`. Establish `hV` using `norm_nonneg (V ξ)`. Establish `hY : 0 ≤ ∑ i, om (s + 1 - m i) M ε ξ * ‖A i ξ * V ξ‖` using `Finset.sum_nonneg fun i _ => mul_nonneg (om_nonneg' _ _ _ _) (norm_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt ‖ξ‖ 1 with h1 | h1` into its components or cases. Establish `e : om (s + 1) M ε ξ = J ^ ((1 : ℝ) / 2) * om s M ε ξ` using `om_add s 1 M ε ξ`. Establish `hJ2 : J ^ ((1 : ℝ) / 2) ≤ Real.sqrt 2`. Rewrite using `[← Real.sqrt_eq_rpow]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Use polynomial arithmetic with `[norm_nonneg ξ]`. Establish `: om (s + 1) M ε ξ * ‖V ξ‖ ≤ Real.sqrt 2 * (om s M ε ξ * ‖V ξ‖)`. Rewrite using `[e, mul_assoc]`. Use `gcongr`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_nonneg (om_nonneg' _ _ _ _) hV`. Establish `h3 : 0 ≤ Real.sqrt (2 ^ k / c) * ∑ i, om (s + 1 - m i) M ε ξ * ‖A i ξ * V ξ‖` using `mul_nonneg (Real.sqrt_nonneg _) hY`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS'` using `hS ξ h1.le set q : ι → ℝ := fun i => J ^ (-(m i : ℝ) / 2) with hq`. Establish `hq0 : ∀ i, 0 ≤ q i` using `fun i => by simp only [hq]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq2 : ∀ i, q i ^ 2 = (J ^ m i)⁻¹` using `fun i => rpow_neg_half_sq J hJ0 (m i)`. Establish `hterm : ∀ i, q i * (om (s + 1) M ε ξ * ‖V ξ‖) * ‖σ i ξ‖ ≤ om (s + 1 - m i) M ε ξ * ‖A i ξ * V ξ‖`. Introduce `i`. Establish `e : om (s + 1 - m i) M ε ξ = q i * om (s + 1) M ε ξ` using `om_sub_nat (s + 1) M ε (m i) ξ`. Rewrite using `[e, norm_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `hσA i ξ` as an intermediate fact. Use `hq0 i` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `set X := om (s + 1) M ε ξ * ‖V ξ‖ with hX`. Establish `hX0 : 0 ≤ X` using `mul_nonneg hO hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y := ∑ i, om (s + 1 - m i) M ε ξ * ‖A i ξ * V ξ‖ with hYd`. Establish `hsq : X ^ 2 ≤ (2 ^ k / c) * Y ^ 2`. Establish `hK : 0 < 2 ^ k / c` using `by positivity`. Establish `h1' : X ^ 2 * (c / 2 ^ k) ≤ X ^ 2 * ∑ i, ((J ^ m i)⁻¹ * ‖σ i ξ‖ ^ 2)` using `by gcongr`. Establish `h2' : X ^ 2 * ∑ i, ((J ^ m i)⁻¹ * ‖σ i ξ‖ ^ 2) = ∑ i, (q i * X * ‖σ i ξ‖) ^ 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum]`. Use `congr 1`. Use extensionality with `i`. Rewrite using `[← hq2 i]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3' : ∑ i, (q i * X * ‖σ i ξ‖) ^ 2 ≤ (∑ i, q i * X * ‖σ i ξ‖) ^ 2` using `Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => mul_nonneg (mul_nonneg (hq0 i) hX0) (norm_nonneg _)`. Establish `h4' : (∑ i, q i * X * ‖σ i ξ‖) ^ 2 ≤ Y ^ 2`. Apply `pow_le_pow_left₀ (Finset.sum_nonneg fun i _ => mul_nonneg (mul_nonneg (hq0 i) hX0) (norm_nonneg _))` to reduce the goal to its premises. Conclude with `Finset.sum_le_sum fun i _ => hterm i`. Establish `h5 : X ^ 2 * (c / 2 ^ k) ≤ Y ^ 2` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e5 : X ^ 2 = X ^ 2 * (c / 2 ^ k) * (2 ^ k / c)` using `by field_simp`. Rewrite using `[e5]`. Combine the equalities or inequalities in the displayed calculation. Establish `hXY : X ≤ Real.sqrt (2 ^ k / c) * Y`. Establish `hR : 0 ≤ Real.sqrt (2 ^ k / c) * Y` using `mul_nonneg (Real.sqrt_nonneg _) hY`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `(pow_le_pow_iff_left₀ hX0 hR (two_ne_zero)).1` to reduce the goal to its premises. Establish `e6 : (Real.sqrt (2 ^ k / c) * Y) ^ 2 = 2 ^ k / c * Y ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]`. Rewrite using `[e6]`. Conclude with `hsq`.
-
-Establish `: 0 ≤ Real.sqrt 2 * (om s M ε ξ * ‖V ξ‖)` using `mul_nonneg (Real.sqrt_nonneg _) (mul_nonneg (om_nonneg' _ _ _ _) hV)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private lemma ell_pt {ι : Type} [Fintype ι] (m : ι → ℕ) (k : ℕ) (c : ℝ) (hc : 0 < c)
     (σ A : ι → E d → ℂ) (hσA : ∀ i ξ, ‖σ i ξ‖ ≤ ‖A i ξ‖)
@@ -666,13 +650,13 @@ private lemma ell_pt {ι : Type} [Fintype ι] (m : ι → ℕ) (k : ℕ) (c : �
     linarith
 
 /- English proof (translation)
-Use `set f0 : E d → ℝ := fun ξ => om s M ε ξ * ‖V ξ‖`. Use `set f : ι → E d → ℝ := fun i ξ => om (s + 1 - m i) M ε ξ * ‖A i ξ * V ξ‖`. Establish `m0 : AEStronglyMeasurable f0 volume` using `wt_aesm s M ε hV.measurable`. Establish `mf : ∀ i, AEStronglyMeasurable (f i) volume` using `fun i => wt_aesm _ M ε ((hA i).mul hV).measurable`. Establish `msum : AEStronglyMeasurable (∑ i, f i) volume` using `Finset.aestronglyMeasurable_sum _ fun i _ => mf i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1 : wn (s + 1) M ε V ≤ eLpNorm (Real.sqrt 2 • f0 + Real.sqrt (2 ^ k / c) • ∑ i, f i) 2 volume`. Unfold `wn`. Apply `eLpNorm_mono` to reduce the goal to its premises. Introduce `ξ`. Establish `h0 : 0 ≤ om (s + 1) M ε ξ * ‖V ξ‖` using `mul_nonneg (om_nonneg' _ _ _ _) (norm_nonneg _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_of_nonneg h0]`. Use `(ell_pt m k c hc σ A hσA hS s M ε V ξ).trans (le_trans (le_of_eq ?_) (le_abs_self _))` and prove the remaining obligations. Simplify using `[f0, f, Finset.sum_apply]`. Use `h1.trans ((eLpNorm_add_le (p := 2) (m0.const_smul _) (msum.const_smul _) (by norm_num)).trans ?_)` and prove the remaining obligations. Rewrite using `[eLpNorm_const_smul, eLpNorm_const_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `add_le_add ?_ ?_` and prove the remaining obligations. Rewrite using `[Real.enorm_eq_ofReal (Real.sqrt_nonneg _)]`. Both sides reduce to the same expression. Rewrite using `[Real.enorm_eq_ofReal (Real.sqrt_nonneg _)]`. Conclude with `mul_le_mul' le_rfl (eLpNorm_sum_le (p := 2) (fun i _ => mf i) (by norm_num))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ell_wn {ι : Type} [Fintype ι] (m : ι → ℕ) (k : ℕ) (c : ℝ) (hc : 0 < c)
     (σ A : ι → E d → ℂ) (hσA : ∀ i ξ, ‖σ i ξ‖ ≤ ‖A i ξ‖) (hA : ∀ i, Continuous (A i))
@@ -701,9 +685,9 @@ private lemma ell_wn {ι : Type} [Fintype ι] (m : ι → ℕ) (k : ℕ) (c : �
     exact mul_le_mul' le_rfl (eLpNorm_sum_le (p := 2) (fun i _ => mf i) (by norm_num))
 
 /- English proof (translation)
-Establish `hh : ENNReal.ofReal (1 / 2) * X + ENNReal.ofReal (1 / 2) * X = X`. Rewrite using `[← add_mul, ← ENNReal.ofReal_add (by norm_num) (by norm_num)]; norm_num`. Establish `h1 : ENNReal.ofReal (1 / 2) * X + ENNReal.ofReal (1 / 2) * X ≤ B + ENNReal.ofReal (1 / 2) * X`. Rewrite using `[hh]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ENNReal.ofReal (1 / 2) * X ≤ B` using `(ENNReal.add_le_add_iff_right (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hX.ne)).1 h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, show (2 : ℝ≥0∞) * ENNReal.ofReal (1 / 2) = 1 by`. Rewrite using `[ENNReal.ofReal_div_of_pos (by norm_num), ENNReal.ofReal_one, ENNReal.ofReal_ofNat, one_div, ENNReal.mul_inv_cancel (by norm_num) (by norm_num)], one_mul]`. Use `_ ≤ 2 * B := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma absorb {X B : ℝ≥0∞} (hX : X < ⊤) (h : X ≤ B + ENNReal.ofReal (1 / 2) * X) : X ≤ 2 * B := by
   have hh : ENNReal.ofReal (1 / 2) * X + ENNReal.ofReal (1 / 2) * X = X := by
@@ -719,7 +703,7 @@ private lemma absorb {X B : ℝ≥0∞} (hX : X < ⊤) (h : X ≤ B + ENNReal.of
     _ ≤ 2 * B := by gcongr
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `congr 1`. Use extensionality with `w`. Unfold `mono`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -733,7 +717,7 @@ private lemma top_eq {m : ℕ} (a : (Fin m → Fin d) → ℂ) (ξ : E d) :
   ring
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty α with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun a => (IsEmpty.false a).elim⟩`. Take `⟨a0, ha0⟩` from `Finite.exists_min f`. Conclude with `⟨f a0, hf a0, ha0⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_pos_le {α : Type} [Finite α] (f : α → ℝ) (hf : ∀ a, 0 < f a) :
     ∃ ρ > 0, ∀ a, ρ ≤ f a := by
@@ -743,61 +727,51 @@ private lemma exists_pos_le {α : Type} [Finite α] (f : α → ℝ) (hf : ∀ a
     exact ⟨f a0, hf a0, ha0⟩
 
 /- English proof (translation)
-Introduce `hSL hWD hCB hKS hDec hFW hEps hCC d ι _ P U u hH x0 hx0`. Establish `hU : IsOpen U` using `hH.1`. Establish `hcoef : ∀ i n w, ContDiffOn ℝ ∞ (P.a i n w) U` using `hH.2.1`. Establish `hell : ∀ x ∈ U, ∀ ξ : E d, ξ ≠ 0 → ∃ i, P.symb i x ξ ≠ 0` using `hH.2.2.1`. Establish `hu : ContinuousOn u U` using `hH.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k : ℕ := Finset.univ.sup P.ord with hkdef`. Establish `hk : ∀ i, P.ord i ≤ k` using `fun i => Finset.le_sup (Finset.mem_univ i)`. Take `⟨c, hc, hSc⟩` from `hSL d ι P x0 k hk (hell x0 hx0)`. Set `b0 : ContDiffBump (0 : E d)` to `⟨1, 3 / 2, by norm_num, by norm_num⟩`. Use `set ψ0 : E d → ℝ := ⇑b0 with hψ0def`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ0 : ContDiff ℝ ∞ ψ0` using `b0.contDiff`. Establish `hψ0c : HasCompactSupport ψ0` using `b0.hasCompactSupport`. Establish `hψ01 : ∀ y ∈ ball (0 : E d) 1, ψ0 y = 1` using `fun y hy => b0.one_of_mem_closedBall (ball_subset_closedBall hy)`. Establish `hψ0t : tsupport ψ0 = closedBall 0 (3 / 2)` using `b0.tsupport_eq`. Establish `hψ0s : tsupport ψ0 ⊆ ball 0 2` using `by rw [hψ0t]; exact closedBall_subset_ball (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `HK` using `fun (i : ι) (w : Fin (P.ord i) → Fin d) => hKS d U (P.a i (P.ord i) w) x0 ψ0 hU hx0 (hcoef i _ w) hψ0 hψ0c hψ0s`. Use `choose r0 hr0 CK hr0U hKS' using HK`. Take `⟨δ, hδ, hδU⟩` from `Metric.isOpen_iff.1 hU x0 hx0`. Take `⟨ρ, hρ, hρle⟩` from `exists_pos_le (fun p : (Σ i : ι, (Fin (P.ord i) → Fin d)) => r0 p.1 p.2) (fun p => hr0 p.1 p.2)`. Use `set S : ℝ := Real.sqrt (2 ^ k / c) * ∑ i, ∑ w : Fin (P.ord i) → Fin d, (2 * Real.pi) ^ (P.ord i) * max (CK i w) 0 with hSdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ S` using `mul_nonneg (Real.sqrt_nonneg _) (Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun w _ => mul_nonneg (by positivity) (le_max_right _ _))`. Use `set r : ℝ := min (min ρ (δ / 2)) (1 / (2 * (S + 1))) with hrdef`. Establish `hr : 0 < r` using `lt_min (lt_min hρ (by linarith)) (by positivity)`. Establish `hrρ : r ≤ ρ` using `(min_le_left _ _).trans (min_le_left _ _)`. Establish `hrδ : r ≤ δ / 2` using `(min_le_left _ _).trans (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrS : S * r ≤ 1 / 2`. Establish `h1 : r ≤ 1 / (2 * (S + 1))` using `min_le_right _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hr0le : ∀ i w, r ≤ r0 i w` using `fun i w => hrρ.trans (hρle ⟨i, w⟩)`. Establish `h2rU : ball x0 (2 * r) ⊆ U` using `(ball_subset_ball (by linarith)).trans hδU`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨r, hr, (ball_subset_ball (by linarith)).trans hδU, ?_⟩` and prove the remaining obligations. Introduce `s IH χ hχ hχc hχs`. Take `⟨ρ', hρ'r, hρ'⟩` from `exists_lt_subset_ball (isClosed_tsupport χ) hχs`. Use `set ρ1 : ℝ := max ρ' (r / 2) with hρ1`. Establish `hρ1r : ρ1 < r` using `max_lt hρ'r (by linarith)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ10 : 0 < ρ1` using `lt_of_lt_of_le (by linarith) (le_max_right _ _)`. Set `b1 : ContDiffBump x0` to `⟨(2 * ρ1 + r) / 3, (ρ1 + 2 * r) / 3, by linarith, by linarith⟩`. Use `set χ' : E d → ℝ := ⇑b1 with hχ'def`. Establish `hχ' : ContDiff ℝ ∞ χ'` using `b1.contDiff`. Establish `hχ'c : HasCompactSupport χ'` using `b1.hasCompactSupport`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ'r : tsupport χ' ⊆ ball x0 r`. Rewrite using `[b1.tsupport_eq]; exact closedBall_subset_ball (by simp only [b1]; linarith)`. Establish `hχ'U : tsupport χ' ⊆ U` using `hχ'r.trans ((ball_subset_ball (by linarith)).trans hδU)`. Establish `hχ'1 : ∀ x ∈ tsupport χ, χ' =ᶠ[𝓝 x] fun _ => 1`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x ∈ ball x0 ((2 * ρ1 + r) / 3)` using `ball_subset_ball (show ρ' ≤ (2 * ρ1 + r) / 3 by linarith [le_max_left ρ' (r / 2)]) (hρ' hx)`. Use `filter_upwards [isOpen_ball.mem_nhds hx'] with y hy`. Conclude with `b1.one_of_mem_closedBall (ball_subset_closedBall hy)`. Establish `hcc` using `hCC d U u χ hU hu hχ hχc (hχs.trans ((ball_subset_ball (by linarith)).trans hδU))`. Establish `hcc'` using `hCC d U u χ' hU hu hχ' hχ'c hχ'U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set V : E d → ℂ := 𝓕 (cut χ u) with hVdef`. Use `set W : E d → ℂ := 𝓕 (cut χ' u) with hWdef`. Establish `hVc : Continuous V` using `fourier_cont_of hcc.1 hcc.2`. Establish `hWc : Continuous W` using `fourier_cont_of hcc'.1 hcc'.2`. Establish `hVs : wn s 0 0 V < ⊤` using `(wn_lt_top_iff _ _ _ _).2 (IH χ hχ hχc hχs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWs : wn s 0 0 W < ⊤` using `(wn_lt_top_iff _ _ _ _).2 (IH χ' hχ' hχ'c hχ'r)`. Use `set M : ℝ := max 0 (s + 1 + d / 2) + 1 with hMdef`. Establish `hM : 0 ≤ M` using `by positivity`. Establish `hMs : s + 1 + d / 2 < M` using `by rw [hMdef]; linarith [le_max_right 0 (s + 1 + d / 2)]`. Establish `HD` using `fun i => hDec d ι P U u hH x0 ψ0 r hψ0 hψ0c hψ01 hψ0s hr h2rU χ χ' hχ hχc hχs hχ' hχ'c hχ'U hχ'1 i`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose lo cc hlo hcc2 hid using HD`. Use `set Kt : (i : ι) → (Fin (P.ord i) → Fin d) → E d → ℂ := fun i w => 𝓕 (fun x => ((ψ0 (r⁻¹ • (x - x0)) : ℝ) : ℂ) * (P.a i (P.ord i) w x - P.a i (P.ord i) w x0)) with hKtdef`. Establish `hχK : ∀ x, ψ0 (r⁻¹ • (x - x0)) ≠ 0 → x ∈ closedBall x0 (3 / 2 * r)`. Introduce `x hx`. Establish `h1 : r⁻¹ • (x - x0) ∈ closedBall (0 : E d) (3 / 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hψ0t]`. Conclude with `subset_tsupport _ hx`. Rewrite `h1` using `[mem_closedBall, dist_zero_right, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hr)]`. Rewrite using `[mem_closedBall, dist_eq_norm]`. Use `(inv_mul_le_iff₀ hr).1 h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hχKt : tsupport (fun x => ψ0 (r⁻¹ • (x - x0))) ⊆ closedBall x0 (3 / 2 * r)` using `closure_minimal (fun x hx => hχK x hx) isClosed_closedBall`. Establish `hχKc : HasCompactSupport (fun x => ψ0 (r⁻¹ • (x - x0)))` using `(isCompact_closedBall x0 (3 / 2 * r)).of_isClosed_subset (isClosed_tsupport _) hχKt`. Establish `hχKU : tsupport (fun x => ψ0 (r⁻¹ • (x - x0))) ⊆ U` using `hχKt.trans ((closedBall_subset_ball (by linarith)).trans h2rU)`. Establish `hχKd : ContDiff ℝ ∞ (fun x => ψ0 (r⁻¹ • (x - x0)))` using `hψ0.comp ((contDiff_id.sub contDiff_const).const_smul r⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hKt : ∀ i w, Continuous (Kt i w)`. Introduce `i w`. Establish `h` using `hCC d U (fun x => P.a i (P.ord i) w x - P.a i (P.ord i) w x0) (fun x => ψ0 (r⁻¹ • (x - x0))) hU ((hcoef i _ w).continuousOn.sub continuousOn_const) hχKd hχKc hχKU`. Conclude with `fourier_cont_of h.1 h.2`. Establish `hKm : ∀ i w, ∀ N : ℝ, (∫⁻ ζ, ENNReal.ofReal (‖ζ‖ * (1 + ‖ζ‖) ^ N) * ‖Kt i w ζ‖ₑ) < ⊤` using `fun i w N => (hKS' i w r hr (hr0le i w)).2 N`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : ι → E d → ℂ := fun i ξ => ∑ w : Fin (P.ord i) → Fin d, P.a i (P.ord i) w x0 * mono w ξ with hAdef`. Establish `HL` using `fun i => level_i hCB hWD M hM s (P.ord i) (A i) V W hVc hWc (Kt i) (hKt i) (hKm i) (lo i) (cc i) (hlo i) (hcc2 i) (fun ξ => hid i ξ) hVs hWs`. Use `choose Bi hBi_fin hBi using HL`. Establish `hA : ∀ i, Continuous (A i)` using `fun i => continuous_finsetSum _ fun w _ => continuous_const.mul (mono_cont w)`. Establish `hσA : ∀ i ξ, ‖P.symb i x0 ξ‖ ≤ ‖A i ξ‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i ξ`. Establish `e : A i ξ = (2 * Real.pi * Complex.I) ^ (P.ord i) * P.symb i x0 ξ` using `top_eq _ ξ`. Rewrite using `[e, norm_mul, norm_pow]`. Establish `h2 : (1 : ℝ) ≤ ‖(2 * Real.pi * Complex.I : ℂ)‖`. Rewrite using `[norm_mul, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Combine the linear relations using `[Real.pi_gt_three]`. Establish `h3 : (1 : ℝ) ≤ ‖(2 * Real.pi * Complex.I : ℂ)‖ ^ (P.ord i)` using `one_le_pow₀ h2`. Use polynomial arithmetic with `[norm_nonneg (P.symb i x0 ξ)]`. Establish `hSb : ∀ ξ : E d, 1 ≤ ‖ξ‖ → c / 2 ^ k ≤ ∑ i, ((1 + ‖ξ‖ ^ 2) ^ P.ord i)⁻¹ * ‖P.symb i x0 ξ‖ ^ 2`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Introduce `ξ hξ`. Establish `hξ0 : ξ ≠ 0` using `by intro h; rw [h, norm_zero] at hξ; linarith`. Conclude with `symb_ineq P.ord k hk c hc ξ hξ (fun i => P.symb i x0 ξ) (hSc ξ hξ0)`. Use `set θ : ℝ≥0∞ := ENNReal.ofReal (Real.sqrt (2 ^ k / c)) * ∑ i, ∑ w : Fin (P.ord i) → Fin d, ENNReal.ofReal ((2 * Real.pi) ^ (P.ord i)) * (∫⁻ ζ, ‖Kt i w ζ‖ₑ) with hθdef`. Establish `hθ : θ ≤ ENNReal.ofReal (1 / 2)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : θ ≤ ENNReal.ofReal (Real.sqrt (2 ^ k / c)) * ∑ i, ∑ w : Fin (P.ord i) → Fin d, ENNReal.ofReal ((2 * Real.pi) ^ (P.ord i) * (max (CK i w) 0 * r))`. Rewrite using `[hθdef]`. Use `gcongr with i _ w _`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hKS' i w r hr (hr0le i w)).1.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hr.le`. Use `h1.trans (le_of_eq_of_le ?_ (ENNReal.ofReal_le_ofReal hrS))` and prove the remaining obligations. Establish `hnn : ∀ i (w : Fin (P.ord i) → Fin d), 0 ≤ (2 * Real.pi) ^ (P.ord i) * (max (CK i w) 0 * r)` using `fun i w => mul_nonneg (by positivity) (mul_nonneg (le_max_right _ _) hr.le)`. Rewrite using `[hSdef, mul_assoc, ENNReal.ofReal_mul (Real.sqrt_nonneg _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Establish `e : (∑ i, ∑ w : Fin (P.ord i) → Fin d, (2 * Real.pi) ^ (P.ord i) * max (CK i w) 0) * r = ∑ i, ∑ w : Fin (P.ord i) → Fin d, (2 * Real.pi) ^ (P.ord i) * (max (CK i w) 0 * r)`. Rewrite using `[Finset.sum_mul]`. Use `congr 1`. Use extensionality with `i`.
-
-Rewrite using `[Finset.sum_mul]`. Use `congr 1`. Use extensionality with `w`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ENNReal.ofReal_sum_of_nonneg (fun i _ => Finset.sum_nonneg fun w _ => hnn i w)]`.
-
-Use `congr 1`. Use extensionality with `i`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun w _ => hnn i w)]`. Use `set B : ℝ≥0∞ := ENNReal.ofReal (Real.sqrt 2) * wn s 0 0 V + ENNReal.ofReal (Real.sqrt (2 ^ k / c)) * ∑ i, Bi i with hBdef`. Establish `hBf : B < ⊤` using `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hVs, ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.sum_lt_top.2 fun i _ => hBi_fin i)⟩`.
-
-Establish `hunif : ∀ ε : ℝ, 0 < ε → ε ≤ 1 → nrm (s + 1) M ε V ≤ (2 * B) ^ 2`. Introduce `ε hε0 hε1`. Establish `hXf : wn (s + 1) M ε V < ⊤` using `(wn_lt_top_iff _ _ _ _).2 (by simpa [hVdef] using hFW d (cut χ u) hcc.1 hcc.2 (s + 1) M ε hε0 hMs)`. Establish `hE` using `ell_wn P.ord k c hc (fun i ξ => P.symb i x0 ξ) A hσA hA hSb s M ε V hVc`. Establish `hX : wn (s + 1) M ε V ≤ B + θ * wn (s + 1) M ε V`.
-
-Use `hE.trans ?_` and prove the remaining obligations. Establish `hsum : ∑ i, wn (s + 1 - P.ord i) M ε (fun ξ => A i ξ * V ξ) ≤ ∑ i, Bi i + (∑ i, ∑ w : Fin (P.ord i) → Fin d, ENNReal.ofReal ((2 * Real.pi) ^ (P.ord i)) * (∫⁻ ζ, ‖Kt i w ζ‖ₑ)) * wn (s + 1) M ε V`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => hBi i ε hε0.le hε1`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hX' : wn (s + 1) M ε V ≤ B + ENNReal.ofReal (1 / 2) * wn (s + 1) M ε V` using `hX.trans (add_le_add le_rfl (mul_le_mul' hθ le_rfl))`. Rewrite using `[nrm_eq_wn]`. Conclude with `pow_le_pow_left₀ zero_le (absorb hXf hX') 2`. Establish `hfin` using `hEps d (s + 1) M V ((2 * B) ^ 2) hM hVc hunif`. Conclude with `lt_of_le_of_lt hfin (ENNReal.pow_lt_top (ENNReal.mul_lt_top (by norm_num) hBf))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regularity_inductive_step : StepCore := by
   intro hSL hWD hCB hKS hDec hFW hEps hCC d ι _ P U u hH x0 hx0

@@ -11,7 +11,7 @@ namespace GlobalTheory.AddCharProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ResidueCharacterDense.prod_psi h2 A hl y hy k`.
+A detailed English derivation is pending.
 -/
 theorem main_prime_pow (h2 : Module.finrank F E = 2) {sig : E →ₐ[F] E}
     (A : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p) {l : ℕ} (hl : l.Prime) (y : E)
@@ -22,25 +22,23 @@ theorem main_prime_pow (h2 : Module.finrank F E = 2) {sig : E →ₐ[F] E}
   _root_.GlobalTheory.ResidueCharacterDense.prod_psi h2 A hl y hy k
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc sig _ A x`. Set `P : E → Prop` to `fun x => (Function.mulSupport fun p => (A p).psiE ((A p).ιE x)).Finite ∧ ∏ᶠ p, (A p).psiE ((A p).ιE x) = Complex.exp (2 * Real.pi * Complex.I * (((Algebra.trace ℚ E x : ℚ) : ℂ)))`. Establish `hadd : ∀ u v, P u → P v → P (u + v)`. Introduce and unpack `u v ⟨hu, hu'⟩ ⟨hv, hv'⟩`. Establish `e : (fun p => (A p).psiE ((A p).ιE (u + v))) = fun p => (A p).psiE ((A p).ιE u) * (A p).psiE ((A p).ιE v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[map_add, AddChar.map_add_eq_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(hu.union hv).subset (Function.mulSupport_mul _ _)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, finprod_mul_distrib hu hv, hu', hv', ← Complex.exp_add, map_add, Rat.cast_add, mul_add]`. Establish `key : ∀ N : ℕ, N ≠ 0 → ∀ y : E, IsIntegral ℤ y → P (y / (N : E))`. Introduce `N`. Proceed by induction on `N using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow l k hl _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_ y hy`. Use `main_prime_pow hc.deg2 A hl y hy k` as an intermediate fact. Simplify `this` using `only [Nat.cast_pow]`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `one`. Introduce `_ y hy`. Use `main_prime_pow hc.deg2 A Nat.prime_two y hy 0` as an intermediate fact. Simplify `this` using `only [pow_zero, Nat.cast_one]`. Consider the case `coprime a b ha hb hab iha ihb`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `_ y hy`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hab`. Establish `ha0 : (a : E) ≠ 0` using `by exact_mod_cast (by omega : a ≠ 0)`. Establish `hb0 : (b : E) ≠ 0` using `by exact_mod_cast (by omega : b ≠ 0)`. Establish `huv' : (u : E) * a + v * b = 1` using `by exact_mod_cast huv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `e : y / ((a * b : ℕ) : E) = (v * y) / a + (u * y) / b`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-y) * huv'`. Rewrite using `[e]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hadd _ _ (iha (by omega) _ ((isIntegral_algebraMap (x := v)).mul hy)) (ihb (by omega) _ ((isIntegral_algebraMap (x := u)).mul hy))`. Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨n, hn, hi⟩` from `halg.exists_integral_multiple`. Establish `hi' : IsIntegral ℤ ((n * n : ℤ) • x)`. Rewrite using `[mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi.smul n`. Establish `h` using `key (n * n).natAbs (by simpa using hn) _ hi'`. Establish `e : ((n * n : ℤ) • x) / (((n * n).natAbs : ℕ) : E) = x`. Establish `h1 : (((n * n).natAbs : ℕ) : E) = ((n * n : ℤ) : E)`. Rewrite using `[← Int.cast_natCast, Int.natAbs_of_nonneg (mul_self_nonneg n)]`.
-
-Establish `h0 : ((n * n : ℤ) : E) ≠ 0` using `by exact_mod_cast mul_ne_zero hn hn`. Rewrite using `[h1, zsmul_eq_mul, mul_div_cancel_left₀ _ h0]`. Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_psiE_eq_exp_trace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E], Formalism.BasicNotions.CMData F E → ∀ (sig : E →ₐ[F] E), (∀ x, sig x = star x) → ∀ (A : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p), ∀ x : E, (Function.mulSupport fun p => (A p).psiE ((A p).ιE x)).Finite ∧ ∏ᶠ p, (A p).psiE ((A p).ιE x) = Complex.exp (2 * Real.pi * Complex.I * (((Algebra.trace ℚ E x : ℚ) : ℂ))) := by
   intro F E _ _ _ _ _ _ hc sig _ A x

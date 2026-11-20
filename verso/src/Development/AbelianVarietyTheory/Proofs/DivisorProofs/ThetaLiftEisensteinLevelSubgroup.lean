@@ -21,16 +21,14 @@ namespace GlobalTheory.RegSch.CentreWeilComm
 variable {D : D7} {θ : InfFam D} {V : HSp D} {n : ℕ} {τ : D.what₂.Tau}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SchwartzMaj.continuous_and_le_maj D θ hθ m n Φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n Φ.1 Φ.2)).1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_mem (hθ : IsInfFam θ) {m : ℕ} (Φ : schwartzA θ m n) : Continuous Φ.1 :=
   (GlobalTheory.SchwartzMaj.continuous_and_le_maj D θ hθ m n Φ.1
     (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n Φ.1 Φ.2)).1
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Take `⟨hc, K, hK, hC⟩` from `GlobalTheory.SchwartzMaj.continuous_and_le_maj D θ hθ m n Φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n Φ.1 Φ.2)`. Take `⟨N, hN⟩` from `GlobalTheory.Unf.MajInt.maj_integrable D θ hθ m n (fun _ _ => True) 0 μ inferInstance (.of_forall fun _ _ _ h => (h trivial).elim) (fun t _ => map_add_right_eq_self μ t)`. Take `⟨C, hC⟩` from `hC N`.
-
-Conclude with `((hN K hK).const_mul C).mono' hc.aestronglyMeasurable (.of_forall hC)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_of_mem (hθ : IsInfFam θ) {m : ℕ} (μ : Measure (Mx D m n)) [μ.IsAddHaarMeasure] (Φ : schwartzA θ m n) :
     Integrable Φ.1 μ := by
@@ -52,7 +50,7 @@ variable {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} {ψ : AddChar (AF D.host.F) 
   {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} {ω : StdUnn.G D n →* Module.End ℂ (schwartzA θ V.rank n)}
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (φ := fun g => Φ.1 (mt V g⁻¹ ⬝ y)) (φ' := fun g => Ψ.1 (mt V g⁻¹ ⬝ y)) (fun g => by` as an intermediate fact. Simplify using `only [mul_inv_rev, mt_mul, Matrix.mul_assoc]`. Conclude with `h _) 1 t`. Simplify `this` using `only [one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsDer.at (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) {Φ Ψ : schwartzA θ V.rank n} (h : IsDer τ X Φ Ψ)
     (y : Mx D V.rank n) (t : ℝ) :
@@ -70,7 +68,7 @@ def Induced (T : (GA D V → ℂ) → GA D V → ℂ) : Prop :=
     T (fun h => (ω g Φ).1 (mt V h⁻¹ ⬝ x)) = fun h => (ω g Ψ).1 (mt V h⁻¹ ⬝ x)
 
 /- English proof (translation)
-Introduce `Φ`. Use `choose Ψ e using fun i => h i Φ`. Use `⟨∑ i ∈ s, c i • Ψ i, fun g x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `only [e, map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Induced.sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (A : ι → (GA D V → ℂ) → GA D V → ℂ)
     (h : ∀ i, Induced ω (A i)) : Induced ω fun f => ∑ i ∈ s, c i • A i f := by

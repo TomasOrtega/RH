@@ -46,7 +46,7 @@ variable [IsTopologicalGroup A] [LocallyCompactSpace A] [SecondCountableTopology
   [IsTopologicalGroup P] [MeasurableSpace P] [BorelSpace P]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `GlobalTheory.CollapseFactor.exists_eq_map_smul_prod e μ Measure.haar m`. Use `⟨c • Measure.haar, Measure.IsHaarMeasure.nnreal_smul _ hc.ne', ?_⟩` and prove the remaining obligations. Rewrite using `[h, Measure.prod_smul_left]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_prod (e : (A × B) ≃ₜ* P) (μ : Measure P) (m : Measure B) [μ.IsHaarMeasure] [m.IsHaarMeasure] :
     ∃ μ' : Measure A, μ'.IsHaarMeasure ∧ μ = (μ'.prod m).map e.toHomeomorph.toMeasurableEquiv := by
@@ -56,7 +56,7 @@ theorem exists_prod (e : (A × B) ≃ₜ* P) (μ : Measure P) (m : Measure B) [�
   rfl
 
 /- English proof (translation)
-Take `⟨μ', h, hμ⟩` from `exists_prod e μ m`. Use `⟨μ', h, ?_, hμ⟩` and prove the remaining obligations. Establish `hp : e.toHomeomorph.toMeasurableEquiv ⁻¹' UP = UA ×ˢ UB` using `Set.ext fun p => hU p.1 p.2`. Rewrite `h1` using `[hμ, MeasurableEquiv.map_apply, hp, Measure.prod_prod, h2, mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_prod_norm (e : (A × B) ≃ₜ* P) (μ : Measure P) (m : Measure B) [μ.IsHaarMeasure] [m.IsHaarMeasure]
     {UA : Set A} {UB : Set B} {UP : Set P} (hU : ∀ a b, e (a, b) ∈ UP ↔ a ∈ UA ∧ b ∈ UB) (h1 : μ UP = 1) (h2 : m UB = 1) :
@@ -67,11 +67,9 @@ theorem exists_prod_norm (e : (A × B) ≃ₜ* P) (μ : Measure P) (m : Measure 
   rwa [hμ, MeasurableEquiv.map_apply, hp, Measure.prod_prod, h2, mul_one] at h1
 
 /- English proof (translation)
-Take `⟨μ', h, hμ⟩` from `exists_prod e μ m`. Use `haveI := hA μ' h`. Establish `h1 : (μ'.prod m).map Inv.inv = μ'.prod m`. Use `Measure.map_prod_map μ' m (measurable_inv (G := A)) (measurable_inv (G := B))` as an intermediate fact. Rewrite `this` using `[Measure.map_inv_eq_self, Measure.map_inv_eq_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `this.symm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Measure.inv_def, hμ, Measure.map_map measurable_inv (MeasurableEquiv.measurable _)]`. Use `conv_rhs => rw [← h1, Measure.map_map (MeasurableEquiv.measurable _) measurable_inv]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `p`. Conclude with `(map_inv e p).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem inv_of_prod (e : (A × B) ≃ₜ* P) (μ : Measure P) (m : Measure B) [μ.IsHaarMeasure] [m.IsHaarMeasure]
     [m.IsInvInvariant] (hA : ∀ μ' : Measure A, μ'.IsHaarMeasure → μ'.IsInvInvariant) : μ.IsInvInvariant := by
@@ -91,11 +89,11 @@ theorem inv_of_prod (e : (A × B) ≃ₜ* P) (μ : Measure P) (m : Measure B) [�
 end Abstract
 
 /- English proof (translation)
-Take `⟨F, h1, h2, h3, h4⟩` from `h`. Establish `key : ∀ (x : G) (r : R'), E.symm ((ER r : G) * x) = r * E.symm x` using `fun x r => by`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[hE, E.apply_symm_apply, E.apply_symm_apply, hR]`. Use `⟨fun x => F (E.symm x), ?_, fun x => ?_, fun x => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integrable_map_equiv]`. Simplify `h1` using `[Function.comp_def]`. Rewrite using `[integrable_map_equiv]`. Simplify `h2 (E.symm x)` using `only [Function.comp_def, key]`. Rewrite using `[integral_map_equiv]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `h3 (E.symm x)` using `only [key, E.apply_symm_apply]`. Rewrite using `[integral_map_equiv]`. Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quot_transport {G G' : Type} [Group G] [MeasurableSpace G] [Group G'] [MeasurableSpace G'] {R : Subgroup G}
     {R' : Subgroup G'} (E : G' ≃ᵐ G) (hE : ∀ a b, E (a * b) = E a * E b) (ER : R' ≃ᵐ R) (hR : ∀ r, (ER r : G) = E r)
@@ -124,9 +122,9 @@ def prodMeas {A B : Type} [Group A] [Group B] [MeasurableSpace A] [MeasurableSpa
     (measurable_subtype_coe.comp measurable_snd)).subtype_mk
 
 /- English proof (translation)
-Use `haveI := cA.locallyCompactSpace`. Use `haveI := cB.locallyCompactSpace`. Take `⟨μ', a1, a2, a3⟩` from `exists_prod_norm e μ m hU h1 h3`. Take `⟨ρ', b1, b2, b3⟩` from `exists_prod_norm (resEquiv e hm) ρ s (UA := {x | x.1 ∈ UA}) (fun a b => hU a.1 b.1) h2 h4`. Set `pe` to `prodMeas RA RB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨μ', ρ', (ρ'.prod s).map pe.symm, a1, b1, a2, b2, pe.map_map_symm, fun f z hq => ?_⟩` and prove the remaining obligations. Use `quot_transport e.toHomeomorph.toMeasurableEquiv (map_mul e) (pe.trans (resEquiv e hm).toHomeomorph.toMeasurableEquiv) (fun r => rfl) _ _ f z hq` as an intermediate fact. Rewrite `this` using `[← a3, MeasurableEquiv.coe_trans, ← Measure.map_map (MeasurableEquiv.measurable _) pe.measurable, pe.map_map_symm, ← b3]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem side_abs {A B P : Type} [Group A] [TopologicalSpace A] [Group B] [TopologicalSpace B] [Group P] [TopologicalSpace P]
     [IsTopologicalGroup A] [LocallyCompactSpace A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
@@ -155,11 +153,11 @@ section Concrete
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ I) => x.1 i j) h` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`. Introduce `h`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `h i j` as an intermediate fact. Rewrite `this` using `[← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_congGrp {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
     g ∈ congGrp V I ↔ ∀ i j, mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j ∈ I := by
@@ -179,7 +177,7 @@ theorem mem_congGrp {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
     exact this
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[grpAt, mem_congGrp]`. Introduce `i j`. Establish `h1` using `hg i j`. Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h1 ⊢`. Conclude with `⟨h1.1, fun u => h1.2 ⟨u.1, fun hp => u.2 (h _ hp)⟩⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem grpAt_mono {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → R p) {g : GA D V}
     (hg : g ∈ grpAt V P) : g ∈ grpAt V R := by
@@ -190,9 +188,9 @@ theorem grpAt_mono {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → R p) {g
   exact ⟨h1.1, fun u => h1.2 ⟨u.1, fun hp => u.2 (h _ hp)⟩⟩
 
 /- English proof (translation)
-Rewrite `hg` using `[grpAt, mem_congGrp]`. Rewrite using `[grpOff, mem_congGrp]`. Introduce `i j`. Establish `h1` using `hg i j`. Simplify using `only [idAt, idOff, Submodule.mem_inf, Submodule.mem_iInf] at h1 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `fun u => h1.2 ⟨u.1, fun hp => h _ hp u.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem grpAt_off {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → ¬ R p) {g : GA D V}
     (hg : g ∈ grpAt V P) : g ∈ grpOff V R := by
@@ -204,9 +202,9 @@ theorem grpAt_off {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → ¬ R p) 
   exact fun u => h1.2 ⟨u.1, fun hp => h _ hp u.2⟩
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[grpAt, mem_congGrp]`. Rewrite `hg'` using `[grpOff, mem_congGrp]`. Introduce `i j`. Establish `h1` using `hg i j`. Establish `h2` using `hg' i j`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [idAt, idOff, Submodule.mem_inf, Submodule.mem_iInf] at h1 h2 ⊢`. Use `⟨h1.1, fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : P u.1`. Conclude with `h2 ⟨u.1, ((h _ hp).resolve_right u.2).symm⟩`. Conclude with `h1.2 ⟨u.1, hp⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem grpAt_of_off {V : HSp D} {P P' : Pl D → Prop} {w : Pl D} (h : ∀ v, P v → w = v ∨ P' v) {g : GA D V}
     (hg : g ∈ grpAt V P) (hg' : g ∈ grpOff V (· = w)) : g ∈ grpAt V P' := by
@@ -222,7 +220,7 @@ theorem grpAt_of_off {V : HSp D} {P P' : Pl D → Prop} {w : Pl D} (h : ∀ v, P
   · exact h1.2 ⟨u.1, hp⟩
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 V).2.2.1`. Establish `: g ∈ grpAt V P ⊓ grpOff V P` using `⟨hg, grpAt_off (fun p hp _ => hP p hp) hg⟩`. Rewrite `this` using `[h, Subgroup.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem grpAt_eq_one {V : HSp D} {P : Pl D → Prop} (hP : ∀ v, ¬ P v) {g : GA D V} (hg : g ∈ grpAt V P) : g = 1 := by
   have h := ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 V).2.2.1
@@ -236,7 +234,7 @@ def IsLocGrp (V : HSp D) (w : Pl D) (gl : GL Y k →* GA D V) : Prop :=
     ∀ g, ∀ y ∈ grpOff V (· = w), gl g * y = y * gl g
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D k q V Y F gl h`. Conclude with `⟨h1.continuous, fun g => h2 ▸ ⟨g, rfl⟩, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLocGrp (q : SplitPt D k) (V : HSp D) (F : GlobalTheory.LocMod.Frame k V.rank Y) (gl : GL Y k →* GA D V)
     (h : ∀ g, (ofSplit q).IsLoc F (gl g) g) : IsLocGrp V q.v gl := by
@@ -246,27 +244,25 @@ theorem isLocGrp (q : SplitPt D k) (V : HSp D) (F : GlobalTheory.LocMod.Frame k 
 variable {V : HSp D} {w : Pl D} {gl : GL Y k →* GA D V}
 
 /- English proof (translation)
-The claim follows from `(h.2.2.1 (gl g)).unique (by simp) (by simpa using hg)`.
+A detailed English derivation is pending.
 -/
 theorem IsLocGrp.eq_one (h : IsLocGrp V w gl) {g : GL Y k} (hg : gl g ∈ grpOff V (· = w)) : g = 1 :=
   (h.2.2.1 (gl g)).unique (by simp) (by simpa using hg)
 
 /- English proof (translation)
-The claim follows from `grpAt_off (R := (· = w)) (fun _ hp e => hw (e ▸ hp)) hx`.
+A detailed English derivation is pending.
 -/
 theorem off_of_not {P' : Pl D → Prop} (hw : ¬ P' w) {x : GA D V} (hx : x ∈ grpAt V P') : x ∈ grpOff V (· = w) :=
   grpAt_off (R := (· = w)) (fun _ hp e => hw (e ▸ hp)) hx
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := (GlobalTheory.FinPl.KOpen.isClosed_grpAt V P).locallyCompactSpace`. Use `haveI := (GlobalTheory.FinPl.KOpen.isClosed_grpAt V P').locallyCompactSpace`. Set `f : (grpAt V P' × GL Y k) →* grpAt V P` to `{ toFun := fun x => ⟨x.1.1 * gl x.2, mul_mem (grpAt_mono (fun p hp => (hP p).2 (Or.inr hp)) x.1.2) (grpAt_mono (fun p hp => (hP p).2 (Or.inl hp.symm)) (h.2.1 x.2))⟩ map_one' := Subtype.ext (by simp) map_mul' := fun x y => Subtype.ext (by`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Subgroup.coe_mul, map_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc (gl x.2), h.2.2.2 _ _ (off_of_not hw y.1.2), mul_assoc]) }`. Establish `hc : Continuous f` using `((continuous_subtype_val.comp continuous_fst).mul (h.1.comp continuous_snd)).subtype_mk _`. Establish `hs : Function.Surjective f` using `fun y => by`. Take `⟨g, hg, -⟩` from `h.2.2.1 y.1`. Use `⟨(⟨y.1 * (gl g)⁻¹, grpAt_of_off (fun v hv => (hP v).1 hv) (mul_mem y.2 (inv_mem (grpAt_mono (fun p hp => (hP p).2 (Or.inl hp.symm)) (h.2.1 g)))) hg⟩, g), Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show y.1 * (gl g)⁻¹ * gl g = y.1`. Simplify using the standard rewrite rules. Establish `hi : Function.Injective f` using `(injective_iff_map_eq_one f).2 fun x hx => by`. Establish `h1 : x.1.1 * gl x.2 = 1` using `congrArg Subtype.val hx`. Establish `h2 : x.2 = 1` using `h.eq_one (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← inv_eq_of_mul_eq_one_right h1]`. Conclude with `inv_mem (off_of_not hw x.1.2))`. Rewrite `h1` using `[h2, map_one, mul_one]`. Conclude with `Prod.ext (Subtype.ext h1) h2`. Establish `ho : IsOpenMap f` using `MonoidHom.isOpenMap_of_sigmaCompact f hs hc`.
-
-Set `E` to `MulEquiv.ofBijective f ⟨hi, hs⟩`. Conclude with `⟨{ E with continuous_toFun := hc continuous_invFun := (E.toEquiv.toHomeomorphOfContinuousOpen hc ho).symm.continuous }, fun x => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsLocGrp.exists_equiv (h : IsLocGrp V w gl) {P P' : Pl D → Prop} (hP : ∀ v, P v ↔ w = v ∨ P' v) (hw : ¬ P' w) :
     ∃ e : (grpAt V P' × GL Y k) ≃ₜ* grpAt V P, ∀ x, (e x : GA D V) = x.1.1 * gl x.2 := by
@@ -301,9 +297,9 @@ theorem IsLocGrp.exists_equiv (h : IsLocGrp V w gl) {P P' : Pl D → Prop} (hP :
     continuous_invFun := (E.toEquiv.toHomeomorphOfContinuousOpen hc ho).symm.continuous }, fun x => rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, h1⟩`. Rewrite `h1` using `[mul_assoc, Subgroup.mul_mem_cancel_left _ hx, ← map_inv, ← map_mul]`. Rewrite using `[mul_inv_eq_one.1 (h.eq_one h1)]`. Conclude with `hκ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun hg => ⟨g, hg, by simpa using hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsLocGrp.intAt_self (h : IsLocGrp V w gl) {x : GA D V} (hx : x ∈ grpOff V (· = w)) (g : GL Y k) :
     IntAt w gl (x * gl g) ↔ g ∈ KO k Y := by
@@ -315,7 +311,7 @@ theorem IsLocGrp.intAt_self (h : IsLocGrp V w gl) {x : GA D V} (hx : x ∈ grpOf
   · exact fun hg => ⟨g, hg, by simpa using hx⟩
 
 /- English proof (translation)
-Use `exists_congr fun κ => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv, mul_assoc, ← h.2.2.2 _ _ hy, ← mul_assoc, Subgroup.mul_mem_cancel_right _ hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsLocGrp.intAt_mul (h : IsLocGrp V w gl) (x : GA D V) {y : GA D V} (hy : y ∈ grpOff V (· = w)) :
     IntAt w gl (x * y) ↔ IntAt w gl x := by
@@ -331,7 +327,7 @@ def IsLocSub (w : Pl D) (gl : GL Y k →* GA D V) (R : Subgroup (GA D V)) (R₀ 
 variable {R : Subgroup (GA D V)} {R₀ : Subgroup (GL Y k)}
 
 /- English proof (translation)
-Establish `e : (R₀ : Set (GL Y k)) = gl ⁻¹' R` using `Set.ext fun g => (hR.2.1 g).symm`. Rewrite using `[e]`. Conclude with `hR.1.preimage h.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLocSub.closed (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) : IsClosed (R₀ : Set (GL Y k)) := by
   have e : (R₀ : Set (GL Y k)) = gl ⁻¹' R := Set.ext fun g => (hR.2.1 g).symm
@@ -339,7 +335,7 @@ theorem IsLocSub.closed (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) : IsCl
   exact hR.1.preimage h.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `h2` using `hR.2.2.1 g x hx (by rwa [h.2.2.2 g x hx])`. Conclude with `⟨(Subgroup.mul_mem_cancel_right _ h2).1 h1, (hR.2.1 g).1 h2⟩`. Conclude with `fun h1 => mul_mem h1.1 ((hR.2.1 g).2 h1.2)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsLocSub.mul_mem_iff (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) {x : GA D V} (hx : x ∈ grpOff V (· = w))
     (g : GL Y k) : x * gl g ∈ R ↔ x ∈ R ∧ g ∈ R₀ := by
@@ -350,7 +346,7 @@ theorem IsLocSub.mul_mem_iff (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) {
   · exact fun h1 => mul_mem h1.1 ((hR.2.1 g).2 h1.2)
 
 /- English proof (translation)
-Use `haveI : BorelSpace (GL Y k) := GlobalTheory.SplitFlip.borel_GL`. Establish `ho : IsOpen {x : R₀ | x.1 ∈ KO k Y}` using `GlobalTheory.SplitFlip.isOpen_KO.preimage continuous_subtype_val`. Establish `hk : IsCompact {x : R₀ | x.1 ∈ KO k Y}` using `GlobalTheory.CollapseFactor.isCompact_setOf_val GlobalTheory.SplitFlip.isCompact_KO hc`. Set `K : TopologicalSpace.PositiveCompacts R₀` to `⟨⟨_, hk⟩, ⟨1, by rw [ho.interior_eq]; exact (KO k Y).one_mem⟩⟩`. Conclude with `⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self (K₀ := K)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_sub (hc : IsClosed (R₀ : Set (GL Y k))) :
     ∃ s : Measure R₀, s.IsHaarMeasure ∧ s {x | x.1 ∈ KO k Y} = 1 := by
@@ -361,11 +357,9 @@ theorem exists_haar_sub (hc : IsClosed (R₀ : Set (GL Y k))) :
   exact ⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self (K₀ := K)⟩
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := (GlobalTheory.FinPl.KOpen.isClosed_grpAt V P').locallyCompactSpace`. Use `haveI : BorelSpace (GL Y k) := GlobalTheory.SplitFlip.borel_GL`. Establish `c1 : IsClosed ((R.subgroupOf (grpAt V P') : Subgroup _) : Set (grpAt V P'))` using `hR.1.preimage continuous_subtype_val`. Use `haveI := c1.locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := (hR.closed h).locallyCompactSpace`. Take `⟨e, he⟩` from `h.exists_equiv hP hw`. Establish `hm : ∀ a b, e (a, b) ∈ R.subgroupOf (grpAt V P) ↔ a ∈ R.subgroupOf (grpAt V P') ∧ b ∈ R₀` using `fun a b => by`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, he]`. Conclude with `hR.mul_mem_iff h (off_of_not hw a.2) b`.
-
-Take `⟨s, hs, hs1⟩` from `exists_haar_sub (hR.closed h)`. Use `haveI := hR.2.2.2 s hs hs1`. Conclude with `inv_of_prod (resEquiv e hm) ρ s ih`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inv_step (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) {P P' : Pl D → Prop} (hP : ∀ v, P v ↔ w = v ∨ P' v)
     (hw : ¬ P' w) (ih : ∀ ρ : Measure (R.subgroupOf (grpAt V P')), ρ.IsHaarMeasure → ρ.IsInvInvariant)
@@ -385,7 +379,7 @@ theorem inv_step (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) {P P' : Pl D 
   exact inv_of_prod (resEquiv e hm) ρ s ih
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `e : (Inv.inv : R.subgroupOf (grpAt V P) → _) = id`. Use function extensionality and compare the values at `fun x => Subtype.ext (Subtype.ext ((grpAt_eq_one hP (x⁻¹).1.2).trans (grpAt_eq_one hP x.1.2).symm))`. Rewrite using `[Measure.inv_def, e, Measure.map_id]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_base {P : Pl D → Prop} (hP : ∀ v, ¬ P v) (ρ : Measure (R.subgroupOf (grpAt V P))) : ρ.IsInvInvariant := by
   constructor
@@ -394,11 +388,11 @@ theorem inv_base {P : Pl D → Prop} (hP : ∀ v, ¬ P v) (ρ : Measure (R.subgr
   rw [Measure.inv_def, e, Measure.map_id]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := (GlobalTheory.FinPl.KOpen.isClosed_grpAt V P').locallyCompactSpace`. Use `haveI : BorelSpace (GL Y k) := GlobalTheory.SplitFlip.borel_GL`. Establish `c1 : IsClosed ((R.subgroupOf (grpAt V P') : Subgroup _) : Set (grpAt V P'))` using `hR.1.preimage continuous_subtype_val`. Use `haveI := c1.locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := (hR.closed h).locallyCompactSpace`. Take `⟨e, he⟩` from `h.exists_equiv hP hw`. Establish `hm : ∀ a b, e (a, b) ∈ R.subgroupOf (grpAt V P) ↔ a ∈ R.subgroupOf (grpAt V P') ∧ b ∈ R₀` using `fun a b => by`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, he]`. Conclude with `hR.mul_mem_iff h (off_of_not hw a.2) b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs, hs1⟩` from `exists_haar_sub (hR.closed h)`. Establish `hm1 : GlobalTheory.SplitFlip.haarVol (KO k Y) (KO k Y) = 1` using `GlobalTheory.SplitFlip.haarVol_self GlobalTheory.SplitFlip.isOpen_KO le_rfl`. Establish `hU' : ∀ a b, U (e (a, b)).1 ↔ U' a.1 ∧ b ∈ KO k Y` using `fun a b => by rw [he]; exact hU a.1 a.2 b`. Take `⟨μ', ρ', p, a1, a2, a3, a4, a5, a6⟩` from `side_abs e c1 (hR.closed h) hm (UA := {x | U' x.1}) (UB := KO k Y) (UP := {x | U x.1}) hU' μ ρ _ s hμ hρ GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO hs h1 h2 hm1 hs1`. Conclude with `⟨μ', ρ', _, s, p, e.toEquiv, a1, a2, a3, a4, GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO, hm1, hs, hs1, hR.2.2.2 s hs hs1, a5, he, a6⟩`.
+A detailed English derivation is pending.
 -/
 theorem side_step (h : IsLocGrp V w gl) (hR : IsLocSub w gl R R₀) {P P' : Pl D → Prop} (hP : ∀ v, P v ↔ w = v ∨ P' v)
     (hw : ¬ P' w) (U U' : GA D V → Prop) (hU : ∀ x ∈ grpAt V P', ∀ g, U (x * gl g) ↔ U' x ∧ g ∈ KO k Y)
@@ -433,7 +427,7 @@ section Steps
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨hc, -, -, h⟩` from `Q.F.jac`. Establish `h1` using `h ⟨0, by omega⟩ ⟨2 * σ + 1, by omega⟩ (by simp; omega)`. Establish `h2` using `congrFun (congrFun Q.F.G₁.γβ (Sum.inr ⟨2 * σ + 1, by omega⟩)) (Sum.inr ⟨2 * σ + 1, by omega⟩)`. Simplify using `[Matrix.mul_apply, h1, h0] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hz_div_xi_ne (Q : QStep S) : (ofSplit Q.q).hz S.B / (ofSplit Q.q).xi ≠ 0 := by
   intro h0
@@ -443,17 +437,17 @@ theorem hz_div_xi_ne (Q : QStep S) : (ofSplit Q.q).hz S.B / (ofSplit Q.q).xi ≠
   simp [Matrix.mul_apply, h1, h0] at h2
 
 /- English proof (translation)
-The claim follows from `isLocGrp Q.q _ Q.F.G₁ _ Q.loc₁`.
+A detailed English derivation is pending.
 -/
 theorem loc₁ (Q : QStep S) : IsLocGrp S.J.W Q.q.v Q.gl₁ := isLocGrp Q.q _ Q.F.G₁ _ Q.loc₁
 
 /- English proof (translation)
-The claim follows from `isLocGrp Q.q _ Q.F.G₂ _ Q.loc₂`.
+A detailed English derivation is pending.
 -/
 theorem loc₂ (Q : QStep S) : IsLocGrp S.B'.V Q.q.v Q.gl₂ := isLocGrp Q.q _ Q.F.G₂ _ Q.loc₂
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D Q.k Q.q Q.n₁ (Q.c + 1 + 1) (σ + 1)).1 S.J _ _ Q.F.F₁ Q.F.G₁ Q.gl₁ (by omega) Q.F.s_ne (div_ne_zero_iff.1 (hz_div_xi_ne Q)).1 Q.F.jac Q.loc₁`. Use `⟨GlobalTheory.jacGrp_isClosed D _ _ _ S.J.d, h1, h2, fun s hs hs1 => ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.localInvariantIntegrals_symmetric_haarSubgroups Q.k Q.ν Q.unitVol Q.n₁ (Q.c + 1 + 1) (σ + 1) Q.m₁ (GlobalTheory.SplitFlip.haarVol (KO _ _)) Q.haar₁ GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO Q.vol₁).2 (by omega) Q.F.jac.1 s hs hs1).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sub₁ (Q : QStep S) : IsLocSub Q.q.v Q.gl₁ (jacGrp S.J.d) (RFJ Q.k Q.n₁ (Q.c + 1 + 1) (σ + 1)) := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D Q.k Q.q Q.n₁ (Q.c + 1 + 1) (σ + 1)).1 S.J _ _ Q.F.F₁ Q.F.G₁ Q.gl₁ (by omega) Q.F.s_ne
@@ -463,7 +457,7 @@ theorem sub₁ (Q : QStep S) : IsLocSub Q.q.v Q.gl₁ (jacGrp S.J.d) (RFJ Q.k Q.
     GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO Q.vol₁).2 (by omega) Q.F.jac.1 s hs hs1).1
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D Q.k Q.q Q.n₂ (Q.c + 1) σ).2 S.B' _ Q.F.F₂ Q.F.G₂ Q.gl₂ (mul_ne_zero Q.F.s_ne (div_ne_zero_iff.1 (hz_div_xi_ne Q)).2) Q.F.bes' Q.loc₂`. Use `⟨GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ S.B'.d S.B'.o, h1, h2, fun s hs hs1 => ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.localInvariantIntegrals_symmetric_haarSubgroups Q.k Q.ν Q.unitVol Q.n₂ (Q.c + 1) (σ + 1) Q.m₂ (GlobalTheory.SplitFlip.haarVol (KO _ _)) Q.haar₂ GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO Q.vol₂).1 Q.F.jac.1 s hs hs1).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sub₂ (Q : QStep S) : IsLocSub Q.q.v Q.gl₂ (besGrp S.B'.d S.B'.o) (R Q.k Q.n₂ (Q.c + 1) (σ + 1)) := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D Q.k Q.q Q.n₂ (Q.c + 1) σ).2 S.B' _ Q.F.F₂ Q.F.G₂ Q.gl₂
@@ -473,21 +467,21 @@ theorem sub₂ (Q : QStep S) : IsLocSub Q.q.v Q.gl₂ (besGrp S.B'.d S.B'.o) (R 
     GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO Q.vol₂).1 Q.F.jac.1 s hs hs1).1
 
 /- English proof (translation)
-The claim follows from `Fin.exists_fin_succ`.
+A detailed English derivation is pending.
 -/
 theorem places_succ {r : ℕ} (Q : Fin (r + 1) → QStep S) (v : Pl D) :
     places Q v ↔ (Q 0).q.v = v ∨ places (fun i => Q i.succ) v := Fin.exists_fin_succ
 
 /- English proof (translation)
-Introduce `⟨j, hj⟩` and use `Fin.succ_ne_zero j (h hj)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_places {r : ℕ} {Q : Fin (r + 1) → QStep S} (h : Function.Injective fun i => (Q i).q.v) :
     ¬ places (fun i => Q i.succ) (Q 0).q.v := fun ⟨j, hj⟩ => Fin.succ_ne_zero j (h hj)
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => exact fun Q _ => ⟨fun ρ _ => inv_base (fun _ ⟨i, _⟩ => i.elim0) ρ, fun ρ _ => inv_base (fun _ ⟨i, _⟩ => i.elim0) ρ⟩`. Consider the case `succ r ih`. Introduce `Q h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `ih (fun i => Q i.succ) (h.comp (Fin.succ_injective _))`. Conclude with `⟨inv_step (loc₁ (Q 0)) (sub₁ (Q 0)) (places_succ Q) (not_places h) h1, inv_step (loc₂ (Q 0)) (sub₂ (Q 0)) (places_succ Q) (not_places h) h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inv_places : ∀ (r : ℕ) (Q : Fin r → QStep S), (Function.Injective fun i => (Q i).q.v) →
     (∀ ρ : Measure ((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places Q))), ρ.IsHaarMeasure → ρ.IsInvInvariant) ∧
@@ -502,7 +496,7 @@ theorem inv_places : ∀ (r : ℕ) (Q : Fin r → QStep S), (Function.Injective 
       inv_step (loc₂ (Q 0)) (sub₂ (Q 0)) (places_succ Q) (not_places h) h2⟩
 
 /- English proof (translation)
-Introduce `x hx g` and use `by rw [Fin.forall_fin_succ, (loc₁ (Q 0)).intAt_self (off_of_not (not_places h) hx), and_comm] refine and_congr_left fun _ => forall_congr' fun i => (loc₁ (Q i.succ)).intAt_mul x (off_of_not (P' := (· = (Q 0).q.v)) (fun e => Fin.succ_ne_zero i (h e)) ((loc₁ (Q 0)).2.1 g))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int₁ {r : ℕ} {Q : Fin (r + 1) → QStep S} (h : Function.Injective fun i => (Q i).q.v) :
     ∀ x ∈ grpAt S.J.W (places fun i => Q i.succ), ∀ g, (∀ i, IntAt (Q i).q.v (Q i).gl₁ (x * (Q 0).gl₁ g)) ↔
@@ -512,7 +506,7 @@ theorem int₁ {r : ℕ} {Q : Fin (r + 1) → QStep S} (h : Function.Injective f
     (off_of_not (P' := (· = (Q 0).q.v)) (fun e => Fin.succ_ne_zero i (h e)) ((loc₁ (Q 0)).2.1 g))
 
 /- English proof (translation)
-Introduce `x hx g` and use `by rw [Fin.forall_fin_succ, (loc₂ (Q 0)).intAt_self (off_of_not (not_places h) hx), and_comm] refine and_congr_left fun _ => forall_congr' fun i => (loc₂ (Q i.succ)).intAt_mul x (off_of_not (P' := (· = (Q 0).q.v)) (fun e => Fin.succ_ne_zero i (h e)) ((loc₂ (Q 0)).2.1 g))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int₂ {r : ℕ} {Q : Fin (r + 1) → QStep S} (h : Function.Injective fun i => (Q i).q.v) :
     ∀ x ∈ grpAt S.B'.V (places fun i => Q i.succ), ∀ g, (∀ i, IntAt (Q i).q.v (Q i).gl₂ (x * (Q 0).gl₂ g)) ↔
@@ -526,11 +520,9 @@ end Steps
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ σ S r Q h μ₁ ρ₁ μ₂ ρ₂ ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩`. Take `⟨μ₁', ρ₁', m₁, s₁, p₁, e₁, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12⟩` from `side_step (loc₁ (Q 0)) (sub₁ (Q 0)) (places_succ Q) (not_places h) (fun x => ∀ i, IntAt (Q i).q.v (Q i).gl₁ x) (fun x => ∀ i : Fin r, IntAt (Q i.succ).q.v (Q i.succ).gl₁ x) (int₁ h) μ₁ ρ₁ a1 a2 a5 a6`. Take `⟨μ₂', ρ₂', m₂, s₂, p₂, e₂, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12⟩` from `side_step (loc₂ (Q 0)) (sub₂ (Q 0)) (places_succ Q) (not_places h) (fun x => ∀ i, IntAt (Q i).q.v (Q i).gl₂ x) (fun x => ∀ i : Fin r, IntAt (Q i.succ).q.v (Q i.succ).gl₂ x) (int₂ h) μ₂ ρ₂ a3 a4 a7 a8`. Take `⟨i₁, i₂⟩` from `inv_places r (fun i => Q i.succ) (h.comp (Fin.succ_injective _))`. Use `haveI := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S.J.W).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S.B'.V).1`. Use `⟨(GlobalTheory.FinPl.KOpen.isClosed_grpAt _ _).locallyCompactSpace, (GlobalTheory.FinPl.KOpen.isClosed_grpAt _ _).locallyCompactSpace, (sub₁ (Q 0)).1.preimage continuous_subtype_val, (sub₂ (Q 0)).1.preimage continuous_subtype_val, (sub₁ (Q 0)).closed (loc₁ (Q 0)), (sub₂ (Q 0)).cl …` and prove the remaining obligations. Introduce and unpack `F z ⟨f₁, hf, hf'⟩`. Use `⟨fun q => f₁ (e₁.symm q), b12 _ z (by simpa only [Equiv.symm_apply_apply] using hf), fun q => c12 _ _ ?_⟩` and prove the remaining obligations. Use `hf' (e₁.symm q)` as an intermediate fact.
-
-Simplify `this` using `only [← b11, ← c11, Equiv.apply_symm_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem reduce : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (S : Dbl2 ψ σ) (r : ℕ) (Q : Fin (r + 1) → QStep S), Function.Injective (fun i => (Q i).q.v) → ∀ (μ₁ : Measure (grpAt S.J.W (places Q))) (ρ₁ : Measure ((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places Q)))) (μ₂ : Measure (grpAt S.B'.V (places Q))) (ρ₂ : Measure ((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places Q)))), Norm Q μ₁ ρ₁ μ₂ ρ₂ → LocallyCompactSpace (grpAt S.J.W (places fun i => Q i.succ)) ∧ LocallyCompactSpace (grpAt S.B'.V (places fun i => Q i.succ)) ∧ IsClosed (((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ)) : Set (grpAt S.J.W (places fun i => Q i.succ)))) ∧ IsClosed (((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ)) : Set (grpAt S.B'.V (places fun i => Q i.succ)))) ∧ IsClosed ((RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1) : Set (GL ((Q 0).n₁ ⊕ Fin ((Q 0).c + 1 + 1)) (Q 0).k))) ∧ IsClosed ((R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1) : Set (GL ((Q 0).n₂ ⊕ Fin ((Q 0).c + 1)) (Q 0).k))) ∧ ∃ (μ₁' : Measure (grpAt S.J.W (places fun i => Q i.succ))) (ρ₁' : Measure ((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ)))) (μ₂' : Measure (grpAt S.B'.V (places fun i => Q i.succ))) (ρ₂' : Measure ((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ)))) (m₁ : Measure (GL ((Q 0).n₁ ⊕ Fin ((Q 0).c + 1 + 1)) (Q 0).k)) (s₁ : Measure (RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1))) (m₂ : Measure (GL ((Q 0).n₂ ⊕ Fin ((Q 0).c + 1)) (Q 0).k)) (s₂ : Measure (R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1))) (p₁ : Measure (((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ))).prod (RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1)))) (p₂ : Measure (((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ))).prod (R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1)))), Norm (fun i => Q i.succ) μ₁' ρ₁' μ₂' ρ₂' ∧ LocNorm (Q 0) m₁ s₁ m₂ s₂ ∧ ρ₁'.IsInvInvariant ∧ ρ₂'.IsInvInvariant ∧ s₁.IsInvInvariant ∧ s₂.IsInvInvariant ∧ p₁.map (Subgroup.prodEquiv _ _) = ρ₁'.prod s₁ ∧ p₂.map (Subgroup.prodEquiv _ _) = ρ₂'.prod s₂ ∧ ∀ (F : GA D S.J.W → GA D S.B'.V → ℂ) (z : ℂ), Iter2 p₁ (μ₁'.prod m₁) p₂ (μ₂'.prod m₂) (fun x y => F (x.1.1 * (Q 0).gl₁ x.2) (y.1.1 * (Q 0).gl₂ y.2)) z → Iter2 ρ₁ μ₁ ρ₂ μ₂ (fun x y => F x.1 y.1) z := by
   intro D ψ σ S r Q h μ₁ ρ₁ μ₂ ρ₂ ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩

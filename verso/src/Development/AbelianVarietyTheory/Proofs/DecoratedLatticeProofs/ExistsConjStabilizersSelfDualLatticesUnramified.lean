@@ -15,21 +15,19 @@ namespace GlobalTheory.SelfDualStabConj
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h.2.2.1 }`. Establish `: IsGalois F E` using `inferInstance`. Use `v.isMaximal` as an intermediate fact. Establish `hσ` using `GlobalTheory.LFun.InertChart.conj_conj h`. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcard` using `Ideal.card_inertia_eq_ramificationIdxIn (G := E ≃ₐ[F] E) v.asIdeal Q`. Rewrite `hcard` using `[Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal Q (E ≃ₐ[F] E), Ideal.ramificationIdx_eq_one_of_isUnramifiedAt]`. Set `s : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)`. Establish `hs1 : s ≠ 1` using `fun hs => GlobalTheory.LFun.InertChart.conj_ne h fun x => congrArg (fun t : E ≃ₐ[F] E => t x) hs`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : 𝓞 E, s • x - x ∉ Q := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hs : s ∈ Q.inertia (E ≃ₐ[F] E)` using `AddSubgroup.mem_inertia.2 hn`. Rewrite `hs` using `[Subgroup.eq_bot_of_card_eq _ hcard, Subgroup.mem_bot]`. Conclude with `hs1 hs`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ t : E ≃ₐ[F] E, t (((x : E) - σ x) ^ 2) = ((x : E) - σ x) ^ 2` using `fun t => by`. Establish `hc : Nat.card (E ≃ₐ[F] E) = 2` using `(IsGalois.card_aut_eq_finrank F E).trans h.2.2.1`. Take `⟨u, -, hu⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hc`. Distinguish the cases in `ht : t = 1`. Rewrite using `[ht]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[(hu t ht).trans (hu s hs1).symm]`. Express the relevant statement in the definitionally equal form `σ _ = _`. Rewrite using `[map_pow, map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed _).2 hfix`. Establish `e : (((s • x - x) ^ 2 : 𝓞 E) : E) = ((x : E) - σ x) ^ 2`. Express the relevant statement in the definitionally equal form `(σ x - (x : E)) ^ 2 = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : IsIntegral ℤ d`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← isIntegral_algebraMap_iff (algebraMap F E).injective, hd, ← e]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Use `⟨x, ⟨d, hi⟩, fun hm => hx (hQ.isPrime.mem_of_pow_mem 2 ?_), hd⟩` and prove the remaining obligations. Establish `: (s • x - x) ^ 2 = algebraMap (𝓞 F) (𝓞 E) ⟨d, hi⟩` using `RingOfIntegers.ext (e.trans hd.symm)`. Rewrite using `[this]`.
-
-Rewrite `hm` using `[hQv.over]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_sq_conj_sub (h : IsCMExt F E σ) (hU : Algebra.Unramified (𝓞 F) (𝓞 E)) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ (x : 𝓞 E) (d : 𝓞 F), d ∉ v.asIdeal ∧ algebraMap F E d = ((x : E) - σ x) ^ 2 := by
@@ -73,11 +71,11 @@ def conjInt (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) : intLoc F E v
   (sigR (Fv F v) σ).restrict _ _ fun _ => sigR_mem_intLoc σ
 
 /- English proof (translation)
-Take `⟨x, d, hd, e⟩` from `exists_sq_conj_sub h hU v`. Establish `hd0 : (d : F) ≠ 0` using `fun h0 => hd (by`. Rewrite using `[show d = 0 from RingOfIntegers.coe_injective (by simpa using h0)]; exact zero_mem _)`. Establish `ha : algebraMap F (Fv F v) (d : F)⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : v.valuation F (d : F) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := F) v).2 hd`. Establish `h2` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (d : F)⁻¹`. Conclude with `le_of_eq (h2.trans (by rw [map_inv₀, h1, inv_one]))`. Use `⟨⟨_, tmul_mem_intLoc (one_mem _) x⟩, (isUnit_pow_iff two_ne_zero).1 (IsUnit.of_mul_eq_one ⟨_, tmul_mem_intLoc ha 1⟩ (Subtype.ext ?_))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(inclR (Fv F v) (x : E) - inclR (Fv F v) (σ x)) ^ 2 * (algebraMap F (Fv F v) (d : F)⁻¹ ⊗ₜ[F] (1 : E)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub, ← map_pow, ← e, Algebra.algebraMap_eq_smul_one (d : F)⁻¹, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]`. Express the relevant statement in the definitionally equal form `inclR (Fv F v) _ * inclR (Fv F v) _ = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ hd0, map_one, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_sub_conj (h : IsCMExt F E σ) (hU : Algebra.Unramified (𝓞 F) (𝓞 E))
     (v : HeightOneSpectrum (𝓞 F)) : ∃ ω : intLoc F E v, IsUnit (ω - conjInt σ v ω) := by
@@ -98,13 +96,13 @@ theorem exists_isUnit_sub_conj (h : IsCMExt F E σ) (hU : Algebra.Unramified (�
   rw [← map_mul, ← map_mul, mul_inv_cancel₀ hd0, map_one, map_one]
 
 /- English proof (translation)
-Set `O` to `intLoc F E v`. Set `_` to `(GlobalTheory.Orb.intLocMap E v).toAlgebra`. Establish `: Module.Finite (v.adicCompletionIntegers F) O` using `GlobalTheory.Orb.finite_intLocMap v`. Use `GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v` as an intermediate fact. Establish `: Finite (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))` using `Formalism.UG.P.glint_finite_residueField v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.InertNorm.isAdicComplete_map_of_finite (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) O` as an intermediate fact. Use `GlobalTheory.InertNorm.finite_quotient_map_of_finite (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) O` as an intermediate fact. Establish `: IsNoetherianRing O` using `Algebra.FiniteType.isNoetherianRing (v.adicCompletionIntegers F) O`. Set `s : O →+* O` to `conjInt σ v`. Establish `hs : ∀ y : O, s (s y) = y` using `fun y => Subtype.ext (GlobalTheory.Doubling.sigR_invol (GlobalTheory.LFun.InertChart.conj_conj h) y.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hk : ∀ c, s (algebraMap (v.adicCompletionIntegers F) O c) = algebraMap (v.adicCompletionIntegers F) O c` using `fun c => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `sigR (Fv F v) σ ((c : Fv F v) ⊗ₜ[F] (1 : E)) = (c : Fv F v) ⊗ₜ[F] (1 : E)`. Simplify using `[sigR])`. Set `I` to `(IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)).map (algebraMap (v.adicCompletionIntegers F) O)`. Establish `hI : I ≤ I.comap s` using `Ideal.map_le_iff_le_comap.2 fun c hc => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hk]`. Conclude with `Ideal.mem_map_of_mem _ hc`. Take `⟨p, hp⟩` from `GlobalTheory.UnitaryDoubleCoset.exists_poly_norm hs (GlobalTheory.InertNorm.exists_dvd_mul_map_sub_X O I s hs (fun y hy => hI hy) (exists_isUnit_sub_conj h hU v)) hB hu`. Establish `h2 : IsUnit (Polynomial.aeval B p)` using `isUnit_of_mul_isUnit_right (hp ▸ hu)`. Conclude with `⟨h2.unit, hp⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_norm (h : IsCMExt F E σ) (hU : Algebra.Unramified (𝓞 F) (𝓞 E)) (v : HeightOneSpectrum (𝓞 F))
     {n : ℕ} {B : Matrix (Fin n) (Fin n) (intLoc F E v)} (hB : cT (conjInt σ v) B = B) (hu : IsUnit B) :
@@ -135,7 +133,7 @@ theorem exists_norm (h : IsCMExt F E σ) (hU : Algebra.Unramified (𝓞 F) (𝓞
   exact ⟨h2.unit, hp⟩
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_mul {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} (P Q : Matrix (Fin n) (Fin n) A) :
     cT s (P * Q) = cT s Q * cT s P := by
@@ -143,26 +141,26 @@ theorem cT_mul {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} (P Q : Matrix (
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_one {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} : cT s (1 : Matrix (Fin n) (Fin n) A) = 1 := by
   unfold cT
   rw [Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]
 
 /- English proof (translation)
-Take `⟨a₀, ha₀⟩` from `Frames.exists_isLatticeFrame (F := F) L`. Establish `ha` using `ha₀ v`. Generalize the expression as in `bc (compFin F E v) a₀ = a at ha`. Establish `hσ` using `GlobalTheory.Doubling.sigR_invol (R := Fv F v) (GlobalTheory.LFun.InertChart.conj_conj h)`. Establish `hJu : IsUnit (JR (F` using `F) (Fv F v) J) := (Matrix.isUnit_iff_isUnit_det _).2 (GlobalTheory.Doubling.isUnit_det_JR hJ.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJh : cT (sigR _ σ) (JR (F` using `F) (Fv F v) J) = JR (Fv F v) J := by`. Use extensionality with `i j`. Conclude with `congrArg (fun x => (1 : Fv F v) ⊗ₜ[F] x) (hJ.1 i j)`. Establish `hau : IsUnit (cT (sigR _ σ) a.1)` using `IsUnit.of_mul_eq_one (cT (sigR _ σ) (a⁻¹).1) (by`. Rewrite using `[← cT_mul, Units.inv_mul, cT_one])`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `(hau.mul hJu).mul a.isUnit`. Take `⟨h1, h2⟩` from `GlobalTheory.StdUnn.Unimod.gram_int (sigR _ σ) (intLoc F E v) (fun _ => sigR_mem_intLoc σ) (JR (Fv F v) J) a.1 (a⁻¹).1 (H⁻¹).1 (fun y => y ∈ latLoc F L v) a.mul_inv (hH ▸ H.mul_inv) ha (fun y => SetLike.ext_iff.1 hL y)`. Set `ι` to `(intLoc F E v).subtype`. Establish `hinj : ∀ {M N : Matrix (Fin n) (Fin n) (intLoc F E v)}, M.map ι = N.map ι → M = N` using `fun e => Matrix.map_injective Subtype.val_injective e`. Establish `hcT : ∀ M : Matrix (Fin n) (Fin n) (intLoc F E v), (cT (conjInt σ v) M).map ι = cT (sigR _ σ) (M.map ι)` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : Matrix (Fin n) (Fin n) (intLoc F E v)` to `Matrix.of fun i j => ⟨_, h1 i j⟩`. Set `B' : Matrix (Fin n) (Fin n) (intLoc F E v)` to `Matrix.of fun i j => ⟨_, h2 i j⟩`. Establish `eB : B.map ι = cT (sigR _ σ) a.1 * JR (Fv F v) J * a.1` using `rfl`. Take `⟨u, hu⟩` from `exists_norm h hU v (B := B) (hinj (by rw [hcT, eB, cT_mul, cT_mul, hJh, GlobalTheory.UnitaryDoubleCoset.cT_cT hσ, Matrix.mul_assoc])) (IsUnit.of_mul_eq_one B' (hinj (by`. Rewrite using `[Matrix.map_mul, eB, ← hH, Matrix.map_one _ (map_zero ι) (map_one ι)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `H.mul_inv)))`. Establish `hu' : cT (sigR _ σ) (bc ι u).1 * (bc ι u).1 = cT (sigR _ σ) a.1 * JR (Fv F v) J * a.1`. Rewrite using `[← eB, ← hu, Matrix.map_mul]`. Both sides reduce to the same expression. Establish `hm : ∀ (k : GL (Fin n) (intLoc F E v)) (y : Fin n → Fv F v ⊗[F] E), (∀ i, y i ∈ intLoc F E v) → ∀ i, ((bc ι k).1 *ᵥ y) i ∈ intLoc F E v` using `fun k y hy i => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (k.1 i j).2 (hy j)`. Use `⟨a * (bc ι u)⁻¹, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `: cT (sigR _ σ) (a * (bc ι u)⁻¹).1 * JR (Fv F v) J * (a * (bc ι u)⁻¹).1 = cT (sigR _ σ) ((bc ι u)⁻¹).1 * (cT (sigR _ σ) a.1 * JR (Fv F v) J * a.1) * ((bc ι u)⁻¹).1`. Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, ← hu', ← Matrix.mul_assoc, ← cT_mul, Units.mul_inv, cT_one, Matrix.one_mul, Units.mul_inv]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← ha]`. Use `⟨fun hy => by rw [← map_inv]; exact hm _ y hy, fun hy => ?_⟩` and prove the remaining obligations. Use `hm u _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_frame (h : IsCMExt F E σ) (hU : Algebra.Unramified (𝓞 F) (𝓞 E)) {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]
@@ -211,13 +209,13 @@ theorem exists_orthonormal_frame (h : IsCMExt F E σ) (hU : Algebra.Unramified (
     rwa [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h hU n J hJ L L' _ _ v hL hL'`. Take `⟨b, hb, fb⟩` from `exists_orthonormal_frame h hU hJ L hL`. Take `⟨c, hc, fc⟩` from `exists_orthonormal_frame h hU hJ L' hL'`. Establish `hg : cT (sigR _ σ) (c * b⁻¹).1 * JR (Fv F v) J * (c * b⁻¹).1 = JR (Fv F v) J`. Establish `: cT (sigR _ σ) (c * b⁻¹).1 * JR (Fv F v) J * (c * b⁻¹).1 = cT (sigR _ σ) (b⁻¹).1 * (cT (sigR _ σ) c.1 * JR (Fv F v) J * c.1) * (b⁻¹).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc]`. Rewrite using `[this, hc, ← hb, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← cT_mul, Units.mul_inv, cT_one, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Set `g : GLoc σ J v` to `⟨c * b⁻¹, hg⟩`. Establish `eg : matHom _ σ J g = c * b⁻¹` using `rfl`. Establish `hm : ∀ y, y ∈ latLoc F L v ↔ (matHom _ σ J g).1 *ᵥ y ∈ latLoc F L' v` using `fun y => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eg, Units.val_mul, ← Matrix.mulVec_mulVec, ← fc, fb, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hact : ∀ (p q : GLoc σ J v) y, (matHom _ σ J p).1 *ᵥ ((matHom _ σ J q).1 *ᵥ y) = (matHom _ σ J (p * q)).1 *ᵥ y` using `fun p q y => by`. Rewrite using `[Matrix.mulVec_mulVec, map_mul, Units.val_mul]`. Use `⟨g, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_stabLoc, mem_stabLoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hk y => ?_, fun hk y => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hm, hk, hact, hact, ← mul_assoc, mul_inv_cancel_left]`. Use `hk ((matHom _ σ J g⁻¹).1 *ᵥ y)` as an intermediate fact. Rewrite `this` using `[hm, hm, hact, hact, hact, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec, mul_assoc, mul_inv_cancel_right, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_conj_stabLoc : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E),

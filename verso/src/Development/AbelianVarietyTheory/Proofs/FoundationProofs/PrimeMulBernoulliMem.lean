@@ -31,13 +31,13 @@ variable {p : ℕ} [Fact p.Prime]
 
 omit [CharZero K] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, (Fact.out : p.Prime).not_dvd_one, by simpa using h⟩`.
+Supply the required witnesses or components.
 -/
 lemma mem_of_isIntegral {x : K} (h : IsIntegral ℤ x) : x ∈ pInt p K :=
   ⟨1, (Fact.out : p.Prime).not_dvd_one, by simpa using h⟩
 
 /- English proof (translation)
-Establish `hm : (m : K) ≠ 0`. Establish `: m ≠ 0` using `by rintro rfl; exact h (dvd_zero _)`. Conclude with `this` after adjusting the coercions. Conclude with `⟨m, h, by rw [mul_inv_cancel₀ hm]; exact isIntegral_one⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma inv_nat_mem {m : ℕ} (h : ¬ p ∣ m) : (m : K)⁻¹ ∈ pInt p K := by
   have hm : (m : K) ≠ 0 := by
@@ -46,9 +46,9 @@ lemma inv_nat_mem {m : ℕ} (h : ¬ p ∣ m) : (m : K)⁻¹ ∈ pInt p K := by
   exact ⟨m, h, by rw [mul_inv_cancel₀ hm]; exact isIntegral_one⟩
 
 /- English proof (translation)
-Establish `h1 : ((c.natAbs : ℕ) : K)⁻¹ ∈ pInt p K` using `inv_nat_mem (fun h' => h (Int.natCast_dvd.2 h'))`. Break down `Int.natAbs_eq c with h2 | h2` into its components or cases. Rewrite using `[h2]`. Simplify using `using h1`. Rewrite using `[h2]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using neg_mem h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma inv_int_mem {c : ℤ} (h : ¬ (p : ℤ) ∣ c) : (c : K)⁻¹ ∈ pInt p K := by
   have h1 : ((c.natAbs : ℕ) : K)⁻¹ ∈ pInt p K := inv_nat_mem (fun h' => h (Int.natCast_dvd.2 h'))
@@ -57,7 +57,7 @@ lemma inv_int_mem {c : ℤ} (h : ¬ (p : ℤ) ∣ c) : (c : K)⁻¹ ∈ pInt p K
   · rw [h2]; simpa using neg_mem h1
 
 /- English proof (translation)
-Break down `e with e | e` into its components or cases. Simplify using `using pow_mem (intCast_mem (pInt p K) c) e`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `pow_mem (inv_int_mem h) _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zpow_int_mem {c : ℤ} (h : ¬ (p : ℤ) ∣ c) (e : ℤ) : (c : K) ^ e ∈ pInt p K := by
   rcases e with e | e
@@ -66,7 +66,7 @@ lemma zpow_int_mem {c : ℤ} (h : ¬ (p : ℤ) ∣ c) (e : ℤ) : (c : K) ^ e �
 
 omit [CharZero K] in
 /- English proof (translation)
-Break down `e with e | e` into its components or cases. Simplify using `using pow_mem (mem_of_isIntegral (h.isIntegral hM)) e`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `pow_mem (mem_of_isIntegral (h.inv.isIntegral hM)) _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma root_zpow_mem {ζ : K} {M : ℕ} (hM : 0 < M) (h : IsPrimitiveRoot ζ M) (e : ℤ) : ζ ^ e ∈ pInt p K := by
   rcases e with e | e
@@ -74,11 +74,11 @@ lemma root_zpow_mem {ζ : K} {M : ℕ} (hM : 0 < M) (h : IsPrimitiveRoot ζ M) (
   · rw [zpow_negSucc, ← inv_pow]; exact pow_mem (mem_of_isIntegral (h.inv.isIntegral hM)) _
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨v, u, hu, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hk p hp.ne_one`. Establish `hu0 : u ≠ 0` using `by rintro rfl; exact hu (dvd_zero _)`. Establish `hv : v ≤ e`. Establish `: p ^ v < p ^ (e + 1)` using `lt_of_le_of_lt (Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hu0)) h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.pow_lt_pow_iff_right hp.one_lt).1 this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨w, rfl⟩` from `Nat.exists_eq_add_of_le hv`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `: (p : K) ^ (v + w) / ((p ^ v * u : ℕ) : K) = (p : K) ^ w * (u : K)⁻¹` using `by push_cast; field_simp; ring`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `mul_mem (pow_mem (natCast_mem _ p) w) (inv_nat_mem hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pow_div_mem {k e : ℕ} (hk : k ≠ 0) (h : k < p ^ (e + 1)) : (p : K) ^ e / k ∈ pInt p K := by
   have hp : p.Prime := Fact.out
@@ -96,11 +96,11 @@ lemma pow_div_mem {k e : ℕ} (hk : k ≠ 0) (h : k < p ^ (e + 1)) : (p : K) ^ e
   exact mul_mem (pow_mem (natCast_mem _ p) w) (inv_nat_mem hu)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `h3 : 3 ≤ p` using `by have := hp.two_le; omega`. Establish `h1 : ∀ i : ℕ, i + 2 < 3 ^ (i + 1)`. Introduce `i`. Proceed by induction on `i with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => norm_num`. Consider the case `succ i ih => rw [pow_succ]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : i + 2 < p ^ ((n + 1) * i + 1)` using `(h1 i).trans_le ((Nat.pow_le_pow_left h3 _).trans (Nat.pow_le_pow_right hp.pos (by nlinarith)))`. Use `pow_div_mem (K := K) (k := i + 2) (by omega) h2` as an intermediate fact.
+Treat this case separately. Treat this case separately. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma pow_div_add_two_mem (hp2 : p ≠ 2) (n i : ℕ) : ((p : K) ^ (n + 1)) ^ i / ((i : K) + 2) ∈ pInt p K := by
   have hp : p.Prime := Fact.out
@@ -117,15 +117,13 @@ lemma pow_div_add_two_mem (hp2 : p ≠ 2) (n i : ℕ) : ((p : K) ^ (n + 1)) ^ i 
   simpa using this
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Break down `Nat.even_or_odd (k + 2) with ⟨m, hm⟩ | hodd` into its components or cases. Establish `hk2 : k + 2 = 2 * m` using `by omega`. Take `⟨z, hz⟩` from `Bernoulli.vonStaudt_clausen m`. Establish `hB : bernoulli (k + 2) = (z : ℚ) - ∑ q ∈ Finset.range (2 * m + 2) with q.Prime ∧ (q - 1) ∣ 2 * m, (1 : ℚ) / q`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hk2, hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hB]`. Use `push_cast`. Rewrite using `[mul_sub, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `sub_mem (mul_mem (natCast_mem _ _) (intCast_mem _ _)) (sum_mem fun q hq => ?_)` and prove the remaining obligations. Establish `hq'` using `(Finset.mem_filter.mp hq).2.1`. Distinguish the cases in `hql : q = p`. Substitute `hql` using the available equality. Establish `: (q : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[mul_one_div_cancel this]`. Conclude with `one_mem _`. Rewrite using `[one_div]`. Conclude with `mul_mem (natCast_mem _ _) (inv_nat_mem fun h => hql ((Nat.prime_dvd_prime_iff_eq hp hq').mp h).symm)`. Rewrite using `[bernoulli_eq_zero_of_odd hodd (by omega)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prime_mul_bernoulli_mem (k : ℕ) : (p : K) * ((bernoulli (k + 2) : ℚ) : K) ∈ pInt p K := by
   have hp : p.Prime := Fact.out
@@ -151,9 +149,9 @@ lemma prime_mul_bernoulli_mem (k : ℕ) : (p : K) * ((bernoulli (k + 2) : ℚ) :
     simp
 
 /- English proof (translation)
-Establish `h` using `Nat.add_one_mul_choose_eq (m + 1) (i + 1)`. Establish `hi : (i : K) + 2 ≠ 0` using `by exact_mod_cast (show i + 2 ≠ 0 by omega)`. Rewrite using `[eq_div_iff hi]`. Establish `h'` using `congrArg (Nat.cast : ℕ → K) h`. Move the coercions through the operations in `at h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [add_assoc, one_add_one_eq_two] at h'`. Rewrite using `[← h']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma choose_cast (m i : ℕ) :
     (((m + 2).choose (i + 2) : ℕ) : K) = ((m : K) + 2) * ((m + 1).choose (i + 1) : ℕ) / ((i : K) + 2) := by
@@ -166,9 +164,9 @@ lemma choose_cast (m i : ℕ) :
   rw [← h']
 
 /- English proof (translation)
-Use `set Q : K := (p : K) ^ (n + 1) with hQ`. Use `⟨∑ i ∈ range (m + 1), (t : K) ^ (i + 2) * (x : K) ^ (m - i) * ((m + 1).choose (i + 1) : ℕ) * (Q ^ i / ((i : K) + 2)), sum_mem fun i _ => mul_mem (mul_mem (mul_mem (pow_mem (intCast_mem _ _) _) (pow_mem (intCast_mem _ _) _)) (natCast_mem _ _)) (pow_div_add_two_mem hp2 n i), ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm (x : K), add_pow, sum_range_succ', sum_range_succ', mul_sum]`. Establish `: ∀ i ∈ range (m + 1), ((t : K) * Q) ^ (i + 1 + 1) * (x : K) ^ (m + 2 - (i + 1 + 1)) * ((m + 2).choose (i + 1 + 1) : ℕ) = ((m : K) + 2) * Q ^ 2 * ((t : K) ^ (i + 2) * (x : K) ^ (m - i) * ((m + 1).choose (i + 1) : ℕ) * (Q ^ i / ((i : K) + 2)))`. Introduce `i _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show m + 2 - (i + 1 + 1) = m - i by omega, show i + 1 + 1 = i + 2 by omega, choose_cast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sum_congr rfl this]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma binom_second (hp2 : p ≠ 2) (n m : ℕ) (x t : ℤ) :
     ∃ y ∈ pInt p K, ((x : K) + t * (p : K) ^ (n + 1)) ^ (m + 2) =
@@ -190,7 +188,7 @@ lemma binom_second (hp2 : p ≠ 2) (n m : ℕ) (x t : ℤ) :
   ring
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `sub_dvd_pow_sub_pow (x + t * Q) x k`. Use `⟨t * y, ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → K) hy` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma binom_first (Q : ℤ) (k : ℕ) (x t : ℤ) :
     ∃ y : ℤ, ((x : K) + t * (Q : K)) ^ k = (x : K) ^ k + Q * y := by
@@ -201,13 +199,13 @@ lemma binom_first (Q : ℤ) (k : ℕ) (x t : ℤ) :
   linear_combination this
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hm : (m : K) + 2 ≠ 0` using `by exact_mod_cast (show m + 2 ≠ 0 by omega)`. Use `⟨∑ i ∈ range (m + 1), ((p : K) * ((bernoulli (i + 2) : ℚ) : K)) * (a : K) ^ (m - i) * ((m + 1).choose (i + 1) : ℕ) * (((p : K) ^ (n + 1)) ^ i / ((i : K) + 2)), sum_mem fun i _ => mul_mem (mul_mem (mul_mem (prime_mul_bernoulli_mem i) (pow_mem (intCast_mem _ _) _)) (natCast_mem _ _ …` and prove the remaining obligations. Rewrite using `[Polynomial.bernoulli, Polynomial.eval_finsetSum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.eval_monomial]`. Use `push_cast`. Rewrite using `[sum_div, mul_sum, sum_range_succ', sum_range_succ', mul_sum]`. Establish `: ∀ i ∈ range (m + 1), ((p : K) ^ (n + 1)) ^ (m + 1) * (((bernoulli (i + 1 + 1) : ℚ) : K) * ((m + 2).choose (i + 1 + 1) : ℕ) * ((a : K) / (p : K) ^ (n + 1)) ^ (m + 2 - (i + 1 + 1)) / ((m : K) + 2)) = (p : K) ^ n * (((p : K) * ((bernoulli (i + 2) : ℚ) : K)) * (a : K) ^ (m - i) * ( …`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l, rfl⟩ : ∃ l, m = i + l` from `⟨m - i, by have := mem_range.1 hi; omega⟩`. Establish `hi2 : (i : K) + 2 ≠ 0` using `by exact_mod_cast (show i + 2 ≠ 0 by omega)`. Rewrite using `[show i + l + 2 - (i + 1 + 1) = l by omega, show i + l - i = l by omega, show i + 1 + 1 = i + 2 by omega, choose_cast, div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[sum_congr rfl this]`. Generalize the expression as in `(∑ i ∈ range (m + 1), _ : K) = S`. Simplify using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma bernoulli_expansion (hp2 : p ≠ 2) (n m : ℕ) (a : ℤ) :
     ∃ y ∈ pInt p K, ((p : K) ^ (n + 1)) ^ (m + 1) *
@@ -244,7 +242,7 @@ lemma bernoulli_expansion (hp2 : p ≠ 2) (n m : ℕ) (a : ℤ) :
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Establish `hN' : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Unfold `frc`. Rewrite using `[Nat.cast_mul, Int.mul_emod_mul_of_pos _ _ (by exact_mod_cast hN)]`. Use `push_cast`. Rewrite using `[mul_div_mul_left _ _ hN']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 lemma frc_mul {N : ℕ} (hN : 0 < N) (Q : ℕ) (x : ℤ) : frc (N * Q) (N * x) = ((x % (Q : ℤ) : ℤ) : ℚ) / Q := by
   have hN' : (N : ℚ) ≠ 0 := by exact_mod_cast hN.ne'
@@ -254,29 +252,29 @@ lemma frc_mul {N : ℕ} (hN : 0 < N) (Q : ℕ) (x : ℤ) : frc (N * Q) (N * x) =
   rw [mul_div_mul_left _ _ hN']
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hm : (m : K) + 2 ≠ 0` using `by exact_mod_cast (show m + 2 ≠ 0 by omega)`. Establish `hc0 : (c : K) ≠ 0`. Establish `: c ≠ 0` using `by rintro rfl; exact hc (dvd_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `set t : ℤ := -(c * α / (p : ℤ) ^ (n + 1)) with ht`. Use `set b : ℤ := c * α + t * (p : ℤ) ^ (n + 1) with hb`. Establish `hb' : (c * α) % (p : ℤ) ^ (n + 1) = b`. Rewrite using `[hb, ht, Int.emod_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `f1 : frc (N * p ^ (n + 1)) (N * α) = (α : ℚ) / (p : ℚ) ^ (n + 1)`. Rewrite using `[frc_mul hN]`. Use `push_cast`. Rewrite using `[Int.emod_eq_of_lt h0 h1]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `f2 : frc (N * p ^ (n + 1)) (c * (N * α)) = (b : ℚ) / (p : ℚ) ^ (n + 1)`. Rewrite using `[mul_left_comm, frc_mul hN]`. Use `push_cast`. Rewrite using `[hb']`. Establish `hbK : (b : K) = ((c * α : ℤ) : K) + t * (p : K) ^ (n + 1)` using `by rw [hb]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (α : K) ^ (m + 1) * smF c 1 (N * p ^ (n + 1)) ζ (N * α) a₂ 0 = (α : K) ^ (m + 1) * (((c : K) ^ 2 - c) / 2 + c * t)`. Break down `h0.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Establish `hN' : (N : ℤ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : ¬ ((p : ℤ) ^ (n + 1) ∣ α)` using `fun hd => absurd (Int.le_of_dvd h hd) (not_le.2 h1)`. Establish `d2 : ¬ ((p : ℤ) ^ (n + 1) ∣ c * α)` using `fun hd => d1 <| IsCoprime.dvd_of_dvd_mul_left (IsCoprime.pow_left ((Nat.prime_iff_prime_int.1 hp).irreducible.coprime_iff_not_dvd.2 hc)) hd`. Establish `d3 : ¬ (((N * p ^ (n + 1) : ℕ) : ℤ) ∣ N * α)` using `by push_cast; rw [mul_dvd_mul_iff_left hN']; exact d1`. Establish `d4 : ¬ (((N * p ^ (n + 1) : ℕ) : ℤ) ∣ c * (N * α))` using `by push_cast; rw [mul_left_comm, mul_dvd_mul_iff_left hN']; exact d2`. Use `congr 1`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smF, eisF, const0, if_true, if_neg d3, if_neg d4, f1, f2]`. Use `push_cast`. Rewrite using `[hbK]`. Use `push_cast`. Evaluate the numerical expressions.
+Move the embeddings inside the algebraic operations. Evaluate the numerical expressions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨y1, hy1, E1⟩` from `bernoulli_expansion (K := K) hp2 n m α`. Take `⟨y2, hy2, E2⟩` from `bernoulli_expansion (K := K) hp2 n m b`. Take `⟨y3, hy3, E3⟩` from `binom_second (K := K) hp2 n m (c * α) t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y4, E4⟩` from `binom_first (K := K) ((p : ℤ) ^ (n + 1)) (m + 1) (c * α) t`. Rewrite `E3` using `[← hbK]`. Rewrite `E4` using `[Int.cast_pow, Int.cast_natCast, ← hbK]`. Establish `h2 : (2 : K)⁻¹ ∈ pInt p K`. Simplify using `using inv_nat_mem (K := K) (p := p) (m := 2) fun h => hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : (c : K) ^ ((2 : ℤ) - ((m + 2 : ℕ) : ℤ)) = ((c : K)⁻¹) ^ m`. Rewrite using `[show (2 : ℤ) - ((m + 2 : ℕ) : ℤ) = -(m : ℤ) by push_cast; ring, zpow_neg, zpow_natCast, inv_pow]`. Establish `hci : ((c : K)⁻¹) ^ m ∈ pInt p K` using `pow_mem (inv_int_mem hc) m`. Use `⟨(c : K) ^ 2 * y1 - ((c : K)⁻¹) ^ m * (y2 + p * y3 - p * y4 * 2⁻¹), sub_mem (mul_mem (pow_mem (intCast_mem _ _) _) hy1) (mul_mem hci (sub_mem (add_mem hy2 (mul_mem (natCast_mem _ _) hy3)) (mul_mem (mul_mem (natCast_mem _ _) (intCast_mem _ _)) h2))), ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smF, eisF, const0, if_true, if_neg (show m + 2 ≠ 1 by omega), f1, f2, hz]`. Rewrite `E2` using `[E3, E4]`. Rewrite using `[pow_mul]`. Establish `: ∀ u v A B Q : K, Q * (u * (-A) - v * (-B)) = -(u * (Q * A) - v * (Q * B))` using `by intros; ring`. Rewrite using `[this, E1, E2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma const_congr (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (n m : ℕ) (ζ : K) {c : ℤ} (hc : ¬ (p : ℤ) ∣ c)
     {α : ℤ} (a₂ : ℤ) (h0 : 0 ≤ α) (h1 : α < (p : ℤ) ^ (n + 1)) :
@@ -348,11 +346,11 @@ lemma const_congr (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (n m : ℕ) (ζ : K) {c
 omit [Fact p.Prime] in
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h.symm.dvd`. Take `⟨y, hy⟩` from `binom_first (K := K) ((p : ℤ) ^ n) k a t`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hN' : (N : K) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hA : (A : K) = N * a + N * (p : K) ^ n * t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Int.cast : ℤ → K) ht` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`. Move the coercions through the operations in `at hy ⊢`. Rewrite using `[← hy, pow_mul, ← mul_pow, hA]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 lemma term_congr (hp0 : (p : K) ≠ 0) {N : ℕ} (hN : 0 < N) (n k : ℕ) {A a : ℤ}
     (h : A ≡ N * a [ZMOD ((N * p ^ n : ℕ) : ℤ)]) :
@@ -371,13 +369,13 @@ lemma term_congr (hp0 : (p : K) ≠ 0) {N : ℕ} (hN : 0 < N) (n k : ℕ) {A a :
   field_simp
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hM : 0 < N * p ^ n` using `Nat.mul_pos hN (pow_pos hp.pos n)`. Establish `key : ∀ (A e : ℤ), ∃ y ∈ pInt p K, (a : K) ^ k * (if A ≡ N * a [ZMOD ((N * p ^ n : ℕ) : ℤ)] then ζ ^ e else 0) - (p : K) ^ (n * k) * (if A ≡ N * a [ZMOD ((N * p ^ n : ℕ) : ℤ)] then ((A : K) / ((N * p ^ n : ℕ) : K)) ^ k * ζ ^ e else 0) = (p : K) ^ n * y`. Introduce `A e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Take `⟨y, hy⟩` from `term_congr hp0 hN n k h`. Use `⟨-(y * ζ ^ e), neg_mem (mul_mem (intCast_mem _ _) (root_zpow_mem hM hζ e)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Conclude with `⟨0, zero_mem _, by simp⟩`. Use `choose y hy hE using key`. Use `⟨∑ d ∈ r.divisors, (y ((r / d : ℕ) : ℤ) (a₂ * d) - y (-((r / d : ℕ) : ℤ)) (-(a₂ * d))), sum_mem fun d _ => sub_mem (hy _ _) (hy _ _), ?_⟩` and prove the remaining obligations. Unfold `coefPos`. Rewrite using `[mul_sum, mul_sum, mul_sum, ← sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sub ((p : K) ^ n), ← hE, ← hE]`. Simplify using `only [Nat.sub_self, pow_zero, one_mul, Nat.add_sub_cancel, Int.cast_neg, Int.cast_natCast, neg_div]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma coefPos_congr {N : ℕ} (hN : 0 < N) (n k : ℕ) {ζ : K} (hζ : IsPrimitiveRoot ζ (N * p ^ n))
     (a a₂ : ℤ) (r : ℕ) :
@@ -407,19 +405,17 @@ lemma coefPos_congr {N : ℕ} (hN : 0 < N) (n k : ℕ) {ζ : K} (hζ : IsPrimiti
   ring
 
 /- English proof (translation)
-Introduce `p _ N n j K _ _ ζ hp2 hζ hN _ hj hn c hc α a₂ h0 h1 r`. Establish `hp : p.Prime` using `Fact.out`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨m, rfl⟩ : ∃ m, j = m + 2` from `⟨j - 2, by omega⟩`. Choose the witnesses or unpack the hypotheses as in `⟨n, rfl⟩ : ∃ n', n = n' + 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `n with _ | n` into its components or cases. It suffices to derive a contradiction. Use `hp.two_le` as an intermediate fact. Rewrite `hn` using `[pow_zero]`. Use the polynomial consequences of the given equalities and inequalities.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `⟨n, rfl⟩`. Rewrite using `[show m + 2 - 1 = m + 1 from rfl, Nat.add_sub_cancel]`. It suffices to establish `H : ∃ y ∈ pInt p K, (α : K) ^ (m + 1) * smF c 1 (N * p ^ (n + 1)) ζ (N * α) a₂ r - (p : K) ^ ((n + 1) * (m + 1)) * smF c (m + 2) (N * p ^ (n + 1)) ζ (N * α) a₂ r = (p : K) ^ n * y by`. Take `⟨y, ⟨D, hD, hy⟩, E⟩` from `H`. Use `⟨D, hD, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[E, mul_left_comm, mul_div_cancel_left₀ _ (pow_ne_zero _ hp0)]`. Conclude with `hy`. Break down `eq_or_ne r 0 with rfl | hr` into its components or cases. Conclude with `const_congr hp2 hN n m ζ hc a₂ h0 h1`. Establish `hc0 : (c : K) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: c ≠ 0` using `by rintro rfl; exact hc (dvd_zero _)`. Conclude with `this` after adjusting the coercions. Take `⟨y1, hy1, E1⟩` from `coefPos_congr hN (n + 1) (m + 1) hζ α a₂ r`. Take `⟨y2, hy2, E2⟩` from `coefPos_congr hN (n + 1) (m + 1) hζ (c * α) (c * a₂) r`. Establish `hz : (c : K) ^ ((2 : ℤ) - ((m + 2 : ℕ) : ℤ)) = ((c : K)⁻¹) ^ m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (2 : ℤ) - ((m + 2 : ℕ) : ℤ) = -(m : ℤ) by push_cast; ring, zpow_neg, zpow_natCast, inv_pow]`. Establish `hz1 : (c : K) ^ ((2 : ℤ) - ((1 : ℕ) : ℤ)) = c` using `by norm_num`. Use `⟨p * ((c : K) ^ 2 * y1 - ((c : K)⁻¹) ^ m * y2), mul_mem (natCast_mem _ _) (sub_mem (mul_mem (pow_mem (intCast_mem _ _) _) hy1) (mul_mem (pow_mem (inv_int_mem hc) m) hy2)), ?_⟩` and prove the remaining obligations. Simplify using `only [smF, eisF, if_neg hr, hz, hz1]`. Rewrite using `[mul_left_comm c (N : ℤ) α]`.
-
-Establish `hcm : ((c : K)⁻¹) ^ m * ((c * α : ℤ) : K) ^ (m + 1) = c * (α : K) ^ (m + 1)` using `by push_cast; rw [inv_pow]; field_simp; ring`. Take the linear combination `(c : K) ^ 2 * E1 - ((c : K)⁻¹) ^ m * E2 + coefPos 1 (N * p ^ (n + 1)) ζ (N * (c * α)) (c * a₂) r * hcm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem smF_congr : ∀ (p : ℕ) [Fact p.Prime] (N n j : ℕ) (K : Type) [Field K] [CharZero K] (ζ : K), p ≠ 2 → IsPrimitiveRoot ζ (N * p ^ n) → 0 < N → ¬ p ∣ N → 2 ≤ j → j ^ 2 * p ≤ p ^ n → ∀ (c : ℤ), ¬ (p : ℤ) ∣ c → ∀ (α a₂ : ℤ), 0 ≤ α → α < (p : ℤ) ^ n → ∀ r : ℕ, ∃ D : ℕ, ¬ p ∣ D ∧ IsIntegral ℤ ((D : K) * ((α : K) ^ (j - 1) * smF c 1 (N * p ^ n) ζ (N * α) a₂ r - (p : K) ^ (n * (j - 1)) * smF c j (N * p ^ n) ζ (N * α) a₂ r) / (p : K) ^ (n - 1)) := by
   intro p _ N n j K _ _ ζ hp2 hζ hN _ hj hn c hc α a₂ h0 h1 r

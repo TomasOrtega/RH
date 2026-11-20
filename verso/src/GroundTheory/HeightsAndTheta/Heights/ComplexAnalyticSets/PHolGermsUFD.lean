@@ -23,7 +23,7 @@ theorem coe_mkGerm {τ : Type} [Fintype τ] (f : (τ → ℂ) → ℂ) (hf : Ana
     ((mkGerm f hf : holGerms (0 : τ → ℂ)) : Germ (𝓝 (0 : τ → ℂ)) ℂ) = ↑f := rfl
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one (mkGerm (fun x => (e x)⁻¹) (he.inv he0)) (Subtype.ext ?_)` and prove the remaining obligations. Use `show ((fun x => e x * (e x)⁻¹ : (τ → ℂ) → ℂ) : Germ (𝓝 (0 : τ → ℂ)) ℂ) = ((fun _ => (1 : ℂ) : (τ → ℂ) → ℂ) : Germ (𝓝 (0 : τ → ℂ)) ℂ)`. Conclude with `Germ.coe_eq.2 (by filter_upwards [he.continuousAt.eventually_ne he0] with x hx`. Conclude with `mul_inv_cancel₀ hx)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_mkGerm {τ : Type} [Fintype τ] (e : (τ → ℂ) → ℂ) (he : AnalyticAt ℂ e 0) (he0 : e 0 ≠ 0) :
     IsUnit (mkGerm e he) := by
@@ -35,21 +35,21 @@ theorem isUnit_mkGerm {τ : Type} [Fintype τ] (e : (τ → ℂ) → ℂ) (he : 
     exact mul_inv_cancel₀ hx)
 
 /- English proof (translation)
-Use `hN (Option σ) 0` as an intermediate fact. Use `hR` as an intermediate fact. Use `{ irreducible_iff_prime := fun {φ} => ⟨fun hφ => ?_, Prime.irreducible⟩ }` and prove the remaining obligations. Take `⟨f, hf, hfφ⟩` from `φ.2`. Establish `hnz : ¬ ∀ᶠ x in 𝓝 (0 : Option σ → ℂ), f x = 0` using `fun h => hφ.ne_zero (Subtype.ext (by rw [← hfφ]; exact Germ.coe_eq.2 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A, d, hAd⟩` from `hG σ f hf hnz`. Establish `hfA : AnalyticAt ℂ (f ∘ A) 0` using `hf.comp_of_eq (A.analyticAt 0) (map_zero A)`. Establish `hT : germAffineEquiv A (0 : Option σ → ℂ) φ = mkGerm (f ∘ A) hfA`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((germPull (fun z : Option σ → ℂ => A z + 0) ((A.analyticAt 0).add analyticAt_const) (by simp) φ : holGerms (0 : Option σ → ℂ)) : Germ (𝓝 (0 : Option σ → ℂ)) ℂ) = ↑(f ∘ A)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[germPull_coe _ _ _ φ f hfφ]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Use `(MulEquiv.prime_iff (germAffineEquiv A (0 : Option σ → ℂ))).1 ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Establish `hirrA : Irreducible (mkGerm (f ∘ A) hfA)`. Rewrite using `[← hT]`. Conclude with `(MulEquiv.irreducible_iff (germAffineEquiv A (0 : Option σ → ℂ))).2 hφ`. Take `⟨e, c, he, he0, hc, hc0, hfe⟩` from `hP σ d (f ∘ A) hfA hAd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `isUnit_mkGerm e he he0`. Establish `hF : mkGerm (f ∘ A) hfA = polyToGerm σ (weierstrassPoly c hc) * mkGerm e he`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, polyToGerm_weierstrassPoly, coe_mkGerm, coe_mkGerm, ← Germ.coe_mul]`. Conclude with `Germ.coe_eq.2 (by filter_upwards [hfe] with x hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx, Pi.mul_apply, mul_comm])`. Establish `hassoc : Associated (polyToGerm σ (weierstrassPoly c hc)) (mkGerm (f ∘ A) hfA)` using `⟨hE.unit, by rw [hF, IsUnit.unit_spec]⟩`. Establish `hirrW : Irreducible (polyToGerm σ (weierstrassPoly c hc))` using `hassoc.irreducible_iff.2 hirrA`. Use `hassoc.prime_iff.1 ?_` and prove the remaining obligations. Establish `hprimeω : Prime (weierstrassPoly c hc)` using `UniqueFactorizationMonoid.irreducible_iff_prime.1 (weierstrassPoly_irreducible c hc hc0 hirrW)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `prime_map_of_prime (polyToGerm σ) hprimeω hirrW.ne_zero ?_ (weierstrassPoly_dvd_of_polyToGerm_dvd c hc hc0)` and prove the remaining obligations. Introduce `g`. Take `⟨g₀, hg₀, hg₀g⟩` from `g.2`. Take `⟨q, a, hq, ha, hdiv⟩` from `hD σ d (f ∘ A) g₀ hfA hg₀ hAd`. Use `⟨mkGerm (q * e) (hq.mul he), finPoly fun j => mkGerm (a j) (ha j), Subtype.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.coe_add, Subring.coe_mul, polyToGerm_weierstrassPoly, polyToGerm_finPoly, coe_mkGerm, ← hg₀g, ← Germ.coe_mul, ← Germ.coe_add]`. Conclude with `Germ.coe_eq.2 (by filter_upwards [hdiv, hfe] with x hx hx'`. Simplify using `only [Pi.add_apply, Pi.mul_apply]`. Rewrite using `[hx, hx']`. Use the proof step `ring)`.
+A detailed English derivation is pending.
 -/
 theorem uniqueFactorizationMonoid_holGerms_option (hN : AnalyticGermsNoetherian.Statement)
     (hG : GeneralLinearCoordinates.Statement) (hP : WeierstrassPreparation.Statement)
@@ -108,11 +108,9 @@ theorem uniqueFactorizationMonoid_holGerms_option (hN : AnalyticGermsNoetherian.
     ring)
 
 /- English proof (translation)
-Establish `hG` using `GeneralLinearCoordinates.proof`. Establish `hN` using `AnalyticGermsNoetherian.proof hD hG`. Establish `hfin : ∀ n : ℕ, UniqueFactorizationMonoid (holGerms (0 : Fin n → ℂ))`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Set `_` to `isField_holGerms_fin_zero.toField`. Use `infer_instance`. Consider the case `succ n ih`. Conclude with `(germAffineEquiv (LinearEquiv.funCongrLeft ℂ ℂ (finSuccEquiv n)).toContinuousLinearEquiv (0 : Fin (n + 1) → ℂ)).symm.toMulEquiv.uniqueFactorizationMonoid (uniqueFactorizationMonoid_holGerms_option hN hG hP hD (Fin n) ih)`.
-
-Introduce `σ _ w`. Conclude with `(germAffineEquiv (LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin σ)).toContinuousLinearEquiv w).symm.toMulEquiv.uniqueFactorizationMonoid (hfin _)`.
+Treat this case separately. Introduce a local definition for the expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem HolGermsUFD.proof (hP : WeierstrassPreparation.Statement) (hD : WeierstrassDivision.Statement) :
     HolGermsUFD.Statement := by
@@ -133,7 +131,7 @@ theorem HolGermsUFD.proof (hP : WeierstrassPreparation.Statement) (hD : Weierstr
     w).symm.toMulEquiv.uniqueFactorizationMonoid (hfin _)
 
 /- English proof (translation)
-The claim follows from `HolGermsUFD.proof (WeierstrassPreparation.proof ParametricCircleIntegralAnalytic.proof CircleArgumentPrinciple.proof PowerSumsEsymmAnalytic.proof) (WeierstrassDivision.proof (WeierstrassPreparation.proof ParametricCircleIntegralAnalytic.proof CircleArgumentPrinciple.proof PowerSu …`.
+A detailed English derivation is pending.
 -/
 theorem holGerms_uniqueFactorizationMonoid : HolGermsUFD.Statement :=
   HolGermsUFD.proof

@@ -21,11 +21,11 @@ open Filter Topology Set ReciprocityTheory.ChartRestriction.G ReciprocityTheory.
 namespace GlobalTheory.KaehlerCmp
 
 /- English proof (translation)
-Take `⟨C, hCn, hCV, hC⟩` from `local_compact_nhds (hV.mem_nhds hz)`. Establish `hS : IsCompact (C ×ˢ Metric.sphere (0 : Fin e → ℂ) 1)` using `hC.prod (isCompact_sphere _ _)`. Establish `hsub : C ×ˢ Metric.sphere (0 : Fin e → ℂ) 1 ⊆ V ×ˢ univ` using `prod_mono hCV (subset_univ _)`. Establish `hne : ∀ u ∈ Metric.sphere (0 : Fin e → ℂ) 1, u ≠ 0` using `fun u hu h => by simp [h] at hu`. Establish `hc : ContinuousOn (fun q : (Fin e → ℂ) × (Fin e → ℂ) => levi f q.1 q.2 / levi g q.1 q.2) (C ×ˢ Metric.sphere (0 : Fin e → ℂ) 1)` using `((continuousOn_levi hV hf).mono hsub).div ((continuousOn_levi hV hg).mono hsub) fun q hq => (hp _ (hCV hq.1) _ (hne _ hq.2)).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK⟩` from `hS.bddAbove_image hc`. Use `⟨K, mem_of_superset hCn fun z hzC w => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne w 0 with rfl | hw` into its components or cases. Simplify using `[levi_zero]`. Establish `hn : ‖w‖ ≠ 0` using `norm_ne_zero_iff.2 hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : (‖w‖⁻¹ : ℝ) • w ∈ Metric.sphere (0 : Fin e → ℂ) 1`. Simplify using `[norm_smul, hn]`. Establish `h1 : levi f z ((‖w‖⁻¹ : ℝ) • w) / levi g z ((‖w‖⁻¹ : ℝ) • w) ≤ K` using `hK (mem_image_of_mem _ (show (z, (‖w‖⁻¹ : ℝ) • w) ∈ C ×ˢ Metric.sphere (0 : Fin e → ℂ) 1 from ⟨hzC, hu⟩))`. Rewrite `h1` using `[levi_smul_dir, levi_smul_dir, mul_div_mul_left _ _ (pow_ne_zero _ (inv_ne_zero hn)), div_le_iff₀ (hp z (hCV hzC) w hw)]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_le_mul_eventually {e : ℕ} {f g : (Fin e → ℂ) → ℝ} {V : Set (Fin e → ℂ)} (hV : IsOpen V)
     (hf : ContDiffOn ℝ 2 f V) (hg : ContDiffOn ℝ 2 g V) (hp : ∀ z ∈ V, ∀ w, w ≠ 0 → 0 < levi g z w)
@@ -57,7 +57,7 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+*
   {R : AnRead p σ d} {a b : ChartForm p σ d}
 
 /- English proof (translation)
-Break down `eq_or_ne ξ 0 with rfl | hξ` into its components or cases. Take `⟨W, φ, hW, ho, hs, e⟩` from `ha.1 y`. Rewrite using `[e c y hy hW, ddcForm, AlgChart.levi, c.leviV_re_eq (hs.contDiffAt_two ho hy hW), levi_zero, zero_div]`. Conclude with `(ha.2 c y hy ξ hξ).le`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kaehler_nonneg (ha : IsKaehlerForm R a) (c : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (ξ : Fin d → ℂ) : 0 ≤ a c y ξ := by
@@ -67,13 +67,11 @@ theorem kaehler_nonneg (ha : IsKaehlerForm R a) (c : AlgChart p σ d) {y : CxPts
   · exact (ha.2 c y hy ξ hξ).le
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `R.cover y₀`. Use `set c₀ := R.chart j`. Take `⟨W, φ, hW, ho, hs, e⟩` from `ha.1 y₀`. Take `⟨W', ψ, hW', ho', hs', e'⟩` from `hb.1 y₀`. Establish `hV : IsOpen (c₀.finChart.target ∩ c₀.finChart.symm ⁻¹' (W ∩ W'))` using `c₀.finChart.isOpen_inter_preimage_symm (ho.inter ho')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ {a : ChartForm p σ d} {W φ}, ShFam.IsPotential R a W φ → ∀ y ∈ c₀.e.source, y ∈ W → ∀ ξ, a c₀ y ξ = levi (φ ∘ c₀.finChart.symm) (c₀.finChart y) ξ / Real.pi` using `fun h y hy hyW ξ => by`. Rewrite using `[h.2.2 c₀ y hy hyW, ddcForm, AlgChart.levi, c₀.leviV_re_eq (h.2.1.contDiffAt_two h.1 hy hyW)]`. Establish `hl : c₀.finChart.symm (c₀.finChart y₀) = y₀` using `c₀.finChart.left_inv hj`. Take `⟨K, hK⟩` from `levi_le_mul_eventually (f := φ ∘ c₀.finChart.symm) (g := ψ ∘ c₀.finChart.symm) hV (((c₀.contDiffOn_finChart_iff _ _ _).2 (hs.mono inter_subset_left j)).of_le (WithTop.coe_le_coe.2 le_top)) (((c₀.contDiffOn_finChart_iff _ _ _).2 (hs'.mono inter_subset_right j)).of_le (WithTop.coe_ …`. Establish `h1` using `hb.2 c₀ _ (c₀.finChart.map_target hz.1) w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hval ⟨ho', hs', e'⟩ _ (c₀.finChart.map_target hz.1) hz.2.2, c₀.finChart.right_inv hz.1]`. Conclude with `(div_pos_iff_of_pos_right Real.pi_pos).1 h1)`. Use the proof step `(z₀ := c₀.finChart y₀) ⟨c₀.finChart.map_source hj, by rw [mem_preimage, hl]; exact ⟨hW, hW'⟩⟩`. Use `⟨K, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(c₀.finChart.continuousAt hj).eventually hK, c₀.e.open_source.mem_nhds hj, ho.mem_nhds hW, ho'.mem_nhds hW'] with y h1 h2 h3 h4 c hy ξ`.
-
-Rewrite using `[ha.trans hy h2, hb.trans hy h2, hval ⟨ho, hs, e⟩ y h2 h3, hval ⟨ho', hs', e'⟩ y h2 h4, ← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (h1 _) Real.pi_pos.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kaehler_le_eventually (ha : IsKaehlerForm R a) (hb : IsKaehlerForm R b) (y₀ : CxPts p σ) :
     ∃ K : ℝ, ∀ᶠ y in 𝓝 y₀, ∀ c : AlgChart p σ d, y ∈ c.e.source → ∀ ξ, a c y ξ ≤ K * b c y ξ := by
@@ -102,7 +100,7 @@ theorem kaehler_le_eventually (ha : IsKaehlerForm R a) (hb : IsKaehlerForm R b) 
   exact div_le_div_of_nonneg_right (h1 _) Real.pi_pos.le
 
 /- English proof (translation)
-Establish `hm : ∀ {K K' : ℝ} {y}, K ≤ K' → (∀ c : AlgChart p σ d, y ∈ c.e.source → ∀ ξ, a c y ξ ≤ K * b c y ξ) → ∀ c : AlgChart p σ d, y ∈ c.e.source → ∀ ξ, a c y ξ ≤ K' * b c y ξ` using `fun hK h c hy ξ => (h c hy ξ).trans (mul_le_mul_of_nonneg_right hK (kaehler_nonneg hb c hy ξ))`. Take `⟨K, hK⟩` from `isCompact_univ.induction_on (p := fun S : Set (CxPts p σ) => ∃ K : ℝ, ∀ y ∈ S, ∀ c : AlgChart p σ d, y ∈ c.e.source → ∀ ξ, a c y ξ ≤ K * b c y ξ) ⟨0, fun _ h => h.elim⟩ (fun _ _ h ⟨K, hK⟩ => ⟨K, fun y hy => hK y (h hy)⟩) (fun _ _ ⟨K, hK⟩ ⟨K', hK'⟩ => ⟨max K K', fun y hy => hy.eli …`. Take `⟨K, hK⟩` from `kaehler_le_eventually ha hb y`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds hK, K, fun _ h => h⟩`. Conclude with `⟨max K 1, lt_max_of_lt_right one_pos, fun c y hy => hm (le_max_left _ _) (hK y trivial) c hy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem kaehler_le_mul [CompactSpace (CxPts p σ)] (ha : IsKaehlerForm R a) (hb : IsKaehlerForm R b) :
     ∃ K : ℝ, 0 < K ∧ ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ ξ, a c y ξ ≤ K * b c y ξ := by
@@ -125,11 +123,11 @@ end
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {M : Man Y.dim} (I : ManIs M Y) (a : Fin (M.n + 1))
 
 /- English proof (translation)
-Establish `hcov : ∀ y : Pts Y (I.ε a), ∃ j, y ∈ ((I.alg a j).choose).e.source`. Introduce `y`. Take `⟨j, hj⟩` from `(M.A a).cover ((I.pt a).symm y)`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[(I.alg a j).choose_spec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hj` using `[Homeomorph.transOpenPartialHomeomorph_source]`. Set `R : AnRead Y.str (I.ε a) Y.dim` to `⟨Fin (M.A a).n, fun j => (I.alg a j).choose, hcov⟩`. Use `(AnRead.smoothOn_iff R (Y.an (I.ε a)) (hU.preimage (I.pt a).symm.continuous)).1 fun j => ?_` and prove the remaining obligations. Establish `h1` using `hG j`. Rewrite `h1` using `[(I.alg a j).choose_spec]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((I.alg a j).choose.contDiffOn_finChart_iff _ _ _).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_of_man {U : Set (M.X a)} (hU : IsOpen U) {G : M.X a → ℝ} (hG : (M.A a).SmoothOn U G) :
     (Y.an (I.ε a)).SmoothOn ((I.pt a).symm ⁻¹' U) (fun y => G ((I.pt a).symm y)) := by
@@ -146,11 +144,11 @@ theorem smoothOn_of_man {U : Set (M.X a)} (hU : IsOpen U) {G : M.X a → ℝ} (h
   exact ((I.alg a j).choose.contDiffOn_finChart_iff _ _ _).1 h1
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `(M.A a).cover ((I.pt a).symm y)`. Take `⟨cj, hcj⟩` from `I.alg a j`. Establish `hyj : y ∈ cj.e.source`. Rewrite `hj` using `[hcj]`. Simplify `hj` using `[Homeomorph.transOpenPartialHomeomorph_source]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv` using `((M.A a).chart j).map_source hj`. Establish `hvc : (M.A a).chart j ((I.pt a).symm y) = cj.finChart y`. Rewrite using `[hcj]`. Simplify using the standard rewrite rules. Use `⟨j, _, hv, c.dtrans cj y ξ, AlgChart.dtrans_ne_zero hy hyj, fun P hP x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : ContDiffAt ℝ 2 ((fun z => P.φ x ((I.pt a).symm z)) ∘ cj.e.symm) (cj.e y)` using `(smoothOn_of_man I a (P.isOpen_U x) (hP.1 x)).contDiffAt_two ((P.isOpen_U x).preimage (I.pt a).symm.continuous) hyj hx`. Rewrite using `[AlgChart.levi_trans hy hyj hG, ← GlobalTheory.ShellMass.levi_base hP x j hv (by rw [((M.A a).chart j).left_inv hj]; exact hx), hvc, AlgChart.levi, cj.leviV_re_eq hG, hcj]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem exists_levi_eq_leviAt (c : AlgChart Y.str (I.ε a) Y.dim) {y : Pts Y (I.ε a)} (hy : y ∈ c.e.source)
     (ξ : Fin Y.dim → ℂ) : ∃ j, ∃ v ∈ ((M.A a).chart j).target, ∃ w, (ξ ≠ 0 → w ≠ 0) ∧
@@ -175,17 +173,15 @@ theorem exists_levi_eq_leviAt (c : AlgChart Y.str (I.ε a) Y.dim) {y : Pts Y (I.
   congr 1
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I he a om hom`. Substitute `he` using the available equality. Establish `hP` using `(M.bd a).2.2.1`. Establish `hpos` using `(M.bd a).2.2.2.1`. Use `haveI : CompactSpace (Pts Y (I.ε a)) := (I.pt a).compactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : ChartForm Y.str (I.ε a) Y.dim` to `fun c y => ddcForm (fun z => (M.Om a).φ ((I.pt a).symm y) ((I.pt a).symm z)) c y`. Establish `hb : ∀ (c : AlgChart Y.str (I.ε a) Y.dim), ∀ y ∈ c.e.source, ∀ x, (I.pt a).symm y ∈ (M.Om a).U x → ∀ ξ, b c y ξ = ddcForm (fun z => (M.Om a).φ x ((I.pt a).symm z)) c y ξ`. Introduce `c y hy x hx ξ`. Take `⟨j, v, -, w, -, h⟩` from `exists_levi_eq_leviAt I a c hy ξ`. Simplify using `only [b, ddcForm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ hP x hx, h _ hP _ ((M.Om a).mem_U _)]`. Establish `hk : IsKaehlerForm (Y.an (I.ε a)) b`. Use `⟨fun y => ⟨_, _, (M.Om a).mem_U ((I.pt a).symm y), ((M.Om a).isOpen_U _).preimage (I.pt a).symm.continuous, smoothOn_of_man I a ((M.Om a).isOpen_U _) (hP.1 _), fun c z hz hx => hb c z hz _ hx⟩, fun c y hy ξ hξ => ?_⟩` and prove the remaining obligations. Take `⟨j, v, hv, w, hw, h⟩` from `exists_levi_eq_leviAt I a c hy ξ`. Simplify using `only [b, ddcForm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ hP _ ((M.Om a).mem_U _)]`. Conclude with `div_pos (hpos _ j v ⟨hv, (M.Om a).mem_U _⟩ w (hw hξ)) Real.pi_pos`. Take `⟨K, hK, h⟩` from `kaehler_le_mul hom hk`. Use `⟨K / Real.pi, div_pos hK Real.pi_pos, fun c y hy x hx ξ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h0` using `kaehler_nonneg hk c hy ξ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h0` using `[hb c y hy x hx, ddcForm]`. Simplify `(le_div_iff₀ Real.pi_pos).1 h0` using `only [zero_mul]`. Establish `h0` using `h c y hy ξ`. Rewrite `h0` using `[hb c y hy x hx, ddcForm]`. Use `h0.trans_eq ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kaehler_le_levi_Om : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y),
     Y.dim = e → ∀ (a : Fin (M.n + 1)) (om : ChartForm Y.str (I.ε a) Y.dim), IsKaehlerForm (Y.an (I.ε a)) om →

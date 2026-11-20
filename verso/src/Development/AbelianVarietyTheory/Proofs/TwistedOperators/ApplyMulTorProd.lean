@@ -36,9 +36,9 @@ def toLieC (C : Ctx S T) (R : GlobalTheory.SmoothForms.RealPoints C.θ T) (B : C
   (GlobalTheory.HolRead.AdExt.toLie R B (fun ρ => C.m.e ρ)).comp conjL
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Use `congrArg det (hB ρ)` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, h0, mul_zero, sgnM, det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun c _ => ?_) this.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnit_det_B (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Tau) : IsUnit (B ρ).det := by
   rw [isUnit_iff_ne_zero]
@@ -50,7 +50,7 @@ theorem isUnit_det_B (C : Ctx S T) {B : C.Bas} (hB : C.IsB B) (ρ : D.what₂.Ta
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `h : ∀ M : Matrix (Fin n) (Fin n) ℂ, M.map (starRingEnd ℂ) = Mᴴᵀ` using `fun M => by`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`. Rewrite using `[h, h, Matrix.exp_transpose, Matrix.exp_conjTranspose]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_map_conj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     (NormedSpace.exp A).map (starRingEnd ℂ) = NormedSpace.exp (A.map (starRingEnd ℂ)) := by
@@ -89,11 +89,11 @@ namespace GlobalTheory.AdSpan.ConjHol
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Unfold `torProd`. It suffices to establish `H : ∀ l : List D.what₂.Tau, l.Nodup → ∀ g, ψ (g * (l.map fun ρ => torAt θ V B ρ (s ρ)).prod) = cexp (((∑ ρ ∈ l.toFinset, ∑ a, (w ρ a : ℝ) * s ρ a : ℝ) : ℂ) * I) * ψ g by`. Use `H (Finset.univ : Finset D.what₂.Tau).toList (Finset.nodup_toList _) g` as an intermediate fact. Rewrite `this` using `[Finset.toList_toFinset]`. Then use the resulting hypothesis. Introduce `l hl`.
+Replace the relevant objects with their definitions. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `l with`. Consider the case `nil => intro g`. Simplify using the standard rewrite rules. Consider the case `cons ρ l ih`. Introduce `g`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ← mul_assoc, ih hl.2, h, List.toFinset_cons, Finset.sum_insert (by simpa using hl.1), ← mul_assoc, ← Complex.exp_add, ← add_mul]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem apply_mul_torProd (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (w : D.what₂.Tau → Fin V.rank → ℤ) (ψ : GA D V → ℂ)
@@ -119,9 +119,9 @@ theorem apply_mul_torProd (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Mat
     ring
 
 /- English proof (translation)
-Establish `R : GlobalTheory.SmoothForms.RealPoints C.θ T` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 C.θ C.inf T`. Use function extensionality and compare the values at `σ i j`. Take `⟨ρ, rfl⟩` from `C.m.e.surjective σ`. Establish `e1 : C.mvB (a * k) B ρ = C.mvB a B ρ * (mat b (C.m.e ρ)).map (starRingEnd ℂ)`. Establish `hm : compAt C.θ ρ (Formalism.L2.Theta.mt T (a * k)) = compAt C.θ ρ (Formalism.L2.Theta.mt T a) * compAt C.θ ρ (Formalism.L2.Theta.mt T k)` using `R.2.2.2.1 a k ρ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ctx.mvB]`. Rewrite using `[hm, hk]`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul _ (isUnit_det_B C hB ρ), Matrix.mul_one]`. Simplify using `only [Ctx.xB, rmul, mat, Equiv.symm_apply_apply, e1, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, map_sum, map_mul, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem xB_mvB_mul (C : Ctx S T) (B : C.Bas) (hB : C.IsB B) (a k : GA D T) (b : Frame C.X.Ψ T.rank)
     (hk : ∀ ρ, compAt C.θ ρ (Formalism.L2.Theta.mt T k) = B ρ * (mat b (C.m.e ρ)).map (starRingEnd ℂ) * (B ρ)⁻¹) :

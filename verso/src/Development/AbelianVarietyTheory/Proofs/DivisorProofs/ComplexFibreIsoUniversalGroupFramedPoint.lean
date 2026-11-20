@@ -24,39 +24,35 @@ namespace GlobalTheory.PtDeg
 open Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c K _ _ _ y B t₀ m1 m2 F ρ v hFC σ φ hφ z hz Q ψ v' hQ hv' T m`. Establish `hφσ : (φ.toRingHom : K →+* ℂ) = σ` using `RingHom.ext hφ`. Establish `hbase : z.x = spMap σ ≫ y.x` using `by rw [hz.1, hφσ]; rfl`. Establish `hcomp` using `hQ.2.1.comp F.fib.2.1`. Establish `w0 : (ψ ≫ F.φ) ≫ B.t.G.hom = (Q.A.hom ≫ spMap σ) ≫ spMap (algebraMap (𝓞 K) K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcomp.1.w, Category.assoc]`. Set `χ₀ : Q.A.left ⟶ t₀.G.left` to `m2.cart.1.lift (ψ ≫ F.φ) (Q.A.hom ≫ spMap σ) w0`. Establish `hχ₀2 : χ₀ ≫ m2.φ = ψ ≫ F.φ` using `m2.cart.1.lift_fst _ _ w0`. Establish `hχ₀b : χ₀ ≫ t₀.G.hom = Q.A.hom ≫ spMap σ` using `m2.cart.1.lift_snd _ _ w0`. Establish `hχ₀ : IsGrpPullback Q.A t₀.G (spMap σ) χ₀` using `m2.cart.cancel (by rw [hχ₀2]; exact hcomp) hχ₀b`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ` using `hχ₀.comp m1.cart`. Establish `w1 : (χ₀ ≫ m1.φ) ≫ Xo.univ.t.G.hom = Q.A.hom ≫ z.x` using `by rw [hχ.1.w, hbase]`. Set `fl : Q.A.left ⟶ T.t.G.left` to `m.cart.1.lift (χ₀ ≫ m1.φ) Q.A.hom w1`. Establish `hfl : fl ≫ m.φ = χ₀ ≫ m1.φ` using `m.cart.1.lift_fst _ _ w1`. Establish `hflb : fl ≫ T.t.G.hom = Q.A.hom` using `m.cart.1.lift_snd _ _ w1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : Q.A ⟶ T.pol.A` to `Over.homMk fl hflb`. Use `⟨f, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.DivisibleHom.isMonHom_of_mul_points f fun S x y => ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `hχ.2 S x y (pushPt hχ.1.w x) (pushPt hχ.1.w y) rfl rfl`. Establish `e2` using `m.cart.2 S (x ≫ f) (y ≫ f) (pushPt m.cart.1.w (x ≫ f)) (pushPt m.cart.1.w (y ≫ f)) rfl rfl`. Rewrite using `[Over.comp_left, Category.assoc]`. Express the relevant statement in the definitionally equal form `_ ≫ fl ≫ m.φ = _`. Rewrite using `[hfl, ← e1, ← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `mul_left_congr (by rw [hbase]) _ _ _ _ ?_ ?_` and prove the remaining obligations. Use `show x.left ≫ χ₀ ≫ m1.φ = (x.left ≫ fl) ≫ m.φ`. Rewrite using `[Category.assoc, hfl]`. Use `show y.left ≫ χ₀ ≫ m1.φ = (y.left ≫ fl) ≫ m.φ`. Rewrite using `[Category.assoc, hfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(Over.w ((x * y) ≫ f)).trans (Over.w ((x ≫ f) * (y ≫ f))).symm`. Take `⟨wT, hwT, -⟩` from `m.lin`. Take `⟨w1', hw1', -⟩` from `m1.lin`. Take `⟨w2', hw2', -⟩` from `m2.lin`. Establish `hT : LBIso T.t.PP.L (Xo.univ.t.PP.L.pull m.φ)` using `⟨wT, hwT⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LBIso t₀.PP.L (Xo.univ.t.PP.L.pull m1.φ)` using `⟨w1', hw1'⟩`. Establish `h2 : LBIso t₀.PP.L (B.t.PP.L.pull m2.φ)` using `⟨w2', hw2'⟩`. Establish `hT2` using `GlobalTheory.CM.EllComp.lbIso_pull_comp hT.symm fl`. Rewrite `hT2` using `[hfl]`. Establish `h3` using `GlobalTheory.CM.EllComp.lbIso_pull_comp h1.symm χ₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.CM.EllComp.lbIso_pull_comp h2.symm χ₀`. Rewrite `h4` using `[hχ₀2]`. Establish `h5 : LBIso (B.t.PP.L.pull (ψ ≫ F.φ)) (F.P₀.L.pull ψ)` using `GlobalTheory.CM.EllComp.lbIso_pull_comp F.fib.2.2 ψ`. Establish `e45` using `LBIso.trans (pull_isLB B.t.PP.isLB _) (pull_isLB F.P₀.isLB ψ) Q.isLB h5 hQ.2.2`. Establish `e345` using `LBIso.trans (pull_isLB t₀.PP.isLB χ₀) (pull_isLB B.t.PP.isLB _) Q.isLB h4.symm e45`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2345` using `LBIso.trans (pull_isLB Xo.univ.t.PP.isLB _) (pull_isLB t₀.PP.isLB χ₀) Q.isLB h3 e345`. Establish `main : LBIso (T.t.PP.L.pull fl) Q.L` using `LBIso.trans (pull_isLB T.t.PP.isLB fl) (pull_isLB Xo.univ.t.PP.isLB _) Q.isLB hT2.symm e2345`. Conclude with `GlobalTheory.lbIso_lbPow main 1`. Introduce `i q hq w' hw'`. Take `⟨u, w, hu1, hu2, hw⟩` from `hFC i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `haveI := GlobalTheory.ShFam.OpenReg.mono_spMap_algebraMap (𝓞 K) K`. Establish `hFw : F.φ ≫ B.t.G.hom = F.P₀.A.hom ≫ spMap (algebraMap (𝓞 K) K)` using `F.fib.2.1.1.w`. Establish `hu3 : u ≫ t₀.G.hom = spMap (algebraMap K (DualNumber K))`. Rewrite using `[← cancel_mono (spMap (algebraMap (𝓞 K) K))]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, m2.cart.1.w]`. Use `_ = (w.left ≫ F.P₀.A.hom) ≫ spMap (algebraMap (𝓞 K) K) := by`. Rewrite using `[hu2, Category.assoc, hFw, Category.assoc]`. Use `_ = spMap (algebraMap K (DualNumber K)) ≫ spMap (algebraMap (𝓞 K) K) := by rw [Over.w w]; rfl`. Take `⟨q', hq', -⟩` from `GlobalTheory.existsUnique_isVecOver hQ.2.1.1 w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hq'c : IsLieComb (fun k => σ (v i k)) v' q'` using `GlobalTheory.ArcQ.NormalForm.isLieComb_baseChange hQ.2.1 (fun k => hv' k) hq' hw`. Establish `hqq : q = q'`. Take `⟨a, ha, rfl⟩` from `hq`. Take `⟨b, hb, rfl⟩` from `hq'c`. Establish `hab : a = b` using `funext fun k => Over.OverMorphism.ext ((ha k).trans (hb k).symm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab]`. Substitute `hqq` using the available equality. Establish `key : q.left ≫ χ₀ = spMap (dualMap σ) ≫ u`. Apply `m2.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hχ₀2, Category.assoc, hu2, ← Category.assoc, ← Category.assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ≫ F.φ) hq'`. Rewrite using `[Category.assoc, hχ₀b, Category.assoc, hu3, ← Category.assoc, Over.w q] show spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ = _`. Rewrite using `[GlobalTheory.spMap_comp_spMap, GlobalTheory.spMap_comp_spMap]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hw', hz.2.1, ← hu1, hφσ]`. Express the relevant statement in the definitionally equal form `(q.left ≫ fl) ≫ m.φ = _`. Rewrite using `[Category.assoc, hfl, ← Category.assoc, key, Category.assoc]`.
-
-Both sides reduce to the same expression. Conclude with `(Over.w (q ≫ f)).trans (Over.w w').symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fibre_iso_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (ρ : E →+* ℂ) (v : Fin (Dw.mult ρ) → Fin F.P₀.g → K), GlobalTheory.PtDeg.FrameCoord y m1 m2 F ρ v → ∀ (σ : K →+* ℂ) (φ : K →ₐ[c.F] CAt (σ.comp (algebraMap c.F K))), (∀ a, toC (φ a) = σ a) → ∀ (z : FrPt Xo c (CAt (σ.comp (algebraMap c.F K)))), FrMap φ y z → ∀ (Q : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp ℂ)) (ψ : Q.A.left ⟶ F.P₀.A.left) (v' : Fin F.P₀.g → (epsR ℂ ⟶ Q.A)), GlobalTheory.IsPolFibre σ F.P₀ Q ψ → (∀ i, GlobalTheory.IsVecOver σ ψ (F.v i) (v' i)) → ∀ (T : GlobalTheory.CM.PAT H (Sp ℂ)) (m : SABMap T.t Xo.univ.t z.x), ∃ f : Q.A ⟶ T.pol.A, IsMonHom f ∧ LBIso (lbPow (T.pol.L.pull f.left) 1) (lbPow Q.L 1) ∧ ∀ i (q : epsR ℂ ⟶ Q.A), IsLieComb (fun k => σ (v i k)) v' q → ∀ w' : epsR ℂ ⟶ T.pol.A, w'.left ≫ m.φ = z.u ρ i → q ≫ f = w' := by
   intro E _ _ _ H Dw l Xo c K _ _ _ y B t₀ m1 m2 F ρ v hFC σ φ hφ z hz Q ψ v' hQ hv' T m

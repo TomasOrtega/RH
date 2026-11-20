@@ -3,23 +3,23 @@ import Mathlib
 namespace GlobalTheory.TargetSimplification
 
 /- English proof (translation)
-Establish `hyx : ∀ i j, B (y i) (x j) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[hB, hxy]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `hzx : ∀ i, B z (x i) = 0` using `fun i => by rw [hB, hxz, map_zero]`. Establish `hzy : ∀ i, B z (y i) = 0` using `fun i => by rw [hB, hyz, map_zero]`. Take `⟨w₁, hw₁⟩ : ∃ w₁ : V, w₁ = w₀ - ∑ j, B (y j) w₀ • x j - ∑ j, B (x j) w₀ • y j` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxw₁ : ∀ i, B (x i) w₁ = 0`. Introduce `i`. Simplify using `[hw₁, map_sub, map_sum, hx, hxy]`. Establish `hyw₁ : ∀ i, B (y i) w₁ = 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hw₁, map_sub, map_sum, hy, hyx]`. Establish `hzw₁ : B z w₁ = 1` using `by simp [hw₁, map_sub, map_sum, hzx, hzy, hzw]`. Establish `h1 : B w₁ z = 1` using `by rw [hB, hzw₁, map_one]`. Establish `ht : s (B w₁ w₁) = B w₁ w₁` using `(hB w₁ w₁).symm`. Take `⟨c, hc⟩ : ∃ c : E, c = -(B w₁ w₁ / 2)` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsc : s c = c` using `by rw [hc, map_neg, map_div₀, ht, map_ofNat]`. Take `⟨w, hw⟩ : ∃ w : V, w = w₁ + c • z` from `⟨_, rfl⟩`. Establish `hxw : ∀ i, B (x i) w = 0` using `by intro i; simp [hw, hxw₁, hxz]`. Establish `hyw : ∀ i, B (y i) w = 0` using `by intro i; simp [hw, hyw₁, hyz]`. Establish `hwy : ∀ i, B w (y i) = 0` using `fun i => by rw [hB, hyw, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzw' : B z w = 1` using `by simp [hw, hzw₁, hzz]`. Establish `hww : B w w = 0`. Simplify using `only [hw, map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hzz, h1, hsc, hzw₁]`. Rewrite using `[hc]`. Simplify using `only [RingHom.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨Fin.snoc x z, Fin.snoc y w, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `cases i using Fin.lastCases <;> cases j using Fin.lastCases <;>`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last, hx, hxz, hzx, hzz]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Apply the tactic sequence `cases i using Fin.lastCases <;> cases j using Fin.lastCases <;>`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last, hy, hyw, hwy, hww]`. Introduce `i j`. Apply the tactic sequence `cases i using Fin.lastCases <;> cases j using Fin.lastCases <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Fin.snoc_castSucc, Fin.snoc_last, hxy, hxw, hzy, hzw', Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`. Introduce `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem main {E V : Type} [Field E] [CharZero E] [AddCommGroup V] [Module E V] {s : E →+* E} {r : ℕ}
   (B : V →ₛₗ[s] V →ₗ[E] E) (hB : ∀ u v : V, B u v = s (B v u))

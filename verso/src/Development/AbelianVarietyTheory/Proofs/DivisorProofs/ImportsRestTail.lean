@@ -8,11 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Div.BaseChangeIso
 
 /- English proof (translation)
-Introduce `R R' _ _ _ M _ _ N _ _ M' _ _ N' _ _ e e' f g he he' hc`. Establish `key : (e' ∘ liftSemi f) = (liftSemi g ∘ e.baseChange R')`. Use function extensionality and compare the values at `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x m => simp [liftSemi_tmul, LinearMap.baseChange_tmul, hc]`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Establish `hb : Function.Bijective (e.baseChange R')`. Establish `h` using `((LinearEquiv.ofBijective e he).baseChange R R' M N).bijective`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use `congrArg DFunLike.coe ?_` and prove the remaining obligations. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite using `[← Function.Bijective.of_comp_iff' he' (liftSemi f), key, Function.Bijective.of_comp_iff _ hb]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (M : Type) [AddCommGroup M] [Module R M] (N : Type) [AddCommGroup N] [Module R N] (M' : Type) [AddCommGroup M'] [Module R' M'] (N' : Type) [AddCommGroup N'] [Module R' N'] (e : M →ₗ[R] N) (e' : M' →ₗ[R'] N') (f : M →ₛₗ[algebraMap R R'] M') (g : N →ₛₗ[algebraMap R R'] N'), Function.Bijective e → Function.Bijective e' → (∀ x, e' (f x) = g (e x)) → (Function.Bijective (liftSemi f) ↔ Function.Bijective (liftSemi g)) := by
   intro R R' _ _ _ M _ _ N _ _ M' _ _ N' _ _ e e' f g he he' hc

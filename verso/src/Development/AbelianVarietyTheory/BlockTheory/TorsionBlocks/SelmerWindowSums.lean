@@ -17,11 +17,11 @@ open TensorProduct in
 variable {l : ℕ} [Fact l.Prime] in
 
 /- English proof (translation)
-Establish `hl : 0 < l ^ s` using `pow_pos (Fact.out : l.Prime).pos s`. Establish `hK : FiniteDimensional ℚ_[l] ↥(K.1)` using `K.2`. Establish `hK0 : FiniteDimensional ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K)`. Unfold `_root_.Formalism.BasicNotions.Loc.K0`. Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : (K.1 : IntermediateField ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l)) ⊓ _root_.Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l ≤ K.1)).toLinearMap (RingHom.injective _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hfin : {x : _root_.Formalism.BasicNotions.Loc.Om l | x ^ l ^ s = 1}.Finite`. Use `(Polynomial.nthRoots (l ^ s) (1 : _root_.Formalism.BasicNotions.Loc.Om l)).toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `x hx`. Simplify `hx` using `[Polynomial.mem_nthRoots hl]`. Establish `: Finite {x : _root_.Formalism.BasicNotions.Loc.Om l | x ^ l ^ s = 1}` using `hfin.to_subtype`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {x : _root_.Formalism.BasicNotions.Loc.Om l | x ^ l ^ s = 1})` using `IntermediateField.finiteDimensional_adjoin fun x hx => IsIntegral.of_pow hl (by rw [show x ^ l ^ s = 1 from hx]; exact isIntegral_one)`. Unfold `_root_.Formalism.BasicNotions.Loc.Ks`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.finKs (K : _root_.Formalism.BasicNotions.Loc.FinExt l) (s : ℕ) :
     FiniteDimensional ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.Ks K s) := by
@@ -105,11 +105,9 @@ open TensorProduct in
 variable {l : ℕ} [Fact l.Prime] in
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `P.χQ_cyc (g : _root_.Formalism.BasicNotions.Loc.GQ l) 0 1 (by simp)`. Establish `hnorm : ‖((P.χQ g : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1`. Establish `ha' : ‖(a : ℚ_[l])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one ℚ_[l] a`. Combine the equalities or inequalities in the displayed calculation. Unfold `_root_.Formalism.MainNotions.N.cycLL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Use `show algebraMap ℚ_[l] LL (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∈ _`. Rewrite using `[P.PD_χ K g]`. Establish `hmap : algebraMap ℚ_[l] LL ((P.χQ g : ℚ_[l]ˣ) : ℚ_[l]) = algebraMap ℤ_[l] LL ⟨_, hnorm⟩` using `rfl`. Rewrite using `[hmap]`. Unfold `_root_.Formalism.BasicNotions.Loc.OL`.
-
-Conclude with `(integralClosure ℤ_[l] LL).algebraMap_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.cyc_mem (P : _root_.Formalism.BasicNotions.LocPrime l) (K LL : _root_.Formalism.BasicNotions.Loc.FinExt l) (g : ↥(_root_.Formalism.BasicNotions.Loc.GK K)) :
     ((_root_.Formalism.MainNotions.N.cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) ∈ _root_.Formalism.BasicNotions.Loc.OL LL := by
@@ -133,7 +131,7 @@ def negTwist (P : LocPrime l) (K LL : FinExt l) (e : ℕ) : ↥(GK K) →* (↥L
   ((cycLL (P.PD K) ↥LL.1)⁻¹) ^ e
 
 /- English proof (translation)
-Establish `: negTwist P K LL e g = (cycLL (P.PD K) ↥LL.1 g⁻¹) ^ e`. Simplify using `[negTwist]`. Rewrite using `[this, Units.val_pow_eq_pow_val]`. Conclude with `Subalgebra.pow_mem _ (cyc_mem P K LL _) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negTwist_mem (P : LocPrime l) (K LL : FinExt l) (e : ℕ) (g : ↥(GK K)) :
     ((negTwist P K LL e g : (↥LL.1)ˣ) : ↥LL.1) ∈ OL LL := by
@@ -165,7 +163,7 @@ def ringAs (K : FinExt l) (s : ℕ) : Subring (Ainf l) :=
 def ringAsW (K : FinExt l) (s : ℕ) : Subring (WCb l) := (ringAs AI K s).map (inclW l)
 
 /- English proof (translation)
-Simplify using `only [ringAs, Subring.mem_iInf, Subring.mem_comap]`. Conclude with `fun m => ⟨_, Subring.subset_closure (Set.mem_insert _ _), rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (K : FinExt l) (s : ℕ) : piS AI s ∈ ringAs AI K s := by
   simp only [ringAs, Subring.mem_iInf, Subring.mem_comap]
@@ -212,7 +210,7 @@ def WachHyp {K LL : FinExt l} {s : ℕ} (h : Good K s LL) (Y : Lat K LL) (M₀ h
         mulR ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI s) : RW LL) x')
 
 /- English proof (translation)
-Establish `h2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Use `⟨H, ?_⟩` and prove the remaining obligations. Establish `h1 : H < l ^ H` using `Nat.lt_pow_self (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_pow_mul_pred_ge (l : ℕ) [Fact l.Prime] (H : ℕ) : ∃ k : ℕ, H ≤ l ^ k * (l - 1) := by
   have h2 : 2 ≤ l := (Fact.out : l.Prime).two_le
@@ -238,7 +236,7 @@ def cTor (K : FinExt l) (s H : ℕ) (U : Finset ℤ) (e : ℕ) : ℕ :=
     (s + padicValNat l (e + 1)) + gK K s
 
 /- English proof (translation)
-The claim follows from `padicValNat.zero`.
+A detailed English derivation is pending.
 -/
 example : padicValNat l 0 = 0 := padicValNat.zero
 

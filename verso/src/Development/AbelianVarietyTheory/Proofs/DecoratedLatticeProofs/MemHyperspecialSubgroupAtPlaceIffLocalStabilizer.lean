@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.HypDict
 
 /- English proof (translation)
-Introduce `D v w hw V g`. Take `⟨e, f, hP⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.1 w`. Rewrite using `[GlobalTheory.LevOp.mem_hyp hP, GlobalTheory.AdelicU.Supp.suppF_iff_of_isPrimeIdem V hP hw g, GlobalTheory.AdelicU.KsphC_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨k, ?_, rfl⟩` and prove the remaining obligations. Use `(GlobalTheory.AdelicU.mem_levelOff.1 hk).2.2 v (Finset.notMem_empty v)` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨GlobalTheory.AdelicU.emb_mem_levelOff (Finset.notMem_empty v) hk, k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_hyp_iff_embV : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → ∀ (V : HSp D) (g : GA D V), g ∈ hyp V w ↔ ∃ k ∈ Kv V v, g = embV V v k := by
   intro D v w hw V g

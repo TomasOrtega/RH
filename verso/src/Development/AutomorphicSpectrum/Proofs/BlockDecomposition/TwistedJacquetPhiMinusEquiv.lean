@@ -13,19 +13,17 @@ section Abstract
 variable {G M V : Type} [Group G] [Group M] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `⟨le_antisymm ?_ ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨a, x, rfl⟩`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Take `⟨h, hθ⟩` from `h2 a`. Use `⟨ρ (s a) v - ((θ ⟨s a, h⟩ : ℂˣ) : ℂ) • v, Submodule.subset_span ⟨⟨_, h⟩, v, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hθ, Submodule.mkQ_apply, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression. Rewrite using `[Submodule.map_le_iff_le_comap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Take `⟨u₁, a, hu⟩` from `h3 u`. Take `⟨hu₁, e1⟩` from `h1 u₁`. Take `⟨ha, e2⟩` from `h2 a`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hθ : θ u = θ₁ u₁ * θ₂ a`. Establish `: u = ⟨u₁, hu₁⟩ * ⟨s a, ha⟩` using `Subtype.ext hu`. Rewrite using `[this, map_mul, e1, e2]`. Establish `hdec : ρ (u : G) v - ((θ u : ℂˣ) : ℂ) • v = (ρ (u₁ : G) (ρ (s a) v) - ((θ₁ u₁ : ℂˣ) : ℂ) • ρ (s a) v) + ((θ₁ u₁ : ℂˣ) : ℂ) • (ρ (s a) v - ((θ₂ a : ℂˣ) : ℂ) • v)`. Rewrite using `[hθ, hu, map_mul, Module.End.mul_apply, Units.val_mul, smul_sub, mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hz : ρ (u₁ : G) (ρ (s a) v) - ((θ₁ u₁ : ℂˣ) : ℂ) • ρ (s a) v ∈ twKer ρ N₁ θ₁` using `Submodule.subset_span ⟨u₁, _, rfl⟩`. Use `show (twKer ρ N₁ θ₁).mkQ _ ∈ twKer (twAct ρ N₁ θ₁ s hs) N₂ θ₂`. Rewrite using `[hdec, map_add, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hz, zero_add, map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, Submodule.Quotient.mk v, ?_⟩)` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Take `⟨h, hθ⟩` from `h1 u`.
-
-Conclude with `Submodule.subset_span ⟨⟨u, h⟩, v, by rw [hθ]⟩`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twKer_twAct_eq_map (ρ : Representation ℂ G V) (N₁ : Subgroup G) (θ₁ : N₁ →* ℂˣ) (s : M →* G)
     (hs : ∀ (m : M) (n : N₁), ∃ h : s m * (n : G) * (s m)⁻¹ ∈ N₁, θ₁ ⟨_, h⟩ = θ₁ n)
@@ -71,7 +69,7 @@ theorem twKer_twAct_eq_map (ρ : Representation ℂ G V) (N₁ : Subgroup G) (θ
     exact Submodule.subset_span ⟨⟨u, h⟩, v, by rw [hθ]⟩
 
 /- English proof (translation)
-Take `⟨e, hle⟩` from `twKer_twAct_eq_map ρ N₁ θ₁ s hs N₂ θ₂ N θ h1 h2 h3`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ e).trans (Submodule.quotientQuotientEquivQuotient _ _ hle)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twJacquet_twAct_equiv (ρ : Representation ℂ G V) (N₁ : Subgroup G) (θ₁ : N₁ →* ℂˣ) (s : M →* G)
     (hs : ∀ (m : M) (n : N₁), ∃ h : s m * (n : G) * (s m)⁻¹ ∈ N₁, θ₁ ⟨_, h⟩ = θ₁ n)
@@ -90,9 +88,9 @@ section Concrete
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use `show (∀ j : Fin N, (j : ℕ) < n → _ = _) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hj`. Use `congrFun (h j hj) i` as an intermediate fact. Rewrite `this` using `[mulVec_single_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[one_apply, Pi.single_apply, Matrix.col_apply]`. Introduce `h j hj`. Rewrite using `[mulVec_single_one]`. Use function extensionality and compare the values at `i`. Simplify `h i j hj` using `[one_apply, Pi.single_apply, Matrix.col_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_colFix_iff {N n : ℕ} (g : GL (Fin N) k) :
     g ∈ colFix k N n ↔ ∀ i j : Fin N, (j : ℕ) < n →
@@ -109,28 +107,28 @@ theorem mem_colFix_iff {N n : ℕ} (g : GL (Fin N) k) :
     simpa [one_apply, Pi.single_apply, Matrix.col_apply] using h i j hj
 
 /- English proof (translation)
-Simplify using `[glEmbMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glEmbMat_castSucc_castSucc (N : ℕ) (A : Matrix (Fin N) (Fin N) k) (i j : Fin N) :
     glEmbMat k N A (Fin.castSucc i) (Fin.castSucc j) = A i j := by
   simp [glEmbMat]
 
 /- English proof (translation)
-Simplify using `[glEmbMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glEmbMat_castSucc_last (N : ℕ) (A : Matrix (Fin N) (Fin N) k) (i : Fin N) :
     glEmbMat k N A (Fin.castSucc i) (Fin.last N) = 0 := by
   simp [glEmbMat]
 
 /- English proof (translation)
-Simplify using `[glEmbMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glEmbMat_last_castSucc (N : ℕ) (A : Matrix (Fin N) (Fin N) k) (j : Fin N) :
     glEmbMat k N A (Fin.last N) (Fin.castSucc j) = 0 := by
   simp [glEmbMat]
 
 /- English proof (translation)
-Simplify using `[glEmbMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glEmbMat_last_last (N : ℕ) (A : Matrix (Fin N) (Fin N) k) :
     glEmbMat k N A (Fin.last N) (Fin.last N) = 1 := by
@@ -157,19 +155,19 @@ section H1
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `_ hg i hi` and use `hg i (lt_of_lt_of_le hi hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem colFix_anti {N a b : ℕ} (hab : b ≤ a) : colFix k N a ≤ colFix k N b :=
   fun _ hg i hi => hg i (lt_of_lt_of_le hi hab)
 
 /- English proof (translation)
-Establish `hu` using `(GlobalTheory.CompanionTheory.BZMir.mem_MirUin_iff_mem_derUnipM k (m + 1) (u : Mir k (m + 1))).1 u.2`. Rewrite `hu` using `[derUnipM, Subgroup.mem_subgroupOf, derUnip, Subgroup.mem_inf]`. Use `⟨Subgroup.mem_subgroupOf.2 ⟨hu.1, colFix_anti (by omega) hu.2⟩, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(u.2 : ((u : Mir k (m + 1)) : GL (Fin (m + 2)) k) ∈ MirU k (m + 1))`. Rewrite using `[mirChar_eq k ψ m u w hw.symm, derCharM_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Establish `hw' : ((u : Mir k (m + 1)) : GL (Fin (m + 2)) k) = unip k (m + 1) w` using `hw.symm`. Rewrite using `[hw']`. Rewrite using `[Finset.sum_eq_single (Fin.castSucc (Fin.last m), Fin.last (m + 1))]`. Conclude with `unip_apply_castSucc_last k (m + 1) w (Fin.last m)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp hne`. Establish `hc` using `(Finset.mem_filter.1 hp).2.1`. Establish `h12 : p.1 ≠ p.2` using `fun e => by rw [e] at hc; omega`. Establish `h2 : p.2 ≠ Fin.last (m + 1)` using `fun e => hne (Prod.ext (Fin.ext (by`. Rewrite `hc` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hc ⊢`. Use the proof step `omega)) e)`. Simplify using `[unip, colMat, one_apply, h12, h2]`. Introduce `h`. Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp, by simpa using hnm⟩) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MirUin_step (ψ : AddChar k Circle) {m n : ℕ} (hnm : n ≤ m) (u : MirUin k (m + 1)) :
     ∃ h : (u : Mir k (m + 1)) ∈ derUnipM k (m + 1) n, derCharM k ψ (m + 1) n ⟨u, h⟩ = mirChar k ψ m u := by
@@ -199,31 +197,29 @@ section H2
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `ha` using `Subgroup.mem_subgroupOf.1 a.2`. Rewrite `ha` using `[derUnip, Subgroup.mem_inf]`. Take `⟨hB, hC⟩` from `ha`. Rewrite `hB` using `[mem_unipB]`. Rewrite `hC` using `[mem_colFix_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set A : Matrix (Fin (m + 1)) (Fin (m + 1)) k := ((a : Mir k m) : GL (Fin (m + 1)) k).val with hA`. Establish `hval : ((((levi k (m + 1)).comp (Mir k m).subtype) (a : Mir k m) : Mir k (m + 1)) : GL (Fin (m + 2)) k).val = glEmbMat k (m + 1) A` using `rfl`. Use `⟨Subgroup.mem_subgroupOf.2 ⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩, (mem_colFix_iff _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Proceed by induction on `i using Fin.lastCases with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hji (lt_irrefl _)`. Consider the case `cast j => exact glEmbMat_last_castSucc (m + 1) A j`. Consider the case `cast i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact glEmbMat_castSucc_last (m + 1) A i`. Consider the case `cast j`. Rewrite using `[glEmbMat_castSucc_castSucc]`. Conclude with `hB.1 i j (Fin.castSucc_lt_castSucc_iff.1 hji)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[hval]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact glEmbMat_last_last (m + 1) A`. Consider the case `cast i => rw [glEmbMat_castSucc_castSucc]`. Conclude with `hB.2 i`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Introduce `i j hj`. Rewrite using `[hval]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp at hj`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [glEmbMat_last_castSucc]`. Simplify using `[one_apply, (Fin.castSucc_ne_last j).symm]`. Consider the case `cast i`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[glEmbMat_castSucc_castSucc, hC i j (by simpa using hj)]`. Simplify using `[one_apply]`. Rewrite using `[derCharM_apply, derCharM_apply]`. Use `congr 2`. Rewrite using `[hval]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Establish `e1 : ∑ q ∈ Finset.univ.filter (fun p : Fin (m + 1) × Fin (m + 1) => (p.2 : ℕ) = p.1 + 1 ∧ n ≤ (p.1 : ℕ)), A q.1 q.2 = ∑ q ∈ Finset.univ.filter (fun p : Fin (m + 1) × Fin (m + 1) => (p.2 : ℕ) = p.1 + 1 ∧ n ≤ (p.1 : ℕ)), glEmbMat k (m + 1) A (Function.Embedding.prodMap Fin.castSucc …`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `[glEmbMat_castSucc_castSucc]`. Rewrite using `[e1, ← Finset.sum_map _ _ (fun p : Fin (m + 2) × Fin (m + 2) => glEmbMat k (m + 1) A p.1 p.2)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `Finset.mem_map.1 hp`. Simplify using `using hq`. Introduce and unpack `⟨i, j⟩ hp hnot`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hc` using `(Finset.mem_filter.1 hp).2`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp at hc`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `cast j => have := j.isLt`. Simplify using `at hc`. Use linear arithmetic over natural numbers and integers. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`.
-
-Consider the case `last => exact glEmbMat_castSucc_last (m + 1) A i`. Consider the case `cast j`. Conclude with `absurd (Finset.mem_map.2 ⟨(i, j), by simpa using hc, rfl⟩) hnot`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levi_step (ψ : AddChar k Circle) {m n : ℕ} (hnm : n ≤ m) (a : derUnipM k m n) :
     ∃ h : ((levi k (m + 1)).comp (Mir k m).subtype) (a : Mir k m) ∈ derUnipM k (m + 1) n,
@@ -300,27 +296,23 @@ section H3
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hu` using `Subgroup.mem_subgroupOf.1 u.2`. Rewrite `hu` using `[derUnip, Subgroup.mem_inf]`. Take `⟨hB, hC⟩` from `hu`. Rewrite `hB` using `[mem_unipB]`. Rewrite `hC` using `[mem_colFix_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM` using `(mem_Mir_iff k _).1 (u : Mir k (m + 1)).2`. Use `set X : Matrix (Fin (m + 2)) (Fin (m + 2)) k := ((u : Mir k (m + 1)) : GL (Fin (m + 2)) k).val with hX`. Establish `hXl : ∀ j, X (Fin.last (m + 1)) j = if j = Fin.last (m + 1) then 1 else 0`. Introduce `j`. Use `congrFun hM j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [eLast, Pi.single_apply] at this`. Conclude with `this`. Set `a₀ : GL (Fin (m + 1)) k` to `mirabolicProjection k (m + 1) (u : Mir k (m + 1))`. Establish `hval : (a₀ : Matrix (Fin (m + 1)) (Fin (m + 1)) k) = blockMat k (m + 1) X` using `rfl`. Establish `ha₀M : a₀ ∈ Mir k m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mem_Mir_iff, hval]`. Use function extensionality and compare the values at `j`. Simplify using `only [blockMat, eLast, Pi.single_apply]`. Distinguish the cases in `hj : j = Fin.last m`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Conclude with `hB.2 _`. Rewrite using `[if_neg hj]`. Conclude with `hB.1 _ _ (Fin.castSucc_lt_castSucc_iff.2 (Fin.lt_last_iff_ne_last.2 hj))`. Establish `ha₀D : a₀ ∈ derUnip k (m + 1) n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩, (mem_colFix_iff _).2 fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `hB.1 _ _ (Fin.castSucc_lt_castSucc_iff.2 hji)`. Rewrite using `[hval]`. Conclude with `hB.2 _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hval] show X (Fin.castSucc i) (Fin.castSucc j) = _`. Rewrite using `[hC _ _ (by simpa using hj)]`. Simplify using `[one_apply]`. Set `c : Multiplicative (Fin (m + 1) → k)` to `Multiplicative.ofAdd fun i => X (Fin.castSucc i) (Fin.last (m + 1))`. Use `⟨⟨⟨unip k (m + 1) c, MirU_le_Mir k (m + 1) ⟨c, rfl⟩⟩, Subgroup.mem_subgroupOf.2 ⟨c, rfl⟩⟩, ⟨⟨a₀, ha₀M⟩, Subgroup.mem_subgroupOf.2 ha₀D⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show X = (1 + colMat k (m + 1) c.toAdd) * glEmbMat k (m + 1) (blockMat k (m + 1) X)`. Rewrite using `[add_mul, one_mul]`. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Matrix.add_apply, mul_apply, Fin.sum_univ_castSucc]`. Simplify using `only [colMat, Fin.castSucc_ne_last, if_false, zero_mul, Finset.sum_const_zero, zero_add, if_true]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `i using Fin.lastCases with`.
-
-Consider the case `last => simp [glEmbMat, hXl]`. Consider the case `cast i => simp [glEmbMat, c]`. Consider the case `cast j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [glEmbMat, hXl, Fin.castSucc_ne_last]`.
-
-Consider the case `cast i => simp [glEmbMat, blockMat]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem derUnipM_decomp {m n : ℕ} (hnm : n ≤ m) (u : derUnipM k (m + 1) n) :
     ∃ u₁ : MirUin k (m + 1), ∃ a : derUnipM k m n,
@@ -380,7 +372,7 @@ theorem derUnipM_decomp {m n : ℕ} (hnm : n ≤ m) (u : derUnipM k (m + 1) n) :
 end H3
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ m n hnm V _ _ τ`. Conclude with `twJacquet_twAct_equiv τ (MirUin k (m + 1)) (mirChar k ψ m) _ (levi_stab ψ m) (derUnipM k m n) (derCharM k ψ m n) (derUnipM k (m + 1) n) (derCharM k ψ (m + 1) n) (MirUin_step ψ hnm) (levi_step ψ hnm) (derUnipM_decomp hnm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem phiMinus_twJacquet_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (m n : ℕ), n ≤ m → ∀ (V : Type) [AddCommGroup V]

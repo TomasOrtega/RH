@@ -11,15 +11,15 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.HeckeChar
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ μ hμ w A _ O _ _ _ Bw`. Establish `hc : Continuous fun g : G E Ω => ((μ g : (Qbar l)ˣ) : Qbar l)` using `Units.continuous_val.comp hμ`. Establish `hent : ∀ (g : G E Ω) (i j : Fin 1), ((rk1 μ g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) i j = ((μ g : (Qbar l)ˣ) : Qbar l)`. Introduce `g i j`. Establish `hij : i = j` using `Subsingleton.elim i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hij` using the available equality. Simplify using `[rk1]`. Establish `hr : Continuous (fun g : G E Ω => ((rk1 μ g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `hc.congr fun g => (hent g i j).symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hle, hL⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l (G E Ω) 1 (rk1 μ) hr Bw.LL`. Establish `hmem : ∀ g : G E Ω, ((μ g : (Qbar l)ˣ) : Qbar l) ∈ L.1` using `fun g => by`. Establish `h` using `hL g 0 0`. Rewrite `h` using `[hent]`. Then use the resulting hypothesis. Set `ψ : ↥(Dec (F` to `E) A) →* (↥L.1)ˣ := { toFun := fun g => ⟨⟨((μ (g : G E Ω) : (Qbar l)ˣ) : Qbar l), hmem _⟩, ⟨((μ ((g : G E Ω)⁻¹) : (Qbar l)ˣ) : Qbar l), hmem _⟩, Subtype.ext (by simp [← Units.val_mul, ← map_mul]), Subtype.ext (by simp [← Units.val_mul, ← map_mul])⟩ map_one' := Units.ext (Subtype. …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ g, ((ψ g : ↥L.1) : Qbar l) = ((μ (g : G E Ω) : (Qbar l)ˣ) : Qbar l)` using `fun g => rfl`. Use `⟨L, ψ, hle, ⟨hle, ?_⟩, hψ, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `hij : i = j` using `Subsingleton.elim i j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using `[Formalism.MainNotions.N.mapRep, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, rk1, hψ]`. Conclude with `hc.comp continuous_subtype_val`. Conclude with `GlobalTheory.ExpFrame.CharUnit.norm_eq_one_of_compact μ hc _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_model : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (μ : G E Ω →* (Qbar l)ˣ), Continuous μ →
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →

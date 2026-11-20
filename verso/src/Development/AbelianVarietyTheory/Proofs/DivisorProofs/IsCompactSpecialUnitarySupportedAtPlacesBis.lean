@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.SUSuppCompact
 
 /- English proof (translation)
-Establish `hinv : ∀ g ∈ SUSupp σ J ε, g⁻¹ ∈ SUSupp σ J ε`. Introduce `g hg`. Rewrite `hg`, the goal using `[GlobalTheory.SUSuppSub.mem_SUSupp_iff]`. Conclude with `⟨(SUAdelic σ J).inv_mem hg.1, GlobalTheory.SUSuppSub.fix_inv _ (GlobalTheory.SUSuppSub.mv_inv_mul σ J g) hg.2⟩`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: T2Space (AF F)` using `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Establish `: T2Space (AF F ⊗[F] E)` using `e.isEmbedding.t2Space`. Set `S : Set (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => X`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hS : IsCompact S` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hX`. Establish `hK` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin M) (Fin M) (AF F ⊗[F] E))).isCompact_preimage (hS.prod (hS.image MulOpposite.continuous_op))`. Establish `hL` using `(GlobalTheory.AdelicU.isClosedEmbedding_matHom_GAd σ J).isCompact_preimage hK`. Use `hL.of_isClosed_subset hcl fun g hg => ?_` and prove the remaining obligations. Use `⟨fun i _ j _ => hent g hg i j, ((HA.mat (AF F) σ J g⁻¹).1), fun i _ j _ => hent g⁻¹ (hinv g hg) i j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Both sides reduce to the same expression.
 -/

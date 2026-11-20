@@ -16,9 +16,9 @@ variable {S K' : Type} [DecidableEq S] [DecidableEq K'] {κ : S → Type} {ι' :
   (σ : (Σ s, κ s) ≃ (Σ k', ι' k'))
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => funext k`. Simplify using the standard rewrite rules. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.mapDomain_add, map_add, map_add, hf, hg]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `single v n`. Rewrite using `[Finsupp.mapDomain_single, Finsupp.weight_single, Finsupp.weight_single]`. Use function extensionality and compare the values at `k`. Simplify using `only [blockWeight, hσ, Function.comp_apply, Pi.smul_apply, Pi.single_apply, Equiv.symm_apply_eq, smul_eq_mul]`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem weight_mapDomain (hσ : ∀ v, (σ v).1 = E v.1) (d : (Σ s, κ s) →₀ ℕ) :
     Finsupp.weight (blockWeight ι') (Finsupp.mapDomain σ d) =
@@ -35,9 +35,9 @@ theorem weight_mapDomain (hσ : ∀ v, (σ v).1 = E v.1) (d : (Σ s, κ s) →�
       Equiv.symm_apply_eq, smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `m`. Establish `hm : m = Finsupp.mapDomain σ (Finsupp.mapDomain σ.symm m)`. Rewrite using `[← Finsupp.mapDomain_comp, Equiv.self_comp_symm, Finsupp.mapDomain_id]`. Rewrite using `[hm, coeff_weightedHomogeneousComponent, coeff_rename_mapDomain _ σ.injective, coeff_rename_mapDomain _ σ.injective, coeff_weightedHomogeneousComponent, weight_mapDomain E σ hσ]`. Establish `hiff : Finsupp.weight (blockWeight κ) (Finsupp.mapDomain σ.symm m) ∘ E.symm = b ∘ E.symm ↔ Finsupp.weight (blockWeight κ) (Finsupp.mapDomain σ.symm m) = b` using `E.symm.surjective.injective_comp_right.eq_iff`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hiff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_weightedHomogeneousComponent {R : Type u} [CommRing R]
     (hσ : ∀ v, (σ v).1 = E v.1) (b : S → ℕ) (f : MRing κ R) :
@@ -58,13 +58,11 @@ theorem rename_weightedHomogeneousComponent {R : Type u} [CommRing R]
 end RenameMultiProjPrime
 
 /- English proof (translation)
-Introduce `R _ S K' _ _ κ ι' E σ hσ P hP`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `hP.isPrime` as an intermediate fact. Conclude with `Ideal.comap_isPrime _ _`. Introduce `f hf b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hf`, the goal using `[Ideal.mem_comap]`. Rewrite using `[RenameMultiProjPrime.rename_weightedHomogeneousComponent (R := R) E σ hσ b f]`. Conclude with `hP.multiHomog _ hf _`. Introduce `s`. Take `⟨i', hi'⟩` from `hP.relevant (E s)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨s', i⟩, hv⟩ : ∃ v, σ v = ⟨E s, i'⟩` from `σ.surjective _`. Establish `hs : s' = s` using `E.injective (by simpa [hv] using (hσ ⟨s', i⟩).symm)`. Substitute `hs` using the available equality. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, rename_X, hv]`.
-
-Conclude with `hi'`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RenameMultiProjPrime.proof : RenameMultiProjPrime.Statement.{u} := by
   intro R _ S K' _ _ κ ι' E σ hσ P hP

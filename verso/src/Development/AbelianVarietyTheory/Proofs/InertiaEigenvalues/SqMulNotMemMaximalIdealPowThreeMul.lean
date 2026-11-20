@@ -7,21 +7,21 @@ namespace GlobalTheory.PMon.Ram
 open IsDiscreteValuationRing in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ p e c hp he hord hc w hw heq`. Establish `hw' : w = (p : 𝒪[F]) ^ 2 * (c : 𝒪[F])`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using heq`. Establish `hcop : IsCoprime (p : ℤ) c` using `(Irreducible.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hp).irreducible).mpr hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `hcop.map (Int.castRingHom 𝒪[F])`. Establish `h1 : IsUnit (a * (Int.castRingHom 𝒪[F]) p + b * (Int.castRingHom 𝒪[F]) c)`. Rewrite using `[hab]`. Conclude with `isUnit_one`. Establish `hpnu : ¬ IsUnit (p : 𝒪[F])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu⟩`. Establish `h0` using `addVal_eq_zero_of_unit u`. Rewrite `h0` using `[hu]`. Unfold `OrdIs at hord`. Rewrite `h0` using `[hord]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.pos_iff_ne_zero.mp he) (by exact_mod_cast h0)`. Establish `hcu : IsUnit (c : 𝒪[F])`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h1 with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hpnu` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `isUnit_of_mul_isUnit_right h` as an intermediate fact. Simplify using `using this`. Use `isUnit_of_mul_isUnit_right h` as an intermediate fact. Simplify using `using this`. Establish `hval : addVal 𝒪[F] w = ((2 * e : ℕ) : ℕ∞)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `hcu`. Rewrite using `[hw', addVal_mul, addVal_pow, ← hu, addVal_eq_zero_of_unit, add_zero]`. Unfold `OrdIs at hord`. Rewrite using `[hord]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨ϖ, hϖ⟩` from `exists_irreducible 𝒪[F]`. Rewrite `hw` using `[(irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `hle` using `(addVal_le_iff_dvd).mpr hw`. Rewrite `hle` using `[addVal_pow, addVal_uniformizer hϖ, hval]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((3 * e : ℕ) : ℕ∞) ≤ ((2 * e : ℕ) : ℕ∞)` using `by simpa using hle`. Use `ENat.coe_le_coe.mp this` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sq_mul_not_mem_maxIdeal_pow :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (p e : ℕ) (c : ℤ),

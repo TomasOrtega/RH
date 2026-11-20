@@ -28,7 +28,7 @@ def actF (o : Obj b N s) : Out.RingAct o.A (𝓞 D.F) :=
    fun _ _ => by rw [map_add]; exact o.act.add _ _⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.map, killedBy_span]`. Conclude with `Set.forall_mem_image`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killedBy_map (o : Obj b N s) (w : Ideal (𝓞 D.F)) {T : Over S} (x : T ⟶ o.A) :
     KilledBy (htAct o) (w.map (algebraMap (𝓞 D.F) D.O)) x ↔ KilledBy (actF o) w x := by
@@ -36,7 +36,7 @@ theorem killedBy_map (o : Obj b N s) (w : Ideal (𝓞 D.F)) {T : Over S} (x : T 
   exact Set.forall_mem_image
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨KerGrp.lift f x h, KerGrp.lift_fst _ _ _⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Category.assoc, KerGrp.fst_comp, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem inSub_ker {A B : Over S} [GrpObj A] [GrpObj B] (f : A ⟶ B) [IsMonHom f] {T : Over S} (x : T ⟶ A) :
     InSub (pullback.fst f η[B]) x ↔ x ≫ f = 1 := by
@@ -45,9 +45,9 @@ theorem inSub_ker {A B : Over S} [GrpObj A] [GrpObj B] (f : A ⟶ B) [IsMonHom f
   rw [Category.assoc, KerGrp.fst_comp, MonObj.comp_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg (· ≫ fst A A) h`. Establish `h2` using `congrArg (· ≫ snd A A) h`. Simplify using `only [Category.assoc, lift_fst, lift_snd, MonObj.one_comp] at h1 h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, lift_fst, h1, MonObj.one_comp]`. Rewrite using `[Category.assoc, lift_snd, h2, MonObj.one_comp]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_lift_eq_one {A : Over S} [GrpObj A] {T : Over S} (x : T ⟶ A) (a c : A ⟶ A) :
     x ≫ lift a c = 1 ↔ x ≫ a = 1 ∧ x ≫ c = 1 := by
@@ -63,7 +63,7 @@ theorem comp_lift_eq_one {A : Over S} [GrpObj A] {T : Over S} (x : T ⟶ A) (a c
     · rw [Category.assoc, lift_snd, h2, MonObj.one_comp]
 
 /- English proof (translation)
-Rewrite using `[killedBy_span, comp_lift_eq_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem killedBy_pair {A : Over S} [GrpObj A] [IsCommMonObj A] (ρ : Out.RingAct A (𝓞 D.F)) (g e : 𝓞 D.F)
     {T : Over S} (x : T ⟶ A) :
@@ -72,31 +72,27 @@ theorem killedBy_pair {A : Over S} [GrpObj A] [IsCommMonObj A] (ρ : Out.RingAct
   simp
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o w hw`. Take `⟨g, e, 𝔟, hg0, he, hf, hmul, hp⟩` from `GlobalTheory.T.exists_coprime_ideal_mul_eq_span_numberField D.F p (Fact.out) w hw`. Establish `hI2` using `fun c hc => GlobalTheory.T.isIsogenyOfDegree_intAction_harrisTaylor p D R b N S s o c hc`. Set `ρ` to `actF o`. Establish `hρ : ∀ c, IsMonHom (ρ.act c)` using `ρ.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgw : g ∈ w * 𝔟` using `by rw [hmul]; exact Ideal.mem_span_singleton_self g`. Establish `hgw1 : g ∈ w` using `Ideal.mul_le_left (I := w) (J := 𝔟) hgw`. Establish `hgw2 : g ∈ 𝔟` using `Ideal.mul_le_right (I := w) (J := 𝔟) hgw`. Establish `hw' : w = Ideal.span {g, e}`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Establish `hsplit : a = a * (1 - e) + a * e` using `by ring`. Rewrite using `[hsplit]`. Use `add_mem ?_ (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))` and prove the remaining obligations. Establish `h1 : a * (1 - e) ∈ w * 𝔟` using `Ideal.mul_mem_mul ha hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hmul, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `h1`. Rewrite using `[← ht]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`. Conclude with `Ideal.span_le.2 (Set.insert_subset_iff.2 ⟨hgw1, Set.singleton_subset_iff.2 he⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h𝔟' : 𝔟 = Ideal.span {g, 1 - e}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Establish `hsplit : a = e * a + a * (1 - e)` using `by ring`. Rewrite using `[hsplit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `add_mem ?_ (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))` and prove the remaining obligations. Establish `h1 : e * a ∈ w * 𝔟` using `Ideal.mul_mem_mul he ha`. Rewrite `h1` using `[hmul, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `h1`. Rewrite using `[← ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`. Conclude with `Ideal.span_le.2 (Set.insert_subset_iff.2 ⟨hgw2, Set.singleton_subset_iff.2 hf⟩)`. Establish `hcop : w ⊔ 𝔟 = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : 𝓞 D.F) = e + (1 - e)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Submodule.add_mem_sup he hf`. Establish `h𝔟0 : 𝔟 ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hmul` using `[Ideal.mul_bot, eq_comm, Ideal.span_singleton_eq_bot]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg0 hmul`. Set `f₁ : o.A ⟶ o.A ⊗ o.A` to `lift (ρ.act g) (ρ.act e)`. Set `f₂ : o.A ⟶ o.A ⊗ o.A` to `lift (ρ.act g) (ρ.act (1 - e))`. Use `letI := KerGrp.grp f₁`. Establish `h₁ : ∀ (T : Over S) (x : T ⟶ o.A), InSub (pullback.fst f₁ η[o.A ⊗ o.A]) x ↔ KilledBy ρ w x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T x`. Rewrite using `[inSub_ker, hw', killedBy_pair]`. Establish `h₂ : ∀ (T : Over S) (x : T ⟶ o.A), InSub (pullback.fst f₂ η[o.A ⊗ o.A]) x ↔ KilledBy ρ 𝔟 x`. Introduce `T x`. Rewrite using `[inSub_ker, h𝔟', killedBy_pair]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₃ : ∀ (T : Over S) (x : T ⟶ o.A), InSub (pullback.fst (ρ.act g) η[o.A]) x ↔ KilledBy ρ (w * 𝔟) x`. Introduce `T x`. Rewrite using `[inSub_ker, hmul, killedBy_span]`. Simplify using the standard rewrite rules. Establish `d₃ : IsIsogDeg (toUnit (ker (ρ.act g))) (Ideal.absNorm w ^ (D.m * D.n) * Ideal.absNorm 𝔟 ^ (D.m * D.n))`.
-
-Rewrite using `[← mul_pow, ← map_mul, hmul, Ideal.absNorm_span_singleton]`. Conclude with `(hI2 g hg0).ker`. Establish `d₂ : IsIsogDeg (toUnit (ker f₂)) (Ideal.absNorm 𝔟 ^ (D.m * D.n))` using `GlobalTheory.T.isIsogenyDegree_killedBy_primeToP_harrisTaylor p D R b N S s o hI2 𝔟 hp _ (pullback.fst f₂ η[o.A ⊗ o.A]) inferInstance (fun T x => by rw [h₂, killedBy_map])`. Establish `hpos : 0 < Ideal.absNorm 𝔟 ^ (D.m * D.n)` using `pow_pos (Nat.pos_of_ne_zero (fun h => h𝔟0 (Ideal.absNorm_eq_zero_iff.1 h))) _`. Establish `d₁` using `GlobalTheory.T.isIsogenyOfDegree_torsion_coprime_ideals_product S o.A (𝓞 D.F) ρ w 𝔟 hcop _ _ _ (pullback.fst f₁ η[o.A ⊗ o.A]) (pullback.fst f₂ η[o.A ⊗ o.A]) (pullback.fst (ρ.act g) η[o.A]) inferInstance inferInstance inferInstance h₁ h₂ h₃ _ _ hpos d₃ d₂`.
-
-Use `⟨ker f₁, KerGrp.grp f₁, pullback.fst f₁ η[o.A ⊗ o.A], KerGrp.isMonHom_fst f₁, inferInstance, by rw [← pow_mul]; exact d₁, fun T x => by rw [h₁, killedBy_map]⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem htTorsion : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : GlobalTheory.UPel.HT.Obj b N s) (w : Ideal (𝓞 D.F)), w ≠ ⊥ → ∃ (K : Over S) (_ : GrpObj K) (i : K ⟶ o.A), IsMonHom i ∧ Mono i ∧ GlobalTheory.IwLevel.IsIsogDeg (toUnit K) ((Ideal.absNorm w ^ D.m) ^ D.n) ∧ ∀ (T : Over S) (x : T ⟶ o.A), GlobalTheory.IwLevel.InSub i x ↔ GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) (w.map (algebraMap (𝓞 D.F) D.O)) x := by
   intro p _ D R _ b N S s o w hw

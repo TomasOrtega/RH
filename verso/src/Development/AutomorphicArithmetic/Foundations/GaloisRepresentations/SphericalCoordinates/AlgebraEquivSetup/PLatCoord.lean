@@ -10,11 +10,11 @@ namespace UpperTheory.Gal.W2.Seed.LatticeTensorCoordinates
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨m, hm, hs⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image (fun ij : Fin n × Fin n => x ij.1 ij.2))`. Establish `h : ∀ i j, ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = (m : ℚ) • x i j`. Introduce `i j`. Establish `h1` using `hs (x i j) (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)`. Establish `h2 : m • x i j = (m : ℚ) • x i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[zsmul_eq_mul, Algebra.smul_def]`. Rewrite `h1` using `[h2]`. Conclude with `⟨IsIntegralClosure.mk' (𝓞 E) _ h1, IsIntegralClosure.algebraMap_mk' _ _ _⟩`. Use `choose y hy using h`. Use `⟨m, Matrix.of y, hm, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exists_int_multiple (x : Matrix (Fin n) (Fin n) E) :
     ∃ (m : ℤ) (y : Matrix (Fin n) (Fin n) (𝓞 E)), m ≠ 0 ∧ y.map (algebraMap (𝓞 E) E) = (m : ℚ) • x := by
@@ -34,15 +34,15 @@ private lemma exists_int_multiple (x : Matrix (Fin n) (Fin n) E) :
   simp [hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, mulVec_add, ha, hb]`. Consider the case `tmul q v`. Establish `hq : q ⊗ₜ[ℤ] v = q • ((1 : ℚ) ⊗ₜ[ℤ] v)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules. Take `⟨m, y, hm, hy⟩` from `exists_int_multiple x`. Establish `hmq : (m : ℚ) ≠ 0` using `by exact_mod_cast hm`. Establish `key : (m : ℚ) • β (rep x (1 ⊗ₜ v)) = (m : ℚ) • (x *ᵥ β (1 ⊗ₜ v))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (m : ℚ) • β (rep x (1 ⊗ₜ v)) = β (rep ((m : ℚ) • x) (1 ⊗ₜ v))`. Rewrite using `[map_smul, LinearMap.smul_apply, map_smul]`. Establish `e2 : (m : ℚ) • (x *ᵥ β (1 ⊗ₜ v)) = ((m : ℚ) • x) *ᵥ β (1 ⊗ₜ v)`. Rewrite using `[smul_mulVec]`. Rewrite using `[e1, e2, ← hy, hrep]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Rewrite using `[hβ]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[show ((∑ k, y i k * v k : 𝓞 E) : E) = ∑ k, ((y i k : 𝓞 E) : E) * (v k : E) by simp]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hβ]`. Establish `h3 : β (rep x (1 ⊗ₜ v)) = x *ᵥ β (1 ⊗ₜ v)` using `smul_right_injective _ hmq key`. Rewrite using `[hq, map_smul, map_smul, map_smul, mulVec_smul, h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma beta_rep (rep : Matrix (Fin n) (Fin n) E →ₐ[ℚ] Module.End ℚ (ℚ ⊗[ℤ] (Fin n → 𝓞 E)))
     (hrep : ∀ (x : Matrix (Fin n) (Fin n) (𝓞 E)) (v : Fin n → 𝓞 E),
@@ -80,7 +80,7 @@ private def nu (R : Type) [CommRing R] [Algebra ℚ R] (β : ℚ ⊗[ℤ] (Fin n
     (TensorProduct.piRight ℚ ℚ R (fun _ : Fin n => E))).toAddEquiv
 
 /- English proof (translation)
-Simplify using `[nu]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma nu_tmul (R : Type) [CommRing R] [Algebra ℚ R]
     (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) ≃ₗ[ℚ] (Fin n → E)) (r : R) (z : ℚ ⊗[ℤ] (Fin n → 𝓞 E)) (i : Fin n) :
@@ -88,7 +88,7 @@ private lemma nu_tmul (R : Type) [CommRing R] [Algebra ℚ R]
   simp [nu]
 
 /- English proof (translation)
-Unfold `actOn`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Use `show r • (LinearMap.baseChange R (rep x)) (r' ⊗ₜ z) = _`. Rewrite using `[LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma actOn_tmul {R : Type} [CommRing R] [Algebra ℚ R]
     (rep : Matrix (Fin n) (Fin n) E →ₐ[ℚ] Module.End ℚ (ℚ ⊗[ℤ] (Fin n → 𝓞 E)))
@@ -100,11 +100,11 @@ private lemma actOn_tmul {R : Type} [CommRing R] [Algebra ℚ R]
   rw [LinearMap.baseChange_tmul, TensorProduct.smul_tmul', smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, add_mulVec, ha, hb]`. Consider the case `tmul r x`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, mulVec_add, ha, hb]`. Consider the case `tmul r' z => ext1 i`. Rewrite using `[actOn_tmul, nu_tmul, hr]`. Simplify using `only [Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hμ r x i k, nu_tmul, Algebra.TensorProduct.tmul_mul_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma nu_act {R : Type} [CommRing R] [Algebra ℚ R]
     (μ : R ⊗[ℚ] Matrix (Fin n) (Fin n) E ≃+* Matrix (Fin n) (Fin n) (R ⊗[ℚ] E)) (hμ : IsMu μ)
@@ -128,19 +128,17 @@ private lemma nu_act {R : Type} [CommRing R] [Algebra ℚ R]
       rw [hμ r x i k, nu_tmul, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `AddSubgroup.subset_closure ⟨a, x i, ha, by rw [nu_tmul, hβ]⟩`. Consider the case `zero => simpa using zero_mem _`. Consider the case `add a b _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg a _ h => rw [map_neg]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `neg_mem h`. Introduce `h`. Establish `hs : ∀ i, ∀ w ∈ OHat p E, (nu (AfP p) β).symm (Pi.single i w) ∈ AddSubgroup.closure {z : AfP p ⊗[ℚ] (ℚ ⊗[ℤ] (Fin n → 𝓞 E)) | ∃ (a : AfP p) (x : Fin n → 𝓞 E), IsIntAf a ∧ z = a ⊗ₜ ((1 : ℚ) ⊗ₜ x)}`. Introduce `i w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, Pi.single i x, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[nu_tmul, hβ]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using zero_mem _`. Consider the case `add a b _ _ h1 h2 => rw [Pi.single_add, map_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg a _ h => rw [Pi.single_neg, map_neg]`. Conclude with `neg_mem h`.
-
-Establish `hv : v = ∑ i, (nu (AfP p) β).symm (Pi.single i (nu (AfP p) β v i))`. Rewrite using `[← map_sum, Finset.univ_sum_single]`. Simplify using the standard rewrite rules. Rewrite using `[hv]`. Conclude with `sum_mem fun i _ => hs i _ (h i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nu_mem {p : ℕ} (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) ≃ₗ[ℚ] (Fin n → E))
     (hβ : ∀ (v : Fin n → 𝓞 E) i, β (1 ⊗ₜ v) i = (v i : E))
@@ -185,9 +183,9 @@ end UpperTheory.Gal.W2.Seed.LatticeTensorCoordinates
 
 open UpperTheory.Gal.W2.Seed.LatticeTensorCoordinates in
 /- English proof (translation)
-Introduce `_ E _ _ _ A n p _ S μ hμ`. Take `⟨β, hβ⟩` from `pRepEx E n`. Establish `hr : ∀ x z, β (S.L.rep x z) = x *ᵥ β z` using `beta_rep S.L.rep S.L_rep β hβ`. Use `⟨nu (AfP p) β, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r v i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(nu_tmul (AfP p) β r _ i).trans (congrArg (fun t => r ⊗ₜ[ℚ] t) (hβ v i))`. Introduce `h v`. Conclude with `nu_act μ hμ S.L.rep β hr (S.mx h) v`. Introduce `v`. Conclude with `nu_mem β hβ v`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pLatCoord :
     RepLaws → LatCoord := by

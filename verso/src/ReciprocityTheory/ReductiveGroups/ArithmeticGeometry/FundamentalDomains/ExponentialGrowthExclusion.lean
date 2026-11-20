@@ -10,11 +10,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Set `L : Submodule ℤ (X.Ψ → ℝ)` to `(X.periods la).toIntSubmodule`. Use `haveI : DiscreteTopology L := inferInstanceAs (DiscreteTopology (X.periods la))`. Use `haveI : IsZLattice ℝ L := ⟨by simpa [L] using RealEmbeddingCharacters.periods_span (X := X) (la := la)⟩`. Use `haveI := ZLattice.module_free ℝ L`. Use `haveI := ZLattice.module_finite ℝ L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `b` to `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L`. Establish `hspan : Submodule.span ℤ (Set.range b) = L` using `by show Submodule.span ℤ (Set.range ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L)) = L`. Rewrite using `[Module.Basis.ofZLatticeBasis_span]`. Use `⟨ZSpan.fundamentalDomain b, ZSpan.fundamentalDomain_measurableSet b, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `ZSpan.isAddFundamentalDomain b volume`.
-
-Rewrite `h` using `[hspan]`. Conclude with `h`. Conclude with `pos_iff_ne_zero.2 (ZSpan.measure_fundamentalDomain_ne_zero b)`. Conclude with `(ZSpan.fundamentalDomain_isBounded b).measure_lt_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_fd (X : Data E r) (la : Wt X.Ψ r) :
     ∃ D : Set (X.Ψ → ℝ), MeasurableSet D ∧ IsAddFundamentalDomain (X.periods la) D volume ∧
@@ -36,7 +34,7 @@ lemma exists_fd (X : Data E r) (la : Wt X.Ψ r) :
   · exact (ZSpan.fundamentalDomain_isBounded b).measure_lt_top
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (volume.restrict D) := isFiniteMeasure_restrict.2 hD.ne`. Use `haveI : IsFiniteMeasure (volume.restrict K) := isFiniteMeasure_restrict.2 hK.ne`. Apply `MeasureTheory.integral_integral_swap` to reduce the goal to its premises. Conclude with `Integrable.mono' (integrable_const M) hf.aestronglyMeasurable (Filter.Eventually.of_forall fun p => hM p.1 p.2)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma integral_swap_of_bdd {m n : Type} [Fintype m] [Fintype n] {D : Set (m → ℝ)} {K : Set (n → ℝ)}
     (hD : volume D < ⊤) (hK : volume K < ⊤) {f : (m → ℝ) → (n → ℝ) → ℂ}

@@ -15,9 +15,9 @@ abbrev restBlock (k : ι → ℕ) (τ : ι) (g : Mat m K) : Matrix (Rest m k τ)
   (g τ).submatrix Subtype.val Subtype.val
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Pi.mul_apply, Matrix.mul_apply]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun l : Fin (m τ) => k τ ≤ (l : ℕ)) (by simp) (fun l => g τ i.1 l * h τ l j.1)]`. Use `(Finset.sum_subset (Finset.filter_subset _ _) fun l _ hl => ?_).symm` and prove the remaining obligations. Establish `hl' : (l : ℕ) < k τ` using `by simpa using hl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj` using `j.2`. Rewrite using `[(hh τ).2.2.2 l j.1 hl' (by show (l : ℕ) < j.1; omega), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem restBlock_mul {O : Subring K} (τ : ι) (g : Mat m K) {h : Mat m K} (hh : Par k O h) :
     restBlock k τ (g * h) = restBlock k τ g * restBlock k τ h := by
@@ -31,20 +31,20 @@ theorem restBlock_mul {O : Subring K} (τ : ι) (g : Mat m K) {h : Mat m K} (hh 
   rw [(hh τ).2.2.2 l j.1 hl' (by show (l : ℕ) < j.1; omega), mul_zero]
 
 /- English proof (translation)
-The claim follows from `Matrix.submatrix_one _ Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem restBlock_one (τ : ι) : restBlock k τ (1 : Mat m K) = 1 :=
   Matrix.submatrix_one _ Subtype.val_injective
 
 /- English proof (translation)
-Rewrite using `[← restBlock_mul τ _ hg, Mat.inv_mul hg.det_ne, restBlock_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restBlock_inv_mul {O : Subring K} (τ : ι) {g : Mat m K} (hg : Par k O g) :
     restBlock k τ g⁻¹ * restBlock k τ g = 1 := by
   rw [← restBlock_mul τ _ hg, Mat.inv_mul hg.det_ne, restBlock_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (restBlock_inv_mul τ hg)`.
+A detailed English derivation is pending.
 -/
 theorem restBlock_inv {O : Subring K} (τ : ι) {g : Mat m K} (hg : Par k O g) :
     (restBlock k τ g)⁻¹ = restBlock k τ g⁻¹ :=
@@ -53,7 +53,7 @@ theorem restBlock_inv {O : Subring K} (τ : ι) {g : Mat m K} (hg : Par k O g) :
 variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun l => ⟨P i l, hP i l⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Subalgebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem span_mul_le {J : Type} [Fintype J] (O : Subalgebra F Ω) (P B : Matrix J J Ω) (hP : ∀ i j, P i j ∈ O) :
     Submodule.span O (Set.range (P * B)) ≤ Submodule.span O (Set.range B) := by
@@ -66,16 +66,14 @@ theorem span_mul_le {J : Type} [Fintype J] (O : Subalgebra F Ω) (P B : Matrix J
 variable {M : RatModel F Ω} {S : Fr M m k} {A₀ : Mat m Ω}
 
 /- English proof (translation)
-The claim follows from `(Fr.mem_iff h₀).1 (Fr.mem_genericPoint hA)`.
+A detailed English derivation is pending.
 -/
 theorem par_generic (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z : M.Z} {A : Mat m Ω} (hA : A ∈ S.S z) :
     Par k (M.O (genericPoint M.Z)).toSubring (A * A₀⁻¹) :=
   (Fr.mem_iff h₀).1 (Fr.mem_genericPoint hA)
 
 /- English proof (translation)
-Establish `h` using `par_generic h₀ hA`. Establish `e` using `congrArg Matrix.det (restBlock_inv_mul τ h)`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_one]`. Use `show ((restBlock k τ (A * A₀⁻¹))⁻¹).transpose.det ≠ 0`. Rewrite using `[Matrix.det_transpose, restBlock_inv τ h]`.
-
-Conclude with `left_ne_zero_of_mul_eq_one e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_dualBlock_ne (τ : ι) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z : M.Z} {A : Mat m Ω} (hA : A ∈ S.S z) :
     (dualBlock k τ A₀ A).det ≠ 0 := by
@@ -87,9 +85,9 @@ theorem det_dualBlock_ne (τ : ι) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z :
   exact left_ne_zero_of_mul_eq_one e
 
 /- English proof (translation)
-Establish `hg` using `(Fr.mem_iff hA).1 hA'`. Establish `e : A' * A₀⁻¹ = (A' * A⁻¹) * (A * A₀⁻¹)`. Rewrite using `[← mul_assoc, mul_assoc A', Mat.inv_mul (Fr.det_ne hA), mul_one]`. Establish `e2 : dualBlock k τ A₀ A' = (restBlock k τ (A' * A⁻¹)⁻¹).transpose * dualBlock k τ A₀ A` using `by show ((restBlock k τ (A' * A₀⁻¹))⁻¹).transpose = _ * ((restBlock k τ (A * A₀⁻¹))⁻¹).transpose`. Rewrite using `[e, restBlock_mul τ _ (par_generic h₀ hA), Matrix.mul_inv_rev, Matrix.transpose_mul, restBlock_inv τ hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `span_mul_le _ _ _ fun i j => (hg.inv τ).1 _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_dualBlock_le (τ : ι) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z : M.Z} {A A' : Mat m Ω} (hA : A ∈ S.S z)
     (hA' : A' ∈ S.S z) : Submodule.span (M.O z) (Set.range (dualBlock k τ A₀ A')) ≤
@@ -104,7 +102,7 @@ theorem span_dualBlock_le (τ : ι) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z 
   exact span_mul_le _ _ _ fun i j => (hg.inv τ).1 _ _
 
 /- English proof (translation)
-The claim follows from `le_antisymm (span_dualBlock_le τ h₀ hA hA') (span_dualBlock_le τ h₀ hA' hA)`.
+A detailed English derivation is pending.
 -/
 theorem span_dualBlock_eq (τ : ι) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z : M.Z} {A A' : Mat m Ω} (hA : A ∈ S.S z)
     (hA' : A' ∈ S.S z) : Submodule.span (M.O z) (Set.range (dualBlock k τ A₀ A')) =
@@ -112,7 +110,7 @@ theorem span_dualBlock_eq (τ : ι) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) {z 
   le_antisymm (span_dualBlock_le τ h₀ hA hA') (span_dualBlock_le τ h₀ hA' hA)
 
 /- English proof (translation)
-Use `⟨⟨fun z => Submodule.span (M.O z) (Set.range (dualBlock k τ A₀ (S.nonempty z).some)), fun z => ?_⟩, fun z A hA => ⟨det_dualBlock_ne τ h₀ hA, span_dualBlock_eq τ h₀ hA (S.nonempty z).some_mem⟩⟩` and prove the remaining obligations. Take `⟨U, A, hz, hA, hU⟩` from `S.loc z`. Establish `hm : ∀ z' ∈ U, A ∈ S.S z'` using `fun z' hz' => (hU z' hz' A).2 (by rw [Mat.mul_inv hA]; exact Par.one)`. Conclude with `⟨U, dualBlock k τ A₀ A, hz, det_dualBlock_ne τ h₀ (hm z hz), fun z' hz' => span_dualBlock_eq τ h₀ (hm z' hz') (S.nonempty z').some_mem⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_lat_dualBlock (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : RatModel F Ω) (ι : Type)
     (m k : ι → ℕ) (S : Fr M m k) (τ : ι) (A₀ : Mat m Ω) (h₀ : A₀ ∈ S.S (genericPoint M.Z)) :

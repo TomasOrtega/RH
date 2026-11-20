@@ -19,9 +19,9 @@ namespace UpperTheory.TP.BA
 section Schr
 variable {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ]
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Prod.fst_add, Prod.snd_add, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem schr_comp_pk (ψ : AddChar R ℂ) (w w' : (κ → R) × (κ → R)) (f : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' f) = ψ (⅟(2 : R) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') f := by
@@ -33,7 +33,7 @@ private theorem schr_comp_pk (ψ : AddChar R ℂ) (w w' : (κ → R) × (κ → 
   have h : ⅟(2 : R) * 2 = 1 := invOf_mul_self 2
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * h
 /- English proof (translation)
-Rewrite using `[schr_comp_pk, schr_comp_pk, add_comm w' w, smul_smul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `h : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `(w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) * h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem schr_comm_pk (ψ : AddChar R ℂ) (w w' : (κ → R) × (κ → R)) (f : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' f) = ψ (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) • schr ψ w' (schr ψ w f) := by
@@ -42,19 +42,19 @@ private theorem schr_comm_pk (ψ : AddChar R ℂ) (w w' : (κ → R) × (κ → 
   have h : ⅟(2 : R) * 2 = 1 := invOf_mul_self 2
   linear_combination (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) * h
 /- English proof (translation)
-Rewrite using `[schr_comp_pk, h, mul_zero, AddChar.map_zero_eq_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem schr_add_of_pk (ψ : AddChar R ℂ) {w w' : (κ → R) × (κ → R)} (h : w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2 = 0)
     (f : (κ → R) → ℂ) : schr ψ (w + w') f = schr ψ w (schr ψ w' f) := by
   rw [schr_comp_pk, h, mul_zero, AddChar.map_zero_eq_one, one_smul]
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem schr_zero_pk (ψ : AddChar R ℂ) (f : (κ → R) → ℂ) : schr ψ 0 f = f := by
   funext x
   simp [schr]
 /- English proof (translation)
-Rewrite using `[← schr_add_of_pk ψ (by simp [dotProduct_comm]), neg_add_cancel, schr_zero_pk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem schr_neg_pk (ψ : AddChar R ℂ) (w : (κ → R) × (κ → R)) (f : (κ → R) → ℂ) :
     schr ψ (-w) (schr ψ w f) = f := by
@@ -62,15 +62,15 @@ private theorem schr_neg_pk (ψ : AddChar R ℂ) (w : (κ → R) × (κ → R)) 
 end Schr
 section Alg
 /- English proof (translation)
-Establish `a1 : q = e + s * (β * q)`. Establish `: e * q - s * β * q = e` using `by rw [← sub_mul]; exact hq`. Rewrite `this` using `[eq]`. Rewrite using `[← this, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `a2 : q' = e - s * (α * q')`. Establish `: e * q' + s * α * q' = e` using `by rw [← add_mul]; exact hq'`. Rewrite `this` using `[eq']`. Rewrite using `[← this, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `b1 : m * e = (e + s * α) * q` using `by rw [← h, mul_assoc, hq]`. Establish `b2 : m' * e = (e - s * β) * q'`. Combine the equalities or inequalities in the displayed calculation. Establish `c : ∀ a b : A, a * (s * b) = s * (a * b)` using `fun a b => by rw [← mul_assoc, ← hs a, mul_assoc]`. Establish `a3 : α * q = α + s * (α * (β * q))` using `by conv_lhs => rw [a1]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_add, eα, c]`. Establish `a4 : β * q' = β - s * (β * (α * q'))` using `by conv_lhs => rw [a2]`. Rewrite using `[mul_sub, eβ, c]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hm, sub_mul, one_mul, b1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hm', sub_mul, one_mul, b2]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem cong_key_pk {A : Type} [Ring A] {e s m m' α β q q' : A} (hs : ∀ a : A, s * a = a * s)
     (h : m * (e - s * β) = e + s * α) (hmm : m' * m = 1) (hq : (e - s * β) * q = e) (hq' : (e + s * α) * q' = e)
@@ -113,25 +113,25 @@ end Alg
 section Geo
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
 /- English proof (translation)
-Rewrite using `[PositivityTheory.ThKH.Iwas.mul_sg, PositivityTheory.ThKH.Iwas.ev_sg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sg_mul_pk (v : Pl F) (a b : Fv F v) : sg v a * sg v b = sg v (a * b) := by
   rw [PositivityTheory.ThKH.Iwas.mul_sg, PositivityTheory.ThKH.Iwas.ev_sg]
 /- English proof (translation)
-The claim follows from `PositivityTheory.KCo.at_iff.1 h`.
+A detailed English derivation is pending.
 -/
 private theorem sg_one_smul_pk {v : Pl F} {A : Type} [AddCommGroup A] [Module (AF F) A] {z : A} (h : At (evFin F v) z) :
     sg v 1 • z = z := PositivityTheory.KCo.at_iff.1 h
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_smul, PositivityTheory.ThKH.Iwas.mul_sg, hu, zero_mul, map_zero, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem at_sg_smul_pk {v : Pl F} {A : Type} [AddCommGroup A] [Module (AF F) A] (t : Fv F v) (z : A) :
     At (evFin F v) (sg v t • z) := fun u hu => by
   rw [smul_smul, PositivityTheory.ThKH.Iwas.mul_sg, hu, zero_mul, map_zero, zero_smul]
 /- English proof (translation)
-Establish `m : ∀ {a b e : ℕ} (A : Matrix (Fin a) (Fin b) K) (B : Matrix (Fin b) (Fin e) K), (A * B).map c = A.map c * B.map c` using `fun A B => Matrix.map_mul (f := c.toRingHom)`. Establish `h' : x.map c * JBᵀ * xᵀ = 0`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[PositivityTheory.KCo.hTens_eq, m, Matrix.transpose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((pᵀ * JA * q.map c * (x.map c * JBᵀ)) * xᵀ).trace := Matrix.trace_mul_comm _ _`. Use `_ = 0 := by rw [Matrix.mul_assoc, h', Matrix.mul_zero, Matrix.trace_zero]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hTens_zero'_pk {R K : Type} [CommRing R] [CommRing K] [Algebra R K] (c : K →ₐ[R] K) (JA : Matrix (Fin n) (Fin n) K)
     (JB : Matrix (Fin d) (Fin d) K) (p q : Matrix (Fin n) (Fin n) K) (x : Matrix (Fin n) (Fin d) K)
@@ -147,7 +147,7 @@ private theorem hTens_zero'_pk {R K : Type} [CommRing R] [CommRing K] [Algebra R
     _ = ((pᵀ * JA * q.map c * (x.map c * JBᵀ)) * xᵀ).trace := Matrix.trace_mul_comm _ _
     _ = 0 := by rw [Matrix.mul_assoc, h', Matrix.mul_zero, Matrix.trace_zero]
 /- English proof (translation)
-Rewrite using `[symp, hTens_zero'_pk c JA JB p q x h, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem symp_zero'_pk {R K : Type} [CommRing R] [CommRing K] [Algebra R K] (c : K →ₐ[R] K) (ξ : K) (JA : Matrix (Fin n) (Fin n) K)
     (JB : Matrix (Fin d) (Fin d) K) (p q : Matrix (Fin n) (Fin n) K) (x : Matrix (Fin n) (Fin d) K)
@@ -155,9 +155,7 @@ private theorem symp_zero'_pk {R K : Type} [CommRing R] [CommRing K] [Algebra R 
   rw [symp, hTens_zero'_pk c JA JB p q x h, mul_zero, map_zero]
 variable {σ : E →ₐ[F] E} {X : Spc F E n} {W : Spc F E d}
 /- English proof (translation)
-Establish `e : mat g⁻¹ - 1 = -mat g⁻¹ * (mat g - 1)`. Rewrite using `[mul_sub, neg_mul, show mat g⁻¹ * mat g = 1 from g.1.inv_mul]`. Simplify using `[neg_add_eq_sub]`. Use `show At (evFin F v) (mat g⁻¹ - 1)`. Rewrite using `[e]`.
-
-Conclude with `PositivityTheory.ThKH.Iwas.at_mul_right _ hg`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem at_mat_inv_pk {v : Pl F} {g : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v)) : g⁻¹ ∈ UAt σ X (evFin F v) := by
   have e : mat g⁻¹ - 1 = -mat g⁻¹ * (mat g - 1) := by
@@ -167,7 +165,7 @@ private theorem at_mat_inv_pk {v : Pl F} {g : UA σ X.J} (hg : g ∈ UAt σ X (e
   rw [e]
   exact PositivityTheory.ThKH.Iwas.at_mul_right _ hg
 /- English proof (translation)
-Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact PositivityTheory.ThKH.Locrep.one_mem_UAt X v`. Consider the case `mul x y _ _ hx hy => exact PositivityTheory.ThKH.Locrep.mul_mem_UAt hx hy`. Consider the case `inv x _ hx => exact at_mat_inv_pk hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem mem_UAt_of_locGrp_pk {v : Pl F} {g : UA σ X.J} (hg : g ∈ GlobalTheory.ThK.Dbl.locGrp σ X v) : g ∈ UAt σ X (evFin F v) := by
   induction hg using Subgroup.closure_induction with
@@ -202,7 +200,7 @@ private abbrev Sc_pk (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F) (u 
 private abbrev Bf_pk (σ : E →ₐ[F] E) (X : Spc F E n) (W : Spc F E d) (u y : Matrix (Fin n) (Fin d) (AE F E)) : AF F :=
   symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) u y
 /- English proof (translation)
-Rewrite using `[Sc_pk, Sc_pk, schr_comm_pk]`. Use `congr 1`. Conclude with `(GlobalTheory.LatVac.DualLoc.psi_form M.co v ψ hu y).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem sc_comm_pk (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F) {u : Matrix (Fin n) (Fin d) (AE F E)}
     (hu : At (evFin F v) u) (y) (f) : Sc_pk M ψ v u (Sc_pk M ψ v y f) = ψ (Bf_pk σ X W u y) • Sc_pk M ψ v y (Sc_pk M ψ v u f) := by
@@ -210,7 +208,7 @@ private theorem sc_comm_pk (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl 
   congr 1
   exact (GlobalTheory.LatVac.DualLoc.psi_form M.co v ψ hu y).symm
 /- English proof (translation)
-Use `GlobalTheory.LatVac.DualLoc.evFin_form M.co v u y` as an intermediate fact. Rewrite `this` using `[show symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) u y = 0 from h, map_zero]`. Rewrite using `[Sc_pk, map_add]`. Conclude with `schr_add_of_pk _ this.symm f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sc_add_pk (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F) {u y : Matrix (Fin n) (Fin d) (AE F E)}
     (h : Bf_pk σ X W u y = 0) (f) : Sc_pk M ψ v (u + y) f = Sc_pk M ψ v u (Sc_pk M ψ v y f) := by
@@ -219,13 +217,13 @@ private theorem sc_add_pk (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F
   rw [Sc_pk, map_add]
   exact schr_add_of_pk _ this.symm f
 /- English proof (translation)
-Rewrite using `[Sc_pk, Sc_pk, map_neg]`. Conclude with `schr_neg_pk _ _ f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sc_neg_pk (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F) (u) (f) : Sc_pk M ψ v (-u) (Sc_pk M ψ v u f) = f := by
   rw [Sc_pk, Sc_pk, map_neg]
   exact schr_neg_pk _ _ f
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem schr_smul_pk {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ] (ψ : AddChar R ℂ)
     (w : (κ → R) × (κ → R)) (c : ℂ) (f : (κ → R) → ℂ) : schr ψ w (c • f) = c • schr ψ w f := by
@@ -233,14 +231,14 @@ private theorem schr_smul_pk {R : Type} [CommRing R] [Invertible (2 : R)] {κ : 
   simp only [schr, Pi.smul_apply, smul_eq_mul]
   ring
 /- English proof (translation)
-Simplify using `only [Bf_pk, M.co.form, map_sub, Prod.fst_sub, Prod.snd_sub, dotProduct_sub, sub_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem bf_sub_pk (M : Model σ X W) (u y y' : Matrix (Fin n) (Fin d) (AE F E)) :
     Bf_pk σ X W u (y - y') = Bf_pk σ X W u y - Bf_pk σ X W u y' := by
   simp only [Bf_pk, M.co.form, map_sub, Prod.fst_sub, Prod.snd_sub, dotProduct_sub, sub_dotProduct]
   ring
 /- English proof (translation)
-Use `PositivityTheory.KCo.symp_act (R := AF F) (cA σ) ξ (incM F X.J) (incM F W.J) (g, (1 : UA σ W.J)) u y` as an intermediate fact. Simplify `this` using `[actAB, mat]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem symp_g_pk (ξ : AE F E) (g : UA σ X.J) (u y : Matrix (Fin n) (Fin d) (AE F E)) :
     symp (R := AF F) (cA σ) ξ (incM F X.J) (incM F W.J) (mat g * u) (mat g * y) =
@@ -251,59 +249,53 @@ end Main
 section Thm
 open UpperTheory.TP
 /- English proof (translation)
-Introduce `T F E _ _ _ _ _ σ B n d X W M χX χW om hP hn hd v N hN`. Take `⟨ω, ρ, L⟩` from `_root_.PositivityTheory.ThKH.Locrep.locRepEx_k F E σ n d B X W M om ⟨hP.base, ⟨n, 0, hP.herm⟩, ⟨d, 0, hP.skew⟩, hP.good, χX, χW, hP.weil⟩ v`. Take `⟨Λ, x₁, r, ϖ, D⟩` from `_root_.UpperTheory.exists_weilLatticeDatum F E σ B n d X W n 0 d 0 hP.base hP.herm hP.skew hd v`. Take `⟨hvS, hv0, θ, hθ, hvac⟩` from `hP.good.vac v`. Establish `hat : ∀ γ ∈ latAtV X W v, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hone : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `PositivityTheory.ThKH.Locrep.one_mem_UAt W v`. Take `⟨U, hU, hUf⟩` from `(T.acts F E σ B n d X W M χX χW om n 0 d 0 hP v).2.2 (M.vac v) hvS`. Establish `hU1 : {g : UA σ X.J | (g, (1 : UA σ W.J)) ∈ U} ∈ 𝓝 (1 : UA σ X.J)`. Establish `c : Continuous fun g : UA σ X.J => (g, (1 : UA σ W.J))` using `continuous_id.prodMk continuous_const`. Conclude with `c.continuousAt.preimage_mem_nhds (show U ∈ 𝓝 ((1 : UA σ X.J), (1 : UA σ W.J)) from hU)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : {g : UA σ X.J | GlobalTheory.ThK.Dbl.IntAt v g} ∈ 𝓝 (1 : UA σ X.J)` using `(GlobalTheory.ThK.Dbl.Euler.isOpen_int (σ := σ) hP.herm.lat v).mem_nhds (one_mem _)`. Take `⟨k₀, hk₀⟩` from `D.small _ (Filter.inter_mem hN (Filter.inter_mem hU1 hI))`. Take `⟨k, hk⟩ : ∃ k, k = k₀ + 1` from `⟨_, rfl⟩`. Establish `hϖO : ∀ m : ℕ, ϖ ^ m ∈ v.adicCompletionIntegers F` using `fun m => pow_mem D.ϖ_mem m`. Take `⟨s, hs⟩ : ∃ s, s = sg v (ϖ ^ k)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs'⟩ : ∃ s', s' = sg v (ϖ ^ k)⁻¹` from `⟨_, rfl⟩`. Establish `ss : s * s' = sg v 1` using `by rw [hs, hs', sg_mul_pk, mul_inv_cancel₀ (pow_ne_zero _ D.ϖ_ne)]`. Establish `hsΛ : ∀ a ∈ Λ, s • a ∈ Λ` using `fun a ha => hs ▸ D.smul_mem _ (hϖO k) a ha`. Set `H : Subgroup (UA σ X.J)` to `cong_pk v Λ s D.mul_mem hsΛ`. Establish `memH : ∀ g, g ∈ H ↔ g ∈ UAt σ X (evFin F v) ∧ (∃ a ∈ Λ, mat g - 1 = s • a) ∧ ∃ a ∈ Λ, mat g⁻¹ - 1 = s • a` using `fun g => Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ g ∈ H, g ∈ N ∩ ({g : UA σ X.J | (g, (1 : UA σ W.J)) ∈ U} ∩ {g : UA σ X.J | GlobalTheory.ThK.Dbl.IntAt v g})` using `fun g hg => by`. Take `⟨h1, h2, h3⟩` from `(memH g).1 hg`. Conclude with `hk₀ k (by omega) g h1 (hs ▸ h2) (hs ▸ h3)`. Establish `hx₁` using `hat _ D.x_mem`. Take `⟨x0, hx0d⟩ : ∃ x0, x0 = s' • x₁` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : At (evFin F v) x0` using `hx0d ▸ hs' ▸ at_sg_smul_pk _ _`. Establish `hsx0 : s • x0 = x₁` using `by rw [hx0d, smul_smul, ss, sg_one_smul_pk hx₁]`. Take `⟨φ, hφd⟩ : ∃ φ, φ = Sc_pk M B.ψ v x0 (M.vac v)` from `⟨_, rfl⟩`. Take `⟨Q, hQ⟩ : ∃ Q : Matrix (Fin n) (Fin d) (AE F E) → ℂ, Q = fun γ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` from `F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ) := ⟨_, rfl⟩`. Establish `hSρ : ∀ u, At (evFin F v) u → ∀ f ∈ SB (Fin n × Fin d → Fv F v), Sc_pk M B.ψ v u f = ρ u f` using `fun u hu f hf => (L.actsH u hu f hf _).1 (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v u hu f)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφS : φ ∈ SB (Fin n × Fin d → Fv F v)`. Rewrite using `[hφd, hSρ _ hx0 _ hvS]`. Conclude with `L.presH _ hx0 _ hvS`. Establish `hφ0 : φ ≠ 0` using `fun h0 => hv0 (by`. Use `sc_neg_pk M B.ψ v x0 (M.vac v)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[← hφd, h0]`. Rewrite using `[← this]`. Use function extensionality and compare the values at `x`. Simplify using `[schr])`. Establish `hSv : ∀ γ ∈ latAtV X W v, Sc_pk M B.ψ v γ (M.vac v) = Q γ • M.vac v` using `fun γ hγ => GlobalTheory.TensUniq.eq_of_tens_eq v (M.vac v) _ _ hvS fun r' hr => (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v γ (hat γ hγ) (M.vac v) r' hr).symm.trans (by rw [hQ]; exact hvac γ hγ r' hr)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `E1 : ∀ γ ∈ latAtV X W v, Sc_pk M B.ψ v γ φ = (B.ψ (Bf_pk σ X W γ x0) * Q γ) • φ` using `fun γ hγ => by`. Rewrite using `[hφd, sc_comm_pk M B.ψ v (hat γ hγ), hSv γ hγ, Sc_pk, schr_smul_pk, smul_smul]`. Establish `hA : ∀ γ ∈ latAtV X W v, Acts (evFin F v) (M.co.rho B.ψ γ) φ ((B.ψ (Bf_pk σ X W γ x0) * Q γ) • φ)` using `fun γ hγ => by`. Rewrite using `[← E1 γ hγ]`. Conclude with `GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v γ (hat γ hγ) φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ g ∈ H, Acts (evFin F v) (om (g, 1)) φ φ` using `fun g hg => by`. Take `⟨h1, ⟨a, ha, ea⟩, -⟩` from `(memH g).1 hg`. Establish `vf : Acts (evFin F v) (om (g, 1)) (M.vac v) (M.vac v)` using `hUf (g, 1) (hsm g hg).2.1 h1 hone`. Establish `w1 : M.vac v = ω (g, 1) (M.vac v)` using `(L.acts g h1 1 hone _ hvS _).1 vf`. Use `(L.acts g h1 1 hone φ hφS φ).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hγ` using `D.act a ha x₁ D.x_mem`. Establish `e1 : mat g * x0 * (mat (1 : UA σ W.J))ᵀ = x0 + a * x₁`. Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, Matrix.transpose_one, Matrix.mul_one, show mat g = 1 + (mat g - 1) by abel, Matrix.add_mul, Matrix.one_mul, ea]`. Use `congr 1`. Rewrite using `[hx0d, Matrix.smul_mul, Matrix.mul_smul, smul_smul, ss, sg_one_smul_pk (hat _ hγ)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hb0 : Bf_pk σ X W x0 (a * x₁) = 0`. Use `symp_zero'_pk (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (s' • 1) a x₁ D.gram` as an intermediate fact. Rewrite `this` using `[Matrix.smul_mul, Matrix.one_mul, ← hx0d]`. Then use the resulting hypothesis. Establish `hq1 : Q (a * x₁) = 1`. Rewrite using `[hQ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show B.ψ _ = 1`. Rewrite using `[symp_zero'_pk (R := AF F) (cA σ) _ (incM F X.J) (incM F W.J) a a x₁ D.gram, mul_zero, AddChar.map_zero_eq_one]`. Establish `e2` using `L.impl g h1 1 hone x0 hx0 (M.vac v) hvS`. Rewrite `e2` using `[e1, ← w1, ← hSρ _ hx0 _ hvS, ← hφd, ← hSρ _ (PositivityTheory.ThKH.Iwas.at_add hx0 (hat _ hγ)) _ hvS, sc_add_pk M B.ψ v hb0, hSv _ hγ, hq1, one_smul, ← hφd]`. Conclude with `e2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsep : ∀ g ∈ GlobalTheory.ThK.Dbl.locGrp σ X v, g ∉ H → ∃ (u : Matrix (Fin n) (Fin d) (AE F E)) (c c' : ℂ), At (evFin F v) u ∧ c ≠ c' ∧ Acts (evFin F v) (M.co.rho B.ψ u) φ (c • φ) ∧ Acts (evFin F v) (M.co.rho B.ψ (mat g * u)) φ (c' • φ)` using `fun g hgl hgH => by`. Establish `hg` using `mem_UAt_of_locGrp_pk hgl`. Establish `hg'` using `at_mat_inv_pk hg`. Establish `hgm : mat g * mat g⁻¹ = 1` using `g.1.mul_inv`. Take `⟨y, hyd⟩ : ∃ y, y = mat g⁻¹ * x0 - x0` from `⟨_, rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : At (evFin F v) y` using `hyd ▸ PositivityTheory.ThKH.Iwas.at_sub (PositivityTheory.ThKH.Iwas.at_mul_right _ hx0) hx0`. Distinguish the cases in `hc : ∀ a ∈ latAtV X W v, ∀ b ∈ latAtV X W v, y ≠ a + mat g⁻¹ * b`. Take `⟨u, hu, hgu, hne⟩` from `_root_.UpperTheory.exists_separating_of_not_mem_lattice_coset F E σ B n d X W M n 0 d 0 hP.base hP.herm hP.skew v g hg y hy hc`. Establish `hq : Q (mat g * u) = Q u`. Rewrite using `[hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show B.ψ _ = B.ψ _`. Rewrite using `[symp_g_pk]`. Establish `hb : Bf_pk σ X W (mat g * u) x0 = Bf_pk σ X W u (mat g⁻¹ * x0)`. Use `symp_g_pk (W := W) (-1) g u (mat g⁻¹ * x0)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, hgm, Matrix.one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ0 : Q u ≠ 0`. Rewrite using `[hQ]`. Conclude with `(B.ψ.val_isUnit _).ne_zero`. Use `⟨u, _, _, hat u hu, ?_, hA u hu, hA _ hgu⟩` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Establish `h3 : B.ψ (Bf_pk σ X W u x0) = B.ψ (Bf_pk σ X W (mat g * u) x0)` using `mul_right_cancel₀ hQ0 (by rw [h, hq])`. Rewrite using `[hyd]`. Use `show B.ψ (Bf_pk σ X W u _) = 1`. Rewrite using `[bf_sub_pk M, AddChar.map_sub_eq_div, ← hb, ← h3, div_self (B.ψ.val_isUnit _).ne_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Apply `hgH` to reduce the goal to its premises. Use `push Not at hc`. Take `⟨a, ha, b, hb, e⟩` from `hc`. Establish `hα` using `D.r_mem a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hβ` using `D.r_mem b hb`. Take `⟨S, hS⟩ : ∃ S : Matrix (Fin n) (Fin n) (AE F E), S = s • 1` from `⟨_, rfl⟩`. Establish `hSx : ∀ {l : ℕ} (x : Matrix (Fin n) (Fin l) (AE F E)), S * x = s • x` using `fun x => by`. Rewrite using `[hS, Matrix.smul_mul, Matrix.one_mul]`. Establish `hcomm : ∀ x : Matrix (Fin n) (Fin n) (AE F E), S * x = x * S` using `fun x => by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hSx, hS, Matrix.mul_smul, Matrix.mul_one]`. Establish `e0 : mat g⁻¹ * (x₁ - s • b) = x₁ + s • a`. Establish `e' : mat g⁻¹ * x0 = x0 + a + mat g⁻¹ * b`. Rewrite using `[add_assoc, ← e, hyd]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsx0, ← smul_sub, Matrix.mul_smul, Matrix.mul_sub]`. Use `_ = s • (x0 + a) := by`. Rewrite using `[e']`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use `_ = x₁ + s • a := by rw [smul_add, hsx0]`. Establish `hkey : mat g⁻¹ * (eM v n - S * (b * r)) = eM v n + S * (a * r)`. Rewrite using `[← D.right, hSx, hSx, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.sub_mul, ← Matrix.add_mul, ← Matrix.mul_assoc, e0]`. Establish `hsk : ∀ p : Matrix (Fin n) (Fin n) (AE F E), sg v ϖ • (sg v (ϖ ^ k₀) • p) = s • p` using `fun p => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, sg_mul_pk, hs, hk, pow_succ']`. Take `⟨q, hq, hq1⟩` from `D.unit (sg v (ϖ ^ k₀) • (-(b * r))) (D.smul_mem _ (hϖO _) _ (neg_mem hβ))`. Take `⟨q', hq', hq1'⟩` from `D.unit (sg v (ϖ ^ k₀) • (a * r)) (D.smul_mem _ (hϖO _) _ hα)`. Rewrite `hq1` using `[hsk, smul_neg, ← sub_eq_add_neg, ← hSx]`. Rewrite `hq1'` using `[hsk, ← hSx]`.
-
-Establish `eL : ∀ x ∈ Λ, eM v n * x = x` using `fun x hx => by`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, sg_one_smul_pk (D.at_mem x hx)]`. Establish `eR : ∀ x : Matrix (Fin n) (Fin n) (AE F E), At (evFin F v) x → x * eM v n = x` using `fun x hx => by`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, sg_one_smul_pk hx]`. Take `⟨c1, c2⟩` from `cong_key_pk (s := S) (m := mat g⁻¹) (m' := mat g) hcomm hkey hgm hq1 hq1' (eL q hq) (eL q' hq') (eR _ (D.at_mem _ hα)) (eR _ (D.at_mem _ hβ)) (eL _ hα) (eL _ hβ) (eL _ D.one_mem) (eR _ hg') (eR _ hg)`.
-
-Simplify using `only [hSx] at c1 c2`. Conclude with `(memH g).2 ⟨hg, ⟨_, add_mem (sub_mem (neg_mem hβ) (D.mul_mem _ hα _ hq')) (hsΛ _ (D.mul_mem _ hβ _ (D.mul_mem _ hα _ hq'))), c2⟩, ⟨_, add_mem (add_mem hα (D.mul_mem _ hβ _ hq)) (hsΛ _ (D.mul_mem _ hα _ (D.mul_mem _ hβ _ hq))), c1⟩⟩`. Use `⟨H, φ, ⟨hφS, hφ0, fun g hg => Subgroup.subset_closure ((memH g).1 hg).1, fun g hg => (hsm g hg).2.2, ?_, hfix, hsep⟩, fun g hg => (hsm g hg).1⟩` and prove the remaining obligations. Take `⟨O, hO, h1, hOg⟩` from `D.nbhd k`. Use `⟨O, hO, h1, fun g hg hgO => ?_⟩` and prove the remaining obligations.
-
-Establish `hu` using `mem_UAt_of_locGrp_pk hg`. Use `hOg g hu hgO` as an intermediate fact. Conclude with `(memH g).2 ⟨hu, hs ▸ this.1, hs ▸ this.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.TP.bumpAny_k : _root_.UpperTheory.TP.Tools_k → _root_.UpperTheory.TP.BumpAny_k := by
   intro T F E _ _ _ _ _ σ B n d X W M χX χW om hP hn hd v N hN

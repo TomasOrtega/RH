@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FinsetKernelTrivial.main`. Consider the case `exact _root_.GlobalTheory.FinsetKernelTrivial.main`. Consider the case `(apply _root_.GlobalTheory.FinsetKernelTrivial.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FinsetKernelTrivial.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FinsetKernelTrivial.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FinsetKernelTrivial.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem funSub_evalExpand_exists {X : Type} (V : Submodule ℂ (X → ℂ)) (W : Submodule ℂ V)
     [FiniteDimensional ℂ W] :
@@ -23,7 +23,7 @@ theorem funSub_evalExpand_exists {X : Type} (V : Submodule ℂ (X → ℂ)) (W :
   | (intros; exact _root_.GlobalTheory.FinsetKernelTrivial.main ..)
 
 /- English proof (translation)
-Use `conv_lhs => rw [show h = fun i => ∑ x ∈ P i, (h i : X i → ℂ) x • e i x from funext hh]`. Rewrite using `[Φ.map_sum_finset]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[Φ.map_smul_univ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funSub_multilinear_expand {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type}
     {V : ∀ i, Submodule ℂ (X i → ℂ)} {N : Type} [AddCommMonoid N] [Module ℂ N]
@@ -40,19 +40,19 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι κ Δ _ _ _ _ X Y V V' M τ f f' g g' hfg`. Set `Wf : ∀ i, Submodule ℂ (V i)` to `fun i => Submodule.span ℂ ((τ.support.image (fun d => f d i) ∪ τ.support.image (fun d => f' d i) : Finset (V i)) : Set (V i))`. Set `Wg : ∀ j, Submodule ℂ (V' j)` to `fun j => Submodule.span ℂ ((τ.support.image (fun d => g d j) ∪ τ.support.image (fun d => g' d j) : Finset (V' j)) : Set (V' j))`. Use `choose P e hP using fun i => funSub_evalExpand_exists (V i) (Wf i)`. Use `choose Q e' hQ using fun j => funSub_evalExpand_exists (V' j) (Wg j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (F : Δ → ∀ i, V i) (G : Δ → ∀ j, V' j), (∀ d ∈ τ.support, ∀ i, F d i ∈ Wf i) → (∀ d ∈ τ.support, ∀ j, G d j ∈ Wg j) → (τ.sum fun d a => a * M (F d) (G d)) = ∑ x ∈ Fintype.piFinset P, ∑ y ∈ Fintype.piFinset Q, M (fun i => e i (x i)) (fun j => e' j (y j)) * τ.sum fun d a => …`. Introduce `F G hF hG`. Establish `hM : ∀ d ∈ τ.support, M (F d) (G d) = ∑ x ∈ Fintype.piFinset P, ∑ y ∈ Fintype.piFinset Q, M (fun i => e i (x i)) (fun j => e' j (y j)) * ((∏ i, (F d i : X i → ℂ) (x i)) * ∏ j, (G d j : Y j → ℂ) (y j))`. Introduce `d hd`. Rewrite using `[funSub_multilinear_expand M P e (F d) (fun i => hP i _ (hF d hd i))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MultilinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.smul_apply, funSub_multilinear_expand (M fun i => e i (x i)) Q e' (G d) (fun j => hQ j _ (hG d hd j)), smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finsupp.sum]`. Use `(Finset.sum_congr rfl (fun d hd => congrArg (τ d * ·) (hM d hd))).trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finsupp.sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memf : ∀ d ∈ τ.support, ∀ i, f d i ∈ Wf i` using `fun d hd i => Submodule.subset_span (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inl ⟨d, hd, rfl⟩)`. Establish `memf' : ∀ d ∈ τ.support, ∀ i, f' d i ∈ Wf i` using `fun d hd i => Submodule.subset_span (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inr ⟨d, hd, rfl⟩)`. Establish `memg : ∀ d ∈ τ.support, ∀ j, g d j ∈ Wg j` using `fun d hd j => Submodule.subset_span (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inl ⟨d, hd, rfl⟩)`. Establish `memg' : ∀ d ∈ τ.support, ∀ j, g' d j ∈ Wg j` using `fun d hd j => Submodule.subset_span (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inr ⟨d, hd, rfl⟩)`. Rewrite using `[key f g memf memg, key f' g' memf' memg']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun y _ => ?_))` and prove the remaining obligations. Rewrite using `[hfg x y]`.
+A detailed English derivation is pending.
 -/
 theorem funProd_multilinear_sum_eq : ∀ {ι κ Δ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] {X : ι → Type} {Y : κ → Type}
     {V : ∀ i, Submodule ℂ (X i → ℂ)} {V' : ∀ j, Submodule ℂ (Y j → ℂ)}

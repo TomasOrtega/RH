@@ -18,7 +18,7 @@ variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `(basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [jetLin, LinearMap.add_apply, Module.Basis.constr_basis, Pi.add_apply, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetLin_add (J J' : (DVar ι a b →₀ ℕ) → K) : jetLin (J + J') = jetLin J + jetLin J' := by
   refine (basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).ext fun m => ?_
@@ -26,7 +26,7 @@ theorem jetLin_add (J J' : (DVar ι a b →₀ ℕ) → K) : jetLin (J + J') = j
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `(basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [jetLin, LinearMap.smul_apply, Module.Basis.constr_basis, Pi.smul_apply, smul_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetLin_smul (c : K) (J : (DVar ι a b →₀ ℕ) → K) : jetLin (c • J) = c • jetLin J := by
   refine (basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).ext fun m => ?_
@@ -43,7 +43,7 @@ def jetOpL (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → �
     simp only [jetOp, jetMap, jetLin_smul, LinearMap.comp_apply, LinearMap.smul_apply, map_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Use `map_sum (jetOpL (K := K) lam lam' n) (fun i => ξ i • J i) Finset.univ` as an intermediate fact. Simplify using `only [map_smul] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetOp_sum (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → ℕ) {I : Type} [Fintype I] (ξ : I → K)
     (J : I → (DVar ι a b →₀ ℕ) → K) :
@@ -54,9 +54,9 @@ theorem jetOp_sum (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι
 
 omit [Fintype ι] in
 /- English proof (translation)
-Rewrite using `[Q.as_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `e : (monomial μ (coeff μ Q) : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) = coeff μ Q • basisMonomials _ K μ`. Simplify using `[coe_basisMonomials, smul_monomial]`. Rewrite using `[e, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [jetLin, Module.Basis.constr_basis, h μ hμ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jetLin_congr (J J' : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K)
     (h : ∀ μ ∈ Q.support, J (μ.comapDomain Sum.inr Sum.inr_injective.injOn) =
@@ -70,9 +70,9 @@ theorem jetLin_congr (J J' : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial (
   simp only [jetLin, Module.Basis.constr_basis, h μ hμ]
 
 /- English proof (translation)
-Use `ext1 F`. Simplify using `only [jetOp, jetMap, LinearMap.comp_apply]`. Use `congr 1`. Use `jetLin_congr J J' _ fun μ hμ => h _ fun τ => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.JetDeg.subD_hom (b := b) τ (GlobalTheory.JetDeg.sharp_hom n τ (GlobalTheory.JetDeg.VV_hom lam τ F.2)) (mem_support_iff.mp hμ)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.JetDeg.weight_derW]`. Simplify using `only [Finsupp.comapDomain_apply]`. Rewrite using `[h1]`. Use `push_cast`. Simplify using `[GlobalTheory.JetDeg.natW_cast, Finset.sum_add_distrib, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetOp_congr (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (n : ι → ℕ) (J J' : (DVar ι a b →₀ ℕ) → K)
     (h : ∀ m : DVar ι a b →₀ ℕ, (∀ τ, ((∑ β : Fin b, ∑ α : Fin a, m (τ, β, α) : ℕ) : ℤ) =
@@ -97,9 +97,9 @@ section An
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Establish `hc : ∀ i (k : ℕ), ContDiff ℂ k (G i)` using `fun i k => (hG i).contDiff`. Establish `e : (fun z => ∑ i, c i * G i z) = fun z => ∑ i, (c i • G i) z`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Unfold `jetC derivAt0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, iteratedFDeriv_sum (f := fun i => c i • G i) (fun i _ => (hc i _).const_smul (c i))]`. Simplify using `only [Finset.sum_apply, ContinuousMultilinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_const_smul_apply (hc i _).contDiffAt]`. Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -118,7 +118,7 @@ theorem jetC_sum (cD : ι → ℂ) {I : Type} [Fintype I] (c : I → ℂ) (G : I
   ring
 
 /- English proof (translation)
-Rewrite using `[desc, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_desc {K : Type} [Field K] (σ : K →+* ℂ) {z : ℂ} (h : ∃ k : K, σ k = z) : σ (desc σ z) = z := by
   rw [desc, dif_pos h]
@@ -131,13 +131,13 @@ end GlobalTheory.JetIdentity
 open GlobalTheory.JetIdentity in
 
 /- English proof (translation)
-Introduce `X a b σ cD lam lam' n I₁ I₂ _ _ ξ₁ ξ₂ G₁ G₂ u₁ u₂ r hG₁ hG₂ hr₁ hr₂ hz`. Rewrite using `[jetOp_sum, jetOp_sum]`. Use `Eq.trans ?_ ((jetOpL lam lam' n).map_smul r _)` and prove the remaining obligations. Use `jetOp_congr lam lam' n _ _ fun m hm => ?_` and prove the remaining obligations. Apply `σ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, map_mul, map_sum]`. Establish `h1` using `jetC_sum cD (fun i => σ (ξ₁ i) * u₁) G₁ hG₁ m`. Establish `h2` using `jetC_sum cD (fun i => σ r * (σ (ξ₂ i) * u₂)) G₂ hG₂ m`. Establish `e : (fun z => ∑ i, σ (ξ₁ i) * u₁ * G₁ i z) = fun z => ∑ i, σ r * (σ (ξ₂ i) * u₂) * G₂ i z`. Use function extensionality and compare the values at `z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hz z` as an intermediate fact. Rewrite `this` using `[Finset.mul_sum]`. Simplify `this` using `only [mul_assoc]`. Rewrite `h1` using `[e, h2]`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fun i => map_desc σ (hr₁ i m hm), fun i => map_desc σ (hr₂ i m hm)]`. Simplify `h1.symm` using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.jetOp_identity_of_entire : ∀ (X : Fields) (a b : ℕ) (σ : X.K →+* ℂ) (cD : X.Tau → ℂ) (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b) (n : X.Tau → ℕ) (I₁ I₂ : Type) [Fintype I₁] [Fintype I₂] (ξ₁ : I₁ → X.K) (ξ₂ : I₂ → X.K) (G₁ : I₁ → VCx X.Tau a b → ℂ) (G₂ : I₂ → VCx X.Tau a b → ℂ) (u₁ u₂ : ℂ) (r : X.K), (∀ i, AnalyticOnNhd ℂ (G₁ i) Set.univ) → (∀ i, AnalyticOnNhd ℂ (G₂ i) Set.univ) → (∀ i (m : DVar X.Tau a b →₀ ℕ), (∀ τ, (degAt m τ : ℤ) = degNu lam n τ) → ∃ k : X.K, σ k = u₁ * jetC cD (G₁ i) m) → (∀ i (m : DVar X.Tau a b →₀ ℕ), (∀ τ, (degAt m τ : ℤ) = degNu lam n τ) → ∃ k : X.K, σ k = u₂ * jetC cD (G₂ i) m) → (∀ z, ∑ i, σ (ξ₁ i) * (u₁ * G₁ i z) = σ r * ∑ i, σ (ξ₂ i) * (u₂ * G₂ i z)) → ∑ i, ξ₁ i • jetOp lam lam' (fun m => desc σ (u₁ * jetC cD (G₁ i) m)) n = r • ∑ i, ξ₂ i • jetOp lam lam' (fun m => desc σ (u₂ * jetC cD (G₂ i) m)) n := by
   intro X a b σ cD lam lam' n I₁ I₂ _ _ ξ₁ ξ₂ G₁ G₂ u₁ u₂ r hG₁ hG₂ hr₁ hr₂ hz

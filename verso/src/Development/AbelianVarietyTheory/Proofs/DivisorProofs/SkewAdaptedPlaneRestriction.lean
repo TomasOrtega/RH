@@ -19,17 +19,17 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.UnipEv
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he u hu Φ hΦ`. Establish `hS` using `hP.weil.isUSplitting`. Establish `pres : ∀ g, ∀ φ ∈ schA F (Fin n × Fin d), om g φ ∈ schA F (Fin n × Fin d)` using `fun g φ hφ => hS.pres g φ hφ`. Establish `key : ∀ g ∈ stabilizer₂ σ W H', ∃ c : ℂ, ∀ Φ ∈ schA F (Fin n × Fin d), e (om (1, g) Φ) = c • e Φ`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.skew_adapted_pair_constant_term hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he (e ∘ₗ om (1, g)) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.skew_adapted_pair_eigen_unique F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he g hg`. Conclude with `GlobalTheory.T.skew_adapted_pair_vanishing F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he g hg`. Introduce `y`. Establish `h1` using `GlobalTheory.T.skew_adapted_pair_seesaw F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `hS.adm (1, g) _ h1`. Rewrite `h2` using `[LinearMap.comp_assoc]`. Then use the resulting hypothesis. Use `choose! c hc using key`. Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.T.skew_adapted_pair_integral F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he`. Establish `inj : Function.Injective fun a : ℂ => a • e Φ₀` using `smul_left_injective ℂ hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmul : ∀ g ∈ stabilizer₂ σ W H', ∀ h ∈ stabilizer₂ σ W H', c (g * h) = c g * c h`. Introduce `g hg h hh`. Apply `inj` to reduce the goal to its premises. Establish `e1 : om (1, g * h) = om (1, g) * om (1, h)`. Apply the tactic sequence `rw [← map_mul]; congr 1; ext <;> simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show c (g * h) • e Φ₀ = (c g * c h) • e Φ₀`. Rewrite using `[← hc _ (mul_mem hg hh) Φ₀ hΦ₀, e1, Module.End.mul_apply, hc g hg _ (pres _ _ hΦ₀), hc h hh Φ₀ hΦ₀, smul_smul]`. Establish `hone : c 1 = 1`. Apply `inj` to reduce the goal to its premises. Use `show c 1 • e Φ₀ = (1 : ℂ) • e Φ₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc 1 (one_mem _) Φ₀ hΦ₀, one_smul]`. Establish `: ((1, 1) : UA σ X.J × UA σ W.J) = 1` using `rfl`. Rewrite using `[this, map_one, Module.End.one_apply]`. Establish `hcu` using `GlobalTheory.T.character_multiplicative_stabilizer F E σ B d W d₁ W₁ H' i₀ i₁ r' s' r₁ s₁ hP.base hP.skew hP₁.skew hH c hmul hone u hu`. Rewrite using `[hc u (unip_le_stabP W H' hu) Φ hΦ, hcu, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem unip_evalZero : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

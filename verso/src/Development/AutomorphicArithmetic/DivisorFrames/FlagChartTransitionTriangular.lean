@@ -13,13 +13,13 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 open GlobalTheory.QCoh (appLinear appLinear_apply)
 
 /- English proof (translation)
-Use `isFrame_of_forall_exists fun V h x hx => ?_` and prove the remaining obligations. Take `⟨W, a, -, hxW, hle, ha⟩` from `hA.exists_affine hx`. Use `⟨W, hle, hxW, ?_⟩` and prove the remaining obligations. Set `p : Γ(A, W) →ₗ[Γ(X, W)] (Fin k → Γ(X, W))` to `LinearMap.funLeft _ _ g ∘ₗ (he.basis (hle.trans h)).equivFun.toLinearMap ∘ₗ appLinear u W`. Establish `hp : p ∘ₗ (Fintype.linearCombination Γ(X, W) fun i => resM A (hle.trans h) (s i)) = LinearMap.id`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Pi.basisFun _ _).ext fun j => ?_` and prove the remaining obligations. Establish `h₁ : appLinear u W (resM A (hle.trans h) (s j)) = he.basis (hle.trans h) (g j)`. Rewrite using `[appLinear_apply, app_resM, hs, IsFrame.basis_apply]`. Use function extensionality and compare the values at `i`. Simplify using `[p, h₁, Finsupp.single_apply, Pi.single_apply, hg.eq_iff, eq_comm, -IsFrame.basis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hp' (c) : p (Fintype.linearCombination Γ(X, W) (fun i => resM A (hle.trans h) (s i)) c) = c` using `LinearMap.congr_fun hp c`. Establish `hsurj : Function.Surjective p` using `fun c => ⟨_, hp' c⟩`. Establish `hinj : Function.Injective p`. Use `OrzechProperty.injective_of_surjective_endomorphism (p ∘ₗ (ha.basis le_rfl).equivFun.symm.toLinearMap) (hsurj.comp (ha.basis le_rfl).equivFun.symm.surjective)` as an intermediate fact. Conclude with `(Function.Injective.of_comp_iff' _ (ha.basis le_rfl).equivFun.symm.bijective).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨fun c c' hc => by rw [← hp' c, hc, hp'], fun y => ⟨p y, hinj (hp' _)⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.isFrame_of_map_eq_frame_injective {X : Scheme.{0}} {A M : X.Modules} {k r : ℕ} (hA : IsVB A k) (u : A ⟶ M)
     {U : X.Opens} {e : Fin r → Γ(M, U)} (he : IsFrame e) (g : Fin k → Fin r) (hg : Function.Injective g)
@@ -45,9 +45,9 @@ private theorem UpperTheory.isFrame_of_map_eq_frame_injective {X : Scheme.{0}} {
   exact ⟨fun c c' hc => by rw [← hp' c, hc, hp'], fun y => ⟨p y, hinj (hp' _)⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.induction with`. Consider the case `zero`. Take `rfl : a = 0` from `Fin.le_zero_iff.1 h`. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ b ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Break down `h.eq_or_lt with rfl | h'` into its components or cases. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Take `⟨φ, hφ⟩` from `ih (Fin.le_castSucc_iff.2 h')`. Conclude with `⟨φ ≫ fl.step b, by rw [Category.assoc, fl.step_ι, hφ]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.exists_flag_inclusion_of_le {X : Scheme.{0}} {M : X.Modules} {r : ℕ} (fl : Vert.Flag M r) (a b : Fin (r + 1))
     (h : a ≤ b) : ∃ φ : fl.F a ⟶ fl.F b, φ ≫ fl.ι b = fl.ι a := by
@@ -62,21 +62,21 @@ private theorem UpperTheory.exists_flag_inclusion_of_le {X : Scheme.{0}} {M : X.
       exact ⟨φ ≫ fl.step b, by rw [Category.assoc, fl.step_ι, hφ]⟩
 
 /- English proof (translation)
-Establish `hi : (i.succ : ℕ) ≤ r` using `i.2`. Establish `key (j : Fin (i.succ : ℕ)) : ∃ s : Γ(fl.F i.succ, ch.U), (fl.ι i.succ).app ch.U s = ch.e (j.castLE hi) ∧ (j = Fin.last i → s = t) ∧ (j ≠ Fin.last i → (fl.π i).app ch.U s = 0)`. Distinguish the cases in `hj : j = Fin.last i`. Substitute `hj` using the available equality. Conclude with `⟨t, ht, fun _ => rfl, fun h => (h rfl).elim⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Take `⟨s₀, hs₀⟩` from `hch (j.castLE hi)`. Take `⟨φ, hφ⟩` from `UpperTheory.exists_flag_inclusion_of_le fl (j.castLE hi).succ i.castSucc (Fin.val_lt_last hj)`. Use `⟨(φ ≫ fl.step i).app ch.U s₀, ?_, fun h => (hj h).elim, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[QCoh.app_app, Category.assoc, fl.step_ι, hφ, hs₀]`. Establish `h₀ : fl.step i ≫ fl.π i = 0` using `Limits.cokernel.condition _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[QCoh.app_app, Category.assoc, h₀, Limits.comp_zero]`. Both sides reduce to the same expression. Take `⟨l, hl₀⟩ : ∃ l : Fin (i.succ : ℕ), l = Fin.last i` from `⟨_, rfl⟩`. Establish `hlv : (l : ℕ) = i` using `congrArg Fin.val hl₀`. Use `choose s hs h₁ h₂ using key`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf` using `UpperTheory.isFrame_of_map_eq_frame_injective (fl.isVB i.succ) (fl.ι i.succ) ch.isFrame _ (Fin.castLE_injective hi) s hs`. Take `⟨c, rfl⟩` from `(hf W hW).2 y`. Establish `hι (a : Fin r) : (ch.isFrame.basis hW).repr ((fl.ι i.succ).app W (Fintype.linearCombination Γ(X, W) (fun j => resM (fl.F i.succ) hW (s j)) c)) a = ∑ j, if j.castLE hi = a then c j else 0`. Rewrite using `[Fintype.linearCombination_apply, ← appLinear_apply, map_sum, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, appLinear_apply, app_resM, hs, ← ch.isFrame.basis_apply, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Use `(hι a).trans (Finset.sum_eq_zero fun j _ => if_neg fun h => ?_)` and prove the remaining obligations. Establish `h1 : (j : ℕ) = a` using `congrArg Fin.val h`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (j : ℕ) < i + 1` using `j.2`. Establish `h3 : (i : ℕ) < a` using `ha`. Use linear arithmetic over natural numbers and integers. Establish `hl : (∑ j : Fin (i.succ : ℕ), if j.castLE hi = i then c j else 0) = c l`. Rewrite using `[Finset.sum_eq_single l, if_pos (Fin.ext hlv)]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Conclude with `if_neg fun h => hj (Fin.ext ((show (j : ℕ) = i from congrArg Fin.val h).trans hlv.symm))`. Simplify using the standard rewrite rules. Use `Eq.trans ?_ (congrArg (· • resM (fl.gr i) hW ((fl.π i).app ch.U t)) ((hι i).trans hl).symm)` and prove the remaining obligations. Rewrite using `[Fintype.linearCombination_apply, ← appLinear_apply, map_sum, Finset.sum_eq_single l, map_smul, appLinear_apply, app_resM, h₁ _ hl₀]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hj`. Rewrite using `[map_smul, appLinear_apply, app_resM, h₂ j (fun h => hj (h.trans hl₀.symm)), map_zero, smul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.flag_section_combination {X : Scheme.{0}} {M : X.Modules} {r : ℕ} (fl : Vert.Flag M r) (ch : Chart M r)
     (hch : IsAdapted fl ch) (i : Fin r) (t : Γ(fl.F i.succ, ch.U)) (ht : (fl.ι i.succ).app ch.U t = ch.e i)
@@ -129,9 +129,9 @@ private theorem UpperTheory.flag_section_combination {X : Scheme.{0}} {M : X.Mod
     · simp
 
 /- English proof (translation)
-Introduce `X M r fl ch ch' h h'`. Use `⟨fun a i hia => ?_, fun i t t' e e' ht ht' => ?_⟩` and prove the remaining obligations. Take `⟨t, e⟩` from `h i`. Take `⟨t', e'⟩` from `h' i`. Use `(UpperTheory.flag_section_combination fl ch h i t e (W := ch.U ⊓ ch'.U) inf_le_left (resM _ inf_le_right t')).1 a hia` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[app_resM, e']`. Then use the resulting hypothesis. Use `(UpperTheory.flag_section_combination fl ch h i t e (W := ch.U ⊓ ch'.U) inf_le_left (resM _ inf_le_right t')).2` as an intermediate fact. Rewrite `this` using `[app_resM, app_resM, e']`. Express the relevant statement in the definitionally equal form `(ht.basis inf_le_left).repr (resM (fl.gr i) inf_le_right ((fl.π i).app ch'.U t')) 0 = (ch.isFrame.basis inf_le_left).repr (resM M inf_le_right (ch'.e i)) i`. Rewrite using `[this, ← ht.basis_apply inf_le_left 0, map_smul, Module.Basis.repr_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

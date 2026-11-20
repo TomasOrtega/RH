@@ -21,11 +21,11 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : 
   {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)}
 
 /- English proof (translation)
-Introduce `w hw A hA hfin`. Take `⟨g, hg⟩` from `e`. Establish `hfin' : (r '' (Ine (F` using `F) A : Set (G F Ω))).Finite := by`. Use `(hfin.image (fun x => g⁻¹ * x * g)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨r' s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hg s]`. Use `group`. Take `⟨s, j, hj, hF, h⟩` from `hU w hw A hA hfin'`. Use `⟨s, j, hj, hF, fun α β hα hβ k hk => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hα`, `hβ` using `[hg s, charpoly_conj_gl]`. Conclude with `h α β hα hβ k hk`.
+A detailed English derivation is pending.
 -/
 theorem Wit.iso' [IsCMField F] (e : RepIso r r') (hU : Wit ι r) : Wit ι r' := by
   intro w hw A hA hfin
@@ -42,13 +42,13 @@ theorem Wit.iso' [IsCMField F] (e : RepIso r r') (hU : Wit ι r) : Wit ι r' := 
   exact h α β hα hβ k hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ss_conj h.choose h.choose_spec H.1, H.2.mono fun _ ⟨B, hB, hB'⟩ => ⟨B, hB, hB'.of_iso h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem attC_iso [IsTotallyComplex F] {π : CuspSub F n} (h : RepIso r r') (H : AttC ι r π) : AttC ι r' π :=
   ⟨ss_conj h.choose h.choose_spec H.1, H.2.mono fun _ ⟨B, hB, hB'⟩ => ⟨B, hB, hB'.of_iso h⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.1.imp fun _ k => ⟨k.1, k.2.1, attC_iso h k.2.2⟩, fun c => (H.2 (continuous_of_iso c h.symm')).iso' h⟩`.
+Supply the required witnesses or components.
 -/
 theorem autCsd_iso {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] {l : ℕ}
     [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} (h : Af.RepIso r r')

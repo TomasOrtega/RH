@@ -15,7 +15,7 @@ namespace GlobalTheory.EisRestrict
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Rewrite using `[hE_eq_dot, ← Matrix.mulVec_mulVec]`. Simplify using `[Matrix.mulVec, dotProduct, Formalism.UG.cT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cT_mul_mulVec_apply {a : ℕ} (A : Matrix (Fin n) (Fin a) E) (K : Matrix (Fin n) (Fin n) E) (z : Fin n → E)
     (i : Fin a) : ((Formalism.UG.cT (σ : E →+* E) A * K) *ᵥ z) i = hE σ K (fun k => A k i) z := by
@@ -23,7 +23,7 @@ theorem cT_mul_mulVec_apply {a : ℕ} (A : Matrix (Fin n) (Fin a) E) (K : Matrix
   simp [Matrix.mulVec, dotProduct, Formalism.UG.cT]
 
 /- English proof (translation)
-Rewrite using `[← cT_mul_mulVec_apply]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cT_mul_mul_apply {a b : ℕ} (A : Matrix (Fin n) (Fin a) E) (K : Matrix (Fin n) (Fin n) E)
     (B : Matrix (Fin n) (Fin b) E) (i : Fin a) (j : Fin b) :
@@ -35,23 +35,23 @@ end GlobalTheory.EisRestrict
 
 open GlobalTheory.EisRestrict in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW`. Establish `hyx` using `GlobalTheory.StdPar.yx (σ := σ) (J := J) (X := X) (Y := Y) h hJ hW`. Establish `ent : ∀ (A B : Matrix (Fin n) (Fin (r + 1)) E) (i j : Fin (r + 1)), hE σ J (fun k => A k i) (fun k => B k j) = (Formalism.UG.cT (σ : E →+* E) A * J * B) i j` using `fun A B i j => (cT_mul_mul_apply σ A J B i j).symm`. Establish `c0X : GlobalTheory.EisMidHt.firstColumn X = fun k => X k 0` using `rfl`. Establish `c0Y : GlobalTheory.EisMidHt.firstColumn Y = fun k => Y k 0` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memX : ∀ j : Fin r, (fun k => X k j.succ) ∈ V0 σ J X Y` using `fun j => by`. Rewrite using `[mem_invariant_forms, c0X, c0Y, ent, ent, hW.xx, hyx]`. Simplify using `[Matrix.one_apply, (Fin.succ_ne_zero j).symm]`. Establish `memY : ∀ j : Fin r, (fun k => Y k j.succ) ∈ V0 σ J X Y` using `fun j => by`. Rewrite using `[mem_invariant_forms, c0X, c0Y, ent, ent, hW.xy, hW.yy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply, (Fin.succ_ne_zero j).symm]`. Establish `iX` using `fun j => ι_coordTail σ J X Y X j (memX j)`. Establish `iY` using `fun j => ι_coordTail σ J X Y Y j (memY j)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[cT_mul_mul_apply, hE_J0, iX, iX, ent, hW.xx]`. Both sides reduce to the same expression. Use extensionality with `i j`. Rewrite using `[cT_mul_mul_apply, hE_J0, iY, iY, ent, hW.yy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `i j`. Rewrite using `[cT_mul_mul_apply, hE_J0, iX, iY, ent, hW.xy]`. Simplify using `[Matrix.one_apply]`. Introduce `u h1 h2 h3`. Apply `ι_injective σ J X Y` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero]`. Establish `hm` using `(mem_invariant_forms σ J X Y).1 (ι_mem σ J X Y u)`. Apply `hW.aniso` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[cT_mul_mulVec_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hm.1`. Use `congrFun h1 j` as an intermediate fact. Rewrite `this` using `[cT_mul_mulVec_apply, hE_J0, iX]`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[cT_mul_mulVec_apply]`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hm.2`. Use `congrFun h2 j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[cT_mul_mulVec_apply, hE_J0, iY]`. Simplify using `using this`. Rewrite using `[← hE_J0]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisRestrict.isWittFrame_restrict : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

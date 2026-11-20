@@ -14,36 +14,32 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh.SmallStepSurj
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_hom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `R _ _ t R' _ σ' hσ' hker ht hm hfield hR' A _ g hA hg k _ σ hσ X₀ s₀ ψ w`. Establish `hkerσ : RingHom.ker σ = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective σ hσ)`. Distinguish the cases in `htm : t ∈ IsLocalRing.maximalIdeal R`. Set `R₀` to `R ⧸ IsLocalRing.maximalIdeal R`. Set `σ₀ : R →+* R₀` to `Ideal.Quotient.mk _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hR₀ : IsField R₀` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 (IsLocalRing.maximalIdeal.isMaximal R)`. Establish `hse : SmallExt t σ' σ₀`. Use `⟨hσ', hker, Ideal.Quotient.mk_surjective, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hm a`. Introduce `hat`. Assume the negation of the conclusion as `hna`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hnu`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hna ((IsLocalRing.mem_maximalIdeal a).2 hnu)`. Conclude with `ht (hu.mul_right_eq_zero.1 hat)`. Establish `hP'` using `IsPullback.of_hasPullback A.hom (spMap σ')`. Establish `hP₀` using `IsPullback.of_hasPullback A.hom (spMap σ₀)`. Take `⟨i', hg', hab', hsm'⟩` from `GlobalTheory.T.exists_grpObj_isGrpPullback_of_isPullback' R R' σ' A _ _ _ hP'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i₀, hg₀, hab₀, hsm₀⟩` from `GlobalTheory.T.exists_grpObj_isGrpPullback_of_isPullback' R R₀ σ₀ A _ _ _ hP₀`. Establish `hstep` using `GlobalTheory.T.small_extension_primitive_lift R R' R₀ t σ' σ₀ g A _ _ _ _ hg' hg₀ hse hA hg (hR' _ g (hab' hA) (hsm' g hg)).2 (hfield R₀ hR₀ _ g (hab₀ hA) (hsm₀ g hg)).2.1`. Establish `hle : RingHom.ker σ' ≤ RingHom.ker σ`. Rewrite using `[hker, Ideal.span_le, Set.singleton_subset_iff, hkerσ]`. Conclude with `htm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `τ : R' →+* k` to `RingHom.liftOfRightInverse σ' (Function.surjInv hσ') (Function.rightInverse_surjInv hσ') ⟨σ, hle⟩`. Establish `hτ : ∀ r, τ (σ' r) = σ r` using `fun r => RingHom.liftOfRightInverse_comp_apply σ' (Function.surjInv hσ') (Function.rightInverse_surjInv hσ') ⟨σ, hle⟩ r`. Establish `hτs : Function.Surjective τ` using `fun y => by`. Take `⟨x, rfl⟩` from `hσ y`. Conclude with `⟨σ' x, hτ x⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hcomp : spMap σ = spMap τ ≫ spMap σ'`. Rewrite using `[← spMap_comp_hom]`. Use `congr 1`. Use extensionality with `r`. Conclude with `(hτ r).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `ψ' : X₀ ⟶ pullback A.hom (spMap σ')` to `hP'.lift ψ (s₀ ≫ spMap τ) (by rw [w.w, hcomp, Category.assoc])`. Establish `hψ' : ψ' ≫ pullback.fst A.hom (spMap σ') = ψ` using `hP'.lift_fst _ _ _`. Establish `w' : IsPullback ψ' s₀ (pullback.snd A.hom (spMap σ')) (spMap τ)`. Use `IsPullback.of_right ?_ (hP'.lift_snd _ _ _) hP'` and prove the remaining obligations. Rewrite using `[hψ', ← hcomp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `w`. Establish `hsurj` using `(hR' (Over.mk (pullback.snd A.hom (spMap σ'))) g (hab' hA) (hsm' g hg)).1 k τ hτs X₀ s₀ ψ' w'`. Introduce `y`. Take `⟨x', rfl⟩` from `hsurj y`. Take `⟨a, rfl⟩` from `hstep x'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).1 R R' A.left (pullback A.hom (spMap σ')) A.hom (pullback.snd A.hom (spMap σ')) σ' (pullback.fst A.hom (spMap σ')) hg'.1.w k X₀ s₀ τ ψ' w'.w σ ψ w.w hψ'.symm (fun r => (hτ r).symm)).1 a |>.symm`. Establish `hu : IsUnit t`. Assume the negation of the conclusion as `hnu`. Conclude with `htm ((IsLocalRing.mem_maximalIdeal t).2 hnu)`.
-
-Establish `hinj : Function.Injective σ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `hma : a ∈ IsLocalRing.maximalIdeal R` using `by rw [← hkerσ]; exact ha`. Conclude with `(hu.mul_left_eq_zero).1 (hm a hma)`.
-
-Conclude with `GlobalTheory.T.pull_h1_surjective_of_bijective R k σ A.left X₀ A.hom s₀ ψ w ⟨hinj, hσ⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surj_of_smallExt : ∀ (R : Type) [CommRing R] [IsLocalRing R] (t : R) (R' : Type) [CommRing R'] (σ' : R →+* R'), Function.Surjective σ' → RingHom.ker σ' = Ideal.span {t} → t ≠ 0 → (∀ a ∈ IsLocalRing.maximalIdeal R, a * t = 0) → (∀ (k : Type) [CommRing k], IsField k → ∀ (B : Over (Sp k)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → AxesVanishingStructureSheafDegOne B ∧ NoPrimitiveStructureSheafH2 B ∧ WedgeO (OAff B.hom)) → (∀ (B : Over (Sp R')) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (∀ (k : Type) [Field k] (σ : R' →+* k), Function.Surjective σ → ∀ (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp k) (ψ : X₀ ⟶ B.left) (w : IsPullback ψ s₀ B.hom (spMap σ)), Function.Surjective (pullHO1 w.w)) ∧ StructureSheafH1Primitive B) → ∀ (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → (∀ (k : Type) [Field k] (σ : R →+* k), Function.Surjective σ → ∀ (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp k) (ψ : X₀ ⟶ A.left) (w : IsPullback ψ s₀ A.hom (spMap σ)), Function.Surjective (pullHO1 w.w)) := by
   intro R _ _ t R' _ σ' hσ' hker ht hm hfield hR' A _ g hA hg k _ σ hσ X₀ s₀ ψ w

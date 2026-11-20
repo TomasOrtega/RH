@@ -15,7 +15,7 @@ open GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 namespace GlobalTheory.Mem.R3.LiftsAt
 open GlobalTheory.Mem.Top.GroupRetwisting
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps _ h0 _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ?_⟩⟩⟩⟩` and prove the remaining obligations. Take `⟨x₀, h⟩` from `_root_.GlobalTheory.LiftsOnly.holdsL_of_ties_alt P hHL eps h0`. Conclude with `⟨x₀, fun K _ _ _ hs hx X L e hS hP px I hX Tw Wt z => h z.core z.R z.F z.geo.κ z.geo.v₀ z.geo.O L (by rw [e]; exact hs) (by rw [e]; exact hx) hS hP⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ev_closes_alt (P : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems) (hHL : GlobalTheory.Published.HeckeLPartialContinuation) :
     Ev fun K => ∀ (X : Stages) (L : SizeData₂ X.toD7), L.sc = K.s → SizesAt L → Nonempty (ParameterChoice' X.toD7 L) → Closes X := by
@@ -25,11 +25,11 @@ theorem ev_closes_alt (P : _root_.GlobalTheory.PrimIn.PublishedThetaConditionThe
     h z.core z.R z.F z.geo.κ z.geo.v₀ z.geo.O L (by rw [e]; exact hs) (by rw [e]; exact hx) hS hP⟩
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `P hHL hM`. Establish `hE : Step KPx (fun _ _ _ _ => True) fun K B f T => (∀ X : Stages, X.B = B → (∀ L : SizeData₂ X.toD7, L.sc = K.s → SizesAt L → Nonempty (ParameterChoice' X.toD7 L) → Closes X) ∧ (X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) → (∀ w j, X.toD7.what₂.Aj j w = 0) → ∃ L : SizeData₂ X.toD7, L. …` using `Step.of_evG ((((evG_of_ev (_root_.GlobalTheory.Mem.R3.LiftsAt.ev_closes_alt P hHL)).inter (evG_of_ev LedRec.ev_exists_sizeData)).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)).imp fun K _ _ _ _ H B f T hO _ _ _ X e => by`. Substitute `e` using the available equality. Conclude with `⟨H.1.1 X, H.1.2 X hO, (H.2 X hO).1, (H.2 X hO).2.2.2.2.2.2.1⟩)`. Use `((((hE.and (Step.of_evLgG (evLgG_of_evLg GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField))).and (Step.of_evLgG (q := fun _ => CoverAt.WeberLev) (evG_all CoverAt.lg_weberLev))).and hM).and (Step.and (lUnif_atDat P.q3 P.q2 P.q1) (atDat_lIntegral P.q3 P.q2 P.q1))).trans (Step. …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨⟨h1, hOk⟩, hW⟩, hM⟩, hU, hI⟩` from `H`. Take `⟨b, hb, heta, hA⟩` from `LedRec.exists_bare P.q12 (C := w.C) Z f (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨hcl, hled, hhost, hV⟩` from `h1 (w.st b) rfl`. Take `⟨L, hL, hS, hP, hn⟩` from `hled heta hA`. Establish `s : SameGrp (C` using `w.C) Z b := LedRec.sameGrp g1 hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEx'` using `DatCopy.copy_exAt b s hEx`. Establish `hU'` using `DatCopy.copy_lUnif b s (hU w hw Z hX Wt z g1 g2 hEx g4)`. Establish `hT` using `ties_at P.q12 w b hX Wt (DatCopy.copy b s z) hb ((hOk w.px w.I hX w.ok w.C_eq w.xi_range).2 _ _ _ (DatCopy.copy b s z).good.irr) hEx' hhost ⟨L, hP⟩ hn (GlobalTheory.T.ioExt_of_weakCharacterisation_of_orthonormal_frames _ _ _ _ _ _ _ (DatCopy.copy b s z).R (DatCopy.copy b s z).F ( …`. Conclude with `LiftCopy.holdsL_of_copy b s (hcl L hL hS hP w.px w.I hX T Wt (DatCopy.copy b s z) hT.1 hT.2 (DatCopy.copy_multEq b s (hM w hw Z hX Wt z g1 g2 hEx g4)) (DatCopy.copy_lIntegral b s (hI w hw Z hX Wt z g1 g2 hEx g4)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lu_of_multEq_at_data : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems → GlobalTheory.Published.HeckeLPartialContinuation → (StepW Pinned fun _ B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : GlobalTheory.Mem.R3.Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GlobalTheory.Mem.R3.GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo → GlobalTheory.CuspMult.MultEq z.R.toRealDat) → LowerUnitaryCaseCondition := by
   intro P hHL hM
@@ -73,7 +73,7 @@ open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.
 open GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Mem.R3.LiftsAt.lu_of_multEq_at_data | exact _root_.GlobalTheory.Mem.R3.LiftsAt.lu_of_multEq_at_data | (intros; apply _root_.GlobalTheory.Mem.R3.LiftsAt.lu_of_multEq_at_data <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lu_of_multiplicity_equal : _root_.GlobalTheory.PrimIn.PublishedThetaConditionTheorems → GlobalTheory.Published.HeckeLPartialContinuation → (StepW Pinned fun _ B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : GlobalTheory.Mem.R3.Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GlobalTheory.Mem.R3.GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo → GlobalTheory.CuspMult.MultEq z.R.toRealDat) → LowerUnitaryCaseCondition := by
   first | exact @_root_.GlobalTheory.Mem.R3.LiftsAt.lu_of_multEq_at_data | exact _root_.GlobalTheory.Mem.R3.LiftsAt.lu_of_multEq_at_data | (intros; apply _root_.GlobalTheory.Mem.R3.LiftsAt.lu_of_multEq_at_data <;> assumption)

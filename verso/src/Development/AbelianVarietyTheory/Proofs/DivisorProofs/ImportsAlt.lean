@@ -6,23 +6,21 @@ namespace GlobalTheory.ValuativeQuotient
 attribute [local instance] Algebra.TensorProduct.rightAlgebra
 
 /- English proof (translation)
-Introduce `V K B _ _ _ _ _ _ _ _ JK`. Establish `hloc` using `IsLocalization.tensorRight (S := B) K (nonZeroDivisors V)`. Use `set M := Algebra.algebraMapSubmonoid B (nonZeroDivisors V) with hM`. Establish `hmap : ∀ I : Ideal B, I.map (Algebra.TensorProduct.includeRight : B →ₐ[V] K ⊗[V] B) = I.map (algebraMap B (K ⊗[V] B))` using `fun I => rfl`. Establish `hsmul : ∀ (J : Ideal B) (v : V) (b : B), v • Ideal.Quotient.mk J b = Ideal.Quotient.mk J (algebraMap V B v * b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J v b`. Rewrite using `[← Algebra.smul_def, ← Ideal.Quotient.mkₐ_eq_mk V, map_smul]`. Establish `hflat : ∀ J : Ideal B, Module.Flat V (B ⧸ J) ↔ ∀ m ∈ M, ∀ b : B, m * b ∈ J → b ∈ J`. Introduce `J`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, Submodule.eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h m ⟨v, hv, rfl⟩ b hb`. Establish `h0` using `h (Ideal.Quotient.mk J b) ((Submodule.mem_torsion_iff _).mpr ⟨⟨v, hv⟩, by show v • Ideal.Quotient.mk J b = 0`. Rewrite using `[hsmul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hb⟩)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h0`. Introduce `h x hx`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨⟨v, hv⟩, hvb⟩` from `(Submodule.mem_torsion_iff _).mp hx`. Express the relevant statement in the definitionally equal form `v • Ideal.Quotient.mk J b = 0 at hvb`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hvb` using `[hsmul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (h _ ⟨v, hv, rfl⟩ b hvb)`. Use `⟨JK.comap (algebraMap B (K ⊗[V] B)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hflat]`. Introduce `m hm b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Ideal.mem_comap, map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem JK (IsLocalization.map_units (K ⊗[V] B) ⟨m, hm⟩)).mp hb`. Rewrite using `[hmap]`. Conclude with `IsLocalization.map_comap M (K ⊗[V] B) JK`. Introduce and unpack `J' ⟨hJ'f, hJ'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJ'` using `[hmap]`. Rewrite `hJ'f` using `[hflat]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hJ']`. Conclude with `Ideal.le_comap_map`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `b hb`. Rewrite `hb` using `[Ideal.mem_comap, ← hJ', IsLocalization.mem_map_algebraMap_iff M]`. Take `⟨⟨x, m⟩, hxm⟩` from `hb`. Rewrite `hxm` using `[← map_mul, IsLocalization.eq_iff_exists M]`. Take `⟨c, hc⟩` from `hxm`.
-
-Apply `hJ'f (c * m) (M.mul_mem c.2 m.2)` to reduce the goal to its premises. Establish `: (c : B) * (m : B) * b = c * x.1` using `by rw [← hc]; ring`. Rewrite using `[this]`. Conclude with `J'.mul_mem_left _ x.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V K B : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K]
     [Algebra V K] [IsFractionRing V K] [CommRing B] [Algebra V B] (JK : Ideal (K ⊗[V] B)),

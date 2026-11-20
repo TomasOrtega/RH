@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ X D cp a bad j La v`. Simplify using `only [Formalism.L2.PairingIndexBounds.F.fdOfCharts]`. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Use `erw [← RingHom.map_det]`. Use `IsUnit.map _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul]`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_toMatrix']`. Conclude with `LinearEquiv.isUnit_det' _`. Conclude with `Matrix.isUnits_det_units (cp.B j La)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_frameMatrix_ofCharts : ∀ {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7} (cp : ChartPts X D) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) (j : ℕ) (La : X.Lt j) (v : X.Pl), IsUnit ((fdOfCharts cp a bad).frM j La v).det := by
   intro p _ X D cp a bad j La v

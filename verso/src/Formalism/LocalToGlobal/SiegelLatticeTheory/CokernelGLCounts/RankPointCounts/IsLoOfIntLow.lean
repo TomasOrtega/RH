@@ -11,9 +11,9 @@ section Free
 def Free {n : ℕ} (σ : Fin n → Fin n) (i j : Fin n) : Prop := j < i ∧ σ i < σ j
 
 /- English proof (translation)
-Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[hT.2 i j hij, Matrix.one_apply_ne hij.ne]`. Rewrite using `[hT.1 i, Matrix.one_apply_eq]`. Establish `hne : σ i ≠ σ j` using `fun e => hij.ne' (by rw [← hσ i, e, hσ])`. Establish `: σ j < σ i`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne hne with h' | h'` into its components or cases. Conclude with `absurd ⟨hij, h'⟩ h`. Conclude with `h'`. Rewrite using `[hpat i j this, Matrix.one_apply_ne hij.ne']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem off_free {K : Type*} [CommRing K] {n : ℕ} {σ : Fin n → Fin n} (hσ : ∀ a, σ (σ a) = a)
     {T : Matrix (Fin n) (Fin n) K} (hT : IsLo T) (hpat : ∀ i j, σ j < σ i → T i j = 0) {i j : Fin n}
@@ -29,7 +29,7 @@ theorem off_free {K : Type*} [CommRing K] {n : ℕ} {σ : Fin n → Fin n} (hσ 
     rw [hpat i j this, Matrix.one_apply_ne hij.ne']
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.sub_apply, Matrix.map_apply]`. Distinguish the cases in `hf : Free σ i j`. Conclude with `h i j hf`. Apply the tactic sequence `rw [off_free hσ hX' hpX hf, off_free hσ hT hpT hf, Matrix.one_apply, Matrix.one_apply] split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ent_free {E K : Type*} [Field E] [CommRing K] (ψ : E →+* K) {n : ℕ} {σ : Fin n → Fin n}
     (hσ : ∀ a, σ (σ a) = a) {X' : Matrix (Fin n) (Fin n) E} (hX' : IsLo X') (hpX : ∀ i j, σ j < σ i → X' i j = 0)
@@ -43,7 +43,7 @@ theorem ent_free {E K : Type*} [Field E] [CommRing K] (ψ : E →+* K) {n : ℕ}
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨s, hs0, hsO, hs⟩` from `bnd_fin O hI (fun q : Fin k × Fin n × Fin n => Ms q.1 q.2.1 q.2.2) (fun q => hx _)`. Conclude with `⟨s, hs0, hsO, fun m i j => hs (m, i, j)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bnd_mats {Fp : Type*} [Field Fp] {K : Type*} [CommRing K] [Algebra Fp K] {I : Subring K} (O : Subring Fp)
     (hI : ∀ s ∈ O, algebraMap Fp K s ∈ I) (hx : ∀ x : K, ∃ s : Fp, s ≠ 0 ∧ s ∈ O ∧ algebraMap Fp K s * x ∈ I)
@@ -53,9 +53,7 @@ theorem bnd_mats {Fp : Type*} [Field Fp] {K : Type*} [CommRing K] [Algebra Fp K]
   exact ⟨s, hs0, hsO, fun m i j => hs (m, i, j)⟩
 
 /- English proof (translation)
-Establish `e : a i j = (a - 1) i j + (1 : Matrix (Fin n) (Fin n) K) i j` using `by rw [Matrix.sub_apply]; ring`. Rewrite using `[e]`. Use `I.add_mem (lat_one (h i j)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `I.one_mem`. Conclude with `I.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_close {K : Type*} [CommRing K] {I : Subring K} {n : ℕ} {a : Matrix (Fin n) (Fin n) K}
     (h : EntIn (lat I 1) (a - 1)) (i j : Fin n) : a i j ∈ I := by
@@ -91,34 +89,34 @@ def LocTarget (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (L₁ U₁ A₀ B₀
       GoodAt Zd p w L₁ U₁ A₀ B₀ X'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLo_of_intLow {p : PlF D} {l : MatP D p} (h : TieN.IntLow (Zd.M p) l) : IsLo l := ⟨h.1, h.2.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun a b hab => h.2.1 b a hab⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUp_of_intUp {p : PlF D} {ρ : MatP D p} (h : TieN.IntUp (Zd.M p) ρ) : IsUp ρ :=
   ⟨h.1, fun a b hab => h.2.1 b a hab⟩
 
 /- English proof (translation)
-Establish `hcv : ∀ a, (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) a * (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)) a = 1` using `fun a => by simp only [← map_mul, cf_cfi, map_one]`. Establish `hσ : ∀ a, fσ w (fσ w a) = a` using `fσ_fσ w`. Establish `hν : ∀ a : Fin (D.R.rS + 1), pv w.1 a ≠ 0` using `fun a => pv_ne' w a`. Establish `hYp : CntLocal.ZZP (M` using `Zd.M) Zd.δ u u' p Z₁ * LsDatumB.sgnP p = (1 : (D.s.atP p).Ep) • (Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) * (L₁ * mono (fσ w) (fun a => pv w.1 a) * U₁).map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ( …`. Rewrite using `[one_smul, zero_smul, sub_zero, zzp_sgn_ord Zd u u' p hM Z₁, hZ, ptMat_mono']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hli, -, hll'⟩` from `ZsVolGrp.intLow_inv (Zd.M p) hl`. Take `⟨hρi, -, hρρ⟩` from `ZsVolGrp.intUp_inv (Zd.M p) hρ`. Establish `hkL : IsLo (l⁻¹ * locL Zd p A₀ B₀)` using `isLo_mul (isLo_of_intLow Zd hli) (locL_lo Zd p hA₀ hB₀)`. Establish `hkR : IsUp (locR Zd p A₀ B₀ * ρ⁻¹)` using `isUp_mul (locR_up Zd p hA₀ hB₀) (isUp_of_intUp Zd hρi)`. Establish `hk` using `key_stab Zd p hl hρ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[hYp]`. Take `⟨hTlo, hTpat, -⟩` from `comp_target (D.s.atP p).ιE hcv hL₁ hU₁ hσ hν isUnit_one hkL hkR hk`. Take `⟨t, ht0, htO, hb⟩` from `bnd_mats 𝒪[(D.s.atP p).Fp] (fun s hs => alg_mem_O hs) (fun x => bounded x) ![cP (D.s.atP p).ιE (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) L₁, cP' (D.s.atP p).ιE (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)) L₁, cQ (D.s.atP p).ιE (fun a => a …`. Use `⟨(cP' (D.s.atP p).ιE (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)) L₁ * (l⁻¹ * locL Zd p A₀ B₀) * cP (D.s.atP p).ιE (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) L₁)⁻¹, t * (t * (t * (t * (t * 1)))), by simp [ht0], ?_⟩` and prove the remaining obligations. Introduce `X' hX' hpat hfree`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hgX, hgY, hst⟩` from `glob_stab w hL₁ hU₁ hZ hX' hpat`. Establish `hab` using `key_stab Zd p hl hρ ((corr_move Zd u u' p hA₀ hB₀ hgX hgY hst).trans h)`. Rewrite `hab` using `[hYp]`. Establish `ha : IsLo (l⁻¹ * locL Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀))` using `isLo_mul (isLo_of_intLow Zd hli) (locL_lo Zd p (isLo_mul hA₀ hgX) (isUp_mul hgY hB₀))`. Establish `hb' : IsUp (locR Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀) * ρ⁻¹)` using `isUp_mul (locR_up Zd p (isLo_mul hA₀ hgX) (isUp_mul hgY hB₀)) (isUp_of_intUp Zd hρi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haX : l⁻¹ * locL Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀) = (l⁻¹ * locL Zd p A₀ B₀) * (Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) * (L₁ * X' * L₁⁻¹).map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd …`. Rewrite using `[locL_L Zd p hM, locL_L Zd p hM, gX, Matrix.map_mul (L := A₀)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a))) (Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a))), diag_one (hcv'_of hcv), Matrix.one_mul]`. Establish `hG : EntIn (lat (D.s.atP p).O (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep t * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep t * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep t * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep t * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep t * 1)))))) (X'.map (D.s …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ent_free (D.s.atP p).ιE hσ hX' hpat hTlo hTpat fun i j hf => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hfree i j hf`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `only [map_mul, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcl` using `comp_main (D.s.atP p).ιE hcv hL₁ hU₁ hσ hν isUnit_one hkL hkR hk ha hb' hab haX (alg_mem_O htO) (D.s.atP p).O.one_mem (fun a => by simpa using hb 4 a a) (fun a => by simpa using hb 5 a a) (fun i j => by simpa using hb 0 i j) (fun i j => by simpa using hb 1 i j) (fun i j => by sim …`. Establish `hR : (Zd.M p).R = (D.s.atP p).O` using `Formalism.L2.SG.Pf.LMK.R_eq_O (Zd.agree p) hM`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : locL Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀) = l * (l⁻¹ * locL Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀))`. Rewrite using `[← Matrix.mul_assoc, hll', Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `ZsVolGrp.intLow_mul (Zd.M p) hl ⟨ha.1, ha.2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hR]`. Conclude with `int_of_close hcl.1 i j`. Establish `e : locR Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀) = (locR Zd p (A₀ * gX L₁ X') (gY w U₁ X' * B₀) * ρ⁻¹) * ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, (ZsVolGrp.intUp_inv (Zd.M p) hρ).2.1, Matrix.mul_one]`. Rewrite using `[e]`. Use `ZsVolGrp.intUp_mul (Zd.M p) ⟨hb'.1, fun a b hab => hb'.2 b a hab, fun i j => ?_⟩ hρ` and prove the remaining obligations. Rewrite using `[hR]`. Conclude with `int_of_close hcl.2 i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem target_L (u u' : D.what₂.Word) (p : PlF D) (hM : (Zd.M p).split = none) (w : Point D.host.E (D.R.rS + 1))
     {Z₁ L₁ U₁ A₀ B₀ : PairVal.MatR D} (hL₁ : IsLo L₁) (hU₁ : IsUp U₁)

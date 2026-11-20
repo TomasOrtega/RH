@@ -27,15 +27,13 @@ def condI (y : D.host.E) : Ideal (𝓞 D.host.E) where
     exact ⟨c * o, by rw [smul_eq_mul]; push_cast; rw [mul_assoc, h]⟩
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.iE_mem_O_iff_D]`. Use `p.isPrime` as an intermediate fact. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hle : (condI y).comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ p.asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Assume the negation of the conclusion as `hsp`. Take `⟨o, ho⟩` from `hs`. Apply `hno s hsp` to reduce the goal to its premises. Establish `e : algebraMap D.host.F D.host.E (s : D.host.F) = ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s : 𝓞 D.host.E) : D.host.E)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 D.host.F) D.host.F D.host.E, IsScalarTower.algebraMap_apply (𝓞 D.host.F) (𝓞 D.host.E) D.host.E]`. Rewrite using `[e, ho]`. Conclude with `o.2`. Take `⟨Q, hIQ, hQp, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral p.asIdeal (condI y) hle`. Establish `hQ0 : Q ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hb`. Apply `p.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQc, hb, Ideal.comap_bot_of_injective]`. Conclude with `FaithfulSMul.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E)`. Take `⟨t, ht, o, hto⟩` from `h ⟨Q, hQp, hQ0⟩ hQc`.
-
-Conclude with `ht (hIQ ⟨o, hto⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iota_mem_O (p : PlF D) (y : D.host.E)
     (h : ∀ P : HeightOneSpectrum (𝓞 D.host.E),

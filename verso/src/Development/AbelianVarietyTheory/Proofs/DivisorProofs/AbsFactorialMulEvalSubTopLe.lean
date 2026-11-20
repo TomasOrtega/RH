@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_nat_ge ((d.factorial : ℚ) * ∑ i ∈ Finset.range d, |p.coeff i|)`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations. Establish `hm : (0 : ℚ) ≤ m` using `Nat.cast_nonneg m`. Establish `hf : (0 : ℚ) ≤ d.factorial` using `Nat.cast_nonneg _`. Rewrite using `[Polynomial.eval_eq_sum_range' (n := d + 1) (Nat.lt_succ_of_le hp), Finset.sum_range_succ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (d.factorial : ℚ) * (∑ i ∈ Finset.range d, p.coeff i * (m : ℚ) ^ i + p.coeff d * (m : ℚ) ^ d) - (d.factorial : ℚ) * p.coeff d * (m : ℚ) ^ d = (d.factorial : ℚ) * ∑ i ∈ Finset.range d, p.coeff i * (m : ℚ) ^ i` using `by ring`. Rewrite using `[e, abs_mul, abs_of_nonneg hf]`. Establish `hX : (0 : ℚ) ≤ (d : ℚ) * ((m : ℚ) + 1) ^ (d - 1)` using `by positivity`. Establish `h1 : |∑ i ∈ Finset.range d, p.coeff i * (m : ℚ) ^ i| ≤ (∑ i ∈ Finset.range d, |p.coeff i|) * ((d : ℚ) * ((m : ℚ) + 1) ^ (d - 1))`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < d` using `Finset.mem_range.mp hi`. Rewrite using `[abs_mul, abs_of_nonneg (pow_nonneg hm i)]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)` and prove the remaining obligations. Establish `a1 : (m : ℚ) ^ i ≤ ((m : ℚ) + 1) ^ i` using `pow_le_pow_left₀ hm (by linarith) i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a2 : ((m : ℚ) + 1) ^ i ≤ ((m : ℚ) + 1) ^ (d - 1)` using `pow_le_pow_right₀ (by linarith) (by omega)`. Establish `a3 : (1 : ℚ) ≤ d` using `by exact_mod_cast (show 1 ≤ d by omega)`. Establish `a4 : (0 : ℚ) ≤ ((m : ℚ) + 1) ^ (d - 1)` using `by positivity`. Conclude with `a1.trans (a2.trans (le_mul_of_one_le_left a4 a3))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem abs_factorial_mul_eval_sub_top_le (d : ℕ) (p : Polynomial ℚ) (hp : p.natDegree ≤ d) :
     ∃ C : ℕ, ∀ m : ℕ, |(d.factorial : ℚ) * p.eval (m : ℚ) - (d.factorial : ℚ) * p.coeff d * (m : ℚ) ^ d|

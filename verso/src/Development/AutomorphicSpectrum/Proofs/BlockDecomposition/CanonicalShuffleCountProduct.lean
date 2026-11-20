@@ -28,11 +28,11 @@ theorem T_cons {ι : Type*} [Fintype ι] [DecidableEq ι] (a : α) (L : List α)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `L generalizing E with`. Consider the case `nil`. Rewrite using `[T_nil, T_nil]`. Establish `hiff : (∀ i, (E ∘ σ) i = []) ↔ ∀ i, E i = []` using `⟨fun h i => by simpa using h (σ.symm i), fun h i => h (σ i)⟩`. Distinguish the cases in `hE : ∀ i, E i = []`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hE, if_pos (hiff.2 hE)]`. Rewrite using `[if_neg hE, if_neg (fun h' => hE (hiff.1 h'))]`. Consider the case `cons a L ih`. Rewrite using `[T_cons, T_cons]`. Use `Fintype.sum_equiv σ _ _ fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : Function.update (E ∘ σ) i (E (σ i)).tail = Function.update E (σ i) (E (σ i)).tail ∘ σ`. Use function extensionality and compare the values at `j`. Simplify using `[Function.update_apply]`. Simplify using `only [Function.comp_apply, hu, ih]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem T_comp {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : ι ≃ ι) (L : List α) (E : ι → List α) : T L (E ∘ σ) = T L E := by
   induction L generalizing E with
@@ -52,17 +52,17 @@ theorem T_comp {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : ι ≃ ι) (L : 
     simp only [Function.comp_apply, hu, ih]
 
 /- English proof (translation)
-Proceed by induction on `L generalizing E with`. Consider the case `nil`. Rewrite using `[T_nil, T_nil]`. Establish `hiff : (∀ i, E i = []) ↔ ∀ i : Fin h, E i.castSucc = []`. Prove the components needed by the constructor for the conclusion.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H i`. Conclude with `H _`. Introduce `H i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact hE`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast j => exact H j`. Distinguish the cases in `H : ∀ i : Fin h, E i.castSucc = []`. Rewrite using `[if_pos (hiff.2 H), if_pos H]`. Rewrite using `[if_neg (fun h' => H (hiff.1 h')), if_neg H]`. Consider the case `cons a L ih`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T_cons, T_cons, Fin.sum_univ_castSucc]`. Establish `hlast : (if (E (Fin.last h)).head? = some a then T L (Function.update E (Fin.last h) (E (Fin.last h)).tail) else 0) = 0`. Simplify using `[hE]`. Rewrite using `[hlast, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : Fin.castSucc i ≠ Fin.last h` using `(Fin.castSucc_lt_last i).ne`. Establish `hE' : Function.update E i.castSucc (E i.castSucc).tail (Fin.last h) = []`. Rewrite using `[Function.update_of_ne (Ne.symm hne)]`. Conclude with `hE`. Rewrite using `[ih _ hE']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hf : (fun j : Fin h => Function.update E i.castSucc (E i.castSucc).tail j.castSucc) = Function.update (fun j : Fin h => E j.castSucc) i (E i.castSucc).tail`. Use function extensionality and compare the values at `j`. Simplify using `[Function.update_apply, Fin.castSucc_inj]`. Rewrite using `[hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_last {h : ℕ} (L : List α) (E : Fin (h + 1) → List α) (hE : E (Fin.last h) = []) :
     T L E = T L fun i : Fin h => E i.castSucc := by
@@ -99,11 +99,11 @@ theorem T_last {h : ℕ} (L : List α) (E : Fin (h + 1) → List α) (hE : E (Fi
     rw [hf]
 
 /- English proof (translation)
-Proceed by induction on `B generalizing E with`. Consider the case `nil => simp`. Consider the case `cons b B ih`. Establish `H' : ∀ i, i ≠ g → ∀ a ∈ B, ((Function.update E g (E g).tail) i).head? ≠ some a`. Introduce `i hi a ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne hi]`. Conclude with `H i hi a (by simp [ha])`. Rewrite using `[List.cons_append, T_cons, Finset.sum_eq_single g (fun i _ hi => by rw [if_neg (H i hi b (by simp))]) (fun hg => absurd (Finset.mem_univ g) hg), ih _ H', Function.update_self, Function.update_idem]`. Break down `hEg : E g with _ | ⟨x, xs⟩` into its components or cases. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = b`. Substitute `hx` using the available equality. Apply the tactic sequence `by_cases hB : B <+: xs <;> simp [hB]`. Establish `hx' : b ≠ x` using `Ne.symm hx`. Simplify using `[hx, hx']`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_block {ι : Type*} [Fintype ι] [DecidableEq ι] (R B : List α) (E : ι → List α) (g : ι)
     (H : ∀ i, i ≠ g → ∀ a ∈ B, (E i).head? ≠ some a) :
@@ -127,7 +127,7 @@ theorem T_block {ι : Type*} [Fintype ι] [DecidableEq ι] (R B : List α) (E : 
         simp [hx, hx']
 
 /- English proof (translation)
-Rewrite using `[List.finRange_succ_last, List.filter_append, List.map_append, List.filter_map, List.map_map]`. Distinguish the cases in `hc : c (Fin.last n) = i`. Simplify using `[hc, Function.comp_def]`. Simplify using `[hc, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sub_last {ι : Type*} [DecidableEq ι] {n : ℕ} (w : Fin (n + 1) → α) (c : Fin (n + 1) → ι) (i : ι) :
     ((List.finRange (n + 1)).filter (fun p => c p = i)).map w =
@@ -139,15 +139,15 @@ theorem sub_last {ι : Type*} [DecidableEq ι] {n : ℕ} (w : Fin (n + 1) → α
   · simp [hc, Function.comp_def]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hj` using `h j`. Rewrite `hj` using `[if_pos rfl]`. Use `⟨by rw [← hj, List.head?_cons], fun i => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hij : i = j`. Rewrite using `[hij, Function.update_self, ← hj, List.tail_cons]`. Establish `hi` using `h i`. Rewrite `hi` using `[if_neg (Ne.symm hij)]`. Rewrite using `[Function.update_of_ne hij, hi]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hh, hR⟩ i`. Distinguish the cases in `hij : j = i`. Rewrite using `[if_pos hij, hR i, ← hij, Function.update_self]`. Consider the cases of `hE : E j with`. Consider the case `nil`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite `hh` using `[hE]`. Conclude with `absurd hh (by simp)`. Consider the case `cons x t`. Rewrite `hh` using `[hE]`. Simplify using `only [List.head?_cons, Option.some.injEq] at hh`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, List.tail_cons]`. Rewrite using `[if_neg hij, hR i, Function.update_of_ne (Ne.symm hij)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_iff {ι : Type*} [DecidableEq ι] (R E : ι → List α) (j : ι) (a : α) :
     (∀ i, (if j = i then a :: R i else R i) = E i) ↔
@@ -176,19 +176,19 @@ theorem step_iff {ι : Type*} [DecidableEq ι] (R E : ι → List α) (j : ι) (
     · rw [if_neg hij, hR i, Function.update_of_ne (Ne.symm hij)]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing E with`. Consider the case `zero`. Rewrite using `[Finset.card_filter, Fintype.sum_unique, List.ofFn_zero, List.reverse_nil, T_nil]`. Simplify using `only [List.finRange_zero, List.filter_nil, List.map_nil, List.reverse_nil]`. Distinguish the cases in `hE : ∀ i, E i = []`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hE, if_pos (fun i => (hE i).symm)]`. Rewrite using `[if_neg hE, if_neg (fun h' => hE fun i => (h' i).symm)]`. Consider the case `succ n ih`. Establish `hw : (List.ofFn w).reverse = w (Fin.last n) :: (List.ofFn fun i : Fin n => w i.castSucc).reverse`. Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.reverse_append, List.reverse_singleton, List.singleton_append]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, T_cons, Finset.card_filter]`. Set `e : ι × (Fin n → ι) ≃ (Fin (n + 1) → ι)` to `{ toFun := fun q => Fin.snoc (α := fun _ => ι) q.2 q.1 invFun := fun c => (c (Fin.last n), Fin.init c) left_inv := fun q => by simp [Fin.init_snoc, Fin.snoc_last] right_inv := fun c => by simp [Fin.snoc_init_self] }`. Rewrite using `[← e.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `key : ∀ c' : Fin n → ι, (∀ j, (((List.finRange (n + 1)).filter (fun p => e (i, c') p = j)).map w).reverse = E j) ↔ ((E i).head? = some (w (Fin.last n)) ∧ ∀ j, (((List.finRange n).filter (fun p => c' p = j)).map (fun p => w p.castSucc)).reverse = Function.update E i (E i).tail j)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `c'`. Use `Iff.trans ?_ (step_iff (fun j => (((List.finRange n).filter (fun p => c' p = j)).map (fun p => w p.castSucc)).reverse) E i (w (Fin.last n)))` and prove the remaining obligations. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[sub_last w (e (i, c')) j]`. Simplify using `only [e, Equiv.coe_fn_mk, Fin.snoc_castSucc, Fin.snoc_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Rewrite using `[← ih (fun p => w p.castSucc) (Function.update E i (E i).tail), Finset.card_filter]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hh : (E i).head? = some (w (Fin.last n))`. Rewrite using `[if_pos hh]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : ∀ j, (((List.finRange n).filter (fun p => c' p = j)).map (fun p => w p.castSucc)).reverse = Function.update E i (E i).tail j`. Rewrite using `[if_pos ((key c').2 ⟨hh, hQ⟩), if_pos hQ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' => hQ ((key c').1 h').2), if_neg hQ]`. Rewrite using `[if_neg hh]`. Use `Finset.sum_eq_zero fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (fun h' => hh ((key c').1 h').1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_filter_reverse_map_eq_shuffle_count {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ} (w : Fin n → α) (E : ι → List α) :
     (Finset.univ.filter fun c : Fin n → ι =>
@@ -240,9 +240,9 @@ theorem card_filter_reverse_map_eq_shuffle_count {ι : Type*} [Fintype ι] [Deci
       rw [if_neg (fun h' => hh ((key c').1 h').1)]
 
 /- English proof (translation)
-Establish `hc` using `card_filter_reverse_map_eq_shuffle_count W.get (fun i => (D i).reverse)`. Rewrite `hc` using `[List.ofFn_get]`. Use `delta shuffleCount Zc.Cos.sub`. Rewrite using `[← hc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, List.reverse_inj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shuffleCount_eq_T_reverse {h : ℕ} (W : List α) (D : Fin h → List α) :
     shuffleCount W D = T W.reverse fun i => (D i).reverse := by
@@ -257,11 +257,11 @@ theorem shuffleCount_eq_T_reverse {h : ℕ} (W : List α) (D : Fin h → List α
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `key : ∀ (m : ℕ) (f : Fin m → IrrGL k), 0 < m → (∀ a : Fin m, f a = Δ.first.nu ((a : ℕ) : ℂ)) → ∃ B : List (IrrGL k), List.ofFn f = Δ.first :: B ∧ B.length + 1 = m ∧ ∀ a ∈ B, ∃ n : ℕ, 0 < n ∧ a = Δ.first.nu (n : ℂ)`. Introduce `m f hm hf`. Consider the cases of `m with`. Consider the case `zero => exact absurd hm (lt_irrefl 0)`. Consider the case `succ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `⟨List.ofFn fun i : Fin m => f i.succ, ?_, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[List.ofFn_succ, hf 0]`. Simplify using the standard rewrite rules. Introduce `a ha`. Rewrite `ha` using `[List.mem_ofFn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, rfl⟩` from `ha`. Conclude with `⟨(i.succ : ℕ), by simp, hf i.succ⟩`. Conclude with `key Δ.len Δ.term Δ.len_pos (fun a => rfl)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ofFn_term_cons (Δ : Segment k) : ∃ B : List (IrrGL k), List.ofFn Δ.term = Δ.first :: B ∧
     B.length + 1 = Δ.len ∧ ∀ a ∈ B, ∃ n : ℕ, 0 < n ∧ a = Δ.first.nu (n : ℂ) := by
@@ -282,27 +282,25 @@ theorem ofFn_term_cons (Δ : Segment k) : ∃ B : List (IrrGL k), List.ofFn Δ.t
   exact key Δ.len Δ.term Δ.len_pos (fun a => rfl)
 
 /- English proof (translation)
-Take `⟨hc1, -⟩` from `hc`. Take `⟨B', hB', hlen', hmem'⟩` from `ofFn_term_cons (Γ (Fin.last h))`. Establish `hlt : ∀ i, i ≠ Fin.last h → i < Fin.last h` using `fun i hi => lt_of_le_of_ne (Fin.le_last i) hi`. Establish `hempty : ∀ g, Γ g = Γ (Fin.last h) → T R (Function.update (fun i => List.ofFn (Γ i).term) g []) = T R (fun i : Fin h => List.ofFn (Γ i.castSucc).term)`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEg : List.ofFn (Γ g).term = List.ofFn (Γ (Fin.last h)).term` using `by rw [hg]`. Establish `h1 : Function.update (fun i => List.ofFn (Γ i).term) g [] ∘ Equiv.swap g (Fin.last h) = Function.update (fun i => List.ofFn (Γ i).term) (Fin.last h) []`. Use function extensionality and compare the values at `j`. Rewrite using `[Function.comp_apply]`. Distinguish the cases in `hjl : j = Fin.last h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hjl, Equiv.swap_apply_right, Function.update_self, Function.update_self]`. Distinguish the cases in `hjg : j = g`. Rewrite `hjl`, the goal using `[hjg]`. Rewrite using `[Equiv.swap_apply_left, Function.update_of_ne (Ne.symm hjl), Function.update_of_ne hjl]`. Conclude with `hEg.symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne hjg hjl, Function.update_of_ne hjg, Function.update_of_ne hjl]`. Rewrite using `[← T_comp (Equiv.swap g (Fin.last h)) R, h1, T_last R _ (by simp)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.update_of_ne (Fin.castSucc_lt_last i).ne]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB', List.cons_append, T_cons, Finset.card_eq_sum_ones, Finset.sum_mul, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨Bi, hBi, hleni, -⟩` from `ofFn_term_cons (Γ i)`. Rewrite using `[hBi, List.head?_cons, List.tail_cons, one_mul]`. Distinguish the cases in `hf : (Γ i).first = (Γ (Fin.last h)).first`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by rw [hf])]`. Establish `H : ∀ j, j ≠ i → ∀ a ∈ B', ((Function.update (fun i => List.ofFn (Γ i).term) i Bi) j).head? ≠ some a`. Introduce `j hj a ha heq`. Rewrite `heq` using `[Function.update_of_ne hj]`. Take `⟨Bj, hBj, -, -⟩` from `ofFn_term_cons (Γ j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hBj, List.head?_cons, Option.some.injEq] at heq`. Take `⟨n, hn, rfl⟩` from `hmem' a ha`. Distinguish the cases in `hjl : j = Fin.last h`. Establish `hil : i ≠ Fin.last h` using `fun e => hj (hjl.trans e.symm)`. Rewrite `heq` using `[hjl]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc1 i (Fin.last h) (hlt i hil)).1 ⟨n, hn, hf.trans heq⟩`. Conclude with `(hc1 j (Fin.last h) (hlt j hjl)).1 ⟨n, hn, heq⟩`. Rewrite using `[T_block R B' _ i H, Function.update_self, Function.update_idem]`. Distinguish the cases in `hΓ : Γ i = Γ (Fin.last h)`. Establish `hBB : Bi = B'`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hBi` using `[hΓ]`. Conclude with `(List.cons.inj (hBi.symm.trans hB')).2`. Rewrite using `[hBB, if_pos (show B' <+: B' from ⟨[], List.append_nil B'⟩), if_pos hΓ, List.drop_length]`. Conclude with `hempty i hΓ`. Rewrite using `[if_neg hΓ, if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hp`. Establish `hle` using `hp.length_le`. Establish `hil : i ≠ Fin.last h` using `fun e => hΓ (by rw [e])`. Establish `hle2` using `(hc1 i (Fin.last h) (hlt i hil)).2 hf`. Apply `hΓ` to reduce the goal to its premises.
-
-Conclude with `Segment.ext_first hf (by omega)`. Rewrite using `[if_neg (fun e => hf (Option.some.inj e)), if_neg (fun e => hf (by rw [e]))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_step {h : ℕ} (Γ : Fin (h + 1) → Segment k) (hc : IsCanon Γ) (R : List (IrrGL k)) :
     T (List.ofFn (Γ (Fin.last h)).term ++ R) (fun i => List.ofFn (Γ i).term) =
@@ -365,7 +363,7 @@ theorem T_step {h : ℕ} (Γ : Fin (h + 1) → Segment k) (hc : IsCanon Γ) (R :
   · rw [if_neg (fun e => hf (Option.some.inj e)), if_neg (fun e => hf (by rw [e]))]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hc`. Conclude with `⟨fun i j hij => h1 _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij), fun i j l hij hjl => h2 _ _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij) (Fin.castSucc_lt_castSucc_iff.mpr hjl)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem canon_castSucc {h : ℕ} {Γ : Fin (h + 1) → Segment k} (hc : IsCanon Γ) :
     IsCanon fun i : Fin h => Γ i.castSucc := by
@@ -374,17 +372,17 @@ theorem canon_castSucc {h : ℕ} {Γ : Fin (h + 1) → Segment k} (hc : IsCanon 
     fun i j l hij hjl => h2 _ _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij) (Fin.castSucc_lt_castSucc_iff.mpr hjl)⟩
 
 /- English proof (translation)
-Establish `hd : ∀ Δ : Segment k, (decWord Δ).reverse = List.ofFn Δ.term` using `fun Δ => List.reverse_reverse (List.ofFn Δ.term)`. Proceed by induction on `h with`. Consider the case `zero => simp [T_nil]`. Consider the case `succ h ih`. Establish `hw : (List.ofFn fun i => decWord (Γ i)).flatten.reverse = List.ofFn (Γ (Fin.last h)).term ++ (List.ofFn fun i : Fin h => decWord (Γ i.castSucc)).flatten.reverse`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [List.ofFn_succ', List.concat_eq_append, List.flatten_append, List.reverse_append, List.flatten_cons, List.flatten_nil, List.append_nil, hd]`. Rewrite using `[hw, T_step Γ hc, ih (fun i => Γ i.castSucc) (canon_castSucc hc), Fin.prod_univ_castSucc, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Finset.card_bij (fun a _ => a.castSucc) ?_ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Conclude with `⟨Fin.castSucc_le_castSucc_iff.mpr ha.1, ha.2⟩`. Introduce `a _ b _ hab`. Conclude with `Fin.castSucc_injective _ hab`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hbl : b ≠ Fin.last h`. Introduce `e`. Rewrite `hb` using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd hb.1 (not_le.mpr (Fin.castSucc_lt_last i))`. Use `⟨b.castPred hbl, ?_, Fin.castSucc_castPred b hbl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[← Fin.castSucc_le_castSucc_iff, Fin.castSucc_castPred]`. Conclude with `hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `j`. Simplify using `[Fin.le_last]`.
+A detailed English derivation is pending.
 -/
 theorem T_canon {h : ℕ} (Γ : Fin h → Segment k) (hc : IsCanon Γ) :
     T (List.ofFn fun i => decWord (Γ i)).flatten.reverse (fun i => List.ofFn (Γ i).term) =
@@ -422,9 +420,7 @@ theorem T_canon {h : ℕ} (Γ : Fin h → Segment k) (hc : IsCanon Γ) :
       simp [Fin.le_last]
 
 /- English proof (translation)
-Rewrite using `[shuffleCount_eq_T_reverse]`. Establish `hD : (fun i => (decWord (Γ i)).reverse) = fun i => List.ofFn (Γ i).term`. Use function extensionality and compare the values at `i`. Conclude with `List.reverse_reverse (List.ofFn (Γ i).term)`. Rewrite using `[hD]`.
-
-Conclude with `T_canon Γ hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shuffleCount_canon {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {h : ℕ} (Γ : Fin h → Segment k) (hc : IsCanon Γ) :

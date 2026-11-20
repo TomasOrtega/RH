@@ -10,7 +10,7 @@ end UpperTheory.V.Sd
 
 open UpperTheory.V UpperTheory.V.Sd in
 /- English proof (citation)
-Apply `UpperTheory.Reformulated.B.Gr32.holLin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FIntegralCasts%2FCapelliIdentities%2FPrincipalCongruenceAntitone.lean&line=64#L64)
 -/

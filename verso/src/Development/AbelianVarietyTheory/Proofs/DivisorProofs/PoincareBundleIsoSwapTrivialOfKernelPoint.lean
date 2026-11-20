@@ -9,13 +9,13 @@ open GlobalTheory.AbLaw GlobalTheory.CechPic
 namespace GlobalTheory.AbDual
 
 /- English proof (translation)
-Introduce `k _ A B _ _ P₀ hD P hP hsym l hl`. Establish `hP₀` using `hD.isLB`. Establish `e₁ : cls P hP = evc hP (snd A A) (fst A A)` using `(CechPic.cls_eq_iff hP (pull_isLB hP _)).2 hsym`. Establish `e₂ : cls P hP = evc hP₀ (fst A A) (snd A A ≫ l)` using `(CechPic.cls_eq_iff hP (pull_isLB hP₀ _)).2 hl`. Establish `key : ∀ (Y : Over (Sp k)) (a b : Y ⟶ A), evc hP a b = evc hP₀ b (a ≫ l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y a b`. Establish `h1 : evc hP a b = CechPic.pull (lift a b).left (evc hP (snd A A) (fst A A))`. Rewrite using `[← e₁]`. Both sides reduce to the same expression. Rewrite using `[h1, pull_evc, lift_snd, lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `CechPic.pull (lift b a).left (cls P hP) = _`. Rewrite using `[e₂, pull_evc, lift_fst, lift_snd_assoc]`. Use `⟨?_, fun T x hx => ?_⟩` and prove the remaining obligations. Use `(CechPic.cls_eq_iff (pull_isLB hP _) (pull_isLB (pull_isLB hP₀ _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hP, cls_ev (pull_isLB hP₀ _), evc_swap hP₀, key, Category.comp_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Triv _`. Rewrite using `[triv_ev_iff hP, key, Category.assoc, hx, MonObj.comp_one]`. Conclude with `evc_one_right hP₀ hD.zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_swap_and_triv_of_ker : ∀ (k : Type) [Field k] (A B : Over (Sp k)) [GrpObj A] [GrpObj B] (P₀ : LB (A ⊗ B).left), GlobalTheory.AbDual.IsDual A B P₀ → ∀ (P : LB (A ⊗ A).left), P.IsLB → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → ∀ (l : A ⟶ B), LBIso P (GlobalTheory.AbDual.ev P₀ (fst A A) (snd A A ≫ l)) → LBIso (GlobalTheory.AbDual.ev P (fst A A) (snd A A ≫ 𝟙 A)) (GlobalTheory.AbDual.ev (GlobalTheory.AbDual.swap P₀) (fst A A ≫ l) (snd A A)) ∧ ∀ (T : Over (Sp k)) (x : T ⟶ A), x ≫ l = 1 → ∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen := by
   intro k _ A B _ _ P₀ hD P hP hsym l hl

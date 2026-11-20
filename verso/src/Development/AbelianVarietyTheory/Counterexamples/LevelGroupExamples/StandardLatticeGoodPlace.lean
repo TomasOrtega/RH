@@ -13,26 +13,24 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.I
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Simplify using `[stdLat, Submodule.mem_pi, Submodule.mem_one, RingHom.mem_range]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_std {n : ℕ} (v : Fin n → E) :
     v ∈ stdLat E n ↔ ∀ j, v j ∈ (algebraMap (𝓞 E) E).range := by
   simp [stdLat, Submodule.mem_pi, Submodule.mem_one, RingHom.mem_range]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro ⟨y, rfl⟩; exact RingOfIntegers.isIntegral_coe y, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem algebraMap_range_mem_iff_isIntegral (x : E) : x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x :=
   ⟨by rintro ⟨y, rfl⟩; exact RingOfIntegers.isIntegral_coe y, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `v`. Use `show v ∈ stdLat E n ↔ ∀ w ∈ stdLat E n, _`. Simplify using `only [mem_std]`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ (hw j)` and prove the remaining obligations. Conclude with `(algebraMap_range_mem_iff_isIntegral _).2 (((algebraMap_range_mem_iff_isIntegral _).1 (hv j)).map ((IsCMField.complexConj E).toRingEquiv : E →+* E).toIntAlgHom)`. Introduce `h j`. Establish `hs : ∀ i, (Pi.single j (1 : E) : Fin n → E) i ∈ (algebraMap (𝓞 E) E).range`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [Subring.one_mem _, Subring.zero_mem _]`. Establish `h1` using `h (Pi.single j 1) hs`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at h1`.
-
-Establish `h2` using `((algebraMap_range_mem_iff_isIntegral _).1 h1).map ((IsCMField.complexConj E).toRingEquiv : E →+* E).toIntAlgHom`. Conclude with `(algebraMap_range_mem_iff_isIntegral _).2 (by simpa using h2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unimod_std (H : Host E) (n : ℕ) : GenLat.Unimod (⟨stdLat E n⟩ : GenLat E n) := by
   intro v
@@ -57,7 +55,7 @@ theorem unimod_std (H : Host E) (n : ℕ) : GenLat.Unimod (⟨stdLat E n⟩ : Ge
     exact (algebraMap_range_mem_iff_isIntegral _).2 (by simpa using h2)
 
 /- English proof (translation)
-Conclude with `⟨1, Nat.coprime_one_left _, Submodule.smul_le_right, Submodule.smul_le_right⟩`.
+Supply the required witnesses or components.
 -/
 theorem trivAt_std (n k : ℕ) : GenLat.TrivAt (⟨stdLat E n⟩ : GenLat E n) k := by
   exact ⟨1, Nat.coprime_one_left _, Submodule.smul_le_right, Submodule.smul_le_right⟩

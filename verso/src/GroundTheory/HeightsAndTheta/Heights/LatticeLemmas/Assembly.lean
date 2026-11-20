@@ -29,66 +29,66 @@ universe u v w
 namespace LatticeLemmas
 
 /- English proof (translation)
-The claim follows from `BaseChange.proof`.
+A detailed English derivation is pending.
 -/
 theorem BaseChange.full : BaseChange.Statement := BaseChange.proof
 
 /- English proof (translation)
-The claim follows from `Sublattice.proof`.
+A detailed English derivation is pending.
 -/
 theorem Sublattice.full : Sublattice.Statement := Sublattice.proof
 
 /- English proof (translation)
-The claim follows from `LatticeOfLocalisations.proof`.
+A detailed English derivation is pending.
 -/
 theorem LatticeOfLocalisations.full : LatticeOfLocalisations.Statement :=
   LatticeOfLocalisations.proof
 
 /- English proof (translation)
-The claim follows from `LocalChange.proof Sublattice.full h`.
+A detailed English derivation is pending.
 -/
 theorem LocalChange.full_of_localIndex (h : LocalIndex.Statement.{u, v}) :
     LocalChange.Statement.{u, v} :=
   LocalChange.proof Sublattice.full h
 
 /- English proof (translation)
-The claim follows from `NormComparison.proof`.
+A detailed English derivation is pending.
 -/
 theorem NormComparison.full : NormComparison.Statement := NormComparison.proof
 
 /- English proof (translation)
-The claim follows from `DiagonalChange.proof`.
+A detailed English derivation is pending.
 -/
 theorem DiagonalChange.full : DiagonalChange.Statement := DiagonalChange.proof
 
 /- English proof (translation)
-The claim follows from `ExactSequence.proof`.
+A detailed English derivation is pending.
 -/
 theorem ExactSequence.full : ExactSequence.Statement := ExactSequence.proof
 
 /- English proof (translation)
-The claim follows from `ChainSum.proof ExactSequence.full`.
+A detailed English derivation is pending.
 -/
 theorem ChainSum.full : ChainSum.Statement.{u, v} := ChainSum.proof ExactSequence.full
 
 /- English proof (translation)
-The claim follows from `Hadamard.proof Sublattice.full`.
+A detailed English derivation is pending.
 -/
 theorem Hadamard.full : Hadamard.Statement.{u, v, w} := Hadamard.proof Sublattice.full
 
 /- English proof (translation)
-The claim follows from `HadamardQuotient.proof Hadamard.full`.
+A detailed English derivation is pending.
 -/
 theorem HadamardQuotient.full : HadamardQuotient.Statement.{u, v, w} :=
   HadamardQuotient.proof Hadamard.full
 
 /- English proof (translation)
-The claim follows from `HadamardMean.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem HadamardMean.full : HadamardMean.Statement.{u, v, w} := HadamardMean.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `HadamardMeanQuotient.proof HadamardMean.full`.
+A detailed English derivation is pending.
 -/
 theorem HadamardMeanQuotient.full : HadamardMeanQuotient.Statement.{u, v, w} :=
   HadamardMeanQuotient.proof HadamardMean.full
@@ -96,55 +96,55 @@ theorem HadamardMeanQuotient.full : HadamardMeanQuotient.Statement.{u, v, w} :=
 end LatticeLemmas
 
 /- English proof (translation)
-The claim follows from `GaussNormBasic.proof`.
+A detailed English derivation is pending.
 -/
 theorem GaussNormBasic.full : GaussNormBasic.Statement := GaussNormBasic.proof
 
 /- English proof (translation)
-The claim follows from `SchwartzZippelPerVariable.proof`.
+A detailed English derivation is pending.
 -/
 theorem SchwartzZippelPerVariable.full : SchwartzZippelPerVariable.Statement :=
   SchwartzZippelPerVariable.proof
 
 /- English proof (translation)
-The claim follows from `RootsOfUnityValuation.proof`.
+A detailed English derivation is pending.
 -/
 theorem RootsOfUnityValuation.full : RootsOfUnityValuation.Statement :=
   RootsOfUnityValuation.proof
 
 /- English proof (translation)
-The claim follows from `HeightOfPoint.proof GaussNormBasic.full`.
+A detailed English derivation is pending.
 -/
 theorem HeightOfPoint.full : HeightOfPoint.Statement := HeightOfPoint.proof GaussNormBasic.full
 
 /- English proof (translation)
-The claim follows from `HeightOfCycle.proof HeightOfPoint.full h`.
+A detailed English derivation is pending.
 -/
 theorem HeightOfCycle.full_of_fibreMahlerForms (h : FibreMahlerForms.Statement) :
     HeightOfCycle.Statement :=
   HeightOfCycle.proof HeightOfPoint.full h
 
 /- English proof (translation)
-The claim follows from `SphereLawUnitary.proof`.
+A detailed English derivation is pending.
 -/
 theorem SphereLawUnitary.full : SphereLawUnitary.Statement := SphereLawUnitary.proof
 
 /- English proof (translation)
-The claim follows from `SpherePhase.proof hb SphereLawUnitary.full`.
+A detailed English derivation is pending.
 -/
 theorem SpherePhase.full_of_sphereLawBasic (hb : SphereLawBasic.Statement) :
     SpherePhase.Statement :=
   SpherePhase.proof hb SphereLawUnitary.full
 
 /- English proof (translation)
-The claim follows from `SphereProjectionLaw.proof hb SphereLawUnitary.full hc (SpherePhase.full_of_sphereLawBasic hb)`.
+A detailed English derivation is pending.
 -/
 theorem SphereProjectionLaw.full_of (hb : SphereLawBasic.Statement)
     (hc : SphereLawFirstCoord.Statement) : SphereProjectionLaw.Statement :=
   SphereProjectionLaw.proof hb SphereLawUnitary.full hc (SpherePhase.full_of_sphereLawBasic hb)
 
 /- English proof (translation)
-The claim follows from `PointwiseLelong.proof (SphereProjectionLaw.full_of hb hc)`.
+A detailed English derivation is pending.
 -/
 theorem PointwiseLelong.full_of (hb : SphereLawBasic.Statement)
     (hc : SphereLawFirstCoord.Statement) : PointwiseLelong.Statement :=

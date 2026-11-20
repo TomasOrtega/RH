@@ -14,17 +14,15 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Establish `hS` using `ma_hS P0 T s j w`. Establish `hAB : AB P0.k (P0.r - ↑j) ≤ A - 2 * (w.length : ℝ)`. Establish `h1` using `pd_thr_AB P0 j w.length A hA`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm5 : 5 + (2 * (P0.r - ↑j) + P0.k + 1) * w.length ≤ mm` using `pd_thr_mm P0 j w.length mm hmm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hN0 : (0 : ℝ) ≤ w.length` using `Nat.cast_nonneg _`. Establish `hin : ∀ {F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)}, InCC A mm F → InCC (A - 2 * (w.length : ℝ) + ((2 * w.length : ℕ) : ℝ)) (5 + (2 * (P0.r - ↑j) + P0.k + 1) * w.length) F` using `fun h => sq_inCC_mono (by push_cast; linarith) hm5 h`. Establish `hvec : ∀ v : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp), (∀ a, InCC A mm (v a)) → ∀ a, InCC (A - 2 * (w.length : ℝ)) 5 (D.actOp (D.RRlev T s j w) v a)`. Introduce `v hv a`. Rewrite using `[ma_actOp_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sq_inCC_sum Finset.univ (fun b => (D.RRlev T s j w a b) (v b)) (fun b _ => ma_inCC (hS a b) (hin (hv b)))`. Establish `hlow : ∀ {F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)}, InCC A mm F → InCC (A - 2 * (w.length : ℝ)) 5 F` using `fun h => sq_inCC_mono (by linarith) (by omega) h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) (x + c • x') a) (y a) = ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) x a) (y a) + c * ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) x' a) (y a)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hGV : ∀ g ∈ GV P0.k (P0.r - j), D.actOp (D.RRlev T s j w) (x + c • x') a g = (D.actOp (D.RRlev T s j w) x a + c • D.actOp (D.RRlev T s j w) x' a) g`. Introduce `g hg`. Use `show (∑ b, D.ap (D.RRlev T s j w a b) ((x + c • x') b)) g = (∑ b, D.ap (D.RRlev T s j w a b) (x b) + c • ∑ b, D.ap (D.RRlev T s j w a b) (x' b)) g`. Rewrite using `[Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Finset.sum_apply, Finset.sum_apply, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `(hS a b).2.1 _ _ (x b) (x' b) c (hin (hx b)) (hin (hx' b)) g hg`. Rewrite using `[sq_beta_congr (T.bs j) hGV]`. Conclude with `(GlobalTheory.BetaSum.beta_sesq hΞ (T.bs j) hAB (hvec x hx a) (hvec x' hx' a) (hlow (hy a)) c).1`. Use `show ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) y a) ((x + c • x') a) = ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) y a) (x a) + conj c * ∑ a, beta (T.bs j) (D.actOp (D.RRlev T s j w) y a) (x' a)`.
-
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.BetaSum.beta_sesq hΞ (T.bs j) hAB (hlow (hx a)) (hlow (hx' a)) (hvec y hy a) c).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formLev_sesquilinear (hΞ : B.XiExists) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
@@ -80,19 +78,17 @@ theorem formLev_sesquilinear (hΞ : B.XiExists) {Wp Wq : Type} [NormedAddCommGro
     exact (GlobalTheory.BetaSum.beta_sesq hΞ (T.bs j) hAB (hlow (hx a)) (hlow (hx' a)) (hvec y hy a) c).2
 
 /- English proof (translation)
-Establish `hR` using `ma_hS P0 T s j w`. Use `set A'' : ℝ := A - 1 - 2 * (w.length : ℝ) with hA''`. Establish `hop : ∀ a b, ∃ K : ℝ, 0 ≤ K ∧ ∀ (F : Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (c : ℝ), CCle (A'' + ((2 * w.length : ℕ) : ℝ)) (5 + (2 * (P0.r - j) + P0.k + 1) * w.length) F c → CCle A'' 5 (D.RRlev T s j w a b F) (K * c)` using `fun a b => (hR a b).1 A'' 5`. Use `choose K hK0 hK using hop`. Use `set KK : ℝ := ∑ a, ∑ b, K a b with hKK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKK0 : 0 ≤ KK` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => hK0 a b`. Establish `hKab : ∀ a, ∑ b, K a b ≤ KK` using `fun a => Finset.single_le_sum (f := fun a => ∑ b, K a b) (fun a _ => Finset.sum_nonneg fun b _ => hK0 a b) (Finset.mem_univ a)`. Establish `hAB : AB P0.k (P0.r - j) ≤ A''` using `pd_thr_AB P0 j w.length A hA`. Take `⟨_, _, _, hB1, _, _, _⟩` from `(BXiAsm.any_of hΞ) P0.k (P0.r - j) Wp Wq (T.bs j) A'' hAB`. Take `⟨Cβ, hCβ⟩` from `hB1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA2 : A'' + ((2 * w.length : ℕ) : ℝ) = A - 1` using `by rw [hA'']; push_cast; ring`. Use `set card : ℝ := (Fintype.card (Wd.Ix (Fin w.length)) : ℝ)`. Establish `hcard : 0 ≤ card` using `Nat.cast_nonneg _`. Use `⟨card * (|Cβ| * KK), mul_nonneg hcard (mul_nonneg (abs_nonneg _) hKK0), ?_⟩` and prove the remaining obligations. Introduce `u v cu cv hcu hcv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu0 : 0 ≤ cu` using `pd_ccle_nonneg (hcu (Classical.arbitrary _))`. Establish `hcv0 : 0 ≤ cv` using `pd_ccle_nonneg (hcv (Classical.arbitrary _))`. Establish `hu' : ∀ b, CCle (A'' + ((2 * w.length : ℕ) : ℝ)) (5 + (2 * (P0.r - j) + P0.k + 1) * w.length) (u b) cu` using `fun b => pd_ccle_mono (le_of_eq hA2) le_rfl (hcu b)`. Establish `hRu : ∀ a, CCle A'' 5 (D.actOp (D.RRlev T s j w) u a) (KK * cu)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ma_actOp_eq]`. Use `pd_ccle_mono_c (pd_ccle_sum Finset.univ (fun b => D.RRlev T s j w a b (u b)) (fun b => K a b * cu) fun b _ => hK a b (u b) cu (hu' b)) ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hKab a) hcu0`. Unfold `D.formLev`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hterm : ∀ a, ‖B.beta (T.bs j) (D.actOp (D.RRlev T s j w) u a) (v a)‖ ≤ |Cβ| * (KK * cu) * cv`. Introduce `a`. Establish `h` using `(hCβ _ _ _ _ ⟨_, hRu a⟩ ⟨_, hcv a⟩ (pd_ccle_mono le_rfl (by norm_num) (hRu a)) (pd_ccle_mono le_rfl (by norm_num) (hcv a))).2.2`. Use `h.trans ?_` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) (mul_nonneg hKK0 hcu0)) hcv0`. Use `(Finset.sum_le_sum fun a _ => hterm a).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem formLev_norm_le (hΞ : B.XiExists) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
@@ -146,7 +142,7 @@ theorem formLev_norm_le (hΞ : B.XiExists) {Wp Wq : Type} [NormedAddCommGroup Wp
   ring
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P0 T s j w A mm ε _ hA hmm x x' y c hx hx' hy`. Conclude with `formLev_sesquilinear hΞ P0 T s j w A mm hA hmm x x' y c (fun a => (hx a).2.1) (fun a => (hx' a).2.1) (fun a => (hy a).2.1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem formLev_sesquilinear_finiteReg (hΞ : B.XiExists) : Formalism.FourierDecayAlt.JC.FormLevSesqMM := by
   intro Wp Wq _ _ _ _ _ _ P0 T s j w A mm ε _ hA hmm x x' y c hx hx' hy
@@ -162,21 +158,19 @@ open scoped ContDiff
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.PBE Formalism.FourierDecayAlt.P.JCTx6.Lev0
 
 /- English proof (translation)
-Establish `hAu : P5.Auser P0 w.length + 1 ≤ P5.Auser P0 N + 1` using `by linarith [auser_mono P0 hw]`. Establish `hmu : P5.mmUser P0 w.length ≤ P5.mmUser P0 N` using `mmUser_mono P0 hw`. Establish `hS` using `formLev_sesquilinear_finiteReg hΞ Wp Wq P0 T s j w (P5.Auser P0 N + 1) (P5.mmUser P0 N) ε₀ hε₀ hAu hmu`. Take `⟨Cf, hCf0, hCf⟩` from `formLev_norm_le hΞ P0 T s j w (P5.Auser P0 N + 1 + 1) (by linarith)`. Establish `hmm5 : 5 + (2 * (P0.r - (j : ℕ)) + P0.k + 1) * w.length ≤ P5.mmUser P0 N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Formalism.FourierDecayAlt.P.JCx2.pd_thr_mm P0 j N (P5.mmUser P0 N) le_rfl` as an intermediate fact. Establish `h2 : (2 * (P0.r - (j : ℕ)) + P0.k + 1) * w.length ≤ (2 * (P0.r - (j : ℕ)) + P0.k + 1) * N` using `Nat.mul_le_mul_left _ hw`. Use linear arithmetic over natural numbers and integers. Establish `h5 : 5 ≤ P5.mmUser P0 N` using `by unfold P5.mmUser; omega`. Establish `hu : ∀ (u : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (cu : ℝ), (∀ e, B.CCle (P5.Auser P0 N + 1) (P5.mmUser P0 N) (u e) cu) → ∀ e, B.CCle (P5.Auser P0 N + 1 + 1 - 1) (5 + (2 * (P0.r - (j : ℕ)) + P0.k + 1) * w.length) (u e) cu`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u cu h e`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by linarith) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m hmm5 (h e))`. Establish `hv : ∀ (u : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (cu : ℝ), (∀ e, B.CCle (P5.Auser P0 N + 1) (P5.mmUser P0 N) (u e) cu) → ∀ e, B.CCle (P5.Auser P0 N + 1 + 1 - 1 - 2 * (w.length : ℝ)) 5 (u e) cu`. Introduce `u cu h e`. Establish `hw0 : (0 : ℝ) ≤ w.length` using `Nat.cast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by linarith) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m h5 (h e))`. Establish `key : ∀ n, D.formLev T s j w (xn n) (yn n) - D.formLev T s j w x y = D.formLev T s j w (xn n - x) (yn n) + D.formLev T s j w x (yn n - y)`. Introduce `n`. Establish `e1 : xn n = x + (1 : ℂ) • (xn n - x)` using `by simp`. Establish `e2 : yn n = y + (1 : ℂ) • (yn n - y)` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `(hS x (xn n - x) (yn n) 1 (fun e => (hx e).1) (fun e => (hdx n e).1) (fun e => (hyn n e).1)).1`. Establish `s2` using `(hS y (yn n - y) x 1 (fun e => (hy e).1) (fun e => (hdy n e).1) (fun e => (hx e).1)).2`. Rewrite `s1` using `[← e1]`. Rewrite `s2` using `[← e2]`. Rewrite using `[s1, s2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : ∀ n, ‖D.formLev T s j w (xn n) (yn n) - D.formLev T s j w x y‖ ≤ 2 * Cf * Bd * dn n`. Introduce `n`. Rewrite using `[key n]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `hCf (xn n - x) (yn n) (dn n) Bd (hu _ _ fun e => (hdx n e).2) (hv _ _ fun e => (hyn n e).2)`. Establish `b2` using `hCf x (yn n - y) Bd (dn n) (hu _ _ fun e => (hx e).2) (hv _ _ fun e => (hdy n e).2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hlim : Tendsto (fun n => 2 * Cf * Bd * dn n) atTop (𝓝 0)`.
-
-Simplify using `using hdn.const_mul (2 * Cf * Bd)`. Conclude with `squeeze_zero (fun n => norm_nonneg _) hbd hlim`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem formLev_tendsto (hΞ : B.XiExists) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
@@ -245,57 +239,53 @@ theorem formLev_tendsto (hΞ : B.XiExists) {Wp Wq : Type} [NormedAddCommGroup Wp
   exact squeeze_zero (fun n => norm_nonneg _) hbd hlim
 
 /- English proof (translation)
-Take `⟨Cs, hCs0, hSQ⟩` from `sliceQ`. Use `⟨Cs + 1, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc Wp Wq _ _ _ _ _ _ P p f χ ε A N cut hχ hε hf hfA hA hcut i hi w hw a b`. Establish `hk2 : 2 ≤ P.k` using `p.hl.2.2`. Use `set X : ℝ := (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3 with hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX1 : 1 ≤ X`. Establish `h1 : (1 : ℝ) ≤ 2 * (P.r : ℝ) + P.k + 1`. Establish `: (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 1 ≤ (2 * (P.r : ℝ) + P.k + 1) ^ 3` using `one_le_pow₀ h1`. Establish `: 0 ≤ (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR4 : 1 ≤ ((P.r : ℝ) + 1) ^ 4` using `one_le_pow₀ (by have : (0 : ℝ) ≤ P.r := Nat.cast_nonneg _; linarith)`. Establish `hA' : Cs * ((P.r : ℝ) + 1) ^ 4 * X ≤ A - 1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Cs + 1) * ((P.r : ℝ) + 1) ^ 4 * X ≤ A` using `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCc (by positivity)) (by positivity)) hA`. Establish `h2 : 1 ≤ ((P.r : ℝ) + 1) ^ 4 * X` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use `set M := 3 * (11 * (N * (2 * P.r + P.k + 1) ^ 2 + (2 * P.r + P.k + 1) ^ 3) + 5) with hM`. Take `⟨bf, hbf⟩` from `hfA M`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbf0 : 0 ≤ bf` using `JCx2.pd_ccle_nonneg hbf`. Establish `hbf' : B.CCle (A - 1) M f bf` using `BetaSesquilinearity.CCle_mono_A (by linarith) hbf`. Take `⟨Kp, hKp0, hKp⟩` from `JCx2.pd_cut_ccle (k := P.k) (r := P.r) (E := Wq →L[ℂ] Wp) M`. Establish `hψ : ∀ n : ℕ, B.CCle (A - 1) M (fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g) (Kp * bf / ((n : ℝ) + 1))` using `fun n => hKp _ (by positivity) A f bf hbf`. Establish `hψs : ∀ n : ℕ, B.CkOn ⊤ (B.GV P.k P.r) (fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g)` using `fun n => JCx2.pd_smooth_smul (JCx2.pd_psi_cd _) hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set hn : ℕ → B.Mat P.k P.r → (Wq →L[ℂ] Wp) := fun n g => cut n g • f g with hhn`. Establish `hneq : ∀ n, hn n = fun g => f g + (-1 : ℂ) • (JCx2.pdPsi ((n : ℝ) + 1) g • f g)`. Introduce `n`. Use function extensionality and compare the values at `g`. Simplify using `only [hhn, cut_eq cut hcut n g, sub_smul, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[sub_eq_add_neg]`. Establish `hnC : ∀ n, B.CCle (A - 1) M (hn n) (bf + Kp * bf)`. Introduce `n`. Rewrite using `[hneq n]`. Use `JCx2.pd_ccle_mono_c (BetaSesquilinearity.CCle_add hbf' (BetaSesquilinearity.CCle_smul (-1) (hψ n))) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : Kp * bf / ((n : ℝ) + 1) ≤ Kp * bf` using `div_le_self (by positivity) (by`. Establish `: (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use the proof step `linarith)`. Simplify using `only [norm_neg, norm_one, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hns : ∀ n, B.CkOn ⊤ (B.GV P.k P.r) (hn n)`. Introduce `n`. Rewrite using `[hneq n]`. Conclude with `BetaSesquilinearity.CkOn_add hf (BetaSesquilinearity.CkOn_smul (-1) (hψs n))`. Establish `hsub : ∀ n, (fun g => f g - hn n g) = fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n`. Use function extensionality and compare the values at `g`. Rewrite using `[hneq n]`. Simplify using the standard rewrite rules. Establish `hFn : ∀ n, (fun g => cut n g • D.cutF p.T.base χ f ε g) = D.cutF p.T.base χ (hn n) ε`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `n`. Use function extensionality and compare the values at `g`. Simplify using `only [D.cutF, hhn]`. Rewrite using `[smul_comm]`. Simplify using `only [KB.Pl.RR, hFn]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `D.RRplace`. Distinguish the cases in `hab : D.IsLocPt a i ∧ D.IsLocPt b i`. Use `swap`. Simplify using `only [dif_neg hab]`. Conclude with `tendsto_const_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [dif_pos hab, dif_pos hi]`. Establish `hca : P.r - i = P.r - D.ptSize a` using `by simp [hab.1.2]`. Establish `hcb : P.r - i = P.r - D.ptSize b` using `by simp [hab.2.2]`. Establish `hQa` using `fun e => hSQ Cs le_rfl P.k P.r Wp Wq p.T χ (A - 1) N P rfl rfl hk2 hχ hA' ε hε i hi w hw a hca hab.1 e`. Establish `hQb` using `fun e => hSQ Cs le_rfl P.k P.r Wp Wq p.T χ (A - 1) N P rfl rfl hk2 hχ hA' ε hε i hi w hw b hcb hab.2 e`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose εa Ka hεa hKa hQ1a hQ2a using hQa`. Use `choose εb Kb hεb hKb hQ1b hQ2b using hQb`. Use `set S : ℝ := ∑ e, (εa e)⁻¹ + ∑ e, (εb e)⁻¹ with hS`. Establish `hSa : ∀ e, (εa e)⁻¹ ≤ S`. Introduce `e`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (εa e)⁻¹ ≤ ∑ e, (εa e)⁻¹` using `Finset.single_le_sum (f := fun e => (εa e)⁻¹) (fun e _ => (inv_pos.2 (hεa e)).le) (Finset.mem_univ e)`. Establish `h2 : 0 ≤ ∑ e, (εb e)⁻¹` using `Finset.sum_nonneg fun e _ => (inv_pos.2 (hεb e)).le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSb : ∀ e, (εb e)⁻¹ ≤ S`. Introduce `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : (εb e)⁻¹ ≤ ∑ e, (εb e)⁻¹` using `Finset.single_le_sum (f := fun e => (εb e)⁻¹) (fun e _ => (inv_pos.2 (hεb e)).le) (Finset.mem_univ e)`. Establish `h2 : 0 ≤ ∑ e, (εa e)⁻¹` using `Finset.sum_nonneg fun e _ => (inv_pos.2 (hεa e)).le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS0 : 0 < S` using `lt_of_lt_of_le (inv_pos.2 (hεa Wd.e1)) (hSa Wd.e1)`. Establish `hε₀a : ∀ e, S⁻¹ ≤ εa e` using `fun e => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `inv_anti₀ (inv_pos.2 (hεa e)) (hSa e)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hε₀b : ∀ e, S⁻¹ ≤ εb e` using `fun e => by`. Use `inv_anti₀ (inv_pos.2 (hεb e)) (hSb e)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set KK : ℝ := ∑ e, Ka e + ∑ e, Kb e with hKK`. Establish `hKa' : ∀ e, Ka e ≤ KK`. Introduce `e`. Establish `h1 : Ka e ≤ ∑ e, Ka e` using `Finset.single_le_sum (f := Ka) (fun e _ => hKa e) (Finset.mem_univ e)`. Establish `h2 : 0 ≤ ∑ e, Kb e` using `Finset.sum_nonneg fun e _ => hKb e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKb' : ∀ e, Kb e ≤ KK`. Introduce `e`. Establish `h1 : Kb e ≤ ∑ e, Kb e` using `Finset.single_le_sum (f := Kb) (fun e _ => hKb e) (Finset.mem_univ e)`. Establish `h2 : 0 ≤ ∑ e, Ka e` using `Finset.sum_nonneg fun e _ => hKa e`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKK0 : 0 ≤ KK` using `le_trans (hKa Wd.e1) (hKa' Wd.e1)`. Establish `hB1 : bf ≤ bf + Kp * bf` using `by nlinarith`. Establish `main : ∀ (q : C.LPt) (hcq : P.r - i = P.r - D.ptSize q) (εq Kq : Wd.Ix (Fin w.length) → ℝ), (∀ e, S⁻¹ ≤ εq e) → (∀ e, 0 ≤ Kq e) → (∀ e, Kq e ≤ KK) → (∀ e (h : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : ℝ), B.CkOn ⊤ (B.GV P.k P.r) h → B.CCle (A - 1) M h c → JC.CCCoefM (p.T.bs i) (P5.Ause …`. Introduce `q hcq εq Kq hεq hKq hKq' hQ1 hQ2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun e => ?_, fun n e => ?_, fun n e => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hQ1 e f bf hf hbf'`. Conclude with `⟨cccoef_mono h1 (hεq e), JCx2.pd_ccle_mono_c h2 (mul_le_mul (hKq' e) hB1 hbf0 hKK0)⟩`. Take `⟨h1, h2⟩` from `hQ1 e (hn n) _ (hns n) (hnC n)`. Conclude with `⟨cccoef_mono h1 (hεq e), JCx2.pd_ccle_mono_c h2 (mul_le_mul_of_nonneg_right (hKq' e) (by positivity))⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hQ1 e _ _ (hψs n) (hψ n)`. Establish `hd : ∀ γ ∈ B.GV P.k (P.r - i), (fun γ => (-1 : ℂ) • xs p.T χ ε i hi w q hcq (fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g) e γ) γ = (xs p.T χ ε i hi w q hcq (hn n) e - xs p.T χ ε i hi w q hcq f e) γ`. Introduce `γ hγ`. Use `hQ2 e f (hn n) bf _ hf (hns n) hbf' (hnC n) γ hγ` as an intermediate fact. Rewrite `this` using `[hsub n]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, ← this]`. Simplify using the standard rewrite rules. Establish `hC2` using `Formalism.FourierDecayAlt.P.Ux1.cc_congr hd (BetaSesquilinearity.CCle_smul (-1) h2)`. Simplify using `only [norm_neg, norm_one, one_mul] at hC2`. Establish `hC3` using `JCx2.pd_ccle_mono_c hC2 (mul_le_mul_of_nonneg_right (hKq' e) (by positivity))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨hC3.1, ⟨_, hC3⟩, fun γ hγ hne => ?_⟩, hC3⟩` and prove the remaining obligations. Rewrite `hne` using `[← hd γ hγ]`. Establish `hne' : xs p.T χ ε i hi w q hcq (fun g => JCx2.pdPsi ((n : ℝ) + 1) g • f g) e γ ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
-
-Simplify using `[h0]`. Conclude with `(hεq e).trans (h1.2.2 γ hγ hne')`. Take `⟨ma1, ma2, ma3⟩` from `main a hca εa Ka hε₀a hKa hKa' hQ1a hQ2a`. Take `⟨mb1, mb2, mb3⟩` from `main b hcb εb Kb hε₀b hKb hKb' hQ1b hQ2b`. Establish `hdn : Tendsto (fun n : ℕ => KK * (Kp * bf / ((n : ℝ) + 1))) atTop (𝓝 0)`.
-
-Establish `h1 : Tendsto (fun n : ℕ => ((n : ℝ) + 1)⁻¹) atTop (𝓝 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat.congr (fun n => by simp)`. Use `(h1.const_mul (Kp * bf)).const_mul KK` as an intermediate fact. Simplify `this` using `[div_eq_mul_inv, mul_assoc]`. Conclude with `formLev_tendsto hΞ P p.T _ ⟨i, by omega⟩ w N hw S⁻¹ (inv_pos.2 hS0) (xs p.T χ ε i hi w a hca f) (xs p.T χ ε i hi w b hcb f) (fun n => xs p.T χ ε i hi w a hca (hn n)) (fun n => xs p.T χ ε i hi w b hcb (hn n)) (KK * (bf + Kp * bf)) (fun n => KK * (Kp * bf / ((n : ℝ) + 1))) hdn ma1 …`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levelForm_cutoff_tendsto_below (hΞ : B.XiExists) : ∃ Cl : ℝ, 0 ≤ Cl ∧ ∀ Cc : ℝ, Cl ≤ Cc →
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -457,15 +447,15 @@ theorem levelForm_cutoff_tendsto_below (hΞ : B.XiExists) : ∃ Cl : ℝ, 0 ≤ 
     (KK * (bf + Kp * bf)) (fun n => KK * (Kp * bf / ((n : ℝ) + 1))) hdn ma1 mb1 ma2 mb2 ma3 mb3
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨Cl, _, hL⟩` from `levelForm_cutoff_tendsto_below hΞ`. Take `⟨Ct, hT⟩` from `PBE.formLimit_top Cb`. Use `⟨max Cl Ct, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P0 p f χ ε A N cut hDD hχ hε hf hfA hA hcut`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun n => PBE.cutCpt P0 p.T.base f χ ε cut hχ hε hf hcut n, ?_⟩` and prove the remaining obligations. Introduce `i w hwc hw a b`. Establish `hX : 0 ≤ ((P0.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P0.r : ℝ) + P0.k + 1) ^ 2 + (2 * (P0.r : ℝ) + P0.k + 1) ^ 3)`. Check the signs of the components of the expression. Break down `lt_trichotomy i (P0.r + 1) with hlt | heq | hgt` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Check the signs of the components of the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hL (max Cl Ct) (le_max_left _ _) Wp Wq P0 p f χ ε A N cut hχ hε hf hfA hA hcut i (by omega) w hw a b`. Substitute `heq` using the available equality. Use `hT Wp Wq P0 p f χ ε A N cut hDD hχ hε hf hfA ?_ hcut w hwc hw a b` and prove the remaining obligations. Use `le_trans ?_ hA` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (le_max_right Cl Ct) hX` as an intermediate fact.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : ∀ F, p.RR F i w a b = 0`. Introduce `F`. Unfold `KB.Pl.RR D.RRplace`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0]`. Conclude with `tendsto_const_nhds`.
+A detailed English derivation is pending.
 -/
 theorem levelForm_cutoff_tendsto (hΞ : B.XiExists) : Formalism.FourierDecayAlt.KB.FormLimit := by
   intro Cb

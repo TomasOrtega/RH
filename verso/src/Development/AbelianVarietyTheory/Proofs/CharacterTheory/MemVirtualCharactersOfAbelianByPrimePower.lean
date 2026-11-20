@@ -12,27 +12,25 @@ noncomputable section
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Set `S : AddSubgroup (G → ℤ)` to `{ carrier := {f | ∀ χ : G → L, IsChar L L χ → (fun g => (f g : L) * χ g) ∈ Virt K L G} zero_mem' := by`. Introduce `χ _`. Establish `: (fun g => (((0 : G → ℤ) g : ℤ) : L) * χ g) = 0`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Use the proof step `add_mem' := by`. Introduce `a b ha hb χ hχ`. Establish `: (fun g => (((a + b) g : ℤ) : L) * χ g) = (fun g => (a g : L) * χ g) + (fun g => (b g : L) * χ g)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `[add_mul]`. Rewrite using `[this]`. Conclude with `add_mem (ha χ hχ) (hb χ hχ)`. Use the proof step `neg_mem' := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `a ha χ hχ`. Establish `: (fun g => (((-a) g : ℤ) : L) * χ g) = -(fun g => (a g : L) * χ g)`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `neg_mem (ha χ hχ) }`. Establish `hS : ∀ f : G → ℤ, f ∈ S ↔ ∀ χ : G → L, IsChar L L χ → (fun g => (f g : L) * χ g) ∈ Virt K L G` using `fun _ => Iff.rfl`. Establish `hmul : ∀ f ∈ S, ∀ f' ∈ S, f * f' ∈ S`. Introduce `f hf f' hf'`. Rewrite `hf`, `hf'`, the goal using `[hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `χ hχ`. Take `⟨a, b, ha, hb, hab⟩` from `(GlobalTheory.T.mem_virtualCharacters_iff_sub_characters K L G _).1 (hf' χ hχ)`. Establish `: (fun g => (((f * f') g : ℤ) : L) * χ g) = (fun g => (f g : L) * a g) - (fun g => (f g : L) * b g)`. Use function extensionality and compare the values at `g`. Establish `h` using `congrFun hab g`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply] at h`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Int.cast_mul]`. Rewrite using `[mul_assoc, h, mul_sub]`. Rewrite using `[this]`. Conclude with `sub_mem (hf a (GlobalTheory.BI.isChar_baseChange K L G a ha)) (hf b (GlobalTheory.BI.isChar_baseChange K L G b hb))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hperm : ∀ H : Subgroup G, AbByP H → (fun g => (Nat.card (MulAction.fixedBy (G ⧸ H) g) : ℤ)) ∈ S`. Introduce `H hA`. Rewrite using `[hS]`. Introduce `χ hχ`. Take `⟨hres, hconj, -⟩` from `GlobalTheory.isChar_restrict_conj_one L L G χ hχ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : IsChar K L (fun h : H => χ h)` using `hH H hA _ (hres H H.subtype)`. Establish `h2` using `GlobalTheory.T.isCharacterOverSubfield_inducedClassFunction K L G H _ h1`. Establish `: (fun g => (((Nat.card (MulAction.fixedBy (G ⧸ H) g) : ℤ)) : L) * χ g) = ind H (fun h : H => χ h)`. Use function extensionality and compare the values at `g`. Rewrite using `[GlobalTheory.T.ind_restrict_eq_card_fixedBy_mul_of_classFn L G H χ hconj g, Int.cast_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `AddSubgroup.subset_closure h2`. Establish `hone : (1 : G → ℤ) ∈ S`. Use `GlobalTheory.T.one_mem_of_mul_mem_of_forall_prime_exists_not_dvd G S hmul fun x p hp => ?_` and prove the remaining obligations. Take `⟨H, hA, hp'⟩` from `GlobalTheory.T.exists_abelianByPrimePower_not_dvd_card_fixedBy G x p hp`.
-
-Conclude with `⟨_, hperm H hA, fun h => hp' (Int.natCast_dvd_natCast.1 h)⟩`. Introduce `χ hχ`. Simplify using `using (hS 1).1 hone χ hχ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_virt_of_forall_abByP (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K]
     [CharZero L] (G : Type) [Group G] [Finite G]

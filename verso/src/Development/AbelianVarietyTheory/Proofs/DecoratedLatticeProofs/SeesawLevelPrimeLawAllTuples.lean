@@ -16,9 +16,9 @@ variable {D : D7}
 open GlobalTheory.FinPl.AllBij in
 
 /- English proof (translation)
-Take `⟨hbij, -, c, c', hc, -⟩` from `GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n q χ hχ _ rfl ε A (α i) (P i)`. Establish `hC` using `mapDomain_mem _ (gl_mem (α i)) c`. Establish `hT : ∀ φ, sOp (α i) (P i) q (resChar χ hχ q) ε φ = act (Finsupp.mapDomain (α i).gl c) φ` using `fun φ => (hc φ).trans (sum_rep_eq _ _ _)`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isContAut_act _ hφ.1`. Break down `eq_or_ne j i with rfl | hj` into its components or cases. Conclude with `hbij.mapsTo (hφ.2 j)`. Rewrite using `[hT]`. Conclude with `ramAt_act _ _ _ (fun x hx g => grpAt_comm A (fun e => hj (hinj e)) (hC x hx) (gl_mem _ g)) (hφ.2 j)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ram_sOp {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
     {p : ι → SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {A : HSp D} (α : ∀ i, Frame (p i) A n) (P : ι → Pair k n)
@@ -37,7 +37,7 @@ theorem ram_sOp {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
       exact ramAt_act _ _ _ (fun x hx g => grpAt_comm A (fun e => hj (hinj e)) (hC x hx) (gl_mem _ g)) (hφ.2 j)
 
 /- English proof (translation)
-Unfold `TDat.S`. Proceed by induction on `o.I with`. Consider the case `nil => exact hφ`. Consider the case `cons i l ih => exact ram_sOp (o.β j) (o.Q j) hinj o.q (o.χ i) (o.hχ i) (ε j i) i _ ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ram_S {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
     (o : TDat c k ι) (hinj : Function.Injective fun i => (o.p i).v) (ε : ℕ → ι → 𝓀[k]ˣ) (j : ℕ) (φ : GA D (c.X j) → ℂ)
@@ -48,9 +48,9 @@ theorem ram_S {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   | cons i l ih => exact ram_sOp (o.β j) (o.Q j) hinj o.q (o.χ i) (o.hχ i) (ε j i) i _ ih
 
 /- English proof (translation)
-Distinguish the cases in `h1 : ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m`. Take `⟨σ, h⟩` from `h1`. Take `⟨ε, op, r, e, hr, hop, H⟩` from `GlobalTheory.T.seeSawLevelPrimeLaw_doubleStep D c v k ι o hc hv hS j σ h`. Use `⟨ε, op, r, e, hr, hop, fun σ' h' => ?_, fun h' => absurd h' (by omega)⟩` and prove the remaining obligations. Take `rfl : σ = σ'` from `by omega`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `H`. Distinguish the cases in `h2 : j + 2 * 0 + 2 = D.R.m`. Take `⟨ε, op, r, e, hr, hop, H⟩` from `GlobalTheory.T.levelPrime_law_last_two_steps_all_tuples D c v k ι o hc hv hS j h2`. Conclude with `⟨ε, op, r, e, hr, hop, fun σ h => absurd ⟨σ, h⟩ h1, fun _ => H⟩`. Conclude with `⟨fun _ => 1, ⟨0, Fin.elim0, Fin.elim0⟩, fun _ => 1, fun _ => 0, fun _ => one_pos, fun i => i.elim0, fun σ h => absurd ⟨σ, h⟩ h1, fun h => absurd h h2⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_choice (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι) (hc : c.Is) (hv : v.Is) (hS : ShapeOff v o) (j : ℕ) :
@@ -88,13 +88,13 @@ theorem exists_choice (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeR
         fun σ h => absurd ⟨σ, h⟩ h1, fun h => absurd h h2⟩
 
 /- English proof (translation)
-Introduce `D c v k _ _ _ _ ι o hc hv hS`. Use `choose ε op r e hr hop Hm Hl using exists_choice c v k ι o hc hv hS`. Use `⟨ε, op, r, e, hr, ?_, fun t w ht hW hU hK hT => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `⟨hv.disj, hv.sd, hv.sdT, hv.b, hv.bT, hv.Ψ, hv.ΨT, hv.JG, hv.atG, fun j => ⟨(hv.atT j).1, hop j⟩, fun j φ hφ => ?_⟩` and prove the remaining obligations. Use `⟨(hv.ram j φ hφ).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `o.S ε j φ ∈ v.RamAd j`. Express the relevant statement in the definitionally equal form `φ ∈ v.RamAd j at hφ`. Rewrite `hφ`, the goal using `[hS.ram j]`. Conclude with `ram_S o hS.pre.inj ε j φ hφ`. Introduce `j σ h Ψ₁ Ψ₂ h₁ h₂`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨H1, H2⟩` from `Hm j σ h t ht hW hU Ψ₁ Ψ₂ h₁ h₂`. Use `⟨H1, fun d d' hd hd' φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hT j (σ + 1) h]`. Conclude with `H2 d d' hd hd' φ (hS.ram j ▸ hφ)`. Introduce `j h Ψ₁ Ψ₂ h₁ h₂`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H1, H2⟩` from `Hl j h t ht hW hU hK Ψ₁ Ψ₂ h₁ h₂`. Use `⟨H1, fun d d' hd hd' φ hφ f hf _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hT j 0 h]`. Conclude with `H2 d d' hd hd' φ (hS.ram j ▸ hφ) f hf`.
+A detailed English derivation is pending.
 -/
 theorem lawLevelPrime_all : ∀ D : D7, GlobalTheory.SeeSaw.TOfShape D := by
   intro D c v k _ _ _ _ ι o hc hv hS

@@ -7,9 +7,9 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.PerfClos
 
 /- English proof (translation)
-Introduce `p hpf S _ I hp`. Take `⟨T, inst, i, hc, hb, hpow, hker⟩` from `exists_perfect_radical p S I hp`. Use `⟨T, inst, i, ⟨⟨hc, hb⟩, hpow, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hker x]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, hn⟩`. Use `⟨n, Ideal.pow_mem_of_pow_mem I hn ?_⟩` and prove the remaining obligations. Conclude with `(Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le`. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨p ^ k, hk⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_PQ : ∀ (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] (I : Ideal S), (p : S) = 0 →
     ∃ (T : Type) (_ : CommRing T) (i : S →+* T), PQ p i I := by

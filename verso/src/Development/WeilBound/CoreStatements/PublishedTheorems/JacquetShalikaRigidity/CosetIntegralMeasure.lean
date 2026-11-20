@@ -16,13 +16,13 @@ namespace CosetIntegralMeasure
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-Conclude with `measurable_const_mul g`.
+A detailed English derivation is pending.
 -/
 theorem meas_mul (g : GA E k) : Measurable (fun h : GA E k => g * h) := by
   exact measurable_const_mul g
 
 /- English proof (translation)
-Rewrite using `[nuG, lintegral_sum_measure]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Conclude with `lintegral_map hF (meas_mul _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lint_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ) (F : GA E k → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ h, F h ∂nuG Γ d = ∑' γ : Γ, ∫⁻ h, F (ratGL E k γ * h) ∂nuD E k d := by
@@ -34,19 +34,17 @@ end CosetIntegralMeasure
 
 open CosetIntegralMeasure in
 /- English proof (translation)
-Introduce `h0 _ _ E _ _ _ k j hj1 hjk F hF`. Take `⟨hgam, huniq, hmul, hinv, -, hmir, -⟩` from `h0 E k j hj1 hjk`. Establish `hd : k - (j - 1 + 1) = k - j` using `by omega`. Set `f : RowT E k j × ({γ : GL (Fin k) E | IsMir (j - 1) γ} : Set (GL (Fin k) E)) → ({γ : GL (Fin k) E | GlobalTheory j γ} : Set (GL (Fin k) E))` to `fun x => ⟨(gam x.1)⁻¹ * (x.2 : GL (Fin k) E), hmul (gam x.1)⁻¹ (x.2 : GL (Fin k) E) (hinv (gam x.1) (hgam x.1).1) (hmir (x.2 : GL (Fin k) E) x.2.2).2⟩`. Establish `hinj : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨ξ, p⟩ ⟨ξ', p'⟩ h`. Establish `hv : (gam ξ)⁻¹ * (p : GL (Fin k) E) = (gam ξ')⁻¹ * (p' : GL (Fin k) E)` using `congrArg Subtype.val h`. Establish `hB : GlobalTheory j ((gam ξ)⁻¹ * (p : GL (Fin k) E))⁻¹` using `hinv ((gam ξ)⁻¹ * (p : GL (Fin k) E)) (f (ξ, p)).2`. Take `⟨q, -, huq⟩` from `huniq _ hB`. Establish `e1 : (ξ, (p : GL (Fin k) E)⁻¹) = q` using `huq (ξ, (p : GL (Fin k) E)⁻¹) ⟨(hmir (p : GL (Fin k) E) p.2).1, by simp only [_root_.mul_inv_rev, inv_inv]⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (ξ', (p' : GL (Fin k) E)⁻¹) = q` using `huq (ξ', (p' : GL (Fin k) E)⁻¹) ⟨(hmir (p' : GL (Fin k) E) p'.2).1, by simp only [hv, _root_.mul_inv_rev, inv_inv]⟩`. Establish `h3` using `Prod.mk.inj (e1.trans e2.symm)`. Conclude with `Prod.ext h3.1 (Subtype.ext (inv_injective h3.2))`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨γ, hγ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨ξ, q⟩, ⟨hq, heq⟩, -⟩` from `huniq γ⁻¹ (hinv γ hγ)`. Establish `hq' : IsMir (j - 1) q` using `hq`. Establish `heq' : γ⁻¹ = q * gam ξ` using `heq`. Use `⟨(ξ, ⟨q⁻¹, (hmir q hq').1⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (gam ξ)⁻¹ * q⁻¹ = γ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← _root_.mul_inv_rev, ← heq', inv_inv]`. Set `e` to `Equiv.ofBijective f ⟨hinj, hsurj⟩`. Establish `hR : ∀ ξ : RowT E k j, ∫⁻ h, F ((ratGL E k (gam ξ))⁻¹ * h) ∂nuP E k (j - 1) = ∑' p : ({γ : GL (Fin k) E | IsMir (j - 1) γ} : Set (GL (Fin k) E)), ∫⁻ h, F (ratGL E k ((gam ξ)⁻¹ * (p : GL (Fin k) E)) * h) ∂nuD E k (k - j)`. Introduce `ξ`. Establish `e0` using `lint_nuG {γ : GL (Fin k) E | IsMir (j - 1) γ} (k - (j - 1 + 1)) (fun h => F ((ratGL E k (gam ξ))⁻¹ * h)) (hF.comp (meas_mul _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `e0.trans ?_` and prove the remaining obligations. Rewrite using `[hd]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `ENNReal.tsum_prod (f := fun (ξ : RowT E k j) (p : ({γ : GL (Fin k) E | IsMir (j - 1) γ} : Set (GL (Fin k) E))) => ∫⁻ h, F (ratGL E k ((gam ξ)⁻¹ * (p : GL (Fin k) E)) * h) ∂nuD E k (k - j))`. Use `_ = ∑' ξ : RowT E k j, ∫⁻ h, F ((ratGL E k (gam ξ))⁻¹ * h) ∂nuP E k (j - 1) := tsum_congr fun ξ => (hR ξ).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coset_integration_of : N0 → N1 → N3 → CosetIntegralParabolic := by
   intro h0 _ _ E _ _ _ k j hj1 hjk F hF

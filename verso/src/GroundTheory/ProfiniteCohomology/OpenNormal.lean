@@ -13,7 +13,7 @@ instance instNonempty : Nonempty (OpenNormalSubgroup G) :=
   ⟨{ toOpenSubgroup := ⊤, isNormal' := ⟨fun _ _ _ => Set.mem_univ _⟩ }⟩
 
 /- English proof (translation)
-The claim follows from `U.toOpenSubgroup.isOpen.mem_nhds U.one_mem`.
+A detailed English derivation is pending.
 -/
 theorem mem_nhds_one (U : OpenNormalSubgroup G) : (U : Set G) ∈ 𝓝 (1 : G) :=
   U.toOpenSubgroup.isOpen.mem_nhds U.one_mem
@@ -31,7 +31,7 @@ instance finite_quotient [CompactSpace G] (U : OpenNormalSubgroup G) :
 variable [CompactSpace G] [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Use `⟨fun s => ⟨fun hs => ?_, fun ⟨U, _, hU⟩ => mem_of_superset U.mem_nhds_one hU⟩⟩` and prove the remaining obligations. Take `⟨t, hts, ht, h1⟩` from `mem_nhds_iff.mp hs`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ht h1`. Conclude with `⟨U, trivial, hU.trans hts⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasBasis_nhds_one :
     (𝓝 (1 : G)).HasBasis (fun _ : OpenNormalSubgroup G => True) (fun U => (U : Set G)) := by
@@ -41,9 +41,9 @@ theorem hasBasis_nhds_one :
   exact ⟨U, trivial, hU.trans hts⟩
 
 /- English proof (translation)
-Simplify using `only [nhds_pi, Pi.one_apply]`. Use `(hasBasis_nhds_one.pi_self (ι := ι)).to_hasBasis ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨I, U⟩ -`. Conclude with `⟨U, trivial, fun x hx i _ => hx i (Set.mem_univ i)⟩`. Introduce `U _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨Set.univ, U⟩, ⟨Set.finite_univ, trivial⟩, subset_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasBasis_nhds_one_pi (ι : Type*) [Finite ι] :
     (𝓝 (1 : ι → G)).HasBasis (fun _ : OpenNormalSubgroup G => True)

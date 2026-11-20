@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarP
 namespace Formalism.L2.SG.Pf.NcVal
 
 /- English proof (translation)
-The claim follows from `volOrdV_of X u u' ψ Formalism.L2.SG.Pf.conductor_inverse_different`.
+A detailed English derivation is pending.
 -/
 theorem volOrdV_holds {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) : VolOrdV X u u' ψ :=

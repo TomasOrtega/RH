@@ -11,17 +11,17 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Introduce `l _ F N x hN hx`. Use `set P : F[X] := Polynomial.X ^ N + Polynomial.C (l : F) with hP`. Establish `hPm : P.Monic` using `monic_X_pow_add_C _ hN.ne'`. Establish `hPx : aeval x P = 0`. Simplify using `[hP, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : IsIntegral F x` using `⟨P, hPm, by simpa [aeval_def] using hPx⟩`. Establish `hm : (minpoly F x).Monic` using `minpoly.monic hint`. Establish `hdvd : minpoly F x ∣ P` using `minpoly.dvd F x hPx`. Use `set q : (Om l)[X] := (minpoly F x).map (algebraMap F (Om l)) with hq`. Establish `hqm : q.Monic` using `hm.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : q.Splits` using `IsAlgClosed.splits q`. Establish `hc : q.coeff 0 = (((minpoly F x).coeff 0 : F) : Om l)`. Rewrite using `[hq, Polynomial.coeff_map]`. Both sides reduce to the same expression. Establish `hdeg : q.natDegree = (minpoly F x).natDegree` using `natDegree_map _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hroot : ∀ r ∈ q.roots, ‖r‖ ^ N = (l : ℝ)⁻¹`. Introduce `r hr`. Establish `hr0 : aeval r (minpoly F x) = 0`. Rewrite `hr` using `[mem_roots hqm.ne_zero, IsRoot, hq, eval_map]`. Simplify `hr` using `[aeval_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hdvd`. Establish `hPr : aeval r P = 0` using `by rw [hg, map_mul, hr0, zero_mul]`. Establish `hrN : r ^ N = -(l : Om l)`. Establish `: r ^ N + (l : Om l) = 0` using `by simpa [hP] using hPr`. Conclude with `eq_neg_of_add_eq_zero_left this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, hrN, norm_neg, ← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `hprod : ‖q.roots.prod‖ ^ N = (q.roots.map fun r => ‖r‖ ^ N).prod`. Use `map_multiset_prod ((powMonoidHom N : ℝ →* ℝ).comp (normHom : Om l →*₀ ℝ).toMonoidHom) q.roots` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Rewrite using `[← hc, hs.coeff_zero_eq_prod_roots_of_monic hqm, norm_mul, mul_pow, norm_pow, norm_neg, norm_one, one_pow, one_pow, one_mul, hprod, Multiset.map_congr rfl hroot, Multiset.map_const', Multiset.prod_replicate, ← hs.natDegree_eq_card_roots, hdeg]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_minpoly_coeff_zero_pow_of_pow_eq_neg :
     ∀ (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (Om l)) (N : ℕ) (x : Om l), 0 < N →

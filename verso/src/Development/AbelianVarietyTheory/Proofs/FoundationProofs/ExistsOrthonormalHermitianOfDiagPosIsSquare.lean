@@ -15,19 +15,19 @@ end
 open NumberField in
 open scoped Matrix ComplexConjugate in
 /- English proof (translation)
-Take `⟨x, hx0, hx⟩` from `_root_.GlobalTheory.LocalQuad.isotropic_of_indefinite _root_.GlobalTheory.QNorm.hasseNormSt ℚ (![a, a * d, b, b * d, -1] : Fin 5 → ℚ) (by simp) (by`. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [ha.ne', hb.ne', hd.ne'])`. Use the proof step `(by`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨4, 0, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Matrix.cons_val_zero, eq_ratCast]`. Conclude with `ha)` after adjusting the coercions. Establish `hx' : a * x 0 ^ 2 + a * d * x 1 ^ 2 + b * x 2 ^ 2 + b * d * x 3 ^ 2 = x 4 ^ 2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `[Fin.sum_univ_five] at hx`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t0 : 0 ≤ a * x 0 ^ 2` using `by positivity`. Establish `t1 : 0 ≤ a * d * x 1 ^ 2` using `by positivity`. Establish `t2 : 0 ≤ b * x 2 ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t3 : 0 ≤ b * d * x 3 ^ 2` using `by positivity`. Establish `h4 : x 4 ≠ 0`. Introduce `h4`. Rewrite `hx'` using `[h4]`. Establish `e0 : a * x 0 ^ 2 = 0` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : a * d * x 1 ^ 2 = 0` using `by linarith`. Establish `e2 : b * x 2 ^ 2 = 0` using `by linarith`. Establish `e3 : b * d * x 3 ^ 2 = 0` using `by linarith`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases i`. Simplify `e0` using `[ha.ne']`. Simplify `e1` using `[ha.ne', hd.ne']`. Simplify `e2` using `[hb.ne']`. Simplify `e3` using `[hb.ne', hd.ne']`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `h4`. Use `⟨x 0 / x 4, x 1 / x 4, x 2 / x 4, x 3 / x 4, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem exists_rat_sum_norm_forms_eq_one {a b d : ℚ} (ha : 0 < a) (hb : 0 < b) (hd : 0 < d) :
     ∃ p₁ q₁ p₂ q₂ : ℚ, a * (p₁ ^ 2 + d * q₁ ^ 2) + b * (p₂ ^ 2 + d * q₂ ^ 2) = 1 := by
@@ -71,7 +71,7 @@ private theorem exists_rat_sum_norm_forms_eq_one {a b d : ℚ} (ha : 0 < a) (hb 
 open NumberField in
 open scoped Matrix ComplexConjugate in
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx.1, hy.1, hx.2, hy.2]`. Consider the case `smul c x _ hx => simp [hx.1, hx.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem sesq_apply_eq_zero_and_of_mem_span_of_forall_mem {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     {σ : K →+* K} (h : V →ₗ[K] V →ₛₗ[σ] K) {s : Set V} {w : V}
@@ -86,57 +86,55 @@ private theorem sesq_apply_eq_zero_and_of_mem_span_of_forall_mem {K V : Type} [F
 open NumberField in
 open scoped Matrix ComplexConjugate in
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r using Nat.strong_induction_on with`. Consider the case `_ r ih`. Introduce `v a ha hv hsq`. Break down `r with _ | _ | r` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Take `⟨s, hs⟩` from `hsq`. Rewrite `hs` using `[Fin.prod_univ_one]`. Establish `hs0 : (s : K) ≠ 0`. Establish `: s ≠ 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Use `ha 0` as an intermediate fact. Rewrite `this` using `[hs]`. Simplify using `at this`. Conclude with `this` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => ((s⁻¹ : ℚ) : K) • v 0, ?_, fun _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)⟩` and prove the remaining obligations. Introduce `i j`. Establish `hij : i = j` using `Fin.ext (by have := i.2; have := j.2; omega)`. Substitute `hij` using the available equality. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hv, if_true, map_ratCast, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hdq : (0 : ℚ) < d` using `by exact_mod_cast hd`. Take `⟨p₁, q₁, p₂, q₂, hq⟩` from `exists_rat_sum_norm_forms_eq_one (ha 0) (ha 1) hdq`. Establish `hqK : (a 0 : K) * ((p₁ : K) ^ 2 + (d : K) * (q₁ : K) ^ 2) + (a 1 : K) * ((p₂ : K) ^ 2 + (d : K) * (q₂ : K) ^ 2) = 1`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hq` after adjusting the coercions. Establish `h01 : (0 : Fin (r + 2)) ≠ 1` using `by simp`. Establish `hss : ∀ i : Fin r, (i.succ.succ : Fin (r + 2)) ≠ 0 ∧ (i.succ.succ : Fin (r + 2)) ≠ 1`. Introduce `i`. Use `⟨Fin.succ_ne_zero _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Fin.succ_zero_eq_one, Ne, Fin.succ_inj]`. Conclude with `Fin.succ_ne_zero _`. Establish `hv00` using `hv 0 0`. Establish `hv11` using `hv 1 1`. Establish `hv01` using `hv 0 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv10` using `hv 1 0`. Simplify using `only [if_true, h01, h01.symm, if_false] at hv00 hv11 hv01 hv10`. Establish `hvs : ∀ (i : Fin r) (j : Fin (r + 2)), j = 0 ∨ j = 1 → h (v i.succ.succ) (v j) = 0 ∧ h (v j) (v i.succ.succ) = 0`. Introduce `i j hj`. Rewrite using `[hv, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Break down `hj with rfl | rfl` into its components or cases. Simplify using `[(hss i).1, (hss i).1.symm]`. Simplify using `[(hss i).2, (hss i).2.symm]`. Use `set w : V := ((p₁ : K) + (q₁ : K) * θ) • v 0 + ((p₂ : K) + (q₂ : K) * θ) • v 1 with hw`. Use `set w' : V := ((a 1 : K) * ((p₂ : K) - (q₂ : K) * θ)) • v 0 - ((a 0 : K) * ((p₁ : K) - (q₁ : K) * θ)) • v 1 with hw'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hww : h w w = 1`. Simplify using `only [hw, map_add, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hv00, hv11, hv01, hv10, map_mul, map_ratCast, hθ]`. Take the linear combination `hqK - ((a 0 : K) * (q₁ : K) ^ 2 + (a 1 : K) * (q₂ : K) ^ 2) * hθ2`. Establish `hww' : h w w' = 0`. Simplify using `only [hw, hw', map_add, map_sub, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hv00, hv11, hv01, hv10, map_mul, map_ratCast, hθ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hw'w : h w' w = 0`. Simplify using `only [hw, hw', map_add, map_sub, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hv00, hv11, hv01, hv10, map_mul, map_ratCast, hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw'w' : h w' w' = ((a 0 * a 1 : ℚ) : K)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hw', map_sub, map_smul, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hv00, hv11, hv01, hv10, map_mul, map_ratCast, hθ, map_neg]`. Use `push_cast`. Take the linear combination `(a 0 : K) * (a 1 : K) * hqK - (a 0 : K) * (a 1 : K) * ((a 0 : K) * (q₁ : K) ^ 2 + (a 1 : K) * (q₂ : K) ^ 2) * hθ2`. Establish `hwv : ∀ i : Fin r, h (v i.succ.succ) w = 0 ∧ h w (v i.succ.succ) = 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h1'⟩` from `hvs i 0 (Or.inl rfl)`. Take `⟨h2, h2'⟩` from `hvs i 1 (Or.inr rfl)`. Prove the components needed by the constructor for the conclusion. Simplify using `[hw, h1, h2]`. Simplify using `[hw, h1', h2']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Establish `hw'v : ∀ i : Fin r, h (v i.succ.succ) w' = 0 ∧ h w' (v i.succ.succ) = 0`. Introduce `i`. Take `⟨h1, h1'⟩` from `hvs i 0 (Or.inl rfl)`. Take `⟨h2, h2'⟩` from `hvs i 1 (Or.inr rfl)`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `[hw', h1, h2]`. Simplify using `[hw', h1', h2']`. Establish `hwspan : w ∈ Submodule.span K (Set.range v)` using `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Establish `hw'span : w' ∈ Submodule.span K (Set.range v)` using `sub_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Set `v' : Fin (r + 1) → V` to `Fin.cons w' (fun i => v i.succ.succ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Set `a' : Fin (r + 1) → ℚ` to `Fin.cons (a 0 * a 1) (fun i => a i.succ.succ)`. Establish `ha' : ∀ i, 0 < a' i`. Introduce `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact mul_pos (ha 0) (ha 1)`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ i => exact ha _`. Establish `hv' : ∀ i j, h (v' i) (v' j) = if i = j then (a' i : K) else 0`. Introduce `i j`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa [v', a'] using hw'w'`. Consider the case `succ j => simpa [v', a', (Fin.succ_ne_zero j).symm] using (hw'v j).2`. Consider the case `succ i`. Consider the cases of `j using Fin.cases with`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `zero => simpa [v', a', Fin.succ_ne_zero i] using (hw'v i).1`. Consider the case `succ j`. Simplify using `only [v', a', Fin.cons_succ, hv, Fin.succ_inj]`. Establish `hsq' : IsSquare (∏ i, a' i)`. Rewrite `hsq` using `[Fin.prod_univ_succ, Fin.prod_univ_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [a', Fin.cons_zero, Fin.cons_succ]`. Use `hsq using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Fin.succ_zero_eq_one]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨e', he', hspan'⟩` from `ih (r + 1) (by omega) v' a' ha' hv' hsq'`. Establish `hwe' : ∀ j, h (e' j) w = 0 ∧ h w (e' j) = 0`. Introduce `j`. Use `sesq_apply_eq_zero_and_of_mem_span_of_forall_mem h ?_ (hspan' j)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact ⟨by simpa [v'] using hw'w, by simpa [v'] using hww'⟩`. Consider the case `succ i => simpa [v'] using hwv i`. Establish `hle : Submodule.span K (Set.range v') ≤ Submodule.span K (Set.range v)`. Rewrite using `[Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa [v'] using hw'span`. Consider the case `succ i => exact Submodule.subset_span ⟨i.succ.succ, rfl⟩`. Use `⟨Fin.cons w e', ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce `i j`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa using hww`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j => simpa [(Fin.succ_ne_zero j).symm] using (hwe' j).2`. Consider the case `succ i`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa [Fin.succ_ne_zero i] using (hwe' i).1`. Consider the case `succ j => simpa [Fin.succ_inj] using he' i j`.
-
-Introduce `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using hwspan`. Consider the case `succ i => simpa using hle (hspan' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem exists_orthonormal_mem_span_of_diagonal_square_prod {K V : Type} [Field K] [CharZero K]
     [AddCommGroup V] [Module K V] (σ : K →+* K) (h : V →ₗ[K] V →ₛₗ[σ] K) {d : ℕ} {θ : K}
@@ -295,7 +293,7 @@ open NumberField in
 open scoped Matrix ComplexConjugate in
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ σ h d θ hd hθ2 hθ _ r v a ha hv hsq`. Take `⟨e, he, -⟩` from `exists_orthonormal_mem_span_of_diagonal_square_prod σ h hd hθ2 hθ r v a ha hv hsq`. Conclude with `⟨e, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.SqDet.exists_orthonormal_of_diag_pos_isSquare :
     ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] (σ : K →+* K) (h : V →ₗ[K] V →ₛₗ[σ] K) (d : ℕ) (θ : K), 0 < d → θ ^ 2 = -(d : K) → σ θ = -θ → (∀ x : K, ∃ a b : ℚ, x = (a : K) + (b : K) * θ) → ∀ (r : ℕ) (v : Fin r → V) (a : Fin r → ℚ), (∀ i, 0 < a i) → (∀ i j, h (v i) (v j) = if i = j then (a i : K) else 0) → IsSquare (∏ i, a i) → ∃ e : Fin r → V, ∀ i j, h (e i) (e j) = if i = j then 1 else 0 := by

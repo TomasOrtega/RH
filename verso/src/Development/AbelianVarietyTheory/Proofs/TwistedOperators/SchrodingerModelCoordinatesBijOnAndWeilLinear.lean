@@ -18,7 +18,7 @@ namespace GlobalTheory.SplitCoordModel
 variable {D : D7}
 
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Use `haveI : BorelSpace (Fv D.host.F v) := ⟨rfl⟩`. Conclude with `⟨MeasureTheory.Measure.addHaar, inferInstance⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar (v : FinPl D) : ∃ ν : Measure (Fv D.host.F v), ν.IsAddHaarMeasure := by
   letI := GlobalTheory.LocalData.complRel v
@@ -27,7 +27,7 @@ theorem exists_haar (v : FinPl D) : ∃ ν : Measure (Fv D.host.F v), ν.IsAddHa
   exact ⟨MeasureTheory.Measure.addHaar, inferInstance⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [pull, Pi.sub_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pull_sub {S T : HSp D} {v : FinPl D} {m n : ℕ} (a : AE D)
     (κ : WO S T → Matrix (Fin m) (Fin n) (Fv D.host.F v)) (Φ₁ Φ₂ : Matrix (Fin m) (Fin n) (Fv D.host.F v) → ℂ) :
@@ -37,7 +37,7 @@ theorem pull_sub {S T : HSp D} {v : FinPl D} {m n : ℕ} (a : AE D)
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `ipO`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,41 +51,41 @@ theorem ipO_smul_smul {m n : ℕ} (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m 
   ring
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hC v e a he hev ha m n κ hκ Tm hTm`. Choose the witnesses or unpack the hypotheses as in `⟨haS, haI⟩ : IsSplitIdem D a ∧ a + cA D a = idem D (.inl v) := by`. Break down `ha with rfl | rfl` into its components or cases. Conclude with `⟨he, hev⟩`. Take `⟨h1, h2, w, ε, hε, h3⟩` from `he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm]; exact h2, w, ε, hε, by rw [cA_cA, add_comm]; exact h3⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cA_cA, add_comm]`. Conclude with `hev`. Choose the witnesses or unpack the hypotheses as in `⟨-, hloc, hsurj⟩ : _ ∧ _ ∧ _ := by`. Use `GlobalTheory.T.split_idempotent_base_function_identity D ψ θ S T sS sT ΛS ΛT f₀ hB v a haS haI` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨this.1, this.2 Tm hTm⟩`. Establish `hP` using `GlobalTheory.HalfCoordSB.isSBHalf_iff_pull D S T v m n a _ κ hκ`. Take `⟨ν, hν⟩` from `exists_haar (D := D) v`. Take `⟨hv0, hvT, hIso⟩` from `GlobalTheory.T.schrodingerModel_halfLatticeVolume_mul_inner_eq_inner D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC v a haS m n κ hκ Tm hTm ν hν`. Establish `hvol : ((GlobalTheory.SplitWeil.volM ν (Fin m) (Fin n) (κ '' {t | t ∈ (latO S T ΛS ΛT fun _ => True) ∧ IsHalf a t})).toReal : ℂ) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.toReal_ne_zero.mpr ⟨hv0, hvT⟩` after adjusting the coercions. Establish `hU` using `GlobalTheory.LinUnit.linOm_unitary D v m n`. Establish `hdef : ∀ Φ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v)), GlobalTheory.SplitWeil.ip ν Φ Φ = 0 → Φ = 0` using `fun Φ hΦ => ((hU 1 1).2 Φ hΦ).2 ν hν |>.2`. Use `⟨⟨fun Φ hΦ => hloc _ (hP.1 Φ hΦ), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `Φ₁ h₁ Φ₂ h₂ heq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Φ₁ - Φ₂ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v))` using `Submodule.sub_mem _ h₁ h₂`. Establish `h0 : Tm (pull a κ (Φ₁ - Φ₂)) = 0`. Rewrite using `[pull_sub, map_sub, sub_eq_zero]`. Conclude with `heq`. Establish `hi` using `hIso _ hd _ hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[h0]`. Use `sub_eq_zero.mp (hdef _ hd ?_)` and prove the remaining obligations. Rewrite using `[← hi]`. Simplify using `[ipO]`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Ψ, hΨ, rfl⟩` from `hsurj x hx`. Take `⟨Φ, hΦ, rfl⟩` from `hP.2 Ψ hΨ`. Conclude with `⟨Φ, hΦ, rfl⟩`. Introduce `g h hg hh x y hx hy γ δ hκa Φ hΦ`. Take `⟨r, hr, hom⟩` from `GlobalTheory.PlaceTensor.om_placeModel_linear D ψ θ S T χS χT om sS sT ΛS ΛT f₀ hW hB v e a he hev ha Tm hTm g h hg hh x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r', hr', hlin⟩` from `(hU γ δ).1`. Establish `hr'0 : (r' : ℂ) ≠ 0` using `by exact_mod_cast hr'.ne'`. Establish `hsub : (fun t => pull a κ Φ (actO S T g⁻¹ h⁻¹ t)) = ((r' : ℂ)⁻¹) • pull a κ (linOm v γ δ Φ)`. Use function extensionality and compare the values at `t`. Simplify using `only [pull, Pi.smul_apply, smul_eq_mul, hlin]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Distinguish the cases in `ht : IsHalf a t`. Rewrite using `[if_pos (GlobalTheory.SplitHecke.isHalf_actO g⁻¹ h⁻¹ ht), if_pos ht, hκa]`. Clear the denominators using the available nonvanishing facts. Establish `ht' : ¬ IsHalf a (actO S T g⁻¹ h⁻¹ t)`. Introduce `h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ht` to reduce the goal to its premises. Establish `h2` using `GlobalTheory.SplitHecke.isHalf_actO g h h'`. Establish `h3` using `GlobalTheory.SplitHecke.actO_inv_actO g⁻¹ h⁻¹ t`. Rewrite `h3` using `[inv_inv, inv_inv]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg ht', if_neg ht, mul_zero]`. Establish `hmain : om (g, h) (Tm (pull a κ Φ)) = (((r : ℂ) * (r' : ℂ)⁻¹) * ((splitFacO χS χT x y : Circle) : ℂ)) • Tm (pull a κ (linOm v γ δ Φ))`. Rewrite using `[hom _ (hP.1 Φ hΦ), hsub, map_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Distinguish the cases in `hΦ0 : GlobalTheory.SplitWeil.ip ν Φ Φ = 0`. Establish `hz` using `hdef Φ hΦ hΦ0`. Substitute `hz` using the available equality. Establish `hG0 : pull a κ (linOm v γ δ 0) = 0`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[pull, hlin]`. Rewrite using `[hmain, hG0]`. Simplify using the standard rewrite rules. Establish `hF : IsThetaFunO ψ S T (Tm (pull a κ Φ))` using `(hloc _ (hP.1 Φ hΦ)).1`. Establish `h1 : ipO μ 𝓕 (om (g, h) (Tm (pull a κ Φ))) (om (g, h) (Tm (pull a κ Φ))) = ipO μ 𝓕 (Tm (pull a κ Φ)) (Tm (pull a κ Φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `ipO`. Conclude with `GlobalTheory.WeilInner.om_inner D ψ S T χS χT om hW μ 𝓕 hC (g, h) _ _ hF hF`. Rewrite `h1` using `[hmain, ipO_smul_smul]`. Establish `hΦL` using `((hU γ δ).2 Φ hΦ).1`. Establish `hunit` using `(((hU γ δ).2 Φ hΦ).2 ν hν).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `hIso Φ hΦ Φ hΦ`. Establish `e2` using `hIso _ hΦL _ hΦL`. Rewrite `e2` using `[hunit]`. Establish `hGF` using `mul_left_cancel₀ hvol (e2.trans e1.symm)`. Establish `hI : ipO μ 𝓕 (Tm (pull a κ Φ)) (Tm (pull a κ Φ)) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Apply `hΦ0` to reduce the goal to its premises. Rewrite using `[← e1, h0, mul_zero]`. Rewrite `h1` using `[hGF]`. Establish `hc` using `mul_right_cancel₀ hI (h1.trans (one_mul _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hχ : ((splitFacO χS χT x y : Circle) : ℂ) * (starRingEnd ℂ) ((splitFacO χS χT x y : Circle) : ℂ) = 1`. Rewrite using `[Complex.mul_conj, Circle.normSq_coe, Complex.ofReal_one]`. Rewrite `hc` using `[map_mul, map_mul, map_inv₀, Complex.conj_ofReal, Complex.conj_ofReal]`. Establish `hsq : ((r : ℂ) * (r' : ℂ)⁻¹) ^ 2 = 1`. Take the linear combination `hc - ((r : ℂ) * (r' : ℂ)⁻¹) ^ 2 * hχ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsqR : (r * r'⁻¹) ^ 2 = (1 : ℝ)` using `by exact_mod_cast hsq`. Establish `hq : r * r'⁻¹ = 1` using `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).mp hsqR`. Establish `hqC : (r : ℂ) * (r' : ℂ)⁻¹ = 1` using `by exact_mod_cast hq`. Rewrite using `[hmain, hqC, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem bijOn_and_om_linear : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsWeilDatumO ψ S T χS χT om → IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (v : FinPl D) (e a : AE D), IsSplitIdem D e → e + cA D e = idem D (.inl v) → (a = e ∨ a = cA D e) → ∀ (m n : ℕ) (κ : WO S T → Matrix (Fin m) (Fin n) (Fv D.host.F v)), IsCoord a (latO S T ΛS ΛT fun _ => True) κ → ∀ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → Set.BijOn (fun Φ => Tm (pull a κ Φ)) (GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v))) {f | IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) f} ∧ ∀ g h, SuppAt e S g → SuppAt e T h → ∀ x y, IsDetAt e S g x → IsDetAt e T h y → ∀ (γ : GL (Fin n) (Fv D.host.F v)) (δ : GL (Fin m) (Fv D.host.F v)), (∀ t, κ (actO S T g⁻¹ h⁻¹ t) = (δ⁻¹).val * κ t * γ.val) → ∀ Φ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin m) (Fin n) (Fv D.host.F v)), om (g, h) (Tm (pull a κ Φ)) = ((splitFacO χS χT x y : Circle) : ℂ) • Tm (pull a κ (linOm v γ δ Φ)) := by
   intro D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hC v e a he hev ha m n κ hκ Tm hTm

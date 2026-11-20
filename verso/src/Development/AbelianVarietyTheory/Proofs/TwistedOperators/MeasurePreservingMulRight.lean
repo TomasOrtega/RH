@@ -30,7 +30,7 @@ def infMatHom (V : HSp D) (φ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) 
   map_mul' := GlobalTheory.PointAtPlaceHom.infMat_mul V φ
 
 /- English proof (translation)
-The claim follows from `| [], _, h => by simp at h | x :: l, hn, h => by rw [List.map_cons, List.prod_cons] rw [List.nodup_cons] at hn by_cases hx : x = σ · subst hx rw [if_pos rfl, List.prod_eq_one, mul_one] intro y hy obtain ⟨z, hz, rfl⟩ := List.mem_map.1 hy exact if_neg fun (e : z = x) => hn.1 (e ▸ h …`.
+A detailed English derivation is pending.
 -/
 theorem list_prod_map_ite {α M : Type} [Monoid M] [DecidableEq α] (a : M) (σ : α) :
     ∀ l : List α, l.Nodup → σ ∈ l → (l.map fun ρ => if ρ = σ then a else 1).prod = a
@@ -53,13 +53,11 @@ def IsRealAll (θ : InfFam D) (V : HSp D) (M : D.what₂.Tau → Matrix (Fin V.r
 variable {θ : InfFam D} {V : HSp D}
 
 /- English proof (translation)
-Set `l` to `(Finset.univ : Finset D.what₂.Tau).toList`. Use `⟨(l.map fun ρ => atTau θ V ρ (M ρ)).prod, ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `Subgroup.list_prod_mem (GinfC V) fun x hx => ?_` and prove the remaining obligations. Take `⟨ρ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem V ρ (M ρ)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `map_list_prod (infMatHom V (θ σ)) (l.map fun ρ => atTau θ V ρ (M ρ))`. Rewrite `e` using `[List.map_map]`. Establish `key : ((infMatHom V (θ σ)) ∘ fun ρ => atTau θ V ρ (M ρ)) = fun ρ => if ρ = σ then M σ else 1`. Use function extensionality and compare the values at `ρ`. Establish `hs` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V ρ (hM ρ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hρ : ρ = σ`. Substitute `hρ` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `hs.2.1`. Rewrite using `[if_neg hρ]`.
-
-Conclude with `hs.2.2 σ (Ne.symm hρ)`. Rewrite `e` using `[key]`. Conclude with `e.trans (list_prod_map_ite _ _ l (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ _)))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRealAll (hθ : IsInfFam θ) (M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hM : ∀ ρ, M ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) : ∃ h, IsRealAll θ V M h := by
@@ -84,9 +82,9 @@ theorem exists_isRealAll (hθ : IsInfFam θ) (M : D.what₂.Tau → Matrix (Fin 
     exact e.trans (list_prod_map_ite _ _ l (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ _)))
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `k : ∀ ρ, infMat D.sp.cm.sig V.gram (θ ρ) (h' * h⁻¹) = 1` using `fun ρ => by`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, hh'.2 ρ, ← hh.2 ρ, ← GlobalTheory.PointAtPlaceHom.infMat_mul, mul_inv_cancel, GlobalTheory.PointAtPlaceHom.infMat_one]`. Establish `hc : IsAtTau θ V τ 1 (h' * h⁻¹)` using `⟨mul_mem hh'.1 (inv_mem hh.1), k τ, fun ρ _ => k ρ⟩`. Establish `h1 : IsAtTau θ V τ 1 (1 : GA D V)` using `⟨one_mem _, GlobalTheory.PointAtPlaceHom.infMat_one V _, fun _ _ => GlobalTheory.PointAtPlaceHom.infMat_one V _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(GlobalTheory.PointAtPlace.existsUnique_isAtTau V τ θ hθ 1 (GlobalTheory.PointAtPlaceHom.one_mem_UH _)).unique hc h1`. Conclude with `(mul_inv_eq_one.1 e).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsRealAll.unique (hθ : IsInfFam θ) {M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {h h' : GA D V}
     (hh : IsRealAll θ V M h) (hh' : IsRealAll θ V M h') : h = h' := by
@@ -107,7 +105,7 @@ def realAll (M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) : GA D 
   if h : ∃ x, IsRealAll θ V M x then h.choose else 1
 
 /- English proof (translation)
-Unfold `realAll`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem realAll_mem (M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) : realAll θ V M ∈ GinfC V := by
   unfold realAll
@@ -116,7 +114,7 @@ theorem realAll_mem (M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
   · exact one_mem _
 
 /- English proof (translation)
-Establish `h` using `exists_isRealAll hθ M hM`. Unfold `realAll`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAll_spec (hθ : IsInfFam θ) {M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hM : ∀ ρ, M ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) : IsRealAll θ V M (realAll θ V M) := by
@@ -126,27 +124,27 @@ theorem realAll_spec (hθ : IsInfFam θ) {M : D.what₂.Tau → Matrix (Fin V.ra
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `(realAll_spec hθ hM).unique hθ hh`.
+A detailed English derivation is pending.
 -/
 theorem realAll_eq (hθ : IsInfFam θ) {M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hM : ∀ ρ, M ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) {h : GA D V} (hh : IsRealAll θ V M h) : realAll θ V M = h :=
   (realAll_spec hθ hM).unique hθ hh
 
 /- English proof (translation)
-The claim follows from `(realAll_spec hθ hM).2 ρ`.
+A detailed English derivation is pending.
 -/
 theorem compAt_realAll (hθ : IsInfFam θ) {M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hM : ∀ ρ, M ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) (ρ : D.what₂.Tau) : compAt θ ρ (mt V (realAll θ V M)) = M ρ :=
   (realAll_spec hθ hM).2 ρ
 
 /- English proof (translation)
-The claim follows from `realAll_eq hθ (fun _ => GlobalTheory.PointAtPlaceHom.one_mem_UH _) ⟨one_mem _, fun _ => GlobalTheory.PointAtPlaceHom.infMat_one V _⟩`.
+A detailed English derivation is pending.
 -/
 theorem realAll_one (hθ : IsInfFam θ) : realAll θ V 1 = 1 :=
   realAll_eq hθ (fun _ => GlobalTheory.PointAtPlaceHom.one_mem_UH _) ⟨one_mem _, fun _ => GlobalTheory.PointAtPlaceHom.infMat_one V _⟩
 
 /- English proof (translation)
-Use `realAll_eq hθ (fun ρ => GlobalTheory.PointAtPlaceHom.mul_mem_UH (hM ρ) (hM' ρ)) ⟨mul_mem (realAll_spec hθ hM).1 (realAll_spec hθ hM').1, fun ρ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, (realAll_spec hθ hM).2 ρ, (realAll_spec hθ hM').2 ρ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem realAll_mul (hθ : IsInfFam θ) {M M' : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hM : ∀ ρ, M ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) (hM' : ∀ ρ, M' ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) :
@@ -158,11 +156,11 @@ theorem realAll_mul (hθ : IsInfFam θ) {M M' : D.what₂.Tau → Matrix (Fin V.
 open Classical in
 
 /- English proof (translation)
-Establish `hM1 : ∀ ρ, Function.update M τ 1 ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)` using `fun ρ => by`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `GlobalTheory.PointAtPlaceHom.one_mem_UH _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne h]`. Conclude with `hM ρ`. Establish `hs` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ (hM τ)`. Use `realAll_eq hθ hM ⟨mul_mem (GlobalTheory.PointAtPlaceHom.atTau_mem V τ _) (realAll_spec hθ hM1).1, fun ρ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, (realAll_spec hθ hM1).2 ρ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Rewrite using `[hs.2.1, Function.update_self, Matrix.mul_one]`. Rewrite using `[hs.2.2 ρ h, Function.update_of_ne h, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAll_eq_atTau_mul (hθ : IsInfFam θ) {M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hM : ∀ ρ, M ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) (τ : D.what₂.Tau) :
@@ -192,11 +190,9 @@ namespace GlobalTheory.RowReal
 section Unitary
 
 /- English proof (translation)
-Establish `hd : IsUnit B.det` using `Matrix.isUnit_det_of_left_inverse hB`. Establish `h1 : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `h2 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `hu' : uᴴ * u = 1` using `Matrix.mem_unitaryGroup_iff'.1 hu`. Establish `hG : G = (B⁻¹)ᴴ * B⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show (B * u * B⁻¹)ᴴ * G * (B * u * B⁻¹) = G`. Rewrite using `[hG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = (B⁻¹)ᴴ * B⁻¹ := by rw [h2, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hu', Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_UH {n : ℕ} {G B u : Matrix (Fin n) (Fin n) ℂ} (hB : Bᴴ * G * B = 1)
     (hu : u ∈ Matrix.unitaryGroup (Fin n) ℂ) : B * u * B⁻¹ ∈ Formalism.QuantumDeterminants.UH G := by
@@ -225,7 +221,7 @@ def PosOnb (W : G.Weil) (X : Node) : Prop :=
   ∀ τ, (W.onb X τ)ᴴ * gramAt D (G.V X) τ * W.onb X τ = 1
 
 /- English proof (translation)
-Introduce `τ` and use `by obtain ⟨ε, h1, -⟩ := W.onb_is X hX.inRange τ have hc := GlobalTheory.GridJoin.card_false_of_gram (hX.sigOK G) τ h1 rw [h0 τ, Finset.card_eq_zero, Finset.filter_eq_empty_iff] at hc have hJ : Formalism.REAL.Jm ε = 1 := by rw [Formalism.REAL.Jm, ← Matrix.diagonal_one] congr 1; fu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posOnb_of_sig (W : G.Weil) {X : Node} (hX : DefNode D.R.m X) (h0 : ∀ τ, ((G.V X).sig (tauE D τ)).2 = 0) :
     PosOnb W X := fun τ => by
@@ -240,7 +236,7 @@ theorem posOnb_of_sig (W : G.Weil) {X : Node} (hX : DefNode D.R.m X) (h0 : ∀ �
   rw [h1, hJ]
 
 /- English proof (translation)
-The claim follows from `posOnb_of_sig W hX fun τ => by rw [(defNode_isV G μ0 hL X hX).sig (tauE D τ)]`.
+A detailed English derivation is pending.
 -/
 theorem posOnb_of_defNode (W : G.Weil) (μ0 : T) (hL : L.Is μ0) {X : Node} (hX : DefNode D.R.m X) : PosOnb W X :=
   posOnb_of_sig W hX fun τ => by rw [(defNode_isV G μ0 hL X hX).sig (tauE D τ)]
@@ -250,7 +246,7 @@ def castU {n n' : ℕ} (h : n = n') : Matrix.unitaryGroup (Fin n) ℂ →* Matri
   exact MonoidHom.id _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castU_coe {n n' : ℕ} (h : n = n') (u : Matrix.unitaryGroup (Fin n) ℂ) :
     ((castU h u : Matrix.unitaryGroup (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) =
@@ -263,14 +259,14 @@ def onbConj (W : G.Weil) (X : Node) (u : UG D.what₂.Tau (G.V X).rank) (τ : D.
   W.onb X τ * (u τ : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ) * (W.onb X τ)⁻¹
 
 /- English proof (translation)
-The claim follows from `conj_mem_UH (hX τ) (u τ).2`.
+A detailed English derivation is pending.
 -/
 theorem onbConj_mem {W : G.Weil} {X : Node} (hX : PosOnb W X) (u : UG D.what₂.Tau (G.V X).rank) (τ : D.what₂.Tau) :
     onbConj W X u τ ∈ Formalism.QuantumDeterminants.UH (gramAt D (G.V X) τ) :=
   conj_mem_UH (hX τ) (u τ).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hd : IsUnit (W.onb X τ).det` using `Matrix.isUnit_det_of_left_inverse (hX τ)`. Simplify using `only [onbConj, Pi.one_apply, OneMemClass.coe_one, Matrix.mul_one]`. Conclude with `Matrix.mul_nonsing_inv _ hd`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem onbConj_one {W : G.Weil} {X : Node} (hX : PosOnb W X) : onbConj W X 1 = 1 := by
   funext τ
@@ -279,9 +275,9 @@ theorem onbConj_one {W : G.Weil} {X : Node} (hX : PosOnb W X) : onbConj W X 1 = 
   exact Matrix.mul_nonsing_inv _ hd
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hd : IsUnit (W.onb X τ).det` using `Matrix.isUnit_det_of_left_inverse (hX τ)`. Establish `h2 : (W.onb X τ)⁻¹ * W.onb X τ = 1` using `Matrix.nonsing_inv_mul _ hd`. Simplify using `only [onbConj, Pi.mul_apply, Submonoid.coe_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem onbConj_mul {W : G.Weil} {X : Node} (hX : PosOnb W X) (u v : UG D.what₂.Tau (G.V X).rank) :
     onbConj W X (u * v) = onbConj W X u * onbConj W X v := by
@@ -310,7 +306,7 @@ def vtxPt (W : G.Weil) (X : Node) : UG D.what₂.Tau (G.V X).rank →* GA D (G.V
     · rw [mul_one]
 
 /- English proof (translation)
-Simplify using `only [vtxPt, MonoidHom.coe_mk, OneHom.coe_mk]`. Conclude with `if_pos hX`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vtxPt_eq {W : G.Weil} {X : Node} (hX : PosOnb W X) (u : UG D.what₂.Tau (G.V X).rank) :
     vtxPt W X u = realAll W.θ (G.V X) (onbConj W X u) := by
@@ -318,14 +314,14 @@ theorem vtxPt_eq {W : G.Weil} {X : Node} (hX : PosOnb W X) (u : UG D.what₂.Tau
   exact if_pos hX
 
 /- English proof (translation)
-Simplify using `only [vtxPt, MonoidHom.coe_mk, OneHom.coe_mk]`. Conclude with `if_neg hX`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vtxPt_of_not {W : G.Weil} {X : Node} (hX : ¬ PosOnb W X) (u : UG D.what₂.Tau (G.V X).rank) : vtxPt W X u = 1 := by
   simp only [vtxPt, MonoidHom.coe_mk, OneHom.coe_mk]
   exact if_neg hX
 
 /- English proof (translation)
-Distinguish the cases in `h : PosOnb W X`. Rewrite using `[vtxPt_eq h]`. Conclude with `realAll_mem _`. Rewrite using `[vtxPt_of_not h]`. Conclude with `one_mem _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vtxPt_mem (W : G.Weil) (X : Node) (u : UG D.what₂.Tau (G.V X).rank) : vtxPt W X u ∈ GinfC (G.V X) := by
   by_cases h : PosOnb W X
@@ -333,7 +329,7 @@ theorem vtxPt_mem (W : G.Weil) (X : Node) (u : UG D.what₂.Tau (G.V X).rank) : 
   · rw [vtxPt_of_not h]; exact one_mem _
 
 /- English proof (translation)
-Rewrite using `[vtxPt_eq hX]`. Conclude with `compAt_realAll W.θ_is (onbConj_mem hX u) τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_vtxPt {W : G.Weil} {X : Node} (hX : PosOnb W X) (u : UG D.what₂.Tau (G.V X).rank) (τ : D.what₂.Tau) :
     compAt W.θ τ (mt (G.V X) (vtxPt W X u)) =
@@ -364,7 +360,7 @@ def colU (i : Fin (D.R.m + 1)) : Gc D.what₂.Tau (rowSizes D) →* UG D.what₂
     ((Pi.evalMonoidHom (fun i : Fin ((rowSizes D).m + 1) => UG D.what₂.Tau ((rowSizes D).nC i)) i).comp (MonoidHom.snd _ _))
 
 /- English proof (translation)
-The claim follows from `castU_coe _ _`.
+A detailed English derivation is pending.
 -/
 theorem rowU_coe (g : Gc D.what₂.Tau (rowSizes D)) (j : Fin D.R.m) (τ : D.what₂.Tau) :
     ((rowU G j g τ : Matrix.unitaryGroup (Fin (G.V (.top j)).rank) ℂ) : Matrix (Fin (G.V (.top j)).rank) (Fin (G.V (.top j)).rank) ℂ) =
@@ -373,7 +369,7 @@ theorem rowU_coe (g : Gc D.what₂.Tau (rowSizes D)) (j : Fin D.R.m) (τ : D.wha
   castU_coe _ _
 
 /- English proof (translation)
-The claim follows from `castU_coe _ _`.
+A detailed English derivation is pending.
 -/
 theorem colU_coe (g : Gc D.what₂.Tau (rowSizes D)) (i : Fin (D.R.m + 1)) (τ : D.what₂.Tau) :
     ((colU G i g τ : Matrix.unitaryGroup (Fin (G.V (.grid i D.R.m)).rank) ℂ) :
@@ -400,19 +396,19 @@ theorem kappa_snd (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (i : Fin (D.R
     (kappa W g).2 i = vtxPt W (.grid i D.R.m) (colU G i g) := rfl
 
 /- English proof (translation)
-The claim follows from `vtxPt_mem _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem kappa_fst_mem (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (j : Fin D.R.m) :
     (kappa W g).1 j ∈ GinfC (G.V (.top j)) := vtxPt_mem _ _ _
 
 /- English proof (translation)
-The claim follows from `vtxPt_mem _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem kappa_snd_mem (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (i : Fin (D.R.m + 1)) :
     (kappa W g).2 i ∈ GinfC (G.V (.grid i D.R.m)) := vtxPt_mem _ _ _
 
 /- English proof (translation)
-Rewrite using `[kappa_fst, compAt_vtxPt hW, rowU_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_kappa_fst {W : G.Weil} (g : Gc D.what₂.Tau (rowSizes D)) (j : Fin D.R.m) (hW : PosOnb W (.top j))
     (τ : D.what₂.Tau) : compAt W.θ τ (mt (G.V (.top j)) ((kappa W g).1 j)) =
@@ -421,7 +417,7 @@ theorem compAt_kappa_fst {W : G.Weil} (g : Gc D.what₂.Tau (rowSizes D)) (j : F
   rw [kappa_fst, compAt_vtxPt hW, rowU_coe]
 
 /- English proof (translation)
-Rewrite using `[kappa_snd, compAt_vtxPt hW, colU_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_kappa_snd {W : G.Weil} (g : Gc D.what₂.Tau (rowSizes D)) (i : Fin (D.R.m + 1))
     (hW : PosOnb W (.grid i D.R.m)) (τ : D.what₂.Tau) : compAt W.θ τ (mt (G.V (.grid i D.R.m)) ((kappa W g).2 i)) =
@@ -442,7 +438,7 @@ def kappaTop (W : G.Weil) : Gc D.what₂.Tau (rowSizes D) →* GA D (G.V (.top D
     exact GlobalTheory.RealType.unitaryEmbedding_mul G.sp.topDec _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealType.Emb_mem_inf G.sp.topDec (kappa_snd_mem W g (Fin.last D.R.m))`.
+A detailed English derivation is pending.
 -/
 theorem kappaTop_mem (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) : kappaTop W g ∈ GinfC (G.V (.top D.R.m)) :=
   GlobalTheory.RealType.Emb_mem_inf G.sp.topDec (kappa_snd_mem W g (Fin.last D.R.m))
@@ -460,11 +456,9 @@ section Measure
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -, -, -⟩` from `GlobalTheory.RealMeasOne.ginfC_facts V`. Use `haveI := hμ.1`. Establish `h` using `Measure.map_right_mul_eq_modularCharacterFun_smul μ k`. Establish `hT : μ (K.comap (Lev.finE V) : Set (GA D V)) = 1` using `GlobalTheory.Mass.Levels.measure_comap_finE hμ`. Establish `hkT : k ∈ K.comap (Lev.finE V)` using `hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : μ.map (fun g => g * k) (K.comap (Lev.finE V) : Set (GA D V)) = 1`. Rewrite using `[show (fun g : GA D V => g * k) = ⇑(MeasurableEquiv.mulRight k) from rfl, MeasurableEquiv.map_apply, show ⇑(MeasurableEquiv.mulRight k) ⁻¹' (K.comap (Lev.finE V) : Set (GA D V)) = K.comap (Lev.finE V) from Set.ext fun x => (K.comap (Lev.finE V)).mul_mem_cancel_right hkT]`. Conclude with `hT`. Rewrite `e1` using `[h, Measure.coe_nnreal_smul_apply, hT, mul_one]`. Establish `h1 : Measure.modularCharacterFun k = 1` using `by exact_mod_cast e1`.
-
-Rewrite using `[h, h1, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_of_finE {V : HSp D} {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} {μ : Measure (GA D V)}
     (hμ : Lev.IsMeasLevDef V K μ) {k : GA D V} (hk : Lev.finE V k ∈ K) : μ.map (fun g => g * k) = μ := by
@@ -485,7 +479,7 @@ theorem map_mul_right_of_finE {V : HSp D} {K : Subgroup (GL (Fin V.rank) (Lev.EA
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Take `⟨-, rfl⟩` from `hX`. Simplify using `[Node.neg]`. Conclude with `hX.elim`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem neg_eq_zero_of_defNode {X : Node} (hX : DefNode D.R.m X) : X.neg D.R.m = 0 := by
   rcases X with ⟨i, j⟩ | i | j
@@ -495,9 +489,9 @@ theorem neg_eq_zero_of_defNode {X : Node} (hX : DefNode D.R.m X) : X.neg D.R.m =
   · rfl
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -, -, -⟩` from `GlobalTheory.RealMeasOne.ginfC_facts (G.V X)`. Establish `hd : IsMeasDef (G.V X) K (M.ν X) (M.fd X)`. Unfold `Vol.IsAt at hM`. Rewrite `hM` using `[if_pos hX]`. Then use the resulting hypothesis. Establish `hfin : Lev.finE (G.V X) k = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : finHom (G.V X) k = 1` using `hk`. Simplify using `only [Lev.finE, MonoidHom.comp_apply, h1, map_one]`. Conclude with `⟨measurable_mul_const k, map_mul_right_of_finE hd.1 (by rw [hfin]; exact one_mem K)⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem measurePreserving_mul_right {M : Vol G} {X : Node} {K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))}
     (hM : M.IsAt X K) (hX : X.neg D.R.m = 0) {k : GA D (G.V X)} (hk : k ∈ GinfC (G.V X)) :
@@ -512,14 +506,14 @@ theorem measurePreserving_mul_right {M : Vol G} {X : Node} {K : Subgroup (GL (Fi
   exact ⟨measurable_mul_const k, map_mul_right_of_finE hd.1 (by rw [hfin]; exact one_mem K)⟩
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -, -, -⟩` from `GlobalTheory.RealMeasOne.ginfC_facts (G.V X)`. Conclude with `measurable_mul_const k⁻¹`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measurable_mul_inv_right (X : Node) (k : GA D (G.V X)) : Measurable (fun g : GA D (G.V X) => g * k⁻¹) := by
   obtain ⟨i1, i2, i3, i4, i5, -, -, -⟩ := GlobalTheory.RealMeasOne.ginfC_facts (G.V X)
   exact measurable_mul_const k⁻¹
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨measurePreserving_mul_right hM rfl (kappa_fst_mem W g j), measurable_mul_inv_right _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem kappa_fst_move (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (j : Fin D.R.m) {M : Vol G}
     {K : Subgroup (GL (Fin (G.V (.top j)).rank) (Lev.EAf D))} (hM : M.IsAt (.top j) K) :
@@ -528,7 +522,7 @@ theorem kappa_fst_move (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (j : Fin
   ⟨measurePreserving_mul_right hM rfl (kappa_fst_mem W g j), measurable_mul_inv_right _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨measurePreserving_mul_right hM (neg_eq_zero_of_defNode (X := .grid i D.R.m) ⟨Nat.lt_succ_iff.1 i.2, rfl⟩) (kappa_snd_mem W g i), measurable_mul_inv_right _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem kappa_snd_move (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (i : Fin (D.R.m + 1)) {M : Vol G}
     {K : Subgroup (GL (Fin (G.V (.grid i D.R.m)).rank) (Lev.EAf D))} (hM : M.IsAt (.grid i D.R.m) K) :
@@ -549,7 +543,7 @@ section Inhabit
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealType.archM_Emb G.sp.topDec W.θ_is _ τ`.
+A detailed English derivation is pending.
 -/
 theorem archM_kappaTop (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (τ : D.what₂.Tau) :
     Formalism.L2.Pj.archM (G.V (.top D.R.m)) (W.θ τ) (kappaTop W g) *

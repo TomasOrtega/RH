@@ -39,11 +39,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesisBundleCon
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Introduce `hN hX`. Establish `hS` using `GlobalTheory.SerStdFit.seriesRat_of_seriesRatS`. Take `⟨hLoc, hA, hCo, ⟨hToric, -, hT, -, -⟩, -⟩` from `hN`. Take `⟨hL, hPr⟩` from `GlobalTheory.Mem.LiteralAutomorphy.localLanglandsGL_and_prN_of_lit hLoc hA`. Establish `hRatio` using `GlobalTheory.ToricRatioBridge.ratioConj_of_toricRatioConjugates (GlobalTheory.ToricTransport.toricRatioConjugates_of_transport hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hkInt, hkTr, hkRead⟩` from `GlobalTheory.HeckeMember.heckeInt_transform_readTie`. Take `⟨hRS, hInt⟩` from `GlobalTheory.seriesRatS_and_serInt_of_globalArtin hA.art`. Establish `hSer : SerN` using `⟨hS hRS, hInt, hkInt, hkTr, hkRead, hRatio⟩`. Establish `hE : HypE`. Take `⟨hCheb, hDeg1, -, hTC, hCD, hTame, hAdm4, hRay⟩` from `GlobalTheory.twist_front_inputs (GlobalTheory.PoitouTateConj.poitouTateDuality_of_normalised hCo.pt) hCo.lf hCo.lt hCo.lfK hCo.ltK hCo.leK hA.art`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `{ e1 := hCheb, e2 := hTC, e3 := hCD, e4 := hTame, e5 := hCo.lf, e6 := hCo.lt, e7 := hCo.le, e8 := hCo.gf, e9 := hCo.ge, e10 := hCo.uo, e11 := hAdm4, e12 := hCo.gw, e13 := hRay, e14 := hDeg1, e15 := hToric, e16 := hSer.rat, e17 := hSer.int, e18 := hSer.hkInt, e19 := hSer.hkTr, e20 …`. Conclude with `⟨hE, hPr, hSer, hL, hPr, hSer, GlobalTheory.ArchFromLit.archCmp_of_lit hLoc hA hL, GlobalTheory.HeightCounting.Up.parSt_of_prN_sMt hPr (GlobalTheory.MtInMain.prN_sMt hPr) hL, GlobalTheory.HeightCounting.Up.pointStatements_of_hypotheses hPr hX hL, GlobalTheory.HeightCounting.Up.go …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MemberClose.hyps_of_litNE : LitNE → GlobalTheory.NRows.HypothesesX → HypE ∧ PrN ∧ SerN ∧ ∃ hL : GlobalTheory.Published.LocalLanglandsGL, HypN hL := by
   intro hN hX

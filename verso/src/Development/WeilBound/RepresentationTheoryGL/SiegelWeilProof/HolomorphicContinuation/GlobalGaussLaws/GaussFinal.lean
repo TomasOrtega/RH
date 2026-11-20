@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `gaussLaw_of' (vacK_of gZSch (lawN_of unipTau (tensInj_of awayIn)) (lawNbar_of unipTau hW hF (tensInj_of awayIn) lNe) (locMul_of (tensInj_of awayIn)) lNe) gZSch`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_law_of_weil (hW : WEx) (hF : FTfact) : GaussLaw :=
   gaussLaw_of' (vacK_of gZSch (lawN_of unipTau (tensInj_of awayIn))

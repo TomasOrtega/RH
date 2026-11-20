@@ -26,7 +26,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
   (j : Fin D.R.m)
 
 /- English proof (translation)
-Simplify using `only [embC, embS, RingHom.comp_apply, sideK_eKs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem embC_eKs (a : S.Ks) : embC YS iC b (eKs YS a) = embS S iC b a := by
   simp only [embC, embS, RingHom.comp_apply, sideK_eKs]
@@ -37,7 +37,7 @@ def locBall : Set (NX.FmK S ((j : ℕ) + 1)) :=
 
 variable {iC b} in
 /- English proof (translation)
-Rewrite using `[cuspOf_smul, Submodule.coe_smul, valC_smul, embC_eKs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valC_cuspOf_smul (z : FrC YS iC b ((j : ℕ) + 1)) (a : S.Ks) (f : NX.FmK S ((j : ℕ) + 1)) :
     valC z (cuspOf YS fw j (a • f) : T0.R ((j : ℕ) + 1)) = embS S iC b a * valC z (cuspOf YS fw j f : T0.R ((j : ℕ) + 1)) := by

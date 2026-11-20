@@ -13,7 +13,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
   IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Introduce `hF hJ hL D P`. Use `GlobalTheory.CuspRep.host_isCMField D.host` as an intermediate fact. Conclude with `GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hJ.1 (_root_.GlobalTheory.HeightCounting.Blocks.readsCusp_alt hF P.cg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isobaricRigid_of_pin_alt : GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.JacquetShalika →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), IsobaricRigid D.nd D.naut := by

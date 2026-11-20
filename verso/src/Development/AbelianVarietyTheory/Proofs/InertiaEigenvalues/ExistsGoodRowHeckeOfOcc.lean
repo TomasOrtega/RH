@@ -33,7 +33,7 @@ def OccGood (D : D7) : Prop :=
   ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ : D.what₂.FT, D.what₂.isot j σ ≠ ⊥ → D.nd.goodRow σ
 
 /- English proof (translation)
-Introduce `_ _ _ σ _` and use `h σ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem occGood_of_all (D : D7) (h : GoodFTAll D) : OccGood D := fun _ _ _ σ _ => h σ
 
@@ -70,16 +70,16 @@ def readW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) :
   (R.HW i (sg0 D A3.A)).e ∘ₗ Y.mj.eW i
 
 /- English proof (translation)
-The claim follows from `(Y.mjRead i y).symm`.
+A detailed English derivation is pending.
 -/
 theorem lift_readW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) (y : D.what₂.Mj ((i : ℕ) + 1)) :
     PiTensorProduct.lift (readW Y i y) = (Y.IL.jMj i y).1 :=
   (Y.mjRead i y).symm
 
 /- English proof (translation)
-Rewrite using `[Y.tied.lift.isot, Y.prtWE, ← lift_readW]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.lift (readW Y i y) ∈ (partR Y i σ).map (PiTensorProduct.lift : Formalism.IndefR.Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).toLinearMap ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, e⟩` from `Submodule.mem_map.1 h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h'` using `(PiTensorProduct.lift : Formalism.IndefR.Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).injective e`. Rewrite `ha` using `[h']`. Conclude with `ha`. Introduce `h`. Conclude with `Submodule.mem_map_of_mem h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_isot_iff (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) (σ : D.what₂.FT) (y : D.what₂.Mj ((i : ℕ) + 1)) :
     y ∈ D.what₂.isot ((i : ℕ) + 1) σ ↔ readW Y i y ∈ partR Y i σ := by
@@ -96,7 +96,7 @@ theorem mem_isot_iff (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) (σ : D.what�
     exact Submodule.mem_map_of_mem h
 
 /- English proof (translation)
-Use `⟨(Y.IL.jMj i).symm ⟨PiTensorProduct.lift x, Submodule.mem_map_of_mem hx⟩, ?_⟩` and prove the remaining obligations. Apply `(PiTensorProduct.lift : Formalism.IndefR.Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).injective` to reduce the goal to its premises. Rewrite using `[lift_readW, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_readW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) {x : Formalism.IndefR.Mult.MMap (R.MW i (sg0 D A3.A))}
     (hx : x ∈ goodW R F i) : ∃ y, readW Y i y = x := by
@@ -152,11 +152,9 @@ def sphEig (Q : principalLevelFrame.RowPsi V n) (π : Formalism.L2.NG.FinTyp D.h
   if h : ∃ a, ActsOnSph Q π P d a then h.choose else 0
 
 /- English proof (translation)
-Establish `h : ∃ a, ActsOnSph Q π P d a`. Distinguish the cases in `hB : ∃ B, SphOp V P d B`. Take `⟨B, hB⟩` from `hB`. Take `⟨a, ha⟩` from `GlobalTheory.SphScalar.spherical_scalar hF Q hQ π P d B hB`. Use `⟨a, fun B' hB' x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.RowEig.heckeOperator_eq_of_spherical Q P d B' B hB' hB x hx.2]`. Conclude with `ha x hx.1 hx.2`. Conclude with `⟨0, fun B h => (hB ⟨B, h⟩).elim⟩`. Unfold `sphEig`. Rewrite using `[dif_pos h]`.
-
-Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsOnSph_sphEig {hF : D.host.F = maximalRealSubfield D.host.E} {Q : principalLevelFrame.RowPsi V n} (hQ : StdPsi hF Q)
     (π : Formalism.L2.NG.FinTyp D.host.E n) (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ) :
@@ -177,9 +175,9 @@ variable {Sp : D.what₂.Tau → SPar} {θ : D.what₂.Tau → (Ainf D.host.F �
   {J : Set (GA D V)} {χ : GA D V → ℂ} {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))}
 
 /- English proof (translation)
-Introduce `k hk`. Take `⟨e, f, ϖ, α, -, hP, -, -, -, hJ, hχ, -⟩` from `hB`. Rewrite `hk` using `[GlobalTheory.SphLabelOps.hyp_eq hP]`. Establish `h1 : k ∈ J` using `(hJ k hk.2).2 hk.1`. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Use function extensionality and compare the values at `g`. Use `show U v (g * k) = U v g`. Rewrite using `[principalLevelFrame.mult_lev hU v k h1 g, hχ k h1 hk.2, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_of_full {P : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ} {B : Finset (GA D V)}
     (hB : Hecke₂ V J χ Sb P d B) {U : MMap M} (hU : U ∈ Mult θ M J χ) :
@@ -195,9 +193,9 @@ theorem fixed_of_full {P : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ} {B 
   rw [principalLevelFrame.mult_lev hU v k h1 g, hχ k h1 hk.2, one_mul]
 
 /- English proof (translation)
-Introduce `U hU`. Establish `hM : U ∈ Mult θ M J χ` using `hU.1.1`. Use `Submodule.mem_inf.2 ⟨hM, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `P d B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS` using `GlobalTheory.RowEig.sph_of_full hB`. Conclude with `GlobalTheory.IsotSph.hecke_eq_smul_of_isot hF Q hQ θ M π P d B _ hS (fun x hx hf => actsOnSph_sphEig hQ π P d B hS x ⟨hx, hf⟩) U hU.2 (fixed_of_full hB hM)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isotL_le_partFull {hF : D.host.F = maximalRealSubfield D.host.E} {Q : principalLevelFrame.RowPsi V n} (hQ : StdPsi hF Q)
     (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (π : Formalism.L2.NG.FinTyp D.host.E n) :
@@ -212,7 +210,7 @@ theorem isotL_le_partFull {hF : D.host.F = maximalRealSubfield D.host.E} {Q : pr
     (fun x hx hf => actsOnSph_sphEig hQ π P d B hS x ⟨hx, hf⟩) U hU.2 (fixed_of_full hB hM)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Take `⟨U, hU, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `key : ∀ a : ℂ, heckeOn M B U = a • U` using `fun a => GlobalTheory.IsotSph.hecke_eq_smul_of_isot hF Q hQ θ M π P d B a (GlobalTheory.RowEig.sph_of_full hB) (fun x hx hf => by rw [hn x ⟨hx, hf⟩, map_zero, smul_zero]) U hU.2 (fixed_of_full hB hU.1.1)`. Conclude with `h0 (by rw [← one_smul ℂ U, ← key 1, key 0, zero_smul])`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sphVec {hF : D.host.F = maximalRealSubfield D.host.E} {Q : principalLevelFrame.RowPsi V n} (hQ : StdPsi hF Q)
     {e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)} {π : Formalism.L2.NG.FinTyp D.host.E n} (h : principalLevelFrame.isotL θ Q M J χ e π ≠ ⊥)
@@ -227,7 +225,7 @@ theorem exists_sphVec {hF : D.host.F = maximalRealSubfield D.host.E} {Q : princi
   exact h0 (by rw [← one_smul ℂ U, ← key 1, key 0, zero_smul])
 
 /- English proof (translation)
-Use `(Submodule.mem_inf.1 hx).2` as an intermediate fact. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at this`. Conclude with `this P d B h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeOn_of_mem_partFull {c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ} {x : MMap M}
     (hx : x ∈ partFull θ M J χ Sb c) {P : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ} {B : Finset (GA D V)}
@@ -255,9 +253,9 @@ def IsDiagOpAt (J : Set (GA D V)) (χ : GA D V → ℂ) (S : Finset (HeightOneSp
     IsCosetRep V (locPart V J e) α B
 
 /- English proof (translation)
-Take `⟨e, ϖ, α, hS, he, hϖ, hϖ2, hk, hJ, hχ, hα, hR, hC⟩` from `h`. Establish `h0 : (ϖ : D.host.E) ≠ 0` using `fun h => hϖ2 (by`. Rewrite using `[show ϖ = 0 from RingOfIntegers.coe_eq_zero_iff.1 h]`. Conclude with `zero_mem _)`. Establish `hD` using `(GlobalTheory.DivDual.divAt_inv_and_mul V e _ _ _ he.1.1 h0 (GlobalTheory.SplitHeckeLabel.divAt_inv V e P he ϖ hϖ hϖ2 k hk α hα)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hD` using `[inv_inv, show dualLab (splitLab V.rank k) = diagLab V.rank k by simp [dualLab, splitLab, diagLab]]`. Conclude with `⟨e, e + cA D e, ϖ, α, hS, Or.inl ⟨he, rfl⟩, hϖ, hϖ2, by simp [diagLab, List.pairwise_append, List.pairwise_replicate], hJ, hχ, hα.2.1, hD, hR, hC⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsDiagOpAt.full {P : HeightOneSpectrum (𝓞 D.host.E)} {k : ℕ} {B : Finset (GA D V)}
     (h : IsDiagOpAt V J χ Sb P k B) : Hecke₂ V J χ Sb P (diagLab V.rank k) B := by
@@ -290,12 +288,12 @@ def rowEig (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) (σ : D.what₂.FT) (P :
   sphEig (Y.PW i) (typeR Y σ) P d
 
 /- English proof (translation)
-The claim follows from `Y.stdPsi.2 i`.
+A detailed English derivation is pending.
 -/
 theorem stdPsi_PW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) : GlobalTheory.StdFrame.StdPsi Y.hF (Y.PW i) := Y.stdPsi.2 i
 
 /- English proof (translation)
-The claim follows from `isotL_le_partFull (stdPsi_PW Y i) _ _`.
+A detailed English derivation is pending.
 -/
 theorem partR_le_partFull (Y : Read (A3 := A3) R F X0) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (i : Fin D.R.m)
     (σ : D.what₂.FT) :
@@ -303,13 +301,13 @@ theorem partR_le_partFull (Y : Read (A3 := A3) R F X0) (Sb : Finset (HeightOneSp
   isotL_le_partFull (stdPsi_PW Y i) _ _
 
 /- English proof (translation)
-Introduce `y y' h` and use `(Y.IL.jMj i).injective (Subtype.ext (by rw [← lift_readW, ← lift_readW, h]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem readW_injective (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) : Function.Injective (readW Y i) := fun y y' h =>
   (Y.IL.jMj i).injective (Subtype.ext (by rw [← lift_readW, ← lift_readW, h]))
 
 /- English proof (translation)
-Take `⟨y, hy, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Introduce `e`. Use `(mem_isot_iff Y i σ y).1 hy` as an intermediate fact. Rewrite `this` using `[e, Submodule.mem_bot]`. Conclude with `h0 (readW_injective Y i (this.trans (map_zero _).symm))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partR_ne_bot (Y : Read (A3 := A3) R F X0) {i : Fin D.R.m} {σ : D.what₂.FT} (h : D.what₂.isot ((i : ℕ) + 1) σ ≠ ⊥) :
     partR Y i σ ≠ ⊥ := by
@@ -323,18 +321,18 @@ abbrev levTriv (R : RealDat D A3.A Ks) (i : Fin D.R.m) : Subgroup (GA D (Wc D i)
   levG (Wc D i) (R.βW i) (R.datWp i R.triv)
 
 /- English proof (translation)
-The claim follows from `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+A detailed English derivation is pending.
 -/
 theorem rank_Wc (i : Fin D.R.m) : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
 
 /- English proof (translation)
-Take `⟨e, ϖ, he, h1, h2, hα⟩` from `hα`. Take `⟨c, hβ⟩` from `hL.βW i`. Establish `hN : ((1 ^ c : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : Mult.IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Establish `LS` using `fun Lv : LevelP R.Pg D.R.r ℂ => (GlobalTheory.LevSplit.lev_split (Wc D i) (R.βW i) (R.ΛW i) _ (R.datWp i Lv) hβ).2 P e _ hp hN fun PP h => hP PP (h.elim id fun h => absurd h (Finset.notMem_empty _))`. Take `⟨B, hB, hC⟩` from `(GlobalTheory.SplitPlace.split_local (Wc D i) P e he).2.1 α hα.2.1`. Establish `hset : ∀ Lv : LevelP R.Pg D.R.r ℂ, Mult.locPart (Wc D i) (levS _ (R.βW i) (R.datWp i Lv)) e = Mult.locPart (Wc D i) (KsphC (Wc D i) ∅) e` using `fun Lv => Set.ext fun g => and_congr_left fun hg => (LS Lv).1 g hg`. Use `⟨B, ⟨e, ϖ, α, GlobalTheory.LevOp.offS_empty, he, h1, h2, (rank_Wc i).symm ▸ hk, (LS _).1, (LS _).2.1, hα, hB, (hset _).symm ▸ hC⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hLm⟩` from `GlobalTheory.HeckeKeep.exists_loc (Wc D i) (e + cA D e)`. Establish `hm : ∀ g, g ∈ levTriv R i ⊓ L ↔ g ∈ Mult.locPart (Wc D i) (KsphC (Wc D i) ∅) e` using `fun g => by`. Rewrite using `[← hset R.triv]`. Conclude with `and_congr_right fun _ => hLm g`. Use `GlobalTheory.HeckeParts.isDC_of_local ((hLm α).2 hα.2.1) (fun γ hγ => (hLm γ).2 (hB γ hγ)) (fun g hg => ?_) (fun γ hγ => ?_) fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha, b, hb, s₁, s₂, e'⟩` from `(LS R.triv).2.2 g hg`. Conclude with `⟨a, ha, b, hb, (hLm a).2 s₁, GlobalTheory.LevOp.comm_of_supp hp hα.2.1 s₂, e'⟩`. Simplify `(hC.1 γ hγ).2` using `only [hm]`. Simplify `hC.2 y (by simpa only [hm] using hy)` using `only [hm]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_local (hL : R.toLevCh.Is A3.A.μ0) (i : Fin D.R.m) {P : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : ∀ PP ∈ R.Pg, PP ≠ P ∧ ¬ Lev.IsConjPl PP P) {k : ℕ} (hk : k ≤ D.R.r) {α : GA D (Wc D i)}
@@ -365,7 +363,7 @@ theorem exists_local (hL : R.toLevCh.Is A3.A.μ0) (i : Fin D.R.m) {P : HeightOne
   · simpa only [hm] using hC.2 y (by simpa only [hm] using hy)
 
 /- English proof (translation)
-Introduce `k hk g`. Take `⟨h1, h2⟩` from `GlobalTheory.HeckeParts.triv_le (V := Wc D i) (β := R.βW i) (R.levL F false (sg0 D A3.A)) k hk`. Rewrite using `[principalLevelFrame.mult_lev hU v k h1 g]`. Conclude with `(congrArg (· * U v g) h2).trans (one_mul _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_levTriv (i : Fin D.R.m) {U : Mult.MMap (R.MW i (sg0 D A3.A))}
     (hU : U ∈ Mult.Mult R.θ (R.MW i (sg0 D A3.A)) (levW R F i) (chiW R F i)) (v) :
@@ -376,9 +374,9 @@ theorem inv_levTriv (i : Fin D.R.m) {U : Mult.MMap (R.MW i (sg0 D A3.A))}
   exact (congrArg (· * U v g) h2).trans (one_mul _)
 
 /- English proof (translation)
-Take `⟨B, hB, hD⟩` from `exists_local (F := F) hL i hP hk hα`. Establish `h` using `partR_le_partFull Y ∅ i σ hz`. Establish `e` using `heckeOn_of_mem_partFull h hB.full`. Rewrite `e` using `[rank_Wc]`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MultilinearMap.ext fun v => funext fun g => GlobalTheory.HeckeParts.sum_eq_of_isDC hR hD (z v) (inv_levTriv i h.1 v) g`.
+A detailed English derivation is pending.
 -/
 theorem heckeOn_partR (Y : Read (A3 := A3) R F X0) (hL : R.toLevCh.Is A3.A.μ0) (i : Fin D.R.m)
     {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : ∀ PP ∈ R.Pg, PP ≠ P ∧ ¬ Lev.IsConjPl PP P) {k : ℕ} (hk : k ≤ D.R.r)

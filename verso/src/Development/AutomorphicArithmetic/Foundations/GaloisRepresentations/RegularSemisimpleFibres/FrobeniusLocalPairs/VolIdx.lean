@@ -9,19 +9,17 @@ open scoped ENNReal
 namespace UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Use `haveI : Fintype (C' ⧸ H'.subgroupOf C') := Fintype.ofFinite _`. Set `r : (C' ⧸ H'.subgroupOf C') → T` to `fun q => ((Quotient.out q : C') : T)`. Establish `hr : ∀ q, r q ∈ C'` using `fun q => (Quotient.out q).2`. Establish `hcov : (C' : Set T) = ⋃ q, (fun y => (r q)⁻¹ * y) ⁻¹' (H' : Set T)`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨QuotientGroup.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk ⟨x, hx⟩ : C' ⧸ H'.subgroupOf C'))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `h1`. Introduce and unpack `⟨q, hq⟩`. Establish `h2` using `C'.mul_mem (hr q) (hHC hq)`. Rewrite `h2` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdisj : Pairwise (Function.onFun Disjoint fun q => (fun y => (r q)⁻¹ * y) ⁻¹' (H' : Set T))`. Introduce `q q' hqq'`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `x hx hx'`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at hx hx'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hqq'` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Express the relevant statement in the definitionally equal form `(r q)⁻¹ * r q' ∈ H'`. Establish `e : (r q)⁻¹ * r q' = ((r q)⁻¹ * x) * ((r q')⁻¹ * x)⁻¹` using `by group`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `H'.mul_mem hx (H'.inv_mem hx')`. Rewrite using `[hcov, measure_iUnion hdisj (fun q => (hH'.preimage (continuous_const_mul _)).measurableSet), tsum_fintype]`. Simplify using `only [measure_preimage_mul]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `congr 1`.
-
-Simplify using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma haar_measure_open_subgroup_index {T : Type} [Group T] [TopologicalSpace T] [IsTopologicalGroup T]
     [MeasurableSpace T] [BorelSpace T] (ν : Measure T) [ν.IsMulLeftInvariant]
@@ -63,15 +61,13 @@ private lemma haar_measure_open_subgroup_index {T : Type} [Group T] [Topological
   simp [Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ T C H hT ν hν hCT hC hHC hH`. Use `haveI := hν`. Establish `eH : {t : T | (t : G) ∈ H} = ((H.subgroupOf T : Subgroup T) : Set T)` using `rfl`. Establish `eC : {t : T | (t : G) ∈ C} = ((C.subgroupOf T : Subgroup T) : Set T)` using `rfl`. Establish `hHo : IsOpen ((H.subgroupOf T : Subgroup T) : Set T)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← eH]`. Conclude with `hH`. Establish `hCc : IsCompact ((C.subgroupOf T : Subgroup T) : Set T)`. Rewrite using `[← eC]`. Conclude with `hT.isClosedEmbedding_subtypeVal.isCompact_preimage hC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : H.subgroupOf T ≤ C.subgroupOf T` using `fun x hx => hHC hx`. Use `haveI : CompactSpace (C.subgroupOf T) := isCompact_iff_compactSpace.mp hCc`. Use `haveI : Finite ((C.subgroupOf T) ⧸ (H.subgroupOf T).subgroupOf (C.subgroupOf T)) := Subgroup.quotient_finite_of_isOpen _ (by`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hHo.preimage continuous_subtype_val)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `haar_measure_open_subgroup_index ν (C.subgroupOf T) (H.subgroupOf T) hHo hle`. Rewrite `key` using `[Subgroup.relIndex_subgroupOf hCT]`. Establish `hpos : ν ((H.subgroupOf T : Subgroup T) : Set T) ≠ 0` using `(hHo.measure_pos ν ⟨1, (H.subgroupOf T).one_mem⟩).ne'`. Establish `hfinH : ν ((H.subgroupOf T : Subgroup T) : Set T) ≠ ∞` using `((measure_mono (fun x hx => hle hx)).trans_lt hCc.measure_lt_top).ne`. Rewrite using `[eH, eC]`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[measureReal_def, ENNReal.toReal_ne_zero]`. Conclude with `⟨hpos, hfinH⟩`. Simplify using `only [measureReal_def, key, ENNReal.toReal_mul, ENNReal.toReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volIdx :
     UpperTheory.Gal.InertialTypesAlt.L.VolIdx := by

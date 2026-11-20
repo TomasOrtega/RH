@@ -15,63 +15,57 @@ section Abstract
 variable {K A : Type} [Field K] [CommRing A] {n : ℕ}
 
 /- English proof (translation)
-Use `set φ : A →+* K := (RingHom.fst K K).comp sp.toRingHom with hφ`. Use `set ψ : A →+* K := (RingHom.snd K K).comp sp.toRingHom with hψ`. Establish `hφa : ∀ x, φ x = (sp x).1` using `fun _ => rfl`. Establish `hψa : ∀ x, ψ x = (sp x).2` using `fun _ => rfl`. Use `set M := fri * y.map φ * fr with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcol : ∀ j, (φ ∘ c j) = fr *ᵥ Pi.single j 1`. Introduce `j`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec_single_one, hfr0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgen : ∀ (Z : Matrix (Fin n) (Fin n) A) (i : Fin n), fri *ᵥ (φ ∘ (Z *ᵥ c i)) = fun a => (fri * Z.map φ * fr) a i`. Introduce `Z i`. Establish `h1 : φ ∘ (Z *ᵥ c i) = Z.map φ *ᵥ (fr *ᵥ Pi.single i 1)`. Use function extensionality and compare the values at `a`. Rewrite using `[← hcol i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `RingHom.map_mulVec φ Z (c i) a`. Rewrite using `[h1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hbasis : ∀ j, fri *ᵥ (φ ∘ c j) = Pi.single j 1`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcol j, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Establish `hmap1 : (y - 1).map φ = y.map φ - 1`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, apply_ite φ]`. Establish `hD : ∀ i, fri *ᵥ (φ ∘ ((y - 1) *ᵥ c i)) = fun a => M a i - if a = i then 1 else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `i`. Rewrite using `[hgen, hmap1, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hinv]`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, hM]`. Establish `hMO : ∀ a b, M a b ∈ O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Establish `h` using `(hfr (φ ∘ (y *ᵥ c b))).1 ⟨y *ᵥ c b, hy _ (hc b), fun _ => rfl⟩ a`. Rewrite `h` using `[hgen]`. Conclude with `h`. Use `⟨hMO, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `h a b hba`. Establish `hspan : ∀ s ∈ Submodule.span I (c '' {j | j.1 < b.1}), (fri *ᵥ (φ ∘ s)) a = 0`. Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Take `⟨j, hj, rfl⟩` from `hx`. Rewrite using `[hbasis j]`. Establish `: a ≠ j`. Introduce `h'`. Substitute `h'` using the available equality.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `absurd hba (not_le.2 hj)`. Simplify using `[Pi.single_apply, this]`. Consider the case `zero`. Establish `: (φ ∘ (0 : Fin n → A)) = 0` using `by funext; simp`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Consider the case `add x x' _ _ hx hx'`. Establish `: (φ ∘ (x + x')) = φ ∘ x + φ ∘ x'` using `by funext; simp`. Rewrite using `[this, Matrix.mulVec_add, Pi.add_apply, hx, hx', add_zero]`. Consider the case `smul r x _ hx`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (φ ∘ (r • x)) = φ (r : A) • (φ ∘ x)`. Use function extensionality and compare the values at `b`. Simplify using `[Subring.smul_def]`. Rewrite using `[this, Matrix.mulVec_smul, Pi.smul_apply, hx, smul_zero]`. Take `⟨s, hs, z, hz, e⟩` from `h b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hs0` using `hspan s hs`. Use `⟨(fri *ᵥ (φ ∘ z)) a, (hfr _).1 ⟨z, hz, fun _ => rfl⟩ a, ?_⟩` and prove the remaining obligations. Establish `h1 : φ ∘ ((y - 1) *ᵥ c b) = φ ∘ s + (g : K) • (φ ∘ z)`. Rewrite using `[e]`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2` using `congrFun (hD b) a`. Rewrite `h2` using `[h1, Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, hs0, zero_add]`. Simplify using `using h2.symm`. Introduce `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h' : ∀ a : Fin n, ∃ w ∈ O, (i ≤ a → M a i - (if a = i then 1 else 0) = (g : K) * w) ∧ (a < i → w = 0)`. Introduce `a`. Distinguish the cases in `hia : i ≤ a`. Take `⟨w, hw, e⟩` from `h a i hia`. Conclude with `⟨w, hw, fun _ => e, fun h'' => absurd h'' (not_lt.2 hia)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨0, O.zero_mem, fun h'' => absurd h'' hia, fun _ => rfl⟩`. Use `choose W hWO hW hW0 using h'`. Establish `hri : ∀ j, sp.symm (M j i, 0) ∈ I`. Introduce `j`. Rewrite using `[hint]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingEquiv.apply_symm_apply]`. Conclude with `⟨hMO j i, O.zero_mem⟩`. Establish `hz0 : ∀ a, ψ (sp.symm ((fr *ᵥ W) a, 0)) = 0`. Introduce `a`. Simplify using `[hψa]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Use `set z : Fin n → A := fun a => sp.symm ((fr *ᵥ W) a, 0) with hz`. Establish `hzΛ : z ∈ Λ`. Rewrite using `[hΛ]`. Use `⟨?_, 0, Λ.zero_mem, fun b => ?_⟩` and prove the remaining obligations. Take `⟨y₁, hy₁, e⟩` from `(hfr (fr *ᵥ W)).2 (fun a => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Conclude with `hWO a)`. Conclude with `⟨y₁, hy₁, fun b => by rw [e b]; simp [hz]⟩`. Simplify using `[hz]`. Use `set s : Fin n → A := ∑ j ∈ Finset.univ.filter (· < i), (⟨sp.symm (M j i, 0), hri j⟩ : I) • c j with hs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hsm : s ∈ Submodule.span I (c '' {j | j.1 < i.1})`. Use `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, ?_, rfl⟩)` and prove the remaining obligations. Simplify using `using hj`. Establish `hs1 : φ ∘ s = fr *ᵥ (fun b => if b < i then M b i else 0)`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show φ (s a) = _`. Rewrite using `[hs, Finset.sum_apply, map_sum, Finset.sum_filter]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b < i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hb, if_pos hb] show φ ((sp.symm (M b i, 0) : A) * c b a) = _`. Rewrite using `[map_mul, hφa, RingEquiv.apply_symm_apply, hfr0, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[if_neg hb, if_neg hb, mul_zero]`. Establish `hs2 : ∀ a, ψ (s a) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[hs, Finset.sum_apply, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `show ψ ((sp.symm (M j i, 0) : A) * c j a) = 0`. Rewrite using `[map_mul, hψa (c j a), hc2, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcolD : φ ∘ ((y - 1) *ᵥ c i) = fr *ᵥ (fun b => if b < i then M b i else 0) + (g : K) • (fr *ᵥ W)`. Establish `h1 : (fun a => M a i - if a = i then (1 : K) else 0) = (fun b => if b < i then M b i else 0) + (g : K) • W`. Use function extensionality and compare the values at `a`. Distinguish the cases in `hia : i ≤ a`. Use `hW a hia` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[not_lt.2 hia, this]`. Establish `hai` using `not_le.1 hia`. Simplify using `[hai, hW0 a hai, ne_of_lt hai]`. Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_add, ← h1, ← hD i, Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`. Use `⟨s, hsm, z, hzΛ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Apply `sp.injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `h1 : φ (((y - 1) *ᵥ c i) a) = (fr *ᵥ (fun b => if b < i then M b i else 0)) a + (g : K) * (fr *ᵥ W) a` using `congrFun hcolD a`. Establish `h2 : φ (s a) = (fr *ᵥ (fun b => if b < i then M b i else 0)) a` using `congrFun hs1 a`.
-
-Establish `h3 : φ (z a) = (fr *ᵥ W) a` using `by simp [hz, hφa]`. Use `show φ (((y - 1) *ᵥ c i) a) = φ (s a + (g : A) * z a)`. Rewrite using `[map_add, map_mul, map_natCast, h1, h2, h3]`. Establish `h1 : ψ (((y - 1) *ᵥ c i) a) = 0`. Rewrite using `[RingHom.map_mulVec]`.
-
-Establish `: ψ ∘ c i = 0`. Use function extensionality and compare the values at `b`. Conclude with `hc2 i b`. Rewrite using `[this, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
-
-Use `show ψ (((y - 1) *ᵥ c i) a) = ψ (s a + (g : A) * z a)`. Rewrite using `[h1, map_add, map_mul, hs2 a, hz0 a, mul_zero, add_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem columns_iff (sp : A ≃+* K × K) (I : Subring A) (Λ : Submodule I (Fin n → A)) (O : Subring K) (g : ℕ)
     (hint : ∀ x, x ∈ I ↔ (sp x).1 ∈ O ∧ (sp x).2 ∈ O)
@@ -238,21 +232,19 @@ end Abstract
 section Residue
 
 /- English proof (translation)
-Establish `hiff : ∀ a b, (∃ w ∈ (v.adicCompletionIntegers F).toSubring, X a b - (if a = b then 1 else 0) = (g : v.adicCompletion F) * w) ↔ redM F v X a b = if a = b then 1 else 0`. Introduce `a b`. Establish `hred : redM F v X a b = IsLocalRing.residue _ ⟨X a b, hX a b⟩` using `dif_pos (hX a b)`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd1, hd2⟩ : ∃ d : v.adicCompletionIntegers F, IsLocalRing.residue (v.adicCompletionIntegers F) d = (if a = b then 1 else 0) ∧ (d : v.adicCompletion F) = if a = b then 1 else 0 := by`. Distinguish the cases in `h : a = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, by simp [h], by simp [h]⟩`. Conclude with `⟨0, by simp [h], by simp [h]⟩`. Rewrite using `[hred, ← hd1, ← hd2, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, hg, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, e⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show w * (g : v.adicCompletion F) = X a b - d`. Rewrite using `[e, mul_comm]`. Introduce and unpack `⟨w, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, w.2, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val e`. Establish `h' : (w : v.adicCompletion F) * (g : v.adicCompletion F) = X a b - d` using `h`. Rewrite using `[← h', mul_comm]`. Establish `hblk : ∀ x : Fin n, blkOf n t x = x` using `fun x => if_pos x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -, -⟩ a b hba`. Rewrite using `[hiff]`. Break down `eq_or_lt_of_le hba with e | e` into its components or cases. Substitute `e` using the available equality.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Conclude with `h2 b b.2`. Rewrite using `[if_neg e.ne']`. Conclude with `h1 a b (by rw [hblk, hblk]; exact e)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun x y hxy => ?_, fun x _ => ?_, fun x y hy => absurd y.2 (by omega), fun h' => by cases h'⟩` and prove the remaining obligations. Establish `hlt : y < x`. Rewrite `hxy` using `[hblk, hblk]`. Conclude with `hxy`. Establish `h3` using `(hiff x y).1 (h x y hlt.le)`.
-
-Rewrite `h3` using `[if_neg hlt.ne']`. Then use the resulting hypothesis. Establish `h3` using `(hiff x x).1 (h x x le_rfl)`. Rewrite `h3` using `[if_pos rfl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inJ_red_iff (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (g : ℕ)
     (hg : IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) =
@@ -308,9 +300,9 @@ theorem inJ_red_iff (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum 
 end Residue
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hH hJ v sp hsig halg hint g hg L hL c fr hc hc2 hfr0 hfr t y hy`. Establish `hsplit` using `(GlobalTheory.St.G.split_components F E cm n J hH hJ v sp hsig halg).1 L`. Establish `hy' : ∀ x ∈ loc v L, y.1 *ᵥ x ∈ loc v L` using `fun x hx => (hy.2 x).1 hx`. Establish `hinv : ((fr⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * fr.1 = 1` using `Units.inv_mul fr`. Establish `hinv' : fr.1 * ((fr⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1` using `Units.mul_inv fr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `columns_iff sp (intV E v) (loc v L) (v.adicCompletionIntegers F).toSubring g hint hsplit c hc hc2 fr.1 _ hinv hinv' hfr0 hfr y.1 hy'`. Conclude with `⟨h1, h2.trans (inJ_red_iff F v g hg t _ h1).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitriangular_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (v : HeightOneSpectrum (𝓞 F)) (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ x, sp (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp x)) → (∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a)) → (∀ x, x ∈ intV E v ↔ (sp x).1 ∈ v.adicCompletionIntegers F ∧ (sp x).2 ∈ v.adicCompletionIntegers F) → ∀ (g : ℕ), IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) = Ideal.span {((g : ℕ) : v.adicCompletionIntegers F)} → ∀ (L : Submodule (𝓞 E) (Fin n → E)), IsLat L → ∀ (c : Fin n → Fin n → E ⊗[F] v.adicCompletion F) (fr : GL (Fin n) (v.adicCompletion F)), (∀ j, c j ∈ loc v L) → (∀ j a, (sp (c j a)).2 = 0) → (fr : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = Matrix.of (fun a j => (sp (c j a)).1) → (∀ x : Fin n → v.adicCompletion F, (∃ y ∈ loc v L, ∀ a, (sp (y a)).1 = x a) ↔ ∀ a, ((fr⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).mulVec x a ∈ v.adicCompletionIntegers F) → ∀ (t : ℕ), ∀ y ∈ levelVL cm.sig J v L, (∀ a b, ((fr⁻¹ * bc ((RingHom.fst _ _).comp sp.toRingHom) y * fr : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b ∈ v.adicCompletionIntegers F) ∧ ((∀ i : Fin n, InModL (loc v L) g (c '' {j | j.1 < i.1}) ((y.1 - 1) *ᵥ c i)) ↔ InJ n t n false (redM F v ((fr⁻¹ * bc ((RingHom.fst _ _).comp sp.toRingHom) y * fr : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)))) := by
   intro F E _ _ _ _ _ _ cm n J hH hJ v sp hsig halg hint g hg L hL c fr hc hc2 hfr0 hfr t y hy

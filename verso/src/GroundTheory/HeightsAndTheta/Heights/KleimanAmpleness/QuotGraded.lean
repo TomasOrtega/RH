@@ -20,7 +20,7 @@ def quotPieces (n : ι) : Submodule R (A ⧸ I) :=
 
 omit [DecidableEq ι] [Decomposition 𝒜] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, ha, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mk_mem_quotPieces {n : ι} {a : A} (ha : a ∈ 𝒜 n) :
     Ideal.Quotient.mk I a ∈ quotPieces 𝒜 I n :=
@@ -43,7 +43,7 @@ theorem quotientDecomposition_apply (a : A) : quotientDecomposition 𝒜 I a =
     DirectSum.map (quotPieceMap 𝒜 I) (DirectSum.decompose 𝒜 a) := rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (DirectSum.decompose 𝒜 a n : A) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hI n a ha`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotientDecomposition_of_mem_ideal (hI : ∀ (n : ι) (a : A), a ∈ I → (decompose 𝒜 a n : A) ∈ I) {a : A}
     (ha : a ∈ I) : quotientDecomposition 𝒜 I a = 0 := by
@@ -54,7 +54,7 @@ theorem quotientDecomposition_of_mem_ideal (hI : ∀ (n : ι) (a : A), a ∈ I �
 
 omit [Decomposition 𝒜] in
 /- English proof (translation)
-Use extensionality with `n x`. Simplify using `[DirectSum.map_of, quotPieceMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_comp_map_quotPieceMap :
     (DirectSum.coeAddMonoidHom (quotPieces 𝒜 I)).comp (DirectSum.map (quotPieceMap 𝒜 I)) =
@@ -63,7 +63,7 @@ theorem coe_comp_map_quotPieceMap :
   simp [DirectSum.map_of, quotPieceMap]
 
 /- English proof (translation)
-Rewrite using `[quotientDecomposition_apply]`. Use `congrArg (fun φ => φ (DirectSum.decompose 𝒜 a)) (coe_comp_map_quotPieceMap (𝒜 := 𝒜) (I := I))` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply] at this`. Rewrite using `[this]`. Conclude with `congrArg (Ideal.Quotient.mk I) ((DirectSum.decompose 𝒜).symm_apply_apply a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_quotientDecomposition (a : A) :
     DirectSum.coeAddMonoidHom (quotPieces 𝒜 I) (quotientDecomposition 𝒜 I a) = Ideal.Quotient.mk I a := by
@@ -74,7 +74,7 @@ theorem coe_quotientDecomposition (a : A) :
   exact congrArg (Ideal.Quotient.mk I) ((DirectSum.decompose 𝒜).symm_apply_apply a)
 
 /- English proof (translation)
-Rewrite using `[quotientDecomposition_apply, DirectSum.decompose_of_mem 𝒜 ha, DirectSum.map_of]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotientDecomposition_of_mem_piece {n : ι} {a : A} (ha : a ∈ 𝒜 n) :
     quotientDecomposition 𝒜 I a = DirectSum.of (fun n => quotPieces 𝒜 I n) n
@@ -104,7 +104,7 @@ def quotDecomposition (hI : ∀ (n : ι) (a : A), a ∈ I → (decompose 𝒜 a 
     | add d e hd he => rw [map_add, map_add, hd, he]
 
 /- English proof (translation)
-The claim follows from `letI := quotDecomposition hI Decomposition.isInternal _`.
+A detailed English derivation is pending.
 -/
 theorem quotPieces_isInternal (hI : ∀ (n : ι) (a : A), a ∈ I → (decompose 𝒜 a n : A) ∈ I) :
     IsInternal (quotPieces 𝒜 I) :=
@@ -118,7 +118,7 @@ section PolyQuot
 variable {S : Type u} [CommRing S] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply]`. Simplify using `only [Finsupp.sum, nsmul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `_ = ((∑ i ∈ d.support, d i : ℕ) : ℤ)`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem weight_one_int (d : Fin (N + 1) →₀ ℕ) :
     Finsupp.weight (fun _ : Fin (N + 1) => (1 : ℤ)) d = (d.degree : ℤ) := by
@@ -129,9 +129,9 @@ theorem weight_one_int (d : Fin (N + 1) →₀ ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `d hd`. Establish `h1` using `hf hd`. Rewrite `h1` using `[weight_one_int]`. Establish `h2 : Finsupp.weight (1 : Fin (N + 1) → ℕ) d = d.degree`. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `h1` after adjusting the coercions.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_isWeightedHomogeneous_one {f : Poly S N} {n : ℕ}
     (hf : IsWeightedHomogeneous (fun _ => (1 : ℤ)) f (n : ℤ)) : f.IsHomogeneous n := by
@@ -144,13 +144,11 @@ theorem isHomogeneous_of_isWeightedHomogeneous_one {f : Poly S N} {n : ℕ}
   exact_mod_cast h1
 
 /- English proof (translation)
-Distinguish the cases in `hc : 0 ≤ c`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hc`. Establish `: weightedHomogeneousComponent (fun _ => (1 : ℤ)) (k : ℤ) f = homogeneousComponent k f`. Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_homogeneousComponent, weight_one_int]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.cast_inj]`. Rewrite using `[this]`. Conclude with `hp f hf k`. Establish `: weightedHomogeneousComponent (fun _ => (1 : ℤ)) c f = 0`. Use extensionality with `d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_weightedHomogeneousComponent, weight_one_int, coeff_zero]`. Use `split_ifs with h`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Rewrite using `[this]`.
-
-Conclude with `p.zero_mem`.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightedHomogeneousComponent_one_mem {p : Ideal (Poly S N)}
     (hp : ∀ f ∈ p, ∀ d : ℕ, homogeneousComponent d f ∈ p) (c : ℤ) {f : Poly S N} (hf : f ∈ p) :
@@ -193,7 +191,7 @@ def quotGraded (p : Ideal (Poly S N)) (hp : ∀ f ∈ p, ∀ d : ℕ, homogeneou
       rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, rfl⟩`. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_quotGraded_piece {p : Ideal (Poly S N)} {hp : ∀ f ∈ p, ∀ d : ℕ, homogeneousComponent d f ∈ p}
     {c : ℤ} {m : Poly S N ⧸ p} :
@@ -206,7 +204,7 @@ theorem mem_quotGraded_piece {p : Ideal (Poly S N)} {hp : ∀ f ∈ p, ∀ d : �
     exact ⟨f, hf, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_surjective (Ideal.Quotient.mkₐ (Poly S N) p).toLinearMap Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot (p : Ideal (Poly S N)) : Module.Finite (Poly S N) (Poly S N ⧸ p) :=
   Module.Finite.of_surjective (Ideal.Quotient.mkₐ (Poly S N) p).toLinearMap

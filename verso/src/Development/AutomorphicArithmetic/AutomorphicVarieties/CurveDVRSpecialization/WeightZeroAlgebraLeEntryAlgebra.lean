@@ -15,11 +15,11 @@ section SlopeTestRemainingChoices
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])` using `(Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by`. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_iff_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -37,17 +37,15 @@ private theorem int_iff_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsInt
       rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := O)`. Set `S : Set (PadicAlgCl l)` to `Set.range b ∪ algebraMap O _ '' s`. Use `haveI : Finite S := ((Set.finite_range b).union (s.finite_toSet.image _)).to_subtype`. Set `K : IntermediateField ℚ_[l] (PadicAlgCl l)` to `IntermediateField.adjoin ℚ_[l] S`. Use `haveI : FiniteDimensional ℚ_[l] K := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨h1, h2, -⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l K`. Set `f : K →ₐ[ℤ_[l]] PadicAlgCl l` to `K.val.restrictScalars ℤ_[l]`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`. Set `B` to `(integralClosure ℤ_[l] K).map f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ x ∈ S, IsIntegral ℤ_[l] x → x ∈ B` using `fun x hx hi => ⟨⟨x, IntermediateField.subset_adjoin _ _ hx⟩, (isIntegral_algHom_iff f hf).1 hi, rfl⟩`. Establish `hO : ∀ a : O, algebraMap O (PadicAlgCl l) a ∈ B`. Introduce `a`. Establish `ha : a ∈ Submodule.span ℤ_[l] (s : Set O)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Conclude with `hB _ (Or.inr ⟨x, hx, rfl⟩) ((Algebra.IsIntegral.isIntegral x).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)))`. Consider the case `zero => simpa using B.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `B.add_mem hx hy`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx => rw [Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Conclude with `B.mul_mem (B.algebraMap_mem c) hx`. Set `A : Subalgebra O (PadicAlgCl l)` to `{ B.toSubsemiring with algebraMap_mem' := hO }`. Establish `d1 : IsDiscreteValuationRing B` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e`. Establish `d2 : Module.Finite ℤ_[l] B` using `Module.Finite.equiv e.toLinearEquiv`.
-
-Use `⟨A, d1, ?_, fun i => hB _ (Or.inl ⟨i, rfl⟩) ((int_iff_norm _).2 (hb i))⟩` and prove the remaining obligations. Use `haveI : Module.Finite ℤ_[l] A := d2`. Conclude with `Module.Finite.of_restrictScalars_finite ℤ_[l] O A`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_dvr {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] {σ : Type} [Finite σ] (b : σ → PadicAlgCl l)
@@ -85,15 +83,13 @@ private theorem exists_dvr {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Alg
   exact Module.Finite.of_restrictScalars_finite ℤ_[l] O A
 
 /- English proof (translation)
-Establish `hp : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hcl : ∀ n : ℕ, IsClosed {v | y - φ v ∈ J ^ n}` using `fun n => by`. Rewrite using `[← isOpen_compl_iff, Metric.isOpen_iff]`. Introduce `v hv`. Use `⟨(l : ℝ) ^ (-n : ℤ), zpow_pos hp _, fun w hw hw' => hv ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ i, ∃ u : ℤ_[l], u * (l : ℤ_[l]) ^ n = w i - v i` using `fun i => by`. Rewrite using `[← Ideal.mem_span_singleton', ← PadicInt.norm_le_pow_iff_mem_span_pow, ← dist_eq_norm]`. Conclude with `(dist_le_pi_dist w v i).trans (le_of_lt hw)`. Use `choose u hu using h1`. Establish `h2 : w = v + (l ^ n : ℕ) • u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `hu i` as an intermediate fact. Rewrite using `[Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow]`. Take the linear combination `-this`. Establish `h3 : y - φ v = (y - φ w) + (l : R) ^ n * φ u`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, map_add, map_nsmul, nsmul_eq_mul, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `show y - φ v ∈ J ^ n`. Rewrite using `[h3]`. Conclude with `add_mem hw' (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hl n))`.
-
-Take `⟨v, hv⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed (fun n : ℕ => {v | y - φ v ∈ J ^ n}) (fun n v hv => Ideal.pow_le_pow_right (Nat.le_succ n) hv) h (hcl 0).isCompact hcl`. Use `⟨v, (sub_eq_zero.1 (IsHausdorff.haus (inferInstance : IsHausdorff J R) _ fun n => ?_)).symm⟩` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Set.mem_iInter.1 hv n`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_range_of_approx {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (J : Ideal R)
     [IsHausdorff J R] (hl : (l : R) ∈ J) {k : ℕ} (φ : (Fin k → ℤ_[l]) →+ R) (y : R)
@@ -126,9 +122,7 @@ private theorem mem_range_of_approx {l : ℕ} [Fact l.Prime] {R : Type} [CommRin
   exact Set.mem_iInter.1 hv n
 
 /- English proof (translation)
-Use `SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use `show (tor O (Ψ g) : Matrix (Fin 3) (Fin 3) O).map (residue O) = tor _ (barChar O Ψ g)`. Rewrite using `[tor_val, tor_val, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (Ψ g) (wt1 i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem map_reducible_three_dim {O : Type} [CommRing O] [IsLocalRing O] {G : Type} [Group G] (η : G →* ℤˣ) (Ψ : G →* Oˣ)
     (g : G) : GG.map (residue O) (r0 η Ψ g) = rbar O η Ψ g := by
@@ -140,7 +134,7 @@ private theorem map_reducible_three_dim {O : Type} [CommRing O] [IsLocalRing O] 
   exact congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (Ψ g) (wt1 i))
 
 /- English proof (translation)
-Establish `h1 : Units.map (res O R : R →* ResidueField O) t = 1` using `Units.ext ht`. Establish `h2` using `map_zpow (Units.map (res O R : R →* ResidueField O)) t j`. Rewrite `h2` using `[h1, _root_.one_zpow]`. Conclude with `congrArg Units.val h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_zpow {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     (t : Rˣ) (ht : res O R t = 1) (j : ℤ) : res O R ((t ^ j : Rˣ) : R) = 1 := by
@@ -164,9 +158,9 @@ private def torLift {O : Type} [CommRing O] [IsLocalRing O] {G : Type} [Group G]
     rw [(conjBy_tor r.hom t).1, map_mul, res_zpow t ht, one_mul]
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Matrix.sub_apply, tor_val]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.one_apply_eq, ← res_eq_zero_iff O, map_sub, res_zpow t ht, map_one, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem congOne_tor {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     (t : Rˣ) (ht : res O R t = 1) : CongOne (maximalIdeal R) (tor R t) := by
@@ -179,9 +173,9 @@ private theorem congOne_tor {O R : Type} [CommRing O] [IsLocalRing O] [CommRing 
     exact zero_mem _
 
 /- English proof (translation)
-Set `g : R →+* f.range` to `f.rangeRestrict`. Establish `hg : Function.Surjective g` using `f.rangeRestrict_surjective`. Use `haveI : IsLocalRing f.range := IsLocalRing.of_surjective' g hg`. Establish `hl : IsLocalHom g` using `IsLocalHom.of_surjective _ hg`. Use `haveI : Algebra.IsIntegral f.range A := Algebra.IsIntegral.tower_top (R := O)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h2 : IsLocalHom (algebraMap f.range A)` using `Algebra.IsIntegral.isLocalHom _ _`. Conclude with `⟨fun x hx => hl.map_nonunit x (h2.map_nonunit (g x) hx)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem loc_of_int {O R A : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Algebra O R] [CommRing A]
     [Nontrivial A] [Algebra O A] [Algebra.IsIntegral O A] (f : R →ₐ[O] A) : IsLocalHom f := by
@@ -194,7 +188,7 @@ private theorem loc_of_int {O R A : Type} [CommRing O] [CommRing R] [IsLocalRing
   exact ⟨fun x hx => hl.map_nonunit x (h2.map_nonunit (g x) hx)⟩
 
 /- English proof (translation)
-Simplify using `[GG.mat, tor_val, Matrix.diagonal_apply_ne _ h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem diagonal_rep_off_diagonal_zero {G R : Type} [Group G] [CommRing R] (η : G →* ℤˣ) (Ψ : G →* Rˣ) (g : G) {a b : Fin 3}
     (h : a ≠ b) : (r0 η Ψ g).mat a b = 0 := by
@@ -202,23 +196,21 @@ private theorem diagonal_rep_off_diagonal_zero {G R : Type} [Group G] [CommRing 
 
 set_option linter.overlappingInstances false in
 /- English proof (translation)
-Establish `hm : ∀ s : Γ × Fin 3 × Fin 3, (S.r.hom s.1).mat s.2.1 s.2.2 - algebraMap O S.R ((r0 η Ψ s.1).mat s.2.1 s.2.2) ∈ maximalIdeal S.R` using `fun ⟨g, a, b⟩ => by`. Establish `h1` using `congrArg (fun x : GG 3 (ResidueField O) => x.mat a b) ((S.r.red g).trans (map_reducible_three_dim η Ψ g).symm)`. Rewrite using `[← res_eq_zero_iff O, map_sub, AlgHom.commutes, sub_eq_zero]`. Conclude with `h1`. Take `⟨W, u, hu, he⟩` from `coord_grading O ℤ S.R (Γ × Fin 3 × Fin 3) (fun s => (S.r.hom s.1).mat s.2.1 s.2.2 - algebraMap O S.R ((r0 η Ψ s.1).mat s.2.1 s.2.2)) (fun s => wt s.2.1 s.2.2) hm (fun R' _ _ _ f f' h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : S.r.map f = S.r.map f'`. Use `GLift.ext (MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext ?_) rfl)` and prove the remaining obligations. Use extensionality with `a b`. Use `h (g, a, b)` as an intermediate fact. Simplify using `only [map_sub, AlgHom.commutes, sub_left_inj] at this`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Conclude with `((S.rep R').2 _ ((S.rep R').1 f')).unique h1 rfl)`. Use the proof step `(fun R' _ _ _ f t ht => by`. Take `⟨hn, hk, hI⟩` from `(S.rep R').1 f`. Take `⟨f', hf', -⟩` from `(S.rep R').2 (torLift (S.r.map f) (t (Multiplicative.ofAdd 1)) (ht _)) ⟨(conjBy_tor _ _).2.2.1 _ _ hn, fun g hg => by show MulAut.conj _ ((S.r.map f).hom g) = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk g hg, map_one], hL R' ((S.r.map f).comap ι hι) ((torLift (S.r.map f) (t (Multiplicative.ofAdd 1)) (ht _)).comap ι hι) _ (congOne_tor _ (ht _)) (MonoidHom.ext fun _ => rfl) hI⟩`. Establish `htj : ∀ j : ℤ, t (Multiplicative.ofAdd 1) ^ j = t (Multiplicative.ofAdd j)` using `fun j => by`. Rewrite using `[← map_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Use `⟨f', fun ⟨g, a, b⟩ => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_sub f, AlgHom.commutes, AlgHom.commutes, mul_sub, ← htj (wt a b)]`. Use `congr 1`. Conclude with `(congrArg (fun x : GLift O η Ψ R' => (x.hom g).mat a b) hf').trans ((conjBy_tor (S.r.map f).hom _).1 g a b)`. Distinguish the cases in `hab : a = b`. Simplify using `[hab, wt]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[diagonal_rep_off_diagonal_zero η Ψ g hab])`. Use `⟨W, fun i => (hu i).1 ▸ hm _, fun i => ?_, fun g a b => ?_⟩` and prove the remaining obligations. Rewrite using `[(hu i).1, (hu i).2]`. Take `⟨g, a, b⟩` from `u i`. Use `sub_mem (Submodule.subset_span ⟨[(g, a, b)], by simp, by simp⟩) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨[], by simp [wt], by simp⟩)`. Rewrite using `[diagonal_rep_off_diagonal_zero η Ψ g hab, map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `zero_mem _`. Establish `h1` using `he (g, a, b)`. Establish `h2 : algebraMap O S.R ((r0 η Ψ g).mat a b) ∈ W.part (wt a b)`. Distinguish the cases in `hab : a = b`. Rewrite using `[hab, wt, sub_self, Algebra.algebraMap_eq_smul_one]`.
-
-Conclude with `Submodule.smul_mem _ _ (SetLike.GradedOne.one_mem : (1 : S.R) ∈ W.part 0)`. Rewrite using `[diagonal_rep_off_diagonal_zero η Ψ g hab, map_zero]`. Conclude with `zero_mem _`. Simplify `add_mem h1 h2` using `only [sub_add_cancel]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_pres {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [Group H] [TopologicalSpace H]
@@ -283,7 +275,7 @@ private theorem exists_pres {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O]
     simpa only [sub_add_cancel] using add_mem h1 h2
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨L, -, rfl⟩`. Use `Subalgebra.list_prod_mem (entAlg O r) fun y hy => ?_` and prove the remaining obligations. Take `⟨s, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `Algebra.subset_adjoin ⟨_, _, _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem span_le_ent {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] [Algebra O R] (r : Γ →* GG 3 R) (j : ℤ) :
     Submodule.span O (entMon r j) ≤ Subalgebra.toSubmodule (entAlg O r) := by
@@ -294,20 +286,18 @@ private theorem span_le_ent {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R]
   exact Algebra.subset_adjoin ⟨_, _, _, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.adjoin_le fun _ hx => span_le_ent r 0 (Submodule.subset_span hx)`.
+A detailed English derivation is pending.
 -/
 private theorem weight_zero_algebra_le_entry_algebra {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] [Algebra O R] (r : Γ →* GG 3 R) :
     weightZeroSubalgebra O r ≤ entAlg O r :=
   Algebra.adjoin_le fun _ hx => span_le_ent r 0 (Submodule.subset_span hx)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨F, hF, rfl⟩`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' O (weightZeroSubalgebra O r)`. Take `⟨k, g, hg⟩` from `Module.Finite.exists_fin' ℤ_[l] (Fin n → O)`. Set `φ : (Fin k → ℤ_[l]) →+ R` to `((weightZeroSubalgebra O r).val.toLinearMap.toAddMonoidHom.comp f.toAddMonoidHom).comp g.toAddMonoidHom`. Take `⟨v, hv⟩` from `mem_range_of_approx J hl φ (W.π F) fun m => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy'⟩` from `Mop.approx W.wt W.π J (fun j => Submodule.span O (entMon r j)) (Submodule.subset_span ⟨[], by simp, by simp⟩) (fun i j a ha b hb => by`. Use `Submodule.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨L, hL, rfl⟩, _, ⟨L', hL', rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨L ++ L', by simp [hL, hL'], by simp⟩) hz hs 0 F hF m`. Take `⟨v, hv⟩` from `(hf.comp hg) ⟨y, Algebra.span_le_adjoin _ _ hy⟩`. Conclude with `⟨v, by rwa [show φ v = y from congrArg Subtype.val hv]⟩`. Use `show W.π F ∈ weightZeroSubalgebra O r`. Rewrite using `[← hv]`.
-
-Conclude with `(f (g v)).2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem part_zero_le {l : ℕ} [Fact l.Prime] {O Γ R : Type} [CommRing O] [Algebra ℤ_[l] O]
     [Module.Finite ℤ_[l] O] [Group Γ] [CommRing R] [Algebra O R] (J : Ideal R) [IsHausdorff J R] (hl : (l : R) ∈ J)
@@ -334,15 +324,13 @@ private theorem part_zero_le {l : ℕ} [Fact l.Prime] {O Γ R : Type} [CommRing 
   exact (f (g v)).2
 
 /- English proof (translation)
-Establish `hm : ∀ b : W.σ →₀ ℕ, W.π (MvPowerSeries.monomial b 1) ∈ T` using `fun b => by`. Proceed by induction on `b using Finsupp.induction_linear with`. Consider the case `zero => simpa using one_mem _`. Consider the case `add a b ha hb`. Establish `: (MvPowerSeries.monomial (a + b) 1 : MvPowerSeries W.σ O) = MvPowerSeries.monomial a 1 * MvPowerSeries.monomial b 1`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.monomial_mul_monomial, one_mul]`. Rewrite using `[this, map_mul]`. Conclude with `mul_mem ha hb`. Consider the case `single i k`. Rewrite using `[← MvPowerSeries.X_pow_eq, map_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_mem (hz i) k`. Establish `hle : ⨆ j, W.part j ≤ Subalgebra.toSubmodule T`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨μ, -, hd⟩` from `part_span O R ℤ W {n | Finsupp.weight W.wt n = j} j fun _ h => h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, rfl⟩` from `hd f hf`. Use `show W.π _ ∈ T`. Rewrite using `[map_sum]`. Conclude with `sum_mem fun m _ => by`. Rewrite using `[map_mul]`.
-
-Conclude with `mul_mem (h0 _ ⟨_, hb m, rfl⟩) (hm m)`. Conclude with `fun x hx => hle hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem A_le {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (W : WPres O ℤ R) (T : Subalgebra O R)
     (hz : ∀ i, W.z i ∈ T) (h0 : ∀ x ∈ W.part 0, x ∈ T) : W.A ≤ T := by
@@ -371,11 +359,11 @@ private theorem A_le {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (W : W
   exact fun x hx => hle hx
 
 /- English proof (translation)
-Take `⟨n, p, hp⟩` from `Module.Finite.exists_fin' O Ξ.range`. Establish `hint : ∀ x : Ξ.range, ‖(x : PadicAlgCl l)‖ ≤ 1` using `fun x => (int_iff_norm _).1 (isIntegral_trans (A := O) _ ((Algebra.IsIntegral.isIntegral x).map Ξ.range.val))`. Take `⟨A, hA1, hA2, hbA⟩` from `exists_dvr (O := O) (fun i => (p (Pi.single i 1) : PadicAlgCl l)) fun i => hint _`. Establish `hmem : ∀ x, Ξ x ∈ A` using `fun x => by`. Take `⟨v, hv⟩` from `hp ⟨Ξ x, x, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Ξ x = (p v : PadicAlgCl l)` using `(congrArg Subtype.val hv).symm`. Rewrite using `[h1, LinearMap.pi_apply_eq_sum_univ, AddSubmonoidClass.coe_finset_sum]`. Use `sum_mem fun i _ => A.smul_mem ?_ _` and prove the remaining obligations. Use `hbA i using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Pi.single_apply, eq_comm]`. Use `haveI : Module.Finite ℤ_[l] A := Module.Finite.trans O A`. Conclude with `⟨A, hA1, hA2, Ξ.codRestrict A hmem, (UpperTheory.V.abelian₂.dvr_finite l A).1, fun _ => rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_range {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] {R : Type} [CommRing R] [Algebra O R]
@@ -398,9 +386,9 @@ private theorem exists_range {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [A
   exact ⟨A, hA1, hA2, Ξ.codRestrict A hmem, (UpperTheory.V.abelian₂.dvr_finite l A).1, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext (Matrix.ext fun a b => ?_)) ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((conjBy_tor r _).1 g a b).symm` and prove the remaining obligations. Take `⟨h, e⟩` from `(hr g).2 a b`. Rewrite using `[e, ← map_zpow, ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Establish `h1 : Ξ ((u g).mat a b) = _` using `(DFunLike.congr_fun hΞ ⟨_, W.part_le_A (hent g a b)⟩).trans (act_of_mem W.gr t _ (j := wt a b) (hent g a b))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hf _).trans h1`. Rewrite using `[(conjBy_tor r _).2.1, (hr g).1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem push_eq {O Γ R K : Type} [CommRing O] [Group Γ] [CommRing R] [Algebra O R] [CommRing K] [Algebra O K]
     (u : Γ →* GG 3 R) (W : WPres O ℤ R) (hent : ∀ g a b, (u g).mat a b ∈ W.part (wt a b)) {T : Subalgebra O R}
@@ -423,13 +411,11 @@ end SlopeTestRemainingChoices
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ K _ _ _ l _ c N _ e ψ D g₁ hg U S hfin B hB ξ r hr`. Take `⟨hc, -, hl, hinj, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `haveI : IsNoetherianRing c.O := PrincipalIdealRing.isNoetherianRing`. Use `haveI : Algebra.IsAlgebraic ℤ_[l] (PadicAlgCl l) := IsFractionRing.comap_isAlgebraic_iff.2 (inferInstance : Algebra.IsAlgebraic ℚ_[l] (PadicAlgCl l))`. Use `haveI : Algebra.IsAlgebraic c.O (PadicAlgCl l) := Algebra.IsAlgebraic.extendScalars hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hz, hs, hent⟩` from `exists_pres S (Loc.locGood hP D.loc U).conj`. Establish `hlS : (l : S.R) ∈ maximalIdeal S.R` using `fun h => by`. Establish `h1 : IsUnit (algebraMap c.O S.R (l : c.O))` using `by rwa [map_natCast]`. Conclude with `hl (IsLocalHom.map_nonunit _ h1)`. Establish `h0` using `part_zero_le _ hlS S.r.hom W hz hs (hfin U S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hA : W.A ≤ entAlg c.O S.r.hom` using `A_le W _ (fun i => span_le_ent _ _ (hs i)) fun x hx => weight_zero_algebra_le_entry_algebra _ (h0 x hx)`. Use `haveI := hfin U S`. Establish `hfg : ((W.gr 0).map (ξ.comp (Subalgebra.inclusion hA)).toLinearMap).FG`. Use `((Module.Finite.fg_top (R := c.O) (M := weightZeroSubalgebra c.O S.r.hom)).map (ξ.comp (Subalgebra.inclusion (weight_zero_algebra_le_entry_algebra S.r.hom))).toLinearMap).of_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
-
-Conclude with `⟨⟨x, h0 x hx⟩, trivial, rfl⟩`. Take `⟨t, Ξ, hΞ, hr'⟩` from `Alg.points_finite c.O ℤ S.R W hz (PadicAlgCl l) _ hfg`. Take `⟨A, hA1, hA2, f, hA3, hf⟩` from `exists_range Ξ hr'`. Use `haveI : IsLocalRing A := hA1.toIsLocalRing`. Conclude with `⟨A, hA1, hA2, t (Multiplicative.ofAdd 1), U3.push f S.r.hom, ordPt_of_gd hP D g₁ hg U S B hB A f (loc_of_int f), push_eq _ W hent hA ξ r hr t Ξ hΞ A f hf⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.exists_ordPt_of_point :
     Loc.LocalPublishedTheorems → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) (g₁ : G ℚ Ω), D.Marked g₁ → ∀ (U : D.ULoc) (S : D.Ring U g₁),

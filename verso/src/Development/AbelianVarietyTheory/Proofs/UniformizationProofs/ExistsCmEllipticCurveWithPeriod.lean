@@ -15,7 +15,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj UpperHalfPlane in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.cmCurve_of_uniformisation _root_.GlobalTheory.thetaUnifAV_all _root_.GlobalTheory.polBaseChange_holds _root_.GlobalTheory.homExtension_semiAbelian_dvr_unconditional`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cmCurve_closed : _root_.GlobalTheory.CMCurve :=
   _root_.GlobalTheory.cmCurve_of_uniformisation _root_.GlobalTheory.thetaUnifAV_all

@@ -7,21 +7,21 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Establish `hsymm : ∀ y : Fl l, ι ((frobeniusEquiv (Fl l) l).symm y) = (frobeniusEquiv F l).symm (ι y)` using `fun y => RingHom.map_frobeniusEquiv_symm l ι y`. Establish `hit : ∀ (n : ℕ) (y : Fl l), ι (((frobeniusEquiv (Fl l) l).symm)^[n] y) = ((frobeniusEquiv F l).symm)^[n] (ι y)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `succ n ih => intro y`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hsymm, ih]`. Establish `hpos : ∀ (n : ℕ) (y : Fl l), ((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ n) y = y ^ l ^ n`. Introduce `n`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `y`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ']`. Express the relevant statement in the definitionally equal form `(frobeniusEquiv (Fl l) l) (((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ n) y) = _`. Rewrite using `[ih, frobeniusEquiv_apply, frobenius_def, ← pow_mul, pow_succ]`. Establish `hneg : ∀ (n : ℕ) (y : Fl l), ((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ (-(n : ℤ))) y = ((frobeniusEquiv (Fl l) l).symm)^[n] y`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `y`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Nat.cast_succ, neg_add, zpow_add, Function.iterate_succ_apply]`. Express the relevant statement in the definitionally equal form `((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ (-(n : ℤ))) (((frobeniusEquiv (Fl l) l : RingAut (Fl l)) ^ (-1 : ℤ)) y) = _`. Rewrite using `[ih, zpow_neg_one]`. Both sides reduce to the same expression. Consider the cases of `k with`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Split into cases according to the possible forms of the given data.
 
-Consider the case `ofNat n`. Simplify using `only [GlobalTheory.PSer.pw, GlobalTheory.PMonE.pw, Int.ofNat_eq_coe, zpow_natCast, hpos, map_pow]`. Simplify using the standard rewrite rules. Consider the case `negSucc n`. Establish `hk : Int.negSucc n = -((n + 1 : ℕ) : ℤ)` using `rfl`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.PSer.pw, GlobalTheory.PMonE.pw]`. Rewrite using `[if_neg (by omega), hk, hneg, hit]`. Reduce the equality to equality of the corresponding arguments.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem map_pw_eq_pw (l : ℕ) [Fact l.Prime] (F : Type) [NormedField F] [CharP F l] [PerfectRing F l]
     (ι : Fl l →+* F) (k : ℤ) (x : Fl l) : ι (GlobalTheory.PSer.pw k x) = GlobalTheory.PMonE.pw l k (ι x) := by

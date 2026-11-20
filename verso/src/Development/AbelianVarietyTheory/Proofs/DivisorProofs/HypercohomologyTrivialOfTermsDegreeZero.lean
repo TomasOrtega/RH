@@ -11,11 +11,9 @@ namespace GlobalTheory.NullHtpyStair
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h0 : CohomologyClass.mk (Cocycle.fromSingleMk f (zero_add m) (m + 1) rfl hf) = 0` using `Subsingleton.elim _ _`. Rewrite `h0` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m' hm]`. Take `⟨β, hβ⟩` from `h0`. Use `⟨sglι A ≫ β.v 0 m' (by omega), ?_⟩` and prove the remaining obligations. Use `congrArg (fun c => c.v 0 m (zero_add m)) hβ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `beta_reduce at this`. Rewrite `this` using `[δ_v m' m hm β 0 m (zero_add m) m' 1 (by omega) (by omega), Cocycle.fromSingleMk_coe, Cochain.fromSingleMk_v]`. Establish `hd : (sgl A).d 0 1 = 0` using `(HomologicalComplex.isZero_single_obj_X _ _ _ 1 (by omega)).eq_of_tgt _ _`. Rewrite `this` using `[hd, zero_comp, smul_zero, add_zero]`. Rewrite using `[Category.assoc, this]`.
-
-Conclude with `Iso.inv_hom_id_assoc _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_of_subsingleton {A : Shv R} {M : Cx R} {m' m : ℤ} (hm : m' + 1 = m)
     (hA : Subsingleton (CohomologyClass (sgl A) M m)) (f : A ⟶ M.X m) (hf : f ≫ M.d m (m + 1) = 0) :
@@ -33,7 +31,7 @@ theorem lift_of_subsingleton {A : Shv R} {M : Cx R} {m' m : ℤ} (hm : m' + 1 = 
   exact Iso.inv_hom_id_assoc _ _
 
 /- English proof (translation)
-Use `congrArg (fun c' => c'.v p (p + n + 1) (by omega)) hc` as an intermediate fact. Simplify using `only [Cochain.zero_v] at this`. Rewrite `this` using `[δ_v n (n + 1) rfl c p (p + n + 1) (by omega) (p + n) (p + 1) (by omega) rfl, h1, comp_zero, smul_zero, add_zero]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_d_eq_zero {K M : Cx R} {n : ℤ} (c : Cochain K M n) (hc : δ n (n + 1) c = 0) (p : ℤ)
     (h1 : ∀ q hq, c.v (p + 1) q hq = 0) : c.v p (p + n) rfl ≫ M.d (p + n) (p + n + 1) = 0 := by
@@ -47,11 +45,11 @@ def Good {K M : Cx R} {n : ℤ} (z : Cocycle K M n) (k : ℕ) (y : Cochain K M (
   ∀ p q (hpq : p + n = q), -(k : ℤ) < p → (δ (n - 1) n y).v p q hpq = (z : Cochain K M n).v p q hpq
 
 /- English proof (translation)
-Set `c : Cochain K M n` to `(z : Cochain K M n) - δ (n - 1) n y`. Establish `hc : δ n (n + 1) c = 0`. Simplify using `only [c, δ_sub, δ_δ, Cocycle.δ_eq_zero, sub_zero]`. Establish `h1 : ∀ q hq, c.v (-(k : ℤ) + 1) q hq = 0` using `fun q hq => by`. Simplify using `only [c, Cochain.sub_v, hy (-(k : ℤ) + 1) q hq (by omega), sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨g, hg⟩` from `hK (-(k : ℤ)) (-(k : ℤ) + (n - 1)) (-(k : ℤ) + n) (by omega) (by omega) (c.v (-(k : ℤ)) (-(k : ℤ) + n) rfl) (comp_d_eq_zero c hc _ h1)`. Use `⟨g, fun p q hpq hp => ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, Cochain.add_v]`. Distinguish the cases in `hpp : p = -(k : ℤ)`. Substitute `hpp` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `rfl : q = -(k : ℤ) + n` from `by omega`. Rewrite using `[δ_v (n - 1) n (by omega) (Cochain.single g (n - 1)) _ _ hpq (-(k : ℤ) + (n - 1)) (-(k : ℤ) + 1) (by omega) rfl, Cochain.single_v, Cochain.single_v_eq_zero _ _ _ _ _ (by omega), comp_zero, smul_zero, add_zero, hg]`. Simplify using `only [c, Cochain.sub_v]`. Normalize the expressions using the abelian group laws. Rewrite using `[hy p q hpq (by omega), δ_v (n - 1) n (by omega) _ p q hpq (q - 1) (p + 1) rfl rfl, Cochain.single_v_eq_zero _ _ _ _ _ (by omega), Cochain.single_v_eq_zero _ _ _ _ _ (by omega)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -89,9 +87,9 @@ def seq {K M : Cx R} [K.IsStrictlyLE 0] {n : ℤ}
     (fun k ih => ⟨ih.1 + Cochain.single (step hK z k _ ih.2).choose (n - 1), (step hK z k _ ih.2).choose_spec⟩) k
 
 /- English proof (translation)
-Proceed by induction on `j, hkj using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ j hj ih`. Rewrite using `[← ih]`. Use `show ((seq hK z j).1 + Cochain.single _ (n - 1)).v p q hpq = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cochain.add_v, Cochain.single_v_eq_zero _ _ _ _ _ (by omega), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem seq_agree {K M : Cx R} [K.IsStrictlyLE 0] {n : ℤ}
     (hK : ∀ (p m' m : ℤ), p ≤ 0 → m' + 1 = m → ∀ f : K.X p ⟶ M.X m, f ≫ M.d m (m + 1) = 0 →
@@ -110,9 +108,9 @@ end GlobalTheory.NullHtpyStair
 open GlobalTheory.NullHtpyStair in
 
 /- English proof (translation)
-Introduce `R _ K M _ hA n`. Establish `hK : ∀ (p m' m : ℤ), p ≤ 0 → m' + 1 = m → ∀ f : K.X p ⟶ M.X m, f ≫ M.d m (m + 1) = 0 → ∃ g : K.X p ⟶ M.X m', g ≫ M.d m' m = f` using `fun p m' m hp hm f hf => lift_of_subsingleton hm (hA p m hp) f hf`. It suffices to establish `h : ∀ x : CohomologyClass K M n, x = 0 from ⟨fun x y => (h x).trans (h y).symm⟩`. Introduce `x`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨Cochain.mk (fun p q hpq => (seq hK z ((-p).toNat + 1)).1.v p q hpq), ?_⟩` and prove the remaining obligations. Use `Cochain.ext _ _ fun p q hpq => ?_` and prove the remaining obligations. Rewrite using `[δ_v (n - 1) n (by omega) _ p q hpq (q - 1) (p + 1) (by omega) rfl, Cochain.mk_v, Cochain.mk_v, ← seq_agree hK z ((-(p + 1)).toNat + 1) ((-p).toNat + 1) (by omega) (p + 1) q _ (by omega), ← δ_v (n - 1) n (by omega) _ p q hpq (q - 1) (p + 1) (by omega) rfl]`. Conclude with `(seq hK z ((-p).toNat + 1)).2 p q hpq (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.nullHtpy_stair : ∀ (R : Type) [CommRing R] (K M : Cx R) [K.IsStrictlyLE 0],
     (∀ p n : ℤ, p ≤ 0 → Subsingleton (CohomologyClass (sgl (K.X p)) M n)) → ∀ n : ℤ,

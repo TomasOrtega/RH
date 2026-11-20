@@ -21,11 +21,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h3 h hh s`. Take `⟨B, hB⟩` from `h2.1 h hh s y hy (fun e => h0 (by rw [e, map_zero]))`. Take `⟨B', hB', hb⟩` from `h2.2 c ((Submodule.ne_bot_iff _).2 ⟨_, hc y hy, h0⟩)`. Use `⟨B, hB, fun w hw => ⟨(B' w).map (fun a : ℂˣ => ((a * valV R i t w * (valW R i t w)⁻¹ : ℂˣ) : ℂ)), ?_, fun a ha => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hw' : ok w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `h1' h hh s c y hy h0 (hc y hy) B B' hB hB' w hw hw'`. Conclude with `h1 h hh s c y hy h0 (hc y hy) B B' hB hB' w hw hw'`. Take `⟨b, hb', rfl⟩` from `Multiset.mem_map.1 ha`. Establish `e1 : ‖(valV R i t w : ℂ)‖ = 1` using `GlobalTheory.LFun.norm_val _ _`. Establish `e2 : ‖(valW R i t w : ℂ)‖ = 1` using `GlobalTheory.LFun.norm_val _ _`.
-
-Simplify `hb w hw b hb'` using `[e1, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasString_of_lift (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (ok : Pl D.host.E → Prop)
     (h1 : UnrCorr R i t fun w => ¬ ok w) (h1' : UnrCorr R i t ok)
@@ -44,9 +42,9 @@ theorem hasString_of_lift (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (ok : Pl 
   simpa [e1, e2] using hb w hw b hb'
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ hZ`. Introduce `i h hops s x y hx hy hxne hyG hy0`. Take `⟨hT, hDE, hU1, hU2, hPE⟩` from `hZ i`. Establish `hF : R.thF i A.μ0 x ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hxne` to reduce the goal to its premises. Apply `(hG.core.models.HW i (sg0 D A)).1` to reduce the goal to its premises. Rewrite using `[hG.core.thP.thG i A.μ0 x, h0, map_zero, map_zero]`. Conclude with `hT h hops s (hasString_of_lift R i A.μ0 (fun w => IsConjPl w w) hU1 hU2 hPE hDE hops hx hF) y hy hyG hy0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftInj_of_typeNZ : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → (∀ i, TypeNZ R i A.μ0 ∧ DownEig R i A.μ0 ∧ UnrCorr R i A.μ0 (fun w => ¬ IsConjPl w w) ∧ UnrCorr R i A.μ0 (fun w => IsConjPl w w) ∧ ParamsEx R i A.μ0) → GlobalTheory.LiftRows.LiftInj R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ hZ

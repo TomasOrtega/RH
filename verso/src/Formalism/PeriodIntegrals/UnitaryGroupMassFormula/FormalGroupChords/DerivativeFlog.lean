@@ -25,7 +25,7 @@ def iW (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : PowerSeries �
   -PowerSeries.X * (Dser W wq)⁻¹
 
 /- English proof (translation)
-Establish `h' : wq = 1 + cP W.a₁ * PowerSeries.X * wq + cP W.a₂ * PowerSeries.X ^ 2 * wq + cP W.a₃ * PowerSeries.X ^ 3 * wq ^ 2 + cP W.a₄ * PowerSeries.X ^ 4 * wq ^ 2 + cP W.a₆ * PowerSeries.X ^ 6 * wq ^ 3` using `h`. Establish `e` using `congrArg PowerSeries.constantCoeff h'`. Simplify using `using e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wq_const' {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.constantCoeff wq = 1 := by
@@ -36,14 +36,14 @@ theorem wq_const' {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h :
   simpa using e
 
 /- English proof (translation)
-Simplify using `[Dser]`.
+Simplify using the standard rewrite rules.
 -/
 theorem D_const (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (Dser W wq) = 1 := by
   simp [Dser]
 
 /- English proof (translation)
-Establish `hc : PowerSeries.constantCoeff (Dser W wq) ≠ 0` using `by rw [D_const]; exact one_ne_zero`. Rewrite using `[iW, mul_assoc, PowerSeries.inv_mul_cancel _ hc, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iW_mul_D (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     iW W wq * Dser W wq = -PowerSeries.X := by
@@ -51,14 +51,14 @@ theorem iW_mul_D (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
   rw [iW, mul_assoc, PowerSeries.inv_mul_cancel _ hc, mul_one]
 
 /- English proof (translation)
-Simplify using `[iW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iW_const (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (iW W wq) = 0 := by
   simp [iW]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' (iW_const W wq)`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero (iW_const W wq)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasSubst_iW (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : PowerSeries.HasSubst (iW W wq) := by
   first
@@ -66,9 +66,9 @@ theorem hasSubst_iW (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : 
   | exact PowerSeries.HasSubst.of_constantCoeff_zero (iW_const W wq)
 
 /- English proof (translation)
-Establish `h' : wq = 1 + cP W.a₁ * PowerSeries.X * wq + cP W.a₂ * PowerSeries.X ^ 2 * wq + cP W.a₃ * PowerSeries.X ^ 3 * wq ^ 2 + cP W.a₄ * PowerSeries.X ^ 4 * wq ^ 2 + cP W.a₆ * PowerSeries.X ^ 6 * wq ^ 3` using `h`. Establish `hφ : ∀ f : PowerSeries ℂ_[p], PowerSeries.subst t f = PowerSeries.substAlgHom ht f` using `fun f => by`. Rewrite using `[PowerSeries.coe_substAlgHom]`. Establish `hX : PowerSeries.substAlgHom ht (PowerSeries.X : PowerSeries ℂ_[p]) = t`. Rewrite using `[← hφ, PowerSeries.subst_X ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h']`. Simplify using `only [hφ, map_add, map_mul, map_pow, map_one, AlgHom.commutes, hX]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_isWq {W : WeierstrassCurve ℂ_[p]} {wq t : PowerSeries ℂ_[p]} (ht : PowerSeries.HasSubst t)
     (h : IsWq W wq) :
@@ -86,9 +86,9 @@ theorem subst_isWq {W : WeierstrassCurve ℂ_[p]} {wq t : PowerSeries ℂ_[p]} (
   simp only [hφ, map_add, map_mul, map_pow, map_one, AlgHom.commutes, hX]
 
 /- English proof (translation)
-Establish `key : (V₁ - V₂) * (1 - (cP a₁ * t + cP a₂ * t ^ 2 + cP a₃ * t ^ 3 * (V₁ + V₂) + cP a₄ * t ^ 4 * (V₁ + V₂) + cP a₆ * t ^ 6 * (V₁ ^ 2 + V₁ * V₂ + V₂ ^ 2))) = 0`. Take the linear combination `h₁ - h₂`. Establish `hc : PowerSeries.constantCoeff (1 - (cP a₁ * t + cP a₂ * t ^ 2 + cP a₃ * t ^ 3 * (V₁ + V₂) + cP a₄ * t ^ 4 * (V₁ + V₂) + cP a₆ * t ^ 6 * (V₁ ^ 2 + V₁ * V₂ + V₂ ^ 2))) ≠ 0`. Simplify using `[ht]`. Break down `mul_eq_zero.1 key with h | h` into its components or cases.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sub_eq_zero.1 h`. Conclude with `absurd (by rw [h, map_zero]) hc`.
+A detailed English derivation is pending.
 -/
 theorem fix_unique {a₁ a₂ a₃ a₄ a₆ : ℂ_[p]} {t V₁ V₂ : PowerSeries ℂ_[p]} (ht : PowerSeries.constantCoeff t = 0)
     (h₁ : V₁ = 1 + cP a₁ * t * V₁ + cP a₂ * t ^ 2 * V₁ + cP a₃ * t ^ 3 * V₁ ^ 2 + cP a₄ * t ^ 4 * V₁ ^ 2 +
@@ -106,9 +106,9 @@ theorem fix_unique {a₁ a₂ a₃ a₄ a₆ : ℂ_[p]} {t V₁ V₂ : PowerSeri
   · exact absurd (by rw [h, map_zero]) hc
 
 /- English proof (translation)
-Establish `hw : wq = 1 + cP W.a₁ * PowerSeries.X * wq + cP W.a₂ * PowerSeries.X ^ 2 * wq + cP W.a₃ * PowerSeries.X ^ 3 * wq ^ 2 + cP W.a₄ * PowerSeries.X ^ 4 * wq ^ 2 + cP W.a₆ * PowerSeries.X ^ 6 * wq ^ 3` using `h`. Use `fix_unique (a₁ := W.a₁) (a₂ := W.a₂) (a₃ := W.a₃) (a₄ := W.a₄) (a₆ := W.a₆) (iW_const W wq) ?_ ?_` and prove the remaining obligations. Conclude with `subst_isWq (hasSubst_iW W wq) h`. Establish `e` using `iW_mul_D W wq`. Generalize the expression as in `iW W wq = i at e ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hDdef : Dser W wq = D at e ⊢`. Establish `hD : D = 1 - (cP W.a₁ * PowerSeries.X + cP W.a₃ * PowerSeries.X ^ 3 * wq)` using `hDdef.symm`. Take the linear combination `(-(cP W.a₁) * wq * D - cP W.a₂ * wq * (i * D - PowerSeries.X) - cP W.a₃ * wq ^ 2 * D * ((i * D) ^ 2 - i * D * PowerSeries.X + PowerSeries.X ^ 2) - cP W.a₄ * wq ^ 2 * ((i * D) ^ 3 - (i * D) ^ 2 * PowerSeries.X + i * D * PowerSeries.X ^ 2 - PowerSeries.X ^ 3) - cP W.a₆ * wq ^ 3 * ( …`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wq_iW {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.subst (iW W wq) wq = wq * Dser W wq ^ 2 := by
@@ -129,7 +129,7 @@ theorem wq_iW {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsW
       + hw + wq * (D + 1) * hD
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[dX, PowerSeries.coeff_mk, PowerSeries.coeff_derivative]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dX_eq (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivative ℂ_[p] f := by
   ext n
@@ -137,7 +137,7 @@ theorem dX_eq (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivative ℂ_[p] 
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_derivative, flog, PowerSeries.coeff_mk, if_neg (Nat.succ_ne_zero n), Nat.add_sub_cancel]`. Use `push_cast`. Conclude with `div_mul_cancel₀ _ (Nat.cast_add_one_ne_zero n)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem derivative_flog' (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.derivative ℂ_[p] (flog W wq) = omegaW W wq := by
@@ -147,14 +147,14 @@ theorem derivative_flog' (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p
   exact div_mul_cancel₀ _ (Nat.cast_add_one_ne_zero n)
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, flog, PowerSeries.coeff_mk, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flog_const (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (flog W wq) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, flog, PowerSeries.coeff_mk, if_pos rfl]
 
 /- English proof (translation)
-Establish `hM : PowerSeries.constantCoeff (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq - 2)) ≠ 0`. Establish `h2 : PowerSeries.constantCoeff (2 : PowerSeries ℂ_[p]) = 2` using `map_ofNat _ 2`. Simplify using `[wq_const' h, h2]`. Simplify using `only [omegaW]`. Rewrite using `[mul_assoc, PowerSeries.inv_mul_cancel _ hM, mul_one, dX_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem omega_mul {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     omegaW W wq * (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X +
@@ -168,9 +168,9 @@ theorem omega_mul {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h :
   rw [mul_assoc, PowerSeries.inv_mul_cancel _ hM, mul_one, dX_eq]
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify `h0` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `e` using `congrArg (PowerSeries.coeff n) hd`. Rewrite `e` using `[PowerSeries.coeff_derivative, PowerSeries.coeff_derivative]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `exact mul_right_cancel₀ (Nat.cast_add_one_ne_zero n) e`. Consider the case `exact mul_right_cancel₀ (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero n)) e`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem deriv_ext {f g : PowerSeries ℂ_[p]} (hd : PowerSeries.derivative ℂ_[p] f = PowerSeries.derivative ℂ_[p] g)
     (h0 : PowerSeries.constantCoeff f = PowerSeries.constantCoeff g) : f = g := by
@@ -184,9 +184,9 @@ theorem deriv_ext {f g : PowerSeries ℂ_[p]} (hd : PowerSeries.derivative ℂ_[
     | exact mul_right_cancel₀ (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero n)) e
 
 /- English proof (translation)
-Establish `hpd : ∀ g : PowerSeries ℂ_[p], MvPowerSeries.pderiv ℂ_[p] () g = PowerSeries.derivative ℂ_[p] g`. Introduce `g`. Use `PowerSeries.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_derivative]`. Use `show MvPowerSeries.coeff (Finsupp.single () n) (MvPowerSeries.pderiv ℂ_[p] () g) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_pderiv, ← Finsupp.single_add, Finsupp.single_eq_same]`. Both sides reduce to the same expression. Use `PI.AddIntG.Wk.pderiv_subst (σ := Unit) ha f ()` as an intermediate fact. Rewrite `this` using `[hpd, hpd]`. Conclude with `this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem derivative_subst_eq_subst_derivative_mul (a f : PowerSeries ℂ_[p]) (ha : PowerSeries.HasSubst a) :
     PowerSeries.derivative ℂ_[p] (PowerSeries.subst a f) =
@@ -203,19 +203,19 @@ private theorem derivative_subst_eq_subst_derivative_mul (a f : PowerSeries ℂ_
   exact this
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_iW W wq`. Establish `hφ : ∀ f : PowerSeries ℂ_[p], PowerSeries.subst (iW W wq) f = PowerSeries.substAlgHom hs f` using `fun f => by`. Rewrite using `[PowerSeries.coe_substAlgHom]`. Establish `hX : PowerSeries.substAlgHom hs (PowerSeries.X : PowerSeries ℂ_[p]) = iW W wq`. Rewrite using `[← hφ, PowerSeries.subst_X hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `deriv_ext` to reduce the goal to its premises. Establish `hwi` using `wq_iW h`. Establish `e` using `iW_mul_D W wq`. Establish `hD0 : Dser W wq = 1 - (cP W.a₁ * PowerSeries.X + cP W.a₃ * PowerSeries.X ^ 3 * wq)` using `rfl`. Establish `hom` using `omega_mul h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hom'` using `congrArg (PowerSeries.substAlgHom hs) hom`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_neg, map_ofNat, AlgHom.commutes, hX] at hom'`. Simplify using `only [← hφ] at hom'`. Rewrite `hom'` using `[hwi]`. Establish `hcw` using `derivative_subst_eq_subst_derivative_mul (iW W wq) wq hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcw` using `[hwi]`. Establish `hdwD : PowerSeries.derivative ℂ_[p] (wq * Dser W wq ^ 2) = PowerSeries.derivative ℂ_[p] wq * Dser W wq ^ 2 + wq * (2 * Dser W wq * PowerSeries.derivative ℂ_[p] (Dser W wq))`. Rewrite using `[pow_two, Derivation.leibniz, Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2` using `congrArg (PowerSeries.derivative ℂ_[p]) e`. Rewrite `e2` using `[Derivation.leibniz, map_neg, PowerSeries.derivative_X]`. Simplify using `only [smul_eq_mul] at e2`. Establish `hDM : Dser W wq * (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq - 2)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h00` using `congrArg PowerSeries.constantCoeff h0`. Establish `h2 : PowerSeries.constantCoeff (2 : PowerSeries ℂ_[p]) = 2` using `map_ofNat _ 2`. Simplify using `[D_const, wq_const' h, h2] at h00`. Rewrite using `[derivative_subst_eq_subst_derivative_mul (iW W wq) (flog W wq) hs, derivative_flog', map_neg, derivative_flog']`. Establish `key : (PowerSeries.subst (iW W wq) (omegaW W wq) * PowerSeries.derivative ℂ_[p] (iW W wq) + omegaW W wq) * (Dser W wq * (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq - 2))) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `Dser W wq * hom + PowerSeries.derivative ℂ_[p] (iW W wq) * hom' - PowerSeries.derivative ℂ_[p] (iW W wq) * PowerSeries.subst (iW W wq) (omegaW W wq) * wq * Dser W wq * (cP W.a₁ + cP W.a₃ * wq * ((iW W wq * Dser W wq) ^ 2 - iW W wq * Dser W wq * PowerSeries.X + PowerSeries.X ^ 2)) …`. Establish `h3` using `(mul_eq_zero.1 key).resolve_right hDM`. Take the linear combination `h3`. Take `⟨g, hg⟩` from `PowerSeries.X_dvd_iff.2 (flog_const W wq)`. Rewrite using `[map_neg, flog_const, neg_zero, hg, hφ, map_mul, hX, map_mul, iW_const, zero_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem flog_iW {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.subst (iW W wq) (flog W wq) = -flog W wq := by
@@ -268,13 +268,11 @@ theorem flog_iW {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : I
     rw [map_neg, flog_const, neg_zero, hg, hφ, map_mul, hX, map_mul, iW_const, zero_mul]
 
 /- English proof (translation)
-Establish `hcP : ∀ x ∈ S, ∀ n, PowerSeries.coeff n (cP x) ∈ S`. Introduce `x hx n`. Rewrite using `[cP, Algebra.algebraMap_eq_smul_one, PowerSeries.coeff_smul, PowerSeries.coeff_one]`. Use `split_ifs`. Rewrite using `[smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[smul_zero]`. Conclude with `S.zero_mem`. Establish `hXm : (PowerSeries.X : MvPowerSeries Unit ℂ_[p]) ∈ SerS S Unit` using `serS_unit fun n => by`. Rewrite using `[PowerSeries.coeff_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Establish `h1m` using `serS_unit (hcP _ h1)`. Establish `h3m` using `serS_unit (hcP _ h3)`.
-
-Establish `hwm` using `serS_unit hw`. Establish `hDm : (Dser W wq : MvPowerSeries Unit ℂ_[p]) ∈ SerS S Unit` using `(SerS S Unit).sub_mem (SerS S Unit).one_mem ((SerS S Unit).add_mem ((SerS S Unit).mul_mem h1m hXm) ((SerS S Unit).mul_mem ((SerS S Unit).mul_mem h3m ((SerS S Unit).pow_mem hXm 3)) hwm))`. Establish `hi : (iW W wq : MvPowerSeries Unit ℂ_[p]) ∈ SerS S Unit` using `(SerS S Unit).mul_mem ((SerS S Unit).neg_mem hXm) (inv_mem_SerS S (D_const W wq) hDm)`. Conclude with `serS_unit_iff.1 hi`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iW_mem {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h1 : W.a₁ ∈ S)
     (h3 : W.a₃ ∈ S) (hw : ∀ n, PowerSeries.coeff n wq ∈ S) : ∀ n, PowerSeries.coeff n (iW W wq) ∈ S := by

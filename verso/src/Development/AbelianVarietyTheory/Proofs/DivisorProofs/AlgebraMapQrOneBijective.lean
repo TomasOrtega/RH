@@ -8,7 +8,7 @@ namespace GlobalTheory.TorCls.AtP
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.DiscreteGroups.LocalClassField.finrank_Kn p (Q0 p) (by infer_instance) one_pos`. Rewrite `h` using `[IntermediateField.finrank_bot, one_mul]`. Conclude with `IntermediateField.finrank_eq_one_iff.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qr_one_eq_bot : Qr p 1 = ⊥ := by
   have h := ReciprocityTheory.DiscreteGroups.LocalClassField.finrank_Kn p (Q0 p) (by infer_instance) one_pos
@@ -16,9 +16,9 @@ theorem qr_one_eq_bot : Qr p 1 = ⊥ := by
   exact IntermediateField.finrank_eq_one_iff.1 h
 
 /- English proof (translation)
-Use `⟨(algebraMap ℚ_[p] (Qr p 1)).injective, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : (x : PadicAlgCl p) ∈ (⊥ : IntermediateField ℚ_[p] (PadicAlgCl p))`. Rewrite using `[← qr_one_eq_bot]`. Conclude with `x.2`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, Subtype.ext ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_qr_one_bijective : Function.Bijective (algebraMap ℚ_[p] (Qr p 1)) := by
   refine ⟨(algebraMap ℚ_[p] (Qr p 1)).injective, fun x => ?_⟩
@@ -28,9 +28,9 @@ theorem algebraMap_qr_one_bijective : Function.Bijective (algebraMap ℚ_[p] (Qr
   exact ⟨a, Subtype.ext ha⟩
 
 /- English proof (translation)
-Set `e : ℚ_[p] ≃ₐ[ℚ_[p]] Qr p 1` to `AlgEquiv.ofBijective (Algebra.ofId ℚ_[p] (Qr p 1)) algebraMap_qr_one_bijective`. Set `E : K ≃ₐ[ℚ_[p]] KQ p K 1` to `(Algebra.TensorProduct.rid ℚ_[p] ℚ_[p] K).symm.trans (Algebra.TensorProduct.congr AlgEquiv.refl e)`. Establish `h : ∀ a, inclK p K 1 a = E a`. Introduce `a`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[ℚ_[p]] (1 : Qr p 1) = Algebra.TensorProduct.congr AlgEquiv.refl e ((Algebra.TensorProduct.rid ℚ_[p] ℚ_[p] K).symm a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.rid_symm_apply, Algebra.TensorProduct.congr_apply, Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Establish `: (inclK p K 1 : K → KQ p K 1) = E` using `funext h`. Rewrite using `[this]`. Conclude with `E.bijective`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclK_one_bijective (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     Function.Bijective (inclK p K 1) := by
@@ -46,9 +46,9 @@ theorem inclK_one_bijective (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
   rw [this]; exact E.bijective
 
 /- English proof (translation)
-Set `g : S ≃+* R` to `(RingEquiv.ofBijective f hf).symm`. Use `⟨fun A B h => ?_, fun B => ⟨GeneralLinearGroup.map (g : S →+* R) B, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrArg (fun X : GL (Fin n) S => (X : Matrix (Fin n) (Fin n) S) i j) h` as an intermediate fact. Simplify using `only [GeneralLinearGroup.map_apply] at this`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hf.1 this`. Use extensionality with `i j`. Simplify using `only [GeneralLinearGroup.map_apply, RingHom.coe_coe]`. Conclude with `(RingEquiv.ofBijective f hf).apply_symm_apply _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glMap_bijective {R S : Type*} [CommRing R] [CommRing S] (n : ℕ) (f : R →+* S) (hf : Function.Bijective f) :
     Function.Bijective (GeneralLinearGroup.map (n := Fin n) f) := by
@@ -63,11 +63,11 @@ theorem glMap_bijective {R S : Type*} [CommRing R] [CommRing S] (n : ℕ) (f : R
     exact (RingEquiv.ofBijective f hf).apply_symm_apply _
 
 /- English proof (translation)
-Use `⟨fun a b h => ?_, fun B => ?_⟩` and prove the remaining obligations. Use `congrArg (fun X : GL (Fin 1) R => (X : Matrix (Fin 1) (Fin 1) R) 0 0) h` as an intermediate fact. Simplify using `at this`. Conclude with `Units.ext this`. Use `⟨⟨(B : Matrix (Fin 1) (Fin 1) R) 0 0, (B⁻¹ : GL (Fin 1) R) 0 0, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun X : Matrix (Fin 1) (Fin 1) R => X 0 0) B.mul_inv` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Use `congrArg (fun X : Matrix (Fin 1) (Fin 1) R => X 0 0) B.inv_mul` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Use extensionality with `i j fin_cases i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `fin_cases j`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem scalar_one_bijective (R : Type*) [CommRing R] :
     Function.Bijective (GeneralLinearGroup.scalar (Fin 1) : Rˣ →* GL (Fin 1) R) := by
@@ -85,11 +85,11 @@ theorem scalar_one_bijective (R : Type*) [CommRing R] :
       simp
 
 /- English proof (translation)
-Establish `h1 : Function.Bijective ((GeneralLinearGroup.scalar (Fin 1)).comp (Units.map (algebraMap ℚ_[p] (Qr p 1)).toMonoidHom))`. Use `(scalar_one_bijective _).comp ⟨fun a b h => Units.ext (algebraMap_qr_one_bijective.1 (congrArg Units.val h)), fun b => ?_⟩` and prove the remaining obligations. Set `f` to `RingEquiv.ofBijective (algebraMap ℚ_[p] (Qr p 1)) algebraMap_qr_one_bijective`. Use `⟨Units.map (f.symm : Qr p 1 →+* ℚ_[p]).toMonoidHom b, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `f.apply_symm_apply (b : Qr p 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∀ w, Function.Bijective (GeneralLinearGroup.map (n` using `Fin G.n) (inclK p (G.Fw w) 1).toRingHom) := fun w => glMap_bijective _ _ (inclK_one_bijective (G.Fw w))`. Use `⟨fun a b h => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `hh` using `Prod.ext_iff.1 h`. Use `Prod.ext (h1.1 hh.1) (funext fun w => (h2 w).1 (congrFun hh.2 w))` and prove the remaining obligations. Take `⟨a, ha⟩` from `h1.2 c.1 choose b hb using fun w => (h2 w).2 (c.2 w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(a, b), Prod.ext ha (funext hb)⟩`.
+A detailed English derivation is pending.
 -/
 theorem inclG_one_bijective (G : HTGroup p) : Function.Bijective (inclG G 1) := by
   have h1 : Function.Bijective ((GeneralLinearGroup.scalar (Fin 1)).comp
@@ -113,31 +113,29 @@ namespace GlobalTheory.TorCls.AtP
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Set `τ : G.F →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := G.F)).toRingHom`. Take `⟨x, hxK, hx⟩` from `G.hKq.2 τ`. Set `xk : G.Kq` to `⟨x, hxK⟩`. Establish `: FiniteDimensional ℚ G.Kq` using `Module.finite_of_finrank_pos (by rw [G.hKq.1]; norm_num)`. Establish `hint : IsIntegral ℚ xk` using `IsIntegral.of_finite ℚ xk`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (minpoly ℚ xk).natDegree ≤ 2` using `G.hKq.1 ▸ minpoly.natDegree_le xk`. Establish `hpos : 0 < (minpoly ℚ xk).natDegree` using `minpoly.natDegree_pos hint`. Establish `hne1 : (minpoly ℚ xk).natDegree ≠ 1`. Introduce `h1`. Take `⟨q, hq⟩` from `(minpoly.natDegree_eq_one_iff (A := ℚ) (x := xk)).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hq' : (q : G.F) = x`. Use `congrArg (fun y : G.Kq => (y : G.F)) hq` as an intermediate fact. Simplify using `using this`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hq', map_ratCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : (minpoly ℚ xk).natDegree = 2` using `by omega`. Establish `hmon` using `minpoly.monic hint`. Establish `hc2 : (minpoly ℚ xk).coeff 2 = 1`. Use `hmon.coeff_natDegree` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h2]`. Then use the resulting hypothesis. Establish `hev` using `minpoly.aeval ℚ xk`. Rewrite `hev` using `[Polynomial.aeval_eq_sum_range, h2]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, hc2, zero_add, pow_zero, pow_one, one_smul] at hev`. Use `set b := (minpoly ℚ xk).coeff 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c := (minpoly ℚ xk).coeff 0`. Rewrite `hev` using `[Rat.smul_def, Rat.smul_def, mul_one]`. Establish `hsq : (2 * xk + (b : G.Kq)) ^ 2 = (((b ^ 2 - 4 * c : ℚ)) : G.Kq)`. Use `push_cast`. Take the linear combination `4 * hev`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2c : ((2 : G.Kq) : G.F) = 2` using `map_ofNat G.Kq.subtype 2`. Establish `h4c : ((4 : G.Kq) : G.F) = 4` using `map_ofNat G.Kq.subtype 4`. Establish `hsqF : (2 * x + (b : G.F)) ^ 2 = (((b ^ 2 - 4 * c : ℚ)) : G.F)`. Use `congrArg (fun y : G.Kq => (y : G.F)) hsq` as an intermediate fact. Simplify `this` using `[xk, h2c, h4c]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set δF : G.F := 2 * x + (b : G.F) with hδF`. Establish `hcF : IsCMField.complexConj G.F δF ^ 2 = δF ^ 2`. Rewrite using `[← map_pow, hsqF, map_ratCast]`. Establish `hneq : IsCMField.complexConj G.F δF ≠ δF`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ : τ (IsCMField.complexConj G.F δF) = (starRingEnd ℂ) (τ δF)` using `IsCMField.complexEmbedding_complexConj G.F τ δF`. Rewrite `hτ` using `[h]`. Establish `him : (τ δF).im = 0` using `Complex.conj_eq_iff_im.1 hτ.symm`. Apply `hx` to reduce the goal to its premises. Establish `: τ δF = 2 * τ x + (b : ℂ)` using `by simp [hδF, map_ratCast, map_ofNat τ 2]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `him` using `[this]`. Simplify using `at him`. Conclude with `him`. Establish `hanti : IsCMField.complexConj G.F δF = -δF`. Establish `h0 : (IsCMField.complexConj G.F δF - δF) * (IsCMField.complexConj G.F δF + δF) = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `hcF`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) hneq`. Conclude with `eq_neg_of_add_eq_zero_left h`. Use `⟨2 * xk + (b : G.Kq), b ^ 2 - 4 * c, hsq, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((2 * xk + (b : G.Kq) : G.Kq)) : G.F) = δF` using `by simp [xk, hδF, h2c]`. Rewrite using `[e]`. Conclude with `hanti`. Introduce `h0`. Apply `hneq` to reduce the goal to its premises.
-
-Establish `e : δF = 0`. Use `congrArg (fun y : G.Kq => (y : G.F)) h0` as an intermediate fact. Simplify `this` using `[xk, hδF, h2c]`. Rewrite using `[e, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_anti (G : HTGroup p) : ∃ (δ : G.Kq) (d : ℚ), δ ^ 2 = (d : G.Kq) ∧
     IsCMField.complexConj G.F (δ : G.F) = -(δ : G.F) ∧ δ ≠ 0 := by
@@ -210,17 +208,17 @@ end GlobalTheory.TorCls.AtP
 namespace GlobalTheory.TorCls.AtP
 
 /- English proof (translation)
-Use `set f := 1 - e with hf`. Establish `hfz : ∀ z, f * z = z * f` using `fun z => by rw [hf, sub_mul, mul_sub, one_mul, mul_one, he]`. Establish `hff : f * f = f` using `by rw [hf, sub_mul, mul_sub, mul_sub, one_mul, mul_one, one_mul, hee, sub_self, sub_zero]`. Establish `hef : e * f = 0` using `by rw [hf, mul_sub, mul_one, hee, sub_self]`. Establish `hfe : f * e = 0` using `by rw [hfz, hef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hef' : e + f = 1` using `by rw [hf]; abel`. Establish `hσf : (σ f).unop = e`. Rewrite using `[hf, map_sub, map_one, MulOpposite.unop_sub, MulOpposite.unop_one, hσe, hf]`. Normalize the expressions using the abelian group laws. Establish `inv : ∀ X Y : R, X * Y = 1 → (e + f * X) * (e + f * Y) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X Y hXY`. Establish `h1 : e * (f * Y) = 0` using `by rw [← mul_assoc, hef, zero_mul]`. Establish `h2 : f * (X * e) = 0` using `by rw [← he X, ← mul_assoc, hfe, zero_mul]`. Establish `h3 : f * (X * (f * Y)) = f` using `by rw [← mul_assoc X, ← hfz X, mul_assoc, hXY, mul_one, hff]`. Simplify using `only [mul_add, add_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3, hee]`. Simplify using `only [add_zero, zero_add]`. Conclude with `hef'`. Use `⟨inv B Bi hBi, inv Bi B hBi', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, MulOpposite.unop_add, MulOpposite.unop_mul, hσe, hB, hσf]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : e * (B * e) = B * e` using `by rw [← mul_assoc, he B, mul_assoc, hee]`. Establish `k3 : f * (B * f) = B * f` using `by rw [← mul_assoc, hfz B, mul_assoc, hff]`. Establish `k4 : f * (B * (B * e)) = 0` using `by rw [← mul_assoc B, ← he (B * B), ← mul_assoc, hfe, zero_mul]`. Simplify using `only [mul_add, add_mul, mul_assoc]`. Rewrite using `[hef, k2, k3, k4]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [add_zero, zero_add]`. Rewrite using `[← mul_add, add_comm, hef', mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem triv_of_idem {R : Type*} [Ring R] (σ : R →+* Rᵐᵒᵖ) (e B Bi : R) (he : ∀ z, e * z = z * e)
     (hee : e * e = e) (hσe : (σ e).unop = 1 - e) (hB : (σ B).unop = B) (hBi : B * Bi = 1) (hBi' : Bi * B = 1) :
@@ -259,25 +257,25 @@ namespace GlobalTheory.TorCls.AtP
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨δ, d, hδ2, hconj, hδ0⟩` from `exists_anti G`. Use `set δC : G.C := algebraMap G.F G.C (δ : G.F) with hδC`. Use `set s : ℚ_[p] := G.u δ with hs`. Establish `hs0 : s ≠ 0`. Introduce `h; apply hδ0; exact G.u.injective (by rw [← hs, h, map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2 : s ^ 2 = (d : ℚ_[p])` using `by rw [hs, ← map_pow, hδ2, map_ratCast]`. Establish `hδC2 : δC * δC = algebraMap ℚ G.C d`. Establish `: ((δ : G.F)) * (δ : G.F) = (d : G.F)`. Use `congrArg (fun y : G.Kq => (y : G.F)) hδ2` as an intermediate fact. Simplify `this` using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hδC, ← map_mul, this, ← eq_ratCast (algebraMap ℚ G.F) d, ← IsScalarTower.algebraMap_apply]`. Establish `hδcomm : ∀ c : G.C, δC * c = c * δC` using `fun c => Algebra.commutes _ c`. Establish `hδstar : (G.star δC).unop = -δC`. Rewrite using `[hδC, G.star_F, hconj, map_neg]`. Set `E : ℚ_[p] → ℚ_[p] → ℚ_[p] ⊗[ℚ] G.C` to `fun h k => h ⊗ₜ (1 : G.C) + k ⊗ₜ δC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : ∀ h k h' k', E h k * E h' k' = E (h * h' + k * k' * d) (h * k' + k * h')`. Introduce `h k h' k'`. Simplify using `only [E, mul_add, add_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, hδC2]`. Establish `hd1 : ∀ x : ℚ_[p], x ⊗ₜ[ℚ] (algebraMap ℚ G.C d) = (x * d) ⊗ₜ (1 : G.C)`. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Rat.smul_def, mul_comm]`. Rewrite using `[hd1, TensorProduct.add_tmul, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws. Establish `hcent : ∀ h k (z : ℚ_[p] ⊗[ℚ] G.C), E h k * z = z * E h k`. Introduce `h k z`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c`. Simplify using `only [E, mul_add, add_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, hδcomm c, mul_comm h a, mul_comm k a]`. Consider the case `add x y hx hy => rw [mul_add, hx, hy, ← add_mul]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstar : ∀ h k, (starT G.star ℚ_[p] (E h k)).unop = E h (-k)`. Introduce `h k`. Simplify using `only [E, map_add, MulOpposite.unop_add, starT_tmul, map_one, MulOpposite.unop_one, hδstar, TensorProduct.tmul_neg, TensorProduct.neg_tmul]`. Establish `hsub : ∀ h k, 1 - E h k = E (1 - h) (-k)`. Introduce `h k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [E, Algebra.TensorProduct.one_def, TensorProduct.sub_tmul, TensorProduct.neg_tmul]`. Normalize the expressions using the abelian group laws. Use `⟨E (1 / 2) (1 / (2 * s)), hcent _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← hs2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hstar, hsub]`. Use `congr 1`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_idem (G : HTGroup p) : ∃ e : ℚ_[p] ⊗[ℚ] G.C, (∀ z, e * z = z * e) ∧ e * e = e ∧
     (starT G.star ℚ_[p] e).unop = 1 - e := by
@@ -336,13 +334,13 @@ namespace GlobalTheory.TorCls.AtP
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨e, he, hee, hσe⟩` from `exists_idem G`. Establish `hB : (starT G.star ℚ_[p] (inC G ℚ_[p] β)).unop = inC G ℚ_[p] β`. Express the relevant statement in the definitionally equal form `(starT G.star ℚ_[p] ((1 : ℚ_[p]) ⊗ₜ (β : G.C))).unop = (1 : ℚ_[p]) ⊗ₜ (β : G.C)`. Rewrite using `[starT_tmul]`. Conclude with `congrArg _ hβ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBi : inC G ℚ_[p] β * inC G ℚ_[p] ((β⁻¹ : G.Cˣ) : G.C) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hBi' : inC G ℚ_[p] ((β⁻¹ : G.Cˣ) : G.C) * inC G ℚ_[p] β = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Take `⟨h1, h2, h3⟩` from `triv_of_idem (starT G.star ℚ_[p]) e _ _ he hee hσe hB hBi hBi'`. Set `Y : (ℚ_[p] ⊗[ℚ] G.C)ˣ` to `⟨_, _, h1, h2⟩`. Use `⟨Y⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hY : (Y : ℚ_[p] ⊗[ℚ] G.C) * (starT G.star ℚ_[p] (Y : ℚ_[p] ⊗[ℚ] G.C)).unop = inC G ℚ_[p] β` using `h3`. Unfold `Triv`. Rewrite using `[← hY, Units.val_one, map_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 := by`. Rewrite using `[Units.inv_mul, one_mul, ← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_triv (G : HTGroup p) (β : G.Cˣ) (hβ : sh G β = β) :
     ∃ X : (ℚ_[p] ⊗[ℚ] G.C)ˣ, Triv G ℚ_[p] β X 1 := by
@@ -392,7 +390,7 @@ def conjW (G : HTGroup p) (X : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : Gp G →* Gp G :=
     (MulAut.conj (Units.map ((G.locW w).toRingHom.toMonoidHom) X)).toMonoidHom.comp (Pi.evalMonoidHom _ w))
 
 /- English proof (translation)
-Use `Prod.ext rfl (funext fun w => ?_)` and prove the remaining obligations. Use `show Units.map ((G.locW w).toRingHom.toMonoidHom) (X * z.1 * X⁻¹) = Units.map ((G.locW w).toRingHom.toMonoidHom) X * Units.map ((G.locW w).toRingHom.toMonoidHom) z.1 * (Units.map ((G.locW w).toRingHom.toMonoidHom) X)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiP_conj (G : HTGroup p) (X : (ℚ_[p] ⊗[ℚ] G.C)ˣ) (z : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ) :
     phiP G (X * z.1 * X⁻¹, z.2) = conjW G X (phiP G z) := by
@@ -403,9 +401,9 @@ theorem phiP_conj (G : HTGroup p) (X : (ℚ_[p] ⊗[ℚ] G.C)ˣ) (z : (ℚ_[p] �
   rw [map_mul, map_mul, map_inv]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `hh` using `Prod.ext_iff.1 h`. Use `Prod.ext hh.1 (funext fun w => ?_)` and prove the remaining obligations. Use `congrFun hh.2 w` as an intermediate fact. Express the relevant statement in the definitionally equal form `Units.map ((G.locW w).toRingHom.toMonoidHom) X * a.2 w * (Units.map ((G.locW w).toRingHom.toMonoidHom) X)⁻¹ = Units.map ((G.locW w).toRingHom.toMonoidHom) X * b.2 w * (Units.map ((G.locW w).toRingHom.toMonoidHom) X)⁻¹ at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `mul_left_cancel (mul_right_cancel this)`.
+A detailed English derivation is pending.
 -/
 theorem conjW_injective (G : HTGroup p) (X : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : Function.Injective (conjW G X) := by
   intro a b h
@@ -417,21 +415,17 @@ theorem conjW_injective (G : HTGroup p) (X : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : Functio
   exact mul_left_cancel (mul_right_cancel this)
 
 /- English proof (translation)
-Take `⟨X, hX⟩` from `exists_triv G β hβ`. Take `⟨d, rfl⟩` from `(inclG_one_bijective G).2 c`. Use `set q0 := (dg G.C p (y₀ : G.Cˣ × ℚˣ)).2 with hq0`. Establish `hd : d * phiP G q0 = phiP G q0 * d`. Apply `(inclG_one_bijective G).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, ← psiP_eq, ← formGroupToPadicPointsDegreeOne_eq_unitaryPoints]`. Conclude with `hc`. Take `⟨h, hh⟩` from `hb.2 (conjW G X d)`. Establish `hy : ((q0.1 : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C) * inC G ℚ_[p] β * (starT G.star ℚ_[p] ((q0.1 : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C)).unop = algebraMap ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) ((q0.2 : ℚ_[p]ˣ) : ℚ_[p]) * inC G ℚ_[p] β`. Establish `h'` using `congrArg (inC G ℚ_[p]) y₀.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[map_mul, map_mul, map_mul]`. Establish `e1 : inC G ℚ_[p] (sh G y₀.1.1) = (starT G.star ℚ_[p] (inC G ℚ_[p] y₀.1.1)).unop` using `(starT_tmul G.star ℚ_[p] 1 _).symm`. Establish `e2 : inC G ℚ_[p] (algebraMap ℚ G.C y₀.1.2) = algebraMap ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) (algebraMap ℚ ℚ_[p] y₀.1.2)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] ℚ_[p] ⊗[ℚ] G.C).commutes _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h'` using `[e1, e2]`. Conclude with `h'`. Establish `hmem0 : (X * q0.1 * X⁻¹, q0.2) ∈ UPts G.star ℚ_[p]` using `conj_mul_star (starT G.star ℚ_[p]) (inC G ℚ_[p] β) X q0.1 (1 : ℚ_[p]ˣ) _ hX hy`. Set `H0 : G.GQp` to `⟨(X * q0.1 * X⁻¹, q0.2), hmem0⟩`. Establish `hl : G.localization₂ H0 = conjW G X (phiP G q0)` using `by rw [localization_eq]; exact phiP_conj G X q0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomm : h * H0 = H0 * h` using `hb.1 (by rw [map_mul, map_mul, hh, hl, ← map_mul, ← map_mul, hd])`. Establish `hU` using `congrArg (fun g : G.GQp => ((g : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ).1)) hcomm`. Simplify using `only [Subgroup.coe_mul, Prod.fst_mul] at hU`. Use `set h1 := ((h : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ).1)`. Use `set Y := q0.1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(X⁻¹ * h1 * X, (h : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ).2), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `conj_back (starT G.star ℚ_[p]) (inC G ℚ_[p] β) X h1 ((1 : ℚ_[p]ˣ) : ℚ_[p]) _ hX h.2`. Establish `hUU : (X⁻¹ * h1 * X) * Y = Y * (X⁻¹ * h1 * X)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg Units.val hUU`.
-
-Rewrite using `[psiP_eq]`. Use `congr 1`. Apply `conjW_injective G X` to reduce the goal to its premises. Rewrite using `[← phiP_conj, ← hh, localization_eq]`. Use `congr 1`.
-
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show X * (X⁻¹ * h1 * X) * X⁻¹ = h1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem atp_of_bijective (G : HTGroup p) (hb : Function.Bijective G.localization₂) (β : G.Cˣ) (hβ : sh G β = β)
     (y₀ : grp G β) (c : Gr G 1) (hc : c * toP1 G β y₀ = toP1 G β y₀ * c) :

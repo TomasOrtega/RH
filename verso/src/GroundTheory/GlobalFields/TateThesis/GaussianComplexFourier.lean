@@ -9,15 +9,15 @@ open scoped FourierTransform
 noncomputable section
 
 /- English proof (translation)
-Establish `h` using `VectorFourier.hasFDerivAt_fourierIntegral traceFormℂ hf hf' w`. Rewrite `h` using `[← complexFourier_eq_fourierIntegral]`. Rewrite using `[hD.unique h]`. Establish `hint : Integrable (fun z ↦ VectorFourier.fourierSMulRight traceFormℂ f z) complexPlaceMeasure`. Use `((hf'.const_mul (2 * π * ‖traceFormℂ‖))).mono' hf.1.fourierSMulRight ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun z ↦ ?_` and prove the remaining obligations. Use `VectorFourier.norm_fourierSMulRight_le traceFormℂ f z` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Rewrite using `[fourierIntegral_continuousLinearMap_apply' hint, fourierIntegral_continuousLinearMap_apply' hint]`. Establish `hL : ∀ v : ℂ, traceFormℂ.toLinearMap₁₂ v w = 2 * (v * w).re` using `fun v ↦ traceFormℂ_apply v w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [VectorFourier.fourierIntegral, VectorFourier.fourierSMulRight_apply, hL, traceFormℂ_apply]`. Establish `i1 : ∀ h : ℂ, Integrable (fun z ↦ 𝐞 (-(2 * (z * w).re)) • (-(2 * π * I) • (2 * (z * h).re) • f z)) complexPlaceMeasure`. Introduce `h`. Establish `: Integrable (fun z ↦ (-(2 * π * I) • (2 * (z * h).re) • f z)) complexPlaceMeasure`. Use `(hint.apply_continuousLinearMap h)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[VectorFourier.fourierSMulRight_apply]`. Use `(fourierIntegral_convergent_iff' (μ := complexPlaceMeasure) traceFormℂ w).2 this` as an intermediate fact. Simplify using `using this`. Rewrite using `[← integral_const_mul, ← integral_sub (i1 1) ((i1 I).const_mul I), complexFourier, ← integral_const_mul]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Circle.smul_def, smul_eq_mul, Complex.real_smul, mul_one, mul_I_re]`. Use `push_cast`. Establish `hz : (z : ℂ) = z.re + z.im * I` using `(re_add_im z).symm`. Take the linear combination `(-4 * π * I * (𝐞 (-(2 * (z * w).re)) : ℂ) * f z) * hz`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem complexFourier_mul_self {f : ℂ → ℂ} (hf : Integrable f complexPlaceMeasure)
     (hf' : Integrable (fun z ↦ ‖z‖ * ‖f z‖) complexPlaceMeasure) {w : ℂ} {D : ℂ →L[ℝ] ℂ}
@@ -56,7 +56,7 @@ theorem complexFourier_mul_self {f : ℂ → ℂ} (hf : Integrable f complexPlac
   linear_combination (-4 * π * I * (𝐞 (-(2 * (z * w).re)) : ℂ) * f z) * hz
 
 /- English proof (translation)
-Use `congr 2`. Rewrite using `[mul_conj, normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cexp_neg_two_pi_norm_sq (w : ℂ) :
     Complex.exp (-2 * π * (‖w‖ : ℂ) ^ 2) = Complex.exp (-2 * π * (w * conj w)) := by
@@ -66,9 +66,9 @@ theorem cexp_neg_two_pi_norm_sq (w : ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [cexp_neg_two_pi_norm_sq]`. Establish `hc : HasFDerivAt (fun w : ℂ ↦ conj w) (conjCLE : ℂ →L[ℝ] ℂ) w` using `(conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt`. Establish `hid : HasFDerivAt (fun w : ℂ ↦ w) (ContinuousLinearMap.id ℝ ℂ) w` using `hasFDerivAt_id w`. Establish `hq` using `(hid.fun_mul hc).const_mul (-2 * π : ℂ)`. Establish `hexp` using `hq.cexp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `hc.pow n`. Use `⟨_, hp.fun_mul hexp, ?_⟩` and prove the remaining obligations. Simplify using `only [add_apply, smul_apply, ContinuousLinearMap.coe_id', id, ContinuousLinearEquiv.coe_coe, conjCLE_apply, map_one, conj_I, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[pow_succ]`. Take the linear combination `(conj w ^ n * Complex.exp (-2 * π * (w * conj w)) * (-2 * π) * (-w) + Complex.exp (-2 * π * (w * conj w)) * (n * conj w ^ (n - 1)) + 2 * conj w * conj w ^ n * Complex.exp (-2 * π * (w * conj w)) * π - 4 * conj w ^ n * Complex.exp (-2 * π * (w * conj w)) * π * w) * I_sq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_hasFDerivAt_conj_pow_mul_gaussian (n : ℕ) (w : ℂ) :
     ∃ D : ℂ →L[ℝ] ℂ,
@@ -92,7 +92,7 @@ theorem exists_hasFDerivAt_conj_pow_mul_gaussian (n : ℕ) (w : ℂ) :
     4 * conj w ^ n * Complex.exp (-2 * π * (w * conj w)) * π * w) * I_sq
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[complexGaussian]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem complexGaussian_natCast (n : ℕ) :
     complexGaussian n = fun z ↦ z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2) := by
@@ -100,9 +100,9 @@ theorem complexGaussian_natCast (n : ℕ) :
   simp [complexGaussian]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[complexGaussian]`. Use `split_ifs with h`. Establish `: n = 0` using `by omega`. Substitute `this` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem complexGaussian_neg_natCast (n : ℕ) :
     complexGaussian (-(n : ℤ)) = fun z ↦ conj z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2) := by
@@ -114,19 +114,19 @@ theorem complexGaussian_neg_natCast (n : ℕ) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `complexFourier_complexGaussian_zero`. Simplify using `only [funext complexGaussian_zero] at h`. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Use function extensionality and compare the values at `w`. Take `⟨D, hD, hD1⟩` from `exists_hasFDerivAt_conj_pow_mul_gaussian n w`. Establish `hF : HasFDerivAt (complexFourier (fun z ↦ z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2))) ((-I) ^ n • D) w`. Rewrite using `[ih]`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD.const_mul _`. Establish `hf : Integrable (fun z ↦ z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)) complexPlaceMeasure`. Simplify `integrable_complexGaussian n` using `[complexGaussian_natCast]`. Establish `hf' : Integrable (fun z ↦ ‖z‖ * ‖z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)‖) complexPlaceMeasure`. Use `(integrable_norm_pow_smul_complexGaussian' n 1).norm` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.congr (Filter.Eventually.of_forall fun z ↦ ?_)` and prove the remaining obligations. Simplify using `[complexGaussian_natCast]`. Establish `key` using `complexFourier_mul_self hf hf' hF`. Establish `e : (fun z : ℂ ↦ z * (z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2))) = fun z ↦ z ^ (n + 1) * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)`. Use function extensionality and compare the values at `z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[e]`. Establish `hne : (-4 * π * I : ℂ) ≠ 0`. Establish `: (π : ℂ) ≠ 0` using `ofReal_ne_zero.mpr Real.pi_ne_zero`. Simplify using `[this, I_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[key]`. Simplify using `only [smul_apply, smul_eq_mul]`. Establish `hD1' : (-I) ^ n * D 1 - I * ((-I) ^ n * D I) = (-I) ^ n * (D 1 - I * D I)` using `by ring`. Rewrite using `[hD1', hD1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Take the linear combination `(-4 * π * (-I) ^ n * (conj w ^ (n + 1) * Complex.exp (-2 * π * (‖w‖ : ℂ) ^ 2))) * I_sq`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem complexFourier_pow_mul_gaussian (n : ℕ) :
     complexFourier (fun z ↦ z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)) =
@@ -168,9 +168,9 @@ theorem complexFourier_pow_mul_gaussian (n : ℕ) :
       Complex.exp (-2 * π * (‖w‖ : ℂ) ^ 2))) * I_sq
 
 /- English proof (translation)
-Rewrite using `[complexFourier, complexFourier, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [Circle.smul_def, smul_eq_mul, map_mul, Real.fourierChar_apply, ← exp_conj]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [conj_ofReal, conj_I]`. Use `push_cast`. Simplify using `only [neg_mul, mul_neg, neg_re, mul_re, ofReal_neg, ofReal_sub, ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem complexFourier_conj (f : ℂ → ℂ) (w : ℂ) :
     complexFourier (fun z ↦ conj (f z)) w = conj (complexFourier f (-w)) := by
@@ -185,7 +185,7 @@ theorem complexFourier_conj (f : ℂ → ℂ) (w : ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← exp_conj]`. Simplify using `[map_mul, conj_ofReal, map_ofNat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_cexp_neg_two_pi_norm_sq (z : ℂ) :
     conj (Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)) = Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2) := by
@@ -193,9 +193,9 @@ theorem conj_cexp_neg_two_pi_norm_sq (z : ℂ) :
   simp [map_mul, conj_ofReal, map_ofNat]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `e : (fun z : ℂ ↦ conj z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)) = fun z ↦ conj (z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2))`. Use function extensionality and compare the values at `z`. Rewrite using `[map_mul, map_pow, conj_cexp_neg_two_pi_norm_sq]`. Rewrite using `[e, complexFourier_conj, complexFourier_pow_mul_gaussian]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_pow, map_neg, conj_I, conj_conj, conj_cexp_neg_two_pi_norm_sq, norm_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem complexFourier_conj_pow_mul_gaussian (n : ℕ) :
     complexFourier (fun z ↦ conj z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)) =
@@ -211,7 +211,7 @@ theorem complexFourier_conj_pow_mul_gaussian (n : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg m`. Rewrite using `[complexGaussian_natCast, complexFourier_pow_mul_gaussian, complexGaussian_neg_natCast]`. Simplify using the standard rewrite rules. Rewrite using `[complexGaussian_neg_natCast, complexFourier_conj_pow_mul_gaussian, neg_neg, complexGaussian_natCast]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem complexFourier_complexGaussian (m : ℤ) :
     complexFourier (complexGaussian m) = fun w ↦ (-I) ^ m.natAbs * complexGaussian (-m) w := by

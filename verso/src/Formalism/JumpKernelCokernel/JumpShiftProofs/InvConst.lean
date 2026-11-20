@@ -3,11 +3,11 @@ import Formalism.JumpKernelCokernel.Statement
 namespace Formalism.KernelCokernelLengths
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j _ hjk`. Simplify using `only [Nat.cast_zero, add_zero] at hjk`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hjk]`. Consider the case `succ k ih`. Introduce `j hjb hjk`. Establish `hlt : j < -(η : ℤ)` using `by push_cast at hjk; omega`. Rewrite using `[hj j hjb hlt]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih (j + 1) (by omega) (by push_cast at hjk ⊢; omega)`.
+A detailed English derivation is pending.
 -/
 theorem fil_eq_of_noJump {K D : Type} [Field K] [AddCommGroup D] [Module K D]
     (Fil : ℤ → Submodule K D) (b η : ℕ)
@@ -26,11 +26,11 @@ theorem fil_eq_of_noJump {K D : Type} [Field K] [AddCommGroup D] [Module K D]
     exact ih (j + 1) (by omega) (by push_cast at hjk ⊢; omega)
 
 /- English proof (translation)
-Introduce `K _ D _ _ Fil hA χ hχ b η w hj hw`. Establish `h1 : ∀ i : ℤ, i ≠ 0 → w i ∈ Fil (-i)`. Introduce `i hi`. Establish `hne : χ ^ i - 1 ≠ 0` using `sub_ne_zero.mpr (hχ i hi)`. Establish `h2` using `(Fil (-i)).smul_mem (χ ^ i - 1)⁻¹ (hw i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Use `⟨h1, fun i hi hib => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hη : (η : ℤ) ≤ i`. Take `⟨k, hk⟩ : ∃ k : ℕ, -i + k = -(η : ℤ)` from `⟨(i - η).toNat, by omega⟩`. Rewrite using `[← fil_eq_of_noJump Fil b η hj k (-i) (by omega) hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 i hi`. Conclude with `hA (by omega : -(η : ℤ) ≤ -i) (h1 i hi)`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixed_add_of_sub_mem : InvConst := by
   intro K _ D _ _ Fil hA χ hχ b η w hj hw

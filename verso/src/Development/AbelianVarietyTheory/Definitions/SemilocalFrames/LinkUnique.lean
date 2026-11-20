@@ -16,29 +16,29 @@ variable {D : D7} (X : HidaSetting D) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
   (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F)
 
 /- English proof (translation)
-Simplify using `[Mq, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Mq (x : Fin (D.R.N 0) → D.host.E) : x ∈ Mq wt ↔ (∑ j, x j • qFr wt j) ∈ (VS D).L0 := by
   simp [Mq, Fintype.linearCombination_apply]
 
 /- English proof (translation)
-Simplify using `[embA, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embA_add (x y : Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F) :
     embA X wt ιA (x + y) = embA X wt ιA x + embA X wt ιA y := by
   simp [embA, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[embA, Finset.smul_sum, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embA_smul (a : D.host.E ⊗[D.host.F] Ad D.host.F) (x : Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F) :
     embA X wt ιA (a • x) = ιA.symm a • embA X wt ιA x := by
   simp [embA, Finset.smul_sum, mul_smul]
 
 /- English proof (translation)
-Unfold `embA`. Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hr _, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ∀ f : Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F, ιA.symm (∑ j, f j) = ∑ j, ιA.symm (f j)` using `fun f => map_sum ιA.symm.toAddEquiv.toAddMonoidHom f Finset.univ`. Simplify using `only [Matrix.mulVec, dotProduct, hs, RingEquiv.map_mul, Finset.sum_smul, smul_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem embA_rep (h : X.B.I.Gf)
     (y : UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (Ad D.host.F))
@@ -56,7 +56,7 @@ theorem embA_rep (h : X.B.I.Gf)
   rw [mul_comm]
 
 /- English proof (translation)
-Establish `h1 : ∀ a : D.host.E, ιA.symm (inclE (F` using `D.host.F) (Ad D.host.F) a) = inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm a) := by`. Introduce `a`. Rewrite using `[RingEquiv.symm_apply_eq, hι.1, RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Simplify using `[embA, qA, incl, HidaSetting.crd, crdOf, h1, Finset.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem embA_rat (hι : GlobalTheory.St.IsAdeleIso X ιA) (x : Fin (D.R.N 0) → D.host.E) :
     embA X wt ιA (fun j => inclE (F := D.host.F) (Ad D.host.F) (x j)) =
@@ -69,9 +69,7 @@ theorem embA_rat (hι : GlobalTheory.St.IsAdeleIso X ιA) (x : Fin (D.R.N 0) →
   simp [embA, qA, incl, HidaSetting.crd, crdOf, h1, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[embA_rat X wt ιA hι]`. Establish `hL : X.crd (∑ j, x j • qFr wt j) ∈ X.B.I.L`. Rewrite using `[X.L_eq]`. Simplify using `only [HidaSetting.crd, crdOf, RingEquiv.apply_symm_apply, Module.Basis.sum_repr]`. Conclude with `(mem_Mq wt x).1 hx`.
-
-Conclude with `Submodule.subset_span ⟨⟨_, hL⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embA_mem (hι : GlobalTheory.St.IsAdeleIso X ιA) (x : Fin (D.R.N 0) → D.host.E) (hx : x ∈ Mq wt) :
     embA X wt ιA (fun j => inclE (F := D.host.F) (Ad D.host.F) (x j)) ∈ X.B.I.Lf := by
@@ -83,7 +81,7 @@ theorem embA_mem (hι : GlobalTheory.St.IsAdeleIso X ιA) (x : Fin (D.R.N 0) →
   exact Submodule.subset_span ⟨⟨_, hL⟩, rfl⟩
 
 /- English proof (translation)
-Use `⟨h.1.trans h'.1.symm, funext fun a => (h.2.2.2 a).trans (h'.2.2.2 a).symm, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `using (mL X.B.I X.B.g).sub_mem (h.2.1 i) (h'.2.1 i)`. Simplify using `using (mL X.B.I X.B.g).sub_mem (h.2.2.1 i) (h'.2.2.1 i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem link_unique (u : D.what₂.Word) (Fr Fr' : FrQ D wt) (h : FrLink X u wt ιA Fr) (h' : FrLink X u wt ιA Fr') :
     Fr.eps = Fr'.eps ∧ Fr.psi = Fr'.psi ∧
@@ -94,7 +92,7 @@ theorem link_unique (u : D.what₂.Word) (Fr Fr' : FrQ D wt) (h : FrLink X u wt 
   · simpa using (mL X.B.I X.B.g).sub_mem (h.2.2.1 i) (h'.2.2.1 i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.g_eq, by simp [Ranks.N]⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_rank : X.B.g = D.host.g 0 * D.host.g 1 ∧ D.R.N 0 = D.R.k :=
   ⟨X.g_eq, by simp [Ranks.N]⟩

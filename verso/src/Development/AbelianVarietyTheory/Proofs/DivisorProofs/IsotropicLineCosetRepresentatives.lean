@@ -12,17 +12,17 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.LineStabReps
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J x`. Set `H : Subgroup (ratPts σ J)` to `{ carrier := {p | ∃ l : (AF F ⊗[F] E)ˣ, (matHom _ σ J p.1).1 * adMat F x = l.1 • adMat F x} one_mem' := ⟨1, by simp⟩ mul_mem' := by`. Introduce and unpack `p q ⟨l, hl⟩ ⟨l', hl'⟩`. Use `⟨l' * l, ?_⟩` and prove the remaining obligations. Establish `e : (matHom _ σ J (p * q).1).1 = (matHom _ σ J p.1).1 * (matHom _ σ J q.1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Subgroup.coe_mul, map_mul, Units.val_mul]`. Rewrite using `[e, Matrix.mul_assoc, hl', Matrix.mul_smul, hl, smul_smul, Units.val_mul]`. Use the proof step `inv_mem' := by`. Introduce and unpack `p ⟨l, hl⟩`. Use `⟨l⁻¹, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (matHom _ σ J (p⁻¹).1).1 = ((matHom _ σ J p.1)⁻¹ : GL (Fin n) (AF F ⊗[F] E)).1`. Simplify using `[Subgroup.coe_inv, map_inv]`. Rewrite using `[e]`. Establish `h1 : ((matHom _ σ J p.1)⁻¹ : GL (Fin n) (AF F ⊗[F] E)).1 * ((matHom _ σ J p.1).1 * adMat F x) = adMat F x`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hl, Matrix.mul_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Use `_ = _ := by rw [h1] }`. Use `⟨Set.range (fun q : Quotient (QuotientGroup.rightRel H) => q.out), fun γ => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ t : ratPts σ J, γ * t⁻¹ ∈ H ↔ (Quotient.mk _ t : Quotient (QuotientGroup.rightRel H)) = Quotient.mk _ γ`. Introduce `t`. Rewrite using `[Quotient.eq, QuotientGroup.rightRel_apply]`. Use `⟨(Quotient.mk (QuotientGroup.rightRel H) γ).out, ⟨⟨_, rfl⟩, (key _).2 (Quotient.out_eq _)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨⟨q, rfl⟩, ht⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(key _).1 ht`. Rewrite `h2` using `[Quotient.out_eq]`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E),

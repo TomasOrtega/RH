@@ -9,13 +9,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.GlobEig
 
 /- English proof (translation)
-Use `set x : K ⊗[F] A := (1 : K) ⊗ₜ[F] g with hx`. Establish `hli : LinearIndependent K (fun j : Fin (minpoly F g).natDegree => x ^ (j : ℕ))`. Establish `h` using `Module.Flat.linearIndependent_one_tmul (S := K) (linearIndependent_pow (K := F) g)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, Algebra.TensorProduct.tmul_pow]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hsum` using `aeval_eq_sum_range' hlt x`. Rewrite `hsum` using `[minpoly.aeval, ← Fin.sum_univ_eq_sum_range (fun i => (minpoly K x).coeff i • x ^ i)]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc` using `Fintype.linearIndependent_iff.mp hli (fun i => (minpoly K x).coeff i) hsum.symm`. Apply `minpoly.ne_zero hK` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[coeff_zero]`. Distinguish the cases in `hi : i < (minpoly F g).natDegree`.
-
-Conclude with `hc ⟨i, hi⟩`. Conclude with `coeff_eq_zero_of_natDegree_lt (by omega)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_le_tmul {F A : Type} [Field F] [Ring A] [Algebra F A] (K : Type)
     [Field K] [Algebra F K] (g : A) (hK : IsIntegral K ((1 : K) ⊗ₜ[F] g)) :
@@ -39,9 +37,9 @@ theorem natDegree_minpoly_le_tmul {F A : Type} [Field F] [Ring A] [Algebra F A] 
   · exact coeff_eq_zero_of_natDegree_lt (by omega)
 
 /- English proof (translation)
-Use `set z : K ⊗[F] B := (1 : K) ⊗ₜ[F] y with hz`. Establish `hzi : IsIntegral K z` using `IsIntegral.of_finite K z`. Establish `hyi : IsIntegral F y` using `IsIntegral.of_finite F y`. Establish `hzr : z = Algebra.TensorProduct.includeRight y` using `rfl`. Establish `hdvd : minpoly K z ∣ (minpoly F y).map (algebraMap F K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_map_algebraMap, hzr, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hge` using `natDegree_minpoly_le_tmul K y hzi`. Use `eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hzi) hdvd (by rw [natDegree_map]; exact hge)` as an intermediate fact. Rewrite using `[this, ((minpoly.monic hyi).map _).leadingCoeff, C_1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_one_tmul {F B : Type} [Field F] [Ring B] [Algebra F B] [FiniteDimensional F B]
     (K : Type) [Field K] [Algebra F K] (y : B) :
@@ -59,7 +57,7 @@ theorem minpoly_one_tmul {F B : Type} [Field F] [Ring B] [Algebra F B] [FiniteDi
   rw [this, ((minpoly.monic hyi).map _).leadingCoeff, C_1, one_mul]
 
 /- English proof (translation)
-Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `c r`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mulLeft_one_tmul (k L R : Type) [Field k] [Field L] [Algebra k L] [Ring R] [Algebra k R] (a : R) :
     LinearMap.mulLeft L ((1 : L) ⊗ₜ[k] a) = (LinearMap.mulLeft k a).baseChange L := by
@@ -68,7 +66,7 @@ theorem mulLeft_one_tmul (k L R : Type) [Field k] [Field L] [Algebra k L] [Ring 
   simp [Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Rewrite `h` using `[← LinearMap.charpoly_baseChange, ← mulLeft_one_tmul]`. Establish `hr` using `Module.End.isRoot_of_hasEigenvalue ((Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).2 h)`. Establish `e : minpoly E (LinearMap.mulLeft E ((1 : E) ⊗ₜ[k] y)) = minpoly E ((1 : E) ⊗ₜ[k] y)` using `minpoly.algHom_eq (Algebra.lmul E (E ⊗[k] A)) (Algebra.lmul_injective (R := E)) _`. Rewrite `hr` using `[e, minpoly_one_tmul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isRoot_minpoly_of_isRoot_charpoly {k A E : Type} [Field k] [Ring A] [Algebra k A]
     [FiniteDimensional k A] [Field E] [Algebra k E] (y : A) (μ : E)
@@ -81,9 +79,9 @@ theorem isRoot_minpoly_of_isRoot_charpoly {k A E : Type} [Field k] [Ring A] [Alg
   rwa [e, minpoly_one_tmul] at hr
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7 h_8 h_9; revert F C E h_3 h_4 h_5 h_6 h_7 h_8 h_9 τ n hn ρ hρ x μ hμ; exact @_root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly)`. Consider the case `exact @_root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly`. Consider the case `exact _root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly`. Consider the case `(apply _root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isRoot_charpoly_of_isRoot_minpoly {F C E : Type} [Field F] [Ring C] [Algebra F C]
     [FiniteDimensional F C] [Algebra.IsCentral F C] [IsSimpleRing C] [Field E] (τ : F →+* E) {n : ℕ}
@@ -100,15 +98,13 @@ theorem isRoot_charpoly_of_isRoot_minpoly {F C E : Type} [Field F] [Ring C] [Alg
   | (intros; exact _root_.GlobalTheory.SumScalarVanishing.isRoot_charpoly_of_isRoot_minpoly ..)
 
 /- English proof (translation)
-Establish `hyi : IsIntegral F y` using `IsIntegral.of_finite F y`. Use `haveI : Fact (Irreducible (minpoly F y)) := ⟨minpoly.irreducible hyi⟩`. Use `haveI : FiniteDimensional F (AdjoinRoot (minpoly F y)) := (AdjoinRoot.powerBasis (minpoly.ne_zero hyi)).finite`. Use `haveI : FiniteDimensional ℚ (AdjoinRoot (minpoly F y)) := Module.Finite.trans F _`. Use `haveI : Algebra.IsAlgebraic ℚ (AdjoinRoot (minpoly F y)) := Algebra.IsAlgebraic.of_finite ℚ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set r := AdjoinRoot.root (minpoly F y)`. Establish `hdvd : minpoly ℚ y ∣ minpoly ℚ r`. Apply `minpoly.dvd` to reduce the goal to its premises. Establish `h1 : minpoly F y ∣ (minpoly ℚ r).map (algebraMap ℚ F)`. Rewrite using `[← AdjoinRoot.mk_eq_zero, ← AdjoinRoot.aeval_eq, aeval_map_algebraMap, minpoly.aeval]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `h1`. Rewrite using `[← aeval_map_algebraMap F, hk, map_mul, minpoly.aeval, zero_mul]`. Establish `hne : minpoly ℚ r ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral r)`. Establish `hμ' : μ ∈ (minpoly ℚ r).rootSet E`. Rewrite using `[mem_rootSet]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨hne, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hdvd`. Rewrite using `[hk, map_mul, aeval_def, eval₂_eq_eval_map, h.eq_zero, zero_mul]`. Rewrite `hμ'` using `[← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly]`. Take `⟨ψ, hψ⟩` from `hμ'`.
-
-Use `⟨(ψ : AdjoinRoot (minpoly F y) →+* E).comp (algebraMap F _), ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ, IsRoot.def, eval_map]`. Express the relevant statement in the definitionally equal form `eval₂ ((ψ : AdjoinRoot (minpoly F y) →+* E).comp (algebraMap F _)) ((ψ : AdjoinRoot (minpoly F y) →+* E) r) (minpoly F y) = 0`. Rewrite using `[← hom_eval₂, ← aeval_def, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_isRoot {F C E : Type} [Field F] [NumberField F] [Ring C] [IsDomain C] [Algebra F C]
     [Algebra ℚ C] [IsScalarTower ℚ F C] [FiniteDimensional F C] [Field E] [Algebra ℚ E] [IsAlgClosed E]
@@ -148,7 +144,7 @@ namespace GlobalTheory.GlobEig
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]`. Conclude with `(spectralNorm_eq_of_equiv σ x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_aut (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x : PadicAlgCl p) : ‖σ x‖ = ‖x‖ := by
   rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]
@@ -158,9 +154,9 @@ noncomputable def rhoE (G : HTGroup p) (i : Fin G.m) : G.C →+* Matrix (Fin G.n
   (RingHom.mapMatrix (algebraMap (G.Fw i) (PadicAlgCl p))).comp (G.rho i)
 
 /- English proof (translation)
-Simplify using `only [rhoE, RingHom.comp_apply, G.rho_F, RingHom.mapMatrix_apply]`. Use extensionality with `j k`. Simplify using `only [Matrix.scalar_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem rhoE_F (G : HTGroup p) (i : Fin G.m) (a : G.F) :
     rhoE G i (algebraMap G.F G.C a) = Matrix.scalar (Fin G.n) (G.emb i a) := by
@@ -172,7 +168,7 @@ theorem rhoE_F (G : HTGroup p) (i : Fin G.m) (a : G.F) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_rhoE (G : HTGroup p) (i : Fin G.m) (x : G.C) :
     (rhoE G i x).charpoly = (G.rho i x).charpoly.map (algebraMap (G.Fw i) (PadicAlgCl p)) := by
@@ -180,11 +176,11 @@ theorem charpoly_rhoE (G : HTGroup p) (i : Fin G.m) (x : G.C) :
   rfl
 
 /- English proof (translation)
-Take `⟨i, σ, hσ⟩` from `G.emb_all τ hτ`. Use `⟨i, σ.symm μ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_aut σ, AlgEquiv.apply_symm_apply]`. Rewrite using `[← charpoly_rhoE]`. Use `isRoot_charpoly_of_isRoot_minpoly (G.emb i) G.n_pos (rhoE G i) (rhoE_F G i) x _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `Polynomial.hom_eval₂ (minpoly G.F x) (G.emb i) ((σ : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p) (σ.symm μ)`. Rewrite `key` using `[← hσ]`. Establish `e : ((σ : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p) (σ.symm μ) = μ` using `σ.apply_symm_apply μ`. Establish `hz : eval₂ τ μ (minpoly G.F x) = 0` using `by rw [← eval_map]; exact hμ.eq_zero`. Rewrite `key` using `[e, hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[IsRoot.def, eval_map]`. Conclude with `(map_eq_zero_iff _ σ.injective).1 key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_rho (G : HTGroup p) (τ : G.F →+* PadicAlgCl p) (hτ : LiesOver G.Kq G.u τ)
     (x : G.C) (μ : PadicAlgCl p) (hμ : ((minpoly G.F x).map τ).IsRoot μ) :
@@ -206,9 +202,9 @@ theorem exists_root_rho (G : HTGroup p) (τ : G.F →+* PadicAlgCl p) (hτ : Lie
     exact (map_eq_zero_iff _ σ.injective).1 key
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add P Q hP hQ`. Rewrite using `[Polynomial.map_add, map_add, map_add, ← hP, ← hQ]`. Simplify using `only [sh, map_add, MulOpposite.unop_add]`. Consider the case `monomial k a`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial]`. Simplify using `only [sh, map_mul, MulOpposite.unop_mul, map_pow, MulOpposite.unop_pow]`. Rewrite using `[G.star_F]`. Conclude with `(Algebra.commutes _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_aeval (G : HTGroup p) (x : G.C) (P : G.F[X]) :
     sh G (aeval x P) = aeval (sh G x) (P.map (IsCMField.complexConj G.F : G.F →+* G.F)) := by
@@ -223,9 +219,9 @@ theorem sh_aeval (G : HTGroup p) (x : G.C) (P : G.F[X]) :
     exact (Algebra.commutes _ _).symm
 
 /- English proof (translation)
-Establish `hss : sh G (sh G y) = y` using `G.star_star y`. Establish `h0 : aeval y ((minpoly G.F (sh G y)).map (IsCMField.complexConj G.F : G.F →+* G.F)) = 0`. Establish `h1` using `sh_aeval G (sh G y) (minpoly G.F (sh G y))`. Rewrite `h1` using `[hss, minpoly.aeval]`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sh]`. Take `⟨k, hk⟩` from `minpoly.dvd G.F y h0`. Rewrite using `[← Polynomial.map_map, hk, Polynomial.map_mul, IsRoot.def, eval_mul, hμ.eq_zero, zero_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRoot_minpoly_sh (G : HTGroup p) (y : G.C) (τ : G.F →+* PadicAlgCl p) (μ : PadicAlgCl p)
     (hμ : ((minpoly G.F y).map τ).IsRoot μ) :
@@ -246,37 +242,33 @@ namespace GlobalTheory.GlobEig
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨hfr, hre⟩` from `G.hKq`. Set `φ : G.F →+* ℂ` to `Classical.arbitrary _`. Take `⟨x0, hx0K, hx0⟩` from `hre φ`. Use `set k0 : G.Kq := ⟨x0, hx0K⟩ with hk0`. Establish `hli : LinearIndependent ℚ ![(1 : G.Kq), k0]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `hF : (s : G.F) + (t : G.F) * x0 = 0`. Use `congrArg (fun z : G.Kq => (z : G.F)) hst` as an intermediate fact. Simplify `this` using `[Rat.smul_def, hk0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `at hF`. Conclude with `⟨hF, rfl⟩`. It suffices to derive a contradiction.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx0` to reduce the goal to its premises. Establish `e : x0 = ((-s / t : ℚ) : G.F)`. Establish `ht' : (t : G.F) ≠ 0` using `by exact_mod_cast ht`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hF`. Rewrite using `[e, map_ratCast]`. Conclude with `Complex.ratCast_im _`. Set `bs` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hfr])`. Establish `hmem : ∀ z : G.Kq, ∃ a b : ℚ, z = (a : G.Kq) + (b : G.Kq) * k0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `⟨bs.repr z 0, bs.repr z 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← bs.sum_repr z]`. Simplify using `[Fin.sum_univ_two, bs, Rat.smul_def]`. Take `⟨a, b, hq⟩` from `hmem (k0 * k0)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hx2 : x0 * x0 = (a : G.F) + (b : G.F) * x0`. Use `congrArg (fun z : G.Kq => (z : G.F)) hq` as an intermediate fact. Simplify `this` using `[hk0]`. Use `set cj : G.F →+* G.F := (IsCMField.complexConj G.F : G.F →+* G.F) with hcj`. Establish `hc2 : cj x0 * cj x0 = (a : G.F) + (b : G.F) * cj x0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg cj hx2` as an intermediate fact. Simplify `this` using `[map_ratCast]`. Establish `hne : cj x0 ≠ x0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ (cj x0) = starRingEnd ℂ (φ x0)` using `IsCMField.complexEmbedding_complexConj G.F φ x0`. Rewrite `h1` using `[h]`. Conclude with `Complex.conj_eq_iff_im.1 h1.symm`. Establish `hcx : cj x0 = (b : G.F) - x0`. Establish `h : (cj x0 - x0) * (cj x0 + x0 - (b : G.F)) = 0` using `by linear_combination hc2 - hx2`.
+Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) hne`. Take the linear combination `h`. Use `set ψ : G.Kq →+* PadicAlgCl p := (algebraMap ℚ_[p] (PadicAlgCl p)).comp G.u with hψ`. Establish `hz2 : τ x0 * τ x0 = (a : PadicAlgCl p) + (b : PadicAlgCl p) * τ x0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg τ hx2` as an intermediate fact. Simplify `this` using `[map_ratCast]`. Establish `hw2 : ψ k0 * ψ k0 = (a : PadicAlgCl p) + (b : PadicAlgCl p) * ψ k0`. Use `congrArg ψ hq` as an intermediate fact. Simplify `this` using `[map_ratCast]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψk : ∀ k : G.Kq, algebraMap ℚ_[p] (PadicAlgCl p) (G.u k) = ψ k` using `fun k => rfl`. Establish `h : (τ x0 - ψ k0) * (τ x0 + ψ k0 - (b : PadicAlgCl p)) = 0` using `by linear_combination hz2 - hw2`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Use `left`. Introduce `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a', b', hk⟩` from `hmem k`. Rewrite using `[hψk, hk]`. Establish `e : ((((a' : G.Kq) + (b' : G.Kq) * k0 : G.Kq)) : G.F) = (a' : G.F) + (b' : G.F) * x0`. Simplify using `[hk0]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, map_ratCast]`. Take the linear combination `(b' : PadicAlgCl p) * h`. Use `right`. Introduce `k`. Take `⟨a', b', hk⟩` from `hmem k`.
-
-Rewrite using `[hψk, hk]`. Establish `e : ((((a' : G.Kq) + (b' : G.Kq) * k0 : G.Kq)) : G.F) = (a' : G.F) + (b' : G.F) * x0`. Simplify using `[hk0]`. Rewrite using `[RingHom.comp_apply, e]`. Simplify using `only [map_add, map_mul, map_ratCast, hcx, map_sub]`.
-
-Take the linear combination `(-(b' : PadicAlgCl p)) * h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem liesOver_or_conj (G : HTGroup p) (τ : G.F →+* PadicAlgCl p) :
     LiesOver G.Kq G.u τ ∨ LiesOver G.Kq G.u (τ.comp (IsCMField.complexConj G.F : G.F →+* G.F)) := by
@@ -358,23 +350,21 @@ theorem liesOver_or_conj (G : HTGroup p) (τ : G.F →+* PadicAlgCl p) :
     linear_combination (-(b' : PadicAlgCl p)) * h
 
 /- English proof (translation)
-Rewrite `hν`, the goal using `[← charpoly_rhoE]`. Rewrite `hν`, the goal using `[← Matrix.charpoly_toLin', ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Take `⟨v, hv⟩` from `hν.exists_hasEigenvector`. Establish `hSv : rhoE G i (sh G y) *ᵥ v = ν • v`. Use `hv.apply_eq_smul` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.toLin'_apply]`. Then use the resulting hypothesis. Use `set s : PadicAlgCl p := ((c : ℚ) : PadicAlgCl p) with hs_def`. Establish `hs : s ≠ 0` using `by simp [s]`. Establish `hT : rhoE G i (algebraMap ℚ G.C c) = Matrix.scalar (Fin G.n) s`. Rewrite using `[IsScalarTower.algebraMap_apply ℚ G.F G.C, rhoE_F, eq_ratCast, map_ratCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : ∀ z : Fin G.n → PadicAlgCl p, Matrix.scalar (Fin G.n) s *ᵥ z = s • z`. Introduce `z`. Use extensionality with `j`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Establish `hM` using `congrArg (rhoE G i) hyc`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[map_mul, map_mul, map_mul, hT]`. Establish `hYi : rhoE G i ((y⁻¹ : G.Cˣ) : G.C) * rhoE G i (y : G.C) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hBi : rhoE G i ((β⁻¹ : G.Cˣ) : G.C) * rhoE G i (β : G.C) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set w := rhoE G i (β : G.C) *ᵥ v with hw`. Establish `hw0 : w ≠ 0`. Introduce `h`. Apply `hv.2` to reduce the goal to its premises. Use `congrArg (fun z => rhoE G i ((β⁻¹ : G.Cˣ) : G.C) *ᵥ z) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[w, Matrix.mulVec_mulVec, hBi]`. Establish `key : s • (rhoE G i ((y⁻¹ : G.Cˣ) : G.C) *ᵥ w) = ν • w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsc, Matrix.mulVec_smul]`. Use `_ = rhoE G i ((y⁻¹ : G.Cˣ) : G.C) *ᵥ ((rhoE G i (y : G.C) * rhoE G i (β : G.C) * rhoE G i (sh G y)) *ᵥ v) := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hM]`. Simplify using `only [hw, Matrix.mulVec_mulVec, mul_assoc]`. Use `_ = (rhoE G i ((y⁻¹ : G.Cˣ) : G.C) * rhoE G i (y : G.C)) *ᵥ (rhoE G i (β : G.C) *ᵥ (rhoE G i (sh G y) *ᵥ v)) := by`. Simplify using `only [Matrix.mulVec_mulVec, mul_assoc]`. Use `_ = ν • w := by rw [hYi, Matrix.one_mulVec, hSv, Matrix.mulVec_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Module.End.hasEigenvalue_of_hasEigenvector (x := w)` to reduce the goal to its premises. Use `⟨?_, hw0⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Use `congrArg (fun z => s⁻¹ • z) key` as an intermediate fact. Simplify using `only [smul_smul, inv_mul_cancel₀ hs, one_smul] at this`.
-
-Rewrite using `[this, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRoot_inv (G : HTGroup p) (i : Fin G.m) (β y : G.Cˣ) (c : ℚˣ)
     (hyc : (y : G.C) * β * sh G y = algebraMap ℚ G.C c * β) (ν : PadicAlgCl p)
@@ -431,19 +421,17 @@ end GlobalTheory.GlobEig
 namespace GlobalTheory.GlobEig
 
 /- English proof (translation)
-Introduce `p _ G hS β y c hyc B hc hc' hy hyi μ hμ`. Use `haveI : NoZeroDivisors G.C := ⟨fun {a b} hab => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨u, hu⟩` from `hS.1 a h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `h.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `haveI : IsDomain G.C := NoZeroDivisors.to_isDomain _`. Establish `h0` using `isRoot_minpoly_of_isRoot_charpoly (y : G.C) μ hμ`. Take `⟨τ, hτ⟩` from `exists_emb_isRoot (F := G.F) (y : G.C) μ h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcpos : 0 < ‖((c : ℚ) : ℚ_[p])‖` using `norm_pos_iff.2 (by simp)`. Establish `hprod : ‖((c : ℚ) : ℚ_[p])‖ * ‖(((c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ = 1`. Rewrite using `[← norm_mul, ← Rat.cast_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Rat.cast_one, norm_one]`. Establish `hB0 : 0 ≤ B` using `hcpos.le.trans hc`. Establish `hB1 : 1 ≤ B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : 1 ≤ B * B`. Rewrite using `[← hprod]`. Conclude with `mul_le_mul hc hc' (norm_nonneg _) hB0`. Use the polynomial consequences of the given equalities and inequalities. Break down `liesOver_or_conj G τ with hu | hu` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨i, ν, hνμ, hν⟩` from `exists_root_rho G τ hu y μ hτ`. Establish `h1` using `hy i ν hν`. Rewrite `h1` using `[hνμ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2` using `isRoot_minpoly_sh G y τ μ hτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, ν, hνμ, hν⟩` from `exists_root_rho G _ hu (sh G y) μ h2`. Establish `h3` using `isRoot_inv G i β y c hyc ν hν`. Establish `h4` using `hyi i _ h3`. Establish `hs : ‖((c : ℚ) : PadicAlgCl p)‖ = ‖((c : ℚ) : ℚ_[p])‖`. Rewrite using `[← PadicAlgCl.norm_extends, map_ratCast]`.
-
-Rewrite `h4` using `[norm_mul, norm_inv, hs, hνμ, ← div_eq_mul_inv, div_le_iff₀ hcpos]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem root_norm_le : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), IsSimple G → ∀ (β y : G.Cˣ) (c : ℚˣ),
     (y : G.C) * β * sh G y = algebraMap ℚ G.C c * β → ∀ B : ℝ, ‖((c : ℚ) : ℚ_[p])‖ ≤ B →

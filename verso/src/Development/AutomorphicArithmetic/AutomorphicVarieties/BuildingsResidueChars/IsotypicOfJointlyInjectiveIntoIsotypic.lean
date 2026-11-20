@@ -3,15 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EquivOfISupR
 open GlobalTheory.CuspRep
 
 /- English proof (translation)
-Establish `hM : IsSemisimpleModule R M`. Use `IsSemisimpleModule.of_sSup_simples_eq_top (top_le_iff.1 fun x _ => ?_)` and prove the remaining obligations. Use `(iSup_le (a := sSup {m : Submodule R M | IsSimpleModule R m}) fun f => ?_) (h x)` and prove the remaining obligations. Break down `LinearMap.injective_or_eq_zero f with hf | rfl` into its components or cases. Conclude with `le_sSup (IsSimpleModule.congr (LinearEquiv.ofInjective f hf).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (LinearMap.pi j)`. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun z hz => hj z fun i => congrFun hz i`. Establish `hN : IsSemisimpleModule R N` using `IsSemisimpleModule.congr (LinearEquiv.ofInjective _ hinj)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y ∈ sSup {m : Submodule R N | IsSimpleModule R m}`. Rewrite using `[IsSemisimpleModule.sSup_simples_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `(sSup_le (a := ⨆ f : S →ₗ[R] N, LinearMap.range f) fun m hm => ?_) hy` and prove the remaining obligations. Establish `hm' : IsSimpleModule R m` using `hm`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : ∀ i, (j i).comp m.subtype = 0`. Introduce `z hzm`. Establish `: z = 0` using `hj z fun i => LinearMap.congr_fun (hz i) ⟨z, hzm⟩`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `not_forall.1 hz`. Establish `hi'` using `(LinearMap.injective_or_eq_zero ((j i).comp m.subtype)).resolve_right hi`. Take `⟨e⟩` from `LocUniq.equiv_of_iSup_range h _ hi'`. Introduce `z hzm`. Conclude with `Submodule.mem_iSup_of_mem (m.subtype.comp e.toLinearMap) ⟨e.symm ⟨z, hzm⟩, by simp⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem iSup_range_of_jointly_injective {R M S N I : Type} [Ring R] [AddCommGroup M] [Module R M]
     [AddCommGroup S] [Module R S] [AddCommGroup N] [Module R N] [IsSimpleModule R S] [Finite I]
@@ -42,15 +42,13 @@ private theorem iSup_range_of_jointly_injective {R M S N I : Type} [Ring R] [Add
     exact Submodule.mem_iSup_of_mem (m.subtype.comp e.toLinearMap) ⟨e.symm ⟨z, hzm⟩, by simp⟩
 
 /- English proof (translation)
-Introduce `Γ X V _ _ _ _ _ σ τ hσ h Y _ _ ρ I _ j hj hj0`. Establish `key` using `iSup_range_of_jointly_injective (R := MonoidAlgebra ℂ Γ) (S := σ.asModule) (M := τ.asModule) (N := ρ.asModule) (fun x => by`. Establish `hx : τ.asModuleEquiv x ∈ (⨆ f : {f : X →ₗ[ℂ] V // ∀ g v, f (σ g v) = τ g (f v)}, LinearMap.range f.1)` using `h ▸ Submodule.mem_top`. Establish `hle : (⨆ f : {f : X →ₗ[ℂ] V // ∀ g v, f (σ g v) = τ g (f v)}, LinearMap.range f.1) ≤ ((⨆ f : σ.asModule →ₗ[MonoidAlgebra ℂ Γ] τ.asModule, LinearMap.range f).restrictScalars ℂ).comap τ.asModuleEquiv.symm.toLinearMap`. Use `iSup_le fun f => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Set `f' : σ.IntertwiningMap τ` to `⟨f.1, fun g => LinearMap.ext (f.2 g)⟩`. Establish `: Representation.IntertwiningMap.equivLinearMapAsModule σ τ f' (σ.asModuleEquiv.symm v) ∈ ⨆ f : σ.asModule →ₗ[MonoidAlgebra ℂ Γ] τ.asModule, LinearMap.range f` using `Submodule.mem_iSup_of_mem (Representation.IntertwiningMap.equivLinearMapAsModule σ τ f') ⟨_, rfl⟩`. Conclude with `this`. Conclude with `hle hx)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun i => Representation.IntertwiningMap.equivLinearMapAsModule ρ τ ⟨j i, fun g => LinearMap.ext (hj i g)⟩)`. Use the proof step `(fun y hy => hj0 y hy)`. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Use `Submodule.iSup_induction _ (motive := fun z : ρ.asModule => ρ.asModuleEquiv z ∈ (⨆ f : {f : X →ₗ[ℂ] Y // ∀ g v, f (σ g v) = ρ g (f v)}, LinearMap.range f.1)) (key (ρ.asModuleEquiv.symm y)) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨v, rfl⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `f'` to `(Representation.IntertwiningMap.equivLinearMapAsModule σ ρ).symm f`. Conclude with `Submodule.mem_iSup_of_mem ⟨f'.toLinearMap, fun g v => LinearMap.congr_fun (f'.isIntertwining' g) v⟩ ⟨σ.asModuleEquiv v, rfl⟩`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b ha hb`.
-
-Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.isotypic_of_jointly_injective_into_isotypic :
     ∀ (Γ X V : Type) [Group Γ] [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ Γ X) (τ : Representation ℂ Γ V), σ.IsIrreducible → (⨆ f : {f : X →ₗ[ℂ] V // ∀ g v, f (σ g v) = τ g (f v)}, LinearMap.range f.1) = ⊤ → ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ Γ Y) (I : Type) [Finite I] (j : I → Y →ₗ[ℂ] V), (∀ i g y, j i (ρ g y) = τ g (j i y)) → (∀ y, (∀ i, j i y = 0) → y = 0) → (⨆ f : {f : X →ₗ[ℂ] Y // ∀ g v, f (σ g v) = ρ g (f v)}, LinearMap.range f.1) = ⊤ := by

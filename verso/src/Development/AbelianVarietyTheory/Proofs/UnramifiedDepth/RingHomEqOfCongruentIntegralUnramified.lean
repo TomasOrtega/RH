@@ -13,19 +13,19 @@ namespace GlobalTheory.CongruentCharacters
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-The claim follows from `V.v.map_lt_add ha hb`.
+A detailed English derivation is pending.
 -/
 theorem mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) :=
   V.v.map_lt_add ha hb
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v.map_neg]`. Conclude with `ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_neg {a : C} (ha : V.MM a) : V.MM (-a) := by
   unfold VF.MM; rw [V.v.map_neg]; exact ha
 
 /- English proof (translation)
-Unfold `VF.MM at *`. Establish `ha' : (0 : WithTop ℝ) ≤ V.v a` using `by simpa [VF.Ge] using ha`. Rewrite using `[V.v.map_mul]`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left ha')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_int_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   unfold VF.MM at *
@@ -34,15 +34,15 @@ theorem mm_int_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   exact lt_of_lt_of_le hb (le_add_of_nonneg_left ha')
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v_l]`. Conclude with `zero_lt_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_l : V.MM (V.l : C) := by
   unfold VF.MM; rw [V.v_l]; exact zero_lt_one
 
 /- English proof (translation)
-Establish `h0 : V.v u = 0`. Establish `h1 : V.v (1 : C) < V.v (u - 1)` using `by rw [V.v.map_one]; exact hu`. Establish `h2` using `V.v.map_add_eq_of_lt_left h1`. Rewrite `h2` using `[V.v.map_one]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `VF.Ge at *`. Rewrite `h` using `[V.v.map_mul, h0, zero_add]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cancel_unit {u a : C} {w : ℝ} (hu : V.MM (u - 1)) (h : V.Ge w (u * a)) : V.Ge w a := by
   have h0 : V.v u = 0 := by
@@ -54,9 +54,9 @@ theorem cancel_unit {u a : C} {w : ℝ} (hu : V.MM (u - 1)) (h : V.Ge w (u * a))
   rwa [V.v.map_mul, h0, zero_add] at h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, by ring, by simp [VF.MM]⟩`. Consider the case `succ n ih`. Take `⟨S, h1, h2⟩` from `ih`. Use `⟨a * S + b ^ (n + 1), by linear_combination a * h1, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `mm_add (mm_int_mul ha h2) (mm_int_mul (VF.Ge.mul_int (VF.ge_natCast (n + 1)) (hb.pow n)) hab)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_sub_pow_factor {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (hab : V.MM (a - b)) (n : ℕ) :
     ∃ S : C, a ^ (n + 1) - b ^ (n + 1) = (a - b) * S ∧
@@ -72,9 +72,9 @@ theorem pow_sub_pow_factor {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (hab : V.MM
     push_cast; ring
 
 /- English proof (translation)
-Apply `(AddValuation.top_iff V.v).1` to reduce the goal to its premises. Proceed by induction on `hv : V.v a using WithTop.recTopCoe with`. Consider the case `top => rfl`. Consider the case `coe t`. It suffices to derive a contradiction.
+Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Treat this case separately. It suffices to derive a contradiction.
 
-Take `⟨n, hn⟩` from `exists_nat_gt t`. Use `h n` as an intermediate fact. Unfold `VF.Ge at this`. Rewrite `this` using `[hv]`. Establish `h' : (n : ℝ) ≤ t` using `WithTop.coe_le_coe.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -92,25 +92,25 @@ theorem eq_zero_of_ge_all {a : C} (h : ∀ n : ℕ, V.Ge n a) : a = 0 := by
     linarith
 
 /- English proof (translation)
-Introduce `C _ V O _ d hd ε ⟨y, hy⟩ hx ψ φ hψ hφ hε hc`. Establish `hl0 : 0 < V.l` using `V.l_prime.pos`. Take `⟨m, hm⟩ : ∃ m, V.l ^ d = m + 1` from `⟨V.l ^ d - 1, by have := pow_pos hl0 d; omega⟩`. Establish `hq : V.MM ((m + 1 : ℕ) : C)`. Take `⟨e, rfl⟩ : ∃ e, d = e + 1` from `⟨d - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hm, pow_succ, Nat.cast_mul]`. Conclude with `mm_int_mul (VF.ge_natCast _) mm_l`. Establish `key : ∀ n : ℕ, ∀ x, V.Ge n (ψ x - φ x)`. Introduce `n`. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro x`. Simplify using `using (hψ x).sub (hφ x)`. Consider the case `succ n ih`. Establish `hl : ∀ z, V.Ge ((n + 1 : ℕ) : ℝ) ((V.l : C) * (ψ z - φ z))` using `fun z => by`. Use `(ih z).l_mul` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hδε : V.Ge ((n + 1 : ℕ) : ℝ) (ψ ε - φ ε)`. Establish `e1` using `congrArg ψ hy`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg φ hy`. Simplify using `only [map_sub, map_mul, map_natCast] at e1 e2`. Apply `cancel_unit (u := ψ ε + φ ε - 1)` to reduce the goal to its premises. Use `mm_add (mm_add hε hε) (mm_neg (hc ε))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `hl y using 1` and compare the differences between its conclusion and the goal. Take the linear combination `e1 - e2`. Introduce `x`. Take `⟨z, hz⟩` from `hx x`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `congrArg ψ hz`. Establish `e2` using `congrArg φ hz`. Simplify using `only [map_sub, map_mul, map_natCast, map_pow, hm] at e1 e2`. Take `⟨S, hS1, hS2⟩` from `pow_sub_pow_factor (hψ x) (hφ x) (hc x) m`. Establish `hS : V.MM S`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mm_add hS2 (mm_int_mul ((hφ x).pow m) hq)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `ht : V.Ge 0 (φ x ^ (m + 1) - φ x)` using `((hφ x).pow _).sub (hφ x)`. Apply `cancel_unit (u := 1 - S)` to reduce the goal to its premises.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `mm_neg hS` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Apply `cancel_unit hε` to reduce the goal to its premises. Use `(VF.Ge.mul_int ht hδε).sub (hl z)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `ψ ε * hS1 - e1 + e2`. Use extensionality with `x`. Conclude with `sub_eq_zero.1 (eq_zero_of_ge_all fun n => key n x)`.
+Take a linear combination of the given relations to obtain the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_of_congruent : ∀ (C : Type) [Field C] (V : VF C) (O : Type) [CommRing O] (d : ℕ), 0 < d → ∀ ε : O, (∃ y, ε * ε - ε = (V.l : O) * y) → (∀ x : O, ∃ y, ε * (x ^ (V.l ^ d) - x) = (V.l : O) * y) → ∀ ψ φ : O →+* C, (∀ x, V.Ge 0 (ψ x)) → (∀ x, V.Ge 0 (φ x)) → V.MM (ψ ε - 1) → (∀ x, V.MM (ψ x - φ x)) → ψ = φ := by
   intro C _ V O _ d hd ε ⟨y, hy⟩ hx ψ φ hψ hφ hε hc

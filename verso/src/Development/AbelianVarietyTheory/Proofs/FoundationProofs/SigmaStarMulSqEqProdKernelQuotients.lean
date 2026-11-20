@@ -17,37 +17,33 @@ namespace GlobalTheory.EvenTheta.MulLat
 variable {Λ : AddSubgroup ℂ}
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem trFac_ne (z ω : ℂ) : GlobalTheory.EvenTheta.Fibres.trFac Λ z ω ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Unfold `GlobalTheory.EvenTheta.Fibres.trFac`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_trFac (ω : ℂ) : Differentiable ℂ fun z => GlobalTheory.EvenTheta.Fibres.trFac Λ z ω := by
   unfold GlobalTheory.EvenTheta.Fibres.trFac
   fun_prop
 
 /- English proof (translation)
-Establish `hσ` using `h.differentiable`. Establish `hne : ∀ z ∉ Λ, sgStar Λ z ≠ 0` using `fun z hz => (h.sg_eq_zero z).not.2 hz`. Use `set u := dslope (sgStar Λ) 0 with hu_def`. Establish `hU : Differentiable ℂ u` using `differentiableOn_univ.1 ((Complex.differentiableOn_dslope Filter.univ_mem).2 hσ.differentiableOn)`. Establish `hu0 : u 0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu_def, dslope_same, (GlobalTheory.OddTheta.sgStar_laws Λ h).1.2.1]`. Establish `eu : ∀ z, sgStar Λ z = z * u z` using `fun z => by`. Use `sub_smul_dslope (sgStar Λ) 0 z` as an intermediate fact. Rewrite `this` using `[(h.sg_eq_zero 0).2 Λ.zero_mem]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_entire_of_locally_dvd (F := fun z => sgStar Λ (β * z) ^ 2) (S := fun z => sgStar Λ z ^ 2) (h.dense_compl.mono fun z hz => pow_ne_zero 2 (hne z hz)) fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ Λ`. Establish `hT` using `differentiable_trFac (Λ := Λ) w`. Establish `hT'` using `differentiable_trFac (Λ := Λ) (β * w)`. Use `set D : ℂ → ℂ := fun z => u (z - w) ^ 2 * GlobalTheory.EvenTheta.Fibres.trFac Λ (β * (z - w)) (β * w) ^ 2 with hD_def`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : Differentiable ℂ D`. Rewrite using `[hD_def]`. Establish `h1 : Differentiable ℂ fun z => u (z - w)` using `hU.comp (by fun_prop)`. Establish `h2 : Differentiable ℂ fun z => GlobalTheory.EvenTheta.Fibres.trFac Λ (β * (z - w)) (β * w)` using `hT'.comp (by fun_prop)`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD0 : D w ≠ 0`. Simplify using `only [hD_def, sub_self, hu0]`. Conclude with `mul_ne_zero (by norm_num) (pow_ne_zero 2 (trFac_ne _ _))`. Use `set N : ℂ → ℂ := fun z => β ^ 2 * u (β * (z - w)) ^ 2 * GlobalTheory.EvenTheta.Fibres.trFac Λ (z - w) w ^ 2 with hN_def`. Establish `hN : Differentiable ℂ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hN_def]`. Establish `h1 : Differentiable ℂ fun z => u (β * (z - w))` using `hU.comp (by fun_prop)`. Establish `h2 : Differentiable ℂ fun z => GlobalTheory.EvenTheta.Fibres.trFac Λ (z - w) w` using `hT.comp (by fun_prop)`. Use `fun_prop`. Use `⟨fun z => N z / D z, (hN.analyticAt w).div (hD.analyticAt w) hD0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hD.continuous.continuousAt.eventually_ne hD0] with z hz`. Establish `hz1 : u (z - w) ≠ 0` using `fun h0 => hz (by simp [hD_def, h0])`. Establish `e1` using `GlobalTheory.EvenTheta.Fibres.sg_sq h hw (z - w)`. Establish `e2` using `GlobalTheory.EvenTheta.Fibres.sg_sq h (hβ w hw) (β * (z - w))`. Rewrite `e1` using `[sub_add_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[show β * (z - w) + β * w = β * z by ring]`. Establish `t1` using `trFac_ne (Λ := Λ) (z - w) w`. Establish `t2` using `trFac_ne (Λ := Λ) (β * (z - w)) (β * w)`. Simplify using `only [hN_def, hD_def]`. Rewrite `e1` using `[eu (z - w)]`.
-
-Rewrite `e2` using `[eu (β * (z - w))]`. Establish `hz' : u (z - w) ^ 2 * GlobalTheory.EvenTheta.Fibres.trFac Λ (β * (z - w)) (β * w) ^ 2 ≠ 0` using `hz`. Rewrite using `[mul_div_assoc', eq_div_iff hz']`. Take the linear combination `u (z - w) ^ 2 * e2 - β ^ 2 * u (β * (z - w)) ^ 2 * e1`. Use `⟨fun z => sgStar Λ (β * z) ^ 2 / sgStar Λ z ^ 2, (((hσ.comp (by fun_prop : Differentiable ℂ fun z => β * z)).pow 2).analyticAt w).div ((hσ.analyticAt w).pow 2) (pow_ne_zero 2 (hne w hw)), ?_⟩ filter_upwards [hσ.continuous.continuousAt.eventually_ne (hne w hw)] with y hy` and prove the remaining obligations.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_sg_mul_sq (h : IsLat Λ) {β : ℂ} (hβ : ∀ ω ∈ Λ, β * ω ∈ Λ) :
     ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ ∀ z, sgStar Λ (β * z) ^ 2 = sgStar Λ z ^ 2 * G z := by
@@ -114,13 +110,13 @@ namespace GlobalTheory.EvenTheta.MulLat
 variable {Λ : AddSubgroup ℂ}
 
 /- English proof (translation)
-Establish `hσ` using `h.differentiable`. Use `set u := dslope (sgStar Λ) 0 with hu_def`. Establish `hU : Differentiable ℂ u` using `differentiableOn_univ.1 ((Complex.differentiableOn_dslope Filter.univ_mem).2 hσ.differentiableOn)`. Establish `hu0 : u 0 = 1`. Rewrite using `[hu_def, dslope_same, (GlobalTheory.OddTheta.sgStar_laws Λ h).1.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eu : ∀ z, sgStar Λ z = z * u z` using `fun z => by`. Use `sub_smul_dslope (sgStar Λ) 0 z` as an intermediate fact. Rewrite `this` using `[(h.sg_eq_zero 0).2 Λ.zero_mem]`. Simplify using `using this.symm`. Establish `hGc` using `hG.continuous`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUc` using `hU.continuous`. Establish `key` using `congrFun (Continuous.ext_on (dense_compl_singleton (0 : ℂ)) (f := fun z => u z ^ 2 * G z) (g := fun z => β ^ 2 * u (β * z) ^ 2) (by fun_prop) (by fun_prop) fun z hz => by`. Establish `hz : z ≠ 0` using `hz`. Establish `e` using `eG z`. Rewrite `e` using `[eu, eu z]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_left_cancel₀ (pow_ne_zero 2 hz) ?_` and prove the remaining obligations. Use `beta_reduce`. Take the linear combination `-e) 0`. Simplify `key` using `[hu0]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_zero (h : IsLat Λ) {β : ℂ} {G : ℂ → ℂ} (hG : Differentiable ℂ G)
     (eG : ∀ z, sgStar Λ (β * z) ^ 2 = sgStar Λ z ^ 2 * G z) : G 0 = β ^ 2 := by
@@ -148,21 +144,21 @@ theorem val_zero (h : IsLat Λ) {β : ℂ} {G : ℂ → ℂ} (hG : Differentiabl
   simpa [hu0] using key
 
 /- English proof (translation)
-Introduce `Λ h β k hβ hN`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Evaluate the numerical expressions using `at hN`. Conclude with `Nat.cast_add_one_ne_zero k hN.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hσ` using `h.differentiable`. Establish `hσc` using `hσ.continuous`. Establish `hne : ∀ z ∉ Λ, sgStar Λ z ≠ 0` using `fun z hz => (h.sg_eq_zero z).not.2 hz`. Take `⟨G, hG, eG⟩` from `exists_sg_mul_sq h hβ`. Establish `hGc` using `hG.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG0` using `val_zero h hG eG`. Establish `hev : ∀ z, G (-z) = G z` using `fun z => by`. Use `congrFun (Continuous.ext_on h.dense_compl (f := fun z => G (-z)) (by fun_prop) hGc fun z hz => ?_) z` and prove the remaining obligations. Use `mul_left_cancel₀ (pow_ne_zero 2 (hne z hz)) ?_` and prove the remaining obligations. Establish `h1` using `eG (-z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h.sg_neg, neg_sq, mul_neg, h.sg_neg, neg_sq]`. Conclude with `h1.symm.trans (eG z)`. Establish `hlaw : ∀ ω ∈ Λ, ∀ z, G (z + ω) * GlobalTheory.EvenTheta.Fibres.trFac Λ z ω ^ (2 * k) = G z`. Introduce `ω hω z`. Establish `hTc : Continuous fun z => GlobalTheory.EvenTheta.Fibres.trFac Λ z ω` using `(differentiable_trFac ω).continuous`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (Continuous.ext_on h.dense_compl (f := fun z => G (z + ω) * GlobalTheory.EvenTheta.Fibres.trFac Λ z ω ^ (2 * k)) (by fun_prop) hGc fun z hz => ?_) z` and prove the remaining obligations. Use `mul_left_cancel₀ (pow_ne_zero 2 (hne z hz)) ?_` and prove the remaining obligations. Establish `ea` using `GlobalTheory.EvenTheta.Fibres.sg_sq h hω z`. Establish `eb` using `GlobalTheory.EvenTheta.Fibres.sg_sq h (hβ ω hω) (β * z)`. Rewrite `eb` using `[GlobalTheory.EvenTheta.Fibres.trFac_mul hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `egz` using `eG z`. Establish `egw` using `eG (z + ω)`. Rewrite `egw` using `[mul_add]`. Use `beta_reduce`. Take the linear combination `egz + eb - GlobalTheory.EvenTheta.Fibres.trFac Λ z ω ^ (2 * k + 2) * egw - G (z + ω) * GlobalTheory.EvenTheta.Fibres.trFac Λ z ω ^ (2 * k) * ea`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Q, hQ, hQe⟩` from `GlobalTheory.EvenTheta.exists_eq_prod_sqTh Λ h k (fun z => G z / β ^ 2) (hG.div_const _) (fun z => by simp only [hev]) (by simp only [hG0]; exact div_self (pow_ne_zero 2 hβ0)) (fun ω hω z => GlobalTheory.EvenTheta.Fibres.law_of_fac h (F := fun z => G z / β ^ 2) (k := k) hω z (by …`. Rewrite using `[div_mul_eq_mul_div, hlaw ω hω z]))`. Establish `hfac : ∀ z, sgStar Λ (β * z) ^ 2 = β ^ 2 * sgStar Λ z ^ 2 * ∏ i, sqTh Λ (Q i) z` using `fun z => by`. Rewrite using `[eG z, ← hQe z]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Q, fun i => ⟨hQ i, ?_⟩, hfac⟩` and prove the remaining obligations. Use `(h.sg_eq_zero _).1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 ?_)` and prove the remaining obligations. Rewrite using `[hfac, Finset.prod_eq_zero (Finset.mem_univ i) ((h.sqTh_eq_zero (hQ i) _).2 (Or.inr (by rw [sub_self]; exact Λ.zero_mem))), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sg_mul_sq : ∀ (Λ : AddSubgroup ℂ), IsLat Λ → ∀ (β : ℂ) (k : ℕ), (∀ ω ∈ Λ, β * ω ∈ Λ) → β * starRingEnd ℂ β = ((k + 1 : ℕ) : ℂ) → ∃ Q : Fin k → ℂ, (∀ i, Q i ∉ Λ ∧ β * Q i ∈ Λ) ∧ ∀ z, sgStar Λ (β * z) ^ 2 = β ^ 2 * sgStar Λ z ^ 2 * ∏ i, sqTh Λ (Q i) z := by
   intro Λ h β k hβ hN

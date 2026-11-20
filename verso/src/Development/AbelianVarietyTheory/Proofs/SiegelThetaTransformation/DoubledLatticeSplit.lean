@@ -12,11 +12,11 @@ section Algebra
 variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
 
 /- English proof (translation)
-Introduce `I g`. Distinguish the cases in `hI : ∃ a ∈ I, a ≠ 0`. Take `⟨a, ha, ha0⟩` from `hI`. Establish `hA : algebraMap R K a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr ha0`. Use `⟨LinearMap.toSpanSingleton R V ((algebraMap R K a)⁻¹ • g ⟨a, ha⟩), fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : a • g ⟨x, hx⟩ = x • g ⟨a, ha⟩`. Rewrite using `[← LinearMap.map_smul, ← LinearMap.map_smul]`. Use `congr 1`. Conclude with `Subtype.ext (show a * x = x * a from mul_comm a x)`. Rewrite using `[LinearMap.toSpanSingleton_apply, ← algebraMap_smul K x, smul_comm, algebraMap_smul, ← key, ← algebraMap_smul K a, smul_smul, inv_mul_cancel₀ hA, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [not_exists, not_and, not_not] at hI`. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : (⟨x, hx⟩ : I) = 0` using `Subtype.ext (hI x hx)`. Rewrite using `[hx0, map_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baer (V : Type) [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V] :
     Module.Baer R V := by
@@ -38,13 +38,13 @@ theorem baer (V : Type) [AddCommGroup V] [Module K V] [Module R V] [IsScalarTowe
     rw [hx0, map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `(baer (R := R) (K := K) (Fin r → K)).extension_property M.subtype Subtype.val_injective f`. Establish `hK : ∀ (c : K) (v : Fin r → K), F (c • v) = c • F v`. Introduce `c v`. Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := R) c`. Establish `hs' : algebraMap R K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul : algebraMap R K s * (algebraMap R K a / algebraMap R K s) = algebraMap R K a`. Clear the denominators using the available nonvanishing facts. Establish `h1 : s • F ((algebraMap R K a / algebraMap R K s) • v) = a • F v` using `by conv_lhs => rw [← F.map_smul]`. Rewrite using `[← algebraMap_smul K s ((algebraMap R K a / algebraMap R K s) • v), smul_smul, hmul, algebraMap_smul, F.map_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← algebraMap_smul K s (F _), smul_smul, inv_mul_cancel₀ hs', one_smul]`. Use `_ = (algebraMap R K a / algebraMap R K s) • F v := by`. Rewrite using `[h1, ← algebraMap_smul K a (F v), smul_smul, div_eq_mul_inv, mul_comm]`. Set `Fk : (Fin r → K) →ₗ[K] (Fin r → K)` to `{ toFun := F, map_add' := F.map_add, map_smul' := hK }`. Use `⟨(LinearMap.toMatrix' Fk)ᵀ, fun d => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`. Conclude with `LinearMap.congr_fun hF d`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix {r : ℕ} (M : Submodule R (Fin r → K)) (f : M →ₗ[R] (Fin r → K)) :
     ∃ A : Matrix (Fin r) (Fin r) K, ∀ d : M, (d : Fin r → K) ᵥ* A = f d := by
@@ -76,15 +76,15 @@ end Algebra
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hP : (L₁ ⊔ L₂).FG` using `Submodule.FG.sup h₁ h₂`. Establish `: Module.Finite (𝓞 E) (L₁ ⊔ L₂ : Lt E r)` using `Module.Finite.iff_fg.mpr hP`. Establish `: Module.FinitePresentation (𝓞 E) (L₁ ⊔ L₂ : Lt E r)` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 E) (L₁ ⊔ L₂ : Lt E r)` using `Module.Flat.projective_of_finitePresentation`. Set `f : L₁ →ₗ[𝓞 E] (Fin r → E) ⧸ L₂` to `L₂.mkQ ∘ₗ L₁.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : (L₁ ⊔ L₂ : Lt E r) →ₗ[𝓞 E] LinearMap.range f` to `LinearMap.codRestrict (LinearMap.range f) (L₂.mkQ ∘ₗ (L₁ ⊔ L₂).subtype) (by`. Introduce `d`. Take `⟨y₁, hy₁, y₂, hy₂, hd⟩` from `Submodule.mem_sup.mp d.2`. Use `⟨⟨y₁, hy₁⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [f, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.mkQ_apply]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.Quotient.eq, ← hd]`. Simplify using `using L₂.neg_mem hy₂)`. Take `⟨h, hh⟩` from `Module.projective_lifting_property f.rangeRestrict g (LinearMap.surjective_rangeRestrict f)`. Take `⟨A, hA⟩` from `exists_matrix (R := 𝓞 E) (K := E) (L₁ ⊔ L₂) (L₁.subtype ∘ₗ h)`. Use `⟨A, fun d hd => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `hA ⟨d, hd⟩`. Establish `e2` using `congrArg Subtype.val (LinearMap.congr_fun hh ⟨d, hd⟩)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at e1`. Simplify using `only [LinearMap.comp_apply, LinearMap.codRestrict_apply, LinearMap.rangeRestrict, f, Submodule.subtype_apply, Submodule.mkQ_apply, g] at e2`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(h ⟨d, hd⟩).2, (Submodule.Quotient.eq L₂).mp e2⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_section (L₁ L₂ : Lt E r) (h₁ : L₁.FG) (h₂ : L₂.FG) :
     ∃ A : Matrix (Fin r) (Fin r) E, ∀ d ∈ L₁ ⊔ L₂, d ᵥ* A ∈ L₁ ∧ d ᵥ* A - d ∈ L₂ := by
@@ -129,31 +129,31 @@ def intTr (E : Type) [Field E] [NumberField E] : AddSubgroup E where
     exact ⟨-k, by simp [hk]⟩
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_add_left (x x' y : Fin r → E) : pair (x + x') y = pair x y + pair x' y := by
   simp only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_sub_left (x x' y : Fin r → E) : pair (x - x') y = pair x y - pair x' y := by
   simp only [pair, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [pair, cc, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_add_right (x y y' : Fin r → E) : pair x (y + y') = pair x y + pair x y' := by
   simp only [pair, cc, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pair, cc, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_sub_right (x y y' : Fin r → E) : pair x (y - y') = pair x y - pair x y' := by
   simp only [pair, cc, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [pair, Matrix.vecMul, dotProduct, ccT, Matrix.transpose_apply, Matrix.map_apply, cc, map_sum, map_mul, IsCMField.complexConj_apply_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_vecMul (x y : Fin r → E) (M : Matrix (Fin r) (Fin r) E) :
     pair (x ᵥ* M) y = pair x (y ᵥ* ccT M) := by
@@ -163,21 +163,21 @@ theorem pair_vecMul (x y : Fin r → E) (M : Matrix (Fin r) (Fin r) E) :
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ccT, cc, map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ccT_add (A B : Matrix (Fin r) (Fin r) E) : ccT (A + B) = ccT A + ccT B := by
   ext i j
   simp [ccT, cc, map_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ccT, cc, map_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ccT_sub (A B : Matrix (Fin r) (Fin r) E) : ccT (A - B) = ccT A - ccT B := by
   ext i j
   simp [ccT, cc, map_sub]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ccT, cc, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ccT_smul (c : E) (A : Matrix (Fin r) (Fin r) E) : ccT (c • A) = cc c • ccT A := by
   ext i j
@@ -188,9 +188,9 @@ variable (X : Data E r)
 noncomputable def skew : Matrix (Fin r) (Fin r) E := (X.κ0 / 2) • X.Gm
 
 /- English proof (translation)
-Establish `hξ : IsCMField.complexConj E X.ξ0 = -X.ξ0` using `X.ξ0_im`. Establish `hκ : IsCMField.complexConj E X.κ0 = -X.κ0`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] <;> simp [hξ]`. Establish `hG : ∀ a b, IsCMField.complexConj E (X.Gm a b) = X.Gm b a` using `X.Gm_herm`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [ccT, skew, cc, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_div₀, hκ, hG, Matrix.neg_apply, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ccT_skew : ccT (skew X) = -skew X := by
   have hξ : IsCMField.complexConj E X.ξ0 = -X.ξ0 := X.ξ0_im
@@ -203,7 +203,7 @@ theorem ccT_skew : ccT (skew X) = -skew X := by
   ring
 
 /- English proof (translation)
-Establish `hξ` using `X.ξ0_ne`. Establish `hκ : X.κ0 ≠ 0`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] <;> simp [hξ]`. Rewrite using `[isUnit_iff_ne_zero, skew, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (div_ne_zero hκ two_ne_zero)) X.Gm_det`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_skew : IsUnit (skew X).det := by
   have hξ := X.ξ0_ne
@@ -213,13 +213,13 @@ theorem isUnit_det_skew : IsUnit (skew X).det := by
   exact mul_ne_zero (pow_ne_zero _ (div_ne_zero hκ two_ne_zero)) X.Gm_det
 
 /- English proof (translation)
-Establish `hp : pair (x ᵥ* skew X) y = (X.κ0 / 2) * herm X.Gm x y`. Simplify using `only [pair, skew, Matrix.smul_apply, smul_eq_mul, herm, Matrix.vecMul, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `hm : pair (x ᵥ* skew X) y ∈ intTr E ↔ ∃ k : ℤ, Algebra.trace ℚ E (pair (x ᵥ* skew X) y) = k` using `Iff.rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EF_def, hm, hp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[neg_mul, map_neg]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_mul, map_neg, hk]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EF_mem (x y : Fin r → E) :
     (∃ k : ℤ, EF X x y = k) ↔ pair (x ᵥ* skew X) y ∈ intTr E := by
@@ -246,7 +246,7 @@ theorem EF_mem (x y : Fin r → E) :
 variable {X}
 
 /- English proof (translation)
-Rewrite using `[hL.2 x]`. Conclude with `forall₂_congr fun y _ => EF_mem X x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff {L : Lt E r} (hL : SelfD X L) (x : Fin r → E) :
     x ∈ L ↔ ∀ y ∈ L, pair (x ᵥ* skew X) y ∈ intTr E := by
@@ -254,9 +254,9 @@ theorem mem_iff {L : Lt E r} (hL : SelfD X L) (x : Fin r → E) :
   exact forall₂_congr fun y _ => EF_mem X x y
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx₁, hx₂⟩ y hy`. Take `⟨y₁, hy₁, y₂, hy₂, rfl⟩` from `Submodule.mem_sup.mp hy`. Rewrite using `[pair_add_right]`. Conclude with `add_mem ((mem_iff h₁ x).mp hx₁ y₁ hy₁) ((mem_iff h₂ x).mp hx₂ y₂ hy₂)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨(mem_iff h₁ x).mpr fun y hy => h y (Submodule.mem_sup_left hy), (mem_iff h₂ x).mpr fun y hy => h y (Submodule.mem_sup_right hy)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_inf_iff {L₁ L₂ : Lt E r} (h₁ : SelfD X L₁) (h₂ : SelfD X L₂) (x : Fin r → E) :
     (x ∈ L₁ ∧ x ∈ L₂) ↔ ∀ y ∈ L₁ ⊔ L₂, pair (x ᵥ* skew X) y ∈ intTr E := by
@@ -270,9 +270,9 @@ theorem mem_inf_iff {L₁ L₂ : Lt E r} (h₁ : SelfD X L₁) (h₂ : SelfD X L
       (mem_iff h₂ x).mpr fun y hy => h y (Submodule.mem_sup_right hy)⟩
 
 /- English proof (translation)
-Rewrite using `[dblT, Matrix.vecMul_fromBlocks]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[sub_eq_add_neg, Matrix.vecMul_neg]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr, skew, Matrix.vecMul_smul, Matrix.add_vecMul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMul_dblT (y₁ y₂ : Fin r → E) : Sum.elim y₁ y₂ ᵥ* dblT X =
     Sum.elim (y₁ - y₂) ((1 / 2 : E) • ((y₁ + y₂) ᵥ* skew X)) := by
@@ -286,75 +286,71 @@ theorem vecMul_dblT (y₁ y₂ : Fin r → E) : Sum.elim y₁ y₂ ᵥ* dblT X =
     ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ccT, cc, Matrix.mul_apply, map_sum, map_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ccT_mul_siegel_theta_transformation (M N : Matrix (Fin r) (Fin r) E) : ccT (M * N) = ccT N * ccT M := by
   ext i j
   simp [ccT, cc, Matrix.mul_apply, map_sum, map_mul, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [ccT]`. Rewrite using `[Matrix.map_one _ (by simp [cc]) (by simp [cc]), Matrix.transpose_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ccT_one_fin_r : ccT (1 : Matrix (Fin r) (Fin r) E) = 1 := by
   simp only [ccT]
   rw [Matrix.map_one _ (by simp [cc]) (by simp [cc]), Matrix.transpose_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ccT, cc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ccT_ccT_siegel_theta_transformation (M : Matrix (Fin r) (Fin r) E) : ccT (ccT M) = M := by
   ext i j
   simp [ccT, cc]
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pair_smul_left_eq_mul (c : E) (x y : Fin r → E) : pair (c • x) y = c * pair x y := by
   simp only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[pair_vecMul, ccT_ccT_siegel_theta_transformation]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pair_vecMul_right_eq_ccT (x y : Fin r → E) (N : Matrix (Fin r) (Fin r) E) :
     pair x (y ᵥ* N) = pair (x ᵥ* ccT N) y := by
   rw [pair_vecMul, ccT_ccT_siegel_theta_transformation]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X w hw hw1 L₁ L₂ h₁ h₂`. Take `⟨A, hA⟩` from `exists_section L₁ L₂ h₁.1 h₂.1`. Take `⟨β₀, hβ₀⟩ : ∃ β₀ : Matrix (Fin r) (Fin r) E, β₀ = (A - (1 / 2 : E) • 1) * skew X` from `⟨_, rfl⟩`. Establish `hwcc : cc w = 1 - w` using `eq_sub_of_add_eq' hw1`. Establish `hcc1 : cc (1 - w) = w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hwcc`. Simplify using `only [cc] at h ⊢`. Rewrite using `[map_sub, map_one, h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hhalf : cc (1 / 2 : E) = 1 / 2` using `by simp [cc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hD : ccT β₀ - β₀ = (A - 1) * skew X * ccT (A - 1) - A * skew X * ccT A`. Rewrite using `[hβ₀]`. Simplify using `only [ccT_mul_siegel_theta_transformation, ccT_skew, ccT_sub, ccT_smul, ccT_one_fin_r, hhalf, sub_mul, mul_sub, Matrix.smul_mul, one_mul, mul_one, neg_mul]`. Use `module`. Establish `hvA : ∀ d : Fin r → E, d ᵥ* β₀ = (d ᵥ* A - (1 / 2 : E) • d) ᵥ* skew X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d`. Rewrite using `[hβ₀, ← Matrix.vecMul_vecMul, Matrix.vecMul_sub, Matrix.vecMul_smul, Matrix.vecMul_one]`. Establish `hsmul : ∀ {L : Lt E r} {y : Fin r → E}, y ∈ L → w • y ∈ L`. Introduce `L y hy`. Conclude with `L.smul_mem (⟨w, hw⟩ : 𝓞 E) hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : ∀ z : Fin r → E, z ᵥ* (A - 1) = z ᵥ* A - z` using `fun z => by`. Rewrite using `[Matrix.vecMul_sub, Matrix.vecMul_one]`. Establish `hcorr : ∀ d ∈ L₁ ⊔ L₂, ∀ d' ∈ L₁ ⊔ L₂, pair (d ᵥ* ((1 - w) • β₀ + w • ccT β₀) - d ᵥ* β₀) d' ∈ intTr E`. Introduce `d hd d' hd'`. Establish `e1 : d ᵥ* ((1 - w) • β₀ + w • ccT β₀) - d ᵥ* β₀ = w • (d ᵥ* (ccT β₀ - β₀))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.vecMul_add, Matrix.vecMul_smul, Matrix.vecMul_smul, Matrix.vecMul_sub]`. Use `module`. Establish `e2 : ∀ N : Matrix (Fin r) (Fin r) E, pair (d ᵥ* (N * skew X * ccT N)) d' = pair ((d ᵥ* N) ᵥ* skew X) (d' ᵥ* N)`. Introduce `N`. Rewrite using `[pair_vecMul_right_eq_ccT, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, pair_smul_left_eq_mul, hD, Matrix.vecMul_sub, pair_sub_left, e2, e2, mul_sub, ← pair_smul_left_eq_mul, ← pair_smul_left_eq_mul, ← Matrix.smul_vecMul, ← Matrix.smul_vecMul, hA1, hA1]`. Establish `m₂ : (w • d) ᵥ* A - w • d ∈ L₂`. Rewrite using `[Matrix.smul_vecMul, ← smul_sub]`. Conclude with `hsmul (hA d hd).2`. Establish `m₁ : (w • d) ᵥ* A ∈ L₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.smul_vecMul]`. Conclude with `hsmul (hA d hd).1`. Establish `k₂` using `(mem_iff h₂ _).mp m₂ (d' ᵥ* A - d') (hA d' hd').2`. Establish `k₁` using `(mem_iff h₁ _).mp m₁ (d' ᵥ* A) (hA d' hd').1`. Simplify using `only [Matrix.smul_vecMul] at k₁ k₂ ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `sub_mem k₂ k₁`. Use `⟨(1 - w) • β₀ + w • ccT β₀, ?_, fun d b => ?_⟩` and prove the remaining obligations. Rewrite using `[ccT_add, ccT_smul, ccT_smul, ccT_ccT_siegel_theta_transformation, hcc1, hwcc, add_comm]`. Establish `hmem : (∀ d' ∈ L₁ ⊔ L₂, ∃ k : ℤ, Algebra.trace ℚ E (∑ a, (b - d ᵥ* ((1 - w) • β₀ + w • ccT β₀)) a * cc (d' a)) = k) ↔ ∀ d' ∈ L₁ ⊔ L₂, pair (b - d ᵥ* ((1 - w) • β₀ + w • ccT β₀)) d' ∈ intTr E` using `Iff.rfl`. Rewrite using `[hmem]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y₁, hy₁, y₂, hy₂, hyb⟩`. Rewrite `hyb` using `[vecMul_dblT]`. Establish `hd : y₁ - y₂ = d` using `funext fun i => congrFun hyb (Sum.inl i)`. Establish `hb : (1 / 2 : E) • ((y₁ + y₂) ᵥ* skew X) = b` using `funext fun i => congrFun hyb (Sum.inr i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdm : d ∈ L₁ ⊔ L₂` using `hd ▸ sub_mem (Submodule.mem_sup_left hy₁) (Submodule.mem_sup_right hy₂)`. Use `⟨hdm, fun d' hd' => ?_⟩` and prove the remaining obligations. Establish `hz₁ : y₁ - d ᵥ* A ∈ L₁` using `sub_mem hy₁ (hA d hdm).1`. Establish `hz₂ : y₁ - d ᵥ* A ∈ L₂`. Establish `e : y₁ - d ᵥ* A = y₂ - (d ᵥ* A - d)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hd]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem hy₂ (hA d hdm).2`. Establish `hzS : b - d ᵥ* β₀ = (y₁ - d ᵥ* A) ᵥ* skew X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hb, hvA, ← hd, ← Matrix.smul_vecMul, ← Matrix.sub_vecMul]`. Use `congr 1`. Use `module`. Establish `e : b - d ᵥ* ((1 - w) • β₀ + w • ccT β₀) = (b - d ᵥ* β₀) - (d ᵥ* ((1 - w) • β₀ + w • ccT β₀) - d ᵥ* β₀)` using `by abel`. Rewrite using `[e, pair_sub_left, hzS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem ((mem_inf_iff h₁ h₂ _).mp ⟨hz₁, hz₂⟩ d' hd') (hcorr d hdm d' hd')`. Introduce and unpack `⟨hdm, hint⟩`. Take `⟨z, hzdef⟩ : ∃ z : Fin r → E, z = (b - d ᵥ* β₀) ᵥ* (skew X)⁻¹` from `⟨_, rfl⟩`. Establish `hz : z ᵥ* skew X = b - d ᵥ* β₀`. Rewrite using `[hzdef, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (isUnit_det_skew X), Matrix.vecMul_one]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzm : z ∈ L₁ ∧ z ∈ L₂`. Use `(mem_inf_iff h₁ h₂ z).mpr fun y hy => ?_` and prove the remaining obligations. Establish `e : z ᵥ* skew X = (b - d ᵥ* ((1 - w) • β₀ + w • ccT β₀)) + (d ᵥ* ((1 - w) • β₀ + w • ccT β₀) - d ᵥ* β₀)`. Rewrite using `[hz]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, pair_add_left]`. Conclude with `add_mem (hint y hy) (hcorr d hdm y hy)`. Use `⟨d ᵥ* A + z, add_mem (hA d hdm).1 hzm.1, (d ᵥ* A - d) + z, add_mem (hA d hdm).2 hzm.2, ?_⟩` and prove the remaining obligations. Rewrite using `[vecMul_dblT]`. Establish `e3 : (1 / 2 : E) • ((d ᵥ* A + z + (d ᵥ* A - d + z)) ᵥ* skew X) = b`.
-
-Rewrite using `[← Matrix.smul_vecMul]`. Establish `e4 : (1 / 2 : E) • (d ᵥ* A + z + (d ᵥ* A - d + z)) = (d ᵥ* A - (1 / 2 : E) • d) + z` using `by module`. Rewrite using `[e4, Matrix.add_vecMul, ← hvA, hz]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`.
-
-Use `congr 1`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem doubled_lattice_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L₁ L₂ : Lt E r, SelfD X L₁ → SelfD X L₂ → ∃ β : Matrix (Fin r) (Fin r) E, ccT β = β ∧ ∀ d b : Fin r → E, ((∃ y₁ ∈ L₁, ∃ y₂ ∈ L₂, Sum.elim y₁ y₂ ᵥ* dblT X = Sum.elim d b) ↔ (d ∈ L₁ ⊔ L₂ ∧ ∀ d' ∈ L₁ ⊔ L₂, ∃ k : ℤ, Algebra.trace ℚ E (∑ a, (b - d ᵥ* β) a * cc (d' a)) = k)) := by
   intro E _ _ _ r X w hw hw1 L₁ L₂ h₁ h₂

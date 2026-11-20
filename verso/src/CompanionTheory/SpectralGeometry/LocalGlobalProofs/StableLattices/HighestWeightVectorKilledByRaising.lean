@@ -13,17 +13,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.RgExh
 
 /- English proof (translation)
-Establish `hcase : (q = i.1.1 ∧ k.1 = (p, i.1.2)) ∨ (i.1.2 = p ∧ k.1 = (i.1.1, q))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`. Conclude with `hc (by simp only [adC, if_neg hn.1, if_neg hn.2, sub_self])`. Take `⟨h1, h2⟩ : ε i.1.1 = ε i.1.2 ∧ lev i.1.1 < lev i.1.2` from `(mem_filter.1 hi).2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : p ≠ q` using `ne_of_lt hpq`. Break down `hcase with ⟨e1, e2⟩ | ⟨e1, e2⟩` into its components or cases. Use `⟨mem_filter.2 ⟨mem_univ _, ?_, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Use `show ε p = ε i.1.2`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hε, e1, h1]`. Rewrite using `[e2]`. Use `show lev p < lev i.1.2`. Rewrite using `[hl, e1]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[e]`. Conclude with `hne (e1.trans (congrArg Prod.fst e2)).symm`. Use `⟨mem_filter.2 ⟨mem_univ _, ?_, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Use `show ε i.1.1 = ε q`.
-
-Rewrite using `[h1, e1, hε]`. Rewrite using `[e2]`. Use `show lev i.1.1 < lev q`. Rewrite using `[← hl, ← e1]`. Conclude with `h2`.
-
-Rewrite `e2` using `[e]`. Conclude with `hne (e1.symm.trans (congrArg Prod.snd e2))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adC_mem_omU {n : ℕ} {ε : Fin n → Bool} {lev : Fin n → ℕ} {p q : Fin n} (hpq : p < q) (hε : ε p = ε q)
     (hl : lev p = lev q) {i k : Pos n} (hc : adC p q i k ≠ 0) (hi : i ∈ omU ε lev) :
@@ -45,19 +41,17 @@ theorem adC_mem_omU {n : ℕ} {ε : Fin n → Bool} {lev : Fin n → ℕ} {p q :
     · rw [e] at e2; exact hne (e1.symm.trans (congrArg Prod.snd e2))
 
 /- English proof (translation)
-Introduce `n ε lev V _ _ E γ u hu p q hpq hε hl`. Establish `hE : E p q u = 0` using `hu.2 p q hpq hε`. Establish `h1 : lift n (E p q) (Pi.single (omU ε lev) u : Cn n V) = 0`. Use function extensionality and compare the values at `A`. Rewrite using `[CompanionTheory.D.LK.lift_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : A = omU ε lev`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hE`. Rewrite using `[Pi.single_eq_of_ne e, map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : adL p q (Pi.single (omU ε lev) u : Cn n V) = 0`. Simplify using `only [adL, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : adC p q i k = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, zero_smul]`. It suffices to establish `h : cre k (ann i (Pi.single (omU ε lev) u : Cn n V)) = 0 by rw [h, smul_zero]`. Use function extensionality and compare the values at `B`. Assume the negation of the conclusion as `h`. Take `⟨-, h3⟩` from `CompanionTheory.D.LK.cre_ne h`.
+Reduce the argument to an intermediate assertion. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h4⟩` from `CompanionTheory.D.LK.ann_ne h3`. Establish `e : insert i (B.erase k) = omU ε lev`. Assume the negation of the conclusion as `h'`. Conclude with `h4 (Pi.single_eq_of_ne h' _)`. Establish `hi : i ∈ omU ε lev` using `e ▸ mem_insert_self _ _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hk, hki⟩` from `adC_mem_omU hpq hε hl hc hi`. Rewrite `hk` using `[← e]`. Break down `mem_insert.1 hk with h5 | h5` into its components or cases. Conclude with `hki h5`. Conclude with `notMem_erase _ _ h5`.
-
-Use `show lift n (E p q) _ + adL p q _ = 0`. Rewrite using `[h1, h2, add_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lF_single_omU : ∀ (n : ℕ) (ε : Fin n → Bool) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (γ : Fin n → ℝ) (u : V), KHighest ε E γ u →

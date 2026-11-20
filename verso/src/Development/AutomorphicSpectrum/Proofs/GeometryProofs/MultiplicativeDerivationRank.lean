@@ -6,17 +6,15 @@ namespace GlobalTheory.CompanionTheory.PowerDerivation
 open Polynomial
 
 /- English proof (translation)
-Establish `hone : 1 < p` using `hp.out.one_lt`. Establish `hP : (X ^ p - X : k[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hone`. Establish `hdeg : (X ^ p - X : k[X]).natDegree = p` using `FiniteField.X_pow_card_sub_X_natDegree_eq k hone`. Use `haveI : ExpChar k p := ExpChar.prime hp.out`. Use `set S : Finset k := (Finset.range p).image (fun i : ℕ => (i : k)) with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : S.card = p`. Rewrite using `[hS, Finset.card_image_of_injOn, Finset.card_range]`. Introduce `a ha b hb hab`. Conclude with `CharP.natCast_injOn_Iio k p (by simpa using ha) (by simpa using hb) hab`. Establish `hsub : S ⊆ (X ^ p - X : k[X]).roots.toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Establish `hi : ((i : k)) ^ p = i`. Use `map_natCast (frobenius k p) i` as an intermediate fact. Rewrite `this` using `[frobenius_def]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Multiset.mem_toFinset, mem_roots hP]`. Simplify using `[IsRoot, hi]`. Establish `hEq : S = (X ^ p - X : k[X]).roots.toFinset`. Use `Finset.eq_of_subset_of_card_le hsub ?_` and prove the remaining obligations. Rewrite using `[hcard]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hμ : μ ∈ S`. Rewrite using `[hEq, Multiset.mem_toFinset, mem_roots hP]`. Simplify using `[IsRoot, h]`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hμ`.
-
-Conclude with `⟨i, Finset.mem_range.1 hi, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_natCast_of_pow_eq (k : Type) [Field k] (p : ℕ) [hp : Fact p.Prime] [CharP k p]
     (μ : k) (h : μ ^ p = μ) : ∃ i < p, μ = (i : k) := by
@@ -51,9 +49,9 @@ theorem exists_natCast_of_pow_eq (k : Type) [Field k] (p : ℕ) [hp : Fact p.Pri
   exact ⟨i, Finset.mem_range.1 hi, rfl⟩
 
 /- English proof (translation)
-Establish `hsep : (X ^ p - X : k[X]).Separable` using `galois_poly_separable p p dvd_rfl`. Establish `h0 : aeval T (X ^ p - X : k[X]) = 0`. Use extensionality with `a`. Simplify using `[Module.End.pow_apply, h a]`. Establish `hss : T.IsSemisimple` using `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hsep.squarefree h0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Module.End.iSup_maxGenEigenspace_eq_top T` as an intermediate fact. Simplify `this` using `[hss.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iSup_eigenspace_eq_top (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [hp : Fact p.Prime]
     [CharP k p] (R : Type) [AddCommGroup R] [Module k R] [Module.Finite k R]
@@ -85,9 +83,9 @@ theorem powerSum_apply (D : Derivation k R R) (z : R) (p : ℕ)
     powerSum D z p a = ∑ i, (a i : R) * z ^ (i : ℕ) := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, D.leibniz, ih, hz]`. Simplify using `only [smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivation_pow_of_eq (D : Derivation k R R) {z : R} (hz : D z = z) (n : ℕ) :
     D (z ^ n) = (n : R) * z ^ n := by
@@ -100,9 +98,9 @@ theorem derivation_pow_of_eq (D : Derivation k R R) {z : R} (hz : D z = z) (n : 
     ring
 
 /- English proof (translation)
-Establish `h1 : D (z * w) = 0` using `by rw [hw]; simp`. Rewrite `h1` using `[D.leibniz, hz]`. Simplify using `only [smul_eq_mul] at h1`. Establish `h2 : w * (z * D w + w * z) = 0` using `by rw [h1, mul_zero]`. Establish `h3 : w * (z * D w + w * z) = (z * w) * D w + (z * w) * w` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3, hw]`. Take the linear combination `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem derivation_inv_of_eq (D : Derivation k R R) {z w : R} (hz : D z = z) (hw : z * w = 1) :
     D w = -w := by
@@ -115,9 +113,9 @@ theorem derivation_inv_of_eq (D : Derivation k R R) {z w : R} (hz : D z = z) (hw
   linear_combination h2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, D.leibniz, ih, derivation_inv_of_eq D hz hw]`. Simplify using `only [smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivation_inv_pow_of_eq (D : Derivation k R R) {z w : R} (hz : D z = z)
     (hw : z * w = 1) (n : ℕ) : D (w ^ n) = -(n : R) * w ^ n := by
@@ -130,7 +128,7 @@ theorem derivation_inv_pow_of_eq (D : Derivation k R R) {z w : R} (hz : D z = z)
     ring
 
 /- English proof (translation)
-Establish `ha : D (a : R) = 0` using `a.2`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Express the relevant statement in the definitionally equal form `D ((a : R) * z ^ n) = _`. Rewrite using `[D.leibniz, derivation_pow_of_eq D hz, ha, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Simplify using `only [smul_eq_mul, smul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -145,11 +143,11 @@ theorem mem_eigenspace_of_mem_ker (D : Derivation k R R) {z : R} (hz : D z = z)
   ring
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `hinj : Function.Injective (fun i : Fin p => ((i : ℕ) : k))` using `fun i j hij => Fin.ext (CharP.natCast_injOn_Iio k p i.2 j.2 hij)`. Establish `hind` using `(Module.End.eigenspaces_iSupIndep (D : R →ₗ[k] R)).comp hinj`. Establish `h0` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero _).1 hind Finset.univ (fun i => (a i : R) * z ^ (i : ℕ)) (fun i _ => mem_eigenspace_of_mem_ker D hz (a i) i) ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `h0 i (Finset.mem_univ i)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2 : (a i : R) * z ^ (i : ℕ) * w ^ (i : ℕ) = a i`. Rewrite using `[mul_assoc, ← mul_pow, hw, one_pow, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h2.symm` using `[h1]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem powerSum_injective (p : ℕ) [CharP k p] (D : Derivation k R R) {z w : R}
     (hz : D z = z) (hw : z * w = 1) : Function.Injective (powerSum D z p) := by
@@ -168,7 +166,7 @@ theorem powerSum_injective (p : ℕ) [CharP k p] (D : Derivation k R R) {z w : R
   simpa [h1] using h2.symm
 
 /- English proof (translation)
-Rewrite using `[powerSum_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem powerSum_single (D : Derivation k R R) (z : R) (p : ℕ) (i : Fin p)
     (x : LinearMap.ker (D : R →ₗ[k] R)) :
@@ -181,17 +179,15 @@ theorem powerSum_single (D : Derivation k R R) (z : R) (p : ℕ) (i : Fin p)
   · simp
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← iSup_eigenspace_eq_top k p R (D : R →ₗ[k] R) hD, iSup_le_iff]`. Introduce `μ v hv`. Distinguish the cases in `hv0 : v = 0`. Rewrite using `[hv0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : Module.End.HasEigenvector (D : R →ₗ[k] R) μ v` using `⟨hv, hv0⟩`. Establish `hμ : μ ^ p = μ`. Establish `h1` using `hev.pow_apply p`. Rewrite `h1` using `[Module.End.pow_apply]`. Establish `h2 : (⇑(D : R →ₗ[k] R))^[p] v = D v` using `hD v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Establish `h3 : D v = μ • v` using `Module.End.mem_eigenspace_iff.1 hv`. Rewrite `h1` using `[h3]`. Conclude with `(smul_left_injective k hv0 h1).symm`. Take `⟨i, hi, rfl⟩` from `exists_natCast_of_pow_eq k p μ hμ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : D v = (i : R) * v`. Rewrite using `[show D v = ((i : ℕ) : k) • v from Module.End.mem_eigenspace_iff.1 hv, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Establish `hx : v * w ^ i ∈ LinearMap.ker (D : R →ₗ[k] R)`. Express the relevant statement in the definitionally equal form `D (v * w ^ i) = 0`. Rewrite using `[D.leibniz, derivation_inv_pow_of_eq D hz hw, h3]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Pi.single ⟨i, hi⟩ ⟨v * w ^ i, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[powerSum_single]`. Express the relevant statement in the definitionally equal form `v * w ^ i * z ^ i = v`.
-
-Rewrite using `[mul_assoc, ← mul_pow, mul_comm w z, hw, one_pow, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powerSum_surjective [IsAlgClosed k] (p : ℕ) [hp : Fact p.Prime] [CharP k p]
     [Module.Finite k R] (D : Derivation k R R) (hD : ∀ a : R, (⇑D)^[p] a = D a) {z w : R}
@@ -225,9 +221,9 @@ theorem powerSum_surjective [IsAlgClosed k] (p : ℕ) [hp : Fact p.Prime] [CharP
   rw [mul_assoc, ← mul_pow, mul_comm w z, hw, one_pow, mul_one]
 
 /- English proof (translation)
-Establish `hpow : ∀ n : ℕ, u (z ^ n) = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hk 1 (by simp)`. Consider the case `succ n ih => rw [pow_succ, hu, ih, huz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using the standard rewrite rules. Rewrite using `[powerSum_apply, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hu, hpow, hk _ (a i).2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_powerSum_eq_zero (D : Derivation k R R) (ε : R →ₐ[k] k) {z : R} (p : ℕ)
     (u : R →ₗ[k] k) (hu : ∀ a b : R, u (a * b) = u a * ε b + ε a * u b)
@@ -244,11 +240,11 @@ theorem map_powerSum_eq_zero (D : Derivation k R R) (ε : R →ₐ[k] k) {z : R}
   simp
 
 /- English proof (translation)
-Introduce `k _ _ p _ _ R _ _ _ D ε hD z₀ hu hz`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hinj` using `powerSum_injective p D hz hw`. Establish `hsurj` using `powerSum_surjective p D hD hz hw`. Use `⟨?_, z₀, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Rewrite using `[hz]`. Conclude with `(hu.map ε).ne_zero`. Introduce `u h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Take `⟨a, rfl⟩` from `hsurj r`. Simplify using `using map_powerSum_eq_zero D ε p u h1 h2 h3 a`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_eq_and_derivation_eq_zero :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p]

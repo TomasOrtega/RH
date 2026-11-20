@@ -13,9 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use extensionality with `x`. Establish `e` using `DFunLike.congr_fun h (Pi.mulSingle i x)`. Simplify using `only [torusChar_apply] at e`. Rewrite `e` using `[Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp), Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using congrArg Units.val e`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem torusChar_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} {a b : Fin n → kˣ →* ℂˣ} (h : torusChar a = torusChar b) : a = b := by
@@ -28,11 +28,11 @@ private theorem torusChar_injective {k : Type} [Field k] [ValuativeRel k] [Topol
   simpa using congrArg Units.val e
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hj` using `j.2`. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `e : n - (i : ℕ) = 1 + ((n - j) + (j - i - 1))` using `by omega`. Establish `hc0 : 0 < valuation k (c : k)` using `zero_lt_iff.2 ((valuation k).ne_zero_iff.2 c.ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce`. Rewrite using `[e]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, pow_add, pow_one]`. Rewrite using `[← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc]`. Conclude with `mul_le_of_le_one_right' (pow_le_one' h1 _)`. Use `_ < valuation k (s j : k) * valuation k (c : k) ^ (n - (j : ℕ)) := mul_lt_mul_of_pos_right (h2 i j hij) (pow_pos hc0 _)`.
+A detailed English derivation is pending.
 -/
 private theorem sdom_of_step {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (s : Fin n → kˣ) (c : kˣ)
     (h1 : valuation k (c : k) ≤ 1)
@@ -56,15 +56,15 @@ private theorem sdom_of_step {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (s 
         mul_lt_mul_of_pos_right (h2 i j hij) (pow_pos hc0 _)
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n) with h | h` into its components or cases. Conclude with `⟨1, fun i => h.elim i, fun i => h.elim i⟩`. Take `⟨p, hp⟩` from `Finite.exists_min (fun p : Fin n × Fin n => valuation k ((t p.2 * (t p.1)⁻¹ : kˣ) : k))`. Take `⟨x, q, hq, hx⟩` from `UpperTheory.V.AlgebraTools.exists_isUnif (k := k)`. Establish `hx1 : valuation k (x : k) < 1`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : valuation k (q : k) ≤ 1` using `q.2`. Establish `hne : valuation k (q : k) ≠ 1` using `fun h => hq.not_isUnit ((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 h)`. Rewrite using `[← hx]`. Conclude with `lt_of_le_of_ne h0 hne`. Use `set c₀ : kˣ := t p.2 * (t p.1)⁻¹ with hc₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : valuation k (c₀ : k) ≤ 1` using `by simpa using hp (p.1, p.1)`. Establish `hcx : valuation k ((c₀ * x : kˣ) : k) < 1`. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hc1) hx1`. Use `⟨fun i => (c₀ * x) ^ (n - (i : ℕ)), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `hcx` using `using sdom_of_step (1 : Fin n → kˣ) (c₀ * x) hcx.le fun i j _ => by simpa`. Use `sdom_of_step t (c₀ * x) hcx.le fun i j _ => ?_` and prove the remaining obligations. Establish `hle : valuation k (t i : k) * valuation k (c₀ : k) ≤ valuation k (t j : k)`. Use `(mul_le_mul_right (hp (i, j)) (valuation k (t i : k))).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 2`. Simplify using the standard rewrite rules. Establish `hj0 : 0 < valuation k (t j : k)` using `zero_lt_iff.2 ((valuation k).ne_zero_iff.2 (t j).ne_zero)`. Rewrite using `[Units.val_mul, map_mul, ← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem exists_sdom {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} (t : Fin n → kˣ) :
@@ -101,19 +101,17 @@ private theorem exists_sdom {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
       _ = valuation k (t j : k) := mul_one _
 
 /- English proof (translation)
-Introduce `H k _ _ _ _ n ψ T _ _ τ hs hi v hv0 hvJ heig`. Establish `hJ : (Sig.Lev.iw k).J n = UpperTheory.V.AlgebraTools.iwC k n ⊤` using `(UpperTheory.V.Z.Sym.Sig.link k n).1`. Rewrite `hvJ`, `heig` using `[hJ]`. Establish `hq : IsUnit (resCard k : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne').isUnit`. Take `⟨θ, hθ, -⟩` from `UpperTheory.V.AlgebraTools.thetaEx k n ⊤ ℂ T τ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `δ : (Fin n → kˣ) →* ℂˣ` to `(deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom`. Set `χ : (Fin n → kˣ) →* ℂˣ` to `torusChar ψ * δ⁻¹`. Set `w : Hi.fixd τ (UpperTheory.V.AlgebraTools.iwC k n ⊤)` to `⟨v, hvJ⟩`. Establish `hw0 : w ≠ 0` using `fun h => hv0 (congrArg Subtype.val h)`. Establish `hsd : ∀ d, Sig.SDom d → (θ d : Module.End ℂ (Hi.fixd τ (UpperTheory.V.AlgebraTools.iwC k n ⊤))) w = (χ d : ℂ) • w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d hd`. Establish `hD : UpperTheory.V.AlgebraTools.Dom d` using `fun i j hij => by`. Break down `hij.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(hd i j h).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hθ d hD]`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h1` using `(UpperTheory.V.AlgebraTools.hkApply ℂ _ T τ _ _ (Sig.dg d) ((UpperTheory.V.AlgebraTools.heckePairIwC k n ⊤).1 (Sig.dg d))).1 w`. Conclude with `h1.trans (heig d hd)`. Establish `ht : ∀ t, (θ t : Module.End ℂ (Hi.fixd τ (UpperTheory.V.AlgebraTools.iwC k n ⊤))) w = (χ t : ℂ) • w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t`. Take `⟨d, hd, htd⟩` from `exists_sdom t`. Establish `h1` using `hsd d hd`. Establish `h2` using `hsd (t * d) htd`. Rewrite `h2` using `[map_mul, Units.val_mul, Module.End.mul_apply, h1, map_smul, map_mul, Units.val_mul, mul_comm, mul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `smul_right_injective _ (Units.ne_zero (χ d)) h2`. Establish `hne : (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (Hi.fixd τ (UpperTheory.V.AlgebraTools.iwC k n ⊤))) (χ t : ℂ)) ≠ ⊥`. Use `(Submodule.ne_bot_iff _).2 ⟨w, (Submodule.mem_iInf _).2 fun t => ?_, hw0⟩` and prove the remaining obligations. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, ?_⟩` and prove the remaining obligations. Simplify using `[ht t]`.
-
-Take `⟨ψ', -, -, e, h2⟩` from `UpperTheory.V.AlgebraTools.jqEmbed H.loc.bz k n ⊤ T τ hs hi θ hθ χ hne`. Establish `hψ : ψ' = ψ` using `torusChar_injective (e.trans (by`. Express the relevant statement in the definitionally equal form `torusChar ψ * δ⁻¹ * δ = torusChar ψ`. Use the proof step `simp))`. Conclude with `hψ ▸ h2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.locSub :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ) (T : Type) [AddCommGroup T] [Module ℂ T] (τ : Representation ℂ (GL (Fin n) k) T),

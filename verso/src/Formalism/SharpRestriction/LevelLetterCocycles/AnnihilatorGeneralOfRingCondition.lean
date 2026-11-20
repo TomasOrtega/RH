@@ -20,9 +20,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Unfold `letπ at h`. Establish `h' : (fun _ => PowerSeries.X) ^ k * a = (fun _ => PowerSeries.X) ^ k * b`. Use `congrArg (fun x => (↑w⁻¹ : LetA O n) * x) h` as an intermediate fact. Simplify `this` using `[← mul_assoc, Units.inv_mul]`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `congrFun h' i`. Simplify using `only [Pi.mul_apply, Pi.pow_apply] at hi`. Use extensionality with `m`. Establish `hm` using `congrArg (PowerSeries.coeff (m + k)) hi`. Rewrite `hm` using `[mul_comm, PowerSeries.coeff_mul_X_pow, mul_comm, PowerSeries.coeff_mul_X_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cancel_unit_mul_uniformizer_pow {w : (LetA O n)ˣ} {k : ℕ} {a b : LetA O n}
     (h : (w : LetA O n) * letπ ^ k * a = (w : LetA O n) * letπ ^ k * b) : a = b := by
@@ -38,13 +38,13 @@ theorem cancel_unit_mul_uniformizer_pow {w : (LetA O n)ˣ} {k : ℕ} {a b : LetA
   rwa [mul_comm, PowerSeries.coeff_mul_X_pow, mul_comm, PowerSeries.coeff_mul_X_pow] at hm
 
 /- English proof (translation)
-Introduce `g`. Take `⟨t, ht⟩` from `Formalism.MainNotions.LiftingTheory.gamma_X_eq W g`. Take `⟨Uc, hUc⟩ : ∃ Uc : LetA O n, Uc = fun _ => PowerSeries.C ((W.χΓ g : Oˣ) : O) + PowerSeries.X * t` from `⟨_, rfl⟩`. Establish `hπ : W.γA g letπ = letπ * Uc`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hUc]`. Use `show W.γ₀ g PowerSeries.X = PowerSeries.X * (PowerSeries.C ((W.χΓ g : Oˣ) : O) + PowerSeries.X * t)`. Conclude with `ht`. Take `⟨u, hu⟩ : ∃ u : LetA O n, u = (↑w⁻¹ : LetA O n) * W.γA g (w : LetA O n) * Uc ^ k` from `⟨_, rfl⟩`. Establish `heq : W.γA g W.π₀ = W.π₀ * u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3, map_mul, map_pow, hπ, hu, show (↑w : LetA O n) * letπ ^ k * (↑w⁻¹ * W.γA g ↑w * Uc ^ k) = (↑w * ↑w⁻¹) * (W.γA g ↑w * (letπ * Uc) ^ k) by ring, Units.mul_inv, one_mul]`. Use `⟨u, ?_, heq⟩` and prove the remaining obligations. Establish `hmem : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀` using `h1`. Use `show ∀ δ ∈ W.DelF, W.γA δ u = u`. Introduce `δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : W.γA δ (W.γA g W.π₀) = W.γA g W.π₀`. Rewrite using `[Formalism.MainNotions.LiftingTheory.gammaA_comm W δ g, hmem δ hδ]`. Rewrite `e1` using `[heq, map_mul, hmem δ hδ, h3]`. Conclude with `cancel_unit_mul_uniformizer_pow e1`.
+A detailed English derivation is pending.
 -/
 theorem pi0Core_of (W : LocWach PD LL O v n) (w : (LetA O n)ˣ) (k : ℕ) (h1 : W.π₀ ∈ W.AΔ)
     (h3 : W.π₀ = (w : LetA O n) * letπ ^ k) : Pi0LatticeCondition W := by
@@ -76,9 +76,9 @@ theorem pi0Core_of (W : LocWach PD LL O v n) (w : (LetA O n)ˣ) (k : ℕ) (h1 : 
 end CoreW
 
 /- English proof (translation)
-Unfold `K0`. Rewrite using `[finrank_eq_one_iff_of_nonzero' (1 : ↥K.1) one_ne_zero]`. Introduce `x`. Use `⟨⟨(x : Om l), IntermediateField.mem_inf.mpr ⟨x.2, hK x.2⟩⟩, ?_⟩` and prove the remaining obligations. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `exact Subtype.ext (mul_one _)`. Consider the case `exact Subtype.ext (by simp)`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finrank_K0_eq_one_of_le_Kur {l : ℕ} [Fact l.Prime] {K : FinExt l} (hK : K.1 ≤ MaximalUnramifiedExtension l) :
     Module.finrank ↥(K0 K) ↥K.1 = 1 := by
@@ -92,9 +92,7 @@ theorem finrank_K0_eq_one_of_le_Kur {l : ℕ} [Fact l.Prime] {K : FinExt l} (hK 
     | rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `h9W` using `h9 l K 1 LL h.2.2`. Establish `hp` using `h9W _ (Formalism.MainNotions.LiftingTheory.gen_one_crys ((HW l).W K 1 LL h.2.2))`. Use `((hp ?_ ?_).2.2 ?_).1` and prove the remaining obligations. Conclude with `(HW l).W_s K 1 LL h.2.2`.
-
-Rewrite using `[(D.loc l).PD_p K]`. Conclude with `h.2.1`. Conclude with `finrank_K0_eq_one_of_le_Kur h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ring_condition_uniformizer_polynomial (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (h : CaseA K LL) :
@@ -110,7 +108,7 @@ theorem ring_condition_uniformizer_polynomial (D : D7) (HW : HWOf D.loc) (F : Fo
   · exact finrank_K0_eq_one_of_le_Kur h.1
 
 /- English proof (translation)
-Introduce `h9 l _ K LL h _`. Take `⟨h1, -, ⟨w, hw⟩, -⟩` from `ring_condition_uniformizer_polynomial D HW F h9 l K LL h`. Conclude with `pi0Core_of _ w _ h1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gamma_uniformizer_divisible_statement (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : UniformiserGammaTheorem D HW F := by
   intro h9 l _ K LL h _

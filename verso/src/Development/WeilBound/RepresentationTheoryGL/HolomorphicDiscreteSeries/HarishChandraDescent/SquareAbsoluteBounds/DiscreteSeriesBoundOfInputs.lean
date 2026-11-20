@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.DS
 namespace NormTraceLemmas
 
 /- English proof (translation)
-Establish `hs : u a ^ 2 ≤ nsq u`. Unfold `nsq dot`. Use `Finset.single_le_sum (f := fun i => u i * u i) (fun i _ => mul_self_nonneg (u i)) (Finset.mem_univ a)` as an intermediate fact. Simplify `this` using `[sq]`. Conclude with `Real.abs_le_sqrt (hs.trans h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem abs_le_of_nsq {n : ℕ} (u : Fin n → ℝ) (T : ℝ) (h : nsq u ≤ T) (a : Fin n) : |u a| ≤ Real.sqrt T := by
   have hs : u a ^ 2 ≤ nsq u := by
@@ -25,27 +25,27 @@ theorem abs_le_of_nsq {n : ℕ} (u : Fin n → ℝ) (T : ℝ) (h : nsq u ≤ T) 
 end NormTraceLemmas
 
 /- English proof (translation)
-Introduce `hComp hParts hCut hAsc hDesc hInt hHCOf hId`. Unfold `Comp ForAlg at hComp`. Unfold `Parts ForAlg at hParts`. Unfold `Cut ForRep at hCut`. Unfold `Ascent ForAlg at hAsc`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Descent ForAlg at hDesc`. Unfold `IntWt ForRep at hInt`. Unfold `HCOf at hHCOf`. Unfold `Ident ForRep at hId`. Unfold `Core ForRep`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Introduce `n ε H _ _ _ ρ hU hD μ S τ J x hS hx hK hq hgap hJ hτ`. Establish `hDer` using `isDerivedOn_smE hU`. Establish `hGl` using `hDer.glRep`. Establish `hIU` using `isInfUnitary_of_isDerivedOn hU hDer`. Take `⟨y, ν, κ, hG, hqy⟩` from `hComp n ε _ (smE ε ρ) hGl hIU μ S x hx hK hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `hParts n ε _ (smE ε ρ) hGl hIU μ ν κ S y hG hqy`. Take `⟨N, hN, hNcas, y', hy'N, hG'⟩` from `hCut n ε H ρ hU hD ν κ S y hS hG h3`. Establish `hsq : 0 ≤ √(2 * S)` using `Real.sqrt_nonneg _`. Establish `hn3 : (0:ℝ) ≤ (n:ℝ) ^ 3` using `by positivity`. Establish `hJ0 : (0:ℝ) ≤ (J:ℝ)` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : (0:ℝ) ≤ (n:ℝ)` using `by positivity`. Establish `hτ0 : 0 ≤ τ` using `by linarith`. Establish `hanti : Antitone μ`. Introduce `a b hab`. Break down `hab.lt_or_eq with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hgap a b h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h]`. Take `⟨y'', hy''N, L, hy0, hyK, hHW, hcasL, hLμ⟩` from `hAsc n ε _ (smE ε ρ) hGl hIU N hN μ ν κ S y' hy'N hG' hanti h1 h2`. Establish `hbd : ∀ a, |L a - μ a| ≤ √(2 * S)` using `fun a => by`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `NormTraceLemmas.abs_le_of_nsq (L - μ) (2 * S) hLμ a` as an intermediate fact. Simplify using `using this`. Take `⟨L', V, hL'bd, hIrr, hNoD⟩` from `hDesc n ε _ (smE ε ρ) hGl hIU N hN μ L (2 * S) τ (√(2 * S)) J (fun z hz => by rw [hcasL]; exact hNcas z hz) hgap hbd hJ y'' hy''N hy0 hyK hHW`. Take `⟨w, -, hw0, hwHW⟩` from `hIrr.2.2.2`. Establish `hLint` using `hInt n ε H ρ hU L' w hw0 hwHW.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgapL : ∀ a b : Fin n, a < b → (τ - 2 * (√(2 * S) + J) - 2 * n) + 2 * n ≤ L' a - L' b`. Introduce `a b hab`. Establish `ha` using `abs_le.mp (hL'bd a)`. Establish `hb` using `abs_le.mp (hL'bd b)`. Use `hgap a b hab` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[ha.1, ha.2, hb.1, hb.2]`. Establish `hh : 0 < τ - 2 * (√(2 * S) + J) - 2 * n` using `by linarith`. Take `⟨mu, hP, hlow, hGap, hmu⟩` from `hHCOf n ε L' _ hLint hh hgapL`. Establish `hlt : (n:ℝ) ^ 3 + 2 * n + 1 < τ - 2 * (√(2 * S) + J) - 2 * n` using `by linarith`. Establish `hV1 : IsKIrrHW ε (smE ε ρ) (lowK ε mu) V` using `by rw [hlow]; exact hIrr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV2 : NoDown ε (smE ε ρ) (lowK ε mu) V` using `by rw [hlow]; exact hNoD`. Use `⟨mu, hP, fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `e1` using `hmu a`. Establish `e2` using `hL'bd a`. Establish `e3` using `abs_sub_le (mu a) (L' a) (μ a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `H' _ _ _ σ hσ`. Conclude with `hId n ε H ρ hU mu _ hP hGap hlt V hV1 hV2 H' σ hσ`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem discrete_series_bound_of_inputs : Comp → Parts → Cut → Ascent → Descent → IntWt → HCOf → Ident → Core := by
   intro hComp hParts hCut hAsc hDesc hInt hHCOf hId

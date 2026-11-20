@@ -6,9 +6,9 @@ noncomputable section
 namespace PI.SqfPrimeFactor.W
 
 /- English proof (translation)
-Introduce `g r hr hg`. Use `ana_main hRS g r hr hg (bigPrimes r) (fun p => ?_)` and prove the remaining obligations. Simplify using `only [bigPrimes, Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h; exact ⟨by omega, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem analytic_of (hRS : PI.PrimesDyadicRS.Claim) : Analytic := by
   intro g r hr hg

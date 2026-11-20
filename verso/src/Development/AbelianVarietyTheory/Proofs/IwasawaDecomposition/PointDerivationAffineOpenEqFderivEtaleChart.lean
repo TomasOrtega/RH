@@ -23,31 +23,31 @@ def dualHom {A : Type} [CommRing A] (e : A →+* ℂ) (D : A →+ ℂ)
   map_add' f f' := by ext <;> simp
 
 /- English proof (translation)
-Simplify using `[dualHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dualHom_fst {A : Type} [CommRing A] (e : A →+* ℂ) (D : A →+ ℂ)
     (hm : ∀ f f', D (f * f') = e f * D f' + e f' * D f) (f : A) : (dualHom e D hm f).fst = e f := by
   simp [dualHom]
 
 /- English proof (translation)
-Simplify using `[dualHom]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem dualHom_snd {A : Type} [CommRing A] (e : A →+* ℂ) (D : A →+ ℂ)
     (hm : ∀ f f', D (f * f') = e f * D f' + e f' * D f) (f : A) : (dualHom e D hm f).snd = D f := by
   simp [dualHom]
 
 /- English proof (translation)
-Establish `hP : ∀ q, D (φ q) = 0`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => exact h0 a`. Consider the case `add q r hq hr => rw [map_add, map_add, hq, hr, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X q i hq => rw [map_mul, hm, hq, hX]`. Simplify using the standard rewrite rules. Set `F : A →+* DualNumber ℂ` to `dualHom e D hm`. Set `F₀ : A →+* DualNumber ℂ` to `(algebraMap ℂ (DualNumber ℂ)).comp e`. Establish `hFF : ∀ q, F (φ q) = F₀ (φ q)` using `fun q => by`.
+Treat this case separately. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [F, F₀, hP, TrivSqZeroExt.algebraMap_eq_inl]`. Set `_` to `φ.toAlgebra`. Set `_ : Algebra (MvPolynomial (Fin g) k) (DualNumber ℂ)` to `(F₀.comp φ).toAlgebra`. Establish `_ : Algebra.Etale (MvPolynomial (Fin g) k) A` using `hφ`. Set `G : A →ₐ[MvPolynomial (Fin g) k] DualNumber ℂ` to `{ F with commutes' := hFF }`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `G₀ : A →ₐ[MvPolynomial (Fin g) k] DualNumber ℂ` to `{ F₀ with commutes' := fun q => rfl }`. Establish `hnil : IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Establish `hx' : x.fst = 0` using `hx`. Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx', hy']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hG : G = G₀` using `Algebra.FormallyUnramified.ext' (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom hnil G G₀ (fun x => by simp [G, G₀, F, F₀])`. Use extensionality with `f`. Use `congrArg (fun H : A →ₐ[MvPolynomial (Fin g) k] DualNumber ℂ => (H f).snd) hG` as an intermediate fact. Simplify `this` using `[G, G₀, F, F₀, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem derivation_eq_zero_of_etale {k A : Type} [CommRing k] [CommRing A] {g : ℕ}
     (φ : MvPolynomial (Fin g) k →+* A) (hφ : φ.Etale) (e : A →+* ℂ) (D : A →+ ℂ)
@@ -92,35 +92,33 @@ open CxPts
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 /- English proof (translation)
-Introduce `k _ Y p n σ c x₀ hx₀ U hU δ hδ0 hδm`. Establish `hxc : x₀ ∈ ptsIn p σ c.U` using `c.source_subset hx₀`. Take `⟨f, g, hfg, hxf⟩` from `exists_basicOpen_le_affine_inter U.2 c.affine _ ⟨mem_ptsIn.1 hU, mem_ptsIn.1 hxc⟩`. Establish `hWc : Y.basicOpen g ≤ c.U` using `Y.basicOpen_le g`. Establish `hWU : Y.basicOpen g ≤ U.1` using `hfg ▸ Y.basicOpen_le f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxW : x₀ ∈ ptsIn p σ (Y.basicOpen g)` using `mem_ptsIn.2 (hfg ▸ hxf)`. Establish `hmU : ∀ a b, δ (a * b) = evHom hU a * δ b + evHom hU b * δ a` using `fun a b => by`. Rewrite using `[hδm, ev_eq hU, ev_eq hU]`. Set `ψU` to `dualHom (evHom hU) δ hmU`. Use `letI : Algebra Γ(Y, U.1) Γ(Y, Y.basicOpen g) := (resG Y hWU).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI : IsLocalization.Away f Γ(Y, Y.basicOpen g) := U.2.isLocalization_of_eq_basicOpen f (homOfLE hWU) hfg.symm`. Establish `hfu : IsUnit (ψU f)`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, dualHom_fst, isUnit_iff_ne_zero, ← ev_eq hU]`. Conclude with `(mem_ptsIn_basicOpen hU f).1 (mem_ptsIn.2 hxf)`. Set `ψW : Γ(Y, Y.basicOpen g) →+* DualNumber ℂ` to `IsLocalization.Away.lift f hfu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψW (a : Γ(Y, U.1)) : ψW (resG Y hWU a) = ψU a` using `IsLocalization.Away.lift_eq f hfu a`. Establish `hψW1 : (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp ψW = evHom hxW`. Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `(ψW (resG Y hWU a)).fst = evHom hxW (resG Y hWU a)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hψW, dualHom_fst, ← ev_eq, ← ev_eq, ev_res _ hxW]`. Establish `hfst (a : Γ(Y, Y.basicOpen g)) : (ψW a).fst = evHom hxW a` using `RingHom.congr_fun hψW1 a`. Set `v : ReciprocityTheory.L2DbarEstimates.V n` to `WithLp.toLp 2 (fun b => (ψW (resG Y hWc (c.x b))).snd)`. Establish `hdW` using `fun a : Γ(Y, Y.basicOpen g) => c.differentiableAt_ev a hx₀ hxW`. Set `dW : Γ(Y, Y.basicOpen g) → ℂ` to `fun a => fderiv ℂ (ev p σ _ a ∘ c.e.symm) (c.e x₀) v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdadd (a b) : dW (a + b) = dW a + dW b`. Establish `e : ev p σ _ (a + b) ∘ c.e.symm = (ev p σ _ a ∘ c.e.symm) + (ev p σ _ b ∘ c.e.symm)`. Use function extensionality and compare the values at `fun _ => ev_add _ _ _`. Simplify using `only [dW, e, fderiv_add (hdW a) (hdW b), ContinuousLinearMap.add_apply]`. Establish `hdmul (a b) : dW (a * b) = evHom hxW a * dW b + evHom hxW b * dW a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ev p σ _ (a * b) ∘ c.e.symm = (ev p σ _ a ∘ c.e.symm) * (ev p σ _ b ∘ c.e.symm)`. Use function extensionality and compare the values at `fun _ => ev_mul _ _ _`. Simplify using `only [dW, e, fderiv_mul (hdW a) (hdW b), Function.comp_apply, c.e.left_inv hx₀, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ← ev_eq hxW]`. Establish `hn : ∀ᶠ w in 𝓝 (c.e x₀), c.e.symm w ∈ ptsIn p σ (Y.basicOpen g)` using `Filter.eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over c.e hx₀ hxW)) fun _ h => h.2`. Set `Dd : Γ(Y, Y.basicOpen g) →+ ℂ` to `AddMonoidHom.mk' (fun a => (ψW a).snd - dW a) fun a b => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, TrivSqZeroExt.snd_add, hdadd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : Dd = 0`. Use `derivation_eq_zero_of_etale ((resG Y hWc).comp (MvPolynomial.eval₂Hom (algX p c.U) c.x)) ?_ (evHom hxW) Dd ?_ ?_ ?_` and prove the remaining obligations. Establish `hR : (resG Y hWc).Etale`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra Γ(Y, c.U) Γ(Y, Y.basicOpen g) := (resG Y hWc).toAlgebra`. Use `haveI : IsLocalization.Away g Γ(Y, Y.basicOpen g) := c.affine.isLocalization_of_eq_basicOpen g (homOfLE hWc) rfl`. Conclude with `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway g)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ c.etale hR`. Introduce `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (resG Y hWc) (MvPolynomial.eval₂Hom (algX p c.U) c.x (MvPolynomial.C a)) = resG Y hWU (algX p U.1 a)`. Rewrite using `[MvPolynomial.eval₂Hom_C, ← RingHom.comp_apply, GlobalTheory.TopForm.resG_comp_algX, ← RingHom.comp_apply, GlobalTheory.TopForm.resG_comp_algX]`. Establish `e2 : dW (resG Y hWU (algX p U.1 a)) = 0`. Establish `e : ev p σ _ (resG Y hWU (algX p U.1 a)) ∘ c.e.symm =ᶠ[𝓝 (c.e x₀)] fun _ => σ a` using `by filter_upwards [hn] with w hw`. Rewrite using `[Function.comp_apply, ← RingHom.comp_apply, GlobalTheory.TopForm.resG_comp_algX]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `ev_algX hw a`. Use `show fderiv ℂ _ _ v = 0`. Rewrite using `[e.fderiv_eq]`. Simplify using the standard rewrite rules. Simplify using `only [Dd, AddMonoidHom.mk'_apply, RingHom.comp_apply, e1, hψW, ψU, dualHom_snd, hδ0, e2, sub_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Simplify using `only [Dd, AddMonoidHom.mk'_apply, map_mul, TrivSqZeroExt.snd_mul, hfst, hdmul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Establish `e2 : dW (resG Y hWc (c.x i)) = v i`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : ev p σ _ (resG Y hWc (c.x i)) ∘ c.e.symm =ᶠ[𝓝 (c.e x₀)] EuclideanSpace.proj (𝕜` using `ℂ) i := by filter_upwards [hn, c.e.open_target.mem_nhds (c.e.map_source hx₀)] with w hw hwt`. Rewrite using `[Function.comp_apply, ev_res hWc hw, ← c.apply_eq _ (c.e.map_target hwt) i, c.e.right_inv hwt]`. Both sides reduce to the same expression. Simplify using `only [dW, e.fderiv_eq, ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Dd, AddMonoidHom.mk'_apply, RingHom.comp_apply, MvPolynomial.eval₂Hom_X', e2]`. Simplify using `[v]`. Use `⟨v, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun D : Γ(Y, Y.basicOpen g) →+ ℂ => D (resG Y hWU a)) hD`. Simplify using `only [Dd, AddMonoidHom.mk'_apply, AddMonoidHom.zero_apply, hψW, dualHom_snd, sub_eq_zero] at h1`.
-
-Rewrite using `[show δ a = (ψU a).snd from (dualHom_snd _ _ _ a).symm, h1]`. Establish `e : ev p σ _ (resG Y hWU a) ∘ c.e.symm =ᶠ[𝓝 (c.e x₀)] ev p σ U.1 a ∘ c.e.symm` using `by filter_upwards [hn] with w hw`. Conclude with `ev_res hWU hw a`. Simplify using `only [dW, e.fderiv_eq]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_fderiv : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (n : ℕ) (σ : k →+* ℂ) (c : AlgChart p σ n) (x₀ : CxPts p σ), x₀ ∈ c.e.source → ∀ (U : Y.affineOpens), x₀ ∈ CxPts.ptsIn p σ U.1 → ∀ δ : Γ(Y, U.1) →+ ℂ, (∀ a : k, δ (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U.1 a) = 0) → (∀ g h : Γ(Y, U.1), δ (g * h) = CxPts.ev p σ U.1 g x₀ * δ h + CxPts.ev p σ U.1 h x₀ * δ g) → ∃ v : ReciprocityTheory.L2DbarEstimates.V n, ∀ g : Γ(Y, U.1), δ g = fderiv ℂ (CxPts.ev p σ U.1 g ∘ c.e.symm) (c.e x₀) v := by
   intro k _ Y p n σ c x₀ hx₀ U hU δ hδ0 hδm

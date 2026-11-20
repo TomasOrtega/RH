@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `d hd z hz`. Establish `hre : z.re * z.re - z.im * z.im = -(d : ℝ)`. Establish `h` using `congrArg Complex.re hz`. Simplify `h` using `[pow_two]`. Establish `him : z.re * z.im + z.im * z.re = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrArg Complex.im hz`. Simplify `h` using `[pow_two]`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `h0 : z.re = 0`. Establish `hmul : z.re * z.im = 0` using `by linarith [mul_comm z.im z.re]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp hmul with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `hre` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ConjEqNegOfSquare.conj_eq_neg_of_sq :
     ∀ {d : ℕ},

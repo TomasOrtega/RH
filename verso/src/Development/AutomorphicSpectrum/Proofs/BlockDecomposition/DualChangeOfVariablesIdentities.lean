@@ -13,7 +13,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_mul_weyl : (w2 : GL (Fin 2) F) * w2 = 1 := by
   apply Units.ext
@@ -21,16 +21,16 @@ theorem weyl_mul_weyl : (w2 : GL (Fin 2) F) * w2 = 1 := by
   fin_cases i <;> fin_cases j <;> simp [w2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[tinv]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem tinv_one' : tinv (1 : GL (Fin 2) F) = 1 := by
   apply Units.ext
   simp [tinv]
 
 /- English proof (translation)
-Establish `hi : (w2 : GL (Fin 2) F)⁻¹ = w2` using `inv_eq_of_mul_eq_one_left weyl_mul_weyl`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((w2 : GL (Fin 2) F)⁻¹).valᵀ = (w2 : GL (Fin 2) F).val`. Rewrite using `[hi]`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transposeInv_weyl : tinv (w2 : GL (Fin 2) F) = w2 := by
   have hi : (w2 : GL (Fin 2) F)⁻¹ = w2 := inv_eq_of_mul_eq_one_left weyl_mul_weyl
@@ -41,7 +41,7 @@ theorem transposeInv_weyl : tinv (w2 : GL (Fin 2) F) = w2 := by
   fin_cases i <;> fin_cases j <;> simp [w2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(z.valᵀ)ᵀ = z.val`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem tinv_tinv (z : GL (Fin 2) F) : tinv (tinv z) = z := by
   apply Units.ext
@@ -49,9 +49,9 @@ theorem tinv_tinv (z : GL (Fin 2) F) : tinv (tinv z) = z := by
   simp
 
 /- English proof (translation)
-Establish `h1 : tinv z⁻¹ * tinv z = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.GL2LocalData.tinv_mul', inv_mul_cancel, tinv_one']`. Establish `hi : (tinv z⁻¹)⁻¹ = tinv z` using `inv_eq_of_mul_eq_one_right h1`. Establish `hw : (w2 : GL (Fin 2) F)⁻¹ = w2` using `inv_eq_of_mul_eq_one_left weyl_mul_weyl`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, hi, hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem h_mul_inv (h z : GL (Fin 2) F) :
     h * (tinv z⁻¹ * w2 * h)⁻¹ = w2 * tinv z := by
@@ -63,9 +63,9 @@ theorem h_mul_inv (h z : GL (Fin 2) F) :
   group
 
 /- English proof (translation)
-Establish `hv : (w2 * tinv z).val = (w2 : GL (Fin 2) F).val * (z⁻¹ : GL (Fin 2) F).valᵀ` using `rfl`. Unfold `e2r`. Rewrite using `[hv]`. Generalize the expression as in `(z⁻¹ : GL (Fin 2) F).val = m`. Use extensionality with `j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases j <;>`. Simplify using `[e1, w2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.mulVec, dotProduct]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem second_vector_long_weyl_transpose_inv (z : GL (Fin 2) F) :
     e2r (w2 * tinv z) = (z⁻¹ : GL (Fin 2) F).val *ᵥ e1 := by
@@ -78,7 +78,7 @@ theorem second_vector_long_weyl_transpose_inv (z : GL (Fin 2) F) :
     simp [e1, w2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `W₀ (w2 * tinv (w2 * tinv z)) = W₀ z`. Rewrite using `[GlobalTheory.CompanionTheory.GL2LocalData.tinv_mul', transposeInv_weyl, tinv_tinv, ← mul_assoc, weyl_mul_weyl, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_whittaker_long_weyl_transpose_inv (W₀ : GL (Fin 2) F → ℂ) (z : GL (Fin 2) F) :
     dW2 W₀ (w2 * tinv z) = W₀ z := by
@@ -86,7 +86,7 @@ theorem dual_whittaker_long_weyl_transpose_inv (W₀ : GL (Fin 2) F → ℂ) (z 
   rw [GlobalTheory.CompanionTheory.GL2LocalData.tinv_mul', transposeInv_weyl, tinv_tinv, ← mul_assoc, weyl_mul_weyl, one_mul]
 
 /- English proof (translation)
-Establish `h : modulus (-1 : F) * modulus (-1 : F) = 1`. Rewrite using `[← modulus_mul]`. Simplify using the standard rewrite rules. Establish `h2 : modulus (-1 : F) ^ 2 = 1` using `by rw [sq]; exact h`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modulus_neg_one : modulus (-1 : F) = 1 := by
   have h : modulus (-1 : F) * modulus (-1 : F) = 1 := by
@@ -96,7 +96,7 @@ theorem modulus_neg_one : modulus (-1 : F) = 1 := by
   exact (pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h2
 
 /- English proof (translation)
-Establish `: modulus (-(a : F)) = modulus (a : F)`. Rewrite using `[← neg_one_mul, modulus_mul, modulus_neg_one, one_mul]`. Simplify using `only [mp, Units.val_neg, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mp_of_val_neg (a : Fˣ) (s : ℂ) : mp (-a) s = mp a s := by
   have : modulus (-(a : F)) = modulus (a : F) := by
@@ -104,9 +104,9 @@ theorem mp_of_val_neg (a : Fˣ) (s : ℂ) : mp (-a) s = mp a s := by
   simp only [mp, Units.val_neg, this]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : (tinv z⁻¹).val = z.valᵀ`. Express the relevant statement in the definitionally equal form `((z⁻¹)⁻¹ : GL (Fin 2) F).valᵀ = z.valᵀ`. Rewrite using `[inv_inv]`. Establish `h2 : ((w2 : GL (Fin 2) F).val).det = -1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[w2, Matrix.det_fin_two]`. Simplify using `only [GeneralLinearGroup.val_det_apply, Units.val_mul, Units.val_neg, Matrix.det_mul, h1, Matrix.det_transpose, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_g (h z : GL (Fin 2) F) :
     GeneralLinearGroup.det (tinv z⁻¹ * w2 * h) =
@@ -122,7 +122,7 @@ theorem det_g (h z : GL (Fin 2) F) :
   ring
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h_mul_inv, second_vector_long_weyl_transpose_inv]`. Rewrite using `[h_mul_inv, dual_whittaker_long_weyl_transpose_inv]`. Rewrite using `[det_g, mp_of_val_neg, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem main (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]

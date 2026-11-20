@@ -13,33 +13,29 @@ noncomputable section
 namespace GlobalTheory.SphTheta
 
 /- English proof (translation)
-Establish `key : ∀ z : X, W z s = (γ (w • (Quotient.out (Submodule.Quotient.mk z : X ⧸ Λ) : X)) (z - Quotient.out (Submodule.Quotient.mk z : X ⧸ Λ)))⁻¹ • W (Quotient.out (Submodule.Quotient.mk z : X ⧸ Λ)) s`. Introduce `z`. Use `set t : X := Quotient.out (Submodule.Quotient.mk z : X ⧸ Λ) with ht`. Establish `hmem : z - t ∈ Λ`. Rewrite using `[← Submodule.Quotient.eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Quotient.out_eq (Submodule.Quotient.mk z : X ⧸ Λ)).symm`. Establish `h1` using `h.comp t (z - t) s`. Rewrite `h1` using `[hfix _ hmem, add_sub_cancel]`. Rewrite using `[h1, smul_smul, inv_mul_cancel₀ (h.ne_zero _ _), one_smul]`. Establish `hli : LinearIndependent ℂ (fun q : X ⧸ Λ => W (Quotient.out q) s)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `linearIndependent_of_simultaneous_eigen _ (fun q (a : Λ) => γ a (Quotient.out q)) (fun a : Λ => W a) ?_ ?_ ?_` and prove the remaining obligations. Introduce `q q' hq`. Establish `hm : (Quotient.out q : X) - Quotient.out q' ∈ Λ`. Rewrite using `[hΛ]`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `h.swap_eq_one` to reduce the goal to its premises. Establish `h1 : γ a (Quotient.out q) = γ a (Quotient.out q')` using `congrFun hq ⟨a, ha⟩`. Rewrite using `[sub_eq_add_neg, h.add_right, h.neg_right, h1, mul_inv_cancel₀ (h.ne_zero _ _)]`. Rewrite `hm` using `[← Submodule.Quotient.eq]`. Establish `e1 : (Submodule.Quotient.mk (Quotient.out q) : X ⧸ Λ) = q` using `Quotient.out_eq q`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (Submodule.Quotient.mk (Quotient.out q') : X ⧸ Λ) = q'` using `Quotient.out_eq q'`. Rewrite using `[← e1, ← e2, hm]`. Introduce `a q`. Rewrite using `[h.comm, hfix a a.2]`. Introduce `q h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `h.neg_comp (Quotient.out q) s`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `hs ((smul_eq_zero.1 h1.symm).resolve_left (h.ne_zero _ _))`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun q : X ⧸ Λ => W (Quotient.out q) s)`. Rewrite using `[← hspan, Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Use `show W z s ∈ _`. Rewrite using `[key z]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Set `b` to `Module.Basis.mk hli hsp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : ∀ q, b q = W (Quotient.out q) s` using `fun q => Module.Basis.mk_apply hli hsp q`. Establish `hcoord : ∀ a ∈ Λ, ∀ q x, b.coord q (W a x) = γ a (Quotient.out q) * b.coord q x`. Introduce `a ha q x`. Establish `e : (b.coord q).comp (W a) = γ a (Quotient.out q) • b.coord q`. Use `b.ext fun q' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, hb, h.comm, hfix a ha, ← hb, LinearMap.smul_apply, map_smul, smul_eq_mul]`. Simplify using `only [Module.Basis.coord_apply, Module.Basis.repr_self, smul_eq_mul, Finsupp.single_apply]`. Use `split_ifs with hq`. Rewrite using `[hq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun e x`. Establish `h0 : (Quotient.out (0 : X ⧸ Λ) : X) ∈ Λ` using `(Submodule.Quotient.mk_eq_zero Λ).1 (Quotient.out_eq (0 : X ⧸ Λ))`. Establish `hb0 : b 0 = s` using `by rw [hb, hfix _ h0]`. Establish `hvan : ∀ q : X ⧸ Λ, q ≠ 0 → b.repr v q = 0`. Introduce `q hq`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (Quotient.out q : X) ∉ Λ` using `fun hm => hq (by`. Establish `e1 : (Submodule.Quotient.mk (Quotient.out q) : X ⧸ Λ) = q` using `Quotient.out_eq q`. Rewrite using `[← e1]`. Conclude with `(Submodule.Quotient.mk_eq_zero Λ).2 hm)`. Rewrite `hn` using `[hΛ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `push_neg at hn`. Take `⟨a, ha, hne⟩` from `hn`. Establish `hne' : γ a (Quotient.out q) ≠ 1` using `fun e => hne (h.swap_eq_one e)`. Establish `e` using `hcoord a ha q v`. Rewrite `e` using `[hv a ha, Module.Basis.coord_apply]`.
-
-Establish `e2 : (γ a (Quotient.out q) - 1) * b.repr v q = 0` using `by rw [sub_mul, ← e]; ring`. Conclude with `(mul_eq_zero.1 e2).resolve_left (sub_ne_zero.2 hne')`. Use `⟨b.repr v 0, b.ext_elem fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← hb0, b.repr_self, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]`. Distinguish the cases in `hq : (0 : X ⧸ Λ) = q`.
-
-Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hq, mul_zero, hvan q (Ne.symm hq)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacuum_unique_of_selfDual {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
     {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M} (h : IsHeis σ w γ W) (Λ : Submodule R X)

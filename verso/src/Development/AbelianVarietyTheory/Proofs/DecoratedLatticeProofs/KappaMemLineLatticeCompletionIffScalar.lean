@@ -16,11 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Corev.KappaLeft
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, -, hα, a, -, s, -, rfl⟩` from `hw`. Introduce `r`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.FinPl.LatMem.tmul_mem_idAt hα _`. Consider the case `zero => intro r`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => intro r`. Conclude with `add_mem (hx r) (hy r)`.
-
-Consider the case `neg x _ hx => intro r`. Conclude with `neg_mem (hx r)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem latV_mem_idAt {D : D7} {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.rank → AE D}
     (hy : y ∈ latV S L P) : ∀ r, y r ∈ idAt D P := by
@@ -39,39 +37,37 @@ end GlobalTheory.Corev.KappaLeft
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p I P hP n' _ _ ρ σ B B' l S α α₀ M LS Λ hM hLS hα x hx`. Establish `hcA : ∀ e : D.host.E, cA D (incA D e) = incA D (star e)` using `fun e => rfl`. Establish `hMx : MxAt P ((B.o.resS S).symm (0, l.κ S x))` using `(GlobalTheory.KapLatSupp.mxAt_embed_kappa D ρ B B'.L B'.ζ l S B'.V₀ B'.A B'.o P x hx).1`. Establish `hu : (B.o.resS S).symm (0, l.κ S x) = l.κ S x ⬝ B.o.pB`. Rewrite using `[OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hline : ∀ (L : HSp D) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → ∀ v : Fin L.rank → AE D, (∀ r, v r ∈ idAt D P) → ∃ c : AE D, c ∈ idAt D P ∧ v = c • ratV ζ`. Introduce `L ζ hL v hv`. Take `⟨hrk, hne⟩` from `hL`. Establish `hr : ∀ r r' : Fin L.rank, r = r'` using `fun r r' => Fin.ext (by omega)`. Set `r₀ : Fin L.rank` to `⟨0, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hζ : ζ r₀ ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `: ζ = 0` using `funext fun r => by rw [hr r r₀, h0]; rfl`. Rewrite using `[this, Matrix.mulVec_zero, dotProduct_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v r₀ * incA D (ζ r₀)⁻¹, Ideal.mul_mem_right _ _ (hv r₀), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Rewrite using `[hr r r₀, Pi.smul_apply, smul_eq_mul, ratV, mul_assoc, ← map_mul, inv_mul_cancel₀ hζ, map_one, mul_one]`. Establish `hjB : ∀ c : AE D, B.o.jB *ᵥ (c • ratV B.ζ) = fun r => c * incA D (vecB B.o B.ζ r)`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `r`. Simplify using `only [Matrix.mulVec, dotProduct, OrthDec.jB, rat, Matrix.map_apply, ratV, Pi.smul_apply, smul_eq_mul, vecB, map_sum, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hpj : ∀ c : AE D, B.o.pB *ᵥ (B.o.jB *ᵥ (c • ratV B.ζ)) = c • ratV B.ζ`. Introduce `c`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, OrthDec.pB_jB, Matrix.one_mulVec]`. Establish `hsupp : ∀ m : Fin B.V₀.rank → AE D, ∀ r, (((B.o.resS S).symm (0, l.κ S x) : Matrix _ _ (AE D)) *ᵥ m) r ∈ idAt D P`. Introduce `m r`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (hMx r j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpair : ∀ (y : Fin S.rank → AE D) (d c : AE D), (x : Matrix _ _ (AE D)) *ᵥ y = d • ratV B'.ζ → (∑ i, ∑ j, cA D (y i) * incA D (HSpace.gram S i j) * ((l.κ S x : Matrix _ _ (AE D)) *ᵥ (c • ratV B.ζ)) j) = incA D (D.host.xi0⁻¹) * cA D d * c * incA D (star B.ζ ⬝ᵥ HSpace.gram B.L *ᵥ B …`. Introduce `y d c hxy`. Rewrite using `[GlobalTheory.T.besselLinkKappa_adjoint_tau_factor D ρ B B'.L B'.ζ l S x (c • ratV B.ζ) y]`. Establish `h1 : ((rat l.τ : Matrix _ _ (AE D)) * (x : Matrix _ _ (AE D))) *ᵥ y = d • ratV (-B.ζ)`. Rewrite using `[← Matrix.mulVec_mulVec, hxy, Matrix.mulVec_smul, ← l.map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, ratV, map_sum, map_mul]`. Rewrite using `[h1]`. Establish `hh : incA D (star B.ζ ⬝ᵥ HSpace.gram B.L *ᵥ B.ζ) = ∑ i, ∑ j, incA D (star (B.ζ i)) * incA D (HSpace.gram B.L i j) * incA D (B.ζ j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.star_apply, Finset.mul_sum, mul_assoc]`. Rewrite using `[hh, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, ratV, Pi.neg_apply, map_mul, map_neg, hcA, star_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D B.V₀ S M LS hM hLS P, GlobalTheory.T.latticeCompletionAAScaled_eq_at_unitSplitPlaces D k ι p I P hP S LS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ y hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ r, ((x : Matrix _ _ (AE D)) *ᵥ y) r ∈ idAt D P`. Introduce `r`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (hx r j)`. Take `⟨d, hdI, hxd⟩` from `hline B'.L B'.ζ B'.line _ hz`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨d, hdI, hxd, fun c hc hl => ?_⟩` and prove the remaining obligations. Establish `hm : (fun r => c * incA D (vecB B.o B.ζ r)) ∈ latV B.V₀ M P` using `(GlobalTheory.T.lineMultiple_mem_splitCoreLattice_completion_iff D k ι p I P hP n' B.V₀ B.A B.L B.o B.ζ B.line α α₀ M Λ hM hα c hc).2 hl`. Establish `h1` using `h _ hm`. Establish `hI` using `hsupp (fun r => c * incA D (vecB B.o B.ζ r))`. Establish `heq : ((B.o.resS S).symm (0, l.κ S x) : Matrix _ _ (AE D)) *ᵥ (fun r => c * incA D (vecB B.o B.ζ r)) = (l.κ S x : Matrix _ _ (AE D)) *ᵥ (c • ratV B.ζ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu, ← hjB, ← Matrix.mulVec_mulVec, hpj]`. Rewrite `h1`, `hI` using `[heq]`. Establish `h2` using `(GlobalTheory.T.latticeCompletionAtPlaces_selfDual_of_selfDual D S LS hLS P _ hI).1 h1 y hy`. Rewrite `h2` using `[hpair y d c hxd]`. Then use the resulting hypothesis. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hMx, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ r, (B.o.pB *ᵥ m) r ∈ idAt D P`. Introduce `r`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (GlobalTheory.Corev.KappaLeft.latV_mem_idAt hm j)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc, hcv⟩` from `hline B.L B.ζ B.line _ hv`. Establish `hjp` using `GlobalTheory.T.lineProjection_mem_splitCoreCompletion D k ι p I P hP n' B.V₀ B.A B.L B.o B.ζ B.line α α₀ M Λ hM hα m hm`. Rewrite `hjp` using `[hcv, hjB]`. Establish `hl` using `(GlobalTheory.T.lineMultiple_mem_splitCoreLattice_completion_iff D k ι p I P hP n' B.V₀ B.A B.L B.o B.ζ B.line α α₀ M Λ hM hα c hc).1 hjp`. Establish `hI` using `hsupp m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq : ((B.o.resS S).symm (0, l.κ S x) : Matrix _ _ (AE D)) *ᵥ m = (l.κ S x : Matrix _ _ (AE D)) *ᵥ (c • ratV B.ζ)`. Rewrite using `[hu, ← Matrix.mulVec_mulVec, hcv]`. Rewrite `hI`, the goal using `[heq]`. Use `(GlobalTheory.T.latticeCompletionAtPlaces_selfDual_of_selfDual D S LS hLS P _ hI).2 fun s hs => ?_` and prove the remaining obligations. Take `⟨d, -, hxd, hd⟩` from `h s hs`.
-
-Rewrite using `[hpair s d c hxd]`. Conclude with `hd c hc hl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Corev.kappa_mem_latO_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ (n' : Type) [Fintype n'] [DecidableEq n'] (ρ σ : ℕ) (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (S : HSp D) (α : ∀ i, Frame (p i) B.A n') (α₀ : ∀ i, Frame (p i) B.V₀ (n' ⊕ Fin 1)) (M : Lat B.V₀) (LS : Lat S) (Λ : ι → Submodule 𝒪[k] (n' → k)), IsSelfDualC B.V₀ M → IsSelfDualC S LS → (∀ i, IsSumFrame B.o B.ζ (α i) (α₀ i) ∧ (α₀ i).IsLat M (lastKer (Λ i))) → ∀ x : WO S B'.L, MxAt P x → ((B.o.resS S).symm (0, l.κ S x) ∈ latO B.V₀ S (M : Set _) (LS : Set _) P ↔ ∀ y ∈ latV S LS P, ∃ d : AE D, d ∈ idAt D P ∧ (x : Matrix _ _ (AE D)) *ᵥ y = d • ratV B'.ζ ∧ ∀ c : AE D, c ∈ idAt D P → (∀ i, (p i).pr c ∈ 𝒪[k] ∧ (p i).pr (cA D c) * (p i).pr (incA D (star B.ζ ⬝ᵥ HSpace.gram B.L *ᵥ B.ζ)) ∈ 𝒪[k]) → incA D (D.host.xi0⁻¹) * cA D d * c * incA D (star B.ζ ⬝ᵥ HSpace.gram B.L *ᵥ B.ζ) ∈ intAt D P) := by
   intro D k _ _ _ _ ι p I P hP n' _ _ ρ σ B B' l S α α₀ M LS Λ hM hLS hα x hx

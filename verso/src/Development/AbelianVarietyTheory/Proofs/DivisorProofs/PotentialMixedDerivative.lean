@@ -8,17 +8,17 @@ noncomputable section
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ 1 (fderiv ℝ ψ)` using `hψ.fderiv_right (by norm_num)`. Establish `hd1 : Differentiable ℝ ψ` using `hψ.differentiable (by norm_num)`. Establish `hd2 : Differentiable ℝ (fderiv ℝ ψ)` using `h1.differentiable (by norm_num)`. Use `set D2 := fderiv ℝ (fderiv ℝ ψ) z with hD2`. Establish `hsymm : ∀ v w, D2 v w = D2 w v` using `fun v w => (hψ.contDiffAt.isSymmSndFDerivAt (by simp)) v w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ y, HasFDerivAt (fun z' => fderiv ℝ ψ z' y) ((ContinuousLinearMap.apply ℝ ℝ y).comp D2) z` using `fun y => (ContinuousLinearMap.apply ℝ ℝ y).hasFDerivAt.comp z (hd2 z).hasFDerivAt`. Establish `hAe : ∀ v y, fderiv ℝ (fun z' => fderiv ℝ ψ z' y) z v = D2 v y` using `fun v y => by`. Rewrite using `[(hA y).fderiv]`. Both sides reduce to the same expression. Establish `hF : (fun z' => d01 (fun z'' => (ψ z'' : ℂ)) z' (ev c)) = fun z' => (1 / 2 : ℂ) • (((fderiv ℝ ψ z' (ev c) : ℝ) : ℂ) + Complex.I • ((fderiv ℝ ψ z' (Complex.I • ev c) : ℝ) : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z'`. Establish `: fderiv ℝ (fun z'' => (ψ z'' : ℂ)) z' = Complex.ofRealCLM.comp (fderiv ℝ ψ z')` using `(Complex.ofRealCLM.hasFDerivAt.comp z' (hd1 z').hasFDerivAt).fderiv`. Simplify using `only [d01, this, ContinuousLinearMap.comp_apply, Complex.ofRealCLM_apply]`. Establish `hFd : HasFDerivAt (fun z' => (1 / 2 : ℂ) • (((fderiv ℝ ψ z' (ev c) : ℝ) : ℂ) + Complex.I • ((fderiv ℝ ψ z' (Complex.I • ev c) : ℝ) : ℂ))) ((1 / 2 : ℂ) • (Complex.ofRealCLM.comp ((ContinuousLinearMap.apply ℝ ℝ (ev c)).comp D2) + Complex.I • Complex.ofRealCLM.comp ((ContinuousLinea …` using `((Complex.ofRealCLM.hasFDerivAt.comp z (hA (ev c))).add ((Complex.ofRealCLM.hasFDerivAt.comp z (hA (Complex.I • ev c))).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`. Rewrite using `[hF]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [d10, hFd.fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, Complex.ofRealCLM_apply, smul_eq_mul]`. Establish `E1` using `hΩ (ev a) (ev c)`. Establish `E2` using `hΩ (ev a) (Complex.I • ev c)`. Rewrite `E1`, `E2` using `[hAe, hAe]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_smul, Complex.I_mul_I, neg_one_smul, map_neg] at E1 E2`. Rewrite `E1` using `[hsymm (ev c) (Complex.I • ev a)]`. Rewrite `E2` using `[hsymm (Complex.I • ev c) (Complex.I • ev a)]`. Establish `E1' : (4 : ℂ) * π * Ω (ev a) (ev c) = (D2 (ev a) (Complex.I • ev c) : ℂ) - (D2 (Complex.I • ev a) (ev c) : ℂ)` using `by exact_mod_cast E1.symm`. Establish `E2' : (4 : ℂ) * π * Ω (ev a) (Complex.I • ev c) = -(D2 (ev a) (ev c) : ℂ) - (D2 (Complex.I • ev a) (Complex.I • ev c) : ℂ)` using `by exact_mod_cast E2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Take the linear combination `(-Complex.I / 4) * E1' + (1 / 4 : ℂ) * E2' + (-(D2 (Complex.I • ev a) (Complex.I • ev c) : ℂ) / 4) * hI`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dd_real_hessian {g : ℕ} (ψ : (Fin g → ℂ) → ℝ) (hψ : ContDiff ℝ 2 ψ)
     (Ω : (Fin g → ℂ) → (Fin g → ℂ) → ℝ) (z : Fin g → ℂ)

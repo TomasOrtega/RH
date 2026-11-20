@@ -9,7 +9,7 @@ namespace GlobalTheory.Phase.VacShape
 open GlobalTheory.SW.Vac
 
 /- English proof (translation)
-Take `⟨m, hm, ha⟩` from `ha`. Take `⟨n, hn, hb⟩` from `hb`. Use `⟨m * n, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.ofReal_mul, mul_pow, mul_pow, pow_mul a, ha, pow_mul' b, hb, ← pow_mul, ← pow_mul, mul_comm n m]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ph_mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
   obtain ⟨m, hm, ha⟩ := ha
@@ -19,7 +19,7 @@ theorem ph_mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
     ← pow_mul, mul_comm n m]
 
 /- English proof (translation)
-Take `⟨m, hm, ha⟩` from `ha`. Take `⟨n, hn, hb⟩` from `hb`. Use `⟨m * n, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul a, ha, pow_mul' b, hb]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMu_mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   obtain ⟨m, hm, ha⟩ := ha
@@ -28,7 +28,7 @@ theorem isMu_mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   rw [mul_pow, pow_mul a, ha, pow_mul' b, hb]; simp
 
 /- English proof (translation)
-Take `⟨m, hm, ha⟩` from `ha`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, ← norm_pow, ha]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ph_of_isMu {a : ℂ} (ha : IsMu a) : Ph a := by
   obtain ⟨m, hm, ha⟩ := ha
@@ -36,9 +36,9 @@ theorem ph_of_isMu {a : ℂ} (ha : IsMu a) : Ph a := by
   rw [← Complex.ofReal_pow, ← norm_pow, ha]; simp
 
 /- English proof (translation)
-Use `⟨2 * q.den, Nat.mul_pos two_pos q.den_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[ex, ← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Use `⟨q.num, ?_⟩` and prove the remaining obligations. Establish `: (q.den : ℂ) * (q : ℂ) = q.num` using `by exact_mod_cast Rat.den_mul_eq_num q`. Rewrite using `[← this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isMu_ex (q : ℚ) : IsMu (ex q) := by
   refine ⟨2 * q.den, Nat.mul_pos two_pos q.den_pos, ?_⟩
@@ -53,7 +53,7 @@ variable {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Introduce `y hy y' hy'`. Rewrite using `[h.semi y hy y' hy', om, om_eq, ex]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem semi' (h : VacS A ε φ) : ∀ y ∈ A, ∀ y' ∈ A,
     ε (y + y') = ε y * ε y' * ex (pr y.1 y'.2 - pr y'.1 y.2) := by
@@ -62,9 +62,9 @@ theorem semi' (h : VacS A ε φ) : ∀ y ∈ A, ∀ y' ∈ A,
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Take `⟨m, hm, hm'⟩` from `h.ord`. Establish `h0 : ε 0 = 1` using `by simpa using hm' 0 A.zero_mem`. Establish `hpow : ∀ n : ℕ, ε (n • y) = ε y ^ n`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [zero_nsmul, pow_zero]`. Conclude with `h0`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, semi' h _ (A.nsmul_mem hy n) _ hy, ih, pow_succ, Prod.smul_fst, Prod.smul_snd, ← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ, pr_smul_left, pr_smul_right, sub_self, ex_zero, mul_one]`. Conclude with `⟨m, hm, by rw [← hpow, hm' y hy]⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMu_eps (h : VacS A ε φ) {y} (hy : y ∈ A) : IsMu (ε y) := by
   obtain ⟨m, hm, hm'⟩ := h.ord
@@ -80,27 +80,27 @@ theorem isMu_eps (h : VacS A ε φ) {y} (hy : y ∈ A) : IsMu (ε y) := by
   exact ⟨m, hm, by rw [← hpow, hm' y hy]⟩
 
 /- English proof (translation)
-Establish `hfix : ∀ y ∈ A, ∀ x, fac ε y x * φ (x - y.2) = φ x` using `fun y hy => (fixed_iff ε y φ).1 (h.fix y hy)`. Set `f : Matrix κ ι ℚ → ℂ` to `fun b => φ (a + b) / φ a`. Establish `hf : ∀ y ∈ A, f y.2 = fac ε y (a + y.2)`. Introduce `y hy`. Simplify using `only [f]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hfix y hy (a + y.2), add_sub_cancel_right, mul_div_cancel_right₀ _ ha]`. Establish `hadd : ∀ y ∈ A, ∀ y' ∈ A, f (y.2 + y'.2) = f y.2 * f y'.2 * ex (2 * pr y'.2 y.1)`. Introduce `y hy y' hy'`. Use `hf _ (A.add_mem hy hy')` as an intermediate fact. Rewrite `this` using `[Prod.snd_add, fac_add (semi' h y hy y' hy')]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, hf y hy, hf y' hy', show a + (y.2 + y'.2) - y.2 = a + y'.2 by abel, mul_right_comm]`. Use `congr 1`. Unfold `fac`. Rewrite using `[mul_assoc, ← ex_add]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [pr_add_left]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨A.map (AddMonoidHom.snd _ _), f, ⟨?_, ?_⟩, fun x => ⟨fun _ => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `IsMu (f y.2)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf y hy]`. Conclude with `isMu_mul (isMu_eps h hy) (isMu_ex _)`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ _ ⟨z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `f (x.2 + y.2 + z.2) * f x.2 * f y.2 * f z.2 = f (x.2 + y.2) * f (y.2 + z.2) * f (x.2 + z.2) * f 0`. Establish `h0 : f 0 = 1` using `by simp [f, ha]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hadd _ (A.add_mem hx hy) z hz`. Rewrite `h1` using `[Prod.snd_add, Prod.fst_add, pr_add_right, mul_add, ex_add]`. Rewrite using `[h1, hadd y hy z hz, hadd x hx z hz, h0]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [f]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_cancel, mul_div_cancel₀ _ ha]`. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Establish `hd : ∀ y, y ∈ A ↔ ∀ y' ∈ A, ∃ m : ℤ, pr y.1 y'.2 - pr y'.1 y.2 = m`. Introduce `y`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h.dual y` using `only [om, om_eq]`. Establish `key : ∀ b, (b, 0) ∈ A → ∀ w, φ w ≠ 0 → ε (b, 0) * ex (2 * pr w b) = 1`. Introduce `b hb w hw`. Establish `h1` using `hfix _ hb w`. Simplify using `only [sub_zero, fac, pr_zero_right] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ hw` to reduce the goal to its premises. Rewrite using `[h1, one_mul]`. Take `⟨b, hb⟩` from `exists_lift A h.fg hd (x - a) fun b hb => by`. Establish `h2` using `key b hb x hne`. Establish `h3` using `key b hb a ha`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ex_two_eq_one` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← ex_add, pr_sub_left]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Use `_ = 1 := h2`. Conclude with `⟨_, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem shape_at (h : VacS A ε φ) (a : Matrix κ ι ℚ) (ha : φ a ≠ 0) :
     ∃ (S : AddSubgroup (Matrix κ ι ℚ)) (f : Matrix κ ι ℚ → ℂ), Quad S f ∧
@@ -158,9 +158,9 @@ theorem shape_at (h : VacS A ε φ) (a : Matrix κ ι ℚ) (ha : φ a ≠ 0) :
     exact ⟨_, hb, rfl⟩
 
 /- English proof (translation)
-Use `⟨h.fg, h.dual, h.norm, h.semi, h.ord, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨R, hR, h1, h2⟩` from `h.sb`. Use `⟨R, hR, fun x hx => h1 x fun e => hx (by simp [e]), fun x z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, h2 x z hz]`. Rewrite using `[fixed_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm, (fixed_iff ε y φ).1 (h.fix y hy) x]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vac_smul (h : VacS A ε φ) (u : ℂ) : VacS A ε (u • φ) := by
   refine ⟨h.fg, h.dual, h.norm, h.semi, h.ord, ?_, fun y hy => ?_⟩
@@ -173,9 +173,9 @@ theorem vac_smul (h : VacS A ε φ) (u : ℂ) : VacS A ε (u • φ) := by
     rw [mul_left_comm, (fixed_iff ε y φ).1 (h.fix y hy) x]
 
 /- English proof (translation)
-Use `⟨⟨A, ε, h⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨S, f, hq, hx⟩` from `shape_at h a ha`. Distinguish the cases in `hS : x - a ∈ S`. Rewrite using `[(hx x).1 hS]`. Conclude with `ph_mul hp (ph_of_isMu (hq.1 _ hS))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hx x).2 hS]`. Conclude with `ph_zero`.
+A detailed English derivation is pending.
 -/
 theorem pv_of_ph (h : VacS A ε φ) (a : Matrix κ ι ℚ) (ha : φ a ≠ 0) (hp : Ph (φ a)) : PV φ := by
   refine ⟨⟨A, ε, h⟩, fun x => ?_⟩
@@ -185,17 +185,15 @@ theorem pv_of_ph (h : VacS A ε φ) (a : Matrix κ ι ℚ) (ha : φ a ≠ 0) (hp
   · rw [(hx x).2 hS]; exact ph_zero
 
 /- English proof (translation)
-Introduce `κ ι _ _ _ φ`. Use `⟨fun A ε h a ha => shape_at h a ha, ?_, fun A ε h => ?_, ?_, fun A ε h a ha hp => pv_of_ph h a ha hp⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨A, ε, h⟩, hp⟩`. Use `⟨h.sb, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : ∃ a, φ a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha⟩` from `h0`. Take `⟨S, f, hq, hx⟩` from `shape_at h a ha`. Use `⟨φ a, a, S, f, hp a, hq, fun x => ?_⟩` and prove the remaining obligations. Use `split_ifs with hS`. Conclude with `(hx x).1 hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hx x).2 hS`. Use `push Not at h0`. Conclude with `⟨0, 0, ⊥, fun _ => 1, ph_zero, ⟨fun _ _ => isMu_one, fun _ _ _ _ _ _ => rfl⟩, fun x => by simp [h0]⟩`. Distinguish the cases in `h0 : ∃ a, φ a ≠ 0`. Take `⟨a, ha⟩` from `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ‖φ a‖ ≠ 0` using `norm_ne_zero_iff.2 ha`. Establish `e : ((((‖φ a‖ : ℝ) : ℂ) / φ a) • φ) a = ((‖φ a‖ : ℝ) : ℂ)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ ha]`. Use `⟨((‖φ a‖ : ℝ) : ℂ) / φ a, by simp [hn], pv_of_ph (vac_smul h _) a ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hn` after adjusting the coercions. Rewrite using `[e]; exact ⟨1, one_pos, by simp⟩`. Use `push Not at h0`. Conclude with `⟨1, norm_one, ⟨A, ε, vac_smul h _⟩, fun x => by simpa [h0] using ph_zero⟩`. Introduce and unpack `⟨⟨A, ε, h⟩, hp⟩ u hu`.
-
-Conclude with `⟨⟨A, ε, vac_smul h _⟩, fun x => ph_mul hu (hp x)⟩`.
+A detailed English derivation is pending.
 -/
 theorem vacuum_shape : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι], ∀ φ : Matrix κ ι ℚ → ℂ, (∀ A ε, VacS A ε φ → ∀ a, φ a ≠ 0 → ∃ (S : AddSubgroup (Matrix κ ι ℚ)) (f : Matrix κ ι ℚ → ℂ), Quad S f ∧ ∀ x, (x - a ∈ S → φ x = φ a * f (x - a)) ∧ (x - a ∉ S → φ x = 0)) ∧ (PV φ → Shape φ) ∧ (∀ A ε, VacS A ε φ → ∃ u : ℂ, ‖u‖ = 1 ∧ PV (u • φ)) ∧ (PV φ → ∀ u : ℂ, Ph u → PV (u • φ)) ∧ ∀ A ε, VacS A ε φ → ∀ a, φ a ≠ 0 → Ph (φ a) → PV φ := by
   intro κ ι _ _ _ φ

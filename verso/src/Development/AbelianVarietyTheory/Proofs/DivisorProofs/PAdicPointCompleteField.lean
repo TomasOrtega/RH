@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν p _ _ _ yb yy P π ψ hP σ x u h hu`. Take `⟨-, -, h2, h3, h4, -⟩` from `hP`. Establish `hpb : IsGrpPullback P.A.A Xo.univ.t.G (yy ≫ r ≫ pullback.fst _ _) (ψ ≫ ν.φ)` using `h3.comp ν.cart`. Establish `hact : ∀ a, (P.oA.act a).left ≫ (ψ ≫ ν.φ) = (ψ ≫ ν.φ) ≫ (Xo.univ.t.act.act a).left` using `fun a => by`. Establish `e : (P.oA.act a).left ≫ ψ = ψ ≫ (Y.oF.t.act.act a).left` using `Y.m.cart.1.hom_ext (by rw [Category.assoc, Category.assoc, Y.m.act, h4, ← Category.assoc ψ, h4, ← Category.assoc, P.gen_act, Category.assoc, h2, Category.assoc]) (by rw [Category.assoc, Category.assoc, Over.w, h3.1.w, Over.w_assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, e, Category.assoc, Category.assoc, ν.act]`. Introduce `a`. Conclude with `(h.act a (hact a)).unique hpb.1 (by rw [hu a, ← algebraMap_embInt P.integers]; exact h.scale _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pt_isEig_of_lieTie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

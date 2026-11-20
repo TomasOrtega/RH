@@ -17,7 +17,7 @@ section Unram
 variable {X : Fields} {Pr : Primes X}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `hPr.piG_norm i`. Rewrite `h1` using `[h, zero_mul]`. Establish `h2 : ((Pr.g i : ℕ) : 𝓞 X.E) ≠ 0` using `by exact_mod_cast (hPr.g_prime i).ne_zero`. Conclude with `h2 h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ciPiG_ne_zero (hPr : Pr.Ok) (i : Fin 2) : Pr.piG i ≠ 0 := by
   intro h
@@ -27,7 +27,7 @@ theorem ciPiG_ne_zero (hPr : Pr.Ok) (i : Fin 2) : Pr.piG i ≠ 0 := by
   exact h2 h1.symm
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `hPr.piG_norm i`. Rewrite `h1` using `[h, mul_zero]`. Establish `h2 : ((Pr.g i : ℕ) : 𝓞 X.E) ≠ 0` using `by exact_mod_cast (hPr.g_prime i).ne_zero`. Conclude with `h2 h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ciConjPiG_ne_zero (hPr : Pr.Ok) (i : Fin 2) : X.conjO (Pr.piG i) ≠ 0 := by
   intro h
@@ -37,9 +37,9 @@ theorem ciConjPiG_ne_zero (hPr : Pr.Ok) (i : Fin 2) : X.conjO (Pr.piG i) ≠ 0 :
   exact h2 h1.symm
 
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm (Ideal.span {Pr.piG i}) * Ideal.absNorm (Ideal.span {X.conjO (Pr.piG i)}) = Pr.g i ^ (2 * X.f)`. Rewrite using `[← map_mul, Ideal.span_singleton_mul_span_singleton, hPr.piG_norm, X.absNorm_nat, hX.rankQ]`. Rewrite `h1` using `[X.absNorm_conjO]`. Establish `h2 : Ideal.absNorm (Ideal.span {Pr.piG i}) ^ 2 = (Pr.g i ^ X.f) ^ 2`. Rewrite using `[sq, h1, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.absNorm_conjO]`. Conclude with `Nat.pow_left_injective (by norm_num : 2 ≠ 0) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciAbsNorm_conjPiG (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) :
     Ideal.absNorm (Ideal.span {X.conjO (Pr.piG i)}) = Pr.g i ^ X.f := by
@@ -52,23 +52,21 @@ theorem ciAbsNorm_conjPiG (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) :
   exact Nat.pow_left_injective (by norm_num : 2 ≠ 0) h2
 
 /- English proof (translation)
-Introduce `hmem`. Establish `h0` using `ciConjPiG_ne_zero hPr i`. Set `fam : HeightOneSpectrum (𝓞 X.E) → Ideal (𝓞 X.E)` to `fun Q => if Q = P then P.asIdeal ^ 2 else Q.asIdeal`. Establish `hdvd : ∀ Q ∈ Pr.vG i, fam Q ∣ Ideal.span {X.conjO (Pr.piG i)}`. Introduce `Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.dvd_span_singleton]`. Distinguish the cases in `hQP : Q = P`. Simplify using `only [fam, if_pos hQP]`. Conclude with `hmem`. Simplify using `only [fam, if_neg hQP]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(mem_divs h0 Q).1 hQ`. Establish `hbase : ∀ Q Q' : HeightOneSpectrum (𝓞 X.E), Q ≠ Q' → IsCoprime Q.asIdeal Q'.asIdeal`. Introduce `Q Q' hne`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne Q.isMaximal Q'.isMaximal (fun h => hne (HeightOneSpectrum.ext h))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hcop : (↑(Pr.vG i) : Set (HeightOneSpectrum (𝓞 X.E))).Pairwise (Function.onFun IsCoprime fam)`. Introduce `Q _ Q' _ hne`. Use `show IsCoprime (fam Q) (fam Q')`. Distinguish the cases in `hQP : Q = P`. Establish `hQ'P : Q' ≠ P` using `fun h => hne (hQP.trans h.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [fam, if_pos hQP, if_neg hQ'P]`. Conclude with `(hbase P Q' hQ'P.symm).pow_left`. Distinguish the cases in `hQ'P : Q' = P`. Simplify using `only [fam, if_neg hQP, if_pos hQ'P]`. Conclude with `(hbase Q P hQP).pow_right`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [fam, if_neg hQP, if_neg hQ'P]`. Conclude with `hbase Q Q' hne`. Establish `hprod : ∏ Q ∈ Pr.vG i, fam Q ∣ Ideal.span {X.conjO (Pr.piG i)}` using `Finset.prod_dvd_of_coprime hcop hdvd`. Establish `hN : Ideal.absNorm (∏ Q ∈ Pr.vG i, fam Q) = Pr.g i ^ (X.f + 1)`. Rewrite using `[map_prod]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ Q ∈ Pr.vG i, Ideal.absNorm (fam Q) = Pr.g i * (if Q = P then Pr.g i else 1)`. Introduce `Q hQ`. Distinguish the cases in `hQP : Q = P`. Simplify using `only [fam, if_pos hQP]`. Rewrite using `[map_pow, hPr.vG_norm i P hP, sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [fam, if_neg hQP]`. Rewrite using `[hPr.vG_norm i Q hQ, mul_one]`. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_mul_distrib, Finset.prod_const, hPr.vG_card, Finset.prod_ite_eq', if_pos hP, pow_succ]`. Establish `h3` using `map_dvd Ideal.absNorm hprod`. Rewrite `h3` using `[hN, ciAbsNorm_conjPiG hX hPr i]`.
-
-Use `(Nat.pow_dvd_pow_iff_le_right (hPr.g_prime i).one_lt).1 h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ciConjPiG_notMem_sq (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vG i) :
     X.conjO (Pr.piG i) ∉ P.asIdeal ^ 2 := by
@@ -116,9 +114,9 @@ theorem ciConjPiG_notMem_sq (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) {P : HeightOne
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `hc : X.conjO (Pr.piG i) ∈ w.asIdeal` using `(mem_divs (ciConjPiG_ne_zero hPr i) w).1 hw`. Take `⟨a, b, hab⟩` from `hPr.piG_cop i`. Establish `h1 : (1 : 𝓞 X.E) ∈ w.asIdeal`. Rewrite using `[← hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (w.asIdeal.mul_mem_left _ h) (w.asIdeal.mul_mem_left _ hc)`. Conclude with `one_notMem w h1`.
+A detailed English derivation is pending.
 -/
 theorem ciPiG_notMem (hPr : Pr.Ok) (i : Fin 2) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vG i) :
     Pr.piG i ∉ w.asIdeal := by
@@ -131,9 +129,7 @@ theorem ciPiG_notMem (hPr : Pr.Ok) (i : Fin 2) {w : HeightOneSpectrum (𝓞 X.E)
   exact one_notMem w h1
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[← hPr.piG_norm i]`. Use `w.isPrime` as an intermediate fact. Break down `Ideal.IsPrime.mul_mem_pow w.asIdeal h with h1 | h1` into its components or cases. Conclude with `ciPiG_notMem hPr i hw h1`.
-
-Conclude with `ciConjPiG_notMem_sq hX hPr i hw h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ciG_notMem_sq (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vG i) :
     ((Pr.g i : ℕ) : 𝓞 X.E) ∉ w.asIdeal ^ 2 := by
@@ -145,7 +141,7 @@ theorem ciG_notMem_sq (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2) {w : HeightOneSpectr
   · exact ciConjPiG_notMem_sq hX hPr i hw h1
 
 /- English proof (translation)
-Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ciVGs_cases {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) : ∃ i : Fin 2, w ∈ Pr.vG i := by
   classical
@@ -154,13 +150,13 @@ theorem ciVGs_cases {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) : ∃
   · exact ⟨1, h⟩
 
 /- English proof (translation)
-The claim follows from `hPr.vG_norm i w hw`.
+A detailed English derivation is pending.
 -/
 theorem ciQOf_eq (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} {i : Fin 2} (hw : w ∈ Pr.vG i) : qOf w = Pr.g i :=
   hPr.vG_norm i w hw
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ciVGs_cases hw`. Rewrite using `[ciQOf_eq hPr hi]`. Conclude with `ciG_notMem_sq hX hPr i hi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciQ_notMem_sq (hX : X.Ok) (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) :
     ((qOf w : ℕ) : 𝓞 X.E) ∉ w.asIdeal ^ 2 := by
@@ -169,7 +165,7 @@ theorem ciQ_notMem_sq (hX : X.Ok) (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E
   exact ciG_notMem_sq hX hPr i hi
 
 /- English proof (translation)
-The claim follows from `Ideal.absNorm_mem w.asIdeal`.
+A detailed English derivation is pending.
 -/
 theorem ciQ_mem {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) : ((qOf w : ℕ) : 𝓞 E) ∈ w.asIdeal :=
   Ideal.absNorm_mem w.asIdeal
@@ -181,7 +177,7 @@ section Red
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `hq : q = 0` using `by exact_mod_cast h`. Substitute `hq` using the available equality. Conclude with `hu (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ciQ_ne_zero (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) : (q : E) ≠ 0 := by
   intro h
@@ -190,17 +186,15 @@ theorem ciQ_ne_zero (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) : (q : E) ≠ 
   exact hu (by simp)
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Establish `hr : r ∈ P.asIdeal`. Establish `h1` using `reduction_spec P hs h`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Ideal.span {((q : ℕ) : 𝓞 E)} ≤ P.asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 hq`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hJP : ¬ J ≤ P.asIdeal`. Introduce `hJ'`. Apply `hu` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : Ideal.span {((q : ℕ) : 𝓞 E)} ≤ P.asIdeal ^ 2`. Rewrite using `[hJ, sq]`. Conclude with `Ideal.mul_mono_right hJ'`. Conclude with `h2 (Ideal.mem_span_singleton_self _)`. Take `⟨s', hs'J, hs'P⟩` from `Set.not_subset.1 hJP`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmem : r * s' ∈ Ideal.span {((q : ℕ) : 𝓞 E)}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hr hs'J`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `hq0` using `ciQ_ne_zero hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht' : algebraMap (𝓞 E) E t * (q : E) = algebraMap (𝓞 E) E r * algebraMap (𝓞 E) E s'`. Use `congrArg (algebraMap (𝓞 E) E) ht` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_natCast]`. Conclude with `this`. Use `⟨t, s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs'P, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, show algebraMap (𝓞 E) E s * algebraMap (𝓞 E) E s' * (a / (q : E)) = (algebraMap (𝓞 E) E s * a) * algebraMap (𝓞 E) E s' / (q : E) by ring, h, ← ht', mul_div_assoc, div_self hq0, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciIntAt_div (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {a : E}
     (ha : IntAt P a) (h0 : redP P a = 0) : IntAt P (a / (q : E)) := by
@@ -233,13 +227,13 @@ theorem ciIntAt_div (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) :
     (algebraMap (𝓞 E) E s * a) * algebraMap (𝓞 E) E s' / (q : E) by ring, h, ← ht', mul_div_assoc, div_self hq0, mul_one]
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P (q : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciIntAt_q : IntAt P (q : E) := by
   simpa using IntAt.coe P (q : 𝓞 E)
 
 /- English proof (translation)
-Establish `h` using `reduction_coe P (q : 𝓞 E)`. Rewrite `h` using `[Ideal.Quotient.eq_zero_iff_mem.mpr hq]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redP_natCast_eq_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) : redP P (q : E) = 0 := by
   have h := reduction_coe P (q : 𝓞 E)
@@ -247,7 +241,7 @@ theorem redP_natCast_eq_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) : redP P 
   simpa using h
 
 /- English proof (translation)
-Establish `ha : a = (q : E) * (a / q)` using `by field_simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `ciIntAt_q.mul h`. Rewrite using `[ha, reduction_mul ciIntAt_q h, redP_natCast_eq_zero hq, zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciRed_of_div (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {a : E} (h : IntAt P (a / (q : E))) :
     IntAt P a ∧ redP P a = 0 := by
@@ -258,43 +252,43 @@ theorem ciRed_of_div (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) �
   · rw [ha, reduction_mul ciIntAt_q h, redP_natCast_eq_zero hq, zero_mul]
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciIntAt_zero : IntAt P (0 : E) := by
   simpa using IntAt.coe P 0
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciIntAt_one : IntAt P (1 : E) := by
   simpa using IntAt.coe P 1
 
 /- English proof (translation)
-Simplify using `using reduction_coe P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redP_zero : redP P (0 : E) = 0 := by
   simpa using reduction_coe P 0
 
 /- English proof (translation)
-Simplify using `using reduction_coe P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redP_one : redP P (1 : E) = 1 := by
   simpa using reduction_coe P 1
 
 /- English proof (translation)
-Simplify using `using (IntAt.coe P (-1)).mul ha`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciIntAt_neg {a : E} (ha : IntAt P a) : IntAt P (-a) := by
   simpa using (IntAt.coe P (-1)).mul ha
 
 /- English proof (translation)
-Simplify `ha.add (ciIntAt_neg hb)` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciIntAt_sub {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a - b) := by
   simpa [sub_eq_add_neg] using ha.add (ciIntAt_neg hb)
 
 /- English proof (translation)
-Establish `h` using `reduction_mul (IntAt.coe P (-1)) ha`. Rewrite `h` using `[reduction_coe]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redP_neg {a : E} (ha : IntAt P a) : redP P (-a) = -redP P a := by
   have h := reduction_mul (IntAt.coe P (-1)) ha
@@ -302,30 +296,30 @@ theorem redP_neg {a : E} (ha : IntAt P a) : redP P (-a) = -redP P a := by
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, reduction_add ha (ciIntAt_neg hb), redP_neg hb, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem redP_sub {a b : E} (ha : IntAt P a) (hb : IntAt P b) : redP P (a - b) = redP P a - redP P b := by
   rw [sub_eq_add_neg, reduction_add ha (ciIntAt_neg hb), redP_neg hb, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P (z : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciIntAt_intCast (z : ℤ) : IntAt P (z : E) := by
   simpa using IntAt.coe P (z : 𝓞 E)
 
 /- English proof (translation)
-Simplify using `using reduction_coe P (z : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redP_intCast (z : ℤ) : redP P (z : E) = (z : 𝓞 E ⧸ P.asIdeal) := by
   simpa using reduction_coe P (z : 𝓞 E)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) ciIntAt_zero h`.
+A detailed English derivation is pending.
 -/
 theorem ciIntAt_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) : IntAt P (∑ i ∈ s, f i) := Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) ciIntAt_zero h
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simp [redP_zero]) ?_` and prove the remaining obligations. Introduce `k s hk ih h`. Rewrite using `[Finset.sum_insert hk, Finset.sum_insert hk, reduction_add (h k (Finset.mem_insert_self k s)) (ciIntAt_sum s f fun i hi => h i (Finset.mem_insert_of_mem hi)), ih fun i hi => h i (Finset.mem_insert_of_mem hi)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redP_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     redP P (∑ i ∈ s, f i) = ∑ i ∈ s, redP P (f i) := by
@@ -338,12 +332,12 @@ theorem redP_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, In
     ih fun i hi => h i (Finset.mem_insert_of_mem hi)]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (IntAt P) (fun _ _ ha hb => ha.mul hb) ciIntAt_one h`.
+A detailed English derivation is pending.
 -/
 theorem ciIntAt_prod {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) : IntAt P (∏ i ∈ s, f i) := Finset.prod_induction f (IntAt P) (fun _ _ ha hb => ha.mul hb) ciIntAt_one h
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simp [redP_one]) ?_` and prove the remaining obligations. Introduce `k s hk ih h`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk, reduction_mul (h k (Finset.mem_insert_self k s)) (ciIntAt_prod s f fun i hi => h i (Finset.mem_insert_of_mem hi)), ih fun i hi => h i (Finset.mem_insert_of_mem hi)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redP_prod {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     redP P (∏ i ∈ s, f i) = ∏ i ∈ s, redP P (f i) := by
@@ -356,14 +350,14 @@ theorem redP_prod {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, I
     ih fun i hi => h i (Finset.mem_insert_of_mem hi)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `ciIntAt_sum _ _ fun σ _ => (ciIntAt_intCast _).mul (ciIntAt_prod _ _ fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciIntAt_det {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n E) (h : ∀ i j, IntAt P (N i j)) : IntAt P N.det := by
   rw [Matrix.det_apply']
   exact ciIntAt_sum _ _ fun σ _ => (ciIntAt_intCast _).mul (ciIntAt_prod _ _ fun i _ => h _ _)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply', Matrix.det_apply', redP_sum _ _ fun σ _ => (ciIntAt_intCast _).mul (ciIntAt_prod _ _ fun i _ => h _ _)]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[reduction_mul (ciIntAt_intCast _) (ciIntAt_prod _ _ fun i _ => h _ _), redP_intCast, redP_prod _ _ fun i _ => h _ _]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem redP_det {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n E) (h : ∀ i j, IntAt P (N i j)) :
     redP P N.det = (N.map (redP P)).det := by
@@ -375,11 +369,11 @@ theorem redP_det {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n E) (h : 
   simp
 
 /- English proof (translation)
-Establish `hqd : IntAt P ((q : E) * d)` using `ciIntAt_q.mul hd`. Distinguish the cases in `ha : IntAt P a`. Rewrite using `[reduction_add ha hqd, reduction_mul ciIntAt_q hd, redP_natCast_eq_zero hq, zero_mul, add_zero]`. Establish `ha' : ¬ IntAt P (a + q * d)` using `fun h => ha (by simpa using ciIntAt_sub h hqd)`. Establish `hz : ∀ b : E, ¬ IntAt P b → redP P b = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb`. Establish `hn : ¬ ∃ c : 𝓞 E ⧸ P.asIdeal, ∃ r s : 𝓞 E, s ∉ P.asIdeal ∧ algebraMap (𝓞 E) E s * b = algebraMap (𝓞 E) E r ∧ Ideal.Quotient.mk P.asIdeal s * c = Ideal.Quotient.mk P.asIdeal r`. Introduce and unpack `⟨c, r, s, hs, h1, -⟩`. Conclude with `hb ⟨r, s, hs, h1⟩`. Rewrite using `[redP, dif_neg hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz _ ha', hz _ ha]`.
+A detailed English derivation is pending.
 -/
 theorem redP_add_natCast_mul (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) {a d : E} (hd : IntAt P d) :
     redP P (a + q * d) = redP P a := by
@@ -398,7 +392,7 @@ theorem redP_add_natCast_mul (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) {a d : E}
     rw [hz _ ha', hz _ ha]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using ciIntAt_sub h hd, fun h => h.add hd⟩`.
+Supply the required witnesses or components.
 -/
 theorem ciIntAt_add_iff {a d : E} (hd : IntAt P d) : IntAt P (a + d) ↔ IntAt P a := ⟨fun h => by simpa using ciIntAt_sub h hd, fun h => h.add hd⟩
 
@@ -409,12 +403,12 @@ section Scl
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ)
 
 /- English proof (translation)
-The claim follows from `mem_localization_standardLattice P x`.
+A detailed English derivation is pending.
 -/
 theorem ciMem_stdAt {n : ℕ} (x : Sp E n) : x ∈ stdAt E n P ↔ ∀ i, IntAt P (x i) := mem_localization_standardLattice P x
 
 /- English proof (translation)
-Unfold `LocE.sclLat`. Rewrite using `[Submodule.mem_comap, ciMem_stdAt]`. Simplify using `[LinearMap.pi_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ciMem_sclLat {N : ℕ} (e : ℕ → ℤ) (v : Sp E N) :
     v ∈ LocE.sclLat P q N e ↔ ∀ l : Fin N, IntAt P (((q : E) ^ e l.1)⁻¹ * v l) := by
@@ -429,20 +423,20 @@ section Cst
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Unfold `qOf`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciCard (w : HeightOneSpectrum (𝓞 X.E)) : Nat.card (𝓞 X.E ⧸ w.asIdeal) = qOf w := by
   unfold qOf
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-The claim follows from `Nat.finite_of_card_ne_zero (by rw [ciCard]; exact hq)`.
+A detailed English derivation is pending.
 -/
 theorem ciFinite {w : HeightOneSpectrum (𝓞 X.E)} (hq : qOf w ≠ 0) : Finite (𝓞 X.E ⧸ w.asIdeal) :=
   Nat.finite_of_card_ne_zero (by rw [ciCard]; exact hq)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ciVGs_cases hw`. Rewrite using `[ciQOf_eq hPr hi]`. Conclude with `hPr.g_prime i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciQOf_prime (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) : (qOf w).Prime := by
   obtain ⟨i, hi⟩ := ciVGs_cases hw
@@ -450,9 +444,9 @@ theorem ciQOf_prime (hPr : Pr.Ok) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈
   exact hPr.g_prime i
 
 /- English proof (translation)
-Introduce `h1`. Apply `hψ` to reduce the goal to its premises. Establish `: Fintype A` using `Fintype.ofFinite A`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Set `e : ZMod p ≃+* A` to `ZMod.ringEquivOfPrime A hp (by rw [← Nat.card_eq_fintype_card, hA])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use extensionality with `x`. Take `⟨n, rfl⟩` from `e.surjective x`. Establish `h2 : e n = (n.val : ℕ) • (1 : A)` using `by rw [nsmul_one, ← map_natCast e, ZMod.natCast_zmod_val]`. Rewrite using `[h2, AddChar.map_nsmul_eq_pow, h1, one_pow, AddChar.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciAddChar_one_ne {A : Type} [CommRing A] [Finite A] {p : ℕ} (hp : p.Prime) (hA : Nat.card A = p) {M : Type} [CommMonoid M]
     (ψ : AddChar A M) (hψ : ψ ≠ 1) : ψ 1 ≠ 1 := by
@@ -494,17 +488,17 @@ def ciCst (SB : Finset (HeightOneSpectrum (𝓞 X.E))) (mq : ℕ → SB → X.K)
 variable {Ch}
 
 /- English proof (translation)
-Establish `hqp` using `ciQOf_prime hPr hP`. Establish `hfin : Finite (𝓞 X.E ⧸ P.asIdeal)` using `ciFinite hqp.ne_zero`. Unfold `ciSq`. Rewrite using `[dif_pos ⟨hP, hfin⟩]`. Set `_ : Fintype (𝓞 X.E ⧸ P.asIdeal)` to `Fintype.ofFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `_` to `Ideal.Quotient.field P.asIdeal`. Establish `hcard : Fintype.card (𝓞 X.E ⧸ P.asIdeal) = qOf P` using `by rw [← Nat.card_eq_fintype_card, ciCard]`. Establish `hq0 : ((qOf P : ℕ) : 𝓞 X.E ⧸ P.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (ciQ_mem P)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hch : ringChar (𝓞 X.E ⧸ P.asIdeal) = qOf P`. Establish `h1` using `ringChar.dvd hq0`. Break down `(Nat.dvd_prime hqp).1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (CharP.ringChar_ne_one)`. Conclude with `h2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq2 : ringChar (𝓞 X.E ⧸ P.asIdeal) ≠ 2` using `by rw [hch]; omega`. Establish `hχ₁ : (quadraticChar (𝓞 X.E ⧸ P.asIdeal)).ringHomComp (Int.castRingHom X.K) ≠ 1`. Take `⟨a, ha⟩` from `quadraticChar_exists_neg_one' hq2`. Use `MulChar.ne_one_iff.mpr ⟨a, ?_⟩` and prove the remaining obligations. Use `show ((quadraticChar (𝓞 X.E ⧸ P.asIdeal) a : ℤ) : X.K) ≠ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha]`. Evaluate the numerical expressions. Establish `hχ₂ : ((quadraticChar (𝓞 X.E ⧸ P.asIdeal)).ringHomComp (Int.castRingHom X.K)).IsQuadratic` using `MulChar.IsQuadratic.comp (quadraticChar_isQuadratic _) _`. Establish `hψ : (Ch.psi0 ⟨P, hP⟩).IsPrimitive` using `AddChar.IsPrimitive.of_ne_one (hCh.psi_zero_nontrivial_character _)`. Establish `h` using `gaussSum_sq hχ₁ hχ₂ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ((quadraticChar (𝓞 X.E ⧸ P.asIdeal)).ringHomComp (Int.castRingHom X.K)) (-1) * ((Fintype.card (𝓞 X.E ⧸ P.asIdeal) : ℕ) : X.K) = (qOf P : X.K)` using `by show ((quadraticChar (𝓞 X.E ⧸ P.asIdeal) (-1) : ℤ) : X.K) * _ = _`. Rewrite using `[quadraticChar_neg_one hq2, hcard, ZMod.χ₄_nat_one_mod_four h4]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `h.trans key using 3` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem ciSq_sq (hPr : Pr.Ok) (hCh : Ch.Ok) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) (h4 : qOf P % 4 = 1) :
     ciSq Ch P ^ 2 = (qOf P : X.K) := by
@@ -542,15 +536,11 @@ theorem ciSq_sq (hPr : Pr.Ok) (hCh : Ch.Ok) {P : HeightOneSpectrum (𝓞 X.E)} (
   convert h.trans key using 3
 
 /- English proof (translation)
-Use `show ciPsi Ch P (x + y) = ciPsi Ch P x * ciPsi Ch P y`. Simplify using `only [ciCst, pow_one] at hx hy`. Unfold `ciPsi`. Rewrite using `[if_pos hx, if_pos hy, mul_add, if_pos (hx.add hy), reduction_add hx hy, AddChar.map_add_eq_mul]`. Use `psi_int P x hx := by show ciPsi Ch P x = 1`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ciPsi`. Rewrite using `[if_pos ((ciIntAt_q (q := qOf P.1)).mul hx), reduction_mul (ciIntAt_q (q := qOf P.1)) hx, redP_natCast_eq_zero (ciQ_mem P.1), zero_mul, AddChar.map_zero_eq_one]`. Use `psi_ne P := by show ciPsi Ch P _ ≠ 1`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (ciQOf_prime hPr (hSB P.1 P.2)).ne_zero`. Unfold `ciPsi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel₀ hq0, if_pos ciIntAt_one, redP_one]`. Unfold `psi0P`. Rewrite using `[dif_pos (hSB P.1 P.2)]`. Establish `hqp` using `ciQOf_prime hPr (hSB P.1 P.2)`. Use `ciFinite (w := P.1) hqp.ne_zero` as an intermediate fact.
-
-Conclude with `ciAddChar_one_ne hqp (ciCard P.1) _ (hCh.psi_zero_nontrivial_character _)`. Use `D_pos _ := le_refl 1`. Use `sq_sq P := ciSq_sq hPr hCh (hSB P.1 P.2) (h4 P.1 P.2)`. Use `M_pos := le_refl 1`. Use `M_le_A := le_refl 1`.
-
-Use `M_le_B := le_refl 1`. Use `B_pos := le_refl 1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ciCst_ok (hPr : Pr.Ok) (hCh : Ch.Ok) {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (hSB : ∀ P ∈ SB, P ∈ Pr.vGs)
     (h4 : ∀ P ∈ SB, qOf P % 4 = 1) {mq : ℕ → SB → X.K} : (ciCst Ch SB mq).Ok where
@@ -588,7 +578,7 @@ section Grp
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Loc.inX, LinearMap.pi_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ciInX_apply {n c : ℕ} (x : Fin n → E) (l : Fin (n + c)) :
     Loc.inX E n c x l = if h : l.1 < n then x ⟨l.1, h⟩ else 0 := by
@@ -598,35 +588,35 @@ theorem ciInX_apply {n c : ℕ} (x : Fin n → E) (l : Fin (n + c)) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[ciInX_apply, dif_pos (by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ciInX_castAdd {n c : ℕ} (x : Fin n → E) (l : Fin n) : Loc.inX E n c x (Fin.castAdd c l) = x l := by
   rw [ciInX_apply, dif_pos (by simp)]
   rfl
 
 /- English proof (translation)
-Unfold `LocE.fPos`. Apply the tactic sequence `rcases hfr with rfl | rfl <;> split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ciFPos {k₀ c n l : ℕ} (hfr : c = 0 ∨ k₀ = n) (hl : l < n + c) : LocE.fPos k₀ c n l = l := by
   unfold LocE.fPos
   rcases hfr with rfl | rfl <;> split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.fIdx`. Apply the tactic sequence `rcases hfr with rfl | rfl <;> split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ciFIdx {k₀ c n s : ℕ} (hfr : c = 0 ∨ k₀ = n) (hs : s < n + c) : LocE.fIdx k₀ c n s = s := by
   unfold LocE.fIdx
   rcases hfr with rfl | rfl <;> split_ifs <;> omega
 
 /- English proof (translation)
-Simplify using `[LocE.scE, hl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciScE_lt {n : ℕ} (ex : ℕ → ℕ) {l : ℕ} (hl : l < n) : LocE.scE n ex l = 0 := by
   simp [LocE.scE, hl]
 
 variable (P q) in
 /- English proof (translation)
-Unfold `LocE.flagG`. Conclude with `ciMem_sclLat P q _ v`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ciMem_flagG {k₀ n c s : ℕ} (v : Sp E (n + c)) :
     v ∈ LocE.flagG P q k₀ n c s ↔ ∀ l : Fin (n + c),
@@ -635,11 +625,11 @@ theorem ciMem_flagG {k₀ n c s : ℕ} (v : Sp E (n + c)) :
   exact ciMem_sclLat P q _ v
 
 /- English proof (translation)
-Rewrite using `[ciMem_flagG]`. Introduce `m`. Rewrite using `[ciInX_apply]`. Distinguish the cases in `hm : m.1 < n`. Rewrite using `[dif_pos hm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `he : (⟨m.1, hm⟩ : Fin n) = l'`. Establish `hml : m.1 = l'.1` using `by rw [← he]`. Rewrite using `[he, Pi.single_eq_same, ciScE_lt _ hm, ciFPos hfr m.2, if_neg (by omega)]`. Simplify using `using (ciIntAt_one (P := P))`. Rewrite using `[Pi.single_eq_of_ne he, mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ciIntAt_zero`. Rewrite using `[dif_neg hm, mul_zero]`. Conclude with `ciIntAt_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciInX_single_mem_flagG {k₀ n c s : ℕ} (hfr : c = 0 ∨ k₀ = n) (l' : Fin n) (h1 : l'.1 < s) :
     Loc.inX E n c (Pi.single l' 1) ∈ LocE.flagG P q k₀ n c s := by
@@ -658,7 +648,7 @@ theorem ciInX_single_mem_flagG {k₀ n c s : ℕ} (hfr : c = 0 ∨ k₀ = n) (l'
     exact ciIntAt_zero
 
 /- English proof (translation)
-Establish `h2` using `hr.2`. Break down `hs with hs | hs` into its components or cases. Conclude with `(h2.2 s hs).1`. Conclude with `h2.1 s hs`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ciJG_stab {k₀ r0 t n c : ℕ} {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hr : r ∈ LocE.JG P q k₀ r0 t n c) {s : ℕ}
     (hs : s < r0 ∨ ∃ i, s = r0 + i * t) : r ∈ stabL E (n + c) (LocE.flagG P q k₀ n c s) := by
@@ -668,9 +658,9 @@ theorem ciJG_stab {k₀ r0 t n c : ℕ} {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)
   · exact h2.1 s hs
 
 /- English proof (translation)
-Establish `hm` using `((ciJG_stab hr hs) _).2 (ciInX_single_mem_flagG (P := P) (q := q) hfr l' h1)`. Rewrite `hm` using `[hg, ciMem_flagG]`. Establish `h3` using `hm (Fin.castAdd c l)`. Rewrite `h3` using `[ciInX_castAdd]`. Simplify using `only [Fin.val_castAdd, ciScE_lt _ l.2, ciFPos hfr (show l.1 < n + c by omega), if_pos h2] at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[zero_add, zpow_one, inv_mul_eq_div]`. Conclude with `(ciRed_of_div hq hq0 h3).2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciJG_entry (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {k₀ r0 t n c : ℕ} (hfr : c = 0 ∨ k₀ = n)
     {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hr : r ∈ LocE.JG P q k₀ r0 t n c) {g : Sp E n ≃ₗ[E] Sp E n}
@@ -685,15 +675,15 @@ theorem ciJG_entry (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 
   exact (ciRed_of_div hq hq0 h3).2
 
 /- English proof (translation)
-Establish `hm` using `(hr.2.2 l.1 hl).2`. Establish `hb : LocE.bvecG E q k₀ n c l.1 = Loc.inX E n c (Pi.single l 1)`. Unfold `LocE.bvecG`. Rewrite using `[ciFIdx hfr (show l.1 < n + c by omega), ciScE_lt _ l.2, zpow_zero, one_smul]`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[ciInX_apply]`. Unfold `Loc.eN`. Distinguish the cases in `hm : m.1 < n`. Rewrite using `[dif_pos hm]`. Distinguish the cases in `he : (⟨m.1, hm⟩ : Fin n) = l`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[he, Pi.single_eq_same, if_pos (by rw [← he])]`. Rewrite using `[Pi.single_eq_of_ne he, if_neg (fun h => he (Fin.ext h))]`. Rewrite using `[dif_neg hm, if_neg (by omega)]`. Rewrite `hm` using `[hb, hg, ← map_sub, ciMem_flagG]`. Establish `h3` using `hm (Fin.castAdd c l)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[ciInX_castAdd]`. Simplify using `only [Fin.val_castAdd, ciScE_lt _ l.2, ciFPos hfr (show l.1 < n + c by omega), le_refl, if_true] at h3`. Rewrite `h3` using `[zero_add, zpow_one, inv_mul_eq_div]`. Establish `h4` using `(ciRed_of_div hq hq0 h3).2`. Rewrite `h4` using `[Pi.sub_apply, Pi.single_eq_same, redP_sub (hgi l l) ciIntAt_one, redP_one, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem ciJG_diag (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {k₀ r0 t n c : ℕ} (hfr : c = 0 ∨ k₀ = n)
     {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hr : r ∈ LocE.JG P q k₀ r0 t n c) {g : Sp E n ≃ₗ[E] Sp E n}
@@ -722,11 +712,11 @@ theorem ciJG_diag (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0
   exact h4
 
 /- English proof (translation)
-Unfold `LocE.lamY`. Rewrite using `[ciMem_sclLat, ciMem_stdAt]`. Prove the components needed by the constructor for the conclusion. Introduce `h l`. Establish `h1` using `h (Fin.castAdd c l)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[ciInX_castAdd, Fin.val_castAdd, ciScE_lt _ l.2, zpow_zero, inv_one, one_mul]`. Then use the resulting hypothesis. Introduce `h m`. Rewrite using `[ciInX_apply]`. Distinguish the cases in `hm : m.1 < n`. Rewrite using `[dif_pos hm, ciScE_lt _ hm, zpow_zero, inv_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _`. Rewrite using `[dif_neg hm, mul_zero]`. Conclude with `ciIntAt_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciMem_lamY {n c : ℕ} (ex : ℕ → ℕ) (x : Sp E n) :
     Loc.inX E n c x ∈ LocE.lamY P q n c ex ↔ x ∈ stdAt E n P := by
@@ -745,9 +735,9 @@ theorem ciMem_lamY {n c : ℕ} (ex : ℕ → ℕ) (x : Sp E n) :
       exact ciIntAt_zero
 
 /- English proof (translation)
-Introduce and unpack `g ⟨r, hr, hg⟩ x`. Establish `hr' : r ∈ LocE.JG P q k₀ r0 t n c`. Use `hr.2` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`. Rewrite using `[← ciMem_lamY (P := P) (q := q) (c := c) (fun i => i + 1) (g x), ← hg]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hr'.1 _).trans (ciMem_lamY _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ciPrX_le {k₀ r0 t n c : ℕ} :
     Loc.prX (Loc.Cbe (LocE.JG P q k₀ r0 t n c) 1) ≤ GLint E n P := by
@@ -771,7 +761,7 @@ def ciLift (c : 𝓞 E ⧸ P.asIdeal) : 𝓞 E :=
   if c = 0 then 0 else if c = 1 then 1 else (Ideal.Quotient.mk_surjective c).choose
 
 /- English proof (translation)
-Unfold `ciLift`. Use `split_ifs with h0 h1`. Simplify using `[h0]`. Simplify using `[h1]`. Conclude with `(Ideal.Quotient.mk_surjective c).choose_spec`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ciLift_mk (c : 𝓞 E ⧸ P.asIdeal) : Ideal.Quotient.mk P.asIdeal (ciLift P c) = c := by
   unfold ciLift
@@ -781,14 +771,14 @@ theorem ciLift_mk (c : 𝓞 E ⧸ P.asIdeal) : Ideal.Quotient.mk P.asIdeal (ciLi
   · exact (Ideal.Quotient.mk_surjective c).choose_spec
 
 /- English proof (translation)
-Unfold `ciLift`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ciLift_zero : ciLift P 0 = 0 := by
   unfold ciLift
   simp
 
 /- English proof (translation)
-Unfold `ciLift`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ciLift_one : ciLift P 1 = 1 := by
   unfold ciLift
@@ -803,7 +793,7 @@ def ciLiftM {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) : Matr
   (algebraMap (𝓞 E) E).mapMatrix (ciLiftO P M)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ciLiftO, ciLift_mk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ciLiftO_red {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) :
     (Ideal.Quotient.mk P.asIdeal).mapMatrix (ciLiftO P M) = M := by
@@ -817,7 +807,7 @@ theorem ciLiftM_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdea
     ciLiftM P M i j = algebraMap (𝓞 E) E (ciLift P (M i j)) := rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : Ideal.Quotient.mk P.asIdeal (ciLiftO P M.1).det = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr h`. Rewrite `h1` using `[RingHom.map_det, ciLiftO_red]`. Conclude with `(Matrix.isUnits_det_units M).ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciLiftO_det_notMem {n : ℕ} (M : GL (Fin n) (𝓞 E ⧸ P.asIdeal)) : (ciLiftO P M.1).det ∉ P.asIdeal := by
   intro h
@@ -826,16 +816,16 @@ theorem ciLiftO_det_notMem {n : ℕ} (M : GL (Fin n) (𝓞 E ⧸ P.asIdeal)) : (
   exact (Matrix.isUnits_det_units M).ne_zero h1
 
 /- English proof (translation)
-Rewrite using `[ciLiftM, RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ciLiftM_det {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) :
     (ciLiftM P M).det = algebraMap (𝓞 E) E (ciLiftO P M).det := by
   rw [ciLiftM, RingHom.map_det]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `by first`. Consider the case `exact FaithfulSMul.algebraMap_injective (𝓞 E) E`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective (𝓞 E) E`. Consider the case `exact RingOfIntegers.coe_injective`. Rewrite using `[ciLiftM_det]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `ciLiftO_det_notMem M` to reduce the goal to its premises. Rewrite using `[(map_eq_zero_iff _ hinj).mp h]`. Conclude with `Ideal.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciLiftM_det_ne {n : ℕ} (M : GL (Fin n) (𝓞 E ⧸ P.asIdeal)) : (ciLiftM P M.1).det ≠ 0 := by
   have hinj : Function.Injective (algebraMap (𝓞 E) E) := by
@@ -850,24 +840,22 @@ theorem ciLiftM_det_ne {n : ℕ} (M : GL (Fin n) (𝓞 E ⧸ P.asIdeal)) : (ciLi
   exact Ideal.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[ciLiftM_apply]`. Conclude with `IntAt.coe P _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciLiftM_int {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) (i j : Fin n) : IntAt P (ciLiftM P M i j) := by
   rw [ciLiftM_apply]
   exact IntAt.coe P _
 
 /- English proof (translation)
-Rewrite using `[ciLiftM_apply, reduction_coe, ciLift_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ciLiftM_red {n : ℕ} (M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) (i j : Fin n) : redP P (ciLiftM P M i j) = M i j := by
   rw [ciLiftM_apply, reduction_coe, ciLift_mk]
 
 /- English proof (translation)
-Establish `hne : algebraMap (𝓞 E) E (ciLiftO P M.1).det ≠ 0`. Rewrite using `[← ciLiftM_det]`. Conclude with `ciLiftM_det_ne M`. Establish `hd : IntAt P ((ciLiftM P M.1).det)⁻¹`. Rewrite using `[ciLiftM_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, (ciLiftO P M.1).det, ciLiftO_det_notMem M, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `mul_inv_cancel₀ hne`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Use `hd.mul ?_` and prove the remaining obligations.
-
-Rewrite using `[ciLiftM, ← RingHom.map_adjugate, RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `IntAt.coe P _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciLiftM_inv_int {n : ℕ} (M : GL (Fin n) (𝓞 E ⧸ P.asIdeal)) (i j : Fin n) : IntAt P ((ciLiftM P M.1)⁻¹ i j) := by
   have hne : algebraMap (𝓞 E) E (ciLiftO P M.1).det ≠ 0 := by
@@ -884,7 +872,7 @@ theorem ciLiftM_inv_int {n : ℕ} (M : GL (Fin n) (𝓞 E ⧸ P.asIdeal)) (i j :
   exact IntAt.coe P _
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[ciLiftM_apply, h hij, ciLift_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciLiftM_blockTriangular {n : ℕ} {β : Fin n → ℕ} {M : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)} (h : M.BlockTriangular β) :
     (ciLiftM P M).BlockTriangular β := by
@@ -895,27 +883,27 @@ def ciExtM {n : ℕ} (c : ℕ) (A : Matrix (Fin n) (Fin n) E) : Matrix (Fin (n +
   Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A 0 0 (1 : Matrix (Fin c) (Fin c) E))
 
 /- English proof (translation)
-Simplify using `only [ciExtM, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ciExtM_mul {n c : ℕ} (A B : Matrix (Fin n) (Fin n) E) : ciExtM c (A * B) = ciExtM c A * ciExtM c B := by
   simp only [ciExtM, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   simp
 
 /- English proof (translation)
-Simplify using `[ciExtM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciExtM_one {n c : ℕ} : ciExtM c (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   simp [ciExtM]
 
 /- English proof (translation)
-Simplify using `[ciExtM, Matrix.mulVec, dotProduct, Fin.sum_univ_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciExtM_castAdd {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (v : Fin (n + c) → E) (l : Fin n) :
     (ciExtM c A).mulVec v (Fin.castAdd c l) = ∑ l' : Fin n, A l l' * v (Fin.castAdd c l') := by
   simp [ciExtM, Matrix.mulVec, dotProduct, Fin.sum_univ_add]
 
 /- English proof (translation)
-Simplify using `[ciExtM, Matrix.mulVec, dotProduct, Fin.sum_univ_add, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciExtM_natAdd {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (v : Fin (n + c) → E) (j : Fin c) :
     (ciExtM c A).mulVec v (Fin.natAdd n j) = v (Fin.natAdd n j) := by
@@ -932,14 +920,14 @@ def ciEquiv {N : ℕ} (M M' : Matrix (Fin N) (Fin N) E) (h1 : M * M' = 1) (h2 : 
     (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one])
 
 /- English proof (translation)
-Simplify using `[ciEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciEquiv_apply {N : ℕ} (M M' : Matrix (Fin N) (Fin N) E) (h1 : M * M' = 1) (h2 : M' * M = 1) (v : Sp E N) :
     ciEquiv M M' h1 h2 v = M.mulVec v := by
   simp [ciEquiv]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [ciEquiv]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ciEquiv_inv_apply {N : ℕ} (M M' : Matrix (Fin N) (Fin N) E) (h1 : M * M' = 1) (h2 : M' * M = 1) (v : Sp E N) :
     (ciEquiv M M' h1 h2)⁻¹ v = M'.mulVec v := by
@@ -948,9 +936,9 @@ theorem ciEquiv_inv_apply {N : ℕ} (M M' : Matrix (Fin N) (Fin N) E) (h1 : M * 
   | simp [ciEquiv]
 
 /- English proof (translation)
-Use `show ∀ x, ciEquiv M M' h1 h2 x ∈ L ↔ x ∈ L`. Introduce `x`. Rewrite using `[ciEquiv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `hM' _ h`. Rewrite `h'` using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Then use the resulting hypothesis. Conclude with `hM x`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ciEquiv_stab {N : ℕ} {M M' : Matrix (Fin N) (Fin N) E} {h1 : M * M' = 1} {h2 : M' * M = 1} {L : Submodule (𝓞 E) (Sp E N)}
     (hM : ∀ v ∈ L, M.mulVec v ∈ L) (hM' : ∀ v ∈ L, M'.mulVec v ∈ L) : ciEquiv M M' h1 h2 ∈ stabL E N L := by
@@ -964,9 +952,9 @@ theorem ciEquiv_stab {N : ℕ} {M M' : Matrix (Fin N) (Fin N) E} {h1 : M * M' = 
   · exact hM x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Use `Fin.addCases (fun l => ?_) (fun j => ?_) l` and prove the remaining obligations. Rewrite using `[ciExtM_castAdd, ciInX_castAdd]`. Simplify using `only [ciInX_castAdd]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[ciExtM_natAdd, ciInX_apply, ciInX_apply, dif_neg (by simp), dif_neg (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ciExtM_inX {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     (ciExtM c A).mulVec (Loc.inX E n c x) = Loc.inX E n c (A.mulVec x) := by
@@ -978,7 +966,7 @@ theorem ciExtM_inX {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (x : Fin n → E) 
   · rw [ciExtM_natAdd, ciInX_apply, ciInX_apply, dif_neg (by simp), dif_neg (by simp)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Use `Fin.addCases (fun l => ?_) (fun j => ?_) l` and prove the remaining obligations. Rewrite using `[ciExtM_castAdd, hv l]`. Simplify using `[hv]`. Rewrite using `[ciExtM_natAdd]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciExtM_fix {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (v : Sp E (n + c)) (hv : ∀ l : Fin n, v (Fin.castAdd c l) = 0) :
     (ciExtM c A).mulVec v = v := by
@@ -989,11 +977,11 @@ theorem ciExtM_fix {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (v : Sp E (n + c))
   · rw [ciExtM_natAdd]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[ciMem_sclLat]`. Introduce `m`. Use `Fin.addCases (fun l => ?_) (fun j => ?_) m` and prove the remaining obligations. Rewrite using `[ciExtM_castAdd, Finset.mul_sum]`. Use `ciIntAt_sum _ _ fun l' _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ((q : E) ^ e (Fin.castAdd c l).1)⁻¹ * (A l l' * v (Fin.castAdd c l')) = (A l l' * (q : E) ^ (e l'.1 - e l.1)) * (((q : E) ^ e (Fin.castAdd c l').1)⁻¹ * v (Fin.castAdd c l'))`. Simplify using `only [Fin.val_castAdd]`. Rewrite using `[zpow_sub₀ hq0]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(he l l').mul (hv _)`. Rewrite using `[ciExtM_natAdd]`. Conclude with `hv _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciExtM_maps {n c : ℕ} (hq0 : (q : E) ≠ 0) (A : Matrix (Fin n) (Fin n) E) (e : ℕ → ℤ)
     (he : ∀ l l' : Fin n, IntAt P (A l l' * (q : E) ^ (e l'.1 - e l.1))) (v : Sp E (n + c))
@@ -1014,13 +1002,13 @@ theorem ciExtM_maps {n c : ℕ} (hq0 : (q : E) ≠ 0) (A : Matrix (Fin n) (Fin n
     exact hv _
 
 /- English proof (translation)
-Establish `hfixN : ∀ i : ℕ, r (Loc.eN E (n + c) (n + i)) = Loc.eN E (n + c) (n + i)`. Introduce `i`. Rewrite using `[hr, ciExtM_fix]`. Introduce `l`. Unfold `Loc.eN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (by simp; omega)]`. Use `⟨fun i v hv => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `m hm`. Establish `hm' : ¬ m.1 < n + i` using `hm`. Use `Fin.addCases (motive := fun m => ¬ m.1 < n + i → (r v) m = 0) (fun l hl => ?_) (fun j hj => ?_) m hm'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `at hl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hr, ciExtM_natAdd]`. Conclude with `hv _ hj`. Use `hfixN 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Rewrite using `[hfixN i, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciR1cond {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (r : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
     (hr : ∀ v, r v = (ciExtM c A).mulVec v) : Loc.R1cond E n c r := by
@@ -1043,7 +1031,7 @@ theorem ciR1cond {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (r : Sp E (n + c) �
     exact zero_mem _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ciR1cond A _ (ciEquiv_apply _ _ h1 h2), ciR1cond A' _ (ciEquiv_inv_apply _ _ h1 h2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem extended_matrix_in_reduction {n c : ℕ} (A A' : Matrix (Fin n) (Fin n) E) (h1 : ciExtM c A * ciExtM c A' = 1) (h2 : ciExtM c A' * ciExtM c A = 1) :
     ciEquiv (ciExtM c A) (ciExtM c A') h1 h2 ∈ Loc.R1 E n c :=
@@ -1056,7 +1044,7 @@ section Mem2
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Apply `hAt` to reduce the goal to its premises. Use `show fine a bl l'.1 < fine a bl l.1`. Simplify using `only [fine]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ciFine_zero {a n : ℕ} {bl : List ℕ} {A : Matrix (Fin n) (Fin n) E} (hAt : A.BlockTriangular (fun i => fine a bl i.1))
     {l l' : Fin n} (h1 : l'.1 < a) (h2 : l'.1 < l.1) : A l l' = 0 := by
@@ -1066,11 +1054,9 @@ theorem ciFine_zero {a n : ℕ} {bl : List ℕ} {A : Matrix (Fin n) (Fin n) E} (
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[ciScE_lt _ l.2, ciScE_lt _ l'.2, ciFPos hfr (show l.1 < n + c by omega), ciFPos hfr (show l'.1 < n + c by omega), zero_add, zero_add]`. Apply the tactic sequence `by_cases h1 : s ≤ l'.1 <;> by_cases h2 : s ≤ l.1`. Rewrite using `[if_pos h1, if_pos h2, sub_self, zpow_zero, mul_one]`. Conclude with `hAi _ _`. Rewrite using `[if_pos h1, if_neg h2, sub_zero, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hAi _ _).mul ciIntAt_q`. Establish `h3 : A l l' = 0`. Break down `hs with hs | hs` into its components or cases. Conclude with `ciFine_zero hAt (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[h3, zero_mul]`. Conclude with `ciIntAt_zero`. Rewrite using `[if_neg h1, if_neg h2, sub_self, zpow_zero, mul_one]`. Conclude with `hAi _ _`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciHe_flag {k₀ n c a s : ℕ} {bl : List ℕ} (hfr : c = 0 ∨ k₀ = n) (A : Matrix (Fin n) (Fin n) E)
     (hAi : ∀ i j, IntAt P (A i j)) (hAt : A.BlockTriangular (fun i => fine a bl i.1)) (hs : s ≤ a ∨ n ≤ s) (l l' : Fin n) :
@@ -1089,11 +1075,11 @@ theorem ciHe_flag {k₀ n c a s : ℕ} {bl : List ℕ} (hfr : c = 0 ∨ k₀ = n
   · rw [if_neg h1, if_neg h2, sub_self, zpow_zero, mul_one]; exact hAi _ _
 
 /- English proof (translation)
-Unfold `LocE.bvecG`. Rewrite using `[ciFIdx hfr (show l.1 < n + c by omega), ciScE_lt _ l.2, zpow_zero, one_smul]`. Use function extensionality and compare the values at `m`. Rewrite using `[ciInX_apply]`. Unfold `Loc.eN`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hm : m.1 < n`. Rewrite using `[dif_pos hm]`. Distinguish the cases in `he : (⟨m.1, hm⟩ : Fin n) = l`. Rewrite using `[he, Pi.single_eq_same, if_pos (by rw [← he])]`. Rewrite using `[Pi.single_eq_of_ne he, if_neg (fun h => he (Fin.ext h))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hm, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ciBvecG {k₀ n c : ℕ} (hfr : c = 0 ∨ k₀ = n) (l : Fin n) :
     LocE.bvecG E q k₀ n c l.1 = Loc.inX E n c (Pi.single l 1) := by
@@ -1110,37 +1096,33 @@ theorem ciBvecG {k₀ n c : ℕ} (hfr : c = 0 ∨ k₀ = n) (l : Fin n) :
   · rw [dif_neg hm, if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hq0` using `ciQ_ne_zero hu`. Use `set G := ciLiftM P hbar.1 with hGdef`. Establish `hdet : IsUnit G.det` using `isUnit_iff_ne_zero.2 (ciLiftM_det_ne hbar)`. Establish `hG1 : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G hdet`. Establish `hG2 : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE1 : ciExtM c G * ciExtM c G⁻¹ = 1` using `by rw [← ciExtM_mul, hG1, ciExtM_one]`. Establish `hE2 : ciExtM c G⁻¹ * ciExtM c G = 1` using `by rw [← ciExtM_mul, hG2, ciExtM_one]`. Establish `hbt : (hbar.1 : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)).BlockTriangular (fun i => fine a bl i.1)` using `hh.1`. Establish `hdiag : ∀ i : Fin n, i.1 < a → (hbar.1 : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) i i = 1` using `hh.2`. Establish `hGt : G.BlockTriangular (fun i => fine a bl i.1)` using `ciLiftM_blockTriangular hbt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Invertible G` using `Matrix.invertibleOfIsUnitDet G hdet`. Establish `hGit : G⁻¹.BlockTriangular (fun i => fine a bl i.1)` using `Matrix.blockTriangular_inv_of_blockTriangular hGt`. Establish `hGi : ∀ i j, IntAt P (G i j)` using `ciLiftM_int _`. Establish `hGii : ∀ i j, IntAt P (G⁻¹ i j)` using `ciLiftM_inv_int hbar`. Establish `hsX : ∀ s, s < r0 ∨ (∃ i, s = r0 + i * t) → s ≤ a ∨ n ≤ s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `s (hs | ⟨i, rfl⟩)`. Distinguish the cases in `hsn : s < n`. Conclude with `Or.inl (hsa s hs hsn).le`. Conclude with `Or.inr (by omega)`. Conclude with `hst i`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstab : ∀ s, s < r0 ∨ (∃ i, s = r0 + i * t) → ciEquiv (ciExtM c G) (ciExtM c G⁻¹) hE1 hE2 ∈ stabL E (n + c) (LocE.flagG P q k₀ n c s)`. Introduce `s hs`. Use `ciEquiv_stab (fun v hv => ?_) (fun v hv => ?_)` and prove the remaining obligations. Unfold `LocE.flagG at hv ⊢`. Conclude with `ciExtM_maps hq0 G _ (ciHe_flag hfr G hGi hGt (hsX s hs)) v hv`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `LocE.flagG at hv ⊢`. Conclude with `ciExtM_maps hq0 G⁻¹ _ (ciHe_flag hfr G⁻¹ hGii hGit (hsX s hs)) v hv`. Use `⟨ciEquiv G G⁻¹ hG1 hG2, ⟨ciEquiv (ciExtM c G) (ciExtM c G⁻¹) hE1 hE2, ⟨extended_matrix_in_reduction G G⁻¹ hE1 hE2, ?_⟩, fun x => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one]`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ ∈ stabL E (n + c) (LocE.sclLat P q (n + c) (LocE.scE n fun i => i + 1))`. Establish `he : ∀ (A : Matrix (Fin n) (Fin n) E), (∀ i j, IntAt P (A i j)) → ∀ l l' : Fin n, IntAt P (A l l' * (q : E) ^ (LocE.scE n (fun i => i + 1) l'.1 - LocE.scE n (fun i => i + 1) l.1))`. Introduce `A hA l l'`. Rewrite using `[ciScE_lt _ l.2, ciScE_lt _ l'.2, sub_self, zpow_zero, mul_one]`. Conclude with `hA _ _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ciEquiv_stab (fun v hv => ciExtM_maps hq0 G _ (he G hGi) v hv) (fun v hv => ciExtM_maps hq0 G⁻¹ _ (he G⁻¹ hGii) v hv)`. Use `⟨fun s hs => hstab s (Or.inr hs), fun s hs => ⟨hstab s (Or.inl hs), ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hsn : s < n`. Establish `hb` using `ciBvecG (E := E) (q := q) (k₀ := k₀) (c := c) hfr ⟨s, hsn⟩`. Simplify using `only at hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, ciEquiv_apply, ciExtM_inX, ← map_sub, ciMem_flagG]`. Introduce `m`. Use `Fin.addCases (fun l => ?_) (fun j => ?_) m` and prove the remaining obligations. Rewrite using `[ciInX_castAdd, Fin.val_castAdd, ciScE_lt _ l.2, ciFPos hfr (show l.1 < n + c by omega), zero_add]`. Establish `hv : ((G.mulVec (Pi.single (⟨s, hsn⟩ : Fin n) (1 : E)) - Pi.single (⟨s, hsn⟩ : Fin n) (1 : E) : Fin n → E) l) = G l ⟨s, hsn⟩ - (Pi.single (⟨s, hsn⟩ : Fin n) (1 : E) : Fin n → E) l`.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[hv]`. Distinguish the cases in `hsl : s ≤ l.1`. Break down `Nat.eq_or_lt_of_le hsl with h | h` into its components or cases. Establish `hl : l = ⟨s, hsn⟩` using `Fin.ext h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Substitute `hl` using the available equality. Rewrite using `[Pi.single_eq_same, hGdef, ciLiftM_apply, hdiag _ (hsa s hs hsn), ciLift_one, map_one, sub_self, mul_zero]`. Conclude with `ciIntAt_zero`. Establish `hl : l ≠ ⟨s, hsn⟩` using `fun h' => by rw [h'] at h; simp at h`. Rewrite using `[ciFine_zero hGt (show (⟨s, hsn⟩ : Fin n).1 < a from hsa s hs hsn) h, Pi.single_eq_of_ne hl, sub_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ciIntAt_zero`. Rewrite using `[if_neg hsl, zpow_zero, inv_one, one_mul]`. Distinguish the cases in `hl : l = ⟨s, hsn⟩`. Rewrite using `[hl, Pi.single_eq_same]`. Conclude with `ciIntAt_sub (hGi _ _) ciIntAt_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.single_eq_of_ne hl, sub_zero]`. Conclude with `hGi _ _`. Rewrite using `[ciInX_apply, dif_neg (by simp), mul_zero]`. Conclude with `ciIntAt_zero`. Establish `hfix : ciEquiv (ciExtM c G) (ciExtM c G⁻¹) hE1 hE2 (LocE.bvecG E q k₀ n c s) = LocE.bvecG E q k₀ n c s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ciEquiv_apply, ciExtM_fix]`. Introduce `l`. Unfold `LocE.bvecG Loc.eN`. Rewrite using `[ciFIdx hfr (show s < n + c by omega), Pi.smul_apply, if_neg (by simp; omega), smul_zero]`. Rewrite using `[hfix, sub_self]`.
-
-Conclude with `zero_mem _`. Rewrite using `[ciEquiv_apply, ciEquiv_apply, ciExtM_inX]`. Use function extensionality and compare the values at `l`. Establish `hx'` using `(ciMem_stdAt P x).1 hx`. Simplify using `only [redV, ciEquiv_apply, Matrix.mulVec, dotProduct]`.
-
-Rewrite using `[redP_sum _ _ (fun l' _ => (hGi _ _).mul (hx' _))]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[reduction_mul (hGi _ _) (hx' _), ciLiftM_red]`.
+A detailed English derivation is pending.
 -/
 theorem ciGrp_mem (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {k₀ r0 t n c a : ℕ} {bl : List ℕ}
     (hfr : c = 0 ∨ k₀ = n) (hr0 : r0 ≤ n + c) (hsa : ∀ s, s < r0 → s < n → s < a)
@@ -1235,7 +1217,7 @@ section Of
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[ciInX_apply]`. Simplify using `only [Loc.eN]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl | simp_all [Pi.single_apply, Fin.ext_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ciEN {n c p : ℕ} (hp : p < n) : Loc.eN E (n + c) p = Loc.inX E n c (Pi.single ⟨p, hp⟩ 1) := by
   funext l
@@ -1244,15 +1226,15 @@ theorem ciEN {n c p : ℕ} (hp : p < n) : Loc.eN E (n + c) p = Loc.inX E n c (Pi
   split_ifs <;> first | omega | rfl | simp_all [Pi.single_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Simplify using `[Loc.atN, ciInX_apply, hp, show p < n + c by omega]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciAtN_inX {n c p : ℕ} (hp : p < n) (v : Fin n → E) : Loc.atN (Loc.inX E n c v) p = v ⟨p, hp⟩ := by
   simp [Loc.atN, ciInX_apply, hp, show p < n + c by omega]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [redV]`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using `[redP_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h, redP_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciRedV_single {n : ℕ} (l : Fin n) : redV P (Pi.single l (1 : E)) = Pi.single l 1 := by
   funext i
@@ -1263,9 +1245,9 @@ theorem ciRedV_single {n : ℕ} (l : Fin n) : redV P (Pi.single l (1 : E)) = Pi.
   · simp [Pi.single_eq_of_ne h, redP_zero]
 
 /- English proof (translation)
-Rewrite using `[ciMem_stdAt]`. Introduce `i`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using `using (ciIntAt_one : IntAt P (1 : E))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(ciIntAt_zero : IntAt P (0 : E))` using `[Pi.single_eq_of_ne h]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciSingle_mem {n : ℕ} (l : Fin n) : (Pi.single l (1 : E) : Sp E n) ∈ stdAt E n P := by
   rw [ciMem_stdAt]
@@ -1276,7 +1258,7 @@ theorem ciSingle_mem {n : ℕ} (l : Fin n) : (Pi.single l (1 : E) : Sp E n) ∈ 
   · simpa [Pi.single_eq_of_ne h] using (ciIntAt_zero : IntAt P (0 : E))
 
 /- English proof (translation)
-Establish `h` using `congrFun (hred _ (ciSingle_mem l')) l`. Rewrite `h` using `[ciRedV_single]`. Simplify using `only [redV] at h`. Rewrite using `[h]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ciEntry {n : ℕ} {g : Sp E n ≃ₗ[E] Sp E n} {hbar : GL (Fin n) (𝓞 E ⧸ P.asIdeal)}
     (hred : ∀ x ∈ stdAt E n P, redV P (g x) = hbar.1.mulVec (redV P x)) (l l' : Fin n) :
@@ -1288,7 +1270,7 @@ theorem ciEntry {n : ℕ} {g : Sp E n ≃ₗ[E] Sp E n} {hbar : GL (Fin n) (𝓞
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Use `hr.2` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ciJG_of_Cbe {k₀ r0 t n c : ℕ} {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hr : r ∈ Loc.Cbe (LocE.JG P q k₀ r0 t n c) 1) :
     r ∈ LocE.JG P q k₀ r0 t n c := by
@@ -1296,7 +1278,7 @@ theorem ciJG_of_Cbe {k₀ r0 t n c : ℕ} {r : Sp E (n + c) ≃ₗ[E] Sp E (n + 
   simpa [MulAut.conj_apply] using this
 
 /- English proof (translation)
-Establish `h1` using `((ciPrX_le (P := P) (q := q) (k₀ := k₀) (r0 := r0) (t := t) (c := c) hg) _).2 (ciSingle_mem (P := P) l')`. Conclude with `(ciMem_stdAt P _).1 h1 l`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ciInt_of_prX {k₀ r0 t n c : ℕ} {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ Loc.prX (Loc.Cbe (LocE.JG P q k₀ r0 t n c) 1))
     (l l' : Fin n) : IntAt P (g (Pi.single l' 1) l) := by
@@ -1304,11 +1286,9 @@ theorem ciInt_of_prX {k₀ r0 t n c : ℕ} {g : Sp E n ≃ₗ[E] Sp E n} (hg : g
   exact (ciMem_stdAt P _).1 h1 l
 
 /- English proof (translation)
-Take `⟨r, hr, hrg⟩` from `hg`. Establish `hJ` using `ciJG_of_Cbe hr`. Establish `hgi` using `ciInt_of_prX ⟨r, hr, hrg⟩`. Rewrite using `[mem_uniUT]`. Use `⟨fun i j hij => ?_, fun i j hi hji => ?_, fun i hi => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, h1, h2⟩` from `hblk i j hij`. Apply the tactic sequence `rw [ciEntry hred]`. Apply the tactic sequence `exact ciJG_entry hq hq0 hfr hJ hrg hs h1 h2`. Apply the tactic sequence `rw [ciEntry hred]`. Apply the tactic sequence `exact ciJG_entry hq hq0 hfr hJ hrg (s := j.1 + 1) (Or.inl (by omega)) (by omega) (by omega)`.
-
-Apply the tactic sequence `rw [ciEntry hred]`. Conclude with `ciJG_diag hq hq0 hfr hJ hrg hgi (by omega)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciGrp_of (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {k₀ r0 t n c a : ℕ} {bl : List ℕ}
     (hfr : c = 0 ∨ k₀ = n) (ha : a ≤ r0)
@@ -1329,7 +1309,7 @@ theorem ciGrp_of (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0)
     exact ciJG_diag hq hq0 hfr hJ hrg hgi (by omega)
 
 /- English proof (translation)
-Unfold `LocE.entB`. Rewrite using `[ciFIdx hfr (show p < n + c by omega), ciFIdx hfr (show p' < n + c by omega), ciScE_lt _ hp, ciScE_lt _ hp', sub_self, zpow_zero, mul_one, ciEN hp', LinearEquiv.coe_coe, hrg, ciAtN_inX hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciEntB_X {k₀ n c : ℕ} (hfr : c = 0 ∨ k₀ = n) (ex ex' : ℕ → ℕ) {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} {g : Sp E n ≃ₗ[E] Sp E n}
     (hrg : ∀ x, r (Loc.inX E n c x) = Loc.inX E n c (g x)) {p p' : ℕ} (hp : p < n) (hp' : p' < n) :
@@ -1339,9 +1319,9 @@ theorem ciEntB_X {k₀ n c : ℕ} (hfr : c = 0 ∨ k₀ = n) (ex ex' : ℕ → �
     zpow_zero, mul_one, ciEN hp', LinearEquiv.coe_coe, hrg, ciAtN_inX hp]
 
 /- English proof (translation)
-Unfold `LocE.entB`. Rewrite using `[ciFIdx hfr (show p < n + c by omega), ciFIdx hfr (show n < n + c by omega), LinearEquiv.coe_coe, hr.1.2.1]`. Unfold `Loc.atN Loc.eN`. Rewrite using `[dif_pos (by omega)]`. Simplify using `only`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entry_block_vanishing {k₀ n c : ℕ} (hfr : c = 0 ∨ k₀ = n) (ex ex' : ℕ → ℕ) {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)}
     (hr : r ∈ Loc.R1 E n c) {p : ℕ} (hp : p < n) (hc : 1 ≤ c) :
@@ -1360,7 +1340,7 @@ section Lev
 variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
 
 /- English proof (translation)
-Unfold `Jat`. Rewrite using `[if_pos hw]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ciJat (j : ℕ) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) :
     Jat (Pr := Pr) (R := Examples₂.R0) false j w = LocE.JG w (qOf w) Examples₂.R0.k Examples₂.R0.r Examples₂.R0.t (Examples₂.R0.N j) (cOf Examples₂.R0 j) := by
@@ -1369,11 +1349,11 @@ theorem ciJat (j : ℕ) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) :
   rfl
 
 /- English proof (translation)
-Establish `hq` using `ciQ_mem (E := X.E) w.1`. Establish `hu` using `ciQ_notMem_sq hX hPr w.2`. Establish `hq0` using `ciQ_ne_zero hu`. Unfold `prCat`. Rewrite using `[ciJat 0 w.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `hbar ∈ uniUT (Examples₂.R0.N 0) (𝓞 X.E ⧸ w.1.asIdeal) (Examples₂.R0.k + 0) (List.replicate 0 Examples₂.R0.t) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `ciGrp_mem hu (Or.inr rfl) (by decide) (fun s h1 h2 => by simp [Examples₂.exampleRanks_N_formula] at h2 ⊢; omega) (fun i => Or.inr (by simp [Examples₂.exampleRanks_N_formula]; omega)) hbar hh`. Introduce and unpack `⟨g, hg, hred⟩`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `ciGrp_of hq hq0 (Or.inr rfl) (by decide) (fun i j h => ?_) hbar hg hred` and prove the remaining obligations. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Examples₂.exampleRanks_N_formula] at hi hj`. Simplify using `[coarse, blkIdx, hi, hj] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem first_level_reduction_group (hX : X.Ok) (hPr : Pr.Ok) (w : Pr.vGs) (hbar : GL (Fin (Examples₂.R0.N 0)) (𝓞 X.E ⧸ w.1.asIdeal)) :
     hbar ∈ (colLev Ch 0 w).H ↔ ∃ g ∈ prCat (Pr := Pr) (R := Examples₂.R0) false 0 w.1 1,
@@ -1396,13 +1376,13 @@ theorem first_level_reduction_group (hX : X.Ok) (hPr : Pr.Ok) (w : Pr.vGs) (hbar
     simp [coarse, blkIdx, hi, hj] at h
 
 /- English proof (translation)
-Establish `hq` using `ciQ_mem (E := X.E) w.1`. Establish `hu` using `ciQ_notMem_sq hX hPr w.2`. Establish `hq0` using `ciQ_ne_zero hu`. Unfold `prCat`. Rewrite using `[ciJat 1 w.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `hbar ∈ uniUT (Examples₂.R0.N 1) (𝓞 X.E ⧸ w.1.asIdeal) (Examples₂.R0.k + 1) (List.replicate 1 Examples₂.R0.t) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `ciGrp_mem hu (Or.inl rfl) (by decide) (fun s h1 h2 => by simp [Examples₂.exampleRanks_N_formula] at h1 h2 ⊢; omega) (fun i => by simp [Examples₂.exampleRanks_N_formula]; omega) hbar hh`. Introduce and unpack `⟨g, hg, hred⟩`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `ciGrp_of hq hq0 (Or.inl rfl) (by decide) (fun i j h => ?_) hbar hg hred` and prove the remaining obligations. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [Examples₂.exampleRanks_N_formula] at hi hj`. Use `⟨Examples₂.R0.r, Or.inr ⟨0, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [coarse, blkIdx, List.replicate] at h split_ifs at h <;> simp_all <;> omega`. Apply the tactic sequence `simp only [coarse, blkIdx, List.replicate] at h split_ifs at h <;> simp_all <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem second_level_reduction_group (hX : X.Ok) (hPr : Pr.Ok) (w : Pr.vGs) (hbar : GL (Fin (Examples₂.R0.N 1)) (𝓞 X.E ⧸ w.1.asIdeal)) :
     hbar ∈ (colLev Ch 1 w).H ↔ ∃ g ∈ prCat (Pr := Pr) (R := Examples₂.R0) false 1 w.1 1,
@@ -1433,13 +1413,11 @@ end Lev
 section Chr
 
 /- English proof (translation)
-Unfold `supSum`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => if h : i + 1 < n ∧ i + 1 < a ∧ i ∈ S then M ⟨i, by omega⟩ ⟨i + 1, h.1⟩ else 0) n]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.1 + 1 < n ∧ i.1 + 1 < a ∧ i.1 ∈ S`. Rewrite using `[dif_pos h, Finset.sum_eq_single (⟨i.1 + 1, h.1⟩ : Fin n)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ⟨rfl, h.2.1, h.2.2⟩]`. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `hc`. Conclude with `hj (Fin.ext hc.1.symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Conclude with `absurd (Finset.mem_univ _) hc`. Rewrite using `[dif_neg h]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
-
-Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `h ⟨by rw [h1]; exact j.2, by rw [h1]; exact h2, h3⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ciSupSum {κ : Type} [CommRing κ] {n a : ℕ} {S : Finset ℕ} (M : Matrix (Fin n) (Fin n) κ) :
     supSum a S M = ∑ i ∈ Finset.range n,
@@ -1467,7 +1445,7 @@ variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
   {mq : ℕ → rowSG Pr sel (mu0 X.F X.E X.K S) → X.K}
 
 /- English proof (translation)
-Unfold `ciPsi`. Rewrite using `[mul_zero, if_pos ciIntAt_zero, redP_zero]`. Use `first`. Consider the case `exact AddChar.map_zero_eq_one _`. Consider the case `simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ciPsi_zero {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (P : SB) : ciPsi Ch P 0 = 1 := by
   unfold ciPsi
@@ -1477,14 +1455,14 @@ theorem ciPsi_zero {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (P : SB) : ciPsi
   | simp
 
 /- English proof (translation)
-Unfold `psi0P`. Rewrite using `[dif_pos w.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciPsi0P (w : Pr.vGs) : psi0P Ch w.1 = Ch.psi0 w := by
   unfold psi0P
   rw [dif_pos w.2]
 
 /- English proof (translation)
-Unfold `chiP`. Rewrite using `[dif_pos w.2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ciChiP (w : Pr.vGs) : chiP Ch w.1 = extChi fun s => Ch.chi s w := by
   unfold chiP
@@ -1492,21 +1470,21 @@ theorem ciChiP (w : Pr.vGs) : chiP Ch w.1 = extChi fun s => Ch.chi s w := by
   rfl
 
 /- English proof (translation)
-Establish `hq` using `ciQ_mem (E := X.E) w.1`. Establish `hu` using `ciQ_notMem_sq hX hPr w.2`. Establish `hq0` using `ciQ_ne_zero hu`. Rewrite `hr` using `[ciJat 0 w.2]`. Establish `hJ` using `ciJG_of_Cbe hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgi` using `ciInt_of_prX ⟨r, hr, hrg⟩`. Establish `hfr0 : cOf Examples₂.R0 0 = 0 ∨ Examples₂.R0.k = Examples₂.R0.N 0` using `Or.inr rfl`. Unfold `chiInv`. Establish `hn1 : Loc.n1Arg r = 0`. Unfold `Loc.n1Arg`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[show cOf Examples₂.R0 0 - 1 = 0 from rfl, Finset.range_zero, Finset.sum_empty]`. Rewrite using `[hn1]`. Use `show _ = (ciPsi Ch _ 0)⁻¹ * _`. Rewrite using `[ciPsi_zero, inv_one, one_mul, inv_one, one_mul, mul_one]`. Unfold `lamRow`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos w.2]`. Unfold `LocE.lamGB LocE.lamGv`. Rewrite using `[ciPsi0P, Finset.range_zero, Finset.prod_empty, mul_one]`. Establish `e1 : (((colLev Ch 0 w).lam hbar : X.Kˣ) : X.K) = ((lamX (Ch.psi0 w) (extChi fun s => Ch.chi s w) (Examples₂.R0.N 0) Examples₂.R0.k Examples₂.R0.m Examples₂.R0.t 0 ⟨hbar.1, hbar.2⟩ : X.Kˣ) : X.K)` using `rfl`. Rewrite using `[e1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lamX lamGen`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, supChar_val, MonoidHom.comp_apply, detChar_apply]`. Simplify using `only [List.replicate, List.length_nil, Finset.range_zero, Finset.prod_empty, Units.val_one, mul_one]`. Use `congr 1`. Rewrite using `[ciSupSum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ i ∈ Finset.range (Examples₂.R0.r - 1), IntAt w.1 (LocE.entB (qOf w.1) Examples₂.R0.k (cOf Examples₂.R0 0) (Examples₂.R0.N 0) (cOf Examples₂.R0 0) (Examples₂.R0.N 0) (fun i => i + 1) (fun i => i + 1) r.toLinearMap i (i + 1))`. Introduce `i hi`. Simplify using `only [Finset.mem_range, show Examples₂.R0.r - 1 = 8 from rfl] at hi`. Distinguish the cases in `h7 : i < 7`. Rewrite using `[ciEntB_X hfr0 _ _ hrg (show i < Examples₂.R0.N 0 by simp [Examples₂.exampleRanks_N_formula]; omega) (show i + 1 < Examples₂.R0.N 0 by simp [Examples₂.exampleRanks_N_formula]; omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgi _ _`. Rewrite using `[show i = Examples₂.R0.N 0 - 1 by simp [Examples₂.exampleRanks_N_formula]; omega, show Examples₂.R0.N 0 - 1 + 1 = Examples₂.R0.N 0 from rfl, entry_block_vanishing hfr0 _ _ hr.1 (by simp [Examples₂.exampleRanks_N_formula]) (by decide)]`. Conclude with `ciIntAt_zero`. Rewrite using `[redP_sum _ _ hint, show Examples₂.R0.r - 1 = Examples₂.R0.N 0 from rfl]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_range, Examples₂.exampleRanks_N_formula] at hi`. Distinguish the cases in `h7 : i < 7`. Rewrite using `[dif_pos ⟨by simp [Examples₂.exampleRanks_N_formula]; omega, by simp; omega, by simp [SX]; omega⟩, ciEntB_X hfr0 _ _ hrg (show i < Examples₂.R0.N 0 by simp [Examples₂.exampleRanks_N_formula]; omega) (show i + 1 < Examples₂.R0.N 0 by simp [Examples₂.exampleRanks_N_formula]; omega) …`. Apply the tactic sequence `exact ciEntry hred _ _`. Rewrite using `[dif_neg (by simp [Examples₂.exampleRanks_N_formula]; omega), show i = Examples₂.R0.N 0 - 1 by simp [Examples₂.exampleRanks_N_formula]; omega, show Examples₂.R0.N 0 - 1 + 1 = Examples₂.R0.N 0 from rfl, entry_block_vanishing hfr0 _ _ hr.1 (by simp [Examples₂.exampleRanks_N_formula …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_first_level_group (hX : X.Ok) (hPr : Pr.Ok) (w : Pr.vGs) (hw : w.1 ∈ rowSG Pr sel (mu0 X.F X.E X.K S))
     (hbar : ↥(colLev Ch 0 w).H) (g : Sp X.E (Examples₂.R0.N 0) ≃ₗ[X.E] Sp X.E (Examples₂.R0.N 0))
@@ -1570,7 +1548,7 @@ variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
   {mq : ℕ → rowSG Pr sel (mu0 X.F X.E X.K S) → X.K}
 
 /- English proof (translation)
-Unfold `coarse`. Simplify using `only [blkIdx]`. Apply the tactic sequence `by_cases h1 : x < 9 <;> by_cases h2 : x - 9 < 15 <;> simp [h1, h2] <;> omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ciCoarse1 (x : ℕ) : coarse 9 [15] x = 1 ↔ 9 ≤ x ∧ x < 24 := by
   unfold coarse
@@ -1588,29 +1566,27 @@ def secondBlockIndexEquiv : Fin 15 ≃ {i : Fin 24 // coarse 9 [15] i.1 = 1} whe
     omega
 
 /- English proof (translation)
-Establish `hu` using `ciQ_notMem_sq hX hPr w.2`. Rewrite `hr` using `[ciJat 1 w.2]`. Establish `hgi` using `ciInt_of_prX ⟨r, hr, hrg⟩`. Establish `hfr1 : cOf Examples₂.R0 1 = 0 ∨ Examples₂.R0.k = Examples₂.R0.N 1` using `Or.inl rfl`. Unfold `chiInv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hn1 : Loc.n1Arg r = 0`. Unfold `Loc.n1Arg`. Rewrite using `[show cOf Examples₂.R0 1 - 1 = 0 from rfl, Finset.range_zero, Finset.sum_empty]`. Rewrite using `[hn1]`. Use `show _ = (ciPsi Ch _ 0)⁻¹ * _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ciPsi_zero, inv_one, one_mul, inv_one, one_mul, mul_one]`. Unfold `lamRow`. Rewrite using `[if_pos w.2]`. Unfold `LocE.lamGB LocE.lamGv`. Rewrite using `[ciPsi0P, ciChiP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (((colLev Ch 1 w).lam hbar : X.Kˣ) : X.K) = ((lamX (Ch.psi0 w) (extChi fun s => Ch.chi s w) (Examples₂.R0.N 1) Examples₂.R0.k Examples₂.R0.m Examples₂.R0.t 1 ⟨hbar.1, hbar.2⟩ : X.Kˣ) : X.K)` using `rfl`. Rewrite using `[e1]`. Unfold `lamX lamGen`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, supChar_val, MonoidHom.comp_apply, detChar_apply]`. Establish `hM : ∀ p p' : ℕ, ∀ (hp : p < 24) (hp' : p' < 24), LocE.entB (qOf w.1) Examples₂.R0.k (cOf Examples₂.R0 1) (Examples₂.R0.N 1) (cOf Examples₂.R0 1) (Examples₂.R0.N 1) (fun i => i + 1) (fun i => i + 1) r.toLinearMap p p' = g (Pi.single ⟨p', hp'⟩ 1) ⟨p, hp⟩` using `fun p p' hp hp' => ciEntB_X hfr1 _ _ hrg hp hp'`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[ciSupSum]`. Establish `hint : ∀ i ∈ Finset.range (Examples₂.R0.r - 1), IntAt w.1 (LocE.entB (qOf w.1) Examples₂.R0.k (cOf Examples₂.R0 1) (Examples₂.R0.N 1) (cOf Examples₂.R0 1) (Examples₂.R0.N 1) (fun i => i + 1) (fun i => i + 1) r.toLinearMap i (i + 1))`. Introduce `i hi`. Simplify using `only [Finset.mem_range, show Examples₂.R0.r - 1 = 8 from rfl] at hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM i (i + 1) (by omega) (by omega)]`. Conclude with `hgi _ _`. Rewrite using `[redP_sum _ _ hint, ← Finset.sum_range_add_sum_Ico _ (show Examples₂.R0.r - 1 ≤ Examples₂.R0.N 1 by decide)]`. Rewrite using `[Finset.sum_eq_zero (s := Finset.Ico (Examples₂.R0.r - 1) (Examples₂.R0.N 1)) (fun i hi => by`. Simplify using `only [Finset.mem_Ico, show Examples₂.R0.r - 1 = 8 from rfl] at hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[dif_neg (by simp; omega)]), add_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_range, show Examples₂.R0.r - 1 = 8 from rfl] at hi`. Rewrite using `[dif_pos ⟨by simp [Examples₂.exampleRanks_N_formula]; omega, by simp; omega, by simp [SX]; omega⟩, hM i (i + 1) (by omega) (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `exact ciEntry hred _ _`. Simplify using `only [List.replicate, List.length_singleton, Finset.range_one, Finset.prod_singleton, zero_mul, add_zero]`. Use `set D : Matrix (Fin Examples₂.R0.t) (Fin Examples₂.R0.t) X.E := Matrix.of fun s s' : Fin Examples₂.R0.t => LocE.entB (qOf w.1) Examples₂.R0.k (cOf Examples₂.R0 1) (Examples₂.R0.N 1) (cOf Examples₂.R0 1) (Examples₂.R0.N 1) (fun i => i + 1) (fun i => i + 1) r.toLinearMap (Examples₂ …`. Establish `hDint : ∀ s s', IntAt w.1 (D s s')`. Introduce `s s'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, Matrix.of_apply, hM _ _ (by have := s.2; simp at this ⊢; omega) (by have := s'.2; simp at this ⊢; omega)]`. Conclude with `hgi _ _`. Establish `hmem : (hbar.1 : GL (Fin (Examples₂.R0.N 1)) (𝓞 X.E ⧸ w.1.asIdeal)) ∈ uniUT (Examples₂.R0.N 1) (𝓞 X.E ⧸ w.1.asIdeal) (Examples₂.R0.k + 1) (List.replicate 1 Examples₂.R0.t)` using `hbar.2`. Establish `hdet : redP w.1 D.det = ((blkDet (Examples₂.R0.N 1) (𝓞 X.E ⧸ w.1.asIdeal) (coarse (Examples₂.R0.k + 1) (List.replicate 1 Examples₂.R0.t)) 1 ⟨hbar.1, uniUT_le_blockUT _ _ _ _ hmem⟩ : (𝓞 X.E ⧸ w.1.asIdeal)ˣ) : 𝓞 X.E ⧸ w.1.asIdeal)`. Rewrite using `[redP_det D hDint, blkDet_val]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (Matrix.det_submatrix_equiv_self secondBlockIndexEquiv _)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `s s'`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, Matrix.toSquareBlock_def, Matrix.of_apply, hD]`. Apply the tactic sequence `rw [hM _ _ (by have := s.2; simp at this ⊢; omega) (by have := s'.2; simp at this ⊢; omega), ← ciEntry hred]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Establish `hU : IsUnit (redP w.1 D.det)` using `by rw [hdet]; exact Units.isUnit _`. Unfold `LocE.unitV`. Rewrite using `[dif_pos hU]`. Use `congr 2`.
-
-Conclude with `Units.ext (by rw [IsUnit.unit_spec, hdet]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem character_second_level_group (hX : X.Ok) (hPr : Pr.Ok) (w : Pr.vGs) (hw : w.1 ∈ rowSG Pr sel (mu0 X.F X.E X.K S))
     (hbar : ↥(colLev Ch 1 w).H) (g : Sp X.E (Examples₂.R0.N 1) ≃ₗ[X.E] Sp X.E (Examples₂.R0.N 1))
@@ -1693,7 +1669,7 @@ section Phi
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Unfold `Loc.om`. Establish `e : ((1 : (Fin b → E) ≃ₗ[E] (Fin b → E)).symm.toLinearMap ∘ₗ x ∘ₗ (1 : (Fin a → E) ≃ₗ[E] (Fin a → E)).toLinearMap) = x` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e, map_one, map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciOm_one {a b : ℕ} (mu : E → K) (v : E → ℤ) (sq : K) (Φ : Loc.SF E K a b) (x : (Fin a → E) →ₗ[E] (Fin b → E)) :
     Loc.om mu v sq (1 : (Fin a → E) ≃ₗ[E] (Fin a → E)) (1 : (Fin b → E) ≃ₗ[E] (Fin b → E)) Φ x =
@@ -1704,9 +1680,9 @@ theorem ciOm_one {a b : ℕ} (mu : E → K) (v : E → ℤ) (sq : K) (Φ : Loc.S
   rw [e, map_one, map_one, Units.val_one]
 
 /- English proof (translation)
-Unfold `LocE.unitV`. Distinguish the cases in `hu : IsUnit (redP P a)`. Rewrite using `[dif_pos hu, dif_pos (h ▸ hu)]`. Use `congr 2`. Conclude with `Units.ext (by rw [IsUnit.unit_spec, IsUnit.unit_spec, h])`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hu, dif_neg (fun h' => hu (h ▸ h'))]`.
+A detailed English derivation is pending.
 -/
 theorem ciUnitV_congr (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a a' : E} (h : redP P a' = redP P a) :
     LocE.unitV χ a' = LocE.unitV χ a := by
@@ -1718,13 +1694,13 @@ theorem ciUnitV_congr (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a a' : E} (h : r
   · rw [dif_neg hu, dif_neg (fun h' => hu (h ▸ h'))]
 
 /- English proof (translation)
-Unfold `LocE.lamGv`. Use `congr 1`. Use `congr 1`. Establish `hb : ∀ i ∈ Finset.range (r - 1), i < a ∧ i + 1 < a` using `fun i hi => by simp at hi; omega`. Rewrite using `[redP_sum _ _ (fun i hi => (h i (i + 1) (hb i hi).1 (hb i hi).2).2.1), redP_sum _ _ (fun i hi => (h i (i + 1) (hb i hi).1 (hb i hi).2).1)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i hi => (h i (i + 1) (hb i hi).1 (hb i hi).2).2.2`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < j` using `by simpa using hi`. Establish `hb : ∀ s : Fin t, r + i * t + s.1 < a` using `fun s => by`. Establish `h1` using `s.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right _ hi'`. Use the polynomial consequences of the given equalities and inequalities. Apply `ciUnitV_congr` to reduce the goal to its premises. Rewrite using `[redP_det (Matrix.of fun s s' : Fin t => M' (r + i * t + s.1) (r + i * t + s'.1)) (fun s s' => (h _ _ (hb s) (hb s')).2.1), redP_det (Matrix.of fun s s' : Fin t => M (r + i * t + s.1) (r + i * t + s'.1)) (fun s s' => (h _ _ (hb s) (hb s')).1)]`. Use `congr 1`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `s s'`. Conclude with `(h _ _ (hb s) (hb s')).2.2`.
+A detailed English derivation is pending.
 -/
 theorem ciLamGv_congr (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {r t j a : ℕ} (M M' : ℕ → ℕ → E)
     (hr : r - 1 < a) (hja : r + j * t ≤ a)
@@ -1761,7 +1737,7 @@ def ciPhiCond (q : ℕ) (sharp : Bool) (k₀ r t j c n : ℕ) (M : ℕ → ℕ �
 
 open Classical in
 /- English proof (translation)
-Unfold `LocE.PhiG ciPhiCond`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ciPhiG_eq (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (sharp : Bool)
     (k₀ r t j c' n' c n : ℕ) (x : HomE E (n' + c') (n + c)) :
@@ -1778,25 +1754,21 @@ theorem ciPhiG_eq (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[ciPhiG_eq, ciPhiG_eq]`. Use `set M := LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x with hM`. Use `set M' := LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x' with hM'`. Use `set a := r + (j - 1) * t with ha`. Establish `k1 : ∀ p p', p < n + c → p' < a → (IntAt P (M' p p') ↔ IntAt P (M p p'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`. Rewrite using `[he]`. Conclude with `ciIntAt_add_iff ((ciIntAt_q (q := q)).mul hd)`. Establish `k2 : ∀ p p', p < n + c → p' < a → (IntAt P (M' p p' / q) ↔ IntAt P (M p p' / q))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`. Rewrite using `[he, add_div, mul_div_cancel_left₀ _ hq0]`. Conclude with `ciIntAt_add_iff hd`. Establish `k3 : ∀ p p', p < n + c → p' < a → redP P (M' p p') = redP P (M p p')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`. Rewrite using `[he]`. Conclude with `redP_add_natCast_mul hq hd`. Establish `hc : ciPhiCond P q sharp k₀ r t j c n M' ↔ ciPhiCond P q sharp k₀ r t j c n M`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `ciPhiCond`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`. Use `⟨fun p p' hp hp' => (k1 p p' hp hp').1 (h1 p p' hp hp'), fun p p' h0 hp hp' => (k2 p p' hp hp').1 (h2 p p' h0 hp hp'), fun p' hp' => ⟨?_, fun p hpp hp => ?_⟩, fun p p' h0 hp' hp hpp => ?_, fun hs p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[← k3 p' p' (by omega) (by omega)]; exact (h3 p' hp').1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← k3 p p' (by omega) (by omega)]; exact (h3 p' hp').2 p hpp hp`. Rewrite using `[← k3 p p' (by omega) hp']; exact h4 p p' h0 hp' hp hpp`. Rewrite using `[← k3 p k₀ hp hk]`. Conclude with `h5 hs p hp`. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun p p' hp hp' => (k1 p p' hp hp').2 (h1 p p' hp hp'), fun p p' h0 hp hp' => (k2 p p' hp hp').2 (h2 p p' h0 hp hp'), fun p' hp' => ⟨?_, fun p hpp hp => ?_⟩, fun p p' h0 hp' hp hpp => ?_, fun hs p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[k3 p' p' (by omega) (by omega)]; exact (h3 p' hp').1`. Rewrite using `[k3 p p' (by omega) (by omega)]; exact (h3 p' hp').2 p hpp hp`. Rewrite using `[k3 p p' (by omega) hp']; exact h4 p p' h0 hp' hp hpp`. Rewrite using `[k3 p k₀ hp hk]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h5 hs p hp`. Distinguish the cases in `hC : ciPhiCond P q sharp k₀ r t j c n M`. Rewrite using `[if_pos (hc.2 hC), if_pos hC]`. Establish `htrip : ∀ p p', p < a → p' < a → IntAt P (M p p') ∧ IntAt P (M' p p') ∧ redP P (M' p p') = redP P (M p p')` using `fun p p' hp hp' => ⟨hC.1 p p' (by omega) hp', (hc.2 hC).1 p p' (by omega) hp', k3 p p' (by omega) hp'⟩`. Use `congr 1`.
-
-Conclude with `ciLamGv_congr ψ₀ χ M M' (by omega) (le_refl _) htrip`. Use `congr 1`. Apply `ciUnitV_congr` to reduce the goal to its premises. Rewrite using `[redP_det (Matrix.of fun s s' : Fin a => M' s.1 s'.1) (fun s s' => (htrip s.1 s'.1 s.2 s'.2).2.1), redP_det (Matrix.of fun s s' : Fin a => M s.1 s'.1) (fun s s' => (htrip s.1 s'.1 s.2 s'.2).1)]`. Use `congr 1`.
-
-Use extensionality with `s s'`. Conclude with `(htrip s.1 s'.1 s.2 s'.2).2.2`. Rewrite using `[if_neg (fun h => hC (hc.1 h)), if_neg hC]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciPhiG_congr (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (sharp : Bool) {k₀ r t j c' n' c n : ℕ} (x x' : HomE E (n' + c') (n + c))
@@ -1858,7 +1830,7 @@ theorem ciPhiG_congr (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) �
 
 open Classical in
 /- English proof (translation)
-Rewrite `h` using `[ciPhiG_eq]`. Distinguish the cases in `hC : ciPhiCond P q sharp k₀ r t j c n (LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x)`. Conclude with `hC.1`. Rewrite `h` using `[if_neg hC]`. Conclude with `absurd rfl h`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciPhiG_int (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (sharp : Bool)
     {k₀ r t j c' n' c n : ℕ} (x : HomE E (n' + c') (n + c)) (h : LocE.PhiG (P := P) q ψ₀ χ sharp k₀ r t j c' n' c n x ≠ 0) :
@@ -1871,19 +1843,19 @@ theorem ciPhiG_int (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (�
     exact absurd rfl h
 
 /- English proof (translation)
-Substitute `hk hc' hc` using the available equality. Unfold `LocE.entB joinCol atNL`. Rewrite using `[ciFIdx (Or.inr rfl) (show p' < k₀ + 1 by omega), ciFIdx (Or.inl rfl) (show p < n + 0 by omega), ciScE_lt _ hp, dif_pos (show k₀ < k₀ + 1 by omega)]`. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, LinearMap.funLeft_apply, LinearMap.proj_apply]`. Rewrite using `[ciAtN_inX hp]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : p' < k₀`. Rewrite using `[dif_pos h, ciScE_lt _ h, sub_zero, zpow_zero, mul_one]`. Establish `e1 : (LinearMap.funLeft E E (Fin.castAdd 1)) (Loc.eN E (k₀ + 1) p') = (Pi.single ⟨p', h⟩ 1 : Fin k₀ → E)`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Loc.eN E (k₀ + 1) p' (Fin.castAdd 1 i) = _`. Unfold `Loc.eN`. Simplify using `only [Fin.val_castAdd]`. Distinguish the cases in `hi : i = ⟨p', h⟩`. Rewrite using `[hi, Pi.single_eq_same, if_pos rfl]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hi, if_neg (fun h' => hi (Fin.ext h'))]`. Establish `e2 : Loc.eN E (k₀ + 1) p' ⟨k₀, by omega⟩ = 0`. Unfold `Loc.eN`. Rewrite using `[if_neg (by simp; omega)]`. Rewrite using `[e1, e2, zero_mul, add_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpk : p' = k₀` using `by omega`. Substitute `hpk` using the available equality. Rewrite using `[dif_neg (lt_irrefl _)]`. Establish `e1 : (LinearMap.funLeft E E (Fin.castAdd 1)) (Loc.eN E (p' + 1) p') = (0 : Fin p' → E)`. Use function extensionality and compare the values at `i`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `show Loc.eN E (p' + 1) p' (Fin.castAdd 1 i) = 0`. Unfold `Loc.eN`. Simplify using `only [Fin.val_castAdd]`. Rewrite using `[if_neg (by have := i.2; omega)]`. Establish `e2 : Loc.eN E (p' + 1) p' ⟨p', by omega⟩ = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Loc.eN`. Rewrite using `[if_pos rfl]`. Establish `e3 : LocE.scE p' (fun i => i + 1) p' = 1` using `by simp [LocE.scE]`. Rewrite using `[e1, e2, e3, map_zero, Pi.zero_apply, zero_add, one_mul, sub_zero, zpow_one, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciEntB_join {k₀ n' c' n c : ℕ} (hk : k₀ = n') (hc' : c' = 1) (hc : c = 0) (x₀ : HomE E n' n) (y' : Sp E n)
     {p p' : ℕ} (hp : p < n) (hp' : p' ≤ n') :
@@ -1936,9 +1908,9 @@ def ciIdx {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (Q : Fi
   levQ j _ := LevQFam.top X.E X.K (R.N j) Q
 
 /- English proof (translation)
-Establish `h : Qprime (1 : Chr X.F X.E X.K) = ∅`. Use extensionality with `v`. Simplify using `[Qprime]`. Unfold `QE`. Rewrite using `[dif_pos (by rw [h]; exact Set.finite_empty)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ciQE_one {X : Fields} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) :
     QE sel (1 : Chr X.F X.E X.K) = ∅ := by
@@ -1955,21 +1927,21 @@ variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
 
 open Classical in
 /- English proof (translation)
-Use `show Pr.vGs ∪ QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = Pr.vGs`. Rewrite using `[show ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 from rfl, ciQE_one, Finset.union_empty]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciRowSG : rowSG Pr sel (mu0 X.F X.E X.K S) = Pr.vGs := by
   show Pr.vGs ∪ QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = Pr.vGs
   rw [show ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 from rfl, ciQE_one, Finset.union_empty]
 
 /- English proof (translation)
-Rewrite using `[show ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 from rfl, ciQE_one]`. Conclude with `Finset.notMem_empty P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciNotQ (P : HeightOneSpectrum (𝓞 X.E)) : P ∉ QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) := by
   rw [show ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = 1 from rfl, ciQE_one]
   exact Finset.notMem_empty P
 
 /- English proof (translation)
-Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (ciNotQ sel S P.1)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ciMemG (P : rowSG Pr sel (mu0 X.F X.E X.K S)) : P.1 ∈ Pr.vGs := by
   classical
@@ -1982,7 +1954,7 @@ end Inst
 section PsiInst
 
 /- English proof (translation)
-The claim follows from `ciEntB_join rfl rfl rfl x₀ y' hp hp'`.
+A detailed English derivation is pending.
 -/
 theorem ciEntB_join0 {E : Type} [Field E] [NumberField E] [StarRing E] (q : ℕ) (x₀ : HomE E (Examples₂.R0.N 0) (Examples₂.R0.N (0 + 1)))
     (y' : Sp E (Examples₂.R0.N (0 + 1))) {p p' : ℕ} (hp : p < Examples₂.R0.N (0 + 1)) (hp' : p' ≤ Examples₂.R0.N 0) :
@@ -1995,9 +1967,9 @@ variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
   {mq : ℕ → rowSG Pr sel (mu0 X.F X.E X.K S) → X.K}
 
 /- English proof (translation)
-Use `⟨muAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 * (muAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1)⁻¹ * (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq).sq P ^ (-(LocE.vP P.1 (qOf P.1) 1) * ((Examples₂ …` and prove the remaining obligations. Unfold `PsiAt omPhi`. Rewrite using `[ciOm_one]`. Use `congr 1`. Unfold `PhiAt`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos (ciMemG sel S P)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ciPsiAt_eq (P : rowSG Pr sel (mu0 X.F X.E X.K S)) : ∃ cK : X.K, ∀ (x₀ : HomE X.E (Examples₂.R0.N 0) (Examples₂.R0.N (0 + 1)))
     (y' : Sp X.E (Examples₂.R0.N (0 + 1))),
@@ -2018,9 +1990,9 @@ theorem ciPsiAt_eq (P : rowSG Pr sel (mu0 X.F X.E X.K S)) : ∃ cK : X.K, ∀ (x
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[if_pos (ciMemG sel S P), pow_one]`. Take `⟨cK, hcK⟩` from `ciPsiAt_eq Ch sel S P`. Establish `hne' : LocE.PhiG (P` using `P.1) (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) false Examples₂.R0.k Examples₂.R0.r Examples₂.R0.t (0 + 1) (cOf Examples₂.R0 0) (Examples₂.R0.N 0) (cOf Examples₂.R0 (0 + 1)) (Examples₂.R0.N (0 + 1)) (joinCol x₀ y') ≠ 0 := by`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show PsiAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 x₀ y' = 0`. Rewrite using `[hcK, h0, mul_zero]`. Establish `h1` using `ciPhiG_int _ _ _ (joinCol x₀ y') hne' i.1 (Examples₂.R0.N 0) (Nat.lt_of_lt_of_le i.2 (Nat.le_add_right _ _)) (by decide)`. Rewrite `h1` using `[ciEntB_join0 _ x₀ y' i.2 (le_refl _), dif_neg (lt_irrefl _)]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciPsiSupp (_hX : X.Ok) (_hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K))).β 0)
     (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (x₀ : HomE X.E (Examples₂.R0.N 0) (Examples₂.R0.N (0 + 1))) (y' : Sp X.E (Examples₂.R0.N (0 + 1)))
@@ -2041,11 +2013,9 @@ theorem ciPsiSupp (_hX : X.Ok) (_hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F 
   exact h1
 
 /- English proof (translation)
-Use `show IntAt P.1 ((qOf P.1 : X.E) ^ 1 * x₀ (Pi.single s 1) l)`. Rewrite using `[pow_one]`. Take `⟨cK, hcK⟩` from `ciPsiAt_eq Ch sel S P`. Establish `hne' : LocE.PhiG (P` using `P.1) (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) false Examples₂.R0.k Examples₂.R0.r Examples₂.R0.t (0 + 1) (cOf Examples₂.R0 0) (Examples₂.R0.N 0) (cOf Examples₂.R0 (0 + 1)) (Examples₂.R0.N (0 + 1)) (joinCol x₀ y') ≠ 0 := by`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Use `show PsiAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 x₀ y' = 0`. Rewrite using `[hcK, h0, mul_zero]`. Establish `hs8 : s.1 < Examples₂.R0.r + (0 + 1 - 1) * Examples₂.R0.t` using `by have := s.2; simp [Examples₂.exampleRanks_N_formula] at this ⊢; omega`. Establish `h1` using `ciPhiG_int _ _ _ (joinCol x₀ y') hne' l.1 s.1 (Nat.lt_of_lt_of_le l.2 (Nat.le_add_right _ _)) hs8`.
-
-Rewrite `h1` using `[ciEntB_join0 _ x₀ y' l.2 s.2.le, dif_pos s.2]`. Conclude with `(ciIntAt_q (q := qOf P.1)).mul h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciPsiSuppX (_hX : X.Ok) (_hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K))).β 0)
     (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (x₀ : HomE X.E (Examples₂.R0.N 0) (Examples₂.R0.N (0 + 1))) (y' : Sp X.E (Examples₂.R0.N (0 + 1)))
@@ -2069,15 +2039,15 @@ theorem ciPsiSuppX (_hX : X.Ok) (_hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F
 
 open Classical in
 /- English proof (translation)
-Establish `hG` using `ciMemG sel S P`. Establish `hu` using `ciQ_notMem_sq hX hPr hG`. Take `⟨cK, hcK⟩` from `ciPsiAt_eq Ch sel S P`. Use `show PsiAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 x₀ (y' + z) = PsiAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 x₀ y'`. Rewrite using `[hcK, hcK]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `ciPhiG_congr (ciQ_mem P.1) (ciQ_ne_zero hu) _ _ _ _ _ (by decide) (by decide) (by decide) (by decide) fun p p' hp hp' => ?_` and prove the remaining obligations. Establish `hc1 : cOf Examples₂.R0 (0 + 1) = 0` using `rfl`. Establish `hN1 : Examples₂.R0.N (0 + 1) = 24` using `rfl`. Establish `hN0 : Examples₂.R0.N 0 = 8` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : Examples₂.R0.r + (0 + 1 - 1) * Examples₂.R0.t = 9` using `rfl`. Establish `hp24 : p < Examples₂.R0.N (0 + 1)` using `by omega`. Establish `hp8 : p' ≤ Examples₂.R0.N 0` using `by omega`. Rewrite using `[ciEntB_join0 _ x₀ (y' + z) hp24 hp8, ciEntB_join0 _ x₀ y' hp24 hp8]`. Distinguish the cases in `h8 : p' < Examples₂.R0.N 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h8, dif_pos h8]`. Conclude with `⟨0, ciIntAt_zero, by rw [mul_zero, add_zero]⟩`. Rewrite using `[dif_neg h8, dif_neg h8]`. Establish `h1` using `hz ⟨p, hp24⟩`. Rewrite `h1` using `[if_pos hG, pow_zero, inv_one, one_mul]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨z ⟨p, hp24⟩, h1, by rw [Pi.add_apply, mul_add]⟩`.
+A detailed English derivation is pending.
 -/
 theorem ciPsiInv (hX : X.Ok) (hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K))).β 0)
     (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (x₀ : HomE X.E (Examples₂.R0.N 0) (Examples₂.R0.N (0 + 1))) (y' z : Sp X.E (Examples₂.R0.N (0 + 1)))
@@ -2110,15 +2080,15 @@ theorem ciPsiInv (hX : X.Ok) (hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F X.E
     exact ⟨z ⟨p, hp24⟩, h1, by rw [Pi.add_apply, mul_add]⟩
 
 /- English proof (translation)
-Establish `hG` using `ciMemG sel S P`. Establish `hu` using `ciQ_notMem_sq hX hPr hG`. Establish `hq0` using `ciQ_ne_zero hu`. Take `⟨cK, hcK⟩` from `ciPsiAt_eq Ch sel S P`. Use `show PsiAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 (x₀ + z) y' = PsiAt Ch sel (mu0 X.F X.E X.K S) (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq) 0 P 1 x₀ y'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcK, hcK]`. Use `congr 1`. Use `ciPhiG_congr (ciQ_mem P.1) hq0 _ _ _ _ _ (by decide) (by decide) (by decide) (by decide) fun p p' hp hp' => ?_` and prove the remaining obligations. Establish `hc1 : cOf Examples₂.R0 (0 + 1) = 0` using `rfl`. Establish `hN1 : Examples₂.R0.N (0 + 1) = 24` using `rfl`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : Examples₂.R0.N 0 = 8` using `rfl`. Establish `ha : Examples₂.R0.r + (0 + 1 - 1) * Examples₂.R0.t = 9` using `rfl`. Establish `hp24 : p < Examples₂.R0.N (0 + 1)` using `by omega`. Establish `hp8 : p' ≤ Examples₂.R0.N 0` using `by omega`. Rewrite using `[ciEntB_join0 _ (x₀ + z) y' hp24 hp8, ciEntB_join0 _ x₀ y' hp24 hp8]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h8 : p' < Examples₂.R0.N 0`. Rewrite using `[dif_pos h8, dif_pos h8]`. Establish `h1` using `hz ⟨p', h8⟩ ⟨p, hp24⟩`. Rewrite `h1` using `[show (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S)) mq).B = 1 from rfl, pow_one]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.add_apply, Pi.add_apply, ← mul_assoc, mul_inv_cancel₀ hq0, one_mul]`. Rewrite using `[dif_neg h8, dif_neg h8]`. Conclude with `⟨0, ciIntAt_zero, by rw [mul_zero, add_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ciPsiInvX (hX : X.Ok) (hPr : Pr.Ok) (al : (ciIdx Ch (QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K))).β 0)
     (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (x₀ z : HomE X.E (Examples₂.R0.N 0) (Examples₂.R0.N (0 + 1))) (y' : Sp X.E (Examples₂.R0.N (0 + 1)))
@@ -2171,9 +2141,9 @@ def ciMuq {m : ℕ} (G : ChGlob X m) (ξ : Chr X.F X.E X.K) {SB : Finset (Height
   ciMuqG G (j - 1) P.1 * (((qValC ξ P.1)⁻¹ : X.Kˣ) : X.K)
 
 /- English proof (translation)
-Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by rw [← hqu]; exact qu.ne_zero`. Establish `e : qu = ciQU P.1`. Unfold `ciQU`. Rewrite using `[dif_pos hq0]`. Conclude with `Units.ext (by rw [Units.val_mk0, hqu])`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ∃ (hi : i < m) (y : X.K), G.σ₀ y = ((((G.mu0 ⟨i, hi⟩).locK P.1 (ciQU P.1)) : ℂˣ) : ℂ)⁻¹` using `⟨h, hval ⟨i, h⟩ P.1 hP⟩`. Unfold `ciMuq ciMuqG`. Rewrite using `[Nat.add_sub_cancel, dif_pos hd, map_mul, hd.choose_spec.choose_spec, e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciMuq_tie {m : ℕ} (G : ChGlob X m) (ξ : Chr X.F X.E X.K) {SB : Finset (HeightOneSpectrum (𝓞 X.E))}
     (hval : ∀ (j : Fin m) (w : HeightOneSpectrum (𝓞 X.E)), w ∈ Pr.vGs →
@@ -2193,13 +2163,13 @@ theorem ciMuq_tie {m : ℕ} (G : ChGlob X m) (ξ : Chr X.F X.E X.K) {SB : Finset
 variable {R : Ranks} (Ch : Chars X Pr R.m)
 
 /- English proof (translation)
-Introduce `P a b ha hab`. Establish `hD : (ciCst Ch SB mq).D P = 1` using `rfl`. Rewrite `ha`, `hab`, the goal using `[hD, pow_one]`. Establish `hq` using `ciQ_mem (E := X.E) P.1`. Establish `hu` using `ciQ_notMem_sq hX hPr (hSB P.1 P.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `ciQ_ne_zero hu`. Use `show σ₀ (ciPsi Ch P a) = _`. Unfold `ciPsi`. Rewrite using `[if_pos ha]`. Establish `hpsi : psi0P Ch P.1 = Ch.psi0 ⟨P.1, hSB P.1 P.2⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `psi0P`. Rewrite using `[dif_pos (hSB P.1 P.2)]`. Rewrite using `[hpsi]`. Apply `hW` to reduce the goal to its premises. Establish `e1 : xi0 * ((qOf P.1 : X.E) * a) - (b : X.E) = (qOf P.1 : X.E) * (xi0 * a - (b : X.E) / (qOf P.1 : X.E))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `h0 : redP P.1 (xi0 * ((qOf P.1 : X.E) * a) - (b : X.E)) = 0`. Rewrite using `[e1, reduction_mul ciIntAt_q hab, redP_natCast_eq_zero hq, zero_mul]`. Rewrite `h0` using `[redP_sub ((hxi P.1 P.2).mul ha) (ciIntAt_intCast b), reduction_mul (hxi P.1 P.2) ha, redP_intCast, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ciCst_weil (hX : X.Ok) (hPr : Pr.Ok) {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (hSB : ∀ P ∈ SB, P ∈ Pr.vGs)
     (mq : ℕ → SB → X.K) {σ₀ : X.K →+* ℂ} {xi0 : X.E} (hW : Ch.WeilTied σ₀ xi0) (hxi : ∀ P ∈ SB, IntAt P xi0) :
@@ -2226,7 +2196,7 @@ theorem ciCst_weil (hX : X.Ok) (hPr : Pr.Ok) {SB : Finset (HeightOneSpectrum (�
   exact h0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h'`. Conclude with `h (reduction_eq_zero_of_not_integral P h')`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem intAt_of_redP_ne_zero₂ {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : redP P a ≠ 0) : IntAt P a := by
   by_contra h'
@@ -2236,9 +2206,9 @@ def ciXiUnitG (Pr : Primes X) (xi0 : X.E) : Prop :=
   ∀ i : Fin 2, ∃ b : ℤ, ¬ (Pr.g i : ℤ) ∣ b ∧ ∀ w ∈ Pr.vG i, redP w xi0 = (b : 𝓞 X.E ⧸ w.asIdeal)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ciVGs_cases hw`. Take `⟨b, hb, hbw⟩` from `h i`. Establish `hne : redP w xi0 ≠ 0`. Rewrite using `[hbw w hi]`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(owedC_intCast_eq_iff (A := 𝓞 X.E ⧸ w.asIdeal) (ciQOf_prime hPr hw) (ciCard w) b 0).1 (by rw [h0, Int.cast_zero])`. Rewrite `h1` using `[sub_zero, ciQOf_eq hPr hi]`. Conclude with `hb h1`. Conclude with `⟨intAt_of_redP_ne_zero₂ hne, hne⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ciXiUnitG.unit (hPr : Pr.Ok) {xi0 : X.E} (h : ciXiUnitG Pr xi0) (w : HeightOneSpectrum (𝓞 X.E)) (hw : w ∈ Pr.vGs) :
     IntAt w xi0 ∧ redP w xi0 ≠ 0 := by
@@ -2257,7 +2227,7 @@ def ciWeilChars {m : ℕ} (hPr : Pr.Ok) (Ch : Chars X Pr m) (ζ : {w // w ∈ Pr
   { Ch with psi0 := fun w => AddChar.mulShift (owedC_chr (ciQOf_prime hPr w.2) (ciCard w.1) (hζ w)) (redP w.1 xi0) }
 
 /- English proof (translation)
-Introduce `w c b h`. Establish `e : (ciWeilChars hPr Ch ζ hζ xi0).psi0 w c = owedC_chr (ciQOf_prime hPr w.2) (ciCard w.1) (hζ w) (redP w.1 xi0 * c)` using `rfl`. Rewrite using `[e, h, owedC_chr_intCast, map_zpow₀, hσ, owedC_exp_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ciWeilChars_weilTied {m : ℕ} (hPr : Pr.Ok) (Ch : Chars X Pr m) (σ₀ : X.K →+* ℂ) (ζ : {w // w ∈ Pr.vGs} → X.K)
     (hζ : ∀ w, ζ w ^ qOf w.1 = 1) (hσ : ∀ w, σ₀ (ζ w) = Complex.exp (2 * Real.pi * Complex.I / (qOf w.1 : ℂ))) (xi0 : X.E) :
@@ -2267,11 +2237,11 @@ theorem ciWeilChars_weilTied {m : ℕ} (hPr : Pr.Ok) (Ch : Chars X Pr m) (σ₀ 
   rw [e, h, owedC_chr_intCast, map_zpow₀, hσ, owedC_exp_zpow]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ciVGs_cases w.2`. Take `⟨b, hb, hbw⟩` from `hxi i`. Establish `h1` using `ciWeilChars_weilTied hPr Ch σ₀ ζ hζ hσ xi0 w 1 b (by rw [hbw w.1 hi, mul_one])`. Rewrite `h1` using `[h, AddChar.one_apply, map_one, ← owedC_exp_zpow]`. Establish `hq` using `ciQOf_prime hPr w.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `((Complex.isPrimitiveRoot_exp (qOf w.1) hq.ne_zero).zpow_eq_one_iff_dvd b).1 h1.symm`. Rewrite `h2` using `[ciQOf_eq hPr hi]`. Conclude with `hb h2`. Use `chi_inj := hCh.chi_inj`. Use `chi_same := hCh.chi_same`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `characterAgreesOnPlaces i w w' hw hw' a := by`. Take `⟨b, -, hbw⟩` from `hxi i`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[ciWeilChars_weilTied hPr Ch σ₀ ζ hζ hσ xi0 w (a : 𝓞 X.E ⧸ w.1.asIdeal) (b * a) (by rw [hbw w.1 hw, Int.cast_mul]), ciWeilChars_weilTied hPr Ch σ₀ ζ hζ hσ xi0 w' (a : 𝓞 X.E ⧸ w'.1.asIdeal) (b * a) (by rw [hbw w'.1 hw', Int.cast_mul]), ciQOf_eq hPr hw, ciQOf_eq hPr hw']`. Use `chi_om := hCh.chi_om`.
+A detailed English derivation is pending.
 -/
 theorem ciWeilChars_ok {m : ℕ} (hPr : Pr.Ok) {Ch : Chars X Pr m} (hCh : Ch.Ok) (σ₀ : X.K →+* ℂ) (ζ : {w // w ∈ Pr.vGs} → X.K)
     (hζ : ∀ w, ζ w ^ qOf w.1 = 1) (hσ : ∀ w, σ₀ (ζ w) = Complex.exp (2 * Real.pi * Complex.I / (qOf w.1 : ℂ))) {xi0 : X.E}
@@ -2299,17 +2269,17 @@ variable {Ch} in
 open Classical in
 
 /- English proof (translation)
-Introduce `w c b h`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Set `P : rowSG Pr sel mu` to `⟨w.1, Finset.mem_union_left _ w.2⟩`. Establish `hq` using `ciQ_mem (E := X.E) w.1`. Establish `hu` using `ciQ_notMem_sq hX hPr w.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (qOf w.1 : X.E) ≠ 0` using `ciQ_ne_zero hu`. Establish `hy : IntAt w.1 (algebraMap (𝓞 X.E) X.E y)` using `IntAt.coe w.1 y`. Establish `h1` using `hL.psi0 P (algebraMap (𝓞 X.E) X.E y) w.2 hy`. Establish `hD : cst.D P = 1` using `hL.depthG P w.2`. Establish `hxi : IntAt w.1 G.xi0` using `(hL.xiUnitAtPrime P).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : G.xi0 * (algebraMap (𝓞 X.E) X.E y / (qOf w.1 : X.E)) - (b : X.E) / (qOf w.1 : X.E) = (G.xi0 * algebraMap (𝓞 X.E) X.E y - (b : X.E)) / (qOf w.1 : X.E)` using `by ring`. Establish `hab : IntAt P.1 (G.xi0 * (algebraMap (𝓞 X.E) X.E y / (qOf w.1 : X.E)) - (b : X.E) / (qOf P.1 : X.E) ^ cst.D P)`. Rewrite using `[hD, pow_one]`. Use `show IntAt w.1 (G.xi0 * (algebraMap (𝓞 X.E) X.E y / (qOf w.1 : X.E)) - (b : X.E) / (qOf w.1 : X.E))`. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ciIntAt_div hq hu (ciIntAt_sub (hxi.mul hy) (ciIntAt_intCast b)) ?_` and prove the remaining obligations. Rewrite using `[redP_sub (hxi.mul hy) (ciIntAt_intCast b), reduction_mul hxi hy, redP_intCast, reduction_coe, h, sub_self]`. Establish `ha : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * (algebraMap (𝓞 X.E) X.E y / (qOf w.1 : X.E)))`. Rewrite using `[hD, pow_one]`. Use `show IntAt w.1 ((qOf w.1 : X.E) * (algebraMap (𝓞 X.E) X.E y / (qOf w.1 : X.E)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_div_cancel₀ _ hq0]`. Conclude with `hy`. Establish `h2` using `hL.weil P _ b ha hab`. Rewrite `h2` using `[h1, hD, pow_one]`. Establish `e : psi0P Ch P.1 (redP P.1 (algebraMap (𝓞 X.E) X.E y)) = Ch.psi0 w (Ideal.Quotient.mk w.1.asIdeal y)` using `by show psi0P Ch w.1 (redP w.1 (algebraMap (𝓞 X.E) X.E y)) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `psi0P`. Rewrite using `[dif_pos w.2, reduction_coe]`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem ChIdx.Ok.chars_weilTied (hX : X.Ok) (hPr : Pr.Ok) {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
     {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m}
@@ -2355,15 +2325,13 @@ variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
   {mq : ℕ → rowSG Pr sel (mu0 X.F X.E X.K S) → X.K}
 
 /- English proof (translation)
-Use `{ hm := rfl cst_ok := ciCst_ok hPr hCh (fun P hP => ciMemG sel S ⟨P, hP⟩) (fun P hP => h4 P (ciMemG sel S ⟨P, hP⟩)) xiUnitAtPrime := fun P => hxi P.1 (ciMemG sel S P) weil := ciCst_weil Ch hX hPr (fun P hP => ciMemG sel S ⟨P, hP⟩) _ hW (fun P hP => (hxi P (ciMemG sel S ⟨P, hP⟩)). …` and prove the remaining obligations. Introduce `P a _ ha show ciPsi Ch P _ = _`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (ciQOf_prime hPr (ciMemG sel S P)).ne_zero`. Unfold `ciPsi`. Rewrite using `[mul_div_cancel₀ _ hq0, if_pos ha]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `j b P show Loc.prX (Loc.Cbe (Jat (Pr := Pr) (R := Examples₂.R0) false j P.1) 1) ≤ _`. Rewrite using `[ciJat j (ciMemG sel S P)]`. Conclude with `ciPrX_le`. Introduce `j b w hbar`. Establish `hj : j ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Establish `h0 : (if j ≤ 1 then 1 else 0) = 0` using `if_neg h`. Conclude with `Nat.not_lt_zero _ (lt_of_lt_of_eq (show Fin (if j ≤ 1 then 1 else 0) from b).2 h0)`. Use `interval_cases j`. Conclude with `first_level_reduction_group Ch hX hPr w hbar`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `second_level_reduction_group Ch hX hPr w hbar`. Introduce `j b w hbar g r hr hrg hred`. Establish `hj : j ≤ 1`. Assume the negation of the conclusion as `h`. Establish `h0 : (if j ≤ 1 then 1 else 0) = 0` using `if_neg h`.
-
-Conclude with `Nat.not_lt_zero _ (lt_of_lt_of_eq (show Fin (if j ≤ 1 then 1 else 0) from b).2 h0)`. Use `interval_cases j`. Conclude with `character_first_level_group Ch sel S hX hPr w _ hbar g r hr hrg hred`. Conclude with `character_second_level_group Ch sel S hX hPr w _ hbar g r hr hrg hred`.
+A detailed English derivation is pending.
 -/
 theorem ciIdx_ok (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X Examples₂.R0.m)
     (hW : Ch.WeilTied G.σ₀ G.xi0) (hxi : ∀ w ∈ Pr.vGs, IntAt w G.xi0 ∧ redP w G.xi0 ≠ 0)
@@ -2444,9 +2412,7 @@ open Formalism.L2.Host Formalism.FrobeniusOrbits
 variable (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL] (hLL : cycQ nd2N ≤ LL)
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨i, hi⟩` from `ciVGs_cases hw`. Rewrite using `[ciQOf_eq (examplePrimes_ok LL hLL) hi]`. Establish `h4 : toyFirstParameter % 4 = 1 ∧ toySecondParameter % 4 = 1` using `by decide +kernel`. Use `fin_cases i`.
-
-Conclude with `h4.1`. Conclude with `h4.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem primes_over_one_mod_four : ∀ w ∈ (toyPrimes LL hLL).vGs, qOf w % 4 = 1 := by
   intro w hw
@@ -2458,9 +2424,9 @@ theorem primes_over_one_mod_four : ∀ w ∈ (toyPrimes LL hLL).vGs, qOf w % 4 =
   · exact h4.2
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ciVGs_cases w.2`. Establish `hq : qOf w.1 = (toyPrimes LL hLL).g i` using `ciQOf_eq (examplePrimes_ok LL hLL) hi`. Establish `hdvd : (toyPrimes LL hLL).g i ∣ nd2N` using `by fin_cases i`. Conclude with `example_primes_dvd_level.1`. Conclude with `example_primes_dvd_level.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `example_enough_roots LL hLL hdvd` as an intermediate fact. Establish `: NeZero ((toyPrimes LL hLL).g i)` using `⟨((examplePrimes_ok LL hLL).g_prime i).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (CoF ndIota LL) ((toyPrimes LL hLL).g i)`. Rewrite using `[hq]`. Conclude with `owedC_exists_exp (toyComplexEmbedding LL hLL) ((examplePrimes_ok LL hLL).g_prime i).ne_zero hζ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_of_unity_phase (w : {w // w ∈ (toyPrimes LL hLL).vGs}) :
     ∃ ζ : (nd2X LL hLL).K, toyComplexEmbedding LL hLL ζ = Complex.exp (2 * Real.pi * Complex.I / (qOf w.1 : ℂ)) := by
@@ -2479,14 +2445,14 @@ theorem exists_root_of_unity_phase (w : {w // w ∈ (toyPrimes LL hLL).vGs}) :
 def nd2Zeta (w : {w // w ∈ (toyPrimes LL hLL).vGs}) : (nd2X LL hLL).K := (exists_root_of_unity_phase LL hLL w).choose
 
 /- English proof (translation)
-The claim follows from `(exists_root_of_unity_phase LL hLL w).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem nd2Zeta_sig (w : {w // w ∈ (toyPrimes LL hLL).vGs}) :
     toyComplexEmbedding LL hLL (nd2Zeta LL hLL w) = Complex.exp (2 * Real.pi * Complex.I / (qOf w.1 : ℂ)) :=
   (exists_root_of_unity_phase LL hLL w).choose_spec
 
 /- English proof (translation)
-Apply `(toyComplexEmbedding LL hLL).injective` to reduce the goal to its premises. Rewrite using `[map_pow, nd2Zeta_sig, map_one]`. Conclude with `(Complex.isPrimitiveRoot_exp _ (ciQOf_prime (examplePrimes_ok LL hLL) w.2).ne_zero).pow_eq_one`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nd2Zeta_pow (w : {w // w ∈ (toyPrimes LL hLL).vGs}) : nd2Zeta LL hLL w ^ qOf w.1 = 1 := by
   apply (toyComplexEmbedding LL hLL).injective
@@ -2496,7 +2462,7 @@ theorem nd2Zeta_pow (w : {w // w ∈ (toyPrimes LL hLL).vGs}) : nd2Zeta LL hLL w
 def nd2B : Fin 2 → ℤ := ![((Examples₂.H0.condN : ℕ) : ℤ) * 18, ((Examples₂.H0.condN : ℕ) : ℤ) * 768]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prime_generator_formula (i : Fin 2) : (toyPrimes LL hLL).piG i = nd2z LL hLL 1 (nd2B i) := by
   fin_cases i <;> rfl
@@ -2504,7 +2470,7 @@ theorem prime_generator_formula (i : Fin 2) : (toyPrimes LL hLL).piG i = nd2z LL
 def nd2Xi : (nd2X LL hLL).E := -1 / hwE Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `hwE_sq Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL)`. Rewrite `h1` using `[h0, zero_pow two_ne_zero, zero_eq_neg]`. Establish `h2 : (Examples₂.H0.d : ℕ) ≠ 0` using `example_discriminant_pos.ne'`. Conclude with `h2 (by exact_mod_cast h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem highest_weight_element_ne : hwE Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) ≠ 0 := by
   intro h0
@@ -2514,17 +2480,15 @@ theorem highest_weight_element_ne : hwE Examples₂.H0.toHostRaw ndIota LL (exam
   exact h2 (by exact_mod_cast h1)
 
 /- English proof (translation)
-Establish `hPr` using `examplePrimes_ok LL hLL`. Introduce `i`. Use `⟨-(nd2B i), ?_, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h1 : ¬ ((toyFirstParameter : ℕ) : ℤ) ∣ -(((Examples₂.H0.condN : ℕ) : ℤ) * 18)` using `by decide +kernel`. Establish `h2 : ¬ ((toySecondParameter : ℕ) : ℤ) ∣ -(((Examples₂.H0.condN : ℕ) : ℤ) * 768)` using `by decide +kernel`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_cases i`. Conclude with `h1`. Conclude with `h2`. Establish `hc : (nd2X LL hLL).conjO ((toyPrimes LL hLL).piG i) ∈ w.asIdeal` using `(mem_divs (ciConjPiG_ne_zero hPr i) w).1 hw`. Rewrite `hc` using `[prime_generator_formula, conjO_hz _ _ _ _ example_discriminant_pos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : hwO Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) ∉ w.asIdeal`. Introduce `hm`. Apply `one_notMem w` to reduce the goal to its premises. Establish `e : (1 : 𝓞 (nd2X LL hLL).E) = hz Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) 1 (-nd2B i) - ((-nd2B i : ℤ) : 𝓞 (nd2X LL hLL).E) * hwO Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL)`. Unfold `hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `sub_mem hc (Ideal.mul_mem_left _ _ hm)`. Use `redP_eq w (r := -1) hs ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show hwE Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) * nd2Xi LL hLL = _`. Unfold `nd2Xi`. Rewrite using `[map_neg, map_one, mul_div_cancel₀ _ (highest_weight_element_ne LL hLL)]`. Rewrite using `[← map_intCast (Ideal.Quotient.mk w.asIdeal), ← map_mul, Ideal.Quotient.eq]`. Establish `e : hwO Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) * ((-nd2B i : ℤ) : 𝓞 (nd2X LL hLL).E) - (-1) = hz Examples₂.H0.toHostRaw ndIota LL (exampleField_le_cyclotomic.trans hLL) 1 (-nd2B i)`.
-
-Unfold `hz`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hc`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_unit_at_gaussian_primes : ciXiUnitG (toyPrimes LL hLL) (nd2Xi LL hLL) := by
   have hPr := examplePrimes_ok LL hLL
@@ -2563,20 +2527,20 @@ def nd2ChW (h : ToyHeckeCondition LL hLL) : Chars (nd2X LL hLL) (toyPrimes LL hL
 def nd2G (h : ToyHeckeCondition LL hLL) : ChGlob (nd2X LL hLL) Examples₂.R0.m := ⟨toyComplexEmbedding LL hLL, nd2Xi LL hLL, h.choose⟩
 
 /- English proof (translation)
-The claim follows from `ciWeilChars_ok (examplePrimes_ok LL hLL) (Chars.ofHecke_ok (exampleCharacters_ok LL hLL) _ _ _) (toyComplexEmbedding LL hLL) _ _ (nd2Zeta_sig LL hLL) (xi_unit_at_gaussian_primes LL hLL)`.
+A detailed English derivation is pending.
 -/
 theorem nd2ChW_ok (h : ToyHeckeCondition LL hLL) : (nd2ChW LL hLL h).Ok :=
   ciWeilChars_ok (examplePrimes_ok LL hLL) (Chars.ofHecke_ok (exampleCharacters_ok LL hLL) _ _ _) (toyComplexEmbedding LL hLL) _ _ (nd2Zeta_sig LL hLL)
     (xi_unit_at_gaussian_primes LL hLL)
 
 /- English proof (translation)
-The claim follows from `ciWeilChars_weilTied (examplePrimes_ok LL hLL) _ (toyComplexEmbedding LL hLL) _ _ (nd2Zeta_sig LL hLL) (nd2Xi LL hLL)`.
+A detailed English derivation is pending.
 -/
 theorem nd2ChW_weil (h : ToyHeckeCondition LL hLL) : (nd2ChW LL hLL h).WeilTied (toyComplexEmbedding LL hLL) (nd2Xi LL hLL) :=
   ciWeilChars_weilTied (examplePrimes_ok LL hLL) _ (toyComplexEmbedding LL hLL) _ _ (nd2Zeta_sig LL hLL) (nd2Xi LL hLL)
 
 /- English proof (translation)
-Establish `t` using `Chars.ofHecke_tied h.choose_spec.choose_spec.1 h.choose_spec.choose_spec.2.1 h.choose_spec.choose_spec.2.2.1 h.choose_spec.choose_spec.2.2.2`. Conclude with `⟨fun j => ⟨(t.mu0 j).unitary, (t.mu0 j).triv, (t.mu0 j).inf, (t.mu0 j).unr, (t.mu0 j).tame, (t.mu0 j).atg⟩, t.muVal, t.etaT, t.etaVal⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nd2ChW_tied (h : ToyHeckeCondition LL hLL) :
     (nd2ChW LL hLL h).Tied (toyComplexEmbedding LL hLL) (fun j τ => ((nd2W LL hLL).row τ).e j) h.choose h.choose_spec.choose := by
@@ -2586,7 +2550,7 @@ theorem nd2ChW_tied (h : ToyHeckeCondition LL hLL) :
     t.etaVal⟩
 
 /- English proof (translation)
-The claim follows from `ciCst_ok (examplePrimes_ok LL hLL) (nd2ChW_ok LL hLL h) (fun P hP => ciMemG sel S ⟨P, hP⟩) (fun P hP => primes_over_one_mod_four LL hLL P (ciMemG sel S ⟨P, hP⟩))`.
+A detailed English derivation is pending.
 -/
 theorem local_constants_conditions (h : ToyHeckeCondition LL hLL) (sel : HeightOneSpectrum (𝓞 (nd2X LL hLL).F) → HeightOneSpectrum (𝓞 (nd2X LL hLL).E))
     (S : Set ℕ) :
@@ -2596,7 +2560,7 @@ theorem local_constants_conditions (h : ToyHeckeCondition LL hLL) (sel : HeightO
     (fun P hP => primes_over_one_mod_four LL hLL P (ciMemG sel S ⟨P, hP⟩))
 
 /- English proof (translation)
-The claim follows from `ciIdx_ok (nd2ChW LL hLL h) sel S (exampleFields_ok LL hLL) (examplePrimes_ok LL hLL) (nd2ChW_ok LL hLL h) (primes_over_one_mod_four LL hLL) (nd2G LL hLL h) (nd2ChW_weil LL hLL h) (fun w hw => (xi_unit_at_gaussian_primes LL hLL).unit (examplePrimes_ok LL hLL) w hw) (fun j => (h.ch …`.
+A detailed English derivation is pending.
 -/
 theorem character_index_conditions (h : ToyHeckeCondition LL hLL)
     (hval : ∀ (j : Fin Examples₂.R0.m) (w : HeightOneSpectrum (𝓞 (nd2X LL hLL).E)), w ∈ (toyPrimes LL hLL).vGs →

@@ -24,7 +24,7 @@ namespace GlobalTheory.HeatRatio.Closed
 open GlobalTheory.KS GlobalTheory.KS.GlueDer
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z U h, gs_eq (𝟙 Y) (r z) U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r U z h a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_stalk {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (a : Γ(Y, U)) :
     gs r z U a = (r.stalkMap z).hom (gs (𝟙 Y) (r z) U a) := by
@@ -32,7 +32,7 @@ theorem gs_stalk {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z
   exact (Scheme.Hom.germ_stalkMap_apply r U z h a).symm
 
 /- English proof (translation)
-Take `⟨J', hJ', e⟩` from `exists_good L hL (r z) φ (fun k => J (r ≫ φ k)) (fun a b e => by rw [e]) (fun k => hJ (r ≫ φ k))`. Use `⟨J', hJ', fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[sval_of s (𝟙 Y) (r z) J' (fun k => J (r ≫ φ k)) (fun k => by rw [Category.id_comp]; exact e k)]`. Conclude with `gs_stalk r z _ (hJ.mem φ r) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sval_stalk {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -51,9 +51,9 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} {n : ℕ} {X : Scheme.{0}} {m
 include hdd
 
 /- English proof (translation)
-Establish `hd : ∀ g, resG G.left hO (h.d i (h.W i) g) = h.d i O (resG G.left hO g)` using `fun g => ((h.lift i).1.2.2 (h.W i) O hO le_rfl g).symm`. Establish `hdd' : ∀ a g, resG G.left hO (dd a (h.W i) g) = dd a O (resG G.left hO g)` using `fun a g => ((hdd a).2.2 (h.W i) O hO le_top g).symm`. Establish `hc : ∀ r, resG G.left hO (constFn G.hom (h.W i) r) = constFn G.hom O r` using `fun r => res_const G.hom hO r`. Establish `hp : ∀ q : Γ(G.left, h.W i), resG G.left hO (rsT q (h.W i)) = rsT q O` using `fun q => by`. Rewrite using `[← rsT_of_le hO, rsT_rsT le_rfl hO]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rsT_of_le hO, rsT_of_le hO]`. Simplify using `only [op, map_add, map_sub, map_mul, map_sum, map_pow, map_natCast, map_ofNat, hd, hdd', hc, hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rsT_op (k : ℕ) (i : h.J) (O : G.left.Opens) (hO : O ≤ h.W i) (f : Γ(G.left, h.W i)) :
     rsT (op G dd h.Θ h.u (h.d i) (h.p i) (h.p' i) k (h.W i) f) O =
@@ -70,9 +70,9 @@ theorem rsT_op (k : ℕ) (i : h.J) (O : G.left.Opens) (hO : O ≤ h.W i) (f : Γ
   simp only [op, map_add, map_sub, map_mul, map_sum, map_pow, map_natCast, map_ofNat, hd, hdd', hc, hp]
 
 /- English proof (translation)
-Establish `e₁` using `congrArg π e`. Establish `hs : ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O (F * T)) = π F * ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O T) + π T * ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O F)`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(hdd a).2.1 O le_top, map_add, map_mul, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [op, map_add, map_sub, map_mul, map_sum, hΘ, zero_mul, Finset.sum_const_zero, sub_zero, map_ofNat, map_pow, map_natCast] at e₁`. Rewrite `e₁` using `[hs, (h.lift i).1.2.1 O hO, map_add, map_mul, map_mul]`. Use `(hT.map π).mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `-e₁`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rem_eq (k : ℕ) (i : h.J) (O : G.left.Opens) (hO : O ≤ h.W i) {A : Type} [CommRing A] (π : Γ(G.left, O) →+* A)
     (hΘ : ∀ a b, π (constFn G.hom O (h.Θ a b)) = 0) (F T g : Γ(G.left, O)) (hT : IsUnit T)
@@ -100,9 +100,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRin
   {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D)
 
 /- English proof (translation)
-Take `⟨J, hJ, e⟩` from `exists_good Q.P.L Q.P.isLB y (K := Unit) (fun _ => Y.q.left) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hV hy)`. Take `⟨J', hJ', e'⟩` from `exists_sval_stalk Q.P.isLB (DegPre.famφB Q β) (DegPre.famε N) Y.q.left y hJ`. Use `⟨J', val ((Y.Φ Y.H (𝟙 _)).s β) (𝟙 _) y J, hJ', fun σ τ hτ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hτ Y.H (𝟙 _) y J hJ`. Rewrite `h1` using `[Category.id_comp, e']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ h1` and prove the remaining obligations. Establish `hle : V ≤ LB.wchart Q.P.L (fun _ : Fin 1 => Y.q.left) (fun _ => j)` using `Glue.le_wchart _ hV`. Use `Eq.trans ?_ (sval_of τ (𝟙 _) y J (fun _ => j) (fun _ => by rw [Category.id_comp]; exact e ())).symm` and prove the remaining obligations. Conclude with `(congrArg (gs (𝟙 _) y V) (rsT_of_le hle _)).trans (gs_res (𝟙 _) y hle hy _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_term_germ (N : ℕ) (β : Q.X) (j : Q.P.L.ι) (V : Y.H.left.Opens) (hV : V ≤ Y.q.left ⁻¹ᵁ Q.P.L.U j)
     (y : Y.H.left) (hy : y ∈ V) : ∃ (J' : (Q.P.A.left ⟶ Q.P.A.left) → Q.P.L.ι) (c : (Y.H.left.presheaf.stalk y)ˣ),
@@ -120,15 +120,15 @@ theorem exists_term_germ (N : ℕ) (β : Q.X) (j : Q.P.L.ι) (V : Y.H.left.Opens
   exact (congrArg (gs (𝟙 _) y V) (rsT_of_le hle _)).trans (gs_res (𝟙 _) y hle hy _)
 
 /- English proof (translation)
-Take `⟨τ, τp, t₁, t₂, a₁⟩` from `h₁`. Take `⟨τ', τp', t₃, t₄, a₂⟩` from `h₂`. Establish `hV` using `hW.trans (h.le i)`. Establish `hWc : h.W i ≤ LB.wchart Q.P.L (fun _ : Fin 1 => Y.q.left) (fun _ => h.j i)` using `Glue.le_wchart _ (h.le i)`. Establish `hfn : ∀ y ∈ Y.q.left ⁻¹ᵁ W, ∀ x : Γ(Q.P.A.left, U), gs (𝟙 _) y (Y.q.left ⁻¹ᵁ W) ((Y.q.left.app W).hom (resG _ hWU x)) = (Y.q.left.stalkMap y).hom (gs (𝟙 _) (Y.q.left y) U x)` using `fun y hy x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gs_pull (𝟙 _) Y.q.left y W hy, Category.id_comp]`. Conclude with `(gs_res Y.q.left y hWU hy x).trans (gs_stalk _ y U (hWU hy) x)`. Establish `act : ∀ {s s' : SecM Y.q.left Q.P.L N}, h.Acts N s s' → rsT (s'.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W) = op Y.H dd h.Θ h.u (h.d i) (h.p i) (h.p' i) N _ (rsT (s.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W))` using `fun {s s'} a => by`. Use `congrArg (fun x => rsT x (Y.q.left ⁻¹ᵁ W)) (a i)` as an intermediate fact. Simplify using `only [rsT_op h hdd N i _ hW] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(rsT_rsT hWc hW _).symm.trans (this.trans (congrArg _ (rsT_rsT hWc hW _)))`. Establish `e₁ : rsT (τ.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W) = (Y.q.left.app W).hom (resG _ hWU f) * rsT (τ'.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W)` using `fn_ext fun y hy => by`. Take `⟨J', c, hJ', e⟩` from `exists_term_germ Y N β (h.j i) _ hV y hy`. Rewrite using `[gs_mul (𝟙 _) y (Y.q.left ⁻¹ᵁ W) hy, hfn y hy, e σ τ t₁, e σ' τ' t₃, (hr _ (hWU hy) J' hJ').2, map_mul, _root_.mul_assoc]`. Establish `e₂ : rsT (τp.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W) = (Y.q.left.app W).hom (resG _ hWU f) * rsT (τp'.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W) + (Y.q.left.app W).hom (resG _ hWU g) * rsT (τ'.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W)` using `fn_ext fun y hy => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨J', c, hJ', e⟩` from `exists_term_germ Y N β (h.j i) _ hV y hy`. Rewrite using `[gs_add (𝟙 _) y (Y.q.left ⁻¹ᵁ W) hy, gs_mul (𝟙 _) y (Y.q.left ⁻¹ᵁ W) hy, gs_mul (𝟙 _) y (Y.q.left ⁻¹ᵁ W) hy, hfn y hy, hfn y hy, e σp τp t₂, e σ' τ' t₃, e σp' τp' t₄, hg _ (hWU hy) J' hJ', map_add, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : IsUnit (rsT (τ'.f fun _ => h.j i) (Y.q.left ⁻¹ᵁ W))` using `Y.H.left.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨J', c, hJ', e⟩` from `exists_term_germ Y N β (h.j i) _ hV y hy`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg IsUnit ((gs_eq (𝟙 _) y _ hy _).symm.trans (e σ' τ' t₃))).mpr (((hr _ (hWU hy) J' hJ').1.map _).mul c.isUnit)`. Use `rem_eq h hdd N i _ hW π hΘ _ _ _ hu ?_` and prove the remaining obligations. Rewrite using `[← e₁, ← act a₁, ← act a₂, e₂]`.
+A detailed English derivation is pending.
 -/
 theorem rem_chart (hdd : ∀ a, IsField ⊤ (dd a)) (N : ℕ) (β : Q.X) (σ σ' σp σp' : Q.SecB N β) (U : Q.P.A.left.Opens)
     (f g : Γ(Q.P.A.left, U)) (hr : IsRatio Q σ σ' U f) (h₁ : TActs Y h N β σ σp) (h₂ : TActs Y h N β σ' σp')
@@ -171,23 +171,21 @@ theorem rem_chart (hdd : ∀ a, IsField ⊤ (dd a)) (N : ℕ) (β : Q.X) (σ σ'
   rw [← e₁, ← act a₁, ← act a₂, e₂]
 
 /- English proof (translation)
-Use `Y.smooth_q` as an intermediate fact. Establish `hs` using `(AbConst.surjective_q Y).1`. Use `choose V hV using fun i => (hB i).1`. Use `eq_of_rsT_eq (fun i => m ⁻¹ᵁ (U ⊓ V i)) (fun i => pre_mono m inf_le_left) (fun y hy => ?_) _ _ fun i => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `Y.q.left.surjective (m y)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x ∈ ⨆ i, h.W i` using `by rw [h.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`. Rewrite `hi` using `[hV]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hy, hx ▸ hi⟩`. Take `⟨W, hWe⟩ : ∃ W, W = U ⊓ V i` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWU : W ≤ U` using `hWe.le.trans inf_le_left`. Establish `hW : Y.q.left ⁻¹ᵁ W ≤ h.W i` using `(pre_mono _ (hWe.le.trans inf_le_right)).trans (hV i).ge`. Rewrite using `[← hWe]`. Establish `red : ∀ (N : ℕ) (g : Γ(Q.P.A.left, U)), rsT ((m.app U).hom g - 2 * (N : Γ(Z, m ⁻¹ᵁ U)) * dl U f) (m ⁻¹ᵁ W) = (m.app W).hom (resG _ hWU g) - 2 * (N : Γ(Z, m ⁻¹ᵁ W)) * dl W (resG _ hWU f)` using `fun N g => by`. Rewrite using `[hdl.res U W hWU le_top, rsT_of_le (pre_mono m hWU), rsT_of_le (pre_mono m hWU), map_sub, map_mul, map_mul, map_natCast, map_ofNat, res_app m hWU]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[red, red]`. Set `a` to `pullback.fst Y.q.left m`. Set `b` to `pullback.snd Y.q.left m`. Establish `w : a ≫ Y.q.left = b ≫ m` using `pullback.condition`. Establish `hle : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ a ⁻¹ᵁ (Y.q.left ⁻¹ᵁ W)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`. Set `π` to `(a.appLE _ _ hle).hom`. Establish `key : ∀ x, (b.app _).hom ((m.app W).hom x) = π ((Y.q.left.app W).hom x)` using `fun x => by`. Establish `k : ∀ (c : pullback Y.q.left m ⟶ Q.P.A.left) (_ : c = b ≫ m) (hc : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ c ⁻¹ᵁ W), (b.app _).hom ((m.app W).hom x) = (c.appLE W _ hc).hom x`. Introduce and unpack `_ rfl hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Scheme.Hom.comp_appLE, Scheme.Hom.app_eq_appLE b]`. Both sides reduce to the same expression. Rewrite using `[k _ w hle]`. Conclude with `congrArg (fun ψ => ψ.hom x) (Scheme.Hom.comp_appLE a Y.q.left W _ hle)`. Establish `hc : ∀ r, π (constFn Y.H.hom _ r) = constFn (b ≫ p) _ (φ r)` using `fun r => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← res_const (b ≫ p) hle, ← app_const φ Y.H.hom (b ≫ p) a (by`. Rewrite using `[← Over.w Y.q, reassoc_of% w, hm, Category.assoc])]`. Both sides reduce to the same expression. Establish `hΘ' : ∀ a b, π (constFn Y.H.hom _ (h.Θ a b)) = 0` using `fun a b => by`. Rewrite using `[hc, hΘ, constFn, map_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : ∀ x, (b.app _).hom (dl W x) = π (h.d i _ ((Y.q.left.app W).hom x))` using `fun x => by`. Use `desc _ a b w i W hW x` as an intermediate fact. Rewrite `this` using `[pbT, pbT, dif_pos le_rfl, dif_pos hle]`. Rewrite using `[Scheme.Hom.app_eq_appLE b]`. Conclude with `this`.
-
-Use `GlobalTheory.FunDescent.app_injective b _ ?_` and prove the remaining obligations. Use `show (b.app _).hom _ = (b.app _).hom _`. Simplify using `only [map_sub, map_mul, map_natCast, map_ofNat, key, hd]`. Conclude with `(rem_chart Y h hdd N₁ β₁ σ σ' σp σp' U f g₁ r₁ h₁ h₂ e₁ i W hWU hW π hΘ').trans (rem_chart Y h hdd N₂ β₂ ρ ρ' ρp ρp' U f g₂ r₂ h₃ h₄ e₂ i W hWU hW π hΘ').symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rem_indep (hdd : ∀ a, IsField ⊤ (dd a)) (hB : IsBasic Y h) {K : Type} [Field K] (φ : R →+* K)
     (hΘ : ∀ a b, φ (h.Θ a b) = 0) {Z : Scheme.{0}} (p : Z ⟶ Sp K) (m : Z ⟶ Q.P.A.left)
@@ -253,9 +251,9 @@ theorem rem_indep (hdd : ∀ a, IsField ⊤ (dd a)) (hB : IsBasic Y h) {K : Type
 end Ray
 
 /- English proof (translation)
-Introduce `E _ _ _ H k _ _ m d t P gam _ _ _`. Use `letI := H.starRing`. Introduce `Y n' v' dd hdd D q _ h hB hΘ ρ hρ A₀ _ m₀ hm dl hdl desc N₁ N₂ _ _ β₁ β₂ σ σ' σp σp' ρ₂ ρ₂' ρp ρp' U f g₁ g₂ r₁ r₂ h₁ h₂ h₃ h₄ e₁ e₂`. Use `rem_indep Y h (fun a => (hdd a).1) hB ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ) (fun a b => ?_) A₀.hom m₀ hm.1.w dl hdl desc N₁ N₂ β₁ β₂ σ σ' σp σp' ρ₂ ρ₂' ρp ρp' U f g₁ g₂ r₁ r₂ h₁ h₂ h₃ h₄ e₁ e₂` and prove the remaining obligations. Establish `h0 : MvPowerSeries.constantCoeff (h.Θ a b) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hΘ a b (MvPowerSeries.isUnit_iff_constantCoeff.2 (Ne.isUnit hne))`. Use `show (ρ (h.Θ a b)).fst = 0`. Simplify using `[hρ, h0]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closed_fibre_rem_indep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [CharZero k] (m d : ℕ) (t : SAB H (Sp (ChartRing k m d))) (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre (bdParam k m d) gam → LinearIndependent ℤ gam → (∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n' : ℕ) (v' : Module.Basis (Fin n') (ChartRing k m d) (TanM (𝟙 (Sp (ChartRing k m d))) Y.H)) (dd : Fin n' → Fld Y.H.left), (∀ a, IsInv Y.H (v' a) (dd a)) → ∀ (D : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (q : Fin m → ChartRing k m d), (∀ i, D (bdParam k m d i) = q i * bdParam k m d i) → ∀ h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D, IsBasic Y h → (∀ a b, h.Θ a b ∈ maximalIdeal (ChartRing k m d)) → ∀ ρ : ChartRing k m d →+* DualNumber k, (∀ r, ρ r = TrivSqZeroExt.inl (MvPowerSeries.constantCoeff r) + TrivSqZeroExt.inr (MvPowerSeries.constantCoeff (D r)))  → ∀ (A₀ : Over (Sp k)) (_ : GrpObj A₀) (m₀ : A₀.left ⟶ P.D.toPre.P.A.left), IsGrpPullback A₀ P.D.toPre.P.A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀ → ∀ dl : ∀ W : P.D.toPre.P.A.left.Opens, Γ(P.D.toPre.P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W), GlobalTheory.KS.LocDerK A₀.hom P.D.toPre.P.A.hom m₀ (fun r => (ρ r).snd) ⊤ dl → (∀ (Z' : Scheme.{0}) (a : Z' ⟶ Y.H.left) (b : Z' ⟶ A₀.left), a ≫ Y.q.left = b ≫ m₀ → ∀ (i : h.J) (W : P.D.toPre.P.A.left.Opens), Y.q.left ⁻¹ᵁ W ≤ h.W i → ∀ f, pbT b (dl W f) (b ⁻¹ᵁ (m₀ ⁻¹ᵁ W)) = pbT a (h.d i _ ((Y.q.left.app W).hom f)) (b ⁻¹ᵁ (m₀ ⁻¹ᵁ W))) → ∀ (N₁ N₂ : ℕ), 1 ≤ N₁ → 1 ≤ N₂ → ∀ (β₁ β₂ : P.D.toPre.X) (σ σ' σp σp' : P.D.toPre.SecB N₁ β₁) (ρ₂ ρ₂' ρp ρp' : P.D.toPre.SecB N₂ β₂) (U : P.D.toPre.P.A.left.Opens) (f g₁ g₂ : Γ(P.D.toPre.P.A.left, U)), GlobalTheory.HeatRatio.IsRatio P.D.toPre σ σ' U f → GlobalTheory.HeatRatio.IsRatio P.D.toPre ρ₂ ρ₂' U f → TActs Y h N₁ β₁ σ σp → TActs Y h N₁ β₁ σ' σp' → TActs Y h N₂ β₂ ρ₂ ρp → TActs Y h N₂ β₂ ρ₂' ρp' → GlobalTheory.HeatRatio.IsRem P.D.toPre σ' σp σp' U f g₁ → GlobalTheory.HeatRatio.IsRem P.D.toPre ρ₂' ρp ρp' U f g₂ → (m₀.app U).hom g₁ - 2 * (N₁ : Γ(A₀.left, m₀ ⁻¹ᵁ U)) * dl U f = (m₀.app U).hom g₂ - 2 * (N₂ : Γ(A₀.left, m₀ ⁻¹ᵁ U)) * dl U f := by
   intro E _ _ _ H k _ _ m d t P gam _ _ _

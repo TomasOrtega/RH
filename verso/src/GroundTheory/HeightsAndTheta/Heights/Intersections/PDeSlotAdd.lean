@@ -17,11 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `h0 : ∀ y w, sheetDensity P hΨ.choose φ g y w = 0`. Introduce `y w`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[hg _ hγ.choose_spec.2.self_of_nhds.2.1, zero_mul]`. Both sides reduce to the same expression. Simplify using `[h0]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_eq_zero_of_vanish (P : Ideal (MRing ι)) {e : ℕ}
     (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) {g : ((Σ k, ι k) → ℂ) → ℝ}
@@ -39,21 +37,19 @@ theorem ptsIntegral_eq_zero_of_vanish (P : Ideal (MRing ι)) {e : ℕ}
   · rfl
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, e = m + 1` from `⟨e - 1, by have := j.pos; omega⟩`. Take `⟨J, ⟨R⟩⟩` from `exists_anLogRes hE hP`. Use `set T : Fin m → HermLine ι := fun i => L (Equiv.swap 0 j i.succ) with hT`. Establish `hT' : ∀ i, IsSmoothHerm (T i)` using `fun i => hL _`. Establish `hU : ∀ X : HermLine ι, IsSmoothHerm X → ∀ i, IsSmoothHerm (Function.update L j X i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X hX i`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using `using hX`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hL i`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ X : HermLine ι, IsSmoothHerm X → ∀ i, IsSmoothHerm ((Fin.cons X T : Fin (m + 1) → HermLine ι) i)` using `fun X hX i => Fin.cases hX hT' i`. Establish `key : ∀ X : HermLine ι, IsSmoothHerm X → ptsIntegral P (pot (Function.update L j X)) (logNorm A s) = mInt R.A (Fin.cons (potOf R X) fun i => potOf R (T i)) (fun x => logNorm A s (R.lift x x))`. Introduce `X hX`. Rewrite using `[ptsIntegral_eq_mInt' hE resBridge R hP (hU X hX) hA hs, ← potOf_cons R X T, ← mIntSymm R.A (fun i => potOf R (Function.update L j X i)) (Equiv.swap 0 j)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hne : Equiv.swap 0 j i.succ ≠ j`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]`. Conclude with `Fin.succ_ne_zero _ h`. Simplify using `only [Function.comp_apply, Fin.cons_succ, hT, Function.update_of_ne hne]`. Rewrite using `[key _ (isSmoothHerm_tensor hM hN), key M hM, key N hN]`. Establish `hΦ : ∀ i, IsPotential R.A (potOf R (T i))` using `fun i => isPotential_potOf R (hT' i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPM` using `isPotential_potOf R hM`. Establish `hPN` using `isPotential_potOf R hN`. Establish `e1 : mInt R.A (Fin.cons (potOf R (M.tensor N)) fun i => potOf R (T i)) (fun x => logNorm A s (R.lift x x)) = mInt R.A (Fin.cons (potOf R M + potOf R N) fun i => potOf R (T i)) (fun x => logNorm A s (R.lift x x))`. Use `ReciprocityTheory.ChartRestriction.G.Geo.mInt_congr _ (locDens_cons_congr _ _ fun j y hy => germ_of_eqOn R (fun x z hz => ?_) j y hy) fun _ => rfl` and prove the remaining obligations. Establish `hm` using `(R.mem x z hz).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show Real.log (M.h (R.lift x z) * N.h (R.lift x z)) = Real.log (M.h (R.lift x z)) + Real.log (N.h (R.lift x z))`. Conclude with `Real.log_mul (M.pos _ hm).ne' (N.pos _ hm).ne'`. Establish `hI : ∀ X : HermLine ι, IsSmoothHerm X → MIntegrable R.A (Fin.cons (potOf R X) fun i => potOf R (T i)) (fun x => logNorm A s (R.lift x x))`. Introduce `X hX`. Rewrite using `[← potOf_cons R X T]`.
-
-Conclude with `brIntegrable R _ A s hP (hC X hX) hA hs`. Rewrite using `[e1]`. Conclude with `mIntAdd R.A _ _ _ hPM hPN hΦ _ (hI M hM) (hI N hN)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_update_tensor (hE : ResExistsStatement) {P : Ideal (MRing ι)} {e : ℕ}
     (hP : IsArithVar P (e + 1)) {L : Fin e → HermLine ι} (j : Fin e) {M N A : HermLine ι}
@@ -115,19 +111,17 @@ theorem ptsIntegral_update_tensor (hE : ResExistsStatement) {P : Ideal (MRing ι
   exact mIntAdd R.A _ _ _ hPM hPN hΦ _ (hI M hM) (hI N hN)
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L j M N A A' s s' hP hL hM hN hA hA' hs hs' _`. Establish `hZ : ∀ (B C : HermLine ι) (t : MRing ι), IsSmoothHerm B → IsSmoothHerm C → IsSectionOn P C t → ptsIntegral P (Fin.cons (fun z => Real.log (B.h z)) (pot (Function.update L j (M.tensor N)))) (logNorm C t) = ptsIntegral P (Fin.cons (fun z => Real.log (B.h z)) (pot (Function.update L …`. Introduce `B C t hB hC ht`. Establish `hc : ∀ X : HermLine ι, (Fin.cons (fun z => Real.log (B.h z)) (pot (Function.update L j X)) : Fin (n + 1) → ((Σ k, ι k) → ℂ) → ℝ) = pot (Function.update (Fin.cons B L : Fin (n + 1) → HermLine ι) j.succ X)`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Fin.cons_update]`. Use function extensionality and compare the values at `i`. Conclude with `Fin.cases rfl (fun i => rfl) i`. Rewrite using `[hc, hc, hc]`. Conclude with `ptsIntegral_update_tensor hE hP j.succ (fun i => Fin.cases hB hL i) hM hN hC ht`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ (t t' : MRing ι) (C C' : HermLine ι), IsSectionOn P C t → IsSmoothHerm C' → IsSectionOn P C' t' → (∑ᶠ (W) (_ : W ∈ divSupp P t ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {t}) W : ℝ) * ptsIntegral W (pot (Function.update L j (M.tensor N))) (logNorm C' t')) = (∑ᶠ (W) (_ : W …`. Introduce `t t' C C' ht hC' ht'`. Establish `hfin : {W | W ∈ divSupp P t ∧ IsHorizontal W}.Finite` using `(divSupp_finite P t).subset fun W hW => hW.1`. Establish `hpt : ∀ W ∈ {W | W ∈ divSupp P t ∧ IsHorizontal W}, (multAt (P ⊔ Ideal.span {t}) W : ℝ) * ptsIntegral W (pot (Function.update L j (M.tensor N))) (logNorm C' t') = (multAt (P ⊔ Ideal.span {t}) W : ℝ) * ptsIntegral W (pot (Function.update L j M)) (logNorm C' t') + (multAt (P ⊔ Idea …`. Introduce `W hW`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← mul_add]`. Use `congr 1`. Establish `hWa : IsArithVar W (n + 1)` using `(divSuppArith K ι P (n + 1) C t W hP ht hW.1).1 hW.2`. Distinguish the cases in `hsW : t' ∈ W`. Establish `h0 : ∀ z ∈ mcPts W, logNorm C' t' z = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `z hz`. Simplify using `[logNorm, hz.2 t' hsW]`. Rewrite using `[ptsIntegral_eq_zero_of_vanish W _ h0, ptsIntegral_eq_zero_of_vanish W _ h0, ptsIntegral_eq_zero_of_vanish W _ h0, add_zero]`. Take `⟨a, ha, hta, -⟩` from `ht'`. Conclude with `ptsIntegral_update_tensor hE hWa j hL hM hN hC' ⟨a, ha, hta, hsW⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ᶠ W ∈ {W | W ∈ divSupp P t ∧ IsHorizontal W}, (multAt (P ⊔ Ideal.span {t}) W : ℝ) * ptsIntegral W (pot (Function.update L j (M.tensor N))) (logNorm C' t') = ∑ᶠ W ∈ {W | W ∈ divSupp P t ∧ IsHorizontal W}, (multAt (P ⊔ Ideal.span {t}) W : ℝ) * ptsIntegral W (pot (Function.upd …`. Rewrite using `[← finsum_mem_add_distrib hfin]`. Conclude with `finsum_mem_congr rfl hpt`. Unfold `De`. Rewrite using `[hW s s' A A' hs hA' hs', hW s' s A' A hs' hA hs, hZ A' A s hA' hA hs, hZ A A' s' hA hA' hs']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem DeSlotAdd.proof (hE : ResExistsStatement) : DeSlotAdd.Statement := by
   intro K _ ι _ P n L j M N A A' s s' hP hL hM hN hA hA' hs hs' _

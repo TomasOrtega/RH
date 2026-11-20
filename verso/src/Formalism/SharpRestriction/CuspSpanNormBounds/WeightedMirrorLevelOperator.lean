@@ -434,9 +434,9 @@ section Shape
 variable {B : Base E} {r : ℕ} {C : Ctx B r} {SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E} {b : Bool}
 
 /- English proof (translation)
-Establish `e : c • M = C.fmul (C.fscal (fun _ => c)) M`. Use function extensionality and compare the values at `s t x`. Simplify using `only [Ctx.fmul, Ctx.fscal, Matrix.smul_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v _ hv`. Simplify using `[Ne.symm hv]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `IsEePM.mul (IsEePM.scal c) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEePM.smul {n : ℕ} (c : ℂ) {M : C.FM n} (h : IsEePM C SS b n M) : IsEePM C SS b n (c • M) := by
   have e : c • M = C.fmul (C.fscal (fun _ => c)) M := by
@@ -451,7 +451,7 @@ theorem IsEePM.smul {n : ℕ} (c : ℂ) {M : C.FM n} (h : IsEePM C SS b n M) : I
   exact IsEePM.mul (IsEePM.scal c) h
 
 /- English proof (translation)
-Establish `e : (0 : C.FM n) = C.fscal (fun _ => (0 : ℂ))`. Use function extensionality and compare the values at `s t x`. Simplify using `[Ctx.fscal]`. Rewrite using `[e]`. Conclude with `IsEePM.scal 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEePM.zero {n : ℕ} : IsEePM C SS b n (0 : C.FM n) := by
   have e : (0 : C.FM n) = C.fscal (fun _ => (0 : ℂ)) := by
@@ -461,7 +461,7 @@ theorem IsEePM.zero {n : ℕ} : IsEePM C SS b n (0 : C.FM n) := by
   exact IsEePM.scal 0
 
 /- English proof (translation)
-Establish `e : M - N = M + (-1 : ℂ) • N` using `by simp [sub_eq_add_neg]`. Rewrite using `[e]`. Conclude with `IsEePM.add h (IsEePM.smul _ h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEePM.sub {n : ℕ} {M N : C.FM n} (h : IsEePM C SS b n M) (h' : IsEePM C SS b n N) :
     IsEePM C SS b n (M - N) := by
@@ -470,7 +470,7 @@ theorem IsEePM.sub {n : ℕ} {M N : C.FM n} (h : IsEePM C SS b n M) (h' : IsEePM
   exact IsEePM.add h (IsEePM.smul _ h')
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using IsEePM.zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `IsEePM.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEePM.sum {n : ℕ} {ι : Type*} (s : Finset ι) (M : ι → C.FM n) (h : ∀ i ∈ s, IsEePM C SS b n (M i)) :
     IsEePM C SS b n (∑ i ∈ s, M i) := by
@@ -482,7 +482,7 @@ theorem IsEePM.sum {n : ℕ} {ι : Type*} (s : Finset ι) (M : ι → C.FM n) (h
     exact IsEePM.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s t x`. Simplify using `only [Ctx.fmul, Matrix.sub_apply, Pi.sub_apply, ContinuousLinearMap.sub_comp, ContinuousLinearMap.comp_sub, Finset.sum_sub_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fmul_sub_mid {n : ℕ} (X M N Z : C.FM n) :
     C.fmul X (C.fmul M Z) - C.fmul X (C.fmul N Z) = C.fmul X (C.fmul (M - N) Z) := by
@@ -497,11 +497,11 @@ theorem fblk_sub {n : ℕ} (K K' : Fin 2 → Fin 2 → C.FM n) :
     C.fblk K - C.fblk K' = C.fblk (fun i j => K i j - K' i j) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s t x`. Establish `sub : ∀ a c : Fin ([] : List (Bool × ℝ)).length → Fin 2, a = c` using `fun a c => funext fun i => absurd i.2 (by simp)`. Establish `hst : s = t` using `sub _ _`. Substitute `hst` using the available equality. Simplify using `only [Ctx.ee, Ctx.fmul, Ctx.fdiag, shInv, if_true, Matrix.sum_apply, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `v _ hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (sub _ _) hv`. Introduce `hs`. Conclude with `absurd (Finset.mem_univ s) hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ee_nil_eq (Y : ℂ) :
     C.ee SS [] Y = ∑ l : Fin B.k0, C.fmul (C.fdiag (fun _ ρ => (Y + (B.rhoP ρ l : ℂ))⁻¹))
@@ -521,14 +521,14 @@ theorem ee_nil_eq (Y : ℂ) :
     exact absurd (Finset.mem_univ s) hs
 
 /- English proof (translation)
-Rewrite using `[ee_nil_eq]`. Conclude with `IsEePM.sum _ _ fun l _ => IsEePM.mul (IsEePM.cst _) (IsEePM.ss l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ee_nil_mem (Y : ℂ) : IsEePM C SS b 0 (C.ee SS [] Y) := by
   rw [ee_nil_eq]
   exact IsEePM.sum _ _ fun l _ => IsEePM.mul (IsEePM.cst _) (IsEePM.ss l)
 
 /- English proof (translation)
-The claim follows from `| [], Y => ee_nil_mem Y | (true, ya) :: w, Y => by rw [Ctx.ee] refine IsEePM.blk _ fun i j => ?_ fin_cases i <;> fin_cases j · exact IsEePM.add (IsEePM.sub (ee_mem w Y) (IsEePM.smul _ (IsEePM.sub (ee_mem w Y) (ee_mem w ya)))) (IsEePM.tt rfl) · exact IsEePM.scal _ · exact IsEePM.z …`.
+A detailed English derivation is pending.
 -/
 theorem ee_mem : ∀ (w : List (Bool × ℝ)) (Y : ℂ), IsEePM C SS true w.length (C.ee SS w Y)
   | [], Y => ee_nil_mem Y
@@ -552,12 +552,12 @@ theorem ee_mem : ∀ (w : List (Bool × ℝ)) (Y : ℂ), IsEePM C SS true w.leng
           (IsEePM.smul _ (IsEePM.sub (ee_mem w Y) (ee_mem w yb)))) (IsEePM.tt rfl)
 
 /- English proof (translation)
-The claim follows from `e ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem IsEePM.of_eq {n : ℕ} {M N : C.FM n} (h : IsEePM C SS b n M) (e : M = N) : IsEePM C SS b n N := e ▸ h
 
 /- English proof (translation)
-The claim follows from `| [], Y, Y' => IsEePM.sub (ee_nil_mem Y) (ee_nil_mem Y') | (true, ya) :: w, Y, Y' => by rw [Ctx.ee, Ctx.ee, fblk_sub] refine IsEePM.blk _ fun i j => ?_ fin_cases i <;> fin_cases j · refine IsEePM.of_eq (IsEePM.add (IsEePM.sub (ee_diff_mem w Y Y') (IsEePM.smul (Y - ya)⁻¹ (ee_diff_ …`.
+A detailed English derivation is pending.
 -/
 theorem ee_diff_mem : ∀ (w : List (Bool × ℝ)) (Y Y' : ℂ), IsEePM C SS false w.length (C.ee SS w Y - C.ee SS w Y')
   | [], Y, Y' => IsEePM.sub (ee_nil_mem Y) (ee_nil_mem Y')

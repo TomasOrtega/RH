@@ -11,7 +11,7 @@ noncomputable section
 namespace FlatWeightedEstimates
 
 /- English proof (translation)
-Establish `h` using `eLpNorm_nnreal_pow_eq_lintegral (f := f) (μ := μ) (p := 2) two_ne_zero`. Establish `e : ((2 : NNReal) : ℝ) = ((2 : ℕ) : ℝ)` using `by norm_num`. Rewrite `h` using `[e]`. Simplify using `only [ENNReal.rpow_natCast] at h`. Simplify using `using h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma lint_sq {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] (f : α → E)
     (μ : Measure α) : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ = eLpNorm f 2 μ ^ 2 := by
@@ -22,7 +22,7 @@ lemma lint_sq {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] (f : α
   simpa using h.symm
 
 /- English proof (translation)
-Repeatedly rewrite using `[lint_sq]`. Simplify using `using ENNReal.Tendsto.pow (n := 2) h`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma tendsto_lint {ι α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] {l : Filter ι}
     {μ : Measure α} (F : ι → α → E) (h : Tendsto (fun i => eLpNorm (F i) 2 μ) l (𝓝 0)) :
@@ -31,7 +31,7 @@ lemma tendsto_lint {ι α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E]
   simpa using ENNReal.Tendsto.pow (n := 2) h
 
 /- English proof (translation)
-Simplify using `only [← ofReal_norm]`. Rewrite using `[← ENNReal.ofReal_pow (norm_nonneg _), EuclideanSpace.norm_sq_eq, ENNReal.ofReal_sum_of_nonneg (fun j _ => by positivity)]`. Conclude with `Finset.sum_congr rfl fun j _ => ENNReal.ofReal_pow (norm_nonneg _) 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma enorm_sq_V {n : ℕ} (x : V n) : ‖x‖ₑ ^ 2 = ∑ j, ‖x j‖ₑ ^ 2 := by
   simp only [← ofReal_norm]
@@ -40,7 +40,7 @@ lemma enorm_sq_V {n : ℕ} (x : V n) : ‖x‖ₑ ^ 2 = ∑ j, ‖x j‖ₑ ^ 2 
   exact Finset.sum_congr rfl fun j _ => ENNReal.ofReal_pow (norm_nonneg _) 2
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun y => fderiv ℝ φ y u)` using `(hφ.continuous_fderiv (by simp)).clm_apply continuous_const`. Conclude with `hf.integrable_smul_right_of_hasCompactSupport h1 (hc.fderiv_apply (𝕜 := ℝ) u)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma integrable_fd {n : ℕ} {f : V n → ℂ} (hf : LocallyIntegrable f volume) {φ : V n → ℂ}
     (hφ : ContDiff ℝ ∞ φ) (hc : HasCompactSupport φ) (u : V n) :
@@ -50,9 +50,9 @@ lemma integrable_fd {n : ℕ} {f : V n → ℂ} (hf : LocallyIntegrable f volume
   exact hf.integrable_smul_right_of_hasCompactSupport h1 (hc.fderiv_apply (𝕜 := ℝ) u)
 
 /- English proof (translation)
-Establish `h1` using `(integrable_fd hf hφ hc u).const_mul a`. Establish `h2` using `(integrable_fd hf hφ hc w).const_mul b`. Establish `e : (fun y => f y * (a * fderiv ℝ φ y u + b * fderiv ℝ φ y w)) = fun y => a * (f y * fderiv ℝ φ y u) + b * (f y * fderiv ℝ φ y w)`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `⟨h1.add h2, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add h1 h2, integral_const_mul, integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma int_comb {n : ℕ} {f : V n → ℂ} (hf : LocallyIntegrable f volume) {φ : V n → ℂ}
     (hφ : ContDiff ℝ ∞ φ) (hc : HasCompactSupport φ) (a b : ℂ) (u w : V n) :
@@ -69,7 +69,7 @@ lemma int_comb {n : ℕ} {f : V n → ℂ} (hf : LocallyIntegrable f volume) {φ
   rw [integral_add h1 h2, integral_const_mul, integral_const_mul]
 
 /- English proof (translation)
-Unfold `wd`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wd_eq (n : ℕ) (j : Fin n) (φ : V n → ℂ) (y : V n) :
     wd n j φ y = 1 / 2 * fderiv ℝ φ y (bas n j) + (-Complex.I / 2) *
@@ -77,7 +77,7 @@ lemma wd_eq (n : ℕ) (j : Fin n) (φ : V n → ℂ) (y : V n) :
   unfold wd; ring
 
 /- English proof (translation)
-Unfold `wdb`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wdb_eq (n : ℕ) (j : Fin n) (φ : V n → ℂ) (y : V n) :
     wdb n j φ y = 1 / 2 * fderiv ℝ φ y (bas n j) + (Complex.I / 2) *
@@ -91,7 +91,7 @@ def vD (n : ℕ) (p : Fin (n * 2)) : V n :=
     (finProdFinEquiv.symm p).2
 
 /- English proof (translation)
-Rewrite using `[Equiv.sum_comp finProdFinEquiv.symm H, Fintype.sum_prod_type]`. Simplify using `[Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma reindex {n : ℕ} (H : Fin n × Fin 2 → ℂ) :
     ∑ p : Fin (n * 2), H (finProdFinEquiv.symm p) = ∑ j, (H (j, 0) + H (j, 1)) := by
@@ -99,7 +99,7 @@ lemma reindex {n : ℕ} (H : Fin n × Fin 2 → ℂ) :
   simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `reindex (n := n) (fun q => ![(1 : ℂ) / 2, -Complex.I / 2] q.2 * fderiv ℝ (h q.1) y (![bas n q.1, Complex.I • bas n q.1] q.2))` as an intermediate fact. Conclude with `this.trans (Finset.sum_congr rfl fun j _ => by simp [wd_eq])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma dop_div {n : ℕ} (h : Fin n → V n → ℂ) (y : V n) :
     B.Dop (cD n) (vD n) (fun p => h (finProdFinEquiv.symm p).1) y = ∑ j, wd n j (h j) y := by
@@ -113,7 +113,7 @@ def vS (n : ℕ) (j k : Fin n) : Fin 4 → V n :=
   ![bas n j, Complex.I • bas n j, bas n k, Complex.I • bas n k]
 
 /- English proof (translation)
-Simplify using `[B.Dop, Fin.sum_univ_four, cS, vS, wdb_eq, h0, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma dop_sb' {n : ℕ} (j k : Fin n) (g : Fin 4 → V n → ℂ) (a b : V n → ℂ) (h0 : g 0 = a)
     (h1 : g 1 = a) (h2 : g 2 = b) (h3 : g 3 = b) (y : V n) :
@@ -125,41 +125,39 @@ end FlatWeightedEstimates
 
 open FlatWeightedEstimates in
 /- English proof (translation)
-Introduce `Ω K G D S hΩ hK hKΩ hvan hG hD hS hdiv hsb`. Take `⟨r, hr, hrΩ⟩` from `hK.exists_cthickening_subset_open hΩ hKΩ`. Use `⟨Metric.cthickening r K, hK.cthickening, hrΩ, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `hGj : ∀ j, MemLp (fun u => G u j) 2 volume` using `fun j => (EuclideanSpace.proj j : V n →L[ℂ] ℂ).comp_memLp' hG`. Establish `hSjk : ∀ j k, MemLp (fun u => S u j k) 2 volume` using `fun j k => ((ContinuousLinearMap.proj k : (Fin n → ℂ) →L[ℂ] ℂ).comp (ContinuousLinearMap.proj j : (Fin n → Fin n → ℂ) →L[ℂ] (Fin n → ℂ))).comp_memLp' hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGl : ∀ j, LocallyIntegrable (fun u => G u j) volume` using `fun j => (hGj j).locallyIntegrable (by norm_num)`. Establish `hWD : B.IsWeakD volume (cD n) (vD n) (fun p => fun u => G u (finProdFinEquiv.symm p).1) D`. Use `⟨fun p => hGl _, hD.locallyIntegrable (by norm_num), fun φ hφ hc => ?_⟩` and prove the remaining obligations. Establish `hI` using `fun j => int_comb (hGl j) hφ hc (1 / 2) (-Complex.I / 2) (bas n j) (Complex.I • bas n j)`. Establish `e1` using `hdiv φ hφ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [wd_eq] at e1`. Rewrite `e1` using `[integral_finsetSum _ (fun j _ => (hI j).1), Finset.sum_congr rfl (fun j _ => (hI j).2)]`. Establish `h2` using `reindex (n := n) (fun q => ![(1 : ℂ) / 2, -Complex.I / 2] q.2 * ∫ y, G y q.1 * fderiv ℝ φ y (![bas n q.1, Complex.I • bas n q.1] q.2))`. Establish `h3 : ∑ p, cD n p * ∫ x, (fun u => G u (finProdFinEquiv.symm p).1) x * fderiv ℝ φ x (vD n p) = ∑ j, (1 / 2 * (∫ y, G y j * fderiv ℝ φ y (bas n j)) + -Complex.I / 2 * ∫ y, G y j * fderiv ℝ φ y (Complex.I • bas n j))` using `h2.trans (Finset.sum_congr rfl fun j _ => by simp)`. Rewrite using `[h3, e1, neg_neg]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWS : ∀ j k, B.IsWeakD volume cS (vS n j k) (fun p => ![fun u => G u k, fun u => G u k, fun u => G u j, fun u => G u j] p) (fun u => S u j k)`. Introduce `j k`. Use `⟨fun p => ?_, (hSjk j k).locallyIntegrable (by norm_num), fun φ hφ hc => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases p <;> exact hGl _`. Establish `hk` using `int_comb (hGl k) hφ hc (1 / 2) (Complex.I / 2) (bas n j) (Complex.I • bas n j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hj` using `int_comb (hGl j) hφ hc (1 / 2) (Complex.I / 2) (bas n k) (Complex.I • bas n k)`. Establish `e1` using `hsb φ hφ hc j k`. Simplify using `only [wdb_eq] at e1`. Rewrite `e1` using `[integral_sub hk.1 hj.1, hk.2, hj.2]`. Rewrite using `[Fin.sum_univ_four]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cS, vS, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]`. Take the linear combination `e1`. Establish `hKr : ∀ t : ℝ, 0 < t → (B.Kernel.std (V n) volume t).r = t` using `fun t ht => by`. Simplify using `[B.Kernel.std, B.Kernel.ofBump, B.stdBump, ht]`. Establish `hGD` using `hGraph (𝓝[>] 0) (fun t => B.Kernel.std (V n) volume t) hStd _ _ _ _ _ hWD (fun p => hGj _) hD`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `have hGS := fun j k => hGraph (𝓝[>] 0) (fun t => B.Kernel.std (V n) volume t) hStd _ _ _ _ _ (hWS j k) (fun p => by fin_cases p <;> exact hGj _) (hSjk j k)`. Establish `T1 : Tendsto (fun t => ∑ j, ∫⁻ y, ‖B.moll (B.Kernel.std (V n) volume t) (fun u => G u j) y - G y j‖ₑ ^ 2) (𝓝[>] 0) (𝓝 0)`. Use `tendsto_finsetSum Finset.univ (fun j _ => tendsto_lint _ (hGD.1 (finProdFinEquiv (j, 0))))` as an intermediate fact. Simplify using `using this`. Establish `T2` using `tendsto_lint _ hGD.2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `T3 : Tendsto (fun t => ∑ j, ∑ k, ∫⁻ y, ‖(B.Dop cS (vS n j k) (fun p => B.moll (B.Kernel.std (V n) volume t) (![fun u => G u k, fun u => G u k, fun u => G u j, fun u => G u j] p)) - fun u => S u j k) y‖ₑ ^ 2) (𝓝[>] 0) (𝓝 0)`. Use `tendsto_finsetSum Finset.univ (fun j _ => tendsto_finsetSum Finset.univ (fun k _ => tendsto_lint _ (hGS j k).2))` as an intermediate fact. Simplify using `using this`. Establish `e4 : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t` using `self_mem_nhdsWithin`. Establish `e5 : ∀ᶠ t in 𝓝[>] (0 : ℝ), t < r` using `nhdsWithin_le_nhds (Iio_mem_nhds hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ev` using `(((T1.eventually (gt_mem_nhds hδ)).and (T2.eventually (gt_mem_nhds hδ))).and (T3.eventually (gt_mem_nhds hδ))).and (e4.and e5)`. Take `⟨t, ⟨⟨h1, h2⟩, h3⟩, ht0', htr'⟩` from `ev.exists`. Establish `hmc : ∀ j, ContDiff ℝ ∞ (B.moll (B.Kernel.std (V n) volume t) (fun u => G u j))` using `fun j => hSmooth _ _ (hGl j)`. Use `⟨fun y => WithLp.toLp 2 (fun j => B.moll (B.Kernel.std (V n) volume t) (fun u => G u j) y), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `contDiff_piLp' 2 fun j => hmc j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hz : ∀ j, B.moll (B.Kernel.std (V n) volume t) (fun u => G u j) y = 0`. Introduce `j`. Assume the negation of the conclusion as `hne`. Establish `hm` using `hSupp (B.Kernel.std (V n) volume t) (fun u => G u j) (Function.mem_support.2 hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Set.mem_add.1 hm`. Apply `hy` to reduce the goal to its premises. Establish `haK : a ∈ K`. Assume the negation of the conclusion as `haK`. Conclude with `ha (by simp [(hvan a haK).1])`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Metric.mem_cthickening_of_dist_le _ a r K haK ?_` and prove the remaining obligations. Rewrite `hb` using `[hKr t ht0', mem_ball_zero_iff]`. Rewrite using `[dist_eq_norm, add_sub_cancel_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun j => B.moll (B.Kernel.std (V n) volume t) (fun u => G u j) y) = 0 from funext hz]`. Simplify using the standard rewrite rules. Use `lt_of_le_of_lt (le_of_eq ?_) h1` and prove the remaining obligations. Use `(lintegral_congr fun y => ?_).trans (lintegral_finsetSum' _ (fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[enorm_sq_V]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Conclude with `(((hmc j).continuous.aestronglyMeasurable.sub (hGj j).1).enorm).pow_const 2`. Use `lt_of_le_of_lt (le_of_eq (lintegral_congr fun y => ?_)) h2` and prove the remaining obligations. Conclude with `congrArg (fun s => ‖s - D y‖ₑ ^ 2) (dop_div (fun j => B.moll (B.Kernel.std (V n) volume t) (fun u => G u j)) y).symm`. Set `Q : Fin n → Fin n → V n → ℝ≥0∞` to `fun j k y => ‖(B.Dop cS (vS n j k) (fun p => B.moll (B.Kernel.std (V n) volume t) (![fun u => G u k, fun u => G u k, fun u => G u j, fun u => G u j] p)) - fun u => S u j k) y‖ₑ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmeas : ∀ j k, AEMeasurable (Q j k) volume` using `fun j k => ((((Finset.measurable_sum _ fun p _ => (measurable_fderiv_apply_const ℝ _ _).const_mul _).aestronglyMeasurable).sub (hSjk j k).1).enorm).pow_const 2`. Establish `hsum : ∫⁻ y, ∑ j, ∑ k, Q j k y = ∑ j, ∑ k, ∫⁻ y, Q j k y`. Rewrite using `[lintegral_finsetSum' _ (fun j _ => Finset.aemeasurable_fun_sum _ fun k _ => hmeas j k)]`. Conclude with `Finset.sum_congr rfl fun j _ => lintegral_finsetSum' _ fun k _ => hmeas j k`. Use `lt_of_le_of_lt (le_trans (lintegral_mono fun y => ?_) hsum.le) h3` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hA : ∀ j k, Q j k y = ‖wdb n j (fun u => B.moll (B.Kernel.std (V n) volume t) (fun u => G u k) u) y - wdb n k (fun u => B.moll (B.Kernel.std (V n) volume t) (fun u => G u j) u) y - S y j k‖ₑ ^ 2` using `fun j k => by`. Simplify using `only [Q]`. Rewrite using `[Pi.sub_apply, dop_sb' j k _ _ _ rfl rfl rfl rfl y]`. Both sides reduce to the same expression. Use `le_of_le_of_eq ?_ (Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => hA j k).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Unfold `sq2`. Use `le_trans (ENNReal.ofReal_le_ofReal (half_le_self (by positivity))) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm, ENNReal.ofReal_pow (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flatGraph (n : ℕ) (hGraph : B.GraphSt (V n) volume ℝ) (hSmooth : B.SmoothSt (V n) volume)
     (hSupp : B.SupportSt (V n) volume) (hStd : B.StdSt (V n) volume) : FlatGraphStatement n := by

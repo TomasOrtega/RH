@@ -17,47 +17,41 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 open Classical
 
 /- English proof (translation)
-The claim follows from `if_pos hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_D_g {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs) : (twCst Ch sel mu G).D P = 1 := if_pos hP
 /- English proof (translation)
-The claim follows from `if_neg hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_D_Q {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) : (twCst Ch sel mu G).D P = 2 * R.m := if_neg hP
 /- English proof (translation)
-The claim follows from `if_pos hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_psi_g {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs) : (twCst Ch sel mu G).psi P = ciPsi Ch P := if_pos hP
 /- English proof (translation)
-The claim follows from `if_neg hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_psi_Q {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) :
     (twCst Ch sel mu G).psi P = twPsiQ G.σ₀ G.xi0 P.1 (2 * R.m) := if_neg hP
 /- English proof (translation)
-The claim follows from `if_pos hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_sq_g {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs) : (twCst Ch sel mu G).sq P = ciSq Ch P.1 := if_pos hP
 /- English proof (translation)
-The claim follows from `if_neg hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_sq_Q {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) : (twCst Ch sel mu G).sq P = twSqrt P.1 := if_neg hP
 
 /- English proof (translation)
-Establish `hc` using `ciCst_ok (Ch := Ch) hPr hCh (SB := Pr.vGs) (fun _ h => h) h4 (mq := fun _ _ => 1)`. Establish `h2` using `R.two_le_m`. Conclude with `{ psi_add := fun P x y hx hy => by`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite `hx`, `hy` using `[twCst_D_g hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twCst_psi_g hP]`. Conclude with `hc.psi_add ⟨P.1, hP⟩ x y hx hy`. Rewrite `hx`, `hy` using `[twCst_D_Q hP]`. Rewrite using `[twCst_psi_Q hP]`. Conclude with `hK.psi_add P hP x y hx hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `psi_int := fun P x hx => by`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[twCst_psi_g hP]`. Conclude with `hc.psi_int ⟨P.1, hP⟩ x hx`. Rewrite using `[twCst_psi_Q hP]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK.psi_int P hP x hx`. Use `psi_ne := fun P => by`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[twCst_psi_g hP]`. Conclude with `hc.psi_ne ⟨P.1, hP⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twCst_psi_Q hP]`. Conclude with `hK.psi_ne P hP`. Use `D_pos := fun P => by`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[twCst_D_g hP]`.
-
-Rewrite using `[twCst_D_Q hP]`. Use linear arithmetic over natural numbers and integers. Use `sq_sq := fun P => by`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[twCst_sq_g hP]`.
-
-Conclude with `hc.sq_sq ⟨P.1, hP⟩`. Rewrite using `[twCst_sq_Q hP]`. Conclude with `hK.sq_sq P hP`. Use `M_pos := by show 1 ≤ R.m; omega`. Use `M_le_A := by show R.m ≤ R.m + 1; omega`.
-
-Use `M_le_B := by show R.m ≤ R.m + 1; omega`. Use `B_pos := by show 1 ≤ R.m + 1; omega }`.
+A detailed English derivation is pending.
 -/
 theorem twCst_ok (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (hK : TwCstQ (Pr := Pr) sel mu G) :
     (twCst Ch sel mu G).Ok := by
@@ -100,7 +94,7 @@ theorem twCst_ok (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 =
       B_pos := by show 1 ≤ R.m + 1; omega }
 
 /- English proof (translation)
-Rewrite using `[twCst_psi_g hP]`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (ciQOf_prime hPr hP).ne_zero`. Unfold `ciPsi`. Rewrite using `[mul_div_cancel₀ _ hq0, if_pos ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem localConstants_psi_depth_one (hPr : Pr.Ok) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (a : X.E) (ha : IntAt P.1 a) :
     (twCst Ch sel mu G).psi P (a / (qOf P.1 : X.E)) = psi0P Ch P.1 (redP P.1 a) := by
@@ -110,9 +104,9 @@ theorem localConstants_psi_depth_one (hPr : Pr.Ok) (P : rowSG Pr sel mu) (hP : P
   rw [mul_div_cancel₀ _ hq0, if_pos ha]
 
 /- English proof (translation)
-Introduce `P a b ha hab`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `hw` using `ciCst_weil Ch hX hPr (SB := Pr.vGs) (fun _ h => h) (fun _ _ => 1) hW (fun P hP => (ookXiUnit hCh hW P hP).1)`. Rewrite `ha`, `hab`, the goal using `[twCst_D_g hP]`. Rewrite using `[twCst_psi_g hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw ⟨P.1, hP⟩ a b ha hab`. Rewrite `ha`, `hab`, the goal using `[twCst_D_Q hP]`. Rewrite using `[twCst_psi_Q hP]`. Conclude with `hK.weil P hP a b ha hab`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twCst_weil (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (hW : Ch.WeilTied G.σ₀ G.xi0) (hK : TwCstQ (Pr := Pr) sel mu G) :
     (twCst Ch sel mu G).WeilTied G.σ₀ G.xi0 := by
@@ -127,7 +121,7 @@ theorem twCst_weil (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (hW : Ch.WeilTied G.�
     exact hK.weil P hP a b ha hab
 
 /- English proof (translation)
-The claim follows from `hX hPr := hPr hCh := hCh hm := hm cst_ok := twCst_ok hPr hCh h4 hK sharp := rfl psi0 P a hP ha := localConstants_psi_depth_one hPr P hP a ha depthG _ hP := twCst_D_g hP`.
+A detailed English derivation is pending.
 -/
 theorem twCst_base (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (hK : TwCstQ (Pr := Pr) sel mu G) {m2 : ℕ}
     (hm : R.m = m2 + 2) : OcbBase Ch sel mu (twCst Ch sel mu G) m2 where

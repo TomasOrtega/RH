@@ -9,11 +9,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Take `⟨s⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hli : LinearIndependent K ![x]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[linearIndependent_unique_iff]`. Simplify using `using h0`. Establish `h1` using `(h.posDef s 1 ![x] hli).diag_pos (i := 0)`. Establish `h2 : h'.form s (M x) (M x) = 0`. Use `h'.smul_right s 0 (M x) (M x)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul, map_zero, zero_mul]`. Rewrite using `[← this, hx]`. Rewrite `h2` using `[hM]`. Simplify using `[h2] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hermFam_isometry_injective {K : Type*} [Field K] [NumberField K] {V V' : Type*}
     [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
@@ -34,13 +34,13 @@ theorem hermFam_isometry_injective {K : Type*} [Field K] [NumberField K] {V V' :
   simp [h2] at h1
 
 /- English proof (translation)
-Introduce `K _ _ V V' _ _ _ _ _ _ _ _ h h' M E hE hM`. Establish `hinj` using `hermFam_isometry_injective h h' M hM`. Take `⟨v, hv⟩` from `exists_isFrame E hE`. Establish `hv' : IsFrame K (E.map (M.restrictScalars (𝓞 K))) (M ∘ v)`. Use `⟨fun i => ⟨v i, hv.1 i, rfl⟩, hv.2.1.map' M (LinearMap.ker_eq_bot.2 hinj), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[Set.range_comp, Submodule.span_image]`. Conclude with `⟨x, hv.2.2 hx, rfl⟩`. Rewrite using `[arakelovDegree_eq_degreeOfFamily h hE hv, arakelovDegree_eq_degreeOfFamily h' (hE.map _) hv']`. Unfold `degreeOfFamily`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `e1 : ∀ s, h'.gram s (M ∘ v) = h.gram s v` using `fun s => by`. Use extensionality with `i j`. Simplify using `[HermFam.gram, hM]`. Establish `e2 : Submodule.span (𝓞 K) (Set.range (M ∘ v)) = (Submodule.span (𝓞 K) (Set.range v)).map (M.restrictScalars (𝓞 K))`. Rewrite using `[Submodule.map_span, Set.range_comp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [e1, e2, Submodule.map_toAddSubgroup]`. Rewrite using `[AddSubgroup.relIndex_map_map_of_injective _ _ (by exact hinj)]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_map_isometry : ∀ (K : Type) [Field K] [NumberField K] (V V' : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (h : HermFam K V) (h' : HermFam K V') (M : V →ₗ[K] V') (Λ : Submodule (𝓞 K) V), Λ.FG → (∀ s a b, h'.form s (M a) (M b) = h.form s a b) → ReciprocityTheory.GeometryOfNumbersTheory.deg h' (Λ.map (M.restrictScalars (𝓞 K))) = ReciprocityTheory.GeometryOfNumbersTheory.deg h Λ := by
   intro K _ _ V V' _ _ _ _ _ _ _ _ h h' M E hE hM

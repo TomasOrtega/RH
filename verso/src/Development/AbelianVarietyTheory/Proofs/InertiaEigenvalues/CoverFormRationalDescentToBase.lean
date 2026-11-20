@@ -18,15 +18,15 @@ namespace GlobalTheory.CoverDescRat
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `k hk g`. Establish `hj` using `inR j`. Establish `hσ : GoodEmb T.Q.c T.σ₀` using `T.toCore.good_σ₀`. Take `⟨τ, hτ⟩` from `GlobalTheory.MuLevel.exists_ext (L := D.what₂.LL) T.σ₀`. Take `⟨hf, hk'⟩` from `(hJ.levelK _ hj _ hσ k).1 hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hodd : Odd (D.host.g 0 * D.host.g 1)` using `hJ.pins.2.1.1 ▸ T.Q.l.odd`. Take `⟨y, hy, hu, hc⟩` from `GlobalTheory.MuLevel.exists_root_of_level _ _ hodd k hf hk'`. Establish `hm` using `R.C.isMu0 j`. Establish `h1 : R.mu0 ((j : ℕ) + 1) y = 1`. Use `GlobalTheory.tame_heckeChar_eq_one_of_finUnit D _ _ (hlev.mu0 j) hm.tame _ (fun P hP => hm.unr P fun a ha => hP ?_) y hu hc` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_mul]`. Use `fin_cases a`. Conclude with `Ideal.mul_mem_right _ _ ha`. Conclude with `Ideal.mul_mem_left _ _ ha`. Establish `hg : GoodEmb T.Q.c (τ.comp (algebraMap T.Q.c.F D.what₂.LL))` using `hτ ▸ hσ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz1, hz2⟩` from `(hT.chiR j τ hg).2.2.2.1 y hu.1`. Establish `h2 : algebraMap T.Q.c.F D.what₂.LL z = 1` using `D.what₂.embLL.injective (by rw [← hz1, h1, map_one, Circle.coe_one])`. Establish `hχ : T.chiW ((j : ℕ) + 1) T.σ₀ y = 1`. Rewrite `hz2` using `[hτ]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hz2, h2, map_one, Circle.coe_one]`. Establish `hMV` using `hJ.muVal _ hj _ hσ`. Take `⟨x, hx⟩` from `hMV.1 g`. Establish `hxy : IsDetRoot _ (g * k) (x * y)` using `(GlobalTheory.Member.isDetRoot_laws D _).2.2.2 g k x y hx hy`. Rewrite using `[hMV.2 _ _ hxy, hMV.2 g x hx, map_mul, hχ, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_mul_level_of_tie (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
@@ -64,9 +64,9 @@ theorem mu_mul_level_of_tie (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hJ hlev _ _ _ _ hT i _ hV _ l _ C hC hP φ hφ hinv`. Establish `hn : 0 < (κ i).n`. Take `⟨t⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Rewrite using `[(hT.kap i t).2.2]`. Unfold `Ranks.nV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `D.R.t_odd.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.CoverFormDesc.cover_form_desc D T hJ ((i : ℕ) + 1) (inR i) T.σ₀ T.toCore.good_σ₀ C hC.1 (wtA (κ i)) (κ i).n (dom_wtA (κ i)) hP (GlobalTheory.T.boundedCuspidalHolomorphic_le_span_algebraicCuspSections D T hJ ((i : ℕ) + 1) (inR i) T.σ₀ T.toCore.good_σ₀ (κ i) (GlobalThe …`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem cover_desc_rat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T R i T.σ₀ hV → ∀ l : ℕ, l.Prime → ∀ C : Cover T ((i : ℕ) + 1) T.σ₀, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsTowerCover T i l C → C.IsPinned (wtA (κ i)) (κ i).n → ∀ φ ∈ C.ratForms (wtA (κ i)) (κ i).n, (∀ k ∈ T.Kf ((i : ℕ) + 1) T.σ₀, ∀ h, φ (h * k) = φ h) → ∃ (m : ℕ) (x : Fin m → C.d.c₂.F) (ψ : Fin m → (GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ)), (∀ a, ψ a ∈ baseForms T ((i : ℕ) + 1) T.σ₀ (wtA (κ i)) (κ i).n) ∧ φ = ∑ a, C.σ₂ (x a) • ψ a := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hJ hlev _ _ _ _ hT i _ hV _ l _ C hC hP φ hφ hinv

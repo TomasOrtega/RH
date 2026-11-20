@@ -17,7 +17,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc), fun c hc => (le_max_left _ _).trans (h.2.2.2 c hc)⟩, ⟨fun c hc => (le_max_right _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h.2.2.1 c hc), fun …`.
+Supply the required witnesses or components.
 -/
 theorem fc_large_of_sup {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Large (K.sup K') CH) : C.Large K CH ∧ C.Large K' CH :=
   ⟨⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc),
@@ -26,11 +26,11 @@ theorem fc_large_of_sup {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Large
       fun c hc => (le_max_right _ _).trans (h.2.2.2 c hc)⟩⟩
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `GlobalTheory.scale_poly_comparison eps (2 * C8) (1 / 2) he (by norm_num)`. Use `⟨x0, fun s N q0 hs hx hN hlog hq => ?_⟩` and prove the remaining obligations. Establish `h` using `(hx0 s hs hx).2.2.2.2.2.2`. Establish `hx1` using `s.one_lt_alt`. Establish `h1 : 1 ≤ s.x ^ (2 * C8)` using `Real.one_le_rpow hx1.le (by linarith)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : 1 < s.X'` using `Real.one_lt_exp_iff.2 (Real.rpow_pos_of_pos (by linarith) _)`. Establish `h2 : s.X' ^ (1 / 2 : ℝ) < s.X'`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : N ^ C8 ≤ Real.exp (2 * C8 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2)`. Rewrite using `[Real.rpow_def_of_pos hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_right hlog (by linarith : (0 : ℝ) ≤ C8)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Real.exp (2 * C8 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2) ≤ Real.exp (2 * C8 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2) * s.x ^ (2 * C8)` using `le_mul_of_one_le_right (Real.exp_pos _).le h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem small_prime_lt (eps C8 : ℝ) (he : 0 < eps) (h8 : 1 ≤ C8) : ∃ x0 : ℝ, ∀ (s : Scale) (N q0 : ℝ), s.eps = eps → x0 ≤ s.x →
     0 < N → Real.log N ≤ 2 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2 → q0 ≤ N ^ C8 → q0 < s.X' := by
@@ -54,28 +54,24 @@ theorem small_prime_lt (eps C8 : ℝ) (he : 0 < eps) (h8 : 1 ≤ C8) : ∃ x0 : 
   linarith
 
 /- English proof (translation)
-Use `s.eps_pos` as an intermediate fact. Conclude with `Real.exp_le_exp.2 (Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (by linarith))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem X'_le_b (s : Scale) : s.X' ≤ s.b := by
   have := s.eps_pos
   exact Real.exp_le_exp.2 (Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (by linarith))
 
 /- English proof (translation)
-Establish `hw` using `GlobalTheory.T.weight_requirement_of_valid C cD ch p R H a b M c u0 hC hV hF hI h0 hW`. Take `⟨hv, -, hT2, -, hQD, hBox, -, hThin, hBad, -, -, -, ⟨hp, hmod, -, hne, hne'⟩, hlev⟩` from `hH`. Establish `hb` using `GlobalTheory.T.bad_character_bound C p R H a b M c u0 Cb hF hI hBad`. Establish `hBW` using `hF.boxesW hBox`. Establish `hRW` using `hF.qdRowsW hBox`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTh` using `hF.chThin hThin`. Establish `eQS` using `hF.QS_eq`. Take `⟨eR, -, eT2, eq, ed, eg, ep, ep', hsub, -⟩` from `hF`. Substitute `eR` using the available equality. Establish `hq0 : (0 : ℝ) < q0` using `by exact_mod_cast hp.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hXb` using `X'_le_b p.L.sc`. Use `⟨⟨hQ, hw, hBW, hRW, q0, hsub (by rw [hlev]; simp), hp, ?_, ?_, hq, ?_, ?_, ?_⟩, ?_, hb, ?_, hTh, h1, h2, h3, h4⟩` and prove the remaining obligations. Rewrite using `[eQS, eq, ed]`. Conclude with `hmod`. Rewrite using `[Real.log_le_iff_le_exp hq0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq.le.trans hXb`. Rewrite using `[ep]`. Conclude with `hne`. Rewrite using `[ep']`. Conclude with `hne'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hg` using `(hv.2.2.2.2.1 i).1`. Rewrite `hg` using `[← eg, ← hi]`. Establish `hk : (1 : ℝ) ≤ p.D.R.k`. Use `p.D.R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(by omega : 1 ≤ p.D.R.k)` after adjusting the coercions. Establish `hb1 : 1 ≤ p.L.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [p.L.sc.one_lt_alt]) _)`. Establish `h5 : p.L.sc.b ≤ (p.D.R.k : ℝ) * p.L.sc.b` using `le_mul_of_one_le_left (by linarith) hk`. Establish `h6 : (p.D.R.k : ℝ) * p.L.sc.b ≤ ((p.D.R.k : ℝ) * p.L.sc.b) ^ 8` using `le_self_pow₀ (by linarith) (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Unfold `ThickSetLowerBound Host.secondSet_card_lower_bound`. Rewrite using `[eT2, hV.secondConstant_eq, hV.host.2.2.2.2.2.1, ← hT, ← hv.2.2.2.2.2.1]`. Conclude with `hT2`. Unfold `ChQD_at`. Rewrite using `[eq, ed]`.
-
-Conclude with `hQD`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem has_withDuty_and_chosen {Q : PtProp} {C : FC} {cD ch C8 C5 c6 Cb Cdg : ℝ} (p : Pt C) {R : Ranks} {H : Host R} {q0 : ℕ}
     {a b : R.A → ℤ} {M : ℕ} {c : Fin M → Fin (R.k - 2) → Bool} {u0 : ℕ} (hC : Std C) (hT : H.CT2 = C.CT2)

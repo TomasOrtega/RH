@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem mat_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul, inv_mul_cancel, mat_one]
@@ -61,13 +61,13 @@ def locK (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Subgroup (U
     exact (hg.2 z hz).1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locK {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g : UA σ W.J} :
     g ∈ locK σ W v ↔ g ∈ KAt σ W v := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hg` and use `hg.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locK_le_locU (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : locK σ W v ≤ locU σ W v :=
   fun _ hg => hg.1

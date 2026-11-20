@@ -13,15 +13,15 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨a, J, ha, hI⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Set `φ : 𝓞 K →ₗ[𝓞 K] V` to `LinearMap.toSpanSingleton (𝓞 K) V ((algebraMap (𝓞 K) K a)⁻¹ • v)`. Establish `hφ : line (I : Submodule (𝓞 K) K) v = Submodule.map φ J`. Use extensionality with `x`. Simplify using `only [line, Submodule.mem_map, hI, FractionalIdeal.mem_coe, FractionalIdeal.mem_singleton_mul, FractionalIdeal.mem_coeIdeal, φ, LinearMap.toSpanSingleton_apply, LinearMap.restrictScalars_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨_, ⟨z, hz, rfl⟩, rfl⟩, rfl⟩`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, algebraMap_smul]`. Introduce and unpack `⟨z, hz, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨_, ⟨_, ⟨z, hz, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, algebraMap_smul]`. Rewrite using `[hφ]`. Distinguish the cases in `hJ : J = ⊥`. Conclude with `⟨0, zero_mem _, by simp [hJ]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `IsDedekindDomain.exists_sup_span_eq (I := n * J) (J := J) Ideal.mul_le_right (mul_ne_zero hn hJ)`. Establish `hbJ : b ∈ J`. Rewrite using `[← hb]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self b)`. Use `⟨φ b, Submodule.mem_map_of_mem hbJ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hb]`. Rewrite using `[Submodule.map_sup, ← Ideal.smul_eq_mul, Submodule.map_smul'']`. Use `sup_le_sup_left ?_ _` and prove the remaining obligations. Rewrite using `[← Ideal.submodule_span_eq, Submodule.map_span, Set.image_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_cyclic (I : FractionalIdeal (𝓞 K)⁰ K) (v : V) (n : Ideal (𝓞 K)) (hn : n ≠ ⊥) :
     ∃ u ∈ line (I : Submodule (𝓞 K) K) v,
@@ -55,27 +55,23 @@ theorem line_cyclic (I : FractionalIdeal (𝓞 K)⁰ K) (v : V) (n : Ideal (𝓞
 omit [Module K V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Set `S : Submodule (𝓞 K) P` to `(n • P).comap P.subtype`. Set `w : Fin e → P ⧸ S` to `fun i => S.mkQ ⟨v i, hv i⟩`. Establish `hS : ∀ a ∈ n, ∀ y : P ⧸ S, a • y = 0`. Introduce `a ha y`. Take `⟨x, rfl⟩` from `S.mkQ_surjective y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul ha x.2`. Establish `hgen : ∀ y : P ⧸ S, ∃ c : Fin e → 𝓞 K, y = ∑ i, c i • w i`. Introduce `y`. Take `⟨x, rfl⟩` from `S.mkQ_surjective y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 (hP x.2)`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 ht`. Use `⟨c, ?_⟩` and prove the remaining obligations. Simplify using `only [w, ← map_smul, ← map_sum]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ((x - ∑ i, c i • (⟨v i, hv i⟩ : P) : P) : V) ∈ n • P`. Simplify using `only [Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul, ← hst, add_sub_cancel_right]`. Conclude with `hs`. Use `haveI : Finite (𝓞 K ⧸ n) := Ideal.finiteQuotientOfFreeOfNeBot n hn`. Set `f : (Fin e → 𝓞 K ⧸ n) → P ⧸ S` to `fun c => ∑ i, (c i).out • w i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : Function.Surjective f`. Introduce `y`. Take `⟨c, rfl⟩` from `hgen y`. Use `⟨fun i => Ideal.Quotient.mk n (c i), Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← sub_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hS` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `Quotient.out_eq _`. Use `haveI : Finite (P ⧸ S) := Finite.of_surjective f hf`. Establish `hcard : Nat.card (P ⧸ S) ≤ Ideal.absNorm n ^ e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Nat.card_le_card_of_surjective f hf).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.card_fun, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Simplify using the standard rewrite rules. Establish `hw : Submodule.span (𝓞 K) (Set.range w) = ⊤`. Rewrite using `[eq_top_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Take `⟨c, rfl⟩` from `hgen y`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨c, rfl⟩`. Establish `hc` using `Formalism.SLP.P.card_submodules_le_of_dedekind (𝓞 K) (P ⧸ S) e w hw`. Use `haveI : Finite (Submodule (𝓞 K) (P ⧸ S)) := Finite.of_injective _ SetLike.coe_injective`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Set.InjOn (fun L : Submodule (𝓞 K) V => (L.comap P.subtype).map S.mkQ) {L : Submodule (𝓞 K) V | n • P ≤ L ∧ L ≤ P}`. Establish `key : ∀ L : Submodule (𝓞 K) V, n • P ≤ L → L ≤ P → (((L.comap P.subtype).map S.mkQ).comap S.mkQ).map P.subtype = L`. Introduce `L h1 h2`. Rewrite using `[Submodule.comap_map_mkQ, sup_eq_right.2 (Submodule.comap_mono h1), Submodule.map_comap_subtype, inf_eq_right.2 h2]`. Introduce `L hL L' hL' h`.
-
-Rewrite using `[← key L hL.1 hL.2, ← key L' hL'.1 hL'.2]`. Simplify using `only at h`. Rewrite using `[h]`. Use `(Set.encard_le_encard_of_injOn (t := Set.univ) (Set.mapsTo_univ _ _) hinj).trans ?_` and prove the remaining obligations. Rewrite using `[Set.encard_univ, ENat.card_eq_coe_natCard, Nat.cast_le, pow_mul]`.
-
-Conclude with `hc.trans (Nat.pow_le_pow_left hcard e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_between (P : Submodule (𝓞 K) V) (n : Ideal (𝓞 K)) (hn : n ≠ ⊥) (e : ℕ) (v : Fin e → V)
     (hv : ∀ i, v i ∈ P) (hP : P ≤ n • P ⊔ Submodule.span (𝓞 K) (Set.range v)) :
@@ -136,11 +132,11 @@ theorem count_between (P : Submodule (𝓞 K) V) (n : Ideal (𝓞 K)) (hn : n �
   exact hc.trans (Nat.pow_le_pow_left hcard e)
 
 /- English proof (translation)
-Take `⟨a, ham, ha⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`. Take `⟨J, hJ⟩ : m ∣ Ideal.span {a}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 ham)`. Establish `key : ∀ P Q : Submodule (𝓞 K) V, m • P = m • Q → P ≤ Q`. Introduce `P Q h x hx`. Establish `h2 : Ideal.span {a} • P = Ideal.span {a} • Q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hJ, mul_comm, Submodule.mul_smul, Submodule.mul_smul, h]`. Establish `h3 : a • x ∈ Ideal.span {a} • Q` using `h2 ▸ Submodule.smul_mem_smul (Ideal.mem_span_singleton_self a) hx`. Rewrite `h3` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨y, hy, hxy⟩` from `h3`. Establish `ha' : algebraMap (𝓞 K) K a ≠ 0` using `by simpa using ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hxy` using `[← algebraMap_smul K a y, ← algebraMap_smul K a x]`. Rewrite using `[← smul_right_injective V ha' hxy]` and apply the resulting hypothesis. Introduce `P Q h`. Conclude with `le_antisymm (key P Q h) (key Q P h.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_injective (m : Ideal (𝓞 K)) (hm : m ≠ ⊥) :
     Function.Injective fun P : Submodule (𝓞 K) V => m • P := by
@@ -160,21 +156,17 @@ theorem smul_injective (m : Ideal (𝓞 K)) (hm : m ≠ ⊥) :
   exact le_antisymm (key P Q h) (key Q P h.symm)
 
 /- English proof (translation)
-Use `choose u hu hu' using fun (I : FractionalIdeal (𝓞 K)⁰ K) (v : V) => line_cyclic I v n hn`. Set `d : FractionalIdeal (𝓞 K)⁰ K` to `N.𝔡`. Set `I : Option (Fin r ⊕ Fin r) → FractionalIdeal (𝓞 K)⁰ K` to `fun o => o.elim 1 (Sum.elim (fun a => d ^ (-((r : ℤ) - a.val))) fun a => if a.val < N.j then d ^ (-((r : ℤ) - a.val)) else d ^ ((r : ℤ) - a.val))`. Set `x : Option (Fin r ⊕ Fin r) → V` to `fun o => o.elim N.F.z (Sum.elim (fun a => N.F.e a.castSucc) fun a => if a.val < N.j then N.F'.e a.castSucc else N.ist a)`. Establish `hP : N.P0 = ⨆ o, line (I o : Submodule (𝓞 K) K) (x o)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (sup_le (sup_le (iSup_le fun a => ?_) (iSup₂_le fun a h => ?_)) ?_) (iSup₂_le fun a h => ?_)` and prove the remaining obligations. Conclude with `le_iSup_of_le (some (Sum.inl a)) le_rfl`. Use `le_iSup_of_le (some (Sum.inr a)) (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [I, x, Option.elim, Sum.elim_inr, if_pos h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `le_iSup_of_le none (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [I, x, Option.elim, FractionalIdeal.coe_one]`. Use `le_iSup_of_le (some (Sum.inr a)) (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [I, x, Option.elim, Sum.elim_inr, if_neg (not_lt.2 h)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `iSup_le ?_` and prove the remaining obligations. Introduce and unpack `(_ | a | a)`. Simplify using `only [I, x, Option.elim, FractionalIdeal.coe_one]`. Conclude with `le_sup_of_le_left le_sup_right`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `le_sup_of_le_left (le_sup_of_le_left (le_sup_of_le_left ?_))` and prove the remaining obligations. Conclude with `le_iSup_of_le a le_rfl`. Distinguish the cases in `h : a.val < N.j`. Simplify using `only [I, x, Option.elim, Sum.elim_inr, if_pos h]`. Use `le_sup_of_le_left (le_sup_of_le_left (le_sup_of_le_right ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_iSup₂_of_le a h le_rfl`. Simplify using `only [I, x, Option.elim, Sum.elim_inr, if_neg h]`. Use `le_sup_of_le_right ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le a (not_lt.1 h) le_rfl`. Establish `hle : ∀ o, line (I o : Submodule (𝓞 K) K) (x o) ≤ N.P0` using `fun o => by`.
-
-Rewrite using `[hP]`. Conclude with `le_iSup (fun o => line (I o : Submodule (𝓞 K) K) (x o)) o`. Set `σ : Fin (2 * r + 1) ≃ Option (Fin r ⊕ Fin r)` to `Fintype.equivOfCardEq (by simp; ring)`. Use `⟨fun i => u (I (σ i)) (x (σ i)), fun i => hle _ (hu _ _), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hP]`.
-
-Use `iSup_le fun o => (hu' _ _).trans (sup_le_sup (Submodule.smul_mono le_rfl (hle o)) ?_)` and prove the remaining obligations. Conclude with `Submodule.span_mono (Set.singleton_subset_iff.2 ⟨σ.symm o, by simp⟩)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_gens [StarRing K] {H : HermSpace K V} {r : ℕ} (N : NF H r) (n : Ideal (𝓞 K)) (hn : n ≠ ⊥) :
     ∃ v : Fin (2 * r + 1) → V, (∀ i, v i ∈ N.P0) ∧ N.P0 ≤ n • N.P0 ⊔ Submodule.span (𝓞 K) (Set.range v) := by
@@ -221,9 +213,9 @@ theorem exists_gens [StarRing K] {H : HermSpace K V} {r : ℕ} (N : NF H r) (n :
 end GlobalTheory.DegCnt.NearCount
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H _ r N m hm`. Establish `hn : m * m ≠ ⊥` using `mul_ne_zero hm hm`. Take `⟨v, hv, hP⟩` from `GlobalTheory.DegCnt.NearCount.exists_gens N (m * m) hn`. Establish `h1` using `GlobalTheory.DegCnt.NearCount.count_between N.P0 (m * m) hn _ v hv hP`. Establish `h2 : ({P : Submodule (𝓞 K) V | m • N.P0 ≤ P ∧ m • P ≤ N.P0}).encard ≤ {L : Submodule (𝓞 K) V | (m * m) • N.P0 ≤ L ∧ L ≤ N.P0}.encard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.encard_le_encard_of_injOn (f := fun P => m • P) ?_ (GlobalTheory.DegCnt.NearCount.smul_injective m hm).injOn` and prove the remaining obligations. Introduce and unpack `P ⟨h, h'⟩`. Conclude with `⟨by rw [Submodule.mul_smul]; exact Submodule.smul_mono le_rfl h, h'⟩`. Use `(ENat.toENNReal_le.2 (h2.trans h1)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← sq, ← pow_mul, ← sq]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

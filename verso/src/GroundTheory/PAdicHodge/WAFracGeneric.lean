@@ -17,7 +17,7 @@ section Frac
 variable {G R : Type*} [CommRing R] [IsDomain R] [Algebra ℚ_[p] R]
 
 /- English proof (translation)
-Introduce `x hx` and use `mem_nonZeroDivisors_of_ne_zero fun h : f x = 0 => nonZeroDivisors.ne_zero hx (hf (show f x = f 0 by rw [h, map_zero]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comap_of_injective (f : R →+* R) (hf : Function.Injective f) :
     nonZeroDivisors R ≤ (nonZeroDivisors R).comap f := fun x hx =>
@@ -28,14 +28,14 @@ def fracMap (f : R →+* R) (hf : Function.Injective f) : FractionRing R →+* F
   IsLocalization.map (S := FractionRing R) (FractionRing R) f (le_comap_of_injective f hf)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_eq (S := FractionRing R) (le_comap_of_injective f hf) x`.
+A detailed English derivation is pending.
 -/
 theorem fracMap_algebraMap (f : R →+* R) (hf : Function.Injective f) (x : R) :
     fracMap f hf (algebraMap R (FractionRing R) x) = algebraMap R (FractionRing R) (f x) :=
   IsLocalization.map_eq (S := FractionRing R) (le_comap_of_injective f hf) x
 
 /- English proof (translation)
-Establish `e : (fracMap f₁ h₁).comp (fracMap f₂ h₂) = (fracMap f₂ h₂).comp (fracMap f₁ h₁)` using `IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun x => by`. Simplify using `only [RingHom.comp_apply, fracMap_algebraMap, h])`. Conclude with `congrArg (fun F : FractionRing R →+* FractionRing R => F y) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fracMap_comp (f₁ f₂ : R →+* R) (h₁ : Function.Injective f₁) (h₂ : Function.Injective f₂)
     (h : ∀ x, f₁ (f₂ x) = f₂ (f₁ x)) (y : FractionRing R) :
@@ -46,7 +46,7 @@ theorem fracMap_comp (f₁ f₂ : R →+* R) (h₁ : Function.Injective f₁) (h
   exact congrArg (fun F : FractionRing R →+* FractionRing R => F y) e
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, fracMap_algebraMap, Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fracMap_iterate (f : R →+* R) (hf : Function.Injective f) (n : ℕ) (x : R) :
     (fracMap f hf)^[n] (algebraMap R (FractionRing R) x) = algebraMap R (FractionRing R) (f^[n] x) := by
@@ -55,23 +55,23 @@ theorem fracMap_iterate (f : R →+* R) (hf : Function.Injective f) (n : ℕ) (x
   | succ n ih => rw [Function.iterate_succ_apply', ih, fracMap_algebraMap, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R _`. Establish `hne : ∀ {x : R}, x ≠ 0 → algebraMap R (FractionRing R) x ≠ 0` using `fun hx h => hx (hinj (by rw [h, map_zero]))`. Establish `hιq : ∀ q : ℚ_[p], algebraMap ℚ_[p] (FractionRing R) q = algebraMap R (FractionRing R) (algebraMap ℚ_[p] R q)` using `fun q => IsScalarTower.algebraMap_apply ℚ_[p] R (FractionRing R) q`. Establish `hgz : ∀ σ {z : R}, z ≠ 0 → g σ z ≠ 0` using `fun σ z hz h => hz (hg σ (by rw [h, map_zero]))`. Establish `hy : ∀ σ, fracMap (g σ) (hg σ) (algebraMap R _ a / algebraMap R _ b) - algebraMap R _ a / algebraMap R _ b = algebraMap ℚ_[p] (FractionRing R) (c σ) * algebraMap R _ t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Rewrite using `[map_div₀, fracMap_algebraMap, fracMap_algebraMap, hιq, div_sub_div _ _ (hne (hgz σ hb)) (hne hb), div_eq_iff (mul_ne_zero (hne (hgz σ hb)) (hne hb))]`. Establish `h` using `congrArg (algebraMap R (FractionRing R)) (hrel σ)`. Simplify using `only [map_sub, map_mul] at h`. Take the linear combination `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hperF : ∀ μ : FractionRing R, (∀ σ, fracMap (g σ) (hg σ) μ = μ) → ∃ n d, 0 < d ∧ (fracMap φ hφ)^[n + d] μ = (fracMap φ hφ)^[n] μ`. Introduce `μ hμ`. Take `⟨x, z, hz, rfl⟩` from `IsFractionRing.div_surjective (A := R) μ`. Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`. Establish `hcross : ∀ σ, g σ x * z = x * g σ z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Establish `h1` using `hμ σ`. Rewrite `h1` using `[map_div₀, fracMap_algebraMap, fracMap_algebraMap, div_eq_div_iff (hne (hgz σ hz0)) (hne hz0)]`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Take `⟨w, hw, rfl⟩` from `hfix x z hz0 hcross`. Take `⟨n, d, hd, hnd⟩` from `hper w hw`. Use `⟨n, d, hd, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap R (FractionRing R) (w * z) / algebraMap R _ z = algebraMap R _ w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_div_assoc, div_self (hne hz0), mul_one]`. Rewrite using `[e, fracMap_iterate, fracMap_iterate, hnd]`. Take `⟨y', hφy', hgy'⟩` from `exists_eq_p_mul_of_sub_eq (fracMap φ hφ) (fun q => by rw [hιq, fracMap_algebraMap, hφq]) (fun σ => fracMap (g σ) (hg σ)) (fun σ q => by rw [hιq, fracMap_algebraMap, hgq]) (fun σ x => fracMap_comp _ _ _ _ (fun x => hgφ σ x) x) (show fracMap φ hφ (algebraMap R _ t) = (p : FractionR …`. Rewrite using `[fracMap_algebraMap, ht, map_mul, map_natCast])`. Use `hperF c hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a', b', hb', rfl⟩` from `IsFractionRing.div_surjective (A := R) y'`. Establish `hb'0 : b' ≠ 0` using `nonZeroDivisors.ne_zero hb'`. Establish `hφb' : φ b' ≠ 0` using `fun h => hb'0 (hφ (by rw [h, map_zero]))`. Use `⟨a', b', hb'0, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite `hφy'` using `[map_div₀, fracMap_algebraMap, fracMap_algebraMap, mul_div_assoc', div_eq_div_iff (hne hφb') (hne hb'0)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_natCast]`. Take the linear combination `hφy'`. Establish `h1` using `hgy' σ`. Rewrite `h1` using `[map_div₀, fracMap_algebraMap, fracMap_algebraMap, hιq, div_sub_div _ _ (hne (hgz σ hb'0)) (hne hb'0), div_eq_iff (mul_ne_zero (hne (hgz σ hb'0)) (hne hb'0))]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_sub]`. Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pair_phi (φ : R →+* R) (hφ : Function.Injective φ)
     (hφq : ∀ q : ℚ_[p], φ (algebraMap ℚ_[p] R q) = algebraMap ℚ_[p] R q)
@@ -151,7 +151,7 @@ section Away
 variable {G R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
 
 /- English proof (translation)
-Take `⟨n₁, α₁, h₁⟩` from `IsLocalization.Away.surj t x`. Take `⟨n₂, β₂, h₂⟩` from `IsLocalization.Away.surj t y`. Use `⟨n₁ + n₂, α₁ * t ^ n₂, β₂ * t ^ n₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, map_mul, ← mul_assoc, map_pow, h₁, map_mul]`. Rewrite using `[pow_add, mul_comm (t ^ n₁), map_mul, ← mul_assoc, map_pow, h₂, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_common_den (t : R) [IsLocalization.Away t S] (x y : S) : ∃ (n : ℕ) (α β : R),
     x * algebraMap R S (t ^ n) = algebraMap R S α ∧ y * algebraMap R S (t ^ n) = algebraMap R S β := by
@@ -162,15 +162,15 @@ theorem exists_common_den (t : R) [IsLocalization.Away t S] (x y : S) : ∃ (n :
   · rw [pow_add, mul_comm (t ^ n₁), map_mul, ← mul_assoc, map_pow, h₂, map_mul]
 
 /- English proof (translation)
-Take `⟨n, α, β, ha, hb'⟩` from `exists_common_den t a b`. Establish `hu : IsUnit (algebraMap R S (t ^ n))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit t).pow n`. Use `⟨α, β, ?_, ?_, fun σ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hb'` using `[map_zero]`. Conclude with `hb (hu.mul_left_eq_zero.1 hb')`. Apply `hinj` to reduce the goal to its premises. Establish `hφa` using `congrArg φS ha`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hφb` using `congrArg φS hb'`. Simplify using `only [map_mul, hφ] at hφa hφb`. Simplify using `only [map_mul, map_natCast]`. Rewrite using `[← hφa, ← hb', ← ha, ← hφb]`. Take the linear combination `(algebraMap R S (φR (t ^ n)) * algebraMap R S (t ^ n)) * hφab`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Establish `hga` using `congrArg (gS σ) ha`. Establish `hgb` using `congrArg (gS σ) hb'`. Simplify using `only [map_mul, hg] at hga hgb`. Simplify using `only [map_mul, map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← hga, ← hb', ← ha, ← hgb]`. Take the linear combination `(algebraMap R S (gR σ (t ^ n)) * algebraMap R S (t ^ n)) * hgab σ`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair_away (t : R) [IsLocalization.Away t S] (hinj : Function.Injective (algebraMap R S)) (φR : R →+* R) (φS : S →+* S)
     (hφ : ∀ x, φS (algebraMap R S x) = algebraMap R S (φR x)) (gR : G → R →+* R) (gS : G → S →+* S)

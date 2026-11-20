@@ -7,61 +7,51 @@ open GlobalTheory.PRep
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Set `ρY : Representation ℂ G Y` to `{ toFun := fun h => (LinearMap.mulLeft ℂ (π h)).restrict (fun y hy => hY1 h y hy) map_one' := by`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Use `show π 1 * (y : H →L[ℂ] H) = y`. Rewrite using `[map_one, one_mul]`. Use the proof step `map_mul' := by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Use `show π (a * b) * (y : H →L[ℂ] H) = π a * (π b * y)`. Rewrite using `[map_mul, mul_assoc] }`. Establish `hρY : ∀ h (y : Y), ((ρY h y : Y) : H →L[ℂ] H) = π h * y` using `fun h y => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Y'' : Submodule ℂ Y` to `Y'.comap Y.subtype`. Establish `hρY'' : ∀ h, Y'' ≤ Y''.comap (ρY h)` using `fun h y hy => hY'G h y hy`. Set `ρQ : Representation ℂ G (Y ⧸ Y'')` to `{ toFun := fun h => Y''.mapQ Y'' (ρY h) (hρY'' h) map_one' := by`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Use `show Submodule.Quotient.mk (ρY 1 y) = Submodule.Quotient.mk y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one]`. Both sides reduce to the same expression. Use the proof step `map_mul' := by`. Introduce `a b`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun y => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Submodule.Quotient.mk (ρY (a * b) y) = Submodule.Quotient.mk (ρY a (ρY b y))`. Rewrite using `[map_mul]`. Use `rfl }`. Establish `hρQ : ∀ h (y : Y), ρQ h (Submodule.Quotient.mk y) = Submodule.Quotient.mk (ρY h y)` using `fun h y => rfl`. Establish `hsm : IsSmooth ρQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective Y'' q`. Take `⟨U, hUo, hU⟩` from `hSm y y.2`. Conclude with `alt_isOpen_fix ρQ _ U hUo fun v hv => by`. Rewrite using `[hρQ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `Subtype.ext (hU v hv)`. Establish `hmk0 : ∀ y : Y, (Submodule.Quotient.mk y : Y ⧸ Y'') = 0 ↔ (y : H →L[ℂ] H) ∈ Y'` using `fun y => Submodule.Quotient.mk_eq_zero Y''`. Establish `hirr : ρQ.IsIrreducible`. Unfold `Representation.IsIrreducible`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[isSimpleOrder_iff]`. Use `⟨⟨⊥, ⊤, fun hbt => heY' ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : (Submodule.Quotient.mk (⟨e, heY⟩ : Y) : Y ⧸ Y'') ∈ (⊥ : Subrepresentation ρQ).toSubmodule`. Rewrite using `[hbt]`. Conclude with `Submodule.mem_top`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hmk0 _).mp ((Submodule.mem_bot ℂ).mp h1)`. Set `Z : Submodule ℂ (H →L[ℂ] H)` to `(a.toSubmodule.comap Y''.mkQ).map Y.subtype`. Establish `hZY : Z ≤ Y` using `by rintro _ ⟨y, _, rfl⟩; exact y.2`. Establish `hZG : ∀ h, ∀ x ∈ Z, π h * x ∈ Z`. Introduce and unpack `h _ ⟨y, hy, rfl⟩`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨ρY h y, a.apply_mem_toSubmodule h hy, rfl⟩`. Establish `hY'Z : Y' ≤ Z`. Introduce `x hx`. Use `⟨⟨x, hY'Y hx⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk _ ∈ a.toSubmodule`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hmk0 _).mpr hx]`. Conclude with `a.toSubmodule.zero_mem`. Distinguish the cases in `heZ : e ∈ Z`. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show a.toSubmodule = ⊤`. Use `eq_top_iff.mpr fun q _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective Y'' q`. Establish `hYZ : Y ≤ Z` using `hYs.trans (Submodule.span_le.mpr (by rintro _ ⟨h, rfl⟩; exact hZG h e heZ))`. Take `⟨y', hy', hyy⟩` from `hYZ y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Subtype.ext hyy]`. Conclude with `hy'`. Use `left`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `show a.toSubmodule = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `eq_bot_iff.mpr fun q hq => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective Y'' q`. Use `hmax Z hZY hZG heZ hY'Z ⟨y, hq, rfl⟩` as an intermediate fact. Conclude with `(Submodule.mem_bot ℂ).mpr ((hmk0 y).mpr this)`. Take `⟨hfd, hfr⟩` from `hN (Y ⧸ Y'') ρQ hsm hirr`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `f : G → (H →L[ℂ] H)` to `fun h => e * π h * e`. Establish `hfY : ∀ a, ∀ y ∈ Y, f a * y ∈ Y` using `fun a y hy => by show e * π a * e * y ∈ Y`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `hYE _ (hY1 a _ (hYE y hy))`. Set `TY : G → Module.End ℂ Y` to `fun a => (LinearMap.mulLeft ℂ (f a)).restrict (fun y hy => hfY a y hy)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTY'' : ∀ a, Y'' ≤ Y''.comap (TY a)` using `fun a y hy => by show e * π a * e * (y : H →L[ℂ] H) ∈ Y'`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `hY'E _ (hY'G a _ (hY'E _ hy))`. Set `T : G → Module.End ℂ (Y ⧸ Y'')` to `fun a => Y''.mapQ Y'' (TY a) (hTY'' a)`. Establish `hfixmk : ∀ y : Y, e * (y : H →L[ℂ] H) = y → Submodule.Quotient.mk y ∈ fixed ρQ K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `y hy`. Use `show ∀ κ : K, _`. Introduce `κ`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[hρQ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hρY, ← hy, ← mul_assoc, hKe' κ κ.2]`. Establish `hTW : ∀ a q, T a q ∈ fixed ρQ K`. Introduce `a q`.
+Treat this case separately. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective Y'' q`. Conclude with `hfixmk (TY a y) (by show e * (e * π a * e * (y : H →L[ℂ] H)) = e * π a * e * y; simp only [← mul_assoc, hee])`. Use `hfd` as an intermediate fact. Set `t : G → Module.End ℂ (fixed ρQ K)` to `fun a => (T a).restrict (fun q _ => hTW a q)`. Establish `hdim : Module.finrank ℂ (Module.End ℂ (fixed ρQ K)) < d`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[Module.finrank_linearMap, ← sq]`. Conclude with `lt_of_le_of_lt (Nat.pow_le_pow_left hfr 2) hd`. Establish `h0` using `alt_std_eq_zero hdim fun i => t (g i)`. Establish `key : ∀ (l : List G) (w : fixed ρQ K), (((l.map t).prod w : fixed ρQ K) : Y ⧸ Y'') = (l.map T).prod w`. Introduce `l w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `congrArg (T a) ih`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key2 : ∀ (l : List G) (y : Y), (l.map T).prod (Submodule.Quotient.mk y) = Submodule.Quotient.mk ((l.map TY).prod y)`. Introduce `l y`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.map_cons, List.prod_cons, Module.End.mul_apply, ih]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `key3 : ∀ (l : List G) (y : Y), (((l.map TY).prod y : Y) : H →L[ℂ] H) = (l.map f).prod * y`. Introduce `l y`. Proceed by induction on `l with`. Consider the case `nil => simp`.
-
-Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, List.map_cons, List.prod_cons, mul_assoc, ← ih]`. Both sides reduce to the same expression. Set `e' : Y` to `⟨e, heY⟩`. Establish `he'W : Submodule.Quotient.mk e' ∈ fixed ρQ K` using `hfixmk e' hee`.
-
-Establish `h1` using `congrArg (fun X : Module.End ℂ (fixed ρQ K) => ((X ⟨_, he'W⟩ : fixed ρQ K) : Y ⧸ Y'')) h0`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h1`. Establish `hsum : ∀ σ : Equiv.Perm (Fin d), (((List.ofFn fun i => t (g (σ i))).prod ⟨_, he'W⟩ : fixed ρQ K) : Y ⧸ Y'') = Y''.mkQ (((List.ofFn fun i => g (σ i)).map TY).prod e')`. Introduce `σ`. Rewrite using `[show (List.ofFn fun i => t (g (σ i))) = (List.ofFn fun i => g (σ i)).map t by rw [List.map_ofFn]; rfl, key, key2]`.
-
-Both sides reduce to the same expression. Establish `h1' : Y''.mkQ (∑ σ : Equiv.Perm (Fin d), ((Equiv.Perm.sign σ : ℤ) : ℂ) • ((List.ofFn fun i => g (σ i)).map TY).prod e') = 0`. Rewrite using `[map_sum]`. Use `(Finset.sum_congr rfl fun σ _ => ?_).trans h1` and prove the remaining obligations. Rewrite using `[map_smul, hsum]`.
-
-Establish `h2` using `(Submodule.Quotient.mk_eq_zero Y'').mp h1'`. Establish `h3 : ((∑ σ : Equiv.Perm (Fin d), ((Equiv.Perm.sign σ : ℤ) : ℂ) • ((List.ofFn fun i => g (σ i)).map TY).prod e' : Y) : H →L[ℂ] H) = (∑ σ : Equiv.Perm (Fin d), ((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun i => e * π (g (σ i)) * e).prod) * e`. Rewrite using `[Submodule.coe_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, key3, smul_mul_assoc, show (List.ofFn fun i => e * π (g (σ i)) * e) = (List.ofFn fun i => g (σ i)).map f by rw [List.map_ofFn]; rfl]`.
-
-Rewrite using `[← h3]`. Conclude with `h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alt_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G) (N : ℕ)
     (hN : UnifAdm G K N) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

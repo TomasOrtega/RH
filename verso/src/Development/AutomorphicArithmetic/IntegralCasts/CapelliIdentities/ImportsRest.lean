@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `X Y _ _ _ _ x y hx hy h`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_ne_zero ℂ hx`. Take `⟨g, hg⟩` from `Module.Projective.exists_dual_ne_zero ℂ hy`. Establish `key` using `congrArg (TensorProduct.lift ((LinearMap.mul ℂ ℂ).compl₁₂ f g)) h`. Simplify using `only [TensorProduct.lift.tmul, map_zero, LinearMap.compl₁₂_apply, LinearMap.mul_apply'] at key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_ne_zero hf hg) key`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYha2.main :
     ∀ {X Y : Type} [inst : AddCommGroup X] [inst_1 : _root_.Module ℂ X] [inst_2 : AddCommGroup Y]

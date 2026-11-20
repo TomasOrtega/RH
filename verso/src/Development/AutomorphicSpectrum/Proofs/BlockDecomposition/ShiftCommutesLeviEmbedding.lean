@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.PcB
 open GlobalTheory.CompanionTheory.FourierN (mat_injective)
 
 /- English proof (translation)
-Simplify using `only [bl]`. Rewrite using `[Matrix.fromBlocks_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blockMatrix_zero' {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) :
     bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 0 = 0 := by
@@ -24,7 +24,7 @@ theorem blockMatrix_zero' {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = 
   rfl
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowerUnipotent_mul_blockDiagonal {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (c : Matrix (Fin p) (Fin ρ) R)
     (d : Matrix (Fin p) (Fin p) R) :
@@ -33,7 +33,7 @@ theorem lowerUnipotent_mul_blockDiagonal {R : Type} [CommRing R] {n ρ p : ℕ} 
   congr 1 <;> simp
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockMatrix_diagonal_mul_lowerUnipotent {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (c : Matrix (Fin p) (Fin ρ) R)
     (d : Matrix (Fin p) (Fin p) R) :
@@ -42,7 +42,7 @@ theorem blockMatrix_diagonal_mul_lowerUnipotent {R : Type} [CommRing R] {n ρ p 
   congr 1 <;> simp
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upperUnipotent_mul_blockDiagonal {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (y : Matrix (Fin ρ) (Fin p) R)
     (d : Matrix (Fin p) (Fin p) R) :
@@ -51,7 +51,7 @@ theorem upperUnipotent_mul_blockDiagonal {R : Type} [CommRing R] {n ρ p : ℕ} 
   congr 1 <;> simp
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockMatrix_diagonal_mul_upperUnipotent {R : Type} [CommRing R] {n ρ p : ℕ} (hn : ρ + p = n) (y : Matrix (Fin ρ) (Fin p) R)
     (d : Matrix (Fin p) (Fin p) R) :
@@ -60,11 +60,11 @@ theorem blockMatrix_diagonal_mul_upperUnipotent {R : Type} [CommRing R] {n ρ p 
   congr 1 <;> simp
 
 /- English proof (translation)
-Establish `hinv : HMul.hMul (adj (a⁻¹).1 : Mx D p p) (adj a.1 : Mx D p p) = (1 : Mx D p p)`. Establish `h1 : HMul.hMul (a.1 : Mx D p p) ((a⁻¹).1 : Mx D p p) = (1 : Mx D p p)`. Conclude with `congrArg Units.val (mul_inv_cancel a)`. Rewrite using `[← adj_mul, h1]`. Conclude with `adj_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', mat_mul', M.sh_mat, M.sh_mat, M.emb_mat g₀ _ _ _ _ h, blockMatrix_zero', block_diagonal_mul, block_diagonal_mul]`. Use `congr 1`. Rewrite using `[upperUnipotent_mul_blockDiagonal, blockMatrix_diagonal_mul_upperUnipotent]`. Establish `hk : HMul.hMul (adj (a⁻¹).1 : Mx D p p) (adj (HMul.hMul y a.1 : Mx D ρ p)) = adj y`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[adj_mul, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `hk' : HMul.hMul (adj (a⁻¹).1 : Mx D p p) (-adj (HMul.hMul y a.1 : Mx D ρ p)) = -adj y`. Rewrite using `[Matrix.mul_neg, hk]`. Rewrite using `[lowerUnipotent_mul_blockDiagonal, blockMatrix_diagonal_mul_lowerUnipotent, hk']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_emb_levi (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (g₀ : G D p)
     (a : GL (Fin p) (AE D)) (h : mat g₀ = blk4 a.1 0 0 (adj (a⁻¹).1)) (y : Mx D ρ p) :

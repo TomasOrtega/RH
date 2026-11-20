@@ -12,17 +12,15 @@ namespace GlobalTheory.CosetVolProd
 open MeasureTheory ValuativeRel Matrix Topology in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν _ n _ _ c J h hopen m`. Use `set C := _root_.GlobalTheory.StepData.Cgrp J h`. Use `set N := _root_.GlobalTheory.RootEx.N k n c 1`. Use `haveI := _root_.GlobalTheory.RootEx.VolN.isHaarMeasure_volN ν (n := n) (c := c) 1`. Establish `key : ∀ g : GL n k, _root_.GlobalTheory.RootEx.volN ν n c 1 {u : N | _root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) ∈ C} = (_root_.GlobalTheory.StepData.prX C : Set (GL n k)).indicator (fun _ => _root_.GlobalTheory.RootEx.volN ν n c 1 (C.subgroupOf N)) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Distinguish the cases in `hg : g ∈ _root_.GlobalTheory.StepData.prX C`. Rewrite using `[Set.indicator_of_mem hg]`. Take `⟨u₀, hu₀, hC⟩` from `(_root_.GlobalTheory.StepData.mem_prX).1 hg`. Establish `hv : (_root_.GlobalTheory.RootEx.embX c g)⁻¹ * u₀ * _root_.GlobalTheory.RootEx.embX c g ∈ N` using `_root_.GlobalTheory.RootEx.Model.conj_mem hu₀ g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `set v : N := ⟨_, hv⟩`. Establish `hset : {u : N | _root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) ∈ C} = (fun w => v⁻¹ * w) ⁻¹' (C.subgroupOf N : Set N)`. Use extensionality with `u`. Use `show _ ∈ C ↔ ((v⁻¹ * u : N) : GL (n ⊕ Fin c) k) ∈ C`. Establish `e : _root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) = (u₀ * _root_.GlobalTheory.RootEx.embX c g) * (((_root_.GlobalTheory.RootEx.embX c g)⁻¹ * u₀ * _root_.GlobalTheory.RootEx.embX c g)⁻¹ * u)` using `by group`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, C.mul_mem_cancel_left hC]`. Both sides reduce to the same expression. Rewrite using `[hset, measure_preimage_mul]`. Rewrite using `[Set.indicator_of_notMem hg]`. Establish `hset : {u : N | _root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) ∈ C} = ∅`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `Set.eq_empty_iff_forall_notMem.2 fun u hu => ?_` and prove the remaining obligations. Apply `hg` to reduce the goal to its premises. Use `(_root_.GlobalTheory.StepData.mem_prX).2 ⟨_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (_root_.GlobalTheory.RootEx.embX c g)⁻¹, _root_.GlobalTheory.RootEx.Radical.conj_mem g u.2, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_right]` and apply the resulting hypothesis. Rewrite using `[hset, measure_empty]`.
-
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.volR`. Use `(lintegral_congr key).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_const hopen.measurableSet]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CosetVolProd.volR_Cgrp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (n : Type) [Fintype n] [DecidableEq n] (c : ℕ) (J : Subgroup (GL (n ⊕ Fin c) k)) (h : GL (n ⊕ Fin c) k), IsOpen (_root_.GlobalTheory.StepData.prX (_root_.GlobalTheory.StepData.Cgrp J h) : Set (GL n k)) → ∀ m : Measure (GL n k), _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.volR ν m (_root_.GlobalTheory.StepData.Cgrp J h) = _root_.GlobalTheory.RootEx.volN ν n c 1 ((_root_.GlobalTheory.StepData.Cgrp J h).subgroupOf (_root_.GlobalTheory.RootEx.N k n c 1)) * m (_root_.GlobalTheory.StepData.prX (_root_.GlobalTheory.StepData.Cgrp J h)) := by
   intro k _ _ _ _ _ _ ν _ n _ _ c J h hopen m

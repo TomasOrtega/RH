@@ -18,7 +18,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Bas
   {s : S ⟶ Sp R}
 
 /- English proof (translation)
-Rewrite using `[map_add, o.act.add, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_add' (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) (a a' : 𝓞 D.F) :
     g ≫ o.act.act (algebraMap (𝓞 D.F) D.O (a + a')) =
@@ -26,7 +26,7 @@ private theorem act_add' (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) (a a' : �
   rw [map_add, o.act.add, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, o.act.mul, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_mul' (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) (a a' : 𝓞 D.F) :
     g ≫ o.act.act (algebraMap (𝓞 D.F) D.O (a * a')) =
@@ -34,16 +34,16 @@ private theorem act_mul' (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) (a a' : �
   rw [map_mul, o.act.mul, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[map_one, o.act.one, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_one' (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) :
     g ≫ o.act.act (algebraMap (𝓞 D.F) D.O 1) = g := by
   rw [map_one, o.act.one, Category.comp_id]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `act_add' o g 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_eq_mul.mp h`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, act_add', ih, act_one', pow_succ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_nat (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) (n : ℕ) :
     g ≫ o.act.act (algebraMap (𝓞 D.F) D.O (n : 𝓞 D.F)) = g ^ n := by
@@ -57,7 +57,7 @@ private theorem act_nat (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) (n : ℕ) :
     rw [Nat.cast_succ, act_add', ih, act_one', pow_succ]
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝓞 D.F) ∈ I ⊔ J` using `h ▸ Submodule.mem_top`. Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.mp h1`. Rewrite using `[← act_one' o g, ← hij, act_add', hI i hi, hJ j hj, _root_.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_one_of_killed (o : Obj b N s) {I J : Ideal (𝓞 D.F)} (h : I ⊔ J = ⊤) {T : Over S} {g : T ⟶ o.A}
     (hI : KilledBy o I g) (hJ : KilledBy o J g) : g = 1 := by
@@ -66,11 +66,11 @@ private theorem eq_one_of_killed (o : Obj b N s) {I J : Ideal (𝓞 D.F)} (h : I
   rw [← act_one' o g, ← hij, act_add', hI i hi, hJ j hj, _root_.mul_one]
 
 /- English proof (translation)
-Take `⟨hfin, -, hsurj⟩` from `GlobalTheory.KthRoot.finite_flat_surjective_mulN_any S A hA c hc`. Take `⟨t, ht⟩` from `ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_section (pullback.fst g.left (mulN A c).left)`. Establish `hsq : pullback.fst g.left (mulN A c).left ≫ g.left = pullback.snd g.left (mulN A c).left ≫ (mulN A c).left` using `pullback.condition`. Establish `hw : (t ≫ pullback.snd g.left (mulN A c).left) ≫ A.hom = x`. Establish `e1` using `Over.w (mulN A c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `Over.w g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc (pullback.snd _ _), ← hsq, Category.assoc]`. Use `_ = x := by rw [e2, ← Category.assoc, ht, Category.id_comp]; rfl`. Use `⟨Over.homMk (t ≫ pullback.snd g.left (mulN A c).left) hw, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.comp_id (Over.homMk _ hw), ← MonObj.comp_pow, ← GlobalTheory.MulFlatSurj.mulN_eq_pow]`. Use `ext1`. Simplify using `only [Over.comp_left, Over.homMk_left, Category.assoc]`. Rewrite using `[← hsq, ← Category.assoc, ht]`. Conclude with `Category.id_comp _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pow_eq (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) {c : ℕ} (hc : 0 < c)
     {k : Type} [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (g : Over.mk x ⟶ A) :
@@ -97,39 +97,35 @@ private theorem exists_pow_eq (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) {
 end
 
 /- English proof (translation)
-Introduce `hsplit p _ D R _ b N r w 𝔞 ρ hcop he S s c o o' ψ hψ hker lv hlv`. Take `⟨e, he⟩` from `he`. Establish `hc : 0 < c` using `hψ.pos`. Take `⟨-, hmon, hcomm, -, -, ψ', hmon', h1, h2⟩` from `hψ`. Take `⟨hadd, hlin, hwsub, hgeom⟩` from `hlv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcopρ : 𝔞 ^ ρ ⊔ w = ⊤`. Rewrite using `[sup_comm]`. Conclude with `Ideal.sup_pow_eq_top (by rw [sup_comm]; exact hcop)`. Establish `hle : uIdeal D r ^ (e * ρ) ≤ 𝔞 ^ ρ`. Rewrite using `[pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_right_mono he ρ`. Establish `hlvK : ∀ y, KilledBy o (𝔞 ^ ρ) (lv y)`. Introduce `y a ha`. Rewrite using `[← hlin]`. Conclude with `hwsub _ (Submodule.subset_span ⟨a, ha, y, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix : ∀ {X : Over S} (oo : GlobalTheory.UPel.HT.Obj b N s) (g : X ⟶ oo.A) (β : 𝓞 D.F), β - 1 ∈ 𝔞 ^ ρ → KilledBy oo (𝔞 ^ ρ) g → g ≫ oo.act.act (algebraMap (𝓞 D.F) D.O β) = g`. Introduce `X oo g β hβ hg`. Establish `h3` using `act_add' oo g (β - 1) 1`. Rewrite `h3` using `[sub_add_cancel]`. Rewrite using `[h3, hg _ hβ, act_one', _root_.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y dsimp only`. Rewrite using `[hadd, MonObj.mul_comp]`. Introduce `c' x dsimp only`. Rewrite using `[hlin, Category.assoc, hcomm, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx dsimp only`. Rewrite using `[hwsub x hx, MonObj.one_comp]`. Introduce `kk _ _ xx`. Take `⟨hinj, hsurj⟩` from `hgeom kk xx`. Prove the components needed by the constructor for the conclusion.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y hy`. Apply `hinj y` to reduce the goal to its premises. Establish `hI : KilledBy o (𝔞 ^ ρ) (toUnit (Over.mk xx) ≫ lv y)`. Introduce `a ha`. Rewrite using `[Category.assoc, hlvK y a ha, MonObj.comp_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : KilledBy o w (toUnit (Over.mk xx) ≫ lv y)`. Use `hker _ _ ⟨?_, e * ρ, fun a ha => hI a (hle ha)⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `hy`. Conclude with `eq_one_of_killed o hcopρ hI hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g' hg'`. Take `⟨u0, hu0⟩` from `exists_pow_eq o'.A o'.ab hc xx g'`. Establish `hpre : (u0 ≫ ψ') ≫ ψ = g'`. Rewrite using `[Category.assoc, h2, MonObj.comp_pow, Category.comp_id, hu0]`. Establish `hkill : ∀ {X : Over S} (z : X ⟶ o.A), z ≫ ψ = 1 → z ^ c = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `X z hz`. Rewrite using `[← Category.comp_id z, ← MonObj.comp_pow, ← h1, ← Category.assoc, hz, MonObj.one_comp]`. Establish `hc0 : ((c : ℕ) : 𝓞 D.F) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Take `⟨m, α, hα1, hαm⟩` from `hsplit (𝓞 D.F) (uIdeal D r) (c : 𝓞 D.F) hc0 (e * ρ)`. Establish `h1top : (1 : 𝓞 D.F) ∈ 𝔞 ^ ρ ⊔ w` using `hcopρ ▸ Submodule.mem_top`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, u, hu, hvu⟩` from `Submodule.mem_sup.mp h1top`. Use `set h0 := u0 ≫ ψ' with hh0`. Establish `hA : ∀ a ∈ 𝔞 ^ ρ, (h0 ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)) ≫ ψ = 1`. Introduce `a ha`. Rewrite using `[Category.assoc, hcomm, ← Category.assoc, hpre]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hg' a ha`. Establish `hB : ∀ a ∈ 𝔞 ^ ρ, KilledBy o w ((h0 ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)) ≫ o.act.act (algebraMap (𝓞 D.F) D.O α))`. Introduce `a ha`. Use `hker _ _ ⟨?_, m, ?_⟩` and prove the remaining obligations. Use `haveI := o'.act.hom (algebraMap (𝓞 D.F) D.O α)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hcomm, ← Category.assoc, hA a ha, MonObj.one_comp]`. Introduce `bb hbb`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (hαm bb hbb)`. Rewrite using `[← act_mul', ← act_mul']`. Establish `hre : bb * α * a = t * ((c : 𝓞 D.F) * a)` using `by linear_combination (-a) * ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hre, act_mul', act_mul', act_nat, hkill _ (hA a ha)]`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O t)`. Conclude with `MonObj.one_comp _`. Establish `hK : KilledBy o (𝔞 ^ ρ) ((h0 ≫ o.act.act (algebraMap (𝓞 D.F) D.O α)) ≫ o.act.act (algebraMap (𝓞 D.F) D.O u))`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← act_mul', ← act_mul', show a * u * α = u * (α * a) by ring, act_mul', act_mul']`. Conclude with `hB a ha u hu`. Take `⟨y, hy⟩` from `hsurj _ hK`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[← Category.assoc, hy, Category.assoc, hcomm, ← Category.assoc, Category.assoc h0, hcomm, ← Category.assoc, hpre]`. Establish `hα' : α - 1 ∈ 𝔞 ^ ρ` using `hle hα1`. Establish `hu' : u - 1 ∈ 𝔞 ^ ρ`. Establish `: u - 1 = -v` using `by linear_combination hvu`. Rewrite using `[this]`.
-
-Conclude with `(𝔞 ^ ρ).neg_mem hv`. Rewrite using `[hfix o' g' α hα' hg', hfix o' g' u hu' hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levPush_of : IdealSplit → LevPush := by
   intro hsplit p _ D R _ b N r w 𝔞 ρ hcop he S s c o o' ψ hψ hker lv hlv

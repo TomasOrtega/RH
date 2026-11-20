@@ -11,9 +11,9 @@ section Eval
 variable {A S : Type*} [CommRing A] [CommRing S] [Algebra A S]
 
 /- English proof (translation)
-Establish `h1 : ∀ p : Polynomial A, φ (p : A⟦X⟧) = Polynomial.aeval (φ X) p`. Introduce `p`. Establish `: φ.comp (Polynomial.coeToPowerSeries.algHom A) = Polynomial.aeval (φ X)` using `by ext; simp`. Simplify using `using DFunLike.congr_fun this p`. Use `⟨φ (mk fun i => coeff (i + n) f), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [f.eq_X_pow_mul_shift_add_trunc n]`. Rewrite using `[← h1, ← map_pow, ← map_mul, ← map_sub]`. Use `congr 1`. Rewrite using `[← f.eq_X_pow_mul_shift_add_trunc n, sub_eq_iff_eq_add]`. Conclude with `f.eq_X_pow_mul_shift_add_trunc n`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_sub_aeval_trunc (φ : A⟦X⟧ →ₐ[A] S) (n : ℕ) (f : A⟦X⟧) :
     φ X ^ n ∣ φ f - Polynomial.aeval (φ X) (trunc n f) := by
@@ -30,7 +30,7 @@ theorem pow_dvd_sub_aeval_trunc (φ : A⟦X⟧ →ₐ[A] S) (n : ℕ) (f : A⟦X
   exact f.eq_X_pow_mul_shift_add_trunc n
 
 /- English proof (translation)
-Establish `: (Polynomial.X : Polynomial A) ^ n ∣ p - q` using `Polynomial.X_pow_dvd_iff.2 fun i hi => by simp [h i hi]`. Take `⟨r, hr⟩` from `this`. Rewrite using `[← map_sub, hr, map_mul, map_pow, Polynomial.aeval_X]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hs n)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_sub_mem_pow {J : Ideal S} {s : S} (hs : s ∈ J) {n : ℕ} {p q : Polynomial A}
     (h : ∀ i < n, p.coeff i = q.coeff i) :
@@ -65,7 +65,7 @@ def evalMod (A : Type*) [CommRing A] [Algebra A S] (J : Ideal S) {s : S} (hs : s
     simp [coeff_trunc, hi, Polynomial.coeff_C, coeff_C, PowerSeries.algebraMap_apply]
 
 /- English proof (translation)
-Use `AlgHom.ext fun f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (Polynomial.aeval s (trunc n f)) = Ideal.Quotient.mk _ (Polynomial.aeval s (trunc m f))`. Rewrite using `[Ideal.Quotient.eq]`. Use `aeval_sub_mem_pow hs fun i hi => ?_` and prove the remaining obligations. Rewrite using `[coeff_trunc, coeff_trunc, if_pos hi, if_pos (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem factor_comp_evalMod (J : Ideal S) {s : S} (hs : s ∈ J) {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorₐ A (Ideal.pow_le_pow_right hle)).comp (evalMod A J hs n) =
@@ -84,7 +84,7 @@ def evalAdic (A : Type*) [CommRing A] [Algebra A S] (J : Ideal S) [IsAdicComplet
 variable (J : Ideal S) [IsAdicComplete J S] {s : S} (hs : s ∈ J)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `IsAdicComplete.mk_liftAlgHom J (evalMod A J hs) (factor_comp_evalMod J hs) n f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAdic_sub_aeval_trunc_mem (n : ℕ) (f : A⟦X⟧) :
     evalAdic A J hs f - Polynomial.aeval s (trunc n f) ∈ J ^ n := by
@@ -92,7 +92,7 @@ theorem evalAdic_sub_aeval_trunc_mem (n : ℕ) (f : A⟦X⟧) :
   exact IsAdicComplete.mk_liftAlgHom J (evalMod A J hs) (factor_comp_evalMod J hs) n f
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := J) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero]`. Simplify using `using h n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_forall_sub_mem_pow {x y : S} (h : ∀ n, x - y ∈ J ^ n) : x = y := by
   rw [← sub_eq_zero]
@@ -101,7 +101,7 @@ theorem eq_of_forall_sub_mem_pow {x y : S} (h : ∀ n, x - y ∈ J ^ n) : x = y 
   simpa using h n
 
 /- English proof (translation)
-Use `eq_of_forall_sub_mem_pow J fun n => ?_` and prove the remaining obligations. Establish `h1` using `evalAdic_sub_aeval_trunc_mem J hs n (X : A⟦X⟧)`. Establish `h2 : Polynomial.aeval s (trunc n (X : A⟦X⟧)) - Polynomial.aeval s (Polynomial.X : Polynomial A) ∈ J ^ n` using `aeval_sub_mem_pow hs fun i hi => by`. Simplify using `[coeff_trunc, hi, coeff_X, Polynomial.coeff_X, eq_comm]`. Simplify using `using add_mem h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem evalAdic_X : evalAdic A J hs X = s := by
   refine eq_of_forall_sub_mem_pow J fun n => ?_
@@ -113,15 +113,15 @@ Use `eq_of_forall_sub_mem_pow J fun n => ?_` and prove the remaining obligations
   simpa using add_mem h1 h2
 
 /- English proof (translation)
-The claim follows from `(evalAdic A J hs).commutes a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem evalAdic_C (a : A) : evalAdic A J hs (C a) = algebraMap A S a :=
   (evalAdic A J hs).commutes a
 
 /- English proof (translation)
-Use `AlgHom.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := J) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero]`. Establish `h1` using `pow_dvd_sub_aeval_trunc φ n f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `pow_dvd_sub_aeval_trunc ψ n f`. Rewrite `h2` using `[← h]`. Establish `h3 : φ X ^ n ∣ φ f - ψ f` using `by simpa using dvd_sub h1 h2`. Simplify using `using Ideal.mem_of_dvd _ h3 (Ideal.pow_mem_pow hφ n)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algHom_ext_of_isHausdorff (J : Ideal S) [IsHausdorff J S] {φ ψ : A⟦X⟧ →ₐ[A] S}
     (hφ : φ X ∈ J) (h : φ X = ψ X) : φ = ψ := by
@@ -136,7 +136,7 @@ theorem algHom_ext_of_isHausdorff (J : Ideal S) [IsHausdorff J S] {φ ψ : A⟦X
   simpa using Ideal.mem_of_dvd _ h3 (Ideal.pow_mem_pow hφ n)
 
 /- English proof (translation)
-The claim follows from `algHom_ext_of_isHausdorff J (h ▸ hs) (by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem eq_evalAdic (φ : A⟦X⟧ →ₐ[A] S) (h : φ X = s) : φ = evalAdic A J hs :=
   algHom_ext_of_isHausdorff J (h ▸ hs) (by simp [h])
@@ -148,13 +148,13 @@ section Division
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Establish `key : ∀ n, φ (mk fun i => coeff (i + n) f) = φ X * φ (mk fun i => coeff (i + (n + 1)) f) + coeff n f`. Introduce `n`. Establish `h` using `(mk fun i => coeff (i + n) f).eq_X_mul_shift_add_const`. Establish `hC : ∀ a, φ (C a) = a` using `fun a => φ.commutes a`. Rewrite using `[h, map_add, map_mul, hC]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_assoc, add_comm 1 n]`. Use `⟨mk fun n => φ (mk fun i => coeff (i + (n + 1)) f), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `h0` using `key 0`. Establish `: (mk fun i => coeff (i + 0) f) = f` using `by ext; simp`. Rewrite `h0` using `[this]`. Simplify using `only [sub_mul, map_sub, coeff_zero_C, coeff_C_mul, coeff_mk, coeff_zero_X_mul]`. Rewrite using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n`. Simplify using `only [sub_mul, map_sub, coeff_C_mul, coeff_mk, coeff_succ_X_mul, coeff_succ_C]`. Rewrite using `[key (n + 1)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem X_sub_C_dvd_sub_C (φ : A⟦X⟧ →ₐ[A] A) (f : A⟦X⟧) : X - C (φ X) ∣ f - C (φ f) := by
   have key : ∀ n, φ (mk fun i => coeff (i + n) f) =
@@ -178,9 +178,9 @@ theorem X_sub_C_dvd_sub_C (φ : A⟦X⟧ →ₐ[A] A) (f : A⟦X⟧) : X - C (φ
     rw [key (n + 1)]; ring
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Establish `h` using `X_sub_C_dvd_sub_C φ f`. Rewrite `h` using `[RingHom.mem_ker.1 hf]`. Simplify `h` using `[Ideal.mem_span_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, map_sub]`. Conclude with `sub_eq_zero.2 (φ.commutes _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_eq_span_X_sub_C (φ : A⟦X⟧ →ₐ[A] A) :
     RingHom.ker φ = Ideal.span {X - C (φ X)} := by
@@ -199,9 +199,9 @@ section Complete
 variable {A : Type*} [CommRing A] (I : Ideal A)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Simplify using `using ha`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Ideal.span_singleton_le_iff_mem]`. Introduce `f hf`. Rewrite using `[f.eq_X_mul_shift_add_const]`. Conclude with `add_mem (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_C_sup_span_X :
     I.map (C : A →+* A⟦X⟧) ⊔ Ideal.span {X} = I.comap (constantCoeff (R := A)) := by
@@ -218,21 +218,19 @@ theorem map_C_sup_span_X :
       (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Proceed by induction on `n generalizing f with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Introduce `hf`.
+Prove the components needed by the constructor for the conclusion. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hf` using `[pow_succ]`. Use `Submodule.mul_induction_on hf (fun a ha b hb i => ?_) (fun a b ha hb i => ?_)` and prove the remaining obligations. Rewrite using `[coeff_mul]`. Use `sum_mem fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ih a ha x.1`. Establish `h2 : coeff x.2 b ∈ I ^ (1 - x.2)`. Break down `Nat.eq_zero_or_pos x.2 with h | h` into its components or cases. Rewrite using `[h]`. Simplify using `using hb`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[show 1 - x.2 = 0 by omega]; simp`. Establish `h3` using `Ideal.mul_mem_mul h1 h2`. Rewrite `h3` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) h3`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem (ha i) (hb i)`. Introduce `h`. Establish `hX : (X : A⟦X⟧) ∈ I.comap (constantCoeff (R` using `A)) := by simp`. Rewrite using `[f.eq_X_pow_mul_shift_add_trunc n]`. Use `add_mem (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hX n)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[trunc_apply, ← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]`. Use `sum_mem fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < n` using `(Finset.mem_Ico.1 hi).2`. Rewrite using `[Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_monomial, monomial_eq_C_mul_X_pow]`. Establish `h1 : C (coeff i f) ∈ I.comap (constantCoeff (R` using `A)) ^ (n - i) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.mem_map_of_mem (C : A →+* A⟦X⟧) (h i)` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`. Use `Ideal.pow_right_mono ?_ _ this` and prove the remaining obligations. Rewrite using `[← map_C_sup_span_X]`. Conclude with `le_sup_left`.
-
-Establish `h2` using `Ideal.mul_mem_mul h1 (Ideal.pow_mem_pow hX i)`. Rewrite `h2` using `[← pow_add, Nat.sub_add_cancel hi'.le]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_pow_comap_constantCoeff_iff (n : ℕ) (f : A⟦X⟧) :
     f ∈ I.comap (constantCoeff (R := A)) ^ n ↔ ∀ i, coeff i f ∈ I ^ (n - i) := by
@@ -273,9 +271,9 @@ theorem mem_pow_comap_constantCoeff_iff (n : ℕ) (f : A⟦X⟧) :
     rwa [← pow_add, Nat.sub_add_cancel hi'.le] at h2
 
 /- English proof (translation)
-Use extensionality with `i`. Use `IsHausdorff.haus' (I := I) _ fun n => ?_` and prove the remaining obligations. Use `hf (n + i)` as an intermediate fact. Rewrite `this`, the goal using `[SModEq.zero]`. Simplify using `only [smul_eq_mul, Ideal.mul_top] at this ⊢`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using (mem_pow_comap_constantCoeff_iff I _ f).1 this i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHausdorff_comap_constantCoeff [IsHausdorff I A] :
     IsHausdorff (I.comap (constantCoeff (R := A))) A⟦X⟧ where
@@ -288,11 +286,11 @@ theorem isHausdorff_comap_constantCoeff [IsHausdorff I A] :
     simpa using (mem_pow_comap_constantCoeff_iff I _ f).1 this i
 
 /- English proof (translation)
-Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, mem_pow_comap_constantCoeff_iff] at hF ⊢`. Establish `: ∀ i, ∃ L : A, ∀ n, coeff i (F (n + i)) - L ∈ I ^ n`. Introduce `i`. Use `IsPrecomplete.prec' (I := I) (fun n => coeff i (F (n + i))) (by` as an intermediate fact. Introduce `m n h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Simplify using `using hF (show m + i ≤ n + i by omega) i)`. Simplify `this` using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Use `choose L hL using this`. Use `⟨mk L, fun n i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt i n with h | h` into its components or cases. Use `hL i (n - i)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel h]`. Simplify using `using this`. Rewrite using `[show n - i = 0 by omega]; simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_comap_constantCoeff [IsPrecomplete I A] :
     IsPrecomplete (I.comap (constantCoeff (R := A))) A⟦X⟧ where
@@ -314,16 +312,16 @@ theorem isPrecomplete_comap_constantCoeff [IsPrecomplete I A] :
     · rw [show n - i = 0 by omega]; simp
 
 /- English proof (translation)
-The claim follows from `{ isHausdorff_comap_constantCoeff I, isPrecomplete_comap_constantCoeff I with }`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_comap_constantCoeff [IsAdicComplete I A] :
     IsAdicComplete (I.comap (constantCoeff (R := A))) A⟦X⟧ :=
   { isHausdorff_comap_constantCoeff I, isPrecomplete_comap_constantCoeff I with }
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Rewrite using `[Ideal.mem_comap, f.eq_X_mul_shift_add_const, map_add, map_mul]`. Use `add_mem (Ideal.mul_mem_right _ _ hX) ?_` and prove the remaining obligations. Establish `: φ (C (constantCoeff f)) = algebraMap A S (constantCoeff f)` using `φ.commutes _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hI (Ideal.mem_map_of_mem _ hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_comap_constantCoeff_le {S : Type*} [CommRing S] [Algebra A S] (J : Ideal S)
     (φ : A⟦X⟧ →ₐ[A] S) (hI : I.map (algebraMap A S) ≤ J) (hX : φ X ∈ J) :
@@ -337,7 +335,7 @@ theorem map_comap_constantCoeff_le {S : Type*} [CommRing S] [Algebra A S] (J : I
   exact hI (Ideal.mem_map_of_mem _ hf)
 
 /- English proof (translation)
-Use `letI : WithIdeal A := ⟨I⟩`. Use `letI : WithIdeal S := ⟨J⟩`. Conclude with `(WithIdeal.uniformContinuous_of_map_le (f := φ) h).continuous`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_adicTopology_of_map_le {S : Type*} [CommRing S] (J : Ideal S) (φ : A →+* S)
     (h : I.map φ ≤ J) : @Continuous A S I.adicTopology J.adicTopology φ := by

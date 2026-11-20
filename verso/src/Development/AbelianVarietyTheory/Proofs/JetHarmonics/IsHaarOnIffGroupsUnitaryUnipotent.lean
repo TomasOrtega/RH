@@ -13,17 +13,15 @@ namespace GlobalTheory.HaarNotions
 open Formalism.FourierDecayAlt.P.B2x1 in
 
 /- English proof (translation)
-Establish `: (pull hU μ).IsMulLeftInvariant` using `pull_left μ hl`. Establish `: SigmaFinite (pull hU μ)`. Establish `h : SigmaFinite ((pull hU μ).map inc)` using `by rw [map_pull μ hc]; infer_instance`. Conclude with `SigmaFinite.of_map _ inc_memb.measurable.aemeasurable h`. Take `⟨K₀⟩ : Nonempty (TopologicalSpace.PositiveCompacts (Gp U hU))` from `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huniq` using `Measure.haarMeasure_unique (pull hU μ) K₀`. Establish `hfin : pull hU μ K₀ ≠ ∞`. Introduce `hinf`. Rewrite `huniq` using `[hinf]`. Establish `hzero : ∀ n, Measure.haarMeasure K₀ (spanningSets (pull hU μ) n) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Assume the negation of the conclusion as `hne`. Establish `h1` using `measure_spanningSets_lt_top (pull hU μ) n`. Establish `h2 : pull hU μ (spanningSets (pull hU μ) n) = ∞ * Measure.haarMeasure K₀ (spanningSets (pull hU μ) n)` using `congrArg (fun m : Measure (Gp U hU) => m (spanningSets (pull hU μ) n)) huniq`. Rewrite `h1` using `[h2, ENNReal.top_mul hne]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ h1`. Establish `huniv : Measure.haarMeasure K₀ Set.univ = 0`. Rewrite using `[← iUnion_spanningSets (pull hU μ)]`. Conclude with `measure_iUnion_null hzero`. Establish `h1 : Measure.haarMeasure K₀ K₀ = 0` using `measure_mono_null (Set.subset_univ _) huniv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Measure.haarMeasure_self]`. Conclude with `one_ne_zero h1`. Establish `hK' : IsCompact ((inc : Gp U hU → Formalism.QuantumDeterminants.Mt k r) ⁻¹' K)` using `inc_closedEmb.isCompact_preimage hK`. Establish `h3 : pull hU μ (inc ⁻¹' K) = pull hU μ K₀ * Measure.haarMeasure K₀ (inc ⁻¹' K)` using `congrArg (fun m : Measure (Gp U hU) => m (inc ⁻¹' K)) huniq`. Rewrite using `[← map_pull (hU := hU) μ hc, inc_memb.map_apply, h3]`.
-
-Conclude with `ENNReal.mul_lt_top hfin.lt_top hK'.measure_lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_compact_of_sigmaFinite {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U)
     (μ : Measure (Formalism.QuantumDeterminants.Mt k r)) [SigmaFinite μ] (hc : μ Uᶜ = 0)
@@ -59,11 +57,11 @@ theorem finite_compact_of_sigmaFinite {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2
   exact ENNReal.mul_lt_top hfin.lt_top hK'.measure_lt_top
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hσ, h0, hc, hl⟩`. Take `⟨ν, hν⟩` from `hex`. Establish `hfin` using `finite_compact_of_sigmaFinite hU μ hc hl`. Take `⟨c, hcν⟩` from `P.haar_measure_unique_up_to_scalar k r U ν μ hU hν hc hl hfin`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `{ ne_zero := h0, conc := hc, left := hl, right := ?_, finite_compact := hfin }` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[hcν, Measure.map_smul, hν.right a ha]`. Introduce `h`. Establish `: IsFiniteMeasureOnCompacts μ` using `⟨fun K hK => h.finite_compact K hK⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨inferInstance, h.ne_zero, h.conc, h.left⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHaarOn_iff {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U)
     (hex : ∃ ν : Measure (Formalism.QuantumDeterminants.Mt k r), B.IsHaarOn U ν) (μ : Measure (Formalism.QuantumDeterminants.Mt k r)) :
@@ -81,7 +79,7 @@ theorem isHaarOn_iff {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup
     exact ⟨inferInstance, h.ne_zero, h.conc, h.left⟩
 
 /- English proof (translation)
-Introduce `k r μ` and use `⟨isHaarOn_iff (P.unitary_group_closed k r) (P.unitary_group_haar_exists k r) μ, isHaarOn_iff (P.unipotent_radical_closed k r) (P.unipotent_haar_exists k r) μ, fun z hz hT _ => isHaarOn_iff (P.weyl_subgroup_closed k r z) (P.weyl_haar_exists k r z hz hT) μ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isHaarOn_iff_groups : ∀ (k r : ℕ) (μ : Measure (Formalism.QuantumDeterminants.Mt k r)), (PI.BesselPeriodGGP.IsHaarOn (GG k r) μ ↔ B.IsHaarOn (GG k r) μ) ∧ (PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μ ↔ B.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μ) ∧ ∀ z, Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → 1 ≤ k → (PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μ ↔ B.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μ) :=
   fun k r μ =>

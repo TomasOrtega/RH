@@ -11,11 +11,11 @@ open PI.VolStabSW PI.OmLocU.CntFF
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `_`. Rewrite using `[Finset.Icc_eq_empty (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ a ih`. Introduce `ha`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih (by omega), show n - (a + 1) + 1 = n - a by omega, ← Finset.insert_Icc_add_one_left_eq_Icc (show n - a ≤ n by omega), Finset.prod_insert (by simp), mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_fin_rev (f : ℕ → ℝ) (n : ℕ) : ∀ a : ℕ, a ≤ n →
     ∏ j : Fin a, f (n - (j : ℕ)) = ∏ i ∈ Finset.Icc (n - a + 1) n, f i := by
@@ -33,13 +33,13 @@ theorem prod_fin_rev (f : ℕ → ℝ) (n : ℕ) : ∀ a : ℕ, a ≤ n →
       ← Finset.insert_Icc_add_one_left_eq_Icc (show n - a ≤ n by omega), Finset.prod_insert (by simp), mul_comm]
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ a ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ha`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Rewrite using `[ih (by omega), ← pow_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le ha`. Establish `e1 : 2 * (a + 1 + m) * a - a ^ 2 = a ^ 2 + 2 * a + 2 * m * a`. Apply `Nat.sub_eq_of_eq_add` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 2 * (a + 1 + m) * (a + 1) - (a + 1) ^ 2 = (a + 1) ^ 2 + 2 * m * (a + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `Nat.sub_eq_of_eq_add` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, show 2 * (a + 1 + m - a) - 1 = 2 * m + 1 by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_pow_rev (q : ℝ) (n : ℕ) : ∀ a : ℕ, a ≤ n →
     ∏ j : Fin a, q ^ (2 * (n - (j : ℕ)) - 1) = q ^ (2 * n * a - a ^ 2) := by
@@ -61,11 +61,11 @@ theorem prod_pow_rev (q : ℝ) (n : ℕ) : ∀ a : ℕ, a ≤ n →
     ring
 
 /- English proof (translation)
-Use `set f : ℕ → ℝ := fun i => 1 - (-1 : ℝ) ^ i * q ^ (-(i : ℤ)) with hf`. Establish `ht : ∀ j : Fin a, q ^ (2 * (n - (j : ℕ)) - 1) - (-1) ^ (n - (j : ℕ)) * q ^ (n - (j : ℕ) - 1) = q ^ (2 * (n - (j : ℕ)) - 1) * f (n - (j : ℕ))`. Introduce `j`. Establish `hj : (j : ℕ) < n` using `lt_of_lt_of_le j.2 ha`. Simplify using `only [hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : q ^ (2 * (n - (j : ℕ)) - 1) * q ^ (-((n - (j : ℕ) : ℕ) : ℤ)) = q ^ (n - (j : ℕ) - 1)`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hq.ne']`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub (show 1 ≤ 2 * (n - (j : ℕ)) by omega), Nat.cast_sub hj.le, Nat.cast_sub (show 1 ≤ n - (j : ℕ) by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_sub, mul_one, ← e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl (fun j _ => ht j), Finset.prod_mul_distrib, prod_pow_rev q n a ha, prod_fin_rev f n a ha]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inert_prod (q : ℝ) (hq : 0 < q) (n a : ℕ) (ha : a ≤ n) :
     ∏ j : Fin a, (q ^ (2 * (n - (j : ℕ)) - 1) - (-1) ^ (n - (j : ℕ)) * q ^ (n - (j : ℕ) - 1)) =
@@ -88,13 +88,13 @@ theorem inert_prod (q : ℝ) (hq : 0 < q) (n a : ℕ) (ha : a ≤ n) :
     prod_fin_rev f n a ha]
 
 /- English proof (translation)
-Use `set f : ℕ → ℝ := fun i => 1 - (1 : ℝ) ^ i * q ^ (-(i : ℤ)) with hf`. Establish `ht : ∀ j : Fin a, q ^ n - q ^ (j : ℕ) = q ^ n * f (n - (j : ℕ))`. Introduce `j`. Establish `hj : (j : ℕ) < n` using `lt_of_lt_of_le j.2 ha`. Simplify using `only [hf, one_pow, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : q ^ n * q ^ (-((n - (j : ℕ) : ℕ) : ℤ)) = q ^ (j : ℕ)`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hq.ne']`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub hj.le]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_sub, mul_one, e]`. Rewrite using `[Finset.prod_congr rfl (fun j _ => ht j), Finset.prod_mul_distrib, prod_fin_rev f n a ha, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`. Establish `e : n * a + a * (n - a) = 2 * n * a - a ^ 2`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le ha`. Rewrite using `[show a + m - a = m by omega]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `Nat.sub_eq_of_eq_add` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem split_prod (q : ℝ) (hq : 0 < q) (n a : ℕ) (ha : a ≤ n) :
     (∏ i : Fin a, (q ^ n - q ^ (i : ℕ))) * q ^ (a * (n - a)) =
@@ -139,11 +139,11 @@ def RedU (a : ℕ) (Y : TupV (E := E) v n a) : Prop :=
               ffGram (RingEquiv.prodComm (R := k) (S := k)).toRingHom J' X = T'}))
 
 /- English proof (translation)
-Introduce `hG ϖ hϖ`. Establish `ha : a ≤ n` using `hG.2.2.2.2.1`. Establish `hq` using `qv_pos v`. Take `⟨k, _, _, hk, h⟩` from `hR hG ϖ hϖ`. Break down `h with ⟨hη, K, _, _, σ', J', T', hσ, h2, hne, hJ, hJu, hT, hTu, hc⟩ | ⟨hη, J', T', hJ, hJu, hT, hTu, hc⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hc, fFInert2_holds k K σ' hσ h2 hne n a ha J' hJ hJu T' hT hTu, hk]`. Unfold `prodEta`. Rewrite using `[hη]`. Use `push_cast`. Conclude with `inert_prod (qv v) hq n a ha`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, fFSplit_holds k n a ha J' hJ hJu T' hT hTu, hk]`. Unfold `prodEta`. Rewrite using `[hη]`. Use `push_cast`. Conclude with `split_prod (qv v) hq n a ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem clsU_of (a : ℕ) (Y : TupV (E := E) v n a) (hR : RedU σ J ψ v Λ a Y) : ClsU σ J ψ v Λ a Y := by
   intro hG ϖ hϖ
@@ -164,7 +164,7 @@ theorem clsU_of (a : ℕ) (Y : TupV (E := E) v n a) (hR : RedU σ J ψ v Λ a Y)
     exact split_prod (qv v) hq n a ha
 
 /- English proof (translation)
-The claim follows from `countU_of σ J ψ v Λ a Y hM hI (clsU_of σ J ψ v Λ a Y hR)`.
+A detailed English derivation is pending.
 -/
 theorem countU_of_red (a : ℕ) (Y : TupV (E := E) v n a) (hM : MeasU σ J ψ v Λ a Y)
     (hI : IdxU σ J ψ v Λ a Y) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=

@@ -20,16 +20,16 @@ namespace GlobalTheory.RelBasis
 variable {X Y T Y' T' : Scheme.{0}} {L : LB X} {t : ℤ} {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `(gs_res r z e hz _).trans (gs_pull r q z U (e hz) f)`.
+A detailed English derivation is pending.
 -/
 theorem affine_gs_appLE {Z : Scheme.{0}} (q : Y ⟶ X) (U : X.Opens) (W : Y.Opens) (e : W ≤ q ⁻¹ᵁ U) (r : Z ⟶ Y) (z : Z)
     (hz : r z ∈ W) (f : Γ(X, U)) : gs r z W ((q.appLE U W e).hom f) = gs (r ≫ q) z U f :=
   (gs_res r z e hz _).trans (gs_pull r q z U (e hz) f)
 
 /- English proof (translation)
-Establish `h₁ : p₁ (j z) ∈ W`. Establish `: (j ≫ p₁) z ∈ W` using `by rw [w]; exact e (show p₁' z ∈ (⊤ : T'.Opens) from trivial)`. Conclude with `this`. Rewrite using `[← comb_comp b j p₁ p₂ W c z i h₁ h₂, comb, comb]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[affine_gs_appLE g W ⊤ e p₁' z trivial, w]`.
+A detailed English derivation is pending.
 -/
 theorem affine_comb (b : Fin N → LB.Sec (pw L t)) (p₁ : Y ⟶ T) (p₂ : Y ⟶ X) (W : T.Opens)
     (j : Y' ⟶ Y) (p₁' : Y' ⟶ T') (g : T' ⟶ T) (w : j ≫ p₁ = p₁' ≫ g) (e : ⊤ ≤ g ⁻¹ᵁ W)
@@ -44,19 +44,17 @@ theorem affine_comb (b : Fin N → LB.Sec (pw L t)) (p₁ : Y ⟶ T) (p₂ : Y �
   rw [affine_gs_appLE g W ⊤ e p₁' z trivial, w]
 
 /- English proof (translation)
-Establish `hj : IsOpenImmersion j` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) sq.flip inferInstance`. Establish `hW : ∀ z : Y', p₁ (j z) ∈ W` using `fun z => by`. Establish `: (j ≫ p₁) z ∈ W` using `by rw [sq.w]; exact e (show p₁' z ∈ (⊤ : T'.Opens) from trivial)`. Conclude with `this`. Use `⟨fun c hc => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h₁ (fun k => (g.appLE W ⊤ e).hom (c k)) (fun z i _ hz => by` as an intermediate fact. Rewrite using `[affine_comb b p₁ p₂ W j p₁' g sq.w e c z i hz, hc (j z) i (hW z) hz, map_zero])`. Use function extensionality and compare the values at `k`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[Pi.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrFun this k`. Establish `le : ∀ i, p₁' ⁻¹ᵁ ⊤ ⊓ (j ≫ p₂) ⁻¹ᵁ L.U i ≤ j ⁻¹ᵁ (p₁ ⁻¹ᵁ W ⊓ p₂ ⁻¹ᵁ L.U i)` using `fun i z hz => ⟨hW z, hz.2⟩`. Establish `key : ∀ (z : Y') (i : L.ι), p₂ (j z) ∈ L.U i → gs (𝟙 Y') z _ ((j.appLE _ _ (le i)).hom (σ i)) = (j.stalkMap z).hom (gs (𝟙 Y) (j z) _ (σ i))`. Introduce `z i hz`. Rewrite using `[affine_gs_appLE j _ _ (le i) (𝟙 Y') z ⟨trivial, hz⟩, Category.id_comp, ← gs_comp j (𝟙 Y) z (p₁ ⁻¹ᵁ W ⊓ p₂ ⁻¹ᵁ L.U i) ⟨hW z, hz⟩, Category.comp_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c', hc'⟩` from `h₂ (fun i => (j.appLE _ _ (le i)).hom (σ i)) (fun z i i' _ hi hi' => by`. Rewrite using `[key z i hi, key z i' hi', hσ (j z) i i' (hW z) hi hi', map_mul]`. Use `congr 1`. Establish `: gm (j ≫ p₂) z (L.U i ⊓ L.U i') (L.g i i') = Units.map (j.stalkMap z).hom.toMonoidHom (gm p₂ (j z) (L.U i ⊓ L.U i') (L.g i i'))`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← gs_unit (j ≫ p₂) z (L.U i ⊓ L.U i') ⟨hi, hi'⟩, gs_comp j p₂ z (L.U i ⊓ L.U i') ⟨hi, hi'⟩, gs_unit p₂ (j z) (L.U i ⊓ L.U i') ⟨hi, hi'⟩]`. Both sides reduce to the same expression. Rewrite using `[this, ← map_zpow (Units.map (j.stalkMap z).hom.toMonoidHom)]`. Use the proof step `rfl)`. Use `choose c hc using fun k => hb.2 (c' k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨c, fun y i hy hi => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩ : p₁ y ∈ Set.range g` from `by rw [hr]; exact hy`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback sq y s hs.symm`. Apply `(ConcreteCategory.bijective_of_isIso (j.stalkMap z)).1` to reduce the goal to its premises. Use `hc' z i trivial hi` as an intermediate fact.
-
-Rewrite `this` using `[key z i hi, ← funext hc, affine_comb b p₁ p₂ W j p₁' g sq.w e c z i hi]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affine_transfer (b : Fin N → LB.Sec (pw L t)) (p₁ : Y ⟶ T) (p₂ : Y ⟶ X) (W : T.Opens)
     (j : Y' ⟶ Y) (p₁' : Y' ⟶ T') (g : T' ⟶ T) [IsOpenImmersion g] (sq : IsPullback j p₁' p₁ g)
@@ -102,13 +100,11 @@ theorem affine_transfer (b : Fin N → LB.Sec (pw L t)) (p₁ : Y ⟶ T) (p₂ :
     exact this
 
 /- English proof (translation)
-Introduce `R _ X p L t N b H T Y q p₁ p₂ sq W hW`. Take `⟨Y', p₁', p₂', sq', h₁, h₂⟩` from `H Γ(T, W) (Spec.preimage (hW.fromSpec ≫ q)).hom`. Establish `hf : spMap (Spec.preimage (hW.fromSpec ≫ q)).hom = hW.fromSpec ≫ q` using `Spec.map_preimage _`. Rewrite `sq'` using `[hf]`. Set `j : Y' ⟶ Y` to `sq.lift p₂' (p₁' ≫ hW.fromSpec) (by rw [sq'.w, Category.assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e₂ : j ≫ p₂ = p₂'` using `sq.lift_fst _ _ _`. Establish `e₁ : j ≫ p₁ = p₁' ≫ hW.fromSpec` using `sq.lift_snd _ _ _`. Rewrite `sq'`, `h₁`, `h₂` using `[← e₂]`. Establish `sq'' : IsPullback j p₁' p₁ hW.fromSpec` using `IsPullback.of_right (by simpa using sq') e₁ sq`. Establish `e : ⊤ ≤ hW.fromSpec ⁻¹ᵁ W` using `hW.fromSpec_preimage_self.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `affine_transfer b p₁ p₂ W j p₁' hW.fromSpec sq'' hW.range_fromSpec e ?_ h₁ h₂` and prove the remaining obligations. Establish `: hW.fromSpec.appLE W ⊤ e = (Scheme.ΓSpecIso Γ(T, W)).inv`. Rewrite using `[Scheme.Hom.appLE, hW.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg _ ((congrArg _ (Subsingleton.elim _ _)).trans (CategoryTheory.Functor.map_id _ _))).trans (Category.comp_id _)`. Rewrite using `[this]`.
-
-Conclude with `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso Γ(T, W)).inv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepOn_spanOn_of_affine : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (p : X ⟶ Sp R) (L : LB X) (t : ℤ) (N : ℕ) (b : Fin N → LB.Sec (pw L t)), (∀ (R' : Type) [CommRing R'] (f : R →+* R'), ∃ (Y : Scheme.{0}) (p₁ : Y ⟶ Sp R') (p₂ : Y ⟶ X), IsPullback p₂ p₁ p (spMap f) ∧ GlobalTheory.RelBasis.IndepOn b p₁ p₂ ⊤ ∧ GlobalTheory.RelBasis.SpanOn b p₁ p₂ ⊤) → ∀ (T Y : Scheme.{0}) (q : T ⟶ Sp R) (p₁ : Y ⟶ T) (p₂ : Y ⟶ X), IsPullback p₂ p₁ p q → ∀ W : T.Opens, IsAffineOpen W → GlobalTheory.RelBasis.IndepOn b p₁ p₂ W ∧ GlobalTheory.RelBasis.SpanOn b p₁ p₂ W := by
   intro R _ X p L t N b H T Y q p₁ p₂ sq W hW

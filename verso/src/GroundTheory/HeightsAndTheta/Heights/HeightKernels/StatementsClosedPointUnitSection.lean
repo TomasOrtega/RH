@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Take `⟨W, h, hloc⟩` from `LocalSubring.exists_le_valuationSubring (LocalSubring.ofPrime A P)`. Establish `hA : ∀ a : A, (a : K) ∈ (LocalSubring.ofPrime A P).toSubring` using `fun a => LocalSubring.le_ofPrime A P a.2`. Establish `key : ∀ a : A, (IsUnit (algebraMap A (LocalSubring.ofPrime A P).toSubring a) ↔ a ∉ P)` using `fun a => IsLocalization.AtPrime.isUnit_to_map_iff _ P a`. Use `⟨W, fun a => h (hA a), fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hu` using `((key a).mpr ha).map (Subring.inclusion h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(W.valuation_eq_one_iff ⟨a, h (hA a)⟩).mp hu`. Use `lt_of_le_of_ne (W.valuation_le_one ⟨a, h (hA a)⟩) fun h1 => ?_` and prove the remaining obligations. Establish `hu : IsUnit (Subring.inclusion h (algebraMap A (LocalSubring.ofPrime A P).toSubring a))` using `(W.valuation_eq_one_iff ⟨a, h (hA a)⟩).mpr h1`. Conclude with `(key a).mp ((isUnit_map_iff (Subring.inclusion h) _).mp hu) ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ClosedPointUnitSection.exists_valuationSubring {K : Type*} [Field K] (A : Subring K)
     (P : Ideal A) [P.IsPrime] :

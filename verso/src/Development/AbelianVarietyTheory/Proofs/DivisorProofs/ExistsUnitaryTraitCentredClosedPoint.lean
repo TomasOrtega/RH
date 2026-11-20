@@ -16,15 +16,15 @@ open Classical
 namespace GlobalTheory.UTraitCen
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hA x _`. Establish `hU : (U₀ : Set M.Z).Nonempty` using `hA.1.ne`. Take `⟨W, _, _, _, _, hc, a, ha, hg⟩` from `GlobalTheory.Poinc.TraitCen.exists_cdvr M U₀ hU x`. Establish `hr : Set.range (jK W ≫ a) ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `hg t`. Set `ξ₀' : Sp (FractionRing W) ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι (jK W ≫ a) hr`. Establish `hξ₀' : ξ₀' ≫ U₀.ι = jK W ≫ a` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hB : GlobalTheory.Mum.Base W` using `⟨⟨inferInstance, inferInstance, inferInstance, hc⟩, inferInstance⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, ⟨x', hx', hy'⟩, -⟩` from `X₁.existsUnique_lies (ξ₀' ≫ out.u₀)`. Take `⟨T, f, fK, -, hloc, -, hcomp, hy⟩` from `GlobalTheory.UTraitExt.uTraitExtSt E H Dw l Xo c W hB inferInstance y`. Use `⟨T, spMap f ≫ a, ⟨spMap fK ≫ ξ₀', ?_, spMap fK ≫ x', ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hξ₀', ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `hcomp r`. Rewrite using `[Category.assoc, hx', Category.assoc]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, Category.assoc, hy']`. Establish `h : (spMap f) (closedPoint T.V) = closedPoint W` using `IsLocalRing.comap_closedPoint f show a ((spMap f) (closedPoint T.V)) = x`. Rewrite using `[h, ha]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uTrait_cen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C)

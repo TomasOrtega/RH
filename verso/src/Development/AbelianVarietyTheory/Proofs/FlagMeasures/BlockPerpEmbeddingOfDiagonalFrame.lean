@@ -13,7 +13,7 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.PerpSort
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hf`. Rewrite using `[dotProduct, ← Equiv.sum_comp f, Fintype.sum_sum_type, herm]`. Simplify using `only [Function.comp_apply, Pi.star_apply, Formalism.REAL.Jm, mulVec_diagonal, h1, h2, if_true, Bool.false_eq_true, if_false, one_mul, neg_one_mul, mul_neg, Finset.sum_neg_distrib, ← sub_eq_add_neg]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem herm_comp {n P Q : ℕ} {ε : Fin n → Bool} {f : Fin P ⊕ Fin Q ≃ Fin n} (hf : Sorts ε f)
     (x y : Fin n → ℂ) : herm (x ∘ f) (y ∘ f) = star y ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ x) := by
@@ -24,9 +24,9 @@ theorem herm_comp {n P Q : ℕ} {ε : Fin n → Bool} {f : Fin P ⊕ Fin Q ≃ F
   congr 1 <;> exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, Formalism.REAL.Jm, mulVec_diagonal, GlobalTheory.GaussMean.qEps]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hx : star (x i) * x i = ((‖x i‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_left_comm, hx]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem form_self {n : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) :
     star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ x) = (GlobalTheory.GaussMean.qEps ε x : ℂ) := by
@@ -40,9 +40,9 @@ theorem form_self {n : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) :
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Establish `h` using `hf.umat_equiv (hf.equiv.symm k)`. Rewrite `h` using `[ContinuousMulEquiv.apply_symm_apply]`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun h (f i)) (f j)`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] at e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 theorem mat_symm {n P Q : ℕ} {ε : Fin n → Bool} {f : Fin P ⊕ Fin Q ≃ Fin n} (hf : Sorts ε f)
     (k : Formalism.REAL.UJ ε) : (hf.equiv.symm k).mat = (Formalism.MainNotions.S.uMat k).submatrix f f := by
@@ -54,7 +54,7 @@ theorem mat_symm {n P Q : ℕ} {ε : Fin n → Bool} {f : Fin P ⊕ Fin Q ≃ Fi
   exact e.symm
 
 /- English proof (translation)
-Rewrite using `[act, mat_symm hf, Matrix.submatrix_mulVec_equiv, Function.comp_assoc, f.self_comp_symm, Function.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_symm {n P Q : ℕ} {ε : Fin n → Bool} {f : Fin P ⊕ Fin Q ≃ Fin n} (hf : Sorts ε f)
     (k : Formalism.REAL.UJ ε) (x : Fin n → ℂ) :
@@ -63,7 +63,7 @@ theorem act_symm {n P Q : ℕ} {ε : Fin n → Bool} {f : Fin P ⊕ Fin Q ≃ Fi
     Function.comp_id]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, Fin.sum_univ_succ, Matrix.of_apply, Fin.cases_zero, Fin.cases_succ, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem of_fin_cases_mulVec {n : ℕ} (x₀ : Fin (n + 1) → ℂ) (B : Matrix (Fin (n + 1)) (Fin n) ℂ)
     (w : Fin (n + 1) → ℂ) :
@@ -75,21 +75,19 @@ private theorem of_fin_cases_mulVec {n : ℕ} (x₀ : Fin (n + 1) → ℂ) (B : 
   ring
 
 /- English proof (translation)
-Use `set J := Formalism.REAL.Jm ε`. Use `set M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ := Matrix.of fun i j => Fin.cases (motive := fun _ => ℂ) (x₀ i) (fun k => B i k) j with hM`. Establish `hMv : ∀ w, M *ᵥ w = w 0 • x₀ + B *ᵥ fun k : Fin n => w k.succ` using `fun w => of_fin_cases_mulVec x₀ B w`. Establish `key : ∀ t : Fin n → ℂ, star x₀ ⬝ᵥ (J *ᵥ (B *ᵥ t)) = 0`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, h1, zero_dotProduct]`. Establish `hval : ∀ w, star x₀ ⬝ᵥ (J *ᵥ (M *ᵥ w)) = w 0 * (star x₀ ⬝ᵥ (J *ᵥ x₀))`. Introduce `w`. Rewrite using `[hMv, Matrix.mulVec_add, dotProduct_add, key, add_zero, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Establish `hinj : Function.Injective M.mulVec`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `hz : M *ᵥ (a - b) = 0`. Rewrite using `[Matrix.mulVec_sub]`. Conclude with `sub_eq_zero.mpr hab`. Establish `hw0 : (a - b) 0 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hval (a - b)`. Rewrite `e` using `[hz, Matrix.mulVec_zero, dotProduct_zero]`. Conclude with `(mul_eq_zero.mp e.symm).resolve_right h0`. Establish `hBt : B *ᵥ (fun k : Fin n => (a - b) k.succ) = 0`. Establish `e` using `hMv (a - b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hz, hw0, zero_smul, zero_add]`. Conclude with `e.symm`. Establish `ht : (fun k : Fin n => (a - b) k.succ) = 0`. Establish `hJ' : Formalism.REAL.Jm ε' *ᵥ (fun k : Fin n => (a - b) k.succ) = 0`. Rewrite using `[← h2, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hBt, Matrix.mulVec_zero, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.one_mulVec (fun k : Fin n => (a - b) k.succ), ← Formalism.REAL.Jm_mul_self ε', ← Matrix.mulVec_mulVec, hJ', Matrix.mulVec_zero]`. Rewrite using `[← sub_eq_zero]`. Use function extensionality and compare the values at `i`. Use `Fin.cases hw0 (fun k => ?_) i` and prove the remaining obligations. Conclude with `congrFun ht k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective M.mulVec` using `Matrix.mulVec_surjective_iff_isUnit.mpr (Matrix.mulVec_injective_iff_isUnit.mp hinj)`. Take `⟨w, hw⟩` from `hsurj y`. Establish `hw0 : w 0 = 0`. Establish `e` using `hval w`. Rewrite `e` using `[hw, hy]`.
-
-Conclude with `(mul_eq_zero.mp e.symm).resolve_right h0`. Use `⟨fun k : Fin n => w k.succ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, hMv, hw0, zero_smul, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mulVec_eq {n : ℕ} (ε : Fin (n + 1) → Bool) (ε' : Fin n → Bool)
     (x₀ : Fin (n + 1) → ℂ) (B : Matrix (Fin (n + 1)) (Fin n) ℂ)
@@ -140,17 +138,15 @@ theorem exists_mulVec_eq {n : ℕ} (ε : Fin (n + 1) → Bool) (ε' : Fin n → 
   rw [← hw, hMv, hw0, zero_smul, zero_add]
 
 /- English proof (translation)
-Introduce `n ε ε' s x₀ B j hq h1 h2 hj P Q P' Q' f f' hf hf'`. Express the relevant statement in the definitionally equal form `IsPerpEmb (x₀ ∘ f) _ _`. Establish `hsub : ∀ u : Fin P' ⊕ Fin Q' → ℂ, B.submatrix f f' *ᵥ u = (B *ᵥ (u ∘ f'.symm)) ∘ f` using `fun u => Matrix.submatrix_mulVec_equiv _ _ _ _`. Establish `hc : star x₀ ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ x₀) ≠ 0`. Rewrite using `[form_self, hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases s <;> simp [GlobalTheory.GaussMean.sgn]`. Use `⟨fun u v => ?_, fun y => ⟨fun h0 => ?_, ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `herm_comp hf' (u ∘ f'.symm) (v ∘ f'.symm)`. Rewrite `e` using `[Function.comp_assoc, f'.symm_comp_self, Function.comp_id, Function.comp_assoc, f'.symm_comp_self, Function.comp_id]`. Rewrite using `[e, hsub, hsub, herm_comp hf, ← h2, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `herm_comp hf (y ∘ f.symm) x₀`. Rewrite `e` using `[Function.comp_assoc, f.symm_comp_self, Function.comp_id]`. Rewrite `h0` using `[e]`. Take `⟨u, hu⟩` from `exists_mulVec_eq ε ε' x₀ B hc h1 h2 _ h0`. Use `⟨u ∘ f', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsub, Function.comp_assoc, f'.self_comp_symm, Function.comp_id, hu, Function.comp_assoc, f.symm_comp_self, Function.comp_id]`. Introduce and unpack `⟨u, rfl⟩`. Rewrite using `[hsub, herm_comp hf, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, h1, zero_dotProduct]`. Take `⟨hfix, hcomm⟩` from `hj (hf'.equiv g)`. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show act (hf.equiv.symm (j (hf'.equiv g))) (x₀ ∘ f) = x₀ ∘ f`. Rewrite using `[act_symm hf, hfix]`. Use `show act (hf.equiv.symm (j (hf'.equiv g))) _ = _`. Establish `e` using `act_symm hf' (hf'.equiv g) (u ∘ f'.symm)`. Rewrite `e` using `[ContinuousMulEquiv.symm_apply_apply, Function.comp_assoc, f'.symm_comp_self, Function.comp_id]`.
-
-Rewrite using `[hsub, hsub, act_symm hf, Matrix.mulVec_mulVec, hcomm, ← Matrix.mulVec_mulVec, e, Function.comp_assoc, f'.self_comp_symm, Function.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPerpEmb_of_sorts : ∀ (n : ℕ) (ε : Fin (n + 1) → Bool) (ε' : Fin n → Bool) (s : Bool) (x₀ : Fin (n + 1) → ℂ) (B : Matrix (Fin (n + 1)) (Fin n) ℂ) (j : Formalism.REAL.UJ ε' → Formalism.REAL.UJ ε), GlobalTheory.GaussMean.qEps ε x₀ = GlobalTheory.GaussMean.sgn ℝ s → star x₀ ᵥ* (Formalism.REAL.Jm ε * B) = 0 → Bᴴ * Formalism.REAL.Jm ε * B = Formalism.REAL.Jm ε' → (∀ g, Formalism.MainNotions.S.uMat (j g) *ᵥ x₀ = x₀ ∧ Formalism.MainNotions.S.uMat (j g) * B = B * Formalism.MainNotions.S.uMat g) → ∀ (P Q P' Q' : ℕ) (f : Fin P ⊕ Fin Q ≃ Fin (n + 1)) (f' : Fin P' ⊕ Fin Q' ≃ Fin n) (hf : Sorts ε f) (hf' : Sorts ε' f'), IsPerpEmb (fun i => x₀ (f i)) (B.submatrix f f') (fun g => hf.equiv.symm (j (hf'.equiv g))) := by
   intro n ε ε' s x₀ B j hq h1 h2 hj P Q P' Q' f f' hf hf'

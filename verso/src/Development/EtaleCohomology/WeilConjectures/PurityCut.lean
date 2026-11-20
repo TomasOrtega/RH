@@ -26,17 +26,17 @@ def Compare : Prop := Base → ∀ (l : ℕ) [Fact l.Prime] (r : ℕ),
       θ P c i a b h (redZ (l ^ (c + 1)) (l ^ c) i (initial.to P.Z) a x) = redZ _ _ _ P.j _ (θ P (c + 1) i a b h x)
 
 /- English proof (translation)
-Introduce `hB l _ r`. Take `⟨o, bd, hex, hnat, hred⟩` from `hS`. Take `⟨θ, hθn, hθr⟩` from `hC hB l r`. Establish `bij : ∀ (q : ℕ) (i : ℤ) (Z : Scheme.{0}) (n : ℤ), Function.Bijective (o q i (initial.to Z) n)`. Introduce `q i Z n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Take `⟨z, rfl⟩` from `((hex q i (initial.to Z) m).2.2 x).1 hx`. Use `hE q m i` as an intermediate fact. Rewrite using `[Subsingleton.elim z 0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hE q n i`. Conclude with `((hex q i (initial.to Z) n).1 y).1 (Subsingleton.elim _ _)`. Set `e : ∀ (q : ℕ) (i : ℤ) (Z : Scheme.{0}) (n : ℤ), HZ q i (initial.to Z) n ≃+ Ht q (sch.obj Z) n i` to `fun q i Z n => AddEquiv.ofBijective (o q i (initial.to Z) n) (bij q i Z n)`. Establish `he : ∀ q i Z n x, e q i Z n x = o q i (initial.to Z) n x` using `fun _ _ _ _ _ => rfl`. Use `⟨fun P c i a b h => (e (l ^ c) i P.Z a).symm.trans (θ P c i a b h), ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `P' P f c i a b h x`. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[← hθn]`. Use `congr 1`. Apply `(e (l ^ c) i P'.Z a).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddEquiv.apply_symm_apply, he, (hnat (l ^ c) i (initial.to P.Z) (initial.to P'.Z) f.fZ (𝟙 _) (initial.hom_ext _ _) a).1, ← he, AddEquiv.apply_symm_apply]`. Introduce `P c i a b h x`. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[← hθr]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(e (l ^ c) i P.Z a).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, he, (hred (l ^ (c + 1)) (l ^ c) i (initial.to P.Z) a).1, ← he, AddEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem goal_of (hS : SuppSeq) (hE : EmptyVan) (hC : Compare) : Purity := by
   intro hB l _ r

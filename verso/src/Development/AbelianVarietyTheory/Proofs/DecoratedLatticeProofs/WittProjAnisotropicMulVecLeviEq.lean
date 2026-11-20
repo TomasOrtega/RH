@@ -26,13 +26,13 @@ theorem diagU_inv_val (b : Fin ρ → (AE D)ˣ) :
     ((diagU b)⁻¹).1 = Matrix.diagonal fun i => (((b i)⁻¹ : (AE D)ˣ) : AE D) := rfl
 
 /- English proof (translation)
-Rewrite using `[inv_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diagU_inv_inv_val (b : Fin ρ → (AE D)ˣ) :
     (((diagU b)⁻¹)⁻¹).1 = Matrix.diagonal fun i => (b i : AE D) := by rw [inv_inv]; rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hz j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_supp {m n : ℕ} (A : Matrix (Fin m) (Fin n) (AE D)) {P : Pl D → Prop} {z : Fin n → AE D}
     (hz : ∀ j, z j ∈ idAt D P) (k : Fin m) : (A *ᵥ z) k ∈ idAt D P := by
@@ -40,16 +40,16 @@ theorem mulVec_supp {m n : ℕ} (A : Matrix (Fin m) (Fin n) (AE D)) {P : Pl D �
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hz j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, show mt S g * mt S g⁻¹ = mt S (g * g⁻¹) from rfl, mul_inv_cancel]`. Conclude with `Matrix.one_mulVec z`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_mulVec_inv (g : GA D S) (z : Fin S.rank → AE D) : mt S g *ᵥ (mt S g⁻¹ *ᵥ z) = z := by
   rw [Matrix.mulVec_mulVec, show mt S g * mt S g⁻¹ = mt S (g * g⁻¹) from rfl, mul_inv_cancel]
   exact Matrix.one_mulVec z
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hs : ∀ k, z k ∈ idAt D (· = v)` using `fun k => GlobalTheory.FinPl.FrameLat.latV_supp hz k`. Rewrite using `[hm _ (fun k => mulVec_supp _ hs k), mt_mulVec_inv]`. Conclude with `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Establish `hs : ∀ k, (mt S g⁻¹ *ᵥ z) k ∈ idAt D (· = v)` using `fun k => GlobalTheory.FinPl.FrameLat.latV_supp hz k`. Establish `h` using `(hm _ hs).1 hz`. Rewrite `h` using `[mt_mulVec_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_moves {L M : Lat S} {v : Pl D} {g : GA D S} (hm : Moves S g L M (· = v)) (z : Fin S.rank → AE D) :
     z ∈ latV S M (· = v) ↔ mt S g⁻¹ *ᵥ z ∈ latV S L (· = v) := by
@@ -64,9 +64,9 @@ theorem mem_iff_of_moves {L M : Lat S} {v : Pl D} {g : GA D S} (hm : Moves S g L
     rwa [mt_mulVec_inv] at h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagonal_mulVec_single {n : ℕ} (u : Fin n → AE D) (i : Fin n) (c : AE D) :
     Matrix.diagonal u *ᵥ Pi.single i c = Pi.single i (u i * c) := by
@@ -77,9 +77,9 @@ theorem diagonal_mulVec_single {n : ℕ} (u : Fin n → AE D) (i : Fin n) (c : A
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show cA D (Matrix.diagonal u j i) = Matrix.diagonal (fun k => cA D (u k)) i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ (Ne.symm h), Matrix.diagonal_apply_ne _ h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem adj_diagonal {n : ℕ} (u : Fin n → AE D) :
     adj (Matrix.diagonal u) = Matrix.diagonal fun i => cA D (u i) := by
@@ -92,7 +92,7 @@ theorem adj_diagonal {n : ℕ} (u : Fin n → AE D) :
 variable (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[SplitLat.colMul_eq_mulVec, SplitLat.colMul_eq_mulVec, Matrix.mulVec_mulVec, d.levi_jX, ← Matrix.mulVec_mulVec, ha, diagonal_mulVec_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_colMul_jX (a : GL (Fin ρ) (AE D)) {u : Fin ρ → AE D} (ha : a.1 = Matrix.diagonal u) (i : Fin ρ) (c : AE D) :
     mt S (d.levi a) *ᵥ colMul d.jX i c = colMul d.jX i (u i * c) := by
@@ -100,7 +100,7 @@ theorem levi_colMul_jX (a : GL (Fin ρ) (AE D)) {u : Fin ρ → AE D} (ha : a.1 
     diagonal_mulVec_single]
 
 /- English proof (translation)
-Rewrite using `[SplitLat.colMul_eq_mulVec, SplitLat.colMul_eq_mulVec, Matrix.mulVec_mulVec, d.levi_jY, ← Matrix.mulVec_mulVec, ha, adj_diagonal, diagonal_mulVec_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_colMul_jY (a : GL (Fin ρ) (AE D)) {u : Fin ρ → AE D} (ha : (a⁻¹).1 = Matrix.diagonal u) (i : Fin ρ) (c : AE D) :
     mt S (d.levi a) *ᵥ colMul d.jY i c = colMul d.jY i (cA D (u i) * c) := by
@@ -108,30 +108,30 @@ theorem levi_colMul_jY (a : GL (Fin ρ) (AE D)) {u : Fin ρ → AE D} (ha : (a�
     adj_diagonal, diagonal_mulVec_single]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, d.pX_levi, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pX_levi_mulVec (a : GL (Fin ρ) (AE D)) {u : Fin ρ → AE D} (ha : a.1 = Matrix.diagonal u) (y : Fin S.rank → AE D)
     (i : Fin ρ) : (d.pX *ᵥ (mt S (d.levi a) *ᵥ y)) i = u i * (d.pX *ᵥ y) i := by
   rw [Matrix.mulVec_mulVec, d.pX_levi, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, d.pY_levi, ← Matrix.mulVec_mulVec, ha, adj_diagonal, Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pY_levi_mulVec (a : GL (Fin ρ) (AE D)) {u : Fin ρ → AE D} (ha : (a⁻¹).1 = Matrix.diagonal u)
     (y : Fin S.rank → AE D) (i : Fin ρ) : (d.pY *ᵥ (mt S (d.levi a) *ᵥ y)) i = cA D (u i) * (d.pY *ᵥ y) i := by
   rw [Matrix.mulVec_mulVec, d.pY_levi, ← Matrix.mulVec_mulVec, ha, adj_diagonal, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, d.wittDecomp_projAnisotropic_levi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wittProjAnisotropic_mulVec_levi_eq (a : GL (Fin ρ) (AE D)) (y : Fin S.rank → AE D) :
     d.p0 *ᵥ (mt S (d.levi a) *ᵥ y) = d.p0 *ᵥ y := by
   rw [Matrix.mulVec_mulVec, d.wittDecomp_projAnisotropic_levi]
 
 /- English proof (translation)
-Rewrite using `[SplitLat.mem_dualC, FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨o, ho⟩` from `h 1 ((FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩)`. Conclude with `⟨o, by rw [ho, star_one, one_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨o, rfl⟩ b hb`. Take `⟨o', rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hb`. Take `⟨r, hr⟩` from `GlobalTheory.HypLattice.star_mem_int ⟨o', rfl⟩`. Conclude with `⟨r * o, by rw [map_mul, hr]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_dualC_one (c : D.host.E) : c ∈ SplitLat.dualC (1 : FI D) ↔ c ∈ (1 : FI D) := by
   rw [SplitLat.mem_dualC, FractionalIdeal.mem_one_iff]
@@ -147,25 +147,23 @@ theorem mem_dualC_one (c : D.host.E) : c ∈ SplitLat.dualC (1 : FI D) ↔ c ∈
 variable (L₀ : Lat S₀)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `key : ∀ y ∈ latV S (SplitLat.splitL d L₀ (fun _ => (1 : FI D))) (· = v), (d.pY *ᵥ y) i ∈ idV (1 : FI D) v`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨β, hβi, hβ, c, hc, x, hx, rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality. Express the relevant statement in the definitionally equal form `(rat d.qY *ᵥ _) i ∈ _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[SplitLat.rat_mulVec_gen]`. Use `AddSubgroup.subset_closure ⟨β, hβi, hβ, _, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `(mem_dualC_one _).1 (((SplitLat.mem_splitL d L₀ _ x).1 hx).2.2 i)`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `key _ ha`. Rewrite `h` using `[SplitLat.colMul_eq_mulVec, Matrix.mulVec_mulVec, d.pY_jY, Matrix.one_mulVec, Pi.single_eq_same]`. Then use the resulting hypothesis. Introduce `ha`. Rewrite `ha` using `[idV]`. Proceed by induction on `ha using AddSubgroup.closure_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem z hz`. Take `⟨β, hβi, hβ, b, hb, rfl⟩` from `hz`. Establish `e : colMul d.jY i (pairA D.host.F 0 β ⊗ₜ[D.host.F] b) = rat d.e' *ᵥ fun l => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * (Pi.single i b : Fin ρ → D.host.E) l)`. Rewrite using `[SplitLat.colMul_eq_mulVec]`. Express the relevant statement in the definitionally equal form `rat d.e' *ᵥ _ = _`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `congr 1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[Pi.single_eq_of_ne h]`. Rewrite using `[e, SplitLat.rat_mulVec_gen]`. Conclude with `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, _, SplitLat.e'_mem (SplitLat.single_mem_of_mem (I := fun _ => SplitLat.dualC (1 : FI D)) i ((mem_dualC_one _).2 hb)), rfl⟩`. Consider the case `zero`. Establish `: colMul d.jY i 0 = 0` using `by funext k; simp [colMul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz'`. Establish `: colMul d.jY i (z + z') = colMul d.jY i z + colMul d.jY i z'` using `by funext k; simp [colMul, add_mul]`. Rewrite using `[this]`.
-
-Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz`. Establish `: colMul d.jY i (-z) = -colMul d.jY i z` using `by funext k; simp [colMul]`. Rewrite using `[this]`. Conclude with `neg_mem hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_splitL_jY (v : Pl D) (i : Fin ρ) (a : AE D) :
     colMul d.jY i a ∈ latV S (SplitLat.splitL d L₀ (fun _ => (1 : FI D))) (· = v) ↔ a ∈ idV (1 : FI D) v := by
@@ -220,13 +218,13 @@ end GlobalTheory.FinPl.MonoIdele
 open GlobalTheory.FinPl.MonoIdele in
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d L₀ hL₀ b`. Establish `hL1 : IsSelfDualC S (SplitLat.splitL d L₀ (fun _ => (1 : FI D)))` using `SplitLat.isSelfDualC_splitL d (fun _ => one_ne_zero) hL₀`. Take `⟨M, hM, hmv⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S _ hL1).1 (d.levi (diagU b))`. Use `⟨M, hM, fun x => ⟨?_, fun i a _ => ?_, fun i a _ => ?_⟩⟩` and prove the remaining obligations. Establish `key` using `mem_iff_of_moves (hmv (· = x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `key` using `[← map_inv]`. Introduce `y`. Rewrite using `[key y, SplitLat.monoAt_splitL d L₀ (fun _ => (1 : FI D)) x (mt S (d.levi (diagU b)⁻¹) *ᵥ y)]`. Simplify using `only [key, levi_colMul_jX d _ (diagU_inv_val b), levi_colMul_jY d _ (diagU_inv_inv_val b), pX_levi_mulVec d _ (diagU_inv_val b), pY_levi_mulVec d _ (diagU_inv_inv_val b), wittProjAnisotropic_mulVec_levi_eq]`. Establish `key` using `mem_iff_of_moves (hmv (· = x))`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `key` using `[← map_inv]`. Rewrite using `[key, levi_colMul_jX d _ (diagU_inv_val b)]`. Conclude with `(SplitLat.line_splitL d L₀ _ x i _).trans (GlobalTheory.SeeSaw.idV_one_eq_intAt D x _)`. Establish `key` using `mem_iff_of_moves (hmv (· = x))`. Rewrite `key` using `[← map_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, levi_colMul_jY d _ (diagU_inv_inv_val b)]`. Conclude with `(line_splitL_jY d L₀ x i _).trans (GlobalTheory.SeeSaw.idV_one_eq_intAt D x _)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.exists_selfDual_mono_idele : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L₀ : Lat S₀), IsSelfDualC S₀ L₀ → ∀ b : Fin ρ → (AE D)ˣ, ∃ L : Lat S, IsSelfDualC S L ∧ ∀ x : Pl D, MonoAt d L L₀ x ∧ (∀ i, ∀ a ∈ idAt D (· = x), colMul d.jX i a ∈ latV S L (· = x) ↔ (((b i)⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x)) ∧ ∀ i, ∀ a ∈ idAt D (· = x), colMul d.jY i a ∈ latV S L (· = x) ↔ cA D (b i : AE D) * a ∈ intAt D (· = x) := by
   intro D S S₀ ρ d L₀ hL₀ b

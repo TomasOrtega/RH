@@ -50,13 +50,13 @@ noncomputable section
 namespace GlobalTheory.CovTop.HodgeSteps
 
 /- English proof (translation)
-Establish `hd' : (2 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `hTd : 2000 * (d : ℝ) ≤ T` using `by nlinarith`. Establish `hT0 : (0 : ℝ) < T` using `by linarith`. Establish `h1 : 0 ≤ (d : ℝ) ^ 2 / T` using `by positivity`. Establish `h2 : (d : ℝ) * ρ ≤ 1 / 14` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ρ ≤ 1 / 28` using `by nlinarith`. Establish `h4 : 0 < 1 - ρ` using `by linarith`. Use `⟨⌊((T : ℝ) + d + 4) / (1 - ρ)⌋₊, ?_, ?_⟩` and prove the remaining obligations. Use `Nat.lt_floor_add_one (((T : ℝ) + d + 4) / (1 - ρ))` as an intermediate fact. Rewrite `this` using `[div_lt_iff₀ h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Conclude with `this`. Use `(GlobalTheory.choose_rank_ratio_le d T _ ρ hd (by exact_mod_cast (by linarith : 20 * (d : ℝ) ≤ T)) h0 (by linarith) (Nat.floor_le (by positivity)) ?_).trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (mul_pos h4 (by linarith))]`. Establish `a1 : (d : ℝ) * ρ * T ≤ 1 / 14 * T` using `mul_le_mul_of_nonneg_right h2 hT0.le`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : 27 / 28 * (1999 / 2000 * (T : ℝ)) ≤ (1 - ρ) * (T - d)` using `mul_le_mul (by linarith) (by linarith) (by positivity) h4.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `: 0 ≤ (d : ℝ) * ρ` using `by positivity`. Rewrite using `[mul_div_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_jet_order (d T : ℕ) (ρ : ℝ) (hd : 2 ≤ d) (hT : 1000 * (d : ℝ) ^ 2 ≤ T) (h0 : 0 ≤ ρ)
     (hz : 7 * ((d : ℝ) ^ 2 / T + d * ρ) ≤ 1 / 2) :
@@ -86,15 +86,15 @@ theorem exists_jet_order (d T : ℕ) (ρ : ℝ) (hd : 2 ≤ d) (hT : 1000 * (d :
       linarith
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hn`. Establish `h1` using `(((GlobalTheory.T.flatLine_thetaRoot_twist_twistingSection hP.p5 D T.Q.H (T.Q.Dw j) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U _ Y.dict hC hY.geo hpq hl hF (GlobalTheory.T.unramified_points_deep_level hP D T j Y e o hL hj hY) (anchor (T.Q.Dw j) a (m + m) kc) m).2 _ 0).2 h).1`. Establish `e1 : uWt (T.Q.Dw j) a (m + m) kc + s • hodgeWt (T.Q.Dw j) + GlobalTheory.FlatLine.parWt (T.Q.Dw j) (anchor (T.Q.Dw j) a (m + m) kc) = laOf (T.Q.Dw j) a (m + m) + s • hodgeWt (T.Q.Dw j)`. Rewrite using `[add_right_comm, uWt_add_anchor]`. Rewrite `h1` using `[e1, add_comm (0 : ℤ), AllWt.wtOf_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (laOf (T.Q.Dw j) a (m + m)) m + wtOf (T.Q.Dw j) (s • hodgeWt (T.Q.Dw j)) 0) = exZ (T.Q.Dw j) (shiftG (T.Q.Dw j) a (m + m) s)`. Rewrite using `[shiftG, FlatTw.exZ_add_eq, FlatTw.exZ_add_eq]`. Use `congr 1`. Use `AllWt.exOf_weightOf (Dw := T.Q.Dw j) (fun x => (a x : ℤ)) m` as an intermediate fact. Rewrite `this` using `[AllWt.exOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[laOf, show (m + m) / 2 = m by omega, this, wtZ]`. Use `push_cast`. Rewrite using `[two_mul]`. Establish `e3 : cuspW Y.d.Xo₂ Y.d.c₂ Y.U (wtOf (T.Q.Dw j) (laOf (T.Q.Dw j) a (m + m)) m + wtOf (T.Q.Dw j) (s • hodgeWt (T.Q.Dw j)) 0) = cuspW Y.d.Xo₂ Y.d.c₂ Y.U (shiftG (T.Q.Dw j) a (m + m) s)`. Use extensionality with `f`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[AllWt.mem_cuspW, AllWt.mem_cuspW, e2]`. Conclude with `and_congr_right fun _ => forall₂_congr fun σ hσ => by`. Rewrite using `[AllWt.modelWt_congr (Y.U σ) hσ (hY.unf σ hσ) e2]`. Establish `key : ∀ C C' : Submodule Y.d.c₂.F (Rul Y.d.Xo₂ Y.d.c₂), C = C' → ((AllWt.supLat C).FG ∧ Submodule.span Y.d.c₂.F (AllWt.supLat C : Set C) = ⊤) → (AllWt.supLat C').FG ∧ Submodule.span Y.d.c₂.F (AllWt.supLat C' : Set C') = ⊤`. Introduce and unpack `C _ rfl h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `h`. Conclude with `⟨hasGram_nrm_of_good D _ j Y e o hY _, key _ _ e3 h1.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem goodAt_shiftG (hP : Hypotheses2) (D : D7) (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (hj : InR D j) (Y : Deep T.toCore j) (e : ℕ)
     (o : ℝ) (hY : Y.Good e o) (hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q)
@@ -133,7 +133,7 @@ theorem goodAt_shiftG (hP : Hypotheses2) (D : D7) (T : CoreJ D) (hL : LawsJ T) (
   exact ⟨hasGram_nrm_of_good D _ j Y e o hY _, key _ _ e3 h1.2⟩
 
 /- English proof (translation)
-Establish `h` using `hu (show (⟨Dw.p - 1, by omega⟩ : Fin (Dw.p + Dw.q)) ≤ ⟨Dw.p - 1 + 1, by omega⟩ from Nat.le_succ _)`. Rewrite using `[gap, dif_pos (by omega)]`. Simplify using `only [hodgeWt, CompHt.barWt, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[if_pos (by omega), if_neg (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem le_gap_bar {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (hp : 1 ≤ Dw.p) (hq : 1 ≤ Dw.q) (u : AllWt.Weight Dw) (τ : Psi H) (hu : Antitone (u τ)) (t : ℤ) :
@@ -145,53 +145,49 @@ theorem le_gap_bar {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
   linarith
 
 /- English proof (translation)
-Use polynomial arithmetic with `[Nat.zero_le ((d + 1).choose 2), Nat.zero_le N]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem bir_gap_le (d N : ℕ) (hd : 3 ≤ d) : (d + 3) ^ 2 + 2 * N ≤ (d + 3) * ((d + 1).choose 2 + 4 * N + d + 3) := by
   nlinarith [Nat.zero_le ((d + 1).choose 2), Nat.zero_le N]
 
 /- English proof (translation)
-Introduce `hX hP hSi hTo hG hQ hN hDG hS hFD hDeg hSh`. Use `((((((((((hDG.and hS).and hFD).and hDeg).and hSh).and (GlobalTheory.T.weight_parameter_strict_antitone hS)).and (GlobalTheory.T.size_bounds_for_family hS)).and (GlobalTheory.T.valuation_multiplicity_weight hP hG hQ hSi hTo hN hDG hS hFD)).and (GlobalTheory.T.flat_line_c1_log_boun …` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨_, -, a1⟩, A, -, a2⟩, _, -, a3⟩, _, -, a4⟩, _, -, a5⟩, _, -, a6⟩, _, -, a7⟩, _, -, a8⟩, _, -, a9⟩, _, -, a10⟩, _, -, a11⟩` from `h`. Take `⟨x0, h⟩` from `(((((((((a1.and a2).and a3).and a4).and a5).and a6).and a7).and a8).and a9).and a10).and a11`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY s hs1 hs2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩, b8⟩, b9⟩, b10⟩, b11⟩` from `h x hx hle ι p hp`. Use `clear h a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11`. Take `⟨-, g1, -, -, -, hfin, -, -⟩` from `b1 i hi Y hY`. Take `⟨hb1, -, -, -, -, hbk, hq⟩` from `b2 i`. Take `⟨⟨u1, hu⟩, hq⟩` from `hq hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hρ0, hρ1, -⟩` from `hq u1 hu`. Take `⟨δ, hδ, hdg⟩` from `b4 i hi Y hY u1 hu`. Establish `hsh` using `b5 i hi Y hY u1 hu`. Take `⟨hp1, hq1, hf, hu1, hA, -, hanti⟩` from `b6 i hi`. Take `⟨hL, hj, hL1, -, -, -, -, -, hf8, hr100, -, -, hPP, -, hz1, hz2, -⟩` from `b7 i hi Y hY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval` using `b8 i hi Y hY`. Take `⟨hC, hl, hF, -⟩` from `b9 i hi Y hY`. Establish `hgap` using `(b10 i hi).gaps`. Establish `hdom` using `(b11 i).dom`. Establish `hfl` using `b3 i hi Y hY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `clear b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 hq`. Rewrite `hA`, `hanti`, `hz1`, `hz2`, `hval`, `hgap` using `[← hu1 u1 hu]`. Use `clear hu1`. Generalize the expression as in `(Fm.parT x hx ι).PP = PP at *`. Rewrite `hgap` using `[← CompHS.dimFlag_eq]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd3 : 3 ≤ CompHt.dimFlag (dat p i)`. Rewrite using `[CompHS.dimFlag_eq, FlagTan.dimFlag]`. Conclude with `le_trans hf (Nat.le_mul_of_pos_right _ (Nat.choose_pos (by omega)))`. Establish `hPP100 : 100 ≤ PP`. Use `le_trans ?_ hPP` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `c1 : (8 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast hf8`. Establish `c2 : (100 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast hr100`. Establish `c3 : (8 * 100 * 1 : ℝ) ≤ zBase (Fm.L x ι)`. Unfold `zBase`. Use `gcongr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans (by linarith) (le_self_pow₀ (by linarith) (by norm_num))`. Establish `hT : 1000 * (CompHt.dimFlag (dat p i) : ℝ) ^ 2 ≤ lenT p i PP`. Use `le_trans ?_ (Nat.le_ceil _)` and prove the remaining obligations. Establish `c1` using `(Fm.D x ι).R.two_le_m`. Establish `c2` using `(Fm.D x ι).R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c3 : (0 : ℝ) < (Fm.D x ι).R.m` using `by exact_mod_cast (by omega : 0 < (Fm.D x ι).R.m)`. Establish `c4 : ((Fm.D x ι).R.m : ℝ) ≤ (Fm.D x ι).R.k` using `by exact_mod_cast (by omega : (Fm.D x ι).R.m ≤ (Fm.D x ι).R.k)`. Establish `c5 : 1000 ≤ PP ^ 2` using `by nlinarith`. Rewrite using `[le_div_iff₀ c3]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha1, ha2⟩` from `exists_jet_order _ _ _ (by omega) hT hρ0 hz2`. Establish `hbir` using `GlobalTheory.T.weight_principalisation_bound hX hG hQ hSi (GlobalTheory.T.stronger_published_hypotheses_imply hP) hP.q15 hP.q16 _ p.T hL _ hp1 hq1 Y _ _ hY.1 u1 fun τ a b hb => by`. Rewrite using `[← gap_eq _ hb]`. Use `le_trans ?_ (hgap τ a (hb ▸ b.2))` and prove the remaining obligations. Conclude with `bir_gap_le _ _ hd3` after adjusting the coercions.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hboth` using `GlobalTheory.T.componentImageDegree_between_of_proportionality _ _ _ _ _ _ _ Y.U hY.1.unf (GlobalTheory.T.proportional_positive_volumes hP hSi hTo hN _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1).1 (GlobalTheory.T.equal_volume_deep_level hP hSi hTo hN _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1) …`. Establish `hc0 : 1 ≤ cZero (Fm.D x ι) ((i : ℕ) + 1)`. Use `(cZeroN_isLeast (Fm.D x ι) ((i : ℕ) + 1)).1.2.2` as an intermediate fact. Unfold `cZero`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `ew : uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i) = fun τ => uM p i τ + (((s + 1 : ℕ) : ℤ) * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i) τ`. Use function extensionality and compare the values at `τ k`. Simplify using `only [uM, uW, uMinus, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `em : uW p i + (-(cZero (Fm.D x ι) ((i : ℕ) + 1))) • hodgeWt (dat p i) = uM p i`. Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Establish `hl1 : ∀ τ, Antitone ((uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i)) τ)` using `fun τ => by`. Rewrite using `[ew]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Conclude with `(hanti (s + 1) (by omega) τ).1`. Establish `hl2 : ∀ τ, Antitone (((lenT p i PP + CompHt.dimFlag (dat p i) + 4 : ℕ) : ℤ) • u1 τ - (uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i)) τ)` using `fun τ => by`. Rewrite using `[ew]`. Use `(hanti (s + 1) (by omega) τ).2` as an intermediate fact. Rewrite `this` using `[if_neg (Nat.succ_ne_zero s)]`. Then use the resulting hypothesis.
+Use the polynomial consequences of the given equalities and inequalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl3 : ∀ τ, 1 ≤ gap ((uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i)) τ) ((dat p i).p - 1)` using `fun τ => by`. Rewrite using `[ew]`. Use `le_trans ?_ (le_gap_bar (dat p i) hp1 hq1 (uM p i) τ ?_ _)` and prove the remaining obligations. Use `push_cast`. Use polynomial arithmetic with `[Int.natCast_nonneg s]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `using (hanti 0 (by omega) τ).1`. Establish `hev : Even (p.κ i).n` using `(p.κ i).n_even`. Establish `g2 : Y.GoodAt (Gs p i (s * cZero (Fm.D x ι) ((i : ℕ) + 1)))` using `goodAt_shiftG hP _ p.T hL _ hj Y _ _ hY.1 (le_add_right hp1) hC hl hF _ _ ((Fm.D x ι).R.k - 1) _ hev (GlobalTheory.T.good_weight_antitone_gap hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 _ hl1 hl3).1`. Establish `htw` using `((GlobalTheory.T.flat_line_rank_shift_invariant hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 _ hfl).2 _ (p.κ i).n ((Fm.D x ι).R.k - 1) · hdom hev)`. Rewrite using `[htw _ g1, htw _ g2]`.
+Check the signs of the components of the expression. Treat this case separately. Treat this case separately. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : 0 < PP * kap p i` using `by linarith`. Establish `hz : zed p i PP u1 ≤ min (1 / 2) ((Fm.L x ι).sc.b / (PP * kap p i))` using `le_min hz2 ((le_div_iff₀ hk).2 hz1)`. Establish `hz0 : 0 ≤ zed p i PP u1`. Unfold `zed`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `have hJ := GlobalTheory.T.rank_component_weight_invariance hX hP hSi hTo hG hQ hN`. Consider the case `have hJ := GlobalTheory.T.rank_component_weight_invariance hP hSi hTo hG hQ hN`. Use `letI := Fintype.ofFinite (Comp Y.d.Xo₂ Y.d.c₂)`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun Z _ => ?_` and prove the remaining obligations. Establish `d0 : 0 < Y.dg u1 Z` using `hδ.trans_le (hdg Z).1`. Establish `d1 : (1 - CompHt.rhoB (dat p i) u1) * CompHt.topDeg Y.U Z u1 ≤ Y.dg u1 Z` using `(CompHt.delPrime_eq Y.U Z (CompHt.vdm_pos fun τ => (hA τ).1).ne').ge.trans (hboth Z Z).1`. Establish `d2` using `hJ _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 Z u1 _ _ a hgap hl1 hl2 (by`. Establish `h1 : 0 < 1 - CompHt.rhoB (dat p i) u1` using `by linarith`.
-
-Use `lt_of_mul_lt_mul_left ?_ h1.le` and prove the remaining obligations. Establish `e1` using `mul_le_mul_of_nonneg_left d1 (Nat.cast_nonneg (lenT p i PP + CompHt.dimFlag (dat p i) + 4))`. Establish `e2` using `mul_lt_mul_of_pos_right ha1 d0`. Use the proof step `linarith)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hsh Z).1 (by linarith)`. Use `_ ≤ _ := by`. Rewrite using `[← em]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_le : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share → Covers fun Fm x _ ι p i Y PP _ => ∀ s : ℕ, 1 ≤ s → s ≤ 2 → (Y.rk (Gs p i (s * cZero (Fm.D x ι) ((i : ℕ) + 1))) : ℝ) ≤ (1 + min (1 / 2) ((Fm.L x ι).sc.b / (PP * kap p i))) * Y.rk (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))) := by
   intro hX hP hSi hTo hG hQ hN hDG hS hFD hDeg hSh

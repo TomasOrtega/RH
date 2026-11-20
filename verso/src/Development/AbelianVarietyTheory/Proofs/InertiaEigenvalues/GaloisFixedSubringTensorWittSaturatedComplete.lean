@@ -12,7 +12,7 @@ open scoped TensorProduct
 namespace GlobalTheory.Decompl.FixL
 
 /- English proof (translation)
-Establish `hf : f (p : R) = (p : R)` using `map_natCast f p`. Establish `h2 : (p : R) * (f x - x) = 0`. Rewrite using `[mul_sub, ← hf, ← map_mul, hx, hf, sub_self]`. Conclude with `sub_eq_zero.mp (h _ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_mul {R : Type} [CommRing R] (p : ℕ) (h : ∀ x : R, (p : R) * x = 0 → x = 0)
     (f : R →+* R) (x : R) (hx : f ((p : R) * x) = (p : R) * x) : f x = x := by
@@ -22,9 +22,9 @@ theorem fix_of_mul {R : Type} [CommRing R] (p : ℕ) (h : ∀ x : R, (p : R) * x
   exact sub_eq_zero.mp (h _ h2)
 
 /- English proof (translation)
-Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `h` to reduce the goal to its premises. Introduce `k`. Take `⟨r, hr⟩` from `hy k`. Establish `hsum : f (∑ i ∈ Finset.range k, (p : R) ^ i * x i) = ∑ i ∈ Finset.range k, (p : R) ^ i * x i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[map_sum, map_mul, map_pow, map_natCast, hx]`. Establish `hfy : f y - ∑ i ∈ Finset.range k, (p : R) ^ i * x i = (p : R) ^ k * f r`. Rewrite using `[← hsum, ← map_sub, hr, map_mul, map_pow, map_natCast]`. Use `⟨f r - r, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub, ← hfy, ← hr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -46,11 +46,11 @@ theorem fix_of_sum {R : Type} [CommRing R] (p : ℕ)
   ring
 
 /- English proof (translation)
-Establish `key : ∀ w : WCb l, AI.actWCbHom g (frobW l w) = frobW l (AI.actWCbHom g w)`. Introduce `w`. Unfold `LocAinf.actWCbHom frobW`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk]`. Unfold `mapAlgEquivW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use extensionality with `n`. Simplify using `only [AlgEquiv.ofRingEquiv]`. Simplify using `[mapEquivW, WittVector.map_coeff, frobenius_def]`. Establish `hc : ((AI.actWCbHom g : WCb l →ₐ[ℤ_[l]] WCb l).comp (frobW l)) = (frobW l).comp (AI.actWCbHom g : WCb l →ₐ[ℤ_[l]] WCb l)` using `AlgHom.ext key`. Unfold `LocAinf.gRW φRW`.
+By extensionality, compare the relevant components. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, ← Algebra.TensorProduct.map_comp, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_comm {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l)
     (g : GQ l) (x : RW LL) : AI.gRW LL g (φRW LL x) = φRW LL (AI.gRW LL g x) := by
@@ -69,7 +69,7 @@ theorem frob_comm {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (
     ← Algebra.TensorProduct.map_comp, hc]
 
 /- English proof (translation)
-Unfold `fixSub`. Simplify using `[Subring.mem_iInf, RingHom.mem_eqLocus]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem mem_fixSub_lemma {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
     (LL : FinExt l) (H : Set (GQ l)) (x : RW LL) :
@@ -78,13 +78,11 @@ private theorem mem_fixSub_lemma {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI :
   simp [Subring.mem_iInf, RingHom.mem_eqLocus]
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `GlobalTheory.Decompl.LAdic.ladic_RW l LL`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_fixSub_lemma]`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fix_of_mul l h0 (AI.gRW LL g : RW LL →+* RW LL) x (hx g hg)`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_fixSub_lemma]`. Introduce `g hg`. Rewrite using `[frob_comm, hx g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨s, hs⟩` from `h2 x`. Use `⟨s, ?_, hs⟩` and prove the remaining obligations. Rewrite using `[mem_fixSub_lemma]`. Introduce `g hg`.
-
-Conclude with `fix_of_sum l h1 (AI.gRW LL g : RW LL →+* RW LL) x (fun i => (mem_fixSub_lemma AI LL H (x i)).1 (hx i) g hg) s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixSub_ladic (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (LL : FinExt l)
     (H : Set (GQ l)) :

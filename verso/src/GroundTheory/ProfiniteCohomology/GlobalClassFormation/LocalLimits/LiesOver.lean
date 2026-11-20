@@ -40,7 +40,7 @@ theorem completionEmbeddingBelow_apply (u : PlacesOver F.1 v)
   rfl
 
 /- English proof (translation)
-Rewrite using `[completionEmbeddingBelow_apply, completionMap_algebraMap, IsScalarTower.algebraMap_apply F.1 E.1 ((placeOfEmbedding ι E).1.adicCompletion E.1), completionEmbedding_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem completionEmbeddingBelow_algebraMap (u : PlacesOver F.1 v)
     [(placeOfEmbedding ι E).1.asIdeal.LiesOver u.1.asIdeal] (x : F.1) :
@@ -51,7 +51,7 @@ theorem completionEmbeddingBelow_algebraMap (u : PlacesOver F.1 v)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← AdeleBaseChange.below_eq_iff, AdeleBaseChange.below_below, AdeleBaseChange.below_eq_iff]`. Conclude with `(placeOfEmbedding ι E).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem below_placeOfEmbedding_liesOver :
     (AdeleBaseChange.below F.1 (placeOfEmbedding ι E).1).asIdeal.LiesOver v.asIdeal := by
@@ -60,7 +60,7 @@ theorem below_placeOfEmbedding_liesOver :
   exact (placeOfEmbedding ι E).2
 
 /- English proof (translation)
-The claim follows from `eq_placeOfEmbedding ι F (completionEmbeddingBelow ι F E _) (completionEmbeddingBelow_algebraMap ι _)`.
+A detailed English derivation is pending.
 -/
 theorem below_placeOfEmbedding :
     (⟨AdeleBaseChange.below F.1 (placeOfEmbedding ι E).1, below_placeOfEmbedding_liesOver ι⟩ :
@@ -74,7 +74,7 @@ instance liesOver_placeOfEmbedding :
   exact AdeleBaseChange.liesOver_below _
 
 /- English proof (translation)
-Establish `: completionEmbeddingBelow ι F E (placeOfEmbedding ι F) = completionEmbedding ι F` using `algHom_ext_adicCompletion F fun x ↦ by`. Rewrite using `[completionEmbeddingBelow_algebraMap, completionEmbedding_algebraMap]`. Conclude with `DFunLike.congr_fun this a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completionEmbedding_completionMap (a : (placeOfEmbedding ι F).1.adicCompletion F.1) :
     completionEmbedding ι E (completionMap (placeOfEmbedding ι F).1 (placeOfEmbedding ι E).1 a) =

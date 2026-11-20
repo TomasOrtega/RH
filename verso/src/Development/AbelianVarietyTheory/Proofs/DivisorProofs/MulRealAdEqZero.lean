@@ -15,7 +15,7 @@ section Trace
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ ι)]`. Simplify using `[Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem trace_pi_real_eq_sum' {ι : Type} [Fintype ι] (f : ι → ℝ) :
     Algebra.trace ℝ (ι → ℝ) f = ∑ i, f i := by
@@ -23,7 +23,7 @@ private theorem trace_pi_real_eq_sum' {ι : Type} [Fintype ι] (f : ι → ℝ) 
   simp [Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis fun _ : ι => Complex.basisOneI)]`. Simplify using `[Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Fintype.sum_sigma, Pi.single_apply, Fin.sum_univ_two, Complex.coe_basisOneI, Complex.coe_basisOneI_repr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem trace_pi_complex_eq_sum_two_mul_re {ι : Type} [Fintype ι] (f : ι → ℂ) :
     Algebra.trace ℝ (ι → ℂ) f = ∑ i, 2 * (f i).re := by
@@ -34,11 +34,11 @@ private theorem trace_pi_complex_eq_sum_two_mul_re {ι : Type} [Fintype ι] (f :
   ring
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w => ?_) (funext fun w => ?_)` and prove the remaining obligations. Establish `h1` using `h (Pi.single w 1, 0)`. Rewrite `h1` using `[Algebra.trace_prod_apply, trace_pi_real_eq_sum', trace_pi_complex_eq_sum_two_mul_re]`. Simplify `h1` using `[Pi.single_apply]`. Establish `h1` using `h (0, Pi.single w (star (x.2 w)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[Algebra.trace_prod_apply, trace_pi_real_eq_sum', trace_pi_complex_eq_sum_two_mul_re]`. Establish `h2 : (x.2 w).re * (x.2 w).re + (x.2 w).im * (x.2 w).im = 0`. Simplify `h1` using `[Pi.single_apply, apply_ite Complex.re, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', Complex.star_def, Complex.mul_conj]`. Establish `hre : (x.2 w).re = 0` using `by nlinarith [mul_self_nonneg (x.2 w).re, mul_self_nonneg (x.2 w).im]`. Establish `him : (x.2 w).im = 0` using `by nlinarith [mul_self_nonneg (x.2 w).re, mul_self_nonneg (x.2 w).im]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show x.2 w = 0`. Conclude with `Complex.ext hre him`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace (x : mixedEmbedding.mixedSpace F)
     (h : ∀ b, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * b) = 0) : x = 0 := by
@@ -57,15 +57,13 @@ theorem eq_zero_of_trace (x : mixedEmbedding.mixedSpace F)
     exact Complex.ext hre him
 
 /- English proof (translation)
-Simplify using `only [trP, Pi.add_apply, add_mul, Finset.sum_add_distrib, map_add]`. Use `addR := by`. Use `intros`. Simplify using `only [trP, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add]`. Use `smulL := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `intros`. Simplify using `only [trP, Pi.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul, smul_eq_mul]`. Use `smulR := by`. Use `intros`. Simplify using `only [trP, Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs and assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use `nondegL := by`. Introduce `x hx`. Use function extensionality and compare the values at `i`. Apply `eq_zero_of_trace` to reduce the goal to its premises. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `hx (Pi.single i b)`. Simplify `h` using `[trP, Pi.single_apply, mul_ite, Finset.sum_ite_eq']`. Use `nondegR := by`. Introduce `y hy`. Use function extensionality and compare the values at `i`.
-
-Apply `eq_zero_of_trace` to reduce the goal to its premises. Introduce `b`. Establish `h` using `hy (Pi.single i b)`. Simplify `h` using `[trP, Pi.single_apply, ite_mul, Finset.sum_ite_eq', mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPairing_trP (κ : Type) [Fintype κ] : IsPairing (trP F κ) where
   addL x x' y := by
@@ -95,13 +93,11 @@ theorem isPairing_trP (κ : Type) [Fintype κ] : IsPairing (trP F κ) where
     simpa [trP, Pi.single_apply, ite_mul, Finset.sum_ite_eq', mul_comm] using h
 
 /- English proof (translation)
-Establish `h0L : ∀ y, P 0 y = 0` using `fun y => by`. Establish `h3` using `h.addL 0 0 y`. Simplify using `only [add_zero] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0R : ∀ x, P x 0 = 0` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3` using `h.addR x 0 0`. Simplify using `only [add_zero] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : v.1 = 0` using `h.nondegL _ fun y => by`. Establish `h3 : P v.1 y - P 0 v.2 = 0` using `hv (0, y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h0L, sub_zero]`. Conclude with `h3`. Establish `h2 : v.2 = 0` using `h.nondegR _ fun x => by`. Establish `h3 : P v.1 0 - P x v.2 = 0` using `hv (x, 0)`. Rewrite `h3` using `[h0R, zero_sub, neg_eq_zero]`.
-
-Conclude with `h3`. Conclude with `Prod.ext h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omega_nondeg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {P : V → V → ℝ} (h : IsPairing P)
     (v : V × V) (hv : ∀ w, omega P v w = 0) : v = 0 := by
@@ -134,7 +130,7 @@ Both sides reduce to the same expression.
 theorem evI_eq (a : AF F) : evI F a = evH F a := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [evI, realAd]`. Consider the case `(unfold evI realAd; simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evI_realAd (c : ℝ) : evI F (realAd F c) = algebraMap ℝ _ c := by
   first
@@ -144,7 +140,7 @@ theorem evI_realAd (c : ℝ) : evI F (realAd F c) = algebraMap ℝ _ c := by
 variable {κ : Type}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `first`. Consider the case `simp [locV, liftV, evI]`. Consider the case `simp [locV, liftV]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem loc_lift (y : κ → mixedEmbedding.mixedSpace F) : locV (liftV y) = y := by
   funext i
@@ -153,14 +149,14 @@ theorem loc_lift (y : κ → mixedEmbedding.mixedSpace F) : locV (liftV y) = y :
     | simp [locV, liftV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [locV, Pi.add_apply, evI_eq, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem loc_add (x y : κ → AF F) : locV (x + y) = locV x + locV y := by
   funext i
   simp only [locV, Pi.add_apply, evI_eq, map_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [locV, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[evI_eq, map_mul, ← evI_eq, ← evI_eq, evI_realAd, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_smul (c : ℝ) (x : κ → AF F) : locV (realAd F c • x) = c • locV x := by
   funext i
@@ -168,7 +164,7 @@ theorem loc_smul (c : ℝ) (x : κ → AF F) : locV (realAd F c • x) = c • l
   rw [evI_eq, map_mul, ← evI_eq, ← evI_eq, evI_realAd, Algebra.smul_def]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [liftV, Pi.add_apply, map_add]`. Use `first`. Consider the case `exact Prod.ext rfl (add_zero 0).symm`. Consider the case `exact Prod.ext (by simp) (by simp)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lift_add (x y : κ → mixedEmbedding.mixedSpace F) : liftV (x + y) = liftV x + liftV y := by
   funext i
@@ -178,9 +174,9 @@ theorem lift_add (x y : κ → mixedEmbedding.mixedSpace F) : liftV (x + y) = li
     | exact Prod.ext (by simp) (by simp)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Simplify using `only [liftV, realAd, LinearMap.inl_apply, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `first`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact Prod.ext rfl (mul_zero 0).symm`. Consider the case `exact Prod.ext (by simp) (by simp)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lift_smul (c : ℝ) (x : κ → mixedEmbedding.mixedSpace F) : liftV (c • x) = realAd F c • liftV x := by
   funext i
@@ -192,7 +188,7 @@ theorem lift_smul (c : ℝ) (x : κ → mixedEmbedding.mixedSpace F) : liftV (c 
     | exact Prod.ext (by simp) (by simp)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Simplify using `only [liftV, locV, evI, RingEquiv.symm_apply_apply, realAd, LinearMap.inl_apply, map_one]`. Conclude with `Prod.ext (one_mul _).symm (zero_mul _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_loc (x : κ → AF F) : liftV (locV x) = realAd F 1 • x := by
   funext i
@@ -201,9 +197,9 @@ theorem lift_loc (x : κ → AF F) : liftV (locV x) = realAd F 1 • x := by
   exact Prod.ext (one_mul _).symm (zero_mul _).symm
 
 /- English proof (translation)
-Establish `h1 : a.1 = 0`. Establish `h2` using `congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ha`. Simplify using `only [evI, RingEquiv.symm_apply_apply, map_zero] at h2`. Conclude with `h2`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show a.1 * (realAd F 1).1 = 0`. Rewrite using `[h1, zero_mul]`. Use `show a.2 * (realAd F 1).2 = 0`. Simplify using `only [realAd, LinearMap.inl_apply, mul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_realAd_eq_zero (a : AF F) (ha : evI F a = 0) : a * realAd F 1 = 0 := by
   have h1 : a.1 = 0 := by
@@ -224,9 +220,9 @@ variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E
 variable {α β p q : Type} [Fintype α] [Fintype β] [Fintype p] [Fintype q]
 
 /- English proof (translation)
-Unfold `hTens`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     hTens c JA JB x y = ∑ i, ∑ k, JA i k * (x * JB * (y.map c)ᵀ) i k := by
@@ -241,7 +237,7 @@ theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β
   ring
 
 /- English proof (translation)
-Rewrite using `[hTens_eq]`. Establish `hm : (b * Qᵀ).map c = b.map c * Qᵀ.map c` using `Matrix.map_mul (f := (c : E →+* E))`. Rewrite using `[hm, Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hTens_mul (JA : Matrix α α E) (JB : Matrix β β E) (P : Matrix β p E) (Q : Matrix β q E)
     (a : Matrix α p E) (b : Matrix α q E) :
@@ -259,9 +255,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Establish `hinc : ∀ {p q r : Type} [Fintype q] (A : Matrix p q E) (B : Matrix q r E), incM F (A * B) = incM F A * incM F B` using `fun A B => Matrix.map_mul`. Establish `hincT : ∀ {p q : Type} (A : Matrix p q E), incM F Aᵀ = (incM F A)ᵀ` using `fun A => (Matrix.transpose_map).symm`. Establish `hQ : (incM F Q).map (cA σ) = incM F (Q.map σ)`. Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `simp [cA, inclR]`. Consider the case `rfl`. Consider the case `simp [cA]`. Rewrite using `[hQ, hinc, hinc, hincT]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incM_gram {p q k : Type} [Fintype k] (P : Matrix k p E) (J : Matrix k k E) (Q : Matrix k q E) :
     (incM F P)ᵀ * incM F J * (incM F Q).map (cA σ) = incM F (Pᵀ * J * Q.map σ) := by
@@ -278,7 +274,7 @@ theorem incM_gram {p q k : Type} [Fintype k] (P : Matrix k p E) (J : Matrix k k 
   rw [hQ, hinc, hinc, hincT]
 
 /- English proof (translation)
-Simplify using `only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_apply {p q : Type} {m : ℕ} (P : Matrix (Fin m) p E) (J : Matrix (Fin m) (Fin m) E)
     (Q : Matrix (Fin m) q E) (i : p) (j : q) :
@@ -294,7 +290,7 @@ def coordI (u : Matrix (Fin n) (Fin d) (AE F E)) :
   (locV (M.co.e u).1, locV (M.co.e u).2)
 
 /- English proof (translation)
-Use `first`. Consider the case `simp only [coordI, map_add, Prod.fst_add, Prod.snd_add, loc_add, Prod.mk_add_mk]`. Consider the case `simp [coordI, loc_add]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coordI_add (u u' : Matrix (Fin n) (Fin d) (AE F E)) : coordI M (u + u') = coordI M u + coordI M u' := by
   first
@@ -302,7 +298,7 @@ theorem coordI_add (u u' : Matrix (Fin n) (Fin d) (AE F E)) : coordI M (u + u') 
     | simp [coordI, loc_add]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp only [coordI, map_smul, Prod.smul_fst, Prod.smul_snd, loc_smul, Prod.smul_mk]`. Consider the case `simp [coordI, loc_smul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coordI_smul (c : ℝ) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     coordI M (realAd F c • u) = c • coordI M u := by
@@ -311,13 +307,13 @@ theorem coordI_smul (c : ℝ) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     | simp [coordI, loc_smul]
 
 /- English proof (translation)
-Rewrite using `[coordI_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordI_one (u : Matrix (Fin n) (Fin d) (AE F E)) : coordI M (realAd F 1 • u) = coordI M u := by
   rw [coordI_smul, one_smul]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [coordI, loc_lift]`. Consider the case `simp only [coordI, LinearEquiv.apply_symm_apply, loc_lift, Prod.mk.eta]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coordI_lift (v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) :
     coordI M (M.co.e.symm (liftV v.1, liftV v.2)) = v := by
@@ -326,7 +322,7 @@ theorem coordI_lift (v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fi
     | simp only [coordI, LinearEquiv.apply_symm_apply, loc_lift, Prod.mk.eta]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [coordI, lift_loc, lift_loc, ← Prod.smul_mk, Prod.mk.eta, ← map_smul, LinearEquiv.symm_apply_apply])`. Consider the case `simp [coordI, lift_loc, ← map_smul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lift_coordI (u : Matrix (Fin n) (Fin d) (AE F E)) :
     M.co.e.symm (liftV (coordI M u).1, liftV (coordI M u).2) = realAd F 1 • u := by
@@ -337,7 +333,7 @@ theorem lift_coordI (u : Matrix (Fin n) (Fin d) (AE F E)) :
 abbrev sympM (X : Spc F E n) (W : Spc F E d) := symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J)
 
 /- English proof (translation)
-Rewrite using `[show sympM (σ := σ) X W u u' = _ from M.co.form u u']`. Simplify using `only [omega, trP, coordI, locV, dotProduct, map_sub, map_sum, map_mul, evI_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem omega_coordI (u u' : Matrix (Fin n) (Fin d) (AE F E)) :
     omega (trP F (Fin n × Fin d)) (coordI M u) (coordI M u') =
@@ -346,7 +342,7 @@ theorem omega_coordI (u u' : Matrix (Fin n) (Fin d) (AE F E)) :
   simp only [omega, trP, coordI, locV, dotProduct, map_sub, map_sum, map_mul, evI_eq]
 
 /- English proof (translation)
-Simplify using `only [sympM]`. Unfold `symp hTens`. Simplify using `only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem sympM_add_right (M : Model σ X W) (u v v' : Matrix (Fin n) (Fin d) (AE F E)) :
     sympM (σ := σ) X W u (v + v') = sympM (σ := σ) X W u v + sympM (σ := σ) X W u v' := by
@@ -355,7 +351,7 @@ theorem sympM_add_right (M : Model σ X W) (u v v' : Matrix (Fin n) (Fin d) (AE 
   simp only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `h1` using `M.co.form u v`. Establish `h2` using `M.co.form v u`. Simplify using `only [sympM]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympM_anti (M : Model σ X W) (u v : Matrix (Fin n) (Fin d) (AE F E)) :
     sympM (σ := σ) X W u v = -sympM (σ := σ) X W v u := by
@@ -366,7 +362,7 @@ theorem sympM_anti (M : Model σ X W) (u v : Matrix (Fin n) (Fin d) (AE F E)) :
   ring
 
 /- English proof (translation)
-Simplify using `only [sympM]`. Unfold `symp`. Rewrite using `[hTens_mul, incM_gram, h]`. Simplify using `[incM, Matrix.map_zero]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sympM_eq_zero {p q : Type} [Fintype p] [Fintype q] (P : Matrix (Fin d) p E) (Q : Matrix (Fin d) q E)
     (h : Pᵀ * W.J * Q.map σ = 0) (a : Matrix (Fin n) p (AE F E)) (b : Matrix (Fin n) q (AE F E)) :
@@ -384,7 +380,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.map_one _ (map_zero _) (map_one _)`. Consider the case `(ext i j; simp [incM, Matrix.one_apply]; split_ifs <;> simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem incM_one' : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   first
@@ -392,7 +388,7 @@ theorem incM_one' : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
     | (ext i j; simp [incM, Matrix.one_apply]; split_ifs <;> simp)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `first`. Consider the case `simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM, incV]`. Consider the case `simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM]`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vecMulVec_eq_mul (y : Fin n → AE F E) (x : Fin d → E) :
     Matrix.vecMulVec y (incV F x) = Matrix.replicateCol Unit y * (incM F (Matrix.replicateCol Unit x))ᵀ := by
@@ -404,7 +400,7 @@ theorem vecMulVec_eq_mul (y : Fin n → AE F E) (x : Fin d → E) :
 variable {B : Base F E} {r' s' i₀ i₁ : ℕ} {H' : Plane E d d₁}
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Conclude with `hA.xx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_xx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     (Matrix.replicateCol Unit H'.x)ᵀ * W.J * (Matrix.replicateCol Unit H'.x).map σ = 0 := by
@@ -413,7 +409,7 @@ theorem gram_xx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
   exact hA.xx
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Conclude with `hA.yy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_yy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     (Matrix.replicateCol Unit H'.y)ᵀ * W.J * (Matrix.replicateCol Unit H'.y).map σ = 0 := by
@@ -422,7 +418,7 @@ theorem gram_yy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
   exact hA.yy
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Establish `h` using `(hA.orth (Pi.single i 1)).1`. Rewrite `h` using `[Matrix.mulVec_single_one]`. Conclude with `h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_ιx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     H'.ιᵀ * W.J * (Matrix.replicateCol Unit H'.x).map σ = 0 := by
@@ -433,7 +429,7 @@ theorem gram_ιx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
   exact h
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Establish `h` using `(hA.orth (Pi.single i 1)).2`. Rewrite `h` using `[Matrix.mulVec_single_one]`. Conclude with `h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_ιy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     H'.ιᵀ * W.J * (Matrix.replicateCol Unit H'.y).map σ = 0 := by
@@ -444,13 +440,13 @@ theorem gram_ιy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
   exact h
 
 /- English proof (translation)
-Establish `htop : Submodule.span E (W.L : Set (Fin d → E)) = ⊤` using `hS.lat.span_eq_top`. Establish `hz : z ∈ Submodule.span E (W.L : Set (Fin d → E))`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨s, t, u, -, -, -, h⟩` from `hA.split w hw`. Conclude with `⟨s, t, u, h⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t, u, rfl⟩` from `ha`. Take `⟨s', t', u', rfl⟩` from `hb`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add, add_smul, add_smul]; abel⟩`. Consider the case `smul c a _ ha`. Take `⟨s, t, u, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_plane (hS : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁) (z : Fin d → E) :
     ∃ (s t : E) (u : Fin d₁ → E), z = s • H'.x + H'.ι *ᵥ u + t • H'.y := by
@@ -480,13 +476,13 @@ variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 variable {B : Base F E} {r' s' i₀ i₁ : ℕ} {H' : Plane E d d₁}
 
 /- English proof (translation)
-Use `choose s t u hsu using fun i : Fin d => span_plane hS hA (Pi.single i 1)`. Establish `hone : (1 : Matrix (Fin d) (Fin d) E) = Matrix.of (fun i (_ : Unit) => s i) * (Matrix.replicateCol Unit H'.x)ᵀ + Matrix.of (fun i k => u i k) * H'.ιᵀ + Matrix.of (fun i (_ : Unit) => t i) * (Matrix.replicateCol Unit H'.y)ᵀ`. Use extensionality with `i j`. Establish `h` using `congrFun (hsu i) j`. Simplify using `only [Pi.single_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct] at h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.replicateCol_apply, Finset.univ_unique, Finset.sum_singleton, Matrix.one_apply]`. Establish `e1 : (if i = j then (1 : E) else 0) = if j = i then 1 else 0`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, eq_comm]`. Rewrite using `[e1, h]`. Use `first`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(congr 2; exact Finset.sum_congr rfl fun k _ => mul_comm _ _)`. Consider the case `simp only [mul_comm]`. Consider the case `ring`. Use `⟨Matrix.of (fun i (_ : Unit) => s i), Matrix.of (fun i k => u i k), Matrix.of (fun i (_ : Unit) => t i), fun w => ?_⟩` and prove the remaining obligations. Establish `hinc : ∀ {p q r : Type} [Fintype q] (A : Matrix p q E) (B : Matrix q r E), incM F (A * B) = incM F A * incM F B` using `fun A B => Matrix.map_mul`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hincT : ∀ {p q : Type} (A : Matrix p q E), incM F Aᵀ = (incM F A)ᵀ` using `fun A => (Matrix.transpose_map).symm`. Establish `hincA : ∀ {p q : Type} (A B : Matrix p q E), incM F (A + B) = incM F A + incM F B` using `fun A B => Matrix.map_add _ (map_add _) A B`. Simplify using `only [Matrix.mul_assoc, ← hincT, ← hinc, ← Matrix.mul_add, ← hincA, ← hone, incM_one', Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp (hS : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     ∃ (Sc : Matrix (Fin d) Unit E) (Uc : Matrix (Fin d) (Fin d₁) E) (Tc : Matrix (Fin d) Unit E),

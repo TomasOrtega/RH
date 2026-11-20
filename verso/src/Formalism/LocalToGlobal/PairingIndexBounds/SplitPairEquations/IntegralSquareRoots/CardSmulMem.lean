@@ -12,11 +12,11 @@ open Formalism.L2.Th1.H
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hS`. Establish `hex : ∀ x ∈ S, ∃ s ∈ S, ℓ x - s ∈ M` using `fun x hx => h3 _ (hP x (h1 x hx))`. Use `choose! r hr1 hr2 using hex`. Establish `hfr : ∀ x ∈ S, f (ℓ x) = f (r x)`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hf (r x) (h1 _ (hr1 x hx)) (ℓ x - r x) (hr2 x hx)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hinjr : Set.InjOn r S`. Introduce `x hx y hy hxy`. Use `h2 x hx y hy (hinj x (h1 x hx) y (h1 y hy) ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ℓ x - ℓ y = (ℓ x - r x) - (ℓ y - r y)` using `by rw [hxy]; abel`. Rewrite using `[this]`. Conclude with `M.sub_mem (hr2 x hx) (hr2 y hy)`. Establish `himg : S.image r = S` using `Finset.eq_of_subset_of_card_le (Finset.image_subset_iff.mpr hr1) (by rw [Finset.card_image_of_injOn hinjr])`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_reps_perm {M P : AddSubgroup V} {S : Finset V} (hS : IsReps M P S) (ℓ : V → V)
     (hP : ∀ x ∈ P, ℓ x ∈ P) (hinj : ∀ x ∈ P, ∀ y ∈ P, ℓ x - ℓ y ∈ M → x - y ∈ M)
@@ -41,9 +41,9 @@ theorem sum_reps_perm {M P : AddSubgroup V} {S : Finset V} (hS : IsReps M P S) (
     _ = ∑ x ∈ S, f x := by rw [himg]
 
 /- English proof (translation)
-Establish `hc : Nat.card (P ⧸ M.addSubgroupOf P) = S.card`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective _ (repClass_bijective hS))]`. Simplify using the standard rewrite rules. Establish `h : S.card • (QuotientAddGroup.mk (⟨x, hx⟩ : P) : P ⧸ M.addSubgroupOf P) = 0`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `card_nsmul_eq_zero'`. Rewrite `h` using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_smul_mem {M P : AddSubgroup V} {S : Finset V} (hS : IsReps M P S) {x : V} (hx : x ∈ P) : S.card • x ∈ M := by
   have hc : Nat.card (P ⧸ M.addSubgroupOf P) = S.card := by
@@ -55,7 +55,7 @@ theorem card_smul_mem {M P : AddSubgroup V} {S : Finset V} (hS : IsReps M P S) {
   simpa using h
 
 /- English proof (translation)
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[← h, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_symm (g : V →ₗ[ℂ] V) (φ : V ≃ₗ[ℂ] V) (h : ∀ x, g (φ x) = φ (g x)) (x : V) : g (φ.symm x) = φ.symm (g x) := by
   apply φ.injective
@@ -75,14 +75,14 @@ structure Multipliers (H : Sesq V) (Λ : AddSubgroup V) (δ : V ≃ₗ[ℂ] V) (
 variable {H : Sesq V} {Λ : AddSubgroup V} {α : V → ℂ} {δ Ae : V ≃ₗ[ℂ] V}
 
 /- English proof (translation)
-Rewrite using `[hA, hA, map_sub, comm_symm g δ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_cay (hA : ∀ x, Ae x = x - δ.symm x) (g : V →ₗ[ℂ] V) (h : ∀ x, g (δ x) = δ (g x)) (x : V) :
     g (Ae x) = Ae (g x) := by
   rw [hA, hA, map_sub, comm_symm g δ h]
 
 /- English proof (translation)
-Unfold `latA at hy ⊢`. Rewrite `hy`, the goal using `[mem_imgLat_iff, AddSubgroup.mem_inf, mem_imgLat_iff]`. Rewrite using `[← comm_symm g Ae (comm_cay hA g h), ← comm_symm g δ h]`. Conclude with `⟨hΛ _ hy.1, hΛ _ hy.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem latA_stable (hA : ∀ x, Ae x = x - δ.symm x) (g : V →ₗ[ℂ] V) (hΛ : ∀ x ∈ Λ, g x ∈ Λ)
     (h : ∀ x, g (δ x) = δ (g x)) {y : V} (hy : y ∈ latA Λ δ Ae) : g y ∈ latA Λ δ Ae := by
@@ -92,7 +92,7 @@ theorem latA_stable (hA : ∀ x, Ae x = x - δ.symm x) (g : V →ₗ[ℂ] V) (h�
   exact ⟨hΛ _ hy.1, hΛ _ hy.2⟩
 
 /- English proof (translation)
-Unfold `cayC`. Rewrite using `[map_sub, map_smul, comm_symm g Ae (comm_cay hA g h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cayC_comm (hA : ∀ x, Ae x = x - δ.symm x) (g : V →ₗ[ℂ] V) (h : ∀ x, g (δ x) = δ (g x)) (x : V) :
     cayC Ae (g x) = g (cayC Ae x) := by
@@ -102,27 +102,27 @@ theorem cayC_comm (hA : ∀ x, Ae x = x - δ.symm x) (g : V →ₗ[ℂ] V) (h : 
 variable {ℓ ℓ' σ : V →ₗ[ℂ] V} {e : ℕ}
 
 /- English proof (translation)
-Take `⟨hskew, hre, -, -⟩` from `phiBasic V H Λ α δ Ae hU`. Establish `h1 : H (cayC Ae (ℓ x)) (ℓ x) = -H (cayC Ae x) x + (4 * e : ℂ) * H (cayC Ae x) (σ x)`. Rewrite using `[cayC_comm hU.cay ℓ hM.lδ, hM.adj, hM.rel, map_add, map_neg, map_nsmul, nsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hXre : (H (cayC Ae x) (σ x)).re = 0`. Establish `h2 : H (cayC Ae x) (σ x) = -conj (H (cayC Ae x) (σ x))` using `by conv_lhs => rw [hskew, cayC_comm hU.cay σ hM.sδ, ← hM.sadj, hU.herm (cayC Ae x) (σ x)]`. Establish `h3` using `congrArg Complex.re h2`. Simplify using `only [Complex.neg_re, Complex.conj_re] at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hs0 : (H x (σ x)).im = 0`. Establish `h2 : H x (σ x) = conj (H x (σ x))` using `by conv_lhs => rw [← hM.sadj, hU.herm x (σ x)]`. Establish `h3` using `congrArg Complex.im h2`. Simplify using `only [Complex.conj_im] at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℤ, (e : ℝ) * (H (cayC Ae x) (σ x)).im = (n : ℝ) := by`. Establish `hw : Ae.symm (e • x) ∈ Λ`. Use `he x hx` as an intermediate fact. Unfold `latA at this`. Rewrite `this` using `[mem_imgLat_iff, AddSubgroup.mem_inf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.1`. Rewrite `hw` using `[← hU.selfDual]`. Take `⟨n, hn⟩` from `hw (σ x) (hM.sΛ x hx)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `altE cayC`. Rewrite using `[map_nsmul, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, map_sub, LinearMap.sub_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Simplify using `only [Complex.sub_im, Complex.mul_im, Complex.natCast_re, Complex.natCast_im, hs0]`. Evaluate the numerical expressions. Establish `hX : (4 * e : ℂ) * H (cayC Ae x) (σ x) = (4 * n : ℂ) * Complex.I`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hXre]`. Establish `: ((4 * e : ℂ) * H (cayC Ae x) (σ x)).im = 4 * ((e : ℝ) * (H (cayC Ae x) (σ x)).im)`. Simplify using `[hXre]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hn]`. Simplify using the standard rewrite rules. Establish `hexp : Complex.exp (-(Real.pi : ℂ) * ((4 * n : ℂ) * Complex.I)) = 1`. Use `Complex.exp_int_mul_two_pi_mul_I (-2 * n)` as an intermediate fact. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : conj (H (cayC Ae x) x) = -H (cayC Ae x) x`. Apply `Complex.ext` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[hre x]`. Simplify using the standard rewrite rules. Establish `hαc : conj (α x) = α x`. Apply the tactic sequence `rcases hU.semi.1 x hx with h | h <;> rw [h] <;> simp`. Unfold `phiC`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hα x hx, h1, hX, map_mul, hαc, ← Complex.exp_conj, map_mul, map_neg, Complex.conj_ofReal, hc, mul_add, Complex.exp_add, hexp, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem phi_conj (hU : UnitaryData H Λ α δ Ae) (hM : Multipliers H Λ δ ℓ ℓ' σ e)
     (he : ∀ x ∈ Λ, e • x ∈ latA Λ δ Ae) (hα : ∀ x ∈ Λ, α (ℓ x) = α x) {x : V} (hx : x ∈ Λ) :
@@ -183,17 +183,15 @@ theorem phi_conj (hU : UnitaryData H Λ α δ Ae) (hM : Multipliers H Λ δ ℓ 
     Complex.exp_add, hexp, mul_one]
 
 /- English proof (translation)
-Take `⟨-, -, -, hwd⟩` from `phiBasic V H Λ α δ Ae hU`. Establish `hinj : ∀ x ∈ Λ, ∀ y ∈ Λ, ℓ x - ℓ y ∈ latA Λ δ Ae → x - y ∈ latA Λ δ Ae`. Introduce `x hx y hy h`. Rewrite `h` using `[← map_sub]`. Establish `h2` using `latA_stable hU.cay ℓ' hM.l'Λ hM.l'δ h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hM.rel]`. Establish `h3 : (4 * e) • σ (x - y) ∈ latA Λ δ Ae`. Rewrite using `[mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ (he _ (hM.sΛ _ (Λ.sub_mem hx hy))) 4`. Establish `h4` using `AddSubgroup.sub_mem _ h3 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (4 * e) • σ (x - y) - (-(x - y) + (4 * e) • σ (x - y)) = x - y` using `by abel`. Rewrite `h4` using `[h5]`. Then use the resulting hypothesis. Establish `hsum` using `sum_reps_perm hS ℓ hM.lΛ hinj (phiC H α Ae) hwd`. Establish `hreal : conj (gaussC H α Ae S) = gaussC H α Ae S`. Unfold `gaussC`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv₀, Complex.conj_ofReal, map_sum, ← hsum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun x hx => (phi_conj hU hM he hα (hS.1 x hx)).symm`. Establish `h8` using `unitaryGauss V H Λ α δ Ae hU S hS`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.mp hreal`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h8`, the goal using `[hr]`. Establish `h8' : (r ^ 2) ^ 4 = 1`. Establish `: ((r ^ 2) ^ 4 : ℝ) = r ^ 8` using `by ring`. Rewrite using `[this]`. Conclude with `h8` after adjusting the coercions.
-
-Establish `h2` using `(pow_eq_one_iff_of_nonneg (sq_nonneg r) (by norm_num)).mp h8'`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gauss_sq (hU : UnitaryData H Λ α δ Ae) (hM : Multipliers H Λ δ ℓ ℓ' σ e)
     (he : ∀ x ∈ Λ, e • x ∈ latA Λ δ Ae) (hα : ∀ x ∈ Λ, α (ℓ x) = α x) {S : Finset V}

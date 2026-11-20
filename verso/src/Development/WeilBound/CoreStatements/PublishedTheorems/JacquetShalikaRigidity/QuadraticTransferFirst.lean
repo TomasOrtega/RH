@@ -19,9 +19,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
 omit [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
   [SecondCountableTopology G] [BorelSpace G] in
 /- English proof (translation)
-Establish `hF : Measurable (Function.uncurry fun g r => ∫⁻ h, K r h g ∂ν)`. Establish `: Measurable fun q : (G × G) × G => K q.1.2 q.2 q.1.1` using `hK.comp ((measurable_snd.comp measurable_fst).prodMk (measurable_snd.prodMk (measurable_fst.comp measurable_fst)))`. Conclude with `this.lintegral_prod_right'`. Rewrite using `[lintegral_lintegral_swap hF.aemeasurable]`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK' : Measurable (Function.uncurry fun g h => K r h g)` using `hK.comp (measurable_const.prodMk (measurable_snd.prodMk measurable_fst))`. Conclude with `lintegral_lintegral_swap hK'.aemeasurable`.
+A detailed English derivation is pending.
 -/
 theorem swap3 {μ ν ρ : Measure G} [SFinite μ] [SFinite ν] [SFinite ρ] (K : G → G → G → ℝ≥0∞)
     (hK : Measurable fun p : G × G × G => K p.1 p.2.1 p.2.2) :
@@ -38,25 +38,19 @@ theorem swap3 {μ ν ρ : Measure G} [SFinite μ] [SFinite ν] [SFinite ρ] (K :
   exact lintegral_lintegral_swap hK'.aemeasurable
 
 /- English proof (translation)
-Establish `hβm : Measurable β` using `hβ.1`. Establish `hH' : ∀ᵐ h ∂ν, h⁻¹ ∈ H`. Establish `hH2` using `hH`. Rewrite `hH2` using `[← hinv]`. Conclude with `ae_of_ae_map measurable_inv.aemeasurable hH2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinvβ : ∀ g, ∫⁻ h, β (h⁻¹ * g) ∂ν = 1`. Introduce `g`. Establish `hm : Measurable fun h : G => β (h * g)` using `by fun_prop`. Rewrite using `[show (∫⁻ h, β (h⁻¹ * g) ∂ν) = ∫⁻ h, β (h * g) ∂(Measure.map (fun h => h⁻¹) ν) from (lintegral_map hm measurable_inv).symm, hinv]`. Conclude with `hβ.2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hm1 : ∀ r, Measurable fun h => β₁ (r⁻¹ * h * g)` using `fun r => by fun_prop`. Establish `hm2 : Measurable fun r => ∫⁻ h, β₁ (r⁻¹ * h * g) ∂ν`. Establish `: Measurable fun p : G × G => β₁ (p.1⁻¹ * p.2 * g)` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.lintegral_prod_right'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_const_mul _ hm2]`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ (hm1 r)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ r, ∫⁻ h, ∫⁻ g, β g * Φ g * β₁ (r⁻¹ * h * g) ∂μ ∂ν ∂ρ := swap3 (fun r h g => β g * Φ g * β₁ (r⁻¹ * h * g)) (show Measurable fun p : G × G × G => β p.2.2 * Φ p.2.2 * β₁ (p.1⁻¹ * p.2.1 * p.2.2) by fun_prop)`. Use `_ = ∫⁻ r, ∫⁻ h, ∫⁻ g, β (h⁻¹ * g) * Φ g * β₁ (r⁻¹ * g) ∂μ ∂ν ∂ρ := by`. Use `lintegral_congr fun r => lintegral_congr_ae (hH'.mono fun h hh => ?_)` and prove the remaining obligations. Use `(lintegral_mul_left_eq_self (μ := μ) (fun x => β x * Φ x * β₁ (r⁻¹ * h * x)) h⁻¹).symm.trans (lintegral_congr fun g => ?_)` and prove the remaining obligations. Use `show β (h⁻¹ * g) * Φ (h⁻¹ * g) * β₁ (r⁻¹ * h * (h⁻¹ * g)) = _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΦH _ hh, mul_assoc r⁻¹ h, mul_inv_cancel_left]`. Use `_ = ∫⁻ r, ∫⁻ g, ∫⁻ h, β (h⁻¹ * g) * Φ g * β₁ (r⁻¹ * g) ∂ν ∂μ ∂ρ := by`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations. Conclude with `lintegral_lintegral_swap (show Measurable fun p : G × G => β (p.1⁻¹ * p.2) * Φ p.2 * β₁ (r⁻¹ * p.2) by fun_prop).aemeasurable`. Use `_ = ∫⁻ r, ∫⁻ g, Φ g * β₁ (r⁻¹ * g) ∂μ ∂ρ := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun r => lintegral_congr fun g => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[lintegral_mul_const _ (show Measurable fun h : G => β (h⁻¹ * g) by fun_prop), hinvβ g, one_mul]`. Use `_ = ∫⁻ r, ∫⁻ g, Φ (r * g) * β₁ g ∂μ ∂ρ := by`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations.
-
-Use `(lintegral_mul_left_eq_self (μ := μ) (fun x => Φ x * β₁ (r⁻¹ * x)) r).symm.trans (lintegral_congr fun g => ?_)` and prove the remaining obligations. Use `show Φ (r * g) * β₁ (r⁻¹ * (r * g)) = _`. Rewrite using `[inv_mul_cancel_left]`. Use `_ = ∫⁻ g, ∫⁻ r, Φ (r * g) * β₁ g ∂ρ ∂μ := lintegral_lintegral_swap (show Measurable fun p : G × G => Φ (p.1 * p.2) * β₁ p.2 by fun_prop).aemeasurable`. Use `_ = ∫⁻ g, ∫⁻ r, Φ (r * g) ∂ρ ∂μ.withDensity β₁ := by`.
-
-Establish `hm : Measurable fun g => ∫⁻ r, Φ (r * g) ∂ρ`. Establish `: Measurable fun p : G × G => Φ (p.2 * p.1)` using `by fun_prop`. Conclude with `this.lintegral_prod_right'`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hβ₁ hm]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
-
-Rewrite using `[lintegral_mul_const _ (show Measurable fun r : G => Φ (r * g) by fun_prop)]`. Conclude with `mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (μ : Measure G) [μ.IsHaarMeasure] (ν ρ : Measure G) [SFinite ν] [SFinite ρ] (H : Set G)
     (β β₁ : G → ℝ≥0∞) (hinv : Measure.map (fun h => h⁻¹) ν = ν) (hH : ∀ᵐ h ∂ν, h ∈ H) (hβ : IsWt ν β)
@@ -125,7 +119,7 @@ theorem main (μ : Measure G) [μ.IsHaarMeasure] (ν ρ : Measure G) [SFinite ν
 end QuadraticTransferFirst
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ μ _ ν ρ _ _ H β β₁ hinv hH hβ hβ₁ h1 Φ hΦ hΦH`. Conclude with `QuadraticTransferFirst.main μ ν ρ H β β₁ hinv hH hβ hβ₁ h1 Φ hΦ hΦH`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_last_join : Q1 := by
   intro G _ _ _ _ _ _ _ μ _ ν ρ _ _ H β β₁ hinv hH hβ hβ₁ h1 Φ hΦ hΦH

@@ -11,33 +11,29 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.HalfInt
 
 /- English proof (translation)
-Introduce `hE1 hE1b hE2 hE3 hShim N _ χ D f a hf ha hs c δ S hA`. Take `⟨⟨e, he⟩, -⟩` from `hE1b`. Establish `hp : ∀ v, (pOf v).Prime` using `fun v => by rw [← he v]; exact (e v).2`. Establish `hinj : Function.Injective pOf` using `fun v w h => e.injective (Subtype.ext (by rw [he, he, h]))`. Establish `hM₀ : 0 < 4 * N * ∏ v ∈ S, pOf v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `NeZero.pos N`. Establish `h2 : 0 < ∏ v ∈ S, pOf v` using `Finset.prod_pos fun v _ => (hp v).pos`. Check the signs of the components of the expression. Take `⟨M, hMz, c', hdvd, hc'⟩` from `hE1 c hA.fin _ hM₀`. Use `haveI := hMz`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNM : N ∣ M` using `(Dvd.intro_left 4 rfl |>.mul_right _).trans hdvd`. Establish `h4M : 4 ∣ M` using `((Dvd.intro _ rfl : 4 ∣ 4 * N).mul_right _).trans hdvd`. Establish `hfin : {v : Pl | pOf v ∣ M}.Finite`. Use `Set.Finite.of_finite_image (f := pOf) ((Nat.divisors M).finite_toSet.subset ?_) hinj.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.mem_divisors.2 ⟨hv, NeZero.ne M⟩`. Take `⟨T, hT⟩ : ∃ T : Finset Pl, ∀ v, v ∈ T ↔ pOf v ∣ M` from `⟨hfin.toFinset, fun v => by simp⟩`. Establish `hST : S ⊆ T` using `fun v hv => (hT v).2 (((Finset.dvd_prod_of_mem _ hv).trans (Dvd.intro_left _ rfl)).trans hdvd)`. Establish `hAT : admitted D c δ T` using `⟨hA.fin, hA.sgn, hA.bad.trans hST, fun v hv => hA.unr v fun h => hv (hST h)⟩`. Take `⟨Λ₀, hd₀, ho₀, hΛ₀⟩` from `hShim D.k N M hNM h4M D.three χ f a hf c'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hdE, hsplit, hlf⟩` from `hE3 D c δ S hA`. Establish `hsplitT` using `hsplit T hST`. Establish `hb : ∀ v ∈ T \ S, ∃ C : ℝ, 0 ≤ C ∧ ∀ s : ℂ, 1 / 4 ≤ s.re → ‖lf3 (D.ν v) (localChar c v) s‖ ≤ C` using `fun v hv => by`. Take `⟨C, hC⟩` from `(hlf v (Finset.mem_sdiff.1 hv).2).2`. Conclude with `⟨|C|, abs_nonneg C, fun s h => (hC s h).trans (le_abs_self C)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! Cv hCv0 hCv using hb`. Establish `hPd : DifferentiableOn ℂ (fun s => ∏ v ∈ T \ S, lf3 (D.ν v) (localChar c v) s) (HP 0)` using `DifferentiableOn.fun_finset_prod fun v hv => (hlf v (Finset.mem_sdiff.1 hv).2).1`. Establish `hsub : {s : ℂ | 1 / 4 < s.re} ⊆ HP 0` using `fun s (h : 1 / 4 < s.re) => show (0 : ℝ) < s.re by linarith`. Establish `hsub1 : HP 1 ⊆ {s : ℂ | 1 / 4 < s.re}` using `fun s (h : 1 < s.re) => show 1 / 4 < s.re by linarith`. Establish `hΛd : DifferentiableOn ℂ (fun s => (∏ v ∈ T \ S, lf3 (D.ν v) (localChar c v) s) * Λ₀ s) {s | 1 / 4 < s.re}` using `(hPd.mono hsub).mul hd₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun s => (∏ v ∈ T \ S, lf3 (D.ν v) (localChar c v) s) * Λ₀ s, hΛd, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Take `⟨C₀, hC₀⟩` from `ho₀ b`. Establish `hP0 : 0 ≤ ∏ v ∈ T \ S, Cv v` using `Finset.prod_nonneg hCv0`. Use `⟨((∏ v ∈ T \ S, Cv v) + 1) * |C₀|, fun s h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set P := ∏ v ∈ T \ S, Cv v with hPdef`. Establish `hPs : ‖∏ v ∈ T \ S, lf3 (D.ν v) (localChar c v) s‖ ≤ P`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun v hv => hCv v hv s (by linarith)`. Establish `ht : 0 ≤ s.im ^ 2` using `sq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ |C₀|` using `abs_nonneg _`. Establish `hΛs : ‖Λ₀ s‖ ≤ |C₀| * Real.exp (|C₀| * s.im ^ 2)`. Use `(hC₀ s h1 h2).trans ?_` and prove the remaining obligations. Establish `he1 : Real.exp (C₀ * s.im ^ 2) ≤ Real.exp (|C₀| * s.im ^ 2)` using `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right (le_abs_self _) ht)`. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self _) (Real.exp_pos _).le).trans (mul_le_mul_of_nonneg_left he1 hA0)`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he2 : Real.exp (|C₀| * s.im ^ 2) ≤ Real.exp ((P + 1) * |C₀| * s.im ^ 2)`. Use `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right ?_ ht)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul hPs hΛs (norm_nonneg _) hP0`. Use `_ ≤ (P + 1) * |C₀| * Real.exp (|C₀| * s.im ^ 2) := by`. Use `Real.exp_pos (|C₀| * s.im ^ 2)` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg hA0 this.le]`. Use `_ ≤ (P + 1) * |C₀| * Real.exp ((P + 1) * |C₀| * s.im ^ 2) := mul_le_mul_of_nonneg_left he2 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hopen : ∀ r : ℝ, IsOpen (HP r)` using `fun r => isOpen_lt continuous_const Complex.continuous_re`. Establish `hconn : IsPreconnected (HP 1)` using `(convex_halfSpace_re_gt 1).isPreconnected`. Establish `hg : AnalyticOnNhd ℂ (fun s => (∏ v ∈ T \ S, lf3 (D.ν v) (localChar c v) s) * Λ₀ s) (HP 1)` using `(hΛd.mono hsub1).analyticOnNhd (hopen 1)`. Establish `hh : AnalyticOnNhd ℂ (fun s : ℂ => (s - 1) ^ 1 * eul D c S s) (HP 1)` using `(((differentiable_id.sub_const 1).pow 1).differentiableOn.mul hdE).analyticOnNhd (hopen 1)`. Establish `h3 : (3 : ℂ) ∈ HP 1` using `show (1 : ℝ) < (3 : ℂ).re by norm_num`.
-
-Establish `hev : (fun s => (∏ v ∈ T \ S, lf3 (D.ν v) (localChar c v) s) * Λ₀ s) =ᶠ[𝓝 (3 : ℂ)] fun s : ℂ => (s - 1) ^ 1 * eul D c S s`. Establish `h32 : (3 : ℂ) ∈ HP 2` using `show (2 : ℝ) < (3 : ℂ).re by norm_num`. Use `filter_upwards [(hopen 2).mem_nhds h32] with s (h2 : 2 < s.re)`. Rewrite using `[hsplitT s (by linarith), hΛ₀ s h2, hE2 N M hNM χ D a ha hs c δ T hAT hT c' (fun v hv => hc' v hv) s h2]`. Expand and normalize the polynomial expressions, which then agree.
-
-Introduce `s h1`. Conclude with `hg.eqOn_of_preconnected_of_eventuallyEq hh hconn h3 hev (show s ∈ HP 1 from h1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eulOf_of_faceMap_comp_succAbove_castSucc : E1 → faceMap_comp_succAbove_castSucc → E2 → E3 → EulOf := by
   intro hE1 hE1b hE2 hE3 hShim N _ χ D f a hf ha hs c δ S hA

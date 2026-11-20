@@ -20,7 +20,7 @@ def germCst (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (a : R) : Z.presheaf.sta
   gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)
 
 /- English proof (translation)
-Use `(gs_pull q (Spec.map (CommRingCat.ofHom h)) z ⊤ trivial _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (gs q z ⊤) (congrArg (fun t => t.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom h))).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem germCst_comp (q : Z ⟶ Spec (CommRingCat.of R₂)) (h : R₁ →+* R₂) (z : Z) (a : R₁) :
     germCst (q ≫ Spec.map (CommRingCat.ofHom h)) z a = germCst q z (h a) := by
@@ -28,7 +28,7 @@ theorem germCst_comp (q : Z ⟶ Spec (CommRingCat.of R₂)) (h : R₁ →+* R₂
   exact congrArg (gs q z ⊤) (congrArg (fun t => t.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom h))).symm
 
 /- English proof (translation)
-The claim follows from `(gs_res r z le_top hz _).trans (gs_pull r p z ⊤ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_cst (p : X ⟶ Spec (CommRingCat.of R)) (W : X.Opens) (r : Z ⟶ X) (z : Z) (hz : r z ∈ W) (a : R) :
     gs r z W (GlobalTheory.AbLaw.cst p W a) = germCst (r ≫ p) z a :=
@@ -47,9 +47,9 @@ def comb (ψ : Z ⟶ X) (z : Z) (J : (Z ⟶ X) → N.ι) (i : P.I) (c : Fin P.a 
 variable {P}
 
 /- English proof (translation)
-Establish `hm : r z ∈ π ⁻¹ᵁ P.W i` using `hi`. Use `(sec_trans s r z (hJ.mem _ r) (le_pull N π (P.le i) hm)).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Simplify using `only [trF, Finset.univ_unique, Finset.prod_singleton, zpow_one]`. Use `(gs_res r z (le_pull N π (P.le i)) hm _).symm.trans ((congrArg (gs r z _) (hs i)).trans ?_)` and prove the remaining obligations. Rewrite using `[gs_eq r z _ hm, map_sum, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => (gs_eq r z _ hm _).symm.trans ((gs_mul r z _ hm _ _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (gs_cst f _ r z hm _) (gs_pull r π z _ hi _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Given.sval {π : X₁ ⟶ X} {f : X₁ ⟶ Spec (CommRingCat.of R₁)} {v : Fin P.a → R₁} {s : LB.Sec (N.pull π)}
     (hs : Given P π f v s) (r : Z ⟶ X₁) (z : Z) {J : (Z ⟶ X) → N.ι} (hJ : Good N z J) (i : P.I)
@@ -64,7 +64,7 @@ theorem Given.sval {π : X₁ ⟶ X} {f : X₁ ⟶ Spec (CommRingCat.of R₁)} {
     exact congrArg₂ (· * ·) (gs_cst f _ r z hm _) (gs_pull r π z _ hi _)
 
 /- English proof (translation)
-Substitute `hπ` using the available equality. Establish `hz : (r ≫ π₁) z ∈ ⨆ i, P.W i` using `by rw [P.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Rewrite using `[h₁.sval r z hJ i hi, h₂.sval (𝟙 _) z hJ i hi, Category.id_comp, Category.id_comp, hf]`. Simplify using `only [germCst_comp]`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Given.sval_eq {π₁ : X₁ ⟶ X} {f₁ : X₁ ⟶ Spec (CommRingCat.of R₁)} {v : Fin P.a → R₁}
     {s₁ : LB.Sec (N.pull π₁)} {π₂ : X₂ ⟶ X} {f₂ : X₂ ⟶ Spec (CommRingCat.of R₂)} {s₂ : LB.Sec (N.pull π₂)}
@@ -78,7 +78,7 @@ theorem Given.sval_eq {π₁ : X₁ ⟶ X} {f₁ : X₁ ⟶ Spec (CommRingCat.of
   simp only [germCst_comp]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `s`. Take `⟨b, hb⟩` from `s'`. Take `rfl : a = b` from `funext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem sec_ext {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
   obtain ⟨a, ha⟩ := s
@@ -87,7 +87,7 @@ theorem sec_ext {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s
   rfl
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, RingHom.comp_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_map {a b : ℕ} (D : Matrix (Fin b) (Fin a) R) (g : R →+* R₁) (h : R₁ →+* R₂) {g' : R →+* R₂}
     (hg : h.comp g = g') (v : Fin a → R₁) (j : Fin b) :
@@ -96,11 +96,11 @@ theorem mulVec_map {a b : ℕ} (D : Matrix (Fin b) (Fin a) R) (g : R →+* R₁)
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, RingHom.comp_apply]
 
 /- English proof (translation)
-Take `⟨v₁, rfl⟩` from `E₁.surjective s₁`. Take `⟨v₂, rfl⟩` from `E₂.surjective s₂`. Rewrite using `[E₁.symm_apply_apply, E₂.symm_apply_apply]`. Set `w : {v : Fin P.a → R₂ // (P.D₀.map g₂).mulVec v = 0}` to `⟨fun k => h (v₁.1 k), funext fun j => by`. Rewrite using `[mulVec_map P.D₀ g₁ h hg, v₁.2, Pi.zero_apply, Pi.zero_apply, map_zero]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ z J, Good N z J → sval (E₁ v₁) r z J = sval (E₂ w) (𝟙 _) z J` using `fun z J hJ => Given.sval_eq h r hπ hf (H₁ v₁) (H₂ w) z hJ`. Prove the components needed by the constructor for the conclusion. Introduce `H k`. Establish `: E₂ w = E₂ v₂` using `sec_ext (sec_ext_val hN fun y J hJ => (key y J hJ).symm.trans (H y J hJ))`. Conclude with `congrFun (congrArg Subtype.val (E₂.injective this)) k`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Take `rfl : w = v₂` from `Subtype.ext (funext H)`. Conclude with `key`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sval_eq_iff (hN : N.IsLB) {g₁ : R →+* R₁} {g₂ : R →+* R₂}
     {π₁ : X₁ ⟶ X} {f₁ : X₁ ⟶ Spec (CommRingCat.of R₁)} {π₂ : X₂ ⟶ X} {f₂ : X₂ ⟶ Spec (CommRingCat.of R₂)}
@@ -127,7 +127,7 @@ theorem sval_eq_iff (hN : N.IsLB) {g₁ : R →+* R₁} {g₂ : R →+* R₂}
     exact key
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (IsHausdorff.haus' (I := I) _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) (Ideal.Quotient.eq.1 (h n))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_mk (I : Ideal R) [IsHausdorff I R] {x y : R}
     (h : ∀ e : ℕ, Ideal.Quotient.mk (I ^ (e + 1)) x = Ideal.Quotient.mk (I ^ (e + 1)) y) : x = y := by
@@ -136,15 +136,13 @@ theorem eq_of_forall_mk (I : Ideal R) [IsHausdorff I R] {x y : R}
   exact Ideal.pow_le_pow_right (Nat.le_succ n) (Ideal.Quotient.eq.1 (h n))
 
 /- English proof (translation)
-Use `choose a ha using fun e => Ideal.Quotient.mk_surjective (x e)`. Establish `step : ∀ e, a e - a (e + 1) ∈ I ^ (e + 1)` using `fun e => by`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[ha, ← hx e, ← ha (e + 1), Ideal.Quotient.factor_mk]`. Establish `cau : ∀ m n, m ≤ n → a m - a n ∈ I ^ (m + 1)` using `fun m n hmn => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => rw [sub_self]`. Conclude with `zero_mem _`. Consider the case `succ n hmn ih`. Use `add_mem ih (Ideal.pow_le_pow_right (Nat.succ_le_succ hmn) (step n))` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := I) a (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ m) (cau m n hmn))`. Use `⟨L, fun e => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hL (e + 1)` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h₂` using `add_mem (step e) this`. Rewrite `h₂` using `[sub_add_sub_cancel]`. Rewrite using `[← ha e]`.
-
-Conclude with `(Ideal.Quotient.eq.2 h₂).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lim (I : Ideal R) [IsPrecomplete I R] (x : ∀ e : ℕ, R ⧸ I ^ (e + 1))
     (hx : ∀ e, Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) (x (e + 1)) = x e) :
@@ -171,13 +169,11 @@ theorem exists_lim (I : Ideal R) [IsPrecomplete I R] (x : ∀ e : ℕ, R ⧸ I ^
   exact (Ideal.Quotient.eq.2 h₂).symm
 
 /- English proof (translation)
-Introduce `R _ _ I hI Y hs hp N hN f hf`. Take `⟨P⟩` from `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj R Y.left Y.hom hs hp N hN`. Establish `pb₀ : IsPullback (𝟙 Y.left) Y.hom Y.hom (Spec.map (CommRingCat.ofHom (RingHom.id R)))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨E₀, H₀⟩` from `P.sec R (RingHom.id R) Y.left (𝟙 _) Y.hom pb₀`. Use `choose E H using fun e => P.sec (R ⧸ I ^ (e + 1)) (Ideal.Quotient.mk _) _ (fstG I e Y).left (thickObj R I e Y).hom (IsPullback.of_hasPullback Y.hom (thick R I e))`. Establish `c₁ : ∀ e k, Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) (((E (e + 1)).symm (f (e + 1))).1 k) = ((E e).symm (f e)).1 k` using `fun e => (sval_eq_iff (P := P) hN (H (e + 1)) (H e) _ (Ideal.Quotient.factor_comp_mk _) (thickMap R I e Y) ((pullback.lift_fst _ _ _).trans (Category.comp_id _)) (pullback.lift_snd _ _ _) _ _).1 (hf e)`. Establish `c₂ : ∀ e (s : LB.Sec (N.pull (𝟙 Y.left))), (∀ z J, Good N z J → sval s (fstG I e Y).left z J = sval (f e) (𝟙 _) z J) ↔ ∀ k, Ideal.Quotient.mk (I ^ (e + 1)) ((E₀.symm s).1 k) = ((E e).symm (f e)).1 k` using `fun e s => sval_eq_iff (P := P) hN H₀ (H e) _ (RingHom.comp_id _) (fstG I e Y).left (Category.comp_id _) pullback.condition _ _`. Use `choose v hv using fun k => exists_lim I (fun e => ((E e).symm (f e)).1 k) (fun e => c₁ e k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv₀ : (P.D₀.map (RingHom.id R)).mulVec v = 0` using `funext fun j => eq_of_forall_mk I fun e => by`. Rewrite using `[← mulVec_map P.D₀ (RingHom.id R) _ (RingHom.comp_id _), Pi.zero_apply, map_zero]`. Simplify using `only [hv]`. Conclude with `congrFun ((E e).symm (f e)).2 j`. Use `⟨E₀ ⟨v, hv₀⟩, fun e => (c₂ e _).2 fun k => ?_, fun s hs => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[E₀.symm_apply_apply]`. Conclude with `hv k e`. Use `(E₀.symm_apply_eq).1 (Subtype.ext (funext fun k => eq_of_forall_mk I fun e => ?_))` and prove the remaining obligations. Conclude with `((c₂ e s).1 (hs e) k).trans (hv k e).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_sec : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : Over (Spec (CommRingCat.of R))), Smooth Y.hom → IsProjBy Y.hom → ∀ N : LB Y.left, N.IsLB → ∀ f : ∀ e, LB.Sec (N.pull (fstG I e Y).left), (∀ e z J, Good N z J → sval (f (e + 1)) (thickMap R I e Y) z J = sval (f e) (𝟙 _) z J) → ∃! s : LB.Sec (N.pull (𝟙 Y.left)), ∀ e z J, Good N z J → sval s (fstG I e Y).left z J = sval (f e) (𝟙 _) z J := by
   intro R _ _ I hI Y hs hp N hN f hf

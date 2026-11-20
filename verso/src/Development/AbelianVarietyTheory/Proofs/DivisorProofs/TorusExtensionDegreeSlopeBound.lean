@@ -13,27 +13,25 @@ noncomputable section
 namespace GlobalTheory.TorusSlope
 
 /- English proof (translation)
-Introduce `m C hC`. Use `⟨(m + 1 : ℝ) * Real.log C, by have := Real.log_nonneg hC; positivity, ?_⟩` and prove the remaining obligations. Introduce `K _ _ r m' h L ε q h' L' hT`. Take `⟨hL, hL', hε, hqs, _hker, hLker, hqL, hG⟩` from `hT`. Establish `hC0 : (0 : ℝ) < C` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlogC : 0 ≤ Real.log C` using `Real.log_nonneg hC`. Establish `hPSD : ∀ (W : Submodule (𝓞 K) (Fin m → K)) (σ : K →+* ℂ) (n : ℕ) (v : Fin n → Fin m → K), (∀ i, v i ∈ W) → ((C : ℂ) • h.gram σ v - h'.gram σ (q ∘ v)).PosSemidef` using `fun W σ n v _ => (hG σ).2 n v`. Establish `hFG : ∀ W ≤ L, W.FG` using `fun W hW => by haveI : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL.1`. Establish `h2` using `(IsNoetherian.noetherian (W.comap L.subtype)).map L.subtype`. Rewrite `h2` using `[Submodule.map_comap_eq_of_le (by simpa using hW)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmapL : ∀ W ≤ L, W.map (q.restrictScalars (𝓞 K)) ≤ L'` using `fun W hW => by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hqL x (hW hx)`. Establish `hInf : ∀ W ≤ L, W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K) ≤ Submodule.span (𝓞 K) (Set.range ε)` using `fun W hW => by`. Rewrite using `[← hLker]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inf_le_inf_right _ hW`. Establish `hTor : ∀ W ≤ L, deg h (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)) ≤ (latRank K (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)) : ℝ) / 2 * Real.log C` using `fun W hW => GlobalTheory.T.degree_le_half_rank_log_of_gram_bound K m r h ε C hC0 hε (fun σ => (hG σ).1) _ (hInf W hW)`. Establish `hExt : ∀ W ≤ L, deg h W ≤ deg h (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)) + deg h' (W.map (q.restrictScalars (𝓞 K))) + (latRank K (W.map (q.restrictScalars (𝓞 K))) : ℝ) / 2 * Real.log C` using `fun W hW => GlobalTheory.T.degree_le_kernel_add_image K m m' h h' q C hC0 W (hFG W hW) (hPSD W)`. Establish `hRk : ∀ W : Submodule (𝓞 K) (Fin m → K), (latRank K W : ℝ) = latRank K (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)) + latRank K (W.map (q.restrictScalars (𝓞 K)))` using `fun W => by`. Conclude with `GlobalTheory.T.lattice_rank_additive_exact K m m' q W` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `hmapFG : (L.map (q.restrictScalars (𝓞 K))).FG` using `hL.1.map _`. Establish `hspan : (L' : Set (Fin m' → K)) ⊆ Submodule.span K ((L.map (q.restrictScalars (𝓞 K)) : Submodule (𝓞 K) (Fin m' → K)) : Set (Fin m' → K))`. Establish `: Submodule.span K ((L.map (q.restrictScalars (𝓞 K)) : Submodule (𝓞 K) (Fin m' → K)) : Set (Fin m' → K)) = ⊤`. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hL.2, Submodule.map_top, LinearMap.range_eq_top.mpr hqs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `fun _ _ => Submodule.mem_top`. Establish `hle` using `deg_of_le h' hmapFG hL'.1 (hmapL L le_rfl) hspan`. Establish `hidx : 0 ≤ Real.log ((L.map (q.restrictScalars (𝓞 K))).toAddSubgroup.relIndex L'.toAddSubgroup : ℝ) / Module.finrank ℚ K` using `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`. Establish `hrkL : (latRank K L : ℝ) ≤ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `: latRank K L ≤ m`. Unfold `latRank`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions. Establish `h1` using `hExt L le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hTor L le_rfl`. Establish `h3` using `hRk L`. Establish `h4 : (latRank K L : ℝ) / 2 * Real.log C ≤ (m + 1 : ℝ) * Real.log C`. Establish `: (latRank K L : ℝ) / 2 ≤ m + 1`. Use `Nat.cast_nonneg (α := ℝ) (latRank K L)` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_le_mul_of_nonneg_right this hlogC`. Use the polynomial consequences of the given equalities and inequalities. Introduce `ν hν hMu W hW`. Establish `h1` using `hExt W hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hTor W hW`. Establish `h3` using `hRk W`. Establish `h5` using `hMu _ (hmapL W hW)`. Use `set a := (latRank K (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)) : ℝ)`. Use `set b := (latRank K (W.map (q.restrictScalars (𝓞 K))) : ℝ)`.
-
-Establish `ha : 0 ≤ a` using `Nat.cast_nonneg _`. Establish `hb : 0 ≤ b` using `Nat.cast_nonneg _`. Rewrite using `[h3]`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg ha hν, mul_nonneg ha hlogC, mul_nonneg hb hlogC, mul_nonneg (mul_nonneg ha hm) hlogC, mul_nonneg (mul_nonneg hb hm) hlogC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem slope_le_of_torusExt : ∀ (m : ℕ) (C : ℝ), 1 ≤ C → ∃ C' : ℝ, 0 ≤ C' ∧ ∀ (K : Type) [Field K] [NumberField K] (r m' : ℕ) (h : HermFam K (Fin m → K)) (L : Submodule (𝓞 K) (Fin m → K)) (ε : Fin r → Fin m → K) (q : (Fin m → K) →ₗ[K] (Fin m' → K)) (h' : HermFam K (Fin m' → K)) (L' : Submodule (𝓞 K) (Fin m' → K)), TorusExt h L ε q h' L' C → -deg h' L' ≤ -deg h L + C' ∧ ∀ ν : ℝ, 0 ≤ ν → MuLe h' L' ν → MuLe h L (ν + C') := by
   intro m C hC

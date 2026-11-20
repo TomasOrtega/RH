@@ -15,21 +15,19 @@ open NumberField
 namespace GlobalTheory.HeckeLatCoset
 
 /- English proof (translation)
-Introduce `D V P X Y hP hX hY hXY hYX`. Establish `hcc : ∀ s : 𝓞 D.host.E, ReciprocityTheory.ChartRestriction.G.FD.cc ((Formalism.L2.Col.cO D.host.E s : 𝓞 D.host.E) : D.host.E) = (s : D.host.E)`. Introduce `s`. Use `show IsCMField.complexConj D.host.E (star (s : D.host.E)) = (s : D.host.E)`. Conclude with `star_star (s : D.host.E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcO : ∀ s : 𝓞 D.host.E, Formalism.L2.Col.cO D.host.E (Formalism.L2.Col.cO D.host.E s) = s`. Introduce `s`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star (star (s : D.host.E)) = (s : D.host.E)`. Conclude with `star_star _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ (s : 𝓞 D.host.E) (v y : Fin V.rank → D.host.E), ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) (s • v) y = ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v (Formalism.L2.Col.cO D.host.E s • y)`. Introduce `s v y`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.herm`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e1 : (s • v) a = (s : D.host.E) * v a` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (Formalism.L2.Col.cO D.host.E s • y) b = ((Formalism.L2.Col.cO D.host.E s : 𝓞 D.host.E) : D.host.E) * y b` using `rfl`. Establish `e3 : ReciprocityTheory.ChartRestriction.G.FD.cc (((Formalism.L2.Col.cO D.host.E s : 𝓞 D.host.E) : D.host.E) * y b) = (s : D.host.E) * ReciprocityTheory.ChartRestriction.G.FD.cc (y b)`. Rewrite using `[← hcc s]`. Conclude with `map_mul (IsCMField.complexConj D.host.E) _ _`. Rewrite using `[e1, e2, e3]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hne : P.asIdeal ≠ (Formalism.L2.Col.conjPrime₂ P).asIdeal` using `fun h => hP (IsDedekindDomain.HeightOneSpectrum.ext h.symm)`. Establish `hcop : P.asIdeal ⊔ (Formalism.L2.Col.conjPrime₂ P).asIdeal = ⊤` using `Ideal.IsMaximal.coprime_of_ne P.isMaximal (Formalism.L2.Col.conjPrime₂ P).isMaximal hne`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ P.asIdeal ⊔ (Formalism.L2.Col.conjPrime₂ P).asIdeal)`. Establish `hsc : Formalism.L2.Col.cO D.host.E s ∈ (Formalism.L2.Col.conjPrime₂ P).asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.Col.mem_conjP, hcO]`. Conclude with `hs`. Establish `incl : ∀ X Y : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E), (∀ v : Fin (V).rank → D.host.E, (∀ y ∈ X, ∃ n : ℤ, Algebra.trace ℚ D.host.E (-(-D.host.xi0) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v y) = n) ↔ v ∈ X) → (∀ v : Fin (V).rank → D.host.E, (∀ …`. Introduce `X Y hX hY hXY hYX l hl`. Establish `h1 : t • l ∈ X` using `hYX (Submodule.smul_mem_smul ht hl)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h2 : s • l ∈ X`. Rewrite using `[← hX]`. Introduce `x hx`. Establish `hx' : Formalism.L2.Col.cO D.host.E s • x ∈ Y` using `hXY (Submodule.smul_mem_smul hsc hx)`. Take `⟨n, hn⟩` from `(hY l).2 hl _ hx'`.
-
-Conclude with `⟨n, by rw [key]; exact hn⟩`. Establish `e : l = s • l + t • l` using `by rw [← add_smul, hst, one_smul]`. Rewrite using `[e]`. Conclude with `X.add_mem h2 h1`. Conclude with `le_antisymm (incl Y X hY hX hYX hXY) (incl X Y hX hY hXY hYX)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_eq : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (X Y : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
     Formalism.L2.Col.conjPrime₂ P ≠ P → (∀ v : Fin (V).rank → D.host.E, (∀ y ∈ X, ∃ n : ℤ, Algebra.trace ℚ D.host.E (-(-D.host.xi0) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v y) = n) ↔ v ∈ X) → (∀ v : Fin (V).rank → D.host.E, (∀ y ∈ Y, ∃ n : ℤ, Algebra.trace ℚ D.host.E (-(-D.host.xi0) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v y) = n) ↔ v ∈ Y) →
@@ -84,11 +82,11 @@ theorem selfDual_eq : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E
   exact le_antisymm (incl Y X hY hX hYX hXY) (incl X Y hX hY hXY hYX)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hL i x κ hκ`. Establish `hκ' : Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) 1 κ` using `⟨hκ.1, hκ.2.1, Subgroup.mem_bot.1 hκ.2.2⟩`. Establish `hS` using `GlobalTheory.DictMove.latGHat_eq (hL.βW i) hκ'`. Use extensionality with `v`. Rewrite using `[(GlobalTheory.MarkCoset.latG_spec D _ (x * κ)).1, (GlobalTheory.MarkCoset.latG_spec D _ x).1, (GlobalTheory.MarkCoset.latG_spec D _ (x * κ)).2, (GlobalTheory.MarkCoset.latG_spec D _ x).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyz⟩`. Use `⟨(finHom (Wc D i) κ).1.mulVec y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hS]`. Conclude with `((GlobalTheory.MarkCoset.latG_spec D _ κ).2 _).2 ⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyz, map_mul, Units.val_mul, Matrix.mulVec_mulVec]`. Introduce and unpack `⟨y, hy, hyz⟩`. Rewrite `hy` using `[← hS]`. Take `⟨y', hy', rfl⟩` from `((GlobalTheory.MarkCoset.latG_spec D _ κ).2 _).1 hy`. Conclude with `⟨y', hy', by rw [← hyz, map_mul, Units.val_mul, Matrix.mulVec_mulVec]⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latG_mul_levG : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),
@@ -113,13 +111,13 @@ theorem latG_mul_levG : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : 
     exact ⟨y', hy', by rw [← hyz, map_mul, Units.val_mul, Matrix.mulVec_mulVec]⟩
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hL hF i P k α Rc hso hα hRc g L' h1 h2 hsd hidx`. Take `⟨e, ϖ, he, hϖ1, hϖ2, hαe⟩` from `hα`. Establish `hP : Formalism.L2.Col.conjPrime₂ P ≠ P`. Introduce `h`. Apply `hso.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal, h]`. Take `⟨a₀, ha₀, hT, hT2⟩` from `GlobalTheory.T.exists_heckeElement_lattice_between_prime_mul_split D (Wc D i) P e ϖ k g (L' ⊓ latG (Wc D i) g) he hϖ1 hϖ2 (le_inf h1 Submodule.smul_le_right) inf_le_right hidx`. Take `⟨a, ha, hK⟩` from `GlobalTheory.T.exists_coset_rep_hecke_element_principal_level D R hL hF i P k α Rc e ϖ a₀ hso ⟨e, ϖ, he, hϖ1, hϖ2, hαe⟩ hRc he hϖ1 hϖ2 ha₀`. Establish `hTL : latG (Wc D i) (g * a₀) = L'`. Use `selfDual_eq D (Wc D i) P _ _ hP (GlobalTheory.Member.latG_selfDual D (Wc D i) (g * a₀) _ rfl).2.2 hsd ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (inf_le_left : L' ⊓ latG (Wc D i) g ≤ L')` and prove the remaining obligations. Rewrite using `[← hT]`. Conclude with `le_inf Submodule.smul_le_right hT2`. Use `le_trans ?_ (inf_le_left : latG (Wc D i) (g * a₀) ⊓ latG (Wc D i) g ≤ _)` and prove the remaining obligations. Rewrite using `[hT]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_inf Submodule.smul_le_right h2`. Establish `hga : latG (Wc D i) (g * a) = latG (Wc D i) (g * a₀)`. Use `latG_mul_levG D R hL i (g * a) (a⁻¹ * a₀) hK` as an intermediate fact. Rewrite using `[← this, mul_assoc, mul_inv_cancel_left]`. Conclude with `⟨a, ha, hga.trans hTL, e, a₀, he, ha₀.2.1, hK, hTL⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coset_of_selfDual : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),

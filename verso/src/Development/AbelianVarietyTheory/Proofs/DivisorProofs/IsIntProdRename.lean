@@ -13,14 +13,14 @@ noncomputable section
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-The claim follows from `le_trans (le_min hx hy) (v.map_add x y)`.
+A detailed English derivation is pending.
 -/
 theorem isIntV_add' {v : AddValuation C (WithTop ℝ)} {x y : C} (hx : IsIntV v x) (hy : IsIntV v y) :
     IsIntV v (x + y) :=
   le_trans (le_min hx hy) (v.map_add x y)
 
 /- English proof (translation)
-Unfold `IsIntV at *`. Rewrite using `[v.map_mul]`. Conclude with `add_nonneg hx hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_mul' {v : AddValuation C (WithTop ℝ)} {x y : C} (hx : IsIntV v x) (hy : IsIntV v y) :
     IsIntV v (x * y) := by
@@ -29,19 +29,19 @@ theorem isIntV_mul' {v : AddValuation C (WithTop ℝ)} {x y : C} (hx : IsIntV v 
   exact add_nonneg hx hy
 
 /- English proof (translation)
-Unfold `IsIntV`. Rewrite using `[v.map_zero]`. Conclude with `le_top`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_zero' {v : AddValuation C (WithTop ℝ)} : IsIntV v 0 := by
   unfold IsIntV; rw [v.map_zero]; exact le_top
 
 /- English proof (translation)
-Unfold `IsIntV`. Rewrite using `[v.map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIntV_one' {v : AddValuation C (WithTop ℝ)} : IsIntV v 1 := by
   unfold IsIntV; rw [v.map_one]
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_mul]`. Conclude with `Finset.sum_induction _ (IsIntV v) (fun _ _ => isIntV_add') isIntV_zero' fun p _ => isIntV_mul' (hF _) (hG _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvIsInt_mul' {v : AddValuation C (WithTop ℝ)} {σ : Type} {F G : MvPowerSeries σ C}
     (hF : MvIsInt v F) (hG : MvIsInt v G) : MvIsInt v (F * G) := by
@@ -52,7 +52,7 @@ theorem mvIsInt_mul' {v : AddValuation C (WithTop ℝ)} {σ : Type} {F G : MvPow
     fun p _ => isIntV_mul' (hF _) (hG _)
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_one]`. Use `split_ifs`. Use `exacts [isIntV_one', isIntV_zero']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvIsInt_one' {v : AddValuation C (WithTop ℝ)} {σ : Type} : MvIsInt v (1 : MvPowerSeries σ C) := by
   classical
@@ -62,7 +62,7 @@ theorem mvIsInt_one' {v : AddValuation C (WithTop ℝ)} {σ : Type} : MvIsInt v 
   exacts [isIntV_one', isIntV_zero']
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_X]`. Use `split_ifs`. Use `exacts [isIntV_one', isIntV_zero']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvIsInt_X' {v : AddValuation C (WithTop ℝ)} {σ : Type} (s : σ) :
     MvIsInt v (X s : MvPowerSeries σ C) := by
@@ -73,7 +73,7 @@ theorem mvIsInt_X' {v : AddValuation C (WithTop ℝ)} {σ : Type} (s : σ) :
   exacts [isIntV_one', isIntV_zero']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `mvIsInt_one'`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `mvIsInt_mul' ih hF`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mvIsInt_pow' {v : AddValuation C (WithTop ℝ)} {σ : Type} {F : MvPowerSeries σ C}
     (hF : MvIsInt v F) (n : ℕ) : MvIsInt v (F ^ n) := by
@@ -82,9 +82,9 @@ theorem mvIsInt_pow' {v : AddValuation C (WithTop ℝ)} {σ : Type} {F : MvPower
   | succ n ih => rw [pow_succ]; exact mvIsInt_mul' ih hF
 
 /- English proof (translation)
-Introduce `β`. Rewrite using `[coeff_subst ha]`. Use `finsum_induction (IsIntV v) isIntV_zero' (fun _ _ => isIntV_add') fun e => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `isIntV_mul' (hF e) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_induction _ (MvIsInt v) (fun _ _ => mvIsInt_mul') mvIsInt_one' (fun s _ => mvIsInt_pow' (hai s) _) β`.
+A detailed English derivation is pending.
 -/
 theorem mvIsInt_subst' {v : AddValuation C (WithTop ℝ)} {σ τ : Type} {a : σ → MvPowerSeries τ C}
     (ha : HasSubst a) (hai : ∀ s, MvIsInt v (a s)) {F : MvPowerSeries σ C} (hF : MvIsInt v F) :
@@ -98,7 +98,7 @@ theorem mvIsInt_subst' {v : AddValuation C (WithTop ℝ)} {σ τ : Type} {a : σ
     (fun s _ => mvIsInt_pow' (hai s) _) β
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ (MvIsInt v) (fun _ _ => mvIsInt_mul') mvIsInt_one' fun b _ => mvIsInt_subst' (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) (fun _ => mvIsInt_X' _) (h b)`.
+A detailed English derivation is pending.
 -/
 theorem isInt_prod_rename (v : AddValuation C (WithTop ℝ)) (i d : ℕ)
     (χ : Fin i → MvPowerSeries (Fin d) C) (h : ∀ b, MvIsInt v (χ b)) :
@@ -111,21 +111,21 @@ theorem isInt_prod_rename (v : AddValuation C (WithTop ℝ)) (i d : ℕ)
 variable [CharZero C]
 
 /- English proof (translation)
-Use `set L : MvPowerSeries σ C := ∑ s, c s • (X s : MvPowerSeries σ C) with hLdef`. Establish `hL : constantCoeff L = 0` using `by simp [hLdef]`. Establish `hnL : constantCoeff (-L) = 0` using `by rw [map_neg, hL, neg_zero]`. Set `g : MvPowerSeries σ C` to `fun β => β.prod fun s n => c s ^ n / (n.factorial : C)`. Establish `hg : ∀ β, coeff β g = ∏ s, c s ^ β s / ((β s).factorial : C)` using `fun β => by show (β.prod fun s n => c s ^ n / (n.factorial : C)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finsupp.prod_fintype _ _ (fun s => by simp)`. Establish `hpL : ∀ i, pderiv C i L = c i • (1 : MvPowerSeries σ C)` using `fun i => by`. Simplify using `[hLdef, pderiv_X, Pi.single_apply]`. Establish `hpg : ∀ i, pderiv C i g = c i • g` using `fun i => by`. Use extensionality with `β`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeff_pderiv, hg, coeff_smul, hg, Fintype.prod_eq_mul_prod_compl i, Fintype.prod_eq_mul_prod_compl i (fun s => c s ^ β s / ((β s).factorial : C))]`. Establish `hrest : ∏ s ∈ ({i}ᶜ : Finset σ), c s ^ (β + Finsupp.single i 1 : σ →₀ ℕ) s / (((β + Finsupp.single i 1 : σ →₀ ℕ) s).factorial : C) = ∏ s ∈ ({i}ᶜ : Finset σ), c s ^ β s / ((β s).factorial : C)`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hs' : s ≠ i` using `by simpa using hs`. Simplify using `[Finsupp.single_apply, Ne.symm hs']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrest]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Rewrite using `[Nat.factorial_succ]`. Establish `h0 : ((β i).factorial : C) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `h1 : ((β i : C) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hcg : constantCoeff g = 1`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hg]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `key : g * Formalism.L2.Th1.C.mvExp (-L) = 1`. Use `pderiv.ext (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, Formalism.L2.Th1.C.pderiv_mvExp hnL, map_neg, hpL, hpg, pderiv_one]`. Simplify using `only [smul_eq_mul, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, hcg, Formalism.L2.Th1.C.constantCoeff_mvExp hnL, map_one, mul_one]`. Establish `hE : Formalism.L2.Th1.C.mvExp L = g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = g := by rw [mul_assoc, Formalism.L2.Th1.C.mvExp_neg hL, mul_one]`. Rewrite using `[hE]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem coeff_mvExp_lin {σ : Type} [Fintype σ] (c : σ → C) (α : σ →₀ ℕ) :
     coeff α (Formalism.L2.Th1.C.mvExp (∑ s, c s • (X s : MvPowerSeries σ C))) =
@@ -175,9 +175,9 @@ theorem coeff_mvExp_lin {σ : Type} [Fintype σ] (c : σ → C) (α : σ →₀ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq, derivAt0]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[hg, mfact, mul_assoc, ← Finsupp.prod_mul]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (((α s).factorial : ℕ) : C) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem derivAt0_eq_eval {σ : Type} (P : MvPolynomial σ C) (g : MvPowerSeries σ C) (w : σ → C)
     (hg : ∀ α, coeff α g = α.prod fun s n => w s ^ n / (n.factorial : C)) :
@@ -191,7 +191,7 @@ theorem derivAt0_eq_eval {σ : Type} (P : MvPolynomial σ C) (g : MvPowerSeries 
   field_simp
 
 /- English proof (translation)
-Rewrite using `[detPow, map_pow, RingHom.map_det]`. Use `congr 2`. Use extensionality with `a b`. Simplify using `[RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_detPow (i c : ℕ) (H : Matrix (Fin i) (Fin i) C) :
     MvPolynomial.eval (fun x : (Σ _ : Fin i, Fin i) => H x.2 x.1) (detPow C i c) = H.det ^ c := by
@@ -203,13 +203,13 @@ theorem eval_detPow (i c : ℕ) (H : Matrix (Fin i) (Fin i) C) :
 open Formalism.L2.Th1.C in
 
 /- English proof (translation)
-Establish `hexp` using `(GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G).1`. Establish `hE : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero hexp.1`. Establish `hL : ∀ b' : Fin i, HasSubst (fun e : Fin d => ∑ a, u a e • (X (⟨b', a⟩ : Σ _ : Fin i, Fin i) : MvPowerSeries (Σ _ : Fin i, Fin i) C))` using `fun b' => hasSubst_of_constantCoeff_zero fun e => by simp`. Establish `hEA : HasSubst (expAlong (fun _ : Fin i => G) (fun _ => u))` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_subst_eq_zero (hL x.1) (fun e => by simp) (hexp.1 x.2)`. Establish `hR : HasSubst (fun e : Fin d => (X (⟨b, e⟩ : Σ _ : Fin i, Fin d) : MvPowerSeries (Σ _ : Fin i, Fin d) C))` using `hasSubst_of_constantCoeff_zero fun e => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : subst (expOf G) χ = mvExp (∑ e, w e • (X e : MvPowerSeries (Fin d) C))`. Use extensionality with `α`. Rewrite using `[hχ, coeff_mvExp_lin]`. Rewrite using `[subst_comp_subst_apply hR hEA]`. Establish `h2 : (fun e : Fin d => subst (expAlong (fun _ : Fin i => G) (fun _ => u)) (X (⟨b, e⟩ : Σ _ : Fin i, Fin d) : MvPowerSeries (Σ _ : Fin i, Fin d) C)) = fun e => subst (fun e : Fin d => ∑ a, u a e • (X (⟨b, a⟩ : Σ _ : Fin i, Fin i) : MvPowerSeries (Σ _ : Fin i, Fin i) C)) (expOf G e …`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `e`. Rewrite using `[subst_X hEA]`. Both sides reduce to the same expression. Rewrite using `[h2, ← subst_comp_subst_apply hE (hL b), h1, mvSubst_mvExp (by simp) (hL b)]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← coe_substAlgHom (hL b), map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, coe_substAlgHom, subst_X (hL b)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_col (v : AddValuation C (WithTop ℝ)) {i d : ℕ} (G : LogFGL v d) (u : Fin i → Fin d → C)
     (b : Fin i) (w : Fin d → C) (χ : MvPowerSeries (Fin d) C)
@@ -239,9 +239,9 @@ theorem subst_col (v : AddValuation C (WithTop ℝ)) {i d : ℕ} (G : LogFGL v d
   rw [map_smul, coe_substAlgHom, subst_X (hL b)]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_sum {i d : ℕ} (l : Fin i → Fin d → C) (u : Fin i → Fin d → C) :
     (∑ b, ∑ e, l b e • ∑ a, u a e • (X (⟨b, a⟩ : Σ _ : Fin i, Fin i) : MvPowerSeries (Σ _ : Fin i, Fin i) C)) =
@@ -254,11 +254,11 @@ theorem lin_sum {i d : ℕ} (l : Fin i → Fin d → C) (u : Fin i → Fin d →
   rw [Finset.sum_smul]
 
 /- English proof (translation)
-Introduce `C _ _ v i d c G u l hl`. Use `choose χ hχi hχc using hl`. Establish `hf` using `isInt_prod_rename v i d χ hχi`. Establish `key : subst (expAlong (fun _ : Fin i => G) (fun _ => u)) (∏ b, subst (fun e : Fin d => (X (⟨b, e⟩ : Σ _ : Fin i, Fin d) : MvPowerSeries (Σ _ : Fin i, Fin d) C)) (χ b)) = Formalism.L2.Th1.C.mvExp (∑ x : (Σ _ : Fin i, Fin i), (∑ e, l x.1 e * u x.2 e) • (X x : MvPowerSeries (Σ _ : F …`. Establish `hexp` using `(GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEA : HasSubst (expAlong (fun _ : Fin i => G) (fun _ => u))` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero fun e => by simp) (fun e => by simp) (hexp.1 x.2)`. Rewrite using `[← coe_substAlgHom hEA, map_prod, ← lin_sum, Formalism.L2.Th1.C.mvExp_sum _ _ (fun b _ => by simp)]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coe_substAlgHom, subst_col v G u b (l b) (χ b) (hχc b)]`. Unfold `detDepth depth`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (iInf_le _ ⟨_, hf⟩) (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[key, derivAt0_eq_eval _ _ (fun x : (Σ _ : Fin i, Fin i) => (Matrix.of fun a b => ∑ e, l b e * u a e) x.2 x.1) (fun α => by rw [coeff_mvExp_lin]; rfl), eval_detPow]`.
+Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detDepth_le_char : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (i d c : ℕ)
     (G : LogFGL v d) (u : Fin i → Fin d → C) (l : Fin i → Fin d → C), (∀ b, IsCharLog G (l b)) →

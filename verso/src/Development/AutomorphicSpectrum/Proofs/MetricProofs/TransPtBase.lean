@@ -40,7 +40,7 @@ def stepOf (M : FlagModel y Ψ N j) (k : K) (h : ¬ ∀ p, M.blk p ≠ some k) :
   Classical.choose (not_forall_not.1 (by simpa using h) : ∃ p, M.blk p = some k)
 
 /- English proof (translation)
-Unfold `stepOf`. Conclude with `Classical.choose_spec (p := fun p => M.blk p = some k) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blk_stepOf (M : FlagModel y Ψ N j) (k : K) (h : ¬ ∀ p, M.blk p ≠ some k) :
     M.blk (stepOf M k h) = some k := by
@@ -53,7 +53,7 @@ def transPt {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover 
     minorIJ (M'.g (stepOf M q.1 h).1) I (stepCols N j (stepOf M q.1 h).2)
 
 /- English proof (translation)
-The claim follows from `dif_pos q.1.2`.
+A detailed English derivation is pending.
 -/
 theorem transPt_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (q : Σ k, baseIdx ι M.blk k) :
@@ -61,7 +61,7 @@ theorem transPt_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : F
   dif_pos q.1.2
 
 /- English proof (translation)
-Establish `h : ¬ ∀ p, M.blk p ≠ some k` using `fun H => H p hp`. Establish `e : stepOf M k h = p` using `M.blk_inj _ _ k (blk_stepOf M k h) hp`. Rewrite using `[transPt, dif_neg h, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem transPt_step {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (p : Ψ × Fin N) (k : K) (hp : M.blk p = some k) (m : ι k) :

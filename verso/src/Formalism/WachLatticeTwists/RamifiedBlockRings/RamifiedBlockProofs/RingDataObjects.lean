@@ -16,23 +16,23 @@ variable {O K : Type} [CommRing O] [CommRing K] [Algebra O K] {X : Type} (T : Su
 def term (c : X → O) (g : G) : X → Matrix d d K := fun x => algebraMap O K (c x) • r g x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[term, add_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem term_add (c c' : X → O) (g : G) : term r (c + c') g = term r c g + term r c' g := by
   funext x
   simp [term, add_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[term]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem term_zero (g : G) : term r (0 : X → O) g = 0 := by
   funext x
   simp [term]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [term, Pi.mul_apply, map_mul]`. Use `first`. Consider the case `exact smul_mul_smul_comm _ _ _ _`. Consider the case `exact smul_mul_smul _ _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem term_mul (c c' : X → O) (g g' : G) : term r c g * term r c' g' = term r (c * c') (g * g') := by
   funext x
@@ -43,27 +43,27 @@ theorem term_mul (c c' : X → O) (g g' : G) : term r c g * term r c' g' = term 
   | simp [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_tSpan_iff (F : X → Matrix d d K) :
     F ∈ tSpan T r ↔ ∃ (s : Finset G) (c : G → X → O), (∀ g, c g ∈ T) ∧ F = ∑ g ∈ s, term r (c g) g := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(mem_tSpan_iff T r _).2 ⟨{g}, fun _ => c, fun _ => hc, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem term_mem {c : X → O} (hc : c ∈ T) (g : G) : term r c g ∈ tSpan T r := (mem_tSpan_iff T r _).2 ⟨{g}, fun _ => c, fun _ => hc, by simp⟩
 
 /- English proof (translation)
-The claim follows from `(mem_tSpan_iff T r 0).2 ⟨∅, fun _ => 0, fun _ => T.zero_mem, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem zero_mem_tSpan : (0 : X → Matrix d d K) ∈ tSpan T r := (mem_tSpan_iff T r 0).2 ⟨∅, fun _ => 0, fun _ => T.zero_mem, by simp⟩
 
 /- English proof (translation)
-Take `⟨s, c, hc, rfl⟩` from `(mem_tSpan_iff T r _).1 h`. Take `⟨s', c', hc', rfl⟩` from `(mem_tSpan_iff T r _).1 h'`. Use `(mem_tSpan_iff T r _).2 ⟨s ∪ s', fun g => (if g ∈ s then c g else 0) + (if g ∈ s' then c' g else 0), fun g => T.add_mem (by split_ifs; exacts [hc g, T.zero_mem]) (by split_ifs; exacts [hc' g, T.zero_mem]), ?_⟩` and prove the remaining obligations. Simplify using `only [term_add, Finset.sum_add_distrib]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `(Finset.sum_congr rfl fun g hg => ?_).trans (Finset.sum_subset Finset.subset_union_left fun g _ hg => ?_)` and prove the remaining obligations. Rewrite using `[if_pos hg]`. Rewrite using `[if_neg hg, term_zero]`. Use `(Finset.sum_congr rfl fun g hg => ?_).trans (Finset.sum_subset Finset.subset_union_right fun g _ hg => ?_)` and prove the remaining obligations. Rewrite using `[if_pos hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hg, term_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F' ∈ tSpan T r) :
     F + F' ∈ tSpan T r := by
@@ -82,16 +82,14 @@ theorem add_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F'
     · rw [if_neg hg, term_zero]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (· ∈ tSpan T r) (fun _ _ ha hb => add_mem_tSpan T r ha hb) (zero_mem_tSpan T r) h`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_tSpan {ι : Type*} (s : Finset ι) (F : ι → X → Matrix d d K)
     (h : ∀ i ∈ s, F i ∈ tSpan T r) : ∑ i ∈ s, F i ∈ tSpan T r := Finset.sum_induction _ (· ∈ tSpan T r) (fun _ _ ha hb => add_mem_tSpan T r ha hb)
   (zero_mem_tSpan T r) h
 
 /- English proof (translation)
-Take `⟨s, c, hc, rfl⟩` from `(mem_tSpan_iff T r _).1 h`. Take `⟨s', c', hc', rfl⟩` from `(mem_tSpan_iff T r _).1 h'`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Conclude with `sum_mem_tSpan T r _ _ fun g _ => sum_mem_tSpan T r _ _ fun g' _ => by`. Rewrite using `[term_mul]`.
-
-Conclude with `term_mem T r (T.mul_mem (hc _) (hc' _)) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F' ∈ tSpan T r) :
     F * F' ∈ tSpan T r := by
@@ -103,9 +101,9 @@ theorem mul_mem_tSpan {F F' : X → Matrix d d K} (h : F ∈ tSpan T r) (h' : F'
     exact term_mem T r (T.mul_mem (hc _) (hc' _)) _
 
 /- English proof (translation)
-Take `⟨s, c, hc, rfl⟩` from `(mem_tSpan_iff T r _).1 h`. Use `(mem_tSpan_iff T r _).2 ⟨s, fun g => f * c g, fun g => T.mul_mem hf (hc g), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[term, Finset.sum_apply, Finset.smul_sum, smul_smul, map_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_tSpan {f : X → O} (hf : f ∈ T) {F : X → Matrix d d K} (h : F ∈ tSpan T r) :
     (fun x => algebraMap O K (f x) • F x) ∈ tSpan T r := by

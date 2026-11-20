@@ -13,27 +13,23 @@ noncomputable section
 open GlobalTheory.FrameGlue.PowGlue GlobalTheory.TrueGeo.SmallSec in
 
 /- English proof (translation)
-Introduce `F _ _ Y C A p V V' π hπ hL c hR`. Take `⟨hη, W, U, hW, hov, hunit, hnorm⟩` from `hR`. Take `⟨g, hgj, hgπ⟩` from `hL`. Establish `hη'` using `RootLine.j_gen_specializes V'`. Establish `hg : g (genericPoint V'.G) ⤳ genericPoint V.G` using `specializes_of_eq (gen_of_lies V V' π hπ g hgj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hηV, eV⟩` from `V.φ_eq_fnMap`. Take `⟨hηV', eV'⟩` from `V'.φ_eq_fnMap`. Establish `hφ : ∀ t, V'.φ t = fnMap g hg (V.φ t)`. Introduce `t`. Rewrite using `[eV', eV, ← ProjSpace.fnMap_comp g V.π hg hηV (ProjSpace.comp_genericPoint_specializes _ _ hg hηV) t]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ProjSpace.fnMap_congr hgπ.symm _ _ _`. Establish `hcc : ∀ f, fnMap V'.j hη' (fnMap π hπ f) = fnMap g hg (fnMap V.j hη f)`. Introduce `f`. Rewrite using `[← ProjSpace.fnMap_comp V'.j π hη' hπ (ProjSpace.comp_genericPoint_specializes _ _ hη' hπ), ← ProjSpace.fnMap_comp g V.j hg hη (ProjSpace.comp_genericPoint_specializes _ _ hg hη)]`. Conclude with `ProjSpace.fnMap_congr hgj.symm _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ x, (jm V' hη' ((Units.map (fnMap π hπ).toMonoidHom (c (π x)) : V'.X.functionFieldˣ)) : V'.G.functionField) = fnMap g hg (jm V hη (c (π x)))`. Introduce `x`. Conclude with `hcc _`. Use `⟨hη', W, fun x => π ⁻¹ᵁ U (π x), hW, fun x hx => hov _ (hx.map π), ?_, ?_⟩` and prove the remaining obligations. Introduce `x z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgz : V.j (g z) ∈ U (π x)`. Establish `: V.j (g z) = π (V'.j z)` using `by rw [← Scheme.Hom.comp_apply, hgj, Scheme.Hom.comp_apply]`. Rewrite using `[this]`. Conclude with `hz`. Establish `hπz : V.π (g z) = V'.π z` using `by rw [← Scheme.Hom.comp_apply, hgπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `H` using `RootLine.unitAt_fnMap g hg (hunit (π x) (g z) hgz)`. Rewrite `H` using `[map_mul, ← hφ, hπz]`. Rewrite using `[hval]`. Conclude with `H`. Introduce `v hv e y hy z yt e1 e2 x hyt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : V'.j (below z) ∈ π ⁻¹ᵁ U (π x)`. Establish `h1 : (z ≫ V'.j) (IsLocalRing.closedPoint _) ∈ π ⁻¹ᵁ U (π x)`. Rewrite using `[← e2]`. Conclude with `hyt (Set.mem_univ _)`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : V'.π (below z) = below y.1` using `by rw [← e1]; rfl`. Establish `e1' : (z ≫ g) ≫ V.π = y.1` using `by rw [Category.assoc, hgπ, e1]`. Establish `e2' : spMap e.O.subtype ≫ (yt ≫ π) = (z ≫ g) ≫ V.j`. Rewrite using `[← Category.assoc, e2, Category.assoc, Category.assoc, hgj]`. Establish `hUa : ⊤ ≤ (yt ≫ π) ⁻¹ᵁ U (π x)` using `fun w hw => hyt hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HV` using `hnorm v hv e y hy (z ≫ g) (yt ≫ π) e1' e2' (π x) hUa`. Establish `hgz : V.j (g (below z)) ∈ U (π x)`. Establish `: V.j (g (below z)) = π (V'.j (below z))`. Rewrite using `[← Scheme.Hom.comp_apply, hgj, Scheme.Hom.comp_apply]`. Rewrite using `[this]`.
-
-Conclude with `hz`. Establish `hπz : V.π (g (below z)) = below y.1` using `by rw [← Scheme.Hom.comp_apply, hgπ, hb]`. Establish `hU` using `hunit (π x) (g (below z)) hgz`. Rewrite `hU` using `[hπz]`. Rewrite `HV` using `[← valAt_fnMap g hg z hU.regAt, map_mul, ← hφ]`.
-
-Rewrite using `[hval]`. Conclude with `HV`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatChain.reads_pull : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (A : Adl C Y) (p : ℕ)
     (V V' : Cover Y) (π : V'.X ⟶ V.X) (hπ : π (genericPoint V'.X) ⤳ genericPoint V.X), Lies V' V π →

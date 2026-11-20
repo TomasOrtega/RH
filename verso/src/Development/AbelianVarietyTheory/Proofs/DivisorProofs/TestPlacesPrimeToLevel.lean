@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlacesPrime
 
 /- English proof (translation)
-Introduce `hb`. Take `⟨u, v, e⟩` from `(Nat.isCoprime_iff_coprime.2 h).map (Int.castRingHom R)`. Apply `hI.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← e]`. Simplify using `only [eq_intCast, Int.cast_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ hb)`.
+A detailed English derivation is pending.
 -/
 theorem not_both_mem {R : Type} [CommRing R] {I : Ideal R} (hI : I.IsPrime) {a b : ℕ} (h : Nat.Coprime a b)
     (ha : (a : R) ∈ I) : (b : R) ∉ I := by
@@ -25,7 +25,7 @@ theorem not_both_mem {R : Type} [CommRing R] {I : Ideal R} (hI : I.IsPrime) {a b
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ hb)
 
 /- English proof (translation)
-Take `⟨⟨P, -, -⟩, -⟩` from `h`. Conclude with `Nat.Coprime.mul_right (UpperTheory.Ram.Fun.coprime_condN_of_splitK D.host hp (P.level_split p hl)) (D.host.ccK_coprime p (by simp [hl])).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coprime_level {D : D7} {large₂ : SizeData₂ D} (h : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) {p : ℕ} (hp : p.Prime)
     (hl : p ∈ D.host.levelPrimes) : Nat.Coprime p (D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK) := by
@@ -34,7 +34,7 @@ theorem coprime_level {D : D7} {large₂ : SizeData₂ D} (h : GlobalTheory.Inde
     (D.host.ccK_coprime p (by simp [hl])).symm
 
 /- English proof (translation)
-Take `⟨hp, hm, hn⟩` from `leastSplitAuxiliaryPrimeThetaChain_spec D`. Establish `hM : Nat.Coprime (q0 D) (Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hm, Nat.gcd_one_left]`. Establish `hdvd : D.host.QS * D.host.q * D.host.d ∣ Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D` using `Dvd.dvd.mul_left dvd_rfl _`. Conclude with `Nat.Coprime.mul_right (hM.coprime_dvd_right hdvd) ((Nat.Prime.coprime_iff_not_dvd hp).2 hn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leastSplitAuxiliaryPrime_coprime_host_invariants (D : D7) : Nat.Coprime (q0 D) (D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK) := by
   obtain ⟨hp, hm, hn⟩ := leastSplitAuxiliaryPrimeThetaChain_spec D
@@ -45,13 +45,13 @@ theorem leastSplitAuxiliaryPrime_coprime_host_invariants (D : D7) : Nat.Coprime 
   exact Nat.Coprime.mul_right (hM.coprime_dvd_right hdvd) ((Nat.Prime.coprime_iff_not_dvd hp).2 hn)
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`. Establish `hunder` using `ch.G.pl.under_w hv`. Establish `lift : ∀ n : ℕ, ((n : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → ((n : ℕ) : 𝓞 D.host.E) ∈ (ch.G.pl.w v).asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n hn`. Rewrite `hn` using `[← hunder]`. Use `Ideal.mem_comap.1 hn` as an intermediate fact. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hcop⟩ : ∃ p : ℕ, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∧ Nat.Coprime p (D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Break down `ch.G.pl.mem_S0_of_sum_eq.1 hv with rfl | h1` into its components or cases. Conclude with `⟨q0 D, ch.G.pl.basePlace_over_qZero, leastSplitAuxiliaryPrime_coprime_host_invariants D⟩`. Break down `(S1_mem_OmF D).1 h1 with h | h | h | h` into its components or cases. Conclude with `⟨_, h, coprime_level hS.size (D.host.g_prime 0) (D.host.g_level 0)⟩`. Conclude with `⟨_, h, coprime_level hS.size (D.host.g_prime 1) (D.host.g_level 1)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, h, coprime_level hS.size D.host.pde_prime D.host.pde_level.1⟩`. Conclude with `⟨_, h, coprime_level hS.size D.host.pde'_prime D.host.pde_level.2⟩`. Conclude with `not_both_mem (ch.G.pl.w v).isPrime hcop (lift p hp)`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem places_prime_to_level : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ w ∈ ch.G.pl.W0,
     ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := by

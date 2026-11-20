@@ -5,19 +5,19 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n ι _ _ Φ hΦ μ ⟨w, hw0, hw⟩ i j`. Use `set σ : Equiv.Perm (Fin n) := Equiv.swap i j with hσ`. Use `set P : Matrix (Fin n) (Fin n) ℂ := σ.toPEquiv.toMatrix with hP`. Establish `hσσ : ∀ k, σ (σ k) = k` using `fun k => Equiv.swap_apply_self _ _ _`. Establish `hPP : P * P = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP, ← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Establish `: σ.trans σ = Equiv.refl _` using `by ext k; simp [hσσ]`. Rewrite using `[this, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Set `p : GL (Fin n) ℂ` to `⟨P, P, hPP, hPP⟩`. Establish `hpp : p * p = 1` using `Units.ext hPP`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Φ p *ᵥ w, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Establish `: Φ p *ᵥ (Φ p *ᵥ w) = 0` using `by rw [h]; simp`. Rewrite `this` using `[mulVec_mulVec, ← hΦ.mul, hpp, hΦ.one, one_mulVec]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `D hD`. Establish `hent : ∀ a b, (p * D * p).val a b = D.val (σ a) (σ b)`. Introduce `a b`. Use `show (P * D.val * P) a b = _`. Rewrite using `[hP, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hσ, Equiv.symm_swap]`. Establish `hD' : (p * D * p).val.IsDiag`. Introduce `a b hab`. Rewrite using `[hent]`. Conclude with `hD (fun h => hab (σ.injective h))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Φ D * Φ p = Φ p * Φ (p * D * p)`. Rewrite using `[← hΦ.mul, ← hΦ.mul]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, hpp, one_mul]`. Establish `hprod : (∏ k, (p * D * p).val k k ^ μ k) = ∏ k, D.val k k ^ (μ ∘ σ) k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hent, Function.comp]`. Rewrite using `[← Equiv.prod_comp σ (fun k => D.val k k ^ μ (σ k))]`. Simplify using `[hσσ]`. Rewrite using `[mulVec_mulVec, key, ← mulVec_mulVec, hw _ hD', hprod, mulVec_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isWt_comp_swap : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ),
     IsPolyRep Φ → ∀ μ : Fin n → ℤ, IsWt Φ μ → ∀ i j : Fin n, IsWt Φ (μ ∘ Equiv.swap i j) := by

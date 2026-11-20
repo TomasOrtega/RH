@@ -8,7 +8,7 @@ open MeasureTheory Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.OrbDesc.StabIndex.relIndex_twCent_inf_ne_zero) | (exact GlobalTheory.OrbDesc.StabIndex.relIndex_twCent_inf_ne_zero) | (intros; apply GlobalTheory.OrbDesc.StabIndex.relIndex_twCent_inf_ne_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.relIndex_ne_zero_centralizer_parabolicCosetStabilizer : ∀ (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K]
   (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ) (e : ι ≃ Fin a ⊕ Fin b) (γ : GL ι K),

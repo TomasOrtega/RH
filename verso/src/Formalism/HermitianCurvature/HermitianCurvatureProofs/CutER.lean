@@ -76,7 +76,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.beta Formalism.QuantumDeterminants.betaBig`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[map_mul, Complex.conj_ofReal, inner_conj_symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_conj (D : B.RealPlaceData k r Wp Wq) (F F' : B.Mat k r → (Wq →L[ℂ] Wp)) :
     B.beta D F F' = conj (B.beta D F' F) := by
@@ -102,7 +102,7 @@ def Good (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ) (c : ℝ) (H : B.Ma
 def EqG (H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)) : Prop := ∀ g ∈ B.GV k r, H₁ g = H₂ g
 
 /- English proof (translation)
-Take `⟨C, h1, h2⟩` from `h`. Conclude with `⟨C, Formalism.FourierDecayAlt.P.B5.ckOn_mono (by exact_mod_cast hm) h1, fun u v hu hv huv g hg => h2 u v hu hv (huv.trans hm) g hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inCC_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m m' : ℕ} (hm : m' ≤ m)
     {F : B.Mat k r → E} (h : B.InCC A m F) : B.InCC A m' F := by
@@ -111,14 +111,14 @@ theorem inCC_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : �
     fun u v hu hv huv g hg => h2 u v hu hv (huv.trans hm) g hg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, inCC_mono hm h.2.1, h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_mono {D : B.RealPlaceData k r Wp Wq} {A : ℝ} {m m' : ℕ} {c : ℝ} (hm : m' ≤ m)
     {H : B.Mat k r → (Wq →L[ℂ] Wp)} (h : Good D A m c H) : Good D A m' c H :=
   ⟨h.1, inCC_mono hm h.2.1, h.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hSm k r Wp Wq s _ H h.1, hCC k r Wp Wq s _ A m H h.1 h.2.1, hSu k r Wp Wq D.z D.z' c s _ H h.1 h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem op_good (hSm : CVSmooth) (hCC : CVCC) (hSu : CVSupp) {D : B.RealPlaceData k r Wp Wq} {A : ℝ} {m : ℕ}
     {c : ℝ} (s : ℂ) (x : Bool × ℝ) {H : B.Mat k r → (Wq →L[ℂ] Wp)} (h : Good D A (m + (2 * r + k + 1)) c H) :
@@ -126,7 +126,7 @@ theorem op_good (hSm : CVSmooth) (hCC : CVCC) (hSu : CVSupp) {D : B.RealPlaceDat
   ⟨hSm k r Wp Wq s _ H h.1, hCC k r Wp Wq s _ A m H h.1 h.2.1, hSu k r Wp Wq D.z D.z' c s _ H h.1 h.2.2⟩
 
 /- English proof (translation)
-The claim follows from `| [], m, H, h => by simpa using h | x :: a, m, H, h => by rw [List.foldr_cons] refine op_good hSm hCC hSu s x (fold_good hSm hCC hSu s a (m + (2 * r + k + 1)) H ?_) have e : m + (2 * r + k + 1) + a.length * (2 * r + k + 1) = m + (x :: a).length * (2 * r + k + 1) := by rw [List.le …`.
+A detailed English derivation is pending.
 -/
 theorem fold_good (hSm : CVSmooth) (hCC : CVCC) (hSu : CVSupp) {D : B.RealPlaceData k r Wp Wq} {A : ℝ} {c : ℝ}
     (s : ℂ) : ∀ (a : List (Bool × ℝ)) (m : ℕ) (H : B.Mat k r → (Wq →L[ℂ] Wp)),
@@ -140,7 +140,7 @@ theorem fold_good (hSm : CVSmooth) (hCC : CVCC) (hSu : CVSupp) {D : B.RealPlaceD
     rw [e]; exact h
 
 /- English proof (translation)
-The claim follows from `| [], _, h => h | x :: a, H, h => hSm k r Wp Wq s _ _ (fold_smooth hSm s a H h)`.
+A detailed English derivation is pending.
 -/
 theorem fold_smooth (hSm : CVSmooth) (s : ℂ) : ∀ (a : List (Bool × ℝ)) (H : B.Mat k r → (Wq →L[ℂ] Wp)),
     B.CkOn ⊤ (B.GV k r) H → B.CkOn ⊤ (B.GV k r) (a.foldr (opL k r s) H)
@@ -148,11 +148,9 @@ theorem fold_smooth (hSm : CVSmooth) (s : ℂ) : ∀ (a : List (Bool × ℝ)) (H
   | x :: a, H, h => hSm k r Wp Wq s _ _ (fold_smooth hSm s a H h)
 
 /- English proof (translation)
-Use `set Θ := capTh k r Wp Wq s (x.2 : ℂ) with hΘ`. Take `⟨hord, hSC, hCo, hPC, hApp⟩` from `hF k r Wp Wq D s (x.2 : ℂ) c (B.opOrder Θ + 5)`. Take `⟨_, _, _, _, _, _, hP⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi k r Wp Wq D A hAB`. Establish `hHc : B.InCC (A + 0) (B.opOrder Θ + 5) H` using `by rw [add_zero, hord]; exact hH.2.1`. Establish `hH'c : B.InCC (A + 0) (B.opOrder Θ + 5) H'` using `by rw [add_zero, hord]; exact hH'.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hP Θ c 0 hc le_rfl hSC hCo hPC H H' hHc hH'c hH.2.2 hH'.2.2`. Establish `h0 : B.beta D (opL k r s x H) H' = B.beta D (B.opApply Θ H) H'` using `hB k r Wp Wq D _ _ _ _ (fun g hg => (hApp H (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hH.1) g hg).symm) (fun _ _ => rfl)`. Establish `h2 : B.beta D H (B.opAdj Θ H') = B.beta D H (opL k r s x H')` using `hB k r Wp Wq D _ _ _ _ (fun _ _ => rfl) (fun g hg => by`. Rewrite using `[hΘ, hA k r Wp Wq s (x.2 : ℂ) H' hH'.1 g hg, hs, Complex.conj_ofReal]`. Use the proof step `rfl)`.
-
-Rewrite using `[h0, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_step (hA : CapAdj) (hF : CapThFacts) (hB : BetaCongr) (D : B.RealPlaceData k r Wp Wq) {A : ℝ}
     (hAB : B.AB k r ≤ A) {c : ℝ} (hc : 0 < c) {s : ℂ} (hs : conj s = s) (x : Bool × ℝ)
@@ -174,7 +172,7 @@ theorem adj_step (hA : CapAdj) (hF : CapThFacts) (hB : BetaCongr) (D : B.RealPla
   rw [h0, h1, h2]
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _ => by simp | x :: a, H, H', hH, hH' => by have hZ : Good D A (2 * r + k + 1 + 5) c (a.foldr (opL k r s) H) := by refine fold_good hSm hCC hSu s a _ H (good_mono ?_ hH) rw [List.length_cons]; nlinarith have hx : Good D A (a.length * (2 * r + k + 1) + (2 * r + k + …`.
+A detailed English derivation is pending.
 -/
 theorem fold_adj (hA : CapAdj) (hF : CapThFacts) (hB : BetaCongr) (hSm : CVSmooth) (hCC : CVCC) (hSu : CVSupp)
     (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hAB : B.AB k r ≤ A) {c : ℝ} (hc : 0 < c) {s : ℂ} (hs : conj s = s) :
@@ -199,7 +197,7 @@ theorem fold_adj (hA : CapAdj) (hF : CapThFacts) (hB : BetaCongr) (hSm : CVSmoot
     rfl
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => fun _ _ => rfl | y :: a, H, h => by intro g hg have ih := fold_push hSm hCg hCm s x a H h have h1 : EqG (opL k r s y (a.foldr (opL k r s) (opL k r s x H))) (opL k r s y (opL k r s x (a.foldr (opL k r s) H))) := hCg k r Wp Wq s _ _ _ (fold_smooth hSm s a _ (hSm k r W …`.
+A detailed English derivation is pending.
 -/
 theorem fold_push (hSm : CVSmooth) (hCg : CVCongr) (hCm : CVComm) (s : ℂ) (x : Bool × ℝ) :
     ∀ (a : List (Bool × ℝ)) (H : B.Mat k r → (Wq →L[ℂ] Wp)), B.CkOn ⊤ (B.GV k r) H →
@@ -216,7 +214,7 @@ theorem fold_push (hSm : CVSmooth) (hCg : CVCongr) (hCm : CVComm) (s : ℂ) (x :
     exact hCm k r Wp Wq s _ _ (a.foldr (opL k r s) H) (fold_smooth hSm s a H h) g hg
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => fun _ _ => rfl | x :: a, H, h => by intro g hg rw [List.reverse_cons, List.foldr_append] show (a.reverse.foldr (opL k r s) (opL k r s x H)) g = (opL k r s x (a.foldr (opL k r s) H)) g rw [fold_rev hSm hCg hCm s a (opL k r s x H) (hSm k r Wp Wq s _ H h) g hg] exact f …`.
+A detailed English derivation is pending.
 -/
 theorem fold_rev (hSm : CVSmooth) (hCg : CVCongr) (hCm : CVComm) (s : ℂ) :
     ∀ (a : List (Bool × ℝ)) (H : B.Mat k r → (Wq →L[ℂ] Wp)), B.CkOn ⊤ (B.GV k r) H →
@@ -232,25 +230,25 @@ theorem fold_rev (hSm : CVSmooth) (hCg : CVCongr) (hCm : CVComm) (s : ℂ) :
 end assembly
 
 /- English proof (translation)
-Establish `hr0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hNN : (N : ℝ) ≤ Ntop` using `by exact_mod_cast hN`. Establish `hT0 : (0 : ℝ) ≤ Ntop` using `Nat.cast_nonneg Ntop`. Establish `hcast : ((N * (2 * r + k + 1) + (2 * r + k + 1 + 5) : ℕ) : ℝ) = (N : ℝ) * (2 * (r : ℝ) + k + 1) + (2 * (r : ℝ) + k + 1) + 5` using `by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcast]`. Unfold `B.AB`. Generalize the expression as in `hRd : (r : ℝ) + 1 = R at hA0 ⊢`. Generalize the expression as in `hnd : 2 * (r : ℝ) + k + 1 = n at hA0 ⊢`. Establish `hR : 1 ≤ R` using `by rw [← hRd]; linarith`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hn : 1 ≤ n` using `by rw [← hnd]; linarith`. Establish `hkr : (k : ℝ) + r ≤ n` using `by rw [← hnd]; linarith`. Establish `hR0 : 0 ≤ R` using `by linarith`. Establish `hn0 : 0 ≤ n` using `by linarith`. Establish `hR3 : 1 ≤ R ^ 3` using `one_le_pow₀ hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn2 : 1 ≤ n ^ 2` using `one_le_pow₀ hn`. Establish `hn3' : 1 ≤ n ^ 3` using `one_le_pow₀ hn`. Establish `hR4 : R ≤ R ^ 4`. Establish `h` using `mul_le_mul_of_nonneg_left hR3 hR0`. Establish `e : R ^ 4 = R * R ^ 3` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn3 : n ≤ n ^ 3`. Establish `h` using `mul_le_mul_of_nonneg_left hn2 hn0`. Establish `e : n ^ 3 = n * n ^ 2` using `by ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn2 : n ≤ n ^ 2`. Establish `h` using `mul_le_mul_of_nonneg_left hn hn0`. Establish `e : n ^ 2 = n * n` using `by ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX0 : 0 ≤ (Ntop : ℝ) * n ^ 2 + n ^ 3` using `by positivity`. Establish `fa : R * ((k : ℝ) + r) ≤ R * n` using `mul_le_mul_of_nonneg_left hkr hR0`. Establish `fN : (N : ℝ) * n ≤ (Ntop : ℝ) * n ^ 2` using `(mul_le_mul_of_nonneg_right hNN hn0).trans (mul_le_mul_of_nonneg_left hnn2 hT0)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fb : R * ((N : ℝ) * n) ≤ R * ((Ntop : ℝ) * n ^ 2)` using `mul_le_mul_of_nonneg_left fN hR0`. Establish `fc : R * n ≤ R * n ^ 3` using `mul_le_mul_of_nonneg_left hn3 hR0`. Establish `fd : R * 1 ≤ R * n ^ 3` using `mul_le_mul_of_nonneg_left hn3' hR0`. Establish `g1 : 0 ≤ R * ((Ntop : ℝ) * n ^ 2)` using `mul_nonneg hR0 (mul_nonneg hT0 (by positivity))`. Establish `g2 : 0 ≤ R * n ^ 3` using `mul_nonneg hR0 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRX : R * ((Ntop : ℝ) * n ^ 2 + n ^ 3) ≤ R ^ 4 * ((Ntop : ℝ) * n ^ 2 + n ^ 3)` using `mul_le_mul_of_nonneg_right hR4 hX0`. Establish `e1 : 2 * ((k : ℝ) + r) * R + 1 + 2 * R * ((N : ℝ) * n + n + 5) = 2 * (R * ((k : ℝ) + r)) + 1 + 2 * (R * ((N : ℝ) * n)) + 2 * (R * n) + 10 * (R * 1)` using `by ring`. Establish `e2 : 100 * R ^ 4 * ((Ntop : ℝ) * n ^ 2 + n ^ 3) = 100 * (R ^ 4 * ((Ntop : ℝ) * n ^ 2 + n ^ 3))` using `by ring`. Establish `e3 : R * ((Ntop : ℝ) * n ^ 2 + n ^ 3) = R * ((Ntop : ℝ) * n ^ 2) + R * n ^ 3` using `by ring`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hA0` using `[e2]`. Rewrite `hRX` using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bound_aux (r k N Ntop : ℕ) (A₀ : ℝ) (hN : N ≤ Ntop)
     (hA0 : 100 * ((r : ℝ) + 1) ^ 4 * ((Ntop : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀) :
@@ -306,17 +304,17 @@ theorem bound_aux (r k N Ntop : ℕ) (A₀ : ℝ) (hN : N ≤ Ntop)
   linarith
 
 /- English proof (translation)
-Use `⟨100, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hBu v ε hε a ha`. Take `⟨hIB, -, -, -⟩` from `hBu`. Take `⟨-, -, -, hBuilt, -, -, -, -, -, hfs, -, hA0, -⟩` from `hIB`. Take `⟨hχ, hv⟩` from `hBuilt`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hfc, -⟩` from `hv v`. Take `⟨hχ1, ⟨δ, hδ, hδ0⟩, hχ3⟩` from `hχ`. Take `⟨w, rfl⟩` from `ha`. Use `set Bs := (T v).base with hBs`. Use `set s : ℂ := M.sgn (FourierDecayAlt.D.parOf S v) (S.l + 1) with hsdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F := FourierDecayAlt.D.cutF Bs χ (f v) ε with hFdef`. Establish `hs : conj s = s` using `by rw [hsdef]; unfold M.sgn; simp`. Establish `hc : 0 < δ * ε` using `mul_pos hδ hε`. Establish `hN : (w.1 v).length ≤ S.Ntop` using `(Finset.le_sup (f := fun v => (w.1 v).length) (Finset.mem_univ v)).trans w.2.2`. Establish `hFs : B.CkOn ⊤ (B.GV S.G.k S.G.r) F` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF Bs ⟨hχ1, ⟨δ, hδ, hδ0⟩, hχ3⟩ (hfs v) ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hFsupp : ∀ g ∈ B.GV S.G.k S.G.r, F g ≠ 0 → δ * ε ≤ Gf S.G.k S.G.r Bs.z Bs.z' g`. Introduce `g _ hg`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : χ (Gf S.G.k S.G.r Bs.z Bs.z' g / ε) = 0` using `hδ0 _ (by rw [div_lt_iff₀ hε]; exact hlt)`. Simplify using `only [hFdef, FourierDecayAlt.D.cutF, h0, Complex.ofReal_zero, zero_smul]`. Establish `hbound` using `bound_aux S.G.r S.G.k (w.1 v).length S.Ntop A₀ hN hA0`. Establish `hFcc : B.InCC (B.AB S.G.k S.G.r) ((w.1 v).length * (2 * S.G.r + S.G.k + 1) + (2 * S.G.r + S.G.k + 1 + 5)) F` using `Formalism.FourierDecayAlt.P.PBE.cutF_inCC Bs ⟨hχ1, ⟨δ, hδ, hδ0⟩, hχ3⟩ hfc hε _ _ hbound`. Establish `hG : Good Bs (B.AB S.G.k S.G.r) ((w.1 v).length * (2 * S.G.r + S.G.k + 1) + (2 * S.G.r + S.G.k + 1 + 5)) (δ * ε) F` using `⟨hFs, hFcc, hFsupp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : C7.principalHermitianLattice Bs s (w.1 v) F = B.beta Bs ((w.1 v).foldr (opL S.G.k S.G.r s) F) F` using `rfl`. Establish `h1` using `fold_adj hA hF hB hSm hCC hSu Bs (le_refl _) hc hs (w.1 v) F F hG hG`. Establish `h2 : B.beta Bs F ((w.1 v).reverse.foldr (opL S.G.k S.G.r s) F) = B.beta Bs F ((w.1 v).foldr (opL S.G.k S.G.r s) F)` using `hB S.G.k S.G.r _ _ Bs _ _ _ _ (fun _ _ => rfl) (fold_rev hSm hCg hCm s (w.1 v) F hFs)`. Establish `h3` using `beta_conj Bs F ((w.1 v).foldr (opL S.G.k S.G.r s) F)`. Rewrite using `[e0, ← Complex.conj_eq_iff_im, ← h3, ← h2, ← h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem energyReal_of_leaves (hA : CapAdj) (hF : CapThFacts) (hSm : CVSmooth) (hCC : CVCC) (hSu : CVSupp)
     (hCg : CVCongr) (hCm : CVComm) (hB : BetaCongr) : EnergyReal := by

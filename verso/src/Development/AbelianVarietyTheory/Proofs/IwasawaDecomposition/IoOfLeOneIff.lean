@@ -13,7 +13,7 @@ namespace GlobalTheory.ShFam.Pad
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field _`. Conclude with `CharP.char_is_prime (𝓞 F ⧸ v.asIdeal) _`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem residueCharacteristic_prime (v : HeightOneSpectrum (𝓞 F)) : (resP v).Prime := by
   haveI := v.isMaximal
@@ -22,14 +22,14 @@ theorem residueCharacteristic_prime (v : HeightOneSpectrum (𝓞 F)) : (resP v).
   exact CharP.char_is_prime (𝓞 F ⧸ v.asIdeal) _
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueCharacteristic_mem (v : HeightOneSpectrum (𝓞 F)) : ((resP v : ℕ) : 𝓞 F) ∈ v.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `GlobalTheory.PlaceBridge.exists_embedding (l := p) F (AlgebraicClosure F) v ε.O hv (GlobalTheory.TrueGeo.ExtConj.lies_over ε)`. Establish `h : ∃ io : AlgebraicClosure F →+* ℂ_[p], ∀ a, ‖io a‖ ≤ 1 ↔ a ∈ ε.O` using `⟨(algebraMap (PadicAlgCl p) ℂ_[p]).comp j, fun a => by`. Rewrite using `[hj, RingHom.comp_apply, ← PadicComplex.coe_eq, PadicComplex.norm_extends]⟩`. Conclude with `Classical.epsilon_spec h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ioOf_le_one_iff (p : ℕ) [Fact p.Prime] {v : HeightOneSpectrum (𝓞 F)} (hv : (p : 𝓞 F) ∈ v.asIdeal) (ε : Ext v) :
     ∀ a, ‖ioOf p ε a‖ ≤ 1 ↔ a ∈ ε.O := by
@@ -41,13 +41,13 @@ theorem ioOf_le_one_iff (p : ℕ) [Fact p.Prime] {v : HeightOneSpectrum (𝓞 F)
   exact Classical.epsilon_spec h
 
 /- English proof (translation)
-Set `u : AbsoluteValue (AlgebraicClosure F) ℝ` to `(NormedField.toAbsoluteValue ℂ_[p]).comp io.injective`. Establish `hu (x) : u x = ‖io x‖` using `rfl`. Establish `he : u.IsEquiv ε.w` using `AbsoluteValue.isEquiv_iff_lt_one_iff.2 fun x => by`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `h1 : u x⁻¹ ≤ 1 ↔ ε.w x⁻¹ ≤ 1` using `by rw [hu, h, ε.mem_O]`. Rewrite `h1` using `[map_inv₀, map_inv₀, inv_le_one₀ (u.pos hx), inv_le_one₀ (ε.w.pos hx)]`. Rewrite using `[← not_le, ← not_le, h1]`. Take `⟨c, hc, hce⟩` from `AbsoluteValue.isEquiv_iff_exists_rpow_eq.1 he`. Establish `hw (x) : Real.log (ε.w x) = c * Real.log ‖io x‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← congrFun hce x, hu]`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[Real.zero_rpow hc.ne']`. Conclude with `Real.log_rpow (norm_pos_iff.2 ((map_ne_zero io).2 hx)) c`. Establish `hn : ‖io p‖ = (p : ℝ)⁻¹`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast, ← Padic.norm_p, ← PadicComplex.norm_extends']`. Simplify using the standard rewrite rules. Establish `hl : Real.log p ≠ 0` using `(Real.log_pos (by exact_mod_cast hp.out.one_lt)).ne'`. Rewrite using `[hw, hw, hn, Real.log_inv]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem log_w_eq (p : ℕ) [hp : Fact p.Prime] {v : HeightOneSpectrum (𝓞 F)} (ε : Ext v)
     (io : AlgebraicClosure F →+* ℂ_[p]) (h : ∀ a, ‖io a‖ ≤ 1 ↔ a ∈ ε.O) (a : AlgebraicClosure F) :
@@ -74,7 +74,7 @@ theorem log_w_eq (p : ℕ) [hp : Fact p.Prime] {v : HeightOneSpectrum (𝓞 F)} 
   field_simp
 
 /- English proof (translation)
-The claim follows from `Fact.mk hp; (∀ a, ‖ioOf (resP v) ε a‖ ≤ 1 ↔ a ∈ ε.O) ∧ ∀ a, Real.log (ε.w a) = (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log ‖ioOf (resP v) ε a‖ := fun _ _ _ v ε => ⟨residueCharacteristic_prime v, by haveI := Fact.mk (residueCharacteristic_prime v) exact ⟨ioOf_le_one_ …`.
+A detailed English derivation is pending.
 -/
 theorem ioOf_spec : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v), ∃ hp : (resP v).Prime, haveI := Fact.mk hp; (∀ a, ‖ioOf (resP v) ε a‖ ≤ 1 ↔ a ∈ ε.O) ∧ ∀ a, Real.log (ε.w a) = (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log ‖ioOf (resP v) ε a‖ := fun _ _ _ v ε =>
   ⟨residueCharacteristic_prime v, by

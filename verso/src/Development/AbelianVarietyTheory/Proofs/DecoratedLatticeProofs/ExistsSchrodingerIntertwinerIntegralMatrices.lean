@@ -12,31 +12,31 @@ namespace GlobalTheory.SchrodExist
 open GlobalTheory.PlaceModel
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_map_wave h hL hL' hLL' hY ρ ρX ρY ρXY f₀ hf hf'`. Establish `h0L : (0 : G) ∈ L` using `L.zero_mem`. Establish `hρ0 : ρ 0 f₀ = f₀` using `hf 0 h0L`. Establish `hind : T (ind L) = f₀`. Rewrite using `[← wave_zero (L := L) h, hT 0 (hL h0L) 0 (hL' L'.zero_mem), hρ0, hρ0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T, hind, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦX k hk hΦL hΦk`. Establish `hmem : Φ ∈ waveSpan χ X Y L`. Take `⟨R₁, hR₁, hR₁L⟩` from `hfin k hk`. Establish `hK` using `ind_nsmul_mem h hL hL' hLL' hX (dX k hk) (dY k hk) R₁ hR₁ hR₁L`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R, hR, hRL⟩` from `hfin (k * k) (Nat.mul_pos hk hk)`. Establish `hpre : ∀ r ∈ R, ∃ s : G, (∃ t, k • t = r) → k • s = r` using `fun r _ => by`. Distinguish the cases in `hr : ∃ t, k • t = r`. Take `⟨t, ht⟩` from `hr`. Conclude with `⟨t, fun _ => ht⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h' => absurd h' hr⟩`. Use `choose! s hs using hpre`. Use `mem_of_finite_cosets hK (hR.image s).toFinset Φ hΦX ?_ ?_` and prove the remaining obligations. Introduce `u hu t`. Take `⟨l, hl, rfl⟩` from `AddSubgroup.mem_map.1 hu`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hΦL l hl t`. Introduce `t ht`. Take `⟨r, hr, u, hu, hkt⟩` from `hRL (k • t) (hΦk t ht)`. Establish `hex : ∃ t', k • t' = r` using `⟨t - k • u, by rw [smul_sub, smul_smul, hkt, add_sub_cancel_right]⟩`. Use `⟨s r, ?_, k • u, AddSubgroup.mem_map.2 ⟨u, hu, by simp⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.Finite.mem_toFinset, Set.mem_image]`. Conclude with `⟨r, hr, rfl⟩`. Apply `tf k hk show k • t = k • (s r + k • u)` to reduce the goal to its premises. Rewrite using `[smul_add, hs r hr hex, smul_smul]`. Conclude with `hkt`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ Ψ ∈ waveSpan χ X Y L, (∀ x ∈ X, T (fun t => Ψ (t + x)) = ρ x (T Ψ)) ∧ (∀ y ∈ Y, T (fun t => χ t y * Ψ t) = ρ y (T Ψ)) ∧ T Ψ ∈ Submodule.span ℂ {v | ∃ x ∈ X, ∃ y ∈ Y, v = ρ x (ρ y f₀)}`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨x', hx', y', hy', rfl⟩` from `hΨ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x hx => ?_, fun y hy => ?_, Submodule.subset_span ⟨x', hx', y', hy', hT x' hx' y' hy'⟩⟩` and prove the remaining obligations. Rewrite using `[wave_trans, hT _ (X.add_mem hx hx') _ hy', hT _ hx' _ hy', ρX _ hx _ hx']`. Rewrite using `[wave_modul h, map_smul, hT _ hx' _ (Y.add_mem hy hy'), hT _ hx' _ hy', ← ρY _ hy _ hy', ρXY x' hx' y hy, smul_smul, h.neg_mul, one_smul]`. Consider the case `zero`. Use `⟨fun x _ => ?_, fun y _ => ?_, by rw [map_zero]; exact zero_mem _⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun t => (0 : G → ℂ) (t + x)) = 0` using `rfl`. Rewrite using `[e, map_zero, map_zero]`. Establish `e : (fun t => χ t y * (0 : G → ℂ) t) = 0`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e, map_zero, map_zero]`. Consider the case `add Ψ₁ Ψ₂ _ _ ih₁ ih₂`. Use `⟨fun x hx => ?_, fun y hy => ?_, by rw [map_add]; exact add_mem ih₁.2.2 ih₂.2.2⟩` and prove the remaining obligations. Establish `e : (fun t => (Ψ₁ + Ψ₂) (t + x)) = (fun t => Ψ₁ (t + x)) + fun t => Ψ₂ (t + x)` using `rfl`. Rewrite using `[e, map_add, map_add, map_add, ih₁.1 x hx, ih₂.1 x hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun t => χ t y * (Ψ₁ + Ψ₂) t) = (fun t => χ t y * Ψ₁ t) + fun t => χ t y * Ψ₂ t`. Use function extensionality and compare the values at `t`. Simplify using `[mul_add]`. Rewrite using `[e, map_add, map_add, map_add, ih₁.2.1 y hy, ih₂.2.1 y hy]`. Consider the case `smul c Ψ _ ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun x hx => ?_, fun y hy => ?_, by rw [map_smul]; exact Submodule.smul_mem _ c ih.2.2⟩` and prove the remaining obligations. Establish `e : (fun t => (c • Ψ) (t + x)) = c • fun t => Ψ (t + x)` using `rfl`. Rewrite using `[e, map_smul, map_smul, map_smul, ih.1 x hx]`. Establish `e : (fun t => χ t y * (c • Ψ) t) = c • fun t => χ t y * Ψ t`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, map_smul, map_smul, ih.2.1 y hy]`. Conclude with `key Φ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner_span {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module ℂ V]
     {χ : G → G → ℂ} {X Y L L' : AddSubgroup G} (h : IsBichar χ) (hL : L ≤ X) (hL' : L' ≤ Y)
@@ -138,7 +138,7 @@ def intLat (k : Type) [Field k] [ValuativeRel k] (Y Y' : Type) : AddSubgroup (Ma
     exact neg_mem (ha r q)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intLat {k : Type} [Field k] [ValuativeRel k] {Y Y' : Type} {x : Matrix Y Y' k} :
     x ∈ intLat k Y Y' ↔ ∀ r q, x r q ∈ 𝒪[k] := Iff.rfl
@@ -158,14 +158,14 @@ def annLat {k : Type} [Field k] [ValuativeRel k] {Y Y' Z : Type} [AddCommGroup Z
     exact e.symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_annLat {k : Type} [Field k] [ValuativeRel k] {Y Y' Z : Type} [AddCommGroup Z]
     {χ : Matrix Y Y' k → Z → ℂ} {hr : ∀ a z z', χ a (z + z') = χ a z * χ a z'} {h0 : ∀ a, χ a 0 = 1} {z : Z} :
     z ∈ annLat χ hr h0 ↔ ∀ u : Matrix Y Y' k, (∀ r q, u r q ∈ 𝒪[k]) → χ u z = 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul k n m, smul_smul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hn.ne'), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_nsmul_nsmul {k : Type} [Field k] [CharZero k] {Y Y' : Type} (n : ℕ) (hn : 0 < n)
     (m : Matrix Y Y' k) : (n : k)⁻¹ • (n • m) = m := by
@@ -185,83 +185,73 @@ def liftZ {A Z : Type} [AddCommGroup Z] [TopologicalSpace A] : SB A →ₗ[ℂ] 
     by_cases h : g.2 = 0 <;> simp [h]
 
 /- English proof (translation)
-Simplify using `[liftZ, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftZ_of_eq {A Z : Type} [AddCommGroup Z] [TopologicalSpace A] (Φ : SB A) {g : A × Z} (h : g.2 = 0) :
     liftZ Φ g = Φ.1 g.1 := by
   simp [liftZ, h]
 
 /- English proof (translation)
-Simplify using `[liftZ, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftZ_of_ne {A Z : Type} [AddCommGroup Z] [TopologicalSpace A] (Φ : SB A) {g : A × Z} (h : g.2 ≠ 0) :
     liftZ Φ g = 0 := by
   simp [liftZ, h]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ Y Y' _ _ _ _ Z _ χ hl hr hz0 ha0 hdiv hinj hann M _ _ τ μ hτ hμ hτμ hτ0 hμ0 f₀ hfτ hfμ`. Set `χG : Matrix Y Y' k × Z → Matrix Y Y' k × Z → ℂ` to `fun g h => χ g.1 h.2`. Establish `hB : IsBichar χG` using `⟨fun a b y => hl a.1 b.1 y.2, fun a y z => hr a.1 y.2 z.2, fun y => hz0 y.2, fun a => ha0 a.1⟩`. Set `SX : AddSubgroup (Matrix Y Y' k × Z)` to `(⊤ : AddSubgroup (Matrix Y Y' k)).prod ⊥`. Set `SY : AddSubgroup (Matrix Y Y' k × Z)` to `(⊥ : AddSubgroup (Matrix Y Y' k)).prod ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `SL : AddSubgroup (Matrix Y Y' k × Z)` to `(intLat k Y Y').prod ⊥`. Set `SL' : AddSubgroup (Matrix Y Y' k × Z)` to `(⊥ : AddSubgroup (Matrix Y Y' k)).prod (annLat χ hr ha0)`. Establish `mX : ∀ g, g ∈ SX ↔ g.2 = 0` using `fun g => by simp [SX, AddSubgroup.mem_prod]`. Establish `mY : ∀ g, g ∈ SY ↔ g.1 = 0` using `fun g => by simp [SY, AddSubgroup.mem_prod]`. Establish `mL : ∀ g, g ∈ SL ↔ (∀ r q, g.1 r q ∈ 𝒪[k]) ∧ g.2 = 0` using `fun g => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[SL, AddSubgroup.mem_prod, mem_intLat]`. Establish `mL' : ∀ g, g ∈ SL' ↔ g.1 = 0 ∧ ∀ u : Matrix Y Y' k, (∀ r q, u r q ∈ 𝒪[k]) → χ u g.2 = 1` using `fun g => by`. Simplify using `[SL', AddSubgroup.mem_prod, mem_annLat]`. Set `ρ : Matrix Y Y' k × Z → M →ₗ[ℂ] M` to `fun g => (τ g.1).comp (μ g.2)`. Establish `hρ : ∀ g f, ρ g f = τ g.1 (μ g.2 f)` using `fun _ _ => rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : SL ≤ SX` using `fun g hg => (mX g).2 ((mL g).1 hg).2`. Establish `hL' : SL' ≤ SY` using `fun g hg => (mY g).2 ((mL' g).1 hg).1`. Establish `hLL' : ∀ u ∈ SL, ∀ y ∈ SL', χG u y = 1` using `fun u hu y hy => ((mL' y).1 hy).2 u.1 ((mL u).1 hu).1`. Establish `hX : ∀ x ∈ SX, (∀ y ∈ SL', χG x y = 1) → x ∈ SL`. Introduce `x hx h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(mL x).2 ⟨hann x.1 fun z hz => ?_, (mX x).1 hx⟩` and prove the remaining obligations. Conclude with `h (0, z) ((mL' _).2 ⟨rfl, hz⟩)`. Establish `hY : ∀ y ∈ SY, (∀ u ∈ SL, χG u y = 1) → y ∈ SL'`. Introduce `y hy h`. Conclude with `(mL' y).2 ⟨(mY y).1 hy, fun u hu => h (u, 0) ((mL _).2 ⟨hu, rfl⟩)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `dX : ∀ n : ℕ, 0 < n → ∀ x ∈ SX, ∃ x' ∈ SX, n • x' = x`. Introduce `n hn x hx`. Use `⟨((n : k)⁻¹ • x.1, 0), (mX _).2 rfl, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use `show n • ((n : k)⁻¹ • x.1) = x.1`. Rewrite using `[← Nat.cast_smul_eq_nsmul k, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn.ne'), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show n • (0 : Z) = x.2`. Rewrite using `[smul_zero, (mX x).1 hx]`. Establish `dY : ∀ n : ℕ, 0 < n → ∀ y ∈ SY, ∃ y' ∈ SY, n • y' = y`. Introduce `n hn y hy`. Take `⟨z', hz'⟩` from `hdiv n hn y.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(0, z'), (mY _).2 rfl, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use `show n • (0 : Matrix Y Y' k) = y.1`. Rewrite using `[smul_zero, (mY y).1 hy]`. Conclude with `hz'`. Establish `tf : ∀ n : ℕ, 0 < n → Function.Injective fun t : Matrix Y Y' k × Z => n • t`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `n hn a b hab`. Establish `h1 : n • a.1 = n • b.1` using `congrArg Prod.fst hab`. Establish `h2 : n • a.2 = n • b.2` using `congrArg Prod.snd hab`. Use `Prod.ext ?_ (hinj n hn h2)` and prove the remaining obligations. Establish `h3` using `congrArg (fun m => (n : k)⁻¹ • m) h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h3` using `only [inv_nsmul_nsmul n hn]`. Establish `hfin : ∀ n : ℕ, 0 < n → ∃ R : Set (Matrix Y Y' k × Z), R.Finite ∧ ∀ t ∈ SL, ∃ r ∈ R, ∃ u ∈ SL, t = r + n • u`. Introduce `n hn`. Take `⟨R, hR, hRt⟩` from `GlobalTheory.matrix_integers_mod_nat_finite k Y Y' n hn`. Use `⟨(fun m => (m, (0 : Z))) '' R, hR.image _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨hint, h2⟩` from `(mL t).1 ht`. Take `⟨s, hs, u, hu, hst⟩` from `hRt t.1 hint`. Use `⟨(s, 0), ⟨s, hs, rfl⟩, (u, 0), (mL _).2 ⟨hu, rfl⟩, Prod.ext hst ?_⟩` and prove the remaining obligations. Use `show t.2 = 0 + n • (0 : Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, smul_zero, add_zero]`. Establish `ρX : ∀ x ∈ SX, ∀ x' ∈ SX, ∀ f, ρ x (ρ x' f) = ρ (x + x') f`. Introduce `x hx x' hx' f`. Establish `hs : (x + x').2 = 0` using `by show x.2 + x'.2 = 0`. Rewrite using `[(mX x).1 hx, (mX x').1 hx', add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, hρ, hρ, hs, (mX x).1 hx, (mX x').1 hx']`. Simplify using `only [hμ0]`. Conclude with `hτ _ _ _`. Establish `ρY : ∀ y ∈ SY, ∀ y' ∈ SY, ∀ f, ρ y (ρ y' f) = ρ (y + y') f`. Introduce `y hy y' hy' f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : (y + y').1 = 0` using `by show y.1 + y'.1 = 0`. Rewrite using `[(mY y).1 hy, (mY y').1 hy', add_zero]`. Rewrite using `[hρ, hρ, hρ, hs, (mY y).1 hy, (mY y').1 hy']`. Simplify using `only [hτ0]`. Conclude with `hμ _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ρXY : ∀ x ∈ SX, ∀ y ∈ SY, ∀ f, ρ x (ρ y f) = χG x y • ρ y (ρ x f)`. Introduce `x hx y hy f`. Rewrite using `[hρ, hρ, hρ, hρ, (mX x).1 hx, (mY y).1 hy]`. Simplify using `only [hμ0, hτ0]`. Conclude with `hτμ x.1 y.2 f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : ∀ u ∈ SL, ρ u f₀ = f₀`. Introduce `u hu`. Take `⟨hint, h2⟩` from `(mL u).1 hu`. Rewrite using `[hρ, h2, hμ0]`. Conclude with `hfτ u.1 hint`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `hf' : ∀ u ∈ SL', ρ u f₀ = f₀`. Introduce `u hu`. Take `⟨h1, hz⟩` from `(mL' u).1 hu`. Rewrite using `[hρ, h1, hτ0]`. Conclude with `hfμ u.2 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT0, hT⟩` from `exists_intertwiner_span hB hL hL' hLL' hX hY dX dY tf hfin ρ ρX ρY ρXY f₀ hf hf'`. Establish `good : ∀ Φ : SB (Matrix Y Y' k), ∃ n : ℕ, 0 < n ∧ (∀ u ∈ SL, ∀ t, (liftZ Φ : Matrix Y Y' k × Z → ℂ) (t + n • u) = liftZ Φ t) ∧ (∀ t, (liftZ Φ : Matrix Y Y' k × Z → ℂ) t ≠ 0 → n • t ∈ SL)`. Introduce `Φ`. Take `⟨n, hn, hinv, hsupp⟩` from `GlobalTheory.SBUnif.sb_lattice_bounds k Y Y' Φ.1 Φ.2`. Use `⟨n, hn, fun u hu t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hint, h2⟩` from `(mL u).1 hu`. Distinguish the cases in `ht : t.2 = 0`. Establish `ht' : (t + n • u).2 = 0` using `by show t.2 + n • u.2 = 0`. Rewrite using `[ht, h2, smul_zero, add_zero]`. Rewrite using `[liftZ_of_eq Φ ht', liftZ_of_eq Φ ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hinv u.1 hint t.1`. Establish `ht' : (t + n • u).2 ≠ 0` using `by show t.2 + n • u.2 ≠ 0`. Rewrite using `[h2, smul_zero, add_zero]`. Conclude with `ht`. Rewrite using `[liftZ_of_ne Φ ht', liftZ_of_ne Φ ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : t.2 = 0`. Rewrite `ht` using `[liftZ_of_eq Φ h2]`. Use `(mL _).2 ⟨hsupp t.1 ht, ?_⟩` and prove the remaining obligations. Use `show n • t.2 = 0`. Rewrite using `[h2, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (liftZ_of_ne Φ h2) ht`. Establish `supp : ∀ Φ : SB (Matrix Y Y' k), ∀ t, (liftZ Φ : Matrix Y Y' k × Z → ℂ) t ≠ 0 → t ∈ SX` using `fun Φ t ht => (mX t).2 (by_contra fun h => ht (liftZ_of_ne Φ h))`. Establish `app : ∀ Φ : SB (Matrix Y Y' k), (∀ x ∈ SX, T (fun t => liftZ Φ (t + x)) = ρ x (T (liftZ Φ))) ∧ (∀ y ∈ SY, T (fun t => χG t y * liftZ Φ t) = ρ y (T (liftZ Φ))) ∧ T (liftZ Φ) ∈ Submodule.span ℂ {v | ∃ x ∈ SX, ∃ y ∈ SY, v = ρ x (ρ y f₀)}`. Introduce `Φ`. Take `⟨n, hn, h1, h2⟩` from `good Φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Conclude with `hT (liftZ Φ) (supp Φ) n hn h1 h2`. Use `⟨T.comp liftZ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x Φ Φ' hΦ'`. Establish `e : (liftZ Φ' : Matrix Y Y' k × Z → ℂ) = fun t => liftZ Φ (t + (x, 0))`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : t.2 = 0`. Establish `h2' : (t + (x, (0 : Z))).2 = 0` using `by show t.2 + 0 = 0`. Rewrite using `[h2, add_zero]`. Rewrite using `[liftZ_of_eq Φ' h2, liftZ_of_eq Φ h2']`. Conclude with `hΦ' t.1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2' : (t + (x, (0 : Z))).2 ≠ 0` using `by show t.2 + 0 ≠ 0`. Rewrite using `[add_zero]`. Conclude with `h2`. Rewrite using `[liftZ_of_ne Φ' h2, liftZ_of_ne Φ h2']`. Use `show T (liftZ Φ') = τ x (T (liftZ Φ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, (app Φ).1 (x, 0) ((mX _).2 rfl), hρ]`. Conclude with `congrArg (τ x) (hμ0 _)`. Introduce `z Φ Φ' hΦ'`. Establish `e : (liftZ Φ' : Matrix Y Y' k × Z → ℂ) = fun t => χG t (0, z) * liftZ Φ t`. Use function extensionality and compare the values at `t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `h2 : t.2 = 0`. Rewrite using `[liftZ_of_eq Φ' h2, liftZ_of_eq Φ h2]`. Conclude with `hΦ' t.1`. Rewrite using `[liftZ_of_ne Φ' h2, liftZ_of_ne Φ h2, mul_zero]`. Use `show T (liftZ Φ') = μ z (T (liftZ Φ))`.
-
-Rewrite using `[e, (app Φ).2.1 (0, z) ((mY _).2 rfl), hρ]`. Conclude with `hτ0 _`. Introduce `Φ hΦ`. Establish `e : (liftZ Φ : Matrix Y Y' k × Z → ℂ) = ind SL`. Use function extensionality and compare the values at `t`.
-
-Distinguish the cases in `h2 : t.2 = 0`. Rewrite using `[liftZ_of_eq Φ h2, hΦ]`. Distinguish the cases in `hi : ∀ r q, t.1 r q ∈ 𝒪[k]`. Establish `hm : t ∈ SL` using `(mL t).2 ⟨hi, h2⟩`. Simplify using `[ind, Set.indicator, hi, hm]`.
-
-Establish `hm : t ∉ SL` using `fun h => hi ((mL t).1 h).1`. Simplify using `[ind, Set.indicator, hi, hm]`. Rewrite using `[liftZ_of_ne Φ h2]`. Establish `hm : t ∉ SL` using `fun h => h2 ((mL t).1 h).2`. Simplify using `[ind, hm]`.
-
-Use `show T (liftZ Φ) = f₀`. Rewrite using `[e, hT0]`. Introduce `Φ`. Use `Submodule.span_mono ?_ (app Φ).2.2` and prove the remaining obligations. Introduce and unpack `v ⟨x, hx, y, hy, rfl⟩`.
-
-Use `⟨(x.1, y.2), ?_⟩` and prove the remaining obligations. Use `show τ x.1 (μ y.2 f₀) = ρ x (ρ y f₀)`. Rewrite using `[hρ, hρ, (mX x).1 hx, (mY y).1 hy]`. Simplify using `only [hμ0, hτ0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner_matrix : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (Z : Type) [AddCommGroup Z] (χ : Matrix Y Y' k → Z → ℂ), (∀ a b z, χ (a + b) z = χ a z * χ b z) → (∀ a z z', χ a (z + z') = χ a z * χ a z') → (∀ z, χ 0 z = 1) → (∀ a, χ a 0 = 1) → (∀ n : ℕ, 0 < n → ∀ z : Z, ∃ z' : Z, n • z' = z) → (∀ n : ℕ, 0 < n → Function.Injective fun z : Z => n • z) → (∀ x : Matrix Y Y' k, (∀ z, (∀ u : Matrix Y Y' k, (∀ r q, u r q ∈ 𝒪[k]) → χ u z = 1) → χ x z = 1) → ∀ r q, x r q ∈ 𝒪[k]) → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (τ : Matrix Y Y' k → M →ₗ[ℂ] M) (μ : Z → M →ₗ[ℂ] M), (∀ x x' f, τ x (τ x' f) = τ (x + x') f) → (∀ z z' f, μ z (μ z' f) = μ (z + z') f) → (∀ x z f, τ x (μ z f) = χ x z • μ z (τ x f)) → (∀ f, τ 0 f = f) → (∀ f, μ 0 f = f) → ∀ f₀ : M, (∀ u : Matrix Y Y' k, (∀ r q, u r q ∈ 𝒪[k]) → τ u f₀ = f₀) → (∀ z, (∀ u : Matrix Y Y' k, (∀ r q, u r q ∈ 𝒪[k]) → χ u z = 1) → μ z f₀ = f₀) → ∃ Tm : SB (Matrix Y Y' k) →ₗ[ℂ] M, (∀ (x : Matrix Y Y' k) (Φ Φ' : SB (Matrix Y Y' k)), (∀ t, Φ'.1 t = Φ.1 (t + x)) → Tm Φ' = τ x (Tm Φ)) ∧ (∀ (z : Z) (Φ Φ' : SB (Matrix Y Y' k)), (∀ t, Φ'.1 t = χ t z * Φ.1 t) → Tm Φ' = μ z (Tm Φ)) ∧ (∀ Φ : SB (Matrix Y Y' k), Φ.1 = Set.indicator {x | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => 1) → Tm Φ = f₀) ∧ ∀ Φ, Tm Φ ∈ Submodule.span ℂ (Set.range fun w : Matrix Y Y' k × Z => τ w.1 (μ w.2 f₀)) := by
   intro k _ _ _ _ _ Y Y' _ _ _ _ Z _ χ hl hr hz0 ha0 hdiv hinj hann M _ _ τ μ hτ hμ hτμ hτ0 hμ0 f₀ hfτ hfμ

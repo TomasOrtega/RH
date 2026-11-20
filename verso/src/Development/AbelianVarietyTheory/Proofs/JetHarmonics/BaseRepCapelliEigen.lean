@@ -16,15 +16,13 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f hN hR0 hf hj`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨R, hfam, hR⟩` from `GlobalTheory.family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 hN hR0`. Substitute `hR` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, l', dg, hl, hl'⟩` from `GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam`. Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Take `⟨s₀, hs₀⟩` from `(GlobalTheory.T.capelli_k_finite_coefficient hK P.k P.r _ lam (R 0) Wp Wq (l 0) (l' 0) hR0).1 f hf`. Establish `h0 : n1 (0 : Fin (2 * P.r + P.k + 1) → ℤ) ≤ q0` using `by simp [n1]`. Take `⟨⟨-, -, -, -, hgap⟩, hnum⟩` from `GlobalTheory.T.numericalFamily_shape_gaps P.k P.r lam P.u b bv ga h q0 hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) lam (h / 2)`. Simplify using `using (hnum 0 h0).2.2.1`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base`. Establish `hne : s₀ ≠ 0`. Introduce `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base P Wp Wq p f, hc _ lam (h / 2) (R 0) (l 0) (l' 0) (dg 0) hR0 hg hgap (hl 0 h0).1 (hl' 0 h0).1 (hl 0 h0).2.2 f s₀ hs₀, hz]`. Simplify using the standard rewrite rules. Take `⟨s, J, t, ht, hJ, hnz, hcoef, hzero⟩` from `GlobalTheory.T.family_functional_coefficient hH P Wp Wq p lam b bv ga h q0 R l l' dg f s₀ hfam hl hl' hs₀ hne`. Take `⟨tau, htau⟩` from `GlobalTheory.T.family_functional_span hH P Wp Wq p lam b bv ga h q0 R l l' dg s J hN hfam hl hl' hnz hcoef hzero`.
-
-Conclude with `⟨R, l, l', dg, s, J, tau, t, ht, hJ, htau⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem suppliedData_exists : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), Num P.k P.r lam P.u b bv ga h q0 → R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) lam → PI.CapelliEig.IsKFinCoefT (k := P.k) (r := P.r) R0.σ f → TBB.jN2 p f ≠ 0 → ∃ (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ) (t : ℝ), 0 < t ∧ J 0 = (fun g => (t : ℂ) • f g) ∧ Sup p lam q0 R l l' dg s J tau := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f hN hR0 hf hj

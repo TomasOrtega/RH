@@ -8,7 +8,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x0 x0' h0 h0' φ hφm hφ`. Conclude with `MI.lintegral_cpt_muX_indep_of_isOrtho X h0 h0' hφm hφ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem measInv_holds : MeasInvStatement (E := E) := by
   intro r X x0 x0' h0 h0' φ hφm hφ

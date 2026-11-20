@@ -21,55 +21,49 @@ variable {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (
   {τ : D.what₂.Tau} {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} {ι : GR n →* G D n}
 
 /- English proof (translation)
-Unfold `cLoc`. Use `abs_pos.2 hl0` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cpos {l : D.what₂.Tau → ℝ} {τ : D.what₂.Tau} (hl0 : l τ ≠ 0) : 0 < cLoc l τ := by
   unfold cLoc; have := abs_pos.2 hl0; positivity
 
 /- English proof (translation)
-Unfold `tLoc cLoc; rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * Real.pi)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem tabs {l : D.what₂.Tau → ℝ} {τ : D.what₂.Tau} : |tLoc l τ| = cLoc l τ := by
   unfold tLoc cLoc; rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * Real.pi)]
 
 /- English proof (translation)
-Establish `hc : 0 < cLoc l τ` using `cpos hl0`. Establish `hta : |tLoc l τ| = cLoc l τ` using `tabs`. Establish `ht2 : (tLoc l τ) ^ 2 = (cLoc l τ) ^ 2` using `by rw [← hta, sq_abs]`. Apply the tactic sequence `have hσ : ∀ a, (VacC.sigR ε a) ^ 2 = 1 := by intro a; unfold VacC.sigR; split_ifs <;> norm_num`. Establish `hX1 : (dR fun j => Real.tan (φ j))ᴴ = dR fun j => Real.tan (φ j)` using `dR_conjTranspose _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hX2 : (dR fun j => -(Real.sin (φ j) * Real.cos (φ j)))ᴴ = dR fun j => -(Real.sin (φ j) * Real.cos (φ j))` using `dR_conjTranspose _`. Establish `hDd : IsUnit (dR fun j => (Real.cos (φ j))⁻¹).det`. Rewrite using `[isUnit_iff_ne_zero, dR, Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => by`. Use `(hφ j).ne'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `inv_ne_zero this` after adjusting the coercions. Use `set g1 := mkG (nU (dR fun j => Real.tan (φ j))) (inG_nU _ hX1) with hg1`. Use `set g2 := mkG (nbar (dR fun j => -(Real.sin (φ j) * Real.cos (φ j)))) (inG_nbar _ hX2) with hg2`. Use `set g3 := mkG (mM (dR fun j => (Real.cos (φ j))⁻¹)) (inG_mM _ hDd) with hg3`. Establish `hk : mkG (kth φ) (inK_kth φ).1 = g1 * g2 * g3`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `kth_decomp φ (fun j => (hφ j).ne')`. Establish `hf0 : IsSch (DG (n` using `n) K (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) := isSch_DG hGZ ε (tLoc l τ) (cLoc l τ) hc hta K`. Rewrite using `[hk, hLM D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL (g1 * g2) g3 _ hf0, hLM D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL g1 g2 _ (hL.1 g3 _ hf0)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : L g3 (DG (n` using `n) K (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) = DG (n := n) (K * (∏ j, (((Real.cos (φ j))⁻¹ : ℝ) : ℂ)) ^ V.rank) (fun _ j => ((cLoc l τ : ℝ) : ℂ) * ((((Real.cos (φ j))⁻¹ : ℝ) : ℂ) ^ 2)) := by`. Rewrite using `[hlev g3 _ hDd rfl _ hf0]`. Conclude with `levF_diag e (fun j => (Real.cos (φ j))⁻¹) (fun j => inv_pos.2 (hφ j)) K _`. Establish `hf3` using `hL.1 g3 _ hf0`. Rewrite `hf3`, the goal using `[h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `set K1 : ℂ := K * (∏ j, (((Real.cos (φ j))⁻¹ : ℝ) : ℂ)) ^ V.rank with hK1`. Use `set γ1 : Fin V.rank → Fin n → ℂ := fun _ j => ((cLoc l τ : ℝ) : ℂ) * ((((Real.cos (φ j))⁻¹ : ℝ) : ℂ) ^ 2) with hγ1`. Establish `hre1 : ∀ a j, 0 < (γ1 a j).re`. Introduce `a j`. Rewrite using `[hγ1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]`. Use `inv_pos.2 (hφ j)` as an intermediate fact. Check the signs of the components of the expression. Use `set γ2 : Fin V.rank → Fin n → ℂ := fun a j => ((-tLoc l τ : ℝ) : ℂ) ^ 2 * (((VacC.sigR ε a : ℝ) : ℂ) ^ 2) / γ1 a j - Complex.I * (tLoc l τ : ℂ) * ((VacC.sigR ε a : ℝ) : ℂ) * ((Real.sin (φ j) * Real.cos (φ j) : ℝ) : ℂ) with hγ2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX2' : -(dR fun j => -(Real.sin (φ j) * Real.cos (φ j))) = dR fun j => Real.sin (φ j) * Real.cos (φ j)`. Rewrite using `[dR_neg]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : (fun v => chN ε (tLoc l τ) (-(dR fun j => -(Real.sin (φ j) * Real.cos (φ j)))) v * ftLoc ε (-tLoc l τ) (DG K1 γ1) v) = DG (K1 * ∏ a, ∏ j, ((Real.pi : ℂ) / γ1 a j)) γ2`. Use function extensionality and compare the values at `v`. Rewrite using `[ftLoc_eq, ftG_DG _ _ _ _ hre1, hX2']`. Conclude with `chN_DG ε (tLoc l τ) (fun j => Real.sin (φ j) * Real.cos (φ j)) _ _ v`. Establish `hre2 : ∀ a j, 0 < (γ2 a j).re`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `a j`. Establish `e : γ2 a j = ((((-tLoc l τ) ^ 2 * (VacC.sigR ε a) ^ 2 / (cLoc l τ * ((Real.cos (φ j))⁻¹) ^ 2)) : ℝ) : ℂ) - Complex.I * (((tLoc l τ * VacC.sigR ε a * (Real.sin (φ j) * Real.cos (φ j))) : ℝ) : ℂ)`. Rewrite using `[hγ2, hγ1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, Complex.sub_re, Complex.ofReal_re, Complex.re_mul_ofReal, Complex.I_re, zero_mul, sub_zero, hσ a, mul_one, neg_sq]`. Establish `htne : tLoc l τ ≠ 0` using `by intro h0; rw [h0, abs_zero] at hta; linarith`. Use `inv_pos.2 (hφ j)` as an intermediate fact. Check the signs of the components of the expression. Use `set K2 : ℂ := K1 * ∏ a, ∏ j, ((Real.pi : ℂ) / γ1 a j) with hK2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set γ3 : Fin V.rank → Fin n → ℂ := fun a j => ((tLoc l τ : ℝ) : ℂ) ^ 2 * (((VacC.sigR ε a : ℝ) : ℂ) ^ 2) / γ2 a j with hγ3`. Use `set C0 : ℂ := ((|tLoc l τ| / Real.pi : ℝ) : ℂ) ^ (2 * V.rank * n) with hC0`. Establish `h2 : (fun u => C0 * ftLoc ε (tLoc l τ) (DG K2 γ2) u) = DG (C0 * (K2 * ∏ a, ∏ j, ((Real.pi : ℂ) / γ2 a j))) γ3`. Use function extensionality and compare the values at `u`. Rewrite using `[ftLoc_eq, ftG_DG _ _ _ _ hre2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `DG`. Expand and normalize the polynomial expressions, which then agree. Establish `hf2` using `hL.1 g2 _ hf3`. Rewrite `hf2` using `[hNb D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL g2 _ hX2 rfl _ hf3, hin, h2]`. Rewrite using `[hNb D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL g2 _ hX2 rfl _ hf3, hin, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[hN D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL g1 _ hX1 rfl _ hf2]`. Use function extensionality and compare the values at `u`. Use `(chN_DG ε (tLoc l τ) (fun j => Real.tan (φ j)) _ _ u).trans ?_` and prove the remaining obligations. Establish `hγ4 : (fun a j => γ3 a j - Complex.I * (tLoc l τ : ℂ) * ((VacC.sigR ε a : ℝ) : ℂ) * ((Real.tan (φ j) : ℝ) : ℂ)) = fun _ _ => ((cLoc l τ : ℝ) : ℂ)`. Use function extensionality and compare the values at `a j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ3, hγ2, hγ1]`. Simplify using `only`. Rewrite using `[Real.tan_eq_sin_div_cos]`. Conclude with `coord_gamma (cLoc l τ) (tLoc l τ) (VacC.sigR ε a) (Real.cos (φ j)) (Real.sin (φ j)) hc ht2 (hσ a) (hφ j) (Real.sin_sq_add_cos_sq _)`. Establish `hK : C0 * (K2 * ∏ a, ∏ j, ((Real.pi : ℂ) / γ2 a j)) = K * ∏ a, ∏ j, ((Real.cos (φ j) : ℂ) + Complex.I * (rhoT (tLoc l τ) ε a : ℂ) * (Real.sin (φ j) : ℂ))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `p1 : (∏ j, (((Real.cos (φ j))⁻¹ : ℝ) : ℂ)) ^ V.rank = ∏ _a : Fin V.rank, ∏ j, (((Real.cos (φ j))⁻¹ : ℝ) : ℂ)`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `p2 : ((|tLoc l τ| / Real.pi : ℝ) : ℂ) ^ (2 * V.rank * n) = ∏ _a : Fin V.rank, ∏ _j : Fin n, (((|tLoc l τ| / Real.pi : ℝ) : ℂ) ^ 2)`. Rewrite using `[Finset.prod_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.card_univ, Fintype.card_fin, ← pow_mul, ← pow_mul]`. Put the polynomial expressions in normal form.
-
-Establish `hc1 : ∀ a j, (((Real.cos (φ j))⁻¹ : ℝ) : ℂ) * ((Real.pi : ℂ) / γ1 a j) * ((Real.pi : ℂ) / γ2 a j) * (((|tLoc l τ| / Real.pi : ℝ) : ℂ) ^ 2) = (Real.cos (φ j) : ℂ) + Complex.I * (rhoT (tLoc l τ) ε a : ℂ) * (Real.sin (φ j) : ℂ)`. Introduce `a j`. Rewrite using `[hγ2, hγ1]`. Simplify using `only`. Rewrite using `[coord_const (cLoc l τ) (tLoc l τ) (VacC.sigR ε a) (Real.cos (φ j)) (Real.sin (φ j)) hc ht2 (hσ a) (hφ j) (Real.sin_sq_add_cos_sq _), rhoT_eq (tLoc l τ) (cLoc l τ) hta hc ε a]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hC0, hK2, hK1, p1, p2, ← Finset.prod_congr rfl (fun a _ => Finset.prod_congr rfl (fun j _ => hc1 a j))]`. Simplify using `only [Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hγ4, hK]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rot_DG (hC : Cx D n V ψ χ θ μ ω H l s ν τ ε fr ι) (hl0 : l τ ≠ 0) (hN : LawN) (hNb : LawNbar) (hLM : LocMul)
     (hGZ : GZSch) (L : GR n → ((Fin V.rank → Fin n → ℂ) → ℂ) → ((Fin V.rank → Fin n → ℂ) → ℂ))

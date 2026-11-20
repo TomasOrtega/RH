@@ -181,7 +181,7 @@ namespace Tower
 variable {D : Raw Ω c} (T : Tower D)
 
 /- English proof (translation)
-The claim follows from `T.hL ▸ le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem F_le : T.F ≤ T.L := T.hL ▸ le_sup_left
 

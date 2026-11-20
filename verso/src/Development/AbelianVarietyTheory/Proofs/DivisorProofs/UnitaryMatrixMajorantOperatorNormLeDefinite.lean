@@ -8,11 +8,11 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory.DefiniteOpNorm
 
 /- English proof (translation)
-Use `set M := A * mat x τ with hM`. Use `set c := M⁻¹.mulVec w with hc`. Establish `hw : w = M.mulVec c`. Rewrite using `[hc, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hA), Matrix.one_mulVec]`. Use `⟨fun a => c (Fin.castLE X.p0_le a), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ f : Fin r → Fin r → ℂ, ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) = ∑ j : Fin r, f j`. Introduce `f`. Conclude with `Fintype.sum_equiv (finCongr hp) _ _ (fun a => by congr 1)`. Use `show w = ∑ a : Fin X.p0, (fun j => c j • A.mulVec (ReciprocityTheory.ChartRestriction.G.FD.col (mat x τ) j)) (Fin.castLE X.p0_le a)`. Rewrite using `[hsum (fun j => c j • A.mulVec (ReciprocityTheory.ChartRestriction.G.FD.col (mat x τ) j))]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [hw]`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, ReciprocityTheory.ChartRestriction.G.FD.col, hM, Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem span_colP {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (hp : X.p0 = r) (x : Frame X.Ψ r) (τ : X.Ψ) (A : Matrix (Fin r) (Fin r) ℂ)
@@ -38,19 +38,17 @@ theorem span_colP {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hp x hx β hβ τ u`. Use `set g : Matrix (Fin r) (Fin r) ℂ := (β : Matrix (Fin r) (Fin r) E).map τ.1 with hg`. Use `set g' : Matrix (Fin r) (Fin r) ℂ := ((β⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 with hg'`. Establish `hgg : g * g' = 1`. Rewrite using `[hg, hg', ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one τ.1 τ.1.map_zero τ.1.map_one`. Establish `hg'g : g' * g = 1`. Rewrite using `[hg, hg', ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one τ.1 τ.1.map_zero τ.1.map_one`. Establish `hdetg : g.det ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg Matrix.det hgg` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `hdetx : (mat x τ).det ≠ 0` using `(hx τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hiso : ∀ u v, hermC τ.1 X.Gm (Matrix.mulVec g u) (Matrix.mulVec g v) = hermC τ.1 X.Gm u v` using `GlobalTheory.MajInv.hermC_stab X hβ τ.1`. Establish `H1 : ∀ c, ∃ K : Fin X.p0 → ℂ, Matrix.mulVec g (X.colP x τ c) = ∑ a, K a • X.colP x τ a`. Introduce `c`. Break down `hp with hp | hp` into its components or cases. Conclude with `absurd c.isLt (by omega)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take `⟨K, hK⟩` from `span_colP X hp x τ 1 (by rw [Matrix.one_mul]; exact hdetx) (Matrix.mulVec g (X.colP x τ c))`. Conclude with `⟨K, by simpa only [Matrix.one_mulVec] using hK⟩`. Establish `H2 : ∀ a, ∃ L : Fin X.p0 → ℂ, X.colP x τ a = ∑ c, L c • Matrix.mulVec g (X.colP x τ c)`. Introduce `a`. Break down `hp with hp | hp` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd a.isLt (by omega)`. Conclude with `span_colP X hp x τ g (by rw [Matrix.det_mul]; exact mul_ne_zero hdetg hdetx) _`. Establish `key : X.maj x τ (Matrix.mulVec g u) = X.maj x τ u`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.FD.MajorantConjugateTransfer.maj_transfer X hx hx τ g g' (fun w => by rw [Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec]) hiso H1 H2 (Matrix.mulVec g u)`. Rewrite `h` using `[Matrix.mulVec_mulVec, hg'g, Matrix.one_mulVec]`. Then use the resulting hypothesis.
-
-Rewrite using `[key]`. Establish `h0` using `ReciprocityTheory.ChartRestriction.G.FD.MajorantConjugateTransfer.maj_nonneg X hx τ u`. Establish `h1 : (1 : ℝ) ≤ Real.exp (1 / (3 * (r : ℝ))) ^ 2` using `one_le_pow₀ (Real.one_le_exp (by positivity))`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem opNormLe_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (X.p0 = 0 ∨ X.p0 = r) → ∀ x ∈ X.dom, ∀ β : GL (Fin r) E,

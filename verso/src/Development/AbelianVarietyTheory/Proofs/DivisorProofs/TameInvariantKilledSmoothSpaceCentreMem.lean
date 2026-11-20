@@ -7,17 +7,17 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.AutGrowth
 namespace GlobalTheory.CapKilled
 
 /- English proof (translation)
-Introduce `E _ _ _ b L W hW q z hz ψ hψ`. Take `⟨h1, h2, h3, h4, h5⟩` from `mem_space.1 hψ`. Use `mem_space.2 ⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Zalg_stable (V := leftInv E b) (fun X _ h => lie_mem_leftInv X h) hz ψ h1`. Conclude with `Zalg_stable (V := fixL E b L) (fun X _ h => lie_mem_fixL L X h) hz ψ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g`. Take `⟨s, c, hc⟩` from `GlobalTheory.HCFct.exists_interp W hW`. Establish `hk : ∀ k : Kinf E b, cptRep E b k ψ = ∑ i : s, (c i).1 k • cptRep E b i.1 ψ`. Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Use `hc _ (h3 h) k` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`. Establish `e : (fun k : Kinf E b => (cptRep E b k (z ψ)).1 g) = ∑ i : s, (z (cptRep E b i.1 ψ)).1 g • (c i).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `hcomm` using `LinearMap.congr_fun (GlobalTheory.ZalgCpt.zalg_comm_cptRep E b k z hz) ψ`. Simplify using `only [Module.End.mul_apply] at hcomm`. Rewrite using `[← hcomm, hk k, map_sum]`. Simplify using `only [map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (c i).2`. Introduce `τ u`. Establish `hcap : cap (a` using `b) τ u ∈ Zalg E b := Algebra.subset_adjoin ⟨τ, u, rfl⟩`. Establish `hp : Polynomial.aeval (cap (a` using `b) τ u) (q τ u) ∈ Zalg E b := Algebra.adjoin_le (Set.singleton_subset_iff.2 hcap) (Polynomial.aeval_mem_adjoin_singleton ℂ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcomm` using `(KilledFin.Zalg_commute hz hp).eq`. Use `LinearMap.congr_fun hcomm ψ` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, h4 τ u, map_zero]`. Conclude with `Zalg_stable (V := tame E b) (fun X _ h => lie_mem_tame X h) hz ψ h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zalg_mem_space : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (b : ℕ)
     (L : Subgroup (GL (Fin b) (Af E))) (W : Submodule ℂ (Kinf E b → ℂ)), FiniteDimensional ℂ W →

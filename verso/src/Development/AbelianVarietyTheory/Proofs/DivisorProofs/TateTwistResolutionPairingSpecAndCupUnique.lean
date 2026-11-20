@@ -12,15 +12,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.TwPairUniq
 
 /- English proof (translation)
-Introduce `q _ i j`. Take `⟨T, τ, hτ⟩` from `GlobalTheory.T.exists_isTensor_etaleSheafComplexPairing (ZMod q) (res _ (tw q i)) (res _ (tw q j))`. Take `⟨hI, -, -⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q i`. Take `⟨hJ, hJflat, -⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q j`. Establish `hT : IsTwRes q (i + j) T (fun U ζ => τ.mul U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ))` using `GlobalTheory.T.isTateTwistResolution_tensor_flat q i j (i + j) rfl _ _ hI hJ hJflat τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨huniv, -, hext⟩` from `GlobalTheory.T.isTensor_universal_property (ZMod q) τ hτ`. Take `⟨-, -, hK⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q (i + j)`. Take `⟨⟨u, hu⟩, huniq⟩` from `hK _ hT`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `hext u show IsTwPair (pick IsTwPair)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `pick_spec ⟨ν, fun U ζ => ?_⟩` and prove the remaining obligations. Conclude with `(hν U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)).symm.trans (hu U ζ)`. Introduce `k hk μ ν hμ hν E n m w h`. Substitute `hk` using the available equality. Take `⟨uμ, huμ, -⟩` from `huniv μ (𝟙 _) (𝟙 _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uν, huν, -⟩` from `huniv ν (𝟙 _) (𝟙 _)`. Establish `hom` using `huniq uμ uν (fun U ζ => (huμ U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)).trans ((hμ U ζ).trans ((hν U ζ).symm.trans (huν U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)).symm)))`. Take `⟨hid, -, -, -, hhtp⟩` from `GlobalTheory.T.hypercohomologyPullbackPushforward_functorial (ZMod q)`. Establish `key : ∀ (π : Pair (res _ (tw q i)) (res _ (tw q j)) (res _ (tw q (i + j)))) (v : T ⟶ res _ (tw q (i + j))), τ.Compat π (𝟙 _) (𝟙 _) v → ∀ a b, π.cup E h a b = cpush _ v w (τ.cup E h a b)`. Introduce `π v hc a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.cupProduct_natural_in_sheafComplexPairing (ZMod q) τ π (𝟙 _) (𝟙 _) v hc E h a b, (hid _ _ n a).2, (hid _ _ m b).2]`. Use `AddMonoidHom.ext fun a => AddMonoidHom.ext fun b => ?_` and prove the remaining obligations. Rewrite using `[key μ uμ huμ, key ν uν huν, (hhtp uμ uν hom _ w).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (q : ℕ) [NeZero q] (i j : ℤ), IsTwPair (twPair q i j) ∧ ∀ (k : ℤ), i + j = k →
     ∀ μ ν : Pair (res _ (tw q i)) (res _ (tw q j)) (res _ (tw q k)), IsTwPair μ → IsTwPair ν →

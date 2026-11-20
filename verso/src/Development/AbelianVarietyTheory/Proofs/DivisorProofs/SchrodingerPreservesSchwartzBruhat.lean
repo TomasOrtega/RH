@@ -23,9 +23,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.SchrSB
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IterativeScalingBound.main`. Consider the case `exact _root_.GlobalTheory.IterativeScalingBound.main`. Consider the case `(apply _root_.GlobalTheory.IterativeScalingBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IterativeScalingBound.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IterativeScalingBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IterativeScalingBound.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_two_pow (z : ℂ) (h : ∀ k : ℕ, ‖z ^ (2 ^ k) - 1‖ < 1 / 2) : z = 1 := by
   first
@@ -37,15 +37,13 @@ theorem eq_one_of_pow_two_pow (z : ℂ) (h : ∀ k : ℕ, ‖z ^ (2 ^ k) - 1‖ 
   | (intros; exact _root_.GlobalTheory.IterativeScalingBound.main ..)
 
 /- English proof (translation)
-Establish `hU : (⇑ψ) ⁻¹' Metric.ball 1 (1 / 2) ∈ nhds (0 : G)`. Apply `hψ.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[AddChar.map_zero_eq_one]`. Conclude with `Metric.ball_mem_nhds _ (by norm_num)`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hU`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : ∀ y ∈ V, ψ y = 1`. Introduce `y hy`. Apply `eq_one_of_pow_two_pow` to reduce the goal to its premises. Introduce `k`. Establish `hm : (2 ^ k) • y ∈ V` using `V.toAddSubgroup.nsmul_mem hy _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hV hm` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, Metric.mem_ball, dist_eq_norm, AddChar.map_nsmul_eq_pow]`. Conclude with `this`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : Filter.Tendsto (fun y => y - x) (nhds x) (nhds 0)`. Establish `h` using `((continuous_sub_right x).tendsto x)`. Rewrite `h` using `[sub_self]`. Then use the resulting hypothesis. Use `filter_upwards [hx (V.isOpen.mem_nhds V.zero_mem)] with y hy`. Establish `e : y = x + (y - x)` using `by abel`.
-
-Rewrite using `[e, AddChar.map_add_eq_mul, hker _ hy, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_addChar {G : Type} [AddCommGroup G] [TopologicalSpace G] [NonarchimedeanAddGroup G]
     (ψ : AddChar G ℂ) (hψ : Continuous ψ) : IsLocallyConstant ψ := by
@@ -72,7 +70,7 @@ theorem isLocallyConstant_addChar {G : Type} [AddCommGroup G] [TopologicalSpace 
   rw [e, AddChar.map_add_eq_mul, hker _ hy, mul_one]
 
 /- English proof (translation)
-Establish `h : Continuous (GlobalTheory.LatVac.liftV v)`. Express the relevant statement in the definitionally equal form `Continuous fun a => ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v a)`. Conclude with `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`. Conclude with `hψ.comp h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_psiAt {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ)
     (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : Continuous (GlobalTheory.LatVac.psiAt ψ v) := by
@@ -82,9 +80,9 @@ theorem continuous_psiAt {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF 
   exact hψ.comp h
 
 /- English proof (translation)
-Introduce `F _ _ κ _ ψ hψ v w φ hφ`. Establish `hloc` using `isLocallyConstant_addChar _ (continuous_psiAt ψ hψ v)`. Establish `hlin : Continuous fun x : κ → Fv F v => x ⬝ᵥ w.2 + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)` using `(continuous_id.dotProduct continuous_const).add continuous_const`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hloc.comp_continuous hlin).mul (hφ.1.comp_continuous (continuous_add_const w.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : HasCompactSupport fun x : κ → Fv F v => φ (x + w.1)` using `hφ.2.comp_homeomorph (Homeomorph.addRight w.1)`. Conclude with `hc.mul_left (f := fun x => GlobalTheory.LatVac.psiAt ψ v (x ⬝ᵥ w.2 + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)))`.
+A detailed English derivation is pending.
 -/
 theorem schr_mem_SB : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (w : (κ → Fv F v) × (κ → Fv F v)), ∀ φ ∈ GlobalTheory.WeilM.SB (κ → Fv F v),

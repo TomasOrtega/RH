@@ -14,15 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
 /- English proof (translation)
-Unfold `dH`. Establish `hs' : ContDiff ℝ ∞ (fun t => heisO ψ S T (L t) f x)` using `hs`. Establish `hcomp : (fun t => heisO ψ S T (M t) f x) = (fun t => heisO ψ S T (L t) f x) ∘ A`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, hMA]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcomp, ContinuousLinearMap.iteratedFDeriv_comp_right A hs' 0 (by exact_mod_cast (le_top : (n : ℕ∞) ≤ ⊤)), ContinuousMultilinearMap.compContinuousLinearMap_apply, map_zero]`. Use `set Dg := iteratedFDeriv ℝ n (fun t => heisO ψ S T (L t) f x) 0 with hDg`. Establish `hexp : ∀ v : Fin k → ℝ, v = ∑ j, v j • Pi.single j (1 : ℝ)` using `fun v => by`. Use extensionality with `m`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he1 : ∀ j : Fin k, ‖(Pi.single j (1 : ℝ) : Fin k → ℝ)‖ ≤ 1` using `fun j => by`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).mpr fun m => ?_` and prove the remaining obligations. Distinguish the cases in `h : m = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, h]`. Establish `hc : ∀ i j, ‖(A (Pi.single (l i) (1 : ℝ))) j‖ ≤ ‖A‖` using `fun i j => (norm_le_pi_norm _ j).trans ((A.le_opNorm _).trans (by simpa using mul_le_mul_of_nonneg_left (he1 (l i)) (norm_nonneg A)))`. Rewrite using `[show (fun i => A (Pi.single (l i) (1 : ℝ))) = fun i => ∑ j, (A (Pi.single (l i) (1 : ℝ))) j • Pi.single j (1 : ℝ) from funext fun i => hexp _, ContinuousMultilinearMap.map_sum]`. Simplify using `only [ContinuousMultilinearMap.map_smul_univ]`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_prod]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dH_comp_bound {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T → ℂ} {L M : (Fin k → ℝ) →+ WO S T}
     (A : (Fin k → ℝ) →L[ℝ] (Fin k → ℝ)) (hMA : ∀ t, M t = L (A t)) (x : WO S T)
@@ -62,11 +62,11 @@ theorem dH_comp_bound {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T → ℂ} {L M
     _ = ‖A‖ ^ n := by simp
 
 /- English proof (translation)
-Establish `heq : (psiT D τ : AE D → ℂ) = fun x => gW D (plW D τ) (fstA D.host.F ((basAF D).repr x 0)) + gW D (plW D τ) (fstA D.host.F ((basAF D).repr x 1)) * betaT D τ`. Use function extensionality and compare the values at `x`. Simplify using `only [psiT, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[thetaC_decomp, repr_infPart, repr_infPart]`. Rewrite using `[heq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ k : Fin 2, Continuous fun x : AE D => (basAF D).repr x k` using `fun k => by`. Use `(continuous_apply k).comp (G5.tensCoordH (basE D) (AF D.host.F)).continuous` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, G5.tensCoordH_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hf : Continuous (fstA D.host.F)` using `continuous_fst`. Conclude with `((continuous_gW (D := D) _).comp (hf.comp (hc 0))).add (((continuous_gW (D := D) _).comp (hf.comp (hc 1))).mul continuous_const)`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_psiT (τ : D.what₂.Tau) : Continuous (psiT D τ) := by
   have heq : (psiT D τ : AE D → ℂ) = fun x => gW D (plW D τ) (fstA D.host.F ((basAF D).repr x 0)) +

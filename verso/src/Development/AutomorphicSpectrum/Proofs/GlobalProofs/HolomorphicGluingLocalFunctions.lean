@@ -21,20 +21,18 @@ theorem valAt'_eq_ev (U : X.Opens) (f : Γ(X, U)) (y : CxPts s (RingHom.id ℂ))
     valAt' y.1 U f = ev s (RingHom.id ℂ) U f y := rfl
 
 /- English proof (translation)
-Rewrite using `[y.2]`. Simplify using `[spMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_eq_id (y : CxPts s (RingHom.id ℂ)) : y.1 ≫ s = 𝟙 _ := by
   rw [y.2]
   simp [spMap]
 
 /- English proof (translation)
-Introduce `U f`. Establish `hset : ψ ⁻¹' (c.e.target ∩ c.e.symm ⁻¹' (ptsIn s (RingHom.id ℂ) W ∩ ptsIn s (RingHom.id ℂ) U)) = {b | b ∈ ψ ⁻¹' (c.e.target ∩ c.e.symm ⁻¹' ptsIn s (RingHom.id ℂ) W) ∧ ⊤ ≤ (Opens.map (c.e.symm (ψ b)).1.base).obj U}`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, h2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨h1, h2, h3⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `ho` using `(c.e.isOpen_inter_preimage_symm ((isOpen_ptsIn (p := s) (σ := RingHom.id ℂ) W).inter (isOpen_ptsIn U))).preimage ψ.continuous`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `ho` using `[hset]`. Conclude with `ho`. Establish `hd` using `((c.holo U f).comp ψ.differentiableOn (fun b hb => hb)).mono (fun b (hb : b ∈ {b | b ∈ ψ ⁻¹' (c.e.target ∩ c.e.symm ⁻¹' ptsIn s (RingHom.id ℂ) W) ∧ ⊤ ≤ (Opens.map (c.e.symm (ψ b)).1.base).obj U}) => (⟨hb.1.1, hb.2⟩ : ψ b ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn s (RingHom.id ℂ) U))`. Use `hd.congr ?_` and prove the remaining obligations. Introduce `b _`.
-
-Conclude with `valAt'_eq_ev U f _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isHolTo_chart (c : AlgChart s (RingHom.id ℂ) D) (W : X.Opens)
     (ψ : (Fin D → ℂ) ≃L[ℂ] V D) :
@@ -64,15 +62,15 @@ theorem isHolTo_chart (c : AlgChart s (RingHom.id ℂ) D) (W : X.Opens)
     exact valAt'_eq_ev U f _
 
 /- English proof (translation)
-Introduce `X s D _ R L _ h hhol hcoc`. Take `⟨ψ⟩ : Nonempty ((Fin D → ℂ) ≃L[ℂ] V D)` from `⟨(EuclideanSpace.equiv (Fin D) ℂ).symm⟩`. Use `⟨fun i y => if y ∈ ptsIn s (RingHom.id ℂ) (L.U i) then h i y.1 else 0, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j y hi hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij : y ∈ ptsIn s (RingHom.id ℂ) (L.U i ⊓ L.U j)` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Simplify using `only [if_pos hi, if_pos hj]`. Rewrite using `[hcoc i j y.1 (comp_eq_id y) hij, valAt'_eq_ev]`. Both sides reduce to the same expression. Introduce `i y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_neg hy]`. Introduce `i k`. Establish `hB : IsOpen (ψ ⁻¹' ((R.chart k).e.target ∩ (R.chart k).e.symm ⁻¹' ptsIn s (RingHom.id ℂ) (L.U i)))` using `((R.chart k).e.isOpen_inter_preimage_symm (isOpen_ptsIn _)).preimage ψ.continuous`. Establish `hd` using `hhol i D _ (fun b => ((R.chart k).e.symm (ψ b)).1) hB (isHolTo_chart (R.chart k) (L.U i) ψ) (fun b hb => ⟨comp_eq_id _, hb.2⟩)`. Establish `hd2` using `hd.comp ψ.symm.differentiableOn (fun v hv => by show ψ (ψ.symm v) ∈ (R.chart k).e.target ∩ (R.chart k).e.symm ⁻¹' ptsIn s (RingHom.id ℂ) (L.U i)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ψ.apply_symm_apply]`. Conclude with `hv)`. Use `hd2.congr ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hv2 : (R.chart k).e.symm v ∈ ptsIn s (RingHom.id ℂ) (L.U i)` using `hv.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.comp, hv2]`. Introduce `i y hy`. Simplify using `only [if_pos hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_holSec : ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (D : ℕ), SmoothOfRelativeDimension D s → ∀ (R : AnRead s (RingHom.id ℂ) D), ∀ (L : LB X), L.IsLB → ∀ h : L.ι → (Sp ℂ ⟶ X) → ℂ, (∀ (i : L.ι) (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)), IsOpen B → IsHolTo B y → (∀ b ∈ B, y b ≫ s = 𝟙 _ ∧ ⊤ ≤ y b ⁻¹ᵁ L.U i) → DifferentiableOn ℂ (fun b => h i (y b)) B) → (∀ (i j : L.ι) (x : Sp ℂ ⟶ X), x ≫ s = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j) → h i x = valAt' x (L.U i ⊓ L.U j) (L.g i j).val * h j x) → ∃ σ ∈ R.holSec L, ∀ (i : L.ι), ∀ y ∈ ptsIn s (RingHom.id ℂ) (L.U i), σ i y = h i y.1 := by
   intro X s D _ R L _ h hhol hcoc

@@ -29,19 +29,19 @@ theorem superDiag_eq_sdM {R : Type} [CommRing R] (g : GL (Fin n) R) :
     GlobalTheory.Whittaker.superDiag g = sdM (g : Matrix (Fin n) (Fin n) R) := rfl
 
 /- English proof (translation)
-Simplify using `[nu, not_lt_of_gt h, ne_of_gt h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nu_lower (t : Vp E n) {i j : Fin n} (h : j < i) : nu t i j = 0 := by
   simp [nu, not_lt_of_gt h, ne_of_gt h]
 
 /- English proof (translation)
-Simplify using `[nu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nu_diag (t : Vp E n) (i : Fin n) : nu t i i = 1 := by
   simp [nu]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[nu_diag]`. Introduce `i j h`. Conclude with `nu_lower t h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_nu (t : Vp E n) : (nu t).det = 1 := by
   rw [Matrix.det_of_upperTriangular]
@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
 @[simp] theorem nuGL_val (t : Vp E n) : (nuGL t : Matrix (Fin n) (Fin n) (Cinf E)) = nu t := rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SmGL.mem_unipB (Cinf E)).2 ⟨fun _ _ h => nu_lower t h, nu_diag t⟩`.
+A detailed English derivation is pending.
 -/
 theorem nuGL_mem (t : Vp E n) : nuGL t ∈ GlobalTheory.SmGL.unipB (Cinf E) (Fin n) :=
   (GlobalTheory.SmGL.mem_unipB (Cinf E)).2 ⟨fun _ _ h => nu_lower t h, nu_diag t⟩

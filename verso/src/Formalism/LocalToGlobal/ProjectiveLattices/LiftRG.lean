@@ -24,7 +24,7 @@ theorem iterHd_cons (β : σ →₀ ℕ) (l : List (σ →₀ ℕ)) (x : Λ) :
     iterHd hd (β :: l) x = hd β (iterHd hd l x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons β l ih => rw [iterHd_cons, iterHd_cons, iterHd_cons, ih, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterHd_add (l : List (σ →₀ ℕ)) (x y : Λ) : iterHd hd l (x + y) = iterHd hd l x + iterHd hd l y := by
   induction l with
@@ -32,7 +32,7 @@ theorem iterHd_add (l : List (σ →₀ ℕ)) (x y : Λ) : iterHd hd l (x + y) =
   | cons β l ih => rw [iterHd_cons, iterHd_cons, iterHd_cons, ih, map_add]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons β l ih => rw [iterHd_cons, iterHd_cons, ih, map_neg]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterHd_neg (l : List (σ →₀ ℕ)) (x : Λ) : iterHd hd l (-x) = -iterHd hd l x := by
   induction l with
@@ -40,7 +40,7 @@ theorem iterHd_neg (l : List (σ →₀ ℕ)) (x : Λ) : iterHd hd l (-x) = -ite
   | cons β l ih => rw [iterHd_cons, iterHd_cons, ih, map_neg]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons β l ih => rw [iterHd_cons, ih, map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterHd_zero (l : List (σ →₀ ℕ)) : iterHd hd l 0 = 0 := by
   induction l with
@@ -50,15 +50,15 @@ theorem iterHd_zero (l : List (σ →₀ ℕ)) : iterHd hd l 0 = 0 := by
 variable {hd}
 
 /- English proof (translation)
-Proceed by induction on `hn : Finsupp.degree β using Nat.strong_induction_on generalizing β with`. Consider the case `_ n ih`. Establish `h` using `hdm β 1 1`. Rewrite `h` using `[mul_one]`. Establish `h0 : ((0 : σ →₀ ℕ), β) ∈ antidiagonal β` using `mem_antidiagonal.2 (zero_add β)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (β, (0 : σ →₀ ℕ)) ∈ (antidiagonal β).erase (0, β)` using `mem_erase.2 ⟨fun h => hβ (congrArg Prod.fst h), mem_antidiagonal.2 (add_zero β)⟩`. Rewrite `h` using `[← add_sum_erase _ _ h0, ← add_sum_erase _ _ h1, hd0, one_mul, mul_one]`. Establish `hr : ∑ q ∈ ((antidiagonal β).erase (0, β)).erase (β, 0), hd q.1 1 * hd q.2 1 = 0`. Use `sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Establish `hq2` using `mem_erase.1 hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq1` using `mem_erase.1 hq2.2`. Establish `h12 : q.1 + q.2 = β` using `mem_antidiagonal.1 hq1.2`. Establish `hne1 : q.1 ≠ 0` using `fun h => hq1.1 (Prod.ext h (by rw [← h12, h, zero_add]))`. Establish `hne2 : q.2 ≠ 0` using `fun h => hq2.1 (Prod.ext (by rw [← h12, h, add_zero]) h)`. Establish `hd2 : Finsupp.degree q.2 ≠ 0` using `fun h => hne2 ((Finsupp.degree_eq_zero_iff _).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : Finsupp.degree q.1 < n`. Rewrite using `[← hn, ← h12, map_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ih _ hlt q.1 hne1 rfl, zero_mul]`. Rewrite `h` using `[hr, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: hd β 1 + hd β 1 = hd β 1 + 0` using `by rw [add_zero]; exact h.symm`. Conclude with `add_left_cancel this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hd_one' (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (β : σ →₀ ℕ) (hβ : β ≠ 0) :
@@ -87,11 +87,9 @@ theorem hd_one' (hd0 : ∀ x, hd 0 x = x)
   exact add_left_cancel this
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact Or.inr rfl`. Consider the case `cons β l ih`. Rewrite using `[iterHd_cons]`. Break down `ih with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Rewrite using `[h, map_zero]`. Rewrite using `[h]`. Distinguish the cases in `hβ : β = 0`. Use `right`.
-
-Rewrite using `[hβ, hd0]`. Use `left`. Conclude with `hd_one' hd0 hdm β hβ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterHd_one (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (l : List (σ →₀ ℕ)) :
@@ -108,9 +106,9 @@ theorem iterHd_one (hd0 : ∀ x, hd 0 x = x)
       · left; exact hd_one' hd0 hdm β hβ
 
 /- English proof (translation)
-Rewrite using `[hdm]`. Use `Ideal.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Establish `h12` using `mem_antidiagonal.1 hq`. Establish `h` using `Ideal.mul_mem_mul (hz q.1) (hz' q.2)`. Rewrite `h` using `[← pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.pow_le_pow_right ?_ h` and prove the remaining obligations. Rewrite using `[← h12, map_add]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem low_mul' (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (I : Ideal Λ)
     {n m : ℕ} {z z' : Λ} (hz : ∀ β, hd β z ∈ I ^ (n - Finsupp.degree β))
@@ -126,13 +124,11 @@ theorem low_mul' (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, h
   omega
 
 /- English proof (translation)
-Proceed by induction on `n generalizing z β with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite `hz` using `[pow_succ]`. Use `Submodule.mul_induction_on hz (fun a ha b hb => ?_) (fun x y hx hy => ?_) β` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `β`. Establish `hb1 : ∀ β', hd β' b ∈ I ^ (1 - Finsupp.degree β')` using `fun β' => by`. Distinguish the cases in `h : β' = 0`. Rewrite using `[h, hd0, map_zero, Nat.sub_zero, pow_one]`. Conclude with `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Finsupp.degree β' ≠ 0` using `fun h' => h ((Finsupp.degree_eq_zero_iff _).1 h')`. Rewrite using `[show 1 - Finsupp.degree β' = 0 by omega, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Conclude with `low_mul' hdm I (fun β' => ih ha β') hb1 β`. Introduce `β`.
-
-Rewrite using `[map_add]`. Conclude with `Ideal.add_mem _ (hx β) (hy β)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_pow_mem' (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (I : Ideal Λ) (n : ℕ) {z : Λ}
@@ -188,14 +184,14 @@ def stabSub (hd0 : ∀ x, hd 0 x = x)
     exact fun l => hAM (hAl l)
 
 /- English proof (translation)
-Introduce `_ h` and use `h []`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stabSub_le (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (M : Subring Λ) :
     stabSub hd0 hdm M ≤ M := fun _ h => h []
 
 /- English proof (translation)
-Introduce `l` and use `by have := hr (l ++ [β]) simpa [iterHd, List.foldr_append] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stabSub_hd (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (M : Subring Λ) (β : σ →₀ ℕ)
@@ -230,7 +226,7 @@ def appSub {L : Type*} [CommRing L] (ι : L →+* Λ) (F : Subring L) (I : Ideal
     exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hgb) (Ideal.mul_mem_right _ _ hfa)
 
 /- English proof (translation)
-Introduce `n`. Take `⟨f, hf, hfr⟩` from `hr (n + Finsupp.degree β)`. Use `⟨hL β f, hF β f hf, ?_⟩` and prove the remaining obligations. Establish `h` using `hd_pow_mem' hd0 hdm I _ hfr β`. Rewrite `h` using `[map_sub, hdι, Nat.add_sub_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem appSub_hd (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z)
@@ -244,11 +240,11 @@ theorem appSub_hd (hd0 : ∀ x, hd 0 x = x)
   rwa [map_sub, hdι, Nat.add_sub_cancel] at h
 
 /- English proof (translation)
-Establish `h` using `hdm β u ↑hu.unit⁻¹`. Rewrite `h` using `[hu.mul_val_inv, hd_one' hd0 hdm β hβ]`. Establish `h0 : ((0 : σ →₀ ℕ), β) ∈ antidiagonal β` using `mem_antidiagonal.2 (zero_add β)`. Rewrite `h` using `[← add_sum_erase _ _ h0, hd0]`. Establish `hr : ∑ q ∈ (antidiagonal β).erase (0, β), hd q.1 u * hd q.2 ↑hu.unit⁻¹ = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Establish `hq1` using `mem_erase.1 hq`. Establish `h12 : q.1 + q.2 = β` using `mem_antidiagonal.1 hq1.2`. Establish `hne : q.1 ≠ 0` using `fun h => hq1.1 (Prod.ext h (by rw [← h12, h, zero_add]))`. Rewrite using `[hc _ hne, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hr, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hu.val_inv_mul, one_mul]`. Use `_ = 0 := by rw [← h, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_inv_const (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) {u : Λ} (hu : IsUnit u)
@@ -269,9 +265,9 @@ theorem hd_inv_const (hd0 : ∀ x, hd 0 x = x)
     _ = 0 := by rw [← h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[hdm]`. Use `sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : q.1 = 0`. Establish `h12 : q.1 + q.2 = β` using `mem_antidiagonal.1 hq`. Establish `h2 : q.2 ≠ 0` using `by rw [h1, zero_add] at h12; rw [h12]; exact hβ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb _ h2, mul_zero]`. Rewrite using `[ha _ h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hd_mul_const (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) {a b : Λ}
     (ha : ∀ β, β ≠ 0 → hd β a = 0) (hb : ∀ β, β ≠ 0 → hd β b = 0) (β : σ →₀ ℕ) (hβ : β ≠ 0) :
@@ -285,29 +281,27 @@ theorem hd_mul_const (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal �
   · rw [ha _ h1, zero_mul]
 
 /- English proof (translation)
-Use `set v : Λ := ↑hu.unit⁻¹ with hv`. Set `Bs : Subring Λ` to `Subring.closure ((stabSub hd0 hdm M : Set Λ) ∪ {v})`. Establish `hsB : ∀ z ∈ stabSub hd0 hdm M, z ∈ Bs` using `fun z hz => Subring.subset_closure (Or.inl hz)`. Establish `hvB : v ∈ Bs` using `Subring.subset_closure (Or.inr rfl)`. Establish `hdv : ∀ β, hd β v ∈ Bs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β`. Proceed by induction on `hn : Finsupp.degree β using Nat.strong_induction_on generalizing β with`. Consider the case `_ n ih`. Distinguish the cases in `hβ : β = 0`. Rewrite using `[hβ, hd0]`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hvB`. Establish `h` using `hdm β u v`. Rewrite `h` using `[hv, hu.mul_val_inv, hd_one' hd0 hdm β hβ, ← hv]`. Establish `h0 : ((0 : σ →₀ ℕ), β) ∈ antidiagonal β` using `mem_antidiagonal.2 (zero_add β)`. Rewrite `h` using `[← add_sum_erase _ _ h0, hd0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : ∑ q ∈ (antidiagonal β).erase (0, β), hd q.1 u * hd q.2 v ∈ Bs`. Use `Bs.sum_mem fun q hq => Bs.mul_mem (hsB _ (stabSub_hd hd0 hdm M q.1 hs)) (ih _ ?_ q.2 rfl)` and prove the remaining obligations. Establish `hq1` using `mem_erase.1 hq`. Establish `h12 : q.1 + q.2 = β` using `mem_antidiagonal.1 hq1.2`. Establish `hne : q.1 ≠ 0` using `fun h => hq1.1 (Prod.ext h (by rw [← h12, h, zero_add]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Finsupp.degree q.1 ≠ 0` using `fun h => hne ((Finsupp.degree_eq_zero_iff _).1 h)`. Rewrite using `[← hn, ← h12, map_add]`. Use linear arithmetic over natural numbers and integers. Establish `e1 : v * u = 1` using `hu.val_inv_mul`. Establish `: hd β v = -(v * ∑ q ∈ (antidiagonal β).erase (0, β), hd q.1 u * hd q.2 v)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-v) * h + (-(hd β v)) * e1`. Rewrite using `[this]`. Conclude with `Bs.neg_mem (Bs.mul_mem hvB hS)`. Establish `hBs : ∀ z ∈ Bs, ∀ β, hd β z ∈ Bs`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with hx | hx` into its components or cases. Conclude with `fun β => hsB _ (stabSub_hd hd0 hdm M β hx)`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hx]`. Conclude with `hdv`. Consider the case `zero => exact fun β => by rw [map_zero]; exact Bs.zero_mem`. Consider the case `one`. Introduce `β`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Distinguish the cases in `hβ : β = 0`. Rewrite using `[hβ, hd0]`. Conclude with `Bs.one_mem`. Rewrite using `[hd_one' hd0 hdm β hβ]`. Conclude with `Bs.zero_mem`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => exact fun β => by rw [map_add]; exact Bs.add_mem (hx β) (hy β)`. Consider the case `neg x _ hx => exact fun β => by rw [map_neg]; exact Bs.neg_mem (hx β)`. Consider the case `mul x y _ _ hx hy`. Introduce `β`. Rewrite using `[hdm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `Bs.sum_mem fun q _ => Bs.mul_mem (hx q.1) (hy q.2)`. Establish `hBM : Bs ≤ M` using `(Subring.closure_le).2 (Set.union_subset (fun z hz => stabSub_le hd0 hdm M hz) (Set.singleton_subset_iff.2 hM))`. Introduce `l`. Establish `: iterHd hd l v ∈ Bs`. Proceed by induction on `l with`.
-
-Consider the case `nil => exact hvB`. Consider the case `cons β l ih => rw [iterHd_cons]`. Conclude with `hBs _ ih β`. Conclude with `hBM this`.
+A detailed English derivation is pending.
 -/
 theorem stabSub_inv (hd0 : ∀ x, hd 0 x = x)
     (hdm : ∀ β x z, hd β (x * z) = ∑ q ∈ antidiagonal β, hd q.1 x * hd q.2 z) (M : Subring Λ) {u : Λ}
@@ -370,9 +364,9 @@ theorem stabSub_inv (hd0 : ∀ x, hd 0 x = x)
   exact hBM this
 
 /- English proof (translation)
-Introduce `n`. Use `⟨v * ∑ i ∈ range n, (1 - d * v) ^ i, F.mul_mem hvF (F.sum_mem fun i _ => F.pow_mem (F.sub_mem F.one_mem (F.mul_mem hdF hvF)) i), ?_⟩` and prove the remaining obligations. Establish `hg : 1 - d * (v * ∑ i ∈ range n, (1 - d * v) ^ i) = (1 - d * v) ^ n`. Take the linear combination `(-1 : L) * mul_neg_geom_sum (1 - d * v) n`. Establish `e : (↑hu.unit⁻¹ : Λ) - ι (v * ∑ i ∈ range n, (1 - d * v) ^ i) = ↑hu.unit⁻¹ * ι (1 - d * (v * ∑ i ∈ range n, (1 - d * v) ^ i))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one, map_mul ι d, mul_sub, mul_one, ← mul_assoc, hu.val_inv_mul, one_mul]`. Rewrite using `[e, hg, map_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hz n)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appSub_inv {L : Type*} [CommRing L] (ι : L →+* Λ) (F : Subring L) (I : Ideal Λ) {d v : L} (hdF : d ∈ F)
     (hvF : v ∈ F) (hz : ι (1 - d * v) ∈ I) (hu : IsUnit (ι d)) : (↑hu.unit⁻¹ : Λ) ∈ appSub ι F I := by
@@ -392,9 +386,9 @@ end Gen
 section Int
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[neg_zero]`. Rewrite using `[nval_of_ne (neg_ne_zero.2 hx), nval_of_ne hx]`. Unfold `vV`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Valuation.map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma nval_neg_rg {T : CDVR} (e : ℕ) (x : T.Fr) : nval T.V e (-x) = nval T.V e x := by
   by_cases hx : x = 0
@@ -419,9 +413,9 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   {N : ℕ} {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
 /- English proof (translation)
-Take `⟨f, hf, hfr⟩` from `hr n`. Use `⟨(⟨f, hf⟩ : ↥(Frac0 X la w)) • xe, ?_⟩` and prove the remaining obligations. Establish `hc : ((((⟨f, hf⟩ : ↥(Frac0 X la w)) • xe : ↥(HK X la w u)) : Lw X la w)) = f * (xe : Lw X la w)` using `rfl`. Rewrite using `[hc, map_mul]`. Establish `: ι f * ι (xe : Lw X la w) - r * e' = ι f * (ι (xe : Lw X la w) - e') - (r - ι f) * e'` using `by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ he) (Ideal.mul_mem_right _ _ hfr)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_of {Λ : Type*} [CommRing Λ] (ι : Lw X la w →+* Λ) (I : Ideal Λ) (u : WeightFamilies.Wt D j) (e' : Λ) (n : ℕ)
     (xe : ↥(HK X la w u)) (he : ι (xe : Lw X la w) - e' ∈ I ^ n) {r : Λ}

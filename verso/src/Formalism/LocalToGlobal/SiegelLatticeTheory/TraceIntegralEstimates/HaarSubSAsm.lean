@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hμ]`. Rewrite using `[lintegral_map hg hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lintegral_comp_of_map_eq {μ : Measure G} {φ : G → G} {g : G → ℝ≥0∞} (hφ : Measurable φ) (hμ : μ.map φ = μ)
     (hg : Measurable g) : ∫⁻ x, g (φ x) ∂μ = ∫⁻ x, g x ∂μ := by
@@ -28,11 +28,11 @@ private theorem lintegral_comp_of_map_eq {μ : Measure G} {φ : G → G} {g : G 
   rw [lintegral_map hg hφ]
 
 /- English proof (translation)
-Establish `step1 : ∀ n, ∫⁻ h, f (n₀ * h₀ * (n * h)) ∂μH = ∫⁻ h, f (n₀ * (h₀ * n * h₀⁻¹) * h) ∂μH`. Introduce `n`. Establish `e : ∀ h, n₀ * h₀ * (n * h) = n₀ * (h₀ * n * h₀⁻¹) * (h₀ * h)`. Introduce `h`. Use `group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Conclude with `lintegral_comp_of_map_eq (φ := fun x => h₀ * x) (g := fun h => f (n₀ * (h₀ * n * h₀⁻¹) * h)) (measurable_const_mul h₀) (hHl h₀ hh₀) (hf.comp (measurable_const_mul _))`. Establish `hm1 : Measurable fun n => ∫⁻ h, f (n₀ * n * h) ∂μH`. Establish `: Measurable fun p : G × G => f (n₀ * p.1 * p.2)` using `hf.comp ((measurable_fst.const_mul n₀).mul measurable_snd)`. Conclude with `this.lintegral_prod_right'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hm2 : Measurable fun n => ∫⁻ h, f (n * h) ∂μH`. Establish `: Measurable fun p : G × G => f (p.1 * p.2)` using `hf.comp (measurable_fst.mul measurable_snd)`. Conclude with `this.lintegral_prod_right'`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lint_left {μN μH : Measure G} [SFinite μN] [SFinite μH] {N H : Set G} {n₀ h₀ : G}
     (hn₀ : n₀ ∈ N) (hh₀ : h₀ ∈ H) (hNl : ∀ n ∈ N, μN.map (fun x => n * x) = μN)
@@ -65,13 +65,11 @@ theorem lint_left {μN μH : Measure G} [SFinite μN] [SFinite μH] {N H : Set G
           (measurable_const_mul n₀) (hNl n₀ hn₀) hm2
 
 /- English proof (translation)
-Establish `hF : Measurable (Function.uncurry fun n h => f (n * h * (n₀ * h₀)))` using `hf.comp ((measurable_fst.mul measurable_snd).mul_const _)`. Establish `hG : Measurable (Function.uncurry fun n h => f (n * h))` using `hf.comp (measurable_fst.mul measurable_snd)`. Establish `hm3 : Measurable fun h => ∫⁻ n, f (n * h) ∂μN`. Establish `: Measurable fun p : G × G => f (p.1 * p.2)` using `hf.comp (measurable_fst.mul measurable_snd)`. Conclude with `this.lintegral_prod_left'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ h ∂μH, h ∈ H` using `(ae_iff (p := fun a => a ∈ H)).mpr h0H`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with h hh`. Establish `hm : h * n₀ * h⁻¹ ∈ N` using `hnorm h hh n₀ hn₀`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ n, n * h * (n₀ * h₀) = n * (h * n₀ * h⁻¹) * (h * h₀)`. Introduce `n`. Use `group`. Repeatedly rewrite using `[e]`. Conclude with `lintegral_comp_of_map_eq (φ := fun x => x * (h * n₀ * h⁻¹)) (g := fun n => f (n * (h * h₀))) (measurable_mul_const _) (hNr _ hm) (hf.comp (measurable_mul_const _))`.
-
-Use `_ = ∫⁻ h, ∫⁻ n, f (n * h) ∂μN ∂μH := lintegral_comp_of_map_eq (φ := fun x => x * h₀) (g := fun h => ∫⁻ n, f (n * h) ∂μN) (measurable_mul_const _) (hHr h₀ hh₀) hm3`. Use `_ = ∫⁻ n, ∫⁻ h, f (n * h) ∂μH ∂μN := (lintegral_lintegral_swap hG.aemeasurable).symm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_right {μN μH : Measure G} [SFinite μN] [SFinite μH] {N H : Set G} {n₀ h₀ : G}
     (hn₀ : n₀ ∈ N) (hh₀ : h₀ ∈ H) (hNr : ∀ n ∈ N, μN.map (fun x => x * n) = μN)
@@ -103,13 +101,11 @@ theorem lint_right {μN μH : Measure G} [SFinite μN] [SFinite μH] {N H : Set 
     _ = ∫⁻ n, ∫⁻ h, f (n * h) ∂μH ∂μN := (lintegral_lintegral_swap hG.aemeasurable).symm
 
 /- English proof (translation)
-Establish `hF : Measurable (Function.uncurry fun n h => f ((n * h)⁻¹))` using `hf.comp ((measurable_fst.mul measurable_snd).inv)`. Establish `hG : Measurable (Function.uncurry fun n h => f (n * h))` using `hf.comp (measurable_fst.mul measurable_snd)`. Establish `hm3 : Measurable fun h => ∫⁻ n, f (n * h) ∂μN`. Establish `: Measurable fun p : G × G => f (p.1 * p.2)` using `hf.comp (measurable_fst.mul measurable_snd)`. Conclude with `this.lintegral_prod_left'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ h ∂μH, h ∈ H` using `(ae_iff (p := fun a => a ∈ H)).mpr h0H`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with h hh`. Establish `e : ∀ n, (n * h)⁻¹ = h⁻¹ * n⁻¹ * h⁻¹⁻¹ * h⁻¹`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `n`. Use `group`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_comp_of_map_eq (φ := fun x => x⁻¹) (g := fun n => f (h⁻¹ * n * h⁻¹⁻¹ * h⁻¹)) measurable_inv hNi (hf.comp (((measurable_const_mul _).mul_const _).mul_const _))]`. Conclude with `lintegral_comp_of_map_eq (φ := fun x => h⁻¹ * x * h⁻¹⁻¹) (g := fun n => f (n * h⁻¹)) ((measurable_const_mul _).mul_const _) (hconj _ (hinvH h hh)) (hf.comp (measurable_mul_const _))`.
-
-Use `_ = ∫⁻ h, ∫⁻ n, f (n * h) ∂μN ∂μH := lintegral_comp_of_map_eq (φ := fun x => x⁻¹) (g := fun h => ∫⁻ n, f (n * h) ∂μN) measurable_inv hHi hm3`. Use `_ = ∫⁻ n, ∫⁻ h, f (n * h) ∂μH ∂μN := (lintegral_lintegral_swap hG.aemeasurable).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_inv {μN μH : Measure G} [SFinite μN] [SFinite μH] {H : Set G}
     (hNi : μN.map (fun x => x⁻¹) = μN) (hHi : μH.map (fun x => x⁻¹) = μH)
@@ -141,27 +137,23 @@ theorem lint_inv {μN μH : Measure G} [SFinite μN] [SFinite μH] {H : Set G}
     _ = ∫⁻ n, ∫⁻ h, f (n * h) ∂μH ∂μN := (lintegral_lintegral_swap hG.aemeasurable).symm
 
 /- English proof (translation)
-Use `haveI := hHf`. Establish `hmul_m : Measurable fun p : G × G => p.1 * p.2` using `measurable_fst.mul measurable_snd`. Establish `key : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂((μN.prod μH).map (fun p => p.1 * p.2)) = ∫⁻ n, ∫⁻ h, f (n * h) ∂μH ∂μN`. Introduce `f hf`. Rewrite using `[lintegral_map hf hmul_m]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lintegral_prod _ (hf.comp hmul_m).aemeasurable`. Establish `hcpt : ∀ K : Set G, IsCompact K → (μN.prod μH).map (fun p => p.1 * p.2) K < ⊤`. Introduce `K hK`. Rewrite using `[Measure.map_apply hmul_m hK.isClosed.measurableSet]`. Establish `hTc : IsCompact ((fun p : G × G => p.1 * p.2⁻¹) '' (K ×ˢ H))` using `(hK.prod hHc).image (continuous_fst.mul continuous_snd.inv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hsub : (fun p : G × G => p.1 * p.2) ⁻¹' K ⊆ ((fun p : G × G => p.1 * p.2⁻¹) '' (K ×ˢ H)) ×ˢ H ∪ Set.univ ×ˢ Hᶜ`. Introduce and unpack `⟨n, h⟩ hnh`. Distinguish the cases in `hh : h ∈ H`. Use `left`. Conclude with `⟨⟨(n * h, h), ⟨hnh, hh⟩, by simp⟩, hh⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Conclude with `⟨Set.mem_univ _, hh⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.prod_prod, Measure.prod_prod]`. Use `_ < ⊤ := by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hHcc, mul_zero, add_zero]`. Conclude with `ENNReal.mul_lt_top (hNk _ hTc) (measure_lt_top μH H)`. Unfold `IsHaarSub`. Use `⟨hSc, h1, hmul, hinv, ?_, ?_, ?_, ?_, hcpt, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsFiniteMeasureOnCompacts ((μN.prod μH).map (fun p => p.1 * p.2)) := ⟨hcpt⟩ infer_instance`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Ne, ← Measure.measure_univ_eq_zero, Measure.map_apply hmul_m MeasurableSet.univ, Set.preimage_univ, ← Set.univ_prod_univ, Measure.prod_prod, mul_eq_zero, not_or, Measure.measure_univ_eq_zero, Measure.measure_univ_eq_zero]`. Conclude with `⟨hN0, hH0⟩`. Rewrite using `[Measure.map_apply hmul_m hSc.measurableSet.compl]`. Use `le_antisymm ?_ (by positivity)` and prove the remaining obligations. Establish `hsub : (fun p : G × G => p.1 * p.2) ⁻¹' Sᶜ ⊆ Nᶜ ×ˢ Set.univ ∪ Set.univ ×ˢ Hᶜ`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨n, h⟩ hnh`. Distinguish the cases in `hn : n ∈ N`. Distinguish the cases in `hh : h ∈ H`. Conclude with `absurd (hNH n hn h hh) hnh`. Use `right`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Set.mem_univ _, hh⟩`. Use `left`. Conclude with `⟨hn, Set.mem_univ _⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.prod_prod, Measure.prod_prod, hNc, hHcc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Introduce `s hs`. Take `⟨n₀, hn₀, h₀, hh₀, rfl⟩` from `hdec s hs`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`.
-
-Conclude with `(lintegral_map hf (measurable_const_mul _)).trans ((key (fun a => f (n₀ * h₀ * a)) (hf.comp (measurable_const_mul _))).trans ((lint_left hn₀ hh₀ hNl hHl hconj f hf).trans (key f hf).symm))`. Introduce `s hs`. Take `⟨n₀, hn₀, h₀, hh₀, rfl⟩` from `hdec s hs`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`.
-
-Conclude with `(lintegral_map hf (measurable_mul_const _)).trans ((key (fun a => f (a * (n₀ * h₀))) (hf.comp (measurable_mul_const _))).trans ((lint_right hn₀ hh₀ hNr hHr hnorm hHcc f hf).trans (key f hf).symm))`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `f hf`. Conclude with `(lintegral_map hf measurable_inv).trans ((key (fun a => f a⁻¹) (hf.comp measurable_inv)).trans ((lint_inv hNi hHi hconj hHinv hHcc f hf).trans (key f hf).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isHaarSub_NH [LocallyCompactSpace G] [T2Space G] {S N H : Set G} {μN μH : Measure G}
     [SigmaFinite μN] [SigmaFinite μH]
@@ -259,9 +251,9 @@ def FolnerS : Prop :=
     IsFolner (X.SinfU u) (Formalism.L2.SG.RealObj.muS X u)
 
 /- English proof (translation)
-Take `⟨hSc, h1, hmul, hinv, -, -, -, hHc, -, -, hHinv, hnorm, hNH, hdec⟩` from `hD D X u`. Take `⟨hNk, hNr, hNi, hconj⟩` from `hN D X u`. Take `⟨hHf, hHr, hHi⟩` from `hH D X u`. Take `⟨hNsf, hN0, hNc, hNl⟩` from `X.muN_haar u`. Take `⟨hHsf, hH0, hHcc, hHl⟩` from `X.muH_haar u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hNsf`. Use `haveI := hHsf`. Conclude with `isHaarSub_NH hSc h1 hmul hinv hHc hHinv hnorm hNH hdec hN0 hNc hNl hH0 hHcc hHl hNk hNr hNi hconj hHf hHr hHi`.
+A detailed English derivation is pending.
 -/
 theorem isHaarSub_SinfU (hD : SDecomp) (hN : MeasN) (hH : MeasH) {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (u : D.what₂.Word) : IsHaarSub (X.SinfU u) (Formalism.L2.SG.RealObj.muS X u) := by
@@ -276,7 +268,7 @@ theorem isHaarSub_SinfU (hD : SDecomp) (hN : MeasN) (hH : MeasH) {D : D7} (X : F
     hHf hHr hHi
 
 /- English proof (translation)
-Introduce `D X u`. Conclude with `⟨isHaarSub_SinfU hD hN hH X u, hF D X u, Formalism.L2.S.Pv.TauS.tauU_one (X := X) u, Formalism.L2.S.Pv.TauS.tauU_mul (X := X) u, hQ D X u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stepSubG_of (hD : SDecomp) (hN : MeasN) (hH : MeasH) (hF : FolnerS) (hQ : NuQSFinite) :
     Formalism.L2.SG.RealObj.EnergyInst.StepSubG := by

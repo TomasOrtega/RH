@@ -19,15 +19,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.DepthZeroTame
 /- English proof (translation)
-Introduce `hP hS hL D P hrow hlab hchi`. Take `⟨S, hT, hLaws, -⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hP.fin hL D P hrow`. Establish `hfix : ∀ (i : D.nd.Loc) (PI : D.naut.AV i) (k : Fin 2) (v : D.nd.PlG k), TameLP D (D.naut.locV i PI (D.naut.plGw k v))`. Introduce `i PI k v`. Establish `hw` using `GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htame` using `_root_.GlobalTheory.PendOf.isTame_reading_mu_at_split_plGw hL D P S hT i k v hw`. Establish `hTB` using `_root_.GlobalTheory.T.type_block_of_tame_at_split_place hL D P S hT i _ hw ⟨k, D.naut.plGw_over k v⟩ htame`. Take `⟨x, hx0, hx⟩` from `hTB.2 PI`. Establish `hfixd : x ∈ GlobalTheory.PRep.fixed ((S i _ hw).rep PI).π (GlobalTheory.SplitWeil.KOne ((D.naut.plGw k v).adicCompletion D.host.E) (Fin (D.R.r + D.R.t)))`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : ((S i _ hw).rep PI).π h x = x` using `GlobalTheory.JacBlock.KOne_le_stab htame hx h.2`. Simplify using `using h'`. Establish `hwild` using `_root_.GlobalTheory.DepthZeroLoc.main_m_alt hP.bz hS hL D _ _ ((S i _ hw).rep PI) ⟨x, hfixd, hx0⟩ (UpperTheory.One.M.isQg_of_over D k _ (D.naut.plGw_over k v))`. Introduce `σ hσI hσW`. Establish `hd : D.naut.lpDim (D.naut.locV i PI (D.naut.plGw k v)) = D.R.r + D.R.t`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← P.T.dim, (S i _ hw).locV PI, (hLaws i _ hw).dim]`. Rewrite using `[P.T.inePol _ _ σ hσI, (S i _ hw).locV PI, hT.rc i _ hw, hwild σ hσW, hd]`. Introduce `i PI k w hw`. Take `⟨v, rfl | hc⟩` from `GlobalTheory.TypePlaceCover.place_cover D k w hw`. Conclude with `hfix i PI k v`.
-
-Conclude with `((_root_.GlobalTheory.T.conjDual_of_labAll hP hL D P hlab) i PI k v w hc).2.1 (hfix i PI k v)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem depthZero_tame_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → GlobalTheory.Published.DepthZeroSupport → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists)
     (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → LabAll D P.T → ChiTOk D P.cf →

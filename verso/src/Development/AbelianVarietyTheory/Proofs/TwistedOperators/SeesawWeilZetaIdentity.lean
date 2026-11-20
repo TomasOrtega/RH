@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.TripleAssembly.ReadDerB
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pure_smul_twisted_operators {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (c : ℂ)
     (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -30,13 +30,13 @@ private theorem pure_smul_twisted_operators {F : Type} [Field F] [NumberField F]
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hf, hφ, hv, rfl⟩` from `hx`. Conclude with `⟨1, fun _ => f, fun _ => φ, fun _ => ⟨hf, hφ, hv⟩, by simp⟩`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨m₁, f₁, φ₁, h₁, rfl⟩` from `hx`. Take `⟨m₂, f₂, φ₂, h₂, rfl⟩` from `hy`. Use `⟨m₁ + m₂, Fin.append f₁ f₂, Fin.append φ₁ φ₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `using h₁ j`. Simplify using `using h₂ j`. Simplify using `[Fin.sum_univ_add]`. Consider the case `smul c x _ hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨m, f, φ, h, rfl⟩` from `hx`. Use `⟨m, fun i => c • f i, φ, fun i => ⟨(M.Pol ψ τ).smul_mem c (h i).1, (h i).2⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.smul_sum, pure_smul_twisted_operators]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_sum_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Z)
@@ -66,13 +66,13 @@ theorem exists_sum_pure {F E : Type} [Field F] [NumberField F] [Field E] [Number
     simp [Finset.smul_sum, pure_smul_twisted_operators]
 
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hwA hwB e Bs Γ Xc om om' h htA htB R Rf hM τ Y hY γ hγ hγt Φ hΦ Φ' hΦ' hD`. Establish `hψe` using `h.ψ`. Substitute `hψe` using the available equality. Take `⟨Ψ, hΨ, hΦeq⟩` from `(GlobalTheory.T.seesaw_weil_triple_norm hH hP D Bs.ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hwA hwB e Bs Γ Xc om om' h htA htB R Rf hM).2 Φ hΦ`. Take `⟨m, f, φ, hfφ, hΨeq⟩` from `exists_sum_pure Γ.M' Bs.ψ Bs.emb hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_line_operator_polynomial hP Bs Γ Xc om om' hM.triple γ hγ`. Establish `hΨs : Ψ ∈ GlobalTheory.WeilM.schA D.host.F (Fin W₁.rank × Fin (W.rank + W₁.rank))` using `GlobalTheory.TripleAssembly.darbAlg_le_schA _ _ _ Γ.M' Bs.ψ Bs.emb hM.triple.geo.hM' hΨ`. Use `⟨m, f, fun i => δ (f i), φ, fun i => ⟨(hfφ i).1, (hfφ i).2.1, (hfφ i).2.2, (hδ (f i) (hfφ i).1).2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨δ (f i), φ i, (hδ (f i) (hfφ i).1).1, (hfφ i).2.1, (hfφ i).2.2, rfl⟩`. Rewrite using `[← hΦeq, hΨeq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Establish `key : ∀ t : ℝ, ωB (1, oneP θ X τ Y t) Φ x = GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho Bs.ψ (GlobalTheory.TripleRead.ptO (sgn false W₁).gram e x) (om' (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))))`. Introduce `t`. Rewrite using `[← hΦeq, ← htB Ψ hΨs 1 (oneP θ X τ Y t), GlobalTheory.LocWeilAct.conjU_one', ← hγt t, hΨeq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.T.weil_model_standard_character hP Γ.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hM.triple.base.cm hM.triple.base.std hM.triple.geo.hM' hM.triple.weil' γ hγ m f (fun i => δ (f i)) φ (fun i => ⟨(hfφ i).2.1, (hfφ i).2.2⟩) (fun i => (hδ (f i) (hfφ i).1).2) (GlobalTheory.TripleRead.p …`. Establish `hDx : HasDerivAt (fun t : ℝ => ωB (1, oneP θ X τ Y t) Φ x) (Φ' x) 0` using `hD x`. Rewrite `hDx` using `[show (fun t : ℝ => ωB (1, oneP θ X τ Y t) Φ x) = _ from funext key]`. Conclude with `hDx.unique hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_lieDer : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

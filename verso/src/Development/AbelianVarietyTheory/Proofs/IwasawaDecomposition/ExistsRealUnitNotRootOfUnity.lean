@@ -7,15 +7,13 @@ namespace GlobalTheory.UnipKill
 open NumberField.Units IsCMField in
 
 /- English proof (translation)
-Establish `hrank : 0 < rank E`. Establish `h1` using `IsTotallyComplex.finrank (K := E)`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := E)`. Establish `h3` using `IsTotallyComplex.nrRealPlaces_eq_zero (K := E)`. Unfold `rank`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Set `i : Fin (rank E)` to `⟨0, hrank⟩`. Use `⟨realFundSystem E i, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [realFundSystem, cc]`. Conclude with `complexConj_apply_eq_self E _`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn hpow set v := fundSystem (maximalRealSubfield E) (finCongr (units_rank_eq_units_rank E).symm i)`. Establish `hv : v ^ n = 1`. Establish `hinj : Function.Injective (algebraMap (𝓞 (maximalRealSubfield E)) E)` using `(FaithfulSMul.algebraMap_injective (𝓞 (maximalRealSubfield E)) E)`. Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one, IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (𝓞 E) E]`. Conclude with `hpow`. Establish `htor : v ∈ torsion (maximalRealSubfield E)` using `(CommGroup.mem_torsion _).mpr ((isOfFinOrder_iff_pow_eq_one).mpr ⟨n, hn, hv⟩)`. Establish `hmk` using `fundSystem_mk (maximalRealSubfield E) (finCongr (units_rank_eq_units_rank E).symm i)`. Rewrite `hmk` using `[(QuotientGroup.eq_one_iff _).mpr htor]`.
-
-Conclude with `(basisModTorsion (maximalRealSubfield E)).ne_zero _ hmk.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_unit_infinite_order (E : Type) [Field E] [NumberField E] [IsCMField E]
     (hE : 1 < Module.finrank ℚ E / 2) :

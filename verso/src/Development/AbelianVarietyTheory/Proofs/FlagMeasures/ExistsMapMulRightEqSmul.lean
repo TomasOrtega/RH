@@ -8,7 +8,7 @@ variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Measurab
 
 omit [MeasurableInv G] in
 /- English proof (translation)
-Establish `e` using `lintegral_map (μ := ρ) hf (measurable_const_mul p)`. Rewrite `e` using `[h]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_left_of_map {ρ : Measure G} {p : G} (h : ρ.map (fun g => p * g) = ρ) (f : G → ENNReal)
     (hf : Measurable f) : ∫⁻ x, f (p * x) ∂ρ = ∫⁻ x, f x ∂ρ := by
@@ -17,31 +17,27 @@ theorem lintegral_mul_left_of_map {ρ : Measure G} {p : G} (h : ρ.map (fun g =>
   exact e.symm
 
 /- English proof (translation)
-Establish `e : MeasurableEmbedding (Subtype.val : P → G)` using `MeasurableEmbedding.subtype_coe hP`. Establish `: MeasurableMul₂ P` using `⟨e.measurable_comp_iff.1 ((measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd))⟩`. Establish `: MeasurableInv P` using `⟨e.measurable_comp_iff.1 measurable_subtype_coe.inv⟩`. Use `set ρ' : Measure P := ρ.comap Subtype.val with hρ'`. Establish `hmap : ρ'.map Subtype.val = ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ', e.map_comap, Subtype.range_coe_subtype, Measure.restrict_eq_self_of_ae_mem]`. Conclude with `ae_iff.2 h0`. Establish `inj : ∀ α β : Measure P, α.map Subtype.val = β.map Subtype.val → α = β` using `fun α β h => by`. Rewrite using `[← e.comap_map α, ← e.comap_map β, h]`. Establish `: SigmaFinite ρ'` using `SigmaFinite.of_map ρ' measurable_subtype_coe.aemeasurable (by rw [hmap]; infer_instance)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ρ'.IsMulLeftInvariant` using `⟨fun s => inj _ _ (by`. Rewrite using `[Measure.map_map measurable_subtype_coe (measurable_const_mul s)]`. Establish `hc : (Subtype.val ∘ fun x : P => s * x) = (fun g : G => (s : G) * g) ∘ Subtype.val` using `rfl`. Rewrite using `[hc, ← Measure.map_map (measurable_const_mul _) measurable_subtype_coe, hmap, hinv s s.2])⟩`. Set `l' : P` to `⟨l, hl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ν' : Measure P := ρ'.map (fun x => x * l') with hν'`. Establish `: ν'.IsMulLeftInvariant` using `⟨fun s => by`. Rewrite using `[hν', Measure.map_map (measurable_const_mul s) (measurable_mul_const l')]`. Establish `hc : ((fun x : P => s * x) ∘ fun x => x * l') = (fun x => x * l') ∘ (fun x => s * x)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Function.comp, mul_assoc]`. Rewrite using `[hc, ← Measure.map_map (measurable_mul_const l') (measurable_const_mul s), map_mul_left_eq_self]⟩`. Establish `: SigmaFinite ν'` using `SigmaFinite.of_map ν' (measurable_mul_const l'⁻¹).aemeasurable (by`. Rewrite using `[hν', Measure.map_map (measurable_mul_const _) (measurable_mul_const _)]`. Establish `hc : ((fun x : P => x * l'⁻¹) ∘ fun x => x * l') = id` using `by funext x; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Measure.map_id]`. Use the proof step `infer_instance)`. Establish `hρT' : ρ' (Subtype.val ⁻¹' T) = ρ T`. Rewrite using `[hρ', e.comap_apply, Set.image_preimage_eq_inter_range]`. Conclude with `measure_inter_conull (by rw [Subtype.range_coe_subtype]; exact h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEq` using `measure_eq_div_smul ν' ρ' (s := Subtype.val ⁻¹' T) (by rw [hρT']; exact hT0) (by rw [hρT']; exact hT1)`. Use `set D := ν' (Subtype.val ⁻¹' T) / ρ' (Subtype.val ⁻¹' T) with hD`. Establish `hmapD : ρ.map (fun g => g * l) = D • ρ` using `by conv_lhs => rw [← hmap]`. Rewrite using `[Measure.map_map (measurable_mul_const l) measurable_subtype_coe]`. Establish `hc : ((fun g : G => g * l) ∘ Subtype.val) = Subtype.val ∘ (fun x : P => x * l')` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, ← Measure.map_map measurable_subtype_coe (measurable_mul_const l'), ← hν', hEq, Measure.map_smul, hmap]`. Establish `huniv : (ρ.map fun g => g * l) Set.univ ≠ 0`. Rewrite using `[Measure.map_apply (measurable_mul_const l) MeasurableSet.univ, Set.preimage_univ]`. Conclude with `fun h => hT0 (measure_mono_null (Set.subset_univ _) h)`. Establish `hD0 : D ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `huniv` to reduce the goal to its premises. Rewrite using `[hmapD, h, zero_smul, Measure.coe_zero, Pi.zero_apply]`. Establish `hD1 : D ≠ ⊤`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: SigmaFinite (ρ.map fun g => g * l)` using `SigmaFinite.of_map _ (measurable_mul_const l⁻¹).aemeasurable (by`. Rewrite using `[Measure.map_map (measurable_mul_const _) (measurable_mul_const _)]`. Establish `hc : ((fun g : G => g * l⁻¹) ∘ fun g => g * l) = id` using `by funext x; simp`. Rewrite using `[hc, Measure.map_id]`. Use the proof step `infer_instance)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, (ρ.map fun g => g * l) (spanningSets (ρ.map fun g => g * l) n) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `huniv` to reduce the goal to its premises. Rewrite using `[← iUnion_spanningSets (ρ.map fun g => g * l)]`.
-
-Conclude with `measure_iUnion_null hne`. Establish `hlt` using `measure_spanningSets_lt_top (ρ.map fun g => g * l) n`. Use `set Sn := spanningSets (ρ.map fun g => g * l) n`. Rewrite `hn`, `hlt` using `[hmapD, Measure.smul_apply, smul_eq_mul, h]`. Break down `eq_or_ne (ρ Sn) 0 with h' | h'` into its components or cases.
-
-Conclude with `hn (by rw [h', mul_zero])`. Rewrite `hlt` using `[ENNReal.top_mul h']`. Conclude with `lt_irrefl _ hlt`. Conclude with `⟨D, hD0, hD1, hmapD⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_map_mul_right_eq_smul (P : Subgroup G) (hP : MeasurableSet (P : Set G)) (ρ : Measure G)
     [SigmaFinite ρ] (h0 : ρ (P : Set G)ᶜ = 0) (hinv : ∀ s ∈ P, ρ.map (fun g => s * g) = ρ)
@@ -117,47 +113,43 @@ theorem exists_map_mul_right_eq_smul (P : Subgroup G) (hP : MeasurableSet (P : S
   exact ⟨D, hD0, hD1, hmapD⟩
 
 /- English proof (translation)
-Establish `hind : Measurable (T.indicator (1 : G → ENNReal))` using `measurable_one.indicator hT`. Establish `ind_ne_top : ∀ x, T.indicator (1 : G → ENNReal) x ≠ ⊤` using `fun x => by`. Apply the tactic sequence `by_cases hx : x ∈ T <;> simp [Set.indicator_apply, hx]`. Establish `hLm : ∀ φ : G → ENNReal, Measurable φ → Measurable fun h => T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ q, ∫⁻ k, φ (q * h * k) ∂κ ∂ρ` using `fun φ hφ => (hind.comp measurable_inv).mul ((hφ.comp (by fun_prop : Measurable fun y : (G × G) × G => y.1.2 * y.1.1 * y.2)).lintegral_prod_right').lintegral_prod_right'`. Establish `key : ∀ h : G, ∃ D : ENNReal, D ≠ 0 ∧ D ≠ ⊤ ∧ ∀ φ : G → ENNReal, Measurable φ → ∫⁻ q, ∫⁻ k, φ (q * h * k) ∂κ ∂ρ = D * ∫⁻ p, ∫⁻ k, φ (p * k) ∂κ ∂ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Take `⟨p0, hp0, k0, hk0, rfl⟩` from `hdec h`. Take `⟨D, hD0, hDt, hD⟩` from `hPr p0 hp0`. Use `⟨D, hD0, hDt, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hF : Measurable fun x => ∫⁻ k, φ (x * k) ∂κ` using `(hφ.comp measurable_mul).lintegral_prod_right'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∀ q, ∫⁻ k, φ (q * (p0 * k0) * k) ∂κ = ∫⁻ k, φ (q * p0 * k) ∂κ`. Introduce `q`. Use `lintegral_mul_left_of_map (hKl k0 hk0) (fun k => φ (q * p0 * k)) (hφ.comp (measurable_const_mul _))` as an intermediate fact. Simplify `this` using `only [mul_assoc]`. Repeatedly rewrite using `[e1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `lintegral_map (μ := ρ) hF (measurable_mul_const p0)` as an intermediate fact. Rewrite `this` using `[hD, lintegral_smul_measure, smul_eq_mul]`. Conclude with `this.symm`. Establish `mix : ∀ φ : G → ENNReal, Measurable φ → ρ T * ∫⁻ g, φ g ∂μ = ∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ q, ∫⁻ k, φ (q * h * k) ∂κ ∂ρ ∂μ`. Introduce `φ hφ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `s1 : ∫⁻ g, φ g ∂μ = ∫⁻ g, ∫⁻ k, φ (g * k) ∂κ ∂μ`. Rewrite using `[lintegral_lintegral_swap (f := fun g k => φ (g * k)) (by exact (hφ.comp measurable_mul).aemeasurable)]`. Repeatedly rewrite using `[lintegral_mul_right_eq_self]`. Rewrite using `[lintegral_const, measure_univ, mul_one]`. Establish `s2 : ∀ g, ∫⁻ q, T.indicator (1 : G → ENNReal) (g⁻¹ * q) ∂ρ = ρ T`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Take `⟨p0, hp0, k0, hk0, rfl⟩` from `hdec g`. Establish `e : ∀ q, T.indicator (1 : G → ENNReal) ((p0 * k0)⁻¹ * q) = T.indicator 1 (p0⁻¹ * q)`. Introduce `q`. Establish `hm : (p0 * k0)⁻¹ * q ∈ T ↔ p0⁻¹ * q ∈ T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_rev, mul_assoc]`. Conclude with `hTK k0 hk0 _`. Simplify using `only [Set.indicator_apply, hm, Pi.one_apply]`. Repeatedly rewrite using `[e]`. Use `lintegral_mul_left_of_map (hPl p0 hp0) (fun x => T.indicator (1 : G → ENNReal) (p0⁻¹ * x)) (hind.comp (measurable_const_mul _))` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inv_mul_cancel_left] at this`. Rewrite using `[← this, lintegral_indicator_one hT]`. Establish `hW1 : ∫⁻ g, ∫⁻ q, T.indicator (1 : G → ENNReal) (g⁻¹ * q) * ∫⁻ k, φ (g * k) ∂κ ∂ρ ∂μ = ρ T * ∫⁻ g, φ g ∂μ`. Establish `e : ∀ g, ∫⁻ q, T.indicator (1 : G → ENNReal) (g⁻¹ * q) * ∫⁻ k, φ (g * k) ∂κ ∂ρ = ρ T * ∫⁻ k, φ (g * k) ∂κ`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(lintegral_mul_const _ (hind.comp (measurable_const_mul g⁻¹))).trans (congrArg (· * _) (s2 g))`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_const_mul' _ _ hT1, ← s1]`. Establish `hmF : Measurable fun x : G × G => T.indicator (1 : G → ENNReal) (x.1⁻¹ * x.2) * ∫⁻ k, φ (x.1 * k) ∂κ` using `(hind.comp (measurable_fst.inv.mul measurable_snd)).mul (((hφ.comp measurable_mul).lintegral_prod_right').comp measurable_fst)`. Establish `hmG : Measurable fun x : G × G => T.indicator (1 : G → ENNReal) x.2⁻¹ * ∫⁻ k, φ (x.1 * x.2 * k) ∂κ` using `(hind.comp measurable_snd.inv).mul ((hφ.comp (by fun_prop : Measurable fun y : (G × G) × G => y.1.1 * y.1.2 * y.2)).lintegral_prod_right')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW2 : ∫⁻ g, ∫⁻ q, T.indicator (1 : G → ENNReal) (g⁻¹ * q) * ∫⁻ k, φ (g * k) ∂κ ∂ρ ∂μ = ∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ q, ∫⁻ k, φ (q * h * k) ∂κ ∂ρ ∂μ`. Rewrite using `[lintegral_lintegral_swap (f := fun g q => T.indicator (1 : G → ENNReal) (g⁻¹ * q) * ∫⁻ k, φ (g * k) ∂κ) (by exact hmF.aemeasurable)]`. Establish `e : ∀ q, ∫⁻ g, T.indicator (1 : G → ENNReal) (g⁻¹ * q) * ∫⁻ k, φ (g * k) ∂κ ∂μ = ∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ k, φ (q * h * k) ∂κ ∂μ`. Introduce `q`. Use `(lintegral_mul_left_eq_self (μ := μ) (fun g => T.indicator (1 : G → ENNReal) (g⁻¹ * q) * ∫⁻ k, φ (g * k) ∂κ) q).symm.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_lintegral_swap (f := fun q h => T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ k, φ (q * h * k) ∂κ) (by exact hmG.aemeasurable)]`. Conclude with `lintegral_congr fun h => lintegral_const_mul' _ _ (ind_ne_top _)`. Rewrite using `[← hW1, hW2]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨S, hS, hS0, hS1⟩ : ∃ S, MeasurableSet S ∧ μ S ≠ 0 ∧ μ S ≠ ⊤ := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `hμ` to reduce the goal to its premises. Establish `hz : ∀ n, μ (spanningSets μ n) = 0` using `fun n => by`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `(measure_spanningSets_lt_top μ n).ne (hne _ (measurableSet_spanningSets μ n) hn)`. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_spanningSets μ]`. Conclude with `measure_iUnion_null hz`. Establish `hφ0 : Measurable (S.indicator (1 : G → ENNReal))` using `measurable_one.indicator hS`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hμS : ∫⁻ g, S.indicator (1 : G → ENNReal) g ∂μ = μ S` using `lintegral_indicator_one hS`. Establish `mix0` using `mix _ hφ0`. Rewrite `mix0` using `[hμS]`. Establish `hL0 : ∫⁻ p, ∫⁻ k, S.indicator (1 : G → ENNReal) (p * k) ∂κ ∂ρ ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ q, ∫⁻ k, S.indicator (1 : G → ENNReal) (q * h * k) ∂κ ∂ρ ∂μ = 0`. Use `(lintegral_congr fun h => ?_).trans lintegral_zero` and prove the remaining obligations. Take `⟨D, -, -, hD⟩` from `key h`. Rewrite using `[hD _ hφ0, h0, mul_zero, mul_zero]`. Rewrite `mix0` using `[this]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hT0 hS0 mix0`. Establish `hLt : ∫⁻ p, ∫⁻ k, S.indicator (1 : G → ENNReal) (p * k) ∂κ ∂ρ ≠ ⊤`. Introduce `ht`. Establish `: ∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ q, ∫⁻ k, S.indicator (1 : G → ENNReal) (q * h * k) ∂κ ∂ρ ∂μ = (∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ ∂μ) * ⊤`. Rewrite using `[← (lintegral_mul_const ⊤ (hind.comp measurable_inv) : ∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ * ⊤ ∂μ = (∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ ∂μ) * ⊤)]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Take `⟨D, hD0, -, hD⟩` from `key h`. Rewrite using `[hD _ hφ0, ht, ENNReal.mul_top hD0]`. Rewrite `mix0` using `[this]`. Break down `eq_or_ne (∫⁻ h, T.indicator (1 : G → ENNReal) h⁻¹ ∂μ) 0 with hz | hz` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `mix0` using `[hz, zero_mul]`. Conclude with `mul_ne_zero hT0 hS0 mix0`. Rewrite `mix0` using `[ENNReal.mul_top hz]`. Conclude with `ENNReal.mul_ne_top hT1 hS1 mix0`. Use `⟨μ S / ∫⁻ p, ∫⁻ k, S.indicator (1 : G → ENNReal) (p * k) ∂κ ∂ρ, (ENNReal.div_pos_iff.2 ⟨hS0, hLt⟩).ne', ENNReal.div_ne_top hS1 hL0, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `E : ρ T * ((∫⁻ g, φ g ∂μ) * ∫⁻ p, ∫⁻ k, S.indicator (1 : G → ENNReal) (p * k) ∂κ ∂ρ) = ρ T * (μ S * ∫⁻ p, ∫⁻ k, φ (p * k) ∂κ ∂ρ)`. Rewrite using `[← mul_assoc]`. Rewrite using `[mix _ hφ]`. Rewrite using `[← lintegral_mul_const _ (hLm _ hφ)]`. Rewrite using `[← mul_assoc]`.
-
-Rewrite using `[mix0]`. Rewrite using `[← lintegral_mul_const _ (hLm _ hφ0)]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Take `⟨D, -, -, hD⟩` from `key h`. Rewrite using `[hD _ hφ, hD _ hφ0]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `E'` using `(ENNReal.mul_right_inj hT0 hT1).1 E`. Rewrite using `[div_eq_mul_inv, mul_right_comm, ← div_eq_mul_inv]`. Conclude with `(ENNReal.eq_div_iff hL0 hLt).2 (by rw [mul_comm]; exact E')`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lintegral_eq_mul (μ ρ κ : Measure G) [SigmaFinite μ] [SFinite ρ] [IsProbabilityMeasure κ]
     [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (hμ : μ ≠ 0) (P K : Set G)

@@ -33,41 +33,41 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Simplify using `[comb]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem comb_castSucc (b : Fin r →₀ ℕ) (m : Fin N × Fin r →₀ ℕ) (i : Fin N) (c : Fin r) :
     comb b m (Fin.castSucc i, c) = m (i, c) := by
   simp [comb]
 
 /- English proof (translation)
-Simplify using `[comb]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem comb_last (b : Fin r →₀ ℕ) (m : Fin N × Fin r →₀ ℕ) (c : Fin r) :
     comb b m (Fin.last N, c) = b c := by
   simp [comb]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem llPart_comb (b : Fin r →₀ ℕ) (m : Fin N × Fin r →₀ ℕ) : llPart (comb b m) = m := by
   ext x
   simp
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem etaPart_comb (b : Fin r →₀ ℕ) (m : Fin N × Fin r →₀ ℕ) : etaPart (comb b m) = b := by
   ext c
   simp
 
 /- English proof (translation)
-The claim follows from `(Fin.castSucc_lt_last i).ne`.
+A detailed English derivation is pending.
 -/
 private theorem fin_castSucc_ne_last (i : Fin N) : Fin.castSucc i ≠ Fin.last N :=
   (Fin.castSucc_lt_last i).ne
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `Or.inl rfl`. Conclude with `Or.inr ⟨j, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Prove the second alternative.
 -/
 private theorem fin_eq_last_or_exists_castSucc (i : Fin (N + 1)) : i = Fin.last N ∨ ∃ j : Fin N, i = Fin.castSucc j := by
   refine Fin.lastCases ?_ (fun j => ?_) i
@@ -75,14 +75,14 @@ private theorem fin_eq_last_or_exists_castSucc (i : Fin (N + 1)) : i = Fin.last 
   · exact Or.inr ⟨j, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem llPart_add (m m' : Fin (N + 1) × Fin r →₀ ℕ) : llPart (m + m') = llPart m + llPart m' := by
   ext x
   simp
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem etaPart_add (m m' : Fin (N + 1) × Fin r →₀ ℕ) :
     etaPart (m + m') = etaPart m + etaPart m' := by
@@ -90,14 +90,14 @@ private theorem etaPart_add (m m' : Fin (N + 1) × Fin r →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem llPart_tsub (m m' : Fin (N + 1) × Fin r →₀ ℕ) : llPart (m - m') = llPart m - llPart m' := by
   ext x
   simp
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem etaPart_tsub (m m' : Fin (N + 1) × Fin r →₀ ℕ) :
     etaPart (m - m') = etaPart m - etaPart m' := by
@@ -105,7 +105,7 @@ private theorem etaPart_tsub (m m' : Fin (N + 1) × Fin r →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Use extensionality with `⟨i', c'⟩`. Simplify using `[Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem llPart_single_castSucc (i : Fin N) (c : Fin r) (k : ℕ) :
     llPart (Finsupp.single (Fin.castSucc i, c) k) = Finsupp.single (i, c) k := by
@@ -113,7 +113,7 @@ private theorem llPart_single_castSucc (i : Fin N) (c : Fin r) (k : ℕ) :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Use extensionality with `c'`. Simplify using `[Finsupp.single_apply, fin_castSucc_ne_last i]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem etaPart_single_castSucc (i : Fin N) (c : Fin r) (k : ℕ) :
     etaPart (Finsupp.single (Fin.castSucc i, c) k) = 0 := by
@@ -121,7 +121,7 @@ private theorem etaPart_single_castSucc (i : Fin N) (c : Fin r) (k : ℕ) :
   simp [Finsupp.single_apply, fin_castSucc_ne_last i]
 
 /- English proof (translation)
-Use extensionality with `⟨i', c'⟩`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem llPart_single_last (c : Fin r) (k : ℕ) :
     llPart (Finsupp.single (Fin.last N, c) k) = 0 := by
@@ -129,7 +129,7 @@ private theorem llPart_single_last (c : Fin r) (k : ℕ) :
   simp
 
 /- English proof (translation)
-Use extensionality with `c'`. Simplify using `[Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem etaPart_single_last (c : Fin r) (k : ℕ) :
     etaPart (Finsupp.single (Fin.last N, c) k) = Finsupp.single c k := by
@@ -137,9 +137,9 @@ private theorem etaPart_single_last (c : Fin r) (k : ℕ) :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Use extensionality with `⟨i, c⟩`. Break down `fin_eq_last_or_exists_castSucc i with rfl | ⟨j, rfl⟩` into its components or cases. Use `DFunLike.congr_fun h1 c` as an intermediate fact. Simplify using `using this`. Use `DFunLike.congr_fun h2 (j, c)` as an intermediate fact.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem parts_inj {m m' : Fin (N + 1) × Fin r →₀ ℕ} (h1 : etaPart m = etaPart m')
     (h2 : llPart m = llPart m') : m = m' := by
@@ -151,7 +151,7 @@ theorem parts_inj {m m' : Fin (N + 1) × Fin r →₀ ℕ} (h1 : etaPart m = eta
     simpa using this
 
 /- English proof (translation)
-The claim follows from `parts_inj (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem comb_parts (m : Fin (N + 1) × Fin r →₀ ℕ) : comb (etaPart m) (llPart m) = m :=
   parts_inj (by simp) (by simp)
@@ -184,7 +184,7 @@ private theorem coeffη_eq_lsum (b : Fin r →₀ ℕ) (F : MvPolynomial (Fin (N
       (AddMonoidAlgebra.coeffLinearEquiv K F) := rfl
 
 /- English proof (translation)
-Rewrite using `[coeffη_eq_lsum, coeffLinearEquiv_monomial, Finsupp.lsum_single]`. Apply the tactic sequence `by_cases h : etaPart m = b <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeffη_monomial (b : Fin r →₀ ℕ) (m : Fin (N + 1) × Fin r →₀ ℕ) (a : K) :
     coeffη b (monomial m a) = if etaPart m = b then monomial (llPart m) a else 0 := by
@@ -192,9 +192,9 @@ theorem coeffη_monomial (b : Fin r →₀ ℕ) (m : Fin (N + 1) × Fin r →₀
   by_cases h : etaPart m = b <;> simp [h]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' F (fun n a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[coeffη_monomial]`. Distinguish the cases in `h : etaPart n = b`. Establish `key : llPart n = m ↔ n = comb b m` using `⟨fun h' => by rw [← h, ← h', comb_parts], fun h' => by rw [h', llPart_comb]⟩`. Rewrite using `[if_pos h, coeff_monomial, coeff_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_congr key rfl rfl`. Rewrite using `[if_neg h, coeff_zero, coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `h (etaPart_comb b m)`. Simplify using `only [map_add, coeff_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coeff_coeffη_eq_coeff_comb (b : Fin r →₀ ℕ) (m : Fin N × Fin r →₀ ℕ)
     (F : MvPolynomial (Fin (N + 1) × Fin r) K) :
@@ -213,14 +213,14 @@ private theorem coeff_coeffη_eq_coeff_comb (b : Fin r →₀ ℕ) (m : Fin N ×
   · simp only [map_add, coeff_add, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[coeff_coeffη_eq_coeff_comb, comb_parts]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_coeffη (m : Fin (N + 1) × Fin r →₀ ℕ) (F : MvPolynomial (Fin (N + 1) × Fin r) K) :
     coeff (llPart m) (coeffη (etaPart m) F) = coeff m F := by
   rw [coeff_coeffη_eq_coeff_comb, comb_parts]
 
 /- English proof (translation)
-The claim follows from `coeff_coeffη_eq_coeff_comb b m F`.
+A detailed English derivation is pending.
 -/
 theorem coeff_coeffη' (b : Fin r →₀ ℕ) (m : Fin N × Fin r →₀ ℕ) (F : MvPolynomial (Fin (N + 1) × Fin r) K) :
     coeff m (coeffη b F) = coeff (comb b m) F :=
@@ -238,7 +238,7 @@ section Coeff2
 variable {K : Type*} [CommRing K] {N r : ℕ}
 
 /- English proof (translation)
-Use `show monomial (Finsupp.single x 1) (1 : K) * monomial m a = _`. Rewrite using `[monomial_mul, one_mul, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_mul_monomial' {σ : Type*} (x : σ) (m : σ →₀ ℕ) (a : K) :
     (X x : MvPolynomial σ K) * monomial m a = monomial (m + Finsupp.single x 1) a := by
@@ -246,14 +246,14 @@ theorem X_mul_monomial' {σ : Type*} (x : σ) (m : σ →₀ ℕ) (a : K) :
   rw [monomial_mul, one_mul, add_comm]
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_pow_mul_monomial' {σ : Type*} (x : σ) (k : ℕ) (m : σ →₀ ℕ) (a : K) :
     (X x : MvPolynomial σ K) ^ k * monomial m a = monomial (m + Finsupp.single x k) a := by
   rw [X_pow_eq_monomial, monomial_mul, one_mul, add_comm]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun n a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [X_mul_monomial', coeffη_monomial, coeffη_monomial, etaPart_add, etaPart_single_castSucc, add_zero, llPart_add, llPart_single_castSucc] split_ifs <;> simp [X_mul_monomial']`. Simplify using `only [mul_add, map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem coeffη_X_castSucc_mul (b : Fin r →₀ ℕ) (i : Fin N) (c : Fin r)
     (G : MvPolynomial (Fin (N + 1) × Fin r) K) :
@@ -265,7 +265,7 @@ theorem coeffη_X_castSucc_mul (b : Fin r →₀ ℕ) (i : Fin N) (c : Fin r)
   · simp only [mul_add, map_add, hp, hq]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun n a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [pderiv_monomial, coeffη_monomial, coeffη_monomial, etaPart_tsub, etaPart_single_castSucc, tsub_zero, llPart_tsub, llPart_single_castSucc] split_ifs <;> simp [pderiv_monomial]`. Simplify using `only [map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem coeffη_pderiv_castSucc (b : Fin r →₀ ℕ) (i : Fin N) (c : Fin r)
     (G : MvPolynomial (Fin (N + 1) × Fin r) K) :
@@ -277,7 +277,7 @@ theorem coeffη_pderiv_castSucc (b : Fin r →₀ ℕ) (i : Fin N) (c : Fin r)
   · simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[X_pow_mul_monomial', coeffη_monomial, etaPart_add, llPart_add, etaPart_single_last, llPart_single_last, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffη_Xlast_pow_mul_monomial (b : Fin r →₀ ℕ) (ρ : Fin r) (k : ℕ) (m : Fin (N + 1) × Fin r →₀ ℕ)
     (a : K) :
@@ -287,7 +287,7 @@ theorem coeffη_Xlast_pow_mul_monomial (b : Fin r →₀ ℕ) (ρ : Fin r) (k : 
     llPart_single_last, add_zero]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun n a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[coeffη_Xlast_pow_mul_monomial, coeffη_monomial]`. Simplify using `only [add_left_inj]`. Simplify using `only [mul_add, map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeffη_shift (b : Fin r →₀ ℕ) (ρ : Fin r) (k : ℕ) (G : MvPolynomial (Fin (N + 1) × Fin r) K) :
     coeffη (b + Finsupp.single ρ k) (X (Fin.last N, ρ) ^ k * G) = coeffη b G := by
@@ -297,7 +297,7 @@ theorem coeffη_shift (b : Fin r →₀ ℕ) (ρ : Fin r) (k : ℕ) (G : MvPolyn
   · simp only [mul_add, map_add, hp, hq]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun n a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[coeffη_Xlast_pow_mul_monomial, if_neg]`. Introduce `h`. Conclude with `hb (by rw [← h]; exact le_add_self)`. Simplify using `only [mul_add, map_add, hp, hq, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeffη_shift_zero (b : Fin r →₀ ℕ) (ρ : Fin r) (k : ℕ) (hb : ¬ Finsupp.single ρ k ≤ b)
     (G : MvPolynomial (Fin (N + 1) × Fin r) K) :
@@ -309,13 +309,13 @@ theorem coeffη_shift_zero (b : Fin r →₀ ℕ) (ρ : Fin r) (k : ℕ) (hb : �
   · simp only [mul_add, map_add, hp, hq, add_zero]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun n a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial, coeffη_monomial, coeffη_monomial, etaPart_tsub, etaPart_single_last, llPart_tsub, llPart_single_last, tsub_zero]`. Distinguish the cases in `h1 : etaPart n = b + Finsupp.single c 1`. Establish `hc : n (Fin.last N, c) = b c + 1`. Use `DFunLike.congr_fun h1 c` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[if_pos h1, if_pos (show etaPart n - Finsupp.single c 1 = b by rw [h1, add_tsub_cancel_right]), smul_monomial, hc, smul_eq_mul, mul_comm]`. Rewrite using `[if_neg h1, smul_zero] split_ifs with h2`. Distinguish the cases in `h3 : n (Fin.last N, c) = 0`. Simplify using `[h3]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Establish `hle : Finsupp.single c 1 ≤ etaPart n`. Rewrite using `[Finsupp.single_le_iff, etaPart_apply]`. Use linear arithmetic over natural numbers and integers.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← h2, tsub_add_cancel_of_le hle]`. Both sides reduce to the same expression. Simplify using `only [map_add, smul_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem coeffη_pderiv_last (b : Fin r →₀ ℕ) (c : Fin r) (G : MvPolynomial (Fin (N + 1) × Fin r) K) :
     coeffη b (pderiv (Fin.last N, c) G) = ((b c + 1 : ℕ) : K) • coeffη (b + Finsupp.single c 1) G := by
@@ -353,7 +353,7 @@ section Gl
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.glAct`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glAct_apply (LL : Letters N) (j : ℕ) (c d : Fin r) (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     glAct p LL j c d F = ∑ i : Fin N, if (i : ℕ) < j then
@@ -364,33 +364,33 @@ theorem glAct_apply (LL : Letters N) (j : ℕ) (c d : Fin r) (F : MvPolynomial (
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[Formalism.GM.M.Letters.snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_vec_castSucc (LL : Letters N) (n : ℕ) (i : Fin N) :
     (LL.snoc n).vec (Fin.castSucc i) = LL.vec i := by
   simp [Formalism.GM.M.Letters.snoc]
 
 /- English proof (translation)
-Simplify using `[Formalism.GM.M.Letters.snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_vec_last (LL : Letters N) (n : ℕ) : (LL.snoc n).vec (Fin.last N) = false := by
   simp [Formalism.GM.M.Letters.snoc]
 
 /- English proof (translation)
-Simplify using `[Formalism.GM.M.Letters.snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_deg_castSucc (LL : Letters N) (n : ℕ) (i : Fin N) :
     (LL.snoc n).deg (Fin.castSucc i) = LL.deg i := by
   simp [Formalism.GM.M.Letters.snoc]
 
 /- English proof (translation)
-Simplify using `[Formalism.GM.M.Letters.snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_deg_last (LL : Letters N) (n : ℕ) : (LL.snoc n).deg (Fin.last N) = n := by
   simp [Formalism.GM.M.Letters.snoc]
 
 /- English proof (translation)
-Rewrite using `[glAct_apply, glAct_apply, Fin.sum_univ_castSucc, map_add, map_sum, if_neg (show ¬ ((Fin.last N : ℕ) < j) by rw [Fin.val_last]; omega), map_zero, add_zero]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [Fin.coe_castSucc, snoc_vec_castSucc]`. Apply the tactic sequence `split_ifs <;> simp [coeffη_X_castSucc_mul, coeffη_pderiv_castSucc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeffη_glAct (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (c d : Fin r) (b : Fin r →₀ ℕ)
     (F : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) :
@@ -402,7 +402,7 @@ theorem coeffη_glAct (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (c d : Fin r) 
   split_ifs <;> simp [coeffη_X_castSucc_mul, coeffη_pderiv_castSucc]
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.wt`. Rewrite using `[Fin.sum_univ_castSucc, if_neg (show ¬ ((Fin.last N : ℕ) < j) by rw [Fin.val_last]; omega), add_zero]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [Fin.coe_castSucc, snoc_vec_castSucc, llPart_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem wt_snoc (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (c : Fin r) (m : Fin (N + 1) × Fin r →₀ ℕ) :
     wt (LL.snoc n) j c m = wt LL j c (llPart m) := by
@@ -414,7 +414,7 @@ theorem wt_snoc (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (c : Fin r) (m : Fin
 variable [NeZero r]
 
 /- English proof (translation)
-Establish `key : sSup S ≤ (sSup S).comap f` using `sSup_le (fun T hT y hy => (le_sSup hT : T ≤ sSup S) (h T hT y hy))`. Conclude with `fun x hx => key hx`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem map_mem_sSup_of_forall_mapsTo {R V : Type*} [Semiring R] [AddCommMonoid V] [Module R V]
     (f : V →ₗ[R] V) (S : Set (Submodule R V)) (h : ∀ T ∈ S, ∀ x ∈ T, f x ∈ T) :
@@ -424,7 +424,7 @@ private theorem map_mem_sSup_of_forall_mapsTo {R V : Type*} [Semiring R] [AddCom
   exact fun x hx => key hx
 
 /- English proof (translation)
-Introduce `c d x hx`. Unfold `Formalism.GM.M.YCond at hx ⊢`. Conclude with `map_mem_sSup_of_forall_mapsTo (Formalism.GM.M.glAct p LL j c d) _ (fun T hT => hT.2 c d) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ycond_stable (LL : Letters N) (j : ℕ) (M : WithTop ℤ) : GlStable p LL j (YCond p (r := r) LL j M) := by
   intro c d x hx
@@ -432,7 +432,7 @@ theorem ycond_stable (LL : Letters N) (j : ℕ) (M : WithTop ℤ) : GlStable p L
   exact map_mem_sSup_of_forall_mapsTo (Formalism.GM.M.glAct p LL j c d) _ (fun T hT => hT.2 c d) x hx
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.YCond`. Conclude with `sSup_le (fun T hT => hT.1)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ycond_le (LL : Letters N) (j : ℕ) (M : WithTop ℤ) :
     YCond p (r := r) LL j M ≤ MvPolynomial.restrictSupport ℚ_[p]
@@ -441,7 +441,7 @@ theorem ycond_le (LL : Letters N) (j : ℕ) (M : WithTop ℤ) :
   exact sSup_le (fun T hT => hT.1)
 
 /- English proof (translation)
-Establish `h` using `ycond_le p LL j M hF`. Rewrite `h` using `[mem_restrictSupport_iff]`. Conclude with `h (Finset.mem_coe.2 hm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_le_of_mem (LL : Letters N) (j : ℕ) (M : WithTop ℤ) (F : MvPolynomial (Fin N × Fin r) ℚ_[p])
     (hF : F ∈ YCond p LL j M) (m : Fin N × Fin r →₀ ℕ) (hm : m ∈ F.support) :
@@ -451,13 +451,11 @@ theorem wt_le_of_mem (LL : Letters N) (j : ℕ) (M : WithTop ℤ) (F : MvPolynom
   exact h (Finset.mem_coe.2 hm)
 
 /- English proof (translation)
-Introduce `F hF`. Establish `hS : Submodule.map P (Formalism.GM.M.YCond p LA jA M) ≤ Formalism.GM.M.YCond p LB jB M`. Establish `hmem : Submodule.map P (Formalism.GM.M.YCond p LA jA M) ∈ {S | S ≤ MvPolynomial.restrictSupport ℚ_[p] {m : Fin NB × Fin r →₀ ℕ | ((Formalism.GM.M.wt LB jB 0 m : ℤ) : WithTop ℤ) ≤ M} ∧ Formalism.GM.M.GlStable p LB jB S}`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m hm`. Take `⟨m0, hm0, hw⟩` from `hs x m (Finset.mem_coe.1 hm)`. Use `show ((Formalism.GM.M.wt LB jB 0 m : ℤ) : WithTop ℤ) ≤ M`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Conclude with `wt_le_of_mem p LA jA M x hx m0 hm0`. Introduce `c d y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `Submodule.mem_map.2 ⟨_, ycond_stable p LA jA M c d x hx, hc c d x⟩`.
-
-Unfold `Formalism.GM.M.YCond`. Conclude with `le_sSup hmem`. Conclude with `hS (Submodule.mem_map_of_mem hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ycond_map {NA NB : ℕ} (LA : Letters NA) (LB : Letters NB) (jA jB : ℕ) (M : WithTop ℤ)
     (P : MvPolynomial (Fin NA × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin NB × Fin r) ℚ_[p])
@@ -486,7 +484,7 @@ theorem ycond_map {NA NB : ℕ} (LA : Letters NA) (LB : Letters NB) (jA jB : ℕ
   exact hS (Submodule.mem_map_of_mem hF)
 
 /- English proof (translation)
-Use `ycond_map p (LL.snoc n) LL j j M (coeffη b) (fun c d G => coeffη_glAct p LL n j hj c d b G) (fun G m hm => ?_) F hF` and prove the remaining obligations. Use `⟨comb b m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff, ← coeff_coeffη']`. Conclude with `mem_support_iff.1 hm`. Rewrite using `[wt_snoc LL n j hj, llPart_comb]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ycond_snoc_fwd (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (M : WithTop ℤ) (b : Fin r →₀ ℕ)
     (F : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) (hF : F ∈ YCond p (LL.snoc n) j M) :
@@ -499,13 +497,11 @@ theorem ycond_snoc_fwd (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (M : WithTop 
   · rw [wt_snoc LL n j hj, llPart_comb]
 
 /- English proof (translation)
-Establish `hmem : (⨅ b : Fin r →₀ ℕ, (Formalism.GM.M.YCond p LL j M).comap (coeffη b)) ∈ {S | S ≤ MvPolynomial.restrictSupport ℚ_[p] {m : Fin (N + 1) × Fin r →₀ ℕ | ((Formalism.GM.M.wt (LL.snoc n) j 0 m : ℤ) : WithTop ℤ) ≤ M} ∧ Formalism.GM.M.GlStable p (LL.snoc n) j S}`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `G hG`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG' : coeffη (etaPart m) G ∈ Formalism.GM.M.YCond p LL j M` using `(Submodule.mem_iInf _).1 hG (etaPart m)`. Establish `hm' : llPart m ∈ (coeffη (etaPart m) G).support`. Rewrite using `[mem_support_iff, coeff_coeffη]`. Conclude with `mem_support_iff.1 (Finset.mem_coe.1 hm)`. Use `show ((Formalism.GM.M.wt (LL.snoc n) j 0 m : ℤ) : WithTop ℤ) ≤ M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[wt_snoc LL n j hj]`. Conclude with `wt_le_of_mem p LL j M _ hG' _ hm'`. Introduce `c d G hG`. Use `(Submodule.mem_iInf _).2 (fun b => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, coeffη_glAct p LL n j hj c d b G]`.
-
-Conclude with `ycond_stable p LL j M c d _ ((Submodule.mem_iInf _).1 hG b)`. Establish `hle : (⨅ b : Fin r →₀ ℕ, (Formalism.GM.M.YCond p LL j M).comap (coeffη b)) ≤ Formalism.GM.M.YCond p (LL.snoc n) j M`. Unfold `Formalism.GM.M.YCond`. Conclude with `le_sSup hmem`. Conclude with `hle ((Submodule.mem_iInf _).2 (fun b => hF b))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ycond_snoc_bwd (LL : Letters N) (n j : ℕ) (hj : j ≤ N) (M : WithTop ℤ)
     (F : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) (hF : ∀ b, coeffη b F ∈ YCond p LL j M) :
@@ -548,7 +544,7 @@ section Ops
 variable {K : Type*} [CommRing K] {σ : Type*}
 
 /- English proof (translation)
-Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun m0 _ => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial, X_mul_monomial']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_mul_pderiv_eq_sum [DecidableEq σ] (a b : σ) (F : MvPolynomial σ K) :
     X a * pderiv b F = ∑ m0 ∈ F.support,
@@ -559,11 +555,11 @@ theorem X_mul_pderiv_eq_sum [DecidableEq σ] (a b : σ) (F : MvPolynomial σ K) 
   rw [pderiv_monomial, X_mul_monomial']
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `mem_support_iff.1 hm` to reduce the goal to its premises. Rewrite using `[X_mul_pderiv_eq_sum, coeff_sum]`. Use `Finset.sum_eq_zero (fun m0 hm0 => ?_)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_monomial, if_neg]`. Introduce `heq`. Take `⟨x, hxa, hxb, hx⟩` from `hcon m0 hm0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hxa, Ne.symm hxb]`.
+A detailed English derivation is pending.
 -/
 theorem supp_X_mul_pderiv (a b : σ) (F : MvPolynomial σ K) (m : σ →₀ ℕ)
     (hm : m ∈ (X a * pderiv b F).support) :
@@ -582,9 +578,9 @@ theorem supp_X_mul_pderiv (a b : σ) (F : MvPolynomial σ K) (m : σ →₀ ℕ)
   simp [Ne.symm hxa, Ne.symm hxb]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' F (fun s c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Simplify using `only [pderiv_monomial]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite using `[show s - Finsupp.single b 1 - Finsupp.single a 1 = s - Finsupp.single a 1 - Finsupp.single b 1 from tsub_right_comm]`. Use `congr 1`. Rewrite using `[Finsupp.tsub_apply, Finsupp.tsub_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg hab, if_neg (Ne.symm hab), tsub_zero, tsub_zero]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_comm (a b : σ) (F : MvPolynomial σ K) :
     pderiv a (pderiv b F) = pderiv b (pderiv a F) := by
@@ -603,7 +599,7 @@ theorem pderiv_comm (a b : σ) (F : MvPolynomial σ K) :
   · simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `pderiv_X_self x`. Conclude with `pderiv_X_of_ne (Ne.symm h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem mvPolynomial_pderiv_X_eq_ite [DecidableEq σ] (x y : σ) :
     pderiv x (X y : MvPolynomial σ K) = if x = y then 1 else 0 := by
@@ -613,7 +609,7 @@ private theorem mvPolynomial_pderiv_X_eq_ite [DecidableEq σ] (x y : σ) :
   · exact pderiv_X_of_ne (Ne.symm h)
 
 /- English proof (translation)
-Establish `e1 : pderiv y (X x' : MvPolynomial σ K) = 0` using `by rw [mvPolynomial_pderiv_X_eq_ite, if_neg h1]`. Establish `e2 : pderiv y' (X x : MvPolynomial σ K) = 0` using `by rw [mvPolynomial_pderiv_X_eq_ite, if_neg h2]`. Simplify using `only [Derivation.leibniz, e1, e2, smul_eq_mul]`. Rewrite using `[pderiv_comm y y' F]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem op_comm (x y x' y' : σ) (h1 : y ≠ x') (h2 : y' ≠ x) (F : MvPolynomial σ K) :
     X x * pderiv y (X x' * pderiv y' F) = X x' * pderiv y' (X x * pderiv y F) := by
@@ -625,7 +621,7 @@ theorem op_comm (x y x' y' : σ) (h1 : y ≠ x') (h2 : y' ≠ x) (F : MvPolynomi
   ring
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, mvPolynomial_pderiv_X_eq_ite, mvPolynomial_pderiv_X_eq_ite, smul_eq_mul, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mvPolynomial_pderiv_X_mul_X_eq_ite [DecidableEq σ] (z u v : σ) :
     pderiv z (X u * X v : MvPolynomial σ K) = (if z = v then X u else 0) + (if z = u then X v else 0) := by
@@ -633,14 +629,14 @@ private theorem mvPolynomial_pderiv_X_mul_X_eq_ite [DecidableEq σ] (z u v : σ)
   split_ifs <;> simp
 
 /- English proof (translation)
-Conclude with `homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 (isHomogeneous_monomial a rfl))`.
+A detailed English derivation is pending.
 -/
 private theorem homogeneousComponent_monomial_eq_ite (t : ℕ) (u : σ →₀ ℕ) (a : K) :
     homogeneousComponent t (monomial u a : MvPolynomial σ K) = if t = u.degree then monomial u a else 0 := by
   exact homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 (isHomogeneous_monomial a rfl))
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [Finsupp.degree_add, Finsupp.degree_single]`. Consider the case `simp [map_add]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem degree_add_single_one_eq (s : σ →₀ ℕ) (x y : σ) :
     (s + Finsupp.single x 1).degree = (s + Finsupp.single y 1).degree := by
@@ -649,11 +645,11 @@ private theorem degree_add_single_one_eq (s : σ →₀ ℕ) (x y : σ) :
   | simp [map_add]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' F (fun s c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Distinguish the cases in `hs : s y = 0`. Establish `h0 : pderiv y (monomial s c : MvPolynomial σ K) = 0`. Rewrite using `[pderiv_monomial, hs]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, mul_zero, map_zero, homogeneousComponent_monomial_eq_ite]`. Use `split_ifs`. Rewrite using `[h0, mul_zero]`. Simplify using the standard rewrite rules. Take `⟨s', rfl⟩ : ∃ s', s = s' + Finsupp.single y 1` from `⟨s - Finsupp.single y 1, (tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hs))).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_monomial, add_tsub_cancel_right, X_mul_monomial', homogeneousComponent_monomial_eq_ite, homogeneousComponent_monomial_eq_ite, degree_add_single_one_eq s' x y]`. Use `split_ifs`. Rewrite using `[pderiv_monomial, add_tsub_cancel_right, X_mul_monomial']`. Simplify using the standard rewrite rules. Simplify using `only [map_add, mul_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem op_hc (x y : σ) (t : ℕ) (F : MvPolynomial σ K) :
     homogeneousComponent t (X x * pderiv y F) = X x * pderiv y (homogeneousComponent t F) := by
@@ -688,7 +684,7 @@ noncomputable def top (LL : Letters N) (i : Fin N) (c d : Fin r) :
   else -((LinearMap.mulLeft ℚ_[p] (X (i, d))) ∘ₗ (pderiv (i, c)).toLinearMap)
 
 /- English proof (translation)
-Unfold `top`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem top_apply (LL : Letters N) (i : Fin N) (c d : Fin r) (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     top p LL i c d F = if LL.vec i then X (i, c) * pderiv (i, d) F else -(X (i, d) * pderiv (i, c) F) := by
@@ -706,9 +702,9 @@ noncomputable def restAct (LL : Letters N) (j : ℕ) (c d : Fin r) :
   ∑ i : Fin N, if j ≤ (i : ℕ) then top p LL i c d else 0
 
 /- English proof (translation)
-Rewrite using `[glAct_eq_top, glAct_eq_top, restAct, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[if_pos i.isLt]`. Use `split_ifs with h1 h2 h2`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem glAct_full_split (LL : Letters N) (j : ℕ) (c d : Fin r) :
     glAct p LL N c d = glAct p LL j c d + restAct p LL j c d := by
@@ -722,7 +718,7 @@ theorem glAct_full_split (LL : Letters N) (j : ℕ) (c d : Fin r) :
   · exfalso; omega
 
 /- English proof (translation)
-Establish `h1 : ∀ a b : Fin r, ((i, a) : Fin N × Fin r) ≠ (i', b)` using `fun a b h => hi (congrArg Prod.fst h)`. Establish `h2 : ∀ a b : Fin r, ((i', a) : Fin N × Fin r) ≠ (i, b)` using `fun a b h => hi (congrArg Prod.fst h).symm`. Simplify using `only [top_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [map_neg, mul_neg, neg_neg, neg_inj]) <;>`. Conclude with `op_comm _ _ _ _ (h1 _ _) (h2 _ _) F`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem top_comm (LL : Letters N) (i i' : Fin N) (hi : i ≠ i') (c d c' d' : Fin r)
     (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -734,9 +730,9 @@ theorem top_comm (LL : Letters N) (i i' : Fin N) (hi : i ≠ i') (c d c' d' : Fi
     exact op_comm _ _ _ _ (h1 _ _) (h2 _ _) F
 
 /- English proof (translation)
-Rewrite using `[glAct_eq_top]`. Unfold `restAct`. Simplify using `only [LinearMap.sum_apply, map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> (try simp only [LinearMap.zero_apply, map_zero]) <;>`. Conclude with `top_comm p LL _ _ (fun h => by subst h; omega) _ _ _ _ F`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rest_comm (LL : Letters N) (j : ℕ) (c d c' d' : Fin r) (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     restAct p LL j c d (glAct p LL j c' d' F) = glAct p LL j c' d' (restAct p LL j c d F) := by
@@ -751,9 +747,9 @@ theorem rest_comm (LL : Letters N) (j : ℕ) (c d c' d' : Fin r) (F : MvPolynomi
 variable [NeZero r]
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.wt`. Use `Finset.sum_congr rfl (fun i' _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : (i' : ℕ) < j`. Establish `e : m (i', c0) = m0 (i', c0)` using `h _ (fun e => by`. Establish `e' : (i' : ℕ) = i` using `congrArg Fin.val e`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `omega)`. Simplify using `only [e]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem wt_eq_of_eq_away_from_index (LL : Formalism.GM.M.Letters N) (j : ℕ) (i : Fin N) (hij : j ≤ (i : ℕ))
     (m m0 : Fin N × Fin r →₀ ℕ) (c0 : Fin r) (h : ∀ x : Fin N × Fin r, x.1 ≠ i → m x = m0 x) :
@@ -768,13 +764,13 @@ private theorem wt_eq_of_eq_away_from_index (LL : Formalism.GM.M.Letters N) (j :
   · simp [h1]
 
 /- English proof (translation)
-Establish `hsum : ∃ i : Fin N, m ∈ ((if j ≤ (i : ℕ) then top p LL i c d else 0) F).support`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `mem_support_iff.1 hm` to reduce the goal to its premises. Unfold `restAct`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply, coeff_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Establish `h` using `hcon i`. Rewrite `h` using `[mem_support_iff, not_not]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, hi⟩` from `hsum`. Use `split_ifs at hi with hij`. Rewrite `hi`, `with`, `hv` using `[top_apply] at hi split_ifs`. Take `⟨m0, hm0, hx⟩` from `supp_X_mul_pderiv _ _ F m hi`. Conclude with `⟨m0, hm0, wt_eq_of_eq_away_from_index LL j i hij m m0 0 (fun x hx' => hx x (fun e => hx' (by rw [e])) (fun e => hx' (by rw [e])))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hi` using `[support_neg]`. Take `⟨m0, hm0, hx⟩` from `supp_X_mul_pderiv _ _ F m hi`. Conclude with `⟨m0, hm0, wt_eq_of_eq_away_from_index LL j i hij m m0 0 (fun x hx' => hx x (fun e => hx' (by rw [e])) (fun e => hx' (by rw [e])))⟩`. Simplify using `at hi`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rest_supp (LL : Letters N) (j : ℕ) (c d : Fin r) (F : MvPolynomial (Fin N × Fin r) ℚ_[p])
     (m : Fin N × Fin r →₀ ℕ) (hm : m ∈ (restAct p LL j c d F).support) :
@@ -804,7 +800,7 @@ theorem rest_supp (LL : Letters N) (j : ℕ) (c d : Fin r) (F : MvPolynomial (Fi
   · simp at hi
 
 /- English proof (translation)
-Rewrite using `[glAct_full_split p LL j c d, LinearMap.add_apply]`. Conclude with `add_mem (ycond_stable p LL j M c d F hF) (ycond_map p LL LL j j M (restAct p LL j c d) (fun c' d' G => rest_comm p LL j c d c' d' G) (fun G m hm => rest_supp p LL j c d G m hm) F hF)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ycond_full (LL : Letters N) (j : ℕ) (M : WithTop ℤ) (c d : Fin r)
     (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hF : F ∈ YCond p LL j M) :
@@ -816,9 +812,9 @@ theorem ycond_full (LL : Letters N) (j : ℕ) (M : WithTop ℤ) (c d : Fin r)
       (fun G m hm => rest_supp p LL j c d G m hm) F hF)
 
 /- English proof (translation)
-Use `ycond_map p LL LL j j M (homogeneousComponent t) (fun c d G => ?_) (fun G m hm => ?_) F hF` and prove the remaining obligations. Rewrite using `[glAct_apply, glAct_apply, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [op_hc]`. Establish `h` using `mem_support_iff.1 hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `h` using `[coeff_homogeneousComponent]`. Use `split_ifs at h`. Conclude with `⟨m, mem_support_iff.2 h, rfl⟩`. Conclude with `absurd rfl h`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ycond_hc (LL : Letters N) (j : ℕ) (M : WithTop ℤ) (t : ℕ)
     (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hF : F ∈ YCond p LL j M) :
@@ -845,7 +841,7 @@ section Freeze
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [glAct_apply, Derivation.leibniz, smul_eq_mul]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glAct_full_mul (LL : Letters N) (c d : Fin r) (F G : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     glAct p LL N c d (F * G) = F * glAct p LL N c d G + G * glAct p LL N c d F := by
@@ -855,17 +851,17 @@ theorem glAct_full_mul (LL : Letters N) (c d : Fin r) (F G : MvPolynomial (Fin N
   split_ifs <;> ring
 
 /- English proof (translation)
-Simplify using `[glAct_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glAct_full_C (LL : Letters N) (c d : Fin r) (a : ℚ_[p]) : glAct p LL N c d (C a) = 0 := by
   simp [glAct_apply]
 
 /- English proof (translation)
-Rewrite using `[glAct_apply, Finset.sum_eq_single b]`. Rewrite using `[if_pos b.isLt]`. Consider the cases of `hv : LL.vec b`. Distinguish the cases in `h2 : d = c`. Substitute `h2` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h2]`. Distinguish the cases in `h1 : d = ρ`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Introduce `i _ hib`. Simplify using `[hib]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glAct_full_X (LL : Letters N) (c ρ : Fin r) (b : Fin N) (d : Fin r) :
     glAct p LL N c ρ (X (b, d)) =
@@ -899,9 +895,9 @@ theorem freezeSub_apply (LL : Letters N) (ρ : Fin r) (i : Fin N) (c : Fin r) :
        else X (Fin.last N, ρ) * X (Fin.castSucc i, c) - X (Fin.castSucc i, ρ) * X (Fin.last N, c)) := rfl
 
 /- English proof (translation)
-Take `⟨b, d⟩` from `x`. Establish `n1 : Fin.last N ≠ Fin.castSucc b` using `(fin_castSucc_ne_last b).symm`. Rewrite using `[glAct_full_X, freezeSub_apply]`. Apply the tactic sequence `split_ifs <;> (try (exfalso; exact hc ((‹d = c›).symm.trans ‹d = ρ›))) <;> (try (have hcd : c ≠ d := Ne.symm ‹¬d = c›)) <;> (try (have hρd : ρ ≠ d := Ne.symm ‹¬d = ρ›)) <;>`. Apply the tactic sequence `simp only [map_sub, map_sum, map_neg, map_zero, mvPolynomial_pderiv_X_mul_X_eq_ite] <;>`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [*, n1, Ne.symm hc, freezeSub_apply, Finset.sum_ite_eq, Finset.sum_ite_eq'] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diff_gen (LL : Letters N) (ρ c : Fin r) (hc : c ≠ ρ) (x : Fin N × Fin r) :
     X (Fin.last N, ρ) * pderiv (Fin.last N, c) (freezeSub p LL ρ x) =
@@ -916,9 +912,9 @@ theorem diff_gen (LL : Letters N) (ρ c : Fin r) (hc : c ≠ ρ) (x : Fin N × F
     simp [*, n1, Ne.symm hc, freezeSub_apply, Finset.sum_ite_eq, Finset.sum_ite_eq'] <;> ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Name the introduced variables `a`. Rewrite using `[glAct_full_C, map_zero, aeval_C]`. Simplify using the standard rewrite rules. Name the introduced variables `f g hf hg`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, mul_add, hf, hg]`. Name the introduced variables `f x hf`. Establish `e1` using `diff_gen p LL ρ c hc x`. Rewrite using `[map_mul (aeval (Formalism.GM.M.freezeSub p LL ρ)) f (X x), Derivation.leibniz, smul_eq_mul, smul_eq_mul, glAct_full_mul, map_add (aeval (Formalism.GM.M.freezeSub p LL ρ)), map_mul (aeval (Formalism.GM.M.freezeSub p LL ρ)), map_mul (aeval (Formalism.GM.M.freezeSub p LL ρ)), ← hf, …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diff_id (LL : Letters N) (ρ c : Fin r) (hc : c ≠ ρ) (f : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     X (Fin.last N, ρ) * pderiv (Fin.last N, c) (aeval (freezeSub p LL ρ) f) =
@@ -950,7 +946,7 @@ variable (p : ℕ) [Fact p.Prime] {N r : ℕ}
 def emb (x : Fin N × Fin r) : Fin (N + 1) × Fin r := (Fin.castSucc x.1, x.2)
 
 /- English proof (translation)
-Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Simplify `h` using `[emb]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emb_inj : Function.Injective (emb : Fin N × Fin r → Fin (N + 1) × Fin r) := by
   rintro ⟨a, b⟩ ⟨a', b'⟩ h
@@ -961,13 +957,11 @@ noncomputable def kill (ρ : Fin r) :
   aeval (fun w => if w.1 = Fin.last N ∧ w.2 ≠ ρ then 0 else X w)
 
 /- English proof (translation)
-Rewrite using `[kill, aeval_monomial]`. Use `split_ifs with h`. Rewrite using `[monomial_eq, Finsupp.prod, Finsupp.prod]`. Use `congrArg (fun z => algebraMap ℚ_[p] (MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) a * z) ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl (fun w hw => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try dsimp only`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Apply `Finsupp.mem_support_iff.1 hw` to reduce the goal to its premises. Establish `h3` using `h w.2 h2`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[← h1]`. Conclude with `h3`. Use `push Not at h`. Take `⟨c, hc, hm⟩` from `h`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hm), mul_zero]`.
-
-Apply the tactic sequence `try dsimp only`. Establish `hw : ((Fin.last N, c) : Fin (N + 1) × Fin r).1 = Fin.last N ∧ ((Fin.last N, c) : Fin (N + 1) × Fin r).2 ≠ ρ` using `⟨rfl, hc⟩`. Rewrite using `[if_pos hw, zero_pow hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kill_monomial_eq_ite (ρ : Fin r) (m : Fin (N + 1) × Fin r →₀ ℕ) (a : ℚ_[p]) :
     kill p ρ (monomial m a) =
@@ -994,9 +988,9 @@ private theorem kill_monomial_eq_ite (ρ : Fin r) (m : Fin (N + 1) × Fin r →�
     rw [if_pos hw, zero_pow hm]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun m a => ?_) (fun f g hf hg => ?_)` and prove the remaining obligations. Rewrite using `[kill_monomial_eq_ite] split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[map_zero, coeffη_monomial, if_neg]`. Introduce `hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Introduce `c hc`. Use `DFunLike.congr_fun hm c` as an intermediate fact. Simplify `this` using `[Finsupp.single_apply, Ne.symm hc]`. Simplify using `only [map_add, hf, hg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem coeffη_kill (ρ : Fin r) (t : ℕ) (G : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) :
     coeffη (Finsupp.single ρ t) (kill p ρ G) = coeffη (Finsupp.single ρ t) G := by
@@ -1013,9 +1007,9 @@ theorem coeffη_kill (ρ : Fin r) (t : ℕ) (G : MvPolynomial (Fin (N + 1) × Fi
   · simp only [map_add, hf, hg]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, c⟩`. Rewrite using `[AlgHom.comp_apply, aeval_X, aeval_X, freezeSub_apply]`. Establish `n2 : ∀ i : Fin N, Fin.castSucc i ≠ Fin.last N` using `fun i => fin_castSucc_ne_last i`. Apply the tactic sequence `cases hv : LL.vec i <;> by_cases hc : c = ρ <;>`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [kill, emb, hc, n2, mul_ite, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq'] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kill_freezeSub (LL : Letters N) (ρ : Fin r) :
     (kill p ρ).comp (aeval (freezeSub p LL ρ)) =
@@ -1029,11 +1023,11 @@ theorem kill_freezeSub (LL : Letters N) (ρ : Fin r) :
     simp [kill, emb, hc, n2, mul_ite, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq'] <;> ring
 
 /- English proof (translation)
-Establish `h1 : (monomial (Finsupp.mapDomain emb m) a : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) = algebraMap ℚ_[p] (MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) a * m.prod (fun x k => (X (emb x) : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) ^ k)` using `by first`. Consider the case `rw [monomial_eq, Finsupp.prod_mapDomain_index_inj emb_inj, MvPolynomial.algebraMap_eq]`. Consider the case `rw [monomial_eq, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), MvPolynomial.algebraMap_eq]`. Consider the case `(rw [← rename_monomial] show aeval (fun i => (X (emb i) : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p])) (monomial m a) = _`. Rewrite using `[aeval_monomial])`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals rfl`. Establish `hdeg : m.degree = ∑ i ∈ m.support, m i` using `by first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree]`. Consider the case `exact Finsupp.degree_eq_sum m`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_monomial, h1]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_scaled_monomial (ρ : Fin r) (m : Fin N × Fin r →₀ ℕ) (a : ℚ_[p]) :
     aeval (fun x : Fin N × Fin r => (X (Fin.last N, ρ) * X (emb x) : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]))
@@ -1060,7 +1054,7 @@ theorem aeval_scaled_monomial (ρ : Fin r) (m : Fin N × Fin r →₀ ℕ) (a : 
   ring
 
 /- English proof (translation)
-Use extensionality with `⟨i, c⟩`. Rewrite using `[llPart_apply]`. Conclude with `Finsupp.mapDomain_apply emb_inj m (i, c)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem llPart_mapDomain_emb (m : Fin N × Fin r →₀ ℕ) :
     llPart (Finsupp.mapDomain emb m) = m := by
@@ -1069,7 +1063,7 @@ private theorem llPart_mapDomain_emb (m : Fin N × Fin r →₀ ℕ) :
   exact Finsupp.mapDomain_apply emb_inj m (i, c)
 
 /- English proof (translation)
-Use extensionality with `c`. Rewrite using `[etaPart_apply]`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨i, c'⟩, h⟩`. Simplify using `[emb, fin_castSucc_ne_last i] at h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 private theorem etaPart_mapDomain_emb (m : Fin N × Fin r →₀ ℕ) :
     etaPart (Finsupp.mapDomain emb m) = 0 := by
@@ -1080,9 +1074,9 @@ private theorem etaPart_mapDomain_emb (m : Fin N × Fin r →₀ ℕ) :
   simp [emb, fin_castSucc_ne_last i] at h
 
 /- English proof (translation)
-Rewrite using `[← coeffη_kill, show kill p ρ (aeval (Formalism.GM.M.freezeSub p LL ρ) f) = ((kill p ρ).comp (aeval (Formalism.GM.M.freezeSub p LL ρ))) f from rfl, kill_freezeSub]`. Use `MvPolynomial.induction_on' f (fun m a => ?_) (fun f g hf hg => ?_)` and prove the remaining obligations. Rewrite using `[aeval_scaled_monomial, coeffη_Xlast_pow_mul_monomial, etaPart_mapDomain_emb, llPart_mapDomain_emb, zero_add, homogeneousComponent_monomial_eq_ite]`. Establish `key : (Finsupp.single ρ m.degree = Finsupp.single ρ t) ↔ t = m.degree` using `⟨fun h' => (Finsupp.single_injective ρ h').symm, fun h' => by rw [h']⟩`. Conclude with `if_congr key rfl rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hf, hg]`.
+A detailed English derivation is pending.
 -/
 theorem coeffη_base (LL : Letters N) (ρ : Fin r) (t : ℕ) (f : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     coeffη (Finsupp.single ρ t) (aeval (freezeSub p LL ρ) f) = homogeneousComponent t f := by
@@ -1101,21 +1095,19 @@ theorem coeffη_base (LL : Letters N) (ρ : Fin r) (t : ℕ) (f : MvPolynomial (
 variable [NeZero r]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n : ℕ, ∀ g ∈ Formalism.GM.M.YCond p LL j M, ∀ b' : Fin r →₀ ℕ, (∑ c ∈ Finset.univ.erase ρ, b' c) = n → coeffη b' (aeval (Formalism.GM.M.freezeSub p LL ρ) g) ∈ Formalism.GM.M.YCond p LL j M by`. Conclude with `H _ f hf b rfl`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg b' hb`. Establish `hb' : b' = Finsupp.single ρ (b' ρ)`. Use extensionality with `c`. Distinguish the cases in `hc : c = ρ`. Substitute `hc` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hc)]`. Conclude with `(Finset.sum_eq_zero_iff.1 hb) c (Finset.mem_erase.2 ⟨hc, Finset.mem_univ c⟩)`. Rewrite using `[hb', coeffη_base]`. Conclude with `ycond_hc p LL j M _ g hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `succ n ih`. Introduce `g hg b' hb`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hbc⟩ : ∃ c ∈ Finset.univ.erase ρ, b' c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hb` using `[Finset.sum_eq_zero hcon]`. Conclude with `Nat.succ_ne_zero n hb.symm`. Establish `hcρ : c ≠ ρ` using `(Finset.mem_erase.1 hc).1`. Take `⟨b0, rfl⟩ : ∃ b0, b' = b0 + Finsupp.single c 1` from `⟨b' - Finsupp.single c 1, (tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hbc))).symm⟩`. Establish `e1 : ∑ c' ∈ Finset.univ.erase ρ, (b0 + Finsupp.single ρ 1 : Fin r →₀ ℕ) c' = ∑ c' ∈ Finset.univ.erase ρ, b0 c'` using `Finset.sum_congr rfl (fun c' hc' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm (Finset.mem_erase.1 hc').1), add_zero])`. Establish `e3 : ∑ c' ∈ Finset.univ.erase ρ, (Finsupp.single c 1 : Fin r →₀ ℕ) c' = 1`. Rewrite using `[Finset.sum_eq_single c (fun c' _ hc' => by rw [Finsupp.single_apply, if_neg (Ne.symm hc')]) (fun h => absurd hc h), Finsupp.single_eq_same]`. Establish `e2 : ∑ c' ∈ Finset.univ.erase ρ, (b0 + Finsupp.single c 1 : Fin r →₀ ℕ) c' = ∑ c' ∈ Finset.univ.erase ρ, b0 c' + 1`. Rewrite using `[Finset.sum_congr rfl (fun c' _ => Finsupp.add_apply b0 (Finsupp.single c 1) c'), Finset.sum_add_distrib, e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∑ c' ∈ Finset.univ.erase ρ, (b0 + Finsupp.single ρ 1 : Fin r →₀ ℕ) c' = n`. Rewrite using `[e1]`. Use linear arithmetic over natural numbers and integers. Establish `key` using `ih _ (ycond_full p LL j M c ρ g hg) (b0 + Finsupp.single ρ 1) hs`. Rewrite `key` using `[← diff_id p LL ρ c hcρ g, ← pow_one (X (Fin.last N, ρ) : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]), coeffη_shift, coeffη_pderiv_last]`.
-
-Establish `hne : ((b0 c + 1 : ℕ) : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.succ_ne_zero _)`. Establish `h2` using `Submodule.smul_mem _ ((b0 c + 1 : ℕ) : ℚ_[p])⁻¹ key`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem freeze_coeff_mem (LL : Letters N) (ρ : Fin r) (j : ℕ) (M : WithTop ℤ)
     (f : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hf : f ∈ YCond p LL j M) (b : Fin r →₀ ℕ) :
@@ -1180,7 +1172,7 @@ section Pol
 variable {K : Type*} [CommRing K]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite `hd` using `[coeff_sum]`. Take `⟨i, hi, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hd`. Conclude with `h i hi hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_finset_sum {τ ι : Type*} {w : τ → ℕ} (s : Finset ι) (φ : ι → MvPolynomial τ K) {n : ℕ}
     (h : ∀ i ∈ s, IsWeightedHomogeneous w (φ i) n) : IsWeightedHomogeneous w (∑ i ∈ s, φ i) n := by
@@ -1190,15 +1182,15 @@ private theorem isWeightedHomogeneous_finset_sum {τ ι : Type*} {w : τ → ℕ
   exact h i hi hne
 
 /- English proof (translation)
-The claim follows from `e ▸ h`.
+A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_of_eq_deg {τ : Type*} {w : τ → ℕ} {φ : MvPolynomial τ K} {a b : ℕ}
     (h : IsWeightedHomogeneous w φ a) (e : a = b) : IsWeightedHomogeneous w φ b := e ▸ h
 
 /- English proof (translation)
-Use `first`. Consider the case `exact isWeightedHomogeneous_one w`. Consider the case `exact isWeightedHomogeneous_one _ w`. Consider the case `(intro d hd`. Rewrite `hd` using `[coeff_one]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs at hd with h0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd rfl hd)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_one' {τ : Type*} (w : τ → ℕ) : IsWeightedHomogeneous w (1 : MvPolynomial τ K) 0 := by
   first
@@ -1212,9 +1204,9 @@ private theorem isWeightedHomogeneous_one' {τ : Type*} (w : τ → ℕ) : IsWei
      · exact absurd rfl hd)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, zero_mul]`. Conclude with `isWeightedHomogeneous_one' w`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, add_one_mul]`. Conclude with `ih.mul h`.
+A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_pow {τ : Type*} (w : τ → ℕ) (φ : MvPolynomial τ K) (n : ℕ)
     (h : IsWeightedHomogeneous w φ n) (k : ℕ) : IsWeightedHomogeneous w (φ ^ k) (k * n) := by
@@ -1227,9 +1219,9 @@ private theorem isWeightedHomogeneous_pow {τ : Type*} (w : τ → ℕ) (φ : Mv
     exact ih.mul h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Conclude with `isWeightedHomogeneous_one' w`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_finset_prod {τ ι : Type*} (w : τ → ℕ) (s : Finset ι) (φ : ι → MvPolynomial τ K) (n : ι → ℕ)
     (h : ∀ i ∈ s, IsWeightedHomogeneous w (φ i) (n i)) :
@@ -1244,9 +1236,9 @@ private theorem isWeightedHomogeneous_finset_prod {τ ι : Type*} (w : τ → �
     exact (h a (Finset.mem_insert_self a s)).mul (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum]`. Use `isWeightedHomogeneous_finset_sum _ _ (fun m hm => ?_)` and prove the remaining obligations. Use `show IsWeightedHomogeneous w (aeval g (monomial m (coeff m f))) d`. Establish `hmd : Finsupp.weight v m = d` using `hf (mem_support_iff.1 hm)`. Establish `h1` using `(isWeightedHomogeneous_C w (coeff m f)).mul (isWeightedHomogeneous_finset_prod w m.support (fun x => g x ^ m x) (fun x => m x * v x) (fun x _ => isWeightedHomogeneous_pow w (g x) (v x) (hg x) (m x)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 0 + ∑ x ∈ m.support, m x * v x = d` using `by first`. Consider the case `(rw [zero_add, ← hmd, Finsupp.weight_apply, Finsupp.sum]; simp only [smul_eq_mul])`. Consider the case `simp [← hmd, Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[aeval_monomial, Finsupp.prod]`. Conclude with `isWeightedHomogeneous_of_eq_deg h1 e`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_aeval {σ τ : Type*} (w : τ → ℕ) (v : σ → ℕ) (g : σ → MvPolynomial τ K)
     (hg : ∀ x, IsWeightedHomogeneous w (g x) (v x)) (f : MvPolynomial σ K) (d : ℕ)
@@ -1266,9 +1258,9 @@ theorem hom_aeval {σ τ : Type*} (w : τ → ℕ) (v : σ → ℕ) (g : σ → 
   exact isWeightedHomogeneous_of_eq_deg h1 e
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single i']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_row {N r : ℕ} (i' : Fin N) (m : Fin N × Fin r →₀ ℕ) :
     Finsupp.weight (fun x : Fin N × Fin r => if x.1 = i' then 1 else 0) m = ∑ c, m (i', c) := by
@@ -1283,9 +1275,7 @@ theorem weight_row {N r : ℕ} (i' : Fin N) (m : Fin N × Fin r →₀ ℕ) :
     simp
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite `hd` using `[coeff_sub]`. Distinguish the cases in `h1 : coeff d φ = 0`. Rewrite `hd` using `[h1, zero_sub, neg_ne_zero]`. Conclude with `hψ hd`.
-
-Conclude with `hφ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_sub {τ : Type*} {w : τ → ℕ} {φ ψ : MvPolynomial τ K} {n : ℕ}
     (hφ : IsWeightedHomogeneous w φ n) (hψ : IsWeightedHomogeneous w ψ n) :
@@ -1298,7 +1288,7 @@ private theorem isWeightedHomogeneous_sub {τ : Type*} {w : τ → ℕ} {φ ψ :
   · exact hφ h1
 
 /- English proof (translation)
-Use `first`. Consider the case `exact isWeightedHomogeneous_X K w a`. Consider the case `exact isWeightedHomogeneous_X w a`. Consider the case `exact isWeightedHomogeneous_X _ w a`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_X' {τ : Type*} (w : τ → ℕ) (a : τ) : IsWeightedHomogeneous w (X a : MvPolynomial τ K) (w a) := by
   first
@@ -1307,7 +1297,7 @@ private theorem isWeightedHomogeneous_X' {τ : Type*} (w : τ → ℕ) (a : τ) 
   | exact isWeightedHomogeneous_X _ w a
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using the standard rewrite rules. Introduce `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem weight_one' {N r : ℕ} (m : Fin N × Fin r →₀ ℕ) :
     Finsupp.weight (fun _ : Fin N × Fin r => 1) m = ∑ i, ∑ c, m (i, c) := by
@@ -1323,7 +1313,7 @@ section Pol2
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← h]`. Use `first`. Consider the case `exact (isWeightedHomogeneous_X ℚ_[p] w a).mul (isWeightedHomogeneous_X ℚ_[p] w b)`. Consider the case `exact (isWeightedHomogeneous_X w a).mul (isWeightedHomogeneous_X w b)`. Consider the case `exact (isWeightedHomogeneous_X _ w a).mul (isWeightedHomogeneous_X _ w b)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hX2 {σ : Type*} (w : σ → ℕ) (a b : σ) (n : ℕ) (h : w a + w b = n) :
     IsWeightedHomogeneous w (X a * X b : MvPolynomial σ ℚ_[p]) n := by
@@ -1334,11 +1324,9 @@ theorem hX2 {σ : Type*} (w : σ → ℕ) (a b : σ) (n : ℕ) (h : w a + w b = 
   | exact (isWeightedHomogeneous_X _ w a).mul (isWeightedHomogeneous_X _ w b)
 
 /- English proof (translation)
-Take `⟨i, c⟩` from `x`. Rewrite using `[freezeSub_apply]`. Apply the tactic sequence `by_cases hv : LL.vec i = true <;> by_cases hc : c = ρ`. Rewrite using `[if_pos hv, if_pos hc]`. Conclude with `isWeightedHomogeneous_finset_sum _ _ (fun c' _ => hX2 p _ _ _ _ (by rfl))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hv, if_neg hc]`. Conclude with `hX2 p _ _ _ _ (by exact add_comm _ _)`. Rewrite using `[if_neg hv, if_pos hc]`. Conclude with `hX2 p _ _ _ _ (by exact add_comm _ _)`. Rewrite using `[if_neg hv, if_neg hc]`.
-
-Conclude with `isWeightedHomogeneous_sub (hX2 p _ _ _ _ (by exact add_comm _ _)) (hX2 p _ _ _ _ (by rfl))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freezeSub_hom (LL : Letters N) (ρ : Fin r) (i' : Fin (N + 1)) (x : Fin N × Fin r) :
     IsWeightedHomogeneous (fun y : Fin (N + 1) × Fin r => if y.1 = i' then 1 else 0) (freezeSub p LL ρ x)
@@ -1357,19 +1345,19 @@ theorem freezeSub_hom (LL : Letters N) (ρ : Fin r) (i' : Fin (N + 1)) (x : Fin 
       (hX2 p _ _ _ _ (by rfl))
 
 /- English proof (translation)
-Unfold `Formalism.GM.M.Pol at hf ⊢`. Rewrite `hf`, the goal using `[mem_restrictSupport_iff]`. Establish `hf' : ∀ m ∈ f.support, Formalism.GM.M.MultiDeg LL m` using `fun m hm => hf (Finset.mem_coe.2 hm)`. Establish `key : ∀ i' : Fin (N + 1), IsWeightedHomogeneous (fun y : Fin (N + 1) × Fin r => if y.1 = i' then 1 else 0) (Formalism.GM.M.freeze p LL ρ n f) ((LL.snoc n).deg i')`. Introduce `i'`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.GM.M.freeze`. Break down `fin_eq_last_or_exists_castSucc i' with rfl | ⟨i0, rfl⟩` into its components or cases. Establish `hfv : IsWeightedHomogeneous (fun x : Fin N × Fin r => (if Fin.castSucc x.1 = Fin.last N then 1 else 0) + (if Fin.last N = Fin.last N then 1 else 0)) f LL.total`. Introduce `m hm`. Establish `e : (fun x : Fin N × Fin r => (if Fin.castSucc x.1 = Fin.last N then 1 else 0) + (if Fin.last N = Fin.last N then 1 else 0)) = fun _ => 1`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[fin_castSucc_ne_last]`. Rewrite using `[e, weight_one']`. Unfold `Formalism.GM.M.Letters.total`. Conclude with `Finset.sum_congr rfl (fun i _ => hf' m (mem_support_iff.2 hm) i)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hA` using `hom_aeval _ _ (Formalism.GM.M.freezeSub p LL ρ) (fun x => freezeSub_hom p LL ρ (Fin.last N) x) f _ hfv`. Establish `hX` using `isWeightedHomogeneous_pow (fun y : Fin (N + 1) × Fin r => if y.1 = Fin.last N then 1 else 0) _ _ (isWeightedHomogeneous_X' (K := ℚ_[p]) (fun y : Fin (N + 1) × Fin r => if y.1 = Fin.last N then 1 else 0) (Fin.last N, ρ)) (n - LL.total)`. Use `isWeightedHomogeneous_of_eq_deg (hX.mul hA) ?_` and prove the remaining obligations. Apply the tactic sequence `(simp [snoc_deg_last]) <;> omega`. Establish `hfv : IsWeightedHomogeneous (fun x : Fin N × Fin r => (if Fin.castSucc x.1 = Fin.castSucc i0 then 1 else 0) + (if Fin.last N = Fin.castSucc i0 then 1 else 0)) f (LL.deg i0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Establish `e : (fun x : Fin N × Fin r => (if Fin.castSucc x.1 = Fin.castSucc i0 then 1 else 0) + (if Fin.last N = Fin.castSucc i0 then 1 else 0)) = fun x => if x.1 = i0 then 1 else 0`. Use function extensionality and compare the values at `x`. Simplify using `[(fin_castSucc_ne_last i0).symm]`. Rewrite using `[e, weight_row]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hf' m (mem_support_iff.2 hm) i0`. Establish `hA` using `hom_aeval _ _ (Formalism.GM.M.freezeSub p LL ρ) (fun x => freezeSub_hom p LL ρ (Fin.castSucc i0) x) f _ hfv`. Establish `hX` using `isWeightedHomogeneous_pow (fun y : Fin (N + 1) × Fin r => if y.1 = Fin.castSucc i0 then 1 else 0) _ _ (isWeightedHomogeneous_X' (K := ℚ_[p]) (fun y : Fin (N + 1) × Fin r => if y.1 = Fin.castSucc i0 then 1 else 0) (Fin.last N, ρ)) (n - LL.total)`. Use `isWeightedHomogeneous_of_eq_deg (hX.mul hA) ?_` and prove the remaining obligations. Apply the tactic sequence `(simp [snoc_deg_castSucc, (fin_castSucc_ne_last i0).symm]) <;> omega`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Use `show Formalism.GM.M.MultiDeg (LL.snoc n) m`. Introduce `i'`. Establish `h` using `key i' (mem_support_iff.1 (Finset.mem_coe.1 hm))`. Rewrite `h` using `[weight_row]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem freeze_pol (LL : Letters N) (ρ : Fin r) (n : ℕ) (hn : LL.total ≤ n)
     (f : MvPolynomial (Fin N × Fin r) ℚ_[p]) (hf : f ∈ Pol p r LL) :
@@ -1434,21 +1422,19 @@ namespace Formalism.GM
 open MvPolynomial Finset Formalism.GM.M Formalism.GM.FrozenVariableComponents
 
 /- English proof (translation)
-Introduce `p _ N r _ LL ρ n q J Mt hn hJ f hf`. Establish `hf' : ∀ m ∈ f.support, Formalism.GM.M.MultiDeg LL m`. Introduce `m hm`. Establish `h` using `hf`. Unfold `Formalism.GM.M.Pol at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[mem_restrictSupport_iff]`. Conclude with `h (Finset.mem_coe.2 hm)`. Establish `hhom : f.IsHomogeneous LL.total`. Introduce `m hm`. Use `show Finsupp.weight (fun _ : Fin N × Fin r => 1) m = LL.total`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.GM.FrozenVariableComponents.weight_one']`. Unfold `Formalism.GM.M.Letters.total`. Conclude with `Finset.sum_congr rfl (fun i _ => hf' m (mem_support_iff.2 hm) i)`. Establish `hcomp : homogeneousComponent LL.total f = f`. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 hhom), if_pos rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hext` using `Formalism.GM.FrozenVariableComponents.freeze_pol p LL ρ n hn f hf`. Unfold `Formalism.GM.M.Y`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hk⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hext, fun k => ?_⟩` and prove the remaining obligations. Apply `Formalism.GM.FrozenVariableComponents.ycond_snoc_bwd p LL n (J k) (hJ k)` to reduce the goal to its premises. Introduce `b`. Distinguish the cases in `hb : Finsupp.single ρ (n - LL.total) ≤ b`. Take `⟨b', rfl⟩ : ∃ b', b = b' + Finsupp.single ρ (n - LL.total)` from `⟨b - Finsupp.single ρ (n - LL.total), (tsub_add_cancel_of_le hb).symm⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.GM.M.freeze`. Rewrite using `[Formalism.GM.FrozenVariableComponents.coeffη_shift]`. Conclude with `Formalism.GM.FrozenVariableComponents.freeze_coeff_mem p LL ρ (J k) (Mt k) f (hk k) b'`. Unfold `Formalism.GM.M.freeze`. Rewrite using `[Formalism.GM.FrozenVariableComponents.coeffη_shift_zero b ρ _ hb]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Submodule.zero_mem _`. Introduce and unpack `⟨-, hk⟩`. Use `⟨hf, fun k => ?_⟩` and prove the remaining obligations. Establish `h1` using `Formalism.GM.FrozenVariableComponents.ycond_snoc_fwd p LL n (J k) (hJ k) (Mt k) (Finsupp.single ρ LL.total + Finsupp.single ρ (n - LL.total)) _ (hk k)`. Unfold `Formalism.GM.M.freeze at h1`.
-
-Rewrite `h1` using `[Formalism.GM.FrozenVariableComponents.coeffη_shift, Formalism.GM.FrozenVariableComponents.coeffη_base, hcomp]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendWeightBounded : M.FreezeY := by
   intro p _ N r _ LL ρ n q J Mt hn hJ f hf

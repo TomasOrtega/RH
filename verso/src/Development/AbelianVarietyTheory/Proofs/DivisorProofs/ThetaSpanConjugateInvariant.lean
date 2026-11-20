@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.ThKSpanAut
 
 /- English proof (translation)
-Take `⟨T, -, m, m', f, φ, f', φ', -, hf', -, rfl, -⟩` from `hm`. Use `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨f' j, (hf' j).1, φ' j, (hf' j).2.1, ?_, rfl⟩` and prove the remaining obligations. Use `(T.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv ((hf' j).2.2 v h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem polData_small_of_polMatch {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {R : RealMaps F a a'} {Rf : FinMaps F a a'} {Φ Φ'}
@@ -31,13 +31,11 @@ theorem polData_small_of_polMatch {F E : Type} [Field F] [NumberField F] [Field 
   exact hv ((hf' j).2.2 v h)
 
 /- English proof (translation)
-Take `⟨K₀, -, hA⟩` from `GlobalTheory.T.exists_maximal_compact_invariant_dual F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Use `⟨hA.mod, ?_, hA.zfin⟩` and prove the remaining obligations. Establish `hΦS : Φ ∈ G.M'.So B.ψ B.τ₁` using `(Submodule.mem_inf.1 hΦ).2`. Take `⟨S, hSf, -, hS⟩` from `GlobalTheory.T.polynomial_datum_finite_dimensional_orbit F E σ B _ _ G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hKP (GlobalTheory.ThKContSmall.isPair_small hT) Φ (Submodule.mem_inf.1 hΦ).1`. Set `P` to `G.M'.So B.ψ B.τ₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `L : P →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun Ψ => G.M'.I om' Ψ map_add' := fun Ψ₁ Ψ₂ => GlobalTheory.ThKAutSmallKFin.I_add_so hKP hT Ψ₁.2 Ψ₂.2 map_smul' := fun t Ψ => GlobalTheory.ThKAutSmallKFin.I_smul G.M' om' t Ψ }`. Set `S' : Submodule ℂ P` to `S.comap P.subtype`. Use `haveI : FiniteDimensional ℂ S := hSf`. Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((P.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : GlobalTheory.ThK.Fn F a' (a + a'))) e))`. Set `T : P →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := S'.map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `hS _ (hK k k.2)`. Use `⟨⟨om' (1, (toGAd hσ G.W.J hc).symm k) Φ, GlobalTheory.T.weil_representation_preserves_space hKP.base F E σ B a a' G X om om' hT _ Φ hΦS⟩, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
-
-Simplify using `only [T, L, LinearMap.coe_comp, Function.comp_apply, LinearMap.funLeft_apply, LinearMap.coe_mk, AddHom.coe_mk, map_mul, GlobalTheory.ThKAutSmallKFin.I_mul_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAut_small_of_le_kInf (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
@@ -71,13 +69,13 @@ theorem isAut_small_of_le_kInf (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F
     map_mul, GlobalTheory.ThKAutSmallKFin.I_mul_right]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hσ c hc hσc f hf K hK`. Unfold `thetaSpanV thetaSpanV' at hf`. Rewrite `hf` using `[← Submodule.span_union]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Break down `hx with ⟨Φ, Φ', hΦ', hm, rfl⟩ | ⟨Φ, Φ', hΦ', hm, rfl⟩` into its components or cases. Conclude with `GlobalTheory.T.matched_pol_data_imaginary hKP F E σ B a a' G X om om' R Rf hM hσ c hc hσc Φ Φ' hΦ' hm K hK`. Conclude with `isAut_small_of_le_kInf hKP F E σ hσ B a a' G X om om' hM.triple c hc hσc Φ' (Submodule.mem_inf.2 ⟨polData_small_of_polMatch hm, hΦ'⟩) K hK`. Consider the case `zero => exact isAut_const σ _ K 0`. Consider the case `add x y _ _ hx hy`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `GlobalTheory.UAut.AutClosed.isAut_add_smul hx hy 1 1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Consider the case `smul r x _ hx`. Use `GlobalTheory.UAut.AutClosed.isAut_add_smul hx (isAut_const σ _ K 0) r 0 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isAut_of_mem_thetaSpan_sup : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

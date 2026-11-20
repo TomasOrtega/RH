@@ -1,11 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω _ A T _ y ⟨x1, hx1⟩`. Establish `: Nonempty {x : T // y x ≠ 0}` using `⟨⟨x1, hx1⟩⟩`. Take `⟨⟨x₀, h0⟩, hmax⟩` from `Finite.exists_max (fun z : {x : T // y x ≠ 0} => A.valuation (y z.1))`. Use `⟨x₀, h0, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : y x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hx, zero_div]`. Conclude with `A.zero_mem`. Rewrite using `[← A.valuation_le_one_iff, map_div₀]`. Establish `hpos : (0 : A.ValueGroup) < A.valuation (y x₀)`. Rewrite using `[zero_lt_iff]`.
-
-Conclude with `(Valuation.ne_zero_iff _).mpr h0`. Conclude with `(div_le_one₀ hpos).mpr (hmax ⟨x, hx⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yla8.main :
     ∀ {Ω : Type} [inst : Field Ω] (A : ValuationSubring Ω) {T : Type} [Finite T] (y : T → Ω),

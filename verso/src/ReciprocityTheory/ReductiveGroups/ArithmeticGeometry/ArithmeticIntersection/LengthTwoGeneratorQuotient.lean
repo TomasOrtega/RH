@@ -13,7 +13,7 @@ section
 variable {A : Type u} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A]
 
 /- English proof (translation)
-Rewrite using `[length_quot_restrict a]`. Establish `h : (LinearMap.ker (LinearMap.lsmul (A ⧸ Ideal.span {a}) (A ⧸ Ideal.span {a}) (Ideal.Quotient.mk (Ideal.span {a}) b))).restrictScalars A = LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)`. Use extensionality with `x`. Simplify using `[Algebra.smul_def]`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -31,15 +31,13 @@ theorem length_quotient_kernel (a b : A) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[length_quot_restrict a]`. Use `set N := LinearMap.range (LinearMap.lsmul (A ⧸ Ideal.span {a}) (A ⧸ Ideal.span {a}) (Ideal.Quotient.mk (Ideal.span {a}) b)) with hN`. Set `f : A →ₗ[A] ((A ⧸ Ideal.span {a}) ⧸ N)` to `(N.mkQ.restrictScalars A) ∘ₗ (Ideal.span {a} : Ideal A).mkQ`. Establish `hf : Function.Surjective f` using `(Submodule.mkQ_surjective N).comp (Submodule.mkQ_surjective _)`. Establish `hk : LinearMap.ker f = Ideal.span {a, b}`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Establish `h1 : x ∈ LinearMap.ker f ↔ Ideal.Quotient.mk (Ideal.span {a}) x ∈ N`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Submodule.Quotient.mk_eq_zero N`. Rewrite using `[h1, Ideal.mem_span_pair, hN, LinearMap.mem_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[LinearMap.lsmul_apply, smul_eq_mul, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨-c, y, by linear_combination -hc⟩`. Introduce and unpack `⟨c, y, h⟩`. Use `⟨Ideal.Quotient.mk _ y, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.lsmul_apply, smul_eq_mul, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Conclude with `⟨-c, by linear_combination -h⟩`.
-
-Conclude with `((f.quotKerEquivOfSurjective hf).symm.trans (Submodule.quotEquivOfEq _ _ hk)).length_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_quotient_cokernel (a b : A) :
     length (A ⧸ Ideal.span {a}) ((A ⧸ Ideal.span {a}) ⧸ LinearMap.range (LinearMap.lsmul
@@ -74,11 +72,11 @@ theorem length_quotient_cokernel (a b : A) :
     (Submodule.quotEquivOfEq _ _ hk)).length_eq
 
 /- English proof (translation)
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => simp at hd`. Consider the case `coe n`. Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => exact absurd hd (by decide)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe m`. Establish `e : ((((m + 1 : ℕ) : ℕ∞)) : WithBot ℕ∞) = (((2 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[Nat.cast_add, Nat.cast_one, WithBot.coe_add, WithBot.coe_one]`. Conclude with `hd`. Establish `h2 : ((m + 1 : ℕ) : ℕ∞) = ((2 : ℕ) : ℕ∞)` using `WithBot.coe_inj.mp e`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : m + 1 = 2` using `Nat.cast_injective h2`. Establish `h4 : m = 1` using `by omega`. Substitute `h4` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dimension_eq_one_of_add_one (d : WithBot ℕ∞) (hd : d + 1 = 2) : d = 1 := by
   induction d using WithBot.recBotCoe with
@@ -97,15 +95,13 @@ theorem dimension_eq_one_of_add_one (d : WithBot ℕ∞) (hd : d + 1 = 2) : d = 
       rfl
 
 /- English proof (translation)
-Establish `hmem : ∀ P : PrimeSpectrum (A ⧸ Ideal.span {a}), a ∈ (PrimeSpectrum.comap (Ideal.Quotient.mk (Ideal.span {a})) P).asIdeal`. Introduce `P`. Rewrite using `[PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self a)]`. Conclude with `zero_mem _`. Use `finsum_mem_eq_of_bijOn (s := {P : PrimeSpectrum (A ⧸ Ideal.span {a}) | ringKrullDim ((A ⧸ Ideal.span {a}) ⧸ P.asIdeal) = 1}) (t := {p : PrimeSpectrum A | p.asIdeal.height = 1 ∧ a ∈ p.asIdeal}) (PrimeSpectrum.comap (Ideal.Quotient.mk (Ideal.span {a}))) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Use `⟨(height_one_iff_dim_one h2 ha _ (hmem P)).2 ?_, hmem P⟩` and prove the remaining obligations. Rewrite using `[← dim_quot_comap]`. Conclude with `hP`. Conclude with `(PrimeSpectrum.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective).injOn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `p ⟨hp, hap⟩`. Establish `: p ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (Ideal.span {a})))`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, PrimeSpectrum.mem_zeroLocus]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hap`. Take `⟨P, rfl⟩` from `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨P, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ringKrullDim _ = 1`. Rewrite using `[dim_quot_comap]`. Conclude with `(height_one_iff_dim_one h2 ha _ hap).1 hp`. Introduce `P _`.
-
-Rewrite using `[length_loc_quot, ordMod_quot]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_sum_ord (h2 : ringKrullDim A = 2) {a : A} (ha : a ≠ 0) (b : A) :
     (∑ᶠ (P : PrimeSpectrum (A ⧸ Ideal.span {a}))
@@ -145,11 +141,11 @@ theorem length_quotient_sum_ord (h2 : ringKrullDim A = 2) {a : A} (ha : a ≠ 0)
     rw [length_loc_quot, ordMod_quot]
 
 /- English proof (translation)
-Distinguish the cases in `hu : IsUnit a`. Establish `h1 : Subsingleton (A ⧸ Ideal.span {a})` using `Ideal.Quotient.subsingleton_iff.2 (Ideal.span_singleton_eq_top.2 hu)`. Establish `h3 : Subsingleton (A ⧸ Ideal.span {a, b})` using `Ideal.Quotient.subsingleton_iff.2 (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span (by simp)) hu)`. Establish `h4 : ∀ p : PrimeSpectrum A, a ∉ p.asIdeal` using `fun p hp => p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp hu)`. Simplify using `[h4]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : a ∈ IsLocalRing.maximalIdeal A` using `hu`. Establish `hnt : Nontrivial (A ⧸ Ideal.span {a})` using `Ideal.Quotient.nontrivial_iff.2 (fun h => hu (Ideal.span_singleton_eq_top.1 h))`. Establish `hloc : IsLocalRing (A ⧸ Ideal.span {a})` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `hd` using `ringKrullDim_quotient_span_singleton_succ_eq_ringKrullDim_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero ha) hm`. Establish `hd1 : ringKrullDim (A ⧸ Ideal.span {a}) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[h2]`. Conclude with `dimension_eq_one_of_add_one _ hd`. Establish `key` using `(dimOneFormula (A ⧸ Ideal.span {a}) (A ⧸ Ideal.span {a}) (Ideal.Quotient.mk (Ideal.span {a}) b) hd1 (by rw [length_quotient_cokernel]; exact hfin)).2`. Rewrite `key` using `[length_quotient_cokernel, length_quotient_kernel, length_quotient_sum_ord h2 ha]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_pair_formula (h2 : ringKrullDim A = 2) {a : A} (ha : a ≠ 0) (b : A)
     (hfin : length A (A ⧸ Ideal.span {a, b}) ≠ ⊤) :
@@ -184,9 +180,9 @@ theorem length_quotient_pair_formula (h2 : ringKrullDim A = 2) {a : A} (ha : a �
 end
 
 /- English proof (translation)
-Introduce `A _ _ _ _ a b h2 ha hb hfin`. Establish `hfin' : length A (A ⧸ Ideal.span {b, a}) ≠ ⊤` using `by rwa [Set.pair_comm]`. Establish `h1` using `length_quotient_pair_formula h2 ha b hfin`. Establish `h1'` using `length_quotient_pair_formula h2 hb a hfin'`. Establish `hs` using `length_ker_swap a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `length_ker_ne_top a b ha hb hfin`. Use `⟨h1, ⟨hs, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite `h1'` using `[Set.pair_comm, h1, ← hs]`. Conclude with `ENat.add_right_injective_of_ne_top ht h1'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_two_generator_quotient : LocalLengthMultiplicativity := by
   intro A _ _ _ _ a b h2 ha hb hfin

@@ -6,41 +6,39 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ hp η hη A v hA hτ hunr`. Take `⟨τ, hτI, hτM⟩` from `hτ`. Take `⟨hη1, hηp, hηev⟩` from `hη`. Use `haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`. Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨art, hart⟩` from `GlobalTheory.globalArtinReciprocity_holds K Ω`. Establish `halg : IsAlgPos η 0` using `isAlgPos_zero_of_orderDvd hp.pos hηp`. Take `⟨r, hrc, hr⟩` from `hart.exists_isLAdicOf (ι : Qbar 2 ≃+* ℂ) halg`. Establish `hrI : ∀ s ∈ Ine A, r s = 1` using `(hr.unr_iff hart (Or.inr rfl) hA).2 hunr`. Establish `hres : ∀ g : G M Ω, r (res K Ω M g) = 1` using `by haveI : IsAlgClosure M Ω := by haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.tower_top (K := K) M⟩`. Take `⟨artM, hartM⟩` from `GlobalTheory.globalArtinReciprocity_holds M Ω`. Establish `hφc : Continuous (r.comp (res K Ω M))` using `hrc.comp (UpperTheory.V.Af.continuous_restrictScalarsHom K M Ω)`. Establish `hbad : {w : HeightOneSpectrum (𝓞 M) | ¬ (η.UnrAt (HeightOneSpectrum.under (𝓞 K) w) ∧ ∀ f : ℕ, normV w = normV (HeightOneSpectrum.under (𝓞 K) w) ^ f → η.val (HeightOneSpectrum.under (𝓞 K) w) ^ f = 1)}.Finite`. Establish `h1` using `GlobalTheory.QuadNormChar.tendsto_under (K := K) (K' := M)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ w in Filter.cofinite, η.UnrAt (HeightOneSpectrum.under (𝓞 K) w)` using `h1.eventually (Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified η))`. Conclude with `Filter.eventually_cofinite.1 (h2.and hηev)`. Establish `hone` using `GlobalTheory.FrobDense.eq_one_of_frob M Ω artM hartM (Qbar 2)ˣ (r.comp (res K Ω M)) hφc hbad.toFinset ?_`. Introduce `g`. Conclude with `DFunLike.congr_fun hone g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `w hw A' hA' σ hσ`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Simplify using `only [Set.mem_setOf_eq, not_not] at hw`. Take `⟨hwu, hwn⟩` from `hw`. Establish `hce : CharEig ι r (HeightOneSpectrum.under (𝓞 K) w) (η.val (HeightOneSpectrum.under (𝓞 K) w))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `B hB`. Use `⟨(hr.unr_iff hart (Or.inr rfl) hB).2 hwu, fun σ' hσ' => ?_⟩` and prove the remaining obligations. Establish `h3` using `hr.frob_unr hart (Or.inr rfl) hwu hB hσ'`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, h3, inv_inv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hfr⟩` from `UpperTheory.frobenius_power_compatibility K M Ω 2 ι w (w.asIdeal.inertiaDeg (𝓞 K)) (GlobalTheory.QuadNormChar.normV_under w)`. Take `⟨-, hval⟩` from `hfr r _ hce A' hA'`. Establish `h6` using `hval σ hσ`. Establish `h7 : ((η.val (HeightOneSpectrum.under (𝓞 K) w) : ℂˣ) : ℂ) ^ (w.asIdeal.inertiaDeg (𝓞 K)) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hwn _ (GlobalTheory.QuadNormChar.normV_under w)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `h6` using `[h7]`. Establish `h8 : (((r.comp (res K Ω M)) σ⁻¹ : (Qbar 2)ˣ) : Qbar 2) = 1`. Establish `h9` using `congrArg ι.symm h6`. Simplify using `using h9`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h10 : (r.comp (res K Ω M)) σ⁻¹ = 1` using `Units.ext h8`. Rewrite `h10` using `[map_inv, inv_eq_one]`. Conclude with `h10`. Establish `hr1 : ∀ g : G K Ω, r g = 1` using `by haveI : Fact (Nat.Prime (Module.finrank K M)) := ⟨hp⟩`. Set `ρ : G K Ω →* (M ≃ₐ[K] M)` to `AlgEquiv.restrictNormalHom M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfix : ∀ g : G K Ω, ρ g = 1 → r g = 1`. Introduce `g hg`. Set `g' : Ω ≃ₐ[M] Ω` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) (fun x => by`. Establish `h1` using `AlgEquiv.restrictNormal_commutes g M x`. Establish `h2 : g.restrictNormal M = 1` using `hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h1` using `[h2]`. Simplify using `using h1.symm)`. Establish `hg' : res K Ω M g' = g`. Use extensionality with `x`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hg']`. Conclude with `hres g'`. Establish `hρτ : ρ τ ≠ 1`. Introduce `h1`. Apply `hτM` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x`. Establish `h3` using `AlgEquiv.restrictNormal_commutes τ M x`. Establish `h2 : τ.restrictNormal M = 1` using `h1`. Rewrite `h3` using `[h2]`. Simplify using `using h3.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgen : Subgroup.zpowers (ρ τ) = ⊤` using `zpowers_eq_top_of_prime_card (p := Module.finrank K M) (IsGalois.card_aut_eq_finrank K M) hρτ`. Introduce `g`. Establish `hg : ρ g ∈ Subgroup.zpowers (ρ τ)` using `hgen ▸ Subgroup.mem_top _`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 hg`. Establish `hτ1 : r τ = 1` using `hrI τ hτI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4 : ρ ((τ ^ k)⁻¹ * g) = 1`. Rewrite using `[map_mul, map_inv, map_zpow, hk, inv_mul_cancel]`. Establish `h5` using `hfix _ h4`. Rewrite `h5` using `[map_mul, map_inv, map_zpow, hτ1, one_zpow, inv_one, one_mul]`. Conclude with `h5`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hη1` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨σ, hσ⟩` from `toAb_surjective (E := K) (Ω := Ω) (art x)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hr x σ hσ.symm`. Rewrite `h` using `[infPow_zero, lPow_zero, hr1 σ]`. Simplify using `only [Units.val_one, inv_one, mul_one] at h`. Establish `h2 : ((η.1 x : ℂˣ) : ℂ) = 1`. Establish `h3` using `congrArg ι h`.
-
-Simplify using `using h3.symm`. Use `ext`. Simplify using `using h2`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.normRam :
     NormRam := by

@@ -12,9 +12,9 @@ namespace GlobalTheory.TameEig
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition Topology
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : A.valuation (σ y / y) = 1`. Establish `h2` using `Valuation.map_add_eq_of_lt_left A.valuation (x := (1 : Ω)) (y := σ y / y - 1) (by rw [map_one]; exact hσ y hy)`. Establish `e : (1 : Ω) + (σ y / y - 1) = σ y / y` using `by ring`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e, map_one]`. Then use the resulting hypothesis. Establish `hv : A.valuation y ≠ 0` using `by simpa using hy`. Rewrite `h1` using `[map_div₀, div_eq_one_iff_eq hv]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_apply_eq {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω)
     (σ : G E Ω) (hσ : ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) (y : Ω) :
@@ -31,11 +31,11 @@ theorem val_apply_eq {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra
     exact h1
 
 /- English proof (translation)
-Establish `hv` using `val_apply_eq A σ hσ`. Establish `hD : σ ∈ Dec (F` using `E) A := by`. Rewrite using `[mem_Dec]`. Use extensionality with `x`. Establish `e : x = σ • ((σ⁻¹ : G E Ω) • x)` using `(smul_inv_smul σ x).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[e, ValuationSubring.smul_mem_pointwise_smul_iff, ← A.valuation_le_one_iff, ← A.valuation_le_one_iff, AlgEquiv.smul_def σ, hv]`. Use `⟨hD, fun x hx => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Establish `e : σ x - x = x * (σ x / x - 1)` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hx) (hσ x h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wild_mem_Ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω)
     (σ : G E Ω) (hσ : ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) : σ ∈ Ine (F := E) A := by
@@ -56,7 +56,7 @@ theorem wild_mem_Ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_one (IsLocalRing.residue (N.O i)), ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_eq_one (N : NData R H what₂) (i : N.Loc) {x : N.O i}
     (hx : x - 1 ∈ IsLocalRing.maximalIdeal (N.O i)) : IsLocalRing.residue (N.O i) x = 1 := by
@@ -74,11 +74,11 @@ theorem chiBar_val (N : NData R H what₂) (i : N.Loc) (g : G H.E N.Om) :
       IsLocalRing.residue (N.O i) (chi1 N i g) := rfl
 
 /- English proof (translation)
-Establish `hm : IsOpen (IsLocalRing.maximalIdeal (N.O i) : Set (N.O i))`. Use `(isAdic_iff.1 (N.O_adic i)).1 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Set `U1 : Set (G H.E N.Om)` to `(fun g => ((N.chi i 1 g : (N.O i)ˣ) : N.O i) - 1) ⁻¹' (IsLocalRing.maximalIdeal (N.O i) : Set (N.O i))`. Establish `hU1 : IsOpen U1` using `hm.preimage ((N.chi_cont i 1).sub continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (1 : G H.E N.Om) ∈ U1` using `by show ((N.chi i 1 1 : (N.O i)ˣ) : N.O i) - 1 ∈ IsLocalRing.maximalIdeal (N.O i)`. Rewrite using `[map_one, Units.val_one, sub_self]`. Conclude with `Ideal.zero_mem _`. Establish `hsub : U1 ⊆ ((chiBar N i).ker : Set (G H.E N.Om))`. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `show Units.map (IsLocalRing.residue (N.O i)).toMonoidHom (N.chi i 1 g) = 1`. Use `ext`. Conclude with `residue_eq_one N i hg`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hU1.mem_nhds h1) hsub)`.
+A detailed English derivation is pending.
 -/
 theorem chiBar_open (N : NData R H what₂) (i : N.Loc) : IsOpen ((chiBar N i).ker : Set (G H.E N.Om)) := by
   have hm : IsOpen (IsLocalRing.maximalIdeal (N.O i) : Set (N.O i)) := by
@@ -98,9 +98,9 @@ theorem chiBar_open (N : NData R H what₂) (i : N.Loc) : IsOpen ((chiBar N i).k
   exact Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hU1.mem_nhds h1) hsub)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨p, k, hp, -, he⟩` from `(isPrimePow_nat_iff 15).1 h`. Establish `h3 : (3:ℕ) ∣ p ^ k` using `by rw [he]; norm_num`. Establish `h5 : (5:ℕ) ∣ p ^ k` using `by rw [he]; norm_num`. Establish `e3` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hp).1 (Nat.prime_three.dvd_of_dvd_pow h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5` using `(Nat.prime_dvd_prime_iff_eq (by norm_num) hp).1 ((by norm_num : Nat.Prime 5).dvd_of_dvd_pow h5)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_isPrimePow_15 : ¬ IsPrimePow 15 := by
   intro h
@@ -112,19 +112,19 @@ theorem not_isPrimePow_15 : ¬ IsPrimePow 15 := by
   omega
 
 /- English proof (translation)
-Introduce `h1`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `hval : (N.plOm.1 w).valuation (q : N.Om) < 1`. Use `((N.plOm.2 w) ((q : ℕ) : 𝓞 H.E)).2 hw` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime 15 q` using `(Nat.gcd_rec 15 q).trans (by simp only [hq15, Nat.gcd_one_left])`. Establish `hpow : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), N.chi i 1 σ ^ 15 = 1 := by`. Introduce `σ hσ`. Establish `h` using `pow_card_eq_one' (G := (Ine (F := H.E) (N.plOm.1 w)).map (N.chi i 1)) (x := ⟨N.chi i 1 σ, Subgroup.mem_map_of_mem _ hσ⟩)`. Rewrite `h` using `[hDel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val h`. Establish `hwild : ∀ σ : G H.E N.Om, (∀ y : N.Om, y ≠ 0 → (N.plOm.1 w).valuation (σ y / y - 1) < 1) → σ ∈ (chiBar N i).ker`. Introduce `σ hσ`. Establish `hI` using `wild_mem_Ine (N.plOm.1 w) σ hσ`. Establish `h15 : chiBar N i σ ^ 15 = 1` using `by show (Units.map (IsLocalRing.residue (N.O i)).toMonoidHom) (N.chi i 1 σ) ^ 15 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hpow σ hI, map_one]`. Conclude with `GlobalTheory.T.character_trivial_at_wild_of_coprime_pow H.E N.Om q (N.plOm.1 w) hval _ (chiBar N i) (chiBar_open N i) σ (fun a ha => hσ a ha) 15 (by norm_num) hcop h15`. Establish `hg : N.gam0 i w ∈ (chiBar N i).ker` using `MonoidHom.mem_ker.2 (Units.ext (by simp only [chiBar_val, h1, Units.val_one]))`. Establish `hTG` using `N.restN_tameGenerator_generates i w (Or.inl hS)`. Establish `hle : ((Subgroup.closure (insert (N.gam0 i w) {σ : G H.E N.Om | ∀ y : N.Om, y ≠ 0 → (N.plOm.1 w).valuation (σ y / y - 1) < 1}) : Subgroup (G H.E N.Om)) : Set (G H.E N.Om)) ⊆ ((chiBar N i).ker : Set (G H.E N.Om))` using `(Subgroup.closure_le _).2 (Set.insert_subset_iff.2 ⟨hg, fun σ hσ => hwild σ hσ⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl` using `Subgroup.isClosed_of_isOpen _ (chiBar_open N i)`. Establish `hIne : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), IsLocalRing.residue (N.O i) (chi1 N i σ) = 1 := by`. Introduce `σ hσ`. Establish `h2 : σ ∈ (chiBar N i).ker` using `closure_minimal hle hcl (hTG.2 hσ)`. Rewrite using `[← chiBar_val, MonoidHom.mem_ker.1 h2, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Finite ((Ine (F` using `H.E) (N.plOm.1 w)).map (N.chi i 1)) := Nat.finite_of_card_ne_zero (by rw [hDel]; norm_num)`. Take `⟨g, hgen⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (Ine (F := H.E) (N.plOm.1 w)).map (N.chi i 1))`. Take `⟨σ, hσ, hσg⟩` from `Subgroup.mem_map.1 g.2`. Establish `hord : orderOf (g : (N.O i)ˣ) = 15` using `by rw [Subgroup.orderOf_coe, hgen, hDel]`. Establish `hprim : IsPrimitiveRoot ((g : (N.O i)ˣ) : N.O i) 15`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsPrimitiveRoot.coe_units_iff, ← hord]`. Conclude with `IsPrimitiveRoot.orderOf _`. Apply `GlobalTheory.T.primitiveRoot_notPrimePow_map_ne_one' _ (N.O i) (IsLocalRing.residue (N.O i)) _ 15 (by norm_num) hprim not_isPrimePow_15` to reduce the goal to its premises. Rewrite using `[← hσg]`. Conclude with `hIne σ hσ`.
+A detailed English derivation is pending.
 -/
 theorem residue_ne_one (N : NData R H what₂) (i : N.Loc)
     (w : PlE H) (hS : w ∈ N.S i) (q : ℕ) (hq : q.Prime) (hq15 : q % 15 = 1) (hw : w ∈ placesOver H.E q)
@@ -177,13 +177,13 @@ theorem residue_ne_one (N : NData R H what₂) (i : N.Loc)
   exact hIne σ hσ
 
 /- English proof (translation)
-Establish `hK : (((r x γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).charpoly).map (algebraMap (N.O i) (Kf N i)) = ((X - 1) ^ R.r * (X - C (chi1 N i γ)) ^ R.t).map (algebraMap (N.O i) (Kf N i))`. Take `⟨Pm, hP⟩` from `hs`. Establish `h` using `hP γ hγ`. Rewrite using `[← Matrix.charpoly_map]`. Establish `e1 : ((r x γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).map (algebraMap (N.O i) (Kf N i)) = ((mapRep (algebraMap (N.O i) (Kf N i)) (r x) γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Kf N i))` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Matrix.charpoly_units_conj' Pm ((mapRep (algebraMap (N.O i) (Kf N i)) (r x) γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Kf N i))`. Rewrite `h2` using `[← Matrix.coe_units_inv, ← Units.val_mul, ← Units.val_mul, h]`. Rewrite using `[e1, ← h2]`. Establish `h3` using `Formalism.MainNotions.SumRepresentations.diagHom_charpoly (k := Kf N i) R.r R.t (Units.map (algebraMap (N.O i) (Kf N i)).toMonoidHom (N.chi i 1 γ))`. Rewrite `h3` using `[Formalism.MainNotions.SumRepresentations.diagHom_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one, Polynomial.map_C]`. Conclude with `h3`. Establish `hO` using `Polynomial.map_injective _ (IsFractionRing.injective (N.O i) (Kf N i)) hK`. Establish `e2 : ((redRep N i (r x) γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (IsLocalRing.ResidueField (N.O i))) = ((r x γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).map (IsLocalRing.residue (N.O i))` using `rfl`. Rewrite using `[e2, Matrix.charpoly_map, hO]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one, Polynomial.map_C]`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_red (N : NData R H what₂) {i : N.Loc} (r : N.X i → (G H.E N.Om →* GL (Fin R.nV) (N.O i)))
     {w : PlE H} {x : N.X i} (hs : Formalism.MainNotions.SumRepresentations.SplitI N r w x) (γ : G H.E N.Om) (hγ : γ ∈ Ine (F := H.E) (N.plOm.1 w)) :
@@ -215,23 +215,19 @@ theorem charpoly_red (N : NData R H what₂) {i : N.Loc} (r : N.X i → (G H.E N
     Polynomial.map_one, Polynomial.map_C]
 
 /- English proof (translation)
-Introduce `D hA hLGC _ i _ w hS hw rb hrb hroot`. Establish `hC : Formalism.MainNotions.SumRepresentations.Cheb D.nd` using `hA.2.2.2.2.2.2.2.2.1`. Establish `hDel` using `Formalism.MainNotions.SumRepresentations.Del_holds D i`. Establish `hq : (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde).Prime` using `by split_ifs`. Conclude with `D.host.pde'_prime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `D.host.pde_prime`. Establish `hq15 : (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde) % 15 = 1` using `by split_ifs`. Conclude with `D.host.pde_mod.2`. Conclude with `D.host.pde_mod.1`. Establish `hne` using `residue_ne_one D.nd i w hS _ hq hq15 hw (hDel w hS hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcond : w ∈ D.nd.Q i ∨ (Formalism.MainNotions.SumRepresentations.At.Del D.nd i ∧ (w ∈ placesOver D.host.E D.host.pde ∨ (D.nd.l i = D.host.pde ∧ w ∈ placesOver D.host.E D.host.pde')))`. Use `Or.inr ⟨hDel, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hlp : D.nd.l i = D.host.pde`. Rewrite `hw` using `[if_pos hlp]`. Conclude with `Or.inr ⟨hlp, hw⟩`.
+Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw` using `[if_neg hlp]`. Conclude with `Or.inl hw`. Establish `x : D.nd.X i` using `Classical.choice (D.nd.neX i)`. Establish `hQ : ∀ x, ∃ ρ, Formalism.MainNotions.SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ` using `fun x => by`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Pa, hPa⟩` from `hA.2.2.1 i P`. Take `⟨ρ, h1, h2, h3, -⟩` from `GlobalTheory.T.exists_semisimple_galois_rep_weights D hA.1 hA.2.2.2.1 i P Pa hPa`. Conclude with `⟨ρ, GlobalTheory.T.hecke_galois_of_unramified_match D i x P Pa hP hPa ρ h1 h2 h3⟩`. Use `choose rq hrq using hQ`. Take `⟨r, hr⟩` from `Formalism.MainNotions.SumRepresentations.exists_GoodR D.nd D.naut hA.2.1 i ⟨rq, hrq⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hLGC i r hr w (Or.inl hS)`. Establish `hs` using `Formalism.MainNotions.SumRepresentations.split_inertia_of_hypotheses D.nd r D.naut hr hA.2.2.2.2.2.1 w (Or.inl hS) hcond hL x`. Establish `hg` using `D.nd.locNd_chebotarevPlace_mem i w`. Establish `hwl` using `D.nd.SQ_l i w (Or.inl hS)`. Establish `fac` using `Formalism.MainNotions.SumRepresentations.rhobar_fac D.nd r hC hr rb hrb x (D.nd.gam0 i w)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `fac` using `[charpoly_red D.nd r hs _ hg]`. Establish `hprod : ∏ c ∈ Finset.Icc 1 D.R.t, (X - C (IsLocalRing.residue (D.nd.O i) ((D.nd.chi i c (D.nd.gam0 i w) : (D.nd.O i)ˣ) : D.nd.O i))) = ∏ _c ∈ Finset.Icc 1 D.R.t, (X - C (IsLocalRing.residue (D.nd.O i) (chi1 D.nd i (D.nd.gam0 i w))))` using `Finset.prod_congr rfl fun c hc => by`. Rewrite using `[Formalism.MainNotions.SumRepresentations.character_eq_first_off_l D.nd w hwl c (Finset.mem_Icc.1 hc).1 (Finset.mem_Icc.1 hc).2 _ hg]`. Both sides reduce to the same expression. Rewrite `fac` using `[hprod, Finset.prod_const, Nat.card_Icc, Nat.add_sub_cancel]`.
-
-Establish `hcp` using `mul_right_cancel₀ (pow_ne_zero _ (X_sub_C_ne_zero _)) fac`. Establish `h0 : ((X - 1 : Polynomial (IsLocalRing.ResidueField (D.nd.O i))) ^ D.R.r).eval (IsLocalRing.residue (D.nd.O i) (chi1 D.nd i (D.nd.gam0 i w))) = 0`. Rewrite using `[← hcp]`. Conclude with `hroot`. Rewrite `h0` using `[eval_pow, eval_sub, eval_X, eval_one]`.
-
-Conclude with `pow_ne_zero _ (sub_ne_zero.2 hne) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigPd_holds : ∀ D : D7, SumRepresentations.AdmA D → LGC D → RbEx D → EigPd D := by
   intro D hA hLGC _ i _ w hS hw rb hrb hroot

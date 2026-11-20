@@ -44,7 +44,7 @@ def PSDKOn {α : Type*} (S : Set α) (K : α → α → ℂ) : Prop :=
 def KLEOn {α : Type*} (S : Set α) (K L : α → α → ℂ) : Prop := PSDKOn S (fun p q => L p q - K p q)
 
 /- English proof (translation)
-Introduce `X a _` and use `h X a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PSDKOn_of_PSDK {α : Type*} {K : α → α → ℂ} (h : PSDK K) (S : Set α) : PSDKOn S K := fun X a _ => h X a
 
@@ -73,7 +73,7 @@ def ArithAxF (L : LatticeDataWithDual D) (Kd : KernelData D) : Prop :=
 variable {D}
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3, h4⟩` from `h`. Use `⟨h0, h1, h2, h3, fun Sg => ⟨Kd.Th, fun j s hs hjs => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, b, c, d⟩` from `h4 j s hs hjs`. Conclude with `⟨fun t ht _ => PSDKOn_of_PSDK (a t ht) _, fun t l hl _ _ _ _ => by rw [b t l hl], fun t => PSDKOn_of_PSDK (c t) _, fun X hX => PSDKOn_of_PSDK (d X hX) _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.Formalism.MainNotions.S.ArithAx.toF {L : LatticeDataWithDual D} {Kd : KernelData D} (h : ArithAx D L Kd) : ArithAxF D L Kd := by
   obtain ⟨h0, h1, h2, h3, h4⟩ := h

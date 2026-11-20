@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.SiegelAvgAdm
 
 /- English proof (translation)
-Unfold `Darboux.rho`. Rewrite using `[← h]`. Use `congr 2`. Use extensionality with `i j`. Apply the tactic sequence `rcases j with j | j <;> erw [Matrix.mul_apply] <;> simp [diagCols, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rho_diagCols' {a b : ℕ} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {JA : Matrix (Fin a) (Fin a) E} {JB : Matrix (Fin b) (Fin b) E} {κ : Type}
@@ -34,17 +34,15 @@ theorem rho_diagCols' {a b : ℕ} {F E : Type} [Field F] [NumberField F] [Field 
   rcases j with j | j <;> erw [Matrix.mul_apply] <;> simp [diagCols, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv μ hμ`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `letI mA : MeasurableSpace ((Fin n × Fin d₁) → AF F) := borel _`. Use `haveI : BorelSpace ((Fin n × Fin d₁) → AF F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl₁' : ∀ (x y : Fin n × Fin d₁ → AF F), ∀ φ ∈ schA F ((Fin n × Fin d₁) ⊕ (Fin n × Fin d₁)), l₁ (schr B.ψ (Sum.elim x x, Sum.elim y (-y)) φ) = l₁ φ`. Introduce `x y φ hφ`. Use `hl₁inv (d₁'.e.symm (x, y)) φ hφ` as an intermediate fact. Rewrite `this` using `[rho_diagCols' hdd₁, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.heisenbergInvariant_admissibleForm_eq_mul_diagonalIntegral F B.ψ hψ _ l₁ hl₁ hl₁' (Measure.addHaar) inferInstance`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Take `⟨T, hT⟩` from `GlobalTheory.T.pair_adapted_plane_lift hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz Measure.addHaar inferInstance μ hμ g hg`. Use `⟨c₁ • T, fun f => ?_⟩` and prove the remaining obligations. Take `⟨hi, he⟩` from `hT f`. Establish `hΦ : pureA F (⇑f) g ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ y, (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (pureA F f g)) = c₁ * GlobalTheory.DiagSiegel.diagInt Measure.addHaar (ed (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (pureA F f g)))` using `fun y => by`. Rewrite using `[LinearMap.comp_apply]`. Conclude with `hc₁ _ (hmap _ (GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hψ _ (dd.e (Matrix.vecMulVec (incV F H'.y) (Sum.elim y y))) _ hΦ))`. Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Establish `hconv : GlobalTheory.SiegelAvg.Conv μ (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y)) (pureA F f g)` using `by show Integrable _ μ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Conclude with `hi.const_mul c₁`. Rewrite using `[GlobalTheory.SiegelAvg.avgForm_apply _ _ _ hconv]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, he]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem avgForm_mem_adm : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

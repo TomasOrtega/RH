@@ -18,35 +18,35 @@ namespace RD
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-Establish `hsch` using `d.om_sch`. Establish `hc` using `R.step_comp w hsch (R.step_comp w hsch h₁ h') h₂`. Establish `h0` using `R.step_comp w hsch h₁ h₂`. Introduce `f hf`. Distinguish the cases in `hf0 : ∀ u, f u = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, ⟨0, by ext; simp⟩, fun Ψ hΨ Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Establish `: Φ = 0` using `d.T_inj hT Φ hΦ (by rw [hTΦ]; funext X; simp [RD.tens, hf0])`. Substitute `this` using the available equality. Rewrite using `[map_zero, d.T_zero]`. Use function extensionality and compare the values at `X`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[RD.tens]`. Use `push Not at hf0`. Take `⟨u₀, hu₀⟩` from `hf0`. Distinguish the cases in `hex : ∃ κ : ℂ, κ ≠ 0 ∧ A₁ (A₂ f) = κ • f`. Take `⟨κ, hκ, hA⟩` from `hex`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ⁻¹ • A₁ (A' (A₂ f)), ?_, fun Ψ hΨ Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `hc.1 f hf`. Use `⟨κ⁻¹ • φ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Use `congrFun hφ u` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply] at this`. Simplify using `[this]`. Establish `e` using `(hc.2 Ψ hΨ).2 f hf Φ hΦ hTΦ`. Establish `e0` using `(h0.2 Ψ hΨ).2 f hf Φ hΦ hTΦ`. Rewrite `e0` using `[h1, map_one, Module.End.one_apply, hTΦ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hBaway` using `(h0.2 Ψ hΨ).1`. Establish `hB : ∀ X, B₁ (B₂ Ψ) X = κ⁻¹ * Ψ X`. Introduce `X`. Take `⟨Z, hZ1, hZ2, hZ3⟩` from `R.loc_surj w X u₀`. Establish `h2` using `congrFun e0 (X + Z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hΨ X Z hZ1 hZ2`. Establish `h4` using `hBaway X Z hZ1 hZ2`. Simplify using `only [RD.tens, Function.comp_apply, hZ3, hA, Pi.smul_apply, smul_eq_mul] at h2 h4`. Rewrite `h2` using `[h3, h4]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hκ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ hu₀` to reduce the goal to its premises. Take the linear combination `-h2`. Rewrite using `[hy, e]`. Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, Function.comp_apply, id, Pi.smul_apply, smul_eq_mul, hB]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨0, ⟨0, by ext; simp⟩, fun Ψ hΨ Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Establish `hΨ0 : ∀ X, Ψ X = 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨X₀, hX₀⟩` from `hne`. Establish `e0` using `(h0.2 Ψ hΨ).2 f hf Φ hΦ hTΦ`. Rewrite `e0` using `[h1, map_one, Module.End.one_apply, hTΦ]`. Establish `hBaway` using `(h0.2 Ψ hΨ).1`. Establish `key : ∀ u, f u * Ψ X₀ = A₁ (A₂ f) u * B₁ (B₂ Ψ) X₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u`. Take `⟨Z, hZ1, hZ2, hZ3⟩` from `R.loc_surj w X₀ u`. Establish `h2` using `congrFun e0 (X₀ + Z)`. Establish `h3` using `hΨ X₀ Z hZ1 hZ2`. Establish `h4` using `hBaway X₀ Z hZ1 hZ2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [RD.tens, Function.comp_apply, hZ3] at h2 h4`. Rewrite `h2` using `[h3, h4]`. Conclude with `h2`. Establish `hB0 : B₁ (B₂ Ψ) X₀ ≠ 0`. Introduce `h0'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `key u₀` as an intermediate fact. Rewrite `this` using `[h0', mul_zero]`. Conclude with `mul_ne_zero hu₀ hX₀ this`. Apply `hex` to reduce the goal to its premises. Use `⟨Ψ X₀ / B₁ (B₂ Ψ) X₀, div_ne_zero hX₀ hB0, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Use `key u` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hB0]`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: Φ = 0` using `d.T_inj hT Φ hΦ (by rw [hTΦ]; funext X; simp [RD.tens, hΨ0])`. Substitute `this` using the available equality. Rewrite using `[map_zero, d.T_zero]`. Use function extensionality and compare the values at `X`. Simplify using `[RD.tens, hΨ0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ok_of_conj (hT : TAll) {y y' : GR d.n} {x₁ x₂ : d.G} {A₁ A₂ A' : d.LF → d.LF} {B₁ B₂ : d.MF → d.MF}
     (h₁ : R.StepOK w x₁ A₁ B₁) (h₂ : R.StepOK w x₂ A₂ B₂) (h' : R.StepOK w (R.ι w y') A' id)
@@ -130,20 +130,20 @@ theorem ok_of_conj (hT : TAll) {y y' : GR d.n} {x₁ x₂ : d.G} {A₁ A₂ A' :
 end RD
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_one' {n : ℕ} (t : ℝ) :
     ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = (t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) := by
   rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_ofReal]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w`. Use `⟨_, R.isLocOp_of_ok w fun y => ?_⟩` and prove the remaining obligations. Establish `hsch` using `d.om_sch`. Take `⟨-, ⟨ε, w₀, hw₀, -⟩, -⟩` from `hA F E σ d`. Take `⟨C, s, B, -, hW⟩` from `R.stepW w hT hA ε w₀ hw₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `okN : ∀ (y : GR d.n) (b : Matrix (Fin d.n) (Fin d.n) ℂ), bᴴ = b → mR y = nU b → R.OkY w y` using `fun y b hb hy => R.ok_of_step w (R.stepN w hT y b hb hy)`. Establish `okM : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = Glob.mM a → R.OkY w y`. Introduce `y a ha hy`. Take `⟨c, -, hc⟩` from `R.stepM w hT y a ha hy`. Conclude with `R.ok_of_step w hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `okB : ∀ (y : GR d.n) (c : Matrix (Fin d.n) (Fin d.n) ℂ), cᴴ = c → mR y = Glob.nbar c → R.OkY w y`. Introduce `y c hc hy`. Take `⟨y', x, hx, hy', hrel⟩` from `R.nbar_conj' w hw₀ y c hc hy`. Establish `hW3` using `R.step_comp w hsch (R.step_comp w hsch hW hW) hW`. Conclude with `R.ok_of_conj w hT hW3 hW (R.stepN w hT y' x hx hy') hrel (RD.w_four hw₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y1, y2, y3, y4, hy, ⟨t, ht⟩, ⟨c, hc, hc2⟩, ⟨a, ha, ha2⟩, ⟨b, hb, hb2⟩⟩` from `PositivityTheory.Rg.Sw.Glob.decomp d.n y`. Rewrite using `[hy]`. Conclude with `R.ok_mul w hsch (R.ok_mul w hsch (R.ok_mul w hsch (okN y1 _ (herm_smul_one' t) ht) (okB y2 c hc hc2)) (okM y3 a ha ha2)) (okN y4 b hb hb2)`.
+A detailed English derivation is pending.
 -/
 theorem locOpEx_of (hT : TAll) (hA : AuxiliaryPrimeFunction) : LocOpEx := by
   intro F E _ _ _ _ _ σ d R w

@@ -33,26 +33,26 @@ def levAct (M : LevRep b N w m e) (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) : M.X 
 variable (M : LevRep b N w m e)
 
 /- English proof (translation)
-The claim follows from `(M.rep M.X M.s (M.univAct g)).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem levAct_spec (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) :
     M.levAct g ≫ M.s = M.s ∧ ObjLevMap (M.univAct g) M.univ (M.levAct g) :=
   (M.rep M.X M.s (M.univAct g)).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(M.levAct_spec g).1`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem levAct_comp_s (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) : M.levAct g ≫ M.s = M.s := (M.levAct_spec g).1
 
 /- English proof (translation)
-The claim follows from `(M.rep M.X M.s (M.univAct g)).unique ⟨h₁, h₂⟩ (M.levAct_spec g)`.
+A detailed English derivation is pending.
 -/
 theorem eq_levAct (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) (f : M.X ⟶ M.X) (h₁ : f ≫ M.s = M.s)
     (h₂ : ObjLevMap (M.univAct g) M.univ f) : f = M.levAct g :=
   (M.rep M.X M.s (M.univAct g)).unique ⟨h₁, h₂⟩ (M.levAct_spec g)
 
 /- English proof (translation)
-Use `(M.eq_levAct 1 (𝟙 _) (Category.id_comp _) ⟨GlobalTheory.UPel.HT.EtLev.LevForget.idMap M.univ.obj, fun x => ?_⟩).symm` and prove the remaining obligations. Use `show (M.univ.lev.α ((1 : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)).val.mulVec x)).left ≫ 𝟙 _ = 𝟙 _ ≫ _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem levAct_one : M.levAct 1 = 𝟙 M.X := by
   refine (M.eq_levAct 1 (𝟙 _) (Category.id_comp _) ⟨GlobalTheory.UPel.HT.EtLev.LevForget.idMap M.univ.obj, fun x => ?_⟩).symm
@@ -60,11 +60,9 @@ Use `(M.eq_levAct 1 (𝟙 _) (Category.id_comp _) ⟨GlobalTheory.UPel.HT.EtLev.
   simp
 
 /- English proof (translation)
-Use `symm`. Take `⟨φh, hh⟩` from `(M.levAct_spec h).2`. Take `⟨φg, hg⟩` from `(M.levAct_spec g).2`. Establish `hh' : ∀ y, (M.univ.lev.α (h.val.mulVec y)).left ≫ φh.φ = M.levAct h ≫ (M.univ.lev.α y).left` using `hh`. Establish `hg' : ∀ y, (M.univ.lev.α (g.val.mulVec y)).left ≫ φg.φ = M.levAct g ≫ (M.univ.lev.α y).left` using `hg`.
+Use symmetry to reverse the relation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `M.eq_levAct (h * g) _ (by rw [Category.assoc, levAct_comp_s, levAct_comp_s]) ⟨ObjMap.comp φh φg, fun x => ?_⟩` and prove the remaining obligations. Establish `e1 : (h * g).val.mulVec x = h.val.mulVec (g.val.mulVec x)` using `by rw [Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `show (M.univ.lev.α ((h * g).val.mulVec x)).left ≫ (φh.φ ≫ φg.φ) = (M.levAct h ≫ M.levAct g) ≫ _`. Rewrite using `[e1]`. Use `erw [← Category.assoc, hh', Category.assoc, hg']`.
-
-Simplify using `only [Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levAct_mul (h g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) :
     M.levAct (h * g) = M.levAct h ≫ M.levAct g := by
@@ -81,13 +79,13 @@ theorem levAct_mul (h g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) :
   simp only [Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[← levAct_mul, inv_mul_cancel, levAct_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem levAct_inv_comp (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) : M.levAct g⁻¹ ≫ M.levAct g = 𝟙 M.X := by
   rw [← levAct_mul, inv_mul_cancel, levAct_one]
 
 /- English proof (translation)
-Rewrite using `[← levAct_mul, mul_inv_cancel, levAct_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem levAct_comp_inv (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) : M.levAct g ≫ M.levAct g⁻¹ = 𝟙 M.X := by
   rw [← levAct_mul, mul_inv_cancel, levAct_one]
@@ -110,7 +108,7 @@ def levActHom : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m) →* End M.X where
     rfl
 
 /- English proof (translation)
-Establish `hf` using `(F₀.rep M.X M.s M.univ.obj).exists.choose_spec`. Take `⟨φg, -⟩` from `(M.levAct_spec g).2`. Conclude with `(F₀.rep M.X M.s M.univ.obj).unique ⟨by rw [Category.assoc]; erw [hf.1]; exact M.levAct_comp_s g, ⟨ObjMap.comp φg hf.2.some⟩⟩ hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 @[simp] theorem levAct_forget (F₀ : RepFam b N) (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) :
     M.levAct g ≫ M.forget F₀ = M.forget F₀ := by
@@ -166,18 +164,18 @@ section Basic₂
 variable {N : ℕ} {w : Ideal (𝓞 D.F)} {m : ℕ} {e : D.O}
 
 /- English proof (translation)
-The claim follows from `M.levActHom.map_one`.
+A detailed English derivation is pending.
 -/
 example (M : LevRep b N w m e) : M.levActHom 1 = 𝟙 M.X := M.levActHom.map_one
 
 /- English proof (translation)
-Simplify using `[LevRep.univAct]`.
+Simplify using the standard rewrite rules.
 -/
 example (M : LevRep b N w m e) (x : Fin D.n → 𝓞 D.F ⧸ w ^ m) : (M.univAct 1).lev.α x = M.univ.lev.α x := by
   simp [LevRep.univAct]
 
 /- English proof (translation)
-The claim follows from `(M.levActIso g).isIso_hom`.
+A detailed English derivation is pending.
 -/
 example (M : LevRep b N w m e) (g : GL (Fin D.n) (𝓞 D.F ⧸ w ^ m)) : IsIso (M.levAct g) :=
   (M.levActIso g).isIso_hom

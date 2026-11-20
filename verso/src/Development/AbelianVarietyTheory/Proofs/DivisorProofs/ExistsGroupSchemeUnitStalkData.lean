@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk f⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_stalk_fac {X : Scheme.{0}} (x : X) {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X)
     (h : f (IsLocalRing.closedPoint R) = x) :
@@ -21,7 +21,7 @@ theorem exists_stalk_fac {X : Scheme.{0}} (x : X) {R : CommRingCat.{0}} [IsLocal
   exact ⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk f⟩
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Conclude with `exists_stalk_fac (g x) (X.fromSpecStalk x ≫ g) (congrArg (fun z => g z) Scheme.fromSpecStalk_closedPoint)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_stalk_map {X Y : Scheme.{0}} (x : X) (g : X ⟶ Y) (y : Y) (hy : g x = y) :
     ∃ φ : Y.presheaf.stalk y ⟶ X.presheaf.stalk x, Spec.map φ ≫ Y.fromSpecStalk y = X.fromSpecStalk x ≫ g := by
@@ -29,7 +29,7 @@ theorem exists_stalk_map {X Y : Scheme.{0}} (x : X) (g : X ⟶ Y) (y : Y) (hy : 
   exact exists_stalk_fac (g x) (X.fromSpecStalk x ≫ g) (congrArg (fun z => g z) Scheme.fromSpecStalk_closedPoint)
 
 /- English proof (translation)
-The claim follows from `Spec.map_injective ((cancel_mono (X.fromSpecStalk x)).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem stalk_hom_eq {X : Scheme.{0}} (x : X) {R : CommRingCat.{0}} (φ ψ : X.presheaf.stalk x ⟶ R)
     (h : Spec.map φ ≫ X.fromSpecStalk x = Spec.map ψ ≫ X.fromSpecStalk x) : φ = ψ :=
@@ -40,9 +40,9 @@ section
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G]
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝟙_ (Over S) ⟶ G) = η[G]`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `h2 : η[G] ≫ (𝟙 G * 𝟙 G) = η[G]`. Rewrite using `[Hom.mul_def, ← Category.assoc, comp_lift, Category.comp_id, ← Hom.mul_def, ← h1, _root_.one_mul]`. Express the relevant statement in the definitionally equal form `η[G].left ≫ (𝟙 G * 𝟙 G : G ⟶ G).left = η[G].left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Over.comp_left, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitSec_sqr : unitSec G ≫ sqr G = unitSec G := by
   have h1 : (1 : 𝟙_ (Over S) ⟶ G) = η[G] := by
@@ -53,20 +53,18 @@ theorem unitSec_sqr : unitSec G ≫ sqr G = unitSec G := by
   rw [← Over.comp_left, h2]
 
 /- English proof (translation)
-The claim follows from `Over.w _`.
+A detailed English derivation is pending.
 -/
 theorem sqr_hom : sqr G ≫ G.hom = G.hom := Over.w _
 
 end
 
 /- English proof (translation)
-Introduce `S G _ s`. Take `⟨π, hπ⟩` from `exists_stalk_map (unitSec G s) G.hom s (by`. Rewrite using `[← Scheme.Hom.comp_apply, sec_hom]`. Use the proof step `rfl)`. Take `⟨ε, hε⟩` from `exists_stalk_map s (unitSec G) (unitSec G s) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `exists_stalk_map (unitSec G s) (sqr G) (unitSec G s) (by`. Rewrite using `[← Scheme.Hom.comp_apply, unitSec_sqr])`. Use `⟨π.hom, ε.hom, m.hom, ⟨hπ, hε, hm⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: π ≫ ε = 𝟙 _` using `stalk_hom_eq s _ _ (by`. Rewrite using `[Spec.map_comp, Category.assoc, hπ, ← Category.assoc, hε, Category.assoc, sec_hom, Category.comp_id, Spec.map_id, Category.id_comp])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom this`. Establish `: π ≫ m = π` using `stalk_hom_eq s _ _ (by`. Rewrite using `[Spec.map_comp, Category.assoc, hπ, ← Category.assoc, hm, Category.assoc, sqr_hom])`. Conclude with `congrArg CommRingCat.Hom.hom this`. Establish `: m ≫ ε = ε` using `stalk_hom_eq (unitSec G s) _ _ (by`.
-
-Rewrite using `[Spec.map_comp, Category.assoc, hm, ← Category.assoc, hε, Category.assoc, unitSec_sqr])`. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkData_exists : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], ∀ s : S, ∃ π ε m,
     StalkData G s π ε m ∧ ε.comp π = RingHom.id _ ∧ m.comp π = π ∧ ε.comp m = ε := by

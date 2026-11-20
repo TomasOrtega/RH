@@ -10,23 +10,19 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT.Transl
 
 /- English proof (translation)
-Introduce `R _ _ _ T _ _ Γ U U' hU hU' _ g hg`. Use `haveI := Γ.flat`. Use `haveI := Γ.separated`. Set `p0 : Spec (CommRingCat.of R)` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hp0 : p0 ⤳ Γ.G.hom g` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'g, hg'⟩` from `Flat.generalizingMap Γ.G.hom hp0`. Take `⟨s, x, hx⟩` from `Γ.pt_onto g' (by rw [hg'])`. Establish `hsU : (Γ.pt s).left x ∈ U`. Rewrite using `[hx]`. Conclude with `hg'g.mem_open U.isOpen hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : ∀ z z' : Spec (CommRingCat.of (FractionRing R)), z = z'` using `fun z z' => PrimeSpectrum.ext (by haveI := z.isPrime haveI := z'.isPrime`. Rewrite using `[Ideal.eq_bot_of_prime z.asIdeal, Ideal.eq_bot_of_prime z'.asIdeal])`. Establish `hsall : ∀ z, (Γ.pt s).left z ∈ U` using `fun z => hsub x z ▸ hsU`. Establish `hinvU : ∀ z, (Γ.pt s⁻¹).left z ∈ U`. Rewrite using `[map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hU.inv _ _ hsall`. Take `⟨σ, -, hσ⟩` from `GlobalTheory.T.finite_point_extends_section R T Γ U hU.finite s⁻¹ (fun z _ => hinvU z)`. Use `⟨σ, s⁻¹, hσ, ?_⟩` and prove the remaining obligations. Use `set τ := (toUnit Γ.G ≫ σ) * 𝟙 Γ.G with hτ`. Establish `hτpt : Γ.pt s ≫ τ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hτ, Hom.mul_def, ← Category.assoc, comp_lift, ← Category.assoc, comp_toUnit, hσ, Category.comp_id, ← Hom.mul_def, ← map_mul, inv_mul_cancel, map_one]`. Establish `hτx : τ.left ((Γ.pt s).left x) = (η[Γ.G]).left ((toUnit (genPt R)).left x)`. Establish `h1 : (Γ.pt s ≫ τ).left = (toUnit (genPt R) ≫ η[Γ.G]).left`. Rewrite using `[hτpt, Hom.one_def]`. Rewrite `h1` using `[Over.comp_left, Over.comp_left]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun h => h x) h1`. Simplify using `using h2`. Establish `hw : (η[Γ.G]).left ≫ Γ.G.hom = 𝟙 _` using `Over.w _`. Use `haveI : UniversallyClosed ((η[Γ.G]).left ≫ Γ.G.hom) := by rw [hw]; infer_instance`. Use `haveI : UniversallyClosed (η[Γ.G]).left := UniversallyClosed.of_comp_of_isSeparated _ Γ.G.hom`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Set.range (η[Γ.G]).left)`. Establish `h` using `(η[Γ.G]).left.isClosedMap _ isClosed_univ`. Rewrite `h` using `[Set.image_univ]`. Then use the resulting hypothesis. Establish `hspec : τ.left ((Γ.pt s).left x) ⤳ τ.left g`. Rewrite using `[hx]`.
-
-Conclude with `hg'g.map τ.left.continuous`. Establish `hsubset : ({τ.left ((Γ.pt s).left x)} : Set Γ.G.left) ⊆ Set.range (η[Γ.G]).left` using `Set.singleton_subset_iff.2 ⟨_, hτx.symm⟩`. Establish `hmem : τ.left g ∈ Set.range (η[Γ.G]).left` using `closure_minimal hsubset hcl (specializes_iff_mem_closure.1 hspec)`. Take `⟨z, hz⟩` from `hmem`. Rewrite using `[← hz]`.
-
-Conclude with `hU'.one z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translates_cover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U U' : Γ.G.left.Opens), Γ.IsFinOpenSub U → Γ.IsFinOpenSub U' → U' ≤ U → ∀ g ∈ U, ∃ (σ : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ Γ.G) (t : T), toUnit (genPt R) ≫ σ = Γ.pt t ∧ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left g ∈ U' := by
   intro R _ _ _ T _ _ Γ U U' hU hU' _ g hg

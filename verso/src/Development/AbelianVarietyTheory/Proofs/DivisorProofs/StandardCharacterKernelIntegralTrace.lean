@@ -14,13 +14,11 @@ noncomputable section
 namespace GlobalTheory.DenomTrace
 
 /- English proof (translation)
-Establish `e : t = pairA F 0 (algebraMap F (Af F) a)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective` to reduce the goal to its premises. Conclude with `ht.trans (map_zero _).symm`. Use `show t.2 = algebraMap F (Af F) a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Conclude with `hv v`. Rewrite `h1` using `[e, GlobalTheory.PsiNontriv.isStd_fin_rat hψ]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2 : ((Algebra.trace ℚ F a : ℚ) : ℂ) = (n : ℂ)`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises.
-
-Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_int_of_psi_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (t : AF F) (a : F) (ht : evI F t = 0)

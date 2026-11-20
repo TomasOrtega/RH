@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.TrivLoc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.affine_ideal_locus_criterion Y P stab loc (GlobalTheory.T.local_property_affine_ideal_criterion Y P stab loc near)`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_functor (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) → Prop)
     (stab : ∀ (T T' : Scheme.{0}) (h : T' ⟶ T) (t : T ⟶ Y), P T t → P T' (h ≫ t))
@@ -32,9 +32,9 @@ theorem closed_of_functor (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) �
   GlobalTheory.T.affine_ideal_locus_criterion Y P stab loc (GlobalTheory.T.local_property_affine_ideal_criterion Y P stab loc near)
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `Y.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Take `⟨p, hp⟩` from `hU.range_fromSpec.ge hy`. Establish `: IsNoetherianRing Γ(Y.left, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Take `⟨X, f, M, hM, h₁, h₂, h₃, h₄, h₅, h₆, H⟩` from `GlobalTheory.T.proper_integral_perfect_family_exists S A Y hA N hN Γ(Y.left, U) hU.fromSpec`. Take `⟨r, I, hr, H'⟩` from `GlobalTheory.T.geometrically_integral_global_functions_constant _ X f M hM h₁ h₂ h₃ h₄ h₅ h₆ p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U, hU, r, I, ?_, fun R' _ g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← hU.fromSpec_image_basicOpen]`. Conclude with `⟨p, hr, hp⟩`. Establish `hq` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom g))`. Conclude with `(H R' g _ _ _ hq).symm.trans (H' R' g _ _ _ hq hg)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianScheme A) [IsLocallyNoetherian Y.left]
     {N : LB (A ⊗ Y).left} (hN : N.IsLB) (y : Y.left) :
@@ -53,9 +53,9 @@ theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianSch
     exact (H R' g _ _ _ hq).symm.trans (H' R' g _ _ _ hq hg)
 
 /- English proof (translation)
-Introduce `S A Y _ hA hY N hN h1`. Take `⟨Z, i, hi, H⟩` from `closed_of_functor Y.left (fun T t => Locus N t) (fun T T' h t ht => ht.comp h) (fun T t h => GlobalTheory.T.trivial_locus_local_to_global S A Y hA N hN h1 T t h) (locus_near hA hN)`. Use `⟨Over.mk (i ≫ Y.hom), Over.homMk i rfl, hi, fun T y => ?_⟩` and prove the remaining obligations. Use `(locus_left_iff y).symm.trans ((H _ y.left).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Over.homMk z (by simp [reassoc_of% hz]), by ext; simpa using hz⟩`. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z.left, by simpa using congrArg (fun q => q.left) hz⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem trivLocus : TrivLocus := by
   intro S A Y _ hA hY N hN h1

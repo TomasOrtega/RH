@@ -34,13 +34,11 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
   {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
 
 /- English proof (translation)
-Establish `key : ∀ F ∈ tensorSpan R AA.carrier, (fun x => F (x, y)) ∈ AA.carrier`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨a, ha, b, hb, rfl⟩` from `hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `AA.le_int hb y`. Establish `h : (fun x => a x * b y) = r • a`. Use function extensionality and compare the values at `x`. Simplify using `[Algebra.smul_def, hr, mul_comm]`. Use `show (fun x => a x * b y) ∈ AA.carrier`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `AA.carrier.smul_mem r ha`. Consider the case `zero => exact AA.carrier.zero_mem`. Consider the case `add F G _ _ hF hG => exact AA.carrier.add_mem hF hG`. Consider the case `smul c F _ hF => exact AA.carrier.smul_mem c hF`.
-
-Conclude with `key _ (AA.comul g hg)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem translate_mem (AA : HopfOrder (C := C) R N) (y : N) {g : N → C} (hg : g ∈ AA.carrier) :
     (fun x => g (x + y)) ∈ AA.carrier := by
@@ -78,13 +76,11 @@ def nearZero (v : Valuation C NNReal) (AA : HopfOrder (C := C) R N) : AddSubgrou
     simpa using h1
 
 /- English proof (translation)
-Establish `hy' : ∃ g ∈ AA.carrier, ¬ v (g y - g 0) < 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hy fun g hg => hcon g hg`. Take `⟨g, hg, hn⟩` from `hy'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `AA.le_int hg y`. Take `⟨s, hs⟩` from `AA.le_int hg 0`. Use `⟨g - r • 1, AA.carrier.sub_mem hg (AA.carrier.smul_mem r AA.one_mem), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.smul_def, hr]`. Establish `h1 : v (g y - g 0) ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hr, ← hs, ← map_sub]`. Conclude with `hv.map_le_one _`. Establish `h2 : v (g y - g 0) = 1` using `le_antisymm h1 (not_lt.1 hn)`. Establish `h3 : (g - r • (1 : N → C)) 0 = -(g y - g 0)`. Simplify using `[Algebra.smul_def, hr]`.
-
-Rewrite using `[h3, Valuation.map_neg, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep {v : Valuation C NNReal} (hv : v.Integers R) (AA : HopfOrder (C := C) R N)
     {y : N} (hy : y ∉ nearZero v AA) : ∃ h ∈ AA.carrier, h y = 0 ∧ v (h 0) = 1 := by
@@ -106,7 +102,7 @@ theorem exists_sep {v : Valuation C NNReal} (hv : v.Integers R) (AA : HopfOrder 
     rw [h3, Valuation.map_neg, h2]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using AA.one_mem`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `AA.mul_mem _ _ (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem (AA : HopfOrder (C := C) R N) {T : Type} (s : Finset T) (f : T → N → C)
     (h : ∀ i ∈ s, f i ∈ AA.carrier) : ∏ i ∈ s, f i ∈ AA.carrier := by
@@ -119,29 +115,25 @@ theorem prod_mem (AA : HopfOrder (C := C) R N) {T : Type} (s : Finset T) (f : T 
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use `set K := nearZero v AA with hK`. Establish `hsep : ∀ y : N, ∃ h ∈ AA.carrier, y ∉ K → h y = 0 ∧ v (h 0) = 1`. Introduce `y`. Distinguish the cases in `hy : y ∈ K`. Conclude with `⟨1, AA.one_mem, fun h => absurd hy h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, h1, h2⟩` from `exists_sep hv AA hy`. Conclude with `⟨h, hh, fun _ => ⟨h1, h2⟩⟩`. Use `choose h hmem hh using hsep`. Use `set P : N → C := ∏ y ∈ Finset.univ.filter (· ∉ K), h y with hP`. Establish `hPm : P ∈ AA.carrier` using `prod_mem AA _ _ fun y _ => hmem y`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hP0 : ∀ y, y ∉ K → P y = 0`. Introduce `y hy`. Rewrite using `[hP, Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_filter.2 ⟨Finset.mem_univ _, hy⟩) (hh y hy).1`. Establish `hP1 : v (P 0) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hP, Finset.prod_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun y hy => (hh y (Finset.mem_filter.1 hy).2).2`. Establish `hPk : ∀ k ∈ K, v (P k) = 1`. Introduce `k hk`. Establish `h1 : v (P k - P 0) < v (P 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP1]`. Conclude with `hk P hPm`. Establish `h2 : P k = (P k - P 0) + P 0` using `by ring`. Rewrite using `[h2, Valuation.map_add_eq_of_lt_right v h1, hP1]`. Use `choose r hr using fun k => AA.le_int hPm k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set F : N → C := ∏ k ∈ Finset.univ.filter (· ∈ K), (P - r k • (1 : N → C)) with hF`. Establish `hFm : F ∈ AA.carrier` using `prod_mem AA _ _ fun k _ => AA.carrier.sub_mem hPm (AA.carrier.smul_mem _ AA.one_mem)`. Establish `hF0 : ∀ x ∈ K, F x = 0`. Introduce `x hx`. Rewrite using `[hF, Finset.prod_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.prod_eq_zero (Finset.mem_filter.2 ⟨Finset.mem_univ _, hx⟩) ?_` and prove the remaining obligations. Simplify using `[Algebra.smul_def, hr]`. Use `set u : C := ∏ k ∈ Finset.univ.filter (· ∈ K), (-(P k)) with hu`. Establish `hF1 : ∀ x, x ∉ K → F x = u`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF, Finset.prod_apply, hu]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.smul_def, hr, hP0 x hx]`. Establish `huv : v u = 1`. Rewrite using `[hu, map_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `Finset.prod_eq_one fun k hk => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, hPk k (Finset.mem_filter.1 hk).2]`. Establish `hu0 : u ≠ 0`. Introduce `h0`. Rewrite `huv` using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one huv`. Take `⟨s, hs⟩` from `hv.exists_of_le_one (show v u⁻¹ ≤ 1 by rw [map_inv₀, huv, inv_one])`. Establish `hind : Set.indicator (K : Set N) (1 : N → C) = 1 - s • F`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ K`.
-
-Rewrite using `[Set.indicator_of_mem (show x ∈ (K : Set N) from hx)]`. Simplify using `[hF0 x hx]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ (K : Set N) from hx)]`. Simplify using `[hF1 x hx, Algebra.smul_def, hs, hu0]`. Rewrite using `[hind]`.
-
-Conclude with `AA.carrier.sub_mem AA.one_mem (AA.carrier.smul_mem s hFm)`.
+A detailed English derivation is pending.
 -/
 theorem indicator_mem {v : Valuation C NNReal} (hv : v.Integers R) (AA : HopfOrder (C := C) R N) :
     Set.indicator (nearZero v AA : Set N) (1 : N → C) ∈ AA.carrier := by
@@ -205,19 +197,17 @@ theorem indicator_mem {v : Valuation C NNReal} (hv : v.Integers R) (AA : HopfOrd
   exact AA.carrier.sub_mem AA.one_mem (AA.carrier.smul_mem s hFm)
 
 /- English proof (translation)
-Take `⟨P, rfl, hP⟩` from `hL`. Take `⟨Q, rfl, hQ⟩` from `hM`. Establish `hcol : ∀ j, ∃ a : X → R, ∑ i, a i • (fun x => Q x i) = fun x => P x j` using `fun j => (Submodule.mem_span_range_iff_exists_fun R).1 (hLM (Submodule.subset_span ⟨j, rfl⟩))`. Use `choose a ha using hcol`. Set `A : Matrix X X R` to `Matrix.of fun i j => a j i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : P = Q * A.map (algebraMap R C)`. Use extensionality with `x j`. Rewrite using `[← congrFun (ha j) x]`. Simplify using `[Matrix.mul_apply, Matrix.map_apply, Finset.sum_apply, Algebra.smul_def, mul_comm, A]`. Establish `hdet : v (algebraMap R C A.det) = 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : P.det = Q.det * algebraMap R C A.det`. Rewrite using `[e1, Matrix.det_mul]`. Use `congr 1`. Conclude with `((algebraMap R C).map_det A).symm`. Establish `h2` using `congrArg v h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, hP, hQ]`. Conclude with `(mul_left_cancel₀ hc (by rw [_root_.mul_one]; exact h2)).symm`. Establish `hu : IsUnit A.det`. Use `hv.isUnit_of_one ?_ hdet` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hdet` using `[h0, map_zero]`. Conclude with `zero_ne_one hdet`. Establish `e2 : Q = P * (A⁻¹).map (algebraMap R C)`. Rewrite using `[e1, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv A hu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `le_antisymm hLM ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h3 : (fun x => Q x j) = ∑ i, (A⁻¹ i j) • (fun x => P x i)`. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[e2]`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Use `show (fun x => Q x j) ∈ Submodule.span R _`. Rewrite using `[h3]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_hasColen {v : Valuation C NNReal} (hv : v.Integers R) {X : Type} [Fintype X]
     [DecidableEq X] {L M : Submodule R (X → C)} (hLM : L ≤ M) {c : NNReal} (hc : c ≠ 0)
@@ -261,11 +251,11 @@ theorem eq_of_le_of_hasColen {v : Valuation C NNReal} (hv : v.Integers R) {X : T
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce `f hf choose r hr using hf`. Establish `h : f = ∑ j, r j • (fun x => (1 : Matrix X X C) x j)`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, Matrix.one_apply, Algebra.smul_def, hr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩ x`. Distinguish the cases in `h : x = j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, ?_⟩ show algebraMap R C 1 = (1 : Matrix X X C) x j` and prove the remaining obligations. Rewrite using `[h, Matrix.one_apply_eq, map_one]`. Use `⟨0, ?_⟩ show algebraMap R C 0 = (1 : Matrix X X C) x j` and prove the remaining obligations. Rewrite using `[Matrix.one_apply_ne h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intFun_eq_span (X : Type) [Fintype X] [DecidableEq X] :
     intFun (C := C) R X = Submodule.span R (Set.range fun j x => (1 : Matrix X X C) x j) := by
@@ -290,17 +280,17 @@ theorem intFun_eq_span (X : Type) [Fintype X] [DecidableEq X] :
 end General
 
 /- English proof (translation)
-Use `set D : Matrix (ZMod p) (ZMod p) C := Matrix.of fun x j : ZMod p => e j x with hD`. Use `set D' : Matrix (ZMod p) (ZMod p) C := Matrix.of fun j y : ZMod p => e j (-y) with hD'`. Establish `hmul : D' * D = (p : C) • (1 : Matrix (ZMod p) (ZMod p) C)`. Use extensionality with `i j`. Simplify using `only [hD, hD', Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ x, e i (-x) * e j x = (e j * (e i)⁻¹) x`. Introduce `x`. Rewrite using `[AddChar.mul_apply, AddChar.inv_apply, mul_comm]`. Simplify using `only [h1]`. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using `[ZMod.card]`. Establish `h2 : e j * (e i)⁻¹ ≠ 1`. Introduce `h`. Conclude with `hij (e.injective (mul_inv_eq_one.1 h).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[AddChar.sum_eq_zero_of_ne_one h2]`. Simplify using `[hij]`. Establish `hdet : D'.det * D.det = (p : C) ^ p`. Rewrite using `[← Matrix.det_mul, hmul, Matrix.det_smul, Matrix.det_one, _root_.mul_one, ZMod.card]`. Establish `hperm : D' = (D.transpose).submatrix id (Equiv.neg (ZMod p))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `j y`. Simplify using `[hD, hD']`. Establish `hv' : v D'.det = v D.det`. Rewrite using `[hperm, Matrix.det_permute', Matrix.det_transpose, map_mul]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.neg (ZMod p))) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg v hdet`. Rewrite `h3` using `[map_mul, map_pow, hv']`. Rewrite using `[sq]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem charTable_det_sq {C : Type} [Field C] (p : ℕ) [Fact p.Prime] (v : Valuation C NNReal)
     (e : ZMod p ≃ AddChar (ZMod p) C) :
@@ -342,19 +332,19 @@ variable {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C NNRe
   {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨(Fact.out : p.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `ReciprocityTheory.PGsh.Up.U3.exists_primRoot (p := p) (C := C)`. Take `⟨e, -, -⟩` from `ReciprocityTheory.PGsh.Up.U3.exists_charEquiv hζ`. Set `A₁ : HopfOrder (C` to `C) R (ZMod p) := multOrder' v hv e`. Set `A₂ : HopfOrder (C` to `C) R (ZMod p) := constOrder`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨AA, hcar, -, -, -, -, hcol⟩` from `GlobalTheory.T.tensor_product_hopf_orders p C v R hv hp (ZMod p) (ZMod p) A₁ A₂`. Establish `h1 : A₁.carrier = Submodule.span R (Set.range fun (ψ : AddChar (ZMod p) C) (x : ZMod p) => ψ x)` using `by show Submodule.span R (Set.range fun j : ZMod p => ((e j : AddChar (ZMod p) C) : ZMod p → C)) = _`. Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨e j, rfl⟩`. Introduce and unpack `⟨ψ, rfl⟩`. Conclude with `⟨e.symm ψ, by simp⟩`. Establish `h2 : A₂.carrier = intFun R (ZMod p)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `le_antisymm A₂.le_int ?_` and prove the remaining obligations. Rewrite using `[intFun_eq_span, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.subset_span ⟨j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : x = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Matrix.one_apply]`. Establish `hc₁ : HasColen R v A₁.carrier (v (Matrix.of fun x j : ZMod p => e j x).det)` using `⟨Matrix.of fun x j : ZMod p => e j x, rfl, rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc₂ : HasColen R v A₂.carrier 1` using `⟨1, by rw [h2, intFun_eq_span], by simp⟩`. Use `⟨v (Matrix.of fun x j : ZMod p => e j x).det ^ Fintype.card (ZMod p) * 1 ^ Fintype.card (ZMod p), ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `hcol _ _ hc₁ hc₂`. Rewrite `h3` using `[hcar, h1, h2]`. Conclude with `h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.card, one_pow, _root_.mul_one, ← pow_mul, mul_comm p 2, pow_mul, charTable_det_sq, ← pow_mul, sq]`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasColen_tens (p : ℕ) [Fact p.Prime] (hv : v.Integers R) (hp : v (p : C) < 1) :
     ∃ c : NNReal, HasColen R v (tens (Submodule.span R (Set.range fun (ψ : AddChar (ZMod p) C)
@@ -400,53 +390,47 @@ theorem exists_hasColen_tens (p : ℕ) [Fact p.Prime] (hv : v.Integers R) (hp : 
 end Main
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ hN hcard AA cN hcol hcN ⟨t, g, hg, ht⟩`. Establish `hp0 : (p : C) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hv0 : v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).2 hp0`. Establish `hpp : p ^ 2 ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `hcN0 : cN ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hcN` using `[zero_pow two_ne_zero]`. Conclude with `pow_ne_zero _ hv0 hcN.symm`. Use `set K := nearZero v AA with hKdef`. Establish `htK : t ∉ K`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `h g hg`. Rewrite `h1` using `[ht]`. Conclude with `lt_irrefl _ h1`. Establish `hcoset : ∀ y : N, (fun x => Set.indicator (K : Set N) (1 : N → C) (x + y)) ∈ AA.carrier` using `fun y => translate_mem AA y (indicator_mem hv AA)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hKne : ∃ k ∈ K, k ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hint : intFun R N ≤ AA.carrier`. Rewrite using `[intFun_eq_span, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h1` using `hcoset (-j)`. Establish `h2 : (fun x => Set.indicator (K : Set N) (1 : N → C) (x + -j)) = fun x => (1 : Matrix N N C) x j`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hx` using the available equality. Simplify using `[K.zero_mem]`. Establish `hx' : x + -j ∉ (K : Set N)`. Introduce `h`. Conclude with `hx (by simpa [add_neg_eq_zero] using hcon _ h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hx', Matrix.one_apply_ne hx]`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `heq : AA.carrier = intFun R N` using `le_antisymm AA.le_int hint`. Take `⟨B, hB, hBc⟩` from `hcol`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `valuation_det_eq_of_span_eq_alt hv (P := (1 : Matrix N N C)) (Q := B) (by simp) ((intFun_eq_span N).symm.trans (heq.symm.trans hB))`. Rewrite `h1` using `[hBc, Matrix.det_one, map_one]`. Rewrite `hcN` using `[h1, one_pow]`. Conclude with `absurd hcN.symm (pow_lt_one₀ zero_le hp hpp).ne`. Take `⟨k, hkK, hk0⟩` from `hKne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Module (ZMod p) N := AddCommGroup.zmodModule hN`. Establish `hsm : ∀ (a : ZMod p) (x : N), x ∈ K → a • x ∈ K`. Introduce `a x hx`. Establish `h1 : a • x = a.val • x` using `by conv_lhs => rw [← ZMod.natCast_zmod_val a]`. Conclude with `Nat.cast_smul_eq_nsmul (ZMod p) _ _`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[h1]`. Conclude with `K.nsmul_mem hx _`. Set `f : ZMod p × ZMod p →+ N` to `{ toFun := fun z => z.1 • k + z.2 • t map_zero' := by simp map_add' := by`. Introduce `a b`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `abel }`. Establish `hK2 : ∀ z, f z ∈ K ↔ z.2 = 0`. Introduce and unpack `⟨a, b⟩`. Use `show a • k + b • t ∈ K ↔ b = 0`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `h`. Assume the negation of the conclusion as `hb`. Establish `h1 : b • t ∈ K` using `(K.add_mem_cancel_left (hsm a k hkK)).1 h`. Establish `h2` using `hsm b⁻¹ _ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hb, one_smul]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `htK h2`. Introduce and unpack `rfl`. Simplify using `using hsm a k hkK`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, b⟩ h`. Establish `hb : b = 0` using `(hK2 (a, b)).1 (by rw [h]; exact K.zero_mem)`. Substitute `hb` using the available equality. Establish `h1 : a • k = 0` using `by simpa [f] using h`. Establish `ha : a = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Assume the negation of the conclusion as `ha`. Conclude with `hk0 (by rw [← one_smul (ZMod p) k, ← inv_mul_cancel₀ ha, mul_smul, h1, smul_zero])`. Rewrite using `[ha]`. Both sides reduce to the same expression. Establish `hbij : Function.Bijective f` using `(Fintype.bijective_iff_injective_and_card f).2 ⟨hinj, by simp [ZMod.card, hcard, sq]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `e : ZMod p × ZMod p ≃+ N` to `AddEquiv.ofBijective f hbij`. Establish `he : ∀ z, e z = f z` using `fun _ => rfl`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `hQ : AA.carrier.map (LinearMap.funLeft R C (e : ZMod p × ZMod p → N)) = AA.carrier.map (pbE (C` using `C) (R := R) e : (N → C) →ₗ[R] (ZMod p × ZMod p → C)) := rfl`. Use `set Q := AA.carrier.map (LinearMap.funLeft R C (e : ZMod p × ZMod p → N)) with hQdef`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQmul : ∀ a b, a ∈ Q → b ∈ Q → a * b ∈ Q`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a * b, AA.mul_mem a b ha hb, rfl⟩`. Establish `hQ1 : ∀ h ∈ Submodule.span R (Set.range fun (ψ : AddChar (ZMod p) C) (x : ZMod p) => ψ x), (fun z : ZMod p × ZMod p => h z.1) ∈ Q`. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : Submodule.span R (Set.range fun (ψ : AddChar (ZMod p) C) (x : ZMod p) => ψ x) ≤ Q.comap (LinearMap.funLeft R C (Prod.fst : ZMod p × ZMod p → ZMod p))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨ψ, rfl⟩`. Set `χ : AddChar N C` to `ψ.compAddMonoidHom ((AddMonoidHom.fst (ZMod p) (ZMod p)).comp e.symm.toAddMonoidHom)`. Use `⟨fun x => χ x, GlobalTheory.T.hopf_order_contains_add_characters p C v R hv hp N AA χ, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `z`. Simplify using `[χ, LinearMap.funLeft_apply]`. Conclude with `hle hh`. Establish `hQ2 : ∀ h ∈ intFun (C` using `C) R (ZMod p), (fun z : ZMod p × ZMod p => h z.2) ∈ Q := by`. Introduce `h hh`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hle : intFun (C` using `C) R (ZMod p) ≤ Q.comap (LinearMap.funLeft R C (Prod.snd : ZMod p × ZMod p → ZMod p)) := by`. Rewrite using `[intFun_eq_span, Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Use `⟨_, hcoset (-(f (0, b))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : e z + -(f (0, b)) = f (z.1, z.2 - b)`. Rewrite using `[he, ← map_neg, ← map_add]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [sub_eq_add_neg]`. Simplify using `only [LinearMap.funLeft_apply, h1]`.
-
-Distinguish the cases in `hb : z.2 = b`. Establish `hm : f (z.1, z.2 - b) ∈ (K : Set N)` using `(hK2 _).2 (sub_eq_zero.2 hb)`. Rewrite using `[Set.indicator_of_mem hm, hb, Matrix.one_apply_eq]`. Both sides reduce to the same expression. Establish `hm : f (z.1, z.2 - b) ∉ (K : Set N)` using `fun hc => hb (sub_eq_zero.1 ((hK2 _).1 hc))`.
-
-Rewrite using `[Set.indicator_of_notMem hm, Matrix.one_apply_ne hb]`. Conclude with `hle hh`. Establish `hle : tens (Submodule.span R (Set.range fun (ψ : AddChar (ZMod p) C) (x : ZMod p) => ψ x)) (intFun R (ZMod p)) ≤ Q`. Rewrite using `[tens, Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`.
-
-Conclude with `hQmul _ _ (hQ1 a ha) (hQ2 b hb)`. Take `⟨c, hc, hc2⟩` from `exists_hasColen_tens (R := R) p hv hp`. Establish `hcc : c = cN` using `(pow_left_inj₀ zero_le zero_le two_ne_zero).1 (hc2.trans hcN.symm)`. Substitute `hcc` using the available equality. Conclude with `(eq_of_le_of_hasColen hv hle hcN0 hc (hQ ▸ hasColen_map v e _ _ hcol)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ord_split : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], (∀ x : N, p • x = 0) → Fintype.card N = p ^ 2 → ∀ AA : HopfOrder (C := C) R N, ∀ cN, HasColen R v AA.carrier cN → cN ^ 2 = v (p : C) ^ (p ^ 2) → (∃ t : N, ∃ g ∈ AA.carrier, v (g t - g 0) = 1) → ∃ e : ZMod p × ZMod p ≃+ N, AA.carrier.map (LinearMap.funLeft R C (e : ZMod p × ZMod p → N)) = tens (Submodule.span R (Set.range fun (ψ : AddChar (ZMod p) C) (x : (ZMod p)) => ψ x)) (intFun R (ZMod p)) := by
   intro p _ C _ _ _ v R _ _ hv hp N _ _ _ hN hcard AA cN hcol hcN ⟨t, g, hg, ht⟩

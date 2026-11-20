@@ -4,9 +4,9 @@ open MeasureTheory
 namespace GlobalTheory.SchwInt
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(hC.image hf).isBounded.exists_norm_le`. Establish `hM' : ∀ p, ‖f p‖ ≤ max M 0`. Introduce `p`. Distinguish the cases in `hp : p ∈ C`. Conclude with `(hM _ ⟨p, hp, rfl⟩).trans (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0 p hp]`. Use `IntegrableOn.integrable_of_forall_notMem_eq_zero (s := C) ?_ h0` and prove the remaining obligations. Conclude with `Measure.integrableOn_of_bounded (M := max M 0) hC.measure_lt_top.ne hf.aestronglyMeasurable (Filter.Eventually.of_forall hM')`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_of_zero_outside {P E : Type} [TopologicalSpace P] [MeasurableSpace P]
     [OpensMeasurableSpace P] [SecondCountableTopology P] [NormedAddCommGroup E]
@@ -41,7 +41,7 @@ Both sides reduce to the same expression.
     (f : SchwartzMap V ℂ) : iterEvalCLM n x f = iteratedFDeriv ℝ n f x := rfl
 
 /- English proof (translation)
-The claim follows from `(iterEvalCLM n x).continuous.comp hG`.
+A detailed English derivation is pending.
 -/
 theorem continuous_iteratedFDeriv_apply {V P : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [TopologicalSpace P] {G : P → SchwartzMap V ℂ} (hG : Continuous G) (n : ℕ) (x : V) :
@@ -49,7 +49,7 @@ theorem continuous_iteratedFDeriv_apply {V P : Type} [NormedAddCommGroup V] [Nor
   (iterEvalCLM n x).continuous.comp hG
 
 /- English proof (translation)
-The claim follows from `((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ V ℂ)).continuous.comp hG`.
+A detailed English derivation is pending.
 -/
 theorem continuous_apply {V P : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [TopologicalSpace P] {G : P → SchwartzMap V ℂ} (hG : Continuous G) (x : V) :

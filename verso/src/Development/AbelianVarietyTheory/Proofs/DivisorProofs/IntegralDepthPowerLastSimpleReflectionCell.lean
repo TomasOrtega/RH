@@ -9,15 +9,15 @@ open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeB
 namespace GlobalTheory.WeylCell.WeylUnipotentShell.Atone
 
 /- English proof (translation)
-Establish `hset : ∀ i : ℕ, f ⁻¹' {i + 1} = {x | f x ≤ i + 1} \ {x | f x ≤ i}`. Introduce `i`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_diff, Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hset0 : f ⁻¹' {0} = {x | f x ≤ 0}`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers. Use `⟨measurable_to_countable' fun j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Break down `j with _ | i` into its components or cases. Rewrite using `[hset0]`. Conclude with `hmeas 0`. Rewrite using `[hset]`. Conclude with `(hmeas _).diff (hmeas _)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `j with _ | i` into its components or cases. Rewrite using `[hset0, hV]`. Simplify using the standard rewrite rules. Establish `hsub : {x | f x ≤ i} ⊆ {x | f x ≤ i + 1}` using `fun x hx => by`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hset, measure_diff hsub (hmeas i).nullMeasurableSet (by rw [hV]; exact ENNReal.ofReal_ne_top), hV, hV, if_neg (Nat.succ_ne_zero i), Nat.add_sub_cancel, ENNReal.ofReal_sub _ (hV0 i)]`.
+A detailed English derivation is pending.
 -/
 theorem level_sets {X : Type} [MeasurableSpace X] (μ : Measure X) (f : X → ℕ) (V : ℕ → ℝ)
     (hmeas : ∀ j : ℕ, MeasurableSet {x | f x ≤ j})
@@ -40,13 +40,13 @@ theorem level_sets {X : Type} [MeasurableSpace X] (μ : Measure X) (f : X → �
         hV, hV, if_neg (Nat.succ_ne_zero i), Nat.add_sub_cancel, ENNReal.ofReal_sub _ (hV0 i)]
 
 /- English proof (translation)
-Establish `hmap : ∀ j, (μ.map f) {j} = ENNReal.ofReal (w j)` using `fun j => by`. Rewrite using `[Measure.map_apply hf (measurableSet_singleton j)]`. Conclude with `hw j`. Establish `hL : ∫⁻ x, ‖c (f x)‖ₑ ∂μ = ENNReal.ofReal r`. Rewrite using `[← lintegral_map (f := fun j => ‖c j‖ₑ) measurable_from_nat hf, lintegral_countable']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hmap]`. Rewrite using `[← hr.tsum_eq, ENNReal.ofReal_tsum_of_nonneg (fun j => mul_nonneg (norm_nonneg _) (hw0 j)) hr.summable]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : Integrable (fun x => c (f x)) μ`. Use `⟨(measurable_from_nat.comp hf).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, hL]`. Conclude with `ENNReal.ofReal_lt_top`. Use `⟨hL, hI, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hIm : Integrable c (μ.map f)` using `(integrable_map_measure measurable_from_nat.aestronglyMeasurable hf.aemeasurable).2 hI`. Rewrite using `[← integral_map hf.aemeasurable measurable_from_nat.aestronglyMeasurable, integral_countable' hIm, ← hs.tsum_eq]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[measureReal_def, hmap, ENNReal.toReal_ofReal (hw0 j), Complex.real_smul, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sums_over_levels {X : Type} [MeasurableSpace X] (μ : Measure X) (f : X → ℕ) (hf : Measurable f)
     (w : ℕ → ℝ) (hw0 : ∀ j, 0 ≤ w j) (hw : ∀ j, μ (f ⁻¹' {j}) = ENNReal.ofReal (w j))
@@ -77,23 +77,23 @@ end GlobalTheory.WeylCell.WeylUnipotentShell.Atone
 open GlobalTheory.WeylCell.WeylUnipotentShell.Atone in
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q hq n k hk hn y hy hwy _ _ μ _ hμ z hz`. Establish `q2 : 2 ≤ q` using `hq.2.2.2.2.2.1`. Establish `hsh` using `GlobalTheory.T.unitaryWeylCellShell_isOpenCompactSubgroup L ϖ σ q hq n k hk hn y hy hwy`. Establish `hvol` using `GlobalTheory.T.haar_measure_weyl_cell_odd_unitary L ϖ σ q hq n k hk hn y hy hwy μ hμ`. Set `f : cellU y → ℕ` to `fun u => depthU k (u : GU σ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `V : ℕ → ℝ` to `fun j => (q : ℝ) ^ (j + 2 * (j / 2))`. Establish `hV0 : ∀ j, 0 ≤ V j` using `fun j => by positivity`. Establish `hlev : ∀ j : ℕ, {u : cellU y | f u ≤ j} = shellU k y j`. Introduce `j`. Use extensionality with `u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `(mem_shellU_iff_depth k y j u).symm`. Establish `hmeas : ∀ j : ℕ, MeasurableSet {u : cellU y | f u ≤ j}` using `fun j => by`. Rewrite using `[hlev]`. Conclude with `(hsh.1 j).1.measurableSet`. Establish `hV : ∀ j : ℕ, μ {u : cellU y | f u ≤ j} = ENNReal.ofReal (V j)` using `fun j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hlev, hvol j, ENNReal.ofReal_pow (Nat.cast_nonneg q), ENNReal.ofReal_natCast]`. Take `⟨hf, hlv⟩` from `level_sets μ f V hmeas hV hV0`. Set `w : ℕ → ℝ` to `fun j => V j - if j = 0 then 0 else V (j - 1)`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast (by omega : 1 ≤ q)`. Establish `hw0 : ∀ j, 0 ≤ w j` using `fun j => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, V]`. Use `split_ifs with h`. Simplify using `only [sub_zero]`. Check the signs of the components of the expression. Rewrite using `[sub_nonneg]; exact pow_le_pow_right₀ hq1 (by omega)`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hwc : ∀ j : ℕ, ((w j : ℝ) : ℂ) = (q : ℂ) ^ (j + 2 * (j / 2)) - (if j = 0 then 0 else (q : ℂ) ^ (j - 1 + 2 * ((j - 1) / 2)))` using `fun j => by`. Apply the tactic sequence `simp only [w, V]; split_ifs <;> push_cast <;> rfl`. Set `c : ℕ → ℂ` to `fun j => (z / (q : ℂ) ^ 2) ^ j`. Establish `hs : HasSum (fun j => c j * (w j : ℂ)) (cSU q z)`. Simplify using `only [c, hwc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.hasSum_cSU_power_differences q q2 z hz`. Establish `hz' : ‖((‖z‖ : ℝ) : ℂ)‖ < 1` using `by rw [Complex.norm_real, Real.norm_of_nonneg (norm_nonneg _)]; exact hz`. Establish `hs'` using `GlobalTheory.T.hasSum_cSU_power_differences q q2 _ hz'`. Establish `hterm : ∀ j : ℕ, (((‖z‖ : ℝ) : ℂ) / (q : ℂ) ^ 2) ^ j * ((q : ℂ) ^ (j + 2 * (j / 2)) - (if j = 0 then 0 else (q : ℂ) ^ (j - 1 + 2 * ((j - 1) / 2)))) = ((‖c j‖ * w j : ℝ) : ℂ)` using `fun j => by`. Rewrite using `[← hwc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [c, norm_pow, norm_div, Complex.norm_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [hterm] at hs'`. Establish `hsum : Summable (fun j => ‖c j‖ * w j)` using `Complex.summable_ofReal.1 hs'.summable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr` using `hsum.hasSum`. Establish `heq : cSU q ((‖z‖ : ℝ) : ℂ) = ((∑' j, ‖c j‖ * w j : ℝ) : ℂ)` using `hs'.unique (Complex.hasSum_ofReal.2 hr)`. Take `⟨h1, h2, h3⟩` from `sums_over_levels μ f hf w hw0 hlv c _ hs _ hr`. Use `⟨h2, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, heq, ← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun j => mul_nonneg (norm_nonneg _) (hw0 j))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_depth_cell : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →

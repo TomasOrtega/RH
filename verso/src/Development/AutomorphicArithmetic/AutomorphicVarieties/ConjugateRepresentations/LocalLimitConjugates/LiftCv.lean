@@ -10,13 +10,13 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ _ T hT T' hL ψ φ F hψ hφ`. Take `⟨c1, c2, -, c4⟩` from `clFacts E a μ`. Establish `hφg : φ ∈ gard μ` using `Submodule.subset_span ⟨ψ, F, hψ, hφ⟩`. Take `⟨g1, g2⟩` from `hL φ hφg`. Set `φ' : Sm E a` to `⟨cv ψ.1 (T F), cvSm E a μ ψ hψ (T F)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hφ'g : φ' ∈ gard μ` using `Submodule.subset_span ⟨ψ, T F, hψ, rfl⟩`. Establish `hc : Continuous ψ.1` using `((testOps E a ψ).1 hψ.2).1`. Establish `hint : Integrable (fun y => ψ.1 y⁻¹) μ` using `(hc.comp continuous_inv).integrable_of_hasCompactSupport (hψ.1.comp_homeomorph (Homeomorph.inv (GA E a)))`. Establish `e : cl μ (T' φ) = cl μ φ'`. Rewrite using `[g2, c4 ψ φ F hψ hφ, c4 ψ φ' (T F) hψ rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ropComm _ _ μ T hT _ hint F`. Establish `hd : (1 : ℂ) • T' φ + (-1 : ℂ) • φ' ∈ gard μ` using `add_mem (Submodule.smul_mem _ _ g1) (Submodule.smul_mem _ _ hφ'g)`. Take `⟨d1, d2, -⟩` from `gardFacts E a ha μ _ hd`. Establish `h0` using `c2 _ d1 d2 (by`. Rewrite using `[(c1 _ _ 1 (-1) (gardFacts E a ha μ _ g1).2.1 (gardFacts E a ha μ _ hφ'g).2.1).2, e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `simp)`. Establish `h1 : T' φ = φ'`. Rewrite `h0` using `[one_smul, neg_one_smul, add_neg_eq_zero]`. Conclude with `h0`. Rewrite using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.liftCv :
     UpperTheory.V.Cj.H.LiftCv := by

@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.BCT.TrKer
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.trace_tensorProduct_map_complex, LinearMap.trace_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_map_id {M W : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] (A : M →ₗ[ℂ] M) :
@@ -26,17 +26,17 @@ theorem trace_map_id {M W : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup 
   rw [GlobalTheory.trace_tensorProduct_map_complex, LinearMap.trace_id]
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn S hS lam K' hK f hf`. Establish `hinj` using `GlobalTheory.T.automorphic_map_phi_injective E hE n hn S hS lam K' hK`. Establish `hrange : LinearMap.range (Phi S lam K') = forms S lam K'` using `le_antisymm (GlobalTheory.T.vectorFormTensor_range_le_unitaryAutFormsWeightLevel E hE n hn S hS lam K' hK) (GlobalTheory.T.unitaryAutForms_weight_level_le_tensor_range E hE n hn S hS lam K' hK)`. Establish `hM` using `GlobalTheory.T.unitaryHeckeOperatorVector_mem_levelFunctions E n S lam K' hK f hf`. Set `A` to `(hopM S lam K' f).restrict hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcomm : ∀ x, hop S K' f (Phi S lam K' x) = Phi S lam K' (TensorProduct.map A LinearMap.id x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul F w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[TensorProduct.map_tmul, Phi_tmul, Phi_tmul, GlobalTheory.T.unitaryHeckeOperator_commute_weightVectorFunction_explicit]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy, map_add]`. Establish `hF : ∀ v ∈ forms S lam K', hop S K' f v ∈ forms S lam K'`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[← hrange]`. Take `⟨x, rfl⟩` from `hv`. Conclude with `⟨_, (hcomm x).symm⟩`. Take `⟨e, hev⟩ : ∃ e : (vecM S lam K' ⊗[ℂ] Wsp lam) ≃ₗ[ℂ] forms S lam K', ∀ y, ((e y : forms S lam K') : UA E n → ℂ) = Phi S lam K' y` from `⟨(LinearEquiv.ofInjective _ hinj).trans (LinearEquiv.ofEq _ _ hrange), fun y => rfl⟩`. Establish `he : (hop S K' f).restrict hF = e.conj (TensorProduct.map A LinearMap.id)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Establish `hv : (v : UA E n → ℂ) = Phi S lam K' (e.symm v)` using `(congrArg (fun u : forms S lam K' => (u : UA E n → ℂ)) (e.apply_symm_apply v)).symm.trans (hev _)`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : trOn (forms S lam K') (hop S K' f) = LinearMap.trace ℂ _ ((hop S K' f).restrict hF)` using `dif_pos hF`. Establish `h2 : trOn (vecM S lam K') (hopM S lam K' f) = LinearMap.trace ℂ _ A` using `dif_pos hM`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Conclude with `(congrArg (LinearMap.trace ℂ _) he).trans ((LinearMap.trace_conj' _ e).trans ((trace_map_id A).trans (mul_comm _ _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trOn_forms_eq_finrank_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → trOn (forms S lam K') (hop S K' f) = (Module.finrank ℂ (GlobalTheory.BCT.TrKer.Wsp lam) : ℂ) * trOn (GlobalTheory.BCT.TrKer.vecM S lam K') (GlobalTheory.BCT.TrKer.hopM S lam K' f) := by
   intro E _ _ _ hE n hn S hS lam K' hK f hf

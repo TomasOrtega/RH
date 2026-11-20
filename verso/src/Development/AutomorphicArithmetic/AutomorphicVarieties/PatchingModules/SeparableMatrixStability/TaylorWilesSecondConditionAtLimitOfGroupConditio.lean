@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n x k hB`. Take `⟨C, hC⟩` from `hB`. Use `⟨C, fun m z hz => ?_⟩` and prove the remaining obligations. Take `⟨hfin, -, hn1, hn2, -, -⟩` from `am_fin l G0.frame n x m k.g`. Take `⟨⟨a1, a2, -⟩, ⟨b1, b2, -⟩, hlc, -⟩` from `rho_hom l G0.frame n x k (x.Am m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2⟩` from `hlc hn1`. Establish `E1` using `t1 l L G0 T Λ n x.A (x.Am m) x.t (x.ρX (x.Am m)) (x.wX (x.Am m)) (x.wiX (x.Am m)) (Ev x.A (x.Am m) n x.a) hn1 a1 a2 c1`. Establish `E2` using `t1 l L G0 T Λ n x.A (DD (x.Am m) k.g) x.t (k.ρ1 (x.Am m)) (k.w1 (x.Am m)) (k.wi1 (x.Am m)) (W2 n x.A (x.Am m) k.g x.a) hn2 b1 b2 c2`. Take `⟨N, ⟨⟨-, h1, -⟩, ⟨-, -, h2⟩⟩, h3⟩` from `((E1.and E2).and ((hC m).filter_mono Λ.U_le)).exists`. Use `choose zN hzN hrel using fun i j => h1 (z i j) (hz i j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, ΨN, hΨN, hΨ⟩` from `h3 zN hzN`. Take `⟨Ψ, hΨm, hr⟩` from `h2 ΨN hΨN`. Use `⟨c, hc, Ψ, hΨm, fun j γ a b => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Λ.πo0_surj γ`. Rewrite using `[← hr g, hΨ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hrel _ _ g]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.taylorWiles_second_condition_at_limit_of_group_condition :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (x : NP G0.frame n) (k : Kap x), T.B2 k → SecondSelmerSpanBoundAtAllLevels Λ.h k := by

@@ -6,19 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢`. Establish `h1 : ∀ n, ∃ d ∈ I ^ n, g d = f (n + 1) - f n`. Introduce `n`. Use `(((I.map g) ^ n).neg_mem (hf (Nat.le_succ n)))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[neg_sub, ← Ideal.map_pow, Ideal.mem_map_iff_of_surjective g hg]`. Conclude with `this`. Use `choose d hd hgd using h1`. Take `⟨b0, hb0⟩` from `hg (f 0)`. Set `u : ℕ → B` to `fun n => b0 + ∑ i ∈ Finset.range n, d i`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : ∀ n, g (u n) = f n`. Introduce `n`. Simplify using `only [u, map_add, map_sum, hgd, hb0, Finset.sum_range_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ∀ {m n}, m ≤ n → u m ≡ u n [SMOD (I ^ m • ⊤ : Submodule B B)]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `m n hmn`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ k hk ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : u m - u (k + 1) = (u m - u k) - d k`. Simplify using `only [u, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ ih (Ideal.pow_le_pow_right hk (hd k))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨L, hL⟩` from `hB.prec hc`. Use `⟨g L, fun n => ?_⟩` and prove the remaining obligations. Use `hL n` as an intermediate fact. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at this`. Rewrite using `[← hu, ← map_sub, ← Ideal.map_pow]`.
-
-Conclude with `Ideal.mem_map_of_mem _ this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prec_of_surj {B C : Type} [CommRing B] [CommRing C] (g : B →+* C)
     (I : Ideal B) [hB : IsPrecomplete I B] (hg : Function.Surjective g) :
@@ -55,15 +53,15 @@ private theorem prec_of_surj {B C : Type} [CommRing B] [CommRing C] (g : B →+*
   exact Ideal.mem_map_of_mem _ this
 
 /- English proof (translation)
-Establish `hp` using `h.isPrime`. Establish `h1 : (1 : R) ∉ p` using `(Ideal.ne_top_iff_one _).1 hp.ne_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, hi, 1, h1, by simp⟩`. Consider the case `zero => exact ⟨0, I.zero_mem, 1, h1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨i, hi, s, hs, hx⟩` from `hx`. Take `⟨j, hj, t, ht, hy⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨t * i + s * j, I.add_mem (I.mul_mem_left _ hi) (I.mul_mem_left _ hj), s * t, fun hst => (hp.mem_or_mem hst).elim hs ht, ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ (algebraMap R B t) hx) (Ideal.mul_mem_left _ (algebraMap R B s) hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul b x _ hx`. Take `⟨i, hi, s, hs, hx⟩` from `hx`. Take `⟨a, t, ht, hb⟩` from `h.dense n b`. Use `⟨a * i, I.mul_mem_left _ hi, s * t, fun hst => (hp.mem_or_mem hst).elim hs ht, ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ (Ideal.mul_mem_left _ (algebraMap R B t * b) hx) (Ideal.mul_mem_left _ (algebraMap R B i) hb)` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem approx_map {R : Type} [CommRing R] {p : Ideal R} {B : Type} [CommRing B]
     [IsLocalRing B] [Algebra R B] (h : IsCplAt R p B) (I : Ideal R) (n : ℕ) (x : B)
@@ -95,25 +93,23 @@ private theorem approx_map {R : Type} [CommRing R] {p : Ideal R} {B : Type} [Com
     simp only [map_mul, smul_eq_mul]; ring
 
 /- English proof (translation)
-Introduce `R _ _ p B _ _ _ S _ _ q C _ _ _ _ _ _ _ h hRS hq hBC hker`. Use `haveI := h.noeth`. Use `haveI := h.complete`. Establish `hp` using `h.isPrime`. Establish `hN : IsNoetherianRing C` using `isNoetherianRing_of_surjective B C (algebraMap B C) hBC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hloc : IsLocalHom (algebraMap B C) := IsLocalHom.of_surjective _ hBC`. Establish `hm : (maximalIdeal B).map (algebraMap B C) = maximalIdeal C` using `IsLocalRing.map_maximalIdeal_of_surjective _ hBC`. Establish `hsq : ∀ r : R, algebraMap S C (algebraMap R S r) = algebraMap B C (algebraMap R B r)`. Introduce `r`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hqp : ∀ r : R, algebraMap R S r ∈ q ↔ r ∈ p`. Introduce `r`. Rewrite using `[← hq, Ideal.mem_comap]`. Establish `hpre : IsPrecomplete (maximalIdeal C) C` using `hm ▸ prec_of_surj (algebraMap B C) _ hBC`. Use `⟨hN, {}, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Take `⟨r, rfl⟩` from `hRS x`. Rewrite using `[hqp, ← h.comap_eq, Ideal.mem_comap, Ideal.mem_comap, hsq, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`. Introduce `n c`. Take `⟨b, rfl⟩` from `hBC c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, s, hs, hab⟩` from `h.dense n b`. Use `⟨algebraMap R S a, algebraMap R S s, fun hh => hs ((hqp s).1 hh), ?_⟩` and prove the remaining obligations. Rewrite using `[hsq, hsq, ← map_mul, ← map_sub, ← hm, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hab`. Introduce `n x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `hRS x`. Rewrite `hx` using `[hsq, ← hm, ← Ideal.map_pow, Ideal.mem_map_iff_of_surjective _ hBC]`. Take `⟨y, hy, hya⟩` from `hx`. Establish `hk : algebraMap R B a - y ∈ RingHom.ker (algebraMap B C)`. Rewrite using `[RingHom.mem_ker, map_sub, hya, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[hker]`. Take `⟨i, hi, s, hs, hsi⟩` from `approx_map h _ n _ hk`. Establish `h2 : algebraMap R B (s * a - i) ∈ maximalIdeal B ^ n`. Use `Ideal.add_mem _ hsi (Ideal.mul_mem_left _ (algebraMap R B s) hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht, hta⟩` from `h.strict n _ h2`. Use `⟨algebraMap R S (t * s), fun hh => (hp.mem_or_mem ((hqp _).1 hh)).elim ht hs, ?_⟩` and prove the remaining obligations. Establish `h3 : algebraMap R S (t * (s * a - i)) ∈ q ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_map_of_mem (algebraMap R S) hta` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`. Use `Ideal.pow_right_mono ?_ n this` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap, hq]`. Rewrite `hi` using `[RingHom.mem_ker]`.
-
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_mul, hi]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.quotient :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (p : Ideal R) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B] (S : Type) [CommRing S] [Algebra R S] (q : Ideal S) (C : Type) [CommRing C] [IsLocalRing C]

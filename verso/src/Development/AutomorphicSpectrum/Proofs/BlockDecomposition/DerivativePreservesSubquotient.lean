@@ -20,7 +20,7 @@ end Tw
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `v` and use `(h v).preimage continuous_subtype_val`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_resM {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + 1)) k) V) (h : IsSmooth π) : IsSmooth (resM k π).ρ := fun v =>

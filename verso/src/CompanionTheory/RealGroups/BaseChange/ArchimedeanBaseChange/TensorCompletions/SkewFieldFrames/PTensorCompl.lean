@@ -13,7 +13,7 @@ variable {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Establish `h` using `IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)`. Use `(h.preimage (f := HeightOneSpectrum.asIdeal) (fun a _ b _ hab => HeightOneSpectrum.ext hab)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_over : {w : HeightOneSpectrum (𝓞 K) | w.under (𝓞 F) = v}.Finite := by
   have := v.isMaximal
@@ -37,9 +37,9 @@ def extZ : v.adicCompletion F ⊗[F] K →ₗ[F] FiniteAdeleRing (𝓞 F) F ⊗[
   LinearMap.rTensor K (GlobalTheory.AdelicU.singleFin v)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [extZ, LinearMap.rTensor_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately.
 -/
 theorem map_extZ_self (y : v.adicCompletion F ⊗[F] K) :
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F K) (extZ v y) = y := by
@@ -51,9 +51,9 @@ theorem map_extZ_self (y : v.adicCompletion F ⊗[F] K) :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [extZ, LinearMap.rTensor_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne h, TensorProduct.zero_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`.
+Treat this case separately.
 -/
 theorem map_extZ_ne {v' : HeightOneSpectrum (𝓞 F)} (h : v' ≠ v) (y : v.adicCompletion F ⊗[F] K) :
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v') (AlgHom.id F K) (extZ v y) = 0 := by
@@ -65,11 +65,11 @@ theorem map_extZ_ne {v' : HeightOneSpectrum (𝓞 F)} (h : v' ≠ v) (y : v.adic
   | add a b ha hb => simp only [map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `h0 : GlobalTheory.LFun.finAdEquiv F K (extZ v y) = 0`. Establish `hc : ∀ w : HeightOneSpectrum (𝓞 K), GlobalTheory.LFun.finAdEquiv F K (extZ v y) w = 0`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : w.under (𝓞 F) = v`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply hw, map_extZ_self]`. Conclude with `(phi_apply v y ⟨w, hw⟩).symm.trans (congrFun hy ⟨w, hw⟩)`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply rfl, map_extZ_ne v hw, map_zero]`. Conclude with `Subtype.ext (funext hc)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : extZ v y = 0` using `(map_eq_zero_iff _ (GlobalTheory.LFun.finAdEquiv F K).injective).1 h0`. Rewrite using `[← map_extZ_self v y, h1, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem phi_injective : Function.Injective (phi (K := K) v) := by
   rw [injective_iff_map_eq_zero]
@@ -86,9 +86,9 @@ theorem phi_injective : Function.Injective (phi (K := K) v) := by
   rw [← map_extZ_self v y, h1, map_zero]
 
 /- English proof (translation)
-Introduce `z`. Take `⟨y, hy⟩` from `(GlobalTheory.LFun.finAdEquiv F K).surjective ⟨fun w => if h : w.under (𝓞 F) = v then z ⟨w, h⟩ else 0, by filter_upwards [(finite_over (K := K) v).compl_mem_cofinite] with u hu`. Rewrite using `[dif_neg (by simpa using hu)]`. Conclude with `zero_mem _⟩`. Use `⟨Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F K) y, funext fun u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phi_apply, ← GlobalTheory.LFun.finAdEquiv_apply u.2, hy]`. Use `show (if h : u.1.under (𝓞 F) = v then z ⟨u.1, h⟩ else 0) = z u`. Rewrite using `[dif_pos u.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_surjective : Function.Surjective (phi (K := K) v) := by
   intro z
@@ -106,7 +106,7 @@ end CompanionTheory.Rg.BcB.G3.TensorComplP
 
 open CompanionTheory.Rg.BcB.G3.TensorComplP in
 /- English proof (translation)
-Introduce `F K _ _ _ _ _ v`. Use `⟨RingEquiv.ofBijective (phi v) ⟨phi_injective v, phi_surjective v⟩, fun a u => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.LFun.toCompl u.2 (1 ⊗ₜ[F] a) = _`. Rewrite using `[GlobalTheory.LFun.toCompl_tmul, map_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Rg.BcB.G3.tensorCompl_pf : TensorCompl := by
   intro F K _ _ _ _ _ v

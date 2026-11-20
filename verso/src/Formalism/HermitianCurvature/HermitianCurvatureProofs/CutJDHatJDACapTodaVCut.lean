@@ -70,15 +70,15 @@ def TVCrd : Prop :=
 open scoped ContDiff in
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg`. Establish `e1` using `h1 Wp Wq P Bs hpl hk y J hJ c hc g hg hcg`. Establish `e2` using `h2 Wp Wq P Bs hpl hk y J hJ c hc g hg hcg`. Establish `hD : Q.IsDom P.k P.r Bs.z Bs.z' 0 (Gauge.OmB Bs)` using `isDom_omP Bs.z_mem Bs.z'_mem`. Establish `hfam` using `(Formalism.FourierDecayAlt.P.restriction_good_family Wp Wq P.k P.r Bs.z Bs.z' Bs.π Bs.π' (Gauge.OmB Bs) Bs.z_mem Bs.z'_mem hD J hJ (Fin.last P.r)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, F, hUo, hx0, hF, hFeq⟩` from `hfam (c, g) ⟨hc, hcg⟩ hg`. Establish `hemb : ContDiff ℝ ∞ (fun c' : Fin P.r → ℂ => (c', g))` using `contDiff_id.prodMk contDiff_const`. Use `set U' : Set (Fin P.r → ℂ) := {c' | (c', g) ∈ U} ∩ OmX P.r with hU'`. Establish `hU'o : IsOpen U'` using `(hUo.preimage hemb.continuous).inter (Formalism.FourierDecayAlt.P.Qx5.isOpen_OmX P.r)`. Establish `hgauge : ∀ c' : Fin P.r → ℂ, gaugeF P.k P.r c' • J (Q.wCell P.k P.r (Fin.last P.r) c' * g) = Q.resG P.k P.r (Fin.last P.r) J c' g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c'`. Simplify using `only [gaugeF, Q.resG, smul_eq_mul, mul_one]`. Establish `hsm : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun c' => gaugeF P.k P.r c' • J (Q.wCell P.k P.r (Fin.last P.r) c' * g)) U'`. Use `((hF.comp hemb.contDiffOn (fun c' hc' => hc'.1))).congr (fun c' hc' => ?_)` and prove the remaining obligations. Rewrite using `[hgauge c']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hFeq (c', g) hc'.1 hg`. Establish `e3` using `h3 P.k P.r (Wq →L[ℂ] Wp) y (fun c' => J (Q.wCell P.k P.r (Fin.last P.r) c' * g)) U' c hU'o (fun _ h => h.2) ⟨hx0, hc⟩ hsm`. Establish `hfun : (fun c' => gaugeF P.k P.r c' • J (Q.wCell P.k P.r (Fin.last P.r) c' * g)) = fun c' => Q.resG P.k P.r (Fin.last P.r) J c' g` using `funext hgauge`. Rewrite `e3` using `[hfun]`. Simplify using `only [dMul, Q.crd, Q.cmp, if_true]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e3]`. Establish `hres : Q.resG P.k P.r (Fin.last P.r) (capAv P.k P.r y J) c g = gaugeF P.k P.r c • capAv P.k P.r y J (Q.wCell P.k P.r (Fin.last P.r) c * g)`. Simplify using `only [gaugeF, Q.resG, smul_eq_mul, mul_one]`. Rewrite using `[hres, e1, e2, smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jDACapTodaV_of_parts (h1 : TVCoef) (h2 : TVGrp) (h3 : TVCrd) : JDACapTodaV := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg

@@ -21,7 +21,7 @@ namespace GlobalTheory.RegNullSet
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `h.A_nonneg K_nonneg := h.K_nonneg δ_pos := lt_min h.δ_pos h₀ smooth c := ((h.smooth c).mono (Set.prod_mono subset_rfl fun _ hw => ⟨hw.1, hw.2.trans_le (min_le_left _ _)⟩)).congr fun _ hq => e _ _ hq.2.1 (hq.2.2.le.trans (min_le_right _ _)) mono y := ((h.mono y).mono (Ioo_subset_I …`.
+A detailed English derivation is pending.
 -/
 theorem isRegConst_congr {a θ : ChartForm p σ d} {Ψ Ψ' : CxPts p σ → ℝ → ℝ} {A K δ t₀ : ℝ} (h₀ : 0 < t₀)
     (e : ∀ y t, 0 < t → t ≤ t₀ → Ψ' y t = Ψ y t) (h : IsRegConst a θ Ψ A K δ) : IsRegConst a θ Ψ' A K (min δ t₀) where
@@ -49,13 +49,13 @@ variable [SmoothOfRelativeDimension d p] {a : ChartForm p σ d} {E : ChartMap p 
   {B : Set (CxPts p σ)}
 
 /- English proof (translation)
-Take `⟨c, hx⟩` from `AlgChart.exists_mem_source (D := d) x`. Take `⟨r, hr, hs⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (c.e.open_target.mem_nhds (c.e.map_source hx))`. Take `⟨C, t₀, -, ht₀, H⟩` from `hK k Y p σ d a E ha hE c _ (isCompact_closedBall _ r) hs`. Use `⟨c.e.source ∩ c.e ⁻¹' Metric.closedBall (c.e x) r, inter_mem (c.e.open_source.mem_nhds hx) (c.e.continuousAt hx (Metric.closedBall_mem_nhds _ hr)), t₀, ht₀, fun y hy t ht ht' => ?_⟩` and prove the remaining obligations. Take `⟨h₁, -, h₂⟩` from `H y hy.1 hy.2 t ht ht'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `z : (fun v => |ψ (c.e.symm v) - g (c.e.symm v)|) =ᵐ[volume.restrict (Metric.ball (c.e y) (C * t))] 0` using `by filter_upwards [ae_restrict_mem measurableSet_ball, ae_restrict_of_ae (compl_mem_ae_iff.2 (h0 c))] with v hv hv'`. Rewrite using `[hB _ fun hb => hv' ⟨_, ⟨hb, c.e.map_target (h₁ hv)⟩, c.e.right_inv (h₁ hv)⟩, sub_self, abs_zero]`. Both sides reduce to the same expression. Take `⟨h₃, h₄⟩` from `h₂ (fun y => |ψ y - g y|) ((integrable_zero _ _ _).congr z.symm)`. Simplify using `only [abs_abs] at h₄`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `h₄` using `[integral_congr_ae z, integral_zero', mul_zero, abs_nonpos_iff, rho_eq ha hE _ hy.1, rhoIn, ChernReg.mean, div_eq_zero_iff, or_iff_left (mass_pos (continuous_and_smul ha hy.1).1 (continuous_and_smul ha hy.1).2 (ha.2 _ y hy.1)).ne', integral_eq_zero_iff_of_nonneg (fun ξ => mul_non …`. Rewrite using `[rho_eq ha hE _ hy.1, rho_eq ha hE _ hy.1, rhoIn, rhoIn, ChernReg.mean, ChernReg.mean]`. Use `congr 1`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h₄] with ξ hξ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 hξ with h | h` into its components or cases. Rewrite using `[sub_eq_zero.1 (abs_eq_zero.1 h)]`. Rewrite using `[h, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_rho_eq (hK : KernelSt) (ha : IsKaehlerForm (AnRead.all p σ d) a) (hE : IsExph a E)
     (hB : ∀ y, y ∉ B → ψ y = g y) (h0 : ∀ c : AlgChart p σ d, volume (c.e '' (B ∩ c.e.source)) = 0) (x : CxPts p σ) :
@@ -85,7 +85,7 @@ theorem exists_nhds_rho_eq (hK : KernelSt) (ha : IsKaehlerForm (AnRead.all p σ 
   · rw [h, mul_zero, mul_zero]
 
 /- English proof (translation)
-Use `isCompact_univ.induction_on (p := fun U => ∃ t₀ > (0 : ℝ), ∀ y ∈ U, ∀ t, 0 < t → t ≤ t₀ → rho a E ψ y t = rho a E g y t) ⟨1, one_pos, fun _ h => h.elim⟩ (fun _ _ hs ⟨t₀, h, H⟩ => ⟨t₀, h, fun y hy => H y (hs hy)⟩) (fun _ _ ⟨t₀, h, H⟩ ⟨t₁, h', H'⟩ => ⟨min t₀ t₁, lt_min h h', fun y …` and prove the remaining obligations. Take `⟨U, hU, h⟩` from `exists_nhds_rho_eq hK ha hE hB h0 x`. Conclude with `⟨U, mem_nhdsWithin_of_mem_nhds hU, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rho_eq [CompactSpace (CxPts p σ)] (hK : KernelSt) (ha : IsKaehlerForm (AnRead.all p σ d) a)
     (hE : IsExph a E) (hB : ∀ y, y ∉ B → ψ y = g y)
@@ -105,7 +105,7 @@ end GlobalTheory.RegNullSet
 namespace GlobalTheory.RegNullSet
 
 /- English proof (translation)
-Introduce `hK k _ Y p σ d _ _ a θ E ψ g B ha hE hB h0 A K δ h`. Take `⟨t₀, h₀, e⟩` from `exists_rho_eq hK ha hE hB h0`. Conclude with `⟨_, isRegConst_congr h₀ (fun y => e y trivial) h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem transfer : KernelSt → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [SmoothOfRelativeDimension d p], CompactSpace (CxPts p σ) → ∀ (a θ : ChartForm p σ d) (E : ChartMap p σ d) (ψ g : CxPts p σ → ℝ) (B : Set (CxPts p σ)), IsKaehlerForm (AnRead.all p σ d) a → IsExph a E → (∀ y, y ∉ B → ψ y = g y) → (∀ c : AlgChart p σ d, MeasureTheory.volume (c.e '' (B ∩ c.e.source)) = 0) → ∀ A K δ : ℝ, IsRegConst a θ (rho a E g) A K δ → ∃ δ' : ℝ, IsRegConst a θ (rho a E ψ) A K δ' := by
   intro hK k _ Y p σ d _ _ a θ E ψ g B ha hE hB h0 A K δ h

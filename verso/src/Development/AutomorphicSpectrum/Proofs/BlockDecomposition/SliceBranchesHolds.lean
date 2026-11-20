@@ -7,7 +7,7 @@ set_option maxSynthPendingDepth 1
 namespace GlobalTheory.CompanionTheory.Ar.SliceBranch
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.SliceBranches.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.full GlobalTheory.T.branch_proper_at_point_holds GroundTheory.Heights₂.Heights.SliceMatricesOpen.full GroundTheory.Heights₂.Heights.Implici …`.
+A detailed English derivation is pending.
 -/
 theorem sliceBranches : GroundTheory.Heights₂.Heights.SliceBranches.Statement :=
   GroundTheory.Heights₂.Heights.SliceBranches.proof

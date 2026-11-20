@@ -14,7 +14,7 @@ namespace CupSpec
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x`.
+A detailed English derivation is pending.
 -/
 theorem sub_res {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.res g).sub j l h = (x.sub j l h).res g :=
@@ -29,7 +29,7 @@ def awF {n m k : ℤ} (hk : n + m = k) (a : Cochain ((chains R).obj E) I n) (b :
       (ev a p _ rfl U (x.sub 0 p (by omega))) (ev b (N - p) _ rfl U (x.sub p (N - p) (by omega)))
 
 /- English proof (translation)
-Unfold `awF`. Rewrite using `[Sec.res, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul, sub_res, sub_res, ← ev_res, ← ev_res, ← μ.nat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem awF_res {n m k : ℤ} (hk : n + m = k) (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m)
     (N : ℕ) (w : ℤ) (h : -(N : ℤ) + k = w) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) :
@@ -40,7 +40,7 @@ theorem awF_res {n m k : ℤ} (hk : n + m = k) (a : Cochain ((chains R).obj E) I
   rw [Units.smul_def, Units.smul_def, map_zsmul, sub_res, sub_res, ← ev_res, ← ev_res, ← μ.nat]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `ev_exists (awF μ hk a b) (fun N w h V U g x => awF_res μ hk a b N w h g x)`. Conclude with `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAW_exists {n m k : ℤ} (hk : n + m = k) (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m) :
     ∃ c, μ.IsAW hk a b c := by
@@ -48,14 +48,14 @@ theorem isAW_exists {n m k : ℤ} (hk : n + m = k) (a : Cochain ((chains R).obj 
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-The claim follows from `ev_ext c c' fun N w hw U x => (h N w hw U x).trans (h' N w hw U x).symm`.
+A detailed English derivation is pending.
 -/
 theorem isAW_unique {n m k : ℤ} (hk : n + m = k) {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m}
     {c c' : Cochain ((chains R).obj E) K k} (h : μ.IsAW hk a b c) (h' : μ.IsAW hk a b c') : c = c' :=
   ev_ext c c' fun N w hw U x => (h N w hw U x).trans (h' N w hw U x).symm
 
 /- English proof (translation)
-Introduce `N w hw U x`. Rewrite using `[ev_add, h N w hw U x, h' N w hw U x, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_add, map_add, LinearMap.add_apply, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAW_add_left {n m k : ℤ} (hk : n + m = k) {a a' : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m}
     {c c' : Cochain ((chains R).obj E) K k} (h : μ.IsAW hk a b c) (h' : μ.IsAW hk a' b c') : μ.IsAW hk (a + a') b (c + c') := by
@@ -65,7 +65,7 @@ theorem isAW_add_left {n m k : ℤ} (hk : n + m = k) {a a' : Cochain ((chains R)
   rw [ev_add, map_add, LinearMap.add_apply, smul_add]
 
 /- English proof (translation)
-Introduce `N w hw U x`. Rewrite using `[ev_add, h N w hw U x, h' N w hw U x, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_add, map_add, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAW_add_right {n m k : ℤ} (hk : n + m = k) {a : Cochain ((chains R).obj E) I n} {b b' : Cochain ((chains R).obj E) J m}
     {c c' : Cochain ((chains R).obj E) K k} (h : μ.IsAW hk a b c) (h' : μ.IsAW hk a b' c') : μ.IsAW hk a (b + b') (c + c') := by
@@ -75,23 +75,23 @@ theorem isAW_add_right {n m k : ℤ} (hk : n + m = k) {a : Cochain ((chains R).o
   rw [ev_add, map_add, smul_add]
 
 /- English proof (translation)
-Introduce `N w hw U x`. Simplify using `[ev_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isAW_zero_left {n m k : ℤ} (hk : n + m = k) (b : Cochain ((chains R).obj E) J m) : μ.IsAW hk 0 b 0 := by
   intro N w hw U x
   simp [ev_zero]
 
 /- English proof (translation)
-Introduce `N w hw U x`. Simplify using `[ev_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isAW_zero_right {n m k : ℤ} (hk : n + m = k) (a : Cochain ((chains R).obj E) I n) : μ.IsAW hk a 0 0 := by
   intro N w hw U x
   simp [ev_zero]
 
 /- English proof (translation)
-Establish `h₁ : μ.IsAW (by omega : (n + 1) + m = k + 1) (δ n (n + 1) α.1) β.1 0`. Rewrite using `[Cocycle.δ_eq_zero]`. Conclude with `isAW_zero_left μ _ _`. Establish `h₂ : μ.IsAW (by omega : n + (m + 1) = k + 1) α.1 (δ m (m + 1) β.1) 0`. Rewrite using `[Cocycle.δ_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAW_zero_right μ _ _`. Rewrite using `[aw_leibniz μ rfl rfl rfl hc h₁ h₂]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aw_cocycle {n m k : ℤ} (hk : n + m = k) (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
     (c : Cochain ((chains R).obj E) K k) (hc : μ.IsAW hk α.1 β.1 c) : δ k (k + 1) c = 0 := by
@@ -107,13 +107,13 @@ def awc {n m k : ℤ} (hk : n + m = k) (α : Cocycle ((chains R).obj E) I n) (β
   Cocycle.mk (isAW_exists μ hk α.1 β.1).choose (k + 1) rfl (aw_cocycle μ hk α β _ (isAW_exists μ hk α.1 β.1).choose_spec)
 
 /- English proof (translation)
-The claim follows from `(isAW_exists μ hk α.1 β.1).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem awc_spec {n m k : ℤ} (hk : n + m = k) (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) :
     μ.IsAW hk α.1 β.1 (awc μ hk α β).1 := (isAW_exists μ hk α.1 β.1).choose_spec
 
 /- English proof (translation)
-The claim follows from `Cocycle.ext (isAW_unique μ hk (awc_spec μ hk α β) h)`.
+A detailed English derivation is pending.
 -/
 theorem awc_eq {n m k : ℤ} (hk : n + m = k) (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
     (γ : Cocycle ((chains R).obj E) K k) (h : μ.IsAW hk α.1 β.1 γ.1) : awc μ hk α β = γ :=
@@ -169,35 +169,35 @@ section Op
 variable {S : Type} [CommRing S] {I : Cx S} {J : Cx R} (ρ : SemiMap I J) {E : Spc} {n : ℤ}
 
 /- English proof (translation)
-The claim follows from `ev_exists (fun p s h U x => ρ.app U s (ev a p s h U x)) (fun p s h V U g x => by rw [ρ.nat, ev_res])`.
+A detailed English derivation is pending.
 -/
 theorem image_cochain_exists (a : Cochain ((chains S).obj E) I n) : ∃ b, ρ.IsImage a b :=
   ev_exists (fun p s h U x => ρ.app U s (ev a p s h U x)) (fun p s h V U g x => by rw [ρ.nat, ev_res])
 
 /- English proof (translation)
-The claim follows from `ev_ext b b' fun p s hs U x => (h p s hs U x).trans (h' p s hs U x).symm`.
+A detailed English derivation is pending.
 -/
 theorem image_unique {a : Cochain ((chains S).obj E) I n} {b b' : Cochain ((chains R).obj E) J n}
     (h : ρ.IsImage a b) (h' : ρ.IsImage a b') : b = b' :=
   ev_ext b b' fun p s hs U x => (h p s hs U x).trans (h' p s hs U x).symm
 
 /- English proof (translation)
-Introduce `p s hs U x` and use `by rw [ev_add, ev_add, map_add, h p s hs, h' p s hs]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem image_add {a a' : Cochain ((chains S).obj E) I n} {b b' : Cochain ((chains R).obj E) J n}
     (h : ρ.IsImage a b) (h' : ρ.IsImage a' b') : ρ.IsImage (a + a') (b + b') := fun p s hs U x => by
   rw [ev_add, ev_add, map_add, h p s hs, h' p s hs]
 
 /- English proof (translation)
-Introduce `p s hs U x` and use `by rw [ev_zero, ev_zero, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem image_zero : ρ.IsImage (0 : Cochain ((chains S).obj E) I n) 0 := fun p s hs U x => by
   rw [ev_zero, ev_zero, map_zero]
 
 /- English proof (translation)
-Introduce `p t ht U x`. Consider the cases of `p with`. Consider the case `zero => rw [ev_δ_zero hm b U _ t rfl, ev_δ_zero hm a U _ t rfl, h, ρ.comm]`. Consider the case `succ p`. Rewrite using `[ev_δ_succ hm b U p _ t rfl, ev_δ_succ hm a U p _ t rfl, h, ρ.comm, map_add, sg_smul, sg_smul, map_zsmul, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[map_zsmul, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_δ {m : ℤ} (hm : n + 1 = m) {a : Cochain ((chains S).obj E) I n} {b : Cochain ((chains R).obj E) J n}
     (h : ρ.IsImage a b) : ρ.IsImage (δ n m a) (δ n m b) := by
@@ -210,7 +210,7 @@ theorem image_δ {m : ℤ} (hm : n + 1 = m) {a : Cochain ((chains S).obj E) I n}
     rw [map_zsmul, h]
 
 /- English proof (translation)
-Introduce `p s hs U x` and use `by rw [ev_pull, ev_pull, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem image_pull {E' : Spc} (f : E' ⟶ E) {a : Cochain ((chains S).obj E) I n} {b : Cochain ((chains R).obj E) J n}
     (h : ρ.IsImage a b) : ρ.IsImage ((Cochain.ofHom ((chains S).map f)).comp a (zero_add n))
@@ -224,13 +224,13 @@ def imgc (α : Cocycle ((chains S).obj E) I n) : Cocycle ((chains R).obj E) J n 
     exact image_unique ρ h (image_zero ρ))
 
 /- English proof (translation)
-The claim follows from `(image_cochain_exists ρ α.1).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem imgc_spec (α : Cocycle ((chains S).obj E) I n) : ρ.IsImage α.1 (imgc ρ α).1 :=
   (image_cochain_exists ρ α.1).choose_spec
 
 /- English proof (translation)
-The claim follows from `Cocycle.ext (image_unique ρ (imgc_spec ρ α) h)`.
+A detailed English derivation is pending.
 -/
 theorem imgc_eq (α : Cocycle ((chains S).obj E) I n) (β : Cocycle ((chains R).obj E) J n) (h : ρ.IsImage α.1 β.1) :
     imgc ρ α = β := Cocycle.ext (image_unique ρ (imgc_spec ρ α) h)
@@ -258,7 +258,7 @@ end CupSpec
 open CupSpec
 
 /- English proof (translation)
-Introduce `h`. Establish `hP : ∃ c : CohomologyClass ((chains R).obj E) I n →+ CohomologyClass ((chains R).obj E) J m →+ CohomologyClass ((chains R).obj E) K k, ∀ (α : Cocycle _ I n) (β : Cocycle _ J m) (γ : Cocycle _ K k), μ.IsAW hk α.1 β.1 γ.1 → c (CohomologyClass.mk α) (CohomologyClass.mk β) = Cohomolo …` using `⟨cupMap μ hk, fun α β γ h => by`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (awc μ hk α β) = _`. Rewrite using `[awc_eq μ hk α β γ h]⟩`. Conclude with `pick_spec hP α β γ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pair.cup_spec {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (E : Spc) {n m k : ℤ} (hk : n + m = k)
     (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) (γ : Cocycle ((chains R).obj E) K k) :
@@ -273,14 +273,14 @@ theorem Pair.cup_spec {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (
   exact pick_spec hP α β γ h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨awc μ hk α β, awc_spec μ hk α β⟩`.
+Supply the required witnesses or components.
 -/
 theorem Pair.aw_exists {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (E : Spc) {n m k : ℤ} (hk : n + m = k)
     (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) : ∃ γ : Cocycle ((chains R).obj E) K k, μ.IsAW hk α.1 β.1 γ.1 :=
   ⟨awc μ hk α β, awc_spec μ hk α β⟩
 
 /- English proof (translation)
-The claim follows from `pick_spec (P := fun c : NatOp I J => ∀ (E : Spc) (n : ℤ) (α : Cocycle ((chains S).obj E) I n) (β : Cocycle ((chains R).obj E) J n), (∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U), ev β.1 p s h U x = ρ.app U s (ev α.1 p s h U x)) → c.app E n (CohomologyC …`.
+A detailed English derivation is pending.
 -/
 theorem SemiMap.op_spec {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J) (E : Spc) (n : ℤ)
     (α : Cocycle ((chains S).obj E) I n) (β : Cocycle ((chains R).obj E) J n) :
@@ -293,7 +293,7 @@ theorem SemiMap.op_spec {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : C
     ⟨opMap ρ, fun _ _ α β h => congrArg CohomologyClass.mk (imgc_eq ρ α β h)⟩ E n α β
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨imgc ρ α, imgc_spec ρ α⟩`.
+Supply the required witnesses or components.
 -/
 theorem SemiMap.image_exists {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J) (E : Spc) (n : ℤ)
     (α : Cocycle ((chains S).obj E) I n) : ∃ β : Cocycle ((chains R).obj E) J n,
@@ -301,7 +301,7 @@ theorem SemiMap.image_exists {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {
   ⟨imgc ρ α, imgc_spec ρ α⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun μ E _ _ _ hk α β => ⟨μ.aw_exists E hk α β, μ.cup_spec E hk α β⟩, fun ρ E n α => ⟨ρ.image_exists E n α, ρ.op_spec E n α⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem cup_op_spec :
     (∀ {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (E : Spc) {n m k : ℤ} (hk : n + m = k)

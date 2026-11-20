@@ -15,13 +15,13 @@ def AF (c : R) (N : Submodule R M) : Prop :=
 def AN (c : R) (A : Submodule R M) : Prop := ∀ N : Submodule R M, N ≤ A → AF c N
 
 /- English proof (translation)
-Introduce `N hN` and use `h N (hN.trans hAB)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AN.mono {c : R} {A B : Submodule R M} (h : AN c B) (hAB : A ≤ B) : AN c A :=
   fun N hN => h N (hN.trans hAB)
 
 /- English proof (translation)
-Introduce `N hN` and use `⟨0, ⊥, Submodule.fg_bot, bot_le, fun x hx => by have h := hN hx simp only [Submodule.mem_bot] at h simp [h]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem an_bot (c : R) : AN c (⊥ : Submodule R M) := fun N hN =>
   ⟨0, ⊥, Submodule.fg_bot, bot_le, fun x hx => by
@@ -30,19 +30,19 @@ theorem an_bot (c : R) : AN c (⊥ : Submodule R M) := fun N hN =>
     simp [h]⟩
 
 /- English proof (translation)
-Introduce `N hN`. Establish `key : ∃ (n : ℕ) (G : Submodule R M), G.FG ∧ G ≤ N ∧ ∀ y ∈ N, ∃ g ∈ G, c ^ n • y - g ∈ A`. Distinguish the cases in `h : ∃ a₀ ∈ A, ∃ r₀ : R, r₀ ∉ I ∧ a₀ + r₀ • x ∈ N`. Take `⟨a₀, ha₀, r₀, hr₀, hy₀⟩` from `h`. Take `⟨n, hn⟩` from `hc r₀ hr₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, i, hi, hui⟩` from `Submodule.mem_sup.1 hn`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Use `⟨n, Submodule.span R {a₀ + r₀ • x}, Submodule.fg_span_singleton _, (Submodule.span_singleton_le_iff_mem _ _).2 hy₀, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hN hy)`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(s * r) • (a₀ + r₀ • x), Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Establish `e : c ^ n • (a + r • x) - (s * r) • (a₀ + r₀ • x) = c ^ n • a + r • (i • x) - (s * r) • a₀`. Rewrite using `[← hui]`. Use `module`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `A.sub_mem (A.add_mem (A.smul_mem _ ha) (A.smul_mem _ (hx i hi))) (A.smul_mem _ ha₀)`. Use `⟨0, ⊥, Submodule.fg_bot, bot_le, fun y hy => ⟨0, Submodule.zero_mem _, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hN hy)`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Establish `hr : r ∈ I`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hr`. Conclude with `h ⟨a, ha, r, hr, hy⟩`. Simplify using `using A.add_mem ha (hx r hr)`. Take `⟨n, G, hG, hGN, hy⟩` from `key`. Take `⟨m, G₂, hG₂, hG₂le, hm⟩` from `hA (N ⊓ A) inf_le_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨m + n, G ⊔ G₂, hG.sup hG₂, sup_le hGN (hG₂le.trans inf_le_left), fun y hyN => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgA⟩` from `hy y hyN`. Establish `h1 : c ^ n • y - g ∈ N ⊓ A` using `⟨N.sub_mem (N.smul_mem _ hyN) (hGN hg), hgA⟩`. Establish `h2` using `hm _ h1`. Establish `e : c ^ (m + n) • y = c ^ m • g + c ^ m • (c ^ n • y - g)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, mul_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (G.smul_mem _ hg)) (Submodule.mem_sup_right h2)`.
+A detailed English derivation is pending.
 -/
 theorem AN.step {I : Ideal R} {c : R}
     (hc : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -86,9 +86,9 @@ theorem AN.step {I : Ideal R} {c : R}
   exact Submodule.add_mem _ (Submodule.mem_sup_left (G.smul_mem _ hg)) (Submodule.mem_sup_right h2)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using hA`. Consider the case `insert a s _ ih`. Establish `h` using `AN.step hc (A := A ⊔ Submodule.span R (s : Set M)) (x := a) (fun i hi => Submodule.mem_sup_left (hT a (Finset.mem_insert_self _ _) i hi)) (ih fun t ht => hT t (Finset.mem_insert_of_mem ht))`. Use `h.mono ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.coe_insert, Submodule.span_insert]`. Conclude with `sup_le (le_sup_of_le_left le_sup_left) (sup_le le_sup_right (le_sup_of_le_left le_sup_right))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AN.finset {I : Ideal R} {c : R}
     (hc : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -107,15 +107,13 @@ theorem AN.finset {I : Ideal R} {c : R}
       (sup_le le_sup_right (le_sup_of_le_left le_sup_right))
 
 /- English proof (translation)
-Establish `main : ∀ d j : ℕ, I ^ (j + d) = ⊥ → AN c (I ^ j • F)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[add_zero]`. Rewrite using `[hj, Submodule.bot_smul]`. Conclude with `an_bot c`. Consider the case `succ d ih`. Introduce `j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA : AN c (I ^ (j + 1) • F)` using `ih (j + 1) (by rw [← hj]; congr 1; omega)`. Take `⟨T, hT⟩ : (I ^ j • F).FG` from `Submodule.FG.smul (hI.pow) hF`. Use `(AN.finset hc hA T fun t ht i hi => ?_).mono ?_` and prove the remaining obligations. Establish `ht' : t ∈ I ^ j • F` using `hT ▸ Submodule.subset_span ht`. Rewrite using `[pow_succ', mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul hi ht'`. Rewrite using `[hT]`. Conclude with `le_sup_right`. Take `⟨k, hk⟩` from `hnil`. Use `main k 0 (by simpa using hk)` as an intermediate fact.
-
-Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem AN.of_fg {I : Ideal R} {c : R} (hI : I.FG) (hnil : IsNilpotent I)
     (hc : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -142,7 +140,7 @@ theorem AN.of_fg {I : Ideal R} {c : R} (hI : I.FG) (hnil : IsNilpotent I)
   simpa using this
 
 /- English proof (translation)
-Take `⟨n, F, hF, hn⟩` from `hM`. Take `⟨m, G, hG, hGle, hm⟩` from `AN.of_fg hI hnil hc hF (N ⊓ F) inf_le_right`. Use `⟨m + n, G, hG, hGle.trans inf_le_left, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hm _ (⟨N.smul_mem _ hx, hn x⟩ : c ^ n • x ∈ N ⊓ F)`. Rewrite `h` using `[← mul_smul, ← pow_add]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem af_of_afg {I : Ideal R} {c : R} (hI : I.FG) (hnil : IsNilpotent I)
     (hc : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -154,7 +152,7 @@ theorem af_of_afg {I : Ideal R} {c : R} (hI : I.FG) (hnil : IsNilpotent I)
   rwa [← mul_smul, ← pow_add] at h
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hG`. Establish `h : (s : Set M₂) ⊆ g '' Set.univ` using `fun y hy => by`. Simplify using `using hle (Submodule.subset_span hy)`. Take `⟨s', -, rfl⟩` from `Finset.subset_set_image_iff.1 h`. Conclude with `⟨Submodule.span R (s' : Set M), ⟨s', rfl⟩, by rw [Submodule.map_span]; simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fg_map_eq {M₂ : Type*} [AddCommGroup M₂] [Module R M₂] (g : M →ₗ[R] M₂)
     {G : Submodule R M₂} (hG : G.FG) (hle : G ≤ LinearMap.range g) :
@@ -167,11 +165,11 @@ theorem exists_fg_map_eq {M₂ : Type*} [AddCommGroup M₂] [Module R M₂] (g :
   exact ⟨Submodule.span R (s' : Set M), ⟨s', rfl⟩, by rw [Submodule.map_span]; simp⟩
 
 /- English proof (translation)
-Take `⟨a, G₃, hG₃, hG₃le, ha⟩` from `af_of_afg hI hnil hc h₃ (LinearMap.range g)`. Take `⟨G', hG', rfl⟩` from `exists_fg_map_eq g hG₃ hG₃le`. Take `⟨b, N₁, hN₁, hb⟩` from `h₁`. Use `⟨b + a, G' ⊔ N₁.map f, hG'.sup (hN₁.map f), fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `(Submodule.mem_map).1 (ha (g x) ⟨x, rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `(hfg (c ^ a • x - y)).1 (by rw [map_sub, map_smul, hyx, sub_self])`. Establish `e : c ^ (b + a) • x = c ^ b • y + f (c ^ b • z)`. Rewrite using `[map_smul, hz, pow_add, mul_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (G'.smul_mem _ hy)) (Submodule.mem_sup_right (Submodule.mem_map_of_mem (hb z)))`.
+A detailed English derivation is pending.
 -/
 theorem afg_mid {I : Ideal R} {c : R} (hI : I.FG) (hnil : IsNilpotent I)
     (hc : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -193,7 +191,7 @@ theorem afg_mid {I : Ideal R} {c : R} (hI : I.FG) (hnil : IsNilpotent I)
 end Sub
 
 /- English proof (translation)
-Introduce `R _ I c hI hnil _ _ hc`. Use `⟨⟨fun M _ _ => AFG c M, fun M _ _ _ => ⟨0, ⊥, Submodule.fg_bot, fun x => ?_⟩, fun M₁ M₂ M₃ _ _ _ _ _ _ f g hfg h₁ h₃ => afg_mid hI hnil hc f g hfg h₁ h₃⟩, fun M _ _ => Iff.rfl⟩` and prove the remaining obligations. Simplify using `[Subsingleton.elim x 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem serre_afg : ∀ (R : Type) [CommRing R] (I : Ideal R) (c : R), I.FG → IsNilpotent I → I.IsPrime →
     (∀ x y : R, x ∈ Ideal.span {y} ⊔ I ∨ y ∈ Ideal.span {x} ⊔ I) → (∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I) →

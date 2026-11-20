@@ -8,6 +8,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.abelianScheme_structureSheafCohomology_anyRing`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbCoh.oStr : GlobalTheory.AbCoh.OStr := GlobalTheory.T.abelianScheme_structureSheafCohomology_anyRing

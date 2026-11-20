@@ -6,45 +6,41 @@ noncomputable section
 namespace GlobalTheory.MuCharProof
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_fin_one {k : Type} [CommRing k] (M : Matrix (Fin 1) (Fin 1) k) :
     M.charpoly = X - C (M 0 0) := by
   rw [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]
 
 /- English proof (translation)
-The claim follows from `Multiset.mem_of_le (List.le_sum_of_mem (List.mem_map_of_mem ha)) hb`.
+A detailed English derivation is pending.
 -/
 theorem mem_list_sum {α β : Type} (L : List α) (f : α → Multiset β) {a : α} (ha : a ∈ L) {b : β}
     (hb : b ∈ f a) : b ∈ (L.map f).sum :=
   Multiset.mem_of_le (List.le_sum_of_mem (List.mem_map_of_mem ha)) hb
 
 /- English proof (translation)
-Introduce `D hA i hg ρ hρ w hw`. Take `⟨x, ⟨P, -, Pa, hBC, hmem⟩, -⟩` from `hg`. Establish `h2 : Formalism.MainNotions.SumRepresentations.adm2 D` using `hA.1.1.2.2.2.1`. Establish `h5 : Formalism.MainNotions.SumRepresentations.adm5 D` using `hA.1.1.2.2.2.2.2.2`. Use `set χ := D.naut.tw (D.naut.muC i) D.naut.etaTinv with hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : ℝ := ((D.R.t : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2 with hs`. Establish `halg : ∀ τ : D.host.E →+* ℂ, ∀ z ∈ D.naut.infG χ τ, ∃ k : ℤ, z + (s : ℂ) = (k : ℂ)`. Introduce `τ z hz`. Establish `ht : 0 ∈ List.range D.R.t` using `List.mem_range.2 D.R.t_odd.pos`. Establish `h1 : z + (((D.R.t : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ)) ∈ isoInf D.nd D.naut Pa τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_list_sum Pa _ hmem ?_` and prove the remaining obligations. Use `mem_list_sum _ _ (a := ((0 : ℕ) : ℂ)) ?_ ?_` and prove the remaining obligations. Simplify using `only [List.mem_range]`. Simplify using the standard rewrite rules. Conclude with `⟨0, D.R.t_odd.pos, by simp⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Multiset.mem_map_of_mem _ hz`. Rewrite `h1` using `[hBC.2.2.2.2.2 τ]`. Set `τ' : D.host.E →+* Qbar (D.nd.l i)` to `(D.naut.iotaQC i).symm.toRingHom.comp τ`. Establish `hτ : (D.naut.iotaQC i).toRingHom.comp τ' = τ`. Use extensionality with `e`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[τ']`. Establish `hj` using `D.naut.locAut_hodgeTateWeightsLevelZero_def i τ'`. Rewrite `hj` using `[hτ]`. Establish `h3 : -(z + (((D.R.t : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ))) + ((D.R.nV : ℂ) - 1) / 2 ∈ (D.naut.locAutHodgeTateWeightsLevelZero i τ').map (fun n : ℤ => (n : ℂ))`. Rewrite using `[hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Multiset.mem_map_of_mem _ h1`. Take `⟨n, -, hn⟩` from `Multiset.mem_map.1 h3`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Move the coercions through the operations in `at hn ⊢`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `hn`. Take `⟨ρ', hc', hw', -⟩` from `(h2 i).2.2 χ s halg`. Establish `hc0 : Continuous fun g => ((ρ g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0`. Establish `: (fun g => ((ρ g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0) = fun g => iotaOQ D.nd D.naut i (chi1 D.nd i g)` using `funext hρ`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Formalism.MainNotions.SumRepresentations.continuous_iotaOQ D.nd D.naut i).comp (D.nd.chi_cont i 1)`. Establish `hc0' : Continuous fun g => ((ρ' g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0` using `hc'.matrix_elem 0 0`. Establish `hfin : (placesOver D.host.E (D.nd.l i) ∪ ↑(D.nd.S i) ∪ ↑(D.nd.Q i) : Set (PlE D.host)).Finite` using `((Formalism.MainNotions.SumRepresentations.placesOver_finite D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero).union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet`. Establish `hdense` using `h5.2.2.1 _ hfin`. Establish `hsub : {σ : G D.host.E D.nd.Om | ∃ w ∉ (placesOver D.host.E (D.nd.l i) ∪ ↑(D.nd.S i) ∪ ↑(D.nd.Q i) : Set (PlE D.host)), IsSplitPl D.host w ∧ ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ} ⊆ {g | ((ρ g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = ((ρ' g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0} := by`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `σ ⟨v, hv, hsp, B, hB, hσ⟩`. Simplify using `only [Set.mem_union, not_or, Finset.mem_coe] at hv`. Establish `hso : SplitOut D.nd i v` using `⟨hsp, hv.1.1, hv.1.2, hv.2⟩`. Take `⟨hu, hf⟩` from `D.naut.chi_mu i v hso`. Establish `hunr : D.naut.unr (D.naut.wdOf i ρ' v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw' v hv.1.1]`. Conclude with `(D.naut.unr_tw _ _).2 hu`. Establish `e` using `D.naut.wdOf_frob i ρ' v hv.1.1 hc' hunr B σ hB hσ`. Rewrite `e` using `[hw' v hv.1.1, hf B σ hB hσ, Multiset.map_singleton, Multiset.prod_singleton, charpoly_fin_one, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Establish `e2` using `(D.naut.iotaQC i).injective (C_injective (sub_right_injective e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show _ = _`. Rewrite using `[hρ σ]`. Conclude with `e2.symm`. Establish `hall : ∀ g, ((ρ g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = ((ρ' g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0`. Introduce `g`.
-
-Establish `hcl : IsClosed {g | ((ρ g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = ((ρ' g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0}` using `isClosed_eq hc0 hc0'`. Use `closure_minimal hsub hcl` as an intermediate fact. Rewrite `this` using `[hdense]`. Conclude with `this (Set.mem_univ g)`. Establish `heq : ρ = ρ'`.
-
-Use `MonoidHom.ext fun g => Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Conclude with `hall g`. Rewrite using `[heq]`. Conclude with `hw' w hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muChar_holds : MuChar := by
   intro D hA i hg ρ hρ w hw

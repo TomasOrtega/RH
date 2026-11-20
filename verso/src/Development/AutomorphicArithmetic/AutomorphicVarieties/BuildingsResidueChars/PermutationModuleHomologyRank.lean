@@ -2,15 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open CategoryTheory UpperTheory.V.Af.BA in
 /- English proof (translation)
-Introduce `Γ X _ _ h`. Take `⟨R, hR, hRx⟩` from `h`. Use `haveI := hR.fintype`. Use `⟨Fintype.card R, fun A => ?_⟩` and prove the remaining obligations. Set `Φ : (PC Γ X ⟶ A) →ₗ[ℂ] (R → A)` to `{ toFun := fun φ r => φ.hom (Finsupp.single (r : X) 1) map_add' := fun φ ψ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c φ => by`. Use extensionality with `r`. Use `rfl }`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (χ : PC Γ X ⟶ A) (g : Γ) (x : X), χ.hom (Finsupp.single x 1) = A.ρ g⁻¹ (χ.hom (Finsupp.single (g • x) 1))`. Introduce `χ g x`. Rewrite using `[← Rep.hom_comm_apply]`. Use `congr 1`. Use `show _ = permC Γ X g⁻¹ (Finsupp.single (g • x) 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[permC_single, inv_smul_smul]`. Establish `hinj : Function.Injective Φ`. Introduce `φ ψ hφψ`. Apply `PC_ext` to reduce the goal to its premises. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `hRx x`. Establish `h1` using `congrFun hφψ ⟨g • x, hg⟩`. Rewrite using `[key φ g x, key ψ g x]`. Conclude with `congrArg _ h1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.permutation_module_homology_rank :
     UpperTheory.V.Af.BA.RankHomPerm := by

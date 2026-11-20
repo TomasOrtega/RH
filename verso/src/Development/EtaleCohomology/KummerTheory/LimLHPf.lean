@@ -6,39 +6,39 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.LimLHPf
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_add' {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x y : Ht q E n i) :
     (x + y).cast hn hi = x.cast hn hi + y.cast hn hi := by subst hn; subst hi; rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_nsmul' {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (m : ℕ) (x : Ht q E n i) :
     (m • x).cast hn hi = m • x.cast hn hi := by subst hn; subst hi; rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem red_cast (Q q : ℕ) {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht Q E n i) :
     red Q q E n' i' (x.cast hn hi) = (red Q q E n i x).cast hn hi := by subst hn; subst hi; rfl
 
 /- English proof (translation)
-Unfold `LateralTheory.KummerTheory.ext`. Rewrite using `[map_add, map_add, cast_add']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_add (q : ℕ) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (a n i : ℤ) (x : Ht q (sch.obj X) a i)
     (y y' : Ht q (sch.obj Y) (n - a) 0) : ext q pX pY a n i x (y + y') = ext q pX pY a n i x y + ext q pX pY a n i x y' := by
   unfold LateralTheory.KummerTheory.ext; rw [map_add, map_add, cast_add']
 
 /- English proof (translation)
-Unfold `LateralTheory.KummerTheory.ext`. Rewrite using `[map_nsmul, map_nsmul, cast_nsmul']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_nsmul (q : ℕ) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (a n i : ℤ) (x : Ht q (sch.obj X) a i)
     (m : ℕ) (y : Ht q (sch.obj Y) (n - a) 0) : ext q pX pY a n i x (m • y) = m • ext q pX pY a n i x y := by
   unfold LateralTheory.KummerTheory.ext; rw [map_nsmul, map_nsmul, cast_nsmul']
 
 /- English proof (translation)
-Unfold `LateralTheory.KummerTheory.ext`. Rewrite using `[red_cast, (hA Q q hq _).1, ← pull_red, ← pull_red]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_ext (hA : A11) (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (a n i : ℤ)
     (x : Ht Q (sch.obj X) a i) (y : Ht Q (sch.obj Y) (n - a) 0) :
@@ -47,9 +47,9 @@ theorem red_ext (hA : A11) (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) {X Y S : Scheme
   rw [red_cast, (hA Q q hq _).1, ← pull_red, ← pull_red]
 
 /- English proof (translation)
-Unfold `LateralTheory.KummerTheory.lh`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ext_add _ _ _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lh_add (q : ℕ) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (i : ℤ) (r : ℕ → ℕ)
     (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i) (M : ℕ) (n : ℤ)
@@ -63,9 +63,9 @@ theorem lh_add (q : ℕ) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (i :
   exact ext_add _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `LateralTheory.KummerTheory.lh`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ext_nsmul _ _ _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lh_nsmul (q : ℕ) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (i : ℤ) (r : ℕ → ℕ)
     (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i) (M : ℕ) (n : ℤ) (m : ℕ)
@@ -79,9 +79,9 @@ theorem lh_nsmul (q : ℕ) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (i
   exact ext_nsmul _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Unfold `LateralTheory.KummerTheory.lh`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `red_ext hA Q q hq _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem red_lh (hA : A11) (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (i : ℤ)
     (r : ℕ → ℕ) (c : ∀ a : ℕ, Fin (r a) → Ht Q (sch.obj X) a i) (M : ℕ) (n : ℤ)
@@ -96,7 +96,7 @@ theorem red_lh (hA : A11) (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) {X Y S : Scheme.
   exact red_ext hA Q q hq _ _ _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `x.2 k`.
+A detailed English derivation is pending.
 -/
 theorem lev_red (l : ℕ) [Fact l.Prime] {E : Spc} {n i : ℤ} (x : Hl l E n i) (k : ℕ) :
     red (l ^ (k + 1)) (l ^ k) E n i (lev l x (k + 1)) = lev l x k := x.2 k
@@ -104,7 +104,7 @@ theorem lev_red (l : ℕ) [Fact l.Prime] {E : Spc} {n i : ℤ} (x : Hl l E n i) 
 instance nz (l : ℕ) [Fact l.Prime] (k : ℕ) : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
 
 /- English proof (translation)
-The claim follows from `pow_dvd_pow l (Nat.le_succ k)`.
+A detailed English derivation is pending.
 -/
 theorem dvd_succ (l k : ℕ) : l ^ k ∣ l ^ (k + 1) := pow_dvd_pow l (Nat.le_succ k)
 
@@ -138,9 +138,9 @@ def phi (hA : A11) : (∀ a : Fin (M + 1), Fin (r a) → Hl l (sch.obj Y) (n - (
     exact (HtL.smul_eq l k k le_rfl _ _ _ t _).symm)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a s`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Establish `h0 : lh (l ^ k) pX pY i r (fun a s => lev l (c a s) k) M n (fun a s => lev l (y a s) k) = 0`. Use `congrArg (fun z : Hl l (sch.obj (pullback pX pY)) n i => lev l z k) hy` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Use `congrFun (congrFun ((hiso k).1 _ h0) a) s` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phi_ker (hA : A11) (N : ℕ)
     (hiso : ∀ k, IsoUpTo N (lh (l ^ k) pX pY i r (fun a s => lev l (c a s) k) M n))
@@ -155,17 +155,15 @@ theorem phi_ker (hA : A11) (N : ℕ)
   exact this
 
 /- English proof (translation)
-Set `D : ℕ → Type 1` to `fun k => ∀ a : Fin (M + 1), Fin (r a) → Ht (l ^ k) (sch.obj Y) (n - ((a : ℕ) : ℤ)) 0`. Set `Sl : ℕ → Type 1` to `fun k => {z : D k // lh (l ^ k) pX pY i r (fun a s => lev l (c a s) k) M n z = N • lev l b k}`. Set `f : ∀ k, Sl (k + 1) ⟶ Sl k` to `fun k => TypeCat.ofHom fun (z : Sl (k + 1)) => (⟨fun a s => red (l ^ (k + 1)) (l ^ k) _ _ 0 (z.1 a s), by`. Establish `h` using `congrArg (red (l ^ (k + 1)) (l ^ k) _ n i) z.2`. Rewrite `h` using `[red_lh hA _ _ (dvd_succ l k), map_nsmul, lev_red]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [lev_red] at h`. Conclude with `h⟩ : Sl k)`. Set `F : ℕᵒᵖ ⥤ Type 1` to `Functor.ofOpSequence f`. Establish `: ∀ j, Finite (F.obj j)` using `fun j => by`. Use `hfin (unop j)` as an intermediate fact.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Finite (Sl (unop j))`. Establish `: ∀ (a : Fin (M + 1)), Finite (Fin (r a) → Ht (l ^ unop j) (sch.obj Y) (n - ((a : ℕ) : ℤ)) 0)` using `fun a => by have := hfin (unop j) (n - ((a : ℕ) : ℤ)); infer_instance`. Establish `: Finite (D (unop j))` using `Pi.finite`. Conclude with `Subtype.finite`. Establish `: ∀ j, Nonempty (F.obj j)` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, hz⟩` from `(hiso (unop j)).2 (lev l b (unop j))`. Conclude with `⟨(⟨z, hz⟩ : Sl (unop j))⟩`. Take `⟨sec, hsec⟩` from `nonempty_sections_of_finite_inverse_system F`. Establish `hstep : ∀ k a s, red (l ^ (k + 1)) (l ^ k) _ _ 0 (((sec (op (k + 1)) : Sl (k + 1)).1) a s) = ((sec (op k) : Sl k).1) a s`. Introduce `k a s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hsec (homOfLE (Nat.le_succ k)).op`. Rewrite `h` using `[Functor.ofOpSequence_map_homOfLE_succ]`. Conclude with `congrArg (fun z : Sl k => z.1 a s) h`. Use `⟨fun a s => ⟨fun k => ((sec (op k) : Sl k).1) a s, fun k => hstep k a s⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `k`. Conclude with `(sec (op k) : Sl k).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem phi_coker (hA : A11) (N : ℕ)
     (hfin : ∀ (k : ℕ) (m : ℤ), Finite (Ht (l ^ k) (sch.obj Y) m 0))
@@ -201,7 +199,7 @@ theorem phi_coker (hA : A11) (N : ℕ)
   exact (sec (op k) : Sl k).2
 
 /- English proof (translation)
-Introduce `hA l _ X Y S pX pY n i M N r c hfin hiso`. Conclude with `⟨phi pX pY n i M r c hA, fun y k => rfl, fun y hy => phi_ker pX pY n i M r c hA N hiso y hy, fun b => phi_coker pX pY n i M r c hA N hfin hiso b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem LimLH_of : LimLH := by
   intro hA l _ X Y S pX pY n i M N r c hfin hiso

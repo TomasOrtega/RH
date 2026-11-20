@@ -9,11 +9,11 @@ open MvPolynomial Finset Equiv Comb
 noncomputable section
 
 /- English proof (translation)
-Introduce `m lam hlam T hT`. Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [latticeWords, mem_filter, mem_univ, true_and]`. Use `⟨fun t _ i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 m lam T t j, h1 m lam T t i]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 m lam hlam T hT t i j hij`. Rewrite using `[h1 m lam T _ i, ← h4 m lam i]`. Use `congr 1`. Conclude with `Finset.filter_congr fun p _ => by simp [(T p).isLt]`. Unfold `cellOfWord`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show pcnt (rowWord T) (t : ℕ) ((T.symm t).1.1) = (T.symm t).1.2`. Rewrite using `[h1 m lam T t _]`. Conclude with `h2 m lam T hT t`.
+A detailed English derivation is pending.
 -/
 theorem CombWordOfTableau.proof (h1 : CombTableauRowCount.Statement)
     (h2 : CombTableauRowPrefix.Statement) (h3 : CombTableauRowLattice.Statement)

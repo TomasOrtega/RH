@@ -26,9 +26,9 @@ def reC (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasC
   map_smul' c f := by ext x; simp
 
 /- English proof (translation)
-Introduce `f g hfg`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `h` using `congrArg (fun u : C_c(X, ℝ) => u x) hfg`. Simplify using `only [reC, LinearMap.coe_mk, AddHom.coe_mk] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.ext h ((f.2.2 x).trans (g.2.2 x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem reC_inj (A : Submodule ℂ (X → ℂ)) (hA : ∀ f ∈ A, Continuous f ∧ HasCompactSupport f) :
     Function.Injective (reC A hA) := by
@@ -50,11 +50,11 @@ def reL (A : Submodule ℂ (X → ℂ)) (L : A →ₗ[ℂ] ℂ) : AR A →ₗ[�
     simp only [this, map_smul, smul_eq_mul, Complex.re_ofReal_mul, RingHom.id_apply]
 
 /- English proof (translation)
-Take `⟨b, hbA, hb0, hb1⟩` from `hbump (tsupport y) hyc`. Take `⟨C, hC⟩` from `hy.bounded_above_of_compact_support hyc`. Use `⟨b, hbA, hb0, max C 0, le_max_right _ _, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport y`. Rewrite using `[hb1 x hx, Complex.one_re, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `hC x` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Apply the tactic sequence `constructor <;> linarith [abs_le.mp this, le_max_left C 0]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Use `mul_nonneg (le_max_right C 0) (hb0 x).1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dom (A : Submodule ℂ (X → ℂ))
     (hbump : ∀ C, IsCompact C → ∃ f ∈ A, (∀ x, 0 ≤ (f x).re ∧ (f x).im = 0) ∧ ∀ x ∈ C, f x = 1)

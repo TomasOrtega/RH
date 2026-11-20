@@ -16,19 +16,15 @@ namespace GlobalTheory.ShareOn
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p hp r h hr i v`. Take `⟨ψ, h1⟩` from `GlobalTheory.T.exists_transporter_moves_frame_reads_inverse p hp r h hr i v`. Use `⟨ψ, fun γ k => ?_⟩` and prove the remaining obligations. Set `V` to `Frame ((uAt r v i).X k).Ψ D.R.r`. Set `Dk : Set V` to `((uAt r v i).X k).dom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hDo : IsOpen Dk` using `FourierCoefficientDomain.isOpen_dom _`. Establish `hDn : Dk.Nonempty` using `(GlobalTheory.frames_isConnected D.host.E D.R.r ((uAt r v i).X k)).nonempty`. Set `ι` to `Σ k' : (uAt r v i).Comp, {a : GL (Fin D.R.r) D.host.E // ∃ hm : GlobalTheory.LevelCusp.IsMatch ((uAt r v i).X k) ((uAt r v i).X k') a, ReadsInv p r i v ψ γ k k' a}`. Set `S : ι → Set V` to `fun c => {x | ∃ hx : x ∈ Dk, MovesAt p r i v γ k c.1 c.2.1 c.2.2.1 x hx}`. Use `haveI : Countable ι := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀⟩` from `hDn`. Use `haveI : Nonempty ι := by`. Take `⟨k', a, hm, hR, -⟩` from `h1 γ k x₀ hx₀`. Conclude with `⟨⟨k', a, hm, hR⟩⟩`. Use `haveI : Nonempty Dk := ⟨⟨x₀, hx₀⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace Dk := hDo.locallyCompactSpace`. Set `T : ι → Set Dk` to `fun c => Subtype.val ⁻¹' closure (S c)`. Establish `hTc : ∀ c, IsClosed (T c)` using `fun c => isClosed_closure.preimage continuous_subtype_val`. Establish `hTu : ⋃ c, T c = Set.univ`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k', a, hm, hR, hM⟩` from `h1 γ k y.1 y.2`. Conclude with `Set.mem_iUnion.2 ⟨⟨k', a, hm, hR⟩, subset_closure ⟨y.2, hM⟩⟩`. Take `⟨c, hc⟩` from `nonempty_interior_of_iUnion_of_closed hTc hTu`. Take `⟨k', a, hm, hR⟩` from `c`. Use `⟨k', a, isTransp_of_movesAt hm ?_ hR⟩` and prove the remaining obligations.
-
-Use `GlobalTheory.T.transporter_moves_all_frames_of_dense_open p hp r h hr i v γ k k' a hm (Subtype.val '' interior (T ⟨k', a, hm, hR⟩)) (hDo.isOpenMap_subtype_val _ isOpen_interior) (hc.image _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : y ∈ T ⟨k', a, hm, hR⟩` using `interior_subset hy`.
-
-Conclude with `hy'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_transp_all : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), More p → ∀ (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r), OwnPin r → ∀ (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL)), ∃ ψ : ∀ k : (uAt r v i).Comp, LaMod (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l ≃ₗ[𝓞 D.host.E] latQ p r i v k, ∀ (γ : LaMod (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l) (k : (uAt r v i).Comp), ∃ (k' : (uAt r v i).Comp) (a : GL (Fin D.R.r) D.host.E), IsTransp p r i v ψ γ k k' a := by
   intro D L hT Gi Gl Kc Y cX ex Csz p hp r h hr i v

@@ -3,11 +3,11 @@ import Mathlib
 namespace Bl.general_b_fact_right_further
 
 /- English proof (translation)
-Introduce `n J k h i`. Establish `key : Finset.filter (fun (x : Fin n) ↦ x < J.orderEmbOfFin h i) J = (Finset.Iio i).map (J.orderEmbOfFin h).toEmbedding`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_map, Finset.mem_Iio]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hx, hlt⟩`. Establish `hr : x ∈ Set.range (J.orderEmbOfFin h)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hx`. Take `⟨j, rfl⟩` from `hr`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨j, (J.orderEmbOfFin h).lt_iff_lt.mp hlt, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨Finset.orderEmbOfFin_mem J h j, (J.orderEmbOfFin h).lt_iff_lt.mpr hj⟩`. Rewrite using `[key, Finset.card_map, Fin.card_Iio]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Nat} (J : Finset.{0} (Fin n)) {k : Nat} (h : Eq.{1} (Finset.card.{0} J) k) (i : Fin k),

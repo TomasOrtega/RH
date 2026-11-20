@@ -18,11 +18,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E 
   (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun v hv => absurd hv (Finset.notMem_empty v), fun v _ => map_one _⟩`. Consider the case `insert a S ha ih`. Take `⟨k, h1, h2⟩` from `ih`. Establish `s1 : mapH σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F a) (extH σ J (sgV a) (sgV_mul a) (γ a)) = γ a` using `mapH_extH_self σ J _ _ _ (fun y => Pi.single_eq_same a y) _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s2 : ∀ w, w ≠ a → mapH σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w) (extH σ J (sgV a) (sgV_mul a) (γ a)) = 1` using `fun w hw => mapH_extH_zero σ J _ _ _ (fun y => Pi.single_eq_of_ne hw y) _`. Use `⟨extH σ J (sgV a) (sgV_mul a) (γ a) * k, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[s1, h2 _ ha, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s2 v (fun e => ha (e ▸ hv)), h1 v hv, one_mul]`. Rewrite `hv` using `[Finset.mem_insert, not_or]`. Rewrite using `[map_mul, s2 v hv.1, h2 v hv.2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_on_finset (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ J)
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -47,9 +47,9 @@ theorem exists_on_finset (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) �
       rw [map_mul, s2 v hv.1, h2 v hv.2, one_mul]
 
 /- English proof (translation)
-Take `⟨k, h1, h2⟩` from `exists_on_finset σ J γ h.toFinset`. Use `⟨k, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ h.toFinset`. Conclude with `h1 v hv`. Rewrite using `[h2 v hv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv` using `[eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_finite (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ J)
     (h : {v | γ v ≠ 1}.Finite) :
@@ -64,9 +64,9 @@ theorem exists_of_finite (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) �
 end Gen
 
 /- English proof (translation)
-Introduce `D V γ h`. Take `⟨k, hk⟩` from `exists_of_finite D.sp.cm.sig V.gram γ h`. Use `⟨ofFin D.sp.cm V k, ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (HA.mat _ _ _) (projInf_ofFin D.sp.cm V k)`. Establish `e : finMat D.sp.cm.sig V.gram (ofFin D.sp.cm V k) = (HA.mat _ _ _ k).1` using `congrArg (fun x => (HA.mat _ _ _ x).1) (projFin_ofFin D.sp.cm V k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hk v]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finite_adelic : ∀ (D : D7) (V : HSp D) (γ : ∀ v : HeightOneSpectrum (𝓞 D.host.F), HA (Fv D.host.F v) D.sp.cm.sig V.gram), {v | γ v ≠ 1}.Finite → ∃ k ∈ GfC V, ∀ v : HeightOneSpectrum (𝓞 D.host.F), (finMat D.sp.cm.sig V.gram k).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E)) = (HA.mat (Fv D.host.F v) D.sp.cm.sig V.gram (γ v)).1 := by
   intro D V γ h

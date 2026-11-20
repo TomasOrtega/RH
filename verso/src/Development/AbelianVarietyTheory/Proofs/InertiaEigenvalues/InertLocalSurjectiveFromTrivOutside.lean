@@ -21,9 +21,9 @@ open TensorProduct
 namespace GlobalTheory.InertSurj
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin 2) (maximalRealSubfield L) L` to `Module.finBasisOfFinrankEq _ _ (Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield L) L)`. Take `⟨a, c, h⟩` from `GlobalTheory.InertUmax.tensor_decomp b m`. Use `⟨b 0 ⊗ₜ[maximalRealSubfield L] GlobalTheory.InertUmax.sgl L v a + b 1 ⊗ₜ[maximalRealSubfield L] GlobalTheory.InertUmax.sgl L v c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_same, GlobalTheory.InertUmax.sgl_same, h]`. Introduce `u hu`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_ne L v a hu, GlobalTheory.InertUmax.sgl_ne L v c hu, tmul_zero, tmul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_supported (L : Type) [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
@@ -41,9 +41,9 @@ theorem exists_supported (L : Type) [Field L] [NumberField L] [IsCMField L]
       GlobalTheory.InertUmax.sgl_ne L v c hu, tmul_zero, tmul_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[GlobalTheory.InertUmax.compAt_tmul]`. Simplify using `[conjAL, Formalism.UG.sigR, Algebra.TensorProduct.map_tmul, GlobalTheory.InertUmax.compAt_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately.
 -/
 theorem compAt_conjAL (L : Type) [Field L] [NumberField L] [IsCMField L]
     (u : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (z : AL L) :
@@ -57,39 +57,37 @@ theorem compAt_conjAL (L : Type) [Field L] [NumberField L] [IsCMField L]
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv y hy`. Set `sig` to `Formalism.UG.sigR (IsCMField.complexConj L).toAlgHom (v.adicCompletion (maximalRealSubfield L))`. Set `eS : w.adicCompletion L →+* L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L)` to `Dv.e.symm.toRingHom`. Establish `hcomm : ∀ a, sig (eS a) = eS (Dv.σw a)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Dv.e.injective` to reduce the goal to its premises. Establish `h` using `Dv.comm (eS a)`. Simplify using `only [eS, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply] at h ⊢`. Conclude with `h`. Set `Pm : Matrix (Fin n) (Fin n) (w.adicCompletion L)` to `(Dv.P : Matrix (Fin n) (Fin n) _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Qm : Matrix (Fin n) (Fin n) (w.adicCompletion L)` to `((Dv.P⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)`. Set `Ym : Matrix (Fin n) (Fin n) (w.adicCompletion L)` to `(y : Matrix (Fin n) (Fin n) _)`. Establish `hPQ : Pm * Qm = 1` using `by simp [Pm, Qm]`. Establish `hy' : Formalism.UG.cT Dv.σw Ym * Formalism.UG.antiJ (w.adicCompletion L) n * Ym = Formalism.UG.antiJ (w.adicCompletion L) n` using `hy`. Set `X` to `Pm * Ym * Qm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hX : Formalism.UG.cT Dv.σw X * X = 1`. Establish `hP` using `Dv.Panti`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT Dv.σw Pm * Pm = _ at hP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [X, Formalism.UG.cT_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = Formalism.UG.cT Dv.σw Qm * (Formalism.UG.cT Dv.σw Pm * Pm) * Qm := by rw [hP, hy']`. Use `_ = Formalism.UG.cT Dv.σw (Pm * Qm) * (Pm * Qm) := by`. Simplify using `only [Formalism.UG.cT_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hPQ, Formalism.UG.cT_one, Matrix.one_mul]`. Establish `hX' : X * Formalism.UG.cT Dv.σw X = 1` using `mul_eq_one_comm.mp hX`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `M` to `X.map eS`. Establish `hMc : conjT sig M = (Formalism.UG.cT Dv.σw X).map eS`. Use extensionality with `i j`. Simplify using `[M, conjT, Formalism.UG.cT, hcomm]`. Establish `hM : M * conjT sig M = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hMc]`. Express the relevant statement in the definitionally equal form `X.map eS * (Formalism.UG.cT Dv.σw X).map eS = 1`. Rewrite using `[← Matrix.map_mul, hX', Matrix.map_one _ (map_zero _) (map_one _)]`. Use `choose lift hlv hlw using GlobalTheory.InertSurj.exists_supported L v`. Set `E : AL L` to `(1 : L) ⊗ₜ[maximalRealSubfield L] GlobalTheory.InertUmax.sgl L v 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEv : compAt L v E = 1`. Rewrite using `[GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_same]`. Both sides reduce to the same expression. Establish `hEw : ∀ u, u ≠ v → compAt L u E = 0`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_ne L v 1 hu, tmul_zero]`. Set `Z : Matrix (Fin n) (Fin n) (AL L)` to `M.map lift + (1 - E) • (1 : Matrix (Fin n) (Fin n) (AL L))`. Establish `hZv : Z.map (compAt L v) = M`. Use extensionality with `i j`. Simplify using `only [Z, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hEv, hlv, sub_self, zero_mul, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hZw : ∀ u, u ≠ v → Z.map (compAt L u) = 1`. Introduce `u hu`. Use extensionality with `i j`. Simplify using `only [Z, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hEw u hu, hlw _ u hu, sub_zero, one_mul, zero_add]`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hZconj : ∀ u, (conjT (conjAL L) Z).map (compAt L u) = conjT (Formalism.UG.sigR (IsCMField.complexConj L).toAlgHom (u.adicCompletion (maximalRealSubfield L))) (Z.map (compAt L u))`. Introduce `u`. Use extensionality with `i j`. Simplify using `[conjT, GlobalTheory.InertSurj.compAt_conjAL]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZZ : Z * conjT (conjAL L) Z = 1`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Apply `GlobalTheory.InertUmax.eq_zero_of_compAt` to reduce the goal to its premises. Introduce `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Z * conjT (conjAL L) Z).map (compAt L u) = 1`. Rewrite using `[Matrix.map_mul, hZconj]`. Break down `eq_or_ne u v with rfl | hu` into its components or cases. Rewrite using `[hZv]`. Conclude with `hM`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZw u hu, conjT_one, Matrix.one_mul]`. Establish `h1` using `congrFun (congrFun key i) j`. Establish `h2` using `congrFun (congrFun (Matrix.map_one (compAt L u) (map_zero _) (map_one _)) i) j`. Simplify using `only [Matrix.map_apply] at h1 h2`. Rewrite using `[map_sub, h1, h2, sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hZZ' : conjT (conjAL L) Z * Z = 1` using `mul_eq_one_comm.mp hZZ`. Set `g : GL (Fin n) (AL L)` to `⟨Z, conjT (conjAL L) Z, hZZ, hZZ'⟩`. Establish `hg : g ∈ ReciprocityTheory.Aut.GA L n` using `hZZ`. Use `⟨⟨g, hg⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hZw u (by simpa using hu)`. Establish `hb : Formalism.UG.bc (n` using `Fin n) (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) (Matrix.GeneralLinearGroup.map (compAt L v) (((⟨g, hg⟩ : GAf L n)) : GL (Fin n) (AL L))) = Dv.P * y * Dv.P⁻¹ := by`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Z.map (compAt L v)).map _ = X`. Rewrite using `[hZv]`.
-
-Use extensionality with `i j`. Simplify using `[M, eS]`. Unfold `InertDatum.loc`. Rewrite using `[hb]`. Use `group`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_surj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (y : GL (Fin n) (w.adicCompletion L)), y ∈ Formalism.UG.GU Dv.σw n → ∃ x : GAf L n, TrivOutside {v} x ∧ Dv.loc x = y := by
   intro L _ _ _ n v w Dv y hy

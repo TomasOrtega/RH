@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.EllipticUniformization
 
 /- English proof (translation)
-Set `φ : (ℂ ⧸ Λ.toAddSubgroup) →+ E.toAffine.Point` to `QuotientAddGroup.lift Λ.toAddSubgroup f fun z hz => (hf.map_eq_zero_iff z).2 hz`. Establish `hφ : ∀ z : ℂ, φ (QuotientAddGroup.mk z) = f z` using `fun z => rfl`. Establish `hinj : Function.Injective φ`. Use `(injective_iff_map_eq_zero φ).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hφ]`. Conclude with `(QuotientAddGroup.eq_zero_iff z).2 ((hf.map_eq_zero_iff z).1 hx)`. Establish `hsurj : Function.Surjective φ` using `fun P => by`. Take `⟨z, rfl⟩` from `hf.surjective P`. Conclude with `⟨QuotientAddGroup.mk z, hφ z⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `ξ : (ℂ ⧸ Λ.toAddSubgroup) ≃+ E.toAffine.Point` to `AddEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Establish `hξ : ∀ z : ℂ, ξ (QuotientAddGroup.mk z) = f z` using `fun z => rfl`. Use `⟨ξ, fun z hz => ?_, hξ⟩` and prove the remaining obligations. Establish `hz0 : f z ≠ 0` using `fun h => hz ((hf.map_eq_zero_iff z).1 h)`. Take `⟨X, Y, hX, hY, hev⟩` from `hf.analyticAt_affine z hz0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X, Y, hX, hY, hev.mono fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨h, hw⟩` from `hw`. Conclude with `⟨h, (hξ w).trans hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_analyticIso_of_isAnalyticUniformization (Λ : Submodule ℤ ℂ)
     (E : WeierstrassCurve ℂ) (f : ℂ →+ E.toAffine.Point)

@@ -15,13 +15,11 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T`. Establish `hmem` using `GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range`. Establish `hdiff : ∀ a : ring ε.range, DifferentiableOn ℂ (up (a : ℍ → ℂ)) Hs` using `fun a => ((GlobalTheory.T.upperHalfPlane_germ_ringHom_and_restrict).2.1 _).1 (GlobalTheory.T.mdifferentiable_of_hasSomeLevelOver ε.range _ ((hmem.1 _).1 a.2))`. Use `⟨fun c => ?_, fun f => ?_⟩` and prove the remaining obligations. Establish `hc : (fun _ : ℍ => ε c) ∈ ring ε.range` using `(hmem.1 _).2 (hmem.2 _ ⟨c, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← T.io_c c ⟨_, hc⟩ rfl, T.an_io]`. Both sides reduce to the same expression. Take `⟨a, b, hb, h⟩` from `T.io_surj f`. Use `⟨up (a : ℍ → ℂ), up (b : ℍ → ℂ), hdiff a, hdiff b, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : T.an (T.io b) = T.an (T.io 0)`. Rewrite using `[T.an_io, map_zero, map_zero]`. Conclude with `h0`. Conclude with `hb (T.io_inj ((GlobalTheory.T.fractionField_ext_closure_injective Ω ε T).2.2.2 h1))`. Use `congrArg T.an h` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, T.an_io, T.an_io]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frac_const_and_quot : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε), (∀ c : Ω, T.an (algebraMap Ω T.K c) = ((fun _ => ε c : ℂ → ℂ) : Mero)) ∧ ∀ f : T.K, ∃ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs ∧ DifferentiableOn ℂ b Hs ∧ (b : Mero) ≠ 0 ∧ T.an f * (b : Mero) = (a : Mero) := by
   intro Ω _ _ _ ε T

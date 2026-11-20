@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ep
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `K hK`. Establish `hK' : IsOpen ((K.map H.subtype : Subgroup Γ) : Set Γ)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hH.isOpenMap_subtype_val _ hK`. Use `haveI := hΦ _ hK'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : K ≃* K.map H.subtype` to `K.equivMapOfInjective H.subtype H.subtype_injective`. Establish `hc : Continuous (e.symm : K.map H.subtype → K)`. Establish `hind : Topology.IsInducing (fun k : K => ((k : H) : Γ))` using `Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal`. Rewrite using `[hind.continuous_iff]`. Establish `hfun : (fun k : K => ((k : H) : Γ)) ∘ e.symm = fun γ : K.map H.subtype => (γ : Γ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `γ`. Establish `h1` using `K.coe_equivMapOfInjective_apply H.subtype H.subtype_injective (e.symm γ)`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← H.coe_subtype, ← h1]`. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfun]`. Conclude with `continuous_subtype_val`. Use `Finite.of_injective (β := {ψ : (K.map H.subtype) →* Multiplicative (ZMod l) // IsOpen (ψ.ker : Set (K.map H.subtype))}) (fun φ => ⟨φ.1.comp e.symm.toMonoidHom, ?_⟩) ?_` and prove the remaining obligations. Establish `hk : ((φ.1.comp e.symm.toMonoidHom).ker : Set (K.map H.subtype)) = e.symm ⁻¹' (φ.1.ker : Set K)`. Use extensionality with `γ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Iff.rfl`. Rewrite using `[hk]`. Conclude with `φ.2.preimage hc`. Introduce `φ φ' h`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use extensionality with `k`. Establish `h2` using `congrArg (fun ψ => ψ.1 (e k)) h`. Simplify using `using h2`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem phi_sub (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     (hΦ : PhiCond Γ l) (H : Subgroup Γ) (hH : IsOpen (H : Set Γ)) : PhiCond H l := by
@@ -50,7 +48,7 @@ private theorem phi_sub (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] [
     simpa using h2
 
 /- English proof (translation)
-Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Conclude with `Finite.of_injective (fun f : M →+ ZMod l => (f : M → ZMod l)) DFunLike.coe_injective`.
+A detailed English derivation is pending.
 -/
 private theorem finite_addMonoidHom_zmod_of_finite (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Finite M] :
     Finite (M →+ ZMod l) := by
@@ -58,9 +56,9 @@ private theorem finite_addMonoidHom_zmod_of_finite (l : ℕ) [Fact l.Prime] (M :
   exact Finite.of_injective (fun f : M →+ ZMod l => (f : M → ZMod l)) DFunLike.coe_injective
 
 /- English proof (translation)
-Use `letI : Module (ZMod l) M := AddCommGroup.zmodModule hl`. Set `b` to `Module.Basis.ofVectorSpace (ZMod l) M`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `h (b.coord i).toAddMonoidHom` as an intermediate fact.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_zero_of_forall_hom_zmod_eq_zero_of_l_smul (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] (hl : ∀ m : M, l • m = 0)
     (m : M) (h : ∀ f : M →+ ZMod l, f m = 0) : m = 0 := by
@@ -73,29 +71,25 @@ private theorem eq_zero_of_forall_hom_zmod_eq_zero_of_l_smul (l : ℕ) [Fact l.P
   simpa using this
 
 /- English proof (translation)
-Introduce `l _ R Γ M _ _ _ _ _ _ _ _ ρ hΦ hρ hl`. Use `⟨?_, fun H hH => phi_sub l hΦ H hH⟩` and prove the remaining obligations. Set `N : Subgroup Γ` to `{ carrier := {g | ∀ m, ρ g m = m} mul_mem' := by`. Introduce `a b ha hb m`. Simplify using `only [Set.mem_setOf_eq] at ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by`. Introduce `m`. Simplify using the standard rewrite rules. Use the proof step `inv_mem' := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a ha m`. Simplify using `only [Set.mem_setOf_eq] at ha`. Establish `h1` using `ha (ρ a⁻¹ m)`. Rewrite `h1` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `h1.symm }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hN : IsOpen (N : Set Γ)`. Establish `hset : (N : Set Γ) = ⋂ m : M, (fun g => ρ g m) ⁻¹' {m}`. Use extensionality with `g`. Simplify using `[N]`. Rewrite using `[hset]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `isOpen_iInter_of_finite (fun m => (hρ m).isOpen_fiber m)`. Use `haveI : Finite (Γ ⧸ N) := Subgroup.quotient_finite_of_isOpen N hN`. Use `haveI : Finite (M →+ ZMod l) := finite_addMonoidHom_zmod_of_finite l M`. Use `haveI := hΦ N hN`. Establish `z1 : ∀ z ∈ Zl ρ, z 1 = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Establish `h` using `((mem_Zl ρ).1 hz).2 1 1`. Simplify using `using h`. Establish `zN : ∀ z ∈ Zl ρ, ∀ a b : Γ, a ∈ N → z (a * b) = z a + z b`. Introduce `z hz a b ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((mem_Zl ρ).1 hz).2, ha]`. Use `Finite.of_injective (β := (Γ ⧸ N → M) × ((M →+ ZMod l) → {φ : N →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set N)})) (fun z => (fun q => z.1 q.out, fun f => ⟨⟨⟨fun k => Multiplicative.ofAdd (f (z.1 k)), ?_⟩, ?_⟩, ?_⟩)) ?_` and prove the remaining obligations. Use `show Multiplicative.ofAdd (f (z.1 ((1 : N) : Γ))) = 1`. Rewrite using `[Subgroup.coe_one, z1 _ z.2, map_zero, ofAdd_zero]`. Introduce `k k' show Multiplicative.ofAdd (f (z.1 ((k * k' : N) : Γ))) = Multiplicative.ofAdd (f (z.1 k)) * Multiplicative.ofAdd (f (z.1 k'))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subgroup.coe_mul, zN _ z.2 _ _ k.2, map_add, ofAdd_add]`. Establish `hlc : IsLocallyConstant (fun k : N => Multiplicative.ofAdd (f (z.1 k)))` using `(((mem_Zl ρ).1 z.2).1.comp_continuous continuous_subtype_val).comp _`. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `hlc.isOpen_fiber 1`. Introduce `z z' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `key : ∀ k : N, z.1 k = z'.1 k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `hf : ∀ f : M →+ ZMod l, f (z.1 k - z'.1 k) = 0`. Introduce `f`. Establish `h3` using `congrArg (fun ψ : {φ : N →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set N)} => Multiplicative.toAdd (ψ.1 k)) (congrFun h2 f)`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd] at h3`.
-
-Rewrite using `[map_sub, h3, sub_self]`. Conclude with `sub_eq_zero.1 (eq_zero_of_forall_hom_zmod_eq_zero_of_l_smul l M hl _ hf)`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul N g`. Establish `hg : g = (QuotientGroup.mk g : Γ ⧸ N).out * ((k⁻¹ : N) : Γ)`. Rewrite using `[hk]`.
-
-Simplify using `[mul_assoc]`. Establish `h1' : z.1 (QuotientGroup.mk g : Γ ⧸ N).out = z'.1 (QuotientGroup.mk g : Γ ⧸ N).out` using `congrFun h1 (QuotientGroup.mk g)`. Rewrite using `[hg, ((mem_Zl ρ).1 z.2).2, ((mem_Zl ρ).1 z'.2).2, key, h1']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.finZ :
     ∀ (l : ℕ) [Fact l.Prime] (R Γ M : Type) [CommRing R] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [AddCommGroup M] [Module R M] [Finite M] (ρ : Representation R Γ M), PhiCond Γ l → LC ρ → (∀ m : M, l • m = 0) → Finite (Zl ρ) ∧ ∀ H : Subgroup Γ, IsOpen (H : Set Γ) → PhiCond H l := by

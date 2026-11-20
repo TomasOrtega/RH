@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KostL.vanKL | exact GlobalTheory.CompanionTheory.KostL.vanKL | (intros; apply GlobalTheory.CompanionTheory.KostL.vanKL <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.vanishing_kernel_levi_real : PositivityTheory.RgBcC.RealD.VanKL := by
   first | exact @GlobalTheory.CompanionTheory.KostL.vanKL | exact GlobalTheory.CompanionTheory.KostL.vanKL | (intros; apply GlobalTheory.CompanionTheory.KostL.vanKL <;> assumption)

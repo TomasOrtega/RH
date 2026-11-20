@@ -16,12 +16,12 @@ def genHom : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomial (Fin N × Fi
   aeval (fun v : Fin N × Fin N => ∑ b : Fin N, X (v.1, b) * C (X (b, v.2)))
 
 /- English proof (translation)
-The claim follows from `aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem genHom_X (v : Fin N × Fin N) : genHom O N (X v) = ∑ b : Fin N, X (v.1, b) * C (X (b, v.2)) := aeval_X _ _
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.algHom_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genHom_C (c : O) : genHom O N (C c) = C (C c) := by
   rw [MvPolynomial.algHom_C]; rfl
@@ -34,9 +34,9 @@ def CoefHom (G : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O)
   ∀ m, IsWeightedHomogeneous wx (coeff m G) (Finsupp.weight u m + e)
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[coeff_mul]`. Use `IsWeightedHomogeneous.sum _ _ _ fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = m` using `by simpa using hp`. Rewrite using `[← hp', map_add, add_add_add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h p.1).mul (h' p.2)`.
+A detailed English derivation is pending.
 -/
 theorem CoefHom.mul {G G' : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O)} {e e' : M}
     (h : CoefHom wx u G e) (h' : CoefHom wx u G' e') : CoefHom wx u (G * G') (e + e') := by
@@ -48,7 +48,7 @@ theorem CoefHom.mul {G G' : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N �
   exact (h p.1).mul (h' p.2)
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[coeff_monomial]`. Use `split_ifs with h`. Conclude with `h ▸ hg`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefHom_monomial (d : Fin N × Fin N →₀ ℕ) (g : MvPolynomial (Fin N × Fin N) O) (e : M)
     (hg : IsWeightedHomogeneous wx g (Finsupp.weight u d + e)) : CoefHom wx u (monomial d g) e := by
@@ -59,17 +59,15 @@ theorem coefHom_monomial (d : Fin N × Fin N →₀ ℕ) (g : MvPolynomial (Fin 
   · exact isWeightedHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Establish `hX : ∀ v, CoefHom wx u (genHom O N (X v)) (wf v)`. Introduce `v m`. Rewrite using `[genHom_X, coeff_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, C_mul_X_eq_monomial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `coefHom_monomial wx u _ _ _ ?_ m` and prove the remaining obligations. Rewrite using `[Finsupp.weight_single, one_smul, ← h]`. Conclude with `isWeightedHomogeneous_X _ _ _`. Proceed by induction on `d using Finsupp.induction_linear generalizing c with`. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monomial_zero', genHom_C, map_zero]`. Use `coefHom_monomial wx u 0 _ _ ?_` and prove the remaining obligations. Rewrite using `[map_zero, add_zero]`. Conclude with `isWeightedHomogeneous_C _ _`. Consider the case `add f g hf hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← mul_one c, ← monomial_mul, map_mul, map_add]`. Conclude with `(hf c).mul wx u (hg 1)`. Consider the case `single v n`. Proceed by induction on `n generalizing c with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_zero, monomial_zero', genHom_C, map_zero]`. Use `coefHom_monomial wx u 0 _ _ ?_` and prove the remaining obligations. Rewrite using `[map_zero, add_zero]`. Conclude with `isWeightedHomogeneous_C _ _`. Consider the case `succ n ih`.
-
-Rewrite using `[Finsupp.single_add, ← mul_one c, ← monomial_mul, map_mul, map_add]`. Use `(ih c).mul wx u ?_` and prove the remaining obligations. Rewrite using `[Finsupp.weight_single, one_smul]`. Conclude with `hX v`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefHom_genHom_monomial (wf : Fin N × Fin N → M) (h : ∀ a b s, wx (b, s) = u (a, b) + wf (a, s))
     (d : Fin N × Fin N →₀ ℕ) (c : O) : CoefHom wx u (genHom O N (monomial d c)) (Finsupp.weight wf d) := by
@@ -104,7 +102,7 @@ theorem coefHom_genHom_monomial (wf : Fin N × Fin N → M) (h : ∀ a b s, wx (
       exact hX v
 
 /- English proof (translation)
-Introduce `m`. Rewrite using `[f.as_sum, map_sum, coeff_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[← hf (mem_support_iff.1 hd)]`. Conclude with `coefHom_genHom_monomial wx u wf h d _ m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefHom_genHom (wf : Fin N × Fin N → M) (h : ∀ a b s, wx (b, s) = u (a, b) + wf (a, s))
     (f : MvPolynomial (Fin N × Fin N) O) (e : M) (hf : IsWeightedHomogeneous wf f e) : CoefHom wx u (genHom O N f) e := by
@@ -117,7 +115,7 @@ theorem coefHom_genHom (wf : Fin N × Fin N → M) (h : ∀ a b s, wx (b, s) = u
 end Weights
 
 /- English proof (translation)
-Use `coefHom_genHom (rowW N N) (colW N N) 0 (fun a b s => by simp [rowW, colW]) f 0 (fun d _ => by simp [Finsupp.weight_apply]) m` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coeff_genHom_row (f : MvPolynomial (Fin N × Fin N) O) (m : Fin N × Fin N →₀ ℕ) :
     IsWeightedHomogeneous (rowW N N) (coeff m (genHom O N f)) (Finsupp.weight (colW N N) m) := by
@@ -126,7 +124,7 @@ theorem coeff_genHom_row (f : MvPolynomial (Fin N × Fin N) O) (m : Fin N × Fin
   rwa [add_zero] at this
 
 /- English proof (translation)
-Use `coefHom_genHom (colW N N) 0 (colW N N) (fun a b s => by simp [colW]) f ν hf m` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_genHom_col (f : MvPolynomial (Fin N × Fin N) O) (ν : Fin N → ℕ) (hf : IsWeightedHomogeneous (colW N N) f ν)
     (m : Fin N × Fin N →₀ ℕ) : IsWeightedHomogeneous (colW N N) (coeff m (genHom O N f)) ν := by
@@ -134,15 +132,15 @@ theorem coeff_genHom_col (f : MvPolynomial (Fin N × Fin N) O) (ν : Fin N → �
   simpa [Finsupp.weight_apply] using this
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[rowst_mem_dualWeyl_iff]`. Use `⟨coeff_genHom_col O N f ν hf.1 m, fun l j hlj => ?_⟩` and prove the remaining obligations. Set `Φ : MvPolynomial (Option (Fin N × Fin N)) O →+* MvPolynomial (Fin N × Fin N) (MvPolynomial (Option (Fin N × Fin N)) O)` to `eval₂Hom (C.comp C) fun o => Option.elim o (C (X none)) fun v => ∑ b : Fin N, X (v.1, b) * C (X (some (b, v.2)))`. Establish `h1 : (map (colAddGen O (r` using `N) l j).toRingHom).comp (genHom O N).toRingHom = Φ.comp (colAddGen O l j).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c`. Simplify using `[Φ, genHom_C]`. Introduce `v`. Distinguish the cases in `h : v.2 = j`. Simplify using `[Φ, genHom_X, colAddGen, h, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Φ, genHom_X, colAddGen, h]`. Establish `h2 : (map (rename (R` using `O) (some : Fin N × Fin N → Option (Fin N × Fin N))).toRingHom).comp (genHom O N).toRingHom = Φ.comp (rename some).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[Φ, genHom_C]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `[Φ, genHom_X]`. Establish `h3` using `congrArg (coeff m) (RingHom.congr_fun h1 f)`. Establish `h4` using `congrArg (coeff m) (RingHom.congr_fun h2 f)`. Simplify using `only [RingHom.comp_apply, coeff_map, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h3 h4`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, h4, hf.2 l j hlj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_genHom_mem (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν)
     (m : Fin N × Fin N →₀ ℕ) : coeff m (genHom O N f) ∈ dualWeyl O N N ν := by
@@ -168,13 +166,13 @@ theorem coeff_genHom_mem (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N)
   rw [h3, h4, hf.2 l j hlj]
 
 /- English proof (translation)
-Set `Φ : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O) →ₐ[MvPolynomial (Fin N × Fin N) O] MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O)` to `aeval (fun v : Fin N × Fin N => ∑ b : Fin N, X (v.1, b) * C (X (b, v.2)))`. Establish `h1 : Φ.toRingHom.comp (map C) = (genHom O N).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[Φ, genHom_C]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `[Φ, genHom_X]`. Establish `h2 : ∀ g, genHom O N g = Φ (map C g)` using `fun g => (RingHom.congr_fun h1 g).symm`. Rewrite using `[h2, h2, ← algHom_weightedHomogeneousComponent Φ (rowW N N) (rowW N N)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `m`. Simplify using `only [coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `u`. Simplify using `only [Φ, aeval_X]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `(isWeightedHomogeneous_X _ (rowW N N) (u.1, b)).C_mul _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genHom_component (v : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O) :
     genHom O N (weightedHomogeneousComponent (rowW N N) v f) = weightedHomogeneousComponent (rowW N N) v (genHom O N f) := by
@@ -199,7 +197,7 @@ theorem genHom_component (v : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) 
     exact (isWeightedHomogeneous_X _ (rowW N N) (u.1, b)).C_mul _
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[rowW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_weight_rowW (c : Fin N → ℕ) (m : Fin N × Fin N →₀ ℕ) :
     ∑ a, c a * Finsupp.weight (rowW N N) m a = ∑ v, c v.1 * m v := by
@@ -210,7 +208,7 @@ theorem sum_mul_weight_rowW (c : Fin N → ℕ) (m : Fin N × Fin N →₀ ℕ) 
   simp [rowW, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[colW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_weight_colW (c : Fin N → ℕ) (m : Fin N × Fin N →₀ ℕ) :
     ∑ a, c a * Finsupp.weight (colW N N) m a = ∑ v, c v.2 * m v := by
@@ -223,9 +221,9 @@ theorem sum_mul_weight_colW (c : Fin N → ℕ) (m : Fin N × Fin N →₀ ℕ) 
 def expSet (ν : Fin N → ℕ) : Finset (Fin N × Fin N →₀ ℕ) := Finset.finsuppAntidiag Finset.univ (∑ a, ν a)
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨d, hd⟩` from `ne_zero_iff.1 (mem_support_iff.1 hm)`. Establish `h1` using `coeff_genHom_row O N f m hd`. Establish `h2` using `coeff_genHom_col O N f ν (rowst_mem_dualWeyl_iff.1 hf).1 m hd`. Establish `h3` using `sum_mul_weight_rowW N (fun _ => 1) d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `sum_mul_weight_colW N (fun _ => 1) d`. Establish `h5` using `sum_mul_weight_colW N (fun _ => 1) m`. Simplify using `only [one_mul, h1, h2] at h3 h4 h5`. Simplify using `only [expSet, Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true]`. Rewrite using `[← h5, h3, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem support_genHom (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
     (genHom O N f).support ⊆ expSet N ν := by
@@ -241,7 +239,7 @@ theorem support_genHom (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O
   rw [← h5, h3, h4]
 
 /- English proof (translation)
-Use `conv_lhs => rw [(genHom O N f).as_sum]`. Use `Finset.sum_subset (support_genHom O N ν f hf) fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.1 hm, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genHom_eq_sum (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
     genHom O N f = ∑ m ∈ expSet N ν, monomial m (coeff m (genHom O N f)) := by
@@ -254,7 +252,7 @@ def extHom {Z : Type} (β : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomi
   eval₂Hom C fun v => map C (β (X v))
 
 /- English proof (translation)
-Rewrite using `[extHom, eval₂Hom_monomial, monomial_eq, mul_comm, C_1, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extHom_monomial {Z : Type} (β : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomial Z O) (m : Fin N × Fin N →₀ ℕ)
     (g : MvPolynomial (Fin N × Fin N) O) : extHom O N β (monomial m g) = map C (β (monomial m 1)) * C g := by
@@ -262,7 +260,7 @@ theorem extHom_monomial {Z : Type} (β : MvPolynomial (Fin N × Fin N) O →ₐ[
   simp only [Finsupp.prod, map_prod, map_pow]
 
 /- English proof (translation)
-Use `conv_lhs => rw [genHom_eq_sum O N ν f hf]`. Simplify using `only [map_sum, extHom_monomial]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extHom_genHom {Z : Type} (β : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomial Z O) (ν : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
@@ -271,7 +269,7 @@ theorem extHom_genHom {Z : Type} (β : MvPolynomial (Fin N × Fin N) O →ₐ[O]
   simp only [map_sum, extHom_monomial]
 
 /- English proof (translation)
-Establish `: extHom O N (AlgHom.id O _) = RingHom.id _`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro c <;> simp [extHom]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extHom_id (G : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O)) : extHom O N (AlgHom.id O _) G = G := by
   have : extHom O N (AlgHom.id O _) = RingHom.id _ := by
@@ -279,9 +277,9 @@ theorem extHom_id (G : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `: (genHom O N).toRingHom.comp (rowAct O A).toRingHom = (extHom O N (rowAct O A)).comp (genHom O N).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[extHom, genHom_C]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[extHom, genHom_X, genHom_C, rowAct, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`. Conclude with `RingHom.congr_fun this f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genHom_rowAct (A : Matrix (Fin N) (Fin N) O) (f : MvPolynomial (Fin N × Fin N) O) :
     genHom O N (rowAct O A f) = extHom O N (rowAct O A) (genHom O N f) := by
@@ -296,9 +294,9 @@ theorem genHom_rowAct (A : Matrix (Fin N) (Fin N) O) (f : MvPolynomial (Fin N ×
 def unitHom (Z : Type) : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomial Z O := aeval fun v => if v.1 = v.2 then 1 else 0
 
 /- English proof (translation)
-Establish `: (extHom O N (unitHom O N Z)).comp (genHom O N).toRingHom = C`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[extHom, genHom_C]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[extHom, genHom_X, unitHom, apply_ite]`. Conclude with `RingHom.congr_fun this f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extHom_unit (Z : Type) (f : MvPolynomial (Fin N × Fin N) O) : extHom O N (unitHom O N Z) (genHom O N f) = C f := by
   have : (extHom O N (unitHom O N Z)).comp (genHom O N).toRingHom = C := by
@@ -312,19 +310,17 @@ def elemHom (l j : Fin N) : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomi
   aeval fun v => (if v.1 = v.2 then 1 else 0) + if v = (l, j) then X none else 0
 
 /- English proof (translation)
-Set `Θ : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O) →+* MvPolynomial (Option (Fin N × Fin N)) (MvPolynomial (Fin N × Fin N) O)` to `eval₂Hom ((extHom O N (elemHom O N l j)).comp (genHom O N).toRingHom) fun v => X (some v)`. Establish `: (extHom O N (colAddGen O l j)).comp (genHom O N).toRingHom = Θ.comp (genHom O N).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[extHom, genHom_C, Θ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Establish `e1 : ∀ b, extHom O N (elemHom O N l j) (genHom O N (X (b, v.2))) = C (X (b, v.2)) + if b = l then X none * C (X (j, v.2)) else 0`. Introduce `b`. Simplify using `[extHom, genHom_X, elemHom, apply_ite (map C), add_mul, Finset.sum_add_distrib, ite_and]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[genHom_X]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sum, map_mul, Θ, eval₂Hom_X', eval₂Hom_C, e1]`. Establish `e2 : ∀ b, extHom O N (colAddGen O l j) (X (v.1, b)) = X (some (v.1, b)) + if b = j then X none * X (some (v.1, l)) else 0`. Introduce `b`. Apply the tactic sequence `by_cases h : b = j <;> simp [extHom, colAddGen, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [e2]`. Simplify using `[extHom, mul_add, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `(RingHom.congr_fun this f).trans ?_` and prove the remaining obligations. Use `show Θ (genHom O N f) = _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [genHom_eq_sum O N ν f hf]`. Rewrite using `[map_sum, Finset.sum_product]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Θ, eval₂Hom_monomial, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[extHom_genHom O N _ ν _ (coeff_genHom_mem O N ν f hf m), Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Establish `: map (C : O →+* MvPolynomial (Fin N × Fin N) O) (rename (some : Fin N × Fin N → _) (monomial m 1)) = m.prod fun i k => X (some i) ^ k`. Rewrite using `[monomial_eq, C_1, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, rename_X, map_X]`. Rewrite using `[map_mul, this]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem extHom_colAddGen (l j : Fin N) (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
     extHom O N (colAddGen O l j) (genHom O N f) = ∑ p ∈ expSet N ν ×ˢ expSet N ν,

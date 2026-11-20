@@ -13,7 +13,7 @@ namespace PositivityTheory.Rg.DzCount
 namespace CentralCharacterTransfer
 
 /- English proof (translation)
-The claim follows from `Representation.IntertwiningMap.isIntertwining ρ σ φ.toIntertwiningMap g v`.
+A detailed English derivation is pending.
 -/
 theorem equiv_apply {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) (g : G) (v : V) :
@@ -21,9 +21,9 @@ theorem equiv_apply {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [Ad
   Representation.IntertwiningMap.isIntertwining ρ σ φ.toIntertwiningMap g v
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ h : H, ρ h v = ((1 : H →* ℂˣ) h : ℂ) • v) ↔ _`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Conclude with `hv ⟨h, hh⟩`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv h`. Conclude with `hv h h.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {H : Subgroup G} {v : V} : v ∈ fixed ρ H ↔ ∀ h ∈ H, ρ h v = v := by
@@ -36,11 +36,11 @@ theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ
     exact hv h h.2
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [Submodule.mem_map, mem_fixed_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩ h hh`. Express the relevant statement in the definitionally equal form `σ h (φ v) = φ v`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← equiv_apply, hv h hh]`. Introduce `hw`. Establish `e2 : φ (φ.toLinearEquiv.symm w) = w` using `φ.toLinearEquiv.apply_symm_apply w`. Use `⟨φ.toLinearEquiv.symm w, fun h hh => ?_, e2⟩` and prove the remaining obligations. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `φ _ = φ _`. Rewrite using `[equiv_apply, e2, hw h hh]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_fixed {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) (H : Subgroup G) :
@@ -59,7 +59,7 @@ theorem map_fixed {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddC
     rw [equiv_apply, e2, hw h hh]
 
 /- English proof (translation)
-Introduce `z w`. Establish `e2 : φ (φ.toLinearEquiv.symm w) = w` using `φ.toLinearEquiv.apply_symm_apply w`. Rewrite using `[← e2, ← equiv_apply, h z]`. Conclude with `φ.toLinearEquiv.map_smul _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCentralChar_of_equiv {k V W : Type} [Field k] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} {σ : Representation ℂ (GL (Fin n) k) W} (φ : π.Equiv σ)
@@ -72,11 +72,11 @@ theorem hasCentralChar_of_equiv {k V W : Type} [Field k] [AddCommGroup V] [Modul
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hm` using `map_fixed φ (KOne k (Fin n))`. Rewrite `hm` using `[hf, hf']`. Set `e : W ≃ₗ[ℂ] W'` to `(LinearEquiv.ofInjective j hj.1).trans ((φ.toLinearEquiv.submoduleMap (LinearMap.range j)).trans ((LinearEquiv.ofEq _ _ hm).trans (LinearEquiv.ofInjective j' hj'.1).symm))`. Establish `key : ∀ w, j' (e w) = φ (j w)`. Introduce `w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg Subtype.val ((LinearEquiv.ofInjective j' hj'.1).apply_symm_apply ((LinearEquiv.ofEq _ _ hm) ((φ.toLinearEquiv.submoduleMap _) ((LinearEquiv.ofInjective j hj.1) w))))`. Rewrite `h1` using `[LinearEquiv.ofInjective_apply]`. Conclude with `h1`. Use `⟨e, fun g v => ?_⟩` and prove the remaining obligations. Take `⟨g', rfl⟩` from `GlobalTheory.LocGL.redK_surjective g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hj'.1` to reduce the goal to its premises. Rewrite using `[key, hj.2, hj'.2, key]`. Conclude with `equiv_apply φ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer {W W' V V' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {n : ℕ}
@@ -106,25 +106,21 @@ end CentralCharacterTransfer
 
 open CentralCharacterTransfer in
 /- English proof (translation)
-Introduce `h4 h5 h6 h7 k _ _ _ _ n hn ϖ hϖ c`. Take `⟨τ, hτ, hinj⟩` from `h7 𝓀[k] n hn`. Establish `hdata : ∀ P ∈ Lab 𝓀[k] n, ∃ (π : IrrRep (GL (Fin n) k)) (ω : kˣ →* ℂˣ) (j : (τ P).V →ₗ[ℂ] π.V), HasCentralChar π.ρ ω ∧ ω ϖ = c ∧ IsTypeMap (τ P).ρ π.ρ j` using `fun P hP => h4 k (τ P).V n hn (τ P).ρ (hτ P hP).1 ϖ hϖ c`. Use `choose π ω j hω hc hj using hdata`. Establish `hirr : (1 : Representation ℂ (GL (Fin n) k) ℂ).IsIrreducible`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun s => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (α := Submodule ℂ ℂ) (congrArg Subrepresentation.toSubmodule h)`. Break down `Ideal.eq_bot_or_top s.toSubmodule with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d : IrrRep (GL (Fin n) k)` to `⟨ℂ, 1, fun v => by simp, hirr⟩`. Set `F : 𝓀[k][X] → IrrGL k` to `fun P => if hP : P ∈ Lab 𝓀[k] n then ⟨n, Quotient.mk _ (π P hP)⟩ else ⟨n, Quotient.mk _ d⟩`. Establish `hF : ∀ P (hP : P ∈ Lab 𝓀[k] n), F P = ⟨n, Quotient.mk _ (π P hP)⟩`. Introduce `P hP`. Simplify using `only [F, dif_pos hP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfix : ∀ P (hP : P ∈ Lab 𝓀[k] n), fixed (π P hP).ρ (KOne k (Fin n)) = LinearMap.range (j P hP)`. Introduce `P hP`. Use `haveI := GlobalTheory.SmGL.nontrivial_of_irreducible (hτ P hP).1`. Conclude with `h6 k (τ P).V n (τ P).ρ (hτ P hP).2 (π P hP) (ω P hP) (hω P hP) (j P hP) (hj P hP)`. Use `⟨F, fun P hP => ?_, fun P hP P' hP' hPP => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.SmGL.nontrivial_of_irreducible (hτ P hP).1`. Rewrite using `[hF P hP]`. Take `⟨ψ⟩ : Nonempty ((π P hP).ρ.Equiv (IrrCl.rep (Quotient.mk _ (π P hP) : IrrCl (GL (Fin n) k))).ρ)` from `Quotient.exact (Quotient.out_eq (Quotient.mk _ (π P hP) : IrrCl (GL (Fin n) k))).symm`. Use `set π₀ := IrrCl.rep (Quotient.mk _ (π P hP) : IrrCl (GL (Fin n) k))`. Set `j₀ : (τ P).V →ₗ[ℂ] π₀.V` to `ψ.toLinearEquiv.toLinearMap ∘ₗ j P hP`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj₀ : IsTypeMap (τ P).ρ π₀.ρ j₀`. Use `⟨ψ.toLinearEquiv.injective.comp (hj P hP).1, fun g v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (j P hP _) = π₀.ρ g (ψ (j P hP v))`. Rewrite using `[(hj P hP).2, equiv_apply]`. Establish `hcc` using `hasCentralChar_of_equiv ψ (hω P hP)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨rfl, ⟨hn, h5 k (τ P).V n (τ P).ρ (hτ P hP).2 π₀ j₀ hj₀⟩, ?_, ω P hP, hcc, hc P hP⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fixed π₀.ρ (KOne k (Fin n)) ≠ ⊥`. Rewrite using `[h6 k (τ P).V n (τ P).ρ (hτ P hP).2 π₀ (ω P hP) hcc j₀ hj₀]`. Take `⟨w, hw⟩` from `exists_ne (0 : (τ P).V)`. Introduce `hb`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hw` to reduce the goal to its premises. Apply `hj₀.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `hm : j₀ w ∈ LinearMap.range j₀` using `LinearMap.mem_range_self j₀ w`. Rewrite `hm` using `[hb]`.
-
-Conclude with `(Submodule.mem_bot ℂ).1 hm`. Rewrite `hPP` using `[hF P hP, hF P' hP']`. Establish `hq` using `eq_of_heq (Sigma.mk.inj_iff.1 hPP).2`. Take `⟨φ⟩ : Nonempty ((π P hP).ρ.Equiv (π P' hP').ρ)` from `Quotient.exact hq`. Take `⟨e, he⟩` from `transfer (hj P hP) (hj P' hP') (hfix P hP) (hfix P' hP') φ`.
-
-Conclude with `hinj P hP P' hP' ⟨e, he⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem st8a : St4 → St5 → St6 → St7 → St8a := by
   classical

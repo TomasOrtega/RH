@@ -5,19 +5,17 @@ open Ideal WittVector
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set I : Ideal A := Ideal.span {(p : A)}`. Introduce `x y hxy`. Establish `key : ∀ z : AdicCompletion I A, (p : AdicCompletion I A) * z = 0 → z = 0`. Introduce `z hz`. Apply `AdicCompletion.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (z.val (n + 1))`. Establish `hz' : (p • z).val (n + 1) = 0`. Rewrite using `[nsmul_eq_mul, hz]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz'` using `[AdicCompletion.val_smul_apply, ← ha, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Establish `hmem : (p : A) * a ∈ Ideal.span {(p : A) ^ (n + 1)}`. Establish `: p • a = (p : A) * a` using `by rw [nsmul_eq_mul]`. Rewrite using `[← this, ← Ideal.span_singleton_pow]`. Simplify `hz'` using `[smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `hab : a = (p : A) ^ n * b`. Apply `hp` to reduce the goal to its premises. Simplify using `only [smul_eq_mul]`. Rewrite using `[← hb]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `htr` using `z.property (Nat.le_succ n)`. Express the relevant statement in the definitionally equal form `AdicCompletion.transitionMap I A (Nat.le_succ n) (z.val (n + 1)) = z.val n at htr`. Rewrite using `[← htr, ← ha, AdicCompletion.val_zero_apply]`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk a : A ⧸ (I ^ n • ⊤ : Submodule A A)) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero, hab]`. Simplify using `only [smul_eq_mul, Ideal.mul_top, I, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨b, mul_comm _ _⟩`. Establish `h0 : (p : AdicCompletion I A) * (x - y) = 0`. Rewrite using `[mul_sub, sub_eq_zero]`.
-
-Conclude with `hxy`. Conclude with `sub_eq_zero.mp (key _ h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSMulRegular_natCast_adicCompletion (p : ℕ) (A : Type) [CommRing A]
     (hp : IsSMulRegular A (p : A)) :

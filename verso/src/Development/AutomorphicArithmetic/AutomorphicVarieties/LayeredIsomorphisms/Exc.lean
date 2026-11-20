@@ -5,17 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Introduce `l R _ L₀ _ h`. Take `⟨⟨K, _, _, hU, c, R', s, hR', hζ, hb⟩, -⟩` from `h`. Use `⟨c, hζ, fun Z => ?_⟩` and prove the remaining obligations. Take `⟨near, hnear⟩ : ∃ near : Fin R' → Finset ℕ, near = fun i => (Finset.Icc 1 Z : Finset ℕ).filter (fun e : ℕ => ‖s i - (e : K)‖ < (l : ℝ) ^ (-(Nat.log l Z : ℤ)))` from `⟨_, rfl⟩`. Use `⟨Finset.univ.biUnion near, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `FirstBound`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hone : ∀ i : Fin R', (near i).card ≤ 1`. Introduce `i`. Rewrite using `[Finset.card_le_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha b hb'`. Rewrite `ha`, `hb'` using `[hnear]`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at ha hb'`. Conclude with `near1 l K (s i) Z a b ha.1.1 ha.1.2 hb'.1.1 hb'.1.2 ha.2 hb'.2`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e he1 heZ hne m L₁ _ _ _ hL`. Establish `hfar : ∀ i : Fin R', (l : ℝ) ^ (-(Nat.log l Z : ℤ)) ≤ ‖s i - (e : K)‖`. Introduce `i`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[hnear]`. Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨i, ⟨he1, heZ⟩, hlt⟩`. Establish `h1` using `hb e he1 m L₁ hL (Nat.log l Z) hfar`.
-
-Conclude with `h1.trans (by gcongr)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.exc :
     ∀ (l R : ℕ) [Fact l.Prime] (L₀ : Type) [Field L₀], ABound l R L₀ →

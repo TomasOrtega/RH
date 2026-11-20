@@ -26,21 +26,21 @@ def lowerMat : Matrix (Fin 2) (Fin 2) ℂ := !![I, 1; 1, -I]
 def rotMat : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1; -1, 0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rotMat, raiseMat] <;> ring_nf <;> simp only [I_sq] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rot_raise : rotMat * raiseMat - raiseMat * rotMat = (2 * I) • raiseMat := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [rotMat, raiseMat] <;> ring_nf <;> simp only [I_sq] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rotMat, lowerMat] <;> ring_nf <;> simp only [I_sq] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rot_lower : rotMat * lowerMat - lowerMat * rotMat = (-2 * I) • lowerMat := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [rotMat, lowerMat] <;> ring_nf <;> simp only [I_sq] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rotMat, lowerMat, raiseMat] <;> ring_nf`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lower_raise : lowerMat * raiseMat - raiseMat * lowerMat = (4 * I) • rotMat := by
   ext i j
@@ -60,20 +60,20 @@ theorem coe_cuspOp (B : Matrix (Fin 2) (Fin 2) ℂ) (ψ : cuspForms ℚ 2) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (coe_cuspOp B ψ)`.
+A detailed English derivation is pending.
 -/
 theorem cuspToArch_cuspOp (B : Matrix (Fin 2) (Fin 2) ℂ) (ψ : cuspForms ℚ 2) :
     cuspToArch (cuspOp B ψ) = complexOpGL2 B (cuspToArch ψ) :=
   Subtype.ext (coe_cuspOp B ψ)
 
 /- English proof (translation)
-Introduce `a b h` and use `Subtype.ext (by have := congrArg Subtype.val h; exact this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspToArch_injective : Function.Injective cuspToArch := fun a b h =>
   Subtype.ext (by have := congrArg Subtype.val h; exact this)
 
 /- English proof (translation)
-Use extensionality with `ψ : 1`. Apply `cuspToArch_injective` to reduce the goal to its premises. Rewrite using `[LinearMap.add_apply, cuspToArch_cuspOp, complexOpGL2_add]`. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem cuspOp_add (B C : Matrix (Fin 2) (Fin 2) ℂ) : cuspOp (B + C) = cuspOp B + cuspOp C := by
   ext ψ : 1
@@ -83,7 +83,7 @@ theorem cuspOp_add (B C : Matrix (Fin 2) (Fin 2) ℂ) : cuspOp (B + C) = cuspOp 
   rfl
 
 /- English proof (translation)
-Use extensionality with `ψ : 1`. Apply `cuspToArch_injective` to reduce the goal to its premises. Rewrite using `[LinearMap.smul_apply, cuspToArch_cuspOp, complexOpGL2_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem cuspOp_smul (c : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) : cuspOp (c • B) = c • cuspOp B := by
   ext ψ : 1
@@ -93,9 +93,9 @@ theorem cuspOp_smul (c : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) : cuspOp (c • B
   rfl
 
 /- English proof (translation)
-Use extensionality with `ψ : 1`. Apply `cuspToArch_injective` to reduce the goal to its premises. Rewrite using `[cuspToArch_cuspOp, complexOpGL2_lie, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = ((complexOpGL2 B (cuspToArch (cuspOp C ψ)) - complexOpGL2 C (cuspToArch (cuspOp B ψ)) : archSmooth ℚ 2) : AdelicGL ℚ 2 → ℂ)`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cuspToArch_cuspOp, cuspToArch_cuspOp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cuspOp_lie (B C : Matrix (Fin 2) (Fin 2) ℂ) :
     cuspOp (B * C - C * B) = cuspOp B * cuspOp C - cuspOp C * cuspOp B := by
@@ -108,7 +108,7 @@ theorem cuspOp_lie (B C : Matrix (Fin 2) (Fin 2) ℂ) :
   rw [cuspToArch_cuspOp, cuspToArch_cuspOp]
 
 /- English proof (translation)
-Use extensionality with `ψ : 1`. Apply `cuspToArch_injective` to reduce the goal to its premises. Rewrite using `[cuspToArch_cuspOp, complexOpGL2_map_ofReal, realOpGL2, lieOfRealMat_lieRealMat]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gkModuleCusp_ρ_eq_cuspOp (X : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
     (gkModuleCusp ℚ 2).ρ X = cuspOp ((lieRealMat X).map (↑)) := by
@@ -118,7 +118,7 @@ theorem gkModuleCusp_ρ_eq_cuspOp (X : (isExpLieAlgebra ℚ 2).lieSubalgebra) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [cuspOp, LinearMap.add_apply, LinearMap.smul_apply, gkModuleCusp_ρ_finRepCusp, map_add, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cuspOp_finRepCusp (B : Matrix (Fin 2) (Fin 2) ℂ) (g : FiniteAdelicGL ℚ 2) (ψ : cuspForms ℚ 2) :
     cuspOp B (finRepCusp ℚ 2 g ψ) = finRepCusp ℚ 2 g (cuspOp B ψ) := by
@@ -127,7 +127,7 @@ theorem cuspOp_finRepCusp (B : Matrix (Fin 2) (Fin 2) ℂ) (g : FiniteAdelicGL �
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f.toSlashInvariantForm γ hγ`. Apply `cuspToArch_injective` to reduce the goal to its premises. Rewrite using `[cuspToArch_cuspOp]`. Establish `e : cuspToArch (liftCusp f) = ⟨adelicLift N k f, isArchSmooth_adelicLift hf f.holo'⟩` using `rfl`. Rewrite using `[e, ← gl2ArchRep_ι, gl2ArchRep_ι_adelicLift_of_holCoeff hf f.holo' hB]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -142,9 +142,9 @@ theorem cuspOp_liftCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Rewrite using `[cuspOp_finRepCusp, cuspOp_liftCusp f hB, map_smul]`. Consider the case `zero => rw [map_zero, smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_comm]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem cuspOp_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {B : Matrix (Fin 2) (Fin 2) ℂ} (hB : gl2HolCoeff B = 0) {t : cuspForms ℚ 2} (ht : t ∈ translateSpanCusp f) :
@@ -158,38 +158,38 @@ theorem cuspOp_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) 
   | smul c x _ hx => rw [map_smul, hx, smul_comm]
 
 /- English proof (translation)
-Simplify using `[gl2HolCoeff, lowerMat]`. Put the polynomial expressions in normal form. Simplify using `[I_sq]`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 -/
 theorem holCoeff_lowerMat : gl2HolCoeff lowerMat = 0 := by
   simp [gl2HolCoeff, lowerMat]; ring_nf; simp [I_sq]
 
 /- English proof (translation)
-Simplify using `[gl2HolCoeff, rotMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem holCoeff_rotMat : gl2HolCoeff rotMat = 0 := by
   simp [gl2HolCoeff, rotMat]
 
 /- English proof (translation)
-Simplify using `[gl2HolCoeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem holCoeff_one : gl2HolCoeff (1 : Matrix (Fin 2) (Fin 2) ℂ) = 0 := by
   simp [gl2HolCoeff]
 
 /- English proof (translation)
-Simplify using `[gl2WeightChar, lowerMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weightChar_lowerMat : gl2WeightChar k lowerMat = 0 := by
   simp [gl2WeightChar, lowerMat]
 
 /- English proof (translation)
-Simplify using `[gl2WeightChar, rotMat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weightChar_rotMat : gl2WeightChar k rotMat = I * k := by
   simp [gl2WeightChar, rotMat]
   ring
 
 /- English proof (translation)
-Simplify using `[gl2WeightChar]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weightChar_one : gl2WeightChar k (1 : Matrix (Fin 2) (Fin 2) ℂ) = 0 := by
   simp [gl2WeightChar]
@@ -198,14 +198,14 @@ theorem weightChar_one : gl2WeightChar k (1 : Matrix (Fin 2) (Fin 2) ℂ) = 0 :=
 abbrev kMat (x : archCompact ℚ 2) : GL (Fin 2) ℝ := archToReal (x : archGroup ℚ 2)
 
 /- English proof (translation)
-Apply `realInf_injective` to reduce the goal to its premises. Rewrite using `[realInf_realPart, prodEquiv_realEmb]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem realPart_realEmb (h : GL (Fin 2) ℝ) : realPart (realEmb h) = h := by
   apply realInf_injective
   rw [realInf_realPart, prodEquiv_realEmb]
 
 /- English proof (translation)
-Establish `hx : infEmb ℚ 2 (x : archGroup ℚ 2) ∈ Reduction.maxCompact` using `x.2`. Rewrite `hx` using `[infEmb_eq_realEmb]`. Take `⟨h1, h2, h3⟩` from `realPart_orthogonal hx`. Rewrite `h1`, `h2`, `h3` using `[realPart_realEmb]`. Conclude with `exists_eq_kGL_of_orthogonal _ h1 h2 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kGL_of_mem_archCompact (x : archCompact ℚ 2) :
     ∃ (w : ℂ) (hw : w ≠ 0), ‖w‖ = 1 ∧ (kMat x = kGL w hw ∨ kMat x = toReal epsilon * kGL w hw) := by
@@ -216,7 +216,7 @@ theorem exists_kGL_of_mem_archCompact (x : archCompact ℚ 2) :
   exact exists_eq_kGL_of_orthogonal _ h1 h2 h3
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(ψ : AdelicGL ℚ 2 → ℂ) (g * infEmb ℚ 2 (x : archGroup ℚ 2)) = _`. Rewrite using `[infEmb_eq_realEmb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem archCompactRepCusp_apply_coe (x : archCompact ℚ 2) (ψ : cuspForms ℚ 2) (g : AdelicGL ℚ 2) :
     ((archCompactRepCusp ℚ 2 x ψ : cuspForms ℚ 2) : AdelicGL ℚ 2 → ℂ) g =
@@ -225,7 +225,7 @@ theorem archCompactRepCusp_apply_coe (x : archCompact ℚ 2) (ψ : cuspForms ℚ
   rw [infEmb_eq_realEmb]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[archCompactRepCusp_apply_coe, hK, right_kGL_of_mem_translateSpan (liftEquiv N k f.toSlashInvariantForm).2.right_kGL (coe_mem_translateSpan f ht), h1]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem archCompactRepCusp_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (x : archCompact ℚ 2) {w : ℂ} (hw : w ≠ 0) (h1 : ‖w‖ = 1) (hK : kMat x = kGL w hw)
@@ -237,7 +237,7 @@ theorem archCompactRepCusp_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup 
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem archRealEquiv_coe (g : archGroup ℚ 2) :
     archRealEquiv ((g : (ArchMatrix ℚ 2)ˣ) : ArchMatrix ℚ 2) = (archToReal g : Matrix (Fin 2) (Fin 2) ℝ) := by
@@ -245,15 +245,15 @@ theorem archRealEquiv_coe (g : archGroup ℚ 2) :
   rfl
 
 /- English proof (translation)
-Simplify using `[archToReal, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archToReal_inv (g : archGroup ℚ 2) : archToReal g⁻¹ = (archToReal g)⁻¹ := by
   simp [archToReal, map_inv]
 
 /- English proof (translation)
-Establish `key` using `(gkModuleCusp ℚ 2).map_ρ x ⟨archRealEquiv.symm A, Submodule.mem_top⟩ ψ`. Establish `e1 : (isExpLieAlgebra ℚ 2).toLie ⟨archRealEquiv.symm A, Submodule.mem_top⟩ = lieOfRealMat A` using `rfl`. Establish `e2 : (isExpLieAlgebra ℚ 2).toLie ((isExpLieAlgebra ℚ 2).Ad (x : archGroup ℚ 2) ⟨archRealEquiv.symm A, Submodule.mem_top⟩) = lieOfRealMat ((kMat x : Matrix (Fin 2) (Fin 2) ℝ) * A * ((kMat x)⁻¹ : GL (Fin 2) ℝ))`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((x : archGroup ℚ 2) : (ArchMatrix ℚ 2)ˣ) : ArchMatrix ℚ 2) * archRealEquiv.symm A * ((((x : archGroup ℚ 2)⁻¹ : archGroup ℚ 2) : (ArchMatrix ℚ 2)ˣ) : ArchMatrix ℚ 2) = archRealEquiv.symm _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `archRealEquiv.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, map_mul, map_mul, RingEquiv.apply_symm_apply, archRealEquiv_coe, archRealEquiv_coe, archToReal_inv]`. Rewrite `key` using `[e1, e2]`. Conclude with `key`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archCompactRepCusp_rho (x : archCompact ℚ 2) (A : Matrix (Fin 2) (Fin 2) ℝ) (ψ : cuspForms ℚ 2) :
     archCompactRepCusp ℚ 2 x ((gkModuleCusp ℚ 2).ρ (lieOfRealMat A) ψ) =
@@ -275,7 +275,7 @@ theorem archCompactRepCusp_rho (x : archCompact ℚ 2) (A : Matrix (Fin 2) (Fin 
   exact key
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[reMat, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reMat_conj (K : GL (Fin 2) ℝ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
     reMat ((K : Matrix (Fin 2) (Fin 2) ℝ).map (↑) * B * ((K⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ).map (↑)) =
@@ -284,7 +284,7 @@ theorem reMat_conj (K : GL (Fin 2) ℝ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
   simp [reMat, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[imMat, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem imMat_conj (K : GL (Fin 2) ℝ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
     imMat ((K : Matrix (Fin 2) (Fin 2) ℝ).map (↑) * B * ((K⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ).map (↑)) =
@@ -295,11 +295,11 @@ theorem imMat_conj (K : GL (Fin 2) ℝ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
 abbrev kMatC (x : archCompact ℚ 2) : Matrix (Fin 2) (Fin 2) ℂ := (kMat x : Matrix (Fin 2) (Fin 2) ℝ).map (↑)
 
 /- English proof (translation)
-Establish `hKK : (kMat x : Matrix (Fin 2) (Fin 2) ℝ) * (((kMat x)⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hKi : kMatC x * (((kMat x)⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ).map (↑) = 1`. Rewrite using `[kMatC, show ((kMat x : Matrix (Fin 2) (Fin 2) ℝ).map ((↑) : ℝ → ℂ)) * (((kMat x)⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ).map (↑) = ((kMat x : Matrix (Fin 2) (Fin 2) ℝ) * (((kMat x)⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ)).map Complex.ofRealHom from (Matrix.map_mul (f …`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.one_apply]`. Establish `hB' : B' = kMatC x * B * (((kMat x)⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ).map (↑)`. Rewrite using `[h, Matrix.mul_assoc, hKi, Matrix.mul_one]`. Rewrite using `[hB']`. Simplify using `only [cuspOp, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, archCompactRepCusp_rho]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[kMatC, reMat_conj, imMat_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archCompactRepCusp_cuspOp (x : archCompact ℚ 2) {B B' : Matrix (Fin 2) (Fin 2) ℂ}
     (h : kMatC x * B = B' * kMatC x) (ψ : cuspForms ℚ 2) :
@@ -324,42 +324,42 @@ abbrev kgc (w : ℂ) (hw : w ≠ 0) : Matrix (Fin 2) (Fin 2) ℂ := (kGL w hw : 
 abbrev epsC : Matrix (Fin 2) (Fin 2) ℂ := (toReal epsilon : Matrix (Fin 2) (Fin 2) ℝ).map (↑)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, lowerMat, Matrix.mul_apply, Complex.ext_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kgc_lowerMat (w : ℂ) (hw : w ≠ 0) : kgc w hw * lowerMat = w • lowerMat := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, lowerMat, Matrix.mul_apply, Complex.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, lowerMat, Matrix.mul_apply, Complex.ext_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowerMat_kgc (w : ℂ) (hw : w ≠ 0) : lowerMat * kgc w hw = (starRingEnd ℂ w) • lowerMat := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, lowerMat, Matrix.mul_apply, Complex.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, raiseMat, Matrix.mul_apply, Complex.ext_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kgc_raiseMat (w : ℂ) (hw : w ≠ 0) : kgc w hw * raiseMat = (starRingEnd ℂ w) • raiseMat := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, raiseMat, Matrix.mul_apply, Complex.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, raiseMat, Matrix.mul_apply, Complex.ext_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem raiseMat_kgc (w : ℂ) (hw : w ≠ 0) : raiseMat * kgc w hw = w • raiseMat := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, raiseMat, Matrix.mul_apply, Complex.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, rotMat, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kgc_rotMat (w : ℂ) (hw : w ≠ 0) : kgc w hw * rotMat = rotMat * kgc w hw := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [kgc, coe_kGL, rotMat, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsC, coe_toReal_epsilon, lowerMat, raiseMat, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsC_lowerMat : epsC * lowerMat = -(raiseMat * epsC) := by
   ext i j
@@ -367,7 +367,7 @@ theorem epsC_lowerMat : epsC * lowerMat = -(raiseMat * epsC) := by
     Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsC, coe_toReal_epsilon, lowerMat, raiseMat, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsC_raiseMat : epsC * raiseMat = -(lowerMat * epsC) := by
   ext i j
@@ -375,7 +375,7 @@ theorem epsC_raiseMat : epsC * raiseMat = -(lowerMat * epsC) := by
     Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsC, coe_toReal_epsilon, rotMat, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsC_rotMat : epsC * rotMat = -(rotMat * epsC) := by
   ext i j
@@ -383,26 +383,26 @@ theorem epsC_rotMat : epsC * rotMat = -(rotMat * epsC) := by
     Fin.sum_univ_two]
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero _).2 hw`.
+A detailed English derivation is pending.
 -/
 theorem conj_ne_zero' {w : ℂ} (hw : w ≠ 0) : starRingEnd ℂ w ≠ 0 := (map_ne_zero _).2 hw
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, lowerMat_kgc, smul_smul, div_mul_cancel₀ _ (conj_ne_zero' hw), kgc_lowerMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plus_lowerMat (w : ℂ) (hw : w ≠ 0) :
     kgc w hw * lowerMat = ((w / starRingEnd ℂ w) • lowerMat) * kgc w hw := by
   rw [Matrix.smul_mul, lowerMat_kgc, smul_smul, div_mul_cancel₀ _ (conj_ne_zero' hw), kgc_lowerMat]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, raiseMat_kgc, smul_smul, div_mul_cancel₀ _ hw, kgc_raiseMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plus_raiseMat (w : ℂ) (hw : w ≠ 0) :
     kgc w hw * raiseMat = ((starRingEnd ℂ w / w) • raiseMat) * kgc w hw := by
   rw [Matrix.smul_mul, raiseMat_kgc, smul_smul, div_mul_cancel₀ _ hw, kgc_raiseMat]
 
 /- English proof (translation)
-Establish `hRe : raiseMat * epsC = -(epsC * lowerMat)` using `by rw [epsC_lowerMat, neg_neg]`. Rewrite using `[Matrix.mul_assoc, kgc_lowerMat, Matrix.mul_smul, epsC_lowerMat, Matrix.smul_mul, ← Matrix.mul_assoc, hRe, Matrix.neg_mul, Matrix.mul_assoc, lowerMat_kgc, Matrix.mul_smul, epsC_lowerMat]`. Simplify using `only [smul_neg, neg_neg, smul_smul]`. Rewrite using `[neg_mul, div_mul_cancel₀ _ (conj_ne_zero' hw)]`. Conclude with `(_root_.neg_smul w _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minus_lowerMat (w : ℂ) (hw : w ≠ 0) :
     epsC * kgc w hw * lowerMat = ((-(w / starRingEnd ℂ w)) • raiseMat) * (epsC * kgc w hw) := by
@@ -414,7 +414,7 @@ theorem minus_lowerMat (w : ℂ) (hw : w ≠ 0) :
   exact (_root_.neg_smul w _).symm
 
 /- English proof (translation)
-Establish `hLe : lowerMat * epsC = -(epsC * raiseMat)` using `by rw [epsC_raiseMat, neg_neg]`. Rewrite using `[Matrix.mul_assoc, kgc_raiseMat, Matrix.mul_smul, epsC_raiseMat, Matrix.smul_mul, ← Matrix.mul_assoc, hLe, Matrix.neg_mul, Matrix.mul_assoc, raiseMat_kgc, Matrix.mul_smul, epsC_raiseMat]`. Simplify using `only [smul_neg, neg_neg, smul_smul]`. Rewrite using `[neg_mul, div_mul_cancel₀ _ hw]`. Conclude with `(_root_.neg_smul _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minus_raiseMat (w : ℂ) (hw : w ≠ 0) :
     epsC * kgc w hw * raiseMat = ((-(starRingEnd ℂ w / w)) • lowerMat) * (epsC * kgc w hw) := by
@@ -426,7 +426,7 @@ theorem minus_raiseMat (w : ℂ) (hw : w ≠ 0) :
   exact (_root_.neg_smul _ _).symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, kgc_rotMat, ← Matrix.mul_assoc, epsC_rotMat, neg_one_smul, Matrix.neg_mul, Matrix.neg_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem minus_rotMat (w : ℂ) (hw : w ≠ 0) :
     epsC * kgc w hw * rotMat = ((-1 : ℂ) • rotMat) * (epsC * kgc w hw) := by
@@ -434,14 +434,14 @@ theorem minus_rotMat (w : ℂ) (hw : w ≠ 0) :
     Matrix.neg_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[kMatC, hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kMatC_of_plus {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = kGL w hw) :
     kMatC x = kgc w hw := by
   rw [kMatC, hK]
 
 /- English proof (translation)
-Rewrite using `[kMatC, hK, Units.val_mul]`. Conclude with `Matrix.map_mul (f := Complex.ofRealHom)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kMatC_of_minus {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kMat x = toReal epsilon * kGL w hw) :
     kMatC x = epsC * kgc w hw := by
@@ -449,7 +449,7 @@ theorem kMatC_of_minus {x : archCompact ℚ 2} {w : ℂ} {hw : w ≠ 0} (hK : kM
   exact Matrix.map_mul (f := Complex.ofRealHom)
 
 /- English proof (translation)
-The claim follows from `archCompactRepCusp_cuspOp x (by rw [Matrix.mul_one, Matrix.one_mul]) ψ`.
+A detailed English derivation is pending.
 -/
 theorem archCompactRepCusp_cuspOp_one (x : archCompact ℚ 2) (ψ : cuspForms ℚ 2) :
     archCompactRepCusp ℚ 2 x (cuspOp 1 ψ) = cuspOp 1 (archCompactRepCusp ℚ 2 x ψ) :=

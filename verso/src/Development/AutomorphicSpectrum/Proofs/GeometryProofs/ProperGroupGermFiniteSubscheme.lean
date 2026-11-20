@@ -17,39 +17,39 @@ open PositivityTheory.Xgn.JetKernelRank Formalism.L2.Pj Formalism.MainNotions.Mo
 local notation "hm" φ:max => Formalism.L2.Pj.homAt (𝟙 (Sp _)) φ
 
 /- English proof (translation)
-Establish `hA` using `AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi`. Use `t.act.hom a` as an intermediate fact. Use `t.act.hom (H.bar a)` as an intermediate fact. Take `⟨κ, h₁, h₂⟩` from `exists_ker i hp`. Take `⟨w, hw, hU⟩` from `g.frame.ad a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU₁, hU₂⟩` from `hU 3`. Establish `hW : AdSum (t.act.act a) (t.act.act (H.bar a)) (Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)]) (cφG t ![fst t.G t.G ≫ t.act.act a, snd t.G t.G])) (Sum.elim (cε 2) (fun I => -cε 2 I))` using `fun {T} p q U _ h => by`. Use `(prod_sum₂ (K := ULift.{0} (Finset (Fin 2))) (K' := ULift.{0} (Finset (Fin 2))) (U := U) _ (prod_cube₂ _ _ fun r => h ((lift p q).left ≫ r)) (prod_neg _ _ (prod_cube₂ _ _ fun r => h ((lift p q).left ≫ r)))).trans ?_` and prove the remaining obligations. Simplify using `only [← Over.comp_left, MonObj.comp_mul, MonObj.comp_one, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Establish `cc : MvPowerSeries.constantCoeff (g.B.ad a) = 1`. Apply the tactic sequence `rw [← PositivityTheory.HtPt.Ca.cc_ev (a := ![0, Germ.pt k (n := 1) d 0]) (fun j i => by fin_cases j <;> simp [Germ.pt]), g.B.adjoint_zero_fst, map_one]`. Establish `h11 : ∀ (R : Type) [CommRing R] [Algebra k R], Chi w (1 : Ov k R ⟶ t.G) 1 1` using `fun R _ _ => by`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h0 : ∀ i j : Fin d, (0 : Fin d → R) i * (0 : Fin d → R) j = 0` using `by simp`. Use `chi_chart g w a U hU₂ 0 0 h0 h0 (by simp) (by simp)` as an intermediate fact. Take `⟨α, β, e⟩` from `second_jet_expansion (k := k) 0 0 h0 h0 (g.B.ad a)`. Rewrite `this` using `[cp_zero g _ _ rfl, hU₁, e, cc]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `sq : ∀ {n : ℕ} (v : Fin n → Fin d → k) (i j : Fin d), (inr (fun l => v l i) : Sq k n) * inr (fun l => v l j) = 0` using `fun v i j => inr_mul_inr _ _ _`. Establish `kill : ∀ {n : ℕ} (v : Fin n → Fin d → k) (M : Matrix (Fin d) (Fin d) k), (∀ l, M.mulVec (v l) = 0) → ∀ j, ∑ i, M j i • (inr (fun l => v l i) : Sq k n) = 0` using `fun v M h j => by`. Use `TrivSqZeroExt.ext (by simp [fst_sum]) (funext fun l => ?_)` and prove the remaining obligations. Simplify `congrFun (h l) j` using `[snd_sum, Matrix.mulVec, dotProduct]`. Establish `dirv : ∀ {n : ℕ} (v : Fin n → Fin d → k), LinearIndependent k v → ∀ l : Fin n → k, hm (dir l) ≫ cp g _ (sq v) = 1 → ∀ i, l i = 0` using `fun v lv l h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[cp_nat g _ _ _ (fun j => (inr ((∑ i, l i • v i) j) : DualNumber k)) (fun _ _ => inr_mul_inr _ _ _) (fun j => by simp [dir, dotProduct])]`. Conclude with `Fintype.linearIndependent_iff.1 lv l (cp_inj g hs _ _ h)`. Set `z : Ov k (Sq k r) ⟶ t.G` to `cp g _ (sq v)`. Establish `hz : z ≫ t.act.act (H.bar a) = 1` using `cp_act g _ _ _ (kill v _ hv)`. Establish `ker : ∀ {T : Over (Sp k)} (y : T ⟶ Ov k A), (y ≫ κ) ≫ t.act.act a = 1` using `fun y => by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h₁, MonObj.comp_one]`. Establish `ker' : ∀ {T : Over (Sp k)} (y : T ⟶ Ov k (Sq k r)), (y ≫ z) ≫ t.act.act (H.bar a) = 1` using `fun y => by`. Rewrite using `[Category.assoc, hz, MonObj.comp_one]`. Take `⟨ψ, hψ⟩` from `pt_surj h₂ (cp g _ (sq u)) (cp_act g _ _ _ (kill u _ hu))`. Take `⟨e, he⟩` from `pt_surj h₂ (1 : Ov k k ⟶ t.G) (MonObj.one_comp _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Δ, hΔ⟩` from `pt_surj h₂ ((hm (includeLeft : A →ₐ[k] A ⊗[k] A) ≫ κ) * (hm includeRight ≫ κ)) (by rw [MonObj.mul_comp, ker, ker, _root_.mul_one])`. Take `⟨c, hc⟩` from `chi_exists hw hW (hm (includeLeft : A →ₐ[k] A ⊗[k] Sq k r) ≫ κ) (hm includeRight ≫ z) (ker _) (ker' _)`. Establish `N : ∀ {B C : Type} [CommRing B] [Algebra k B] [CommRing C] [Algebra k C] (θ : A →ₐ[k] B) (ν : Sq k r →ₐ[k] C), Chi w (hm includeLeft ≫ hm θ ≫ κ) (hm includeRight ≫ hm ν ≫ z) (Algebra.TensorProduct.map θ ν c)` using `fun θ ν => by`. Use `hc.nat (Algebra.TensorProduct.map θ ν)` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, map_comp_includeLeft, map_comp_includeRight, ← homAt_comp, ← homAt_comp, Category.assoc, Category.assoc]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `c1 : c0 k r A c = 1`. Use `hc.nat (c0 k r A)` as an intermediate fact. Rewrite `this` using `[← Category.assoc (hm (c0 k r A)) (hm includeRight), homAt_comp, cp_nat g _ _ _ 0 (by simp) (fun j => by simp), cp_zero g _ _ rfl]`. Conclude with `this.unique (chi_one hA hw hW (h11 A) _).1`. Establish `fψ : ∀ x, (ψ x).fst = e x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fstHom k k _).comp ψ = e` using `pt_inj h₁ h₂ (by`. Rewrite using `[← homAt_comp, Category.assoc, hψ, he, cp_nat g _ _ _ 0 (by simp) (fun j => by simp), cp_zero g _ _ rfl])`. Conclude with `fun x => DFunLike.congr_fun this x`. Use `⟨κ, h₁, h₂, Δ, e, fun i => co i c, fun j => LinearMap.proj j ∘ₗ sndHom k _ ∘ₗ ψ.toLinearMap, hΔ, he, fun i => ?_, Fintype.linearIndependent_iff.2 fun l hl => ?_, fun j x y => ?_, Fintype.linearIndependent_iff.2 fun l hl => ?_, fun j i => ?_⟩` and prove the remaining obligations. Establish `a₁` using `N Δ (AlgHom.id k _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `a₁` using `[hΔ, MonObj.comp_mul]`. Establish `a₂` using `chi_mul hA hw hW (h11 _) (by rw [← Category.assoc]; exact ker _) (by rw [← Category.assoc]; exact ker' _) (N (includeLeft : A →ₐ[k] A ⊗[k] A) (AlgHom.id k _)) (N (includeRight : A →ₐ[k] A ⊗[k] A) (AlgHom.id k _))`. Rewrite using `[← co_map, a₁.unique a₂, co_mul, co_map, co_map, map_lineCoeffConst, map_lineCoeffConst, c1]`. Simplify using `[add_comm]`. Take `⟨_, _, _⟩` from `flat_surj h₂ hA`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a₁` using `N (AlgHom.id k A) (dir l)`. Rewrite `a₁` using `[map_dir, hl, c1, zero_tmul, add_zero, ← Algebra.TensorProduct.one_def, homAt_id, Category.id_comp]`. Use `dirv v lv l (pair_nondeg hA t.PP.isLB hw hW hK _ (hm (dir l) ≫ z) (ker' _) fun T ρ x hx y J hJ => ?_)` and prove the remaining obligations. Take `⟨x, rfl, -⟩` from `h₂ T x hx`. Take `⟨τ, rfl, rfl⟩` from `exists_tensor x ρ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a₂` using `(a₁ T τ y J hJ).trans ((chi_one hA hw hW (h11 _) (hm (includeRight : DualNumber k →ₐ[k] A ⊗[k] DualNumber k) ≫ hm (dir l) ≫ z)).2 T τ y J hJ).symm`. Rewrite `a₂` using `[MonObj.comp_one]`. Simplify `Units.ext a₂` using `only [Category.assoc]`. Simplify using `[snd_mul, fψ, mul_comm]`. Use `dirv u lu l ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (dir l).comp ψ = (Algebra.ofId k _).comp e` using `AlgHom.ext fun x => by`. Use `DFunLike.congr_fun hl x` as an intermediate fact. Use `ext`. Simplify using `[dir, fψ, algebraMap_eq_inl]`. Simplify `this` using `[dir, dotProduct, algebraMap_eq_inl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hψ, ← Category.assoc, homAt_comp, this, ← homAt_comp, Category.assoc, he, MonObj.comp_one]`. Establish `a₁` using `N ψ (AlgHom.id k _)`. Set `a' : Fin d → Sq k s ⊗[k] Sq k r` to `fun m => inr (fun l => u l m) ⊗ₜ 1`. Set `b' : Fin d → Sq k s ⊗[k] Sq k r` to `fun m => 1 ⊗ₜ inr (fun l => v l m)`. Establish `ha : ∀ i j, a' i * a' j = 0` using `fun i j => by simp [a']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : ∀ i j, b' i * b' j = 0` using `fun i j => by simp [b']`. Rewrite `a₁` using `[hψ, homAt_id, Category.id_comp, cp_nat g _ _ _ a' ha (fun _ => rfl), cp_nat g _ _ _ b' hb (fun _ => rfl)]`. Establish `a₂` using `chi_chart g w a U hU₂ a' b' ha hb (fun m => by simpa [a', sum_tmul, smul_tmul'] using congrArg (· ⊗ₜ[k] (1 : Sq k r)) (kill u _ hu m)) (fun m => by simpa [b', tmul_sum] using congrArg ((1 : Sq k s) ⊗ₜ[k] ·) (kill v _ hv m))`. Take `⟨α, β, e'⟩` from `second_jet_expansion (k := k) a' b' ha hb (g.B.ad a)`. Establish `a₃` using `congrArg (fun q => (co i q).snd j) ((a₁.unique a₂).trans ((congrArg _ hU₁).trans e'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [co_map] at a₃`. Use `a₃.trans ?_` and prove the remaining obligations. Simplify using `[a', b', snd_sum, Algebra.TensorProduct.algebraMap_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_data (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)]
     (hs : ∀ a : 𝓞 E, star a = H.bar a) (k : Type) [Field k] [IsAlgClosed k] (t : SAB H (Sp k))
@@ -175,11 +175,11 @@ theorem ker_data (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `inj : ∀ {W M : Type} [AddCommGroup W] [Module k W] [AddCommGroup M] [Module k M] {n : ℕ} (b : Module.Basis (Fin n) k W) (c : Fin n → M), LinearIndependent k c → Function.Injective (b.constr k c)`. Introduce `W M _ _ _ _ n b c hc`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Module.Basis.constr_apply_fintype]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hc _ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `b.equivFun.injective (by ext i; simpa using h0 i)`. Use `⟨bU.constr k D₀, bV.constr k f, inj bU D₀ hli, inj bV f hfi, fun u x y => ?_, fun z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.constr_apply_fintype, LinearMap.sum_apply, LinearMap.smul_apply, hD, smul_eq_mul, mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun _ _ => by ring) (Finset.sum_congr rfl fun _ _ => by ring)` and prove the remaining obligations. Simplify using `only [Module.Basis.constr_apply_fintype, map_sum, map_smul, hf, smul_add, Finset.sum_add_distrib, TensorProduct.sum_tmul, TensorProduct.tmul_sum, TensorProduct.smul_tmul', TensorProduct.tmul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [← bU.sum_equivFun u, ← bV.sum_equivFun z]`. Simplify using `only [Module.Basis.constr_apply_fintype, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, hP]`.
+A detailed English derivation is pending.
 -/
 theorem assemble {k H : Type} [Field k] [CommRing H] [HopfAlgebra k H] {V V' : Type} [AddCommGroup V] [Module k V]
     [AddCommGroup V'] [Module k V'] {r s : ℕ} (bV : Module.Basis (Fin r) k V') (bU : Module.Basis (Fin s) k V)
@@ -210,19 +210,15 @@ theorem assemble {k H : Type} [Field k] [CommRing H] [HopfAlgebra k H] {V V' : T
 open Algebra.TensorProduct in
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `pt_surj h₂ κ⁻¹ (by rw [GrpObj.inv_comp, h₁, inv_one])`. Establish `mul : ∀ {R : Type} [CommRing R] [Algebra k R] (θ : A ⊗[k] A →ₐ[k] R), hm (θ.comp Δ) ≫ κ = (hm (θ.comp includeLeft) ≫ κ) * (hm (θ.comp includeRight) ≫ κ)` using `fun θ => by`. Rewrite using `[← homAt_comp, Category.assoc, hΔ, MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp]`. Establish `one : ∀ {R : Type} [CommRing R] [Algebra k R] (θ : k →ₐ[k] R), hm (θ.comp ε) ≫ κ = 1` using `fun θ => by`. Rewrite using `[← homAt_comp, Category.assoc, hε, MonObj.comp_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : hm (AlgHom.id k A) ≫ κ = κ` using `by rw [homAt_id, Category.id_comp]`. Establish `cg : ∀ {R : Type} [CommRing R] [Algebra k R] {φ ψ : A →ₐ[k] R}, φ = ψ → hm φ ≫ κ = hm ψ ≫ κ` using `fun h => by rw [h]`. Use `letI : Bialgebra k A := Bialgebra.ofAlgHom Δ ε (pt_inj h₁ h₂ (by`. Set `a` to `(Algebra.TensorProduct.assoc k k k A A A).toAlgHom`. Establish `e₁ : (a.comp (Algebra.TensorProduct.map Δ (.id k A))).comp includeLeft = (a.comp includeLeft).comp Δ` using `by ext x; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : (Algebra.TensorProduct.map (.id k A) Δ).comp includeRight = (includeRight : A ⊗[k] A →ₐ[k] A ⊗[k] (A ⊗[k] A)).comp Δ` using `by ext x; simp`. Rewrite using `[← AlgHom.comp_assoc, mul, mul, e₁, e₂, mul, mul, _root_.mul_assoc]`. Conclude with `congrArg₂ (· * ·) (cg (by ext x; simp [a, Algebra.TensorProduct.one_def])) (congrArg₂ (· * ·) (cg (by ext x; simp [a, Algebra.TensorProduct.one_def])) (cg (by ext x; simp [a, Algebra.TensorProduct.one_def])))))`. Use the proof step `(pt_inj h₁ h₂ (by`. Establish `e₁ : (Algebra.TensorProduct.map ε (.id k A)).comp includeLeft = (includeLeft : k →ₐ[k] k ⊗[k] A).comp ε` using `by ext x; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul, e₁, one, _root_.one_mul]`. Conclude with `cg (by ext x; simp)))`. Use the proof step `(pt_inj h₁ h₂ (by`. Establish `e₁ : (Algebra.TensorProduct.map (.id k A) ε).comp includeRight = (includeRight : k →ₐ[k] A ⊗[k] k).comp ε` using `by ext x; simp`. Rewrite using `[mul, e₁, one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `cg (by ext x; simp)))`. Use `letI : HopfAlgebra k A := HopfAlgebra.ofAlgHom σ (pt_inj h₁ h₂ (by`. Use `(mul _).trans (Eq.trans ?_ (one _).symm)` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) ((cg (Algebra.TensorProduct.lift_comp_includeLeft _ _ fun _ _ => Commute.all _ _)).trans hσ) ((cg (Algebra.TensorProduct.lift_comp_includeRight _ _ fun _ _ => Commute.all _ _)).trans hid)).trans (inv_mul_cancel _)))`. Use the proof step `(pt_inj h₁ h₂ (by`.
-
-Use `(mul _).trans (Eq.trans ?_ (one _).symm)` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) ((cg (Algebra.TensorProduct.lift_comp_includeLeft _ _ fun _ _ => Commute.all _ _)).trans hid) ((cg (Algebra.TensorProduct.lift_comp_includeRight _ _ fun _ _ => Commute.all _ _)).trans hσ)).trans (mul_inv_cancel _)))`. Establish `hco : Coalgebra.IsCocomm k A` using `⟨by`. Establish `: (Algebra.TensorProduct.comm k A A).toAlgHom.comp Δ = Δ` using `pt_inj h₁ h₂ (by`. Rewrite using `[mul, hΔ, mul_comm]`.
-
-Conclude with `congrArg₂ (· * ·) (cg (by ext x; simp)) (cg (by ext x; simp)))`. Conclude with `congr(($this).toLinearMap)⟩`. Take `⟨D, T, h⟩` from `assemble bV bU u hf hfi D₀ (fun i a b => (hD i a b).trans ((add_comm _ _).trans (congrArg₂ (· + ·) rfl rfl))) hli P hP`. Conclude with `⟨A, inferInstance, inferInstance, hco, ‹Module.Finite k A›, rfl, D, T, h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hopf {k : Type} [Field k] {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {f : G ⟶ G} [IsMonHom f]
     {A : Type} [CommRing A] [Algebra k A] [Module.Finite k A] {κ : Ov k A ⟶ G} (h₁ : κ ≫ f = 1)
@@ -289,15 +285,15 @@ theorem exists_hopf {k : Type} [Field k] {G : Over (Sp k)} [GrpObj G] [IsCommMon
   exact ⟨A, inferInstance, inferInstance, hco, ‹Module.Finite k A›, rfl, D, T, h⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ hs k _ _ p _ _ t hpr hK d g a A _ _ _ i hp`. Use `t.act.hom a` as an intermediate fact. Set `V` to `LinearMap.ker (Matrix.toLin' (rho g.B a))`. Set `V'` to `LinearMap.ker (Matrix.toLin' (rho g.B (star a)))`. Set `bU` to `Module.finBasis k V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bV` to `Module.finBasis k V'`. Establish `lu : LinearIndependent k fun j => (bU j : Fin d → k)` using `bU.linearIndependent.map' V.subtype (Submodule.ker_subtype _)`. Establish `lv : LinearIndependent k fun i => (bV i : Fin d → k)` using `bV.linearIndependent.map' V'.subtype (Submodule.ker_subtype _)`. Establish `hu : ∀ j, (rho g.B a).mulVec (bU j : Fin d → k) = 0` using `fun j => by`. Use `(bU j).2` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Establish `hv : ∀ i, (rho g.B (H.bar a)).mulVec (bV i : Fin d → k) = 0` using `fun i => by`. Use `(bV i).2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, Matrix.toLin'_apply, hs]`. Then use the resulting hypothesis. Take `⟨κ, h₁, h₂, Δ, e, f, D₀, hΔ, he, hf, hfi, hD, hli, hP⟩` from `ker_data E H hs k t hpr hK d g a A i hp _ _ lu lv hu hv`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Set `P : V →ₗ[k] V' →ₗ[k] k` to `LinearMap.mk₂ k (fun u z => (u : Fin d → k) ⬝ᵥ (bil (g.B.ad a) 1 1).mulVec (z : Fin d → k)) (fun _ _ _ => by simp [add_dotProduct]) (fun _ _ _ => by simp [smul_dotProduct]) (fun _ _ _ => by simp [Matrix.mulVec_add, dotProduct_add]) (fun _ _ _ => by simp [Matrix.mulVec_smul, dotPr …`. Take `⟨A', i₁, i₂, i₃, i₄, hr, D, T, hDi, hTi, hder, hprim, hpair⟩` from `exists_hopf h₁ h₂ Δ hΔ e he bV bU f hf hfi D₀ hD hli P hP`. Use `⟨A', i₁, i₂, i₃, i₄, hr, D, T, hDi, hTi, hder, hprim, fun u z h => ?_⟩` and prove the remaining obligations. Rewrite using `[hpair]`. Express the relevant statement in the definitionally equal form `(u : Fin d → k) ⬝ᵥ (bil (g.B.ad a) 1 1).mulVec (z : Fin d → k) = 0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerHopf_geom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (t : SAB H (Sp k)), IsProper t.G.hom → Out.KTriv t.G t.PP.L → ∀ (d : ℕ) (g : GermAt t (𝟙 (Sp k)) d) (a : 𝓞 E) (A : Type) [CommRing A] [Algebra k A] [Module.Finite k A] (i : Sp A ⟶ t.G.left), IsPullback i (spMap (algebraMap k A)) (t.act.act a).left (η[t.G]).left →
     ∃ (A' : Type) (_ : CommRing A') (_ : HopfAlgebra k A') (_ : Coalgebra.IsCocomm k A') (_ : Module.Finite k A'),

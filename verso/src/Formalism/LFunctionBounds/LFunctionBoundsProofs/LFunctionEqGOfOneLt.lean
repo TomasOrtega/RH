@@ -9,18 +9,18 @@ namespace Formalism.FX
 namespace LFunctionPartialSum
 
 /- English proof (translation)
-Rewrite `ht` using `[Set.uIcc_of_le (by linarith)]`. Conclude with `lt_of_lt_of_le hx ht.1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pos_of_mem_uIcc_self_add_one {x t : ℝ} (hx : 0 < x) (ht : t ∈ Set.uIcc x (x + 1)) : 0 < t := by
   rw [Set.uIcc_of_le (by linarith)] at ht
   exact lt_of_lt_of_le hx ht.1
 
 /- English proof (translation)
-Establish `hderiv : ∀ t ∈ Set.uIcc x (x + 1), HasDerivAt (fun y : ℝ => (y : ℂ) ^ (-s)) (-s * (t : ℂ) ^ (-s - 1)) t` using `fun t ht => (Complex.hasStrictDerivAt_cpow_const (Complex.ofReal_mem_slitPlane.mpr (pos_of_mem_uIcc_self_add_one hx ht))).hasDerivAt.comp_ofReal`. Establish `hint : IntervalIntegrable (fun t : ℝ => -s * (t : ℂ) ^ (-s - 1)) MeasureTheory.volume x (x + 1)`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Introduce `t ht`. Establish `hc : ContinuousAt (fun z : ℂ => z ^ (-s - 1)) (t : ℂ)` using `(Complex.hasStrictDerivAt_cpow_const (c := -s - 1) (Complex.ofReal_mem_slitPlane.mpr (pos_of_mem_uIcc_self_add_one hx ht))).hasDerivAt.continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(continuousAt_const.mul (hc.comp Complex.continuous_ofReal.continuousAt)).continuousWithinAt`. Establish `h` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint`. Rewrite `h` using `[intervalIntegral.integral_const_mul]`. Establish `e : s * ∫ t in x..(x + 1), (t : ℂ) ^ (-s - 1) = -(-s * ∫ t in x..(x + 1), (t : ℂ) ^ (-s - 1))` using `by ring`. Rewrite using `[e, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma cpow_sub_eq_integral {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : s ≠ 0) :
     (x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s) = s * ∫ t in x..(x + 1), (t : ℂ) ^ (-s - 1) := by
@@ -42,9 +42,9 @@ lemma cpow_sub_eq_integral {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : s ≠ 0) :
   ring
 
 /- English proof (translation)
-Apply `intervalIntegral.norm_integral_le_of_norm_le (by linarith)` to reduce the goal to its premises. Use `Filter.Eventually.of_forall fun t ht => ?_` and prove the remaining obligations. Establish `ht0 : 0 < t` using `lt_trans hx ht.1`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos ht0]`. Apply `le_of_eq` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Conclude with `(continuousOn_id.rpow_const fun t ht => Or.inl (pos_of_mem_uIcc_self_add_one hx ht).ne').intervalIntegrable`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_integral_le {x : ℝ} (hx : 0 < x) (s : ℂ) :
     ‖∫ t in x..(x + 1), (t : ℂ) ^ (-s - 1)‖ ≤ ∫ t in x..(x + 1), t ^ (-s.re - 1) := by
@@ -57,7 +57,7 @@ lemma norm_integral_le {x : ℝ} (hx : 0 < x) (s : ℂ) :
   · exact (continuousOn_id.rpow_const fun t ht => Or.inl (pos_of_mem_uIcc_self_add_one hx ht).ne').intervalIntegrable
 
 /- English proof (translation)
-Rewrite using `[integral_rpow (Or.inr ⟨by linarith, fun h0 => lt_irrefl 0 (pos_of_mem_uIcc_self_add_one hx h0)⟩)]`. Establish `e : -σ - 1 + 1 = -σ` using `by ring`. Rewrite using `[e, div_neg, ← neg_div, neg_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma integral_rpow_eq {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     ∫ t in x..(x + 1), t ^ (-σ - 1) = (x ^ (-σ) - (x + 1) ^ (-σ)) / σ := by
@@ -66,9 +66,7 @@ lemma integral_rpow_eq {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
   rw [e, div_neg, ← neg_div, neg_sub]
 
 /- English proof (translation)
-Establish `h1 : ∫ t in x..(x + 1), t ^ (-σ - 1) ≤ ∫ t in x..(x + 1), x ^ (-σ - 1)`. Apply `intervalIntegral.integral_mono_on (by linarith)` to reduce the goal to its premises. Conclude with `(continuousOn_id.rpow_const fun t ht => Or.inl (pos_of_mem_uIcc_self_add_one hx ht).ne').intervalIntegrable`. Conclude with `intervalIntegrable_const`. Introduce `t ht`.
-
-Conclude with `Real.rpow_le_rpow_of_nonpos hx ht.1 (by linarith)`. Simplify using `using h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma integral_rpow_le {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     ∫ t in x..(x + 1), t ^ (-σ - 1) ≤ x ^ (-σ - 1) := by
@@ -81,7 +79,7 @@ lemma integral_rpow_le {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
   simpa using h1
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `fun h => by rw [h, Complex.zero_re] at hs; exact lt_irrefl 0 hs`. Rewrite using `[cpow_sub_eq_integral hx hs0, norm_mul]`. Use `le_trans (mul_le_mul_of_nonneg_left (norm_integral_le hx s) (norm_nonneg _)) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_rpow_eq hx hs]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma norm_cpow_sub_le {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
     ‖(x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s)‖ ≤
@@ -93,7 +91,7 @@ lemma norm_cpow_sub_le {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
   ring
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `fun h => by rw [h, Complex.zero_re] at hs; exact lt_irrefl 0 hs`. Rewrite using `[cpow_sub_eq_integral hx hs0, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((norm_integral_le hx s).trans (integral_rpow_le hx hs)) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_cpow_sub_le' {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
     ‖(x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s)‖ ≤ ‖s‖ * x ^ (-s.re - 1) := by
@@ -110,35 +108,35 @@ def dterm (s : ℂ) (n : ℕ) : ℂ := Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) 
 def G (s : ℂ) : ℂ := ∑' n, dterm χ s n
 
 /- English proof (translation)
-Simplify using `[Ap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Ap_zero : Ap χ 0 = 0 := by
   simp [Ap]
 
 /- English proof (translation)
-Simplify using `only [Ap]`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma Ap_succ (n : ℕ) : Ap χ (n + 1) = Ap χ n + χ ((n + 1 : ℕ) : ZMod q) := by
   simp only [Ap]
   rw [Finset.sum_Icc_succ_top (by omega)]
 
 /- English proof (translation)
-Simplify using `[dterm, Ap_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dterm_zero (s : ℂ) : dterm χ s 0 = 0 := by
   simp [dterm, Ap_zero]
 
 /- English proof (translation)
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma natCast_add_one_eq (n : ℕ) : ((n : ℂ) + 1) = (((n : ℝ) + 1 : ℝ) : ℂ) := by
   push_cast
   ring
 
 /- English proof (translation)
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[dterm_zero, norm_zero]`. Conclude with `mul_nonneg hB0 (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _))`. Establish `hx : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `norm_cpow_sub_le' hx hs`. Rewrite `key` using `[← natCast_add_one_eq, Complex.ofReal_natCast]`. Use `show ‖Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) + 1) ^ (-s))‖ ≤ _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hB n) key (norm_nonneg _) hB0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_dterm_le {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
     ‖dterm χ s n‖ ≤ B * (‖s‖ * (n : ℝ) ^ (-s.re - 1)) := by
@@ -154,9 +152,9 @@ lemma norm_dterm_le {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 
     exact mul_le_mul (hB n) key (norm_nonneg _) hB0
 
 /- English proof (translation)
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hx : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `key` using `norm_cpow_sub_le hx hs`. Rewrite `key` using `[← natCast_add_one_eq, Complex.ofReal_natCast]`. Use `show ‖Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) + 1) ^ (-s))‖ ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hB n) key (norm_nonneg _) hB0`.
+A detailed English derivation is pending.
 -/
 lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) {n : ℕ}
     (hn : 1 ≤ n) :
@@ -170,7 +168,7 @@ lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs :
   exact mul_le_mul (hB n) key (norm_nonneg _) hB0
 
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun n => norm_nonneg _) (norm_dterm_le χ hB hs) ?_` and prove the remaining obligations. Conclude with `((Real.summable_nat_rpow.mpr (by linarith)).mul_left ‖s‖).mul_left B`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma summable_norm_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (fun n => ‖dterm χ s n‖) := by
@@ -178,15 +176,15 @@ lemma summable_norm_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} 
   exact ((Real.summable_nat_rpow.mpr (by linarith)).mul_left ‖s‖).mul_left B
 
 /- English proof (translation)
-The claim follows from `(summable_norm_dterm χ hB hs).of_norm`.
+A detailed English derivation is pending.
 -/
 lemma summable_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (dterm χ s) := (summable_norm_dterm χ hB hs).of_norm
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => simp [dterm_zero, Ap_zero]`. Consider the case `succ M ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_Icc_succ_top (by omega), ← ih]`. Simplify using `only [dterm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ap_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma partial_identity (s : ℂ) (M : ℕ) :
     ∑ n ∈ Finset.range (M + 1), dterm χ s n + Ap χ M * ((M : ℂ) + 1) ^ (-s) =
@@ -201,21 +199,17 @@ lemma partial_identity (s : ℂ) (M : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `s0 hs0`. Establish `hs0' : 0 < s0.re` using `hs0`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hUo : IsOpen ({s : ℂ | s0.re / 2 < s.re} ∩ Metric.ball 0 (‖s0‖ + 1))` using `(isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball`. Establish `hs0U : s0 ∈ {s : ℂ | s0.re / 2 < s.re} ∩ Metric.ball 0 (‖s0‖ + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show s0.re / 2 < s0.re`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish `hdiff : DifferentiableOn ℂ (fun w => ∑' n, dterm χ w n) ({s : ℂ | s0.re / 2 < s.re} ∩ Metric.ball 0 (‖s0‖ + 1))`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.differentiableOn_tsum_of_summable_norm (F := fun n w => dterm χ w n) (u := fun n : ℕ => B * ((‖s0‖ + 1) * (n : ℝ) ^ (-(s0.re / 2) - 1)))` to reduce the goal to its premises. Conclude with `((Real.summable_nat_rpow.mpr (by linarith)).mul_left _).mul_left _`. Introduce `n w hw`. Establish `h1 : s0.re / 2 < w.re` using `hw.1`. Establish `hw0 : w ≠ 0` using `fun h => by rw [h, Complex.zero_re] at h1; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Use `show DifferentiableAt ℂ (fun w => Ap χ n * ((n : ℂ) ^ (-w) - ((n : ℂ) + 1) ^ (-w))) w`. Apply `DifferentiableAt.const_mul` to reduce the goal to its premises. Apply `DifferentiableAt.sub` to reduce the goal to its premises. Conclude with `(differentiableAt_id.neg).const_cpow (Or.inr (neg_ne_zero.mpr hw0))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(differentiableAt_id.neg).const_cpow (Or.inr (neg_ne_zero.mpr hw0))`. Conclude with `hUo`. Introduce `n w hw`. Establish `h1 : s0.re / 2 < w.re` using `hw.1`. Establish `h2 : ‖w‖ < ‖s0‖ + 1` using `by simpa using hw.2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwre : 0 < w.re` using `by linarith`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `show ‖dterm χ w 0‖ ≤ B * ((‖s0‖ + 1) * ((0 : ℕ) : ℝ) ^ (-(s0.re / 2) - 1))`. Rewrite using `[dterm_zero, norm_zero]`. Conclude with `mul_nonneg hB0 (mul_nonneg (by positivity) (Real.rpow_nonneg (Nat.cast_nonneg _) _))`.
-
-Use `show ‖dterm χ w n‖ ≤ B * ((‖s0‖ + 1) * (n : ℝ) ^ (-(s0.re / 2) - 1))`. Use `(norm_dterm_le χ hB hwre n).trans ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ hB0` to reduce the goal to its premises. Apply `mul_le_mul h2.le _ (Real.rpow_nonneg (Nat.cast_nonneg _) _) (by positivity)` to reduce the goal to its premises. Conclude with `Real.rpow_le_rpow_of_exponent_le (Nat.one_le_cast.mpr hn) (by linarith)`.
-
-Conclude with `(hdiff.differentiableAt (hUo.mem_nhds hs0U)).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 lemma G_differentiableOn {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) :
     DifferentiableOn ℂ (G χ) {s : ℂ | 0 < s.re} := by
@@ -260,7 +254,7 @@ lemma G_differentiableOn {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) :
   exact (hdiff.differentiableAt (hUo.mem_nhds hs0U)).differentiableWithinAt
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => simp [hf]`. Consider the case `succ M ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), ih]`. Conclude with `(Finset.sum_range_succ f (M + 1)).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_Icc_eq_sum_range (f : ℕ → ℂ) (hf : f 0 = 0) (M : ℕ) :
     ∑ n ∈ Finset.Icc 1 M, f n = ∑ n ∈ Finset.range (M + 1), f n := by
@@ -271,11 +265,11 @@ lemma sum_Icc_eq_sum_range (f : ℕ → ℂ) (hf : f 0 = 0) (M : ℕ) :
     exact (Finset.sum_range_succ f (M + 1)).symm
 
 /- English proof (translation)
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `h1 : Tendsto (fun M : ℕ => ∑ n ∈ Finset.range (M + 1), dterm χ s n) atTop (𝓝 (G χ s))` using `((summable_dterm χ hB hs).hasSum.tendsto_sum_nat).comp (tendsto_add_atTop_nat 1)`. Establish `h2 : Tendsto (fun M : ℕ => Ap χ M * ((M : ℂ) + 1) ^ (-s)) atTop (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `hg : Tendsto (fun M : ℕ => ((M : ℝ) + 1) ^ (-s.re)) atTop (𝓝 0)` using `(tendsto_rpow_neg_atTop hs).comp (tendsto_natCast_atTop_atTop.atTop_add (tendsto_const_nhds (x := (1 : ℝ))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg'` using `hg.const_mul B`. Rewrite `hg'` using `[mul_zero]`. Use `squeeze_zero (fun M => norm_nonneg _) (fun M => ?_) hg'` and prove the remaining obligations. Use `show ‖Ap χ M * ((M : ℂ) + 1) ^ (-s)‖ ≤ B * ((M : ℝ) + 1) ^ (-s.re)`. Establish `hM : (0 : ℝ) < (M : ℝ) + 1` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, natCast_add_one_eq, Complex.norm_cpow_eq_rpow_re_of_pos hM, Complex.neg_re]`. Conclude with `mul_le_mul_of_nonneg_right (hB M) (Real.rpow_nonneg hM.le _)`. Establish `h3` using `h1.add h2`. Rewrite `h3` using `[add_zero]`. Conclude with `h3.congr (partial_identity χ s)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma partial_tendsto_G {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Tendsto (fun M : ℕ => ∑ n ∈ Finset.Icc 1 M, χ (n : ZMod q) * (n : ℂ) ^ (-s)) atTop
@@ -300,11 +294,11 @@ lemma partial_tendsto_G {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (h
   exact h3.congr (partial_identity χ s)
 
 /- English proof (translation)
-Rewrite using `[DirichletCharacter.LFunction_eq_LSeries χ hs]`. Establish `hsum` using `DirichletCharacter.LSeriesSummable_of_one_lt_re χ hs`. Establish `h1` using `(hsum.hasSum.tendsto_sum_nat).comp (tendsto_add_atTop_nat 1)`. Establish `h2` using `partial_tendsto_G χ hB (by linarith : 0 < s.re)`. Use `tendsto_nhds_unique (h1.congr fun M => ?_) h2` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∑ n ∈ Finset.range (M + 1), LSeries.term _ s n = _`. Rewrite using `[← sum_Icc_eq_sum_range _ (LSeries.term_zero _ _) M]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hn0 : n ≠ 0`. Rewrite `hn` using `[Finset.mem_Icc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[LSeries.term_of_ne_zero hn0, Complex.cpow_neg, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma LFunction_eq_G_of_one_lt {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 1 < s.re) :
     DirichletCharacter.LFunction χ s = G χ s := by
@@ -322,11 +316,9 @@ lemma LFunction_eq_G_of_one_lt {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : 
   rw [LSeries.term_of_ne_zero hn0, Complex.cpow_neg, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hU : IsOpen {s : ℂ | 0 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hL : AnalyticOnNhd ℂ (DirichletCharacter.LFunction χ) {s : ℂ | 0 < s.re}` using `(DirichletCharacter.differentiable_LFunction hχ).differentiableOn.analyticOnNhd hU`. Establish `hG : AnalyticOnNhd ℂ (G χ) {s : ℂ | 0 < s.re}` using `(G_differentiableOn χ hB).analyticOnNhd hU`. Establish `h2 : (2 : ℂ) ∈ {s : ℂ | 0 < s.re}` using `by show (0 : ℝ) < (2 : ℂ).re`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Establish `hev : DirichletCharacter.LFunction χ =ᶠ[𝓝 (2 : ℂ)] G χ`. Establish `ho : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `h2' : (2 : ℂ) ∈ {s : ℂ | 1 < s.re}` using `by show (1 : ℝ) < (2 : ℂ).re`. Evaluate the numerical expressions. Use `filter_upwards [ho.mem_nhds h2'] with z hz`.
-
-Conclude with `LFunction_eq_G_of_one_lt χ hB hz`. Conclude with `hL.eqOn_of_preconnected_of_eventuallyEq hG (convex_halfSpace_re_gt 0).isPreconnected h2 hev hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma LFunction_eq_G (hχ : χ ≠ 1) {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     DirichletCharacter.LFunction χ s = G χ s := by

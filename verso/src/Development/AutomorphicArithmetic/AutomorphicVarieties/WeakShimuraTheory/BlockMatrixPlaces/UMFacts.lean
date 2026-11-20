@@ -6,9 +6,9 @@ private def uMat {R : Type} [CommRing R] (v : Fin 3 → R) : UpperTheory.V.Grade
   !![0, 0, 0, 0; v 0, 0, v 1, 0; 0, 0, 0, 0; v 2, 0, -v 0, 0]
 
 /- English proof (translation)
-Use `show uMat v ∈ hAB R ⊓ sp4 R`. Rewrite using `[Submodule.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ∀ i j, ¬ lamW i < lamW j → uMat v i j = 0`. Introduce `i j h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [uMat, lamW]`. Use `show adj (uMat v) = -uMat v`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, uMat, Fin.rev]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem uMat_mem {R : Type} [CommRing R] (v : Fin 3 → R) : uMat v ∈ uM R := by
   show uMat v ∈ hAB R ⊓ sp4 R
@@ -22,11 +22,11 @@ private theorem uMat_mem {R : Type} [CommRing R] (v : Fin 3 → R) : uMat v ∈ 
     fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, uMat, Fin.rev]
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `Y`. Establish `hA` using `(Submodule.mem_inf.mp hY).1`. Establish `hS` using `(Submodule.mem_inf.mp hY).2`. Express the relevant statement in the definitionally equal form `∀ i j, ¬ lamW i < lamW j → Y i j = 0 at hA`. Express the relevant statement in the definitionally equal form `adj Y = -Y at hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h32` using `congrFun (congrFun hS 3) 2`. Simplify using `[adj_apply, sgn, Fin.rev] at h32`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uMat] <;> first`. Consider the case `exact (hA _ _ (by decide)).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `(rw [h32]; ring)`. Consider the case `skip`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem uMat_eq {R : Type} [CommRing R] (Y : uM R) : uMat ![Y.1 1 0, Y.1 1 2, Y.1 3 0] = Y.1 := by
   obtain ⟨Y, hY⟩ := Y
@@ -43,14 +43,14 @@ private theorem uMat_eq {R : Type} [CommRing R] (Y : uM R) : uMat ![Y.1 1 0, Y.1
     | skip
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uMat] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem uMat_add {R : Type} [CommRing R] (v w : Fin 3 → R) : uMat (v + w) = uMat v + uMat w := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uMat] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uMat]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem uMat_smul {R : Type} [CommRing R] (c : R) (v : Fin 3 → R) : uMat (c • v) = c • uMat v := by
   ext i j
@@ -67,15 +67,13 @@ private def uEq (R : Type) [CommRing R] : (Fin 3 → R) ≃ₗ[R] uM R where
   right_inv Y := Subtype.ext (uMat_eq Y)
 
 /- English proof (translation)
-Introduce `R _`. Use `⟨Module.Finite.equiv (uEq R), Module.Free.of_equiv (uEq R), ?_⟩` and prove the remaining obligations. Introduce `I Y`. Prove the components needed by the constructor for the conclusion. Introduce `hY i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.smul_induction_on hY ?_ ?_` and prove the remaining obligations. Introduce `r hr n _`. Simplify using `using I.mul_mem_right (n.1 i j) hr`. Introduce `x y hx hy`. Simplify using `using I.add_mem hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Establish `hv : (uEq R).symm Y = ∑ k : Fin 3, ((uEq R).symm Y k) • Pi.single k 1`. Simplify using `using ((Pi.basisFun R (Fin 3)).sum_repr ((uEq R).symm Y)).symm`. Establish `hY : Y = ∑ k : Fin 3, ((uEq R).symm Y k) • (uEq R) (Pi.single k 1)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[hY]`. Use `Submodule.sum_mem _ (fun k _ => Submodule.smul_mem_smul ?_ Submodule.mem_top)` and prove the remaining obligations. Use `fin_cases k`.
-
-Conclude with `h 1 0`. Conclude with `h 1 2`. Conclude with `h 3 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.uMFacts :
     ∀ (R : Type) [CommRing R], Module.Finite R (uM R) ∧ Module.Free R (uM R) ∧ ∀ (I : Ideal R) (Y : uM R), Y ∈ (I • ⊤ : Submodule R (uM R)) ↔ ∀ i j, Y.1 i j ∈ I := by

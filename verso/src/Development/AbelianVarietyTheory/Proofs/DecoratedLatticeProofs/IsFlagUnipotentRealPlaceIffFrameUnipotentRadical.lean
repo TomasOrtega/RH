@@ -12,11 +12,11 @@ namespace GlobalTheory.RealUnipFrame
 variable {n ρ : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨l, hl, rfl⟩` from `(Finsupp.mem_span_image_iff_linearCombination ℂ).1 h`. Use `⟨l, fun b hb => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hb (hl (Finsupp.mem_support_iff.2 h0))`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`. Simplify using the standard rewrite rules. Introduce and unpack `⟨t, ht, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ S`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Rewrite using `[ht b hb, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_image_iff (g : Fin ρ → Fin n → ℂ) (S : Set (Fin ρ)) (w : Fin n → ℂ) :
     w ∈ Submodule.span ℂ (g '' S) ↔ ∃ t : Fin ρ → ℂ, (∀ b, b ∉ S → t b = 0) ∧ ∑ b, t b • g b = w := by
@@ -35,11 +35,11 @@ theorem mem_span_image_iff (g : Fin ρ → Fin n → ℂ) (S : Set (Fin ρ)) (w 
     · rw [ht b hb, zero_smul]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[mem_span_image_iff, mem_span_image_iff]`. Establish `hinj : ∀ u u' : Fin n → ℂ, Q *ᵥ u = Q *ᵥ u' → u = u'`. Introduce `u u' h`. Use `congrArg (P *ᵥ ·) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsum : ∀ t : Fin ρ → ℂ, ∑ b, t b • Q *ᵥ g b = Q *ᵥ ∑ b, t b • g b`. Introduce `t`. Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Use `exists_congr fun t => and_congr Iff.rfl ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsum]`. Conclude with `⟨hinj _ _, fun h => by rw [h]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_span_image_mulVec (Q P : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1) (g : Fin ρ → Fin n → ℂ)
     (S : Set (Fin ρ)) (w : Fin n → ℂ) :
@@ -64,23 +64,23 @@ namespace GlobalTheory.RealUnipFrame
 variable {n ρ : ℕ}
 
 /- English proof (translation)
-Establish `e1 : ∀ i k, d i * (N *ᵥ f i) k = ∑ j, N k j * (d i * f i j)`. Introduce `i k`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨T, hT, h⟩ i`. Rewrite using `[mem_span_image_iff]`. Use `⟨fun j => d j * T j i / d i, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `: i ≤ j`. Simplify using `only [Set.mem_setOf_eq, not_lt] at hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fin.le_def.2 hj`. Use `show d j * T j i / d i = 0`. Rewrite using `[hT j i this]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `congrFun (congrFun h k) i`. Simplify using `only [Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply] at hk`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply]`. Establish `hdi` using `hd i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : d i * (N *ᵥ f i) k = d i * f i k + ∑ j, d j * T j i * f j k`. Establish `e2 : ∑ j, d j * T j i * f j k = ∑ j, d j * f j k * T j i` using `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e1, hk, e2]`. Establish `e4 : ∑ x, d x * T x i / d i * f x k = (∑ j, d j * T j i * f j k) / d i`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e4, div_eq_iff hdi]`. Take the linear combination `-key`. Introduce `h choose t ht hts using fun i => (mem_span_image_iff f _ _).1 (h i)`. Use `⟨Matrix.of fun j i => d i * t i j / d j, fun j i hij => ?_, ?_⟩` and prove the remaining obligations. Establish `: ¬ j.1 < i.1` using `by rw [Fin.le_def] at hij; omega`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this)]` using `[ht i j (by simpa`. Use extensionality with `k i`. Establish `hk` using `congrFun (hts i) k`. Rewrite `hk` using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply] at hk`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.add_apply, Matrix.of_apply]`. Establish `e3 : ∑ j, d j * f j k * (d i * t i j / d j) = d i * ∑ j, t i j * f j k`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `hd j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[← e1, e3, hk]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cols_iff (f : Fin ρ → Fin n → ℂ) (d : Fin ρ → ℂ) (hd : ∀ a, d a ≠ 0) (N : Matrix (Fin n) (Fin n) ℂ) :
     (∃ T : Matrix (Fin ρ) (Fin ρ) ℂ, GlobalTheory.BesselChar.StrictUp T ∧
@@ -132,11 +132,11 @@ theorem cols_iff (f : Fin ρ → Fin n → ℂ) (d : Fin ρ → ℂ) (hd : ∀ a
       ring
 
 /- English proof (translation)
-Establish `hE : ∀ a : Fin ρ → ℂ, Matrix.of (fun k a => d a * f a k) *ᵥ a = ∑ b, (a b * d b) • f b`. Introduce `a`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_span_image_iff, Matrix.sub_mulVec, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Use `⟨fun b => a b * d b, fun b hb => absurd b.2 (by simpa using hb), ?_⟩` and prove the remaining obligations. Rewrite using `[← hE, ha, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨t, -, ht⟩`. Use `⟨fun b => t b / d b, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Establish `: ∀ b, t b / d b * d b = t b` using `fun b => div_mul_cancel₀ _ (hd b)`. Simplify using `only [this, ht, add_sub_cancel]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem colspan_iff (f : Fin ρ → Fin n → ℂ) (d : Fin ρ → ℂ) (hd : ∀ a, d a ≠ 0) (N : Matrix (Fin n) (Fin n) ℂ)
     (y : Fin n → ℂ) :
@@ -166,7 +166,7 @@ open Formalism.L2.SG.HidaSetting
 variable {n ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hPQ, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_mulVec (Q P N : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1) (w : Fin n → ℂ) :
     (Q * N * P - 1) *ᵥ (Q *ᵥ w) = Q *ᵥ ((N - 1) *ᵥ w) := by
@@ -174,7 +174,7 @@ theorem conj_sub_mulVec (Q P N : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1) (
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hPQ, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[← hspec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hPQ, Matrix.mul_one, ← Matrix.mulVec_mulVec, star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_frame (ε : Fin n → Bool) (P Q Jc : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1)
     (hspec : Pᴴ * Jc * P = Formalism.REAL.Jm ε) (f y : Fin n → ℂ) :
@@ -185,7 +185,7 @@ theorem hJ_frame (ε : Fin n → Bool) (P Q Jc : Matrix (Fin n) (Fin n) ℂ) (hP
     Matrix.conjTranspose_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← Formalism.MainNotions.BridgeUnipRad.hform_eq]`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, starRingEnd_apply, Formalism.MainNotions.BridgeUnipRad.emb_star]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem emb_hform (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (x z : Fin I.n → I.E) :
     I.φ v (Formalism.UG.hform (starRingEnd I.E) I.J x z) =
@@ -195,7 +195,7 @@ theorem emb_hform (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) 
     Formalism.MainNotions.BridgeUnipRad.emb_star]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.map_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul, map_mul, starRingEnd_apply, Formalism.MainNotions.BridgeUnipRad.emb_star, Pi.star_apply, star_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_mulVec (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (x : Fin ρ → Fin I.n → I.E) (c : Fin ρ → I.E)
     (y : Fin I.n → ℂ) :
@@ -216,25 +216,23 @@ namespace GlobalTheory.RealUnipFrame
 open Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Introduce `I v ρ x c z hc hz N`. Establish `hu : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hPQ : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hQP : (I.P v)⁻¹ * I.P v = 1` using `Matrix.nonsing_inv_mul _ hu`. Use `set f : Fin ρ → Fin I.n → ℂ := fun a k => I.φ v (x a k) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : Fin ρ → ℂ := fun a => I.φ v (c a) with hdd`. Establish `hd : ∀ a, d a ≠ 0` using `fun a => (map_ne_zero (I.φ v)).2 (hc a)`. Establish `hE : (Matrix.of fun k a => c a * x a k).map (I.φ v) = Matrix.of fun k a => d a * f a k`. Use extensionality with `k a`. Simplify using `[hf, hdd]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrv : ∀ w : Fin I.n → I.E, rv I v w = (I.P v)⁻¹ *ᵥ fun i => I.φ v (w i)` using `fun _ => rfl`. Establish `hrx : (fun a => rv I v (x a)) = fun b => (I.P v)⁻¹ *ᵥ f b` using `rfl`. Establish `hspan : ∀ (w : Fin I.n → ℂ) (S : Set (Fin ρ)), ((I.P v)⁻¹ * N * I.P v - 1) *ᵥ ((I.P v)⁻¹ *ᵥ w) ∈ Submodule.span ℂ ((fun a => rv I v (x a)) '' S) ↔ (N - 1) *ᵥ w ∈ Submodule.span ℂ (f '' S)`. Introduce `w S`. Rewrite using `[conj_sub_mulVec _ _ _ hPQ, hrx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mem_span_image_mulVec _ _ hPQ f S _`. Establish `hperp : ∀ y : Fin I.n → ℂ, ((Formalism.UG.cT (starRingEnd I.E) (Matrix.of fun k a => c a * x a k) * I.J).map (I.φ v)) *ᵥ y = 0 ↔ ∀ a, hJ (I.ε v) (rv I v (x a)) ((I.P v)⁻¹ *ᵥ y) = 0`. Introduce `y`. Rewrite using `[perp_mulVec]`. Simplify using `only [hrv, hJ_frame (I.ε v) (I.P v) _ (I.J.map (I.φ v)) hPQ (I.P_spec v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h a`. Use `congrFun h a` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_left ((map_ne_zero _).2 (hd a))`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Simplify using `[h a]`. Unfold `GlobalTheory.BesselChar.Unip InN InS spanLt`. Rewrite using `[hE, cols_iff f d hd N]`. Establish `hB : (∀ y, ((Formalism.UG.cT (starRingEnd I.E) (Matrix.of fun k a => c a * x a k) * I.J).map (I.φ v)) *ᵥ y = 0 → ∃ a, N *ᵥ y = y + (Matrix.of fun k a => d a * f a k) *ᵥ a) ↔ ∀ y, (∀ a, hJ (I.ε v) (rv I v (x a)) y = 0) → ((I.P v)⁻¹ * N * I.P v - 1) *ᵥ y ∈ Submodule.span ℂ ((fun a …`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y' hy'`. Establish `hy : y' = (I.P v)⁻¹ *ᵥ (I.P v *ᵥ y')` using `by rw [Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]`. Rewrite `hy'`, the goal using `[hy]`. Rewrite using `[hspan, ← colspan_iff f d hd]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h _ ((hperp _).2 hy')`. Introduce `h y hy`. Rewrite using `[colspan_iff f d hd, ← hspan]`. Conclude with `h _ ((hperp y).1 hy)`. Rewrite using `[hB]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨fun a => (hspan (f a) _).2 (h1 a), ?_⟩, h2⟩` and prove the remaining obligations. Use `h2 _ fun a => ?_` and prove the remaining obligations. Rewrite using `[hrv, hrv, hJ_frame (I.ε v) (I.P v) _ (I.J.map (I.φ v)) hPQ (I.P_spec v), ← emb_hform, hz a, map_zero]`.
-
-Introduce and unpack `⟨⟨h1, -⟩, h2⟩`. Conclude with `⟨fun a => (hspan (f a) _).1 (h1 a), h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unip_iff_inN : ∀ (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) {ρ : ℕ} (x : Fin ρ → Fin I.n → I.E) (c : Fin ρ → I.E)
     (z : Fin I.n → I.E), (∀ a, c a ≠ 0) → (∀ a, Formalism.UG.hform (starRingEnd I.E) I.J (x a) z = 0) →

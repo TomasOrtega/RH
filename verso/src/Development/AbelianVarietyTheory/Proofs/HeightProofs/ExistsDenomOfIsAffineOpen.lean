@@ -12,17 +12,17 @@ open TopologicalSpace
 namespace GlobalTheory.SecSpread
 
 /- English proof (translation)
-Establish `hw : ∀ r, inl.hom (α.hom r) = inr.hom (ψ.hom r)` using `fun r => congr($(H.w).hom r)`. Establish `ht : t ∈ Subring.closure (Set.range inl ∪ Set.range inr)`. Rewrite using `[CommRingCat.closure_range_union_range_eq_top_of_isPushout H]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ht using Subring.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨k, rfl⟩` into its components or cases. Conclude with `⟨1, one_ne_zero, a, by simp⟩`. Take `⟨d, hd, r, hr⟩` from `hK k`. Use `⟨d, hd, α.hom r, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw, hw, ← hr, map_mul]`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, by simp⟩`. Consider the case `one => exact ⟨1, one_ne_zero, 1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, a, ha⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, b, hb⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, α.hom (c e) * a + α.hom (c d) * b, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_add]`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `neg x _ hx`. Take `⟨d, hd, a, ha⟩` from `hx`. Conclude with `⟨d, hd, -a, by rw [map_neg, ← ha, mul_neg]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨d, hd, a, ha⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, b, hb⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, a * b, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_denom_of_isPushout {R : Type} [CommRing R] [IsDomain R] {R₀ A K P : CommRingCat.{0}} {α : R₀ ⟶ A}
     {ψ : R₀ ⟶ K} {inl : A ⟶ P} {inr : K ⟶ P} (H : IsPushout α ψ inl inr) (c : R →+* R₀)
@@ -57,7 +57,7 @@ theorem exists_denom_of_isPushout {R : Type} [CommRing R] [IsDomain R] {R₀ A K
     rw [← ha, ← hb]; ring
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_appTop {R K : Type} [CommRing R] [CommRing K] (f : R →+* K) (a : R) :
     (spMap f).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) =
@@ -68,11 +68,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {K : Type} [Field K] [Algebra R K]
   {X X' : Scheme.{0}} {p : X ⟶ Sp R} {φ : X' ⟶ X} {π : X' ⟶ Sp K}
 
 /- English proof (translation)
-Use `isIso_pushoutSection_of_isAffineOpen H (US := ⊤) (UT := ⊤) (UX := U) (UY := φ ⁻¹ᵁ U) (ProperFunctions.le_preimage_top _ ⊤) (ProperFunctions.le_preimage_top p U) (by simp) (isAffineOpen_top _) (isAffineOpen_top _) hU` as an intermediate fact. Establish `h` using `(isIso_pushoutSection_iff ..).mp this`. Rewrite `h` using `[ProperFunctions.appLE_top_top, Scheme.Hom.appLE_eq_app]`. Use `exists_denom_of_isPushout h (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (fun k => ?_) t` and prove the remaining obligations. Take `⟨k, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2 k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Use `⟨b, hb0, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a, ?_⟩` and prove the remaining obligations. Rewrite using `[spMap_appTop, spMap_appTop, ← map_mul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mul_div_cancel₀ _ ((map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hb0)`.
+A detailed English derivation is pending.
 -/
 theorem exists_denom_of_isAffineOpen (H : IsPullback φ π p (spMap (algebraMap R K))) {U : X.Opens}
     (hU : IsAffineOpen U) (t : Γ(X', φ ⁻¹ᵁ U)) :
@@ -92,13 +92,13 @@ theorem exists_denom_of_isAffineOpen (H : IsPullback φ π p (spMap (algebraMap 
   exact mul_div_cancel₀ _ ((map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hb0)
 
 /- English proof (translation)
-Establish `hf : Function.Injective (spMap (algebraMap R K)).appTop.hom`. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2 x`. Take `⟨y, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2 y`. Use `((spMap_appTop _ x).symm.trans hxy).trans (spMap_appTop _ y)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[IsFractionRing.injective R K ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1 this)]`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx W.isOpen`. Establish `hle : U ≤ W` using `hUW`. Establish `e : (φ.app U).hom (resG X hle a) = (φ.app U).hom (resG X hle b)` using `fn_ext fun z hz => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : φ z ∈ U` using `hz`. Use `(gs_pull (𝟙 X') φ z U hz' _).trans (Eq.trans ?_ (gs_pull (𝟙 X') φ z U hz' _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, gs_res φ z hle hz', gs_res φ z hle hz', h z (hle hz')]`. Establish `h0` using `ProperFunctions.mem_map_ker_of_app_eq_zero H hU (resG X hle a - resG X hle b) ((map_sub _ _ _).trans (sub_eq_zero.2 e))`. Rewrite `h0` using `[(RingHom.injective_iff_ker_eq_bot _).mp hf, Ideal.map_bot, Ideal.mem_bot, sub_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(gs_res (𝟙 X) x hle hxU a).symm.trans ((congrArg _ h0).trans (gs_res (𝟙 X) x hle hxU b))`.
+A detailed English derivation is pending.
 -/
 theorem ext_generic (H : IsPullback φ π p (spMap (algebraMap R K))) [Flat p] {W : X.Opens} {a b : Γ(X, W)}
     (h : ∀ z, φ z ∈ W → gs φ z W a = gs φ z W b) : a = b := by
@@ -122,7 +122,7 @@ theorem ext_generic (H : IsPullback φ π p (spMap (algebraMap R K))) [Flat p] {
   exact (gs_res (𝟙 X) x hle hxU a).symm.trans ((congrArg _ h0).trans (gs_res (𝟙 X) x hle hxU b))
 
 /- English proof (translation)
-Use `choose U hU hx a ha using fun x : W => h x.1 x.2`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' U W (fun i => homOfLE (hU i)) (fun x hx' => Opens.mem_iSup.2 ⟨⟨x, hx'⟩, hx _⟩) a (fun i j => ext_generic H (W := U i ⊓ U j) fun z hz => (gs_res φ z inf_le_left hz _).trans (((ha i z hz.1).trans (ha j z hz.2).symm).trans (gs_res φ z inf_le_right hz _). …`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(gs_res φ z (hU ⟨_, hz⟩) (hx _) s).symm.trans ((congrArg (gs φ z _) (hs ⟨_, hz⟩)).trans (ha _ z (hx _)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_glue (H : IsPullback φ π p (spMap (algebraMap R K))) [Flat p] (W : X.Opens)
     (t : ∀ z : X', X'.presheaf.stalk z)
@@ -140,15 +140,15 @@ theorem exists_glue (H : IsPullback φ π p (spMap (algebraMap R K))) [Flat p] (
 omit [IsDomain R] in
 
 /- English proof (translation)
-Rewrite using `[cst, map_mul, gs_mul q z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cst_mul {Z : Scheme.{0}} (q : Z ⟶ Sp R) (z : Z) (a b : R) : cst q z (a * b) = cst q z a * cst q z b := by
   rw [cst, map_mul, gs_mul q z ⊤ trivial]; rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap R K d)` using `((map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hd).isUnit`. Rewrite using `[hw, cst, ← gs_pull π _ z ⊤ trivial]`. Establish `e` using `congrArg (gs π z ⊤) (spMap_appTop (algebraMap R K) d)`. Use `(congrArg IsUnit e).mpr ?_` and prove the remaining obligations. Rewrite using `[gs_eq π z ⊤ trivial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hu.map _).map _).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_cst (hw : φ ≫ p = π ≫ spMap (algebraMap R K)) (z : X') {d : R} (hd : d ≠ 0) :
     IsUnit (cst (φ ≫ p) z d) := by
@@ -160,7 +160,7 @@ theorem isUnit_cst (hw : φ ≫ p = π ≫ spMap (algebraMap R K)) (z : X') {d :
   exact ((hu.map _).map _).map _
 
 /- English proof (translation)
-Use `sec_trans s (𝟙 X') z (j := fun _ => i) (j' := fun _ => j) (mem_pull.2 hi) (mem_pull.2 hj)` as an intermediate fact. Rewrite `this` using `[trF, Fintype.prod_unique, zpow_one, Category.id_comp]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_sec_trans {L : LB X} (s : (L.pull φ).Sec) (z : X') {i j : L.ι} (hi : φ z ∈ L.U i) (hj : φ z ∈ L.U j) :
     gs (𝟙 X') z ((L.pull φ).U (fun _ => i)) (s.f (fun _ => i)) =
@@ -170,17 +170,15 @@ theorem pull_sec_trans {L : LB X} (s : (L.pull φ).Sec) (z : X') {i j : L.ι} (h
   exact this
 
 /- English proof (translation)
-Establish `loc : ∀ x : X, ∃ (V : X.Opens) (i : L.ι) (_ : V ≤ L.U i) (_ : x ∈ V) (d : R) (_ : d ≠ 0) (a : Γ(X, V)), ∀ z, φ z ∈ V → gs φ z V a = cst (φ ≫ p) z d * gs (𝟙 X') z ((L.pull φ).U (fun _ => i)) (s.f (fun _ => i))`. Introduce `x`. Take `⟨i, hi⟩` from `exists_chart hL x`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hi (L.U i).isOpen`. Establish `hle : U ≤ L.U i` using `hUW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle' : φ ⁻¹ᵁ U ≤ (L.pull φ).U (fun _ => i)` using `fun z hz => mem_pull.2 (hle hz)`. Take `⟨d, hd, a, ha⟩` from `exists_denom_of_isAffineOpen H hU (resG X' hle' (s.f (fun _ => i)))`. Use `⟨U, i, hle, hxU, d, hd, a, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (gs (𝟙 X') z _) ha`. Establish `hz' : (𝟙 X' : X' ⟶ X') z ∈ φ ⁻¹ᵁ U` using `hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[gs_mul _ z _ hz', gs_res _ z hle' hz', gs_pull (𝟙 X') φ z U hz, gs_pull (𝟙 X') φ z U hz, Category.id_comp, gs_constFn p U φ z hz]`. Conclude with `e.symm`. Use `choose V ι hV hx d hd a ha using loc`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun x : X => (V x : Set X)) (fun x => (V x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hx x⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hglue : ∀ i, ∃ θ : Γ(X, L.U i), ∀ z, φ z ∈ L.U i → gs φ z (L.U i) θ = cst (φ ≫ p) z (∏ x ∈ S, d x) * gs (𝟙 X') z ((L.pull φ).U (fun _ => i)) (s.f (fun _ => i))`. Introduce `i`. Use `exists_glue H (L.U i) _ fun y hy => ?_` and prove the remaining obligations. Take `⟨x, hxS, hyx⟩` from `Set.mem_iUnion₂.1 (hS (Set.mem_univ y))`. Establish `l : L.U i ⊓ V x ≤ L.U i ⊓ L.U (ι x)` using `inf_le_inf_left _ (hV x)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨L.U i ⊓ V x, inf_le_left, ⟨hy, hyx⟩, constFn p _ (∏ w ∈ S.erase x, d w) * (resG X l (L.g i (ι x)).val * resG X inf_le_right (a x)), fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[gs_mul φ z _ hz, gs_mul φ z _ hz, gs_constFn p _ φ z hz, gs_res φ z l hz, gs_res φ z inf_le_right hz, ha x z hz.2, gs_unit φ z _ (l hz), pull_sec_trans s z hz.1 (hV x hz.2), ← Finset.mul_prod_erase S d hxS, cst_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose θ hθ using hglue`. Use `⟨∏ x ∈ S, d x, Finset.prod_ne_zero_iff.2 fun x _ => hd x, ⟨θ, fun i j => ext_generic H fun z hz => ?_⟩, hθ⟩` and prove the remaining obligations.
-
-Rewrite using `[gs_mul φ z _ hz, gs_res φ z inf_le_left hz, gs_res φ z inf_le_right hz, gs_unit φ z _ hz, hθ i z hz.1, hθ j z hz.2, pull_sec_trans s z hz.1 hz.2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_spread (H : IsPullback φ π p (spMap (algebraMap R K))) [Flat p] [QuasiCompact p] {L : LB X}
     (hL : L.IsLB) (s : (L.pull φ).Sec) :
@@ -225,9 +223,9 @@ theorem exists_spread (H : IsPullback φ π p (spMap (algebraMap R K))) [Flat p]
   ring
 
 /- English proof (translation)
-Introduce `i j`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Establish `hx' : (𝟙 X : X ⟶ X) x ∈ V ⊓ L.U i ⊓ L.U j` using `hx`. Establish `hm : (𝟙 X : X ⟶ X) x ∈ L.U i ⊓ L.U j` using `⟨hx.1.2, hx.2⟩`. Establish `e` using `congrArg (gs (𝟙 X) x _) (θ.compat i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[gs_mul _ x _ hm, gs_res _ x _ hm, gs_res _ x _ hm]`. Rewrite using `[gs_mul _ x _ hx', gs_res _ x _ hx', gs_res _ x _ hx', gs_res _ x _ hx', gs_res _ x _ hx'.1, gs_res _ x (V := V ⊓ L.U j) _ ⟨hx.1.1, hx.2⟩]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem_secOn {L : LB X} (θ : L.Sec) (V : X.Opens) :
     (fun i => resG X (inf_le_right : V ⊓ L.U i ≤ L.U i) (θ.f i)) ∈ secOn L V := by
@@ -242,19 +240,17 @@ theorem res_mem_secOn {L : LB X} (θ : L.Sec) (V : X.Opens) :
   exact e
 
 /- English proof (translation)
-Introduce `R _ _ G _ hG L hL K _ _ _ G' φ π H ⟨s, j, hj⟩`. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Take `⟨d, hd, θ, hθ⟩` from `exists_spread H hL s`. Establish `: Smooth π` using `MorphismProperty.of_isPullback H hG.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsReduced G'` using `isReduced_scheme_of_smooth_of_isIntegrallyClosed K π`. Take `⟨i, rfl⟩ : ∃ i : L.ι, j = fun _ => i` from `⟨j PUnit.unit, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, z ∈ G'.basicOpen (s.f (fun _ => i)) := by`. Assume the negation of the conclusion as `hn`. Conclude with `hj ((basicOpen_eq_bot_iff _).1 (eq_bot_iff.2 fun z hz => (hn ⟨z, hz⟩).elim))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz₁ : z ∈ (L.pull φ).U (fun _ => i)` using `G'.basicOpen_le _ hz`. Establish `hz₂ : φ z ∈ L.U i` using `mem_pull.1 hz₁`. Establish `hu : IsUnit (gs φ z (L.U i) (θ.f i))`. Rewrite using `[hθ i z hz₂]`. Use `(isUnit_cst H.w z hd).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_eq (𝟙 G') z _ hz₁]`. Conclude with `(G'.mem_basicOpen _ z hz₁).1 hz`. Establish `hb : φ z ∈ G.left.basicOpen (θ.f i)`. Rewrite `hu` using `[gs_eq φ z _ hz₂]`. Use `(G'.mem_basicOpen _ z (show z ∈ φ ⁻¹ᵁ L.U i from hz₂)).2 hu` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← Scheme.preimage_basicOpen]`. Conclude with `this`. Establish `hopen : IsOpen (G.hom '' (G.left.basicOpen (θ.f i) : Set G.left))` using `G.hom.isOpenMap _ (G.left.basicOpen (θ.f i)).isOpen`. Take `⟨_, ⟨h, rfl⟩, hyh, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (Set.mem_image_of_mem G.hom hb) hopen`. Use `⟨h, ?_, _, res_mem_secOn θ _, fun y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 hyh (Ideal.zero_mem _)`. Take `⟨g, hg, rfl⟩` from `hsub hy`. Use `⟨g, i, rfl, ?_⟩` and prove the remaining obligations. Establish `e` using `G.left.basicOpen_res (θ.f i) (homOfLE (inf_le_right : G.hom ⁻¹ᵁ PrimeSpectrum.basicOpen h ⊓ L.U i ≤ L.U i)).op`.
-
-Conclude with `e.ge ⟨⟨hy, G.left.basicOpen_le _ hg⟩, hg⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ (L : LB G.left), L.IsLB → ∀ (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (G' : Scheme.{0}) (φ : G' ⟶ G.left) (π : G' ⟶ Sp K), IsPullback φ π G.hom (spMap (algebraMap R K)) → (∃ (s : (L.pull φ).Sec) (j : (L.pull φ).ι), s.f j ≠ 0) → ∃ h : R, h ≠ 0 ∧ ∃ θ ∈ secOn L (G.hom ⁻¹ᵁ PrimeSpectrum.basicOpen h), ∀ y : Sp R, y ∈ PrimeSpectrum.basicOpen h → ∃ (g : G.left) (i : L.ι), G.hom g = y ∧ g ∈ G.left.basicOpen (θ i) := by
   intro R _ _ G _ hG L hL K _ _ _ G' φ π H ⟨s, j, hj⟩

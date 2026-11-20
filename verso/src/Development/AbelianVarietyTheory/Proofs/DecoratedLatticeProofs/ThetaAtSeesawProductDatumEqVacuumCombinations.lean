@@ -31,11 +31,11 @@ section Gen
 variable {D : D7}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h1` using `h i j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply]`. Rewrite using `[mul_sub, ← mul_assoc, hab, zero_mul, sub_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h1`. Introduce `h i j`. Establish `h1` using `h i j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply] at h1`. Rewrite `h1` using `[mul_sub, ← mul_assoc, hab, zero_mul, sub_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isHalf_add_iff {a b : AE D} (hab : b * a = 0) {m n : ℕ} (t : Mx D m n) :
     IsHalf (a + b) t ↔ IsHalf b (t - t.map (fun x => a * x)) := by
@@ -52,9 +52,9 @@ theorem isHalf_add_iff {a b : AE D} (hab : b * a = 0) {m n : ℕ} (t : Mx D m n)
     linear_combination h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Establish `h1` using `h i j`. Rewrite `h1` using `[zero_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1.symm`. Introduce and unpack `rfl i j`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem isHalf_zero_iff {m n : ℕ} (t : Mx D m n) : IsHalf (0 : AE D) t ↔ t = 0 := by
   constructor
@@ -67,7 +67,7 @@ theorem isHalf_zero_iff {m n : ℕ} (t : Mx D m n) : IsHalf (0 : AE D) t ↔ t =
     simp
 
 /- English proof (translation)
-Introduce `i j`. Establish `h : b * w i j = 0` using `by rw [← hw i j, ← mul_assoc, hab, zero_mul]`. Rewrite using `[add_mul, h, zero_add, hw i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add_of_right {a b : AE D} (hab : b * a = 0) {m n : ℕ} {w : Mx D m n} (hw : IsHalf a w) :
     IsHalf (b + a) w := by
@@ -76,7 +76,7 @@ theorem half_add_of_right {a b : AE D} (hab : b * a = 0) {m n : ℕ} {w : Mx D m
   rw [add_mul, h, zero_add, hw i j]
 
 /- English proof (translation)
-Introduce `i j`. Establish `h : cA D b * y i j = 0` using `by rw [← hy i j, ← mul_assoc, ← map_mul, hab, map_zero, zero_mul]`. Rewrite using `[map_add, add_mul, h, zero_add, hy i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_conj_add_of_right {a b : AE D} (hab : b * a = 0) {m n : ℕ} {y : Mx D m n} (hy : IsHalf (cA D a) y) :
     IsHalf (cA D (b + a)) y := by
@@ -85,7 +85,7 @@ theorem half_conj_add_of_right {a b : AE D} (hab : b * a = 0) {m n : ℕ} {y : M
   rw [map_add, add_mul, h, zero_add, hy i j]
 
 /- English proof (translation)
-Establish `h : hO S T (x - w) y = hO S T x y - hO S T w y`. Simplify using `only [hO, Matrix.sub_apply, mul_sub, Finset.sum_sub_distrib]`. Unfold `symplO`. Rewrite using `[h, mul_sub, map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_sub {S T : HSp D} (x w y : WO S T) :
     symplO S T (x - w) y = symplO S T x y - symplO S T w y := by
@@ -95,7 +95,7 @@ theorem symplO_sub {S T : HSp D} (x w y : WO S T) :
   rw [h, mul_sub, map_sub]
 
 /- English proof (translation)
-Unfold `hO`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Establish `h1 : cA D (y c j) = b * cA D (y c j)` using `by conv_lhs => rw [← hy c j, map_mul, Formalism.L2.Theta.cA_cA]`. Rewrite using `[h1, ← hw d i]`. Take the linear combination `(incA D (S.gram⁻¹ i j) * cA D (y c j) * incA D (T.gram c d) * w d i) * hab`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hO_zero' {S T : HSp D} {a b : AE D} (hab : b * a = 0) {w y : WO S T} (hw : IsHalf a w)
     (hy : IsHalf (cA D b) y) : hO S T w y = 0 := by
@@ -111,9 +111,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-Establish `h0 : p.π a = 0` using `TOneModel.pi_of_mul p ha`. Unfold `Place.down`. Establish `h : (t - t.map (fun x => a * x) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π = (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_sub, map_mul, h0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem down_sub_mul (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) {a : AE D}
     (ha : a * p.e = 0) (t : WO S T) :
@@ -127,7 +127,7 @@ theorem down_sub_mul (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTh
   rw [h]
 
 /- English proof (translation)
-Unfold `Place.up`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem up_add (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (x y : Matrix Y Y' k) :
     p.up FS FT (x + y) = p.up FS FT x + p.up FS FT y := by
@@ -137,9 +137,9 @@ theorem up_add (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.L
   simp [Matrix.map_apply, map_add]
 
 /- English proof (translation)
-Unfold `Place.up Place.down`. Establish `h : ((FT.β * x * FS.γ).map p.ι).map p.π = FT.β * x * FS.γ`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, p.π_ι]`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem down_up (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (x : Matrix Y Y' k) :
     p.down FS FT (p.up FS FT x) = x := by
@@ -152,7 +152,7 @@ theorem down_up (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.
     _ = x := by rw [FT.γβ, FS.γβ, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [Place.tensorAt]`. Rewrite using `[Witness.down_add p FS FT t (p.up FS FT x), down_up, up_add]`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem tensorAt_shift (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (Φ : WO S T → ℂ)
     (Ψ : Matrix Y Y' k → ℂ) (x : Matrix Y Y' k) :
@@ -164,11 +164,11 @@ theorem tensorAt_shift (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : Global
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [Place.tensorAt]`. Distinguish the cases in `h0 : Φ (t - p.up FS FT (p.down FS FT t)) = 0`. Simplify using `[h0]`. Establish `hh` using `hΦ _ h0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz : symplO S T (t - p.up FS FT (p.down FS FT t)) y = 0`. Unfold `symplO`. Rewrite using `[hO_zero' (a := e) (b := p.e) (by rw [mul_comm]; exact he) hh hy, mul_zero, map_zero]`. Establish `hs` using `symplO_sub t (p.up FS FT (p.down FS FT t)) y`. Rewrite `hs` using `[hz]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : symplO S T t y = symplO S T (p.up FS FT (p.down FS FT t)) y` using `by linear_combination -hs`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensorAt_modul (ψ : AddChar (AF D.host.F) ℂ) (FS : GlobalTheory.LocMod.Frame k S.rank Y')
     (FT : GlobalTheory.LocMod.Frame k T.rank Y) {e : AE D} (he : e * p.e = 0) (Φ : WO S T → ℂ)
@@ -190,9 +190,9 @@ theorem tensorAt_modul (ψ : AddChar (AF D.host.F) ℂ) (FS : GlobalTheory.LocMo
     ring
 
 /- English proof (translation)
-Use `⟨fun Ψ => hθ _ (hsb Ψ.1 Ψ.2), fun x Ψ Ψ' h => ?_, fun y hy Ψ Ψ' h => ?_⟩` and prove the remaining obligations. Establish `hfun : (Ψ' : Matrix Y Y' k → ℂ) = fun t => (Ψ : Matrix Y Y' k → ℂ) (t + x)` using `funext h`. Simplify using `only [LinearMap.comp_apply, Place.tensorL_apply]`. Rewrite using `[hfun, tensorAt_shift]`. Conclude with `hT.trans _ (hsb Ψ.1 Ψ.2) _ (half_add_of_right he (Witness.up_half p FS FT x))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfun : (Ψ' : Matrix Y Y' k → ℂ) = fun t => ψ (symplO S T (p.up FS FT t) y) * (Ψ : Matrix Y Y' k → ℂ) t`. Use function extensionality and compare the values at `h`. Simplify using `only [LinearMap.comp_apply, Place.tensorL_apply]`. Rewrite using `[hfun, tensorAt_modul p ψ FS FT he Φ hΦ _ hy]`. Conclude with `hT.modul _ (hsb Ψ.1 Ψ.2) _ (half_conj_add_of_right he hy)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorL_isModel (ψ : AddChar (AF D.host.F) ℂ) (FS : GlobalTheory.LocMod.Frame k S.rank Y')
     (FT : GlobalTheory.LocMod.Frame k T.rank Y) (e : AE D) (he : e * p.e = 0) (Λ : AddSubgroup (WO S T))
@@ -223,14 +223,14 @@ section Fam
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {M : Lat S} {M' : Lat T}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.splitPlaceIdempotent_mul_eq_zero_of_ne_place D _ _ (L 0).q (L i.succ).q fun h => Fin.succ_ne_zero i (hinj h).symm`.
+A detailed English derivation is pending.
 -/
 theorem orth_succ {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Function.Injective fun i => (L i).q.v)
     (i : Fin n) : (L 0).q.e * (L i.succ).q.e = 0 :=
   GlobalTheory.T.splitPlaceIdempotent_mul_eq_zero_of_ne_place D _ _ (L 0).q (L i.succ).q fun h => Fin.succ_ne_zero i (hinj h).symm
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [mul_comm]; exact orth_succ L hinj i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_sum {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Function.Injective fun i => (L i).q.v) :
     (∑ i : Fin n, (L i.succ).q.e) * (L 0).q.e = 0 := by
@@ -238,9 +238,9 @@ theorem orth_sum {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Functio
   exact Finset.sum_eq_zero fun i _ => by rw [mul_comm]; exact orth_succ L hinj i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `prodDat halfInd`. Establish `hs : (∑ i, (L i).q.e) = 0` using `Fin.sum_univ_zero _`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h1 : IsHalf (∑ i, (L i).q.e) (0 : WO S T)` using `by rw [hs]; exact (isHalf_zero_iff _).2 rfl`. Rewrite using `[if_pos h1, if_pos ⟨Λ.zero_mem, (isHalf_zero_iff _).2 rfl⟩, Fin.prod_univ_zero]`. Establish `h1 : ¬ IsHalf (∑ i, (L i).q.e) x` using `by rw [hs]; exact fun h => hx ((isHalf_zero_iff _).1 h)`. Rewrite using `[if_neg h1, if_neg (fun h => hx ((isHalf_zero_iff _).1 h.2))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodDat_zero (L : Fin 0 → LocPl ψ S T M M') (Λ : AddSubgroup (WO S T)) :
     prodDat L = halfInd (0 : AE D) Λ := by
@@ -255,11 +255,11 @@ theorem prodDat_zero (L : Fin 0 → LocPl ψ S T M M') (Λ : AddSubgroup (WO S T
     rw [if_neg h1, if_neg (fun h => hx ((isHalf_zero_iff _).1 h.2))]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hup` using `TOneModel.up_down_eq (ofSplit (L 0).q) (L 0).FS (L 0).FT t`. Establish `hpe : (ofSplit (L 0).q).e = (L 0).q.e` using `rfl`. Simplify using `only [prodDat, Place.tensorAt]`. Rewrite using `[hup, hpe]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ i : Fin n, (ofSplit (L i.succ).q).down (L i.succ).FS (L i.succ).FT (t - t.map (fun a => (L 0).q.e * a)) = (ofSplit (L i.succ).q).down (L i.succ).FS (L i.succ).FT t` using `fun i => down_sub_mul _ _ _ (orth_succ L hinj i) t`. Simplify using `only [hd]`. Rewrite using `[Fin.sum_univ_succ, Fin.prod_univ_succ]`. Establish `hiff` using `isHalf_add_iff (a := (L 0).q.e) (b := ∑ i : Fin n, (L i.succ).q.e) (orth_sum L hinj) t`. Distinguish the cases in `h : IsHalf ((L 0).q.e + ∑ i : Fin n, (L i.succ).q.e) t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (hiff.1 h)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.2 h')), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodDat_succ {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Function.Injective fun i => (L i).q.v) :
     prodDat L = (ofSplit (L 0).q).tensorAt (L 0).FS (L 0).FT (prodDat fun i : Fin n => L i.succ) (L 0).Φ.1 := by
@@ -280,9 +280,9 @@ theorem prodDat_succ {n : ℕ} (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Fun
   · rw [if_neg h, if_neg (fun h' => h (hiff.2 h')), zero_mul]
 
 /- English proof (translation)
-Use `⟨fun t h => ?_, 1, one_pos, fun u _ hh t => ?_, fun t h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `h (by simp [halfInd, hc])`. Rewrite using `[(isHalf_zero_iff u).1 hh]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul]`. Assume the negation of the conclusion as `hc`. Conclude with `h (by simp [halfInd, hc])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem halfInd_zero_isSBHalf (Λ : AddSubgroup (WO S T)) : IsSBHalf (0 : AE D) Λ (halfInd 0 Λ) := by
   refine ⟨fun t h => ?_, 1, one_pos, fun u _ hh t => ?_, fun t h => ?_⟩
@@ -295,9 +295,9 @@ theorem halfInd_zero_isSBHalf (Λ : AddSubgroup (WO S T)) : IsSBHalf (0 : AE D) 
     exact h (by simp [halfInd, hc])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `L _`. Rewrite using `[prodDat_zero L (latO S T (M : Set _) (M' : Set _) fun _ => True)]`. Simplify using `using halfInd_zero_isSBHalf (D := D) (latO S T (M : Set _) (M' : Set _) fun _ => True)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Introduce `L hinj`. Rewrite using `[prodDat_succ L hinj, Fin.sum_univ_succ, add_comm]`. Conclude with `GlobalTheory.T.schwartzBruhatHalf_tensor_split_place_selfDual D ψ S T M M' hM hM' (L 0) _ (orth_sum L hinj) _ (ih (fun i => L i.succ) (hinj.comp (Fin.succ_injective n))) _ (L 0).Φ.2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodDat_isSBHalf (hM : IsSelfDualC S M) (hM' : IsSelfDualC T M') (n : ℕ) :
     ∀ (L : Fin n → LocPl ψ S T M M'), Function.Injective (fun i => (L i).q.v) →
@@ -323,13 +323,13 @@ section Core
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {M : Lat S} {M' : Lat T}
 
 /- English proof (translation)
-Establish `horth` using `orth_sum L hinj`. Establish `hsum : ∑ i, (L i).q.e = (∑ i : Fin n, (L i.succ).q.e) + (L 0).q.e`. Rewrite using `[Fin.sum_univ_succ, add_comm]`. Establish `hT2` using `hT`. Rewrite `hT2` using `[hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hθ : ∀ Φ', IsSBHalf ((∑ i : Fin n, (L i.succ).q.e) + (L 0).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) Φ' → IsThetaFunO ψ S T (T' Φ')`. Introduce `Φ' h`. Rewrite `h` using `[← hsum]`. Conclude with `GlobalTheory.T.isThetaFunO_splitPlaces_schrodingerModel_sum D ψ hψ S T M M' hM hM' (n+1) L hinj f₀ T' hf₀ hT Φ' h`. Establish `hsbL` using `prodDat_isSBHalf hM hM' n (fun i => L i.succ) (hinj.comp (Fin.succ_injective n))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsb : ∀ Ψ ∈ SB (Matrix (L 0).Y (L 0).Y' (L 0).k), IsSBHalf ((∑ i : Fin n, (L i.succ).q.e) + (L 0).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) ((ofSplit (L 0).q).tensorAt (L 0).FS (L 0).FT (prodDat fun i : Fin n => L i.succ) Ψ)` using `fun Ψ hΨ => GlobalTheory.T.schwartzBruhatHalf_tensor_split_place_selfDual D ψ S T M M' hM hM' (L 0) _ horth _ hsbL Ψ hΨ`. Establish `hmodel` using `tensorL_isModel (ofSplit (L 0).q) ψ (L 0).FS (L 0).FT _ horth _ (prodDat fun i : Fin n => L i.succ) hsbL.1 f₀ T' hT2 hθ hsb`. Take `⟨T'', hT'', hT''eq⟩` from `GlobalTheory.T.isPlaceModel_tensor_splitPlaceLatticeIndicator D ψ S T M M' hM hM' (L 0) _ horth f₀ T' hT2`. Use `⟨T' ∘ₗ (ofSplit (L 0).q).tensorL (L 0).FS (L 0).FT (prodDat fun i : Fin n => L i.succ), hmodel, ?_, T'', hT'', ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Place.tensorL_apply, prodDat_succ L hinj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ₀ hΦ₀`. Rewrite using `[LinearMap.comp_apply, Place.tensorL_apply, hΦ₀, hT''eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hψ : IsStdChar D ψ (-1)) (hM : IsSelfDualC S M) (hM' : IsSelfDualC T M') {n : ℕ}
     (L : Fin (n+1) → LocPl ψ S T M M') (hinj : Function.Injective fun i => (L i).q.v) (f₀ : WO S T → ℂ)
@@ -373,11 +373,11 @@ theorem isOne_intInd (P : LocPl ψ S T M M') :
     IsOne (⟨Place.intInd P.Y P.Y', Place.intInd_mem_SB _ _ _⟩ : SB (Matrix P.Y P.Y' P.k)) := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `L _ T' hT`. Rewrite using `[prodDat_zero L (latO S T (M : Set _) (M' : Set _) fun _ => True)]`. Establish `h` using `hT.vac`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Fin.sum_univ_zero, one_smul]`. Rewrite using `[h]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `L hinj T' hT`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Tm, hTm, hTmΦ, T'', hT'', hT''eq⟩` from `step hψ hM hM' L hinj f₀ hf₀ T' hT`. Establish `h1` using `(L 0).e_is.2 Tm hTm _ (L 0).Φ (isOne_intInd (L 0)) rfl`. Establish `h2` using `(L 0).o_is Tm hTm ⟨_, GlobalTheory.T.indicator_localHomLattice_mem_schwartzBruhat D ψ S T M M' hM hM' (L 0)⟩ _ (isOne_intInd (L 0)) rfl`. Establish `h3` using `hT''eq ⟨_, GlobalTheory.T.indicator_localHomLattice_mem_schwartzBruhat D ψ S T M M' hM hM' (L 0)⟩ rfl`. Rewrite using `[← hTmΦ, h1, h2, h3, ih _ (hinj.comp (Fin.succ_injective n)) T'' hT'', List.finRange_succ, List.foldr_cons, List.foldr_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem core (hψ : IsStdChar D ψ (-1)) (hM : IsSelfDualC S M) (hM' : IsSelfDualC T M') (f₀ : WO S T → ℂ)
     (hf₀ : Vac ψ S T M M' (fun _ => True) f₀) (n : ℕ) :
@@ -412,7 +412,7 @@ section Fin2
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {M : Lat S} {M' : Lat T}
 
 /- English proof (translation)
-Establish `h0 : ∀ w : WO S T, symplOH S T w 0 = 0` using `fun w => by simp [symplOH, symplO, hO]`. Unfold `comb`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, add_zero, h0, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_single_zero (f : WO S T → ℂ) : comb ψ S T (Finsupp.single 0 1) f = f := by
   have h0 : ∀ w : WO S T, symplOH S T w 0 = 0 := fun w => by simp [symplOH, symplO, hO]
@@ -454,7 +454,7 @@ Both sides reduce to the same expression.
 theorem oneLoc_o (P : LocPl ψ S T M M') : (oneLoc P).o = P.o := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `prodDat`. Rewrite using `[Equiv.sum_comp σ (fun i => (L i).q.e), Equiv.prod_comp σ (fun i => (L i).Φ.1 ((ofSplit (L i).q).down (L i).FS (L i).FT x))]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodDat_perm {n : ℕ} (L : Fin n → LocPl ψ S T M M') (σ : Equiv.Perm (Fin n)) :
     prodDat (fun i => L (σ i)) = prodDat L := by
@@ -464,7 +464,7 @@ theorem prodDat_perm {n : ℕ} (L : Fin n → LocPl ψ S T M M') (σ : Equiv.Per
     Equiv.prod_comp σ (fun i => (L i).Φ.1 ((ofSplit (L i).q).down (L i).FS (L i).FT x))]
 
 /- English proof (translation)
-Take `⟨ψk, hch, hcond⟩` from `GlobalTheory.T.exists_splitPoint_weilChar_conductor_one_of_units D P.k P.q ψ hψ P.unit`. Establish `h` using `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D P.k P.q P.unit P.Y P.Y' S T P.FS P.FT ψ ψk hψ hch hcond N N' hN hN' hI.1 hI.2).1 Tm _ hTm (isOne_intInd P)`. Rewrite `h` using `[hg]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vac_at_of_model (hψ : IsStdChar D ψ (-1)) (P : LocPl ψ S T M M') (N : Lat S) (N' : Lat T)
     (hN : IsSelfDualC S N) (hN' : IsSelfDualC T N') (hI : IntIn P.q S P.FS N ∧ IntIn P.q T P.FT N')
@@ -479,47 +479,43 @@ theorem vac_at_of_model (hψ : IsStdChar D ψ (-1)) (P : LocPl ψ S T M M') (N :
 end Fin2
 
 /- English proof (translation)
-Introduce `D ψ hψ S T M M' hM hM' n L hinj f₀ f hf₀ hθ _`. Take `⟨⟨T', hT'⟩, hall⟩` from `hθ`. Establish `hcore` using `core hψ hM hM' f₀ hf₀`. Use `⟨(hall T' hT').trans (hcore n L hinj T' hT'), fun N N' hN hN' hI hV => ?_⟩` and prove the remaining obligations. Establish `hg1 : T' (prodDat fun i => oneLoc (L i)) = (List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) f₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hcore n (fun i => oneLoc (L i)) hinj T' hT']`. Simplify using `only [oneLoc_e, oneLoc_o, comb_single_zero]`. Establish `hloc : ∀ j : Fin n, Vac ψ S T N N' (· = (L j).q.v) ((List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) f₀)`. Introduce `j`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by have := j.pos; omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `L1 : Fin (m+1) → LocPl ψ S T M M'` to `fun i => oneLoc (L i)`. Set `σ : Equiv.Perm (Fin (m+1))` to `Equiv.swap 0 j`. Establish `hinjσ : Function.Injective fun i => (L1 (σ i)).q.v` using `hinj.comp σ.injective`. Establish `hTσ : IsPlaceModel ψ (symplO S T) (heisO ψ S T) (∑ i, (L1 (σ i)).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) 1 f₀ T'`. Rewrite using `[Equiv.sum_comp σ (fun i => (L1 i).q.e)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT'`. Take `⟨Tm, hTm, hTmΦ, -⟩` from `step hψ hM hM' (fun i => L1 (σ i)) hinjσ f₀ hf₀ T' hTσ`. Establish `hval : Tm (L1 (σ 0)).Φ = (List.finRange (m+1)).foldr (fun i g => comb ψ S T (L i).o g) f₀`. Rewrite using `[hTmΦ, prodDat_perm L1 σ]`. Conclude with `hg1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `vac_at_of_model hψ (L1 (σ 0)) N N' hN hN' (hI (σ 0)) _ Tm hTm hval`. Establish `h0 : σ 0 = j` using `Equiv.swap_apply_left _ _`. Establish `hq : (L1 (σ 0)).q.v = (L j).q.v` using `by rw [h0]; rfl`. Rewrite `hv` using `[hq]`. Conclude with `hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQc : Vac ψ S T N N' (fun p => ∀ i, p ≠ (L i).q.v) ((List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) f₀)`. Establish `hbase : Vac ψ S T M M' (fun p => ∀ i, p ≠ (L i).q.v) f₀`. Establish `hiff` using `(GlobalTheory.DisjComb.main D ψ hψ S T (fun p => ∀ i, p ≠ (L i).q.v) (fun p => ∃ i, p = (L i).q.v) (fun p hp ⟨i, hi⟩ => hp i hi)).2.2.2.2 M M' f₀ hM hM'`. Establish `hfun : (fun p => (∀ i, p ≠ (L i).q.v) ∨ ∃ i, p = (L i).q.v) = fun _ => True`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `_`. Discharge the goal by the elementary cases of `trivial`. Introduce `_`.
+Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Distinguish the cases in `h : ∃ i, p = (L i).q.v`. Conclude with `Or.inr h`. Conclude with `Or.inl fun i hi => h ⟨i, hi⟩`. Rewrite `hiff` using `[hfun]`. Conclude with `(hiff.1 hf₀).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbaseN : Vac ψ S T N N' (fun p => ∀ i, p ≠ (L i).q.v) f₀`. Use `⟨hbase.1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.homLatticeAtPlaces_congr_localLattices D S T N M N' M' hN hM hN' hM' _ hV]`. Conclude with `hbase.2`. Establish `hl : ∀ l : List (Fin n), Vac ψ S T N N' (fun p => ∀ i, p ≠ (L i).q.v) (l.foldr (fun i g => comb ψ S T (L i).o g) f₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact hbaseN`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hdisj : ∀ p, p = (L i).q.v → ¬ ∀ i', p ≠ (L i').q.v` using `fun p hp h => h i hp`. Establish `hc : CombAt (· = (L i).q.v) (L i).o` using `fun u hu => GlobalTheory.T.matrixSupported_splitPlace_of_isHalf_conjSum D _ (L i).q u ((L i).o_at u hu)`. Conclude with `((GlobalTheory.DisjComb.main D ψ hψ S T (· = (L i).q.v) _ hdisj).2.1 _ hc).2 N N' _ ih`. Conclude with `hl _`. Establish `hstep : ∀ j : ℕ, j ≤ n → Vac ψ S T N N' (fun p => (∀ i, p ≠ (L i).q.v) ∨ ∃ i : Fin n, i.val < j ∧ p = (L i).q.v) ((List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) f₀)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Establish `hfun : (fun p => (∀ i, p ≠ (L i).q.v) ∨ ∃ i : Fin n, i.val < 0 ∧ p = (L i).q.v) = fun p => ∀ i, p ≠ (L i).q.v`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[hfun]`. Conclude with `hQc`. Consider the case `succ j ih`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `hj`. Establish `hj' : j < n` using `hj`. Set `jj : Fin n` to `⟨j, hj'⟩`. Establish `hdisj : ∀ p, ((∀ i, p ≠ (L i).q.v) ∨ ∃ i : Fin n, i.val < j ∧ p = (L i).q.v) → ¬ (p = (L jj).q.v)`. Introduce and unpack `p (h | ⟨i, hi, rfl⟩) hp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `h jj hp`. Establish `h2 : i = jj` using `hinj hp`. Rewrite `hi` using `[h2]`. Conclude with `lt_irrefl _ hi`. Establish `hiff` using `(GlobalTheory.DisjComb.main D ψ hψ S T _ _ hdisj).2.2.2.2 N N' ((List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) f₀) hN hN'`.
+Prove the first alternative. Prove the second alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Establish `hfun : (fun p => ((∀ i, p ≠ (L i).q.v) ∨ ∃ i : Fin n, i.val < j ∧ p = (L i).q.v) ∨ p = (L jj).q.v) = fun p => (∀ i, p ≠ (L i).q.v) ∨ ∃ i : Fin n, i.val < j + 1 ∧ p = (L i).q.v`. Use function extensionality and compare the values at `p`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `((h | ⟨i, hi, h⟩) | h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr ⟨i, by omega, h⟩`. Conclude with `Or.inr ⟨jj, by simp [jj], h⟩`. Introduce and unpack `(h | ⟨i, hi, h⟩)`. Conclude with `Or.inl (Or.inl h)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.lt_succ_iff_lt_or_eq.1 hi with hi | hi` into its components or cases. Conclude with `Or.inl (Or.inr ⟨i, hi, h⟩)`. Conclude with `Or.inr (by rw [h, show i = jj from Fin.ext hi])`. Rewrite `hiff` using `[hfun]`. Conclude with `hiff.2 ⟨ih (by omega), hloc jj⟩`.
+Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Establish `hfin` using `hstep n le_rfl`. Establish `hfun : (fun p => (∀ i, p ≠ (L i).q.v) ∨ ∃ i : Fin n, i.val < n ∧ p = (L i).q.v) = fun _ => True`. Use function extensionality and compare the values at `p`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
-
-Introduce `_`. Discharge the goal by the elementary cases of `trivial`. Introduce `_`. Distinguish the cases in `h : ∃ i, p = (L i).q.v`. Take `⟨i, hi⟩` from `h`.
-
-Conclude with `Or.inr ⟨i, i.isLt, hi⟩`. Conclude with `Or.inl fun i hi => h ⟨i, hi⟩`. Rewrite `hfin` using `[hfun]`. Conclude with `hfin`.
+Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaAt_prodDat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : Lat S) (M' : Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (n : ℕ) (L : Fin n → LocPl ψ S T M M'), (Function.Injective fun i => (L i).q.v) → ∀ f₀ f, Vac ψ S T M M' (fun _ => True) f₀ → IsThetaAt ψ (symplO S T) (heisO ψ S T) (∑ i, (L i).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) 1 f₀ (prodDat L) f → IsThetaFunO ψ S T f → f = (List.finRange n).foldr (fun i g => comb ψ S T (L i).e (comb ψ S T (L i).o g)) f₀ ∧ ∀ (N : Lat S) (N' : Lat T), IsSelfDualC S N → IsSelfDualC T N' → (∀ i, IntIn (L i).q S (L i).FS N ∧ IntIn (L i).q T (L i).FT N') → (∀ p, (∀ i, p ≠ (L i).q.v) → latV S N (· = p) = latV S M (· = p) ∧ latV T N' (· = p) = latV T M' (· = p)) → Vac ψ S T N N' (fun _ => True) ((List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) f₀) := by
   intro D ψ hψ S T M M' hM hM' n L hinj f₀ f hf₀ hθ _

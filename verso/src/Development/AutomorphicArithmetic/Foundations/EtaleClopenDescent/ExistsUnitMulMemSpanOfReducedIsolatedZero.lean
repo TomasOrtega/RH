@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI := Ideal.Quotient.field m`. Use `haveI : Module.Finite ℂ (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℂ (A ⧸ m)`. Establish `hb` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ) (K := A ⧸ m)`. Set `φ` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (A ⧸ m)) hb`. Use `⟨φ.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ m), fun x => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show φ.symm (Ideal.Quotient.mkₐ ℂ m x) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ φ.symm.injective, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_algHom_complex_ker_eq_maximal (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A]
     (m : Ideal A) [m.IsMaximal] : ∃ e : A →ₐ[ℂ] ℂ, ∀ x, e x = 0 ↔ x ∈ m := by
@@ -23,11 +23,9 @@ private theorem exists_algHom_complex_ker_eq_maximal (A : Type) [CommRing A] [Al
   rw [map_eq_zero_iff _ φ.symm.injective, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Use `haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := ℂ)`. Establish `hj : x ∈ J.jacobson`. Rewrite using `[Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `m ⟨hJm, hm⟩`. Use `haveI := hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `exists_algHom_complex_ker_eq_maximal A m`. Conclude with `(he x).1 (hx e fun y hy => (he y).2 (hJm hy))`. Rewrite `hj` using `[← Ideal.radical_eq_jacobson]`. Take `⟨n, hn⟩` from `hj`. Use `haveI := hred`.
-
-Establish `hnil : IsNilpotent (Ideal.Quotient.mk J x)` using `⟨n, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact hn⟩`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 hnil.eq_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_of_reduced_vanishing_on_zeros (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A]
     (J : Ideal A) (hred : IsReduced (A ⧸ J)) (x : A)
@@ -47,17 +45,15 @@ private theorem mem_of_reduced_vanishing_on_zeros (A : Type) [CommRing A] [Algeb
   exact Ideal.Quotient.eq_zero_iff_mem.1 hnil.eq_zero
 
 /- English proof (translation)
-Introduce `A _ _ _ d t hred hfin e he b hb`. Establish `key : ∀ s : {e' : A →ₐ[ℂ] ℂ // ∀ j, e' (t j) = 0}, ∃ a : A, e a ≠ 0 ∧ (s.1 ≠ e → s.1 a = 0)`. Introduce `s`. Distinguish the cases in `hs : s.1 = e`. Conclude with `⟨1, by simp, fun h => absurd hs h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, e y ≠ s.1 y := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hs (AlgHom.ext fun y => (hcon y).symm)`. Use `⟨y - algebraMap ℂ A (s.1 y), ?_, fun _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `sub_ne_zero.2 hy`. Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `sub_self _`. Use `choose f hf using key`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite {e' : A →ₐ[ℂ] ℂ // ∀ j, e' (t j) = 0}`. Use `⟨∏ s, f s, ?_⟩` and prove the remaining obligations. Establish `hmem : (∏ s, f s) * b ∈ Ideal.span (Set.range t)`. Apply `mem_of_reduced_vanishing_on_zeros A _ hred` to reduce the goal to its premises. Introduce `e' he'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `ht : ∀ j, e' (t j) = 0` using `fun j => he' _ (Ideal.subset_span ⟨j, rfl⟩)`. Distinguish the cases in `hee : e' = e`. Substitute `hee` using the available equality. Rewrite using `[map_mul, hb, mul_zero]`. Rewrite using `[map_mul, map_prod, Finset.prod_eq_zero (Finset.mem_univ ⟨e', ht⟩) ((hf ⟨e', ht⟩).2 hee), zero_mul]`.
-
-Take `⟨g, hg⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hmem`. Use `⟨g, ?_, hg.symm⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun s _ => (hf s).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.exists_unit_mul_mem_span_of_reduced_isolated_zero :
     ∀ (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A] (d : ℕ) (t : Fin d → A), IsReduced (A ⧸ Ideal.span (Set.range t)) → Finite {e : A →ₐ[ℂ] ℂ // ∀ j, e (t j) = 0} → ∀ e : A →ₐ[ℂ] ℂ, (∀ j, e (t j) = 0) → ∀ b : A, e b = 0 → ∃ (c : A) (g : Fin d → A), e c ≠ 0 ∧ c * b = ∑ l, g l * t l := by

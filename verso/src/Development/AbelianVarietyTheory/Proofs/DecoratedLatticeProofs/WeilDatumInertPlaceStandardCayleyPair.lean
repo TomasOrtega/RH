@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Establish `hle : w.asIdeal ≤ w'.asIdeal`. Rewrite using `[← hin, Ideal.map_le_iff_le_comap, ← h', HeightOneSpectrum.under_asIdeal]`. Conclude with `(HeightOneSpectrum.ext (w.isMaximal.eq_of_le w'.isPrime.ne_top hle)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_inert_under {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (hin : IsInertAt F E v w)
@@ -35,21 +35,17 @@ theorem eq_of_inert_under {F E : Type} [Field F] [NumberField F] [Field E] [Numb
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW v w h hin hS hT c ϖ eS eT hU heS heT f hf hf0`. Take `⟨δ, ψ', M, ρ, ω, s, hstd, hsf, hω, hth, hρ⟩` from `GlobalTheory.T.exists_standardLocalisation_weilDatum_inertPlace D ψ S T χS χT om hW v w h hin hS hT c ϖ eS eT hU heS heT f hf hf0`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne S T`. Establish `hψ` using `hW.std`. Establish `hthf : IsThetaFunO ψ S T f` using `hf.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `l : M →ₗ[ℂ] ℂ` to `{ toFun := fun m => Lift.pet μ 𝓕 (m : WO S T → ℂ) f map_add' := fun m m' => by show GlobalTheory.Ker.ipO μ 𝓕 ((m + m' : M) : WO S T → ℂ) f = GlobalTheory.Ker.ipO μ 𝓕 _ f + GlobalTheory.Ker.ipO μ 𝓕 _ f`. Rewrite using `[Submodule.coe_add]`. Conclude with `GlobalTheory.Size.ipO_add_left hψ hμ.1 hμ.2.1 (hth m) (hth m') hthf`. Use the proof step `map_smul' := fun a m => by show GlobalTheory.Ker.ipO μ 𝓕 ((a • m : M) : WO S T → ℂ) f = a * GlobalTheory.Ker.ipO μ 𝓕 _ f`. Rewrite using `[Submodule.coe_smul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.Size.ipO_smul_left μ 𝓕 a _ _ }`. Establish `hl : ∀ m : M, l m = Lift.pet μ 𝓕 (m : WO S T → ℂ) f` using `fun _ => rfl`. Establish `hls : l s ≠ 0`. Rewrite using `[hl, hsf]`. Conclude with `fun h0 => hf0 ((GlobalTheory.Size.ipO_self_eq_zero_iff hψ hμ.1 hμ.2.1 hthf).1 h0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hinv : ∀ u ∈ intMat (w.adicCompletion D.host.E) (Fin T.rank) (Fin S.rank), ∀ m : M, l (ρ u m) = l m`. Introduce `u hu m`. Take `⟨u0, hu0⟩` from `hρ u`. Establish `hfix : heisO ψ S T u0 f = f`. Establish `e` using `hu0 s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hstd.fixes u hu, hsf]`. Conclude with `e.symm`. Rewrite using `[hl, hl, hu0 m]`. Use `conv_lhs => rw [← hfix]`. Conclude with `GlobalTheory.Size.ipO_heisO hψ hμ.1 hμ.2.1 (hth m) hthf u0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hcay` using `GlobalTheory.T.cayleyRule_of_biInvariantVacuumCoefficient _ ϖ c (qV D.host.F v) δ ψ' S.rank T.rank M ρ ω s hstd l hls hinv`. Take `⟨φ1, hk1, hc1⟩` from `GlobalTheory.T.vacuum_matrixCoefficient_source_inert_place_alt D ψ S T χS χT om hW μ 𝓕 hμ v w h hin hS hT c ϖ eS hU heS`. Establish `hunr : ∀ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = v → UnrAt χS w' ∧ UnrAt χT w'` using `fun w' h' => by`. Rewrite using `[eq_of_inert_under hin w' h']`. Conclude with `⟨hS, hT⟩`.
-
-Take `⟨φ2, hk2, hc2⟩` from `GlobalTheory.T.weilMatrixCoefficient_vacua_unramifiedPlace D ψ S T χS χT om hW μ 𝓕 hμ v hunr`. Establish `hval` using `(GlobalTheory.T.heckeChar_value_inert_place_and_segment D χS S.rank hW.hecS hW.resS v w h hin hS).1`. Establish `hk2'` using `(hk2 w h).2 hin c ϖ eT hU heT`. Rewrite `hk2'` using `[hval]`. Use `⟨δ, ψ', M, ρ, ω, s, hstd, hsf, hω, hcay.1 φ1 hk1 fun g => ?_, hcay.2 (φ2 ∘ eT.symm) hk2' fun g => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(congrArg (fun x => Lift.pet μ 𝓕 x f) ((hω g 1 s).trans (by rw [map_one eT.symm, map_one (embV T v), hsf]))).trans ((hc1 g f f hf hf).trans (by rw [hl, hsf]))`. Conclude with `(congrArg (fun x => Lift.pet μ 𝓕 x f) ((hω 1 g s).trans (by rw [map_one eS.symm, map_one (embV S v), hsf]))).trans ((hc2 (eT.symm g) f f hf hf).trans (by rw [hl, hsf]; rfl))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem std_cayley_of_inert : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → UnrAt χS w → UnrAt χT w → ∀ c ϖ eS eT, IsUnramInv ϖ c (qV D.host.F v) → IsInertChart D.sp.cm.sig S.gram (frameLat S) h c eS → IsInertChart D.sp.cm.sig T.gram (frameLat T) h c eT → ∀ f, VacFin ψ S T v f → f ≠ 0 → ∃ (δ : w.adicCompletion D.host.E) (ψ' : AddChar (w.adicCompletion D.host.E) ℂ) (M : Submodule ℂ (WO S T → ℂ)) (ρ : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E) → Module.End ℂ M) (ω : GU c S.rank × GU c T.rank →* Module.End ℂ M) (s : M), IsStd ϖ c (qV D.host.F v) δ ψ' ρ ω s ∧ (s : WO S T → ℂ) = f ∧ (∀ g g' (m : M), ((ω (g, g') m : M) : WO S T → ℂ) = om (embV S v (eS.symm g), embV T v (eT.symm g')) m) ∧ CayleyRule (qV D.host.F v) T.rank ρ (ω.comp (MonoidHom.inl _ _)) s ∧ CayleyRule (qV D.host.F v) S.rank ρ (ω.comp (MonoidHom.inr _ _)) s := by
   intro D ψ S T χS χT om hW v w h hin hS hT c ϖ eS eT hU heS heT f hf hf0

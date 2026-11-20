@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.MainNotions.G Formalism.L2.G Formalism.MainNotions.G.CmpJ Formalism.L2.Forms Formalism.UG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ ∀ (hμ : (w.D Z).what₂.muAt v ≠ (w.D Z).what₂.mu0), ∀ (tt : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes n.tp t.C (w.tw Z)), TC.StdTw w.I w.l Z w.l0 tt → ∀ j (hj : j + 1 ≤ (w.D Z).R.m) (β : tt.ch.Ch u ((w.D Z).what₂.muAt v) (j + 1)), ∃ …`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.exists_chainChart_localUnitCharacter_compatible_level : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch) (Y : DivX (w.D Z)),

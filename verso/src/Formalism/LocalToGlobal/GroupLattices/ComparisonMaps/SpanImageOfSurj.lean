@@ -13,15 +13,13 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf) (α : Type) {LL : Type} [Field LL] (e : LL →+* Kf) (Mi : Submodule O (FnP P α))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `(hlat s).mpr (Submodule.subset_span hs)`. Establish `key : ∀ v ∈ Submodule.span A S, cmp v ∈ Submodule.span O (cmp '' S)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Take `⟨o, ho⟩` from `hA a a.2`. Establish `h1 : cmp (a • x) = o • cmp x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show a • x = (a : LL) • x from rfl, LinearMap.map_smulₛₗ, ← ho, algebraMap_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ o hx`. Rewrite using `[← hd, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
-
-Take `⟨v, hv⟩` from `hsurj _ hx (cmpF_rat P α e Mi x)`. Rewrite using `[← hv]`. Conclude with `key v ((hlat v).mp (by rw [hv]; exact hx))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_of_surj {V : Type} [AddCommGroup V] [Module LL V] (cmp : V →ₛₗ[e] FnP P α) (A : Subring LL)
     (hA : ∀ a ∈ A, e a ∈ Set.range (algebraMap O Kf)) (S : Set V)
@@ -78,7 +76,7 @@ structure CmpHypR (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I :
   desc : ∀ u w hg, MRatSpan (D.gat u w hg).P (D.gat u w hg).comp (I.embW u w hg) (D.gat u w hg).M
 
 /- English proof (translation)
-Introduce `i L`. Unfold `cmpRec cmpC`. Use `split_ifs`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨0, map_zero _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cmpRec_rat (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I : CmpIn D X) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (x : ((D.fm u).lat 0).V) :
@@ -90,7 +88,7 @@ theorem cmpRec_rat (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I 
   · exact ⟨0, map_zero _⟩
 
 /- English proof (translation)
-The claim follows from `H.ex uniq := H.uniq pos := H.pos chi := H.chi li := fun u w hg => li_of_rat (I.embW u w hg) (evG (D.gat u w hg)) (cmpL (e := I.embW u w hg) (H.ex u w hg) (H.uniq u w hg)).toAddMonoidHom (evG_sep _) (fun a x => (cmpL (e := I.embW u w hg) (H.ex u w hg) (H.uniq u w hg)).map_smulₛₗ a …`.
+A detailed English derivation is pending.
 -/
 theorem CmpHypR.hyp {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D X} (H : CmpHypR T Gt I) :
     CmpHyp T Gt I where

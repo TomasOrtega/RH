@@ -23,7 +23,7 @@ def atMN (τ : D.what₂.Tau) (g : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N) 
     ((1 : Matrix (Fin N) (Fin N) (Af D.host.F ⊗[D.host.F] D.host.E)) i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, atMN, Matrix.of_apply, psiT_glueA]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psi_atMN (τ τ' : D.what₂.Tau) (g : Matrix (Fin N) (Fin N) ℂ) :
     (atMN D τ g).map (psiT D τ') = if τ' = τ then g else 1 := by
@@ -33,14 +33,14 @@ theorem psi_atMN (τ τ' : D.what₂.Tau) (g : Matrix (Fin N) (Fin N) ℂ) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, atMN, Matrix.of_apply, finPart_glueA]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_atMN (τ : D.what₂.Tau) (g : Matrix (Fin N) (Fin N) ℂ) : (atMN D τ g).map (finPart D) = 1 := by
   ext i j
   rw [Matrix.map_apply, atMN, Matrix.of_apply, finPart_glueA]
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[Matrix.map_mul, psi_atMN, psi_atMN, psi_atMN]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.map_mul, fin_atMN, fin_atMN, fin_atMN, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem atMN_mul (τ : D.what₂.Tau) (g g' : Matrix (Fin N) (Fin N) ℂ) :
     atMN D τ (g * g') = atMN D τ g * atMN D τ g' := by
@@ -51,7 +51,7 @@ theorem atMN_mul (τ : D.what₂.Tau) (g g' : Matrix (Fin N) (Fin N) ℂ) :
   · rw [Matrix.map_mul, fin_atMN, fin_atMN, fin_atMN, Matrix.one_mul]
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[psi_atMN, Matrix.map_one _ (map_zero _) (map_one _)]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[fin_atMN, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem atMN_one (τ : D.what₂.Tau) : atMN D τ (1 : Matrix (Fin N) (Fin N) ℂ) = 1 := by
   apply mat_ext D
@@ -61,14 +61,14 @@ theorem atMN_one (τ : D.what₂.Tau) : atMN D τ (1 : Matrix (Fin N) (Fin N) �
   · rw [fin_atMN, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, psiT_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_psiT (τ : D.what₂.Tau) (M : Matrix (Fin N) (Fin N) (AE D)) :
     (Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) M).map (psiT D τ) = (M.map (psiT D τ))ᴴ := by
   ext i j; simp [Formalism.UG.cT, Matrix.conjTranspose_apply, psiT_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, finPart_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_fin (M : Matrix (Fin N) (Fin N) (AE D)) :
     (Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) M).map (finPart D) =
@@ -76,23 +76,23 @@ theorem cT_map_fin (M : Matrix (Fin N) (Fin N) (AE D)) :
   ext i j; simp [Formalism.UG.cT, finPart_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, psiT_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_psiT (τ : D.what₂.Tau) (J : Matrix (Fin N) (Fin N) D.host.E) :
     (JR (AF D.host.F) J).map (psiT D τ) = J.map (tauE D τ) := by
   ext i j; simp [JR, psiT_inclR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, finPart_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_fin (J : Matrix (Fin N) (Fin N) D.host.E) :
     (JR (AF D.host.F) J).map (finPart D) = JR (Af D.host.F) J := by
   ext i j; simp [JR, finPart_inclR]
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_psiT, JR_map_psiT, psi_atMN]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `hg`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_fin, JR_map_fin, fin_atMN, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atMN_unitary (τ : D.what₂.Tau) (J : Matrix (Fin N) (Fin N) D.host.E) (g : Matrix (Fin N) (Fin N) ℂ)
     (hg : gᴴ * J.map (tauE D τ) * g = J.map (tauE D τ)) :
@@ -106,9 +106,9 @@ theorem atMN_unitary (τ : D.what₂.Tau) (J : Matrix (Fin N) (Fin N) D.host.E) 
   · rw [Matrix.map_mul, Matrix.map_mul, cT_map_fin, JR_map_fin, fin_atMN, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `(continuous_glueA D _).comp ((continuous_splitInv D).comp (continuous_pi fun τ' => ?_))` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`. Simplify using `only [h, if_true]`. Conclude with `(continuous_apply j).comp (continuous_apply i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_false]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_atMN (τ : D.what₂.Tau) : Continuous (atMN D (N := N) τ) := by
   classical

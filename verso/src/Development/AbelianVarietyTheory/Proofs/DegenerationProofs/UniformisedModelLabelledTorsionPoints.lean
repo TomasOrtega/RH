@@ -12,13 +12,11 @@ noncomputable section
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (pushHom h T)` using `fun x y e => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (fun z => z.left) e`. Rewrite using `[Over.w, Over.w]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (pushHom h T)` using `fun z => ⟨Over.homMk (h.1.lift z.left T.hom (Over.w z)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`. Use `choose x hx using fun a => hsurj (U ≫ pt a)`. Use `⟨x, fun a => congrArg (fun z => z.left) (hx a), fun a b => hinj ?_, fun a b e => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hx, hx, hx, hadd, MonObj.comp_mul]`. Establish `ht : (U ≫ pt a) ^ m = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `map_pow (preHom U) (pt a) m` as an intermediate fact. Rewrite `this` using `[htors, map_one]`. Conclude with `this.symm`. Conclude with `(hbij _ ht).unique rfl (by rw [← hx, ← hx, e])`. Take `⟨a, ha, -⟩` from `hbij (pushHom h T z) (by rw [← map_pow, hz, map_one])`.
-
-Conclude with `⟨a, hinj (by rw [hx, ha])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem labelled_torsion_pull {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} [GrpObj G] [GrpObj G']
     {f : B' ⟶ B} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over B') {E : Over B}
@@ -47,9 +45,9 @@ theorem labelled_torsion_pull {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} [G
     exact ⟨a, hinj (by rw [hx, ha])⟩
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ p _ y₀ u`. Establish `e : (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK = spMap y₀ := by`. Use `Eq.trans ?_ (congrArg spMap u.fac)` and prove the remaining obligations. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨x, h₁, h₂⟩` from `labelled_torsion_pull u.cart (TFK (R := u.V) (PadicAlgCl p)) (E := baseOver (Sp S.R)) (Over.homMk ((TFK (R := u.V) (PadicAlgCl p)).hom ≫ spMap u.yK :) (by simp)) ρ.pt (S.r * S.N) ρ.pt_add (fun a => (ρ.fr_tors a).1) (fun z hz => ρ.pt_bij (PadicAlgCl p) _ z hz)`. Conclude with `⟨x, fun a => (h₁ a).trans (by rw [← e]; rfl), h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem utest_torsion_points : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), ∃ x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), (∀ a, (x a).left ≫ u.φ = spMap y₀ ≫ (ρ.pt a).left) ∧ (∀ a b, x (a + b) = x a * x b) ∧ Function.Injective x ∧ ∀ z : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A, z ^ (S.r * S.N) = 1 → ∃ a, z = x a := by
   intro o Ω _ _ _ S ρ p _ y₀ u

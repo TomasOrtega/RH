@@ -29,17 +29,17 @@ Both sides reduce to the same expression.
 @[simp] theorem rmul_apply {k m n : ℕ} (P : Mx D m n) (w : Mx D k m) : rmul P w = w * P := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rmul {k m n : ℕ} (P : Mx D m n) : Continuous (rmul (k := k) P) :=
   continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-Establish `e : ratW T A γ * rat P = ratW T B (γ * P)` using `by rw [ratW_eq, ratW_eq, rat_mul]`. Use `show f ((ratW T A γ + w) * rat P) = _`. Rewrite using `[Matrix.add_mul, e, hf.quasi, ← e, h]`. Use `level := by`. Take `⟨U, hU, k⟩` from `hf.level`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨U.comap (rmul (rat P)), hU.preimage (continuous_rmul _), fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `e` using `congrFun (k _ hu (map_mul_eq_zero_left _ h0 _)) (w * rat P)`. Simplify using `only [heisO, rmul_apply] at e ⊢`. Rewrite using `[Matrix.add_mul, ← h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `e`. Use `cont := hf.cont.comp (continuous_rmul _)`. Use `smooth k L hL h0 w := by`. Use `hf.smooth k ((rmul (rat P)).comp L) ((continuous_rmul _).comp hL) (fun t => map_mul_eq_zero_left _ (h0 t) _) (w * rat P)` as an intermediate fact. Simplify `this` using `only [Matrix.add_mul, AddMonoidHom.comp_apply, rmul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem theta_comp {ψ : AddChar (AF D.host.F) ℂ} {A B T : HSp D} (P : Matrix (Fin A.rank) (Fin B.rank) D.host.E)
     (h : ∀ x y : WO A T, symplOH B T (x * rat P) (y * rat P) = symplOH A T x y) {f : WO B T → ℂ}
@@ -63,7 +63,7 @@ theorem theta_comp {ψ : AddChar (AF D.host.F) ℂ} {A B T : HSp D} (P : Matrix 
     simpa only [Matrix.add_mul, AddMonoidHom.comp_apply, rmul_apply] using this
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hM l k]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem entries_fix_conj {A : Type} [CommRing A] {m n : ℕ} (c : A) {M : Matrix (Fin n) (Fin n) A}
     (hM : ∀ i j, c * M i j = M i j) (P : Matrix (Fin m) (Fin n) A) (Q : Matrix (Fin n) (Fin m) A) (i j : Fin m) :
@@ -74,7 +74,7 @@ theorem entries_fix_conj {A : Type} [CommRing A] {m n : ℕ} (c : A) {M : Matrix
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hM i l]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem entries_fix_right {A : Type} [CommRing A] {k m n : ℕ} (c : A) {M : Matrix (Fin k) (Fin n) A}
     (hM : ∀ i j, c * M i j = M i j) (P : Matrix (Fin n) (Fin m) A) (i : Fin k) (j : Fin m) :
@@ -85,7 +85,7 @@ theorem entries_fix_right {A : Type} [CommRing A] {k m n : ℕ} (c : A) {M : Mat
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm (P.det), mul_assoc, ← Matrix.det_mul, mul_eq_one_comm.1 QP, Matrix.det_one, mul_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj_sq {A : Type} [CommRing A] {m n : ℕ} (h : n = m) {P : Matrix (Fin m) (Fin n) A}
     {Q : Matrix (Fin n) (Fin m) A} (QP : Q * P = 1) (M : Matrix (Fin n) (Fin n) A) : (P * M * Q).det = M.det := by
@@ -94,20 +94,18 @@ theorem det_conj_sq {A : Type} [CommRing A] {m n : ℕ} (h : n = m) {P : Matrix 
     Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_empty_zero {k l : ℕ} (x : Mx D k 0) (y : Mx D 0 l) : x ⬝ y = 0 := by
   ext i j
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Set `m : G ≃ᵐ H` to `{ toEquiv := e.toEquiv measurable_toFun := he.measurable measurable_invFun := hes.measurable }`. Establish `hmp : MeasurePreserving m (μ.map e.symm) μ` using `(MeasurePreserving.symm m.symm ⟨m.symm.measurable, rfl⟩)`. Establish `hmp' : MeasurePreserving e (μ.map e.symm) μ` using `hmp`. Use `⟨μ.map e.symm, AddEquiv.isAddHaarMeasure_map μ e.symm hes (by simpa using he), ?_, ?_⟩` and prove the remaining obligations. Set `f : Λ → Γ` to `fun y => ⟨e.symm y, (hΓ _).1 (by simpa using y.2)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hab))`. Introduce `x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩`. Use `h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving hf ?_` and prove the remaining obligations. Introduce `y x`. Simplify using `[f, AddSubgroup.vadd_def]`. Introduce `u`.
-
-Conclude with `hmp.setLIntegral_comp_preimage_emb m.measurableEmbedding u 𝓕`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem haar_pull {G H : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G]
     [BorelSpace G] [AddCommGroup H] [TopologicalSpace H] [IsTopologicalAddGroup H] [MeasurableSpace H] [BorelSpace H]
@@ -141,27 +139,27 @@ namespace Zero
 variable {S S₀ : HSp D} (d : HypDec S S₀ 0)
 
 /- English proof (translation)
-Use `d.rank_add` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_eq (d : HypDec S S₀ 0) : S₀.rank = S.rank := by
   have := d.rank_add
   omega
 
 /- English proof (translation)
-Establish `h` using `d.sum_eq_one`. Rewrite `h` using `[mul_empty_zero, mul_empty_zero, zero_add, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem witt_decomposition_zero_section_embed_eq_one : d.j0 ⬝ d.p0 = 1 := by
   have h := d.sum_eq_one
   rwa [mul_empty_zero, mul_empty_zero, zero_add, add_zero] at h
 
 /- English proof (translation)
-Rewrite using `[d.unitaryMatrix_wittCoreEmbedding, mul_empty_zero, mul_empty_zero, zero_add, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitaryMatrix_wittCoreEmbedding (g : GA D S₀) : mt S (d.emb0 g) = d.j0 ⬝ mt S₀ g ⬝ d.p0 := by
   rw [d.unitaryMatrix_wittCoreEmbedding, mul_empty_zero, mul_empty_zero, zero_add, add_zero]
 
 /- English proof (translation)
-Establish `h` using `d.gA_eq`. Rewrite `h` using `[mul_empty_zero, mul_empty_zero, zero_add, add_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gA_eq : adj d.p0 ⬝ (gA S₀ ⬝ d.p0) = gA S := by
   have h := d.gA_eq
@@ -179,7 +177,7 @@ def back (k : GA D S) : GA D S₀ :=
     exact d.gram_00)
 
 /- English proof (translation)
-Apply `mt_injective S` to reduce the goal to its premises. Rewrite using `[unitaryMatrix_wittCoreEmbedding, back, mt_ofMat]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = mt S k := by rw [witt_decomposition_zero_section_embed_eq_one, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem witt_decomposition_zero_embedding_left_inverse (k : GA D S) : d.emb0 (back d k) = k := by
   apply mt_injective S
@@ -189,7 +187,7 @@ theorem witt_decomposition_zero_embedding_left_inverse (k : GA D S) : d.emb0 (ba
     _ = mt S k := by rw [witt_decomposition_zero_section_embed_eq_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d.wittDecomp_anisotropicEmbedding_injective, fun k => ⟨back d k, witt_decomposition_zero_embedding_left_inverse d k⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem witt_decomposition_zero_embedding_bijective : Function.Bijective d.emb0 :=
   ⟨d.wittDecomp_anisotropicEmbedding_injective, fun k => ⟨back d k, witt_decomposition_zero_embedding_left_inverse d k⟩⟩
@@ -218,23 +216,23 @@ Both sides reduce to the same expression.
 theorem eqv_symm_apply (x : WO S T) : (eqv d T).symm x = x ⬝ d.j0 := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eqv : Continuous (eqv d T) := continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eqv_symm : Continuous (eqv d T).symm := continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `d.wittDecomp_sympl_extAnisotropic_extAnisotropic T w w'`.
+A detailed English derivation is pending.
 -/
 theorem sympl_eqv (w w' : WO S₀ T) : symplOH S T (eqv d T w) (eqv d T w') = symplOH S₀ T w w' :=
   d.wittDecomp_sympl_extAnisotropic_extAnisotropic T w w'
 
 /- English proof (translation)
-Rewrite using `[← sympl_eqv, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_eqv_symm (x y : WO S T) : symplOH S₀ T ((eqv d T).symm x) ((eqv d T).symm y) = symplOH S T x y := by
   rw [← sympl_eqv, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]
@@ -242,20 +240,20 @@ theorem sympl_eqv_symm (x y : WO S T) : symplOH S₀ T ((eqv d T).symm x) ((eqv 
 variable {T} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-The claim follows from `theta_comp d.q0 (sympl_eqv d T) hf`.
+A detailed English derivation is pending.
 -/
 theorem theta_eqv {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S₀ T fun w => f (eqv d T w) :=
   theta_comp d.q0 (sympl_eqv d T) hf
 
 /- English proof (translation)
-The claim follows from `theta_comp d.i₀ (sympl_eqv_symm d T) hf`.
+A detailed English derivation is pending.
 -/
 theorem theta_eqv_symm {f : WO S₀ T → ℂ} (hf : IsThetaFunO ψ S₀ T f) :
     IsThetaFunO ψ S T fun x => f ((eqv d T).symm x) :=
   theta_comp d.i₀ (sympl_eqv_symm d T) hf
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => theta_eqv d h⟩` and prove the remaining obligations. Use `theta_eqv_symm d h` as an intermediate fact. Simplify `this` using `only [← eqv_apply, AddEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem theta_iff (f : WO S T → ℂ) : IsThetaFunO ψ S₀ T (fun w => f (d.ext0 T w)) ↔ IsThetaFunO ψ S T f := by
   refine ⟨fun h => ?_, fun h => theta_eqv d h⟩
@@ -263,7 +261,7 @@ theorem theta_iff (f : WO S T → ℂ) : IsThetaFunO ψ S₀ T (fun w => f (d.ex
   simpa only [← eqv_apply, AddEquiv.apply_symm_apply] using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, sympl_eqv, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_eqv (v : WO S₀ T) (K : WO S T → ℂ) :
     (fun w => heisO ψ S T (eqv d T v) K (eqv d T w)) = heisO ψ S₀ T v fun w => K (eqv d T w) := by
@@ -309,9 +307,9 @@ namespace Zero
 variable {S S₀ : HSp D} (d : HypDec S S₀ 0) {T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Rewrite using `[ratL_eq, ratL_eq, eqv_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `ratMx_mul hx (rat_mem d.q0)` as an intermediate fact. Rewrite `this` using `[show rat d.q0 = d.p0 from rfl, Matrix.mul_assoc, witt_decomposition_zero_section_embed_eq_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hx`. Conclude with `ratMx_mul hx (rat_mem d.i₀)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rat_iff (x : WO S T) : (eqv d T).symm x ∈ ratL T S₀ ↔ x ∈ ratL T S := by
   rw [ratL_eq, ratL_eq, eqv_symm_apply]
@@ -323,27 +321,23 @@ theorem rat_iff (x : WO S T) : (eqv d T).symm x ∈ ratL T S₀ ↔ x ∈ ratL T
     exact ratMx_mul hx (rat_mem d.i₀)
 
 /- English proof (translation)
-Establish `hT : ∀ F, IsThetaFunO ψ S₀ T F → IsThetaFunO ψ S T (fun x => F ((eqv d T).symm x))` using `fun F hF => theta_eqv_symm d hF`. Use `⟨H.std, H.hecS, H.hecT, (rank_eq d) ▸ H.resS, H.resT, fun p F hF => ?_, fun g h w₀ F hF => ?_, fun γ hγ γ' hγ' F hF => ?_, fun F hF w => ?_, fun μ 𝓕 hμ h𝓕 p F hF => ?_, fun e he g h hg hh x y hx hy => ?_⟩` and prove the remaining obligations. Take `⟨g, h⟩` from `p`. Rewrite using `[pull_apply]`. Conclude with `theta_eqv d (H.om_pres _ _ (hT F hF))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pull_apply, pull_apply]`. Establish `e1 : (fun x => heisO ψ S₀ T w₀ F ((eqv d T).symm x)) = heisO ψ S T (eqv d T w₀) (fun x => F ((eqv d T).symm x))`. Use function extensionality and compare the values at `x`. Simplify using `only [heisO]`. Rewrite using `[← sympl_eqv_symm d T x (eqv d T w₀), map_add, AddEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, H.om_heis _ _ _ _ (hT F hF)]`. Rewrite using `[show actO S T (d.emb0 g) h (eqv d T w₀) = eqv d T (actO S₀ T g h w₀) from d.wittDecomp_homAction_extAnisotropic_equivariant T g h w₀]`. Conclude with `heisO_eqv d _ _`. Rewrite using `[pull_apply] show om _ _ (eqv d T 0) = F 0`. Rewrite using `[map_zero, H.om_aut _ (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hγ) γ' hγ' _ (hT F hF)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show F ((eqv d T).symm 0) = F 0`. Rewrite using `[map_zero]`. Conclude with `(H.om_cont _ (hT F hF) (eqv d T w)).comp ((d.continuous_embed.comp continuous_fst).prodMk continuous_snd)`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩ haveI : BorelSpace (WO S₀ T) := ⟨rfl⟩`. Take `⟨ν, hν, h𝓖, hu⟩` from `haar_pull (eqv d T).symm (continuous_eqv_symm d T) (continuous_eqv d T) (ratL T S) (ratL T S₀) (rat_iff d) μ 𝓕 hμ h𝓕`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1` using `hu fun w => ‖pull d om p F w‖ₑ ^ 2`. Establish `e2` using `hu fun w => ‖F w‖ₑ ^ 2`. Establish `e3 : ∀ x, pull d om p F ((eqv d T).symm x) = om (d.emb0 p.1, p.2) (fun x => F ((eqv d T).symm x)) x` using `fun x => by show om _ _ (eqv d T ((eqv d T).symm x)) = _`. Rewrite using `[AddEquiv.apply_symm_apply]`. Simplify using `only [e3] at e1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← e1, ← e2]`. Conclude with `H.om_unit ν _ hν h𝓖 _ _ (hT F hF)`. Establish `hmt : mt S (d.emb0 g) - 1 = d.j0 ⬝ (mt S₀ g - 1) ⬝ d.p0`. Rewrite using `[unitaryMatrix_wittCoreEmbedding, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, witt_decomposition_zero_section_embed_eq_one]`. Establish `hsupp : SuppAt e S (d.emb0 g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `SuppAt at hg ⊢`. Introduce `i j`. Rewrite using `[hmt]`. Conclude with `entries_fix_conj _ hg _ _ i j`. Establish `hdet : IsDetAt e S (d.emb0 g) x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IsDetAt at hx ⊢`. Rewrite using `[unitaryMatrix_wittCoreEmbedding, det_conj_sq (rank_eq d) d.p0_j0 (mt S₀ g)]`. Conclude with `hx`. Take `⟨r, hr, Hs⟩` from `H.om_split e he (d.emb0 g) h hsupp hh x y hdet hy`. Use `⟨r, hr, fun ℓ hℓ F hF => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `ℓ ∘ₗ LinearMap.funLeft ℂ ℂ (eqv d T)`. Establish `hinv : ∀ u : WO S T, (∀ i j, cA D e * u i j = u i j) → ∀ G, IsThetaFunO ψ S T G → ℓ' (heisO ψ S T u G) = ℓ' G`. Introduce `u hu G hG`. Use `show ℓ (fun w => heisO ψ S T u G (eqv d T w)) = ℓ (fun w => G (eqv d T w))`. Establish `e` using `heisO_eqv (ψ := ψ) d ((eqv d T).symm u) G`.
-
-Rewrite `e` using `[AddEquiv.apply_symm_apply]`. Rewrite using `[e]`. Conclude with `hℓ _ (fun i j => entries_fix_right _ hu d.j0 i j) _ (theta_eqv d hG)`. Use `Hs ℓ' hinv _ (hT F hF)` as an intermediate fact. Establish `e1 : ℓ' (fun x => F ((eqv d T).symm x)) = ℓ F` using `by show ℓ (fun w => F ((eqv d T).symm (eqv d T w))) = ℓ F`.
-
-Simplify using `only [AddEquiv.symm_apply_apply]`. Rewrite `this` using `[e1]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeilDatumO_pull {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) : IsWeilDatumO ψ S₀ T χS χT (pull d om) := by
@@ -414,9 +408,9 @@ theorem isWeilDatumO_pull {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D 
 end Zero
 
 /- English proof (translation)
-Introduce `D ψ S S₀ T d hψ`. Use `⟨Zero.witt_decomposition_zero_embedding_bijective d, (Zero.eqv d T).bijective, fun f => Zero.theta_iff d f, fun χS χT om om₀ H H₀ g h f hf => ?_⟩` and prove the remaining obligations. Establish `hf₀` using `(Zero.theta_iff d f).2 hf`. Rewrite using `[GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ S₀ T χS χT om₀ (Zero.pull d om) H₀ (Zero.isWeilDatumO_pull d H) (g, h) _ hf₀, Zero.pull_apply]`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show om _ (fun x => f (Zero.eqv d T ((Zero.eqv d T).symm x))) _ = _`. Simplify using `only [AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem om0_ext0_eq_om_emb0_of_isWeilDatumO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (d : HypDec S S₀ 0),
     IsStdChar D ψ (-1) → Function.Bijective d.emb0 ∧ Function.Bijective (d.ext0 T) ∧

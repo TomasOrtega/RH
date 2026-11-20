@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `: ∀ᶠ y in nhds x, ∀ i j, f y i j = f x i j`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(h i j).eventually_eq x`. Conclude with `this.mono fun y hy => Matrix.ext hy`.
+A detailed English derivation is pending.
 -/
 private theorem lc_mat {Γ S ι : Type} [TopologicalSpace Γ] [Fintype ι] (f : Γ → Matrix ι ι S)
     (h : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
@@ -18,9 +18,9 @@ private theorem lc_mat {Γ S ι : Type} [TopologicalSpace Γ] [Fintype ι] (f : 
   exact this.mono fun y hy => Matrix.ext hy
 
 /- English proof (translation)
-Introduce `Γ R _ _ I M h`. Establish `hl : ∀ N : ℕ, IsLocallyConstant fun g => (M g).map (Ideal.Quotient.mk (I ^ N))` using `fun N => lc_mat _ fun i j => h i j N`. Use `⟨fun n N => ?_, fun U V i j N => ?_⟩` and prove the remaining obligations. Use `(hl N).comp fun A => A.charpoly.coeff n` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Function.comp, Matrix.charpoly_map, Polynomial.coeff_map]`. Use `(hl N).comp fun A => (U.map (Ideal.Quotient.mk (I ^ N)) * A * V.map (Ideal.Quotient.mk (I ^ N))) i j` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp, ← Matrix.map_mul, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Ws.sxAdicMat :
     ∀ {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R) (M : Γ → M4 R), (∀ i j, AdicCont I fun g => M g i j) → (∀ n, AdicCont I fun g => (M g).charpoly.coeff n) ∧ ∀ (U V : M4 R) i j, AdicCont I fun g => (U * M g * V) i j := by

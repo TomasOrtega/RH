@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.GdegPullProof
 
 /- English proof (translation)
-Simplify using `[Weight.chernInt, Measure.real]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chernInt_one {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     {B : LB X} (φ : Weight p σ B) (D : ℕ) :
@@ -29,13 +29,13 @@ theorem chernInt_one {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {
   simp [Weight.chernInt, Measure.real]
 
 /- English proof (translation)
-Take `⟨U, hUη, hU⟩` from `GlobalTheory.T.exists_open_etaleChart_covering_complexPoints hX hY π hπ hη hδ`. Take `⟨hcard, hchart, hlift⟩` from `hU σ`. Establish `hpre : PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ U = ptsIn q σ (π ⁻¹ᵁ U)`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, mem_ptsIn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hcY : (ptsIn q σ (π ⁻¹ᵁ U))ᶜ = {z : CxPts q σ | z.1 (IsLocalRing.closedPoint ℂ) ∈ ((π ⁻¹ᵁ U : Y.Opens) : Set Y)ᶜ}`. Use extensionality with `z`. Simplify using `[mem_ptsIn]`. Establish `hcX : (ptsIn p σ U)ᶜ = {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ ((U : X.Opens) : Set X)ᶜ}`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `[mem_ptsIn]`. Establish `h0Y` using `GlobalTheory.T.chernPart_over_properClosed_eq_zero hY ((π ⁻¹ᵁ U : Y.Opens) : Set Y)ᶜ (π ⁻¹ᵁ U).isOpen.isClosed_compl (by simp [hη, hUη]) σ ((L.φ σ).pull π hπ) ε`. Establish `h0X` using `GlobalTheory.T.chernPart_over_properClosed_eq_zero hX ((U : X.Opens) : Set X)ᶜ U.isOpen.isClosed_compl (by simp [hUη]) σ (L.φ σ) ε`. Rewrite `h0Y` using `[← hcY]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0X` using `[← hcX]`. Establish `h3` using `GlobalTheory.T.chernPart_preimage_of_finite_liftedChartCovering hX hY π hπ (L.φ σ) (L.cInf σ) ε (ptsIn p σ U) (isOpen_ptsIn U) _ hcard hchart hlift (fun c c' hc w hw => GlobalTheory.T.chernDensity_pullbackWeight_in_liftedChart π hπ (L.φ σ) (L.cInf σ) c c' hc w hw) _ (isOpen_ptsIn …`. Rewrite `h3` using `[hpre]`. Rewrite using `[← measure_add_measure_compl (isOpen_ptsIn (π ⁻¹ᵁ U)).measurableSet, h0Y, add_zero, h3, ← measure_add_measure_compl (isOpen_ptsIn (p := p) (σ := σ) U).measurableSet, h0X, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mass {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
     {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D) (hY : IsArithVar q D)
@@ -75,9 +75,9 @@ end GlobalTheory.GdegPullProof
 namespace GlobalTheory.CovTest
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q D hX hY π hπ hη hδ L`. Establish `key : ∀ σ, ((L.pull π hπ).φ σ).chernInt D Set.univ (fun _ => 1) = (π.residueDegree (genericPoint Y) : ℝ) * (L.φ σ).chernInt D Set.univ (fun _ => 1)`. Introduce `σ`. Express the relevant statement in the definitionally equal form `((L.φ σ).pull π hπ).chernInt D Set.univ (fun _ => 1) = _`. Rewrite using `[GdegPullProof.chernInt_one, GdegPullProof.chernInt_one, GdegPullProof.mass hX hY π hπ hη hδ L σ 1, GdegPullProof.mass hX hY π hπ hη hδ L σ (-1), ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_natCast, mul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [gdeg, chInt]`. Repeatedly rewrite using `[key]`. Rewrite using `[mul_finsum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gdegPull : GdegPull := by
   intro k _ X Y _ _ p q D hX hY π hπ hη hδ L

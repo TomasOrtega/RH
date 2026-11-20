@@ -12,15 +12,13 @@ namespace GlobalTheory.FlagSizeInv
 open GlobalTheory.PointEquivariance
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Take `⟨f, hfz, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hz inferInstance`. Establish `hf0 : ∀ y ∈ s, f y = 0` using `fun y hy => by`. Establish `hm : f y ∈ (Submodule.span E s).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span hy)`. Rewrite `hm` using `[hf]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hm`. Establish `hfx : ∀ y : Fin n → E, f y = ∑ l, y l * f (fun j => if l = j then 1 else 0)` using `fun y => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f y]`. Simplify using `only [smul_eq_mul]`. Set `F : (Fin n → ℂ) →ₗ[ℂ] ℂ` to `∑ l, φ (f (fun j => if l = j then 1 else 0)) • LinearMap.proj l`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hF : ∀ y : Fin n → E, F (fun l => φ (y l)) = φ (f y)` using `fun y => by`. Rewrite using `[hfx y, map_sum]`. Simplify using `only [F, LinearMap.coe_sum, Finset.sum_apply, LinearMap.smul_apply, LinearMap.coe_proj, Function.eval, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Establish `hle : Submodule.span ℂ ((fun y : Fin n → E => fun l => φ (y l)) '' s) ≤ LinearMap.ker F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show F _ = 0`. Rewrite using `[hF, hf0 y hy, map_zero]`. Establish `h0 : φ (f z) = 0`.
-
-Rewrite using `[← hF]`. Conclude with `LinearMap.mem_ker.1 (hle h)`. Conclude with `hfz ((map_eq_zero_iff φ φ.injective).1 h0)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_image {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ) (s : Set (Fin n → E)) (z : Fin n → E)
     (h : (fun l => φ (z l)) ∈ Submodule.span ℂ ((fun y : Fin n → E => fun l => φ (y l)) '' s)) :
@@ -51,13 +49,11 @@ theorem mem_span_of_image {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ) (s :
   exact hfz ((map_eq_zero_iff φ φ.injective).1 h0)
 
 /- English proof (translation)
-Establish `hP : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hmem : (I.P v)⁻¹ *ᵥ (fun l => I.φ v (y l)) ∈ flagAt I S v k`. Unfold `flagAt`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Establish `h1` using `h _ hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ((I.P v)⁻¹ * γ.map (I.φ v) * I.P v) *ᵥ ((I.P v)⁻¹ *ᵥ (fun l => I.φ v (y l))) = (I.P v)⁻¹ *ᵥ (fun l => I.φ v ((γ *ᵥ y) l))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hP, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Conclude with `(RingHom.map_mulVec (I.φ v) γ y l).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[hcomp]`. Unfold `flagAt at h1`. Establish `h2` using `Submodule.mem_map_of_mem (f := Matrix.toLin' (I.P v)) h1`. Rewrite `h2` using `[Submodule.map_span, Set.image_image]`. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hP, Matrix.one_mulVec] at h2`.
-
-Conclude with `mem_span_of_image (I.φ v) _ _ h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_span (I : AutInst) {a : ℕ} (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E))
     (v : InfinitePlace I.F) (k : Fin (a + 1)) (γ : Matrix (Fin I.n) (Fin I.n) I.E)
@@ -84,17 +80,17 @@ theorem mulVec_mem_span (I : AutInst) {a : ℕ} (S : Fin (a + 1) → Submodule (
   exact mem_span_of_image (I.φ v) _ _ h2
 
 /- English proof (translation)
-Rewrite `hΛ`, the goal using `[ratIso_apply]`. Establish `hinj : Function.Injective (Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E))`. Introduce `y y' hyy`. Establish `hc` using `congrArg (Matrix.toLin' ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E)) hyy`. Simplify `hc` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hWle : (Submodule.span I.E (N : Set (Fin I.n → I.E))).map (Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)) ≤ Submodule.span I.E (N : Set (Fin I.n → I.E))`. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce `y hy`. Conclude with `h y hy`. Establish `hW : (Submodule.span I.E (N : Set (Fin I.n → I.E))).map (Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)) = Submodule.span I.E (N : Set (Fin I.n → I.E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.eq_of_le_of_finrank_eq hWle ?_` and prove the remaining obligations. Establish `e` using `LinearEquiv.finrank_map_eq (ratEquiv I γ) (Submodule.span I.E (N : Set (Fin I.n → I.E)))`. Conclude with `e`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply]`. Establish `hy'` using `(hN y).1 hy`. Use `(hN _).2 ⟨?_, h y hy⟩` and prove the remaining obligations. Rewrite using `[← hΛ]`. Conclude with `⟨y, hy'.1, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨hyΛ, hyW⟩` from `(hN y).1 hy`. Rewrite `hyΛ` using `[← hΛ]`. Take `⟨y', hy'Λ, hy'⟩` from `hyΛ`. Rewrite `hyW` using `[← hW]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y'', hy''W, hy''⟩` from `hyW`. Establish `hyy : y'' = y'` using `hinj (by rw [hy'', ← hy']; rfl)`. Substitute `hyy` using the available equality. Conclude with `⟨y'', (hN y'').2 ⟨hy'Λ, hy''W⟩, hy'⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratIso_eq (I : AutInst) (γ : GL (Fin I.n) I.E) (Λ N : Submodule (𝓞 I.E) (Fin I.n → I.E))
     (hΛ : ratIso I γ Λ = Λ) (hN : ∀ y, y ∈ N ↔ y ∈ Λ ∧ y ∈ Submodule.span I.E (N : Set (Fin I.n → I.E)))
@@ -133,15 +129,15 @@ theorem ratIso_eq (I : AutInst) (γ : GL (Fin I.n) I.E) (Λ N : Submodule (𝓞 
     exact ⟨y'', (hN y'').2 ⟨hy'Λ, hy''W⟩, hy'⟩
 
 /- English proof (translation)
-Introduce `I xf a j S hS γ hγ g`. Take `⟨⟨δ, hδ, hδ1, hδK⟩, hkeep⟩` from `hγ`. Take `⟨c, -, hc1, hc2⟩` from `hδ`. Unfold `IsSatFlag at hS`. Take `⟨-, -, -, hsat, -⟩` from `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hL : lamX I (δ * (1, xf)) = lamX I (1, xf)`. Establish `hk` using `(lamX_mul_eq_iff I (1, xf) (1, xf⁻¹ * δ.2 * xf)).1 hδK`. Establish `h2 : (δ * (1, xf)).2 = ((1, xf) * (1, xf⁻¹ * δ.2 * xf) : I.GA).2`. Simplify using `[mul_assoc]`. Rewrite using `[← hk, lamX_eq, lamX_eq, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hlat : ratIso I c (lamX I (1, xf)) = lamX I (1, xf)`. Rewrite using `[← lamX_rat I (1, xf) δ c hc2, hL]`. Take `⟨v₀⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`. Establish `hfix : ∀ k, ratIso I c (S k) = S k` using `fun k => ratIso_eq I c _ (S k) hlat (hsat k) fun y hy => mulVec_mem_span I S v₀ k (c : Matrix (Fin I.n) (Fin I.n) I.E) (fun x hx => by rw [← hc1 v₀, hδ1]; exact hkeep v₀ k x hx) y hy`. Establish `hcond : ∀ v, uMat (((γ, 1) : I.GA).1 v) = (I.P v)⁻¹ * (c : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v` using `fun v => by show uMat (γ v) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hδ1]`. Conclude with `hc1 v`. Establish `hax : ((γ, 1) : I.GA) * (g, xf) = (γ * g, xf)` using `by simp`. Unfold `sizesAt`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `key` using `sizeQ_eq (bas I) (frm I (g, xf)) (frm I (γ * g, xf)) (ratIso I c) (fun N => by rw [← hax]; exact zl_ratIso I (g, xf) (γ, 1) c hcond N) (rkK_ratIso I c) (S i.succ) (S i.castSucc)`. Rewrite `key` using `[hfix, hfix]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sizesAt_mul : ∀ (I : AutInst) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ)
     (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)), IsSatFlag I (lamX I (1, xf)) j S →

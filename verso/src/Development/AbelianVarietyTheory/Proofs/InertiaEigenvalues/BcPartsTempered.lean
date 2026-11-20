@@ -75,9 +75,9 @@ variable {D}
 open GlobalTheory.HeightCounting
 
 /- English proof (translation)
-Unfold `isoLoc`. Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `cons p _ ih => simp only [List.foldr_cons, ih]`. Consider the case `swap p q l`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[← D.naut.lpSum_assoc, D.naut.lpSum_comm (spehLoc D.nd D.naut q w), D.naut.lpSum_assoc]`. Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem isoLoc_perm {Pa Pb : List (Part D.naut.CG)} (h : Pa.Perm Pb) (w : PlE D.host) :
     isoLoc D.nd D.naut Pa w = isoLoc D.nd D.naut Pb w := by
@@ -91,7 +91,7 @@ theorem isoLoc_perm {Pa Pb : List (Part D.naut.CG)} (h : Pa.Perm Pb) (w : PlE D.
   | trans _ _ ih1 ih2 => exact ih1.trans ih2
 
 /- English proof (translation)
-Take `⟨a, π, d⟩` from `p`. Simplify using `only at hd`. Substitute `hd` using the available equality. Simplify using `[isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isoLoc_single (p : Part D.naut.CG) (hd : p.d = 1) (w : PlE D.host) :
     isoLoc D.nd D.naut [p] w = D.naut.locG p.π w := by

@@ -20,16 +20,14 @@ def ideleMap {F E : FiniteSubfield} (h : F ≤ E) : IdeleGroup F.1 →* IdeleGro
   ideleEmbedding F.1 E.1
 
 /- English proof (translation)
-The claim follows from `letI := algebraOfLE h ideleEmbedding_injective`.
+A detailed English derivation is pending.
 -/
 theorem ideleMap_injective {F E : FiniteSubfield} (h : F ≤ E) : Function.Injective (ideleMap h) :=
   letI := algebraOfLE h
   ideleEmbedding_injective
 
 /- English proof (translation)
-Set `` to `algebraOfLE hFE`. Set `` to `algebraOfLE hEM`. Set `` to `algebraOfLE (hFE.trans hEM)`. Establish `: IsScalarTower F.1 E.1 M.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Conclude with `ideleEmbedding_ideleEmbedding x`.
-
-Use the proof step `@[simp]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ideleMap_ideleMap {F E M : FiniteSubfield} (hFE : F ≤ E) (hEM : E ≤ M) (x : IdeleGroup F.1) :
     ideleMap hEM (ideleMap hFE x) = ideleMap (hFE.trans hEM) x := by
@@ -41,7 +39,7 @@ theorem ideleMap_ideleMap {F E M : FiniteSubfield} (hFE : F ≤ E) (hEM : E ≤ 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `ideleMap_injective h (ideleMap_ideleMap h h x)`.
+A detailed English derivation is pending.
 -/
 theorem ideleMap_self {F : FiniteSubfield} (h : F ≤ F) (x : IdeleGroup F.1) : ideleMap h x = x :=
   ideleMap_injective h (ideleMap_ideleMap h h x)
@@ -82,7 +80,7 @@ def of (F : FiniteSubfield) : IdeleGroup F.1 →* IdeleLimit where
 
 @[simp]
 /- English proof (translation)
-The claim follows from `show (⟦⟨E, ideleMap h x⟩⟧ : DirectLimit (fun F : FiniteSubfield ↦ IdeleGroup F.1) (fun _ _ h ↦ ideleMap h)) = ⟦⟨F, x⟩⟧ from DirectLimit.mk_apply (F := fun F : FiniteSubfield ↦ IdeleGroup F.1) (f := fun _ _ h ↦ ideleMap h) F E x h`.
+A detailed English derivation is pending.
 -/
 theorem of_ideleMap {F E : FiniteSubfield} (h : F ≤ E) (x : IdeleGroup F.1) :
     of E (ideleMap h x) = of F x :=
@@ -92,20 +90,20 @@ theorem of_ideleMap {F E : FiniteSubfield} (h : F ≤ E) (x : IdeleGroup F.1) :
         (f := fun _ _ h ↦ ideleMap h) F E x h
 
 /- English proof (translation)
-The claim follows from `DirectLimit.mk_injective (f := fun _ _ h ↦ ideleMap h) (fun _ _ h ↦ ideleMap_injective h) F`.
+A detailed English derivation is pending.
 -/
 theorem of_injective (F : FiniteSubfield) : Function.Injective (of F) :=
   DirectLimit.mk_injective (f := fun _ _ h ↦ ideleMap h) (fun _ _ h ↦ ideleMap_injective h) F
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `DirectLimit.exists_eq_mk (f := fun _ _ h ↦ ideleMap h) z`. Conclude with `⟨F, x, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of (z : IdeleLimit) : ∃ (F : FiniteSubfield) (x : IdeleGroup F.1), of F x = z := by
   obtain ⟨F, x, rfl⟩ := DirectLimit.exists_eq_mk (f := fun _ _ h ↦ ideleMap h) z
   exact ⟨F, x, rfl⟩
 
 /- English proof (translation)
-Take `⟨F, x, y, rfl, rfl⟩` from `DirectLimit.exists_eq_mk₂ (f := fun _ _ h ↦ ideleMap h) z w`. Conclude with `⟨F, x, y, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of₂ (z w : IdeleLimit) : ∃ (F : FiniteSubfield) (x y : IdeleGroup F.1),
     of F x = z ∧ of F y = w := by
@@ -113,7 +111,7 @@ theorem exists_of₂ (z w : IdeleLimit) : ∃ (F : FiniteSubfield) (x y : IdeleG
   exact ⟨F, x, y, rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← of_ideleMap hF x, ← of_ideleMap hE y, (of_injective M).eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem of_eq_of_iff {F E M : FiniteSubfield} (hF : F ≤ M) (hE : E ≤ M) (x : IdeleGroup F.1)
     (y : IdeleGroup E.1) : of F x = of E y ↔ ideleMap hF x = ideleMap hE y := by
@@ -148,7 +146,7 @@ end lift
 
 @[ext]
 /- English proof (translation)
-Use extensionality with `z`. Take `⟨F, x, rfl⟩` from `exists_of z`. Conclude with `DFunLike.congr_fun (h F) x`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hom_ext {A : Type*} [Monoid A] {φ ψ : IdeleLimit →* A}
     (h : ∀ F : FiniteSubfield, φ.comp (of F) = ψ.comp (of F)) : φ = ψ := by
@@ -157,11 +155,11 @@ theorem hom_ext {A : Type*} [Monoid A] {φ ψ : IdeleLimit →* A}
   exact DFunLike.congr_fun (h F) x
 
 /- English proof (translation)
-Establish `hE : E = E'`. Use `Subtype.ext (SetLike.ext fun y ↦ ⟨fun hy ↦ ?_, fun hy ↦ ?_⟩)` and prove the remaining obligations. Take `⟨z, hz⟩` from `τ.surjective ⟨y, hy⟩`. Establish `hy' : y = ((τ' z : E'.1) : ℚ̄)` using `by rw [← h z, hz]`. Rewrite using `[hy']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(τ' z).2`. Take `⟨z, hz⟩` from `τ'.surjective ⟨y, hy⟩`. Establish `hy' : y = ((τ z : E.1) : ℚ̄)` using `by rw [h z, hz]`. Rewrite using `[hy']`. Conclude with `(τ z).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hE` using the available equality. Establish `: τ = τ'` using `RingEquiv.ext fun z ↦ Subtype.ext (h z)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_ideleEquiv_congr {F E E' : FiniteSubfield} (τ : F.1 ≃+* E.1) (τ' : F.1 ≃+* E'.1)
     (h : ∀ x : F.1, (τ x : ℚ̄) = τ' x) (x : IdeleGroup F.1) :
@@ -184,9 +182,9 @@ def conjOf (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) : IdeleGroup F.1 
   (of (map σ F)).comp (ideleEquiv (mapEquiv σ F)).toMulEquiv.toMonoidHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `of (map σ E) (ideleEquiv (mapEquiv σ E) (ideleMap h x)) = of (map σ F) (ideleEquiv (mapEquiv σ F) x)`. Rewrite using `[ideleMap]`. Set `` to `algebraOfLE h`. Set `` to `algebraOfLE (map_mono σ h)`. Rewrite using `[ideleEquiv_ideleEmbedding_of_comm (mapEquiv σ F) (mapEquiv σ E) (fun x ↦ rfl)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `of_ideleMap (map_mono σ h) _`.
+A detailed English derivation is pending.
 -/
 theorem conjOf_compat (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F E : FiniteSubfield) (h : F ≤ E) (x : IdeleGroup F.1) :
     conjOf σ E (ideleMap h x) = conjOf σ F x := by
@@ -209,7 +207,7 @@ theorem galoisHom_of (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (x : Id
   rfl
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[galoisHom_of]`. Use `(of_ideleEquiv_congr (mapEquiv 1 F) (RingEquiv.refl F.1) (fun x ↦ rfl) x).trans ?_` and prove the remaining obligations. Rewrite using `[ideleEquiv_refl]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem galoisHom_one (z : IdeleLimit) : galoisHom 1 z = z := by
   obtain ⟨F, x, rfl⟩ := exists_of z
@@ -218,7 +216,7 @@ theorem galoisHom_one (z : IdeleLimit) : galoisHom 1 z = z := by
   rw [ideleEquiv_refl]
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[galoisHom_of, galoisHom_of, galoisHom_of, ← ideleEquiv_trans]`. Conclude with `of_ideleEquiv_congr (mapEquiv (σ * τ) F) ((mapEquiv τ F).trans (mapEquiv σ (map τ F))) (fun x ↦ rfl) x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galoisHom_mul (σ τ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleLimit) :
     galoisHom (σ * τ) z = galoisHom σ (galoisHom τ z) := by
@@ -248,7 +246,7 @@ theorem smul_of (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (F : FiniteSubfield) (x : IdeleGr
   rfl
 
 /- English proof (translation)
-Rewrite using `[smul_of]`. Use `(of_ideleEquiv_congr (mapEquiv σ F) (RingEquiv.refl F.1) (fun y ↦ (IntermediateField.mem_fixingSubgroup_iff F.1 σ).1 hσ y y.2) x).trans ?_` and prove the remaining obligations. Rewrite using `[ideleEquiv_refl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_of_eq_of_mem_fixingSubgroup {F : FiniteSubfield} {σ : ℚ̄ ≃ₐ[ℚ] ℚ̄}
     (hσ : σ ∈ F.1.fixingSubgroup) (x : IdeleGroup F.1) : σ • of F x = of F x := by
@@ -281,7 +279,7 @@ theorem toClassLimit_of (F : FiniteSubfield) (x : IdeleGroup F.1) :
   rfl
 
 /- English proof (translation)
-Take `⟨F, x, rfl⟩` from `exists_of z`. Rewrite using `[smul_of, toClassLimit_of, toClassLimit_of, IdeleClassLimit.smul_of, ideleClassEquiv_mk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toClassLimit_smul (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleLimit) :
     toClassLimit (σ • z) = σ • toClassLimit z := by
@@ -289,7 +287,7 @@ theorem toClassLimit_smul (σ : ℚ̄ ≃ₐ[ℚ] ℚ̄) (z : IdeleLimit) :
   rw [smul_of, toClassLimit_of, toClassLimit_of, IdeleClassLimit.smul_of, ideleClassEquiv_mk]
 
 /- English proof (translation)
-Introduce `c`. Take `⟨F, c, rfl⟩` from `IdeleClassLimit.exists_of c`. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective F.1 c`. Conclude with `⟨of F x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toClassLimit_surjective : Function.Surjective toClassLimit := by
   intro c

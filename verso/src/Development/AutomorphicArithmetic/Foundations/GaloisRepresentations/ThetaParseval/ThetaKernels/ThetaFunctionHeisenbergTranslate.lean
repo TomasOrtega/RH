@@ -12,7 +12,7 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HeisThetaF.isThetaFunOF_heisOF_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FIsThetaFunOFHeisOFK.lean&line=25#L25)
 -/

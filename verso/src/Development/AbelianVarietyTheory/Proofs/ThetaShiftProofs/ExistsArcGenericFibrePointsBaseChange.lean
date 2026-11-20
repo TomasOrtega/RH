@@ -20,7 +20,7 @@ section Values
 variable {K F : Type} [Field K] [Field F] {X Y Y' Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `⟨fun h z _ => ?_, fun h z _ => h (Set.mem_univ (spMap f z))⟩` and prove the remaining obligations. Establish `e : z = spMap f (IsLocalRing.closedPoint F)` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[e]`. Conclude with `h (Set.mem_univ (IsLocalRing.closedPoint F))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_spMap_iff (f : K →+* F) (x : Sp K ⟶ X) (U : X.Opens) : ⊤ ≤ (spMap f ≫ x) ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U := by
   refine ⟨fun h z _ => ?_, fun h z _ => h (Set.mem_univ (spMap f z))⟩
@@ -29,7 +29,7 @@ theorem le_spMap_iff (f : K →+* F) (x : Sp K ⟶ X) (U : X.Opens) : ⊤ ≤ (s
   exact h (Set.mem_univ (IsLocalRing.closedPoint F))
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Conclude with `valR_spMap_comp f x U h a`. Rewrite using `[valR, valR, dif_neg h, dif_neg (mt (le_spMap_iff f x U).1 h), map_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_spMap_field (f : K →+* F) (x : Sp K ⟶ X) (U : X.Opens) (a : Γ(X, U)) :
     valR (spMap f ≫ x) U a = f (valR x U a) := by
@@ -38,7 +38,7 @@ theorem valR_spMap_field (f : K →+* F) (x : Sp K ⟶ X) (U : X.Opens) (a : Γ(
   · rw [valR, valR, dif_neg h, dif_neg (mt (le_spMap_iff f x U).1 h), map_zero]
 
 /- English proof (translation)
-Introduce `_ hz` and use `Set.mem_iInter.2 fun _ => h hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_wchart {R : Type} [CommRing R] {L : LB Z} {q : Y ⟶ Z} {x : Sp R ⟶ Y} {j : L.ι}
     (h : ⊤ ≤ (x ≫ q) ⁻¹ᵁ L.U j) : ⊤ ≤ x ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => q) (fun _ => j) :=
@@ -65,7 +65,7 @@ abbrev pullM (m : ℕ) : SecM π L q m →ₛₗ[f] SecM π' L q' m :=
   pullOver L (fun _ : Fin 1 => (m : ℤ)) hp (fun _ => hq)
 
 /- English proof (translation)
-Use `(valR_res x' (wchart_eq (fun _ => hq) (fun _ => j)).le (le_wchart h) _).trans ?_` and prove the remaining obligations. Use `(valR_comp x' p _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `valR_spMap_field f x _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_pullM (m : ℕ) (s : SecM π L q m) (x : Sp K ⟶ Y) (x' : Sp F ⟶ Y') (hx : x' ≫ p = spMap f ≫ x)
     (j : L.ι) (h : ⊤ ≤ (x' ≫ q') ⁻¹ᵁ L.U j) :
@@ -87,19 +87,19 @@ def fibMap : pullback G.hom (spMap f ≫ y) ⟶ pullback G.hom y :=
   pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap f) (by rw [pullback.condition, Category.assoc])
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem fibMap_fst : pullback.fst G.hom (spMap f ≫ y) = fibMap G y f ≫ pullback.fst G.hom y :=
   (pullback.lift_fst _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibMap_snd : fibMap G y f ≫ pullback.snd G.hom y = pullback.snd G.hom (spMap f ≫ y) ≫ spMap f :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_right (by rw [← fibMap_fst]; exact IsPullback.of_hasPullback _ _) (fibMap_snd G y f) (IsPullback.of_hasPullback G.hom y)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_fibMap :
     IsPullback (fibMap G y f) (pullback.snd G.hom (spMap f ≫ y)) (pullback.snd G.hom y) (spMap f) :=
@@ -109,17 +109,17 @@ theorem isPullback_fibMap :
 variable {G y}
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fib_fst (x : Over.mk y ⟶ G) : fib x ≫ pullback.fst _ _ = x.left := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fib_snd (x : Over.mk y ⟶ G) : fib x ≫ pullback.snd _ _ = 𝟙 _ := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← fibMap_fst, fib_fst, Category.assoc, fib_fst]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, fibMap_snd, ← Category.assoc, fib_snd, Category.assoc, fib_snd, Category.id_comp, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem fib_fibMap (x : Over.mk y ⟶ G) : fib (toSmall y f ≫ x) ≫ fibMap G y f = spMap f ≫ fib x := by
   apply pullback.hom_ext
@@ -132,7 +132,7 @@ abbrev pullFib (L : LB G.left) (m : ℕ) : SecM (pullback.snd G.hom y) L (pullba
   pullM (fibMap_snd G y f) (fibMap_fst G y f) m
 
 /- English proof (translation)
-Rewrite using `[fib_fst, fib_fst]`. Conclude with `le_spMap_iff f x.left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_iff (L : LB G.left) (x : Over.mk y ⟶ G) (j : L.ι) :
     ⊤ ≤ (fib (toSmall y f ≫ x) ≫ pullback.fst _ _) ⁻¹ᵁ L.U j ↔ ⊤ ≤ (fib x ≫ pullback.fst _ _) ⁻¹ᵁ L.U j := by
@@ -140,7 +140,7 @@ theorem chart_iff (L : LB G.left) (x : Over.mk y ⟶ G) (j : L.ι) :
   exact le_spMap_iff f x.left _
 
 /- English proof (translation)
-The claim follows from `sval_pullM _ _ m s _ _ (fib_fibMap f x) j h`.
+A detailed English derivation is pending.
 -/
 theorem sval_pullFib {L : LB G.left} {m : ℕ} (s : SecP L (pullback.fst G.hom y) m) (x : Over.mk y ⟶ G) (j : L.ι)
     (h : ⊤ ≤ (fib (toSmall y f ≫ x) ≫ pullback.fst _ _) ⁻¹ᵁ L.U j) :
@@ -148,7 +148,7 @@ theorem sval_pullFib {L : LB G.left} {m : ℕ} (s : SecP L (pullback.fst G.hom y
   sval_pullM _ _ m s _ _ (fib_fibMap f x) j h
 
 /- English proof (translation)
-Introduce `j hj` and use `by rw [sval_pullFib f s x j hj, h j ((chart_iff f L x j).1 hj), map_mul, map_pow]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasVal_pullFib {L : LB G.left} {m : ℕ} {s : SecP L (pullback.fst G.hom y) m} {x : Over.mk y ⟶ G}
     {τ : L.ι → K} {r : K} (h : HasVal s (fib x) τ r) :
@@ -156,9 +156,9 @@ theorem hasVal_pullFib {L : LB G.left} {m : ℕ} {s : SecP L (pullback.fst G.hom
   rw [sval_pullFib f s x j hj, h j ((chart_iff f L x j).1 hj), map_mul, map_pow]
 
 /- English proof (translation)
-Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Establish `: IsLocallyNoetherian (pullback G.hom y : Scheme)` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd G.hom y)`. Establish `: CompactSpace (pullback G.hom y : Scheme)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd G.hom y)`. Establish `: IsNoetherian (pullback G.hom y : Scheme)` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem noetherianSpace_fibre [GrpObj G] (hG : IsSemiAbelian G) :
     TopologicalSpace.NoetherianSpace (pullback G.hom y : Scheme) := by
@@ -179,7 +179,7 @@ variable {K F : Type} [Field K] [Field F] [Algebra K F] {S : Scheme.{0}} {G : Ov
   {L : LB G.left}
 
 /- English proof (translation)
-Use `noetherianSpace_fibre (y := y) hG` as an intermediate fact. Conclude with `isExtension_pullOver (isPullback_fibMap G y (algebraMap K F)) hL _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isExtension_pullFib (hG : IsSemiAbelian G) (hL : L.IsLB) (m : ℕ) :
     IsExtension (pullFib (y := y) (algebraMap K F) L m) := by
@@ -187,11 +187,11 @@ theorem isExtension_pullFib (hG : IsSemiAbelian G) (hL : L.IsLB) (m : ℕ) :
   exact isExtension_pullOver (isPullback_fibMap G y (algebraMap K F)) hL _ _
 
 /- English proof (translation)
-Establish `hE` using `isExtension_pullFib (F := F) (y := y) hG hL m`. Establish `e : (show SecM (pullback.snd G.hom (spMap (algebraMap K F) ≫ y)) L _ m from s) = 0`. Use `hE.eq_of_coord fun ℓ Λ hΛ => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `SecOver.ext _ _ (h _ fun v j hj => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj'` using `(chart_iff (algebraMap K F) L (x v) j).2 hj`. Use `IsCoord.natural (a' := (algebraMap K F).toSemilinearMap) hE.span hΛ (Λ' := ℓ.toAddMonoidHom) (fun c v => by show ℓ (c * algebraMap K F v) = ℓ c * v` as an intermediate fact. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm])`. Use the proof step `(evalAt _ m _ (fib_snd (x v)) j hj) (evalAt _ m _ (fib_snd _) j hj')`. Use the proof step `(fun t => sval_pullFib _ t (x v) j hj') s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.symm.trans ?_` and prove the remaining obligations. Use `(congrArg ℓ (hs v j hj')).trans ?_` and prove the remaining obligations. Rewrite using `[zero_mul, zero_mul, map_zero]`. Conclude with `congrArg (fun t : SecP L _ m => t.f i) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_ext (hG : IsSemiAbelian G) (hL : L.IsLB) {m : ℕ} {V : Type} (x : V → (Over.mk y ⟶ G))
     (τ : V → L.ι → K) (τ' : V → L.ι → F)
@@ -216,11 +216,11 @@ theorem sep_ext (hG : IsSemiAbelian G) (hL : L.IsLB) {m : ℕ} {V : Type} (x : V
   exact congrArg (fun t : SecP L _ m => t.f i) e
 
 /- English proof (translation)
-Take `⟨N, c, t, e⟩` from `(isExtension_pullFib (F := F) (y := y) hG hL m).exists_sum s`. Use `choose n r i hr using fun b => h (t b)`. Set `ρ` to `(Fintype.equivFin (Σ b, Fin (n b))).symm`. Use `⟨_, fun a => c (ρ a).1 * algebraMap K F (r _ (ρ a).2), fun a => i _ (ρ a).2, fun v j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[ρ.sum_comp (fun a => c a.1 * algebraMap K F (r _ a.2) * algebraMap K F (φ (i _ a.2) v)), Fintype.sum_sigma, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (evalAt _ m _ (fib_snd _) j hj) e).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Use `(congrArg (c b * ·) (hasVal_pullFib _ (hr b v) j hj)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, ← _root_.mul_assoc, Finset.mul_sum]`.
+A detailed English derivation is pending.
 -/
 theorem span_ext (hG : IsSemiAbelian G) (hL : L.IsLB) {m : ℕ} {V I : Type} (x : V → (Over.mk y ⟶ G))
     (τ : V → L.ι → K) (φ : I → V → K)
@@ -249,7 +249,7 @@ section Theta
 variable {O : Type} [CommRing O] [StarRing O] (A : AnArc O)
 
 /- English proof (translation)
-Use `HahnSeries.ext (funext fun n => (h.2 n).trans ?_)` and prove the remaining obligations. Rewrite using `[AnArc.coeff_FSumShift]`. Use `finsum_cond_eq_sum_of_cond_iff _ fun {m} _ => ?_` and prove the remaining obligations. Rewrite using `[AnArc.mem_level, eq_sub_iff_add_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_isFShift (k : ℕ) [NeZero k] (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (la : A.La) (z : A.V) (F : ℂ⸨X⸩)
     (h : IsFShift A k α th la z F) : F = A.FSumShift k α th la z := by
@@ -259,9 +259,9 @@ theorem eq_of_isFShift (k : ℕ) [NeZero k] (α : A.X) (th : (Fin A.gB → ℂ) 
   rw [AnArc.mem_level, eq_sub_iff_add_eq]
 
 /- English proof (translation)
-Take `⟨th, hth, h0⟩` from `h.2`. Take `⟨z, hz⟩` from `Function.ne_iff.1 h0`. Establish `key : ∀ n : ℕ, th ^ (n + 1) ∈ A.Theta (n + 1) 0` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using hth`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => simpa [pow_succ] using A.mul_mem_Theta ih hth`. Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne k)`. Conclude with `⟨_, key n, Function.ne_iff.2 ⟨z, pow_ne_zero _ hz⟩⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_theta_ne_zero (h : AnFin A) (k : ℕ) [NeZero k] : ∃ th ∈ A.Theta k 0, th ≠ 0 := by
   obtain ⟨th, hth, h0⟩ := h.2
@@ -276,23 +276,19 @@ theorem exists_theta_ne_zero (h : AnFin A) (k : ℕ) [NeZero k] : ∃ th ∈ A.T
 end Theta
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ S A t y Φ F _ f φ hA hφ`. Set `_ : Algebra ℂ⸨X⸩ F` to `f.toAlgebra`. Establish `hc : ∀ v j, ⊤ ≤ (toSmall y f ≫ Φ.x v).left ⁻¹ᵁ t.PP.L.U j → ⊤ ≤ (Φ.x v).left ⁻¹ᵁ t.PP.L.U j` using `fun v j => (le_spMap_iff f (Φ.x v).left _).1`. Set `Θ : FPts (I` to `fun j => Σ α : A.X, A.Theta j α) (fun e v => A.actV e v) t (spMap f ≫ y) φ := { x := fun v => toSmall y f ≫ Φ.x v add := fun v v' => by rw [Φ.add, MonObj.comp_mul] lin := fun e v => by rw [Φ.lin, Category.assoc] τ := fun v j => f (Φ.τ v j) frm := fun v => ⟨fun j hj => ((Φ.frm v). …`. Rewrite using `[(Φ.frm v).2 j j' ((le_spMap_iff f (Φ.x v).left _).1 hj), map_mul, ← valR_spMap_field]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Use `rig := fun j hj => by rw [Φ.rig j (hc 0 j hj), valR_spMap_field]`. Use `sig := fun j i => pullFib f t.PP.L j (Φ.sig j i.1 i.2)`. Use `val := fun j hj i v => by`. Establish `: NeZero j` using `⟨by omega⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ]`. Conclude with `hasVal_pullFib f (Φ.val j i.1 i.2 i.2.2 v)`. Use `span := fun j hj s => by`. Establish `: NeZero j` using `⟨by omega⟩`. Simplify using `only [hφ]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `span_ext t.semi t.PP.isLB Φ.x Φ.τ (fun (i : Σ α : A.X, A.Theta j α) v => A.FSum j i.1 i.2 v) (fun s => ?_) s` and prove the remaining obligations. Take `⟨g, ⟨n, r, α, th, h₁, h₂⟩, hg⟩` from `Φ.span j s`. Conclude with `⟨n, r, fun a => ⟨α a, th a, (h₁ a).2⟩, fun v => h₂ v ▸ hg v⟩`. Use `sep := fun j hj s hs => by`. Establish `: NeZero j` using `⟨by omega⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sep_ext t.semi t.PP.isLB Φ.x Φ.τ _ (Φ.sep j) s hs }`. Use `⟨Θ, fun v => ⟨rfl, fun _ _ => rfl⟩, fun k _ ξ la ψ hp hψ => ?_⟩` and prove the remaining obligations. Establish `hξ : toUnit (Over.mk (spMap f ≫ y)) ≫ ξ = toSmall y f ≫ toUnit _ ≫ ξ`. Rewrite using `[← Category.assoc, comp_toUnit]`. Use `⟨?_, ?_, fun i i' z j hj => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hξ, ← MonObj.comp_pow, hp.1, MonObj.comp_one]`. Take `⟨th, hth, h0⟩` from `exists_theta_ne_zero A hA k`. Use `⟨NeZero.ne k, ⟨0, th, hth⟩, ⟨0 + la.y, _, A.shift_mem_Theta hth la⟩, fun z hz => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hφ, map_ne_zero]`. Rewrite using `[map_ne_zero, eq_of_isFShift A k _ _ la z _ (hψ _ z), A.FSumShift_eq k la (Int.mul_ediv_cancel' (hp.dvd _)).symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (HahnSeries.single_ne_zero (Complex.exp_ne_zero _)) hz`. Take `⟨z, hz⟩` from `A.exists_FSum_ne_zero k (0 + la.y) (th := A.shift k la 0 th) fun h => h0 (A.shift_injective k la 0 (h.trans (map_zero _).symm))`. Conclude with `⟨z, by rw [hφ, map_ne_zero]; exact hz⟩`. Establish `e : Θ.x z * (toUnit (Over.mk (spMap f ≫ y)) ≫ ξ) = toSmall y f ≫ (Φ.x z * (toUnit _ ≫ ξ))`. Rewrite using `[hξ, MonObj.comp_mul]`.
-
-Rewrite `hj`, the goal using `[e]`. Establish `hj' : ⊤ ≤ (fib (toSmall y f ≫ (Φ.x z * (toUnit _ ≫ ξ))) ≫ pullback.fst _ _) ⁻¹ᵁ t.PP.L.U j`. Rewrite using `[fib_fst]`. Conclude with `hj`. Use `congrArg f (hp.2.2 i.1 i'.1 i.2 i.2.2 i'.2 i'.2.2 z _ _ j (hψ i z) (hψ i' z) ((le_spMap_iff f _ _).1 hj))` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, map_mul, ← sval_pullFib f _ _ j hj', ← sval_pullFib f _ _ j hj']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fpts_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (S : Scheme.{0}) (A : AnArc (𝓞 E)) (t : SAB H S) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A t y) (F : Type) [Field F] (f : ℂ⸨X⸩ →+* F) (φ : ∀ j, (Σ α : A.X, A.Theta j α) → A.V → F), AnFin A → (∀ (j : ℕ) [NeZero j] i v, φ j i v = f (A.FSum j i.1 i.2 v)) → ∃ Θ : FPts (I := fun j => Σ α : A.X, A.Theta j α) (fun e v => A.actV e v) t (spMap f ≫ y) φ, (∀ v, (Θ.x v).left = spMap f ≫ (Φ.x v).left ∧ ∀ j, ⊤ ≤ (Φ.x v).left ⁻¹ᵁ t.PP.L.U j → Θ.τ v j = f (Φ.τ v j)) ∧ ∀ (k : ℕ) [NeZero k] (ξ : 𝟙_ (Over S) ⟶ t.G) (la : A.La) (ψ : (Σ α : A.X, A.Theta k α) → A.V → ℂ⸨X⸩), Φ.LevelPt k (toUnit _ ≫ ξ) la → (∀ i z, IsFShift A k i.1 i.2 la z (ψ i z)) → Θ.Lev k (toUnit _ ≫ ξ) (fun i z => f (ψ i z)) := by
   intro E _ _ _ H _ S A t y Φ F _ f φ hA hφ

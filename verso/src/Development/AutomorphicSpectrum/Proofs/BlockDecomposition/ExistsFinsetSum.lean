@@ -37,32 +37,32 @@ def component (n : ℕ) : NSum hy →ₗ[R] V n := DirectSum.component R ℕ V n
 
 @[simp]
 /- English proof (translation)
-The claim follows from `DirectSum.component.lof_self R n a`.
+A detailed English derivation is pending.
 -/
 theorem component_of (n : ℕ) (a : V n) : component hy n (of hy n a) = a :=
   DirectSum.component.lof_self R n a
 
 /- English proof (translation)
-The claim follows from `(DirectSum.component.of R n k a).trans (dif_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem component_of_ne {n k : ℕ} (h : k ≠ n) (a : V k) : component hy n (of hy k a) = 0 :=
   (DirectSum.component.of R n k a).trans (dif_neg h)
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (component_of hy n)`.
+A detailed English derivation is pending.
 -/
 theorem of_injective (n : ℕ) : Function.Injective (of hy n) :=
   Function.LeftInverse.injective (component_of hy n)
 
 /- English proof (translation)
-The claim follows from `DirectSum.linearMap_ext R fun n => LinearMap.ext (h n)`.
+A detailed English derivation is pending.
 -/
 theorem lhom_ext {N : Type*} [AddCommGroup N] [Module R N] {f g : NSum hy →ₗ[R] N}
     (h : ∀ n a, f (of hy n a) = g (of hy n a)) : f = g :=
   DirectSum.linearMap_ext R fun n => LinearMap.ext (h n)
 
 /- English proof (translation)
-The claim follows from `DirectSum.induction_on (β := V) (motive := C) m h0 hof hadd`.
+A detailed English derivation is pending.
 -/
 theorem induction {C : NSum hy → Prop} (h0 : C 0) (hof : ∀ n a, C (of hy n a))
     (hadd : ∀ a b, C a → C b → C (a + b)) (m : NSum hy) : C m :=
@@ -73,7 +73,7 @@ def desc {N : Type*} [AddCommGroup N] [Module R N] (φ : ∀ n, V n →ₗ[R] N)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof R n a`.
+A detailed English derivation is pending.
 -/
 theorem desc_of {N : Type*} [AddCommGroup N] [Module R N] (φ : ∀ n, V n →ₗ[R] N) (n : ℕ)
     (a : V n) : desc hy φ (of hy n a) = φ n a :=
@@ -83,13 +83,13 @@ def op (i : κ) : Module.End R (NSum hy) := desc hy fun n => of hy (n + 1) ∘�
 
 @[simp]
 /- English proof (translation)
-The claim follows from `desc_of hy _ n a`.
+A detailed English derivation is pending.
 -/
 theorem op_of (i : κ) (n : ℕ) (a : V n) : op hy i (of hy n a) = of hy (n + 1) (y i n a) :=
   desc_of hy _ n a
 
 /- English proof (translation)
-The claim follows from `lhom_ext hy fun n a => by simp [hy i j n a]`.
+A detailed English derivation is pending.
 -/
 theorem commute_op (i j : κ) : Commute (op hy i) (op hy j) :=
   lhom_ext hy fun n a => by simp [hy i j n a]
@@ -107,14 +107,14 @@ instance : IsScalarTower R (MvPolynomial κ R) (NSum hy) where
   smul_assoc r p m := by rw [smul_def, smul_def, map_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[smul_def, Wick.commEval_X]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_smul (i : κ) (m : NSum hy) : (MvPolynomial.X i : MvPolynomial κ R) • m = op hy i m := by
   rw [smul_def, Wick.commEval_X]
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[X_smul, op_of]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_smul_of (i : κ) (n : ℕ) (a : V n) :
     (MvPolynomial.X i : MvPolynomial κ R) • of hy n a = of hy (n + 1) (y i n a) := by
@@ -141,7 +141,7 @@ def lift {N : Type*} [AddCommGroup N] [Module R N] [Module (MvPolynomial κ R) N
 
 @[simp]
 /- English proof (translation)
-The claim follows from `desc_of hy φ n a`.
+A detailed English derivation is pending.
 -/
 theorem lift_of {N : Type*} [AddCommGroup N] [Module R N] [Module (MvPolynomial κ R) N]
     [IsScalarTower R (MvPolynomial κ R) N] (φ : ∀ n, V n →ₗ[R] N) (hφ) (n : ℕ) (a : V n) :
@@ -153,15 +153,15 @@ def map (φ : ∀ n, V n →ₗ[R] V' n) (hφ : ∀ i n a, φ (n + 1) (y i n a) 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `lift_of hy _ _ n a`.
+A detailed English derivation is pending.
 -/
 theorem map_of (φ : ∀ n, V n →ₗ[R] V' n) (hφ) (n : ℕ) (a : V n) :
     map hy hy' φ hφ (of hy n a) = of hy' n (φ n a) := lift_of hy _ _ n a
 
 /- English proof (translation)
-Proceed by induction on `m using NSum.induction with`. Consider the case `h0 => simp`. Consider the case `hof k a`. Distinguish the cases in `h : k = n`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_of, component_of_ne hy' h, component_of_ne hy h, map_zero]`. Consider the case `hadd a b ha hb => simp only [map_add, ha, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem component_map (φ : ∀ n, V n →ₗ[R] V' n) (hφ) (n : ℕ) (m : NSum hy) :
     component hy' n (map hy hy' φ hφ m) = φ n (component hy n m) := by
@@ -175,17 +175,17 @@ theorem component_map (φ : ∀ n, V n →ₗ[R] V' n) (hφ) (n : ℕ) (m : NSum
   | hadd a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-The claim follows from `DFinsupp.ext h`.
+A detailed English derivation is pending.
 -/
 theorem ext_component {m m' : NSum hy} (h : ∀ n, component hy n m = component hy n m') : m = m' :=
   DFinsupp.ext h
 
 /- English proof (translation)
-Use `⟨fun m m' e => ext_component hy fun n => (h n).1 ?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← component_map hy hy' φ hφ, ← component_map hy hy' φ hφ, e]`. Proceed by induction on `m using NSum.induction with`. Consider the case `h0 => exact ⟨0, map_zero _⟩`. Consider the case `hof n b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `(h n).2 b`. Conclude with `⟨of hy n a, map_of hy hy' φ hφ n a⟩`. Consider the case `hadd a b ha hb`. Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a' + b', map_add _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_bijective (φ : ∀ n, V n →ₗ[R] V' n) (hφ) (h : ∀ n, Function.Bijective (φ n)) :
     Function.Bijective (map hy hy' φ hφ) := by
@@ -229,7 +229,7 @@ namespace BiOps
 variable (D : BiOps (R := R) W ι κ) (D' : BiOps (R := R) W' ι κ)
 
 /- English proof (translation)
-Introduce `i j e a` and use `D.hy i j e t a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hyN (t : ℤ) : NOpsCommute (fun l e => D.y l e t) := fun i j e a => D.hy i j e t a
 
@@ -240,14 +240,14 @@ def xN (j : ι) (t : ℤ) : D.NM t →ₗ[MvPolynomial κ R] D.NM (t + 1) :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `NSum.map_of (D.hyN t) (D.hyN (t + 1)) (fun e => D.x j e t) (fun l e a => D.hxy j l e t a) e a`.
+A detailed English derivation is pending.
 -/
 theorem xN_of (j : ι) (t : ℤ) (e : ℕ) (a : W e t) :
     D.xN j t (NSum.of (D.hyN t) e a) = NSum.of (D.hyN (t + 1)) e (D.x j e t a) :=
   NSum.map_of (D.hyN t) (D.hyN (t + 1)) (fun e => D.x j e t) (fun l e a => D.hxy j l e t a) e a
 
 /- English proof (translation)
-Introduce `i j t m` and use `by induction m using NSum.induction with | h0 => simp | hof e a => simp [D.hx i j e t a] | hadd a b ha hb => simp only [map_add, ha, hb]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hxN : OperatorsCommute (R := MvPolynomial κ R) (A := D.NM) D.xN := fun i j t m => by
   induction m using NSum.induction with
@@ -267,26 +267,26 @@ def comp (e : ℕ) (t : ℤ) : D.Tot →+ W e t :=
     ((GrSum.component D.hxN t).toAddMonoidHom)
 
 /- English proof (translation)
-The claim follows from `GrSum.of_mem_grading _ _ _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem of_mem_grading (e : ℕ) (t : ℤ) (a : W e t) : D.of e t a ∈ D.grading t :=
   GrSum.of_mem_grading _ _ _
 
 @[simp]
 /- English proof (translation)
-Simplify using `[comp, of]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_of (e : ℕ) (t : ℤ) (a : W e t) : D.comp e t (D.of e t a) = a := by
   simp [comp, of]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (D.comp_of e t)`.
+A detailed English derivation is pending.
 -/
 theorem of_injective (e : ℕ) (t : ℤ) : Function.Injective (D.of e t) :=
   Function.LeftInverse.injective (D.comp_of e t)
 
 /- English proof (translation)
-Simplify using `[of, xN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem X_smul_of (j : ι) (e : ℕ) (t : ℤ) (a : W e t) :
     (MvPolynomial.X j : MvPolynomial ι (MvPolynomial κ R)) • D.of e t a =
@@ -294,7 +294,7 @@ theorem X_smul_of (j : ι) (e : ℕ) (t : ℤ) (a : W e t) :
   simp [of, xN]
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.algebraMap_eq, algebraMap_smul]`. Conclude with `(map_smul (GrSum.of D.hxN t) c _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_smul_of (c : MvPolynomial κ R) (e : ℕ) (t : ℤ) (a : W e t) :
     (MvPolynomial.C c : MvPolynomial ι (MvPolynomial κ R)) • D.of e t a =
@@ -303,7 +303,7 @@ theorem C_smul_of (c : MvPolynomial κ R) (e : ℕ) (t : ℤ) (a : W e t) :
   exact (map_smul (GrSum.of D.hxN t) c _).symm
 
 /- English proof (translation)
-Rewrite using `[C_smul_of, NSum.X_smul_of]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem C_X_smul_of (l : κ) (e : ℕ) (t : ℤ) (a : W e t) :
     (MvPolynomial.C (MvPolynomial.X l) : MvPolynomial ι (MvPolynomial κ R)) • D.of e t a =
@@ -312,7 +312,7 @@ theorem C_X_smul_of (l : κ) (e : ℕ) (t : ℤ) (a : W e t) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[C_smul_of, ← MvPolynomial.algebraMap_eq, algebraMap_smul, ← map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem C_C_smul_of (r : R) (e : ℕ) (t : ℤ) (a : W e t) :
     (MvPolynomial.C (MvPolynomial.C r) : MvPolynomial ι (MvPolynomial κ R)) • D.of e t a =
@@ -321,9 +321,9 @@ theorem C_C_smul_of (r : R) (e : ℕ) (t : ℤ) (a : W e t) :
   rfl
 
 /- English proof (translation)
-Establish `key (t : ℤ) (n : D.NM t) : C (GrSum.of D.hxN t n)`. Proceed by induction on `n using NSum.induction with`. Consider the case `h0 => rw [map_zero]`. Conclude with `h0`. Consider the case `hof e a => exact hof e t a`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `hadd a b ha hb => rw [map_add]`. Conclude with `hadd _ _ ha hb`. Conclude with `DirectSum.induction_on (β := D.NM) (motive := C) m h0 (fun t n => key t n) hadd`.
+A detailed English derivation is pending.
 -/
 theorem induction {C : D.Tot → Prop} (h0 : C 0) (hof : ∀ e t a, C (D.of e t a))
     (hadd : ∀ a b, C a → C b → C (a + b)) (m : D.Tot) : C m := by
@@ -335,9 +335,9 @@ theorem induction {C : D.Tot → Prop} (h0 : C 0) (hof : ∀ e t a, C (D.of e t 
   exact DirectSum.induction_on (β := D.NM) (motive := C) m h0 (fun t n => key t n) hadd
 
 /- English proof (translation)
-Distinguish the cases in `ht : t = t'`. Substitute `ht` using the available equality. Establish `he : e ≠ e'` using `fun he => h ⟨he, rfl⟩`. Simplify `NSum.component_of_ne (D.hyN t) he a` using `[comp, of]`. Use `GrSum.component_of_ne D.hxN ht (NSum.of (D.hyN t) e a)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [comp, of, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe] at this ⊢`. Rewrite using `[this, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_of_ne {e e' : ℕ} {t t' : ℤ} (h : ¬(e = e' ∧ t = t')) (a : W e t) :
     D.comp e' t' (D.of e t a) = 0 := by
@@ -350,13 +350,13 @@ theorem comp_of_ne {e e' : ℕ} {t t' : ℤ} (h : ¬(e = e' ∧ t = t')) (a : W 
     rw [this, map_zero]
 
 /- English proof (translation)
-It suffices to establish `h : ∃ s₀ : Finset (ℕ × ℤ), ∀ s, s₀ ⊆ s → m = ∑ q ∈ s, D.of q.1 q.2 (D.comp q.1 q.2 m) by`. Take `⟨s₀, h⟩` from `h`. Conclude with `⟨s₀, h _ subset_rfl⟩`. Proceed by induction on `m using D.induction with`. Consider the case `h0 => exact ⟨∅, fun s _ => by simp⟩`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction. Treat this case separately.
 
-Consider the case `hof e t a`. Use `⟨{(e, t)}, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem (e, t) (hs (Finset.mem_singleton_self _))]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨e', t'⟩ _ hne`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[comp_of_ne, map_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hne rfl`. Consider the case `hadd a b ha hb`. Take `⟨s₁, h₁⟩` from `ha`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₂, h₂⟩` from `hb`. Use `⟨s₁ ∪ s₂, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Finset.sum_add_distrib]`. Rewrite using `[← h₁ s (Finset.union_subset_left hs), ← h₂ s (Finset.union_subset_right hs)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_sum (m : D.Tot) :
     ∃ s : Finset (ℕ × ℤ), m = ∑ q ∈ s, D.of q.1 q.2 (D.comp q.1 q.2 m) := by
@@ -394,23 +394,23 @@ def map (φ : ∀ e t, W e t →ₗ[R] W' e t)
 
 @[simp]
 /- English proof (translation)
-Simplify using `[map, of]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_of (φ : ∀ e t, W e t →ₗ[R] W' e t) (hx) (hy) (e : ℕ) (t : ℤ) (a : W e t) :
     D.map D' φ hx hy (D.of e t a) = D'.of e t (φ e t a) := by
   simp [map, of]
 
 /- English proof (translation)
-The claim follows from `GrSum.isGradedMap_map _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isGradedMap_map (φ : ∀ e t, W e t →ₗ[R] W' e t) (hx) (hy) :
     IsGradedMap D.grading D'.grading (D.map D' φ hx hy) :=
   GrSum.isGradedMap_map _ _ _ _
 
 /- English proof (translation)
-Proceed by induction on `m using D.induction with`. Consider the case `h0 => simp`. Consider the case `hof e' t' a`. Distinguish the cases in `h : e' = e ∧ t' = t`. Take `⟨rfl, rfl⟩` from `h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_of, comp_of_ne _ h, comp_of_ne _ h, map_zero]`. Consider the case `hadd a b ha hb => simp only [map_add, ha, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem comp_map (φ : ∀ e t, W e t →ₗ[R] W' e t) (hx) (hy) (e : ℕ) (t : ℤ) (m : D.Tot) :
     D'.comp e t (D.map D' φ hx hy m) = φ e t (D.comp e t m) := by
@@ -424,7 +424,7 @@ theorem comp_map (φ : ∀ e t, W e t →ₗ[R] W' e t) (hx) (hy) (e : ℕ) (t :
   | hadd a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-The claim follows from `GrSum.X_smul_bijective D.hxN fun t => NSum.map_bijective (D.hyN t) (D.hyN (t + 1)) _ _ fun e => h e t`.
+A detailed English derivation is pending.
 -/
 theorem X_smul_bijective (j : ι) (h : ∀ e t, Function.Bijective (D.x j e t)) :
     Function.Bijective fun m : D.Tot =>
@@ -434,7 +434,7 @@ theorem X_smul_bijective (j : ι) (h : ∀ e t, Function.Bijective (D.x j e t)) 
 end BiOps
 
 /- English proof (translation)
-The claim follows from `2 • LinearMap.id y _ _ _ := 3 • LinearMap.id hx _ _ _ _ _ := rfl hy _ _ _ _ _ := rfl hxy _ _ _ _ a := by simp; ring`.
+A detailed English derivation is pending.
 -/
 example : BiOps (R := ℤ) (fun _ _ => ℤ) Unit Unit where
   x _ _ _ := 2 • LinearMap.id

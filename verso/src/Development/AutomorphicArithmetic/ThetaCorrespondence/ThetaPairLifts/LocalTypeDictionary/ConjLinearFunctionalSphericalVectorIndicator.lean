@@ -11,19 +11,19 @@ open scoped Matrix
 noncomputable section
 namespace GlobalTheory.SplitBarVac
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair v t b c hb hc`. Establish `hcm : IsCMExt F E σ` using `hPair.base.cm`. Establish `hσσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2, star_star]`. Establish `htt : (t.comp σ).comp σ = t` using `AlgHom.ext fun x => by simp [hσσ]`. Establish `hJX : IsHermND σ X.Jᵀ` using `⟨fun i j => by simp [Matrix.transpose_apply, hPair.herm.herm], by rw [Matrix.det_transpose]; exact GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hPair.herm⟩`. Establish `hL` using `GlobalTheory.HermSelfDualLoc.isSelfDualAt_transpose F E σ B n X r s hPair.base hPair.herm v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2` using `hb.dual hcm hJX hL`. Take `⟨z, c₂, hz1, hc2v, hc2⟩` from `GlobalTheory.T.skewHermitianLattice_splitPlace_components_dual F E σ B d W r' s' hPair.base hPair.skew v t c hc`. Establish `hc3 : IsSplitBasis (t.comp σ) W.L (-c₂)` using `fun u => by`. Use `hc2 (-u)` as an intermediate fact. Simplify using `only [Pi.neg_apply, neg_mem_iff, Matrix.mulVec_neg] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Units.val_neg, Matrix.neg_mulVec, Matrix.mulVec_neg]`. Use `⟨Units.map (Matrix.scalar (Fin n) : Fv F v →+* Matrix (Fin n) (Fin n) (Fv F v)).toMonoidHom z * b, fun hu => by simp [hz1 hu], ?_⟩` and prove the remaining obligations. Take `⟨ι, hι, hvac⟩` from `_root_.GlobalTheory.T.linearFunctional_sphericalVector_ne_zero hP F E σ B n d X W M χX χW om r s r' s' hPair v (t.comp σ) _ _ hb2 hc3`. Use `⟨ι, ?_, hvac⟩` and prove the remaining obligations. Unfold `Model.IsLinW at hι`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite `hι` using `[htt]`. Unfold `Model.IsLinBar`. Use `hι using 1` and compare the differences between its conclusion and the goal. Establish `e1 : ((dualConj 1 (splitGram hJX t * b))⁻¹).1 = b.1ᵀ * X.J.map t`. Rewrite using `[← map_inv, dualConj_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.transpose_mul, Matrix.transpose_map]`. Establish `e2 : ((-c₂)⁻¹).1 = -((z : Fv F v) • (c.1ᵀ * W.J.map t))` using `by first`. Consider the case `(rw [← hc2v]; simp)`. Consider the case `(rw [← hc2v, Units.neg_inv]; rfl)`. Consider the case `(rw [← hc2v]; exact congrArg Units.val (neg_inv c₂))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use extensionality with `Y i j`. Rewrite using `[e1, e2]`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Matrix.transpose_mul, Matrix.scalar_apply, Matrix.transpose_neg, Matrix.transpose_smul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.diagonal_transpose, Matrix.mul_assoc …`. Simplify using `[Matrix.mul_assoc, ← Matrix.smul_eq_diagonal_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conjLinearFunctional_sphericalVector_indicator : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -77,7 +77,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitBarVac.conjLinearFunctional_sphericalVector_indicator | exact _root_.GlobalTheory.SplitBarVac.conjLinearFunctional_sphericalVector_indicator | (intros; apply _root_.GlobalTheory.SplitBarVac.conjLinearFunctional_sphericalVector_indicator <;> …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.splitPlace_sphericalVector_indicator_value : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

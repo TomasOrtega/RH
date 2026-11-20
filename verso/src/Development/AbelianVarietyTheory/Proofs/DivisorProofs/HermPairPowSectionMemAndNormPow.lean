@@ -15,11 +15,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.VolBr.NuPow
 
 /- English proof (translation)
-Introduce `k _ X _ p P a b f hf n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨fun x i j _ _ => ⟨1, by simp [Pair.loc]⟩, fun σ y => ?_⟩` and prove the remaining obligations. Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[map_one, ev_one mem_ptsIn_top]`. Simplify using `[Pair.nu, Pair.loc, e]`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P _ _ a b _ f ih.1 hf`. Establish `ea : ((n + 1 : ℕ) : ℤ) * a = n * a + a` using `by push_cast; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eb : ((n + 1 : ℕ) : ℤ) * b = n * b + b` using `by push_cast; ring`. Rewrite using `[ea, eb, pow_succ]`. Conclude with `⟨h1, fun σ y => by rw [h2 σ y, ih.2 σ y, pow_succ]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pow_mem_H_and_nu_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (f : X.functionField), f ∈ P.H a b → ∀ n : ℕ, f ^ n ∈ P.H (n * a) (n * b) ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (n * a) (n * b) σ y (f ^ n) = P.nu a b σ y f ^ n := by
   intro k _ X _ p P a b f hf n

@@ -13,9 +13,9 @@ namespace PointIntegral
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [zeroSet, Set.mem_ofPred_eq, Set.mem_singleton_iff, RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h (X i - C (p i)) (by simp)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Introduce and unpack `rfl q hq`. Conclude with `hq`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem zeroSet_ker_eval (p : Fin n → ℂ) :
     zeroSet (RingHom.ker (MvPolynomial.eval p)) = {p} := by
@@ -30,13 +30,13 @@ theorem zeroSet_ker_eval (p : Fin n → ℂ) :
     exact hq
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (projHom (RingHom.ker (MvPolynomial.eval p)) A)`. Introduce `q`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `⟨C (eval p q), ?_⟩` and prove the remaining obligations. Simplify using `only [projHom, pullback, AlgHom.comp_apply, aeval_C, Ideal.Quotient.mkₐ_eq_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `P Q hPQ`. Take `⟨a, rfl⟩ : ∃ a, P = C a` from `⟨coeff 0 P, (eq_C_of_isEmpty P)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩ : ∃ b, Q = C b` from `⟨coeff 0 Q, (eq_C_of_isEmpty Q)⟩`. Simplify using `only [projHom, pullback, AlgHom.comp_apply, aeval_C, Ideal.Quotient.mkₐ_eq_mk] at hPQ`. Rewrite `hPQ` using `[Ideal.Quotient.eq, RingHom.mem_ker]`. Simplify using `[sub_eq_zero] at hPQ`. Rewrite using `[hPQ]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.Finite.of_surjective _ hsurj`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteProjection (p : Fin n → ℂ) (A : Matrix (Fin 0) (Fin n) ℂ) :
     IsFiniteProjection (RingHom.ker (MvPolynomial.eval p)) A := by
@@ -58,17 +58,15 @@ theorem isFiniteProjection (p : Fin n → ℂ) (A : Matrix (Fin 0) (Fin n) ℂ) 
   · exact RingHom.Finite.of_surjective _ hsurj
 
 /- English proof (translation)
-Introduce `n p f φ`. Use `set J := RingHom.ker (MvPolynomial.eval p)`. Establish `hZ : zeroSet J = {p}` using `zeroSet_ker_eval p`. Establish `hex : ∃ A : Matrix (Fin 0) (Fin n) ℂ, IsFiniteProjection J A` using `⟨0, isFiniteProjection p 0⟩`. Rewrite using `[varInt, dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A := hex.choose`. Establish `hsheet : IsSheetAt J A p (fun _ => p)`. Use `⟨Set.univ, isOpen_univ, trivial, differentiableOn_const _, rfl, ?_, Set.univ, Filter.univ_mem, ?_⟩` and prove the remaining obligations. Introduce `y _`. Conclude with `⟨Subsingleton.elim _ _, by rw [hZ]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx _`. Rewrite `hx` using `[hZ]`. Conclude with `hx.1`. Establish `hfib : ∀ y, fibre J A y = {p}`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use extensionality with `x`. Simplify using `only [fibre, Set.mem_ofPred_eq, hZ, Set.mem_singleton_iff]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, Subsingleton.elim _ _⟩⟩`. Establish `hdens : ∀ y, chartDens J A f φ y = f p`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chartDens, sheetSum, hfib y, finsum_mem_singleton]`. Establish `hs : ∃ s, IsSheetAt J A p s` using `⟨_, hsheet⟩`. Rewrite using `[dif_pos hs]`. Simplify using `[ReciprocityTheory.AnForm.maDens, ReciprocityTheory.AnForm.mdisc_zero]`. Rewrite using `[chartInt]`.
-
-Repeatedly rewrite using `[hdens]`. Simplify using `[Measure.real, MeasureTheory.volume_pi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proof : PointIntegral.Statement := by
   intro n p f φ

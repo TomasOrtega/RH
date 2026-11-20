@@ -40,7 +40,7 @@ def prodMapOf (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q : ℕ)
 
 @[simp]
 /- English proof (translation)
-Simplify using `[prodMapOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodMapOf_tmul (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q : ℕ)
     (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)) (x y : D) (g : Multiplicative (ZMod q)) :
@@ -48,11 +48,11 @@ theorem prodMapOf_tmul (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q :
   simp [prodMapOf]
 
 /- English proof (translation)
-Take `⟨k₁, f₁, h₁⟩` from `hP`. Take `⟨k₂, f₂, h₂⟩` from `hQ`. Set `a` to `IsFiltered.leftToMax k₁ k₂`. Set `b` to `IsFiltered.rightToMax k₁ k₂`. Set `e` to `IsFiltered.coeqHom (f₁ ≫ a) (f₂ ≫ b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : (f₁ ≫ a) ≫ e = (f₂ ≫ b) ≫ e` using `IsFiltered.coeq_condition _ _`. Use `⟨IsFiltered.coeq (f₁ ≫ a) (f₂ ≫ b), (f₁ ≫ a) ≫ e, fun k f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `h₁ k (a ≫ e ≫ f)` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Use `h₂ k (b ≫ e ≫ f)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[he]`. Simplify `this` using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eventually_and {J : Type} [Category J] [IsFiltered J] {j : J}
     (P Q : ∀ k : J, (j ⟶ k) → Prop)

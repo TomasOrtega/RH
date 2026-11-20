@@ -33,7 +33,7 @@ def perp {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (W : Submodule K (Fin n
     simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, ← Finset.mul_sum, hy x hx, mul_zero]
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun _ _ x hx => by simp [(Submodule.mem_bot K).1 hx]`.
+A detailed English derivation is pending.
 -/
 theorem perp_bot {K : Type} [Field K] (σ : K →+* K) {n : ℕ} : perp σ (⊥ : Submodule K (Fin n → K)) = ⊤ :=
   eq_top_iff.2 fun _ _ x hx => by simp [(Submodule.mem_bot K).1 hx]
@@ -87,7 +87,7 @@ def basisMat (W : Submodule E (Fin n → E)) : Matrix (Fin n) (Fin (Module.finra
 def deg (x : GA E n) (W : Submodule E (Fin n → E)) : ℝ := degM x (basisMat W)
 
 /- English proof (translation)
-Simplify using `[degM, lognInf, lognFin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degM_zero (x : GA E n) (M : Matrix (Fin n) (Fin 0) E) : degM x M = 0 := by
   simp [degM, lognInf, lognFin]
@@ -114,7 +114,7 @@ structure IsTest (φ : GA E n → ℂ) : Prop where
     ∀ u ∈ U, ∀ g, φ (finGL E n u * g) = φ g ∧ φ (g * finGL E n u) = φ g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, HasCompactSupport.zero, ⊤, isOpen_univ, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTest_zero : IsTest (0 : GA E n → ℂ) :=
   ⟨continuous_const, HasCompactSupport.zero, ⊤, isOpen_univ, fun _ _ _ => ⟨rfl, rfl⟩⟩
@@ -180,13 +180,13 @@ def VCAt (v : InfinitePlace E) (φ : GA E n → ℂ) : Prop :=
   ∀ g : GA E n, GeneralLinearGroup.map (cV v) g = 1 → VeryCusp fun d => φ (embInf n v d * g)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem veryCusp_zero : VeryCusp (0 : GL (Fin n) ℂ → ℂ) :=
   ⟨fun _ _ _ => rfl, fun _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `absurd rfl h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regSupp_zero : RegSupp (0 : GA E n → ℂ) := fun _ _ h => absurd rfl h
 

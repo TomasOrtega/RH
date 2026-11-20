@@ -9,11 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.Qi27.ringA :
     fun (l : ℕ) [Fact (Nat.Prime l)] ↦ Subring.closure (UpperTheory.Reformulated.B.Qi27.muPrime l)
 
 /- English proof (translation)
-Introduce `l hl x hx`. Unfold `UpperTheory.Reformulated.B.Qi27.ringA at hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`. Take `⟨n, hn, -, h⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ‖y‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg y) hn.ne').1 h1).le`. Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add a b _ _ ha hb => exact (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg a _ ha => simpa using ha`. Consider the case `mul a b _ _ ha hb`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg b) hb`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi27.norm_ringA_le :
     ∀ {l : ℕ} [hl : Fact (Nat.Prime l)] {x : ℂ_[l]}, x ∈ UpperTheory.Reformulated.B.Qi27.ringA l → ‖x‖ ≤ (1 : ℝ) := by

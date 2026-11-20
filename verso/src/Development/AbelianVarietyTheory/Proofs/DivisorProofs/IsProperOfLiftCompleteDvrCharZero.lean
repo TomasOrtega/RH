@@ -16,11 +16,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ValuativeFlat
 
 /- English proof (translation)
-Introduce `R _ _ _ _ X s hq hflat h`. Establish `hq' : IsQProjOver (s ≫ 𝟙 (Sp R))` using `by rwa [Category.comp_id]`. Establish `hP` using `GlobalTheory.ValuativeGeneric.isProper_of_lift_generic R X (Sp R) s (𝟙 _) inferInstance hq' ?_`. Conclude with `hP`. Introduce `V K _ _ _ _ _ _ _ x y hx hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `β : R →+* V` to `(Spec.preimage y).hom`. Establish `hy : y = spMap β` using `by simp [β, spMap]`. Establish `hxs : x ≫ s = spMap ((algebraMap V K).comp β)`. Rewrite using `[hxy, hy, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ((algebraMap V K).comp β)` using `GlobalTheory.T.injective_of_flat_point_at_generic_points R K X s x _ hflat hx hxs`. Establish `: CharZero K` using `charZero_of_injective_ringHom hinj`. Take `⟨W, L, _, _, _, _, _, _, _, _, hc, hloc, f, hf⟩` from `h V K β x hxs`. Conclude with `GlobalTheory.T.descend_point_valuationRing_of_dominating_local_domain V K W L hc hloc X x f hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isProper_of_lift_dominating : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] [IsNoetherianRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsQProjOver s → Flat s → (∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (β : R →+* V) (x : Sp K ⟶ X), x ≫ s = spMap ((algebraMap V K).comp β) → ∃ (W L : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (_ : Field L) (_ : Algebra V W) (_ : Algebra W L) (_ : Algebra K L) (_ : IsFractionRing W L), (algebraMap W L).comp (algebraMap V W) = (algebraMap K L).comp (algebraMap V K) ∧ IsLocalHom (algebraMap V W) ∧ ∃ f : Sp W ⟶ X, spMap (algebraMap K L) ≫ x = spMap (algebraMap W L) ≫ f) → IsProper s := by
   intro R _ _ _ _ X s hq hflat h

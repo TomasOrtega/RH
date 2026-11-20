@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsOfRedEqZer
 open GlobalTheory.Col PowerSeries
 
 /- English proof (translation)
-Introduce `R _ p _ σ hfl h`. Take `⟨b, -⟩` from `GlobalTheory.Col.exists_basis_one_add_X_pow R p hfl.complete`. Conclude with `GlobalTheory.Col.NormFrob.normOp_eq_smap_add p σ hfl b h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Col.normOp_frob : ∀ (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime] (σ : R ≃+* R), FrobLift R p σ →
     ∀ h : PowerSeries R, ∃ r : PowerSeries R, normOp p h = smap σ h + (p : PowerSeries R) * r := by

@@ -21,27 +21,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RepsCard
 
 /- English proof (translation)
-Introduce `V _ _ H α A B Λ hyp SA SB hSA hSB`. Take `⟨hH, -, hB, -, sdB, hΛ, -, -, -, h5⟩` from `hyp`. Establish `hBint` using `(Formalism.L2.Th1.H.semicharacterBasic V H hH B α hB).2.2`. Establish `hΛint` using `(Formalism.L2.Th1.H.semicharacterBasic V H hH Λ α hΛ).2.2`. Establish `hone : ∀ {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (c : ℂ), Formalism.L2.Th1.H.IsReps Λ₁ Λ₂ S → ∑ x ∈ S, (if x ∈ Λ₁ then c else 0) = c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Λ₁ Λ₂ S c hS`. Take `⟨x₀, hx₀, hd⟩` from `hS.2.2 0 Λ₂.zero_mem`. Establish `hx₀Λ : x₀ ∈ Λ₁` using `by simpa using Λ₁.neg_mem hd`. Rewrite using `[Finset.sum_eq_single x₀]`. Simplify using `[hx₀Λ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x hx hne`. Rewrite using `[if_neg]`. Introduce `hxΛ`. Conclude with `hne (hS.2.1 x hx x₀ hx₀ (Λ₁.sub_mem hxΛ hx₀Λ))`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd hx₀ h`. Establish `hcol : ∀ s ∈ SA, ∑ y ∈ SB, brk H y s = if s ∈ B then (SB.card : ℂ) else 0`. Introduce `s hs`. Establish `hsΛ : s ∈ Λ` using `(hSA.1 s hs).1`. Use `split_ifs with hsB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsd : s ∈ Formalism.L2.Th1.H.dualLat H B` using `by rw [sdB]; exact hsB`. Rewrite using `[Finset.sum_congr rfl fun y hy => brk_one_of_int H (hsd y (hSB.1 y hy))]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`. Apply `hsB` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsd : s ∈ Formalism.L2.Th1.H.dualLat H B`. Introduce `y hyB`. Assume the negation of the conclusion as `hno`. Use `hne (char_sum_zero hSB (fun y => brk H y s) (fun u v => brk_add_left H u v s) ?_ (x₀ := y) hyB ?_)` and prove the remaining obligations. Introduce `m _ hmΛ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `brk_one_of_int H (hΛint hsΛ m hmΛ)`. Introduce `h1`. Conclude with `hno (int_of_brk_one H h1)`. Rewrite `hsd` using `[sdB]`. Then use the resulting hypothesis. Establish `hrow : ∀ y ∈ SB, ∑ s ∈ SA, brk H y s = if y ∈ Λ then (SA.card : ℂ) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `y hy`. Establish `hyB : y ∈ B` using `hSB.1 y hy`. Use `split_ifs with hyΛ`. Rewrite using `[Finset.sum_congr rfl fun s hs => brk_one_of_int H (hΛint (hSA.1 s hs).1 y hyΛ)]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Apply `hyΛ` to reduce the goal to its premises. Apply `h5 y hyB` to reduce the goal to its premises. Introduce `a haA haΛ`. Assume the negation of the conclusion as `hno`.
-
-Use `hne (char_sum_zero hSA (fun s => brk H y s) (fun u v => brk_add_right H y u v) ?_ (x₀ := a) ⟨haΛ, haA⟩ ?_)` and prove the remaining obligations. Introduce `m _ hmB`. Conclude with `brk_one_of_int H (hBint hmB y hyB)`. Introduce `h1`. Conclude with `hno (int_of_brk_one H h1)`.
-
-Establish `key : ∑ s ∈ SA, ∑ y ∈ SB, brk H y s = ∑ y ∈ SB, ∑ s ∈ SA, brk H y s` using `Finset.sum_comm`. Rewrite `key` using `[Finset.sum_congr rfl hcol, Finset.sum_congr rfl hrow, hone _ hSA, hone _ hSB]`. Conclude with `key.symm` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_reps_eq : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ → ∀ SA SB : Finset V, Formalism.L2.Th1.H.IsReps B (Λ ⊓ A) SA → Formalism.L2.Th1.H.IsReps Λ B SB → SA.card = SB.card := by
   intro V _ _ H α A B Λ hyp SA SB hSA hSB

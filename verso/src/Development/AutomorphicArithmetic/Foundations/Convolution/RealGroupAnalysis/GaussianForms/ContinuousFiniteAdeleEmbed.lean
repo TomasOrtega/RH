@@ -7,7 +7,7 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Rewrite `hW` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hsub⟩` from `hW`. Conclude with `⟨⋂ i, t i, Filter.iInter_mem.2 ht, fun y hy => hsub fun i _ => Set.mem_iInter.1 (hy i) i⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_cube {ι Y : Type} [Finite ι] [TopologicalSpace Y] {y₀ : Y} {W : Set (ι → Y)}
     (hW : W ∈ 𝓝 (fun _ => y₀ : ι → Y)) :
@@ -19,7 +19,7 @@ private lemma exists_cube {ι Y : Type} [Finite ι] [TopologicalSpace Y] {y₀ :
 private noncomputable def fin0 {F : Type} [Field F] [NumberField F] (x : FiniteAdeleRing (𝓞 F) F) : A F := (0, x)
 
 /- English proof (translation)
-The claim follows from `show Continuous fun x : FiniteAdeleRing (𝓞 F) F => ((0, x) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) from continuous_const.prodMk continuous_id`.
+A detailed English derivation is pending.
 -/
 private lemma continuous_finiteAdeleEmbed {F : Type} [Field F] [NumberField F] :
     Continuous (fin0 (F := F)) :=
@@ -31,7 +31,7 @@ private noncomputable def oneAdd {F : Type} [Field F] [NumberField F]
   fun i j => (1 : Matrix (Fin 2) (Fin 2) (A F)) i j + fin0 (X (i, j))
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_finiteAdeleEmbed.comp (continuous_apply _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma continuous_oneAdd {F : Type} [Field F] [NumberField F] :
     Continuous (oneAdd (F := F)) := by
@@ -39,7 +39,7 @@ private lemma continuous_oneAdd {F : Type} [Field F] [NumberField F] :
   exact continuous_const.add (continuous_finiteAdeleEmbed.comp (continuous_apply _))
 
 /- English proof (translation)
-Use extensionality with `i j : 2`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) (A F)) i j + 0 = _`. Conclude with `add_zero _`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private lemma oneAdd_zero {F : Type} [Field F] [NumberField F] :
     oneAdd (F := F) (fun _ => 0) = 1 := by
@@ -48,27 +48,23 @@ private lemma oneAdd_zero {F : Type} [Field F] [NumberField F] :
   exact add_zero _
 
 /- English proof (translation)
-Introduce `F _ _ P h`. Establish `hind : IsInducing (fun g : G1 F => (g : Matrix (Fin 2) (Fin 2) (A F)))` using `Matrix.SpecialLinearGroup.isClosedEmbedding_val.isInducing`. Rewrite `h` using `[Filter.Eventually, hind.nhds_eq_comap, Filter.mem_comap]`. Take `⟨S, hS, hSP⟩` from `h`. Establish `h1 : S ∈ 𝓝 (oneAdd (F` using `F) fun _ => 0) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[oneAdd_zero]`. Simplify using `using hS`. Establish `h2` using `continuous_oneAdd.continuousAt.preimage_mem_nhds h1`. Take `⟨U, hU, hUS⟩` from `exists_cube h2`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset hU`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfin : ((idealSupport J : Finset _) : Set (HeightOneSpectrum (𝓞 F))).Finite` using `Finset.finite_toSet _`. Use `Filter.eventually_cofinite.2 (hfin.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hvJ`. Apply `hv` to reduce the goal to its premises. Introduce `g hg hint`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hone : ∀ i j, ((1 : Matrix (Fin 2) (Fin 2) (A F)) i j).2 v ∈ v.adicCompletionIntegers F`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Simplify using `[Matrix.one_apply, hij]`. Simplify using `[Matrix.one_apply, hij]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set X : Fin 2 × Fin 2 → FiniteAdeleRing (𝓞 F) F := fun p => (g p.1 p.2).2 - ((1 : Matrix (Fin 2) (Fin 2) (A F)) p.1 p.2).2 with hX`. Establish `hXm : ∀ p, X p ∈ U`. Introduce `p`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, mem_idealFiniteAdeles]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[count_eq_zero_of_not_mem_idealSupport J (by simpa using hvJ)]`. Simplify using `only [neg_zero, WithZero.exp_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_mem (hint p.1 p.2) (hone p.1 p.2)`. Establish `: X p w = 0`. Use `hg.2 w hw p.1 p.2` as an intermediate fact. Simplify using `only [hX]`. Conclude with `sub_eq_zero.2 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[this, map_zero]`. Conclude with `zero_le`. Establish `hgX : (g : Matrix (Fin 2) (Fin 2) (A F)) = oneAdd X`. Use extensionality with `i j : 2`. Apply `Prod.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (oneAdd X i j).1 = ((1 : Matrix (Fin 2) (Fin 2) (A F)) i j).1 + 0` using `rfl`. Rewrite using `[this, add_zero]`. Conclude with `hg.1 i j`. Establish `: (oneAdd X i j).2 = ((1 : Matrix (Fin 2) (Fin 2) (A F)) i j).2 + X (i, j)` using `rfl`. Rewrite using `[this, hX]`.
-
-Simplify using the standard rewrite rules. Apply `hSP` to reduce the goal to its premises. Use `show (g : Matrix (Fin 2) (Fin 2) (A F)) ∈ S`. Rewrite using `[hgX]`. Conclude with `hUS X hXm`.
-
-Conclude with `hg.1`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.unrOf :
     ∀ (F : Type) [Field F] [NumberField F] (P : G1 F → Prop), (∀ᶠ g in 𝓝 (1 : G1 F), InfOne g → P g) → ∀ᶠ v in cofinite, ∀ g, At v g → IntAt v g → P g := by

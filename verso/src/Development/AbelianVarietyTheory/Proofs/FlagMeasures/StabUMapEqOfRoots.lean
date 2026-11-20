@@ -16,11 +16,9 @@ def IsMatOn (g : Matrix (Fin n) (Fin n) ℂ) (f : Fin m → Fin n → ℂ) (M : 
   ∀ b, g *ᵥ f b = ∑ c, M c b • f c
 
 /- English proof (translation)
-Introduce `b`. Rewrite using `[← Matrix.mulVec_mulVec, hh b, Matrix.mulVec_sum]`. Establish `e : ∀ c, g *ᵥ (M₂ c b • f c) = ∑ d, (M₂ c b * M₁ d c) • f d`. Introduce `c`. Rewrite using `[Matrix.mulVec_smul, hg c, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun d _ => smul_smul _ _ _`. Rewrite using `[Finset.sum_congr rfl fun c _ => e c, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isMatOn_mul {g h : Matrix (Fin n) (Fin n) ℂ} {f : Fin m → Fin n → ℂ} {M₁ M₂ : Matrix (Fin m) (Fin m) ℂ}
     (hg : IsMatOn g f M₁) (hh : IsMatOn h f M₂) : IsMatOn (g * h) f (M₁ * M₂) := by
@@ -37,7 +35,7 @@ theorem isMatOn_mul {g h : Matrix (Fin n) (Fin n) ℂ} {f : Fin m → Fin n → 
   exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `c b`. Establish `h : ∑ d, (M₁ d b - M₂ d b) • f d = 0`. Repeatedly rewrite using `[sub_smul, Finset.sum_sub_distrib, ← hM b, ← hN b, sub_self]`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hf _ h c)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMatOn_unique {g : Matrix (Fin n) (Fin n) ℂ} {f : Fin m → Fin n → ℂ} {M₁ M₂ : Matrix (Fin m) (Fin m) ℂ}
     (hf : LinearIndependent ℂ f) (hM : IsMatOn g f M₁) (hN : IsMatOn g f M₂) : M₁ = M₂ := by
@@ -47,7 +45,7 @@ theorem isMatOn_unique {g : Matrix (Fin n) (Fin n) ℂ} {f : Fin m → Fin n →
   exact sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hf _ h c)
 
 /- English proof (translation)
-Introduce `b`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hg b, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, hP, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMatOn_conj {g P Pi : Matrix (Fin n) (Fin n) ℂ} {f : Fin m → Fin n → ℂ} {A : Matrix (Fin m) (Fin m) ℂ}
     (hg : IsMatOn g (fun j => P *ᵥ f j) A) (hP : Pi * P = 1) : IsMatOn (Pi * g * P) f A := by
@@ -59,7 +57,7 @@ theorem isMatOn_conj {g P Pi : Matrix (Fin n) (Fin n) ℂ} {f : Fin m → Fin n 
 variable {N : ℕ}
 
 /- English proof (translation)
-Use `⟨Formalism.L2.SG.Pf.ZsVolGrp.isUpUni_mul ha.1 hb.1, ?_⟩` and prove the remaining obligations. Establish `e : Z * (a * b) * Z⁻¹ = (Z * a * Z⁻¹) * (Z * b * Z⁻¹)`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hZ]`. Rewrite using `[e]`. Conclude with `Formalism.L2.SG.Pf.ZsVolGrp.isLoUni_mul ha.2 hb.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabU_mul {Z a b : Matrix (Fin N) (Fin N) ℂ} (hZ : IsUnit Z.det) (ha : a ∈ GlobalTheory.LoopV.stabU Z)
     (hb : b ∈ GlobalTheory.LoopV.stabU Z) : a * b ∈ GlobalTheory.LoopV.stabU Z := by
@@ -70,9 +68,9 @@ theorem stabU_mul {Z a b : Matrix (Fin N) (Fin N) ℂ} (hZ : IsUnit Z.det) (ha :
   exact Formalism.L2.SG.Pf.ZsVolGrp.isLoUni_mul ha.2 hb.2
 
 /- English proof (translation)
-Use `⟨(Formalism.L2.SG.Pf.ZsVolGrp.isUpUni_inv ha.1).1, ?_⟩` and prove the remaining obligations. Establish `hai` using `Formalism.L2.SG.Pf.ZsVolGrp.isUpUni_inv ha.1`. Establish `e : Z * a⁻¹ * Z⁻¹ = (Z * a * Z⁻¹)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hZ, Matrix.mul_assoc]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.L2.SG.Pf.ZsVolGrp.isLoUni_inv ha.2).1`.
+A detailed English derivation is pending.
 -/
 theorem stabU_inv {Z a : Matrix (Fin N) (Fin N) ℂ} (hZ : IsUnit Z.det) (ha : a ∈ GlobalTheory.LoopV.stabU Z) :
     a⁻¹ ∈ GlobalTheory.LoopV.stabU Z := by
@@ -84,15 +82,13 @@ theorem stabU_inv {Z a : Matrix (Fin N) (Fin N) ℂ} (hZ : IsUnit Z.det) (ha : a
   exact (Formalism.L2.SG.Pf.ZsVolGrp.isLoUni_inv ha.2).1
 
 /- English proof (translation)
-Take `⟨σ, d, hd, hw⟩` from `GlobalTheory.LoopV.Cell.ptMat_monomial p`. Establish `hd' : ∀ i, ψ (d i) ≠ 0` using `fun i => (map_ne_zero ψ).2 (hd i)`. Establish `hw' : ∀ i j, (ptMat p).map ψ i j = if j = σ i then ψ (d i) else 0`. Apply the tactic sequence `intro i j; rw [Matrix.map_apply, hw]; split_ifs <;> simp`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Unfold `GlobalTheory.LoopV.ofRoots`. Distinguish the cases in `hr : (a, b) ∈ GlobalTheory.LoopV.roots (ptMat p)`. Rewrite using `[dif_pos hr]`. Rewrite using `[dif_neg hr]`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg hab.ne]`. Establish `hσ : σ.symm a < σ.symm b`. Rewrite `hr` using `[GlobalTheory.LoopV.Cell.mono_roots hd hw]`. Use `push_neg at hr`. Break down `(hr hab).lt_or_eq with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `absurd (σ.symm.injective h) hab.ne`. Establish `h0` using `(hx.2 (σ.symm a) (σ.symm b)).1 hσ`. Rewrite `h0` using `[GlobalTheory.LoopV.Cell.mono_conj hd' hw']`. Simplify using `only [Equiv.apply_symm_apply, mul_eq_zero, inv_eq_zero, hd', false_or, or_false] at h0`.
-
-Conclude with `h0`. Rewrite using `[if_pos rfl]`. Conclude with `(hx.1 a a).2 rfl`. Rewrite using `[if_neg hab.ne']`. Conclude with `(hx.1 a b).1 hab`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabU_map_eq_ofRoots {K : Type} [Field K] (ψ : K →+* ℂ) (p : Point K N) (x : Matrix (Fin N) (Fin N) ℂ)
     (hx : x ∈ GlobalTheory.LoopV.stabU ((ptMat p).map ψ)) :

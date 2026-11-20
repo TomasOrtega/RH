@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FcCalc.Ibp.ibpSob | exact GlobalTheory.CompanionTheory.FcCalc.Ibp.ibpSob | (intros; apply GlobalTheory.CompanionTheory.FcCalc.Ibp.ibpSob <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sobolev_integration_by_parts : PositivityTheory.RgBcC.Fc.IbpSob := by
   first | exact @GlobalTheory.CompanionTheory.FcCalc.Ibp.ibpSob | exact GlobalTheory.CompanionTheory.FcCalc.Ibp.ibpSob | (intros; apply GlobalTheory.CompanionTheory.FcCalc.Ibp.ibpSob <;> assumption)

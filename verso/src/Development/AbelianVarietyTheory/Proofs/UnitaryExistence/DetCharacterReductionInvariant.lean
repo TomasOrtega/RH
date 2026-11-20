@@ -8,13 +8,13 @@ namespace GlobalTheory
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `φ2 : Module.End S V →* Module.End R V` to `{ toFun := fun g => g.restrictScalars R, map_one' := rfl, map_mul' := fun _ _ => rfl }`. Set `φ4 : (V ≃ₗ[R] V) →* (Q ≃ₗ[R] Q)` to `{ toFun := fun u => e.trans (u.trans e.symm) map_one' := by ext q; simp map_mul' := by intro u v; ext q; simp }`. Set `Φ : GL (Fin r) S →* (Q ≃ₗ[R] Q)` to `φ4.comp ((LinearMap.GeneralLinearGroup.generalLinearEquiv R V).toMonoidHom.comp ((Units.map φ2).comp (Units.map ((Matrix.toLinAlgEquiv b : Matrix (Fin r) (Fin r) S ≃ₐ[S] Module.End S V) : Matrix (Fin r) (Fin r) S →* Module.End S V))))`. Establish `hdet : IsUnit (LinearMap.toMatrix b b f).det`. Rewrite using `[LinearMap.det_toMatrix, hf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`. Set `g : GL (Fin r) S` to `Matrix.nonsingInvUnit _ hdet`. Establish `hg : (g : Matrix (Fin r) (Fin r) S).det = 1` using `by show (LinearMap.toMatrix b b f).det = 1`. Rewrite using `[LinearMap.det_toMatrix, hf]`. Establish `h1 : (ψ.comp Φ) g = 1` using `generalLinearGroup_char_eq_one_of_det_eq_one S r A (ψ.comp Φ) h4 g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Φ g * k = 1`. Use extensionality with `q`. Use `show e.symm ((Matrix.toLinAlgEquiv b (LinearMap.toMatrix b b f)) (e (k q))) = q`. Rewrite using `[show LinearMap.toMatrix b b f = LinearMap.toMatrixAlgEquiv b f from rfl, Matrix.toLinAlgEquiv_toMatrixAlgEquiv, hk, LinearEquiv.symm_apply_apply]`. Establish `h3` using `congrArg ψ h2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[map_mul, map_one]`. Simplify using `only [MonoidHom.comp_apply] at h1`. Rewrite `h3` using `[h1, one_mul]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_one_of_inverse_det_one_of_basis {R S V Q A : Type} [CommRing R] [CommRing S] [Finite S] [Algebra R S]
     [AddCommGroup V] [Module R V] [Module S V] [IsScalarTower R S V] [AddCommGroup Q] [Module R Q] [CommGroup A]
@@ -51,9 +51,9 @@ theorem char_eq_one_of_inverse_det_one_of_basis {R S V Q A : Type} [CommRing R] 
   exact h3
 
 /- English proof (translation)
-Use `Module.free_of_flat_of_finrank_eq (R ⧸ I) _ (Module.finrank R L') fun P => ?_` and prove the remaining obligations. Set `` to `Ideal.Quotient.field P.1`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.1) ((R ⧸ I) ⧸ P.1) L').finrank_eq]`. Establish `h` using `Module.rankAtStalk_baseChange (R := R) (M := L') (S := (R ⧸ I) ⧸ P.1) ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free, Pi.natCast_apply, Nat.cast_id]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(Ideal.finrank_fiber_eq_rankAtStalk (M := L') _).symm.trans (Ideal.finrank_fiber_eq_finrank _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem free_quotient_tensor_of_projective {R : Type} [CommRing R] [IsDomain R] (L' : Type)
     [AddCommGroup L'] [Module R L'] [Module.Finite R L'] [Module.Projective R L'] (I : Ideal R)
@@ -69,21 +69,21 @@ private theorem free_quotient_tensor_of_projective {R : Type} [CommRing R] [IsDo
   exact (Ideal.finrank_fiber_eq_rankAtStalk (M := L') _).symm.trans (Ideal.finrank_fiber_eq_finrank _)
 
 /- English proof (translation)
-Introduce `R _ _ L L' _ _ _ _ _ _ I _ A _ ψ t γ k h4 hsurj hinj hdet hk`. Use `free_quotient_tensor_of_projective L' I` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨r, ⟨b⟩⟩ : ∃ r : ℕ, Nonempty (Module.Basis (Fin r) (R ⧸ I) ((R ⧸ I) ⊗[R] L')) := by`. Break down `subsingleton_or_nontrivial (R ⧸ I) with h | h` into its components or cases. Use `Module.subsingleton (R ⧸ I) ((R ⧸ I) ⊗[R] L')` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨0, ⟨Module.Basis.empty _⟩⟩`. Conclude with `⟨_, ⟨Module.finBasis (R ⧸ I) ((R ⧸ I) ⊗[R] L')⟩⟩`. Establish `hle : (I • ⊤ : Submodule R L) ≤ (I • ⊤ : Submodule R L').comap t`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr n _`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Set `tb` to `(I • ⊤ : Submodule R L).mapQ (I • ⊤ : Submodule R L') t hle`. Establish `tbij : Function.Bijective tb`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr (hinj a hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨a, ha⟩` from `hsurj c`. Conclude with `⟨Submodule.Quotient.mk a, ((Submodule.Quotient.eq _).mpr ha).symm⟩`. Set `e : (L ⧸ (I • ⊤ : Submodule R L)) ≃ₗ[R] (R ⧸ I) ⊗[R] L'` to `(LinearEquiv.ofBijective tb tbij).trans (TensorProduct.quotTensorEquivQuotSMul L' I).symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ a, e (Submodule.Quotient.mk a) = (1 : R ⧸ I) ⊗ₜ[R] t a`. Introduce `a`. Simplify using `[e, tb, TensorProduct.quotTensorEquivQuotSMul_symm_mk]`. Establish `hz : ∀ x ∈ (I • ⊤ : Submodule R L'), (1 : R ⧸ I) ⊗ₜ[R] x = 0`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (Submodule.Quotient.mk x : L' ⧸ (I • ⊤ : Submodule R L')) = 0` using `(Submodule.Quotient.mk_eq_zero _).mpr hx`. Rewrite using `[← TensorProduct.quotTensorEquivQuotSMul_symm_mk, h0, map_zero]`. Use `char_eq_one_of_inverse_det_one_of_basis b e ψ h4 (LinearMap.baseChange (R ⧸ I) γ) hdet k ?_` and prove the remaining obligations. Introduce `q`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ha', hγ⟩` from `hk a`. Rewrite using `[← ha', he, he, LinearMap.baseChange_tmul, ← sub_eq_zero, ← TensorProduct.tmul_sub]`. Conclude with `hz _ hγ`.
+A detailed English derivation is pending.
 -/
 theorem char_eq_one_of_inverse_reduction_det_one : ∀ (R : Type) [CommRing R] [IsDomain R] (L L' : Type) [AddCommGroup L] [Module R L] [AddCommGroup L'] [Module R L'] [Module.Finite R L'] [Module.Projective R L'] (I : Ideal R) [Finite (R ⧸ I)] (A : Type) [CommGroup A] (ψ : ((L ⧸ (I • ⊤ : Submodule R L)) ≃ₗ[R] (L ⧸ (I • ⊤ : Submodule R L))) →* A) (t : L →ₗ[R] L') (γ : L' →ₗ[R] L') (k : (L ⧸ (I • ⊤ : Submodule R L)) ≃ₗ[R] (L ⧸ (I • ⊤ : Submodule R L))), (∀ 𝔪 : Ideal (R ⧸ I), 𝔪.IsMaximal → 4 ≤ Nat.card ((R ⧸ I) ⧸ 𝔪)) → (∀ b, ∃ a, b - t a ∈ (I • ⊤ : Submodule R L')) → (∀ a, t a ∈ (I • ⊤ : Submodule R L') → a ∈ (I • ⊤ : Submodule R L)) → LinearMap.det (LinearMap.baseChange (R ⧸ I) γ) = 1 → (∀ a, ∃ a', (Submodule.Quotient.mk a' : L ⧸ (I • ⊤ : Submodule R L)) = k (Submodule.Quotient.mk a) ∧ γ (t a') - t a ∈ (I • ⊤ : Submodule R L')) → ψ k = 1 := by
   intro R _ _ L L' _ _ _ _ _ _ I _ A _ ψ t γ k h4 hsurj hinj hdet hk

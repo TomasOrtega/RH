@@ -17,7 +17,7 @@ def expLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
   HermLine.ofWeight (fun z => -v z) fun c z hc => by rw [hv.2 c z hc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j z`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[pot, expLine, HermLine.ofWeight]`. Simplify using `[pot]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pot_cons_expLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {n : ℕ}
     (v : ((Σ k, ι k) → ℂ) → ℝ) (hv : IsDegZeroSmooth v) (L : Fin n → HermLine ι) :
@@ -28,7 +28,7 @@ theorem pot_cons_expLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fint
   · simp [pot]
 
 /- English proof (translation)
-Introduce `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Conclude with `Real.contDiff_exp.comp_contDiffOn hv.1.neg.neg`. Simplify using `using hL j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_cons_expLine {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {n : ℕ}
     (v : ((Σ k, ι k) → ℂ) → ℝ) (hv : IsDegZeroSmooth v) (L : Fin n → HermLine ι)
@@ -40,23 +40,21 @@ theorem isSmoothHerm_cons_expLine {K : Type*} [Fintype K] {ι : K → Type*} [�
   · simpa using hL j
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P n L u v i δ hP hL hu hv hδ hsupp`. Set `σ` to `(Fintype.equivFin ((k : K) → ι k)).symm`. Set `lam` to `chartLift σ i`. Set `χ : ContDiffBump (0 : Fin (Fintype.card ((k : K) → ι k)) → ℂ)` to `⟨1 / δ + 1, 1 / δ + 2, by positivity, by linarith⟩`. Set `U` to `fun x => χ x * u (lam x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `V` to `fun x => v (lam x)`. Set `Φ : Fin n → _` to `fun j x => pot L j (lam x)`. Establish `hlam : ContDiff ℝ ∞ lam` using `contDiff_chartLift σ i`. Set `Ω` to `lam ⁻¹' {z | ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0}`. Establish `hΩ : IsOpen Ω` using `isOpen_blockNonzero.preimage hlam.continuous`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsm : ∀ f : ((Σ k, ι k) → ℂ) → ℝ, ContDiffOn ℝ ∞ f {z | ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0} → ContDiffOn ℝ ∞ (f ∘ lam) Ω` using `fun f hf => hf.comp hlam.contDiffOn fun _ hx => hx`. Establish `hpot : ∀ j, ContDiffOn ℝ ∞ (pot L j) {z | ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0}` using `fun j => (hL j).log fun z hz => ((L j).pos z hz).ne'`. Establish `key : ∀ x ∈ segreChartSet P σ i, U =ᶠ[𝓝 x] u ∘ lam`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Distinguish the cases in `hr : ‖fun a => segre z (σ a)‖ < 1 / δ + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [Metric.isOpen_ball.mem_nhds (mem_ball_zero_iff.2 hr)] with y hy`. Simplify using `[U, χ.one_of_mem_closedBall (Metric.ball_subset_closedBall hy)]`. Establish `hle : ‖fun a => segre z (σ a)‖ ≤ ‖segre z‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun a => norm_le_pi_norm (segre z) (σ a)`. Establish `hcont : Continuous fun y => segre (lam y)` using `continuous_pi fun i' => continuous_finsetProd _ fun k _ => (continuous_apply (⟨k, i' k⟩ : Σ k, ι k)).comp hlam.continuous`. Establish `hO : IsOpen {y | ‖segre (lam y) i‖ < δ * ‖segre (lam y)‖}` using `isOpen_lt ((continuous_apply i).comp hcont).norm (continuous_const.mul hcont.norm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ‖segre (lam fun a => segre z (σ a)) i‖ < δ * ‖segre (lam fun a => segre z (σ a))‖`. Rewrite using `[segre_chartLift σ i z hzi, hzi, norm_one]`. Establish `h1 : 1 / δ < ‖segre z‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hO.mem_nhds hx] with y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[U, hsupp _ hy]`. Establish `hJ : ∀ J ∈ segreChartComponents P σ i, ComplexSets.zeroSet J ⊆ Ω` using `fun J hJ x hx => chartLift_blockNonzero σ i (chart_coord_eq_one hJ hx)`. Use `⟨Fintype.card ((k : K) → ι k), segreChartComponents P σ i, U, V, Φ, fun J hJs => ⟨(mem_segreChartComponents.1 hJs).1.1, hDim K ι P (n + 1) _ σ i hP J hJs, ⟨Ω, hΩ, hJ J hJs, (χ.contDiff.contDiffOn).mul (hsm u hu.1)⟩, ⟨Ω, hΩ, hJ J hJs, hsm v hv.1⟩, fun j => ⟨Ω, hΩ, hJ J hJs, hsm _ …` and prove the remaining obligations. Rewrite using `[← pot_cons_expLine v hv L]`. Use `hInt K ι P n _ σ i _ u δ U _ hP (isSmoothHerm_cons_expLine v hv L hL) hu hδ (Or.inl hsupp) fun x hx => ⟨key x hx, fun j => EventuallyEq.of_eq ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[V, lam, pot, expLine, HermLine.ofWeight]`. Both sides reduce to the same expression. Rewrite using `[← pot_cons_expLine u hu L]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hInt K ι P n _ σ i _ v δ V _ hP (isSmoothHerm_cons_expLine u hu L hL) hv hδ (Or.inr fun z hz => by rw [pot_cons_expLine u hu L]; exact hsupp z hz) fun x hx => ⟨EventuallyEq.rfl, fun j => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `h0 : pot (Fin.cons (expLine u hu) L : Fin (n + 1) → HermLine ι) 0 = u`. Rewrite using `[pot_cons_expLine u hu L]`. Both sides reduce to the same expression.
-
-Simplify `key x hx` using `[h0]`. Conclude with `EventuallyEq.rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem SegreChart.proof (hDim : SegreChartDim.Statement) (hInt : SegreChartIntegral.Statement) :
     SegreChart.Statement := by

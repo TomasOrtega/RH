@@ -9,11 +9,11 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ X' ξ' f p hN hp`. Establish `e : (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring = regAt ξ p`. Rewrite using `[Subring.map_id]`. Use extensionality with `a`. Conclude with `⟨hp a, fun ha => isIntegral_algebraMap (x := (⟨a, ha⟩ : regAt ξ p))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Establish `loc : IsLocalRing (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring`. Rewrite using `[e]`. Conclude with `NormAt.isLocalRing_regAt p`. Establish `hr : ∀ q : Cpt ξ', f q.1 = p.1 → regAt ξ' q = (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring` using `fun q hq => by`. Take `⟨P, hP, h⟩` from `hN.exists_max q hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.trans (NormAt.ofPrime_of_isLocalRing _ P hP)`. Use `⟨?_, fun q hq => ?_, hN.dom⟩` and prove the remaining obligations. Take `⟨q, hq, hu⟩` from `hN.existsUnique _ (IsLocalRing.maximalIdeal.isMaximal _)`. Conclude with `⟨q, hq.1, fun q' hq' => hu q' ⟨hq', (hr q' hq').trans (NormAt.ofPrime_of_isLocalRing _ _ (IsLocalRing.maximalIdeal.isMaximal _)).symm⟩⟩`. Rewrite using `[hr q hq, e, Subring.map_id]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NormAt.isoAt_of_integrallyClosed : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (X' : Scheme.{0}) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (p : Cpt ξ),

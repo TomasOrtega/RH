@@ -22,7 +22,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 namespace GlobalTheory.WeakRes
 
 /- English proof (translation)
-Take `⟨M, k, hk, rfl⟩` from `hf`. Conclude with `⟨M, g ≫ k, inferInstance, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjOver_comp_closed {R : Type} [CommRing R] {X X' : Scheme.{0}} (g : X' ⟶ X) [IsClosedImmersion g]
     {f : X ⟶ Sp R} (hf : IsProjOver f) : IsProjOver (g ≫ f) := by
@@ -30,9 +30,9 @@ theorem isProjOver_comp_closed {R : Type} [CommRing R] {X X' : Scheme.{0}} (g : 
   exact ⟨M, g ≫ k, inferInstance, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `id => simpa using hf`. Consider the case `@step Y₁ Y₂ s J π _ _ _ hb ih`. Take `⟨X', b, hb', hproj, -⟩` from `ProjBlowup.exists_blowup (s ≫ f) ih J`. Take `⟨e, he, heb⟩` from `ProjBlowup.exists_iso_of_blowup J π b hb hb'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← heb, Category.assoc]`. Conclude with `isProjOver_comp_closed e hproj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProjOver_seq {F : Type} [Field F] {Y Y' : Scheme.{0}} (f : Y ⟶ Sp F) {B : Set Y} {s : Y' ⟶ Y}
     (h : IsSmoothBlowupSeq f B s) (hf : IsProjOver f) : IsProjOver (s ≫ f) := by
@@ -47,21 +47,19 @@ theorem isProjOver_seq {F : Type} [Field F] {Y Y' : Scheme.{0}} (f : Y ⟶ Sp F)
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Introduce `hP F _ _ W _ p n hp hdim`. Take `⟨N, i₀, hi₀, hi₀p⟩` from `hp`. Take `⟨ℓ, hℓ, hℓs, hℓd⟩` from `GlobalTheory.T.exists_linear_closedImmersion_projectiveSpace_codimTwo F N`. Set `i` to `i₀ ≫ ℓ`. Set `f` to `PSpace.str F (N + 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hif : i ≫ f = p` using `by simp [i, f, hℓs, hi₀p]`. Establish `hsmf : SmoothOfRelativeDimension (N + 2) f` using `Adelic.smoothOfRelativeDimension_pspace F _`. Establish `: Smooth f` using `by haveI := hsmf; exact SmoothOfRelativeDimension.smooth (N + 2) f`. Establish `: IsLocallyNoetherian (PSpace F (N + 2))` using `LocallyOfFiniteType.isLocallyNoetherian f`. Take `⟨hne, hnc⟩` from `GlobalTheory.T.ker_ne_bot_and_not_effCartier_of_two_le_dim i (hℓd _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Y', s, -, -, -, hseq, -, hE, -⟩` from `hP F (N + 2) _ f inferInstance hsmf (ProjSpace.isProjOver_pspace_str F _) i.ker hne`. Break down `GlobalTheory.T.isIso_restrict_or_exists_smooth_blowup_centre_over f _ (i (genericPoint W)) s hseq with ⟨U, hU, hiso⟩ | ⟨Y₁, s₁, J, U, y₁, hseq₁, hsm, hJB, hU, hiso, hy₁, hs₁⟩` into its components or cases. Conclude with `(hnc U hU (GlobalTheory.T.effCartier_comap_of_isIso_restrict_open s _ U hiso hE)).elim`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, J.subschemeι z = y₁ := by`. Rewrite using `[← Set.mem_range, Scheme.IdealSheafData.range_subschemeι]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hy₁`. Take `⟨W', j, hjc, hjo, hW', w', rfl⟩` from `GlobalTheory.T.exists_clopen_integral_of_smooth_over_field' F J.subscheme (J.subschemeι ≫ s₁ ≫ f) hsm z`. Establish `hg : ∀ w, (j ≫ J.subschemeι ≫ s₁) w ∈ i.ker.support` using `fun w => hJB (Scheme.IdealSheafData.range_subschemeι J ▸ Set.mem_range_self _)`. Establish `: IsReduced W'` using `inferInstance`. Take `⟨h, hh⟩` from `GlobalTheory.T.exists_lift_of_isReduced_of_mem_ker_support i (j ≫ J.subschemeι ≫ s₁) hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw' : h w' = genericPoint W`. Apply `i.isEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hh]`. Simplify using `[hz, hs₁]`. Take `⟨U', hU'ne, hU'iso⟩` from `GlobalTheory.T.exists_nonempty_isIso_restrict_of_generic_mem i h (j ≫ J.subschemeι) s₁ U hiso (by rw [hh]; simp) hU ⟨w', hw'⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : h ≫ p = j ≫ J.subschemeι ≫ s₁ ≫ f` using `by rw [← hif, reassoc_of% hh]`. Establish `: Smooth (j ≫ J.subschemeι ≫ s₁ ≫ f)`. Use `hsm` as an intermediate fact. Use `infer_instance`. Establish `hpft : LocallyOfFiniteType p` using `by rw [← hif]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `GlobalTheory.T.topologicalKrullDim_eq_of_isIso_restrict' F W W' p (h ≫ p) h hpft (by rw [hq]; infer_instance) rfl U' hU'ne hU'iso`. Use `⟨W', h, U', hW', ?_, ?_, hU'ne, hU'iso⟩` and prove the remaining obligations. Rewrite using `[hq]`. Conclude with `GlobalTheory.T.smoothOfRelativeDimension_of_integral_krullDim_eq F W' _ n inferInstance (hd.trans hdim)`. Rewrite using `[hq, ← Category.assoc]`.
-
-Conclude with `isProjOver_comp_closed _ (isProjOver_seq f hseq₁ (ProjSpace.isProjOver_pspace_str F _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weak_resolution : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] [CharZero F] (W : Scheme.{0}) [IsIntegral W]
     (p : W ⟶ Sp F) (n : ℕ), IsProjOver p → topologicalKrullDim W = n →

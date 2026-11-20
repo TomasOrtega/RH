@@ -13,9 +13,9 @@ open scoped Classical
 namespace UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Establish `h : ∀ z : TensorProduct F E A, Algebra.TensorProduct.map ((a * b : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F A) z = Algebra.TensorProduct.map (a : E →ₐ[F] E) (AlgHom.id F A) (Algebra.TensorProduct.map (b : E →ₐ[F] E) (AlgHom.id F A) z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x c => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x c hx hc => simp only [map_add, hx, hc]`. Simplify using `[PositivityTheory.Rg.Tf.Geo.galOf, h]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private lemma galOf_mul' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] (e : TensorProduct F E A ≃ₐ[E] B)
@@ -33,9 +33,9 @@ private lemma galOf_mul' {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   simp [PositivityTheory.Rg.Tf.Geo.galOf, h]
 
 /- English proof (translation)
-Establish `h : ∀ z : TensorProduct F E A, Algebra.TensorProduct.map ((1 : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F A) z = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x c => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x c hx hc => simp only [map_add, hx, hc]`. Simplify using `[PositivityTheory.Rg.Tf.Geo.galOf, h]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private lemma galOf_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] (e : TensorProduct F E A ≃ₐ[E] B)
@@ -50,58 +50,50 @@ private lemma galOf_one' {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   simp [PositivityTheory.Rg.Tf.Geo.galOf, h]
 
 /- English proof (translation)
-The claim follows from `galOf_mul' _ a b y`.
+A detailed English derivation is pending.
 -/
 private lemma galFin_mul' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (a b : E ≃ₐ[F] E) (v : Pl F) (y : CompletionsOver E v) :
     galFin (a * b) v y = galFin a v (galFin b v y) := galOf_mul' _ a b y
 
 /- English proof (translation)
-The claim follows from `galOf_one' _ y`.
+A detailed English derivation is pending.
 -/
 private lemma galFin_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : Pl F) (y : CompletionsOver E v) : galFin (1 : E ≃ₐ[F] E) v y = y := galOf_one' _ y
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hp v w hw`. Establish `hs` using `sum_finrank_eq E v`. Rewrite `hs` using `[Fintype.sum_eq_single w (fun w' h => (h (hw w')).elim)]`. Introduce `alg hcomp`. Establish `hdeg : Module.finrank (HeightOneSpectrum.adicCompletion F v) (HeightOneSpectrum.adicCompletion E w.1) = Module.finrank F E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hs using 2` and compare the differences between its conclusion and the goal. Use `congr 1`. Use `first`. Consider the case `exact Algebra.algebra_ext _ _ (fun x => (hcomp x).symm)`. Consider the case `exact Algebra.algebra_ext _ _ (fun x => hcomp x)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hp2` using `hp.two_le`. Use `haveI : FiniteDimensional (HeightOneSpectrum.adicCompletion F v) (HeightOneSpectrum.adicCompletion E w.1) := Module.finite_of_finrank_pos (by omega)`. Set `ψ : CompletionsOver E v ≃+* HeightOneSpectrum.adicCompletion E w.1` to `RingEquiv.ofBijective (Pi.evalRingHom (fun w' : PlacesOver E v => HeightOneSpectrum.adicCompletion E w'.1) w) ⟨fun y₁ y₂ h => funext fun w' => by`. Take `rfl` from `hw w'`. Conclude with `h,`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fun z => ⟨fun w' => by`. Rewrite using `[hw w']`. Conclude with `z, rfl⟩⟩`. Establish `hx : ∀ (σ : Gal(E/F)) (x : E), galFin σ v (algebraMap E (CompletionsOver E v) x) = algebraMap E (CompletionsOver E v) (σ x)`. Introduce `σ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ z : E, algebraMap E (CompletionsOver E v) z = tensorEquiv' E v (z ⊗ₜ[F] (1 : HeightOneSpectrum.adicCompletion F v))`. Introduce `z`. Rewrite using `[tensorEquiv'_tmul, map_one, mul_one]`. Rewrite using `[e1, e1]`. Use `show tensorEquiv' E v (Algebra.TensorProduct.map ((σ : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F _) ((tensorEquiv' E v).symm (tensorEquiv' E v (x ⊗ₜ[F] (1 : HeightOneSpectrum.adicCompletion F v))))) = _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.symm_apply_apply, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Establish `halg : ∀ (σ : Gal(E/F)) (r : HeightOneSpectrum.adicCompletion F v), galFin σ v (algebraMap _ (CompletionsOver E v) r) = algebraMap _ (CompletionsOver E v) r`. Introduce `σ r`. Establish `e1 : algebraMap _ (CompletionsOver E v) r = tensorEquiv' E v ((1 : E) ⊗ₜ[F] r)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tensorEquiv'_tmul, map_one, one_mul]`. Rewrite using `[e1]`. Use `show tensorEquiv' E v (Algebra.TensorProduct.map ((σ : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F _) ((tensorEquiv' E v).symm (tensorEquiv' E v ((1 : E) ⊗ₜ[F] r)))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply, Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hψalg : ∀ r : HeightOneSpectrum.adicCompletion F v, ψ.symm (algebraMap _ (HeightOneSpectrum.adicCompletion E w.1) r) = algebraMap _ (CompletionsOver E v) r`. Introduce `r`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `(hcomp r).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : Gal(E/F) →* Gal(HeightOneSpectrum.adicCompletion E w.1/HeightOneSpectrum.adicCompletion F v)` to `{ toFun := fun σ => { toFun := fun z => ψ (galFin σ v (ψ.symm z)) invFun := fun z => ψ (galFin σ⁻¹ v (ψ.symm z)) left_inv := fun z => by show ψ (galFin σ⁻¹ v (ψ.symm (ψ (galFin σ v (ψ.symm z))))) = z`. Rewrite using `[RingEquiv.symm_apply_apply, ← galFin_mul', inv_mul_cancel, galFin_one', RingEquiv.apply_symm_apply]`. Use `right_inv := fun z => by show ψ (galFin σ v (ψ.symm (ψ (galFin σ⁻¹ v (ψ.symm z))))) = z`. Rewrite using `[RingEquiv.symm_apply_apply, ← galFin_mul', mul_inv_cancel, galFin_one', RingEquiv.apply_symm_apply]`. Use the proof step `map_mul' := fun a b => by simp only [map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun a b => by simp only [map_add]`. Use the proof step `commutes' := fun r => by show ψ (galFin σ v (ψ.symm (algebraMap _ _ r))) = _`. Rewrite using `[hψalg, halg]`. Conclude with `hcomp r }`. Use the proof step `map_one' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `z`. Use `show ψ (galFin 1 v (ψ.symm z)) = z`. Rewrite using `[galFin_one', RingEquiv.apply_symm_apply]`. Use the proof step `map_mul' := by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `z`. Use `show ψ (galFin (a * b) v (ψ.symm z)) = ψ (galFin a v (ψ.symm (ψ (galFin b v (ψ.symm z)))))`. Rewrite using `[RingEquiv.symm_apply_apply, galFin_mul'] }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `haveI : Nontrivial (CompletionsOver E v) := ψ.toEquiv.nontrivial`. Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h1 : φ σ (ψ (algebraMap E (CompletionsOver E v) x)) = ψ (algebraMap E (CompletionsOver E v) x)`. Rewrite using `[hσ]`. Both sides reduce to the same expression. Establish `h2 : φ σ (ψ (algebraMap E (CompletionsOver E v) x)) = ψ (algebraMap E (CompletionsOver E v) (σ x))` using `by show ψ (galFin σ v (ψ.symm (ψ _))) = _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[RingEquiv.symm_apply_apply, hx]`. Conclude with `(algebraMap E (CompletionsOver E v)).injective (ψ.injective (h2.symm.trans h1))`. Establish `hbij : Function.Bijective φ`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨hinj, le_antisymm (Fintype.card_le_of_injective _ hinj) ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `c1` using `AlgEquiv.card_le (F := HeightOneSpectrum.adicCompletion F v) (K := HeightOneSpectrum.adicCompletion E w.1)`. Establish `c2` using `IsGalois.card_aut_eq_finrank F E`. Simplify using `only [Fintype.card_eq_nat_card] at c1 c2 ⊢`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, hdeg, ?_⟩` and prove the remaining obligations.
-
-Introduce `hsplit`. Establish `h1 : Module.finrank (HeightOneSpectrum.adicCompletion F v) (HeightOneSpectrum.adicCompletion E w.1) = 1`. Rewrite using `[finrank_eq_one_iff_of_nonzero' (1 : HeightOneSpectrum.adicCompletion E w.1) one_ne_zero]`. Introduce `z`. Take `⟨c, hc⟩` from `hsplit w z`.
-
-Conclude with `⟨c, by rw [Algebra.smul_def, mul_one, ← hcomp, hc]⟩`. Use linear arithmetic over natural numbers and integers. Introduce `s hs`. Take `⟨σ, hσ⟩` from `hbij.2 s`. Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `τ`. Take `⟨n, hn⟩` from `Subgroup.mem_zpowers_iff.1 (hs (φ τ))`. Use `Subgroup.mem_zpowers_iff.2 ⟨n, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow, hσ, hn]`. Introduce `y`.
-
-Rewrite using `[← hσ]`. Use `show _ = ψ (galFin σ v (ψ.symm (ψ y)))`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem globOf : GlobOf := by
   intro F E _ _ _ _ _ _ hp v w hw

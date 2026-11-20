@@ -5,7 +5,7 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open NumberField MeasureTheory
 
 /- English proof (translation)
-The claim follows from `zeroMode_mem_sections hI hP hs`.
+A detailed English derivation is pending.
 -/
 theorem zm_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF}
     {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I) (hP : Ext.PackingCount)
@@ -14,7 +14,7 @@ theorem zm_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {X : PT E} {DF
   zeroMode_mem_sections hI hP hs
 
 /- English proof (translation)
-The claim follows from `zeroMode_pointwise_bound hI hP hs w T M hT hM`.
+A detailed English derivation is pending.
 -/
 theorem zm_pt {E : Type} [Field E] [NumberField E] [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF}
     {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I) (hP : Ext.PackingCount)

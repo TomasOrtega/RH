@@ -20,7 +20,7 @@ def ChartEnergySymm.Statement : Prop :=
           maDensity (fun j => hermChartPot (Function.update T p B j)) y)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one, Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, fun _ => Matrix.PosDef.one⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
     (1 : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
@@ -30,7 +30,7 @@ example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) 
     Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, fun _ => Matrix.PosDef.one⟩
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Apply the tactic sequence `exact Matrix.posDef_diagonal_iff.mpr fun i => by fin_cases i <;> norm_num`. Apply the tactic sequence `exact Matrix.posDef_diagonal_iff.mpr fun i => by fin_cases i <;> norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example : ∀ j : Fin 2, ((![Matrix.diagonal ![(4 : ℂ), 1, 1], Matrix.diagonal ![(1 : ℂ), 1, 9]] :
     Fin 2 → Matrix (Fin (2 + 1)) (Fin (2 + 1)) ℂ) j).PosDef := by

@@ -21,9 +21,9 @@ variable {S S' : Scheme.{0}} (f : S' ⟶ S) (E : SplitExt S)
 def jj (j : (pullExt f E).ChartIdx) : E.ChartIdx := fun k => j k PUnit.unit
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy' : y ∈ ((⨅ k, ((pullExt f E).O ((pullExt f E).basis k)).L.U (j k) : (pullExt f E).B.left.Opens) : Set _)` using `hy`. Rewrite `hy'` using `[TopologicalSpace.Opens.coe_iInf, Set.mem_iInter]`. Use `show (pullback.fst E.B.hom f).base y ∈ ((⨅ k, (E.O (E.basis k)).L.U (jj f E j k) : E.B.left.Opens) : Set _)`. Rewrite using `[TopologicalSpace.Opens.coe_iInf, Set.mem_iInter]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Conclude with `Set.mem_iInter.1 (hy' k) PUnit.unit`.
+A detailed English derivation is pending.
 -/
 lemma chart_le (j : (pullExt f E).ChartIdx) :
     (pullExt f E).chart j ≤ pullback.fst E.B.hom f ⁻¹ᵁ E.chart (jj f E j) := by
@@ -39,7 +39,7 @@ lemma chart_le (j : (pullExt f E).ChartIdx) :
 variable {G : Over S} [GrpObj G] (d : E.GtDatum G)
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1` using `chart_le f E j hy`. Establish `e₁` using `congrArg (fun g => g y) (qB_h f d.q)`. Simplify using `only [Scheme.Hom.comp_apply] at e₁`. Conclude with `(congrArg (· ∈ E.chart (jj f E j)) e₁).mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pre_le (j : (pullExt f E).ChartIdx) :
     (qB f d.q).left ⁻¹ᵁ (pullExt f E).chart j ≤

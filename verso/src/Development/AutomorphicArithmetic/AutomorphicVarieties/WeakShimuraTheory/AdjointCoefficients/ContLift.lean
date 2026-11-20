@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul (maximalIdeal R) (I : Submodule R R)`. Use `⟨k + 1, fun x hxI hxm => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ (maximalIdeal R ^ (k + 1) • ⊤ ⊓ (I : Submodule R R))` using `⟨by simpa [smul_eq_mul] using hxm, hxI⟩`. Rewrite `hx` using `[hk (k + 1) (by omega), Nat.add_sub_cancel_left, pow_one]`. Establish `hmem : x ∈ maximalIdeal R • (I : Submodule R R)` using `Submodule.smul_mono le_rfl inf_le_right hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[smul_eq_mul, h]`. Simplify using `using hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem inf_pow_bot (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R)
     (h : maximalIdeal R * I = ⊥) : ∃ N : ℕ, ∀ x ∈ I, x ∈ maximalIdeal R ^ N → x = 0 := by
@@ -19,33 +19,29 @@ private theorem inf_pow_bot (R : Type) [CommRing R] [IsLocalRing R] [IsNoetheria
   simpa using hmem
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ A R _ _ _ _ _ _ p hp hK`. Use `haveI : IsNoetherianRing A := IsCO.toIsNoetherian Λ`. Take `⟨N0, hN0⟩` from `inf_pow_bot A (RingHom.ker p) hK`. Establish `hm : ∀ a : A, a ∈ maximalIdeal A ↔ p a ∈ maximalIdeal R`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← res_eq_zero_iff Λ A, ← res_eq_zero_iff Λ R, res_map]`. Establish `hmap1 : Ideal.map p (maximalIdeal A) = maximalIdeal R`. Use extensionality with `r`. Rewrite using `[Ideal.mem_map_iff_of_surjective p hp]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `(hm a).mp ha`. Introduce `hr`. Take `⟨a, rfl⟩` from `hp r`. Conclude with `⟨a, (hm a).mpr hr, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmap : ∀ n, ∀ r ∈ maximalIdeal R ^ n, ∃ z ∈ maximalIdeal A ^ n, p z = r`. Introduce `n r hr`. Rewrite `hr` using `[← hmap1, ← Ideal.map_pow, Ideal.mem_map_iff_of_surjective p hp]`. Conclude with `hr`. Use `choose ρ hρ using fun c : R ⧸ maximalIdeal R ^ N0 => Ideal.Quotient.mk_surjective c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `choose l hl using fun c : R ⧸ maximalIdeal R ^ N0 => hp (ρ c)`. Establish `hu : ∀ r : R, ∃ z ∈ maximalIdeal A ^ N0, p z = r - ρ (Ideal.Quotient.mk _ r)`. Introduce `r`. Apply `hmap` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq, hρ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `choose u hu1 hu2 using hu`. Set `σ : R → A` to `fun r => l (Ideal.Quotient.mk _ r) + u r`. Establish `hpσ : ∀ r, p (σ r) = r`. Introduce `r`. Simplify using `only [σ, map_add, hl, hu2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ M, N0 ≤ M → ∀ r r' : R, r - r' ∈ maximalIdeal R ^ M → σ r - σ r' ∈ maximalIdeal A ^ M`. Introduce `M hM r r' h`. Establish `hq : (Ideal.Quotient.mk (maximalIdeal R ^ N0) r) = Ideal.Quotient.mk _ r'` using `Ideal.Quotient.eq.mpr (Ideal.pow_le_pow_right hM h)`. Take `⟨z, hz, hpz⟩` from `hmap M _ h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hzero : z - (u r - u r') = 0`. Apply `hN0` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker]`. Simplify using `only [map_sub]`. Rewrite using `[hpz, hu2, hu2, hq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_mem (Ideal.pow_le_pow_right hM hz) (sub_mem (hu1 r) (hu1 r'))`. Establish `hz' : u r - u r' = z` using `(sub_eq_zero.mp hzero).symm`. Simplify using `only [σ]`. Rewrite using `[hq, add_sub_add_left_eq_sub, hz']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `S _ x hx`. Use `⟨fun s => σ (x s), ?_, fun s => hpσ _⟩` and prove the remaining obligations. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc` using `hx (max n N0)`. Rewrite `hc`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `s`. Use `filter_upwards [hc s] with s' hs'`. Establish `h1` using `Ideal.Quotient.eq.mp hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hL (max n N0) (le_max_right _ _) _ _ h1`. Conclude with `Ideal.Quotient.eq.mpr (Ideal.pow_le_pow_right (le_max_left _ _) h2)`. Introduce `S _ y hy h0`. Establish `hc` using `hy N0`. Rewrite `hc`, the goal using `[IsLocallyConstant.iff_eventually_eq]`.
-
-Introduce `s`. Use `filter_upwards [hc s] with s' hs'`. Establish `h1` using `Ideal.Quotient.eq.mp hs'`. Establish `h2 : y s' - y s = 0`. Apply `hN0 _ _ h1` to reduce the goal to its premises.
-
-Rewrite using `[RingHom.mem_ker, map_sub, h0, h0, sub_zero]`. Conclude with `sub_eq_zero.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.X1.contLift :
     ∀ {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {A R : Type} [CommRing A] [Algebra Λ A] [IsCO Λ A] [CommRing R] [Algebra Λ R] [IsCO Λ R] (p : A →ₐ[Λ] R), Function.Surjective p → maximalIdeal A * RingHom.ker p = ⊥ → (∀ (S : Type) [TopologicalSpace S] (x : S → R), AdicCont (maximalIdeal R) x → ∃ y : S → A, AdicCont (maximalIdeal A) y ∧ ∀ s, p (y s) = x s) ∧ ∀ (S : Type) [TopologicalSpace S] (y : S → A), AdicCont (maximalIdeal A) y → (∀ s, p (y s) = 0) → IsLocallyConstant y := by

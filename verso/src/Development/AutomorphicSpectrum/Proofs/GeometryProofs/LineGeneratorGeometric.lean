@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.ConstRatio
 
 /- English proof (translation)
-Establish `: t • e ∈ Submodule.span (regAt ξ x) {s • e}` using `hst ▸ Submodule.mem_span_singleton_self _`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.mp this`. Establish `hr' : ((r : Ω) * s) • e = t • e` using `by rw [mul_smul]; exact hr`. Use `smul_left_injective Ω he hr'` as an intermediate fact. Rewrite using `[← this, mul_div_cancel_right₀ _ hs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `r.2`.
+A detailed English derivation is pending.
 -/
 theorem ratio_mem {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {x : Cpt ξ}
     {W : Type} [AddCommGroup W] [Module Ω W] {e : W} {s t : Ω} (he : e ≠ 0) (hs : s ≠ 0)
@@ -32,7 +32,7 @@ theorem ratio_mem {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCa
   rw [← this, mul_div_cancel_right₀ _ hs]; exact r.2
 
 /- English proof (translation)
-Establish `: α' • a' ∈ Submodule.span (regAt ξ x) {α • a}` using `h ▸ Submodule.mem_span_singleton_self _`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.mp this`. Establish `hr' : ((r : Ω) * α) • a = α' • a'` using `by rw [mul_smul]; exact hr`. Use `⟨α'⁻¹ * ((r : Ω) * α), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hr', smul_smul, inv_mul_cancel₀ hα', one_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_eq {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {x : Cpt ξ}
     {W : Type} [AddCommGroup W] [Module Ω W] {a a' : W} {α α' : Ω} (hα' : α' ≠ 0)
@@ -44,11 +44,11 @@ theorem exists_smul_eq {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommR
   rw [mul_smul, hr', smul_smul, inv_mul_cancel₀ hα', one_smul]
 
 /- English proof (translation)
-Take `⟨α, β, hα, -, hA, hB, e⟩` from `h`. Take `⟨α', β', hα', -, hA', hB', e'⟩` from `h'`. Rewrite `e`, `e'` using `[_root_.one_mul]`. Substitute `e e'` using the available equality. Rewrite `hA'`, `hB'` using `[smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k1` using `ratio_mem ha hα (hA.symm.trans hA')`. Establish `k2` using `ratio_mem ha (mul_ne_zero hα' hs) (hA'.symm.trans hA)`. Establish `k3` using `ratio_mem hb hα (hB.symm.trans hB')`. Establish `k4` using `ratio_mem hb (mul_ne_zero hα' ht) (hB'.symm.trans hB)`. Use `⟨div_ne_zero hs ht, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem k1 k4` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Use `mul_mem k2 k3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -72,13 +72,11 @@ theorem unit_of_coeff {X : Scheme.{0}} {Ω V : Type} [Field Ω] [AddCommGroup V]
     convert this using 1; field_simp
 
 /- English proof (translation)
-Take `⟨ha, hb, h⟩` from `h`. Take `⟨ha', hb', h'⟩` from `h'`. Take `⟨x₀, hx₀⟩` from `hT`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : Ω, a' = s • a := by`. Take `⟨α, β, -, -, hA, -, -⟩` from `h x₀ hx₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α', β', hα', -, hA', -, -⟩` from `h' x₀ hx₀`. Conclude with `exists_smul_eq hα' (hA.symm.trans hA')`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Ω, b' = t • b := by`. Take `⟨α, β, -, -, -, hB, -⟩` from `h x₀ hx₀`. Take `⟨α', β', -, hβ', -, hB', -⟩` from `h' x₀ hx₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `exists_smul_eq hβ' (hB.symm.trans hB')`. Establish `hs0 : s ≠ 0` using `by rintro rfl; exact ha' (by rw [hs, zero_smul])`. Establish `ht0 : t ≠ 0` using `by rintro rfl; exact hb' (by rw [ht, zero_smul])`. Use `⟨s, t, hs0, ht0, hs, ht, fun x hx => ?_⟩` and prove the remaining obligations. Use `h' x hx` as an intermediate fact.
-
-Rewrite `this` using `[hs, ht]`. Conclude with `unit_of_coeff ha hb hs0 ht0 (h x hx) this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factors {X : Scheme.{0}} {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {A B : Lat ξ V} {p q : ℕ} {a a' : ⋀[Ω]^p V} {b b' : ⋀[Ω]^q V}
@@ -103,7 +101,7 @@ theorem exists_factors {X : Scheme.{0}} {Ω V : Type} [Field Ω] [AddCommGroup V
   exact unit_of_coeff ha hb hs0 ht0 (h x hx) this
 
 /- English proof (translation)
-Take `⟨m, i, hi, rfl⟩` from `h`. Use `isProper_str R m` as an intermediate fact. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_proj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsProjOver f) :
     IsProper f := by
@@ -112,27 +110,25 @@ theorem isProper_of_proj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp 
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U Z τ a a' b b' ⟨hβ, hN, hfrac⟩ hG h h'`. Use `haveI : IsDomain O := hβ.isDomain β`. Use `letI : Algebra O Z.Ω := (Z.inc.comp β).toAlgebra`. Establish `halg : ∀ o : O, algebraMap O Z.Ω o = Z.inc (β o)` using `fun _ => rfl`. Establish `hover : (Z.ξ₀ ≫ Y.j) ≫ Y.s = Spec.map (CommRingCat.ofHom (algebraMap O Z.Ω))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Z.ξ₀ ≫ Y.j) ≫ Y.s = spMap Z.inc ≫ spMap β`. Rewrite using `[Model.j, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, Z.over_inc]`. Rewrite using `[e, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (algebraMap O Z.Ω)` using `Z.inc.injective.comp hβ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ConstClosed O Z.Ω`. Introduce and unpack `w ⟨f, hf0, hf⟩`. Take `⟨x, rfl⟩` from `hG w ⟨f.map β, (Polynomial.map_ne_zero_iff hβ).2 hf0, by`. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hf⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, v, hv, e⟩` from `hfrac x`. Use `⟨u, v, fun h0 => hv (by rw [h0, map_zero]), ?_⟩` and prove the remaining obligations. Rewrite using `[halg, halg, ← map_mul, e]`. Establish `hsub : genFibre O (Z.ξ₀ ≫ Y.j) ⊆ Z.genFib`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbot : (Y.s p.1).asIdeal = ⊥`. Use `(Submodule.eq_bot_iff _).2 fun o ho => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `((ConstReg.regular_const _ _ _ O Y.s hover p o).2 Z.gen).1 (hp o h0) ho`. Take `⟨w⟩ : Nonempty (Sp c.F)` from `inferInstance`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Y.s p.1 = spMap β w`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Rewrite using `[hbot]`. Use `((Submodule.eq_bot_iff _).2 fun o ho => ?_).symm` and prove the remaining obligations. Establish `h1 : β o ∈ w.asIdeal` using `ho`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h0`. Establish `h2 : β o ≠ 0` using `fun e0 => h0 (hβ (by rw [e0, map_zero]))`. Conclude with `w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (isUnit_iff_ne_zero.2 h2))`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback _ _ e`. Conclude with `⟨z, hz⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hne : Z.genFib.Nonempty` using `⟨⟨genPt (Z.ξ₀ ≫ Y.j), specializes_rfl⟩, ⟨Y.jQ (genPt Z.ξ₀), rfl⟩⟩`. Take `⟨s, t, hs, ht, rfl, rfl, hu⟩` from `exists_factors hne h h'`. Use `haveI : IsProper Y.s := isProper_of_proj Y.proj`. Set `L : Lat (Z.ξ₀ ≫ Y.j) Z.Ω` to `fun p => Submodule.span (regAt (Z.ξ₀ ≫ Y.j) p) {1}`. Take `⟨x', y', hy', e⟩` from `(GlobalTheory.T.line_lattice_generic_sections Y.X Z.Ω (Z.ξ₀ ≫ Y.j) O Y.s hover hinj Z.gen hcc L 1 (fun p _ => ⟨one_ne_zero, rfl⟩) (s / t)).1 (fun p hp => Submodule.mem_span_singleton.2 ⟨⟨s / t, (hu p (hsub hp)).2.1⟩, by show (s / t) * 1 = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.mul_one]⟩)`. Establish `hy : β y' ≠ 0` using `fun h0 => hy' (hβ (by rw [h0, map_zero]))`. Rewrite `e` using `[_root_.mul_one, halg, halg]`. Establish `hx' : β x' ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `e` using `[h0, map_zero]`. Conclude with `(mul_ne_zero (div_ne_zero hs ht) (by simpa using hy)) e`. Use `⟨β x' / β y', s, t, div_ne_zero hx' hy, ht, ?_, rfl, rfl⟩` and prove the remaining obligations. Establish `hyΩ : Z.inc (β y') ≠ 0` using `by simpa using hy`. Rewrite using `[map_div₀, ← e]`.
-
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem const_ratio : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (a a' : ⋀[Z.Ω]^D.p Z.V) (b b' : ⋀[Z.Ω]^D.q Z.V), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → Z.IsGeom → IsLineGenOn (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q a b Z.genFib → IsLineGenOn (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q a' b' Z.genFib → ∃ (x : c.F) (s t : Z.Ω), x ≠ 0 ∧ t ≠ 0 ∧ s = Z.inc x * t ∧ a' = s • a ∧ b' = t • b := by
   intro E _ _ _ H D l Xo c O _ β Y U Z τ a a' b b' ⟨hβ, hN, hfrac⟩ hG h h'

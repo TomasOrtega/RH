@@ -12,11 +12,11 @@ namespace GlobalTheory.CompanionTheory.CuspNbhd
 open GlobalTheory.AdelicU
 
 /- English proof (translation)
-Introduce `D V U hU N hN`. Establish `hr : Continuous fun g : GA D V => ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram g)` using `(continuous_ofInf _ _).comp (continuous_projInf _ _)`. Establish `hk : Continuous fun g : GA D V => ofFin D.sp.cm.sig V.gram (projFin D.sp.cm.sig V.gram g)` using `(continuous_ofFin _ _).comp (continuous_projFin _ _)`. Establish `h1 : ∀ᶠ g : GA D V in 𝓝 1, ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram g) ∈ N`. Use `hr.continuousAt (x := (1 : GA D V))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ContinuousAt, map_one] at this`. Conclude with `this hN`. Establish `h2 : ∀ᶠ g : GA D V in 𝓝 1, ofFin D.sp.cm.sig V.gram (projFin D.sp.cm.sig V.gram g) ∈ U`. Use `hk.continuousAt (x := (1 : GA D V))` as an intermediate fact. Simplify using `only [ContinuousAt, map_one] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `this (hU.mem_nhds U.one_mem)`. Use `filter_upwards [h1, h2] with g hg1 hg2`. Conclude with `⟨_, _, mem_infPts.2 (by simp), hg1, hg2, mem_finPts.2 (by simp), (ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig V.gram g).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem real_mul_level_mem_nhds : ∀ (D : D7) (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ N ∈ 𝓝 (1 : GA D V), {g : GA D V | ∃ r k : GA D V, r ∈ GinfC V ∧ r ∈ N ∧ k ∈ U ∧ k ∈ GfC V ∧ g = r * k} ∈ 𝓝 (1 : GA D V) := by
   intro D V U hU N hN

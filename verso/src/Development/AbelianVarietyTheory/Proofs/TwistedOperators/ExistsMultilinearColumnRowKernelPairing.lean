@@ -17,7 +17,7 @@ section General
 variable {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, h => by show k n ∘ₗ chainTo k n = k' n ∘ₗ chainTo k' n rw [h n (Nat.lt_succ_self n), chainTo_congr n fun j hj => h j (Nat.lt_succ_of_lt hj)]`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_congr {k k' : ∀ j, V j →ₗ[ℂ] V (j + 1)} : ∀ n, (∀ j < n, k j = k' j) → chainTo k n = chainTo k' n
   | 0, _ => rfl
@@ -26,13 +26,13 @@ theorem chainTo_congr {k k' : ∀ j, V j →ₗ[ℂ] V (j + 1)} : ∀ n, (∀ j 
     rw [h n (Nat.lt_succ_self n), chainTo_congr n fun j hj => h j (Nat.lt_succ_of_lt hj)]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `A _ _ k`. Conclude with `⟨MultilinearMap.constOfIsEmpty ℂ A LinearMap.id, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `A _ _ k`. Take `⟨M, hM⟩` from `ih (fun j => A j.castSucc) (fun j => k j.castSucc)`. Set `kl : A (Fin.last m) →ₗ[ℂ] (V m →ₗ[ℂ] V (m + 1))` to `k (Fin.last m)`. Use `⟨MultilinearMap.uncurryRight (((LinearMap.llcomp ℂ (V 0) (V m) (V (m + 1)) ∘ₗ kl).flip).compMultilinearMap M), fun fs => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show kl (fs (Fin.last m)) ∘ₗ M (Fin.init fs) = _ ∘ₗ chainTo _ m`. Rewrite using `[hM]`. Use `beta_reduce`. Rewrite using `[dif_pos (Nat.lt_succ_self m)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `chainTo_congr m fun j hj => ?_` and prove the remaining obligations. Rewrite using `[dif_pos hj, dif_pos (Nat.lt_succ_of_lt hj)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chain_multilinear : ∀ (m : ℕ) (A : Fin m → Type) [∀ j, AddCommGroup (A j)] [∀ j, Module ℂ (A j)]
     (k : ∀ j : Fin m, A j →ₗ[ℂ] (V j →ₗ[ℂ] V (j + 1))),
@@ -59,7 +59,7 @@ theorem chain_multilinear : ∀ (m : ℕ) (A : Fin m → Type) [∀ j, AddCommGr
     rfl
 
 /- English proof (translation)
-Set `L : X →ₗ[ℂ] MultilinearMap ℂ B ℂ` to `{ toFun := fun x => (β x).compMultilinearMap Mb map_add' := fun x x' => by ext b; simp map_smul' := fun c x => by ext b; simp }`. Conclude with `⟨L.compMultilinearMap Ma, fun _ _ => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem pair_multilinear {ι κ X Y : Type} {A : ι → Type} {B : κ → Type} [∀ j, AddCommGroup (A j)] [∀ j, Module ℂ (A j)]
     [∀ j, AddCommGroup (B j)] [∀ j, Module ℂ (B j)] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
@@ -72,7 +72,7 @@ theorem pair_multilinear {ι κ X Y : Type} {A : ι → Type} {B : κ → Type} 
   exact ⟨L.compMultilinearMap Ma, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨Ma, ha⟩` from `hc`. Take `⟨Mb, hb⟩` from `hr`. Take `⟨M, hM⟩` from `pair_multilinear β Ma Mb`. Conclude with `⟨M, fun a b => by rw [hM, ha, hb, LinearMap.compl₁₂_apply]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem compl_multilinear {ι κ X Y P Q : Type} {A : ι → Type} {B : κ → Type} [∀ j, AddCommGroup (A j)] [∀ j, Module ℂ (A j)]
     [∀ j, AddCommGroup (B j)] [∀ j, Module ℂ (B j)] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
@@ -92,7 +92,7 @@ section Jet
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Use `(MvPolynomial.basisMonomials _ ℂ).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.Ker.jetLin, LinearMap.add_apply, Module.Basis.constr_basis, Pi.add_apply, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetLin_add (J J' : (Formalism.L2.Ker.DVar ι a b →₀ ℕ) → ℂ) :
     Formalism.L2.Ker.jetLin (J + J') = Formalism.L2.Ker.jetLin J + Formalism.L2.Ker.jetLin J' := by
@@ -100,7 +100,7 @@ theorem jetLin_add (J J' : (Formalism.L2.Ker.DVar ι a b →₀ ℕ) → ℂ) :
   simp only [Formalism.L2.Ker.jetLin, LinearMap.add_apply, Module.Basis.constr_basis, Pi.add_apply, map_add]
 
 /- English proof (translation)
-Use `(MvPolynomial.basisMonomials _ ℂ).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.Ker.jetLin, LinearMap.smul_apply, Module.Basis.constr_basis, Pi.smul_apply, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetLin_smul (c : ℂ) (J : (Formalism.L2.Ker.DVar ι a b →₀ ℕ) → ℂ) :
     Formalism.L2.Ker.jetLin (c • J) = c • Formalism.L2.Ker.jetLin J := by
@@ -112,7 +112,7 @@ end Jet
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [jetTab, kerFin, fockIn, GridData.Weil.ker, thetaKO, Pi.add_apply]`. Rewrite using `[GlobalTheory.SpecFac.pureTensorO_add W.ψ_std W.θ_is _ _ _ _ hf hf', map_add, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetTab_add (W : G.Weil) (B : VertexFrames G) (p : Pair T) {f f' : WO (G.pS p) (G.pT p) → ℂ}
     (hf : IsThetaFunO W.ψ _ _ f) (hf' : IsThetaFunO W.ψ _ _ f') (x : FinPt G p.small) (y : FinPt G p.big) :
@@ -122,7 +122,7 @@ theorem jetTab_add (W : G.Weil) (B : VertexFrames G) (p : Pair T) {f f' : WO (G.
   rw [GlobalTheory.SpecFac.pureTensorO_add W.ψ_std W.θ_is _ _ _ _ hf hf', map_add, Pi.add_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [jetTab, kerFin, fockIn, GridData.Weil.ker, thetaKO, Pi.smul_apply]`. Rewrite using `[GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetTab_smul (W : G.Weil) (B : VertexFrames G) (p : Pair T) (c : ℂ) (f : WO (G.pS p) (G.pT p) → ℂ)
     (x : FinPt G p.small) (y : FinPt G p.big) :
@@ -149,9 +149,7 @@ def fockLin (W : G.Weil) (B : VertexFrames G) (p : Pair T) (x : FinPt G p.small)
 variable {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Take `⟨Mc, hc⟩` from `chain_multilinear (V := fun j => VV ℂ (wt G (.top j))) D.R.m (fun j : Fin D.R.m => thSub W (.top t j)) (fun j => S.Z.scal 1 (.top t j) • fockLin W S.N.frC (.top t j) (x j * S.N.u _) (x (j + 1) * S.N.u _))`. Use `⟨(LinearMap.applyₗ (R := ℂ) (rhoVr (tauE D) _ (S.N.fr (.top 0))⁻¹ Ψ₀)).compMultilinearMap Mc, fun fs => ?_⟩` and prove the remaining obligations. Use `show Mc fs _ = _`. Rewrite using `[hc]`. Use `LinearMap.congr_fun (chainTo_congr (V := fun j => VV ℂ (wt G (.top j))) D.R.m fun j hj => ?_) _` and prove the remaining obligations.
-
-Conclude with `dite_congr rfl (fun _ => rfl) (fun _ => rfl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem col_multilinear (S : GridChoice W U) (t : T) (x : ∀ j, FinPt G (.top j)) (Ψ₀ : VV ℂ (wt G (.top 0))) :
     ∃ M : MultilinearMap ℂ (fun j : Fin D.R.m => thSub W (.top t j)) (VV ℂ (wt G (.top D.R.m))),
@@ -166,9 +164,7 @@ theorem col_multilinear (S : GridChoice W U) (t : T) (x : ∀ j, FinPt G (.top j
   exact dite_congr rfl (fun _ => rfl) (fun _ => rfl)
 
 /- English proof (translation)
-Take `⟨Mr, hr⟩` from `chain_multilinear (V := fun i => VV ℂ (wt G (.grid i D.R.m))) D.R.m (fun i : Fin D.R.m => thSub W (.chi i D.R.m : Pair T)) (fun i => S.Z.scal 1 (.chi i D.R.m : Pair T) • fockLin W S.N.frC (.chi i D.R.m : Pair T) (y i * S.N.u _) (y (i + 1) * S.N.u _))`. Use `⟨(LinearMap.applyₗ (R := ℂ) (rhoVr (tauE D) _ (S.N.fr (.grid 0 D.R.m))⁻¹ (funOf (listedWt G (.grid 0 D.R.m)) F₀))).compMultilinearMap Mr, fun gs => ?_⟩` and prove the remaining obligations. Use `show Mr gs _ = _`. Rewrite using `[hr]`. Use `LinearMap.congr_fun (chainTo_congr (V := fun i => VV ℂ (wt G (.grid i D.R.m))) D.R.m fun j hj => ?_) _` and prove the remaining obligations.
-
-Conclude with `dite_congr rfl (fun _ => rfl) (fun _ => rfl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem row_multilinear (S : GridChoice W U) (y : ∀ i, FinPt G (.grid i D.R.m))
     (F₀ : VV ℂ (listedWt G (.grid 0 D.R.m))) :
@@ -188,7 +184,7 @@ theorem row_multilinear (S : GridChoice W U) (y : ∀ i, FinPt G (.grid i D.R.m)
   exact dite_congr rfl (fun _ => rfl) (fun _ => rfl)
 
 /- English proof (translation)
-Conclude with `compl_multilinear (brPair (listedWt G (.grid D.R.m D.R.m)) G.sp.topDec.rank.symm (wt G (.top D.R.m))) (fun fs : ∀ j : Fin D.R.m, thSub W (.top t j) => colMapV S (fun j => (fs j : WO (G.pS (.top t j)) (G.pT (.top t j)) → ℂ)) x) (fun gs : ∀ i : Fin D.R.m, thSub W (.chi i D.R.m : Pa …`.
+A detailed English derivation is pending.
 -/
 theorem pairing_multilinear {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) (t : T) (x : ∀ j, FinPt G (.top j)) (y : ∀ i, FinPt G (.grid i D.R.m))

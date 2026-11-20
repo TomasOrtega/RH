@@ -9,23 +9,21 @@ open MeasureTheory
 namespace UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ B hB _ _ μ _ χ K hKo hKc hBK φ hφ`. Take `⟨hφB, K0, hK0o, hφK0⟩` from `mem_indF.1 hφ`. Use `set S : Set B := {b | (b : G) ∈ K} with hS`. Establish `hSo : IsOpen S` using `hKo.preimage continuous_subtype_val`. Establish `hSc : IsCompact S` using `(hB.isClosedEmbedding_subtypeVal).isCompact_preimage hKc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSpos : 0 < μ S` using `hSo.measure_pos μ ⟨1, K.one_mem⟩`. Establish `hSfin : μ S < ⊤` using `hSc.measure_lt_top`. Establish `hr : (μ S).toReal ≠ 0` using `(ENNReal.toReal_pos hSpos.ne' hSfin.ne).ne'`. Establish `hr' : ((μ S).toReal : ℂ) ≠ 0` using `by exact_mod_cast hr`. Use `set c : ℂ := ((μ S).toReal : ℂ)⁻¹ with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨fun g => if g ∈ K then c * φ g else 0, ?_, ?_⟩` and prove the remaining obligations. Set `K' : OpenSubgroup G` to `⟨K ⊓ K0, hKo.inter hK0o⟩`. Apply `GroundTheory.Automorphic.mem_locallyConstantCompactSupport_of_forall_mul_right (R := ℂ) K'` to reduce the goal to its premises. Conclude with `HasCompactSupport.intro hKc (fun g hg => if_neg hg)`. Introduce `g k hk`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hk' : k ∈ K ∧ k ∈ K0` using `Subgroup.mem_inf.1 hk`. Simplify using `only [K.mul_mem_cancel_right hk'.1, hφK0 k hk'.2 g]`. Use function extensionality and compare the values at `g`. Take `⟨b0, hb0, k0, hk0, rfl⟩` from `hBK g`. Use `set b0' : B := ⟨b0, hb0⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ b : B, ((b : G)⁻¹ * (b0 * k0) ∈ K) ↔ b ∈ (fun x => b0'⁻¹ * x) ⁻¹' S`. Introduce `b`. Simplify using `only [Set.mem_preimage, hS, Set.mem_setOf_eq, Subgroup.coe_mul, Subgroup.coe_inv, b0']`. Rewrite using `[← mul_assoc, K.mul_mem_cancel_right hk0, ← K.inv_mem_iff]`. Simplify using `[mul_inv_rev]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hTm : MeasurableSet ((fun x : B => b0'⁻¹ * x) ⁻¹' S)` using `(hSo.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hint : (fun b : B => (χ b : ℂ) * (if ((b:G)⁻¹ * (b0 * k0)) ∈ K then c * φ ((b:G)⁻¹ * (b0*k0)) else 0)) = ((fun x : B => b0'⁻¹ * x) ⁻¹' S).indicator (fun _ => c * φ (b0 * k0))`. Use function extensionality and compare the values at `b`. Distinguish the cases in `h : ((b:G)⁻¹ * (b0 * k0)) ∈ K`. Rewrite using `[if_pos h, Set.indicator_of_mem ((key b).1 h)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hφB b⁻¹ (b0 * k0)`. Rewrite `h1` using `[Subgroup.coe_inv]`. Rewrite using `[h1]`. Establish `hu : (χ b : ℂ) * (χ b⁻¹ : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(c * φ (b0 * k0)) * hu`. Rewrite using `[if_neg h, Set.indicator_of_notMem (fun h' => h ((key b).2 h')), mul_zero]`. Simplify using `only [pr]`. Rewrite using `[hint, integral_indicator_const _ hTm, measureReal_def, measure_preimage_mul]`. Rewrite using `[hc, Complex.real_smul]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem prSurj : PrSurj := by
   classical

@@ -19,19 +19,19 @@ open Classical in
 def RestrictGen.resid (a : Ω) : K' := if h : a ∈ R then σ ⟨a, h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem RestrictGen.resid_of_mem {a : Ω} (h : a ∈ R) : RestrictGen.resid R σ a = σ ⟨a, h⟩ := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[RestrictGen.resid_of_mem R σ (zero_mem R)]`. Conclude with `map_zero σ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RestrictGen.resid_zero : RestrictGen.resid R σ 0 = 0 := by
   rw [RestrictGen.resid_of_mem R σ (zero_mem R)]
   exact map_zero σ
 
 /- English proof (translation)
-Rewrite using `[RestrictGen.resid_of_mem R σ ha, RestrictGen.resid_of_mem R σ hb, RestrictGen.resid_of_mem R σ (add_mem ha hb), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RestrictGen.resid_add {a b : Ω} (ha : a ∈ R) (hb : b ∈ R) :
     RestrictGen.resid R σ (a + b) = RestrictGen.resid R σ a + RestrictGen.resid R σ b := by
@@ -40,7 +40,7 @@ theorem RestrictGen.resid_add {a b : Ω} (ha : a ∈ R) (hb : b ∈ R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[RestrictGen.resid_of_mem R σ ha, RestrictGen.resid_of_mem R σ hb, RestrictGen.resid_of_mem R σ (mul_mem ha hb), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RestrictGen.resid_mul {a b : Ω} (ha : a ∈ R) (hb : b ∈ R) :
     RestrictGen.resid R σ (a * b) = RestrictGen.resid R σ a * RestrictGen.resid R σ b := by
@@ -53,59 +53,53 @@ end RestrictGenAux
 open RestrictGen in
 
 /- English proof (translation)
-Introduce `F _ N Ω _ _ x K' _ _ x' hxy R σ hσ Q Q' c H ρ w w' hw' hQ hQ' hH`. Establish `hσ' : ∀ (f g : Kleiman.Poly F N) (m : ℕ), f.IsHomogeneous m → g.IsHomogeneous m → aeval x' g ≠ 0 → aeval x f / aeval x g ∈ R ∧ resid R σ (aeval x f / aeval x g) = aeval x' f / aeval x' g`. Introduce `f g m hf hg hg'`. Take `⟨h, e⟩` from `hσ f g m hf hg hg'`. Conclude with `⟨h, by rw [resid_of_mem R σ h, e]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hx' : ∃ j, x' j ≠ 0`. Use `swap`. Simplify using `only [not_exists, not_not] at hx'`. Establish `hI : IsEmpty (Kleiman.Chart x')` using `⟨fun I => by`. Take `⟨i, hi⟩` from `I.2.1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(Kleiman.mem_support x').mp (I.2.2 hi) (hx' i)⟩`. Conclude with `⟨0, ⟨fun I => hI.elim I, fun I => hI.elim I, fun I => hI.elim I, fun I => hI.elim I⟩⟩`. Take `⟨j, hj⟩` from `hx'`. Establish `hxj : x j ≠ 0` using `hxy j hj`. Use `set r : Ω → K' := fun q => resid R σ (q * x j ^ c * w) / (x' j ^ c * w') with hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hrat : ∀ i, x' i ≠ 0 → (x j / x i) ^ c ∈ R ∧ resid R σ ((x j / x i) ^ c) = (x' j / x' i) ^ c`. Introduce `i hi`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Use `hσ' (X j ^ n) (X i ^ n) n (isHomogeneous_X_pow (R := F) j n) (isHomogeneous_X_pow (R := F) i n) (by simpa using pow_ne_zero n hi)` as an intermediate fact. Simplify using `only [map_pow, aeval_X] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[zpow_natCast, div_pow]`. Use `hσ' (X i ^ n) (X j ^ n) n (isHomogeneous_X_pow (R := F) i n) (isHomogeneous_X_pow (R := F) j n) (by simpa using pow_ne_zero n hj)` as an intermediate fact. Simplify using `only [map_pow, aeval_X] at this`. Simplify `this` using `[zpow_neg, zpow_natCast, div_pow, inv_div]`. Establish `hchart : ∀ (I : Kleiman.Chart x') (a : Ω), a ∈ Kleiman.chartRing F x (Kleiman.liftChart hxy I) → a ∈ R ∧ resid R σ a ∈ Kleiman.chartRing F x' I`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `I a ⟨f, s, e, hs, hf, hse, rfl⟩`. Take `⟨h1, h2⟩` from `hσ' f s e hf hse (Kleiman.eval_ne_zero_of_mem_monos I hs)`. Conclude with `⟨h1, h2 ▸ ⟨f, s, e, hs, hf, hse, rfl⟩⟩`. Establish `hspan : ∀ (I : Kleiman.Chart x') (z : Ω), z ∈ Submodule.span (Kleiman.chartRing F x (Kleiman.liftChart hxy I)) H → z * w ∈ R ∧ resid R σ (z * w) / w' ∈ Submodule.span (Kleiman.chartRing F x' I) (ρ '' H)`. Introduce `I z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem h hh`. Take `⟨hm, e⟩` from `hH h hh`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[resid_of_mem R σ hm, e, mul_div_cancel_right₀ _ hw']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `Submodule.subset_span ⟨h, hh, rfl⟩`. Consider the case `zero`. Rewrite using `[zero_mul, resid_zero, zero_div]`. Conclude with `⟨zero_mem R, zero_mem _⟩`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨by rw [add_mul]; exact add_mem ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul, resid_add R σ ha.1 hb.1, add_div]`. Conclude with `add_mem ha.2 hb.2`. Consider the case `smul a z _ hz`. Take `⟨ha1, ha2⟩` from `hchart I a a.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Kleiman.chartRing_smul_def, mul_assoc]`. Use `⟨mul_mem ha1 hz.1, ?_⟩` and prove the remaining obligations. Rewrite using `[resid_mul R σ ha1 hz.1, mul_div_assoc]`. Conclude with `Submodule.smul_mem _ (⟨_, ha2⟩ : Kleiman.chartRing F x' I) hz.2`. Establish `hkey : ∀ (I : Kleiman.Chart x') (i : Fin (N + 1)), i ∈ I.1 → ∀ q ∈ Q.sub (Kleiman.liftChart hxy I), q * x j ^ c * w ∈ R ∧ r q * x' i ^ c = resid R σ (x i ^ c * q * w) / w' ∧ resid R σ (x i ^ c * q * w) / w' ∈ Submodule.span (Kleiman.chartRing F x' I) (ρ '' H)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `I i hi q hq`. Establish `hx'i : x' i ≠ 0` using `(Kleiman.mem_support x').mp (I.2.2 hi)`. Establish `hxi : x i ≠ 0` using `hxy i hx'i`. Establish `hz : x i ^ c * q ∈ Submodule.span (Kleiman.chartRing F x (Kleiman.liftChart hxy I)) H`. Rewrite using `[← hQ (Kleiman.liftChart hxy I)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem c (Kleiman.liftChart hxy I) hi _).mpr ⟨q, hq, rfl⟩`. Take `⟨hz1, hz2⟩` from `hspan I _ hz`. Take `⟨hr1, hr2⟩` from `hrat i hx'i`. Establish `heq : q * x j ^ c * w = (x j / x i) ^ c * (x i ^ c * q * w)`. Rewrite using `[div_zpow]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨heq ▸ mul_mem hr1 hz1, ?_, hz2⟩` and prove the remaining obligations. Rewrite using `[hr]`. Simplify using `only`. Rewrite using `[heq, resid_mul R σ hr1 hz1, hr2, div_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hmem : ∀ (I : Kleiman.Chart x'), ∀ q ∈ Q.sub (Kleiman.liftChart hxy I), r q ∈ Q'.sub I`. Introduce `I q hq`. Take `⟨i, hi⟩` from `I.2.1`. Take `⟨-, e, hm⟩` from `hkey I i hi q hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx'i : x' i ≠ 0` using `(Kleiman.mem_support x').mp (I.2.2 hi)`. Rewrite `hm` using `[← hQ' I]`. Take `⟨y, hy, hy'⟩` from `(TranslateEq.mem_twist_twistSys_iff Q'.toSubSystem c I hi _).mp hm`. Establish `h' : r q * x' i ^ c = y * x' i ^ c`. Rewrite using `[e, hy', smul_eq_mul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_cancel₀ (zpow_ne_zero c hx'i) h']`. Conclude with `hy`. Use `⟨r, ⟨hmem, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `I q hq q' hq'`. Take `⟨i, hi⟩` from `I.2.1`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(hkey I i hi q hq).1`. Establish `h2` using `(hkey I i hi q' hq').1`. Rewrite using `[hr]`. Simplify using `only`. Rewrite using `[add_mul, add_mul, resid_add R σ h1 h2, add_div]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `I q hq f s e hs hf hse`. Take `⟨i, hi⟩` from `I.2.1`. Establish `h1` using `(hkey I i hi q hq).1`. Take `⟨ha1, ha2⟩` from `hσ' f s e hf hse (Kleiman.eval_ne_zero_of_mem_monos I hs)`. Establish `hm : aeval x f / aeval x s * q * x j ^ c * w = aeval x f / aeval x s * (q * x j ^ c * w)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Simplify using `only`. Rewrite using `[hm, resid_mul R σ ha1 h1, ha2, mul_div_assoc]`. Introduce `I`. Take `⟨i, hi⟩` from `I.2.1`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx'i : x' i ≠ 0` using `(Kleiman.mem_support x').mp (I.2.2 hi)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `hmem I q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `ht' : x' i ^ c * t ∈ Submodule.span (Kleiman.chartRing F x' I) (ρ '' H)`. Rewrite using `[← hQ' I]`. Conclude with `(TranslateEq.mem_twist_twistSys_iff Q'.toSubSystem c I hi _).mpr ⟨t, ht, rfl⟩`. Establish `hall : ∀ u ∈ Submodule.span (Kleiman.chartRing F x' I) (ρ '' H), x' i ^ (-c) * u ∈ Submodule.span (Kleiman.chartRing F x' I) (r '' Q.sub (Kleiman.liftChart hxy I))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨h, hh, rfl⟩` from `hu`. Establish `hh' : h ∈ (Q.toSubSystem.twist (Kleiman.twistSys F x c)).sub (Kleiman.liftChart hxy I)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ]`. Conclude with `Submodule.subset_span hh`. Take `⟨y, hy, rfl⟩` from `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem c (Kleiman.liftChart hxy I) hi _).mp hh'`. Take `⟨hm, e⟩` from `hH _ hh`. Take `⟨-, e', -⟩` from `hkey I i hi y hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e'' : resid R σ (x i ^ c * y * w) = ρ (x i ^ c • y) * w'` using `(resid_of_mem R σ hm).trans e`. Rewrite `e'` using `[e'', mul_div_cancel_right₀ _ hw']`. Establish `: x' i ^ (-c) * ρ (x i ^ c • y) = r y`. Rewrite using `[← e', zpow_neg]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`.
-
-Conclude with `add_mem ha hb`. Consider the case `smul a u _ hu`. Rewrite using `[Kleiman.chartRing_smul_def, mul_left_comm]`. Conclude with `Submodule.smul_mem _ a hu`. Use `hall _ ht'` as an intermediate fact.
-
-Rewrite `this` using `[← mul_assoc, ← zpow_add₀ hx'i, neg_add_cancel, zpow_zero, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem RestrictGen.proof : RestrictGen.Statement := by
   intro F _ N Ω _ _ x K' _ _ x' hxy R σ hσ Q Q' c H ρ w w' hw' hQ hQ' hH

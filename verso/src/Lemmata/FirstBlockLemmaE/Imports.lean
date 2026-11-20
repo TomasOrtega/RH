@@ -3,9 +3,9 @@ import Mathlib
 namespace Bl.FirstBlockLemmaE
 
 /- English proof (translation)
-Introduce `L _ _ x c h`. Establish `hi : IsIntegral ℤ x`. Use `⟨Polynomial.X ^ 2 - (Polynomial.X + Polynomial.C c), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨⟨x, hi⟩, rfl, ?_⟩` and prove the remaining obligations. Apply `NumberField.RingOfIntegers.coe_injective` to reduce the goal to its premises. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {L : Type} [inst : Field.{0} L] [NumberField.{0} L] (x : L) (c : Int),

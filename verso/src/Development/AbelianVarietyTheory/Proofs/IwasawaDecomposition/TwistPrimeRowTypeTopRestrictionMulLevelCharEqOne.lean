@@ -11,13 +11,13 @@ namespace GlobalTheory.TopRowsQ
 open GlobalTheory.TopStep GlobalTheory.Mem.Col2 GlobalTheory.TopLaw
 
 /- English proof (translation)
-Establish `hq` using `qOf_ne_zero (P := P)`. Establish `h1 : ∀ i, IntAt P ((((qOf P : ℕ) : E) ^ c)⁻¹ * (a i - b i))` using `fun i => mem_stdAt.1 h i`. Establish `h2 : ∀ i, IntAt P (a i - b i)` using `fun i => by`. Establish `h3` using `(intAt_pow (intAt_nat (P := P) (qOf P)) c).mul (h1 i)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Establish `ha : ∀ i, IntAt P (a i)` using `fun i => by`. Establish `h3` using `(h2 i).add (mem_stdAt.1 hb i)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨mem_stdAt.2 ha, funext fun i => ?_⟩` and prove the remaining obligations. Establish `h4 : redP P (a i - b i) = 0`. Apply `redP_eq_zero_of_div` to reduce the goal to its premises. Establish `h3` using `(intAt_pow (intAt_nat (P := P) (qOf P)) (c - 1)).mul (h1 i)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel, pow_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite `h4` using `[reduction_sub (ha i) (mem_stdAt.1 hb i), sub_eq_zero]`. Conclude with `h4`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redV_eq_of_cong {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {c : ℕ}
     (hc : 0 < c) {a b : Sp E n} (hb : b ∈ stdAt E n P) (h : (((qOf P : ℕ) : E) ^ c)⁻¹ • (a - b) ∈ stdAt E n P) :
@@ -44,25 +44,23 @@ theorem redV_eq_of_cong {E : Type} [Field E] [NumberField E] [StarRing E] {n : �
   exact h4
 
 /- English proof (translation)
-Introduce `X R ξ Q P c M hM k hk g g'' hJ hpr hC`. Establish `hN` using `N_m_succ R`. Take `⟨j, hj, hb⟩` from `(mem_levCong (N_m_succ R) c _ k).1 hk`. Rewrite using `[levCong_lam (N_m_succ R) c _ hk hj hb, levRed_lam]`. Establish `ek : redGL _ P.1 k = diagEmb _ (by omega : R.N R.m - 1 ≤ R.N R.m) (redGL _ P.1 j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `redGL_of_prinCong c.succ_pos hb`. Rewrite `e` using `[map_mul, map_inv, inv_mul_eq_one, redGL_extI]`. Conclude with `e.symm`. Set `g2 : Formalism.L2.Col.GLint X.E (R.N R.m - 1) P.1` to `⟨g'', hJ.1⟩`. Establish `hred : redGL _ P.1 g2 = (redGL _ P.1 j)⁻¹`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `redGL_eq g2 fun x hx => ?_` and prove the remaining obligations. Set `v : Sp X.E (R.N R.m)` to `fun l => if h : l.1 < R.N R.m - 1 then x ⟨l.1, h⟩ else 0`. Establish `hv : v ∈ stdAt X.E (R.N R.m) P.1` using `mem_stdAt.2 fun l => by`. Distinguish the cases in `h : l.1 < R.N R.m - 1`. Simplify using `only [v, dif_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `mem_stdAt.1 hx _`. Simplify using `only [v, dif_neg h]`. Simplify using `using intAt_nat (P := P.1) 0`. Establish `hpv : prXpG X.E (R.N R.m) v = x`. Use function extensionality and compare the values at `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `show v _ = x i`. Simplify using `only [v, dif_pos (show i.1 < R.N R.m - 1 from i.2)]`. Both sides reduce to the same expression. Establish `hxg : g'' x = prXpG X.E (R.N R.m) (g v)`. Use `LinearMap.congr_fun hpr v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hpv] at this`. Conclude with `this.symm`. Take `⟨-, e1⟩` from `redV_eq_of_cong (by omega : 0 < 2 * M) (glint_mem k⁻¹ hv) (hC v hv)`. Establish `e2` using `redV_redGL k⁻¹ hv`. Rewrite `e2` using `[map_inv, ek, ← map_inv, diagEmb_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Establish `e3` using `congrFun e1 (Br.iC hN i)`. Rewrite `e3` using `[e2, (diagMat_mulVec hN _ _).1]`. Use `show redP P.1 (g'' x i) = _`. Rewrite using `[hxg]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `e3.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `l`. Use `show redP P.1 (v (Br.iC hN l)) = redP P.1 (x l)`. Simplify using `only [v, Br.iC, dif_pos l.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : redGL _ P.1 g2 ∈ HQ (𝓞 X.E ⧸ P.1.asIdeal) (R.N R.m - 1) R.r (R.m * R.t)` using `hred ▸ inv_mem hj`. Establish `hl` using `lamQB_eq_red (resChar ξ P.1) (rank_X'_eq R) g2 hH`. Rewrite using `[show (g''.toLinearMap : HomE X.E _ _) = g2.1.toLinearMap from rfl, hl]`. Establish `e4 : lamQ (resChar ξ P.1) _ R.r (R.m * R.t) ⟨redGL _ P.1 g2, hH⟩ = (lamQ (resChar ξ P.1) _ R.r (R.m * R.t) ⟨redGL _ P.1 j, hj⟩)⁻¹`. Rewrite using `[← map_inv]`.
-
-Conclude with `congrArg _ (Subtype.ext hred)`. Rewrite using `[← Units.val_mul, e4]`. Use `show (((_ : X.Kˣ)⁻¹)⁻¹ * (lamQP ξ P.1 (R.N R.m - 1) R.r (R.m * R.t) ⟨redGL _ P.1 j, hj⟩)⁻¹ : X.Kˣ).1 = 1`. Rewrite using `[inv_inv, lamQP, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamQB_mul_levCong : ∀ {X : Fields} {R : Ranks} (ξ : Chr X.F X.E X.K) (Q : Finset (HeightOneSpectrum (𝓞 X.E))) (P : Q) (c M : ℕ), 1 ≤ M →
     ∀ (k : Formalism.L2.Col.GLint X.E (R.N R.m) P.1) (hk : k ∈ (levCong (N_m_succ R) P.1 c (rowTyQ R ξ Q P)).H)

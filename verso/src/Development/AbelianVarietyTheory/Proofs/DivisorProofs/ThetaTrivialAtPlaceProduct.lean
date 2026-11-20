@@ -11,11 +11,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 namespace GlobalTheory.PureAway
 
 /- English proof (translation)
-Introduce `P F E _ _ _ _ _ σ B a a' G X om om' hT v g h hg hh f φ hφ hφv`. Take `⟨S, g₁, g₂, g₃, h₁, h₂, h₃, hvS, rfl, rfl, a1, a2, b1, b2, c1, c2, c3, c4, c5, c6⟩` from `GlobalTheory.T.theta_local_factor_finite_place F E σ B a a' G X om om' hT v g h hg hh φ hφv`. Take `⟨c, hc⟩` from `GlobalTheory.T.theta_trivial_at_infinity_set P F E σ B a a' G X om om' hT (insert v S) g₃ h₃ c1 c2 (fun w hw => c3 w (Finset.mem_insert.mp hw)) (fun w hw => c4 w (Finset.mem_insert.mp hw)) (fun w hw => c5 w (fun e => hw (e ▸ Finset.mem_insert_self _ _)) (fun e => hw (Finset.mem_i …`. Take `⟨φ₁, hφ₁, hφ₁e, he₁⟩` from `GlobalTheory.T.theta_trivial_at_finite_set P F E σ B a a' G X om om' hT S g₂ h₂ b1 b2 f φ hφ hφv`. Establish `hφ₁v : ∀ᶠ w in Filter.cofinite, φ₁ w = G.M'.vac w` using `by filter_upwards [hφv, S.finite_toSet.compl_mem_cofinite] with w hw hwS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hφ₁e w hwS, hw]`. Take `⟨f₂, he₂⟩` from `GlobalTheory.T.archimedean_theta_local_action P F E σ B a a' G X om om' hT g₁ h₁ a1 a2 f φ₁ hφ₁ hφ₁v`. Use `⟨c • f₂, φ₁, hφ₁, hφ₁v, hφ₁e v hvS, ?_⟩` and prove the remaining obligations. Establish `hmul : ((g₁ * g₂ * g₃, h₁ * h₂ * h₃) : UA σ G.V'.J × UA σ G.W.J) = (g₁, h₁) * (g₂, h₂) * (g₃, h₃)` using `rfl`. Rewrite using `[hmul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hc, map_smul, he₁, map_smul, he₂]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_away : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

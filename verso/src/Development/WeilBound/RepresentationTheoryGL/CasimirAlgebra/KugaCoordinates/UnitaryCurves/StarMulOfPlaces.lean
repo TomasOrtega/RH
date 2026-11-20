@@ -14,7 +14,7 @@ namespace PositivityTheory.Rg.Cz.GK
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Set `ev : GA E a → Module.Dual ℂ S` to `fun g => { toFun := fun v => v.1.1.1 g map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Take `⟨s, c, h⟩` from `exists_comb_of_sep ev (fun v hv => Subtype.ext (Subtype.ext (Subtype.ext (funext hv)))) (lam ∘ₗ S.subtype)`. Conclude with `⟨s, c, fun v hv => h ⟨v, hv⟩⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eval {π : CuspSub E a} (S : Submodule ℂ π.V) [FiniteDimensional ℂ S] (lam : π.V →ₗ[ℂ] ℂ) :
     ∃ (s : Finset (GA E a)) (c : GA E a → ℂ), ∀ v ∈ S, lam v = ∑ g ∈ s, c g * v.1.1 g := by
@@ -27,7 +27,7 @@ theorem exists_eval {π : CuspSub E a} (S : Submodule ℂ π.V) [FiniteDimension
   exact ⟨s, c, fun v hv => h ⟨v, hv⟩⟩
 
 /- English proof (translation)
-Establish `h1 : (fun k : Kinf E a => y.1 (g * infGL E a (Unitary.toUnits k))) = fun k => chart y.1 g (toL k.1)` using `funext fun k => (chart_val y.1 g (Unitary.toUnits k)).symm`. Rewrite using `[h1]`. Conclude with `(y.2 g).continuousOn.comp_continuous continuous_subtype_val fun k => val_mem_invSet (Unitary.toUnits k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_eval (y : Sm E a) (g : GA E a) :
     Continuous fun k : Kinf E a => y.1 (g * infGL E a (Unitary.toUnits k)) := by
@@ -39,9 +39,9 @@ theorem continuous_eval (y : Sm E a) (g : GA E a) :
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use extensionality with `i j w`. Use `congrArg (fun M => M i j) (h w)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.of_apply] at this ⊢`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.mul_apply, Pi.star_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_mul_of_places (D : InfinitePlace E → Matrix (Fin a) (Fin a) ℂ) (h : ∀ w, star (D w) * D w = 1) :
     star (Matrix.of fun i j w => D w i j : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of (fun i j w => D w i j) = 1 := by
@@ -56,7 +56,7 @@ theorem star_mul_of_places (D : InfinitePlace E → Matrix (Fin a) (Fin a) ℂ) 
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Unfold `atEmb`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atEmb_apply (τ : E →+* ℂ) (z : ℂ) (w : InfinitePlace E) :
     atEmb τ z w = if w = InfinitePlace.mk τ then
@@ -65,33 +65,29 @@ theorem atEmb_apply (τ : E →+* ℂ) (z : ℂ) (w : InfinitePlace E) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use `set v := InfinitePlace.mk τ with hv`. Use `set Y : Matrix (Fin a) (Fin a) ℂ := if v.embedding = τ then X else X.map (starRingEnd ℂ) with hYd`. Establish `hY : Yᴴ = -Y`. Rewrite using `[hYd]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hX`. Use extensionality with `i j`. Use `congrArg (fun M => M i j) hX` as an intermediate fact. Simplify using `only [Matrix.conjTranspose_apply, Matrix.neg_apply, Matrix.map_apply] at this ⊢`. Rewrite using `[← star_star (X j i), this, star_neg, Complex.star_def, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨U, hU, hU0, hUd⟩` from `exists_unitary_curve Y hY`. Set `D : ℝ → InfinitePlace E → Matrix (Fin a) (Fin a) ℂ` to `fun t w => if w = v then U t else 1`. Establish `hD : ∀ t w, star (D t w) * D t w = 1` using `fun t w => by`. Simplify using `only [D]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hU t`. Simplify using the standard rewrite rules. Set `C : ℝ → Matrix (Fin a) (Fin a) (Cinf E)` to `fun t => Matrix.of fun i j w => D t w i j`. Establish `hC : ∀ t, C t ∈ Matrix.unitaryGroup (Fin a) (Cinf E)` using `fun t => (Matrix.mem_unitaryGroup_iff').2 (star_mul_of_places (D t) (hD t))`. Use `⟨fun t => ⟨C t, hC t⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j w`. Simplify using `only [C, D, hU0, Matrix.of_apply, ite_self]`. Use `show (1 : Matrix (Fin a) (Fin a) ℂ) i j = (1 : Matrix (Fin a) (Fin a) (Cinf E)) i j w`. Simplify using `only [Matrix.one_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Introduce `i j show HasDerivAt (fun t => coord τ (C t i j)) (X i j) 0`. Establish `e : (fun t => coord τ (C t i j)) = fun t => if v.embedding = τ then U t i j else starRingEnd ℂ (U t i j)`. Use function extensionality and compare the values at `t`. Rewrite using `[PositivityTheory.Rg.Cz.J.coord_eq]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [C, D, Matrix.of_apply, ← hv, ↓reduceIte]`. Rewrite using `[e]`. Distinguish the cases in `hε : v.embedding = τ`. Simplify using `only [hε, if_true]`. Use `hUd i j` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[hYd, hε]`. Simplify using `only [hε, if_false]`. Use `(hUd i j).star` as an intermediate fact. Simplify using `only [hYd, hε, if_false, Matrix.map_apply] at this`. Simplify `this` using `[Complex.star_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ' h1 h2 t`. Establish `hw : InfinitePlace.mk τ' ≠ v`. Rewrite using `[hv]`. Introduce `h`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 h`. Apply `h2 show τ' = ComplexEmbedding.conjugate τ` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `(star_star τ').symm`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show coord τ' (C t i j) = (1 : Matrix (Fin a) (Fin a) ℂ) i j`. Rewrite using `[PositivityTheory.Rg.Cz.J.coord_eq]`. Simplify using `only [C, D, Matrix.of_apply, if_neg hw, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hasDerivAt_pi]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`. Rewrite using `[hasDerivAt_pi]`. Introduce `w`.
-
-Simplify using `only [atEmb_apply, ← hv]`. Use `show HasDerivAt (fun t => D t w i j) _ 0`. Distinguish the cases in `hw : w = v`. Simplify using `only [D, hw, if_true]`. Use `hUd i j` as an intermediate fact.
-
-Rewrite `this` using `[hYd]`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`. Simplify using `only [D, hw, if_false]`. Conclude with `hasDerivAt_const _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_curve (τ : E →+* ℂ) (X : Matrix (Fin a) (Fin a) ℂ) (hX : Xᴴ = -X) :
     ∃ c : ℝ → Kinf E a, c 0 = 1 ∧ (∀ i j, HasDerivAt (fun t => kap E a τ (c t) i j) (X i j) 0) ∧
@@ -166,11 +162,11 @@ theorem exists_curve (τ : E →+* ℂ) (X : Matrix (Fin a) (Fin a) ℂ) (hX : X
       exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Establish `key : ∀ (z : ℂ) (i j : Fin a), lieS E a i j (atEmb τ z) = z • Eop τ i j + star z • Eop (barE E τ) i j`. Introduce `z i j`. Rewrite using `[atEmb_eq τ z, map_add, map_smul, map_smul, lieS_atEmb_one, lieS_atEmb_I]`. Use `conv_rhs => rw [← Complex.re_add_im z]`. Simplify using `only [Complex.star_def, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul]`. Apply the tactic sequence `match_scalars <;> ring`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Establish `hX : lie E a (fun i j => atEmb τ (X i j)) = ∑ i, ∑ j, lieS E a i j (atEmb τ (X i j))`. Simplify using `only [lieS_apply, ← map_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `congrArg _ (Matrix.matrix_eq_sum_single (Matrix.of fun i j => atEmb τ (X i j)))`. Express the relevant statement in the definitionally equal form `lie E a (fun i j => atEmb τ (X i j)) φ.1 = _`. Rewrite using `[hX]`. Simplify using `only [key, LinearMap.sum_apply, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_add, Submodule.coe_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lieOp_atEmb (π : CuspSub E a) (τ : E →+* ℂ) (X : Matrix (Fin a) (Fin a) ℂ) :
     lieOp π (fun i j => atEmb τ (X i j)) =
@@ -194,9 +190,9 @@ theorem lieOp_atEmb (π : CuspSub E a) (τ : E →+* ℂ) (X : Matrix (Fin a) (F
   rfl
 
 /- English proof (translation)
-Establish `h` using `(π.cusp y.1 y.2).1.kfin`. Establish `e : (Submodule.span ℂ (Set.range fun γ => π.op (.cpt γ) y)).map π.V.subtype = Submodule.span ℂ (Set.range fun k => cptRep E a k y.1)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `: FiniteDimensional ℂ ((Submodule.span ℂ (Set.range fun γ => π.op (.cpt γ) y)).map π.V.subtype)` using `e ▸ h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ π.V.injective_subtype _).symm`.
+A detailed English derivation is pending.
 -/
 theorem fin_orbit (π : CuspSub E a) (y : π.V) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun γ => π.op (.cpt γ) y)) := by
@@ -208,31 +204,31 @@ theorem fin_orbit (π : CuspSub E a) (y : π.V) :
   exact LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ π.V.injective_subtype _).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ a π`. Use `{ gl := ?_, comm := ?_, one := ?_, mul := ?_, ad := ?_, fin := fin_orbit π, cont := ?_, der := ?_ }` and prove the remaining obligations. Introduce `τ i j k l`. Set `X : Fin a → Fin a → GlobalTheory.WigCap.keep π` to `fun i j => ⟨Eop τ i j, GlobalTheory.WigCap.Eop_mem π τ i j⟩`. Establish `hX : (fun i j => GlobalTheory.WigCap.res π (X i j)) = cx τ (lieOp π)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => funext fun j => GlobalTheory.WigCap.res_Eop π τ i j`. Establish `h` using `glRel_Eop (a := a) τ i j k l`. Rewrite using `[← hX]`. Simplify using `only`. Establish `h2 : X i j * X k l - X k l * X i j = (if j = k then X i l else 0) - (if l = i then X k j else 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_sub, Subalgebra.coe_mul]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[← map_mul, ← map_mul, ← map_sub, h2, map_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Introduce `τ τ' h i j k l`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Eop τ i j (Eop τ' k l φ.1) = Eop τ' k l (Eop τ i j φ.1)`. Conclude with `LinearMap.congr_fun (Eop_comm h i j k l) φ.1`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cptRep E a 1 φ.1 = φ.1`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Introduce `γ δ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cptRep E a (γ * δ) φ.1 = cptRep E a γ (cptRep E a δ φ.1)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Introduce `γ τ i j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.CapAdInv.rt_Eop (Unitary.toUnits γ) τ i j`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Establish `h2` using `LinearMap.congr_fun h φ.1`. Express the relevant statement in the definitionally equal form `cptRep E a γ (Eop τ i j φ.1) = _`. Use `h2.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show coord τ (γ.1 k i) * coord τ ((star γ.1) j l) = coord τ (γ.1 k i) * star (coord τ (γ.1 l j))`. Rewrite using `[Matrix.star_apply, PositivityTheory.Rg.Cz.J.coord_star]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y lam`. Use `fin_orbit π y` as an intermediate fact. Take `⟨s, c, hc⟩` from `exists_eval (Submodule.span ℂ (Set.range fun γ => π.op (.cpt γ) y)) lam`. Establish `e : (fun γ => lam (π.op (.cpt γ) y)) = fun γ => ∑ g ∈ s, c g * y.1.1 (g * infGL E a (Unitary.toUnits γ))`. Use function extensionality and compare the values at `fun γ => hc _ (Submodule.subset_span ⟨γ, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `continuous_finsetSum _ fun g _ => continuous_const.mul (continuous_eval y.1 g)`. Introduce `τ X hX`. Take `⟨c, h0, hk, hoth, hZ⟩` from `exists_curve τ X hX`. Use `⟨c, h0, hk, hoth, fun y lam => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Zl : Lie E a` to `fun i j => atEmb τ (X i j)`. Set `S` to `Submodule.span ℂ (Set.range fun γ => π.op (.cpt γ) y) ⊔ Submodule.span ℂ {lieOp π Zl y}`. Use `fin_orbit π y` as an intermediate fact. Establish `: FiniteDimensional ℂ S` using `Submodule.finiteDimensional_sup _ _`. Take `⟨s, cc, hc⟩` from `exists_eval S lam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← lieOp_atEmb π τ X]`. Rewrite using `[hc _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))]`. Establish `e : (fun t => lam (π.op (.cpt (c t)) y)) = fun t => ∑ g ∈ s, cc g * y.1.1 (g * infGL E a (Unitary.toUnits (c t)))`. Use function extensionality and compare the values at `fun t => hc _ (Submodule.mem_sup_left (Submodule.subset_span ⟨c t, rfl⟩))`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0' : Unitary.toUnits (c 0) = 1` using `by rw [h0, map_one]`. Establish `hs` using `HasDerivAt.sum (u := s) (x := (0 : ℝ)) fun g (_ : g ∈ s) => (hasDerivAt_curve y.1 g (fun t => Unitary.toUnits (c t)) Zl h0' hZ).const_mul (cc g)`. Rewrite `hs` using `[Finset.sum_fn]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem gkData_holds : GKData := by
   intro E _ _ _ a π

@@ -13,7 +13,7 @@ variable {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpa
   (μ : Measure X) [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Establish `cf : Continuous f` using `hf.1.continuous`. Establish `ch : Continuous h` using `hh.1.continuous`. Conclude with `(cf.mul (Complex.continuous_conj.comp ch)).integrable_of_hasCompactSupport (hf.2.mul_right)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_mul_conj {f h : X → ℂ} (hf : f ∈ SB X) (hh : h ∈ SB X) :
     Integrable (fun x => f x * conj (h x)) μ := by
@@ -23,17 +23,17 @@ theorem integrable_mul_conj {f h : X → ℂ} (hf : f ∈ SB X) (hh : h ∈ SB X
     (hf.2.mul_right)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hh.1.comp _, hh.2.comp_left (map_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem {h : X → ℂ} (hh : h ∈ SB X) : (fun y => conj (h y)) ∈ SB X :=
   ⟨hh.1.comp _, hh.2.comp_left (map_zero _)⟩
 
 /- English proof (translation)
-Establish `hi : Integrable (fun x => g x * conj (g x)) μ` using `integrable_mul_conj μ hg hg`. Establish `hn : Integrable (fun x => ‖g x‖ ^ 2) μ`. Use `hi.norm` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hn (Filter.Eventually.of_forall fun x => by positivity)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem self_eq {g : X → ℂ} (hg : g ∈ SB X) :
     ENNReal.ofReal (∫ x, ‖g x‖ ^ 2 ∂μ) = ∫⁻ x, ‖g x‖ₑ ^ 2 ∂μ ∧
@@ -52,11 +52,11 @@ theorem self_eq {g : X → ℂ} (hg : g ∈ SB X) :
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Establish `e : (fun x => (c • h + f) x * conj ((c • h + f) x)) = fun x => (c * conj c) * (h x * conj (h x)) + c * (h x * conj (f x)) + conj c * (f x * conj (h x)) + f x * conj (f x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add, integral_add, integral_add, integral_const_mul, integral_const_mul, integral_const_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact integrable_mul_conj μ hf hf`. Consider the case `exact (integrable_mul_conj μ hh hh).const_mul _`. Consider the case `exact (integrable_mul_conj μ hh hf).const_mul _`. Consider the case `exact (integrable_mul_conj μ hf hh).const_mul _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((integrable_mul_conj μ hh hh).const_mul _).add ((integrable_mul_conj μ hh hf).const_mul _)`. Consider the case `exact (((integrable_mul_conj μ hh hh).const_mul _).add ((integrable_mul_conj μ hh hf).const_mul _)).add ((integrable_mul_conj μ hf hh).const_mul _)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem expand {f h : X → ℂ} (hf : f ∈ SB X) (hh : h ∈ SB X) (c : ℂ) :
     ∫ x, (c • h + f) x * conj ((c • h + f) x) ∂μ =
@@ -82,17 +82,15 @@ end GlobalTheory.PolarSB
 open MeasureTheory ComplexConjugate in
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v T hSB hlin μ hμ hnorm φ₁ h₁ φ₂ h₂`. Use `letI : MeasurableSpace (κ → Fv F v) := borel _`. Use `haveI : BorelSpace (κ → Fv F v) := ⟨rfl⟩`. Use `set w : (κ → Fv F v) → ℂ := fun y => starRingEnd ℂ (φ₂ y) with hw`. Establish `hwSB : w ∈ SB (κ → Fv F v)` using `GlobalTheory.PolarSB.conj_mem h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ g ∈ SB (κ → Fv F v), ∫ x, T g x * conj (T g x) ∂μ = ∫ x, g x * conj (g x) ∂μ`. Introduce `g hg`. Take `⟨a1, a2⟩` from `GlobalTheory.PolarSB.self_eq μ hg`. Take `⟨b1, b2⟩` from `GlobalTheory.PolarSB.self_eq μ (hSB g hg)`. Rewrite using `[a2, b2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `hnorm g hg` as an intermediate fact. Rewrite `this` using `[← a1, ← b1]`. Conclude with `(ENNReal.ofReal_eq_ofReal_iff (integral_nonneg fun _ => by positivity) (integral_nonneg fun _ => by positivity)).1 this`. Establish `key : ∀ c : ℂ, c * ∫ x, T w x * conj (T φ₁ x) ∂μ + conj c * ∫ x, T φ₁ x * conj (T w x) ∂μ = c * ∫ x, w x * conj (φ₁ x) ∂μ + conj c * ∫ x, φ₁ x * conj (w x) ∂μ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Establish `hm : c • w + φ₁ ∈ SB (κ → Fv F v)` using `add_mem (Submodule.smul_mem _ c hwSB) h₁`. Establish `e1` using `hN _ hm`. Rewrite `e1` using `[hlin w hwSB φ₁ h₁ c, GlobalTheory.PolarSB.expand μ h₁ hwSB c, GlobalTheory.PolarSB.expand μ (hSB _ h₁) (hSB _ hwSB) c, hN _ h₁, hN _ hwSB]`. Take the linear combination `e1`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `k1` using `key 1`. Establish `kI` using `key Complex.I`. Simplify using `only [map_one, one_mul, Complex.conj_I] at k1 kI`. Establish `hfin : ∫ x, T φ₁ x * conj (T w x) ∂μ = ∫ x, φ₁ x * conj (w x) ∂μ`. Take the linear combination `(k1 + Complex.I * kI) / 2 + (-(∫ x, T w x * conj (T φ₁ x) ∂μ) + ∫ x, T φ₁ x * conj (T w x) ∂μ + ∫ x, w x * conj (φ₁ x) ∂μ - ∫ x, φ₁ x * conj (w x) ∂μ) / 2 * Complex.I_sq`.
-
-Rewrite using `[hfin]`. Simplify using `[hw]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PolarSB.pairing_eq : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (T : ((κ → Fv F v) → ℂ) → (κ → Fv F v) → ℂ),

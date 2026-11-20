@@ -10,7 +10,7 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag]`. Use `Finset.sum_eq_zero fun a _ => hZ a a ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> simp [sameBlock]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pcTrace_eq_zero {p q : ℕ} {Z : Mat p q} (hZ : IsPC Z) : Z.trace = 0 := by
   simp only [Matrix.trace, Matrix.diag]
@@ -18,11 +18,11 @@ theorem pcTrace_eq_zero {p q : ℕ} {Z : Mat p q} (hZ : IsPC Z) : Z.trace = 0 :=
   rcases a with a | a <;> simp [sameBlock]
 
 /- English proof (translation)
-Introduce `P Q R S x`. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Establish `hpr : ∀ Z : Mat P Q, IsPC Z → ∀ g, (coinv P Q R S x).mkQ (fockAct1 P Q R S Z g) = 0`. Introduce `Z hZ g`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨Z, g, ?_⟩` and prove the remaining obligations. Rewrite using `[pcTrace_eq_zero hZ, mul_zero, zero_smul, sub_zero]`. Take `⟨h, hh, he⟩` from `GlobalTheory.FockAlg.HarmLift.exists_harm2_rep P Q R S _ (coinv P Q R S x).mkQ hpr f`. Establish `hd : f - h ∈ coinv P Q R S x`. Rewrite using `[← Submodule.Quotient.eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he.symm`. Establish `: f = h + (f - h)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span hh) hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_harm2_sup_coinv_eq_univ : ∀ (P Q R S : ℕ) (x : ℂ),
     Submodule.span ℂ (harm2 P Q R S) ⊔ coinv P Q R S x = ⊤ := by
@@ -41,7 +41,7 @@ theorem span_harm2_sup_coinv_eq_univ : ∀ (P Q R S : ℕ) (x : ℂ),
   exact Submodule.add_mem_sup (Submodule.subset_span hh) hd
 
 /- English proof (translation)
-The claim follows from `span_harm2_sup_coinv_eq_univ`.
+A detailed English derivation is pending.
 -/
 example : ∀ (P Q R S : ℕ) (x : ℂ), Submodule.span ℂ (harm2 P Q R S) ⊔ coinv P Q R S x = ⊤ := span_harm2_sup_coinv_eq_univ
 

@@ -15,7 +15,7 @@ open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.Glob
 variable {eps : ℝ}
 
 /- English proof (translation)
-The claim follows from `tCV_of_tied Fm ColValS.colValOfTiedS_holds tCl`.
+A detailed English derivation is pending.
 -/
 theorem tCV_of_ties (Fm : FamP eps) (tCl : tCVTies Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u) :=

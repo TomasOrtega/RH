@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Out
 open GlobalTheory.HomFixMat GlobalTheory.HomFixUniv
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.FormsLocus.factors_quot_iff) | (exact GlobalTheory.FormsLocus.factors_quot_iff) | (intros; apply GlobalTheory.FormsLocus.factors_quot_iff <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.factors_through_zero_locus : ∀ (Rg : Type) [CommRing Rg] (n : ℕ) (I : Ideal (MvPolynomial (Fin n) Rg)) (T : Scheme.{0}) (g : T ⟶ Sp (MvPolynomial (Fin n) Rg)), (∃ w : T ⟶ Sp (MvPolynomial (Fin n) Rg ⧸ I), w ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) = g) ↔ ∀ P ∈ I, GlobalTheory.FormsLocus.ringOf g P = 0 := by
   first | (exact @GlobalTheory.FormsLocus.factors_quot_iff) | (exact GlobalTheory.FormsLocus.factors_quot_iff) | (intros; apply GlobalTheory.FormsLocus.factors_quot_iff  <;> assumption)

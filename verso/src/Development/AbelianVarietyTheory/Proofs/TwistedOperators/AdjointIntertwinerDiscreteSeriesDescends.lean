@@ -9,7 +9,7 @@ open Matrix
 namespace GlobalTheory.AdjDescent
 
 /- English proof (translation)
-Unfold `Jm Formalism.UG.Jpq`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.fromBlocks_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jm_mul_jm (p q : ℕ) : Jm p q * Jm p q = 1 := by
   unfold Jm Formalism.UG.Jpq
@@ -17,14 +17,14 @@ theorem jm_mul_jm (p q : ℕ) : Jm p q * Jm p q = 1 := by
   simp [Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Unfold `Jm Formalism.UG.Jpq`. Simplify using `[Matrix.fromBlocks_conjTranspose]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem jm_conjTranspose (p q : ℕ) : (Jm p q)ᴴ = Jm p q := by
   unfold Jm Formalism.UG.Jpq
   simp [Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Unfold `conjR adjZ`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, jm_conjTranspose, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, jm_mul_jm, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjR_conjTranspose_mul {p q : ℕ} (Z : Mat p q) : (conjR Z)ᴴ * Jm p q = -(Jm p q * Z) := by
   unfold conjR adjZ
@@ -33,14 +33,14 @@ theorem conjR_conjTranspose_mul {p q : ℕ} (Z : Mat p q) : (conjR Z)ᴴ * Jm p 
     Matrix.mul_assoc, jm_mul_jm, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `conjR adjZ`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, jm_mul_jm, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_conjR {p q : ℕ} (Z : Mat p q) : Jm p q * conjR Z = -(Zᴴ * Jm p q) := by
   unfold conjR adjZ
   rw [Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, jm_mul_jm, Matrix.one_mul]
 
 /- English proof (translation)
-Use `show (Z + conjR Z)ᴴ * Jm p q + Jm p q * (Z + conjR Z) = 0`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, conjR_conjTranspose_mul, mul_conjR]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem re_mem_upq {p q : ℕ} (Z : Mat p q) : Z + conjR Z ∈ upq p q := by
   show (Z + conjR Z)ᴴ * Jm p q + Jm p q * (Z + conjR Z) = 0
@@ -48,7 +48,7 @@ theorem re_mem_upq {p q : ℕ} (Z : Mat p q) : Z + conjR Z ∈ upq p q := by
   abel
 
 /- English proof (translation)
-Use `show (Complex.I • (Z - conjR Z))ᴴ * Jm p q + Jm p q * (Complex.I • (Z - conjR Z)) = 0`. Establish `hI : (star Complex.I : ℂ) = -Complex.I` using `Complex.conj_I`. Rewrite using `[Matrix.conjTranspose_smul, hI, Matrix.conjTranspose_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, conjR_conjTranspose_mul, mul_conjR]`. Simplify using `only [neg_smul, sub_neg_eq_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem im_mem_upq {p q : ℕ} (Z : Mat p q) : Complex.I • (Z - conjR Z) ∈ upq p q := by
   show (Complex.I • (Z - conjR Z))ᴴ * Jm p q + Jm p q * (Complex.I • (Z - conjR Z)) = 0
@@ -59,9 +59,9 @@ theorem im_mem_upq {p q : ℕ} (Z : Mat p q) : Complex.I • (Z - conjR Z) ∈ u
   abel
 
 /- English proof (translation)
-Establish `h : (-Complex.I / 2) • (Complex.I • (Z - conjR Z)) = (1 / 2 : ℂ) • (Z - conjR Z)`. Rewrite using `[smul_smul]`. Use `congr 1`. Rewrite using `[div_mul_eq_mul_div, neg_mul, Complex.I_mul_I]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[h, ← smul_add, show Z + conjR Z + (Z - conjR Z) = (2 : ℂ) • Z by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem decomp {p q : ℕ} (Z : Mat p q) :
     Z = (1 / 2 : ℂ) • (Z + conjR Z) + (-Complex.I / 2) • (Complex.I • (Z - conjR Z)) := by
@@ -75,9 +75,9 @@ theorem decomp {p q : ℕ} (Z : Mat p q) :
   norm_num
 
 /- English proof (translation)
-Establish `e : ρ g * ρ g⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `hinv : ρ g (ρ g⁻¹ x) = x`. Combine the equalities or inequalities in the displayed calculation. Set `L : H →ₗᵢ[ℂ] H` to `⟨(ρ g : H →ₗ[ℂ] H), h g⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv]`. Use `_ = inner ℂ (ρ g⁻¹ x) y := L.inner_map_map _ _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_apply_of_norm {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ρ : G →* (H →L[ℂ] H)) (h : ∀ g x, ‖ρ g x‖ = ‖x‖) (g : G) (x y : H) :
@@ -94,11 +94,9 @@ theorem inner_apply_of_norm {G H : Type} [Group G] [NormedAddCommGroup H] [Inner
     _ = inner ℂ (ρ g⁻¹ x) y := L.inner_map_map _ _
 
 /- English proof (translation)
-Unfold `KFin at hx ⊢`. Establish `key : ∀ (κ : Type) (c : κ → T.G), FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => πE (c k) x)) → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => πF (c k) (L x)))`. Introduce `κ c hc`. Establish `e : (Set.range fun k => πF (c k) (L x)) = (L : E →ₗ[ℂ] F) '' Set.range (fun k => πE (c k) x)`. Rewrite using `[← Set.range_comp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[hL]`. Rewrite using `[e, Submodule.span_image]`. Use `haveI := hc`.
-
-Use `infer_instance`. Conclude with `key _ _ hx`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kFin_map_of_intertwining {p q : ℕ} (T : GrpData p q) {E F : Type} [NormedAddCommGroup E]
     [InnerProductSpace ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F]
@@ -121,17 +119,17 @@ private theorem kFin_map_of_intertwining {p q : ℕ} (T : GrpData p q) {E F : Ty
   exact key _ _ hx
 
 /- English proof (translation)
-Introduce `p q T D H _ _ _ ρ hρ S hS V _ _ ι act hK hD`. Establish `hA : ∀ g y, ContinuousLinearMap.adjoint S (ρ g y) = D.U.π g (ContinuousLinearMap.adjoint S y)`. Introduce `g y`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ContinuousLinearMap.adjoint_inner_right, inner_apply_of_norm ρ hρ, hS, ← ContinuousLinearMap.adjoint_inner_right S, inner_apply_of_norm D.U.π D.U.isom]`. Establish `hmem : ∀ P, ∃ w, D.ι w = ContinuousLinearMap.adjoint S (ι P)` using `fun P => (D.ι_range _).2 (kFin_map_of_intertwining T (fun g => ρ g) (fun g => D.U.π g) _ hA (ι P) (hK P))`. Use `choose f hf using hmem`. Establish `hinj` using `D.ι_inj`. Set `φ : V →ₗ[ℂ] D.HK.V` to `{ toFun := f map_add' := fun P Q => hinj (by simp only [map_add, hf]) map_smul' := fun c P => hinj (by simp only [RingHom.id_apply, map_smul, hf]) }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ P, D.ι (φ P) = ContinuousLinearMap.adjoint S (ι P)` using `hf`. Establish `hY : ∀ Y ∈ upq p q, ∀ P, φ (act Y P) = D.HK.act Y (φ P)`. Introduce `Y hYm P`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun t : ℝ => D.U.π (T.expt (t • Y)) (D.ι (φ P))) (ContinuousLinearMap.adjoint S (ι (act Y P))) 0`. Establish `h0` using `((ContinuousLinearMap.adjoint S).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hD Y hYm P)`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `(funext t; simp [hA, hφ])`. Conclude with `h1.unique (D.der Y hYm (φ P))`. Use `⟨φ, fun P x => ?_, fun Z P => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, ContinuousLinearMap.adjoint_inner_right]`. Establish `hre` using `re_mem_upq Z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `him` using `im_mem_upq Z`. Rewrite using `[decomp Z]`. Generalize the expression as in `Z + conjR Z = A at hre ⊢`. Generalize the expression as in `Complex.I • (Z - conjR Z) = B at him ⊢`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, hY A hre, hY B him]`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjoint_descends : ∀ (p q : ℕ) (T : GrpData p q) (D : DSRep T) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : T.G →* (H →L[ℂ] H)), (∀ g x, ‖ρ g x‖ = ‖x‖) → ∀ S : D.U.H →L[ℂ] H, (∀ g x, ρ g (S x) = S (D.U.π g x)) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ι : V →ₗ[ℂ] H) (act : Mat p q →ₗ[ℂ] Module.End ℂ V), (∀ P, KFin T (fun g => ρ g) (ι P)) → (∀ Y ∈ upq p q, ∀ P, HasDerivAt (fun t : ℝ => ρ (T.expt (t • Y)) (ι P)) (ι (act Y P)) 0) → ∃ φ : V →ₗ[ℂ] D.HK.V, (∀ P x, inner ℂ x (D.ι (φ P)) = inner ℂ (S x) (ι P)) ∧ ∀ Z P, φ (act Z P) = D.HK.act Z (φ P) := by
   intro p q T D H _ _ _ ρ hρ S hS V _ _ ι act hK hD

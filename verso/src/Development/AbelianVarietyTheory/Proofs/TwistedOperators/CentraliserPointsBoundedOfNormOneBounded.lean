@@ -12,9 +12,9 @@ namespace GlobalTheory.RegSS.MatBd
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a r`. Proceed by induction on `a with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul p e => simp [sigR, tConj, tConj3]`. Consider the case `add a b ha hb => rw [TensorProduct.add_tmul, map_add, map_add, map_add, map_add, ha, hb]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, map_add, ha, hb]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem assoc_sigR (P : Type) [CommRing P] [Algebra F P] (σ : E →ₐ[F] E) (R : Type) [CommRing R]
     [Algebra F R] (x : (P ⊗[F] E) ⊗[F] R) :
@@ -35,13 +35,13 @@ def entry (σ : E →ₐ[F] E) (J γ : Matrix n n E) (i j : n) : plusAlg σ J γ
   map_smul' c a := by rw [map_smul]; rfl
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a r`. Proceed by induction on `a with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul p e`. Establish `h : (plusTensor σ J γ (p ⊗ₜ e) : Matrix n n E) = e • ((p : genAlg γ) : Matrix n n E)`. Rewrite using `[plusTensor, Algebra.TensorProduct.productMap_apply_tmul, mul_comm]`. Conclude with `(Algebra.smul_def e ((p : genAlg γ) : Matrix n n E)).symm`. Rewrite using `[Algebra.TensorProduct.assoc_tmul, LinearMap.rTensor_tmul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(((p : genAlg γ) : Matrix n n E).map (inclE (F := F) R) * algebraMap (E ⊗[F] R) (Matrix n n (E ⊗[F] R)) (e ⊗ₜ r)) i j = ((plusTensor σ J γ (p ⊗ₜ e) : Matrix n n E) i j) ⊗ₜ r`. Rewrite using `[h, ← Algebra.commutes, ← Algebra.smul_def]`. Simplify using `[inclE]`. Consider the case `add a b ha hb`. Rewrite using `[TensorProduct.add_tmul, map_add, map_add, map_add, Matrix.add_apply, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, map_add, Matrix.add_apply, ha, hb]`.
+A detailed English derivation is pending.
 -/
 theorem toMat_assoc_apply (σ : E →ₐ[F] E) (J γ : Matrix n n E) (R : Type) [CommRing R]
     [Algebra F R] (x : (plusAlg σ J γ ⊗[F] E) ⊗[F] R) (i j : n) :
@@ -68,7 +68,7 @@ theorem toMat_assoc_apply (σ : E →ₐ[F] E) (J γ : Matrix n n E) (R : Type) 
   | add a b ha hb => rw [map_add, map_add, map_add, Matrix.add_apply, ha, hb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[toMat_assoc_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMat_assoc_inclE (σ : E →ₐ[F] E) (J γ : Matrix n n E) (R : Type) [CommRing R]
     [Algebra F R] (β : plusAlg σ J γ ⊗[F] E) :
@@ -79,9 +79,9 @@ theorem toMat_assoc_inclE (σ : E →ₐ[F] E) (J γ : Matrix n n E) (R : Type) 
   rfl
 
 /- English proof (translation)
-Establish `h1 : (plusTensor σ J (γ : Matrix n n E) β : Matrix n n E) * adj (σ : E →+* E) J (plusTensor σ J (γ : Matrix n n E) β : Matrix n n E) = 1`. Rewrite using `[← plusTensor_tConj h, ← Subalgebra.coe_mul, ← map_mul, hβ, map_one]`. Both sides reduce to the same expression. Use `⟨⟨_, _, h1, mul_eq_one_comm.1 h1⟩, ⟨(mem_UJ_iff_mul_adj _ h.nondeg _).2 h1, ?_⟩, rfl⟩` and prove the remaining obligations. Use `Subgroup.mem_centralizer_singleton_iff.2 (Units.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(commute_of_mem_genAlg rfl (plusTensor σ J (γ : Matrix n n E) β).2).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_centRat {σ : E →ₐ[F] E} {J : Matrix n n E} {γ : GL n E} (h : IsRegular σ J γ)
     (β : plusAlg σ J (γ : Matrix n n E) ⊗[F] E) (hβ : β * tConj _ σ β = 1) :
@@ -95,15 +95,13 @@ theorem exists_centRat {σ : E →ₐ[F] E} {J : Matrix n n E} {γ : GL n E} (h 
   exact (commute_of_mem_genAlg rfl (plusTensor σ J (γ : Matrix n n E) β).2).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n _ _ σ J γ h _ _ hP hN`. Take `⟨D, hD, hu⟩` from `hN`. Use `letI : TopologicalSpace (E ⊗[F] AdeleRing (𝓞 F) F) := Formalism.BasicNotions.tensTopL (F := F) (E := E) (AdeleRing (𝓞 F) F)`. Use `letI : TopologicalSpace ((plusAlg σ J (γ : Matrix n n E) ⊗[F] E) ⊗[F] AdeleRing (𝓞 F) F) := Formalism.BasicNotions.tensTopL (F := F) (E := plusAlg σ J (γ : Matrix n n E) ⊗[F] E) (AdeleRing (𝓞 F) F)`. Set `a` to `Algebra.TensorProduct.assoc F F F (plusAlg σ J (γ : Matrix n n E)) E (AdeleRing (𝓞 F) F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hc : Continuous fun x => toMat σ J (γ : Matrix n n E) (AdeleRing (𝓞 F) F) (a x)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [a, toMat_assoc_apply]`. Conclude with `continuous_rTensor _ _`. Use `⟨_, hD.image hc, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu1, hug⟩` from `((hP (AdeleRing (𝓞 F) F)).2.2 g).1 hg`. Take `⟨x, hx⟩` from `a.surjective u`. Take `⟨β, hβ, hxβ⟩` from `hu x (a.injective (by`. Rewrite using `[map_mul, map_one, assoc_sigR]`. Express the relevant statement in the definitionally equal form `a x * tConj3 _ σ _ (a x) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `hu1))`. Take `⟨δ, hδ, hδβ⟩` from `exists_centRat h β hβ`. Use `⟨δ, hδ, _, hxβ, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
-
-Rewrite using `[map_mul, map_mul, hx, hug, toMat_assoc_inclE, hδβ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matOfNormBounded : MatOfNormBounded := by
   intro F E _ _ _ _ n _ _ σ J γ h _ _ hP hN

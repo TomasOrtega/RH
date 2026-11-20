@@ -28,14 +28,14 @@ def TateH1FinitenessAt (_PD : PeriodData G Qp K₀ K B BdR) : Prop :=
   ∀ (A : GRep G Qp LL O) (LA : Lattice (O := O) A.ρ), Module.Finite O (LatticeCohomology LA)
 
 /- English proof (translation)
-The claim follows from `h LL O hO`.
+A detailed English derivation is pending.
 -/
 theorem bkAAt_of_core [TopologicalSpace Qp] (h : bkACore PD) (hO : GoodO (Qp := Qp) LL O) :
     bkAAt PD LL O :=
   h LL O hO
 
 /- English proof (translation)
-The claim follows from `h LL O hO`.
+A detailed English derivation is pending.
 -/
 theorem tate_h1_finite_of_all_coefficients [TopologicalSpace Qp] (h : TateFiniteness PD) (hO : GoodO (Qp := Qp) LL O) :
     TateH1FinitenessAt LL O PD :=
@@ -46,7 +46,7 @@ end Lit
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨C.LL.2, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Om (D.nd.l i)) (x : Br.Kw D.nbr i w hw), τ x ∈ C.LL.1` using `fun τ x => C.le ((D.nbr i w hw).LL_split τ x)`. Set `e : (Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) ≃ (Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Om (D.nd.l i))` to `{ toFun := fun f => C.LL.1.val.comp f invFun := fun τ => τ.codRestrict C.LL.1.toSubalgebra (hmem τ) left_inv := fun f => by ext x; rfl right_inv := fun τ => by ext x; rfl }`. Rewrite using `[Fintype.card_congr e]`. Conclude with `AlgHom.card _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splits_coef {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw) :
@@ -112,7 +112,7 @@ def admitted : Prop :=
 end Pt
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ, ih, Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero m) (Nat.factorial_ne_zero m), add_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_padicValNat_range (p : ℕ) [Fact p.Prime] (n : ℕ) :
     ∑ k ∈ Finset.range (n + 1), padicValNat p k = padicValNat p n.factorial := by
@@ -123,13 +123,13 @@ theorem sum_padicValNat_range (p : ℕ) [Fact p.Prime] (n : ℕ) :
       padicValNat.mul (Nat.succ_ne_zero m) (Nat.factorial_ne_zero m), add_comm]
 
 /- English proof (translation)
-Establish `h1 : D.nd.vdel i ≤ ∑ k ∈ Finset.range D.R.t, ((D.nd.s0 i : ℚ) + (padicValNat (D.nd.l i) k : ℚ))`. Unfold `NData.vdel`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `k hk`. Conclude with `Finset.mem_range.2 (Finset.mem_Ioo.1 hk).2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ _`. Check the signs of the components of the expression. Establish `h2 : (∑ k ∈ Finset.range D.R.t, padicValNat (D.nd.l i) k) ≤ padicValNat (D.nd.l i) D.R.t.factorial`. Break down `Nat.eq_zero_or_pos D.R.t with h0 | hpos` into its components or cases. Simplify using `[h0]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hpos.ne'`. Rewrite using `[hm, Nat.succ_eq_add_one, sum_padicValNat_range, Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero m) (Nat.factorial_ne_zero m)]`. Conclude with `Nat.le_add_left _ _`. Establish `h3 : (∑ k ∈ Finset.range D.R.t, ((D.nd.s0 i : ℚ) + (padicValNat (D.nd.l i) k : ℚ))) = (D.R.t : ℚ) * (D.nd.s0 i : ℚ) + ((∑ k ∈ Finset.range D.R.t, padicValNat (D.nd.l i) k : ℕ) : ℚ)`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, Nat.cast_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : ((∑ k ∈ Finset.range D.R.t, padicValNat (D.nd.l i) k : ℕ) : ℚ) ≤ (padicValNat (D.nd.l i) D.R.t.factorial : ℚ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem vdel_le (i : D.nd.Loc) :
     D.nd.vdel i ≤ (D.R.t : ℚ) * (D.nd.s0 i : ℚ) + (padicValNat (D.nd.l i) D.R.t.factorial : ℚ) := by
@@ -180,7 +180,7 @@ def HodgeTateFromSandwich (D : D7) : Prop := ∀ i : D.nd.Loc, Conclusion2 i
 def Stmt (D : D7) : Prop := IntegralityFromMetric D ∧ HodgeTateFromSandwich D
 
 /- English proof (translation)
-Take `⟨-, -, -, -, g1, g2, g3, g4, -, g5, g5x, g6, bk, -, ct, ss, dcm, ep, tie, sh, fo, h2, -, cft⟩` from `h`. Conclude with `⟨g1, g2, g3, g4, g5, g5x, g6, bk, hT, hR, hL, ct, ss, dcm, ep, tie, sh, fo, h2, cft⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypotheses_of_local_inputs {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))}
     {ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))} {π : D.nd.X i}
@@ -192,14 +192,14 @@ theorem hypotheses_of_local_inputs {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →
   exact ⟨g1, g2, g3, g4, g5, g5x, g6, bk, hT, hR, hL, ct, ss, dcm, ep, tie, sh, fo, h2, cft⟩
 
 /- English proof (translation)
-Introduce `i r ρ π dc lenRow e' cB hG hA _ hR hL hT` and use `h i r ρ π dc lenRow e' cB hG (hypotheses_of_local_inputs hA hR hL hT)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem positive_case_of_general (h : Formalism.MainNotions.TruncatedSeriesCountingIdentities.IntegralityFromMetric D) : IntegralityFromMetric D :=
   fun i r ρ π dc lenRow e' cB hG hA _ hR hL hT =>
     h i r ρ π dc lenRow e' cB hG (hypotheses_of_local_inputs hA hR hL hT)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[D.Z_tie]`. Rewrite `hx` using `[D.Zgood_tie]`. Conclude with `hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zgoodSubsetZ (i : D.nd.Loc) : D.nd.Zgood i ⊆ D.nd.Z i := by
   intro x hx
@@ -208,13 +208,13 @@ theorem zgoodSubsetZ (i : D.nd.Loc) : D.nd.Zgood i ⊆ D.nd.Z i := by
   exact hx.1
 
 /- English proof (translation)
-Introduce `i α A hA hc h1 h0` and use `h i (D.nd.Zgood i) (zgoodSubsetZ i) α A hA hc h1 h0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem endomorphism_bound_at_good_points (h : Formalism.MainNotions.TruncatedSeriesCountingIdentities.HodgeTateFromSandwich D) : HodgeTateFromSandwich D :=
   fun i α A hA hc h1 h0 => h i (D.nd.Zgood i) (zgoodSubsetZ i) α A hA hc h1 h0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨positive_case_of_general h.1, endomorphism_bound_at_good_points h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem global_theorems_of_general (h : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Stmt D) : Stmt D :=
   ⟨positive_case_of_general h.1, endomorphism_bound_at_good_points h.2⟩

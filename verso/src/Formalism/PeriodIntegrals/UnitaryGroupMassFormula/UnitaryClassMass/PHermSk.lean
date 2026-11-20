@@ -59,25 +59,21 @@ def sigFix {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) :
   { (σ : E →+* E) with commutes' := fun r => r.2 }
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hS hN hL0 N hNg P hP`. Establish `hσσ : ∀ e, σ (σ e) = e` using `fun e => by rw [hσ, hσ, star_star]`. Take `⟨hH, hdet⟩` from `hG F E σ hσ V h M b hS hN`. Use `set J := gramOf h b with hJ`. Set `K0 : Subfield E` to `Fix (σ : E →+* E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σ0 : E →ₐ[K0] E` to `sigFix σ`. Establish `hσ0 : ∀ e, σ0 e = σ e` using `fun _ => rfl`. Establish `hσσ0 : ∀ e, σ0 (σ0 e) = e` using `fun e => hσσ e`. Establish `hθ0 : ∃ θ, σ0 θ ≠ θ` using `hθ`. Establish `hH0 : PI.UnitaryApproxDefs.IsHerm (σ0 : E →+* E) J` using `hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ e, σ0 e = e → ∃ c : K0, algebraMap K0 E c = e` using `fun e he => ⟨⟨e, he⟩, rfl⟩`. Establish `hσstar : ∀ a, σ0 a = star a` using `fun a => hσ a`. Establish `wit : ∀ p : P, ∃ u ∈ isom h, gmap u (loc (K` using `E) (p : Ideal (𝓞 E)) L0) = loc (K := E) (p : Ideal (𝓞 E)) N := fun p => hNg.2 p (hP p p.2)`. Use `choose u hu hul using wit`. Set `g : P → GL (Fin M) E` to `fun p => matGL b (u p)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : ∀ p, g p ∈ PI.UnitaryApproxDefs.UJ (σ0 : E →+* E) J` using `fun p => matGL_mem σ hσ h b (hu p)`. Set `w : P → HeightOneSpectrum (𝓞 K0)` to `fun p => ⟨(p : Ideal (𝓞 E)).comap (algebraMap (𝓞 K0) (𝓞 E)), by have := (hP _ p.2).isPrime; infer_instance, hW K0 E _ (hP _ p.2)⟩`. Set `T : Finset (HeightOneSpectrum (𝓞 K0))` to `Finset.univ.image w`. Set `gl : (t : HeightOneSpectrum (𝓞 K0)) → GL (Fin M) (E ⊗[K0] t.adicCompletion K0)` to `fun t => if hx : ∃ p, w p = t then Units.map ((PI.UnitaryApproxDefs.inclE (F := K0) (E := E) (t.adicCompletion K0)).mapMatrix : Matrix (Fin M) (Fin M) E →+* Matrix (Fin M) (Fin M) (E ⊗[K0] t.adicCompletion K0)).toMonoidHom (g (Classical.choose hx)) else 1`. Establish `hgl : ∀ t ∈ T, gl t ∈ PI.UnitaryApproxDefs.UPts σ0 J (t.adicCompletion K0)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `t _`. Distinguish the cases in `hx : ∃ p, w p = t`. Simplify using `only [gl, dif_pos hx]`. Conclude with `hB K0 E σ0 M J _ _ (hg _)`. Simplify using `only [gl, dif_neg hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `one_mem _`. Establish `hCp` using `fun p : P => hC K0 E σ0 V M J b L0 hσσ0 hH0 hdet hL0 (g p) (hg p)`. Use `choose D hD0 hDcl using hCp`. Set `Dall : 𝓞 K0` to `∏ p, D p`. Establish `hDall : Dall ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p _ => hD0 p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hc⟩` from `unitary_approximation_finite K0 E (Fin M) σ0 J hσσ0 hθ0 hH0 hdet T gl hgl Dall hDall`. Use `⟨⟨γ, hγ⟩, fun q hq => ?_⟩` and prove the remaining obligations. Set `q' : P` to `⟨q, hq⟩`. Establish `hx : ∃ p, w p = w q'` using `⟨q', rfl⟩`. Use `set ps := Classical.choose hx with hps`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpw : w ps = w q'` using `Classical.choose_spec hx`. Establish `hT : w q' ∈ T` using `Finset.mem_image_of_mem w (Finset.mem_univ _)`. Establish `hcong` using `hc (w q') hT`. Establish `hglq : gl (w q') = Units.map ((PI.UnitaryApproxDefs.inclE (F` using `K0) (E := E) ((w q').adicCompletion K0)).mapMatrix : Matrix (Fin M) (Fin M) E →+* Matrix (Fin M) (Fin M) (E ⊗[K0] (w q').adicCompletion K0)).toMonoidHom (g ps) := dif_pos hx`. Rewrite `hcong` using `[hglq]`.
-
-Establish `hcl` using `hDcl ps Dall (Finset.dvd_prod_of_mem _ (Finset.mem_univ _)) γ hγ (w q') hcong`. Establish `eq1` using `hL K0 E σ0 hσstar hfix V q (hP q hq) (w q') rfl`. Establish `eq2` using `hL K0 E σ0 hσstar hfix V (ps : Ideal (𝓞 E)) (hP _ ps.2) (w q') (by rw [← hpw])`. Use `show loc (K := E) q (gmap (linOf b γ) L0) = loc (K := E) q N`. Rewrite using `[eq1, eq1, hcl, ← eq2, ← eq2, linOf_matGL, locGmapStep E V (u ps) (ps : Ideal (𝓞 E)) L0]`.
-
-Conclude with `hul ps`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermApprox_of (hL : LocSw) (hC : CloseLoc) (hW : WPlace) (hB : BcU) (hG : GramOK) :
     HermApprox := by

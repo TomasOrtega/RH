@@ -45,13 +45,11 @@ def AbelianDieudonne : Prop :=
 namespace AbelianDieudonne
 
 /- English proof (translation)
-Take `⟨M, map, F, V, red, h1, h2, h3⟩` from `H p k`. Take `⟨hfree, hfin, hrk, -, hVF, hs, hk, -, hid⟩` from `h1 A g hA hg`. Take `⟨hnat, hadd⟩` from `h2 A A hA hA`. Establish `hc : ∀ {f f' : A ⟶ A} [IsMonHom f] [IsMonHom f'], f = f' → map f = map f'`. Introduce `f f' _ _ e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `e` using the available equality. Both sides reduce to the same expression. Use `a.hom` as an intermediate fact. Set `ρ : O →+* Module.End (WittVector p k) (M A)` to `RingHom.mk' { toFun x := map (a.act x) map_one' := (hc a.one).trans hid map_mul' x y := (hc ((congrArg a.act (mul_comm x y)).trans (a.mul y x))).trans (h3 A A A hA hA hA _ _) } fun x y ↦ by`. Establish `: IsMonHom (a.act x * a.act y)` using `a.add x y ▸ a.hom _`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hc (a.add x y)).trans (hadd _ _)`. Use `⟨M A, inferInstance, inferInstance, ρ, F A, red A, hfree, hfin, hrk, ?_, fun x m ↦ (hnat _ m).1, hs, hk, fun x m ↦ (hnat _ m).2.2⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun m hm ↦ ?_` and prove the remaining obligations. Establish `e` using `hVF m`. Rewrite `e` using `[hm, map_zero, ← Nat.cast_smul_eq_nsmul (WittVector p k)]`.
-
-Conclude with `(smul_eq_zero.1 e.symm).resolve_left (WittVector.p_nonzero p k)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_action (H : AbelianDieudonne) (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p]
     [PerfectRing k p] {A : Over (Sp k)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)

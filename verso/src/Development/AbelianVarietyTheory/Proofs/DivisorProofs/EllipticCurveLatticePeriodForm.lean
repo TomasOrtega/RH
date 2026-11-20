@@ -18,7 +18,7 @@ open scoped UpperHalfPlane
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.j, ← WeierstrassCurve.coe_Δ', mul_comm]`. Conclude with `_root_.Units.mul_inv_cancel_left W.Δ' _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_mul_Δ_eq (F : Type) [Field F] (W : WeierstrassCurve F) [W.IsElliptic] :
     W.j * W.Δ = W.c₄ ^ 3 := by
@@ -26,9 +26,9 @@ theorem j_mul_Δ_eq (F : Type) [Field F] (W : WeierstrassCurve F) [W.IsElliptic]
   exact _root_.Units.mul_inv_cancel_left W.Δ' _
 
 /- English proof (translation)
-Establish `him : τ.im ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Complex.re h`. Simplify using `[pow_two, h0] at h1`. Establish `: (0 : ℝ) < d` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg τ.re]`. Break down `lt_or_gt_of_ne him with hn | hp` into its components or cases. Conclude with `⟨⟨-τ, by simpa using hn⟩, Or.inr rfl⟩`. Conclude with `⟨⟨τ, hp⟩, Or.inl rfl⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_upper_of_sq_eq_neg {d : ℕ} {τ : ℂ} (hd : 0 < d) (h : τ ^ 2 = -(d : ℂ)) :
     ∃ τ₀ : ℍ, (τ₀ : ℂ) = τ ∨ (τ₀ : ℂ) = -τ := by
@@ -43,7 +43,7 @@ theorem exists_upper_of_sq_eq_neg {d : ℕ} {τ : ℂ} (hd : 0 < d) (h : τ ^ 2 
   · exact ⟨⟨τ, hp⟩, Or.inl rfl⟩
 
 /- English proof (translation)
-Establish `hi : _root_.IsIntegral ℤ (modularJ τ₀)` using `isIntegral_modularJ_of_quadratic (a := 1) (b := 0) (c := d) one_ne_zero (by push_cast; rw [h]; ring)`. Conclude with `mem_algebraicClosure_iff.2 (hi.tower_top (A := ℚ)).isAlgebraic`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modularJ_mem_Qb {d : ℕ} {τ₀ : ℍ} (h : (τ₀ : ℂ) ^ 2 = -(d : ℂ)) :
     modularJ τ₀ ∈ algebraicClosure ℚ ℂ := by
@@ -54,21 +54,21 @@ theorem modularJ_mem_Qb {d : ℕ} {τ₀ : ℍ} (h : (τ₀ : ℂ) ^ 2 = -(d : �
 end GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `d τ hd hτ`. Take `⟨τ₀, hτ₀⟩` from `GlobalTheory.CMModel.exists_upper_of_sq_eq_neg hd hτ`. Apply the tactic sequence `have hτ₀2 : (τ₀ : ℂ) ^ 2 = -(d : ℂ) := by rcases hτ₀ with e | e <;> rw [e] <;> simp [hτ]`. Set `j : Qb` to `⟨GlobalTheory.modularJ τ₀, GlobalTheory.CMModel.modularJ_mem_Qb hτ₀2⟩`. Set `W : WeierstrassCurve Qb` to `WeierstrassCurve.ofJ j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hWj : W.j = j` using `WeierstrassCurve.ofJ_j j`. Establish `hΔ : IsUnit W.Δ` using `(inferInstance : W.IsElliptic).isUnit`. Take `⟨P, v, Lf, ⟨hg, hv, -, hU'⟩, hLf⟩` from `GlobalTheory.exists_polAV_latticeFamily GlobalTheory.thetaUnifAV_all GlobalTheory.polBaseChange_holds Qb W hΔ`. Set `s : Qb →+* ℂ` to `algebraMap Qb ℂ`. Take `⟨P', φ, h⟩` from `GlobalTheory.exists_isPolFibre GlobalTheory.polBaseChange_holds s P`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv', -⟩` from `GlobalTheory.existsUnique_isVecOver h.2.1.1 v`. Take `⟨rig, hrig⟩` from `P'.rigid`. Take `⟨u, -, -, -, -, -, hd', -⟩` from `GlobalTheory.thetaUnifAV_all P' rig hrig`. Take `⟨w, hw, -⟩` from `hd' v' (hv'.isTangent h.2.1 (hv.1 0))`. Take `⟨hw0, hmem⟩` from `hU' s P' φ v' u w h hv' hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj : s W.j = (GlobalTheory.latticeCurve (GlobalTheory.periodPairOfTau τ₀)).j`. Rewrite using `[hWj, GlobalTheory.latticeCurve_j one_ne_zero (GlobalTheory.mem_lattice_periodPairOfTau τ₀)]`. Both sides reduce to the same expression. Establish `e1` using `congrArg s (GlobalTheory.CMModel.j_mul_Δ_eq Qb W)`. Rewrite `e1` using `[map_mul, map_pow, hj, (hLf s).1, (hLf s).2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `GlobalTheory.CMModel.j_mul_Δ_eq ℂ (GlobalTheory.latticeCurve (GlobalTheory.periodPairOfTau τ₀))`. Rewrite `e2` using `[GlobalTheory.latticeCurve_Δ, GlobalTheory.latticeCurve_c₄]`. Establish `key : (GlobalTheory.periodPairOfTau τ₀).g₂ ^ 3 * ((Lf s).g₂ ^ 3 - 27 * (Lf s).g₃ ^ 2) = (Lf s).g₂ ^ 3 * ((GlobalTheory.periodPairOfTau τ₀).g₂ ^ 3 - 27 * (GlobalTheory.periodPairOfTau τ₀).g₃ ^ 2)`. Take the linear combination `(((GlobalTheory.periodPairOfTau τ₀).g₂ ^ 3 - 27 * (GlobalTheory.periodPairOfTau τ₀).g₃ ^ 2) * e1 - ((Lf s).g₂ ^ 3 - 27 * (Lf s).g₃ ^ 2) * e2) / 1728`. Take `⟨c, hc0, hc⟩` from `(GlobalTheory.lattice_determined_by_invariants (GlobalTheory.periodPairOfTau τ₀) (Lf s)).2 key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Consider the cases of `P' with | mk A' isAb' g' sm' L' isLB' rig' sym' amp' kt' => ?_`. Establish `e : g' = 1` using `h.1.trans hg`. Substitute `e` using the available equality. Establish `hw00 : w 0 ≠ 0` using `fun h0 => hw0 (funext fun i => by fin_cases i; exact h0)`. Use `⟨P.A, inferInstance, A', inferInstance, φ, L', u, w 0 * c, P.isAb, hg ▸ P.smoothDim, h.2.1, isLB', mul_ne_zero hw00 hc0, fun z hz => ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : z = (z 0 / w 0) • w` using `funext fun i => by fin_cases i`. Simplify using `[hw00]`. Take `⟨x, hx, hxz⟩` from `(hc _).1 ((hmem (z 0 / w 0)).2 (hz' ▸ hz))`. Take `⟨m, n, rfl⟩` from `(GlobalTheory.mem_lattice_periodPairOfTau τ₀ x).1 hx`. Establish `hz0 : z 0 = w 0 * c * (1 * (m * (τ₀ : ℂ) + n))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_assoc, ← hxz]`. Clear the denominators using the available nonvanishing facts. Break down `hτ₀ with e | e` into its components or cases. Conclude with `⟨n, m, by rw [hz0, e]; ring⟩`. Conclude with `⟨n, -m, by rw [hz0, e]; push_cast; ring⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CMModel.exists_curve_lattice :
     ∀ (d : ℕ) (τ : ℂ), 0 < d → τ ^ 2 = -(d : ℂ) →

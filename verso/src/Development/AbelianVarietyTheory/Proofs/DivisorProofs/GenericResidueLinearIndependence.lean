@@ -7,9 +7,9 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Rewrite `hx` using `[pow_two]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `q.add_mem (q.mul_mem_right _ hm) (q.mul_mem_right _ hn)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `q.add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_mem_of_mem_sq {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
     (δ : Derivation k A A) (q : Ideal A) {x : A} (hx : x ∈ q ^ 2) : δ x ∈ q := by
@@ -22,7 +22,7 @@ theorem derivation_mem_of_mem_sq {k A : Type} [CommRing k] [CommRing A] [Algebra
     rw [map_add]; exact q.add_mem hx hy
 
 /- English proof (translation)
-Rewrite using `[residue_eq_zero_iff]`. Use `conv_rhs => rw [← IsLocalization.AtPrime.under_maximalIdeal R q]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem residue_algebraMap_eq_zero_iff_mem {A R : Type} [CommRing A] [CommRing R] [IsLocalRing R]
     [Algebra A R] (q : Ideal A) [q.IsPrime] [IsLocalization.AtPrime R q] (x : A) :
@@ -32,23 +32,21 @@ theorem residue_algebraMap_eq_zero_iff_mem {A R : Type} [CommRing A] [CommRing R
   rfl
 
 /- English proof (translation)
-Use `set ψ : A →+* ResidueField R := (residue R).comp (algebraMap A R) with hψdef`. Establish `hψ : ∀ x, ψ x = 0 ↔ x ∈ q` using `fun x => residue_algebraMap_eq_zero_iff_mem q x`. Establish `hgq : ∀ j, g j ∈ q` using `fun j => (hψ _).1 ((residue_eq_zero_iff _).2 (hg j))`. Use `set r : κ → R := fun j => (residue_surjective (c j)).choose with hr`. Establish `hrc : ∀ j, residue R (r j) = c j` using `fun j => (residue_surjective (c j)).choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples q.primeCompl J r`. Establish `hb' : ∀ i ∈ J, ∃ x : A, algebraMap A R x = (b : A) • r i` using `fun i hi => hb i hi`. Use `choose! a ha using hb'`. Establish `hb0 : ψ b ≠ 0` using `fun h => b.2 ((hψ _).1 h)`. Establish `hψa : ∀ j ∈ J, ψ (a j) = ψ b * c j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j hj`. Simplify using `only [hψdef, RingHom.comp_apply, ha j hj, Algebra.smul_def, map_mul, hrc]`. Use `set y : A := ∑ j ∈ J, a j * g j with hy`. Establish `hyq : y ∈ q` using `q.sum_mem fun j _ => q.mul_mem_left _ (hgq j)`. Establish `hT : (maximalIdeal R).toCotangent (∑ j ∈ J, algebraMap A R (a j) • (⟨_, hg j⟩ : maximalIdeal R)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Establish `: ∀ j ∈ J, (maximalIdeal R).toCotangent (algebraMap A R (a j) • (⟨_, hg j⟩ : maximalIdeal R)) = ψ b • (c j • (maximalIdeal R).toCotangent ⟨_, hg j⟩)`. Introduce `j hj`. Rewrite using `[map_smul, smul_smul, ← hψa j hj]`. Conclude with `(algebraMap_smul (ResidueField R) (algebraMap A R (a j)) _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl this, ← Finset.smul_sum, hrel, smul_zero]`. Rewrite `hT` using `[Ideal.toCotangent_eq_zero]`. Establish `hcoe : ((∑ j ∈ J, algebraMap A R (a j) • (⟨_, hg j⟩ : maximalIdeal R) : maximalIdeal R) : R) = algebraMap A R y`. Simplify using `[hy, Submodule.coe_sum, map_sum, map_mul, Algebra.smul_def]`. Rewrite `hT` using `[hcoe, ← IsLocalization.AtPrime.map_eq_maximalIdeal q R, ← Ideal.map_pow, IsLocalization.mem_map_algebraMap_iff q.primeCompl R]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨x, s⟩, hxs⟩` from `hT`. Rewrite `hxs` using `[← map_mul, IsLocalization.eq_iff_exists q.primeCompl R]`. Take `⟨t, ht⟩` from `hxs`. Establish `hz : (t : A) * (y * s) ∈ q ^ 2` using `ht ▸ Ideal.mul_mem_left _ _ x.2`. Establish `hδz` using `(hψ _).2 (derivation_mem_of_mem_sq δ q hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs0 : ψ s ≠ 0` using `fun h => s.2 ((hψ _).1 h)`. Establish `ht0 : ψ t ≠ 0` using `fun h => t.2 ((hψ _).1 h)`. Establish `hy0 : ψ y = 0` using `(hψ _).2 hyq`. Establish `hδy : ψ (δ y) = 0`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, hy0] at hδz`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hδz` using `[hs0, ht0]`. Establish `hg0 : ∀ j, ψ (g j) = 0` using `fun j => (hψ _).2 (hgq j)`. Rewrite `hδy` using `[hy, map_sum, map_sum]`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, hg0, zero_mul, add_zero] at hδy`. Rewrite `hδy` using `[Finset.sum_congr rfl (fun j hj => by rw [hψa j hj, mul_assoc]), ← Finset.mul_sum]`.
-
-Conclude with `(mul_eq_zero.1 hδy).resolve_left hb0`.
+A detailed English derivation is pending.
 -/
 theorem cotangent_relation_derivation {k A R : Type} [CommRing k] [CommRing A] [Algebra k A]
     (q : Ideal A) [q.IsPrime] [CommRing R] [IsLocalRing R] [Algebra A R]
@@ -110,23 +108,21 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ ι _ f M`. Take `⟨n, δ, ω, hD⟩` from `GlobalTheory.T.exists_derivation_split_kaehlerD_smooth k A`. Establish `hC` using `fun (J : Finset (Fin M)) (i₀ : Fin M) (p₀ : ι) (h : i₀ ∈ J) => GlobalTheory.T.bertini_general_members_no_derivative_relation k A n δ ω hD f M J i₀ p₀ h`. Set `Qf : Finset (Fin M) × Fin M × ι → MvPolynomial (Fin M × ι) k` to `fun x => if h : x.2.1 ∈ x.1 then (hC x.1 x.2.1 x.2.2 h).choose else 1`. Use `⟨∏ x, Qf x, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `x _`. Simplify using `only [Qf]`. Use `split_ifs with h`. Conclude with `(hC _ _ _ h).choose_spec.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero`. Introduce `u hu q _ R _ _ _ _ hp`. Take `⟨p₀, hp₀⟩` from `hp`. Rewrite `hu` using `[map_prod, Finset.prod_ne_zero_iff]`. Rewrite using `[linearIndependent_iff']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Introduce `s w hw i₀ hi₀`. Assume the negation of the conclusion as `hne`. Set `ψ : A →+* ResidueField R` to `(residue R).comp (algebraMap A R)`. Use `letI : Algebra k (ResidueField R) := (ψ.comp (algebraMap k A)).toAlgebra`. Set `φ : A →ₐ[k] ResidueField R` to `{ ψ with commutes' := fun _ => rfl }`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J : Finset (Fin M)` to `s.map (Function.Embedding.subtype _)`. Set `c : Fin M → ResidueField R` to `fun j => if h : algebraMap A R (∑ p, u (j, p) • f p) ∈ maximalIdeal R then w ⟨j, h⟩ / w i₀ else 0`. Establish `hJ : i₀.1 ∈ J` using `Finset.mem_map_of_mem _ hi₀`. Establish `hx` using `hu (J, i₀.1, p₀) (Finset.mem_univ _)`. Simplify using `only [Qf, dif_pos hJ] at hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Use `(hC J i₀.1 p₀ hJ).choose_spec.2 u hx (ResidueField R) φ c ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun h => hp₀ ((residue_algebraMap_eq_zero_iff_mem q _).1 h)`. Use `show c i₀.1 = 1`. Rewrite using `[show c i₀.1 = w i₀ / w i₀ from dif_pos i₀.2]`. Conclude with `div_self hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `i hi`. Take `⟨j, _, rfl⟩` from `Finset.mem_map.1 hi`. Conclude with `(residue_eq_zero_iff _).2 j.2`. Introduce `l`. Establish `hrel : ∑ j ∈ s, (w j / w i₀) • (maximalIdeal R).toCotangent ⟨_, j.2⟩ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[div_eq_mul_inv, mul_comm _ (w i₀)⁻¹, mul_smul]`. Rewrite using `[← Finset.smul_sum, hw, smul_zero]`. Establish `key` using `cotangent_relation_derivation q (δ l) s (fun j => ∑ p, u (j.1, p) • f p) (fun j => j.2) (fun j => w j / w i₀) hrel`. Rewrite using `[Finset.sum_map]`. Use `key using 2 with j hj` and compare the differences between its conclusion and the goal.
-
-Use `show c j.1 * φ _ = _`. Rewrite using `[show c j.1 = w j / w i₀ from dif_pos j.2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bertini_cotangent_independent : ∀ (k A : Type) [Field k] [CharZero k] [CommRing A] [Algebra k A] [Algebra.Smooth k A] {ι : Type} [Fintype ι] (f : ι → A) (M : ℕ), ∃ Q : MvPolynomial (Fin M × ι) k, Q ≠ 0 ∧ ∀ u : Fin M × ι → k, MvPolynomial.eval u Q ≠ 0 → ∀ (q : Ideal A) [q.IsPrime] (R : Type) [CommRing R] [IsLocalRing R] [Algebra A R] [IsLocalization.AtPrime R q], (∃ p, f p ∉ q) → LinearIndependent (IsLocalRing.ResidueField R) (fun j : {j : Fin M // algebraMap A R (∑ p, u (j, p) • f p) ∈ IsLocalRing.maximalIdeal R} => ((IsLocalRing.maximalIdeal R).toCotangent ⟨_, j.2⟩ : IsLocalRing.CotangentSpace R)) := by
   intro k A _ _ _ _ _ ι _ f M

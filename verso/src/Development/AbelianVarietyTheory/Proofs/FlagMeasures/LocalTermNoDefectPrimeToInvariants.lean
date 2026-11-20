@@ -22,11 +22,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Introduce `n hn`. Proceed by induction on `hn using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx.1`. Consider the case `one => intro a b`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `mul x y _ _ hx hy => intro a b`. Rewrite using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, hx, hy]`. Consider the case `inv x _ hx`. Introduce `a b`. Establish `hxx : ∀ v, x (x⁻¹ v) = v` using `fun v => by rw [← LinearEquiv.mul_apply, mul_inv_cancel]; rfl`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hx (x⁻¹ a) (x⁻¹ b), hxx, hxx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem N_unitary (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) : ∀ n ∈ Fr.N, IsUnitary H n := by
   intro n hn
@@ -40,13 +40,13 @@ theorem N_unitary (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) : ∀ n ∈ Fr.N,
     rw [← hx (x⁻¹ a) (x⁻¹ b), hxx, hxx]
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Take `⟨-, -, xz, hxz, hxzL, -⟩` from `hL`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Establish `h1 : ∀ a, H.h (Fr.f (Fin.last r)) (Fr.es a) = 0` using `fun a => by`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[H.h_herm (Fr.es a), Fr.h_sz, map_zero]`. Establish `h2 : ∀ a : Fin r, H.h (Fr.f (Fin.last r)) (Fr.e a) = 0` using `fun a => Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last a).ne)`. Use `⟨fun a => by rw [h1]; exact M.L.O.zero_mem, fun a => by rw [h2]; exact M.L.O.zero_mem, xz, ?_, hxzL⟩` and prove the remaining obligations. Simplify using `[FrameD.prF, h1, h2, hxz, FrameD.z]`. Consider the case `cast a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `h1 : ∀ c, H.h (Fr.f a.castSucc) (Fr.es c) = if a = c then 1 else 0` using `fun c => Fr.h_es a c`. Establish `h2 : ∀ c : Fin r, H.h (Fr.f a.castSucc) (Fr.e c) = 0` using `fun c => Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`. Use `⟨fun c => ?_, fun c => by rw [h2]; exact M.L.O.zero_mem, 0, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[h1]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `M.L.O.one_mem`. Conclude with `M.L.O.zero_mem`. Establish `h2' : ∀ c : Fin r, H.h (Fr.f a.castSucc) (Fr.f c.castSucc) = 0` using `h2`. Simplify using `[FrameD.prF, h1, h2', FrameD.e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_mem_lamStd (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) (L : Submodule M.L.O (H.Wb Fr.f))
     (hL : Fr.IsInner L) (b : Fin (r + 1)) : Fr.f b ∈ Fr.LamStd L := by
@@ -72,27 +72,23 @@ theorem frame_mem_lamStd (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) (L : Submo
       simp [FrameD.prF, h1, h2', FrameD.e]
 
 /- English proof (translation)
-Introduce and unpack `⟨v, hvΛ, hvE, hvO⟩`. Establish `hs : M.split = none` using `hP.1`. Establish `hMM : H.MMfam t = Sum.elim t.f t.f'`. Unfold `HermSp.MMfam`. Rewrite using `[hs]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hvE`, `hvO` using `[hMM]`. Take `⟨hT, hT', ⟨n, hn, hf, hΛ⟩, ⟨n', hn', hf', hΛ'⟩, -⟩` from `ht`. Establish `hu` using `N_unitary H P.A n hn`. Establish `hu'` using `N_unitary H P.B n' hn'`. Establish `hint : ∀ x ∈ t.abelian₂, ∀ y ∈ t.abelian₂, H.h x y ∈ M.L.O`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[hΛ]`. Take `⟨x0, hx0, rfl⟩` from `Submodule.mem_map.mp hx`. Take `⟨y0, hy0, rfl⟩` from `Submodule.mem_map.mp hy`. Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu]`. Conclude with `GlobalTheory.T.frameStandardLattice_hermitian_integral H P.A d.L d.hL x0 hx0 y0 hy0`. Establish `hmem : ∀ i, Sum.elim t.f t.f' i ∈ t.abelian₂`. Introduce and unpack `(b | b)`. Simplify using `only [Sum.elim_inl, hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΛ]`. Conclude with `Submodule.mem_map_of_mem (f := ((n : V →ₗ[E] V).restrictScalars M.L.O)) (frame_mem_lamStd H P.A d.L d.hL b)`. Simplify using `only [Sum.elim_inr, hf']`. Rewrite using `[hΛ']`. Conclude with `Submodule.mem_map_of_mem (f := ((n' : V →ₗ[E] V).restrictScalars M.L.O)) (frame_mem_lamStd H P.B d.L' d.hL' b)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hDl : ∀ l, H.Dl t.f t.f' l = H.Dl P.A.f P.B.f l`. Introduce `l`. Rewrite using `[hf, hf']`. Conclude with `GlobalTheory.T.pairingLeadingMinor_eq_of_unitriangular_changes H _ _ _ _ (GlobalTheory.T.isFamilyUnitriangularChange_of_mem_frameUnipotent H P.A n hn) (GlobalTheory.T.isFamilyUnitriangularChange_of_mem_frameUnipotent H P.B n' hn') l`. Establish `hG : H.Gdet t.f t.f' t.T t.T' = P.Gv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [HermSp.Gdet, hDl, hT, hT', FPair.Gv]`. Establish `hfr : ∀ (Fr : FrameD H r) (g : V ≃ₗ[E] V), IsUnitary H g → ∀ a b, H.h (g (Fr.f a)) (g (Fr.f b)) = if a = Fin.last r ∧ b = Fin.last r then -(algebraMap F E Fr.T) else 0`. Introduce `Fr g hg a b`. Rewrite using `[hg]`. Use `split_ifs with hab`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hab.1, hab.2]`. Conclude with `Fr.h_zz`. Apply `Fr.h_iso` to reduce the goal to its premises. The claim follows by propositional logic. Establish `hdet` using `GlobalTheory.T.gramDet_joinedFamily_eq_pm_norm_difference H t.f t.f' t.T t.T' (by intro a b; rw [hf, hT]; exact hfr P.A n hu a b) (by intro a b; rw [hf', hT']; exact hfr P.B n' hu' a b) (by rw [hDl]; exact hR.2.1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hdet` using `[hG]`. Establish `hU : IsUnitO M (H.gram (Sum.elim t.f t.f')).det`. Take `⟨h1, y, hy, hxy⟩` from `hP.2.1`. Break down `hdet with h | h` into its components or cases. Rewrite using `[h]`.
-
-Conclude with `⟨h1, y, hy, hxy⟩`. Rewrite using `[h]`. Use `⟨M.L.O.neg_mem h1, -y, M.L.O.neg_mem hy, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_mul_neg]`. Conclude with `hxy`.
-
-Conclude with `hvO (GlobalTheory.T.saturated_span_of_gramDet_isUnit_integralLattice H t.abelian₂ hint (Sum.elim t.f t.f') hmem hU v hvΛ hvE)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noDefect_gen (H : HermSp M V) {r : ℕ} (P : FPair H r) (hR : P.RelG (theta M)) (hP : P.PrimeTo)
     (d : Datum P) (t : Term V M r) (ht : IsTermOver P d t) : ¬ BBne (H := H) t := by
@@ -155,7 +151,7 @@ theorem noDefect_gen (H : HermSp M V) {r : ℕ} (P : FPair H r) (hR : P.RelG (th
 end Gen
 
 /- English proof (translation)
-Introduce `_ _ FP p hR hP d t ht` and use `noDefect_gen _ (FP p) hR hP d t ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem noDefect : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (p : PlF D), (FP p).RelG (LocNG.theta (Z.M p)) → (FP p).PrimeTo → ∀ (d : LocNG.Datum (FP p)) (t : Loc.Term (Vp D p) (Z.M p) D.R.rS), LocNG.IsTermOver (FP p) d t → ¬ LocNG.BBne (H := locH Z p) t :=
   fun _ _ FP p hR hP d t ht => noDefect_gen _ (FP p) hR hP d t ht

@@ -11,9 +11,9 @@ variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarT
 
 omit [NumberField K] [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Rewrite using `[Basis.det_apply, Basis.det_apply, ← Matrix.det_transpose, ← Matrix.det_transpose (b.toMatrix x)]`. Establish `e : Matrix.transpose (b.toMatrix (Function.update x i (∑ k, a k • x k))) = (Matrix.transpose (b.toMatrix x)).updateRow i (∑ k, a k • Matrix.transpose (b.toMatrix x) k)`. Use extensionality with `r s`. Break down `eq_or_ne r i with rfl | hr` into its components or cases. Simplify using `[Basis.toMatrix_apply, Matrix.updateRow_self, Finset.sum_apply, map_sum, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Basis.toMatrix_apply, Matrix.updateRow_ne hr, Function.update_apply, hr]`. Rewrite using `[e, Matrix.det_updateRow_sum, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_update_sum {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Basis ι K V) (x : ι → V)
     (a : ι → K) (i : ι) : b.det (Function.update x i (∑ k, a k • x k)) = a i * b.det x := by
@@ -28,17 +28,15 @@ theorem det_update_sum {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Basis ι 
   rw [e, Matrix.det_updateRow_sum, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hadd : ∀ π ∈ P, c + π ∉ P` using `fun π hπ h => hc (by simpa using P.sub_mem h hπ)`. Establish `hle2 : Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P ≤ P.comap (conjO K) := by`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `r ⟨s, hs, hrs⟩`. Use `show conjO K r ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : conjO K r = s`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Apply the tactic sequence `have e1 : algebraMap (𝓞 K) K (conjO K r) = star (algebraMap (𝓞 K) K r) := by first | rfl | simp [conjO]`. Rewrite using `[e1, hrs, star_star]`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs`. Establish `hne_top : Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P ≠ ⊤ := by`. Introduce `htop`. Establish `h1 : (1 : 𝓞 K) ∈ P.comap (conjO K)` using `hle2 (by rw [htop]; exact Submodule.mem_top)`. Rewrite `h1` using `[Ideal.mem_comap, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 h1)`. Distinguish the cases in `hc' : c ∈ Formalism.HermitianLatticesTheory.conjIdeal (K := K) P`. Establish `hnle : ¬ P ≤ Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P := by`. Introduce `hle`. Establish `hPe` using `hP.eq_of_le hne_top hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc (by rw [hPe]; exact hc')`. Take `⟨π, hπ, hπ'⟩` from `SetLike.not_le_iff_exists.1 hnle`. Use `⟨π, hπ, hadd π hπ, fun h => hπ' ?_⟩` and prove the remaining obligations. Establish `h3` using `(Formalism.HermitianLatticesTheory.conjIdeal (K := K) P).sub_mem h hc'`. Simplify using `using h3`.
-
-Conclude with `⟨0, P.zero_mem, by simpa using hc, by simpa using hc'⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_adjust (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {c : 𝓞 K}
     (hc : c ∉ P) : ∃ π ∈ P, c + π ∉ P ∧ c + π ∉ Formalism.HermitianLatticesTheory.conjIdeal (K := K) P := by
@@ -71,37 +69,33 @@ theorem exists_adjust (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : 
   · exact ⟨0, P.zero_mem, by simpa using hc, by simpa using hc'⟩
 
 /- English proof (translation)
-Use `discrIdeal_le b fun x hx z hz => ?_` and prove the remaining obligations. Establish `hxB : ∀ i, x i ∈ B` using `fun i => S.le (hx i)`. Distinguish the cases in `hδ : b.det x = 0`. Establish `: z = 0`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hz, hδ, mul_zero, map_zero]`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `hbas` using `(b.is_basis_iff_det).2 (isUnit_iff_ne_zero.2 hδ)`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hbas.2 ▸ Submodule.mem_top : y ∈ Submodule.span K (Set.range x))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : Option (Fin (finrank K V)) → K` to `fun o => o.elim 1 a`. Take `⟨t, c, hc, j, hj⟩` from `exists_prim f (j₀ := none) (by simp [f]) hP.ne_top`. Establish `hf0 : f none = 1` using `rfl`. Establish `hfs : ∀ i, f (some i) = a i` using `fun i => rfl`. Establish `hc0 : c none ∈ P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `S.mem_of_smul_mem hP` to reduce the goal to its premises. Establish `: c none • y = ∑ i, c (some i) • x i`. Rewrite using `[← algebraMap_smul K, hc none, ← ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (c (some i)), hc (some i), smul_smul, hf0, hfs, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `A.sum_mem fun i _ => A.smul_mem _ (hx i)`. Choose the witnesses or unpack the hypotheses as in `⟨i, rfl⟩ : ∃ i, j = some i := by`. Consider the cases of `j with`. Consider the case `none => exact absurd hc0 hj`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `some i => exact ⟨i, rfl⟩`. Establish `hδi : b.det (Function.update x i y) = a i * b.det x` using `by rw [← ha, det_update_sum]`. Establish `hrel : algebraMap (𝓞 K) K (c (some i)) * b.det x = algebraMap (𝓞 K) K (c none) * b.det (Function.update x i y)`. Rewrite using `[hc, hc, hδi, hf0, hfs]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hπ, hcP, hcQ⟩` from `exists_adjust hK hP hj`. Use `set c₁ := c (some i) + π with hc₁`. Use `set c₀ := c none with hc₀`. Establish `hcδ : algebraMap (𝓞 K) K c₁ * b.det x = algebraMap (𝓞 K) K c₀ * b.det (Function.update x i y) + algebraMap (𝓞 K) K π * b.det x`. Rewrite using `[hc₁, map_add, add_mul, hrel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hxk : ∀ k, k ≠ i → x k ∈ B` using `fun k _ => hxB k`. Establish `huy` using `update_mem hxk S.mem`. Take `⟨zyy, hyy⟩` from `exists_mixed hB b huy huy`. Take `⟨zyx, hyx⟩` from `exists_mixed hB b huy hxB`. Take `⟨zxy, hxy⟩` from `exists_mixed hB b hxB huy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `myy` using `mem_discrIdeal b huy hyy`. Establish `mxx` using `mem_discrIdeal b hxB hz`. Establish `myx : zyx ∈ discrIdeal h B` using `mixed_mem hK hB b hxk S.mem (hxB i) (by rw [Function.update_eq_self]; exact hyx)`. Establish `mxy : zxy ∈ discrIdeal h B` using `mixed_mem hK hB b hxk (hxB i) S.mem (by rw [Function.update_eq_self]; exact hxy)`. Establish `heq : conjO K c₁ * c₁ * z = conjO K c₀ * c₀ * zyy + conjO K c₀ * π * zyx + conjO K π * c₀ * zxy + conjO K π * π * z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Simplify using `only [map_add, map_mul, algebraMap_conjO, hz, hyy, hyx, hxy]`. Establish `h1 : star (algebraMap (𝓞 K) K c₁) * algebraMap (𝓞 K) K c₁ * (star (b.det x) * gdet h b * b.det x) = star (algebraMap (𝓞 K) K c₁ * b.det x) * gdet h b * (algebraMap (𝓞 K) K c₁ * b.det x)`. Rewrite using `[star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hcδ, star_add, star_mul', star_mul']`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : conjO K c₁ * c₁ ∈ col (P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P * discrIdeal h B) z := by`. Rewrite using `[mem_col, heq]`. Conclude with `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.add_mem _ (term_mem hc0 hc0 myy) (term_mem hc0 hπ myx)) (term_mem hπ hc0 mxy)) (term_mem hπ hπ mxx)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPP : P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P ≤ col (P * Formalism.HermitianLatticesTheory.conjIdeal (K := K) P * discrIdeal h B) z := fun r hr => Ideal.mul_mem_mul hr mxx`. Apply `mem_of_col_eq_top` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hcc : ∀ w : 𝓞 K, conjO K w ∈ P → w ∈ Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[conjIdeal_eq_comap, Ideal.mem_comap]`. Conclude with `hw`. Establish `hcc' : ∀ w : 𝓞 K, conjO K w ∈ Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P → w ∈ P := by`. Introduce `w hw`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hw` using `[conjIdeal_eq_comap, Ideal.mem_comap, conjO_conjO]`. Conclude with `hw`. Break down `hM.isPrime.mul_le.1 (hPP.trans hle) with h1 | h1` into its components or cases. Establish `hMP` using `hP.eq_of_le hM.ne_top h1`. Break down `hM.isPrime.mem_or_mem (hle hmem) with h2 | h2` into its components or cases.
-
-Conclude with `hcQ (hcc _ (hMP ▸ h2))`. Conclude with `hcP (hMP ▸ h2)`. Establish `hMP` using `(conjIdeal_isMaximal hK hP).eq_of_le hM.ne_top h1`. Break down `hM.isPrime.mem_or_mem (hle hmem) with h2 | h2` into its components or cases. Conclude with `hcP (hcc' _ (hMP ▸ h2))`.
-
-Conclude with `hcQ (hMP ▸ h2)`.
+A detailed English derivation is pending.
 -/
 theorem step_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K} {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) {A B : Submodule (𝓞 K) V} {y : V} (S : IsStep P A B y)
@@ -189,11 +183,11 @@ theorem step_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →�
 
 omit [StarRing K] [Module K V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Set `f : 𝓞 K →+ B.toAddSubgroup` to `{ toFun := fun c => ⟨c • y, B.smul_mem c S.mem⟩ map_zero' := by ext; simp map_add' := by intro a b; ext; simp [add_smul] }`. Set `g : 𝓞 K →+ B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup` to `(QuotientAddGroup.mk' _).comp f`. Establish `hg : Function.Surjective g`. Introduce `q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `S.gen x.1 x.2`. Use `⟨c, ?_⟩` and prove the remaining obligations. Simplify using `only [g, AddMonoidHom.comp_apply, QuotientAddGroup.mk'_apply]`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `hc` using `[f, neg_add_eq_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hker : g.ker = P.toAddSubgroup`. Use extensionality with `c`. Simplify using `only [AddMonoidHom.mem_ker, g, f, AddMonoidHom.comp_apply, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Conclude with `⟨fun h => S.mem_of_smul_mem hP h, fun h => S.smul c h⟩`. Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index_eq_card, ← Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective g hg).toEquiv, hker, Ideal.absNorm_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -226,33 +220,29 @@ theorem IsStep.relIndex {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {A B : Submodule
   rfl
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `A hAB hn hn0`. Distinguish the cases in `hBA : B ≤ A`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `: A = B` using `le_antisymm hAB hBA`. Substitute `this` using the available equality. Rewrite `hn` using `[AddSubgroup.relIndex_self]`. Rewrite using `[← hn, one_pow, one_mul]`. Take `⟨y₀, hy₀B, hy₀A⟩` from `SetLike.not_le_iff_exists.1 hBA`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `J : Ideal (𝓞 K)` to `A.comap (LinearMap.toSpanSingleton (𝓞 K) V y₀)`. Establish `hJ : ∀ c, c ∈ J ↔ c • y₀ ∈ A` using `fun c => Iff.rfl`. Establish `hJtop : J ≠ ⊤`. Introduce `hJt`. Establish `: (1 : 𝓞 K) ∈ J` using `hJt ▸ Submodule.mem_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hJ, one_smul]`. Conclude with `hy₀A this`. Establish `hJbot : J ≠ ⊥`. Introduce `hJb`. Take `⟨k, hk0, -, hk⟩` from `AddSubgroup.exists_nsmul_mem_of_relIndex_ne_zero (H := A.toAddSubgroup) (K := B.toAddSubgroup) (hn ▸ hn0) (a := y₀) hy₀B`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (k : 𝓞 K) ∈ J`. Rewrite using `[hJ, Nat.cast_smul_eq_nsmul]`. Conclude with `hk.1`. Rewrite `h1` using `[hJb, Ideal.mem_bot]`. Conclude with `hk0.ne' (by exact_mod_cast h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP, hJP⟩` from `Ideal.exists_le_maximal J hJtop`. Take `⟨J', hJ'⟩` from `Ideal.dvd_iff_le.2 hJP`. Establish `hJ'0 : J' ≠ 0`. Introduce and unpack `rfl`. Rewrite `hJ'` using `[mul_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hJbot hJ'`. Establish `hnle : ¬ J' ≤ J`. Introduce `hle`. Establish `h1 : P * J' = 1 * J'`. Rewrite using `[one_mul, ← hJ']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm (hJ' ▸ Ideal.mul_le_right) hle`. Conclude with `hP.ne_top (by rw [mul_right_cancel₀ hJ'0 h1, Ideal.one_eq_top])`. Take `⟨c, hcJ', hcJ⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `S : IsStep P A (A ⊔ Submodule.span (𝓞 K) {c • y₀}) (c • y₀)`. Use `⟨le_sup_left, Submodule.mem_sup_right (Submodule.mem_span_singleton_self _), hcJ, fun π hπ => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, ← hJ, hJ']`. Conclude with `Ideal.mul_mem_mul hπ hcJ'`. Take `⟨a, ha, w, hw, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨e, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Conclude with `⟨e, by rwa [add_sub_cancel_right]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA'B : A ⊔ Submodule.span (𝓞 K) {c • y₀} ≤ B` using `sup_le hAB ((Submodule.span_singleton_le_iff_mem _ _).2 (B.smul_mem c hy₀B))`. Establish `hA' : Formalism.HermitianLatticesTheory.IsIntegralLat h (A ⊔ Submodule.span (𝓞 K) {c • y₀})` using `fun x hx w hw => hB x (hA'B hx) w (hA'B hw)`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex A.toAddSubgroup (A ⊔ Submodule.span (𝓞 K) {c • y₀}).toAddSubgroup B.toAddSubgroup S.le hA'B`. Rewrite `hmul` using `[S.relIndex hP, hn]`. Establish `hq1 : Ideal.absNorm P ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `hP.ne_top`. Establish `hq0 : Ideal.absNorm P ≠ 0`. Introduce `h0`. Rewrite `hmul` using `[h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `hn0 hmul.symm`. Establish `hn'0 : (A ⊔ Submodule.span (𝓞 K) {c • y₀}).toAddSubgroup.relIndex B.toAddSubgroup ≠ 0`. Introduce `h0`. Rewrite `hmul` using `[h0, mul_zero]`. Conclude with `hn0 hmul.symm`.
-
-Establish `hlt : (A ⊔ Submodule.span (𝓞 K) {c • y₀}).toAddSubgroup.relIndex B.toAddSubgroup < n`. Rewrite using `[← hmul]`. Establish `h2 : 2 ≤ Ideal.absNorm P` using `by omega`. Use polynomial arithmetic with `[Nat.pos_of_ne_zero hn'0]`. Establish `hI : discrIdeal h A = P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P * discrIdeal h (A ⊔ Submodule.span (𝓞 K) {c • y₀}) := le_antisymm (step_le hK hP S hA' b) (step_ge hK hP S hA' b)`.
-
-Rewrite using `[hI, map_mul, map_mul, absNorm_conjIdeal hK, ih _ hlt _ hA'B rfl hn'0, ← hmul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem absNorm_discrIdeal_of_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     {B : Submodule (𝓞 K) V} (hB : Formalism.HermitianLatticesTheory.IsIntegralLat h B)

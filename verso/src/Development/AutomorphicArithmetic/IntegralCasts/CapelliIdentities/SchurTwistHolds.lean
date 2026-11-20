@@ -22,7 +22,7 @@ noncomputable def UpperTheory.Reformulated.B.H13.RepIso :
       ∃ (g : GL (Fin n) k), ∀ (s : Γ), (r' : Γ → GL (Fin n) k) s = g * (r : Γ → GL (Fin n) k) s * g⁻¹
 
 /- English proof (translation)
-Introduce `Γ k _ _ n r χ`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.H13.aux5 :
     ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ),
@@ -33,9 +33,9 @@ theorem UpperTheory.Reformulated.B.H13.aux5 :
   simp
 
 /- English proof (translation)
-Introduce `Γ k _ _ n r χ s t`. Establish `hc : ∀ (c : kˣ) (A : GL (Fin n) k), A * Matrix.GeneralLinearGroup.scalar (Fin n) c = Matrix.GeneralLinearGroup.scalar (Fin n) c * A`. Introduce `c A`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(Matrix.scalar_commute (c : k) (fun x => Commute.all _ _) (A : Matrix (Fin n) (Fin n) k)).eq.symm`. Rewrite using `[map_mul, map_mul, map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (r s), hc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H13.aux6 :
     ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ) (s t : Γ),
@@ -70,25 +70,25 @@ noncomputable def UpperTheory.Reformulated.B.H13.SchurTw :
         δ.comp φ = (1 : Γ' →* kˣ) → UpperTheory.Reformulated.B.H13.RepIso r (UpperTheory.Reformulated.B.H13.tw r δ) → δ = (1 : Γ →* kˣ)
 
 /- English proof (translation)
-Introduce `Γ Γ' k _ _ _ _ n r φ δ hirr hδ hiso`. Take `⟨hne, -, hmin⟩` from `hirr`. Take `⟨g, hg⟩` from `hiso`. Establish `hg' : ∀ s : Γ, Matrix.GeneralLinearGroup.scalar (Fin n) (δ s) * r s * g = g * r s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : Matrix.GeneralLinearGroup.scalar (Fin n) (δ s) * r s = g * r s * g⁻¹` using `hg s`. Rewrite using `[h, inv_mul_cancel_right]`. Establish `hcomm : ∀ t : Γ', r (φ t) * g = g * r (φ t)`. Introduce `t`. Establish `h1 : δ (φ t) = 1` using `DFunLike.congr_fun hδ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hg' (φ t)`. Rewrite `h` using `[h1, map_one, one_mul]`. Then use the resulting hypothesis. Use `haveI : Nontrivial (Fin n → k) := by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (Subsingleton.elim _ _)`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (g : Matrix (Fin n) (Fin n) k))`. Establish `hmem : ∀ v : Fin n → k, v ∈ Module.End.eigenspace (Matrix.toLin' (g : Matrix (Fin n) (Fin n) k)) c ↔ (g : Matrix (Fin n) (Fin n) k).mulVec v = c • v`. Introduce `v`. Rewrite using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htop : Module.End.eigenspace (Matrix.toLin' (g : Matrix (Fin n) (Fin n) k)) c = ⊤`. Use `(hmin _ le_top ?_).resolve_left hc` and prove the remaining obligations. Introduce `t v hv`. Rewrite `hv`, the goal using `[hmem]`. Establish `h : (r (φ t) : Matrix (Fin n) (Fin n) k) * (g : Matrix (Fin n) (Fin n) k) = (g : Matrix (Fin n) (Fin n) k) * (r (φ t) : Matrix (Fin n) (Fin n) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Units.val_mul, ← Units.val_mul, hcomm]`. Express the relevant statement in the definitionally equal form `(g : Matrix (Fin n) (Fin n) k).mulVec ((r (φ t) : Matrix (Fin n) (Fin n) k).mulVec v) = c • (r (φ t) : Matrix (Fin n) (Fin n) k).mulVec v`. Rewrite using `[Matrix.mulVec_mulVec, ← h, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_smul]`. Establish `hgv : ∀ v : Fin n → k, (g : Matrix (Fin n) (Fin n) k).mulVec v = c • v`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hmem, htop]`. Conclude with `Submodule.mem_top`. Establish `hcent : ∀ A : GL (Fin n) k, g * A = A * g`. Introduce `A`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hgv, hgv, Matrix.mulVec_smul]`. Establish `hn : Nonempty (Fin n)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[not_nonempty_iff]`. Conclude with `not_subsingleton (Fin n → k) inferInstance`. Take `⟨i⟩` from `hn`. Use `MonoidHom.ext fun s => ?_` and prove the remaining obligations. Establish `h` using `hg' s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[hcent, mul_left_inj, mul_eq_right]`. Establish `h2` using `congrArg (fun A : GL (Fin n) k => (A : Matrix (Fin n) (Fin n) k) i i) h`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.H13.schur_twist_holds :
     UpperTheory.Reformulated.B.H13.SchurTw := by

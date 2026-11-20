@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Establish `h0 : E 0 = 1`. Use `hE 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hp : ∀ (m : ℕ) (x : V), E (m • x) = E x ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m x`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ m ih => rw [succ_nsmul, hE, ih, pow_succ]`. Introduce `n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro a z`. Simplify using `[h0]`. Consider the case `succ n ih`. Introduce `a z`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_succ, hE, List.ofFn_succ, List.prod_cons, hp, ih]`.
+A detailed English derivation is pending.
 -/
 theorem map_sum_nsmul_eq_listProd {V G : Type} [AddCommGroup V] [Group G] (E : V → G)
     (hE : ∀ z w, E (z + w) = E z * E w) : ∀ (n : ℕ) (a : Fin n → ℕ) (z : Fin n → V),
@@ -42,7 +42,7 @@ theorem map_sum_nsmul_eq_listProd {V G : Type} [AddCommGroup V] [Group G] (E : V
     rw [Fin.sum_univ_succ, hE, List.ofFn_succ, List.prod_cons, hp, ih]
 
 /- English proof (translation)
-Establish `: F.restrictScalars ℝ = F'.restrictScalars ℝ` using `LinearMap.ext_on hs h`. Conclude with `LinearMap.restrictScalars_injective ℝ this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearMap_eq_of_span_real {g : ℕ} (s : Set (Fin g → ℂ)) (hs : Submodule.span ℝ s = ⊤)
     (F F' : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (h : ∀ z ∈ s, F z = F' z) : F = F' := by
@@ -50,13 +50,11 @@ theorem linearMap_eq_of_span_real {g : ℕ} (s : Set (Fin g → ℂ)) (hs : Subm
   exact LinearMap.restrictScalars_injective ℝ this
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk`. Use `haveI : NeZero k := ⟨hk0⟩`. Use `⟨∑ i, (m i / k) • lam i + y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, map_sum, map_sum, map_nsmul, smul_add, Finset.smul_sum, ← add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (((m i : ZMod k).val : ℤ) : ℂ) = ((m i % k : ℤ) : ℂ)` using `by rw [ZMod.val_intCast]`. Establish `h2 : ((m i : ℤ) : ℂ) = ((m i % k : ℤ) : ℂ) + (k : ℂ) * ((m i / k : ℤ) : ℂ)`. Conclude with `(Int.emod_add_mul_ediv (m i) k).symm` after adjusting the coercions. Rewrite using `[map_zsmul, map_zsmul, ← Int.cast_smul_eq_zsmul ℂ, ← Int.cast_smul_eq_zsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, smul_smul, ← add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Rewrite `h1` using `[Int.cast_natCast]`. Rewrite using `[h1]`. Use `conv_lhs => rw [h2]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hk]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_comb_sub_mem {g n k : ℕ} (hk : (k : ℂ) ≠ 0) {La : Type} [AddCommGroup La] (Q : La →+ (Fin g → ℂ))
     (lam : Fin n → La) (m : Fin n → ℤ) (y : La) :
@@ -82,13 +80,13 @@ theorem level_comb_sub_mem {g n k : ℕ} (hk : (k : ℂ) ≠ 0) {La : Type} [Add
   · rw [← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hk]
 
 /- English proof (translation)
-Introduce `hL hL2 _ hU o _ g k J b em w w' t La _ EF lam ac Q Hm Mat κ ⟨u, χ', hAH, hΛ, _, hpt, hact⟩ hMat hB j`. Take `⟨F, hFQ, hF⟩` from `hact j`. Establish `hk : (k : ℂ) ≠ 0` using `by simpa using (b.unit.map em).ne_zero`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hMat j i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `E : (Fin g → ℂ) → (Out.baseOver (Sp ℂ) ⟶ t.A)` to `u.ex`. Establish `hE : ∀ z w, E (z + w) = E z * E w` using `u.ex_add`. Establish `hpt' : ∀ i₀, t.pt i₀ = E ((k : ℂ)⁻¹ • Q (lam i₀))` using `fun i₀ => Over.OverMorphism.ext (hpt i₀)`. Establish `hF' : ∀ z, E (F z) = E z ≫ t.act j` using `hF`. Take `⟨x, hx⟩` from `level_comb_sub_mem hk Q lam (fun i' => Mat j i' i) y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : E (Q x) = 1` using `(u.ker _).2 ((hΛ _).2 ⟨x, rfl⟩)`. Rewrite using `[hpt', ← hF', map_smul, hFQ, hy, hx, hE, h1, _root_.mul_one, map_sum_nsmul_eq_listProd E hE]`. Simplify using `only [TObj.lab, Out.linComb, hpt']`. Take `⟨F', hFQ', hF'⟩` from `hB j`. Establish `hFF : F' = F` using `linearMap_eq_of_span_real _ u.full _ _ fun z hz => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `(hΛ z).1 hz`. Rewrite using `[hFQ, hFQ']`. Substitute `hFF` using the available equality. Conclude with `GlobalTheory.relAmple_of_hermForm_pos hL hL2 hU t.pol u Hm χ' (t.act j) F' κ hAH (t.hom j) hF hF'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem shape_of_uniformised : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (t : TObj g k J b (spMap em)) (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (lam : Fin (2 * g) → La) (ac : J → La → La) (Q : La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ), (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ EF x (ac w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q (lam i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q (ac j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) → (∀ j i, ∃ y, ac j (lam i) = ∑ i', Mat j i' i • lam i' + k • y) → (∀ j, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q (ac j x)) ∧ ∀ y, y ≠ 0 → (hermForm Hm (F y) (F y)).re < κ * (hermForm Hm y y).re) → t.Shape Mat κ := by
   intro hL hL2 _ hU o _ g k J b em w w' t La _ EF lam ac Q Hm Mat κ ⟨u, χ', hAH, hΛ, _, hpt, hact⟩ hMat hB j

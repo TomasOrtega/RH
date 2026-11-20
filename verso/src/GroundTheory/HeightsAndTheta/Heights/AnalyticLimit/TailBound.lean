@@ -26,9 +26,9 @@ end Inhabitants
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `R₀ hR₀`. Establish `ht : tail Yo r R₀ = tail Yo r' R₀` using `Set.ext fun x => ⟨fun hx => ⟨hx.1, by rw [← h x hx.1]; exact hx.2⟩, fun hx => ⟨hx.1, by rw [h x hx.1]; exact hx.2⟩⟩`. Establish `hi : (tail Yo r' R₀).indicator (fun x => Real.log (r' x)) = (tail Yo r R₀).indicator (fun x => Real.log (r x))`. Rewrite using `[ht]`. Conclude with `Set.indicator_congr fun x hx => by rw [h x hx.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hi]`. Conclude with `hT R₀ hR₀`.
+A detailed English derivation is pending.
 -/
 theorem tailLogBound_congr {A : FinHolAtlas D X} {Yo : Set X} {r r' : X → ℝ}
     (h : ∀ x ∈ Yo, r x = r' x) {T : Fin D → LocPot X} {CE : ℝ}
@@ -45,7 +45,7 @@ theorem tailLogBound_congr {A : FinHolAtlas D X} {Yo : Set X} {r r' : X → ℝ}
   exact hT R₀ hR₀
 
 /- English proof (translation)
-The claim follows from `{ hT with le_u := fun x hx => by rw [← h x hx]; exact hT.le_u x hx }`.
+A detailed English derivation is pending.
 -/
 theorem isBoundedPotForm_congr {A : FinHolAtlas D X} {Yo : Set X} {r r' : X → ℝ}
     (h : ∀ x ∈ Yo, r x = r' x) {Om : KaehlerForm A} {C₁ : ℝ} {th : LocPot X} {u : X → ℝ}
@@ -53,7 +53,7 @@ theorem isBoundedPotForm_congr {A : FinHolAtlas D X} {Yo : Set X} {r r' : X → 
   { hT with le_u := fun x hx => by rw [← h x hx]; exact hT.le_u x hx }
 
 /- English proof (translation)
-The claim follows from `{ hT with le_u := fun x hx => by have h0 : 0 ≤ Real.log (r x) := Real.log_nonneg (le_trans (by have := Real.add_one_le_exp (1 : ℝ) linarith) (hr x hx)) have := mul_le_mul_of_nonneg_right hC h0 have := hT.le_u x hx linarith }`.
+A detailed English derivation is pending.
 -/
 theorem isBoundedPotForm_mono {A : FinHolAtlas D X} {Yo : Set X} {r : X → ℝ}
     (hr : ∀ x ∈ Yo, Real.exp 1 ≤ r x) {Om : KaehlerForm A} {C₁ C₁' : ℝ} (hC : C₁ ≤ C₁')
@@ -69,19 +69,17 @@ theorem isBoundedPotForm_mono {A : FinHolAtlas D X} {Yo : Set X} {r : X → ℝ}
       linarith }
 
 /- English proof (translation)
-Introduce `X _ _ _ D A F hr`. Break down `Nat.eq_zero_or_pos F.m with hm | hm` into its components or cases. Break down `Nat.eq_zero_or_pos D with hD | hD` into its components or cases. Substitute `hD` using the available equality. Take `⟨CE, hCE⟩` from `tailLogBound_dim_zero A F.Yo F.r Fin.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨CE, fun i τ _ => ?_⟩` and prove the remaining obligations. Establish `e : (fun j => (F.sys (i j)).curr (τ j)) = (Fin.elim0 : Fin 0 → LocPot X)`. Use function extensionality and compare the values at `fun j => j.elim0`. Rewrite using `[e]`. Conclude with `hCE`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun i => absurd (i ⟨0, hD⟩).2 (by omega)⟩`. Use `set k : Fin F.m := ⟨0, hm⟩`. Take `⟨Om, hOm⟩` from `h₂ D A ⟨(F.R k).om, (F.R k).om_pot, (F.R k).om_pos⟩ F.m (fun i => thetaOmega (F.R i)) (fun i => ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ (F.R i).θ_pot (F.R i).om_pot)`. Establish `hrk : ∀ x ∈ (F.R k).Yo, Real.exp 1 ≤ (F.R k).r x` using `fun x hx => by`. Rewrite `hx` using `[F.Yo_eq k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[F.r_eq k x hx]`. Conclude with `hr x hx`. Take `⟨CE, hCE⟩` from `h₁ D A (F.R k) hrk Om (∑ i, (|(F.R i).C| + |(F.sys i).C|))`. Use `⟨CE, fun i τ hτ => ?_⟩` and prove the remaining obligations. Establish `h` using `hCE (fun j => thetaOmega (F.R (i j))) (fun j => (F.sys (i j)).uT (τ j)) fun j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hRi : ∀ x ∈ (F.R (i j)).Yo, Real.exp 1 ≤ (F.R (i j)).r x` using `fun x hx => by`. Rewrite `hx` using `[F.Yo_eq]`. Rewrite using `[F.r_eq _ x hx]`. Conclude with `hr x hx`. Establish `hT` using `((F.sys (i j)).curr_isSmoothPotForm hRi Om (hOm (i j)).1 (hOm (i j)).2 (τ j) (hτ j).1 (hτ j).2.1 (hτ j).2.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hCi : |(F.R (i j)).C| + |(F.sys (i j)).C| ≤ ∑ l, (|(F.R l).C| + |(F.sys l).C|)` using `Finset.single_le_sum (f := fun l => |(F.R l).C| + |(F.sys l).C|) (fun _ _ => by positivity) (Finset.mem_univ _)`. Establish `hT'` using `isBoundedPotForm_mono hRi hCi hT`. Rewrite `hT'`, the goal using `[F.Yo_eq]`. Conclude with `isBoundedPotForm_congr (fun x hx => by rw [F.r_eq _ x hx, F.r_eq k x hx]) hT'`. Rewrite `h` using `[F.Yo_eq k]`.
-
-Conclude with `tailLogBound_congr (fun x hx => F.r_eq k x hx) h`.
+A detailed English derivation is pending.
 -/
 theorem TailBound.proof (h₁ : ListTailLog.Statement) (h₂ : BoundingKaehler.Statement) :
     TailBound.Statement := by

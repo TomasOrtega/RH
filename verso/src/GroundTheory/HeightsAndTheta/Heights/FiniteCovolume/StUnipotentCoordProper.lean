@@ -32,7 +32,7 @@ theorem unipCoord_apply (h : HermitianForm F E W) (v : Basis ι E W) (x₀ w₀ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Establish `hc : Continuous fun n : unipRadical h v x₀ => (((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)` using `Units.continuous_val.comp ((continuous_apply w).comp (continuous_subtype_val.comp continuous_subtype_val))`. Conclude with `(hc.matrix_mulVec continuous_const).sub continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_unipCoord (h : HermitianForm F E W) (v : Basis ι E W) (x₀ w₀ : W) :
     Continuous (unipCoord h v x₀ w₀) := by

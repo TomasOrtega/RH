@@ -6,15 +6,15 @@ open PositivityTheory.Rg.BcB.E1
 namespace GlobalTheory.CompanionTheory.KerLinear
 
 /- English proof (translation)
-Introduce `hb X ι _ φ c hφ`. Prove the components needed by the constructor for the conclusion. Use `⟨continuous_finsetSum _ fun i _ => (hφ i).1.mul continuous_const, ?_⟩` and prove the remaining obligations. Establish `key : ∀ s : Finset ι, HasCompactSupport (fun y => ∑ i ∈ s, φ i y * c i)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => exact (HasCompactSupport.zero : HasCompactSupport (0 : X.G → ℂ))`. Consider the case `cons a s ha ih`. Establish `h1 : HasCompactSupport (fun y => φ a y * c a)` using `(hφ a).2.mul_right`. Establish `h2` using `h1.add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (fun y => ∑ i ∈ Finset.cons a s ha, φ i y * c i) = (fun y => φ a y * c a) + fun y => ∑ i ∈ s, φ i y * c i`. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_cons]`. Rewrite using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key Finset.univ`. Introduce `x y`. Establish `hfin : ∀ i, (Function.support fun γ : X.Γ => φ i (x⁻¹ * (γ : X.G) * y)).Finite` using `fun i => (hb X (φ i) (hφ i)).1 x y`. Establish `hfin' : ∀ i ∈ (Finset.univ : Finset ι), (Function.support fun γ : X.Γ => φ i (x⁻¹ * (γ : X.G) * y) * c i).Finite` using `fun i _ => (hfin i).subset (Function.support_mul_subset_left _ _)`. Unfold `ker`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finsum_sum_comm _ _ hfin']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerLin_of_kerBasic : KerBasic → KerLin := by
   intro hb X ι _ φ c hφ

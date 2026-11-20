@@ -10,7 +10,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Rewrite using `[Pi.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun l _ hl => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[(hT τ).2.2.2 l i l.isLt h, mul_zero]`. Rewrite using `[(hS τ).2.2.2 i l i.isLt h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_diag_of_par {ι : Type} {m : ι → ℕ} {K : Type} [Field K] {O O' : Subring K} {S T : Mat m K}
     (hS : Par m O S) (hT : Par m O' T) (τ : ι) (i : Fin (m τ)) :
@@ -22,9 +22,9 @@ theorem mul_diag_of_par {ι : Type} {m : ι → ℕ} {K : Type} [Field K] {O O' 
   · rw [(hS τ).2.2.2 i l i.isLt h, zero_mul]
 
 /- English proof (translation)
-Introduce `ι m K _ O S hS x`. Establish `hSi : Par m O S⁻¹` using `hS.inv`. Establish `h1 : S x.1 x.2 x.2 * S⁻¹ x.1 x.2 x.2 = 1`. Rewrite using `[← mul_diag_of_par hS hSi, Mat.mul_inv hS.det_ne]`. Conclude with `Matrix.one_apply_eq _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : S x.1 x.2 x.2 ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Establish `hinv : S⁻¹ x.1 x.2 x.2 = (S x.1 x.2 x.2)⁻¹` using `eq_inv_of_mul_eq_one_right h1`. Use `⟨hne, ?_, hinv, fun T hT => mul_diag_of_par hS hT x.1 x.2⟩` and prove the remaining obligations. Rewrite using `[← hinv]`. Conclude with `(hSi x.1).1 x.2 x.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_of_par : ∀ (ι : Type) (m : ι → ℕ) (K : Type) [Field K] (O : Subring K) (S : Mat m K), Par m O S →
     ∀ x : Root m, S x.1 x.2 x.2 ≠ 0 ∧ (S x.1 x.2 x.2)⁻¹ ∈ O ∧ S⁻¹ x.1 x.2 x.2 = (S x.1 x.2 x.2)⁻¹ ∧

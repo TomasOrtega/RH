@@ -9,7 +9,7 @@ open GlobalTheory.MumFam GlobalTheory.MumProd GlobalTheory.ProdUnif
 namespace GlobalTheory.ProdDim
 
 /- English proof (translation)
-Establish `: SmoothOfRelativeDimension g' (Limits.pullback.fst A.hom B.hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback (IsPullback.of_hasPullback A.hom B.hom).flip hg'`. Rewrite using `[Over.tensorObj_hom]`. Conclude with `smoothOfRelativeDimension_comp g' g _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothDim_tensor {S : Scheme.{0}} {A B : Over S} {g g' : ℕ} (hg : SmoothOfRelativeDimension g A.hom)
     (hg' : SmoothOfRelativeDimension g' B.hom) : SmoothOfRelativeDimension (g' + g) (A ⊗ B).hom := by
@@ -20,9 +20,9 @@ theorem smoothDim_tensor {S : Scheme.{0}} {A B : Over S} {g g' : ℕ} (hg : Smoo
   exact smoothOfRelativeDimension_comp g' g _ _
 
 /- English proof (translation)
-Introduce `S P P₁ P₂ a₁ a₂ ⟨s⟩ hi`. Establish `h` using `smoothDim_tensor P₁.smoothDim P₂.smoothDim`. Use `haveI : IsIso (lift a₁ a₂).left := inferInstanceAs (IsIso ((Over.forget S).map (lift a₁ a₂)))`. Establish `hw : (lift a₁ a₂).left ≫ (P₁.A ⊗ P₂.A).hom = P.A.hom` using `Over.w _`. Establish `h2 : SmoothOfRelativeDimension (0 + (P₂.g + P₁.g)) P.A.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw]`. Conclude with `smoothOfRelativeDimension_comp 0 (P₂.g + P₁.g) _ _`. Use `ReciprocityTheory.ChartRestriction.G.H1.dim_unique P.A.hom P.smoothDim h2 (eSec P.A s)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem g_eq_add : ∀ (S : Scheme.{0}) (P P₁ P₂ : PolAV S) (a₁ : P.A ⟶ P₁.A) (a₂ : P.A ⟶ P₂.A),
     Nonempty S → IsIso (lift a₁ a₂) → P.g = P₁.g + P₂.g := by

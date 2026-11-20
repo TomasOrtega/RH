@@ -6,7 +6,7 @@ open scoped UpperHalfPlane MatrixGroups Manifold
 open GlobalTheory.Sieg GlobalTheory.QFam
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Sieg.admissible_act_SL2` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FAdmissibleOfSl2Action.lean&line=35#L35)
 -/

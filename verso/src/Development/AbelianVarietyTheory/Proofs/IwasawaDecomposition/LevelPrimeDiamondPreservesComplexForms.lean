@@ -14,16 +14,16 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
   (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[GStep.tr, trFr_apply, frMul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tr_one (b : S.β) (F : Fr emb σ n → ℂ) : S.tr emb σ b 1 F = F := by
   funext y
   simp [GStep.tr, trFr_apply, frMul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h : S.rho emb lam b g v = ((S.chr b g : Kˣ) : K) • rhoVr emb lam (S.gam b g) v` using `rfl`. Rewrite using `[h, LinearMap.map_smulₛₗ, GStep.tr, trFr_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Use `evV_rhoVr_tr emb 1 lam σ _ v y _ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val ((frEquiv emb σ (S.gam b g)).apply_symm_apply y)` as an intermediate fact. Introduce `τ`. Conclude with `(congrFun this τ).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evV_rho (b : S.β) (g : S.G b) (v : VV K lam) :
     evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ (S.rho emb lam b g v) =
@@ -38,11 +38,9 @@ theorem evV_rho (b : S.β) (g : S.G b) (v : VV K lam) :
   exact (congrFun this τ).symm
 
 /- English proof (translation)
-Rewrite `hF` using `[← span_evV emb 1 lam σ]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Rewrite using `[← evV_rho]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `evV_mem_ValC emb 1 lam σ _`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tr_mem (b : S.β) (g : S.G b)
     {F : Fr emb σ n → ℂ} (hF : F ∈ ValC (Gr emb σ n) lam) : S.tr emb σ b g F ∈ ValC (Gr emb σ n) lam := by
@@ -57,7 +55,7 @@ theorem tr_mem (b : S.β) (g : S.G b)
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `c` and use `⟨h c, fun g => by rw [hf c.1 g.1 _ g.2, tr_one]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_Fi (hf : S.Free)
     (φ : S.Cl → Fr emb σ n → ℂ) (h : ∀ c, φ c ∈ ValC (Gr emb σ n) lam) : φ ∈ S.Fi emb σ lam := fun c =>
@@ -66,7 +64,7 @@ theorem mem_Fi (hf : S.Free)
 end General
 
 /- English proof (translation)
-Introduce `E K ι _ _ _ _ _ _ _ R I J emb σ hc _ _ h`. Introduce and unpack `P a _ ⟨φ, hφ, rfl⟩`. Conclude with `mem_Fi _ emb σ _ h.free0 _ fun c => tr_mem _ emb σ _ _ _ (hφ _).1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lawDiaStable : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K]
     [Fintype ι] {R : Ranks} (I : ChainIn E K ι R) (J : AtIn I) (emb : ι → E →+* K) (σ : K →+* ℂ) (hc : ι → HCParam R),

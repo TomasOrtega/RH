@@ -31,7 +31,7 @@ def tailP (O : Type) [CommRing O] [IsDomain O] (r : ℕ) (D : BlockData N) (jp :
     X (scalZ N r D.T.t (Fin.last D.T.t)) ^ D.zPlus * rename (chainEmb N r D.T.t) y * g
 
 /- English proof (translation)
-Unfold `SSt BlockData.SSZ`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `Set.mem_iUnion.2 ⟨j, Set.mem_iUnion.2 ⟨jp, Set.mem_iUnion.2 ⟨hL, ⟨y, hy, g, hg, ?_⟩⟩⟩⟩` and prove the remaining obligations. Unfold `tailP`. Simplify using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -47,9 +47,9 @@ theorem gen_mem (D : BlockData N) (thr : Fin D.T.q → WithTop ℤ) {j : Fin D.T
   rfl
 
 /- English proof (translation)
-Unfold `SSt BlockData.SSZ`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨j, jp, hL, hx⟩` from `hx`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, g0, hg0, rfl⟩` from `hx`. Conclude with `Set.mem_iUnion.2 ⟨j, Set.mem_iUnion.2 ⟨jp, Set.mem_iUnion.2 ⟨hL, ⟨y, ⟨yjt_mono' _ _ h hy.1, hy.2⟩, g0, hg0, rfl⟩⟩⟩⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SSt_mono (D : BlockData N) {thr thr' : Fin D.T.q → WithTop ℤ} (h : ∀ k, thr k ≤ thr' k) :
     SSt O r D thr ≤ SSt O r D thr' := by
@@ -70,11 +70,11 @@ def IsMult (O : Type) [CommRing O] [IsDomain O] (r : ℕ) [NeZero r] (vec : Fin 
       (fun k => thr k + ((1 : ℤ) : WithTop ℤ))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero`. Simplify using `using hy`. Consider the case `succ l ih`. Establish `h1` using `h _ _ _ ih`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', mul_assoc]`. Establish `e1 : (fun a => (deg a + if a = aW ∨ a = aE then l else 0) + if a = aW ∨ a = aE then 1 else 0) = fun a => deg a + if a = aW ∨ a = aE then l + 1 else 0`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> omega`. Establish `e2 : (fun k => thr k + ((l : ℤ) : WithTop ℤ) + ((1 : ℤ) : WithTop ℤ)) = fun k => thr k + (((l + 1 : ℕ) : ℤ) : WithTop ℤ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[add_assoc]`. Use `norm_cast`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMult.pow {vec : Fin N → Bool} {q : ℕ} {J : Fin q → ℕ} {aW aE : Fin N}
     {q0 : MvPolynomial (Fin N × Fin r) (KK O)} (h : IsMult O r vec J aW aE q0) (l : ℕ) (deg : Fin N → ℕ)
@@ -100,9 +100,9 @@ theorem IsMult.pow {vec : Fin N → Bool} {q : ℕ} {J : Fin q → ℕ} {aW aE :
     exact h1
 
 /- English proof (translation)
-Introduce `deg thr y hy`. Establish `h1` using `yjtZ_X (O := O) D7 ⟨vec, deg⟩ ⟨vec, fun a => deg a + if a = aE then 1 else 0⟩ rfl aE c' (fun _ => rfl) J (thr := thr) (thr' := thr) 0 (fun h => by simp [hE] at h) (fun k => by simp) hy`. Establish `h2` using `yjtZ_X (O := O) D7 ⟨vec, fun a => deg a + if a = aE then 1 else 0⟩ ⟨vec, fun a => deg a + if a = aW ∨ a = aE then 1 else 0⟩ rfl aW c (fun i => by show deg i + _ = deg i + _ + _`. Distinguish the cases in `h1 : i = aW`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hne]`. Simplify using `[h1]) J (thr := thr) (thr' := fun k => thr k + ((1 : ℤ) : WithTop ℤ)) 1 (fun _ => le_rfl)`. Use the proof step `(fun k => by norm_cast) h1`. Rewrite using `[mul_assoc]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMult_XX (D7 : Formalism.BasicNotions.D7) (vec : Fin N → Bool) {q : ℕ} (J : Fin q → ℕ) (aW aE : Fin N) (hne : aW ≠ aE)
     (hE : vec aE = false) (c c' : Fin r) : IsMult O r vec J aW aE (X (aW, c) * X (aE, c')) := by
@@ -121,7 +121,7 @@ theorem isMult_XX (D7 : Formalism.BasicNotions.D7) (vec : Fin N → Bool) {q : �
   exact h2
 
 /- English proof (translation)
-Introduce `deg thr y hy`. Rewrite using `[neg_mul]`. Conclude with `Submodule.neg_mem _ (h deg thr y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMult.neg {vec : Fin N → Bool} {q : ℕ} {J : Fin q → ℕ} {aW aE : Fin N}
     {q0 : MvPolynomial (Fin N × Fin r) (KK O)} (h : IsMult O r vec J aW aE q0) : IsMult O r vec J aW aE (-q0) := by
@@ -130,7 +130,7 @@ theorem IsMult.neg {vec : Fin N → Bool} {q : ℕ} {J : Fin q → ℕ} {aW aE :
   exact Submodule.neg_mem _ (h deg thr y hy)
 
 /- English proof (translation)
-Introduce `deg thr y hy`. Rewrite using `[Finset.sum_mul]`. Conclude with `Submodule.sum_mem _ fun i hi => h i hi deg thr y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMult.sum {vec : Fin N → Bool} {q : ℕ} {J : Fin q → ℕ} {aW aE : Fin N} {ι : Type} (s : Finset ι)
     {q0 : ι → MvPolynomial (Fin N × Fin r) (KK O)} (h : ∀ i ∈ s, IsMult O r vec J aW aE (q0 i)) :

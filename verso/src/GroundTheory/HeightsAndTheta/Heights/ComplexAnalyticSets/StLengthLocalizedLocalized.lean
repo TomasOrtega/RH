@@ -16,7 +16,7 @@ def LengthLocalizedLocalized.Statement : Prop :=
         Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl M)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isPrime_of_isPrime_disjoint Q.primeCompl _ P hP (Set.disjoint_left.mpr fun _ hx hxP => hx (h hxP))`.
+A detailed English derivation is pending.
 -/
 theorem LengthLocalizedLocalized.map_isPrime (B : Type u) [CommRing B] (P Q : Ideal B) [hP : P.IsPrime]
     [Q.IsPrime] (h : P ≤ Q) : (P.map (algebraMap B (Localization.AtPrime Q))).IsPrime :=

@@ -42,9 +42,9 @@ end GlobalTheory.CompanionTheory.Ar.Plug.FinTr
 namespace GlobalTheory.CompanionTheory.Ar.Plug.FinTr
 
 /- English proof (translation)
-Establish `key : ∀ r ∈ (Finset.univ : Finset R), S r ^ n r ≤ rec r ^ n r * Real.exp (|(n r : ℝ)| * C)`. Introduce `r _`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_intCast, Real.rpow_def_of_pos (hS r), Real.rpow_def_of_pos (hr r), ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `h1 : (n r : ℝ) * (Real.log (S r) - Real.log (rec r)) ≤ |(n r : ℝ)| * C`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem prod_zpow_le {R : Type} [Fintype R] (S rec : R → ℝ) (n : R → ℤ) (C : ℝ) (hS : ∀ r, 0 < S r)
     (hr : ∀ r, 0 < rec r) (h : ∀ r, |Real.log (S r) - Real.log (rec r)| ≤ C) :
@@ -65,13 +65,11 @@ theorem prod_zpow_le {R : Type} [Fintype R] (S rec : R → ℝ) (n : R → ℤ) 
     _ = _ := by rw [Finset.prod_mul_distrib, ← Real.exp_sum, Finset.sum_mul]
 
 /- English proof (translation)
-Establish `hN : ∀ k, ‖fun i : ι k => z ⟨k, i⟩‖ ≠ 0` using `fun k h0 => by`. Take `⟨i, hi⟩` from `hz k`. Conclude with `hi (congrFun (norm_eq_zero.1 h0) i)`. Unfold `Small.supMet`. Simplify using `only [← Finset.prod_zpow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hs : ∀ (s : Finset R), ‖fun i : ι k => z ⟨k, i⟩‖ ^ (∑ r ∈ s, n r • d r) k = ∏ r ∈ s, (‖fun i : ι k => z ⟨k, i⟩‖ ^ d r k) ^ n r` using `by classical`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Pi.add_apply, zpow_add₀ (hN k), ih]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← zpow_mul, mul_comm (n a)]`.
-
-Conclude with `hs Finset.univ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supMet_sum {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {𝕜 : Type} [NormedField 𝕜]
     {R : Type} [Fintype R] (n : R → ℤ) (d : R → K → ℤ) (z : (Σ k, ι k) → 𝕜)

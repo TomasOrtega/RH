@@ -16,7 +16,7 @@ variable {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {ι : Type} [Fintype ι] [DecidableEq ι] {G : Type} [Group G] [TopologicalSpace G]
 
 /- English proof (translation)
-Rewrite using `[inclL_apply, inclL_apply]`. Establish `h : (fun i => inclO l O (m * c i)) = inclO l O m • fun i => inclO l O (c i)`. Use function extensionality and compare the values at `fun i => by simp only [map_mul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclL_smul_coord (P : PhiMod O K l e a ι) (m : OA l O) (c : ι → OA l O) :
     inclL t ϖ P (fun i => m * c i) = inclO l O m • inclL t ϖ P c := by
@@ -26,9 +26,9 @@ theorem inclL_smul_coord (P : PhiMod O K l e a ι) (m : OA l O) (c : ι → OA l
   rw [h, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Take `⟨m, c, hu, hc, hb⟩` from `h`. Take `⟨m', c', hu', hc', hb'⟩` from `h'`. Use `⟨m * m', fun i => m' * c i - m * c' i, by rw [map_mul]; exact hu.mul hu', ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun i => m' * c i - m * c' i) = (fun i => m' * c i) - (fun i => m * c' i)` using `rfl`. Rewrite using `[e1, map_sub, inclL_smul_coord, inclL_smul_coord, ← hc, ← hc', smul_sub, smul_smul, smul_smul, map_mul, mul_comm (inclO l O m')]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun i => toB l O (m' * c i - m * c' i)) = toB l O m' • (fun i => toB l O (c i)) - toB l O m • (fun i => toB l O (c' i))`. Use function extensionality and compare the values at `fun i => by simp only [map_sub, map_mul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e2, map_sub, map_smul, map_smul, ← hb, ← hb', smul_sub, smul_smul, smul_smul, map_mul, mul_comm (toB l O m')]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsCrisVal.sub {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
     {jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T} {w w' : ι → OW l O} {b b' : TW (OB l O) T}

@@ -18,7 +18,7 @@ def IsRos (L : LB A.left) (f g : A ⟶ A) (u : LB.Gen (LB.LinComb L (rosatiφ A 
 variable {L : LB A.left}
 
 /- English proof (translation)
-Establish `e : lift (1 : 𝟙_ (Over S) ⟶ A) (1 : 𝟙_ (Over S) ⟶ A) = lift η[A] η[A]` using `by simp [Hom.one_def]`. Use `val_corr hJ hu.2 (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_pull hJ, Category.id_comp, val_one]`. Rewrite using `[val₂, e]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRos.val_origin {f g : A ⟶ A} {u : LB.Gen (LB.LinComb L (rosatiφ A f g) rosatiε)} (hu : IsRos L f g u)
     {y : (𝟙_ (Over S)).left} {J} (hJ : Good L y J) : val₂ u y J (1 : 𝟙_ (Over S) ⟶ A) 1 = 1 := by
@@ -29,7 +29,7 @@ theorem IsRos.val_origin {f g : A ⟶ A} {u : LB.Gen (LB.LinComb L (rosatiφ A f
 
 omit [IsCommMonObj A] in
 /- English proof (translation)
-Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_pull_pair {K : Type} [Fintype K] {φ : K → ((A ⊗ A).left ⟶ A.left)} {ε : K → ℤ}
     (u : LB.Gen (LB.LinComb L φ ε)) {T T' : Over S} (ρ : T' ⟶ T) {z : T'.left} {J} (hJ : Good L z J) (a b : T ⟶ A) :
@@ -37,7 +37,7 @@ theorem val_pull_pair {K : Type} [Fintype K] {φ : K → ((A ⊗ A).left ⟶ A.l
   rw [val_pull hJ, ← Over.comp_left, comp_lift]; rfl
 
 /- English proof (translation)
-The claim follows from `gen_unique' hL hF ((snd A A).left ≫ A.hom) _ (by rw [Over.w]; exact Over.w (lift (1 : 𝟙_ (Over S) ⟶ A) (1 : 𝟙_ (Over S) ⟶ A))) (surj_comp (surj_snd hG hA _) (hG _ _ hA).2) hu hu' h Z r z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem pair_unique (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → ((A ⊗ A).left ⟶ A.left)} {ε : K → ℤ} {φ' : K' → ((A ⊗ A).left ⟶ A.left)} {ε' : K' → ℤ}
@@ -53,7 +53,7 @@ variable (hG : GlobalFnsSt) (hA : IsAbelianScheme A)
 include hG hA
 
 /- English proof (translation)
-The claim follows from `pair_unique hG hA hL (fun _ _ _ => rfl) hu.1 hu'.1 (fun _ _ hI => (hu.val_origin hI).trans (hu'.val_origin hI).symm) _ hJ`.
+A detailed English derivation is pending.
 -/
 theorem IsRos.unique (hL : L.IsLB) {f g : A ⟶ A} {u u' : LB.Gen (LB.LinComb L (rosatiφ A f g) rosatiε)}
     (hu : IsRos L f g u) (hu' : IsRos L f g u') {T : Over S} {z : T.left} {J} (hJ : Good L z J) (x w : T ⟶ A) :
@@ -62,9 +62,9 @@ theorem IsRos.unique (hL : L.IsLB) {f g : A ⟶ A} {u u' : LB.Gen (LB.LinComb L 
     (fun _ _ hI => (hu.val_origin hI).trans (hu'.val_origin hI).symm) _ hJ
 
 /- English proof (translation)
-Substitute `hf hg` using the available equality. Use `pair_unique hG hA hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (u := LB.pullGen L _ _ u (lift (fst A A) (snd A A)).left) (u' := LB.oneGen L) (fun U _ h => by` as an intermediate fact. Rewrite using `[prod_ros, Category.comp_id, Category.comp_id, Fintype.prod_empty]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `abel) (pullGen_isGen _ _ _ _ hu.1 _)`. Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Use the proof step `(fun y I hI => by rw [val_pull_pair u _ hI, lift_fst, lift_snd, hu.val_origin hI, val_one]) (lift x w).left hJ`. Rewrite `this` using `[val_pull_pair u _ hJ, lift_fst, lift_snd, val_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem IsRos.val_id (hL : L.IsLB) {f g : A ⟶ A} (hf : f = 𝟙 A) (hg : g = 𝟙 A)
     {u : LB.Gen (LB.LinComb L (rosatiφ A f g) rosatiε)} (hu : IsRos L f g u) {T : Over S} {z : T.left} {J}
@@ -81,11 +81,11 @@ theorem IsRos.val_id (hL : L.IsLB) {f g : A ⟶ A} (hf : f = 𝟙 A) (hg : g = �
   rwa [val_pull_pair u _ hJ, lift_fst, lift_snd, val_one] at this
 
 /- English proof (translation)
-Substitute `hf hg` using the available equality. Establish `ev : ∀ {T : Over S} {z : T.left} {J}, Good L z J → ∀ x w : T ⟶ A, val (LB.pullGen L _ _ u (lift (fst A A) (snd A A)).left) (lift x w).left z J = val₂ u z J x w ∧ val (LB.mulGen L _ _ _ _ (LB.pullGen L _ _ u₂ (lift (fst A A ≫ f₁) (snd A A)).left) (LB.pullGen L _ _ u₁ (lift (fst A …` using `fun hJ x w => ⟨by rw [val_pull_pair u _ hJ, lift_fst, lift_snd], by`. Rewrite using `[val_mul hJ, val_pull_pair u₂ _ hJ, val_pull_pair u₁ _ hJ, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]⟩`. Use `(ev hJ x w).1.symm.trans (Eq.trans (pair_unique hG hA hL (fun U _ h => ?_) (pullGen_isGen _ _ _ _ hu.1 _) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hu₂.1 _) (pullGen_isGen _ _ _ _ hu₁.1 _)) (fun y I hI => ?_) _ hJ) (ev hJ x w).2)` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 6) (K' := Fin 6) (U := U) _ (prod_ros _ _ _ _ h) (prod_ros _ _ _ _ h)).trans ?_` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prod_ros, Category.assoc, Category.assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `(ev hI 1 1).1.trans (Eq.trans ?_ (ev hI 1 1).2.symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonObj.one_comp, MonObj.one_comp, hu.val_origin hI, hu₁.val_origin hI, hu₂.val_origin hI, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRos.val_comp (hL : L.IsLB) {f g f₁ g₁ f₂ g₂ : A ⟶ A} [IsMonHom f₁] [IsMonHom g₂] (hf : f = f₁ ≫ f₂)
     (hg : g = g₂ ≫ g₁) {u : LB.Gen (LB.LinComb L (rosatiφ A f g) rosatiε)}
@@ -113,11 +113,11 @@ theorem IsRos.val_comp (hL : L.IsLB) {f g f₁ g₁ f₂ g₂ : A ⟶ A} [IsMonH
     rw [MonObj.one_comp, MonObj.one_comp, hu.val_origin hI, hu₁.val_origin hI, hu₂.val_origin hI, _root_.mul_one]
 
 /- English proof (translation)
-Substitute `hf hg` using the available equality. Establish `ev : ∀ {T : Over S} {z : T.left} {J}, Good Lr.L z J → ∀ x w : T ⟶ A, val (LB.mulGen Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ u (lift (fst A A) (snd A A)).left) (LB.pullGen Lr.L (thφ A (x3 A)) thε c.t (lift (fst A A) (lift (snd A A ≫ g₁) (snd A A ≫ g₂))).left)) (lift x w).left z J = val₂ …` using `fun hJ x w => ⟨((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull_pair u _ hJ _ _) (val_cub c _ hJ _ _ _))).trans (by`. Rewrite using `[lift_snd_assoc, lift_snd_assoc, lift_fst, lift_snd]),`. Use the proof step `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_cub c _ hJ _ _ _) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull_pair u₁ _ hJ _ _) (val_pull_pair u₂ _ hJ _ _))))).trans (by`. Rewrite using `[lift_fst_assoc, lift_fst_assoc, lift_fst, lift_snd])⟩`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ev hJ x w).1.symm.trans (Eq.trans (pair_unique hG hA Lr.isLB (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hu.1 _) (pullGen_isGen _ _ _ _ c.isGen _)) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ c.isGen _) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ …` and prove the remaining obligations. Use `(prod_sum₂ (K := thK) (K' := Fin 6 ⊕ Fin 6) (U := U) _ (prod_cub _ _ _ h) (prod_sum₂ (K := Fin 6) (K' := Fin 6) (U := U) _ (prod_ros _ _ _ _ h) (prod_ros _ _ _ _ h))).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 6) (K' := thK) (U := U) _ (prod_ros _ _ _ _ h) (prod_cub _ _ _ h)).symm)` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, _root_.mul_assoc (fst A A)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `C : IsCub (cubV c y I)` using `isCub_cubV c hI`. Use `(ev hI 1 1).1.trans (Eq.trans ?_ (ev hI 1 1).2.symm)` and prove the remaining obligations. Rewrite using `[hu.val_origin hI, hu₁.val_origin hI, hu₂.val_origin hI, C.face, C.face₃, _root_.mul_one, _root_.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRos.val_sum {Lr : RigLB A} (c : CubicalStr A Lr) {f g f₁ g₁ f₂ g₂ : A ⟶ A} [IsMonHom f₁] [IsMonHom g₁]
     (hf : f = f₁ * f₂) (hg : g = g₁ * g₂) {u : LB.Gen (LB.LinComb Lr.L (rosatiφ A f g) rosatiε)}
@@ -168,14 +168,14 @@ section Action
 variable {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
 /- English proof (translation)
-Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cPoint_smul (oa : D.OAct O) (T : Over (Spec (CommRingCat.of R))) (a : O) (χ : D.X) :
     cP D T (a • χ) = cP D T χ ≫ oa.onB.act a := by
   rw [cP, oa.c_lin, ← Category.assoc]; rfl
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `hr` using `oa.onB.rosati (star a)`. Rewrite `hr` using `[star_star]`. Conclude with `exists_ros hG D.P.isAb D.P.isLB _ _ hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) :
     ∃ u, IsRos D.P.L (oa.onB.act (star a)) (oa.onB.act a) u := by
@@ -188,13 +188,13 @@ theorem exists_isRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) :
 def rosGen (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) := (exists_isRos hG oa a).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isRos hG oa a).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem rosGen_isRos (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) :
     IsRos D.P.L (oa.onB.act (star a)) (oa.onB.act a) (rosGen hG oa a) := (exists_isRos hG oa a).choose_spec
 
 /- English proof (translation)
-Establish `vv : ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε)) χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (𝟙 (TF (R` using `R) F).left) y J = charVal g (star a • χ) y J * val₂ u y J (cP D _ χ) g.b := fun u χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))`. Use `and_congr Iff.rfl ⟨fun h χ y J hJ => ?_, fun h u hu u₀ χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(val_corr hJ (h _ (rosGen_isRos hG oa a).1 (rosGen_isRos hG oa a).2 χ) _).symm.trans (vv _ χ y J hJ)`. Conclude with `(vv u χ y J hJ).trans ((congrArg₂ (· * ·) rfl (IsRos.unique hG D.P.isAb D.P.isLB ⟨hu, u₀⟩ (rosGen_isRos hG oa a) hJ _ _)).trans (h χ y J hJ).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gtAct_iff_val (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g g' : GtPtF D F) :
     GtAct oa a g g' ↔ g'.b = g.b ≫ oa.onB.act a ∧ ∀ χ y J, Good D.P.L y J →
@@ -210,7 +210,7 @@ theorem gtAct_iff_val (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g g' : GtPtF D
       (IsRos.unique hG D.P.isAb D.P.isLB ⟨hu, u₀⟩ (rosGen_isRos hG oa a) hJ _ _)).trans (h χ y J hJ).symm)
 
 /- English proof (translation)
-Take `⟨b, v⟩` from `(gtAct_iff_val hG _ _ _ _).1 e`. Take `⟨b', v'⟩` from `(gtAct_iff_val hG _ _ _ _).1 e'`. Conclude with `gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gtAct_unique (hG : GlobalFnsSt) {oa : D.OAct O} {a : O} {g h h' : GtPtF D F} (e : GtAct oa a g h)
     (e' : GtAct oa a g h') : h = h' := by
@@ -219,7 +219,7 @@ theorem gtAct_unique (hG : GlobalFnsSt) {oa : D.OAct O} {a : O} {g h h' : GtPtF 
   exact gt_ext_val (b.trans b'.symm) fun χ y J hJ => (v χ y J hJ).trans (v' χ y J hJ).symm
 
 /- English proof (translation)
-The claim follows from `have := oa.onB.hom a have := oa.onB.hom (star a) ros_add D.cub hG D.P.isAb _ _ _ (rosGen_isRos hG oa a).1 (rosGen_isRos hG oa a).2 hJ x x' w`.
+A detailed English derivation is pending.
 -/
 theorem rosGen_add (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) {T : Over (Spec (CommRingCat.of R))} {z : T.left} {J}
     (hJ : Good D.P.L z J) (x x' w : T ⟶ D.P.A) :
@@ -234,15 +234,15 @@ theorem rosGen_add (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) {T : Over (Spec (C
   ros_add D.cub hG D.P.isAb _ _ _ (rosGen_isRos hG oa a).1 (rosGen_isRos hG oa a).2 hJ x x' w
 
 /- English proof (translation)
-Use `oa.onB.hom (star a)` as an intermediate fact. Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ (rosGen hG oa a) (lift (cP D _ χ) g.b).left)) (𝟙 (TF (R` using `R) F).left) y J = charVal g (star a • χ) y J * val₂ (rosGen hG oa a) y J (cP D _ χ) g.b := fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))`. Take `⟨g', hb, hv⟩` from `exists_gt (g.b ≫ oa.onB.act a) (fun χ => LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ (rosGen hG oa a) (lift (cP D _ χ) g.b).left)) (fun χ => mulGen_isGen _ _ _ _ _ _ _ (g.isGen _) (pullGen_isGen _ _ _ _ (rosGen_isRos hG oa a).1 _)) (fun χ U _ h => by`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 6) (U := U) _ (prod_gt g.b (star a • χ) h) (prod_ros _ _ (cP D _ χ) g.b h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, cPoint_smul oa]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (fun y J hJ => by`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(rosGen_add hG oa a hJ 1 1 g.b).1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face, C.face, _root_.mul_one, _root_.one_mul]`. Use `(vv 0 y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[smul_zero, cPoint_zero, mul_eq_left.1 e.symm, _root_.mul_one, charVal_zero g hJ]) (fun χ χ' y J hJ => by`. Establish `e₁` using `congrArg Additive.ofMul (rosGen_add hG oa a hJ (cP D _ χ) (cP D _ χ') g.b).1`. Establish `e` using `charVal_add g hJ (star a • χ) (star a • χ')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[cPoint_smul oa, cPoint_smul oa]`. Establish `e₂` using `congrArg Additive.ofMul e`. Use `(congrArg₂ (· * ·) (vv _ y J hJ) rfl).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vv _ y J hJ) (vv _ y J hJ)).symm)` and prove the remaining obligations. Rewrite using `[smul_add, cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul] at e₁ e₂ ⊢`. Take the linear combination `(norm := abel) e₁ + e₂)`. Conclude with `⟨g', (gtAct_iff_val hG _ _ _ _).2 ⟨hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gtAct (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g : GtPtF D F) : ∃ g', GtAct oa a g g' := by
   have := oa.onB.hom (star a)
@@ -281,34 +281,34 @@ def gtSmul (hG : GlobalFnsSt) (oa : D.OAct O) (a : O) (g : GtPtF D F) : GtPtF D 
 variable (hG : GlobalFnsSt) (oa : D.OAct O)
 
 /- English proof (translation)
-The claim follows from `(exists_gtAct hG oa a g).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem gtAct_gtSmul (a : O) (g : GtPtF D F) : GtAct oa a g (gtSmul hG oa a g) := (exists_gtAct hG oa a g).choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => gtAct_unique hG h (gtAct_gtSmul hG oa a g), fun h => h ▸ gtAct_gtSmul hG oa a g⟩`.
+Supply the required witnesses or components.
 -/
 theorem gtAct_iff_eq_gtSmul (a : O) (g g' : GtPtF D F) : GtAct oa a g g' ↔ g' = gtSmul hG oa a g :=
   ⟨fun h => gtAct_unique hG h (gtAct_gtSmul hG oa a g), fun h => h ▸ gtAct_gtSmul hG oa a g⟩
 
 /- English proof (translation)
-The claim follows from `(gtAct_gtSmul hG oa a g).1`.
+A detailed English derivation is pending.
 -/
 theorem gtSmul_b (a : O) (g : GtPtF D F) : (gtSmul hG oa a g).b = g.b ≫ oa.onB.act a := (gtAct_gtSmul hG oa a g).1
 
 /- English proof (translation)
-The claim follows from `((gtAct_iff_val hG _ _ _ _).1 (gtAct_gtSmul hG oa a g)).2 χ y J hJ`.
+A detailed English derivation is pending.
 -/
 theorem gtSmul_val (a : O) (g : GtPtF D F) (χ : D.X) {y J} (hJ : Good D.P.L y J) :
     charVal (gtSmul hG oa a g) χ y J = charVal g (star a • χ) y J * val₂ (rosGen hG oa a) y J (cP D _ χ) g.b :=
   ((gtAct_iff_val hG _ _ _ _).1 (gtAct_gtSmul hG oa a g)).2 χ y J hJ
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Use `(isAdd_iff_eq _ _ _).1 ((isAdd_iff_val _ _ _).2 ⟨?_, fun χ y J hJ => ?_⟩)` and prove the remaining obligations. Rewrite using `[gtSmul_b, gtSmul_b, gtSmul_b, add_b, MonObj.mul_comp]`. Establish `e₁` using `congrArg Additive.ofMul (rosGen_add hG oa a hJ g.b g'.b (cP D _ χ)).2`. Establish `e` using `add_val g g' (star a • χ) hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[cPoint_smul oa]`. Establish `e₂` using `congrArg Additive.ofMul e`. Rewrite using `[gtSmul_val hG oa a _ χ hJ, gtSmul_val hG oa a _ χ hJ, gtSmul_val hG oa a _ χ hJ, gtSmul_b, gtSmul_b, add_b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at e₁ e₂ ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) e₁ + e₂`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gtSmul_add (a : O) (g g' : GtPtF D F) : gtSmul hG oa a (g + g') = gtSmul hG oa a g + gtSmul hG oa a g' := by
   have := oa.onB.hom a
@@ -324,7 +324,7 @@ theorem gtSmul_add (a : O) (g g' : GtPtF D F) : gtSmul hG oa a (g + g') = gtSmul
     linear_combination (norm := abel) e₁ + e₂
 
 /- English proof (translation)
-The claim follows from `gt_ext_val (by rw [gtSmul_b, oa.onB.map_one, Category.comp_id]) fun χ y J hJ => by rw [gtSmul_val hG oa _ _ χ hJ, IsRos.val_id hG D.P.isAb D.P.isLB (by rw [star_one, oa.onB.map_one]) oa.onB.map_one (rosGen_isRos hG oa 1) hJ, star_one, one_smul, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem one_gtSmul (g : GtPtF D F) : gtSmul hG oa 1 g = g :=
   gt_ext_val (by rw [gtSmul_b, oa.onB.map_one, Category.comp_id]) fun χ y J hJ => by
@@ -332,7 +332,7 @@ theorem one_gtSmul (g : GtPtF D F) : gtSmul hG oa 1 g = g :=
       oa.onB.map_one (rosGen_isRos hG oa 1) hJ, star_one, one_smul, _root_.mul_one]
 
 /- English proof (translation)
-Use `oa.onB.hom a'` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `gt_ext_val (by rw [gtSmul_b, gtSmul_b, gtSmul_b, oa.onB.map_mul, Category.assoc]) fun χ y J hJ => ?_` and prove the remaining obligations. Rewrite using `[gtSmul_val hG oa _ _ χ hJ, gtSmul_val hG oa _ _ χ hJ, gtSmul_val hG oa _ _ _ hJ, IsRos.val_comp hG D.P.isAb D.P.isLB (by rw [star_mul, oa.onB.map_mul]) (oa.onB.map_mul a a') (rosGen_isRos hG oa (a * a')) (rosGen_isRos hG oa a) (rosGen_isRos hG oa a') hJ, gtSmul_b, cPoint_smul oa …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mul_gtSmul (a a' : O) (g : GtPtF D F) : gtSmul hG oa (a * a') g = gtSmul hG oa a (gtSmul hG oa a' g) := by
   have := oa.onB.hom a'
@@ -344,11 +344,11 @@ theorem mul_gtSmul (a a' : O) (g : GtPtF D F) : gtSmul hG oa (a * a') g = gtSmul
     gtSmul_b, cPoint_smul oa, star_mul, mul_smul, _root_.mul_assoc]
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `(isAdd_iff_eq _ _ _).1 ((isAdd_iff_val _ _ _).2 ⟨?_, fun χ y J hJ => ?_⟩)` and prove the remaining obligations. Rewrite using `[gtSmul_b, gtSmul_b, gtSmul_b, oa.onB.map_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg Additive.ofMul (IsRos.val_sum hG D.P.isAb D.cub (by rw [star_add]; exact oa.onB.map_add _ _) (oa.onB.map_add a a') (rosGen_isRos hG oa (a + a')) (rosGen_isRos hG oa a) (rosGen_isRos hG oa a') hJ (cP D _ χ) g.b)`. Establish `e` using `charVal_add g hJ (star a • χ) (star a' • χ)`. Rewrite `e` using `[cPoint_smul oa, cPoint_smul oa, ← add_smul, ← star_add]`. Establish `e₂` using `congrArg Additive.ofMul e`. Rewrite using `[gtSmul_val hG oa _ _ χ hJ, gtSmul_val hG oa _ _ χ hJ, gtSmul_val hG oa _ _ χ hJ, gtSmul_b, gtSmul_b]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, th] at e₁ e₂ ⊢`. Take the linear combination `(norm := abel) e₁ + e₂`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem add_gtSmul (a a' : O) (g : GtPtF D F) : gtSmul hG oa (a + a') g = gtSmul hG oa a g + gtSmul hG oa a' g := by
   have := oa.onB.hom a
@@ -381,9 +381,9 @@ def gtSmulHom (F : Type) [Field F] [Algebra (FractionRing R) F] (a : O) : GtPtF 
   AddMonoidHom.mk' (gtSmul hG oa a) (gtSmul_add hG oa a)
 
 /- English proof (translation)
-Establish `hbal` using `oa.tau_bal (star a)`. Rewrite `hbal` using `[star_star]`. Use `gt_ext_val (by rw [gtSmul_b, iota_b, iota_b, cPoint_smul oa]) fun χ y J hJ => ?_` and prove the remaining obligations. Set `κ : TF (R` to `R) F ⟶ TK R := Over.homMk (𝟙 _ ≫ jFK (R := R) F) (by rw [Category.id_comp]; rfl)`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hbal _ (rosGen_isRos hG oa a).1 (rosGen_isRos hG oa a).2 χ x) κ.left)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e' : val (LB.pullGen D.P.L _ _ (rosGen hG oa a) (D.pt2 χ x)) κ.left y J = val₂ (rosGen hG oa a) y J (cP D _ χ) (cP D _ x)`. Rewrite using `[val_pull hJ, val₂, ← comp_cP D κ, ← comp_cP D κ x, ← comp_lift]`. Both sides reduce to the same expression. Rewrite using `[gtSmul_val hG oa _ _ χ hJ, iota_val hB _ _ hJ, iota_val hB _ _ hJ, iota_b, ← e']`. Conclude with `((congrArg₂ (· * ·) (tau_symm (𝟙 (TF (R := R) F)) hJ _ _) rfl).trans (e.trans (tau_symm (𝟙 (TF (R := R) F)) hJ _ _))).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_smul (hB : D.TauBimult) (a : O) (x : D.X) : iota hB F (a • x) = gtSmul hG oa a (iota hB F x) := by
   have hbal := oa.tau_bal (star a)
@@ -419,16 +419,16 @@ Both sides reduce to the same expression.
 theorem extMap_left : (extMap (R := R) f hf).left = spMap f := rfl
 
 /- English proof (translation)
-Use `show spMap f ≫ jFK (R := R) F = 𝟙 _ ≫ jFK (R := R) F'`. Rewrite using `[Category.id_comp, jFK, jFK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extMap_jFK : (extMap (R := R) f hf).left ≫ jFK (R := R) F = (𝟙 (TF (R := R) F') :).left ≫ jFK (R := R) F' := by
   show spMap f ≫ jFK (R := R) F = 𝟙 _ ≫ jFK (R := R) F'
   rw [Category.id_comp, jFK, jFK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hf]
 
 /- English proof (translation)
-Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.pullGen D.P.L _ _ (g.s χ) (extMap f hf).left) (𝟙 (TF (R` using `R) F').left) y J = val (g.s χ) (extMap f hf).left y J := fun χ y J hJ => by`. Rewrite using `[val_pull hJ, Category.id_comp]`. Take `⟨g', hb, hv⟩` from `exists_gt (extMap f hf ≫ g.b) (fun χ => LB.pullGen D.P.L _ _ (g.s χ) (extMap f hf).left) (fun χ => pullGen_isGen _ _ _ _ (g.isGen χ) _) (fun χ U _ h => by`. Use `(prod_gt g.b χ (fun q => h ((extMap f hf).left ≫ q))).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, ← Over.comp_left, ← Over.comp_left, ← Over.comp_left, ← Over.comp_left, MonObj.comp_mul, comp_cP, MonObj.comp_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun y J hJ => (vv 0 y J hJ).trans ((val_corr hJ g.s_zero _).trans (val_one _))) (fun χ χ' y J hJ => (congrArg₂ (· * ·) (vv _ y J hJ) rfl).trans ((gt_mul (extMap f hf) hJ g χ χ').trans (congrArg₂ (· * ·) (vv _ y J hJ) (vv _ y J hJ)).symm))`. Conclude with `⟨g', hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext (g : GtPtF D F) : ∃ g' : GtPtF D F', g'.b = extMap f hf ≫ g.b ∧ ∀ χ y J, Good D.P.L y J →
     charVal g' χ y J = val (g.s χ) (extMap f hf).left y J := by
@@ -459,20 +459,20 @@ def gtExt (D : DegPre R) (f : F →+* F')
     exact e
 
 /- English proof (translation)
-The claim follows from `(exists_ext f hf g).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem gtExt_b (g : GtPtF D F) : (gtExt D f hf g).b = extMap f hf ≫ g.b := (exists_ext f hf g).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_ext f hf g).choose_spec.2 χ y J hJ`.
+A detailed English derivation is pending.
 -/
 theorem gtExt_val (g : GtPtF D F) (χ : D.X) {y J} (hJ : Good D.P.L y J) :
     charVal (gtExt D f hf g) χ y J = val (g.s χ) (extMap f hf).left y J := (exists_ext f hf g).choose_spec.2 χ y J hJ
 
 /- English proof (translation)
-Establish `vv : ∀ χ (y : (TF (R` using `R) F').left) J, Good D.P.L y J → val (LB.pullGen D.P.L _ _ (g.s χ) (extMap f hf).left) (𝟙 (TF (R := R) F').left) y J = val (g.s χ) (extMap f hf).left y J := fun χ y J hJ => by`. Rewrite using `[val_pull hJ, Category.id_comp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨congrArg (fun q => q.left) (gtExt_b f hf g), fun χ => corr_of_val D.P.isLB fun y J hJ => (gtExt_val f hf g χ hJ).trans (vv χ y J hJ).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, v⟩`. Conclude with `gt_ext_val (Eq.trans (Over.OverMorphism.ext b) (gtExt_b f hf g).symm) fun χ y J hJ => (val_corr hJ (v χ) _).trans ((vv χ y J hJ).trans (gtExt_val f hf g χ hJ).symm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eq_gtExt_iff (g : GtPtF D F) (g' : GtPtF D F') : g' = gtExt D f hf g ↔ g'.b.left = spMap f ≫ g.b.left ∧
     ∀ χ, LB.Gen.Corr D.P.L _ _ _ _ (g'.s χ) (LB.pullGen D.P.L _ _ (g.s χ) (spMap f)) := by
@@ -488,7 +488,7 @@ theorem eq_gtExt_iff (g : GtPtF D F) (g' : GtPtF D F') : g' = gtExt D f hf g ↔
       (val_corr hJ (v χ) _).trans ((vv χ y J hJ).trans (gtExt_val f hf g χ hJ).symm)
 
 /- English proof (translation)
-The claim follows from `gt_ext_val (by rw [gtExt_b, iota_b, iota_b, comp_cP]) fun χ y J hJ => by rw [gtExt_val f hf _ χ hJ, iota_val hB _ _ hJ, tauVal, ← extMap_jFK f hf] exact (val_corr hJ ((isIota_iota hB x).2 χ) _).trans (val_pull hJ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem gtExt_iota (hB : D.TauBimult) (x : D.X) : gtExt D f hf (iota hB F x) = iota hB F' x :=
   gt_ext_val (by rw [gtExt_b, iota_b, iota_b, comp_cP]) fun χ y J hJ => by
@@ -496,7 +496,7 @@ theorem gtExt_iota (hB : D.TauBimult) (x : D.X) : gtExt D f hf (iota hB F x) = i
     exact (val_corr hJ ((isIota_iota hB x).2 χ) _).trans (val_pull hJ _ _ _)
 
 /- English proof (translation)
-The claim follows from `gt_ext_val (by rw [gtExt_b, gtSmul_b, gtSmul_b, gtExt_b, Category.assoc]) fun χ y J hJ => by rw [gtExt_val f hf _ χ hJ, gtSmul_val hG oa _ _ χ hJ, gtExt_val f hf _ _ hJ, gtExt_b, ← comp_cP D (extMap f hf)] exact (val_corr hJ ((gtAct_gtSmul hG oa a g).2 _ (rosGen_isRos hG oa a).1 …`.
+A detailed English derivation is pending.
 -/
 theorem gtExt_gtSmul {O : Type} [CommRing O] [StarRing O] [Module O D.X] (hG : GlobalFnsSt) (oa : D.OAct O) (a : O)
     (g : GtPtF D F) : gtExt D f hf (gtSmul hG oa a g) = gtSmul hG oa a (gtExt D f hf g) :=

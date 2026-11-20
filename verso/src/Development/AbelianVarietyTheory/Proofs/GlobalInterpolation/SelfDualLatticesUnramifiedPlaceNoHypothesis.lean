@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsOfFixed
 namespace GlobalTheory.UnramSelfDualClosed
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SelfDualLatticeCompare.selfDualLattices_iff.1 GlobalTheory.UnramSelfDual.selfDualLattices`.
+A detailed English derivation is pending.
 -/
 theorem selfDualLatticeLemmas : GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.SelfDualLatticeLemmas :=
   GlobalTheory.SelfDualLatticeCompare.selfDualLattices_iff.1 GlobalTheory.UnramSelfDual.selfDualLattices

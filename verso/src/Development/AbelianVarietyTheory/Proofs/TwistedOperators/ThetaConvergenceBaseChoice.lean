@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.RowLift
 
 /- English proof (translation)
-Introduce `hP hL D large₂ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hb CF hs a u`. Take `⟨G', hG', hM⟩` from `GlobalTheory.T.grid_matching_of_base_choice hP large₂ hS ch hb CF hs`. Establish `hC : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.CuspAlong G'` using `hL D (GlobalTheory.RowSizes.sizes_of_sizeRows large₂ hS.size) Γ Pl0 T A Ks R G' (rowBase_of_core hS.core) hG'`. Set `C : ∀ i, Set (Fn ch.G (.grid i 0))` to `fun i => {φ | ∃ Φ' ∈ (G'.V i 0).Cusp R.θ, ∃ v, HEq (Φ' v) φ}`. Establish `step : ∀ (i : Fin D.R.m) φ, φ ∈ C i → LiftConv ch.W ch.M (.right (i : ℕ) 0) (ch.W.datum ch.ρ (ch.Phi a) i) φ ∧ liftA ch.W ch.M (.right (i : ℕ) 0) (ch.W.datum ch.ρ (ch.Phi a) i) φ ∈ C ((i : ℕ) + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `i φ ⟨Φ', hΦ', v, hv⟩`. Take `⟨f, hf, p, hK⟩` from `hM.ker ch.ρ (ch.Phi a) i`. Take `⟨F', hF', H⟩` from `hC.X A.μ0 i 0 i.2 (Nat.zero_le _) f hf Φ' hΦ'`. Rewrite `H` using `[G'.meas_zero]`. Establish `T` using `transport_stepS (hM.V i i.2.le) (hM.V (i + 1) i.2) (hM.ν i i.2.le) (hM.fd i i.2.le) hK hv (fun h => (H p v h).1) (fun h => (H p v h).2)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨T.1, F', hF', _, T.2⟩`. Establish `h0 : ch.form u ∈ C 0` using `⟨_, start_mem hS.core u, ch.w, HEq.rfl⟩`. Take `⟨h1, Φ', hΦ', v, hv⟩` from `row_induction ch.W ch.M C D.R.m _ step _ h0`. Conclude with `⟨h1, isAutFun_transportS (hM.V _ le_rfl) hv (isAutFun_of_mem_cusp _ R.θ hΦ' v)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem row_lifts_base : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistModuleFree
 open CategoryTheory AlgebraicGeometry GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q _ i C _ ζ c h`. Take `⟨f, hf⟩` from `(GlobalTheory.T.tateTwistModule_free_and_generator_summand q i C).2 ζ`. Establish `h' : c • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (Prim q C →₀ ULift.{1} (ZMod q)) ⧸ twRel q i C) = 0` using `h`. Establish `h2` using `congrArg f h'`. Rewrite `h2` using `[map_smul, hf, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.twist_generator_smul_eq_zero_imp :
     ∀ (q : ℕ) [NeZero q] (i : ℤ) (C : CommRingCat.{0}) [Nontrivial C] (ζ : Prim q C) (c : ULift.{1} (ZMod q)), c • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q i).obj C) = 0 → c = 0 := by

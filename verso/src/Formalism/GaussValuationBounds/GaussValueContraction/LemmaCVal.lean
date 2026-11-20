@@ -8,13 +8,13 @@ section
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-The claim follows from `hU O x hx 1 isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem cval_gaussV_one (hU : GaussUnit) {x : ℝ} (hx : 0 ≤ x) :
     gaussV x (1 : PowerSeries O) = 0 := hU O x hx 1 isUnit_one
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, cval_gaussV_one hU hx.le]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [pow_succ, hM O x hx, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -25,7 +25,7 @@ theorem cval_gaussV_pow (hM : GaussMul) (hU : GaussUnit) {x : ℝ} (hx : 0 < x)
   | succ n ih => rw [pow_succ, hM O x hx, ih]; push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Finset.prod_range_zero, Finset.sum_range_zero, cval_gaussV_one hU hx.le]`. Consider the case `succ n ih => rw [Finset.prod_range_succ, Finset.sum_range_succ, hM O x hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cval_gaussV_prod (hM : GaussMul) (hU : GaussUnit) {x : ℝ} (hx : 0 < x)
     (f : ℕ → PowerSeries O) (n : ℕ) :
@@ -35,7 +35,7 @@ theorem cval_gaussV_prod (hM : GaussMul) (hU : GaussUnit) {x : ℝ} (hx : 0 < x)
   | succ n ih => rw [Finset.prod_range_succ, Finset.sum_range_succ, hM O x hx, ih]
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ ℓ ^ s` using `Nat.one_le_pow _ _ (by omega)`. Rewrite using `[hM O x hx, hU O x hx.le u hu, zero_add, hE O ϖ hϖ x hx.le E (ℓ ^ s) h1 hEis hdeg, Nat.cast_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cval_gaussV_letter (hM : GaussMul) (hU : GaussUnit) (hE : GaussEis) {ϖ : O}
     (hϖ : Irreducible ϖ) {x : ℝ} (hx : 0 < x) {ℓ : ℕ} (hℓ : 1 ≤ ℓ) (E : Polynomial O)
@@ -47,7 +47,7 @@ theorem cval_gaussV_letter (hM : GaussMul) (hU : GaussUnit) (hE : GaussEis) {ϖ 
     Nat.cast_pow]
 
 /- English proof (translation)
-Rewrite using `[hC O x hx, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cval_gaussV_C_pow (hC : GaussC) {ϖ : O} (hϖ : Irreducible ϖ) {x : ℝ} (hx : 0 ≤ x)
     (n : ℕ) : gaussV x (PowerSeries.C (ϖ ^ n)) = (n : ℝ≥0∞) := by
@@ -60,25 +60,23 @@ section
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `hℓ1 : 1 ≤ ℓ` using `by omega`. Establish `hℓR : (2 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Establish `hℓpos : (0 : ℝ) < ℓ` using `by linarith`. Establish `hℓne : (ℓ : ℝ) ≠ 0` using `hℓpos.ne'`. Establish `hpow1 : (0 : ℝ) < (ℓ : ℝ) ^ s₁` using `pow_pos hℓpos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow2 : (ℓ : ℝ) ^ s₀ * ℓ ≤ (ℓ : ℝ) ^ s₁`. Rewrite using `[← pow_succ]; exact pow_le_pow_right₀ (by linarith) (by omega)`. Use `set x : ℝ := τ / (ℓ : ℝ) ^ s₁ with hxdef`. Establish `hx : 0 < x` using `div_pos hτ0 hpow1`. Establish `hx1 : x * (ℓ : ℝ) ^ s₁ = τ` using `by rw [hxdef]; field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x * (ℓ : ℝ) ^ s₀ ≤ τ / ℓ`. Rewrite using `[le_div_iff₀ hℓpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hVF : ∀ s, gaussV x (u s * (E s : PowerSeries O)) = ENNReal.ofReal (min 1 (x * (ℓ : ℝ) ^ s))` using `fun s => cval_gaussV_letter hM hU hE hϖ hx hℓ1 (E s) (u s) s (hEis s) (hdeg s) (hu s)`. Establish `hprod : gaussV x ((∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g) ^ 2) ≤ ((2 * g * ell : ℕ) : ℝ≥0∞)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cval_gaussV_pow hM hU hx, cval_gaussV_prod hM hU hx]`. Establish `hterm : ∀ s ∈ Finset.range ell, gaussV x ((u s * (E s : PowerSeries O)) ^ g) ≤ (g : ℝ≥0∞)`. Introduce `s _`. Rewrite using `[cval_gaussV_pow hM hU hx, hVF s]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Rewrite using `[← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal (min_le_left _ _)`. Use `_ = g := mul_one _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]; push_cast <;> ring`. Establish `hR0 : 0 ≤ (a : ℝ) + 2 * g * ell + b₀ / ℓ * τ` using `add_nonneg (by positivity) (mul_nonneg (by positivity) hτ0.le)`. Establish `hR : (a : ℝ≥0∞) + ((2 * g * ell : ℕ) : ℝ≥0∞) + (b₀ : ℝ≥0∞) * ENNReal.ofReal (τ / ℓ) = ENNReal.ofReal ((a : ℝ) + 2 * g * ell + b₀ / ℓ * τ)`. Establish `e1 : (a : ℝ) + 2 * g * ell + b₀ / ℓ * τ = ((a + 2 * g * ell : ℕ) : ℝ) + (b₀ : ℝ) * (τ / ℓ)` using `by push_cast; ring`. Rewrite using `[e1, ENNReal.ofReal_add (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (div_nonneg hτ0.le hℓpos.le)), ENNReal.ofReal_natCast, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `push_cast <;> ring`. Establish `hup : gaussV x (PowerSeries.C (ϖ ^ a) * (∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g) ^ 2 * (u s₀ * (E s₀ : PowerSeries O)) ^ b₀) ≤ ENNReal.ofReal ((a : ℝ) + 2 * g * ell + b₀ / ℓ * τ)`. Rewrite using `[← hR, hM O x hx, hM O x hx, cval_gaussV_C_pow hC hϖ hx.le, cval_gaussV_pow hM hU hx (u s₀ * (E s₀ : PowerSeries O)) b₀, hVF s₀]`. Conclude with `add_le_add (add_le_add le_rfl hprod) (mul_le_mul_of_nonneg_left (ENNReal.ofReal_le_ofReal ((min_le_right _ _).trans hx0)) (by positivity))`. Establish `hQ : gaussV x ((u s₁ * (E s₁ : PowerSeries O)) ^ b₁) = ENNReal.ofReal (b₁ * τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cval_gaussV_pow hM hU hx, hVF s₁, hx1, min_eq_right hτ1, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`. Take `⟨c, e, hce⟩` from `Ideal.mem_span_pair.mp hmem`. Establish `hlow : min (k : ℝ≥0∞) (ENNReal.ofReal (b₁ * τ)) ≤ gaussV x (PowerSeries.C (ϖ ^ a) * (∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g) ^ 2 * (u s₀ * (E s₀ : PowerSeries O)) ^ b₀)`. Rewrite using `[← hce]`. Use `le_trans ?_ (hA O x _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hM O x hx c, hM O x hx e, cval_gaussV_C_pow hC hϖ hx.le, hQ]`. Conclude with `min_le_min le_add_self le_add_self`. Establish `hRlt : ENNReal.ofReal ((a : ℝ) + 2 * g * ell + b₀ / ℓ * τ) < ENNReal.ofReal (b₁ * τ)` using `(ENNReal.ofReal_lt_ofReal_iff (lt_of_le_of_lt hR0 hlt)).mpr hlt`. Break down `min_le_iff.mp (hlow.trans hup) with h | h` into its components or cases. Rewrite `h` using `[← ENNReal.ofReal_natCast]`.
-
-Conclude with `(ENNReal.ofReal_le_ofReal_iff hR0).mp h`. Conclude with `absurd h (not_le.mpr hRlt)`.
+A detailed English derivation is pending.
 -/
 theorem cval_step (hM : GaussMul) (hA : GaussAdd) (hC : GaussC) (hU : GaussUnit)
     (hE : GaussEis) {ϖ : O} (hϖ : Irreducible ϖ) {ℓ : ℕ} (hℓ : 2 ≤ ℓ)
@@ -167,21 +165,21 @@ theorem cval_step (hM : GaussMul) (hA : GaussAdd) (hC : GaussC) (hU : GaussUnit)
 end
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ ℓ hℓ E u hEis hdeg hu ell g a b₀ b₁ s₀ s₁ k hs h2A hb hmem`. Establish `key : ∀ τ : ℝ, 0 < τ → τ ≤ 1 → (a : ℝ) + 2 * g * ell + b₀ / ℓ * τ < b₁ * τ → (k : ℝ) ≤ (a : ℝ) + 2 * g * ell + b₀ / ℓ * τ` using `fun τ hτ0 hτ1 hlt => cval_step hM hA hC hU hE hϖ hℓ E u hEis hdeg hu hs hmem hτ0 hτ1 hlt`. Establish `hℓpos : (0 : ℝ) < ℓ` using `by exact_mod_cast (by omega : 0 < ℓ)`. Establish `hc0 : 0 ≤ (b₀ : ℝ) / ℓ` using `by positivity`. Establish `hcB : 2 * ((b₀ : ℝ) / ℓ) ≤ b₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : (2 : ℝ) * b₀ ≤ ℓ * b₁` using `by exact_mod_cast hb`. Rewrite using `[← mul_div_assoc, div_le_iff₀ hℓpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA0 : 0 ≤ (a : ℝ) + 2 * g * ell` using `by positivity`. Generalize the expression as in `(a : ℝ) + 2 * g * ell = A at key h2A hA0 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(b₀ : ℝ) / ℓ = c at key hc0 hcB ⊢`. Generalize the expression as in `(b₁ : ℝ) = B at key hcB h2A ⊢`. Establish `hD : 0 < B - c` using `by linarith`. Establish `hτs : A / (B - c) < 1` using `by rw [div_lt_one hD]; linarith`. Establish `hτs0 : 0 ≤ A / (B - c)` using `div_nonneg hA0 hD.le`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : A * B / (B - c) = A + c * (A / (B - c))`. Establish `hDne : B - c ≠ 0` using `hD.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (k : ℝ) ≤ A * B / (B - c)`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Apply `le_of_forall_pos_le_add` to reduce the goal to its premises. Introduce `ε hε`. Establish `hc1 : (0 : ℝ) < c + 1` using `by linarith`. Establish `hδ : 0 < ε / (c + 1)` using `div_pos hε hc1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτgt : A / (B - c) < min 1 (A / (B - c) + ε / (c + 1))` using `lt_min hτs (by linarith)`. Establish `hτ0 : 0 < min 1 (A / (B - c) + ε / (c + 1))` using `lt_of_le_of_lt hτs0 hτgt`. Establish `hτ1 : min 1 (A / (B - c) + ε / (c + 1)) ≤ 1` using `min_le_left _ _`. Establish `hτle : min 1 (A / (B - c) + ε / (c + 1)) ≤ A / (B - c) + ε / (c + 1)` using `min_le_right _ _`. Establish `hlt : A + c * min 1 (A / (B - c) + ε / (c + 1)) < B * min 1 (A / (B - c) + ε / (c + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(div_lt_iff₀ hD).mp hτgt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk` using `key _ hτ0 hτ1 hlt`. Establish `hcδ : c * (ε / (c + 1)) ≤ ε`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hm` using `mul_le_mul_of_nonneg_left hτle hc0`. Combine the equalities or inequalities in the displayed calculation. Use `⟨h1, h1.trans ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hD]`. Use polynomial arithmetic with `[mul_nonneg hA0 (sub_nonneg.mpr hcB)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem lemmaCVal_of (hM : GaussMul) (hA : GaussAdd) (hC : GaussC) (hU : GaussUnit)
     (hE : GaussEis) : LemmaCVal := by

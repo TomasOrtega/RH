@@ -9,7 +9,7 @@ open scoped Matrix
 namespace GlobalTheory.WeilComplexUnique
 
 /- English proof (translation)
-Introduce `X G _ _ g _ _ L hL y k x x' c c' h h'`. Conclude with `GlobalTheory.weilIs_unique_fieldPoint X G L hL ℂ y k x x' c c' h h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weilIs_unitOn_unique_complex : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsAbelianScheme G → SmoothOfRelativeDimension g G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (y : Sp ℂ ⟶ X) (k : ℤ) (x x' : Over.mk y ⟶ G) (c c' : ℂˣ), Out.WeilIs G L k x x' (unitOn c) → Out.WeilIs G L k x x' (unitOn c') → c = c' := by
   intro X G _ _ g _ _ L hL y k x x' c c' h h'

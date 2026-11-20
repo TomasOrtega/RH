@@ -4,9 +4,9 @@ import GroundTheory.ArithmeticGeometry.ToricVarieties.KrullDomain
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `B K _ _ _ _ _ _ _ ϖ x _ hN hP`. Take `⟨N, b, hb⟩` from `hN`. Take `⟨y, hy⟩` from `GroundTheory.Arith.Toric.mem_range_of_forall_height_one (A := B) (K := K) x (fun p hp h1 => by`. Distinguish the cases in `hm : ϖ ∈ p`. Take `⟨b', c, hc, hbc⟩` from `hP p hp h1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b', c, hc, by rw [hbc, mul_comm]⟩`. Conclude with `⟨b, ϖ ^ N, fun h => hm (hp.mem_of_pow_mem N h), by rw [hb, map_pow, mul_comm]⟩)`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_range_of_integral_at_heightOne_over :
     ∀ (B K : Type) [CommRing B] [IsDomain B] [IsNoetherianRing B] [IsIntegrallyClosed B]

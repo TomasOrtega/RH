@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.SingleDatum
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `⟨GlobalTheory.OrientedHeis.theta_zero, GlobalTheory.FockFiniteHeis.pureTensorO_zero ψ θ S T hψ hθ sS BS sT BT φ⟩`. Consider the case `insert i s hi ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Use `⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (hg i)) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT (a i) (hg i) ih.1 φ, ih.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pureTensorO_finsetSum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
@@ -41,17 +41,17 @@ theorem pureTensorO_finsetSum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : In
     rw [GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT (a i) (hg i) ih.1 φ, ih.2]
 
 /- English proof (translation)
-Introduce `D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hv ι l₂ e he _ BV BW w P`. Establish `hψ : IsStdChar D ψ (-1)` using `hv.2.2.2.2.2.2.2.2.1`. Establish `hθ : IsInfFam θ` using `hv.1.inf`. Establish `hf₀ : IsThetaFunO ψ V W f₀` using `hv.2.2.2.2.2.2.2.2.2.2`. Establish `hinf : infPart D e = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, hQ, -⟩` from `he`. Conclude with `GlobalTheory.PlaceDatum.infPart_idemSum hQ`. Establish `hpt : ∀ q, (levPoint V W l₂ ι e q).map (infPart D) = 0`. Introduce `q`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[levPoint, Matrix.map_apply, map_mul, hinf]`. Establish `hth : ∀ q, IsThetaFunO ψ V W (heisO ψ V W (levPoint V W l₂ ι e q) f₀)` using `fun q => ((GlobalTheory.FinTranslate.finite_translate D ψ θ V W hψ hθ f₀ hf₀).2 _ (hpt q)).1`. Establish `key : ∀ w' : (Fin V.rank → LevQ Dw l₂) → ℂ, pureTensorO ψ θ V W (fun _ => 1) s BV BW (transSum ψ V W l₂ ι e f₀ w') P = ∑ q, (((Nat.card (Fin V.rank → LevQ Dw l₂) : ℂ))⁻¹ * w' q) • pureTensorO ψ θ V W (fun _ => 1) s BV BW (heisO ψ V W (levPoint V W l₂ ι e q) f₀) P`. Introduce `w'`. Establish `h1 : transSum ψ V W l₂ ι e f₀ w' = ∑ q, (((Nat.card (Fin V.rank → LevQ Dw l₂) : ℂ))⁻¹ * w' q) • heisO ψ V W (levPoint V W l₂ ι e q) f₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `transSum`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pureTensorO_finsetSum hψ hθ (fun _ => 1) BV s BW Finset.univ _ _ hth P).2`. Rewrite using `[key w]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[key, Finset.sum_eq_single q]`. Rewrite using `[if_pos rfl, mul_one, mul_comm, ← smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Rewrite using `[if_neg hb, mul_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ q) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pureTensorO_transSum_lin : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW s f₀ → ∀ (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) (l₂ : Geo.Tor.Level H) (e : AE D), IsHalfIdem l₂ e → ∀ [Fintype (Fin V.rank → LevQ Dw l₂)] (BV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (BW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (w : (Fin V.rank → LevQ Dw l₂) → ℂ) (P : PolF D W.rank V.rank), pureTensorO ψ θ V W (fun _ => 1) s BV BW (transSum ψ V W l₂ ι e f₀ w) P = ∑ q, w q • pureTensorO ψ θ V W (fun _ => 1) s BV BW (transSum ψ V W l₂ ι e f₀ (fun q' => if q' = q then 1 else 0)) P := by
   intro D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hv ι l₂ e he _ BV BW w P

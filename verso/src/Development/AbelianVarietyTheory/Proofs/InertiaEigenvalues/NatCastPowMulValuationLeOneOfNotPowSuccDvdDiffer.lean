@@ -5,15 +5,13 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l c K L _ _ _ _ _ la hl hD y hy`. Choose the witnesses or unpack the hypotheses as in `⟨d₀, hd₀D, hd₀⟩ : ∃ d₀ ∈ differentIdeal (𝓞 K) (𝓞 L), d₀ ∉ la.asIdeal ^ (c + 1) := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hD (Ideal.dvd_iff_le.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : la.intValuation ((l : 𝓞 L) ^ c) ≤ WithZero.exp (-(c : ℤ))` using `(la.intValuation_le_pow_iff_mem _ c).mpr (Ideal.pow_mem_pow hl c)`. Establish `h2 : WithZero.exp (-(c : ℤ)) ≤ la.intValuation d₀`. Rewrite using `[HeightOneSpectrum.exp_le_intValuation_iff_emultiplicity_le]`. Rewrite `hd₀` using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem la, HeightOneSpectrum.intValuation_le_exp_iff_le_emultiplicity, not_le]`. Rewrite using `[← ENat.lt_natCast_add_one_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd₀` after adjusting the coercions. Establish `hyd` using `hy d₀ hd₀D`. Establish `e1 : la.valuation L (d₀ : L) = la.intValuation d₀` using `la.valuation_of_algebraMap (K := L) d₀`. Establish `e2 : la.valuation L ((l : L) ^ c) = la.intValuation ((l : 𝓞 L) ^ c)`. Rewrite using `[← la.valuation_of_algebraMap (K := L)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Rewrite `hyd`, the goal using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Conclude with `h1.trans h2`.
-
-Use `_ = la.valuation L y * la.valuation L (d₀ : L) := mul_comm _ _`. Use `_ ≤ 1 := hyd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_pow_mul_valuation_le_one_of_not_pow_succ_dvd_differentIdeal :
     ∀ (l c : ℕ) (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]

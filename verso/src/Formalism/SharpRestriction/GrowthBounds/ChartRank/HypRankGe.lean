@@ -9,9 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hr : Module.rank O M ≤ (finrank Kf (Submodule.span Kf (M : Set W)) : Cardinal)`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Establish `h2 : LinearIndependent Kf fun k : s => ((k : M) : W)` using `(LinearIndependent.iff_fractionRing O Kf).1 (hs.map' M.subtype M.ker_subtype)`. Establish `h3 : LinearIndependent Kf fun k : s => (⟨((k : M) : W), Submodule.subset_span (k : M).2⟩ : Submodule.span Kf (M : Set W))` using `LinearIndependent.of_comp (Submodule.span Kf (M : Set W)).subtype h2`. Simplify using `using h3.fintype_card_le_finrank`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `Cardinal.toNat_le_toNat hr (Cardinal.natCast_lt_aleph0)`. Rewrite `h` using `[Cardinal.toNat_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_span {O Kf W : Type} [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     [IsFractionRing O Kf] [AddCommGroup W] [Module Kf W] [Module O W] [IsScalarTower O Kf W] (M : Submodule O W)
@@ -69,9 +69,9 @@ def Eqv : Submodule H.Kf H.Fn where
         mul_comm]⟩
 
 /- English proof (translation)
-Introduce `F hF a`. Establish `h` using `(PCard.mem_M H).1 hF a`. Simplify using `only [Level.funMod, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mem_ker] at h`. Take `⟨⟨h1, h2⟩, h3⟩` from `h`. Use `⟨fun L hL => Submodule.subset_span (h1 L hL), fun L hL => h2 L hL, fun γ L => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3 γ L` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem M_le_Eqv : (H.M : Set H.Fn) ⊆ Eqv H := by
   intro F hF a
@@ -84,7 +84,7 @@ theorem M_le_Eqv : (H.M : Set H.Fn) ⊆ Eqv H := by
   exact this
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (M_le_Eqv H)`.
+A detailed English derivation is pending.
 -/
 theorem span_le_Eqv : Submodule.span H.Kf (H.M : Set H.Fn) ≤ Eqv H :=
   Submodule.span_le.2 (M_le_Eqv H)
@@ -95,9 +95,9 @@ def Cover (rep : Cl → H.comp × H.P.Tup) : Prop :=
   ∀ a L, H.P.IsLatTup L → ∃ (c : Cl) (γ : (H.lev (rep c).1).Γ), (rep c).1 = a ∧ L = (H.lev (rep c).1).smul γ (rep c).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a L`. Distinguish the cases in `hL : H.P.IsLatTup L`. Take `⟨c, γ, rfl, rfl⟩` from `hc a L hL`. Rewrite using `[(hF _).2.2 γ _, h0 c, map_zero, smul_zero]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hF a).2.1 L hL`.
+A detailed English derivation is pending.
 -/
 theorem eqv_eq_zero {rep : Cl → H.comp × H.P.Tup} (hc : Cover H rep) {F : H.Fn} (hF : F ∈ Eqv H)
     (h0 : ∀ c, F (rep c).1 (rep c).2 = 0) : F = 0 := by
@@ -109,9 +109,9 @@ theorem eqv_eq_zero {rep : Cl → H.comp × H.P.Tup} (hc : Cover H rep) {F : H.F
   · exact (hF a).2.1 L hL
 
 /- English proof (translation)
-Distinguish the cases in `hL : H.P.IsLatTup L`. Use `⟨(hF a).1 L hL, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `(hF a).2.2 γ L` as an intermediate fact. Rewrite `this` using `[hγ]`. Conclude with `this.symm`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hF a).2.1 L hL]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem eqv_mem_InvK {F : H.Fn} (hF : F ∈ Eqv H) (a : H.comp) (L : H.P.Tup) : F a L ∈ InvK H a L := by
   by_cases hL : H.P.IsLatTup L
@@ -129,7 +129,7 @@ def evR (rep : Cl → H.comp × H.P.Tup) :
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `F hF`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `eqv_eq_zero H hc (span_le_Eqv H F.2) fun c => congrArg Subtype.val (congrFun hF c)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem evR_inj {rep : Cl → H.comp × H.P.Tup} (hc : Cover H rep) : Function.Injective (evR H rep) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -138,7 +138,7 @@ theorem evR_inj {rep : Cl → H.comp × H.P.Tup} (hc : Cover H rep) : Function.I
   exact eqv_eq_zero H hc (span_le_Eqv H F.2) fun c => congrArg Subtype.val (congrFun hF c)
 
 /- English proof (translation)
-Establish `: FiniteDimensional H.Kf (Submodule.span H.Kf (H.M : Set H.Fn))` using `Module.Finite.of_injective (evR H rep) (evR_inj H hc)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem finrank_le_of_cover [IsFractionRing H.O H.Kf] {rep : Cl → H.comp × H.P.Tup} (hc : Cover H rep)
     (hfin : ∀ c, FiniteDimensional H.Kf (InvK H (rep c).1 (rep c).2)) :
@@ -170,7 +170,7 @@ abbrev FiBc (S : StepIn M i hi G) (β : S.Ch) (c : {c // S.chOf c = β}) := proj
 def FiBPi (S : StepIn M i hi G) (β : S.Ch) : Prop := IsPiSub (FiB S β)
 
 /- English proof (translation)
-Use `fin_Fi M i` as an intermediate fact. Establish `: Module.Finite ℂ ((β : chs S) → FiB S β.1)` using `Module.Finite.equiv (eF S)`. Conclude with `fin_fac (R := ℂ) (φ := fun β : chs S => FiB S β.1) ⟨β, hβ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finDim_FiB (S : StepIn M i hi G) (β : S.Ch) (hβ : β ∈ chs S) : FiniteDimensional ℂ (FiB S β) := by
   classical
@@ -179,11 +179,11 @@ theorem finDim_FiB (S : StepIn M i hi G) (β : S.Ch) (hβ : β ∈ chs S) : Fini
   exact fin_fac (R := ℂ) (φ := fun β : chs S => FiB S β.1) ⟨β, hβ⟩
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty {c // S.chOf c = β} with he | hne` into its components or cases. Simplify using `[Finset.univ_eq_empty]`. Take `⟨c₀⟩` from `hne`. Establish `: FiniteDimensional ℂ (FiB S β)` using `finDim_FiB S β (c₀.2 ▸ chOf_mem S c₀.1)`. Establish `: ∀ c, FiniteDimensional ℂ (FiBc S β c)` using `fun c => Module.Finite.map _ _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : ((c : {c // S.chOf c = β}) → FiBc S β c) →ₗ[ℂ] FiB S β` to `{ toFun := fun g => ⟨fun c => (g c).1, hπ _ fun c => (g c).2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hψ : Function.Injective ψ`. Introduce `g g' h`. Use function extensionality and compare the values at `c`. Conclude with `Subtype.ext (congrFun (congrArg Subtype.val h) c)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.finrank_pi_fintype ℂ]`. Conclude with `LinearMap.finrank_le_finrank_of_injective hψ`.
+A detailed English derivation is pending.
 -/
 theorem sum_le_finrank_FiB (S : StepIn M i hi G) (β : S.Ch) (hπ : FiBPi S β) :
     ∑ c, finrank ℂ (FiBc S β c) ≤ finrank ℂ (FiB S β) := by
@@ -213,19 +213,19 @@ def RepOk (S : StepIn M i hi G) (β : S.Ch) (rep : {c // S.chOf c = β} → S.cm
     (S.loc β).IsPt (rep c).1 g (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ₀ * ((S.K β).y c).1 * κ₀.1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.cinj β, X.onto β, X.hypC β⟩`.
+Supply the required witnesses or components.
 -/
 theorem rankTie_of_chX {S : StepIn M i hi G} (X : KAat.ChX S) (β : S.Ch) : RankTie S β :=
   ⟨X.cinj β, X.onto β, X.hypC β⟩
 
 /- English proof (translation)
-Establish `hex : ∀ c : {c // S.chOf c = β}, ∃ (a0 : S.cmpt β) (L : G.P.Tup) (γ₀ : GL (Fin (D.R.N i)) D.host.E), G.P.IsLatTup L ∧ KAat.IsCG S (S.eC ⟨β, a0⟩) L c.1 γ₀`. Introduce and unpack `⟨c0, hc0⟩`. Substitute `hc0` using the available equality. Take `⟨a, L, γ₀, hL, hcg⟩` from `KAat.exists_of_cls H c0`. Take `⟨β', a0, hc, g, κ₀, ha, hrest⟩` from `id hcg`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hc` using the available equality. Conclude with `⟨a0, L, γ₀, hL, ha ▸ hcg⟩`. Use `choose a0 L γ₀ hL hcg using hex`. Use `⟨fun c => (a0 c, L c), fun c => ?_, fun a L' hL' => ?_⟩` and prove the remaining obligations. Take `⟨β', a0', hc, g, κ₀, ha, hLg, hγ, hpt⟩` from `hcg c`.
+Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.1 (S.eC.injective ha)`. Consider the cases of `eq_of_heq h`. Conclude with `⟨g, γ₀ c, κ₀, hγ, hLg, hpt⟩`. Take `⟨c1, γ1, h1⟩` from `KAat.exists_isCG H (S.eC ⟨β, a⟩) L' hL'`. Establish `hc1 : S.chOf c1 = β` using `by rw [KAat.IsCG.chart h1, Equiv.symm_apply_apply]`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, γ, hγ⟩` from `KAat.IsCG.orbit H X (hcg ⟨c1, hc1⟩) h1`. Take `⟨-, h⟩` from `Sigma.mk.inj_iff.1 (S.eC.injective ha)`. Conclude with `⟨⟨c1, hc1⟩, γ, eq_of_heq h, hγ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coverOf {S : StepIn M i hi G} {e : D.what₂.LL →+* G.Kf} (H : ∀ β, S.Core e β) (X : KAat.ChX S) (β : S.Ch) :
     ∃ rep, RepOk S β rep ∧ Cover (Hc S β) rep := by
@@ -257,7 +257,7 @@ def InvLeOf (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : Prop :=
 def FiBPiAll (S : StepIn M i hi G) : Prop := ∀ β, FiBPi S β
 
 /- English proof (translation)
-Use `symm`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨⟨_, PStabEq.bc_mem hγ⟩, Subgroup.mem_subgroupOf.2 ⟨γ, hγ, rfl⟩, ⟨_, PStabEq.U_le κ.2⟩, Subgroup.mem_subgroupOf.2 κ.2, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `hx`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mk_eq_of (S : StepIn M i hi G) (β : S.Ch) {γ : GL (Fin (D.R.N i)) D.host.E}
     (hγ : γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
@@ -272,23 +272,21 @@ theorem mk_eq_of (S : StepIn M i hi G) (β : S.Ch) {γ : GL (Fin (D.R.N i)) D.ho
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hφ : ∀ c, ∃ φ ∈ AdForms (S.K β).lev (embT D) (lamTG M i), φ ((S.K β).y c) = f c`. Introduce `c`. Take `⟨φ', hφ', e⟩` from `Submodule.mem_map.1 (hf c)`. Take `⟨φ, hφ, rfl⟩` from `Submodule.mem_map.1 hφ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨φ, hφ, e⟩`. Use `choose φ hφA hφy using hφ`. Set `g` to `fun (c : {c // S.chOf c = β}) (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) => if (Quotient.mk'' x : Cls (S.K β).lev) = Quotient.mk'' ((S.K β).y c) then φ c x else 0`. Establish `hg : ∀ c, g c ∈ AdForms (S.K β).lev (embT D) (lamTG M i)`. Introduce `c`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hφA c`. Unfold `AdForms at h2 ⊢`. Rewrite `h2`, the goal using `[Submodule.mem_inf]`. Take `⟨hA, hV⟩` from `h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ x x' κ hx y y' hy`. Establish `h1` using `hA γ hγ x x' κ hx y y' hy`. Establish `hq` using `mk_eq_of S β hγ hx`. Distinguish the cases in `hxc : (Quotient.mk'' x : Cls (S.K β).lev) = Quotient.mk'' ((S.K β).y c)`. Establish `hxc' : (Quotient.mk'' x' : Cls (S.K β).lev) = Quotient.mk'' ((S.K β).y c)` using `hq.trans hxc`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, if_pos hxc, if_pos hxc']`. Conclude with `h1`. Establish `hxc' : ¬ (Quotient.mk'' x' : Cls (S.K β).lev) = Quotient.mk'' ((S.K β).y c)` using `fun h => hxc (hq.symm.trans h)`. Simplify using `only [g, if_neg hxc, if_neg hxc', Pi.zero_apply, mul_zero]`. Use `Submodule.mem_pi.2 fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hxc : (Quotient.mk'' x : Cls (S.K β).lev) = Quotient.mk'' ((S.K β).y c)`. Simplify using `only [g, if_pos hxc]`. Conclude with `Submodule.mem_pi.1 hV x (Set.mem_univ x)`. Simplify using `only [g, if_neg hxc]`. Conclude with `Submodule.zero_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum : f = ∑ c, res (embT D) (S.K β).y (g c)`. Use function extensionality and compare the values at `c' z`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single c']`. Use `show f c' z = g c' ((S.K β).y c') z`. Simplify using `only [g, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφy]`. Introduce `c _ hc show g c ((S.K β).y c') z = 0`. Establish `hne : ¬ (Quotient.mk'' ((S.K β).y c') : Cls (S.K β).lev) = Quotient.mk'' ((S.K β).y c)` using `fun h => hc ((S.K β).y_bij.1 h).symm`. Simplify using `only [g, if_neg hne, Pi.zero_apply]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ c') h`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.mem_map_of_mem (hg c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fiBPi (S : StepIn M i hi G) (β : S.Ch) : FiBPi S β := by
   intro f hf
@@ -339,12 +337,12 @@ theorem fiBPi (S : StepIn M i hi G) (β : S.Ch) : FiBPi S β := by
   exact Submodule.sum_mem _ fun c _ => Submodule.mem_map_of_mem (hg c)
 
 /- English proof (translation)
-Introduce `β` and use `fiBPi S β`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fiBPiAll (S : StepIn M i hi G) : FiBPiAll S := fun β => fiBPi S β
 
 /- English proof (translation)
-Introduce `β`. Take `⟨rep, hok, hcov⟩` from `coverOf H X β`. Establish `hI'` using `hI hS H X β rep hok`. Establish `: ∀ c, FiniteDimensional (Hc S β).Kf (InvK (Hc S β) (rep c).1 (rep c).2)` using `fun c => (hI' c).1`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem chartRankGe_of [IsFractionRing G.O G.Kf] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β)
     (hS : BlockRationalityField) (X : KAat.ChX S) (hI : InvLeOf S e) : ChartRankGe S := by
@@ -366,7 +364,7 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.wh
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P}
 
 /- English proof (translation)
-The claim follows from `chartRankGe_of _ e H hS (KAat.chX_stepInOf hi Fo Lc pos hU hB hTc) hI`.
+A detailed English derivation is pending.
 -/
 theorem chartRankGe_stepInOf [IsFractionRing (gatJ Lv (i + 1)).O (gatJ Lv (i + 1)).Kf] (Fo : FormsIn M (i + 1) hi)
     (Lc : LocIn X u w hg Lv i Fo.Ch) (pos : (Σ v : Fin (Fl.Pj (i + 1)).nV, Fin ((Fl.Pj (i + 1)).n' v)) ≃ D.what₂.Tau)

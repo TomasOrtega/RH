@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.SympAct
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`. Introduce `hw`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => w i / M, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `hd : (M : ℤ) ∣ w i` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (congrFun hw i)`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Rewrite using `[Int.mul_ediv_cancel' hd]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_iff {h : ℕ} (M : ℕ) (w : Fin h ⊕ Fin h → ℤ) : (∃ c, w = M • c) ↔ reduceMod M w = 0 := by
   constructor
@@ -30,11 +30,11 @@ theorem exists_smul_iff {h : ℕ} (M : ℕ) (w : Fin h ⊕ Fin h → ℤ) : (∃
     rw [Int.mul_ediv_cancel' hd]
 
 /- English proof (translation)
-Establish `hsm : ∀ (n : ℕ) c, lev ((n + 1) • c) = lev c ^ (n + 1)`. Introduce `n c`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, ← pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc⟩` from `(exists_smul_iff M (x - y)).2 (by`. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun hxy i`. Simplify using `only [reduceMod] at e`. Simplify using `only [reduceMod, Pi.sub_apply, Int.cast_sub, e, sub_self, Pi.zero_apply])`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hx : x = y + M • c` using `by rw [← hc]; abel`. Take `⟨k, rfl⟩ : ∃ k, M = k + 1` from `⟨M - 1, by omega⟩`. Rewrite using `[hx, hadd, hsm, htor, _root_.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_eq_of_reduce {h : ℕ} {T : Type*} [Monoid T] {M : ℕ} (hM : 0 < M) (lev : (Fin h ⊕ Fin h → ℤ) → T)
     (hadd : ∀ a b, lev (a + b) = lev a * lev b) (htor : ∀ a, lev a ^ M = 1) {x y : Fin h ⊕ Fin h → ℤ}
@@ -54,14 +54,14 @@ theorem lev_eq_of_reduce {h : ℕ} {T : Type*} [Monoid T] {M : ℕ} (hM : 0 < M)
   rw [hx, hadd, hsm, htor, _root_.mul_one]
 
 /- English proof (translation)
-Simplify using `[omegaStd, omegaMod, reduceMod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaStd_cast {h : ℕ} (M : ℕ) (a b : Fin h ⊕ Fin h → ℤ) :
     ((omegaStd a b : ℤ) : ZMod M) = omegaMod M (reduceMod M a) (reduceMod M b) := by
   simp [omegaStd, omegaMod, reduceMod]
 
 /- English proof (translation)
-Take `⟨t, ht⟩ : (M : ℤ) ∣ k - l` from `(ZMod.intCast_eq_intCast_iff_dvd_sub l k M).1 hkl.symm`. Establish `e : k = l + M * t` using `by linarith`. Rewrite using `[e, zpow_add, zpow_mul, zpow_natCast, hz, one_zpow, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_eq_of_cast_eq {G : Type*} [Group G] {M : ℕ} (z : G) (hz : z ^ M = 1) {k l : ℤ}
     (hkl : (k : ZMod M) = l) : z ^ k = z ^ l := by
@@ -70,7 +70,7 @@ theorem zpow_eq_of_cast_eq {G : Type*} [Group G] {M : ℕ} (z : G) (hz : z ^ M =
   rw [e, zpow_add, zpow_mul, zpow_natCast, hz, one_zpow, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite `hkl` using `[ZMod.natCast_eq_natCast_iff']`. Rewrite using `[← Nat.div_add_mod k M, ← Nat.div_add_mod l M, hkl, pow_add, pow_add, pow_mul, pow_mul, hz, one_pow, one_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_of_cast_eq {G : Type*} [Monoid G] {M : ℕ} (z : G) (hz : z ^ M = 1) {k l : ℕ}
     (hkl : (k : ZMod M) = l) : z ^ k = z ^ l := by
@@ -78,9 +78,9 @@ theorem pow_eq_of_cast_eq {G : Type*} [Monoid G] {M : ℕ} (z : G) (hz : z ^ M =
   rw [← Nat.div_add_mod k M, ← Nat.div_add_mod l M, hkl, pow_add, pow_add, pow_mul, pow_mul, hz, one_pow, one_pow]
 
 /- English proof (translation)
-Set `e : Fin h ⊕ Fin h → ZMod M` to `Pi.single (Sum.inl ⟨0, hh⟩) 1`. Set `f : Fin h ⊕ Fin h → ZMod M` to `Pi.single (Sum.inr ⟨0, hh⟩) 1`. Establish `hef : omegaMod M e f = 1`. Simplify using `[omegaMod, e, f, Pi.single_apply]`. Use `(hn e f).symm.trans (hn' e f)` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[hef]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mult_unique {h M : ℕ} (hh : 0 < h) (g : sympSimGrp h M) {n n' : ℕ} (hn : IsMultOf g n)
     (hn' : IsMultOf g n') : (n : ZMod M) = n' := by
@@ -94,7 +94,7 @@ theorem mult_unique {h M : ℕ} (hh : 0 < h) (g : sympSimGrp h M) {n n' : ℕ} (
   simpa using this
 
 /- English proof (translation)
-Introduce `x y`. Express the relevant statement in the definitionally equal form `omegaMod M ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) x)) ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZM …`. Rewrite using `[ha, hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isMultOf_mul {h M : ℕ} {a c : sympSimGrp h M} {n n' : ℕ} (ha : IsMultOf a n) (hc : IsMultOf c n') :
     IsMultOf (a * c) (n * n') := by
@@ -108,7 +108,7 @@ theorem isMultOf_mul {h M : ℕ} {a c : sympSimGrp h M} {n n' : ℕ} (ha : IsMul
   ring
 
 /- English proof (translation)
-Introduce `x y`. Express the relevant statement in the definitionally equal form `omegaMod M x y = ((1 : ℕ) : ZMod M) * omegaMod M x y`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isMultOf_one {h M : ℕ} : IsMultOf (1 : sympSimGrp h M) 1 := by
   intro x y
@@ -116,7 +116,7 @@ theorem isMultOf_one {h M : ℕ} : IsMultOf (1 : sympSimGrp h M) 1 := by
   simp
 
 /- English proof (translation)
-Distinguish the cases in `hh : h = 0`. Substitute `hh` using the available equality. Conclude with `⟨1, fun x y => by simp [omegaMod], Nat.coprime_one_left _, fun _ => rfl⟩`. Take `⟨m, hm⟩` from `a.2`. Conclude with `⟨(m : ZMod M).val, fun x y => by rw [ZMod.natCast_zmod_val]; exact hm x y, ZMod.val_coe_unit_coprime m, fun h0 => absurd h0 hh⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mult {h M : ℕ} [NeZero M] (a : sympSimGrp h M) :
     ∃ n : ℕ, IsMultOf a n ∧ n.Coprime M ∧ (h = 0 → n = 1) := by
@@ -134,25 +134,23 @@ def idObjMap {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj
     act := fun c => by simp, pol := GlobalTheory.SiegLower.lbIso_pull_id o.isLB, eta := fun y => by simp }
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨hadd, htor, hgeo⟩` from `hlev`. Establish `hres : ∀ {x y : Fin h ⊕ Fin h → ℤ}, reduceMod M x = reduceMod M y → lev x = lev y` using `fun hxy => lev_eq_of_reduce hM lev hadd htor hxy`. Establish `hred_add : ∀ x y : Fin h ⊕ Fin h → ℤ, reduceMod M (x + y) = reduceMod M x + reduceMod M y`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`. Use `⟨fun x y => ?_, fun x => htor _, ?_⟩` and prove the remaining obligations. Simplify using `only [sympTwist]`. Rewrite using `[← hadd]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hres` to reduce the goal to its premises. Simplify using `only [hred_add, reduceMod_liftMod, map_add]`. Introduce `k _ _ x β z hx hz`. Take `⟨β₀, hβ₀⟩ : ∃ β₀ : cycAway M →+* k, x ≫ s₁ = spMap β₀` from `⟨(Spec.preimage (x ≫ s₁)).hom, by simp [spMap]⟩`. Establish `hββ : β = β₀.comp σ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : spMap β = spMap (β₀.comp σ)`. Rewrite using `[← hx, ← Category.assoc, hβ₀, spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_inj.1 e)`. Establish `hζ` using `isPrimitiveRoot_zetaAway hM.ne'`. Set `z₀ : kˣ` to `((hζ.isUnit hM.ne').map β₀).unit`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz₀ : (z₀ : k) = β₀ (zetaAway M)` using `IsUnit.unit_spec _`. Establish `hz' : z = z₀ ^ n`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hz, hββ, RingHom.comp_apply, hσ, map_pow, hz₀]`. Establish `hz₀M : z₀ ^ M = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hz₀, ← map_pow, hζ.pow_eq_one, map_one, Units.val_one]`. Take `⟨hker, hsurj, hweil⟩` from `hgeo k x β₀ z₀ hβ₀ hz₀`. Use `⟨fun w => ?_, fun g hg => ?_, fun w v => ?_⟩` and prove the remaining obligations. Simplify using `only [sympTwist]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hker, exists_smul_iff, exists_smul_iff, reduceMod_liftMod]`. Conclude with `LinearEquiv.map_eq_zero_iff _`. Take `⟨w, hw⟩` from `hsurj g hg`. Use `⟨liftMod ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)).symm (reduceMod M w)), ?_⟩` and prove the remaining obligations. Simplify using `only [sympTwist]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[reduceMod_liftMod, LinearEquiv.apply_symm_apply, ← hw]`. Use `congr 1`. Conclude with `hres (reduceMod_liftMod _)`. Simplify using `only [sympTwist]`. Establish `key : z ^ (2 * omegaStd w v) = z₀ ^ (2 * omegaStd (liftMod ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M w))) (liftMod ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M v))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz', ← zpow_natCast, ← zpow_mul]`. Apply `zpow_eq_of_cast_eq z₀ hz₀M` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[omegaStd_cast, omegaStd_cast, reduceMod_liftMod, reduceMod_liftMod, ha]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[key]`. Conclude with `hweil _ _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSympLev_twist {b : Base D R} {N h M : ℕ} (hM : 0 < M) {X : Scheme.{0}} {s : X ⟶ Sp R}
     {s₁ : X ⟶ Sp (cycAway M)} (u : Obj b N s) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over X) ⟶ u.A))
@@ -210,25 +208,23 @@ theorem isSympLev_twist {b : Base D R} {N h M : ℕ} (hM : 0 < M) {X : Scheme.{0
       exact hweil _ _
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M hM X s s₁ u lev hlev huniv`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hζ` using `isPrimitiveRoot_zetaAway hM.ne'`. Establish `hζM : zetaAway M ^ M = 1` using `hζ.pow_eq_one`. Establish `hadd` using `hlev.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htor` using `hlev.2.1`. Establish `hres : ∀ {x y : Fin h ⊕ Fin h → ℤ}, reduceMod M x = reduceMod M y → lev x = lev y` using `fun hxy => lev_eq_of_reduce hM lev hadd htor hxy`. Use `choose n hn hcop h0 using fun a : sympSimGrp h M => exists_mult a`. Establish `hσex : ∀ a, ∃ σ : cycAway M →+* cycAway M, σ (zetaAway M) = zetaAway M ^ n a` using `fun a =>`. Set `⟨σ, hσ⟩` to `exists_cycAway_aut hM.ne' (hcop a)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `⟨σ.toRingHom, hσ⟩`. Use `choose σ hσ using hσex`. Establish `hU : ∀ a, ∃! f : X ⟶ X, f ≫ s = s ∧ f ≫ s₁ = s₁ ≫ spMap (σ a) ∧ ∃ m : ObjMap u u f, ∀ x, (sympTwist a lev x).left ≫ m.φ = f ≫ (lev x).left` using `fun a => huniv X s (s₁ ≫ spMap (σ a)) u (sympTwist a lev) (isSympLev_twist hM u lev hlev a (n a) (hn a) (σ a) (hσ a))`. Use `choose ρ hρ hρu using hU`. Establish `hcons : ∀ a c, zetaAway M ^ n (a * c) = zetaAway M ^ (n a * n c)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `a c`. Distinguish the cases in `hh : h = 0`. Rewrite using `[h0 _ hh, h0 _ hh, h0 _ hh]`. Conclude with `pow_eq_of_cast_eq _ hζM (mult_unique (Nat.pos_of_ne_zero hh) _ (hn _) (isMultOf_mul (hn a) (hn c)))`. Establish `hone : zetaAway M ^ n 1 = zetaAway M`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hh : h = 0`. Rewrite using `[h0 _ hh, pow_one]`. Rewrite using `[pow_eq_of_cast_eq _ hζM (mult_unique (Nat.pos_of_ne_zero hh) _ (hn 1) isMultOf_one), pow_one]`. Use `⟨ρ, ?_, fun a c => ?_, fun a => ⟨(hρ a).1, ⟨n a, σ a, hn a, hσ a, (hρ a).2.1⟩, (hρ a).2.2⟩⟩` and prove the remaining obligations. Establish `hσ1 : σ 1 = RingHom.id _` using `cycAway_hom_ext hM.ne' (by rw [hσ, hone]; rfl)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(hρu 1 (𝟙 X) ⟨Category.id_comp _, ?_, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[hσ1, Category.id_comp]`. Simplify using `[spMap]`. Use `⟨idObjMap u, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(lev (liftMod (reduceMod M x))).left ≫ 𝟙 _ = 𝟙 X ≫ (lev x).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id, Category.id_comp, hres (reduceMod_liftMod _)]`. Establish `hσmul : σ (a * c) = (σ a).comp (σ c)` using `cycAway_hom_ext hM.ne' (by`. Rewrite using `[hσ, RingHom.comp_apply, hσ, map_pow, hσ, ← pow_mul, hcons])`. Use `(hρu (a * c) (ρ a ≫ ρ c) ⟨?_, ?_, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, (hρ c).1, (hρ a).1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, (hρ c).2.1, ← Category.assoc, (hρ a).2.1, Category.assoc, hσmul, spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨ma, hma⟩` from `(hρ a).2.2`. Take `⟨mc, hmc⟩` from `(hρ c).2.2`. Use `⟨ObjMapComp.comp ma mc, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(sympTwist (a * c) lev x).left ≫ ma.φ ≫ mc.φ = (ρ a ≫ ρ c) ≫ (lev x).left`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : sympTwist (a * c) lev x = sympTwist a lev (liftMod ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M x)))`. Simplify using `only [sympTwist, reduceMod_liftMod]`. Both sides reduce to the same expression. Rewrite using `[e1, ← Category.assoc, hma, Category.assoc]`. Express the relevant statement in the definitionally equal form `ρ a ≫ (sympTwist c lev x).left ≫ mc.φ = _`.
-
-Rewrite using `[hmc, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sympActs : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M →
   ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (s₁ : X ⟶ Sp (cycAway M)) (u : Obj b N s)

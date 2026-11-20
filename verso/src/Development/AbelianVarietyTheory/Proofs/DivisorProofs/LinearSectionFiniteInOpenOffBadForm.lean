@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.HSShort.Supp
 
 /- English proof (translation)
-Use `haveI := hS.smooth`. Use `haveI : Smooth S.str := SmoothOfRelativeDimension.smooth S.D S.str`. Use `haveI : JacobsonSpace S.Y := LocallyOfFiniteType.jacobsonSpace S.str`. Establish `hf : (Z ∩ closedPoints S.Y).Finite`. Use `(h.image fun x => ptOf x.1).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨hyZ, hy⟩`. Assume the negation of the conclusion as `hne`. Use `subset_of_forall_pt_mem k S hS Ω {y} hy ∅ isOpen_empty (fun x hx => hne ⟨x, ?_, hx⟩) rfl` and prove the remaining obligations. Establish `e : ptOf x.1 = y` using `hx`. Express the relevant statement in the definitionally equal form `ptOf x.1 ∈ Z`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hyZ`. Establish `hc : IsClosed (Z ∩ closedPoints S.Y)`. Rewrite using `[← Set.biUnion_of_singleton (Z ∩ closedPoints S.Y)]`. Conclude with `hf.isClosed_biUnion fun y hy => hy.2`.
-
-Rewrite using `[← JacobsonSpace.closure_inter_closedPoints hZ, hc.closure_eq]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_finite_pts {k : Type} [Field k] (S : LinSys k) (hS : S.IsVariety) (Ω : Type) [Field Ω]
     [Algebra k Ω] [IsAlgClosed Ω] (Z : Set S.Y) (hZ : IsClosed Z)
@@ -48,13 +46,13 @@ theorem finite_of_finite_pts {k : Type} [Field k] (S : LinSys k) (hS : S.IsVarie
   exact hf
 
 /- English proof (translation)
-Use `⟨(fun p : MvPolynomial (Fin 1 × Fin N) K => fun j => coeff (Finsupp.single ((0 : Fin 1), j) 1) p) '' (UniqueFactorizationMonoid.factors G).toFinset, (Finset.finite_toSet _).image _, fun y hy hz => ?_⟩` and prove the remaining obligations. Establish `irr` using `HyperplaneFactor.irreducible_lin hy`. Take `⟨n, hn⟩` from `HyperplaneFactor.exists_dvd_pow_of_zeros (a := lin y) (b := G) fun x hx => by`. Establish `e : (fun p : Fin 1 × Fin N => x (0, p.2)) = x`. Use function extensionality and compare the values at `⟨i, j⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim i 0]`. Establish `h1` using `hz (fun j => x (0, j)) (by rwa [HyperplaneFactor.eval_lin] at hx)`. Simplify `h1` using `only [e]`. Take `⟨q, hq, ha⟩` from `UniqueFactorizationMonoid.exists_mem_factors_of_dvd hG irr (irr.prime.dvd_of_dvd_pow hn)`. Take `⟨a, ha⟩` from `ha.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, -, ht⟩` from `isUnit_iff_eq_C_of_isReduced.1 a.isUnit`. Rewrite `ha` using `[ht, mul_comm]`. Use `⟨_, ⟨q, by simpa using hq, rfl⟩, t, funext fun j => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), j) 1)) ha`. Rewrite `h1` using `[coeff_C_mul, HyperplaneFactor.coeff_lin]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1.symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_finite_lines {K : Type} [Field K] [IsAlgClosed K] {N : ℕ} {G : MvPolynomial (Fin 1 × Fin N) K}
     (hG : G ≠ 0) : ∃ R : Set (Fin N → K), R.Finite ∧ ∀ y : Fin N → K, y ≠ 0 →
@@ -79,11 +77,11 @@ theorem exists_finite_lines {K : Type} [Field K] [IsAlgClosed K] {N : ℕ} {G : 
   simpa using h1.symm
 
 /- English proof (translation)
-Introduce `F _ _ T hT δ f hf g hbd hfin E _ _ s hG hg`. Establish `hv : (T.toLinSys.baseChange E).IsVariety` using `hT.alg.variety.baseChange E`. Use `⟨finite_of_finite_pts _ hv (AlgebraicClosure E) _ (T.linSection E s).support.isClosed ?_, ?_⟩` and prove the remaining obligations. Take `⟨R, hR, hl⟩` from `exists_finite_lines hG`. Use `((hR.biUnion fun y _ => hfin (AlgebraicClosure E) y).preimage (T.toLinSys.toBase_bijective E (AlgebraicClosure E)).1.injOn).subset fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : x ∈ T.geomPts E (T.linSection E s)` using `(LinSys.mem_subPts_iff _ _ x).2 hx`. Establish `hy` using `hT.alg.bpf.coords_ne_zero (LinSys.toBase x : T.Pt (AlgebraicClosure E)).1`. Take `⟨r, hr, hc⟩` from `hl _ hy fun ξ hξ => by`. Rewrite using `[EtaleSection.eval_spec]`. Use `(GlobalTheory.T.chowForm_zeroSet_extensionField_iff_common_cone_zero F T.D T.N δ _ f hf).1 _ _ ξ _ hy (fun p hp => ?_) ((T.toLinSys.mem_subPts_cut_baseChange_iff E s x).1 hm) hξ` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `T.toLinSys.eval₂_coords_eq_zero (LinSys.toBase x : T.Pt (AlgebraicClosure E)).1 hp` as an intermediate fact. Rewrite `this` using `[LinSys.baseHom_ptOver]`. Then use the resulting hypothesis. Conclude with `Set.mem_biUnion hr ⟨hg x hm, hc⟩`. Conclude with `subset_of_forall_pt_mem E _ hv (AlgebraicClosure E) _ (T.linSection E s).support.isClosed (T.toLinSys.bcFst E ⁻¹' (T.U : Set T.Y)) (T.U.isOpen.preimage (T.toLinSys.bcFst E).continuous) fun x hx hb => hg x ((LinSys.mem_subPts_iff _ _ x).2 hx) (hbd (AlgebraicClosure E) (LinSys.toBa …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_and_inOpen : ∀ (F : Type) [Field F] [NumberField F] (T : Tuple F), T.IsGeometric → ∀ (δ : ℕ) (f : MvPolynomial (Fin (T.D + 1) × Fin T.N) F), IsChowForm T.imageIdeal T.D δ f → ∀ (g : MvPolynomial (Fin T.N) F), (∀ (K : Type) [Field K] [Algebra F K] (x : T.Pt K), ptOf x.1 ∈ T.bd → aeval (T.coords x.1) g = 0) → (∀ (K : Type) [Field K] [Algebra F K] (y : Fin T.N → K), {x : T.Pt K | aeval (T.coords x.1) g ≠ 0 ∧ ∃ c : K, T.coords x.1 = c • y}.Finite) → ∀ (E : Type) [Field E] [Algebra F E] (s : Fin T.D → Fin T.N → E), spec (fun i j => algebraMap E (AlgebraicClosure E) (s i j)) f ≠ 0 → (∀ x ∈ T.geomPts E (T.linSection E s), aeval (T.coords (LinSys.toBase x : T.Pt (AlgebraicClosure E)).1) g ≠ 0) → ((T.linSection E s).support : Set (T.toLinSys.baseChange E).Y).Finite ∧ T.InOpen E (T.linSection E s) := by
   intro F _ _ T hT δ f hf g hbd hfin E _ _ s hG hg

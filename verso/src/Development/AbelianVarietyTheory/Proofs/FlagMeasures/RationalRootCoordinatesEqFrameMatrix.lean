@@ -20,7 +20,7 @@ namespace GlobalTheory.LoopVol
 open Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Unfold `hJ`. Simplify using `only [mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hJ_sum_right' {n m : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) (g : Fin m → ℂ)
     (y : Fin m → Fin n → ℂ) : hJ ε x (∑ i, g i • y i) = ∑ i, g i * hJ ε x (y i) := by
@@ -28,11 +28,11 @@ theorem hJ_sum_right' {n m : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) (g :
   simp only [mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `D X u' w γ s y τ M hM q`. Unfold `GlobalTheory.LoopVol.ratCoord`. Rewrite using `[hM q.1.2, hJ_sum_right', Fin.sum_univ_castSucc]`. Establish `hfe : ∀ i : Fin D.R.rS, hJ (X.B.I.ε (X.pl.symm τ)) (rv X.B.I (X.pl.symm τ) (X.fR ⟨q.1.1.1, root_fst_lt w q⟩)) (Formalism.L2.SG.RealObj.frm X u' 1 (X.pl.symm τ) (Fin.castSucc i)) = if i = ⟨q.1.1.1, root_fst_lt w q⟩ then 1 else 0`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`. Simplify using `only [Fin.snoc_castSucc, Complex.ofReal_one, one_pow, inv_one, one_smul]`. Apply the tactic sequence `exact (Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X _ _ _).trans (by rw [Formalism.L2.SG.PoincareInHH.Cut.hT_f_e X]; split_ifs <;> simp)`. Establish `hfz : hJ (X.B.I.ε (X.pl.symm τ)) (rv X.B.I (X.pl.symm τ) (X.fR ⟨q.1.1.1, root_fst_lt w q⟩)) (Formalism.L2.SG.RealObj.frm X u' 1 (X.pl.symm τ) (Fin.last _)) = 0`. Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Fin.snoc_last, Complex.ofReal_one, one_pow, inv_one, one_smul]`. Conclude with `(Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X _ _ _).trans (by rw [(X.zu_orth u' _).2]; simp)`. Simplify using `only [hfe, hfz, mul_ite, mul_one, mul_zero, add_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ratCoord_eq_matOn : ∀ (D : D7) (X : HidaSetting D) (u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (γ s y : X.B.I.Ginf) (τ : D.what₂.Tau) (M : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ), GlobalTheory.LoopAct.IsMatOn (uMat ((γ⁻¹ * (s⁻¹ * y * s) * γ) (X.pl.symm τ))) (Formalism.L2.SG.RealObj.frm X u' 1 (X.pl.symm τ)) M → ∀ q : GlobalTheory.LoopV.roots (ptMat w), GlobalTheory.LoopVol.ratCoord X u' w γ s y τ q = M q.1.1 q.1.2 := by
   intro D X u' w γ s y τ M hM q

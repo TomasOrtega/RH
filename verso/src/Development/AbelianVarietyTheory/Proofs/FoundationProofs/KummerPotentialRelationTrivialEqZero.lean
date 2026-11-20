@@ -12,11 +12,11 @@ open scoped MatrixGroups TensorProduct
 namespace GlobalTheory.KZ.H3
 
 /- English proof (translation)
-Rewrite `hδ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨a, b, c, d⟩` from `hδ`. Establish `e : ∀ x : ℤ, ((x : ZMod M).cast : ZMod N) = (x : ZMod N)` using `fun x => ZMod.cast_intCast h x`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, a]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ZMod.cast_one h]`. Rewrite using `[← e, b]`. Simplify using the standard rewrite rules. Rewrite using `[← e, c]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e, d]`. Simplify using `[ZMod.cast_one h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem relTriv_gamma_of_dvd {N M : ℕ} (h : N ∣ M) {δ : SL(2, ℤ)} (hδ : δ ∈ CongruenceSubgroup.Gamma M) :
     δ ∈ CongruenceSubgroup.Gamma N := by
@@ -30,9 +30,9 @@ theorem relTriv_gamma_of_dvd {N M : ℕ} (h : N ∣ M) {δ : SL(2, ℤ)} (hδ : 
   · rw [← e, d]; simp [ZMod.cast_one h]
 
 /- English proof (translation)
-Rewrite `hδ` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨a, b, c, d⟩` from `hδ`. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval]`. Rewrite using `[MvPolynomial.eval₂_comp_left, MvPolynomial.eval₂_comp_left]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Establish `e : ∀ x : ℤ, PadicInt.toZModPow n ((x : ℤ_[l])) = (x : ZMod (l ^ n))` using `fun x => map_intCast _ x`. Apply the tactic sequence `fin_cases i <;>`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, e, a, b, c, d]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem toZModPow_eval_mulVec {l : ℕ} [Fact l.Prime] (n : ℕ) {δ : SL(2, ℤ)}
     (hδ : δ ∈ CongruenceSubgroup.Gamma (l ^ n)) (u : Fin 2 → ℤ_[l]) (q : MvPolynomial (Fin 2) ℤ_[l]) :
@@ -50,13 +50,13 @@ theorem toZModPow_eval_mulVec {l : ℕ} [Fact l.Prime] (n : ℕ) {δ : SL(2, ℤ
     simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, e, a, b, c, d]
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X l _ w Γ M₀ hM₀ hΓ b F hR hF`. Take `⟨ψ, p, hψ, hFψ⟩` from `hF`. Use function extensionality and compare the values at `u`. Apply `AdicCompletion.ext` to reduce the goal to its premises. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨χ, hK, M₁, hM₁, hχ⟩` from `hR u n`. Express the relevant statement in the definitionally equal form `AdicCompletion.eval (idl l) (X.Kl l) n (b u) = AdicCompletion.eval (idl l) (X.Kl l) n ((0 : X.Fn l) u)`. Rewrite using `[Pi.zero_apply, map_zero]`. Use `GlobalTheory.T.kummerClass_eval_eq_zero_of_vanishing_on_congruence Ω ε X l n (b u) χ hK ⟨M₁ * M₀ * l ^ n, ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `: 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `h1 : δ ∈ CongruenceSubgroup.Gamma M₁` using `relTriv_gamma_of_dvd ⟨M₀ * l ^ n, by ring⟩ hδ`. Establish `h0 : δ ∈ Γ` using `hΓ (relTriv_gamma_of_dvd ⟨M₁ * l ^ n, by ring⟩ hδ)`. Establish `hl : δ ∈ CongruenceSubgroup.Gamma (l ^ n)` using `relTriv_gamma_of_dvd ⟨M₁ * M₀, by ring⟩ hδ`. Establish `hI : Complex.I ∈ Hs` using `by simp [Hs]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδI : mob (ofSL δ) Complex.I ∈ Hs` using `(GlobalTheory.T.glTwoPosRatMobius_basic_laws).1 _ _ hI`. Establish `key` using `hχ δ h1 Complex.I hI`. Use `beta_reduce at key`. Rewrite using `[← key, hFψ _ hδI, hFψ _ hI, ← hψ δ h0 Complex.I hI]`. Simplify using `only [map_add, GlobalTheory.KZ.Betti.eval_slP, add_sub_add_right_eq_sub, map_sub, toZModPow_eval_mulVec n hl, sub_self, Pi.zero_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rel_triv_eq_zero : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime],
     ∀ (w : ℕ) (Γ : Subgroup SL(2, ℤ)) (M₀ : ℕ), 0 < M₀ → CongruenceSubgroup.Gamma M₀ ≤ Γ →

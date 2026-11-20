@@ -20,7 +20,7 @@ namespace GlobalTheory.SharpBundle
 open GlobalTheory.ZH.EndoExtend GlobalTheory.SquareOfGeneric
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `using h₁`. Simplify using `using h₂`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_left_ext {S : Scheme.{0}} {X Y : Over S} {Z : Scheme.{0}} (f g : Z ⟶ (X ⊗ Y).left)
     (h₁ : f ≫ (fst X Y).left = g ≫ (fst X Y).left) (h₂ : f ≫ (snd X Y).left = g ≫ (snd X Y).left) : f = g := by
@@ -29,29 +29,27 @@ theorem prod_left_ext {S : Scheme.{0}} {X Y : Over S} {Z : Scheme.{0}} (f g : Z 
   · simpa using h₂
 
 /- English proof (translation)
-Introduce `g n o _ ζ F W R _ _ _ hR D D₀ A A₀ G G₀ _ _ _ _ hG U U₀ y α α₂ hα hαs hαL c φc φ₂ hφ hφs hφL pr hP q hq hqg`. Take `⟨hno, -, hic, -⟩` from `hR.1`. Establish `hS : IsSemiAbelian G` using `hG`. Use `hS.smooth` as an intermediate fact. Use `hS.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `geometricallyIntegral_of_smooth G.hom` as an intermediate fact. Use `U₀.gen_hom` as an intermediate fact. Establish `hL` using `U.LG.isLB`. Establish `hL₀` using `U₀.LG.isLB`. Establish `hA` using `A.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA₀` using `A₀.isLB`. Establish `hcP` using `c.isLB`. Establish `hUP` using `F.univ.isLB`. Establish `h₁ : IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `h₂ : Flat (jK R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors R))`. Establish `h₃ : IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Establish `hn : Geo.Tor.IsNormalScheme (Sp R)` using `(GlobalTheory.isNormalScheme_iff_pred _).1 inferInstance`. Establish `key : ∀ a b, CechPic.pull U.gen.hom.left (CechPic.pull (lift (pr a) (pr b)).left (cls c.P hcP)) = CechPic.pull (pullback.fst G.hom (jK R)) (lam (cls U₀.LG.L hL₀) (q a) (q b))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `eP : cls c.P hcP = CechPic.pull φ₂ (cls F.univ.P hUP)` using `(cls_eq_iff hcP (pull_isLB hUP _)).2 hφL`. Establish `eΛ : CechPic.pull α₂ (cls F.univ.P hUP) = lam (cls A₀.L hA₀) (fst A₀.A A₀.A) (snd A₀.A A₀.A)` using `((cls_eq_iff (LB.isLB_linComb hA₀ _ _) (pull_isLB hUP _)).2 hαL).symm.trans (cls_cube_two hA₀ _ _ _)`. Establish `eK : (U.gen.hom ≫ lift (pr a) (pr b)).left ≫ φ₂ = (lift ((Over.pullback (jK R)).map (q a) ≫ U₀.gen.hom) ((Over.pullback (jK R)).map (q b) ≫ U₀.gen.hom)).left ≫ α₂`. Apply `GlobalTheory.SharpBundle.prod_left_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hφs.1, Category.assoc, hαs.1, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, Category.assoc, lift_fst, lift_fst]`. Conclude with `(hqg a).symm`. Rewrite using `[Category.assoc, hφs.2, Category.assoc, hαs.2, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, Category.assoc, lift_snd, lift_snd]`. Conclude with `(hqg b).symm`. Establish `hext₀ : CechPic.pull U₀.gen.hom.left (cls A₀.L hA₀) = CechPic.pull (pullback.fst G₀.hom (jK R)) (cls U₀.LG.L hL₀)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `U₀.ext`. Rewrite using `[← cls_pull hL₀ _ (pull_isLB hL₀ _), ← cls_pull hA₀ _ (pull_isLB hA₀ _)]`. Conclude with `(cls_eq_iff _ _).2 ⟨w, hw⟩`. Rewrite using `[← pull_comp, ← Over.comp_left, eP, ← pull_comp, eK, pull_comp, eΛ, pull_lam, lift_fst, lift_snd, ← lam_pull, hext₀, lam_pull_fst]`. Set `hh : Over.mk (((Over.pullback (jK R)).obj G).hom ≫ jK R) ⟶ G` to `Over.homMk (pullback.fst G.hom (jK R)) pullback.condition`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show _ = CechPic.pull hh.left _`. Rewrite using `[pull_lam]`. Apply the tactic sequence `congr 1 <;> ext1 <;> exact pullback.lift_fst _ _ _`. Use `pic_ext (jK R) hn G (eSec G) (Over.w η[G]) ?_ ?_` and prove the remaining obligations. Establish `h0 : CechPic.pull (eSec G) (cls U.LG.L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 ⟨U.LG.rig, U.LG.rigGen⟩`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, map_sum]`. Use `symm`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hq a` as an intermediate fact. Use `hq b` as an intermediate fact. Establish `e₁ : (1 : 𝟙_ (Over (Sp R)) ⟶ G₀) = η[G₀]` using `by rw [Hom.one_def]; simp`. Rewrite using `[map_zsmul]`. Use `show _ • CechPic.pull η[G].left _ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pull_lam, IsMonHom.one_hom, IsMonHom.one_hom, ← e₁, lam_one_left, smul_zero]`. Establish `hc' : CechPic.pull (pullback.fst G.hom (jK R)) (cls U.LG.L hL) = CechPic.pull U.gen.hom.left (cls A.L hA)`. Take `⟨w, hw⟩` from `U.ext`. Rewrite using `[← cls_pull hL _ (pull_isLB hL _), ← cls_pull hA _ (pull_isLB hA _)]`. Conclude with `((cls_eq_iff _ _).2 ⟨w, hw⟩).symm`.
-
-Rewrite using `[hc', (cls_eq_iff hA (LB.isLB_linComb hcP _ _)).2 hP, cls_linComb hcP, map_sum, map_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_eq_sum_lam : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : GlobalTheory.ZM.SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D₀ : DegData R (maximalIdeal R)) (A A₀ : PolAV (Sp (FractionRing R))) (G G₀ : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G₀] [IsCommMonObj G₀], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (U₀ : Unif (maximalIdeal R) D₀ A₀ G₀) (y : Sp (FractionRing R) ⟶ F.X) (α : A₀.A.left ⟶ F.univ.A.left) (α₂ : (G2 A₀.A).left ⟶ (G2 F.univ.A).left), IsGrpPullback A₀.A F.univ.A y α → IsSquare α α₂ → LBIso (abelian₂ A₀.A A₀.L) (F.univ.P.pull α₂) → ∀ (c : SiegPre g n ζ (y ≫ F.s)) (φc : c.A.left ⟶ F.univ.A.left) (φ₂ : (G2 c.A).left ⟶ (G2 F.univ.A).left), IsGrpPullback c.A F.univ.A y φc → IsSquare φc φ₂ → LBIso c.P (F.univ.P.pull φ₂) → ∀ pr : Fin 8 → (A.A ⟶ c.A), LBIso A.L (LB.LinComb c.P (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∀ q : Fin 8 → (G ⟶ G₀), (∀ u, IsMonHom (q u)) → (∀ u, ((Over.pullback (jK R)).map (q u) ≫ U₀.gen.hom).left ≫ α = (U.gen.hom ≫ pr u).left ≫ φc) → cls U.LG.L U.LG.isLB = ∑ a, ∑ b, W a b • lam (cls U₀.LG.L U₀.LG.isLB) (q a) (q b) := by
   intro g n o _ ζ F W R _ _ _ hR D D₀ A A₀ G G₀ _ _ _ _ hG U U₀ y α α₂ hα hαs hαL c φc φ₂ hφ hφs hφL pr hP q hq hqg

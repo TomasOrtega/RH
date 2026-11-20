@@ -6,17 +6,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.E8.TwSec
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem jointlySurj_prec (P : MorphismProperty Scheme.{0}) : Scheme.JointlySurjective (Scheme.precoverage P) :=
   inferInstance
 
 /- English proof (translation)
-Introduce `R _ M U t ht u`. Establish `h0 : (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).app (op U) t = (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).app (op U) 0`. Establish `: ofRings.sec M U t = 0` using `ht`. Simplify using `only [ofRings.sec] at this`. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hS` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) t 0 h0`. Take `⟨𝒰, hle⟩` from `Scheme.exists_cover_of_mem_grothendieckTopology hS`. Use `jointlySurj_prec @Etale` as an intermediate fact. Take `⟨i, y, hy⟩` from `𝒰.exists_eq u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨𝒰.X i, 𝒰.f i, 𝒰.map_prop i, ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Establish `hm` using `hle _ _ (Presieve.ofArrows.mk i)`. Establish `hm' : ((Scheme.Γ ⋙ M).map (𝒰.f i).op).hom t = ((Scheme.Γ ⋙ M).map (𝒰.f i).op).hom 0` using `hm`. Rewrite `hm'` using `[map_zero]`. Conclude with `hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafOfRingsLocInj_of : LeafOfRingsLocInj := by
   intro R _ M U t ht u

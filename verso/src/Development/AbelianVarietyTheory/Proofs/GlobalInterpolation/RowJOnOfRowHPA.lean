@@ -10,9 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 namespace GlobalTheory.Fc.JOnBundle
 
 /- English proof (translation)
-Introduce `Q Lk h`. Apply `GlobalTheory.JOnRow.row_jOn_of_realisations Bundle Q Lk` to reduce the goal to its premises. Use `Row.imp h fun 𝒜 σ _ hA => ?_` and prove the remaining obligations. Introduce `eps Fm hc x hx i`. Establish `hb` using `hA Fm hc x hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨(σ Fm hc x hx i).R, (σ Fm hc x hx i).P, _, _, _, (σ Fm hc x hx i).S, _, inferInstance, inferInstance, inferInstance, (σ Fm hc x hx i).B.Q, 1, (σ Fm hc x hx i).C.ok1, hb.2, hb.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem row_jOn_of_row_hPA : ∀ (Q : V4.Slot) (Lk : LkT Bundle), R1.PeriodAdmissibilityAtBundlePoints Q Lk → R0.JInvariantConditionAtConstructedPoints Q Lk := by
   intro Q Lk h

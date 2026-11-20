@@ -31,11 +31,11 @@ open GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.Points
 namespace GlobalTheory.FlagValuationRings
 
 /- English proof (translation)
-Take `⟨i₀, h₀⟩` from `hw`. Establish `: Nonempty ι` using `⟨i₀⟩`. Set `v` to `ValuationRing.valuation A F`. Take `⟨i, hi⟩` from `Finite.exists_max fun i => v (w i)`. Establish `hne : w i ≠ 0` using `fun h => h₀ (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hi i₀` as an intermediate fact. Rewrite `this` using `[h, map_zero, le_zero_iff]`. Conclude with `v.zero_iff.1 this)`. Use `⟨i, hne, fun j => ?_⟩` and prove the remaining obligations. Establish `: w j / w i ∈ v.integer`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ (hi j) zero_le`. Take `⟨a, ha⟩` from `(ValuationRing.mem_integer_iff A F _).1 this`. Conclude with `⟨a, by rw [ha, div_mul_cancel₀ _ hne]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dvd_all {A F : Type} [CommRing A] [IsDomain A] [ValuationRing A] [Field F] [Algebra A F]
     [IsFractionRing A F] {ι : Type} [Finite ι] (w : ι → F) (hw : ∃ i, w i ≠ 0) :
@@ -56,15 +56,13 @@ theorem exists_dvd_all {A F : Type} [CommRing A] [IsDomain A] [ValuationRing A] 
   exact ⟨a, by rw [ha, div_mul_cancel₀ _ hne]⟩
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact fun E hE => FlagModelExists.flag_rank_zero X E hE`. Consider the case `succ r ih`. Introduce `E hE`. Use `hE.isQuasicoherent` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose U e hx he using id hE`. Set `φ` to `((he _).stalkBasis _ (hx (genericPoint X))).coord 0`. Establish `hφ : φ ≠ 0` using `fun h0 => by`. Use `LinearMap.congr_fun h0 ((he _).stalkBasis _ (hx (genericPoint X)) 0)` as an intermediate fact. Rewrite `this` using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero this`. Establish `hQ` using `CorankOne.isVB_cokernel_ofGeneric (F := E) φ fun y => by`. Use `hX y` as an intermediate fact. Take `⟨i, hi, hj⟩` from `exists_dvd_all (A := X.presheaf.stalk y) (F := X.functionField) (fun j => φ (E.presheaf.germ _ _ (gen_mem (hx y)) (e y j))) (by by_contra! H`. Conclude with `hφ (((he y).stalkBasis _ (gen_mem (hx y))).ext fun j => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[IsFrame.stalkBasis_apply]`. Conclude with `H j))`. Conclude with `⟨U y, hx y, e y, i, he y, hi, fun j => (hj j).elim fun a ha => ⟨_, ⟨a, rfl⟩, ha⟩⟩`. Establish `hS : (ShortComplex.mk _ (cokernel.π (Sub.ofGeneric (LinearMap.ker φ)).incl) (cokernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Take `⟨fl⟩` from `ih _ (isVB_X₁_of_shortExact X _ r 1 hS hE hQ)`.
-
-Conclude with `Vert.Flag.nonempty_extend X E _ _ r ⟨inferInstance, 1, hQ⟩ hE fl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonempty_flag {X : Scheme.{0}} [IsIntegral X] (hX : ∀ x : X, ValuationRing (X.presheaf.stalk x)) (r : ℕ) :
     ∀ E : X.Modules, IsVB E r → Nonempty (Vert.Flag E r) := by
@@ -93,9 +91,9 @@ theorem nonempty_flag {X : Scheme.{0}} [IsIntegral X] (hX : ∀ x : X, Valuation
     exact Vert.Flag.nonempty_extend X E _ _ r ⟨inferInstance, 1, hQ⟩ hE fl
 
 /- English proof (translation)
-Distinguish the cases in `h : P = ⊥`. Establish `hf : IsField (Localization.AtPrime P)`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, ← Localization.AtPrime.map_eq_maximalIdeal]`. Substitute `h` using the available equality. Conclude with `Ideal.map_bot`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression.
 
-Set `` to `hf.toField`. Use `infer_instance`. Use `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R h (Localization.AtPrime P) infer_instance` as an intermediate fact.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuationRing_atPrime (R : Type) [CommRing R] [IsDedekindDomain R] (P : Ideal R) [P.IsPrime] :
     ValuationRing (Localization.AtPrime P) := by
@@ -110,7 +108,7 @@ theorem valuationRing_atPrime (R : Type) [CommRing R] [IsDedekindDomain R] (P : 
     infer_instance
 
 /- English proof (translation)
-Establish `key (y : PrimeSpectrum R) : Nonempty (Localization.AtPrime y.asIdeal ≃+* (Sp R).presheaf.stalk y)` using `⟨(Spec.stalkIso (.of R) y).commRingCatIsoToRingEquiv.symm⟩`. Use `x.isPrime` as an intermediate fact. Take `⟨e⟩` from `key x`. Use `valuationRing_atPrime R x.asIdeal` as an intermediate fact. Conclude with `Function.Surjective.valuationRing e.toRingHom e.surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuationRing_stalk (R : Type) [CommRing R] [IsDedekindDomain R] (x : Sp R) :
     ValuationRing ((Sp R).presheaf.stalk x) := by
@@ -124,7 +122,7 @@ theorem valuationRing_stalk (R : Type) [CommRing R] [IsDedekindDomain R] (x : Sp
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {E : X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Introduce `σ c y _ a b` and use `(vInfAt_const ((h.met σ).G c y a b) y).congr (by have := hd σ rw [nhds_discrete] exact eventually_pure.2 rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCInf_of_discrete (hd : ∀ σ, DiscreteTopology (CxPts p σ)) (h : VMetric p E r) : h.IsCInf :=
   fun σ c y _ a b => (vInfAt_const ((h.met σ).G c y a b) y).congr (by
@@ -133,11 +131,11 @@ theorem isCInf_of_discrete (hd : ∀ σ, DiscreteTopology (CxPts p σ)) (h : VMe
     exact eventually_pure.2 rfl)
 
 /- English proof (translation)
-Use `Met.bcMeas_eq_zero _ _ _ fun c z hz => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) (PtsOver.map π hπ _ z)`. Establish `ha' : z ∈ ptsIn q σ (π ⁻¹ᵁ a.U)` using `ha`. Establish `H₂ : ((h.pull π hπ).stepMet (fl.pull π) i).IsCInf` using `(H.pull π hπ).restrict _ _`. Use `hd σ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Continuous (PtsOver.map π hπ (spMap σ))` using `PtsOver.continuous_map π hπ _`. Establish `hS : IsOpen (PtsOver.map π hπ (spMap σ) ⁻¹' {PtsOver.map π hπ (spMap σ) z})` using `(isOpen_discrete _).preimage hm`. Establish `hn` using `(ChartGlue.isOpen_over c.e hS).mem_nhds (ChartGlue.mem_over c.e hz (S := _) rfl)`. Rewrite using `[Met.bcDens_eq _ _ _ (VMetric.pullStep fl π i a) c (H₂ σ) hz ha', Met.bcForm, extTrace_congr (K' := fun _ => ((h.stepMet fl i).met σ).gram a.frame (PtsOver.map π hπ _ z))]`. Simplify using `[diagVal, extTrace, extForm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hn] with v hv`. Establish `e : PtsOver.map π hπ (spMap σ) (c.e.symm v) = PtsOver.map π hπ (spMap σ) z` using `hv.2`. Establish `hv' : PtsOver.map π hπ (spMap σ) (c.e.symm v) ∈ ptsIn p σ a.U` using `e ▸ ha`. Conclude with `(VMetric.gram_pullStep h hπ a hv').trans (congrArg _ e)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bcMeas_pull_eq_zero (hd : ∀ σ, DiscreteTopology (CxPts p σ)) {h : VMetric p E r} (H : h.IsCInf)
     (fl : Vert.Flag E r) (π : Y ⟶ X) (hπ : π ≫ p = q) (i : Fin r) (σ : k →+* ℂ) :
@@ -162,9 +160,9 @@ theorem bcMeas_pull_eq_zero (hd : ∀ σ, DiscreteTopology (CxPts p σ)) {h : VM
     exact (VMetric.gram_pullStep h hπ a hv').trans (congrArg _ e)
 
 /- English proof (translation)
-Establish `e` using `bcMeas_pull_eq_zero hd H fl π hπ`. Use `⟨fun i σ => ?_, fun _ => 0, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using the standard rewrite rules. Use `(VMetric.isometric_grLB_pull k X Y p q E r h H fl π hπ i).symm.isSelfInter hY (ProjDrop.isSelfInter_zero_of_dim_lt HC k X Y p q 0 1 hX hY π hπ ?_ _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `((topologicalKrullDim_subspace_le _ _).trans hX.dim_eq.le).trans_lt ?_` and prove the remaining obligations. Conclude with `(by norm_num : 0 + 1 < 1 + 1)` after adjusting the coercions. Simplify using `only [VMetric.flagBc, VMetric.bcInt, e]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFlagCh2_pull_zero (HC : Published.ArCalc) [IsIntegral Y] (hX : IsArithVar p 0) (hY : IsArithVar q 1)
     (hd : ∀ σ, DiscreteTopology (CxPts p σ)) {h : VMetric p E r} (H : h.IsCInf)
@@ -180,9 +178,9 @@ theorem isFlagCh2_pull_zero (HC : Published.ArCalc) [IsIntegral Y] (hX : IsArith
   · simp only [VMetric.flagBc, VMetric.bcInt, e]; simp
 
 /- English proof (translation)
-Set `f` to `Algebra.TensorProduct.productMap a.toIntAlgHom b.toIntAlgHom`. Use `⟨f.range, inferInstance, inferInstance, inferInstance, Module.Finite.of_surjective f.rangeRestrict.toLinearMap f.rangeRestrict_surjective, (f.rangeRestrict.comp Algebra.TensorProduct.includeLeft).toRingHom, (f.rangeRestrict.comp Algebra.TensorProduct.includeRight).toRingHom, f.ra …` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[f]`. Use extensionality with `x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_order {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Module.Finite ℤ A] [Module.Finite ℤ B]
     [IsDomain C] [CharZero C] (a : A →+* C) (b : B →+* C) :
@@ -201,11 +199,11 @@ section Order
 variable {R : Type} [CommRing R] [IsDomain R] [CharZero R] [Module.Finite ℤ R] (a : k →+* R)
 
 /- English proof (translation)
-Establish `hA : IsAmpleLB (LB.triv (Sp R))` using `⟨LB.isLB_triv _, inferInstance, fun x => by`. Take `⟨s, hs⟩` from `((isGenerated_triv (Sp R)).pow 1).exists_mem x`. Conclude with `⟨1, le_rfl, s, hs, inf_top_eq (Out.nonzeroLocus s) ▸ isAffineOpen_nonzeroLocus_inf (isLB_lbPow (LB.isLB_triv _) 1) s (isAffineOpen_top _)⟩⟩`. Establish `hf : a.Finite`. Use `RingHom.Finite.of_comp_finite (f := algebraMap ℤ k) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.ext_int (a.comp (algebraMap ℤ k)) (algebraMap ℤ R)]`. Conclude with `RingHom.finite_algebraMap.2 ‹_›`. Establish `: IsFinite (spMap a)` using `(IsFinite.SpecMap_iff _).2 hf`. Establish `hd : ringKrullDim R = 1`. Rewrite using `[ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective (A := ℤ) (B := R) (algebraMap ℤ R).injective_int]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField`. Conclude with `⟨‹_›, ‹_›, inferInstance, hA.isProjOver _, (flat_int_iff_charZero _).2 (((Scheme.ΓSpecIso (.of R)).inv.hom.charZero_iff (ConcreteCategory.bijective_of_isIso _).1).1 ‹_›), (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim R).trans hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem isArithVar_order [IsDomain k] [Module.Finite ℤ k] : IsArithVar (spMap a) 0 := by
   have hA : IsAmpleLB (LB.triv (Sp R)) := ⟨LB.isLB_triv _, inferInstance, fun x => by
@@ -226,9 +224,7 @@ theorem isArithVar_order [IsDomain k] [Module.Finite ℤ k] : IsArithVar (spMap 
     (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim R).trans hd⟩
 
 /- English proof (translation)
-Use `t2Space_cxPts_of_isProjOver (σ := σ) (isArithVar_order a).isProjOver` as an intermediate fact. Establish `: Finite (R →+* ℂ)` using `.of_equiv _ (RingHom.equivIntAlgHom R ℂ).symm`. Establish `: Finite (CxPts (spMap a) σ)` using `.of_injective (β := R →+* ℂ) (fun y => (Spec.preimage y.1).hom) fun y y' e => Subtype.ext (by`. Rewrite using `[← Spec.map_preimage y.1, ← Spec.map_preimage y'.1]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext e))`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrete_order [IsDomain k] [Module.Finite ℤ k] (σ : k →+* ℂ) : DiscreteTopology (CxPts (spMap a) σ) := by
   have := t2Space_cxPts_of_isProjOver (σ := σ) (isArithVar_order a).isProjOver
@@ -242,18 +238,18 @@ theorem discrete_order [IsDomain k] [Module.Finite ℤ k] (σ : k →+* ℂ) : D
 end Order
 
 /- English proof (translation)
-Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSpecΓ_comp {A : Type} [CommRing A] (g : Y ⟶ Sp A) :
     Y.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (.of A)).inv ≫ g.appTop) = g := by
   rw [Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
 
 /- English proof (translation)
-Take `⟨hP, hPc⟩` from `hP`. Take `⟨hQ, hQc⟩` from `hQ`. Establish `w : ψ ≫ P.A.hom = (Q.A.hom ≫ g) ≫ f`. Rewrite using `[hQ.1.w, Category.assoc]`. Set `ψ' : Q.A.left ⟶ P'.A.left` to `hP.1.lift ψ (Q.A.hom ≫ g) w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h₁ : ψ' ≫ φ = ψ` using `hP.1.lift_fst _ _ _`. Establish `h₂ : ψ' ≫ P'.A.hom = Q.A.hom ≫ g` using `hP.1.lift_snd _ _ _`. Establish `n : IsGrpPullback Q.A P.A (g ≫ f) (ψ' ≫ φ)` using `hQ.congr rfl h₁.symm`. Establish `hc : IsGrpPullback Q.A P'.A g ψ'` using `IsGrpPullback.cancel hP n h₂`. Use `⟨ψ', hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hQc, hPc, ← CechPic.pull_comp, HodgePull.sqMap_comp hP.1.w hc.1.w n.1.w]`. Establish `key {χ χ' : Q.A.left ⟶ P.A.left} (e : χ = χ') (u u') : sqMap (f` using `g ≫ f) (φ := χ) u = sqMap (f := g ≫ f) (φ := χ') u' := by subst e; rfl`. Rewrite using `[key h₁ n.1.w hQ.1.w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isPull_cancel {S T T' : Scheme.{0}} {P : PPAS S} {P' : PPAS T} {Q : PPAS T'} {f : T ⟶ S}
     {φ : P'.A.left ⟶ P.A.left} {g : T' ⟶ T} {ψ : Q.A.left ⟶ P.A.left} (hP : P'.IsPull P f φ)
@@ -274,19 +270,17 @@ theorem exists_isPull_cancel {S T T' : Scheme.{0}} {P : PPAS S} {P' : PPAS T} {Q
   rw [key h₁ n.1.w hQ.1.w]
 
 /- English proof (translation)
-Introduce `HP _ K _ _ E _ k _ Y p _ hY q Q φ hQ h H _ a ha`. Use `hY.isDomain` as an intermediate fact. Use `hY.finite` as an intermediate fact. Use `hY.toIsArithVar.charZero` as an intermediate fact. Take `⟨R, _, _, _, _, a', b', c, h₁, h₂⟩` from `exists_order ((Scheme.ΓSpecIso (.of k)).inv ≫ p.appTop).hom ((Scheme.ΓSpecIso (.of (𝓞 K))).inv ≫ q.appTop).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `π : Y ⟶ Sp R` to `Y.toSpecΓ ≫ Spec.map (CommRingCat.ofHom c)`. Establish `w₁ : π ≫ spMap a' = p`. Rewrite using `[← toSpecΓ_comp p, Category.assoc, spMap, ← Spec.map_comp]`. Conclude with `congrArg (fun t => Y.toSpecΓ ≫ Spec.map t) (CommRingCat.hom_ext h₁)`. Establish `w₂ : π ≫ spMap b' = q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← toSpecΓ_comp q, Category.assoc, spMap, ← Spec.map_comp]`. Conclude with `congrArg (fun t => Y.toSpecΓ ≫ Spec.map t) (CommRingCat.hom_ext h₂)`. Take `⟨P, ψ, hg, hP⟩` from `PPAS.exists_pull _ _ E (spMap b')`. Take `⟨χ, hχ⟩` from `exists_isPull_cancel hP (w₂.symm ▸ hQ)`. Establish `hg' : Q.g = P.g` using `Q.isVB_omega.rank_unique ((P.isVB_omega.pullback π).of_iso (ShFam.Pad.omegaPullIso hχ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fl₀⟩` from `nonempty_flag (valuationRing_stalk (𝓞 K)) _ _ E.isVB_omega`. Establish `fl : Vert.Flag (LieVB.omega P.A) P.g` using `hg.symm ▸ (fl₀.pull (spMap b')).ofIso (ShFam.Pad.omegaPullIso hP)`. Take `⟨h₀, H₀⟩` from `PPAS.exists_isDualRiemann k _ (spMap a') P _ Real.pi_pos`. Establish `hd` using `discrete_order a'`. Establish `hC` using `isCInf_of_discrete hd h₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z` using `isFlagCh2_pull_zero HP.p4 (isArithVar_order a') hY.toIsArithVar hd hC fl π w₁`. Establish `I` using `HodgePull.form_omegaBase k _ _ Y p π w₁ P Q χ hχ.1 hg' hχ _ h₀ h H₀ H`. Use `clear H`. Use `revert h`. Rewrite using `[hg']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h _ ha I`. Apply the tactic sequence `have I' : (h₀.pull π w₁).IsIsometry h (ShFam.Pad.omegaPullIso hχ) := I`. Establish `hC' : h.IsCInf`. Rewrite using `[(VMetric.isIsometry_iff _).1 I']`. Conclude with `(hC.pull π w₁).map _`.
-
-Conclude with `ChTwoModel.eq_of_isFlagCh2 hY ha ((VMetric.isFlagCh2_ofIso k Y p _ _ _ _ _ _ (hC.pull π w₁) hC' _ 0 I').1 z)`.
+A detailed English derivation is pending.
 -/
 theorem ch2Deg_eq_zero : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (K : Type) [Field K] [NumberField K] (E : PPAS (Sp (𝓞 K))), E.HasTheta → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) [IsIntegral Y], IsRegSurf p → ∀ (q : Y ⟶ Sp (𝓞 K)) (Q : PPAS Y) (φ : Q.A.left ⟶ E.A.left), Q.IsPull E q φ → ∀ h : VMetric p (LieVB.omega Q.A) Q.g, Q.IsHodge h → h.IsCInfNorm → ∀ a : ℝ, h.IsCh2Deg a → a = 0 := by
   intro HP _ K _ _ E _ k _ Y p _ hY q Q φ hQ h H _ a ha

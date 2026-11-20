@@ -20,7 +20,7 @@ def preH {X Y : Over (Spec (CommRingCat.of R))} (f : Y ⟶ X) : (X ⟶ M) →* (
   MonoidHom.mk' (f ≫ ·) fun a b => MonObj.comp_mul f a b
 
 /- English proof (translation)
-Establish `h` using `map_list_prod (preH (M := M) f) (List.ofFn v)`. Rewrite `h` using `[List.map_ofFn]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_prod {X Y : Over (Spec (CommRingCat.of R))} (f : Y ⟶ X) {d : ℕ} (v : Fin d → (X ⟶ M)) :
     f ≫ (List.ofFn v).prod = (List.ofFn fun i => f ≫ v i).prod := by
@@ -29,9 +29,9 @@ theorem pre_prod {X Y : Over (Spec (CommRingCat.of R))} (f : Y ⟶ X) {d : ℕ} 
   exact h
 
 /- English proof (translation)
-Unfold `prodPts`. Rewrite using `[pre_prod]`. Use `congrArg List.prod (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations. Establish `hs : (scaleD a).comp (scaleD (c i)) = scaleD ((a • c) i)`. Apply `AlgHom.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `all_goals (simp only [TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map, AlgHom.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, Pi.smul_apply]; try ring)`. Rewrite using `[← Category.assoc, spMap_comp, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_prodPts {d : ℕ} (a : R) (c : Fin d → R) (v : Fin d → (sp (R₀ := R) (DualNumber R) ⟶ M)) :
     spMap (scaleD a) ≫ prodPts c v = prodPts (a • c) v := by
@@ -61,7 +61,7 @@ def pushforwardHom : (sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) →
     exact map_mul (Geo.Tor.pushHom (Geo.Tor.isGrpPullback_pullback G (fB R R')) _) a b
 
 /- English proof (translation)
-Establish `h` using `map_list_prod (pushforwardHom (R := R) (R' := R') (P := P) G) (List.ofFn v)`. Rewrite `h` using `[List.map_ofFn]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushR_prod {d : ℕ} (v : Fin d → (sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G)) :
     pushR G (List.ofFn v).prod = (List.ofFn fun i => pushR G (v i)).prod := by
@@ -72,19 +72,17 @@ theorem pushR_prod {d : ℕ} (v : Fin d → (sp (R₀ := R') P ⟶ (Over.pullbac
 end Push
 
 /- English proof (translation)
-Establish `hfst : pullback.lift F (G''.hom ≫ g) (by rw [h.1.w, Category.assoc]) ≫ pullback.fst G.hom f = F` using `pullback.lift_fst _ _ _`. Establish `hsnd : pullback.lift F (G''.hom ≫ g) (by rw [h.1.w, Category.assoc]) ≫ pullback.snd G.hom f = G''.hom ≫ g` using `pullback.lift_snd _ _ _`. Establish `hP` using `Geo.Tor.isGrpPullback_pullback G f`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ hsnd (IsPullback.of_hasPullback G.hom f)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfst]`. Conclude with `h.1`. Introduce `T x y x₀ y₀ hx hy`. Apply `pullback.hom_ext` to reduce the goal to its premises. Set `x₀' : Over.mk ((Over.mk (T.hom ≫ g)).hom ≫ f) ⟶ G` to `Over.homMk (x₀.left ≫ pullback.fst G.hom f) (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ f) (Over.w x₀))`. Set `y₀' : Over.mk ((Over.mk (T.hom ≫ g)).hom ≫ f) ⟶ G` to `Over.homMk (y₀.left ≫ pullback.fst G.hom f) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ f) (Over.w y₀))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Set `x₀'' : Over.mk (T.hom ≫ g ≫ f) ⟶ G` to `Over.homMk (x.left ≫ F) (by`. Rewrite using `[Category.assoc, h.1.w]`. Simplify using `using (Over.w x) =≫ (g ≫ f))`. Set `y₀'' : Over.mk (T.hom ≫ g ≫ f) ⟶ G` to `Over.homMk (y.left ≫ F) (by`. Rewrite using `[Category.assoc, h.1.w]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (Over.w y) =≫ (g ≫ f))`. Establish `e1 : (x₀' * y₀').left = (x₀ * y₀).left ≫ pullback.fst G.hom f` using `hP.2 _ x₀ y₀ x₀' y₀' rfl rfl`. Establish `e2 : (x₀'' * y₀'').left = (x * y).left ≫ F` using `h.2 T x y x₀'' y₀'' rfl rfl`. Establish `e3 : (x₀' * y₀').left = (x₀'' * y₀'').left`. Use `Geo.Tor.mul_left_congr (Category.assoc T.hom g f) x₀' y₀' x₀'' y₀'' ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show x₀.left ≫ pullback.fst G.hom f = x.left ≫ F`. Rewrite using `[hx, Category.assoc, hfst]`. Use `show y₀.left ≫ pullback.fst G.hom f = y.left ≫ F`. Rewrite using `[hy, Category.assoc, hfst]`. Rewrite using `[Category.assoc, hfst, ← e1, e3, e2]`.
-
-Rewrite using `[Category.assoc, hsnd, ← Category.assoc, Over.w (x * y)]`. Conclude with `Over.w (x₀ * y₀)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_factor {S S' S'' : Scheme.{0}} {G : Over S} [GrpObj G] {G'' : Over S''} [GrpObj G'']
     (f : S' ⟶ S) (g : S'' ⟶ S') {F : G''.left ⟶ G.left} (h : Geo.Tor.IsGrpPullback G'' G (g ≫ f) F) :

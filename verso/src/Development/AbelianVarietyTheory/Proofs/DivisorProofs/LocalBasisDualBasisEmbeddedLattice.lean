@@ -18,9 +18,9 @@ open Formalism.HermitianLatticesTheory Formalism.UG Formalism.L2.Forms
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `h`. Establish `hcop : Nat.Coprime l s` using `(hl.coprime_iff_not_dvd).2 hs`. Take `⟨a, b, e⟩` from `(Nat.isCoprime_iff_coprime.2 hcop).map (Int.castRingHom (𝓞 K))`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ?_) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Simplify using `using hlw`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_notMem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {l s : ℕ}
     (hl : l.Prime) (hlw : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal) (hs : ¬ l ∣ s) : (s : 𝓞 K) ∉ w.asIdeal := by
@@ -34,21 +34,21 @@ theorem natCast_notMem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
   · simpa using h
 
 /- English proof (translation)
-Establish `h1 : ¬ l ∣ 1` using `fun h => hl.one_lt.ne' (Nat.dvd_one.1 h)`. Unfold `IsBasisAt`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← localized_localized w (colLat _)]`. Use `localization_mono _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `tauLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨s', hs', hint⟩` from `(hB x).1 ⟨1, h1, by simpa using hx⟩`. Use `⟨(s' : 𝓞 K), natCast_notMem w hl hlw hs', ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lc_mem_colLat]`. Introduce `a`. Establish `e : ((s' : 𝓞 K) • fun b => emb τ (x b)) = fun b => emb τ (((s' : E) • x) b)`. Use function extensionality and compare the values at `b`. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Formalism.L2.Col.vl_bc_inv_mulVec, Matrix.mulVec_smul]`. Take `⟨r, hr⟩` from `hint a`. Conclude with `du_map_mem_one (emb τ) (Submodule.mem_one.2 ⟨r, by rw [hr]; rfl⟩)`. Rewrite using `[← localized_localized w (tauLat emb τ M)]`. Use `localization_mono _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `colLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨s', hs', hmem⟩` from `(hB (fun a => (B : Matrix (Fin n) (Fin n) E) a j)).2 ⟨1, h1, fun a => by`. Establish `e : (((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ fun a => (B : Matrix (Fin n) (Fin n) E) a j) a = (1 : Matrix (Fin n) (Fin n) E) a j`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * (B : Matrix (Fin n) (Fin n) E) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `split_ifs`. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp⟩⟩`. Use `⟨(s' : 𝓞 K), natCast_notMem w hl hlw hs', ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨_, hmem, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Simplify using `[Algebra.smul_def, bc_coe]`.
+A detailed English derivation is pending.
 -/
 theorem isBasisAt_tauLat {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} {n : ℕ}
     (emb : ι → E →+* K) (τ : ι) (w : HeightOneSpectrum (𝓞 K)) {l : ℕ} (hl : l.Prime)
@@ -98,7 +98,7 @@ end GlobalTheory.LocBasisDual
 namespace GlobalTheory.LocBasisDual
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ ι _ n emb τ w l hl hlw M hM`. Establish `: Fact l.Prime` using `⟨hl⟩`. Use `⟨Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis l E M hM.fg hM.span_eq_top, Formalism.L2.DIV.dualFr_tauLat_isLattice emb τ M hM, fun B hB => ?_⟩` and prove the remaining obligations. Conclude with `pb_isBasisAt_dualFr w _ (tauLatticeLattice_holds E K ι n emb τ M hM).fg _ (isBasisAt_tauLat emb τ w hl hlw M B hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem basisAt_dualFr_tauLat : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ) (emb : ι → E →+* K) (τ : ι) (w : HeightOneSpectrum (𝓞 K)) (l : ℕ), l.Prime → ((l : ℕ) : 𝓞 K) ∈ w.asIdeal → ∀ (M : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E M → (∃ B, Formalism.L2.Forms.IsLocBasis l (M : Set (Fin n → E)) B) ∧ Submodule.IsLattice K (dualFr (tauLat emb τ M)) ∧ ∀ B : GL (Fin n) E, Formalism.L2.Forms.IsLocBasis l (M : Set (Fin n → E)) B → IsBasisAt w (dualFr (tauLat emb τ M)) (inside₂ K n (Matrix.GeneralLinearGroup.map (emb τ) B)) := by
   intro E K _ _ _ _ ι _ n emb τ w l hl hlw M hM

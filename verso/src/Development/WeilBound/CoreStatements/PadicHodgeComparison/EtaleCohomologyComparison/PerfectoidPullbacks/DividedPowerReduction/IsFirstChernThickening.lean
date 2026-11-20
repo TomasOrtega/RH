@@ -32,7 +32,7 @@ def toSome (r : ℤ) (c : b.R) (j : ℕ) : HM Q none c j →ₗ[b.R] HM Q (some 
     fun _ => sup_le_sup_right bot_le _).pull j
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem toSome_redM (r : ℤ) (c : b.R) (j : ℕ) (z : HO Q j) : toSome Q r c j (redM Q none c j z) = redM Q (some r) c j z := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ z
@@ -58,7 +58,7 @@ variable {O : Type} [CommRing O] {A A' : Type} [CommRing A] [CommRing A'] [Algeb
   {σ : A →+* A'} (m : NMor γ q (κA O I) γ' q' (κA O I') σ) (l s : ℕ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, ⊤, rfl, fun _ _ => trivial⟩`.
+Supply the required witnesses or components.
 -/
 theorem nm_mem (T : Thick (nlFun γ' 0 X' q' (κA O I'))) (h : TS γ' q' l s {⊤} T) : TS γ q l s {⊤} ((m.mor 0).obj T) :=
   ⟨h.1, ⊤, rfl, fun _ _ => trivial⟩
@@ -66,9 +66,9 @@ theorem nm_mem (T : Thick (nlFun γ' 0 X' q' (κA O I'))) (h : TS γ' q' l s {�
 def nmS : SMor (sP (TS γ q l s {⊤})) (sP (TS γ' q' l s {⊤})) σ := m.smor _ _ (nm_mem m l s)
 
 /- English proof (translation)
-Introduce `T x hx`. Establish `e : (T.obj.i.comp σ) ((l : A) ^ n) = T.obj.i ((l : A') ^ n)` using `by rw [map_pow, map_pow, map_natCast, map_natCast]`. Consider the cases of `r`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Ideal T.obj.B) ⊔ Ideal.span {(T.obj.i.comp σ) ((l : A) ^ n)} at hx`. Rewrite `hx` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`. Express the relevant statement in the definitionally equal form `x ∈ (T.obj.pdPow _ : Ideal T.obj.B) ⊔ Ideal.span {(T.obj.i.comp σ) ((l : A) ^ n)} at hx`. Rewrite `hx` using `[e]`. Conclude with `hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nm_std (r : Option ℤ) (n : ℕ) : (nmS m l s).Le (stdI _ r ((l : A) ^ n)) (stdI _ r ((l : A') ^ n)) := by
   intro T x hx

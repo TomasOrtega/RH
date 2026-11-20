@@ -14,7 +14,7 @@ universe u
 variable {F : Type u} [Field F]
 
 /- English proof (translation)
-Establish `hu' : IsAlgebraic (AlgebraicClosure F) (bcEmb (F'` using `AlgebraicClosure F) E u) := (hu.algHom (bcEmb (F' := AlgebraicClosure F) E)).tower_top (AlgebraicClosure F)`. Take `⟨c, hc⟩` from `exists_algebraMap_eq_of_isAlgebraic (E.baseChange (AlgebraicClosure F)) hu'`. Conclude with `exists_algebraMap_eq_of_bcEmb E hc.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_eq_of_isAlgebraic_ff (E : WeierstrassCurve F) [E.IsElliptic]
     {u : E.toAffine.FunctionField} (hu : IsAlgebraic F u) :
@@ -28,15 +28,13 @@ theorem exists_algebraMap_eq_of_isAlgebraic_ff (E : WeierstrassCurve F) [E.IsEll
 variable {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 
 /- English proof (translation)
-Break down `Q with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `absurd rfl h0`. Assume the negation of the conclusion as `hx`. Establish `hx' : IsAlgebraic F x` using `not_not.mp hx`. Take `⟨a, rfl⟩` from `exists_algebraMap_eq_of_isAlgebraic_ff E hx'`.
+Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : IsAlgebraic F y`. Use `isIntegral_y E' F h.1 (mem_algebraicClosure_iff.2 (isAlgebraic_algebraMap a))` as an intermediate fact. Conclude with `mem_algebraicClosure_iff.1 this`. Take `⟨b, rfl⟩` from `exists_algebraMap_eq_of_isAlgebraic_ff E hy'`. Establish `hc : (E'.baseChange F).toAffine.Nonsingular a b` using `(E'.toAffine.baseChange_nonsingular (f := Algebra.ofId F E.toAffine.FunctionField) (algebraMap F _).injective a b).mp h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQc : (Point.some _ _ h : (E'.baseChange E.toAffine.FunctionField).toAffine.Point) = Point.map (Algebra.ofId F E.toAffine.FunctionField) (Point.some _ _ hc)`. Rewrite using `[Point.map_some, Point.some.injEq]`. Conclude with `⟨rfl, rfl⟩`. Establish `key` using `(respectsAdd_iff _).mp hQ (univField E) (univPt₁ E) (univPt₂ E) (isGenPt_univPt₁ E) (isGenPt_univPt₂ E) (isGenPt_univPt₁₂ E)`. Establish `hconst : ∀ (σ : E.toAffine.FunctionField →ₐ[F] univField E), Point.map σ (Point.some _ _ h) = Point.map (Algebra.ofId F (univField E)) (Point.some _ _ hc)` using `fun σ => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQc, Point.map_map]`. Establish `e : σ.comp (Algebra.ofId F E.toAffine.FunctionField) = Algebra.ofId F (univField E)` using `AlgHom.ext fun z => by`. Rewrite using `[AlgHom.comp_apply, Algebra.ofId_apply, Algebra.ofId_apply, σ.commutes]`. Rewrite using `[e]`. Rewrite `key` using `[hconst, hconst, hconst, left_eq_add]`.
-
-Use `Point.map_injective (W' := E') (Algebra.ofId F (univField E)) (key.trans (map_zero _).symm)` as an intermediate fact. Conclude with `Point.some_ne_zero hc this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGenPt_of_respectsAdd
     {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point} (hQ : RespectsAdd E E' Q)
@@ -73,7 +71,7 @@ theorem isGenPt_of_respectsAdd
     exact Point.some_ne_zero hc this
 
 /- English proof (translation)
-The claim follows from `(isIsogeny_iff Q).mpr ⟨isGenPt_of_respectsAdd hQ h0, hQ⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIsogeny_of_respectsAdd
     {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point} (hQ : RespectsAdd E E' Q)

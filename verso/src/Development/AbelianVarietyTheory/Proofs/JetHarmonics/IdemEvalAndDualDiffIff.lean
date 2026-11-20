@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem evAt_eq (σ : E →+* C) : evAt σ = evalAt σ := rfl
 
 /- English proof (translation)
-Name the introduced variables `inst`. Take `rfl : inst = fun a b => Classical.propDecidable (a = b)` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem trDual_ratBasis {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι ℤ (𝓞 E)) :
     trDual (ratBasis b) = dualBasis b := by
@@ -27,7 +27,7 @@ theorem trDual_ratBasis {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι 
   rfl
 
 /- English proof (translation)
-Unfold `trDual`. Rewrite using `[Basis.traceDual_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem trDual_eq {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι ℚ E) :
     trDual b = b.traceDual := by
@@ -35,13 +35,11 @@ theorem trDual_eq {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι ℚ E)
   rw [Basis.traceDual_def]
 
 /- English proof (translation)
-Establish `h1 : ∀ i, b.traceDual i = ∑ j, Algebra.trace ℚ E (b.traceDual i * c.traceDual j) • c j`. Introduce `i`. Use `conv_lhs => rw [← c.traceDual.traceDual.sum_repr (b.traceDual i)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Basis.traceDual_repr_apply, Algebra.traceForm_apply, Basis.traceDual_traceDual]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ j, c.traceDual j = ∑ i, Algebra.trace ℚ E (b.traceDual i * c.traceDual j) • b i`. Introduce `j`. Use `conv_lhs => rw [← b.traceDual.traceDual.sum_repr (c.traceDual j)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Basis.traceDual_repr_apply, Algebra.traceForm_apply, Basis.traceDual_traceDual, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [h1 i, TensorProduct.sum_tmul]`. Simplify using `only [TensorProduct.smul_tmul']`. Use `_ = ∑ j, c j ⊗ₜ[ℚ] τ (c.traceDual j) := by`.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [h2 j, map_sum, TensorProduct.tmul_sum]`. Simplify using `only [map_rat_smul, TensorProduct.tmul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_dual_swap {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (b : Basis ι ℚ E) (c : Basis κ ℚ E) (τ : E →+* C) :
@@ -68,7 +66,7 @@ theorem sum_dual_swap {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] 
         simp only [map_rat_smul, TensorProduct.tmul_smul]
 
 /- English proof (translation)
-Unfold `idemOf idem dualBasis`. Rewrite using `[trDual_eq]`. Simplify using `only [← ratBasis_apply]`. Conclude with `sum_dual_swap b (ratBasis c) τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idemOf_eq_idem {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (b : Basis ι ℚ E) (c : Basis κ ℤ (𝓞 E)) (τ : E →+* C) : idemOf b τ = idem c τ := by
@@ -79,17 +77,15 @@ theorem idemOf_eq_idem {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ]
   exact sum_dual_swap b (ratBasis c) τ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Set `v : ι → 𝓞 E` to `fun i => ⟨b i, h1 i⟩`. Establish `hli : LinearIndependent ℤ v`. Establish `: LinearIndependent ℤ (fun i => b i)` using `b.linearIndependent.restrict_scalars' ℤ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearIndependent.of_comp (IsScalarTower.toAlgHom ℤ (𝓞 E) E).toLinearMap this`. Establish `hsp : ⊤ ≤ Submodule.span ℤ (Set.range v)`. Introduce `x _`. Take `⟨c, hc⟩` from `h2 x`. Establish `: x = ∑ i, c i • v i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hc]`. Simplify using `only [map_sum, map_zsmul, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨Basis.mk hli hsp, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[ratBasis_apply, Basis.mk_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun i => ?_, fun x => ⟨c.repr x, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ratBasis_apply]`. Conclude with `(c i).isIntegral_coe`. Use `conv_lhs => rw [← c.sum_repr x]`.
-
-Simplify using `[ratBasis_apply, Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_iff_ratBasis {ι : Type} [Fintype ι] (b : Basis ι ℚ E) :
     ((∀ i, IsIntegral ℤ (b i)) ∧ ∀ x : 𝓞 E, ∃ c : ι → ℤ, (x : E) = ∑ i, (c i : ℚ) • b i) ↔
@@ -123,9 +119,9 @@ theorem integral_iff_ratBasis {ι : Type} [Fintype ι] (b : Basis ι ℚ E) :
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[idemOf_eq_idem b c τ]`. Simplify using `only [evAt_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨by rw [h, if_pos rfl], fun σ hσ => by rw [h, if_neg hσ]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩ σ split_ifs with hσ`. Rewrite using `[hσ, h1]`. Conclude with `h2 σ hσ`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_iff {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (b : Basis ι ℚ E) (c : Basis κ ℤ (𝓞 E)) (τ : E →+* C) :
@@ -141,7 +137,7 @@ theorem eval_iff {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ]
     · exact h2 σ hσ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h E _ _ C _ _ _ ι _ b τ`. Conclude with `(eval_iff (ratBasis b) b τ).1 fun σ => h E C ι (ratBasis b) τ σ`. Introduce `h E _ _ C _ _ _ ι _ _ b τ`. Conclude with `(eval_iff b (NumberField.RingOfIntegers.basis E) τ).2 (h E C _ _ τ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idemEvalSt_iff :
     IdemEvalSt ↔ ∀ (E : Type) [Field E] [NumberField E] (C : Type) [Field C] [CharZero C]
@@ -155,19 +151,17 @@ theorem idemEvalSt_iff :
     exact (eval_iff b (NumberField.RingOfIntegers.basis E) τ).2 (h E C _ _ τ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩ i`. Establish `key : ∀ t : (𝓞 E) ⊗[ℤ] R, ∃ y : ι → C, (∀ i, y i ∈ R) ∧ integralMap E R t = ∑ i, ((b i : 𝓞 E) : E) ⊗ₜ[ℚ] y i`. Introduce `t`. Proceed by induction on `t with`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, fun _ => R.zero_mem, by simp⟩`. Consider the case `tmul a r`. Use `⟨fun i => (b.repr a i : C) * r, fun i => R.mul_mem (intCast_mem R _) r.2, ?_⟩` and prove the remaining obligations. Rewrite using `[integralMap_tmul]`. Establish `ha : (a : E) = ∑ i, ((b.repr a i : ℤ) : ℚ) • ((b i : 𝓞 E) : E)` using `by conv_lhs => rw [← b.sum_repr a]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Int.cast_smul_eq_zsmul]`. Rewrite using `[ha, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Consider the case `add s t hs ht`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨y, hy, hy'⟩` from `hs`. Take `⟨z, hz, hz'⟩` from `ht`. Use `⟨y + z, fun i => R.add_mem (hy i) (hz i), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hy', hz', ← Finset.sum_add_distrib]`. Simplify using `[TensorProduct.tmul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy, hy'⟩` from `key t`. Establish `ht' : ∑ i, ratBasis b i ⊗ₜ[ℚ] y i = ∑ i, ratBasis b i ⊗ₜ[ℚ] x i`. Simplify using `only [ratBasis_apply]`. Rewrite using `[← hy']`. Conclude with `ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z => TensorProduct.lid ℚ C (TensorProduct.map ((ratBasis b).coord i) LinearMap.id z)) ht'`. Simplify using `[Finsupp.single_apply, map_sum, ite_smul] at h2`. Rewrite using `[← h2]`. Conclude with `hy i`. Introduce `h`.
-
-Use `Subring.sum_mem _ fun i _ => ⟨b i ⊗ₜ[ℤ] ⟨x i, h i⟩, ?_⟩` and prove the remaining obligations. Conclude with `integralMap_tmul R (b i) ⟨x i, h i⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_mem_integralPart_iff {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E)) (R : Subring C)
     (x : ι → C) :
@@ -208,7 +202,7 @@ theorem sum_mem_integralPart_iff {ι : Type} [Fintype ι] (b : Basis ι ℤ (�
     exact integralMap_tmul R (b i) ⟨x i, h i⟩
 
 /- English proof (translation)
-Rewrite using `[← sum_mem_integralPart_iff b R]`. Simplify using `[idem, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_idem_mem_iff {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E)) (τ : E →+* C)
     (R : Subring C) (c : C) :
@@ -217,9 +211,9 @@ theorem mul_idem_mem_iff {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E)) (�
   simp [idem, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [mul_idem_mem_iff, ← map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h R hR i`. Conclude with `hR ⟨_, h i⟩`. Introduce `h i`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h (τ.comp (algebraMap (𝓞 E) E)).range (fun a => ⟨a, rfl⟩) i`. Establish `: (a : E) = δ * dualBasis b i` using `τ.injective ha`. Rewrite using `[← this]`. Conclude with `a.isIntegral_coe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_iff {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E)) (τ : E →+* C) (δ : E) :
     (∀ i, IsIntegral ℤ (δ * dualBasis b i)) ↔
@@ -235,7 +229,7 @@ theorem den_iff {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E)) (τ : E →
     rw [← this]; exact a.isIntegral_coe
 
 /- English proof (translation)
-Rewrite using `[trDual_ratBasis]`. Simplify using `only [den_iff b τ]`. Conclude with `⟨fun h R hR δ hδ => h δ hδ R hR, fun h δ hδ R hR => h R hR δ hδ⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem different_iff {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι ℤ (𝓞 E))
     (τ : E →+* C) :
@@ -246,9 +240,9 @@ theorem different_iff {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι �
   exact ⟨fun h R hR δ hδ => h δ hδ R hR, fun h δ hδ R hR => h R hR δ hδ⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h E _ _ C _ _ _ ι _ b τ`. Take `⟨h1, h2⟩` from `(integral_iff_ratBasis (ratBasis b)).2 ⟨b, rfl⟩`. Conclude with `(different_iff b τ).1 (h E ι _ h1 h2)`. Introduce `h E _ _ ι _ _ b h1 h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(integral_iff_ratBasis b).1 ⟨h1, h2⟩`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `(different_iff c τ).2 (h E ℂ ι c τ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dualDiffSt_iff :
     DualDiffSt ↔ ∀ (E : Type) [Field E] [NumberField E] (C : Type) [Field C] [CharZero C]
@@ -265,7 +259,7 @@ theorem dualDiffSt_iff :
     exact (different_iff c τ).2 (h E ℂ ι c τ)
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (τ x)` using `hx.map τ.toIntAlgHom`. Establish `h2 : IsIntegral O (τ x)` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integer_mem (O : ValuationSubring C) (τ : E →+* C) {x : E} (hx : IsIntegral ℤ x) :
     τ x ∈ O := by
@@ -275,13 +269,13 @@ theorem integer_mem (O : ValuationSubring C) (τ : E →+* C) {x : E} (hx : IsIn
   rw [← hy]; exact y.2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `z _`. Rewrite using `[pow_zero, mul_one]`. Conclude with `(O.valuation_le_one_iff _).2 (integer_mem O τ z.isIntegral_coe)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `z hz`. Rewrite `hz` using `[pow_succ]`. Use `Submodule.mul_induction_on hz (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Use `mul_le_one' (ih x hx) (h y hy)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ]`. The two sides agree by associativity and commutativity. Use `_ ≤ 1 := this`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [map_add]`. Break down `le_max_iff.1 (O.valuation.map_add (τ (x : E)) (τ (y : E))) with h1 | h1` into its components or cases. Conclude with `(mul_le_mul_left h1 _).trans hx`. Conclude with `(mul_le_mul_left h1 _).trans hy`.
+A detailed English derivation is pending.
 -/
 theorem val_pow_le (O : ValuationSubring C) (τ : E →+* C) (I : Ideal (𝓞 E)) (u : O.ValueGroup)
     (h : ∀ x ∈ I, O.valuation (τ (x : E)) * u ≤ 1) (n : ℕ) :
@@ -306,7 +300,7 @@ theorem val_pow_le (O : ValuationSubring C) (τ : E →+* C) (I : Ideal (𝓞 E)
       · exact (mul_le_mul_left h1 _).trans hy
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((O.valuation_le_one_iff _).2 (integer_mem O τ s.isIntegral_coe)) (not_lt.1 fun h => hs ((hw s).2 h))`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_one {O : ValuationSubring C} {τ : E →+* C} {w : HeightOneSpectrum (𝓞 E)}
     (hw : Induces O τ w) {s : 𝓞 E} (hs : s ∉ w.asIdeal) : O.valuation (τ (s : E)) = 1 :=
@@ -315,7 +309,7 @@ theorem val_eq_one {O : ValuationSubring C} {τ : E →+* C} {w : HeightOneSpect
 
 omit [NumberField E] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `w.isPrime.ne_top (by rw [← h]; exact (sup_eq_left.2 hh).symm)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_not_mem {w : HeightOneSpectrum (𝓞 E)} {Q : Ideal (𝓞 E)}
     (h : w.asIdeal ⊔ Q = ⊤) : ∃ s ∈ Q, s ∉ w.asIdeal := by
@@ -324,41 +318,37 @@ theorem exists_not_mem {w : HeightOneSpectrum (𝓞 E)} {Q : Ideal (𝓞 E)}
   exact w.isPrime.ne_top (by rw [← h]; exact (sup_eq_left.2 hh).symm)
 
 /- English proof (translation)
-Establish `hD : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Rewrite using `[← different_iff, trDual_ratBasis]`. Prove the components needed by the constructor for the conclusion. Introduce `h p hp O hO w hw c hc`. Rewrite using `[mul_idem_mem_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `w.isMaximal` as an intermediate fact. Establish `hp0 : Ideal.span {(p : 𝓞 E)} ≠ ⊥` using `by simpa using hp.ne_zero`. Take `⟨J, hJ, hJ'⟩` from `Ideal.eq_prime_pow_mul_coprime hD w.asIdeal`. Take `⟨K, hK, hK'⟩` from `Ideal.eq_prime_pow_mul_coprime hp0 w.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `_ = w.asIdeal ^ differentExp_vw w * J at hJ'`. Express the relevant statement in the definitionally equal form `_ = w.asIdeal ^ ramExp p w * K at hK'`. Establish `hpw : (p : 𝓞 E) ∈ w.asIdeal` using `(hw _).2 (by simpa using hO)`. Establish `he : ramExp p w ≠ 0`. Introduce `h0`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, hs'⟩` from `exists_not_mem hK`. Rewrite `hK'` using `[h0, pow_zero, one_mul]`. Rewrite `hs` using `[← hK']`. Conclude with `hs' ((Ideal.span_singleton_le_iff_mem _).2 hpw hs)`. Take `⟨s, hs, hs'⟩` from `exists_not_mem hJ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ x ∈ w.asIdeal ^ differentExp_vw w, O.valuation (τ (x : E)) * O.valuation (τ (dualBasis b i)) ≤ 1`. Introduce `x hx`. Use `(O.valuation_le_one_iff _).2 (integer_mem O τ (h (x * s) (by rw [hJ']; exact Ideal.mul_mem_mul hx hs) i))` as an intermediate fact. Simplify `this` using `only [map_mul, val_eq_one hw hs', mul_one]`. Establish `hpe : (p : 𝓞 E) ∈ w.asIdeal ^ ramExp p w` using `Ideal.mul_le_left (by rw [← hK']; exact Ideal.mem_span_singleton_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `val_pow_le O τ _ _ h1 (ramExp p w) ((p : 𝓞 E) ^ differentExp_vw w) (by`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Conclude with `Ideal.pow_mem_pow hpe _)`. Simplify using `only [map_pow, map_natCast] at h2`. Establish `h3 : (O.valuation (c * τ (dualBasis b i))) ^ ramExp p w ≤ 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, mul_pow]`. Conclude with `(mul_le_mul_left hc _).trans h2`. Conclude with `(O.valuation_le_one_iff _).1 ((pow_le_one_iff he).1 h3)`. Introduce `h δ hδ i`. Assume the negation of the conclusion as `hx`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : τ ((δ : E) * dualBasis b i) ∉ (integralClosure ℤ C).toSubring` using `fun hh => hx ((isIntegral_algHom_iff τ.toIntAlgHom τ.injective).1 hh)`. Establish `: IsIntegrallyClosedIn (integralClosure ℤ C).toSubring C` using `Subring.isIntegrallyClosedIn_iff.mpr fun x hx => isIntegral_trans (R := ℤ) (A := integralClosure ℤ C) x hx`. Take `⟨O, -, hO⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn hx'`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hpO⟩ : ∃ p : ℕ, p.Prime ∧ O.valuation (p : C) < 1 := by`. Assume the negation of the conclusion as `hh`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `push Not at hh`. Establish `hn : ∀ n : ℕ, n ≠ 0 → O.valuation (n : C) = 1`. Introduce `n`. Proceed by induction on `n using induction_on_primes with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `one => simp`. Consider the case `prime_mul p a hp ih`. Introduce `h0`. Rewrite using `[Nat.cast_mul, map_mul, ih (right_ne_zero_of_mul h0), mul_one]`. Conclude with `le_antisymm ((O.valuation_le_one_iff _).2 (natCast_mem O p)) (hh p hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, hki⟩` from `exists_integral_multiples ℤ ℚ ({(δ : E) * dualBasis b i} : Finset E)`. Establish `h1` using `(O.valuation_le_one_iff _).2 (integer_mem O τ (hki _ (Finset.mem_singleton_self _)))`. Establish `h2 : O.valuation (k : C) = 1`. Use `hn k.natAbs (by simpa using hk)` as an intermediate fact. Break down `Int.natAbs_eq k with h3 | h3` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[h3]`. Simplify using `using this`. Rewrite using `[h3]`. Simplify using `using this`. Rewrite `h1` using `[zsmul_eq_mul, map_mul, map_mul, map_intCast, h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hO ((O.valuation_le_one_iff _).1 h1)`. Set `φ : 𝓞 E →+* O` to `(τ.comp (algebraMap (𝓞 E) E)).codRestrict O fun a => integer_mem O τ a.isIntegral_coe`. Establish `hφ : ∀ a : 𝓞 E, a ∈ (IsLocalRing.maximalIdeal O).comap φ ↔ O.valuation (τ (a : E)) < 1` using `fun a => by`. Rewrite using `[Ideal.mem_comap, O.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpw : (p : 𝓞 E) ∈ (IsLocalRing.maximalIdeal O).comap φ` using `(hφ _).2 (by simpa using hpO)`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨(IsLocalRing.maximalIdeal O).comap φ, inferInstance, fun h0 => hp.ne_zero (by rw [h0] at hpw; simpa using hpw)⟩`. Establish `hw : Induces O τ w` using `hφ`. Use `w.isMaximal` as an intermediate fact. Establish `hp0 : Ideal.span {(p : 𝓞 E)} ≠ ⊥` using `by simpa using hp.ne_zero`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, hJ'⟩` from `Ideal.eq_prime_pow_mul_coprime hD w.asIdeal`. Take `⟨K, hK, hK'⟩` from `Ideal.eq_prime_pow_mul_coprime hp0 w.asIdeal`. Express the relevant statement in the definitionally equal form `_ = w.asIdeal ^ differentExp_vw w * J at hJ'`. Express the relevant statement in the definitionally equal form `_ = w.asIdeal ^ ramExp p w * K at hK'`. Take `⟨s, hs, hs'⟩` from `exists_not_mem hK`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hδw : δ ∈ w.asIdeal ^ differentExp_vw w` using `Ideal.mul_le_left (by rwa [← hJ'])`. Establish `hmem : δ ^ ramExp p w * s ^ differentExp_vw w ∈ Ideal.span {(p : 𝓞 E) ^ differentExp_vw w}`. Rewrite using `[← Ideal.span_singleton_pow, hK', mul_pow, ← pow_mul, mul_comm (ramExp p w), pow_mul]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hδw _) (Ideal.pow_mem_pow hs _)`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hmem`.
-
-Establish `hv : ValGeDifferent_vp O p w (τ (δ : E))`. Establish `h1` using `congrArg (fun a : 𝓞 E => O.valuation (τ (a : E))) ht`. Simplify using `only [map_mul, map_pow, map_natCast, val_eq_one hw hs', one_pow, mul_one] at h1`. Unfold `ValGeDifferent_vp`. Rewrite using `[← h1]`.
-
-Conclude with `mul_le_of_le_one_left' ((O.valuation_le_one_iff _).2 (integer_mem O τ t.isIntegral_coe))`. Use `(mul_idem_mem_iff b τ _ _).1 (h p hp O hpO w hw _ hv) i` as an intermediate fact. Conclude with `hO (by rw [map_mul]; exact this)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentClaim_iff_vp {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E)) (τ : E →+* C) :
     DifferentClaim b τ ↔ DifferentClaim_vp b τ := by
@@ -461,7 +451,7 @@ theorem differentClaim_iff_vp {ι : Type} [Fintype ι] (b : Basis ι ℤ (𝓞 E
     exact hO (by rw [map_mul]; exact this)
 
 /- English proof (translation)
-Simplify using `only [dualDiffSt_iff, differentClaim_iff_vp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualDiffSt_iff_vp :
     DualDiffSt ↔ ∀ (E : Type) [Field E] [NumberField E] (C : Type) [Field C] [CharZero C]

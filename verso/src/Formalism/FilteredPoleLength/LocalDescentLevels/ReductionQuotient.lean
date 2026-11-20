@@ -16,11 +16,11 @@ variable {O X : Type} [CommRing O] [AddCommGroup X] [Module O X]
 abbrev q (A B : Submodule O X) : ℕ∞ := Module.length O (↥A ⧸ B.comap A.subtype)
 
 /- English proof (translation)
-Establish `e : B.comap A.subtype = B'.comap A.subtype`. Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (x : X) ∈ A ⊓ B'` using `h ▸ Submodule.mem_inf.mpr ⟨x.2, hx⟩`. Conclude with `this.2`. Introduce `hx`. Establish `: (x : X) ∈ A ⊓ B` using `h.symm ▸ Submodule.mem_inf.mpr ⟨x.2, hx⟩`. Conclude with `this.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `q`. Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem q_congr (A : Submodule O X) {B B' : Submodule O X} (h : A ⊓ B = A ⊓ B') :
     q A B = q A B' := by
@@ -38,7 +38,7 @@ theorem q_congr (A : Submodule O X) {B B' : Submodule O X} (h : A ⊓ B = A ⊓ 
   rw [e]
 
 /- English proof (translation)
-Rewrite using `[add_comm]`. Conclude with `length_chain' hAB hBC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_chain {A B C : Submodule O X} (hAB : A ≤ B) (hBC : B ≤ C) :
     q C A = q C B + q B A := by
@@ -46,7 +46,7 @@ theorem q_chain {A B C : Submodule O X} (hAB : A ≤ B) (hBC : B ≤ C) :
   exact length_chain' hAB hBC
 
 /- English proof (translation)
-Establish `h` using `(LinearMap.quotientInfEquivSupQuotient A B).length_eq`. Establish `h2 : q A (A ⊓ B) = q A B` using `q_congr A (by simp)`. Conclude with `h.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_sup (A B : Submodule O X) : q (A ⊔ B) B = q A B := by
   have h := (LinearMap.quotientInfEquivSupQuotient A B).length_eq
@@ -54,14 +54,14 @@ theorem q_sup (A B : Submodule O X) : q (A ⊔ B) B = q A B := by
   exact h.symm.trans h2
 
 /- English proof (translation)
-The claim follows from `qlen_eq_zero h`.
+A detailed English derivation is pending.
 -/
 theorem q_zero {A B : Submodule O X} (h : A ≤ B) : q A B = 0 := qlen_eq_zero h
 
 /- English proof (translation)
-Apply `Module.length_le_of_injective (Submodule.mapQ (p.comap f) p f le_rfl)` to reduce the goal to its premises. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Simplify using `only [Submodule.mapQ_apply] at hxy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `hxy`, the goal using `[Submodule.Quotient.eq]`. Simplify using `using hxy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem len_comap_le {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     (f : M →ₗ[O] M') (p : Submodule O M') :
@@ -75,7 +75,7 @@ theorem len_comap_le {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M
   simpa using hxy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `len_comap_le _ _`. Establish `h` using `len_comap_le (Submodule.topEquiv (R := O) (M := X)).symm.toLinearMap (N.comap (⊤ : Submodule O X).subtype)`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem q_top (N : Submodule O X) : q ⊤ N = Module.length O (X ⧸ N) := by
   apply le_antisymm
@@ -90,11 +90,11 @@ end BasisReduction
 open BasisReduction
 
 /- English proof (translation)
-Introduce `O A _ _ _ n F h0 hn hF N`. Establish `key : ∀ k, Module.length O (A ⧸ N) = ∑ j ∈ Finset.range k, q (F j) (F (j + 1) ⊔ (N ⊓ F j)) + q (F k) N`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [h0, q_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[ih, Finset.sum_range_succ, add_assoc]`. Use `congr 1`. Establish `hB : F (k + 1) ⊔ (N ⊓ F k) ≤ F k` using `sup_le (hF k) inf_le_right`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[q_congr (F (k + 1)) (B := N ⊓ F k) (B' := N)]`. Rewrite using `[inf_comm N, ← inf_assoc, inf_eq_left.mpr (hF k)]`. Rewrite using `[key n, hn, q_zero bot_le, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem filteredLength : FilteredLength := by
   intro O A _ _ _ n F h0 hn hF N

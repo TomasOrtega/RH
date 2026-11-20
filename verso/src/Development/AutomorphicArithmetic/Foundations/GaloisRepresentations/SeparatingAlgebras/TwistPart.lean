@@ -6,13 +6,13 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `E _ _ _ a w₀ K W J A _ θ χ hC hK F hF`. Set `χ' : (lev K w₀ J) →* ℂˣ` to `χ.comp (θ.comp (((cLoc w₀).comp (lev K w₀ J).subtype).codRestrict J fun c => hC c.1 c.2))`. Take `⟨I, G, h1, h2, rfl⟩` from `GlobalTheory.T.eigenForm_eq_finite_sum_autRep_eigenForms E a W (lev K w₀ J) χ' F fun c v g => hF c.1 c.2 v g`. Use `Submodule.sum_mem _ fun π hπ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : G π = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `hlaw : ∀ c (hc : c ∈ lev K w₀ J) v g, (G π).1 v (g * c) = ((χ (θ ⟨cLoc w₀ c, hC c hc⟩) : ℂˣ) : ℂ) * (G π).1 v g` using `fun c hc v g => h2 π hπ ⟨c, hc⟩ v g`. Establish `hfix : G π ∈ fixedBy W K` using `fun k hk v g => by`. Establish `hkC : k ∈ lev K w₀ J` using `(le_sup_left : K ≤ lev K w₀ J) hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨cLoc w₀ k, hC k hkC⟩ : J) = 1` using `Subtype.ext (hK k hk)`. Rewrite using `[hlaw k hkC v g, e]`. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, (G π).1 v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Conclude with `h0 (Subtype.ext (LinearMap.ext hcon))`. Establish `hP : GlobalTheory.CongW.HasTypeVec w₀ K J θ χ π.V` using `⟨(G π).1 v, AutSub.mem_finPart.1 (h1 π hπ) v, hv, fun x hx => funext fun g => hfix x hx v g, fun x hx h => funext fun g => hlaw x ((le_sup_right : _ ≤ lev K w₀ J) ⟨hx, h⟩) v g⟩`. Conclude with `Submodule.mem_iSup_of_mem π (Submodule.mem_iSup_of_mem hP ⟨h1 π hπ, hfix⟩)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.twistPart_pf :
     UpperTheory.Gal.Gen.TwistPart := by

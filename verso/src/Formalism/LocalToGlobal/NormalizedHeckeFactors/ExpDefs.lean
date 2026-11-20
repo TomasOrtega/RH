@@ -19,9 +19,9 @@ def IsUniTri {R : Type} [CommRing R] (M : Matrix (Fin r) (Fin r) R) : Prop :=
 variable {r}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hM h, zero_mul]`. Rewrite using `[hN h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_diag_of_tri {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R} (hM : M.BlockTriangular id)
     (hN : N.BlockTriangular id) (a : Fin r) : (M * N) a a = M a a * N a a := by
@@ -34,14 +34,14 @@ theorem mul_diag_of_tri {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R}
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hM.1.mul hN.1, fun a => by rw [mul_diag_of_tri hM.1 hN.1, hM.2, hN.2, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsUniTri.mul {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R} (hM : IsUniTri r M)
     (hN : IsUniTri r N) : IsUniTri r (M * N) :=
   ⟨hM.1.mul hN.1, fun a => by rw [mul_diag_of_tri hM.1 hN.1, hM.2, hN.2, one_mul]⟩
 
 /- English proof (translation)
-Establish `hi` using `Matrix.blockTriangular_inv_of_blockTriangular hM.1`. Use `⟨hi, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `mul_diag_of_tri hM.1 hi a`. Rewrite `h` using `[Matrix.mul_inv_of_invertible, hM.2, one_mul, Matrix.one_apply_eq]`. Conclude with `h.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUniTri.inv {R : Type} [CommRing R] {M : Matrix (Fin r) (Fin r) R} [Invertible M] (hM : IsUniTri r M) :
     IsUniTri r M⁻¹ := by
@@ -70,7 +70,7 @@ def Uup : Subgroup (GProd p r) where
 variable {p r}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Uup {g : GProd p r} : g ∈ Uup p r ↔
     ∀ x, IsUniTri r ((g x : GL (Fin r) (ZMod (p x))) : Matrix (Fin r) (Fin r) (ZMod (p x))) := Iff.rfl
@@ -83,13 +83,13 @@ def supSum {R : Type} [CommRing R] (M : Matrix (Fin r) (Fin r) R) : R :=
 variable {r}
 
 /- English proof (translation)
-Establish `hab : a ≠ b`. Introduce `e`. Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_add a b hab]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM.2, hN.2, one_mul, mul_one, add_comm]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc.1 with h1 | h1` into its components or cases. Rewrite using `[hM.1 h1, zero_mul]`. Establish `h2 : b < c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hc.2` as an intermediate fact. Rewrite `h1`, the goal using `[Fin.lt_def]`. Rewrite `this` using `[Ne, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hN.1 h2, mul_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_sup {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R} (hM : IsUniTri r M) (hN : IsUniTri r N)
     {a b : Fin r} (h : (b : ℕ) = a + 1) : (M * N) a b = M a b + N a b := by
@@ -114,7 +114,7 @@ theorem mul_sup {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R} (hM : I
     exact absurd (Finset.mem_univ b) h
 
 /- English proof (translation)
-Simplify using `only [supSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `mul_sup hM hN h`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem supSum_mul {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R} (hM : IsUniTri r M) (hN : IsUniTri r N) :
     supSum r (M * N) = supSum r M + supSum r N := by
@@ -125,9 +125,9 @@ theorem supSum_mul {R : Type} [CommRing R] {M N : Matrix (Fin r) (Fin r) R} (hM 
   · simp
 
 /- English proof (translation)
-Simplify using `only [supSum]`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem supSum_one {R : Type} [CommRing R] : supSum r (1 : Matrix (Fin r) (Fin r) R) = 0 := by
   simp only [supSum]
@@ -159,15 +159,15 @@ def IsStdGeneric {K : Type} [Field K] {S : Subgroup (GProd p r)} (ψ : S →* K�
   ∃ θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ, (2 ≤ r → ∀ x, θ x ≠ 1) ∧ ∀ u : S, ψ u = stdVal p r θ u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨θ, fun _ => hθ, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem psiStd_isStdGeneric {K : Type} [Field K] (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ) (hθ : ∀ x, θ x ≠ 1) :
     IsStdGeneric p r (psiStd p r θ) := ⟨θ, fun _ => hθ, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `h`. Apply `hθ` to reduce the goal to its premises. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `key : x = Multiplicative.ofAdd (1 : ZMod q) ^ (Multiplicative.toAdd x).val`. Rewrite using `[← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.one_apply, key, map_pow, h, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem char_one_ne {K : Type} [Field K] {q : ℕ} [NeZero q] (θ : Multiplicative (ZMod q) →* Kˣ) (hθ : θ ≠ 1) :
     θ (Multiplicative.ofAdd 1) ≠ 1 := by
@@ -179,9 +179,7 @@ theorem char_one_ne {K : Type} [Field K] {q : ℕ} [NeZero q] (θ : Multiplicati
   rw [MonoidHom.one_apply, key, map_pow, h, one_pow]
 
 /- English proof (translation)
-Use `haveI := Fact.mk hq`. Use `haveI : NeZero q := ⟨hq.ne_zero⟩`. Establish `h1 : θ (Multiplicative.ofAdd 1) ^ q = 1`. Rewrite using `[← map_pow, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_self, ofAdd_zero, map_one]`. Rewrite using `[IsPrimitiveRoot.coe_units_iff, IsPrimitiveRoot.iff_orderOf]`.
-
-Conclude with `orderOf_eq_prime h1 (char_one_ne θ hθ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_one_prim {K : Type} [Field K] {q : ℕ} (hq : q.Prime) (θ : Multiplicative (ZMod q) →* Kˣ) (hθ : θ ≠ 1) :
     IsPrimitiveRoot (((θ (Multiplicative.ofAdd 1) : Kˣ)) : K) q := by
@@ -202,11 +200,11 @@ def tv {R : Type} [CommRing R] (hr : 2 ≤ r) (c : R) : Matrix (Fin r) (Fin r) R
   Matrix.transvection (⟨0, by omega⟩ : Fin r) ⟨1, by omega⟩ c
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hab' : (b : ℕ) < a` using `hab`. Establish `hne : a ≠ b` using `fun e => by rw [e] at hab'; omega`. Simplify using `only [tv, Matrix.transvection, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add]`. Apply `Matrix.single_apply_of_ne` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1`, `h2` using `[Fin.ext_iff]`. Simplify using `only at h1 h2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [tv, Matrix.transvection, Matrix.add_apply, Matrix.one_apply_eq]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1` using `[← h2, Fin.ext_iff]`. Simplify using `at h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tv_uniTri {R : Type} [CommRing R] (hr : 2 ≤ r) (c : R) : IsUniTri r (tv hr c) := by
   refine ⟨fun a b hab => ?_, fun a => ?_⟩
@@ -225,15 +223,13 @@ theorem tv_uniTri {R : Type} [CommRing R] (hr : 2 ≤ r) (c : R) : IsUniTri r (t
     simp at h1
 
 /- English proof (translation)
-Simplify using `only [supSum]`. Rewrite using `[Finset.sum_eq_single (⟨0, by omega⟩ : Fin r), Finset.sum_eq_single (⟨1, by omega⟩ : Fin r)]`. Simplify using `[tv, Matrix.transvection, Matrix.one_apply, Matrix.single_apply, Fin.ext_iff]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using `only at h ⊢`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `a _ ha`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : a ≠ b` using `fun e => by rw [e] at h; omega`. Simplify using `only [tv, Matrix.transvection, Matrix.add_apply, Matrix.one_apply_ne hne, zero_add]`. Apply `Matrix.single_apply_of_ne` to reduce the goal to its premises. Introduce and unpack `⟨h1, -⟩`. Conclude with `ha h1.symm`.
-
-Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem supSum_tv {R : Type} [CommRing R] (hr : 2 ≤ r) (c : R) : supSum r (tv hr c) = c := by
   simp only [supSum]
@@ -265,9 +261,9 @@ def tvAt [DecidableEq ι] (hr : 2 ≤ r) (x : ι) : GProd p r :=
     ⟨tv hr (1 : ZMod (p x)), Matrix.det_transvection_of_ne _ _ (by simp [Fin.ext_iff]) 1⟩)
 
 /- English proof (translation)
-Unfold `tvAt`. Distinguish the cases in `h : y = x`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, if_pos rfl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne h, if_neg h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tvAt_apply [DecidableEq ι] (hr : 2 ≤ r) (x y : ι) :
     ((tvAt (p := p) hr x y : GL (Fin r) (ZMod (p y))) : Matrix (Fin r) (Fin r) (ZMod (p y))) =
@@ -281,9 +277,7 @@ theorem tvAt_apply [DecidableEq ι] (hr : 2 ≤ r) (x y : ι) :
     simp
 
 /- English proof (translation)
-Rewrite using `[mem_Uup]`. Introduce `y`. Rewrite using `[tvAt_apply]`. Use `split_ifs`. Conclude with `tv_uniTri hr 1`.
-
-Conclude with `⟨Matrix.blockTriangular_one, fun a => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tvAt_mem [DecidableEq ι] (hr : 2 ≤ r) (x : ι) : tvAt (p := p) hr x ∈ Uup p r := by
   rw [mem_Uup]
@@ -294,9 +288,9 @@ theorem tvAt_mem [DecidableEq ι] (hr : 2 ≤ r) (x : ι) : tvAt (p := p) hr x �
   · exact ⟨Matrix.blockTriangular_one, fun a => by simp⟩
 
 /- English proof (translation)
-Simplify using `only [stdVal]`. Rewrite using `[Finset.prod_eq_single x]`. Rewrite using `[tvAt_apply, if_pos rfl, supSum_tv]`. Introduce `y _ hy`. Rewrite using `[tvAt_apply, if_neg hy, supSum_one, ofAdd_zero, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stdVal_tvAt [DecidableEq ι] {K : Type} [Field K] (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ)
     (hr : 2 ≤ r) (x : ι) : stdVal p r θ (tvAt hr x) = θ x (Multiplicative.ofAdd 1) := by
@@ -314,7 +308,7 @@ def charOf {K : Type} [Field K] {q : ℕ} (ζ : Kˣ) (hζ : ζ ^ q = 1) : Multip
     rw [zpow_natCast, hζ]; rfl⟩)
 
 /- English proof (translation)
-Establish `h1 : (1 : ZMod q) = ((1 : ℤ) : ZMod q)` using `Int.cast_one.symm`. Simplify using `only [charOf, AddMonoidHom.toMultiplicativeLeft_apply_apply, toAdd_ofAdd]`. Rewrite using `[h1, ZMod.lift_coe]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem charOf_one {K : Type} [Field K] {q : ℕ} (ζ : Kˣ) (hζ : ζ ^ q = 1) :
     charOf ζ hζ (Multiplicative.ofAdd 1) = ζ := by
@@ -324,9 +318,9 @@ theorem charOf_one {K : Type} [Field K] {q : ℕ} (ζ : Kˣ) (hζ : ζ ^ q = 1) 
   simp
 
 /- English proof (translation)
-Use `choose ζ hζ using hζ`. Establish `hne : ∀ x, ζ x ≠ 0` using `fun x => (hζ x).ne_zero (hp x).ne_zero`. Set `u : ∀ x, Kˣ` to `fun x => Units.mk0 (ζ x) (hne x)`. Establish `hu : ∀ x, u x ^ (p x) = 1` using `fun x => Units.ext (by simp [u, (hζ x).pow_eq_one])`. Use `⟨psiStd p r (fun x => charOf (u x) (hu x)), fun x => charOf (u x) (hu x), fun _ x h1 => ?_, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun f => f (Multiplicative.ofAdd (1 : ZMod (p x)))) h1`. Simplify using `only [charOf_one, MonoidHom.one_apply] at h2`. Conclude with `(hζ x).ne_one (hp x).one_lt (by simpa [u] using congrArg Units.val h2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isStdGeneric {K : Type} [Field K] (hp : ∀ x, (p x).Prime)
     (hζ : ∀ x, ∃ ζ : K, IsPrimitiveRoot ζ (p x)) : ∃ ψ : Uup p r →* Kˣ, IsStdGeneric p r ψ := by
@@ -385,9 +379,7 @@ def InLevG (v : HeightOneSpectrum (𝓞 L⁺)) (r : ℕ) (x : Matrix (Fin n) (Fi
     (b < a → Valued.v (x a b) < 1) ∧ (a = b → Valued.v (x a b - 1) < 1)
 
 /- English proof (translation)
-Use `⟨fun a b => ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[Matrix.one_apply_ne (by intro h; rw [h] at ha; omega), map_zero]`.
-
-Conclude with `zero_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inParah_one (v : HeightOneSpectrum (𝓞 L⁺)) (r : ℕ) :
     InParah v r (1 : Matrix (Fin n) (Fin n) (v.adicCompletion L⁺)) := by
@@ -400,7 +392,7 @@ theorem inParah_one (v : HeightOneSpectrum (𝓞 L⁺)) (r : ℕ) :
     exact zero_lt_one
 
 /- English proof (translation)
-Use `⟨inParah_one v r, fun a b _ _ => ⟨fun hba => ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply_ne (ne_of_gt hba), map_zero]`. Conclude with `zero_lt_one`. Rewrite using `[hab, Matrix.one_apply_eq, sub_self, map_zero]`. Conclude with `zero_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inLevG_one (v : HeightOneSpectrum (𝓞 L⁺)) (r : ℕ) :
     InLevG v r (1 : Matrix (Fin n) (Fin n) (v.adicCompletion L⁺)) := by
@@ -431,7 +423,7 @@ def glOf {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] (M : Matrix ι
   if h : IsUnit M.det then M.nonsingInvUnit h else 1
 
 /- English proof (translation)
-Unfold `glOf`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem glOf_val {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] (M : Matrix ι ι R) (h : IsUnit M.det) :
     ((glOf M : GL ι R) : Matrix ι ι R) = M := by

@@ -61,7 +61,7 @@ theorem coe_matrixCoordHomeomorph [TopologicalSpace X] :
     ⇑(matrixCoordHomeomorph n X) = matrixCoord := rfl
 
 /- English proof (translation)
-The claim follows from `measurePreserving_curry_symm μ`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_matrixCoord [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] :
     MeasurePreserving (matrixCoord : Matrix n n X → n × n → X) (matrixMeasure μ)
@@ -69,7 +69,7 @@ theorem measurePreserving_matrixCoord [MeasurableSpace X] (μ : Measure X) [Sigm
   measurePreserving_curry_symm μ
 
 /- English proof (translation)
-Establish `h` using `(measurePreserving_piCongrLeft (fun _ : n × n ↦ μ) (Equiv.prodComm n n)).comp (measurePreserving_matrixCoord (n := n) μ)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x p`. Simplify using `only [Function.comp_apply, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, MeasurableEquiv.coe_mk, matrixCoordT]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem measurePreserving_matrixCoordT [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] :
     MeasurePreserving (matrixCoordT : Matrix n n X → n × n → X) (matrixMeasure μ)
@@ -83,7 +83,7 @@ theorem measurePreserving_matrixCoordT [MeasurableSpace X] (μ : Measure X) [Sig
   rfl
 
 /- English proof (translation)
-Rewrite using `[trace, Fintype.sum_prod_type]`. Simplify using `only [diag_apply, mul_apply, matrixCoord, matrixCoordT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_mul_eq_sum {R : Type*} [CommRing R] (x y : Matrix n n R) :
     trace (x * y) = ∑ p, matrixCoord x p * matrixCoordT y p := by

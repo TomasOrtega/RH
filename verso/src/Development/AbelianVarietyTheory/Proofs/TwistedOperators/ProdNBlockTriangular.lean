@@ -9,9 +9,9 @@ section
 variable {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single s]`. Rewrite using `[hg s s le_rfl, Matrix.one_apply_eq, mul_one]`. Introduce `t _ hts`. Distinguish the cases in `hlt : lev p t < lev p r`. Rewrite using `[hh hlt, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg t s (hrs.trans (not_lt.mp hlt)), Matrix.one_apply_ne hts, mul_zero]`. Introduce `hs`. Conclude with `absurd (Finset.mem_univ s) hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prodN_mul_apply {p : ℕ} {h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} {g : GL (n ⊕ Fin c) k}
     (hh : h.BlockTriangular (lev p)) (hg : InN p g) (r s : n ⊕ Fin c) (hrs : lev p s ≤ lev p r) :
@@ -26,7 +26,7 @@ theorem prodN_mul_apply {p : ℕ} {h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} {g 
     exact absurd (Finset.mem_univ s) hs
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[hg i j hij.le, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem prodN_blockTriangular {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : InN p g) :
     g.val.BlockTriangular (lev p) := by
@@ -36,13 +36,11 @@ theorem prodN_blockTriangular {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : InN p g) 
   exact lt_irrefl _ hij
 
 /- English proof (translation)
-Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => intro r s _`. Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `r s hrs`. Rewrite using `[Units.val_mul, prodN_mul_apply (prodN_blockTriangular hx) hy r s hrs]`. Conclude with `hx r s hrs`. Consider the case `inv x _ hx`. Introduce `r s hrs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Invertible x.val` using `⟨x.inv, x.inv_val, x.val_inv⟩`. Establish `hb : (x⁻¹).val.BlockTriangular (lev p)`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular (prodN_blockTriangular hx)`. Establish `key` using `prodN_mul_apply hb hx r s hrs`.
-
-Rewrite `key` using `[← Units.val_mul, inv_mul_cancel, Units.val_one, eq_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem prodN_inN_of_mem {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c p) : InN p g := by
   induction hg using Subgroup.closure_induction with

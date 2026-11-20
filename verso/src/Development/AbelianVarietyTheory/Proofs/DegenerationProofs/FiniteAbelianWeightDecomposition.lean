@@ -12,7 +12,7 @@ variable {o : Type} [CommRing o] {T : Type} [CommGroup T]
   {M : Type} [AddCommGroup M] [Module o M]
 
 /- English proof (translation)
-Simplify using `[Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_weightSpace_iff {ι : Type} (f : ι → M →ₗ[o] M) (a : ι → o) (x : M) :
     x ∈ (⨅ t, LinearMap.ker (f t - a t • LinearMap.id)) ↔ ∀ t, f t x = a t • x := by
@@ -24,14 +24,14 @@ noncomputable def avg [Fintype T] (ρ : Representation o T M) (u : o) (c : T →
 variable [Fintype T] (ρ : Representation o T M) (u : o)
 
 /- English proof (translation)
-Simplify using `[avg, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem avg_apply (c : T →* oˣ) (x : M) :
     avg ρ u c x = u • ∑ t : T, (((c t)⁻¹ : oˣ) : o) • ρ t x := by
   simp [avg, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [avg_apply, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm s t, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_avg (c : T →* oˣ) (s : T) (x : M) : ρ s (avg ρ u c x) = avg ρ u c (ρ s x) := by
   simp only [avg_apply, map_smul, map_sum]
@@ -40,9 +40,9 @@ theorem comm_avg (c : T →* oˣ) (s : T) (x : M) : ρ s (avg ρ u c x) = avg ρ
   rw [← Module.End.mul_apply, ← map_mul, mul_comm s t, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [avg_apply, map_smul, map_sum]`. Rewrite using `[smul_comm]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft s) _ _ fun t => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulLeft, map_mul, Module.End.mul_apply, smul_smul]`. Use `congr 1`. Rewrite using `[← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_inv, mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_avg (c : T →* oˣ) (s : T) (x : M) :
     ρ s (avg ρ u c x) = (c s : o) • avg ρ u c x := by
@@ -58,7 +58,7 @@ theorem apply_avg (c : T →* oˣ) (s : T) (x : M) :
   rw [mul_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Simplify using `only [avg_apply, hx, smul_smul, Units.inv_mul, one_smul, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul o, smul_smul, hu, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_of_weight (hu : u * (Fintype.card T : o) = 1) (c : T →* oˣ) (x : M)
     (hx : ∀ t, ρ t x = (c t : o) • x) : avg ρ u c x = x := by
@@ -66,11 +66,11 @@ theorem avg_of_weight (hu : u * (Fintype.card T : o) = 1) (c : T →* oˣ) (x : 
   rw [← Nat.cast_smul_eq_nsmul o, smul_smul, hu, one_smul]
 
 /- English proof (translation)
-Simplify using `only [avg_apply, hx, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Establish `h` using `sum_hom_units_eq_zero ((Units.coeHom o).comp (c⁻¹ * d)) (by`. Introduce `h`. Apply `hcd` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `t`. Use `DFunLike.congr_fun h t` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.coeHom_apply, MonoidHom.one_apply, Units.val_eq_one, inv_mul_eq_one] at this`. Rewrite using `[this])`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.coeHom_apply, Units.val_mul] at h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, zero_smul, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_of_weight_ne [IsDomain o] (c d : T →* oˣ) (hcd : d ≠ c) (x : M)
     (hx : ∀ t, ρ t x = (d t : o) • x) : avg ρ u c x = 0 := by
@@ -89,9 +89,9 @@ theorem avg_of_weight_ne [IsDomain o] (c d : T →* oˣ) (hcd : d ≠ c) (x : M)
   rw [h, zero_smul, smul_zero]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CharacterSumInverse.main`. Consider the case `exact _root_.GlobalTheory.CharacterSumInverse.main`. Consider the case `(apply _root_.GlobalTheory.CharacterSumInverse.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CharacterSumInverse.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CharacterSumInverse.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CharacterSumInverse.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_avg [IsDomain o] [HasEnoughRootsOfUnity o (Monoid.exponent T)] [Fintype (T →* oˣ)]
     (hu : u * (Fintype.card T : o) = 1) (x : M) : ∑ c : T →* oˣ, avg ρ u c x = x := by
@@ -104,9 +104,9 @@ theorem sum_avg [IsDomain o] [HasEnoughRootsOfUnity o (Monoid.exponent T)] [Fint
   | (intros; exact _root_.GlobalTheory.CharacterSumInverse.main ..)
 
 /- English proof (translation)
-Establish `h : ∀ y : A ⊗[o] M, (avg ρ u c).baseChange A y = u • ∑ t : T, (((c t)⁻¹ : oˣ) : o) • (ρ t).baseChange A y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => simp [avg_apply, TensorProduct.tmul_sum, TensorProduct.tmul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z hy hz => simp only [map_add, hy, hz, smul_add, Finset.sum_add_distrib]`. Rewrite using `[h]`. Simplify using `only [hx, algebraMap_smul, smul_smul, Units.inv_mul, one_smul, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul o, smul_smul, hu, one_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_avg_of_weight (hu : u * (Fintype.card T : o) = 1) (A : Type) [CommRing A]
     [Algebra o A] (c : T →* oˣ) (x : A ⊗[o] M)
@@ -129,35 +129,29 @@ end FiniteAbelianWeights
 open FiniteAbelianWeights in
 
 /- English proof (translation)
-Introduce `o _ _ N ζ hN hNu hζ T _ _ hT M _ _ ρ _`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hunit : ∀ (G : Type) [CommGroup G] [Fintype G], (∀ g : G, g ^ N = 1) → ∃ u : o, u * (Fintype.card G : o) = 1`. Introduce `G _ _ hG`. Establish `h1` using `card_dvd_exponent_pow_rank' G hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Nat.card_eq_fintype_card]`. Establish `h2 : (Fintype.card G : o) ∣ (N : o) ^ Group.rank G`. Conclude with `Nat.cast_dvd_cast (α := o) h1` after adjusting the coercions. Conclude with `(isUnit_of_dvd_unit h2 (hNu.pow _)).exists_left_inv`. Use `haveI : HasEnoughRootsOfUnity o N := ⟨⟨ζ, hζ⟩, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : HasEnoughRootsOfUnity o (Monoid.exponent T) := HasEnoughRootsOfUnity.of_dvd o (Monoid.exponent_dvd_of_forall_pow_eq_one hT)`. Establish `hfin : Finite (T →* oˣ)` using `Finite.of_equiv T (CommGroup.monoidHom_mulEquiv_of_hasEnoughRootsOfUnity T o).some.toEquiv.symm`. Use `haveI := Fintype.ofFinite T`. Use `haveI := Fintype.ofFinite (T →* oˣ)`. Take `⟨u, hu⟩` from `hunit T hT`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ (c : T →* oˣ) (x : M), avg ρ u c x ∈ ⨅ t, LinearMap.ker (ρ t - (c t : o) • LinearMap.id)` using `fun c x => (mem_weightSpace_iff (fun t => ρ t) (fun t => (c t : o)) _).2 fun t => apply_avg ρ u c t x`. Use `⟨hfin, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Introduce `c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Establish `hle : (⨆ d, ⨆ (_ : d ≠ c), ⨅ t, LinearMap.ker (ρ t - (d t : o) • LinearMap.id)) ≤ LinearMap.ker (avg ρ u c)`. Use `iSup₂_le fun d hd y hy => ?_` and prove the remaining obligations. Conclude with `avg_of_weight_ne ρ u c d hd y ((mem_weightSpace_iff (fun t => ρ t) (fun t => (d t : o)) _).1 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : avg ρ u c x = 0` using `hle hx'`. Rewrite `h0` using `[avg_of_weight ρ u hu c x ((mem_weightSpace_iff (fun t => ρ t) (fun t => (c t : o)) _).1 hx)]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← sum_avg ρ u hu x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.sum_mem _ fun c _ => Submodule.mem_iSup_of_mem c (hmem c x)`. Introduce `T' c'`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx'` using `(mem_weightSpace_iff (fun t : T' => ρ t) (fun t => (c' t : o)) _).1 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sum_avg ρ u hu x]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c.comp T'.subtype = c'`. Conclude with `Submodule.mem_iSup_of_mem (⟨c, hc⟩ : {c : T →* oˣ // c.comp T'.subtype = c'}) (hmem c x)`. Use `haveI := Fintype.ofFinite T'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `hunit T' fun g => Subtype.ext (by simpa using hT g)`. Set `ρ' : Representation o T' M` to `ρ.comp T'.subtype`. Establish `h1 : avg ρ' v c' (avg ρ u c x) = avg ρ u c x` using `avg_of_weight ρ' v hv c' _ fun t => by`. Express the relevant statement in the definitionally equal form `ρ t (avg ρ u c x) = _`. Rewrite using `[comm_avg, hx' t, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Establish `h2 : avg ρ' v c' (avg ρ u c x) = 0` using `avg_of_weight_ne ρ' v c' (c.comp T'.subtype) hc _ fun t => apply_avg ρ u c t x`. Rewrite using `[← h1, h2]`. Conclude with `Submodule.zero_mem _`. Use `iSup_le fun c x hx => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `c`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'` using `(mem_weightSpace_iff (fun t => ρ t) (fun t => (c t : o)) _).1 hx`. Conclude with `(mem_weightSpace_iff (fun t : T' => ρ t) (fun t => (c.comp T'.subtype t : o)) _).2 fun t => hx' t`. Introduce `A _ _ c`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hx'` using `(mem_weightSpace_iff (fun t => (ρ t).baseChange A) (fun t => algebraMap o A (c t)) _).1 hx`. Rewrite using `[← baseChange_avg_of_weight ρ u hu A c x hx']`. Use `clear hx hx'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `tmul a m`. Rewrite using `[LinearMap.baseChange_tmul]`. Conclude with `Submodule.tmul_mem_baseChange_of_mem a (hmem c m)`. Consider the case `add y z hy hz`. Rewrite using `[map_add]`.
-
-Conclude with `Submodule.add_mem _ hy hz`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.span_le]`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Establish `hm'` using `(mem_weightSpace_iff (fun t => ρ t) (fun t => (c t : o)) _).1 hm`. Use `(mem_weightSpace_iff (fun t => (ρ t).baseChange A) (fun t => algebraMap o A (c t)) _).2 fun t => ?_` and prove the remaining obligations.
-
-Simplify using `only [TensorProduct.mk_apply, LinearMap.baseChange_tmul, hm', algebraMap_smul, TensorProduct.tmul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem finiteAbelian_weightDecomposition :
     ∀ (o : Type) [CommRing o] [IsDomain o] (N : ℕ) (ζ : o), 0 < N → IsUnit (N : o) →

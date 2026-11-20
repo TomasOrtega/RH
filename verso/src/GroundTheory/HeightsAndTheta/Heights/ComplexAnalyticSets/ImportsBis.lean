@@ -16,7 +16,7 @@ def LogIntegrableOn.Statement : Prop :=
       ProjIntegrable J A (B.indicator fun x => Real.log ‖linVal u x‖) φ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAffVariety_bot 1, isFiniteProj_one 1, fun _ => smoothNear_of_contDiff _ contDiff_normSq_coord, linForm_one_not_mem_point ℂ, measurableSet_ball, Metric.isBounded_ball⟩`.
+Supply the required witnesses or components.
 -/
 theorem LogIntegrableOn.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 ∧

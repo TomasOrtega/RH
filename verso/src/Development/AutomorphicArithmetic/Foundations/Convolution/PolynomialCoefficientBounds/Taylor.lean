@@ -6,27 +6,25 @@ open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `ι _ c hc' H h M A0 hb`. Use `set L : ℝ →L[ℝ] (ι → ℝ) := ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) h with hL`. Establish `hLt : ∀ t : ℝ, L t = t • h` using `fun t => by simp [hL]`. Use `set cH : (ι → ℝ) → ℂ := fun z => c (H + z) with hcH`. Establish `hcH' : ContDiff ℝ ∞ cH` using `hc'.comp (contDiff_const.add contDiff_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ℝ → ℂ := cH ∘ L with hg`. Establish `hgs : ContDiff ℝ ∞ g` using `hcH'.comp L.contDiff`. Establish `key : ∀ (j : ℕ) (t : ℝ), iteratedDeriv j g t = iteratedFDeriv ℝ j c (H + t • h) (fun _ => h)`. Introduce `j t`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, hg, L.iteratedFDeriv_comp_right hcH' t (by exact_mod_cast le_top), ContinuousMultilinearMap.compContinuousLinearMap_apply, hcH, iteratedFDeriv_comp_add_left, hLt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hLt]`. Use `set A : ℝ := |A0| with hA`. Establish `hA0 : 0 ≤ A` using `abs_nonneg _`. Establish `bnd : ∀ (k : ℕ) (t : ℝ), t ∈ Set.Icc (0 : ℝ) 1 → ‖iteratedDeriv k g t‖ ≤ |M| * A ^ k`. Introduce `k t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `(hb k t ht).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hD : ∀ k : ℕ, iteratedFDeriv ℝ k c H (fun _ => h) = iteratedDeriv k g 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Simplify using the standard rewrite rules. Establish `hsum : Summable (fun k : ℕ => ((Nat.factorial k : ℂ))⁻¹ * iteratedFDeriv ℝ k c H (fun _ => h))`. Establish `hs0 : Summable (fun k : ℕ => |M| * (A ^ k / (Nat.factorial k : ℝ)))` using `(Real.summable_pow_div_factorial A).mul_left _`. Use `Summable.of_norm_bounded hs0 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[norm_mul, hD, norm_inv, Complex.norm_natCast]`. Use `bnd k 0 (by simp)` as an intermediate fact. Establish `hf : (0 : ℝ) ≤ ((Nat.factorial k : ℝ))⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htay : ∀ m : ℕ, taylorWithinEval g m (Set.Icc 0 1) 0 1 = ∑ k ∈ Finset.range (m + 1), ((Nat.factorial k : ℂ))⁻¹ * iteratedFDeriv ℝ k c H (fun _ => h)`. Introduce `m`. Rewrite using `[taylor_within_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hD, iteratedDerivWithin_eq_iteratedDeriv (uniqueDiffOn_Icc zero_lt_one) ((hgs.of_le (by exact_mod_cast le_top)).contDiffAt) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Complex.real_smul]`. Establish `hrem : ∀ m : ℕ, ‖g 1 - taylorWithinEval g m (Set.Icc 0 1) 0 1‖ ≤ |M| * A * (A ^ m / (Nat.factorial m : ℝ))`. Introduce `m`. Establish `h1` using `taylor_mean_remainder_bound (f := g) (a := 0) (b := 1) (x := 1) (n := m) (C := |M| * A ^ (m + 1)) zero_le_one ((hgs.of_le (by exact_mod_cast le_top)).contDiffOn) (by simp) (by`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[iteratedDerivWithin_eq_iteratedDeriv (uniqueDiffOn_Icc zero_lt_one) ((hgs.of_le (by exact_mod_cast le_top)).contDiffAt) hy]`. Conclude with `bnd _ y hy)`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [sub_zero, one_pow, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlim : Tendsto (fun m : ℕ => taylorWithinEval g m (Set.Icc 0 1) 0 1) atTop (𝓝 (g 1))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `h0 : Tendsto (fun m : ℕ => |M| * A * (A ^ m / (Nat.factorial m : ℝ))) atTop (𝓝 0)`. Simplify using `using (FloorSemiring.tendsto_pow_div_factorial_atTop A).const_mul (|M| * A)`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun m => ?_) h0` and prove the remaining obligations.
-
-Rewrite using `[norm_sub_rev]`. Conclude with `hrem m`. Establish `hg1 : g 1 = c (H + h)` using `by simp [hg, hcH, hLt]`. Rewrite using `[← hg1, hsum.hasSum_iff_tendsto_nat, ← tendsto_add_atTop_iff_nat 1]`. Simplify `hlim` using `only [htay]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.taylor_smooth :
     ∀ (ι : Type) [Fintype ι] (c : (ι → ℝ) → ℂ), ContDiff ℝ ∞ c → ∀ (H v : ι → ℝ) (M C : ℝ), (∀ (k : ℕ) (t : ℝ), t ∈ Set.Icc (0 : ℝ) 1 → ‖iteratedFDeriv ℝ k c (H + t • v) (fun _ => v)‖ ≤ M * C ^ k) → HasSum (fun k : ℕ => (k.factorial : ℂ)⁻¹ * iteratedFDeriv ℝ k c H (fun _ => v)) (c (H + v)) := by

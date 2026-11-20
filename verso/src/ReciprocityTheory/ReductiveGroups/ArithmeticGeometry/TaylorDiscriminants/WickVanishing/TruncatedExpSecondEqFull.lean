@@ -18,7 +18,7 @@ variable {k : Type} [CommRing k] {σ : Type}
 def lam (W : (σ →₀ ℕ) → k) (R : MvPolynomial σ k) : k := ∑ m ∈ R.support, R.coeff m * W m
 
 /- English proof (translation)
-Unfold `lam`. Use `Finset.sum_subset hS fun e _ he => ?_` and prove the remaining obligations. Rewrite `he` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[he, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_eq (W : (σ →₀ ℕ) → k) (R : MvPolynomial σ k) (S : Finset (σ →₀ ℕ)) (hS : R.support ⊆ S) :
     lam W R = ∑ m ∈ S, R.coeff m * W m := by
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 theorem lamL_apply (W : (σ →₀ ℕ) → k) (R : MvPolynomial σ k) : lamL W R = lam W R := rfl
 
 /- English proof (translation)
-Rewrite using `[lam_eq W _ {m} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_monomial (W : (σ →₀ ℕ) → k) (m : σ →₀ ℕ) (r : k) : lam W (monomial m r) = r * W m := by
   classical
@@ -59,7 +59,7 @@ theorem lam_monomial (W : (σ →₀ ℕ) → k) (m : σ →₀ ℕ) (r : k) : l
 end abelian₂
 
 /- English proof (translation)
-Unfold `FB.nabVal lam`. Simplify using `only [DpolyOf, map_sum, map_mul, MvPowerSeries.constantCoeff_C]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[MvPolynomial.support_monomial, MvPolynomial.coeff_monomial]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem nabVal_eq_lam {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (k : Type)
     [CommRing k] [Algebra ℚ k] [Algebra R k] [Nontrivial k] (B : FB R d O) (h : PS k 2 d) (w0 : O) (m : ℕ)
@@ -79,9 +79,9 @@ variable {k : Type} [CommRing k] {ι : Type} [Fintype ι] {n : ℕ}
 def glue (g : Fin n → (ι →₀ ℕ)) : (ι × Fin n) →₀ ℕ := ∑ b, Finsupp.mapDomain (fun l => (l, b)) (g b)
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single b]`. Conclude with `Finsupp.mapDomain_apply (fun x y h => congrArg Prod.fst h) _ _`. Introduce `b' _ hb`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩`. Conclude with `hb (congrArg Prod.snd hx)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glue_apply (g : Fin n → (ι →₀ ℕ)) (l : ι) (b : Fin n) : glue g (l, b) = g b l := by
   classical
@@ -96,7 +96,7 @@ theorem glue_apply (g : Fin n → (ι →₀ ℕ)) (l : ι) (b : Fin n) : glue g
     exact absurd (Finset.mem_univ b) h
 
 /- English proof (translation)
-Use extensionality with `l`. Use `first`. Consider the case `simp [colM, glue_apply]`. Consider the case `exact glue_apply g l b`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem colM_glue (g : Fin n → (ι →₀ ℕ)) (b : Fin n) : colM (glue g) b = g b := by
   ext l
@@ -105,7 +105,7 @@ theorem colM_glue (g : Fin n → (ι →₀ ℕ)) (b : Fin n) : colM (glue g) b 
   | exact glue_apply g l b
 
 /- English proof (translation)
-Use extensionality with `⟨l, b⟩`. Rewrite using `[glue_apply]`. Use `first`. Consider the case `simp [colM]`. Consider the case `rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem glue_colM (mo : (ι × Fin n) →₀ ℕ) : glue (fun b => colM mo b) = mo := by
   ext ⟨l, b⟩
@@ -115,7 +115,7 @@ theorem glue_colM (mo : (ι × Fin n) →₀ ℕ) : glue (fun b => colM mo b) = 
   | rfl
 
 /- English proof (translation)
-Unfold `prodQ glue`. Rewrite using `[MvPolynomial.monomial_sum_one]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `MvPolynomial.rename_monomial _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prodQ_monomial (g : Fin n → (ι →₀ ℕ)) :
     prodQ (fun b => (monomial (g b) (1 : k) : MvPolynomial ι k)) = monomial (glue g) 1 := by
@@ -125,13 +125,13 @@ theorem prodQ_monomial (g : Fin n → (ι →₀ ℕ)) :
   exact MvPolynomial.rename_monomial _ _ _
 
 /- English proof (translation)
-Establish `hP : prodQ Q = ∑ g ∈ Fintype.piFinset (fun b => (Q b).support), (monomial (glue g) (∏ b, (Q b).coeff (g b)) : MvPolynomial (ι × Fin n) k)`. Establish `h1 : ∀ b, colE b (Q b) = ∑ e ∈ (Q b).support, (monomial (Finsupp.mapDomain (fun l => (l, b)) e) ((Q b).coeff e) : MvPolynomial (ι × Fin n) k)`. Introduce `b`. Use `conv_lhs => rw [(Q b).as_sum]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Conclude with `MvPolynomial.rename_monomial _ _ _`. Unfold `prodQ`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.prod_univ_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[glue, MvPolynomial.monomial_sum_index, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]`. Rewrite using `[hP, ← lamL_apply, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [lamL_apply, lam_monomial, colM_glue]`. Simplify using `only [lam]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_prodQ (V : Fin n → (ι →₀ ℕ) → k) (Q : Fin n → MvPolynomial ι k) :
     lam (fun mo => ∏ b, V b (colM mo b)) (prodQ Q) = ∏ b, lam (V b) (Q b) := by
@@ -166,17 +166,15 @@ section Trunc
 variable {k : Type} [CommRing k] [Algebra ℚ k]
 
 /- English proof (translation)
-Use `conv_lhs => rw [q.as_sum]`. Rewrite using `[map_sum]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_monomial]`. Distinguish the cases in `hsl : s l = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsl, Nat.cast_zero, mul_zero, MvPolynomial.monomial_zero, MvPolynomial.totalDegree_zero]`. Conclude with `Nat.zero_le _`. Use `le_trans (b := (s - Finsupp.single l 1).sum fun _ e => e) ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `exact MvPolynomial.totalDegree_monomial_le _ _`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(by_cases hc : coeff s q * (s l : k) = 0`. Rewrite using `[hc, MvPolynomial.monomial_zero, MvPolynomial.totalDegree_zero]`. Conclude with `Nat.zero_le _`. Rewrite using `[MvPolynomial.totalDegree_monomial _ hc])`. Establish `hs' : (s.sum fun _ e => e) ≤ D + 1` using `(MvPolynomial.le_totalDegree hs).trans hq`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hsplit : s = (s - Finsupp.single l 1) + Finsupp.single l 1`. Use extensionality with `x`. Distinguish the cases in `hx : l = x`. Substitute `hx` using the available equality. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_eq_same]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply, if_neg hx]`. Use linear arithmetic over natural numbers and integers. Establish `hsum : (s.sum fun _ e => e) = ((s - Finsupp.single l 1).sum fun _ e => e) + 1` using `by conv_lhs => rw [hsplit]`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma totalDegree_pderiv_le_of_le_succ {σ : Type} (l : σ) (q : MvPolynomial σ k) (D : ℕ)
     (hq : q.totalDegree ≤ D + 1) : (pderiv l q).totalDegree ≤ D := by
@@ -211,9 +209,9 @@ private lemma totalDegree_pderiv_le_of_le_succ {σ : Type} (l : σ) (q : MvPolyn
       omega
 
 /- English proof (translation)
-Unfold `secondOrder`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun l _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun l' _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `totalDegree_pderiv_le_of_le_succ l _ D (totalDegree_pderiv_le_of_le_succ l' q (D + 1) hq)`.
+A detailed English derivation is pending.
 -/
 private lemma totalDegree_secondOrder_le_of_le_add_two {σ : Type} [Fintype σ] (c : σ → σ → k) (q : MvPolynomial σ k) (D : ℕ)
     (hq : q.totalDegree ≤ D + 2) : (secondOrder k c q).totalDegree ≤ D := by
@@ -225,7 +223,7 @@ private lemma totalDegree_secondOrder_le_of_le_add_two {σ : Type} [Fintype σ] 
   exact totalDegree_pderiv_le_of_le_succ l _ D (totalDegree_pderiv_le_of_le_succ l' q (D + 1) hq)
 
 /- English proof (translation)
-Rewrite `hq` using `[MvPolynomial.totalDegree_eq_zero_iff_eq_C]`. Rewrite using `[hq]`. Unfold `secondOrder`. Simplify using `[MvPolynomial.pderiv_C]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma secondOrder_eq_zero_of_totalDegree_eq_zero {σ : Type} [Fintype σ] (c : σ → σ → k) (q : MvPolynomial σ k)
     (hq : q.totalDegree = 0) : secondOrder k c q = 0 := by
@@ -235,9 +233,9 @@ private lemma secondOrder_eq_zero_of_totalDegree_eq_zero {σ : Type} [Fintype σ
   simp [MvPolynomial.pderiv_C]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => intro q hq`. Use linear arithmetic over natural numbers and integers. Consider the case `succ i ih`. Introduce `q hq`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply]`. Distinguish the cases in `h0 : q.totalDegree = 0`. Rewrite using `[secondOrder_eq_zero_of_totalDegree_eq_zero c q h0]`. Conclude with `Function.iterate_fixed (secondOrder_eq_zero_of_totalDegree_eq_zero c 0 MvPolynomial.totalDegree_zero) i`. Conclude with `ih _ (by have := totalDegree_secondOrder_le_of_le_add_two c q (q.totalDegree - 2) (by omega); omega)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma iterate_secondOrder_eq_zero_of_totalDegree_lt {σ : Type} [Fintype σ] (c : σ → σ → k) (i : ℕ) :
     ∀ q : MvPolynomial σ k, q.totalDegree + 1 ≤ i → (secondOrder k c)^[i] q = 0 := by
@@ -252,9 +250,9 @@ private lemma iterate_secondOrder_eq_zero_of_totalDegree_lt {σ : Type} [Fintype
     · exact ih _ (by have := totalDegree_secondOrder_le_of_le_add_two c q (q.totalDegree - 2) (by omega); omega)
 
 /- English proof (translation)
-Unfold `expSecond E1`. Establish `h1 : ∑ i ∈ Finset.range (D + 1), (t ^ i * algebraMap ℚ k (1 / (i.factorial : ℚ))) • (secondOrder k c)^[i] y = ∑ i ∈ Finset.range (N + 1), (t ^ i * algebraMap ℚ k (1 / (i.factorial : ℚ))) • (secondOrder k c)^[i] y`. Apply `Finset.sum_subset (fun x hx => by simp only [Finset.mem_range] at hx ⊢; omega)` to reduce the goal to its premises. Introduce `i _ hi`. Simplify using `only [Finset.mem_range] at hi`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[iterate_secondOrder_eq_zero_of_totalDegree_lt c i y (by omega), smul_zero]`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[one_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -279,9 +277,9 @@ def TL {σ : Type} [Fintype σ] (c : σ → σ → k) (t : k) (N : ℕ) : MvPoly
   ∑ i ∈ range (N + 1), (algebraMap ℚ k ((i.factorial : ℚ)⁻¹) * t ^ i) • (soL c) ^ i
 
 /- English proof (translation)
-Rewrite using `[TL, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Use `congr 1`. Use `first`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `exact Module.End.pow_apply _ _ _`. Consider the case `exact LinearMap.pow_apply _ _ _`. Consider the case `(rw [Module.End.coe_pow]; rfl)`. Consider the case `(rw [LinearMap.coe_pow]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem TL_apply {σ : Type} [Fintype σ] (c : σ → σ → k) (t : k) (N : ℕ) (x : MvPolynomial σ k) :
     TL c t N x = ∑ i ∈ range (N + 1),
@@ -299,27 +297,23 @@ theorem TL_apply {σ : Type} [Fintype σ] (c : σ → σ → k) (t : k) (N : ℕ
 end Trunc
 
 /- English proof (translation)
-Introduce `R _ d O _ _ _ _ _ k _ _ _ B h h' hh hh' w0 mm n ι _ u P hP f`. Break down `subsingleton_or_nontrivial k with hk | hk` into its components or cases. Conclude with `Subsingleton.elim _ _`. Use `set c : ι → ι → k := fun l l' => dotProduct (u l) ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l'))) + dotProduct (u l') ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l))) with hc`. Use `set cD : ι × Fin n → ι × Fin n → k := fun p q => if p.2 = q.2 then c p.1 q.1 else 0 with hcD`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP' : secondOrder k cD P = 0` using `hP`. Use `set t : k := (mm : k) * algebraMap ℚ k (1 / 2) with ht`. Use `set N := P.totalDegree with hN`. Use `set V : Fin n → (ι →₀ ℕ) → k := fun b e => B.nabVal k h w0 mm (f b) u (monomial e 1) with hV`. Use `set W : (ι × Fin n →₀ ℕ) → k := fun mo => ∏ b, V b (colM mo b) with hW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLHS : (∑ mo ∈ P.support, P.coeff mo * ∏ b, B.nabVal k h w0 mm (f b) u (monomial (colM mo b) 1)) = lam W P` using `rfl`. Rewrite using `[hLHS]`. Establish `hcol : ∀ (mo : (ι × Fin n) →₀ ℕ) (b : Fin n) (l : ι), colM mo b l = mo (l, b)`. Introduce `mo b l`. Simplify using `[colM]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : ∀ mo ∈ P.support, ∑ b, (monomial (colM mo b) (1 : k)).totalDegree ≤ N`. Introduce `mo hmo`. Establish `h1` using `le_totalDegree hmo`. Establish `h2 : ∀ b, (monomial (colM mo b) (1 : k)).totalDegree = ∑ l, mo (l, b)`. Introduce `b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[totalDegree_monomial _ one_ne_zero, Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `sum_congr rfl fun l _ => hcol mo b l`. Rewrite `h1` using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type]`. Simplify using `only [h2]`. Rewrite using `[sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `key : ∀ mo ∈ P.support, ∏ b, B.nabVal k h' w0 mm (f b) u (monomial (colM mo b) 1) = lam W (TL cD t N (monomial mo 1))`. Introduce `mo hmo`. Establish `hbN : ∀ b, (monomial (colM mo b) (1 : k)).totalDegree ≤ N` using `fun b => (single_le_sum (f := fun b => (monomial (colM mo b) (1 : k)).totalDegree) (fun _ _ => Nat.zero_le _) (mem_univ b)).trans (hsum mo hmo)`. Establish `h1 : ∀ b, B.nabVal k h' w0 mm (f b) u (monomial (colM mo b) 1) = lam (V b) (E1 c t N (monomial (colM mo b) 1))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Rewrite using `[hG R d O k B h h' hh hh' w0 mm u _ (f b), nabVal_eq_lam, truncated_exp_second_eq_full c t _ N (hbN b) _ le_rfl]`. Rewrite using `[prod_congr rfl fun b _ => h1 b, ← lam_prodQ V (fun b => E1 c t N (monomial (colM mo b) 1))]`. Establish `hE` using `exp_cols c t N (fun b => (monomial (colM mo b) (1 : k)).totalDegree) (hsum mo hmo) univ (fun b => monomial (colM mo b) 1) (fun _ => le_rfl)`. Simplify using `only [mem_univ, if_true] at hE`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmoN : (monomial mo (1 : k)).totalDegree ≤ N` using `(totalDegree_monomial_le _ _).trans (le_totalDegree hmo)`. Rewrite using `[← hE, cS_univ, prodQ_monomial, glue_colM, exp_opA_apply _ _ _ _ hmoN, TL_apply]`. Establish `hRHS : (∑ mo ∈ P.support, P.coeff mo * ∏ b, B.nabVal k h' w0 mm (f b) u (monomial (colM mo b) 1)) = lam W (TL cD t N P)`. Rewrite using `[sum_congr rfl fun mo hmo => by rw [key mo hmo]]`. Use `conv_rhs => rw [as_sum P]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, ← lamL_apply, map_sum]`. Use `sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[show (monomial mo (P.coeff mo) : MvPolynomial (ι × Fin n) k) = P.coeff mo • monomial mo 1 by`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one], map_smul, map_smul, lamL_apply, smul_eq_mul]`. Establish `hTP : TL cD t N P = P`.
-
-Rewrite using `[TL_apply, sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hi`. Rewrite using `[Function.iterate_succ_apply, hP', Function.iterate_fixed (so_zero _) j, smul_zero]`.
-
-Introduce `h0`. Simplify using `at h0`. Rewrite using `[hRHS, hTP]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauge_second_columns_of_exp (hG : GaugeExpSt) : GaugeIndependenceColumns := by
   intro R _ d O _ _ _ _ _ k _ _ _ B h h' hh hh' w0 mm n ι _ u P hP f

@@ -8,21 +8,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SymChar
 
 /- English proof (translation)
-Introduce `D X w k hg a j`. Establish `hW : ∀ i, ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) (GlobalTheory.Mem.SymFrame.epsW X w i))`. Introduce `i`. Unfold `GlobalTheory.Mem.SymFrame.epsW`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((X.weightVectorsIntegral _).2.2 a).2.1`. Conclude with `((X.weightVectorsIntegral _).2.2 a).2.2.2`. Use `wInt_of_zmod X k hg ?_` and prove the remaining obligations. Establish `ha` using `a.2`. Establish `hpos : (GlobalTheory.Mem.SymChar.Resid.posE D a).1 = a.1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.Mem.SymFrame.symVec GlobalTheory.SeeConjRead.flagV`. Distinguish the cases in `h1 : j.1 < D.R.rS`. Rewrite using `[dif_pos h1]`. Establish `h` using `Formalism.L2.SG.Pf.unitaryCongruence.Z_sig X.B.I X.B.g (X.gramIntegral ⟨j.1, h1⟩ a).2.2`. Rewrite `h` using `[map_sub, ← Formalism.L2.SG.Pf.unitaryCongruence.hA_symm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `e : j = GlobalTheory.Mem.SymChar.Resid.posE D a`. Rewrite using `[if_pos e]`. Rewrite `h` using `[if_pos (Fin.ext (by have := congrArg Fin.val e; simp only at this ⊢; omega)), map_one]`. Then use the resulting hypothesis. Rewrite using `[if_neg e]`. Rewrite `h` using `[if_neg (fun h' => e (Fin.ext (by have := congrArg Fin.val h'; simp only at this; omega))), map_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_neg h1]`. Establish `hne : ¬ j = GlobalTheory.Mem.SymChar.Resid.posE D a` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[hpos]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hne, sub_zero]`. Distinguish the cases in `h2 : j.1 < D.R.rS + D.R.k`. Rewrite using `[dif_pos h2]`. Conclude with `hW _`. Rewrite using `[dif_neg h2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h4 : j.1 = D.R.rS + D.R.k`. Rewrite using `[dif_pos h4]`. Conclude with `(X.formsAtZero.2 a).2`. Rewrite using `[dif_neg h4]`. Distinguish the cases in `h3 : j.1 < 2 * D.R.rS + D.R.k + 1`.
-
-Rewrite using `[dif_pos h3]`. Conclude with `(X.gramIntegral a _).2.1`. Rewrite using `[dif_neg h3, hA_zero_right']`. Conclude with `⟨0, zero_mem _, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hA_symVec_sub_ite_mem_wInt : ∀ (D : D7) (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (k : Fin 2), ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → ∀ (a : Fin D.R.rS) (j : Fin D.R.r), hA X.B.I (X.f0 a) (GlobalTheory.Mem.SymFrame.symVec X w j) - (if j = GlobalTheory.Mem.SymChar.Resid.posE D a then 1 else 0) ∈ GlobalTheory.Mem.SymChar.wInt X w := by
   intro D X w k hg a j

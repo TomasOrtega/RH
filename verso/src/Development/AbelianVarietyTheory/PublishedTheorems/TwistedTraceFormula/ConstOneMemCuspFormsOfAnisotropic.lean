@@ -19,17 +19,17 @@ namespace GlobalTheory.Eis.DblModel
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-The claim follows from `Cusp.mem_cuspForms.2 ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem const_one_mem_cuspForms_of_anisotropic (h : IsAniso V) (θ : InfF D) (A : CptF V) : (1 : GA D V → ℂ) ∈ Cusp.A0 θ V A :=
   Cusp.mem_cuspForms.2 ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Set `V : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n`. Establish `h1 : IsHeckeChar D (η ^ b)` using `⟨by`. Establish `: ((η ^ b : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ b` using `by funext x; simp`. Rewrite using `[this]; exact hη.1.1.pow b, fun x => by rw [MonoidHom.pow_apply, hη.1.2 x, one_pow]⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr` using `hη.2.2.1`. Establish `h2 : ResEta D (η ^ b) b` using `⟨hr.1, fun e he a => by rw [MonoidHom.pow_apply, hr.2 e he a, pow_one]⟩`. Take `⟨a, ha⟩` from `exists_isMaj V`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Establish `hV : V.SigOK` using `Examples₂.posSpace_sigOK _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A, hA⟩` from `Cusp.exists_isCartanFrame V hV`. Conclude with `⟨V, a, _, θ, A, Measure.haar, rfl, ha, h1, h2, hθ, hV, hA, inferInstance, const_one_mem_cuspForms_of_anisotropic (ThetaMean.Model.isAniso_posSpace n) θ A⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypotheses_inhabited (D : D7) (n b : ℕ) :
     ∃ (V : HSp D) (a : GL (Fin V.rank) (AE D)) (μ : (AE D)ˣ →* Circle) (θ : InfF D) (A : CptF V) (m : Measure (GA D V)),
@@ -50,16 +50,16 @@ theorem hypotheses_inhabited (D : D7) (n b : ℕ) :
     const_one_mem_cuspForms_of_anisotropic (ThetaMean.Model.isAniso_posSpace n) θ A⟩
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Conclude with `resEta_parity (n := 0) ⟨hη.2.2.1.1, fun _ _ _ => rfl⟩ (by omega)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem resEta_one (D : D7) (b : ℕ) : ResEta D 1 (2 * b) := by
   obtain ⟨η, hη⟩ := GlobalTheory.WeilParts.exists_isEtaTilde_unramified D
   exact resEta_parity (n := 0) ⟨hη.2.2.1.1, fun _ _ _ => rfl⟩ (by omega)
 
 /- English proof (translation)
-Take `⟨Φ, h1, h2, -⟩` from `Model.exists_family V Measure.haar fun s => (s - s₀)⁻¹`. Establish `h3 : ∀ g, IsMerExt (eisSer V Φ g) univ fun s => (s - s₀)⁻¹` using `fun g => ⟨isRightDomain_univ, fun s _ => by fun_prop, 0, fun s _ => (h1 s g).symm⟩`. Establish `hc : EisContinues V Φ` using `⟨h2.1, fun g => ⟨_, h3 g⟩⟩`. Use `⟨Φ, hc, ⟨1, fun _ _ => 1, one_pos, fun s _ hs g => ?_, fun _ => differentiableOn_const _, continuousOn_const, 1, 0, fun _ _ _ => by simp⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `: eisCont V Φ s g = (s - s₀)⁻¹` using `(HolValueAt.valueAt ⟨_, (h3 g).isExtAt trivial, (analyticAt_id.sub analyticAt_const).inv (sub_ne_zero.2 hs), rfl⟩).cont_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, pow_one, mul_inv_cancel₀ (sub_ne_zero.2 hs)]`. Take `⟨c, hc⟩` from `((h3 1).isExtAt trivial).poleLE_iff.1 ((h.eisPoleLE hc).2 1)`. Establish `h4 : Tendsto (fun s => (s - s₀) * ((s - s₀) ^ 0 * (s - s₀)⁻¹)) (𝓝[≠] s₀) (𝓝 1)` using `tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun s hs => by simp [sub_ne_zero.2 hs])`. Establish `h5` using `((tendsto_nhdsWithin_of_tendsto_nhds (s := {s₀}ᶜ) (continuous_sub_right s₀).continuousAt.tendsto).mul hc)`. Simplify using `using tendsto_nhds_unique h5 h4`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_regular_one_not_zero (V : HSp D) (s₀ : ℂ) :
     ∃ Φ, EisContinues V Φ ∧ EisRegularAt V Φ s₀ 1 ∧ ¬ EisRegularAt V Φ s₀ 0 := by
@@ -79,16 +79,16 @@ theorem exists_regular_one_not_zero (V : HSp D) (s₀ : ℂ) :
     simpa using tendsto_nhds_unique h5 h4
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[petCoef, Cusp.petersson, pet, AutomorphicL2Unitary.descend, rTr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem petCoef_one (m : Measure (GA D V)) : petCoef V m 1 1 = fun _ => (((autMeasure V m).real univ : ℝ) : ℂ) := by
   funext g
   simp [petCoef, Cusp.petersson, pet, AutomorphicL2Unitary.descend, rTr]
 
 /- English proof (translation)
-Establish `e : autMeasure V (c • m) = c • autMeasure V m` using `quotMeasure_smul (c : ENNReal)`. Establish `e2 : ∀ g, petCoef V (c • m) f₁ f₂ g = (c : ℂ) * petCoef V m f₁ f₂ g` using `fun g => by`. Express the relevant statement in the definitionally equal form `∫ _, _ ∂autMeasure V (c • m) = _`. Rewrite using `[e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dblInt_smul_measure, h.2.2, zetaH_eq, zetaH_eq, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul, sq, mul_assoc, ← integral_const_mul]`. Use `congr 2`. Use function extensionality and compare the values at `g`. Rewrite using `[e2, map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem basicIdentity_value_smul {μ : (AE D)ˣ →* Circle} {m : Measure (GA D V)} [SigmaFinite m]
     {Φ : GA D (dblSp V) → ℂ} {f₁ f₂ : GA D V → ℂ} (h : BasicIdentity V μ m Φ f₁ f₂) (c : ℝ≥0) :
@@ -105,11 +105,11 @@ theorem basicIdentity_value_smul {μ : (AE D)ˣ →* Circle} {m : Measure (GA D 
   ring
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨A, hC⟩` from `Cusp.exists_isCartanFrame V hV`. Take `⟨-, h2, h3⟩` from `basicIdentity_of_mem hP h0 ha hI (μ := 1) ⟨continuous_const, fun _ => rfl⟩ (resEta_one D 0) (sph_mem hI σ) (by simpa using hσ) hθ hV hC m (const_one_mem_cuspForms_of_anisotropic hA θ A) (const_one_mem_cuspForms_of_anisotropic hA θ A)`. Establish `hv : 0 < (autMeasure V m).real univ` using `ENNReal.toReal_pos (NeZero.ne _) (measure_ne_top _ _)`. Establish `e : (fun g => sph V a σ (ioH _ D.sp.cm.sig (gram_hdbl V) (g, 1)) * conj (petCoef V m 1 1 g)) = fun g => (((hgt V a (io V (g, 1)) : ℝ) ^ (σ + (V.rank : ℝ) / 2) * (autMeasure V m).real univ : ℝ) : ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[petCoef_one, Complex.conj_ofReal, Complex.ofReal_mul, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h2` using `[zetaConvH_iff, e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3, zetaH_eq, e, integral_complex_ofReal, Complex.ofReal_re]`. Establish `hp : ∀ g, 0 < (hgt V a (io V (g, 1)) : ℝ) ^ (σ + (V.rank : ℝ) / 2) * (autMeasure V m).real univ` using `fun g => mul_pos (Real.rpow_pos_of_pos (hgtH_pos _) _) hv`. Use `(integral_pos_iff_support_of_nonneg (fun g => (hp g).le) (by simpa using h2.re)).2 ?_` and prove the remaining obligations. Rewrite using `[show Function.support _ = univ from eq_univ_of_forall fun g => (hp g).ne']`. Conclude with `isOpen_univ.measure_pos m univ_nonempty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblInt_sph_pos (hP : Published.DoublingMethod) (h0 : 0 < V.rank) (hA : IsAniso V) (hV : V.SigOK)
     {a : GL (Fin V.rank) (AE D)} (ha : IsMaj V a) (hI : HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a))
@@ -135,7 +135,7 @@ theorem dblInt_sph_pos (hP : Published.DoublingMethod) (h0 : 0 < V.rank) (hA : I
   exact isOpen_univ.measure_pos m univ_nonempty
 
 /- English proof (translation)
-Introduce `b` and use `by have hd := isFundamentalDomain_stdDom (GQ V) m have h : m univ = ⊤ := by rw [hd.measure_eq_tsum univ] simp only [smul_set_univ, univ_inter] exact ENNReal.tsum_const_eq_top_of_ne_zero (hd.measure_ne_zero (NeZero.ne m)) have h2 := b.2.1 rw [zetaConvH_iff, petCoef_one] at h2 simp …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_basicIdentity_one [Infinite (GQ V)] (m : Measure (GA D V)) [m.IsHaarMeasure] :
     ¬ BasicIdentity V 1 m 1 1 1 := fun b => by
@@ -152,11 +152,11 @@ theorem not_basicIdentity_one [Infinite (GQ V)] (m : Measure (GA D V)) [m.IsHaar
   · exact measure_ne_top m _ h
 
 /- English proof (translation)
-Establish `h1 : flat V a 0 s₁ = fun _ _ => 0`. Use function extensionality and compare the values at `s g`. Conclude with `(flatH_apply _ _ _ _).trans (by simp)`. Establish `h2 : eis V (fun _ => 0) = fun _ => 0`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[eis, cosetSum, term]`. Establish `h3 : dblIntegrandQ V μ (fun _ => 0) f₁ f₂ = fun _ => 0` using `funext fun _ => by simp [dblIntegrandQ, dblIntegrand]`. Rewrite using `[h1]`. Use `⟨⟨1, fun _ _ => 0, one_pos, fun s _ _ g => ?_, fun _ => differentiableOn_const _, continuousOn_const, 0, 0, fun _ _ _ => by simp⟩, ?_⟩` and prove the remaining obligations. Establish `: eisSer V (fun _ _ => (0 : ℂ)) g = fun _ => 0` using `funext fun s => congrFun h2 g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eisCont, this, (holValueAt_const 0 s).valueAt.cont_eq, mul_zero]`. Simplify using `only [BasicIdentity, h2, DblConv, dblInt, h3, zetaConvH_iff, zetaH_eq, zero_mul, integral_zero, integrable_zero, and_true]`. Conclude with `⟨⟨fun _ _ _ => by simp [dblIntegrand], integrable_zero _ _ _⟩, integrable_zero _ _ _⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conclusion_zero (V : HSp D) (a : GL (Fin V.rank) (AE D)) (μ : (AE D)ˣ →* Circle) (s₁ s₀ : ℂ)
     (m : Measure (GA D V)) (f₁ f₂ : GA D V → ℂ) :

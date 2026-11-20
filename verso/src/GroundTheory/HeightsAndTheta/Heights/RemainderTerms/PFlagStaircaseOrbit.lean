@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 noncomputable section
 
 /- English proof (translation)
-Use `Finite.injective_iff_bijective.mp ?_` and prove the remaining obligations. Introduce `i j h`. Conclude with `hinj (congrArg Fin.val h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem FlagStaircaseOrbit.bijective_of_injective {f N : ℕ} (γ : Fin f × Fin N →₀ ℕ) (τ : Fin f)
     (hlt : ∀ i, γ (τ, i) < N) (hinj : Function.Injective fun i : Fin N => γ (τ, i)) :
@@ -17,9 +17,9 @@ theorem FlagStaircaseOrbit.bijective_of_injective {f N : ℕ} (γ : Fin f × Fin
   exact hinj (congrArg Fin.val h)
 
 /- English proof (translation)
-Introduce `f N α β hα hβ iα iβ`. Set `A : Fin f → (Fin N ≃ Fin N)` to `fun τ => Equiv.ofBijective _ (FlagStaircaseOrbit.bijective_of_injective α τ (hα τ) (iα τ))`. Set `B : Fin f → (Fin N ≃ Fin N)` to `fun τ => Equiv.ofBijective _ (FlagStaircaseOrbit.bijective_of_injective β τ (hβ τ) (iβ τ))`. Use `⟨fun τ => (B τ).trans (A τ).symm, fun τ i => ?_⟩` and prove the remaining obligations. Establish `h : A τ ((A τ).symm (B τ i)) = B τ i` using `Equiv.apply_symm_apply _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h'` using `congrArg Fin.val h`. Conclude with `h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FlagStaircaseOrbit.proof : FlagStaircaseOrbit.Statement := by
   intro f N α β hα hβ iα iβ

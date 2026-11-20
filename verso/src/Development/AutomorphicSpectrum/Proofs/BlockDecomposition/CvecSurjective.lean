@@ -32,7 +32,7 @@ def cvec (v : Fin n → E) : Fin (dimN F E n) → F := fun p =>
     ((Fintype.equivFin (Fin n × Fin (Module.finrank F E))).symm p).2
 
 /- English proof (translation)
-Introduce `u v h`. Use function extensionality and compare the values at `i`. Apply `(Module.finBasis F E).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Simplify `congrFun h (Fintype.equivFin (Fin n × Fin (Module.finrank F E)) (i, k))` using `[cvec]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cvec_injective : Function.Injective (cvec F : (Fin n → E) → Fin (dimN F E n) → F) := by
   intro u v h
@@ -42,7 +42,7 @@ theorem cvec_injective : Function.Injective (cvec F : (Fin n → E) → Fin (dim
   simpa [cvec] using congrFun h (Fintype.equivFin (Fin n × Fin (Module.finrank F E)) (i, k))
 
 /- English proof (translation)
-Introduce `x`. Use `⟨fun i => (Module.finBasis F E).equivFun.symm fun k => x (Fintype.equivFin _ (i, k)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[cvec, Module.Basis.equivFun_symm_apply, Finsupp.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cvec_surjective : Function.Surjective (cvec F : (Fin n → E) → Fin (dimN F E n) → F) := by
   intro x
@@ -51,9 +51,9 @@ theorem cvec_surjective : Function.Surjective (cvec F : (Fin n → E) → Fin (d
   simp [cvec, Module.Basis.equivFun_symm_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `h`. Apply `hv` to reduce the goal to its premises. Apply `cvec_injective (F := F)` to reduce the goal to its premises. Rewrite using `[h]`. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[cvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cvec_ne_zero {v : Fin n → E} (hv : v ≠ 0) : cvec F v ≠ 0 := by
   intro h
@@ -64,7 +64,7 @@ theorem cvec_ne_zero {v : Fin n → E} (hv : v ≠ 0) : cvec F v ≠ 0 := by
   simp [cvec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [Reduction.ratVec, cvec, resVec, Function.comp_apply, coordsVec, coords, ratV, inclR]`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ratVec_cvec (v : Fin n → E) :
     Reduction.ratVec (cvec F v) = resVec (ι := Fin n) (Module.finBasis F E) (AF F) (ratV F v) := by
@@ -79,7 +79,7 @@ theorem hv_eq (ξ : Fin n → AF F ⊗[F] E) :
     hv ξ = Reduction.adelicNorm (resVec (ι := Fin n) (Module.finBasis F E) (AF F) ξ) := rfl
 
 /- English proof (translation)
-Rewrite using `[Reduction.height, ratVec_cvec, trG, MonoidHom.comp_apply, resVec_vecMul_trHom, hgt, hv_eq, map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hgt_eq (g : GAd σ J) (v : Fin n → E) : hgt σ J g v = Reduction.height (trG σ J g) (cvec F v) := by
   rw [Reduction.height, ratVec_cvec, trG, MonoidHom.comp_apply, resVec_vecMul_trHom, hgt, hv_eq, map_inv]
@@ -90,7 +90,7 @@ attribute [local instance] tensorTopology finite_of_isQuadraticExtension isModul
   isTopologicalRing_tensor
 
 /- English proof (translation)
-The claim follows from `(continuous_trHom (ι := Fin n) (Module.finBasis F E) (AF F)).comp (isEmbedding_matHom (AF F) σ J).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trG : Continuous (trG σ J) :=
   (continuous_trHom (ι := Fin n) (Module.finBasis F E) (AF F)).comp (isEmbedding_matHom (AF F) σ J).continuous
@@ -98,7 +98,7 @@ theorem continuous_trG : Continuous (trG σ J) :=
 end Top
 
 /- English proof (translation)
-Take `⟨P, -, hP⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul (hC.image (continuous_trG σ J))`. Use `⟨P * Reduction.adelicNorm (Reduction.ratVec (cvec F v)), fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hgt_eq]`. Conclude with `hP _ ⟨c, hc, rfl⟩ _ (Reduction.hasFiniteContent_ratVec (cvec_ne_zero hv))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hgt_le {C : Set (GAd σ J)} (hC : IsCompact C) {v : Fin n → E} (hv : v ≠ 0) :
     ∃ B : ℝ, ∀ c ∈ C, hgt σ J c v ≤ B := by

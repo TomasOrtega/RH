@@ -6,7 +6,7 @@ import Mathlib
 namespace Formalism.GM.Top
 open Formalism.GM
 /- English proof (translation)
-The claim follows from `determinant_block_leading_term`.
+A detailed English derivation is pending.
 -/
 theorem detBlockLead : DetBlockLead := determinant_block_leading_term
 end Formalism.GM.Top

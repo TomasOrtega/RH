@@ -25,21 +25,21 @@ noncomputable def skewSub (A : Matrix (Fin r) (Fin r) ℂ) :
     rw [transpose_smul, h1, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hY, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_skewSub {A Y : Matrix (Fin r) (Fin r) ℂ} :
     Y ∈ skewSub A ↔ Yᵀ * A + A * Y.map (starRingEnd ℂ) = 0 := Iff.rfl
 
 /- English proof (translation)
-Rewrite `h1`, `h2` using `[mem_skewSub]`. Establish `hc : (Complex.I • Y).map (starRingEnd ℂ) = (-Complex.I) • Y.map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite `h2` using `[transpose_smul, hc, Matrix.smul_mul, Matrix.mul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : Yᵀ * A - A * Y.map (starRingEnd ℂ) = 0`. Establish `: Complex.I • (Yᵀ * A - A * Y.map (starRingEnd ℂ)) = 0`. Rewrite using `[smul_sub, ← h2, neg_smul]`. Normalize the expressions using the abelian group laws. Break down `smul_eq_zero.mp this with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h Complex.I_ne_zero`. Conclude with `h`. Establish `h4 : Yᵀ * A = 0`. Establish `: (2 : ℂ) • (Yᵀ * A) = 0`. Rewrite using `[two_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the equalities or inequalities in the displayed calculation. Break down `smul_eq_zero.mp this with h | h` into its components or cases. Evaluate the numerical expressions using `at h`. Conclude with `h`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h5 : Yᵀ = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using congrArg Matrix.transpose h5`.
+A detailed English derivation is pending.
 -/
 lemma eq_zero_of_mem_of_I_smul_mem {A Y : Matrix (Fin r) (Fin r) ℂ} (hA : A.det ≠ 0)
     (h1 : Y ∈ skewSub A) (h2 : Complex.I • Y ∈ skewSub A) : Y = 0 := by
@@ -68,13 +68,13 @@ lemma eq_zero_of_mem_of_I_smul_mem {A Y : Matrix (Fin r) (Fin r) ℂ} (hA : A.de
   simpa using congrArg Matrix.transpose h5
 
 /- English proof (translation)
-Use `set u := skewSub A`. Set `f : (u × u) →ₗ[ℝ] Matrix (Fin r) (Fin r) ℂ` to `u.subtype ∘ₗ LinearMap.fst ℝ u u + (Complex.I • LinearMap.id) ∘ₗ u.subtype ∘ₗ LinearMap.snd ℝ u u`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨a, b⟩ hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hab' : (a : Matrix (Fin r) (Fin r) ℂ) + Complex.I • (b : Matrix (Fin r) (Fin r) ℂ) = 0`. Simplify `hab` using `[f]`. Establish `hIb : Complex.I • (b : Matrix (Fin r) (Fin r) ℂ) ∈ u`. Establish `: Complex.I • (b : Matrix (Fin r) (Fin r) ℂ) = -(a : Matrix (Fin r) (Fin r) ℂ)` using `eq_neg_of_add_eq_zero_right hab'`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `u.neg_mem a.2`. Establish `hb : (b : Matrix (Fin r) (Fin r) ℂ) = 0` using `eq_zero_of_mem_of_I_smul_mem hA b.2 hIb`. Establish `ha : (a : Matrix (Fin r) (Fin r) ℂ) = 0` using `by simpa [hb] using hab'`. Use `ext1`. Conclude with `Subtype.ext ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Subtype.ext hb`. Use `LinearMap.finrank_le_finrank_of_injective hf` as an intermediate fact. Rewrite `this` using `[Module.finrank_prod, Module.finrank_matrix, Complex.finrank_real_complex]`. Simplify using `only [Fintype.card_fin] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma finrank_skewSub_mul_two_le {A : Matrix (Fin r) (Fin r) ℂ} (hA : A.det ≠ 0) :
     2 * Module.finrank ℝ (skewSub A) ≤ 2 * (r * r) := by
@@ -101,21 +101,19 @@ lemma finrank_skewSub_mul_two_le {A : Matrix (Fin r) (Fin r) ℂ} (hA : A.det �
   linarith
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Establish `: Y = 0` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u := skewSub A`. Use `set su := u ⊓ LinearMap.ker ((Matrix.traceLinearMap (Fin r) ℂ ℂ).restrictScalars ℝ)`. Establish `hYsu : Y ∈ su` using `⟨hY, by simpa using hYt⟩`. Establish `hle : Submodule.span ℝ (Set.range v) ≤ su`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨(hvu i).1, by simpa using (hvu i).2⟩`. Establish `hIu : Complex.I • (1 : Matrix (Fin r) (Fin r) ℂ) ∈ u`. Rewrite using `[mem_skewSub]`. Establish `hc : (Complex.I • (1 : Matrix (Fin r) (Fin r) ℂ)).map (starRingEnd ℂ) = (-Complex.I) • (1 : Matrix (Fin r) (Fin r) ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite using `[hc, transpose_smul, transpose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, neg_smul, add_neg_cancel]`. Establish `hIsu : Complex.I • (1 : Matrix (Fin r) (Fin r) ℂ) ∉ su`. Introduce and unpack `⟨-, h⟩`. Establish `h' : Matrix.trace (Complex.I • (1 : Matrix (Fin r) (Fin r) ℂ)) = 0` using `by simpa using h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h'` using `[Matrix.trace_smul, Matrix.trace_one, Fintype.card_fin, smul_eq_mul]`. Break down `mul_eq_zero.mp h' with h'' | h''` into its components or cases. Conclude with `Complex.I_ne_zero h''`. Conclude with `absurd (by exact_mod_cast h'' : r = 0) hr.ne'`. Establish `hlt : su < u` using `lt_of_le_of_ne inf_le_left (fun h => hIsu (h ▸ hIu))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Submodule.finrank_lt_finrank_of_lt hlt`. Establish `h2 : 2 * Module.finrank ℝ u ≤ 2 * (r * r)` using `finrank_skewSub_mul_two_le hA`. Establish `hspan` using `finrank_span_eq_card hv`. Rewrite `hspan` using `[Fintype.card_fin]`. Establish `heq : Submodule.span ℝ (Set.range v) = su`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Apply `Submodule.eq_of_le_of_finrank_le hle` to reduce the goal to its premises. Rewrite using `[hspan, sq]`. Express the relevant statement in the definitionally equal form `Module.finrank ℝ su ≤ r * r - 1`. Generalize the expression as in `r * r = n at h2 ⊢`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[heq]`. Conclude with `hYsu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_linearIndependent {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (hA : A.det ≠ 0)
     (v : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) ℂ) (hv : LinearIndependent ℝ v)

@@ -21,31 +21,25 @@ open scoped Classical
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Take `⟨KA, hKA, hcov⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Use `set Kκ : Set (κ → AdeleRing (𝓞 F) F) := Set.univ.pi fun _ => KA`. Establish `hKκ : IsCompact Kκ` using `isCompact_univ_pi fun _ => hKA`. Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `hKκ.exists_bound_of_continuousOn (continuous_archV F (κ := κ)).continuousOn`. Establish `hR0 : ∀ b ∈ Kκ, ‖archV F b‖ ≤ max R 0` using `fun b hb => (hR b hb).trans (le_max_left _ _)`. Use `set R' := max R 0`. Use `set Kf : Set (κ → FiniteAdeleRing (𝓞 F) F) := (fun p => p.1 - finV F p.2) '' (tsupport g ×ˢ Kκ)`. Establish `hKf : IsCompact Kf` using `(hg.2.isCompact.prod hKκ).image (continuous_fst.sub ((continuous_finV F).comp continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN, hKN⟩` from `exists_nat_mul_integral_of_isCompact F hKf`. Use `haveI := discreteTopology_denomLattice F κ hN`. Use `set k := Module.finrank ℤ (denomLattice F κ N) + 1`. Use `set S : Set (κ → F) := {η | (fun i => mixedEmbedding F (η i)) ∈ denomLattice F κ N}`. Establish `hw : Summable (S.indicator fun η => ((1 + ‖(fun i => mixedEmbedding F (η i))‖) ^ k)⁻¹)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← summable_subtype_iff_indicator]`. Set `j : S → denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`. Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Establish `hs` using `(summable_one_add_norm_inv (denomLattice F κ N) (k := k) (Nat.lt_succ_self _)).comp_injective hj`. Use `hs.congr fun η => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, j, Submodule.coe_norm]`. Use `set w : (κ → F) → ℝ := S.indicator fun η => ((1 + ‖(fun i => mixedEmbedding F (η i))‖) ^ k)⁻¹ with hwdef`. Establish `hw0 : ∀ η, 0 ≤ w η` using `fun η => Set.indicator_nonneg (fun _ _ => inv_nonneg.2 (by positivity)) η`. Use `⟨k, B * (1 + R') ^ k * 2 ^ k * ∑' η, w η, by` and prove the remaining obligations. Establish `h1 : 0 ≤ ∑' η, w η` using `tsum_nonneg hw0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : 0 ≤ R'` using `le_max_right _ _`. Use the proof step `positivity, fun f a => ?_⟩`. Use `set C := (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f`. Use `choose y hy using fun i => hcov (a i)`. Use `set b : κ → AdeleRing (𝓞 F) F := fun i => a i - algebraMap F (AdeleRing (𝓞 F) F) (y i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : b ∈ Kκ` using `fun i _ => hy i`. Establish `hab : ∀ ξ : κ → F, (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + a = (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((ξ + y) i)) + b`. Introduce `ξ`. Use function extensionality and compare the values at `i`. Simplify using `[b, map_add]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨fun ξ => B * ((1 + R') ^ k * (2 ^ k * C)) * w (ξ + y), ?_, ?_, fun ξ => ?_⟩` and prove the remaining obligations. Conclude with `((Equiv.addRight y).summable_iff.2 hw).mul_left _`. Establish `e : ∑' x, w (x + y) = ∑' η, w η` using `(Equiv.addRight y).tsum_eq w`. Rewrite using `[tsum_mul_left, e]`. Apply `le_of_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[hab, pureA_eq, archV_add, finV_add, archV_alg, finV_alg, norm_mul]`. Distinguish the cases in `hξ : ξ + y ∈ S`. Establish `h1` using `schwartz_shift_le f k (fun i => mixedEmbedding F ((ξ + y) i)) (archV F b) (hR0 b hb)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : w (ξ + y) = ((1 + ‖(fun i => mixedEmbedding F ((ξ + y) i))‖) ^ k)⁻¹` using `by rw [hwdef, Set.indicator_of_mem hξ]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `hg0 : g ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((ξ + y) i)) + finV F b) = 0`. Assume the negation of the conclusion as `h0`.
-
-Apply `hξ` to reduce the goal to its premises. Establish `hmem : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((ξ + y) i)) ∈ Kf` using `⟨(_, b), ⟨subset_tsupport _ h0, hb⟩, by simp⟩`. Use `fun i => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * (ξ + y) i) fun v => by`. Rewrite using `[map_mul, map_natCast]`.
-
-Conclude with `hKN _ hmem i v`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hz`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`.
-
-Rewrite using `[hg0, norm_zero, mul_zero]`. Conclude with `mul_nonneg (mul_nonneg hB0 (by have : 0 ≤ R' := le_max_right _ _; positivity)) (hw0 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniform_majorant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ (k : ℕ) (c : ℝ), 0 ≤ c ∧ ∀ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (a : κ → AdeleRing (𝓞 F) F),
@@ -128,9 +122,9 @@ open scoped Classical
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [Invertible (2 : AdeleRing (𝓞 F) F)]
 
 /- English proof (translation)
-Take `⟨k, c, hc, h⟩` from `uniform_majorant F hg`. Use `⟨k, c, hc, fun f p => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hsum, hb⟩` from `h f p.1`. Use `(tsum_of_norm_bounded hu.hasSum fun ξ => ?_).trans hsum` and prove the remaining obligations. Simplify using `only [schr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul, hψ, one_mul]`. Conclude with `hb ξ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSum_pure_le (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -146,17 +140,15 @@ theorem thetaSum_pure_le (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : ∀ x,
   exact hb ξ
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨k, c, -, hb⟩` from `thetaSum_pure_le F ψ hψ hg`. Conclude with `⟨_, fun p => hb f p⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero`. Use `⟨0, fun p => ?_⟩` and prove the remaining obligations. Establish `e : schr ψ p (0 : (κ → AdeleRing (𝓞 F) F) → ℂ) = 0` using `funext fun x => by simp [schr]`. Simplify using `[e, thetaSum]`. Consider the case `add Φ Ψ hΦ hΨ h1 h2`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨C1, hC1⟩` from `h1`. Take `⟨C2, hC2⟩` from `h2`. Use `⟨C1 + C2, fun p => ?_⟩` and prove the remaining obligations. Establish `e : schr ψ p (Φ + Ψ) = schr ψ p Φ + schr ψ p Ψ` using `funext fun x => by simp [schr, mul_add]`. Establish `e2 : thetaSum F (schr ψ p (Φ + Ψ)) = thetaSum F (schr ψ p Φ) + thetaSum F (schr ψ p Ψ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `((schA_cont F ψ hψc hψ hΦ).1 p).tsum_add ((schA_cont F ψ hψc hψ hΨ).1 p)`. Rewrite using `[e2]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hC1 p) (hC2 p))`. Consider the case `smul a Φ _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `h`. Use `⟨‖a‖ * C, fun p => ?_⟩` and prove the remaining obligations. Establish `e : schr ψ p (a • Φ) = a • schr ψ p Φ` using `funext fun x => by`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e, thetaSum_smul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hC p) (norm_nonneg _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSum_schA_bdd (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψc : Continuous ψ) (hψ : ∀ x, ‖ψ x‖ = 1)
     {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ schA F κ) :
@@ -197,29 +189,23 @@ open GlobalTheory.ThetaTrCont GlobalTheory.WeilSchrodinger
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JT JB ξ κ _ co hrat ν 𝓕 hν h𝓕`. Establish `hψ : IsCharAF F B.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`. Use `set Cm : Matrix (Fin (nT + nT)) (Fin nT) (AF F ⊗[F] E) := (diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id with hCm`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hfin : ν 𝓕 < ⊤` using `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc ν h𝓕`. Use `haveI : IsFiniteMeasure (ν.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (nT + nT)) (Fin nS) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (nT + nT) → Fin nS → AE F E))`. Establish `hce : Continuous co.e` using `IsModuleTopology.continuous_of_linearMap co.e.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hCu : Continuous fun u : WOF F E nS nT => Cm * u` using `continuous_const.matrix_mul continuous_id`. Establish `hcont : ∀ Φ ∈ schA F κ, Continuous fun u : WOF F E nS nT => thetaTr F co B.ψ Φ (Cm * u)` using `fun Φ hΦ => ((schA_cont F B.ψ hψ.1 hψ.2.1 hΦ).2.comp hce).comp hCu`. Establish `hint : ∀ Φ ∈ schA F κ, Integrable (fun u => thetaTr F co B.ψ Φ (Cm * u)) (ν.restrict 𝓕)` using `fun Φ hΦ => by`. Take `⟨C, hC⟩` from `thetaSum_schA_bdd F B.ψ hψ.1 hψ.2.1 hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Integrable.of_bound (hcont Φ hΦ).aestronglyMeasurable C (Filter.Eventually.of_forall fun u => hC _)`. Establish `hadd : ∀ Φ ∈ schA F κ, ∀ Ψ ∈ schA F κ, ∀ w, thetaTr F co B.ψ (Φ + Ψ) w = thetaTr F co B.ψ Φ w + thetaTr F co B.ψ Ψ w`. Introduce `Φ hΦ Ψ hΨ w`. Establish `e : schr B.ψ (co.e w) (Φ + Ψ) = schr B.ψ (co.e w) Φ + schr B.ψ (co.e w) Ψ`. Use function extensionality and compare the values at `fun x => by simp [schr, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show thetaSum F (schr B.ψ (co.e w) (Φ + Ψ)) = thetaSum F (schr B.ψ (co.e w) Φ) + thetaSum F (schr B.ψ (co.e w) Ψ)`. Rewrite using `[e]`. Conclude with `((schA_cont F B.ψ hψ.1 hψ.2.1 hΦ).1 _).tsum_add ((schA_cont F B.ψ hψ.1 hψ.2.1 hΨ).1 _)`. Establish `hsmul : ∀ (a : ℂ) (Φ : (κ → AF F) → ℂ) w, thetaTr F co B.ψ (a • Φ) w = a * thetaTr F co B.ψ Φ w`. Introduce `a Φ w`.
+Introduce a local definition for the expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : schr B.ψ (co.e w) (a • Φ) = a • schr B.ψ (co.e w) Φ` using `funext fun x => by`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show thetaSum F (schr B.ψ (co.e w) (a • Φ)) = a * thetaSum F (schr B.ψ (co.e w) Φ)`. Rewrite using `[e, thetaSum_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `L : schA F κ →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => GlobalTheory.LagrTheta.lagrInt ν 𝓕 Cm (thetaTr F co B.ψ Φ) map_add' := fun Φ Ψ => by show ∫ u in 𝓕, thetaTr F co B.ψ (Φ.1 + Ψ.1) (Cm * u) ∂ν = ∫ u in 𝓕, thetaTr F co B.ψ Φ.1 (Cm * u) ∂ν + ∫ u in 𝓕, thetaTr F co B.ψ Ψ.1 (Cm * u) ∂ν`. Repeatedly rewrite using `[hadd Φ.1 Φ.2 Ψ.1 Ψ.2]`. Conclude with `integral_add (hint _ Φ.2) (hint _ Ψ.2)`. Use the proof step `map_smul' := fun a Φ => by show ∫ u in 𝓕, thetaTr F co B.ψ (a • Φ.1) (Cm * u) ∂ν = a • ∫ u in 𝓕, thetaTr F co B.ψ Φ.1 (Cm * u) ∂ν`. Repeatedly rewrite using `[hsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_const_mul, smul_eq_mul] }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend L`. Establish `hlL : ∀ Φ (hΦ : Φ ∈ schA F κ), l Φ = L ⟨Φ, hΦ⟩` using `fun Φ hΦ => LinearMap.congr_fun hl ⟨Φ, hΦ⟩`. Use `⟨l, ?_, fun Φ hΦ => hlL Φ hΦ⟩` and prove the remaining obligations. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, c, hc, hb⟩` from `thetaSum_pure_le F B.ψ hψ.2.1 hg`. Establish `hmem : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, pureA F f g ∈ schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hsn : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f = ((Finset.Iic (k, 0)).sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)) f`. Introduce `f`. Rewrite using `[Seminorm.finset_sup_apply, Seminorm.finset_sup_apply]`.
-
-Use `congr 2`. Use `⟨SchwartzMap.mkCLMtoNormedSpace (σ := RingHom.id ℂ) (fun f => L ⟨pureA F f g, hmem f⟩) (fun f f' => ?_) (fun a f => ?_) ⟨Finset.Iic (k, 0), c * ν.real 𝓕, mul_nonneg hc measureReal_nonneg, fun f => ?_⟩, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => by simp [pureA, add_mul])`.
-
-Rewrite using `[RingHom.id_apply, ← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => by simp [pureA, mul_assoc])`. Use `show ‖∫ u in 𝓕, thetaTr F co B.ψ (pureA F f g) (Cm * u) ∂ν‖ ≤ _`. Use `(norm_setIntegral_le_of_norm_le_const hfin fun u _ => hb f (co.e (Cm * u))).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[hsn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hlL _ (hmem f)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_admitted_eq_diagonalLagrangian_thetaIntegral_alt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)

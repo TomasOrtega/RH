@@ -25,11 +25,11 @@ variable {D : D7}
 section Half
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_pair_mul_span_pair]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce `z hz`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hz`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton]`. Break down `hz with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨t, by linear_combination (-1 : R) * hw + ht⟩`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`. Establish `e : p = u * (p * (1 - w - c)) + u * ((w - c) * p) + v * (p * p)` using `by linear_combination (-p) * huv`. Establish `key` using `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_left (Ideal.span {p * p, p * (1 - w - c), (w - c) * p, (w - c) * (1 - w - c)}) u (Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_insert _ _)))) (Ideal.mul_mem_left _ u (Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_insert …`. Rewrite `key` using `[← e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_pair_mul {R : Type} [CommRing R] (p w c m t u v : R) (hw : w ^ 2 = w - m) (ht : c ^ 2 - c + m = p * t)
     (huv : u * (1 - 2 * c) + v * p = 1) : Ideal.span {p, w - c} * Ideal.span {p, 1 - w - c} = Ideal.span {p} := by
@@ -54,13 +54,13 @@ theorem span_pair_mul {R : Type} [CommRing R] (p w c m t u v : R) (hw : w ^ 2 = 
     rwa [← e] at key
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `Ideal.dvd_iff_le.2 hle`. Rewrite `hN` using `[map_mul]`. Establish `h1 : Ideal.absNorm P ≠ 1` using `fun h => hP (Ideal.absNorm_eq_one_iff.1 h)`. Establish `h2 : Ideal.absNorm J' ≠ 1` using `fun h => hJ' (Ideal.absNorm_eq_one_iff.1 h)`. Establish `d1 : p ∣ Ideal.absNorm P`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).1 (⟨Ideal.absNorm Q * Ideal.absNorm J', by rw [← hN]; ring⟩ : Ideal.absNorm P ∣ p ^ 2)`. Rewrite `h1`, the goal using `[hk]`. Conclude with `dvd_pow_self p (by rintro rfl; exact h1 rfl)`. Establish `d2 : p ∣ Ideal.absNorm J'`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).1 (⟨Ideal.absNorm P * Ideal.absNorm Q, by rw [← hN]; ring⟩ : Ideal.absNorm J' ∣ p ^ 2)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, the goal using `[hk]`. Conclude with `dvd_pow_self p (by rintro rfl; exact h2 rfl)`. Take `⟨a, ha⟩` from `d1`. Take `⟨b, hb⟩` from `d2`. Establish `h3 : p ^ 2 * (Ideal.absNorm Q * (a * b)) = p ^ 2 * 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hN` using `[ha, hb]`. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `Nat.eq_one_of_mul_eq_one_right (Nat.eq_of_mul_eq_mul_left (pow_pos hp.pos 2) h3)`. Rewrite using `[Ideal.absNorm_eq_one_iff.1 h4, Ideal.mul_top]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_norm {R : Type} [CommRing R] [IsDedekindDomain R] [Module.Free ℤ R] [Module.Finite ℤ R] {J J' P : Ideal R} {p : ℕ}
     (hp : p.Prime) (hN : Ideal.absNorm J * Ideal.absNorm J' = p ^ 2) (hJ' : J' ≠ ⊤) (hP : P ≠ ⊤) (hle : J ≤ P) : J = P := by
@@ -87,7 +87,7 @@ theorem eq_of_norm {R : Type} [CommRing R] [IsDedekindDomain R] [Module.Free ℤ
   rw [Ideal.absNorm_eq_one_iff.1 h4, Ideal.mul_top]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_map]`. Establish `: (bH D).comp (bH D) = RingHom.id _` using `RingHom.ext fun a => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `IsCMField.complexConj_apply_apply D.host.E (a : D.host.E)`. Rewrite using `[this, Ideal.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bH_bH (I : Ideal (𝓞 D.host.E)) : (I.map (bH D)).map (bH D) = I := by
   rw [Ideal.map_map]
@@ -97,9 +97,7 @@ theorem bH_bH (I : Ideal (𝓞 D.host.E)) : (I.map (bH D)).map (bH D) = I := by
   rw [this, Ideal.map_id]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `Ideal.absNorm_span_natCast (S := 𝓞 D.host.E) p`. Rewrite `h1` using `[h, Ideal.absNorm_top]`. Break down `Nat.pow_eq_one.1 h1.symm with h2 | h2` into its components or cases. Conclude with `hp.one_lt.ne' h2`.
-
-Conclude with `Module.finrank_pos.ne' h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem span_ne_top {p : ℕ} (hp : p.Prime) : Ideal.span {(p : 𝓞 D.host.E)} ≠ ⊤ := by
   intro h
@@ -110,15 +108,15 @@ theorem span_ne_top {p : ℕ} (hp : p.Prime) : Ideal.span {(p : 𝓞 D.host.E)} 
   · exact Module.finrank_pos.ne' h2
 
 /- English proof (translation)
-Establish `hs : D.host.sqrtMinusD ∈ D.host.K` using `IntermediateField.subset_adjoin _ _ rfl`. Establish `hw : ((w0E D : 𝓞 D.host.E) : D.host.E) ∈ D.host.K` using `div_mem (add_mem (one_mem _) hs) (by exact_mod_cast natCast_mem D.host.K 2)`. Set `w : 𝓞 D.host.K` to `⟨⟨(w0E D : D.host.E), hw⟩, (isIntegral_algHom_iff (IntermediateField.val D.host.K).toRingHom.toIntAlgHom Subtype.val_injective).1 (w0E D).isIntegral_coe⟩`. Establish `hwE : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) w = w0E D`. Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `hinj : Function.Injective (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))` using `FaithfulSMul.algebraMap_injective _ _`. Establish `hw2 : w ^ 2 = w - (mE D : 𝓞 D.host.K)` using `hinj (by rw [map_pow, map_sub, map_natCast, hwE, w0E_sq])`. Take `⟨t, ht⟩` from `cRoot_spec D hp`. Take `⟨u, v, huv⟩` from `cRoot_coprime D hp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hJ` using `span_pair_mul (p : 𝓞 D.host.K) w (cRoot D p) (mE D) t u v hw2 (by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 D.host.K) ht) (by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 D.host.K) huv)`. Establish `m1 : (Ideal.span {(p : 𝓞 D.host.K), w - (cRoot D p : 𝓞 D.host.K)}).map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = pIdeal D p`. Rewrite using `[Ideal.map_span, Set.image_pair, map_natCast, map_sub, hwE, map_intCast, pIdeal]`. Establish `m2 : (Ideal.span {(p : 𝓞 D.host.K), 1 - w - (cRoot D p : 𝓞 D.host.K)}).map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = (pIdeal D p).map (bH D)`. Rewrite using `[Ideal.map_span, Set.image_pair, map_natCast, map_sub, map_sub, map_one, hwE, map_intCast, map_pIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n1 : pIdeal D p ≠ ⊤` using `fun h => span_ne_top (D := D) hp.1 (by rw [← pIdeal_mul_bar D hp, h, Ideal.map_top, Ideal.top_mul])`. Establish `n2 : (pIdeal D p).map (bH D) ≠ ⊤` using `fun h => n1 (by rw [← bH_bH (pIdeal D p), h, Ideal.map_top])`. Establish `hK : Module.finrank ℚ D.host.K = 2` using `Formalism.FrobeniusOrbits.SplitK.finrank_K (L := D.host.E) (d := D.host.d) D.host.hyp.2.1.pos (D.host.sqd_sq)`. Establish `hN` using `congrArg Ideal.absNorm hJ`. Rewrite `hN` using `[map_mul, Ideal.absNorm_span_natCast, RingOfIntegers.rank, hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `P.isPrime.mul_le.1 (hJ.le.trans ((Ideal.span_singleton_le_iff_mem _).2 hP)) with h | h` into its components or cases. Use `left`. Rewrite using `[← m1, eq_of_norm hp.1 hN (fun h' => n2 (by rw [← m2, h', Ideal.map_top])) P.isPrime.ne_top h]`. Use `right`. Rewrite using `[← m2, eq_of_norm hp.1 ((mul_comm _ _).trans hN) (fun h' => n1 (by rw [← m1, h', Ideal.map_top])) P.isPrime.ne_top h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_prime {p : ℕ} (hp : SplitOK D p) (P : HeightOneSpectrum (𝓞 D.host.K)) (hP : (p : 𝓞 D.host.K) ∈ P.asIdeal) :
     P.asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = pIdeal D p ∨
@@ -159,12 +157,12 @@ variable (P : Formalism.L2.Host.PiBar D.host)
 abbrev hI (k : Fin 2) : Ideal (𝓞 D.host.E) := (P.pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime k, g_ne_two D k, g_jacobi D k⟩`.
+Supply the required witnesses or components.
 -/
 theorem splitOK_g (k : Fin 2) : SplitOK D (D.host.g k) := ⟨D.host.g_prime k, g_ne_two D k, g_jacobi D k⟩
 
 /- English proof (translation)
-Break down `map_prime (splitOK_g k) (P.pb k) (P.pb_over k) with h | h` into its components or cases. Rewrite using `[hI, h, pIdeal_mul_bar D (splitOK_g k)]`. Rewrite using `[hI, h, bH_bH, mul_comm, pIdeal_mul_bar D (splitOK_g k)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hI_mul (k : Fin 2) : hI P k * (hI P k).map (bH D) = Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)} := by
   rcases map_prime (splitOK_g k) (P.pb k) (P.pb_over k) with h | h
@@ -172,9 +170,9 @@ theorem hI_mul (k : Fin 2) : hI P k * (hI P k).map (bH D) = Ideal.span {((D.host
   · rw [hI, h, bH_bH, mul_comm, pIdeal_mul_bar D (splitOK_g k)]
 
 /- English proof (translation)
-Establish `hw : w0E D ∈ Algebra.adjoin ℤ {w0E D}` using `Algebra.subset_adjoin rfl`. Break down `map_prime (splitOK_g k) (P.pb k) (P.pb_over k) with h | h` into its components or cases. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `natCast_mem _ _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_mem hw (intCast_mem _ _)`. Use `⟨_, h.trans (map_pIdeal D _), ?_⟩` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `natCast_mem _ _`. Conclude with `sub_mem (sub_mem (one_mem _) hw) (intCast_mem _ _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hI_gen (k : Fin 2) : ∃ G : Set (𝓞 D.host.E), hI P k = Ideal.span G ∧ G ⊆ Algebra.adjoin ℤ {w0E D} := by
   have hw : w0E D ∈ Algebra.adjoin ℤ {w0E D} := Algebra.subset_adjoin rfl
@@ -189,13 +187,13 @@ theorem hI_gen (k : Fin 2) : ∃ G : Set (𝓞 D.host.E), hI P k = Ideal.span G 
     · exact sub_mem (sub_mem (one_mem _) hw) (intCast_mem _ _)
 
 /- English proof (translation)
-Distinguish the cases in `hk : k = k'`. Substitute `hk` using the available equality. Establish `hc` using `isCoprime_pq D (splitOK_g k) (splitOK_g k)`. Break down `map_prime (splitOK_g k) (P.pb k) (P.pb_over k) with h | h` into its components or cases. Rewrite using `[hI, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Rewrite using `[hI, h, bH_bH]`. Conclude with `hc.symm`. Establish `hne : D.host.g k ≠ D.host.g k'`. Use `D.host.g_ne` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> simp_all [eq_comm]`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime k) (D.host.g_prime k')).2 hne)`. Establish `huv' : ((u * D.host.g k + v * D.host.g k' : ℤ) : 𝓞 D.host.E) = ((1 : ℤ) : 𝓞 D.host.E)` using `by rw [huv]`. Move the coercions through the operations in `at huv'`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ hI P k` using `(Ideal.mul_le_left : hI P k * (hI P k).map (bH D) ≤ _) (by rw [hI_mul]; exact Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((D.host.g k' : ℕ) : 𝓞 D.host.E) ∈ (hI P k').map (bH D)` using `(Ideal.mul_le_right : hI P k' * (hI P k').map (bH D) ≤ _) (by rw [hI_mul]; exact Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one, ← huv']`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.mem_sup_left h1)) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right h2))`.
+A detailed English derivation is pending.
 -/
 theorem hI_cop (k k' : Fin 2) : IsCoprime (hI P k) ((hI P k').map (bH D)) := by
   by_cases hk : k = k'
@@ -256,17 +254,15 @@ def DetChar (V : HSp D) : Prop :=
   ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → (∀ a, χ (idF D a) = 1) → ∃ mu : GA D V → ℂ, Continuous mu ∧ MuVal V χ mu
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat F E (Λ : Set (Fin n → E)), (fun i => Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E (y i)) ∈ Formalism.UG.latS (F` using `F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) Λ := by`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hs : (1 : E) ⊗ₜ[F] a ∈ Formalism.L2.Herm.intAf F E` using `Subring.subset_closure (Or.inr ⟨⟨a, fun v => ha v⟩, rfl⟩)`. Establish `hv : (fun i => Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F) (x i)) ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) Λ := Submodule.subset_span ⟨x, hx, rfl⟩`. Use `Submodule.smul_mem _ (⟨(1 : E) ⊗ₜ[F] a, hs⟩ : Formalism.L2.Herm.intAf F E) hv using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `show Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E (a ⊗ₜ[F] x i) = ((1 : E) ⊗ₜ[F] a) * (x i ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Both sides reduce to the same expression. Consider the case `zero`. Use `Submodule.zero_mem (Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) Λ) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Both sides reduce to the same expression. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Conclude with `map_zero _`. Consider the case `add y z _ _ hy hz`. Use `add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_add _ _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `neg y _ hy`. Use `neg_mem hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `map_neg _ _`. Establish `hg : x ∈ Formalism.UG.CS.globLat (F` using `F) 1 Λ := by show ((1⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (x i)) ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf …`.
-
-Rewrite using `[inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `key _ h`. Rewrite `hg` using `[Formalism.UG.P.global_lattice_one_holds F E (Fin n) Λ hfin hsp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_latHat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Λ) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) {x : Fin n → E}
@@ -308,11 +304,11 @@ theorem mem_of_latHat {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rwa [Formalism.UG.P.global_lattice_one_holds F E (Fin n) Λ hfin hsp] at hg
 
 /- English proof (translation)
-Set `Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map (V.frame.equivFun.toLinearMap.restrictScalars (𝓞 D.host.E))`. Establish `hL` using `V.standardTuple_isLattice`. Establish `hfin : Module.Finite (𝓞 D.host.E) Λ` using `Module.Finite.iff_fg.2 (hL.fg.map _)`. Establish `hsp : Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `: (Λ : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Establish `hle : Formalism.L2.Pj.latHat V ≤ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E))` using `AddSubgroup.closure_mono (by`. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, V.frame.equivFun x, ⟨x, hx, rfl⟩, rfl⟩)`. Take `⟨x, hx, rfl⟩` from `mem_of_latHat Λ hfin hsp (hle hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `(V.frame.equivFun.symm_apply_apply x).symm ▸ hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_lattice_of_mem_completion (V : HSp D) {v : Fin V.rank → D.host.E} (hv : finVec V v ∈ Formalism.L2.Pj.latHat V) :
     V.frame.equivFun.symm v ∈ V.L0 := by
@@ -334,13 +330,13 @@ abbrev iotaAt {V : HSp D} {r : ℕ} (hr : V.rank = r) {La : Type} [AddCommGroup 
   LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨-, -, φ, ε, hφ, hR, hE⟩` from `h`. Set `e` to `(D.sp.W j).frame.equivFun.toLinearMap.restrictScalars (𝓞 D.host.E)`. Use `⟨e ∘ₗ φ, ⟨(D.sp.W j).frame.equivFun.injective.comp hφ, ?_⟩, ε, fun x y => ?_⟩` and prove the remaining obligations. Use `show LinearMap.range (e ∘ₗ φ) = _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.range_comp, hR, Submodule.map_span, latG]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, x, hx, rfl⟩, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ha, (D.sp.W j).frame.equivFun x, ⟨finVec _ ((D.sp.W j).frame.equivFun x), AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩, ?_⟩, map_smul (D.sp.W j).frame.equivFun a x⟩` and prove the remaining obligations. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]`. Introduce and unpack `⟨a, ha, v, ⟨z, hz, hv⟩, rfl⟩`. Rewrite `hv` using `[map_one, Units.val_one, Matrix.one_mulVec]`. Use `⟨_, ⟨a, ha, _, mem_lattice_of_mem_completion _ (hv ▸ hz), rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (D.sp.W j).frame.equivFun (a • _) = _`. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Rewrite using `[hE] show _ = _ * Algebra.trace ℚ D.host.E (_ * (D.sp.W j).hT ((D.sp.W j).frame.equivFun.symm ((D.sp.W j).frame.equivFun (φ x))) ((D.sp.W j).frame.equivFun.symm ((D.sp.W j).frame.equivFun (φ y))))`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iota {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {j : ℕ} {Dw : Datum H} (h : IsDatW D j Dw) {r : ℕ}
     (hr : (D.sp.W j).rank = r) : ∃ ι : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E),
@@ -428,7 +424,7 @@ end Unif
 section Core
 
 /- English proof (translation)
-The claim follows from `D.sp.W_rank j hj.1 hj.2`.
+A detailed English derivation is pending.
 -/
 theorem rankW {j : ℕ} (hj : InR D j) : (D.sp.W j).rank = D.R.r := D.sp.W_rank j hj.1 hj.2
 
@@ -548,7 +544,7 @@ end H90
 def MuCont (V : HSp D) : Prop := ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → (∀ a, χ (idF D a) = 1) → Continuous (muOf V χ)
 
 /- English proof (translation)
-The claim follows from `exists_iota (hQ.2.2.2 j hj) (rankW hj)`.
+A detailed English derivation is pending.
 -/
 theorem iotaEx_of {Q : Par D} (hQ : Q.Pins) (j : ℕ) (hj : InR D j) : IotaEx Q j hj := exists_iota (hQ.2.2.2 j hj) (rankW hj)
 
@@ -622,7 +618,7 @@ section Cech
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Semi.res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (x : Γ(X, U)ˣ) :
     ReciprocityTheory.ChartRestriction.G.Semi.res h (ReciprocityTheory.ChartRestriction.G.Semi.res h' x) = ReciprocityTheory.ChartRestriction.G.Semi.res (h.trans h') x := by
@@ -632,7 +628,7 @@ theorem rs_rs {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (x : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Semi.res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Establish `e1 : f.appLE U V (h.trans (fun _ hy => h' hy)) = X.presheaf.map (homOfLE h').op ≫ f.appLE U' V h` using `(Scheme.Hom.map_appLE f h (homOfLE h').op).symm`. Conclude with `(congrArg (fun φ : Γ(X, U) ⟶ Γ(Y, V) => φ.hom x) e1).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rs_pull_rs (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (h' : U' ≤ U) (h : V ≤ f ⁻¹ᵁ U') (x : Γ(X, U)ˣ) :
     ReciprocityTheory.ChartRestriction.G.Semi.res h (pullU f U' (ReciprocityTheory.ChartRestriction.G.Semi.res h' x)) = ReciprocityTheory.ChartRestriction.G.Semi.res (h.trans (fun _ hy => h' hy)) (pullU f U x) := by
@@ -643,7 +639,7 @@ theorem rs_pull_rs (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (h' : U' ≤ U) 
   exact (congrArg (fun φ : Γ(X, U) ⟶ Γ(Y, V) => φ.hom x) e1).symm
 
 /- English proof (translation)
-Establish `h` using `congrArg (ReciprocityTheory.ChartRestriction.G.Semi.res (le_inf hij (hjk.trans inf_le_right))) (hL.cocycle i j k)`. Rewrite `h` using `[map_mul, rs_rs, rs_rs, rs_rs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cocyc {L : LB X} (hL : L.IsLB) {V : X.Opens} (i j k : L.ι) (hij : V ≤ L.U i ⊓ L.U j) (hjk : V ≤ L.U j ⊓ L.U k)
     (hik : V ≤ L.U i ⊓ L.U k) : ReciprocityTheory.ChartRestriction.G.Semi.res hij (L.g i j) * ReciprocityTheory.ChartRestriction.G.Semi.res hjk (L.g j k) = ReciprocityTheory.ChartRestriction.G.Semi.res hik (L.g i k) := by
@@ -653,19 +649,19 @@ theorem cocyc {L : LB X} (hL : L.IsLB) {V : X.Opens} (i j k : L.ι) (hij : V ≤
 variable (L : LB X)
 
 /- English proof (translation)
-The claim follows from `LB.wchart_le L (fun _ : PUnit => 𝟙 X) a ⟨⟩`.
+A detailed English derivation is pending.
 -/
 theorem idU_le (a : PUnit → L.ι) : (L.pull (𝟙 X)).U a ≤ L.U (a ⟨⟩) := LB.wchart_le L (fun _ : PUnit => 𝟙 X) a ⟨⟩
 
 /- English proof (translation)
-The claim follows from `(Fintype.prod_unique (fun _ : PUnit => ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_inf (idU_le L a) (idU_le L b)) (L.g (a ⟨⟩) (b ⟨⟩)) ^ (1 : ℤ))).trans (zpow_one _)`.
+A detailed English derivation is pending.
 -/
 theorem idG (a b : PUnit → L.ι) :
     (L.pull (𝟙 X)).g a b = ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_inf (idU_le L a) (idU_le L b)) (L.g (a ⟨⟩) (b ⟨⟩)) :=
   (Fintype.prod_unique (fun _ : PUnit => ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_inf (idU_le L a) (idU_le L b)) (L.g (a ⟨⟩) (b ⟨⟩)) ^ (1 : ℤ))).trans (zpow_one _)
 
 /- English proof (translation)
-Rewrite using `[mul_right_comm, eq_mul_inv_iff_mul_eq, cocyc hL a i j hai hij (le_inf (hai.trans inf_le_left) (hij.trans inf_le_right)), cocyc hL a b j hab hbj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coc4 (hL : L.IsLB) {V : X.Opens} (a i b j : L.ι) (hai : V ≤ L.U a ⊓ L.U i) (hab : V ≤ L.U a ⊓ L.U b)
     (hij : V ≤ L.U i ⊓ L.U j) (hbj : V ≤ L.U b ⊓ L.U j) :
@@ -677,7 +673,7 @@ def idIso : LB.Iso L (L.pull (𝟙 X)) where
   s p := ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_inf (idU_le L p.1) le_rfl) (L.g (p.1 ⟨⟩) p.2)
 
 /- English proof (translation)
-Introduce `p q` and use `(rs_rs _ _ _).trans ((coc4 L hL (p.1 ⟨⟩) p.2 (q.1 ⟨⟩) q.2 _ _ _ _).trans (congrArg₂ (· * ·) (congrArg (· * _) ((congrArg _ (idG L p.1 q.1)).trans (rs_rs _ _ _)).symm) (rs_rs _ _ _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idIso_gen (hL : L.IsLB) : (idIso L).IsGen := fun p q =>
   (rs_rs _ _ _).trans ((coc4 L hL (p.1 ⟨⟩) p.2 (q.1 ⟨⟩) q.2 _ _ _ _).trans
@@ -686,14 +682,14 @@ theorem idIso_gen (hL : L.IsLB) : (idIso L).IsGen := fun p q =>
 variable {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => idU_le L (j k) (Set.mem_iInter.1 hy k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combU_le (j : K → PUnit → L.ι) : (LB.LinComb (L.pull (𝟙 X)) φ ε).U j ≤ (LB.LinComb L φ ε).U (fun k => j k ⟨⟩) :=
   fun _ hy => Set.mem_iInter.2 fun k => idU_le L (j k) (Set.mem_iInter.1 hy k)
 
 omit L in
 /- English proof (translation)
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_zpow, rs_rs, rs_pull_rs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_rs {V W : Y.Opens} (h : W ≤ V) (U U' : K → X.Opens) (hU : ∀ k, U' k ≤ U k) (hW : ∀ k, W ≤ φ k ⁻¹ᵁ U' k)
     (hV : ∀ k, V ≤ φ k ⁻¹ᵁ U k) (x : ∀ k, Γ(X, U k)ˣ) :
@@ -702,7 +698,7 @@ theorem prod_rs {V W : Y.Opens} (h : W ≤ V) (U U' : K → X.Opens) (hU : ∀ k
   exact Finset.prod_congr rfl fun k _ => by rw [map_zpow, rs_rs, rs_pull_rs]
 
 /- English proof (translation)
-The claim follows from `prod_rs φ ε (inf_le_inf (combU_le L φ ε p.1) le_rfl) (fun k => L.U (p.1 k ⟨⟩) ⊓ L.U (p.2 k)) (fun k => (L.pull (𝟙 X)).U (p.1 k) ⊓ L.U (p.2 k)) (fun k => inf_le_inf (idU_le L (p.1 k)) le_rfl) (fun k => le_inf (inf_le_left.trans (LB.wchart_le (L.pull (𝟙 X)) φ p.1 k)) (inf_le_right. …`.
+A detailed English derivation is pending.
 -/
 theorem combIso (p : (K → PUnit → L.ι) × (K → L.ι)) :
     @id (Γ(Y, (LB.LinComb (L.pull (𝟙 X)) φ ε).U p.1 ⊓ (LB.LinComb L φ ε).U p.2)ˣ) ((LB.linCombIso (idIso L) φ ε).s p) =
@@ -714,7 +710,7 @@ theorem combIso (p : (K → PUnit → L.ι) × (K → L.ι)) :
     (fun k => L.g (p.1 k ⟨⟩) (p.2 k))
 
 /- English proof (translation)
-The claim follows from `have hW : ∀ k, (LB.LinComb (L.pull (𝟙 X)) φ ε).U j ⊓ (LB.LinComb (L.pull (𝟙 X)) φ ε).U j' ≤ φ k ⁻¹ᵁ ((L.pull (𝟙 X)).U (j k) ⊓ (L.pull (𝟙 X)).U (j' k)) := fun k => le_inf (inf_le_left.trans (LB.wchart_le (L.pull (𝟙 X)) φ j k)) (inf_le_right.trans (LB.wchart_le (L.pull (𝟙 X)) φ j' …`.
+A detailed English derivation is pending.
 -/
 theorem combG (j j' : K → PUnit → L.ι) : (LB.LinComb (L.pull (𝟙 X)) φ ε).g j j' =
     ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_inf (combU_le L φ ε j) (combU_le L φ ε j')) ((LB.LinComb L φ ε).g (fun k => j k ⟨⟩) (fun k => j' k ⟨⟩)) :=
@@ -729,7 +725,7 @@ theorem combG (j j' : K → PUnit → L.ι) : (LB.LinComb (L.pull (𝟙 X)) φ �
       (fun k => L.g (j k ⟨⟩) (j' k ⟨⟩)))
 
 /- English proof (translation)
-Introduce `p`. Establish `e` using `congrArg (ReciprocityTheory.ChartRestriction.G.Semi.res (inf_le_inf (combU_le L φ ε p.1) (le_refl ((LB.LinComb L φ ε).U p.2)))) (ht (fun k => p.1 k ⟨⟩) p.2)`. Rewrite `e` using `[map_mul, rs_rs, rs_rs]`. Use `erw [h, rs_rs, combIso]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maps_id (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t' : LB.Gen (LB.LinComb (L.pull (𝟙 X)) φ ε))
     (h : ∀ j, t'.s j = ReciprocityTheory.ChartRestriction.G.Semi.res (combU_le L φ ε j) (t.s fun k => j k ⟨⟩)) : LB.Gen.Maps (LB.linCombIso (idIso L) φ ε) t t' := by
@@ -740,7 +736,7 @@ theorem maps_id (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t' : LB.Gen (L
   exact e
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rg_rg {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h).op).hom ((X.presheaf.map (homOfLE h').op).hom x) = (X.presheaf.map (homOfLE (h.trans h')).op).hom x := by
@@ -839,7 +835,7 @@ variable (D) in
 def jLL : D.what₂.LL →+* LLc D := (AlgEquiv.ofInjectiveField D.what₂.embLL.toRatAlgHom).toRingEquiv.toRingHom
 
 /- English proof (translation)
-Introduce `z hz` and use `by obtain ⟨x, y, -, h⟩ := IsFractionRing.div_surjective (A := 𝓞 Q.c.F) (⟨z, hz⟩ : Q.c.F) have e : z = ((x : Q.c.F) : ℂ) / ((y : Q.c.F) : ℂ) := (congrArg Subtype.val h).symm rw [e, ← hp, ← hp] exact div_mem ⟨_, rfl⟩ ⟨_, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem F_le {Q : Par D} (hp : Q.PinField) : Q.c.F ≤ LLc D := fun z hz => by
   obtain ⟨x, y, -, h⟩ := IsFractionRing.div_surjective (A := 𝓞 Q.c.F) (⟨z, hz⟩ : Q.c.F)

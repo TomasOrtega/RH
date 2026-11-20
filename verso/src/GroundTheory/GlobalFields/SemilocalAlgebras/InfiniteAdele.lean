@@ -48,7 +48,7 @@ def tensorInfiniteAdeleRingEquiv :
     (AlgEquiv.piCongrRight fun v => tensorPiEquivLeft (L := L) v).trans piPlacesOverEquiv
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `tensorPiEquivLeft (L := L) (w.comap (algebraMap K L)) (l ⊗ₜ x (w.comap (algebraMap K L))) ⟨w, liesOver_comap w⟩ = _`. Rewrite using `[tensorPiEquivLeft_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorInfiniteAdeleRingEquiv_tmul (l : L) (x : InfiniteAdeleRing K)
     (w : InfinitePlace L) :
@@ -79,7 +79,7 @@ theorem infiniteAdeleRingMap_apply (x : InfiniteAdeleRing K) (w : InfinitePlace 
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (NumberField.LiesOver.continuous_completionMap (v := w.comap (algebraMap K L)) (w := w)).comp (continuous_apply (w.comap (algebraMap K L)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteAdeleRingMap :
     Continuous (infiniteAdeleRingMap (K := K) (L := L)) :=
@@ -90,7 +90,7 @@ theorem continuous_infiniteAdeleRingMap :
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[infiniteAdeleRingMap_apply, InfiniteAdeleRing.algebraMap_apply, InfiniteAdeleRing.algebraMap_apply, ← Completion.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteAdeleRingMap_algebraMap (k : K) :
     infiniteAdeleRingMap (algebraMap K (InfiniteAdeleRing K) k) =
@@ -102,7 +102,7 @@ theorem infiniteAdeleRingMap_algebraMap (k : K) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[tensorInfiniteAdeleRingEquiv_tmul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tensorInfiniteAdeleRingEquiv_tmul' (l : L) (x : InfiniteAdeleRing K) :
     tensorInfiniteAdeleRingEquiv (l ⊗ₜ x) =

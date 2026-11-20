@@ -9,15 +9,13 @@ namespace UpperTheory.V.Z.Kato.Sym.PT
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Use `letI := algPoly X (CongruenceSubgroup.Gamma M)`. Take `⟨p, hpm, hp⟩` from `h`. Establish `hmem : ∀ P : Polynomial Ω, aeval X.jK P ∈ Algebra.adjoin Ω {X.jK}` using `fun P => by`. Rewrite using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `⟨P, rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `g : Polynomial Ω →+* Algebra.adjoin Ω {X.jK}` to `((aeval X.jK).codRestrict (Algebra.adjoin Ω {X.jK}) hmem).toRingHom`. Establish `hg : Function.Surjective g`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨P, rfl⟩` from `hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic ((lifts_iff_coeff_lifts p).mpr fun n => hg _) hpm`. Use `⟨q, hqm, Subtype.val_injective ?_⟩` and prove the remaining obligations. Establish `e1 : ((topL X M).subtype).comp (algebraMap (Polynomial Ω) (topL X M)) = (aeval X.jK : Polynomial Ω →ₐ[Ω] X.K).toRingHom` using `RingHom.ext fun P => coe_jPoly X _ P`. Establish `e2 : (algebraMap (Algebra.adjoin Ω {X.jK}) X.K).comp g = (aeval X.jK : Polynomial Ω →ₐ[Ω] X.K).toRingHom` using `RingHom.ext fun P => rfl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `Polynomial.hom_eval₂ q (algebraMap (Polynomial Ω) (topL X M)) (topL X M).subtype f`. Rewrite `key` using `[e1]`. Rewrite `hp` using `[← hq, eval₂_map, e2]`. Use `show (topL X M).subtype (eval₂ (algebraMap (Polynomial Ω) (topL X M)) f q) = ((0 : topL X M) : X.K)`. Rewrite using `[key, ZeroMemClass.coe_zero]`.
-
-Conclude with `hp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int (X : Tower Ω ε) (M : ℕ) (f : topL X M) (h : IsIntegral (Algebra.adjoin Ω {X.jK}) (f : X.K)) :
     letI := algPoly X (CongruenceSubgroup.Gamma M)
@@ -49,7 +47,7 @@ theorem mem_int (X : Tower Ω ε) (M : ℕ) (f : topL X M) (h : IsIntegral (Alge
   exact hp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hu.1, hF, mdl_le_lev X _ _ hF, mem_int X M _ (intU Ω ε X M u hu).1, mem_int X M _ (intU Ω ε X M u hu).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTopUnit [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (M : ℕ) {u : X.K} (hu : IsU X u) (hF : u ∈ topF X M) :
     TopUnits.IsTopUnit X M u :=

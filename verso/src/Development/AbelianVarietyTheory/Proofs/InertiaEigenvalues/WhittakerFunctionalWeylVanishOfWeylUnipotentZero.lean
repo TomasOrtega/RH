@@ -5,9 +5,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR
 
 /- English proof (translation)
-Establish `h1 : (z : k) * ((z⁻¹ : kˣ) : k) = 1` using `z.mul_inv`. Establish `cw : ((wS k : SpecialLinearGroup (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = !![0, 1; -1, 0]` using `rfl`. Establish `cn : ∀ t : k, ((nS t : SpecialLinearGroup (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = !![1, t; 0, 1]` using `fun _ => rfl`. Establish `cm : ∀ s : kˣ, ((mS s : SpecialLinearGroup (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = !![(s : k), 0; 0, ((s⁻¹ : kˣ) : k)]` using `fun _ => rfl`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, cw, cn, cm]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_fin_two] <;> ring_nf <;> simp [h1]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wS_nS_wS_eq_unit {k : Type} [CommRing k] (z : kˣ) :
     wS k * nS (z : k) * wS k = nS ((-z⁻¹ : kˣ) : k) * mS (-z⁻¹) * (wS k * nS ((-z⁻¹ : kˣ) : k)) := by
@@ -23,9 +23,9 @@ theorem wS_nS_wS_eq_unit {k : Type} [CommRing k] (z : kˣ) :
     simp [Matrix.mul_fin_two] <;> ring_nf <;> simp [h1]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ μK hμ Ψ hΨ h0 a c`. Establish `hnull : μK {t | ¬ IsUnit t} = 0` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.2.2.2.2.2.2.1 μK hμ`. Establish `hae : ∀ᵐ z ∂μK, IsUnit z` using `ae_iff.2 hnull`. Unfold `Et.abelian₂`. Apply `integral_eq_zero_of_ae` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ae_restrict_of_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with z hz`. Take `⟨u, rfl⟩` from `hz`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[wS_nS_wS_eq_unit u, hΨ.2, h0, mul_zero, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_flip_eq_zero : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ Ψ : SpecialLinearGroup (Fin 2) A.K → ℂ, A.InI Ψ → (∀ z, Ψ (wS A.K * nS z) = 0) → ∀ (a : A.K) (c : F), A.abelian₂ μK ψ a (fun h => Ψ (h * wS A.K)) c = 0 := by
   intro F E _ _ _ _ _ A ψ μK hμ Ψ hΨ h0 a c

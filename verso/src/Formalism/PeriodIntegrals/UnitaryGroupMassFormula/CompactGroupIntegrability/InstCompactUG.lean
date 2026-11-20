@@ -10,9 +10,9 @@ open MeasureTheory Matrix
 abbrev UG (N : ℕ) := ↥(Matrix.unitaryGroup (Fin N) ℂ)
 
 /- English proof (translation)
-Establish `hc : IsClosed ((Matrix.unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ)))`. Establish `: ((Matrix.unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ))) = {g | star g * g = 1} ∩ {g | g * star g = 1}`. Use extensionality with `g`. Conclude with `Unitary.mem_iff`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isClosed_eq (continuous_star.mul continuous_id) continuous_const).inter (isClosed_eq (continuous_id.mul continuous_star) continuous_const)`. Establish `hb : IsCompact (Set.pi Set.univ fun _ : Fin N => Set.pi Set.univ fun _ : Fin N => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `hb.of_isClosed_subset hc ?_` and prove the remaining obligations. Introduce `g hg i _ j _`. Simplify using `using entry_norm_bound_of_unitary hg i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma isCompact_UG (N : ℕ) :
     IsCompact ((Matrix.unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ))) := by
@@ -46,7 +46,7 @@ def IsPD {N : ℕ} (f : UG N → ℂ) : Prop :=
 def detP (N : ℕ) : MvPolynomial (Fin N × Fin N) ℂ := (Matrix.mvPolynomialX (Fin N) (Fin N) ℂ).det
 
 /- English proof (translation)
-The claim follows from `Matrix.mvPolynomialX_mapMatrix_eval (g : Matrix (Fin N) (Fin N) ℂ)`.
+A detailed English derivation is pending.
 -/
 lemma mapX_eval {N : ℕ} (g : UG N) :
     (MvPolynomial.eval (ent g)).mapMatrix (Matrix.mvPolynomialX (Fin N) (Fin N) ℂ) =
@@ -54,7 +54,7 @@ lemma mapX_eval {N : ℕ} (g : UG N) :
   Matrix.mvPolynomialX_mapMatrix_eval (g : Matrix (Fin N) (Fin N) ℂ)
 
 /- English proof (translation)
-Unfold `detP`. Rewrite using `[RingHom.map_det, mapX_eval]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma eval_detP {N : ℕ} (g : UG N) :
     MvPolynomial.eval (ent g) (detP N) = (g : Matrix (Fin N) (Fin N) ℂ).det := by
@@ -62,13 +62,13 @@ lemma eval_detP {N : ℕ} (g : UG N) :
   rw [RingHom.map_det, mapX_eval]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.C c, fun g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma IsPD.const {N : ℕ} (c : ℂ) : IsPD (fun _ : UG N => c) :=
   ⟨0, MvPolynomial.C c, fun g => by simp⟩
 
 /- English proof (translation)
-Take `⟨k, P, hP⟩` from `hf`. Take `⟨k', P', hP'⟩` from `hf'`. Use `⟨k + k', P * detP N ^ k' + P' * detP N ^ k, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, eval_detP, ← hP g, ← hP' g]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma IsPD.add {N : ℕ} {f f' : UG N → ℂ} (hf : IsPD f) (hf' : IsPD f') : IsPD (fun g => f g + f' g) := by
   obtain ⟨k, P, hP⟩ := hf
@@ -78,7 +78,7 @@ lemma IsPD.add {N : ℕ} {f f' : UG N → ℂ} (hf : IsPD f) (hf' : IsPD f') : I
   ring
 
 /- English proof (translation)
-Take `⟨k, P, hP⟩` from `hf`. Take `⟨k', P', hP'⟩` from `hf'`. Use `⟨k + k', P * P', fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, ← hP g, ← hP' g]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma IsPD.mul {N : ℕ} {f f' : UG N → ℂ} (hf : IsPD f) (hf' : IsPD f') : IsPD (fun g => f g * f' g) := by
   obtain ⟨k, P, hP⟩ := hf
@@ -88,20 +88,20 @@ lemma IsPD.mul {N : ℕ} {f f' : UG N → ℂ} (hf : IsPD f) (hf' : IsPD f') : I
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qi25.sum .. | (apply UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (intros; apply @UpperTheory.Refor …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma IsPD.sum {N : ℕ} {ι : Type*} (s : Finset ι) {F : ι → UG N → ℂ} (hF : ∀ i ∈ s, IsPD (F i)) :
     IsPD (fun g => ∑ i ∈ s, F i g) := by
   first | exact UpperTheory.Reformulated.B.Qi25.sum .. | (apply UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qi25.sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi25.sum <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qi25.sum N ι s F hF | exact @UpperTheory.Reformulated.B.Qi25.sum N ι s F | exact @UpperTheory.Reformulated.B.Qi25.sum N ι s | exact @UpperTheory.Reformulated.B.Qi25.sum N ι | exact @UpperTheory.Reformulated.B.Qi25.sum N
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.X (i, j), fun g => by simp [ent]⟩`.
+Supply the required witnesses or components.
 -/
 lemma IsPD.entry {N : ℕ} (i j : Fin N) : IsPD (fun g : UG N => (g : Matrix (Fin N) (Fin N) ℂ) i j) :=
   ⟨0, MvPolynomial.X (i, j), fun g => by simp [ent]⟩
 
 /- English proof (translation)
-Establish `h1 : star (g : Matrix (Fin N) (Fin N) ℂ) * (g : Matrix (Fin N) (Fin N) ℂ) = 1` using `Unitary.coe_star_mul_self g`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma adjugate_eq {N : ℕ} (g : UG N) :
     (g : Matrix (Fin N) (Fin N) ℂ).adjugate =
@@ -116,7 +116,7 @@ lemma adjugate_eq {N : ℕ} (g : UG N) :
     _ = _ := by rw [Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `⟨1, (Matrix.mvPolynomialX (Fin N) (Fin N) ℂ).adjugate j i, fun g => ?_⟩` and prove the remaining obligations. Establish `h : MvPolynomial.eval (ent g) ((Matrix.mvPolynomialX (Fin N) (Fin N) ℂ).adjugate j i) = ((MvPolynomial.eval (ent g)).mapMatrix (Matrix.mvPolynomialX (Fin N) (Fin N) ℂ).adjugate) j i` using `rfl`. Rewrite using `[h, RingHom.map_adjugate, mapX_eval, adjugate_eq]`. Use `show star ((g : Matrix (Fin N) (Fin N) ℂ) i j) * (g : Matrix (Fin N) (Fin N) ℂ).det ^ 1 = _`. Simplify using `[Matrix.star_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma IsPD.conjEntry {N : ℕ} (i j : Fin N) :
     IsPD (fun g : UG N => star ((g : Matrix (Fin N) (Fin N) ℂ) i j)) := by
@@ -135,11 +135,11 @@ def algA (N : ℕ) : StarSubalgebra ℂ C(UG N, ℂ) :=
   StarAlgebra.adjoin ℂ (Set.range fun ij : Fin N × Fin N => coordC ij.1 ij.2)
 
 /- English proof (translation)
-Establish `hsep : (algA N).SeparatesPoints`. Introduce `x y hxy`. Establish `hne : (x : Matrix (Fin N) (Fin N) ℂ) ≠ y` using `fun h => hxy (Subtype.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, (x : Matrix (Fin N) (Fin N) ℂ) i j ≠ (y : Matrix (Fin N) (Fin N) ℂ) i j := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_exists, not_not] at hcon`. Conclude with `hne (Matrix.ext hcon)`. Use `⟨coordC i j, ⟨coordC i j, StarAlgebra.subset_adjoin ℂ _ ⟨(i, j), rfl⟩, rfl⟩, hij⟩` and prove the remaining obligations. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints (algA N) hsep`. Establish `hF : F ∈ closure ((algA N : Set C(UG N, ℂ)))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← StarSubalgebra.topologicalClosure_coe, htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨f, hf, hd⟩` from `Metric.mem_closure_iff.mp hF ε hε`. Conclude with `⟨f, hf, by rwa [dist_eq_norm] at hd⟩`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma algA_dense (N : ℕ) (F : C(UG N, ℂ)) {ε : ℝ} (hε : 0 < ε) : ∃ f ∈ algA N, ‖F - f‖ < ε := by
   have hsep : (algA N).SeparatesPoints := by
@@ -161,16 +161,16 @@ def Sep {N : ℕ} (f : UG N → ℂ) : Prop :=
     ∀ h y : UG N, f (h⁻¹ * y) = ∑ i, a i h * b i y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ _ => c, fun _ _ => 1, fun _ => IsPD.const c, fun _ => continuous_const, fun h y => by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma Sep.const {N : ℕ} (c : ℂ) : Sep (fun _ : UG N => c) :=
   ⟨Unit, inferInstance, fun _ _ => c, fun _ _ => 1, fun _ => IsPD.const c, fun _ => continuous_const,
     fun h y => by simp⟩
 
 /- English proof (translation)
-Take `⟨ι, _, a, b, ha, hb, he⟩` from `hf`. Take `⟨ι', _, a', b', ha', hb', he'⟩` from `hf'`. Use `⟨ι ⊕ ι', inferInstance, Sum.elim a a', Sum.elim b b', ?_, ?_, fun h y => ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Use `exacts [ha i, ha' i]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(i | i)`. Use `exacts [hb i, hb' i]`. Simplify using `[Fintype.sum_sum_type, he, he']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Sep.add {N : ℕ} {f f' : UG N → ℂ} (hf : Sep f) (hf' : Sep f') : Sep (fun g => f g + f' g) := by
   obtain ⟨ι, _, a, b, ha, hb, he⟩ := hf
@@ -181,9 +181,9 @@ lemma Sep.add {N : ℕ} {f f' : UG N → ℂ} (hf : Sep f) (hf' : Sep f') : Sep 
   · simp [Fintype.sum_sum_type, he, he']
 
 /- English proof (translation)
-Take `⟨ι, _, a, b, ha, hb, he⟩` from `hf`. Take `⟨ι', _, a', b', ha', hb', he'⟩` from `hf'`. Use `⟨ι × ι', inferInstance, fun p g => a p.1 g * a' p.2 g, fun p g => b p.1 g * b' p.2 g, fun p => (ha p.1).mul (ha' p.2), fun p => (hb p.1).mul (hb' p.2), fun h y => ?_⟩` and prove the remaining obligations. Use `show f (h⁻¹ * y) * f' (h⁻¹ * y) = ∑ p : ι × ι', (a p.1 h * a' p.2 h) * (b p.1 y * b' p.2 y)`. Rewrite using `[he, he', Fintype.sum_mul_sum, Fintype.sum_prod_type]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma Sep.mul {N : ℕ} {f f' : UG N → ℂ} (hf : Sep f) (hf' : Sep f') : Sep (fun g => f g * f' g) := by
   obtain ⟨ι, _, a, b, ha, hb, he⟩ := hf
@@ -196,7 +196,7 @@ lemma Sep.mul {N : ℕ} {f f' : UG N → ℂ} (hf : Sep f) (hf' : Sep f') : Sep 
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨Fin N, inferInstance, fun k h => star ((h : Matrix (Fin N) (Fin N) ℂ) k i), fun k y => (y : Matrix (Fin N) (Fin N) ℂ) k j, fun k => IsPD.conjEntry k i, fun k => (coordC k j).continuous, fun h y => ?_⟩`. Use `show (star (h : Matrix (Fin N) (Fin N) ℂ) * (y : Matrix (Fin N) (Fin N) ℂ)) i j = _`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[Matrix.star_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Sep.coord {N : ℕ} (i j : Fin N) : Sep (fun g : UG N => (g : Matrix (Fin N) (Fin N) ℂ) i j) := by
   refine ⟨Fin N, inferInstance, fun k h => star ((h : Matrix (Fin N) (Fin N) ℂ) k i),
@@ -207,7 +207,7 @@ lemma Sep.coord {N : ℕ} (i j : Fin N) : Sep (fun g : UG N => (g : Matrix (Fin 
   simp [Matrix.star_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨Fin N, inferInstance, fun k h => (h : Matrix (Fin N) (Fin N) ℂ) k i, fun k y => star ((y : Matrix (Fin N) (Fin N) ℂ) k j), fun k => IsPD.entry k i, fun k => (coordC k j).continuous.star, fun h y => ?_⟩`. Use `show star ((star (h : Matrix (Fin N) (Fin N) ℂ) * (y : Matrix (Fin N) (Fin N) ℂ)) i j) = _`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[Matrix.star_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Sep.conjCoord {N : ℕ} (i j : Fin N) :
     Sep (fun g : UG N => star ((g : Matrix (Fin N) (Fin N) ℂ) i j)) := by
@@ -219,11 +219,11 @@ lemma Sep.conjCoord {N : ℕ} (i j : Fin N) :
   simp [Matrix.star_apply]
 
 /- English proof (translation)
-Establish `hf' : f ∈ Algebra.adjoin ℂ ((Set.range fun ij : Fin N × Fin N => coordC ij.1 ij.2) ∪ star (Set.range fun ij : Fin N × Fin N => coordC ij.1 ij.2))`. Rewrite using `[← StarAlgebra.adjoin_toSubalgebra]`. Conclude with `hf`. Use `clear hf`. Proceed by induction on `hf' using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `mem x hx`. Break down `hx with ⟨⟨i, j⟩, rfl⟩ | hx` into its components or cases. Conclude with `Sep.coord i j`. Take `⟨⟨i, j⟩, hij⟩` from `(Set.mem_star.mp hx)`. Establish `: x = star (coordC i j)` using `by rw [show coordC i j = star x from hij, star_star]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Substitute `this` using the available equality. Conclude with `Sep.conjCoord i j`. Consider the case `algebraMap r => exact Sep.const r`. Consider the case `add x y _ _ hx hy => exact Sep.add hx hy`. Consider the case `mul x y _ _ hx hy => exact Sep.mul hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma sep_of_mem {N : ℕ} {f : C(UG N, ℂ)} (hf : f ∈ algA N) : Sep (⇑f) := by
   have hf' : f ∈ Algebra.adjoin ℂ ((Set.range fun ij : Fin N × Fin N => coordC ij.1 ij.2) ∪

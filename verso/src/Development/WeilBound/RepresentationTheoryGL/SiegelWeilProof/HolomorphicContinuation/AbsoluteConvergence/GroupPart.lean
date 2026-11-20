@@ -7,7 +7,7 @@ namespace PositivityTheory.Rg.Sw.AbsSt.DF
 open PositivityTheory.Rg.Sw
 
 /- English proof (translation)
-Introduce `n X a ha`. Conclude with `⟨dil_mul ha, dil_zero ha, dil_up ha, cont_dil ha, fun y hy s => up_mul hy (dil_up ha s), cell_dec, fun g b hg h => conj_cell ha g b hg h, fun y hy s => cell_mul ha y hy s, dense_cell, fun p q e h => weight_factor_dilation ha p q e h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem groupPart : GroupPart := by
   intro n X a ha

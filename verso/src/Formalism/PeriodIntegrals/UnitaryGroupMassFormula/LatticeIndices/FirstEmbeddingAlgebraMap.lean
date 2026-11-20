@@ -14,7 +14,7 @@ section Loc
 variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
 
 /- English proof (translation)
-Simplify using `only [secondEmbedding_eq_star X p θ hθ, Formalism.UG.hform, star_sum, star_mul', starRingEnd_apply, star_star, herm_entry, map_sum, map_mul, dotProduct, Matrix.mulVec, firstForm_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_iota2 (hθ : IsSplitEquiv X p θ) (l l' : Fin X.B.I.n → X.B.I.E) :
     iota2 X p θ (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J l l') =
@@ -25,7 +25,7 @@ theorem hform_iota2 (hθ : IsSplitEquiv X p θ) (l l' : Fin X.B.I.n → X.B.I.E)
   exact Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul, dotProduct, Matrix.mulVec, firstForm_apply, starRingEnd_apply, ← secondEmbedding_eq_star X p θ hθ, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_iota1 (hθ : IsSplitEquiv X p θ) (l x : Fin X.B.I.n → X.B.I.E) :
     iota1 X p θ (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J l x) =
@@ -35,7 +35,7 @@ theorem hform_iota1 (hθ : IsSplitEquiv X p θ) (l x : Fin X.B.I.n → X.B.I.E) 
   exact Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))
 
 /- English proof (translation)
-Use `show ((θ (Algebra.TensorProduct.includeRight (algebraMap X.B.I.F X.B.I.E f))).1) = _`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply X.B.I.F (FpX X p) (TpX X p), AlgEquiv.commutes]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstEmbedding_algebraMap (f : X.B.I.F) : iota1 X p θ (algebraMap X.B.I.F X.B.I.E f) = algebraMap X.B.I.F (FpX X p) f := by
   show ((θ (Algebra.TensorProduct.includeRight (algebraMap X.B.I.F X.B.I.E f))).1) = _
@@ -50,25 +50,21 @@ def EpsLat : Prop :=
     ε • u ∈ Mlat1 X p θ ∧ ε • u ∈ Mlat2 X p θ
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨ε, hε0, hε⟩` from `hE`. Take `⟨a, w, hw, hwa⟩` from `unitElt_holds X p θ hθ`. Use `set α1 := iota1 X p θ (a : X.B.I.E) with hα1`. Use `set α2 := iota2 X p θ (a : X.B.I.E) with hα2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `val : ∀ β : FpX X p, ∃ d : FpX X p, d ≠ 0 ∧ d ∈ OpX X p ∧ d * β ∈ OpX X p`. Introduce `β`. Distinguish the cases in `hβ : β ∈ OpX X p`. Conclude with `⟨1, one_ne_zero, one_mem _, by simpa using hβ⟩`. Establish `hβ0 : β ≠ 0` using `fun h => hβ (h ▸ zero_mem _)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨β⁻¹, inv_ne_zero hβ0, ?_, by rw [inv_mul_cancel₀ hβ0]; exact one_mem _⟩` and prove the remaining obligations. Conclude with `((OpX X p).mem_or_inv_mem β).resolve_left hβ`. Take `⟨d1, hd10, hd1, hd1α⟩` from `val α1`. Take `⟨d2, hd20, hd2, hd2α⟩` from `val α2`. Establish `hδ0 : d1 * d2 ≠ 0` using `mul_ne_zero hd10 hd20`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ1 : d1 * d2 * α1 ∈ OpX X p`. Rewrite using `[mul_right_comm]`. Conclude with `mul_mem hd1α hd2`. Establish `hδ2 : d1 * d2 * α2 ∈ OpX X p`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_mem hd1 hd2α`. Establish `hεδ : ε * (d1 * d2) ≠ 0` using `mul_ne_zero hε0 hδ0`. Use `choose b o ho hb using fun j => hD (w * z j * α1) (ε * (d1 * d2)) hεδ`. Use `choose b' o' ho' hb' using fun j => hD (-(w * z j)) (ε * (d1 * d2)) hεδ`. Use `set x : Fin X.B.I.n → X.B.I.E := fun j => algebraMap X.B.I.F X.B.I.E (b j) + algebraMap X.B.I.F X.B.I.E (b' j) * (a : X.B.I.E) with hx`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `set u1 : Fin X.B.I.n → FpX X p := fun j => d1 * d2 * o j + o' j * (d1 * d2 * α1) with hu1`. Use `set u2 : Fin X.B.I.n → FpX X p := fun j => d1 * d2 * o j + o' j * (d1 * d2 * α2) with hu2`. Establish `hu1m : ∀ j, u1 j ∈ OpX X p` using `fun j => add_mem (mul_mem (mul_mem hd1 hd2) (ho j)) (mul_mem (ho' j) hδ1)`. Establish `hu2m : ∀ j, u2 j ∈ OpX X p` using `fun j => add_mem (mul_mem (mul_mem hd1 hd2) (ho j)) (mul_mem (ho' j) hδ2)`. Establish `e1 : (fun j => iota1 X p θ (x j)) = ε • u1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [hx, hu1, map_add, map_mul, firstEmbedding_algebraMap, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← hα1]`. Take the linear combination `hb j + α1 * hb' j`. Establish `e2 : (fun j => iota2 X p θ (x j)) = z + ε • u2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [hx, hu2, map_add, map_mul, secondEmbedding_algebraMap, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Rewrite using `[← hα2]`. Take the linear combination `hb j + α2 * hb' j + z j * hwa`. Establish `M1mem : ε • u1 ∈ Mlat1 X p θ` using `(hε u1 hu1m).1`.
-
-Establish `M2mem : ε • u2 ∈ Mlat2 X p θ` using `(hε u2 hu2m).2`. Establish `mem1 : ∀ l ∈ X.B.I.L, (fun j => iota1 X p θ (l j)) ∈ Mlat1 X p θ` using `fun l hl => Submodule.subset_span ⟨l, hl, rfl⟩`. Establish `mem2 : ∀ l ∈ X.B.I.L, (fun j => iota2 X p θ (l j)) ∈ Mlat2 X p θ` using `fun l hl => Submodule.subset_span ⟨l, hl, rfl⟩`. Use `⟨x, fun l hl => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hform_iota1 X p θ hθ, e1]`.
-
-Conclude with `dual_fwd X p θ hθ _ (mem2 l hl) _ M1mem`. Rewrite using `[hform_iota2 X p θ hθ, e2, add_dotProduct]`. Conclude with `add_mem (hz _ (mem1 l hl)) (dual_fwd X p θ hθ _ M2mem _ (mem1 l hl))`. Rewrite using `[e2, sub_add_cancel_left]`. Conclude with `neg_mem M2mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_of (hθ : IsSplitEquiv X p θ) (hD : DenseF X p) (hE : EpsLat X p θ) : ApproxP X p θ := by
   intro z hz

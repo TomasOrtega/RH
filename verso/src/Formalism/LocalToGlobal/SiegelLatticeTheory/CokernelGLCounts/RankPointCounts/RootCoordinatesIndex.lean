@@ -14,7 +14,7 @@ variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what�
 abbrev eV (a : Fin D.R.rS) : Fin X.B.I.n → ℂ := rv X.B.I (vOf X τ) (X.eR a)
 
 /- English proof (translation)
-Introduce `h0`. Use `Formalism.L2.SG.RealFrameCoordinates.frS_mul_rd D` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frS_ne (D : D7) : frS D ≠ 0 := by
   intro h0
@@ -23,14 +23,14 @@ theorem frS_ne (D : D7) : frS D ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-The claim follows from `((C.isT τ).2.2.2 a a rfl).1`.
+A detailed English derivation is pending.
 -/
 theorem Q_e (a : Fin D.R.rS) :
     C.Q τ *ᵥ Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1 = frS D ^ (D.R.rS - a.val) • eV τ a :=
   ((C.isT τ).2.2.2 a a rfl).1
 
 /- English proof (translation)
-Take `⟨hQiQ, _, _, _⟩` from `C.isT τ`. Establish `h` using `congrArg (fun x => C.Qi τ *ᵥ x) (Q_e C τ a)`. Simplify using `only [Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec, Matrix.mulVec_smul] at h`. Rewrite using `[h, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ (frS_ne D)), one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qi_e (a : Fin D.R.rS) :
     C.Qi τ *ᵥ eV τ a = (frS D ^ (D.R.rS - a.val))⁻¹ • Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1 := by
@@ -40,11 +40,11 @@ theorem Qi_e (a : Fin D.R.rS) :
   rw [h, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ (frS_ne D)), one_smul]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx'`. Take `⟨b, hb, rfl⟩` from `hx'`. Rewrite using `[Qi_e, Pi.smul_apply, Pi.single_apply, if_neg, smul_zero]`. Introduce `h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Formalism.QuantumDeterminants.eI] at this`. Simplify using `only [Set.mem_setOf_eq] at hb`. Use linear arithmetic over natural numbers and integers. Consider the case `zero => simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, Pi.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, Pi.smul_apply, hx, smul_zero]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem Qi_spanLt (a : ℕ) (x : Fin X.B.I.n → ℂ) (hx : x ∈ spanLt (eV (X := X) τ) a) (i : Fin (2 * D.R.rS + D.R.k + 1))
     (hi : a ≤ i.val) : (C.Qi τ *ᵥ x) i = 0 := by
@@ -62,11 +62,11 @@ theorem Qi_spanLt (a : ℕ) (x : Fin X.B.I.n → ℂ) (hx : x ∈ spanLt (eV (X 
   | smul c x _ hx => rw [Matrix.mulVec_smul, Pi.smul_apply, hx, smul_zero]
 
 /- English proof (translation)
-Establish `hw' : w = ∑ i, w i • Pi.single i (1 : ℂ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hw', Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : a ≤ i.val`. Rewrite using `[hw i hi, zero_smul, Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hir : i.val < D.R.rS` using `by omega`. Establish `e : i = Formalism.QuantumDeterminants.eI D.R.k D.R.rS ⟨i.val, hir⟩` using `Fin.ext rfl`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_smul, e, Q_e]`. Use `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨i.val, hir⟩, ?_, rfl⟩))` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Q_spanLt (a : ℕ) (ha : a ≤ D.R.rS) (w : Fin (2 * D.R.rS + D.R.k + 1) → ℂ)
     (hw : ∀ i : Fin (2 * D.R.rS + D.R.k + 1), a ≤ i.val → w i = 0) : C.Q τ *ᵥ w ∈ spanLt (eV (X := X) τ) a := by
@@ -86,9 +86,9 @@ theorem Q_spanLt (a : ℕ) (ha : a ≤ D.R.rS) (w : Fin (2 * D.R.rS + D.R.k + 1)
     omega
 
 /- English proof (translation)
-Establish `hrow : ∀ j, Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) j = if j = Formalism.QuantumDeterminants.esI k r a then 1 else 0`. Introduce `j`. Establish `ha` using `a.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Formalism.QuantumDeterminants.eI, Fin.ext_iff, Fin.val_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega)`. Simplify using `only [Matrix.mulVec, dotProduct, hrow, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem hpk_eI (k r : ℕ) (a : Fin r) (v : Fin (2 * r + k + 1) → ℂ) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ v) (Formalism.QuantumDeterminants.eI k r a) = v (Formalism.QuantumDeterminants.esI k r a) := by
@@ -102,9 +102,9 @@ theorem hpk_eI (k r : ℕ) (a : Fin r) (v : Fin (2 * r + k + 1) → ℂ) :
     if_true]
 
 /- English proof (translation)
-Take `⟨_, hQQi, hH, _⟩` from `C.isT τ`. Establish `he : eV τ a = (frS D ^ (D.R.rS - a.val))⁻¹ • (C.Q τ *ᵥ Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1)`. Rewrite using `[Q_e, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ (frS_ne D)), one_smul]`. Establish `hy : y = C.Q τ *ᵥ (C.Qi τ *ᵥ y)` using `by rw [Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]`. Use `conv_lhs => rw [he, hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `hJ`. Rewrite using `[star_smul, smul_dotProduct, ← Formalism.L2.SG.Pf.LTL.star_dot_conjT, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH, Pi.star_single, star_one, single_dotProduct, one_mul, hpk_eI, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hJ_e (a : Fin D.R.rS) (y : Fin X.B.I.n → ℂ) :
     hJ (X.B.I.ε (vOf X τ)) (eV τ a) y = star ((frS D ^ (D.R.rS - a.val))⁻¹) * (C.Qi τ *ᵥ y) (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) := by
@@ -120,31 +120,31 @@ theorem hJ_e (a : Fin D.R.rS) (y : Fin X.B.I.n → ℂ) :
 variable {C τ}
 
 /- English proof (translation)
-Take `⟨hQiQ, hQQi, hH, _⟩` from `C.isT τ`. Establish `hstar_ne : ∀ a : Fin D.R.rS, star ((frS D ^ (D.R.rS - a.val))⁻¹) ≠ 0` using `fun a => star_ne_zero.2 (inv_ne_zero (pow_ne_zero _ (frS_ne D)))`. Establish `hcol : ∀ (M : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) i j, M i j = (M *ᵥ Pi.single j 1) i` using `fun M i j => by rw [Matrix.mulVec_single_one]; rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hIe, hIz⟩, hperp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, fun a i hai => ?_, fun i j hj1 hj2 hi => ?_⟩` and prove the remaining obligations. Use `show (C.Qi τ * g * C.Q τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.Qi τ * g * C.Q τ) = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Establish `hQiQ' : (C.Qi τ)ᴴ * (C.Q τ)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQQi, Matrix.conjTranspose_one]`. Rewrite using `[← hH]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hcol (C.Qi τ * g * C.Q τ) i (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a)]`. Establish `h1 : (C.Qi τ * g * C.Q τ) *ᵥ Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1 = Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1 + frS D ^ (D.R.rS - a.val) • (C.Qi τ *ᵥ ((g - 1) *ᵥ eV τ a))`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Q_e, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Qi_e, smul_sub, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ (frS_ne D)), one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, Pi.add_apply, Pi.smul_apply, Qi_spanLt C τ a.val _ (hIe a) i hai, smul_zero, add_zero, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hcol (C.Qi τ * g * C.Q τ) i j]`. Establish `horth : ∀ b : Fin D.R.rS, hJ (X.B.I.ε (vOf X τ)) (eV τ b) (C.Q τ *ᵥ Pi.single j 1) = 0`. Introduce `b`. Rewrite using `[hJ_e, Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec, Pi.single_apply, if_neg, mul_zero]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Formalism.QuantumDeterminants.esI] at this`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1 : (C.Qi τ * g * C.Q τ) *ᵥ Pi.single j 1 = Pi.single j 1 + C.Qi τ *ᵥ ((g - 1) *ᵥ (C.Q τ *ᵥ Pi.single j 1))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`. Simplify using `only [Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, Pi.add_apply, Qi_spanLt C τ D.R.rS _ (hperp _ horth) i hi, add_zero, Pi.single_apply]`. Introduce and unpack `⟨_, hce, hcw⟩`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hg' : g = C.Q τ * (C.Qi τ * g * C.Q τ) * C.Qi τ`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hQQi, Matrix.one_mul, Matrix.mul_assoc, hQQi, Matrix.mul_one]`. Use `set m := C.Qi τ * g * C.Q τ with hm`. Establish `key : ∀ x, (g - 1) *ᵥ x = C.Q τ *ᵥ ((m - 1) *ᵥ (C.Qi τ *ᵥ x))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Use `conv_lhs => rw [hg']`. Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]`. Establish `hmW : ∀ x : Fin (2 * D.R.rS + D.R.k + 1) → ℂ, (∀ a, x (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) = 0) → ∀ i : Fin (2 * D.R.rS + D.R.k + 1), D.R.rS ≤ i.val → ((m - 1) *ᵥ x) i = 0`. Introduce `x hx i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj1 : j.val < D.R.rS`. Establish `e : j = Formalism.QuantumDeterminants.eI D.R.k D.R.rS ⟨j.val, hj1⟩` using `Fin.ext rfl`. Use `hce ⟨j.val, hj1⟩ i (by simp only; omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, e, this, Matrix.one_apply, sub_self, zero_mul]`. Distinguish the cases in `hj2 : j.val ≤ D.R.rS + D.R.k`. Rewrite using `[Matrix.sub_apply, hcw i j (by omega) hj2 hi, Matrix.one_apply, sub_self, zero_mul]`. Establish `hjr : 2 * D.R.rS + D.R.k - j.val < D.R.rS` using `by have := j.isLt; omega`. Establish `e : j = Formalism.QuantumDeterminants.esI D.R.k D.R.rS ⟨2 * D.R.rS + D.R.k - j.val, hjr⟩` using `by ext; simp only [Formalism.QuantumDeterminants.esI]; have := j.isLt; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hx, mul_zero]`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Qi_e, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Use `Submodule.smul_mem _ _ (Q_spanLt C τ a.val a.isLt.le _ fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, ← hcol m i (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a), hce a i hi, Pi.single_apply, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Use `Q_spanLt C τ D.R.rS le_rfl _ (hmW _ (fun a => hz _ (Or.inr ?_)))` and prove the remaining obligations. Simplify using `only [Formalism.QuantumDeterminants.esI]`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `Q_spanLt C τ D.R.rS le_rfl _ (hmW _ fun a => ?_)` and prove the remaining obligations. Establish `h1` using `hy a`. Rewrite `h1` using `[hJ_e]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (hstar_ne a)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_iff (z : Fin X.B.I.n → ℂ) (hz : Formalism.QuantumDeterminants.inWb D.R.k D.R.rS (C.Qi τ *ᵥ z))
     (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) (hg : gᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * g = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))) :

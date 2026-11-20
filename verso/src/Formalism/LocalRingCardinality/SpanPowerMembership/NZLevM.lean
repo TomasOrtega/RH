@@ -12,7 +12,7 @@ section One
 variable {R : Ranks} {H : Host R} {p : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S.prime⟩ CharZero (Kn p (orderOf (gPsi S))) := haveI : Fact p.Prime := ⟨S.prime⟩ charZero_of_setting (hidaSettingOfEven p _ S.five_le (ord_spec S).2.1 (ord_spec S).2.2)`.
+Supply the required witnesses or components.
 -/
 theorem charZero_Kn (S : Served H p) :
     haveI : Fact p.Prime := ⟨S.prime⟩
@@ -21,7 +21,7 @@ theorem charZero_Kn (S : Served H p) :
   charZero_of_setting (hidaSettingOfEven p _ S.five_le (ord_spec S).2.1 (ord_spec S).2.2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S.prime⟩ ((p : ℕ) : Kn p (orderOf (gPsi S))) ≠ 0 := haveI : Fact p.Prime := ⟨S.prime⟩ haveI := charZero_Kn S Nat.cast_ne_zero.mpr S.prime.ne_zero`.
+Supply the required witnesses or components.
 -/
 theorem p_ne_Kn (S : Served H p) :
     haveI : Fact p.Prime := ⟨S.prime⟩
@@ -31,7 +31,7 @@ theorem p_ne_Kn (S : Served H p) :
   Nat.cast_ne_zero.mpr S.prime.ne_zero
 
 /- English proof (translation)
-The claim follows from `Nat.card_pos`.
+A detailed English derivation is pending.
 -/
 theorem nOrb_pos (S : Served H p) : 0 < nOrb S := Nat.card_pos
 
@@ -47,7 +47,7 @@ def gatNZ (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → 
     e := e }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S.prime⟩ haveI := charZero_Kn S (gatNZ S T r lam comp e).M = (gatC (placesOf S T r lam) (p_ne_Kn S) comp).M := rfl`.
+Supply the required witnesses or components.
 -/
 theorem gatNZ_eq (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → DomWeight (R.N 0))
     (comp : Type) [Fintype comp] [DecidableEq comp] (e : ℕ) :
@@ -56,7 +56,7 @@ theorem gatNZ_eq (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Ps
     (gatNZ S T r lam comp e).M = (gatC (placesOf S T r lam) (p_ne_Kn S) comp).M := rfl
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨S.prime⟩`. Use `haveI := charZero_Kn S`. Conclude with `gatC_d (placesOf S T r lam) (p_ne_Kn S) comp ⟨0, nOrb_pos S⟩`.
+A detailed English derivation is pending.
 -/
 theorem gatNZ_d (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → DomWeight (R.N 0))
     (comp : Type) [Fintype comp] [DecidableEq comp] (e : ℕ) : (gatNZ S T r lam comp e).d = Fintype.card comp := by
@@ -71,7 +71,7 @@ def FbNZ (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → D
   Fb (placesOf S T r lam) (p_ne_Kn S) comp c
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨S.prime⟩`. Use `haveI := charZero_Kn S`. Conclude with `Fb_li (placesOf S T r lam) (p_ne_Kn S) comp ⟨0, nOrb_pos S⟩`.
+A detailed English derivation is pending.
 -/
 theorem FbNZ_li (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → DomWeight (R.N 0))
     (comp : Type) [Fintype comp] [DecidableEq comp] (e : ℕ) :
@@ -81,7 +81,7 @@ theorem FbNZ_li (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi
   exact Fb_li (placesOf S T r lam) (p_ne_Kn S) comp ⟨0, nOrb_pos S⟩
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨S.prime⟩`. Use `haveI := charZero_Kn S`. Conclude with `M_eq (placesOf S T r lam) (p_ne_Kn S) comp ⟨0, nOrb_pos S⟩`.
+A detailed English derivation is pending.
 -/
 theorem FbNZ_span (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → DomWeight (R.N 0))
     (comp : Type) [Fintype comp] [DecidableEq comp] (e : ℕ) :
@@ -114,7 +114,7 @@ def gatTiesNZ : GatTies (withGatNZ D h1 rOf eOf bs) where
   gat_lam := fun _ _ _ _ _ _ => rfl
 
 /- English proof (translation)
-Conclude with `gatNZ_d _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem withGatNZ_d (u w h) : ((withGatNZ D h1 rOf eOf bs).gat u w h).d = Fintype.card ((D.mem u).C.cls 0) := by
   classical

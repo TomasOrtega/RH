@@ -11,13 +11,11 @@ variable {O : Type*} [CommRing O]
   [AddCommGroup C] [Module O C]
 
 /- English proof (translation)
-Establish `h1 : Module.length O B = Module.length O (LinearMap.ker g) + Module.length O (LinearMap.range g)` using `Module.length_eq_add_of_exact (LinearMap.ker g).subtype g.rangeRestrict (Submodule.injective_subtype _) g.surjective_rangeRestrict (by`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val hx` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨y, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use the proof step `simp)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : Module.length O (LinearMap.ker g) ≤ Module.length O A`. Establish `hk : LinearMap.ker g = LinearMap.range f` using `(LinearMap.exact_iff.mp h)`. Rewrite using `[hk]`. Conclude with `Module.length_le_of_surjective f.rangeRestrict f.surjective_rangeRestrict`. Establish `h3 : Module.length O (LinearMap.range g) ≤ Module.length O C` using `Module.length_le_of_injective (LinearMap.range g).subtype (Submodule.injective_subtype _)`.
-
-Rewrite using `[h1]`. Conclude with `add_le_add h2 h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_le_of_exact (f : A →ₗ[O] B) (g : B →ₗ[O] C) (h : Function.Exact f g) :
     Module.length O B ≤ Module.length O A + Module.length O C := by
@@ -50,15 +48,15 @@ section Card
 variable {O : Type*} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `of_subsingleton`. Use `⟨inferInstance, 0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Module.length_eq_zero]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `@of_simple_quotient M _ _ N hs _ ih`. Take `⟨hfin, n, hn, hc⟩` from `ih`. Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hs`. Establish `hIm : I = maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hI`. Substitute `hIm` using the available equality.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hq : Nat.card (M ⧸ N) = Nat.card (ResidueField O)` using `Nat.card_congr e.toEquiv`. Establish `hfq : Finite (M ⧸ N)` using `Finite.of_equiv (ResidueField O) e.symm.toEquiv`. Establish `hcard : Nat.card M = Nat.card (M ⧸ N) * Nat.card N` using `(Submodule.card_eq_card_quotient_mul_card N).trans (mul_comm _ _)`. Establish `hfM : Finite M`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hcard, hq, hc]`. Establish `: Nat.card (ResidueField O) ≠ 0` using `Nat.card_pos.ne'`. Check the signs of the components of the expression. Use `⟨hfM, n + 1, ?_, ?_⟩` and prove the remaining obligations. Use `Module.length_eq_add_of_exact N.subtype N.mkQ (Submodule.injective_subtype _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ N)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, hn, Module.length_eq_one O (M ⧸ N)]`. Use `norm_cast`. Rewrite using `[hcard, hq, hc, pow_succ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_of_isFiniteLength {M : Type*} [AddCommGroup M] [Module O M]
     (h : IsFiniteLength O M) :
@@ -97,19 +95,17 @@ variable {O : Type*} [CommRing O] [IsLocalRing O]
   {Q : Type*} [AddCommGroup Q] [Module O Q]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `@of_subsingleton M _ _ _`. Establish `: Subsingleton (M →ₗ[O] Q)` using `⟨fun f g => LinearMap.ext fun x => by`. Rewrite using `[Subsingleton.elim x 0, map_zero, map_zero]⟩`. Rewrite using `[Module.length_eq_zero (R := O) (M := M →ₗ[O] Q)]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Consider the case `@of_simple_quotient M _ _ N hs _ ih`. Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hs`. Establish `hIm : I = maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hI`. Substitute `hIm` using the available equality.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hex : Function.Exact (LinearMap.lcomp O Q N.mkQ) (LinearMap.lcomp O Q N.subtype)`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨N.liftQ g ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `LinearMap.congr_fun hg ⟨x, hx⟩` as an intermediate fact. Simplify using `using this`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, rfl⟩`. Use extensionality with `x`. Establish `: N.mkQ (x : M) = 0` using `(Submodule.Quotient.mk_eq_zero N).mpr x.2`. Use `show k (N.mkQ (x : M)) = 0`. Rewrite using `[this, map_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `length_le_of_exact _ _ hex`. Establish `h2 : Module.length O ((M ⧸ N) →ₗ[O] Q) ≤ 1`. Rewrite using `[(LinearEquiv.congrLeft Q O e).length_eq]`. Conclude with `hQ`. Establish `h3` using `Module.length_eq_add_of_exact N.subtype N.mkQ (Submodule.injective_subtype _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ N)`.
-
-Rewrite using `[h3, Module.length_eq_one O (M ⧸ N), add_comm]`. Conclude with `h1.trans (add_le_add h2 ih)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_hom_le (hQ : Module.length O ((O ⧸ maximalIdeal O) →ₗ[O] Q) ≤ 1)
     {M : Type*} [AddCommGroup M] [Module O M] (h : IsFiniteLength O M) :
@@ -155,31 +151,25 @@ section Socle
 variable {O : Type*} [CommRing O] [IsDomain O] [IsLocalRing O]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `hs : Subsingleton (O ⧸ Ideal.span {p ^ 0})`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`. Conclude with `Ideal.Quotient.subsingleton_iff.mpr rfl`. Establish `: Subsingleton ((O ⧸ maximalIdeal O) →ₗ[O] (O ⧸ Ideal.span {p ^ 0}))` using `⟨fun f g => LinearMap.ext fun x => Subsingleton.elim _ _⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.length_eq_zero]`. Conclude with `bot_le`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Set `t : O ⧸ Ideal.span {p ^ (j + 1)}` to `Ideal.Quotient.mk _ (p ^ j)`. Establish `ht : ∀ c ∈ maximalIdeal O, c • t = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `c hc`. Rewrite `hc` using `[hp, Ideal.mem_span_singleton]`. Take `⟨d, rfl⟩` from `hc`. Use `show (p * d) • (Ideal.Quotient.mk _ (p ^ j)) = 0`. Rewrite using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `show Ideal.Quotient.mk _ (p * d) * Ideal.Quotient.mk _ (p ^ j) = 0`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `⟨d, by ring⟩`. Set `φ : (O ⧸ maximalIdeal O) →ₗ[O] (O ⧸ Ideal.span {p ^ (j + 1)})` to `Submodule.liftQ _ (LinearMap.toSpanSingleton O _ t) (by`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `ht c hc)` using `[LinearMap.mem_ker]`. Set `ev : ((O ⧸ maximalIdeal O) →ₗ[O] (O ⧸ Ideal.span {p ^ (j + 1)})) →ₗ[O] (O ⧸ Ideal.span {p ^ (j + 1)})` to `LinearMap.applyₗ (1 : O ⧸ maximalIdeal O)`. Establish `hev : Function.Injective ev`. Introduce `f g hfg`. Use `ext`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify `hfg` using `[ev]`. Establish `hran : ∀ f, ev f ∈ LinearMap.range φ`. Introduce `f`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (ev f)`. Establish `h0 : p • ev f = 0` using `by show p • f 1 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul]`. Establish `: p • (1 : O ⧸ maximalIdeal O) = 0`. Rewrite using `[Algebra.smul_def, mul_one]`. Use `show Ideal.Quotient.mk _ p = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self p`. Rewrite using `[this, map_zero]`. Rewrite `h0` using `[← hy, Algebra.smul_def]`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {p ^ (j + 1)}) (p * y) = 0`. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h0`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `h1`. Establish `h2 : y = p ^ j * d`. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Ideal.Quotient.mk _ d, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, h2]`. Use `show d • t = _`.
-
-Rewrite using `[Algebra.smul_def]`. Use `show Ideal.Quotient.mk _ d * Ideal.Quotient.mk _ (p ^ j) = _`. Rewrite using `[← map_mul, mul_comm]`. Establish `h1 : Module.length O ((O ⧸ maximalIdeal O) →ₗ[O] (O ⧸ Ideal.span {p ^ (j + 1)})) ≤ Module.length O (LinearMap.range φ)` using `Module.length_le_of_injective (ev.codRestrict _ hran) (by`. Introduce `f g hfg`.
-
-Conclude with `hev (congrArg Subtype.val hfg))`. Establish `h2 : Module.length O (LinearMap.range φ) ≤ Module.length O (O ⧸ maximalIdeal O)` using `Module.length_le_of_surjective φ.rangeRestrict φ.surjective_rangeRestrict`. Establish `h3 : Module.length O (O ⧸ maximalIdeal O) = 1`. Establish `: IsSimpleModule O (O ⧸ maximalIdeal O)` using `isSimpleModule_iff_quot_maximal.mpr ⟨_, inferInstance, ⟨LinearEquiv.refl _ _⟩⟩`. Conclude with `Module.length_eq_one _ _`.
-
-Conclude with `h1.trans (h2.trans h3.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_hom_residue_le (p : O) (hp : maximalIdeal O = Ideal.span {p}) (hp0 : p ≠ 0) (k : ℕ) :
     Module.length O ((O ⧸ maximalIdeal O) →ₗ[O] (O ⧸ Ideal.span {p ^ k})) ≤ 1 := by

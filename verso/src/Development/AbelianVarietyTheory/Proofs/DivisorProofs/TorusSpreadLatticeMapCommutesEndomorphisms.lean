@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.Spz
 
 /- English proof (translation)
-Take `⟨t, ht, hi⟩` from `E.i_lin 0`. Establish `htm` using `GlobalTheory.Poinc.Eq8.eq_torusMap_of_torusEndOf E.h t ht`. Establish `k` using `GlobalTheory.TorusPart.isGrpPullback_thickLift ha h`. Establish `e : f₀.left ≫ GlobalTheory.TorusPart.thickLift ha h = GlobalTheory.TorusPart.thickLift ha h ≫ ((Over.pullback (thick V (maximalIdeal V) 0)).map E.aG).left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, GlobalTheory.TorusPart.thickLift_fst, hf, Category.assoc]`. Simplify using `only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left]`. Rewrite using `[pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left]`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd, ← Category.assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `GlobalTheory.TorusPart.pullTorus_comp k k _ f₀ e (U.gt 0).i`. Unfold `GlobalTheory.TorusPart.gtTorus`. Rewrite using `[← hc, hi, htm, GlobalTheory.TorusPart.pullTorus_torusMap_comp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem endU_gtTorus_comp {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {D : DegData V (maximalIdeal V)}
     {A : PolAV (Sp (FractionRing V))} {G : Over (Sp V)} [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G)
@@ -50,14 +50,14 @@ def pullEnd {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G
   Over.homMk (h.1.lift (φ ≫ u.left) G'.hom (by rw [Category.assoc, Over.w, h.1.w])) (h.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `h.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullEnd_left {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (u : G ⟶ G) : (pullEnd h u).left ≫ φ = φ ≫ u.left :=
   h.1.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `h₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← e3, ← Category.assoc, e1, Category.assoc, e2, ← Category.assoc, e3, Category.assoc, Category.assoc, e4]`. Rewrite using `[Category.assoc, e6, Category.assoc, e5]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem over_of_two_pullbacks {B S₁ : Scheme.{0}} {H : Over B} {G₁ : Over S₁} {X Y : Scheme.{0}} {ξ₁ : S₁ ⟶ B}
     {β₁ : G₁.left ⟶ H.left} (h₁ : IsPullback β₁ G₁.hom H.hom ξ₁) {φW : Y ⟶ H.left} {n : X ⟶ Y} {n₁ : X ⟶ G₁.left}
@@ -70,17 +70,17 @@ theorem over_of_two_pullbacks {B S₁ : Scheme.{0}} {H : Over B} {G₁ : Over S�
   · rw [Category.assoc, e6, Category.assoc, e5]
 
 /- English proof (translation)
-Introduce `B H _ _ hH V₁ _ _ _ hV₁ G₁ _ _ hG₁ D₁ A₁ U₁ ξ₁ β₁ h₁ V₂ _ _ _ hV₂ G₂ _ _ hG₂ D₂ A₂ U₂ ξ₂ β₂ h₂ ρ hsp Fm E₁ E₂ hE₁ hE₂`. Take `⟨W, _, _, _, ψ, GW, _, _, φW, j, Ω, _, α, b₁, hb₁, GΩ, _, n, hn, n₁, hn₁, κ, _, c, b₂, hb₂, Gκ, _, m, hm, m₂, hm₂, hW, hj, hα, -, -, -, hnφ, hmφ, hjΩ, hjκ⟩` from `hsp`. Set `FW` to `pullEnd hW Fm`. Establish `hFW : FW.left ≫ φW = φW ≫ Fm.left` using `pullEnd_left hW Fm`. Establish `key : j ≫ FW = GlobalTheory.SplitTorus.torusMap _ E₁.h ≫ j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSchemeTheoreticallyDominant (spMap α)` using `GlobalTheory.ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hα`. Establish `: IsSeparated H.hom` using `hH.separated`. Establish `: IsSeparated GW.hom` using `MorphismProperty.of_isPullback hW.1 this`. Establish `: Flat (splitTorusAff ZU D₁.toPre.X).hom` using `(GlobalTheory.ExtUnique.splitTorusAff_flat_and_isSeparated _ _).1`. Establish `: Flat (splitTorus (Sp W) D₁.toPre.X).hom` using `inferInstanceAs (Flat (pullback.snd _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback (GlobalTheory.SplitTorus.isPullback_bcMap (spMap α) _) ?_` and prove the remaining obligations. Set `FΩ` to `pullEnd hn FW`. Establish `hFΩ : FΩ.left ≫ n = n ≫ FW.left` using `pullEnd_left hn FW`. Establish `hover : FΩ.left ≫ n₁ = n₁ ≫ E₁.aG.left` using `over_of_two_pullbacks h₁.1 hFΩ hFW hnφ hE₁ (Over.w E₁.aG) (by rw [hn₁.1.w, ← Category.assoc, Over.w FΩ])`. Establish `e1` using `GlobalTheory.TorusPart.pullTorus_comp hn hn FW FΩ hFΩ j`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.TorusPart.pullTorus_torusMap_comp hn j E₁.h`. Establish `e3` using `endU_gtTorus_comp U₁ E₁ hb₁ hn₁ FΩ hover`. Rewrite `e1` using `[hjΩ, e3]`. Rewrite `e2` using `[hjΩ]`. Rewrite using `[← GlobalTheory.TorusPart.pullTorus_left hn, ← GlobalTheory.TorusPart.pullTorus_left hn, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `Fκ` to `pullEnd hm FW`. Establish `hFκ : Fκ.left ≫ m = m ≫ FW.left` using `pullEnd_left hm FW`. Establish `hover₂ : Fκ.left ≫ m₂ = m₂ ≫ E₂.aG.left` using `over_of_two_pullbacks h₂.1 hFκ hFW hmφ hE₂ (Over.w E₂.aG) (by rw [hm₂.1.w, ← Category.assoc, Over.w Fκ])`. Establish `hmono` using `(GlobalTheory.TorusPart.mono_gtTorus_and_factor (U₂.gt 0) hb₂ hm₂).1`. Establish `e` using `congrArg (GlobalTheory.TorusPart.pullTorus hm) key`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[GlobalTheory.TorusPart.pullTorus_comp hm hm FW Fκ hFκ j, GlobalTheory.TorusPart.pullTorus_torusMap_comp hm j, hjκ, Category.assoc, endU_gtTorus_comp U₂ E₂ hb₂ hm₂ Fκ hover₂, ← Category.assoc, ← Category.assoc, ← GlobalTheory.SplitTorus.torusMap_comp, ← GlobalTheory.SplitTorus.to …`. Establish `: Nonempty (Sp κ)` using `inferInstance`. Establish `e'` using `GlobalTheory.SplitTorus.torusMap_injective ((cancel_mono _).1 e)`. Introduce `y`. Conclude with `DFunLike.congr_fun e' y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem spread₂_endU_comm : ∀ (B : Scheme.{0}) (H : Over B) [GrpObj H] [IsCommMonObj H], IsSemiAbelian H → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], GlobalTheory.Mum.Base V₁ → ∀ (G₁ : Over (Sp V₁)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (D₁ : DegData V₁ (maximalIdeal V₁)) (A₁ : PolAV (Sp (FractionRing V₁))) (U₁ : Unif (maximalIdeal V₁) D₁ A₁ G₁) (ξ₁ : Sp V₁ ⟶ B) (β₁ : G₁.left ⟶ H.left), IsGrpPullback G₁ H ξ₁ β₁ → ∀ (V₂ : Type) [CommRing V₂] [IsDomain V₂] [IsLocalRing V₂], GlobalTheory.Mum.Base V₂ → ∀ (G₂ : Over (Sp V₂)) [GrpObj G₂] [IsCommMonObj G₂], IsSemiAbelian G₂ → ∀ (D₂ : DegData V₂ (maximalIdeal V₂)) (A₂ : PolAV (Sp (FractionRing V₂))) (U₂ : Unif (maximalIdeal V₂) D₂ A₂ G₂) (ξ₂ : Sp V₂ ⟶ B) (β₂ : G₂.left ⟶ H.left), IsGrpPullback G₂ H ξ₂ β₂ → ∀ ρ : D₂.toPre.X →+ D₁.toPre.X, Spread₂ H U₁ ξ₁ β₁ U₂ ξ₂ β₂ ρ → ∀ (Fm : H ⟶ H) (E₁ : EndU U₁.toUnifPre) (E₂ : EndU U₂.toUnifPre), E₁.aG.left ≫ β₁ = β₁ ≫ Fm.left → E₂.aG.left ≫ β₂ = β₂ ≫ Fm.left → ∀ y, ρ (E₂.h y) = E₁.h (ρ y) := by
   intro B H _ _ hH V₁ _ _ _ hV₁ G₁ _ _ hG₁ D₁ A₁ U₁ ξ₁ β₁ h₁ V₂ _ _ _ hV₂ G₂ _ _ hG₂ D₂ A₂ U₂ ξ₂ β₂ h₂ ρ hsp

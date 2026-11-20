@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hT hW S Y f d`. Use `⟨⟨S, 𝟙 S, f, Wt.const S d, inferInstance, hW.2.2 (𝟙 S) d⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `B bY`. Simplify using the standard rewrite rules. Introduce `Ω _ _ x y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hs : {z : gp Ω ⟶ S | z ≫ 𝟙 S = x ∧ z ≫ f = y} = {x}`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff, Category.comp_id]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `fun hz => hz.1`. Introduce and unpack `rfl`. Conclude with `⟨rfl, h⟩`. Express the relevant statement in the definitionally equal form `∑ᶠ z ∈ {z : gp Ω ⟶ S | z ≫ 𝟙 S = x ∧ z ≫ f = y}, Wt.const S d Ω z = d`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hs, finsum_mem_singleton]`. Both sides reduce to the same expression. Introduce `h`. Establish `hs : {z : gp Ω ⟶ S | z ≫ 𝟙 S = x ∧ z ≫ f = y} = ∅`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, Category.comp_id]`. Introduce and unpack `⟨rfl, h'⟩`. Conclude with `h h'`. Express the relevant statement in the definitionally equal form `∑ᶠ z ∈ {z : gp Ω ⟶ S | z ≫ 𝟙 S = x ∧ z ≫ f = y}, Wt.const S d Ω z = 0`. Rewrite using `[hs, finsum_mem_empty]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ n i hl`. Express the relevant statement in the definitionally equal form `(trHQ l (𝟙 S) (Wt.const S d) n i).comp (pullHQ l (sch.map f) n i) = _`. Rewrite using `[hT l n i S d hl, LinearMap.smul_comp, LinearMap.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.corrGraphQ_of :
     TrIdQ → WtLin → CorrGraphQ := by

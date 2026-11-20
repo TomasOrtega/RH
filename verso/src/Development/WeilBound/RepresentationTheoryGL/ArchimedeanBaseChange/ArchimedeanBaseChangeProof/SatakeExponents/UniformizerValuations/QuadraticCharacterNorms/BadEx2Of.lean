@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.Ex0
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n a ha w μ hμ m hm KB hKB`. Distinguish the cases in `hw : IsSplitAt w`. Conclude with `badSplit2 h3 E hE n a ha w hw μ hμ m hm KB hKB`. Conclude with `badInert2 h2 E hE n a ha w hw μ hμ m hm KB hKB`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem badEx2_of (h2 : M2) (h3 : M3) : BadEx2 := by
   intro E _ _ _ hE n a ha w μ hμ m hm KB hKB

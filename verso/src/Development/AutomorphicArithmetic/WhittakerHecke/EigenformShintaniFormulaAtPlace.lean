@@ -12,7 +12,7 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [H.dL, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma dL_mul {K : Type} [Field K] [NumberField K] {v : H.P K} (a d a' d' : (H.Kv v)ˣ) :
     H.dL a d * H.dL a' d' = H.dL (a * a') (d * d') := by
@@ -21,7 +21,7 @@ private lemma dL_mul {K : Type} [Field K] [NumberField K] {v : H.P K} (a d a' d'
   fin_cases i <;> fin_cases j <;> simp [H.dL, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [H.dL]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma dL_one {K : Type} [Field K] [NumberField K] {v : H.P K} : (H.dL (1 : (H.Kv v)ˣ) 1) = 1 := by
   refine Units.ext ?_
@@ -29,7 +29,7 @@ private lemma dL_one {K : Type} [Field K] [NumberField K] {v : H.P K} : (H.dL (1
   fin_cases i <;> fin_cases j <;> simp [H.dL]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [H.dL, H.nL, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma dL_nL {K : Type} [Field K] [NumberField K] {v : H.P K} (a : (H.Kv v)ˣ) (b : H.Kv v) :
     H.dL a 1 * H.nL b = H.nL ((a : H.Kv v) * b) * H.dL a 1 := by
@@ -38,9 +38,9 @@ private lemma dL_nL {K : Type} [Field K] [NumberField K] {v : H.P K} (a : (H.Kv 
   fin_cases i <;> fin_cases j <;> simp [H.dL, H.nL, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ, Finset.mul_sum, Nat.sub_self, pow_zero, mul_one]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: k + 1 - i = (k - i) + 1`. Use `Finset.mem_range.1 hi` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hs_succ (a b : ℂ) (k : ℕ) :
     ∑ i ∈ Finset.range (k + 1 + 1), a ^ i * b ^ (k + 1 - i) =
@@ -55,29 +55,25 @@ private lemma hs_succ (a b : ℂ) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨R, hcard, hRint, hR⟩` from `UpperTheory.ConvolutionTheory.R2.H.heckeExpl K v ϖ hϖ`. Establish `hsum` using `fun g => (hR α β W hW g).1`. Establish `hcen` using `fun g => (hR α β W hW g).2`. Take `⟨t1, -⟩` from `UpperTheory.ConvolutionTheory.R2.H.whTorus K v ϖ hϖ χ hχ α β W hW hn`. Establish `hint : ∀ c : H.Kv v, H.IsInt c → ∀ y, W (H.nL c * y) = W y` using `fun c hc y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hn, hχ.2.1 c hc, one_mul]`. Establish `hϖint : H.IsInt (ϖ : H.Kv v)`. Establish `h' : Valued.v (ϖ : H.Kv v) = _` using `hϖ`. Use `show Valued.v (ϖ : H.Kv v) ≤ 1`. Rewrite using `[h']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) ≤ 1)` after adjusting the coercions. Establish `hq0 : H.q v ≠ 0`. Establish `: Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `Nat.cast_ne_zero.2 this`. Use `set s : ℂ := H.q v ^ (1 / 2 : ℂ) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hss : s * s = H.q v`. Rewrite using `[hs, ← Complex.cpow_add _ _ hq0]`. Evaluate the numerical expressions. Establish `hs0 : s ≠ 0` using `fun h => hq0 (by rw [← hss, h, zero_mul])`. Establish `hconst : ∀ x : ℂ, ∑ _b ∈ R, x = H.q v * x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_const, hcard, nsmul_eq_mul]`. Both sides reduce to the same expression. Establish `hrec : ∀ k : ℕ, s * ((α : ℂ) + β) * W (H.dL (ϖ ^ (k + 1)) 1) = H.q v * W (H.dL (ϖ ^ (k + 1 + 1)) 1) + (α : ℂ) * β * W (H.dL (ϖ ^ k) 1)` using `fun k => by`. Establish `h2` using `hsum (H.dL (ϖ ^ (k + 1)) 1)`. Establish `t3 : ∀ b ∈ R, W (H.dL (ϖ ^ (k + 1)) 1 * H.nL b * H.dL ϖ 1) = W (H.dL (ϖ ^ (k + 1 + 1)) 1)` using `fun b hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[dL_nL, mul_assoc, hint _ ?_, dL_mul, mul_one, ← pow_succ]`. Establish `hb' : ((ϖ : H.Kv v) ^ (k + 1)) * b ∈ v.adicCompletionIntegers K` using `mul_mem (pow_mem (show (ϖ : H.Kv v) ∈ v.adicCompletionIntegers K from hϖint) _) (show b ∈ v.adicCompletionIntegers K from hRint b hb)`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `hb'`. Rewrite `h2` using `[Finset.sum_congr rfl t3, hconst]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t4 : W (H.dL (ϖ ^ (k + 1)) 1 * H.dL 1 ϖ) = (α : ℂ) * β * W (H.dL (ϖ ^ k) 1)`. Use `hcen (H.dL (ϖ ^ k) 1)` as an intermediate fact. Rewrite `this` using `[dL_mul, one_mul, ← pow_succ]`. Rewrite using `[dL_mul, mul_one, one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[t4]`. Conclude with `h2`. Establish `h3 : s * W (H.dL ϖ 1) = ((α : ℂ) + β) * W 1`. Use `mul_left_cancel₀ hs0 ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hss, ← mul_assoc]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `t1`. Establish `key : ∀ k : ℕ, s ^ (k + 1) * W (H.dL (ϖ ^ (k + 1)) 1) = β * (s ^ k * W (H.dL (ϖ ^ k) 1)) + (α : ℂ) ^ (k + 1) * W 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Proceed by induction.
 
-Simplify using `only [zero_add, pow_one, pow_zero, one_mul, dL_one]`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ k ih`. Establish `h` using `hrec k`.
-
-Rewrite `h` using `[← hss]`. Take the linear combination `(α : ℂ) * ih - s ^ k * h`. Proceed by induction on `k with`. Consider the case `zero => simp [dL_one]`. Consider the case `succ k ih`.
-
-Rewrite using `[key, ih, hs_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma tor_loc (K : Type) [Field K] [NumberField K] (v : H.P K) (ϖ : (H.Kv v)ˣ) (hϖ : H.IsU ϖ)
     (χ : H.Kv v → ℂ) (hχ : H.Good χ) (α β : ℂˣ) (W : GL (Fin 2) (H.Kv v) → ℂ)
@@ -147,11 +143,9 @@ private lemma tor_loc (K : Type) [Field K] [NumberField K] (v : H.P K) (ϖ : (H.
     ring
 
 /- English proof (translation)
-Introduce `K _ _ v ϖ hϖ χ hχ α β f hB hn g hg k`. Establish `hE1 : UpperTheory.V.Af.Smo.Eig v {α, β} fun x => f (H.lc v x * g)`. Use `(H.fixTr K v f g hg).2 _ hB 1` as an intermediate fact. Simplify `this` using `[H.lc]`. Establish `hnl : ∀ b x, f (H.lc v (H.nL b * x) * g) = χ b * f (H.lc v x * g)` using `fun b x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[map_mul, mul_assoc, hn]`. Establish `h` using `tor_loc K v ϖ hϖ χ hχ α β _ hE1 hnl k`. Establish `e : H.idl v (ϖ ^ k) = H.idl v ϖ ^ k` using `map_pow _ _ _`. Use `beta_reduce at h`. Rewrite `h` using `[(H.lcLaws K v).2.2.2.1, e, map_one, one_mul]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eigenform_shintani_formula_at_place :
     ∀ (K : Type) [Field K] [NumberField K] (v : H.P K) (ϖ : (H.Kv v)ˣ), H.IsU ϖ → ∀ (χ : H.Kv v → ℂ), H.Good χ → ∀ (α β : ℂˣ) (f : GL (Fin 2) (A K) → ℂ),

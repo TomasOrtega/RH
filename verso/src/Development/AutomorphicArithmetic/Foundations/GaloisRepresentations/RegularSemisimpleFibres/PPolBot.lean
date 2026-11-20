@@ -7,9 +7,9 @@ open Polynomial
 namespace UpperTheory.Gal.InertialTypesAlt
 
 /- English proof (translation)
-Use `haveI : NeZero (Q - 1) := ⟨by omega⟩`. Rewrite using `[Multiset.map_map, Finset.prod_eq_multiset_prod, Finset.range_val]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, pow_one, ZMod.val_natCast]`. Rewrite using `[← pow_eq_pow_mod _ hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem polBot_block (Q : ℕ) (x : ℂ) (hQ : 2 ≤ Q) (hx : x ^ (Q - 1) = 1) (c : ℕ → ℕ) (m : ℕ) :
     (((Multiset.range m).map fun j => ((1 : ℕ), ((c j : ℕ) : ZMod (Q - 1)))).map
@@ -23,7 +23,7 @@ private theorem polBot_block (Q : ℕ) (x : ℂ) (hQ : 2 ≤ Q) (hx : x ^ (Q - 1
   rw [← pow_eq_pow_mod _ hx]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons p L ih`. Rewrite using `[List.map_cons, List.sum_cons, Multiset.map_add, Multiset.prod_add, ih, List.map_cons, List.prod_cons, polBot_block Q x hQ hx (fun j => p.2 * q ^ j * ((Q - 1) / (q ^ p.1 - 1))) p.1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem polBot_list (q Q : ℕ) (x : ℂ) (hQ : 2 ≤ Q) (hx : x ^ (Q - 1) = 1) (L : List (ℕ × ℕ)) :
     (((L.map fun p => (Multiset.range p.1).map fun j =>
@@ -37,7 +37,7 @@ private theorem polBot_list (q Q : ℕ) (x : ℂ) (hQ : 2 ≤ Q) (hx : x ^ (Q - 
       polBot_block Q x hQ hx (fun j => p.2 * q ^ j * ((Q - 1) / (q ^ p.1 - 1))) p.1]
 
 /- English proof (translation)
-Introduce `q Q L x hQ hx`. Establish `h` using `polBot_list q Q x hQ hx L`. Simplify `h` using `[Lbl.pol, Lbl.blocks]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem polBot : PolBot := by
   intro q Q L x hQ hx

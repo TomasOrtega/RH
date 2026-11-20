@@ -8,7 +8,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (HasChars)
 open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll boundInert boundFine)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FrobOrbit.frobOnType_and_orbit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrobeniusOrbitOfUnramifiedPrime.lean&line=232#L232)
 -/

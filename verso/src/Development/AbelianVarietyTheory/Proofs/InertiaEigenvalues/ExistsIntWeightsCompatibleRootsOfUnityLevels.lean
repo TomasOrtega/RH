@@ -10,11 +10,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.LevelSums
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.mul_succ, Finset.sum_range_add, ih, Finset.sum_range_succ, mul_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_eq_single (n % m)]`. Rewrite using `[if_pos (by simp), pow_add, pow_mul, mul_comm]`. Introduce `b hb hne`. Rewrite using `[if_neg]`. Rewrite using `[Nat.mul_add_mod, Nat.mod_eq_of_lt (Finset.mem_range.1 hb)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.mod_lt _ hm)) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_class {R : Type*} [CommRing R] (x : R) (m k n : ℕ) (hm : 0 < m) :
     ∑ a ∈ Finset.range (m * k), (if a % m = n % m then x ^ a else 0) =
@@ -36,15 +36,15 @@ theorem sum_class {R : Type*} [CommRing R] (x : R) (m k n : ℕ) (hm : 0 < m) :
 open Classical in
 
 /- English proof (translation)
-Establish `hs : l ^ s = l ^ j * l ^ (s - j)` using `by rw [← pow_add]; congr 1; omega`. Establish `h1 : ∑ a ∈ primeTo l s, (((if a % l ^ j = n % l ^ j then 1 else 0 : ℤ)) : R) * x ^ a = ∑ a ∈ Finset.range (l ^ j * l ^ (s - j)), (if a % l ^ j = n % l ^ j then x ^ a else 0)`. Rewrite using `[← hs]`. Unfold `primeTo`. Rewrite using `[Finset.sum_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a % l ^ j = n % l ^ j`. Establish `: ¬ l ∣ a`. Introduce `ha`. Establish `hd : l ∣ l ^ j` using `dvd_pow_self l (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hn (((Nat.ModEq.of_dvd hd h).dvd_iff dvd_rfl).1 ha)`. Simplify using `[h, this]`. Simplify using `[h]`. Rewrite using `[h1, sum_class x _ _ n (pow_pos hl j)]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, ← pow_eq_pow_mod n h]`. Simplify using `[mul_comm]`. Establish `h2 : (x ^ l ^ j) ^ l ^ (s - j) = 1` using `by rw [← pow_mul, ← hs, hx]`. Establish `h3` using `mul_geom_sum (x ^ l ^ j) (l ^ (s - j))`. Rewrite `h3` using `[h2, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h4) h`. Rewrite using `[h4, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sum_ind {R : Type*} [CommRing R] [IsDomain R] (l : ℕ) (hl : 0 < l) (x : R) (s j n : ℕ)
     (hj : 1 ≤ j) (hjs : j ≤ s) (hn : ¬ l ∣ n) (hx : x ^ l ^ s = 1) :
@@ -76,7 +76,7 @@ theorem sum_ind {R : Type*} [CommRing R] [IsDomain R] (l : ℕ) (hl : 0 < l) (x 
     · rw [h4, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', pow_mul, ← add_assoc, h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_shift {M : Type*} [Monoid M] (l : ℕ) (ζ : ℕ → M) (h : ∀ j, ζ (j + 1) ^ l = ζ j)
     (i j : ℕ) : ζ (i + j) ^ l ^ j = ζ i := by
@@ -85,11 +85,11 @@ theorem pow_shift {M : Type*} [Monoid M] (l : ℕ) (ζ : ℕ → M) (h : ∀ j, 
   | succ j ih => rw [pow_succ', pow_mul, ← add_assoc, h, ih]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hij`. Assume the negation of the conclusion as `hlt`. Take `⟨d, rfl⟩ : ∃ d, i = 1 + (j + d)` from `⟨i - 1 - j, by omega⟩`. Apply `h1` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← pow_shift l ζ h 1 (j + d), pow_add, pow_mul, hij, one_pow]`. Introduce `hij`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hij`. Use `pow_shift l ζ h 0 i` as an intermediate fact. Rewrite `this` using `[zero_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_add, pow_mul, this, h0, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_iff_le {M : Type*} [Monoid M] (l : ℕ) (ζ : ℕ → M) (h0 : ζ 0 = 1) (h1 : ζ 1 ≠ 1)
     (h : ∀ j, ζ (j + 1) ^ l = ζ j) (i j : ℕ) : ζ i ^ l ^ j = 1 ↔ i ≤ j := by
@@ -106,17 +106,17 @@ theorem pow_eq_one_iff_le {M : Type*} [Monoid M] (l : ℕ) (ζ : ℕ → M) (h0 
     rw [pow_add, pow_mul, this, h0, one_pow]
 
 /- English proof (translation)
-Introduce `l hl ζ h0 h1 h s j n hj hjs hn`. Establish `hl0 : 0 < l` using `hl.out.pos`. Establish `hz : ∀ j, 1 ≤ j → j ≤ s → ∑ a ∈ primeTo l s, (if a % l ^ j = n % l ^ j then 1 else 0 : ℤ) = (l : ℤ) ^ (s - j)`. Introduce `j hj hjs`. Simplify using `using sum_ind l hl0 (1 : ℤ) s j n hj hjs hn (one_pow _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv : ∀ i, i ≤ s → ∀ j, 1 ≤ j → j ≤ s → ∑ a ∈ primeTo l s, (((if a % l ^ j = n % l ^ j then 1 else 0 : ℤ)) : Om l) * ζ i ^ a = if i ≤ j then (l : Om l) ^ (s - j) * ζ i ^ n else 0`. Introduce `i hi j hj hjs`. Rewrite using `[sum_ind l hl0 (ζ i) s j n hj hjs hn ((pow_eq_one_iff_le l ζ h0 h1 h i s).2 hi)]`. Simplify using `only [pow_eq_one_iff_le l ζ h0 h1 h]`. Distinguish the cases in `hj1 : j = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hj1` using the available equality. Use `⟨fun a => if a % l ^ 1 = n % l ^ 1 then 1 else 0, ?_, fun i hi his => ?_⟩` and prove the remaining obligations. Rewrite using `[hz 1 le_rfl hjs, if_pos rfl]`. Rewrite using `[hv i his 1 le_rfl hjs]`. Distinguish the cases in `e : i = 1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (by omega), if_neg e]`. Establish `hsj : s - (j - 1) = s - j + 1` using `by omega`. Use `⟨fun a => l * (if a % l ^ j = n % l ^ j then 1 else 0) - (if a % l ^ (j - 1) = n % l ^ (j - 1) then 1 else 0), ?_, fun i hi his => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, hz j hj hjs, hz (j - 1) (by omega) (by omega), if_neg hj1, hsj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Int.cast_sub, Int.cast_mul, Int.cast_natCast, sub_mul, mul_assoc]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, hv i his j hj hjs, hv i his (j - 1) (by omega) (by omega), if_neg hj1, hsj]`. Break down `lt_trichotomy i j with e | e | e` into its components or cases.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_pos e.le, if_pos (by omega), if_neg e.ne]; ring`. Substitute `e` using the available equality. Rewrite using `[if_pos le_rfl, if_neg (by omega), if_pos rfl]; ring`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg e.ne']; ring`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_weights : ∀ (l : ℕ) [Fact l.Prime] (ζ : ℕ → Om l), ζ 0 = 1 → ζ 1 ≠ 1 → (∀ j, ζ (j + 1) ^ l = ζ j) → ∀ s j n : ℕ, 1 ≤ j → j ≤ s → ¬ l ∣ n → ∃ lam : ℕ → ℤ, (∑ a ∈ primeTo l s, lam a = if j = 1 then (l : ℤ) ^ (s - 1) else 0) ∧ ∀ i, 1 ≤ i → i ≤ s → ∑ a ∈ primeTo l s, (lam a : Om l) * ζ i ^ a = if i = j then (l : Om l) ^ (if j = 1 then s - 1 else s - j + 1) * ζ j ^ n else 0 := by
   intro l hl ζ h0 h1 h s j n hj hjs hn

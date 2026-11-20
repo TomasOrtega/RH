@@ -11,7 +11,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open GlobalTheory.VB
 /- English proof (translation)
-The claim follows from `UpperTheory.vector_bundle_subbundle_universal UpperTheory.Grass.exists_grass`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_grassmannian_pair_bundle : ∀ (B : Scheme.{0}) (E : B.Modules) (n m₁ m₂ : ℕ), GlobalTheory.VB.IsVB E n → m₁ ≤ m₂ → m₂ ≤ n →
     ∃ (G : Scheme.{0}) (γ : G ⟶ B) (S P : G.Modules) (s : S ⟶ P) (j : P ⟶ (Scheme.Modules.pullback γ).obj E),

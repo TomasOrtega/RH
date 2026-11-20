@@ -11,9 +11,9 @@ namespace GlobalTheory.PiCounts
 variable {G : GridData}
 
 /- English proof (translation)
-Introduce `i j h`. Establish `e` using `G.a_sub_a i j`. Rewrite `e` using `[h, sub_self]`. Establish `hg' : (G.ga : ℚ) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `: ((j : ℚ) - i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 e.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hg'`. Establish `: (j : ℚ) = i` using `by linarith`. Conclude with `this.symm` after adjusting the coercions.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem a_injective (hg : 0 < G.ga) : Function.Injective G.a := by
   intro i j h
@@ -28,7 +28,7 @@ theorem a_injective (hg : 0 < G.ga) : Function.Injective G.a := by
   exact_mod_cast this.symm
 
 /- English proof (translation)
-Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Establish `: (0 : ℚ) ≤ G.ga` using `by positivity`. Combine the linear relations using `[GlobalTheory.ChiGrid.a_add_le (G := G) h]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem a_anti {i j : ℕ} (h : i ≤ j) : G.a j ≤ G.a i := by
   rcases h.eq_or_lt with rfl | h
@@ -37,17 +37,15 @@ theorem a_anti {i j : ℕ} (h : i ≤ j) : G.a j ≤ G.a i := by
     linarith [GlobalTheory.ChiGrid.a_add_le (G := G) h]
 
 /- English proof (translation)
-Rewrite using `[GridData.tops, card_image_of_injective _ (a_injective hg), card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_tops (hg : 0 < G.ga) : G.tops.card = G.m + 1 := by
   rw [GridData.tops, card_image_of_injective _ (a_injective hg), card_range]
 
 /- English proof (translation)
-Rewrite using `[GridData.cloudHalf, card_image_of_injOn, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers. Introduce `i hi j hj h`. Establish `hi` using `mem_Icc.1 (mem_coe.1 hi)`. Establish `hj` using `mem_Icc.1 (mem_coe.1 hj)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : G.v i = G.v j`. Establish `: (G.v i : ℚ) = G.v j` using `by simp only [GridData.vHalf] at h; linarith`. Conclude with `this` after adjusting the coercions. Break down `lt_trichotomy i j with h' | h' | h'` into its components or cases. Conclude with `absurd e (G.v_anti i j hi.1 h' hj.2).ne'`.
-
-Conclude with `h'`. Conclude with `absurd e (G.v_anti j i hj.1 h' hi.2).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem card_cloudHalf : G.cloudHalf.card = G.k - 1 := by
   rw [GridData.cloudHalf, card_image_of_injOn, Nat.card_Icc]
@@ -64,11 +62,11 @@ theorem card_cloudHalf : G.cloudHalf.card = G.k - 1 := by
     · exact absurd e (G.v_anti j i hj.1 h' hi.2).ne
 
 /- English proof (translation)
-Rewrite using `[card_biUnion]`. Establish `: ∀ u ∈ Icc (G.m - i + 1) G.m, (G.blockC' u).card = G.s - 1` using `fun u _ => card_block _ _`. Rewrite using `[sum_congr rfl this, sum_const, Nat.card_Icc, smul_eq_mul]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Introduce `u hu v hv huv`. Establish `hu` using `mem_Icc.1 (mem_coe.1 hu)`. Establish `hv` using `mem_Icc.1 (mem_coe.1 hv)`. Use `disjoint_left.2 fun x h1 h2 => ?_` and prove the remaining obligations. Establish `b1` using `GlobalTheory.ChiGrid.blockC'_between hm hs hg (by omega) hu.2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `b2` using `GlobalTheory.ChiGrid.blockC'_between hm hs hg (by omega) hv.2 h2`. Apply the tactic sequence `rcases lt_or_gt_of_ne huv with h | h <;>`. Combine the linear relations using `[GlobalTheory.ChiGrid.a_add_le (G := G) h, b1.1, b1.2, b2.1, b2.2]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem card_Cs' (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ} (hi : i ≤ G.m) :
     ((Icc (G.m - i + 1) G.m).biUnion G.blockC').card = i * (G.s - 1) := by
@@ -87,13 +85,13 @@ theorem card_Cs' (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ} (
       linarith [GlobalTheory.ChiGrid.a_add_le (G := G) h, b1.1, b1.2, b2.1, b2.2]
 
 /- English proof (translation)
-Establish `hg0 : 0 < G.ga` using `by omega`. Establish `d1 : Disjoint G.tops G.cloudHalf` using `disjoint_left.2 fun x h1 h2 => by`. Take `⟨l, hl, rfl⟩` from `GridData.mem_tops.1 h1`. Combine the linear relations using `[GlobalTheory.ChiGrid.cloudHalf_lt h2, a_anti (G := G) hl]`. Establish `d2 : Disjoint (G.tops ∪ G.cloudHalf) ((Icc (G.m - i + 1) G.m).biUnion G.blockC')` using `disjoint_left.2 fun x h1 h2 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨u, hu, h2⟩` from `mem_biUnion.1 h2`. Establish `hu` using `mem_Icc.1 hu`. Establish `b` using `GlobalTheory.ChiGrid.blockC'_between hm hs hg (by omega) hu.2 h2`. Break down `mem_union.1 h1 with h1 | h1` into its components or cases. Take `⟨l, -, rfl⟩` from `GridData.mem_tops.1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `lt_or_ge l u with h | h` into its components or cases. Combine the linear relations using `[GlobalTheory.ChiGrid.a_add_le (G := G) h, b.2]`. Combine the linear relations using `[a_anti (G := G) h, b.1]`. Combine the linear relations using `[GlobalTheory.ChiGrid.cloudHalf_lt h1, a_anti (G := G) hu.2, b.1]`. Use `G.two_le_k` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[GridData.entries_parPi, GridData.entries_lam, card_union_of_disjoint d2, card_union_of_disjoint d1, card_tops hg0, card_cloudHalf, card_Cs' hm hs hg hi, GridData.rankP, G.n_eq]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_entries_parPi (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ} (hi : i ≤ G.m) :
     (entries (G.parPi i)).card = G.rankP i := by
@@ -118,7 +116,7 @@ theorem card_entries_parPi (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {
   omega
 
 /- English proof (translation)
-Rewrite using `[GridData.parPi]`. Use `(card_union_le _ _).trans (add_le_add ((card_union_le _ _).trans (add_le_add ?_ ?_)) ?_)` and prove the remaining obligations. Conclude with `card_image_le.trans (card_range _).le`. Conclude with `card_image_le.trans card_cloudHalf.le`. Conclude with `card_image_le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_parPi_le {i : ℕ} (hg : 0 < G.ga) : (G.parPi i).card ≤ (G.m + 1) + (G.k - 1) +
     ((Icc (G.m - i + 1) G.m).biUnion G.blockC').card := by
@@ -129,7 +127,7 @@ theorem card_parPi_le {i : ℕ} (hg : 0 < G.ga) : (G.parPi i).card ≤ (G.m + 1)
   · exact card_image_le
 
 /- English proof (translation)
-Use `le_antisymm ?_ ((card_entries_parPi hm hs hg hi).symm.le.trans card_image_le)` and prove the remaining obligations. Use `G.two_le_k` as an intermediate fact. Use `(card_parPi_le (by omega)).trans ?_` and prove the remaining obligations. Rewrite using `[card_Cs' hm hs hg hi, GridData.rankP, G.n_eq]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_parPi (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ} (hi : i ≤ G.m) :
     (G.parPi i).card = G.rankP i := by
@@ -140,20 +138,20 @@ theorem card_parPi (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ}
   omega
 
 /- English proof (translation)
-The claim follows from `isRegular_iff_card.2 ((card_entries_parPi hm hs hg hi).trans (card_parPi hm hs hg hi).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isRegular_parPi (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ} (hi : i ≤ G.m) :
     IsRegular (G.parPi i) :=
   isRegular_iff_card.2 ((card_entries_parPi hm hs hg hi).trans (card_parPi hm hs hg hi).symm)
 
 /- English proof (translation)
-Establish `: (G.parPi i).filter (fun x => x.2 = false) = (range ((G.m - i + 1) / 2)).image fun c => (G.a (G.m - i - 1 - 2 * c), false)`. Use extensionality with `⟨x, s⟩`. Simplify using `only [mem_filter, GridData.mem_parPi, mem_image, mem_range, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨l, h1, h2, h3⟩ | ⟨-, h⟩ | ⟨l, -, -, -, h⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h5 : ¬ (G.m - i ≤ l ∨ Even (G.m - i - l))` using `by simpa using h3.symm`. Rewrite `h5` using `[Nat.even_iff]`. Use `⟨(G.m - i - l - 1) / 2, by omega, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[show G.m - i - 1 - 2 * ((G.m - i - l - 1) / 2) = l by omega, h2]`. Simplify using `at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Introduce and unpack `⟨c, hc, rfl, rfl⟩`. Use `⟨Or.inl ⟨G.m - i - 1 - 2 * c, by omega, rfl, ?_⟩, rfl⟩` and prove the remaining obligations. Use `symm`. Rewrite using `[decide_eq_false_iff_not, Nat.even_iff]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[nMinus, this, card_image_of_injOn, card_range]`. Introduce `c hc c' hc' h`. Simplify using `only [coe_range, Set.mem_Iio] at hc hc'`. Establish `h1` using `a_injective hg (congrArg Prod.fst h)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -184,9 +182,9 @@ end GlobalTheory.PiCounts
 namespace GlobalTheory.Grid
 
 /- English proof (translation)
-Introduce `D _ τ i hi`. Establish `hg : (grid D τ).s < (grid D τ).ga`. Use `(isLeast_gap D).1.2.1` as an intermediate fact. Use `show sLen D < gap D`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hs : 1 ≤ (grid D τ).s` using `by show 1 ≤ D.R.r + 6; omega`. Establish `hm` using `grid_nearMid D τ`. Establish `hi' : i ≤ (grid D τ).m` using `hi`. Use `⟨GlobalTheory.PiCounts.isRegular_parPi hm hs hg hi', ?_, GlobalTheory.PiCounts.nMinus_parPi (by omega) i⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.PiCounts.card_parPi hm hs hg hi').trans rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem parPi_counts : ∀ (D : D7), HostHyp D → ∀ (τ : D.what₂.Tau) (i : ℕ), i ≤ D.R.m →
     GlobalTheory.SignedHC.IsRegular ((GlobalTheory.Grid.grid D τ).parPi i) ∧ ((GlobalTheory.Grid.grid D τ).parPi i).card = GlobalTheory.Grid.rkP D i ∧

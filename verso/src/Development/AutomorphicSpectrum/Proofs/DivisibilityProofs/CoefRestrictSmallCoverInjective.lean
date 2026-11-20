@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.TrivSmall
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ideal.map _ T.obj.J = ⊥`. Rewrite using `[show T.obj.J = ⊥ from T.property, Ideal.map_bot]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTriv_loc (s : X ⟶ Sp R) (T : (IsTriv s).FullSubcategory) (b : T.obj.B) :
     IsTriv s (ThickLoc.loc T.obj b) := by
@@ -28,11 +28,9 @@ theorem isTriv_loc (s : X ⟶ Sp R) (T : (IsTriv s).FullSubcategory) (b : T.obj.
   rw [show T.obj.J = ⊥ from T.property, Ideal.map_bot]
 
 /- English proof (translation)
-Introduce `T b`. Set `b' : T.obj.B` to `b`. Use `⟨⟨ThickLoc.loc T.obj b', isTriv_loc s T b'⟩, ObjectProperty.homMk (ThickLoc.toLoc T.obj b'), IsLocalization.Away.algebraMap_isUnit (S := Localization.Away b') b', fun y ↦ IsLocalization.Away.surj (S := Localization.Away b') b' y, fun x hx ↦ ?_, fun S u hu ↦ ⟨ObjectProperty.homMk …` and prove the remaining obligations. Take `⟨⟨_, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers b') (Localization.Away b') x).1 hx`. Conclude with `⟨n, hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `ObjectProperty.hom_ext _ (Thick.hom_ext (ThickLoc.liftφ_algebraMap u.hom hu))`. Establish `hv' : ∀ x : T.obj.B, v.hom.φ (algebraMap T.obj.B (Localization.Away b') x) = u.hom.φ x` using `fun x ↦ by rw [← hv]; rfl`. Establish `: (v.hom.φ : Localization.Away b' →+* S.obj.B) = (ThickLoc.liftφ u.hom hu : Localization.Away b' →+* S.obj.B)`. Use `IsLocalization.ringHom_ext (Submonoid.powers b') (RingHom.ext fun x ↦ ?_)` and prove the remaining obligations. Conclude with `(hv' x).trans (ThickLoc.liftφ_algebraMap u.hom hu x).symm`.
-
-Conclude with `ObjectProperty.hom_ext _ (Thick.hom_ext fun x ↦ RingHom.congr_fun this x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasLoc (s : X ⟶ Sp R) : Desc.HasLoc ((IsTriv s).ι ⋙ O (dp0 R) s) := by
   intro T b
@@ -54,7 +52,7 @@ theorem hasLoc (s : X ⟶ Sp R) : Desc.HasLoc ((IsTriv s).ι ⋙ O (dp0 R) s) :=
     exact ObjectProperty.hom_ext _ (Thick.hom_ext fun x ↦ RingHom.congr_fun this x)
 
 /- English proof (translation)
-Introduce `R _ X s K U hU`. Conclude with `(Desc.pull2_bijective _ (hasLoc s) _ (fun _ _ φ h ↦ h.imp fun _ ↦ φ.hom.le_preimage) fun T ↦ by`. Take `⟨n, b, hb, h⟩` from `exists_finite_small_cover R ⊥ (dp0 R) X s K U hU T.obj`. Conclude with `⟨n, b, hb, fun i S u hu ↦ h i S.obj u.hom hu⟩).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pull_restrict_small_injective : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (K : Type) (U : K → X.Opens), ⨆ i, U i = ⊤ → Function.Injective (CoefMap.restrict ((IsTriv s).ι ⋙ O (dp0 R) s) (ObjectProperty.ι (fun T : (IsTriv s).FullSubcategory => IsSmall (dp0 R) s U T.obj))).pull2 := by
   intro R _ X s K U hU

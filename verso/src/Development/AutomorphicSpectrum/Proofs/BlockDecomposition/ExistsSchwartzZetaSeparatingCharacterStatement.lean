@@ -5,7 +5,7 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel NNReal ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GaussLam.TestFn.exists_test` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsSchwartzZetaSeparatingCharacter.lean&line=136#L136)
 -/

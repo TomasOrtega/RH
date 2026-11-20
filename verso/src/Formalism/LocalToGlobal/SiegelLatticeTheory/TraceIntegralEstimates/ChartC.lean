@@ -21,9 +21,9 @@ variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Formalism.L2.SG.LocWSOf.Ch
 include C
 
 /- English proof (translation)
-Take `⟨hzW, hTz⟩` from `Formalism.L2.SG.Pf.zTr C u τ`. Take `⟨hzW', hTz'⟩` from `Formalism.L2.SG.Pf.zTr C u' τ`. Establish `hT : ∀ u0 : D.what₂.Word, 0 < Tr D u0` using `fun u0 => by`. Unfold `Tr`. Conclude with `Nat.cast_pos.2 (D.mem u0).A.T_prime.pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hg0 : Formalism.L2.SG.RealFrameCoordinates.g0 C γ τ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `Formalism.L2.SG.Pf.LTL.trG_mem _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1 _`. Conclude with `locChart D.R.k D.R.rS hk _ _ hzW (by rw [hTz]; exact hT u) hzW' (by rw [hTz']; exact hT u') (ptLoc D τ w) _ hg0 (Formalism.L2.SG.RealFrameCoordinates.zhat_conjugator_eq_point C u u' w γ hrep τ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem place_chart (hrep : IsPtRep X u u' w γ) :
     ∃ ψ : (rootPat (ptLoc D τ w) → ℂ) → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS,
@@ -43,9 +43,9 @@ theorem place_chart (hrep : IsPtRep X u u' w γ) :
     hg0 (Formalism.L2.SG.RealFrameCoordinates.zhat_conjugator_eq_point C u u' w γ hrep τ)
 
 /- English proof (translation)
-Take `⟨ψ, -, hψ⟩` from `place_chart C u u' w γ τ hrep`. Rewrite `h` using `[Formalism.L2.SG.RootPatterns.stCoordV_comp C u' w γ τ]`. Establish `h'` using `(MeasurableEquiv.piCongrLeft (fun _ : FreeE w => ℂ) (Formalism.L2.SG.RootPatterns.idxF τ w)).injective h`. Establish `m₁` using `(Formalism.L2.SG.RealConjugatorData.stV_iff C γ τ u u' y₁).1 h₁`. Establish `m₂` using `(Formalism.L2.SG.RealConjugatorData.stV_iff C γ τ u u' y₂).1 h₂`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg ψ h'`. Simplify using `only [Function.comp_apply] at e`. Rewrite `e` using `[hψ (Formalism.L2.SG.RealConjugatorData.cMr C γ τ y₁) m₁, hψ (Formalism.L2.SG.RealConjugatorData.cMr C γ τ y₂) m₂]`. Conclude with `(Formalism.L2.SG.RealConjugatorData.cMr_closedEmb C γ τ).injective e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stCoordV_inj (hrep : IsPtRep X u u' w γ) {y₁ y₂ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))}
     (h₁ : y₁ ∈ Formalism.L2.SG.NGPin.StV X u u' γ (vOf X τ)) (h₂ : y₂ ∈ Formalism.L2.SG.NGPin.StV X u u' γ (vOf X τ))
@@ -62,9 +62,9 @@ theorem stCoordV_inj (hrep : IsPtRep X u u' w γ) {y₁ y₂ : Formalism.REAL.UJ
   exact (Formalism.L2.SG.RealConjugatorData.cMr_closedEmb C γ τ).injective e
 
 /- English proof (translation)
-Take `⟨ψ, hψ, -⟩` from `place_chart C u u' w γ τ hrep`. Use `set e := MeasurableEquiv.piCongrLeft (fun _ : FreeE w => ℂ) (Formalism.L2.SG.RootPatterns.idxF τ w)`. Take `⟨hm, hc⟩` from `hψ (e.symm x)`. Take `⟨y, hy⟩` from `Formalism.L2.SG.RealConjugatorData.rset_range C γ τ _ hm`. Use `⟨y, (Formalism.L2.SG.RealConjugatorData.stV_iff C γ τ u u' y).2 (by rw [hy]; exact hm), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.RootPatterns.stCoordV_comp C u' w γ τ]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hy, hc, e.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stCoordV_surj (hrep : IsPtRep X u u' w γ) (x : FreeE w → ℂ) :
     ∃ y ∈ Formalism.L2.SG.NGPin.StV X u u' γ (vOf X τ), Formalism.L2.SG.NGPin.stCoordV X u' w γ (vOf X τ) y = x := by
@@ -78,7 +78,7 @@ theorem stCoordV_surj (hrep : IsPtRep X u u' w γ) (x : FreeE w → ℂ) :
   rw [hy, hc, e.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.RootPatterns.stCoordV_comp C u' w γ τ]`. Conclude with `(MeasurableEquiv.measurable _).comp ((Formalism.L2.SG.RootPatterns.rootCoords_cont _ _ _ _).measurable.comp (Formalism.L2.SG.RealConjugatorData.cMr_measEmb C γ τ).measurable)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stCoordV_meas : Measurable (Formalism.L2.SG.NGPin.stCoordV X u' w γ (vOf X τ)) := by
   rw [Formalism.L2.SG.RootPatterns.stCoordV_comp C u' w γ τ]

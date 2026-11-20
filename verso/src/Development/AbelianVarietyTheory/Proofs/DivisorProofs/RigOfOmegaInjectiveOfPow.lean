@@ -15,7 +15,7 @@ set_option autoImplicit false
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hw`. Rewrite `hb` using `[G.eq_zero_of_cob_eq_zero_of_pow p R N hN b (congrArg Prod.fst hb), map_zero]`. Conclude with `(congrArg Prod.snd hb).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigOfOmega_injective_of_pow (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (N : ℕ)
     (hN : (p : R) ^ N = 0) (G : PDivGroup p R) : Function.Injective G.rigOfOmega := by

@@ -14,15 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Heat.TermWt
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y k α σ τ hT j V hV`. Introduce `S _ φ x x' c a a' ha ha' hV₁ hV₂ hq hc`. Substitute `ha ha'` using the available equality. Establish `hL : Q.P.L.IsLB` using `Q.P.isLB`. Establish `hV' : V ≤ (LB.LinComb Q.P.L (K` using `Fin 1) (fun _ => Y.q.left) fun _ => (k : ℤ)).U j := hV`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `germ : ∀ (b : Sp S ⟶ Y.H.left), ⊤ ≤ b ⁻¹ᵁ V → ∀ z, gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (valR b V (rsT (τ.f j) V))) = gs b z (LB.wchart Q.P.L (fun _ : Fin 1 => Y.q.left) j) (τ.f j)`. Introduce `b hb z`. Rewrite using `[valR, dif_pos hb, Iso.hom_inv_id_apply, rsT, dif_pos hV']`. Use `(gs_res (𝟙 _) z hb trivial _).trans ((gs_pull (𝟙 _) b z V (hb trivial) _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gs_res b z hV (hb trivial) _`. Establish `hqq : x'.left ≫ Y.q.left = x.left ≫ Y.q.left` using `congrArg CommaMorphism.left hq`. Apply `(Scheme.ΓSpecIso (CommRingCat.of S)).commRingCatIsoToRingEquiv.symm.injective` to reduce the goal to its premises. Use `fn_ext fun z _ => ?_` and prove the remaining obligations. Take `⟨J, hJ, hJj⟩` from `exists_good Q.P.L hL z (fun _ : Fin 1 => x.left ≫ Y.q.left) j (fun a b _ => congrArg j (Subsingleton.elim a b)) (fun i => Set.mem_iInter.1 (hV (hV₁ (show z ∈ (⊤ : (Sp S).Opens) from trivial))) i)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₁ : ∀ i, J (x.left ≫ (fun _ : Fin 1 => Y.q.left) i) = j i` using `hJj`. Establish `e₂ : ∀ i, J (x'.left ≫ (fun _ : Fin 1 => Y.q.left) i) = j i` using `fun i => by rw [hqq]; exact hJj i`. Establish `t₁` using `hT (Over.mk (spMap φ)) x z J hJ`. Establish `t₂` using `hT (Over.mk (spMap φ)) x' z J hJ`. Rewrite `t₁` using `[sval_of τ _ z J j e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t₂` using `[sval_of τ _ z J j e₂, hq, hc α z J hJ, Units.val_mul]`. Use `show gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom _) = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom _)`. Rewrite using `[germ _ hV₂ z, t₂, map_mul, gs_mul (𝟙 _) z ⊤ trivial, germ _ hV₁ z, t₁, show (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (c α : S) = (unitOn (c α)).val from rfl, gs_unit (𝟙 _) z ⊤ trivial]`. Conclude with `_root_.mul_left_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWt_term : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (k : ℕ) (α : Q.X) (σ : Q.SecB k α) (τ : SecM Y.q.left Q.P.L k), IsTerm Y k α σ τ → ∀ (j : Fin 1 → Q.P.L.ι) (V : Y.H.left.Opens), V ≤ LB.wchart Q.P.L (fun _ : Fin 1 => Y.q.left) j → IsWt Y α V (rsT (τ.f j) V) := by
   intro R _ _ Q O _ _ _ oa Y k α σ τ hT j V hV

@@ -10,25 +10,23 @@ open Polynomial Matrix GlobalTheory.LatOrb IsLocalRing
 namespace GlobalTheory.MaxOrder
 
 /- English proof (translation)
-Take `⟨Q, hQm, hQ⟩` from `hy`. Use `set m := Q.natDegree with hm`. Use `set u := π ^ N with hu`. Set `F : O[X]` to `∑ i ∈ Finset.range (m + 1), C (Q.coeff i * u ^ (m - i)) * f ^ i`. Establish `hF : aeval γ F = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : aeval γ F = u ^ m • aeval y Q`. Rewrite using `[aeval_eq_sum_range (p := Q) y, Finset.smul_sum]`. Simplify using `only [F, map_sum, map_mul, aeval_C, map_pow, hf]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `him : i ≤ m` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAlg : ∀ (c : O) (X : Matrix (Fin n) (Fin n) K), algebraMap O _ c * X = c • X` using `fun c X => (Algebra.smul_def c X).symm`. Establish `hmi : u ^ (m - i) * u ^ i = u ^ m` using `by rw [← pow_add, Nat.sub_add_cancel him]`. Simplify using `only [_root_.smul_pow, ← map_pow, hAlg, smul_mul_assoc, smul_smul]`. Use `congr 1`. Take the linear combination `(Q.coeff i) * hmi`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, show aeval y Q = 0 from hQ, smul_zero]`. Establish `hmon : P₀.Monic` using `monic_of_injective (IsFractionRing.injective O K) (hγ ▸ γ.charpoly_monic)`. Establish `hd : P₀ ∣ F ^ n`. Establish `h` using `GlobalTheory.CharpolyPowIrred.charpoly_dvd_pow_of_aeval γ (F.map (algebraMap O K)) (by rw [aeval_map_algebraMap]; exact hF)`. Rewrite `h` using `[hγ, Fintype.card_fin, ← Polynomial.map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(map_dvd_map _ (IsFractionRing.injective O K) hmon).1 h`. Set `φ` to `residue O`. Establish `hφπ : φ π = 0` using `(residue_eq_zero_iff π).2 ((mem_maximalIdeal _).2 hπ.not_isUnit)`. Establish `hFm : F.map φ = (f.map φ) ^ m`. Simplify using `only [F, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_pow, map_C, map_mul, map_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero, zero_add, hQm.coeff_natDegree, Nat.sub_self, pow_zero, mul_one, map_one, C_1, one_mul]`. Introduce `i hi`. Establish `him : 0 < m - i` using `Nat.sub_pos_of_lt (Finset.mem_range.1 hi)`. Rewrite using `[hu, map_pow, hφπ, zero_pow (by omega), C_0, zero_pow him.ne', mul_zero, zero_mul]`. Establish `hsep : (P₀.map φ).Separable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Separable`. Rewrite using `[derivative_map]`. Conclude with `hP.map (mapRingHom φ)`. Establish `hd2 : P₀.map φ ∣ (f.map φ) ^ (m * n + 1)`. Establish `h` using `Polynomial.map_dvd φ hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[Polynomial.map_pow, hFm, ← pow_mul]`. Conclude with `h.trans (pow_dvd_pow _ (Nat.le_succ _))`. Take `⟨qb, hqb⟩` from `(hsep.squarefree.dvd_pow_iff_dvd (Nat.succ_ne_zero _)).1 hd2`. Take `⟨q, rfl⟩` from `Polynomial.map_surjective φ (residue_surjective) qb`. Establish `hker : f - P₀ * q ∈ Ideal.span {C π}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : f - P₀ * q ∈ RingHom.ker (mapRingHom φ)`. Rewrite using `[RingHom.mem_ker, coe_mapRingHom, Polynomial.map_sub, Polynomial.map_mul, hqb, sub_self]`. Rewrite `h` using `[Polynomial.ker_mapRingHom, ker_residue, (IsDiscreteValuationRing.irreducible_iff_uniformizer π).1 hπ, Ideal.map_span, Set.image_singleton]`. Then use the resulting hypothesis. Take `⟨h, hh⟩` from `Ideal.mem_span_singleton'.1 hker`. Use `⟨h, ?_⟩` and prove the remaining obligations.
-
-Establish `hP0 : aeval γ P₀ = 0`. Rewrite using `[← aeval_map_algebraMap K, ← hγ, aeval_self_charpoly]`. Establish `hfe : f = P₀ * q + h * C π` using `by rw [hh]; ring`. Rewrite using `[hfe, map_add, map_mul, map_mul, hP0, zero_mul, zero_add, aeval_C, ← Algebra.commutes, ← Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_uniformizer_smul {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] {n : ℕ} (P₀ : O[X])
@@ -93,15 +91,13 @@ theorem exists_eq_uniformizer_smul {O K : Type} [CommRing O] [IsDomain O] [IsDis
     ← Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ n P₀ hP γ hγ p hp`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Simplify using `only [aeval_map_algebraMap]`. Establish `hπK : algebraMap O K π ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective O K)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hπ.ne_zero`. Establish `key : ∀ k : ℕ, ∀ f : O[X], aeval γ f = π ^ k • aeval γ p → ∃ r : O[X], aeval γ p = aeval γ r`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro f hf; exact ⟨f, by rw [hf, pow_zero, one_smul]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `f hf`. Take `⟨h, hh⟩` from `exists_eq_uniformizer_smul P₀ hP γ hγ π hπ _ hp (k + 1) (by omega) f hf`. Use `ih h ?_` and prove the remaining obligations. Establish `h1 : π • (π ^ k • aeval γ p) = π • aeval γ h` using `by rw [smul_smul, ← pow_succ', ← hf, hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← algebraMap_smul K π (π ^ k • aeval γ p), ← algebraMap_smul K π (aeval γ h)]`. Conclude with `(smul_right_injective _ hπK h1).symm`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors O) p`. Take `⟨k, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero b.2) hπ`. Use `key k (C (↑v⁻¹ : O) * IsLocalization.integerNormalization (nonZeroDivisors O) p) ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, aeval_C, ← aeval_map_algebraMap K γ (IsLocalization.integerNormalization _ p), hb, ← algebraMap_smul K (b : O) p, map_smul, algebraMap_smul, ← Algebra.smul_def, smul_smul, hv, ← mul_assoc, Units.inv_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_aeval_eq_aeval_map : ∀ {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (n : ℕ) (P₀ : O[X]), IsCoprime P₀ (derivative P₀) →

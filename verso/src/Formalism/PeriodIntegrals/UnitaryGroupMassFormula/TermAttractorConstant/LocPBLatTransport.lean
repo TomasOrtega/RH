@@ -27,9 +27,9 @@ theorem gmap_eq_map (n : S.V ≃ₗ[E] S.V) (M : Submodule (𝓞 E) S.V) :
     Formalism.HermitianLatticesTheory.gmap n M = M.map (fO n) := rfl
 
 /- English proof (translation)
-Rewrite using `[gmap_eq_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify `hw` using `[fO_apply]`. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨n.symm v, hv, by simp [fO_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_gmap_iff (n : S.V ≃ₗ[E] S.V) (M : Submodule (𝓞 E) S.V) (v : S.V) :
     v ∈ Formalism.HermitianLatticesTheory.gmap n M ↔ n.symm v ∈ M := by
@@ -41,17 +41,17 @@ theorem mem_gmap_iff (n : S.V ≃ₗ[E] S.V) (M : Submodule (𝓞 E) S.V) (v : S
     exact ⟨n.symm v, hv, by simp [fO_apply]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_localization_iff (P : Ideal (𝓞 E)) [P.IsPrime] (M : Submodule (𝓞 E) S.V) (v : S.V) :
     v ∈ Formalism.HermitianLatticesTheory.localization₂ P M ↔ ∃ s ∈ P.primeCompl, s • v ∈ M := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[mem_localization_iff, mem_gmap_iff, mem_localization_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsv⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hsv` using `[mem_gmap_iff]`. Establish `e : n.symm (s • v) = s • n.symm v` using `(fO n.symm).map_smul s v`. Rewrite `hsv` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `⟨s, hs, hsv⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_gmap_iff]`. Establish `e : n.symm (s • v) = s • n.symm v` using `(fO n.symm).map_smul s v`. Rewrite using `[e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem locP_gmap (P : Ideal (𝓞 E)) [P.IsPrime] (n : S.V ≃ₗ[E] S.V) (M : Submodule (𝓞 E) S.V) :
     Formalism.HermitianLatticesTheory.localization₂ P (Formalism.HermitianLatticesTheory.gmap n M) = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.localization₂ P M) := by
@@ -70,7 +70,7 @@ theorem locP_gmap (P : Ideal (𝓞 E)) [P.IsPrime] (n : S.V ≃ₗ[E] S.V) (M : 
     rwa [e]
 
 /- English proof (translation)
-Use extensionality with `v`. Use `SetLike.ext_iff.1 h (n v)` as an intermediate fact. Simplify `this` using `[mem_gmap_iff]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gmap_injective (n : S.V ≃ₗ[E] S.V) {A B : Submodule (𝓞 E) S.V}
     (h : Formalism.HermitianLatticesTheory.gmap n A = Formalism.HermitianLatticesTheory.gmap n B) : A = B := by
@@ -79,11 +79,9 @@ theorem gmap_injective (n : S.V ≃ₗ[E] S.V) {A B : Submodule (𝓞 E) S.V}
   simpa [mem_gmap_iff] using this
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `e : a = (a - b) + b` using `by abel`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left h) (Submodule.mem_sup_right (Submodule.mem_span_singleton_self b))`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `e : b = a - (a - b)` using `by abel`. Rewrite using `[e]`.
-
-Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self a)) (Submodule.mem_sup_left h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_span_swap {M : Submodule (𝓞 E) S.V} {a b : S.V} (h : a - b ∈ M) :
     M ⊔ Submodule.span (𝓞 E) {a} = M ⊔ Submodule.span (𝓞 E) {b} := by
@@ -102,14 +100,14 @@ theorem sup_span_swap {M : Submodule (𝓞 E) S.V} {a b : S.V} (h : a - b ∈ M)
       (Submodule.mem_sup_left h)
 
 /- English proof (translation)
-Rewrite using `[gmap_eq_map, Submodule.map_span, Set.image_singleton, fO_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_span_singleton (n : S.V ≃ₗ[E] S.V) (v : S.V) :
     Formalism.HermitianLatticesTheory.gmap n (Submodule.span (𝓞 E) {v}) = Submodule.span (𝓞 E) {n v} := by
   rw [gmap_eq_map, Submodule.map_span, Set.image_singleton, fO_apply]
 
 /- English proof (translation)
-Rewrite using `[gmap_eq_map, gmap_eq_map, gmap_eq_map, Submodule.map_sup]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_sup (n : S.V ≃ₗ[E] S.V) (A B : Submodule (𝓞 E) S.V) :
     Formalism.HermitianLatticesTheory.gmap n (A ⊔ B) = Formalism.HermitianLatticesTheory.gmap n A ⊔ Formalism.HermitianLatticesTheory.gmap n B := by
@@ -118,14 +116,14 @@ theorem gmap_sup (n : S.V ≃ₗ[E] S.V) (A B : Submodule (𝓞 E) S.V) :
 variable {Λ : Submodule (𝓞 E) S.V}
 
 /- English proof (translation)
-Establish `h : n v ∈ Formalism.HermitianLatticesTheory.gmap n Λ` using `(mem_gmap_iff n Λ (n v)).2 (by simpa using hv)`. Rewrite `h` using `[hn.2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem autLam_maps {n : S.V ≃ₗ[E] S.V} (hn : IsAutLam S Λ n) {v : S.V} (hv : v ∈ Λ) : n v ∈ Λ := by
   have h : n v ∈ Formalism.HermitianLatticesTheory.gmap n Λ := (mem_gmap_iff n Λ (n v)).2 (by simpa using hv)
   rwa [hn.2] at h
 
 /- English proof (translation)
-Rewrite `hv` using `[← hn.2]`. Conclude with `(mem_gmap_iff n Λ v).1 hv`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem autLam_symm_maps {n : S.V ≃ₗ[E] S.V} (hn : IsAutLam S Λ n) {v : S.V} (hv : v ∈ Λ) :
     n.symm v ∈ Λ := by
@@ -133,18 +131,18 @@ theorem autLam_symm_maps {n : S.V ≃ₗ[E] S.V} (hn : IsAutLam S Λ n) {v : S.V
   exact (mem_gmap_iff n Λ v).1 hv
 
 /- English proof (translation)
-Unfold `XLam`. Rewrite using `[Submodule.mem_inf, Submodule.restrictScalars_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_XLam {F : LFlag S r T} {v : S.V} : v ∈ XLam Λ F ↔ v ∈ Λ ∧ v ∈ Xsp F := by
   unfold XLam
   rw [Submodule.mem_inf, Submodule.restrictScalars_mem]
 
 /- English proof (translation)
-Establish `hni : n.symm ∈ NLam Λ F` using `nlam_inv hn`. Use extensionality with `v`. Rewrite using `[mem_gmap_iff, mem_XLam, mem_XLam]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `a1` using `autLam_maps hn.1 h1`. Establish `a2` using `nlam_maps_X hn _ h2`. Simplify using `only [LinearEquiv.apply_symm_apply] at a1 a2`. Conclude with `⟨a1, a2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨autLam_symm_maps hn.1 h1, nlam_maps_X hni _ h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem gmap_XLam_self {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) :
     Formalism.HermitianLatticesTheory.gmap n (XLam Λ F) = XLam Λ F := by
@@ -161,20 +159,20 @@ theorem gmap_XLam_self {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLa
     exact ⟨autLam_symm_maps hn.1 h1, nlam_maps_X hni _ h2⟩
 
 /- English proof (translation)
-The claim follows from `mem_XLam.2 ⟨Submodule.sub_mem _ (autLam_maps hn.1 hz) hz, hn.2.2 _ (z_mem_orth F)⟩`.
+A detailed English derivation is pending.
 -/
 theorem nlam_z_sub {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hz : F.fl.z ∈ Λ) :
     n F.fl.z - F.fl.z ∈ XLam Λ F :=
   mem_XLam.2 ⟨Submodule.sub_mem _ (autLam_maps hn.1 hz) hz, hn.2.2 _ (z_mem_orth F)⟩
 
 /- English proof (translation)
-Set `g : S.V ≃ₗ[E] S.V` to `m.trans n`. Establish `hfr' : ∀ a, frame F₂ a = g (frame F₁ a)` using `fun a => hfr a`. Establish `hg : IsAutLam S Λ g` using `autLam_mul hn.1 hm.1`. Establish `h1 : XLam Λ F₂ = Formalism.HermitianLatticesTheory.gmap g (XLam Λ F₁)`. Use extensionality with `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_gmap_iff, mem_XLam, mem_XLam, Xsp_mem_transport hfr' v]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨autLam_symm_maps hg h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, h2⟩` and prove the remaining obligations. Use `autLam_maps hg h1` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1]`. Use `show Formalism.HermitianLatticesTheory.gmap (n * m) (XLam Λ F₁) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gmap_mul', gmap_XLam_self hm]`.
+A detailed English derivation is pending.
 -/
 theorem XLam_transport {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V} {T₀ : E} {F : LFlag S r T₀}
     (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁) (hfr : ∀ a, frame F₂ a = n (m (frame F₁ a))) :
@@ -197,11 +195,11 @@ theorem XLam_transport {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V} {T�
   rw [gmap_mul', gmap_XLam_self hm]
 
 /- English proof (translation)
-Unfold `UU`. Rewrite using `[gmap_sup, gmap_sup, gmap_sup, gmap_span_singleton, gmap_span_singleton, gmap_XLam_self hn, ← XLam_transport hn hm hfr, sup_assoc, sup_assoc (XLam Λ F ⊔ _)]`. Establish `e1 : XLam Λ F ⊔ Submodule.span (𝓞 E) {F.zt} = XLam Λ F ⊔ Submodule.span (𝓞 E) {n F.zt}`. Use `sup_span_swap ?_` and prove the remaining obligations. Rewrite using `[hF.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.neg_mem _ (nlam_z_sub hn hF.1)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Establish `e2 : XLam Λ F₂ ⊔ Submodule.span (𝓞 E) {F₂.zt} = XLam Λ F₂ ⊔ Submodule.span (𝓞 E) {n F₁.zt}`. Use `sup_span_swap ?_` and prove the remaining obligations. Rewrite using `[hzt, ← map_sub, XLam_transport hn hm hfr, mem_gmap_iff, LinearEquiv.symm_apply_apply, h₁.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nlam_z_sub hm h₁.1`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UU_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
     (hF : IsLift Λ F) (h₁ : IsLift Λ F₁) (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁)
@@ -222,7 +220,7 @@ theorem UU_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃
   rw [e1, e2]
 
 /- English proof (translation)
-Unfold `spanE`. Rewrite using `[gmap_eq_map, Submodule.map_coe]`. Establish `e : ⇑(fO n) = ⇑(n : S.V →ₗ[E] S.V)` using `rfl`. Rewrite using `[e, Submodule.span_image]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem spanE_gmap (n : S.V ≃ₗ[E] S.V) (M : Submodule (𝓞 E) S.V) :
     spanE S (Formalism.HermitianLatticesTheory.gmap n M) = (spanE S M).map (n : S.V →ₗ[E] S.V) := by
@@ -232,11 +230,11 @@ theorem spanE_gmap (n : S.V ≃ₗ[E] S.V) (M : Submodule (𝓞 E) S.V) :
   rw [e, Submodule.span_image]
 
 /- English proof (translation)
-Unfold `BLat UUE`. Rewrite using `[UU_transport hF h₁ hn hm hfr hzt, spanE_gmap]`. Use extensionality with `v`. Rewrite using `[mem_gmap_iff, Submodule.mem_inf, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.restrictScalars_mem, Submodule.mem_map_equiv]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨autLam_symm_maps hn.1 h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Use `autLam_maps hn.1 h1` as an intermediate fact.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem BLat_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
     (hF : IsLift Λ F) (h₁ : IsLift Λ F₁) (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁)
@@ -256,7 +254,7 @@ theorem BLat_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V �
     simpa using this
 
 /- English proof (translation)
-Rewrite using `[BLat_transport hF h₁ hn hm hfr hzt, locP_gmap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locP_BLat_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
     (hF : IsLift Λ F) (h₁ : IsLift Λ F₁) (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁)
@@ -266,7 +264,7 @@ theorem locP_BLat_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : 
   rw [BLat_transport hF h₁ hn hm hfr hzt, locP_gmap]
 
 /- English proof (translation)
-Rewrite using `[locP_BLat_transport hF h₁ hn hm hfr hzt, UU_transport hF h₁ hn hm hfr hzt, locP_gmap]`. Conclude with `⟨gmap_injective n, fun h => by rw [h]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem offg_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
     (hF : IsLift Λ F) (h₁ : IsLift Λ F₁) (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁)

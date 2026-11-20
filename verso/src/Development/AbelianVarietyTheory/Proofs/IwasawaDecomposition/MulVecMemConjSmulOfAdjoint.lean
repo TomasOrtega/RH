@@ -11,13 +11,13 @@ open scoped TensorProduct Pointwise Classical
 namespace GlobalTheory.Mem.RowsBundle
 
 /- English proof (translation)
-Set `st : 𝓞 I.E →+* 𝓞 I.E` to `RingOfIntegers.mapRingHom (starRingEnd I.E)`. Establish `hst : ∀ a : 𝓞 I.E, (st a : I.E) = star (a : I.E)` using `fun a => rfl`. Establish `hst2 : ∀ a, st (st a) = a` using `fun a => RingOfIntegers.ext (by rw [hst, hst, star_star])`. Establish `hsurj : Function.Surjective st` using `fun a => ⟨st a, hst2 a⟩`. Set `cj : HeightOneSpectrum (𝓞 I.E) → HeightOneSpectrum (𝓞 I.E)` to `fun v => v.comap st hsurj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcj : ∀ v a, a ∈ (cj v).asIdeal ↔ st a ∈ v.asIdeal` using `fun v a => Iff.rfl`. Use `⟨cj, fun v => HeightOneSpectrum.ext (Ideal.ext fun a => by rw [hcj, hcj, hst2]), fun v v' => ?_, fun m v hv => by rw [hcj, map_natCast]; exact hv⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `HeightOneSpectrum.ext (Ideal.ext fun b => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcj]`. Conclude with `(h (st b) b (by rw [hst, star_star])).symm`. Introduce and unpack `rfl a b hab`. Establish `: b = st a` using `RingOfIntegers.ext hab`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcj, hst2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_involution (I : AutInst) :
     ∃ cj : HeightOneSpectrum (𝓞 I.E) → HeightOneSpectrum (𝓞 I.E), (∀ v, cj (cj v) = v) ∧
@@ -42,15 +42,13 @@ theorem exists_conj_involution (I : AutInst) :
     rw [hcj, hst2]
 
 /- English proof (translation)
-Set `f : P ⊕ P → S` to `Sum.elim (fun v => ⟨w v, hw v⟩) (fun v => ⟨cj (w v), hS _ (hw v)⟩)`. Establish `hf : Function.Injective f`. Introduce and unpack `(a | a) (b | b) h`. Conclude with `congrArg _ (hinj (congrArg Subtype.val h))`. Conclude with `absurd (congrArg Subtype.val h) (hn _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (congrArg Subtype.val h).symm (hn _ _)`. Establish `h' : cj (w a) = cj (w b)` using `congrArg Subtype.val h`. Conclude with `congrArg _ (hinj (by rw [← hc (w a), h', hc]))`. Establish `hS' : Nat.card S = 2 * m` using `hcard`. Use `haveI : Finite S := Nat.finite_of_card_ne_zero (by omega)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite P := Finite.of_injective _ (hf.comp Sum.inl_injective)`. Establish `hP : Nat.card (P ⊕ P) = Nat.card P + Nat.card P` using `Nat.card_sum`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hs : Function.Surjective f` using `fun u => by`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, e | e⟩` from `h u.1 u.2`. Conclude with `⟨Sum.inl v, Subtype.ext e.symm⟩`. Conclude with `⟨Sum.inr v, Subtype.ext e.symm⟩`. Use `Nat.card_eq_of_bijective f ⟨hf, hs⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Introduce `h u hu`. Establish `hb` using `(Nat.bijective_iff_injective_and_card f).2 ⟨hf, by omega⟩`. Take `⟨v | v, e⟩` from `hb.2 ⟨u, hu⟩`. Conclude with `⟨v, Or.inl (congrArg Subtype.val e).symm⟩`. Conclude with `⟨v, Or.inr (congrArg Subtype.val e).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem meets_iff_card {X P : Type} (cj : X → X) (hc : ∀ v, cj (cj v) = v) (S : Set X) (hS : ∀ v ∈ S, cj v ∈ S)
     {m : ℕ} (hm : 0 < m) (hcard : S.ncard = 2 * m) (w : P → X) (hw : ∀ v, w v ∈ S) (hinj : Function.Injective w)
@@ -82,11 +80,11 @@ theorem meets_iff_card {X P : Type} (cj : X → X) (hc : ∀ v, cj (cj v) = v) (
     · exact ⟨v, Or.inr (congrArg Subtype.val e).symm⟩
 
 /- English proof (translation)
-Take `⟨cj, hc, hconj, hmem⟩` from `exists_conj_involution I`. Take `⟨Pl₀, w₀, -, h₀⟩` from `exists_choice I g hg hne hsp`. Establish `key : ∀ (Pl : Fin 2 → Type) [∀ k, Fintype (Pl k)] (w : ∀ k, Pl k → HeightOneSpectrum (𝓞 I.E)), (∀ k, Fintype.card (Pl k) = m) → (∀ k v, ((g k : ℕ) : 𝓞 I.E) ∈ (w k v).asIdeal) → (∀ k, Function.Injective (w k)) → (∀ k v v', ¬ IsConj I (w k v) (w k v')) → IsChoice I g Pl w`. Introduce `Pl _ w h1 h2 h3 h4`. Use `⟨hg, hne, h₀.2.2.1, fun k v => ⟨h2 k v, (hsp k _ (h2 k v)).1⟩, h3, h4, fun k u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hconj] at h4 ⊢`. Conclude with `(meets_iff_card cj hc _ (hmem (g k)) hm (hcard k) (w k) (h2 k) (h3 k) (h4 k)).2 (by rw [Nat.card_eq_fintype_card, h1]) u hu`. Use `⟨?_, key⟩` and prove the remaining obligations. Take `⟨-, -, -, h2, h3, h4, h5⟩` from `h₀`. Establish `hP : ∀ k, Nat.card (Pl₀ k) = m` using `fun k => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hconj] at h4 h5`. Conclude with `(meets_iff_card cj hc _ (hmem (g k)) hm (hcard k) (w₀ k) (fun v => (h2 k v).1) (h3 k) (h4 k)).1 (h5 k)`. Establish `e : ∀ k, Fin m ≃ Pl₀ k` using `fun k => haveI : Finite (Pl₀ k) := Nat.finite_of_card_ne_zero (by rw [hP]; omega) (Finite.equivFinOfCardEq (hP k)).symm`. Conclude with `⟨fun k v => w₀ k (e k v), key _ _ (fun _ => Fintype.card_fin m) (fun k v => (h2 k _).1) (fun k => (h3 k).comp (e k).injective) fun k v v' => h4 k _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isChoice_of_card (I : AutInst) (g : Fin 2 → ℕ) (hg : ∀ k, (g k).Prime) (hne : g 0 ≠ g 1)
     (hsp : ∀ k (v : HeightOneSpectrum (𝓞 I.E)), ((g k : ℕ) : 𝓞 I.E) ∈ v.asIdeal →
@@ -123,16 +121,16 @@ section Unip
 variable {I : AutInst}
 
 /- English proof (translation)
-Simplify using `only [hAf, hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hAf_eq_dot (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hAf I u v =
     (fun i => sigR I.cm.sig (Af I.F) (u i)) ⬝ᵥ (I.J.map (inclE (F := I.F) (Af I.F)) *ᵥ v) := by
   simp only [hAf, hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hx : cT (sigR I.cm.sig (Af I.F)) (I.fmat x⁻¹) * I.J.map (inclE (F` using `I.F) (Af I.F)) * I.fmat x⁻¹ = _ := x⁻¹.2`. Establish `hs : (fun i => sigR I.cm.sig (Af I.F) ((I.fmat x⁻¹ *ᵥ y) i)) = (fun i => sigR I.cm.sig (Af I.F) (y i)) ᵥ* cT (sigR I.cm.sig (Af I.F)) (I.fmat x⁻¹)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, Matrix.vecMul, dotProduct, cT, map_sum, mul_comm]`. Establish `h1 : I.fmat x⁻¹ * I.fmat x = 1` using `by rw [← fmat_mul, inv_mul_cancel, fmat_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hAf_eq_dot, hAf_eq_dot, hs, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `conv_rhs => rw [← hx, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hAf_inv_mulVec (x : I.Gf) (y z : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hAf I (I.fmat x⁻¹ *ᵥ y) z = hAf I y (I.fmat x *ᵥ z) := by
@@ -146,9 +144,9 @@ theorem hAf_inv_mulVec (x : I.Gf) (y z : Fin I.n → I.E ⊗[I.F] Af I.F) :
   conv_rhs => rw [← hx, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing z with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', pow_succ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← ih, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec]`. Generalize the expression as in `(I.fmat x⁻¹ - 1) ^ m *ᵥ y = u`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `h` using `hAf_inv_mulVec x u z`. Simplify using `only [hAf, hform, Pi.sub_apply, map_sub, sub_mul, mul_sub, Finset.sum_sub_distrib] at h ⊢`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hAf_pow_adjoint (x : I.Gf) (m : ℕ) (y z : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hAf I ((I.fmat x⁻¹ - 1) ^ m *ᵥ y) z = hAf I y ((I.fmat x - 1) ^ m *ᵥ z) := by
@@ -163,7 +161,7 @@ theorem hAf_pow_adjoint (x : I.Gf) (m : ℕ) (y z : Fin I.n → I.E ⊗[I.F] Af 
     rw [h]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using hy`. Consider the case `succ m ih`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `sub_mem (mulVec_mem hx ih) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_one_pow_mem {x : I.Gf} (hx : x ∈ I.Kset) (m : ℕ) {y : Fin I.n → I.E ⊗[I.F] Af I.F} (hy : y ∈ I.Lf) :
     (I.fmat x - 1) ^ m *ᵥ y ∈ I.Lf := by

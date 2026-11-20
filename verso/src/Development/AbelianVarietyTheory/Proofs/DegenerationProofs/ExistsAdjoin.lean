@@ -18,7 +18,7 @@ variable (R : Type) [CommRing R] [IsDomain R] (E F : Type) [Field E] [Field F] [
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_jFK : Spec.map (CommRingCat.ofHom (algebraMap E F)) ≫ jFK (R := R) E = jFK (R := R) F := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
@@ -29,9 +29,7 @@ def ιE : TF (R := R) F ⟶ TF (R := R) E :=
 
 omit [IsDomain R] in
 /- English proof (translation)
-Introduce `a b h`. Establish `: Epi (ιE R E F).left` using `by show Epi (Spec.map (CommRingCat.ofHom (algebraMap E F)))`. Establish `: Flat (Spec.map (CommRingCat.ofHom (algebraMap E F)))` using `inferInstance`. Establish `: Surjective (Spec.map (CommRingCat.ofHom (algebraMap E F)))` using `⟨fun u => ⟨IsLocalRing.closedPoint F, Subsingleton.elim _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
-
-Conclude with `(cancel_epi (ιE R E F).left).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ι_inj : Function.Injective fun ψ : (TF (R := R) E).left ⟶ X => (ιE R E F).left ≫ ψ := by
   intro a b h
@@ -45,7 +43,7 @@ theorem ι_inj : Function.Injective fun ψ : (TF (R := R) E).left ⟶ X => (ιE 
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[cst_eq, gs_eq _ z ⊤ trivial]`. Conclude with `congrArg ((TF (R := R) F).left.presheaf.germ ⊤ z trivial).hom (appTop_specMap (CommRingCat.ofHom (algebraMap E F)) a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_ι (z : (TF (R := R) F).left) (a : Γ(Spec (CommRingCat.of E), ⊤)) :
     gs (ιE R E F).left z ⊤ a = cst F z (algebraMap E F ((Scheme.ΓSpecIso (CommRingCat.of E)).hom.hom a)) := by
@@ -56,9 +54,9 @@ theorem gs_ι (z : (TF (R := R) F).left) (a : Γ(Spec (CommRingCat.of E), ⊤)) 
 omit [IsDomain R] in
 
 /- English proof (translation)
-Take `⟨s₀, hs⟩` from `exists_sec hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `Eq.trans ?_ ((hf U (Function.extend (fun ψ => (ιE R E F).left ≫ ψ) h 1)).trans (Fintype.prod_empty _).symm)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(ι_inj R E F).extend_apply]) s`. Establish `le : (⊤ : (TF (R` using `R) E).left.Opens) ≤ LB.wchart L (PEmpty.elim : PEmpty → ((TF (R := R) E).left ⟶ X)) PEmpty.elim := fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of E)).hom.hom (((TF (R := R) E).left.presheaf.map (homOfLE le).op).hom (s₀.f PEmpty.elim)), fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs _ _ z J hJ, sval_of s₀ _ z J PEmpty.elim (fun k => k.elim), ← gs_ι R E F]`. Conclude with `(gs_res _ z le trivial _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_rat (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → ((TF (R := R) E).left ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε))
@@ -87,9 +85,9 @@ def HE (L : LB X) (σ : CoefVal.FS R F X)
 variable {R E F}
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Take `⟨K', _, φ', ε', t', ht', hs', e'⟩` from `H'`. Use `⟨K ⊕ K', inferInstance, _, _, LB.mulGen L _ _ _ _ t t', mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ h => ?_, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`. Conclude with `congrArg₂ (· * ·) (hs U h) (hs' U h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_mul hJ]`. Simplify using `only [e z J hJ, e' z J hJ, cst_eq, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem HE.mul {σ σ' : CoefVal.FS R F X} {f f'} {x x' : F} (H : HE R E F L σ f x) (H' : HE R E F L σ' f' x') :
     HE R E F L (fun U _ h => σ U h * σ' U h) (fun z J => f z J * f' z J) (x * x') := by
@@ -104,7 +102,7 @@ theorem HE.mul {σ σ' : CoefVal.FS R F X} {f f'} {x x' : F} (H : HE R E F L σ 
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PEmpty, inferInstance, _, _, LB.oneGen L (Y := (TF (R := R) E).left), fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm, fun U _ h => Fintype.prod_empty _, fun z J _ => by rw [val_one, cst_eq, map_one, Units.val_o …`.
+Supply the required witnesses or components.
 -/
 theorem HE.one : HE R E F L (fun _ _ _ => 1) (fun _ _ => 1) 1 :=
   ⟨PEmpty, inferInstance, _, _, LB.oneGen L (Y := (TF (R := R) E).left),
@@ -112,7 +110,7 @@ theorem HE.one : HE R E F L (fun _ _ _ => 1) (fun _ _ => 1) 1 :=
     fun U _ h => Fintype.prod_empty _, fun z J _ => by rw [val_one, cst_eq, map_one, Units.val_one, _root_.mul_one]⟩
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Conclude with `⟨K, _, φ, ε, t, ht, fun U _ h => (hs U h).trans (hσ U h), fun z J hJ => (hf z J hJ).trans (e z J hJ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HE.congr {σ σ' : CoefVal.FS R F X} {f f'} {x : F} (H : HE R E F L σ f x)
     (hσ : ∀ (U : Type) [CommGroup U] h, σ U h = σ' U h) (hf : ∀ z J, Good L z J → f' z J = f z J) :
@@ -121,7 +119,7 @@ theorem HE.congr {σ σ' : CoefVal.FS R F X} {f f'} {x : F} (H : HE R E F L σ f
   exact ⟨K, _, φ, ε, t, ht, fun U _ h => (hs U h).trans (hσ U h), fun z J hJ => (hf z J hJ).trans (e z J hJ)⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa only [pow_zero] using HE.one`. Consider the case `succ n ih => simpa only [pow_succ] using ih.mul H`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem HE.pow {σ : CoefVal.FS R F X} {f} {x : F} (H : HE R E F L σ f x) (n : ℕ) :
     HE R E F L (fun U _ h => σ U h ^ n) (fun z J => f z J ^ n) (x ^ n) := by
@@ -130,11 +128,11 @@ theorem HE.pow {σ : CoefVal.FS R F X} {f} {x : F} (H : HE R E F L σ f x) (n : 
   | succ n ih => simpa only [pow_succ] using ih.mul H
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Take `⟨K', _, φ', ε', t', ht', hs', e'⟩` from `H'`. Establish `hu` using `mulGen_isGen _ _ _ _ _ _ _ ht (invGen_isGen _ _ _ _ ht')`. Take `⟨a, hav⟩` from `sec_rat R E F hL (Geo.Tor.genSec _ hu) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[hs, hs', hσ, mul_inv_cancel])`. Use `⟨a, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `b` using `hav z J hJ`. Rewrite `b` using `[sval_genSec _ hu _ z hJ, val_mul hJ, val_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c : (val t (ιE R E F).left z J).val = cst F z (algebraMap E F a) * (val t' (ιE R E F).left z J).val`. Rewrite using `[← b, Units.val_mul, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`. Rewrite using `[e z J hJ, e' z J hJ, c]`. Simplify using `only [cst_eq, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem HE.ratio (hL : L.IsLB) {σ σ' : CoefVal.FS R F X} {f f'} {x x' : F} (H : HE R E F L σ f x)
     (H' : HE R E F L σ' f' x') (hσ : ∀ (U : Type) [CommGroup U] h, σ U h = σ' U h) :
@@ -158,7 +156,7 @@ theorem HE.ratio (hL : L.IsLB) {σ σ' : CoefVal.FS R F X} {f f'} {x x' : F} (H 
 variable {K : Type} [Fintype K] {ε : K → ℤ}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `⟨K, _, _, ε, LB.pullGen L φ ε t r₀, pullGen_isGen _ _ _ _ ht _, fun U _ h => by simp only [Category.assoc], fun z J hJ => by rw [val_pull hJ, cst_eq, map_one, _root_.one_mul]⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem he_gen {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen)
     (r₀ : (TF (R := R) E).left ⟶ Y) {r : (TF (R := R) F).left ⟶ Y} (hr : (ιE R E F).left ≫ r₀ = r) :
@@ -168,9 +166,9 @@ theorem he_gen {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} {t : LB.Gen (LB.LinComb L
     fun z J hJ => by rw [val_pull hJ, cst_eq, map_one, _root_.one_mul]⟩
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨t, ht⟩` from `exists_gen_of_local (V := E) L hL (fun i => r₀ ≫ φ i) ε`. Establish `hi` using `invGen_isGen _ _ _ _ ht`. Take `⟨a, hav⟩` from `sec_rat R E F hL (pullMulSec s r₀ _ hi) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`. Use `⟨a, K, _, _, ε, t, ht, fun U _ h => by simp only [Category.assoc], fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `b` using `hav z J hJ`. Rewrite `b` using `[sval_pullMulSec _ _ _ hi _ z hJ, val_inv]`. Rewrite using `[← b, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem he_sec (hL : L.IsLB) {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} (s : LB.Sec (LB.LinComb L φ ε))
     (r₀ : (TF (R := R) E).left ⟶ Y) {r : (TF (R := R) F).left ⟶ Y} (hr : (ιE R E F).left ≫ r₀ = r) :
@@ -187,9 +185,9 @@ theorem he_sec (hL : L.IsLB) {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} (s : LB.Sec
   rw [← b, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]
 
 /- English proof (translation)
-Use `choose φ₀ h₀ using hφ`. Take `⟨t₀, ht₀⟩` from `exists_gen_of_local (V := E) L hL φ₀ ε`. Take `⟨c, hc, e⟩` from `exists_ratio hL t ht (LB.pullGen L _ _ t₀ (ιE R E F).left) (pullGen_isGen _ _ _ _ ht₀ _) (fun U _ h => Finset.prod_congr rfl fun i _ => by rw [h₀])`. Use `⟨c, hc, K, _, φ₀, ε, t₀, ht₀, fun U _ h => by simp only [h₀], fun z J hJ => ?_⟩` and prove the remaining obligations. Use `e (TF (R := R) F).left (𝟙 (TF (R := R) F).left) z J hJ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[val_pull hJ, Category.id_comp]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_he (hL : L.IsLB) {φ : K → ((TF (R := R) F).left ⟶ X)} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen)
     (hφ : ∀ i, ∃ ψ, φ i = (ιE R E F).left ≫ ψ) :
@@ -206,21 +204,19 @@ theorem exists_he (hL : L.IsLB) {φ : K → ((TF (R := R) F).left ⟶ X)} {t : L
 end
 
 /- English proof (translation)
-Set `a : Spec (CommRingCat.of F) ⟶ A.left` to `b.left`. Choose the witnesses or unpack the hypotheses as in `⟨B, i, _, t, ht⟩ : ∃ (B : CommRingCat.{0}) (i : Spec B ⟶ A.left) (_ : IsOpenImmersion i) (t : Spec B), i t = a (IsLocalRing.closedPoint F) := by`. Take `⟨n, t, ht⟩` from `A.left.affineCover.exists_eq (a (IsLocalRing.closedPoint F))`. Conclude with `⟨_, A.left.affineCover.f n, A.left.affineCover.map_prop n, t, ht⟩`. Establish `hr : Set.range a ⊆ Set.range i`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨t, ht.trans (congrArg a (Subsingleton.elim _ _))⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift i a hr)`. Establish `hφa : Spec.map φ ≫ i = a` using `by rw [hφ, IsOpenImmersion.lift_fac]`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (show Spec B ⟶ Spec (CommRingCat.of R) from i ≫ A.hom)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₂ : LocallyOfFiniteType (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Rewrite `h₂` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `hc : ψ ≫ φ = CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ CommRingCat.ofHom (algebraMap (FractionRing R) F)`. Rewrite using `[← Spec.map_inj, Spec.map_comp, hψ, ← Category.assoc, hφa, Spec.map_comp]`. Conclude with `Over.w b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `: Algebra R B` to `ψ.hom.toAlgebra`. Take `⟨s, hs⟩ : (⊤ : Subalgebra R B).FG` from `(show Algebra.FiniteType R B from h₂).out`. Set `K` to `IntermediateField.adjoin (FractionRing R) ((s.image φ.hom : Finset F) : Set F)`. Establish `hm : ∀ x : B, φ.hom x ∈ K` using `fun x => by`. Establish `hx : x ∈ Algebra.adjoin R (s : Set B)` using `by rw [hs]; trivial`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ (by simpa using ⟨x, hx, rfl⟩)`. Consider the case `algebraMap r`. Establish `e : φ.hom (algebraMap R B r) = algebraMap (FractionRing R) F (algebraMap R _ r)` using `congr($hc r)`. Rewrite using `[e]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `K.algebraMap_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : (ιE R K F).left ≫ Spec.map (CommRingCat.ofHom (φ.hom.codRestrict K hm)) ≫ i = b.left`. Use `Eq.trans ?_ hφa` and prove the remaining obligations. Use `show Spec.map _ ≫ _ = _`. Rewrite using `[← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
-
-Use `⟨s.image φ.hom, Over.homMk (Spec.map (CommRingCat.ofHom (φ.hom.codRestrict K hm)) ≫ i) ?_, Over.OverMorphism.ext e⟩` and prove the remaining obligations. Apply `ι_inj R K F` to reduce the goal to its premises. Use `show (ιE R K F).left ≫ _ ≫ _ = (ιE R K F).left ≫ _`. Rewrite using `[← Category.assoc, e, Over.w, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoin {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
     (A : Over (Spec (CommRingCat.of R))) [LocallyOfFiniteType A.hom] (b : TF (R := R) F ⟶ A) :

@@ -26,14 +26,14 @@ def chartPullSection {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (ψ : X ⟶ Y)
       ((gm_pull_g L φ ψ y (fun _ => i) (fun _ => j) (le i hi) (le j hj)).trans (by rw [e])).symm }
 
 /- English proof (translation)
-The claim follows from `(LBIso.chartPull (chartPullPull M ψ ψ rfl) (chartPullSection L φ ψ e) h).symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_inv {X Y : Scheme.{0}} {L : LB X} {M : LB Y} {φ : Y ⟶ X} {ψ : X ⟶ Y} (e : ψ ≫ φ = 𝟙 X)
     (h : LBIso M (L.pull φ)) : LBIso L (M.pull ψ) :=
   (LBIso.chartPull (chartPullPull M ψ ψ rfl) (chartPullSection L φ ψ e) h).symm
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Take `⟨w', hw'⟩` from `h'`. Take `⟨w'', T⟩` from `exists_comp hL' w w' ((isGen_iff w).1 hw) ((isGen_iff w').1 hw') hL hL''`. Conclude with `⟨w'', (isGen_iff w'').2 (T.pgen_comp hL' ((isGen_iff w).1 hw) ((isGen_iff w').1 hw'))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lbIso_comp {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {L'' : LB X''} {F : X' ⟶ X} {F' : X'' ⟶ X'}
     (hL : L.IsLB) (hL' : L'.IsLB) (hL'' : L''.IsLB) (h : LBIso L' (L.pull F)) (h' : LBIso L'' (L'.pull F')) :
@@ -44,7 +44,7 @@ theorem lbIso_comp {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {L'' : LB X''
   exact ⟨w'', (isGen_iff w'').2 (T.pgen_comp hL' ((isGen_iff w).1 hw) ((isGen_iff w').1 hw'))⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Conclude with `⟨_, DVR.linCombIso_isGen w hw φ ε⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lbIso_linComb {X Y : Scheme.{0}} {L M : LB X} (h : LBIso L M) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) : LBIso (LB.LinComb L φ ε) (LB.LinComb M φ ε) := by
@@ -55,7 +55,7 @@ section Cube
 variable {S : Scheme.{0}} {G A : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Establish `e : psum A x' I ≫ ψ = U ≫ psum G x I` using `(psum_hom (MonoidHom.mk' (· ≫ ψ) fun a b => MonObj.mul_comp a b ψ) x' I).trans ((congrArg (fun z => psum G z I) (funext hx)).trans (psum_hom (preHom U) x I).symm)`. Conclude with `congrArg (fun z => z.left) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psum_comp (ψ : A ⟶ G) [IsMonHom ψ] {T T' : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ A)) (x : Fin n → (T ⟶ G))
     (U : T' ⟶ T) (hx : ∀ i, x' i ≫ ψ = U ≫ x i) (I : Finset (Fin n)) :
@@ -72,20 +72,20 @@ def chartPullCube (ψ : A ⟶ G) [IsMonHom ψ] (M : LB G.left) {T T' : Over S} {
 
 omit [IsCommMonObj A] in
 /- English proof (translation)
-The claim follows from `DVR.linComb_isLB L hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem cube_isLB {L : LB A.left} (hL : L.IsLB) {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) : (cubeLB A x L).IsLB :=
   DVR.linComb_isLB L hL _ _
 
 omit [IsCommMonObj A] in
 /- English proof (translation)
-The claim follows from `lbIso_linComb h _ _`.
+A detailed English derivation is pending.
 -/
 theorem cube_congr {L M : LB A.left} (h : LBIso L M) {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ A)) :
     LBIso (cubeLB A x L) (cubeLB A x M) := lbIso_linComb h _ _
 
 /- English proof (translation)
-Establish `hP` using `pull_isLB hM ψ.left`. Use `((cube_congr h _).trans (cube_isLB hL _) (cube_isLB hP _) (cube_isLB hP _) ?_).trans (cube_isLB hL _) (cube_isLB hP _) (cube_isLB hL _) (cube_congr h _).symm` and prove the remaining obligations. Use `LBIso.chartPull (chartPullCube ψ M _ _ (ψ ⊗ₘ ψ) fun i => ?_) (chartPullCube ψ M _ _ (ψ ⊗ₘ ψ) fun i => ?_) H` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [hu]`. Apply the tactic sequence `fin_cases i <;> simp [hv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_pull (ψ : A ⟶ G) [IsMonHom ψ] {L : LB A.left} {M : LB G.left} (hL : L.IsLB) (hM : M.IsLB)
     (h : LBIso L (M.pull ψ.left)) {u v : A ⟶ A} {u₀ v₀ : G ⟶ G} (hu : u ≫ ψ = ψ ≫ u₀) (hv : v ≫ ψ = ψ ≫ v₀)
@@ -99,7 +99,7 @@ theorem adj_pull (ψ : A ⟶ G) [IsMonHom ψ] {L : LB A.left} {M : LB G.left} (h
   · fin_cases i <;> simp [hv]
 
 /- English proof (translation)
-Establish `hP` using `pull_isLB hM ψ.left`. Use `(h.trans hL hP (cube_isLB hP _) ?_).trans hL (cube_isLB hP _) (cube_isLB hL _) (cube_congr h _).symm` and prove the remaining obligations. Use `LBIso.chartPull (chartPullPull M _ ψ.left rfl) (chartPullCube ψ M _ _ ψ fun i => ?_) H` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [hu]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prim_pull (ψ : A ⟶ G) [IsMonHom ψ] {L : LB A.left} {M : LB G.left} (hL : L.IsLB) (hM : M.IsLB)
     (h : LBIso L (M.pull ψ.left)) {u : A ⟶ A} {u₀ : G ⟶ G} (hu : u ≫ ψ = ψ ≫ u₀)
@@ -112,17 +112,15 @@ theorem prim_pull (ψ : A ⟶ G) [IsMonHom ψ] {L : LB A.left} {M : LB G.left} (
 end Cube
 
 /- English proof (translation)
-Establish `hd : 0 < H.d` using `H.d_prime.pos`. Establish `h1 : H.bar H.rt ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Establish `h2 : H.bar H.rt = -H.rt`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `e` using `H.bar_eq H.rt`. Rewrite `e` using `[h]`. Establish `e2 : starRingEnd ℂ (φ (H.rt : E)) = φ (H.rt : E)`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun z : 𝓞 E => φ (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 e2`. Rewrite `e3` using `[hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast e3`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg r]`. Conclude with `h`. Establish `h3 : 2 * H.bar H.w0 = 1 - H.rt`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg H.bar H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, h2, map_ofNat]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (2 : 𝓞 E) * (H.w0 + H.bar H.w0) = 2 * 1` using `by rw [mul_add, h3, H.two_weight_eq_one_add_root]; ring`.
-
-Conclude with `mul_left_cancel₀ two_ne_zero h4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmHostUnit_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : H.w0 + H.bar H.w0 = 1 := by
   have hd : 0 < H.d := H.d_prime.pos
@@ -156,17 +154,17 @@ end GlobalTheory.PelPrim
 open GlobalTheory.PelPrim in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D o _ g k J b em w w' a bas ρ t ⟨τ, φ, hφ, hL, hact, hpt⟩`. Use `⟨fun hw hw' => ?_, fun t' ⟨ψ, hψ, hL', hpt', hact'⟩ => ?_⟩` and prove the remaining obligations. Set `_` to `t.ab.comm`. Establish `hinv : ∀ j, t.act j ≫ φ.inv = φ.inv ≫ τ.act.act (a j)` using `fun j => by`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, hact, φ.inv_hom_id_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL₀ : LBIso t.L (τ.PP.L.pull φ.inv.left)` using `lbIso_inv (by rw [← Over.comp_left, φ.inv_hom_id, Over.id_left]) hL`. Use `⟨?_, adj_pull φ.inv t.isLB τ.PP.isLB hL₀ (hinv w) (hinv w') ?_, prim_pull φ.inv t.isLB τ.PP.isLB hL₀ (hinv w) ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi φ.hom, MonObj.comp_mul, ← hact, ← hact, ← MonObj.mul_comp, ← τ.act.add, hw, hw', cmHostUnit_add_conj_eq_one, τ.act.one, Category.id_comp, Category.comp_id]`. Rewrite using `[hw, hw']`. Conclude with `τ.adj _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Conclude with `τ.prim`. Establish `: IsMonHom (Iso.refl t.A).hom` using `inferInstanceAs (IsMonHom (𝟙 t.A))`. Take `⟨e, he, hl⟩` from `grpPullback_iso hψ (isGrpPullback_of_iso (Iso.refl t.A))`. Establish `hl' : e.hom.left = ψ` using `(Category.comp_id _).symm.trans hl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hl'` using the available equality. Establish `hact₀ : ∀ j, t.act j ≫ e.inv = e.inv ≫ t'.act j` using `fun j => by`. Establish `: t'.act j ≫ e.hom = e.hom ≫ t.act j` using `Over.OverMorphism.ext (hact' j)`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, this, e.inv_hom_id_assoc]`. Establish `hpt₀ : ∀ i, t.pt i ≫ e.inv = t'.pt i` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: t'.pt i ≫ e.hom = t.pt i` using `Over.OverMorphism.ext ((hpt' i).trans (Category.id_comp _))`. Rewrite using `[Iso.comp_inv_eq, this]`. Establish `hL₀ : LBIso t.L (t'.L.pull e.inv.left)` using `lbIso_inv (by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]) hL'`. Use `⟨τ, φ ≪≫ e.symm, inferInstanceAs (IsMonHom (φ.hom ≫ e.inv)), lbIso_comp t'.isLB t.isLB τ.PP.isLB hL₀ hL, fun j => ?_, fun K _ _ _ x β hx => ?_⟩` and prove the remaining obligations. Use `show _ ≫ φ.hom ≫ e.inv = (φ.hom ≫ e.inv) ≫ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, hact, Category.assoc, hact₀, Category.assoc]`. Take `⟨h₁, I, h₂, h₃⟩` from `hpt K x β hx`. Use `⟨h₁, I, h₂, fun i => ?_⟩` and prove the remaining obligations. Use `show _ ≫ φ.hom ≫ e.inv = _`. Rewrite using `[← Category.assoc, h₃, Category.assoc, hpt₀]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.pelClass_prim_and_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (a : J → 𝓞 E) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La) (ρ : o) (t : TObj g k J b (spMap em)), PELClass D a bas ρ em t → (a w = H.w0 → a w' = H.bar H.w0 → t.Prim w w') ∧ ∀ t' : TObj g k J b (spMap em), TMap t' t (𝟙 _) → PELClass D a bas ρ em t' := by
   intro E _ _ _ H D o _ g k J b em w w' a bas ρ t ⟨τ, φ, hφ, hL, hact, hpt⟩

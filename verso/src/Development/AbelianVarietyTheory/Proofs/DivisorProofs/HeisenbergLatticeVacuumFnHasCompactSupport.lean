@@ -23,9 +23,9 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.HeisLatVac
 
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψ₀ Λ χ x₀ hΛ`. Establish `hK : IsCompact ((fun u : (κ → Fv F v) × (κ → Fv F v) => x₀ + u.1) '' (Λ : Set _))` using `hΛ.image (continuous_const.add continuous_fst)`. Use `HasCompactSupport.intro hK ?_` and prove the remaining obligations. Introduce `x hx`. Unfold `vacFn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg]`. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `hx ⟨u, hu, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem vacFn_hasCompactSupport_of_isCompact : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ) (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v)))

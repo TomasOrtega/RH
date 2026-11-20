@@ -35,37 +35,29 @@ open GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.Bi
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Use `haveI : Flat (spMap (algebraMap Qb ℂ)) := Flat.SpecMap_iff.2 (by`. Use `letI := (algebraMap Qb ℂ).toAlgebra`. Conclude with `(inferInstance : Module.Flat Qb ℂ))`. Use `haveI : Surjective (spMap (algebraMap Qb ℂ)) := ⟨fun x ↦ ⟨(inferInstance : Nonempty (PrimeSpectrum ℂ)).some, Subsingleton.elim (α := PrimeSpectrum Qb) _ _⟩⟩`. Use `haveI := hA₀.comm`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨rm, hrm⟩` from `ActDescent.exists_oAct hp X.rm fun a ↦ by`. Take `⟨f, -, hf⟩` from `GlobalTheory.HomDescentQb.hom_descends A₀ A₀ X.A X.A p p _ _ hA₀ gA₀ hA₀ gA₀ hp hp (X.rm.act a) (X.rm.hom a)`. Conclude with `⟨f, hf⟩`. Take `⟨D₀, _, Q, D, _, d, m, hD₀, gD₀, q₀, q₀', hd, m₁, m₂, q, q'⟩` from `exists_dual_pair HD hA₀ gA₀ hp`. Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback hp hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH, aH⟩` from `exists_relAmple_prod X.ab X.ab (pull_isLB (X.isLB c₀) _) (X.pos c₀ hc₀) (pull_isLB (X.isLB c₀) _) (X.pos c₀ hc₀)`. Establish `hx : ∀ c : 𝔠.elt, ∃ P₀ : LB (A₀ ⊗ A₀).left, ∃ h : P₀.IsLB, IsAdditive P₀ ∧ IsAdditive (swap P₀) ∧ CechPic.pull l (cls P₀ h) = cls (X.P c) (X.isLB c)` using `fun c ↦ by`. Take `⟨a₁, a₂⟩` from `additive_of_triv X.ab X.ab hH aH (X.isLB c) (X.rig₁ c) (X.rig₂ c)`. Take `⟨x, hx, ex⟩` from `exists_hom q q' (X.isLB c) a₁ a₂`. Take `⟨x₀, hx₀, e₀⟩` from `GlobalTheory.HomDescentQb.hom_descends A₀ D₀ X.A D p d _ _ hA₀ gA₀ hD₀ gD₀ hp hd x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨b₁, b₂⟩` from `additive_ev q₀.isLB q₀.additive q₀'.additive x₀`. Use `⟨_, pull_isLB q₀.isLB _, b₁, b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[cls_ev q₀.isLB, ex]`. Conclude with `pull_evc_eq l₁ l₂ m₁ m₂ q₀.isLB q.isLB e₀.symm`. Use `choose P₀ hP₀ a₁ a₂ eP using hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `inj : ∀ {P P' : LB (A₀ ⊗ A₀).left} (hP : P.IsLB) (hP' : P'.IsLB), IsAdditive P → IsAdditive P' → CechPic.pull l (cls P hP) = CechPic.pull l (cls P' hP') → LBIso P P'` using `fun hP hP' a a' e ↦ (cls_eq_iff hP hP').1 (cls_eq_of_pull hp.1 hd l₁ l₂ m₁ m₂ q₀ q hP hP' a a' e)`. Establish `iso : ∀ c, LBIso ((P₀ c).pull l) (X.P c)` using `fun c ↦ (cls_eq_iff (pull_isLB (hP₀ c) _) (X.isLB c)).1 (by rw [cls_pull (hP₀ c)]; exact eP c)`. Establish `val : ∀ (c : 𝔠.elt) {Y₀ : Over (Sp Qb)} {Y : Over (Sp ℂ)} (r : Y.left ⟶ Y₀.left) (a₀ t₀ : Y₀ ⟶ A₀) (a t : Y ⟶ X.A), a.left ≫ p = r ≫ a₀.left → t.left ≫ p = r ≫ t₀.left → CechPic.pull r (evc (hP₀ c) a₀ t₀) = evc (X.isLB c) a t` using `fun c Y₀ Y r a₀ t₀ a t ha ht ↦ by`. Rewrite using `[evc, evc, ← eP, ← pull_comp, ← pull_comp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, lift_left_fst, l₁, lift_left_fst_assoc, ha]`. Rewrite using `[Category.assoc, Category.assoc, lift_left_snd, l₂, lift_left_snd_assoc, ht]`. Use `⟨{ A := A₀ ab := hA₀ dim := gA₀ rm := rm P := P₀ isLB := hP₀ rig₁ := fun c ↦ triv_left (hP₀ c) (a₁ c) rig₂ := fun c ↦ triv_right (hP₀ c) (a₂ c)` and prove the remaining obligations. Use symmetry as in `:= fun c ↦ ?_`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `add := fun c c' ↦ ?_`. Use `smul := fun a c ↦ ?_`. Use `pos := fun c hc ↦ ?_`. Use `ker := fun c T₀ x hx a ha ↦ ?_ }, p, g, ⟨hp, hrm, l, ⟨l₁, l₂⟩, fun c ↦ ?_⟩, hg, rfl⟩`. Use `inj (hP₀ c) (pull_isLB (hP₀ c) _) (a₁ c) (a₂ c) ?_` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[eP, cls_ev (hP₀ c), val c l _ _ _ _ l₂.symm l₁.symm]`. Conclude with `(cls_eq_iff _ (pull_isLB (X.isLB c) _)).2 (X.symm c)`. Establish `hq` using `LB.isLB_div (hP₀ (c + c')) (hP₀ c)`. Establish `ev' : ∀ (Y : Over (Sp Qb)) (a t : Y ⟶ A₀), evc hq a t = evc (hP₀ (c + c')) a t - evc (hP₀ c) a t` using `fun Y a t ↦ by rw [evc, cls_div (hP₀ (c + c')) (hP₀ c), map_sub]; rfl`. Use `inj (hP₀ c') hq (a₁ c') ((isAdditive_iff hq).2 fun Y a a' t ↦ ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[ev', ev', ev', (isAdditive_iff (hP₀ _)).1 (a₁ _), (isAdditive_iff (hP₀ _)).1 (a₁ _)]`. Normalize the expressions using the abelian group laws. Rewrite using `[cls_div (hP₀ (c + c')) (hP₀ c), map_sub, eP, eP, eP, ← cls_div (X.isLB (c + c')) (X.isLB c) (LB.isLB_div (X.isLB (c + c')) (X.isLB c))]`. Conclude with `(cls_eq_iff _ _).2 (X.add c c')`. Establish `hq : (ev (P₀ c) (fst A₀ A₀) (snd A₀ A₀ ≫ rm.act a)).IsLB` using `pull_isLB (hP₀ c) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `inj (hP₀ _) hq (a₁ _) ((isAdditive_iff hq).2 fun Y u u' t ↦ ?_) ?_` and prove the remaining obligations. Simplify using `only [evc_ev (hP₀ c), lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff (hP₀ c)).1 (a₁ c) _ _ _ _`. Rewrite using `[eP, cls_ev (hP₀ c), val c l _ _ (fst X.A X.A) (snd X.A X.A ≫ X.rm.act a) l₁.symm (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hrm, ← Category.assoc, ← Category.assoc, l₂])]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(cls_eq_iff _ (pull_isLB (X.isLB c) _)).2 (X.smul a c)`. Use `AmpleDescent.relAmple_of_fieldExtension Qb ℂ _ A₀ X.A p _ _ hA₀ hp (pull_isLB (hP₀ c) _) (pull_isLB (X.isLB c) _) ((cls_eq_iff (pull_isLB (X.isLB c) _) (pull_isLB (pull_isLB (hP₀ c) _) _)).1 ?_) (X.pos c hc)` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB (hP₀ c) _), cls_ev (hP₀ c), cls_ev (X.isLB c)]`. Conclude with `(val c p _ _ _ _ (by simp) (by simp)).symm`. Set `T : Over (Sp ℂ)` to `(Over.pullback (spMap (algebraMap Qb ℂ))).obj T₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `r : T.left ⟶ T₀.left` to `Limits.pullback.fst _ _`. Establish `hr : IsPullback r T.hom T₀.hom (spMap (algebraMap Qb ℂ))` using `IsPullback.of_hasPullback _ _`. Establish `w : (r ≫ x.left) ≫ A₀.hom = T.hom ≫ spMap (algebraMap Qb ℂ)` using `by rw [Category.assoc, Over.w x, hr.w]`. Set `x' : T ⟶ X.A` to `liftPt hp T.hom _ w`. Establish `ex : x'.left ≫ p = r ≫ x.left` using `liftPt_left hp _ _ w`.
-
-Set `u : Over.mk ((X.A ⊗ T).hom ≫ spMap (algebraMap Qb ℂ)) ⟶ T₀` to `Over.homMk ((snd X.A T).left ≫ r) (by`. Express the relevant statement in the definitionally equal form `((snd X.A T).left ≫ r) ≫ T₀.hom = _`. Rewrite using `[Category.assoc, hr.w, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Set `s : (X.A ⊗ T).left ⟶ (A₀ ⊗ T₀).left` to `(lift (pushP hp (s := (X.A ⊗ T).hom) rfl (fst X.A T)) u).left`.
-
-Establish `s₁ : s ≫ (fst A₀ T₀).left = (fst X.A T).left ≫ p` using `lift_left_fst _ _`. Establish `s₂ : s ≫ (snd A₀ T₀).left = (snd X.A T).left ≫ r` using `lift_left_snd _ _`. Establish `z : evc (X.isLB c) (fst X.A T) (snd X.A T ≫ x') = 0`. Rewrite using `[← val c s (fst A₀ T₀) (snd A₀ T₀ ≫ x) _ _ s₁.symm (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ex, ← Category.assoc, ← Category.assoc, s₂]),`.
-
-Use the proof step `(triv_ev_iff (hP₀ c) _ _).1 hx, map_zero]`. Establish `k` using `X.ker c T x' ((triv_ev_iff (X.isLB c) _ _).2 z) a ha`. Use `ActDescent.over_hom_ext hr ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, ← ex, Category.assoc, ← hrm, ← Category.assoc, ← Over.comp_left, k]`. Use `(one_left_comp hp (s := T.hom) rfl).trans ?_` and prove the remaining obligations.
-
-Set `r' : Over.mk (T.hom ≫ spMap (algebraMap Qb ℂ)) ⟶ T₀` to `Over.homMk r hr.w`. Conclude with `congrArg (fun y ↦ y.left) (MonObj.comp_one (M := A₀) r').symm`. Conclude with `(cls_eq_iff (X.isLB c) (pull_isLB (hP₀ c) _)).1 (by rw [cls_pull (hP₀ c)]; exact (eP c).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_obj_of_isGrpPullback_over (HD : GlobalTheory.Published.DualAbelianScheme) {F : Type} [Field F] [NumberField F]
     {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ)) (c₀ : 𝔠.elt) (hc₀ : IsTotPos (c₀ : F)) (A₀ : Over (Sp Qb)) [GrpObj A₀]
@@ -183,23 +175,19 @@ open GlobalTheory.ComplexPoints
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Introduce `HD E _ _ _ I _ φ c L 𝔠 X U hα R₀ σ hσ G₀ _ p₀ _ hpb`. Use `haveI : Flat (spMap (algebraMap Qb ℂ)) := Flat.SpecMap_iff.2 (by`. Use `letI := (algebraMap Qb ℂ).toAlgebra`. Conclude with `(inferInstance : Module.Flat Qb ℂ))`. Use `haveI : Surjective (spMap (algebraMap Qb ℂ)) := ⟨fun x ↦ ⟨(inferInstance : Nonempty (PrimeSpectrum ℂ)).some, Subsingleton.elim (α := PrimeSpectrum Qb) _ _⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hring : R₀.subtype = (algebraMap Qb ℂ).comp σ` using `RingHom.ext fun x ↦ (hσ x).symm`. Establish `hcomp : spMap R₀.subtype = spMap (algebraMap Qb ℂ) ≫ spMap σ`. Rewrite using `[hring]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Set `A₀ : Over (Sp Qb)` to `(Over.pullback (spMap σ)).obj G₀`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `letI : GrpObj A₀ := inferInstanceAs (GrpObj ((Over.pullback (spMap σ)).obj G₀))`. Establish `hA₀G : IsGrpPullback A₀ G₀ (spMap σ) (pullback.fst G₀.hom (spMap σ))` using `isGrpPullback_pullback G₀ (spMap σ)`. Set `p : X.A.left ⟶ A₀.left` to `pullback.lift p₀ (X.A.hom ≫ spMap (algebraMap Qb ℂ)) (by`. Rewrite using `[Category.assoc, ← hcomp]`. Conclude with `hpb.1.w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp₁ : p ≫ pullback.fst G₀.hom (spMap σ) = p₀` using `pullback.lift_fst _ _ _`. Establish `hp₂ : p ≫ A₀.hom = X.A.hom ≫ spMap (algebraMap Qb ℂ)` using `pullback.lift_snd _ _ _`. Establish `hp : IsGrpPullback X.A A₀ (spMap (algebraMap Qb ℂ)) p` using `IsGrpPullback.cancel hA₀G (by rw [hp₁, ← hcomp]; exact hpb) hp₂`. Take `⟨hA₀, hdim⟩` from `GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend Qb ℂ (algebraMap Qb ℂ) A₀ X.A p hp X.ab`. Take `⟨XQ, pQ, gQ, hXQ, hgQ, hpg⟩` from `exists_obj_of_isGrpPullback_over HD.1 X U.c U.pos A₀ p hA₀ (hdim _ X.dim) hp G₀ (spMap σ) _ hA₀G`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `ρ : orderC c →+* Module.End ℂ (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `(Algebra.lmul ℂ (Fin (Module.finrank ℚ (FR E)) → ℂ)).toRingHom.comp ((Pi.ringHom fun j ↦ φ (U.e j)).comp (orderC c).subtype)`. Establish `hρ : ∀ a w, ρ a w = fun j ↦ φ (U.e j) (a : E) * w j` using `fun a w ↦ rfl`. Establish `hlat : ∀ a, ∀ z ∈ U.u.Λ, ρ a z ∈ U.u.Λ` using `fun a z hz ↦ by`. Take `⟨α, hαm, hαe⟩` from `hα a`. Use `haveI := hαm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hz`, the goal using `[← U.u.ker]`. Rewrite using `[hρ, hαe, hz, MonObj.one_comp]`. Take `⟨act, hact⟩` from `GlobalTheory.TorusAction.exists_oAct_of_map_lattice _ X.A X.ab _ U.u (orderC c) ρ hlat`. Use `haveI := X.ab.smooth`. Use `haveI := X.ab.proper`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsReduced X.A.left := isReduced_of_smooth_complex _ X.A.hom X.ab.smooth`. Establish `hext : ∀ f f' : X.A ⟶ X.A, (∀ z, U.u.ex z ≫ f = U.u.ex z ≫ f') → f = f'` using `fun f f' h ↦ over_hom_ext_of_complexPoints fun x ↦ by`. Take `⟨z, rfl⟩` from `U.u.ex_onto x`. Conclude with `h z`. Establish `huniq : ∀ (a : orderC c) (α : X.A ⟶ X.A), (∀ w, U.u.ex (fun j ↦ φ (U.e j) (a : E) * w j) = U.u.ex w ≫ α) → α = act.act a` using `fun a α h ↦ hext _ _ fun z ↦ by rw [← h, ← hact, hρ]`.
-
-Take `⟨cmQ, hcm⟩` from `GlobalTheory.ActDescent.exists_oAct hXQ.grp act fun a ↦ by haveI := act.hom a`. Take `⟨β, -, hβ⟩` from `GlobalTheory.RealMult.Obj.exists_end_descend_algebraic _ _ XQ X pQ hXQ (act.act a)`. Conclude with `⟨β, hβ⟩`. Use `⟨XQ, pQ, gQ, cmQ, hXQ, hgQ, by rw [hpg, hp₁], fun a ↦ ?_, fun a α _ h ↦ ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ActDescent.over_hom_ext hXQ.grp.1 ?_` and prove the remaining obligations.
-
-Rewrite using `[← hcm, ← hXQ.act a]`. Use `congr 2`. Conclude with `(huniq _ _ (U.act a)).symm`. Rewrite using `[huniq a α h]`. Conclude with `hcm a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_qbModel_of_subring : GlobalTheory.Published.AbelianDualCrystal →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E))

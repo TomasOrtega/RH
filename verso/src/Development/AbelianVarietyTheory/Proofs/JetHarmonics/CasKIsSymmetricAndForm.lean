@@ -7,9 +7,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `CasK`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [LinearMap.sum_apply, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : ε a = ε b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hab.symm, if_pos hab, Module.End.mul_apply, h a b hab]`. Rewrite using `[if_neg (fun e => hab e.symm), if_neg hab]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_casK_eq_sum {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {n : ℕ}
     {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} (h : KUnit ε E) (x y : M) :
@@ -24,11 +24,11 @@ theorem inner_casK_eq_sum {M : Type} [NormedAddCommGroup M] [InnerProductSpace �
     simp
 
 /- English proof (translation)
-Introduce `M _ _ n ε E h`. Use `⟨fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← inner_conj_symm, inner_casK_eq_sum h, inner_casK_eq_sum h]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Rewrite using `[inner_conj_symm]`. Simplify using the standard rewrite rules. Rewrite using `[inner_casK_eq_sum h]`. Simplify using `only [Complex.re_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem casK_isSymmetric_and_form :
     ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool)

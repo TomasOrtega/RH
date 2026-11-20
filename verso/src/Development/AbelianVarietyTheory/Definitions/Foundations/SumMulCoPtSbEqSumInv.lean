@@ -15,7 +15,7 @@ def coPtSb (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d a b : ℤ) (
         GlobalTheory.KummerEisensteinGalois.coPtMu N p m k ψ (c * a) (d * b) s
 
 /- English proof (translation)
-Simplify using `[coPtSb, GlobalTheory.KummerEisensteinGalois.coPtS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coPtSb_one (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d x : ℤ) (s : ℕ) :
     coPtSb N p m k ψ c d x 1 s = GlobalTheory.KummerEisensteinGalois.coPtS N p m k ψ c d x s := by
@@ -27,7 +27,7 @@ def chiAvg (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)) (χ : 
 omit [CharZero K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `h' : ∀ z : ℤ, z ≡ a [ZMOD N] ↔ z ≡ a' [ZMOD N]` using `fun z => ⟨fun hz => hz.trans h, fun hz => hz.trans h.symm⟩`. Simplify using `only [GlobalTheory.KummerEisensteinGalois.ffMu, h']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ffMu_congr (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) {a a' : ℤ} (h : a ≡ a' [ZMOD N]) :
     GlobalTheory.KummerEisensteinGalois.ffMu N p m k ψ a = GlobalTheory.KummerEisensteinGalois.ffMu N p m k ψ a' := by
@@ -38,7 +38,7 @@ theorem ffMu_congr (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) {a a' : �
 omit [CharZero K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `h' : ∀ z : ℤ, z ≡ b [ZMOD N] ↔ z ≡ b' [ZMOD N]` using `fun z => ⟨fun hz => hz.trans h, fun hz => hz.trans h.symm⟩`. Simplify using `only [GlobalTheory.KummerEisensteinGalois.eeMu, h']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eeMu_congr (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) {b b' : ℤ} (h : b ≡ b' [ZMOD N]) :
     GlobalTheory.KummerEisensteinGalois.eeMu N p m ψ b = GlobalTheory.KummerEisensteinGalois.eeMu N p m ψ b' := by
@@ -49,7 +49,7 @@ theorem eeMu_congr (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) {b b' : ℤ
 omit [CharZero K] in
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.KummerEisensteinGalois.coPtMu, ffMu_congr N p m k ψ ha, eeMu_congr N p m ψ hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coPtMu_congr (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) {a a' b b' : ℤ} (ha : a ≡ a' [ZMOD N])
     (hb : b ≡ b' [ZMOD N]) : GlobalTheory.KummerEisensteinGalois.coPtMu N p m k ψ a b = GlobalTheory.KummerEisensteinGalois.coPtMu N p m k ψ a' b' := by
@@ -58,7 +58,7 @@ theorem coPtMu_congr (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) {a a' b
 omit [CharZero K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [coPtSb, coPtMu_congr N p m k ψ ha hb, coPtMu_congr N p m k ψ (ha.mul_left c) hb, coPtMu_congr N p m k ψ ha (hb.mul_left d), coPtMu_congr N p m k ψ (ha.mul_left c) (hb.mul_left d)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coPtSb_congr (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d : ℤ) {a a' b b' : ℤ} (ha : a ≡ a' [ZMOD N])
     (hb : b ≡ b' [ZMOD N]) : coPtSb N p m k ψ c d a b = coPtSb N p m k ψ c d a' b' := by
@@ -69,7 +69,7 @@ theorem coPtSb_congr (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d : 
 omit [CharZero K] in
 
 /- English proof (translation)
-Use `Fintype.sum_equiv (Equiv.inv _) _ _ fun δ => ?_` and prove the remaining obligations. Establish `: χ⁻¹ ((δ⁻¹ : (ZMod N)ˣ) : ZMod N) = χ (δ : ZMod N)`. Rewrite using `[MulChar.inv_apply_eq_inv', ← MulChar.coe_toUnitHom, ← MulChar.coe_toUnitHom, map_inv, Units.val_inv_eq_inv_val, inv_inv]`. Simplify using `only [Equiv.inv_apply, inv_inv, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_mul_coPtSb_eq_sum_inv (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)) (χ : DirichletCharacter K N)
     (c d x : ℤ) (s : ℕ) :
@@ -84,7 +84,7 @@ theorem sum_mul_coPtSb_eq_sum_inv (N p m k : ℕ) [NeZero N] (ψ : DirichletChar
 omit [CharZero K] in
 
 /- English proof (translation)
-Simplify using `only [chiAvg, ZMod.natCast_zmod_val, MulChar.inv_apply_eq_inv', inv_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiAvg_inv (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)) (χ : DirichletCharacter K N)
     (c d x : ℤ) (s : ℕ) :
@@ -95,7 +95,7 @@ theorem chiAvg_inv (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)
 omit [CharZero K] in
 
 /- English proof (translation)
-Establish `h` using `chiAvg_inv N p m k ψ χ⁻¹ c d x s`. Rewrite `h` using `[inv_inv]`. Rewrite using `[h, sum_mul_coPtSb_eq_sum_inv, inv_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiAvg_eq_sum_inv (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)) (χ : DirichletCharacter K N)
     (c d x : ℤ) (s : ℕ) :
@@ -109,11 +109,11 @@ theorem chiAvg_eq_sum_inv (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K 
 omit [CharZero K] in
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft t) _ _ fun δ => ?_` and prove the remaining obligations. Establish `hb : ((t : ZMod N).val : ℤ) * ((δ : ZMod N).val : ℤ) ≡ (((t * δ : (ZMod N)ˣ) : ZMod N).val : ℤ) [ZMOD N]`. Rewrite using `[← ZMod.intCast_eq_intCast_iff]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [ZMod.natCast_zmod_val]`. Establish `ha : ((t : ZMod N).val : ℤ) * (x * ((δ : ZMod N).val : ℤ)) ≡ x * (((t * δ : (ZMod N)ˣ) : ZMod N).val : ℤ) [ZMOD N]`. Rewrite using `[mul_left_comm]`. Conclude with `hb.mul_left x`. Establish `ht : χ (t : ZMod N) ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MulChar.coe_toUnitHom]`. Conclude with `Units.ne_zero _`. Rewrite using `[coPtSb_congr N p m k ψ c d ha hb]`. Simplify using `only [Equiv.coe_mulLeft, Units.val_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem sum_mul_coPtSb_shift (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)) (χ : DirichletCharacter K N)
     (c d x : ℤ) (t : (ZMod N)ˣ) (s : ℕ) :
@@ -140,7 +140,7 @@ theorem sum_mul_coPtSb_shift (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter
 omit [CharZero K] in
 
 /- English proof (translation)
-Establish `h` using `sum_mul_coPtSb_shift N p m k ψ χ⁻¹ c d x t s`. Simplify using `only [MulChar.inv_apply_eq_inv', inv_inv] at h`. Simplify using `only [h, chiAvg, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chiAvg_shift (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ m)) (χ : DirichletCharacter K N)
     (c d x : ℤ) (t : (ZMod N)ˣ) (s : ℕ) :
@@ -152,7 +152,7 @@ theorem chiAvg_shift (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ 
   simp only [h, chiAvg, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Rewrite using `[chiAvg, Fintype.sum_unique, ← coPtSb_one, inv_one, one_mul, coPtSb_congr 1 p m k ψ c d (a' := x) (b' := 1) Int.modEq_one Int.modEq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d x : ℤ) (s : ℕ) :
     chiAvg 1 p m k ψ (fun _ => 1) c d x s = GlobalTheory.KummerEisensteinGalois.coPtS 1 p m k ψ c d x s := by
@@ -160,13 +160,13 @@ example (p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d x : ℤ) (s : ℕ
     coPtSb_congr 1 p m k ψ c d (a' := x) (b' := 1) Int.modEq_one Int.modEq_one]
 
 /- English proof (translation)
-Simplify using `[coPtSb]`.
+Simplify using the standard rewrite rules.
 -/
 example (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (a b : ℤ) (s : ℕ) : coPtSb N p m k ψ 1 1 a b s = 0 := by
   simp [coPtSb]
 
 /- English proof (translation)
-Establish `h1 : ∀ y : ZMod (3 ^ 0), (1 : DirichletCharacter ℚ (3 ^ 0)) y = 1` using `fun y => MulChar.one_apply (@isUnit_of_subsingleton _ _ (inferInstanceAs (Subsingleton (ZMod 1))) y)`. Simplify using `[GlobalTheory.KummerEisensteinGalois.coPtMu, GlobalTheory.KummerEisensteinGalois.cmul, GlobalTheory.KummerEisensteinGalois.ffMu, GlobalTheory.KummerEisensteinGalois.eeMu, Finset.sum_range_succ, h1, Int.ModEq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : GlobalTheory.KummerEisensteinGalois.coPtMu (K := ℚ) 5 3 0 3 1 1 1 2 = 1 := by
   have h1 : ∀ y : ZMod (3 ^ 0), (1 : DirichletCharacter ℚ (3 ^ 0)) y = 1 := fun y =>

@@ -313,7 +313,7 @@ def decompOne : Fin 1 → ℕ → Roots 1 1 1 := fun _ m =>
   else if m = 2 then C (1 / 2) else 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_pos, fun _ h => h, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : (0 : ℝ) < 1 ∧ (∀ p ∈ {p : ℕ | p.Prime}, p.Prime) ∧
     4 * ((1 : ℕ) : ℝ) * ((1 + 1 : ℕ) : ℝ) ^ 2 ≤ 16 :=
@@ -325,7 +325,7 @@ Evaluate the decidable proposition.
 example : IsPart (![2, 1] : Fin 2 → ℕ) := by decide
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨1, one_pos, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example : ∀ i l, ∃ m : ℕ, 0 < m ∧ (Matrix.of fun (_ : Fin 1) (_ : Fin 2) => (1 : ℂ)) i l ^ m = 1 :=
   fun _ _ => ⟨1, one_pos, by simp⟩

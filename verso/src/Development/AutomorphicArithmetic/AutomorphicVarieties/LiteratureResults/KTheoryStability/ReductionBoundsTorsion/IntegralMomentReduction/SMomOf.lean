@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB.TwSMInt2
 
 /- English proof (translation)
-The claim follows from `sMom_of_parts discrete_specialLinearGroup_ringOfIntegers sHtB sIntB (sRed_of sRedGL2) h`.
+A detailed English derivation is pending.
 -/
 theorem sMom_of (h : SHt) : SMom :=
   sMom_of_parts discrete_specialLinearGroup_ringOfIntegers sHtB sIntB (sRed_of sRedGL2) h

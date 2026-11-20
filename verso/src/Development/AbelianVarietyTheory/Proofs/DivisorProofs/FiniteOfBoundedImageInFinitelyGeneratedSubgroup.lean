@@ -6,31 +6,25 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V E _ _ _ _ _ Φ hΦ S Y hY R hR`. Use `set M : Submodule ℤ V := Submodule.span ℤ (S : Set V) with hMdef`. Establish `hMY : Y ⊆ (M : Set V)`. Introduce `y hy`. Use `hY hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← Submodule.span_int_eq_addSubgroupClosure]`. Conclude with `this`. Use `haveI : Module.Finite ℤ M := Module.Finite.span_of_finite ℤ S.finite_toSet`. Use `haveI : Module.IsTorsionFree ℤ V := .trans_faithfulSMul ℤ ℚ V`. Use `haveI : Module.Free ℤ M := Module.free_of_finite_type_torsion_free'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis ℤ M`. Use `set n := Module.finrank ℤ M`. Set `e : Fin n → V` to `fun j => (b j : V)`. Establish `heZ : LinearIndependent ℤ e` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Establish `heQ : LinearIndependent ℚ e` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 heZ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `heR` using `hΦ n e heQ`. Set `T : (Fin n → ℝ) →ₗ[ℝ] E` to `Fintype.linearCombination ℝ (fun j => Φ (e j))`. Establish `hT : LinearMap.ker T = ⊥` using `LinearMap.ker_eq_bot.2 (linearIndependent_iff_injective_fintypeLinearCombination.1 heR)`. Take `⟨K, -, hK⟩` from `T.exists_antilipschitzWith hT`. Set `f : V → (Fin n → ℤ)` to `fun y => if h : y ∈ M then fun j => b.repr ⟨y, h⟩ j else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfy : ∀ y (h : y ∈ M), f y = fun j => b.repr ⟨y, h⟩ j` using `fun y h => by simp [f, h]`. Establish `hinj : Set.InjOn f Y`. Introduce `y hy z hz hyz`. Establish `h1` using `hMY hy`. Establish `h2` using `hMY hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hyz` using `[hfy y h1, hfy z h2]`. Establish `: b.repr ⟨y, h1⟩ = b.repr ⟨z, h2⟩`. Use extensionality with `j`. Conclude with `congrFun hyz j`. Use `b.repr.injective this` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using congrArg Subtype.val this`. Establish `hΦy : ∀ y (h : y ∈ M), Φ y = T (fun j => ((b.repr ⟨y, h⟩ j : ℤ) : ℝ))`. Introduce `y h`. Establish `hs' : y = ∑ j, b.repr ⟨y, h⟩ j • e j`. Use `congrArg (Subtype.val : M → V) (b.sum_repr ⟨y, h⟩)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this.symm`. Use `conv_lhs => rw [hs']`. Simplify using `[T, Fintype.linearCombination_apply, map_sum, map_zsmul, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N : ℤ := ⌈(K : ℝ) * R⌉`. Establish `hsub : f '' Y ⊆ Set.Icc (fun _ => -N) (fun _ => N)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `h` using `hMY hy`. Rewrite using `[hfy y h]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : Fin n → ℝ := fun j => ((b.repr ⟨y, h⟩ j : ℤ) : ℝ)`. Establish `hc : ‖c‖ ≤ (K : ℝ) * R`. Establish `h1` using `ZeroHomClass.bound_of_antilipschitz T hK c`. Rewrite `h1` using `[← hΦy y h]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (hR y hy) K.2)`.
-
-Establish `hcj : ∀ j, |c j| ≤ (K : ℝ) * R` using `fun j => by`. Establish `h0 : ‖c j‖ ≤ ‖c‖` using `norm_le_pi_norm c j`. Rewrite `h0` using `[Real.norm_eq_abs]`. Conclude with `h0.trans hc`. Apply the tactic sequence `constructor <;> intro j`.
-
-Establish `h3 : -((K : ℝ) * R) ≤ c j` using `(abs_le.1 (hcj j)).1`. Establish `h4 : (-(N : ℝ)) ≤ c j` using `le_trans (neg_le_neg (Int.le_ceil _)) h3`. Establish `h5 : ((-N : ℤ) : ℝ) ≤ ((b.repr ⟨y, h⟩ j : ℤ) : ℝ)` using `by push_cast; exact h4`. Conclude with `Int.cast_le.1 h5`. Establish `h4 : c j ≤ (N : ℝ)` using `((abs_le.1 (hcj j)).2).trans (Int.le_ceil _)`.
-
-Conclude with `Int.cast_le.1 h4`. Conclude with `Set.Finite.of_finite_image ((Set.finite_Icc _ _).subset hsub) hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_bounded_image_closure_finset :
     ∀ {V E : Type} [AddCommGroup V] [Module ℚ V] [NormedAddCommGroup E] [NormedSpace ℝ E]

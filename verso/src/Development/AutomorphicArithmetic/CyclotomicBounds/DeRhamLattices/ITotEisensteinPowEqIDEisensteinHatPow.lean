@@ -6,9 +6,9 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ β`. Use `(ϖ.iD_ofA (thetaW a LL) ↥LL.1 _).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (map_pow (ϖ.iD (thetaW a LL) ↥LL.1) _ β)` and prove the remaining obligations. Use `congrArg (ϖ.iD (thetaW a LL) ↥LL.1) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_pow (ofA ↥(OL LL) ↥LL.1 l e) ⟨E ↥LL.1 l e, E_mem l e _⟩ β`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.iTot_eisensteinPow_eq_iD_eisensteinHatPow :
     ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (β : ℕ), toOD l ↥(OL LL) (ϖ.iTot (thetaW a LL) ↥LL.1 (fun _ => ⟨E ↥LL.1 l e ^ β, pow_mem (E_mem l e _) β⟩)) = ϖ.iD (thetaW a LL) ↥LL.1 (fun _ => Ehat ↥(OL LL) ↥LL.1 l e) ^ β := by

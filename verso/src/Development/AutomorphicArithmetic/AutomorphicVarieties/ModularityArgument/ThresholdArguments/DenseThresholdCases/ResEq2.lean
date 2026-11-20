@@ -25,13 +25,13 @@ private def resEquiv {G V V' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [
   Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v =>
     Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap (g : G) v
 /- English proof (translation)
-Introduce `hT hP hN L Ω _ _ _ _ _ _ n hn π π' w A h τ τ' hτ hτ' χ hx hc hc'`. Take `⟨ω, hs, ⟨e⟩, hω⟩` from `hT hN L Ω n hn π w A h τ hτ χ hx hc`. Take `⟨ω', hs', ⟨e'⟩, hω'⟩` from `hT hN L Ω n hn π' w A h τ' hτ' χ hx hc'`. Establish `ha : IsLocalArtin h (artOf h)` using `Classical.epsilon_spec (_root_.UpperTheory.V.Z.Win.T2.laArtinLit' hN h)`. Establish `hu : ∀ i (y : Uo (w.adicCompletion L)), ω i y = ω' i y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i y`. Take `⟨σ, hσ⟩` from `ha.surj y`. Establish `h1 : valuation (w.adicCompletion L) (artOf h σ : w.adicCompletion L) = 1`. Rewrite using `[hσ]`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `ha.ord_eq σ`. Rewrite `h2` using `[GlobalTheory.SmGL.ord_eq_zero_iff.2 h1]`. Establish `hI : (σ : G L Ω) ∈ Ine (F` using `L) A := deg_eq_zero_iff.mp (by omega)`. Establish `e1 : artOf h (ineIncl h ⟨σ, hI⟩) = y` using `hσ`. Establish `h3` using `hω i ⟨σ, hI⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hω' i ⟨σ, hI⟩`. Rewrite `h3`, `h4` using `[e1]`. Conclude with `h3.trans h4.symm`. Take `⟨f⟩` from `hP (w.adicCompletion L) n ω ω' hs hs' hu`. Conclude with `⟨(resEquiv _ e).trans (f.trans (resEquiv _ e').symm)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resEq2_alt : _root_.UpperTheory.V.Z.J.D.TypePS2Alt → PsRes → _root_.UpperTheory.V.Z.J.D.ResidualEqualityRankTwo := by
   intro hT hP hN L Ω _ _ _ _ _ _ n hn π π' w A h τ τ' hτ hτ' χ hx hc hc'

@@ -19,7 +19,7 @@ section Mat
 variable {r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem snoc_comp {α β : Type*} (φ : α → β) (e : Fin r → α) (z : α) (a : Fin (r + 1)) :
     Fin.snoc (α := fun _ => β) (fun i => φ (e i)) (φ z) a = φ (Fin.snoc (α := fun _ => α) e z a) := by
@@ -31,7 +31,7 @@ private def sgnP (K : Type*) [CommRing K] (r l : ℕ) (h : l ≤ r + 1) : K :=
   ∏ b : Fin l, (-1 : K) ^ (r - (Fin.castLE h b).val)
 
 /- English proof (translation)
-Unfold `sgnP`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun b _ => by rw [← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem localSign_sq (K : Type*) [CommRing K] (r l : ℕ) (h : l ≤ r + 1) : sgnP K r l h * sgnP K r l h = 1 := by
   unfold sgnP
@@ -39,14 +39,14 @@ private theorem localSign_sq (K : Type*) [CommRing K] (r l : ℕ) (h : l ≤ r +
   exact Finset.prod_eq_one fun b _ => by rw [← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
 
 /- English proof (translation)
-Simplify using `only [sgnP, map_prod, map_pow, map_neg, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sgnP_map {K K' : Type*} [CommRing K] [CommRing K'] (ψ : K →+* K') (r l : ℕ) (h : l ≤ r + 1) :
     ψ (sgnP K r l h) = sgnP K' r l h := by
   simp only [sgnP, map_prod, map_pow, map_neg, map_one]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, ZhatOM, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sub_zhatOM {K : Type*} [CommRing K] (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) {l : ℕ} (h : l ≤ r + 1) :
     (ZhatOM Z).submatrix (Fin.castLE h) (Fin.castLE h) =
@@ -56,7 +56,7 @@ private theorem sub_zhatOM {K : Type*} [CommRing K] (Z : Matrix (Fin (r + 1)) (F
   ring
 
 /- English proof (translation)
-Simplify using `only [leadMinorE, dif_pos h, sub_zhatOM Z h, Matrix.det_mul, Matrix.det_diagonal, sgnP]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lead_zhatOM {E : Type} [Field E] [NumberField E] [StarRing E]
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) {l : ℕ} (h : l ≤ r + 1) :
@@ -64,7 +64,7 @@ private theorem lead_zhatOM {E : Type} [Field E] [NumberField E] [StarRing E]
   simp only [leadMinorE, dif_pos h, sub_zhatOM Z h, Matrix.det_mul, Matrix.det_diagonal, sgnP]
 
 /- English proof (translation)
-Establish `e : RealObj.ZhatO Z = ZhatOM Z` using `rfl`. Simplify using `only [RealObj.Dl, dif_pos h, e, sub_zhatOM Z h, Matrix.det_mul, Matrix.det_diagonal, sgnP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem dl_zhatO (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) {l : ℕ} (h : l ≤ r + 1) :
     RealObj.Dl (RealObj.ZhatO Z) l = RealObj.Dl Z l * sgnP ℂ r l h := by
@@ -72,7 +72,7 @@ private theorem dl_zhatO (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) {l : ℕ} 
   simp only [RealObj.Dl, dif_pos h, e, sub_zhatOM Z h, Matrix.det_mul, Matrix.det_diagonal, sgnP]
 
 /- English proof (translation)
-Simplify using `only [RealObj.Dl, leadMinorE, dif_pos h, Matrix.submatrix_map, RingHom.map_det, RingHom.mapMatrix_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dl_map {E : Type} [Field E] [NumberField E] [StarRing E] (ψ : E →+* ℂ)
     (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E) {l : ℕ} (h : l ≤ r + 1) :
@@ -80,7 +80,7 @@ private theorem dl_map {E : Type} [Field E] [NumberField E] [StarRing E] (ψ : E
   simp only [RealObj.Dl, leadMinorE, dif_pos h, Matrix.submatrix_map, RingHom.map_det, RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [RealObj.famSc, Complex.ofReal_one, one_pow, inv_one, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem famSc_one' {n : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : RealObj.famSc 1 e z = RealObj.fam e z := by
   funext a
@@ -95,7 +95,7 @@ variable {r : ℕ}
 private def sgn (r : ℕ) : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ := Matrix.diagonal fun b => (-1 : ℂ) ^ (r - b.1)
 
 /- English proof (translation)
-Simplify using `only [sgn, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgn_sq : sgn r * sgn r = 1 := by
   simp only [sgn, Matrix.diagonal_mul_diagonal]
@@ -105,7 +105,7 @@ private theorem sgn_sq : sgn r * sgn r = 1 := by
   rw [← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [RealObj.ZhatO, sgn, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem zhatO_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : RealObj.ZhatO Z = Z * sgn r := by
   ext a b
@@ -113,7 +113,7 @@ private theorem zhatO_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : RealObj.
   ring
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `⟨fun hij => by rw [Matrix.map_apply, (h i j).1 hij, map_zero], fun hij => by rw [Matrix.map_apply, (h i j).2 hij, map_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem isLoUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {L : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (h : IsLoUni L) : IsLoUni (L.map ψ) := by
@@ -122,7 +122,7 @@ private theorem isLoUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {L : Matrix
     fun hij => by rw [Matrix.map_apply, (h i j).2 hij, map_one]⟩
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `⟨fun hij => by rw [Matrix.map_apply, (h i j).1 hij, star_zero], fun hij => by rw [Matrix.map_apply, (h i j).2 hij, star_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem isLoUni_star {L : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : IsLoUni L) : IsLoUni (L.map star) := by
   intro i j
@@ -130,7 +130,7 @@ private theorem isLoUni_star {L : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : I
     fun hij => by rw [Matrix.map_apply, (h i j).2 hij, star_one]⟩
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [sgn, Matrix.transpose_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Use `⟨fun hij => by rw [(h j i).1 hij, mul_zero, zero_mul], fun hij => ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality. Rewrite using `[(h i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isLoUni_sgnT {U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : IsUpUni U) :
     IsLoUni (sgn r * U * sgn r)ᵀ := by
@@ -141,7 +141,7 @@ private theorem isLoUni_sgnT {U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : I
   rw [(h i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular L (fun i j hij => (h i j).1 (OrderDual.toDual_lt_toDual.mp hij))]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_lo {K : Type*} [Field K] {L : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsLoUni L) :
     L.det = 1 := by
@@ -149,7 +149,7 @@ private theorem det_lo {K : Type*} [Field K] {L : Matrix (Fin (r + 1)) (Fin (r +
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => (h i j).1 hij)]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_up {K : Type*} [Field K] {U : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsUpUni U) :
     U.det = 1 := by
@@ -157,7 +157,7 @@ private theorem det_up {K : Type*} [Field K] {U : Matrix (Fin (r + 1)) (Fin (r +
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `⟨fun hij => by rw [Matrix.map_apply, (h i j).1 hij, map_zero], fun hij => by rw [Matrix.map_apply, (h i j).2 hij, map_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem isUpUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {U : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (h : IsUpUni U) : IsUpUni (U.map ψ) := by
@@ -166,7 +166,7 @@ private theorem isUpUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {U : Matrix
     fun hij => by rw [Matrix.map_apply, (h i j).2 hij, map_one]⟩
 
 /- English proof (translation)
-Establish `hLu : IsUnit L` using `(Matrix.isUnit_iff_isUnit_det L).mpr (isUnit_iff_ne_zero.mpr hL)`. Establish `hUu : IsUnit U` using `(Matrix.isUnit_iff_isUnit_det U).mpr (isUnit_iff_ne_zero.mpr hU)`. Conclude with `hLu.mul_left_cancel (hUu.mul_right_cancel h)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cancel {L A B U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hL : L.det ≠ 0) (hU : U.det ≠ 0)
     (h : L * A * U = L * B * U) : A = B := by
@@ -181,7 +181,7 @@ section Glob
 variable {D : D7} (X : HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Simplify using `only [RealObj.ZX, RealObj.frm, famSc_one']`.
+Simplify using the standard rewrite rules.
 -/
 private theorem zx_eq (u u' : D.what₂.Word) (δ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) :
     RealObj.ZX X u u' 1 δ v = RealObj.Zhat (X.B.I.ε v)
@@ -190,19 +190,17 @@ private theorem zx_eq (u u' : D.what₂.Word) (δ : X.B.I.Ginf) (v : InfinitePla
   simp only [RealObj.ZX, RealObj.frm, famSc_one']
 
 /- English proof (translation)
-Set `ψ : InfinitePlace X.B.I.F → D.host.E →+* ℂ` to `fun v => (X.B.I.φ v).comp X.ιE.symm.toRingHom`. Set `P : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ` to `fun v => (L.map (ψ v)).map star`. Set `P' : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ` to `fun v => (sgn D.R.rS * U.map (ψ v) * sgn D.R.rS)ᵀ`. Establish `hzz : ∀ (w' : D.what₂.Word) v, HidaSetting.hJ (X.B.I.ε v) (HidaSetting.rv X.B.I v (X.zR w')) (HidaSetting.rv X.B.I v (X.zR w')) ≠ 0`. Introduce `w' v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(RealObj.HermitianSumRootCoordinateFrames.FrameAtV_holds D X w' v).2.2.2.2.2.1]`. Conclude with `neg_ne_zero.2 (Complex.ofReal_ne_zero.2 (RealObj.HermitianSumRootCoordinateFrames.FrameAtV_holds D X w' v).2.2.2.2.2.2)`. Establish `hs : ∀ v, ∃ s : Formalism.REAL.UJ (X.B.I.ε v), HidaSetting.InN (X.B.I.ε v) (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR u)) (uMat s) ∧ ∀ a, uMat s *ᵥ RealObj.fam (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR u)) a = ∑ c, P v …` using `fun v => RealObj.ThreeBlockFrameInverses.NRealize_holds X.B.I.n D.R.rS (X.B.I.ε v) (fun a => HidaSetting.rv X.B.I v (X.eR a)) (fun a => HidaSetting.rv X.B.I v (X.fR a)) (HidaSetting.rv X.B.I v (X.zR u)) (RealObj.HermitianSumRootCoordinateFrames.FrameAtV_holds D X u v).1 (RealObj. …`. Establish `hs' : ∀ v, ∃ s : Formalism.REAL.UJ (X.B.I.ε v), HidaSetting.InN (X.B.I.ε v) (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR u')) (uMat s) ∧ ∀ a, uMat s *ᵥ RealObj.fam (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR u')) a = ∑ c, P …` using `fun v => RealObj.ThreeBlockFrameInverses.NRealize_holds X.B.I.n D.R.rS (X.B.I.ε v) (fun a => HidaSetting.rv X.B.I v (X.eR a)) (fun a => HidaSetting.rv X.B.I v (X.fR a)) (HidaSetting.rv X.B.I v (X.zR u')) (RealObj.HermitianSumRootCoordinateFrames.FrameAtV_holds D X u' v).1 (RealOb …`. Use `choose s hsN hsP using hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose s' hs'N hs'P using hs'`. Establish `hsS : s ∈ X.SinfU u` using `fun v => (hsN v).1`. Establish `hs'S : s' ∈ X.SinfU u'` using `fun v => (hs'N v).1`. Use `⟨s, hsS, s', hs'S, fun v => ?_⟩` and prove the remaining obligations. Establish `hg : s⁻¹ * (s * γ * s'⁻¹) * s' = γ` using `by group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h4` using `RealObj.HermitianSumRootCoordinateFrames.ZhatNAct_holds _ _ (X.B.I.ε v) (RealObj.fam (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR u))) (RealObj.fam (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR u'))) (uMat (s v)) (uMat (s⁻¹ v …`. Establish `hγv : uMat (s⁻¹ v) * uMat ((s * γ * s'⁻¹) v) * uMat (s' v) = uMat (γ v)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [uMat, Pi.mul_apply, Subgroup.coe_mul, Units.val_mul]`. Use `_ = uMat (γ v) := by rw [hg]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[hγv, ← zx_eq, ← zx_eq]`. Establish `h5 : RealObj.ZhatO (RealObj.ZX X u u' 1 γ v) = (L * ptMat w * U).map (ψ v)` using `hZ v`. Rewrite `h5` using `[Matrix.map_mul, Matrix.map_mul, zhatO_eq, h4]`. Establish `hPs : (P v).map star = L.map (ψ v)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [P, Matrix.map_apply, star_star]`. Establish `hPt' : (P' v)ᵀ = sgn D.R.rS * U.map (ψ v) * sgn D.R.rS` using `Matrix.transpose_transpose _`. Rewrite `h5` using `[hPs, hPt']`. Establish `h6 : L.map (ψ v) * RealObj.ZhatO (RealObj.ZX X u u' 1 (s * γ * s'⁻¹) v) * U.map (ψ v) = L.map (ψ v) * RealObj.ptC X v w * U.map (ψ v)`. Use `Eq.trans ?_ h5` and prove the remaining obligations.
-
-Rewrite using `[zhatO_eq]`. Simplify using `only [Matrix.mul_assoc, sgn_sq, Matrix.mul_one]`. Conclude with `cancel (by rw [det_lo (isLoUni_map _ hLo)]; exact one_ne_zero) (by rw [det_up (isUpUni_map _ hUp)]; exact one_ne_zero) h6`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptRep_of_cell (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (w : Point D.host.E (D.R.rS + 1))
     (L U : PairVal.MatR D) (hLo : IsLoUni L) (hUp : IsUpUni U)
@@ -276,7 +274,7 @@ variable {D : D7} (X : HidaSetting.HidaSetting D) (u u' : D.what₂.Word)
   {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Establish `hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Unfold `TermOp.GTerm.frame TermOp.mapLF`. Rewrite using `[dif_pos hiso]`. Conclude with `snoc_comp t.lin (X.Fu u').e (X.Fu u').z b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frame_fvec (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (b : Fin (D.R.rS + 1)) :
     t.frame.fl.fvec b = t.lin ((X.Fu u').fvec b) := by
@@ -286,18 +284,18 @@ private theorem frame_fvec (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ r
   exact snoc_comp t.lin (X.Fu u').e (X.Fu u').z b
 
 /- English proof (translation)
-Rewrite using `[X.φ_eq, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem phi_embS (v : InfinitePlace X.B.I.F) (y : D.host.E) :
     X.B.I.φ v (X.ιE.symm y) = embS D (X.pl v) y := by
   rw [X.φ_eq, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨M, -, h1, -, h4⟩` from `t.rep.2.1`. Establish `h1' : uMat (t.pt.1 v) = (X.B.I.P v)⁻¹ * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) * X.B.I.P v` using `h1 v`. Establish `hfam : ∀ (w' : D.what₂.Word) (a : Fin (D.R.rS + 1)), RealObj.fam (fun a => HidaSetting.rv X.B.I v (X.eR a)) (HidaSetting.rv X.B.I v (X.zR w')) a = HidaSetting.rv X.B.I v (X.crd ((X.Fu w').fvec a))`. Introduce `w' a`. Unfold `RealObj.fam FlagG.fvec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[X.Fu_e w', X.flagZVector w']`. Conclude with `snoc_comp (fun p => HidaSetting.rv X.B.I v (X.crd p)) X.eX (X.zu w') a`. Use extensionality with `a b`. Rewrite using `[zx_eq]`. Use `show HidaSetting.hJ _ (RealObj.fam _ _ a) (uMat (t.pt.1 v) *ᵥ RealObj.fam _ _ b) = _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfam u a, hfam u' b, h1', Pf.Level.rv_mulVec, ← h4, RealObj.InfCut.UnitaryIsometries.hJ_rvX]`. Simplify using `only [Matrix.map_apply, ZhatL, Formalism.MainNotions.S.Zhat, brS]`. Rewrite using `[frame_fvec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zx_rat (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (v : InfinitePlace X.B.I.F) :
     RealObj.ZX X u u' 1 t.pt.1 v = (ZhatL (lf D (X.Fu u)) t.frame).map (embS D (X.pl v)) := by
@@ -320,7 +318,7 @@ theorem zx_rat (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (v : I
   rfl
 
 /- English proof (translation)
-Rewrite using `[zx_rat X u u' t v]`. Use extensionality with `a b`. Simplify using `only [RealObj.ZhatO, ZhatOM, Matrix.map_apply, phi_embS X v, map_mul, map_pow, map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem zhatO_rat (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (v : InfinitePlace X.B.I.F) :
     RealObj.ZhatO (RealObj.ZX X u u' 1 t.pt.1 v) =
@@ -330,14 +328,14 @@ theorem zhatO_rat (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (v 
   simp only [RealObj.ZhatO, ZhatOM, Matrix.map_apply, phi_embS X v, map_mul, map_pow, map_neg, map_one]
 
 /- English proof (translation)
-The claim follows from `TermDef.Gt_mk (Pf.g_value_function _ _ _) ⟨t.frame, t.rep.2.2.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem g_frame (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') :
     t.G = Gval (lf D (X.Fu u)) t.frame :=
   TermDef.Gt_mk (Pf.g_value_function _ _ _) ⟨t.frame, t.rep.2.2.2.2⟩
 
 /- English proof (translation)
-Take `⟨F', hrep, -, hc⟩` from `hw`. Establish `hmk : TermDef.Rep t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') t.toTerm.cls t.frame` using `TermDef.rep_mk ⟨t.frame, t.rep.2.2.2.2⟩`. Conclude with `(Pf.cell_rep_iff (Pf.cell_function_holds _ _ _) hrep hmk w).1 hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cell_frame (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (w : Point D.host.E (D.R.rS + 1))
     (hw : t.toTerm.atPt w) : IsInCell (ZhatOM (ZhatL (lf D (X.Fu u)) t.frame)) w := by
@@ -347,15 +345,15 @@ theorem cell_frame (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (w
   exact (Pf.cell_rep_iff (Pf.cell_function_holds _ _ _) hrep hmk w).1 hc
 
 /- English proof (translation)
-Establish `hptC : RealObj.ptC X v w = (ptMat w).map (embS D (X.pl v))`. Use extensionality with `i j`. Simplify using `only [RealObj.ptC, Matrix.map_apply, phi_embS]`. Establish `key : ∀ l (h : l ≤ D.R.rS + 1), RealObj.Dl (RealObj.ZX X u u' 1 γ v) l = embS D (X.pl v) (leadMinorE (ZhatL (lf D (X.Fu u)) t.frame) l)`. Introduce `l h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `dl_zhatO (RealObj.ZX X u u' 1 γ v) h`. Rewrite `e1` using `[hγ v, hptC, dl_map _ _ h]`. Establish `e2 : leadMinorE (ptMat w) l = leadMinorE (ZhatL (lf D (X.Fu u)) t.frame) l * sgnP D.host.E D.R.rS l h`. Rewrite using `[← lead_zhatOM _ h, hLU, Pf.leadMinor_uni L (ptMat w) U (fun a c hac => (hL a c).1 hac) (fun a => (hL a a).2 rfl) (fun d b hbd => (hU d b).1 hbd) (fun b => (hU b b).2 rfl)]`. Rewrite `e1` using `[e2, map_mul, sgnP_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `localSign_sq ℂ D.R.rS l h`. Combine the equalities or inequalities in the displayed calculation. Establish `hGv : ((RealObj.Gv (RealObj.Tw u) (RealObj.Tw u') (RealObj.ZX X u u' 1 γ v) : ℝ) : ℂ) = embS D (X.pl v) (Gval (lf D (X.Fu u)) t.frame)`. Unfold `RealObj.Gv`. Rewrite using `[key _ le_rfl, key _ (Nat.le_succ _)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Gval, Gflag, Formalism.MainNotions.S.Dl, ZhatL, map_sub, map_mul, map_natCast, Formalism.BasicNotions.Examples₂.emb_star, Complex.mul_conj, Complex.normSq_eq_norm_sq, RealObj.Tw, Tu]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `h0`. Apply `hG` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[g_frame]`. Establish `: embS D (X.pl v) (Gval (lf D (X.Fu u)) t.frame) = 0` using `by rw [← hGv, h0, Complex.ofReal_zero]`. Conclude with `(map_eq_zero _).mp this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gv_ne (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (hG : t.G ≠ 0)
     (w : Point D.host.E (D.R.rS + 1)) (L U : PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U)
@@ -401,7 +399,7 @@ section Main
 variable {D : D7} (X : HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Take `⟨w0, hw0⟩` from `hat`. Establish `hw : t.toTerm.atPt (PairVal.ptOf t.toTerm)` using `PairVal.ptOf_spec _ ⟨w0, hw0, hrel⟩`. Take `⟨L, U, hL, hU, hLU⟩` from `cell_frame X u u' t _ hw`. Conclude with `⟨L, U, hL, hU, hLU, fun v => by rw [zhatO_rat, hLU]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem liftCell_of (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
     (hrel : t.relevant) (hat : ∃ w, t.toTerm.atPt w) :
@@ -415,9 +413,9 @@ theorem liftCell_of (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y
   exact ⟨L, U, hL, hU, hLU, fun v => by rw [zhatO_rat, hLU]⟩
 
 /- English proof (translation)
-Introduce `t hrel hG`. Take `⟨L, U, hL, hU, hLU, hZ⟩` from `liftCell_of X Y u u' t hrel (hAt t.toTerm hG hrel)`. Take `⟨s, hs, s', hs', hpt0⟩` from `ptRep_of_cell X u u' t.pt.1 _ L U hL hU hZ`. Establish `hGv` using `gv_ne X u u' t hG _ L U hL hU hLU _ hpt0`. Use `⟨⟨_, hpt0⟩, fun γ hγ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, a', ha', hdc⟩` from `RealDecompW.ptRep_dc X u u' _ _ γ hpt0 hγ hGv`. Establish `hmul : ∀ (w : D.what₂.Word) {p q : X.B.I.Ginf}, p ∈ X.SinfU w → q ∈ X.SinfU w → p * q ∈ X.SinfU w` using `fun w p q hp hq => (Pf.SinfSub X.B.I X.eR (X.zR w)).mul_mem hp hq`. Use `⟨s⁻¹ * a⁻¹, hmul u (RealObj.InfCut.sinfU_inv X u hs) (RealObj.InfCut.sinfU_inv X u ha), s'⁻¹ * a'⁻¹, hmul u' (RealObj.InfCut.sinfU_inv X u' hs') (RealObj.InfCut.sinfU_inv X u' ha'), ?_⟩` and prove the remaining obligations. Rewrite using `[hdc]`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realDecompC_of
     (hAt : ∀ t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :
@@ -436,9 +434,9 @@ theorem realDecompC_of
   group
 
 /- English proof (translation)
-Introduce `R ρ s hs`. Establish `hG : s.1.G ≠ 0` using `realDecomp_G_ne (s := s.1) (h := s.2.1)`. Take `⟨hex, hall⟩` from `realDecompC_of X Y u u' hAt s.1 hs hG`. Use `⟨hex, hall _ ?_⟩` and prove the remaining obligations. Unfold `RealObj.gamW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftDecompC_of_atSome (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
     (hAt : ∀ t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :
@@ -458,13 +456,13 @@ section Pos
 variable {D : D7} (X : HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hptC : RealObj.ptC X v w = (ptMat w).map (embS D (X.pl v))`. Use extensionality with `i j`. Simplify using `only [RealObj.ptC, Matrix.map_apply, phi_embS]`. Establish `key : ∀ l (h : l ≤ D.R.rS + 1), ((‖RealObj.Dl (RealObj.ZX X u u' 1 γ v) l‖ ^ 2 : ℝ) : ℂ) = embS D (X.pl v) (LocalSplitGroups.Dmin w l) * conj (embS D (X.pl v) (LocalSplitGroups.Dmin w l))`. Introduce `l h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `dl_zhatO (RealObj.ZX X u u' 1 γ v) h`. Rewrite `e1` using `[hγ v, hptC, dl_map _ _ h]`. Establish `hD : leadMinorE (ptMat w) l = LocalSplitGroups.Dmin w l`. Unfold `leadMinorE LocalSplitGroups.Dmin`. Simplify using `only [dif_pos h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[hD]`. Establish `hs` using `localSign_sq ℂ D.R.rS l h`. Establish `e2 : RealObj.Dl (RealObj.ZX X u u' 1 γ v) l = embS D (X.pl v) (LocalSplitGroups.Dmin w l) * sgnP ℂ D.R.rS l h`. Rewrite using `[e1, mul_assoc, hs, mul_one]`. Establish `hn : ‖sgnP ℂ D.R.rS l h‖ ^ 2 = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sq, ← norm_mul, hs, norm_one]`. Rewrite using `[e2, norm_mul, mul_pow, hn, mul_one, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Unfold `RealObj.Gv`. Rewrite using `[Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_mul, key _ le_rfl, key _ (Nat.le_succ _)]`. Simplify using `only [LocalSplitGroups.Gpt, map_sub, map_mul, map_natCast, D.conjF_eq, Formalism.BasicNotions.Examples₂.emb_conj, RealObj.Tw, Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gv_eq_embedding (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (hγ : RealObj.IsPtRep X u u' w γ)
     (v : InfinitePlace X.B.I.F) :
@@ -492,19 +490,19 @@ theorem gv_eq_embedding (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (hγ
     Complex.ofReal_natCast]
 
 /- English proof (translation)
-Establish `hc0 : ∀ k : ℕ, ((sc : ℂ) ^ k)⁻¹ ≠ 0` using `fun k => inv_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.mpr hsc))`. Establish `hs : ∀ k : ℕ, star (((sc : ℂ) ^ k)⁻¹) = ((sc : ℂ) ^ k)⁻¹` using `fun k => by`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_inv]`. Conclude with `Complex.conj_ofReal _`. Establish `hE : ∀ a b, RealObj.ZX X u u' sc γ v a b = ((sc : ℂ) ^ (D.R.rS - a.1))⁻¹ * RealObj.ZX X u u' 1 γ v a b * ((sc : ℂ) ^ (D.R.rS - b.1))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Simplify using `only [RealObj.ZX, RealObj.Zhat, RealObj.frm, RealObj.famSc, HidaSetting.hJ, Complex.ofReal_one, one_pow, inv_one, one_smul]`. Simplify using `only [Matrix.mulVec_smul, star_smul, hs]`. Use `first`. Consider the case `(simp only [Matrix.smul_dotProduct, Matrix.dotProduct_smul, smul_eq_mul]; ring)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [smul_dotProduct, dotProduct_smul, smul_eq_mul]; ring)`. Consider the case `(simp; ring)`. Establish `hsub : ∀ l (hl : l ≤ D.R.rS + 1), (RealObj.ZX X u u' sc γ v).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.diagonal (fun b : Fin l => ((sc : ℂ) ^ (D.R.rS - b.1))⁻¹) * (RealObj.ZX X u u' 1 γ v).submatrix (Fin.castLE hl) (Fin.castLE hl) * Matrix.diagonal (fun b : Fin l => ((sc …`. Introduce `l hl`. Use extensionality with `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, hE, Fin.coe_castLE]`. Establish `hDl : ∀ l (hl : l ≤ D.R.rS + 1), RealObj.Dl (RealObj.ZX X u u' sc γ v) l = (∏ b : Fin l, ((sc : ℂ) ^ (D.R.rS - b.1))⁻¹) ^ 2 * RealObj.Dl (RealObj.ZX X u u' 1 γ v) l`. Introduce `l hl`. Simplify using `only [RealObj.Dl, dif_pos hl, hsub l hl, Matrix.det_mul, Matrix.det_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP1 : ∏ b : Fin (D.R.rS + 1), ((sc : ℂ) ^ (D.R.rS - b.1))⁻¹ = ∏ b : Fin D.R.rS, ((sc : ℂ) ^ (D.R.rS - b.1))⁻¹`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using the standard rewrite rules. Establish `hn : 0 < ‖∏ b : Fin D.R.rS, ((sc : ℂ) ^ (D.R.rS - b.1))⁻¹‖` using `norm_pos_iff.mpr (Finset.prod_ne_zero_iff.mpr fun b _ => hc0 _)`. Establish `e1` using `hDl (D.R.rS + 1) le_rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0` using `hDl D.R.rS (Nat.le_succ _)`. Rewrite `e1` using `[hP1]`. Simplify using `only [RealObj.GX, RealObj.Gv] at h ⊢`. Rewrite using `[e1, e0, _root_.norm_mul, _root_.norm_mul, _root_.norm_pow]`. Establish `hq` using `mul_pos (pow_pos hn 4) h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `linarith`. Consider the case `nlinarith [hq]`.
+A detailed English derivation is pending.
 -/
 theorem gx_pos_of (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) (sc : ℝ) (hsc : sc ≠ 0)
     (h : 0 < RealObj.Gv (RealObj.Tw u) (RealObj.Tw u') (RealObj.ZX X u u' 1 γ v)) :
@@ -554,13 +552,13 @@ theorem gx_pos_of (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) (sc : ℝ) (hsc 
   | nlinarith [hq]
 
 /- English proof (translation)
-Introduce `R ρ s hs v`. Establish `hG : s.1.G ≠ 0` using `realDecomp_G_ne (s := s.1) (h := s.2.1)`. Establish `hex` using `(realDecompC_of X Y u u' hAt s.1 hs hG).1`. Establish `hγ : RealObj.IsPtRep X u u' (PairVal.ptOf s.1.toTerm) (RealObj.gamW X u u' (PairVal.ptOf s.1.toTerm))`. Unfold `RealObj.gamW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hw : s.1.toTerm.atPt (PairVal.ptOf s.1.toTerm)`. Take `⟨w, hw⟩` from `hAt s.1.toTerm hG hs`. Establish `hx : ∃ w, s.1.toTerm.atPt w ∧ s.1.toTerm.relevant` using `⟨w, hw, hs⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `PairVal.ptOf`. Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec.1`. Establish `hT` using `hTP s.1.toTerm _ hw (X.pl v)`. Establish `he` using `congrArg Complex.re (gv_eq_embedding X u u' (PairVal.ptOf s.1.toTerm) _ hγ v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `he` using `[Complex.ofReal_re]`. Use `gx_pos_of X u u' _ v _ (Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D).ne' ?_` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftGPosC_of (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
     (hAt : ∀ t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w)
@@ -589,7 +587,7 @@ theorem liftGPosC_of (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
   exact hT
 
 /- English proof (translation)
-Introduce `R ρ s hs`. Establish `hG : s.1.G ≠ 0` using `realDecomp_G_ne (s := s.1) (h := s.2.1)`. Conclude with `hAt s.1.toTerm hG hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftAtSomeC_of (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
     (hAt : ∀ t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :

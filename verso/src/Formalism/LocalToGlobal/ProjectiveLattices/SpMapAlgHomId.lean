@@ -26,7 +26,7 @@ variable {borR : ∀ {S : Type} [CommRing S] [Algebra K S], (ιB → Sˣ) → pt
 variable {G : Type} [Group G] {actR : ∀ {S : Type} [CommRing S] [Algebra K S], G → pts S → pts S → Prop}
 
 /- English proof (translation)
-Take `⟨p, φ, y', hy⟩` from `hz`. Conclude with `⟨p, φ, y', hTr _ _ φ y' z w hy h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fromTest_of_id (hTr : MapTransId pts mapR) {S : Type} [CommRing S] [Algebra K S] {z w : pts S}
     (h : mapR (AlgHom.id K S) z w) (hz : FromTest pts mapR z) : FromTest pts mapR w := by
@@ -34,7 +34,7 @@ theorem fromTest_of_id (hTr : MapTransId pts mapR) {S : Type} [CommRing S] [Alge
   exact ⟨p, φ, y', hTr _ _ φ y' z w hy h⟩
 
 /- English proof (translation)
-Establish `hF : FromTest pts mapR w` using `⟨p, φ, y, hy⟩`. Unfold `evalAt`. Rewrite using `[dif_pos hF]`. Conclude with `hWD f hf S _ _ _ _ _ _ w hF.choose_spec.choose_spec.choose_spec hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem evalAt_eq_lemma (hWD : EvalWD pts mapR) {f : Rules pts} (hf : IsNatural pts mapR f) {S : Type}
     [CommRing S] [Algebra K S] {w : pts S} (p : TRing K) (φ : p.R →ₐ[K] S) (y : pts p.R) (hy : mapR φ y w) :
@@ -45,9 +45,9 @@ private theorem evalAt_eq_lemma (hWD : EvalWD pts mapR) {f : Rules pts} (hf : Is
   exact hWD f hf S _ _ _ _ _ _ w hF.choose_spec.choose_spec.choose_spec hy
 
 /- English proof (translation)
-Distinguish the cases in `hz : FromTest pts mapR z`. Take `⟨p, φ, y, hy⟩` from `hz`. Rewrite using `[evalAt_eq_lemma hWD hf p φ y hy, evalAt_eq_lemma hWD hf p φ y (hTr _ _ φ y z w hy h₁)]`. Establish `hw : ¬ FromTest pts mapR w` using `fun hw' => hz (fromTest_of_id hTr h₂ hw')`. Unfold `evalAt`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg hz, dif_neg hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAt_congr_id (hWD : EvalWD pts mapR) (hTr : MapTransId pts mapR) {f : Rules pts}
     (hf : IsNatural pts mapR f) {S : Type} [CommRing S] [Algebra K S] {z w : pts S}
@@ -61,15 +61,15 @@ theorem evalAt_congr_id (hWD : EvalWD pts mapR) (hTr : MapTransId pts mapR) {f :
     rw [dif_neg hz, dif_neg hw]
 
 /- English proof (translation)
-Establish `hm : ∀ (g' : G) {S : Type} [CommRing S] [Algebra K S] (y : pts S), actR g' y (mvPt pts actR g' y)`. Introduce `g' S _ _ y`. Unfold `mvPt`. Rewrite using `[dif_pos (hL.total g' S y)]`. Conclude with `(hL.total g' S y).choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hF : FromTest pts mapR y`. Establish `hc` using `hF.choose_spec.choose_spec.choose_spec`. Rewrite using `[evalAt_eq_lemma hWD hf _ _ _ (hL.nat g _ _ _ _ _ _ _ hc (hm g _) (hm g y))]`. Unfold `evalAt`. Rewrite using `[dif_pos hF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hmy : ¬ FromTest pts mapR (mvPt pts actR g y)`. Introduce and unpack `⟨p, φ, z0, hz⟩`. Apply `hF` to reduce the goal to its premises. Establish `h1` using `hL.nat g⁻¹ _ _ _ _ _ _ _ hz (hm g⁻¹ z0) (hm g⁻¹ (mvPt pts actR g y))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hL.mul g g⁻¹ _ _ _ _ (hm g y) (hm g⁻¹ (mvPt pts actR g y))`. Use `first`. Consider the case `rw [mul_inv_cancel] at h2`. Consider the case `rw [mul_right_inv] at h2`. Establish `h3` using `hL.func 1 _ _ _ _ h2 (hL.one _ y)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Conclude with `⟨p, φ, _, hTr _ _ φ _ _ _ h1 h3⟩`. Unfold `evalAt`. Rewrite using `[dif_neg hF, dif_neg hmy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAt_actL (hL : ActLaws pts mapR borR actR) (hWD : EvalWD pts mapR)
     (hTr : MapTransId pts mapR) (g : G) {f : Rules pts} (hf : IsNatural pts mapR f) {S : Type}
@@ -107,9 +107,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+A detailed English derivation is pending.
 -/
 theorem ppx_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
@@ -126,7 +126,7 @@ theorem ppx_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : 
   exact hp' k
 
 /- English proof (translation)
-Unfold `spMap`. Establish `h : CommRingCat.ofHom (AlgHom.id K T).toRingHom = 𝟙 (CommRingCat.of T)` using `rfl`. Rewrite using `[h, Spec.map_id]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_algHom_id (K : Type) [Field K] (T : Type) [CommRing T] [Algebra K T] :
     spMap (AlgHom.id K T).toRingHom = 𝟙 _ := by
@@ -136,24 +136,24 @@ theorem spMap_algHom_id (K : Type) [Field K] (T : Type) [CommRing T] [Algebra K 
   try rfl
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Conclude with `TrivSqZeroExt.inl_fst_add_inr_snd_eq x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dualMap_id (T : Type) [CommRing T] : dualMap (RingHom.id T) = RingHom.id _ := by
   refine RingHom.ext fun x => ?_
   exact TrivSqZeroExt.inl_fst_add_inr_snd_eq x
 
 /- English proof (translation)
-Introduce `S T _ _ _ _ φ y z w hyz hzw`. Take `⟨hx1, hu1, pm1, hs1, hf1, hsec1⟩` from `hyz`. Take `⟨hx2, hu2, pm2, hs2, hf2, hsec2⟩` from `hzw`. Establish `e1 : spMap (AlgHom.id c.F T).toRingHom = 𝟙 _` using `spMap_algHom_id c.F T`. Establish `e2 : spMap (dualMap (AlgHom.id c.F T).toRingHom) = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : dualMap (AlgHom.id c.F T).toRingHom = RingHom.id _` using `dualMap_id T`. Rewrite using `[hd]`. Unfold `spMap`. Establish `h0 : CommRingCat.ofHom (RingHom.id (TrivSqZeroExt T T)) = 𝟙 (CommRingCat.of (TrivSqZeroExt T T))` using `rfl`. Rewrite using `[h0, Spec.map_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Use `⟨?_, ?_, pm2 ≫ pm1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx2, e1, Category.id_comp, hx1]`. Introduce `τ i`. Rewrite using `[hu2, e2, Category.id_comp, hu1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hs1, hs2]`. Rewrite using `[Category.assoc, hf1, ← Category.assoc, hf2, Category.assoc, e1] first`. Consider the case `erw [Category.id_comp]`. Consider the case `simp`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i h`. Establish `h2` using `ppx_le pm2 hs2 i`. Establish `h1` using `ppx_le pm1 hs1 i`. Rewrite using `[← hsec2 i h2, ← hsec1 i h1]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `rw [← Scheme.appLE_comp_appLE pm2 pm1 _ _ _ h1 h2]`. Both sides reduce to the same expression. Consider the case `rw [← Scheme.Hom.appLE_comp_appLE pm2 pm1 _ _ _ h1 h2]`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frMap_trans_id {c : Coeff l} :
     MapTransId (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) := by
@@ -187,7 +187,7 @@ theorem frMap_trans_id {c : Coeff l} :
       | rw [← Scheme.Hom.appLE_comp_appLE pm2 pm1 _ _ _ h1 h2]; rfl
 
 /- English proof (translation)
-Take `⟨ρ, ν, hi, hl, hm⟩` from `hy`. Conclude with `⟨ρ, ν, hi, hl, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levActR_res {c c' : Coeff l} (hle : c.F ≤ c'.F) {G : Type}
     (lev : G → (Dw.La →ₗ[𝓞 E] Dw.La) × (Dw.La →ₗ[𝓞 E] Dw.La)) (g : G) {S : Type} [CommRing S]
@@ -205,15 +205,13 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F)
 
 /- English proof (translation)
-Introduce `a n g m as fs f' hf' hfs hBC S _ _ _ h y`. Take `⟨hn', -⟩` from `hf'`. Establish `hn : ∀ i, IsNatural (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fs i) := by`. Introduce `i`. Take `⟨hni, -⟩` from `hfs i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hni`. Establish `hTr` using `frMap_trans_id (Xo := Xo) (c := c)`. Establish `hTr'` using `frMap_trans_id (Xo := Xo) (c := c')`. Simplify using `only [IsBC, evR, actLev] at hBC ⊢`. Rewrite using `[evalAt_actL hL' hWD' hTr' g hn', hBC S h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[evalAt_actL hL hWD hTr g (hn i)]`. Use `congr 1`. Establish `A0 : levActR (Xo` using `Xo) (c := c') lev g y (mvPt (K := c'.F) (fun S _ _ => FrPt Xo c' S) (fun {S : Type} [CommRing S] [Algebra c'.F S] (g' : G) (y y' : FrPt Xo c' S) => levActR (Xo := Xo) (c := c') lev g' y y') g y) := by`. Unfold `mvPt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (hL'.total g S y)]`. Conclude with `(hL'.total g S y).choose_spec`. Establish `A` using `levActR_res hle lev g h A0`. Establish `B : levActR (Xo` using `Xo) (c := c) lev g (y.res hle h) (mvPt (K := c.F) (fun S _ _ => FrPt Xo c S) (fun {S : Type} [CommRing S] [Algebra c.F S] (g' : G) (y y' : FrPt Xo c S) => levActR (Xo := Xo) (c := c) lev g' y y') g (y.res hle h)) := by`. Unfold `mvPt`.
-
-Rewrite using `[dif_pos (hL.total g S (y.res hle h))]`. Conclude with `(hL.total g S (y.res hle h)).choose_spec`. Conclude with `evalAt_congr_id hWD hTr (hn i) (hL.func g _ _ _ _ A B) (hL.func g _ _ _ _ B A)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actBC_of {G : Type} [Group G]
     (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La))
@@ -263,7 +261,7 @@ def SecBC : Prop :=
     ∃ (m : ℕ) (as : Fin m → c'.F) (fs : Fin m → Rul Xo c), (∀ i, fs i ∈ sec Xo c a n) ∧ IsBC hle f' as fs
 
 /- English proof (translation)
-Unfold `evR`. Distinguish the cases in `h : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y`. Simplify using `only [evalAt, dif_pos h]`. Simplify using `[Finset.sum_apply, map_sum, Algebra.smul_def]`. Simplify using `only [evalAt, dif_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -278,11 +276,11 @@ theorem evR_sum_smul {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {
     simp
 
 /- English proof (translation)
-Introduce `S _ _ _ h y`. Establish `h' : ∀ a : c.F, algebraMap c'.F S (incF c c' hle a) = algebraMap c.F S a` using `h`. Rewrite using `[hBC S h y]`. Repeatedly rewrite using `[evR_sum_smul, ← h', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr (as i)]`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, halg, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isBC_regroup [Algebra c.F c'.F] (halg : algebraMap c.F c'.F = incF c c' hle) {m d : ℕ}
     {f' : Rul Xo c'} {as : Fin m → c'.F} {gs : Fin m → Rul Xo c} (hBC : IsBC hle f' as gs)
@@ -302,9 +300,9 @@ theorem isBC_regroup [Algebra c.F c'.F] (halg : algebraMap c.F c'.F = incF c c' 
 
 open Classical in
 /- English proof (translation)
-Use `funext fun (k : (U (σ'.comp (incF c c' hle))).Comp) =>` and prove the remaining obligations. Use function extensionality and compare the values at `fun (x : Frame ((U (σ'.comp (incF c c' hle))).X k).Ψ r) => ?_`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `show (if h : x ∈ ((U (σ'.comp (incF c c' hle))).X k).dom then toC (evR Xo c' f' ((unfBC hle U σ').un k ⟨x, h⟩)) else 0) = ∑ i, σ' (as i) * (if h : x ∈ ((U (σ'.comp (incF c c' hle))).X k).dom then toC (evR Xo c (fs i) ((U (σ'.comp (incF c c' hle))).un k ⟨x, h⟩)) else 0)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ ((U (σ'.comp (incF c c' hle))).X k).dom`. Simplify using `only [dif_pos hx]`. Conclude with `@hBC (CAt σ') _ ((σ'.comp (incF c c' hle)).toAlgebra) σ'.toAlgebra (fun _ => rfl) _`. Simplify using `only [dif_neg hx, mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdU_unfBC (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ' : c'.F →+* ℂ) {m : ℕ} {f' : Rul Xo c'}
     {as : Fin m → c'.F} {fs : Fin m → Rul Xo c} (hBC : IsBC hle f' as fs) :
@@ -330,7 +328,7 @@ theorem laU_unfBC (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ' : c'.F →+* 
   rfl
 
 /- English proof (translation)
-Unfold `GoodEmb at hσ ⊢`. Rewrite using `[← hσ, ← h]`. Use `first`. Consider the case `rfl`. Consider the case `simp [incF]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem goodEmb_ext {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {σ' : c'.F →+* ℂ}
     (h : σ'.comp (incF c c' hle) = σ) : GoodEmb c' σ' := by
@@ -341,23 +339,21 @@ theorem goodEmb_ext {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {σ' : c'.F →+* 
     | simp [incF]
 
 /- English proof (translation)
-Introduce `a n f' hf'`. Rewrite `hf'` using `[mem_cusp]`. Take `⟨hsec, hcusp⟩` from `hf'`. Take `⟨m, as, gs, hgs, hBC⟩` from `hS a n f' hsec`. Use `letI alg : Algebra c.F c'.F := (incF c c' hle).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[eq_ratCast (algebraMap ℚ c'.F), eq_ratCast (algebraMap ℚ c.F), map_ratCast]`. Use `haveI := c'.fin`. Use `haveI : FiniteDimensional c.F c'.F := Module.Finite.of_restrictScalars_finite ℚ c.F c'.F`. Set `B` to `Module.finBasis c.F c'.F`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `hs : Fin (Module.finrank c.F c'.F) → Rul Xo c` to `fun j => ∑ i, (B.repr (as i) j) • gs i`. Establish `hBC' : IsBC hle f' (fun j => B j) hs` using `isBC_regroup hle rfl hBC B`. Use `⟨_, fun j => B j, hs, fun j => ?_, hBC'⟩` and prove the remaining obligations. Rewrite using `[mem_cusp]`. Use `⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hgs i), fun σ hσ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `key : ∀ τ : c'.F →ₐ[c.F] ℂ, ∑ i, τ (B i) • rdU (U σ) (hs i) ∈ holSub (U σ).X (laU (U σ) a n)`. Introduce `τ`. Establish `hτ : τ.toRingHom.comp (incF c c' hle) = σ` using `RingHom.ext fun x => τ.commutes x`. Establish `hm : ∑ i, τ.toRingHom (B i) • rdU (U (τ.toRingHom.comp (incF c c' hle))) (hs i) ∈ holSub (U (τ.toRingHom.comp (incF c c' hle))).X (laU (U (τ.toRingHom.comp (incF c c' hle))) a n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hcusp τ.toRingHom (goodEmb_ext hle hσ hτ)` as an intermediate fact. Rewrite `this` using `[rdU_unfBC hle U τ.toRingHom hBC', laU_unfBC]`. Conclude with `this`. Rewrite `hm` using `[hτ]`. Conclude with `hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `Bd` to `(Algebra.traceForm c.F c'.F).dualBasis (traceForm_nondegenerate c.F c'.F) B`. Establish `hinv : rdU (U σ) (hs j) = ∑ τ : c'.F →ₐ[c.F] ℂ, τ (Bd j) • ∑ i, τ (B i) • rdU (U σ) (hs i)`. Establish `e1 : ∀ τ : c'.F →ₐ[c.F] ℂ, τ (Bd j) • ∑ i, τ (B i) • rdU (U σ) (hs i) = ∑ i, τ (Bd j * B i) • rdU (U σ) (hs i)`. Introduce `τ`. Rewrite using `[Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul]`. Rewrite using `[Finset.sum_congr rfl fun τ _ => e1 τ, Finset.sum_comm]`. Establish `e2 : ∀ i, ∑ τ : c'.F →ₐ[c.F] ℂ, τ (Bd j * B i) • rdU (U σ) (hs i) = (if i = j then (1 : ℂ) else 0) • rdU (U σ) (hs i)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_smul, ← trace_eq_sum_embeddings (K := c.F) (L := c'.F) (E := ℂ), ← Algebra.traceForm_apply, LinearMap.BilinForm.apply_dualBasis_left]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl fun i _ => e2 i]`. Simplify using the standard rewrite rules. Rewrite using `[hinv]`.
-
-Conclude with `Submodule.sum_mem _ fun τ _ => Submodule.smul_mem _ _ (key τ)`.
+A detailed English derivation is pending.
 -/
 theorem cuspBC_of (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hS : SecBC Xo hle) : CuspBC hle U := by
   classical

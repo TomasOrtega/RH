@@ -23,13 +23,13 @@ variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] 
   {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left}
 
 /- English proof (translation)
-Introduce `x y e` and use `Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem push_injective (h : IsGrpPullback A' A f φ) (T : Over S') : Function.Injective (pushHom h T) :=
   fun x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))
 
 /- English proof (translation)
-Introduce `x₀` and use `⟨Over.homMk (h.1.lift x₀.left T.hom (Over.w x₀)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem push_surjective (h : IsGrpPullback A' A f φ) (T : Over S') : Function.Surjective (pushHom h T) :=
   fun x₀ => ⟨Over.homMk (h.1.lift x₀.left T.hom (Over.w x₀)) (h.1.lift_snd _ _ _),
@@ -38,7 +38,7 @@ theorem push_surjective (h : IsGrpPullback A' A f φ) (T : Over S') : Function.S
 omit [GrpObj A] [GrpObj A'] in
 
 /- English proof (translation)
-Use `pullback.hom_ext (f := A.hom) (g := A.hom) ?_ ?_` and prove the remaining obligations. Use `show (χ ≫ (lift x' y').left ≫ φ₂) ≫ (fst A A).left = (ψ ≫ (lift x y).left) ≫ (fst A A).left`. Rewrite using `[Category.assoc, Category.assoc, sq.1, ← Category.assoc (lift x' y').left, ← Over.comp_left, lift_fst, hx, Category.assoc, ← Over.comp_left, lift_fst]`. Use `show (χ ≫ (lift x' y').left ≫ φ₂) ≫ (snd A A).left = (ψ ≫ (lift x y).left) ≫ (snd A A).left`. Rewrite using `[Category.assoc, Category.assoc, sq.2, ← Category.assoc (lift x' y').left, ← Over.comp_left, lift_snd, hy, Category.assoc, ← Over.comp_left, lift_snd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_sq (sq : IsSquare φ φ₂) {T : Over S} {T' : Over S'} (χ : T.left ⟶ T'.left) (x' y' : T' ⟶ A')
     {Z : Over S} (ψ : T.left ⟶ Z.left) (x y : Z ⟶ A) (hx : χ ≫ x'.left ≫ φ = ψ ≫ x.left)
@@ -54,7 +54,7 @@ theorem lift_sq (sq : IsSquare φ φ₂) {T : Over S} {T' : Over S'} (χ : T.lef
 omit [GrpObj A] [GrpObj A'] in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `H`. Establish `e : (lift (𝟙 A') (𝟙 A')).left ≫ φ₂ = φ ≫ (lift (𝟙 A) (𝟙 A)).left` using `(Category.id_comp _).symm.trans (lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (𝟙 A') (𝟙 A') (Z := A) φ (𝟙 A) (𝟙 A) (by simp) (by simp))`. Conclude with `LBIso.chartPull (chartPullId _) (chartPullOut P _ _ φ _ fun _ => e) (iso_linComb ((isGen_iff u).1 hu) (fun _ : PUnit => (lift (𝟙 A') (𝟙 A')).left) (fun _ => 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diag_iso (sq : IsSquare φ φ₂) {P : LB (A ⊗ A).left} {P' : LB (A' ⊗ A').left}
     (H : LBIso P' (P.pull φ₂)) :
@@ -67,13 +67,13 @@ theorem diag_iso (sq : IsSquare φ φ₂) {P : LB (A ⊗ A).left} {P' : LB (A' �
     (iso_linComb ((isGen_iff u).1 hu) (fun _ : PUnit => (lift (𝟙 A') (𝟙 A')).left) (fun _ => 1))
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `H`. Take `⟨t, ht⟩` from `hx`. Use `push_injective h T ((hn _ (pushHom h T x) ?_).trans (map_one _).symm)` and prove the remaining obligations. Set `T₀ : Over S` to `Over.mk (T.hom ≫ f)`. Establish `w₁ : (fst A T₀).left ≫ A.hom = ((snd A T₀).left ≫ T.hom) ≫ f` using `pullback.condition.trans (Category.assoc _ _ _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : (A ⊗ T₀).left ⟶ A'.left` to `h.1.lift _ _ w₁`. Establish `a₁ : a ≫ φ = (fst A T₀).left` using `h.1.lift_fst _ _ _`. Establish `a₂ : a ≫ A'.hom = (snd A T₀).left ≫ T.hom` using `h.1.lift_snd _ _ _`. Set `χ : (A ⊗ T₀).left ⟶ (A' ⊗ T).left` to `pullback.lift a (snd A T₀).left a₂`. Establish `c₁ : χ ≫ (fst A' T).left = a` using `pullback.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `c₂ : χ ≫ (snd A' T).left = (snd A T₀).left` using `pullback.lift_snd _ _ _`. Take `⟨t₂, ht₂, -⟩` from `exists_up ((isGen_iff u).1 hu) hP hP' t ht`. Use `gen_chartPull (chartPullSame P _ _ _ χ fun _ => ?_) t₂ ht₂` and prove the remaining obligations. Use `((Category.id_comp _).symm.trans (lift_sq sq (T := A ⊗ T₀) χ _ _ (𝟙 _) _ _ ?_ ?_).symm)` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, ← Category.assoc χ, c₂, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← Category.assoc, c₁, a₁, Category.id_comp]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem nondeg_pull (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) {P : LB (A ⊗ A).left}
     {P' : LB (A' ⊗ A').left} (hP : P.IsLB) (hP' : P'.IsLB) (H : LBIso P' (P.pull φ₂))
@@ -104,13 +104,13 @@ def secPull (h : IsGrpPullback A' A f φ) (x : 𝟙_ (Over S) ⟶ A) : 𝟙_ (Ov
     rw [Category.assoc, Over.w x]; exact (Category.comp_id _).trans (Category.id_comp _).symm)) (h.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `h.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem secPull_left (h : IsGrpPullback A' A f φ) (x : 𝟙_ (Over S) ⟶ A) : (secPull h x).left ≫ φ = f ≫ x.left :=
   h.1.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((toUnit T).left ≫ (secPull h x).left) ≫ φ = (toUnit (Over.mk (T.hom ≫ f))).left ≫ x.left`. Rewrite using `[Category.assoc, secPull_left, Over.toUnit_left, Over.toUnit_left, ← Category.assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem push_secPull (h : IsGrpPullback A' A f φ) (x : 𝟙_ (Over S) ⟶ A) (T : Over S') :
     pushHom h T (toUnit T ≫ secPull h x) = toUnit (Over.mk (T.hom ≫ f)) ≫ x := by
@@ -120,7 +120,7 @@ theorem push_secPull (h : IsGrpPullback A' A f φ) (x : 𝟙_ (Over S) ⟶ A) (T
   rfl
 
 /- English proof (translation)
-Establish `e` using `push_secPull h x (𝟙_ (Over S'))`. Rewrite `e` using `[toUnit_unit, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem push_secPull' (h : IsGrpPullback A' A f φ) (x : 𝟙_ (Over S) ⟶ A) :
     pushHom h _ (secPull h x) = toUnit _ ≫ x := by
@@ -134,15 +134,13 @@ namespace GlobalTheory
 open SiegelPull
 
 /- English proof (translation)
-Introduce `h M o _ ζ S S' s s' f c hs`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨p⟩` from `siegPairPB_nonempty c f`. Use `⟨{ A := p.A ab := p.ab P := p.P isLB := p.isLB rig₁ := p.rig₁ rig₂ := p.rig₂` and prove the remaining obligations. Use symmetry as in `:= p.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation.
 
-Use `lev := fun a => secPull p.pb (c.lev a)`. Use `lev_add := fun a b => push_injective p.pb _ (by`. Rewrite using `[map_mul, push_secPull', push_secPull', push_secPull', c.lev_add, MonObj.comp_mul])`. Use `lev_tors := fun a => push_injective p.pb _ (by`. Rewrite using `[map_pow, map_one, push_secPull', ← MonObj.comp_pow, c.lev_tors, MonObj.comp_one])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `geom := fun k _ _ x β z hx hz => ?_ }, p.φ, p.φ₂, p.pb, p.sq, p.iso, fun a => secPull_left p.pb _⟩`. Take `⟨g₁, g₂, g₃⟩` from `c.geom k (x ≫ f) β z (by rw [Category.assoc, hs, hx]) hz`. Use `⟨fun a => Iff.trans ?_ (g₁ a), fun g hg => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← (push_injective p.pb (Over.mk x)).eq_iff, push_secPull, map_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `g₂ (pushHom p.pb (Over.mk x) g) (by`. Use `congrArg (pushHom p.pb (Over.mk x)) hg` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `this)`. Conclude with `⟨a, push_injective p.pb _ ((push_secPull p.pb _ _).trans ha)⟩`.
-
-Conclude with `(weilIs_grpPullback_of_comm S S' c.A p.A f p.φ _ _ (pull_isLB c.isLB _) (pull_isLB p.isLB _) p.pb (diag_iso p.sq p.iso) (Over.mk x) M _ _ _ _ _ (congrArg (fun q => q.left) (push_secPull p.pb (c.lev a) (Over.mk x)).symm) (congrArg (fun q => q.left) (push_secPull p.pb (c.lev b) (Ov …`. Introduce and unpack `c' ⟨φ, φ₂, pb, sq, iso, -⟩ ⟨h₁, h₂⟩`. Conclude with `⟨(pol_pull S S' c.A c'.A f φ _ _ (pull_isLB c.isLB _) (pull_isLB c'.isLB _) c.ab pb (diag_iso sq iso)).2.1 h₁, nondeg_pull pb sq c.isLB c'.isLB iso h₂⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem siegPre_pullback : ∀ (h M : ℕ) (o : Type) [CommRing o] (ζ : o) (S S' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (f : S' ⟶ S) (c : SiegPre h M ζ s), f ≫ s = s' → (∃ c' : SiegPre h M ζ s', SiegPB c' c f) ∧ ∀ c' : SiegPre h M ζ s', SiegPB c' c f → c.Principal → c'.Principal := by
   intro h M o _ ζ S S' s s' f c hs

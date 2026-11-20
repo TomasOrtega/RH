@@ -21,15 +21,15 @@ def twist (v : ∀ σ, Y σ → ι → ℂ) (w : ∀ σ, Y σ → ℝ) : ∀ σ,
 def col (T : Matrix ι ι ℂ) (a : ι) : ι → ℂ := fun i => star (T i a)
 
 /- English proof (translation)
-Rewrite using `[sq, ← Real.exp_add]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem exp_half_sq (t : ℝ) : Real.exp (-t / 2) ^ 2 = Real.exp (-t) := by
   rw [sq, ← Real.exp_add]; ring_nf
 
 /- English proof (translation)
-Establish `h : ∑ i, c i * twist v w σ y i = (∑ i, c i * v σ y i) * (Real.exp (-(w σ y) / 2) : ℝ)`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [twist]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[cmb, cmb, h, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, exp_half_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmb_twist (v : ∀ σ, Y σ → ι → ℂ) (w : ∀ σ, Y σ → ℝ) (c : ι → ℂ) (σ : S) (y : Y σ) :
     cmb (twist v w) c σ y = cmb v c σ y * Real.exp (-(w σ y)) := by
@@ -38,19 +38,19 @@ theorem cmb_twist (v : ∀ σ, Y σ → ι → ℂ) (w : ∀ σ, Y σ → ℝ) (
   rw [cmb, cmb, h, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, exp_half_sq]
 
 /- English proof (translation)
-Unfold `cmb`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem cmb_nonneg (v : ∀ σ, Y σ → ι → ℂ) (c : ι → ℂ) (σ : S) (y : Y σ) : 0 ≤ cmb v c σ y := by
   unfold cmb; positivity
 
 /- English proof (translation)
-The claim follows from `Real.exp_le_exp.2 (by linarith [neg_le_abs t])`.
+A detailed English derivation is pending.
 -/
 theorem exp_neg_le {C t : ℝ} (h : |t| ≤ C) : Real.exp (-t) ≤ Real.exp C :=
   Real.exp_le_exp.2 (by linarith [neg_le_abs t])
 
 /- English proof (translation)
-The claim follows from `Real.exp_le_exp.2 (by linarith [le_abs_self t])`.
+A detailed English derivation is pending.
 -/
 theorem exp_neg_ge {C t : ℝ} (h : |t| ≤ C) : Real.exp (-C) ≤ Real.exp (-t) :=
   Real.exp_le_exp.2 (by linarith [le_abs_self t])
@@ -58,11 +58,11 @@ theorem exp_neg_ge {C t : ℝ} (h : |t| ≤ C) : Real.exp (-C) ≤ Real.exp (-t)
 variable {μ : ∀ σ, Measure (Y σ)} {v : ∀ σ, Y σ → ι → ℂ} {w : ∀ σ, Y σ → ℝ} {C : ℝ}
 
 /- English proof (translation)
-Use `⟨h.finite, fun σ i j => ?_⟩` and prove the remaining obligations. Establish `e : (fun y => twist v w σ y i * (starRingEnd ℂ) (twist v w σ y j)) = fun y => ((Real.exp (-(w σ y)) : ℝ) : ℂ) * (v σ y i * (starRingEnd ℂ) (v σ y j))`. Use function extensionality and compare the values at `y`. Simplify using `only [twist, map_mul, Complex.conj_ofReal]`. Rewrite using `[← exp_half_sq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(h.integrable σ i j).bdd_mul (c := Real.exp C) ?_ ?_` and prove the remaining obligations. Conclude with `(Complex.measurable_ofReal.comp (Real.measurable_exp.comp (hw σ).neg)).aestronglyMeasurable`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `exp_neg_le (hC σ y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFam_twist (h : IsFam μ v) (hw : ∀ σ, Measurable (w σ)) (hC : ∀ σ y, |w σ y| ≤ C) :
     IsFam μ (twist v w) := by
@@ -80,14 +80,14 @@ theorem isFam_twist (h : IsFam μ v) (hw : ∀ σ, Measurable (w σ)) (hC : ∀ 
     exact exp_neg_le (hC σ y)
 
 /- English proof (translation)
-Simplify using `only [l2, cmb_twist]`.
+Simplify using the standard rewrite rules.
 -/
 theorem l2_twist_eq_finsum_integral_mul_exp_neg (c : ι → ℂ) :
     l2 μ (twist v w) c = ∑ᶠ σ, ∫ y, cmb v c σ y * Real.exp (-(w σ y)) ∂μ σ := by
   simp only [l2, cmb_twist]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, col]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quad (M T : Matrix ι ι ℂ) (a : ι) :
     ∑ i, ∑ j, col T a i * (starRingEnd ℂ) (col T a j) * M i j = (Tᴴ * M * T) a a := by
@@ -97,7 +97,7 @@ theorem quad (M T : Matrix ι ι ℂ) (a : ι) :
   simp only [Complex.star_def, Complex.conj_conj]; ring
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_vec (M : Matrix ι ι ℂ) (x : ι → ℂ) :
     star x ⬝ᵥ (M *ᵥ x) = ∑ i, ∑ j, star x i * (starRingEnd ℂ) (star x j) * M i j := by
@@ -105,11 +105,11 @@ theorem quad_vec (M : Matrix ι ι ℂ) (x : ι → ℂ) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_; ring
 
 /- English proof (translation)
-Establish `hS` using `h.finite`. Use `haveI := Fintype.ofFinite S`. Take `⟨-, hc⟩` from `GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ v h`. Rewrite using `[l2_twist_eq_finsum_integral_mul_exp_neg]`. Simplify using `only [l2, finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_mono (((hc c).1 σ).const_mul _) ?_ fun y => ?_` and prove the remaining obligations. Conclude with `((hc c).1 σ).mul_bdd (c := Real.exp C) (Real.measurable_exp.comp (hw σ).neg).aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `exp_neg_le (hC σ y))`. Establish `h0` using `cmb_nonneg v c σ y`. Establish `h1` using `exp_neg_ge (hC σ y)`. Simplify using `only`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exp_neg_bound_mul_l2_le_l2_twist (h : IsFam μ v) (hw : ∀ σ, Measurable (w σ)) (hC : ∀ σ y, |w σ y| ≤ C) (c : ι → ℂ) :
     Real.exp (-C) * l2 μ v c ≤ l2 μ (twist v w) c := by
@@ -130,9 +130,9 @@ theorem exp_neg_bound_mul_l2_le_l2_twist (h : IsFam μ v) (hw : ∀ σ, Measurab
     nlinarith
 
 /- English proof (translation)
-Use `GlobalTheory.T.gram_posDef_of_l2_definite S Y ι μ _ (isFam_twist h hw hC) fun c hc0 => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hx : star c ≠ 0` using `fun h' => hne (by simpa using congrArg star h')`. Establish `hpos` using `hG.dotProduct_mulVec_pos hx`. Take `⟨-, hl⟩` from `GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ v h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hpos` using `[quad_vec, star_star, ← (hl c).2.2]`. Establish `hp : 0 < l2 μ v c` using `by exact_mod_cast hpos`. Use `exp_neg_bound_mul_l2_le_l2_twist h hw hC c` as an intermediate fact. Rewrite `this` using `[hc0]`. Use polynomial arithmetic with `[Real.exp_pos (-C)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem posDef_twist (h : IsFam μ v) (hG : (gram μ v).PosDef) (hw : ∀ σ, Measurable (w σ))
     (hC : ∀ σ y, |w σ y| ≤ C) : (gram μ (twist v w)).PosDef := by
@@ -148,17 +148,15 @@ theorem posDef_twist (h : IsFam μ v) (hG : (gram μ v).PosDef) (hw : ∀ σ, Me
   nlinarith [Real.exp_pos (-C)]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite S`. Simplify using `only [finsum_eq_sum_of_fintype] at hf1 ⊢`. Take `⟨m, hm⟩ : ∃ m, m = ∑ σ, ∫ y, w σ y * f σ y ∂μ σ` from `⟨_, rfl⟩`. Rewrite using `[← hm]`. Establish `hwi : ∀ σ, Integrable (fun y => w σ y * f σ y) (μ σ)` using `fun σ => (hfi σ).bdd_mul (c := C) (hw σ).aestronglyMeasurable (Filter.Eventually.of_forall fun y => by rw [Real.norm_eq_abs]; exact hC σ y)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hei : ∀ σ, Integrable (fun y => f σ y * Real.exp (-(w σ y))) (μ σ)` using `fun σ => (hfi σ).mul_bdd (c := Real.exp C) (Real.measurable_exp.comp (hw σ).neg).aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `exp_neg_le (hC σ y))`. Establish `pt : ∀ σ y, Real.exp (-m) * (f σ y * (1 + m) - w σ y * f σ y) ≤ f σ y * Real.exp (-(w σ y))`. Introduce `σ y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Real.add_one_le_exp (m - w σ y)`. Establish `h2 : Real.exp (-m) * Real.exp (m - w σ y) = Real.exp (-(w σ y))` using `by rw [← Real.exp_add]; ring_nf`. Establish `h3 : Real.exp (-m) * (m - w σ y + 1) ≤ Real.exp (-(w σ y))`. Rewrite using `[← h2]`. Conclude with `mul_le_mul_of_nonneg_left h1 (Real.exp_pos _).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h4` using `mul_le_mul_of_nonneg_left h3 (hf0 σ y)`. Use the polynomial consequences of the given equalities and inequalities. Establish `e : ∀ σ, ∫ y, Real.exp (-m) * (f σ y * (1 + m) - w σ y * f σ y) ∂μ σ = Real.exp (-m) * ((1 + m) * ∫ y, f σ y ∂μ σ - ∫ y, w σ y * f σ y ∂μ σ)`. Introduce `σ`. Rewrite using `[integral_const_mul, integral_sub ((hfi σ).mul_const _) (hwi σ), integral_mul_const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hf1, ← hm]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ σ, ∫ y, Real.exp (-m) * (f σ y * (1 + m) - w σ y * f σ y) ∂μ σ := by`.
-
-Rewrite using `[Finset.sum_congr rfl fun σ _ => e σ, ← Finset.mul_sum, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Use `_ ≤ ∑ σ, ∫ y, f σ y * Real.exp (-(w σ y)) ∂μ σ := Finset.sum_le_sum fun σ _ => integral_mono ((((hfi σ).mul_const _).sub (hwi σ)).const_mul _) (hei σ) (pt σ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jensen (hS : Finite S) (f : ∀ σ, Y σ → ℝ) (hf0 : ∀ σ y, 0 ≤ f σ y)
     (hfi : ∀ σ, Integrable (f σ) (μ σ)) (hf1 : ∑ᶠ σ, ∫ y, f σ y ∂μ σ = 1) (hw : ∀ σ, Measurable (w σ))
@@ -195,13 +193,13 @@ theorem jensen (hS : Finite S) (f : ∀ σ, Y σ → ℝ) (hf0 : ∀ σ y, 0 ≤
         Finset.sum_le_sum fun σ _ => integral_mono ((((hfi σ).mul_const _).sub (hwi σ)).const_mul _) (hei σ) (pt σ)
 
 /- English proof (translation)
-Establish `hinv : (gram μ v)⁻¹ = T * Tᴴ`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 hT`. Establish `hn : ∀ z : ℂ, ((‖z‖ ^ 2 : ℝ) : ℂ) = z * (starRingEnd ℂ) z` using `fun z => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `key : ((∑ a, cmb v (col T a) σ y : ℝ) : ℂ) = ∑ i, ∑ j, (gram μ v)⁻¹ j i * (v σ y i * (starRingEnd ℂ) (v σ y j))`. Establish `ha : ∀ a, ((cmb v (col T a) σ y : ℝ) : ℂ) = ∑ i, ∑ j, T j a * star (T i a) * (v σ y i * (starRingEnd ℂ) (v σ y j))`. Introduce `a`. Rewrite using `[cmb, hn, map_sum, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [col, map_mul, Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hinv, Complex.ofReal_sum]`. Simplify using `only [ha, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[bergmanDensity, ← key, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem berg_sum (T : Matrix ι ι ℂ) (hT : Tᴴ * gram μ v * T = 1) (σ : S) (y : Y σ) :
     ∑ a, cmb v (col T a) σ y = bergmanDensity μ v σ y := by
@@ -227,23 +225,23 @@ theorem berg_sum (T : Matrix ι ι ℂ) (hT : Tᴴ * gram μ v * T = 1) (σ : S)
   rw [bergmanDensity, ← key, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hF` using `isFam_twist h hw hC`. Establish `hG'` using `posDef_twist h hG hw hC`. Use `⟨hF, hG', ?_⟩` and prove the remaining obligations. Establish `hS` using `h.finite`. Use `haveI := Fintype.ofFinite S`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, d, -, hT, hT'⟩` from `GlobalTheory.T.exists_simultaneous_diagonalisation_posDef_hermitian ι _ _ hG hG'.1`. Take `⟨-, hl⟩` from `GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ v h`. Take `⟨-, hl'⟩` from `GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ _ hF`. Establish `hl1 : ∀ a, l2 μ v (col T a) = 1` using `fun a => by`. Use `(hl (col T a)).2.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[quad, hT, Matrix.one_apply_eq]`. Conclude with `this` after adjusting the coercions. Establish `hld : ∀ a, l2 μ (twist v w) (col T a) = d a` using `fun a => by`. Use `(hl' (col T a)).2.2` as an intermediate fact. Rewrite `this` using `[quad, hT', Matrix.diagonal_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hj : ∀ a, Real.exp (-(∑ᶠ σ, ∫ y, w σ y * cmb v (col T a) σ y ∂μ σ)) ≤ d a` using `fun a => by`. Rewrite using `[← hld a, l2_twist_eq_finsum_integral_mul_exp_neg]`. Conclude with `jensen hS (cmb v (col T a)) (cmb_nonneg v _) (hl (col T a)).1 (hl1 a) hw hC`. Establish `hd : ∀ a, 0 < d a` using `fun a => (Real.exp_pos _).trans_le (hj a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet : (gram μ (twist v w)).det = (gram μ v).det * ∏ a, (d a : ℂ)`. Establish `e1` using `congrArg Matrix.det hT`. Establish `e2` using `congrArg Matrix.det hT'`. Rewrite `e1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_one]`. Rewrite `e2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(gram μ v).det * e2 - (gram μ (twist v w)).det * e1`. Establish `hpos` using `Complex.pos_iff.1 (Matrix.PosDef.det_pos hG)`. Establish `hre : (gram μ (twist v w)).det.re = (gram μ v).det.re * ∏ a, d a`. Rewrite using `[hdet, ← Complex.ofReal_prod, Complex.re_mul_ofReal]`. Rewrite using `[hre, Real.log_mul hpos.1.ne' (Finset.prod_pos fun a _ => hd a).ne', Real.log_prod fun a _ => (hd a).ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ᶠ σ, ∫ y, w σ y * bergmanDensity μ v σ y ∂μ σ = ∑ a, ∑ᶠ σ, ∫ y, w σ y * cmb v (col T a) σ y ∂μ σ`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_finsetSum Finset.univ fun a _ => ((hl (col T a)).1 σ).bdd_mul (c := C) (hw σ).aestronglyMeasurable (Filter.Eventually.of_forall fun y => by rw [Real.norm_eq_abs]; exact hC σ y)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← Finset.mul_sum, berg_sum T hT]`. Establish `hlog : ∀ a, -(∑ᶠ σ, ∫ y, w σ y * cmb v (col T a) σ y ∂μ σ) ≤ Real.log (d a)` using `fun a => by`. Use `Real.log_le_log (Real.exp_pos _) (hj a)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Rewrite using `[hsum]`. Use `Finset.sum_le_sum fun a (_ : a ∈ Finset.univ) => hlog a` as an intermediate fact. Rewrite `this` using `[Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem jensen_gram (h : IsFam μ v) (hG : (gram μ v).PosDef) (hw : ∀ σ, Measurable (w σ))
     (hC : ∀ σ y, |w σ y| ≤ C) :
@@ -293,7 +291,7 @@ theorem jensen_gram (h : IsFam μ v) (hG : (gram μ v).PosDef) (hw : ∀ σ, Mea
   linarith
 
 /- English proof (translation)
-Introduce `S Y _ ι _ _ μ v h hG w C hw hC`. Conclude with `jensen_gram h hG hw hC`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_det_jensen : ∀ (S : Type) (Y : S → Type) [∀ σ, MeasurableSpace (Y σ)] (ι : Type) [Fintype ι] [DecidableEq ι] (μ : ∀ σ, Measure (Y σ)) (v : ∀ σ, Y σ → ι → ℂ), IsFam μ v → (gram μ v).PosDef → ∀ (w : ∀ σ, Y σ → ℝ) (C : ℝ), (∀ σ, Measurable (w σ)) → (∀ σ y, |w σ y| ≤ C) → IsFam μ (fun σ y i => v σ y i * (Real.exp (-(w σ y) / 2) : ℝ)) ∧ (gram μ fun σ y i => v σ y i * (Real.exp (-(w σ y) / 2) : ℝ)).PosDef ∧ Real.log (gram μ v).det.re - ∑ᶠ σ, ∫ y, w σ y * bergmanDensity μ v σ y ∂μ σ ≤ Real.log (gram μ fun σ y i => v σ y i * (Real.exp (-(w σ y) / 2) : ℝ)).det.re := by
   intro S Y _ ι _ _ μ v h hG w C hw hC

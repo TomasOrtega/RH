@@ -87,7 +87,7 @@ structure MonomialCenterHypotheses : Prop where
                             ∀ ξ : ↥T.scheme, IsGenericPoint ξ C → π ξ' = ξ
 
 /- English proof (translation)
-The claim follows from `MonomialCodimension.card_lt_krullDimSucc_of_nonempty center_smooth := h.center_smooth center_snc := h.center_snc blowup_total_transform := h.blowup_total_transform components_subset_divisor_iff := h.components_subset_divisor_iff transformed_components := h.transformed_components …`.
+A detailed English derivation is pending.
 -/
 theorem monomialCaseHypotheses_of_monomialCenterHypotheses (h : MonomialCenterHypotheses.{u}) : MonomialCaseHypotheses.{u} where
   card_lt_dim := MonomialCodimension.card_lt_krullDimSucc_of_nonempty
@@ -123,7 +123,7 @@ structure StrictTransformHypotheses : Prop extends MonomialCenterCase.MonomialCe
                               C = closure ({π ξ'} : Set ↥T.scheme)
 
 /- English proof (translation)
-The claim follows from `h.strictTransform_components monomial := MonomialCenterCase.monomialCaseHypotheses_of_monomialCenterHypotheses h.toMonomialCenterHypotheses`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformHypotheses_of_residualHypotheses (h : StrictTransformHypotheses.{u}) : StrictTransformAndMonomialCaseHypotheses.{u} where
   strictTransform_components := h.strictTransform_components

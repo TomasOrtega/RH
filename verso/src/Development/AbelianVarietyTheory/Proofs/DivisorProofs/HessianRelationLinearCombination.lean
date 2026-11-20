@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.Mean4O.HessComb
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert b s hb ih`. Establish `he : (fun w => ((g w + ∑ l ∈ insert b s, t l * q l w : ℝ) : ℂ)) = fun w => (((g w + ∑ l ∈ s, t l * q l w) + t b * q b w : ℝ) : ℂ)`. Use function extensionality and compare the values at `w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_insert hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ContDiffOn ℝ ∞ (fun w => g w + ∑ l ∈ s, t l * q l w) Ω` using `hg.add (ContDiffOn.sum fun l _ => contDiffOn_const.mul (hq l))`. Rewrite using `[he, ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul hΩ hs (hq b) (t b) hy, ih, Finset.sum_insert hb]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -50,35 +50,29 @@ theorem cHess_sum {n : ℕ} {ι : Type} (s : Finset ι) {Ω : Set (ReciprocityTh
     abel
 
 /- English proof (translation)
-Introduce `F _ _ Y V e M I ε π hd ι _ L P n R hP hR hL hlevi σ c y hy i hi`. Take `⟨j, hj⟩` from `(M.A (ε σ)).cover (π σ y)`. Take `⟨U, hU, hyU, -, hUs, hτ⟩` from `GlobalTheory.T.downward_chart_local_holomorphic_section F Y V e M I ε π hd σ c y hy j hj`. Use `set ch := (M.A (ε σ)).chart j with hch`. Use `set x₀ := π σ y with hx₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set τ : ReciprocityTheory.L2DbarEstimates.V e → ReciprocityTheory.L2DbarEstimates.V e := fun v => FinChart.toV e (ch (π σ (c.e.symm v))) with hτdef`. Use `set T := (FinChart.toV e).symm with hT`. Use `set gR : (Fin e → ℂ) → ℝ := (R (ε σ)).φ x₀ ∘ ch.symm with hgR`. Use `set gP : ι → (Fin e → ℂ) → ℝ := fun l => (P l (ε σ)).φ x₀ ∘ ch.symm with hgP`. Use `set S : Set (Fin e → ℂ) := ch.target ∩ ch.symm ⁻¹' ((R (ε σ)).U x₀ ∩ ⋂ l, (P l (ε σ)).U x₀) with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSo : IsOpen S` using `ch.isOpen_inter_preimage_symm (((R (ε σ)).isOpen_U x₀).inter (isOpen_iInter_of_finite fun l => (P l (ε σ)).isOpen_U x₀))`. Establish `hsR : ContDiffOn ℝ ∞ gR S` using `((hR (ε σ)).1 x₀ j).mono fun z hz => ⟨hz.1, hz.2.1⟩`. Establish `hsP (l : ι) : ContDiffOn ℝ ∞ (gP l) S` using `((hP l (ε σ)).1 x₀ j).mono fun z hz => ⟨hz.1, Set.mem_iInter.1 hz.2.2 l⟩`. Establish `hτc : ContDiffOn ℝ ∞ (fun v => T (τ v)) U` using `T.contDiff.comp_contDiffOn ((show ContDiffOn ℂ ∞ τ U from ((SCV.analyticOnNhd_iff_differentiableOn hU).2 hτ).contDiffOn hU.uniqueDiffOn).restrict_scalars ℝ)`. Use `set Ω := U ∩ (fun v => T (τ v)) ⁻¹' S with hΩ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hΩo : IsOpen Ω` using `hτc.continuousOn.isOpen_inter_preimage hU hSo`. Establish `hz₀ : T (τ (c.e y)) = ch x₀` using `by show T (FinChart.toV e (ch (π σ (c.e.symm (c.e y))))) = ch x₀`. Rewrite using `[hT, ContinuousLinearEquiv.symm_apply_apply, c.e.left_inv hy]`. Establish `hyΩ : c.e y ∈ Ω`. Use `⟨hyU, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show T (τ (c.e y)) ∈ S`. Rewrite using `[hz₀]`. Use `⟨ch.map_source hj, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, ch.left_inv hj]`. Conclude with `⟨(R (ε σ)).mem_U x₀, Set.mem_iInter.2 fun l => (P l (ε σ)).mem_U x₀⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hback (v : ReciprocityTheory.L2DbarEstimates.V e) (hv : v ∈ Ω) : ch.symm (T (τ v)) = π σ (c.e.symm v)`. Simplify using `only [hτdef, hT, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `ch.left_inv (hUs v hv.1)`. Establish `hmaps : Set.MapsTo (fun v => T (τ v)) Ω S` using `fun v hv => hv.2`. Establish `hcR : ContDiffOn ℝ ∞ (fun v => gR (T (τ v))) Ω` using `hsR.comp (hτc.mono Set.inter_subset_left) hmaps`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcP (l : ι) : ContDiffOn ℝ ∞ (fun v => gP l (T (τ v))) Ω` using `(hsP l).comp (hτc.mono Set.inter_subset_left) hmaps`. Rewrite using `[GlobalTheory.T.hessian_of_combination_metric_linear L n σ c hy i hi (fun l => pick (L l).isLB y) (fun l => mem_pick _ y)]`. Repeatedly rewrite using `[fun l => hL l σ c y hy (pick (L l).isLB y) (mem_pick _ y)]`. Use `set G : (Fin e → ℂ) → ℝ := fun z => ∑ l ∈ Finset.univ, (-(2 * (n l : ℝ))) * gP l z + 2 * gR z with hG`. Establish `hz₀t : ch x₀ ∈ ch.target` using `ch.map_source hj`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsym : ch.symm (ch x₀) = x₀` using `ch.left_inv hj`. Establish `hc2P (l : ι) : ContDiffAt ℝ 2 (gP l) (ch x₀)`. Use `Deg.potential_chart_contDiffAt_two (M.A (ε σ)) (hP l (ε σ)) j hz₀t` as an intermediate fact. Rewrite `this` using `[hsym]`. Then use the resulting hypothesis. Establish `hc2R : ContDiffAt ℝ 2 gR (ch x₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Deg.potential_chart_contDiffAt_two (M.A (ε σ)) (hR (ε σ)) j hz₀t` as an intermediate fact. Rewrite `this` using `[hsym]`. Then use the resulting hypothesis. Establish `hGl (w : Fin e → ℂ) : levi G (ch x₀) w = 0`. Establish `h0 : levi (fun _ : Fin e → ℂ => (0 : ℝ)) (ch x₀) w = 0` using `by simp [levi]`. Establish `h2` using `levi_add_smul (f := fun _ : Fin e → ℂ => (0 : ℝ)) 2 contDiffAt_const hc2R w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zero_add, h0] at h2`. Use `(LeviFormCombination.GlobalTheory.CompanionTheory.LeviComb.levi_sum_add Finset.univ (fun l => -(2 * (n l : ℝ))) gP (fun z => 2 * gR z) hc2P (contDiffAt_const.mul hc2R) w).2` as an intermediate fact. Establish `hl' : levi gR (ch x₀) w = ∑ l, (n l : ℝ) * levi (gP l) (ch x₀) w`. Establish `hl` using `hlevi (ε σ) j (ch x₀) hz₀t w`. Simplify using `only [leviAt, ← hch, hsym] at hl`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hl`. Rewrite using `[hG, this, h2, hl', Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun l _ => by ring`. Establish `hGc : ContDiffAt ℝ 2 G (ch x₀)` using `(LeviFormCombination.GlobalTheory.CompanionTheory.LeviComb.levi_sum_add Finset.univ (fun l => -(2 * (n l : ℝ))) gP (fun z => 2 * gR z) hc2P (contDiffAt_const.mul hc2R) 0).1`. Establish `hzero` using `GlobalTheory.T.complex_hessian_zero_of_levi_zero G τ hU hyU hτ (by rwa [hz₀]) (by rwa [hz₀])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hGs : ContDiffOn ℝ ∞ (fun v => G (T (τ v))) Ω`. Simplify using `only [hG]`. Conclude with `(ContDiffOn.sum fun l _ => contDiffOn_const.mul (hcP l)).add (contDiffOn_const.mul hcR)`. Establish `key` using `cHess_sum Finset.univ hΩo (fun l v => 2 * gP l (T (τ v))) (fun l => contDiffOn_const.mul (hcP l)) (fun l => (n l : ℝ)) (fun v => G (T (τ v))) hGs hyΩ`. Rewrite `key` using `[hzero, zero_add]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun l _ => congrArg _ (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_)` and prove the remaining obligations. Use `filter_upwards [hΩo.mem_nhds hyΩ] with v hv`. Simplify using `only [hgP, Function.comp_apply, hback v hv, hx₀]`. Use `_ = _ := key.symm`.
-
-Use `_ = _ := by`. Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_` and prove the remaining obligations. Use `filter_upwards [hΩo.mem_nhds hyΩ] with v hv`. Establish `e₁ : gR (T (τ v)) = (R (ε σ)).φ x₀ (π σ (c.e.symm v))`. Simplify using `only [hgR, Function.comp_apply, hback v hv]`.
-
-Rewrite using `[← e₁, hG]`. Use `push_cast`. Rewrite using `[add_right_comm, ← Finset.sum_add_distrib, Finset.sum_eq_zero (fun l _ => by ring), zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem hessRel_comb : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (e : ℕ) (M : Man e) (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts V.p σ → M.X (ε σ)), V.IsDown I ε π → ∀ (ι : Type) [Fintype ι] (L : ι → HermLB V.p) (P : ι → M.Pot) (n : ι → ℤ) (R : M.Pot), (∀ i a, ReciprocityTheory.AnForm.M.IsPotential (M.A a) (P i a)) → (∀ a, ReciprocityTheory.AnForm.M.IsPotential (M.A a) (R a)) → (∀ i, HessRel ε π (L i) (P i)) → (∀ a j, ∀ y ∈ ((M.A a).chart j).target, ∀ w, leviAt (M.A a) (R a) j y w = ∑ i, (n i : ℝ) * leviAt (M.A a) (P i a) j y w) → HessRel ε π (ArInt.comb L n) R := by
   intro F _ _ Y V e M I ε π hd ι _ L P n R hP hR hL hlevi σ c y hy i hi

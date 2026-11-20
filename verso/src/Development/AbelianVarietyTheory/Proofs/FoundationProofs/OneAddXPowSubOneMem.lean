@@ -11,9 +11,9 @@ open GlobalTheory.Col PowerSeries
 namespace GlobalTheory.ColEx
 
 /- English proof (translation)
-Introduce `R _ p _ σ hF h hh j i`. Proceed by induction on `i with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ i ih`. Take `⟨r, hr⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨r', hr'⟩` from `GlobalTheory.T.colemanNormOperator_iterate_succ_congr_frobenius R p σ hF h hh (j + i)`. Use `⟨smap σ r + (p : PowerSeries R) ^ i * r', ?_⟩` and prove the remaining obligations. Rewrite using `[show j + (i + 1) = (j + i) + 1 by omega, hr', hr, Function.iterate_succ_apply' (smap σ), map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iter_cong : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] (σ : R ≃+* R), FrobLift R p σ → ∀ h : PowerSeries R, IsUnit h → ∀ j i : ℕ, ∃ r : PowerSeries R, (normOp p)^[j + i] h = (smap σ)^[i] ((normOp p)^[j] h) + (p : PowerSeries R) ^ (j + 1) * r := by
   intro R _ p _ σ hF h hh j i
@@ -27,9 +27,9 @@ theorem iter_cong : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] (σ : R
     ring
 
 /- English proof (translation)
-Introduce `R _ p _ hR u hu m i`. Proceed by induction on `i with`. Consider the case `zero => intro h hh`. Conclude with `hh`. Consider the case `succ i ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Rewrite using `[Function.iterate_succ_apply]`. Apply `ih` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.ev_normOp_eq_nrm_ev_succ R p (m + i + 1) (by omega) hR h, ← hu (m + i)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem norm_tower : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime], IsAdicComplete (Ideal.span {(p : R)}) R → ∀ u : ∀ m : ℕ, (lev R p (m + 1))ˣ, (∀ m : ℕ, nrm p (m + 1) (by omega) ((u (m + 1) : lev R p (m + 2))) = (u m : lev R p (m + 1))) → ∀ (m i : ℕ) (h : PowerSeries R), ev R p (m + i + 1) h = (u (m + i) : lev R p (m + i + 1)) → ev R p (m + 1) ((normOp p)^[i] h) = u m := by
   intro R _ p _ hR u hu m i
@@ -43,11 +43,11 @@ theorem norm_tower : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime], IsAdi
     congr 1
 
 /- English proof (translation)
-Introduce `R _ p m τ g g' hg`. Establish `hc : PowerSeries.map τ (cyc R p m) = cyc R p m`. Unfold `cyc`. Rewrite using `[Polynomial.hom_eval₂]`. Establish `h1 : (PowerSeries.map τ).comp (PowerSeries.C (R` using `R)) = (PowerSeries.C (R := R)).comp τ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a : 1`. Simplify using the standard rewrite rules. Rewrite using `[h1, map_add, map_one, PowerSeries.map_X, ← Polynomial.eval₂_map, Polynomial.map_cyclotomic]`. Rewrite `hg`, the goal using `[Ideal.Quotient.eq]`. Rewrite using `[← map_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc'⟩` from `Ideal.mem_span_singleton'.1 hg`. Rewrite using `[← hc', map_mul, hc]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_map_congr : ∀ (R : Type) [CommRing R] (p m : ℕ) (τ : R →+* R) (g g' : PowerSeries R), ev R p m g = ev R p m g' → ev R p m (PowerSeries.map τ g) = ev R p m (PowerSeries.map τ g') := by
   intro R _ p m τ g g' hg
@@ -68,17 +68,15 @@ end GlobalTheory.ColEx
 namespace GlobalTheory.ColEx
 
 /- English proof (translation)
-Introduce `R _ p n hp hR g hg`. Use `haveI := hR`. Take `⟨w, hw⟩` from `hg.exists_right_inv`. Take `⟨g', rfl⟩` from `Ideal.Quotient.mk_surjective w`. Rewrite `hw` using `[← map_mul, ← map_one (ev R p n), Ideal.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hw`. Establish `hcyc : constantCoeff (cyc R p n) ∈ Ideal.span {(p : R)}`. Establish `e : constantCoeff (cyc R p n) = (Polynomial.cyclotomic (p ^ n) R).eval 1`. Unfold `cyc`. Rewrite using `[Polynomial.hom_eval₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (constantCoeff (R` using `R)).comp (PowerSeries.C (R := R)) = RingHom.id R := by ext a; simp`. Rewrite using `[h1, map_add, map_one, constantCoeff_X, add_zero]`. Both sides reduce to the same expression. Rewrite using `[e]`. Break down `n with _ | n` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Polynomial.eval_one_cyclotomic_prime_pow]`. Conclude with `Ideal.subset_span rfl`. Establish `hj : constantCoeff g * constantCoeff g' - 1 ∈ Ideal.jacobson (⊥ : Ideal R)`. Use `congrArg (constantCoeff (R := R)) hc` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_sub, map_mul, map_one]`. Rewrite using `[← this]`. Conclude with `IsAdicComplete.le_jacobson_bot _ (Ideal.mul_mem_left _ _ hcyc)`. Establish `hu : IsUnit (constantCoeff g * constantCoeff g')`. Use `(Ideal.mem_jacobson_bot.1 hj) 1` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `PowerSeries.isUnit_iff_constantCoeff.2 (isUnit_of_mul_isUnit_left hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unit_of_ev : ∀ (R : Type) [CommRing R] (p n : ℕ) [Fact p.Prime], IsAdicComplete (Ideal.span {(p : R)}) R → ∀ g : PowerSeries R, IsUnit (ev R p n g) → IsUnit g := by
   intro R _ p n hp hR g hg
@@ -109,15 +107,13 @@ theorem unit_of_ev : ∀ (R : Type) [CommRing R] (p n : ℕ) [Fact p.Prime], IsA
   exact PowerSeries.isUnit_iff_constantCoeff.2 (isUnit_of_mul_isUnit_left hu)
 
 /- English proof (translation)
-Introduce `R _ p hp j`. Establish `hpJ : (p : PowerSeries R) ∈ (Ideal.span {(p : R)}).comap (constantCoeff (R` using `R)) := by`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.subset_span rfl`. Establish `hXJ : (X : PowerSeries R) ∈ (Ideal.span {(p : R)}).comap (constantCoeff (R` using `R)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, constantCoeff_X]`. Conclude with `Ideal.zero_mem _`. Proceed by induction on `j with`. Consider the case `zero => simpa using hXJ`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp.out ((1 + X : PowerSeries R) ^ (p ^ j) - 1) 1`. Establish `e : (1 + X : PowerSeries R) ^ (p ^ (j + 1)) - 1 = ((1 + X : PowerSeries R) ^ (p ^ j) - 1) ^ p + (p : PowerSeries R) * ((1 + X : PowerSeries R) ^ (p ^ j) - 1) * 1 * r`. Rewrite `hr` using `[sub_add_cancel, one_pow, ← pow_mul, ← pow_succ]`. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Use `Ideal.pow_mem_pow ih p` as an intermediate fact. Rewrite `this` using `[← pow_mul]`. Conclude with `Ideal.pow_le_pow_right (by nlinarith [hp.out.two_le]) this`.
-
-Rewrite using `[mul_one, pow_succ']`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_mul hpJ ih)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_X_pow_sub_one_mem : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] (j : ℕ), (1 + X : PowerSeries R) ^ (p ^ j) - 1 ∈ ((Ideal.span {(p : R)}).comap (constantCoeff (R := R))) ^ (j + 1) := by
   intro R _ p hp j
@@ -142,21 +138,19 @@ theorem one_add_X_pow_sub_one_mem : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact 
       exact Ideal.mul_mem_right _ _ (Ideal.mul_mem_mul hpJ ih)
 
 /- English proof (translation)
-Introduce `R _ p m N hp g hg`. Establish `hXp : ev R p m X ^ (p ^ m) ∈ Ideal.span {(p : lev R p m)}`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp.out (X : PowerSeries R) 1 m`. Take `⟨s, hs⟩` from `cyc_dvd_level (R := R) p m`. Establish `h0 : ev R p m ((1 + X : PowerSeries R) ^ (p ^ m) - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hs, map_mul, ev_cyc_self, zero_mul]`. Rewrite `h0` using `[add_comm (1 : PowerSeries R) X, hr]`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_one, one_pow, map_natCast] at h0`. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨-(ev R p m X * ev R p m r), by linear_combination -h0⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hJP : ((Ideal.span {(p : R)}).comap (constantCoeff (R` using `R))) ^ (p ^ m) ≤ Ideal.comap (ev R p m) (Ideal.span {(p : lev R p m)}) := by`. Introduce `g hg`. Rewrite `hg` using `[GlobalTheory.ChartRing.mem_pow_comap_constantCoeff_iff]`. Rewrite using `[g.eq_X_pow_mul_shift_add_trunc (p ^ m)]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_comap, map_mul, map_pow]`. Conclude with `Ideal.mul_mem_right _ _ hXp`. Rewrite using `[trunc_apply, ← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]`. Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < p ^ m` using `(Finset.mem_Ico.1 hi).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_monomial, monomial_eq_C_mul_X_pow]`. Establish `hc : coeff i g ∈ Ideal.span {(p : R)}` using `Ideal.pow_le_self (by omega) (hg i)`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hc`. Establish `e : (C (coeff i g) * X ^ i : PowerSeries R) = (p : PowerSeries R) * (C d * X ^ i)`. Rewrite using `[← hd, map_mul, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Ideal.mem_comap, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Establish `h2 : g ∈ (Ideal.comap (ev R p m) (Ideal.span {(p : lev R p m)})) ^ N`. Rewrite `hg` using `[pow_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.pow_right_mono hJP N hg`. Establish `h3` using `Ideal.le_comap_pow (f := ev R p m) (K := Ideal.span {(p : lev R p m)}) N h2`. Rewrite `h3` using `[Ideal.mem_comap, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨z, hz⟩` from `h3`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
-
-Conclude with `⟨y, by rw [← hz, map_mul, map_pow, map_natCast, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ev_of_mem_pow : ∀ (R : Type) [CommRing R] (p m N : ℕ) [Fact p.Prime] (g : PowerSeries R), g ∈ ((Ideal.span {(p : R)}).comap (constantCoeff (R := R))) ^ (p ^ m * N) → ∃ y : PowerSeries R, ev R p m g = ev R p m ((p : PowerSeries R) ^ N * y) := by
   intro R _ p m N hp g hg
@@ -196,11 +190,11 @@ theorem ev_of_mem_pow : ∀ (R : Type) [CommRing R] (p m N : ℕ) [Fact p.Prime]
   exact ⟨y, by rw [← hz, map_mul, map_pow, map_natCast, mul_comm]⟩
 
 /- English proof (translation)
-Introduce `R _ p m _ hR x hx`. Use `haveI := hR`. Take `⟨b, -⟩` from `GlobalTheory.T.exists_colemanLevelRing_basis_one_add_X_pow R p m hR`. Apply `b.repr.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Rewrite using `[Finsupp.coe_zero, Pi.zero_apply]`. Apply `IsHausdorff.haus' (I := Ideal.span {(p : R)}) (b.repr x i)` to reduce the goal to its premises. Introduce `N`. Take `⟨y, hy⟩` from `hx N`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `e : x = ((p : R) ^ N) • ev R p m y`. Rewrite using `[hy, Algebra.smul_def, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_sep : ∀ (R : Type) [CommRing R] (p m : ℕ) [Fact p.Prime], IsAdicComplete (Ideal.span {(p : R)}) R → ∀ x : lev R p m, (∀ N : ℕ, ∃ y : PowerSeries R, x = ev R p m ((p : PowerSeries R) ^ N * y)) → x = 0 := by
   intro R _ p m _ hR x hx
@@ -224,57 +218,51 @@ end GlobalTheory.ColEx
 namespace GlobalTheory.Col
 
 /- English proof (translation)
-Introduce `R _ p hp σ hF u hu`. Establish `hR` using `hF.complete`. Use `haveI : IsAdicComplete (Ideal.span {(p : R)}) R := hF.complete`. Use `haveI : IsAdicComplete ((Ideal.span {(p : R)}).comap (constantCoeff (R := R))) (PowerSeries R) := GlobalTheory.ChartRing.isAdicComplete_comap_constantCoeff _`. Use `set J : Ideal (PowerSeries R) := (Ideal.span {(p : R)}).comap (constantCoeff (R := R)) with hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hcoeff : ∀ (k : ℕ) (x : PowerSeries R) (n : ℕ), coeff n ((smap σ)^[k] x) = (⇑σ)^[k] (coeff n x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x n`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Introduce `x n`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', coeff_map, ih]`. Both sides reduce to the same expression. Establish `hτ' : ∀ (m : ℕ) (x : PowerSeries R) (n : ℕ), coeff n (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) x) = (⇑σ.symm)^[m + 1] (coeff n x)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `m x n`. Rewrite using `[coeff_map, RingHom.coe_pow]`. Both sides reduce to the same expression. Establish `hτ : ∀ (m : ℕ) (x : PowerSeries R) (n : ℕ), coeff n (PowerSeries.map (((σ : R ≃+* R) : R →+* R) ^ (m + 1)) x) = (⇑σ)^[m + 1] (coeff n x)`. Introduce `m x n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[coeff_map, RingHom.coe_pow]`. Both sides reduce to the same expression. Establish `hcancel : ∀ (m a : ℕ) (x : PowerSeries R), m + 1 ≤ a → PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) ((smap σ)^[a] x) = (smap σ)^[a - (m + 1)] x`. Introduce `m a x h`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `n`. Rewrite using `[hτ', hcoeff, hcoeff, Function.iterate_add_apply (⇑σ) (m + 1) d, Nat.add_sub_cancel_left]`. Conclude with `(Function.LeftInverse.iterate (fun c => σ.symm_apply_apply c) (m + 1)) _`. Establish `hinv : ∀ (m : ℕ) (x : PowerSeries R), PowerSeries.map (((σ : R ≃+* R) : R →+* R) ^ (m + 1)) (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) x) = x`. Introduce `m x`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `n`. Rewrite using `[hτ, hτ']`. Conclude with `(Function.LeftInverse.iterate (fun c => σ.apply_symm_apply c) (m + 1)) _`. Establish `hmapJ : ∀ (τ : R →+* R) (n : ℕ) (g : PowerSeries R), g ∈ J ^ n → PowerSeries.map τ g ∈ J ^ n`. Introduce `τ n g hg`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hg`, the goal using `[hJ, GlobalTheory.ChartRing.mem_pow_comap_constantCoeff_iff]`. Introduce `i`. Use `hg i` as an intermediate fact. Rewrite `this`, the goal using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `this`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨τ c, by rw [coeff_map, ← hc, map_mul, map_pow, map_natCast]⟩`. Establish `hdivX : ∀ (n : ℕ) (g : PowerSeries R), X * g ∈ J ^ (n + 1) → g ∈ J ^ n`. Introduce `n g hg`. Rewrite `hg`, the goal using `[hJ, GlobalTheory.ChartRing.mem_pow_comap_constantCoeff_iff]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hg (i + 1)` as an intermediate fact. Rewrite `this` using `[coeff_succ_X_mul, Nat.add_sub_add_right]`. Then use the resulting hypothesis. Establish `hpJ : (p : PowerSeries R) ∈ J`. Rewrite using `[hJ, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.subset_span rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlift : ∀ n, ∃ h : PowerSeries R, ev R p (n + 1) h = u n` using `fun n => Ideal.Quotient.mk_surjective _`. Use `choose H hH using hlift`. Establish `hHu : ∀ n, IsUnit (H n)` using `fun n => GlobalTheory.ColEx.unit_of_ev R p (n + 1) hR (H n) (by rw [hH]; exact (u n).isUnit)`. Use `set F : ℕ → PowerSeries R := fun k => (smap σ)^[k + 1] ((normOp p)^[k + 1] (H (2 * k + 1))) with hFdef`. Establish `C1 : ∀ k m, m ≤ k → ∃ y : PowerSeries R, ev R p (m + 1) (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) (F k)) = u m + ev R p (m + 1) ((p : PowerSeries R) ^ (k + 1 + 1) * y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Introduce `k m hmk`. Take `⟨r, hr⟩` from `GlobalTheory.ColEx.iter_cong R p σ hF (H (2 * k + 1)) (hHu _) (k + 1) (k - m)`. Establish `h3` using `GlobalTheory.ColEx.norm_tower R p hR u hu m (k + 1 + (k - m)) (H (m + (k + 1 + (k - m)))) (hH _)`. Establish `e : m + (k + 1 + (k - m)) = 2 * k + 1` using `by omega`. Rewrite `h3` using `[e, hr, map_add]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨-r, ?_⟩` and prove the remaining obligations. Rewrite using `[hFdef]`. Simplify using `only`. Rewrite using `[hcancel m (k + 1) _ (by omega), show k + 1 - (m + 1) = k - m by omega, mul_neg, map_neg, ← h3]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `C2 : ∀ k, F (k + 1) - F k ∈ J ^ ((k + 1) / 2)`. Introduce `k`. Establish `hsmall : ∀ r, 1 ≤ r → r ≤ k + 1 → ∃ y : PowerSeries R, ev R p r (F (k + 1) - F k) = ev R p r ((p : PowerSeries R) ^ (k + 2) * y)`. Introduce `r h1 h2`. Take `⟨m, rfl⟩ : ∃ m, r = m + 1` from `⟨r - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨y1, h1'⟩` from `C1 (k + 1) m (by omega)`. Take `⟨y2, h2'⟩` from `C1 k m (by omega)`. Establish `hD : ev R p (m + 1) (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) (F (k + 1) - F k)) = ev R p (m + 1) ((p : PowerSeries R) ^ (k + 2) * ((p : PowerSeries R) * y1 - y2))`. Rewrite using `[map_sub, map_sub, h1', h2', map_mul, map_mul, map_mul, map_sub, map_mul, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `GlobalTheory.ColEx.ev_map_congr R p (m + 1) (((σ : R ≃+* R) : R →+* R) ^ (m + 1)) _ _ hD` as an intermediate fact. Rewrite `this` using `[hinv, map_mul, map_pow, map_natCast]`. Conclude with `⟨_, this⟩`. Establish `hI` using `GlobalTheory.T.X_mul_mem_span_of_colemanLevels R p hF.dom hF.prime hR (F (k + 1) - F k) (k + 1) (k + 2) hsmall ((k + 1) / 2) (by omega) (by omega)`. Apply `hdivX` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `(Ideal.span_le.2 ?_) hI` and prove the remaining obligations. Introduce `z hz`. Break down `hz with rfl | hz` into its components or cases. Conclude with `Ideal.pow_le_pow_right (by omega) (Ideal.pow_mem_pow hpJ _)`. Rewrite `hz` using `[Set.mem_singleton_iff]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `GlobalTheory.ColEx.one_add_X_pow_sub_one_mem R p ((k + 1) / 2)`. Establish `C3 : ∀ n k, n ≤ k → F (2 * k) - F (2 * n) ∈ J ^ n`. Introduce `n k hnk`. Proceed by induction on `k, hnk using Nat.le_induction with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `base => simp`. Consider the case `succ k hnk ih`. Establish `e1 : F (2 * (k + 1)) - F (2 * n) = (F (2 * k + 1 + 1) - F (2 * k + 1)) + (F (2 * k + 1) - F (2 * k)) + (F (2 * k) - F (2 * n))`. Rewrite using `[show 2 * (k + 1) = 2 * k + 1 + 1 by ring]; ring`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `add_mem (add_mem ?_ ?_) ih` and prove the remaining obligations. Conclude with `Ideal.pow_le_pow_right (by omega) (C2 (2 * k + 1))`. Conclude with `Ideal.pow_le_pow_right (by omega) (C2 (2 * k))`. Take `⟨f0, hf0⟩` from `IsPrecomplete.prec' (I := J) (fun n => F (2 * n)) (fun {a b} hab => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `neg_mem (C3 a b hab))`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf0`. Establish `C5 : ∀ m, ev R p (m + 1) (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) f0) = u m`. Introduce `m`. Apply `sub_eq_zero.1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Apply `GlobalTheory.ColEx.lev_sep R p (m + 1) hR` to reduce the goal to its premises. Introduce `N`. Take `⟨y1, hy1⟩` from `C1 (2 * (p ^ (m + 1) * N + m + N)) m (by omega)`. Establish `hmem : PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) (f0 - F (2 * (p ^ (m + 1) * N + m + N))) ∈ J ^ (p ^ (m + 1) * N)`. Apply `hmapJ` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : f0 - F (2 * (p ^ (m + 1) * N + m + N)) ∈ J ^ (p ^ (m + 1) * N + m + N)`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (hf0 _)`. Conclude with `Ideal.pow_le_pow_right (by omega) hm0`. Take `⟨y2, hy2⟩` from `GlobalTheory.ColEx.ev_of_mem_pow R p (m + 1) N _ hmem`.
-
-Use `set n := p ^ (m + 1) * N + m + N`. Establish `e : (p : PowerSeries R) ^ (2 * n + 1 + 1) = (p : PowerSeries R) ^ N * (p : PowerSeries R) ^ (2 * n + 1 + 1 - N)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Use `⟨y2 + (p : PowerSeries R) ^ (2 * n + 1 + 1 - N) * y1, ?_⟩` and prove the remaining obligations. Rewrite `hy2` using `[map_sub, map_sub]`. Rewrite using `[mul_add, map_add, ← hy2, ← mul_assoc, ← e]`. Take the linear combination `hy1`. Establish `hu0 : IsUnit (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (0 + 1)) f0)` using `GlobalTheory.ColEx.unit_of_ev R p (0 + 1) hR _ (by rw [C5 0]; exact (u 0).isUnit)`.
-
-Establish `hunit : IsUnit f0`. Use `hu0.map (PowerSeries.map (((σ : R ≃+* R) : R →+* R) ^ (0 + 1)))` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Conclude with `⟨hunit.unit, fun m => by rw [IsUnit.unit_spec]; exact C5 m⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coleman_series : ∀ (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime] (σ : R ≃+* R), FrobLift R p σ → ∀ u : ∀ m : ℕ, (lev R p (m + 1))ˣ, (∀ m : ℕ, nrm p (m + 1) (by omega) ((u (m + 1) : lev R p (m + 2))) = (u m : lev R p (m + 1))) → ∃ f : (PowerSeries R)ˣ, ∀ m : ℕ, ev R p (m + 1) (PowerSeries.map (((σ.symm : R ≃+* R) : R →+* R) ^ (m + 1)) (f : PowerSeries R)) = u m := by
   intro R _ p hp σ hF u hu

@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.NilProper
 
 /- English proof (translation)
-Set `m` to `pullback.map (j ≫ f) (j ≫ f) f f j j (𝟙 S) (by simp) (by simp)`. Establish `hm : UniversallyClosed m` using `MorphismProperty.pullbackMap (P := @UniversallyClosed) ‹_› ‹_› rfl rfl`. Establish `hcomm : pullback.diagonal (j ≫ f) ≫ m = j ≫ pullback.diagonal f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.diagonal_fst_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.diagonal_snd_assoc]`. Simplify using the standard rewrite rules. Establish `key : m '' Set.range (pullback.diagonal (j ≫ f)) = Set.range (pullback.diagonal f)`. Use extensionality with `z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨j x, by rw [← Scheme.Hom.comp_apply, ← hcomm, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `j.surjective y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, ⟨x, rfl⟩, by rw [← Scheme.Hom.comp_apply, hcomm, Scheme.Hom.comp_apply]⟩`. Use `⟨IsClosedImmersion.of_isPreimmersion _ ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`. Conclude with `m.isClosedMap _ (pullback.diagonal (j ≫ f)).isClosedEmbedding.isClosed_range`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSeparated_of_comp_surjective {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S)
     [Surjective j] [UniversallyClosed j] [IsSeparated (j ≫ f)] : IsSeparated f := by
@@ -44,9 +44,9 @@ theorem isSeparated_of_comp_surjective {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y
   exact m.isClosedMap _ (pullback.diagonal (j ≫ f)).isClosedEmbedding.isClosed_range
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hJ`. Establish `hle : J ≤ nilradical A` using `fun x hx ↦ by`. Rewrite using `[mem_nilradical]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow hx n` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Conclude with `⟨(PrimeSpectrum.comap_quotientMk_bijective_of_le_nilradical hle).2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem surjective_specMap_mk (A : Type) [CommRing A] (J : Ideal A) (hJ : IsNilpotent J) :
     Surjective (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) := by
@@ -59,19 +59,17 @@ theorem surjective_specMap_mk (A : Type) [CommRing A] (J : Ideal A) (hJ : IsNilp
   exact ⟨(PrimeSpectrum.comap_quotientMk_bijective_of_le_nilradical hle).2⟩
 
 /- English proof (translation)
-Introduce `A _ J hJ Y _`. Establish `hsq : Surjective (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))` using `surjective_specMap_mk A J hJ`. Establish `hci : IsClosedImmersion (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `⟨fun hP ↦ ?_, fun hG ↦ ?_⟩` and prove the remaining obligations. Establish `hcomp : IsProper (pullback.fst Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) ≫ Y.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pullback.condition]`. Use `infer_instance`. Establish `: IsSeparated Y.hom` using `isSeparated_of_comp_surjective (pullback.fst Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))) Y.hom`. Establish `: UniversallyClosed Y.hom` using `UniversallyClosed.of_comp_surjective (pullback.fst Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))) Y.hom`. Conclude with `{ toIsSeparated := ‹_›, toUniversallyClosed := ‹_›, toLocallyOfFiniteType := ‹_› }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hG`, the goal using `[geometricallyConnected_iff]`. Introduce `K _ y Z fst snd h`. Take `⟨φ, rfl⟩` from `Spec.map_surjective y`. Establish `hker : ∀ x ∈ J, φ.hom x = 0`. Take `⟨n, hn⟩` from `hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ^ n = 0`. Use `Ideal.pow_mem_pow hx n` as an intermediate fact. Rewrite `this` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Conclude with `(IsNilpotent.map ⟨n, hx'⟩ φ.hom).eq_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `ψ` to `Ideal.Quotient.lift J φ.hom hker`. Establish `hφ : φ = CommRingCat.ofHom (Ideal.Quotient.mk J) ≫ CommRingCat.ofHom ψ`. Use extensionality with `x`. Simplify using `[ψ]`. Rewrite `h` using `[hφ, Spec.map_comp]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Set `p : Z ⟶ pullback Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))` to `pullback.lift fst (snd ≫ Spec.map (CommRingCat.ofHom ψ)) (by rw [h.w, Category.assoc])`. Apply `hG (Spec.map (CommRingCat.ofHom ψ)) p snd` to reduce the goal to its premises. Establish `e : p ≫ pullback.fst Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) = fst` using `pullback.lift_fst _ _ _`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[e]`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_and_geometricallyConnected_of_isNilpotent :
     ∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J → ∀ (Y : Over (Spec (CommRingCat.of A))) [LocallyOfFiniteType Y.hom], (IsProper (pullback.snd Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))) → IsProper Y.hom) ∧ (GeometricallyConnected (pullback.snd Y.hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))) → GeometricallyConnected Y.hom) := by

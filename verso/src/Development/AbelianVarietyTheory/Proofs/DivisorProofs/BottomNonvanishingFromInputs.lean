@@ -25,25 +25,25 @@ namespace GlobalTheory.SqTop.BotNeFormula
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hPr hK hM hI hL hB hN hT`. Establish `hA` using `GlobalTheory.T.exists_bottom_triple_period_const hPr hK hM hI hB`. Establish `hB'` using `GlobalTheory.T.exists_bottom_triple_period_const_dual hPr hK hM hI hB`. Establish `hC` using `GlobalTheory.T.exists_constant_triple_coefficient hPr.minguezThetaGL hPr hK hM hI hB`. Establish `hR` using `GlobalTheory.T.bottom_triangle_root_of_unity_twist hPr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.SqTop.BotConstPf.gBig_imp (GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.SqTop.Model.gBig_and hL hB) (GlobalTheory.SqTop.Model.gBig_and hN hT)) (GlobalTheory.SqTop.Model.gBig_and hA (GlobalTheory.SqTop.Model.gBig_and hB' (GlobalTh …` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hLc ⟨⟨⟨l1, l2⟩, l3, l5⟩, a1, a2, a3, a4⟩`. Introduce `δ t0 Q P P' i j hbot`. Establish `hmod : modT G μ₀ = SqNum.condE G.pl` using `by simp [modT, l2.2.1]`. Rewrite `hbot` using `[← hmod]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Λ, hΛ, hnz⟩` from `(l1 i j).1 μ₀`. Establish `hh : (h0 D i j : ℤ) ≤ halfRank D i j` using `by exact_mod_cast squareBottomHalfRankSum_le_halfRank D i j`. Take `⟨Aa, hAa, hAn⟩` from `l3 δ t0 i j`. Establish `hP : P.norm ≠ 0`. Introduce `h0'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `hAn μ₀ Q P P' Λ hbot hΛ`. Rewrite `e` using `[h0', Complex.ofReal_zero]`. Use `mul_ne_zero hAa (Finset.prod_ne_zero_iff.2 fun s hs => ?_) e.symm` and prove the remaining obligations. Rewrite `hs` using `[Finset.mem_Icc]`. Conclude with `hnz s hs.1 (hs.2.trans hh)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, Tt, hne⟩` from `exists_coord_ne_of_norm_ne P hP`. Use `⟨⟨h, Tt, hne⟩, ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `GlobalTheory.Ker.Model.exists_stdChar D`. Take `⟨W, hWψ⟩` from `GlobalTheory.GridWeil.exists_weil hPr.weilRepresentationUnitaryPair D T Lc μ₀ hLc sc G ψ hψ`. Establish `hψW : IsStdChar D W.ψ (-1)` using `hWψ ▸ hψ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, A', WW, X₀, c₀, hX₀, hc₀⟩` from `l5 W hψW i j`. Take `⟨X, ζ, hX, hβ, -, hc⟩` from `a4 W hψW i j A A' WW X₀ c₀ hX₀ hc₀`. Take `⟨Ω, -, HA⟩` from `a1 W hψW i j A A' WW X δ t0 hX hβ`. Take `⟨Ω', -, HB⟩` from `a2 W hψW i j A A' WW X δ t0 hX hβ`. Take `⟨κ₀, -, HC⟩` from `a3 W hψW i j A A' WW X _ hX hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uA, -, -, -, HA⟩` from `HA μ₀ Q P P' hbot`. Take `⟨uB, -, -, -, HB⟩` from `HB μ₀ Q P P' hbot`. Establish `ea : P.a = A.rank` using `hbot.rank.1.trans hX.rank.symm`. Establish `ea' : P'.a = A'.rank` using `hbot.rank.2.1.trans hX.rank'.symm`. Establish `ed : P.d = WW.rank` using `by rw [hbot.rank.2.2.1, ← hX.is.rank, hX.rank, hX.rank']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : P'.d = P.d` using `hbot.rank.2.2.2`. Establish `ed' : P'.d = WW.rank` using `hd.trans ed`. Take `⟨M, -, -, HC⟩` from `HC μ₀ Q δ t0 P P' hbot ea ea' ed ed'`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_finiteAdelicPoint_unitaryGroup_gramOne WW hX.stdW.1 h ed.symm`. Establish `hg'` using `hg.cast hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hz`. Use `push Not at hz`. Apply `hne` to reduce the goal to its premises. Establish `e` using `HA ea ed h g hg Tt`. Rewrite `e` using `[HC g Tt]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ∑ T', (M Tt T' : ℂ) * X.I' W.ψ W.θ μ₀ (GlobalTheory.BotFormula.minorF ea' ed' T') g = 0`. Use `Finset.sum_eq_zero fun T' _ => ?_` and prove the remaining obligations. Rewrite using `[HB ea' ed' (hd ▸ h) g hg' T', hz, mul_zero, mul_zero]`. Rewrite `e` using `[hs, mul_zero, mul_zero]`. Simplify using `using e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem botNe_of_formula : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → LNe → BotSmall → NormBig → TriEx → BotNe := by

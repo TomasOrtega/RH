@@ -11,11 +11,11 @@ open MvPolynomial MeasureTheory Matrix Metric Set ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(isCompact_sphere (0 : Fin n → ℂ) 1).exists_bound_of_continuousOn (hc.mono fun x hx => by`. Introduce and unpack `rfl`. Simplify using `at hx)`. Use `⟨max B |g 0|, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Conclude with `le_max_right _ _`. Establish `hn : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Establish `hne : ((‖x‖⁻¹ : ℝ) : ℂ) ≠ 0` using `by simpa using hn`. Rewrite using `[← hdeg _ x hne]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Establish `hmem : ((‖x‖⁻¹ : ℝ) : ℂ) • x ∈ sphere (0 : Fin n → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hn]`. Simplify `hB _ hmem` using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bounded_of_degree_zero {n : ℕ} (g : (Fin n → ℂ) → ℝ)
     (hdeg : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → g (t • x) = g x)
@@ -38,7 +38,7 @@ theorem bounded_of_degree_zero {n : ℕ} (g : (Fin n → ℂ) → ℝ)
     simpa [Real.norm_eq_abs] using hB _ hmem
 
 /- English proof (translation)
-Establish `h` using `ringKrullDim_quotient_le J`. Rewrite `h` using `[hdim, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_ringKrullDim_quotient {n e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ((e + 1 : ℕ) : WithBot ℕ∞)) : e + 1 ≤ n := by
@@ -48,11 +48,11 @@ theorem le_of_ringKrullDim_quotient {n e : ℕ} (J : Ideal (MvPolynomial (Fin n)
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `hdet : IsUnit (h.matᵀ).det` using `by rw [det_transpose]; exact h.isUnit_det`. Set `P : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `LinearMap.toContinuousLinearMap (Matrix.toLpLin 2 2 h.matᵀ)`. Set `Q : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `LinearMap.toContinuousLinearMap (Matrix.toLpLin 2 2 (h.matᵀ)⁻¹)`. Establish `hsub : {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0} ⊆ Q '' (zeroSetEuc J ∩ ball 0 (‖P‖ + 1))`. Introduce and unpack `z ⟨hz, hzJ⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨P z, ⟨fun q hq => hzJ q hq, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff]`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `i`. Simplify using `[P, Q, Matrix.toLpLin_apply, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hd : (0 : ℝ) ≤ ((2 * (e + 1) : ℕ) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem coneBall_hausdorff_lt_top (hMF : MassFinite.Statement) {n e : ℕ} (h : HermNorm n)
     (J : Ideal (MvPolynomial (Fin n) ℂ)) (hJ : J.IsPrime)
@@ -84,21 +84,21 @@ theorem coneBall_hausdorff_lt_top (hMF : MassFinite.Statement) {n e : ℕ} (h : 
         (hMF n (e + 1) J hJ (by exact_mod_cast hdim) _)
 
 /- English proof (translation)
-Establish `hdet : IsUnit (h.matᵀ).det` using `by rw [det_transpose]; exact h.isUnit_det`. Establish `hinv : h.matᵀ *ᵥ ((h.matᵀ)⁻¹ *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hMx : (h.matᵀ)⁻¹ *ᵥ x ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← hinv, h0, Matrix.mulVec_zero]`. Use `set ρ := ‖WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)‖ with hρ_def`. Establish `hρx : h.dualNorm x = ρ`. Rewrite using `[hρ_def, EuclideanSpace.norm_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hρ : 0 < ρ`. Rewrite using `[hρ_def, norm_pos_iff]`. Introduce `h0`. Conclude with `hMx (by simpa using congrArg WithLp.ofLp h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ t : ℂ, h.pointOf (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) = t • x`. Introduce `t`. Establish `: (fun i => (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) i) = t • ((h.matᵀ)⁻¹ *ᵥ x)`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [HermNorm.pointOf, this, Matrix.mulVec_smul, hinv]`. Establish `hae : (fun t : ℂ => (ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => g (h.pointOf z)) (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)) * (‖t‖ ^ (2 * e) * G)) =ᵐ[volume] fun t => (g x * G) * (ball (0 : ℂ) (1 / ρ)).indicator (fun t => ‖t‖ ^ (2 * e)) t`. Establish `h0 : ∀ᵐ t : ℂ, t ≠ 0`. Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h0] with t ht`. Establish `hiff : ‖t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ x)‖ < 1 ↔ ‖t‖ < 1 / ρ`. Rewrite using `[norm_smul, lt_div_iff₀ hρ]`. Distinguish the cases in `hb : ‖t‖ < 1 / ρ`. Rewrite using `[indicator_of_mem (mem_ball_zero_iff.2 (hiff.2 hb)), indicator_of_mem (mem_ball_zero_iff.2 hb), hpt, hg t x ht]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[indicator_of_notMem (fun h => hb (hiff.1 (mem_ball_zero_iff.1 h))), indicator_of_notMem (fun h => hb (mem_ball_zero_iff.1 h))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hae, integral_const_mul, integral_indicator_ball_norm_pow e (by positivity), hρx]`. Rewrite using `[one_div, inv_pow, Nat.factorial_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hρ' : ρ ^ (2 * (e + 1)) ≠ 0` using `by positivity`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_line_gram {n : ℕ} (e : ℕ) (h : HermNorm n) (g : (Fin n → ℂ) → ℝ)
     (hg : ∀ (t : ℂ) (x : Fin n → ℂ), t ≠ 0 → g (t • x) = g x) (x : Fin n → ℂ) (hx : x ≠ 0) (G : ℝ) :
@@ -152,23 +152,21 @@ theorem integral_line_gram {n : ℕ} (e : ℕ) (h : HermNorm n) (g : (Fin n → 
   ring
 
 /- English proof (translation)
-Introduce `n e h J ℓ g A hJ hdim hℓ hdeg hcont hA`. Use `set f : EuclideanSpace ℂ (Fin n) → ℝ := (ball (0 : EuclideanSpace ℂ (Fin n)) 1).indicator (fun z => g (h.pointOf z)) with hf`. Establish `hset : {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0} = {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0} ∩ ball 0 1`. Use extensionality with `z`. Simplify using `only [mem_ofPred_eq, mem_inter_iff, mem_ball_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `and_comm`. Establish `hgm : Measurable g` using `measurable_of_continuousOn_compl_singleton 0 (hcont.mono fun x hx => hx)`. Establish `hpm : Continuous fun z : EuclideanSpace ℂ (Fin n) => h.pointOf z`. Unfold `HermNorm.pointOf`. Conclude with `continuous_const.matrix_mulVec (PiLp.continuous_ofLp 2 _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `bounded_of_degree_zero g hdeg hcont`. Establish `hfin` using `coneBall_hausdorff_lt_top hMF h J hJ.isPrime hdim`. Establish `hint : IntegrableOn f {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0} (Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ))`. Rewrite using `[IntegrableOn, hf, integrable_indicator_iff measurableSet_ball, IntegrableOn, Measure.restrict_restrict measurableSet_ball, inter_comm, ← hset]`. Establish `: IsFiniteMeasure ((Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)).restrict {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0})` using `isFiniteMeasure_restrict.2 hfin.ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Integrable.of_bound (hgm.comp hpm.measurable).aestronglyMeasurable B (Filter.Eventually.of_forall fun z => by simpa [Real.norm_eq_abs] using hB _)`. Establish `key` using `hArea n e h J ℓ A f hJ hdim hℓ hA hint`. Establish `hterm : ∀ y : Fin e → ℂ, sheetSum (J ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ s => ∫ t : ℂ, f (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ s y)) * (‖t‖ ^ (2 * e) * gramVol (fun y' => (h.matᵀ)⁻¹ *ᵥ s y') y)) y = Real.pi ^ (e + 1) / ((e + 1).factorial : ℝ) * sheetSum (J ⊔ Ideal.span {linForm ℓ …`. Introduce `y`. Unfold `sheetSum`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_finsum_mem]`. Use `finsum_mem_congr rfl fun x hx => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Take `⟨-, -, -, -, hsx, -⟩` from `hs.choose_spec`. Establish `hy : hs.choose y = x` using `by rw [← hx.2]; exact hsx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Establish `hmem` using `hx.1 (linForm ℓ - 1) (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Simplify using `[linForm] at hmem`. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy]`. Conclude with `integral_line_gram e h g hdeg x hx0 _`. Simplify using the standard rewrite rules. Rewrite `key` using `[hterm, integral_const_mul]`. Take `⟨hM0, hMtop⟩` from `coordBall_mass (n := n) (m := e + 1) (le_of_ringKrullDim_quotient J hdim)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : 0 < (Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ j : Fin n, e + 1 ≤ (j : ℕ) → z j = 0}).toReal` using `ENNReal.toReal_pos hM0.ne' hMtop.ne`. Establish `hc : (0 : ℝ) < Real.pi ^ (e + 1) / ((e + 1).factorial : ℝ)` using `by positivity`. Establish `hleft : ∫ z in {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0}, f z ∂(Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)) = ∫ z in {z : EuclideanSpace ℂ (Fin n) | ‖z‖ < 1 ∧ ∀ q ∈ J, eval (h.pointOf z) q = 0}, g (h.pointOf z) ∂(Measure.hausdorffMeasure ((2 * (e + …`. Rewrite using `[hf, setIntegral_indicator measurableSet_ball, hset]`. Rewrite `key` using `[hleft]`.
-
-Unfold `coneIntegral`. Rewrite using `[div_eq_iff hM.ne']`. Rewrite `key` using `[mul_left_comm]`. Rewrite using `[mul_left_cancel₀ hc.ne' key, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConeChartGram.proof (hArea : ConeSheetGram.Statement) (hMF : MassFinite.Statement) :
     ConeChartGram.Statement := by

@@ -21,9 +21,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Establish `h : m • v u = 0` using `by rw [← v.map_pow, hu, v.map_one]`. Consider the cases of `hc : v u with`. Consider the case `top => exact le_top`. Consider the case `coe q`. Rewrite `h` using `[hc, ← WithTop.coe_nsmul, WithTop.coe_eq_zero, smul_eq_zero]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Rewrite using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_le_val_of_pow_eq_one {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {u : F} {m : ℕ} (hm : 0 < m)
     (hu : u ^ m = 1) : ((0 : ℚ) : WithTop ℚ) ≤ v u := by
@@ -37,15 +37,15 @@ theorem zero_le_val_of_pow_eq_one {F : Type} [Field F] (v : AddValuation F (With
     · rw [h]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y I P hT ϖ hϖ Q hQ F _ _ _ _ _ v hv xF h hl k b hh hh' hk hmv hν σ' s' hσ' hs'`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `h3 : FiniteOrderValuationInvariance` using `(GlobalTheory.twisting_statements_of_laws hL GlobalTheory.twistBaseChange).2.1`. Establish `hx` using `hσ'.base`. Take `⟨⟨σ, hσ, -⟩, hex⟩` from `GlobalTheory.T.existsUnique_compatibleSection_expansion_integralFramedPoint E H Dw l Xo c T io y I P hT ϖ hϖ Q hQ F v hv xF h hl k hk hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `hex σ hσ`. Take `⟨s₁, -, hu'⟩` from `(GlobalTheory.T.existsUnique_compatibleSection_expansion_integralFramedPoint E H Dw l Xo c T io y I P hT ϖ hϖ Q hQ F v hv xF h hl k hk hh').2 σ' hσ'`. Take `⟨e, he, -⟩` from `GlobalTheory.PtTie.exists_mulEquiv_ptTieF E H Dw l Xo c T io y.1 I P F xF hx`. Establish `hxk : (e.symm b) ^ k = 1` using `by rw [← map_pow, hmv.1, map_one]`. Take `⟨f, hf, hsurj, -⟩` from `hT F k hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `hsurj _ hxk`. Take `⟨w, hw⟩ : ∃ w : LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F p.g.b) (DegPre.lineε k)), w.IsGen` from `ReciprocityTheory.ChartRestriction.G.H1.ClosedPointWeilPower.gen_local_linComb P.D.toPre.P.L P.D.toPre.P.isLB _ _`. Take `⟨ζ, hζ, hfin⟩` from `ReciprocityTheory.ChartRestriction.G.H1.finOrdExists_of_laws hL T.V P.D F k hk p w hw`. Take `⟨Φ, hΦ⟩` from `phiFun_of hL T.V (maximalIdeal T.V) P.D F k hk p w hw`. Establish `h1 : PhiRel P.D.toPre F k p w s (Φ s)` using `(hΦ _ _).2 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Fam.IsSmul P.D.toPre F ζ (Φ s) (ζ • Φ s)` using `(ReciprocityTheory.ChartRestriction.G.DVR.isSmul_iff _ _ _).2 rfl`. Take `⟨u, t', ⟨m, hm, hum⟩, hut, ht'⟩` from `GlobalTheory.T.symmetric_lift_acts_root_of_unity_on_expansions E H Dw l Xo c T io y.1 I P F xF hx k hk σ σ' hh hh' s (Φ s) (ζ • Φ s) (e.symm b) b p w ζ hσ hσ' hs hmv ((he _ _).2 (e.apply_symm_apply b).symm) ((hf _ _).2 hp.symm) hw hfin h1 h2`. Establish `h4` using `(h3 T.V ϖ hϖ P.D Q hQ F v hv k hk p w hw ζ hζ hfin s _ _ h1 h2 0).1 (hν σ s hσ hs)`. Establish `h5` using `NuGe.smul Q (zero_le_val_of_pow_eq_one v hm hum) hut h4`. Rewrite `h5` using `[add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hu' s' hs', ← hu' t' ht']`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuGe_zero_of_moves : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (I : IntData Xo c T io y.1) (P : PELUnif (maximalIdeal T.V) I.G), P.TorsionIso → ∀ (ϖ : T.V), Irreducible ϖ → ∀ (Q : P.D.toPre.X → ℤ), IsQ P.D.toPre ϖ Q → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (xF : Sp F ⟶ Xo.X) (h : ptO Xo xF ⟶ ptO Xo (xOf y)), h.left = spMap (algebraMap T.Fr F) → ∀ (k : ℕ) (b : ptO Xo xF ⟶ Xo.univ.t.G) (hh hh' : SecN Xo xF k), 1 ≤ k → Moves Xo b hh hh' → (∀ σ s, SecTieF I P F xF k σ hh → P.U.toUnifPre.ExpandsG F k σ s → NuGe P.D Q F v k s 0) → (∀ σ s, SecTieF I P F xF k σ hh' → P.U.toUnifPre.ExpandsG F k σ s → NuGe P.D Q F v k s 0) := by
   intro E _ _ _ H Dw l Xo c T io y I P hT ϖ hϖ Q hQ F _ _ _ _ _ v hv xF h hl k b hh hh' hk hmv hν σ' s' hσ' hs'

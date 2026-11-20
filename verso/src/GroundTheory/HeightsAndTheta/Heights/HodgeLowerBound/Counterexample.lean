@@ -18,13 +18,13 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_chartMon_notMem hW`. Rewrite using `[inter_eq_recR I hI hW (isSmoothHerm_constLine M hM) (d := 0) (fun k ↦ rfl) (isMultiHomog_chartMon c 0) (hc 0), chartMon_zero, recR_one]`. Establish `h : logNorm (constLine (ι` using `ι) M hM) 1 = fun _ ↦ -Real.log M := by`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, constLine, Real.log_inv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hfin : Finite (projPts W)`. Rewrite `hdeg` using `[degC_eq_card_projPts]`. Conclude with `(Nat.card_pos_iff.mp hdeg).2`. Establish `key : ∀ φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ, ptsIntegral W φ (fun _ ↦ (1 : ℝ)) = degC W`. Introduce `φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : φ = Fin.elim0` from `funext fun j ↦ j.elim0`. Rewrite using `[PtsIntegralPoints.homogProof K ι W (fun _ ↦ 1) hH hfin (fun _ _ _ _ ↦ rfl), degC_eq_card_projPts]`. Use `Fintype.ofFinite (projPts W)` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, Nat.card_eq_fintype_card]`. Unfold `arInt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Inter.Conservation.ptsIntegral_const, key]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inter_constLine_eq [Nonempty K] (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → Geo.HermLine ι) → ℝ)
     (hI : IsIntersectionFamily I) {W : Ideal (MRing ι)} (hW : IsArithVar W 1)
@@ -58,19 +58,19 @@ section Point
 def ptIdeal : Ideal (MRing (PBlk 2)) := orbitIdeal samplePoint
 
 /- English proof (translation)
-The claim follows from `OrbitCurve.full Unit (fun _ ↦ 1) samplePoint samplePoint_blockNonzero`.
+A detailed English derivation is pending.
 -/
 theorem isArithVar_ptIdeal : IsArithVar ptIdeal 1 :=
   OrbitCurve.full Unit (fun _ ↦ 1) samplePoint samplePoint_blockNonzero
 
 /- English proof (translation)
-The claim follows from `OrbitCurve.isMultiHomogIdeal_orbitIdeal samplePoint`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_ptIdeal : IsMultiHomogIdeal ptIdeal :=
   OrbitCurve.isMultiHomogIdeal_orbitIdeal samplePoint
 
 /- English proof (translation)
-The claim follows from `OrbitDegree.full Unit (fun _ ↦ 1) samplePoint samplePoint_blockNonzero`.
+A detailed English derivation is pending.
 -/
 theorem degC_ptIdeal_pos : 0 < degC ptIdeal :=
   OrbitDegree.full Unit (fun _ ↦ 1) samplePoint samplePoint_blockNonzero
@@ -80,11 +80,9 @@ end Point
 section Shift
 
 /- English proof (translation)
-Take `⟨a, ha, hza⟩` from `exists_eq_smul_orbitRep z`. Establish `hw : ∀ k, ∃ i, orbitRep z ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hz k`. Use `⟨i, fun h0 ↦ hi ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hza]`. Simplify using `[torusSmul, h0]`. Use `show refNorm 0 z * Real.exp (Real.log (muMetric (lineHodgeScaled II hII c hc) (orbitRep z) / refNorm 0 (orbitRep z))) = Real.sqrt c`. Rewrite using `[hMu II hII c hc _ hw]`. Simplify using `only [refNorm, Pi.zero_apply, Int.cast_zero, zero_div, Real.rpow_zero, Finset.prod_const_one, div_one, one_mul]`.
-
-Conclude with `Real.exp_log (Real.sqrt_pos.mpr hc)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem muLine_scaled_h (hMu : MuMetricLine.Statement) (II : IntersectionSystem)
     (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
@@ -107,15 +105,13 @@ theorem muLine_scaled_h (hMu : MuMetricLine.Statement) (II : IntersectionSystem)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet in
 
 /- English proof (translation)
-Use `set h1 := fsHeight_nonneg II hII`. Use `set μc := muLine (lineHodgeScaled II h1 c hc)`. Use `set μ1 := muLine (lineHodgeScaled II h1 1 one_pos)`. Establish `hsc : 0 < Real.sqrt c` using `Real.sqrt_pos.mpr hc`. Establish `hμc : ∀ z : (Σ _ : Unit, Fin 2) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → μc.h z = Real.sqrt c` using `muLine_scaled_h hMu II h1 c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hμ1 : ∀ z : (Σ _ : Unit, Fin 2) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → μ1.h z = 1` using `fun z hz ↦ by`. Rewrite using `[muLine_scaled_h hMu II h1 1 one_pos z hz, Real.sqrt_one]`. Establish `hsm : ∀ (μ : Geo.HermLine (PBlk 2)) (v : ℝ), (∀ z : (Σ _ : Unit, Fin 2) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → μ.h z = v) → IsSmoothHerm μ` using `fun μ v h ↦ contDiffOn_const.congr fun z hz ↦ h z hz`. Establish `hshift` using `R.shift t' μ1 μc (Real.sqrt c) hsc rfl fun z hz ↦ by rw [hμc z hz, hμ1 z hz, mul_one]`. Establish `hrc` using `R.smooth t' μc (hsm μc _ hμc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1` using `R.smooth t' μ1 (hsm μ1 _ hμ1)`. Establish `hI` using `hII Unit (PBlk 2)`. Establish `hcongr : II Unit (PBlk 2) W 1 ![R.reg t' μc] = II Unit (PBlk 2) W 1 ![(R.reg t' μ1).tensor (constLine (Real.sqrt c) hsc)]` using `inter_congr (II Unit (PBlk 2)) hI hW hrc (IndefiniteRowSideFullHecke.HeightsSet.isSmoothHerm_tensor hr1 (isSmoothHerm_constLine _ _)) (d := 0) (fun k ↦ by rw [R.deg]; rfl) (fun k ↦ by show (R.reg t' μ1).a k + (0 : Unit → ℤ) k = _`. Rewrite using `[R.deg]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun z hz ↦ by`. Rewrite using `[hshift z hz.1]`. Use `show _ = (R.reg t' μ1).h z * Real.sqrt c`. Use the proof step `ring)`. Establish `hA : ∀ (c' : ℝ) (hc' : 0 < c'), (lineDataScaled II h1 c' hc').A' = fsLine 2` using `fun _ _ ↦ rfl`.
-
-Establish `hd : (degC W : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hdeg.ne'`. Simplify using `only [heightMU, hA]`. Rewrite using `[hcongr, inter_tensor (II Unit (PBlk 2)) hI hW hr1 (isSmoothHerm_constLine _ _), inter_constLine_eq (II Unit (PBlk 2)) hI hW hH hdeg]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem heightMU_scaled (hMu : MuMetricLine.Statement) (II : IntersectionSystem)
     (hII : IsIntersectionSystem II) (R : WeightReg (PBlk 2)) (eps t' : ℝ) {W : Ideal (MRing (PBlk 2))}
@@ -170,18 +166,16 @@ def HtInteriorNotUniversal.Statement : Prop :=
         (lineHodgeScaled II (fsHeight_nonneg II hII) c hc) R Ch rd Lval
 
 /- English proof (translation)
-The claim follows from `weightRegRef`.
+A detailed English derivation is pending.
 -/
 example : WeightReg (PBlk 2) := weightRegRef
 
 /- English proof (translation)
-Introduce `II hII R Ch rd Lval`. Use `set h1 := fsHeight_nonneg II hII`. Use `set X := heightMU (lineDataScaled II h1 1 one_pos) (lineHodgeScaled II h1 1 one_pos) R 1 1 ptIdeal`. Use `set β := -Ch * abelian₂ 16 rd Lval`. Use `⟨Real.exp (2 * (β - X - 1)), Real.exp_pos _, fun c hc hcle hN ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPX : (lineDataScaled II h1 c hc).PX ≤ ptIdeal` using `by show mCoordIdeal yLine ≤ _`. Rewrite using `[mCoordIdeal_yLine]`. Conclude with `bot_le`. Establish `h` using `hN 16 (by rw [lineDataScaled_f, lineDataScaled_N]; norm_num) 1 1 one_pos le_rfl one_pos le_rfl ptIdeal isArithVar_ptIdeal hPX (fun z _ hz ↦ Set.notMem_empty z hz)`. Rewrite `h` using `[heightMU_scaled hMu II hII R 1 1 isArithVar_ptIdeal isMultiHomogIdeal_ptIdeal degC_ptIdeal_pos c hc, Real.log_sqrt hc.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hK : (lineDataScaled II h1 c hc).KA = 0` using `rfl`. Rewrite `h` using `[lineDataScaled_f, lineDataScaled_j', hK]`. Establish `hlog : Real.log c ≤ 2 * (β - X - 1)`. Rewrite using `[← Real.log_exp (2 * (β - X - 1))]`. Conclude with `Real.log_le_log hc hcle`.
-
-Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem HtInteriorNotUniversal.proof (hMu : MuMetricLine.Statement) : HtInteriorNotUniversal.Statement := by
   intro II hII R Ch rd Lval

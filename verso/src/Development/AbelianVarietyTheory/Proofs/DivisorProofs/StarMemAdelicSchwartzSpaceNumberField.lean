@@ -32,15 +32,15 @@ theorem conjSchwartz_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     conjSchwartz f x = star (f x) := rfl
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, g, hg, rfl⟩` from `hΨ`. Use `Submodule.subset_span ⟨conjSchwartz f, fun y => star (g y), ⟨hg.1.comp star, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hg.2.comp_left (g := star) (star_zero ℂ)`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, conjSchwartz_apply, star_mul']`. Consider the case `zero`. Use `(schA F κ).zero_mem using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add Ψ Ψ' _ _ h h'`. Use `(schA F κ).add_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[star_add]`. Consider the case `smul c Ψ _ h`. Use `(schA F κ).smul_mem (star c) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[star_mul']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (Φ : (κ → AF F) → ℂ), Φ ∈ schA F κ → (fun x => star (Φ x)) ∈ schA F κ := by

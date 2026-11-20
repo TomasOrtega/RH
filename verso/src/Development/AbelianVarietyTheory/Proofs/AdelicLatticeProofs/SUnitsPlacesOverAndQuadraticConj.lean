@@ -8,15 +8,15 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ δ θ σ hq S SE hS`. Take `⟨-, hup, hval⟩` from `places_over F E`. Take `⟨hconj, -⟩` from `conj_places_transitive F E δ θ σ hq`. Use `⟨fun x => ⟨fun h => ?_, fun h => ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[mem_sUnits]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `v hv`. Take `⟨w, rfl⟩` from `hup v`. Take `⟨e, he, hx⟩` from `hval w`. Establish `h1 : w.valuation E (algebraMap F E (x : F)) = 1` using `h w (fun a => hv ((hS w).1 a))`. Rewrite `h1` using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg zero_le he.ne').1 h1`. Rewrite `h`, the goal using `[mem_sUnits]`. Introduce `w hw`. Take `⟨e, he, hx⟩` from `hval w`. Express the relevant statement in the definitionally equal form `w.valuation E (algebraMap F E (x : F)) = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, h _ (fun a => hw ((hS w).2 a)), one_pow]`. Rewrite `hy`, the goal using `[mem_sUnits]`. Introduce `w hw`. Take `⟨w', hu, hv⟩` from `hconj w`. Express the relevant statement in the definitionally equal form `w.valuation E (σ (y : E)) = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv]`. Conclude with `hy w' (fun a => hw ((hS w).2 (hu ▸ (hS w').1 a)))`.
+A detailed English derivation is pending.
 -/
 theorem sUnits_over_and_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsQuad δ θ σ → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (SE : Finset (HeightOneSpectrum (𝓞 E))), (∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 F) ∈ S) → (∀ x : Fˣ, Units.map (algebraMap F E : F →* E) x ∈ sUnits E SE ↔ x ∈ sUnits F S) ∧ ∀ y : Eˣ, y ∈ sUnits E SE → Units.map (σ : E →* E) y ∈ sUnits E SE := by
   intro F E _ _ _ _ _ δ θ σ hq S SE hS

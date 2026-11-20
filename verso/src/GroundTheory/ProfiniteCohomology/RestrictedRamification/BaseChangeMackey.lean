@@ -25,7 +25,7 @@ def gsFinFamily (v : S) :
     continuous_decompHomS (Kv := (v : HeightOneSpectrum (𝓞 F)).adicCompletion F) S (ιs v)⟩
 
 /- English proof (translation)
-The claim follows from `decompHom_apply ((ιs v).comp (maxUnramifiedOutside F Ω S).val) σ y`.
+A detailed English derivation is pending.
 -/
 theorem gsFinFamily_apply (v : S)
     (σ : Gal(AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F) /
@@ -67,7 +67,7 @@ def closureEquivOfAlgHom : AlgebraicClosure (v.adicCompletion F) ≃+*
     (AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L))).toRingEquiv
 
 /- English proof (translation)
-Set `_ : Algebra ((placeOfAlgHom j).1.adicCompletion L) (AlgebraicClosure (v.adicCompletion F))` to `(completionEmbeddingOfAlgHom j).toRingHom.toAlgebra`. Conclude with `AlgEquiv.commutes _ y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem closureEquivOfAlgHom_completionEmbedding (y : (placeOfAlgHom j).1.adicCompletion L) :
     closureEquivOfAlgHom j (completionEmbeddingOfAlgHom j y) =
@@ -77,7 +77,7 @@ theorem closureEquivOfAlgHom_completionEmbedding (y : (placeOfAlgHom j).1.adicCo
   exact AlgEquiv.commutes _ y
 
 /- English proof (translation)
-The claim follows from `(closureEquivOfAlgHom j).symm_apply_eq.2 (closureEquivOfAlgHom_completionEmbedding j y).symm`.
+A detailed English derivation is pending.
 -/
 theorem closureEquivOfAlgHom_symm_algebraMap (y : (placeOfAlgHom j).1.adicCompletion L) :
     (closureEquivOfAlgHom j).symm
@@ -97,7 +97,7 @@ def fixingOfAlgHom : Subgroup Gal(AlgebraicClosure (v.adicCompletion F) / v.adic
 
 omit [NumberField L] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fixingOfAlgHom_iff (σ : Gal(AlgebraicClosure (v.adicCompletion F) / v.adicCompletion F)) :
     σ ∈ fixingOfAlgHom j ↔ ∀ l, σ (j l) = j l :=
@@ -152,13 +152,13 @@ theorem fixingOfAlgHomMulEquiv_apply (σ : fixingOfAlgHom j)
   rfl
 
 /- English proof (translation)
-Set `f : Gal(AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L) / (placeOfAlgHom j).1.adicCompletion L) →* Gal(AlgebraicClosure (v.adicCompletion F) / v.adicCompletion F)` to `(fixingOfAlgHom j).subtype.comp (fixingOfAlgHomMulEquiv j).symm.toMonoidHom`. Express the relevant statement in the definitionally equal form `Continuous f`. Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨K, hK, hKs⟩` from `(krullTopology_mem_nhds_one_iff (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F)) s).1 hs`. Set `b` to `Module.finBasis (v.adicCompletion F) K`. Set `K' : IntermediateField ((placeOfAlgHom j).1.adicCompletion L) (AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L))` to `IntermediateField.adjoin _ (Set.range fun i => closureEquivOfAlgHom j (b i : _))`. Establish `hK' : FiniteDimensional ((placeOfAlgHom j).1.adicCompletion L) K'` using `IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Rewrite using `[Filter.mem_map]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.mem_of_superset ((krullTopology_mem_nhds_one_iff _ _ _).2 ⟨K', hK', le_rfl⟩) fun τ hτ => hKs ?_` and prove the remaining obligations. Rewrite `hτ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hb : ∀ i, f τ (b i : AlgebraicClosure (v.adicCompletion F)) = b i` using `fun i => by`. Express the relevant statement in the definitionally equal form `(closureEquivOfAlgHom j).symm (τ (closureEquivOfAlgHom j (b i : _))) = b i`. Rewrite using `[hτ _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩), RingEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `hlin : ((f τ).toLinearMap ∘ₗ K.val.toLinearMap : K →ₗ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)) = K.val.toLinearMap` using `b.ext fun i => hb i`. Conclude with `LinearMap.congr_fun hlin ⟨y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coe_fixingOfAlgHomMulEquiv_symm :
     Continuous fun τ : Gal(AlgebraicClosure ((placeOfAlgHom j).1.adicCompletion L) /
@@ -236,11 +236,11 @@ theorem gsLocalEmbedding_apply (v : S) (x : galUnramifiedOutside F Ω S) (l : L)
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_mackeySubgroup]`. Express the relevant statement in the definitionally equal form `_ ∈ gsOpenSubgroup S hL ↔ _`. Rewrite using `[mem_gsOpenSubgroup_iff]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Establish `key` using `gsFinFamily_apply S ιs v σ ((x⁻¹ : galUnramifiedOutside F Ω S) (gsEmbedding hL l))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[gsLocalEmbedding_apply, ← key]`. Express the relevant statement in the definitionally equal form `x (gsFinFamily S ιs v σ (x⁻¹ (gsEmbedding hL l))) = gsEmbedding hL l ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg (⇑(x⁻¹ : galUnramifiedOutside F Ω S)) h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Rewrite using `[h']`. Introduce `h`. Establish `h'` using `Subtype.ext ((ιs v).injective h)`. Rewrite using `[h', ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mackeySubgroup_gs_iff (v : S) (x : galUnramifiedOutside F Ω S)
     (σ : Gal(AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F) /
@@ -265,7 +265,7 @@ theorem mem_mackeySubgroup_gs_iff (v : S) (x : galUnramifiedOutside F Ω S)
     rw [h', ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun σ => mem_mackeySubgroup_gs_iff hL ιs v x σ`.
+A detailed English derivation is pending.
 -/
 theorem mackeySubgroup_gs_eq (v : S) (x : galUnramifiedOutside F Ω S) :
     mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S))
@@ -273,9 +273,7 @@ theorem mackeySubgroup_gs_eq (v : S) (x : galUnramifiedOutside F Ω S) :
   Subgroup.ext fun σ => mem_mackeySubgroup_gs_iff hL ιs v x σ
 
 /- English proof (translation)
-Establish `hul` using `(mem_gsOpenSubgroup_iff S hL u).1 hu l`. Establish `hu' : u⁻¹ (gsEmbedding hL l) = gsEmbedding hL l`. Rewrite using `[AlgEquiv.aut_inv]`. Conclude with `u.symm_apply_eq.2 hul.symm`. Rewrite using `[gsLocalEmbedding_apply, gsLocalEmbedding_apply, mul_inv_rev, mul_inv_rev, ← map_inv, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hu']`.
-
-Conclude with `gsFinFamily_apply S ιs v h⁻¹ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsLocalEmbedding_mul (v : S) (x : galUnramifiedOutside F Ω S) {u : galUnramifiedOutside F Ω S}
     (hu : u ∈ gsOpenSubgroup S hL)
@@ -291,11 +289,11 @@ theorem gsLocalEmbedding_mul (v : S) (x : galUnramifiedOutside F Ω S) {u : galU
   exact gsFinFamily_apply S ιs v h⁻¹ _
 
 /- English proof (translation)
-Set `_ : Algebra L (maxUnramifiedOutside F Ω S)` to `(gsEmbedding hL).toRingHom.toAlgebra`. Establish `: IsScalarTower F L (maxUnramifiedOutside F Ω S)` using `IsScalarTower.of_algebraMap_eq fun a => ((gsEmbedding hL).commutes a).symm`. Set `_ : Algebra L (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F))` to `j.toRingHom.toAlgebra`. Establish `: IsScalarTower F L (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F))` using `IsScalarTower.of_algebraMap_eq fun a => (j.commutes a).symm`. Establish `: Algebra.IsAlgebraic L (maxUnramifiedOutside F Ω S)` using `Algebra.IsAlgebraic.tower_top (K := F) L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j' : maxUnramifiedOutside F Ω S →ₐ[L] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F)` to `IsAlgClosed.lift`. Take `⟨g, hg⟩` from `exists_eq_comp_of_normal ((ιs v).comp (maxUnramifiedOutside F Ω S).val) (j'.restrictScalars F)`. Use `⟨g⁻¹, AlgHom.ext fun l => ?_⟩` and prove the remaining obligations. Establish `h1 : j l = j' (gsEmbedding hL l)` using `(j'.commutes l).symm`. Establish `h2` using `DFunLike.congr_fun hg (gsEmbedding hL l)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, gsLocalEmbedding_apply, inv_inv]`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gsLocalEmbedding_eq (v : S)
     (j : L →ₐ[F] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F)) :
@@ -324,7 +322,7 @@ abbrev gsLocalPlace (v : S) (x : galUnramifiedOutside F Ω S) :
   placeOfAlgHom (gsLocalEmbedding hL ιs v x)
 
 /- English proof (translation)
-Establish `e : gsLocalEmbedding hL ιs v (u * x * gsFinFamily S ιs v h) = (((h⁻¹ : Gal(AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F) / (v : HeightOneSpectrum (𝓞 F)).adicCompletion F)) : AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F) →ₐ[(v : HeightOneSpe …` using `AlgHom.ext fun l => gsLocalEmbedding_mul hL ιs v x hu h l`. Rewrite using `[gsLocalPlace, e, placeOfAlgHom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsLocalPlace_mul (v : S) (x : galUnramifiedOutside F Ω S) {u : galUnramifiedOutside F Ω S}
     (hu : u ∈ gsOpenSubgroup S hL)
@@ -347,15 +345,15 @@ def mackeyPlace (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs)) :
   ⟨(gsLocalPlace hL ιs p.1 p.2.out).1, p.1.1, p.1.2, (gsLocalPlace hL ιs p.1 p.2.out).2⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨v, d⟩ ⟨v', d'⟩ h`. Establish `h1 : (gsLocalPlace hL ιs v d.out).1 = (gsLocalPlace hL ιs v' d'.out).1` using `congrArg Subtype.val h`. Establish `hv : v = v'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `a` using `(gsLocalPlace hL ιs v d.out).2`. Establish `b` using `(gsLocalPlace hL ιs v' d'.out).2`. Rewrite `a` using `[h1]`. Conclude with `a.over.trans b.over.symm`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2 : gsLocalPlace hL ιs v d.out = gsLocalPlace hL ιs v d'.out` using `Subtype.ext h1`. Take `⟨g, hg⟩` from `exists_algEquiv_of_placeOfAlgHom_eq _ _ h2`. Establish `hmem : d'.out * gsFinFamily S ιs v g * d.out⁻¹ ∈ gsOpenSubgroup S hL`. Rewrite using `[mem_gsOpenSubgroup_iff]`. Introduce `l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : d'.out⁻¹ (gsEmbedding hL l) = gsFinFamily S ιs v g (d.out⁻¹ (gsEmbedding hL l))` using `Subtype.ext ((ιs v).injective ((hg l).trans (gsFinFamily_apply S ιs v g _).symm))`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← hinj, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hd : d = d'`. Rewrite using `[← DoubleCoset.out_eq' _ _ d, ← DoubleCoset.out_eq' _ _ d', DoubleCoset.eq]`. Use `⟨_, hmem, gsFinFamily S ιs v g⁻¹, ⟨g⁻¹, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv]`. Use `group`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mackeyPlace_injective : Function.Injective (mackeyPlace S hL ιs) := by
   rintro ⟨v, d⟩ ⟨v', d'⟩ h
@@ -385,11 +383,11 @@ theorem mackeyPlace_injective : Function.Injective (mackeyPlace S hL ιs) := by
   rw [hd]
 
 /- English proof (translation)
-Introduce and unpack `⟨w, v0, hv0, hw⟩`. Set `v : S` to `⟨v0, hv0⟩`. Take `⟨j, hj⟩` from `exists_placeOfAlgHom_eq (⟨w, hw⟩ : PlacesOver L v0)`. Take `⟨x, hx⟩` from `exists_gsLocalEmbedding_eq hL ιs v j`. Set `d : MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)) (gsFinFamily S ιs v).toMonoidHom` to `DoubleCoset.mk _ _ x`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨⟨v, d⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, hab⟩` from `DoubleCoset.mk_out_eq_mul (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)) (gsFinFamily S ιs v).toMonoidHom.range x`. Take `⟨h, rfl⟩` from `MonoidHom.mem_range.1 hb`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(gsLocalPlace hL ιs v d.out).1 = w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1 : d.out = a * x * gsFinFamily S ιs v h` using `hab`. Rewrite using `[e1, gsLocalPlace_mul hL ιs v x ha h, gsLocalPlace, hx, hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mackeyPlace_surjective : Function.Surjective (mackeyPlace S hL ιs) := by
   rintro ⟨w, v0, hv0, hw⟩
@@ -429,7 +427,7 @@ def gsAutLift (x : galUnramifiedOutside F Ω S) : Gal(Ω/F) :=
 
 omit [IsScalarTower F L Ω] in
 /- English proof (translation)
-Establish `h` using `(AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside F Ω S) Ω x).choose_spec`. Use `conv_rhs => rw [← h]`. Conclude with `(AlgEquiv.restrictNormal_commutes (gsAutLift S x) (maxUnramifiedOutside F Ω S) y).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsAutLift_apply (x : galUnramifiedOutside F Ω S) (y : maxUnramifiedOutside F Ω S) :
     gsAutLift S x (y : Ω) = ((x y : maxUnramifiedOutside F Ω S) : Ω) := by
@@ -439,7 +437,7 @@ theorem gsAutLift_apply (x : galUnramifiedOutside F Ω S) (y : maxUnramifiedOuts
 
 omit [IsScalarTower F L Ω] in
 /- English proof (translation)
-Rewrite using `[AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq, gsAutLift_apply, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gsAutLift_inv_apply (x : galUnramifiedOutside F Ω S) (y : maxUnramifiedOutside F Ω S) :
     (gsAutLift S x)⁻¹ (y : Ω) = (((x⁻¹ : galUnramifiedOutside F Ω S) y : maxUnramifiedOutside F Ω S) : Ω) := by
@@ -488,9 +486,9 @@ theorem gsMackeyLocalEquiv_apply (v : S) (x : galUnramifiedOutside F Ω S)
 variable [IsGalois L Ω]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[decompHomS, decompHom_eq_iff]`. Introduce `t`. Establish `hu` using `coe_gsBaseChange_apply hL (mackeyConj (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)) (gsFinFamily S ιs v).toMonoidHom x σ) t`. Establish `ht : ((t : maxUnramifiedOutside L Ω (placesOver S)) : Ω) = (((gsFieldEquiv hL).symm t : maxUnramifiedOutside F Ω S) : Ω)` using `(coe_fieldEquivOfRestrictScalarsEq_symm (restrictScalars_maxUnramifiedOutside_eq S hL) t).symm`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, IntermediateField.coe_val, gsLocalEmbeddingOver_apply, gsLocalEmbeddingOver_apply, gsMackeyLocalEquiv_apply, RingEquiv.symm_apply_apply, hu, ht, mackeyConj_apply_coe]`. Establish `key : (gsAutLift S x)⁻¹ ((((x * (gsFinFamily S ιs v).toMonoidHom σ * x⁻¹) ((gsFieldEquiv hL).symm t) : maxUnramifiedOutside F Ω S)) : Ω) = ((gsFinFamily S ιs v σ ((x⁻¹ : galUnramifiedOutside F Ω S) ((gsFieldEquiv hL).symm t)) : maxUnramifiedOutside F Ω S) : Ω)`. Rewrite using `[gsAutLift_inv_apply, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← AlgEquiv.mul_apply x⁻¹ x, inv_mul_cancel, AlgEquiv.one_apply]`. Both sides reduce to the same expression. Rewrite using `[key, gsFinFamily_apply, gsAutLift_inv_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsBaseChange_mackeyConj (v : S) (x : galUnramifiedOutside F Ω S)
     (σ : mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S))
@@ -520,7 +518,7 @@ theorem gsBaseChange_mackeyConj (v : S) (x : galUnramifiedOutside F Ω S)
   rw [key, gsFinFamily_apply, gsAutLift_inv_apply]
 
 /- English proof (translation)
-The claim follows from `gsBaseChange_mackeyConj hL ιs p.1 p.2.out σ`.
+A detailed English derivation is pending.
 -/
 theorem gsBaseChange_mackeyFamily (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs))
     (σ : mackeyGroup (gsOpenSubgroup S hL) (gsFinFamily S ιs) p) :

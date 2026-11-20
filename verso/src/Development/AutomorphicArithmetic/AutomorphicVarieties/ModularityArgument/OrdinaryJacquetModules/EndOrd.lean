@@ -22,14 +22,14 @@ section SlopeTestRemainingChoices
 variable {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h g => by obtain ⟨g, rfl⟩ := hφ g; exact h g, fun h g => h (φ g)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem inv_comp {φ : Γ' →* Γ} (hφ : Function.Surjective φ) (r : Γ →* GL (Fin n) k) (M : Submodule k (Fin n → k)) :
     IsInv (r.comp φ) M ↔ IsInv r M :=
   ⟨fun h g => by obtain ⟨g, rfl⟩ := hφ g; exact h g, fun h g => h (φ g)⟩
 
 /- English proof (translation)
-Introduce `M hM` and use `by obtain ⟨M', h1, h2⟩ := h M ((inv_comp hφ r M).1 hM) exact ⟨M', (inv_comp hφ r M').2 h1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ss_comp {φ : Γ' →* Γ} (hφ : Function.Surjective φ) {r : Γ →* GL (Fin n) k} (h : IsSSRep r) :
     IsSSRep (r.comp φ) := fun M hM => by
@@ -37,7 +37,7 @@ private theorem ss_comp {φ : Γ' →* Γ} (hφ : Function.Surjective φ) {r : �
   exact ⟨M', (inv_comp hφ r M').2 h1, h2⟩
 
 /- English proof (translation)
-Introduce `M hM` and use `by rcases h.2.2 M le_top hM with rfl | rfl · exact ⟨⊤, h.2.1, isCompl_bot_top⟩ · refine ⟨⊥, fun g v hv => ?_, isCompl_top_bot⟩ rw [(Submodule.mem_bot k).1 hv] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ss_of_irr {r : Γ →* GL (Fin n) k} (h : Af.IsIrr r) : IsSSRep r := fun M hM => by
   rcases h.2.2 M le_top hM with rfl | rfl
@@ -47,11 +47,11 @@ private theorem ss_of_irr {r : Γ →* GL (Fin n) k} (h : Af.IsIrr r) : IsSSRep 
     simp
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `e`. Use `⟨h.1, fun _ _ _ => Submodule.mem_top, fun M _ hM => ?_⟩` and prove the remaining obligations. Set `E : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `(Matrix.GeneralLinearGroup.toLin P).toLinearEquiv`. Establish `hE : ∀ v, E v = (P : Matrix (Fin n) (Fin n) k).mulVec v` using `fun v => rfl`. Establish `hi : IsInv r (M.comap (E : (Fin n → k) →ₗ[k] (Fin n → k)))` using `fun g v hv => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hM g _ hv` as an intermediate fact. Express the relevant statement in the definitionally equal form `(r' g : Matrix (Fin n) (Fin n) k).mulVec ((P : Matrix (Fin n) (Fin n) k).mulVec v) ∈ M at this`. Express the relevant statement in the definitionally equal form `(P : Matrix (Fin n) (Fin n) k).mulVec _ ∈ M`. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, hP, inv_mul_cancel_right, Units.val_mul, ← Matrix.mulVec_mulVec]`. Then use the resulting hypothesis. Establish `hm : M = (M.comap (E : (Fin n → k) →ₗ[k] (Fin n → k))).map (E : (Fin n → k) →ₗ[k] (Fin n → k))` using `(Submodule.map_comap_eq_of_surjective E.surjective M).symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Break down `h.2.2 _ le_top hi with h0 | h0` into its components or cases. Use `left`. Rewrite using `[hm, h0, Submodule.map_bot]`. Use `right`. Rewrite using `[hm, h0, Submodule.map_top, LinearEquiv.range]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irr_iso {r r' : Γ →* GL (Fin n) k} (e : Af.RepIso r r') (h : Af.IsIrr r) : Af.IsIrr r' := by
   obtain ⟨P, hP⟩ := e
@@ -70,7 +70,7 @@ private theorem irr_iso {r r' : Γ →* GL (Fin n) k} (e : Af.RepIso r r') (h : 
   · right; rw [hm, h0, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `AlgebraTools.Det.bnRep (W.mat r) (W.mat r') h h' fun g => by`. Rewrite using `[← (AlgebraTools.Det.repApi (W.mat r)).2.1 g, ← (AlgebraTools.Det.repApi (W.mat r')).2.1 g, e]`. Use `⟨P, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Conclude with `Units.ext (hP g).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iso_of_det {r r' : Γ →* GL (Fin n) k} (h : IsSSRep r) (h' : IsSSRep r')
     (e : W.GDet.ofRep (W.mat r) = W.GDet.ofRep (W.mat r')) : Af.RepIso r' r := by
@@ -81,7 +81,7 @@ private theorem iso_of_det {r r' : Γ →* GL (Fin n) k} (h : IsSSRep r) (h' : I
   exact Units.ext (hP g).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Ideal.Quotient.liftₐ (RingHom.ker f) x fun _ hb => hx hb).comp (Ideal.quotientKerAlgEquivOfSurjective hf).symm.toAlgHom, fun b => by have : (Ideal.quotientKerAlgEquivOfSurjective hf).symm (f b) = Ideal.Quotient.mk _ b := by rw [AlgEquiv.symm_apply_eq]; rfl exact (congrArg (Idea …`.
+Supply the required witnesses or components.
 -/
 private theorem factor {O A T K : Type} [CommRing O] [CommRing A] [CommRing T] [CommRing K] [Algebra O A] [Algebra O T]
     [Algebra O K] (f : A →ₐ[O] T) (hf : Function.Surjective f) (x : A →ₐ[O] K) (hx : RingHom.ker f ≤ RingHom.ker x) :
@@ -93,7 +93,7 @@ private theorem factor {O A T K : Type} [CommRing O] [CommRing A] [CommRing T] [
       exact (congrArg (Ideal.Quotient.liftₐ (RingHom.ker f) x fun _ hb => hx hb) this).trans rfl⟩
 
 /- English proof (translation)
-Take `rfl : x = y.comp f` from `RingHom.ext fun b => (h b).symm`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem map_comp {n : ℕ} {A T K Γ : Type} [CommRing A] [CommRing T] [CommRing K] [Group Γ] (D : W.GDet n A Γ)
     (f : A →+* T) (y : T →+* K) (x : A →+* K) (h : ∀ b, y (f b) = x b) : (D.map f).map y = D.map x := by
@@ -101,7 +101,7 @@ private theorem map_comp {n : ℕ} {A T K Γ : Type} [CommRing A] [CommRing T] [
   rfl
 
 /- English proof (translation)
-Take `rfl : x = y.comp f` from `RingHom.ext fun b => (h b).symm`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem push_comp {A T K Γ : Type} [CommRing A] [CommRing T] [CommRing K] [Group Γ] (χ : Γ →* Aˣ)
     (f : A →+* T) (y : T →+* K) (x : A →+* K) (h : ∀ b, y (f b) = x b) : W.pushCh y (W.pushCh f χ) = W.pushCh x χ := by
@@ -112,9 +112,9 @@ end SlopeTestRemainingChoices
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `factor f hf x hx`. Establish `e1 : y.toRingHom.comp (algebraMap A _) = (x.comp j).toRingHom` using `RingHom.ext fun b => (congrArg y (hj b)).symm.trans (hy _)`. Establish `har' : H.Arith θ (y.toRingHom.comp (algebraMap A _)) lam` using `by rw [e1]; exact har`. Unfold `HSet.IsMap at hm`. Take `⟨d, ξ, Y, hY, hD, hω⟩` from `hC L Ω l n c H hA A θ hθ ι P hP a K _ _ hm lam hl y har'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `⟨d, ξ, Y, hY, (map_comp D₀ f.toRingHom y.toRingHom x hy).symm.trans hD, fun v => ?_⟩` and prove the remaining obligations. Take `⟨ω, h1, h2⟩` from `hω v`. Use `⟨ω, h1, fun i => ?_⟩` and prove the remaining obligations. Use `h2 i` as an intermediate fact. Rewrite `this` using `[push_comp _ f.toRingHom y.toRingHom x hy]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem absPt (hC : CoreOrd) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (hA : H.Ax) {A : Type} [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ)
@@ -141,9 +141,9 @@ private theorem absPt (hC : CoreOrd) {L Ω : Type} [Field L] [NumberField L] [Fi
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Break down `hJ with ⟨_, rfl⟩ | ⟨i1, i2, f, -, hmap, hsurj, hlam, rfl⟩` into its components or cases. Conclude with `absurd (hx (Submodule.mem_top (x := 1))) (by simp)`. Take `⟨⟨lam, hl⟩, hb⟩` from `wtBridge H.litN l L Ω s n hn V Q c R.m R.τ₀ r B Λ R.θ R.theta h ha.1`. Establish `har` using `(hb lam hl x).1.1 ha`. Take `⟨d, ξ, Y, hY, hD, hω⟩` from `absPt (coreOrd H.litN) (hset Q R.τ₀) (axU H.litN l L Ω s n hn V Q c R.m R.τ₀) R.θ R.isWt ι (autUO H l L Ω s n hn V Q c r ι R.m R.τ₀ R.type) R.a K B.u.D B.u.ψ (Λ.toPair B.u) f hmap hsurj hlam x hx lam (Set.mem_univ _) har`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨lam, d, ξ, Y, hY, ?_, hω⟩` and prove the remaining obligations. Use `replace hD : x.D = W.GDet.ofRep (W.mat Y.r) := hD`. Express the relevant statement in the definitionally equal form `x.D.comap V.pr = _`. Rewrite using `[hD]`. Conclude with `(AlgebraTools.Det.repApi (W.mat Y.r)).2.2.2.2.2.2.1 V.pr`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core (H : Af.HypothesesH) {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (hn : 1 ≤ n) {V : s.Lev} {Q : QData V} {c : Coef l}

@@ -16,89 +16,85 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Aψ G _ _ _ _ ψ B Λc red T hs SB Hd Th ip f₀ Gd hsurj hB hSB htr hmod hf₀ hwit hslin hThlin hThhs hiplin hipconj hiphs hThf₀ hip₀`. Take `⟨rep, hrep⟩ : ∃ rep : G → Λc, ∀ c, red (rep c) = c` from `⟨Function.surjInv hsurj, Function.surjInv_eq hsurj⟩`. Take `⟨ind, hind⟩ : ∃ ind : G → X → ℂ, ∀ c t, ind c t = if h : t ∈ Λc then (if red ⟨t, h⟩ = c then (1:ℂ) else 0) else 0` from `⟨_, fun _ _ => rfl⟩`. Take `⟨g, hg⟩ : ∃ g : G → X → ℂ, ∀ c, g c = T (ind c)` from `⟨_, fun _ => rfl⟩`. Take `⟨χ, hχd⟩ : ∃ χ : X → G → ℂ, ∀ y c, χ y c = ψ (B (rep c) y)` from `⟨_, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hB0 : ∀ y, B 0 y = 0` using `fun y => by simpa using hB 0 0 y`. Establish `hBn : ∀ (m : ℕ) t y, B (m • t) y = m • B t y`. Introduce `m t y`. Proceed by induction on `m with`. Consider the case `zero => simp [hB0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [succ_nsmul, hB, ih, succ_nsmul]`. Establish `hχ : ∀ y, (∀ k : Λc, red k = 0 → ψ (B k y) = 1) → ∀ t : Λc, ψ (B t y) = χ y (red t)`. Introduce `y hy t`. Establish `hk : red (t - rep (red t)) = 0` using `by rw [map_sub, hrep, sub_self]`. Establish `ht : (t : X) = ((t - rep (red t) : Λc) : X) + (rep (red t) : X)` using `by simp`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ht, hB, AddChar.map_add_eq_mul, hy _ hk, one_mul, hχd]`. Establish `hχpow : ∀ y, (∀ k : Λc, red k = 0 → ψ (B k y) = 1) → ∀ c, χ y c ^ Fintype.card G = 1`. Introduce `y hy c`. Rewrite using `[hχd, ← AddChar.map_nsmul_eq_pow, ← hBn]`. Use `hy (Fintype.card G • rep c) (by rw [map_nsmul, card_nsmul_eq_zero])` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hχnorm : ∀ y, (∀ k : Λc, red k = 0 → ψ (B k y) = 1) → ∀ c, ‖χ y c‖ = 1` using `fun y hy c => Complex.norm_eq_one_of_pow_eq_one (hχpow y hy c) Fintype.card_ne_zero`. Establish `hχconj : ∀ y, (∀ k : Λc, red k = 0 → ψ (B k y) = 1) → ∀ c, starRingEnd ℂ (χ y c) * χ y c = 1`. Introduce `y hy c`. Rewrite using `[Complex.conj_mul', hχnorm y hy c]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsep : ∀ c d, c ≠ d → ∃ y, Hd y ∧ (∀ k : Λc, red k = 0 → ψ (B k y) = 1) ∧ χ y c ≠ χ y d`. Introduce `c d hcd`. Take `⟨y, hHd, hy, hne⟩` from `hwit (rep (c - d)) (by rw [hrep]; exact sub_ne_zero.mpr hcd)`. Use `⟨y, hHd, hy, fun heq => hne ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hχ y hy (rep (c - d) + rep d)`. Establish `hr : red (rep (c - d) + rep d) = c` using `by rw [map_add, hrep, hrep, sub_add_cancel]`. Rewrite `h1` using `[hr, AddSubgroup.coe_add, hB, AddChar.map_add_eq_mul, ← hχd y d, heq]`. Establish `h0 : χ y d ≠ 0` using `fun h => by simpa [h] using hχnorm y hy d`. Conclude with `mul_right_cancel₀ h0 (h1.trans (one_mul _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSBind : ∀ c, SB (ind c)`. Introduce `c`. Apply `hSB` to reduce the goal to its premises. Introduce `t ht`. Assume the negation of the conclusion as `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht (by rw [hind, dif_neg hmem])`. Introduce `t u hu`. Establish `hnu : Fintype.card G • u ∈ Λc` using `Λc.nsmul_mem hu _`. Distinguish the cases in `ht : t ∈ Λc`. Establish `ht' : t + Fintype.card G • u ∈ Λc` using `Λc.add_mem ht hnu`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : red ⟨t + Fintype.card G • u, ht'⟩ = red ⟨t, ht⟩`. Establish `: (⟨t + Fintype.card G • u, ht'⟩ : Λc) = ⟨t, ht⟩ + Fintype.card G • ⟨u, hu⟩` using `Subtype.ext (by simp)`. Rewrite using `[this, map_add, map_nsmul, card_nsmul_eq_zero, add_zero]`. Rewrite using `[hind, hind, dif_pos ht, dif_pos ht', he]`. Establish `ht' : t + Fintype.card G • u ∉ Λc` using `fun h => ht (by simpa using Λc.sub_mem h hnu)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hind, hind, dif_neg ht, dif_neg ht']`. Establish `hmodg : ∀ y, Hd y → (∀ k : Λc, red k = 0 → ψ (B k y) = 1) → ∀ c, hs y (g c) = χ y c • g c`. Introduce `y hHd hy c`. Rewrite using `[hg, ← hmod (ind c) (hSBind c) y hHd, ← map_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hind]`. Distinguish the cases in `ht : t ∈ Λc`. Rewrite using `[dif_pos ht]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hr : red ⟨t, ht⟩ = c`. Rewrite using `[if_pos hr, mul_one, mul_one, ← hr]`. Conclude with `hχ y hy ⟨t, ht⟩`. Rewrite using `[if_neg hr]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[dif_neg ht]`. Simplify using the standard rewrite rules. Establish `htrg : ∀ c, hs (rep c) (g c) = g 0`. Introduce `c`. Rewrite using `[hg, hg, ← htr (ind c) (hSBind c) (rep c) (rep c).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hind, hind]`. Distinguish the cases in `ht : t ∈ Λc`. Establish `ht' : t + (rep c : X) ∈ Λc` using `Λc.add_mem ht (rep c).2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : red ⟨t + rep c, ht'⟩ = red ⟨t, ht⟩ + c`. Establish `: (⟨t + rep c, ht'⟩ : Λc) = ⟨t, ht⟩ + rep c` using `Subtype.ext (by simp)`. Rewrite using `[this, map_add, hrep]`. Rewrite using `[dif_pos ht, dif_pos ht', he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht' : t + (rep c : X) ∉ Λc` using `fun h => ht (by simpa using Λc.sub_mem h (rep c).2)`. Rewrite using `[dif_neg ht, dif_neg ht']`. Establish `hTh0 : Th 0` using `by simpa using hThlin (-1) f₀ f₀ hThf₀ hThf₀`. Establish `hThsmul : ∀ a f, Th f → Th (a • f)` using `fun a f hf => by simpa using hThlin a f 0 hf hTh0`. Establish `hhs0 : ∀ w, hs w 0 = 0` using `fun w => by simpa using hslin w 1 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hThsum : ∀ (a : G → ℂ) (s : Finset G), (∀ c ∈ s, Th (g c)) → Th (∑ c ∈ s, a c • g c)`. Introduce `a s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using hTh0`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `@insert d s hds ih`. Introduce `h`. Rewrite using `[Finset.sum_insert hds]`. Conclude with `hThlin _ _ _ (h d (Finset.mem_insert_self _ _)) (ih fun c hc => h c (Finset.mem_insert_of_mem hc))`. Establish `hsSum : ∀ w (a : G → ℂ) (s : Finset G), hs w (∑ c ∈ s, a c • g c) = ∑ c ∈ s, a c • hs w (g c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `w a s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hhs0 w`. Consider the case `@insert d s hds ih => rw [Finset.sum_insert hds, Finset.sum_insert hds, hslin, ih]`. Establish `hf0sum : f₀ = ∑ c, g c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hf₀]`. Simplify using `only [hg]`. Rewrite using `[← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [hind]`. Distinguish the cases in `ht : t ∈ Λc`. Simplify using `[ht]`. Simplify using `[ht]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hΦsum : (T fun t => if h : t ∈ Λc then Gd (red ⟨t, h⟩) else 0) = ∑ c, Gd c • g c`. Simplify using `only [hg, ← map_smul]`. Rewrite using `[← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hind]`. Distinguish the cases in `ht : t ∈ Λc`. Simplify using `[ht]`. Simplify using `[ht]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hThg : ∀ c, Th (g c)`. Introduce `c`. Establish `key : ∀ S : Finset G, c ∉ S → ∃ a : G → ℂ, a c = 1 ∧ (∀ e ∈ S, a e = 0) ∧ Th (∑ e, a e • g e)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `empty => intro _; exact ⟨fun _ => 1, rfl, by simp, by simpa [hf0sum] using hThf₀⟩`. Consider the case `@insert d S hdS ih`. Introduce `hc`. Establish `hcS : c ∉ S` using `fun h => hc (Finset.mem_insert_of_mem h)`. Establish `hcd : c ≠ d` using `fun h => hc (h ▸ Finset.mem_insert_self d S)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha1, ha0, hTh⟩` from `ih hcS`. Take `⟨y, hHd, hy, hne⟩` from `hsep c d hcd`. Establish `hk : χ y c - χ y d ≠ 0` using `sub_ne_zero.mpr hne`. Use `⟨fun e => a e * ((χ y e - χ y d) / (χ y c - χ y d)), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show a c * ((χ y c - χ y d) / (χ y c - χ y d)) = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha1, one_mul, div_self hk]`. Introduce `e he`. Break down `Finset.mem_insert.mp he with rfl | he` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[ha0 e he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hrw : ∑ e, (a e * ((χ y e - χ y d) / (χ y c - χ y d))) • g e = (χ y c - χ y d)⁻¹ • hs y (∑ e, a e • g e) + (-(χ y d) / (χ y c - χ y d)) • ∑ e, a e • g e`. Rewrite using `[hsSum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hmodg y hHd hy e, smul_smul, smul_smul, smul_smul, ← add_smul]`. Use `congr 1`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrw]`. Conclude with `hThlin _ _ _ (hThhs y _ hTh) (hThsmul _ _ hTh)`. Take `⟨a, ha1, ha0, hTh⟩` from `key (Finset.univ.erase c) (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: ∑ e, a e • g e = g c`. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[ha1, one_smul]`. Introduce `e _ he; rw [ha0 e (by simp [he]), zero_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hTh` using `[this]`. Then use the resulting hypothesis. Establish `hip0 : ∀ h, Th h → ip 0 h = 0` using `fun h hh => by simpa using hiplin 1 0 0 h hTh0 hTh0 hh`. Establish `hipsL : ∀ a f h, Th f → Th h → ip (a • f) h = a * ip f h` using `fun a f h hf hh => by`. Simplify `hiplin a f 0 h hf hTh0 hh` using `[hip0 h hh]`. Establish `hipsR : ∀ a f h, Th f → Th h → ip f (a • h) = starRingEnd ℂ a * ip f h` using `fun a f h hf hh => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hipconj (a • h) f (hThsmul a h hh) hf, hipsL a h f hh hf, map_mul, ← hipconj h f hh hf]`. Establish `hipsumL : ∀ h, Th h → ∀ (a : G → ℂ) (s : Finset G), ip (∑ c ∈ s, a c • g c) h = ∑ c ∈ s, a c * ip (g c) h`. Introduce `h hh a s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hip0 h hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `@insert d s hds ih`. Rewrite using `[Finset.sum_insert hds, Finset.sum_insert hds, hiplin _ _ _ _ (hThg d) (hThsum a s fun c _ => hThg c) hh, ih]`. Establish `horth : ∀ c d, c ≠ d → ip (g c) (g d) = 0`. Introduce `c d hcd`. Take `⟨y, hHd, hy, hne⟩` from `hsep c d hcd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `hiphs y (g c) (g d) (hThg c) (hThg d)`. Rewrite `h1` using `[hmodg y hHd hy c, hmodg y hHd hy d, hipsL _ _ _ (hThg c) (hThsmul _ _ (hThg d)), hipsR _ _ _ (hThg c) (hThg d)]`. Establish `hk : χ y c * starRingEnd ℂ (χ y d) ≠ 1`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `congrArg (· * χ y d) h` as an intermediate fact. Simplify using `only [mul_assoc, hχconj y hy d, mul_one, one_mul] at this`. Conclude with `this`. Establish `: (1 - χ y c * starRingEnd ℂ (χ y d)) * ip (g c) (g d) = 0`. Take the linear combination `(-1 : ℂ) * h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hk`. Conclude with `h`. Establish `hdiag : ∀ c, ip (g c) (g c) = ip (g 0) (g 0)`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← htrg c, hiphs _ _ _ (hThg c) (hThg c)]`. Establish `hgram : ∀ a b : G → ℂ, ip (∑ e, a e • g e) (∑ e, b e • g e) = (∑ e, a e * starRingEnd ℂ (b e)) * ip (g 0) (g 0)`. Introduce `a b`. Establish `hS : Th (∑ e, b e • g e)` using `hThsum b _ fun c _ => hThg c`. Rewrite using `[hipsumL _ hS a Finset.univ, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hipconj _ _ hS (hThg e), hipsumL _ (hThg e) b Finset.univ, Finset.sum_eq_single e (fun d _ hde => by rw [horth d e hde, mul_zero]) (by simp), map_mul, hdiag e, ← hipconj _ _ (hThg 0) (hThg 0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ip (g 0) (g 0) = 1 / (Fintype.card G : ℂ)`. Establish `h1` using `hgram (fun _ => 1) (fun _ => 1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_smul, map_one, mul_one, Finset.sum_const, Finset.card_univ] at h1`. Rewrite `h1` using `[← hf0sum, hip₀]`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Rewrite using `[eq_div_iff hc]`. Rewrite using `[h1]`.
-
-Simplify using `[mul_comm]`. Rewrite using `[hΦsum, hgram, hD]`. Establish `hn : ∀ z : ℂ, z * starRingEnd ℂ z = ((‖z‖ ^ 2 : ℝ) : ℂ)` using `fun z => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [hn, Complex.ofReal_sum]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finite_plancherel_schrodinger_intertwiner :
 ∀ {X Aψ G : Type} [AddCommGroup X] [AddCommGroup Aψ] [AddCommGroup G] [Fintype G]

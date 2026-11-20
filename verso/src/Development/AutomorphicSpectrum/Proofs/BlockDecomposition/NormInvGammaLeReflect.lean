@@ -8,15 +8,15 @@ open scoped Real
 namespace GlobalTheory.CompanionTheory.InvGammaStrip
 
 /- English proof (translation)
-Establish `hpi : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hsin : Complex.sin (π * z) ≠ 0`. Rewrite using `[Complex.sin_ne_zero_iff]`. Introduce `k hk`. Establish `h` using `congrArg Complex.im hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Real.pi_ne_zero] at h`. Conclude with `him h`. Establish `hG : Complex.Gamma z ≠ 0` using `Complex.Gamma_ne_zero fun m h => him (by rw [h]; simp)`. Establish `hinv : (Complex.Gamma z)⁻¹ = Complex.Gamma (1 - z) * Complex.sin (π * z) / π`. Establish `h6 : Complex.Gamma z * Complex.Gamma (1 - z) * Complex.sin (π * z) = π`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.Gamma_mul_Gamma_one_sub, div_mul_cancel₀ _ hsin]`. Use `eq_div_of_mul_eq hpi ?_` and prove the remaining obligations. Rewrite using `[inv_mul_eq_iff_eq_mul₀ hG]`. Take the linear combination `-h6`. Establish `h1 : ‖Complex.Gamma (1 - z)‖ ≤ Real.Gamma (1 - z.re)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PI.EF.norm_Gamma_le (w := 1 - z) (by simp; linarith)` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖Complex.sin (π * z)‖ ≤ Real.exp (π * |z.im|)`. Use `(GlobalTheory.CompanionTheory.DigammaStrip.norm_sin_le_exp _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[abs_mul, abs_of_pos Real.pi_pos]`. Rewrite using `[hinv, norm_div, norm_mul, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inv_Gamma_le_reflect {z : ℂ} (hre : z.re < 1) (him : z.im ≠ 0) :
     ‖(Complex.Gamma z)⁻¹‖ ≤ Real.Gamma (1 - z.re) * Real.exp (π * |z.im|) / π := by
@@ -45,11 +45,11 @@ theorem norm_inv_Gamma_le_reflect {z : ℂ} (hre : z.re < 1) (him : z.im ≠ 0) 
   gcongr
 
 /- English proof (translation)
-Establish `hc : ContinuousOn Real.Gamma (Icc (1 / 2) (max (1 / 2) (1 - a)))` using `fun x hx => (Real.differentiableAt_Gamma fun m h => by`. Establish `h0` using `hx.1`. Establish `h1 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Rewrite `h0` using `[h]`. Use the proof step `linarith).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `isCompact_Icc.exists_bound_of_continuousOn hc`. Use `⟨|M| / π, by positivity, fun z h1 h2 h3 => ?_⟩` and prove the remaining obligations. Use `(norm_inv_Gamma_le_reflect (by linarith) h3).trans ?_` and prove the remaining obligations. Establish `hb : Real.Gamma (1 - z.re) ≤ |M|`. Use `hM (1 - z.re) ⟨by linarith, le_max_of_le_right (by linarith)⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(le_abs_self _).trans (this.trans (le_abs_self _))`. Rewrite using `[div_mul_eq_mul_div]`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_left (a : ℝ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ z : ℂ, a ≤ z.re → z.re ≤ 1 / 2 → z.im ≠ 0 →
@@ -70,21 +70,19 @@ theorem exists_bound_left (a : ℝ) :
   gcongr
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `exists_bound_left (min a (-1 / 2))`. Use `⟨K, hK0, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n : ℕ, ∀ z : ℂ, min a (-1 / 2) ≤ z.re → z.re ≤ 1 / 2 + n → 1 ≤ |z.im| → ‖(Complex.Gamma z)⁻¹‖ ≤ K * Real.exp (π * |z.im|)`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `z h1 h2 h3`. Use `hK z h1 (by simpa using h2) ?_` and prove the remaining obligations. Introduce `h`. Rewrite `h3` using `[h, abs_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n ih`. Introduce `z h1 h2 h3`. Distinguish the cases in `hz : z.re ≤ 1 / 2 + n`. Conclude with `ih z h1 hz h3`.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `push_neg at hz`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hlow : min a (-1 / 2) ≤ (z - 1).re`. Establish `: min a (-1 / 2) ≤ -1 / 2` using `min_le_right _ _`. Simplify using `only [sub_re, one_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hup : (z - 1).re ≤ 1 / 2 + n`. Move the coercions through the operations in `at h2`. Simplify using `only [sub_re, one_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him : (z - 1).im = z.im` using `by simp`. Establish `h` using `ih (z - 1) hlow hup (by rwa [him])`. Rewrite `h` using `[him]`. Establish `hrec` using `Complex.one_div_Gamma_eq_self_mul_one_div_Gamma_add_one (z - 1)`. Rewrite `hrec` using `[sub_add_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : 1 ≤ ‖z - 1‖` using `h3.trans (by`. Rewrite using `[← him]`. Conclude with `Complex.abs_im_le_norm _)`. Establish `hle : ‖(Complex.Gamma z)⁻¹‖ ≤ ‖(Complex.Gamma (z - 1))⁻¹‖`. Rewrite using `[hrec, norm_mul]`.
-
-Conclude with `le_mul_of_one_le_left (norm_nonneg _) hnorm`. Conclude with `hle.trans h`. Introduce `z h1 h2 h3`. Take `⟨n, hn⟩` from `exists_nat_ge b`. Conclude with `key n z ((min_le_left _ _).trans h1) (by linarith) h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_bound_far (a b : ℝ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ z : ℂ, a ≤ z.re → z.re ≤ b → 1 ≤ |z.im| →
@@ -132,11 +130,9 @@ theorem exists_bound_far (a b : ℝ) :
   exact key n z ((min_le_left _ _).trans h1) (by linarith) h3
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `exists_bound_far a b`. Establish `hcomp : IsCompact (Icc a b ×ℂ Icc (-1 : ℝ) 1)` using `isCompact_Icc.reProdIm isCompact_Icc`. Take `⟨D, hD⟩` from `hcomp.exists_bound_of_continuousOn Complex.differentiable_one_div_Gamma.continuous.continuousOn`. Use `⟨max K |D|, le_max_of_le_left hK0, fun z h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hexp : 1 ≤ Real.exp (π * |z.im|)` using `Real.one_le_exp (by positivity)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hz : 1 ≤ |z.im|`. Conclude with `(hK z h1 h2 hz).trans (by gcongr; exact le_max_left _ _)`. Use `push_neg at hz`. Establish `hmem : z ∈ Icc a b ×ℂ Icc (-1 : ℝ) 1` using `Complex.mem_reProdIm.2 ⟨⟨h1, h2⟩, (abs_le.1 hz.le)⟩`. Establish `h` using `hD z hmem`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_norm_inv_Gamma_le (a b : ℝ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ z : ℂ, a ≤ z.re → z.re ≤ b →

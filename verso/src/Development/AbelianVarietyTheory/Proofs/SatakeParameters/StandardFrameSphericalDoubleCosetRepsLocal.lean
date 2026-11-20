@@ -15,32 +15,30 @@ namespace GlobalTheory.SplitFrameReps
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `Ψ.inj (Formalism.IndefR.principalLevelFrame.pre_spec Ψ (Ψ.into x))`.
+A detailed English derivation is pending.
 -/
 theorem pre_mul_eq {D : D7} {V : Formalism.BasicNotions.TH.HSp D} {n : ℕ} (Ψ : Formalism.IndefR.principalLevelFrame.RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n) :
     Formalism.IndefR.principalLevelFrame.pre Ψ (Ψ.ψ x) = x :=
   Ψ.inj (Formalism.IndefR.principalLevelFrame.pre_spec Ψ (Ψ.into x))
 
 /- English proof (translation)
-Introduce `D V n hF Ψ hΨ Pp hS d hd`. Take `⟨s, hs⟩` from `GlobalTheory.OffBad.splitPlace_of_isSplitPl D Pp (GlobalTheory.OffBad.isSplitPl_of_isSplit D Pp hS)`. Establish `hv : Formalism.L2.NG.OverPl Pp s.v` using `by rw [← hs]; exact s.w_under`. Establish `hrep : GlobalTheory.Hk3.rep V Pp d = hd.choose` using `by unfold GlobalTheory.Hk3.rep; rw [dif_pos hd]`. Take `⟨e, f, ϖ, α, -, hP, -, -, -, -, -, hα, -, hRs, hR⟩` from `hd.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hrep]`. Establish `hK : ∀ k, k ∈ GlobalTheory.HeckeScalarSph.locK n s.v ↔ Ψ.ψ k ∈ {k | k ∈ Formalism.L2.Theta.KsphC V ∅ ∧ Formalism.IndefR.Mult.SuppF V f k}` using `fun k => and_congr (hΨ.2 k) (GlobalTheory.InertTransport.suppF_iff hF Ψ hΨ hP hv k).symm`. Establish `h1 : (1 : Formalism.L2.Theta.GA D V) ∈ {k | k ∈ Formalism.L2.Theta.KsphC V ∅ ∧ Formalism.IndefR.Mult.SuppF V f k}`. Use `(hK 1).1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hαG : α ∈ Formalism.L2.Theta.GfC V`. Take `⟨γ, ⟨hγ, hx⟩, -⟩` from `hR.2 α ⟨1, h1, 1, h1, by rw [one_mul, mul_one]⟩`. Use `mul_mem (hR.1 γ hγ).1 hx.1.1` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Take `⟨a, rfl⟩` from `Ψ.onto α hαG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hpull : ∀ k ∈ {k | k ∈ Formalism.L2.Theta.KsphC V ∅ ∧ Formalism.IndefR.Mult.SuppF V f k}, ∃ κ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, Ψ.ψ κ = k`. Introduce `k hk`. Take `⟨κ, rfl⟩` from `Ψ.onto k hk.1.1`. Conclude with `⟨κ, (hK κ).2 hk, rfl⟩`. Use `⟨s, a, hv, (GlobalTheory.InertTransport.suppF_iff hF Ψ hΨ hP hv a).1 hα, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ hγ`. Take `⟨-, k₁, hk₁, k₂, hk₂, eγ⟩` from `hR.1 γ hγ`. Take `⟨κ₁, hκ₁, rfl⟩` from `hpull k₁ hk₁`. Take `⟨κ₂, hκ₂, rfl⟩` from `hpull k₂ hk₂`. Use `⟨κ₁, hκ₁, κ₂, hκ₂, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eγ, ← map_mul, ← map_mul, pre_mul_eq]`. Introduce and unpack `x ⟨κ₁, hκ₁, κ₂, hκ₂, rfl⟩`. Take `⟨γ, ⟨hγ, hγx⟩, hu⟩` from `hR.2 (Ψ.ψ (κ₁ * a * κ₂)) ⟨Ψ.ψ κ₁, (hK _).1 hκ₁, Ψ.ψ κ₂, (hK _).1 hκ₂, by rw [map_mul, map_mul]⟩`. Establish `hγG : γ ∈ Formalism.L2.Theta.GfC V` using `(hR.1 γ hγ).1`. Establish `eγ : Ψ.ψ (Formalism.IndefR.principalLevelFrame.pre Ψ γ) = γ` using `Formalism.IndefR.principalLevelFrame.pre_spec Ψ hγG`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨γ, ⟨hγ, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: Ψ.ψ ((Formalism.IndefR.principalLevelFrame.pre Ψ γ)⁻¹ * (κ₁ * a * κ₂)) ∈ {k | k ∈ Formalism.L2.Theta.KsphC V ∅ ∧ Formalism.IndefR.Mult.SuppF V f k}`. Rewrite using `[map_mul, map_inv, eγ]`. Conclude with `hγx`. Conclude with `((hK _).2 this).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `δ ⟨hδ, hδx⟩`. Use `hu δ ⟨hδ, ?_⟩` and prove the remaining obligations. Establish `hδG : δ ∈ Formalism.L2.Theta.GfC V` using `(hR.1 δ hδ).1`. Establish `eδ : Ψ.ψ (Formalism.IndefR.principalLevelFrame.pre Ψ δ) = δ` using `Formalism.IndefR.principalLevelFrame.pre_spec Ψ hδG`. Establish `hδT : TrivOutside {s.v} (Formalism.IndefR.principalLevelFrame.pre Ψ δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.InertTransport.suppF_iff hF Ψ hΨ hP hv _).1 ?_` and prove the remaining obligations. Rewrite using `[eδ]`. Conclude with `hRs δ hδ`. Establish `hT : TrivOutside {s.v} ((Formalism.IndefR.principalLevelFrame.pre Ψ δ)⁻¹ * (κ₁ * a * κ₂))` using `GlobalTheory.HeckeScalarSph.triv_mul (GlobalTheory.HeckeScalarSph.triv_inv hδT) (GlobalTheory.HeckeScalarSph.triv_mul (GlobalTheory.HeckeScalarSph.triv_mul hκ₁.2 ((GlobalTheory.InertTransport.suppF_iff hF Ψ hΨ hP hv a).1 hα)) hκ₂.2)`. Use `(hK _).1 ⟨hδx, hT⟩` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, map_inv, eδ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frame_reps : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (Ψ : Formalism.IndefR.principalLevelFrame.RowPsi V n), GlobalTheory.NJoin.StdFrame hF Ψ → ∀ (Pp : HeightOneSpectrum (𝓞 D.host.E)), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (Pp.under (𝓞 D.host.F)) → ∀ d, GlobalTheory.Hk3.IsLab V Pp d → ∃ (s : SplitPlace D.host.E) (α : Formalism.AUTREP.GAf D.host.E n), Formalism.L2.NG.OverPl Pp s.v ∧ TrivOutside {s.v} α ∧ (∀ γ ∈ GlobalTheory.Hk3.rep V Pp d, ∃ k₁ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, ∃ k₂ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, Formalism.IndefR.principalLevelFrame.pre Ψ γ = k₁ * α * k₂) ∧ ∀ x, (∃ k₁ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, ∃ k₂ ∈ GlobalTheory.HeckeScalarSph.locK n s.v, x = k₁ * α * k₂) → ∃! γ, γ ∈ GlobalTheory.Hk3.rep V Pp d ∧ (Formalism.IndefR.principalLevelFrame.pre Ψ γ)⁻¹ * x ∈ Umax D.host.E n := by
   intro D V n hF Ψ hΨ Pp hS d hd

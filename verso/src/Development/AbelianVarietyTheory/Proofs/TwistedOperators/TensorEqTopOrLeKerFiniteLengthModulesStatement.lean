@@ -6,7 +6,7 @@ open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TensHead.tensor_eq_top_or_le_ker_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTensorEqTopOrLeKerFiniteLengthModules.lean&line=16#L16)
 -/

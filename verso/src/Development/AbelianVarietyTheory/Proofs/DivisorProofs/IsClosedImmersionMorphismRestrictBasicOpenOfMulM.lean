@@ -7,17 +7,15 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `hA hB` using the available equality. Use `set s := (φ.app V).hom r with hs`. Introduce `y`. Set `resX : Γ(X, φ ⁻¹ᵁ V) →+* Γ(X, X.basicOpen s)` to `(X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom`. Set `resZ : Γ(Z, V) →+* Γ(Z, Z.basicOpen r)` to `(Z.presheaf.map (homOfLE (Z.basicOpen_le r)).op).hom`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g` to `(φ.appLE (Z.basicOpen r) (X.basicOpen s) e).hom`. Use `haveI := haff.isLocalization_basicOpen s`. Take `⟨⟨c, ⟨_, n, rfl⟩⟩, hc⟩` from `IsLocalization.surj (Submonoid.powers s) y`. Take `⟨b, hb⟩` from `h c`. Establish `hu : IsUnit (resZ r)` using `Z.toRingedSpace.isUnit_res_basicOpen r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : IsUnit (resX s)` using `X.toRingedSpace.isUnit_res_basicOpen s`. Establish `hg : ∀ t, g (resZ t) = resX (φ.app V t)`. Introduce `t`. Simplify using `only [g, resZ, resX]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hc' : y * resX s ^ n = resX c` using `by rw [← map_pow]; exact hc`. Set `x` to `resZ b * ((hu.unit⁻¹ : (Γ(Z, Z.basicOpen r))ˣ) : Γ(Z, Z.basicOpen r)) ^ (n + 1)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hx : g x * resX s ^ (n + 1) = y * resX s ^ (n + 1)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Simplify using `only [x, mul_assoc, ← mul_pow]`. Rewrite using `[show ((hu.unit⁻¹ : (Γ(Z, Z.basicOpen r))ˣ) : Γ(Z, Z.basicOpen r)) * resZ r = 1 from hu.val_inv_mul, one_pow, mul_one]`. Use `_ = resX (φ.app V b) := hg b`.
-
-Use `_ = resX (s * c) := by rw [hb]`. Use `_ = y * resX s ^ (n + 1) := by rw [map_mul, ← hc']; ring`. Conclude with `(hv.pow (n + 1)).mul_left_inj.1 hx`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_basicOpen_surjective_of_mul_mem_range {X Z : Scheme.{0}} (φ : X ⟶ Z) {V : Z.Opens}
     (haff : IsAffineOpen (φ ⁻¹ᵁ V)) (r : Γ(Z, V))
@@ -56,9 +54,9 @@ theorem appLE_basicOpen_surjective_of_mul_mem_range {X Z : Scheme.{0}} (φ : X �
   exact (hv.pow (n + 1)).mul_left_inj.1 hx
 
 /- English proof (translation)
-Introduce `X Z φ V hV haff r h`. Establish `hpre : φ ⁻¹ᵁ Z.basicOpen r = X.basicOpen ((φ.app V).hom r)` using `Scheme.preimage_basicOpen φ r`. Use `haveI : IsAffine (Z.basicOpen r) := hV.basicOpen r`. Use `haveI : IsAffine (φ ⁻¹ᵁ Z.basicOpen r) := by`. Use `haff.basicOpen ((φ.app V).hom r)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[← hpre]`. Conclude with `this`. Apply `IsClosedImmersion.of_surjective_of_isAffine` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, morphismRestrict_appLE]`. Conclude with `appLE_basicOpen_surjective_of_mul_mem_range φ haff r h _ _ _ (by simp) (by simp [hpre])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_morphismRestrict_basicOpen_of_mul_mem_range :
     ∀ (X Z : Scheme.{0}) (φ : X ⟶ Z) (V : Z.Opens), IsAffineOpen V → IsAffineOpen (φ ⁻¹ᵁ V) →

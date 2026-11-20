@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem cmat_eq (γ : Sp g) : cmat γ = γ.mat.map Complex.ofRealHom := rfl
 
 /- English proof (translation)
-Rewrite using `[cmat_eq, cmat_eq, ← Matrix.map_mul]`. Establish `: (γ⁻¹).mat * γ.mat = 1` using `congrArg Subtype.val (inv_mul_cancel γ)`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cmat_inv_mul (γ : Sp g) : cmat γ⁻¹ * cmat γ = 1 := by
   rw [cmat_eq, cmat_eq, ← Matrix.map_mul]
@@ -27,9 +27,9 @@ theorem cmat_inv_mul (γ : Sp g) : cmat γ⁻¹ * cmat γ = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h : γ.matᵀ * J (Fin g) ℝ * γ.mat = J (Fin g) ℝ` using `SymplecticGroup.mem_iff'.1 γ.2`. Establish `hJ : (J (Fin g) ℝ).map Complex.ofRealHom = J (Fin g) ℂ`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [J, Matrix.one_apply, apply_ite]`. Use `congrArg (fun A => A.map Complex.ofRealHom) h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, hJ] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmat_symp (γ : Sp g) : (cmat γ)ᵀ * J (Fin g) ℂ * cmat γ = J (Fin g) ℂ := by
   have h : γ.matᵀ * J (Fin g) ℝ * γ.mat = J (Fin g) ℝ := SymplecticGroup.mem_iff'.1 γ.2
@@ -41,7 +41,7 @@ theorem cmat_symp (γ : Sp g) : (cmat γ)ᵀ * J (Fin g) ℂ * cmat γ = J (Fin 
   exact this
 
 /- English proof (translation)
-Establish `: cmat γ = fromBlocks (γ.mat.toBlocks₁₁.map (fun t : ℝ => (t : ℂ))) (γ.mat.toBlocks₁₂.map (fun t : ℝ => (t : ℂ))) (γ.mat.toBlocks₂₁.map (fun t : ℝ => (t : ℂ))) (γ.mat.toBlocks₂₂.map (fun t : ℝ => (t : ℂ)))`. Rewrite using `[← fromBlocks_map, fromBlocks_toBlocks]`. Both sides reduce to the same expression. Rewrite using `[this, fromBlocks_mul_fromRows, den]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cmat_mul_fromRows (γ : Sp g) (τ : Matrix (Fin g) (Fin g) ℂ) :
     cmat γ * fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ) =
@@ -55,11 +55,11 @@ theorem cmat_mul_fromRows (γ : Sp g) (τ : Matrix (Fin g) (Fin g) ℂ) :
   simp
 
 /- English proof (translation)
-Establish `h : ∑ i, ∑ j, (v i).re * (τ i j).re * (v j).im = ∑ i, ∑ j, (v i).im * (τ i j).re * (v j).re`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hτ.apply i j]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (star v ⬝ᵥ (τ *ᵥ v)).im = ∑ i, ∑ j, ((v i).re * (τ i j).re * (v j).im - (v i).im * (τ i j).re * (v j).re + (v i).re * ((τ i j).im * (v j).re) + (v i).im * ((τ i j).im * (v j).im))`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Complex.im_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, h, dotProduct, mulVec, Finset.mul_sum, map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem im_form {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm) (v : Fin g → ℂ) :
     (star v ⬝ᵥ (τ *ᵥ v)).im =
@@ -83,7 +83,7 @@ theorem im_form {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm) (v : Fin g �
   ring
 
 /- English proof (translation)
-Simplify using `[J, fromBlocks_mulVec, Matrix.neg_mulVec]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_J (a b c d : Fin g → ℂ) :
     Sum.elim a b ⬝ᵥ (J (Fin g) ℂ *ᵥ Sum.elim c d) = b ⬝ᵥ c - a ⬝ᵥ d := by
@@ -91,21 +91,21 @@ theorem form_J (a b c d : Fin g → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_injective_iff_isUnit]`. It suffices to establish `H : ∀ v, den γ τ *ᵥ v = 0 → v = 0 by`. Introduce `v w hvw`. Conclude with `sub_eq_zero.1 (H _ (by rw [mulVec_sub, hvw, sub_self]))`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : Fin g → ℂ, cmat γ *ᵥ Sum.elim (τ *ᵥ v) v = Sum.elim u (0 : Fin g → ℂ) := by`. Use `congrArg (· *ᵥ v) (cmat_mul_fromRows γ τ)` as an intermediate fact. Simplify using `only [← mulVec_mulVec, fromRows_mulVec, one_mulVec, hv] at this`. Conclude with `⟨_, this⟩`. Establish `hu' : cmat γ *ᵥ Sum.elim (star (τ *ᵥ v)) (star v) = Sum.elim (star u) 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg (starRingEnd ℂ) (congrFun hu i)`. Establish `h2 : (Sum.elim (star u) 0 : Fin g ⊕ Fin g → ℂ) i = starRingEnd ℂ ((Sum.elim u 0 : Fin g ⊕ Fin g → ℂ) i)`. Apply the tactic sequence `rcases i with i | i <;> simp`. Rewrite using `[h2, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `τ *ᵥ v = w`. Simplify using `[mulVec, dotProduct, cmat, Fintype.sum_sum_type]`. Establish `h0 : Sum.elim (star (τ *ᵥ v)) (star v) ⬝ᵥ (J (Fin g) ℂ *ᵥ Sum.elim (τ *ᵥ v) v) = 0`. Rewrite using `[← cmat_symp γ, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, hu, hu', form_J]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[form_J]`. Establish `h1 : (star v ⬝ᵥ (τ *ᵥ v)).im = 0`. Establish `: star (τ *ᵥ v) ⬝ᵥ v = star (star v ⬝ᵥ (τ *ᵥ v))`. Rewrite using `[← star_dotProduct]`. Rewrite `h0` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg Complex.im h0` as an intermediate fact. Simplify using `only [Complex.sub_im, Complex.star_def, Complex.conj_im, Complex.zero_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[im_form hτ.isSymm]`. Establish `n₁` using `hτ.posDef.posSemidef.dotProduct_mulVec_nonneg (fun i => (v i).re)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₂` using `hτ.posDef.posSemidef.dotProduct_mulVec_nonneg (fun i => (v i).im)`. Simplify using `only [star_trivial] at n₁ n₂`. Establish `r : (fun i => (v i).re) = 0`. Assume the negation of the conclusion as `h`. Combine the linear relations using `[hτ.dotProduct_pos h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `s : (fun i => (v i).im) = 0`. Assume the negation of the conclusion as `h`. Combine the linear relations using `[hτ.dotProduct_pos h]`. Use function extensionality and compare the values at `i`. Conclude with `Complex.ext (congrFun r i) (congrFun s i)`.
+Assume the negation of the conclusion and derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isUnit_den (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel τ) :
     IsUnit (den γ τ) := by
@@ -154,7 +154,7 @@ theorem isUnit_den (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel
   exact Complex.ext (congrFun r i) (congrFun s i)
 
 /- English proof (translation)
-Rewrite using `[cmat_mul_fromRows, fromRows_mul, moeb, mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 (isUnit_den γ hτ))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmat_mul_fromRows_inv (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel τ) :
     cmat γ * fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ) * (den γ τ)⁻¹ = fromRows (moeb γ τ) (1 : Matrix (Fin g) (Fin g) ℂ) := by
@@ -162,7 +162,7 @@ theorem cmat_mul_fromRows_inv (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ
     mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 (isUnit_den γ hτ))]
 
 /- English proof (translation)
-Rewrite using `[transpose_fromRows, J, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromRows_J (τ : Matrix (Fin g) (Fin g) ℂ) :
     (fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ))ᵀ * J (Fin g) ℂ *
@@ -171,9 +171,9 @@ theorem fromRows_J (τ : Matrix (Fin g) (Fin g) ℂ) :
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h` using `fromRows_J (moeb γ τ)`. Rewrite `h` using `[← cmat_mul_fromRows_inv γ hτ, transpose_mul, transpose_mul]`. Establish `h2 : (den γ τ)⁻¹ᵀ * ((fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ))ᵀ * (cmat γ)ᵀ) * J (Fin g) ℂ * (cmat γ * fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ) * (den γ τ)⁻¹) = (den γ τ)⁻¹ᵀ * ((fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ))ᵀ * ((cmat γ)ᵀ * J (Fin g) ℂ * cmat γ) * fromRows τ (1 : …`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `h` using `[h2, cmat_symp, fromRows_J, hτ.isSymm.eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [sub_self, Matrix.mul_zero, Matrix.zero_mul] at h`. Conclude with `(sub_eq_zero.1 h.symm).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSymm_moeb (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel τ) :
     (moeb γ τ).IsSymm := by
@@ -190,14 +190,14 @@ theorem isSymm_moeb (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiege
   exact (sub_eq_zero.1 h.symm).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[tauU, symPart, hA.apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tauU_symPart {A : Matrix (Fin g) (Fin g) ℂ} (hA : A.IsSymm) : tauU (symPart A) = A := by
   ext i j
   simp [tauU, symPart, hA.apply]
 
 /- English proof (translation)
-Rewrite using `[vecMul_fromRows, per]`. Simplify using `only [vecMul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem per_eq (τ : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) :
     per τ x = (fun i => (x i : ℂ)) ᵥ* fromRows τ (1 : Matrix (Fin g) (Fin g) ℂ) := by
@@ -206,9 +206,9 @@ theorem per_eq (τ : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) :
   rfl
 
 /- English proof (translation)
-Establish `: (fun i => ((x ᵥ* (γ⁻¹).mat) i : ℂ)) = (fun i => (x i : ℂ)) ᵥ* cmat γ⁻¹`. Use function extensionality and compare the values at `i`. Simplify using `only [vecMul, dotProduct, cmat, map_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[per_eq, per_eq, this, ← cmat_mul_fromRows_inv γ hτ, vecMul_vecMul, vecMul_vecMul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, cmat_inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem per_moeb (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel τ) (x : Fl g) :
     per (moeb γ τ) (x ᵥ* (γ⁻¹).mat) = per τ x ᵥ* (den γ τ)⁻¹ := by
@@ -221,9 +221,9 @@ theorem per_moeb (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel �
     ← Matrix.mul_assoc, ← Matrix.mul_assoc, cmat_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1` using `cmat_mul_fromRows_inv γ hτ`. Rewrite `h1` using `[h, ← cmat_mul_fromRows_inv γ hσ]`. Establish `h2` using `congrArg (cmat γ⁻¹ * ·) h1`. Simplify using `only [← Matrix.mul_assoc, cmat_inv_mul, Matrix.one_mul, fromRows_mul] at h2`. Take `⟨h3, h4⟩` from `fromRows_inj h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h5` using `congrArg (· * den γ τ) h3`. Simplify using `only [← h4, Matrix.mul_assoc, nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 (isUnit_den γ hτ)), Matrix.mul_one] at h5`. Conclude with `h5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem moeb_inj (γ : Sp g) {τ σ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel τ) (hσ : IsSiegel σ)
     (h : moeb γ τ = moeb γ σ) : τ = σ := by
@@ -238,9 +238,9 @@ theorem moeb_inj (γ : Sp g) {τ σ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiege
   exact h5
 
 /- English proof (translation)
-Use `choose A hA using hγ`. Establish `e : γ.mat = (Matrix.of A).map (Rat.castHom ℝ)` using `by ext i k; simp [hA]`. Establish `hJ : (J (Fin g) ℚ).map (Rat.castHom ℝ) = J (Fin g) ℝ`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [J, Matrix.one_apply, apply_ite]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h : (γ⁻¹).mat = -J (Fin g) ℝ * γ.matᵀ * J (Fin g) ℝ` using `SymplecticGroup.coe_inv γ`. Use `⟨(-J (Fin g) ℚ * (Matrix.of A)ᵀ * J (Fin g) ℚ) i k, ?_⟩` and prove the remaining obligations. Rewrite using `[h, e, ← hJ, ← transpose_map, Matrix.neg_mul, Matrix.neg_mul, Matrix.neg_mul, Matrix.neg_mul, ← Matrix.map_mul, ← Matrix.map_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_rat (γ : Sp g) (hγ : ∀ i k, ∃ r : ℚ, γ.mat i k = r) (i k) :
     ∃ r : ℚ, (γ⁻¹).mat i k = r := by
@@ -256,11 +256,11 @@ theorem inv_rat (γ : Sp g) (hγ : ∀ i k, ∃ r : ℚ, γ.mat i k = r) (i k) :
   simp
 
 /- English proof (translation)
-Take `⟨hd, hz⟩` from `hM`. Establish `h1 : (γ⁻¹).mat * γ.mat = 1` using `congrArg Subtype.val (inv_mul_cancel γ)`. Establish `h2 : γ.mat * (γ⁻¹).mat = 1` using `congrArg Subtype.val (mul_inv_cancel γ)`. Set `e : Fl g ≃ₗ[ℝ] Fl g` to `LinearEquiv.ofLinear (vecMulLinear γ.mat) (vecMulLinear (γ⁻¹).mat) (LinearMap.ext fun x => by simp [h1]) (LinearMap.ext fun x => by simp [h2])`. Establish `: latAct M γ = ZLattice.comap ℝ M e.toContinuousLinearEquiv.toLinearMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [latAct, ZLattice.comap, Submodule.mem_map, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[e, h1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Conclude with `⟨_, hx, by simp [e, h2]⟩`. Rewrite using `[this]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isLat_latAct (γ : Sp g) {M : Submodule ℤ (Fl g)} (hM : IsLat M) : IsLat (latAct M γ) := by
   obtain ⟨hd, hz⟩ := hM
@@ -280,17 +280,17 @@ theorem isLat_latAct (γ : Sp g) {M : Submodule ℤ (Fl g)} (hM : IsLat M) : IsL
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `g γ hγ M hM`. Use `⟨⟨isLat_latAct γ hM.1, ?_⟩, fun P hP Q hQ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩ k choose a ha using hM.2 l hl choose B hB using inv_rat γ hγ`. Use `⟨∑ i, a i * B i k, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ i, l i * (γ⁻¹).mat i k = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [ha, hB]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hP' : IsSiegel (tauU P.1)` using `hP.1`. Establish `hQ' : IsSiegel (tauU Q.1)` using `hQ.1`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ l : Fl g, transl tauU (l ᵥ* (γ⁻¹).mat) (actU γ P) = actU γ (transl tauU l P)`. Introduce `l`. Simplify using `only [transl, actU, tauU_symPart (isSymm_moeb γ hP'), per_moeb γ hP', add_vecMul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨l ᵥ* (γ⁻¹).mat, ⟨l, hl, rfl⟩, (key l).symm⟩`. Introduce and unpack `⟨_, ⟨l, hl, rfl⟩, h⟩`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `h' : actU γ Q = actU γ (transl tauU l P)` using `h.trans (key l)`. Establish `h1 : tauU Q.1 = tauU P.1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun R => tauU R.1) h'` as an intermediate fact. Simplify using `only [actU, transl, tauU_symPart (isSymm_moeb γ hP'), tauU_symPart (isSymm_moeb γ hQ')] at this`. Conclude with `moeb_inj γ hQ' hP' this`. Use `Prod.ext (Subtype.ext h1) ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun R => R.2 ᵥ* den γ (tauU P.1)) h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [actU, transl, h1, vecMul_vecMul, nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 (isUnit_den γ hP')), vecMul_one] at h2`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem sameOrbit_actU_iff : ∀ g : ℕ, ∀ γ : Sp g, (∀ i k, ∃ r : ℚ, γ.mat i k = r) →
     ∀ M : Submodule ℤ (Fl g), IsRatLat M → IsRatLat (latAct M γ) ∧

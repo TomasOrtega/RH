@@ -12,7 +12,7 @@ open Formalism.L2.GlobalTheoryTheory Formalism.MainNotions
 def dens (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (z : ℂ) : ℝ := ‖G z‖ ^ 2 * Real.exp (-Real.pi * (H1 Λ z z).re)
 
 /- English proof (translation)
-Unfold `H1`. Rewrite using `[Complex.div_ofReal_re, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermitian_form_re_eq (Λ : AddSubgroup ℂ) (z w : ℂ) : (H1 Λ z w).re = (z.re * w.re + z.im * w.im) / TaylorLogMetric.area Λ := by
   unfold H1
@@ -20,18 +20,18 @@ theorem hermitian_form_re_eq (Λ : AddSubgroup ℂ) (z w : ℂ) : (H1 Λ z w).re
   ring
 
 /- English proof (translation)
-Unfold `al1`. Rewrite using `[norm_zpow, norm_neg, norm_one, one_zpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cm_sign_eq_one (d : ℕ) (Λ : AddSubgroup ℂ) (x : ℂ) : ‖al1 d Λ x‖ = 1 := by
   unfold al1
   rw [norm_zpow, norm_neg, norm_one, one_zpow]
 
 /- English proof (translation)
-Introduce `d Λ G hG x hx z`. Establish `h` using `congrArg norm (hG.2.1 x hx z)`. Unfold `U1 at h`. Rewrite `h` using `[norm_mul, norm_cm_sign_eq_one, one_mul, norm_mul, Complex.norm_exp]`. Establish `hr : (-(Real.pi : ℂ) * H1 Λ z x - (Real.pi : ℂ) * H1 Λ x x / 2).re = -Real.pi * (H1 Λ z x).re - Real.pi / 2 * (H1 Λ x x).re`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (-(Real.pi : ℂ) * H1 Λ z x - (Real.pi : ℂ) * H1 Λ x x / 2) = ((-Real.pi : ℝ) : ℂ) * H1 Λ z x - ((Real.pi / 2 : ℝ) : ℂ) * H1 Λ x x` using `by push_cast; ring`. Rewrite using `[this, Complex.sub_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Rewrite `h` using `[hr]`. Rewrite using `[← h, mul_pow, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hermitian_form_re_eq, Complex.add_re, Complex.add_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem density_periodic_holds : DensityPeriodic := by
   intro d Λ G hG x hx z
@@ -51,7 +51,7 @@ theorem density_periodic_holds : DensityPeriodic := by
   ring
 
 /- English proof (translation)
-Unfold `dens`. Simplify using `only [hermitian_form_re_eq]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dens_continuous (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (hG : Continuous G) : Continuous (dens Λ G) := by
   unfold dens
@@ -59,13 +59,13 @@ theorem dens_continuous (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (hG : Continuou
   fun_prop
 
 /- English proof (translation)
-Unfold `dens`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem dens_nonneg (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (z : ℂ) : 0 ≤ dens Λ G z := by
   unfold dens; positivity
 
 /- English proof (translation)
-Establish `: g +ᵥ z = z + (g : ℂ)` using `by rw [add_comm]; rfl`. Rewrite using `[this]`. Conclude with `density_periodic_holds d Λ G hG g g.2 z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_vadd (d : ℕ) (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (hG : IsTheta0 d Λ G) (g : Λ) (z : ℂ) :
     dens Λ G (g +ᵥ z) = dens Λ G z := by
@@ -74,7 +74,7 @@ theorem dens_vadd (d : ℕ) (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (hG : IsThe
   exact density_periodic_holds d Λ G hG g g.2 z
 
 /- English proof (translation)
-Establish `h` using `ZSpan.isAddFundamentalDomain' L.basis (volume : Measure ℂ)`. Rewrite `h` using `[← L.lattice_eq_span_range_basis]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd0 (L : PeriodPair) :
     IsAddFundamentalDomain L.lattice.toAddSubgroup (ZSpan.fundamentalDomain L.basis) volume := by
@@ -83,7 +83,7 @@ theorem fd0 (L : PeriodPair) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[← F.areaCovolume L]`. Conclude with `(ZLattice.covolume_eq_measure_fundamentalDomain L.lattice volume h).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_real (L : PeriodPair) (Fd : Set ℂ) (h : IsAddFundamentalDomain L.lattice.toAddSubgroup Fd volume) :
     (volume : Measure ℂ).real Fd = F.area L := by
@@ -93,7 +93,7 @@ theorem vol_real (L : PeriodPair) (Fd : Set ℂ) (h : IsAddFundamentalDomain L.l
 instance (L : PeriodPair) : Countable L.lattice.toAddSubgroup := (inferInstance : Countable L.lattice)
 
 /- English proof (translation)
-Establish `hb` using `ZSpan.fundamentalDomain_isBounded L.basis`. Conclude with `((dens_continuous _ G hG).continuousOn.integrableOn_compact hb.isCompact_closure).mono_set subset_closure`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem density_integrable_fundDomain (L : PeriodPair) (G : ℂ → ℂ) (hG : Continuous G) :
     IntegrableOn (dens L.lattice.toAddSubgroup G) (ZSpan.fundamentalDomain L.basis) volume := by
@@ -101,7 +101,7 @@ theorem density_integrable_fundDomain (L : PeriodPair) (G : ℂ → ℂ) (hG : C
   exact ((dens_continuous _ G hG).continuousOn.integrableOn_compact hb.isCompact_closure).mono_set subset_closure
 
 /- English proof (translation)
-Establish `hs` using `Classical.epsilon_spec (p := fun Fd : Set ℂ => IsAddFundamentalDomain L.lattice.toAddSubgroup Fd volume) ⟨_, fd0 L⟩`. Use `⟨_, hs, ?_⟩` and prove the remaining obligations. Unfold `normSq1`. Simplify using `only`. Rewrite using `[setAverage_eq, vol_real L _ hs, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -116,11 +116,11 @@ theorem normSq1_eq (L : PeriodPair) (G : ℂ → ℂ) :
   rfl
 
 /- English proof (translation)
-Introduce and unpack `d Λ G Fd ⟨L, rfl⟩ hG hFd`. Establish `hv` using `vol_real L Fd hFd`. Establish `hpos` using `F.areaPos L`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[area_eq_holds L, ← hv]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(ENNReal.ofReal_toReal ?_).symm` and prove the remaining obligations. Introduce `htop`. Rewrite `hv` using `[Measure.real, htop, ENNReal.toReal_top]`. Conclude with `absurd hv hpos.ne`. Conclude with `(hFd.integrableOn_iff (fd0 L) (dens_vadd d _ G hG)).mpr (density_integrable_fundDomain L G hG.1.continuous)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Fe, hFe, he⟩` from `normSq1_eq L G`. Rewrite using `[he, area_eq_holds L, hFe.setIntegral_eq hFd (dens_vadd d _ G hG)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_any_holds : NormAny := by
   rintro d Λ G Fd ⟨L, rfl⟩ hG hFd
@@ -138,15 +138,13 @@ theorem norm_any_holds : NormAny := by
     rfl
 
 /- English proof (translation)
-Introduce and unpack `d Λ G ⟨L, rfl⟩ hG`. Take `⟨-, hint, he⟩` from `norm_any_holds d _ G _ ⟨L, rfl⟩ hG (fd0 L)`. Rewrite using `[he]`. Use `mul_pos (inv_pos.mpr (area_pos_lattice_holds _ ⟨L, rfl⟩)) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 < ∫ z in ZSpan.fundamentalDomain L.basis, dens L.lattice.toAddSubgroup G z`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall (dens_nonneg _ G)) hint]`. Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `hinv : ∀ g : L.lattice.toAddSubgroup, g +ᵥ Function.support (dens L.lattice.toAddSubgroup G) = Function.support (dens L.lattice.toAddSubgroup G)`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, Function.mem_support, Function.mem_support, dens_vadd d _ G hG]`. Establish `hz` using `(fd0 L).measure_zero_of_invariant _ hinv h0`. Establish `hopen : IsOpen (Function.support (dens L.lattice.toAddSubgroup G))` using `(dens_continuous _ G hG.1.continuous).isOpen_support`. Establish `hne : (Function.support (dens L.lattice.toAddSubgroup G)).Nonempty`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support]`. Unfold `dens`. Rewrite using `[hG.2.2, norm_one, one_pow, one_mul]`. Conclude with `(Real.exp_pos _).ne'`.
-
-Conclude with `(hopen.measure_pos volume hne).ne' hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pos_holds : NormPos := by
   rintro d Λ G ⟨L, rfl⟩ hG

@@ -6,13 +6,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `key : ∀ a, TB.c i (a * y) ∈ J`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, rfl⟩` from `hz`. Introduce `a`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_comm, TB.c_mul]`. Conclude with `J.mul_mem_right _ hw`. Consider the case `zero => intro a`. Rewrite using `[mul_zero, map_zero]`. Conclude with `J.zero_mem`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz => intro a`. Rewrite using `[mul_add, map_add]`. Conclude with `J.add_mem (hy a) (hz a)`. Consider the case `smul b y _ hy => intro a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`.
-
-Conclude with `hy (a * b)`. Simplify using `using key 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem TopBasis.coeff_mem_of_mem_map {S A : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
     {ι : Type} (TB : TopBasis s I ι) (i : ι) (J : Ideal S) {y : A} (hy : y ∈ J.map s) : TB.c i y ∈ J := by
@@ -97,7 +95,7 @@ def TopBasis.comp {S A : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Id
   b_i₀ := by simp [TB.b_i₀, TB'.b_i₀]
 
 /- English proof (translation)
-Introduce `S A _ _ s I ι TB A' _ t I' κ TB' hI`. Substitute `hI` using the available equality. Conclude with `⟨TB.comp TB', fun _ _ => rfl, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem topBasis_comp_exists : ∀ (S A : Type) [CommRing S] [CommRing A] (s : S →+* A) (I : Ideal S) (ι : Type)
     (TB : TopBasis s I ι) (A' : Type) [CommRing A'] (t : A →+* A') (I' : Ideal A) (κ : Type)

@@ -28,13 +28,13 @@ def norm [IsDomain T] (S : Finset T) : Subring T where
     rw [mul_neg]; exact neg_mem hsx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_norm [IsDomain T] {S : Finset T} {x : T} :
     x ∈ norm S ↔ IsIntegral (gen S) x ∧ ∃ s ∈ gen S, s ≠ 0 ∧ s * x ∈ gen S := Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx`. Use `⟨?_, 1, one_mem _, one_ne_zero, by rw [one_mul]; exact hx⟩` and prove the remaining obligations. Establish `: x = algebraMap (gen S) T ⟨x, hx⟩` using `rfl`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_le_norm [IsDomain T] (S : Finset T) : (gen S).toSubring ≤ norm S := by
   intro x hx
@@ -43,7 +43,7 @@ theorem gen_le_norm [IsDomain T] (S : Finset T) : (gen S).toSubring ≤ norm S :
   rw [this]; exact isIntegral_algebraMap
 
 /- English proof (translation)
-Introduce `S S' h x ⟨hx, s, hs, hs0, hsx⟩`. Establish `hle : gen S ≤ gen S'` using `Algebra.adjoin_mono (by exact_mod_cast h)`. Use `letI : Algebra (gen S) (gen S') := (Subalgebra.inclusion hle).toAlgebra`. Use `haveI : IsScalarTower (gen S) (gen S') T := .of_algebraMap_eq fun _ => rfl`. Conclude with `⟨hx.tower_top, s, hle hs, hs0, hle hsx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_mono [IsDomain T] : Monotone (norm (T := T)) := by
   intro S S' h x ⟨hx, s, hs, hs0, hsx⟩
@@ -80,7 +80,7 @@ namespace GlobalTheory.NormalApprox
 variable {T : Type} [CommRing T] [IsDomain T] (S : Finset T)
 
 /- English proof (translation)
-Simplify using `[toFrac, IsFractionRing.liftAlgHom_apply, IsFractionRing.lift_mk']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem toFrac_mk' (a : gen S) (s : nonZeroDivisors (gen S)) :
     toFrac S (IsLocalization.mk' (FractionRing (gen S)) a s) =
@@ -89,19 +89,19 @@ theorem toFrac_mk' (a : gen S) (s : nonZeroDivisors (gen S)) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Subring.mem_map, Subalgebra.mem_toSubring, AlgHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨hx, s, hs, hs0, hsx⟩, rfl⟩`. Establish `hs0' : (⟨s, hs⟩ : gen S) ≠ 0` using `fun h => hs0 (congrArg Subtype.val h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `k` to `IsLocalization.mk' (FractionRing (gen S)) (⟨s * x, hsx⟩ : gen S) (⟨⟨s, hs⟩, mem_nonZeroDivisors_of_ne_zero hs0'⟩ : nonZeroDivisors (gen S))`. Establish `hsF : algebraMap T (FractionRing T) s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T (FractionRing T))).mpr hs0`. Establish `hk : toFrac S k = algebraMap T (FractionRing T) x`. Rewrite using `[toFrac_mk']`. Express the relevant statement in the definitionally equal form `algebraMap T (FractionRing T) (s * x) / algebraMap T (FractionRing T) s = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨⟨k, ?_⟩, hk⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsIntegral (gen S) k`. Rewrite using `[← isIntegral_algHom_iff (toFrac S) (toFrac S).toRingHom.injective, hk]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.map (IsScalarTower.toAlgHom (gen S) T (FractionRing T))`. Introduce and unpack `⟨⟨c, hc⟩, rfl⟩`. Establish `hi : IsIntegral (gen S) (toFrac S c)` using `(isIntegral_algHom_iff _ (toFrac S).toRingHom.injective).mpr hc`. Take `⟨t, ht⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (R := T) hi.tower_top`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors (gen S)) c`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0 : ((s : gen S) : T) ≠ 0` using `fun h => nonZeroDivisors.ne_zero s.2 (Subtype.ext h)`. Establish `hsF : algebraMap T (FractionRing T) ((s : gen S) : T) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T (FractionRing T))).mpr hs0`. Use `⟨t, ⟨?_, (s : gen S), (s : gen S).2, hs0, ?_⟩, ht⟩` and prove the remaining obligations. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom (gen S) T (FractionRing T)) (IsFractionRing.injective T _)]`. Express the relevant statement in the definitionally equal form `IsIntegral _ (algebraMap T (FractionRing T) t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht]`. Conclude with `hi`. Establish `e : ((s : gen S) : T) * t = (a : T)`. Apply `IsFractionRing.injective T (FractionRing T)` to reduce the goal to its premises. Rewrite using `[map_mul, ht]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ * toFrac S (IsLocalization.mk' (FractionRing (gen S)) a s) = _`. Rewrite using `[toFrac_mk']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `a.2`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_norm_eq [IsIntegrallyClosed T] :
     (norm S).map (algebraMap T (FractionRing T)) =
@@ -152,7 +152,7 @@ noncomputable def normEquiv [IsIntegrallyClosed T] :
       (AlgEquiv.ofInjective _ (fun _ _ h => Subtype.ext ((toFrac S).toRingHom.injective h))).symm.toRingEquiv)
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing (gen S) := Algebra.FiniteType.isNoetherianRing ℤ _`. Use `haveI := GlobalTheory.finite_integralClosure_of_essFiniteType_int (gen S)`. Use `haveI : IsNoetherianRing (integralClosure (gen S) (FractionRing (gen S))) := Algebra.FiniteType.isNoetherianRing (gen S) _`. Conclude with `isNoetherianRing_of_ringEquiv _ (normEquiv S).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_isNoetherianRing [IsIntegrallyClosed T] : IsNoetherianRing (norm S) := by
   haveI : IsNoetherianRing (gen S) := Algebra.FiniteType.isNoetherianRing ℤ _
@@ -162,7 +162,7 @@ theorem norm_isNoetherianRing [IsIntegrallyClosed T] : IsNoetherianRing (norm S)
   exact isNoetherianRing_of_ringEquiv _ (normEquiv S).symm
 
 /- English proof (translation)
-Use `haveI : IsIntegrallyClosed (integralClosure (gen S) (FractionRing (gen S))) := integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing (gen S))`. Conclude with `IsIntegrallyClosed.of_equiv (normEquiv S).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_isIntegrallyClosed [IsIntegrallyClosed T] : IsIntegrallyClosed (norm S) := by
   haveI : IsIntegrallyClosed (integralClosure (gen S) (FractionRing (gen S))) :=
@@ -194,28 +194,28 @@ def loc (S : Finset T) : Subring T where
     exact ⟨s, hs, hsu, by rw [mul_neg]; exact neg_mem hsx⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨1, one_mem _, isUnit_one, by rw [one_mul]; exact hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem norm_le_loc (S : Finset T) : norm S ≤ loc S :=
   fun x hx => ⟨1, one_mem _, isUnit_one, by rw [one_mul]; exact hx⟩
 
 /- English proof (translation)
-Introduce `S S' h x ⟨s, hs, hsu, hsx⟩`. Conclude with `⟨s, norm_mono h hs, hsu, norm_mono h hsx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem loc_mono : Monotone (loc (T := T)) := by
   intro S S' h x ⟨s, hs, hsu, hsx⟩
   exact ⟨s, norm_mono h hs, hsu, norm_mono h hsx⟩
 
 /- English proof (translation)
-The claim follows from `norm_le_loc S (gen_le_norm S (Algebra.subset_adjoin (Finset.mem_coe.mpr hx)))`.
+A detailed English derivation is pending.
 -/
 theorem mem_loc_of_mem (S : Finset T) {x : T} (hx : x ∈ S) : x ∈ loc S :=
   norm_le_loc S (gen_le_norm S (Algebra.subset_adjoin (Finset.mem_coe.mpr hx)))
 
 /- English proof (translation)
-Take `⟨s, hs, hsu, hsx⟩` from `x.2`. Take `⟨u, hu⟩` from `hx`. Establish `hau : IsUnit (s * (x : T))` using `hsu.mul (hu ▸ u.isUnit)`. Establish `hinv : ((u⁻¹ : Tˣ) : T) ∈ loc S`. Use `⟨s * (x : T), hsx, hau, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`. Conclude with `hs`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x : T) * ((u⁻¹ : Tˣ) : T) = 1`. Rewrite using `[← hu, Units.mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_coe (S : Finset T) (x : loc S) (hx : IsUnit (x : T)) : IsUnit x := by
   obtain ⟨s, hs, hsu, hsx⟩ := x.2
@@ -229,9 +229,9 @@ theorem isUnit_of_isUnit_coe (S : Finset T) (x : loc S) (hx : IsUnit (x : T)) : 
   rw [← hu, Units.mul_inv]
 
 /- English proof (translation)
-Use `IsLocalRing.of_nonunits_add fun a b ha hb hab => ?_` and prove the remaining obligations. Establish `ha' : (a : T) ∈ maximalIdeal T` using `fun h => ha (isUnit_of_isUnit_coe S a h)`. Establish `hb' : (b : T) ∈ maximalIdeal T` using `fun h => hb (isUnit_of_isUnit_coe S b h)`. Establish `: ((a + b : loc S) : T) ∈ maximalIdeal T`. Rewrite using `[Subring.coe_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem ha' hb'`. Conclude with `this (hab.map (loc S).subtype)`.
+A detailed English derivation is pending.
 -/
 theorem loc_isLocalRing [IsLocalRing T] (S : Finset T) : IsLocalRing (loc S) := by
   refine IsLocalRing.of_nonunits_add fun a b ha hb hab => ?_
@@ -245,7 +245,7 @@ def unitsIn (S : Finset T) : Submonoid (norm S) :=
   (IsUnit.submonoid T).comap (norm S).subtype
 
 /- English proof (translation)
-Introduce `s hs` and use `mem_nonZeroDivisors_of_ne_zero fun h => (hs : IsUnit (s : T)).ne_zero (by rw [h]; rfl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitsIn_le (S : Finset T) : unitsIn S ≤ nonZeroDivisors (norm S) := fun s hs =>
   mem_nonZeroDivisors_of_ne_zero fun h => (hs : IsUnit (s : T)).ne_zero (by rw [h]; rfl)
@@ -253,9 +253,9 @@ theorem unitsIn_le (S : Finset T) : unitsIn S ≤ nonZeroDivisors (norm S) := fu
 instance (S : Finset T) : Algebra (norm S) (loc S) := (Subring.inclusion (norm_le_loc S)).toAlgebra
 
 /- English proof (translation)
-Use `⟨fun y => isUnit_of_isUnit_coe S _ y.2, fun z => ?_, fun {x y} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs, hsu, hsx⟩` from `z.2`. Use `⟨(⟨_, hsx⟩, ⟨⟨s, hs⟩, hsu⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z : T) * s = s * z`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (x : T) = y` using `congrArg (fun z : loc S => (z : T)) h`. Rewrite using `[Subtype.ext this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_isLocalization (S : Finset T) : IsLocalization (unitsIn S) (loc S) := by
   refine ⟨fun y => isUnit_of_isUnit_coe S _ y.2, fun z => ?_, fun {x y} h => ⟨1, ?_⟩⟩
@@ -271,9 +271,7 @@ end GlobalTheory.NormalApprox
 namespace GlobalTheory.NormalApprox
 
 /- English proof (translation)
-Introduce `T _ _ _ hT`. Use `⟨loc, loc_mono, fun S x hx => mem_loc_of_mem S hx, fun S => ⟨?_, ?_, loc_isLocalRing S, isUnit_of_isUnit_coe S⟩⟩` and prove the remaining obligations. Use `haveI := loc_isLocalization S`. Conclude with `IsLocalization.isNoetherianRing (unitsIn S) _ (norm_isNoetherianRing S)`. Use `haveI := loc_isLocalization S haveI := norm_isIntegrallyClosed S`.
-
-Conclude with `isIntegrallyClosed_of_isLocalization (loc S) (unitsIn S) (unitsIn_le S)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_noetherian_normal_local_approx :
     ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], IsIntegrallyClosed T →

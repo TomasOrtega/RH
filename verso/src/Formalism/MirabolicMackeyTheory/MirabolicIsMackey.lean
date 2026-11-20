@@ -15,37 +15,37 @@ import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.ThreeForms
 namespace Formalism.EigenvalueLevelCeiling
 
 /- English proof (translation)
-The claim follows from `index_monotone`.
+A detailed English derivation is pending.
 -/
 theorem idxMono : IdxMono := index_monotone
 /- English proof (translation)
-The claim follows from `index_scale_inclusion`.
+A detailed English derivation is pending.
 -/
 theorem idxScaleIn : IdxScaleIn := index_scale_inclusion
 /- English proof (translation)
-The claim follows from `index_truncation_le`.
+A detailed English derivation is pending.
 -/
 theorem idxCutLe : IdxCutLe := index_truncation_le
 /- English proof (translation)
-The claim follows from `index_transport`.
+A detailed English derivation is pending.
 -/
 theorem idxTransport : IdxTransport := index_transport
 /- English proof (translation)
-The claim follows from `lattice_intersection`.
+A detailed English derivation is pending.
 -/
 theorem latInter : LatInter := lattice_intersection
 /- English proof (translation)
-The claim follows from `three_forms`.
+A detailed English derivation is pending.
 -/
 theorem threeForms : ThreeForms := three_forms
 /- English proof (translation)
-The claim follows from `three_forms_sum`.
+A detailed English derivation is pending.
 -/
 theorem threeFormsSum : ThreeFormsSum := three_forms_sum
 /- English proof (translation)
-Unfold `IdxFull`. Introduce `K _ _ _ Z _ _ _ _ _ w M Th ThK hM hTh hThK _ σ hσ hsc E r h`. Take `⟨hL, heq⟩` from `idxScaleIn K Z w ⊤ M ThK hM hThK σ hσ`. Establish `hmono` using `idxMono K Z w ⊤ M Th (sc σ ThK) hM hTh hL hsc`. Rewrite `hmono` using `[heq, finrank_top]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (lix w M ThK : ℝ) + (Module.finrank K Z : ℝ) * (Formalism.DivisionValues.vw w σ : ℝ) ≤ (lix w M Th : ℝ)`. Conclude with `hmono` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem idxFull : IdxFull := by
   unfold IdxFull
@@ -57,75 +57,75 @@ theorem idxFull : IdxFull := by
     exact_mod_cast hmono
   nlinarith
 /- English proof (translation)
-The claim follows from `idxPsiGood_of idxMono idxScaleIn idxCutLe latInter`.
+A detailed English derivation is pending.
 -/
 theorem idxPsiGood : IdxPsiGood := idxPsiGood_of idxMono idxScaleIn idxCutLe latInter
 /- English proof (translation)
-The claim follows from `orthogonality_of_mackey`.
+A detailed English derivation is pending.
 -/
 theorem orthOfMackey : OrthOfMackey := orthogonality_of_mackey
 /- English proof (translation)
-The claim follows from `good_index_GG`.
+A detailed English derivation is pending.
 -/
 theorem lemmaGG : LemmaGG := good_index_GG
 /- English proof (translation)
-The claim follows from `mackey_product`.
+A detailed English derivation is pending.
 -/
 theorem mackeyProd : MackeyProd := mackey_product
 /- English proof (translation)
-The claim follows from `mirabolic_mackey_pair`.
+A detailed English derivation is pending.
 -/
 theorem mirabolicMackey : MirabolicMackey := mirabolic_mackey_pair
 /- English proof (translation)
-The claim follows from `mirabolic_is_mackey`.
+A detailed English derivation is pending.
 -/
 theorem mirabolicIsMackey : MirabolicIsMackey := mirabolic_is_mackey
 /- English proof (translation)
-The claim follows from `data_trace`.
+A detailed English derivation is pending.
 -/
 theorem dataTrace : DataTrace := data_trace
 /- English proof (translation)
-The claim follows from `length_ramified`.
+A detailed English derivation is pending.
 -/
 theorem lengthRamified : LengthRamified := length_ramified
 /- English proof (translation)
-The claim follows from `onLocal_of idxMono idxCutLe idxTransport latInter threeForms idxPsiGood lemmaGG`.
+A detailed English derivation is pending.
 -/
 theorem onLocal : OnLocal := onLocal_of idxMono idxCutLe idxTransport latInter threeForms idxPsiGood lemmaGG
 /- English proof (translation)
-The claim follows from `ramified_basic_bound`.
+A detailed English derivation is pending.
 -/
 theorem ramBasic : RamBasic := ramified_basic_bound
 /- English proof (translation)
-The claim follows from `place_sum`.
+A detailed English derivation is pending.
 -/
 theorem placeSum : PlaceSum := place_sum
 /- English proof (translation)
-The claim follows from `depth_cases`.
+A detailed English derivation is pending.
 -/
 theorem depthCases : DepthCases := depth_cases
 /- English proof (translation)
-The claim follows from `normaliser_pair`.
+A detailed English derivation is pending.
 -/
 theorem normaliserPair : NormaliserPair := normaliser_pair
 /- English proof (translation)
-The claim follows from `level_pair`.
+A detailed English derivation is pending.
 -/
 theorem levelPair : LevelPair := level_pair
 /- English proof (translation)
-The claim follows from `share_numeric`.
+A detailed English derivation is pending.
 -/
 theorem shareNum : ShareNum := share_numeric
 /- English proof (translation)
-The claim follows from `unipotent_numeric`.
+A detailed English derivation is pending.
 -/
 theorem unipNum : UnipNum := unipotent_numeric
 /- English proof (translation)
-The claim follows from `budget_numeric`.
+A detailed English derivation is pending.
 -/
 theorem budgetNum : BudgetNum := budget_numeric
 /- English proof (translation)
-Use `first`. Consider the case `exact error_sum_good_places`. Consider the case `exact errSumGood_of`. Consider the case `exact errSumGood_thm`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem errSumGood : ErrSumGood := by
   first
@@ -133,19 +133,19 @@ theorem errSumGood : ErrSumGood := by
     | exact errSumGood_of
     | exact errSumGood_thm
 /- English proof (translation)
-The claim follows from `onSum_of placeSum ramBasic errSumGood`.
+A detailed English derivation is pending.
 -/
 theorem onSum : OnSum := onSum_of placeSum ramBasic errSumGood
 /- English proof (translation)
-The claim follows from `absorb_local_conditions`.
+A detailed English derivation is pending.
 -/
 theorem absorbOn : AbsorbOn := absorb_local_conditions
 /- English proof (translation)
-The claim follows from `unit_change'`.
+A detailed English derivation is pending.
 -/
 theorem unitChange : UnitChange := unit_change'
 /- English proof (translation)
-Use `first`. Consider the case `exact onExport_of_onExport2 (onExport2_of ramBasic)`. Consider the case `exact onExport_proof'`. Consider the case `exact onExport_of ramBasic`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem onExport : OnExport := by
   first

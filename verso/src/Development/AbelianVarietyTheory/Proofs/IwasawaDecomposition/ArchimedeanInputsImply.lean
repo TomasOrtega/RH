@@ -20,7 +20,7 @@ open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ar cm we hm cd cw hf cl ce bu fd sw` and use `have c := GlobalTheory.DiscreteSeriesConsequences.of_classification cl have u : GlobalTheory.Published.DiscreteSeriesUpqUnique := GlobalTheory.Published.discreteSeriesUpqUnique_of_classification cl have d := GlobalTheory.discreteSeries_three_of_hypotheses ce c.2.2.2.2 u ⟨ar.rayCl …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypA_of_artinReciprocity : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.CMCurveGoodOutsidePrimeSt → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.DiscreteSeriesCoverExists → GlobalTheory.Published.BesselUniquenessReal → GlobalTheory.Published.FormalDegreeCompactDual → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → HypA :=
 fun ar cm we hm cd cw hf cl ce bu fd sw =>

@@ -19,7 +19,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {V L L' : X.Modules} {r : ℕ} (h : Met p σ V r)
 
 /- English proof (translation)
-Use `⟨(c.isFrame.basis (hT.trans hW)).repr s 0, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (c.isFrame.basis (hT.trans hW)).sum_repr s]`. Rewrite using `[Fin.sum_univ_one, IsFrame.basis_apply, resM_resM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_frame (c : Chart L 1) {W T : X.Opens} (hW : W ≤ c.U) (hT : T ≤ W)
     (s : Γ(L, T)) : ∃ f : Γ(X, T), s = f • resM L hT (resM L hW (c.e 0)) := by
@@ -28,7 +28,7 @@ theorem exists_smul_frame (c : Chart L 1) {W T : X.Opens} (hW : W ≤ c.U) (hT :
   rw [Fin.sum_univ_one, IsFrame.basis_apply, resM_resM]
 
 /- English proof (translation)
-Rewrite using `[h.form_smul_left, ← h.conj_form (g • b), h.form_smul_left, map_mul, h.conj_form, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_smul {T : X.Opens} (f g : Γ(X, T)) (a b : Γ(V, T)) (y : CxPts p σ) :
     h.form (f • a) (g • b) y =
@@ -36,7 +36,7 @@ theorem form_smul_smul {T : X.Opens} (f g : Γ(X, T)) (a b : Γ(V, T)) (y : CxPt
   rw [h.form_smul_left, ← h.conj_form (g • b), h.form_smul_left, map_mul, h.conj_form, mul_assoc]
 
 /- English proof (translation)
-Establish `hp` using `(h.posDef _ y (h.isVB.mem_pick y)).posSemidef`. Establish `e` using `norm_form_le hp ((h.isVB.pick y).crd p σ a y) ((h.isVB.pick y).crd p σ b y)`. Establish `e₁` using `gnorm_sq hp ((h.isVB.pick y).crd p σ a y)`. Establish `e₂` using `gnorm_sq hp ((h.isVB.pick y).crd p σ b y)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem normSq_form_le {T : X.Opens} (a b : Γ(V, T)) (y : CxPts p σ) :
     ‖h.form a b y‖ ^ 2 ≤ (h.form a a y).re * (h.form b b y).re := by
@@ -51,7 +51,7 @@ def frameImg (l : L ⟶ V) (c : Chart L 1) {W : X.Opens} (hW : W ≤ c.U) : Γ(V
   l.app W (resM L hW (c.e 0))
 
 /- English proof (translation)
-Rewrite using `[frameImg, ← h.form_restrict hl hL _ _ hy, Met.form_resM _ _ _ _ hy, Met.form_frame _ _ hc]`. Conclude with `(Complex.pos_iff.1 ((h.restrict hl hL).posDef c y hc).diag_pos).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameImg_pos {l : L ⟶ V} (hl : IsSubbundle l) (hL : IsVB L 1) (c : Chart L 1)
     {W : X.Opens} (hW : W ≤ c.U) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W)
@@ -69,7 +69,7 @@ def cosRatio (l : L ⟶ V) (l' : L' ⟶ V) (c : Chart L 1) (c' : Chart L' 1) (y 
       (frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)) y).re)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_smul_frame c hW hT (resM L hU s)`. Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Twist.app_resM, hf, Scheme.Modules.Hom.app_smul, GlobalTheory.Twist.app_resM]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resM_app_eq_smul (l : L ⟶ V) (c : Chart L 1) {U W T : X.Opens} (hW : W ≤ c.U)
     (hT : T ≤ W) (hU : T ≤ U) (s : Γ(L, U)) :
@@ -80,13 +80,13 @@ theorem resM_app_eq_smul (l : L ⟶ V) (c : Chart L 1) {U W T : X.Opens} (hW : W
   rfl
 
 /- English proof (translation)
-Establish `hyW : y ∈ ptsIn p σ (c.U ⊓ c'.U)` using `mem_ptsIn_inf.2 ⟨hc, hc'⟩`. Establish `hyT : y ∈ ptsIn p σ (U ⊓ (c.U ⊓ c'.U))` using `mem_ptsIn_inf.2 ⟨hy, hyW⟩`. Take `⟨f, hf⟩` from `resM_app_eq_smul l c (inf_le_left : c.U ⊓ c'.U ≤ c.U) (inf_le_right : U ⊓ (c.U ⊓ c'.U) ≤ _) inf_le_left s`. Take `⟨g, hg⟩` from `resM_app_eq_smul l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U) (inf_le_right : U ⊓ (c.U ⊓ c'.U) ≤ _) inf_le_left s'`. Establish `pos` using `frameImg_pos h hl hL c (inf_le_left : c.U ⊓ c'.U ≤ c.U) hyW hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `pos'` using `frameImg_pos h hl' hL' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U) hyW hc'`. Rewrite using `[cosRatio]`. Use `set u := frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)`. Use `set u' := frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)`. Establish `e₁ : h.form (l'.app U s') (l.app U s) y = ev p σ _ g y * starRingEnd ℂ (ev p σ _ f y) * h.form u' u y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h.form_resM _ _ (inf_le_left : U ⊓ (c.U ⊓ c'.U) ≤ U) hyT, hf, hg, form_smul_smul, h.form_resM _ _ _ hyT]`. Establish `e₂ : h.form (l.app U s) (l.app U s) y = ev p σ _ f y * starRingEnd ℂ (ev p σ _ f y) * h.form u u y`. Rewrite using `[← h.form_resM _ _ (inf_le_left : U ⊓ (c.U ⊓ c'.U) ≤ U) hyT, hf, form_smul_smul, h.form_resM _ _ _ hyT]`. Establish `e₃ : h.form (l'.app U s') (l'.app U s') y = ev p σ _ g y * starRingEnd ℂ (ev p σ _ g y) * h.form u' u' y`. Rewrite using `[← h.form_resM _ _ (inf_le_left : U ⊓ (c.U ⊓ c'.U) ≤ U) hyT, hg, form_smul_smul, h.form_resM _ _ _ hyT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e₁, e₂, e₃, Complex.mul_conj, Complex.mul_conj, Complex.re_ofReal_mul, Complex.re_ofReal_mul, norm_mul, norm_mul, Complex.norm_conj, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem cosRatio_spec {l : L ⟶ V} {l' : L' ⟶ V} (hl : IsSubbundle l) (hl' : IsSubbundle l')
     (hL : IsVB L 1) (hL' : IsVB L' 1) (c : Chart L 1) (c' : Chart L' 1) {U : X.Opens}
@@ -123,19 +123,19 @@ theorem cosRatio_spec {l : L ⟶ V} {l' : L' ⟶ V} (hl : IsSubbundle l) (hl' : 
   field_simp
 
 /- English proof (translation)
-Introduce `k _ X p σ V L L' r h l l' H hl hl' hL hL'`. Establish `hv : IsCosSq h l l' fun y => cosRatio h l l' (hL.pick y) (hL'.pick y) y` using `fun U t t' y hy => cosRatio_spec h hl hl' hL hL' _ _ t t' hy (hL.mem_pick y) (hL'.mem_pick y)`. Use `⟨_, hv, continuous_iff_continuousAt.2 fun y₀ => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `hc` using `hL.mem_pick y₀`. Establish `hc'` using `hL'.mem_pick y₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `hL.pick y₀ = c at hc`. Generalize the expression as in `hL'.pick y₀ = c' at hc'`. Establish `hyW : y₀ ∈ ptsIn p σ (c.U ⊓ c'.U)` using `mem_ptsIn_inf.2 ⟨hc, hc'⟩`. Establish `G` using `H.gram (![frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U), frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)]) hyW`. Establish `c₀₀ : ContinuousAt (fun z => h.form (frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)) (frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)) z) y₀` using `(G 0 0).continuousAt`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁₀ : ContinuousAt (fun z => h.form (frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)) (frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)) z) y₀` using `(G 1 0).continuousAt`. Establish `c₁₁ : ContinuousAt (fun z => h.form (frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)) (frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)) z) y₀` using `(G 1 1).continuousAt`. Establish `pos` using `frameImg_pos h hl hL c (inf_le_left : c.U ⊓ c'.U ≤ c.U) hyW hc`. Establish `pos'` using `frameImg_pos h hl' hL' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U) hyW hc'`. Establish `R` using `(c₁₀.norm.pow 2).div ((Complex.continuous_re.continuousAt.comp c₀₀).mul (Complex.continuous_re.continuousAt.comp c₁₁)) (mul_pos pos pos').ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `R.congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hyW] with z hz`. Establish `e` using `hv (c.U ⊓ c'.U) (resM L inf_le_left (c.e 0)) (resM L' inf_le_right (c'.e 0)) z hz`. Establish `p₁` using `frameImg_pos h hl hL c (inf_le_left : c.U ⊓ c'.U ≤ c.U) hz (mem_ptsIn_inf.1 hz).1`. Establish `p₂` using `frameImg_pos h hl' hL' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U) hz (mem_ptsIn_inf.1 hz).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖h.form (frameImg l' c' (inf_le_right : c.U ⊓ c'.U ≤ c'.U)) (frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)) z‖ ^ 2 = cosRatio h l l' (hL.pick z) (hL'.pick z) z * (h.form (frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)) (frameImg l c (inf_le_left : c.U ⊓ c'.U ≤ c.U)) z).re * (h.for …`. Simplify using `only [Pi.div_apply, Function.comp_apply, Pi.mul_apply, Pi.pow_apply]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Establish `hc` using `hL.mem_pick y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'` using `hL'.mem_pick y`. Establish `hyW` using `mem_ptsIn_inf.2 ⟨hc, hc'⟩`. Establish `pos` using `frameImg_pos h hl hL (hL.pick y) inf_le_left hyW hc`. Establish `pos'` using `frameImg_pos h hl' hL' (hL'.pick y) inf_le_right hyW hc'`. Use `⟨div_nonneg (sq_nonneg _) (mul_pos pos pos').le, (div_le_one (mul_pos pos pos')).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `normSq_form_le h (frameImg l (hL.pick y) inf_le_left) (frameImg l' (hL'.pick y) inf_le_right) y` as an intermediate fact. Rewrite `this` using `[← h.conj_form, Complex.norm_conj]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isCosSq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     (V L L' : X.Modules) (r : ℕ) (h : Met p σ V r) (l : L ⟶ V) (l' : L' ⟶ V), h.IsCInf →

@@ -4,25 +4,23 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hadd : ∀ (H : Matrix (Fin g) (Fin g) ℂ) (z u v : Fin g → ℂ), z ⬝ᵥ H.mulVec (star (u + v)) = z ⬝ᵥ H.mulVec (star u) + z ⬝ᵥ H.mulVec (star v)`. Introduce `H z u v`. Rewrite using `[star_add, mulVec_add, dotProduct_add]`. Establish `hsmul : ∀ (H : Matrix (Fin g) (Fin g) ℂ) (z v : Fin g → ℂ) (a : ℚ), z ⬝ᵥ H.mulVec (star (a • v)) = (a : ℂ) * (z ⬝ᵥ H.mulVec (star v))`. Introduce `H z v a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Rat.cast_smul_eq_qsmul ℂ, star_smul, mulVec_smul, dotProduct_smul, smul_eq_mul]`. Simplify using the standard rewrite rules. Establish `hsmulL : ∀ (H : Matrix (Fin g) (Fin g) ℂ) (z v : Fin g → ℂ) (a : ℚ), (a • z) ⬝ᵥ H.mulVec (star v) = (a : ℂ) * (z ⬝ᵥ H.mulVec (star v))`. Introduce `H z v a`. Rewrite using `[← Rat.cast_smul_eq_qsmul ℂ, smul_dotProduct, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∀ (H : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) (f : Fin r → (Fin g → ℂ)), z ⬝ᵥ H.mulVec (star (∑ i, f i)) = ∑ i, z ⬝ᵥ H.mulVec (star (f i))`. Introduce `H z f`. Rewrite using `[star_sum, mulVec_sum, dotProduct_sum]`. Establish `hsa : ∀ (q : Polynomial ℚ) (z w : Fin g → ℂ), z ⬝ᵥ H₂.mulVec (star (Polynomial.aeval γ q w)) = Polynomial.aeval γ q z ⬝ᵥ H₂.mulVec (star w)`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`. Introduce `z w`. Simplify using `only [Polynomial.aeval_C, Module.algebraMap_end_apply]`. Rewrite using `[hsmul, hsmulL]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Introduce `z w`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hadd, hp, hq, add_dotProduct]`. Consider the case `monomial n a ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `z w`. Establish `e : Polynomial.C a * Polynomial.X ^ (n+1) = (Polynomial.C a * Polynomial.X ^ n) * Polynomial.X` using `by ring`. Establish `e' : Polynomial.C a * Polynomial.X ^ (n+1) = Polynomial.X * (Polynomial.C a * Polynomial.X ^ n)` using `by ring`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, map_mul (Polynomial.aeval γ) (Polynomial.C a * Polynomial.X ^ n) Polynomial.X, Polynomial.aeval_X, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = Polynomial.aeval γ (Polynomial.C a * Polynomial.X ^ n) z ⬝ᵥ H₂.mulVec (star (γ w)) := ih _ _`. Use `_ = γ (Polynomial.aeval γ (Polynomial.C a * Polynomial.X ^ n) z) ⬝ᵥ H₂.mulVec (star w) := h2 _ _`. Use `_ = _ := by`. Rewrite using `[e', map_mul (Polynomial.aeval γ) Polynomial.X (Polynomial.C a * Polynomial.X ^ n), Polynomial.aeval_X, Module.End.mul_apply]`. Establish `comm : ∀ q : Polynomial ℚ, (Polynomial.aeval γ q) ^ 2 * γ = γ * (Polynomial.aeval γ q * Polynomial.aeval γ q)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `q`. Rewrite using `[show (Polynomial.aeval γ q) ^ 2 * γ = Polynomial.aeval γ (q ^ 2 * Polynomial.X) by`. Simplify using `[map_mul, map_pow],`. Use `show q ^ 2 * Polynomial.X = Polynomial.X * (q * q) by ring]`. Simplify using `[map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hw : w = c₀ • γ w + ∑ i, c i • (γ (Polynomial.aeval γ (p i) (Polynomial.aeval γ (p i) w)))`. Use `congrArg (fun f : Module.End ℂ (Fin g → ℂ) => f w) hid` as an intermediate fact. Simplify using `only [Module.End.one_apply, LinearMap.add_apply, LinearMap.smul_apply, comm] at this`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply] at this`. Conclude with `this`.
-
-Use `conv_lhs => rw [hw]`. Rewrite using `[hadd, hsmul, hsum, ← h1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsmul, ← h1, hsa]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_form_identity (g : ℕ) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)
     (γ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))

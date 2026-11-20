@@ -26,39 +26,35 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `⟨card_of_runModel hM, ?_⟩` and prove the remaining obligations. Take `⟨v, e, ha, hb, hc, -⟩` from `hM`. Take `⟨act, hact, hcu⟩` from `h.action v i`. Set `Rd : (recB (h.laws v).p.toLawsCore).Cusp ((i : ℕ) + 1) (p.κ i) →ₛₗ[(r.used v).full.σ₀] M.cusp ka` to `LinearMap.codRestrict (M.cusp ka) (rdLin h ha) fun F => Submodule.subset_span ⟨_, GlobalTheory.T.usedRunCuspForm_reading_mem_modelCuspForms h ha hb F, rfl⟩`. Establish `hRd : ∀ F, ((Rd F : M.cusp ka) : C → M.dom → ℂ) = rdLin h ha F` using `fun F => rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : Algebra (r.used v).full.J.Q.c.F D.what₂.LL := p.alg`. Take `⟨σ, hσ⟩` from `exists_ext_embedding (K := (r.used v).full.J.Q.c.F) (LL := D.what₂.LL) (r.used v).full.σ₀`. Set `cu` to `cuspTo (h.laws v).p (fw2 p) i`. Establish `hcuW : ∀ F, cu F ∈ ((R2 p).FW i).WK` using `fun F => ((fw2 p).e i _).2`. Establish `hcuinj : Function.Injective cu`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `F G hFG`. Establish `h1` using `Subtype.ext hFG`. Establish `h2` using `((fw2 p).e i).injective h1`. Conclude with `Submodule.inclusion_injective _ h2`. Establish `hsurj : ∀ w ∈ ((R2 p).FW i).WK, ∃ F, cu F = w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Use `⟨⟨(((fw2 p).e i).symm ⟨w, hw⟩).1, by` and prove the remaining obligations. Rewrite using `[cutR_eq _ (inR_succ i)]`. Conclude with `(((fw2 p).e i).symm ⟨w, hw⟩).2⟩, ?_⟩`. Use `show ((((fw2 p).e i) _ : ((R2 p).FW i).WK) : Fin _ → D.what₂.LL) = w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val (LinearEquiv.apply_symm_apply ((fw2 p).e i) ⟨w, hw⟩)`. Take `⟨m, b', hbW, hbK, hspK, hbL, hspL⟩` from `(fw2 p).ks i`. Use `choose bC hbC using fun k => hsurj (b' k) (hbW k)`. Establish `hbC' : (fun k => cu (bC k)) = b'` using `funext hbC`. Establish `hbs : Submodule.span (recB (h.laws v).p.toLawsCore).KO (Set.range bC) = ⊤`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `F _`. Establish `h1 : cu F ∈ Submodule.span p.T.Q.c.F (Set.range b')` using `by rw [hspK]; exact hcuW F`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h1`. Establish `h2 : cu (∑ k, (show (recB (h.laws v).p.toLawsCore).KO from cf k) • bC k) = cu F`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, ← hcf]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hbC k]`. Both sides reduce to the same expression. Rewrite using `[← hcuinj h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hbi : LinearIndependent D.what₂.LL (fun k => cu (bC k))` using `by rw [hbC']; exact hbL`. Establish `hbt : Submodule.span D.what₂.LL (Set.range fun k => cu (bC k)) = ⊤` using `by rw [hbC']; exact hspL`. Establish `hK : LinearIndependent (recB (h.laws v).p.toLawsCore).KO bC`. Apply `LinearIndependent.of_comp cu` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show LinearIndependent _ (fun k => cu (bC k))`. Rewrite using `[hbC']`. Conclude with `hbK`. Establish `hR : LinearIndependent ℂ (fun k => Rd (bC k))` using `LinearIndependent.of_comp (M.cusp ka).subtype (GlobalTheory.T.cuspForm_family_linearIndependent h ha m bC hK)`. Establish `hRs : Submodule.span ℂ (Set.range Rd) = ⊤`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨y, hy⟩ -`. Establish `hy' : y ∈ (Submodule.span ℂ (Set.range Rd)).map (M.cusp ka).subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Unfold `TwoLevels.cusp at hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Submodule.span_le.2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨G, hG, rfl⟩`. Take `⟨m', α, Fs, hGe⟩` from `GlobalTheory.T.modelCuspForms_span_usedRunReadings h ha hb hb0 hn G hG`. Establish `hGs : M.res G = ∑ k, α k • rdLin h ha (Fs k)`. Use function extensionality and compare the values at `c x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [TwoLevels.res, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, rdLin_apply]`. Conclude with `hGe c x.1 x.2`. Rewrite using `[hGs]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fs k, rfl⟩)`. Take `⟨z, hz, hzy⟩` from `hy'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : z = ⟨y, hy⟩` using `Subtype.ext hzy`. Rewrite using `[← hz']`. Conclude with `hz`. Take `⟨f, ρ, hfcu, hint, hind, hspan⟩` from `GlobalTheory.T.exists_semilinear_extension_of_form_with_transported_rep (r.used v).full.σ₀ σ hσ cu bC hbs hbi hbt Rd hR hRs ((R2 p).FW i).ρ`. Establish `hρR : ∀ g F, ρ g (Rd F) = Rd (act g F)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g F`. Rewrite using `[← hfcu, ← hfcu, hint, hcu g F]`. Take `⟨a, hpull⟩` from `hc`. Use `⟨ρ, σ, f, ⟨a, fun g G hG c x => ?_⟩, hint, hind, hspan⟩` and prove the remaining obligations. Take `⟨m', α, Fs, hGe⟩` from `GlobalTheory.T.modelCuspForms_span_usedRunReadings h ha hb hb0 hn G hG`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hy : (⟨M.res G, Submodule.subset_span ⟨G, hG, rfl⟩⟩ : M.cusp ka) = ∑ k, α k • Rd (Fs k)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c' x'`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, TwoLevels.res, hRd, rdLin_apply]`. Conclude with `hGe c' x'.1 x'.2`.
-
-Rewrite using `[hy, map_sum]`. Simplify using `only [map_smul, hρR, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hRd, rdLin_apply]`. Rewrite using `[TwoLevels.pull, hGe (g • c) _ (GlobalTheory.T.twoLevelFlagDomain_transporter_mem_domain M g c x.1 x.2), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk` using `hpull (Fs k) g c x.1 x.2 (psi_eq ha c) (psi_eq ha (g • c))`.
-
-Rewrite using `[rdLin_apply]`. Unfold `rdFun rdR`. Rewrite using `[hact g⁻¹ (Fs k)]`. Use `(congrArg (α k * ·) hk).trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem reading_of_runModel (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r) (i : Fin D.R.m) {C : Type}
     [Finite C] [MulAction p.P.Gp C] (M : TwoLevels D.host.E D.R.r p.P.Gp C) (ka : Wt M.Ψ D.R.r)

@@ -7,7 +7,7 @@ open GlobalTheory.KZ GlobalTheory.K4 Polynomial
 attribute [local instance] algMdl algPoly algRat
 
 /- English proof (translation)
-Use `letI := A.toAlgebra`. Assume the negation of the conclusion as `hx`. Establish `hx' : x ∉ (integralClosure R K).toSubring` using `hx`. Take `⟨V, hV, hxV⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn hx'`. Conclude with `hxV (h V fun r => hV ((integralClosure R K).algebraMap_mem r))`.
+Equip the data with the indicated structure. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem valCrit {R K : Type} [CommRing R] [Field K] (A : R →+* K) (x : K)
     (h : ∀ V : ValuationSubring K, (∀ r, A r ∈ V) → x ∈ V) : A.IsIntegralElem x := by
@@ -18,11 +18,11 @@ private theorem valCrit {R K : Type} [CommRing R] [Field K] (A : R →+* K) (x :
   exact hxV (h V fun r => hV ((integralClosure R K).algebraMap_mem r))
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X M f hf`. Establish `key` using `valCrit ((topL X M).subtype.comp (algebraMap (Polynomial Ω) (topL X M))) (f : X.K) (by`. Introduce `V hV`. Apply `hf V` to reduce the goal to its premises. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hV (Polynomial.C c)`. Express the relevant statement in the definitionally equal form `((jPoly X _ (Polynomial.C c) : X.K)) ∈ V at h1`. Rewrite `h1` using `[coe_jPoly, Polynomial.aeval_C]`. Then use the resulting hypothesis. Establish `h2` using `hV Polynomial.X`. Express the relevant statement in the definitionally equal form `((jPoly X _ Polynomial.X : X.K)) ∈ V at h2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coe_jPoly, Polynomial.aeval_X] at h2)` and apply the resulting hypothesis. Conclude with `RingHom.IsIntegralElem.of_map Subtype.val_injective key`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mem_ringOfIntegers_modularTowerTop_of_forall_valuation :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (M : ℕ) (f : topL X M), (∀ W : ValuationSubring X.K, X.OverY W → (f : X.K) ∈ W) → f ∈ FunctionField.ringOfIntegers Ω (topL X M) := by

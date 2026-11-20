@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D S _ _ x y`. Set `i : S →ₐ[A] S[X]` to `IsScalarTower.toAlgHom A S S[X]`. Set `ι` to `Algebra.TensorProduct.map i (AlgHom.id A E)`. Set `ev : S → (S[X] →ₐ[A] S)` to `fun c => (Polynomial.aeval c : S[X] →ₐ[S] S).restrictScalars A`. Set `π` to `fun c => Algebra.TensorProduct.map (ev c) (AlgHom.id A E)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hπι : ∀ c z, π c (ι z) = z`. Introduce `c z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul s e => simp [π, ι, ev, i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Set `t : S[X] ⊗[A] E` to `X ⊗ₜ 1`. Establish `ht : ∀ c, π c t = c ⊗ₜ 1`. Introduce `c`. Simplify using `[π, t, ev]`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `u : S[X] ⊗[A] E` to `1 + t * ι (x - 1)`. Establish `hu0 : π 0 u = 1`. Simplify using `only [u, map_add, map_mul, map_one, hπι, ht]`. Simplify using the standard rewrite rules. Establish `hu1 : π 1 u = x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [u, map_add, map_mul, map_one, hπι, ht]`. Rewrite using `[← Algebra.TensorProduct.one_def]`. Simplify using the standard rewrite rules. Establish `hc : (D.D S[X] u).coeff 0 = 1`. Establish `h` using `D.nat S[X] S (ev 0) u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `D.D S (π 0 u) = _ at h`. Rewrite `h` using `[hu0, map_one]`. Rewrite using `[h]`. Simplify using `[ev, Polynomial.coeff_zero_eq_eval_zero]`. Establish `hnz : D.D S[X] u ∈ nonZeroDivisors S[X]` using `Polynomial.mem_nonzeroDivisors_of_coeff_mem 0 (by rw [hc]; exact one_mem _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : D.D S[X] (1 + u * ι y) = D.D S[X] (1 + ι y * u)`. Establish `h : (1 + u * ι y) * u = u * (1 + ι y * u)` using `by noncomm_ring`. Establish `h2` using `congrArg (D.D S[X]) h`. Rewrite `h2` using `[map_mul, map_mul, mul_comm (D.D S[X] u)]`. Conclude with `(mul_cancel_right_mem_nonZeroDivisors hnz).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `congrArg (ev 1) key`. Rewrite `h` using `[← D.nat, ← D.nat]`. Express the relevant statement in the definitionally equal form `D.D S (π 1 _) = D.D S (π 1 _) at h`. Simplify `h` using `only [map_add, map_mul, map_one, hπι, hu1]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_comm :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (S : Type) [CommRing S] [Algebra A S] (x y : S ⊗[A] E), D.D S (1 + x * y) = D.D S (1 + y * x) := by

@@ -6,9 +6,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir
 namespace GlobalTheory.CompanionTheory.BZMirDer
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ m n V _ _ π`. Unfold `twKer`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, v, rfl⟩`. Conclude with `⟨Subgroup.subgroupOfEquivOfLe (derUnip_le_Mir k m n) u, v, rfl⟩`. Introduce and unpack `⟨u, v, rfl⟩`. Use `⟨(Subgroup.subgroupOfEquivOfLe (derUnip_le_Mir k m n)).symm u, v, ?_⟩` and prove the remaining obligations. Simplify using `[derCharM, resM]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

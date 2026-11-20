@@ -4,9 +4,9 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Establish `hcop : IsCoprime ((-1 : ℤ) ^ a * (a.factorial : ℤ)) (p : ℤ)`. Apply `IsCoprime.mul_left` to reduce the goal to its premises. Conclude with `IsCoprime.pow_left (isCoprime_one_left.neg_left)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one, Int.gcd_natCast_natCast]`. Conclude with `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp.out).2 (fun h => absurd ((Nat.Prime.dvd_factorial hp.out).1 h) (by omega)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, v, huv⟩` from `hcop`. Use `⟨u, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : u * ((-1 : ℤ) ^ a * (a.factorial : ℤ)) = 1 - v * p` using `by linarith`. Rewrite using `[h1, sub_smul, one_smul, mul_smul, natCast_zsmul, hE, smul_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_signFactorial {E : Type} [AddCommGroup E] (p : ℕ) [hp : Fact p.Prime]
     (hE : ∀ x : E, p • x = 0) (a : ℕ) (ha : a < p) :
@@ -23,17 +23,17 @@ theorem exists_inv_signFactorial {E : Type} [AddCommGroup E] (p : ℕ) [hp : Fac
   rw [h1, sub_smul, one_smul, mul_smul, natCast_zsmul, hE, smul_zero, sub_zero]
 
 /- English proof (translation)
-Introduce `E _ p hp d γ γ' N T hE hN hγ hC`. Establish `hp0 : 0 < p` using `hp.out.pos`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx h0`. Rewrite `h0` using `[hγ 0 x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h0`. Conclude with `hC.inj_zero x hx h0`. Introduce `a x hx z hz h`. Distinguish the cases in `hpa : p ≤ a + 1`. Rewrite `hx` using `[hN _ hpa]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(AddSubgroup.mem_bot.1 hx)`. Take `⟨u, hu⟩` from `exists_inv_signFactorial (E := E) p hE (a + 1) (by omega)`. Apply `hC.inj_succ a x hx (u • z) (AddSubgroup.zsmul_mem _ hz u)` to reduce the goal to its premises. Rewrite `h` using `[hγ _ x hx]`. Rewrite using `[map_zsmul, ← h, ← mul_smul, hu]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy hd`. Take `⟨x, hx, rfl⟩` from `hC.surj_zero y hy hd`. Conclude with `⟨x, hx, by rw [hγ 0 x hx]; simp⟩`. Introduce `a y hy hd`. Take `⟨x, hx, z, hz, rfl⟩` from `hC.surj_succ a y hy hd`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hpa : p ≤ a + 1`. Establish `hx0 : x = 0` using `by rw [hN _ hpa] at hx; exact AddSubgroup.mem_bot.1 hx`. Substitute `hx0` using the available equality. Use `⟨0, AddSubgroup.zero_mem _, z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ (a + 1) 0 (AddSubgroup.zero_mem _)]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨u, hu⟩` from `exists_inv_signFactorial (E := E) p hE (a + 1) (by omega)`. Use `⟨u • x, AddSubgroup.zsmul_mem _ hx u, z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ _ _ (AddSubgroup.zsmul_mem _ hx u), map_zsmul, ← mul_smul, mul_comm, hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartierAt_signFactorial : ∀ {E : Type} [AddCommGroup E] (p : ℕ) [Fact p.Prime] (d γ : E →+ E) (γ' : E → E)
     (N T : ℕ → AddSubgroup E), (∀ x : E, p • x = 0) → (∀ a, p ≤ a → N a = ⊥) →

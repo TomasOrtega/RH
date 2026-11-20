@@ -16,9 +16,9 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
   [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X]
 
 /- English proof (translation)
-Take `⟨C, -, hC⟩` from `exists_bound_bilD Ψ B hc hB 1 k`. Use `(hint.const_mul C).mono' (hκ.smul ((continuous_fderiv_bil_left Ψ B x).comp_aestronglyMeasurable hw)) (ae_of_all _ fun a => ?_)` and prove the remaining obligations. Establish `h` using `hC x hx (w a)`. Rewrite `h` using `[bilD, ← norm_iteratedFDeriv_fderiv, norm_iteratedFDeriv_zero]`. Rewrite using `[norm_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem integrable_fderiv_schwartz_bilin (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) {U : Set X} {c : ℝ}
     (hc : 0 < c) (hB : ∀ x ∈ U, ∀ v, c * ‖v‖ ≤ ‖B v x‖)
@@ -38,11 +38,11 @@ theorem integrable_fderiv_schwartz_bilin (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X 
 end General
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ p ∂μ, fderiv ℝ (fun x => a x * h p (b x)) x0 X = a x0 * h' p (b' X) + h p z0 * a' X` using `by filter_upwards [hh] with p hp`. Establish `hp' : HasFDerivAt (h p) (h' p) (b x0)` using `by rw [hb0]; exact hp`. Establish `hc : HasFDerivAt (fun x => a x * h p (b x)) _ x0` using `ha.mul (hp'.comp x0 hb)`. Rewrite using `[hc.fderiv]`. Simplify using `[hb0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `HI' : HasFDerivAt H (∫ p, h' p ∂μ) (b x0)` using `by rw [hb0]; exact HI`. Establish `hbig : HasFDerivAt (fun x => a x * H (b x)) _ x0` using `ha.mul (HI'.comp x0 hb)`. Establish `hint : Integrable (fun p => a x0 * h' p (b' X) + h p z0 * a' X) μ` using `((hi1.apply_continuousLinearMap (b' X)).const_mul _).add (hi0.mul_const _)`. Use `⟨hint.congr (hae.mono fun p hp => hp.symm), hbig.differentiableAt, ?_⟩` and prove the remaining obligations. Rewrite using `[hbig.fderiv, integral_congr_ae hae, integral_add ((hi1.apply_continuousLinearMap (b' X)).const_mul _) (hi0.mul_const _), integral_const_mul, integral_mul_const, ← hH0, ← ContinuousLinearMap.integral_apply hi1 (b' X)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fderiv_mul_comp_integral {P : Type*} [MeasurableSpace P] {μ : Measure P}
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -75,9 +75,9 @@ theorem fderiv_mul_comp_integral {P : Type*} [MeasurableSpace P] {μ : Measure P
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Establish `hU : IsOpen (Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4 : ℝ))` using `Metric.isOpen_ball`. Establish `h1U : UpperTheory.V.TR.oneL F 2 ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4 : ℝ)` using `Metric.mem_ball_self (by norm_num)`. Establish `hinv : ∀ᶠ x in 𝓝 (UpperTheory.V.TR.oneL F 2), invL x ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4 : ℝ)` using `contDiffAt_invL.continuousAt.preimage_mem_nhds (by rw [invL_one]; exact hU.mem_nhds h1U)`. Establish `hunit : ∀ᶠ x in 𝓝 (UpperTheory.V.TR.oneL F 2), x ∈ UpperTheory.V.TR.invSet F 2` using `UpperTheory.V.TR.isOpen_invSet.mem_nhds (by simp [UpperTheory.V.TR.invSet, UpperTheory.V.TR.oneL, UpperTheory.V.TR.toL])`. Establish `hdet : ∀ᶠ x in 𝓝 (UpperTheory.V.TR.oneL F 2), ∀ v, 0 < (Matrix.det (Matrix.of x)) v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.eventually_all.2 fun v => ?_` and prove the remaining obligations. Establish `hcont : ContinuousAt (fun x : UpperTheory.V.TR.Lie F 2 => (Matrix.det (Matrix.of x)) v) (UpperTheory.V.TR.oneL F 2)` using `((continuous_apply v).comp (UpperTheory.V.TR.contDiff_det (E := F) (a := 2)).continuous).continuousAt`. Conclude with `continuousAt_const.eventually_lt hcont (by simp [UpperTheory.V.TR.oneL, UpperTheory.V.TR.toL])`. Use `filter_upwards [hU.mem_nhds h1U, hinv, hunit, hdet] with x h1 h2 h3 h4`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_good (_g : GA F 2) : ∀ᶠ x in 𝓝 (UpperTheory.V.TR.oneL F 2),
     x ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4) ∧ invL x ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4) ∧
@@ -108,7 +108,7 @@ def Rc (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (p :
   ∫ ξ, kap2 χ c g (p, ξ) * archS F (B2 (w2 g (p, ξ)) z) ∂(Measure.count : Measure (Xi F))
 
 /- English proof (translation)
-Use `filter_upwards [eventually_good g] with x ⟨_, _, hxu, hxd⟩`. Use `set y : GL (Fin 2) (UpperTheory.V.TR.Rinf F) := (show IsUnit (Matrix.of x) from hxu).unit`. Establish `hy : UpperTheory.V.TR.toL y.val = x` using `rfl`. Rewrite using `[← hy, UpperTheory.V.TR.chart_val, eisInt_row, dl_eq g y hxd, Dc, Sr, integral_count_Xi, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_eisInt_row (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (p : Pp F) :
     UpperTheory.V.TR.chart (fun g' => eisInt χ (Phi c) g' p.1 p.2) g =ᶠ[𝓝 (UpperTheory.V.TR.oneL F 2)]
@@ -119,7 +119,7 @@ theorem chart_eisInt_row (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ)
   rw [← hy, UpperTheory.V.TR.chart_val, eisInt_row, dl_eq g y hxd, Dc, Sr, integral_count_Xi, mul_comm]
 
 /- English proof (translation)
-Use `filter_upwards [eventually_good g] with x ⟨_, _, hxu, hxd⟩`. Use `set y : GL (Fin 2) (UpperTheory.V.TR.Rinf F) := (show IsUnit (Matrix.of x) from hxu).unit`. Establish `hy : UpperTheory.V.TR.toL y.val = x` using `rfl`. Establish `hyi : UpperTheory.V.TR.toL (y⁻¹).val = invL x` using `by rw [← invL_val, hy]`. Rewrite using `[← hy, UpperTheory.V.TR.chart_val, eisInt_col χ c g hC, dl_eq g y hxd, Ac, Dc, Rc, integral_count_Xi, hyi, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_eisInt_col (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) {C : ℂ}
     (hC : ∀ h : GA F 2, thetaS (Phi c) h = C * ((absD h)⁻¹ : ℝ) * thetaT (PhiH c) h) (p : Pp F) :
@@ -132,45 +132,37 @@ theorem chart_eisInt_col (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ)
   rw [← hy, UpperTheory.V.TR.chart_val, eisInt_col χ c g hC, dl_eq g y hxd, Ac, Dc, Rc, integral_count_Xi, hyi, hy]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hP F χ c H`. Establish `hC' : ∀ h : GA F 2, thetaS (Phi c) h = C * ((absD h)⁻¹ : ℝ) * thetaT (PhiH c) h` using `fun h => (hC h).2.2`. Use `set one := UpperTheory.V.TR.oneL F 2 with hone`. Use `set U : Set (UpperTheory.V.TR.Lie F 2) := Metric.ball one (1 / 4)`. Establish `hU : IsOpen U` using `Metric.isOpen_ball`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1U : one ∈ U` using `Metric.mem_ball_self (by norm_num)`. Establish `hc : (0 : ℝ) < 1 / 2` using `by norm_num`. Use `set S1 : Set {r : ℝ // 0 < r} := {t | 1 ≤ (t : ℝ)}`. Use `set S2 : Set {r : ℝ // 0 < r} := {t | (t : ℝ) < 1}`. Use `set ν := (normOneMeasure F).restrict (normOneFundamentalDomain F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set μ1 := (posRealMeasure.restrict S1).prod ν`. Use `set μ2 := (posRealMeasure.restrict S2).prod ν`. Establish `m1` using `aestronglyMeasurable_first_kernel χ c g S1`. Establish `mw1` using `aestronglyMeasurable_row_weight (F := F) g S1`. Establish `m2` using `aestronglyMeasurable_second_kernel χ c g S2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mw2` using `aestronglyMeasurable_column_weight (F := F) g S2`. Take `⟨k1, hk1⟩` from `hint1 H g m1 mw1`. Take `⟨k2, hk2⟩` from `hint2 H g m2 mw2`. Establish `hB1 : ∀ x ∈ U, ∀ v, (1 / 2 : ℝ) * ‖v‖ ≤ ‖B1 v x‖` using `fun x hx v => half_norm_le_norm_left_bilinear hx v`. Establish `hB2 : ∀ x ∈ U, ∀ v, (1 / 2 : ℝ) * ‖v‖ ≤ ‖B2 v x‖` using `fun x hx v => half_norm_le_norm_right_bilinear hx v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I1 : UpperTheory.V.TR.Lie F 2 → ℂ := fun x => ∫ q, kap1 χ c g q * archS F (B1 (w1 g q) x) ∂μS F S1`. Use `set I2 : UpperTheory.V.TR.Lie F 2 → ℂ := fun z => ∫ q, kap2 χ c g q * archS F (B2 (w2 g q) z) ∂μS F S2`. Use `set Sr' : Pp F → (UpperTheory.V.TR.Lie F 2 →L[ℝ] ℂ) := fun p => ∫ ξ, kap1 χ c g (p, ξ) • fderiv ℝ (fun x => archS F (B1 (w1 g (p, ξ)) x)) one ∂(Measure.count : Measure (Xi F))`. Use `set Rc' : Pp F → (UpperTheory.V.TR.Lie F 2 →L[ℝ] ℂ) := fun p => ∫ ξ, kap2 χ c g (p, ξ) • fderiv ℝ (fun x => archS F (B2 (w2 g (p, ξ)) x)) one ∂(Measure.count : Measure (Xi F))`. Establish `mk1 : ∀ p, AEStronglyMeasurable (fun ξ : Xi F => kap1 χ c g (p, ξ)) Measure.count` using `fun p => ((measurable_first_kernel χ c g).comp measurable_prodMk_left).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mk2 : ∀ p, AEStronglyMeasurable (fun ξ : Xi F => kap2 χ c g (p, ξ)) Measure.count` using `fun p => ((measurable_second_kernel χ c g).comp measurable_prodMk_left).aestronglyMeasurable`. Establish `mv1 : ∀ p, AEStronglyMeasurable (fun ξ : Xi F => w1 g (p, ξ)) Measure.count` using `fun p => ((measurable_row_weight g).comp measurable_prodMk_left).aestronglyMeasurable`. Establish `mv2 : ∀ p, AEStronglyMeasurable (fun ξ : Xi F => w2 g (p, ξ)) Measure.count` using `fun p => ((measurable_column_weight g).comp measurable_prodMk_left).aestronglyMeasurable`. Establish `hk1' : Integrable (fun q => ‖kap1 χ c g q‖ * ((1 + ‖w1 g q‖) ^ k1)⁻¹) (μ1.prod Measure.count)` using `hk1`. Establish `hk2' : Integrable (fun q => ‖kap2 χ c g q‖ * ((1 + ‖w2 g q‖) ^ k2)⁻¹) (μ2.prod Measure.count)` using `hk2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hder1 : ∀ᵐ p ∂μ1, HasFDerivAt (Sr χ c g p) (Sr' p) one` using `by filter_upwards [hk1'.prod_right_ae] with p hp`. Conclude with `hasFDerivAt_integral_schwartz_bilin (archS F) B1 hU hc hB1 (mk1 p) (mv1 p) hp h1U`. Establish `hder2 : ∀ᵐ p ∂μ2, HasFDerivAt (Rc χ c g p) (Rc' p) one` using `by filter_upwards [hk2'.prod_right_ae] with p hp`. Conclude with `hasFDerivAt_integral_schwartz_bilin (archS F) B2 hU hc hB2 (mk2 p) (mv2 p) hp h1U`. Establish `i1 : Integrable (fun q => kap1 χ c g q * archS F (B1 (w1 g q) one)) (μ1.prod Measure.count)` using `integrable_schwartz_bilin (archS F) B1 hc hB1 m1 mw1 hk1 h1U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : Integrable (fun q => kap2 χ c g q * archS F (B2 (w2 g q) one)) (μ2.prod Measure.count)` using `integrable_schwartz_bilin (archS F) B2 hc hB2 m2 mw2 hk2 h1U`. Establish `j1 : Integrable (fun q => kap1 χ c g q • fderiv ℝ (fun x => archS F (B1 (w1 g q) x)) one) (μ1.prod Measure.count)` using `integrable_fderiv_schwartz_bilin (archS F) B1 hc hB1 m1 mw1 hk1 h1U`. Establish `j2 : Integrable (fun q => kap2 χ c g q • fderiv ℝ (fun x => archS F (B2 (w2 g q) x)) one) (μ2.prod Measure.count)` using `integrable_fderiv_schwartz_bilin (archS F) B2 hc hB2 m2 mw2 hk2 h1U`. Establish `HI1 : HasFDerivAt I1 (∫ p, Sr' p ∂μ1) one` using `(hasFDerivAt_integral_schwartz_bilin (archS F) B1 hU hc hB1 m1 mw1 hk1 h1U).congr_fderiv (integral_prod _ j1)`. Establish `HI2 : HasFDerivAt I2 (∫ p, Rc' p ∂μ2) one` using `(hasFDerivAt_integral_schwartz_bilin (archS F) B2 hU hc hB2 m2 mw2 hk2 h1U).congr_fderiv (integral_prod _ j2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hH1 : I1 one = ∫ p, Sr χ c g p one ∂μ1` using `integral_prod _ i1`. Establish `hH2 : I2 one = ∫ p, Rc χ c g p one ∂μ2` using `integral_prod _ i2`. Establish `hdl` using `(contDiff_dl (F := F) g).contDiffAt (x := one)`. Establish `hdl0 : dl g one ≠ 0` using `by rw [dl_one]; exact (absD_pos g).ne'`. Establish `hD : ContDiffAt ℝ ∞ (Dc g) one` using `(Complex.ofRealCLM.contDiff.contDiffAt).comp _ (hdl.rpow_const_of_ne hdl0)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hA : ContDiffAt ℝ ∞ (Ac g) one` using `(Complex.ofRealCLM.contDiff.contDiffAt).comp _ (hdl.inv hdl0)`. Establish `hA2 : ContDiffAt ℝ ∞ (fun x => C * Ac g x * Dc g x) one` using `(contDiffAt_const.mul hA).mul hD`. Establish `hDa` using `(hD.differentiableAt (by simp)).hasFDerivAt`. Establish `hA2a` using `(hA2.differentiableAt (by simp)).hasFDerivAt`. Establish `hinva` using `(contDiffAt_invL (F := F).differentiableAt (by simp)).hasFDerivAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨L1int, L1diff, L1eq⟩` from `fderiv_mul_comp_integral hder1 j1.integral_prod_left i1.integral_prod_left HI1 hH1 hDa (hasFDerivAt_id one) rfl X`. Take `⟨L2int, L2diff, L2eq⟩` from `fderiv_mul_comp_integral hder2 j2.integral_prod_left i2.integral_prod_left HI2 hH2 hA2a hinva invL_one X`. Simplify using `only [id] at L1int L1diff L1eq`. Establish `eL1 : (fun p : Pp F => UpperTheory.V.TR.lieD X (fun g' => eisInt χ (Phi c) g' p.1 p.2) g) = fun p => fderiv ℝ (fun x => Dc g x * Sr χ c g p x) one X`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[UpperTheory.V.TR.lieD, (chart_eisInt_row χ c g p).fderiv_eq]`. Establish `eL2 : (fun p : Pp F => UpperTheory.V.TR.lieD X (fun g' => eisInt χ (Phi c) g' p.1 p.2) g) = fun p => fderiv ℝ (fun x => (C * Ac g x * Dc g x) * Rc χ c g p (invL x)) one X`. Use function extensionality and compare the values at `p`. Rewrite using `[UpperTheory.V.TR.lieD, (chart_eisInt_col χ c g hC' p).fderiv_eq]`. Establish `hs : MeasurableSet (S1 ×ˢ (Set.univ : Set (normOneSubgroup F)))` using `measurableSet_ge_one.prod MeasurableSet.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hμ1 : (posRealMeasure.prod ν).restrict (S1 ×ˢ Set.univ) = μ1`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hμ2 : (posRealMeasure.prod ν).restrict (S1 ×ˢ (Set.univ : Set (normOneSubgroup F)))ᶜ = μ2`. Establish `e : (S1 ×ˢ (Set.univ : Set (normOneSubgroup F)))ᶜ = S2 ×ˢ Set.univ`. Use extensionality with `p`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[S1, S2]`. Rewrite using `[e, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hint : Integrable (fun p : Pp F => UpperTheory.V.TR.lieD X (fun g' => eisInt χ (Phi c) g' p.1 p.2) g) (posRealMeasure.prod ν)`. Establish `h1 : IntegrableOn (fun p : Pp F => UpperTheory.V.TR.lieD X (fun g' => eisInt χ (Phi c) g' p.1 p.2) g) (S1 ×ˢ Set.univ) (posRealMeasure.prod ν)`. Rewrite using `[IntegrableOn, hμ1, eL1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `L1int`. Establish `h2 : IntegrableOn (fun p : Pp F => UpperTheory.V.TR.lieD X (fun g' => eisInt χ (Phi c) g' p.1 p.2) g) (S1 ×ˢ Set.univ)ᶜ (posRealMeasure.prod ν)`. Rewrite using `[IntegrableOn, hμ2, eL2]`. Conclude with `L2int`. Use `h1.union h2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `this` using `[Set.union_compl_self, integrableOn_univ]`. Then use the resulting hypothesis. Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_add_compl hs hint, hμ1, hμ2]`. Establish `hev : UpperTheory.V.TR.chart (Eis χ (Phi c)) g =ᶠ[𝓝 one] fun x => Dc g x * I1 x + (C * Ac g x * Dc g x) * I2 (invL x)` using `by filter_upwards [eventually_good g] with x ⟨hxU, hxi, hxu, hxd⟩ set y : GL (Fin 2) (UpperTheory.V.TR.Rinf F) := (show IsUnit (Matrix.of x) from hxu).unit`. Establish `hy : UpperTheory.V.TR.toL y.val = x` using `rfl`.
-
-Establish `hyi : UpperTheory.V.TR.toL (y⁻¹).val = invL x` using `by rw [← invL_val, hy]`. Establish `hyd : absD (g * UpperTheory.V.TR.infGL F 2 y) = dl g x` using `by rw [dl_eq g y hxd, hy]`. Establish `i1x` using `integrable_schwartz_bilin (archS F) B1 hc hB1 m1 mw1 hk1 hxU`. Establish `i2x` using `integrable_schwartz_bilin (archS F) B2 hc hB2 m2 mw2 hk2 hxi`. Rewrite `i1x` using `[← hy]`.
-
-Rewrite `i2x` using `[← hyi]`. Rewrite using `[← hy, UpperTheory.V.TR.chart_val, eis_decomp χ c g hC' y i1x i2x, hyd, hyi, hy, Dc, Ac]`. Establish `hsum : HasFDerivAt (fun x => Dc g x * I1 x + C * Ac g x * Dc g x * I2 (invL x)) _ one` using `L1diff.hasFDerivAt.add L2diff.hasFDerivAt`. Rewrite using `[UpperTheory.V.TR.lieD, hev.fderiv_eq, hsum.fderiv, ContinuousLinearMap.add_apply, ← L1diff.hasFDerivAt.fderiv, ← L2diff.hasFDerivAt.fderiv, L1eq, L2eq]`. Use `congr 1`.
-
-Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `(congrFun eL1 p).symm`. Use `congr 1`. Use function extensionality and compare the values at `p`.
-
-Conclude with `(congrFun eL2 p).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lie_derivative_eisenstein_integral {χ : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hP : SPois) (H : Hyp χ c)
     (g : GA F 2) (X : UpperTheory.V.TR.Lie F 2) :
@@ -318,7 +310,7 @@ end UpperTheory.HilbertEisensteinWeightOne.EisensteinSmoothness
 namespace UpperTheory.HilbertEisensteinWeightOne
 
 /- English proof (translation)
-The claim follows from `EisensteinSmoothness.lie_derivative_eisenstein_integral hP H g X`.
+A detailed English derivation is pending.
 -/
 theorem lieD_Eis_eq_integral {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {χ : HChar F}
     {c : HeightOneSpectrum (𝓞 F) → ℕ} (hP : SPois) (_hI : SInt) (H : Hyp χ c) (g : GA F 2) (X : UpperTheory.V.TR.Lie F 2) :

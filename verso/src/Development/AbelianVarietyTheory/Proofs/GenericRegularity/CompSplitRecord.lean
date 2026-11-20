@@ -12,9 +12,9 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj hG Z w g`. Take `⟨hL, -, -, hA⟩` from `evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c`. Establish `hg : (g : T.R j) ∈ T.C j w` using `cutR_le T.C j w g.2`. Take `⟨g', hg', h1, h0⟩` from `exists_cusp_restrict_comp _ _ _ _ (T.Q.Xo j) T.Q.c hL hG (hA hG) _ (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) (fun σ hσ => h.unf j hj σ hσ) Z (wtA w) w.n (g : T.R j) hg`. Establish `hm : g' ∈ cutR T.C j w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[cutR_eq T.C hj]`. Conclude with `hg'`. Conclude with `⟨⟨g', hm⟩, h1, h0⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compSplit_record : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     (hG : GenFrEx (T.Q.Xo j) T.Q.c), CompSplitSt h j hG := by

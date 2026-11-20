@@ -15,14 +15,14 @@ noncomputable section
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_grpMul {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (x : T' ⟶ T) (f g : T ⟶ G) :
     x ≫ (f * g) = (x ≫ f) * (x ≫ g) := by
   rw [Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
 /- English proof (translation)
-Establish `h1 : (η[G] : 𝟙_ (Over S) ⟶ G) = 1`. Rewrite using `[Hom.one_def, Subsingleton.elim (toUnit (𝟙_ (Over S))) (𝟙 _), Category.id_comp]`. Establish `: (η[G] : 𝟙_ (Over S) ⟶ G) ≫ (𝟙 G * 𝟙 G) = η[G]`. Rewrite using `[comp_grpMul, Category.comp_id, h1, _root_.one_mul]`. Conclude with `congrArg (·.left) this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitSec_comp_sqr {S : Scheme.{0}} (G : Over S) [GrpObj G] : unitSec G ≫ sqr G = unitSec G := by
   have h1 : (η[G] : 𝟙_ (Over S) ⟶ G) = 1 := by
@@ -32,7 +32,7 @@ theorem unitSec_comp_sqr {S : Scheme.{0}} (G : Over S) [GrpObj G] : unitSec G �
   exact congrArg (·.left) this
 
 /- English proof (translation)
-The claim follows from `triv_over G b zero := by rw [triv, ← Category.assoc, spMap, spMap, ← Spec.map_comp] have : (CommRingCat.ofHom (PowerSeries.C (R := R)) ≫ CommRingCat.ofHom (PowerSeries.constantCoeff (R := R))) = 𝟙 _ := by ext x; simp rw [this, Spec.map_id, Category.id_comp] scale := by rw [triv, …`.
+A detailed English derivation is pending.
 -/
 theorem triv_isPath {S : Scheme.{0}} (G : Over S) [GrpObj G] {R : Type} [CommRing R] (c : R) (b : Sp R ⟶ S) :
     IsPath G c b (triv G b) where
@@ -50,11 +50,11 @@ theorem triv_isPath {S : Scheme.{0}} (G : Over S) [GrpObj G] {R : Type} [CommRin
     rw [this, Category.assoc, Category.assoc, unitSec_comp_sqr]
 
 /- English proof (translation)
-Set `z' : Over.mk (z ≫ G.hom) ⟶ G` to `Over.homMk z rfl`. Establish `h : z' * z' = z'`. Establish `e` using `comp_grpMul z' (𝟙 G) (𝟙 G)`. Rewrite `e` using `[Category.comp_id]`. Rewrite using `[← e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Conclude with `hz`. Establish `h1 : z' = 1` using `by simpa using h`. Establish `h2` using `congrArg (·.left) h1`. Rewrite `h2` using `[Hom.one_def]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eq_unitSec_of_sqr_eq {S : Scheme.{0}} (G : Over S) [GrpObj G] {R : Type} [CommRing R] (z : Sp R ⟶ G.left)
     (hz : z ≫ sqr G = z) : z = (z ≫ G.hom) ≫ unitSec G := by
@@ -77,7 +77,7 @@ end GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `S G _ R _`. Use `⟨fun c b => triv_isPath G c b, fun z hz => eq_unitSec_of_sqr_eq G z hz, ?_⟩` and prove the remaining obligations. Introduce `_ hq c hc b ξ hξ`. Conclude with `GlobalTheory.T.formalSquaringPath_unique_of_agree_low_degrees S G R hq c 1 one_pos hc b ξ (triv G b) hξ (triv_isPath G c b) (fun _ _ _ _ j hj hj' => absurd hj' (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem triv_unique : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R], (∀ (c : R) (b : Sp R ⟶ S), IsPath G c b (triv G b)) ∧ (∀ (z : Sp R ⟶ G.left), z ≫ sqr G = z → z = (z ≫ G.hom) ≫ unitSec G) ∧ (∀ [IsLocalRing R], QuasiSeparated G.hom → ∀ (c : R), (∀ j, 1 ≤ j → IsUnit (c ^ j - 2)) → ∀ (b : Sp R ⟶ S) (ξ : Sp (PowerSeries R) ⟶ G.left), IsPath G c b ξ → ξ = triv G b) := by
   intro S G _ R _

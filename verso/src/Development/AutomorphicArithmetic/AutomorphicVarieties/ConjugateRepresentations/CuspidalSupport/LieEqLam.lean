@@ -9,7 +9,7 @@ open scoped TensorProduct
 
 open UpperTheory.V UpperTheory.V.Af.Fin in
 /- English proof (translation)
-Rewrite using `[← Cm.uAction_ι_smEq, lam_apply]`. Use `congr 3`. Use `Subtype.ext (Matrix.ext fun k l => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cm.mixEq E (Matrix.single i j x k l) = Matrix.single i j (Cm.mixEq E x) k l`. Simplify using `only [Matrix.single_apply, apply_ite (Cm.mixEq E), map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem lie_eq_lam {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (i j : Fin a) (x : Cinf E)
     (φ : Sm E a) :
@@ -23,9 +23,9 @@ private theorem lie_eq_lam {E : Type} [Field E] [NumberField E] [IsTotallyComple
 
 open UpperTheory.V UpperTheory.V.Af.Fin in
 /- English proof (translation)
-Introduce `E _ _ _ a n e g`. Take `⟨f, hf, hl⟩` from `UpperTheory.exists_restriction_blockEmbedding_intertwines_lie E a n e g`. Establish `key : ∀ i j x ψ, (Cm.smEq E a).symm (f (Cm.smEq E n (lie E n (toL (Matrix.single (e i) (e j) x)) ψ))) = lie E a (toL (Matrix.single i j x)) ((Cm.smEq E a).symm (f (Cm.smEq E n ψ)))` using `fun i j x ψ => by`. Rewrite using `[LinearEquiv.symm_apply_eq, lie_eq_lam, lie_eq_lam, LinearEquiv.apply_symm_apply, ← matrixExtendByZero_single, hl]`. Use `⟨(Cm.smEq E a).symm.toLinearMap ∘ₗ f ∘ₗ (Cm.smEq E n).toLinearMap, fun ψ x => hf _ x, fun t i j ψ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Cm.uC_genC, ← Cm.uC_genC]`. Simplify using `only [Cm.genC, AlgRepEndIrreducible.eL, map_smul, map_sub, Cm.uC_ιC, LinearMap.smul_apply, LinearMap.sub_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Cj.S.slice :
     UpperTheory.V.Cj.S.Slice := by

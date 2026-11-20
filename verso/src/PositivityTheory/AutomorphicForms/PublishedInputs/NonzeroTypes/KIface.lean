@@ -13,7 +13,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Introduce `i` and use `(ho i).preimage (continuous_inclusion (Ine_le_Dec A))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hsm (h : IsPlaceOver A w) {n : ℕ} (χ : Fin n → Dec (F := E) A →* ℂˣ)
     (ho : ∀ i, IsOpen ((χ i).ker : Set (Dec (F := E) A))) :

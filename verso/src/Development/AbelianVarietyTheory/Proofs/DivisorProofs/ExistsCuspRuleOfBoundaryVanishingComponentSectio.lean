@@ -28,7 +28,7 @@ def isoSec (w : LB.Iso P B) (hw : w.IsGen) : (LB.div B P).Sec := ⟨fun i => (w.
   exact this⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem val_congr_pt {O : Y.Opens} {R : Type} [CommRing R] {x x' : Sp R ⟶ Y} (h : x = x') (i : B.ι)
     (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (hO' : ⊤ ≤ x' ⁻¹ᵁ O) (hi' : ⊤ ≤ x' ⁻¹ᵁ B.U i) (f : H0 p B O) :
@@ -36,7 +36,7 @@ theorem val_congr_pt {O : Y.Opens} {R : Type} [CommRing R] {x x' : Sp R ⟶ Y} (
   subst h; rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TangentOrigin.evalPt_res x (inf_le_inf_right _ h) (GlobalTheory.FlagMod.le_preimage_inf hO hi) (GlobalTheory.FlagMod.le_preimage_inf hO' hi) _`.
+A detailed English derivation is pending.
 -/
 theorem val_restr_eq {O O' : Y.Opens} (h : O' ≤ O) {R : Type} [CommRing R] (x : Sp R ⟶ Y) (i : B.ι)
     (hO : ⊤ ≤ x ⁻¹ᵁ O) (hO' : ⊤ ≤ x ⁻¹ᵁ O') (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (f : H0 p B O) :
@@ -48,35 +48,31 @@ end Transport
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T j Y e o hG hE Z TF la L hL hc`. Establish `hP : (L.pull (π₀ TF.X Z)).IsLB` using `LB.isLB_pull hL _`. Establish `hB` using `isLB_L₀ TF.X Z la`. Take `⟨w, hw⟩` from `(cls_eq_iff hP hB).1 ((cls_pull hL _ hP).trans hc)`. Set `C` to `divChart hB hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G : H0 (str₀ TF.X Z) (LB.div (L₀ TF.X Z la) (L.pull (π₀ TF.X Z))) ⊤` to `H0.ofSec _ ⊤ (isoSec w hw)`. Set `sOf : H0 (s₀ TF.Y Z) L ⊤ → H0 (str₀ TF.X Z) (L₀ TF.X Z la) ⊤` to `fun t => C.mul (H0.pull (π₀ TF.X Z) le_top t : H0 (str₀ TF.X Z) (L.pull (π₀ TF.X Z)) ⊤) G`. Use `choose f hf hf' using fun t => exists_suppOn_sec₀_eq _ _ _ _ _ _ _ _ _ (AllWt.exOf _ la 0) (H0.restr le_top (sOf t))`. Use `⟨fun t => (f t).1, fun t ht => ?_, fun yy v hv k hk => ?_⟩` and prove the remaining obligations. Establish `hs : sOf t ∈ vanBd TF.X Z la` using `(mem_vanBd _ _).2 fun y hy hn => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, ha, hb, hcc⟩` from `C.cover y`. Establish `u1 : IsUnit (H0.germ (C.c τ) y (memTop y) hcc (sOf t))`. Rewrite using `[← ger_toSec]`. Conclude with `(isUnit_ger_iff _ hcc).2 hn`. Establish `e3` using `C.germ_mul (p := str₀ TF.X Z) (H0.pull (π₀ TF.X Z) le_top t) G τ y (memTop y) ha hb hcc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u1' : IsUnit (H0.germ (C.a τ) y (memTop y) ha (H0.pull (p` using `s₀ TF.Y Z) (π₀ TF.X Z) le_top t : H0 (str₀ TF.X Z) (L.pull (π₀ TF.X Z)) ⊤) * H0.germ (C.b τ) y (memTop y) hb G) := (congrArg IsUnit e3).mp u1`. Establish `u2` using `(congrArg IsUnit (H0.germ_pull (p := s₀ TF.Y Z) (π₀ TF.X Z) le_top (C.a τ) y (memTop y) ha t)).mp (isUnit_of_mul_isUnit_left u1')`. Establish `u3` using `(isUnit_map_iff (Scheme.Hom.stalkMap (π₀ TF.X Z) y).hom _).1 u2`. Rewrite `u3` using `[← ger_toSec]`. Take `⟨v', hv'⟩` from `ht ((isUnit_ger_iff _ _).1 u3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hy (show TF.X.π (inc₀ TF.X Z y) ∈ LogKS.interior TF.Y from ⟨i₀ TF.Y Z v', ?_⟩)` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← j₀_ι, Scheme.Hom.comp_apply, hv', ← Scheme.Hom.comp_apply, morphismRestrict_ι, Scheme.Hom.comp_apply]`. Take `⟨g, hg⟩` from `vanBd_le_space D T j Y e o hG hE Z TF la hs`. Establish `e0 : f t = Submodule.inclusion (cusp_le_secZ Z Y.U la) g`. Use `sub_eq_zero.1 (eq_zero_of_sec₀ TF.X Z (Submodule.sub_mem _ (hf t) g.2.2) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hf' t, ← hg]`. Conclude with `sub_self _`. Use `show (f t).1 ∈ _`. Rewrite using `[e0]`. Conclude with `g.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e1 : TF.X.ptY yy ≫ TF.X.π = v ≫ j₀ TF.Y Z ≫ (barComp TF.Y Z).ι`. Rewrite using `[(TF.X.lies_ptY yy).1, j₀_ι, ← Category.assoc, hv]`. Both sides reduce to the same expression. Establish `hr : Set.range (TF.X.ptY yy) ⊆ Set.range (inc₀ TF.X Z)`. Introduce and unpack `_ ⟨s, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨_, show TF.X.π (TF.X.ptY yy s) ∈ barComp TF.Y Z from ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e1, Scheme.Hom.comp_apply]`. Conclude with `((v ≫ j₀ TF.Y Z) s).2`. Set `zz` to `IsOpenImmersion.lift (inc₀ TF.X Z) (TF.X.ptY yy) hr`. Establish `hzz : zz ≫ inc₀ TF.X Z = TF.X.ptY yy` using `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : zz ≫ π₀ TF.X Z = v ≫ j₀ TF.Y Z`. Establish `h1 : (zz ≫ π₀ TF.X Z) ≫ (barComp TF.Y Z).ι = (v ≫ j₀ TF.Y Z) ≫ (barComp TF.Y Z).ι`. Rewrite using `[Category.assoc, Category.assoc, ← e1, ← hzz, Category.assoc]`. Conclude with `congrArg (zz ≫ ·) (morphismRestrict_ι TF.X.π (barComp TF.Y Z))`. Conclude with `(cancel_mono _).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k', hk'⟩` from `exists_chart_of_field (TF.X.F.isLB_LL (AllWt.exOf (T.Q.Dw j) la 0)) (TF.X.pt yy ≫ TF.X.inc)`. Take `⟨Q, tt, hQ, htt⟩` from `FlagCover.exists_chartFr_frBor TF.X yy k' hk'`. Establish `hO : ⊤ ≤ (TF.X.pt yy ≫ TF.X.inc) ⁻¹ᵁ flagOpen TF.X` using `FlagMod.le_preimage_map TF.X.inc (top_le_inc TF.X) le_top`. Establish `hzO : ⊤ ≤ (zz ≫ inc₀ TF.X Z) ⁻¹ᵁ flagOpen TF.X` using `by rw [hzz, ← FlagCover.pt_inc]; exact hO`. Establish `hzk : ⊤ ≤ (zz ≫ inc₀ TF.X Z) ⁻¹ᵁ (TF.X.LL (AllWt.exOf (T.Q.Dw j) la 0)).U k'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hzz, ← FlagCover.pt_inc]`. Conclude with `hk'`. Establish `hTop : ⊤ ≤ zz ⁻¹ᵁ (⊤ : (Y₀ TF.X Z).Opens)` using `fun _ _ => trivial`. Establish `hz1 : ⊤ ≤ zz ⁻¹ᵁ U₀ TF.X Z` using `hzO`. Establish `hz2 : ⊤ ≤ zz ⁻¹ᵁ (L₀ TF.X Z la).U (pIdx _ (inc₀ TF.X Z) k')` using `fun s hs => mem_pIdx.2 (hzk hs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ1 : ⊤ ≤ (zz ≫ π₀ TF.X Z) ⁻¹ᵁ (⊤ : (X₀ TF.Y Z).Opens)` using `fun _ _ => trivial`. Establish `hπ2 : ⊤ ≤ (zz ≫ π₀ TF.X Z) ⁻¹ᵁ L.U k` using `by rw [e2]; exact hk`. Establish `hz3 : ⊤ ≤ zz ⁻¹ᵁ (L.pull (π₀ TF.X Z)).U (pIdx L (π₀ TF.X Z) k)` using `fun s hs => mem_pIdx.2 (hπ2 hs)`. Establish `hz4 : ⊤ ≤ zz ⁻¹ᵁ (LB.div (L₀ TF.X Z la) (L.pull (π₀ TF.X Z))).U (pIdx _ (inc₀ TF.X Z) k', pIdx L (π₀ TF.X Z) k)` using `fun s hs => ⟨hz2 hs, hz3 hs⟩`. Establish `hu : IsUnit (H0.val zz (C.b (pIdx _ (inc₀ TF.X Z) k', pIdx L (π₀ TF.X Z) k)) hTop hz4 G)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[H0.val_ofSec]`. Conclude with `(w.s (pIdx _ (inc₀ TF.X Z) k', pIdx L (π₀ TF.X Z) k)).isUnit.map (GlobalTheory.TangentOrigin.evalPt zz _ hz4)`. Take `⟨c0, hc0⟩ : ∃ c0 : ℂˣ, ∀ g : AllWt.secZ Y.d.Xo₂ Y.d.c₂ (AllWt.exOf (T.Q.Dw j) la 0), evR _ _ g.1 yy = c0.val * H0.val (TF.X.pt yy ≫ TF.X.inc) k' hO hk' (secOf TF.X _ g)` from `⟨_, fun g => evR_eq_val_secOf g hO hQ htt⟩`. Use `⟨c0 * hu.unit, fun t => ?_⟩` and prove the remaining obligations. Use `show evR _ _ (f t).1 yy = _`.
-
-Rewrite using `[hc0 (f t)]`. Rewrite using `[val_congr_pt (p := flagStr TF.X) (B := TF.X.LL (AllWt.exOf (T.Q.Dw j) la 0)) ((FlagCover.pt_inc TF.X yy).trans hzz.symm) k' hO hk' hzO hzk]`. Rewrite using `[show H0.val (zz ≫ inc₀ TF.X Z) k' hzO hzk (secOf TF.X _ (f t)) = H0.val zz (pIdx _ (inc₀ TF.X Z) k') hz1 hz2 (sec₀ TF.X Z _ (f t)) from (H0.val_pull (inc₀ TF.X Z) le_rfl zz (pIdx _ _ k') hz1 hz2 hzO hzk _).symm]`. Rewrite using `[hf' t, val_restr_eq le_top zz _ hTop hz1 hz2]`. Establish `e4 : H0.val zz (pIdx L (π₀ TF.X Z) k) hTop hz3 (H0.pull (p` using `s₀ TF.Y Z) (π₀ TF.X Z) le_top t) = H0.val (v ≫ j₀ TF.Y Z) k le_top hk t := (H0.val_pull (π₀ TF.X Z) le_top zz (pIdx _ _ k) hTop hz3 hπ1 hπ2 t).trans (val_congr_pt e2 k hπ1 hπ2 le_top hk t)`.
-
-Establish `e5 : H0.val zz (pIdx _ (inc₀ TF.X Z) k') hTop hz2 (sOf t) = H0.val zz (pIdx L (π₀ TF.X Z) k) hTop hz3 (H0.pull (p` using `s₀ TF.Y Z) (π₀ TF.X Z) le_top t) * H0.val zz (C.b (pIdx _ (inc₀ TF.X Z) k', pIdx L (π₀ TF.X Z) k)) hTop hz4 G := C.val_mul (p := str₀ TF.X Z) (H0.pull (π₀ TF.X Z) le_top t) G (pIdx _ (inc₀ TF.X Z) k', pIdx L (π₀ TF.X Z) k) zz hTop hz3 hz4 hz2`. Rewrite using `[e5, e4, Units.val_mul, IsUnit.unit_spec]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_rule_of_cls_pull : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (T.Q.Dw j)) (L : LB (X₀ TF.Y Z)) (hL : L.IsLB), CechPic.pull (π₀ TF.X Z) (cls L hL) = cls (L₀ TF.X Z la) (isLB_L₀ TF.X Z _) → ∃ Φ : H0 (s₀ TF.Y Z) L ⊤ → Rul Y.d.Xo₂ Y.d.c₂, (∀ t, nonzeroLocus (toSec t) ≤ (j₀ TF.Y Z).opensRange → Φ t ∈ cuspOn Y.U Z (wtOf (T.Q.Dw j) la 0)) ∧ ∀ (y : FrPt Y.d.Xo₂ Y.d.c₂ ℂ) (v : Sp ℂ ⟶ V₀ TF.Y Z), v ≫ i₀ TF.Y Z = ptF y → ∀ (k : L.ι) (hk : ⊤ ≤ (v ≫ j₀ TF.Y Z) ⁻¹ᵁ L.U k), ∃ lam : ℂˣ, ∀ t, evR Y.d.Xo₂ Y.d.c₂ (Φ t) y = lam * H0.val (v ≫ j₀ TF.Y Z) k le_top hk t := by
   intro D T j Y e o hG hE Z TF la L hL hc

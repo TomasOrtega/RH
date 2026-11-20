@@ -8,11 +8,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.AdicSpan
 
 /- English proof (translation)
-Establish `hfin : (⋃ i ∈ ((b.repr x).support : Set κ), HeightOneSpectrum.Support ℤ (b.repr x i)).Finite` using `(b.repr x).support.finite_toSet.biUnion fun i _ => HeightOneSpectrum.Support.finite ℤ (b.repr x i)`. Use `⟨hfin.toFinset, fun v hv i => ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`. Distinguish the cases in `hi : b.repr x i = 0`. Rewrite using `[hi, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `h1 : v ∉ HeightOneSpectrum.Support ℤ (b.repr x i)` using `fun h => hv (hfin.mem_toFinset.2 (Set.mem_biUnion (Finsupp.mem_support_iff.2 hi) h))`. Establish `h2 : v.valuation ℚ (b.repr x i) ≤ 1` using `not_lt.1 h1`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h3` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (b.repr x i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← h3]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finset_isIntB_one_tmul (M : Type) [AddCommGroup M] [Module ℚ M] (κ : Type)
     (b : Module.Basis κ ℚ M) (x : M) :

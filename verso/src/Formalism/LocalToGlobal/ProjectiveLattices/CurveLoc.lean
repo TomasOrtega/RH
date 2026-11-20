@@ -20,7 +20,7 @@ def constF : B.KO →+* ↥(Frac0 X la w) :=
   (algebraMap (Kp X la N) ↥(Frac0 X la w)).comp ((algebraMap (X.Kl la) (Kp X la N)).comp (algebraMap B.KO (X.Kl la)))
 
 /- English proof (translation)
-Rewrite using `[add_zero_weight_one_eq]`. Conclude with `emb_mem_Vw X la N wL (w i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_inc_mem (i : Fin N) : emb X la N (X.inc wL (w i)) ∈ Vw X la N (addL (wt0 D j) wL 1) := by
   rw [add_zero_weight_one_eq]
@@ -39,7 +39,7 @@ Both sides reduce to the same expression.
 theorem secOf_self : secOf X la N w = Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0 := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (emb_mem_Vw X la N wL (g k))`.
+A detailed English derivation is pending.
 -/
 theorem secOf_mem (g : Fin N → B.Cusp j wL) : secOf X la N g ∈ Vw X la N wL :=
   Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (emb_mem_Vw X la N wL (g k))
@@ -60,7 +60,7 @@ theorem psiZ_apply (ω : Ω) : psiZ X la N w gF ω =
     algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) ((1 : Kp X la N) ⊗ₜ[X.Kl la] ((1 : X.Kl la) ⊗ₜ[B.KO] ω)) := rfl
 
 /- English proof (translation)
-Rewrite using `[rzMap_emb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem alg_rzMap_emb (F : X.Forms) :
     algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) (rzMap X la N Ω gF (emb X la N F)) = psiZ X la N w gF (gF F) := by
@@ -70,7 +70,7 @@ theorem alg_rzMap_emb (F : X.Forms) :
 def invS : RZs X la N Ω gF w := lwZ X la N Ω gF w (w0inv X la w)
 
 /- English proof (translation)
-Establish `h` using `congrArg (lwZ X la N Ω gF w) (section_mul_inverse_eq_one X la w)`. Rewrite `h` using `[map_mul, lwZ_alg, map_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_zero_section_mul_inv :
     algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) (rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) * invS X la N w gF = 1 := by
@@ -79,7 +79,7 @@ theorem weight_zero_section_mul_inv :
   exact h
 
 /- English proof (translation)
-Rewrite using `[phiZ_apply, hx, frac_apply, map_mul, map_pow, lwZ_alg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiZ_of_eq (x : ↥(Frac0 X la w)) (k : ℕ) (g : Rp X la N) (hx : (x : Lw X la w) = frac X la w k g) :
     phiZ X la N Ω gF w x =
@@ -88,14 +88,14 @@ theorem phiZ_of_eq (x : ↥(Frac0 X la w)) (k : ℕ) (g : Rp X la N) (hx : (x : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[phiZ_of_eq X la N w gF _ k _ rfl, alg_rzMap_emb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiZ_fraction_base (k : ℕ) (F : X.Forms) (hF : emb X la N F ∈ Vw X la N (addL (wt0 D j) wL k)) :
     phiZ X la N Ω gF w (fr0 X la N w k F hF) = psiZ X la N w gF (gF F) * invS X la N w gF ^ k := by
   rw [phiZ_of_eq X la N w gF _ k _ rfl, alg_rzMap_emb]
 
 /- English proof (translation)
-Rewrite using `[constF, RingHom.comp_apply, (phiZ X la N Ω gF w).commutes, psiZ_apply, IsScalarTower.algebraMap_apply (Kp X la N) (RZ X la N Ω) (RZs X la N Ω gF w)]`. Use `congr 1`. Use `show (algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) c)) ⊗ₜ[X.Kl la] (1 : X.Kl la ⊗[B.KO] Ω) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one (algebraMap B.KO (X.Kl la) c), TensorProduct.smul_tmul, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one c, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiZ_const (c : B.KO) :
     phiZ X la N Ω gF w (constF X la N w c) = psiZ X la N w gF (algebraMap B.KO Ω c) := by
@@ -108,16 +108,16 @@ theorem phiZ_const (c : B.KO) :
     Algebra.algebraMap_eq_smul_one c, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Rewrite using `[xw, phiZ_fraction_base, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiZ_xw (i : Fin N) :
     phiZ X la N Ω gF w (xw X la N w i) = psiZ X la N w gF (gF (X.inc wL (w i))) * invS X la N w gF := by
   rw [xw, phiZ_fraction_base, pow_one]
 
 /- English proof (translation)
-Establish `h` using `MvPolynomial.eval₂_comp_left (phiZ X la N Ω gF w).toRingHom (constF X la N w) (xw X la N w) Pw`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h`. Establish `hc : (phiZ X la N Ω gF w : ↥(Frac0 X la w) →+* RZs X la N Ω gF w).comp (constF X la N w) = (psiZ X la N w gF).comp (algebraMap B.KO Ω)` using `RingHom.ext fun c => phiZ_const X la N w gF c`. Establish `hx : (⇑(phiZ X la N Ω gF w) ∘ xw X la N w) = fun i => invS X la N w gF * psiZ X la N w gF (gF (X.inc wL (w i)))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.comp_apply, phiZ_xw, mul_comm]`. Rewrite using `[polX, h, hc, hx, CurveCount.eval₂_mul_homog _ _ _ hPw, MvPolynomial.map_aeval]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiZ_polX {Pw : MvPolynomial (Fin N) B.KO} {k : ℕ} (hPw : Pw.IsHomogeneous k) :
     phiZ X la N Ω gF w (polX X la N w Pw) =
@@ -134,14 +134,14 @@ theorem phiZ_polX {Pw : MvPolynomial (Fin N) B.KO} {k : ℕ} (hPw : Pw.IsHomogen
   rfl
 
 /- English proof (translation)
-Simplify using `only [secOf, map_sum, map_smul, rzMap_emb, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rzMap_secOf (g g' : Fin N → B.Cusp j wL) (h : ∀ k, gF (X.inc wL (g k)) = gF (X.inc wL (g' k))) :
     rzMap X la N Ω gF (secOf X la N g) = rzMap X la N Ω gF (secOf X la N g') := by
   simp only [secOf, map_sum, map_smul, rzMap_emb, h]
 
 /- English proof (translation)
-Simplify using `only [secOf, map_sum, map_smul, rzMap_emb, h, TensorProduct.tmul_zero, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rzMap_secOf_zero (g : Fin N → B.Cusp j wL) (h : ∀ k, gF (X.inc wL (g k)) = 0) :
     rzMap X la N Ω gF (secOf X la N g) = 0 := by
@@ -154,9 +154,9 @@ section Fam
 variable {ι : Type} (Ω : ι → Type) [∀ Z, CommRing (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `choose g hg using hsplit Z`. Establish `hmem : frac X la w 1 (secOf X la N g) ∈ Frac0 X la w` using `Algebra.subset_adjoin (frac_mem_Hfr X la w (by rw [add_zero_weight_one_eq]; exact secOf_mem X la N g))`. Establish `h1 : (⟨_, hmem⟩ : ↥(Frac0 X la w)) - 1 ∈ 𝔮` using `hZ (by`. Rewrite using `[RingHom.mem_ker, map_sub, map_one, phiZ_of_eq X la N w (gF Z) _ 1 _ rfl, rzMap_secOf X la N (gF Z) g w (fun k => (hg k).1), secOf_self, pow_one, weight_zero_section_mul_inv, sub_self])`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (⟨_, hmem⟩ : ↥(Frac0 X la w)) ∈ 𝔮` using `hZ' (by`. Rewrite using `[RingHom.mem_ker, phiZ_of_eq X la N w (gF Z') _ 1 _ rfl, rzMap_secOf_zero X la N (gF Z') g (fun k => (hg k).2 Z' (Ne.symm hne)), map_zero, zero_mul])`. Establish `h3` using `𝔮.sub_mem h2 h1`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `h𝔮.ne_top ((Ideal.eq_top_iff_one _).2 h3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_of_split
     (hsplit : ∀ (Z : ι) (k : Fin N), ∃ g : B.Cusp j wL, gF Z (X.inc wL g) = gF Z (X.inc wL (w k)) ∧
@@ -201,25 +201,25 @@ def Good (r : RZs X la N Ω gF w) : Prop :=
   ∃ a p : ↥(Frac0 X la w), Den X la N w gF p ∧ phiZ X la N Ω gF w p * r = phiZ X la N Ω gF w a
 
 /- English proof (translation)
-Introduce `_ h𝔮 _ _ h` and use `h𝔮.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem den_one : Den X la N w gF 1 := fun _ h𝔮 _ _ h => h𝔮.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
 /- English proof (translation)
-Introduce `𝔮 h𝔮 hJ hK h` and use `(h𝔮.mem_or_mem h).elim (hp 𝔮 h𝔮 hJ hK) (hp' 𝔮 h𝔮 hJ hK)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem den_mul {p p' : ↥(Frac0 X la w)} (hp : Den X la N w gF p) (hp' : Den X la N w gF p') :
     Den X la N w gF (p * p') := fun 𝔮 h𝔮 hJ hK h =>
   (h𝔮.mem_or_mem h).elim (hp 𝔮 h𝔮 hJ hK) (hp' 𝔮 h𝔮 hJ hK)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨f, 1, den_one X la N w gF, by rw [map_one, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_phi (f : ↥(Frac0 X la w)) : Good X la N w gF (phiZ X la N Ω gF w f) :=
   ⟨f, 1, den_one X la N w gF, by rw [map_one, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨a, p, hp, he⟩` from `hr`. Take `⟨a', p', hp', he'⟩` from `hs`. Use `⟨p' * a + p * a', p * p', den_mul X la N w gF hp hp', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_add, map_mul, map_mul, ← he, ← he']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem good_add {r s : RZs X la N Ω gF w} (hr : Good X la N w gF r) (hs : Good X la N w gF s) :
     Good X la N w gF (r + s) := by
@@ -230,7 +230,7 @@ theorem good_add {r s : RZs X la N Ω gF w} (hr : Good X la N w gF r) (hs : Good
   ring
 
 /- English proof (translation)
-Take `⟨a, p, hp, he⟩` from `hr`. Take `⟨a', p', hp', he'⟩` from `hs`. Use `⟨a * a', p * p', den_mul X la N w gF hp hp', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← he, ← he']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem good_mul {r s : RZs X la N Ω gF w} (hr : Good X la N w gF r) (hs : Good X la N w gF s) :
     Good X la N w gF (r * s) := by
@@ -241,7 +241,7 @@ theorem good_mul {r s : RZs X la N Ω gF w} (hr : Good X la N w gF r) (hs : Good
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Simplify using `using good_phi X la N w gF 1`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `good_mul X la N w gF ih hr`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem good_pow {r : RZs X la N Ω gF w} (hr : Good X la N w gF r) (n : ℕ) : Good X la N w gF (r ^ n) := by
   induction n with
@@ -249,16 +249,16 @@ theorem good_pow {r : RZs X la N Ω gF w} (hr : Good X la N w gF r) (n : ℕ) : 
   | succ n ih => rw [pow_succ]; exact good_mul X la N w gF ih hr
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, ← (phiZ X la N Ω gF w).commutes c]`. Conclude with `good_mul X la N w gF (good_phi X la N w gF _) hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_smul (c : Kp X la N) {r : RZs X la N Ω gF w} (hr : Good X la N w gF r) : Good X la N w gF (c • r) := by
   rw [Algebra.smul_def, ← (phiZ X la N Ω gF w).commutes c]
   exact good_mul X la N w gF (good_phi X la N w gF _) hr
 
 /- English proof (translation)
-Take `⟨k, g, Pw, hPw, hne, he⟩` from `hB ω`. Establish `hG : emb X la N (X.inc (wsmul k wL) g) ∈ Vw X la N (addL (wt0 D j) wL k)`. Rewrite using `[addL, zero_weight_add]`. Conclude with `emb_mem_Vw X la N _ g`. Use `⟨fr0 X la N w k _ hG, polX X la N w Pw, fun 𝔮 h𝔮 hJ hK => hC 𝔮 h𝔮 hJ hK Pw hPw hne, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phiZ_polX X la N w gF hPw, phiZ_fraction_base, ← he, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem good_psi (hB : BirAt X N w gF) (hC : CountQAt X la N w gF) (ω : Ω) :
     Good X la N w gF (psiZ X la N w gF ω) := by
@@ -271,9 +271,9 @@ theorem good_psi (hB : BirAt X N w gF) (hC : CountQAt X la N w gF) (ω : Ω) :
   ring
 
 /- English proof (translation)
-Establish `h1 : emb X la N (X.inc wL (w k0)) ∈ Vw X la N (addL (wt0 D j) wL 1)`. Rewrite using `[add_zero_weight_one_eq]`. Conclude with `emb_mem_Vw X la N wL (w k0)`. Establish `e : invS X la N w gF = phiZ X la N Ω gF w (fr0 X la N w 1 _ h1) * psiZ X la N w gF (gF (X.inc wL (w k0)))⁻¹`. Rewrite using `[phiZ_fraction_base, pow_one, mul_right_comm, ← map_mul, mul_inv_cancel₀ hk0, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `good_mul X la N w gF (good_phi X la N w gF _) (good_psi X la N w gF hB hC _)`.
+A detailed English derivation is pending.
 -/
 theorem good_invS (hB : BirAt X N w gF) (hC : CountQAt X la N w gF) (k0 : Fin N)
     (hk0 : gF (X.inc wL (w k0)) ≠ 0) : Good X la N w gF (invS X la N w gF) := by
@@ -286,7 +286,7 @@ theorem good_invS (hB : BirAt X N w gF) (hC : CountQAt X la N w gF) (k0 : Fin N)
   exact good_mul X la N w gF (good_phi X la N w gF _) (good_psi X la N w gF hB hC _)
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h : (l ⊗ₜ[B.KO] ω : X.Kl la ⊗[B.KO] Ω) = l • ((1 : X.Kl la) ⊗ₜ[B.KO] ω)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq (κ : Kp X la N) (l : X.Kl la) (ω : Ω) :
     (κ ⊗ₜ[X.Kl la] (l ⊗ₜ[B.KO] ω) : RZ X la N Ω) =
@@ -297,19 +297,17 @@ theorem tmul_eq (κ : Kp X la N) (l : X.Kl la) (ω : Ω) :
   rw [h, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hk : ∃ k, gF (X.inc wL (w k)) ≠ 0`. Take `⟨k0, hk0⟩` from `hk`. Establish `hRZ : ∀ x : RZ X la N Ω, Good X la N w gF (algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [map_zero]`. Simplify using `using good_phi X la N w gF 0`. Consider the case `tmul κ v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => rw [TensorProduct.tmul_zero, map_zero]`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `using good_phi X la N w gF 0`. Consider the case `tmul l ω`. Rewrite using `[tmul_eq, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, ← Algebra.smul_def]`. Conclude with `good_smul X la N w gF _ (good_psi X la N w gF hB hC ω)`. Consider the case `add v₁ v₂ h₁ h₂ => rw [TensorProduct.tmul_add, map_add]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `good_add X la N w gF h₁ h₂`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `good_add X la N w gF hx hy`. Take `⟨⟨x, y⟩, hr⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))) r`. Take `⟨n, hn⟩` from `(Submonoid.mem_powers_iff _ _).mp y.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : r = algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) x * invS X la N w gF ^ n`. Rewrite using `[← hr]`. Use `show IsLocalization.mk' (RZs X la N Ω gF w) x y = _`. Rewrite using `[IsLocalization.mk'_eq_iff_eq_mul, ← hn, map_pow, mul_assoc, ← mul_pow, mul_comm (invS X la N w gF), weight_zero_section_mul_inv, one_pow, mul_one]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, p, hp, he⟩` from `good_mul X la N w gF (hRZ x) (good_pow X la N w gF (good_invS X la N w gF hB hC k0 hk0) n)`. Conclude with `⟨a, p, hp, he⟩`. Use `push Not at hk`. Establish `hz : rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0) = 0` using `rzMap_secOf_zero X la N gF w hk`. Establish `h2 : algebraMap (RZ X la N Ω) (RZs X la N Ω gF w) (rzMap X la N Ω gF (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) = 0` using `(congrArg (algebraMap (RZ X la N Ω) (RZs X la N Ω gF w)) hz).trans (map_zero _)`.
-
-Establish `h0 : (1 : RZs X la N Ω gF w) = 0`. Rewrite using `[← weight_zero_section_mul_inv X la N w gF, h2, zero_mul]`. Use `subsingleton_of_zero_eq_one h0.symm` as an intermediate fact. Conclude with `⟨0, 1, den_one X la N w gF, Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_of_bir (hB : BirAt X N w gF) (hC : CountQAt X la N w gF) (r : RZs X la N Ω gF w) :
     ∃ a p : ↥(Frac0 X la w), (∀ 𝔮 : Ideal ↥(Frac0 X la w), 𝔮.IsPrime → Jid X la w ≤ 𝔮 →

@@ -9,11 +9,11 @@ open scoped Classical
 namespace GlobalTheory.LoopVol
 
 /- English proof (translation)
-Set `f : (ι → ℂ) →ₗ[ℝ] (ι → ℂ)` to `(Matrix.toLin' M).restrictScalars ℝ`. Establish `hdet : LinearMap.det f = 1`. Simplify using `only [f, LinearMap.det_restrictScalars, LinearMap.det_toLin', hM, map_one]`. Establish `hfun : (f : (ι → ℂ) → ι → ℂ) = fun c => M *ᵥ c`. Use function extensionality and compare the values at `c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[f, Matrix.toLin'_apply]`. Establish `hlin : MeasurePreserving (fun c : ι → ℂ => M *ᵥ c) volume volume`. Rewrite using `[← hfun]`. Use `⟨(LinearMap.continuous_of_finiteDimensional f).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hdet]; exact one_ne_zero), hdet]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(measurePreserving_add_right volume b).comp hlin`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_affine {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (hM : M.det = 1) (b : ι → ℂ) :
     MeasurePreserving (fun c : ι → ℂ => M *ᵥ c + b) volume volume := by
@@ -33,13 +33,11 @@ theorem measurePreserving_affine {ι : Type*} [Fintype ι] [DecidableEq ι] (M :
 variable {N : ℕ}
 
 /- English proof (translation)
-Simplify using `only [ofRoots]`. Distinguish the cases in `h : (i, j) ∈ R`. Rewrite using `[dif_pos h, Matrix.one_apply_ne (hR _ h).ne, zero_add, Finset.sum_eq_single ⟨(i, j), h⟩]`. Simplify using the standard rewrite rules. Introduce `q _ hq`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hq (Subtype.ext h')`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_neg h, Finset.sum_eq_zero, add_zero, Matrix.one_apply]`. Introduce `q _`. Rewrite using `[if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises.
-
-Rewrite using `[← h']`. Conclude with `q.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofRoots_eq (R : Finset (Fin N × Fin N)) (hR : ∀ q ∈ R, q.1 < q.2) (c : R → ℂ) (i j : Fin N) :
     ofRoots R c i j = (1 : Matrix (Fin N) (Fin N) ℂ) i j + ∑ q : R, if q.1 = (i, j) then c q else 0 := by
@@ -62,13 +60,13 @@ theorem ofRoots_eq (R : Finset (Fin N × Fin N)) (hR : ∀ q ∈ R, q.1 < q.2) (
     exact q.2
 
 /- English proof (translation)
-Set `key : R → Fin N ×ₗ (Fin N)ᵒᵈ` to `fun q => toLex (q.1.1, OrderDual.toDual q.1.2)`. Establish `hinj : Function.Injective key`. Introduce `x y h`. Simplify using `only [key, toLex_inj, Prod.mk.injEq, OrderDual.toDual_inj] at h`. Conclude with `Subtype.ext (Prod.ext h.1 h.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e` to `Equiv.ofInjective key hinj`. Rewrite using `[← Matrix.det_reindex_self e, Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, (ha _ _).2 rfl, (hb _ _).2 rfl, mul_one]`. Introduce `i j hlt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply]`. Establish `hk : key (e.symm j) < key (e.symm i)`. Simplify using `only [e, Equiv.apply_ofInjective_symm]`. Conclude with `hlt`. Simplify using `only [key, Prod.Lex.toLex_lt_toLex, OrderDual.toDual_lt_toDual] at hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hk with h1 | ⟨-, h2⟩` into its components or cases. Rewrite using `[(ha _ _).1 h1, zero_mul]`. Rewrite using `[(hb _ _).1 h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_two_sided (R : Finset (Fin N × Fin N)) (a b : Matrix (Fin N) (Fin N) ℂ) (ha : IsUpUni a)
     (hb : IsUpUni b) : (Matrix.of fun q q' : R => a q.1.1 q'.1.1 * b q'.1.2 q.1.2).det = 1 := by
@@ -93,13 +91,13 @@ theorem det_two_sided (R : Finset (Fin N × Fin N)) (a b : Matrix (Fin N) (Fin N
     · rw [(hb _ _).1 h2, mul_zero]
 
 /- English proof (translation)
-Establish `hent : ∀ (c : R → ℂ) (x y : Fin N), (a * ofRoots R c * b) x y = ∑ q : R, a x q.1.1 * b q.1.2 y * c q + (a * b) x y`. Introduce `c x y`. Establish `hO : ofRoots R c = 1 + ∑ q : R, c q • Matrix.of (fun i j => if q.1 = (i, j) then (1 : ℂ) else 0)`. Use extensionality with `i j`. Rewrite using `[ofRoots_eq R hR c i j, Matrix.add_apply, Matrix.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[hO, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.add_apply, add_comm, Finset.mul_sum, Finset.sum_mul, Matrix.sum_apply]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, mul_comm (c q)]`. Use `congr 1`. Simplify using `[Matrix.mul_apply, Prod.ext_iff, ite_and]`. Establish `h` using `measurePreserving_affine (Matrix.of fun q q' : R => a q.1.1 q'.1.1 * b q'.1.2 q.1.2) (det_two_sided R a b ha hb) (fun q : R => (a * b) q.1.1 q.1.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c q`. Simplify using `only [hent, Pi.add_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem measurePreserving_mul (R : Finset (Fin N × Fin N)) (hR : ∀ q ∈ R, q.1 < q.2)
     (a b : Matrix (Fin N) (Fin N) ℂ) (ha : IsUpUni a) (hb : IsUpUni b) :
@@ -127,7 +125,7 @@ theorem measurePreserving_mul (R : Finset (Fin N × Fin N)) (hR : ∀ q ∈ R, q
   simp only [hent, Pi.add_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]
 
 /- English proof (translation)
-The claim follows from `measurePreserving_pi (fun _ => volume) (fun _ => volume) fun v => measurePreserving_mul R hR (a v) (b v) (ha v) (hb v)`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_mul_pi {ι : Type*} [Fintype ι] (R : Finset (Fin N × Fin N)) (hR : ∀ q ∈ R, q.1 < q.2)
     (a b : ι → Matrix (Fin N) (Fin N) ℂ) (ha : ∀ v, IsUpUni (a v)) (hb : ∀ v, IsUpUni (b v)) :

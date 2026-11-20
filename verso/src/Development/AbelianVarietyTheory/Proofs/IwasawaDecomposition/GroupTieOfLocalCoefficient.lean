@@ -10,11 +10,11 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.HeightCounting.Fin3
 
 /- English proof (translation)
-Introduce `hL K B f T w P x l`. Establish `hc` using `GlobalTheory.Mem.R3.pins_card_index_ranks _ _ _ _ _ _ _ _ _ _ x.m.z.pins`. Establish `hU : (Dof x).nexp.U = Formalism.IndefR.NX.U (Dof x).nd` using `l.b.Bs.exp.U_eq`. Take `⟨_, _, _, he0, _, _⟩` from `x.m.z.pins.keep.grp`. Use `⟨hc.1, he0, ?_, ?_, hc.2.1, x.m.z.pins.keep.psi.lvl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Rewrite using `[hU]`. Conclude with `l.rat.rat.lvl g`. Introduce `u hu i b`. Establish `hu' : (x.m.z.R.eG.trans x.m.z.cG) u ∈ Formalism.IndefR.NX.U (Dof x).nd` using `hU ▸ hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨psiUOf (Dof x).nd (NX.xiRed (Dof x)) l.rat.In.θ ⟨_, hu'⟩, l.rat.rat.psi u hu', ?_⟩` and prove the remaining obligations. Conclude with `l.b.Bs.psiU i b _ hu hu'`.
+A detailed English derivation is pending.
 -/
 theorem grpTie_of_LC : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (_ : LC hL x), Formalism.L2.DIV.GrpTie (Dof x)

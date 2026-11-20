@@ -33,11 +33,11 @@ def formFrame {K : Type} [Field K] [NumberField K] {n : ℕ} (H : Matrix (Fin n)
   (CFC.sqrt (H.map v.embedding))⁻¹
 
 /- English proof (translation)
-Unfold `formFrame`. Generalize the expression as in `H.map v.embedding = A at h`. Establish `h0 : 0 ≤ A` using `h.posSemidef.nonneg`. Establish `h1 : CFC.sqrt A * CFC.sqrt A = A` using `CFC.sqrt_mul_sqrt_self A h0`. Establish `hd : IsUnit (CFC.sqrt A).det`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 h.isUnit`. Rewrite `this` using `[← h1, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`. Establish `hh : (CFC.sqrt A).conjTranspose = CFC.sqrt A` using `(Matrix.nonneg_iff_posSemidef.1 (CFC.sqrt_nonneg A)).isHermitian`. Use `⟨Matrix.isUnit_nonsing_inv_det _ hd, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd, hh, h1]`.
+A detailed English derivation is pending.
 -/
 theorem formFrame_spec {K : Type} [Field K] [NumberField K] {n : ℕ} (H : Matrix (Fin n) (Fin n) K)
     (v : InfinitePlace K) (h : (H.map v.embedding).PosDef) :
@@ -76,9 +76,9 @@ open Classical in
 def occurring (Df : DefSide Bs) : Finset Bs.Ix := Finset.univ.filter fun p => Df.Qp Bs.μ0 p ≠ ⊥
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hall : ∀ p, Df.Qp Bs.μ0 p = ⊥`. Introduce `p`. Assume the negation of the conclusion as `h`. Conclude with `hne ⟨p, by simp [occurring, h]⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `htop` using `hW.Qp_top`. Simplify using `only [hall, iSup_bot] at htop`. Establish `: Nonempty (Fin (Df.dQ Bs.μ0))` using `⟨⟨0, hp⟩⟩`. Conclude with `bot_ne_top htop`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem occurring_nonempty (hW : Df.WF) (hp : Df.Pos) : (occurring Df).Nonempty := by
   by_contra hne
@@ -140,7 +140,7 @@ def InfinitePlaces (C : ℝ) [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df
     MeanBounds C hW S XM vm E S0 e k t x ε
 
 /- English proof (translation)
-Use `Finset.le_inf' _ _ fun p hp => h p ?_` and prove the remaining obligations. Simplify `hp` using `[occurring]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_lamMin (hW : Df.WF) (S : IndefRows Df) (v : InfinitePlace K) (c : ℝ)
     (h : ∀ p, Df.Qp Bs.μ0 p ≠ ⊥ → c ≤ ∑ j, Real.log (S.lam j Bs.μ0 p v)) : c ≤ lamMin hW S v := by
@@ -149,7 +149,7 @@ theorem le_lamMin (hW : Df.WF) (S : IndefRows Df) (v : InfinitePlace K) (c : ℝ
   simpa [occurring] using hp
 
 /- English proof (translation)
-Establish `hr : 0 < rootDiscr E` using `Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero E)) _`. Establish `hb : 0 < numB x ε` using `Real.exp_pos _`. Rewrite using `[numLa, Real.log_mul (mul_pos hx hb).ne' hr.ne', Real.log_mul hx.ne' hb.ne', numB, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem numLa_eq (E : Type) [Field E] [NumberField E] {x : ℝ} (ε : ℝ) (hx : 0 < x) :
     numLa E x ε = numL x ε + Real.log x + Real.log (rootDiscr E) := by

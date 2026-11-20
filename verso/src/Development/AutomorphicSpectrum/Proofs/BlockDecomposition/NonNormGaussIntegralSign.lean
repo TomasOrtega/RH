@@ -17,7 +17,7 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Establish `h : (haarIntegers K).restrict ({0}ᶜ : Set K) = haarIntegers K` using `Measure.restrict_eq_self_of_ae_mem ((measure_eq_zero_iff_ae_notMem.mp haarIntegers_singleton_zero).mono fun x hx => hx)`. Rewrite using `[h, lintegral_indicator_one hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem setLIntegral_compl_zero_indicator {T : Set K} (hT : MeasurableSet T) :
     ∫⁻ x in {0}ᶜ, T.indicator 1 x ∂(haarIntegers K) = haarIntegers K T := by
@@ -40,15 +40,15 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarch
 def gS (S : Set F) (y : F) : ENNReal := S.indicator 1 y * (modulus y : ENNReal)
 
 /- English proof (translation)
-The claim follows from `(measurable_one.indicator hS).mul measurable_modulus.coe_nnreal_ennreal`.
+A detailed English derivation is pending.
 -/
 theorem measurable_gS {S : Set F} (hS : MeasurableSet S) : Measurable (gS S) :=
   (measurable_one.indicator hS).mul measurable_modulus.coe_nnreal_ennreal
 
 /- English proof (translation)
-Rewrite using `[lintegral_multHaar (measurable_gS hS), ← setLIntegral_compl_zero_indicator hS]`. Use `congr 1`. Use `setLIntegral_congr_fun (measurableSet_singleton 0).compl fun x hx => ?_` and prove the remaining obligations. Establish `h0 : (modulus x : ENNReal) ≠ 0` using `by exact_mod_cast (modulus_pos hx).ne'`. Simplify using `only [gS]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm (S.indicator 1 x), ← mul_assoc, ENNReal.inv_mul_cancel h0 ENNReal.coe_ne_top, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_gS {S : Set F} (hS : MeasurableSet S) :
     ∫⁻ u : Fˣ, gS S (u : F) ∂(multHaar F) = multHaarConst F * haarIntegers F S := by
@@ -60,11 +60,9 @@ theorem lintegral_gS {S : Set F} (hS : MeasurableSet S) :
   rw [mul_comm (S.indicator 1 x), ← mul_assoc, ENNReal.inv_mul_cancel h0 ENNReal.coe_ne_top, one_mul]
 
 /- English proof (translation)
-Establish `hN` using `GlobalTheory.CompanionTheory.WeilSB.continuous_norm_of (F := F) (E := E) h`. Rewrite using `[Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (Units.val ∘ (normUnits F E) : Eˣ → F) = fun x : Eˣ => Algebra.norm F (x : E)`. Use function extensionality and compare the values at `fun x => coe_normUnits x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `hN.comp Units.continuous_val`. Establish `e : (fun x : Eˣ => (((normUnits F E x)⁻¹ : Fˣ) : F)) = fun x : Eˣ => Algebra.norm F ((x⁻¹ : Eˣ) : E)` using `funext fun x => by`. Rewrite using `[← map_inv, coe_normUnits]`. Use `show Continuous (fun x : Eˣ => (((normUnits F E x)⁻¹ : Fˣ) : F))`.
-
-Rewrite using `[e]`. Conclude with `hN.comp (Units.continuous_val.comp continuous_inv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_normUnits (h : Continuous (algebraMap F E)) : Continuous (normUnits F E) := by
   have hN := GlobalTheory.CompanionTheory.WeilSB.continuous_norm_of (F := F) (E := E) h
@@ -82,11 +80,11 @@ theorem continuous_normUnits (h : Continuous (algebraMap F E)) : Continuous (nor
     exact hN.comp (Units.continuous_val.comp continuous_inv)
 
 /- English proof (translation)
-Establish `hN` using `GlobalTheory.CompanionTheory.WeilSB.continuous_norm_of (F := F) (E := E) h`. Establish `hm : Measurable (fun u : E => (c : F) * Algebra.norm F u)` using `(continuous_const.mul hN).measurable`. Establish `hT : MeasurableSet ((fun u : E => (c : F) * Algebra.norm F u) ⁻¹' S)` using `hm hS`. Rewrite using `[lintegral_multHaar (g := fun x : E => gS S ((c : F) * Algebra.norm F x)) ((measurable_gS hS).comp hm), ← setLIntegral_compl_zero_indicator hT, ← lintegral_const_mul _ (measurable_one.indicator hT)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `setLIntegral_congr_fun (measurableSet_singleton 0).compl fun x hx => ?_` and prove the remaining obligations. Establish `h0 : (modulus x : ENNReal) ≠ 0` using `by exact_mod_cast (modulus_pos hx).ne'`. Establish `hmod : (modulus ((c : F) * Algebra.norm F x) : ENNReal) = (modulus (c : F) : ENNReal) * (modulus x : ENNReal)`. Rewrite using `[modulus_mul, modulus_norm]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `hi : (((fun u : E => (c : F) * Algebra.norm F u) ⁻¹' S).indicator 1 x : ENNReal) = S.indicator 1 ((c : F) * Algebra.norm F x)` using `rfl`. Simplify using `only [gS]`. Rewrite using `[hmod, hi]`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lintegral_gS_norm (h : Continuous (algebraMap F E)) (c : Fˣ) {S : Set F}
     (hS : MeasurableSet S) :
@@ -115,11 +113,11 @@ theorem lintegral_gS_norm (h : Continuous (algebraMap F E)) (c : Fˣ) {S : Set F
     _ = _ := by rw [ENNReal.inv_mul_cancel h0 ENNReal.coe_ne_top, one_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hc` using `continuous_normUnits (F := F) (E := E) h`. Establish `hm1 : Measurable (normUnits F E)` using `hc.measurable`. Establish `hm2 : Measurable (fun x : Eˣ => a * normUnits F E x)` using `(continuous_const.mul hc).measurable`. Establish `hg : Measurable (fun u : Fˣ => gS S (u : F))` using `(measurable_gS hS).comp Units.continuous_val.measurable`. Establish `key` using `congrArg (fun μ : Measure Fˣ => ∫⁻ u, gS S (u : F) ∂μ) H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[lintegral_add_measure, lintegral_map hg hm1, lintegral_map hg hm2, lintegral_smul_measure, lintegral_gS hS]`. Establish `e1 : ∫⁻ u : Eˣ, gS S ((normUnits F E u : Fˣ) : F) ∂(multHaar E) = multHaarConst E * haarIntegers E ((Algebra.norm F : E → F) ⁻¹' S)`. Use `lintegral_gS_norm (F := F) (E := E) h 1 hS` as an intermediate fact. Simplify `this` using `[coe_normUnits, modulus_one]`. Establish `e2 : ∫⁻ u : Eˣ, gS S (((a * normUnits F E u : Fˣ)) : F) ∂(multHaar E) = multHaarConst E * ((modulus (a : F) : ENNReal) * haarIntegers E ((fun u : E => (a : F) * Algebra.norm F u) ⁻¹' S))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `lintegral_gS_norm (F := F) (E := E) h a hS` as an intermediate fact. Simplify `this` using `[coe_normUnits]`. Rewrite `key` using `[e1, e2]`. Rewrite using `[mul_add, key, ENNReal.smul_def, smul_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_identity (h : Continuous (algebraMap F E)) (a : Fˣ) (κ₀ : NNReal)
     (H : (multHaar E).map (normUnits F E) + (multHaar E).map (fun x => a * normUnits F E x) =
@@ -150,9 +148,9 @@ theorem haar_identity (h : Continuous (algebraMap F E)) (a : Fˣ) (κ₀ : NNRea
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hcont a ha`. Take `⟨κ₀, hκ⟩` from `H F E hcont a ha`. Establish `hE0` using `multHaarConst_ne_zero (K := E)`. Establish `hEt` using `multHaarConst_ne_top (K := E)`. Use `⟨(multHaarConst E)⁻¹ * ((κ₀ : ENNReal) * multHaarConst F), ?_, fun S hS => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ENNReal.mul_ne_top (ENNReal.inv_ne_top.mpr hE0) (ENNReal.mul_ne_top ENNReal.coe_ne_top multHaarConst_ne_top)`. Establish `key` using `haar_identity (F := F) (E := E) hcont a κ₀ hκ hS`. Rewrite using `[mul_assoc, ← key, ← mul_assoc, ENNReal.inv_mul_cancel hE0 hEt, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_of_multHaar
     (H : ∀ (F E : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]

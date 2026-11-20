@@ -40,7 +40,7 @@ def utEquiv (n : ℕ) : Fin n ⊕ UT n ≃ UT (n + 1) :=
           | succ j => exact ⟨Sum.inr ⟨(i, j), Fin.succ_lt_succ_iff.1 h⟩, rfl⟩)
 
 /- English proof (translation)
-Establish `h1` using `(measurePreserving_piCongrLeft (α := fun _ : ι => B) (fun _ : ι => ν) φ).symm`. Establish `h2` using `measurePreserving_sumPiEquivProdPi (fun _ : κ ⊕ τ => ν)`. Use `h2.comp h1 using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem pi_split {ι κ τ B : Type} [Fintype ι] [Fintype κ] [Fintype τ] [MeasurableSpace B]
     (φ : κ ⊕ τ ≃ ι) (ν : Measure B) [SigmaFinite ν] :
@@ -61,9 +61,9 @@ def blockT {A B : Type} (n : ℕ) (x : (Fin (n + 1) → A) × (UT (n + 1) → B)
       (fun i => x.1 i.succ, fun p => x.2 (utEquiv n (Sum.inr p)))))
 
 /- English proof (translation)
-Establish `h1` using `(measurePreserving_funUnique lam (Fin 1)).symm`. Establish `h2 : MeasurePreserving (fun f : Fin 1 → A => ((f, fun p => isEmptyElim p) : (Fin 1 → A) × (UT 1 → B))) (Measure.pi fun _ : Fin 1 => lam) ((Measure.pi fun _ : Fin 1 => lam).prod (Measure.pi fun _ : UT 1 => κ))`. Establish `hd : Measure.pi (fun _ : UT 1 => κ) = Measure.dirac (fun p => isEmptyElim p)` using `Measure.pi_of_empty _ _`. Rewrite using `[hd, Measure.prod_dirac]`. Conclude with `⟨by fun_prop, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `h2.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem scalar_mp {A B : Type} [MeasurableSpace A] [MeasurableSpace B] (lam : Measure A) (κ : Measure B)
     [SigmaFinite lam] :
@@ -80,15 +80,15 @@ theorem scalar_mp {A B : Type} [MeasurableSpace A] [MeasurableSpace B] (lam : Me
   exact h2.comp h1
 
 /- English proof (translation)
-Use `set Au := Measure.pi fun _ : Fin n => lam`. Use `set Bw := Measure.pi fun _ : Fin n => κ`. Use `set Cv := Measure.pi fun _ : UT n => κ`. Establish `h1` using `measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => lam) 0`. Establish `h2` using `pi_split (utEquiv n) κ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12` using `h1.prod h2`. Establish `m1` using `measurePreserving_prodAssoc lam Au (Bw.prod Cv)`. Establish `m2` using `(MeasurePreserving.id lam).prod ((measurePreserving_prodAssoc Au Bw Cv).symm)`. Establish `m3` using `(MeasurePreserving.id lam).prod ((Measure.measurePreserving_swap (μ := Au) (ν := Bw)).prod (MeasurePreserving.id Cv))`. Establish `m4` using `(MeasurePreserving.id lam).prod (measurePreserving_prodAssoc Bw Au Cv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1` using `scalar_mp (B := B) lam κ`. Establish `g2` using `(measurePreserving_funUnique Bw (Fin 1)).symm`. Establish `m5` using `g1.prod (g2.prod (MeasurePreserving.id (Au.prod Cv)))`. Establish `all` using `m5.comp (m4.comp (m3.comp (m2.comp (m1.comp h12))))`. It suffices to establish `hf : blockT (A` using `A) (B := B) n = _ by`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hf]`. Conclude with `all`. Use `clear all m5 m4 m3 m2 m1 h12 h1 h2 g1 g2`. Use function extensionality and compare the values at `x`. Take `⟨u, v⟩` from `x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[blockT, MeasurableEquiv.piFinSuccAbove, Prod.map]`. Use `⟨rfl, ?_, rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[uniqueElim_const]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem blockT_mp {A B : Type} [MeasurableSpace A] [MeasurableSpace B] (lam : Measure A) (κ : Measure B)
     [SigmaFinite lam] [SigmaFinite κ] (n : ℕ) :
@@ -144,9 +144,9 @@ def glue (σ : E →ₐ[F] E) {n : ℕ} (t : HermR R σ 1) (w : Fin 1 → Fin n 
     (fun i => Fin.cases (sigR R σ (w 0 i)) (fun j => (L : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i j) b) a
 
 /- English proof (translation)
-Introduce `a b`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact t.2 0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j => exact HypStage.sigR_sigR R σ hinv _`. Consider the case `succ i`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ j => exact L.2 i j`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem glue_mem {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {n : ℕ} (t : HermR R σ 1)
     (w : Fin 1 → Fin n → R ⊗[F] E) (L : HermR R σ n) : glue R σ t w L ∈ HermR R σ (n + 1) := by
@@ -164,7 +164,7 @@ theorem glue_mem {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) {n : ℕ} (t
 variable [TopologicalSpace R]
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val (p := fun S => S ∈ HermR R σ m)).matrix_elem a b`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry (σ : E →ₐ[F] E) {m : ℕ} (a b : Fin m) :
     Continuous fun S : HermR R σ m => (S : Matrix (Fin m) (Fin m) (R ⊗[F] E)) a b :=
@@ -228,11 +228,9 @@ def blockHomeo {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) (hsig : Contin
 end Herm
 
 /- English proof (translation)
-Take `⟨t1, t2, t3, t4, t5, t6, -, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hcm`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R _`. Use `haveI : BorelSpace (HermR R σ m) := ⟨rfl⟩`. Establish `hh` using `HaarCoord.hermCoord_isHomeomorph R hinv h2 hδ hσδ m t5 t6`. Set `ge` to `(hh.homeomorph _).toMeasurableEquiv`. Use `⟨ge, fun _ => rfl, ge.measurable, ?_⟩` and prove the remaining obligations.
-
-Establish `hc : coordHerm R σ b lam m = Measure.map ge.symm ((Measure.pi fun _ : Fin m => lam).prod (Measure.pi fun _ : UT m => coordK R b lam))` using `(MeasurableEquiv.map_symm ge).symm`. Rewrite using `[hc, Measure.map_map ge.measurable ge.symm.measurable]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coordHerm_equiv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
@@ -260,23 +258,19 @@ theorem coordHerm_equiv {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ R _ _ _ _ _ hloc n d b lam hlam`. Take `⟨l1, l2, l3, l4, -⟩` from `hloc`. Use `haveI := l1`. Use `haveI := l2`. Use `haveI := l3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := l4`. Take `⟨t1, t2, t3, t4, t5, t6, -, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Take `⟨hinv, -⟩` from `HaarCoord.conj_facts hcm`. Take `⟨hK, -, hH⟩` from `coord_measures_haar F E σ hcm R d b lam hlam`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : SigmaFinite (coordK R b lam) := inferInstance`. Take `⟨a1, a2, a3, a4, -⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hcm R 1`. Take `⟨c1, c2, c3, c4, -⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hcm R n`. Use `haveI : (coordHerm R σ b lam 1).IsAddHaarMeasure := hH 1`. Use `haveI : (coordHerm R σ b lam n).IsAddHaarMeasure := hH n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (coordW R b lam 1 n) := by`. Unfold `coordW`. Use `infer_instance`. Use `haveI : SigmaFinite (coordHerm R σ b lam 1) := inferInstance`. Use `haveI : SigmaFinite (coordHerm R σ b lam n) := inferInstance`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨blockHomeo R hinv t5 n, fun S => ⟨rfl, fun j => rfl, fun i j => rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨h1, hh1, mp1⟩` from `coordHerm_equiv σ hcm R b lam 1`. Take `⟨hn, hhn, mpn⟩` from `coordHerm_equiv σ hcm R b lam n`. Take `⟨hN, hhN, mpN⟩` from `coordHerm_equiv σ hcm R b lam (n + 1)`. Set `G` to `h1.prodCongr ((MeasurableEquiv.refl (Fin 1 → Fin n → R ⊗[F] E)).prodCongr hn)`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `mG : MeasurePreserving G ((coordHerm R σ b lam 1).prod ((coordW R b lam 1 n).prod (coordHerm R σ b lam n))) _` using `mp1.prod ((MeasurePreserving.id (coordW R b lam 1 n)).prod mpn)`. Establish `mT` using `blockT_mp lam (coordK R b lam) n`. Establish `key : G ∘ (blockHomeo R hinv t5 n) = blockT n ∘ hN`. Use function extensionality and compare the values at `S`. Establish `e1 : (G ∘ (blockHomeo R hinv t5 n)) S = (h1 (corner R σ S), firstRow R σ S, hn (lowerBlock R σ S))` using `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, hh1, hhn, Function.comp_apply, hhN]`. Use `Prod.ext (Prod.ext ?_ ?_) (Prod.ext ?_ (Prod.ext ?_ ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Use function extensionality and compare the values at `p`.
-
-Conclude with `isEmptyElim p`. Use function extensionality and compare the values at `a j`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression.
-
-Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Use `(mG.comp_left_iff).1 ?_` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `mT.comp mpN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermSplit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∃ e : HermR R σ (n + 1) ≃ₜ (HermR R σ 1 × (Fin 1 → Fin n → R ⊗[F] E) × HermR R σ n), (∀ S, ((e S).1 : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0 = (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) 0 0 ∧ (∀ j : Fin n, (e S).2.1 0 j = (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) 0 j.succ) ∧ ∀ i j : Fin n, ((e S).2.2 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i j = (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) i.succ j.succ) ∧ MeasurePreserving e (coordHerm R σ b lam (n + 1)) ((coordHerm R σ b lam 1).prod ((coordW R b lam 1 n).prod (coordHerm R σ b lam n))) := by
   intro F E _ _ _ _ _ σ hcm M J hJ R _ _ _ _ _ hloc n d b lam hlam

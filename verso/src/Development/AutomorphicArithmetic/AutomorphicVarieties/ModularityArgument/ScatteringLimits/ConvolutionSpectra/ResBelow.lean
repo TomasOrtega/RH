@@ -11,15 +11,13 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `convNear β k`. Establish `a : Tendsto (fun n => B (f n) - M.J ((symb β 0).compLpL 2 volume (M.J.symm (f n)))) atTop (𝓝 0)`. Use `(q0.const_mul C).sqrt` as an intermediate fact. Rewrite `this` using `[mul_zero, Real.sqrt_zero]`. Use `squeeze_zero_norm (fun n => Real.le_sqrt_of_sq_le ?_) this` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `M.J.surjective (f n)`. Simplify using `only [← hu, hB, M.J.symm_apply_apply, M.hJ, ← map_sub, M.J.norm_map]`. Conclude with `hC u`. Use `⟨a, ?_⟩` and prove the remaining obligations. Set `G : H →L[ℂ] H` to `(M.J.toContinuousLinearEquiv : L V →L[ℂ] H) ∘L (symb β 0).compLpL 2 volume ∘L (M.J.symm.toContinuousLinearEquiv : H →L[ℂ] L V)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(((M.P (Ioi M.T₀)).continuous.tendsto 0).comp a).add ((G.continuous.tendsto 0).comp p)` as an intermediate fact. Simplify using `only [map_zero, add_zero] at this`. Use `this.congr fun n => ?_` and prove the remaining obligations. Establish `e : G (M.P (Ioi M.T₀) (f n)) = M.P (Ioi M.T₀) (M.J ((symb β 0).compLpL 2 volume (M.J.symm (f n))))` using `by show M.J ((symb β 0).compLpL 2 volume (M.J.symm (M.J (cut V _ _)))) = M.J (cut V _ (M.J.symm (M.J _)))`. Rewrite using `[M.J.symm_apply_apply, M.J.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg M.J (Lp.ext ?_)` and prove the remaining obligations. Use `filter_upwards [(symb β 0).coeFn_compLpL (cut V (Ioi M.T₀) (M.J.symm (f n))), (symb β 0).coeFn_compLpL (M.J.symm (f n)), cutSpec (Ioi M.T₀) measurableSet_Ioi (M.J.symm (f n)), cutSpec (Ioi M.T₀) measurableSet_Ioi ((symb β 0).compLpL 2 volume (M.J.symm (f n)))] with x h1 h2 h3 h4`. Use `erw [h1, h3, h4]`. Distinguish the cases in `hx : x ∈ Ioi M.T₀`. Rewrite using `[indicator_of_mem hx, indicator_of_mem hx, h2]`.
-
-Rewrite using `[indicator_of_notMem hx, indicator_of_notMem hx, map_zero]`. Simplify using `only [Function.comp_apply, map_sub, e, sub_add_cancel]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem side {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (M : Sc H V W)
     (B : H →L[ℂ] H) (β : ℝ → V →L[ℂ] V) (k : Ker β) (hB : ∀ u, B (M.J u) = M.J (conv β u)) (f : ℕ → H)
@@ -55,33 +53,29 @@ private theorem side {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   simp only [Function.comp_apply, map_sub, e, sub_add_cancel]
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M B β β' k1 k2 u1 u2 ha hc f hf t1 t2`. Use `set Λ := M.abelian₂ M.T₀ M.T₀ with hΛ`. Take `⟨-, -, -, -, -, -, l2, -, l4⟩` from `(projLaws M).2.2.2.2.2.2.2 M.T₀ M.T₀ (by linarith)`. Set `q : H → ℝ` to `fun h => ∫ t in Iic (0 : ℝ), Real.exp t * ‖M.F.U t h - h‖ ^ 2`. Establish `q0 : Tendsto (fun n => q (f n)) atTop (𝓝 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(tendsto_const_nhds (x := (2 : ℝ))).sub (t2.const_mul 2)` as an intermediate fact. Simplify using `only [mul_one, sub_self] at this`. Conclude with `this.congr fun n => by simp only [q, (resCob M.F _).2, hf]; ring`. Establish `p1 : Tendsto (fun n => M.P (Ioi M.T₀) (f n)) atTop (𝓝 0)`. Use `(((M.P (Ioi M.T₀)).continuous.tendsto 0).comp t1).neg` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_zero, neg_zero] at this`. Conclude with `this.congr fun n => by`. Establish `l : M.P (Ioi M.T₀) (Λ (f n)) = 0` using `DFunLike.congr_fun l2 _`. Simplify using `[l]`. Establish `p2 : Tendsto (fun n => M.P' (Ioi M.T₀) (f n)) atTop (𝓝 0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(((M.P' (Ioi M.T₀)).continuous.tendsto 0).comp t1).neg` as an intermediate fact. Simplify using `only [map_zero, neg_zero] at this`. Conclude with `this.congr fun n => by`. Establish `l : M.P' (Ioi M.T₀) (Λ (f n)) = 0` using `DFunLike.congr_fun l4 _`. Simplify using `[l]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a1, a2⟩` from `side M B β k1 ha.1 f q0 p1`. Take `⟨-, a3⟩` from `side M.swap B β' k2 ha.2 f (q0.congr fun n => by`. Use `setIntegral_congr_fun measurableSet_Iic fun t _ => ?_` and prove the remaining obligations. Use `show _ = Real.exp t * ‖M.F.U (-t) (f n) - f n‖ ^ 2`. Rewrite using `[← M.F.norm t (M.F.U (-t) (f n) - f n), map_sub, ← M.F.add, add_neg_cancel, M.F.zero, norm_sub_rev]) p2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a4 : Tendsto (fun n => B (f n) - (Λ ∘L B ∘L Λ) (f n)) atTop (𝓝 0)`. Use `(a2.add a3).sub (((Λ ∘L B).continuous.tendsto 0).comp t1)` as an intermediate fact. Simplify using `only [map_zero, add_zero, sub_zero] at this`. Use `this.congr fun n => ?_` and prove the remaining obligations. Establish `e : Λ (B (f n)) = B (f n) - M.P (Ioi M.T₀) (B (f n)) - M.swap.P (Ioi M.swap.T₀) (B (f n))` using `rfl`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Function.comp_apply, ContinuousLinearMap.comp_apply, map_sub, e]`. Normalize the expressions using the abelian group laws. Take `⟨S, hS, hsub⟩` from `hc.image_closedBall_subset_compact 1`. Take `⟨y, -, φ, hφ, hy⟩` from `hS.tendsto_subseq fun n => hsub ⟨f n, by simp [hf], rfl⟩`. Take `⟨s, hs⟩` from `u1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `G : H →L[ℂ] H` to `(M.J.toContinuousLinearEquiv : L V →L[ℂ] H) ∘L ((s⁻¹ : (V →L[ℂ] V)ˣ) : V →L[ℂ] V).compLpL 2 volume ∘L (M.J.symm.toContinuousLinearEquiv : H →L[ℂ] L V)`. Establish `hG : ∀ h, G (M.J ((symb β 0).compLpL 2 volume (M.J.symm h))) = h` using `fun h => by show M.J (((s⁻¹ : (V →L[ℂ] V)ˣ) : V →L[ℂ] V).compLpL 2 volume (M.J.symm (M.J _))) = h`. Rewrite using `[M.J.symm_apply_apply, ← M.J.eq_symm_apply]`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [((s⁻¹ : (V →L[ℂ] V)ˣ) : V →L[ℂ] V).coeFn_compLpL ((symb β 0).compLpL 2 volume (M.J.symm h)), (symb β 0).coeFn_compLpL (M.J.symm h)] with x h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, ← hs]`. Conclude with `DFunLike.congr_fun s.inv_mul _`. Establish `c1 : Tendsto (fun n => f (φ n)) atTop (𝓝 (G y))`. Use `(G.continuous.tendsto _).comp ((hy.add (a4.comp hφ.tendsto_atTop)).sub (a1.comp hφ.tendsto_atTop))` as an intermediate fact. Simplify using `only [add_zero, sub_zero] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr fun n => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_coe, add_sub_cancel, sub_sub_cancel, hG]`. Use `set g := G y`. Establish `g1 : ‖g‖ = 1` using `tendsto_nhds_unique c1.norm (by simp [hf])`. Establish `qc : Continuous q`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [q, (resCob M.F _).2]`. Use `fun_prop`. Establish `g2 : q g = 0` using `tendsto_nhds_unique ((qc.tendsto g).comp c1) (q0.comp hφ.tendsto_atTop)`. Establish `cg : Continuous fun t => Real.exp t * ‖M.F.U t g - g‖ ^ 2`. Use `M.F.cont g` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `ig : IntegrableOn (fun t => Real.exp t * ‖M.F.U t g - g‖ ^ 2) (Iic 0)`. Use `Integrable.mono' ((integrableOn_exp_Iic 0).mul_const 4) cg.aestronglyMeasurable (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Establish `: ‖M.F.U t g - g‖ ≤ 2` using `(norm_sub_le _ _).trans_eq (by rw [M.F.norm, g1]; norm_num)`.
-
-Use `gcongr`. Use polynomial arithmetic with `[norm_nonneg (M.F.U t g - g)]`. Establish `g3` using `(setIntegral_eq_zero_iff_of_nonneg_ae (Eventually.of_forall fun t => by positivity) ig).1 g2`. Establish `g4 : EqOn (fun t => Real.exp t * ‖M.F.U t g - g‖ ^ 2) 0 (Iio 0)` using `Measure.eqOn_open_of_ae_eq (ae_restrict_of_ae_restrict_of_subset Iio_subset_Iic_self g3) isOpen_Iio cg.continuousOn continuousOn_const`. Establish `g5 : ∀ᶠ t in atBot, ⟪g, M.F.U t g⟫_ℂ = 1` using `by filter_upwards [eventually_lt_atBot (0 : ℝ)] with t ht`.
-
-Use `g4 ht` as an intermediate fact. Simplify using `only [Pi.zero_apply, mul_eq_zero, (Real.exp_pos t).ne', false_or, pow_eq_zero_iff two_ne_zero, norm_eq_zero, sub_eq_zero] at this`. Rewrite using `[this, inner_self_eq_norm_sq_to_K, g1]`. Simplify using the standard rewrite rules. Conclude with `one_ne_zero (tendsto_nhds_unique (tendsto_const_nhds.congr' (g5.mono fun _ h => h.symm)) ((projLaws M).1 g g).2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.resBelow :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (B : H →L[ℂ] H) (β : ℝ → V →L[ℂ] V) (β' : ℝ → W →L[ℂ] W), Ker β → Ker β' → IsUnit (symb β 0) → IsUnit (symb β' 0) → M.Acts B β β' → IsCompactOperator (M.abelian₂ M.T₀ M.T₀ ∘L B ∘L M.abelian₂ M.T₀ M.T₀) →

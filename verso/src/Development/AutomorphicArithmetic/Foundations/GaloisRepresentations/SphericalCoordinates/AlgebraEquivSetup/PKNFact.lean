@@ -7,7 +7,7 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨K, hc, -, -, -, hn, -, -⟩` from `hG E n N hN u`. Rewrite using `[← hc, ← hc]`. Conclude with `hn a ha y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_conj_iff (hG : CongGrpEx) {E : Type} [Field E] [NumberField E] [IsCMField E] (n N : ℕ) (hN : 0 < N)
     (u : Plc E) (a : GLw n u) (ha : a ∈ GlobalTheory.LFun.KGL u n) (y : GLw n u) :
@@ -17,7 +17,7 @@ private theorem cong_conj_iff (hG : CongGrpEx) {E : Type} [Field E] [NumberField
   exact hn a ha y
 
 /- English proof (translation)
-Introduce `i k`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem principalCongruence_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (N : ℕ) (u : Plc E) :
     Cong1 N u (1 : GLw n u) := by
@@ -25,27 +25,23 @@ private theorem principalCongruence_one {E : Type} [Field E] [NumberField E] [Is
   simp
 
 /- English proof (translation)
-Introduce `hK _ _ hG hC _ hL E _ _ _ A n p _ S F w L hF q hq hgood hqw N hN K hKc`. Establish `e : ∀ (u : Plc E) (g : GUf E n), GeneralLinearGroup.map (pLoc E u) (F.tr.a * mat g * F.tr.a⁻¹) = F.a u * comp u g * (F.a u)⁻¹`. Introduce `u g`. Rewrite using `[F.a_tr]`. Simplify using `only [map_mul, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hCong : ∀ g : GUf E n, S.L.CongOne N (F.j g) ↔ ∀ u : Plc E, (p : 𝓞 E) ∉ u.asIdeal → Cong1 N u (F.a u * comp u g * (F.a u)⁻¹)`. Introduce `g`. Rewrite using `[F.j_tr, ((hK E A n p S F.tr g).2 N hN)]`. Simplify using `only [e]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `einv : ∀ (u : Plc E) (g : GUf E n), F.a u * comp u g⁻¹ * (F.a u)⁻¹ = (F.a u * comp u g * (F.a u)⁻¹)⁻¹`. Introduce `u g`. Rewrite using `[map_inv]`. Use `group`. Establish `hw` using `(hL E n w.1 w.2.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : IsSplitAt (CertificateRingHomMap.cj w.1)` using `hw.2.2.2.1`. Establish `hqc : (q : 𝓞 E) ∈ (CertificateRingHomMap.cj w.1).asIdeal`. Assume the negation of the conclusion as `hc`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `h1 : GlobalTheory.Cong.Apart w.1 (CertificateRingHomMap.cj w.1)` using `apart_of_not_mem (p := q) hc hqw`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(((hL E n (CertificateRingHomMap.cj w.1) hcs).2.1 w.1).1 h1).2 hw.2.2.2.2.1.symm`. Establish `hcw` using `F.a_int w.1 q hq hgood hqw`. Establish `hcc` using `F.a_int _ q hq hgood hqc`. Establish `main : ∀ y : GLw n w.1, Cong1 N w.1 y → Cong1 N w.1 y⁻¹ → S.L.CongOne N (L.loc y)`. Introduce `y h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hF.2, hCong]`. Introduce `u _`. Distinguish the cases in `huw : u = w.1`. Substitute `huw` using the available equality. Rewrite using `[CertificateRingHomMap.comp_loc]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `((cong_conj_iff hG n N hN _ _ hcw y).2 ⟨h1, h2⟩).1`. Distinguish the cases in `huc : u = CertificateRingHomMap.cj w.1`. Substitute `huc` using the available equality. Establish `c1 : Cong1 N (CertificateRingHomMap.cj w.1) (comp (CertificateRingHomMap.cj w.1) (CertificateRingHomMap.loc w.2.1 y))` using `hC E n N w.1 _ (CertificateRingHomMap.sim_loc _ _) (by rwa [CertificateRingHomMap.comp_loc])`. Establish `c2 : Cong1 N (CertificateRingHomMap.cj w.1) (comp (CertificateRingHomMap.cj w.1) (CertificateRingHomMap.loc w.2.1 y))⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv]`. Conclude with `hC E n N w.1 _ (by rw [map_inv, CertificateRingHomMap.sim_loc, inv_one]) (by rwa [map_inv, CertificateRingHomMap.comp_loc, inv_inv])`. Conclude with `((cong_conj_iff hG n N hN _ _ hcc _).2 ⟨c1, c2⟩).1`. Rewrite using `[CertificateRingHomMap.comp_loc_of_apart w.2.1 (((hw.2.1 u).2 ⟨huw, huc⟩)) y]`. Simplify using `using principalCongruence_one N u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y hy => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(hKc y).1 hy`. Use `⟨main y h1 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `main y⁻¹ h2 (by rwa [inv_inv])`.
-
-Take `⟨g, rfl⟩` from `F.surj k`. Rewrite using `[hF.1, hKc]`. Establish `h1` using `(hCong g).1 hk.1 w.1 w.2.2`. Establish `h2` using `(hCong g⁻¹).1 (by rw [map_inv]; exact hk.2) w.1 w.2.2`. Rewrite `h2` using `[einv]`.
-
-Conclude with `(cong_conj_iff hG n N hN _ _ hcw _).1 ⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pKNFact :
     KNIff → FacEq → AtApart → CongGrpEx → CongConj → UpperTheory.Gal.W2.Seed.LocComm → UpperTheory.Gal.CertificateRingHomMap.LocComm → KNFact := by

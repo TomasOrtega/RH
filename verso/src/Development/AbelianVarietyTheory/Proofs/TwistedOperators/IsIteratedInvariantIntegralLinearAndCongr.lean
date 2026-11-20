@@ -15,11 +15,11 @@ section
 variable {G : Type} [Group G] [MeasurableSpace G] {R : Subgroup G} {μR : Measure R} {μG : Measure G}
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Establish `e : (fun g : G => ∑ n ∈ (∅ : Finset I), x n * F n g) = 0` using `by funext g; simp`. Rewrite using `[e, Finset.sum_empty]`. Conclude with `IsQuotIntL1.zero`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Establish `h1` using `(hF a (Finset.mem_insert_self _ _)).smul (x a)`. Establish `h2` using `ih (fun n hn => hF n (Finset.mem_insert_of_mem hn))`. Establish `h3` using `h1.add h2`. Rewrite using `[Finset.sum_insert ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Finset.sum_insert ha]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quot_sum {I : Type} (S : Finset I) (x : I → ℂ) (F : I → G → ℂ) (z : I → ℂ)
     (hF : ∀ n ∈ S, IsQuotIntL1 μR μG (F n) (z n)) :
@@ -44,11 +44,11 @@ variable {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i, Group (H i)] [�
   {R : ∀ i, Subgroup (H i)} (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `h I S x z q hq`. Simplify using `only [NIter] at hq ⊢`. Conclude with `Finset.sum_congr rfl fun n hn => by rw [hq n hn]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cons i l ih`. Introduce `h I S x z q hq`. Simplify using `only [NIter] at hq ⊢`. Set `F : I → H i → ℂ` to `fun n => if hn : n ∈ S then Classical.choose (hq n hn) else 0`. Establish `hF : ∀ n ∈ S, IsQuotIntL1 (ρ i) (μ i) (F n) (z n) ∧ ∀ g, NIter ρ μ (q n) l (Function.update h i g) (F n g)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Simplify using `only [F, dif_pos hn]`. Conclude with `Classical.choose_spec (hq n hn)`. Use `⟨fun g => ∑ n ∈ S, x n * F n g, quot_sum S x F z fun n hn => (hF n hn).1, fun g => ?_⟩` and prove the remaining obligations. Conclude with `ih (Function.update h i g) I S x (fun n => F n g) q fun n hn => (hF n hn).2 g`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lin (l : List ι) : ∀ (h : ∀ i, H i) (I : Type) (S : Finset I) (x z : I → ℂ) (q : I → (∀ i, H i) → ℂ),
     (∀ n ∈ S, NIter ρ μ (q n) l h (z n)) → NIter ρ μ (fun g => ∑ n ∈ S, x n * q n g) l h (∑ n ∈ S, x n * z n) := by
@@ -70,11 +70,11 @@ theorem lin (l : List ι) : ∀ (h : ∀ i, H i) (I : Type) (S : Finset I) (x z 
     exact ih (Function.update h i g) I S x (fun n => F n g) q fun n hn => (hF n hn).2 g
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `h q q' z hq hz`. Simplify using `only [NIter] at hz ⊢`. Rewrite using `[hz]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq h fun _ _ => rfl`. Consider the case `cons i l ih`. Introduce `h q q' z hq hz`. Simplify using `only [NIter] at hz ⊢`. Take `⟨f, hf, hf'⟩` from `hz`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, hf, fun g => ih (Function.update h i g) q q' (f g) (fun g' hg' => hq g' fun j hj => ?_) (hf' g)⟩` and prove the remaining obligations. Establish `hji : j ≠ i` using `fun e => hj (e ▸ List.mem_cons_self ..)`. Establish `hjl : j ∉ l` using `fun e => hj (List.mem_cons_of_mem _ e)`. Rewrite using `[hg' j hjl, Function.update_of_ne hji]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congr (l : List ι) : ∀ (h : ∀ i, H i) (q q' : (∀ i, H i) → ℂ) (z : ℂ),
     (∀ g : ∀ i, H i, (∀ i, i ∉ l → g i = h i) → q g = q' g) → NIter ρ μ q l h z → NIter ρ μ q' l h z := by
@@ -96,7 +96,7 @@ theorem congr (l : List ι) : ∀ (h : ∀ i, H i) (q q' : (∀ i, H i) → ℂ)
 end GlobalTheory.RowVal.NIterLin
 
 /- English proof (translation)
-Introduce `ι _ H _ _ R ρ μ l h`. Conclude with `⟨fun I S x z q hq => GlobalTheory.RowVal.NIterLin.lin ρ μ l h I S x z q hq, fun q q' z hq hz => GlobalTheory.RowVal.NIterLin.congr ρ μ l h q q' z hq hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.RowVal.niter_lin_congr : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ i, Group (H i)] [∀ i, MeasurableSpace (H i)] (R : ∀ i, Subgroup (H i)) (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i)) (l : List ι) (h : ∀ i, H i), (∀ (I : Type) (S : Finset I) (x z : I → ℂ) (q : I → (∀ i, H i) → ℂ), (∀ n ∈ S, NIter ρ μ (q n) l h (z n)) → NIter ρ μ (fun g => ∑ n ∈ S, x n * q n g) l h (∑ n ∈ S, x n * z n)) ∧ ∀ q q' z, (∀ g : ∀ i, H i, (∀ i, i ∉ l → g i = h i) → q g = q' g) → NIter ρ μ q l h z → NIter ρ μ q' l h z := by
   intro ι _ H _ _ R ρ μ l h

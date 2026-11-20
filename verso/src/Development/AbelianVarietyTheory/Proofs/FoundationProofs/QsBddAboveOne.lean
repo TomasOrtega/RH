@@ -7,7 +7,7 @@ open scoped Real
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Establish `h : (2 * π * Complex.I * n * τ : ℂ) = ((2 * π * n : ℝ) : ℂ) * (Complex.I * τ)` using `by push_cast; ring`. Rewrite using `[h, Complex.re_ofReal_mul, Complex.I_mul_re, UpperHalfPlane.coe_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem norm_cexp_qterm (n : ℕ) (τ : ℍ) :
     ‖cexp (2 * π * Complex.I * n * τ)‖ = Real.exp (-(2 * π * n * τ.im)) := by
@@ -19,11 +19,11 @@ private theorem norm_cexp_qterm (n : ℕ) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Introduce `b hb`. Take `⟨hs, -⟩` from `qs_summable_continuous b hb`. Use `⟨∑' n : ℕ, ‖b n * cexp (2 * π * Complex.I * n * (UpperHalfPlane.I : ℍ))‖, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ n : ℕ, ‖b n * cexp (2 * π * Complex.I * n * τ)‖ ≤ ‖b n * cexp (2 * π * Complex.I * n * (UpperHalfPlane.I : ℍ))‖`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, norm_mul, norm_cexp_qterm, norm_cexp_qterm]`. Use `gcongr`. Simplify using `only [UpperHalfPlane.I_im, mul_one]`. Establish `h0 : (0 : ℝ) ≤ 2 * π * n` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `qs`. Conclude with `norm_tsum_le_tsum_norm (hs τ)`. Use `_ ≤ _ := Summable.tsum_le_tsum hpt (hs τ) (hs _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qs_bdd_above_one : ∀ (b : ℕ → ℂ), PolyB b → ∃ M : ℝ, ∀ τ : ℍ, 1 ≤ τ.im → ‖qs b τ‖ ≤ M := by
   intro b hb

@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKern
 open MeasureTheory NumberField PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.K
 
 /- English proof (translation)
-Use `⟨fun F E _ _ _ _ _ _ σ _ n _ μ _ => ?_, fun F _ _ n μ _ g => ?_⟩` and prove the remaining obligations. Take `⟨θ, h⟩` from `galTwistEx E n μ σ.toRingEquiv`. Conclude with `⟨θ, fun g => by rw [galAdEq]; exact h g⟩`. Rewrite using `[galAdEq]`. Use extensionality with `i j : 2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `((adBasic F).2.1 _).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.g0 :
     G0 := by

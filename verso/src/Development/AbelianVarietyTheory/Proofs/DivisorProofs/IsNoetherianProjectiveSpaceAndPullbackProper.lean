@@ -12,11 +12,9 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ S π hπ N`. Establish `hP : IsProper (PSpace.str R N)` using `isProper_str R N`. Establish `h1 : IsNoetherian (PSpace R N)`. Establish `: IsLocallyNoetherian (PSpace R N)` using `LocallyOfFiniteType.isLocallyNoetherian (PSpace.str R N)`. Establish `: CompactSpace (PSpace R N)` using `QuasiCompact.compactSpace_of_compactSpace (PSpace.str R N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `{}`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `haveI := hπ`. Establish `: IsProper (pullback.fst (PSpace.str R N) π)` using `inferInstance`. Use `haveI := LocallyOfFiniteType.isLocallyNoetherian (pullback.fst (PSpace.str R N) π)`.
-
-Use `haveI := QuasiCompact.compactSpace_of_compactSpace (pullback.fst (PSpace.str R N) π)`. Conclude with `{}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pspace_noeth_and_pullback : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (S : Scheme.{0}) (π : S ⟶ Sp R),
     IsProper π → ∀ N : ℕ, IsNoetherian (PSpace R N) ∧ IsNoetherian (pullback (PSpace.str R N) π) := by

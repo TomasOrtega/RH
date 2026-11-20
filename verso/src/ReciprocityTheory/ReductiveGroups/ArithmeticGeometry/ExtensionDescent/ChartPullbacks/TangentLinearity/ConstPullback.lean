@@ -16,7 +16,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.TLinPf
 open Semi
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' U ⊤ (fun j => homOfLE le_top) hc.ge f h`. Conclude with `⟨s, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem glue {Y : Scheme.{0}} {κ : Type} (U : κ → Y.Opens) (hc : ⨆ j, U j = ⊤)
     (f : ∀ j, Γ(Y, U j))
@@ -27,7 +27,7 @@ theorem glue {Y : Scheme.{0}} {κ : Type} (U : κ → Y.Opens) (hc : ⨆ j, U j 
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-The claim follows from `Y.sheaf.eq_of_locally_eq' U ⊤ (fun j => homOfLE le_top) hc.ge s t h`.
+A detailed English derivation is pending.
 -/
 theorem eq_local {Y : Scheme.{0}} {κ : Type} (U : κ → Y.Opens) (hc : ⨆ j, U j = ⊤)
     (s t : Γ(Y, ⊤))
@@ -36,17 +36,17 @@ theorem eq_local {Y : Scheme.{0}} {κ : Type} (U : κ → Y.Opens) (hc : ⨆ j, 
   Y.sheaf.eq_of_locally_eq' U ⊤ (fun j => homOfLE le_top) hc.ge s t h
 
 /- English proof (translation)
-Take `⟨s⟩` from `t`. Take `⟨s'⟩` from `t'`. Unfold `LB.Gen.IsGen at ht ht'`. Simplify using `only at ht ht' ⊢`. Establish `hcov : (⊤ : Y.Opens) ≤ ⨆ j, L.U j` using `hc.ge`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `key : ∀ (f : ∀ j, Γ(Y, L.U j)), (∀ i j, (Y.presheaf.map (homOfLE (inf_le_left : L.U i ⊓ L.U j ≤ L.U i)).op).hom (f i) = (Y.presheaf.map (homOfLE (inf_le_right : L.U i ⊓ L.U j ≤ L.U j)).op).hom (f j)) → ∃ r : Γ(Y, ⊤), ∀ j, (Y.presheaf.map (homOfLE (le_top : L.U j ≤ ⊤)).op).hom r = …`. Introduce `f hf`. Take `⟨r, hr, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (F := Y.sheaf) (U := L.U) ⊤ (fun j => homOfLE le_top) hcov f hf`. Conclude with `⟨r, hr⟩`. Establish `uniq : ∀ a b : Γ(Y, ⊤), (∀ j, (Y.presheaf.map (homOfLE (le_top : L.U j ≤ ⊤)).op).hom a = (Y.presheaf.map (homOfLE (le_top : L.U j ≤ ⊤)).op).hom b) → a = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `a b h`. Conclude with `TopCat.Sheaf.eq_of_locally_eq' (F := Y.sheaf) (U := L.U) ⊤ (fun j => homOfLE le_top) hcov a b h`. Establish `hu : ∀ i j, res (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (s i * (s' i)⁻¹) = res (inf_le_right : L.U i ⊓ L.U j ≤ L.U j) (s j * (s' j)⁻¹)`. Introduce `i j`. Rewrite using `[map_mul, map_inv, map_mul, map_inv, ht i j, ht' i j, _root_.mul_inv, _root_.mul_mul_mul_comm, _root_.mul_inv_cancel, _root_.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : ∀ i j, res (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (s i * (s' i)⁻¹)⁻¹ = res (inf_le_right : L.U i ⊓ L.U j ≤ L.U j) (s j * (s' j)⁻¹)⁻¹`. Introduce `i j`. Rewrite using `[map_inv, map_inv, hu i j]`. Take `⟨r, hr⟩` from `key (fun j => ((s j * (s' j)⁻¹ : _ˣ) : Γ(Y, L.U j))) (fun i j => congrArg Units.val (hu i j))`. Take `⟨r', hr'⟩` from `key (fun j => (((s j * (s' j)⁻¹)⁻¹ : _ˣ) : Γ(Y, L.U j))) (fun i j => congrArg Units.val (hu' i j))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrr : r * r' = 1`. Apply `uniq` to reduce the goal to its premises. Introduce `j`. Rewrite using `[map_mul, map_one, hr j, hr' j]`. Conclude with `Units.mul_inv _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `ρ : Γ(Y, ⊤)ˣ` to `⟨r, r', hrr, by rw [mul_comm]; exact hrr⟩`. Use `⟨ρ, fun j => ?_⟩` and prove the remaining obligations. Establish `e : res (le_top : L.U j ≤ ⊤) ρ = s j * (s' j)⁻¹` using `Units.ext (hr j)`. Rewrite using `[e, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_glue {Y : Scheme.{0}} (L : LB Y) (hc : ⨆ j, L.U j = ⊤) (t t' : LB.Gen L)
     (ht : t.IsGen) (ht' : t'.IsGen) :
@@ -92,14 +92,14 @@ theorem ratio_glue {Y : Scheme.{0}} (L : LB Y) (hc : ⨆ j, L.U j = ⊤) (t t' :
   rw [e, inv_mul_cancel_right]
 
 /- English proof (translation)
-Establish `: y ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Simplify `this` using `[TopologicalSpace.Opens.mem_iSup]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma exists_chart {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : X) : ∃ i, y ∈ L.U i := by
   have : y ∈ (⨆ i, L.U i : X.Opens) := by rw [hL.cover]; trivial
   simpa [TopologicalSpace.Opens.mem_iSup] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ψ => (exists_chart L hL (ψ.base y)).choose, fun ψ => (exists_chart L hL (ψ.base y)).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem idx_exists {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : Y) :
     ∃ idx : (Y ⟶ X) → L.ι, ∀ ψ, ψ.base y ∈ L.U (idx ψ) :=
@@ -107,7 +107,7 @@ theorem idx_exists {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : Y) :
    fun ψ => (exists_chart L hL (ψ.base y)).choose_spec⟩
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨idx, hidx⟩` from `idx_exists L hL y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun k => idx (φ k), Set.mem_iInter.2 fun k => hidx (φ k)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linComb_cover {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) : ⨆ j, (LB.LinComb L φ ε).U j = ⊤ := by
@@ -117,7 +117,7 @@ theorem linComb_cover {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fi
     ⟨fun k => idx (φ k), Set.mem_iInter.2 fun k => hidx (φ k)⟩
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Conclude with `{ comm := Functor.isCommMonObj_obj smooth := by change Smooth (pullback.snd A.hom φ); infer_instance proper := by change IsProper (pullback.snd A.hom φ); infer_instance geomConnected := by change GeometricallyConnected (pullback.snd A.hom φ); infer_instance }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAb_pullback {S S' : Scheme.{0}} (φ : S' ⟶ S) (A : Over S) [GrpObj A]
     (hA : IsAbelianScheme A) : IsAbelianScheme ((Over.pullback φ).obj A) := by
@@ -132,7 +132,7 @@ theorem isAb_pullback {S S' : Scheme.{0}} (φ : S' ⟶ S) (A : Over S) [GrpObj A
       geomConnected := by change GeometricallyConnected (pullback.snd A.hom φ); infer_instance }
 
 /- English proof (translation)
-The claim follows from `(hGF _ _ (isAb_pullback φ A hA)).2 v`.
+A detailed English derivation is pending.
 -/
 theorem const_pullback (hGF : GlobalFnsSt) {S S' : Scheme.{0}} (φ : S' ⟶ S) (A : Over S)
     [GrpObj A] (hA : IsAbelianScheme A) (v : Γ(((Over.pullback φ).obj A).left, ⊤)) :

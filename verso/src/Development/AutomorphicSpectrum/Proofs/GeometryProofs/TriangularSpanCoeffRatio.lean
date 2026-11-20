@@ -10,25 +10,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 
 /- English proof (translation)
-Introduce `V F EC _ _ _ _ _ _ _ r u v w a b d hu hv hw hb hd i`. Take `⟨e, he⟩` from `(Submodule.mem_span_range_iff_exists_fun V).1 (hd (v i) (Submodule.subset_span ⟨i, rfl⟩))`. Take `⟨cv, hcvi, hcv0, hvi⟩` from `hv i`. Use `choose cw hcwd hcw0 hw' using hw`. Establish `key : ∀ m, algebraMap V F d * cv m = ∑ j, algebraMap V F (e j) * cw j m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : d • v i = ∑ m, (algebraMap V F d * cv m) • u m`. Rewrite using `[hvi, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, algebraMap_smul]`. Establish `hR : ∑ j, e j • w j = ∑ m, (∑ j, algebraMap V F (e j) * cw j m) • u m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hw', Finset.smul_sum, Finset.sum_smul, mul_smul, algebraMap_smul]`. Conclude with `Finset.sum_comm`. Establish `h1 : ∑ m, (algebraMap V F d * cv m - ∑ j, algebraMap V F (e j) * cw j m) • u m = 0`. Repeatedly rewrite using `[sub_smul]`. Rewrite using `[Finset.sum_sub_distrib, ← hL, ← hR, he, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hu _ h1 m)`. Establish `hzero : ∀ j, i < j → algebraMap V F (e j) = 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `set S := Finset.univ.filter (fun j => i < j ∧ algebraMap V F (e j) ≠ 0) with hSdef`. Establish `hS : S.Nonempty`. Take `⟨j, hj⟩` from `hcon`. Conclude with `⟨j, by simp [S, hj]⟩`. Take `⟨J, hJS, hJmax⟩ : ∃ J ∈ S, ∀ j ∈ S, j ≤ J` from `⟨S.max' hS, S.max'_mem hS, fun j hj => S.le_max' j hj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hJ : i < J ∧ algebraMap V F (e J) ≠ 0` using `by simpa [S] using hJS`. Establish `hmax : ∀ j, J < j → algebraMap V F (e j) = 0`. Introduce `j hj`. Assume the negation of the conclusion as `hne`. Establish `hjS : j ∈ S` using `by simp [S, hne, hJ.1.trans hj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_le.2 hj (hJmax j hjS)`. Establish `hk` using `key J`. Rewrite `hk` using `[hcv0 J hJ.1, mul_zero, Finset.sum_eq_single J, hcwd J]`. Conclude with `hJ.2 ((mul_eq_zero.1 hk.symm).resolve_right (hb J))`. Introduce `j _ hjJ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `lt_or_gt_of_ne hjJ with h | h` into its components or cases. Rewrite using `[hcw0 j J h, mul_zero]`. Rewrite using `[hmax j h, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ J) h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨e i, ?_⟩` and prove the remaining obligations. Establish `hk` using `key i`. Rewrite `hk` using `[hcvi, Finset.sum_eq_single i, hcwd i]`. Conclude with `hk`. Introduce `j _ hji`.
-
-Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Rewrite using `[hcw0 j i h, mul_zero]`. Rewrite using `[hzero j h, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem diag_compare_of_triIn : ∀ (V F EC : Type) [CommRing V] [Field F] [Algebra V F] [AddCommGroup EC] [Module F EC] [Module V EC] [IsScalarTower V F EC] (r : ℕ) (u v w : Fin r → EC) (a b : Fin r → F) (d : V), LinearIndependent F u → FinRd.Roots.TriIn u a v → FinRd.Roots.TriIn u b w → (∀ i, b i ≠ 0) → (∀ x ∈ Submodule.span V (Set.range v), d • x ∈ Submodule.span V (Set.range w)) → ∀ i, ∃ c : V, algebraMap V F d * a i = algebraMap V F c * b i := by
   intro V F EC _ _ _ _ _ _ _ r u v w a b d hu hv hw hb hd i

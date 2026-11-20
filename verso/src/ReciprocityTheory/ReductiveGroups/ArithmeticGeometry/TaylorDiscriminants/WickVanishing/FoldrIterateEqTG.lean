@@ -16,7 +16,7 @@ def PolG [Fintype ι] (P : MvPolynomial ι k) (A : S) : S :=
   ∑ n ∈ P.support, κ (P.coeff n) * (Finset.univ : Finset ι).toList.foldr (fun l g => (D l)^[n l] g) A
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem TG_replicate (n : ℕ) (l : ι) (A : S) : TG D (List.replicate n l) A = (D l)^[n] A := by
   induction n with
@@ -26,9 +26,9 @@ theorem TG_replicate (n : ℕ) (l : ι) (A : S) : TG D (List.replicate n l) A = 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `Ls with`. Consider the case `nil => rfl`. Consider the case `cons l Ls ih`. Rewrite using `[List.foldr_cons, ih]`. Establish `e : word (l :: Ls) m = List.replicate (m l) l ++ word Ls m` using `by simp [word]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, TG_append, TG_replicate]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_iterate_eq_TG (Ls : List ι) (m : ι →₀ ℕ) (A : S) :
     Ls.foldr (fun l g => (D l)^[m l] g) A = TG D (word Ls m) A := by
@@ -40,7 +40,7 @@ theorem foldr_iterate_eq_TG (Ls : List ι) (m : ι →₀ ℕ) (A : S) :
     rw [e, TG_append, TG_replicate]
 
 /- English proof (translation)
-Simplify using `only [PolG, map_sum, map_mul, he, foldr_iterate_eq_TG]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem e_PolG [Fintype ι] (e : S →+* k) (he : ∀ a, e (κ a) = a) (P : MvPolynomial ι k) (A : S) :
     e (PolG D κ P A) = (AddMonoidAlgebra.coeff P).sum
@@ -49,13 +49,11 @@ theorem e_PolG [Fintype ι] (e : S →+* k) (he : ∀ a, e (κ a) = a) (P : MvPo
   rfl
 
 /- English proof (translation)
-Use `set ψ : List ι → k := fun w => e (TG D w A) with hψ`. Rewrite using `[e_PolG D κ e he, e_PolG D κ e he]`. Establish `h2 : (AddMonoidAlgebra.coeff (secondOrder k c P)).sum (fun n a => a * e (TG D (word (Finset.univ : Finset ι).toList n) A)) = lamW ψ (secondOrder k c P)` using `rfl`. Rewrite using `[h2, lamW_secondOrder, Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun n _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e_TG_mul_q D κ hadd hC hmul e c q hq0 hq1 hq2 he]`. Establish `h3` using `sum_splits_evalTwo_word c hc (Finset.univ : Finset ι).toList (Finset.nodup_toList _) n ψ`. Establish `h4 : (algebraMap ℚ k (1 / 2)) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap ℚ k) 2, ← map_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h4, one_mul]`. Use `_ = algebraMap ℚ k (1 / 2) * ((AddMonoidAlgebra.coeff P) n * rW ψ c n) := by`. Rewrite using `[mul_assoc (algebraMap ℚ k (1 / 2)), h3]`. Simplify using `only [rW]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem half_gen [Algebra ℚ k] [Fintype ι]
     (hadd : ∀ l f g, D l (f + g) = D l f + D l g) (hC : ∀ l a, D l (κ a) = 0)
@@ -86,9 +84,9 @@ theorem half_gen [Algebra ℚ k] [Fintype ι]
         ring
 
 /- English proof (translation)
-Establish `hsplit : G * (1 + q * Y) = G + G * Y * q` using `by ring`. Establish `hlin : ∀ A B, PolG D κ P (A + B) = PolG D κ P A + PolG D κ P B`. Introduce `A B`. Simplify using `only [PolG, foldr_iterate_eq_TG]`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[TG_add, mul_add]`. Conclude with `hadd`. Rewrite using `[hsplit, hlin, map_add, half_gen D κ hadd hC hmul e he c q hc hq0 hq1 hq2 P (G * Y), hP]`. Simplify using `[PolG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kill_gen [Algebra ℚ k] [Fintype ι]
     (hadd : ∀ l f g, D l (f + g) = D l f + D l g) (hC : ∀ l a, D l (κ a) = 0)

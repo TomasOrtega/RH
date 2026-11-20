@@ -22,13 +22,11 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 noncomputable section
 namespace GlobalTheory.TwTameCell
 /- English proof (translation)
-Introduce `_ hL`. Use `StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l v i b ψ hA j _ _ _ P' _`. Establish `h1` using `((cfOf x).isMu0 j).tame P'`. Establish `hx : w.I.xi ((Dof x).what₂.muTw v) ∈ T.set f` using `w.xi_range ▸ Set.mem_range_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [TwDat.set, Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff, Set.mem_range] at hx`. Establish `h2 : (w.I.xi ((Dof x).what₂.muTw v)).TameAt P'`. Break down `hx with (h | h | h) | ⟨w', h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `tameAt_one P'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `f.isDel.tame P'`. Rewrite using `[h]`. Conclude with `f.isDel'.tame P'`. Rewrite using `[← h]`.
-
-Unfold `TwDat.xiTw`. Use `split_ifs`. Conclude with `tameAt_mul (f.isDel'.tame P') ((T.psi_is w').tame P')`. Conclude with `tameAt_mul (f.isDel.tame P') ((T.psi_is w').tame P')`. Conclude with `tameAt_mul h1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem twist_character_tame_at_place_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → ∀ P' : PlE (Dof x).host, (P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).QP ∨ P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).DP) → (eta (D := Dof x) (cfOf x) w.I.xi v j).TameAt P' := by
   intro _ hL
@@ -63,7 +61,7 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TwTameCell.twist_character_tame_at_place_alt | exact _root_.GlobalTheory.TwTameCell.twist_character_tame_at_place_alt | (intros; apply _root_.GlobalTheory.TwTameCell.twist_character_tame_at_place_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_character_tamely_ramified_at_place' : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → ∀ P' : PlE (Dof x).host, (P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).QP ∨ P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).DP) → (eta (D := Dof x) (cfOf x) w.I.xi v j).TameAt P' := by
   first | exact @_root_.GlobalTheory.TwTameCell.twist_character_tame_at_place_alt | exact _root_.GlobalTheory.TwTameCell.twist_character_tame_at_place_alt | (intros; apply _root_.GlobalTheory.TwTameCell.twist_character_tame_at_place_alt <;> assumption)

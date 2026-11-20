@@ -10,11 +10,11 @@ open Finset InnerProductSpace ReciprocityTheory.ReducedBases.T2
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i j h`. Establish `hij : i = j` using `Fin.ext (by simpa using h)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `i j h`. Establish `hk : j.val + 1 < d` using `by have := i.isLt; omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hr.2.2 ⟨j.val + 1, hk⟩ j rfl`. Establish `h2` using `ih i ⟨j.val + 1, hk⟩ (by show i.val = j.val + 1 + n; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_gso_sq_le_two_pow_mul_of_val_eq_add (b : Fin d → E) (hr : IsRed b) :
     ∀ (n : ℕ) (i j : Fin d), i.val = j.val + n → ‖gs b j‖ ^ 2 ≤ 2 ^ n * ‖gs b i‖ ^ 2 := by
@@ -34,7 +34,7 @@ lemma norm_gso_sq_le_two_pow_mul_of_val_eq_add (b : Fin d → E) (hr : IsRed b) 
       _ = 2 ^ (n + 1) * ‖gs b i‖ ^ 2 := by ring
 
 /- English proof (translation)
-Establish `h' : j.val ≤ i.val` using `h`. Conclude with `norm_gso_sq_le_two_pow_mul_of_val_eq_add b hr _ i j (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gs_sq_le_pow (b : Fin d → E) (hr : IsRed b) (i j : Fin d) (h : j ≤ i) :
     ‖gs b j‖ ^ 2 ≤ 2 ^ (i.val - j.val) * ‖gs b i‖ ^ 2 := by
@@ -42,15 +42,15 @@ lemma gs_sq_le_pow (b : Fin d → E) (hr : IsRed b) (i j : Fin d) (h : j ≤ i) 
   exact norm_gso_sq_le_two_pow_mul_of_val_eq_add b hr _ i j (by omega)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos i.val with h0 | hpos` into its components or cases. Establish `hE : univ.filter (fun j : Fin d => j < i) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `j _`. Rewrite using `[Fin.lt_iff_val_lt_val, h0]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hE, sum_empty, h0]`. Simplify using the standard rewrite rules. Take `⟨n, hn⟩ : ∃ n, i.val = n + 1` from `⟨i.val - 1, by omega⟩`. Establish `hnd : n < d` using `by have := i.isLt; omega`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hset : univ.filter (fun j : Fin d => j < i) = univ.filter (fun j : Fin d => j.val ≤ n)`. Use extensionality with `j`. Simplify using `only [mem_filter, mem_univ, true_and, Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `sum_gs_le b hr.2.2 n hnd`. Establish `h2` using `hr.2.2 i ⟨n, hnd⟩ hn`. Establish `hpow : (2:ℝ) ^ i.val = 2 * 2 ^ n` using `by rw [hn, pow_succ]; ring`. Establish `hA : (0:ℝ) ≤ 2 ^ (n + 1) - 1`. Establish `: (1:ℝ) ≤ 2 ^ (n + 1)` using `one_le_pow₀ (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 lemma sum_lt_le (b : Fin d → E) (hr : IsRed b) (i : Fin d) :
     ∑ j ∈ univ.filter (fun j : Fin d => j < i), ‖gs b j‖ ^ 2 ≤
@@ -75,9 +75,9 @@ lemma sum_lt_le (b : Fin d → E) (hr : IsRed b) (i : Fin d) :
       _ = (2 * 2 ^ i.val - 2) * ‖gs b i‖ ^ 2 := by rw [hpow]; ring
 
 /- English proof (translation)
-Establish `h` using `norm_sq_comb b hb (fun l => if l = i then (1:ℝ) else 0)`. Establish `hs : ∑ l, (if l = i then (1:ℝ) else 0) • b l = b i` using `by simp`. Establish `hn : ∀ j, nu b (fun l => if l = i then (1:ℝ) else 0) j = mu b i j`. Introduce `j`. Simplify using `[nu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hs]`. Rewrite using `[h]`. Simplify using `only [hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma norm_sq_b (b : Fin d → E) (hb : LinearIndependent ℝ b) (i : Fin d) :
     ‖b i‖ ^ 2 = ∑ j, mu b i j ^ 2 * ‖gs b j‖ ^ 2 := by
@@ -88,15 +88,15 @@ lemma norm_sq_b (b : Fin d → E) (hb : LinearIndependent ℝ b) (i : Fin d) :
   rw [hs] at h; rw [h]; simp only [hn]
 
 /- English proof (translation)
-Establish `hb` using `hr.1`. Rewrite using `[norm_sq_b b hb i]`. Establish `hle : ∀ j ∈ (univ : Finset (Fin d)), mu b i j ^ 2 * ‖gs b j‖ ^ 2 ≤ (if j < i then (1 / 4) * ‖gs b j‖ ^ 2 else 0) + (if j = i then ‖gs b i‖ ^ 2 else 0)`. Introduce `j _`. Break down `lt_trichotomy j i with h | h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hm` using `hr.2.1 i j h`. Establish `hq : mu b i j ^ 2 ≤ 1 / 4`. Use polynomial arithmetic with `[abs_nonneg (mu b i j), sq_abs (mu b i j)]`. Use `mul_le_mul_of_nonneg_right hq (sq_nonneg ‖gs b j‖)` as an intermediate fact. Simplify using `only [h, h.ne, if_true, if_false, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Substitute `h` using the available equality. Simplify using `[mu_self b hb]`. Simplify using `[mu_of_lt b h, h.ne', not_lt.mpr h.le]`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[sum_filter, mul_sum, sum_add_distrib]`. Use `congr 1`. Apply the tactic sequence `apply sum_congr rfl; intro j _; split_ifs <;> ring`. Simplify using the standard rewrite rules. Use `_ ≤ (1 / 4) * ((2 * 2 ^ i.val - 2) * ‖gs b i‖ ^ 2) + ‖gs b i‖ ^ 2 := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `sum_lt_le b hr i` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ 2 ^ i.val * ‖gs b i‖ ^ 2 := by`. Establish `h1 : (1:ℝ) ≤ 2 ^ i.val` using `one_le_pow₀ (by norm_num)`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr h1) (sq_nonneg ‖gs b i‖)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma norm_sq_le_pow_gs (b : Fin d → E) (hr : IsRed b) (i : Fin d) :
     ‖b i‖ ^ 2 ≤ 2 ^ i.val * ‖gs b i‖ ^ 2 := by
@@ -128,9 +128,9 @@ lemma norm_sq_le_pow_gs (b : Fin d → E) (hr : IsRed b) (i : Fin d) :
         nlinarith [mul_nonneg (sub_nonneg.mpr h1) (sq_nonneg ‖gs b i‖)]
 
 /- English proof (translation)
-Establish `h1` using `norm_sq_le_pow_gs b hr j`. Establish `h2` using `hm j`. Establish `hjd : j.val ≤ d - 1` using `by have := j.isLt; omega`. Establish `hp : (2:ℝ) ^ j.val ≤ 2 ^ (d - 1)` using `pow_le_pow_right₀ (by norm_num) hjd`. Establish `hpos : (0:ℝ) < 2 ^ (d - 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hpos]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hp (sq_nonneg ‖gs b j‖)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma gs_sq_ge (b : Fin d → E) (hr : IsRed b) (m : ℝ) (hm : ∀ i, m ≤ ‖b i‖ ^ 2) (j : Fin d) :
     m / 2 ^ (d - 1) ≤ ‖gs b j‖ ^ 2 := by
@@ -143,17 +143,17 @@ lemma gs_sq_ge (b : Fin d → E) (hr : IsRed b) (m : ℝ) (hm : ∀ i, m ≤ ‖
   nlinarith [mul_le_mul_of_nonneg_right hp (sq_nonneg ‖gs b j‖)]
 
 /- English proof (translation)
-Establish `hb` using `hr.1`. Take `⟨L, hL⟩ : ∃ L : ℝ, L = m / 2 ^ (d - 1)` from `⟨_, rfl⟩`. Establish `hLpos : 0 < L` using `by rw [hL]; positivity`. Establish `hG : ∀ j, L ≤ ‖gs b j‖ ^ 2` using `fun j => by rw [hL]; exact gs_sq_ge b hr m hm j`. Establish `hprod : L ^ (d - 1) ≤ ∏ j ∈ univ.erase i, ‖gs b j‖ ^ 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_le_prod (s := univ.erase i) (f := fun _ => L) (g := fun j => ‖gs b j‖ ^ 2) (fun _ _ => hLpos.le) (fun j _ => hG j)` as an intermediate fact. Rewrite `this` using `[Finset.prod_const, Finset.card_erase_of_mem (mem_univ i), Finset.card_univ, Fintype.card_fin]`. Conclude with `this`. Establish `hdet : ‖gs b i‖ ^ 2 * ∏ j ∈ univ.erase i, ‖gs b j‖ ^ 2 ≤ D`. Rewrite using `[Finset.mul_prod_erase univ (fun j => ‖gs b j‖ ^ 2) (mem_univ i), ← det_gram_eq b hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hD`. Establish `hGi : ‖gs b i‖ ^ 2 * L ^ (d - 1) ≤ D` using `le_trans (mul_le_mul_of_nonneg_left hprod (sq_nonneg _)) hdet`. Establish `hLp : 0 < L ^ (d - 1)` using `pow_pos hLpos _`. Establish `hGi' : ‖gs b i‖ ^ 2 ≤ D / L ^ (d - 1)` using `by rw [le_div_iff₀ hLp]; exact hGi`. Establish `hid : (2:ℝ) ^ i.val ≤ 2 ^ (d - 1)` using `pow_le_pow_right₀ (by norm_num) (by have := i.isLt; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : D / L ^ (d - 1) = 2 ^ ((d - 1) * (d - 1)) * D / m ^ (d - 1)`. Rewrite using `[hL, div_pow, ← pow_mul, div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnat : d * (d - 1) = (d - 1) + (d - 1) * (d - 1)`. Consider the cases of `d with`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ k => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : (2:ℝ) ^ (d * (d - 1)) = 2 ^ (d - 1) * 2 ^ ((d - 1) * (d - 1))`. Rewrite using `[← pow_add, hnat]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hDL : 0 ≤ D / L ^ (d - 1)` using `le_trans (sq_nonneg _) hGi'`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem red_norm_sq_le (b : Fin d → E) (hr : IsRed b) (m D : ℝ) (hm0 : 0 < m)
     (hm : ∀ i, m ≤ ‖b i‖ ^ 2) (hD : (Matrix.gram ℝ b).det ≤ D) (i : Fin d) :
@@ -191,19 +191,19 @@ theorem red_norm_sq_le (b : Fin d → E) (hr : IsRed b) (m D : ℝ) (hm0 : 0 < m
     _ = 2 ^ (d * (d - 1)) * D / m ^ (d - 1) := by rw [key, hexp]; ring
 
 /- English proof (translation)
-Establish `hb` using `hr.1`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = ‖∑ l, c l • b l‖ ^ 2` from `⟨_, rfl⟩`. Rewrite using `[← hX]`. Establish `hX0 : 0 ≤ X` using `by rw [hX]; exact sq_nonneg _`. Establish `hp : (0:ℝ) < 2 ^ (d - 1)` using `by positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩ : ∃ y : ℝ, y = X * 2 ^ (d - 1) / m` from `⟨_, rfl⟩`. Establish `hy0 : 0 ≤ y` using `by rw [hy]; exact div_nonneg (mul_nonneg hX0 hp.le) hm0.le`. Establish `hnu : ∀ j, |nu b c j| ≤ Real.sqrt y`. Introduce `j`. Apply `Real.abs_le_sqrt` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : nu b c j ^ 2 * ‖gs b j‖ ^ 2 ≤ X`. Rewrite using `[hX, norm_sq_comb b hb c]`. Conclude with `Finset.single_le_sum (f := fun j => nu b c j ^ 2 * ‖gs b j‖ ^ 2) (fun k _ => by positivity) (mem_univ j)`. Establish `h2` using `gs_sq_ge b hr m hm j`. Establish `h3 : nu b c j ^ 2 * (m / 2 ^ (d - 1)) ≤ X` using `le_trans (mul_le_mul_of_nonneg_left h2 (sq_nonneg _)) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, le_div_iff₀ hm0]`. Establish `h4 : nu b c j ^ 2 * (m / 2 ^ (d - 1)) * 2 ^ (d - 1) = nu b c j ^ 2 * m`. Rewrite using `[mul_assoc, div_mul_cancel₀ _ hp.ne']`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h3 hp.le]`. Establish `hc` using `coeff_bound b hb hr.2.1 c (Real.sqrt_nonneg y) hnu i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : c i ^ 2 ≤ ((3 / 2 : ℝ) ^ d * Real.sqrt y) ^ 2`. Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) hc 2`. Rewrite `hsq` using `[mul_pow, Real.sq_sqrt hy0]`. Establish `h1 : ((3 / 2 : ℝ) ^ d) ^ 2 * 4 ^ d = 9 ^ d`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← pow_mul, mul_comm d 2, pow_mul, ← mul_pow]`. Evaluate the numerical expressions. Establish `h2 : (2:ℝ) ^ (d - 1) ≤ 4 ^ d`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : ((3 / 2 : ℝ) ^ d) ^ 2 * 2 ^ (d - 1) ≤ 9 ^ d`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem red_coeff_sq_le (b : Fin d → E) (hr : IsRed b) (m : ℝ) (hm0 : 0 < m)
     (hm : ∀ i, m ≤ ‖b i‖ ^ 2) (c : Fin d → ℝ) (i : Fin d) :

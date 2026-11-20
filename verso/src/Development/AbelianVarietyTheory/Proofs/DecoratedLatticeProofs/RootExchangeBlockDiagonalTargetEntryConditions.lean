@@ -10,11 +10,9 @@ section Shape
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
 
 /- English proof (translation)
-Break down `s with x | j` into its components or cases. It suffices to derive a contradiction. Distinguish the cases in `h : i.val + 1 < p`. Conclude with `hs (h2 (by simp only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega))`. Conclude with `hs (h1 (by simp only [Sum.elim_inl, Sum.elim_inr]; omega))`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : j = i`. Rewrite using `[hij]`. It suffices to derive a contradiction. Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne hij) with h | h` into its components or cases. Conclude with `hs (h1 (by simp only [Sum.elim_inl, Sum.elim_inr]; omega))`.
-
-Conclude with `hs (h2 (by simp only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega))`.
+It suffices to derive a contradiction. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem shape_inr {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k}
     (h1 : M.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
@@ -33,7 +31,7 @@ theorem shape_inr {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k}
     · exact hs (h2 (by simp only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `hs (h1 (by simp only [Sum.elim_inl, Sum.elim_inr]; omega))`. Conclude with `hs (h2 (by simp only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega))`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem shape_inl {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (hp : 1 ≤ p)
     (h1 : M.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
@@ -50,13 +48,13 @@ section Trans
 variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
 /- English proof (translation)
-Simplify using `[ch, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ch_add (x y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) : ch (x + y) = ch x + ch y := by
   simp [ch, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[embA, Matrix.mul_apply, Fintype.sum_sum_type, diagonal_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulD_inr (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (ϖ : kˣ) (r : n ⊕ Fin c) (l : Fin (c + 1)) :
     (x * (embA n' (GlobalTheory.SplitFlip.diagGL fun i : Fin (c + 1) => ϖ ^ (i.val + 1))).val) r (Sum.inr l) =
@@ -64,7 +62,7 @@ theorem mulD_inr (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (ϖ : kˣ) (r
   simp [embA, Matrix.mul_apply, Fintype.sum_sum_type, diagonal_apply]
 
 /- English proof (translation)
-Simplify using `[embA, Matrix.mul_apply, Fintype.sum_sum_type, one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulD_inl (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (ϖ : kˣ) (r : n ⊕ Fin c) (y : n') :
     (x * (embA n' (GlobalTheory.SplitFlip.diagGL fun i : Fin (c + 1) => ϖ ^ (i.val + 1))).val) r (Sum.inl y) =
@@ -74,13 +72,13 @@ theorem mulD_inl (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (ϖ : kˣ) (r
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `ez : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k` to `fun rs => z rs.1.1 rs.1.2`. Establish `hpt : ∀ e, affPt p x₀ (e + ez) = affPt p x₀ e + z`. Introduce `e`. Use extensionality with `r s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [affPt, Matrix.add_apply, Matrix.of_apply, Pi.add_apply]`. Use `split_ifs with h`. Simplify using `only [ez]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hz r s h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `opE`. Rewrite using `[← integral_const_mul]`. Use `conv_lhs => rw [← integral_add_right_eq_self _ ez]`. Use `congr 1`. Use extensionality with `e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hpt, hΨ, ch_add, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem opE_translate_free (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (p : ℕ)
     {Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} {z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k}
@@ -103,7 +101,7 @@ theorem opE_translate_free (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaa
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Apply `h` to reduce the goal to its premises. Simplify using `[opE, hn]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_affPt_ne_zero (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ)
     {Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} {x₀ : Matrix n n' k} (h : opE ψ ν p Ψ x₀ ≠ 0) :
@@ -120,51 +118,45 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp hE`. Take `⟨e, he⟩` from `exists_affPt_ne_zero ψ ν p hx₀`. Establish `hI` using `hInt _ he`. Establish `hx_diag : ∀ i : Fin c, affPt p x₀ e (Sum.inr i) (Sum.inr i.castSucc) = 1`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[affPt, basePt, Free]`. Establish `hx_X : ∀ (y : n) (q : Fin c), q.val + 1 = p → affPt p x₀ e (Sum.inl y) (Sum.inr q.castSucc) = 0`. Introduce `y q hq`. Substitute `hq` using the available equality. Simplify using `[affPt, basePt, Free]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hAB : ∀ i : Fin c, A.val (Sum.inr i) (Sum.inr i) * (A⁻¹).val (Sum.inr i) (Sum.inr i) = 1`. Introduce `i`. Establish `h` using `congrFun (congrFun (Units.mul_inv A) (Sum.inr i)) (Sum.inr i)`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr i)]`. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s _ hs`. Distinguish the cases in `h0 : A.val (Sum.inr i) s = 0`. Simplify using `[h0]`. Conclude with `absurd (shape_inr hA1 hA2 i s h0) hs`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `hI (Sum.inr i) (Sum.inr i.castSucc)`. Rewrite `h` using `[mulD_inr, Matrix.mul_apply, Finset.sum_eq_single (Sum.inr i), hx_diag]`. Simplify using `using h`. Introduce `s _ hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : A.val (Sum.inr i) s = 0`. Simplify using `[h0]`. Conclude with `absurd (shape_inr hA1 hA2 i s h0) hs`. Simplify using the standard rewrite rules. Establish `hb0 : (A⁻¹).val (Sum.inr i) (Sum.inr i) ≠ 0` using `right_ne_zero_of_mul_eq_one (hAB i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ0 : (ϖ : k) ≠ 0` using `ϖ.ne_zero`. Establish `key : ∀ y : k, valuation k y ≤ valuation k ((A⁻¹).val (Sum.inr i) (Sum.inr i) * ((ϖ : k) ^ (i.val + 1))⁻¹) → ψ y = 1`. Introduce `y hy`. Set `ζ` to `y * ((A⁻¹).val (Sum.inr i) (Sum.inr i))⁻¹`. Set `E : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k` to `Matrix.of fun u s => if u = Sum.inr i ∧ s = Sum.inr i.succ then ζ else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z` to `(A⁻¹).val * E`. Establish `hAz : A.val * z = E` using `by simp only [z, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `hzent : ∀ r s, z r s = if s = Sum.inr i.succ then (A⁻¹).val r (Sum.inr i) * ζ else 0`. Introduce `r s`. Simplify using `only [z, E, Matrix.mul_apply, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hs`. Apply the tactic sequence `rw [Finset.sum_eq_single (Sum.inr i)] <;> simp_all`. Simplify using `[hs]`. Establish `hval : valuation k (ζ * (ϖ : k) ^ (i.val + 2)) < 1`. Establish `h1 : (A⁻¹).val (Sum.inr i) (Sum.inr i) * ((ϖ : k) ^ (i.val + 1))⁻¹ * (((A⁻¹).val (Sum.inr i) (Sum.inr i))⁻¹ * (ϖ : k) ^ (i.val + 2)) = ϖ` using `by field_simp; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_assoc]`. Use `_ ≤ valuation k ((A⁻¹).val (Sum.inr i) (Sum.inr i) * ((ϖ : k) ^ (i.val + 1))⁻¹) * valuation k (((A⁻¹).val (Sum.inr i) (Sum.inr i))⁻¹ * (ϖ : k) ^ (i.val + 2)) := by gcongr`. Use `_ = valuation k (ϖ : k) := by rw [← map_mul, h1]`. Use `_ < 1 := hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmax : MaxM (A.val * z * (embA n' (GlobalTheory.SplitFlip.diagGL fun i : Fin (c + 1) => ϖ ^ (i.val + 1))).val)`. Introduce `r s`. Rewrite using `[hAz]`. Break down `s with y' | l` into its components or cases. Rewrite using `[mulD_inl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[E]`. Rewrite using `[mulD_inr]`. Simplify using `only [E, Matrix.of_apply]`. Use `split_ifs with h`. Take `⟨rfl, hl⟩` from `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Take `rfl : l = i.succ` from `Sum.inr_injective hl`. Rewrite using `[show (i.succ : Fin (c + 1)).val + 1 = i.val + 2 by simp [Fin.val_succ]]`. Conclude with `hval`. Simplify using the standard rewrite rules. Establish `hfree : ∀ r s, ¬ Free p (r, s) → z r s = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `r s hns`. Rewrite using `[hzent]`. Use `split_ifs with hs`. Substitute `hs` using the available equality. Distinguish the cases in `h0 : (A⁻¹).val r (Sum.inr i) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. It suffices to derive a contradiction. Apply `hns` to reduce the goal to its premises. Break down `r with y' | j` into its components or cases. Use `shape_inl hp1 hB1 hB2 y' i h0` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Free, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Take `⟨⟩` from `shape_inr hB1 hB2 j (Sum.inr i) h0`. Simplify using `[Free, Fin.val_succ]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `htr` using `opE_translate_free ψ ν p hfree (fun x' => hMax x' z hmax) x₀`. Establish `hch : ch z = y`. Simplify using `only [ch, hzent]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [if_true, ζ]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Introduce `j _ hj`. Simplify using `[Fin.succ_inj, hj]`. Simplify using the standard rewrite rules. Establish `h1 : (ψ (-ch z) : ℂ) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ((ψ (-ch z) : ℂ) - 1) * opE ψ ν p Ψ x₀ = 0` using `by rw [sub_mul, ← htr]; ring`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hx₀`. Establish `h2 : ψ (-ch z) = 1` using `Circle.ext (by simpa using h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[AddChar.map_neg_eq_inv, inv_eq_one, hch]`. Conclude with `h2`. Establish `hle` using `(hψ _).mp key`. Simplify using `only [Units.val_one, map_one] at hle`. Conclude with `hle`.
-
-Introduce `q hq y`. Establish `h` using `hI (Sum.inl y) (Sum.inr q.castSucc)`. Rewrite `h` using `[mulD_inr, Matrix.mul_apply, Finset.sum_eq_single (Sum.inr q)]`. Rewrite `h` using `[hx_diag]`. Simplify using `using h`.
-
-Introduce `s _ hs`. Break down `s with z | j` into its components or cases. Simplify using `[hx_X z q hq]`. Distinguish the cases in `h0 : A.val (Sum.inl y) (Sum.inr j) = 0`. Simplify using `[h0]`.
-
-Use `shape_inl hp1 hA1 hA2 y j h0` as an intermediate fact. Conclude with `absurd (by congr 1; exact Fin.ext (by omega)) hs`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entries_core (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (hψ : HasConductor ψ 1)
     (ϖ : kˣ) (hϖ : valuation k (ϖ : k) < 1) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
@@ -296,7 +288,7 @@ theorem entries_core (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasu
 end Main
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν _ hψ ϖ hϖ n n' _ _ _ _ c p hp1 _ A hA1 hA2 hB1 hB2 Ψ hInt hMax hE`. Conclude with `entries_core ψ ν hψ ϖ hϖ n n' c p hp1 A hA1 hA2 hB1 hB2 Ψ hInt hMax hE`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem entries : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure], HasConductor ψ 1 → ∀ (ϖ : kˣ), valuation k (ϖ : k) < 1 → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (A : GL (n ⊕ Fin c) k), A.val.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))) → A.val.BlockTriangular (fun r => OrderDual.toDual (lev p r)) → (A⁻¹).val.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))) → (A⁻¹).val.BlockTriangular (fun r => OrderDual.toDual (lev p r)) → ∀ (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), (∀ x, Ψ x ≠ 0 → IntM (A.val * x * (embA n' (GlobalTheory.SplitFlip.diagGL fun i : Fin (c + 1) => ϖ ^ (i.val + 1))).val)) → (∀ x z, MaxM (A.val * z * (embA n' (GlobalTheory.SplitFlip.diagGL fun i : Fin (c + 1) => ϖ ^ (i.val + 1))).val) → Ψ (x + z) = Ψ x) → opE ψ ν p Ψ ≠ 0 → (∀ i : Fin c, A.val (Sum.inr i) (Sum.inr i) * (ϖ : k) ^ (i.val + 1) ∈ 𝒪[k] ∧ (A⁻¹).val (Sum.inr i) (Sum.inr i) * ((ϖ : k) ^ (i.val + 1))⁻¹ ∈ 𝒪[k]) ∧ ∀ i : Fin c, i.val + 1 = p → ∀ x : n, A.val (Sum.inl x) (Sum.inr i) * (ϖ : k) ^ (i.val + 1) ∈ 𝒪[k] := by
   intro k _ _ _ _ _ _ ψ ν _ hψ ϖ hϖ n n' _ _ _ _ c p hp1 _ A hA1 hA2 hB1 hB2 Ψ hInt hMax hE

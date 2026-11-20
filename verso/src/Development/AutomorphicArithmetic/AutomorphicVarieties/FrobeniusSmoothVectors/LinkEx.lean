@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `DivisionSemiring.to_moduleIsTorsionFree`.
+A detailed English derivation is pending.
 -/
 private theorem tf (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] : Module.IsTorsionFree F Ω :=
   DivisionSemiring.to_moduleIsTorsionFree
@@ -21,9 +21,9 @@ attribute [local instance high] tf
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `@Loc.decEmb F Ω _ _ _ _ _ _ l _`. Take `⟨j, rfl⟩` from `h1 A w hA hw`. Take `⟨-, φ, -, -, hr, -, -, hd⟩` from `h2 j`. Take `⟨-, φ₀, -, h0, hr0, -⟩` from `(@Loc.decEmb ℚ Ω _ _ _ _ _ _ l _).2 j`. Establish `hs : Function.Surjective φ₀` using `fun s => (hr0 s).2 fun x => by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hd w hA, ← Subgroup.index_comap_of_surjective _ hs, Subgroup.relIndex]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, hr, Subgroup.mem_subgroupOf, mem_galOf]`. Conclude with `forall_congr' fun x => by rw [h0]; exact j.injective.eq_iff`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deg_eq (l : ℕ) [Fact l.Prime] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A w)
     (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) : locDeg w = (galOf ℚ F Ω).relIndex (Dec (F := ℚ) A) := by
@@ -40,11 +40,9 @@ private theorem deg_eq (l : ℕ) [Fact l.Prime] {A : ValuationSubring Ω} {w : H
 
 omit [CharZero Ω] [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsGalois F Ω := {}`. Use `letI : Algebra F ℂ := w.embedding.toAlgebra`. Set `j : Ω →ₐ[F] ℂ` to `IsAlgClosed.lift`. Establish `hr : ComplexEmbedding.IsReal w.embedding` using `InfinitePlace.isReal_iff.1 (IsTotallyReal.isReal w)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `cj : ℂ →ₐ[F] ℂ` to `{ starRingEnd ℂ with commutes' := fun x => RingHom.congr_fun hr x }`. Use `letI : Algebra Ω ℂ := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower F Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `⟨(cj.comp j).restrictNormal' Ω, j.toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `AlgHom.restrictNormal_commutes (cj.comp j) Ω x`.
-
-Rewrite using `[show j.toRingHom.comp (algebraMap F Ω) = w.embedding from RingHom.ext fun x => j.commutes x]`. Conclude with `w.mk_embedding`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_ex [IsTotallyReal F] (w : InfinitePlace F) : ∃ c : G F Ω, IsCCAt w c := by
   haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic
@@ -61,9 +59,7 @@ private theorem cc_ex [IsTotallyReal F] (w : InfinitePlace F) : ∃ c : G F Ω, 
     exact w.mk_embedding
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hf : {ζ : Ω | ζ ^ N = 1}.Finite` using `(Polynomial.nthRootsFinset N (1 : Ω)).finite_toSet.subset fun ζ hζ => (Polynomial.mem_nthRootsFinset (Nat.pos_of_ne_zero hN) _).2 hζ`. Use `haveI := hf.to_subtype`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {ζ : Ω | ζ ^ N = 1}) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin ℚ {ζ : Ω | ζ ^ N = 1}).fixingSubgroup) (fun s hs => h s fun ζ hζ => ?_) (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations.
-
-Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hs ζ (IntermediateField.subset_adjoin _ _ hζ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem kills_open {N : ℕ} (hN : N ≠ 0) {C : Type} [Group C] {χ : G ℚ Ω →* C} (h : Af.KillsMu N χ) :
     IsOpen (χ.ker : Set (G ℚ Ω)) := by
@@ -80,11 +76,11 @@ private theorem kills_open {N : ℕ} (hN : N ≠ 0) {C : Type} [Group C] {χ : G
 
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Use `(Int.units_eq_one_or (η σ)).resolve_left fun h1 => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hσ`. Establish `h3 : σ δ = δ` using `by rw [h, h1]; simp`. Establish `h4` using `hj δ`. Rewrite `h4` using `[h3]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h4.symm`. Establish `h5` using `congrArg j h2`. Rewrite `h5` using `[map_pow, hr, map_neg, map_natCast]`. Establish `h6 : r ^ 2 = -(D : ℝ)` using `by exact_mod_cast h5`. Establish `h7 : (0 : ℝ) < D` using `by exact_mod_cast hD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg r]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem eta_cc {η : G ℚ Ω →* ℤˣ} {σ : G ℚ Ω} (hσ : IsCC σ) {D : ℕ} {δ : Ω} (hD : 0 < D) (h2 : δ ^ 2 = -(D : Ω))
     (h : ∀ s : G ℚ Ω, s δ = (η s : ℤ) • δ) : η σ = -1 := by
@@ -102,7 +98,7 @@ private theorem eta_cc {η : G ℚ Ω →* ℤˣ} {σ : G ℚ Ω} (hσ : IsCC σ
 
 omit [CharZero Ω] [IsAlgClosure ℚ Ω] [IsAlgClosure F Ω] in
 /- English proof (translation)
-Introduce `x` and use `by have e : ∀ y : F, algebraMap F Ω y ∈ g • A ↔ algebraMap F Ω y ∈ A := fun y => by conv_lhs => rw [← g.commutes y] exact ValuationSubring.smul_mem_pointwise_smul_iff rw [← hA x, valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, e, e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem over_smul {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A w) (g : G F Ω) :
     IsPlaceOver (g • A) w := fun x => by
@@ -118,11 +114,9 @@ Both sides reduce to the same expression.
 private theorem emb_smul (g : G F Ω) (A : ValuationSubring Ω) : galEmb ℚ F Ω g • A = g • A := rfl
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, -⟩` from `places ℚ Ω l A`. Take `⟨b1, b2, b3, -⟩` from `places ℚ Ω l B`. Take `⟨v, hv⟩` from `a1 fun h => (a2 h).2 hA`. Take `⟨u, hu⟩` from `b1 fun h => (b2 h).2 hB`. Establish `key : ∀ v : HeightOneSpectrum (𝓞 ℚ), ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → v.asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)}` using `fun v h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : Prime ((l : ℕ) : 𝓞 ℚ)`. Rewrite using `[← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]`. Conclude with `Nat.prime_iff_prime_int.1 Fact.out`. Conclude with `(((Ideal.span_singleton_prime hp.ne_zero).2 hp).isMaximal (mt Ideal.span_singleton_eq_bot.1 hp.ne_zero)).eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 h) |>.symm`. Establish `e : v = u` using `HeightOneSpectrum.ext ((key v ((a3 v hv).1 hA)).trans (key u ((b3 u hu).1 hB)).symm)`.
-
-Conclude with `exists_smul_eq_of_isPlaceOver hv (e ▸ hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem conj_l (l : ℕ) [Fact l.Prime] {A B : ValuationSubring Ω} (hA : A.valuation (l : Ω) < 1)
     (hB : B.valuation (l : Ω) < 1) : ∃ g : G ℚ Ω, g • A = B := by
@@ -140,7 +134,7 @@ private theorem conj_l (l : ℕ) [Fact l.Prime] {A B : ValuationSubring Ω} (hA 
   exact exists_smul_eq_of_isPlaceOver hv (e ▸ hu)
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Take `⟨γ, rfl⟩` from `conj_l l hB (((places F Ω l A).2.2.1 v hA).2 hv)`. Break down `Int.units_eq_one_or (η γ) with h | h` into its components or cases. Conclude with `⟨_, hA, γ, h, rfl⟩`. Conclude with `⟨_, over_smul hA c, galEmb ℚ F Ω c * γ, by rw [map_mul, hc, h]; simp, by rw [mul_smul, emb_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem place_ex (l : ℕ) [Fact l.Prime] {η : G ℚ Ω →* ℤˣ} {c : G F Ω} (hc : η (galEmb ℚ F Ω c) = -1)
     {B : ValuationSubring Ω} (hB : B.valuation (l : Ω) < 1) (v : HeightOneSpectrum (𝓞 F)) (hv : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal) :
@@ -153,7 +147,7 @@ private theorem place_ex (l : ℕ) [Fact l.Prime] {η : G ℚ Ω →* ℤˣ} {c 
 
 omit [CharZero Ω] [IsAlgClosure ℚ Ω] [IsAlgClosure F Ω] in
 /- English proof (translation)
-Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun s hs => ?_) hH` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion] at hs`. Take `⟨v, hv, A, hA, hs⟩` from `hs`. Conclude with `h v hv A hA hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem tame_le (S : Set (HeightOneSpectrum (𝓞 F))) (K H : Subgroup (G F Ω)) [H.Normal] (hH : IsClosed (H : Set (G F Ω)))
     (h : ∀ v ∉ S, ∀ A, IsPlaceOver A v → Ine (F := F) A ⊓ K ≤ H) : GC.tameN S K ≤ H := by
@@ -163,9 +157,9 @@ private theorem tame_le (S : Set (HeightOneSpectrum (𝓞 F))) (K H : Subgroup (
   exact h v hv A hA hs
 
 /- English proof (translation)
-Establish `h : (Subgroup.normalClosure t).comap (e : X →* Y) = Subgroup.normalClosure s`. Use `le_antisymm ?_ (Subgroup.normalClosure_le_normal fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[show (e : X →* Y) = (e.toMulEquiv : X →* Y) from rfl, ← Subgroup.comap_normalClosure]`. Conclude with `Subgroup.normalClosure_mono h2`. Break down `h1 x hx with rfl | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components.
 
-Conclude with `one_mem _`. Conclude with `Subgroup.subset_normalClosure h`. Use extensionality with `x`. Rewrite using `[← h]`. Conclude with `Set.ext_iff.1 (e.toHomeomorph.preimage_closure (Subgroup.normalClosure t : Set Y)) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem clos_comap {X Y : Type} [Group X] [Group Y] [TopologicalSpace X] [TopologicalSpace Y] [IsTopologicalGroup X]
     [IsTopologicalGroup Y] (e : X ≃ₜ* Y) (s : Set X) (t : Set Y) (h1 : ∀ x ∈ s, x = 1 ∨ e x ∈ t) (h2 : ∀ x, e x ∈ t → x ∈ s) :
@@ -182,7 +176,7 @@ private theorem clos_comap {X Y : Type} [Group X] [Group Y] [TopologicalSpace X]
   exact Set.ext_iff.1 (e.toHomeomorph.preimage_closure (Subgroup.normalClosure t : Set Y)) x
 
 /- English proof (translation)
-Use extensionality with `s`. Conclude with `⟨fun h x => h x x.2, fun h x hx => h ⟨x, hx⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 private theorem upl_eq (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (L : Type) [Field L] [NumberField L] [Algebra L Ω] :
     upl Ω L = galOf ℚ (W.Lp L) Ω := by
@@ -190,9 +184,9 @@ private theorem upl_eq (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   exact ⟨fun h x => h x x.2, fun h x hx => h ⟨x, hx⟩⟩
 
 /- English proof (translation)
-Establish `hE` using `(galEmbTop ℚ (W.Lp L) Ω).1`. Establish `hr : (galEmb ℚ (W.Lp L) Ω).range = upl Ω L` using `(range_galEmb ℚ (W.Lp L) Ω).trans (upl_eq Ω L).symm`. Set `e : G (W.Lp L) Ω ≃* upl Ω L` to `(MonoidHom.ofInjective hE.injective).trans (MulEquiv.subgroupCongr hr)`. Use `⟨{ e with continuous_toFun := hE.continuous.subtype_mk _, continuous_invFun := hE.continuous_iff.2 ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Use `continuous_subtype_val using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `s`. Conclude with `congrArg Subtype.val (e.apply_symm_apply s)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem equiv_ex (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (L : Type) [Field L] [NumberField L] [Algebra L Ω]
     [IsAlgClosure (W.Lp L) Ω] : ∃ e : G (W.Lp L) Ω ≃ₜ* upl Ω L, ∀ g, (e g).1 = galEmb ℚ (W.Lp L) Ω g := by
@@ -207,55 +201,39 @@ private theorem equiv_ex (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl O _ _ _ η Ψ σ B M Hb g m L _ _ _ _ g₁ U hab hgal hg₁`. Use `haveI := tf L Ω`. Use `haveI := tf (W.Lp L) Ω`. Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed ℚ, haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic; Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`. Use `haveI : IsGalois (W.Lp L) Ω := {}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := g.fin`. Take `⟨e, he⟩` from `equiv_ex Ω L`. Establish `he' : ∀ s : upl Ω L, galEmb ℚ (W.Lp L) Ω (e.symm s) = s` using `fun s => by rw [← he, e.apply_symm_apply]`. Take `⟨hDI, -, hcyc, -⟩` from `galEmbFam ℚ (W.Lp L) Ω l`. Establish `hcont` using `(galEmbTop ℚ (W.Lp L) Ω).1.continuous`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, δ, hD, -, hδ, hηδ⟩` from `g.quad`. Establish `hσ : η σ = -1` using `eta_cc g.cc hD hδ hηδ`. Establish `hσU : σ ∈ upl Ω L` using `U.real σ g.cc`. Establish `hg : g₁ ∈ upl Ω L ⊓ η.ker` using `hgal ▸ hg₁`. Take `⟨a, hk1, hk2⟩` from `g.cyc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho1` using `kills_open (pow_ne_zero a g.M_ne) hk1`. Establish `ho2` using `kills_open (pow_ne_zero a g.M_ne) hk2`. Use `set E := galEmb ℚ (W.Lp L) Ω with hE`. Use `set K : Subgroup (G (W.Lp L) Ω) := (η.ker ⊓ (barChar O Ψ).ker).comap E with hK`. Establish `hKo : IsOpen (K : Set (G (W.Lp L) Ω))` using `(ho1.inter ho2).preimage hcont`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hKi : ¬ l ∣ K.index`. Establish `h1 : K = ((η.prod (barChar O Ψ)).comp E).ker` using `by rw [hK, ← MonoidHom.comap_ker, MonoidHom.ker_prod]`. Rewrite using `[h1, Subgroup.index_ker]`. Introduce `h`. Establish `h2` using `h.trans (Subgroup.card_subgroup_dvd_card _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Nat.card_prod, hl.out.dvd_mul]`. Break down `h2 with h2 | h2` into its components or cases. Rewrite `h2` using `[Nat.card_eq_fintype_card, Fintype.card_units_int]`. Conclude with `g.odd ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 h2)`. Use `haveI := Fintype.ofFinite (ResidueField O)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' l h2`. Establish `h3 : ((x : ResidueField O) - 1) ^ l = 0`. Rewrite using `[sub_pow_char, one_pow, ← Units.val_pow_eq_pow_val, ← hx, pow_orderOf_eq_one, Units.val_one, sub_self]`. Establish `h4 : x = 1` using `Units.ext (sub_eq_zero.1 (pow_eq_zero_iff hl.out.ne_zero |>.1 h3))`. Rewrite `hx` using `[h4, orderOf_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl.out.one_lt.ne hx`. Establish `hfin : {v : HeightOneSpectrum (𝓞 (W.Lp L)) | ((l : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {((l : ℕ) : 𝓞 (W.Lp L))}) (mt Ideal.span_singleton_eq_bot.1 (Nat.cast_ne_zero.2 hl.out.ne_zero))).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`. Set `S` to `hfin.toFinset`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∀ v, v ∈ S ↔ ((l : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal` using `fun v => hfin.mem_toFinset`. Establish `hval : ∀ {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 (W.Lp L))}, IsPlaceOver A v → (A.valuation (l : Ω) < 1 ↔ ((l : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal)` using `fun {A v} h => (places (W.Lp L) Ω l A).2.2.1 v h`. Use `set N := GC.tameN (S : Set (HeightOneSpectrum (𝓞 (W.Lp L)))) K with hN`. Use `haveI : N.Normal := Subgroup.is_normal_topologicalClosure _`. Use `haveI hNc : IsClosed (N : Set (G (W.Lp L) Ω)) := Subgroup.isClosed_topologicalClosure _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hNK : N ≤ K` using `tame_le _ _ _ (K.isClosed_of_isOpen hKo) fun _ _ _ _ => inf_le_right`. Establish `hNc' : N ≤ (cycZ (W.Lp L) Ω l).ker` using `tame_le _ _ _ (isClosed_singleton.preimage (continuous_cycZ _ _ l)) fun v hv A hA => inf_le_left.trans ((places (W.Lp L) Ω l A).2.2.2 fun h => hv ((hS v).2 ((hval hA).1 h)))`. Establish `hc : η (E (e.symm ⟨σ, hσU⟩)) = -1` using `by rw [he']; exact hσ`. Use `choose A hA hAγ using fun v : W.Vl l L => place_ex l hc g.over_l v.1 v.2`. Establish `hAl : ∀ v, (A v).valuation (l : Ω) < 1` using `fun v => (hval (hA v)).2 v.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hAM : ∀ v, (A v).valuation (M : Ω) < 1` using `fun v => by`. Take `⟨k, hk⟩` from `g.l_dvd`. Rewrite using `[hk, Nat.cast_mul, map_mul]`. Conclude with `mul_lt_one_of_lt_of_le (hAl v) (valuation_natCast_le_one _ k)`. Use `choose c hcc using fun w : InfinitePlace (W.Lp L) => cc_ex (Ω := Ω) w`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hDec : ∀ (B' : ValuationSubring Ω) s, s ∈ Dec (F` using `W.Lp L) B' ↔ E s ∈ Dec (F := ℚ) B' := fun B' s => by`. Rewrite using `[← (hDI B').1]`. Both sides reduce to the same expression. Establish `hIne : ∀ (B' : ValuationSubring Ω) s, s ∈ Ine (F` using `W.Lp L) B' ↔ E s ∈ Ine (F := ℚ) B' := fun B' s => by`. Rewrite using `[← (hDI B').2]`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hEU : ∀ s, E s ∈ upl Ω L` using `fun s => he s ▸ (e s).2`. Set `π : G (W.Lp L) Ω →* G (W.Lp L) Ω ⧸ N` to `QuotientGroup.mk' N`. Set `del : G (W.Lp L) Ω ⧸ N →* ℤˣ` to `QuotientGroup.lift N (η.comp E) fun s hs => (hNK hs).1`. Set `Φ : Frame l (ResidueField O)` to `{ Γ := G (W.Lp L) Ω ⧸ N td := (AlgebraTools.totallyDisconnected_quot _ N hNc).1 del := del c := π (e.symm ⟨σ, hσU⟩) V := W.Vl l L fV := haveI : Finite (W.Vl l L) := hfin.to_subtype; Fintype.ofFinite _ Gv := fun v => Dec (F := W.Lp L) (A v) cv := fun v => isCompact_iff_compactSpac …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `k : GalLink η Ψ σ g₁ B M L Φ` to `{ ab := hab gal := hgal unr := U.unr split := U.split teich := U.teich p := π.comp (e.symm : upl Ω L →* G (W.Lp L) Ω) p_cont := QuotientGroup.continuous_mk.comp e.symm.continuous p_surj := (QuotientGroup.mk'_surjective N).comp e.symm.surjective p_ker := by`. Rewrite using `[← MonoidHom.comap_ker, QuotientGroup.ker_mk']`. Use `clos_comap e.symm _ _ ?_ fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `x ⟨B', hB', h1, h2, h3⟩`. Take `⟨a1, a2, -⟩` from `places (W.Lp L) Ω l B'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hx : e.symm x ∈ Ine (F` using `W.Lp L) B' := by rw [hIne, he']; exact h1`. Distinguish the cases in `ht : B' = ⊤`. Rewrite `hx` using `[(a2 ht).1, Subgroup.mem_bot]`. Conclude with `Or.inl (e.symm.injective (hx.trans (map_one _).symm))`. Take `⟨v, hv⟩` from `a1 ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Or.inr ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Use `⟨v, fun h => hB' ((hval hv).2 ((hS v).1 h)), B', hv, hx, ?_⟩` and prove the remaining obligations. Use `show E (e.symm x) ∈ η.ker ⊓ (barChar O Ψ).ker`. Rewrite using `[he']`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h2, h3⟩`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨v, hv, B', hB', h1, h2⟩` from `hx`. Establish `h3 : E (e.symm x) ∈ η.ker ⊓ (barChar O Ψ).ker` using `h2`. Establish `h4` using `(hIne _ _).1 h1`.
-
-Rewrite `h3`, `h4` using `[he']`. Conclude with `⟨B', fun h => hv ((hS v).2 ((hval hB').1 h)), h4, h3.1, h3.2⟩`. Use `del := fun s => congrArg η (he' s)`. Use `eps := fun s => (DFunLike.congr_fun hcyc (e.symm s)).symm.trans (congrArg (cycZ ℚ Ω l) (he' s))`. Use `psi := fun s => congrArg (barChar O Ψ) (he' s)`.
-
-Use `c := ⟨hσU, rfl⟩`. Use `g0 := ⟨hg.1, rfl⟩`. Use `pl := A`. Use `pl_conj := hAγ`. Use `pl_all := fun B' hB' => by`.
-
-Take `⟨a1, a2, -⟩` from `places (W.Lp L) Ω l B'`. Take `⟨v, hv⟩` from `a1 fun h => (a2 h).2 hB'`. Take `⟨u, hu⟩` from `exists_smul_eq_of_isPlaceOver (hA ⟨v, (hval hv).1 hB'⟩) hv`. Use `⟨⟨v, (hval hv).1 hB'⟩, ⟨E u, hEU u, hu.symm⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `v' ⟨u', hu', h⟩`.
-
-Establish `h1` using `over_smul (hA v') (e.symm ⟨u', hu'⟩)`. Rewrite `h1` using `[← emb_smul, he', ← h]`. Conclude with `Subtype.ext (eq_of_isPlaceOver h1 hv)`. Use `j := fun v => (e : G (W.Lp L) Ω →* upl Ω L).comp (Dec (F := W.Lp L) (A v)).subtype`. Use `j_cont := fun v => e.continuous.comp continuous_subtype_val`.
-
-Use `j_inj := fun v => e.injective.comp Subtype.val_injective`. Use `j_range := fun v s => by`. Use `⟨?_, fun h => ⟨⟨e.symm s, by rw [hDec, he']; exact h⟩, e.apply_symm_apply s⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨t, rfl⟩`. Conclude with `he t.1 ▸ (hDec _ _).1 t.2`.
-
-Use `j_loc := fun v s => (congrArg π (e.symm_apply_apply s.1)).symm`. Use `j_ine := fun v s => (hIne _ s.1).trans (he s.1 ▸ Iff.rfl)`. Use `dv := fun v => (deg_eq l (hA v) v.2).trans (by rw [upl_eq])`. Use `mu := fun v => by`. Take `⟨s, hs, h⟩` from `U.mu (A v) (hAl v)`.
-
-Use `⟨⟨e.symm ⟨s, hs.2⟩, by rw [hDec, he']; exact Ine_le_Dec _ hs.1⟩, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val (e.apply_symm_apply ⟨s, hs.2⟩)).symm ▸ h }`. Use `⟨Φ, k, S, π, fun v => (Dec (F := W.Lp L) (A v)).subtype, Subtype.val, Equiv.refl _, c, ⟨inferInstance, GC.gLink_quot l g.odd (fun v hv => (hS v).2 hv) inferInstance hKo hKi, fun w hw => (hS w).1 hw, ⟨hA, Subtype.val_injective, fun w => ⟨?_, fun h => ⟨⟨w, h⟩, rfl⟩⟩, fun v => conti …` and prove the remaining obligations. Introduce and unpack `⟨v, rfl⟩`. Conclude with `v.2`.
-
-Conclude with `(QuotientGroup.isQuotientMap_mk N).isOpen_preimage.1 (ho1.preimage hcont)`. Conclude with `(e.symm_apply_eq.2 (Subtype.ext (he s).symm)).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.link_ex :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∀ (m : ℕ) (L : Type) [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] (g₁ : G ℚ Ω), UFacts l η Ψ M m (upl Ω L) → IsAbelianGalois ℚ L → galOf ℚ L Ω = upl Ω L ⊓ η.ker → g₁ ∈ galOf ℚ L Ω → ∃ Φ : Frame l (ResidueField O), Linked l η Ψ σ g₁ B M L Φ := by

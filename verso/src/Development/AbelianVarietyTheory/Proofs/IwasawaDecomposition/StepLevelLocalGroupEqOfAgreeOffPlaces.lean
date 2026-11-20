@@ -13,13 +13,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ}
 
 /- English proof (translation)
-Introduce `h hh`. Establish `hx1 : bc (prV (E` using `E) v) (Formalism.UG.P.afsplitU v h 1) = h := Formalism.UG.P.afsplit_right1 v h 1`. Establish `hxw : ∀ w, w ≠ v → bc (prV (E` using `E) w) (Formalism.UG.P.afsplitU v h 1) = 1 := by`. Introduce `w hw`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplitU_coe, Formalism.UG.P.afsplitC_prV_ne v w hw, Units.val_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hxU : Formalism.UG.P.afsplitU v h 1 ∈ S.U`. Rewrite using `[S.U_eq]`. Use `⟨Formalism.UG.P.afsplitU_mem v σ J h 1 (S.Uloc_le v hh) (one_mem _), fun w => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Rewrite using `[hw, hx1]`. Conclude with `hh`. Rewrite using `[hxw w hw]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hxQ : ∀ w ∈ Q, bc (prV (E` using `E) w) (Formalism.UG.P.afsplitU v h 1) = 1 := fun w hw => hxw w (fun he => hv (he ▸ hw))`. Establish `h2` using `((S'.U_eq _).mp (hQ _ hxQ hxU)).2 v`. Rewrite `h2` using `[hx1]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem stepLevel_uloc_le_of_agree {bad bad' : Set (HeightOneSpectrum (𝓞 F))}
     (S : StepLevel F E σ J T f bad) (S' : StepLevel F E σ J T f bad') (Q : Set (HeightOneSpectrum (𝓞 F)))
@@ -47,7 +47,7 @@ theorem stepLevel_uloc_le_of_agree {bad bad' : Set (HeightOneSpectrum (𝓞 F))}
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J T f bad bad' S S' Q hQ v hv`. Conclude with `le_antisymm (stepLevel_uloc_le_of_agree S S' Q (fun x hx => (hQ x hx).mp) v hv) (stepLevel_uloc_le_of_agree S' S Q (fun x hx => (hQ x hx).mpr) v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepLevel_uloc_eq_of_agree : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad bad' : Set (HeightOneSpectrum (𝓞 F))}

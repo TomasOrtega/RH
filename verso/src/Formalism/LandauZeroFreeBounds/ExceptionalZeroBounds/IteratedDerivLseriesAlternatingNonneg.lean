@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hlt : LSeries.abscissaOfAbsConv a < ((2 : ℂ).re : EReal)`. Establish `e : ((2 : ℂ).re : EReal) = ((2 : ℝ) : EReal)` using `by norm_num`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt habs (by exact_mod_cast (by norm_num : (1 : ℝ) < 2))`. Establish `hs : LSeriesSummable a 2` using `LSeriesSummable_of_abscissaOfAbsConv_lt_re hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LSeries.term a 2 1 = 1` using `by simp [LSeries.term, ha1]`. Establish `hnn : ∀ j, 0 ≤ LSeries.term a 2 j` using `fun j => by simpa using LSeries.term_nonneg (ha0 j) 2`. Rewrite using `[← h1]`. Conclude with `hs.le_tsum 1 (fun j _ => hnn j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_le_lseries_at_two {a : ℕ → ℂ} (ha0 : ∀ n, 0 ≤ a n) (ha1 : a 1 = 1)
     (habs : LSeries.abscissaOfAbsConv a ≤ 1) : 1 ≤ LSeries a 2 := by
@@ -25,7 +25,7 @@ lemma one_le_lseries_at_two {a : ℕ → ℂ} (ha0 : ∀ n, 0 ≤ a n) (ha1 : a 
   exact hs.le_tsum 1 (fun j _ => hnn j)
 
 /- English proof (translation)
-Establish `hlt : LSeries.abscissaOfAbsConv a < ((2 : ℝ) : EReal)` using `lt_of_le_of_lt habs (by exact_mod_cast (by norm_num : (1 : ℝ) < 2))`. Establish `h` using `LSeries.iteratedDeriv_alternating (a := a) (fun m => ha0 m) (x := 2) hlt n`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma iteratedDeriv_lseries_alternating_nonneg {a : ℕ → ℂ} (ha0 : ∀ n, 0 ≤ a n)
     (habs : LSeries.abscissaOfAbsConv a ≤ 1) (n : ℕ) :
@@ -36,47 +36,45 @@ lemma iteratedDeriv_lseries_alternating_nonneg {a : ℕ → ℂ} (ha0 : ∀ n, 0
   simpa using h
 
 /- English proof (translation)
-Use `set x : ℝ := 2 - σ with hxdef`. Establish `hx1 : 1 < x` using `by rw [hxdef]; linarith`. Establish `hx2 : x ≤ 9 / 8` using `by rw [hxdef]; linarith`. Establish `hFG' : ∀ s : ℂ, 1 < s.re → LSeries a s = G s + lam * (s - 1)⁻¹`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs1 : s ≠ 1`. Introduce `h`. Rewrite `hs` using `[h]`. Simplify using `at hs`. Rewrite using `[← hF s hs, hFG s hs1, div_eq_mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoef` using `iteratedDeriv_lseries_at_two hG hFG'`. Establish `hB0 : 0 ≤ B`. Establish `hmem : (2 : ℂ) + ((3 / 2 : ℝ) : ℂ) ∈ Metric.sphere (2 : ℂ) (3 / 2)`. Rewrite using `[Metric.mem_sphere, dist_eq_norm, add_sub_cancel_left, Complex.norm_real]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Conclude with `(norm_nonneg _).trans (hB _ hmem)`. Use `set t : ℕ → ℂ := fun n => (n ! : ℂ)⁻¹ • ((σ : ℂ) - 2) ^ n • iteratedDeriv n G 2 with htdef`. Establish `hT : HasSum t (G σ)` using `Complex.hasSum_taylorSeries_of_entire hG 2 (σ : ℂ)`. Establish `hsplit` using `hT.summable.sum_add_tsum_nat_add M`. Rewrite `hsplit` using `[hT.tsum_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set β : ℕ → ℂ := fun n => (n ! : ℂ)⁻¹ * ((-1) ^ n * iteratedDeriv n (LSeries a) 2) with hβdef`. Establish `hβ0 : ∀ n, 0 ≤ β n`. Introduce `n`. Use `mul_nonneg ?_ (iteratedDeriv_lseries_alternating_nonneg ha0 habs n)` and prove the remaining obligations. Establish `: (0 : ℂ) ≤ (n ! : ℂ)` using `by exact_mod_cast (Nat.zero_le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `inv_nonneg.mpr this`. Establish `hσx : (σ : ℂ) - 2 = -(x : ℂ)` using `by rw [hxdef]; push_cast; ring`. Establish `ht : ∀ n, t n = (x : ℂ) ^ n * β n - lam * (x : ℂ) ^ n`. Introduce `n`. Establish `hg : iteratedDeriv n G 2 = iteratedDeriv n (LSeries a) 2 - lam * ((-1) ^ n * (n ! : ℂ))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcoef n]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : ((-1 : ℂ) ^ n) * ((-1) ^ n) = 1` using `by rw [← mul_pow]; simp`. Establish `hfac : (n ! : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero n`. Simplify using `only [htdef, hβdef, smul_eq_mul, hσx, hg, neg_pow (x : ℂ) n]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : (n ! : ℂ)⁻¹ * (n ! : ℂ) = 1` using `inv_mul_cancel₀ hfac`. Take the linear combination `(-(lam * (x : ℂ) ^ n * ((n ! : ℂ)⁻¹ * (n ! : ℂ)))) * hpow + (-(lam * (x : ℂ) ^ n)) * hQ`. Establish `hfin : ∑ i ∈ Finset.range M, t i = ∑ i ∈ Finset.range M, (x : ℂ) ^ i * β i - lam * (((x : ℂ) ^ M - 1) / ((x : ℂ) - 1))`. Rewrite using `[Finset.sum_congr rfl (fun i _ => ht i), Finset.sum_sub_distrib, ← Finset.mul_sum, geom_sum_eq]`. Introduce `h`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: x = 1` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 1 ≤ ∑ i ∈ Finset.range M, (x : ℂ) ^ i * β i`. Establish `hnn : ∀ i ∈ Finset.range M, 0 ≤ (x : ℂ) ^ i * β i`. Introduce `i _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_nonneg ?_ (hβ0 i)` and prove the remaining obligations. Establish `: (0 : ℂ) ≤ (x : ℂ)` using `by exact_mod_cast (by linarith : (0 : ℝ) ≤ x)`. Conclude with `pow_nonneg this i`. Establish `h0` using `Finset.single_le_sum hnn (Finset.mem_range.mpr (by omega : 0 < M))`. Establish `hb0 : (x : ℂ) ^ 0 * β 0 = LSeries a 2` using `by simp [hβdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[hb0]`. Conclude with `(one_le_lseries_at_two ha0 ha1 habs).trans h0`. Establish `htail : ‖∑' i, t (i + M)‖ ≤ 4 * B * (3 / 4) ^ M`. Establish `hg : HasSum (fun i : ℕ => B * (3 / 4) ^ M * (3 / 4 : ℝ) ^ i) (B * (3 / 4) ^ M * (1 - 3 / 4)⁻¹)` using `(hasSum_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left _`. Establish `hle` using `tsum_of_norm_bounded hg (f := fun i => t (i + M)) (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hC` using `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le (i + M) (by norm_num : (0 : ℝ) < 3 / 2) hG.diffContOnCl hB`. Establish `hnorm : ‖t (i + M)‖ = ((i + M) ! : ℝ)⁻¹ * x ^ (i + M) * ‖iteratedDeriv (i + M) G 2‖`. Simplify using `only [htdef, smul_eq_mul, norm_mul, norm_inv, norm_pow, hσx, norm_neg, Complex.norm_real, Complex.norm_natCast]`. Rewrite using `[Real.norm_of_nonneg (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnorm]`. Establish `hfac : (0 : ℝ) < ((i + M) ! : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hxp : 0 ≤ x ^ (i + M)` using `pow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hq : x / (3 / 2) ≤ 3 / 4` using `by rw [div_le_iff₀ (by norm_num)]; linarith`. Establish `hq0 : 0 ≤ x / (3 / 2)` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hq0 hq _) hB0`. Use `_ = B * (3 / 4) ^ M * (3 / 4 : ℝ) ^ i := by rw [pow_add]; ring)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ1' : (σ : ℂ) ≠ 1`. Introduce `h; have : σ = 1 := by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkey : F σ = ∑ i ∈ Finset.range M, (x : ℂ) ^ i * β i - lam * (((x ^ M / (x - 1) : ℝ)) : ℂ) + ∑' i, t (i + M)`. Rewrite using `[hFG σ hσ1', ← hsplit, hfin]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hx1' : (x : ℂ) - 1 ≠ 0`. Introduce `h; have : x = 1 := by`. Establish `h' : ((x - 1 : ℝ) : ℂ) = 0` using `by push_cast; exact h`. Use `Complex.ofReal_eq_zero.mp h'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hσc : (σ : ℂ) - 1 = -((x : ℂ) - 1)` using `by rw [hxdef]; push_cast; ring`. Rewrite using `[hσc]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hre` using `congrArg Complex.re hkey`. Rewrite `hre` using `[Complex.add_re, Complex.sub_re]`. Establish `h1 : 1 ≤ (∑ i ∈ Finset.range M, (x : ℂ) ^ i * β i).re`. Use `(Complex.le_def.mp hpos).1` as an intermediate fact.
+Put the polynomial expressions in normal form. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h2 : (lam * (((x ^ M / (x - 1) : ℝ)) : ℂ)).re ≤ ‖lam‖ * x ^ M / (x - 1)`. Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg]`. Put the polynomial expressions in normal form.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Both sides reduce to the same expression. Conclude with `div_nonneg (pow_nonneg (by linarith) _) (by linarith)`. Establish `h3 : -(4 * B * (3 / 4) ^ M) ≤ (∑' i, t (i + M)).re`. Use `Complex.abs_re_le_norm (∑' i, t (i + M))` as an intermediate fact. Use `neg_abs_le (∑' i, t (i + M)).re` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx1s : x - 1 = 1 - σ` using `by rw [hxdef]; ring`. Rewrite `h2`, `hre` using `[hx1s]`. Rewrite using `[hre]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lseries_taylor_lower_bound {a : ℕ → ℂ} (ha0 : ∀ n, 0 ≤ a n) (ha1 : a 1 = 1)
     (habs : LSeries.abscissaOfAbsConv a ≤ 1) {F G : ℂ → ℂ} {lam : ℂ} (hG : Differentiable ℂ G)

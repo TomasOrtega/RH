@@ -397,17 +397,15 @@ section SlopeTestRemainingChoices
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.CrystallineLiftingInputs Formalism.MainNotions.LiftingTheory
 
 /- English proof (translation)
-Establish `hk : (k : WithTop ℚ) ≠ ⊤` using `WithTop.natCast_ne_top k`. Establish `key : ∀ a b : O, v (algebraMap O LL a) = (k : WithTop ℚ) → v (algebraMap O LL b) = (k : WithTop ℚ) → b ≠ 0 ∧ ∃ o : O, a = o * b`. Introduce `a b ha hb`. Establish `hb0 : algebraMap O LL b ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hb` using `[h, v.map_zero]`. Conclude with `hk hb.symm`. Establish `h1 : algebraMap O LL a = algebraMap O LL a / algebraMap O LL b * algebraMap O LL b` using `(div_mul_cancel₀ _ hb0).symm`. Establish `h2 : v (algebraMap O LL a / algebraMap O LL b) = 0`. Establish `h3` using `congrArg v h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[v.map_mul, ha, hb]`. Conclude with `(WithTop.add_right_cancel hk ((zero_add _).trans h3)).symm`. Take `⟨o, ho⟩` from `hO _ h2.ge`. Use `⟨fun h => hb0 (by rw [h, map_zero]), o, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ho]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨hy0, o, ho⟩` from `key x y hx hy`. Take `⟨-, o', ho'⟩` from `key y x hy hx`. Establish `h1 : o * o' = 1`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy1 : algebraMap O LL y ≠ 0` using `fun h => hy0 (hinj (by rw [h, map_zero]))`. Apply `mul_right_cancel₀ hy1` to reduce the goal to its premises. Rewrite using `[← map_mul, map_one, one_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `⟨Units.mkOfMulEqOne o o' h1, ho⟩`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem unit_of_val {LL O : Type} [Field LL] [CommRing O] [Algebra O LL]
     (v : AddValuation LL (WithTop ℚ)) (hinj : Function.Injective (algebraMap O LL))
@@ -445,7 +443,7 @@ private theorem unit_of_val {LL O : Type} [Field LL] [CommRing O] [Algebra O LL]
   exact ⟨Units.mkOfMulEqOne o o' h1, ho⟩
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Rewrite using `[Nat.factorial_succ, padicValNat.mul (Nat.add_one_ne_zero r) (Nat.factorial_ne_zero r)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem val_succ (p : ℕ) (hp : p.Prime) (r : ℕ) :
     (r + 1) + padicValNat p (r + 1).factorial =
@@ -455,7 +453,7 @@ private theorem val_succ (p : ℕ) (hp : p.Prime) (r : ℕ) :
   omega
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Establish `h` using `Nat.add_choose_mul_factorial_mul_factorial a b`. Establish `h0 : (a + b).choose b ≠ 0` using `(Nat.choose_pos (Nat.le_add_left b a)).ne'`. Rewrite using `[← h, padicValNat.mul (mul_ne_zero h0 (Nat.factorial_ne_zero a)) (Nat.factorial_ne_zero b), padicValNat.mul h0 (Nat.factorial_ne_zero a)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem val_add (p : ℕ) (hp : p.Prime) (a b : ℕ) :
     (a + padicValNat p a.factorial) + (b + padicValNat p b.factorial) ≤
@@ -468,9 +466,9 @@ private theorem val_add (p : ℕ) (hp : p.Prime) (a b : ℕ) :
   omega
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `h3 : (a : ℝ) ≤ b` using `by exact_mod_cast hab`. Apply `Nat.ceil_mono` to reduce the goal to its premises. Apply `div_le_div_of_nonneg_right _ (by linarith)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mul_le_mul_of_nonneg_right h3 (by linarith)`.
+A detailed English derivation is pending.
 -/
 private theorem eY_mono (p : ℕ) (hp : p.Prime) : Monotone (eY p) := by
   intro a b hab
@@ -493,9 +491,9 @@ private noncomputable def N0 (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i
   W.NΔ T ⊓ (W.Nl T i).restrictScalars O
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, y, -, hy⟩`. Use `⟨h1, ?_, h2⟩` and prove the remaining obligations. Establish `hy' : (letE i : LetA O n) • y = x` using `hy`. Establish `he : (letE i : LetA O n) * letE i = letE i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases h : k = i <;> simp [letE, Pi.single_apply, h]`. Rewrite using `[← hy', smul_smul, he]`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨⟨h1, h3⟩, x, h1, h2⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem mem_wachFiltration_iff (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (x : W.DD T) :
     x ∈ N0 W T i ↔ x ∈ W.N T ∧ DL W T i x := by
@@ -511,7 +509,7 @@ private theorem mem_wachFiltration_iff (W : LocWach PD LL O v n) (T : LocLat G Q
     exact ⟨⟨h1, h3⟩, x, h1, h2⟩
 
 /- English proof (translation)
-Use `⟨⟨(W.N T).smul_mem a hx.1.1, fun δ hδ => ?_⟩, (W.Nl T i).smul_mem a hx.2⟩` and prove the remaining obligations. Establish `h` using `W.γD_smul T δ (algebraMap (LetA O n) W.EE a) x`. Rewrite `h` using `[algebraMap_smul, W.γE_ext, algebraMap_smul, hx.1.2 δ hδ]`. Rewrite using `[h]`. Conclude with `congrArg (· • x) (ha δ hδ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_mem_wachFiltration (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
     (a : LetA O n) (ha : a ∈ W.AΔ) (x : W.DD T) (hx : x ∈ N0 W T i) : a • x ∈ N0 W T i := by
@@ -522,15 +520,15 @@ private theorem smul_mem_wachFiltration (W : LocWach PD LL O v n) (T : LocLat G 
   exact congrArg (· • x) (ha δ hδ)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Take `⟨u, hu⟩` from `hf`. Establish `hl : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h0`. Establish `h1 : ((PD.p : ℕ) : LL) = 0` using `by rw [← map_natCast (algebraMap O LL), h0, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `W.v_l`. Rewrite `h2` using `[h1, v.map_zero]`. Conclude with `WithTop.one_ne_top h2.symm`. Establish `hl' : ((PD.p : ℕ) : PowerSeries O) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hl` to reduce the goal to its premises. Use `congrArg PowerSeries.constantCoeff h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `W.EE_sat g 1 (by`. Rewrite using `[Ideal.mem_span_singleton', pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap (LetA O n) W.EE a * (u⁻¹ : W.EEˣ), ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (algebraMap (LetA O n) W.EE) hg`. Rewrite `h1` using `[map_mul, map_mul, map_natCast, ← hu]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨b, funext fun k => mul_left_cancel₀ hl' ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ((PD.p : ℕ) : LetA O n) * a = ((PD.p : ℕ) : LetA O n) * (f * b)`. Rewrite using `[hg, hb]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrFun h1 k`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem sat (W : LocWach PD LL O v n) [IsDomain O] (f : LetA O n)
     (hf : IsUnit (algebraMap (LetA O n) W.EE f)) (a : LetA O n)
@@ -562,23 +560,23 @@ private theorem sat (W : LocWach PD LL O v n) [IsDomain O] (f : LetA O n)
   exact congrFun h1 k
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4, -⟩` from `hH hA T hT i`. Establish `hpr : PD.p.Prime` using `PD.hp`. Establish `hcast : ∀ (k : ℕ) (x : W.DD T), ((PD.p : ℕ) : LetA O n) ^ k • x = ((PD.p : ℕ) : O) ^ k • x`. Introduce `k x`. Rewrite using `[← algebraMap_smul (LetA O n) (((PD.p : ℕ) : O) ^ k) x, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hEe : ∀ y : ℕ, y + padicValNat PD.p y.factorial ≤ eY PD.p y`. Introduce `y`. Establish `h` using `(Rat.cast_le (K := ℝ)).2 (h4 y)`. Establish `h' : ((y + padicValNat PD.p y.factorial : ℕ) : ℝ) ≤ (y : ℝ) * PD.p / ((PD.p : ℝ) - 1)`. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Nat.cast_le (α := ℝ)).1 (h'.trans (Nat.le_ceil _))`. Establish `hlam : ∀ k : ℕ, ∃ u : Oˣ, u₁ W ^ (k + 1) - 1 = (u : O) * ((PD.p : ℕ) : O) ^ (((k + 1) + padicValNat PD.p (k + 1).factorial) - (k + padicValNat PD.p k.factorial))`. Introduce `k`. Rewrite using `[val_succ PD.p hpr k, Nat.add_sub_cancel_left]`. Use `unit_of_val v hinj hO _ _ _ (h2 (k + 1) (by omega)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_natCast, v.map_pow, W.v_l, nsmul_one]`. Establish `hser` using `UpperTheory.filtration_exponent_bound (N0 W T i) (W.γ T) W.π₀ ((PD.p : ℕ) : O) (fun y => y + padicValNat PD.p y.factorial) (eY PD.p) (fun k => u₁ W ^ k - 1) (monotone_nat_of_le_succ fun k => by have := val_succ PD.p hpr k; omega) (eY_mono PD.p hpr) hEe hlam (by simp) (smul_mem_wa …`. Rewrite using `[← hcast]`. Use `UpperTheory.divisibility_filtration ((PD.p : ℕ) : LetA O n) (fMX W M X) ((W.φA ^ j) W.π₀) σ (max M X) (fun y => y + padicValNat PD.p y.factorial) (eY PD.p) r s _ _ (sat W _ ?_) (val_add PD.p hpr) hEe (by simp [eY]) (fun y => (hrs y).1.2) (fun y => (hrs y).2) ?_ ?_ p hp` and prove the remaining obligations. Rewrite using `[fMX, map_mul, map_pow, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hR.πU.pow _).mul (hR.qU.pow _)`. Introduce `y hy`. Take `⟨u, -, -, -, -, hu⟩` from `hφ j y`. Rewrite using `[hu, fMX]`. Establish `hM : M ≤ y` using `by omega`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : X ≤ (PD.p - 1) * y`. Establish `h` using `hpr.two_le`. Establish `h' : 1 * y ≤ (PD.p - 1) * y` using `Nat.mul_le_mul_right y (by omega)`. Use linear arithmetic over natural numbers and integers. Use `mul_dvd_mul ((pow_dvd_pow _ hM).mul_left u) ((pow_dvd_pow (qp W) hX).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Finset.dvd_prod_of_mem (fun k => pk W k ^ ((PD.p - 1) * y)) (Finset.mem_range.2 (show 0 < j by omega))`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw0 : w ∈ N0 W T i` using `(mem_wachFiltration_iff W T i w).2 hw`. Take `⟨c, hc0, hc, hK⟩` from `hser w hw0`. Use `⟨fun y => ((W.φD T) ^ j) (c y), by simp [hc0], fun y => ⟨c y, (mem_wachFiltration_iff W T i _).1 (hc y), rfl⟩, Submodule.subset_span ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨w, hw.1, ⟨hw.2, ⟨0, 0, by simpa using hw.1⟩, ?_⟩, fun y => ((PD.p : ℕ) : O) ^ (eY PD.p y - (y + padicValNat PD.p y.factorial)) • c y, r, s, ⟨by simp [hc0], fun y => ?_, fun k => ?_⟩, hrs, ?_⟩` and prove the remaining obligations. Take `⟨x', hx', he⟩` from `h1 0 w hw0`. Conclude with `⟨x', hx'.1.1, hx'.1.2, by simpa using he⟩`. Conclude with `((mem_wachFiltration_iff W T i _).1 ((N0 W T i).smul_mem _ (hc y))).symm`. Take `⟨t, ht, he⟩` from `hK k`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, t, ht.1.1, ht.1.2, by rw [pow_zero, one_smul]; exact he⟩`. Rewrite using `[hcast]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, hcast, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aux (W : LocWach PD LL O v n) [IsDomain O]
     (hinj : Function.Injective (algebraMap O LL))
@@ -653,7 +651,7 @@ private theorem aux (W : LocWach PD LL O v n) [IsDomain O]
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W _ _ hinj hO _ hH hR _ hA hφ T hT i j M X σ hj r s hrs p hp`. Conclude with `aux W hinj hO hH hR hA hφ T hT i hj r s hrs p hp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IntegerSpanGenerators.span_gen :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G] {Qp K₀ K : Type} [inst_2 : Field Qp] [inst_3 : Field K₀]

@@ -22,16 +22,16 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨v ⊗ₜ[Qp] (⟨b, hb⟩ : (PD.Fil a).restrictScalars Qp), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmul_mem (v : V) {a : ℤ} {b : BdR} (hb : b ∈ PD.Fil a) :
     v ⊗ₜ[Qp] b ∈ FilV PD (LL := LL) (V := V) a :=
   ⟨v ⊗ₜ[Qp] (⟨b, hb⟩ : (PD.Fil a).restrictScalars Qp), by simp⟩
 
 /- English proof (translation)
-Use `antitone_int_of_succ_le fun a => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[AlgebraTensorModule.map_tmul]`. Conclude with `tmul_mem PD _ (PD.Fil_anti a b.2)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem filV_antitone : Antitone (FilV PD (LL := LL) (V := V)) := by
   refine antitone_int_of_succ_le fun a => ?_
@@ -44,9 +44,9 @@ theorem filV_antitone : Antitone (FilV PD (LL := LL) (V := V)) := by
   | add x y hx hy => rw [map_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, zero_mem _⟩`. Consider the case `tmul v b`. Take `⟨a, ha⟩` from `PD.Fil_exh b`. Conclude with `⟨a, tmul_mem PD v ha⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, add_mem (filV_antitone PD (min_le_left a b) ha) (filV_antitone PD (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem filV_exhaustive (z : V ⊗[Qp] BdR) : ∃ a, z ∈ FilV PD (LL := LL) (V := V) a := by
   induction z using TensorProduct.induction_on with
@@ -61,7 +61,7 @@ theorem filV_exhaustive (z : V ⊗[Qp] BdR) : ∃ a, z ∈ FilV PD (LL := LL) (V
       (filV_antitone PD (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [φVB, actVB, PD.φ_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem φVB_act (g : G) (x : V ⊗[Qp] B) :
     φVB PD (LL := LL) (V := V) (actVB PD ρ g x) = actVB PD ρ g (φVB PD (LL := LL) (V := V) x) := by
@@ -71,7 +71,7 @@ theorem φVB_act (g : G) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ιV, actVB, actVdR, PD.ι_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ιV_act (g : G) (x : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (actVB PD ρ g x) = actVdR PD ρ g (ιV PD (LL := LL) (V := V) x) := by
@@ -81,7 +81,7 @@ theorem ιV_act (g : G) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations. Establish `h1 : φVB PD (LL` using `LL) (V := V) (c g ⊗ₜ[Qp] (1 : B)) = c g ⊗ₜ[Qp] (1 : B) := by`. Simplify using `[φVB]`. Rewrite `h1` using `[hx g, map_sub, φVB_act]`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, map_sub, sub_sub_sub_comm, h1, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_φ_mem_Dcris (c : G → V) (x : V ⊗[Qp] B)
     (hx : ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x) :
@@ -94,7 +94,7 @@ theorem sub_φ_mem_Dcris (c : G → V) (x : V ⊗[Qp] B)
     sub_self]
 
 /- English proof (translation)
-Rewrite using `[← ιV_act, ← map_sub, ← hx g]`. Establish `h1 : ιV PD (LL` using `LL) (V := V) (c g ⊗ₜ[Qp] (1 : B)) = c g ⊗ₜ[Qp] (1 : BdR) := by`. Simplify using `[ιV]`. Rewrite using `[h1]`. Conclude with `tmul_mem PD _ PD.one_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_ιV_sub_mem (c : G → V) (x : V ⊗[Qp] B)
     (hx : ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x) (g : G) :
@@ -109,7 +109,7 @@ theorem act_ιV_sub_mem (c : G → V) (x : V ⊗[Qp] B)
 end General
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL _ _ _ O _ _ hO A hdR c x hx`. Use `⟨sub_φ_mem_Dcris (P.PD K) A.ρ c x hx, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `filV_exhaustive (P.PD K) (LL := LL) (ιV (P.PD K) (LL := LL) (V := A.V) x)`. Take `⟨w, hw, hw'⟩` from `GlobalTheory.TateFilQuotTied.tied_tate_fil_quot l P AI hT K LL O hO A hdR a 0 _ ha (act_ιV_sub_mem (P.PD K) A.ρ c x hx)`. Conclude with `⟨w, hw.1, hw'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coboundary_lift : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ A : GRep ↥(GK K) ℚ_[l] LL O, IsDR (P.PD K) A.ρ → ∀ (c : ↥(GK K) → A.V) (x : A.V ⊗[ℚ_[l]] P.R.B), (∀ g, c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) A.ρ g x - x) → x - φVB (P.PD K) (LL := LL) (V := A.V) x ∈ Dcris (P.PD K) A.ρ ∧ ∃ d ∈ DdR (P.PD K) A.ρ, ιV (P.PD K) (LL := LL) (V := A.V) x - d ∈ FilV (P.PD K) (LL := LL) (V := A.V) 0 := by
   intro l _ P AI hT K LL _ _ _ O _ _ hO A hdR c x hx

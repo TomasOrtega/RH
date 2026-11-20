@@ -6,19 +6,17 @@ import Mathlib.RingTheory.Ideal.GoingDown
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Introduce `C R _ _ _ _ _ x _ h`. Take `⟨-, ⟨e⟩, -⟩` from `UpperTheory.V.CA.cpl_uniq x h`. Establish `hflat : Module.Flat C R`. Establish `h1 : Module.Flat (Localization.AtPrime x) (Cpl x)` using `inferInstance`. Establish `h2 : Module.Flat C (Localization.AtPrime x)` using `IsLocalization.flat _ x.primeCompl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Module.Flat C (Cpl x)` using `Module.Flat.trans C (Localization.AtPrime x) (Cpl x)`. Conclude with `Module.Flat.of_linearEquiv e.toLinearEquiv`. Establish `hx : (maximalIdeal R).comap (algebraMap C R) = x` using `by simpa using h.comap_pow 1`. Establish `gd : ∀ (p : Ideal C) (q : Ideal R), p.IsPrime → q.IsPrime → p ≤ q.comap (algebraMap C R) → ∃ Q : Ideal R, Q ≤ q ∧ Q.IsPrime ∧ Q.comap (algebraMap C R) = p`. Introduce `p q hp hq hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : q.LiesOver (q.comap (algebraMap C R)) := ⟨rfl⟩`. Take `⟨Q, hQ, hQp, hQo⟩` from `Ideal.exists_ideal_le_liesOver_of_le q hle`. Conclude with `⟨Q, hQ, hQp, hQo.over.symm⟩`. Establish `hmin : ∀ (I : Ideal C), ∀ q ∈ (I.map (algebraMap C R)).minimalPrimes, q.comap (algebraMap C R) ∈ I.minimalPrimes`. Introduce `I q hq`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `haveI : q.IsPrime := hq.1.1`. Use `⟨⟨Ideal.comap_isPrime _ _, Ideal.map_le_iff_le_comap.1 hq.1.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hIp⟩ hle`. Take `⟨Q, hQ, hQp, hQo⟩` from `gd p q hp this hle`. Establish `: q ≤ Q` using `hq.2 ⟨hQp, Ideal.map_le_iff_le_comap.2 (hQo ▸ hIp)⟩ hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hQo]`. Conclude with `Ideal.comap_mono this`. Use `⟨hflat, ?_, ?_, ?_, hmin⟩` and prove the remaining obligations. Introduce `p hp hle`. Take `⟨Q, -, hQp, hQo⟩` from `gd p (maximalIdeal R) hp inferInstance (hx.symm ▸ hle)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Q, hQp, hQo⟩`. Introduce `q hq`. Rewrite using `[← hx]`. Conclude with `Ideal.comap_mono (le_maximalIdeal hq.ne_top)`. Introduce `q hq`.
-
-Apply `hmin ⊥ q` to reduce the goal to its premises. Rewrite using `[Ideal.map_bot]`. Conclude with `hq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.c3a :
     ∀ {C R : Type} [CommRing C] [IsNoetherianRing C] [CommRing R] [Algebra C R] [IsLocalRing R] (x : Ideal C) [x.IsMaximal], IsCplAt x R → Module.Flat C R ∧ (∀ p : Ideal C, p.IsPrime → p ≤ x → ∃ q : Ideal R, q.IsPrime ∧ q.comap (algebraMap C R) = p) ∧ (∀ q : Ideal R, q.IsPrime → q.comap (algebraMap C R) ≤ x) ∧ (∀ q ∈ minimalPrimes R, q.comap (algebraMap C R) ∈ minimalPrimes C) ∧ ∀ (I : Ideal C), ∀ q ∈ (I.map (algebraMap C R)).minimalPrimes, q.comap (algebraMap C R) ∈ I.minimalPrimes := by

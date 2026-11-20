@@ -6,13 +6,13 @@ namespace Formalism.FourierDecayAlt.P.Rec
 open Finset Real
 
 /- English proof (translation)
-Establish `aux : ∀ k : ℕ, ∑ t ∈ Icc 2 (k+1), a ^ (t-1) + 2 * a ^ (k+1) ≤ 2 * a`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[Finset.Icc_eq_empty (by norm_num)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Establish `e : k + 1 + 1 - 1 = k + 1` using `by omega`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `pow_nonneg h0 (k+1)`. Establish `hs : a ^ (k + 1 + 1) = a ^ (k+1) * a` using `pow_succ a (k+1)`. Rewrite using `[hs]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hp]`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `i with _ | k` into its components or cases. Rewrite using `[Finset.Icc_eq_empty (by norm_num)]; simp; linarith`. Use `aux k` as an intermediate fact. Establish `hp` using `pow_nonneg h0 (k+1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma geom_le (a : ℝ) (h0 : 0 ≤ a) (h1 : a ≤ 1/2) :
     ∀ i : ℕ, ∑ t ∈ Icc 2 i, a ^ (t-1) ≤ 2 * a := by
@@ -40,29 +40,29 @@ lemma geom_le (a : ℝ) (h0 : 0 ≤ a) (h1 : a ≤ 1/2) :
 noncomputable def Pp (e : ℕ → ℝ) (i : ℕ) : ℝ := ∏ l ∈ Icc 1 i, √(1 + e l)
 
 /- English proof (translation)
-Simplify using `[Pp]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Pp_zero (e : ℕ → ℝ) : Pp e 0 = 1 := by
   simp [Pp]
 
 /- English proof (translation)
-Unfold `Pp`. Rewrite using `[Finset.prod_Icc_succ_top (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Pp_succ (e : ℕ → ℝ) (i : ℕ) : Pp e (i+1) = Pp e i * √(1 + e (i+1)) := by
   unfold Pp
   rw [Finset.prod_Icc_succ_top (by omega)]
 
 /- English proof (translation)
-Use `Real.sqrt_le_sqrt (show (1:ℝ) ≤ 1 + e l by linarith [he l])` as an intermediate fact. Rewrite `this` using `[Real.sqrt_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma one_le_sqrt_e {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) (l : ℕ) : (1:ℝ) ≤ √(1 + e l) := by
   have := Real.sqrt_le_sqrt (show (1:ℝ) ≤ 1 + e l by linarith [he l])
   rwa [Real.sqrt_one] at this
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rw [Pp_zero]`. Consider the case `succ k ih`. Rewrite using `[Pp_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `one_le_sqrt_e he (k+1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma one_le_Pp {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) : ∀ i, 1 ≤ Pp e i := by
   intro i
@@ -74,13 +74,13 @@ lemma one_le_Pp {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) : ∀ i, 1 ≤ Pp e i 
     nlinarith
 
 /- English proof (translation)
-The claim follows from `le_trans zero_le_one (one_le_Pp he i)`.
+A detailed English derivation is pending.
 -/
 lemma Pp_nonneg {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) (i : ℕ) : 0 ≤ Pp e i :=
   le_trans zero_le_one (one_le_Pp he i)
 
 /- English proof (translation)
-Apply `monotone_nat_of_le_succ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[Pp_succ]`. Conclude with `le_mul_of_one_le_right (Pp_nonneg he n) (one_le_sqrt_e he (n+1))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Pp_mono {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) : Monotone (Pp e) := by
   apply monotone_nat_of_le_succ
@@ -89,7 +89,7 @@ lemma Pp_mono {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) : Monotone (Pp e) := by
   exact le_mul_of_one_le_right (Pp_nonneg he n) (one_le_sqrt_e he (n+1))
 
 /- English proof (translation)
-Unfold `Pp`. Rewrite using `[← Finset.prod_pow]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[Real.sq_sqrt (by linarith [he l])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma Pp_sq {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) (i : ℕ) :
     Pp e i ^ 2 = ∏ l ∈ Icc 1 i, (1 + e l) := by
@@ -100,17 +100,15 @@ lemma Pp_sq {e : ℕ → ℝ} (he : ∀ i, 0 ≤ e i) (i : ℕ) :
   rw [Real.sq_sqrt (by linarith [he l])]
 
 /- English proof (translation)
-Establish `hρ : (1:ℝ) ≤ ρ` using `by linarith`. Establish `hσ0` using `hσ 0`. Introduce `i`. Proceed by induction on `i using Nat.strong_induction_on with`. Consider the case `_ i ih`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hi`. Break down `i with _ | k` into its components or cases. Simplify using `[Pp_zero]`. Establish `h1` using `hrec (k+1) (by omega) hi`. Simplify using `only [Nat.add_sub_cancel] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hB : 0 ≤ Pp e (k+1) * ρ ^ k * σ 0` using `mul_nonneg (mul_nonneg (Pp_nonneg he _) (pow_nonneg (by linarith) _)) hσ0`. Establish `hsum : ∑ t ∈ Icc 2 (k+1), a ^ (t-1) * σ (k+1-t) ≤ 2 * a * (Pp e (k+1) * ρ ^ k * σ 0)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht'` using `Finset.mem_Icc.mp ht`. Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg ha _)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hσ0` to reduce the goal to its premises. Conclude with `mul_le_mul (Pp_mono he (by omega)) (pow_le_pow_right₀ hρ (by omega)) (pow_nonneg (by linarith) _) (Pp_nonneg he _)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (∑ t ∈ Icc 2 (k+1), a ^ (t-1)) * (Pp e (k+1) * ρ ^ k * σ 0) := by`. Rewrite using `[Finset.sum_mul]`. Use `_ ≤ 2 * a * (Pp e (k+1) * ρ ^ k * σ 0) := mul_le_mul_of_nonneg_right (geom_le a ha ha2 _) hB`. Establish `h3` using `ih k (by omega) (by omega)`. Establish `hs1 : 0 ≤ √(1 + e (k+1))` using `Real.sqrt_nonneg _`.
-
-Establish `hc : 0 ≤ (1 + ε) * √(1 + e (k+1))` using `mul_nonneg (by linarith) hs1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma growth (r : ℕ) (a ε : ℝ) (e σ : ℕ → ℝ) (ρ : ℝ) (ha : 0 ≤ a) (ha2 : a ≤ 1/2)
     (hε : 0 ≤ ε) (he : ∀ i, 0 ≤ e i) (hσ : ∀ i, 0 ≤ σ i)
@@ -160,7 +158,7 @@ lemma growth (r : ℕ) (a ε : ℝ) (e σ : ℕ → ℝ) (ρ : ℝ) (ha : 0 ≤ 
         _ = Pp e (k+1) * ρ ^ (k+1) * σ 0 := by rw [pow_succ]; ring
 
 /- English proof (translation)
-Establish `h2 : x ^ 2 ≤ x` using `by nlinarith`. Establish `h3 : x ^ 3 ≤ x` using `by nlinarith`. Establish `h4 : x ^ 4 ≤ x` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma quart (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1) : (1 + 2 * x) ^ 4 ≤ 1 + 80 * x := by
   have h2 : x ^ 2 ≤ x := by nlinarith
@@ -169,15 +167,15 @@ lemma quart (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1) : (1 + 2 * x) ^ 4 ≤ 1 + 80
   nlinarith
 
 /- English proof (translation)
-Establish `hx0 : 0 ≤ ((r:ℝ) + 1) * (ε + a)` using `by positivity`. Establish `h1 : 1 + ε + 2 * a ≤ Real.exp (2 * (ε + a))`. Use `Real.add_one_le_exp (2 * (ε + a))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (1 + ε + 2 * a) ^ (r+1) ≤ Real.exp (((r+1 : ℕ) : ℝ) * (2 * (ε + a)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Real.exp_nat_mul]; exact pow_le_pow_left₀ (by linarith) h1 _`. Establish `h3 : Real.exp (((r+1 : ℕ) : ℝ) * (2 * (ε + a))) = Real.exp (((r:ℝ) + 1) * (ε + a)) ^ 2`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Establish `hE` using `Real.abs_exp_sub_one_le (x := ((r:ℝ) + 1) * (ε + a)) (by rw [abs_of_nonneg hx0]; exact hx)`. Rewrite `hE` using `[abs_of_nonneg hx0]`. Establish `hE' : Real.exp (((r:ℝ) + 1) * (ε + a)) ≤ 1 + 2 * (((r:ℝ) + 1) * (ε + a))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `[le_abs_self (Real.exp (((r:ℝ) + 1) * (ε + a)) - 1)]`. Establish `hEn : 0 ≤ Real.exp (((r:ℝ) + 1) * (ε + a))` using `(Real.exp_pos _).le`. Establish `hρn : 0 ≤ (1 + ε + 2 * a) ^ (r+1)` using `pow_nonneg (by linarith) _`. Establish `s1` using `pow_le_pow_left₀ hρn h2 2`. Establish `s2` using `pow_le_pow_left₀ hEn hE' 4`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3` using `quart (((r:ℝ) + 1) * (ε + a)) hx0 hx`. Establish `e4 : (Real.exp (((r:ℝ) + 1) * (ε + a)) ^ 2) ^ 2 = Real.exp (((r:ℝ) + 1) * (ε + a)) ^ 4` using `by ring`. Establish `e5 : 80 * ((r:ℝ) + 1) * (ε + a) = 80 * (((r:ℝ) + 1) * (ε + a))` using `by ring`. Rewrite using `[e5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma pow_bound (r : ℕ) (a ε : ℝ) (ha : 0 ≤ a) (hε : 0 ≤ ε)
     (hx : ((r:ℝ) + 1) * (ε + a) ≤ 1) :
@@ -214,11 +212,11 @@ namespace Formalism.FourierDecayAlt.P
 open Finset Real Formalism.FourierDecayAlt.P.Rec
 
 /- English proof (translation)
-Use `⟨80, ?_⟩` and prove the remaining obligations. Introduce `r a ε e σ ha ha2 hε hx he hσ hrec`. Establish `hg` using `growth r a ε e σ (1 + ε + 2 * a) ha ha2 hε he hσ hrec le_rfl (r+1) le_rfl`. Establish `hpb` using `pow_bound r a ε ha hε hx`. Establish `hsq` using `pow_le_pow_left₀ (hσ (r+1)) hg 2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPs` using `Pp_sq he (r+1)`. Establish `hσ0 : 0 ≤ σ 0 ^ 2` using `sq_nonneg _`. Establish `hprod : 0 ≤ ∏ i ∈ Icc 1 (r + 1), (1 + e i)` using `by rw [← hPs]; exact sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ (1 + 80 * ((r : ℝ) + 1) * (ε + a)) * (∏ i ∈ Icc 1 (r + 1), (1 + e i)) * σ 0 ^ 2 := by`. Apply `mul_le_mul_of_nonneg_right _ hσ0` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hpb hprod`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sharp_recursion : Formalism.FourierDecayAlt.RecursionSharp := by
   refine ⟨80, ?_⟩

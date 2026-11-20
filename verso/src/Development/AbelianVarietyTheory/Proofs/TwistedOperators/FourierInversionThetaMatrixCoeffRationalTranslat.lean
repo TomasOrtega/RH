@@ -17,7 +17,7 @@ namespace GlobalTheory.TranslateCoefInversion
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Take `⟨hl, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `h` using `hl x (-x) y`. Rewrite `h` using `[add_neg_cancel, GlobalTheory.ThetaSquare.symplOH_zero_left]`. Conclude with `eq_neg_of_add_eq_zero_right h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_neg_left' (x y : WO S T) : symplOH S T (-x) y = -symplOH S T x y := by
   obtain ⟨hl, -⟩ := GlobalTheory.OrientedFormLaws.symplOH_laws D S T
@@ -26,7 +26,7 @@ theorem symplOH_neg_left' (x y : WO S T) : symplOH S T (-x) y = -symplOH S T x y
   exact eq_neg_of_add_eq_zero_right h.symm
 
 /- English proof (translation)
-Take `⟨hl, hr, hs, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `h` using `hs (x + y)`. Rewrite `h` using `[hl, hr, hr, hs, hs, zero_add, add_zero]`. Conclude with `eq_neg_of_add_eq_zero_right h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_skew' (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   obtain ⟨hl, hr, hs, -⟩ := GlobalTheory.OrientedFormLaws.symplOH_laws D S T
@@ -35,37 +35,37 @@ theorem symplOH_skew' (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   exact eq_neg_of_add_eq_zero_right h
 
 /- English proof (translation)
-Rewrite using `[symplOH_skew', symplOH_neg_left', symplOH_skew' y x, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_neg_right' (x y : WO S T) : symplOH S T x (-y) = -symplOH S T x y := by
   rw [symplOH_skew', symplOH_neg_left', symplOH_skew' y x, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThetaAllChar.star_char hn, AddChar.inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_psi {ψ : AddChar (AF D.host.F) ℂ} (hn : ∀ a, ‖ψ a‖ = 1) (a : AF D.host.F) : star (ψ a) = ψ (-a) := by
   rw [GlobalTheory.ThetaAllChar.star_char hn, AddChar.inv_apply]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.ThetaAllChar.chi, symplOH_neg_left', symplOH_neg_right', neg_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_neg_neg (ψ : AddChar (AF D.host.F) ℂ) (γ x : WO S T) :
     GlobalTheory.ThetaAllChar.chi ψ S T (-γ) (-x) = GlobalTheory.ThetaAllChar.chi ψ S T γ x := by
   simp only [GlobalTheory.ThetaAllChar.chi, symplOH_neg_left', symplOH_neg_right', neg_neg]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.ThetaAllChar.chi, star_psi hn, symplOH_neg_right', neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_chi {ψ : AddChar (AF D.host.F) ℂ} (hn : ∀ a, ‖ψ a‖ = 1) (γ z : WO S T) :
     star (GlobalTheory.ThetaAllChar.chi ψ S T γ z) = GlobalTheory.ThetaAllChar.chi ψ S T (-γ) z := by
   simp only [GlobalTheory.ThetaAllChar.chi, star_psi hn, symplOH_neg_right', neg_add]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hx`. Use extensionality with `i j`. Establish `h : (1 : Af D.host.F) ⊗ₜ[D.host.F] m i j = 0` using `h0 i j`. Use `haveI : Nontrivial (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `v : HeightOneSpectrum (𝓞 D.host.F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField D.host.F)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion D.host.F) = 1` using `congrArg (fun x : FiniteAdeleRing (𝓞 D.host.F) D.host.F => x v) h`. Conclude with `zero_ne_one h2`. Establish `e : m i j = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Algebra.TensorProduct.includeRight_injective (R := D.host.F) (A := Af D.host.F) (B := D.host.E) (algebraMap D.host.F (Af D.host.F)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h`. Use `show incA D (m i j) = 0`. Rewrite using `[e, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_eq_zero_of_fin {x : WO S T} (hx : x ∈ ratL T S) (h0 : ∀ i j, finPart D (x i j) = 0) : x = 0 := by
   obtain ⟨m, rfl⟩ := hx
@@ -87,9 +87,9 @@ theorem rat_eq_zero_of_fin {x : WO S T} (hx : x ∈ ratL T S) (h0 : ∀ i j, fin
   rw [e, map_zero]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hx`. Use extensionality with `i j`. Establish `h : (1 : Ainf D.host.F) ⊗ₜ[D.host.F] m i j = 0` using `h0 i j`. Establish `e : m i j = 0`. Apply `Algebra.TensorProduct.includeRight_injective (R := D.host.F) (A := Ainf D.host.F) (B := D.host.E) (algebraMap D.host.F (Ainf D.host.F)).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero]`. Conclude with `h`. Use `show incA D (m i j) = 0`. Rewrite using `[e, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_eq_zero_of_inf {x : WO S T} (hx : x ∈ ratL T S) (h0 : ∀ i j, infPart D (x i j) = 0) : x = 0 := by
   obtain ⟨m, rfl⟩ := hx
@@ -106,11 +106,11 @@ theorem rat_eq_zero_of_inf {x : WO S T} (hx : x ∈ ratL T S) (h0 : ∀ i j, inf
 open GlobalTheory.ThetaAllChar in
 
 /- English proof (translation)
-Establish `hall : ∀ c : AF D.host.F, (c • (γ : WO S T)) ∈ ratL T S`. Introduce `c`. Use `(chi_ker hψ _).1 fun δ => ?_` and prove the remaining obligations. Establish `h1` using `h ((-c) • (δ : WO S T))`. Simplify using `only [chiR, chi, GlobalTheory.FinTranslate.symplOH_smul_left] at h1 ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[symplOH_skew' (δ : WO S T) (γ : WO S T), mul_neg, ← neg_mul]`. Conclude with `h1`. Establish `h1 : GlobalTheory.FinTranslate.eInf D • (γ : WO S T) = 0` using `rat_eq_zero_of_fin (hall _) fun i j => GlobalTheory.ThetaClosed.finPart_eInf_smul _`. Establish `h2 : (1 - GlobalTheory.FinTranslate.eInf D) • (γ : WO S T) = 0` using `rat_eq_zero_of_inf (hall _) fun i j => GlobalTheory.ThetaClosed.infPart_one_sub_eInf_smul _`. Establish `h3 : (γ : WO S T) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← one_smul (AF D.host.F) (γ : WO S T), ← add_sub_cancel (GlobalTheory.FinTranslate.eInf D) 1, add_smul, h1, h2, add_zero]`. Conclude with `Subtype.ext h3`.
+A detailed English derivation is pending.
 -/
 theorem chiR_eq_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (γ : ratL T S)
     (h : ∀ x, chiR ψ S T γ x = 1) : γ = 0 := by
@@ -132,33 +132,29 @@ theorem chiR_eq_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F �
 open GlobalTheory.ThetaAllChar in
 
 /- English proof (translation)
-Introduce `D ψ hψ S T μ 𝓕 hc f f₀ hf hf₀ w x hs`. Take `⟨hμ, h𝓕, h1⟩` from `hc`. Use `haveI := hμ`. Take `⟨iG1, iG2, iG3, iG4, iG5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Take `⟨lc, lx, la, l0, ln, lker⟩` from `chiR_laws (S := S) (T := T) hψ.1`. Use `set g := heisO ψ S T w f₀ with hgdef`. Establish `hg : IsThetaFunO ψ S T g` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 w f₀ hf₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : ∀ γ : ratL T S, heisO ψ S T ((γ : WO S T) + w) f₀ = fun y => ψ (-(symplOH S T γ w)) * (chi ψ S T γ y * g y)`. Introduce `γ`. Establish `e1` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).2.1 γ w f₀`. Rewrite `e1` using `[heisO_rat γ.2 hg]`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrFun e1 y`. Simplify using `only [Pi.mul_apply, Pi.smul_apply, smul_eq_mul] at e2`. Rewrite using `[e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Use `set F : WO S T → ℂ := fun z => f z * star (g z) with hFdef`. Establish `hFc : Continuous F` using `hf.cont.mul hg.cont.star`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hFp : ∀ γ ∈ ratL T S, ∀ z, F (γ + z) = F z` using `GlobalTheory.ThetaAllChar.periodic_of_one (GlobalTheory.ThetaAllChar.isTheta_mul_star hn hf hg)`. Establish `hχp : ∀ (a : ratL T S), ∀ γ ∈ ratL T S, ∀ z, chiR ψ S T a (γ + z) = chiR ψ S T a z` using `fun a => GlobalTheory.ThetaAllChar.periodic_of_one (GlobalTheory.ThetaAllChar.isTheta_chi hψ.1 a.2)`. Use `set Φ : WO S T → ℂ := fun z => F (z + x) with hΦdef`. Use `set I : ratL T S → ℂ := fun γ => ∫ z in 𝓕, chiR ψ S T (-γ) z * F z ∂μ with hIdef`. Use `set J : ratL T S → ℂ := fun a => ∫ z in 𝓕, chiR ψ S T a z * Φ z ∂μ with hJdef`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcoef : ∀ γ : ratL T S, thPair μ 𝓕 f (heisO ψ S T ((γ : WO S T) + w) f₀) = ψ (symplOH S T γ w) * I γ`. Introduce `γ`. Rewrite using `[thPair, hb γ, hIdef, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [chiR, AddSubgroup.coe_neg, hFdef]`. Rewrite using `[star_mul, star_mul, star_psi hn, neg_neg, star_chi hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `hJ : ∀ γ : ratL T S, J (-γ) = chi ψ S T γ x * I γ`. Introduce `γ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e` using `GlobalTheory.CompactQuotientFourier.setIntegral_translate (ratL T S) μ 𝓕 h𝓕 (fun z => chiR ψ S T (-γ) (z + -x) * F z) (fun γ' hγ' z => by simp only [add_assoc, hχp _ γ' hγ', hFp γ' hγ']) x`. Simplify using `only [add_neg_cancel_right] at e`. Simplify using `only [hJdef, hΦdef, hIdef]`. Rewrite using `[e, ← integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[lx, show chiR ψ S T (-γ) (-x) = chi ψ S T γ x by simp only [chiR, AddSubgroup.coe_neg]; exact chi_neg_neg ψ _ _]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : ∀ γ : ratL T S, thPair μ 𝓕 f (heisO ψ S T ((γ : WO S T) + w) f₀) * heisO ψ S T ((γ : WO S T) + w) f₀ x = g x * J (-γ)`. Introduce `γ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp1 : ψ (symplOH S T γ w) * ψ (-(symplOH S T γ w)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite using `[hcoef, hb γ, hJ]`. Take the linear combination `(I γ * chi ψ S T γ x * g x) * hp1`. Establish `hnorm : ∀ γ : ratL T S, ‖J (-γ)‖ = ‖thPair μ 𝓕 f (heisO ψ S T ((γ : WO S T) + w) f₀)‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Rewrite using `[hJ, hcoef, norm_mul, norm_mul, hn, GlobalTheory.ThetaAllChar.norm_chi hn]`. Establish `hsJ : Summable J`. Establish `h2 : Summable fun γ : ratL T S => J (-γ)`. Use `Summable.of_norm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hnorm]`. Conclude with `hs`. Conclude with `(Equiv.neg (ratL T S)).summable_iff.1 h2`. Establish `hinv` using `GlobalTheory.SeparatingCharacters.tsum_coefficients_eq_value_zero (WO S T) (ratL T S) K hK hcov (ratL T S) (chiR ψ S T) lc lx la l0 ln lker (fun a ha => chiR_eq_zero hψ.1 a ha) μ 𝓕 hμ h𝓕 h1 Φ (hFc.comp (continuous_add_right x)) (fun γ hγ z => by simp only [hΦdef, add_assoc, hFp γ …`. Simplify using `only [hkey]`.
-
-Establish `hre : ∑' γ : ratL T S, J (-γ) = ∑' a, J a`. Establish `e` using `(Equiv.neg (ratL T S)).tsum_eq J`. Simplify using `only [Equiv.neg_apply] at e`. Conclude with `e`. Rewrite using `[tsum_mul_left, hre, show (∑' a, J a) = Φ 0 from hinv]`.
-
-Simplify using `only [hΦdef, hFdef, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_coef_mul_translate : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ f f₀ : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T f₀ → ∀ w x : WO S T, Summable (fun γ : ratL T S => ‖thPair μ 𝓕 f (heisO ψ S T ((γ : WO S T) + w) f₀)‖) → ∑' γ : ratL T S, thPair μ 𝓕 f (heisO ψ S T ((γ : WO S T) + w) f₀) * heisO ψ S T ((γ : WO S T) + w) f₀ x = f x * star (heisO ψ S T w f₀ x) * heisO ψ S T w f₀ x := by
   intro D ψ hψ S T μ 𝓕 hc f f₀ hf hf₀ w x hs

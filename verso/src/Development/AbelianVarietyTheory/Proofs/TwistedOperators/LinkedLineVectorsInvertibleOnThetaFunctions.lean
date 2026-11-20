@@ -18,9 +18,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule (ofAdj starAdj s
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : ‖ψ a‖ = 1` using `hψ.1.2.1 a`. Establish `h2 : ψ a * star (ψ a) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj', h1]`. Simplify using the standard rewrite rules. Establish `h3 : ψ a * ψ (-a) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ψ a ≠ 0` using `by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3`. Conclude with `mul_left_cancel₀ h0 (h2.trans h3.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : star (ψ a) = ψ (-a) := by
   have h1 : ‖ψ a‖ = 1 := hψ.1.2.1 a
@@ -31,9 +31,9 @@ theorem star_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a
   exact mul_left_cancel₀ h0 (h2.trans h3.symm)
 
 /- English proof (translation)
-Establish `h1 : (adj x).map φ = 0`. Use function extensionality and compare the values at `i j`. Conclude with `hφ (x j i) (congrFun (congrFun hx j) i)`. Establish `h2` using `map_mul_eq_zero_right φ (giA L) (map_mul_eq_zero_left φ h1 (gA S))`. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h3 : φ ((giA L ⬝ (adj x ⬝ gA S) : Mx D L.rank S.rank) i j) = 0` using `congrFun (congrFun h2 i) j`. Use `show φ (incA D D.host.xi0 * (giA L ⬝ (adj x ⬝ gA S) : Mx D L.rank S.rank) i j) = 0`. Rewrite using `[map_mul, h3, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_starAdj_eq_zero {B : Type} [CommRing B] (φ : AE D →+* B) (hφ : ∀ z, φ z = 0 → φ (cA D z) = 0)
     (L S : HSp D) {x : WO L S} (hx : x.map φ = 0) : (starAdj L S x).map φ = 0 := by
@@ -47,7 +47,7 @@ theorem map_starAdj_eq_zero {B : Type} [CommRing B] (φ : AE D →+* B) (hφ : �
   rw [map_mul, h3, mul_zero]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : WO L S => (adj x ⬝ gA S : Mx D L.rank S.rank)` using `continuous_adj.matrix_mul continuous_const`. Establish `h2 : Continuous fun x : WO L S => (giA L ⬝ (adj x ⬝ gA S) : Mx D L.rank S.rank)` using `continuous_const.matrix_mul h1`. Conclude with `h2.const_smul (incA D D.host.xi0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_starAdj (L S : HSp D) : Continuous (starAdj L S) := by
   have h1 : Continuous fun x : WO L S => (adj x ⬝ gA S : Mx D L.rank S.rank) :=
@@ -57,7 +57,7 @@ theorem continuous_starAdj (L S : HSp D) : Continuous (starAdj L S) := by
   exact h2.const_smul (incA D D.host.xi0)
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `mem_ratMx.1 hx`. Rewrite using `[← hγ, starAdj, giA, gA, ← rat_conjTranspose, ← rat_mul, ← rat_mul, ← rat_smul]`. Conclude with `rat_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starAdj_mem (L S : HSp D) {x : WO L S} (hx : x ∈ ratMx D S.rank L.rank) :
     starAdj L S x ∈ ratMx D L.rank S.rank := by
@@ -66,11 +66,11 @@ theorem starAdj_mem (L S : HSp D) {x : WO L S} (hx : x ∈ ratMx D S.rank L.rank
   exact rat_mem _
 
 /- English proof (translation)
-Establish `e : star ζ' ⬝ᵥ (l.τᴴ ⬝ (L.gram ⬝ l.τ)) *ᵥ ζ' = star ζ' ⬝ᵥ ((D.host.xi0 * star D.host.xi0) • L'.gram) *ᵥ ζ'`. Rewrite using `[← Matrix.mulVec_mulVec, dotProduct_mulVec, ← Matrix.star_mulVec, ← Matrix.mulVec_mulVec, l.map, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, ← l.norm, star_neg, Matrix.mulVec_neg, neg_dotProduct_neg]`. Establish `hu : Unique (Fin L'.rank)` using `by rw [h.1]; infer_instance`. Establish `h2` using `h.2`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_unique] at e h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i j`. Rewrite using `[Subsingleton.elim i default, Subsingleton.elim j default]`. Establish `a : star ζ' default ≠ 0` using `left_ne_zero_of_mul h2`. Establish `b : ζ' default ≠ 0` using `right_ne_zero_of_mul (right_ne_zero_of_mul h2)`. Establish `c` using `mul_left_cancel₀ a e`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c'` using `mul_right_cancel₀ b c`. Conclude with `c'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lnk_simil {L L' : HSp D} {ζ : Fin L.rank → D.host.E} {ζ' : Fin L'.rank → D.host.E} (h : IsLineVec L' ζ')
     (l : Lnk L ζ L' ζ') : l.τᴴ ⬝ (L.gram ⬝ l.τ) = (D.host.xi0 * star D.host.xi0) • L'.gram := by
@@ -90,29 +90,27 @@ theorem lnk_simil {L L' : HSp D} {ζ : Fin L.rank → D.host.E} {ζ' : Fin L'.ra
   exact c'
 
 /- English proof (translation)
-Introduce `D ψ hψ L L' S ζ ζ' hL hL' l`. Establish `hτ` using `lnk_simil hL' l`. Use `⟨hτ, fun Φ₀ hΦ => ?_⟩` and prove the remaining obligations. Establish `hτ' : l.τᴴ ⬝ (L.gram ⬝ l.τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L'.gram`. Rewrite using `[Int.cast_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hτ`. Take `⟨hadd, -, -, -, hsym, -⟩` from `GlobalTheory.LinkKappa.kappa_props D L L' S l.τ 1 hτ' (l.κ S) (fun _ => rfl)`. Establish `hH : ∀ w w', symplOH L S (l.κ S w) (l.κ S w') = -symplOH S L' w w'` using `fun w w' => by`. Unfold `symplOH`. Rewrite using `[hsym]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hτ0 : l.τ ≠ 0`. Introduce `h0`. Establish `e` using `l.map`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h0, Matrix.zero_mulVec]`. Establish `hz : ζ = 0` using `neg_eq_zero.mp e.symm`. Apply `hL.2` to reduce the goal to its premises. Rewrite using `[hz]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hστ, hτσ⟩` from `GlobalTheory.Unf.LinkGram.exists_inv_of_rank_one hL.1 hL'.1 l.τ hτ0`. Set `g : WO L S → WO S L'` to `fun x => (rat σ : Mx D L'.rank L.rank) ⬝ starAdj L S x`. Establish `hgk : ∀ w, g (l.κ S w) = w`. Introduce `w`. Use `show (rat σ : Mx D L'.rank L.rank) ⬝ starAdj L S (l.κ S w) = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Lnk.κ, starAdj_ofAdj, ← Matrix.mul_assoc, ← rat_mul, hστ, rat_one, Matrix.one_mul]`. Establish `hkg : ∀ x, l.κ S (g x) = x`. Introduce `x`. Use `show l.κ S ((rat σ : Mx D L'.rank L.rank) ⬝ starAdj L S x) = x`. Rewrite using `[Lnk.κ, ← Matrix.mul_assoc, ← rat_mul, hτσ, rat_one, Matrix.one_mul, GlobalTheory.Unf.LinkGram.ofAdj_starAdj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gadd : ∀ x y, g (x + y) = g x + g y` using `fun x y => by conv_lhs => rw [← hkg x, ← hkg y, ← hadd, hgk]`. Establish `gH : ∀ x y, symplOH S L' (g x) (g y) = -symplOH L S x y` using `fun x y => by conv_rhs => rw [← hkg x, ← hkg y, hH, neg_neg]`. Establish `gcont : Continuous g` using `continuous_const.matrix_mul (continuous_starAdj L S)`. Establish `grat : ∀ x ∈ ratMx D S.rank L.rank, g x ∈ ratMx D L'.rank S.rank` using `fun x hx => ratMx_mul (rat_mem σ) (starAdj_mem L S hx)`. Establish `gfin : ∀ x : WO L S, x.map (finPart D) = 0 → (g x).map (finPart D) = 0` using `fun x h => map_mul_eq_zero_right (finPart D) _ (map_starAdj_eq_zero (finPart D) (fun z hz => by rw [GlobalTheory.LinkKappa.finPart_conj, hz, map_zero]) L S h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ginf : ∀ x : WO L S, x.map (infPart D) = 0 → (g x).map (infPart D) = 0` using `fun x h => map_mul_eq_zero_right (infPart D) _ (map_starAdj_eq_zero (infPart D) (fun z hz => by rw [GlobalTheory.LinkKappa.infPart_conj, hz, map_zero]) L S h)`. Set `A : WO L S →+ WO S L'` to `AddMonoidHom.mk' g gadd`. Use `⟨fun x => star (Φ₀ (g x)), ⟨fun γ x => ?_, ?_, continuous_star.comp (hΦ.cont.comp gcont), fun k M h1 h2 x => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ'⟩` from `grat (ratW S L γ) ⟨γ, rfl⟩`. Establish `e : g (ratW S L γ) = ratW L' S γ'` using `hγ'.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show star (Φ₀ (g (ratW S L γ + x))) = ψ (-(symplOH L S (ratW S L γ) x)) * star (Φ₀ (g x))`. Rewrite using `[gadd, e, hΦ.quasi, star_mul', star_psi hψ, ← e, gH, neg_neg]`. Take `⟨U, hU, h⟩` from `hΦ.level`. Use `⟨U.comap A, hU.preimage gcont, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrFun (h _ hu (ginf u h0)) (g x)`. Unfold `heisO at e ⊢`. Use `show ψ (symplOH L S x u) * star (Φ₀ (g (x + u))) = star (Φ₀ (g x))`. Rewrite using `[← e, star_mul', star_psi hψ]`. Use `show ψ (symplOH L S x u) * star (Φ₀ (g (x + u))) = ψ (-symplOH S L' (g x) (g u)) * star (Φ₀ (g x + g u))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[gH, neg_neg, gadd]`. Establish `h3 : ∀ t, (A (M t)).map (finPart D) = 0` using `fun t => gfin (M t) (h2 t)`. Use `hΦ.smooth k (A.comp M) (gcont.comp h1) h3 (g x)` as an intermediate fact. Establish `heq : (fun t => Φ₀ (g (x + M t))) = fun t => Φ₀ (g x + A (M t))`. Use function extensionality and compare the values at `fun t => congrArg Φ₀ (gadd x (M t))`.
-
-Establish `h4` using `(congrArg (ContDiff ℝ _) heq).mpr this`. Conclude with `Complex.conjCLE.contDiff.comp h4`. Use function extensionality and compare the values at `w show Φ₀ w = star (star (Φ₀ (g (l.κ S w))))`. Rewrite using `[hgk, star_star]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem link_inv_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (L L' S : HSp D) (ζ : Fin L.rank → D.host.E) (ζ' : Fin L'.rank → D.host.E), IsLineVec L ζ → IsLineVec L' ζ' → ∀ l : Lnk L ζ L' ζ', l.τᴴ ⬝ (L.gram ⬝ l.τ) = (D.host.xi0 * star D.host.xi0) • L'.gram ∧ ∀ Φ₀, IsThetaFunO ψ S L' Φ₀ → ∃ Ξ, IsThetaFunO ψ L S Ξ ∧ Φ₀ = fun w => star (Ξ (l.κ S w)) := by
   intro D ψ hψ L L' S ζ ζ' hL hL' l

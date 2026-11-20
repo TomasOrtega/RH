@@ -10,9 +10,9 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[List.ofFn_succ, List.prod_cons, ← ih (fun j => T j.succ), Finset.sum_mul_sum, ← Fintype.sum_prod_type']`. Use `(Fintype.sum_equiv (Fin.consEquiv fun _ => ι) _ _ ?_).symm` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p`. Simplify using `[List.ofFn_succ, Fin.consEquiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem sum_ofFn_prod {A ι : Type} [Semiring A] [Fintype ι] (q : ℕ) (T : Fin q → ι → A) :
     ∑ i : Fin q → ι, (List.ofFn fun j => T j (i j)).prod = (List.ofFn fun j => ∑ k, T j k).prod := by
@@ -31,23 +31,21 @@ variable {O R V : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup V]
   {Nq : Fin q → ℕ} {act : PU R q n →ₐ[R] Module.End R V} {e : Fin q → Module.End R V} {W : Fin q → Submodule R V}
 
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem emb_C (j : Fin q) (r : O) :
     emb O R j (MvPolynomial.C r : MvPolynomial (Fin n) O) = algebraMap R (PU R q n) (algebraMap O R r) := by
   simp [emb]
 
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem emb_X (j : Fin q) (i : Fin n) :
     emb O R j (MvPolynomial.X i : MvPolynomial (Fin n) O) = (MvPolynomial.X (j, i) : PU R q n) := by
   simp [emb]
 
 /- English proof (translation)
-Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C r => rw [emb_C, AlgHom.commutes]`. Conclude with `(Algebra.commutes _ _).symm`. Consider the case `add p p' hp hp' => rw [map_add, map_add]`. Conclude with `hp.add_right hp'`.
-
-Consider the case `mul_X p i hp => rw [map_mul, map_mul, emb_X]`. Conclude with `hp.mul_right (H.eX j j' i h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem comm_emb (H : HkHyp O Nq act e W) {j j' : Fin q} (h : j ≠ j') (x : MvPolynomial (Fin n) O) :
     Commute (e j) (act (emb O R j' x)) := by
@@ -57,9 +55,9 @@ private theorem comm_emb (H : HkHyp O Nq act e W) {j j' : Fin q} (h : j ≠ j') 
   | mul_X p i hp => rw [map_mul, map_mul, emb_X]; exact hp.mul_right (H.eX j j' i h)
 
 /- English proof (translation)
-Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C r => intro v hv`. Rewrite using `[emb_C, AlgHom.commutes]`. Conclude with `(W j).smul_mem _ hv`. Consider the case `add p p' hp hp' => intro v hv`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add]`. Conclude with `(W j).add_mem (hp v hv) (hp' v hv)`. Consider the case `mul_X p i hp => intro v hv`. Rewrite using `[map_mul, map_mul, emb_X]`. Conclude with `hp _ (H.WX j j' i h v hv)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_emb (H : HkHyp O Nq act e W) {j j' : Fin q} (h : j ≠ j') (x : MvPolynomial (Fin n) O) :
     ∀ v ∈ W j, act (emb O R j' x) v ∈ W j := by
@@ -69,9 +67,9 @@ private theorem mem_emb (H : HkHyp O Nq act e W) {j j' : Fin q} (h : j ≠ j') (
   | mul_X p i hp => intro v hv; rw [map_mul, map_mul, emb_X]; exact hp _ (H.WX j j' i h v hv)
 
 /- English proof (translation)
-Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `List.mem_map.1 hy`. Establish `haj : a ≠ j`. Introduce and unpack `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h ha`. Conclude with `(comm_emb H haj x).symm`.
+A detailed English derivation is pending.
 -/
 private theorem comm_list (H : HkHyp O Nq act e W) {j : Fin q} {l : List (Fin q)} (h : j ∉ l)
     (x : MvPolynomial (Fin n) O) : Commute (act (emb O R j x)) (l.map e).prod := by
@@ -84,9 +82,9 @@ private theorem comm_list (H : HkHyp O Nq act e W) {j : Fin q} {l : List (Fin q)
   exact (comm_emb H haj x).symm
 
 /- English proof (translation)
-Rewrite using `[map_list_prod]`. Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `List.mem_map.1 hy`. Take `⟨a, ha, rfl⟩` from `List.mem_map.1 hz`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hja : j ≠ a`. Introduce and unpack `rfl`. Conclude with `h ha`. Conclude with `comm_emb H hja (x a)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem comm_list' (H : HkHyp O Nq act e W) {j : Fin q} {l : List (Fin q)} (h : j ∉ l)
     (x : Fin q → MvPolynomial (Fin n) O) : Commute (e j) (act (l.map fun j => emb O R j (x j)).prod) := by
@@ -101,7 +99,7 @@ private theorem comm_list' (H : HkHyp O Nq act e W) {j : Fin q} {l : List (Fin q
   exact comm_emb H hja (x a)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using hv`. Consider the case `cons j' l ih`. Rewrite using `[List.map_cons, List.prod_cons, map_mul]`. Conclude with `mem_emb H (List.ne_of_not_mem_cons h) _ _ (ih fun h' => h (List.mem_cons_of_mem _ h'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_list (H : HkHyp O Nq act e W) {j : Fin q} {l : List (Fin q)} (h : j ∉ l)
     (x : Fin q → MvPolynomial (Fin n) O) {v : V} (hv : v ∈ W j) :
@@ -113,9 +111,9 @@ private theorem mem_list (H : HkHyp O Nq act e W) {j : Fin q} {l : List (Fin q)}
     exact mem_emb H (List.ne_of_not_mem_cons h) _ _ (ih fun h' => h (List.mem_cons_of_mem _ h'))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite `h` using `[List.nodup_cons]`. Simplify using `only [List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc` using `(comm_list H h.1 (x a)).eq`. Establish `hw` using `congrArg (fun f : Module.End R V => f ((act (l.map fun j => emb O R j (x j)).prod) v)) hc`. Simplify using `only [Module.End.mul_apply] at hw`. Rewrite using `[← hw, ih h.2]`. Conclude with `H.tr a (x a) _ (mem_list H h.1 _ (hv a))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_list (H : HkHyp O Nq act e W) {l : List (Fin q)} (h : l.Nodup)
     (x : Fin q → MvPolynomial (Fin n) O) {v : V} (hv : ∀ j, v ∈ W j) :
@@ -133,11 +131,11 @@ private theorem tr_list (H : HkHyp O Nq act e W) {l : List (Fin q)} (h : l.Nodup
     exact H.tr a (x a) _ (mem_list H h.1 _ (hv a))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite `h` using `[List.nodup_cons]`. Simplify using `only [List.map_cons, List.prod_cons, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ih h.2]`. Establish `h1 : Commute (act (l.map fun j => emb O R j (x j)).prod) (e a)` using `(comm_list' H h.1 x).symm`. Establish `h2 : Commute (act (emb O R a (y a))) (l.map e).prod` using `comm_list H h.1 (y a)`. Establish `h3 : Commute (act (emb O R a (y a))) (act (l.map fun j => emb O R j (x j)).prod)` using `(Commute.all _ _).map act`. Use `set A := act (emb O R a (x a))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set PA := act (l.map fun j => emb O R j (x j)).prod`. Use `set Pe := (l.map e).prod`. Use `set C := act (emb O R a (y a))`. Use `set PC := act (l.map fun j => emb O R j (y j)).prod`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem sum_list (H : HkHyp O Nq act e W) {l : List (Fin q)} (h : l.Nodup)
     (x y : Fin q → MvPolynomial (Fin n) O) :
@@ -165,17 +163,17 @@ private theorem sum_list (H : HkHyp O Nq act e W) {l : List (Fin q)} (h : l.Nodu
       _ = A * e a * C * (PA * Pe * PC) := by simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← List.ofFn_eq_map, List.prod_ofFn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_list {A : Type} [CommMonoid A] (f : Fin q → A) : ∏ j, f j = ((List.finRange q).map f).prod := by
   rw [← List.ofFn_eq_map, List.prod_ofFn]
 
 /- English proof (translation)
-Establish `hl` using `List.nodup_finRange q`. Establish `key : ∀ i : Fin q → ι, act (∏ j, emb O R j (a (i j))) * (List.ofFn e).prod * act (∏ j, emb O R j (c (i j))) = (List.ofFn fun j => act (emb O R j (a (i j))) * e j * act (emb O R j (c (i j)))).prod`. Introduce `i`. Rewrite using `[prod_list, prod_list, List.ofFn_eq_map, List.ofFn_eq_map]`. Conclude with `sum_list H hl (fun j => a (i j)) (fun j => c (i j))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Rewrite using `[sum_ofFn_prod q (fun j k => act (emb O R j (a k)) * e j * act (emb O R j (c k)))]`. Establish `hs : ∀ j, ∑ k, act (emb O R j (a k)) * e j * act (emb O R j (c k)) = act (emb O R j (Hk.NN n (Nq j : O)))` using `fun j => H.sum j ι a c hd`. Simplify using `only [hs]`. Rewrite using `[prod_list, map_list_prod, List.ofFn_eq_map, List.map_map]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem sum_all (H : HkHyp O Nq act e W) {ι : Type} [Fintype ι] {a c : ι → MvPolynomial (Fin n) O}
     (hd : Hk.IsDual a c) :
@@ -196,9 +194,7 @@ private theorem sum_all (H : HkHyp O Nq act e W) {ι : Type} [Fintype ι] {a c :
   rfl
 
 /- English proof (translation)
-Use `Commute.list_prod_right _ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨j', rfl⟩` from `(List.mem_ofFn' _ _).1 hy`. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Conclude with `(H.esym _ z hz).symm`.
-
-Conclude with `(comm_emb H h z).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem comm_sym (H : HkHyp O Nq act e W) (j : Fin q) (z : MvPolynomial (Fin n) O) (hz : z.IsSymmetric) :
     Commute (act (emb O R j z)) (List.ofFn e).prod := by
@@ -211,11 +207,11 @@ private theorem comm_sym (H : HkHyp O Nq act e W) (j : Fin q) (z : MvPolynomial 
 end
 
 /- English proof (translation)
-Establish `hE : ∀ p : MvPolynomial (Fin n) O, MvPolynomial.map β (emb O R j p) = MvPolynomial.rename (fun i => (j, i)) (MvPolynomial.map (β.comp (algebraMap O R)) p)`. Introduce `p`. Simplify using `[emb, MvPolynomial.map_rename, MvPolynomial.map_map]`. Rewrite using `[hE, MvPolynomial.map_esymm, MvPolynomial.esymm, map_sum, map_sum]`. Simplify using `only [map_prod, MvPolynomial.rename_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hroot` using `MSplitAlg.prod_root P n j`. Establish `hc' : ((Finset.univ.val.map (MSplitAlg.root P n j)).map fun t => Polynomial.X - Polynomial.C t).prod.coeff (n - k) = algebraMap B (MSplitAlg P n) ((P j).coeff (n - k))`. Rewrite using `[Multiset.map_map, ← Polynomial.coeff_map, ← hroot]`. Both sides reduce to the same expression. Rewrite `hc'` using `[Multiset.prod_X_sub_C_coeff _ (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, Nat.sub_sub_self hk, Finset.esymm_map_val] at hc'`. Rewrite using `[map_mul, ← hc', map_pow, map_neg, map_one, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem esymm_root {O R B : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing B] {q n : ℕ} (β : R →+* B)
     (P : Fin q → Polynomial B) (j : Fin q) (k : ℕ) (hk : k ≤ n) :
@@ -240,55 +236,51 @@ private theorem esymm_root {O R B : Type} [CommRing O] [CommRing R] [Algebra O R
   rfl
 
 /- English proof (translation)
-Introduce `O R B M V _ _ _ _ _ _ _ _ _ q n Nq β P act e W inc tr H hmon hdeg hinj hβ htr hW hsym`. Use `set mkq := Ideal.Quotient.mk (mSplitIdeal P n)`. Use `set f : PU R q n := ∏ j, emb O R j (Hk.NN n (Nq j : O))`. Take `⟨φ, hφ1, hφ2⟩` from `multiPhi R B M V q n β P act inc hmon hdeg hβ hsym`. Take `⟨ι, hι, a, c, hd⟩` from `hkDualEx O n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hembZ : ∀ (j : Fin q) (k : ℕ), emb O R j (MvPolynomial.esymm (Fin n) O k) = emb ℤ R j (MvPolynomial.esymm (Fin n) ℤ k)`. Introduce `j k`. Simplify using `only [emb, RingHom.comp_apply, MvPolynomial.map_esymm]`. Establish `htrS : ∀ (t : R) (v : V), tr (t • v) = β t • tr v`. Introduce `t v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hβ, htr, htr, map_smul]`. Establish `htrE : ∀ (j : Fin q), ∀ k ≤ n, ∀ v : V, tr (act (emb O R j (MvPolynomial.esymm (Fin n) O k)) v) = ((-1) ^ k * (P j).coeff (n - k)) • tr v`. Introduce `j k hk v`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(comm_sym H j _ (MvPolynomial.esymm_isSymmetric (Fin n) O k)).eq`. Use `congrArg (fun g : Module.End R V => g v) hc` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[htr, ← this, ← htr, hembZ, hsym j k hk]`. Set `ψ : V →+ MSplitAlg P n ⊗[B] M` to `AddMonoidHom.mk' (fun v => ∑ i : Fin q → ι, mkq (MvPolynomial.map β (∏ j, emb O R j (a (i j)))) ⊗ₜ[B] tr (act (∏ j, emb O R j (c (i j))) v)) (by intro v w; simp [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψv : ∀ v, ψ v = ∑ i : Fin q → ι, mkq (MvPolynomial.map β (∏ j, emb O R j (a (i j)))) ⊗ₜ[B] tr (act (∏ j, emb O R j (c (i j))) v)` using `fun v => rfl`. Establish `hψ` using `multiPsi O R B M V q n β P act tr ι a c hd hmon hdeg htrS htrE ψ hψv`. Establish `e1 : ∀ (s : MSplitAlg P n) (x : M), s ⊗ₜ[B] x = s • ((1 : MSplitAlg P n) ⊗ₜ[B] x)`. Introduce `s x`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφψ : ∀ v, φ (ψ v) = act f v`. Introduce `v`. Rewrite using `[hψv, map_sum]`. Establish `hterm : ∀ i : Fin q → ι, φ (mkq (MvPolynomial.map β (∏ j, emb O R j (a (i j)))) ⊗ₜ[B] tr (act (∏ j, emb O R j (c (i j))) v)) = (act (∏ j, emb O R j (a (i j))) * (List.ofFn e).prod * act (∏ j, emb O R j (c (i j)))) v`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, hφ2, hφ1, htr]`. Both sides reduce to the same expression. Simplify using `only [hterm]`. Rewrite using `[← LinearMap.sum_apply, sum_all H hd]`. Set `T : PU R q n → Prop` to `fun x => ∃ b : B, algebraMap B (MSplitAlg P n) b = mkq (MvPolynomial.map β x) ∧ ∀ m, act x (inc m) = inc (b • m)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : T 1` using `⟨1, by simp, by simp⟩`. Establish `hTmul : ∀ x y, T x → T y → T (x * y)`. Introduce and unpack `x y ⟨b1, h1, k1⟩ ⟨b2, h2, k2⟩`. Use `⟨b1 * b2, by rw [map_mul, map_mul, map_mul, h1, h2], fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, k2, k1, mul_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hTadd : ∀ x y, T x → T y → T (x + y)`. Introduce and unpack `x y ⟨b1, h1, k1⟩ ⟨b2, h2, k2⟩`. Use `⟨b1 + b2, by rw [map_add, map_add, map_add, h1, h2], fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, k2, k1, ← map_add, add_smul]`. Establish `hTC : ∀ (j : Fin q) (r : O), T (emb O R j (MvPolynomial.C r))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j r`. Use `⟨β (algebraMap O R r), ?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_C, MvPolynomial.algebraMap_eq, MvPolynomial.map_C]`. Both sides reduce to the same expression. Rewrite using `[emb_C, AlgHom.commutes, Module.algebraMap_end_apply, hβ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTes : ∀ (j : Fin q), ∀ k ≤ n, T (emb O R j (MvPolynomial.esymm (Fin n) O k))`. Introduce `j k hk`. Use `⟨(-1) ^ k * (P j).coeff (n - k), (esymm_root β P j k hk).symm, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hembZ, hsym j k hk]`. Establish `hTQ : ∀ (j : Fin q) (Q : MvPolynomial (Fin n) O), T (emb O R j ((MvPolynomial.esymmAlgHom (Fin n) O n Q : MvPolynomial (Fin n) O)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `j Q`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: ((MvPolynomial.esymmAlgHom (Fin n) O n (MvPolynomial.C r) : MvPolynomial (Fin n) O)) = MvPolynomial.C r`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hTC j r`. Consider the case `add p p' hp hp'`. Rewrite using `[map_add, Subalgebra.coe_add, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hTadd _ _ hp hp'`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, Subalgebra.coe_mul, map_mul]`. Use `hTmul _ _ hp ?_` and prove the remaining obligations. Establish `: ((MvPolynomial.esymmAlgHom (Fin n) O n (MvPolynomial.X i) : MvPolynomial (Fin n) O)) = MvPolynomial.esymm (Fin n) O (i + 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[MvPolynomial.esymmAlgHom]`. Rewrite using `[this]`. Conclude with `hTes j _ i.2`. Establish `hTsym : ∀ (j : Fin q) (z : MvPolynomial (Fin n) O), z.IsSymmetric → T (emb O R j z)`. Introduce `j z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩` from `MvPolynomial.esymmAlgHom_surjective O (σ := Fin n) (n := n) (by simp) ⟨z, hz⟩`. Establish `: z = (MvPolynomial.esymmAlgHom (Fin n) O n Q : MvPolynomial (Fin n) O)` using `by rw [hQ]`. Rewrite using `[this]`. Conclude with `hTQ j Q`. Establish `hTprod : ∀ z : Fin q → MvPolynomial (Fin n) O, (∀ j, (z j).IsSymmetric) → T (∏ j, emb O R j (z j))` using `fun z hz => Finset.prod_induction _ T hTmul hT1 (fun j _ => hTsym j (z j) (hz j))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpoly : ∑ i : Fin q → ι, (∏ j, emb O R j (Hk.dd (Hk.NN n (Nq j : O) * c (i j)))) * (∏ j, emb O R j (a (i j))) = f`. Simplify using `only [← Finset.prod_mul_distrib, ← map_mul]`. Establish `hpu` using `Finset.prod_univ_sum (fun _ : Fin q => (Finset.univ : Finset ι)) (fun j k => emb O R j (Hk.dd (Hk.NN n (Nq j : O) * c k) * a k))`. Rewrite `hpu` using `[Fintype.piFinset_univ]`. Rewrite using `[← hpu]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[← map_sum]`. Use `congr 1`. Use `conv_rhs => rw [← (hkDualExp O n ι a c hd (Hk.NN n (Nq j : O))).1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (Hk.NN n (Nq j : O)) (c k), mul_comm]`. Establish `hψinc : ∀ m : M, ψ (inc m) = mkq (MvPolynomial.map β f) • ((1 : MSplitAlg P n) ⊗ₜ[B] m)`. Introduce `m`. Establish `hvW : ∀ j, inc m ∈ W j` using `fun j => hW j m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hb : ∀ i : Fin q → ι, ∃ b : B, algebraMap B (MSplitAlg P n) b = mkq (MvPolynomial.map β (∏ j, emb O R j (Hk.dd (Hk.NN n (Nq j : O) * c (i j))))) ∧ tr (act (∏ j, emb O R j (c (i j))) (inc m)) = b • m`. Introduce `i`. Take `⟨b, hb1, hb2⟩` from `hTprod (fun j => Hk.dd (Hk.NN n (Nq j : O) * c (i j))) (fun j => (hkDdProps O n).2.2.1 _)`. Use `⟨b, hb1, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[htr, ← hb2, prod_list, prod_list, List.ofFn_eq_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `tr_list H (List.nodup_finRange q) (fun j => c (i j)) hvW`. Use `choose bb hbb1 hbb2 using hb`. Rewrite using `[hψv]`. Simplify using `only [hbb2, ← TensorProduct.smul_tmul, Algebra.smul_def, hbb1, ← map_mul, ← TensorProduct.sum_tmul, ← map_sum]`. Rewrite using `[hpoly, e1]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Use `⟨φ, ψ, hφ2, hψ, hφψ, ?_⟩` and prove the remaining obligations. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul s m`. Take `⟨p, rfl⟩ : ∃ p, mkq p = s` from `Ideal.Quotient.mk_surjective s`. Proceed by induction on `p using MvPolynomial.induction_on' generalizing m with`. Consider the case `monomial u b`. Establish `hs : mkq (MvPolynomial.monomial u b) ⊗ₜ[B] m = mkq (MvPolynomial.map β (MvPolynomial.monomial u 1)) • ((1 : MSplitAlg P n) ⊗ₜ[B] (b • m))`.
-
-Rewrite using `[← e1, ← TensorProduct.smul_tmul, MvPolynomial.map_monomial, map_one, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[show algebraMap B (MSplitAlg P n) b = mkq (MvPolynomial.C b) from rfl, ← map_mul, MvPolynomial.C_mul_monomial, mul_one]`. Rewrite using `[hs, hφ2, hφ1, hψ, hψinc, smul_smul, smul_smul, mul_comm]`. Consider the case `add p1 p2 h1 h2`.
-
-Rewrite using `[map_add, TensorProduct.add_tmul, map_add, map_add, h1, h2, smul_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.multiTwo :
     ∀ (O R B M V : Type) [CommRing O] [IsDomain O] [CommRing R] [Algebra O R] [CommRing B] [AddCommGroup M] [Module B M] [AddCommGroup V] [Module R V] (q n : ℕ) (Nq : Fin q → ℕ) (β : R →+* B) (P : Fin q → Polynomial B) (act : PU R q n →ₐ[R] Module.End R V) (e : Fin q → Module.End R V) (W : Fin q → Submodule R V) (inc : M →+ V) (tr : V →+ M), HkHyp O Nq act e W → (∀ j, (P j).Monic) → (∀ j, (P j).natDegree = n) → Function.Injective inc → (∀ (t : R) m, inc (β t • m) = t • inc m) → (∀ v, inc (tr v) = (List.ofFn e).prod v) → (∀ j m, inc m ∈ W j) → (∀ j k, k ≤ n → ∀ m, act (emb ℤ R j (MvPolynomial.esymm (Fin n) ℤ k)) (inc m) = inc (((-1) ^ k * (P j).coeff (n - k)) • m)) → TwoMaps (M := M) β P act (∏ j, emb O R j (Hk.NN n (Nq j : O))) := by

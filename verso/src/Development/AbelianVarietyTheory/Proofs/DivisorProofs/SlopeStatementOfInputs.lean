@@ -15,9 +15,9 @@ open scoped ENNReal Classical
 namespace GlobalTheory.CovHt.SlopeTrue
 
 /- English proof (translation)
-Introduce `hX hY hP hH ⟨r, Cf, hI⟩`. Take `⟨C, hC, h7⟩` from `GlobalTheory.T.volume_equality_slope_mean r Cf`. Use `⟨C, hC, fun D O hc hf hb => ?_⟩` and prove the remaining obligations. Take `⟨A, Φ, hh, hin⟩` from `hI D O hc hf hb`. Take `⟨A', T, H, ⟨rd⟩, -⟩` from `GlobalTheory.Mean4O.ReadsEx.main hP.p4 D O hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h7 D O.Y hf (GlobalTheory.T.de_rham_minus_hodge_tate_good_primes hX hP hH hY.perfd D O hc hf A' T H rd) (GlobalTheory.T.de_rham_hodge_tate_difference_killed hP hH D O hc hf A' T H rd) (GlobalTheory.CompPropObj.main hP hH D O hc hf A' T H rd).2.2 hb A Φ hh hin`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.HypothesesXH → HypothesesY → Hypotheses2 → HypothesesH → InputsSt → SlopeSt := by
   intro hX hY hP hH ⟨r, Cf, hI⟩

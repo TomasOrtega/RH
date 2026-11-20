@@ -11,21 +11,19 @@ open MvPolynomial Formalism.MainNotions.ModuliIntegralCharts.H1.PairEvaluation F
 variable {S : Type} [CommRing S] [Algebra ℚ S] {d : ℕ}
 
 /- English proof (translation)
-Use `set W := P - 1 with hWdef`. Use `set h := bil B with hhdef`. Establish `hhI : h ∈ Io S (Fin 2 × Fin d) ^ 2` using `bil_mem B`. Establish `hh : h.IsHomogeneous 2` using `bil_hom B`. Establish `hmj : ∀ {p : MvPolynomial (Fin 2 × Fin d) S}, p ∈ Io S _ ^ (m + 1) → p ∈ Io S _ ^ (2 + 1)` using `fun hp => Ideal.pow_le_pow_right (by omega) hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ∀ {p : MvPolynomial (Fin 2 × Fin d) S}, p ∈ Io S _ ^ 2 → p ∈ Io S _` using `fun hp => Ideal.pow_le_self two_ne_zero hp`. Establish `hPW : ∀ (u v : Fin d → MvPolynomial (Fin 2 × Fin d) S), ev2 P u v = 1 + ev2 W u v`. Introduce `u v`. Rewrite using `[hWdef, eval_pair_sub, eval_pair_one]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTr : ∀ (u v : Fin d → MvPolynomial (Fin 2 × Fin d) S), (∀ i, u i ∈ Io S _) → (∀ i, v i ∈ Io S _) → ev2 W u v - ev2 h u v ∈ Io S _ ^ (2 + 1)`. Introduce `u v hu hv`. Rewrite using `[← eval_pair_sub]`. Apply the tactic sequence `exact aeval_mem_pow _ (fun p => by rcases p with ⟨k, i⟩; fin_cases k <;> simp [hu, hv]) _ h3`. Establish `hRep : ∀ (u v u' v' : Fin d → MvPolynomial (Fin 2 × Fin d) S), (∀ i, u i ∈ Io S _) → (∀ i, v i ∈ Io S _) → (∀ i, u' i ∈ Io S _) → (∀ i, v' i ∈ Io S _) → (∀ i, u i - u' i ∈ Io S _ ^ 2) → (∀ i, v i - v' i ∈ Io S _ ^ 2) → ev2 h u v - ev2 h u' v' ∈ Io S _ ^ (2 + 1)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `u v u' v' hu hv hu' hv' huu hvv`. Apply the tactic sequence `exact aeval_sub_mem_pow _ _ (fun p => by rcases p with ⟨k, i⟩; fin_cases k <;> simp [hu, hv]) (fun p => by rcases p with ⟨k, i⟩; fin_cases k <;> simp [hu', hv']) (fun p => by rcases p with ⟨k, i⟩; fin_cases k <;> simp [huu, hvv]) 2 h hhI`. Establish `hx : ∀ (k : Fin 2) (i : Fin d), xs S d k i ∈ Io S (Fin 2 × Fin d)` using `fun k i => xs_mem k i`. Establish `hl : ∀ (M : Fin d → Fin d → S) (k : Fin 2) (i : Fin d), lin M k i ∈ Io S (Fin 2 × Fin d)` using `fun M k i => lin_mem M k i`. Establish `haW0 : ∀ i, aW0 i ∈ Io S _` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `add_mem (hsq (hW0 i)) (hl A 0 i)` as an intermediate fact. Simplify using `using this`. Establish `haB1 : ∀ i, aB1 i ∈ Io S _` using `fun i => by`. Use `add_mem (hsq (hB1 i)) (hl Ab 1 i)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : ev2 h (lin A (0 : Fin 2)) (xs S d (1 : Fin 2)) = ev2 h (xs S d (0 : Fin 2)) (lin Ab (1 : Fin 2))`. Establish `k : ev2 h (lin A (0 : Fin 2)) (xs S d (1 : Fin 2)) - ev2 h (xs S d (0 : Fin 2)) (lin Ab (1 : Fin 2)) ∈ Io S _ ^ (2 + 1)`. Establish `e : ev2 h (lin A (0 : Fin 2)) (xs S d (1 : Fin 2)) - ev2 h (xs S d (0 : Fin 2)) (lin Ab (1 : Fin 2)) = (ev2 P aW0 (xs S d 1) - ev2 P (xs S d 0) aB1) - (ev2 W aW0 (xs S d 1) - ev2 h aW0 (xs S d 1)) + (ev2 W (xs S d 0) aB1 - ev2 h (xs S d 0) aB1) - (ev2 h aW0 (xs S d 1) - ev2 h (li …`. Rewrite using `[hPW, hPW]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e]`. Conclude with `add_mem (sub_mem (add_mem (sub_mem (hmj hbal) (hTr _ _ haW0 (hx 1))) (hTr _ _ (hx 0) haB1)) (hRep _ _ _ _ haW0 (hx 1) (hl A 0) (hx 1) hW0 (fun i => by simp))) (hRep _ _ _ _ (hx 0) haB1 (hx 0) (hl Ab 1) (fun i => by simp) hB1)`. Conclude with `sub_eq_zero.1 (eq_zero_of_isHomogeneous ((eval_pair_homogeneous hh _ _ (lin_hom A 0) (xs_hom 1)).sub (eval_pair_homogeneous hh _ _ (xs_hom 0) (lin_hom Ab 1))) k)`. Use extensionality with `i0 l0`. Establish `hc` using `congrArg (coeff (sil i0 l0)) hb1`.
-
-Rewrite `hc` using `[hhdef, eval_pair_bilinear, eval_pair_bilinear, coeff_linL, coeff_linR]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bal_of {P : MvPolynomial (Fin 2 × Fin d) S} {m : ℕ} (hm : 2 ≤ m) (B A Ab : Fin d → Fin d → S)
     (h2 : P - 1 ∈ Io S (Fin 2 × Fin d) ^ 2) (h3 : P - 1 - bil B ∈ Io S (Fin 2 × Fin d) ^ 3)

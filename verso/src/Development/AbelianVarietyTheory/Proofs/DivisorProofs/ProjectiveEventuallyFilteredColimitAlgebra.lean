@@ -17,11 +17,11 @@ noncomputable def sysPoly {R : Type} [CommRing R] (n m : ℕ) (r : Fin m → Fin
       ∑ b, MvPolynomial.X (.inr (a, b)) * MvPolynomial.C (r b l)
 
 /- English proof (translation)
-Establish `key : ∀ a l, MvPolynomial.eval₂ φ x (sysPoly n m r (.inr (a, l))) = x (.inl (a, l)) - ((if a = l then 1 else 0) + ∑ b, x (.inr (a, b)) * φ (r b l))`. Introduce `a l`. Apply the tactic sequence `by_cases h : a = l <;> simp [sysPoly, MvPolynomial.eval₂_sum, h, sub_sub]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun b l => ?_, fun a l => ?_⟩` and prove the remaining obligations. Simplify `h (.inl (b, l))` using `[sysPoly, MvPolynomial.eval₂_sum]`. Use `h (.inr (a, l))` as an intermediate fact. Rewrite `this` using `[key]`. Conclude with `sub_eq_zero.mp this`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩ (⟨b, l⟩ | ⟨a, l⟩)`. Simplify `h1 b l` using `[sysPoly, MvPolynomial.eval₂_sum]`. Rewrite using `[key, sub_eq_zero]`. Conclude with `h2 a l`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_sysPoly_eq_zero_iff {R B : Type} [CommRing R] [CommRing B] (φ : R →+* B) (n m : ℕ)
     (r : Fin m → Fin n → R) (x : (Fin n × Fin n) ⊕ (Fin n × Fin m) → B) :
@@ -45,13 +45,11 @@ theorem eval₂_sysPoly_eq_zero_iff {R B : Type} [CommRing R] [CommRing B] (φ :
       exact h2 a l
 
 /- English proof (translation)
-Introduce `J _ _ F c hc j M _ _ _ hproj`. Take `⟨n, K, e, hK⟩` from `Module.FinitePresentation.exists_fin (F.obj j) M`. Take `⟨m, r, hr⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hK`. Set `π : (Fin n → F.obj j) →ₗ[F.obj j] M` to `e.symm.toLinearMap ∘ₗ K.mkQ`. Establish `hπ : Function.Surjective π` using `e.symm.surjective.comp K.mkQ_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : Submodule.span (F.obj j) (Set.range r) = LinearMap.ker π`. Rewrite using `[hr, LinearMap.ker_comp, LinearEquiv.ker]`. Conclude with `(Submodule.ker_mkQ K).symm`. Use `letI : Algebra (F.obj j) c.pt := (c.ι.app j).hom.toAlgebra`. Take `⟨v, w, h1, h2⟩` from `GlobalTheory.T.exists_presentation_matrix_of_projective_baseChange (F.obj j) c.pt M n m π hπ r hker hproj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, f₀, hk⟩` from `GlobalTheory.T.polynomial_system_eventually_solvable_colimit J F c hc j _ _ (sysPoly n m r) (Sum.elim (fun p => v p.1 p.2) (fun p => w p.1 p.2)) ((eval₂_sysPoly_eq_zero_iff _ n m r _).mpr ⟨h1, h2⟩)`. Use `⟨k₀, f₀, fun k f => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (F.obj j) (F.obj k) := (F.map (f₀ ≫ f)).hom.toAlgebra`. Take `⟨y, hy⟩` from `hk k f`. Take `⟨h1', h2'⟩` from `(eval₂_sysPoly_eq_zero_iff _ n m r y).mp hy`.
-
-Conclude with `GlobalTheory.T.projective_baseChange_of_presentation_matrix_split (F.obj j) (F.obj k) M n m π hπ r hker (fun a l => y (.inl (a, l))) (fun a b => y (.inr (a, b))) h1' h2'`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem projective_eventually_of_finitePresentation : ∀ (J : Type) [SmallCategory J] [IsFiltered J]
     (F : J ⥤ CommRingCat.{0}) (c : Cocone F), IsColimit c → ∀ (j : J) (M : Type) [AddCommGroup M]
@@ -82,15 +80,13 @@ theorem projective_eventually_of_finitePresentation : ∀ (J : Type) [SmallCateg
     (fun a b => y (.inr (a, b))) h1' h2'
 
 /- English proof (translation)
-Introduce `J _ _ F c hc j A _ _ _ hfp`. Take `⟨hfin, hproj⟩` from `hfp`. Use `letI : Algebra (F.obj j) c.pt := (c.ι.app j).hom.toAlgebra`. Take `⟨k₁, g₁, hk₁⟩` from `GlobalTheory.T.eventually_finite_baseChange_filtered_colimit J F c hc j A hfin`. Use `letI : Algebra (F.obj j) (F.obj k₁) := (F.map (g₁ ≫ 𝟙 k₁)).hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite (F.obj k₁) (F.obj k₁ ⊗[F.obj j] A) := hk₁ k₁ (𝟙 k₁)`. Use `haveI : Module.FinitePresentation (F.obj k₁) (F.obj k₁ ⊗[F.obj j] A) := Module.FinitePresentation.of_finite_of_finitePresentation _ _`. Use `letI : Algebra (F.obj k₁) c.pt := (c.ι.app k₁).hom.toAlgebra`. Use `haveI : IsScalarTower (F.obj j) (F.obj k₁) c.pt := IsScalarTower.of_algebraMap_eq (fun x => by`. Express the relevant statement in the definitionally equal form `(c.ι.app j).hom x = (c.ι.app k₁).hom ((F.map (g₁ ≫ 𝟙 k₁)).hom x)`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← c.w (g₁ ≫ 𝟙 k₁)]`. Use the proof step `rfl)`. Use `haveI : Module.Projective c.pt (c.pt ⊗[F.obj j] A) := hproj`. Establish `hproj₁ : Module.Projective c.pt (c.pt ⊗[F.obj k₁] (F.obj k₁ ⊗[F.obj j] A))` using `Module.Projective.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange (F.obj j) (F.obj k₁) c.pt c.pt A).symm`. Take `⟨k₀, g₀, hk₀⟩` from `projective_eventually_of_finitePresentation J F c hc k₁ (F.obj k₁ ⊗[F.obj j] A) hproj₁`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k₀, (g₁ ≫ 𝟙 k₁) ≫ g₀, fun k f => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (F.obj k₁) (F.obj k) := (F.map (g₀ ≫ f)).hom.toAlgebra`. Use `haveI : Module.Projective (F.obj k) (F.obj k ⊗[F.obj k₁] (F.obj k₁ ⊗[F.obj j] A)) := hk₀ k f`. Use `letI : Algebra (F.obj j) (F.obj k) := (F.map (((g₁ ≫ 𝟙 k₁) ≫ g₀) ≫ f)).hom.toAlgebra`. Use `haveI : IsScalarTower (F.obj j) (F.obj k₁) (F.obj k) := IsScalarTower.of_algebraMap_eq (fun x => by`.
-
-Express the relevant statement in the definitionally equal form `(F.map (((g₁ ≫ 𝟙 k₁) ≫ g₀) ≫ f)).hom x = (F.map (g₀ ≫ f)).hom ((F.map (g₁ ≫ 𝟙 k₁)).hom x)`. Rewrite using `[Category.assoc, F.map_comp (g₁ ≫ 𝟙 k₁)]`. Use the proof step `rfl)`. Conclude with `Module.Projective.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange (F.obj j) (F.obj k₁) (F.obj k) (F.obj k) A)`.
+A detailed English derivation is pending.
 -/
 theorem projective_eventually : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),
     IsColimit c → ∀ (j : J) (A : Type) [CommRing A] [Algebra (F.obj j) A]

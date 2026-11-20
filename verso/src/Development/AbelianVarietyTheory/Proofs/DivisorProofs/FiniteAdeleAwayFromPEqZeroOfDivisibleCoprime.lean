@@ -14,14 +14,14 @@ open scoped RestrictedProduct
 namespace GlobalTheory.AfPZero
 
 /- English proof (translation)
-The claim follows from `(map_natCast (algebraMap ℤ (v.adicCompletion ℚ)) n).symm`.
+A detailed English derivation is pending.
 -/
 theorem natCast_eq_algebraMap (v : HeightOneSpectrum ℤ) (n : ℕ) :
     (n : v.adicCompletion ℚ) = algebraMap ℤ (v.adicCompletion ℚ) (n : ℤ) :=
   (map_natCast (algebraMap ℤ (v.adicCompletion ℚ)) n).symm
 
 /- English proof (translation)
-Rewrite using `[natCast_eq_algebraMap]`. Use `valuedAdicCompletion_eq_valuation (K := ℚ) v (n : ℤ)` as an intermediate fact. Rewrite using `[← valuation_of_algebraMap (K := ℚ)]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_natCast (v : HeightOneSpectrum ℤ) (n : ℕ) :
     Valued.v (n : v.adicCompletion ℚ) = v.intValuation (n : ℤ) := by
@@ -31,9 +31,9 @@ theorem valued_natCast (v : HeightOneSpectrum ℤ) (n : ℕ) :
   exact this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hγ : Valued.v x ≠ 0` using `by simpa using hx`. Use `set L : ℤ := log (Valued.v x) with hL`. Take `⟨n, hn, y, hy, hxe⟩` from `h ((-L).toNat + 1)`. Establish `h1 : Valued.v x ≤ exp (-(((-L).toNat + 1 : ℕ) : ℤ))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxe, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[← exp_log hγ, ← hL]`. Establish `h2` using `exp_le_exp.1 h1`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dvd (v : HeightOneSpectrum ℤ) (x : v.adicCompletion ℚ)
     (h : ∀ k : ℕ, ∃ n : ℕ, (n : ℤ) ∈ v.asIdeal ^ k ∧
@@ -55,13 +55,13 @@ theorem eq_zero_of_dvd (v : HeightOneSpectrum ℤ) (x : v.adicCompletion ℚ)
 open GlobalTheory.LKTrip GlobalTheory.LKGeo
 
 /- English proof (translation)
-Use `set q : ℤ := Submodule.IsPrincipal.generator v.1.asIdeal with hq`. Establish `hspan : v.1.asIdeal = Ideal.span {q}` using `(Submodule.IsPrincipal.span_singleton_generator v.1.asIdeal).symm`. Establish `hq0 : q ≠ 0`. Introduce `h0`. Apply `v.1.ne_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan, h0, Ideal.span_singleton_eq_bot]`. Establish `hqp : Prime q`. Use `v.1.isPrime` as an intermediate fact. Rewrite `this` using `[hspan]`. Conclude with `(Ideal.span_singleton_prime hq0).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : q.natAbs.Prime` using `Int.prime_iff_natAbs_prime.1 hqp`. Establish `hspan' : v.1.asIdeal = Ideal.span {((q.natAbs : ℕ) : ℤ)}`. Rewrite using `[hspan, Int.span_natAbs]`. Use `⟨q.natAbs, hl, (Nat.coprime_primes hl (Fact.out)).2 ?_, ?_⟩` and prove the remaining obligations. Introduce `he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `v.2` to reduce the goal to its premises. Rewrite using `[hspan', he]`. Rewrite using `[hspan']`. Conclude with `Ideal.subset_span rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime (p : ℕ) [Fact p.Prime] (v : AwayP p) :
     ∃ l : ℕ, l.Prime ∧ l.Coprime p ∧ (l : ℤ) ∈ v.1.asIdeal := by
@@ -86,9 +86,9 @@ theorem exists_prime (p : ℕ) [Fact p.Prime] (v : AwayP p) :
     exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Introduce `p _ α h`. Establish `hloc : ∀ v : AwayP p, AfP.eval v α = 0`. Introduce `v`. Take `⟨l, hl, hlp, hlv⟩` from `exists_prime p v`. Apply `eq_zero_of_dvd v.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Take `⟨β, hβ, hαβ⟩` from `h (l ^ k) (pow_pos hl.pos k) (Nat.Coprime.pow_left k hlp)`. Use `⟨l ^ k, by push_cast; exact Ideal.pow_mem_pow hlv k, AfP.eval v β, hβ v, ?_⟩` and prove the remaining obligations. Rewrite using `[hαβ, map_nsmul, nsmul_eq_mul]`. Conclude with `Subtype.ext (funext fun v => hloc v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (α : AfP p),
     (∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = n • β) → α = 0 := by

@@ -9,7 +9,7 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.CompanionTheory.CFin
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Orb.archMat_apply, projArch_ratEmb]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `infEmb τ ((1 : w.Completion) ⊗ₜ[F] (γ.1.1 i j)) = τ.1 (γ.1.1 i j)`. Rewrite using `[infEmb_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem archMat_projArch_ratEmb (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (γ : GRat σ J) (w : InfinitePlace F) (τ : EmbOver E w) :

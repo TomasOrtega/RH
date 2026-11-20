@@ -21,7 +21,7 @@ def cinv (e : ℕ) : MvPolynomial (Par e n) (Base Q j) :=
   C (IsLocalization.Away.invSelf (Ideal.Quotient.mk Q (X j)))
 
 /- English proof (translation)
-Rewrite using `[cx, cinv, ← map_mul, IsLocalization.Away.mul_invSelf, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cx_mul_cinv : cx Q j e j * cinv Q j e = 1 := by
   rw [cx, cinv, ← map_mul, IsLocalization.Away.mul_invSelf, map_one]
@@ -40,7 +40,7 @@ def evalF (e : ℕ) :
   eval₂Hom (eval₂Hom (κ Q j e) (parVal Q j)) (cx Q j e)
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `d`. Simplify using `[evalF, κ]`. Introduce `l`. Simplify using `[evalF, cx]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem evalF_comp_map :
     (evalF Q j e).comp (MvPolynomial.map (C : D →+* MvPolynomial (Par e n) D)) =
@@ -50,13 +50,13 @@ theorem evalF_comp_map :
   · intro l; simp [evalF, cx]
 
 /- English proof (translation)
-Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `q hq`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← RingHom.comp_apply, evalF_comp_map]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.span_le, Set.range_subset_iff]`. Introduce `i`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, secForm, linForm, map_sum, map_mul]`. Simplify using `only [evalF, coe_eval₂Hom, eval₂_C, eval₂Hom_X', parVal]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(∑ m, X (.inl (i, m)) * cx Q j e m)) * cx_mul_cinv Q j (e := e)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, chartForm, linForm, map_sub, map_one, map_sum, map_mul]`. Simplify using `only [evalF, coe_eval₂Hom, eval₂_C, eval₂Hom_X', parVal]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(∑ m, X (.inr m) * cx Q j e m - 1)) * cx_mul_cinv Q j (e := e)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem secIdeal_le_ker :
     secIdeal (Q.map (MvPolynomial.map (C : D →+* MvPolynomial (Par e n) D))) X ≤ RingHom.ker (evalF Q j e) := by
@@ -109,14 +109,14 @@ def toPoly (e : ℕ) : Chart Q j e →+* MvPolynomial (Par e n) (Base Q j) :=
       exact IsUnit.of_mul_eq_one _ (cx_mul_cinv Q j (e := e)))
 
 /- English proof (translation)
-Rewrite using `[toChart_apply, toPoly, IsLocalization.Away.lift_eq, Ideal.Quotient.lift_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toPoly_toChart (e : ℕ) (a : MvPolynomial (Fin n) (MvPolynomial (Par e n) D)) :
     toPoly Q j e (toChart Q j e a) = evalF Q j e a := by
   rw [toChart_apply, toPoly, IsLocalization.Away.lift_eq, Ideal.Quotient.lift_mk]
 
 /- English proof (translation)
-Rewrite using `[toChart_apply, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toChart_eq_zero {e : ℕ} {a : MvPolynomial (Fin n) (MvPolynomial (Par e n) D)} (ha : a ∈ secI Q e) :
     toChart Q j e a = 0 := by
@@ -135,7 +135,7 @@ def fromPoly (e : ℕ) : MvPolynomial (Par e n) (Base Q j) →+* Chart Q j e :=
   eval₂Hom (baseToChart Q j e) fun p => toChart Q j e (C (X p))
 
 /- English proof (translation)
-Rewrite using `[baseToChart, IsLocalization.Away.lift_eq, quotToChart, Ideal.Quotient.lift_mk, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseToChart_mk (p : MvPolynomial (Fin n) D) :
     baseToChart Q j e (algebraMap _ (Base Q j) (Ideal.Quotient.mk Q p)) =
@@ -143,19 +143,19 @@ theorem baseToChart_mk (p : MvPolynomial (Fin n) D) :
   rw [baseToChart, IsLocalization.Away.lift_eq, quotToChart, Ideal.Quotient.lift_mk, RingHom.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[cx, fromPoly, coe_eval₂Hom, eval₂_C, baseToChart_mk, map_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fromPoly_cx (l : Fin n) : fromPoly Q j e (cx Q j e l) = toChart Q j e (X l) := by
   rw [cx, fromPoly, coe_eval₂Hom, eval₂_C, baseToChart_mk, map_X]
 
 /- English proof (translation)
-Rewrite using `[fromPoly, coe_eval₂Hom, eval₂_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fromPoly_X (p : Par e n) : fromPoly Q j e (X p) = toChart Q j e (C (X p)) := by
   rw [fromPoly, coe_eval₂Hom, eval₂_X]
 
 /- English proof (translation)
-Establish `hmem : secForm (X : Par e n → MvPolynomial (Par e n) D) i ∈ secI Q e` using `Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))`. Rewrite using `[← toChart_eq_zero Q j hmem]`. Simplify using `only [map_sum, map_mul, fromPoly_X, fromPoly_cx, secForm, linForm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromPoly_secForm (i : Fin e) :
     fromPoly Q j e (∑ m, X (.inl (i, m)) * cx Q j e m) = 0 := by
@@ -165,7 +165,7 @@ theorem fromPoly_secForm (i : Fin e) :
   simp only [map_sum, map_mul, fromPoly_X, fromPoly_cx, secForm, linForm]
 
 /- English proof (translation)
-Establish `hmem : chartForm (X : Par e n → MvPolynomial (Par e n) D) - 1 ∈ secI Q e` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Rewrite using `[← toChart_eq_zero Q j hmem]`. Simplify using `only [map_sum, map_mul, map_sub, map_one, fromPoly_X, fromPoly_cx, chartForm, linForm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fromPoly_chartForm :
     fromPoly Q j e (∑ m, X (.inr m) * cx Q j e m - 1) = 0 := by
@@ -175,13 +175,13 @@ theorem fromPoly_chartForm :
   simp only [map_sum, map_mul, map_sub, map_one, fromPoly_X, fromPoly_cx, chartForm, linForm]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Establish `h : (((fromPoly Q j e).comp (toPoly Q j e)).comp (toChart Q j e)).comp C = (toChart Q j e).comp C`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `d`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, toPoly_toChart, evalF, κ, coe_eval₂Hom, eval₂_C, fromPoly, baseToChart_mk, map_C]`. Introduce `p`. Simplify using `only [RingHom.comp_apply, toPoly_toChart, evalF, coe_eval₂Hom, eval₂_C, eval₂_X]`. Break down `p with ⟨i, l⟩ | l` into its components or cases. Simplify using `only [parVal, map_sub, fromPoly_X] split_ifs`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, fromPoly_secForm, mul_zero, sub_zero]`. Rewrite using `[map_zero, sub_zero]`. Simplify using `only [parVal, map_sub, fromPoly_X] split_ifs`. Rewrite using `[map_mul, fromPoly_chartForm, mul_zero, sub_zero]`. Rewrite using `[map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.congr_fun h c`. Introduce `l`. Simplify using `only [RingHom.comp_apply, toPoly_toChart, evalF, coe_eval₂Hom, eval₂_X, fromPoly_cx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fromPoly_toPoly_toChart :
     ((fromPoly Q j e).comp (toPoly Q j e)).comp (toChart Q j e) = toChart Q j e := by
@@ -209,7 +209,7 @@ theorem fromPoly_toPoly_toChart :
     simp only [RingHom.comp_apply, toPoly_toChart, evalF, coe_eval₂Hom, eval₂_X, fromPoly_cx]
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (Submonoid.powers (xj Q j e))` to reduce the goal to its premises. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Conclude with `fromPoly_toPoly_toChart Q j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fromPoly_comp_toPoly : (fromPoly Q j e).comp (toPoly Q j e) = RingHom.id _ := by
   apply IsLocalization.ringHom_ext (Submonoid.powers (xj Q j e))
@@ -217,7 +217,7 @@ theorem fromPoly_comp_toPoly : (fromPoly Q j e).comp (toPoly Q j e) = RingHom.id
   exact fromPoly_toPoly_toChart Q j
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply D (MvPolynomial (Fin n) (MvPolynomial (Par e n) D)) (Chart Q j e), MvPolynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`. Conclude with `(toPoly_toChart Q j e _).trans (by simp [evalF])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toPoly_algebraMap (d : D) : toPoly Q j e (algebraMap D (Chart Q j e) d) = κ Q j e d := by
   rw [IsScalarTower.algebraMap_apply D (MvPolynomial (Fin n) (MvPolynomial (Par e n) D)) (Chart Q j e),
@@ -229,11 +229,11 @@ end ChartDomain
 open ChartDomain in
 
 /- English proof (translation)
-Introduce `D _ _ n e Q j hQ hQD hXj`. Establish `hxj : Ideal.Quotient.mk Q (X j) ≠ 0` using `fun h => hXj (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Establish `: IsDomain (MvPolynomial (Fin n) D ⧸ Q)` using `Ideal.Quotient.isDomain Q`. Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hxj`. Establish `: IsDomain (Base Q j)` using `IsLocalization.isDomain_localization hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (toPoly Q j e)` using `Function.LeftInverse.injective (g := fromPoly Q j e) fun x => RingHom.congr_fun (fromPoly_comp_toPoly Q j) x`. Use `⟨Function.Injective.isDomain _ hinj, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `h` using `congrArg (toPoly Q j e) hab`. Rewrite `h` using `[toPoly_algebraMap, toPoly_algebraMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `IsLocalization.injective (Base Q j) hle (C_injective _ _ h)`. Establish `h3 : C (a - b) ∈ Q` using `by rw [map_sub]; exact Ideal.Quotient.eq.mp h2`. Conclude with `sub_eq_zero.mp (hQD _ h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ChartDomain.proof : ChartDomain.Statement := by
   intro D _ _ n e Q j hQ hQD hXj

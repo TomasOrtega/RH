@@ -19,17 +19,15 @@ namespace GlobalTheory.PullComp
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (L : RigLB A)
 
 /- English proof (translation)
-Establish `hL` using `L.isLB`. Establish `he : eSec A ≫ ψ.left = eSec A` using `by simp only [eSec, ← Over.comp_left, IsMonHom.one_hom]`. Take `⟨β₀, β, hβ₀, nβ, cβ, tβ⟩` from `h`. Take `⟨δ₀, δ, hδ₀, nδ, cδ, tδ⟩` from `h'`. Take `⟨α₀, hα₀, hv₀⟩` from `exists_gen hL (φ' := ![𝟙 A.left, (ψ ≫ φ).left]) (ε' := ![c, -a]) (fun U _ f => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, Over.comp_left, zpow_neg]`. Rewrite using `[_root_.mul_assoc, inv_mul_cancel_left])`. Use the proof step `(LB.mulGen L.L _ _ _ _ δ₀ (LB.pullGen L.L _ _ β₀ ψ.left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hδ₀ (DVR.pullGen_isGen _ _ _ _ hβ₀ _))`. Take `⟨α, hα, hv⟩` from `exists_gen hL (φ' := ![(snd T A).left, (snd T A ≫ ψ ≫ φ).left]) (ε' := ![c, -a]) (fun U _ f => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `congrArg (fun q => f q ^ c) (Category.comp_id _)`. Use the proof step `rfl)`. Use the proof step `(LB.pullGen L.L ![𝟙 A.left, (ψ ≫ φ).left] ![c, -a] α₀ (snd T A).left)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(DVR.pullGen_isGen _ _ _ _ hα₀ _)`. Use `⟨α₀, α, hα₀, corr_of_val hL fun y J hJ => ?_, corr_of_val hL fun y J hJ => hv _ _ y J hJ, ThetaLin.isTwistPull_of_sval A hL hα fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁` using `val_corr hJ nβ (𝟙 _)`. Establish `e₂` using `val_corr hJ nδ (𝟙 _)`. Rewrite `e₁`, `e₂` using `[val_pull hJ, val_mul hJ, UT.PullMul.val_rigPow, UT.PullMul.val_rigPow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[val_pull hJ, hv₀ _ _ y J hJ, val_mul hJ, val_pull hJ, Category.assoc, he, e₁, e₂, val_mul hJ, UT.PullMul.val_rigPow, UT.PullMul.val_rigPow, zpow_neg _ b, _root_.mul_assoc, inv_mul_cancel_left]`. Establish `e₁ : (endOver A T ψ).left ≫ (snd T A).left = (snd T A).left ≫ ψ.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `e₂ : (endOver A T ψ).left ≫ (endOver A T φ).left = (endOver A T (ψ ≫ φ)).left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, Category.assoc]`.
-
-Rewrite using `[ThetaLin.sval_of_isTwistPull A tδ _ y hJ, ThetaLin.sval_of_isTwistPull A tβ _ y hJ, val_corr hJ cδ, val_corr hJ cβ, hv _ _ y J hJ, val_pull hJ, val_pull hJ, val_pull hJ, hv₀ _ _ y J hJ, val_mul hJ, val_pull hJ, Units.val_mul, _root_.mul_assoc]`. Simplify using `only [Category.assoc, e₁, e₂]`.
+A detailed English derivation is pending.
 -/
 theorem isNormPull_comp (φ ψ : A ⟶ A) [IsMonHom ψ] (a b c : ℤ) {T : Over S} {s : LB.Sec (LPow A L.L a T)}
     {s' : LB.Sec (LPow A L.L b T)} {s'' : LB.Sec (LPow A L.L c T)} (h : IsNormPull A L φ b a s s')
@@ -70,7 +68,7 @@ theorem isNormPull_comp (φ ψ : A ⟶ A) [IsMonHom ψ] (a b c : ℤ) {T : Over 
     simp only [Category.assoc, e₁, e₂]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S _ x a b k k' k'' F F' F'' h h'`. Use `Xo.univ.t.act.hom b` as an intermediate fact. Unfold `Pulls`. Rewrite using `[_root_.mul_comm a b, Xo.univ.t.act.mul]`. Conclude with `isNormPull_comp _ _ _ _ _ _ h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pulls_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (a b : 𝓞 E) (k k' k'' : ℕ) (F : SecN Xo x k) (F' : SecN Xo x k') (F'' : SecN Xo x k''), Pulls Xo a F F' → Pulls Xo b F' F'' → Pulls Xo (a * b) F F'' := by
   intro E _ _ _ H Dw l Xo S _ x a b k k' k'' F F' F'' h h'

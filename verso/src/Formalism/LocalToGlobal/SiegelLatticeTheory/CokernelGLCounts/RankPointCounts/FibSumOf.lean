@@ -19,37 +19,35 @@ variable {D : Formalism.BasicNotions.D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce `hA hT hP hN hR hE w hG Z hZ hfin`. Establish `hpre : Pre M δ u u' F0 what₂` using `⟨hA, hT, hP, hN, hR, hE⟩`. Set `S : Set (TermDef.Term D u u' F0 what₂)` to `{γ | EligAt γ w ∧ locT M δ γ = tupZ M δ u u' Z}`. Establish `hrep : ∀ γ ∈ S, RepIn u u' F0 what₂ γ Z` using `fun γ hγ => hC hpre γ w hG Z hZ hγ.1 hγ.2`. Establish `hclsFin : ∀ Λ ∈ what₂, (clsSet F0 u' Λ Z).Finite` using `fun Λ hΛ => Set.encard_ne_top_iff.1 (by rw [← cntE_eq]; exact hfin Λ hΛ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ γ : TermDef.Term D u u' F0 what₂, PairVal.orbT D u u' F0 what₂ γ Z ⊆ clsSet F0 u' γ.lam Z`. Introduce and unpack `γ O ⟨F', hF', -, rfl⟩`. Conclude with `⟨F', hF', rfl⟩`. Establish `horbFin : ∀ γ : TermDef.Term D u u' F0 what₂, (PairVal.orbT D u u' F0 what₂ γ Z).Finite` using `fun γ => (hclsFin γ.lam γ.mem).subset (hsub γ)`. Establish `hne : ∀ γ ∈ S, (PairVal.orbT D u u' F0 what₂ γ Z).Nonempty`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ hγ`. Take `⟨F', hF', hr⟩` from `hrep γ hγ`. Conclude with `⟨_, F', hF', hr, rfl⟩`. Establish `hnc : ∀ γ ∈ S, (PairVal.orbT D u u' F0 what₂ γ (zT γ)).ncard = (PairVal.orbT D u u' F0 what₂ γ Z).ncard`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.ncard_def, Set.ncard_def, hB hpre γ w Z hγ.1 hZ (hrep γ hγ)]`. Establish `hSfin : S.Finite`. Establish `hU : S ⊆ ⋃ Λ ∈ (what₂ : Set (Submodule (𝓞 D.host.E) (VS D).V)), ⋃ O ∈ clsSet F0 u' Λ Z, {γ : TermDef.Term D u u' F0 what₂ | γ.lam = Λ ∧ O ∈ PairVal.orbT D u u' F0 what₂ γ Z}`. Introduce `γ hγ`. Take `⟨O, hO⟩` from `hne γ hγ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨γ.lam, γ.mem, O, hsub γ hO, rfl, hO⟩`. Use `Set.Finite.subset ?_ hU` and prove the remaining obligations. Use `Set.Finite.biUnion what₂.finite_toSet (fun Λ hΛ => Set.Finite.biUnion (hclsFin Λ hΛ) (fun O _ => ?_))` and prove the remaining obligations. Use `Set.Subsingleton.finite (fun γ₁ h₁ γ₂ h₂ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `orbT_disj (h₁.1.trans h₂.1.symm) h₁.2 h₂.2`. Establish `hrow : ∀ Λ ∈ what₂, ∑ γ ∈ hSfin.toFinset.filter (fun γ => γ.lam = Λ), ((PairVal.orbT D u u' F0 what₂ γ Z).ncard : ℝ) = ((clsSet F0 u' Λ Z).ncard : ℝ)`. Introduce `Λ hΛ`. Establish `hbU : (hclsFin Λ hΛ).toFinset = (hSfin.toFinset.filter (fun γ => γ.lam = Λ)).biUnion (fun γ => (horbFin γ).toFinset)`. Use extensionality with `O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.Finite.mem_toFinset, Finset.mem_biUnion, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', hF', rfl⟩`. Use `⟨termOf Λ hΛ F' (pd_of_ez hF'), ⟨⟨eligAt_termOf Λ hΛ hZ hF', ?_⟩, rfl⟩, mem_orbT_termOf Λ hΛ hF'⟩` and prove the remaining obligations. Conclude with `hD hpre _ w Z (eligAt_termOf Λ hΛ hZ hF') hZ (repIn_termOf Λ hΛ hF')`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨γ, ⟨-, hγΛ⟩, hO⟩`. Use `hsub γ hO` as an intermediate fact. Rewrite `this` using `[hγΛ]`. Conclude with `this`. Establish `hdisj : ∀ γ₁ ∈ hSfin.toFinset.filter (fun γ => γ.lam = Λ), ∀ γ₂ ∈ hSfin.toFinset.filter (fun γ => γ.lam = Λ), γ₁ ≠ γ₂ → Disjoint (horbFin γ₁).toFinset (horbFin γ₂).toFinset`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ₁ h₁ γ₂ h₂ hne12`. Rewrite using `[Finset.disjoint_left]`. Introduce `O hO₁ hO₂`. Rewrite `hO₁`, `hO₂` using `[Set.Finite.mem_toFinset]`. Conclude with `hne12 (orbT_disj ((Finset.mem_filter.1 h₁).2.trans (Finset.mem_filter.1 h₂).2.symm) hO₁ hO₂)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.ncard_eq_toFinset_card _ (hclsFin Λ hΛ), hbU, Finset.card_biUnion hdisj]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun γ _ => ?_)` and prove the remaining obligations. Rewrite using `[Set.ncard_eq_toFinset_card _ (horbFin γ)]`. Establish `hreal : ∑ γ ∈ hSfin.toFinset, PairVal.massTerm γ * ((PairVal.orbT D u u' F0 what₂ γ (zT γ)).ncard : ℝ) = CntLocal.nu (CntLocal.Tn u') F0 what₂ Z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : ∀ γ ∈ hSfin.toFinset, PairVal.massTerm γ * ((PairVal.orbT D u u' F0 what₂ γ (zT γ)).ncard : ℝ) = PairVal.massRow D F0 what₂ γ.lam * ((PairVal.orbT D u u' F0 what₂ γ Z).ncard : ℝ)`. Introduce `γ hγ`. Rewrite using `[hnc γ ((Set.Finite.mem_toFinset hSfin).1 hγ)]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := fun γ : TermDef.Term D u u' F0 what₂ => γ.lam) (t := what₂) (fun γ _ => γ.mem)]`. Establish `e2 : ∀ Λ ∈ what₂, ∑ γ ∈ hSfin.toFinset.filter (fun γ => γ.lam = Λ), PairVal.massRow D F0 what₂ γ.lam * ((PairVal.orbT D u u' F0 what₂ γ Z).ncard : ℝ) = PairVal.massRow D F0 what₂ Λ * ((clsSet F0 u' Λ Z).ncard : ℝ)`. Introduce `Λ hΛ`. Rewrite using `[← hrow Λ hΛ, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun γ hγ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Finset.mem_filter.1 hγ).2]`. Rewrite using `[Finset.sum_congr rfl e2]`. Unfold `CntLocal.nu PairVal.massRow`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl (fun Λ _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Set.ncard_def, ← cntE_eq]`. Unfold `Formalism.MainNotions.S.Cnt.massRows`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : Fintype {γ : TermDef.Term D u u' F0 what₂ // EligAt γ w ∧ locT M δ γ = tupZ M δ u u' Z} := hSfin.fintype`. Establish `hs` using `hasSum_fintype (fun γ : {γ : TermDef.Term D u u' F0 what₂ // EligAt γ w ∧ locT M δ γ = tupZ M δ u u' Z} => (PairVal.massTerm γ.1 : ℂ) * ((PairVal.orbT D u u' F0 what₂ γ.1 (zT γ.1)).ncard : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : ∑ γ ∈ hSfin.toFinset, (PairVal.massTerm γ : ℂ) * ((PairVal.orbT D u u' F0 what₂ γ (zT γ)).ncard : ℂ) = ∑ γ : {γ : TermDef.Term D u u' F0 what₂ // EligAt γ w ∧ locT M δ γ = tupZ M δ u u' Z}, (PairVal.massTerm γ.1 : ℂ) * ((PairVal.orbT D u u' F0 what₂ γ.1 (zT γ.1)).ncard : ℂ)` using `Finset.sum_subtype hSfin.toFinset (fun γ => Set.Finite.mem_toFinset hSfin) _`. Establish `h2 : ((∑ γ ∈ hSfin.toFinset, PairVal.massTerm γ * ((PairVal.orbT D u u' F0 what₂ γ (zT γ)).ncard : ℝ) : ℝ) : ℂ) = ∑ γ ∈ hSfin.toFinset, (PairVal.massTerm γ : ℂ) * ((PairVal.orbT D u u' F0 what₂ γ (zT γ)).ncard : ℂ)`. Use `push_cast`. Both sides reduce to the same expression. Establish `key` using `h1.symm.trans (h2.symm.trans (congrArg (fun x : ℝ => (x : ℂ)) hreal))`.
-
-Conclude with `Eq.mpr (congrArg (HasSum _) key.symm) hs`.
+A detailed English derivation is pending.
 -/
 theorem fibSum_of (hD : TupFun M δ u u' F0 what₂) (hC : RepAtTup M δ u u' F0 what₂) (hB : OrbZT M δ u u' F0 what₂) :
     Formalism.L2.SG.Pf.FCount.FibSum M δ u u' F0 what₂ := by

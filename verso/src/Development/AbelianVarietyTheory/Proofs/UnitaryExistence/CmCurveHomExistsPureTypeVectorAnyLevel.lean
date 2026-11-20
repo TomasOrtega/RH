@@ -15,21 +15,21 @@ namespace GlobalTheory.CurveHomLiftAnyLevel
 open UniformLift CurveHomLift
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty F _ _ _ C i P hP φ x ε hx hadd hw`. Take `⟨L, hL⟩` from `exists_linear_lift_of_isHolTo F i P hP (m := 1) (fun z => x (z 0)) (fun z w => hadd _ _) (by`. Simplify using `only [hx]`. Conclude with `HolFibre.isHolTo_comp (isHolTo_pt C) φ)`. Establish `hv : ∀ z : ℂ, x z = F.ex i P (z • L fun _ => 1)` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, hL]`. Simplify using the standard rewrite rules. Establish `h1 : x 1 = 1`. Rewrite using `[← map_zero_eq_one x hadd]`. Conclude with `Over.OverMorphism.ext (by rw [hx, hx, pt_one])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hv, one_smul, F.ex_ker i P hP]`. Take `⟨a, ha⟩` from `h1`. Rewrite `hv` using `[← ha]`. Use `⟨a, fun j hj => ?_, hv⟩` and prove the remaining obligations. Use `set w : ℂ := (1 + ((ε : ℤ) : ℂ) * H.rt0) / 2 with hwdef`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ z : ℂ, z • (w • P a - P (H.w0 • a)) ∈ P.range` using `fun z => by`. Establish `e1` using `hw z`. Rewrite `e1` using `[hv, hv, ← F.ex_lin i P hP]`. Establish `e2 : (fun k => ty k (H.w0 : E) * (z • P a) k) = z • P (H.w0 • a)`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, hP.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `F.ex_add i P hP (z • (w • P a - P (H.w0 • a))) (z • P (H.w0 • a))`. Rewrite `e3` using `[← smul_add, sub_add_cancel, smul_smul, mul_comm z w, e1, e2]`. Conclude with `(F.ex_ker i P hP _).1 (mul_eq_right.1 e3.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `key 1`. Rewrite `hb` using `[one_smul]`. Establish `hb0 : b = 0` using `eq_zero_of_line hP (hb ▸ key)`. Rewrite `hb` using `[hb0, map_zero]`. Establish `e4` using `congrFun hb j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Pi.zero_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hP.1] at e4`. Establish `e5 : 2 * ty j (H.w0 : E) = 1 + ty j (H.rt : E)`. Use `congrArg (fun s : 𝓞 E => ty j (s : E)) H.two_weight_eq_one_add_root` as an intermediate fact. Simplify `this` using `[map_ofNat]`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `hj` to reduce the goal to its premises. Establish `e6 : w = ty j (H.w0 : E)` using `mul_right_cancel₀ hne (sub_eq_zero.1 e4.symm)`. Rewrite `e6` using `[hwdef]`. Take the linear combination `-e5 - 2 * e6`.
+A detailed English derivation is pending.
 -/
 theorem exists_pure_vector : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → ∀ C : Curve H, ∀ (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P), ∀ (φ : C.P.A.left ⟶ Xo.univ.t.G.left) (x : ℂ → (Over.mk (F.u i P) ⟶ Xo.univ.t.G)) (ε : ℤˣ), (∀ z, (x z).left = C.pt z ≫ φ) → (∀ z w, x (z + w) = x z * x w) → (∀ z, x ((1 + ((ε : ℤ) : ℂ) * H.rt0) / 2 * z) = x z ≫ Xo.univ.t.act.act H.w0) → ∃ a ∈ lat hP (((ε : ℤ) : ℂ) * H.rt0), ∀ z : ℂ, x z = F.ex i P (z • P a) := by
   intro E _ _ _ H D l Xo σ g ty F _ _ _ C i P hP φ x ε hx hadd hw

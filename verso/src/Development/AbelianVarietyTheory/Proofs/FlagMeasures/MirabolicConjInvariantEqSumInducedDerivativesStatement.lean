@@ -5,7 +5,7 @@ open Polynomial Formalism.MainNotions.ArithmeticCylinders GlobalTheory.GLq Globa
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GLm.MirSum.eq_sum_indR_der` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMirabolicConjInvariantEqSumInducedDerivatives.lean&line=110#L110)
 -/

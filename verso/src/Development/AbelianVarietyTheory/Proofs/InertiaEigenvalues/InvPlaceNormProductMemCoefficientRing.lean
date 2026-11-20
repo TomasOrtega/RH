@@ -11,13 +11,13 @@ namespace GlobalTheory.NormUnit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[Nat.Prime.coprime_iff_not_dvd hl]`. Introduce `hd`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `letI : Field (𝓞 K ⧸ P.asIdeal) := Ideal.Quotient.field P.asIdeal`. Establish `hfin : Finite (𝓞 K ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite (𝓞 K ⧸ P.asIdeal)`. Establish `hc : l ∣ Fintype.card (𝓞 K ⧸ P.asIdeal)`. Rewrite using `[Fintype.card_eq_nat_card, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`. Conclude with `hd`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card l hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (l : 𝓞 K ⧸ P.asIdeal) * x = 0`. Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[addOrderOf_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl.one_lt.ne hx`. Establish `h2 : (l : 𝓞 K ⧸ P.asIdeal) = 0` using `(mul_eq_zero.1 h1).resolve_right hx0`. Apply `hP` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem coprime_absNorm {K : Type} [Field K] [NumberField K] (l : ℕ) (hl : l.Prime)
     (P : HeightOneSpectrum (𝓞 K)) (hP : ((l : ℕ) : 𝓞 K) ∉ P.asIdeal) :
@@ -40,11 +40,9 @@ theorem coprime_absNorm {K : Type} [Field K] [NumberField K] (l : ℕ) (hl : l.P
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]; exact h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hn' : ((n : ℕ) : R) ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.2 h : IsCoprime (l : ℤ) (n : ℤ))`. Establish `e : (1 : R) = (a : R) * (l : R) + (b : R) * (n : R)`. Use `congrArg (Int.cast : ℤ → R) hab` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this.symm`. Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hl) (Ideal.mul_mem_left _ _ hn')`.
-
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of_coprime {R : Type} [CommRing R] [IsLocalRing R] {l n : ℕ}
     (hl : ((l : ℕ) : R) ∈ IsLocalRing.maximalIdeal R) (h : Nat.Coprime l n) : IsUnit ((n : ℕ) : R) := by
@@ -60,9 +58,9 @@ theorem isUnit_natCast_of_coprime {R : Type} [CommRing R] [IsLocalRing R] {l n :
   exact (IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 this)
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime (D.ntw.l i) (normProd Q)`. Unfold `normProd`. Use `Nat.Coprime.prod_right fun P hP => coprime_absNorm _ (D.ntw.lPrime i).out P fun hl => ?_` and prove the remaining obligations. Conclude with `Finset.disjoint_left.1 hQ hP (D.ntw.twistExcludedPlaces_contains_residueChar i hl)`. Take `⟨u, hu⟩` from `isUnit_natCast_of_coprime (D.ntw.O_l i) hcop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(u⁻¹ : (D.ntw.O i)ˣ), ?_⟩` and prove the remaining obligations. Establish `h1 : ρ.eO i b (u : D.ntw.O i) = ((normProd Q : ℕ) : ℂ)` using `by rw [hu, map_natCast]`. Rewrite using `[← h1]`. Conclude with `map_units_inv (ρ.eO i b) u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normProd_inv_mem (D : D7) (ρ : Setup D.ntw) (i : D.ntw.Tw) (b : Bool) (Q : Finset (Pl D.host.E))
     (hQ : Disjoint Q (D.ntw.S0 i)) : ((normProd Q : ℕ) : ℂ)⁻¹ ∈ (ρ.eO i b).range := by

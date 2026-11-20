@@ -15,7 +15,7 @@ def hsInv (v : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) : Wq →L[ℂ
   LinearMap.toContinuousLinearMap ((stdOrthonormalBasis ℂ Wq).toBasis.constr ℂ (fun i => v i))
 
 /- English proof (translation)
-Use `(stdOrthonormalBasis ℂ Wq).toBasis.constr_basis ℂ (fun i => v i) i` as an intermediate fact. Simplify `this` using `[hsInv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma hsInv_basis (v : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) (i : Fin (Module.finrank ℂ Wq)) :
     hsInv v (stdOrthonormalBasis ℂ Wq i) = v i := by
@@ -29,7 +29,7 @@ lemma hsVec_apply' (A : Wq →L[ℂ] Wp) (i : Fin (Module.finrank ℂ Wq)) :
     hsVec A i = A (stdOrthonormalBasis ℂ Wq i) := rfl
 
 /- English proof (translation)
-Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Apply `(stdOrthonormalBasis ℂ Wq).toBasis.ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [ContinuousLinearMap.coe_coe, OrthonormalBasis.coe_toBasis]`. Rewrite using `[hsInv_basis, hsVec_apply']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma hsInv_hsVec (A : Wq →L[ℂ] Wp) : hsInv (hsVec A) = A := by
   apply ContinuousLinearMap.coe_injective
@@ -39,7 +39,7 @@ lemma hsInv_hsVec (A : Wq →L[ℂ] Wp) : hsInv (hsVec A) = A := by
   rw [hsInv_basis, hsVec_apply']
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[hsVec_apply', hsInv_basis]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma hsVec_hsInv (v : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) : hsVec (hsInv v) = v := by
   ext i
@@ -62,7 +62,7 @@ def adjH (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : (Wq →L[ℂ] Wp)
     (hsE.symm.toLinearMap ∘ₗ (ContinuousLinearMap.adjoint (conjE T)).toLinearMap ∘ₗ hsE.toLinearMap)
 
 /- English proof (translation)
-Use `show hsE (hsE.symm _) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma hsE_adjH (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (B : Wq →L[ℂ] Wp) :
     hsVec (adjH T B) = ContinuousLinearMap.adjoint (conjE T) (hsVec B) := by
@@ -70,7 +70,7 @@ lemma hsE_adjH (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (B : Wq →L[
   rw [LinearEquiv.apply_symm_apply]; rfl
 
 /- English proof (translation)
-Use `show hsE (T (hsE.symm (hsE A))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma conjE_hsVec (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A : Wq →L[ℂ] Wp) :
     conjE T (hsVec A) = hsVec (T A) := by
@@ -78,7 +78,7 @@ lemma conjE_hsVec (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A : Wq �
   rw [LinearEquiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Unfold `hsInner`. Rewrite using `[hsE_adjH, ContinuousLinearMap.adjoint_inner_left, conjE_hsVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjH_spec (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A B : Wq →L[ℂ] Wp) :
     hsInner (T A) B = hsInner A (adjH T B) := by
@@ -86,9 +86,9 @@ theorem adjH_spec (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A B : Wq 
   rw [hsE_adjH, ContinuousLinearMap.adjoint_inner_left, conjE_hsVec]
 
 /- English proof (translation)
-Use extensionality with `B : 1`. Apply `hsE.injective` to reduce the goal to its premises. Simplify using `only [ContinuousLinearMap.add_apply, map_add]`. Use `show hsVec (adjH (T + S) B) = hsVec (adjH T B) + hsVec (adjH S B)`. Rewrite using `[hsE_adjH, hsE_adjH, hsE_adjH]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: conjE (T + S) = conjE T + conjE S`. Use extensionality with `v : 1`. Simplify using `[conjE]`. Rewrite using `[this, map_add, ContinuousLinearMap.add_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma adjH_add (T S : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : adjH (T + S) = adjH T + adjH S := by
   ext B : 1
@@ -101,9 +101,9 @@ lemma adjH_add (T S : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : adjH (T +
   rw [this, map_add, ContinuousLinearMap.add_apply]
 
 /- English proof (translation)
-Use extensionality with `B : 1`. Apply `hsE.injective` to reduce the goal to its premises. Use `show hsVec (adjH (c • T) B) = hsE (((starRingEnd ℂ c) • adjH T) B)`. Rewrite using `[ContinuousLinearMap.smul_apply, map_smul]`. Use `show _ = (starRingEnd ℂ c) • hsVec (adjH T B)`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsE_adjH, hsE_adjH]`. Establish `: conjE (c • T) = c • conjE T`. Use extensionality with `v : 1`. Simplify using `[conjE]`. Rewrite using `[this, map_smulₛₗ, ContinuousLinearMap.smul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma adjH_smulC (c : ℂ) (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : adjH (c • T) = (starRingEnd ℂ c) • adjH T := by
   ext B : 1
@@ -117,7 +117,7 @@ lemma adjH_smulC (c : ℂ) (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) :
   rw [this, map_smulₛₗ, ContinuousLinearMap.smul_apply]
 
 /- English proof (translation)
-Rewrite using `[← Complex.coe_smul, adjH_smulC, Complex.conj_ofReal, Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma adjH_smul (c : ℝ) (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : adjH (c • T) = c • adjH T := by
   rw [← Complex.coe_smul, adjH_smulC, Complex.conj_ofReal, Complex.coe_smul]

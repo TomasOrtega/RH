@@ -14,9 +14,9 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-Unfold `TB.PSDOn`. Establish `key : (Matrix.of fun x y : Y => K x y) = ∑ k, (Matrix.gram ℂ (fun x : Y => U k x)).transpose`. Use extensionality with `x y`. Simplify using `only [Matrix.of_apply, Matrix.sum_apply, Matrix.transpose_apply, Matrix.gram_apply, hK]`. Rewrite using `[key]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.posSemidef_sum _ fun k _ => (Matrix.posSemidef_gram ℂ _).transpose`.
+A detailed English derivation is pending.
 -/
 theorem psd_of_rep {α ι H : Type} [Fintype ι] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Y : Finset α)
     (U : ι → α → H) (K : α → α → ℂ) (hK : ∀ x y, K x y = ∑ k, inner ℂ (U k y) (U k x)) : TB.PSDOn Y K := by
@@ -28,11 +28,11 @@ theorem psd_of_rep {α ι H : Type} [Fintype ι] [NormedAddCommGroup H] [InnerPr
   exact Matrix.posSemidef_sum _ fun k _ => (Matrix.posSemidef_gram ℂ _).transpose
 
 /- English proof (translation)
-Rewrite `hk`, the goal using `[PBA.psd_iff_qf]`. Use `⟨fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hk.1 x hx y hy, map_mul, Complex.conj_ofReal]`. Establish `: PBA.qf Y (fun x y => (a : ℂ) * k x y) c = (a : ℂ) * PBA.qf Y k c`. Unfold `PBA.qf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, Complex.re_ofReal_mul]`. Conclude with `mul_nonneg ha (hk.2 c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_smul {α : Type} (Y : Finset α) (k : α → α → ℂ) (a : ℝ) (ha : 0 ≤ a) (hk : TB.PSDOn Y k) :
     TB.PSDOn Y (fun x y => (a : ℂ) * k x y) := by
@@ -55,17 +55,17 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
 /- English proof (translation)
-Distinguish the cases in `hw : w = []`. Use `⟨Unit, inferInstance, fun _ x => if D.IsLocPt x (P.r + 1) then B.hsVec (D.vecV p.T.base p.ν' p.m₀ F x) else 0, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.univ_unit, Finset.sum_singleton]`. Unfold `KB.Pl.RR D.RRplace`. Distinguish the cases in `hx : D.IsLocPt x (P.r + 1)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : D.IsLocPt y (P.r + 1)`. Rewrite using `[dif_pos ⟨hx, hy⟩, dif_neg (by omega), if_pos rfl, if_pos hw]`. Simplify using `only [hx, hy, if_true, B.hsInner]`. Rewrite using `[dif_neg (fun h => hy h.2)]`. Simplify using `[hy]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg (fun h => hx h.1)]`. Simplify using `[hx]`. Use `⟨Wd.Ix (Fin w.length) × M.Ty P, inferInstance, fun k x => if D.IsLocPt x (P.r + 1) then ((Top.dH P p.l0 (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') w x k.1 k.2 : ℝ) : ℂ) • B.hsVec ((p.TP.E k.2).comp (D.vecV p.T.base p.ν' p.m₀ (p.Θ.Θ w k.1 F) x)) else 0, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Unfold `KB.Pl.RR D.RRplace`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hx : D.IsLocPt x (P.r + 1)`. Distinguish the cases in `hy : D.IsLocPt y (P.r + 1)`. Rewrite using `[dif_pos ⟨hx, hy⟩, dif_neg (by omega), if_pos rfl, if_neg hw]`. Unfold `Top.topOf`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hx, hy, if_true, B.hsInner, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg (fun h => hy h.2)]`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg (fun h => hx h.1)]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rr_top_rep (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) :
     ∃ (ι : Type) (_ : Fintype ι) (U : ι → C.LPt → PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)),
@@ -112,15 +112,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hw' : KB.CutWord (D.parOf S v) (p v).l0 w` using `by rw [hl0]; exact hw`. Establish `hgpos` using `PBL.g_pos_of_built hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ h, PBL.CV ((p v).T.bs j) (PBL.uY S p F v ε j hj w Y h)`. Introduce `h`. Unfold `PBL.uY`. Use `split_ifs`. Unfold `PBL.uB split_ifs with hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `PBL.cv_smul _ fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient _ _ (D.parOf S v) (p v) (F v ε) j hj w _ ((PBD.isLocPt_toStd_iff _ _ hgpos h 1 j).2 hh) (hF v ε hε) e`. Conclude with `PBL.cv_zero`. Conclude with `PBL.cv_zero`. Use `set c0 : ℝ := 1 / (PBL.ΓS S j * S.sizeAt v w) with hc0`. Establish `hc0n : 0 ≤ c0`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `PBL.gam_pos hB j` as an intermediate fact. Use `PBL.sizeAt_nonneg S v w` as an intermediate fact. Check the signs of the components of the expression. Establish `hG` using `PBL.gram_psd (PBL.CV (S := Fin w.length) ((p v).T.bs j)) (fun x y => (c0 : ℂ) * (p v).form j hj w x y) PBL.cv_zero (fun x y hx hy => PBL.cv_add hx hy) (fun c x hx => PBL.cv_smul c hx) (fun x₁ x₂ y c h₁ h₂ hy => by simp only [PBL.form_slC (p v) j hj w x₁ x₂ y c h₁ h₂ hy]; ring) (f …`. Use `PBL.psd_congr (fun x hx y hy => ?_) hG` and prove the remaining obligations.
-
-Use `show (c0 : ℂ) * (p v).form j hj w (PBL.uY S p F v ε j hj w Y x) (PBL.uY S p F v ε j hj w Y y) = _`. Rewrite using `[PBL.uY_mem S p F v ε j hj w Y x hx, PBL.uY_mem S p F v ε j hj w Y y hy, PBL.gN_uB hB F hF v ε hε j hj w x y]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_psdC (hA : P5.ThmPActualCpt) (hFP : ModuleFormPositivity.FormPosCpt) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
@@ -159,13 +157,13 @@ theorem gN_psdC (hA : P5.ThmPActualCpt) (hFP : ModuleFormPositivity.FormPosCpt) 
   rw [PBL.uY_mem S p F v ε j hj w Y x hx, PBL.uY_mem S p F v ε j hj w Y y hy, PBL.gN_uB hB F hF v ε hε j hj w x y]
 
 /- English proof (translation)
-Take `⟨ι, _, U, hU⟩` from `rr_top_rep (p v) (F v ε) w`. Use `set a : C.LPt → ℝ := fun x => √(PBL.nnS S x) / PBL.bS S x * √(1 / PBL.ΓS S (S.G.r + 1)) with ha`. Establish `hΓ` using `PBL.gam_pos hB (S.G.r + 1)`. Use `psd_of_rep Y (fun k x => ((a x : ℝ) : ℂ) • U k (PBL.stdS S x)) _ fun x y => ?_` and prove the remaining obligations. Rewrite using `[PBL.gramLoc_setC hB, hU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hs : √(1 / PBL.ΓS S (S.G.r + 1)) * √(1 / PBL.ΓS S (S.G.r + 1)) = 1 / PBL.ΓS S (S.G.r + 1)` using `Real.mul_self_sqrt (by positivity)`. Establish `e1 : ((√(PBL.nnS S x) * √(PBL.nnS S y) : ℝ) : ℂ) * ((1 / (PBL.bS S x * PBL.bS S y * PBL.ΓS S (S.G.r + 1)) : ℝ) : ℂ) = ((a y : ℝ) : ℂ) * ((a x : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Use `push_cast`. Rewrite using `[show ((√(1 / PBL.ΓS S (S.G.r + 1)) : ℝ) : ℂ) = ((√(1 / PBL.ΓS S (S.G.r + 1)) : ℝ) : ℂ) from rfl]`. Establish `hs' : ((√(1 / PBL.ΓS S (S.G.r + 1)) : ℝ) : ℂ) * ((√(1 / PBL.ΓS S (S.G.r + 1)) : ℝ) : ℂ) = 1 / (PBL.ΓS S (S.G.r + 1) : ℂ)` using `by exact_mod_cast hs`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, e1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gramLoc_top_psd (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ)
@@ -197,15 +195,15 @@ theorem gramLoc_top_psd (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
 end pos
 
 /- English proof (translation)
-Introduce `Cb`. Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB F hF v ε hε i hi w Y`. Express the relevant statement in the definitionally equal form `i ≤ S.G.r + 1 at hi`. Establish `hB'` using `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, -, -, -, -, hGo, -⟩` from `hB'`. Break down `Nat.lt_or_ge i (S.G.r + 1) with hlt | hge` into its components or cases. Establish `hj : i ≤ S.G.r` using `by omega`. Establish `hCI` using `PBCut.cutInside_of_built hB`. Establish `hw` using `PBD.cutWord_of_adm S hGo hCI w v`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpsd` using `gN_psdC hA hFP hB F hF v ε hε i hj (w.1 v) hw Y`. Establish `hsa` using `PBL.sizeAt_pos S hGo v (w.1 v) ⟨w, rfl⟩`. Use `PBL.psd_congr (fun x _ y _ => ?_) (psd_smul Y _ _ hsa.le hpsd)` and prove the remaining obligations. Use `show (S.sizeAt v (w.1 v) : ℂ) * KB.gN (PBL.setC S p F) v ε i (w.1 v) x y = _`. Unfold `KB.gN`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: ((PBL.setC S p F).sizeAt v (w.1 v) : ℂ) = (S.sizeAt v (w.1 v) : ℂ)` using `rfl`. Rewrite using `[this]`. Establish `hne : (S.sizeAt v (w.1 v) : ℂ) ≠ 0` using `by exact_mod_cast hsa.ne'`. Clear the denominators using the available nonvanishing facts. Establish `hi' : i = S.G.r + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hi'` using the available equality. Conclude with `gramLoc_top_psd hB F v ε (w.1 v) Y`.
+A detailed English derivation is pending.
 -/
 theorem posB_of (hA : P5.ThmPActualCpt) (hFP : ModuleFormPositivity.FormPosCpt) : PosB := by
   intro Cb
@@ -238,7 +236,7 @@ end Formalism.FourierDecayAlt.P.PBASM
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `hA` and use `PBASM.posB_of hA module_form_pos_compact_support`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem positivity_bound : P5.ThmPActualCpt → PBASM.PosB := fun hA => PBASM.posB_of hA module_form_pos_compact_support
 

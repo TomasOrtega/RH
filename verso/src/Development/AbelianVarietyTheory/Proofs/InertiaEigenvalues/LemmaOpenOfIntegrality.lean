@@ -9,7 +9,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `i _ _ _ r ρ hr` and use `⟨LargeLevelLemmas.span_lemma_clause i r (galois_condition_one_of D i r h41 hr), fun π _ _ => ⟨LargeLevelLemmas.eigenspace_lemma_clause i r ρ π, LargeLevelLemmas.relation_lemma_clause i r ρ π⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lemma_open_of_integrality (D : D7) (h41 : Formalism.MainNotions.SumRepresentations.Conclusion41 D) : TypePrimeCongruences.CongruenceModules.SupplierRemainingLemmas D :=
   fun i _ _ _ r ρ hr =>
@@ -17,7 +17,7 @@ theorem lemma_open_of_integrality (D : D7) (h41 : Formalism.MainNotions.SumRepre
       fun π _ _ => ⟨LargeLevelLemmas.eigenspace_lemma_clause i r ρ π, LargeLevelLemmas.relation_lemma_clause i r ρ π⟩⟩
 
 /- English proof (translation)
-Introduce `D hA` and use `TypePrimeCongruences.CongruenceModules.supplier_of_choice_and_lemmas D hA.2.2.2 (lemma_open_of_integrality D hA.2.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supplier_type_prime_all : ∀ D : D7, TypePrimeCongruences.TypePrimeConclusionsOfHypotheses D :=
   fun D hA => TypePrimeCongruences.CongruenceModules.supplier_of_choice_and_lemmas D hA.2.2.2 (lemma_open_of_integrality D hA.2.1)

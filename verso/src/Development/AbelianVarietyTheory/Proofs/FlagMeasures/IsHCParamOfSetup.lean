@@ -15,15 +15,13 @@ abbrev flagSpan (k r : ℕ) (a : Fin (r + 1)) : Submodule ℂ (Fin (2 * r + k + 
   Submodule.span ℂ (Set.range fun b : {b : Fin r // b.val < a.val} => bvec (eI k r b.1))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy i hi`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `b.2` as an intermediate fact. Conclude with `Pi.single_eq_of_ne (fun e => by rw [e] at hi; simp only [eI] at hi; omega) _`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Rewrite using `[← Finset.univ_sum_single y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : a.val ≤ i.val`. Rewrite using `[hy i hi, Pi.single_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `ha` using `a.isLt`. Establish `: (Pi.single i (y i) : Fin (2 * r + k + 1) → ℂ) = y i • bvec (eI k r ⟨i.val, by omega⟩)`. Rewrite using `[bvec, ← Pi.single_smul, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨⟨i.val, by omega⟩, by simpa using hi⟩, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_flagSpan {a : Fin (r + 1)} {y : Fin (2 * r + k + 1) → ℂ} :
     y ∈ flagSpan k r a ↔ ∀ i : Fin (2 * r + k + 1), a.val ≤ i.val → y i = 0 := by
@@ -49,21 +47,19 @@ theorem mem_flagSpan {a : Fin (r + 1)} {y : Fin (2 * r + k + 1) → ℂ} :
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨⟨i.val, by omega⟩, by simpa using hi⟩, rfl⟩)
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Establish `hc` using `((WeylGroupFacts.nset_iff m).1 hm).2`. Establish `ha` using `a.isLt`. Establish `h1 : fvec k r z a - m *ᵥ (fvec k r z a - y) ∈ flagSpan k r a`. Use `mem_flagSpan.2 fun i hi => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (m *ᵥ (fvec k r z a - y)) i = ((1 : Mat k r) *ᵥ (fvec k r z a - y)) i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j.val ≤ r + k ∧ (j.val ≤ i.val ∨ r ≤ i.val)`. Rewrite using `[hc i j hj.1 hj.2, Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : y j = 0` using `mem_flagSpan.1 hy j (by omega)`. Establish `e2 : fvec k r z a j = 0`. Unfold `fvec`. Use `split_ifs with h'`. Conclude with `Pi.single_eq_of_ne (fun e => by rw [e] at hj; simp only [eI] at hj; omega) _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz j (by omega)`. Simplify using `[e1, e2]`. Rewrite using `[Pi.sub_apply, this, Matrix.one_mulVec, Pi.sub_apply, mem_flagSpan.1 hy i hi]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ x ∈ flagSpan k r a, h *ᵥ x = x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨b, rfl⟩ := hx`. Conclude with `(hh.2.1 b.1).1`. Consider the case `zero => exact Matrix.mulVec_zero _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, hx, hy]`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, hx]`. Establish `h3 : h *ᵥ fvec k r z a = fvec k r z a`. Unfold `fvec`. Use `split_ifs with h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hh.2.1 _).1`. Conclude with `hh.2.2`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `h2 _ h1` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_sub, h3]`. Rewrite using `[sub_sub_cancel]`. Conclude with `sub_right_injective this`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_sub {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {s : Mat k r} (hs : s ∈ Sset k r z)
     (a : Fin (r + 1)) {y : Fin (2 * r + k + 1) → ℂ} (hy : y ∈ flagSpan k r a) :
@@ -106,13 +102,13 @@ theorem mulVec_sub {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {s : Mat 
   exact sub_right_injective this
 
 /- English proof (translation)
-Establish `hH : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Establish `hu : IsUnit s.det`. Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Rewrite using `[Matrix.det_mul]`. Conclude with `((uHGroup _ _ hH).2.2 h hh.1).1.mul ((uHGroup _ _ hH).2.2 m hm.1).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lA`. Use `congr 1`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', e⟩` from `mulVec_sub hz ((sGroup k r z hz).2.2 s hs) a hy`. Conclude with `⟨y', hy', by rw [Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, e]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨y', hy', e⟩` from `mulVec_sub hz hs a hy`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, Matrix.mulVec_mulVec, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem lA_left {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {s : Mat k r} (hs : s ∈ Sset k r z) (g : Mat k r)
     (a : Fin (r + 1)) : lA k r z (s * g) a = lA k r z g a := by
@@ -134,9 +130,9 @@ theorem lA_left {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {s : Mat k r
     rw [← e, Matrix.mulVec_mulVec, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : ∀ v : Fin N → ℂ, ((∑ i, Complex.normSq (v i) : ℝ) : ℂ) = star v ⬝ᵥ v` using `fun v => by`. Simplify using `[dotProduct, Complex.normSq_eq_conj_mul_self]`. Establish `h1 : tᴴ * t = 1` using `Matrix.mem_unitaryGroup_iff'.1 ht`. Unfold `eucl`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[e, e, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h1, Matrix.vecMul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eucl_unitary {N : ℕ} {t : Matrix (Fin N) (Fin N) ℂ} (ht : t ∈ Matrix.unitaryGroup (Fin N) ℂ)
     (v : Fin N → ℂ) : eucl (t *ᵥ v) = eucl v := by
@@ -149,7 +145,7 @@ theorem eucl_unitary {N : ℕ} {t : Matrix (Fin N) (Fin N) ℂ} (ht : t ∈ Matr
   rw [e, e, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h1, Matrix.vecMul_one]
 
 /- English proof (translation)
-Establish `h1 : t⁻¹ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ`. Rewrite using `[Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.1 ht)]`. Conclude with `Unitary.star_mem ht`. Unfold `lA`. Simplify using `only [Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, eucl_unitary h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lA_right (z : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) {t : Mat k r}
     (ht : t ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ) (a : Fin (r + 1)) :
@@ -161,15 +157,13 @@ theorem lA_right (z : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) {t : Mat k r}
   simp only [Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, eucl_unitary h1]
 
 /- English proof (translation)
-Use `measurable_of_Iio fun t => ?_` and prove the remaining obligations. Establish `ho : IsOpen {x : Mt k r | ∃ y ∈ flagSpan k r a, eucl (Matrix.of x *ᵥ (fvec k r z a - y)) < t}`. Simplify using `only [Set.ofPred_exists, Set.ofPred_and]`. Use `isOpen_iUnion fun y => IsOpen.inter isOpen_const (isOpen_lt ?_ continuous_const)` and prove the remaining obligations. Simplify using `only [eucl, Matrix.mulVec, dotProduct, Matrix.of_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hi : Measurable fun x : Mt k r => (fun i j => (Matrix.of x)⁻¹ i j : Mt k r)`. Establish `h1 : Continuous fun x : Mt k r => (Matrix.of x).det` using `Continuous.matrix_det continuous_id`. Establish `h2 : Continuous fun x : Mt k r => (Matrix.of x).adjugate` using `Continuous.matrix_adjugate continuous_id`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `h1.measurable.inv.mul (h2.matrix_elem i j).measurable`. Use `hi ho.measurableSet using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_Iio, Set.mem_ofPred_eq, lA]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `(csInf_lt_iff ?_ ?_).trans ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨0, by rintro _ ⟨y, -, rfl⟩; exact Real.sqrt_nonneg _⟩`. Conclude with `Set.nonempty_of_mem (x := eucl ((Matrix.of x)⁻¹ *ᵥ (fvec k r z a - 0))) ⟨0, Submodule.zero_mem _, rfl⟩`. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, h⟩`. Conclude with `⟨y, hy, h⟩`.
-
-Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨_, ⟨y, hy, rfl⟩, h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem measurable_lA (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) :
     Measurable fun x : Mt k r => lA k r z (Matrix.of x) a := by
@@ -195,11 +189,9 @@ theorem measurable_lA (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) :
   · rintro ⟨y, hy, h⟩; exact ⟨_, ⟨y, hy, rfl⟩, h⟩
 
 /- English proof (translation)
-Take `⟨v, hv, hv0, hvw⟩` from `(hK k r P A μ hP hμ hD).1.2.2.2.1`. Establish `hf : v ∈ A.filt P μ 0` using `Submodule.subset_span ⟨_, _, by simp [dist1], by simp [dist1], hv, hvw⟩`. Establish `hn : ‖w‖ = ‖((‖w‖ / ‖v‖ : ℝ) : ℂ) • v‖`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg (by positivity), div_mul_cancel₀ _ (norm_ne_zero_iff.2 hv0)]`. Use `⟨((‖w‖ / ‖v‖ : ℝ) : ℂ) • v, Submodule.smul_mem _ _ hf, ?_, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ofReal_norm, ← ofReal_norm, ← hn]`. Use `hA k r P A μ F κ hP hμ hD hF B hB _ (hΦ.comp (measurable_pi_lambda _ (measurable_lA F.z))) ?_ ?_ w hw _ (Submodule.smul_mem _ _ hv) hn` and prove the remaining obligations. Introduce `g _ s hs`. Conclude with `congrArg Φ (funext (lA_left hF.1 hs g))`. Introduce `g _ t _ ht`.
-
-Conclude with `congrArg Φ (funext (lA_right F.z g ht))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_filt_zero (hA : LowAny) (hK : LowestK) {P : Mat k r} {A : HRep k r} {μ : Fin (2 * r + k + 1) → ℝ}
     {F : Flag k r} {κ : ℝ} (hP : IsCayleyU k r (sgnCN k r) P) (hμ : IsHCParam μ) (hD : A.IsDSAt P μ) (hF : F.Ok κ)
@@ -220,7 +212,7 @@ theorem exists_filt_zero (hA : LowAny) (hK : LowestK) {P : Mat k r} {A : HRep k 
       exact congrArg Φ (funext (lA_right F.z g ht))
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Combine the linear relations using `[hμ.gap hab.ne, hS.2.2.1.le_gap hS.2.1 hab, hS.2.1.1.1 hab]`. Take `⟨m, hm⟩` from `hμ.1 a`. Take `⟨m', hm'⟩` from `hS.2.1.1.2 a`. Conclude with `⟨m + m', by rw [Int.cast_add]; linarith⟩`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isHCParam_of_setup {c Ch bv h q : ℝ} {P : Mat k r} {lam μ : Fin (2 * r + k + 1) → ℝ}
     {R : (Fin (2 * r + k + 1) → ℝ) → HRep k r} (hS : Setup k r c Ch P lam bv h q R) (hμ : InPP lam q μ) :
@@ -232,13 +224,11 @@ theorem isHCParam_of_setup {c Ch bv h q : ℝ} {P : Mat k r} {lam μ : Fin (2 * 
     exact ⟨m + m', by rw [Int.cast_add]; linarith⟩
 
 /- English proof (translation)
-Introduce `hA hC hK c hc`. Take `⟨Ch, hCh, H⟩` from `hC c hc`. Use `⟨Ch, hCh, fun k r P lam bv h q₀ b R hS F κ hF hZ hT q μ B hB w hw => ⟨fun h1 h2 => ?_, fun l hl h1 h2 => ?_⟩⟩` and prove the remaining obligations. Establish `h0 : InPP lam q₀ μ` using `h1.mono (sub_le_self _ (Nat.cast_nonneg _))`. Take `⟨w₀, hw₀, hn, hm⟩` from `exists_filt_zero hA hK hS.1 (isHCParam_of_setup hS h0) (hS.2.2.2.2 μ h0) hF hB hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `(H k r P lam bv h q₀ b R hS F κ hF hZ hT 0 q μ B hB w₀ hw₀).1 h1 (by rwa [zero_add])`. Rewrite `h3` using `[MomAll, hn]`. Use `⟨fun a => ⟨?_, ?_⟩, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `(hm (fun x => x a ^ (2 * q)) (by fun_prop)).trans_le (h3.1 a).1`. Conclude with `(hm (fun x => (x a)⁻¹ ^ (2 * q)) (by fun_prop)).trans_le (h3.1 a).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hm (Set.indicator {x | ∃ a, t * H1 k r (Tz k r F.z) κ b 4 bv ≤ max (x a) (x a)⁻¹} 1) (measurable_one.indicator ?_)).trans_le (h3.2 t ht)` and prove the remaining obligations. Rewrite using `[Set.ofPred_exists]`. Conclude with `MeasurableSet.iUnion fun a => measurableSet_le measurable_const (by fun_prop)`. Establish `h0 : InPP lam q₀ μ` using `h1.mono (sub_le_self _ (Nat.cast_nonneg _))`. Take `⟨w₀, hw₀, hn, hm⟩` from `exists_filt_zero hA hK hS.1 (isHCParam_of_setup hS h0) (hS.2.2.2.2 μ h0) hF hB hw`.
-
-Establish `h3` using `(H k r P lam bv h q₀ b R hS F κ hF hZ hT 0 q μ B hB w₀ hw₀).2 l hl h1 (by rwa [zero_add])`. Rewrite `h3` using `[MomProd, hn]`. Conclude with `(hm (fun x => (∏ a : Fin l, x (Fin.castLE hl a)) ^ (2 * q)) (by fun_prop)).trans_le h3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem momentLow : LowAny → MomentCor → LowestK → MomentLow := by
   intro hA hC hK c hc

@@ -28,7 +28,7 @@ def secSum {X : Scheme.{0}} {N : LB X} {n : ℕ} (F : Fin n → LB.Sec N) : LB.S
     exact Finset.sum_congr rfl fun i _ => (F i).compat a b⟩
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem φ r`. Use `(congrArg (gs r z _) (h _)).trans ((gs_eq r z _ hm _).trans ?_)` and prove the remaining obligations. Conclude with `((congrArg _ (map_sum _ _ _)).trans (map_sum _ _ _)).trans (Finset.sum_congr rfl fun i _ => (gs_eq r z _ hm _).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sval_sum {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {n : ℕ}
     {a : LB.Sec (LB.LinComb L φ ε)} {F : Fin n → LB.Sec (LB.LinComb L φ ε)} (h : ∀ j, a.f j = ∑ i, (F i).f j)
@@ -39,7 +39,7 @@ theorem sval_sum {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K 
     (Finset.sum_congr rfl fun i _ => (gs_eq r z _ hm _).symm)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h j`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem zCast_sum {S : Scheme.{0}} (A : Over S) {L : LB A.left} {T : Over S} {a b : ℤ} (e : a = b) {n : ℕ}
     {t : LB.Sec (LPow A L a T)} {F : Fin n → LB.Sec (LPow A L a T)} (h : ∀ j, t.f j = ∑ i, (F i).f j) (j) :
@@ -51,9 +51,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
 
 /- English proof (translation)
-Use `choose σ σt h1 h2 using hF`. Use `⟨secSum σ, secSum σt, fun Z r zp e1 e2 z J J' hJ hJ' => ?_, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `(sval_sum (zCast_sum _ _ h) zp z hJ).trans ?_` and prove the remaining obligations. Rewrite using `[sval_sum (a := secSum σt) (F := σt) (fun _ => rfl) r z hJ', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h1 i Z r zp e1 e2 z J J' hJ hJ'`.
-
-Rewrite using `[sval_sum (a := secSum σt) (F := σt) (fun _ => rfl) r z hJ', sval_sum (a := secSum σ) (F := σ) (fun _ => rfl) _ z hJ, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h2 i Z r z J J' hJ hJ'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_sum (I : IntData Xo c T io y.1) (M : ℕ) {n : ℕ}
     {t : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((M : ℤ) ^ 2) (Over.mk (xOf y)))}
@@ -69,11 +67,11 @@ theorem reg_sum (I : IntData Xo c T io y.1) (M : ℕ) {n : ℕ}
     exact Finset.sum_congr rfl fun i _ => h2 i Z r z J J' hJ hJ'
 
 /- English proof (translation)
-Set `_` to `io.toAlgebra`. Take `⟨a, hVt⟩` from `hF`. Take `⟨θ, hθ, θK, hθ1, hθ2⟩` from `PullbackSections.thetaTie _ _ _ _ _ _ T io y.1 I`. Take `⟨ttK, FK, hVK, hFK⟩` from `PullbackSections.VtMove.vtMoveSt _ _ _ _ _ y.1.x I.t' I.m1 I.w1 I.rig1 M _ y.1.s _ F hVt (fun u hu => hu) θK hθ1`. Take `⟨σ, hσ⟩` from `PullbackSections.regUnif_of' PullbackSections.thetaNu GlobalTheory.EndPullNu.main.2 GlobalTheory.FiniteLiftNu.finNu _ _ T.V I.G P hP θ hθ M hM I.t' I.m2 I.w2 I.rig2 θK hθ2 ttK FK hVK`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σt, hσt⟩` from `PullbackSections.exists_restrict I.t' _ (PullbackSections.zCast I.t'.G (PullbackSections.natCast_sq M) FK)`. Establish `hg : ∀ {Z : Scheme.{0}} (r : Z ⟶ I.t'.G.left), (r ≫ PullbackSections.gsec I.t'.G) ≫ (snd (𝟙_ (Over (Sp T.Fr))) I.t'.G).left = r` using `fun r => by`. Rewrite using `[Category.assoc, PullbackSections.gsec_snd, Category.comp_id]`. Use `⟨σ, σt, fun Z r zp h1 h2 z J J' hJ hJ' => ?_, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hσt Z r z J' hJ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hFK Z r zp (r ≫ PullbackSections.gsec I.t'.G) h1 h2 (hg r) z J J' hJ hJ'`. Rewrite using `[hσt Z r z J' hJ']`. Conclude with `hσ Z r (r ≫ PullbackSections.gsec I.t'.G) (hg r) z J J' hJ hJ'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_of_isTransl (I : IntData Xo c T io y.1) (M : ℕ)
     (F : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((M : ℤ) ^ 2) (Over.mk (xOf y))))
@@ -97,7 +95,7 @@ theorem reg_of_isTransl (I : IntData Xo c T io y.1) (M : ℕ)
     exact hσ Z r (r ≫ PullbackSections.gsec I.t'.G) (hg r) z J J' hJ hJ'
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y I M t ⟨P, hP⟩ hM ⟨n, F, hF, h⟩`. Conclude with `reg_sum I M h fun i => reg_of_isTransl I M (F i) P hP hM (hF i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_of_isTranslSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (I : IntData Xo c T io y.1) (M : ℕ) (t : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((M : ℤ) ^ 2) (Over.mk (xOf y)))), (∃ U : PELUnif (IsLocalRing.maximalIdeal T.V) I.G, U.TorsionIso) → IsUnit (M : T.V) → letI := io.toAlgebra; IsTranslSum M y.1.s t → Reg I M t := by
   intro E _ _ _ H Dw l Xo c T io y I M t ⟨P, hP⟩ hM ⟨n, F, hF, h⟩

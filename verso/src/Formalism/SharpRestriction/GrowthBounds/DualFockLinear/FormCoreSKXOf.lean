@@ -25,25 +25,25 @@ def FormCoreGX : Prop :=
         B P Q ∈ Set.range (algebraMap O K))
 
 /- English proof (translation)
-Introduce `p _ O K _ _ _ _ _ _ _ hp r n hn ν hν`. Take `⟨N, hNpos, hNeq⟩` from `hN r n hn ν`. Establish `hNK : (N : K) ≠ 0` using `by exact_mod_cast hNpos.ne'`. Establish `hfN : fockR (hw K hn ν) (hw K hn ν) = (N : K)` using `hNeq K`. Establish `hadd : ∀ f f' g : MvPolynomial (Fin r × Fin n) K, fockR (f + f') g = fockR f g + fockR f' g` using `fun f f' g => (hB _ K f f' g 0).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (a : K) (f g : MvPolynomial (Fin r × Fin n) K), fockR (a • f) g = a * fockR f g` using `fun a f g => (hB _ K f f g a).2.1`. Establish `hsymm : ∀ f g : MvPolynomial (Fin r × Fin n) K, fockR f g = fockR g f` using `fun f g => (hB _ K f f g 0).2.2`. Set `B : MvPolynomial (Fin r × Fin n) K →ₗ[K] MvPolynomial (Fin r × Fin n) K →ₗ[K] K` to `LinearMap.mk₂ K (fun P Q => (N : K)⁻¹ * fockR P Q) (fun f f' g => by rw [hadd, mul_add]) (fun a f g => by rw [hsmul, smul_eq_mul]; ring) (fun f g g' => by rw [hsymm f, hadd, hsymm g, hsymm g', mul_add]) (fun a f g => by rw [hsymm f, hsmul, hsymm g, smul_eq_mul]; ring)`. Establish `hBapp : ∀ P Q, B P Q = (N : K)⁻¹ * fockR P Q` using `fun P Q => rfl`. Take `⟨l, hl⟩ : ∃ l, LBound r ν l` from `⟨Finset.univ.sup ν, Or.inl fun t => Finset.le_sup (Finset.mem_univ t)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : weyl O r n hn ν ≤ dualWeyl O r n ν` using `(Top.sandwichLocal p r n hn ν hν l hl O hp).2`. Establish `hrange : ∀ P Q : MvPolynomial (Fin r × Fin n) K, (∃ z : O, fockR P Q = algebraMap O K z * fockR (hw K hn ν) (hw K hn ν)) → B P Q ∈ Set.range (algebraMap O K)`. Introduce and unpack `P Q ⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hBapp, hz, hfN]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨B, ⟨(N : K)⁻¹, inv_ne_zero hNK, hBapp⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g P Q`. Rewrite using `[hBapp, hBapp, hR K r n g P Q]`. Introduce `Q hQ h0`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hG K r n hn ν hν Q hQ fun P hP => ?_` and prove the remaining obligations. Use `h0 P hP` as an intermediate fact. Rewrite `this` using `[hBapp]`. Conclude with `(mul_eq_zero.mp this).resolve_left (inv_ne_zero hNK)`. Introduce `Q hQ hint`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hD O K r n hn ν hν Q hQ fun P hP => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hint P (Submodule.map_mono hle hP)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hfN, hz, hBapp]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l' hl' Q hQ P hP`. Take `⟨y, hy, rfl⟩` from `hQ`. Establish `hs` using `(Top.sandwichLocal p r n hn ν hν l' hl' O hp).1 y hy`. Establish `heq : ((p : K) ^ sExp p r l') • toK O K y = toK O K (((p : O) ^ sExp p r l') • y)`. Rewrite using `[LinearMap.map_smul, ← algebraMap_smul K ((p : O) ^ sExp p r l') (toK O K y), map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Apply `hrange` to reduce the goal to its premises. Rewrite using `[hsymm]`. Conclude with `hW O K r n hn ν hν _ ⟨_, hs, rfl⟩ P hP`. Introduce `h0 Q hQ P hP`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `hQ`. Take `⟨x, hx, rfl⟩` from `hP`. Establish `hhw : hw K hn ν = 1`. Simplify using `[hw, h0]`. Establish `hN1 : (N : K) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hfN, hhw]`. Simplify using `[fockR, MvPolynomial.support_one]`. Use `⟨fockR x y, ?_⟩` and prove the remaining obligations. Rewrite using `[hBapp, hN1, inv_one, one_mul]`. Conclude with `(Top.fockRMap _ O K (algebraMap O K) x y).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formCoreGX_of (hB : FockRBilin) (hR : FockRRowAct) (hN : HWNorm) (hW : WeylPair) (hD : DualWeylIn)
     (hG : NondegK) : FormCoreGX := by
@@ -125,13 +125,13 @@ def FormCoreSKX : Prop :=
         B P (((p : Kf) ^ expN p m lam) • Q) ∈ Set.range (algebraMap O Kf))
 
 /- English proof (translation)
-Introduce `hu`. Use `letI : Algebra W O := j.toAlgebra`. Use `haveI : Module.Finite W O := hS.finite`. Establish `hfg : (⊤ : Submodule W O).FG` using `Module.Finite.fg_top`. Establish `hpm : Ideal.span {((p : ℕ) : W)} ≤ IsLocalRing.maximalIdeal W`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hS.p_unif.not_isUnit`. Establish `hjac : Ideal.span {((p : ℕ) : W)} ≤ (⊥ : Ideal W).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `hpm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : (⊤ : Submodule W O) ≤ Ideal.span {((p : ℕ) : W)} • ⊤`. Introduce `x _`. Take `⟨u, hu'⟩` from `hu`. Establish `hx : x = ((p : ℕ) : W) • ((↑u⁻¹ : O) * x)`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_natCast, ← hu', ← mul_assoc, Units.mul_inv, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg hle hjac`. Establish `h1 : (1 : O) ∈ (⊥ : Submodule W O)` using `hbot ▸ Submodule.mem_top`. Conclude with `one_ne_zero ((Submodule.mem_bot W).mp h1)`.
+A detailed English derivation is pending.
 -/
 private theorem not_isUnit_p_of_hidaSetting {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -159,13 +159,11 @@ private theorem not_isUnit_p_of_hidaSetting {p n' : ℕ} {W Qq O Kf : Type} [Com
   exact one_ne_zero ((Submodule.mem_bot W).mp h1)
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m lam hlam`. Use `haveI : Fact p.Prime := ⟨hS.prime⟩`. Use `haveI := hS.frac_O`. Use `haveI := hS.frac_alt`. Use `haveI : CharZero W := charZero_of_irreducible_natCast hS.prime hS.p_unif`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `haveI : CharZero Qq := charZero_of_injective_algebraMap (IsFractionRing.injective W Qq)`. Use `haveI : CharZero Kf := charZero_of_injective_ringHom ι.injective`. Take `⟨B, hc, hrow, hnd, hint, hbd, hzero⟩` from `h p O Kf (not_isUnit_p_of_hidaSetting hS) (m + 1) (m + 1) le_rfl (nuOf lam) (nuOf_antitone hlam)`. Use `⟨B, hc, hrow, hnd, hint, ?_⟩` and prove the remaining obligations. Introduce `Q hQ P hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : ellWt lam = 0`. Establish `hE : expN p m lam = 0` using `by simp [expN, h0]`. Rewrite using `[hE, pow_zero, one_smul]`. Conclude with `hzero (fun t => by have := nuOf_le_ellWt hlam t; omega) Q hQ P hP`. Establish `hE : expN p m lam = sExp p (m + 1) (ellWt lam)`.
-
-Simplify using `only [expN, if_neg h0, sExp, N0, deF]`. Rewrite using `[hE]`. Conclude with `hbd _ (Or.inl (nuOf_le_ellWt hlam)) Q hQ P hP`.
+A detailed English derivation is pending.
 -/
 theorem formCoreSKX_of (h : FormCoreGX) : FormCoreSKX := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m lam hlam
@@ -189,7 +187,7 @@ theorem formCoreSKX_of (h : FormCoreGX) : FormCoreSKX := by
     exact hbd _ (Or.inl (nuOf_le_ellWt hlam)) Q hQ P hP
 
 /- English proof (translation)
-Conclude with `formCoreSKX_of (formCoreGX_of Top.fockRBilin Top.fockRRowAct Top.hWNorm Top.weylPair Top.dualWeylIn Top.nondegK)`.
+A detailed English derivation is pending.
 -/
 theorem formCoreSKX : FormCoreSKX := by
   exact formCoreSKX_of (formCoreGX_of Top.fockRBilin Top.fockRRowAct Top.hWNorm Top.weylPair Top.dualWeylIn Top.nondegK)

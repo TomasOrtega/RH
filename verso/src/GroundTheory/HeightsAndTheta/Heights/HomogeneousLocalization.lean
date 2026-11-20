@@ -21,7 +21,7 @@ namespace ProjScheme
 variable {A : Type u} [CommRing A] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `(self A N).ι_point x`.
+A detailed English derivation is pending.
 -/
 lemma point_self {ρ : A →+* ℂ} (x : (self A N).complexPoints ρ) :
     (self A N).point x = projPoint ρ x.1 :=
@@ -31,7 +31,7 @@ def selfPoint (ρ : A →+* ℂ) (v : CP N) : (self A N).complexPoints ρ :=
   ⟨v, by rw [complexPoints_self]; trivial⟩
 
 /- English proof (translation)
-Establish `h` using `CP.mk_mem_chartDomain (CP.chartIndex v) v.rep v.rep_nonzero`. Rewrite `h` using `[Projectivization.mk_rep]`. Conclude with `h.mp (CP.mem_chartDomain_chartIndex v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rep_chartIndex_ne_zero (v : CP N) : v.rep (CP.chartIndex v) ≠ 0 := by
   have h := CP.mk_mem_chartDomain (CP.chartIndex v) v.rep v.rep_nonzero
@@ -39,9 +39,9 @@ lemma rep_chartIndex_ne_zero (v : CP N) : v.rep (CP.chartIndex v) ≠ 0 := by
   exact h.mp (CP.mem_chartDomain_chartIndex v)
 
 /- English proof (translation)
-Rewrite using `[point_self]`. Express the relevant statement in the definitionally equal form `(MvPolynomial.X j : MvPolynomial (Fin (N + 1)) A) ∉ (projPoint ρ x.1).asHomogeneousIdeal`. Introduce `h`. Use `(isOver_projPoint ρ x.1 1 (MvPolynomial.X j) (ProjSpace.X_mem j)).1 h` as an intermediate fact. Simplify using `[evalAt] at this`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hj this`.
+A detailed English derivation is pending.
 -/
 lemma point_mem_stdOpen {ρ : A →+* ℂ} (x : (self A N).complexPoints ρ) {j : Fin (N + 1)}
     (hj : x.1.rep j ≠ 0) : (self A N).point x ∈ ProjSpace.stdOpen A N j := by
@@ -58,7 +58,7 @@ def twistN (n : ℕ) : (self A N).X.Modules :=
   twistingSheaf (ProjSpace.grading A N) (n : ℤ)
 
 /- English proof (translation)
-The claim follows from `ProjSpace.isInvertibleSheaf_twistingSheaf _`.
+A detailed English derivation is pending.
 -/
 theorem isInvertibleSheaf_twistN (n : ℕ) : IsInvertibleSheaf (twistN A N n) :=
   ProjSpace.isInvertibleSheaf_twistingSheaf _
@@ -70,7 +70,7 @@ def stdFrame (j : Fin (N + 1)) (n : ℕ) :
   ProjTwist.upow (ProjSpace.grading A N) (ProjSpace.X_mem j) (n : ℤ)
 
 /- English proof (translation)
-The claim follows from `ProjTwist.isBasisOn_upow (ProjSpace.grading A N) (ProjSpace.X_mem j) (n : ℤ)`.
+A detailed English derivation is pending.
 -/
 theorem isBasisOn_frame (j : Fin (N + 1)) (n : ℕ) :
     IsBasisOn ((preMod (self A N).X).obj (twistN A N n)) (ProjSpace.stdOpen A N j) (stdFrame A j n) :=
@@ -86,7 +86,7 @@ def fsFibreNorm (n : ℕ) (ρ : A →+* ℂ) (x : (self A N).complexPoints ρ)
   ‖fsFrameCoord n ρ x s‖ * ‖x.1.rep (CP.chartIndex x.1)‖ ^ n / norm2 x.1.rep ^ n
 
 /- English proof (translation)
-Rewrite using `[fsFibreNorm, fsFibreNorm, LinearEquiv.map_smul, smul_eq_mul, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsFibreNorm_smul (n : ℕ) (ρ : A →+* ℂ) (x : (self A N).complexPoints ρ) (c : ℂ)
     (s : (self A N).Fibre (twistN A N n) x) :
@@ -95,7 +95,7 @@ theorem fsFibreNorm_smul (n : ℕ) (ρ : A →+* ℂ) (x : (self A N).complexPoi
   ring
 
 /- English proof (translation)
-Establish `h1 : 0 < ‖fsFrameCoord n ρ x s‖` using `norm_pos_iff.mpr fun h => hs ((fsFrameCoord n ρ x).map_eq_zero_iff.mp h)`. Establish `h2` using `norm_pos_iff.mpr (rep_chartIndex_ne_zero x.1)`. Establish `h3` using `euclideanNorm_pos x.1.rep_nonzero`. Unfold `fsFibreNorm`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem fsFibreNorm_pos (n : ℕ) (ρ : A →+* ℂ) (x : (self A N).complexPoints ρ)
     (s : (self A N).Fibre (twistN A N n) x) (hs : s ≠ 0) : 0 < fsFibreNorm n ρ x s := by
@@ -111,7 +111,7 @@ def polyFun (P : MvPolynomial (Fin (N + 1)) A) (U : Opens (ProjectiveSpectrum.to
   fun _ => Localization.mk P 1
 
 /- English proof (translation)
-Introduce `x` and use `⟨U, x.2, 𝟙 _, 0, n, by simp, P, 1, hP, SetLike.GradedOne.one_mem, fun y h => y.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h), fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma isLocallyFraction_polyFun {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A}
     (hP : P ∈ ProjSpace.grading A N n) (U : Opens (ProjectiveSpectrum.top (ProjSpace.grading A N))) :
@@ -124,16 +124,16 @@ def polySection {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ ProjSpa
   ProjTwist.mkSection (polyFun P ⊤) (isLocallyFraction_polyFun hP ⊤)
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_monomial 1 ha)`.
+A detailed English derivation is pending.
 -/
 lemma monomial_mem_grading (a : Fin (N + 1) →₀ ℕ) {n : ℕ} (ha : a.degree = n) :
     MvPolynomial.monomial a (1 : A) ∈ ProjSpace.grading A N n :=
   (MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_monomial 1 ha)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (Localization.mk P 1 : ProjTwist.Loc (ProjSpace.grading A N) x) = 0` using `congrArg (fun s : (self A N).H0 (twistN A N n) => (show Γ(twistingSheaf (ProjSpace.grading A N) (n : ℤ), ⊤) from s).1 ⟨x, trivial⟩) h`. Rewrite `h1` using `[Localization.mk_eq_mk', IsLocalization.mk'_eq_zero_iff]`. Take `⟨⟨c, hc⟩, hcP⟩` from `h1`. Establish `hc0 : c ≠ 0` using `fun h0 => hc (h0 ▸ Ideal.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hP0 ((mul_eq_zero.mp hcP).resolve_left hc0)`.
+A detailed English derivation is pending.
 -/
 theorem polySection_ne_zero [IsDomain A] {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A}
     (hP : P ∈ ProjSpace.grading A N n) (hP0 : P ≠ 0)
@@ -252,7 +252,7 @@ variable {K}
 omit [NumberField K] in
 
 /- English proof (translation)
-Simplify using `only [l2Inner, fibreInner, fubiniStudyL2Inner, fsFibreInner, hm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem l2Inner_eq_fubiniStudyL2Inner {n : ℕ} (m : (self (𝓞 K) N).ContinuousMetric (twistN (𝓞 K) N n))
     (hm : ∀ ρ x s, m.norm ρ x s = fsFibreNorm n ρ x s) (μ : Measure (CP N)) (σ : K →+* ℂ) (t u) :
@@ -263,7 +263,7 @@ theorem l2Inner_eq_fubiniStudyL2Inner {n : ℕ} (m : (self (𝓞 K) N).Continuou
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `l2Inner_eq_fubiniStudyL2Inner _ (fun _ _ _ => rfl) μ σ t u`.
+A detailed English derivation is pending.
 -/
 theorem l2Inner_fubiniStudyBundle (hf : FSContinuousFrame.Statement.{0}) (hc : FSNormConj.Statement.{0})
     (n : ℕ) (μ : Measure (CP N)) (σ : K →+* ℂ) (t u) :
@@ -317,7 +317,7 @@ def pointQ : (self (𝓞 ℚ) 1).complexPoints (intEmb (Rat.castHom ℂ)) :=
   selfPoint _ (basePoint 1)
 
 /- English proof (translation)
-Use `point_mem_stdOpen pointQ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Projectivization.exists_smul_eq_mk_rep ℂ (Pi.single (0 : Fin 2) (1 : ℂ) : Fin 2 → ℂ) (by simp [funext_iff, Pi.single_apply])`. Express the relevant statement in the definitionally equal form `(basePoint 1).rep 0 ≠ 0`. Rewrite using `[basePoint, ← ha]`. Simplify using `[Units.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pointQ_mem : (self (𝓞 ℚ) 1).point pointQ ∈ ProjSpace.stdOpen (𝓞 ℚ) 1 0 := by
   refine point_mem_stdOpen pointQ ?_
@@ -328,25 +328,25 @@ lemma pointQ_mem : (self (𝓞 ℚ) 1).point pointQ ∈ ProjSpace.stdOpen (𝓞 
   simp [Units.smul_def]
 
 /- English proof (translation)
-The claim follows from `isInvertibleSheaf_twistN 1`.
+A detailed English derivation is pending.
 -/
 example : IsInvertibleSheaf (twistN (𝓞 ℚ) 1 1) := isInvertibleSheaf_twistN 1
 
 /- English proof (translation)
-The claim follows from `fsFibreNorm_pos _ _ _ _ (value_ne_zero _ (isBasisOn_frame 0 1))`.
+A detailed English derivation is pending.
 -/
 example : 0 < fsFibreNorm 1 _ pointQ
     ((self (𝓞 ℚ) 1).sectionValue pointQ pointQ_mem (stdFrame (𝓞 ℚ) 0 1)) :=
   fsFibreNorm_pos _ _ _ _ (value_ne_zero _ (isBasisOn_frame 0 1))
 
 /- English proof (translation)
-The claim follows from `polySection_ne_zero _ (MvPolynomial.X_ne_zero 0) (projPoint (intEmb (Rat.castHom ℂ)) (basePoint 1))`.
+A detailed English derivation is pending.
 -/
 example : polySection (N := 1) (ProjSpace.X_mem (A := 𝓞 ℚ) 0) ≠ 0 :=
   polySection_ne_zero _ (MvPolynomial.X_ne_zero 0) (projPoint (intEmb (Rat.castHom ℂ)) (basePoint 1))
 
 /- English proof (translation)
-The claim follows from `isBasisOn_frame 0 1`.
+A detailed English derivation is pending.
 -/
 example : IsBasisOn ((preMod (self (𝓞 ℚ) 1).X).obj (twistN (𝓞 ℚ) 1 1)) (ProjSpace.stdOpen (𝓞 ℚ) 1 0)
     (stdFrame (𝓞 ℚ) 0 1) :=
@@ -358,7 +358,7 @@ Simplify using the standard rewrite rules.
 example : (Finsupp.single (0 : Fin 2) 1).degree = 1 := by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_univ, Set.univ_nonempty⟩`.
+Supply the required witnesses or components.
 -/
 example : IsOpen (Set.univ : Set (CP 1)) ∧ (Set.univ : Set (CP 1)).Nonempty :=
   ⟨isOpen_univ, Set.univ_nonempty⟩

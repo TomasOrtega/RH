@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Rewrite using `[Schur.hsymm_eq_sum_finsuppAntidiag]`. Use `IsHomogeneous.sum _ _ _ fun l hl => ?_` and prove the remaining obligations. Establish `hsum : ∑ i, l i = n` using `(mem_finsuppAntidiag.mp hl).1`. Rewrite using `[← hsum]`. Conclude with `IsHomogeneous.prod _ _ _ fun i _ => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (isHomogeneous_X ℚ i).pow (l i)`.
+A detailed English derivation is pending.
 -/
 theorem hsymm_isHomogeneous (σ : Type*) [Fintype σ] [DecidableEq σ] (n : ℕ) :
     (hsymm σ ℚ n).IsHomogeneous n := by
@@ -23,15 +23,13 @@ theorem hsymm_isHomogeneous (σ : Type*) [Fintype σ] [DecidableEq σ] (n : ℕ)
     simpa using (isHomogeneous_X ℚ i).pow (l i)
 
 /- English proof (translation)
-Introduce `σ _ _ r lam`. Unfold `schur`. Rewrite using `[Matrix.det_apply]`. Use `IsHomogeneous.sum _ _ _ fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (∏ i, (Matrix.of fun i j : Fin r => completeSymmetric σ ((lam i : ℤ) - ((i : ℕ) : ℤ) + ((j : ℕ) : ℤ))) (π i) i) ∈ homogeneousSubmodule σ ℚ (∑ i, lam i)`. Rewrite using `[mem_homogeneousSubmodule]`. Distinguish the cases in `h : ∀ i, 0 ≤ (lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)`. Establish `hdeg : ∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)).toNat = ∑ i, lam i`. Establish `h1 : ((∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)).toNat : ℕ) : ℤ) = ∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (h i)`. Establish `h2 : ∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)) = ∑ i, (lam i : ℤ)`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, Equiv.sum_comp π (fun i => (lam i : ℤ)), Equiv.sum_comp π (fun i => ((i : ℕ) : ℤ))]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans h2` after adjusting the coercions. Rewrite using `[← hdeg]`. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, completeSymmetric, if_pos (h i)]`. Conclude with `hsymm_isHomogeneous σ _`.
-
-Use `push Not at h`. Take `⟨i, hi⟩` from `h`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [completeSymmetric, not_le.mpr hi])]`. Conclude with `isHomogeneous_zero _ _ _`. Conclude with `zsmul_mem hmem _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SchSchurHomogeneous.proof : SchSchurHomogeneous.Statement := by
   intro σ _ _ r lam

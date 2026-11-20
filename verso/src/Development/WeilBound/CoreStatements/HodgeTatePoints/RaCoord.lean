@@ -17,7 +17,7 @@ section Count
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Establish `h : (fun x => (B' * V.map (algebraMap R C)) x j) = ∑ α, V α j • (fun x => B' x α)`. Use extensionality with `x`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun α _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨α, rfl⟩)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma monomialCount_col_mem_span {X : Type} [Fintype X] (B' : Matrix X X C) (V : Matrix X X R)
     (j : X) :
@@ -30,9 +30,9 @@ lemma monomialCount_col_mem_span {X : Type} [Fintype X] (B' : Matrix X X C) (V :
   exact Submodule.sum_mem _ fun α _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨α, rfl⟩)
 
 /- English proof (translation)
-Use `choose c hc using fun α => (Submodule.mem_span_range_iff_exists_fun R).1 (h α)`. Use `⟨fun i α => c α i, ?_⟩` and prove the remaining obligations. Use extensionality with `x α`. Use `congrFun (hc α) x` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Algebra.smul_def] at this`. Rewrite using `[← this, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma monomialCount_exists_factor {X : Type} [Fintype X] (B B' : Matrix X X C)
     (h : ∀ α, (fun x => B' x α) ∈ Submodule.span R (Set.range fun j x => B x j)) :
@@ -47,11 +47,9 @@ lemma monomialCount_exists_factor {X : Type} [Fintype X] (B B' : Matrix X X C)
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hpow : ∀ j k, f j ^ k ∈ A.carrier`. Introduce `j k`. Proceed by induction on `k with`. Consider the case `zero => simpa using A.one_mem`. Consider the case `succ k ih => rw [pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `A.mul_mem _ _ ih (hf j)`. Establish `: (fun y => ∏ j, f j y ^ n j) = ∏ j, f j ^ n j`. Use extensionality with `y`. Simplify using `[Finset.prod_apply]`. Rewrite using `[this]`.
-
-Conclude with `Finset.prod_induction _ (· ∈ A.carrier) (fun a b ha hb => A.mul_mem a b ha hb) A.one_mem (fun j _ => hpow j (n j))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma monomialCount_prod_pow_mem {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (A : HopfOrder (C := C) R N) {ι : Type} [Fintype ι] (f : ι → N → C)
@@ -70,11 +68,11 @@ lemma monomialCount_prod_pow_mem {N : Type} [AddCommGroup N] [Fintype N] [Decida
 end Count
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Simplify using the standard rewrite rules. Establish `hpos : 0 < Fintype.card ι` using `Fintype.card_pos`. Establish `h2 : p * (p - 1) / 2 * 2 = p * (p - 1)` using `Nat.div_mul_cancel (Nat.even_mul_pred_self p).two_dvd`. Establish `h3 : p ^ (Fintype.card ι - 1) * p = p ^ Fintype.card ι`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos]`. Establish `hcard : Fintype.card (ι → ZMod p) = p ^ Fintype.card ι`. Simplify using `[ZMod.card]`. Rewrite using `[Finset.prod_pow, ← pow_mul, hcard]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma monomialCount_exponent (p : ℕ) [Fact p.Prime] {ι : Type} [Fintype ι] [DecidableEq ι]
     (a : ι → NNReal) :
@@ -97,27 +95,25 @@ lemma monomialCount_exponent (p : ℕ) [Fact p.Prime] {ι : Type} [Fintype ι] [
     _ = p ^ (Fintype.card ι - 1) * (p * (p - 1) / 2) * 2 := by ring
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp1 ι _ _ AA cA cN hA hN`. Take `⟨Λ, ε, hΛ, hspan, hε, hlen⟩` from `hsmith p C v R hv hp1 ι AA`. Establish `hcA : cA = ∏ j, v (algebraMap R C (ε j))` using `hasLen_unique hv hA hlen`. Establish `hl` using `fun j => lifts p C v R hv hp1 ι AA (Λ j) (ε j) (by rw [hspan]; exact Submodule.subset_span ⟨j, rfl⟩) (hε j)`. Use `choose u hu_mem hu_int hu_cong using hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B' : Matrix (ι → ZMod p) (ι → ZMod p) C` to `Matrix.of fun (x α : ι → ZMod p) => ∏ j, (algebraMap R C (ε j) * u j x) ^ (α j).val`. Establish `hB'v : v B'.det = ∏ j, v (algebraMap R C (ε j)) ^ (p ^ (Fintype.card ι - 1) * (p * (p - 1) / 2))` using `(u5 p C v R hv hp1 ι Λ u hΛ hu_int hu_cong).2 fun j => algebraMap R C (ε j)`. Establish `hsq : cA ^ (Fintype.card (ι → ZMod p) * (p - 1)) = v B'.det ^ 2`. Rewrite using `[hcA, hB'v]`. Conclude with `monomialCount_exponent p _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hε0 : ∀ j, v (algebraMap R C (ε j)) ≠ 0`. Introduce `j h0`. Establish `hpp : p - 1 ≠ 0` using `by have := (Fact.out : p.Prime).two_le; omega`. Use `hε j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, zero_pow hpp]`. Conclude with `hp0 (le_antisymm this zero_le)`. Establish `hB'0 : v B'.det ≠ 0`. Rewrite using `[hB'v]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => pow_ne_zero _ (hε0 j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ α : ι → ZMod p, (fun x => B' x α) ∈ AA.carrier`. Introduce `α`. Conclude with `monomialCount_prod_pow_mem AA (fun j y => algebraMap R C (ε j) * u j y) (fun j => (Submodule.mem_inf.1 (hu_mem j)).1) (fun j => (α j).val)`. Take `⟨B, hAA, hBc⟩` from `hN`. Take `⟨W, hW⟩` from `monomialCount_exists_factor (R := R) B B' (fun α => hAA ▸ hmem α)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : v B'.det = cN * v (algebraMap R C W.det)`. Rewrite using `[hW, Matrix.det_mul, map_mul, RingHom.map_det, hBc]`. Both sides reduce to the same expression. Establish `hw1 : v (algebraMap R C W.det) ≤ 1` using `hv.map_le_one W.det`. Establish `hle : v B'.det ≤ cN`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdet]`. Conclude with `mul_le_of_le_one_right zero_le hw1`. Use `⟨by rw [hsq]; exact pow_le_pow_left₀ zero_le hle 2, fun heq => ?_⟩` and prove the remaining obligations. Establish `hBeq : v B'.det = cN`. Rewrite `heq` using `[hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_left_inj₀ zero_le zero_le two_ne_zero).1 heq`. Establish `hcN0 : cN ≠ 0` using `hBeq ▸ hB'0`. Establish `hw : v (algebraMap R C W.det) = 1`. Establish `h : cN * v (algebraMap R C W.det) = cN * 1` using `by rw [← hdet, hBeq, mul_one]`. Conclude with `mul_left_cancel₀ hcN0 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hWu : IsUnit W.det` using `hv.isUnit_of_one (isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at hw) hw`. Establish `hBeq' : B' * (W⁻¹).map (algebraMap R C) = B`. Rewrite using `[hW, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hWu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Use `⟨fun j y => algebraMap R C (ε j) * u j y, hu_mem, ?_⟩` and prove the remaining obligations. Establish `hspan' : Submodule.span R (Set.range fun (α : ι → ZMod p) (y : ι → ZMod p) => ∏ j, (algebraMap R C (ε j) * u j y) ^ (α j).val) = Submodule.span R (Set.range fun α x => B' x α)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hspan']`. Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[hAA]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
-
-Use `monomialCount_col_mem_span (R := R) B' (W⁻¹) j` as an intermediate fact. Rewrite `this` using `[hBeq']`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨α, rfl⟩`. Conclude with `hmem α`.
+A detailed English derivation is pending.
 -/
 theorem cnt_coord_of (hsmith : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), ∃ (Λ : Matrix ι ι R) (ε : ι → R), IsUnit Λ.det ∧ afLat p AA.carrier = Submodule.span R (Set.range fun j => ε j • Λ j) ∧ (∀ j, v (p : C) ≤ v (algebraMap R C (ε j)) ^ (p - 1)) ∧ HasLen v R (AFQuot p AA.carrier) (∏ j, v (algebraMap R C (ε j)))) :
     ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), ∀ cA cN, HasLen v R (AFQuot p AA.carrier) cA → HasColen R v AA.carrier cN → cA ^ (Fintype.card (ι → ZMod p) * (p - 1)) ≤ cN ^ 2 ∧ (cA ^ (Fintype.card (ι → ZMod p) * (p - 1)) = cN ^ 2 → ∃ x : ι → (ι → ZMod p) → C, (∀ j, x j ∈ afFun p AA.carrier) ∧ AA.carrier = Submodule.span R (Set.range fun (α : ι → ZMod p) (y : ι → ZMod p) => ∏ j, x j y ^ (α j).val)) := by

@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 def anUvec (e' : Fin g ≃ Lt1 Dw) : Lt1 Dw → Fin g → ℂ := fun ℓ j => if j = e'.symm ℓ then 1 else 0
 
 /- English proof (translation)
-The claim follows from `anX_zero F i P hP y hy m trunc m := anX_trunc F i P hP y hy m law m := anX_law_chart F i P hP y hy hPair m act m a := anX_act F i P hP y hy m a tan ℓ := anX_tan F i P hP y hy (e'.symm ℓ) (y.u ℓ.1 ℓ.2) (hder ℓ) basis v := basis_single e' v`.
+A detailed English derivation is pending.
 -/
 theorem anX_isChart [StarRing (𝓞 E)] (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ))
     (hP : IsPeriod (F.Di i) ty P) (y : FrPt Xo c ℂ) (hy : y.x = F.u i P) (e' : Fin g ≃ Lt1 Dw)

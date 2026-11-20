@@ -7,7 +7,7 @@ open Finset
 namespace Formalism.NG
 
 /- English proof (translation)
-Establish `hz' : z.natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr hz`. Rewrite using `[show padicValInt l z = padicValNat l z.natAbs from rfl, padicValNat_eq_emultiplicity hz', ← Int.natCast_emultiplicity, Int.natCast_natAbs]`. Break down `abs_choice z with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, emultiplicity_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma padicValInt_eq_emultiplicity (l : ℕ) [hl : Fact l.Prime] {z : ℤ} (hz : z ≠ 0) :
     (padicValInt l z : ℕ∞) = emultiplicity (l : ℤ) z := by
@@ -19,19 +19,19 @@ private lemma padicValInt_eq_emultiplicity (l : ℕ) [hl : Fact l.Prime] {z : �
   · rw [h, emultiplicity_neg]
 
 /- English proof (translation)
-Establish `hlp` using `hl.out`. Establish `hE1 : emultiplicity (l : ℤ) (x - 1) = s₀` using `emultiplicity_eq_coe.mpr ⟨hx1, hx2⟩`. Establish `hdvd : (l : ℤ) ∣ x - 1` using `(dvd_pow_self (l : ℤ) (by omega)).trans hx1`. Establish `hlx : ¬ (l : ℤ) ∣ x`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (l : ℤ) ∣ 1` using `by have := dvd_sub h hdvd; simpa using this`. Conclude with `(Nat.prime_iff_prime_int.mp hlp).not_dvd_one h1`. Establish `hE : emultiplicity (l : ℤ) (x ^ n - 1) = (s₀ : ℕ∞) + emultiplicity l n`. Break down `hlp.eq_two_or_odd' with h2 | hodd` into its components or cases. Substitute `h2` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h4 : (4 : ℤ) ∣ x - 1`. Use `(pow_dvd_pow ((2 : ℕ) : ℤ) (hs2 rfl)).trans hx1` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`. Move the coercions through the operations in `at hlx hE1 ⊢`.
+Establish an intermediate fact. Evaluate the numerical expressions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Int.two_pow_sub_pow' n h4 hlx` as an intermediate fact. Rewrite `this` using `[one_pow]`. Establish `hc` using `Int.natCast_emultiplicity 2 n`. Move the coercions through the operations in `at hc`. Rewrite using `[this, hE1, hc]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Int.emultiplicity_pow_sub_pow hlp hodd (y := 1) hdvd hlx n` as an intermediate fact. Rewrite `this` using `[one_pow]`. Rewrite using `[this, hE1]`. Establish `hfin : emultiplicity (l : ℤ) (x ^ n - 1) = ((s₀ + padicValNat l n : ℕ) : ℕ∞)`. Rewrite using `[hE, ← padicValNat_eq_emultiplicity hn0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Use `norm_cast`. Establish `hne : x ^ n - 1 ≠ 0`. Introduce `h`. Rewrite `hfin` using `[h, emultiplicity_zero]`. Conclude with `ENat.top_ne_coe _ hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hne, ?_⟩` and prove the remaining obligations. Use `padicValInt_eq_emultiplicity l hne` as an intermediate fact. Rewrite `this` using `[hfin]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private lemma padicValInt_pow_sub_one_eq_add (l : ℕ) [hl : Fact l.Prime] (s₀ : ℕ) (hs : 1 ≤ s₀) (hs2 : l = 2 → 2 ≤ s₀)
     (x : ℤ) (hx1 : (l : ℤ) ^ s₀ ∣ x - 1) (hx2 : ¬ (l : ℤ) ^ (s₀ + 1) ∣ x - 1)
@@ -73,11 +73,11 @@ private lemma padicValInt_pow_sub_one_eq_add (l : ℕ) [hl : Fact l.Prime] (s₀
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `l hl s₀ hs hs2 x hx1 hx2 a b hab`. Establish `hlp` using `Nat.prime_iff_prime_int.mp hl.out`. Take `⟨hne, hv⟩` from `padicValInt_pow_sub_one_eq_add l s₀ hs hs2 x hx1 hx2 (b - a) (by omega)`. Establish `hdvd : (l : ℤ) ∣ x - 1` using `(dvd_pow_self (l : ℤ) (by omega)).trans hx1`. Establish `hlx : ¬ (l : ℤ) ∣ x ^ a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : (l : ℤ) ∣ x` using `hlp.dvd_of_dvd_pow h`. Establish `h1 : (l : ℤ) ∣ 1` using `by have := dvd_sub h' hdvd; simpa using this`. Conclude with `hlp.not_dvd_one h1`. Establish `hxa : x ^ a ≠ 0` using `fun h ↦ hlx (h ▸ dvd_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : x ^ b - x ^ a = x ^ a * (x ^ (b - a) - 1)`. Rewrite using `[mul_sub, ← pow_add, Nat.add_sub_of_le hab.le, mul_one]`. Rewrite using `[e, padicValInt.mul hxa hne, padicValInt.eq_zero_of_not_dvd hlx, zero_add, hv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_column_kernel_length_bound : characterColumnKernelLengthBound := by
   intro l hl s₀ hs hs2 x hx1 hx2 a b hab
@@ -95,7 +95,7 @@ theorem character_column_kernel_length_bound : characterColumnKernelLengthBound 
   rw [e, padicValInt.mul hxa hne, padicValInt.eq_zero_of_not_dvd hlx, zero_add, hv]
 
 /- English proof (translation)
-Rewrite using `[Fin.univ_succ, Finset.erase_cons, Finset.prod_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma prod_univ_erase_zero_eq_prod_succ {M : Type*} [CommMonoid M] (t : ℕ) (f : Fin (t + 1) → M) :
     ∏ i ∈ univ.erase (0 : Fin (t + 1)), f i = ∏ i : Fin t, f i.succ := by
@@ -103,19 +103,19 @@ private lemma prod_univ_erase_zero_eq_prod_succ {M : Type*} [CommMonoid M] (t : 
   rfl
 
 /- English proof (translation)
-Introduce `l hl s₀ hs hs2 x hx1 hx2 u hu w t`. Establish `hlp` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `hdvd : (l : ℤ) ∣ x - 1` using `(dvd_pow_self (l : ℤ) (by omega)).trans hx1`. Establish `hlx : ¬ (l : ℤ) ∣ x`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (l : ℤ) ∣ 1` using `by have := dvd_sub h hdvd; simpa using this`. Conclude with `hlp.not_dvd_one h1`. Establish `hux : ¬ (l : ℤ) ∣ u * x ^ w`. Introduce `h`. Break down `hlp.dvd_or_dvd h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hu h`. Conclude with `hlx (hlp.dvd_of_dvd_pow h)`. Establish `hux0 : u * x ^ w ≠ 0` using `fun h ↦ hux (h ▸ dvd_zero _)`. Establish `hneg : ∀ z : ℤ, padicValInt l (-z) = padicValInt l z` using `fun z ↦ by simp [padicValInt]`. Establish `hg : ∀ i : ℕ, u * x ^ w - u * x ^ (w + (i + 1)) ≠ 0 ∧ padicValInt l (u * x ^ w - u * x ^ (w + (i + 1))) = s₀ + padicValNat l (i + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨hne, hv⟩` from `padicValInt_pow_sub_one_eq_add l s₀ hs hs2 x hx1 hx2 (i + 1) (by omega)`. Establish `e : u * x ^ w - u * x ^ (w + (i + 1)) = -((u * x ^ w) * (x ^ (i + 1) - 1))` using `by ring`. Establish `hm : (u * x ^ w) * (x ^ (i + 1) - 1) ≠ 0` using `mul_ne_zero hux0 hne`. Use `⟨by rw [e]; exact neg_ne_zero.mpr hm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, hneg, padicValInt.mul hux0 hne, padicValInt.eq_zero_of_not_dvd hux, zero_add, hv]`. Establish `key : ∀ t : ℕ, (∏ i ∈ Finset.range t, (u * x ^ w - u * x ^ (w + (i + 1)))) ≠ 0 ∧ padicValInt l (∏ i ∈ Finset.range t, (u * x ^ w - u * x ^ (w + (i + 1)))) = t * s₀ + padicValNat l t.factorial`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ k ih`. Rewrite using `[Finset.prod_range_succ]`. Use `⟨mul_ne_zero ih.1 (hg k).1, ?_⟩` and prove the remaining obligations. Rewrite using `[padicValInt.mul ih.1 (hg k).1, ih.2, (hg k).2, Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero k)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : delta (fun i : Fin (t + 1) ↦ u * x ^ (w + (i : ℕ))) = ∏ i ∈ Finset.range t, (u * x ^ w - u * x ^ (w + (i + 1)))`. Rewrite using `[delta, prod_univ_erase_zero_eq_prod_succ]`. Simplify using `only [Fin.val_zero, Fin.val_succ, add_zero]`. Conclude with `Fin.prod_univ_eq_prod_range (fun i ↦ u * x ^ w - u * x ^ (w + (i + 1))) t`. Rewrite using `[hd, (key t).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotentNormalForms_fact : characterColumnKernelBlockBound := by
   intro l hl s₀ hs hs2 x hx1 hx2 u hu w t

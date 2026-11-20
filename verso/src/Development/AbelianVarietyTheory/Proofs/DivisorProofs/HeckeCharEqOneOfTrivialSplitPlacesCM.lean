@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.HeckeSplitGen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm ν hν hs`. Take `⟨N, hN, hA⟩` from `GlobalTheory.T.unitaryIdeleChar_trivial_congruentOneModulo F E ν hν.1`. Establish `hH : grpHF σ N ≤ ν.ker`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ((⟨k, rfl⟩ | ⟨e, he, hx⟩) | hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hν.2 k`. Conclude with `hs e he x hx`. Conclude with `hA x hx`. Establish `hcl : closure (grpHF σ N : Set (AF F ⊗[F] E)ˣ) ⊆ ν.ker`. Use `closure_minimal hH ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (ν.ker : Set (AF F ⊗[F] E)ˣ) = ν ⁻¹' {1}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage hν.1`. Introduce `x`. Take `⟨z, hz, hxz⟩` from `GlobalTheory.T.exists_finPart_eq_one_mul_inv_mem_split_congruence_ideles F E σ hcm N hN x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ν (x * z⁻¹) = 1` using `hH hxz`. Establish `h2 : ν z = 1` using `hcl (GlobalTheory.T.mem_closure_split_congruence_ideles_of_finPart_eq_one F E σ hcm N hN z hz)`. Establish `: x = x * z⁻¹ * z` using `by group`. Rewrite using `[this, map_mul, h1, h2, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem heckeChar_eq_one_of_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ ν : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ν →

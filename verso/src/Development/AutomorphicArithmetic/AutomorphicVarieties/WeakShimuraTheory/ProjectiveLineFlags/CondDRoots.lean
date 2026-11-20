@@ -12,7 +12,7 @@ private theorem UpperTheory.V.Ws.P1.condD_roots : ∀ w ∈ roots, ∃ i j : Fin
   decide
 
 /- English proof (translation)
-Establish `hd : Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹`. Rewrite using `[← h, mul_comm (Φ.χ 0 g) (Φ.χ 3 g), mul_inv_cancel_right]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Fr.rt, wt, lamW, muW, hd] <;> (apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_inv]; abel)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.V.Ws.P1.condD_rt {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) (g : Γ)
     (h : Φ.χ 0 g * Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g) (i j : Fin 4) : Φ.rt (wt i j) g * Φ.χ j g = Φ.χ i g := by
@@ -22,19 +22,17 @@ private theorem UpperTheory.V.Ws.P1.condD_rt {O Γ : Type} [CommRing O] [Group �
     (apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_inv]; abel)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T hfit _ c' h K`. Take `⟨w, hw, hord⟩` from `hfit.1.ord`. Take `⟨i, j, rfl⟩` from `condD_roots w hw`. Use `⟨i, j, fun n hn hn4 heq => ?_⟩` and prove the remaining obligations. Take `⟨g, hgL, hne⟩` from `hord n hn hn4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hrange, -, -, -, hres, -⟩` from `P1.towerGal D T`. Rewrite `hgL` using `[← hrange]`. Take `⟨g', hg'⟩` from `hgL`. Use `haveI : IsLocalHom (inc h) := (P1.coefRes c).2.2.1 c' h`. Establish `hΦ : (T.fr ∅).χ 0 g * (T.fr ∅).χ 3 g = (T.fr ∅).χ 1 g * (T.fr ∅).χ 2 g`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Tower.fr, chi, lab]`. Apply the tactic sequence `cases T.pr <;> simp [Raw.ps, Raw.th, mul_comm]`. Establish `hrt` using `condD_rt (T.fr ∅) g hΦ i j`. Establish `hq : resQ T.F g = resQ T.L g'` using `by rw [← hg']; exact (hres g').1`. Establish `hA : (T.fr ∅).χ i g = chi D T.pr i (resQ T.L g')` using `by rw [← hq]; rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (T.fr ∅).χ j g = chi D T.pr j (resQ T.L g')` using `by rw [← hq]; rfl`. Rewrite `hrt` using `[hA, hB]`. Establish `hAval : ((chi D T.pr i (resQ T.L g') : (c.O)ˣ) : c.O) = (((T.fr ∅).rt (wt i j) g : (c.O)ˣ) : c.O) * (chi D T.pr j (resQ T.L g') : c.O)`. Rewrite using `[← hrt, Units.val_mul]`. Establish `hx : (K.r.chib i (K.V.pr g') / K.r.chib j (K.V.pr g')) ^ n = 1` using `DFunLike.congr_fun heq (K.V.pr g')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'` using `congrArg (fun u : (ResidueField c'.O)ˣ => (u : ResidueField c'.O)) hx`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_div_eq_div_val, Units.val_one] at hx'`. Rewrite `hx'` using `[K.chib i g', K.chib j g', hAval]`. Establish `hκ : residue c'.O (K.κ g' : c'.O) ≠ 0` using `((K.κ g').isUnit.map (residue _)).ne_zero`. Establish `hBn : residue c'.O (inc h (chi D T.pr j (resQ T.L g') : c.O)) ≠ 0` using `(((chi D T.pr j (resQ T.L g')).isUnit.map (inc h)).map (residue _)).ne_zero`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul] at hx'`. Rewrite `hx'` using `[mul_div_mul_left _ _ hκ, mul_div_cancel_right₀ _ hBn]`. Apply `hne` to reduce the goal to its premises. Use `show (residue c.O (((T.fr ∅).rt (wt i j) g : (c.O)ˣ) : c.O)) ^ n = 1`. Apply `(ResidueField.map (inc h)).injective` to reduce the goal to its premises.
-
-Rewrite using `[map_pow, map_one, ResidueField.map_residue]`. Conclude with `hx'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.P1.condD :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h), ∃ i j, ∀ n : ℕ, 0 < n → n ≤ 4 → (K.r.chib i / K.r.chib j) ^ n ≠ 1 := by

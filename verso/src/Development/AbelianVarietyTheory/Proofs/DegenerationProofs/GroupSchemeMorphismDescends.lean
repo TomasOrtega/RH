@@ -18,7 +18,7 @@ open GrpDense MorphismProperty
 variable {Z U : Scheme.{0}}
 
 /- English proof (translation)
-Use `Flat.epi_of_flat_of_surjective (pullback.fst X.hom j)` as an intermediate fact. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi (pullback.fst X.hom j)]`. Conclude with `congrArg (fun z => z.left) (h (Over.mk (pullback.snd X.hom j)) (Over.homMk (pullback.fst X.hom j) (by simpa using pullback.condition)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_points (j : U ⟶ Z) [Flat j] [Surjective j] {X Y : Over Z} {f g : X ⟶ Y}
     (h : ∀ (T : Over U) (t : Over.mk (T.hom ≫ j) ⟶ X), t ≫ f = t ≫ g) : f = g := by
@@ -31,9 +31,9 @@ theorem hom_ext_of_points (j : U ⟶ Z) [Flat j] [Surjective j] {X Y : Over Z} {
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Establish `hj : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) j` using `⟨⟨inferInstance, inferInstance⟩, inferInstance⟩`. Establish `h₁ : UniversallyClosed g` using `of_isPullback_of_descendsAlong (P := @UniversallyClosed) h.flip hj inferInstance`. Establish `h₂ : LocallyOfFiniteType g` using `of_isPullback_of_descendsAlong (P := @LocallyOfFiniteType) h.flip hj inferInstance`. Establish `: (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}).IsStableUnderBaseChange` using `@IsStableUnderBaseChange.inf _ _ _ _ (@IsStableUnderBaseChange.inf _ _ _ _ inferInstance inferInstance) inferInstance`. Establish `: MorphismProperty.RespectsIso (C` using `Scheme.{0}) @UniversallyClosed := universallyClosed_respectsIso`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : UniversallyClosed (pullback.diagonal g)` using `of_isPullback_of_descendsAlong (P := MorphismProperty.diagonal @UniversallyClosed) h.flip hj (show UniversallyClosed (pullback.diagonal f) from inferInstance)`. Establish `h₄ : IsSeparated g` using `⟨IsClosedImmersion.of_isPreimmersion _ (pullback.diagonal g).isClosedMap.isClosed_range⟩`. Conclude with `{}`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_isPullback {A G : Scheme.{0}} {φ : A ⟶ G} {f : A ⟶ U} {g : G ⟶ Z} {j : U ⟶ Z}
     [Flat j] [Surjective j] [QuasiCompact j] (h : IsPullback φ f g j) [IsProper f] : IsProper g := by
@@ -55,11 +55,11 @@ theorem isProper_of_isPullback {A G : Scheme.{0}} {φ : A ⟶ G} {f : A ⟶ U} {
   exact {}
 
 /- English proof (translation)
-Use `⟨fun K _ y W a b hW => ?_⟩` and prove the remaining obligations. Take `⟨p, -⟩` from `(pullback.fst y j).surjective (Classical.arbitrary _)`. Set `r` to `(Limits.pullback y j).fromSpecResidueField p`. Set `s` to `r ≫ pullback.fst y j`. Set `t` to `r ≫ pullback.snd y j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hst : t ≫ j = s ≫ y` using `by simp only [t, s, Category.assoc, pullback.condition]`. Establish `hs : Surjective s` using `inferInstance`. Establish `hc : ConnectedSpace ↥(Limits.pullback f t)` using `pullback_of_geometrically hf.1 _ t`. Establish `hout : IsPullback (pullback.fst f t ≫ φ) (pullback.snd f t) g (s ≫ y)`. Rewrite using `[← hst]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_hasPullback f t).paste_horiz h`. Set `q : Limits.pullback f t ⟶ W` to `hW.lift (pullback.fst f t ≫ φ) (pullback.snd f t ≫ s) (by simpa only [Category.assoc] using hout.w)`. Establish `hq : IsPullback q (pullback.snd f t) b s` using `IsPullback.of_right (by rwa [hW.lift_fst]) (hW.lift_snd _ _ _) hW`. Establish `hqs : Surjective q` using `MorphismProperty.of_isPullback hq.flip hs`. Conclude with `hqs.surj.connectedSpace q.continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_isPullback {A G : Scheme.{0}} {φ : A ⟶ G} {f : A ⟶ U} {g : G ⟶ Z} {j : U ⟶ Z}
     [Surjective j] (h : IsPullback φ f g j) [hf : GeometricallyConnected f] : GeometricallyConnected g := by
@@ -85,19 +85,19 @@ theorem geometricallyConnected_of_isPullback {A G : Scheme.{0}} {φ : A ⟶ G} {
   exact hqs.surj.connectedSpace q.continuous
 
 /- English proof (translation)
-Establish `hM` using `fun {T : Over U} => pushPt_mul h.w hm (T := T)`. Establish `hI` using `fun {T : Over U} => pushPt_inv h.w hi (T := T)`. Establish `hE` using `pushPt_one h.w he`. Use `letI : MonObj G := { one := e mul := m one_mul := GrpFlatDesc.hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ snd _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `rfl : t = lift (toUnit _) (pushPt h.w x)` from `CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) (by rw [lift_snd, hx])`. Rewrite using `[lift_whiskerRight_assoc, hE, hM, _root_.one_mul, lift_leftUnitor_hom]`. Use `mul_one := GrpFlatDesc.hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _)`. Take `rfl : t = lift (pushPt h.w x) (toUnit _)` from `CartesianMonoidalCategory.hom_ext _ _ (by rw [lift_fst, hx]) (toUnit_unique _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lift_whiskerLeft_assoc, hE, hM, _root_.mul_one, lift_rightUnitor_hom]`. Use `mul_assoc := GrpFlatDesc.hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _ ≫ fst _ _)`. Take `⟨y, hy⟩` from `pushPt_surjective h T (t ≫ fst _ _ ≫ snd _ _)`. Take `⟨z, hz⟩` from `pushPt_surjective h T (t ≫ snd _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : t = lift (lift (pushPt h.w x) (pushPt h.w y)) (pushPt h.w z) := by`. Apply the tactic sequence `ext <;> simp [hx, hy, hz]`. Rewrite using `[lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, hM, hM, hM, hM, _root_.mul_assoc] }`. Use `letI : GrpObj G := { inv := i left_inv := GrpFlatDesc.hom_ext_of_points j fun T t => by`. Take `⟨x, rfl⟩` from `pushPt_surjective h T t`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ _ ≫ e`. Rewrite using `[comp_lift_assoc, Category.comp_id, hI, hM, inv_mul_cancel, comp_toUnit_assoc, hE]`. Use `right_inv := GrpFlatDesc.hom_ext_of_points j fun T t => by`. Take `⟨x, rfl⟩` from `pushPt_surjective h T t`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ _ ≫ e`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[comp_lift_assoc, Category.comp_id, hI, hM, mul_inv_cancel, comp_toUnit_assoc, hE] }`. Use `⟨inferInstance, rfl, rfl, rfl, ⟨GrpFlatDesc.hom_ext_of_points j fun T t => ?_⟩, h, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _)`. Take `⟨y, hy⟩` from `pushPt_surjective h T (t ≫ snd _ _)`. Apply the tactic sequence `obtain rfl : t = lift (pushPt h.w x) (pushPt h.w y) := by ext <;> simp [hx, hy]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ m`. Rewrite using `[lift_braiding_hom_assoc, hM, hM, _root_.mul_comm]`. Take `rfl : x₀ = pushPt h.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₀ = pushPt h.w y` from `Over.OverMorphism.ext hy`. Conclude with `congrArg (fun z => z.left) (hM x y)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem grpObj_of_flat_cover (j : U ⟶ Z) [Flat j] [Surjective j] (G : Over Z) (A : Over U) [GrpObj A]
     [IsCommMonObj A] (φ : A.left ⟶ G.left) (h : IsPullback φ A.hom G.hom j) (m : G ⊗ G ⟶ G) (i : G ⟶ G)
@@ -150,9 +150,9 @@ theorem grpObj_of_flat_cover (j : U ⟶ Z) [Flat j] [Surjective j] (G : Over Z) 
     exact congrArg (fun z => z.left) (hM x y)
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Take `⟨_, -, -, -, hc, hp⟩` from `grpObj_of_flat_cover j G A φ h m i e (fun ψ hψ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : ψ = φ₂` from `Over.tensorObj_ext _ _ (hψ.1.trans h₂.1.symm) (hψ.2.trans h₂.2.symm)`. Conclude with `hm) hi he`. Establish `hj : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) j` using `⟨⟨inferInstance, inferInstance⟩, inferInstance⟩`. Conclude with `⟨inferInstance, ⟨hc, of_isPullback_of_descendsAlong (P := @Smooth) h.flip hj hA.smooth, isProper_of_isPullback h, geometricallyConnected_of_isPullback h⟩, hp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_flat_cover (j : U ⟶ Z) [Flat j] [Surjective j] [QuasiCompact j] (G : Over Z) (A : Over U)
     [GrpObj A] (hA : IsAbelianScheme A) (φ : A.left ⟶ G.left) (h : IsPullback φ A.hom G.hom j) (m : G ⊗ G ⟶ G)
@@ -177,9 +177,7 @@ end GlobalTheory.GrpFlatDesc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k K _ _ β B _ B₀ φ hB h m i e φ₂ h₁ h₂ hm hi he`. Establish `: Flat (spMap β)` using `by algebraize [β]`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(inferInstance : Module.Flat k K)`. Establish `: Surjective (spMap β)` using `⟨fun _ => ⟨default, Subsingleton.elim _ _⟩⟩`.
-
-Conclude with `GrpFlatDesc.isAbelianScheme_of_flat_cover (spMap β) B₀ B hB φ h m i e φ₂ ⟨h₁, h₂⟩ hm hi he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_descends_subfield :
     ∀ (k K : Type) [Field k] [Field K] (β : k →+* K) (B : Over (Sp K)) [GrpObj B] (B₀ : Over (Sp k)) (φ : B.left ⟶ B₀.left), IsAbelianScheme B → IsPullback φ B.hom B₀.hom (spMap β) → ∀ (m : B₀ ⊗ B₀ ⟶ B₀) (i : B₀ ⟶ B₀) (e : 𝟙_ (Over (Sp k)) ⟶ B₀) (φ₂ : (B ⊗ B).left ⟶ (B₀ ⊗ B₀).left), φ₂ ≫ (fst B₀ B₀).left = (fst B B).left ≫ φ → φ₂ ≫ (snd B₀ B₀).left = (snd B B).left ≫ φ → φ₂ ≫ m.left = (μ[B]).left ≫ φ → φ ≫ i.left = (ι[B]).left ≫ φ → spMap β ≫ e.left = (η[B]).left ≫ φ → ∃ _ : GrpObj B₀, IsAbelianScheme B₀ ∧ IsGrpPullback B B₀ (spMap β) φ := by

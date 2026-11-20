@@ -13,13 +13,11 @@ def actHom {dim : (E →+* ℂ) → ℕ} (y : Vsp dim) : 𝓞 E →+ Vsp dim whe
   map_add' α β := act_add_left α β y
 
 /- English proof (translation)
-Establish `hsp : Submodule.span ℚ (Set.range fun j => (ω j : E)) = ⊤` using `by first`. Consider the case `exact hω.span_eq_top_of_card_eq_finrank' (Fintype.card_fin _)`. Consider the case `(haveI : Nonempty (Fin (Module.finrank ℚ E)) := ⟨⟨0, Module.finrank_pos⟩⟩`. Conclude with `hω.span_eq_top_of_card_eq_finrank (Fintype.card_fin _))`. Establish `hα : (α : E) ∈ Submodule.span ℚ (Set.range fun j => (ω j : E))`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsp]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩ : ∃ c : Fin (Module.finrank ℚ E) → ℚ, ∑ j, c j • (ω j : E) = α` from `by first`. Consider the case `exact (Submodule.mem_span_range_iff_exists_fun ℚ).1 hα`. Consider the case `exact Submodule.mem_span_range_iff_exists_fun.1 hα`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : act α y = ∑ j, ((c j : ℝ)) • act (ω j) y`. Use extensionality with `i`. Simplify using `only [act, ← hc]`. Simplify using `[map_sum, Rat.smul_def, map_mul, map_ratCast, Finset.sum_mul, Complex.real_smul, mul_assoc]`. Rewrite using `[key]`.
-
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma act_omega_expand {dim : (E →+* ℂ) → ℕ} (ω : Fin (Module.finrank ℚ E) → 𝓞 E)
     (hω : LinearIndependent ℚ (fun j => (ω j : E))) (α : 𝓞 E) (y : Vsp dim) :
@@ -45,45 +43,43 @@ lemma act_omega_expand {dim : (E →+* ℂ) → ℕ} (ω : Fin (Module.finrank �
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Establish `hpre : ∀ s : b, ∃ u, u ∈ Xg L I ∧ prj σ u = (s : Vsp dim)`. Introduce `s`. Take `⟨u, hu, h⟩` from `hb s.2`. Conclude with `⟨u, hu, h⟩`. Use `choose u hu hus using hpre`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `v : Fin (Module.finrank ℚ E) × b → Vsp dim` to `fun p => act (ω p.1) (u p.2)`. Establish `hvX : ∀ p, v p ∈ Xg L I` using `fun p => hact _ _ (hu p.2)`. Establish `hvIR : ∀ p, v p ∈ IR I`. Introduce `p`. Establish `h : ∃ x ∈ L, IsU I x (v p)` using `hvX p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, _, hx⟩` from `h`. Conclude with `hx.1`. Establish `hprj : ∀ (α : 𝓞 E) (w : Vsp dim), prj σ (act α w) = σ (α : E) • prj σ w`. Introduce `α w`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i.1 = σ`. Simplify using `[prj, act_apply, h]`. Simplify using `[prj, h]`. Establish `hZ : ∀ m : Fin (Module.finrank ℚ E) × b → ℤ, ∑ p, m p • v p = 0 → ∀ p, m p = 0`. Introduce `m hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ s : b, (∑ j, ((m (j, s) : ℂ) * σ (ω j : E))) • (s : Vsp dim) = 0`. Use `congrArg (prj σ) hm` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ = prj σ (m (j, s) • act (ω j) (u s))`. Rewrite using `[map_zsmul, hprj, hus, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Introduce and unpack `⟨j, s⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Fintype.linearIndependent_iff.mp hli (fun s => ∑ j, ((m (j, s) : ℂ) * σ (ω j : E))) h1 s`. Establish `h3 : σ (∑ j, ((m (j, s) : E)) * (ω j : E)) = 0`. Rewrite using `[map_sum]`. Simplify `h2` using `[map_mul, map_intCast]`. Establish `h4 : ∑ j, ((m (j, s) : ℚ)) • (ω j : E) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h5` using `(map_eq_zero_iff σ σ.injective).mp h3`. Simplify `h5` using `[Rat.smul_def]`. Establish `h6` using `Fintype.linearIndependent_iff.mp hω (fun j => (m (j, s) : ℚ)) h4 j`. Conclude with `h6` after adjusting the coercions. Establish `hR : LinearIndependent ℝ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc p`. Assume the negation of the conclusion as `hcp`. Set `y : ℕ → Vsp dim` to `fun k => -(∑ q, ⌊(k : ℝ) * c q⌋ • v q)`. Establish `hyX : ∀ k, y k ∈ Xg L I` using `fun k => neg_mem (sum_mem fun q _ => zsmul_mem (hvX q) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hyeq : ∀ k : ℕ, y k = ∑ q, Int.fract ((k : ℝ) * c q) • v q`. Introduce `k`. Establish `h0 : ∑ q, ((k : ℝ) * c q) • v q = 0`. Repeatedly rewrite using `[mul_smul]`. Rewrite using `[← Finset.smul_sum, hc, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [y, Int.fract, sub_smul, Finset.sum_sub_distrib, h0, zero_sub]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Conclude with `(Int.cast_smul_eq_zsmul ℝ _ _).symm`. Establish `hyn : ∀ k, ‖y k‖ ≤ ∑ q, ‖v q‖`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hyeq]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (Int.fract_nonneg _)]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (Int.fract_lt_one _).le`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : {x | x ∈ (Xg L I : Set (Vsp dim)) ∧ ‖x‖ ≤ ∑ q, ‖v q‖}.Finite` using `finite_sep _ (sep_of_group (Xg L I) hsep _ subset_rfl) _`. Set `g : ℕ → (Fin (Module.finrank ℚ E) × b → ℤ)` to `fun k q => ⌊(k : ℝ) * c q⌋`. Set `Φ : (Fin (Module.finrank ℚ E) × b → ℤ) → Vsp dim` to `fun m => -(∑ q, m q • v q)`. Establish `hΦ : Function.Injective Φ`. Introduce `m m' h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : ∑ q, m q • v q = ∑ q, m' q • v q` using `neg_inj.mp h`. Establish `h'' : ∑ q, (m q - m' q) • v q = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h', sub_self]`. Use function extensionality and compare the values at `q`. Conclude with `sub_eq_zero.mp (hZ _ h'' q)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrg : (Set.range g).Finite`. Use `Set.Finite.of_finite_image ?_ hΦ.injOn` and prove the remaining obligations. Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Conclude with `⟨hyX k, hyn k⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hrp : (Set.range fun k : ℕ => ⌊(k : ℝ) * c p⌋).Finite` using `(hrg.image (fun m => m p)).subset (by rintro _ ⟨k, rfl⟩; exact ⟨g k, ⟨k, rfl⟩, rfl⟩)`. Take `⟨B, hB⟩` from `hrp.bddAbove`. Take `⟨B', hB'⟩` from `hrp.bddBelow`. Establish `hcpos : 0 < |c p|` using `abs_pos.mpr hcp`. Take `⟨k, hk⟩` from `exists_nat_gt ((|(B : ℝ)| + |(B' : ℝ)| + 2) / |c p|)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkc : |(B : ℝ)| + |(B' : ℝ)| + 2 < (k : ℝ) * |c p|`. Rewrite `hk` using `[div_lt_iff₀ hcpos]`. Then use the resulting hypothesis. Establish `hup : ⌊(k : ℝ) * c p⌋ ≤ B` using `hB ⟨k, rfl⟩`. Establish `hlo : B' ≤ ⌊(k : ℝ) * c p⌋` using `hB' ⟨k, rfl⟩`. Establish `h1 : (k : ℝ) * c p - 1 < (⌊(k : ℝ) * c p⌋ : ℝ)` using `Int.sub_one_lt_floor _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (⌊(k : ℝ) * c p⌋ : ℝ) ≤ (k : ℝ) * c p` using `Int.floor_le _`. Establish `hup' : (⌊(k : ℝ) * c p⌋ : ℝ) ≤ B` using `by exact_mod_cast hup`. Establish `hlo' : (B' : ℝ) ≤ ⌊(k : ℝ) * c p⌋` using `by exact_mod_cast hlo`. Establish `hB0` using `abs_nonneg (B : ℝ)`. Establish `hB'0` using `abs_nonneg (B' : ℝ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `lt_or_gt_of_ne hcp with hneg | hpos` into its components or cases. Rewrite `hkc` using `[abs_of_neg hneg, mul_neg]`. Use `neg_abs_le (B' : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hkc` using `[abs_of_pos hpos]`.
-
-Use `le_abs_self (B : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw : LinearIndependent ℝ (fun p => (⟨v p, hvIR p⟩ : IR I))` using `LinearIndependent.of_comp (IR I).subtype hR`. Use `hw.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[Fintype.card_prod, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma rank_bound {dim : (E →+* ℂ) → ℕ} (L I : Submodule ℤ (Vsp dim))
     (hsep : ∀ g ∈ Xg L I, g ≠ 0 → 1 ≤ ‖g‖)

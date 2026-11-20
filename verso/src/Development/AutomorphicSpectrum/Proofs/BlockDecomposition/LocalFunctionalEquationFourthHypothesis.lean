@@ -5,7 +5,7 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.GL2LocalData
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((h * g)⁻¹ : GL n F).valᵀ = (h⁻¹ : GL n F).valᵀ * (g⁻¹ : GL n F).valᵀ`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tinv_mul' {F : Type} [Field F] {n : Type} [Fintype n] [DecidableEq n] (h g : GL n F) :
     tinv (h * g) = tinv h * tinv g := by

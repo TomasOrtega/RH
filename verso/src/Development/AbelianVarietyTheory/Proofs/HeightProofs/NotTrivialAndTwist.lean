@@ -14,15 +14,15 @@ namespace GlobalTheory.RealPar.Cover
 variable {p q n : ℕ} {T : GrpData p q}
 
 /- English proof (translation)
-The claim follows from `T.emb.injective (Prod.ext h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem ext_of {x y : T.G} (h1 : T.cov x = T.cov y) (h2 : T.sq x = T.sq y) : x = y :=
   T.emb.injective (Prod.ext h1 h2)
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.det ((mem_Upq _).1 (T.cov_mem x))`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, ← T.sq_sq x]`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_mul, norm_star, norm_pow]`. Establish `h0 : (Jm p q).det * (Jm p q).det = 1` using `by rw [← Matrix.det_mul, KStabLie.Jm_sq, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖(Jm p q).det‖ ≠ 0` using `norm_ne_zero_iff.2 (left_ne_zero_of_mul_eq_one h0)`. Establish `h4 : ‖((T.sq x : ℂˣ) : ℂ)‖ ^ 4 = 1`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Take the linear combination `h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_sq (x : T.G) : ‖((T.sq x : ℂˣ) : ℂ)‖ = 1 := by
   have h1 := congrArg Matrix.det ((mem_Upq _).1 (T.cov_mem x))
@@ -37,17 +37,15 @@ theorem norm_sq (x : T.G) : ‖((T.sq x : ℂˣ) : ℂ)‖ = 1 := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h4
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (continuous_snd.comp T.emb.continuous)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sq : Continuous fun x : T.G => ((T.sq x : ℂˣ) : ℂ) :=
   Units.continuous_val.comp (continuous_snd.comp T.emb.continuous)
 
 /- English proof (translation)
-Set `e : Ix p q ≃ Fin (p + q)` to `finSumFinEquiv`. Establish `h1 : ∀ a b, HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) a b) (X a b) 0`. Introduce `a b`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `((Matrix.entryLinearMap ℝ ℂ a b).toContinuousLinearMap.hasFDerivAt).comp_hasDerivAt 0 (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h2`. Establish `h3` using `ReciprocityTheory.GeometryOfNumbersTheory.hasDerivAt_det (fun t : ℝ => Matrix.reindex e e (NormedSpace.exp (t • X))) (Matrix.reindex e e X) 0 fun i j => h1 _ _`. Simplify using `only [zero_smul, NormedSpace.exp_zero, Matrix.reindex_apply, Matrix.submatrix_one_equiv, Matrix.adjugate_one, Matrix.one_mul, Matrix.det_submatrix_equiv_self] at h3`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply]`. Conclude with `(e.symm.sum_comp fun a => X a a).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_det_exp (X : Mat p q) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • X)).det) X.trace 0 := by
@@ -68,13 +66,11 @@ theorem hasDerivAt_det_exp (X : Mat p q) :
   exact (e.symm.sum_comp fun a => X a a).symm
 
 /- English proof (translation)
-Use `set f : ℝ → ℂ := fun t => ((T.sq (T.expt (t • X)) : ℂˣ) : ℂ) with hf`. Establish `hc : Continuous f` using `continuous_sq.comp (T.expt_cont.comp_continuous (by fun_prop) fun t => KStabLie.smul_mem_upq hX t)`. Establish `h0 : f 0 = 1` using `by simp [hf, T.expt_zero]`. Establish `h2 : ∀ t, f t ^ 2 = (NormedSpace.exp (t • X)).det` using `fun t => by`. Rewrite using `[hf, T.sq_sq, T.expt_cov _ (KStabLie.smul_mem_upq hX t)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hasDerivAt_det_exp X`. Simplify using `only [← h2] at h3`. Rewrite `h3`, the goal using `[hasDerivAt_iff_tendsto_slope]`. Establish `h4 : Filter.Tendsto (fun t => f t + 1) (nhdsWithin 0 {0}ᶜ) (nhds 2)`. Use `(hc.add (continuous_const (y := (1 : ℂ)))).tendsto 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Pi.add_apply, h0, one_add_one_eq_two]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `(h3.div h4 two_ne_zero).congr' ((h4.eventually_ne two_ne_zero).mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [Pi.div_apply, slope_def_module, h0, Complex.real_smul]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_sq {X : Mat p q} (hX : X ∈ upq p q) :
     HasDerivAt (fun t : ℝ => ((T.sq (T.expt (t • X)) : ℂˣ) : ℂ)) (X.trace / 2) 0 := by
@@ -101,14 +97,14 @@ def twAct {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] 
   act - (1 / 2 : ℂ) • (Matrix.traceLinearMap (Ix p q) ℂ ℂ).smulRight (1 : Module.End ℂ V)
 
 /- English proof (translation)
-Simplify using `[twAct, smul_smul, div_eq_inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twAct_apply {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (X : Mat p q) (v : V) :
     twAct act X v = act X v - (X.trace / 2) • v := by
   simp [twAct, smul_smul, div_eq_inv_mul]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[wtSub, twAct_apply, Eab, add_smul, sub_sub, add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wtSub_twAct {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ) :
     wtSub (twAct act) μ = wtSub act fun a => μ a + 1 / 2 := by
@@ -116,9 +112,9 @@ theorem wtSub_twAct {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q �
   simp [wtSub, twAct_apply, Eab, add_smul, sub_sub, add_comm]
 
 /- English proof (translation)
-Establish `: ∀ a b : Ix p q, posC a b → twAct act (Eab a b) v = act (Eab a b) v`. Introduce `a b h`. Apply the tactic sequence `have hab : a ≠ b := by rintro rfl; cases a <;> simp [posC] at h`. Simplify using `[twAct_apply, Eab, Matrix.trace_single_eq_of_ne _ _ _ hab]`. Simplify using `only [IsHW, hwSub, wtSub_twAct, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `and_congr_right' (and_congr_right' (forall₃_congr fun a b h => by rw [this a b h]))`.
+A detailed English derivation is pending.
 -/
 theorem isHW_twAct {V : Type} [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ)
     (v : V) : IsHW (twAct act) μ v ↔ IsHW act (fun a => μ a + 1 / 2) v := by
@@ -193,9 +189,9 @@ def twist (R : DSRep T) : DSRep T where
     simp [twAct_apply, T.expt_zero, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `R.irred (LinearMap.ker ((R.U.π z - c • 1 : R.U.H →L[ℂ] R.U.H) : R.U.H →ₗ[ℂ] R.U.H)) (ContinuousLinearMap.isClosed_ker _) fun g x hx => by` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, sub_eq_zero] at hx ⊢`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, hz, map_mul, ContinuousLinearMap.mul_apply, hx, map_smul]`. Break down `this with e | e` into its components or cases. Conclude with `absurd ((Submodule.eq_bot_iff _).1 e v (by simp [h])) hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Submodule.eq_top_iff'.1 e w` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem central_scalar (R : DSRep T) {z : T.G} (hz : ∀ x, z * x = x * z) {c : ℂ} {v : R.U.H} (hv : v ≠ 0)
     (h : R.U.π z v = c • v) (w : R.U.H) : R.U.π z w = c • w := by
@@ -209,7 +205,7 @@ theorem central_scalar (R : DSRep T) {z : T.G} (hz : ∀ x, z * x = x * z) {c : 
   · simpa [sub_eq_zero] using Submodule.eq_top_iff'.1 e w
 
 /- English proof (translation)
-Use `T.sq_sq x` as an intermediate fact. Rewrite `this` using `[h, Units.val_one, Matrix.det_one, sq_eq_one_iff]`. Conclude with `this.imp (fun e => Units.ext e) fun e => Units.ext e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_of_ker {x : T.G} (h : T.cov x = 1) : T.sq x = 1 ∨ T.sq x = -1 := by
   have := T.sq_sq x
@@ -217,13 +213,13 @@ theorem sq_of_ker {x : T.G} (h : T.cov x = 1) : T.sq x = 1 ∨ T.sq x = -1 := by
   exact this.imp (fun e => Units.ext e) fun e => Units.ext e
 
 /- English proof (translation)
-Rewrite using `[or_iff_not_imp_left]`. Introduce `h x hx`. Break down `sq_of_ker hx with e | e` into its components or cases. Rewrite using `[ext_of (x := x) (y := 1) (by rw [hx, map_one]) (by rw [e, map_one]), map_one]`. Establish `hc : ∀ y, x * y = y * x` using `fun y => ext_of (by simp [hx]) (by simp [mul_comm])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : x * x = 1` using `ext_of (by simp [hx]) (by simp [e])`. Establish `h3 : ∀ v, R.U.π x v = -v`. Introduce `v`. Assume the negation of the conclusion as `hv`. Use `h fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Break down `sq_of_ker hy with e' | e'` into its components or cases. Rewrite using `[ext_of (x := y) (y := 1) (by rw [hy, map_one]) (by rw [e', map_one]), map_one]`. Rewrite using `[ext_of (hy.trans hx.symm) (e'.trans e.symm)]`. Use extensionality with `w`. Use `central_scalar R hc (c := 1) (v := R.U.π x v + v) (fun h0 => hv (eq_neg_of_add_eq_zero_left h0)) (by rw [map_add, ← ContinuousLinearMap.mul_apply, ← map_mul, h2, map_one]; simp [add_comm]) w` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using this`. Express the relevant statement in the definitionally equal form `((T.sq x : ℂˣ) : ℂ)⁻¹ • R.U.π x = 1`. Use extensionality with `v`. Simplify using `[e, h3]`.
+Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem trivial_or_twist (R : DSRep T) :
     (∀ x, T.cov x = 1 → R.U.π x = 1) ∨ ∀ x, T.cov x = 1 → (twist R).U.π x = 1 := by
@@ -249,19 +245,19 @@ theorem trivial_or_twist (R : DSRep T) :
   simp [e, h3]
 
 /- English proof (translation)
-Establish `key : ∀ (θ : ℝ) {μ : Ix p q → ℚ} {v : R.HK.V}, IsHW R.HK.act μ v → R.U.π (T.expt (TorusWt.torX fun _ => θ)) (R.ι v) = Complex.exp ((θ * Complex.I) * (∑ a, μ a : ℚ)) • R.ι v`. Introduce `θ μ v hv`. Apply `TorusWt.flow_eq R (TorusWt.torX_mem _)` to reduce the goal to its premises. Establish `h1 : ∀ a, R.HK.act (Eab a a) v = ((μ a : ℚ) : ℂ) • v`. Simplify `hv.2.1` using `[wtSub, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[TorusWt.torX_eq_sum, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, h1, smul_smul, ← Finset.sum_smul, ← Finset.mul_sum]`. Use `push_cast`. Both sides reduce to the same expression. Establish `cen : ∀ (θ : ℝ) x, T.expt (TorusWt.torX fun _ => θ) * x = x * T.expt (TorusWt.torX fun _ => θ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `θ x`. Use `ext_of (Units.ext ?_) (by simp [mul_comm])` and prove the remaining obligations. Simplify using `only [map_mul, Units.val_mul, T.expt_cov _ (TorusWt.torX_mem _)]`. Use `Commute.exp_left ?_` and prove the remaining obligations. Conclude with `Matrix.scalar_commute _ (fun _ => Commute.all _ _) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `inj : ∀ {v : R.HK.V}, v ≠ 0 → R.ι v ≠ 0` using `fun h h0 => h (R.ι_inj (by rw [h0, map_zero]))`. Assume the negation of the conclusion as `hne`. Establish `hd : ((∑ a, μ a - ∑ a, ν a : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast sub_ne_zero.2 hne`. Use `set θ : ℝ := Real.pi / ((∑ a, μ a - ∑ a, ν a : ℚ) : ℝ) with hθ`. Establish `h1` using `(central_scalar R (cen θ) (inj hv.1) (key θ hv) (R.ι w)).symm.trans (key θ hw)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `smul_left_injective ℂ (inj hw.1) h1`. Establish `h3 : Complex.exp (Real.pi * Complex.I) = 1`. Rewrite `h2` using `[Complex.exp_eq_exp_iff_exp_sub_eq_one]`. Rewrite using `[← h2]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Real.pi : ℂ) = θ * ((∑ a, μ a - ∑ a, ν a : ℚ) : ℝ)`. Conclude with `(div_mul_cancel₀ _ hd).symm` after adjusting the coercions. Rewrite using `[this]`. Generalize the expression as in `∑ a, μ a = s`. Generalize the expression as in `∑ a, ν a = t`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h3`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem sum_weight_eq (R : DSRep T) {μ ν : Ix p q → ℚ} {v w : R.HK.V} (hv : IsHW R.HK.act μ v)
     (hw : IsHW R.HK.act ν w) : ∑ a, μ a = ∑ a, ν a := by
@@ -302,7 +298,7 @@ theorem sum_weight_eq (R : DSRep T) {μ ν : Ix p q → ℚ} {v w : R.HK.V} (hv 
   norm_num at h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [blattner, rhoNC, add_lt_add_iff_right]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem blattner_add (lam : Ix p q → ℚ) (c : ℚ) : blattner (fun a => lam a + c) = fun a => blattner lam a + c := by
   funext a
@@ -310,7 +306,7 @@ theorem blattner_add (lam : Ix p q → ℚ) (c : ℚ) : blattner (fun a => lam a
   ring
 
 /- English proof (translation)
-Simplify using `only [vogan, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vogan_add (μ : Ix p q → ℚ) (c : ℚ) :
     vogan (fun a => μ a + c) = vogan μ + 2 * c * ∑ a, μ a + ∑ a : Ix p q, (2 * c * rhoOfIndex a + c ^ 2) := by
@@ -318,11 +314,11 @@ theorem vogan_add (μ : Ix p q → ℚ) (c : ℚ) :
   exact Finset.sum_congr rfl fun a _ => by ring
 
 /- English proof (translation)
-Establish `e : ∀ μ v, IsHW (twist R).HK.act μ v ↔ IsHW R.HK.act (fun a => μ a + 1 / 2) v` using `isHW_twAct R.HK.act`. Unfold `HasParam`. Rewrite using `[blattner_add]`. Simplify using `only [e]`. Use `and_congr_right fun ⟨v, hv⟩ => ⟨fun h μ w hw => ?_, fun h μ w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `h (fun a => μ a - 1 / 2) w (by simpa using hw)`. Establish `h2` using `sum_weight_eq R hv hw`. Establish `h3` using `vogan_add (fun a => μ a - 1 / 2) (1 / 2)`. Simplify using `only [sub_add_cancel, Finset.sum_add_distrib, Finset.sum_sub_distrib] at h2 h3`. Rewrite using `[vogan_add, h3, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `h _ w hw`. Establish `h2` using `sum_weight_eq R hv hw`. Rewrite `h1` using `[vogan_add, vogan_add]`. Simplify using `only [Finset.sum_add_distrib] at h1 h2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

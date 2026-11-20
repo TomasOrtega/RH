@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraFinite
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.harishChandra_finiteness_automorphic_GL_of_eigen GlobalTheory.T.harishChandraFinitenessTotallyComplexGL_proof`.
+A detailed English derivation is pending.
 -/
 theorem automorphicFormsFiniteGL : GlobalTheory.Published.AutomorphicFormsFiniteGL :=
   GlobalTheory.T.harishChandra_finiteness_automorphic_GL_of_eigen GlobalTheory.T.harishChandraFinitenessTotallyComplexGL_proof

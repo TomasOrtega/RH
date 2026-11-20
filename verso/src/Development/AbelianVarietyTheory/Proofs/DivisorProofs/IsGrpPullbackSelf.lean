@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.LevSpread
 
 /- English proof (translation)
-Establish `hw : (x * y⁻¹) ^ n = 1` using `by rw [mul_pow, inv_pow, hx, hy, inv_one, _root_.mul_one]`. Take `⟨C, hC, hz⟩` from `GlobalTheory.TorsionCover.exists_clopen_eq_one A hA hn (x * y⁻¹) hw`. Establish `h1 : z ≫ (x * y⁻¹) = 1` using `by show (preHom z) (x * y⁻¹) = 1`. Rewrite using `[map_mul, map_inv]`. Use `show (z ≫ x) * (z ≫ y)⁻¹ = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, mul_inv_cancel]`. Establish `hsub` using `(hz T z).1 h1`. Take `⟨p⟩` from `‹Nonempty T.left›`. Establish `hne : C.Nonempty` using `⟨_, hsub ⟨p, rfl⟩⟩`. Establish `huniv : C = Set.univ` using `hC.eq_univ hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 𝟙 Z ≫ (x * y⁻¹) = 1` using `(hz Z (𝟙 Z)).2 (by rw [huniv]; exact Set.subset_univ _)`. Rewrite `h2` using `[Category.id_comp]`. Conclude with `mul_inv_eq_one.1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_comp_eq {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) {n : ℕ}
     (hn : IsUnit (n : Γ(S, ⊤))) (Z : Over S) [PreconnectedSpace Z.left] (x y : Z ⟶ A) (hx : x ^ n = 1)
@@ -47,9 +47,9 @@ theorem eq_of_comp_eq {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] 
   exact mul_inv_eq_one.1 h2
 
 /- English proof (translation)
-Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[ex, ey, ← MonObj.comp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
@@ -64,21 +64,21 @@ end GlobalTheory.LevSpread
 namespace GlobalTheory.LevSpread
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.grpPullback_of_sameFibreWithSquareBundle`.
+A detailed English derivation is pending.
 -/
 theorem l1 : ∀ (S T : Scheme.{0}) (A₀ : Over T) [GrpObj A₀] [IsCommMonObj A₀] (P₀ : LB (G2 A₀).left) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left) (f : T ⟶ S), P₀.IsLB → P.IsLB → SameFib A₀ P₀ (𝟙 _) A P f → ∃ (φ : A₀.left ⟶ A.left) (φ₂ : (G2 A₀).left ⟶ (G2 A).left), IsGrpPullback A₀ A f φ ∧ IsSquare φ φ₂ ∧ LBIso P₀ (P.pull φ₂) ∧ LBIso (P₀.pull (lift (𝟙 A₀) (𝟙 A₀)).left) ((P.pull (lift (𝟙 A) (𝟙 A)).left).pull φ) := GlobalTheory.T.grpPullback_of_sameFibreWithSquareBundle
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_torsionSection_of_torsionRationalOverFraction`.
+A detailed English derivation is pending.
 -/
 theorem l2a : ∀ (R₀ : Type) [CommRing R₀] [IsDomain R₀] [IsNoetherianRing R₀] [IsIntegrallyClosed R₀] (A : Over (Sp R₀)) [GrpObj A] [IsCommMonObj A] (n : ℕ), IsAbelianScheme A → IsUnit (n : R₀) → TorsRat A n → ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Sp K ⟶ Sp R₀) (x : Over.mk t ⟶ A), x ^ n = 1 → ∃ σ : 𝟙_ (Over (Sp R₀)) ⟶ A, σ ^ n = 1 ∧ toUnit (Over.mk t) ≫ σ = x := GlobalTheory.T.exists_torsionSection_of_torsionRationalOverFraction
 
 /- English proof (translation)
-Introduce `R₀ _ _ _ _ A _ _ n hA hnR hT K _ t x hx`. Establish `hnΓ : IsUnit (n : Γ(Sp R₀, ⊤))`. Use `hnR.map (Scheme.ΓSpecIso (CommRingCat.of R₀)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `t' : Sp (AlgebraicClosure K) ⟶ Sp R₀` to `spMap (algebraMap K (AlgebraicClosure K)) ≫ t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `z : Over.mk t' ⟶ Over.mk t` to `Over.homMk (spMap (algebraMap K (AlgebraicClosure K))) rfl`. Take `⟨σ, hσ, hσx⟩` from `l2a R₀ A n hA hnR hT (AlgebraicClosure K) t' (z ≫ x) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one])`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Use `haveI : PreconnectedSpace (Over.mk t).left := inferInstanceAs (PreconnectedSpace (Sp K))`. Use `haveI : Nonempty (Over.mk t').left := inferInstanceAs (Nonempty (Sp (AlgebraicClosure K)))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_comp_eq A hA hnΓ (Over.mk t) _ x (by rw [← MonObj.comp_pow, hσ, MonObj.comp_one]) hx (Over.mk t') z ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, show z ≫ toUnit (Over.mk t) = toUnit (Over.mk t') from toUnit_unique _ _, hσx]`.
+A detailed English derivation is pending.
 -/
 theorem l2 : ∀ (R₀ : Type) [CommRing R₀] [IsDomain R₀] [IsNoetherianRing R₀] [IsIntegrallyClosed R₀] (A : Over (Sp R₀)) [GrpObj A] [IsCommMonObj A] (n : ℕ), IsAbelianScheme A → IsUnit (n : R₀) → TorsRat A n → ∀ (K : Type) [Field K] (t : Sp K ⟶ Sp R₀) (x : Over.mk t ⟶ A), x ^ n = 1 → ∃ σ : 𝟙_ (Over (Sp R₀)) ⟶ A, σ ^ n = 1 ∧ toUnit (Over.mk t) ≫ σ = x := by
   intro R₀ _ _ _ _ A _ _ n hA hnR hT K _ t x hx
@@ -96,12 +96,12 @@ theorem l2 : ∀ (R₀ : Type) [CommRing R₀] [IsDomain R₀] [IsNoetherianRing
   rw [← Category.assoc, show z ≫ toUnit (Over.mk t) = toUnit (Over.mk t') from toUnit_unique _ _, hσx]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weilPairing_eq_zpow_of_fieldPoint_domain`.
+A detailed English derivation is pending.
 -/
 theorem l3 : ∀ (O : Type) [CommRing O] [IsDomain O] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), IsPPol A P → ∀ (N : ℕ), 0 < N → IsUnit (N : O) → ∀ (u v : 𝟙_ (Over (Sp O)) ⟶ A), u ^ N = 1 → v ^ N = 1 → ∀ (ζ : Oˣ), IsPrimitiveRoot ζ N → ∀ (m : ℤ) (K : Type) [Field K] (κ : O →+* K), Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (toUnit (Over.mk (spMap κ)) ≫ u) (toUnit (Over.mk (spMap κ)) ≫ v) (unitOn (Units.map κ.toMonoidHom (ζ ^ m))) → ∀ (k : Type) [Field k] (ρ : O →+* k), Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (toUnit (Over.mk (spMap ρ)) ≫ u) (toUnit (Over.mk (spMap ρ)) ≫ v) (unitOn (Units.map ρ.toMonoidHom (ζ ^ m))) := GlobalTheory.T.weilPairing_eq_zpow_of_fieldPoint_domain
 
 /- English proof (translation)
-Establish `h₁ : IsPrimitiveRoot (zetaAway n) n` using `IsPrimitiveRoot.of_map_of_injective (f := (cycAway n).subtype) (Complex.isPrimitiveRoot_exp n hn) Subtype.val_injective`. Establish `: NeZero (n : R)` using `⟨by simpa using ((isUnit_natCast hn).map β).ne_zero⟩`. Establish `h₂` using `(h₁.isRoot_cyclotomic (Nat.pos_of_ne_zero hn)).map (f := β)`. Rewrite `h₂` using `[Polynomial.map_cyclotomic, Polynomial.isRoot_cyclotomic_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prim_map {n : ℕ} (hn : n ≠ 0) {R : Type} [CommRing R] [IsDomain R] (β : cycAway n →+* R) :
     IsPrimitiveRoot (β (zetaAway n)) n := by
@@ -112,33 +112,29 @@ theorem prim_map {n : ℕ} (hn : n ≠ 0) {R : Type} [CommRing R] [IsDomain R] (
   rwa [Polynomial.map_cyclotomic, Polynomial.isRoot_cyclotomic_iff] at h₂
 
 /- English proof (translation)
-Introduce `n hn3 hnodd R₀ _ _ _ _ b A _ _ P hA hP hT g K _ κ c₀ hc₀ hsf`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hnR : IsUnit (n : R₀)` using `by simpa using (isUnit_natCast hn0).map b`. Establish `hnΓ : IsUnit (n : Γ(Sp R₀, ⊤))`. Use `hnR.map (Scheme.ΓSpecIso (CommRingCat.of R₀)).inv.hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hζc : IsPrimitiveRoot (zetaAway n) n` using `IsPrimitiveRoot.of_map_of_injective (f := (cycAway n).subtype) (Complex.isPrimitiveRoot_exp n hn0) Subtype.val_injective`. Set `ζU : (cycAway n)ˣ` to `(hζc.isUnit hn0).unit`. Establish `hζU : (ζU : cycAway n) = zetaAway n` using `rfl`. Set `ζR : R₀ˣ` to `Units.map b.toMonoidHom ζU`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hζR : IsPrimitiveRoot ζR n` using `IsPrimitiveRoot.coe_units_iff.1 (prim_map hn0 b)`. Take `⟨φ, φ₂, hφ, hsq, hiso, hdiag⟩` from `l1 _ _ c₀.A c₀.P A P (spMap κ) c₀.isLB hP.1.1 hsf`. Set `E` to `GlobalTheory.ObjPull.pushEquiv hφ (𝟙_ (Over (Sp K)))`. Establish `hxa : ∀ a, (E (c₀.lev a)) ^ n = 1` using `fun a => by rw [← map_pow, c₀.lev_tors, map_one]`. Use `choose σ hσn hσx using fun a => l2 R₀ A n hA hnR hT K _ (E (c₀.lev a)) (hxa a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ∀ a, (c₀.lev a).left ≫ φ = spMap κ ≫ (σ a).left` using `fun a => by`. Establish `e` using `congrArg (fun w => w.left) (hσx a)`. Simplify using `only [Over.comp_left, GlobalTheory.ObjPull.toUnit_left'] at e`. Rewrite using `[← GlobalTheory.ObjPull.pushEquiv_left hφ, ← e]`. Conclude with `congrArg (· ≫ (σ a).left) (Category.id_comp _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : PreconnectedSpace (𝟙_ (Over (Sp R₀))).left := inferInstanceAs (PreconnectedSpace (Sp R₀))`. Establish `inj : ∀ (T : Over (Sp R₀)) [Nonempty T.left] (s s' : 𝟙_ (Over (Sp R₀)) ⟶ A), s ^ n = 1 → s' ^ n = 1 → toUnit T ≫ s = toUnit T ≫ s' → s = s'` using `fun T _ s s' hs hs' h => eq_of_comp_eq A hA hnΓ (𝟙_ _) s s' hs hs' T (toUnit T) h`. Use `haveI : Nonempty (Over.mk ((𝟙_ (Over (Sp K))).hom ≫ spMap κ)).left := inferInstanceAs (Nonempty (Sp K))`. Establish `hadd : ∀ a a', σ (a + a') = σ a * σ a'` using `fun a a' => inj _ _ _ (hσn _) (by rw [mul_pow, hσn, hσn, _root_.mul_one]) (by rw [MonObj.comp_mul, hσx, hσx, hσx, c₀.lev_add, map_mul])`. Establish `one_iff : ∀ (T : Over (Sp R₀)) [Nonempty T.left] a, toUnit T ≫ σ a = 1 ↔ σ a = 1` using `fun T _ a => ⟨fun h => inj T (σ a) 1 (hσn a) (one_pow n) (h.trans (MonObj.comp_one _).symm), fun h => by rw [h, MonObj.comp_one]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c : SiegPre g n (zetaAway n) (spMap b)` to `{ A := A ab := hA P := P isLB := hP.1.1 rig₁ := hP.1.2.1 rig₂ := hP.1.2.2.1`. Use symmetry as in `:= hP.1.2.2.2`. Use `lev := σ`. Use `lev_add := hadd`. Use `lev_tors := hσn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `geom := ?_ }`. Use `⟨c, ⟨hP.2.1, hP.2.2⟩, ⟨φ, φ₂, hφ, hsq, hiso, hcomp⟩, ⟨𝟙 _, 𝟙 _, isGrpPullback_self A, ⟨(Category.id_comp _).trans (Category.comp_id _).symm, (Category.id_comp _).trans (Category.comp_id _).symm⟩, GlobalTheory.ThetaAffineGlue.lbIso_pull_id hP.1.1⟩⟩` and prove the remaining obligations. Introduce `k _ _ x β z hxβ hz`. Take `⟨ρ, rfl⟩ : ∃ ρ : R₀ →+* k, spMap ρ = x` from `⟨(Spec.preimage x).hom, by simp [spMap]⟩`. Establish `hβ : β = ρ.comp b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : spMap (ρ.comp b) = spMap β` using `by rw [← hxβ]; exact Spec.map_comp _ _`. Conclude with `(congrArg CommRingCat.Hom.hom (Spec.map_injective e)).symm`. Establish `hzU : z = Units.map ρ.toMonoidHom ζR` using `Units.ext (by rw [hz, hβ]; rfl)`. Substitute `hzU` using the available equality. Set `iK : K →+* AlgebraicClosure K` to `algebraMap K (AlgebraicClosure K)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `x₀ : Sp (AlgebraicClosure K) ⟶ Sp K` to `spMap iK`. Take `⟨g1, g2, g3⟩` from `c₀.geom (AlgebraicClosure K) x₀ ((iK.comp κ).comp b) (Units.map ((iK.comp κ).comp b).toMonoidHom ζU) (by rw [← Spec.map_comp]; rfl) rfl`. Set `T₀ : Over (Sp R₀)` to `Over.mk ((Over.mk x₀).hom ≫ spMap κ)`. Use `haveI : Nonempty T₀.left := inferInstanceAs (Nonempty (Sp (AlgebraicClosure K)))`. Use `haveI : Nonempty (Over.mk (spMap ρ)).left := inferInstanceAs (Nonempty (Sp k))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `push : ∀ a, GlobalTheory.ObjPull.pushEquiv hφ (Over.mk x₀) (toUnit _ ≫ c₀.lev a) = toUnit T₀ ≫ σ a` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.ObjPull.pushEquiv_left, Over.comp_left, Over.comp_left, Category.assoc, hcomp, GlobalTheory.ObjPull.toUnit_left', GlobalTheory.ObjPull.toUnit_left']`. Conclude with `(Category.assoc _ _ _).symm`. Use `⟨fun a => ?_, fun gg hg => ?_, fun a a' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_iff, ← one_iff T₀, ← push, map_eq_one_iff _ (GlobalTheory.ObjPull.pushEquiv hφ _).injective]`. Conclude with `g1 a`. Take `⟨τ, hτn, hτ⟩` from `l2 R₀ A n hA hnR hT k (spMap ρ) gg hg`. Take `⟨a, ha⟩` from `g2 ((GlobalTheory.ObjPull.pushEquiv hφ (Over.mk x₀)).symm (toUnit T₀ ≫ τ)) (by rw [← map_pow, ← MonObj.comp_pow, hτn, MonObj.comp_one, map_one])`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : σ a = τ` using `inj T₀ _ _ (hσn a) hτn (by rw [← push, ha, MulEquiv.apply_symm_apply])`. Rewrite using `[e, hτ]`. Establish `H'` using `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm (Sp R₀) (Sp K) A c₀.A (spMap κ) φ (P.pull (lift (𝟙 A) (𝟙 A)).left) (c₀.P.pull (lift (𝟙 c₀.A) (𝟙 c₀.A)).left) (pull_isLB hP.1.1 _) (pull_isLB c₀.isLB _) hφ hdiag (Over.mk x₀) (n : ℤ) _ _ (toUnit T₀ ≫ σ a) (toUnit T₀ ≫ σ a') _ (by rw [ …`. Establish `ht : (Over.mk x₀).hom ≫ spMap κ = spMap (iK.comp κ)` using `by show x₀ ≫ spMap κ = _`. Rewrite using `[← Spec.map_comp]`.
-
-Both sides reduce to the same expression. Establish `hu : (Units.map ((iK.comp κ).comp b).toMonoidHom ζU) ^ (2 * omegaStd a a') = Units.map (iK.comp κ).toMonoidHom (ζR ^ (2 * omegaStd a a'))`. Rewrite using `[map_zpow]`. Both sides reduce to the same expression. Rewrite `H'` using `[hu]`.
-
-Simplify using `only [T₀] at H'`. Rewrite `H'` using `[ht]`. Establish `H''` using `l3 R₀ A hA P hP n (by omega) hnR (σ a) (σ a') (hσn a) (hσn a') ζR hζR (2 * omegaStd a a') (AlgebraicClosure K) (iK.comp κ) H' k ρ`. Rewrite using `[← map_zpow]`. Conclude with `H''`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_spreads : ∀ (n : ℕ), 3 ≤ n → Odd n → ∀ (R₀ : Type) [CommRing R₀] [IsDomain R₀] [IsNoetherianRing R₀] [IsIntegrallyClosed R₀] (b : cycAway n →+* R₀) (A : Over (Sp R₀)) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left), IsAbelianScheme A → IsPPol A P → TorsRat A n → ∀ (g : ℕ) (K : Type) [Field K] (κ : R₀ →+* K) (c₀ : SiegPre g n (zetaAway n) (spMap (κ.comp b))), c₀.Principal → SameFib c₀.A c₀.P (𝟙 _) A P (spMap κ) → ∃ c : SiegPre g n (zetaAway n) (spMap b), c.Principal ∧ SiegPB c₀ c (spMap κ) ∧ ∃ (a : c.A.left ⟶ A.left) (a₂ : (G2 c.A).left ⟶ (G2 A).left), IsGrpPullback c.A A (𝟙 _) a ∧ IsSquare a a₂ ∧ LBIso c.P (P.pull a₂) := by
   intro n hn3 hnodd R₀ _ _ _ _ b A _ _ P hA hP hT g K _ κ c₀ hc₀ hsf

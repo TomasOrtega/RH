@@ -23,13 +23,13 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.UnifOffOrigin
 
 /- English proof (translation)
-Establish `hne : (𝔠.elt : Submodule (𝓞 F) F) ≠ ⊥`. Introduce `h`. Apply `𝔠.ne_zero` to reduce the goal to its premises. Conclude with `(FractionalIdeal.coeToSubmodule_eq_bot).mp h`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).mp hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hint⟩` from `(𝔠 : FractionalIdeal (𝓞 F)⁰ F).isFractional`. Take `⟨y, hy⟩` from `hint x hx`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hy0 : (algebraMap (𝓞 F) F y) ≠ 0`. Rewrite using `[hy, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 F) F)).mpr ha0) hx0`. Use `⟨⟨(a * y) • x, Submodule.smul_mem _ _ hx⟩, ?_⟩` and prove the remaining obligations. Introduce `τ`. Establish `hval : ((a * y) • x : F) = algebraMap (𝓞 F) F y * algebraMap (𝓞 F) F y`. Rewrite using `[mul_comm a y, mul_smul, ← hy, Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show 0 < τ ((a * y) • x)`. Rewrite using `[hval, map_mul]`. Establish `: τ (algebraMap (𝓞 F) F y) ≠ 0` using `(map_ne_zero τ).mpr hy0`. Conclude with `mul_self_pos.mpr this`.
+A detailed English derivation is pending.
 -/
 theorem exists_totPos {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) : ∃ c : 𝔠.elt, IsTotPos (c : F) := by
   have hne : (𝔠.elt : Submodule (𝓞 F) F) ≠ ⊥ := by
@@ -53,7 +53,7 @@ theorem exists_totPos {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) : �
   exact mul_self_pos.mpr this
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_totPos 𝔠`. Establish `hL : ((X.P c).pull (lift (𝟙 X.A) (𝟙 X.A)).left).IsLB` using `LB.isLB_pull (X.isLB c) _`. Establish `hA` using `isAmpleLB_of_relAmple_of_isAffine X.A hL (X.pos c hc)`. Take `⟨_, -, s, hS, -, ha⟩` from `hA.exists_affine_finite_subset (S := {p, q}) (Set.toFinite _) (U := ⊤) (fun _ _ => trivial)`. Conclude with `⟨_, ha, hS (by simp), hS (by simp)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affine_mem_mem {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ))
     (p q : X.A.left) : ∃ W : X.A.left.Opens, IsAffineOpen W ∧ p ∈ W ∧ q ∈ W := by
@@ -65,19 +65,17 @@ theorem exists_affine_mem_mem {F : Type} [Field F] [NumberField F] {𝔠 : FracI
   exact ⟨_, ha, hS (by simp), hS (by simp)⟩
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 X L n u w v hd hv`. Set `pt : PrimeSpectrum ℂ` to `default`. Take `⟨W, hW, hx, h0⟩` from `exists_affine_mem_mem X ((spMap TangentOrigin.fstC ≫ v.left) pt) ((u.ex 0).left pt)`. Establish `hx' : ⊤ ≤ (spMap TangentOrigin.fstC ≫ v.left) ⁻¹ᵁ W` using `(top_le_preimage_iff_mem _ _).2 hx`. Establish `h0' : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ W` using `(top_le_preimage_iff_mem _ _).2 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : ⊤ ≤ v.left ⁻¹ᵁ W` using `(TangentOrigin.top_le_preimage_iff v.left W).2 hx'`. Establish `hsnd : ∀ f, (TangentOrigin.evalPt (R` using `DualNumber ℂ) v.left W hv' f).snd = (TangentOrigin.jet u w W h0' f).snd := fun f => hd W hv' f`. Establish `hfst : ∀ f, (TangentOrigin.evalPt (R` using `DualNumber ℂ) v.left W hv' f).fst = TangentOrigin.evalPt (spMap TangentOrigin.fstC ≫ v.left) W hx' f := fun f => (TangentOrigin.evalPt_spMap_comp _ v.left W hv' hx' f).symm`. Establish `key : ∀ f, (TangentOrigin.evalPt (spMap TangentOrigin.fstC ≫ v.left) W hx' f - TangentOrigin.evalPt (u.ex 0).left W h0' f) * (TangentOrigin.jet u w W h0' f).snd = 0`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `hsnd (f * f)`. Rewrite `e` using `[map_mul, map_mul, DualNumber.snd_mul, DualNumber.snd_mul, hsnd f, hfst f, TangentOrigin.jet_fst]`. Take the linear combination `e / 2`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h, TangentOrigin.evalPt (spMap TangentOrigin.fstC ≫ v.left) W hx' h ≠ TangentOrigin.evalPt (u.ex 0).left W h0' h := by`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `hv ((TangentOrigin.ext_evalPt hW hx' h0' (RingHom.ext hc)).trans (TangentOrigin.ex_zero_left u))`. Establish `hdh : (TangentOrigin.jet u w W h0' h).snd = 0` using `(mul_eq_zero.1 (key h)).resolve_left (sub_ne_zero.2 hh)`. Establish `hδ : ∀ f, (TangentOrigin.jet u w W h0' f).snd = 0`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hf : TangentOrigin.evalPt (spMap TangentOrigin.fstC ≫ v.left) W hx' f = TangentOrigin.evalPt (u.ex 0).left W h0' f`. Establish `k2` using `key (f + h)`. Rewrite `k2` using `[map_add, map_add, hf, add_sub_add_left_eq_sub]`. Establish `e` using `(mul_eq_zero.1 k2).resolve_left (sub_ne_zero.2 hh)`. Rewrite `e` using `[map_add, TrivSqZeroExt.snd_add, hdh, add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 (key f)).resolve_left (sub_ne_zero.2 hf)`. Establish `ht` using `ArchMetricCompare.isTangent_zero X.A`. Establish `h₁` using `(TangentOrigin.tangent_mem_iff (u := u) ht W).2 h0'`. Use `ArchMetricCompare.eq_zero_of_isDiff u ((TangentOrigin.isDiff_iff ht hW h₁ h0' w).2 (RingHom.ext fun f => TrivSqZeroExt.ext (TangentOrigin.tangent_fst ht h₁ h0' f) ?_))` and prove the remaining obligations. Establish `e` using `ArchMetricCompare.isDiff_zero u W h₁ f`.
-
-Rewrite `e` using `[map_zero]`. Conclude with `e.trans (hδ f).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isDiff_of_not_isTangent : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (L : LB X.A.left) (n : ℕ)

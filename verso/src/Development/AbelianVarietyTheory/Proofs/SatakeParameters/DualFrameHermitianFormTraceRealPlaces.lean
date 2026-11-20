@@ -19,15 +19,15 @@ noncomputable section
 namespace GlobalTheory.DFrame
 
 /- English proof (translation)
-Introduce `D X s L Λ hΛ hbij N N' A B p _ ι`. Substitute `hΛ` using the available equality. Establish `hA : (0 : ℝ) < Formalism.L2.Th1.F.area L` using `Formalism.L2.Th1.F.areaPos_thm L`. Establish `hconj : ∀ (τ : D.what₂.Tau) (x : D.host.E), TaylorLogMetric.embT D τ (D.host.conj x) = starRingEnd ℂ (TaylorLogMetric.embT D τ x)` using `fun τ x => D.host.conjE_apply (TaylorLogMetric.embT D τ) x`. Establish `hL : Formalism.L2.Th1.GD.hOK L (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area L.lattice.toAddSubgroup)⁻¹) (vecF D s A) (vecF D s B) = ∑ τ : X.Tau, TaylorLogMetric.embT D (s.iT τ) (∑ i, ∑ k, A i k * D.host.conj (B i k))`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FourthRootStd.area_eq]`. Unfold `Formalism.L2.Th1.GD.hOK Formalism.L2.AlgTh.hSc`. Use `show ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) * ∑ i, ∑ j, _ = _`. Simplify using `only [Matrix.diagonal_apply, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum]`. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, hconj, vecF]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h0 : ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hA.ne'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hL, map_sum]`. Rewrite using `[← Equiv.sum_comp s.iT.symm]`. Simplify using `only [Equiv.apply_symm_apply]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.ofBijective _ hbij).sum_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hOK_vecF : ∀ (D : D7) (X : Fields) (s : Seam D X) (L : PeriodPair) (Λ : AddSubgroup ℂ), L.lattice.toAddSubgroup = Λ → Function.Bijective (tauPl D) → ∀ (N N' : ℕ) (A B : Matrix (Fin N') (Fin N) D.host.E) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]), ι (Formalism.L2.Th1.GD.hOK L (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area Λ)⁻¹) (GlobalTheory.DFrame.vecF D s A) (GlobalTheory.DFrame.vecF D s B)) = ∑ z : Bool × HH D, GlobalTheory.DFrame.rho D ι z (∑ i, ∑ k, A i k * D.host.conj (B i k)) := by
   intro D X s L Λ hΛ hbij N N' A B p _ ι

@@ -54,11 +54,11 @@ def RedP (a : ℕ) (Y : TupV (E := E) v n a) : Prop :=
               ffGram (RingEquiv.prodComm (R := k) (S := k)).toRingHom J' X = T' ∧ LinearIndependent (k × k) X}))
 
 /- English proof (translation)
-Introduce `hG ϖ hϖ`. Establish `ha : a ≤ n` using `hG.2.2.2.2.1`. Take `⟨k, _, _, hk, h⟩` from `hR hG ϖ hϖ`. Break down `h with ⟨hη, K, _, _, σ', J', T', hσ, h2, hne, hJ, hJu, hT, hTu, hc⟩ | ⟨hη, J', T', hJ, hJu, hT, hTu, hc⟩` into its components or cases. Rewrite using `[hc, hI k K σ' hσ h2 hne n a ha J' hJ hJu T' hT hTu, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Unfold `prodEtaB qv`. Rewrite using `[hη]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hc, hS k n a ha J' hJ hJu T' hT hTu, hk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Unfold `prodEtaB qv`. Rewrite using `[hη]`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem clsP_of (a : ℕ) (Y : TupV (E := E) v n a) (hR : RedP σ J ψ v Λ a Y) (hI : FFInertB) (hS : FFSplitB) :
     ClsP σ J ψ v Λ a Y := by

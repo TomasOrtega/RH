@@ -12,7 +12,7 @@ open MeasureTheory Filter Topology
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Conclude with `f.smooth j`.
+A detailed English derivation is pending.
 -/
 theorem cd (f : SchwartzMap V ℂ) (j : ℕ) : ContDiff ℝ j f := by
   exact f.smooth j
@@ -29,9 +29,7 @@ Both sides reduce to the same expression.
 theorem jet_apply (k j : ℕ) (f : SchwartzMap V ℂ) (x : V) : jet k j f x = ‖x‖ ^ k • iteratedFDeriv ℝ j f x := rfl
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `BoundedContinuousFunction.norm_ofNormedAddCommGroup_le _ (apply_nonneg _ _) _`. Use `SchwartzMap.seminorm_le_bound ℂ k j f (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Establish `h` using `(jet k j f).norm_coe_le_norm x`. Rewrite `h` using `[jet_apply, norm_smul, norm_pow, norm_norm]`.
-
-Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_jet (k j : ℕ) (f : SchwartzMap V ℂ) : ‖jet k j f‖ = SchwartzMap.seminorm ℂ k j f := by
   refine le_antisymm ?_ ?_
@@ -64,7 +62,7 @@ variable {α : Type} [TopologicalSpace α] [SecondCountableTopology α] [Measura
 include hG hI
 
 /- English proof (translation)
-Use `Integrable.mono' (hI k j) ((J k j).continuous.comp hG).aestronglyMeasurable (Filter.Eventually.of_forall fun a => le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[J_apply, norm_jet]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem int_J (k j : ℕ) : Integrable (fun a => J k j (G a)) μ := by
   refine Integrable.mono' (hI k j) ((J k j).continuous.comp hG).aestronglyMeasurable
@@ -73,7 +71,7 @@ theorem int_J (k j : ℕ) : Integrable (fun a => J k j (G a)) μ := by
 
 omit hI in
 /- English proof (translation)
-Establish `h : (fun a => iteratedFDeriv ℝ j (G a) x) = fun a => J 0 j (G a) x`. Use function extensionality and compare the values at `a`. Rewrite using `[J_apply, jet_apply, pow_zero, one_smul]`. Rewrite using `[h]`. Conclude with `(continuous_eval_const x).comp ((J 0 j).continuous.comp hG)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_D (j : ℕ) (x : V) : Continuous fun a => iteratedFDeriv ℝ j (G a) x := by
   have h : (fun a => iteratedFDeriv ℝ j (G a) x) = fun a => J 0 j (G a) x := by
@@ -84,25 +82,25 @@ theorem cont_D (j : ℕ) (x : V) : Continuous fun a => iteratedFDeriv ℝ j (G a
 
 omit hG hI in
 /- English proof (translation)
-Establish `h` using `SchwartzMap.le_seminorm ℂ 0 j f x`. Rewrite `h` using `[pow_zero, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem bd_D (f : SchwartzMap V ℂ) (j : ℕ) (x : V) : ‖iteratedFDeriv ℝ j f x‖ ≤ SchwartzMap.seminorm ℂ 0 j f := by
   have h := SchwartzMap.le_seminorm ℂ 0 j f x
   rwa [pow_zero, one_mul] at h
 
 /- English proof (translation)
-Conclude with `Integrable.mono' (hI 0 j) (cont_D hG j x).aestronglyMeasurable (Filter.Eventually.of_forall fun a => bd_D (G a) j x)`.
+A detailed English derivation is pending.
 -/
 theorem int_D (j : ℕ) (x : V) : Integrable (fun a => iteratedFDeriv ℝ j (G a) x) μ := by
   exact Integrable.mono' (hI 0 j) (cont_D hG j x).aestronglyMeasurable
     (Filter.Eventually.of_forall fun a => bd_D (G a) j x)
 
 /- English proof (translation)
-Establish `hcurry : ∀ (f : SchwartzMap V ℂ) (y : V), HasFDerivAt (iteratedFDeriv ℝ j f) (iteratedFDeriv ℝ (j + 1) f y).curryLeft y`. Introduce `f y`. Establish `hd : DifferentiableAt ℝ (iteratedFDeriv ℝ j f) y` using `((cd f (j + 1)).differentiable_iteratedFDeriv (by exact_mod_cast Nat.lt_succ_self j)) y`. Use `hd.hasFDerivAt using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Rewrite using `[ContinuousMultilinearMap.curryLeft_apply, iteratedFDeriv_succ_apply_left]`. Simplify using the standard rewrite rules. Establish `hL : (∫ a, iteratedFDeriv ℝ (j + 1) (G a) x ∂μ).curryLeft = ∫ a, (iteratedFDeriv ℝ (j + 1) (G a) x).curryLeft ∂μ` using `((continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (j + 1) => V) ℂ).toContinuousLinearEquiv.integral_comp_comm _).symm`. Rewrite using `[hL]`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun y a => iteratedFDeriv ℝ j (G a) y) (F' := fun y a => (iteratedFDeriv ℝ (j + 1) (G a) y).curryLeft) (bound := fun a => SchwartzMap.seminorm ℂ 0 (j + 1) (G a)) Filter.univ_mem (Filter.Eventually.of_forall fun y => (cont_D hG …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (j + 1) => V) ℂ).continuous.comp (cont_D hG (j + 1) x)).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun a y _ => ?_` and prove the remaining obligations. Conclude with `((continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (j + 1) => V) ℂ).norm_map _).trans_le (bd_D (G a) (j + 1) y)`. Conclude with `Filter.Eventually.of_forall fun a y _ => hcurry (G a) y`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deriv_D (j : ℕ) (x : V) : HasFDerivAt (fun y => ∫ a, iteratedFDeriv ℝ j (G a) y ∂μ)
     (∫ a, iteratedFDeriv ℝ (j + 1) (G a) x ∂μ).curryLeft x := by
@@ -132,7 +130,7 @@ theorem deriv_D (j : ℕ) (x : V) : HasFDerivAt (fun y => ∫ a, iteratedFDeriv 
   · exact Filter.Eventually.of_forall fun a y _ => hcurry (G a) y
 
 /- English proof (translation)
-Use `show (∫ a, iteratedFDeriv ℝ 0 (G a) x ∂μ) 0 = ∫ a, G a x ∂μ`. Rewrite using `[ContinuousMultilinearMap.integral_apply (int_D hG hI 0 x)]`. Simplify using `only [iteratedFDeriv_zero_apply]`. Use `fderiv m _ x := deriv_D hG hI m x`. Use `cont m _ := continuous_iff_continuousAt.2 fun x => (deriv_D hG hI m x).continuousAt`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylor : HasFTaylorSeriesUpTo ∞ (fun x => ∫ a, G a x ∂μ) fun x j => ∫ a, iteratedFDeriv ℝ j (G a) x ∂μ where
   zero_eq x := by
@@ -143,7 +141,7 @@ theorem taylor : HasFTaylorSeriesUpTo ∞ (fun x => ∫ a, G a x ∂μ) fun x j 
   cont m _ := continuous_iff_continuousAt.2 fun x => (deriv_D hG hI m x).continuousAt
 
 /- English proof (translation)
-Establish `h1 : (∫ a, J k j (G a) ∂μ) x = ∫ a, J k j (G a) x ∂μ` using `((BoundedContinuousFunction.evalCLM ℝ x).integral_comp_comm (int_J hG hI k j)).symm`. Rewrite using `[h1, ← (taylor hG hI).eq_iteratedFDeriv (m := j) (by exact_mod_cast le_top) x]`. Simplify using `only [J_apply, jet_apply]`. Conclude with `integral_smul _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_int (k j : ℕ) (x : V) :
     (∫ a, J k j (G a) ∂μ) x = ‖x‖ ^ k • iteratedFDeriv ℝ j (fun x => ∫ a, G a x ∂μ) x := by
@@ -154,9 +152,9 @@ theorem eval_int (k j : ℕ) (x : V) :
   exact integral_smul _ _
 
 /- English proof (translation)
-Use `⟨⟨fun x => ∫ a, G a x ∂μ, (taylor hG hI).contDiff, fun k n => ⟨‖∫ a, J k n (G a) ∂μ‖, fun x => ?_⟩⟩, fun k j => ?_⟩` and prove the remaining obligations. Establish `h` using `(∫ a, J k n (G a) ∂μ).norm_coe_le_norm x`. Rewrite `h` using `[eval_int hG hI, norm_smul, norm_pow, norm_norm]`. Conclude with `h`. Use `ext1 x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[J_apply, jet_apply, eval_int hG hI]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_int : ∃ f : SchwartzMap V ℂ, ∀ k j, J k j f = ∫ a, J k j (G a) ∂μ := by
   refine ⟨⟨fun x => ∫ a, G a x ∂μ, (taylor hG hI).contDiff, fun k n => ⟨‖∫ a, J k n (G a) ∂μ‖, fun x => ?_⟩⟩,
@@ -170,19 +168,17 @@ theorem exists_int : ∃ f : SchwartzMap V ℂ, ∀ k j, J k j f = ∫ a, J k j 
 
 omit hG hI in
 /- English proof (translation)
-Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) ((normSeminorm ℂ ℂ).comp T.toLinearMap) (continuous_norm.comp T.continuous)`. Set `Φ : SchwartzMap V ℂ →ₗ[ℂ] (∀ i : s, V →ᵇ (V [×i.1.2]→L[ℝ] ℂ))` to `LinearMap.pi fun i => (J i.1.1 i.1.2 : SchwartzMap V ℂ →L[ℂ] _).toLinearMap`. Establish `hbound : ∀ f, ‖T f‖ ≤ C * ‖Φ f‖`. Introduce `f`. Establish `h1 : ‖T f‖ ≤ (C : ℝ) * (s.sup (schwartzSeminormFamily ℂ V ℂ)) f` using `hC f`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h1.trans (mul_le_mul_of_nonneg_left ?_ C.2)` and prove the remaining obligations. Use `Seminorm.finset_sup_apply_le (norm_nonneg _) fun i hi => ?_` and prove the remaining obligations. Establish `h2 : ‖J i.1 i.2 f‖ ≤ ‖Φ f‖` using `norm_le_pi_norm (Φ f) ⟨i, hi⟩`. Rewrite `h2` using `[J_apply, norm_jet]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker Φ ≤ LinearMap.ker T.toLinearMap`. Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hbound f`. Rewrite `h` using `[hf, norm_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `norm_le_zero_iff.1 h`. Set `g₀ : LinearMap.range Φ →ₗ[ℂ] ℂ` to `(LinearMap.ker Φ).liftQ T.toLinearMap hker ∘ₗ Φ.quotKerEquivRange.symm.toLinearMap`. Establish `hg₀ : ∀ f, g₀ ⟨Φ f, LinearMap.mem_range_self Φ f⟩ = T f`. Introduce `f`. Simplify using `only [g₀, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression. Establish `hg₀b : ∀ v, ‖g₀ v‖ ≤ C * ‖v‖`. Introduce and unpack `⟨_, f, rfl⟩`. Use `show ‖g₀ ⟨Φ f, LinearMap.mem_range_self Φ f⟩‖ ≤ C * ‖Φ f‖`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg₀]`. Conclude with `hbound f`. Take `⟨T', hT', -⟩` from `exists_extension_norm_eq (LinearMap.range Φ) (g₀.mkContinuous C hg₀b)`. Use `⟨s, T', fun f => ?_⟩` and prove the remaining obligations. Establish `h` using `hT' ⟨Φ f, LinearMap.mem_range_self Φ f⟩`.
-
-Rewrite `h` using `[LinearMap.mkContinuous_apply, hg₀]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor (T : SchwartzMap V ℂ →L[ℂ] ℂ) : ∃ (s : Finset (ℕ × ℕ))
     (T' : (∀ i : s, V →ᵇ (V [×i.1.2]→L[ℝ] ℂ)) →L[ℂ] ℂ), ∀ f, T f = T' fun i => J i.1.1 i.1.2 f := by
@@ -227,11 +223,11 @@ end SchI
 open MeasureTheory in
 
 /- English proof (translation)
-Introduce `V _ _ _ α _ _ _ _ μ G hG hI`. Take `⟨f, hf⟩` from `SchI.exists_int hG hI`. Use `⟨f, fun T => ?_⟩` and prove the remaining obligations. Take `⟨s, T', hT'⟩` from `SchI.factor T`. Establish `hsplit : ∀ g : SchwartzMap V ℂ, T g = ∑ i : s, T' (Pi.single i (SchI.J i.1.1 i.1.2 g))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[hT', ← map_sum, Finset.univ_sum_single]`. Establish `hint : ∀ i : s, Integrable (fun a => T' (Pi.single i (SchI.J i.1.1 i.1.2 (G a)))) μ` using `fun i => (T'.comp (ContinuousLinearMap.single ℂ _ i)).integrable_comp (SchI.int_J hG hI _ _)`. Establish `hTG : (fun a => T (G a)) = fun a => ∑ i : s, T' (Pi.single i (SchI.J i.1.1 i.1.2 (G a)))`. Use function extensionality and compare the values at `fun a => hsplit (G a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨by rw [hTG]; exact integrable_finsetSum _ fun i _ => hint i, ?_⟩` and prove the remaining obligations. Rewrite using `[hTG, integral_finsetSum _ fun i _ => hint i, hsplit f]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `((T'.comp (ContinuousLinearMap.single ℂ _ i)).integral_comp_comm (SchI.int_J hG hI _ _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weakInt :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (α : Type) [TopologicalSpace α]

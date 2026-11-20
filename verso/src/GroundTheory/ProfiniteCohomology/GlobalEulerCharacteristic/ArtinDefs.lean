@@ -58,7 +58,7 @@ theorem piFamilyRep_apply {ι : Type*} (V : ι → Type*) [∀ i, AddCommMonoid 
 end Pi
 
 /- English proof (translation)
-Use `Module.Finite.of_finite (R := ZMod l) (M := W)` as an intermediate fact. Use `Module.Finite.of_finite (R := ZMod l) (M := N)` as an intermediate fact. Conclude with `Module.finite_of_finite (ZMod l)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_tensorProduct_zmod (l : ℕ) [NeZero l] (W N : Type*) [AddCommGroup W]
     [Module (ZMod l) W] [Finite W] [AddCommGroup N] [Module (ZMod l) N] [Finite N] :

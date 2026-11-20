@@ -24,9 +24,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KSAbLocusSymm
 
 /- English proof (translation)
-Use `GlobalTheory.LocM.FrameBase.tanBasis_baseChange t φ (𝟙 (Sp R)) n _ (fun i => GlobalTheory.LieMet.isTan_tv (b i)) ?_` and prove the remaining obligations. Introduce `w hw`. Use `⟨b.repr (GlobalTheory.LieMet.tanOf hw), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show IsCombAtG t _ _ _ (tv (GlobalTheory.LieMet.tanOf hw)).left`. Rewrite using `[GlobalTheory.LieMet.isComb_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(b.sum_repr _).symm`. Establish `h` using `(GlobalTheory.LieMet.isComb_iff b a (GlobalTheory.LieMet.tanOf hw)).1 ha`. Rewrite using `[h]`. Use extensionality with `i`. Simplify using `[Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tanBasis_of_basis' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R]
     (t : SAB H (Sp R)) {n : ℕ} (b : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) {T : Type} [CommRing T]
@@ -46,23 +46,19 @@ theorem tanBasis_of_basis' {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmon htt hab n v' DV`. Take `⟨Θ₁, hKS⟩` from `GlobalTheory.T.exists_kodairaSpencer_abelianLocus_chartRing E H R t P m tt gam hmon htt hab n v' 0 DV`. Use `⟨Θ₁, ?_, hKS⟩` and prove the remaining obligations. Set `U : (Sp R).affineOpens` to `(Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))`. Set `ρ : R →+* Γ(Sp R, U.1)` to `((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc : spMap ρ ≫ 𝟙 (Sp R) = chart U`. Rewrite using `[Category.comp_id]`. Use `show Spec.map _ = U.2.fromSpec`. Rewrite using `[← (isAffineOpen_top (Sp R)).map_fromSpec U.2 (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec]`. Rewrite using `[show CommRingCat.ofHom ρ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op from rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `erw [Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨hv, hb⟩` from `tanBasis_of_basis' t v' ρ`. Rewrite `hv`, `hb` using `[hc]`. Establish `h2 : (U.1 : (Sp R).Opens) = PrimeSpectrum.basicOpen (∏ i, tt i)` using `basicOpen_eq_of_affine (R := CommRingCat.of R) (∏ i, tt i)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : ∀ q : Sp R, q ∈ ((U.1 : (Sp R).Opens) : Set (Sp R)) → ∏ i, tt i ∉ q.asIdeal`. Introduce `q hq`. Rewrite `hq` using `[h2]`. Conclude with `hq`. Establish `hx : ∀ s, ∏ i, tt i ∉ ((chart U) s).asIdeal` using `fun s => h4 _ (by rw [← U.2.range_fromSpec]; exact ⟨s, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∏ i, tt i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => htt i`. Use `haveI : Nonempty (U.1 : (Sp R).Opens) := by`. Use `⟨⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R), ?_⟩⟩` and prove the remaining obligations. Use `show _ ∈ ((U.1 : (Sp R).Opens) : Set (Sp R))`. Rewrite using `[h2]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `show ∏ i, tt i ∉ (⊥ : Ideal R)`. Simplify using `using hne`. Use `haveI : IsDomain Γ(Sp R, U.1) := inferInstance`. Set `K` to `FractionRing Γ(Sp R, U.1)`. Set `x₀ : Γ(Sp R, U.1) →+* K` to `algebraMap _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra ℚ K := ((x₀.comp ρ).comp (algebraMap ℚ R)).toAlgebra`. Use `haveI : CharZero K := algebraRat.charZero K`. Take `⟨PP', cub, sym, adj, prim, mm, -⟩` from `sabPull proved_CubePullSt (spMap x₀ ≫ chart U) t`. Establish `hx' : ∀ s, ∏ i, tt i ∉ ((spMap x₀ ≫ chart U) s).asIdeal` using `fun s => hx ((spMap x₀) s)`. Take `⟨hP, hA, hK⟩` from `GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus E H R t P m tt htt hab _ (spMap x₀ ≫ chart U) _ hx' ⟨mm⟩`.
-
-Take `⟨P₀, e, he⟩` from `GlobalTheory.PolDvr.exists_polAV _ hP hA hK`. Take `⟨w, g, -⟩` from `mm.lin`. Take `⟨h1, h2'⟩` from `he t.G (spMap x₀ ≫ chart U) mm.φ t.PP.L mm.cart ⟨w, g⟩`. Establish `hsym` using `GlobalTheory.FibSym.map_transpose_eq E H (Sp R) t _ U n _ hv hb K x₀ P₀ _ h1 h2' le_rfl _ Θ₁ hKS`. Use extensionality with `i j`.
-
-Establish `hij` using `congrFun (congrFun hsym i) j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at hij`. Conclude with `IsFractionRing.injective Γ(Sp R, U.1) K hij`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_symm_isKS_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre tt gam → (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (DV : Derivation ℤ Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1) Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1)), ∃ Θ₁ : Matrix (Fin n) (Fin n) Γ(Sp R, ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))).1), Θ₁ᵀ = Θ₁ ∧ IsKS t ((Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) ((Sp R).affineBasicOpen (U := (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i))) (fun a => spMap (dualMap (((Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)) ≫ (tv (v' a)).left) ⇑DV Θ₁ := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmon htt hab n v' DV

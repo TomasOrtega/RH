@@ -23,7 +23,7 @@ scoped instance topER (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
 variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
 
 /- English proof (translation)
-The claim follows from `continuous_induced_dom`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cm (F E : Type) [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] : Continuous (cm F E R) := continuous_induced_dom
 
@@ -87,9 +87,9 @@ def PsiInt : Set (E ⊗[F] v.adicCompletion F) :=
   {x | ∃ a : Ix E → v.adicCompletion F, (∀ i, a i ∈ v.adicCompletionIntegers F) ∧ psi v a = x}
 
 /- English proof (translation)
-Use `Subring.closure_induction (p := fun x _ => PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) x ∈ oE v) (fun x hx => ?_) (by simp) (by simp) (fun x y _ _ hx hy => by rw [map_add]; exact add_mem hx hy) (fun x _ hx => by rw [map_neg]; exact neg_mem hx) (fun x y _ _ hx hy => by rw [ma …` and prove the remaining obligations. Break down `hx with ⟨⟨e, ⟨y, rfl⟩⟩, rfl⟩ | ⟨⟨r, hr⟩, rfl⟩` into its components or cases. Use `Subring.subset_closure (Or.inl ⟨⟨σ (algebraMap (𝓞 E) E y), ?_⟩, ?_⟩)` and prove the remaining obligations. Take `⟨z, hz⟩ : ∃ z : 𝓞 E, algebraMap (𝓞 E) E z = σ (algebraMap (𝓞 E) E y)` from `⟨⟨σ (algebraMap (𝓞 E) E y), (y.2.map (σ.restrictScalars ℚ))⟩, rfl⟩`. Conclude with `⟨z, hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `[PI.UnitaryApproxDefs.sigR]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨r, hr⟩, by simp [PI.UnitaryApproxDefs.sigR]⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigR_mem (σ : E →ₐ[F] E) {x : E ⊗[F] v.adicCompletion F} (hx : x ∈ oE v) :
     PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) x ∈ oE v := by

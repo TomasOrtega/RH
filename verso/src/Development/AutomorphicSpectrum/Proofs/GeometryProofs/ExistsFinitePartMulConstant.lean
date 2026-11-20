@@ -18,11 +18,11 @@ open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Sem
 namespace GlobalTheory.CompanionTheory.Ar.BT.LateralTheory
 
 /- English proof (translation)
-Establish `e₁ : ∀ v, φ (θ v) = algebraMap V K v` using `fun v => RingHom.congr_fun h₁ v`. Establish `e₂ : ∀ v, ψ (θ v) = algebraMap V K v` using `fun v => RingHom.congr_fun h₂ v`. Use extensionality with `c`. Take `⟨v, w, hw0, hc⟩` from `IsFractionRing.div_surjective (A := V) (φ c)`. Establish `hw : algebraMap V K w ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hw0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθ : θ w * c = θ v` using `φ.injective (by`. Rewrite using `[map_mul, e₁, e₁, ← hc]`. Use the proof step `field_simp)`. Establish `h3` using `congrArg ψ hθ`. Rewrite `h3` using `[map_mul, e₂, e₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, div_eq_iff hw, ← h3, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_of_isFractionRing {V K L : Type} [CommRing V] [IsDomain V] [Field K] [Field L] [Algebra V K]
     [IsFractionRing V K] (φ ψ : L →+* K) (θ : V →+* L) (h₁ : φ.comp θ = algebraMap V K)
@@ -40,17 +40,15 @@ theorem ringHom_ext_of_isFractionRing {V K L : Type} [CommRing V] [IsDomain V] [
   rw [← hc, div_eq_iff hw, ← h3, mul_comm]
 
 /- English proof (translation)
-Take `⟨⟨z, φ⟩, hz⟩` from `(Scheme.SpecToEquivOfField (FractionRing V) X).symm.surjective f`. Take `⟨⟨w, ψ⟩, hw⟩` from `(Scheme.SpecToEquivOfField (FractionRing V) X).symm.surjective g`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hz hw`. Establish `hzw : z = w`. Establish `h1 : f x ∈ Set.range (X.fromSpecResidueField z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hz]`. Conclude with `⟨_, rfl⟩`. Establish `h2 : g y ∈ Set.range (X.fromSpecResidueField w)`. Rewrite using `[← hw]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1`, `h2` using `[Scheme.range_fromSpecResidueField]`. Rewrite `h1` using `[h]`. Conclude with `h1.symm.trans h2`. Substitute `hzw` using the available equality. Set `θ : CommRingCat.of V ⟶ X.residueField z` to `Spec.preimage (X.fromSpecResidueField z ≫ π)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hθ : Spec.map θ = X.fromSpecResidueField z ≫ π` using `Spec.map_preimage _`. Establish `h₁ : θ ≫ φ = CommRingCat.ofHom (algebraMap V (FractionRing V))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hθ, ← Category.assoc, hz, hf]`. Establish `h₂ : θ ≫ ψ = CommRingCat.ofHom (algebraMap V (FractionRing V))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hθ, ← Category.assoc, hw, hg]`. Establish `hφψ : φ = ψ`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Conclude with `ringHom_ext_of_isFractionRing (V := V) φ.hom ψ.hom θ.hom (congrArg CommRingCat.Hom.hom h₁) (congrArg CommRingCat.Hom.hom h₂)`.
-
-Rewrite using `[← hz, ← hw, hφψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem point_ext {V : Type} [CommRing V] [IsDomain V] {X : Scheme.{0}} (π : X ⟶ Spec (CommRingCat.of V))
     (f g : Spec (CommRingCat.of (FractionRing V)) ⟶ X)
@@ -86,16 +84,14 @@ theorem point_ext {V : Type} [CommRing V] [IsDomain V] {X : Scheme.{0}} (π : X 
 variable {V : Type} [CommRing V] [IsDomain V] {T : Type} [CommGroup T]
 
 /- English proof (translation)
-Simplify using `using Over.w (toUnit (genPt V))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_genPt_left : (toUnit (genPt V)).left =
     Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V))) := by
   simpa using Over.w (toUnit (genPt V))
 
 /- English proof (translation)
-Use `haveI := Γ.separated`. Use `haveI hdom : IsDominant (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Express the relevant statement in the definitionally equal form `RingHom.ker (algebraMap V (FractionRing V)) ≤ _`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V))]`. Conclude with `bot_le)⟩`.
-
-Establish `h'` using `congrArg Over.Hom.left h`. Simplify using `only [Over.comp_left, toUnit_genPt_left] at h'`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Spec (CommRingCat.of V)) Γ.G.hom ((Over.w σ).trans (Over.w τ).symm) (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) h')`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem section_ext (Γ : QFGroup V T) (σ τ : 𝟙_ (Over (Spec (CommRingCat.of V))) ⟶ Γ.G)
     (h : toUnit (genPt V) ≫ σ = toUnit (genPt V) ≫ τ) : σ = τ := by
@@ -112,11 +108,11 @@ theorem section_ext (Γ : QFGroup V T) (σ τ : 𝟙_ (Over (Spec (CommRingCat.o
     (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) h')
 
 /- English proof (translation)
-Set `c` to `toUnit (genPt V) ≫ σ`. Set `x₀ : Spec (CommRingCat.of (FractionRing V))` to `default`. Establish `hover : ∀ c' : genPt V ⟶ Γ.G, c'.left ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))` using `fun c' => Over.w c'`. Establish `hgen : (Γ.G.hom (c.left x₀)).asIdeal = ⊥`. Establish `e : Γ.G.hom (c.left x₀) = (Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) x₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hover c]`. Both sides reduce to the same expression. Establish `hx₀ : x₀.asIdeal = ⊥` using `(Ideal.eq_bot_or_top x₀.asIdeal).resolve_right x₀.isPrime.ne_top`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap V (FractionRing V)) x₀.asIdeal = ⊥`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hx₀]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective V (FractionRing V))`. Take `⟨t, x, hx⟩` from `Γ.pt_onto _ hgen`. Use `⟨t, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Conclude with `point_ext Γ.G.hom _ _ (hover _) (hover _) x₀ x hx.symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pt_of_section (Γ : QFGroup V T) (σ : 𝟙_ (Over (Spec (CommRingCat.of V))) ⟶ Γ.G) :
     ∃ t, toUnit (genPt V) ≫ σ = Γ.pt t := by

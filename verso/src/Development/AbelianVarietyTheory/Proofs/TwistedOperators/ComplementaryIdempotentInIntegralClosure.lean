@@ -21,14 +21,14 @@ def clos (D : D7) (I : Ideal (𝓞 D.host.E)) : AddSubgroup (Af D.host.F ⊗[D.h
   AddSubgroup.closure {y | ∃ a ∈ intAf D.host.F, ∃ x : 𝓞 D.host.E, x ∈ I ∧ y = a ⊗ₜ[D.host.F] (x : D.host.E)}
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_mul]; exact mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAf_mul' {F : Type} [Field F] [NumberField F] {a b : Af F} (ha : a ∈ intAf F) (hb : b ∈ intAf F) :
     a * b ∈ intAf F := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_intAf' {F : Type} [Field F] [NumberField F] : (1 : Af F) ∈ intAf F := fun v => by
   rw [map_one]; exact one_mem _
@@ -36,22 +36,20 @@ theorem one_mem_intAf' {F : Type} [Field F] [NumberField F] : (1 : Af F) ∈ int
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tmul_mem_clos {I : Ideal (𝓞 D.host.E)} {a : Af D.host.F} (ha : a ∈ intAf D.host.F) {x : 𝓞 D.host.E}
     (hx : x ∈ I) : a ⊗ₜ[D.host.F] (x : D.host.E) ∈ clos D I :=
   AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, x', hx', rfl⟩` from `hz`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Establish `e : (x : D.host.E) * (x' : D.host.E) = ((x * x' : 𝓞 D.host.E) : D.host.E)` using `rfl`. Rewrite using `[e]`. Conclude with `tmul_mem_clos (intAf_mul' ha hb) (Ideal.mul_mem_mul hx hx')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [add_mul]`. Conclude with `add_mem h1 h2`. Consider the case `neg _ _ h => rw [neg_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `neg_mem h`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`.
-
-Consider the case `neg _ _ h => rw [mul_neg]`. Conclude with `neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_clos {I J : Ideal (𝓞 D.host.E)} {y z : Af D.host.F ⊗[D.host.F] D.host.E}
     (hy : y ∈ clos D I) (hz : z ∈ clos D J) : y * z ∈ clos D (I * J) := by
@@ -73,7 +71,7 @@ theorem mul_mem_clos {I J : Ideal (𝓞 D.host.E)} {y z : Af D.host.F ⊗[D.host
   | neg _ _ h => rw [mul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Unfold `intAE clos`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Submodule.mem_top, true_and]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intAE_eq_clos : intAE D = clos D ⊤ := by
   unfold intAE clos
@@ -82,7 +80,7 @@ theorem intAE_eq_clos : intAE D = clos D ⊤ := by
   simp only [Set.mem_setOf_eq, Submodule.mem_top, true_and]
 
 /- English proof (translation)
-Establish `h` using `tmul_mem_clos (D := D) (I := ⊤) one_mem_intAf' (Submodule.mem_top (x := (1 : 𝓞 D.host.E)))`. Establish `e : ((1 : 𝓞 D.host.E) : D.host.E) = 1` using `rfl`. Rewrite `h` using `[e, ← Algebra.TensorProduct.one_def]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem one_mem_clos : (1 : Af D.host.F ⊗[D.host.F] D.host.E) ∈ clos D ⊤ := by
   have h := tmul_mem_clos (D := D) (I := ⊤) one_mem_intAf' (Submodule.mem_top (x := (1 : 𝓞 D.host.E)))
@@ -90,9 +88,7 @@ theorem one_mem_clos : (1 : Af D.host.F ⊗[D.host.F] D.host.E) ∈ clos D ⊤ :
   rwa [e, ← Algebra.TensorProduct.one_def] at h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, Ideal.one_eq_top]`. Conclude with `one_mem_clos`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`.
-
-Conclude with `mul_mem_clos (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_mem_clos {ι : Type} (s : Finset ι) (f : ι → Af D.host.F ⊗[D.host.F] D.host.E)
     (I : ι → Ideal (𝓞 D.host.E)) (h : ∀ i ∈ s, f i ∈ clos D (I i)) : ∏ i ∈ s, f i ∈ clos D (∏ i ∈ s, I i) := by
@@ -104,9 +100,9 @@ theorem prod_mem_clos {ι : Type} (s : Finset ι) (f : ι → Af D.host.F ⊗[D.
     exact mul_mem_clos (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih fun i hi j hj hij => h i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj) hij]`. Establish `h0 : c a * ∑ i ∈ s, c i = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => h a (Finset.mem_insert_self _ _) j (Finset.mem_insert_of_mem hj) (fun e => ha (e ▸ hj))`. Take the linear combination `h0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem prod_one_sub {A ι : Type} [CommRing A] (c : ι → A) (s : Finset ι)
     (h : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → c i * c j = 0) : ∏ i ∈ s, (1 - c i) = 1 - ∑ i ∈ s, c i := by
@@ -123,9 +119,9 @@ theorem prod_one_sub {A ι : Type} [CommRing A] (c : ι → A) (s : Finset ι)
     linear_combination h0
 
 /- English proof (translation)
-Establish `hv : v.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 F))` using `mem_nonZeroDivisors_of_ne_zero v.ne_bot`. Use `set n := Fintype.card (ClassGroup (𝓞 F)) with hn`. Establish `hvn : v.asIdeal ^ n ∈ nonZeroDivisors (Ideal (𝓞 F))` using `pow_mem hv n`. Establish `e : (⟨v.asIdeal ^ n, hvn⟩ : nonZeroDivisors (Ideal (𝓞 F))) = ⟨v.asIdeal, hv⟩ ^ n` using `Subtype.ext (by simp)`. Establish `h1 : ClassGroup.mk0 ⟨v.asIdeal ^ n, hvn⟩ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_pow]`. Conclude with `pow_card_eq_one`. Take `⟨s, hs⟩` from `((ClassGroup.mk0_eq_one_iff hvn).1 h1).principal`. Conclude with `⟨n, s, Fintype.card_pos, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_span' {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ (n : ℕ) (s : 𝓞 F), 0 < n ∧ v.asIdeal ^ n = Ideal.span {s} := by
@@ -141,15 +137,13 @@ theorem exists_pow_eq_span' {F : Type} [Field F] [NumberField F] (v : HeightOneS
   exact ⟨n, s, Fintype.card_pos, hs⟩
 
 /- English proof (translation)
-Establish `hmax : (conjI PP.asIdeal).IsMaximal`. Rewrite using `[GlobalTheory.LiftIdeal.conjI_eq_map D]`. Conclude with `GlobalTheory.LiftIdeal.isMaximal_map D PP`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hsP⟩ : ∃ s ∈ conjI PP.asIdeal, s ∉ PP.asIdeal := by`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hne (hmax.eq_of_le PP.isPrime.ne_top hc)`. Establish `hs0 : s ≠ 0` using `fun e => hsP (e ▸ PP.asIdeal.zero_mem)`. Establish `hsE : (s : D.host.E) ≠ 0` using `fun e => hs0 (RingOfIntegers.coe_eq_zero_iff.1 e)`. Establish `hint : finPart D (es * incA D ((s : D.host.E))⁻¹) ∈ intAE D`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hsP ((h.2 s hs0).2 hc)`. Rewrite `hint` using `[intAE_eq_clos]`. Establish `e1 : es = es * incA D ((s : D.host.E))⁻¹ * incA D (s : D.host.E)`. Rewrite using `[mul_assoc, ← map_mul, inv_mul_cancel₀ hsE, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hgen : finPart D (incA D (s : D.host.E)) ∈ clos D (conjI PP.asIdeal)`. Establish `e2 : finPart D (incA D (s : D.host.E)) = (1 : Af D.host.F) ⊗ₜ[D.host.F] (s : D.host.E)` using `by show Algebra.TensorProduct.map _ _ ((1 : AF D.host.F) ⊗ₜ[D.host.F] (s : D.host.E)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Rewrite using `[e2]`.
-
-Conclude with `tmul_mem_clos one_mem_intAf' hs`. Rewrite using `[e1, map_mul]`. Establish `h3` using `mul_mem_clos hint hgen`. Rewrite `h3` using `[Ideal.top_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finPart_es_mem {es : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt es PP)
     (hne : conjI PP.asIdeal ≠ PP.asIdeal) : finPart D es ∈ clos D (conjI PP.asIdeal) := by
@@ -177,19 +171,17 @@ theorem finPart_es_mem {es : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : Form
   rwa [Ideal.top_mul] at h3
 
 /- English proof (translation)
-Take `⟨n, t, hn, ht⟩` from `exists_pow_eq_span' v`. Establish `htv : t ∈ v.asIdeal` using `Ideal.pow_le_self hn.ne' (ht ▸ Ideal.mem_span_singleton_self t)`. Establish `htw : ∀ w : HeightOneSpectrum (𝓞 D.host.F), w ≠ v → t ∉ w.asIdeal` using `fun w hw h => by`. Establish `h2 : v.asIdeal ^ n ≤ w.asIdeal` using `by rw [ht, Ideal.span_le, Set.singleton_subset_iff]; exact h`. Conclude with `hw (HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top (w.isPrime.le_of_pow_le h2))).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (t : D.host.F) ≠ 0`. Introduce `h0'`. Establish `: t = 0` using `by exact_mod_cast h0'`. Substitute `this` using the available equality. Rewrite `ht` using `[Ideal.span_singleton_eq_bot.2 rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `v.ne_bot ((pow_eq_zero_iff hn.ne').1 ht)`. Use `set a : Af D.host.F := algebraMap D.host.F (Af D.host.F) (t : D.host.F)⁻¹ * (1 - α) with ha_def`. Establish `ha : a ∈ intAf D.host.F`. Introduce `w`. Rewrite using `[ha_def, map_mul, AlgHom.commutes, map_sub, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h1, sub_self, mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[h0 w hw, sub_zero, mul_one, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Valued.v (((((t : D.host.F))⁻¹ : D.host.F) : HeightOneSpectrum.adicCompletion D.host.F w)) ≤ 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, show ((t : D.host.F)) = algebraMap (𝓞 D.host.F) D.host.F t from rfl, (HeightOneSpectrum.valuation_eq_one_iff_notMem w).2 (htw w hw), inv_one]`. Establish `ecoe : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (t : D.host.F)` using `rfl`. Establish `hx : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t ∈ conjI PP.asIdeal`. Apply `Ideal.subset_span` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_comap, hv]`. Conclude with `htv`. Rewrite using `[ecoe]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.cc]`.
-
-Establish `h3` using `tmul_mem_clos ha hx`. Establish `e : a ⊗ₜ[D.host.F] ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t : 𝓞 D.host.E) : D.host.E) = (1 - α) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[ecoe, Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.smul_def, ha_def, ← mul_assoc, ← map_mul, mul_inv_cancel₀ ht0, map_one, one_mul]`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem one_sub_mem {PP : Formalism.L2.DIV.Pl D.host.E} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hv : PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal) {α : Af D.host.F}
@@ -233,11 +225,11 @@ theorem one_sub_mem {PP : Formalism.L2.DIV.Pl D.host.E} {v : HeightOneSpectrum (
   rwa [e] at h3
 
 /- English proof (translation)
-Take `⟨-, -, v, ε, hε, h3⟩` from `h.1`. Establish `hsplit` using `GlobalTheory.LevelPlaces.splitAt_of h.1 hε h3`. Take `⟨Q, hQ, hQv⟩` from `GlobalTheory.IdemPrime.exists_isIdemAt D v es hsplit`. Establish `hQP : Q = PP` using `GlobalTheory.PlaceVec.isIdemAt_inj hQ h`. Substitute `hQP` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨α, rfl, hα1, hα0⟩` from `hε`. Establish `e1 : 1 - cA D es = es + (1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α))`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : finPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = α ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e1, map_add, map_sub, map_one, e2, Algebra.TensorProduct.one_def, ← TensorProduct.sub_tmul]`. Conclude with `add_mem (finPart_es_mem h hne) (one_sub_mem hQv hα1 hα0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_one_sub_cA_mem {es : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt es PP)
     (hne : conjI PP.asIdeal ≠ PP.asIdeal) : finPart D (1 - cA D es) ∈ clos D (conjI PP.asIdeal) := by
@@ -254,13 +246,13 @@ theorem finPart_one_sub_cA_mem {es : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (
   exact add_mem (finPart_es_mem h hne) (one_sub_mem hQv hα1 hα0)
 
 /- English proof (translation)
-Introduce `D Pg Q e he`. Establish `he'` using `he`. Take `⟨⟨es, hes, rfl⟩, h0⟩` from `he`. Establish `hz : ∀ i ∈ Pg ∪ Q, ∀ j ∈ Pg ∪ Q, es i * cA D (es j) = 0`. Establish `hsum : ∑ x ∈ (Pg ∪ Q) ×ˢ (Pg ∪ Q), es x.1 * cA D (es x.2) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_product, ← h0, map_sum, Finset.sum_mul_sum]`. Establish `hall` using `GlobalTheory.PlaceVec.idem_eq_zero_of_sum (A := AE D) GlobalTheory.PlaceVec.natCast_mul_eq_zero (fun x : Formalism.L2.DIV.Pl D.host.E × Formalism.L2.DIV.Pl D.host.E => es x.1 * cA D (es x.2)) ((Pg ∪ Q) ×ˢ (Pg ∪ Q)) (fun x hx => by`. Take `⟨h1, h2⟩` from `Finset.mem_product.1 hx`. Use `show es x.1 * cA D (es x.2) * (es x.1 * cA D (es x.2)) = es x.1 * cA D (es x.2)`. Rewrite using `[mul_mul_mul_comm, ← map_mul, (hes _ h1).1.1, (hes _ h2).1.1]) hsum`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i hi j hj => hall (i, j) (Finset.mem_product.2 ⟨hi, hj⟩)`. Establish `horth : ∀ i ∈ Pg ∪ Q, ∀ j ∈ Pg ∪ Q, i ≠ j → cA D (es i) * cA D (es j) = 0`. Introduce `i hi j hj hij`. Break down `GlobalTheory.PlaceVec.splitIdem_eq_or (hes i hi).1 (hes j hj).1 (hz i hi j hj) (hz j hj i hi) with e | e` into its components or cases. Conclude with `absurd (GlobalTheory.PlaceVec.isIdemAt_inj (hes i hi) (by rw [e]; exact hes j hj)) hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, e, map_zero]`. Use `show finPart D _ ∈ clos D (GlobalTheory.LiftLevel.liftI Pg Q)`. Rewrite using `[map_sum, ← prod_one_sub _ _ horth, map_prod]`. Conclude with `prod_mem_clos (Pg ∪ Q) _ (fun PP => conjI PP.asIdeal) fun PP hP => finPart_one_sub_cA_mem (hes PP hP) (by rw [GlobalTheory.LiftIdeal.conjI_eq_map D]; exact GlobalTheory.LiftIdeal.map_ne he' hP hP)`.
+A detailed English derivation is pending.
 -/
 theorem offConj : ∀ (D : D7) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e (Pg ∪ Q) →
     finPart D (1 - cA D e) ∈ AddSubgroup.closure {y | ∃ a ∈ intAf D.host.F, ∃ x : 𝓞 D.host.E,

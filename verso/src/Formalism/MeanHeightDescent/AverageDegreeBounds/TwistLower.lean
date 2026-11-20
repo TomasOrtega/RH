@@ -24,11 +24,11 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
   [DecidableEq ι]
 
 /- English proof (translation)
-Take `⟨hMlat, hrkM, -⟩` from `place_lattice_structure K V ι b X hX M hM`. Take `⟨-, hrkN, -⟩` from `place_lattice_structure K V ι b X hX N hN`. Use `hMlat.2` as an intermediate fact. Establish `hzl : zl (Formalism.HermitianLatticesTheory.realize b X) N ≤ zl (Formalism.HermitianLatticesTheory.realize b X) M` using `shiftInv_zl_mono _ hle`. Establish `hrkeq : Formalism.F.rk (zl (Formalism.HermitianLatticesTheory.realize b X) N) = Formalism.F.rk (zl (Formalism.HermitianLatticesTheory.realize b X) M)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Formalism.HN.rk (Formalism.HermitianLatticesTheory.realize b X) N = Formalism.HN.rk (Formalism.HermitianLatticesTheory.realize b X) M`. Rewrite using `[hrkN, hrkM, hrk]`. Conclude with `h1`. Establish `hcov` using `Formalism.RankSupermodularCovolume.covol_eq_relIndex_mul_covol _ _ hzl hrkeq`. Establish `hinj` using `Formalism.HN.PlaceLattice.realize_injective b X hX`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx : (zl (Formalism.HermitianLatticesTheory.realize b X) N).toAddSubgroup.relIndex (zl (Formalism.HermitianLatticesTheory.realize b X) M).toAddSubgroup = N.toAddSubgroup.relIndex M.toAddSubgroup`. Simplify using `only [zl, AddSubgroup.toIntSubmodule_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hinj`. Rewrite using `[hcov, hidx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_of_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (N M : Submodule (𝓞 K) V) (hN : N.FG) (hM : M.FG) (hle : N ≤ M)
@@ -52,9 +52,9 @@ theorem covol_of_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ
   rw [hcov, hidx]
 
 /- English proof (translation)
-Establish `: FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hfg : (𝔟 • M).FG` using `Submodule.FG.smul (IsNoetherian.noetherian 𝔟) hM`. Establish `hrk : rkK (𝔟 • M) = rkK M`. Unfold `rkK`. Rewrite using `[Formalism.HN.DualPolygon.twist_span_smul M 𝔟 h𝔟]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[covol_of_le b X hX (𝔟 • M) M hfg hM Submodule.smul_le_right hrk, Formalism.HN.DualPolygon.twist_index M hM 𝔟 h𝔟, Nat.cast_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem covol_ideal_smul (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (M : Submodule (𝓞 K) V) (hM : M.FG) (𝔟 : Ideal (𝓞 K))
@@ -73,19 +73,17 @@ theorem covol_ideal_smul (b : Basis ι K V) (X : InfinitePlace K → Matrix ι �
 omit [StarRing K] [IsTotallyComplex K] in
 
 /- English proof (translation)
-Establish `hmem : ∀ a ∈ (I : Submodule (𝓞 K) K), ∃ c ∈ I.num, (algebraMap (𝓞 K) K c) = (I.den : 𝓞 K) • a`. Introduce `a ha`. Establish `h1 : I.den • a ∈ I.den • (I : Submodule (𝓞 K) K)` using `Submodule.smul_mem_pointwise_smul a I.den _ ha`. Rewrite `h1` using `[FractionalIdeal.den_mul_self_eq_num]`. Take `⟨c, hc, hca⟩` from `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, hc, hca⟩`. Establish `hmem2 : ∀ c ∈ I.num, ∃ a ∈ (I : Submodule (𝓞 K) K), (I.den : 𝓞 K) • a = algebraMap (𝓞 K) K c`. Introduce `c hc`. Establish `h1 : algebraMap (𝓞 K) K c ∈ Submodule.map (Algebra.linearMap (𝓞 K) K) I.num` using `⟨c, hc, rfl⟩`. Rewrite `h1` using `[← FractionalIdeal.den_mul_self_eq_num]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hax⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp h1`. Conclude with `⟨a, ha, hax⟩`. Unfold `Formalism.HermitianLatticesTheory.idealSmul`. Rewrite using `[Submodule.ideal_span_singleton_smul]`. Apply `le_antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : Submodule.span (𝓞 K) {z | ∃ a ∈ (I : Submodule (𝓞 K) K), ∃ x ∈ M, z = a • x} ≤ (I.num • M).comap (LinearMap.lsmul (𝓞 K) V (I.den : 𝓞 K))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Take `⟨c, hc, hca⟩` from `hmem a ha`. Use `show (I.den : 𝓞 K) • (a • x) ∈ I.num • M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_assoc, ← hca, algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul hc hx`. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Conclude with `key hn`. Rewrite using `[Submodule.smul_le]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c hc x hx`. Take `⟨a, ha, hax⟩` from `hmem2 c hc`. Establish `h1 : a • x ∈ Submodule.span (𝓞 K) {z | ∃ a ∈ (I : Submodule (𝓞 K) K), ∃ x ∈ M, z = a • x}` using `Submodule.subset_span ⟨a, ha, x, hx, rfl⟩`. Establish `h2` using `Submodule.smul_mem_pointwise_smul (a • x) (I.den : 𝓞 K) _ h1`. Rewrite `h2` using `[← smul_assoc, hax, algebraMap_smul]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_smul_idealSmul (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
     (M : Submodule (𝓞 K) V) :
@@ -128,9 +126,9 @@ theorem den_smul_idealSmul (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
 
 omit [StarRing K] [IsTotallyComplex K] in
 /- English proof (translation)
-Unfold `rkK`. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Introduce `h`. Apply `hM0` to reduce the goal to its premises. Rewrite `h` using `[Submodule.finrank_eq_zero]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span K (M : Set V)` using `Submodule.subset_span hx`. Rewrite `hx'` using `[h]`. Conclude with `(Submodule.mem_bot _).mpr ((Submodule.mem_bot K).mp hx')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rkK_pos' (M : Submodule (𝓞 K) V) (hM0 : M ≠ ⊥) [FiniteDimensional K V] : 0 < rkK (K := K) M := by
   unfold rkK
@@ -145,7 +143,7 @@ theorem rkK_pos' (M : Submodule (𝓞 K) V) (hM0 : M ≠ ⊥) [FiniteDimensional
   exact (Submodule.mem_bot _).mpr ((Submodule.mem_bot K).mp hx')
 
 /- English proof (translation)
-Take `⟨-, hrkM, -⟩` from `place_lattice_structure K V ι b X hX M hM`. Establish `h1 : Formalism.F.rk (zl (Formalism.HermitianLatticesTheory.realize b X) M) = Module.finrank ℚ K * rkK M` using `hrkM`. Unfold `muDef Formalism.HN.slope Formalism.F.slope Formalism.F.deg`. Rewrite using `[h1]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -162,31 +160,27 @@ theorem muDef_eq_covol (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   rfl
 
 /- English proof (translation)
-Establish `: FiniteDimensional K V` using `Module.Finite.of_basis b`. Use `set N := Formalism.HermitianLatticesTheory.idealSmul (I : Submodule (𝓞 K) K) M with hNdef`. Use `set d : 𝓞 K := (I.den : 𝓞 K) with hd`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.coe_ne_zero I.den`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `hd0 (FaithfulSMul.algebraMap_injective (𝓞 K) K (by rw [h0, map_zero]))`. Establish `hJ : I.num ≠ ⊥` using `fun h => hI (FractionalIdeal.num_eq_zero_iff.1 h)`. Establish `hD : Ideal.span {d} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hd0`. Establish `heq : Ideal.span {d} • N = I.num • M` using `den_smul_idealSmul I M`. Establish `heq' : d • N = I.num • M` using `by rw [← heq, Submodule.ideal_span_singleton_smul]`. Set `ψ : V →ₗ[𝓞 K] V` to `(((algebraMap (𝓞 K) K d)⁻¹ • LinearMap.id : V →ₗ[K] V)).restrictScalars (𝓞 K)`. Establish `hψ : ∀ z : V, ψ (d • z) = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `z`. Use `show (algebraMap (𝓞 K) K d)⁻¹ • (d • z) = z`. Rewrite using `[← algebraMap_smul K d z, smul_smul, inv_mul_cancel₀ hdK, one_smul]`. Establish `hNmap : N = (I.num • M).map ψ`. Use extensionality with `z`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨d • z, ?_, hψ z⟩` and prove the remaining obligations. Rewrite using `[← heq']`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ hz`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[SetLike.mem_coe, ← heq']`. Take `⟨z, hz, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Rewrite using `[hψ]`. Conclude with `hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hNfg : N.FG`. Rewrite using `[hNmap]`. Conclude with `(Submodule.FG.smul (IsNoetherian.noetherian I.num) hM).map _`. Establish `hrk : rkK N = rkK M`. Unfold `rkK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Formalism.HN.DualPolygon.twist_span_smul N _ hD, heq, Formalism.HN.DualPolygon.twist_span_smul M _ hJ]`. Use `⟨hNfg, hrk, ?_⟩` and prove the remaining obligations. Establish `c1` using `covol_ideal_smul b X hX N hNfg _ hD`. Establish `c2` using `covol_ideal_smul b X hX M hM _ hJ`. Rewrite `c1` using `[heq, c2, hrk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hMlat, -, -⟩` from `place_lattice_structure K V ι b X hX M hM`. Take `⟨hNlat, -, -⟩` from `place_lattice_structure K V ι b X hX N hNfg`. Establish `hcM` using `Formalism.F.covolPos _ _ hMlat.2`. Establish `hcN` using `Formalism.F.covolPos _ _ hNlat.2`. Establish `hr : (0 : ℝ) < rkK M` using `by exact_mod_cast rkK_pos' M hM0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn : (0 : ℝ) < (Module.finrank ℚ K : ℝ)`. Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ K)` after adjusting the coercions. Establish `hJpos : (0 : ℝ) < (Ideal.absNorm I.num : ℝ)`. Conclude with `Nat.pos_of_ne_zero (fun h => hJ (Ideal.absNorm_eq_zero_iff.1 h))` after adjusting the coercions. Establish `hDpos : (0 : ℝ) < (Ideal.absNorm (Ideal.span {d}) : ℝ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `Nat.pos_of_ne_zero (fun h => hD (Ideal.absNorm_eq_zero_iff.1 h))` after adjusting the coercions. Establish `hnorm : ((FractionalIdeal.absNorm I : ℚ) : ℝ) = (Ideal.absNorm I.num : ℝ) / (Ideal.absNorm (Ideal.span {d}) : ℝ)`. Rewrite using `[FractionalIdeal.absNorm_eq, Ideal.absNorm_span_singleton, Nat.cast_natAbs]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Establish `hlog` using `congrArg Real.log c1`. Rewrite `hlog` using `[Real.log_mul (pow_pos hJpos _).ne' hcM.ne', Real.log_mul (pow_pos hDpos _).ne' hcN.ne', Real.log_pow, Real.log_pow]`. Rewrite using `[muDef_eq_covol b X hX N hNfg, muDef_eq_covol b X hX M hM, hrk, hnorm, Real.log_div hJpos.ne' hDpos.ne']`. Establish `hcNeq : Real.log (Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b X) N)) = (rkK M : ℝ) * Real.log (Ideal.absNorm I.num : ℝ) + Real.log (Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b X) M)) - (rkK M : ℝ) * Real.log (Ideal.absNorm (Ideal.span …` using `by linarith`. Rewrite using `[hcNeq]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem idealScale_mu (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (hI : I ≠ 0)
@@ -267,23 +261,21 @@ theorem idealScale_mu (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
 end
 
 /- English proof (translation)
-Introduce `K V ι W κ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' φ A B I hI hAfg hBfg hA0 hinj hle hrkBA`. Establish `: FiniteDimensional K W` using `Module.Finite.of_basis b'`. Take `⟨hrkeq, hsl⟩` from `slope_image_injective b X b' X' hX hX' φ A hAfg hA0 hinj`. Use `set A' := A.map (φ.restrictScalars (𝓞 K)) with hA'def`. Establish `hA'fg : A'.FG` using `hAfg.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'0 : A' ≠ ⊥`. Introduce `h`. Apply `hA0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : φ x ∈ A'` using `⟨x, hx, rfl⟩`. Rewrite `hm` using `[h]`. Establish `h0 : φ x = 0` using `(Submodule.mem_bot _).1 hm`. Conclude with `(Submodule.mem_bot _).2 (hinj (by rw [h0, map_zero]))`. Take `⟨hNfg, hrkN, hmuN⟩` from `idealScale_mu b' X' hX' I hI A' hA'fg hA'0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := Formalism.HermitianLatticesTheory.idealSmul (I : Submodule (𝓞 K) K) A' with hNdef`. Establish `hrkNB : rkK N = rkK B` using `by rw [hrkN, hrkeq, hrkBA]`. Establish `hcov` using `covol_of_le b' X' hX' N B hNfg hBfg hle hrkNB`. Take `⟨hBlat, -, -⟩` from `place_lattice_structure K W κ b' X' hX' B hBfg`. Take `⟨hNlat, -, -⟩` from `place_lattice_structure K W κ b' X' hX' N hNfg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcB` using `Formalism.F.covolPos _ _ hBlat.2`. Establish `hcN` using `Formalism.F.covolPos _ _ hNlat.2`. Establish `hidx : (1 : ℝ) ≤ (N.toAddSubgroup.relIndex B.toAddSubgroup : ℝ)`. Break down `Nat.eq_zero_or_pos (N.toAddSubgroup.relIndex B.toAddSubgroup) with h | h` into its components or cases. Rewrite `hcov` using `[h, Nat.cast_zero, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `absurd hcov hcN.ne'`. Conclude with `h` after adjusting the coercions. Establish `hcle : Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b' X') B) ≤ Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b' X') N)`. Rewrite using `[hcov]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogle` using `Real.log_le_log hcB hcle`. Establish `hr : (0 : ℝ) < rkK B`. Rewrite using `[← hrkNB, hrkN]`. Conclude with `rkK_pos' A' hA'0` after adjusting the coercions. Establish `hn : (0 : ℝ) < (Module.finrank ℚ K : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ K)` after adjusting the coercions. Establish `hmuNB : muDef b' X' N ≤ muDef b' X' B`. Rewrite using `[muDef_eq_covol b' X' hX' N hNfg, muDef_eq_covol b' X' hX' B hBfg, hrkNB]`. Establish `: -Real.log (Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b' X') N)) / ((Module.finrank ℚ K : ℝ) * (rkK B : ℝ)) ≤ -Real.log (Formalism.F.covol (zl (Formalism.HermitianLatticesTheory.realize b' X') B)) / ((Module.finrank ℚ K : ℝ) * (rkK B : ℝ))` using `div_le_div_of_nonneg_right (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hmuA : muDef b X A - htMap b X b' X' φ ≤ muDef b' X' A'`. Unfold `muDef`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twist_lower_bound : TwistLower := by
   intro K V ι W κ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' φ A B I hI hAfg hBfg hA0 hinj

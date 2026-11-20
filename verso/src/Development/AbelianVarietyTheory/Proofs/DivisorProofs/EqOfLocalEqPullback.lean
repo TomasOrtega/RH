@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ZM.IsGaloisCover
 
 /- English proof (translation)
-Introduce `X Y S Z π Ga _ ρ g h₁ h₂ h hloc`. Establish `hp : IsPullback (pullback.snd g π) (pullback.fst g π) π g` using `(IsPullback.of_hasPullback g π).flip`. Establish `: Etale (pullback.fst g π)` using `MorphismProperty.of_isPullback (P := @Etale) hp h.etale`. Establish `: IsFinite (pullback.fst g π)` using `MorphismProperty.of_isPullback (P := @IsFinite) hp h.fin`. Establish `: Surjective (pullback.fst g π)` using `MorphismProperty.of_isPullback (P := @Surjective) hp h.onto`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : pullback.fst g π ≫ h₁ = pullback.fst g π ≫ h₂` using `Scheme.hom_ext_of_forall _ _ fun q ↦ hloc q`. Conclude with `(cancel_epi (pullback.fst g π)).1 e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_local_eq_pullback : ∀ (X Y S Z : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (g : S ⟶ Y) (h₁ h₂ : S ⟶ Z), GlobalTheory.ZM.IsGaloisCover Ga ρ π → (∀ q : ↥(pullback g π), ∃ V : (pullback g π).Opens, q ∈ V ∧ V.ι ≫ pullback.fst g π ≫ h₁ = V.ι ≫ pullback.fst g π ≫ h₂) → h₁ = h₂ := by
   intro X Y S Z π Ga _ ρ g h₁ h₂ h hloc

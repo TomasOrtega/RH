@@ -18,7 +18,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `g hg v v'`. Use `rigid_orth_closure hgap hσ hD hV hc hVK j' hj horth v' _ ?_` and prove the remaining obligations. Use `closure_genSub_stable hσ hD hV.1 hV.2.1 hc g hg _ ?_` and prove the remaining obligations. Conclude with `Submodule.le_topologicalClosure _ ⟨v, rorth_le_genSub v.2, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rigid_orth {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)

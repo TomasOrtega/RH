@@ -12,15 +12,11 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 namespace GlobalTheory.SncPull
 
 /- English proof (translation)
-Introduce `k _ _ X Y p _ π _ m C y ⟨_, n, r, e, hr, hst⟩`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian (π ≫ p)`. Take `⟨g, s, hs⟩` from `GlobalTheory.T.flat_extension_regular_sequence _ _ (π.stalkMap y).hom (Flat.stalkMap π y) (GlobalTheory.T.smooth_fibre_regular_local_ring X Y π y) n r hr`. Use `haveI : IsRegularLocalRing (Y.presheaf.stalk y) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ ?_` and prove the remaining obligations. Rewrite using `[← hs.2, ← hs.1]`. Establish `h1` using `Submodule.spanFinrank_span_le_ncard_of_finite (R := Y.presheaf.stalk y) (Set.finite_range (Fin.append (fun i => (π.stalkMap y).hom (r i)) s))`. Establish `h2 : (Set.range (Fin.append (fun i => (π.stalkMap y).hom (r i)) s)).ncard ≤ n + g`. Rewrite using `[← Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Set.ncard_image_le Set.finite_univ).trans (by simp [Set.ncard_univ])`. Conclude with `h1.trans h2` after adjusting the coercions. Use `⟨inferInstance, n + g, Fin.append (fun i => (π.stalkMap y).hom (r i)) s, ⟨fun i => Fin.castAdd g (e ⟨i.1, i.2⟩), fun a b h => ?_⟩, hs, fun i => ?_⟩` and prove the remaining obligations. Establish `h'` using `e.injective (Fin.castAdd_injective _ _ h)`. Conclude with `Subtype.ext (congrArg Subtype.val h')`.
-
-Establish `hp` using `ReciprocityTheory.AnForm.R.prime_of_regular_params _ hs.1 hs.2 (Fin.castAdd g (e ⟨i.1, i.2⟩))`. Rewrite `hp` using `[Fin.append_left]`. Express the relevant statement in the definitionally equal form `stalkId (Scheme.IdealSheafData.vanishingIdeal (GlobalTheory.TorRef.pre π (C i.1))) y = _`. Rewrite using `[GlobalTheory.VanStalk.van_pre, hst ⟨i.1, i.2⟩, Ideal.map_span, Set.image_singleton]`. Use `show _ = Ideal.span {Fin.append (fun i => (π.stalkMap y).hom (r i)) s (Fin.castAdd g (e ⟨i.1, i.2⟩))}`.
-
-Rewrite using `[Fin.append_left]`. Conclude with `((Ideal.span_singleton_prime hp.ne_zero).2 hp).radical`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lsncAt_preimage : ∀ (k : Type) [Field k] [CharZero k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) [Smooth p] (π : Y ⟶ X) [Smooth π] (m : ℕ) (C : Fin m → Closeds X) (y : Y), LSncAt X C (π y) → LSncAt Y (fun i => (C i).preimage π.continuous) y := by
   intro k _ _ X Y p _ π _ m C y ⟨_, n, r, e, hr, hst⟩

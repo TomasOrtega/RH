@@ -44,19 +44,19 @@ end GlobalTheory.SqZeroPb
 
 open GlobalTheory.SqZeroPb in
 /- English proof (translation)
-Introduce `K _ V W₁ W₂ _ _ _ _ _ _ _ _ _ _ _ _ p q hpq`. Set `e` to `LinearEquiv.ofBijective (LinearMap.prod p q) hpq`. Establish `he : ∀ v, e v = (p v, q v)` using `fun v => rfl`. Establish `hw : CommRingCat.ofHom (TrivSqZeroExt.map p).toRingHom ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom K K W₁).toRingHom = CommRingCat.ofHom (TrivSqZeroExt.map q).toRingHom ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom K K W₂).toRingHom`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `IsPullback.of_isLimit' ⟨hw⟩ (PullbackCone.IsLimit.mk hw (fun s => CommRingCat.ofHom (liftHom e s.fst.hom s.snd.hom ?_)) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `t`. Use `congrArg (fun φ => φ.hom t) s.condition` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s`. Use extensionality with `t : 2`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[liftHom]`. Simplify using `[liftHom]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg Prod.fst (e.apply_symm_apply _)`. Introduce `s`. Use extensionality with `t : 2`. Establish `hc` using `congrArg (fun φ => φ.hom t) s.condition`. Simplify using `at hc`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[liftHom, hc]`. Simplify using `[liftHom]`. Conclude with `congrArg Prod.snd (e.apply_symm_apply _)`. Introduce `s m hm1 hm2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `t : 2`. Establish `h1` using `congrArg (fun φ => φ.hom t) hm1`. Establish `h2` using `congrArg (fun φ => φ.hom t) hm2`. Simplify using `at h1 h2`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[liftHom, ← h1]`. Simplify using `[liftHom, ← h1, ← h2]`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SqZeroPb.isPullback_trivSqZeroExt : ∀ (K : Type) [Field K] (V W₁ W₂ : Type) [AddCommGroup V] [Module K V] [Module Kᵐᵒᵖ V] [IsCentralScalar K V] [AddCommGroup W₁] [Module K W₁] [Module Kᵐᵒᵖ W₁] [IsCentralScalar K W₁] [AddCommGroup W₂] [Module K W₂] [Module Kᵐᵒᵖ W₂] [IsCentralScalar K W₂] (p : V →ₗ[K] W₁) (q : V →ₗ[K] W₂), Function.Bijective (LinearMap.prod p q) → IsPullback (CommRingCat.ofHom (TrivSqZeroExt.map p).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.map q).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.fstHom K K W₁).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.fstHom K K W₂).toRingHom) := by
   intro K _ V W₁ W₂ _ _ _ _ _ _ _ _ _ _ _ _ p q hpq

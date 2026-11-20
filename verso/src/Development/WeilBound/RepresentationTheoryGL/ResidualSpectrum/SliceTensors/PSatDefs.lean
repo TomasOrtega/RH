@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Rs.SatakeVectors
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `h : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NumberField.HeightOneSpectrum.one_lt_absNorm w).ne_bot`. Conclude with `fun e => h ((Complex.cpow_eq_zero_iff _ _).1 e).1`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem absNorm_cpow_ne_zero (w : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
     (((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ s) ≠ 0 := by
@@ -32,13 +32,13 @@ def SatLike {m : ℕ} (U : Submodule ℂ (Sm E m)) (w : HeightOneSpectrum (𝓞 
     GlobalTheory.LFun.IsSatVecGL w ((finRep E m).comp (locGL E m w)) ψ S
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem satLike_of_satV {m : ℕ} {V : Submodule ℂ (Sm E m)} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (h : SatV V w B) : SatLike V w B := h.2
 
 /- English proof (translation)
-Simplify using `[satTw, Multiset.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem satTw_eq (w : HeightOneSpectrum (𝓞 E)) (z : ℂ) (B : Multiset ℂˣ) :
     satTw w z B = (B.map (· * qU w (-z))).map fun b : ℂˣ => (b : ℂ) := by

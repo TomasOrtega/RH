@@ -20,11 +20,11 @@ def ChartDens1 : Prop :=
       ∀ T : Set (lieSp K), MeasurableSet T → T ⊆ ball 0 δ → haarH K hc (expSet1 K T) = ∫⁻ x in T, j x
 
 /- English proof (translation)
-Unfold `conjInv`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Establish `e : y * (MulAut.conj y⁻¹).toMonoidHom h * y⁻¹ = h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`. Rewrite using `[e]`. Conclude with `hh`. Introduce `hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨y * g * y⁻¹, hg, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem mem_conjInv (H : Subgroup (Formalism.REAL.UJ ε)) (y g : Formalism.REAL.UJ ε) :
     g ∈ conjInv H y ↔ y * g * y⁻¹ ∈ H := by

@@ -8,23 +8,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open scoped Matrix in
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d, Fintype.card κ = d + 1` from `Nat.exists_eq_succ_of_ne_zero (Fintype.card_pos_iff.2 ⟨k0⟩).ne'`. Set `σ₀` to `(Fintype.equivFinOfCardEq hd).symm`. Set `σ : Fin (d + 1) ≃ κ` to `σ₀.trans (Equiv.swap (σ₀ 0) k0)`. Establish `h0 : σ 0 = k0` using `Equiv.swap_apply_left _ _`. Establish `h0' : ∀ j, σ j = k0 ↔ j = 0` using `fun j => by rw [← h0, σ.injective.eq_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b'` to `b.reindex σ.symm`. Set `ξ : G →* GL (Fin (d + 1)) Ω` to `MonoidHom.toHomUnits (((LinearMap.toMatrixAlgEquiv b').toAlgHom.toRingHom.toMonoidHom).comp ρ)`. Establish `hξ' : ∀ g, (ξ g).val = LinearMap.toMatrix b' b' (ρ g)` using `fun g => rfl`. Establish `hξ : ∀ g i j, ξ g i j = A g (σ i) (σ j)` using `fun g i j => by`. Rewrite using `[← hA]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(ξ g).val i j = _`. Rewrite using `[hξ', LinearMap.toMatrix_apply]`. Simplify using `[b']`. Set `χ₀ : I.Tf →* Ω` to `{ toFun := fun t => ξ t 0 0 map_one' := by simp map_mul' := fun s t => by`. Express the relevant statement in the definitionally equal form `(ξ (s * t)).val 0 0 = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single 0]`. Introduce `j _ hj`. Establish `: (ξ s).val 0 j = 0`. Express the relevant statement in the definitionally equal form `ξ s 0 j = 0`. Rewrite using `[hξ, h0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT _ s.2 _ fun h => hj ((h0' j).1 h)`. Rewrite using `[this, zero_mul]`. Simplify using `}`. Establish `hχ : ∀ t : I.Tf, (χ₀.toHomUnits t : Ω) = A t k0 k0` using `fun t => by rw [← h0, ← hξ]; rfl`. Use `⟨{ d := d, ξ := ξ, χ := χ₀.toHomUnits, c0 := 0 int_N := fun x hx i j => by rw [hξ]; exact hK x (.inl hx) _ _ integral_torusCharacter := fun x hx i j => by rw [hξ]; exact hK x (.inr (.inl hx)) _ _ int_Nm := fun x hx i j => by rw [hξ]; exact hK x (.inr (.inr hx)) _ _ int_P := fun a …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hξ, h0, hχ]`. Use `split_ifs with h`. Rewrite using `[h, h0]`. Conclude with `hT _ t.2 _ fun h' => h ((h0' j).1 h')`. Use `nilpotent_central_action := fun i j hj => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hξ, Units.val_inv_eq_inv_val, hχ]`. Conclude with `hz _ _ fun h' => hj ((h0' j).1 h')`. Use `cont_Nm := fun k => (hc k).imp fun c h y hy i j => by`. Simplify `h y (.inl hy) (σ i) (σ j)` using `only [hξ, σ.injective.eq_iff]`. Use `continuous_torusCharacter := fun k => (hc k).imp fun c h t ht => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify `h t (.inr ht) k0 k0` using `only [hχ, if_true]`. Use `central := fun t ht i j => by`. Rewrite using `[hξ, hχ, hZ _ t.2 ht]`. Simplify using `only [σ.injective.eq_iff] }, ⟨b'.equivFun.symm, fun g x => ?_⟩, hχ⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
-
-Express the relevant statement in the definitionally equal form `(ξ g).val *ᵥ x = b'.repr _`. Rewrite using `[hξ', ← LinearMap.toMatrix_mulVec_repr b' b']`. Use `congr 1`. Conclude with `(b'.equivFun.apply_symm_apply x).symm`.
+A detailed English derivation is pending.
 -/
 private theorem ofBasis {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω]
     {M : Type} [AddCommGroup M] [Module Ω M] {κ : Type} [Fintype κ] [DecidableEq κ] (k0 : κ) (b : Module.Basis κ Ω M)
@@ -95,7 +93,7 @@ private theorem ofBasis {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing
   exact (b'.equivFun.apply_symm_apply x).symm
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a F ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, zpow_add₀ hs, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem prod_zpow_const {K ι : Type} [Field K] {s : K} (hs : s ≠ 0) (μ : ι → ℤ) (F : Finset ι) :
     ∏ i ∈ F, s ^ μ i = s ^ ∑ i ∈ F, μ i := by
@@ -105,9 +103,9 @@ private theorem prod_zpow_const {K ι : Type} [Field K] {s : K} (hs : s ≠ 0) (
   | insert a F ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, zpow_add₀ hs, ih]
 
 /- English proof (translation)
-Use `⟨∏ e, ((if i e = j e then 1 else 0) + y e) - ∏ e, (if i e = j e then 1 else 0), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun e _ => by rw [map_add, Ideal.Quotient.eq_zero_iff_mem.2 (hy e), add_zero]`. Rewrite using `[Fintype.prod_boole]`. Simplify using `only [map_sub, map_prod, map_add, ← funext_iff, apply_ite (algebraMap O K), map_one, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+A detailed English derivation is pending.
 -/
 private theorem prod_delta {O K E : Type} [CommRing O] [CommRing K] [Algebra O K] [Fintype E] [DecidableEq E] {κ : E → Type}
     [∀ e, DecidableEq (κ e)] [DecidableEq (∀ e, κ e)] (𝔞 : Ideal O) (i j : ∀ e, κ e) (y : E → O) (hy : ∀ e, y e ∈ 𝔞) :
@@ -120,63 +118,55 @@ private theorem prod_delta {O K E : Type} [CommRing O] [CommRing K] [Algebra O K
     split_ifs <;> ring
 
 /- English proof (translation)
-Introduce `L _ _ l _ n V _ S ι lam c`. Use `haveI : ∀ v, Finite (W.Emb l (S v)) := fun v => GlobalTheory.HeckeGal.finite_contEmb _`. Use `letI : ∀ v, Fintype (W.Emb l (S v)) := fun v => Fintype.ofFinite _`. Choose the witnesses or unpack the hypotheses as in `⟨c', hc, hc'⟩ : ∃ c' : Coef l, c.O ≤ c'.O ∧ ∀ e ∈ (Finset.univ : Finset (Emb l S)), ∀ x : 𝒪[(S e.1).adicCompletion L], e.2.1 (x : (S e.1).adicCompletion L) ∈ c'.O := by`. Proceed by induction on `(Finset.univ : Finset (Emb l S)) using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => exact ⟨c, le_rfl, by simp⟩`. Consider the case `insert e F _ ih`. Take `⟨c₁, h₁, h₁'⟩` from `ih`. Take `⟨c₂, h₂, h₂'⟩` from `(UpperTheory.expChar_integrality_criterion L l _ e.2).1 c₁`. Use `⟨c₂, h₁.trans h₂, fun e' he' x => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 he' with rfl | he'` into its components or cases. Use `exacts [h₂' x, h₂ (h₁' e' he' x)]`. Use `⟨c', hc, ?_⟩` and prove the remaining obligations. Use `letI : Algebra c'.O ℂ := (ι.toRingHom.comp (algebraMap c'.O (Qbar l))).toAlgebra`. Establish `hinj : Function.Injective (algebraMap c'.O ℂ)` using `ι.injective.comp Subtype.val_injective`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : ∀ e : Emb l S, (S e.1).adicCompletion L →+* ℂ` to `fun e => ι.toRingHom.comp e.2.1`. Set `φ : ∀ e : Emb l S, 𝒪[(S e.1).adicCompletion L] →+* c'.O` to `fun e => (e.2.1.comp (algebraMap _ _)).codRestrict c'.O (hc' e (Finset.mem_univ _))`. Establish `hφ : ∀ e x, algebraMap c'.O ℂ (φ e x) = ψ e x` using `fun e x => rfl`. Establish `hφm : ∀ e k, ∀ x ∈ maximalIdeal _ ^ k, φ e x ∈ maximalIdeal c'.O ^ k` using `fun e k x hx => by`. Establish `h1 : (maximalIdeal _).map (φ e) ≤ maximalIdeal c'.O` using `Ideal.map_le_iff_le_comap.2 fun x hx => (UpperTheory.expChar_integrality_criterion L l _ e.2).2 c' x hx _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.pow_right_mono h1 k ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Use `choose κ _ _ k0 b μ hI hU hD h0 hle hlt using fun e : Emb l S => sqBasis c'.O ℂ hinj n (lam e.res)`. Set `A : GV n S → (∀ e, κ e) → (∀ e, κ e) → ℂ` to `fun g i j => ∏ e, (b e).repr (GlobalTheory.Branching.sqRep ℂ n (lam e.res) (Matrix.GeneralLinearGroup.map (ψ e) (g e.1)) (b e (j e))) (i e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ g i j, (Basis.piTensorProduct b).repr (algRep S ι lam g (Basis.piTensorProduct b j)) i = A g i j`. Introduce `g i j`. Rewrite using `[Basis.piTensorProduct_apply]`. Use `erw [PiTensorProduct.map_tprod]`. Rewrite using `[Basis.piTensorProduct_repr_tprod_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hK : ∀ (k : ℕ) (g : GV n S), (∀ v, g v ∈ Kc _ n k) → ∀ i j, ∃ x ∈ maximalIdeal c'.O ^ k, A g i j = (if i = j then 1 else 0) + algebraMap c'.O ℂ x`. Introduce `k g hg i j`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible c'.O`. Establish `hm : maximalIdeal c'.O ^ k = Ideal.span {p ^ k}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp.maximalIdeal_eq, Ideal.span_singleton_pow]`. Use `choose h hh hh' using hg`. Use `choose x hx using fun e : Emb l S => hI e (p ^ k) (pow_ne_zero _ hp.ne_zero) (Matrix.GeneralLinearGroup.map (φ e) (h e.1)) (fun a a' => by`. Establish `h1 : ((h e.1).val - 1) a a' ∈ maximalIdeal _ ^ k`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub, sub_eq_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `(congrArg (fun u : GL (Fin n) _ => u.val a a') (MonoidHom.mem_ker.1 (hh e.1))).trans ?_` and prove the remaining obligations. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2` using `hφm e k _ h1`. Rewrite `h2` using `[hm, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.sub_apply, Matrix.one_apply, map_sub, apply_ite (φ e), map_one, map_zero]`. Use the proof step `rfl) (i e) (j e)`. Take `⟨y, hy, hy'⟩` from `prod_delta (K := ℂ) (maximalIdeal c'.O ^ k) i j (fun e => p ^ k * x e) fun e => by`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy']`. Use `Finset.prod_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[← hx e, ← hh' e.1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hDiag : ∀ (g : GV n S) (y : ∀ v, Fin n → ((S v).adicCompletion L)ˣ), (∀ v, g v = diagT _ (Fin n) (y v)) → ∀ i j, A g i j = if i = j then ∏ e, ∏ a, ψ e (y e.1 a) ^ μ e (j e) a else 0`. Introduce `g y hy i j`. Establish `h1 : ∀ e : Emb l S, (Matrix.GeneralLinearGroup.map (ψ e) (g e.1)).val = Matrix.diagonal fun a => ψ e (y e.1 a)` using `fun e => by`. Express the relevant statement in the definitionally equal form `(g e.1).val.map (ψ e) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, val_diagT, Matrix.diagonal_map (map_zero _)]`. Establish `h2 : ∀ e : Emb l S, (b e).repr (GlobalTheory.Branching.sqRep ℂ n (lam e.res) (Matrix.GeneralLinearGroup.map (ψ e) (g e.1)) (b e (j e))) (i e) = (if i e = j e then 1 else 0) * ∏ a, ψ e (y e.1 a) ^ μ e (j e) a` using `fun e => by`. Rewrite using `[hD e _ _ (h1 e), map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_comm]`. Simplify using `only [eq_comm]`. Use `(Finset.prod_congr rfl fun e _ => h2 e).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.prod_mul_distrib, Fintype.prod_boole]`. Distinguish the cases in `hij : i = j`. Rewrite using `[if_pos hij, if_pos (congrFun hij), one_mul]`. Rewrite using `[if_neg hij, if_neg fun h => hij (funext h), zero_mul]`. Establish `hPw : ∀ (g : GV n S) (a : V → Fin n → ℤ), (∀ v, Antitone (a v)) → (∀ v, g v = upow _ n (a v)) → ∀ i j, ∃ x, (A g k0 k0)⁻¹ * A g i j = algebraMap c'.O ℂ x ∧ ((∃ e, ∑ s, a e.1 s * μ e (k0 e) s < ∑ s, a e.1 s * μ e (j e) s) → x ∈ maximalIdeal c'.O)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g a ha hg i j`. Distinguish the cases in `hij : i = j`. Use `swap`. Conclude with `⟨0, by rw [hDiag g _ hg i j, if_neg hij, mul_zero, map_zero], fun _ => zero_mem _⟩`. Set `p : ∀ v, 𝒪[(S v).adicCompletion L]` to `fun v => ⟨unif ((S v).adicCompletion L), ((GlAx.unif_spec (k := (S v).adicCompletion L)).trans_lt uniformizer_lt_one).le⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hp : ∀ v, p v ∈ maximalIdeal _ ^ 1` using `fun v => (GlAx.mem_pow 1 _).2 (by`. Rewrite using `[Nat.cast_one, zpow_one]`. Conclude with `GlAx.unif_spec.le)`. Establish `hp0 : ∀ e : Emb l S, ψ e (p e.1) ≠ 0` using `fun e => (_root_.map_ne_zero _).2 (Units.ne_zero _)`. Use `⟨∏ e, φ e (p e.1) ^ (∑ s, a e.1 s * μ e (j e) s - ∑ s, a e.1 s * μ e (k0 e) s).toNat, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDiag g _ hg, hDiag g _ hg, if_pos rfl, if_pos hij, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, map_prod]`. Use `Finset.prod_congr rfl fun e _ => ?_` and prove the remaining obligations. Establish `h1 : ∀ m : Fin n → ℤ, ∏ s, ψ e ((unif ((S e.1).adicCompletion L) ^ a e.1 s : _ˣ) : (S e.1).adicCompletion L) ^ m s = ψ e (p e.1) ^ ∑ s, a e.1 s * m s` using `fun m => by`. Rewrite using `[← prod_zpow_const (hp0 e)]`. Conclude with `Finset.prod_congr rfl fun s _ => by rw [Units.val_zpow_eq_zpow_val, map_zpow₀, ← zpow_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[h1, h1, map_pow, hφ, ← zpow_natCast, Int.toNat_of_nonneg (sub_nonneg.2 (hle e _ _ (ha _))), zpow_sub₀ (hp0 e), div_eq_inv_mul]`. Introduce and unpack `⟨e, he⟩`. Use `Ideal.prod_mem _ (Finset.mem_univ e) (Ideal.pow_mem_of_mem _ ?_ _ (by omega))` and prove the remaining obligations. Simplify `hφm e 1 _ (hp e.1)` using `only [pow_one]`. Take `⟨R, hR, hχ⟩` from `ofBasis (iwS n S) c'.O ℂ k0 (Basis.piTensorProduct b) (algRep S ι lam) A hA (fun x hx i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, -, hy⟩` from `hK 0 x (fun v => by`. Rewrite using `[GlAx.Kc_zero]`. Break down `hx with hx | hx | hx` into its components or cases. Use `exacts [(hx v trivial).2, GlAx.T_le_KO (hx v trivial), GlAx.Kc_le _ (hx v trivial).2]) i j`. Rewrite using `[hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `add_mem ?_ ⟨y, rfl⟩` and prove the remaining obligations. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Use the proof step `(fun g hg i j => by choose a ha ha' using fun v => hg v trivial`. Take `⟨x, hx, -⟩` from `hPw g a ha ha' i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx.symm⟩)`. Use the proof step `(fun x hx j => by`. Establish `h1` using `fun v => (mem_unipB _).1 (hx v trivial)`. Establish `h2 : ∀ e : Emb l S, _` using `fun e => hU e (Matrix.GeneralLinearGroup.map (ψ e) (x e.1)) (fun a a' h => (congrArg (ψ e) ((h1 e.1).1 a a' h)).trans (map_zero _)) (j e)`. Establish `h3 : ∀ (e : Emb l S) a, (Matrix.GeneralLinearGroup.map (ψ e) (x e.1)).val a a = 1` using `fun e a => (congrArg (ψ e) ((h1 e.1).2 a)).trans (map_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [A, h2, h3, one_zpow, Finset.prod_const_one, Fintype.prod_boole, ← funext_iff])`. Use the proof step `(fun x hx j hj => by choose y hy using fun v => hx v trivial`. Rewrite using `[hDiag x y (fun v => (hy v).symm), if_neg hj.symm])`. Use the proof step `(fun i j hj => by`. Take `⟨x, hx, hx'⟩` from `hPw (iwS n S).z (fun _ s => (n : ℤ) - 1 - (s : ℕ)) (fun _ => GlAx.z_anti) (fun _ => rfl) i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨e, he⟩` from `Function.ne_iff.1 hj`. Conclude with `⟨x, hx' ⟨e, hlt e _ he⟩, hx⟩)`. Use the proof step `(fun k => ⟨k, fun y hy i j => by`. Use `hK k y (fun v => GlAx.Kc_anti (Nat.le_succ k) ?_) i j` and prove the remaining obligations. Break down `hy with hy | hy` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `exacts [(hy v trivial).2, (hy v trivial).2]⟩)`. Use the proof step `(fun x hx hZ i j => by choose y hy using fun v => hx v trivial`. Rewrite using `[hDiag x y (fun v => (hy v).symm), hDiag x y (fun v => (hy v).symm), if_pos rfl]`. Use `if_congr Iff.rfl (Finset.prod_congr rfl fun e _ => ?_) rfl` and prove the remaining obligations. Establish `h1 : x e.1 ∈ Subgroup.center _` using `Subgroup.mem_center_iff.2 fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using congrFun (Subgroup.mem_center_iff.1 hZ (Pi.mulSingle e.1 g)) e.1`. Take `⟨s, hs⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 h1`. Establish `h2 : ∀ a, (y e.1 a : (S e.1).adicCompletion L) = s` using `fun a => by`. Use `congrFun (congrFun hs a) a` as an intermediate fact. Rewrite `this` using `[← hy, val_diagT]`.
-
-Simplify using `using this.symm`. Break down `isEmpty_or_nonempty (Fin n) with hn | ⟨⟨a⟩⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `h3 : ψ e s ≠ 0` using `(_root_.map_ne_zero _).2 (h2 a ▸ Units.ne_zero _)`. Establish `h4` using `hle e (j e) 1 antitone_const`.
-
-Establish `h5` using `hle e (j e) (-1) antitone_const`. Simplify using `only [Pi.one_apply, Pi.neg_apply, one_mul, neg_mul, Finset.sum_neg_distrib] at h4 h5`. Simplify using `only [h2, prod_zpow_const h3]`. Rewrite using `[le_antisymm h4 (by linarith)])`. Use `⟨R, hR, fun t y hy => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hχ, hDiag _ y hy, if_pos rfl, Fintype.prod_sigma, map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_comm, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[algPow, finprod_eq_prod_of_fintype, map_prod]`.
-
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, h0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.wtRep :
     ∀ (L : Type) [Field L] [NumberField L] (l : ℕ) [Fact l.Prime] (n : ℕ) (V : Type) [Fintype V] (S : V → W.Plc L) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) (c : Coef l), ∃ c' : Coef l, c.O ≤ c'.O ∧

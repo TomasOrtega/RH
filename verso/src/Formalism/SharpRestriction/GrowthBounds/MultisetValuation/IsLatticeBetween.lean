@@ -12,7 +12,7 @@ variable {R : Type*} [CommRing R] {M M1 M2 : Type*} [AddCommGroup M] [AddCommGro
   [Module R M] [Module R M1] [Module R M2]
 
 /- English proof (translation)
-Establish `e1` using `(f1.quotKerEquivOfSurjective h1).toEquiv`. Establish `e2` using `(f2.quotKerEquivOfSurjective h2).toEquiv`. Establish `e3` using `(Submodule.quotEquivOfEq _ _ hk).toEquiv`. Conclude with `Nat.card_congr (e1.symm.trans (e3.trans e2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_eq_of_ker_eq (f1 : M →ₗ[R] M1) (f2 : M →ₗ[R] M2) (h1 : Function.Surjective f1)
     (h2 : Function.Surjective f2) (hk : LinearMap.ker f1 = LinearMap.ker f2) : Nat.card M1 = Nat.card M2 := by
@@ -22,11 +22,11 @@ theorem card_eq_of_ker_eq (f1 : M →ₗ[R] M1) (f2 : M →ₗ[R] M2) (h1 : Func
   exact Nat.card_congr (e1.symm.trans (e3.trans e2))
 
 /- English proof (translation)
-Establish `hmem : ∀ m, φ m ∈ T` using `fun m => hφ ▸ LinearMap.mem_range_self φ m`. Set `f1 : M →ₗ[R] (↥T ⧸ Submodule.comap T.subtype S)` to `(Submodule.comap T.subtype S).mkQ.comp (φ.codRestrict T hmem)`. Apply `card_eq_of_ker_eq f1 f2 _ h2` to reduce the goal to its premises. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_ker, ← hk m]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show (Submodule.comap T.subtype S).mkQ (φ.codRestrict T hmem m) = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression. Introduce `y`. Take `⟨⟨t, ht⟩, rfl⟩` from `Submodule.mkQ_surjective _ y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[← hφ]`. Take `⟨m, rfl⟩` from `ht`. Conclude with `⟨m, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_quot (T S : Submodule R M1) (φ : M →ₗ[R] M1) (hφ : LinearMap.range φ = T) (f2 : M →ₗ[R] M2)
     (h2 : Function.Surjective f2) (hk : ∀ m, φ m ∈ S ↔ f2 m = 0) :
@@ -60,11 +60,11 @@ theorem psi_apply (g : Matrix (Fin n) (Fin n) Qq) (w : Fin n → W) :
     psi g w = g.mulVec (fun c => algebraMap W Qq (w c)) := rfl
 
 /- English proof (translation)
-Unfold `colSpan`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Matrix.mulVec, dotProduct, Algebra.smul_def]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Matrix.mulVec, dotProduct, Algebra.smul_def]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_colSpan (G : Matrix (Fin n) (Fin n) Qq) (x : Fin n → Qq) :
     x ∈ colSpan W G ↔ ∃ y : Fin n → W, x = G.mulVec (fun c => algebraMap W Qq (y c)) := by
@@ -83,9 +83,9 @@ theorem mem_colSpan (G : Matrix (Fin n) (Fin n) Qq) (x : Fin n → Qq) :
     exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[LinearMap.mem_range, mem_colSpan]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_psi (g : Matrix (Fin n) (Fin n) Qq) : LinearMap.range (psi (W := W) g) = colSpan W g := by
   ext x
@@ -95,7 +95,7 @@ theorem range_psi (g : Matrix (Fin n) (Fin n) Qq) : LinearMap.range (psi (W := W
   · rintro ⟨y, rfl⟩; exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Use `congrArg (g⁻¹).mulVec h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul g hg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_cancel (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) {u v : Fin n → Qq}
     (h : g.mulVec u = g.mulVec v) : u = v := by
@@ -103,7 +103,7 @@ theorem mulVec_cancel (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) {u v :
   simpa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul g hg] using this
 
 /- English proof (translation)
-Introduce `a b h`. Use `mulVec_cancel g hg h` as an intermediate fact. Use function extensionality and compare the values at `c`. Conclude with `hinj (congrFun this c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem psi_inj (hinj : Function.Injective (algebraMap W Qq)) (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) :
     Function.Injective (psi (W := W) g) := by
@@ -113,28 +113,26 @@ theorem psi_inj (hinj : Function.Injective (algebraMap W Qq)) (g : Matrix (Fin n
   exact hinj (congrFun this c)
 
 /- English proof (translation)
-Rewrite using `[psi_apply, psi_apply, Matrix.smul_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_smul_mat (c : Qq) (g : Matrix (Fin n) (Fin n) Qq) (w : Fin n → W) :
     psi (c • g) w = c • psi g w := by
   rw [psi_apply, psi_apply, Matrix.smul_mulVec]
 
 /- English proof (translation)
-Establish `hinj` using `psi_inj (IsFractionRing.injective W Qq) g hg`. Use `set Sb : Submodule W (Fin n → W) := S.comap (psi g) with hSb`. Take `⟨m, ⟨bS⟩⟩` from `Submodule.nonempty_basis_of_pid (Pi.basisFun W (Fin n)) Sb`. Establish `hfin : Module.Finite W Sb` using `Module.Finite.of_basis bS`. Establish `hfr : Module.finrank W Sb = m` using `by rw [Module.finrank_eq_card_basis bS, Fintype.card_fin]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : Fin m → (Fin n → Qq)` to `fun i => psi g (bS i : Fin n → W)`. Establish `hliW : LinearIndependent W c`. Use `bS.linearIndependent.map' ((psi g).comp Sb.subtype) (by rw [LinearMap.ker_comp, LinearMap.ker_eq_bot.2 hinj, Submodule.comap_bot, Submodule.ker_subtype])` as an intermediate fact. Conclude with `this`. Establish `hliQ : LinearIndependent Qq c` using `(LinearIndependent.iff_fractionRing W Qq).1 hliW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmn : m ≤ n`. Use `hliQ.fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`. Establish `hnm : n ≤ m`. Establish `hmem : ∀ i : Fin n, π • (Pi.basisFun W (Fin n) i) ∈ Sb`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `show psi g (π • (Pi.basisFun W (Fin n) i)) ∈ S`. Rewrite using `[map_smul]`. Conclude with `h2 _ (by rw [← range_psi]; exact LinearMap.mem_range_self _ _)`. Establish `hli : LinearIndependent W (fun i : Fin n => (⟨π • (Pi.basisFun W (Fin n) i), hmem i⟩ : Sb))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearIndependent.of_comp Sb.subtype` to reduce the goal to its premises. Use `(Pi.basisFun W (Fin n)).linearIndependent.map' (π • (LinearMap.id : (Fin n → W) →ₗ[W] (Fin n → W))) (by` as an intermediate fact. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `a b hab`. Conclude with `smul_right_injective _ hπ hab)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[hfr]`. Simplify using `using this`. Take `rfl : m = n` from `le_antisymm hmn hnm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.of fun a b => c b a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hliQ`. Unfold `colSpan`.
-
-Establish `e1 : (Set.range fun b : Fin m => fun a => (Matrix.of fun a b => c b a) a b) = (psi g).comp Sb.subtype '' Set.range bS`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, ← Submodule.map_span, bS.span_eq, Submodule.map_comp, Submodule.map_subtype_top, hSb, Submodule.map_comap_eq, range_psi, inf_eq_right.2 h1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_between [IsDomain W] [IsPrincipalIdealRing W] [IsFractionRing W Qq] (π : W) (hπ : π ≠ 0)
     (g : Matrix (Fin n) (Fin n) Qq) (hg : IsUnit g.det) (S : Submodule W (Fin n → Qq))

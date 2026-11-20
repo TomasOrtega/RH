@@ -3,19 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `R X _ _ _ W P Bd hP hW hBd`. Rewrite using `[← WithBot.coe_le_coe, Module.coe_length, Order.krullDim, iSup_le_iff]`. Introduce `p`. Establish `hstep : ∀ i : Fin p.length, ∃ x : W, x ∈ p i.succ ∧ x ∉ p i.castSucc`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `SetLike.exists_of_lt (p.step i)`. Use `choose x hx1 hx2 using hstep`. Establish `hdir : Directed (· ≤ ·) P` using `hP.directed_le`. Establish `hmem : ∀ i : Fin p.length, ∃ n, (x i : X) ∈ P n`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_iSup_of_directed P hdir).mp (hW (x i).2)`. Use `choose m hm using hmem`. Take `⟨n, hn, hlen⟩` from `hBd (Finset.univ.sup m)`. Establish `hxn : ∀ i, (x i : X) ∈ P n`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `hP ((Finset.le_sup (Finset.mem_univ i)).trans hn) (hm i)`. Set `f : Submodule R W → Submodule R (P n)` to `fun S => (S.map W.subtype).comap (P n).subtype`. Establish `hfmono : Monotone f`. Introduce `S T hST`. Conclude with `Submodule.comap_mono (Submodule.map_mono hST)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `q : LTSeries (Submodule R (P n))` to `{ length := p.length toFun := fun i => f (p i) step := by`. Introduce `i`. Use `lt_of_le_of_ne (hfmono (p.step i).le) ?_` and prove the remaining obligations. Introduce `heq`. Establish `h1 : (⟨(x i : X), hxn i⟩ : P n) ∈ f (p i.succ)`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [f, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_map]`. Conclude with `⟨x i, hx1 i, rfl⟩`. Rewrite `h1` using `[← heq]`. Simplify using `only [f, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_map] at h1`. Take `⟨y, hy, hyx⟩` from `h1`.
-
-Establish `: y = x i` using `Subtype.ext hyx`. Conclude with `hx2 i (this ▸ hy) }`. Establish `hq` using `Order.LTSeries.length_le_krullDim q`. Rewrite `hq` using `[← Module.coe_length]`. Conclude with `hq.trans (WithBot.coe_le_coe.mpr hlen)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.lenDirected :
     ∀ (R X : Type) [CommRing R] [AddCommGroup X] [Module R X] (W : Submodule R X) (P : ℕ → Submodule R X) (Bd : ℕ∞), Monotone P → W ≤ ⨆ n, P n →

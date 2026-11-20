@@ -12,13 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ T DF P R i N hR hN s hs hl G J _ _ hG hJ cf w a hcf ha hsp hw`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Simplify using `[I2.PT.l2, I2.PT.ptN2] at hl`. Set `eG : Fin (2 * R ^ 4 * i) ≃ G` to `(Fintype.equivFinOfCardEq hG).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `eJ : Fin (Fintype.card J) ≃ J` to `(Fintype.equivFin J).symm`. Establish `key` using `GlobalTheory.norm_prod_sum_theta_le_exp I2.T_holds E T DF P R hR s hs hs0 i N (Fintype.card J) hN hJ (fun _ t => (cf (eJ t) : ℂ)) (fun k t => ∏ b, w (eG k) (eJ t) b) (fun k t => a (eG k) (eJ t)) (fun _ t => by`. Rewrite using `[Complex.norm_intCast]`. Conclude with `hcf (eJ t))` after adjusting the coercions. Use the proof step `(fun k t => ⟨ha _ _, hsp _ _⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun k t => by`. Rewrite using `[norm_prod]`. Simplify using `[hw, hl])`. Establish `h1 : ∏ g, ∑ j, (cf j : ℂ) * ∏ b, w g j b = ∏ k, ∑ t, (cf (eJ t) : ℂ) * ∏ b, w (eG k) (eJ t) b`. Rewrite using `[← eG.prod_comp]`.
-
-Conclude with `Finset.prod_congr rfl fun k _ => (eJ.sum_comp _).symm`. Rewrite using `[h1, neg_mul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_prod_sum_theta_le_exp_of_card :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (T : I2.PT E) (DF : ℕ) (P : I2.Par T DF) (R i N : ℕ), 2 ≤ R → 1 ≤ N → ∀ s ∈ T.Sec 1 1, T.l2 1 s = 1 → ∀ (G J : Type) [Fintype G] [Fintype J], Fintype.card G = 2 * R ^ 4 * i → Fintype.card J ≤ R ^ (2 * I2.PT.f E * T.r ^ 2) → ∀ (cf : J → ℤ) (w : G → J → Fin T.r → ℂ) (a : G → J → Fin T.r → I2.Vsp T.dim), (∀ j, |cf j| ≤ N) → (∀ g j b, ((R : ℂ) ^ 2) • a g j b ∈ T.L) → (∀ g j, ∀ x ∈ T.L, ∃ c : Fin T.r → 𝓞 E, ∃ y ∈ T.L, x = ∑ b, I2.act (c b) (((R : ℂ) ^ 2) • a g j b) + (R : ℂ) • y) → (∀ g j b, ‖w g j b‖ = Real.sqrt (T.ptN2 1 s fun _ => a g j b)) → ‖∏ g, ∑ j, (cf j : ℂ) * ∏ b, w g j b‖ ≤ Real.exp (-(i : ℝ) * (T.ph (I2.th (E := E) P.q P.R0) - p16 E T.r P.q P.m R N)) := by

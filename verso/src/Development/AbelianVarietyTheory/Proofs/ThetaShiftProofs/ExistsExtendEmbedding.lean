@@ -12,7 +12,7 @@ open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNo
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-Use `letI : Algebra F ℂ := σ.toAlgebra`. Use `haveI : Algebra.IsAlgebraic F K := Algebra.IsAlgebraic.tower_top (K := ℚ) F`. Set `f : K →ₐ[F] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨f.toRingHom, RingHom.ext fun x => f.commutes x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extend_embedding {F K : Type} [Field F] [Field K] [NumberField F] [NumberField K] [Algebra F K]
     (σ : F →+* ℂ) : ∃ em : K →+* ℂ, em.comp (algebraMap F K) = σ := by
@@ -22,9 +22,9 @@ theorem exists_extend_embedding {F K : Type} [Field F] [Field K] [NumberField F]
   exact ⟨f.toRingHom, RingHom.ext fun x => f.commutes x⟩
 
 /- English proof (translation)
-Introduce `hK D T h j ka CR Tt cc hG hj hm K₁ _ _ _ d hd F hF`. Establish `key : ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → (∀ k, rdU (T.U j σ) F.1 k ∈ ((T.U j σ).X k).SSgt (laU (T.U j σ) (wtA ka) ka.n k) (WeightFamilies.c1 D CR Tt cc j)) → cfOf d.yF d.μ d.jj F.1 = 0`. Introduce `σ hσ hr`. Take `⟨em, rfl⟩` from `exists_extend_embedding (K := K₁) σ`. Establish `hc : F.1 ∈ T.C j ka` using `cutR_le T.C j ka F.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.cmArcFunctional_vanishes_low_fourierJacobi hK _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d _ _ _ em _ (Formalism.L2.PjFree.Unf.ofPj (T.U j _)) (wtA ka) ka.n hd hσ (h.unf j hj _ hσ) (dom_wtA ka) (GlobalTheory.TransvPrinc.transvIn_of_hasPrinc _ _ _ _ (T.Q.Xo j) T.Q.c _ _ (Formalism …`. Conclude with `key T.σ₀ T.good_σ₀ ((GlobalTheory.T.mem_forms_low_coeffs_vanish_iff_fourierJacobi D T h j ka CR Tt cc hj hm F).2.1 hF)`.
+A detailed English derivation is pending.
 -/
 theorem killQ_of_gamAt : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ), GlobalTheory.RunIn.GamAt T → InR D j → j < D.R.m → KillQ h j ka CR Tt cc := by
   intro hK D T h j ka CR Tt cc hG hj hm K₁ _ _ _ d hd F hF

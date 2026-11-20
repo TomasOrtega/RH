@@ -7,7 +7,7 @@ open GlobalTheory.EtC
 namespace LateralTheory.EDual
 
 /- English proof (translation)
-Use `⟨(((ZMod.unitOfCoprime u h)⁻¹ : (ZMod q)ˣ) : ZMod q) • x, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod q), smul_smul, ← ZMod.coe_unitOfCoprime u h, Units.mul_inv, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_nsmul_eq_of_coprime {q u : ℕ} {G : Type*} [AddCommGroup G] [Module (ZMod q) G] (h : Nat.Coprime u q)
     (x : G) : ∃ z : G, u • z = x := by
@@ -15,9 +15,9 @@ theorem exists_nsmul_eq_of_coprime {q u : ℕ} {G : Type*} [AddCommGroup G] [Mod
   rw [← Nat.cast_smul_eq_nsmul (ZMod q), smul_smul, ← ZMod.coe_unitOfCoprime u h, Units.mul_inv, one_smul]
 
 /- English proof (translation)
-Introduce and unpack `⟨-, -, -, -, -, -, -, -, -, a7, a8, -, a10, a11, -⟩ l hl E i hI hF n`. Take `⟨hfin, -, M, hM, hc⟩` from `h2 a11 l E i (fun b => h1 a7 a8 a10 a11 l b E i hI) hF n`. Take `⟨c, u, hu, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM.ne' l hl.out.ne_one`. Use `⟨hfin, c, fun m x => ?_⟩` and prove the remaining obligations. Establish `hco : Nat.Coprime u (l ^ m)` using `((Nat.Prime.coprime_iff_not_dvd hl.out).2 hu).symm.pow_right m`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩` from `exists_nsmul_eq_of_coprime hco x`. Take `⟨y, hy⟩` from `hc m z`. Conclude with `⟨y, hy.trans (mul_smul _ _ _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adicFin_of (h1 : LateralTheory.KummerTheory.Bock) (h2 : LateralTheory.KummerTheory.AdicLim) : AdicFin := by
   rintro ⟨-, -, -, -, -, -, -, -, -, a7, a8, -, a10, a11, -⟩ l hl E i hI hF n

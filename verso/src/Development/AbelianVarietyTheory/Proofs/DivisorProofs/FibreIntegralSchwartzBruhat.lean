@@ -13,7 +13,7 @@ namespace GlobalTheory.ColFib
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [insB]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_insB_zero (v : Pl F) (a b : ℕ) :
     Continuous fun C : Matrix (Fin a) (Fin (a + b)) (Fv F v) => insB C 0 := by
@@ -22,24 +22,24 @@ theorem continuous_insB_zero (v : Pl F) (a b : ℕ) :
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => by simp only [dropCols]; fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dropCols (v : Pl F) (a b : ℕ) :
     Continuous fun X : Matrix (Fin a) (Fin (a + (b + 2))) (Fv F v) => dropCols X :=
   continuous_pi fun i => continuous_pi fun j => by simp only [dropCols]; fun_prop
 
 /- English proof (translation)
-Establish `hΦ' : Φ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin a) (Fin (a + (b + 2))) (Fv F v))`. Rewrite using `[← GlobalTheory.WeilM.SB_eq]`. Conclude with `hΦ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y`. Establish `hc : Continuous fun Y' : Matrix (Fin a) (Fin (a + b)) (Fv F v) => -insB (Y' - Y) (0 : Fin a → Fv F v)` using `((continuous_insB_zero v a b).comp (continuous_sub_right Y)).neg`. Establish `ht : Filter.Tendsto (fun Y' : Matrix (Fin a) (Fin (a + b)) (Fv F v) => -insB (Y' - Y) (0 : Fin a → Fv F v)) (nhds Y) (nhds 0)`. Establish `h` using `hc.tendsto Y`. Establish `e : -insB (Y - Y) (0 : Fin a → Fv F v) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self]`. Use function extensionality and compare the values at `i j`. Simplify using `[insB]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Use `filter_upwards [ht.eventually (GlobalTheory.SBConv.eventually_translate hΦ')] with Y' hY'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `fibInt`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `e : insB Y' t = insB Y t - -insB (Y' - Y) (0 : Fin a → Fv F v)`. Rewrite using `[sub_neg_eq_add, ← insB_add, add_sub_cancel, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, hY']`. Use `HasCompactSupport.intro ((hΦ.2.isCompact).image (continuous_dropCols v a b)) fun Y hY => ?_` and prove the remaining obligations. Unfold `fibInt`. Establish `h0 : (fun t => Φ (insB Y t)) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `t`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `image_eq_zero_of_notMem_tsupport fun hm => hY ⟨_, hm, ?_⟩` and prove the remaining obligations. Conclude with `dropCols_insB Y t`. Rewrite using `[h0, integral_zero]`.
+A detailed English derivation is pending.
 -/
 theorem fibInt_mem_SB (F : Type) [Field F] [NumberField F] (v : Pl F) (a b : ℕ)
     (Φ : Matrix (Fin a) (Fin (a + (b + 2))) (Fv F v) → ℂ)
@@ -78,6 +78,6 @@ end GlobalTheory.ColFib
 end
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ColFib.fibInt_mem_SB`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (a b : ℕ) (Φ : Matrix (Fin a) (Fin (a + (b + 2))) (Fv F v) → ℂ), Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + (b + 2))) (Fv F v)) → fibInt v Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) (Fv F v)) := GlobalTheory.ColFib.fibInt_mem_SB

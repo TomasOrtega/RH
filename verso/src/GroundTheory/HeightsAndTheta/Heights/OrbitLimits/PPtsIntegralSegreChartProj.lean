@@ -19,27 +19,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo (ptsIntegralAt)
 open ComplexSets
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e m σ i L g Ψ G Φ hP hL hg hΨ hΨ0 hgerm`. Use `set A := chartProjMatrix σ Ψ`. Use `set G' := chartWeight σ i g with hG'`. Use `set Φ' := chartPot σ i L`. Establish `hcoordS : ∀ x ∈ segreChartSet P σ i, x (σ.symm i) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Simplify using `using hzi`. Establish `hchart : ∀ J ∈ segreChartComponents P σ i, zeroSet J ⊆ segreChartSet P σ i`. Introduce `J hJ x hx`. Rewrite using `[← hZero K ι P m σ i hP.2.1.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun q hq => hx q ((mem_segreChartComponents.1 hJ).1.2 hq)`. Establish `hprime : ∀ J ∈ segreChartComponents P σ i, J.IsPrime` using `fun J hJ => (mem_segreChartComponents.1 hJ).1.1`. Establish `hdim : ∀ J ∈ segreChartComponents P σ i, ringKrullDim (MvPolynomial (Fin m) ℂ ⧸ J) = ((e + 1 : ℕ) : WithBot ℕ∞)` using `fun J hJ => SegreChartDim.proof K ι P (e + 1) m σ i hP J hJ`. Establish `hfin : ∀ J ∈ segreChartComponents P σ i, IsFiniteProjection J A` using `hFin K ι P (e + 1) m σ i Ψ hP hΨ hΨ0`. Establish `hmeas : Measurable G'` using `measurable_chartWeight σ i hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ J ∈ segreChartComponents P σ i, ∀ k, SmoothNear (zeroSet J) (Φ' k)` using `fun J hJ => smoothNear_chartPot σ i hL fun x hx => chart_coord_eq_one hJ hx`. Establish `habs : ∀ J ∈ segreChartComponents P σ i, Integrable (chartAbsDens J A G' Φ')` using `fun J hJ => hAbs K ι P (e + 1) m σ i L g hP hL hg J hJ A (hfin J hJ)`. Establish `hint : ∀ J ∈ segreChartComponents P σ i, Integrable (chartDens J A G' Φ')`. Introduce `J hJ`. Use `(habs J hJ).mono' (SheetSumMeasurable.full m (e + 1) J A G' Φ' (hprime J hJ) (hdim J hJ) (hfin J hJ) hmeas (hsm J hJ)).1.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_eq_abs]`. Unfold `chartDens chartAbsDens sheetSum`. Use `(abs_finsum_mem_le_finsum_mem_abs _ _).trans (le_of_eq (finsum_mem_congr rfl fun x _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcong : ∀ J ∈ segreChartComponents P σ i, ∀ A₁ : Matrix (Fin (e + 1)) (Fin m) ℂ, chartDens J A₁ G Φ = chartDens J A₁ G' Φ'`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Introduce `J hJ A₁`. Use function extensionality and compare the values at `y`. Unfold `chartDens sheetSum`. Use `finsum_mem_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hxS : x ∈ segreChartSet P σ i` using `hchart J hJ hx.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with h`. Take `⟨U, hU, hyU, hdiff, hsx, -, -⟩` from `h.choose_spec`. Establish `hy : A₁ *ᵥ x = y` using `hx.2`. Establish `hG : G x = G' x`. Rewrite using `[hG', chartWeight_of_coord g (hcoordS x hxS)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hgerm x hxS).1.eq_of_nhds`. Establish `hcont : Tendsto h.choose (𝓝 y) (𝓝 x)`. Use `(hdiff.continuousOn.continuousAt (hU.mem_nhds hyU)).tendsto` as an intermediate fact. Rewrite `this` using `[hsx, hy]`. Then use the resulting hypothesis. Use `beta_reduce`.
+Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hG]`. Use `congr 1`. Conclude with `ReciprocityTheory.AnForm.M.maDens_congr_eventuallyEq fun k => ((hgerm x hxS).2 k).comp_tendsto hcont`. Both sides reduce to the same expression. Establish `hvar : ∀ J ∈ segreChartComponents P σ i, varInt J (e + 1) G Φ = ∫ y, chartDens J A G' Φ' y`.
-
-Introduce `J hJ`. Establish `hex : ∃ A₁ : Matrix (Fin (e + 1)) (Fin m) ℂ, IsFiniteProjection J A₁` using `⟨A, hfin J hJ⟩`. Rewrite using `[varInt, dif_pos hex, chartInt, hcong J hJ]`. Conclude with `(IntegralIndep.full m (e + 1) J A hex.choose G' Φ' (hprime J hJ) (hdim J hJ) (hfin J hJ) hex.choose_spec hmeas (hsm J hJ) (habs J hJ)).2.symm`. Rewrite using `[Finset.sum_congr rfl hvar, ← integral_finsetSum _ hint]`.
-
-Unfold `ptsIntegralAt`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hSum K ι P (e + 1) m σ i L g Ψ hP hL hg hΨ hΨ0] with y hy`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem PtsIntegralSegreChartProj.proof (hFin : SegreChartProjFinite.Statement)
     (hZero : SegreChartZeroSet.Statement) (hAbs : SegreChartAbsIntegrable.Statement)

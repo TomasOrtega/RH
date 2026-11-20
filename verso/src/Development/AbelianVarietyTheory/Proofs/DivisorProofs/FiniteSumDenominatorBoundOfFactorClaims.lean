@@ -30,9 +30,9 @@ section Val
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0` using `fun h => hc (h ▸ zero_mem _)`. Establish `h1` using `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w c`. Establish `h2` using `(Formalism.L2.DIV.EmbeddingLemmas.mem_pow_iff w c hc0 1).not.1 (by simpa using hc)`. Establish `h3 : 0 ≤ vw w (algebraMap (𝓞 K) K c)` using `h1`. Establish `h4 : vw w (algebraMap (𝓞 K) K c) < ((1 : ℕ) : ℤ)` using `not_le.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: vw w (algebraMap (𝓞 K) K c) = 0` using `by omega`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vw_eq_zero_of_notMem (w : HeightOneSpectrum (𝓞 K)) {c : 𝓞 K} (hc : c ∉ w.asIdeal) : vw w (c : K) = 0 := by
   have hc0 : c ≠ 0 := fun h => hc (h ▸ zero_mem _)
@@ -44,25 +44,23 @@ theorem vw_eq_zero_of_notMem (w : HeightOneSpectrum (𝓞 K)) {c : 𝓞 K} (hc :
   exact this
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `hL`. Take `⟨u, hu, hv⟩` from `Formalism.DivisionValues.shift_exists_val w ⌊a⌋`. Establish `key : ∀ x ∈ Lt, ∃ c z : 𝓞 K, c ∉ w.asIdeal ∧ (c : K) * (u * (y ⬝ᵥ x)) = (z : K)`. Introduce `x hx`. Distinguish the cases in `h0 : y ⬝ᵥ x = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, 0, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp [h0]⟩`. Use `Formalism.L2.DIV.EmbeddingLemmas.exists_clear w _ ?_` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hu h0, hv]`. Establish `h1` using `(h x hx).resolve_left h0`. Establish `h2 : -vw w (y ⬝ᵥ x) ≤ ⌊a⌋` using `Int.le_floor.2 (by push_cast; linarith)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `choose! c z hc hz using key`. Establish `hGL : ∀ x ∈ G, x ∈ Lt` using `fun x hx => hG ▸ Submodule.subset_span hx`. Use `set P : 𝓞 K := ∏ x ∈ G, c x with hP`. Establish `hPw : P ∉ w.asIdeal`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hm`. Take `⟨x, hx, hx'⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := w.isPrime)).1 hm`. Conclude with `hc x (hGL x hx) hx'`. Establish `hP0 : (P : K) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: P = 0` using `by exact_mod_cast h0`. Conclude with `hPw (this ▸ zero_mem _)`. Use `⟨u * P, mul_ne_zero hu hP0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hu hP0, hv, vw_eq_zero_of_notMem w hPw, add_zero]`. Conclude with `Int.floor_le a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[← hG]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[Submodule.mem_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(∏ x' ∈ G.erase x, c x') * z x, ?_⟩` and prove the remaining obligations. Establish `e : P = c x * ∏ x' ∈ G.erase x, c x'` using `(Finset.mul_prod_erase G c hx).symm`. Establish `e2` using `hz x (hGL x hx)`. Rewrite using `[smul_dotProduct, smul_eq_mul, e]`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : algebraMap (𝓞 K) K (c x) * (u * (y ⬝ᵥ x)) = algebraMap (𝓞 K) K (z x)` using `e2`. Establish `e4 : u * ((c x : K) * ((∏ x' ∈ G.erase x, c x' : 𝓞 K) : K)) * (y ⬝ᵥ x) = ((∏ x' ∈ G.erase x, c x' : 𝓞 K) : K) * (algebraMap (𝓞 K) K (c x) * (u * (y ⬝ᵥ x)))`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e4` using `[e3]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify `e4.symm` using `[RingOfIntegers.coe_eq_algebraMap, mul_comm, mul_left_comm, mul_assoc]`. Consider the case `zero => simp [zero_mem]`. Consider the case `add a b _ _ ha hb`. Rewrite using `[dotProduct_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul r a _ ha`. Rewrite using `[dotProduct_smul]`. Conclude with `Submodule.smul_mem _ r ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {n : ℕ} (w : HeightOneSpectrum (𝓞 K)) (Lt : Submodule (𝓞 K) (Fin n → K)) (hL : Lt.FG) (y : Fin n → K) (a : ℝ)
     (ha : 0 ≤ a) (h : ∀ x ∈ Lt, y ⬝ᵥ x = 0 ∨ -a ≤ (vw w (y ⬝ᵥ x) : ℝ)) :
@@ -124,11 +122,11 @@ section Loss
 variable {D : D7} {w : PlL D}
 
 /- English proof (translation)
-Take `⟨y, e, h⟩` from `h`. Take `⟨y', e', h'⟩` from `h'`. Use `⟨y * y', by rw [map_mul, e, e'], ?_⟩` and prove the remaining obligations. Break down `h with rfl | h` into its components or cases. Conclude with `Or.inl (zero_mul _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Break down `h' with rfl | h'` into its components or cases. Conclude with `Or.inl (mul_zero _)`. Distinguish the cases in `h0 : y = 0`. Conclude with `Or.inl (by rw [h0, zero_mul])`. Distinguish the cases in `h0' : y' = 0`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl (by rw [h0', mul_zero])`. Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ h0 h0']`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem loss_mul {z z' : ℂ} {a a' : ℝ} (h : LossLe w z a) (h' : LossLe w z' a') : LossLe w (z * z') (a + a') := by
   obtain ⟨y, e, h⟩ := h
@@ -148,13 +146,13 @@ theorem loss_mul {z z' : ℂ} {a a' : ℝ} (h : LossLe w z a) (h' : LossLe w z' 
   linarith
 
 /- English proof (translation)
-Take `⟨y, e, h⟩` from `h`. Take `⟨y', e', h'⟩` from `h'`. Use `⟨y + y', by rw [map_add, e, e'], ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : y = 0`. Substitute `h0` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using h'`. Distinguish the cases in `h0' : y' = 0`. Substitute `h0'` using the available equality. Simplify using `using h`. Distinguish the cases in `h1 : y + y' = 0`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl h1`. Use `Or.inr ?_` and prove the remaining obligations. Establish `hy` using `h.resolve_left h0`. Establish `hy'` using `h'.resolve_left h0'`. Use `Formalism.PairingDivisionLocalBalance.vw_add w y y' h0 h0' h1` as an intermediate fact.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((min (vw w y) (vw w y') : ℤ) : ℝ) ≤ (vw w (y + y') : ℝ)` using `by exact_mod_cast this`. Use `le_trans ?_ h2` and prove the remaining obligations. Use `push_cast`. Conclude with `le_min hy hy'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem loss_add {z z' : ℂ} {a : ℝ} (h : LossLe w z a) (h' : LossLe w z' a) : LossLe w (z + z') a := by
   obtain ⟨y, e, h⟩ := h
@@ -176,12 +174,12 @@ theorem loss_add {z z' : ℂ} {a : ℝ} (h : LossLe w z a) (h' : LossLe w z' a) 
   exact le_min hy hy'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, map_zero _, Or.inl rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem loss_zero (a : ℝ) : LossLe w 0 a := ⟨0, map_zero _, Or.inl rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using loss_zero a`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `loss_add (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loss_sum {ι : Type} (s : Finset ι) (f : ι → ℂ) {a : ℝ} (h : ∀ i ∈ s, LossLe w (f i) a) : LossLe w (∑ i ∈ s, f i) a := by
   classical
@@ -201,9 +199,9 @@ variable {Γ A K M : Type} [Group Γ] [Group A] [Field K] [AddCommGroup M] [Modu
 open Classical in
 
 /- English proof (translation)
-Unfold `deltaForm`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hf.toFinset) ?_]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Conclude with `if_pos (hf.mem_toFinset.1 hγ)`. Introduce `γ hγ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hγ` using `[Function.mem_support]`. Assume the negation of the conclusion as `h`. Conclude with `hγ (if_neg (fun h' => h (hf.mem_toFinset.2 h')))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem deltaForm_eq_sum (x g : A) (hf : {γ : Γ | x⁻¹ * ((ι γ)⁻¹ * g) ∈ U}.Finite) (v : M) :
     deltaForm ι U ρ x v g = ∑ γ ∈ hf.toFinset, ρ γ v := by
@@ -217,7 +215,7 @@ theorem deltaForm_eq_sum (x g : A) (hf : {γ : Γ | x⁻¹ * ((ι γ)⁻¹ * g) 
     exact hγ (if_neg (fun h' => h (hf.mem_toFinset.2 h')))
 
 /- English proof (translation)
-Simplify using `only [deltaForm_eq_sum ι U ρ x g hf, map_sum, map_smul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deltaForm_sum {J : Type} (x g : A) (hf : {γ : Γ | x⁻¹ * ((ι γ)⁻¹ * g) ∈ U}.Finite) (s : Finset J) (a : J → K) (v : J → M) :
     deltaForm ι U ρ x (∑ i ∈ s, a i • v i) g = ∑ i ∈ s, a i • deltaForm ι U ρ x (v i) g := by
@@ -226,13 +224,11 @@ theorem deltaForm_sum {J : Type} (x g : A) (hf : {γ : Γ | x⁻¹ * ((ι γ)⁻
   exact Finset.sum_comm
 
 /- English proof (translation)
-Distinguish the cases in `hne : ∃ γ₀ : Γ, x⁻¹ * ((ι γ₀)⁻¹ * g) ∈ U`. Take `⟨γ₀, h₀⟩` from `hne`. Establish `hm : ∀ γ : {γ : Γ | x⁻¹ * ((ι γ)⁻¹ * g) ∈ U}, g⁻¹ * ι (γ.1 * γ₀⁻¹) * g ∈ U`. Introduce and unpack `⟨γ, hγ⟩`. Use `U.mul_mem (U.inv_mem hγ) h₀` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (x⁻¹ * ((ι γ)⁻¹ * g))⁻¹ * (x⁻¹ * ((ι γ₀)⁻¹ * g)) = g⁻¹ * ι (γ * γ₀⁻¹) * g`. Simplify using `only [map_mul, map_inv]`. Use `group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `Set.finite_coe_iff.1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finite.of_injective (fun γ => (⟨γ.1 * γ₀⁻¹, hm γ⟩ : {δ : Γ // g⁻¹ * ι δ * g ∈ U})) fun a b e => by`. Use `congrArg Subtype.val e` as an intermediate fact. Conclude with `Subtype.ext (mul_right_cancel this)`. Establish `: {γ : Γ | x⁻¹ * ((ι γ)⁻¹ * g) ∈ U} = ∅` using `Set.eq_empty_of_forall_notMem fun γ hγ => hne ⟨γ, hγ⟩`. Rewrite using `[this]`.
-
-Conclude with `Set.finite_empty`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_index (x g : A) (h : Finite {δ : Γ // g⁻¹ * ι δ * g ∈ U}) :
     {γ : Γ | x⁻¹ * ((ι γ)⁻¹ * g) ∈ U}.Finite := by
@@ -259,11 +255,11 @@ section DeltaG
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `hγ : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1.1 * (Xp G).gram * γ.1.1 = (Xp G).gram` using `γ.2`. Set `q0 : GA D (Xp G)` to `GlobalTheory.ConjSplit.ratPt D (Xp G) γ.1 hγ`. Establish `hq : q0 ∈ GQ (Xp G)`. Conclude with `⟨γ.1, γ.2, rfl⟩`. Set `q : GQ (Xp G)` to `⟨q0, hq⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hr : Bridge.IsRatMat (Xp G) q γ.1` using `rfl`. Establish `e1 : Lev.finE (Xp G) q.1 = ratIn G γ` using `TestLatModel.finE_rat q γ hr`. Take `⟨z, hz⟩` from `GlobalTheory.FunObj.ClassFin.gfcToGf_surjective (Xp G) (Bridge.ratF (Xp G) q)`. Establish `hz' : finHom (Xp G) z.1 = finHom (Xp G) q.1` using `congrArg Subtype.val hz`. Establish `e2 : finG (Xp G) z = Lev.finE (Xp G) q.1` using `by show Formalism.UG.bc (Lev.swapAE D) (finHom (Xp G) z.1) = Formalism.UG.bc (Lev.swapAE D) (finHom (Xp G) q.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz']`. Conclude with `⟨⟨z, q.1, q.2, e2.symm⟩, e2.trans e1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_lift (γ : UR D.sp.cm (Xp G).gram) : ∃ z : ratFin (Xp G), finG (Xp G) z.1 = ratIn G γ := by
   have hγ : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1.1 * (Xp G).gram * γ.1.1 = (Xp G).gram := γ.2
@@ -281,9 +277,9 @@ theorem exists_lift (γ : UR D.sp.cm (Xp G).gram) : ∃ z : ratFin (Xp G), finG 
   exact ⟨⟨z, q.1, q.2, e2.symm⟩, e2.trans e1⟩
 
 /- English proof (translation)
-Establish `hf` using `(Nat.card_ne_zero.1 hx).2`. Use `choose z hz using exists_lift (G := G)`. Use `Finite.of_injective (β := {γ : ratFin (Xp G) // finG (Xp G) (x⁻¹ * γ * x) ∈ G.Kplus}) (fun δ => ⟨z δ.1, ?_⟩) ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, hz]`. Conclude with `δ.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b e`. Establish `h1 : z a.1 = z b.1` using `congrArg Subtype.val e`. Establish `h2 : ratIn G a.1 = ratIn G b.1` using `by rw [← hz, ← hz, h1]`. Conclude with `Subtype.ext (Subtype.ext (Formalism.L2.DIV.incl_inj D.host.F D.host.E _ h2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_stabUR (x : FinPt G (.top 0)) (hx : gamOrd (Xp G) G.Kplus x ≠ 0) :
     Finite {δ : UR D.sp.cm (Xp G).gram // (finG (Xp G) x)⁻¹ * ratIn G δ * finG (Xp G) x ∈ G.Kplus} := by
@@ -303,7 +299,7 @@ end DeltaG
 section Chain
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by have e : a + ((0 : ℕ) : ℝ) * δ = a := by simp rw [e] exact hu | n + 1, hn => by have := hk n (by omega) _ _ (chainTo_loss Q k m δ hk a u hu n (by omega)) have e : a + ((n + 1 : ℕ) : ℝ) * δ = a + n * δ + δ := by push_cast; ring rw [e] exact this`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_loss {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (Q : ∀ j, ℝ → Set (V j))
     (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (m : ℕ) (δ : ℝ) (hk : ∀ j, j < m → ∀ a, ∀ u ∈ Q j a, k j u ∈ Q (j + 1) (a + δ)) (a : ℝ) (u : V 0)
@@ -327,11 +323,11 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {
 open Classical in
 
 /- English proof (translation)
-Establish `hτ : ∀ β ∈ S.supp t Φ, S.IsExpansion t Φ β (Classical.epsilon (S.IsExpansion t Φ β))` using `fun β hβ => Classical.epsilon_spec (h.ex β hβ)`. Simplify using `only [h.vCore_eq _ hτ]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.cls β` as an intermediate fact. Use `Fintype.ofFinite (S.Classes t Φ β)` as an intermediate fact. Simplify using `only [GridChoice.classSum, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv β c, map_sum, LinearMap.sum_apply, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vCore_lin {S : GridChoice W U} {t : T} {Φ : G.Datum} (h : S.SumOK t Φ) {J : Type} (s : Finset J) (a : J → ℂ)
     (Ψs : J → FinPt G (.top 0) → VV ℂ (wt G (.top 0))) (Ψ0 : FinPt G (.top 0) → VV ℂ (wt G (.top 0)))
@@ -365,19 +361,17 @@ set_option maxHeartbeats 1600000 in
 open Classical in
 
 /- English proof (translation)
-Establish `ex : ∀ β, ∃ τ, β ∈ ch.S.supp t Φ → IsCosetExpansion ch.S.toGridChoice t Φ β (expDepth ch.S.toGridChoice t Φ β) τ` using `fun β => by`. Distinguish the cases in `hβ : β ∈ ch.S.supp t Φ`. Take `⟨τ, h⟩` from `hD β hβ`. Conclude with `⟨τ, fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h hβ⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose τ hτ using ex`. Rewrite using `[hS.vCore_eq τ (fun β hβ => (hτ β hβ).2.1)]`. Use `loss_sum _ _ fun β hβ => ?_` and prove the remaining obligations. Establish `hβ' : β ∈ ch.S.supp t Φ` using `hS.fin.mem_toFinset.1 hβ`. Use `loss_mul (hC β hβ') ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hS.cls β` as an intermediate fact. Use `Fintype.ofFinite (ch.S.Classes t Φ β)` as an intermediate fact. Rewrite using `[GridChoice.classSum, finsum_eq_sum_of_fintype]`. Use `loss_sum _ _ fun c _ => loss_mul (hG β c) ?_` and prove the remaining obligations. Simplify using `only [GridChoice.pairAt, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.compl₁₂_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `loss_sum _ _ fun d hd => ?_` and prove the remaining obligations. Take `⟨x', y', e⟩` from `(hτ β hβ').coef_eq hd`. Rewrite using `[e]`. Use `loss_mul (hDat β hβ' x' y') ?_` and prove the remaining obligations. Establish `hO : Occurs ch.S.toGridChoice t Φ β d` using `⟨hβ', τ β, hτ β hβ', hd⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol` using `chainTo_loss (V := fun j => VV ℂ (wt ch.G (.top j))) (fun j a => {v | InLat _ w a (latAt ch.S.toGridChoice (.top j) (ch.S.ptTop c j)) v}) (fun j => if h : j < D.R.m then ch.S.Z.kkMap 1 (d.1 ⟨j, h⟩) (ch.S.ptTop c j) (ch.S.ptTop c (j + 1)) else 0) D.R.m aT (fun j hj a u hu => by`. Simplify using `only [dif_pos hj]`. Conclude with `hT β d hO c ⟨j, hj⟩ a u hu) 0 _ (hΨ (ch.S.ptTop c 0)) D.R.m le_rfl`. Establish `hrow` using `chainTo_loss (V := fun i => VV ℂ (wt ch.G (.grid i D.R.m))) (fun i a => {v | InLat _ w a (latAt ch.S.toGridChoice (.grid i D.R.m) (ch.S.ptRow c i)) v}) (fun i => if h : i < D.R.m then ch.S.Z.kkMap 1 (d.2 ⟨i, h⟩) (ch.S.ptRow c i) (ch.S.ptRow c (i + 1)) else 0) D.R.m aR (fun i hi a …`. Simplify using `only [dif_pos hi]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hR β d hO c ⟨i, hi⟩ a u hu) aF _ (hF (ch.S.ptRow c 0)) D.R.m le_rfl`. Establish `e' : ch.S.ptTop c D.R.m = finEmb ch.G.sp.topDec (ch.S.ptRow c D.R.m)`. Simplify using `[GridChoice.ptTop]`. Simplify using `only [Set.mem_setOf_eq] at hcol hrow`. Rewrite `hcol` using `[e']`.
-
-Conclude with `hP _ _ _ _ _ hcol hrow`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_loss (ch : Choice R) {t : T} {w : PlL D} {Φ : ch.G.Datum} (hS : ch.S.SumOK t Φ)
     (hD : ∀ β ∈ ch.S.supp t Φ, ∃ τ, IsCosetExpansion ch.S.toGridChoice t Φ β (expDepth ch.S.toGridChoice t Φ β) τ)
@@ -465,9 +459,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP G) (Ψ0 (finG (Xp G) x))).1 = _`. Rewrite using `[h, map_sum, Submodule.coe_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, Submodule.coe_smul, Submodule.coe_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem psiC_sum {L : LevCh D T} {sc : Consts} {G : GridData L sc} {J : Type} (s : Finset J) (a : J → D.what₂.LL)
     (Ψ0 : GLf G → WtSp G) (Ψs : J → GLf G → WtSp G) (x : FinPt G (.top 0))
@@ -481,11 +475,11 @@ theorem psiC_sum {L : LevCh D T} {sc : Consts} {G : GridData L sc} {J : Type} (s
   rfl
 
 /- English proof (translation)
-Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `h1` using `left_ne_zero_of_mul (h.gam β c)`. Establish `h2` using `Finset.prod_ne_zero_iff.1 h1 ⟨0, hm⟩ (Finset.mem_univ _)`. Establish `e : S.ptTop c 0 = (c.1 ⟨0, hm⟩).out`. Unfold `GridChoice.ptTop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Function.update_of_ne hm.ne]`. Conclude with `dif_pos hm`. Rewrite using `[e]`. Introduce `h3`. Apply `h2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h4 : gamOrd (G.V (.top ((⟨0, hm⟩ : Fin D.R.m) : ℕ))) (S.levTop t Φ β ((⟨0, hm⟩ : Fin D.R.m) : ℕ) hm) (c.1 ⟨0, hm⟩).out = 0` using `h3`. Rewrite using `[h4]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gam_ne {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} {S : GridChoice W U} {t : T} {Φ : G.Datum}
     (h : S.SumOK t Φ) {β : CosFam G t} (c : S.Classes t Φ β) : gamOrd (Xp G) G.Kplus (S.ptTop c 0) ≠ 0 := by
@@ -507,21 +501,21 @@ set_option maxHeartbeats 1600000 in
 open Classical in
 
 /- English proof (translation)
-Take `⟨i0⟩` from `GlobalTheory.TestLat.SumLat.idx_nonempty (LaP ch.G)`. Use `haveI : Finite (TestIx ch.G) := Finite.of_injective (fun c => ch.e.symm (c, i0)) fun _ _ h => congrArg Prod.fst (ch.e.symm.injective h)`. Use `haveI := Fintype.ofFinite (TestIx ch.G)`. Establish `hlat : Submodule.IsLattice D.what₂.LL (formLat ch.G ch.rp ch.e)` using `GlobalTheory.TestLat.SumLat.isLattice_sumLat _ _ _ fun c => delAtr_isLattice (emb D) (LaP ch.G) _ (isSelfDualE_latOf ch.G (ch.rp.x c.2)).1`. Establish `key : ∀ x ∈ formLat ch.G ch.rp ch.e, y ⬝ᵥ x = 0 ∨ -B ≤ (vw w (y ⬝ᵥ x) : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `e1 : ∑ a, D.what₂.embLL (x a) * vK ch t Fx a = ∑ c : TestIx ch.G, ∑ i, D.what₂.embLL (x (ch.e.symm (c, i))) * vK ch t Fx (ch.e.symm (c, i))`. Rewrite using `[← Equiv.sum_comp ch.e.symm, Fintype.sum_prod_type]`. Establish `hl : LossLe w (∑ a, D.what₂.embLL (x a) * vK ch t Fx a) B`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `loss_sum _ _ fun c _ => ?_` and prove the remaining obligations. Establish `hc : valAt (LaP ch.G) ch.e c x ∈ wLat ch.G (ch.rp.lat c.2)` using `(Submodule.mem_iInf _).1 hx c`. Establish `hSO : ch.S.SumOK t c.1`. Establish `h` using `hO (ch.e.symm (c, i0))`. Establish `e : ch.Phi (ch.e.symm (c, i0)) = c.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Choice.Phi, datumOf, Equiv.apply_symm_apply]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hval : valAt (LaP ch.G) ch.e c x = ∑ i, x (ch.e.symm (c, i)) • bVV D.what₂.LL (LaP ch.G) i`. Simplify using `[valAt, Module.Basis.equivFun_symm_apply, LinearMap.funLeft_apply]`. Establish `hlin` using `vCore_lin hSO Finset.univ (fun i => D.what₂.embLL (x (ch.e.symm (c, i)))) (fun i => psiC (ch.rp.delta c.2 (bVV D.what₂.LL (LaP ch.G) i))) (psiC (ch.rp.delta c.2 (valAt (LaP ch.G) ch.e c x))) (ch.S.formC t (R.jX t Fx)) (fun β cc => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `psiC_sum _ _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `deltaForm_sum _ _ _ _ _ (finite_index _ _ _ _ (finite_stabUR _ (gam_ne hSO cc))) _ _ _)`. Establish `e2 : ∑ i, D.what₂.embLL (x (ch.e.symm (c, i))) * vK ch t Fx (ch.e.symm (c, i)) = ch.S.sAA * ch.S.vCore t c.1 (psiC (ch.rp.delta c.2 (valAt (LaP ch.G) ch.e c x))) (ch.S.formC t (R.jX t Fx))`. Rewrite using `[hlin, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e3 : vK ch t Fx (ch.e.symm (c, i)) = ch.S.sAA * ch.S.vCore t c.1 (psiC (ch.rp.delta c.2 (bVV D.what₂.LL (LaP ch.G) i))) (ch.S.formC t (R.jX t Fx))` using `by show ch.S.sAA * ch.S.vCore t (datumOf ch.e (ch.e.symm (c, i))) (psiC (psi ch.rp ch.e (ch.e.symm (c, i)))) (ch.S.formC t (R.jX t Fx)) = _`. Simplify using `only [datumOf, psi, Equiv.apply_symm_apply]`. Rewrite using `[e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `hb c.1 c.2 hSO _ hc`. Take `⟨y', e, h⟩` from `hl`. Establish `e2 : y' = y ⬝ᵥ x` using `D.what₂.embLL.injective (by`. Rewrite using `[e, dotProduct, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hy, mul_comm])`. Rewrite `h` using `[e2]`. Then use the resulting hypothesis. Take `⟨s, hs, hv, hm⟩` from `exists_den w _ hlat.fg y B hB key`. Conclude with `⟨s, hs, hv, hM.2 ▸ hm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_intMod_levelPrimePow_eq_add_mul (ch : Choice R) {t : T} {w : PlL D} {B : ℝ} (hB : 0 ≤ B) (hO : ∀ a, ch.S.SumOK t (ch.Phi a))
     {X' : InfinitePlace D.what₂.LL → Matrix (Fin ch.n) (Fin ch.n) ℂ} {M : Submodule (𝓞 D.what₂.LL) (Fin ch.n → D.what₂.LL)}
@@ -588,19 +582,19 @@ section Comb
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hB : 0 ≤ B` using `by simpa using hT.2.2 ∅`. Establish `hm0 : 0 ≤ m` using `by linarith`. Use `⟨fun w => ?_, ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `h1` using `hS.1 w`. Establish `h2` using `hC.1 w`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hD.1 w`. Establish `h4` using `hG.1 w`. Establish `h5` using `mul_nonneg hm0 (hT.1 w)`. Establish `h6` using `mul_nonneg hm0 (hR.1 w)`. Establish `h7` using `hF.1 w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8` using `hP.1 w`. Use `show 0 ≤ dS w + dC w + dD w + dG w + m * dT w + m * dR w + dF w + dP w`. Combine the linear equalities and inequalities to obtain the conclusion. Use `((((((((hS.2.1.union hC.2.1).union hD.2.1).union hG.2.1).union hT.2.1).union hR.2.1).union hF.2.1).union hP.2.1)).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hn`. Take `⟨⟨⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩, h7⟩, h8⟩` from `hn`. Conclude with `hw (by simp [h1, h2, h3, h4, h5, h6, h7, h8])`. Establish `e : ∑ w ∈ s, lw w * (dS w + dC w + dD w + dG w + m * dT w + m * dR w + dF w + dP w) = ∑ w ∈ s, lw w * dS w + ∑ w ∈ s, lw w * dC w + ∑ w ∈ s, lw w * dD w + ∑ w ∈ s, lw w * dG w + m * ∑ w ∈ s, lw w * dT w + m * ∑ w ∈ s, lw w * dR w + ∑ w ∈ s, lw w * dF w + ∑ w ∈ s, lw w * dP w`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Rewrite using `[e]`. Establish `h1` using `hS.2.2 s`. Establish `h2` using `hC.2.2 s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hD.2.2 s`. Establish `h4` using `hG.2.2 s`. Establish `h5` using `mul_le_mul_of_nonneg_left (hT.2.2 s) hm0`. Establish `h6` using `mul_le_mul_of_nonneg_left (hR.2.2 s) hm0`. Establish `h7` using `hF.2.2 s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h8` using `hP.2.2 s`. Establish `h9 : B ≤ m * B` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem loss_comb {dS dC dD dG dT dR dF dP : PlL D → ℝ} {B m : ℝ} (hm : 1 ≤ m) (hS : Loss dS (m * B)) (hC : Loss dC (m * B))
     (hD : Loss dD (m * B)) (hG : Loss dG (m * B)) (hT : Loss dT B) (hR : Loss dR B) (hF : Loss dF B) (hP : Loss dP B) :
@@ -651,13 +645,13 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨dS, lS, hS⟩` from `hS`. Take `⟨dC, lC, hC⟩` from `hC`. Take `⟨dD, lD, hDt⟩` from `hDt`. Take `⟨dG, lG, hG⟩` from `hG`. Take `⟨dT, lT, hT⟩` from `hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨dR, lR, hR⟩` from `hR`. Take `⟨dP, lP, hP⟩` from `hP`. Take `⟨dF, lF, hF⟩` from `hF`. Establish `hm1 : (1 : ℝ) ≤ D.R.m`. Use `D.R.two_le_m` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : 1 ≤ D.R.m)` after adjusting the coercions. Establish `hL` using `loss_comb hm1 lS lC lD lG lT lR lF lP`. Establish `e : (D.R.m : ℝ) * bOne ch.G C b / 2 = 8 * D.R.m * bOne ch.G (C / 16) b`. Simplify using `only [bOne]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, e ▸ hL, ?_⟩` and prove the remaining obligations. Introduce `X' M hM t w hw x hx y hy`. Use `exists_intMod_levelPrimePow_eq_add_mul ch (hL.1 w) (hO t) hM (formOf F t x) y hy fun Φ cl hSO u hu => ?_` and prove the remaining obligations. Establish `core` using `core_loss ch hSO (fun β hβ => (hD t Φ β hβ).1) (hC t w hw Φ) (hDt t w hw Φ) (hG t w Φ) (hT t w hw Φ) (hR t w hw Φ) (hP w) (psiC (ch.rp.delta cl u)) (fun z => hΨ w cl u hu z) (ch.S.formC t (R.jX t (formOf F t x))) (fun z => hF t w x hx z)`. Conclude with `LossLe.mono (loss_mul (hS w) core) (le_of_eq (by ring))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_at (F : Face D A) (ch : Choice R) (C b : ℝ) (hO : ∀ t a, ch.S.SumOK t (ch.Phi a)) (hD : DepthAt ch)
     (hS : FinScalAt ch (C / 16) b) (hC : FinCoefAt ch (C / 16) b) (hDt : FinDatAt ch (C / 16) b) (hG : FinGamAt ch (C / 16) b)
@@ -688,19 +682,19 @@ theorem fin_at (F : Face D A) (ch : Choice R) (C b : ℝ) (hO : ∀ t a, ch.S.Su
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce and unpack `⟨a0, hO⟩ ⟨a1, hD⟩ ⟨a2, hS⟩ ⟨a3, hC⟩ ⟨a4, hDt⟩ ⟨a5, hG⟩ ⟨a6, hT⟩ ⟨a7, hR⟩ ⟨a8, hP⟩ ⟨a9, hΨ⟩ ⟨a10, hF⟩`. Use `⟨a0 ⊔ a1 ⊔ a2 ⊔ a3 ⊔ a4 ⊔ a5 ⊔ a6 ⊔ a7 ⊔ a8 ⊔ a9 ⊔ a10, fun CF hCF => ?_⟩` and prove the remaining obligations. Simplify using `only [sup_le_iff] at hCF`. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨h0, h1⟩, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩, h7⟩, h8⟩, h9⟩, h10⟩` from `hCF`. Take `⟨c1, hD⟩` from `hD CF h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c2, hS⟩` from `hS CF h2`. Take `⟨c3, hC⟩` from `hC CF h3`. Take `⟨c4, hDt⟩` from `hDt CF h4`. Take `⟨c5, hG⟩` from `hG CF h5`. Take `⟨c6, hT⟩` from `hT CF h6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c7, hR⟩` from `hR CF h7`. Take `⟨c8, hP⟩` from `hP CF h8`. Take `⟨c9, hΨ⟩` from `hΨ CF h9`. Take `⟨c10, hF⟩` from `hF CF h10`. Use `⟨16 * (c1 ⊔ c2 ⊔ c3 ⊔ c4 ⊔ c5 ⊔ c6 ⊔ c7 ⊔ c8 ⊔ c9 ⊔ c10), fun ε C hCC => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hCC' : c1 ⊔ c2 ⊔ c3 ⊔ c4 ⊔ c5 ⊔ c6 ⊔ c7 ⊔ c8 ⊔ c9 ⊔ c10 ≤ C / 16` using `by linarith`. Simplify using `only [sup_le_iff] at hCC'`. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨k1, k2⟩, k3⟩, k4⟩, k5⟩, k6⟩, k7⟩, k8⟩, k9⟩, k10⟩` from `hCC'`. Take `⟨x0, hO⟩` from `hO ε CF h0`. Take `⟨x1, hD⟩` from `hD ε (C / 16) k1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, hS⟩` from `hS ε (C / 16) k2`. Take `⟨x3, hC⟩` from `hC ε (C / 16) k3`. Take `⟨x4, hDt⟩` from `hDt ε (C / 16) k4`. Take `⟨x5, hG⟩` from `hG ε (C / 16) k5`. Take `⟨x6, hT⟩` from `hT ε (C / 16) k6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x7, hR⟩` from `hR ε (C / 16) k7`. Take `⟨x8, hP⟩` from `hP ε (C / 16) k8`. Take `⟨x9, hΨ⟩` from `hΨ ε (C / 16) k9`. Take `⟨x10, hF⟩` from `hF ε (C / 16) k10`. Use `⟨x0 ⊔ x1 ⊔ x2 ⊔ x3 ⊔ x4 ⊔ x5 ⊔ x6 ⊔ x7 ⊔ x8 ⊔ x9 ⊔ x10, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [sup_le_iff] at hx`. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨y0, y1⟩, y2⟩, y3⟩, y4⟩, y5⟩, y6⟩, y7⟩, y8⟩, y9⟩, y10⟩` from `hx`. Conclude with `fin_at F ch C large₂.sc.b (hO D large₂ he y0 Γ Pl0 T A Ks R F s ch i j) (hD D large₂ he y1 Γ Pl0 T A Ks R F s ch i j k) (hS D large₂ he y2 Γ Pl0 T A Ks R F s ch i j k) (hC D large₂ he y3 Γ Pl0 T A Ks R F s ch i j k) (hDt D large₂ he y4 Γ Pl0 T A Ks R F s ch i j k) (hG D large₂ he …`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fin_of_factors : SumOKK → DepthK → FinScalK → FinCoefK → FinDatK → FinGamK → FinTopK → FinRowK → FinPairK → FinPsiK →
     FinFormK → FinK := by
@@ -755,7 +749,7 @@ end DenominatorLossAdditivity
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 /- English proof (translation)
-Apply the tactic sequence `first | exact @DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | exact DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | (intros; apply DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.finiteSumDenominatorBound_of_factor_claims : SumOKK → DepthK → FinScalK → FinCoefK → FinDatK → FinGamK → FinTopK → FinRowK → FinPairK → FinPsiK → FinFormK → FinK := by
   first | exact @DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | exact DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | (intros; apply DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors <;> assumption)

@@ -9,11 +9,11 @@ open UpperTheory.Gal.Int.Geo (FEt gen)
 namespace UpperTheory.Gal.crystallineComparison.Br
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h1 : IsUnit ((l : Γ(sp k, ⊤)))`. Use `(IsUnit.mk0 _ hl).map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom` as an intermediate fact. Simplify using `using this`. Establish `h2 : IsUnit ((l : Γ(P, ⊤)))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `h1.map (c.app ⊤).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hu : IsUnit (a.app ⊤ (l : Γ(Y, ⊤)))`. Rewrite using `[map_natCast]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : x ∈ a ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))`. Rewrite using `[Scheme.preimage_basicOpen, Scheme.basicOpen_of_isUnit _ hu]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private theorem range_subset_basicOpen (l : ℕ) {k : Type} [Field k] (hl : (l : k) ≠ 0) {Y P : Scheme.{0}} (a : P ⟶ Y)
     (c : P ⟶ sp k) : Set.range a ⊆ (Y.basicOpen (l : Γ(Y, ⊤)) : Set Y) := by
@@ -33,21 +33,15 @@ private theorem range_subset_basicOpen (l : ℕ) {k : Type} [Field k] (hl : (l :
   exact hx
 
 /- English proof (translation)
-Introduce `l O k _ _ _ hl Y p T`. Establish `sY` using `(IsPullback.of_hasPullback p (gen O k)).flip`. Establish `sZ` using `(IsPullback.of_hasPullback (T.p ≫ p) (gen O k)).flip`. Establish `hsq : IsPullback (pullback.fst (T.p ≫ p) (gen O k)) (bcMap (gen O k) (p` using `p) T.p rfl) T.p (pullback.fst p (gen O k)) := by`. Establish `h` using `IsPullback.of_right (h₁₁ := bcMap (gen O k) (p := p) T.p rfl) (h₁₂ := pullback.snd p (gen O k)) (v₁₁ := pullback.fst (T.p ≫ p) (gen O k)) (v₁₂ := pullback.fst p (gen O k)) (h₂₁ := T.p) (h₂₂ := p) (by rw [bcMap_snd]; exact sZ) (bcMap_fst _ _ _) sY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.flip`. Use `show FEt (bcMap (gen O k) (p := p) T.p rfl) T.d`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @IsFinite) hsq T.fin`. Establish `hr : Set.range (pullback.fst p (gen O k)) ⊆ Set.range (Y.basicOpen (l : Γ(Y, ⊤))).ι`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `range_subset_basicOpen l hl _ (pullback.snd p (gen O k))`. Set `φ` to `IsOpenImmersion.lift (Y.basicOpen (l : Γ(Y, ⊤))).ι (pullback.fst p (gen O k)) hr`. Establish `hφ : φ ≫ (Y.basicOpen (l : Γ(Y, ⊤))).ι = pullback.fst p (gen O k)` using `IsOpenImmersion.lift_fac _ _ _`. Establish `t` using `(isPullback_morphismRestrict T.p (Y.basicOpen (l : Γ(Y, ⊤)))).flip`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `w : pullback.fst (T.p ≫ p) (gen O k) ≫ T.p = (bcMap (gen O k) (p` using `p) T.p rfl ≫ φ) ≫ (Y.basicOpen (l : Γ(Y, ⊤))).ι := by`. Rewrite using `[Category.assoc, hφ]`. Conclude with `hsq.w`. Establish `sq2 : IsPullback (t.lift _ _ w) (bcMap (gen O k) (p` using `p) T.p rfl) (T.p ∣_ Y.basicOpen (l : Γ(Y, ⊤))) φ := by`. Use `IsPullback.of_right (h₁₂ := (T.p ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))).ι) (h₂₂ := (Y.basicOpen (l : Γ(Y, ⊤))).ι) (v₁₃ := T.p) ?_ (t.lift_snd _ _ w) t` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[t.lift_fst, hφ]`. Conclude with `hsq`. Conclude with `MorphismProperty.of_isPullback (P := @Etale) sq2 T.et`. Introduce `K _ _ x`. Establish `hlK : (l : K) ≠ 0`.
-
-Introduce `h`. Apply `hl` to reduce the goal to its premises. Apply `(Spec.preimage (x ≫ pullback.snd p (gen O k))).hom.injective` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `h`.
-
-Rewrite using `[← T.deg K hlK (x ≫ pullback.fst p (gen O k))]`. Conclude with `Nat.card_congr { toFun := fun y => ⟨y.1 ≫ pullback.fst (T.p ≫ p) (gen O k), by`. Rewrite using `[Category.assoc, hsq.w, ← Category.assoc, y.2]⟩`. Use `invFun := fun z => ⟨hsq.lift z.1 x z.2, hsq.lift_snd _ _ _⟩`. Use `left_inv := fun y => Subtype.ext (hsq.hom_ext (hsq.lift_fst _ _ _) (by rw [hsq.lift_snd]; exact y.2.symm))`.
-
-Use `right_inv := fun z => Subtype.ext (hsq.lift_fst _ _ _) }`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFEt : GenFEt := by
   intro l O k _ _ _ hl Y p T

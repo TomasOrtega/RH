@@ -20,24 +20,24 @@ namespace GlobalTheory.Core.Mi
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castGA_mem_GFset {I I' : Formalism.MainNotions.S.AutInst} (e : I = I') (x : I.GA) :
     Formalism.L2.SG.RowsJoinPinned.castGA e x ∈ I'.GFset ↔ x ∈ I.GFset := by
   subst e; rfl
 
 /- English proof (translation)
-Establish `hS : besGrp B.d B.o = (Formalism.L2.SG.Pf.SAsub X u).comap (iotaX X h).toMonoidHom`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨h1, h2⟩` from `(B.tieN n).1 hn`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun v => (h1 v).1, Formalism.L2.SG.Pf.nfin_sfin X u h2⟩`. Introduce `g hg`. Take `⟨h1, h2⟩` from `(B.tieH g).1 hg`. Conclude with `⟨hinf_le_sinf X u _ h1, Formalism.L2.SG.Pf.hfin_sfin X u ⟨_, h2⟩⟩`. Introduce `g hg`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : (iotaX X h g).1 ∈ X.SinfU u ∧ (iotaX X h g).2 ∈ SfinU X u` using `hg`. Take `⟨hg1, hg2⟩` from `hg'`. Take `⟨hi, hhi, ni, hni, ei⟩` from `Formalism.L2.SG.Pf.Sinf.levi X u hg1`. Take `⟨hf, nf, hnf, ef⟩` from `Formalism.L2.SG.Closed.FinLeviC_holds D X u _ hg2`. Establish `hgeq : g = (iotaX X h).symm (hi, (hf : X.B.I.Gf)) * (iotaX X h).symm (ni, nf)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, (iotaX X h).eq_symm_apply]`. Conclude with `Prod.ext ei ef`. Rewrite using `[hgeq]`. Use `Subgroup.mul_mem _ (Subgroup.mem_sup_right ?_) (Subgroup.mem_sup_left ?_)` and prove the remaining obligations. Use `(B.tieH _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `⟨hhi, hf.2⟩`. Use `(B.tieN _).2 ?_` and prove the remaining obligations. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `⟨hni, hnf⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem besGrp_iff_sA (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (g : GA D (D.sp.Y 0)) :
@@ -70,7 +70,7 @@ theorem besGrp_iff_sA (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (
   rw [hS]; rfl
 
 /- English proof (translation)
-Introduce `D X h u ψ A B`. Use `⟨besGrp_iff_sA D X h u ψ A B, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_inf, besGrp_iff_sA D X h u ψ A B, Formalism.L2.SG.Pf.srat_eq, Subgroup.mem_inf, Formalism.MainNotions.LeviCoordinates.rr_mem_GF, Formalism.IndefR.RationalEmbedding.iota_rat]`. Establish `e : iotaX X h g = Formalism.L2.SG.RowsJoinPinned.castGA h.symm (Formalism.IndefR.RationalEmbedding.iota D g)` using `rfl`. Rewrite using `[e, castGA_mem_GFset]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

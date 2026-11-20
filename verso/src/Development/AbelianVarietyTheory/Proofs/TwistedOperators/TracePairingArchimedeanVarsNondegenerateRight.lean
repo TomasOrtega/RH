@@ -20,9 +20,9 @@ open scoped Classical
 namespace GlobalTheory.GaussLine
 
 /- English proof (translation)
-Introduce `F _ _ κ _ q hq`. Use function extensionality and compare the values at `i`. Use `GlobalTheory.ArchUniq.Coord.eq_zero_of_trace _ fun b => ?_` and prove the remaining obligations. Establish `h` using `hq (Pi.single i b)`. Rewrite `h` using `[GlobalTheory.GaussLine.pairInf_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairInf_nondeg : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (q : κ → mixedEmbedding.mixedSpace F),

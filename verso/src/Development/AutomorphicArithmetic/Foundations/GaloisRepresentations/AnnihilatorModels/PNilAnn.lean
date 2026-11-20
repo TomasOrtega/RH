@@ -13,7 +13,7 @@ private abbrev Phi (a : End L V) (b : End F B) : End L (V ⊗[F] B) := AlgebraTe
 end
 
 /- English proof (translation)
-Unfold `Commute SemiconjBy`. Rewrite using `[← AlgebraTensorModule.map_mul, ← AlgebraTensorModule.map_mul, hf.eq, hg.eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem commute_tensorMap_of_commute {F B L V : Type} [Field F] [AddCommGroup B] [Module F B] [Field L]
     [Algebra F L] [AddCommGroup V] [Module L V] [Module F V] [IsScalarTower F L V]
@@ -23,7 +23,7 @@ private theorem commute_tensorMap_of_commute {F B L V : Type} [Field F] [AddComm
   rw [← AlgebraTensorModule.map_mul, ← AlgebraTensorModule.map_mul, hf.eq, hg.eq]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp only [pow_zero, AlgebraTensorModule.map_one]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, ← AlgebraTensorModule.map_mul, ← pow_succ, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tensorMap_pow {F B L V : Type} [Field F] [AddCommGroup B] [Module F B] [Field L]
     [Algebra F L] [AddCommGroup V] [Module L V] [Module F V] [IsScalarTower F L V]
@@ -35,9 +35,9 @@ private theorem tensorMap_pow {F B L V : Type} [Field F] [AddCommGroup B] [Modul
     rw [pow_succ, ih, ← AlgebraTensorModule.map_mul, ← pow_succ, ← pow_succ]
 
 /- English proof (translation)
-Establish `h : (AlgebraTensorModule.map f g : Module.End L (V ⊗[F] B)) = AlgebraTensorModule.map f 1 * AlgebraTensorModule.map 1 g`. Rewrite using `[← AlgebraTensorModule.map_mul, mul_one, one_mul]`. Rewrite using `[h]`. Apply `Commute.isNilpotent_mul_right (commute_tensorMap_of_commute (Commute.one_right f) (Commute.one_left g))` to reduce the goal to its premises. Take `⟨k, hk⟩` from `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[tensorMap_pow, hk, one_pow]`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `v b`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem isNilpotent_tensorMap_of_isNilpotent {F B L V : Type} [Field F] [AddCommGroup B] [Module F B] [Field L]
     [Algebra F L] [AddCommGroup V] [Module L V] [Module F V] [IsScalarTower F L V]
@@ -56,27 +56,25 @@ private theorem isNilpotent_tensorMap_of_isNilpotent {F B L V : Type} [Field F] 
   simp
 
 /- English proof (translation)
-Introduce `F G B _ _ _ _ σ ψ hσψ L _ _ V _ _ _ _ ρ q n T θ hTρ hTT hnil hann`. Set `c : ℕ → ℤ` to `fun j => (-1) ^ j * (q : ℤ) ^ j.choose 2`. Set `P : Module.End L (V ⊗[F] B)` to `∑ j ∈ Finset.range (n + 1), c j • AlgebraTensorModule.map (T j) (ψ ^ (n - j))`. Set `E : Module.End L (V ⊗[F] B)` to `∑ j ∈ Finset.range (n + 1), c j • AlgebraTensorModule.map (T j - θ j • 1) (ψ ^ (n - j))`. Establish `hQ : Polynomial.aeval (onPer ψ L V) (heckePol q n θ) = P - E`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Simplify using `only [heckePol, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `v b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [onPer, tensorMap_pow, map_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, Module.End.mul_apply, Module.algebraMap_end_apply, LinearMap.sub_apply, LinearMap.smul_apply, AlgebraTensorModule.map_tmul, ← smul_sub, ← sub_tmul]`. Simplify using `[c, smul_tmul', sub_sub_cancel, smul_smul]`. Rewrite using `[← Int.cast_smul_eq_zsmul L, smul_smul]`. Use `congr 2`. Use `push_cast`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hP : ∀ x ∈ Dinv σ ρ, P x = 0`. Introduce `x hx`. Simplify using `only [P, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `hann x hx`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM : ∀ i j : ℕ, ∀ f : Module.End L V, Commute (T i) f → Commute (c i • AlgebraTensorModule.map (T i) (ψ ^ (n - i)) : Module.End L (V ⊗[F] B)) (c j • AlgebraTensorModule.map f (ψ ^ (n - j)))`. Introduce `i j f hf`. Establish `h0 : Commute (AlgebraTensorModule.map (T i) (ψ ^ (n - i)) : Module.End L (V ⊗[F] B)) (AlgebraTensorModule.map f (ψ ^ (n - j)))` using `commute_tensorMap_of_commute hf (Commute.pow_pow_self ψ _ _)`. Conclude with `(h0.smul_left (c i)).smul_right (c j)`. Establish `hPE : Commute P E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Commute.sum_left _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => ?_` and prove the remaining obligations. Conclude with `hM i j _ ((hTT i j).sub_right ((Commute.one_right (T i)).smul_right (θ j)))`. Establish `hE : IsNilpotent E`. Use `Commute.isNilpotent_sum (fun j hj => (isNilpotent_tensorMap_of_isNilpotent _ (hnil j ?_)).smul (c j)) ?_` and prove the remaining obligations. Conclude with `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i j _ _`. Establish `hf : Commute (T i - θ i • 1) (T j - θ j • 1)`. Use `((hTT i j).sub_right ((Commute.one_right (T i)).smul_right (θ j))).sub_left ?_` and prove the remaining obligations. Conclude with `((Commute.one_left (T j)).smul_left (θ i)).sub_right (((Commute.one_right _).smul_left (θ i)).smul_right (θ j))`. Establish `h0 : Commute (AlgebraTensorModule.map (T i - θ i • 1) (ψ ^ (n - i)) : Module.End L (V ⊗[F] B)) (AlgebraTensorModule.map (T j - θ j • 1) (ψ ^ (n - j)))` using `commute_tensorMap_of_commute hf (Commute.pow_pow_self ψ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(h0.smul_left (c i)).smul_right (c j)`. Take `⟨N, hN⟩` from `hE`. Use `⟨N, fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (k : ℕ) (y : V ⊗[F] B), P y = 0 → ((P - E) ^ k) y = ((-E) ^ k) y`. Introduce `k`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero => intro y _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply]`. Establish `h1 : (P - E) y = (-E) y` using `by simp [hy]`. Rewrite using `[h1]`. Apply `ih` to reduce the goal to its premises. Rewrite using `[← Module.End.mul_apply, hPE.neg_right.eq, Module.End.mul_apply, hy, map_zero]`.
-
-Rewrite using `[hQ, key N x (hP x hx), neg_pow, hN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.nilAnn_of :
     NilOfAnn := by

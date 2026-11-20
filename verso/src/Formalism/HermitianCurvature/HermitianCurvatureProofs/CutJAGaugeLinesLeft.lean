@@ -11,31 +11,27 @@ noncomputable section
 
 open Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep in
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk ζ hζ Fr hFr`. Take `⟨-, hz, hz', hTz, hTz', -, -⟩` from `hpl`. Establish `hζ' : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`. Rewrite using `[hTz, hTz']`. Conclude with `hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set μ := NF.muZ P.k P.r Bs.μsec ζ with hμ`. Establish `hm` using `NFRadRedA.muZ_uwb Bs.sec hζ'`. Establish `hG` using `NFRadRedA.uwb_glev hm`. Establish `hU : μ ∈ UH (Hpk P.k P.r)` using `hG.1`. Establish `hGi` using `FrameEntries.glev_inv hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUi : μ⁻¹ ∈ UH (Hpk P.k P.r)` using `hGi.1`. Establish `hT` using `Bs.T_pos`. Use `set y := μ *ᵥ Bs.z' with hydef`. Establish `hy : inWb P.k P.r y` using `Qx8.inWb_mulVec hG hz'`. Establish `hyz : herm (Hpk P.k P.r) y Bs.z = ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← NFRadRedA.zeta_eq]`. Conclude with `NFRadRedA.zeta_muZ hz hz' Bs.sec hζ'`. Establish `hyy : herm (Hpk P.k P.r) y y = -((Tz P.k P.r Bs.z' : ℝ) : ℂ)`. Rewrite using `[Qx2.herm_uh hU, FrameEntries.herm_self]`. Establish `hpos : 0 < Complex.normSq ζ / Tz P.k P.r Bs.z - Tz P.k P.r Bs.z'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_pos, lt_div_iff₀ hT]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set p := SSn.prWv P.k P.r Bs.z y with hpdef`. Establish `hpp` using `DU.prWv_norm hT hy hyy hyz`. Establish `hre : (herm (Hpk P.k P.r) p p).re = Complex.normSq ζ / Tz P.k P.r Bs.z - Tz P.k P.r Bs.z'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpp]`. Simplify using the standard rewrite rules. Establish `hν : SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ = (((Real.sqrt (Complex.normSq ζ / Tz P.k P.r Bs.z - Tz P.k P.r Bs.z'))⁻¹ : ℝ) : ℂ) • p` using `by show SSn.unitH P.k P.r p = _`. Unfold `SSn.unitH`. Rewrite using `[hre]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsne : (((Real.sqrt (Complex.normSq ζ / Tz P.k P.r Bs.z - Tz P.k P.r Bs.z'))⁻¹ : ℝ) : ℂ) ≠ 0`. Establish `: 0 < Real.sqrt (Complex.normSq ζ / Tz P.k P.r Bs.z - Tz P.k P.r Bs.z')` using `Real.sqrt_pos.2 hpos`. Conclude with `(inv_pos.2 this).ne'` after adjusting the coercions. Establish `hFz : ∀ a, herm (Hpk P.k P.r) (Fr a) Bs.z = 0` using `fun a => hFr.2.2 a Bs.z (by simp)`. Establish `hFy : ∀ a, herm (Hpk P.k P.r) (Fr a) y = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Establish `h1 : herm (Hpk P.k P.r) (Fr a) (SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ) = 0` using `hFr.2.2 a _ (by simp)`. Rewrite `h1` using `[hν, DU.hsmul_r]`. Establish `h2 : herm (Hpk P.k P.r) (Fr a) p = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd ((map_eq_zero (starRingEnd ℂ)).1 h) hsne`. Conclude with `h`. Rewrite `h2` using `[hpdef, DU.prWv_of hy, DU.hadd_r, DU.hsmul_r, hFz a, mul_zero, add_zero]`. Conclude with `h2`. Establish `hmi : μ⁻¹ * μ = 1` using `Gauge.GC.KLAM.inv_mul_uh hU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hmm : μ * μ⁻¹ = 1` using `Gauge.GC.KLAM.mul_inv_uh hU`. Establish `hz'e : Bs.z' = μ⁻¹ *ᵥ y`. Rewrite using `[hydef, Matrix.mulVec_mulVec, hmi, Matrix.one_mulVec]`. Establish `hF' : Q.IsFrameOf P.k P.r [μ⁻¹ *ᵥ Bs.z, Bs.z'] (fun a => μ⁻¹ *ᵥ Fr a)`. Use `⟨fun a => Qx8.inWb_mulVec hGi (hFr.1 a), fun a b => ?_, fun a w hw => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Qx2.herm_uh hUi]`. Conclude with `hFr.2.1 a b`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hw`. Break down `hw with rfl | rfl` into its components or cases. Rewrite using `[Qx2.herm_uh hUi]`.
-
-Conclude with `hFz a`. Rewrite using `[hz'e, Qx2.herm_uh hUi]`. Conclude with `hFy a`. Use `⟨hF', fun X hX w v => ?_⟩` and prove the remaining obligations. Establish `hXF : X ∈ Gauge.GC.FibAt P.k P.r Bs.z Bs.z' Bs.π Bs.π' μ` using `fun h hh h' hh' he => hX (h, h') ⟨hh, hh', he⟩`.
-
-Establish `hint` using `Qx8.capRep_intertwine hF' Bs.π'_rep Bs.π'_cont hU X (fun h' hh' hy' u => Gauge.GC.KLAM.fib_intertwine Bs.π_rep hG hXF hh' hy' u) w v`. Establish `hback : (fun a => μ *ᵥ (μ⁻¹ *ᵥ Fr a)) = Fr`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec_mulVec, hmm, Matrix.one_mulVec]`. Rewrite using `[hint, hback]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauge_left_line_holds : GLLeft := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk ζ hζ Fr hFr

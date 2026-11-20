@@ -15,7 +15,7 @@ section Mat
 variable {E : Type} [Field E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last, Fin.val_last, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_last {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     adjugate Z (Fin.last r) (Fin.last r) = det (Z.submatrix Fin.castSucc Fin.castSucc) := by
@@ -23,11 +23,11 @@ theorem adj_last {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     one_pow, one_mul]
 
 /- English proof (translation)
-Establish `h2 : (adjugate Z * Z) *ᵥ v = adjugate Z *ᵥ Pi.single (Fin.last r) x`. Rewrite using `[← mulVec_mulVec, h]`. Rewrite `h2` using `[adjugate_mul]`. Use `first`. Consider the case `rw [smul_mulVec, one_mulVec] at h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Matrix.smul_mulVec_assoc, one_mulVec] at h2`. Establish `h3` using `congrFun h2 (Fin.last r)`. Rewrite `h3` using `[Pi.smul_apply, smul_eq_mul, mulVec_single]`. Rewrite using `[h3]`. Use `first`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [Pi.smul_apply, op_smul_eq_mul, col_apply]; rw [adj_last])`. Consider the case `(simp [adj_last]; done)`. Consider the case `(simp [adj_last, mul_comm])`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem last_eq {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v : Fin (r + 1) → E) (x : E)
     (h : Z *ᵥ v = Pi.single (Fin.last r) x) :
@@ -47,11 +47,11 @@ theorem last_eq {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v : Fin (r
     | (simp [adj_last, mul_comm])
 
 /- English proof (translation)
-Break down `hd with hd | hd` into its components or cases. Conclude with `eq_zero_of_mulVec_eq_zero hd h`. Establish `hs : (Z.submatrix Fin.castSucc Fin.castSucc) *ᵥ (v ∘ Fin.castSucc) = 0`. Use function extensionality and compare the values at `i`. Establish `h4` using `congrFun h (Fin.castSucc i)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct, Fin.sum_univ_castSucc, hl, mul_zero, add_zero, Pi.zero_apply] at h4`. Simplify `h4` using `[mulVec, dotProduct]`. Establish `h0` using `eq_zero_of_mulVec_eq_zero hd hs`. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.lastCases with`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately.
 
-Consider the case `last => simpa using hl`. Consider the case `cast j => simpa using congrFun h0 j`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vec_zero {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v : Fin (r + 1) → E)
     (h : Z *ᵥ v = 0) (hl : v (Fin.last r) = 0)
@@ -70,17 +70,15 @@ theorem vec_zero {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v : Fin (
     | cast j => simpa using congrFun h0 j
 
 /- English proof (translation)
-Use `set d := det (Z.submatrix Fin.castSucc Fin.castSucc) with hd`. Establish `e1` using `last_eq Z c' _ h1`. Establish `hsub : det (Zᴴ.submatrix Fin.castSucc Fin.castSucc) = star d`. Rewrite using `[hd, ← det_conjTranspose, conjTranspose_submatrix]`. Establish `e2` using `last_eq Zᴴ c _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[det_conjTranspose, hsub]`. Establish `hcl : c (Fin.last r) = 0`. Establish `h5 : (det Z * star (det Z) - T * T' * (d * star d)) * c (Fin.last r) = 0`. Take the linear combination `(det Z) * e2 + (star d * T') * e1`. Conclude with `(mul_eq_zero.mp h5).resolve_left hG`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl' : c' (Fin.last r) = 0`. Establish `h5 : (det Z * star (det Z) - T * T' * (d * star d)) * c' (Fin.last r) = 0`. Take the linear combination `(star (det Z)) * e1 + (d * T) * e2`. Conclude with `(mul_eq_zero.mp h5).resolve_left hG`. Establish `hnd : det Z ≠ 0 ∨ d ≠ 0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hG` to reduce the goal to its premises. Rewrite using `[hc.1, hc.2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `vec_zero Zᴴ c ?_ hcl ?_` and prove the remaining obligations. Rewrite using `[h2, hcl', mul_zero, Pi.single_zero]`. Rewrite using `[det_conjTranspose, hsub]`. Break down `hnd with h6 | h6` into its components or cases.
-
-Conclude with `Or.inl (star_ne_zero.mpr h6)`. Conclude with `Or.inr (star_ne_zero.mpr h6)`. Conclude with `vec_zero Z c' (by rw [h1, hcl, mul_zero, Pi.single_zero]) hcl' hnd`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem key {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (c c' : Fin (r + 1) → E)
     (h1 : Z *ᵥ c' = Pi.single (Fin.last r) (T * c (Fin.last r)))
@@ -123,31 +121,31 @@ section Flag
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fvec_castSucc {T : E} (F : FlagG S r T) (i : Fin r) : F.fvec i.castSucc = F.e i := by
   simp only [FlagG.fvec, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Simplify using `only [FlagG.fvec, Fin.snoc_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fvec_last {T : E} (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
   simp only [FlagG.fvec, Fin.snoc_last]
 
 /- English proof (translation)
-Rewrite using `[← S.herm.eq (F.e i) F.z, F.z_orth i, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_z_e {T : E} (F : FlagG S r T) (i : Fin r) : S.hT F.z (F.e i) = 0 := by
   rw [← S.herm.eq (F.e i) F.z, F.z_orth i, map_zero]
 
 /- English proof (translation)
-Establish `hv : ∀ b : Fin (r + 1), S.hT (F.fvec a) (F.fvec b) = if a = Fin.last r ∧ b = Fin.last r then -T else 0`. Introduce `b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last => simp [fvec_last, F.z_norm]`. Consider the case `cast j => simp [fvec_last, fvec_castSucc, hT_z_e, Fin.castSucc_ne_last]`. Consider the case `cast i`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [fvec_last, fvec_castSucc, F.z_orth, Fin.castSucc_ne_last]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simp [fvec_castSucc, F.e_iso, Fin.castSucc_ne_last]`. Simplify using `only [hv]`. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality. Apply the tactic sequence `simp <;> ring`.
+Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem self_sum {T : E} (F : FlagG S r T) (c : Fin (r + 1) → E) (a : Fin (r + 1)) :
     ∑ a', c a' * S.hT (F.fvec a) (F.fvec a') =
@@ -171,7 +169,7 @@ theorem self_sum {T : E} (F : FlagG S r T) (c : Fin (r + 1) → E) (a : Fin (r +
   · simp [ha]
 
 /- English proof (translation)
-Unfold `Dl leadMinorE`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Dl_succ {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') :
     Dl F F' (r + 1) = det (Zhat F F') := by
@@ -180,7 +178,7 @@ theorem Dl_succ {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') :
   rfl
 
 /- English proof (translation)
-Unfold `Dl leadMinorE`. Rewrite using `[dif_pos (Nat.le_succ r)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Dl_r {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') :
     Dl F F' r = det ((Zhat F F').submatrix Fin.castSucc Fin.castSucc) := by
@@ -189,19 +187,19 @@ theorem Dl_r {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') :
   rfl
 
 /- English proof (translation)
-Establish `hl1 : ∀ a, S.hT (F.fvec a) w = (Pi.single (Fin.last r) (-T * c (Fin.last r)) : Fin (r + 1) → E) a + (Zhat F F' *ᵥ c') a`. Introduce `a`. Rewrite using `[hw, map_add, map_sum, map_sum, ← self_sum F c a]`. Simplify using `only [map_smul, smul_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [mulVec, dotProduct, Zhat, brS]`. Conclude with `Finset.sum_congr rfl (fun b _ => mul_comm _ _)`. Establish `hl2 : ∀ b, S.hT (F'.fvec b) w = ((Zhat F F')ᴴ *ᵥ c) b + (Pi.single (Fin.last r) (-T' * c' (Fin.last r)) : Fin (r + 1) → E) b`. Introduce `b`. Rewrite using `[hw, map_add, map_sum, map_sum, ← self_sum F' c' b]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, smul_eq_mul]`. Use `congr 1`. Simplify using `only [mulVec, dotProduct, conjTranspose_apply, Zhat, brS]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← S.herm.eq (F.fvec a) (F'.fvec b), starRingEnd_apply, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k1 : Zhat F F' *ᵥ c' = Pi.single (Fin.last r) (T * c (Fin.last r))`. Use function extensionality and compare the values at `a`. Establish `h7` using `hl1 a`. Rewrite `h7` using `[h1 a]`. Establish `e : (Pi.single (Fin.last r) (T * c (Fin.last r)) : Fin (r + 1) → E) a = -((Pi.single (Fin.last r) (-T * c (Fin.last r)) : Fin (r + 1) → E) a)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_mul, Pi.single_neg, Pi.neg_apply, neg_neg]`. Rewrite using `[e]`. Take the linear combination `-h7`. Establish `k2 : (Zhat F F')ᴴ *ᵥ c = Pi.single (Fin.last r) (T' * c' (Fin.last r))`. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h7` using `hl2 b`. Rewrite `h7` using `[h2 b]`. Establish `e : (Pi.single (Fin.last r) (T' * c' (Fin.last r)) : Fin (r + 1) → E) b = -((Pi.single (Fin.last r) (-T' * c' (Fin.last r)) : Fin (r + 1) → E) b)`. Rewrite using `[neg_mul, Pi.single_neg, Pi.neg_apply, neg_neg]`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h7`. Establish `hG' : det (Zhat F F') * star (det (Zhat F F')) - T * T' * (det ((Zhat F F').submatrix Fin.castSucc Fin.castSucc) * star (det ((Zhat F F').submatrix Fin.castSucc Fin.castSucc))) ≠ 0`. Rewrite using `[← Dl_succ, ← Dl_r]`. Conclude with `hG`. Conclude with `key (Zhat F F') T T' c c' k1 k2 hG'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffs_zero {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (c c' : Fin (r + 1) → E)
     (w : S.V) (hw : w = ∑ a, c a • F.fvec a + ∑ b, c' b • F'.fvec b)
@@ -255,35 +253,31 @@ end GN
 
 open GN in
 /- English proof (translation)
-Introduce `E _ _ _ S Λ r T T' F F' hΛ hL hL' hG`. Set `v : Fin (r + 1) ⊕ Fin (r + 1) → S.V` to `Sum.elim F.fl.fvec F'.fl.fvec`. Establish `hsp : UUE Λ F F' = Submodule.span E (Set.range v)`. Establish `hX : ∀ {T₀ : E} (F₀ : LFlag S r T₀), (∀ a, v (Sum.inl a) = F₀.fl.fvec a) ∨ (∀ b, v (Sum.inr b) = F₀.fl.fvec b) → Xsp F₀ ≤ Submodule.span E (Set.range v)`. Introduce `T₀ F₀ h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Break down `h with h | h` into its components or cases. Conclude with `⟨Sum.inl i.castSucc, by rw [h, fvec_castSucc]⟩`. Conclude with `⟨Sum.inr i.castSucc, by rw [h, fvec_castSucc]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `UUE spanE`. Rewrite using `[Submodule.span_le]`. Establish `hU : UU Λ F F' ≤ (Submodule.span E (Set.range v)).restrictScalars (𝓞 E)`. Unfold `UU`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `hX F (Or.inl fun _ => rfl) hy.2`. Rewrite using `[Submodule.span_le, hL.2]`. Introduce and unpack `_ rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨Sum.inl (Fin.last r), by simp [v, fvec_last]⟩`. Introduce `y hy`. Conclude with `hX F' (Or.inr fun _ => rfl) hy.2`. Rewrite using `[Submodule.span_le, hL'.2]`. Introduce and unpack `_ rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.subset_span ⟨Sum.inr (Fin.last r), by simp [v, fvec_last]⟩`. Conclude with `hU`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Break down `i with a | b` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Use `show F.fl.fvec (Fin.last r) ∈ UUE Λ F F'`. Rewrite using `[fvec_last, ← hL.2]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Unfold `UU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)))`. Use `show F.fl.fvec i.castSucc ∈ UUE Λ F F'`. Rewrite using `[fvec_castSucc]`. Conclude with `Xsp_le_UUE S Λ hΛ F F' (Submodule.subset_span ⟨i, rfl⟩)`. Use `Fin.lastCases ?_ (fun i => ?_) b` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show F'.fl.fvec (Fin.last r) ∈ UUE Λ F F'`. Rewrite using `[fvec_last, ← hL'.2]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Unfold `UU`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show F'.fl.fvec i.castSucc ∈ UUE Λ F F'`. Rewrite using `[fvec_castSucc]`. Conclude with `Xsp_le_UUE' S Λ hΛ F F' (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hcoef : ∀ g : Fin (r + 1) ⊕ Fin (r + 1) → E, (∀ a, S.hT (F.fl.fvec a) (∑ i, g i • v i) = 0) → (∀ b, S.hT (F'.fl.fvec b) (∑ i, g i • v i) = 0) → g = 0`. Introduce `g h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∑ i, g i • v i = ∑ a, g (Sum.inl a) • F.fl.fvec a + ∑ b, g (Sum.inr b) • F'.fl.fvec b`. Simplify using `[v, Fintype.sum_sum_type]`. Take `⟨hc, hc'⟩` from `coeffs_zero F.fl F'.fl _ _ _ hw h1 h2 hG`. Use function extensionality and compare the values at `i`. Break down `i with a | b` into its components or cases.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrFun hc a`. Conclude with `congrFun hc' b`. Establish `hli : LinearIndependent E v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hcoef g (by simp [hg]) (by simp [hg])` as an intermediate fact. Introduce `i`. Simplify using `[this]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hsp, finrank_span_eq_card hli]`.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Rewrite `hw` using `[Submodule.mem_inf, hsp]`.
-
-Take `⟨hw1, hw2⟩` from `hw`. Take `⟨g, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hw1`. Rewrite `hw2` using `[mem_orth]`. Establish `hg` using `hcoef g (fun a => hw2 _ (Submodule.subset_span ⟨Sum.inl a, rfl⟩)) (fun b => hw2 _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩))`. Simplify using `[hg]`.
+A detailed English derivation is pending.
 -/
 theorem gram_matrix_nondegenerate : GramNondeg := by
   intro E _ _ _ S Λ r T T' F F' hΛ hL hL' hG

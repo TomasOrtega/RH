@@ -16,13 +16,11 @@ open GlobalTheory.FlatNorm (nm nm_of_isPushout isUnit_of_nm exists_preimage_le)
 variable {X Y : Scheme.{0}} (π : Y ⟶ X) [IsFinite π] [Flat π] [LocallyOfFinitePresentation π]
 
 /- English proof (translation)
-Take `⟨V0, hV0, hxV0, hV0U⟩` from `(Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hx`. Establish `hfin : (π.app V0).hom.Finite` using `IsFinite.finite_app π V0 hV0`. Establish `hfl : (π.app V0).hom.Flat`. Use `HasRingHomProperty.appLE @Flat π inferInstance ⟨V0, hV0⟩ ⟨π ⁻¹ᵁ V0, hV0.preimage π⟩ le_rfl` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.appLE_eq_app]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfp : (π.app V0).hom.FinitePresentation`. Use `HasRingHomProperty.appLE @LocallyOfFinitePresentation π inferInstance ⟨V0, hV0⟩ ⟨π ⁻¹ᵁ V0, hV0.preimage π⟩ le_rfl` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.appLE_eq_app]`. Then use the resulting hypothesis. Take `⟨r, hr, H⟩` from `GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.exists_finFree_away_of_finitePresentation hfin hfl hfp (hV0.primeIdealOf ⟨x, hxV0⟩)`. Use `⟨X.basicOpen r, hV0.basicOpen r, ?_, (X.basicOpen_le r).trans hV0U, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : hV0.primeIdealOf ⟨x, hxV0⟩ ∈ (TopologicalSpace.Opens.map hV0.fromSpec.base).obj (X.basicOpen r)`. Rewrite using `[hV0.fromSpec_preimage_basicOpen]`. Conclude with `hr`. Establish `h2 : hV0.fromSpec (hV0.primeIdealOf ⟨x, hxV0⟩) ∈ X.basicOpen r` using `h1`. Rewrite `h2` using `[hV0.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
-
-Conclude with `H (isPushout_app π hV0 (hV0.basicOpen r) (X.basicOpen_le r)) (RingedSpace.isUnit_res_basicOpen _ r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_finFree_app_of_finitePresentation {x : X} {U : X.Opens} (hx : x ∈ U) :
     ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V ∧ V ≤ U ∧ FinFree (π.app V).hom := by
@@ -50,7 +48,7 @@ theorem exists_finFree_app_of_finitePresentation {x : X} {U : X.Opens} (hx : x �
 abbrev FreeOpen (V : X.Opens) : Type := {W : X.Opens // IsAffineOpen W ∧ W ≤ V ∧ FinFree (π.app W).hom}
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨W, hW, hxW, hWV, hF⟩` from `exists_finFree_app_of_finitePresentation π hx`. Conclude with `Opens.mem_iSup.mpr ⟨⟨W, hW, hWV, hF⟩, hxW⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_iSup_freeOpen (V : X.Opens) : V ≤ ⨆ W : FreeOpen π V, W.1 := by
   intro x hx
@@ -58,7 +56,7 @@ theorem le_iSup_freeOpen (V : X.Opens) : V ≤ ⨆ W : FreeOpen π V, W.1 := by
   exact Opens.mem_iSup.mpr ⟨⟨W, hW, hWV, hF⟩, hxW⟩
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext X.sheaf V a b fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hxW⟩` from `Opens.mem_iSup.mp (le_iSup_freeOpen π V hx)`. Establish `e` using `congrArg (X.presheaf.germ W.1 x hxW).hom (h W)`. Simplify using `[resG] at e`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ext_freeOpen {V : X.Opens} {a b : Γ(X, V)}
     (h : ∀ W : FreeOpen π V, resG X W.2.2.1 a = resG X W.2.2.1 b) : a = b := by
@@ -70,7 +68,7 @@ theorem ext_freeOpen {V : X.Opens} {a b : Γ(X, V)}
 
 omit [Flat π] [LocallyOfFinitePresentation π] in
 /- English proof (translation)
-Conclude with `(nm_of_isPushout (isPushout_app π hV hW h) hF b).symm`.
+A detailed English derivation is pending.
 -/
 theorem resG_nm {V W : X.Opens} (hV : IsAffineOpen V) (hW : IsAffineOpen W) (h : W ≤ V)
     (hF : FinFree (π.app V).hom) (b : Γ(Y, π ⁻¹ᵁ V)) :
@@ -78,7 +76,7 @@ theorem resG_nm {V W : X.Opens} (hV : IsAffineOpen V) (hW : IsAffineOpen W) (h :
   exact (nm_of_isPushout (isPushout_app π hV hW h) hF b).symm
 
 /- English proof (translation)
-Rewrite using `[resG_nm π k.2.1 hW' h k.2.2.2, resG_resG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem resG_nm_app_eq_nm_app_of_le_freeOpen {V : X.Opens} (b : Γ(Y, π ⁻¹ᵁ V)) (k : FreeOpen π V) {W' : X.Opens}
     (hW' : IsAffineOpen W') (h : W' ≤ k.1) :
@@ -87,7 +85,7 @@ private theorem resG_nm_app_eq_nm_app_of_le_freeOpen {V : X.Opens} (b : Γ(Y, π
   rw [resG_nm π k.2.1 hW' h k.2.2.2, resG_resG]
 
 /- English proof (translation)
-Use `exists_fun_of_cover (fun k : FreeOpen π V => k.1) (fun k => k.2.2.1) (le_iSup_freeOpen π V) (fun k => nm (π.app k.1).hom (resG Y (π.preimage_mono k.2.2.1) b)) fun k l => ?_` and prove the remaining obligations. Use `ext_freeOpen π fun W' => ?_` and prove the remaining obligations. Rewrite using `[resG_resG, resG_resG, resG_nm_app_eq_nm_app_of_le_freeOpen π b k W'.2.1, resG_nm_app_eq_nm_app_of_le_freeOpen π b l W'.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_normFun (V : X.Opens) (b : Γ(Y, π ⁻¹ᵁ V)) : ∃ a : Γ(X, V), ∀ W : FreeOpen π V,
     resG X W.2.2.1 a = nm (π.app W.1).hom (resG Y (π.preimage_mono W.2.2.1) b) := by
@@ -105,14 +103,14 @@ def normFun (V : X.Opens) : Γ(Y, π ⁻¹ᵁ V) →* Γ(X, V) where
       (exists_normFun π V a).choose_spec W, (exists_normFun π V b).choose_spec W]
 
 /- English proof (translation)
-Conclude with `(exists_normFun π V b).choose_spec W`.
+A detailed English derivation is pending.
 -/
 theorem resG_normFun_free {V : X.Opens} (b : Γ(Y, π ⁻¹ᵁ V)) (W : FreeOpen π V) :
     resG X W.2.2.1 (normFun π V b) = nm (π.app W.1).hom (resG Y (π.preimage_mono W.2.2.1) b) := by
   exact (exists_normFun π V b).choose_spec W
 
 /- English proof (translation)
-Use `ext_freeOpen π fun W' => ?_` and prove the remaining obligations. Rewrite using `[resG_resG, resG_normFun_free π b ⟨W'.1, W'.2.1, W'.2.2.1.trans h, W'.2.2.2⟩, resG_normFun_free π _ W', resG_resG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_normFun {V W : X.Opens} (h : W ≤ V) (b : Γ(Y, π ⁻¹ᵁ V)) :
     resG X h (normFun π V b) = normFun π W (resG Y (π.preimage_mono h) b) := by
@@ -121,14 +119,14 @@ theorem resG_normFun {V W : X.Opens} (h : W ≤ V) (b : Γ(Y, π ⁻¹ᵁ V)) :
     resG_normFun_free π _ W', resG_resG]
 
 /- English proof (translation)
-The claim follows from `Z.basicOpen_res f (homOfLE h).op`.
+A detailed English derivation is pending.
 -/
 private theorem basicOpen_resG_eq_inf_basicOpen {Z : Scheme.{0}} {U V : Z.Opens} (h : V ≤ U) (f : Γ(Z, U)) :
     Z.basicOpen (resG Z h f) = V ⊓ Z.basicOpen f :=
   Z.basicOpen_res f (homOfLE h).op
 
 /- English proof (translation)
-Rewrite using `[← resG_resG (Z.basicOpen_le f) hV f]`. Conclude with `(RingedSpace.isUnit_res_basicOpen _ f).map (resG Z hV)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_resG_of_le_basicOpen' {Z : Scheme.{0}} {U V : Z.Opens} (h : V ≤ U) (f : Γ(Z, U))
     (hV : V ≤ Z.basicOpen f) : IsUnit (resG Z h f) := by
@@ -136,21 +134,19 @@ private theorem isUnit_resG_of_le_basicOpen' {Z : Scheme.{0}} {U V : Z.Opens} (h
   exact (RingedSpace.isUnit_res_basicOpen _ f).map (resG Z hV)
 
 /- English proof (translation)
-Take `⟨W, hW, hxW, hWV, hF⟩` from `exists_finFree_app_of_finitePresentation π hx`. Establish `e0` using `resG_normFun_free π b ⟨W, hW, hWV, hF⟩`. Establish `key : x ∈ X.basicOpen (normFun π V b) ↔ x ∈ X.basicOpen (nm (π.app W).hom (resG Y (π.preimage_mono hWV) b))`. Rewrite using `[← e0, basicOpen_resG_eq_inf_basicOpen]`. Conclude with `⟨fun h => ⟨hxW, h⟩, fun h => h.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `hx' y hy`. Take `⟨W'', hW'', hxW'', hle, hF''⟩` from `exists_finFree_app_of_finitePresentation π hx'`. Establish `hW''W : W'' ≤ W` using `hle.trans (X.basicOpen_le _)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `isUnit_resG_of_le_basicOpen' hW''W _ hle`. Rewrite `hu` using `[resG_nm π hW hW'' hW''W hF, resG_resG]`. Establish `hu'` using `isUnit_of_nm hF'' hu`. Establish `hy'' : y ∈ Y.basicOpen (resG Y (π.preimage_mono (hW''W.trans hWV)) b)`. Rewrite using `[Y.basicOpen_of_isUnit hu']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show π y ∈ W''`. Rewrite using `[hy]`. Conclude with `hxW''`. Rewrite `hy''` using `[basicOpen_resG_eq_inf_basicOpen]`. Conclude with `hy''.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hall`. Establish `hall' : ∀ y, π y = x → y ∈ Y.basicOpen (resG Y (π.preimage_mono hWV) b)`. Introduce `y hy`. Rewrite using `[basicOpen_resG_eq_inf_basicOpen]`. Use `⟨?_, hall y hy⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show π y ∈ W`. Rewrite using `[hy]`. Conclude with `hxW`. Take `⟨V', hxV', hV'⟩` from `exists_preimage_le π hall'`. Take `⟨W'', hW'', hxW'', hle, hF''⟩` from `exists_finFree_app_of_finitePresentation π (U := W ⊓ V') ⟨hxW, hxV'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hW''W : W'' ≤ W` using `hle.trans inf_le_left`. Establish `hu` using `isUnit_resG_of_le_basicOpen' (π.preimage_mono hW''W) (resG Y (π.preimage_mono hWV) b) ((π.preimage_mono (hle.trans inf_le_right)).trans hV')`. Establish `hu2` using `hu.map (nm (π.app W'').hom)`. Rewrite `hu2` using `[← resG_nm π hW hW'' hW''W hF]`. Establish `h3 : x ∈ X.basicOpen (resG X hW''W (nm (π.app W).hom (resG Y (π.preimage_mono hWV) b)))`.
-
-Rewrite using `[X.basicOpen_of_isUnit hu2]`. Conclude with `hxW''`. Rewrite `h3` using `[basicOpen_resG_eq_inf_basicOpen]`. Conclude with `h3.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_normFun {V : X.Opens} (b : Γ(Y, π ⁻¹ᵁ V)) {x : X} (hx : x ∈ V) :
     x ∈ X.basicOpen (normFun π V b) ↔ ∀ y, π y = x → y ∈ Y.basicOpen b := by
@@ -202,7 +198,7 @@ end GlobalTheory.CompanionTheory.FinFlatNorm
 open GlobalTheory.CompanionTheory.FinFlatNorm in
 
 /- English proof (translation)
-Introduce `X Y q h1 h2 h3`. Conclude with `⟨normFun q, fun V W h a => resG_normFun q h a, fun V a y hy => mem_basicOpen_normFun q a hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CompanionTheory.FinFlatNorm.exists_norm_sheaf : ∀ {X Y : Scheme.{0}} (q : X ⟶ Y), IsFinite q → Flat q → LocallyOfFinitePresentation q → ∃ N : ∀ V : Y.Opens, Γ(X, q ⁻¹ᵁ V) →* Γ(Y, V), (∀ (V W : Y.Opens) (h : W ≤ V) (a : Γ(X, q ⁻¹ᵁ V)), (Y.presheaf.map (homOfLE h).op).hom (N V a) = N W ((X.presheaf.map (homOfLE (show q ⁻¹ᵁ W ≤ q ⁻¹ᵁ V from fun _ hx => h hx)).op).hom a)) ∧ ∀ (V : Y.Opens) (a : Γ(X, q ⁻¹ᵁ V)) (y : Y), y ∈ V → (y ∈ Y.basicOpen (N V a) ↔ ∀ x : X, q x = y → x ∈ X.basicOpen a) := by
   intro X Y q h1 h2 h3

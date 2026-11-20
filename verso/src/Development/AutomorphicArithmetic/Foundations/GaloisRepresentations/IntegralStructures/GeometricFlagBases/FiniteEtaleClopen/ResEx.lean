@@ -5,11 +5,11 @@ open GlobalTheory.GalV (HTower)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
 /- English proof (translation)
-Introduce `Y' Y T j s t hj`. Use `haveI := hj.op`. Set `U : T.Opens` to `s ⁻¹ᵁ j.opensRange ⊓ t ⁻¹ᵁ j.opensRange`. Establish `hs : Set.range (U.ι ≫ s) ⊆ Set.range j`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx.1`. Establish `ht : Set.range (U.ι ≫ t) ⊆ Set.range j`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.2`. Use `⟨U, U.ι, IsOpenImmersion.lift j _ hs, IsOpenImmersion.lift j _ ht, ⟨inferInstance, ?_, IsOpenImmersion.lift_fac _ _ _, IsOpenImmersion.lift_fac _ _ _⟩⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Cut.resEx :
     UpperTheory.Gal.Int.Geo.Cut.ResEx := by

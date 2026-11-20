@@ -9,9 +9,9 @@ namespace GlobalTheory.Col
 
 open PowerSeries in
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ((j.choose i : ℕ) : R⟦X⟧) * X ^ i) p, add_comm, add_pow]`. Establish `hsub : Finset.range (j + 1) ⊆ Finset.range p` using `Finset.range_subset_range.2 (by omega)`. Rewrite using `[← Finset.sum_subset hsub (fun i _ hi => by`. Rewrite `hi` using `[Finset.mem_range, not_lt]`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]; simp)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[one_pow, mul_one, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem one_add_X_pow_eq_sum_fin_choose {R : Type} [CommRing R] (p j : ℕ) (hj : j < p) :
     (1 + X : R⟦X⟧) ^ j = ∑ i : Fin p, ((j.choose i : ℕ) : R⟦X⟧) * X ^ (i : ℕ) := by
@@ -25,9 +25,9 @@ private theorem one_add_X_pow_eq_sum_fin_choose {R : Type} [CommRing R] (p j : �
 
 open PowerSeries in
 /- English proof (translation)
-Establish `htop : Ideal.span {(p : R)} = ⊤` using `Ideal.span_singleton_eq_top.2 hu`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `h` using `hR.toIsHausdorff.haus (a - b) (fun n => by`. Rewrite using `[htop, Ideal.top_pow, Submodule.top_smul]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SModEq.top)`. Conclude with `sub_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 private theorem subsingleton_of_isUnit_natCast_of_isAdicComplete {R : Type} [CommRing R] (p : ℕ)
     (hR : IsAdicComplete (Ideal.span {(p : R)}) R) (hu : IsUnit (p : R)) : Subsingleton R := by
@@ -41,17 +41,17 @@ private theorem subsingleton_of_isUnit_natCast_of_isAdicComplete {R : Type} [Com
 open PowerSeries in
 
 /- English proof (translation)
-Distinguish the cases in `hn : (p : R) ∈ nonunits R`. Use `haveI := hR set e := _root_.GlobalTheory.Col.Model.basis (R := R) p hn`. Establish `he : ∀ i, e i = _root_.GlobalTheory.Col.Model.toUp p (X ^ (i : ℕ))` using `fun i => by show (_root_.GlobalTheory.Col.Model.basis (R := R) p hn) i = _`. Unfold `_root_.GlobalTheory.Col.Model.basis`. Rewrite using `[Module.Basis.mk_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `v : Fin p → _root_.GlobalTheory.Col.Model.Up R p` to `fun j => _root_.GlobalTheory.Col.Model.toUp p ((1 + X) ^ (j : ℕ))`. Establish `hv : ∀ j : Fin p, v j = ∑ i : Fin p, (((j : ℕ).choose i : ℕ) : R⟦X⟧) • e i`. Introduce `j`. Simplify using `only [he, Algebra.smul_def, map_natCast]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `one_add_X_pow_eq_sum_fin_choose p j j.2`. Establish `hrepr : ∀ j i : Fin p, e.repr (v j) i = (((j : ℕ).choose i : ℕ) : R⟦X⟧)`. Introduce `j i`. Rewrite using `[hv, e.repr_sum_self]`. Establish `hdet : e.det v = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.Basis.det_apply, Matrix.det_of_upperTriangular]`. Simplify using `[Module.Basis.toMatrix_apply, hrepr]`. Introduce `i j hij`. Simplify using `[Module.Basis.toMatrix_apply, hrepr, Nat.choose_eq_zero_of_lt (show (j : ℕ) < i from hij)]`. Take `⟨hli, hspan⟩` from `(Module.Basis.is_basis_iff_det e).2 (by rw [hdet]; exact isUnit_one)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b : Module.Basis (Fin p) R⟦X⟧ (_root_.GlobalTheory.Col.Model.Up R p)` to `Module.Basis.mk hli hspan.ge`. Establish `hb : ∀ i, b i = v i` using `fun i => Module.Basis.mk_apply hli hspan.ge i`. Conclude with `⟨b, hb⟩`. Establish `hu : IsUnit (p : R)` using `by simpa [mem_nonunits_iff] using hn haveI := subsingleton_of_isUnit_natCast_of_isAdicComplete p hR hu haveI : Subsingleton R⟦X⟧ := ⟨fun a b => PowerSeries.ext fun n => Subsingleton.elim _ _⟩ haveI : Subsingleton (_root_.GlobalTheory.Col.Model.Up R p) := ‹Subsingleton R⟦X⟧› haveI …`. Set `b : Module.Basis (Fin p) R⟦X⟧ (_root_.GlobalTheory.Col.Model.Up R p)` to `Module.Basis.ofRepr (LinearEquiv.ofSubsingleton _ _)`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hb : ∀ i, b i = _root_.GlobalTheory.Col.Model.toUp p ((1 + X) ^ (i : ℕ))` using `fun i => Subsingleton.elim _ _`. Conclude with `⟨b, hb⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Col.exists_basis_one_add_X_pow (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime]
     (hR : IsAdicComplete (Ideal.span {(p : R)}) R) :

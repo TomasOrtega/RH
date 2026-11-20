@@ -13,9 +13,9 @@ section Lin
 variable {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ}
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : ∑ k', (T *ᵥ g) k' • b₀ k' = ∑ k, g k • b k`. Simplify using `only [h, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun k' _ => ?_))` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `h2` using `hb _ (h1.trans hg)`. Establish `h3` using `Matrix.eq_zero_of_mulVec_eq_zero hT (funext h2)`. Conclude with `fun k => congrFun h3 k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem li_of_det {b₀ b : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω} (hb : LinearIndependent Ω b₀)
     (h : ∀ k, b k = ∑ k', T k' k • b₀ k') (hT : T.det ≠ 0) : LinearIndependent Ω b := by
@@ -31,9 +31,9 @@ theorem li_of_det {b₀ b : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω} (hb : L
   exact fun k => congrFun h3 k
 
 /- English proof (translation)
-Establish `hu : IsUnit T.det` using `isUnit_iff_ne_zero.2 hT`. Simplify using `only [h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `h1 : ∀ m, ∑ k', T⁻¹ k' k * T m k' = (T * T⁻¹) m k`. Introduce `m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl (fun _ _ => mul_comm _ _)`. Simplify using `only [← Finset.sum_smul, h1, Matrix.mul_nonsing_inv T hu, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_inv {b₀ b : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω}
     (h : ∀ k, b k = ∑ k', T k' k • b₀ k') (hT : T.det ≠ 0) (k : Fin r) : b₀ k = ∑ k', T⁻¹ k' k • b k' := by
@@ -48,7 +48,7 @@ theorem mat_inv {b₀ b : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω}
   simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h k`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_sum {r' : ℕ} (e : r' = r) {b₀ b : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω}
     (h : ∀ k, b k = ∑ k', T k' k • b₀ k') (k : Fin r') :
@@ -57,7 +57,7 @@ theorem cast_sum {r' : ℕ} (e : r' = r) {b₀ b : Fin r → V} {T : Matrix (Fin
   exact h k
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_det {r' : ℕ} (e : r' = r) (T : Matrix (Fin r) (Fin r) Ω) :
     (T.submatrix (Fin.cast e) (Fin.cast e)).det = T.det := by
@@ -72,7 +72,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_frame {r' : ℕ} (e : r' = r) {L : Lat ξ V} {b : Fin r → V} {p : Cpt ξ} (h : L.IsFrameAt b p) :
     L.IsFrameAt (b ∘ Fin.cast e) p := by
@@ -80,9 +80,9 @@ theorem cast_frame {r' : ℕ} (e : r' = r) {L : Lat ξ V} {b : Fin r → V} {p :
   exact h
 
 /- English proof (translation)
-Take `⟨U', hpU, b', hspan, hfr⟩` from `hL p (Set.mem_univ _)`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h1 : b' i ∈ L p`. Rewrite using `[(hfr p (Set.mem_univ _) hpU).2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite `h1` using `[h.2]`. Conclude with `Submodule.span_le_restrictScalars (regAt ξ p) Ω _ h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_span_frame {r' : ℕ} {L : Lat ξ V} {U : Submodule Ω V} (hL : L.IsVB r' U) {b : Fin r → V} {p : Cpt ξ}
     (h : L.IsFrameAt b p) : U ≤ Submodule.span Ω (Set.range b) := by
@@ -96,9 +96,9 @@ theorem le_span_frame {r' : ℕ} {L : Lat ξ V} {U : Submodule Ω V} (hL : L.IsV
   exact Submodule.span_le_restrictScalars (regAt ξ p) Ω _ h1
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `h`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h0`. Apply `le_antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨⟨a / b, h1⟩, by show a / b * b = a; field_simp⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨⟨(a / b)⁻¹, h2⟩, by show (a / b)⁻¹ * a = b; field_simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem span_eq_of_unit {p : Cpt ξ} {a b : Ω} (hb : b ≠ 0) (h : unitAt ξ p (a / b)) :
     Submodule.span (regAt ξ p) {a} = Submodule.span (regAt ξ p) {b} := by
@@ -113,15 +113,15 @@ theorem span_eq_of_unit {p : Cpt ξ} {a b : Ω} (hb : b ≠ 0) (h : unitAt ξ p 
     exact ⟨⟨(a / b)⁻¹, h2⟩, by show (a / b)⁻¹ * a = b; field_simp⟩
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective`.
+A detailed English derivation is pending.
 -/
 private theorem isLocalRing_regAt' {p : Cpt ξ} : IsLocalRing (regAt ξ p) :=
   IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Use `⟨?_, (u : regAt ξ p).2, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h00 : (u : regAt ξ p) = 0` using `Subtype.ext h0`. Conclude with `u.ne_zero h00`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (u : regAt ξ p) * ↑u⁻¹ = 1` using `u.mul_inv`. Establish `h2 : ((u : regAt ξ p) : Ω) * (((u⁻¹ : (regAt ξ p)ˣ) : regAt ξ p) : Ω) = 1` using `congrArg Subtype.val h1`. Rewrite using `[← eq_inv_of_mul_eq_one_right h2]`. Conclude with `((u⁻¹ : (regAt ξ p)ˣ) : regAt ξ p).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitAt_of_isUnit' {p : Cpt ξ} (z : regAt ξ p) (hu : IsUnit z) : unitAt ξ p (z : Ω) := by
   obtain ⟨u, rfl⟩ := hu
@@ -136,9 +136,9 @@ private theorem unitAt_of_isUnit' {p : Cpt ξ} (z : regAt ξ p) (hu : IsUnit z) 
     exact ((u⁻¹ : (regAt ξ p)ˣ) : regAt ξ p).2
 
 /- English proof (translation)
-Use `haveI := isLocalRing_regAt' (ξ := ξ) (p := p)`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hnu : ∀ l, ¬ IsUnit (⟨f l, hf l⟩ : regAt ξ p)` using `fun l hu => hne l (unitAt_of_isUnit' _ hu)`. Establish `hsum : (∑ l, (⟨cc l, hc l⟩ : regAt ξ p) * ⟨f l, hf l⟩) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h`. Establish `hmem : (∑ l, (⟨cc l, hc l⟩ : regAt ξ p) * ⟨f l, hf l⟩) ∈ IsLocalRing.maximalIdeal (regAt ξ p)` using `Ideal.sum_mem _ (fun l _ => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hnu l)))`. Rewrite `hmem` using `[hsum]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hmem isUnit_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_sum {p : Cpt ξ} {m : ℕ} {f cc : Fin m → Ω} (hf : ∀ l, f l ∈ regAt ξ p)
     (hc : ∀ l, cc l ∈ regAt ξ p) (h : ∑ l, cc l * f l = 1) : ∃ l, unitAt ξ p (f l) := by
@@ -156,11 +156,9 @@ theorem exists_unit_of_sum {p : Cpt ξ} {m : ℕ} {f cc : Fin m → Ω} (hf : �
   exact (IsLocalRing.mem_maximalIdeal _).1 hmem isUnit_one
 
 /- English proof (translation)
-Use `haveI := isLocalRing_regAt' (ξ := ξ) (p := p)`. Introduce `hb'`. Establish `hcop : Nat.Coprime a b` using `(Nat.coprime_primes ha hb).2 hab`. Establish `hnA : ¬ IsUnit ((a : regAt ξ p))` using `fun hu => h (by simpa using unitAt_of_isUnit' _ hu)`. Establish `hnB : ¬ IsUnit ((b : regAt ξ p))` using `fun hu => hb' (by simpa using unitAt_of_isUnit' _ hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `h1 : (u : regAt ξ p) * (a : regAt ξ p) + (v : regAt ξ p) * (b : regAt ξ p) = 1`. Conclude with `congrArg (Int.cast : ℤ → regAt ξ p) huv` after adjusting the coercions. Establish `hm : (u : regAt ξ p) * (a : regAt ξ p) + (v : regAt ξ p) * (b : regAt ξ p) ∈ IsLocalRing.maximalIdeal (regAt ξ p)` using `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 hnA)) (Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 hnB))`. Rewrite `hm` using `[h1]`.
-
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_inFibre_two {p : Cpt ξ} {a b : ℕ} (ha : a.Prime) (hb : b.Prime) (hab : a ≠ b) (h : InFibre ξ a p) :
     ¬ InFibre ξ b p := by
@@ -180,7 +178,7 @@ theorem not_inFibre_two {p : Cpt ξ} {a b : ℕ} (ha : a.Prime) (hb : b.Prime) (
   exact (IsLocalRing.mem_maximalIdeal _).1 hm isUnit_one
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `hf`. Establish `h3 : u = (f⁻¹) ^ n * (f ^ n * u)`. Rewrite using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ h0, one_pow, one_mul]`. Rewrite using `[h3]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ h2 n) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mul {p : Cpt ξ} {f u : Ω} (hf : unitAt ξ p f) {n : ℕ} (h : f ^ n * u ∈ regAt ξ p) :
     u ∈ regAt ξ p := by
@@ -194,7 +192,7 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Unfold `chartMono`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.add_apply, zpow_add₀ (hc k)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartMono_add {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a b : K → ℤ) :
     chartMono y c (a + b) = chartMono y c a * chartMono y c b := by
@@ -205,7 +203,7 @@ theorem chartMono_add {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a b :
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Unfold `chartMono`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, _root_.zpow_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartMono_neg (c : ∀ k, J k) (a : K → ℤ) : chartMono y c (-a) = (chartMono y c a)⁻¹ := by
   unfold chartMono
@@ -215,7 +213,7 @@ theorem chartMono_neg (c : ∀ k, J k) (a : K → ℤ) : chartMono y c (-a) = (c
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [chartMono]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, chartMono_add hc, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem chartMono_sum {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (S : Finset ℕ) (b : ℕ → K → ℤ) :
     chartMono y c (∑ p ∈ S, b p) = ∏ p ∈ S, chartMono y c (b p) := by
@@ -225,16 +223,16 @@ theorem chartMono_sum {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (S : F
 
 omit [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Unfold `chartMono`. Conclude with `Finset.prod_ne_zero_iff.2 (fun k _ => zpow_ne_zero _ (hc k))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem chartMono_ne {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a : K → ℤ) : chartMono y c a ≠ 0 := by
   unfold chartMono
   exact Finset.prod_ne_zero_iff.2 (fun k _ => zpow_ne_zero _ (hc k))
 
 /- English proof (translation)
-Establish `hker : mConeMap y g = 0` using `RingHom.mem_ker.1 hg`. Establish `key : ((dh y c : MRing J →ₐ[ℤ] Ω) : MRing J →+* Ω) = (MvPolynomial.eval (fun k => (y ⟨k, c k⟩)⁻¹)).comp ((mConeMap y : MRing J →ₐ[ℤ] MvPolynomial K Ω) : MRing J →+* MvPolynomial K Ω)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[dh, mConeMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `[dh, mConeMap, div_eq_mul_inv]`. Establish `h1` using `congrArg (fun φ : MRing J →+* Ω => φ g) key`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.coe_toRingHom] at h1`. Rewrite using `[h1, hker, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dh_eq_zero {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {g : MRing J} (hg : g ∈ mCoordIdeal y) :
     dh y c g = 0 := by
@@ -252,9 +250,9 @@ theorem dh_eq_zero {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {g : MRin
   rw [h1, hker, map_zero]
 
 /- English proof (translation)
-Establish `key : ((dh y c : MRing J →ₐ[ℤ] Ω) : MRing J →+* Ω) = (MvPolynomial.eval (fun k => (y ⟨k, c k⟩)⁻¹)).comp ((mConeMap y : MRing J →ₐ[ℤ] MvPolynomial K Ω) : MRing J →+* MvPolynomial K Ω)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[dh, mConeMap]`. Introduce `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[dh, mConeMap, div_eq_mul_inv]`. Conclude with `congrArg (fun φ : MRing J →+* Ω => φ g') key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dh_eq_eval_inv_mConeMap (c : ∀ k, J k) (g' : MRing J) :
     dh y c g' = MvPolynomial.eval (fun k => (y ⟨k, c k⟩)⁻¹) (mConeMap y g') := by
@@ -269,9 +267,9 @@ private theorem dh_eq_eval_inv_mConeMap (c : ∀ k, J k) (g' : MRing J) :
   exact congrArg (fun φ : MRing J →+* Ω => φ g') key
 
 /- English proof (translation)
-Use `⟨∑ m ∈ g.support, ((g.coeff m : ℤ) : Ω) * ∏ p, y p ^ m p, ?_⟩` and prove the remaining obligations. Rewrite using `[show mConeMap y g = MvPolynomial.aeval (fun p : (Σ k, J k) => MvPolynomial.C (y p) * MvPolynomial.X p.1) g from rfl, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun m hm => ?_)` and prove the remaining obligations. Establish `hd` using `hg m hm`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.prod_sigma (fun p : (Σ k, J k) => MvPolynomial.X (R := Ω) p.1 ^ m p)]`. Simplify using `only [Finset.prod_pow_eq_pow_sum, hd]`. Simplify using `[MvPolynomial.algebraMap_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mConeMap_eq_C_mul_prod_of_isMultiHomog {g : MRing J} {d : K → ℕ} (hg : IsMultiHomog g d) :
     ∃ a : Ω, mConeMap y g = MvPolynomial.C a * ∏ k, MvPolynomial.X k ^ d k := by
@@ -288,41 +286,37 @@ private theorem mConeMap_eq_C_mul_prod_of_isMultiHomog {g : MRing J} {d : K → 
   simp [MvPolynomial.algebraMap_apply, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one (a := z) ⟨(z : Ω)⁻¹, hu.2.2⟩ (Subtype.ext (by simp [hu.1]))`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_of_unitAt' {p : Cpt ξ} (z : regAt ξ p) (hu : unitAt ξ p (z : Ω)) : IsUnit z :=
   IsUnit.of_mul_eq_one (a := z) ⟨(z : Ω)⁻¹, hu.2.2⟩ (Subtype.ext (by simp [hu.1]))
 
 /- English proof (translation)
-Use `haveI := isLocalRing_regAt' (ξ := ξ) (p := p)`. Establish `hc0 : ∀ k, y ⟨k, c k⟩ ≠ 0` using `ne_of_seg h.1`. Take `⟨bf, bg, hbf, hbg, hbeq⟩` from `hv.degrees`. Establish `hPW : mCoordIdeal y ≤ Ideal.comap (dhP h) (IsLocalRing.maximalIdeal (regAt ξ p))`. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Establish `h0 : dhP h x = 0` using `Subtype.ext (by rw [coe_dhP]; exact dh_eq_zero hc0 hx)`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `hrel : IsRelevant (Ideal.comap (dhP h) (IsLocalRing.maximalIdeal (regAt ξ p)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Use `⟨c k, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap]`. Establish `h1 : dhP h (MvPolynomial.X ⟨k, c k⟩) = 1` using `Subtype.ext (by rw [coe_dhP]; exact dh_X_self y c hc0 k)`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm isUnit_one`. Establish `hl' : unitAt ξ p (l : Ω)`. Assume the negation of the conclusion as `hn`. Conclude with `hl hn`. Establish `hCl : MvPolynomial.C (l : ℤ) ∉ Ideal.comap (dhP h) (IsLocalRing.maximalIdeal (regAt ξ p))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Establish `e : dhP h (MvPolynomial.C (l : ℤ)) = ((l : ℤ) : regAt ξ p)` using `eq_intCast ((dhP h).comp MvPolynomial.C) l`. Rewrite using `[e]`. Establish `hu : IsUnit (((l : ℤ) : regAt ξ p))` using `isUnit_of_unitAt' _ (by simpa using hl')`. Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm hu`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, v, hu, hv', huv⟩` from `hv.unit_off_fibre _ inferInstance hPW hrel hCl`. Establish `hunit : ∀ w, w ∉ Ideal.comap (dhP h) (IsLocalRing.maximalIdeal (regAt ξ p)) → unitAt ξ p (dh y c w)`. Introduce `w hw`. Rewrite `hw` using `[Ideal.mem_comap]`. Establish `h1 : IsUnit (dhP h w)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hw ((IsLocalRing.mem_maximalIdeal _).2 hn)`. Rewrite using `[← coe_dhP h]`. Conclude with `unitAt_of_isUnit' _ h1`. Establish `hU` using `hunit u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hV` using `hunit v hv'`. Establish `hrel2 : dh y c u * dh y c f = dh y c v * dh y c g`. Establish `h0` using `dh_eq_zero hc0 huv`. Rewrite `h0` using `[map_sub, map_mul, map_mul]`. Conclude with `sub_eq_zero.1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdg : dh y c g ≠ 0`. Introduce `h0`. Take `⟨a, ha⟩` from `mConeMap_eq_C_mul_prod_of_isMultiHomog (y := y) hbg`. Rewrite `h0` using `[dh_eq_eval_inv_mConeMap, ha, map_mul, MvPolynomial.eval_C, map_prod]`. Simplify using `only [map_pow, MvPolynomial.eval_X] at h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∏ k, ((y ⟨k, c k⟩)⁻¹) ^ bg k ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun k _ => pow_ne_zero _ (inv_ne_zero (hc0 k)))`. Establish `ha0 : a = 0` using `(mul_eq_zero.1 h0).resolve_right hprod`. Apply `hv.den_not_mem` to reduce the goal to its premises. Use `show g ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker, ha, ha0, map_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hPF : ∏ k, y ⟨k, c k⟩ ^ bf k = (∏ k, y ⟨k, c k⟩ ^ bg k) * chartMono y c b`. Establish `e1 : ∀ d : K → ℕ, ∏ k, y ⟨k, c k⟩ ^ d k = chartMono y c (fun k => (d k : ℤ))`. Introduce `d`. Unfold `chartMono`. Conclude with `Finset.prod_congr rfl (fun k _ => (zpow_natCast _ _).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e1, ← chartMono_add hc0]`. Use `congr 1`. Rewrite using `[← hbeq]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hCB` using `chartMono_ne hc0 b`. Establish `hPG : ∏ k, y ⟨k, c k⟩ ^ bg k ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun k _ => pow_ne_zero _ (hc0 k))`. Establish `hdu : dh y c u ≠ 0` using `hU.1`. Establish `hQ : aeval y f / aeval y g * chartMono y c (-b) = dh y c v * (dh y c u)⁻¹`. Rewrite using `[aeval_eq_dh_mul y c hc0 hbf, aeval_eq_dh_mul y c hc0 hbg, chartMono_neg, hPF]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hrel2`. Rewrite using `[hQ]`. Use `⟨mul_ne_zero hV.1 (inv_ne_zero hdu), Subring.mul_mem _ hV.2.1 hU.2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv, inv_inv]`.
-
-Conclude with `Subring.mul_mem _ hV.2.2 hU.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_off_fibre {c : ∀ k, J k} {p : Cpt ξ} (h : InChart ξ (seg y) c p) {l : ℕ} {b : K → ℤ} {f g : MRing J}
     (hv : IsVerticalDivisorAt (mCoordIdeal y) l b f g) (hl : ¬ InFibre ξ l p) :

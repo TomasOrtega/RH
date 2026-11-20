@@ -6,13 +6,13 @@ open NumberField Polynomial
 namespace PIW.CMDiscSq
 
 /- English proof (translation)
-Establish `hinj` using `FaithfulSMul.algebraMap_injective (𝓞 E) E`. Establish `hx : star (algebraMap (𝓞 E) E θ) ≠ algebraMap (𝓞 E) E θ`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[ht, h]`. Establish `hmem` using `aeval_derivative_mem_differentIdeal (𝓞 F) F E θ (adjoin_eq_top_of_star_ne hR hx)`. Take `⟨s, n, hs, hn, hmin⟩` from `minpoly_eq_of_star_ne hR hx`. Establish `hAx : IsIntegral (𝓞 F) θ` using `Algebra.IsIntegral.isIntegral θ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval : algebraMap (𝓞 E) E (aeval θ (derivative (minpoly (𝓞 F) θ))) = algebraMap (𝓞 E) E (θ - t)`. Establish `h1 : aeval (algebraMap (𝓞 E) E θ) (derivative (minpoly F (algebraMap (𝓞 E) E θ))) = algebraMap (𝓞 E) E (aeval θ (derivative (minpoly (𝓞 F) θ)))`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions F E hAx, derivative_map, aeval_map_algebraMap, aeval_algebraMap_apply]`. Rewrite using `[← h1, hmin, map_sub, ht]`. Simplify using `only [derivative_X_pow, derivative_mul, derivative_C, derivative_X, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, hs, zero_mul, zero_add, mul_one, add_zero, Nat.cast_ofNat, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hmem` using `[hinj hval]`. Conclude with `hmem`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_differentIdeal {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [StarRing E] [Algebra F E]
@@ -44,11 +44,11 @@ theorem sub_mem_differentIdeal {F E : Type} [Field F] [NumberField F] [Field E] 
   exact hmem
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hFE`. Take `⟨⟨_, _, hP⟩, hR⟩` from `hFE`. Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨θ, t, ht, hθt⟩` from `hP P hPmax`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `hθt` to reduce the goal to its premises. Apply `hle` to reduce the goal to its premises. Apply `sub_mem_differentIdeal hR θ t ht` to reduce the goal to its premises. Introduce `h0`. Apply `hθt` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0]`. Conclude with `P.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDiffTop : RelDiffTop := by
   intro F E _ _ _ _ _ _ hFE

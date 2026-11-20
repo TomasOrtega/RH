@@ -11,9 +11,9 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `W hWV`. Establish `key : (fun r : Fin n → Γ(X, W) => ∑ i, r i • (M.presheaf.map (homOfLE hWV).op).hom ((M.presheaf.map (homOfLE hVU).op).hom (s i))) = (fun r : Fin n → Γ(X, W) => ∑ i, r i • (M.presheaf.map (homOfLE (hWV.trans hVU)).op).hom (s i))`. Use function extensionality and compare the values at `r`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `show _ = (M.presheaf.map ((homOfLE hVU).op ≫ (homOfLE hWV).op)).hom (s i)`. Rewrite using `[Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hs W (hWV.trans hVU)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsBasisOn.restrict {X : Scheme.{u}} {M : X.Modules} {U : X.Opens} {n : ℕ}
     {s : Fin n → Γ(M, U)} (hs : IsBasisOn M U s) {V : X.Opens} (hVU : V ≤ U) :
@@ -34,7 +34,7 @@ theorem IsBasisOn.restrict {X : Scheme.{u}} {M : X.Modules} {U : X.Opens} {n : �
   exact hs W (hWV.trans hVU)
 
 /- English proof (translation)
-Introduce `W hWU`. Set `e : Γ(X, W) ≃+* Γ(Y, f ''ᵁ W)` to `((f.appIso W).commRingCatIsoToRingEquiv).symm`. Establish `hb` using `(hs (f ''ᵁ W) (Scheme.Hom.image_mono f hWU)).comp (Equiv.piCongrRight fun _ : Fin n => e.toEquiv).bijective`. Conclude with `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsBasisOn.restrictImage {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f] {M : Y.Modules}
     {U : X.Opens} {n : ℕ} {s : Fin n → Γ(M, f ''ᵁ U)} (hs : IsBasisOn M (f ''ᵁ U) s) :
@@ -46,9 +46,9 @@ theorem IsBasisOn.restrictImage {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersio
   exact hb
 
 /- English proof (translation)
-Introduce `X Y f _ E hE`. Use `IsVectorBundle.of_iso ((Scheme.Modules.restrictFunctorIsoPullback f).app E) ?_` and prove the remaining obligations. Introduce `x`. Take `⟨U, -, hxU, n, s, hs⟩` from `hE (f.base x)`. Take `⟨V, hV, hxV, hVU⟩` from `Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens (show x ∈ f ⁻¹ᵁ U from hxU)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle : f ''ᵁ V ≤ U` using `(Scheme.Hom.image_mono f hVU).trans (f.image_preimage_le U)`. Conclude with `⟨V, hV, hxV, n, _, (hs.restrict hle).restrictImage f⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem VectorBundleRestrict.proof : VectorBundleRestrict.Statement := by
   intro X Y f _ E hE

@@ -6,23 +6,21 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Introduce `D P hP`. Use `set f : MvPolynomial (Fin D) ℚ →+* MvPolynomial (Fin D) ℂ := MvPolynomial.map (algebraMap ℚ ℂ)`. Use `set Q := P.map f`. Establish `hQ : Q.Monic` using `hP.map f`. Establish `h0 : P.eval₂ ((AdjoinRoot.of Q).comp f) (AdjoinRoot.root Q) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Polynomial.eval₂_map, AdjoinRoot.eval₂_root]`. Set `τ` to `AdjoinRoot.lift ((AdjoinRoot.of Q).comp f) (AdjoinRoot.root Q) h0`. Establish `hof : ∀ r, τ (AdjoinRoot.of P r) = AdjoinRoot.of Q (f r)` using `fun r => by`. Simplify using `[τ, AdjoinRoot.lift_of]`. Establish `hroot : τ (AdjoinRoot.root P) = AdjoinRoot.root Q` using `AdjoinRoot.lift_root _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsmul : ∀ (q : ℚ) u, τ (q • u) = (q : ℂ) • τ u`. Introduce `q u`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, IsScalarTower.algebraMap_apply ℚ (MvPolynomial (Fin D) ℚ), AdjoinRoot.algebraMap_eq, hof, IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin D) ℂ), AdjoinRoot.algebraMap_eq]`. Simplify using `[f, MvPolynomial.algebraMap_eq]`. Use `⟨τ, fun i => by rw [hof]; simp [f], hsmul, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `J e he`. Set `τL : AdjoinRoot P →ₗ[ℚ] AdjoinRoot Q` to `{ toFun := τ map_add' := map_add τ map_smul' := fun q u => by`. Rewrite using `[hsmul]`. Conclude with `algebraMap_smul ℂ q (τ u) }`. Set `bA` to `(MvPolynomial.basisMonomials (Fin D) ℚ).smulTower (AdjoinRoot.powerBasis' hP).basis`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `bB` to `(MvPolynomial.basisMonomials (Fin D) ℂ).smulTower (AdjoinRoot.powerBasis' hQ).basis`. Establish `hdim : (AdjoinRoot.powerBasis' hP).dim = (AdjoinRoot.powerBasis' hQ).dim`. Simplify using `[AdjoinRoot.powerBasis', Q, hP.natDegree_map]`. Set `σ` to `Equiv.prodCongr (Equiv.refl (Fin D →₀ ℕ)) (finCongr hdim)`. Set `E` to `(Algebra.TensorProduct.basis ℂ bA).equiv bB σ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hbas : ∀ k, τ (bA k) = bB (σ k)`. Introduce and unpack `⟨a, i⟩`. Simplify using `only [bA, bB, σ, Module.Basis.smulTower_apply, MvPolynomial.coe_basisMonomials, PowerBasis.coe_basis, AdjoinRoot.powerBasis'_gen, Equiv.prodCongr_apply, Equiv.coe_refl, Prod.map, id, finCongr_apply, Fin.val_cast]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, map_pow, hroot, AdjoinRoot.algebraMap_eq, AdjoinRoot.algebraMap_eq, hof]`. Simplify using `[f, MvPolynomial.map_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hkey : ∀ v, E (1 ⊗ₜ[ℚ] v) = τ v`. Introduce `v`. Use `bA.ext (f₁ := (E.toLinearMap.restrictScalars ℚ).comp (TensorProduct.mk ℚ ℂ _ 1)) (f₂ := τL) (fun k => by` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, TensorProduct.mk_apply, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Rewrite using `[← Algebra.TensorProduct.basis_apply, Module.Basis.equiv_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hbas k).symm)`. Conclude with `congrArg (fun g => g v) this`. Establish `hli : LinearIndependent ℂ (fun j => (1 : ℂ) ⊗ₜ[ℚ] e j)` using `Module.Flat.linearIndependent_one_tmul he`. Use `hli.map' E.toLinearMap E.ker` as an intermediate fact. Establish `h2 : (fun j => τ (e j)) = E.toLinearMap ∘ (fun j => (1 : ℂ) ⊗ₜ[ℚ] e j)`.
-
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, LinearEquiv.coe_coe]`. Conclude with `(hkey (e j)).symm`. Rewrite using `[h2]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoinRoot_map_complex_linearIndependent :
     ∀ (D : ℕ) (P : Polynomial (MvPolynomial (Fin D) ℚ)), P.Monic →

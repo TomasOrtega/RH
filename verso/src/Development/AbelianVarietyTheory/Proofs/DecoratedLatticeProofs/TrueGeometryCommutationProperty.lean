@@ -27,9 +27,9 @@ namespace GlobalTheory.Fam.Rebase
 open ValuativeRel
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use `(GlobalTheory.FinPl.SetCut.mem_grpAt_iff_parts V P h).2 fun i j => ⟨(GlobalTheory.FinPl.SetCut.mem_GfC_iff_entries V h).1 hh i j, fun w hw => ?_⟩` and prove the remaining obligations. Establish `e1 : Formalism.UG.prV (E` using `D.host.E) w (κ.1 i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j := congrArg (fun g => g.1 i j) (hoff w hw)`. Rewrite `e1` using `[← hκ, GlobalTheory.AdForm.CongAtIdem.finM_rfl, Matrix.map_apply]`. Establish `e2 : Formalism.UG.prV (E` using `D.host.E) w (toEAf D ((Formalism.L2.Theta.mt V h - 1) i j)) = 0 := by`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply, RingHom.map_sub, map_sub, e1, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `e3` using `(GlobalTheory.StabOff.prV_comm w (finPart D ((Formalism.L2.Theta.mt V h - 1) i j))).symm.trans e2`. Conclude with `(map_eq_zero_iff _ (Algebra.TensorProduct.comm _ _ _).injective).1 e3`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_grpAt_of_bc {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (P : GlobalTheory.FinPl.Pl D → Prop) (h : GA D V) (hh : h ∈ GfC V)
     (κ : GL (Fin n) (EF D)) (hκ : finM V hn h = κ.1)
@@ -46,9 +46,9 @@ theorem mem_grpAt_of_bc {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (P : Gl
   exact (map_eq_zero_iff _ (Algebra.TensorProduct.comm _ _ _).injective).1 e3
 
 /- English proof (translation)
-Take `⟨r, s, hs, e⟩` from `hx`. Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ P.asIdeal.zero_mem)`. Establish `hsE : (s : D.host.E) ≠ 0` using `fun h => hs0 (RingOfIntegers.coe_eq_zero_iff.mp h)`. Establish `h1` using `not_not.1 (mt (GlobalTheory.PhiOneVal.mem_prime_iff_pr_inv_notMem q P hP s hs0).2 hs)`. Establish `e' : x = (r : D.host.E) * (s : D.host.E)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq₀ hsE, mul_comm]`. Conclude with `e`. Rewrite using `[e', map_mul, map_mul]`. Conclude with `mul_mem (GlobalTheory.LocMod.FullLatFrame.pr_int_mem q r) h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_mem_of_intAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : Formalism.L2.NTheta.IsIdemAt q.e P) {x : D.host.E}
@@ -64,9 +64,9 @@ theorem pr_mem_of_intAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topologi
   exact mul_mem (GlobalTheory.LocMod.FullLatFrame.pr_int_mem q r) h1
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨e', he', hF⟩` from `hF`. Take `rfl : e = e'` from `Equiv.ext fun y => Fin.ext ((he y).trans (he' y).symm)`. Use `Matrix.ext fun c d => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `e.surjective c`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `e.surjective d`. Rewrite using `[GlobalTheory.Fam.MovedJoin.mul_frameγ_std _ e hF, GlobalTheory.Fam.MovedJoin.frameβ_mul_std _ e hF]`. Establish `h1` using `hr (e c) (e d)`. Rewrite `h1` using `[GlobalTheory.AdForm.CongAtIdem.finM_rfl, Matrix.map_apply]`. Conclude with `GlobalTheory.SplitProj.pr_eq_of_adAt q P hP _ _ h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pr_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : Formalism.L2.NTheta.IsIdemAt q.e P)
@@ -87,7 +87,7 @@ theorem map_pr_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   exact GlobalTheory.SplitProj.pr_eq_of_adAt q P hP _ _ h1
 
 /- English proof (translation)
-Introduce `x` and use `⟨(Matrix.reindex (finCongr hT) (finCongr hS)).symm (LinearMap.toMatrix' x), by unfold toHom rw [Equiv.apply_symm_apply, Matrix.toLin'_toMatrix']⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem toHom_surj {D : D7} (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) :
     Function.Surjective (toHom S T hS hT) := fun x =>
@@ -103,9 +103,9 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
 open Formalism.L2.Col GlobalTheory.StepData GlobalTheory.SymBridge
 
 /- English proof (translation)
-Use `Finset.disjoint_left.2 fun P h1 h2 => ?_` and prove the remaining obligations. Take `⟨hX, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `h3` using `(GlobalTheory.ThetaMove.BadPrimes.bad_primes B.fields (B.primes X) I.sel I.S (I.tup b) u hX hPr hI.sel_ok (hI.T_mem u) hI.g_mem P (Finset.mem_union_left _ h1)).2.2.2.2 h1`. Use `GlobalTheory.Mem.LevTwist.T_notMem_under_uSG B X I hI u P ?_ ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 h2 with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Finset.mem_union_left _ h`. Conclude with `Finset.mem_union_right _ (I.Q_subset_SQ b h)`. Use `show algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (B.T u : 𝓞 B.host.F) ∈ P.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_vT (hI : I.Ok) (u : B.Word) (b : I.ι) : Disjoint ((B.primes X).vT u) (rowSG (B.primes X) I.sel (I.tup b)) := by
   refine Finset.disjoint_left.2 fun P h1 h2 => ?_
@@ -132,7 +132,7 @@ def Carry (J : QJ a t) (i : Fin J.r) (β : J.Ch₀ ((J.G i).s + 1))
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.QTw.exists_xOrd B.R ((J.G i).s + 1)`. Take `⟨r, hr, g, hg, h1, h2⟩` from `GlobalTheory.QPl.RatOrb.exists_rat_of_sameOrb (E := B.fields.E) (J.P i).1 ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (J.G i).ϖ (hJ.tw i).compl e _ ((J.E i).reg.2.2 ((J.G i).s + 1) 0 rfl).1 ((J.E i).le ((J.G i).s + 1) 0 rfl) (J.E i).M _ (repY (J.A.p0 ((J.G i).s + 1) β).1.2) (hJ.orb i …`. Use `⟨r, hr, fun e' he' => ?_⟩` and prove the remaining obligations. Take `rfl : e = e'` from `Equiv.ext fun y => Fin.ext ((he y).trans (he' y).symm)`. Conclude with `⟨g, hg, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_carry {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) (β : J.Ch₀ ((J.G i).s + 1)) :
     ∃ r ∈ GLint B.fields.E (B.R.N ((J.G i).s + 1)) (J.P i).1, Carry J i β r := by
@@ -145,7 +145,7 @@ theorem exists_carry {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) (β : J.Ch₀ 
   exact ⟨g, hg, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hJ.surj P ((hW.tq.Q t P).2 hP)`. Conclude with `⟨i, (hJ.eq i).trans hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_place (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) {P : HeightOneSpectrum (𝓞 B.fields.E)}
     (hP : P ∈ I.Q (W.P.I.tup t)) : ∃ i, (J.P i).1 = P := by
@@ -153,7 +153,7 @@ theorem exists_place (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) {P : Height
   exact ⟨i, (hJ.eq i).trans hi⟩
 
 /- English proof (translation)
-The claim follows from `(Finset.mem_union.1 (J.P i).2).resolve_left (hJ.tw i).nmem`.
+A detailed English derivation is pending.
 -/
 theorem mem_Q {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) : (J.P i).1 ∈ I.Q (W.P.I.tup t) :=
   (Finset.mem_union.1 (J.P i).2).resolve_left (hJ.tw i).nmem
@@ -161,13 +161,13 @@ theorem mem_Q {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) : (J.P i).1 ∈ I.Q (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Distinguish the cases in `hm : j + 1 = B.R.m`. Use `swap`. Conclude with `⟨(J.A.p0 j β).1.1, 1, fun h => absurd h hm⟩`. Establish `H : ∀ P : I.Q (W.P.I.tup t), ∃ r ∈ GLint B.fields.E (B.R.N j) P.1, ∀ i, (J.P i).1 = P.1 → ∀ β' r', HEq β' β → HEq r' r → Carry J i β' r'`. Introduce and unpack `⟨P, hP⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `exists_place hW hJ hP`. Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Take `rfl : j = (J.G i).s + 1` from `by omega`. Take `⟨r, hr, hc⟩` from `exists_carry hJ i β`. Use `⟨r, hr, fun i' hi' β' r' h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : i' = i` from `hJ.inj ((hJ.eq i').symm.trans (hi'.trans (hJ.eq i)))`. Rewrite using `[eq_of_heq h1, eq_of_heq h2]`. Conclude with `hc`. Use `choose r hr hc using H`. Take `⟨hb1, hb2⟩` from `hJ.is.base j (by omega) β`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, κ, h1, h2, h3, h4⟩` from `GlobalTheory.AdForm.Rebase.exists_frames hW.tr.ok (J.A.p0 j β).1.1 (J.A.kb j β) hb1 hb2 r hr`. Use `⟨q, κ, fun _ => ⟨h1, h3, h4, fun i β' r' e1 e2 => hc ⟨(J.P i).1, mem_Q hJ i⟩ i rfl β' r' e1 ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h2]`. Conclude with `e2`.
+A detailed English derivation is pending.
 -/
 theorem exists_moves (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) (j : ℕ) (β : J.Ch₀ j) :
     ∃ (q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup (W.P.I.tup t)) u j) (κ : TC.GA B (B.R.N j)), j + 1 = B.R.m →
@@ -198,9 +198,9 @@ theorem exists_moves (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) (j : ℕ) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hPn : (J.P i).1 ∉ (B.primes X).vGs` using `(hJ.tw i).nmem`. Establish `key : ∀ r' b' : Fin (B.R.N j), frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 (J.P i) (Pi.single b' 1) r' = if r' = b' then (1 : B.host.E) else 0`. Introduce `r' b'`. Apply `(algebraMap B.host.E ((J.P i).1.adicCompletion B.host.E)).injective` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.Fam.MovedJoin.adAt_kb_eq_frsF J.A hJ.is (J.P i) hPn j hj.le β r' b', hJ.std j hj β, GlobalTheory.Fam.MovedJoin.adAt_kStd_of_twist hW.tr.ok _ (J.P i) hPn u _ r' b']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `LinearEquiv.toLinearMap_injective ((Pi.basisFun B.fields.E (Fin (B.R.N j))).ext fun b => funext fun r => ?_)` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply]`. Conclude with `(key r b).trans (Pi.single_apply b (1 : B.fields.E) r).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_std (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) (j : ℕ) (hj : j < B.R.m) (β : J.Ch₀ j) :
     frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 (J.P i) = 1 := by
@@ -218,11 +218,9 @@ theorem frsF_std (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Establish `hPn : (J.P i).1 ∉ (B.primes X).vGs` using `(hJ.tw i).nmem`. Take `⟨g, -, -, h⟩` from `hr e he`. Use `h _ ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.AdForm.Rebase.repY_cong hs (J.A.p0 ((J.G i).s + 1) β) p' hc (J.P i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : frsF I.sel (I.tup (W.P.I.tup t)) p'.1.1 (J.P i) = p'.1.1.fr ⟨(J.P i).1, mem_Q hJ i⟩`. Unfold `frsF`. Conclude with `dif_neg hPn`. Rewrite `h1` using `[frsF_std hW hJ i _ (by omega) β, h2, if_neg hPn]`. Rewrite using `[hJ.M i]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cos_moved (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) (β : J.Ch₀ ((J.G i).s + 1))
     (p' : PtAt B.R I.sel (I.tup (W.P.I.tup t)) (I.cst (W.P.I.tup t)) u ((J.G i).s + 1))
@@ -244,11 +242,11 @@ theorem cos_moved (hW : AllTrue W) {J : QJ a t} (hJ : J.ReadsStd) (i : Fin J.r) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hP : (a.pl n).1 ∈ (B.primes X).vGs` using `(hW.lev.2.1 _).1 (a.pl n).2`. Set `P : rowSG (B.primes X) I.sel (I.tup b)` to `⟨(a.pl n).1, Finset.mem_union_left _ hP⟩`. Establish `hP' : P.1 ∈ (B.primes X).vGs` using `hP`. Establish `h1` using `GlobalTheory.AdForm.Rebase.repY_cong hs p p' hc P`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : frsF I.sel (I.tup b) p'.1.1 P = frsF I.sel (I.tup b) p.1.1 P`. Unfold `frsF`. Rewrite using `[dif_pos hP', dif_pos hP', hd]`. Rewrite `h1` using `[h2, if_pos hP', pow_zero, inv_one, one_smul, ← map_sub]`. Establish `h3` using `(isFr_ptFr p.1.1 P.1 _).2 h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← frsF_eq_ptFr, LinearEquiv.apply_symm_apply, hN]`. Establish `h4` using `(mem_localization_standardLattice P.1 _).1 h3 x`. Establish `h5` using `pr_mem_of_intAt (D := I.rec7 l Z) (a.G n).q (GlobalTheory.Fam.TopLoc.LocalIdempotentDensity.idem_at hW a ha n) h4`. Establish `h6` using `map_sub ((a.G n).q.pr.comp (incA (I.rec7 l Z))) (repY p'.1.2 x) (repY p.1.2 x)`. Conclude with `h6 ▸ h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cosG_moved (hW : AllTrue W) (ha : a.Is) (n : Fin a.n) {b : I.ι}
     (p p' : PtAt B.R I.sel (I.tup b) (I.cst b) u ((a.G n).s + 1)) (hc : cosetIn p' = cosetIn p) (hd : p'.1.1.deco = p.1.1.deco)
@@ -273,17 +271,15 @@ theorem cosG_moved (hW : AllTrue W) (ha : a.Is) (n : Fin a.n) {b : I.ι}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨hl.inj, hl.first, hl.last, fun j hj γ hγ α z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : j + 1 = B.R.m`. Use `absurd ?_ hγ` and prove the remaining obligations. Establish `: ∀ k, k = B.R.m → Function.Surjective (ι k)`. Introduce and unpack `_ rfl`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hl.last`. Conclude with `this _ h1 γ`. Distinguish the cases in `h2 : j + 2 = B.R.m`. Use `swap`. Establish `h` using `hl.dead j hj γ hγ α z`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `TwDat.xi at h ⊢`. Rewrite using `[hb, hne j h1, hne (j + 1) h2]`. Conclude with `h`. Establish `hL : (I.idx b).Ok I.Ch I.sel (I.tup b) (I.cst b) I.glob j`. Use `hI.idx_ok b` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[show B.R.m - 2 = j by omega]`. Then use the resulting hypothesis. Take `⟨hd, hc⟩` from `heq (j + 1) h2 γ`. Establish `key` using `GlobalTheory.CplDead.xiCpl1_eq_zero_of_frames I.Ch I.sel (I.tup b) (I.cst b) (I.idx b) I.glob j hL u (disjoint_vT hI u b) ((A.b0 j α).get (by omega)) (A.p0 j α).1.1 (A.p0 (j + 1) γ).1.1 (A'.p0 (j + 1) γ).1.1 (A.p0 (j + 1) γ).1.2 (A'.p0 (j + 1) γ).1.2 hd (GlobalTheory.AdForm.Rebas …`. Unfold `TwDat.xi`. Rewrite using `[hb, hne j h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `xiAt`. Rewrite using `[dif_neg (by omega), dif_pos h2]`. Conclude with `(congrArg B.embLL (key _)).trans (map_zero _)`. Take `⟨z', hz'⟩` from `toHom_surj _ _ (rankN (I.rec7 l Z) j (Nat.le_of_succ_le hj)) (rankN (I.rec7 l Z) (j + 1) hj) x`. Establish `h` using `hl.dead j hj γ hγ α z'`.
-
-Unfold `TwDat.xi xiAt at h`. Rewrite `h` using `[dif_neg (by omega), dif_pos h2]`. Substitute `hz'` using the available equality. Conclude with `(map_eq_zero_iff _ B.embLL.injective).1 h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem dead_moved (hI : I.Ok) {b : I.ι} {Ch₀ Ch : ℕ → Type} {A A' : TwDat I l Z u b Ch₀} {ι : ∀ j, Ch j → Ch₀ j} (hl : A.Live ι)
     (hb : A'.b0 = A.b0) (hne : ∀ i, i + 1 ≠ B.R.m → A'.p0 i = A.p0 i)
@@ -324,17 +320,17 @@ theorem dead_moved (hI : I.Ok) {b : I.ι} {Ch₀ Ch : ℕ → Type} {A A' : TwDa
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hI` using `hW.tr.ok`. Establish `hle : j ≤ B.R.m` using `by omega`. Take `⟨k1, k2, -⟩` from `hJ.is.kA j hle β`. Establish `hstd` using `hJ.std j (by omega) β`. Establish `hidem : ∀ i, Formalism.L2.NTheta.IsIdemAt (J.G i).q.e (J.P i).1` using `fun i => by rw [hJ.eq i]; exact (J.G i).idem`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : finM _ (rankN (I.rec7 l Z) j hle) ((J.A.kA j β)⁻¹ * kA) = κ.1`. Establish `e1` using `GlobalTheory.AdForm.StabMove.finM_mul _ (rankN (I.rec7 l Z) j hle) (J.A.kA j β) ((J.A.kA j β)⁻¹ * kA)`. Rewrite `e1` using `[mul_inv_cancel_left, h2, k2]`. Conclude with `((Units.mul_right_inj (J.A.kb j β)).1 e1).symm`. Use `⟨J.A.kA j β, (J.A.kA j β)⁻¹ * kA, k1, by rw [← hstd]; exact k2, (mul_inv_cancel_left _ _).symm, mem_grpAt_of_bc _ (rankN (I.rec7 l Z) j hle) _ _ (mul_mem (inv_mem k1) h1) κ hfin fun v hv => hoff v ?_, fun i e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨P, hP, rfl⟩`. Take `⟨i, rfl⟩` from `exists_place hW hJ hP`. Conclude with `hv ⟨i, GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under _ (hidem i)⟩`. Substitute `e` using the available equality. Take `⟨e, he⟩` from `GlobalTheory.QTw.exists_xOrd B.R ((J.G i).s + 1)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, hgm, -⟩` from `hc i β _ HEq.rfl HEq.rfl e he`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[hgm]`. Use `map_pr_eq (J.G i).q (hidem i) _ (rankN (I.rec7 l Z) _ hle) _ _ (fun r s => ?_) xPos _ ((ha.stdQ (J.pl i) ⟨t, J.mem i⟩).1 _ le_rfl) e he` and prove the remaining obligations. Establish `hSQ : (J.P i).1 ∈ I.SQ` using `I.Q_subset_SQ _ (mem_Q hJ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTn` using `GlobalTheory.Mem.LevTwist.T_notMem_under_uSG B X I hI u (J.P i).1 (Finset.mem_union_right _ hSQ)`. Establish `hb` using `(GlobalTheory.Mem.Col2.MemChart.kStd_spec (X := X) l.pr u (B.R.N ((J.G i).s + 1))).2.1 _ hTn`. Establish `e1 : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) ((J.P i).1.under (𝓞 B.host.F))) κ = Formalism.UG.bc (Formalism.UG.prV (E := B.host.E) ((J.P i).1.under (𝓞 B.host.F))) (J.A.kb _ β * κ) := by`. Rewrite using `[map_mul, hstd, hb, one_mul]`. Establish `e2` using `GlobalTheory.Mem.Col2.ZeroMove.adAt_entry_of_bc (F := B.host.F) (E := B.host.E) (J.P i).1 e1 r s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `hpt.fr ⟨(J.P i).1, hSQ⟩ r s`. Rewrite `e3` using `[extTo_fr, ptFr_of_mem q (hJ.tw i).nmem (mem_Q hJ i)]`. Rewrite using `[hfin]`. Conclude with `e2.trans e3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pen_moved (hW : AllTrue W) (ha : a.Is) {J : QJ a t} (hJ : J.ReadsStd) (j : ℕ) (hj : j + 1 = B.R.m) (β : J.Ch₀ j)
     (q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup (W.P.I.tup t)) u j) (κ : TC.GA B (B.R.N j))
@@ -390,17 +386,13 @@ open GlobalTheory.Fam.Rebase
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha _ _ t J hJ`. Use `choose q κ hq using fun j β => exists_moves hW hJ j β`. Take `⟨A', hA', hchr, hb0, hne, heq⟩` from `GlobalTheory.AdForm.Rebase.exists_moved hW.tr.ok hW.tr.pins.some J.A hJ.is q κ (fun j hj β => (hq j β hj).2.1) (fun j hj β => (hq j β hj).2.2.1) (fun j hj β => by rw [(hq j β hj).1]; exact (hJ.is.base j (by omega) β).2)`. Establish `hdeco : ∀ j, j + 1 = B.R.m → ∀ β, (A'.p0 j β).1.1.deco = (J.A.p0 j β).1.1.deco` using `fun j hj β => by`. Rewrite using `[(heq j hj β).2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hq j β hj).1`. Use `⟨{ J with A := A' }, hA', hJ.inj, hJ.surj, fun j hj => ?_, hJ.res, hJ.eq, hJ.sg, hJ.tw, hJ.M, fun i j d h hj β => ?_, fun i β e he => ?_, fun j hj β => ?_, fun j hj β => ?_, hJ.last, hJ.sec, fun n y e he r => ?_, ?_⟩` and prove the remaining obligations. Use `show A'.chr (j + 1) = _`. Rewrite using `[hchr]`. Conclude with `hJ.chr j hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h'` using `hJ.rep i j d h hj β`. Rewrite `h'` using `[← hb0]`. Conclude with `h'`. Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Use `cos_moved hW hJ i β (A'.p0 _ β) (heq _ hs β).2.2 ?_ e he` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(heq _ hs β).2.1]`. Conclude with `(hq _ β hs).2.2.2 i β _ HEq.rfl HEq.rfl`. Use `show A'.kb j β = _`. Rewrite using `[(hne j (by omega)).1]`. Conclude with `hJ.std j (by omega) β`.
-
-Take `⟨k1, k2, -⟩` from `hA'.kA j (by omega) β`. Rewrite `k2` using `[(heq j hj β).1]`. Conclude with `pen_moved hW ha hJ j hj β (q j β) (κ j β) (hq j β hj).2.1 (hq j β hj).2.2.1 (hq j β hj).2.2.2 (A'.kA j β) k1 k2`. Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `h1` using `cosG_moved hW ha n (J.A.p0 _ (J.ι _ y)) (A'.p0 _ (J.ι _ y)) (heq _ hs _).2.2 (hdeco _ hs _) (hJ.is.base _ (by omega) _).2 (e r)`.
-
-Establish `h2` using `add_mem h1 (hJ.cosG n y e he r)`. Rewrite `h2` using `[sub_add_sub_cancel]`. Conclude with `h2`. Conclude with `dead_moved hW.tr.ok hJ.live hb0 (fun j hj => (hne j hj).2) fun j hj β => ⟨hdeco j hj β, (heq j hj β).2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem readsOfStd : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → (commOf (pk W) u a.g).Is → ∀ t (J : QJ a t), J.ReadsStd → ∃ J' : QJ a t, J'.Reads := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha _ _ t J hJ

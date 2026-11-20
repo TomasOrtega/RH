@@ -5,11 +5,11 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Establish `h1 : ν = fun y => ν x * ν (y - x)`. Use function extensionality and compare the values at `y`. Rewrite using `[← hm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Use `continuousAt_const.mul ?_` and prove the remaining obligations. Establish `h2 : ContinuousAt (fun y : ℝ => y - x) x` using `by fun_prop`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ContinuousAt.comp (f := fun y : ℝ => y - x) (by simpa using hc) h2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_map_add_mul_of_continuousAt_zero (ν : ℝ → ℂ)
     (hm : ∀ s t, ν (s + t) = ν s * ν t) (hc : ContinuousAt ν 0) : Continuous ν := by
@@ -26,17 +26,15 @@ theorem continuous_of_map_add_mul_of_continuousAt_zero (ν : ℝ → ℂ)
   exact ContinuousAt.comp (f := fun y : ℝ => y - x) (by simpa using hc) h2
 
 /- English proof (translation)
-Introduce `ν h0 hm hc0`. Establish `hc` using `continuous_of_map_add_mul_of_continuousAt_zero ν hm hc0`. Use `set F : ℝ → ℂ := fun u => ∫ x in (0:ℝ)..u, ν x with hF`. Establish `hd : ∀ u, HasDerivAt F (ν u) u` using `fun u => (hc.deriv_integral ν 0 u ▸ (hc.integral_hasStrictDerivAt 0 u).hasDerivAt.differentiableAt.hasDerivAt)`. Establish `hex : ∃ δ, F δ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hz : F = fun _ => 0` using `funext hne`. Establish `h1` using `hd 0`. Rewrite `h1` using `[hz, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `one_ne_zero (h1.unique (hasDerivAt_const (0:ℝ) (0:ℂ)))`. Take `⟨δ, hδ⟩` from `hex`. Establish `key : ∀ t, ν t = (F (t + δ) - F t) / F δ`. Introduce `t`. Rewrite using `[eq_div_iff hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : F (t + δ) - F t = ∫ x in t..(t + δ), ν x`. Simplify using `only [hF]`. Conclude with `intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)`. Establish `e2 : ∫ x in t..(t + δ), ν x = ∫ x in (0:ℝ)..δ, ν (t + x)`. Rewrite using `[intervalIntegral.integral_comp_add_left ν t, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Simplify using `only [hm, hF]`. Rewrite using `[intervalIntegral.integral_const_mul]`. Establish `h1 : HasDerivAt (fun t => F (t + δ)) (ν (0 + δ)) 0` using `(hd (0 + δ)).comp_add_const 0 δ`. Use `⟨(ν (0 + δ) - ν 0) / F δ, ?_⟩` and prove the remaining obligations.
-
-Establish `h2` using `(h1.sub (hd 0)).div_const (F δ)`. Establish `h3 : ν = fun t => (F (t + δ) - F t) / F δ` using `funext key`. Use `conv => arg 1`. Rewrite using `[h3]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hasDerivAt_zero_of_map_add_mul :
     ∀ ν : ℝ → ℂ, ν 0 = 1 → (∀ s t, ν (s + t) = ν s * ν t) → ContinuousAt ν 0 →

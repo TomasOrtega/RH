@@ -10,15 +10,15 @@ noncomputable section
 variable {p q : ℕ}
 
 /- English proof (translation)
-Simplify using `[Jf, fromBlocks_multiply, ← fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumBdJf_mul_Jf : Jf p q * Jf p q = 1 := by
   simp [Jf, fromBlocks_multiply, ← fromBlocks_one]
 
 /- English proof (translation)
-Establish `h1 : (Jf p q * Mᴴ * Jf p q) * M = 1`. Use `h` as an intermediate fact. Simplify using `only [IsUpq, Matrix.mul_assoc] at this ⊢`. Rewrite using `[this, sumBdJf_mul_Jf]`. Establish `h2 : M * (Jf p q * Mᴴ * Jf p q) = 1` using `mul_eq_one_comm.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, sumBdJf_mul_Jf, Matrix.mul_one]`. Use `_ = Jf p q := by rw [h2, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumBdIsUpq_right {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) :
     M * Jf p q * Mᴴ = Jf p q := by
@@ -30,13 +30,13 @@ theorem sumBdIsUpq_right {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h
     _ = Jf p q := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1` using `h`. Establish `h2` using `sumBdIsUpq_right h`. Rewrite `h1` using `[IsUpq, ← fromBlocks_toBlocks M]`. Rewrite `h2` using `[← fromBlocks_toBlocks M]`. Simplify using `only [Jf, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_inj] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h1 h2`. Take `⟨a1, -, -, a4⟩` from `h1`. Take `⟨b1, -, -, b4⟩` from `h2`. Establish `a4'` using `congrArg Neg.neg a4`. Establish `b4'` using `congrArg Neg.neg b4`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a4'`, `b4'` using `[neg_neg]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← a1]`. Normalize the expressions using the abelian group laws. Rewrite using `[← a4']`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← b1]`. Normalize the expressions using the abelian group laws. Rewrite using `[← b4']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sumBdIsUpq_blocks {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) :
     M.toBlocks₁₁ᴴ * M.toBlocks₁₁ = 1 + M.toBlocks₂₁ᴴ * M.toBlocks₂₁ ∧
@@ -64,13 +64,13 @@ def sumBdFsq {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℂ) : ℝ :=
   ∑ i, ∑ j, Complex.normSq (X i j)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sumBdFsq_nonneg {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℂ) : 0 ≤ sumBdFsq X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Simplify using `only [trace, diag, mul_apply, conjTranspose_apply, sumBdFsq, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.normSq_apply, Complex.mul_re]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sumBd_trace_ctm {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℂ) :
     (trace (Xᴴ * X)).re = sumBdFsq X := by
@@ -80,7 +80,7 @@ theorem sumBd_trace_ctm {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n �
   simp [Complex.normSq_apply, Complex.mul_re]
 
 /- English proof (translation)
-Simplify using `only [trace, diag, mul_apply, conjTranspose_apply, sumBdFsq, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.normSq_apply, Complex.mul_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sumBd_trace_mct {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℂ) :
     (trace (X * Xᴴ)).re = sumBdFsq X := by
@@ -89,7 +89,7 @@ theorem sumBd_trace_mct {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n �
   simp [Complex.normSq_apply, Complex.mul_re]
 
 /- English proof (translation)
-Unfold `sumBdFsq`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem sumBd_entry_le_fsq {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℂ) (i : m) (j : n) :
     Complex.normSq (X i j) ≤ sumBdFsq X := by
@@ -100,9 +100,9 @@ theorem sumBd_entry_le_fsq {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n
         (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Establish `h0 : 0 ≤ ∑ i ∈ s, x i` using `Finset.sum_nonneg fun i _ => hx i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hx a]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sumBd_prod_one_add {ι : Type*} (s : Finset ι) (x : ι → ℝ) (hx : ∀ i, 0 ≤ x i) :
     1 + ∑ i ∈ s, x i ≤ ∏ i ∈ s, (1 + x i) := by
@@ -115,15 +115,13 @@ theorem sumBd_prod_one_add {ι : Type*} (s : Finset ι) (x : ι → ℝ) (hx : �
     nlinarith [hx a]
 
 /- English proof (translation)
-Use `set U := hP.1.eigenvectorUnitary`. Establish `hU : (U : Matrix n n ℂ) * star (U : Matrix n n ℂ) = 1` using `Unitary.mul_star_self_of_mem U.2`. Establish `hs : P = (U : Matrix n n ℂ) * diagonal (RCLike.ofReal ∘ hP.1.eigenvalues) * star (U : Matrix n n ℂ)`. Use `hP.1.spectral_theorem` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hd : diagonal (fun i => 1 + ((hP.1.eigenvalues i : ℝ) : ℂ)) = 1 + diagonal (RCLike.ofReal ∘ hP.1.eigenvalues)`. Rewrite using `[← diagonal_one, diagonal_add]`. Both sides reduce to the same expression. Establish `h1 : 1 + P = (U : Matrix n n ℂ) * diagonal (fun i => 1 + ((hP.1.eigenvalues i : ℝ) : ℂ)) * star (U : Matrix n n ℂ)`. Rewrite using `[hd, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hU, ← hs]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : det (1 + P) = ∏ i, (1 + ((hP.1.eigenvalues i : ℝ) : ℂ))`. Rewrite using `[h1, det_mul, det_mul, det_diagonal]`. Establish `: det (U : Matrix n n ℂ) * det (star (U : Matrix n n ℂ)) = 1` using `by rw [← det_mul, hU, det_one]`. Take the linear combination `(∏ i, (1 + ((hP.1.eigenvalues i : ℝ) : ℂ))) * this`. Establish `htr : (trace P).re = ∑ i, hP.1.eigenvalues i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.1.trace_eq_sum_eigenvalues]`. Simplify using the standard rewrite rules. Rewrite using `[hdet, htr]`. Establish `: (∏ i, (1 + ((hP.1.eigenvalues i : ℝ) : ℂ))) = ((∏ i, (1 + hP.1.eigenvalues i) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`.
-
-Conclude with `sumBd_prod_one_add _ _ hP.eigenvalues_nonneg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_det_one_add_ge {n : Type*} [Fintype n] [DecidableEq n] {P : Matrix n n ℂ}
     (hP : P.PosSemidef) : 1 + (trace P).re ≤ (det (1 + P)).re := by
@@ -151,20 +149,20 @@ theorem sumBd_det_one_add_ge {n : Type*} [Fintype n] [DecidableEq n] {P : Matrix
   exact sumBd_prod_one_add _ _ hP.eigenvalues_nonneg
 
 /- English proof (translation)
-Simplify using `[Complex.normSq_apply, Complex.mul_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumBd_star_mul_self_re (z : ℂ) : (star z * z).re = Complex.normSq z := by
   simp [Complex.normSq_apply, Complex.mul_re]
 
 /- English proof (translation)
-Rewrite using `[det_mul, det_conjTranspose, sumBd_star_mul_self_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sumBd_normSq_det (D : Matrix (Fin q) (Fin q) ℂ) :
     (det (Dᴴ * D)).re = Complex.normSq (det D) := by
   rw [det_mul, det_conjTranspose, sumBd_star_mul_self_re]
 
 /- English proof (translation)
-Rewrite using `[← sumBd_normSq_det, (sumBdIsUpq_blocks h).2.1, ← sumBd_trace_ctm]`. Conclude with `sumBd_det_one_add_ge (posSemidef_conjTranspose_mul_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_detD_ge {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) :
     1 + sumBdFsq M.toBlocks₁₂ ≤ Complex.normSq (det M.toBlocks₂₂) := by
@@ -172,17 +170,17 @@ theorem sumBd_detD_ge {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : 
   exact sumBd_det_one_add_ge (posSemidef_conjTranspose_mul_self _)
 
 /- English proof (translation)
-Take `⟨e1, e2, e3, e4⟩` from `sumBdIsUpq_blocks h`. Establish `hB` using `sumBd_detD_ge h`. Establish `hBn` using `sumBdFsq_nonneg M.toBlocks₁₂`. Establish `fD : sumBdFsq M.toBlocks₂₂ = q + sumBdFsq M.toBlocks₁₂`. Rewrite using `[← sumBd_trace_ctm, e2, trace_add, Complex.add_re, sumBd_trace_ctm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `fA : sumBdFsq M.toBlocks₁₁ = p + sumBdFsq M.toBlocks₁₂`. Rewrite using `[← sumBd_trace_mct, e3, trace_add, Complex.add_re, sumBd_trace_mct]`. Simplify using the standard rewrite rules. Establish `fA' : sumBdFsq M.toBlocks₁₁ = p + sumBdFsq M.toBlocks₂₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← sumBd_trace_ctm, e1, trace_add, Complex.add_re, sumBd_trace_ctm]`. Simplify using the standard rewrite rules. Establish `hp : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `key : ∀ X : ℝ, X ≤ (p + q : ℝ) + sumBdFsq M.toBlocks₁₂ → X ≤ ((p + q : ℕ) + 1 : ℝ) * Complex.normSq (det M.toBlocks₂₂)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X hX`. Use `push_cast`. Establish `hN1 : 1 ≤ Complex.normSq (det M.toBlocks₂₂)` using `by linarith`. Use polynomial arithmetic with `[mul_nonneg (add_nonneg hp hq) (sub_nonneg.mpr hN1)]`. Apply `key` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Use `sumBd_entry_le_fsq M.toBlocks₁₁ a b` as an intermediate fact. Conclude with `le_trans this (by linarith)`. Use `sumBd_entry_le_fsq M.toBlocks₁₂ a b` as an intermediate fact. Conclude with `le_trans this (by linarith)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sumBd_entry_le_fsq M.toBlocks₂₁ a b` as an intermediate fact. Conclude with `le_trans this (by linarith)`. Use `sumBd_entry_le_fsq M.toBlocks₂₂ a b` as an intermediate fact. Conclude with `le_trans this (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem sumBd_entry_bound {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M)
     (i j : Fin p ⊕ Fin q) :
@@ -215,15 +213,13 @@ theorem sumBd_entry_bound {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (
     exact le_trans this (by linarith)
 
 /- English proof (translation)
-Establish `e2 : M.toBlocks₂₂ᴴ * M.toBlocks₂₂ = 1 + M.toBlocks₁₂ᴴ * M.toBlocks₁₂` using `(sumBdIsUpq_blocks h).2.1`. Establish `hD1 : 1 ≤ Complex.normSq (det M.toBlocks₂₂)`. Use `sumBd_detD_ge h` as an intermediate fact. Combine the linear relations using `[sumBdFsq_nonneg M.toBlocks₁₂]`. Use `set B := M.toBlocks₁₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `set D := M.toBlocks₂₂`. Establish `hD0 : det D ≠ 0` using `by intro h0; rw [h0] at hD1; simp at hD1; linarith`. Establish `hDu : IsUnit (det D)` using `isUnit_iff_ne_zero.mpr hD0`. Use `⟨hD0, ?_⟩` and prove the remaining obligations. Establish `hinv : D * D⁻¹ = 1` using `mul_nonsing_inv D hDu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvH : (D⁻¹)ᴴ * Dᴴ = 1` using `by rw [← conjTranspose_mul, hinv, conjTranspose_one]`. Establish `hW : 1 - (B * D⁻¹)ᴴ * (B * D⁻¹) = (D⁻¹)ᴴ * D⁻¹`. Establish `hBB : Bᴴ * B = Dᴴ * D - 1` using `by rw [e2]; abel`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 - ((D⁻¹)ᴴ * Dᴴ) * (D * D⁻¹) + (D⁻¹)ᴴ * D⁻¹ := by`. Rewrite using `[hBB]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
-
-Use `_ = (D⁻¹)ᴴ * D⁻¹ := by rw [hinv, hinvH, Matrix.one_mul]; abel`. Rewrite using `[det_one_sub_mul_comm, hW, det_mul, det_conjTranspose, sumBd_star_mul_self_re, det_nonsing_inv, Ring.inverse_eq_inv', map_inv₀]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_weight {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) :
     det M.toBlocks₂₂ ≠ 0 ∧
@@ -253,17 +249,17 @@ theorem sumBd_weight {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : I
     det_nonsing_inv, Ring.inverse_eq_inv', map_inv₀]
 
 /- English proof (translation)
-Use `set U := hH.1.eigenvectorUnitary`. Establish `hU : (U : Matrix n n ℂ)ᴴ * (U : Matrix n n ℂ) = 1`. Rewrite using `[← star_eq_conjTranspose]`. Conclude with `Unitary.star_mul_self_of_mem U.2`. Establish `hs : H = (U : Matrix n n ℂ) * diagonal (RCLike.ofReal ∘ hH.1.eigenvalues) * (U : Matrix n n ℂ)ᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hH.1.spectral_theorem` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply, star_eq_conjTranspose]`. Then use the resulting hypothesis. Set `d : n → ℂ` to `fun i => (((Real.sqrt (hH.1.eigenvalues i))⁻¹ : ℝ) : ℂ)`. Use `⟨(U : Matrix n n ℂ) * diagonal d, ?_⟩` and prove the remaining obligations. Establish `hdH : (diagonal d)ᴴ = diagonal d`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[d]`. Rewrite using `[conjTranspose_mul, hdH, hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, Matrix.mul_one, Matrix.mul_one]`. Use `_ = 1 := by`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `hl` using `hH.eigenvalues_pos i`. Establish `hsq` using `Real.mul_self_sqrt hl.le`. Establish `hs0 : 0 < Real.sqrt (hH.1.eigenvalues i)` using `Real.sqrt_pos.mpr hl`. Simplify using `only [d, Function.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[show ((((Real.sqrt (hH.1.eigenvalues i))⁻¹ : ℝ) : ℂ) * (RCLike.ofReal (hH.1.eigenvalues i) : ℂ) * (((Real.sqrt (hH.1.eigenvalues i))⁻¹ : ℝ) : ℂ)) = (((Real.sqrt (hH.1.eigenvalues i))⁻¹ * hH.1.eigenvalues i * (Real.sqrt (hH.1.eigenvalues i))⁻¹ : ℝ) : ℂ) by push_cast; rfl]`. Rewrite using `[← hsq]`. Clear the denominators using the available nonvanishing facts. Simplify using `[hs0.ne']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumBd_exists_S {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ} (hH : H.PosDef) :
     ∃ S : Matrix n n ℂ, Sᴴ * H * S = 1 := by
@@ -298,13 +294,11 @@ theorem sumBd_exists_S {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n �
         rw [← hsq]; field_simp; simp [hs0.ne']
 
 /- English proof (translation)
-Use `set P := 1 - Z * Zᴴ`. Establish `hQ : (1 + Zᴴ * P⁻¹ * Z).PosDef` using `PosDef.one.add_posSemidef (hZ.inv.posSemidef.conjTranspose_mul_mul_same Z)`. Establish `hPi : P * P⁻¹ = 1` using `mul_nonsing_inv P (isUnit_iff_ne_zero.mpr hZ.det_pos.ne')`. Establish `hm : (1 + Zᴴ * P⁻¹ * Z) * (1 - Zᴴ * Z) = 1`. Establish `: Zᴴ * P⁻¹ * Z - Zᴴ * P⁻¹ * (Z * Zᴴ) * Z = Zᴴ * Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = Zᴴ * Z := by`. Rewrite using `[nonsing_inv_mul P (isUnit_iff_ne_zero.mpr hZ.det_pos.ne'), Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = 1 := by rw [this]; abel`. Establish `hm' : (1 - Zᴴ * Z) * (1 + Zᴴ * P⁻¹ * Z) = 1` using `mul_eq_one_comm.mp hm`. Rewrite using `[← inv_eq_left_inv hm']`.
-
-Conclude with `hQ.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_posDef_swap {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).PosDef) :
     (1 - Zᴴ * Z).PosDef := by
@@ -328,7 +322,7 @@ theorem sumBd_posDef_swap {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).
   exact hQ.inv
 
 /- English proof (translation)
-Unfold `IsUpq at *`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sumBd_isUpq_mul {g G : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hg : IsUpq g) (hG : IsUpq G) :
     IsUpq (g * G) := by
@@ -338,19 +332,19 @@ theorem sumBd_isUpq_mul {g G : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (
     _ = Jf p q := by rw [hg, hG]
 
 /- English proof (translation)
-Take `⟨S1, h1⟩` from `sumBd_exists_S hZ`. Take `⟨S2, h2⟩` from `sumBd_exists_S (sumBd_posDef_swap hZ)`. Establish `hS2 : IsUnit (det S2)`. Use `congrArg det h2` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, det_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.mpr (fun h0 => by rw [h0, mul_zero] at this; exact zero_ne_one this)`. Establish `hS2i : S2 * S2⁻¹ = 1` using `mul_nonsing_inv S2 hS2`. Establish `hG : IsUpq (fromBlocks S1 (Z * S2) (Zᴴ * S1) S2)`. Unfold `IsUpq Jf`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul]`. Use `congr 1`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[← h2]`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `⟨_, hG, fun g hg s => ?_⟩` and prove the remaining obligations. Establish `hM` using `sumBd_isUpq_mul hg hG`. Establish `hM12 : (g * fromBlocks S1 (Z * S2) (Zᴴ * S1) S2).toBlocks₁₂ = (g.toBlocks₁₁ * Z + g.toBlocks₁₂) * S2` using `by conv_lhs => rw [← fromBlocks_toBlocks g]`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fromBlocks_multiply, toBlocks_fromBlocks₁₂]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`. Establish `hM22 : (g * fromBlocks S1 (Z * S2) (Zᴴ * S1) S2).toBlocks₂₂ = (g.toBlocks₂₁ * Z + g.toBlocks₂₂) * S2` using `by conv_lhs => rw [← fromBlocks_toBlocks g]`. Rewrite using `[fromBlocks_multiply, toBlocks_fromBlocks₂₂]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hW : mob g Z = (g * fromBlocks S1 (Z * S2) (Zᴴ * S1) S2).toBlocks₁₂ * ((g * fromBlocks S1 (Z * S2) (Zᴴ * S1) S2).toBlocks₂₂)⁻¹`. Rewrite using `[hM12, hM22, Matrix.mul_inv_rev, mob]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc S2, hS2i, Matrix.one_mul]`. Rewrite using `[dpow, hW, (sumBd_weight hM).2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumBd_frame {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : (1 - Z * Zᴴ).PosDef) :
     ∃ G : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ, IsUpq G ∧

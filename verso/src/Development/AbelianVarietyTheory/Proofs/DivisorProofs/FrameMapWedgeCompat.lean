@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.TorsionForm.FrameWedge
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun j' => ?_) (fun j' => ?_) j` and prove the remaining obligations. Simplify using `[fibMat, Pi.single_apply, Matrix.one_apply, eq_comm]`. Establish `h : Fin.natAdd (n + n) j' ≠ Fin.castAdd g k`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[fibMat, Pi.single_apply, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem fibMat_row_castAdd (n : ℕ) {g : ℕ} (a : Matrix (Fin g) (Fin g) ℂ) (k : Fin (n + n)) :
     fibMat n a (Fin.castAdd g k) = Pi.single (Fin.castAdd g k) 1 := by
@@ -26,21 +26,21 @@ theorem fibMat_row_castAdd (n : ℕ) {g : ℕ} (a : Matrix (Fin g) (Fin g) ℂ) 
     simp [fibMat, Pi.single_apply, h]
 
 /- English proof (translation)
-Simplify using `[fibMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fibMat_row_natAdd (n : ℕ) {g : ℕ} (a : Matrix (Fin g) (Fin g) ℂ) (c : Fin g) (j : Fin g) :
     fibMat n a (Fin.natAdd (n + n) c) (Fin.natAdd (n + n) j) = a c j := by
   simp [fibMat]
 
 /- English proof (translation)
-Simplify using `[fibMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fibMat_row_natAdd_castAdd (n : ℕ) {g : ℕ} (a : Matrix (Fin g) (Fin g) ℂ) (c : Fin g)
     (j : Fin (n + n)) : fibMat n a (Fin.natAdd (n + n) c) (Fin.castAdd g j) = 0 := by
   simp [fibMat]
 
 /- English proof (translation)
-Unfold `frameMap`. Rewrite using `[GlobalTheory.ExtFunctor.extMap_wedge, GlobalTheory.ExtFunctor.wedgeVec_apply, fibMat_row_castAdd, Finset.sum_eq_single (Fin.castAdd g k)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -55,7 +55,7 @@ theorem frameMap_wedge_castAdd {g : ℕ} (n : ℕ) (D : Matrix (Fin g) (Fin g) �
   · simp
 
 /- English proof (translation)
-Introduce `g n D w`. Use `⟨fun c => ?_, fun i => ⟨frameMap_wedge_castAdd n D _ w, frameMap_wedge_castAdd n D _ w⟩⟩` and prove the remaining obligations. Establish `e : frameMap n D (wedge (dzb n c) w) = GlobalTheory.ExtFunctor.wedgeVec (fibMat n (D⁻¹)ᴴ (dzb n c)) (frameMap n D w)` using `GlobalTheory.ExtFunctor.extMap_wedge _ _ _`. Rewrite using `[e, GlobalTheory.ExtFunctor.wedgeVec_apply, Fin.sum_univ_add]`. Simplify using `only [dzb, fibMat_row_natAdd_castAdd, fibMat_row_natAdd, zero_smul, Finset.sum_const_zero, zero_add, Matrix.conjTranspose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameMap_wedge : ∀ {g : ℕ} (n : ℕ) (D : Matrix (Fin g) (Fin g) ℂ) (w : Ext (n + n + g)),
     (∀ c : Fin g, frameMap n D (wedge (dzb n c) w) = ∑ a, star (D⁻¹ a c) • wedge (dzb n a) (frameMap n D w)) ∧

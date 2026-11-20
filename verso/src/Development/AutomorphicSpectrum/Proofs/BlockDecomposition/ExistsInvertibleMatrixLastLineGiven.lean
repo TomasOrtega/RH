@@ -5,7 +5,7 @@ open GlobalTheory.PRep GlobalTheory.BZMir GroundTheory.LocalField Matrix GlobalT
 namespace GlobalTheory.CompanionTheory.MirFourier
 
 /- English proof (translation)
-Rewrite using `[← det_transpose, ← updateCol_transpose, transpose_one, ← cramer_apply, cramer_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem det_updateRow_one' {n R : Type*} [DecidableEq n] [Fintype n] [CommRing R]
     (r : n) (b : n → R) : (updateRow (1 : Matrix n n R) r b).det = b r := by
@@ -13,11 +13,11 @@ private theorem det_updateRow_one' {n R : Type*} [DecidableEq n] [Fintype n] [Co
   rfl
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp ha`. Establish `hN : (updateRow (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) (a ∘ Equiv.swap i (Fin.last m))).det ≠ 0`. Rewrite using `[det_updateRow_one']`. Simplify using `using hi`. Establish `hM : ((updateRow (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) (a ∘ Equiv.swap i (Fin.last m))).submatrix id (Equiv.swap i (Fin.last m))).det ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[det_permute']`. Use `mul_ne_zero ?_ hN` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap i (Fin.last m))) with h | h <;> simp [h]`. Use `⟨GeneralLinearGroup.mkOfDetNeZero _ hM, fun j => ?_⟩` and prove the remaining obligations. Use `show updateRow (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) (a ∘ Equiv.swap i (Fin.last m)) (Fin.last m) (Equiv.swap i (Fin.last m) j) = a j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[updateRow_self, Function.comp_apply, Equiv.swap_apply_self]`.
+A detailed English derivation is pending.
 -/
 theorem exists_GL_lastRow_eq (k : Type) [Field k] (m : ℕ) (a : Fin (m + 1) → k) (ha : a ≠ 0) :
     ∃ g : GL (Fin (m + 1)) k, ∀ j, (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j = a j := by

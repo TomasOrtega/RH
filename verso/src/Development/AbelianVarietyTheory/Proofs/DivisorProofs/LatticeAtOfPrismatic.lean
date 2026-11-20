@@ -16,7 +16,7 @@ open scoped Classical
 namespace GlobalTheory.EigWhole
 
 /- English proof (translation)
-Introduce `h2 hH hR hS hP` and use `latAt_of_ramModel (ramModel_constLattices h2 hH hR hS hP) h2 hH hR hS hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latAt_onObj : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd → OnObj fun _ O _ _ _ _ => LatAt O.Y :=
   fun h2 hH hR hS hP => latAt_of_ramModel (ramModel_constLattices h2 hH hR hS hP) h2 hH hR hS hP

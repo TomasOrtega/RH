@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX
 namespace GlobalTheory.BigTop
 
 /- English proof (translation)
-Introduce `𝒜 eps Fm hW hD`. Take `⟨⟨⟨⟨_, hDvd, _, hBox, hQD, hCYL⟩, hSm⟩, hTw⟩, hCE, hTu, hDG⟩` from `hW`. Take `⟨h1, h2, h3, h4, h5, _, _⟩` from `GlobalTheory.EX.DQ.duty_seven_library eps Fm hD`. Conclude with `⟨h1, h2, h3, h4, h5, hDvd, hBox, hQD, hCYL, hSm, hTw, hCE, hTu, hDG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem famHyp_of_working_duty : ∀ (𝒜 : FamClass) (eps : ℝ) (Fm : FamP eps),
     GlobalTheory.Fc.W3 𝒜 Fm → GlobalTheory.EX.DQ.Duty7 Fm → GlobalTheory.BigTop.FamHyp Fm := by

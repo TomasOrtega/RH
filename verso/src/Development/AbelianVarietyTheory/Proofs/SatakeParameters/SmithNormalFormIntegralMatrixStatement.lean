@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Hk3.smith_int_approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSmithNormalFormIntegralMatrix.lean&line=222#L222)
 -/

@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNo
 open scoped WithZero TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CNorm.algebraMap_norm_tensor_eq_prod_conjugates` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FAlgebraMapNormTensorEqProdConjugates.lean&line=11#L11)
 -/

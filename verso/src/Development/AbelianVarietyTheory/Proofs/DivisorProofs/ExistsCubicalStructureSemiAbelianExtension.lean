@@ -25,15 +25,15 @@ open Classical
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρS M U₀ EE hO Z`. Take `⟨s, hs, hr⟩` from `GlobalTheory.SymmetricBundle.gen_of_isSymmetric Z.L Z.sym`. Establish `hrange : Set.range M.pt ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.top_le_preimage_pt hO.ne (Set.mem_univ w)`. Set `x : Sp Ω ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι M.pt hrange`. Establish `hx : x ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `w' : pullback.fst Z.G.hom M.pt ≫ Z.G.hom = (((Over.pullback M.pt).obj Z.G).hom ≫ x) ≫ U₀.ι`. Rewrite using `[Category.assoc, hx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `pullback.condition`. Set `φ'` to `Z.cart.1.lift (pullback.fst Z.G.hom M.pt) (((Over.pullback M.pt).obj Z.G).hom ≫ x) w'`. Establish `n : IsGrpPullback ((Over.pullback M.pt).obj Z.G) Z.G (x ≫ U₀.ι) (φ' ≫ Z.φ)` using `(isGrpPullback_pullback Z.G M.pt).congr hx.symm (Z.cart.1.lift_fst _ _ _).symm`. Establish `h1` using `IsGrpPullback.cancel Z.cart n (Z.cart.1.lift_snd _ _ _)`. Establish `h2` using `(IsGrpPullback.comp h1 (isGrpPullback_pullback ρS.P.A Z.u₀)).congr (Z.u₀_gen x hx) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : IsAbelianScheme ((Over.pullback M.pt).obj Z.G)` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback ρS.P.isAb h2`. Establish `h3` using `GlobalTheory.ValueForm.surjective_cube_baseChange GlobalTheory.globalFns_holds M.pt hA (Iso.refl _)`. Use `Z.semi.smooth` as an intermediate fact. Establish `: Flat (G3 Z.G).hom` using `by show Flat (pullback.fst Z.G.hom (pullback.fst Z.G.hom Z.G.hom ≫ Z.G.hom) ≫ Z.G.hom) infer_instance`. Use `M.sep` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact M.pt` using `by infer_instance`. Establish `: IsSchemeTheoreticallyDominant M.pt` using `IsSchemeTheoreticallyDominant.of_isDominant M.pt`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst (G3 Z.G).hom M.pt)` using `.of_isPullback (IsPullback.of_hasPullback (G3 Z.G).hom M.pt).flip`. Establish `hi : ∀ U, Function.Injective ((pullback.fst (G3 Z.G).hom M.pt).app U).hom` using `fun U => (pullback.fst (G3 Z.G).hom M.pt).app_injective U`. Conclude with `⟨⟨Z.L, Z.cub, s, hs, hr, GlobalTheory.ValueForm.sym_cub_of_baseChange M.pt hi h3 Z.cub s hs hr⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cp_zhOut : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [GlobalTheory.ZH.ArithBase o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω) (ρS : S.Real) (M : GlobalTheory.ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.Over₀ M U₀ → ∀ Z : GlobalTheory.ZH.ZHOut ρS M U₀ EE, ∃ P : GlobalTheory.UU.CP Z.G, P.L = Z.L := by
   intro o Ω _ _ _ _ S ρS M U₀ EE hO Z

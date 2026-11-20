@@ -24,7 +24,7 @@ def conjNeg {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : SchwartzM
       exact hC x }
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hg`. Use `⟨(hlc.comp_continuous continuous_neg).comp (starRingEnd ℂ), ?_⟩` and prove the remaining obligations. Conclude with `(hcs.comp_homeomorph (Homeomorph.neg X)).comp_left (g := starRingEnd ℂ) (map_zero _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conjNeg_mem_SB {X : Type} [TopologicalSpace X] [AddGroup X] [IsTopologicalAddGroup X] {g : X → ℂ}
     (hg : g ∈ GlobalTheory.WeilM.SB X) : (fun y => starRingEnd ℂ (g (-y))) ∈ GlobalTheory.WeilM.SB X := by
@@ -33,7 +33,7 @@ theorem conjNeg_mem_SB {X : Type} [TopologicalSpace X] [AddGroup X] [IsTopologic
   exact (hcs.comp_homeomorph (Homeomorph.neg X)).comp_left (g := starRingEnd ℂ) (map_zero _)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.pureA, map_mul]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.neg_apply, Pi.neg_apply, ← map_neg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_pureA_neg (F : Type) [Field F] [NumberField F] {κ : Type}
     (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
@@ -47,13 +47,13 @@ theorem conj_pureA_neg (F : Type) [Field F] [NumberField F] {κ : Type}
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ κ _ φ hφ`. Unfold `GlobalTheory.WeilM.schA at hφ ⊢`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨conjNeg f, fun y => starRingEnd ℂ (g (-y)), conjNeg_mem_SB hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[conj_pureA_neg]`. Use `congr 1`. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Use `Submodule.add_mem _ ha hb using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `smul c a _ ha`. Use `Submodule.smul_mem _ (starRingEnd ℂ c) ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -93,7 +93,7 @@ section
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `F _ _ κ _ φ hφ`. Conclude with `AdelicReflection.GlobalTheory.CompanionTheory.AdelicReflect.schA_conj_neg F κ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Adopt.adelicSchwartzSpace_closed_under_conj_reflection : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∀ φ ∈ GlobalTheory.WeilM.schA F κ, (fun x => starRingEnd ℂ (φ (-x))) ∈ GlobalTheory.WeilM.schA F κ := by

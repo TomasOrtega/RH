@@ -13,9 +13,9 @@ section Abstract
 variable {R G M : Type} [CommRing R] [Group G] [AddCommGroup M] [Module R M] (ρ : Representation R G M)
 
 /- English proof (translation)
-Use `⟨Nat.gcdA n l, fun m => ?_⟩` and prove the remaining obligations. Establish `e : (1 : ℤ) = n * Nat.gcdA n l + l * Nat.gcdB n l`. Use `Nat.gcd_eq_gcd_ab n l` as an intermediate fact. Rewrite `this` using `[hn.gcd_eq_one, Nat.cast_one]`. Then use the resulting hypothesis. Establish `h0 : (l : ℤ) • m = 0` using `by rw [natCast_zsmul, hl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (l : ℤ), mul_smul (Nat.gcdB n l), h0, smul_zero, add_zero, mul_comm, mul_smul, natCast_zsmul]`. Use `_ = m := by rw [← add_smul, ← e, one_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem degree_inverse {l n : ℕ} (hn : n.Coprime l) (hl : ∀ m : M, l • m = 0) :
     ∃ a : ℤ, ∀ m : M, a • (n • m) = m := by
@@ -29,7 +29,7 @@ private theorem degree_inverse {l n : ℕ} (hn : n.Coprime l) (hl : ∀ m : M, l
     _ = m := by rw [← add_smul, ← e, one_smul]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CoboundaryCriterion.isCoboundary_of_coprime _ i f hC hl z hz h0`.
+A detailed English derivation is pending.
 -/
 private theorem isCoboundary_of_coprime {l : ℕ} {H C : Type} [Group H] [Group C] [Finite C] (i : H →* G) (f : H →* C)
     (hC : (Nat.card C).Coprime l) (hl : ∀ m : M, l • m = 0) (z : G → M)
@@ -40,13 +40,11 @@ private theorem isCoboundary_of_coprime {l : ℕ} {H C : Type} [Group H] [Group 
 variable [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [Finite M]
 
 /- English proof (translation)
-Use `letI : TopologicalSpace M := ⊥`. Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Use `haveI : ContinuousConstSMul R M := ⟨fun _ => continuous_of_discreteTopology⟩`. Establish `key` using `AlgebraTools.zhatFin R G M ρ I φ (continuous_prod_of_discrete_right.2 fun m => (hρ m).continuous) (by rw [dense_iff_closure_eq, ← Subgroup.topologicalClosure_coe, hd, Subgroup.coe_top]) (fun k hk => by`. Take `⟨d, d1, d2, d3⟩` from `hc k hk`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨d, d1.isOpen_fiber 1, d2, d3⟩)`. Establish `val : ∀ z, z ∈ Zl ρ → (∀ u ∈ I, z u = 0) → ∀ u ∈ I, ρ u (z φ) = z φ` using `fun z hz h0 u hu => by`. Establish `e1` using `hz.2 u φ`. Establish `e2` using `hz.2 φ (φ⁻¹ * u * φ)`. Rewrite `e2` using `[h0 _ (hI.conj_mem' u hu φ), map_zero, add_zero, show φ * (φ⁻¹ * u * φ) = u * φ by group, e1, h0 u hu, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `e2`. Use `Nat.card_eq_of_bijective (fun z => ⟨z.1 φ, val z.1 z.2.1 z.2.2⟩) ⟨fun x y e => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `e' : x.1 φ = y.1 φ` using `congrArg Subtype.val e`. Use `(key _ (val x.1 x.2.1 x.2.2)).unique (y₁ := ⟨x.1, x.2.1.1.continuous, x.2.1.2⟩) (y₂ := ⟨y.1, y.2.1.1.continuous, y.2.1.2⟩) ⟨x.2.2, rfl⟩ ⟨y.2.2, e'.symm⟩` as an intermediate fact. Conclude with `Subtype.ext (Subtype.mk.inj this)`.
-
-Take `⟨z, ⟨z1, z2⟩, -⟩` from `key m.1 m.2`. Conclude with `⟨⟨z.1, ⟨(IsLocallyConstant.iff_continuous _).2 z.2.1, z.2.2⟩, z1⟩, Subtype.ext z2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem degree_eval (I : Subgroup G) [hI : I.Normal] (φ : G) (hρ : LC ρ)
     (hd : (I ⊔ Subgroup.zpowers φ).topologicalClosure = ⊤)
@@ -80,15 +78,15 @@ private theorem degree_eval (I : Subgroup G) [hI : I.Normal] (φ : G) (hρ : LC 
 end Abstract
 
 /- English proof (translation)
-Introduce `R M _ _ _ _ ρ hρ hl hJ`. Set `Z : AddSubgroup (G → M)` to `{ carrier := {z | z ∈ Zl ρ ∧ ∀ g ∈ I ⊓ χ.ker, z g = 0} add_mem' := fun x y => ⟨add_mem x.1 y.1, fun g hg => by rw [Pi.add_apply, x.2 g hg, y.2 g hg, add_zero]⟩ zero_mem' := ⟨zero_mem _, fun _ _ => rfl⟩ neg_mem' := fun x => ⟨neg_mem x.1, fun g hg => by rw [Pi.neg_apply, x.2 g hg, …`. Set `res : Z →+ (I → M)` to `AddMonoidHom.mk' (fun z u => z.1 u) fun _ _ => rfl`. Set `δ : M →+ (I → M)` to `AddMonoidHom.mk' (fun b u => ρ u b - b) fun x y => funext fun u => by`. Simplify using `only [map_add, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `rng : res.range = δ.range`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb⟩` from `isCoboundary_of_coprime ρ I.subtype (χ.comp I.subtype) hC hl z.1 z.2.1.2 fun u hu => z.2.2 u ⟨u.2, hu⟩`. Conclude with `⟨b, funext fun u => (hb u).symm⟩`. Introduce and unpack `⟨b, rfl⟩`. Use `⟨⟨fun g => ρ g b - b, ⟨(hρ b).comp (· - b), fun g h => ?_⟩, fun g hg => ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [hJ g hg, Module.End.one_apply, sub_self]`. Establish `k1 : Nat.card res.ker = Nat.card {z // z ∈ Zl ρ ∧ ∀ u ∈ I, z u = 0}` using `Nat.card_congr { toFun := fun z => ⟨z.1.1, z.1.2.1, fun u hu => congrFun z.2 ⟨u, hu⟩⟩ invFun := fun z => ⟨⟨z.1, z.2.1, fun g hg => z.2.2 g hg.1⟩, funext fun u => z.2.2 u u.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `k2 : Nat.card δ.ker = Nat.card {m // ∀ u ∈ I, ρ u m = m}` using `Nat.card_congr (Equiv.subtypeEquivRight fun m => ⟨fun h u hu => sub_eq_zero.1 (congrFun h ⟨u, hu⟩), fun h => funext fun u => sub_eq_zero.2 (h u u.2)⟩)`. Establish `tot : Nat.card Z = Nat.card M`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← res.ker.card_mul_index, ← δ.ker.card_mul_index, AddSubgroup.index_ker, AddSubgroup.index_ker, rng, k1, k2, degree_eval ρ I φ hρ hd hc]`. Establish `fin : Finite Z` using `Nat.finite_of_card_ne_zero (tot ▸ (Nat.card_pos (α := M)).ne')`. Conclude with `⟨Set.toFinite (Z : Set (G → M)), tot⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem degree_count₂ (l : ℕ) {G C : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [Group C] [Finite C] (χ : G →* C) (hC : (Nat.card C).Coprime l) (I : Subgroup G) [I.Normal] (φ : G)
@@ -132,7 +130,7 @@ private theorem degree_count₂ (l : ℕ) {G C : Type} [Group G] [TopologicalSpa
   exact ⟨Set.toFinite (Z : Set (G → M)), tot⟩
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.RootEquality.unrBare`.
+A detailed English derivation is pending.
 -/
 theorem unrBare : ∀ (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))

@@ -17,7 +17,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FlagUnipotentSemidirect
 variable {F : Type} [Field F] {n c : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Use `l.2` as an intermediate fact. Rewrite using `[if_neg (by omega)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eN_eq_zero {N i : ℕ} (h : N ≤ i) : Loc.eN F N i = 0 := by
   funext l
@@ -27,11 +27,9 @@ theorem eN_eq_zero {N i : ℕ} (h : N ≤ i) : Loc.eN F N i = 0 := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Loc.eN, smul_eq_mul]`. Use `split_ifs with h`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [if_neg (by omega), mul_zero]`. Rewrite using `[Finset.sum_eq_single ⟨l.1 - n, by omega⟩]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos (by simp; omega), mul_one]`. Introduce `b _ hb`. Rewrite using `[if_neg, mul_zero]`. Introduce `hl`. Conclude with `hb (Fin.ext (by simp; omega))`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_eN_apply (g : Fin c → F) (l : Fin (n + c)) :
     (∑ i : Fin c, g i • Loc.eN F (n + c) (n + i.1)) l = if h : l.1 < n then 0 else g ⟨l.1 - n, by omega⟩ := by
@@ -48,9 +46,9 @@ theorem sum_eN_apply (g : Fin c → F) (l : Fin (n + c)) :
     · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[Pi.add_apply, inX_apply, sum_eN_apply]`. Use `split_ifs with h`. Rewrite using `[add_zero]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add]`. Use `congr 1`. Conclude with `Fin.ext (by simp; omega)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem decomp (v : Fin (n + c) → F) :
     v = Loc.inX F n c (fun a => v (Fin.castAdd c a)) +
@@ -65,15 +63,13 @@ theorem decomp (v : Fin (n + c) → F) :
     exact Fin.ext (by simp; omega)
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `congrFun hg (Fin.natAdd n i)` as an intermediate fact. Rewrite `this` using `[sum_eN_apply, dif_neg (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ ⟨x, rfl⟩ hv`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hv`. Use function extensionality and compare the values at `l`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun hg l`. Rewrite `h1` using `[sum_eN_apply]`. Distinguish the cases in `h : l.1 < n`. Rewrite `h1` using `[dif_pos h]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inX_apply, dif_neg h]`. Both sides reduce to the same expression. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `v _`. Rewrite using `[decomp v]`.
-
-Conclude with `Submodule.add_mem_sup ⟨_, rfl⟩ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame : IsFrame (LinearMap.range (Loc.inX F n c)) (fun i : Fin c => Loc.eN F (n + c) (n + i.1)) := by
   refine ⟨?_, ?_, ?_⟩
@@ -100,9 +96,7 @@ theorem isFrame : IsFrame (LinearMap.range (Loc.inX F n c)) (fun i : Fin c => Lo
       (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Use `sup_le ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `inX_mem_Ufl _ x`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `: l.1 < i.1` using `hl`.
-
-Conclude with `eN_mem_Ufl (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flag_le (i : Fin c) :
     flag (LinearMap.range (Loc.inX F n c)) (fun i : Fin c => Loc.eN F (n + c) (n + i.1)) i ≤ Loc.Ufl F n c i.1 := by
@@ -114,13 +108,11 @@ theorem flag_le (i : Fin c) :
     exact eN_mem_Ufl (by omega)
 
 /- English proof (translation)
-Use `⟨fun i v hv => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[decomp v, map_add, map_sum]`. Use `add_mem (Ufl_mono (Nat.zero_le i) (h1 _)) (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j.1 < i`. Rewrite using `[map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `add_mem (Ufl_mono hj.le (h3 j)) (eN_mem_Ufl (F := F) (n := n) (c := c) (i := i) (s := n + j.1) (by omega))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Rewrite using `[mem_Ufl.1 hv (Fin.natAdd n j) (by simp; omega), zero_smul, map_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos c with hc | hc` into its components or cases. Rewrite using `[eN_eq_zero (by omega), map_zero]`. Conclude with `h2 ⟨0, hc⟩ rfl`. Distinguish the cases in `hi : i < c`. Conclude with `h3 ⟨i, hi⟩`.
-
-Rewrite using `[eN_eq_zero (by omega), map_zero, sub_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R1cond_of {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)}
     (h1 : ∀ x, r (Loc.inX F n c x) ∈ Loc.Ufl F n c 0)
@@ -146,13 +138,11 @@ theorem R1cond_of {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)}
       exact zero_mem _
 
 /- English proof (translation)
-Establish `key : ∀ i, ∀ v ∈ Loc.Ufl F n c i, r⁻¹ v ∈ Loc.Ufl F n c i`. Introduce `i v hv`. Establish `hle : (Loc.Ufl F n c i).map r.toLinearMap ≤ Loc.Ufl F n c i`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hr.1 i w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq r _)`. Rewrite `hv` using `[← heq]`. Take `⟨w, hw, rfl⟩` from `hv`. Establish `: r⁻¹ (r.toLinearMap w) = w` using `r.symm_apply_apply w`. Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨key, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show r.symm _ = _`. Rewrite using `[LinearEquiv.symm_apply_eq, hr.2.1]`. Establish `h` using `neg_mem (key i _ (hr.2.2 i))`. Establish `e : r⁻¹ (r (Loc.eN F (n + c) (n + i))) = Loc.eN F (n + c) (n + i)` using `r.symm_apply_apply _`.
-
-Rewrite `h` using `[map_sub, e, neg_sub]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem R1cond_inv {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (hr : Loc.R1cond F n c r) :
     Loc.R1cond F n c r⁻¹ := by
@@ -174,11 +164,11 @@ theorem R1cond_inv {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (hr :
     rwa [map_sub, e, neg_sub] at h
 
 /- English proof (translation)
-Take `⟨γ, g, u, hg, hu, rfl⟩` from `hr`. Establish `h1 : Loc.R1cond F n c g`. Use `R1cond_of (fun x => ?_) (fun i _ => hg.2 i) (fun i => ?_)` and prove the remaining obligations. Use `hg.1 ⟨Loc.inX F n c x, x, rfl⟩` as an intermediate fact. Take `⟨y, hy⟩` from `(γ ⟨Loc.inX F n c x, x, rfl⟩).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show g (Loc.inX F n c x) = Loc.inX F n c y from this.trans hy.symm]`. Conclude with `inX_mem_Ufl 0 y`. Rewrite using `[show g (Loc.eN F (n + c) (n + i.1)) = Loc.eN F (n + c) (n + i.1) from hg.2 i, sub_self]`. Conclude with `zero_mem _`. Establish `h2 : Loc.R1cond F n c u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `R1cond_of (fun x => ?_) hu.2.1 (fun i => flag_le i (hu.2.2 i))` and prove the remaining obligations. Rewrite using `[hu.1 _ ⟨x, rfl⟩]`. Conclude with `inX_mem_Ufl 0 x`. Conclude with `⟨h1.mul h2, R1cond_inv (h1.mul h2)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_unipotentRadical_of_isSemidirect {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)}
     (hr : IsSemidirect (LinearMap.range (Loc.inX F n c)) (fun i : Fin c => Loc.eN F (n + c) (n + i.1)) r) :
@@ -199,7 +189,7 @@ theorem mem_unipotentRadical_of_isSemidirect {r : (Fin (n + c) → F) ≃ₗ[F] 
   exact ⟨h1.mul h2, R1cond_inv (h1.mul h2)⟩
 
 /- English proof (translation)
-Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `h : ((L.map (φ.toLinearMap.restrictScalars O) : Submodule O W) : Set W) = φ.toLinearMap '' (L : Set V)` using `rfl`. Rewrite using `[h, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_map {O : Type} [CommRing O] [Algebra O F] {V W : Type} [AddCommGroup V] [Module F V] [Module O V]
     [IsScalarTower O F V] [AddCommGroup W] [Module F W] [Module O W] [IsScalarTower O F W] (φ : V ≃ₗ[F] W)
@@ -210,9 +200,9 @@ theorem isLattice_map {O : Type} [CommRing O] [Algebra O F] {V W : Type} [AddCom
   rw [h, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Introduce `H O F _ _ _ _ _ _ q hq n c L hL Λ hΛ`. Set `φ` to `LinearEquiv.ofInjective (Loc.inX F n c) inX_injective`. Take `⟨r, e, z, hr, ⟨z', rfl⟩, h⟩` from `H O F (Fin (n + c) → F) q hq c _ _ isFrame _ (isLattice_map φ L hL) Λ hΛ`. Use `⟨r, mem_unipotentRadical_of_isSemidirect hr, e, z', ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `inY`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latticeNormalFormCoord_of : GlobalTheory.IndefiniteRowSideFullHecke.FlagUnipotentSemidirect.LatticeNormalForm → GlobalTheory.IndefiniteRowSideFullHecke.FlagUnipotentSemidirect.LatticeNormalFormCoord := by
   intro H O F _ _ _ _ _ _ q hq n c L hL Λ hΛ

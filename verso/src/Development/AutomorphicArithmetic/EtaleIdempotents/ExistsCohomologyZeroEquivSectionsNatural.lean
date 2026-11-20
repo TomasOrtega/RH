@@ -17,17 +17,17 @@ private def val (f : Cn G 0) (X : E) : G.obj X := f (mk₀ X)
 private def dv (f : Cn G 0) {X Y : E} (φ : X ⟶ Y) : G.obj Y := d G 0 f (mk₁ φ)
 
 /- English proof (translation)
-The claim follows from `eq_of_heq (congr_arg_heq f (ext₀ rfl))`.
+A detailed English derivation is pending.
 -/
 private theorem val_eq (f : Cn G 0) (s : ComposableArrows E 0) : f s = val f (s.obj (Fin.last 0)) :=
   eq_of_heq (congr_arg_heq f (ext₀ rfl))
 
 /- English proof (translation)
-Establish `e0 : (f (face 0 (mk₁ φ))) = val f Y` using `val_eq f _`. Establish `e1 : (f (face 1 (mk₁ φ))) = val f X` using `val_eq f _`. Establish `t0 : (toLast 0 (mk₁ φ) : Y ⟶ Y) = 𝟙 Y` using `(mk₁ φ).map_id _`. Establish `t1 : (toLast 1 (mk₁ φ) : X ⟶ Y) = φ` using `rfl`. Establish `h : dv f φ = ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (G.map (toLast i (mk₁ φ))).hom (f (face i (mk₁ φ)))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, Fin.sum_univ_two]`. Establish `a0 : (G.map (toLast 0 (mk₁ φ))).hom (f (face 0 (mk₁ φ))) = val f Y`. Establish `: ∀ m : Y ⟶ Y, m = 𝟙 Y → (G.map m).hom (val f Y) = val f Y`. Introduce and unpack `m rfl`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg (G.map (toLast 0 (mk₁ φ))).hom e0).trans (this _ t0)`. Establish `a1 : (G.map (toLast 1 (mk₁ φ))).hom (f (face 1 (mk₁ φ))) = (G.map φ).hom (val f X)` using `congrArg (G.map φ).hom e1`. Rewrite using `[a0, a1]`. Simplify using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dv_eq (f : Cn G 0) {X Y : E} (φ : X ⟶ Y) :
     dv f φ = val f Y - (G.map φ).hom (val f X) := by
@@ -75,7 +75,7 @@ private def zEq (P : C ⥤ Type) (F : Coef C) : (cx (elF P (zm F))).Z 0 ≃+ Sec
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Submodule.submoduleOf, Submodule.mem_comap, Submodule.mem_bot]`. Conclude with `⟨fun h => Subtype.ext h, fun h => by rw [h]; exact Submodule.zero_mem _⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem bot_of {R : Type} [CommRing R] (K : Cx.{1} R) : (K.B 0).submoduleOf (K.Z 0) = ⊥ := by
   ext x
@@ -89,9 +89,9 @@ end UpperTheory.Ru.crystallineComparison.Th.Deg0
 
 open UpperTheory.Ru.crystallineComparison.Th.Deg0 in
 /- English proof (translation)
-Introduce `C _`. Use `⟨zIso, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q P u F x A y`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `val_eq f.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P F G α x A y`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg (α.app A).hom (val_eq f.1 _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_cohomology_zero_equiv_sections_natural :
     ∀ (C : Type 1) [Category.{0} C], ∃ z : ∀ (P : C ⥤ Type) (F : Coef C), TH P F 0 ≃+ Sec P F,

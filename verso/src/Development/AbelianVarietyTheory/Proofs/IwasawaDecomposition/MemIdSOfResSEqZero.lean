@@ -13,7 +13,7 @@ open Formalism.L2.DIV HeightOneSpectrum
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one (x := (x : Valued.integer (v.adicCompletion F)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_iff (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletionIntegers F) :
     x ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) ↔
@@ -22,7 +22,7 @@ theorem mem_maximalIdeal_iff (v : HeightOneSpectrum (𝓞 F)) (x : v.adicComplet
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one (x := (x : Valued.integer (v.adicCompletion F)))
 
 /- English proof (translation)
-Establish `h0 : IsIntegral ℤ b` using `Algebra.IsIntegral.isIntegral b`. Set `ψ : 𝓞 E →+* v.adicCompletion F` to `φ.comp ((inclE (F := F) (v.adicCompletion F)).comp (algebraMap (𝓞 E) E))`. Establish `h1 : IsIntegral (v.adicCompletionIntegers F) (ψ b)` using `IsIntegral.map_of_comp_eq (Int.castRingHom _) ψ (RingHom.ext_int _ _) h0`. Conclude with `(adicCompletionIntegers.integers F v).mem_of_integral h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_image (v : HeightOneSpectrum (𝓞 F))
     (φ : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F) (b : 𝓞 E) :
@@ -35,9 +35,9 @@ theorem integral_image (v : HeightOneSpectrum (𝓞 F))
   exact (adicCompletionIntegers.integers F v).mem_of_integral h1
 
 /- English proof (translation)
-Establish `hle : Formalism.L2.Herm.intAf F E ≤ Subring.comap (φ.comp (prV (E` using `E) v)) (v.adicCompletionIntegers F).toSubring := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨b, rfl⟩ | ⟨y, rfl⟩)`. Take `⟨b0, hb0⟩` from `b.2 show φ (prV (E := E) v ((b : E) ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F))) ∈ v.adicCompletionIntegers F`. Rewrite using `[Formalism.UG.P.afsplit_prV_tmul, ← hb0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_image v φ b0`. Use `show φ (prV (E := E) v ((1 : E) ⊗ₜ[F] (y : Formalism.L2.Herm.Af F))) ∈ v.adicCompletionIntegers F`. Rewrite using `[Formalism.UG.P.afsplit_prV_tmul, hφ]`. Conclude with `y.2 v`. Conclude with `hle s.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem (v : HeightOneSpectrum (𝓞 F))
     (φ : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F)
@@ -57,7 +57,7 @@ theorem comp_mem (v : HeightOneSpectrum (𝓞 F))
   exact hle s.2
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Unfold `resS at h`. Rewrite `h` using `[RingHom.comp_apply]`. Conclude with `(map_eq_zero_iff _ (RingEquiv.injective _)).1 h`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_idS_of_resS_eq_zero (w : HeightOneSpectrum (𝓞 E)) {t : Formalism.L2.Herm.intAf F E}
     (h : resS F w t = 0) : t ∈ idS F w.asIdeal := by
@@ -67,29 +67,25 @@ theorem mem_idS_of_resS_eq_zero (w : HeightOneSpectrum (𝓞 E)) {t : Formalism.
   exact (map_eq_zero_iff _ (RingEquiv.injective _)).1 h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v w φ p hφ hp hw`. Set `ρ : Formalism.L2.Herm.intAf F E →+* v.adicCompletionIntegers F` to `(φ.comp ((prV (E := E) v).comp (Formalism.L2.Herm.intAf F E).subtype)).codRestrict (v.adicCompletionIntegers F) (fun s => comp_mem v φ hφ s)`. Establish `hρ : ∀ s, ((ρ s : v.adicCompletionIntegers F) : v.adicCompletion F) = φ (prV (E` using `E) v s.1) := fun _ => rfl`. Set `r : Formalism.L2.Herm.intAf F E →+* Formalism.L2.Forms.kv F v` to `(IsLocalRing.residue _).comp ρ`. Set `g : 𝓞 E →+* Formalism.L2.Forms.kv F v` to `r.comp (oToS F E)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg0 : ∀ b : 𝓞 E, Valued.v (φ (inclE (F` using `F) (v.adicCompletion F) (b : E))) < 1 → g b = 0 := by`. Introduce `b hb`. Use `show IsLocalRing.residue _ (ρ (oToS F E b)) = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, mem_maximalIdeal_iff, hρ]`. Conclude with `hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : ∀ x ∈ v.asIdeal, g (algebraMap (𝓞 F) (𝓞 E) x) = 0`. Introduce `x hx`. Use `hg0 _ ?_` and prove the remaining obligations. Establish `e1 : ((algebraMap (𝓞 F) (𝓞 E) x : 𝓞 E) : E) = algebraMap F E (algebraMap (𝓞 F) F x)` using `by show algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) x) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : inclE (F` using `F) (v.adicCompletion F) (algebraMap F E (algebraMap (𝓞 F) F x)) = (1 : E) ⊗ₜ[F] (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F x)) := by show (algebraMap F E (algebraMap (𝓞 F) F x)) ⊗ₜ[F] (1 : v.adicCompletion F) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e1, e2, hφ]`. Use `lt_of_eq_of_lt (valuedAdicCompletion_eq_valuation' v _) ?_` and prove the remaining obligations. Conclude with `(valuation_lt_one_iff_mem v x).2 hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : RingHom.ker g ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Introduce `hb`. Establish `h1 : algebraMap (𝓞 F) (𝓞 E) x ∈ RingHom.ker g` using `hv x hx`. Rewrite `h1` using `[hb, Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx0 (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E) (h1.trans (map_zero _).symm))`. Set `P : HeightOneSpectrum (𝓞 E)` to `⟨RingHom.ker g, RingHom.ker_isPrime g, hne⟩`. Establish `hunder : P.under (𝓞 F) = v`. Use `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (P.under (𝓞 F)).isPrime.ne_top ?_).symm` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hv x hx`. Establish `hk : RingHom.ker g = w.asIdeal` using `congrArg HeightOneSpectrum.asIdeal (hw P hunder (hg0 p hp))`. Establish `hz : idS F w.asIdeal ≤ RingHom.ker r`. Use `Ideal.map_le_iff_le_comap.2 fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[← hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha`. Establish `hfac : ∀ s (b : 𝓞 E), resS F w s = Ideal.Quotient.mk w.asIdeal b → r s = g b`. Introduce `s b h`. Establish `h0 : resS F w (s - oToS F E b) = 0` using `by rw [map_sub, resS_oToS, h, sub_self]`. Establish `h1 : r (s - oToS F E b) = 0` using `hz (mem_idS_of_resS_eq_zero w h0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub]`. Conclude with `sub_eq_zero.1 h1`. Establish `hs : Function.Surjective g`. Introduce `κ`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective κ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `s : Formalism.L2.Herm.intAf F E` to `⟨(1 : E) ⊗ₜ[F] Formalism.UG.P.afsplitI v (a : v.adicCompletion F), Subring.subset_closure (Or.inr ⟨⟨_, Formalism.UG.P.afsplitI_mem_intAd v _ a.2⟩, rfl⟩)⟩`. Establish `hρs : ρ s = a` using `Subtype.ext (by`. Rewrite using `[hρ]`. Use `show φ (prV (E := E) v ((1 : E) ⊗ₜ[F] Formalism.UG.P.afsplitI v (a : v.adicCompletion F))) = _`. Rewrite using `[Formalism.UG.P.afsplit_prV_tmul, Formalism.UG.P.afsplitI_self, hφ])`.
-
-Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (resS F w s)`. Use `⟨b, (hfac s b hb.symm).symm.trans ?_⟩` and prove the remaining obligations. Use `show IsLocalRing.residue _ (ρ s) = _`. Rewrite using `[hρs]`. Use `⟨ρ, (Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective hs), hρ, ?_⟩` and prove the remaining obligations.
-
-Introduce `s`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (resS F w s)`. Rewrite using `[← hb]`. Conclude with `hfac s b hb.symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_residue_equiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))

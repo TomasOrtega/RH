@@ -25,13 +25,13 @@ def NzCls (𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Fra
 def rep {𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F} (β : NzCls 𝔟) : F := (Quotient.out β : NzElt 𝔟).1
 
 /- English proof (translation)
-The claim follows from `(Quotient.out β : NzElt 𝔟).2.1`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem {𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F} (β : NzCls 𝔟) : rep β ∈ (𝔟 : FractionalIdeal (𝓞 F)⁰ F) :=
   (Quotient.out β : NzElt 𝔟).2.1
 
 /- English proof (translation)
-The claim follows from `(Quotient.out β : NzElt 𝔟).2.2`.
+A detailed English derivation is pending.
 -/
 theorem rep_ne_zero {𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F} (β : NzCls 𝔟) : rep β ≠ 0 :=
   (Quotient.out β : NzElt 𝔟).2.2
@@ -40,7 +40,7 @@ def posCone (𝔞 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.F
   {ν : F // ν ∈ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) ∧ ∀ τ : F →+* ℝ, 0 < τ (ν * b)}
 
 /- English proof (translation)
-The claim follows from `Quotient.mk _ ⟨1, by simp [FractionalIdeal.one_mem_one], one_ne_zero⟩`.
+A detailed English derivation is pending.
 -/
 example : NzCls (1 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) :=
   Quotient.mk _ ⟨1, by simp [FractionalIdeal.one_mem_one], one_ne_zero⟩

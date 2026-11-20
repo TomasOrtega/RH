@@ -9,19 +9,19 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `l _ H x hx`. Take `⟨c, hc, hax⟩` from `GlobalTheory.T.bounded_orbit_has_nearby_fixed_point l`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Establish `hd : DenseRange (fun y : Om l => (y : ℂ_[l]))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_closure`. Consider the case `ih a => exact subset_closure ⟨a, rfl⟩`. Establish `hδ : 0 < ε / (2 * c + 2)` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hd.exists_dist_lt x hδ`. Use `set δ := ε / (2 * c + 2) with hδdef`. Establish `hmul : δ * (2 * c + 2) = ε`. Rewrite using `[hδdef]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[dist_eq_norm]`. Establish `hsub : ∀ u v : Om l, ‖u - v‖ = ‖(u : ℂ_[l]) - (v : ℂ_[l])‖`. Introduce `u v`. Rewrite using `[← PadicComplex.norm_extends, PadicComplex.coe_eq, PadicComplex.coe_eq, PadicComplex.coe_eq, map_sub]`. Take `⟨y, hy, hxy⟩` from `hax H a (2 * δ) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Establish `h1 : ((g a : Om l) : ℂ_[l]) - (a : ℂ_[l]) = (x - (a : ℂ_[l])) - Per.σC g (x - (a : ℂ_[l]))`. Rewrite using `[map_sub, hx g hg, GlobalTheory.RingBasics.σC_coe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsub, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `norm_sub_le (x - (a : ℂ_[l])) (Per.σC g (x - (a : ℂ_[l])))`. Rewrite `h2` using `[GlobalTheory.RingBasics.norm_σC]`. Use the proof step `linarith)`. Use `⟨(y : ℂ_[l]), ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[hsub]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `norm_add_le (x - (a : ℂ_[l])) ((a : ℂ_[l]) - (y : ℂ_[l]))`. Rewrite `h3` using `[sub_add_sub_cancel]`. Rewrite using `[dist_eq_norm]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ax_sen_tate : ∀ (l : ℕ) [Fact l.Prime], ∀ (H : Subgroup (GQ l)) (x : ℂ_[l]),
     (∀ g ∈ H, Per.σC g x = x) →

@@ -5,15 +5,15 @@ open scoped ENNReal
 namespace GlobalTheory.VolBoxMajorant
 
 /- English proof (translation)
-Introduce `ι _`. Use `Fintype.induction_empty_option (P := fun ι _ => ∀ {X : ι → Type} (φ : ∀ i, X i → ℝ≥0∞), ∑' x : ∀ i, X i, ∏ i, φ i (x i) = ∏ i, ∑' y, φ i y) ?_ ?_ ?_ ι` and prove the remaining obligations. Introduce `α β _ e h X φ`. Use `letI : Fintype α := Fintype.ofEquiv β e.symm`. Establish `h1` using `h (X := fun a => X (e a)) (fun a => φ (e a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[← (Equiv.piCongrLeft X e).tsum_eq]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `x`. Rewrite using `[← Fintype.prod_equiv e (fun a => φ (e a) (Equiv.piCongrLeft X e x (e a))) (fun b => φ b (Equiv.piCongrLeft X e x b)) (fun _ => rfl)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.piCongrLeft_apply_apply]`. Use `_ = ∏ a, ∑' y, φ (e a) y := h1`. Use `_ = ∏ b, ∑' y, φ b y := Fintype.prod_equiv e _ _ (fun _ => rfl)`. Introduce `X φ`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `α _ h X φ`. Rewrite using `[← (Equiv.piOptionEquivProd (β := X)).symm.tsum_eq, Fintype.prod_option]`. Rewrite using `[← h (X := fun a => X (some a)) (fun a => φ (some a))]`. Rewrite using `[← ENNReal.tsum_mul_right]`. Simplify using `only [Fintype.prod_option]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ENNReal.tsum_prod']`. Use `congr 1`. Use extensionality with `y`. Rewrite using `[← ENNReal.tsum_mul_left]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tsum_pi_prod_ennreal' : ∀ {ι : Type} [Fintype ι] {X : ι → Type} (φ : ∀ i, X i → ℝ≥0∞),
     ∑' x : ∀ i, X i, ∏ i, φ i (x i) = ∏ i, ∑' y, φ i y := by

@@ -33,12 +33,12 @@ Both sides reduce to the same expression.
 theorem coordHomeo_coe : ⇑(coordHomeo F) = ⇑(coord F) := rfl
 
 /- English proof (translation)
-The claim follows from `(coordHomeo F).isHomeomorph`.
+A detailed English derivation is pending.
 -/
 theorem isHomeomorph_coord : IsHomeomorph (coord F) := (coordHomeo F).isHomeomorph
 
 /- English proof (translation)
-Establish `h` using `(isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).isometry.norm_map_of_map_zero (map_zero (ringEquivRealOfIsReal (IsTotallyReal.isReal w))) (y w)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem abs_coord (y : Ainf F) (w : InfinitePlace F) : |coord F y w| = ‖y w‖ := by
   have h := (isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).isometry.norm_map_of_map_zero
@@ -46,13 +46,13 @@ theorem abs_coord (y : Ainf F) (w : InfinitePlace F) : |coord F y w| = ‖y w‖
   exact h
 
 /- English proof (translation)
-The claim follows from `embedding_of_isReal_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem rho_coe (w : InfinitePlace F) (x : F) : ((rho F w x : ℝ) : ℂ) = w.embedding x :=
   embedding_of_isReal_apply _ _
 
 /- English proof (translation)
-Establish `h : ((coord F (algebraMap F (Ainf F) x) w : ℝ) : ℂ) = ((rho F w x : ℝ) : ℂ)`. Rewrite using `[rho_coe, coord_apply, InfiniteAdeleRing.algebraMap_apply, ringEquivRealOfIsReal_apply, extensionEmbeddingOfIsReal_apply]`. Conclude with `extensionEmbedding_coe w ((WithAbs.equiv w.1).symm x)`. Conclude with `Complex.ofReal_injective h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_algebraMap (x : F) (w : InfinitePlace F) :
     coord F (algebraMap F (Ainf F) x) w = rho F w x := by
@@ -69,14 +69,14 @@ def toMixed (y : InfinitePlace F → ℝ) : mixedEmbedding.mixedSpace F :=
   (fun w => y w.1, 0)
 
 /- English proof (translation)
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `[toMixed]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem toMixed_add (y z : InfinitePlace F → ℝ) : toMixed F (y + z) = toMixed F y + toMixed F z := by
   refine Prod.ext rfl ?_
   simp [toMixed]
 
 /- English proof (translation)
-Introduce `y z h`. Use function extensionality and compare the values at `w`. Conclude with `congrFun (congrArg Prod.fst h) ⟨w, IsTotallyReal.isReal w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem toMixed_injective : Function.Injective (toMixed F) := by
   intro y z h
@@ -84,7 +84,7 @@ theorem toMixed_injective : Function.Injective (toMixed F) := by
   exact congrFun (congrArg Prod.fst h) ⟨w, IsTotallyReal.isReal w⟩
 
 /- English proof (translation)
-Use `Prod.ext ?_ (Subsingleton.elim _ _)` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Rewrite using `[mixedEmbedding.mixedEmbedding_apply_isReal]`. Conclude with `coord_algebraMap F x w.1`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMixed_coord_algebraMap (x : F) :
     toMixed F (coord F (algebraMap F (Ainf F) x)) = mixedEmbedding F x := by
@@ -95,11 +95,11 @@ theorem toMixed_coord_algebraMap (x : F) :
 
 open scoped Classical in
 /- English proof (translation)
-Set `f : {w : InfinitePlace F // w.IsReal} ≃ InfinitePlace F` to `Equiv.subtypeUnivEquiv IsTotallyReal.isReal`. Establish `h1` using `(volume_measurePreserving_piCongrLeft (fun _ : InfinitePlace F => ℝ) f).symm`. Establish `h2 : MeasurePreserving (fun y : InfinitePlace F → ℝ => fun w : {w : InfinitePlace F // w.IsReal} => y w.1) volume volume`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h2.measurable.prodMk measurable_const`. Establish `hm : Measurable (fun x : {w : InfinitePlace F // w.IsReal} → ℝ => (x, (0 : {w : InfinitePlace F // w.IsComplex} → ℂ)))` using `by fun_prop`. Rewrite using `[Measure.volume_eq_prod, volume_pi (α := fun _ : {w : InfinitePlace F // w.IsComplex} => ℂ), Measure.pi_of_empty _ (0 : {w : InfinitePlace F // w.IsComplex} → ℂ), Measure.prod_dirac, ← h2.map_eq, Measure.map_map hm h2.measurable]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_toMixed : MeasurePreserving (toMixed F) volume volume := by
   let f : {w : InfinitePlace F // w.IsReal} ≃ InfinitePlace F :=
@@ -120,7 +120,7 @@ theorem measurePreserving_toMixed : MeasurePreserving (toMixed F) volume volume 
     rfl
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Conclude with `(isHomeomorph_coord F).continuous.measurable`.
+A detailed English derivation is pending.
 -/
 theorem coord_measurable : Measurable (coord F) := by
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
@@ -128,31 +128,27 @@ theorem coord_measurable : Measurable (coord F) := by
 
 open scoped Classical in
 /- English proof (translation)
-Take `⟨hH, D, hD, hD1⟩` from `hl`. Use `haveI := hH`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : (lam.map (coord F)).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map lam (coord F).toAddEquiv (isHomeomorph_coord F).continuous (coordHomeo F).symm.continuous`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, lam.map (coord F) = c • (volume : Measure (InfinitePlace F → ℝ))` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set P := ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis F) with hP`. Establish `hmp` using `measurePreserving_toMixed F`. Establish `hPm : MeasurableSet P` using `ZSpan.fundamentalDomain_measurableSet _`. Use `set Λ := mixedEmbedding.integerLattice F with hΛdef`. Use `set Γ : AddSubgroup (Ainf F) := ((algebraMap F (Ainf F)).comp (algebraMap (𝓞 F) F)).toAddMonoidHom.range with hΓ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ψ : Ainf F → mixedEmbedding.mixedSpace F` to `fun y => toMixed F (coord F y)`. Establish `hΨadd : ∀ x y, Ψ (x + y) = Ψ x + Ψ y` using `fun x y => by`. Simplify using `only [Ψ, map_add, toMixed_add]`. Establish `hΨinj : Function.Injective Ψ` using `(toMixed_injective F).comp (coord F).injective`. Establish `hΨalg : ∀ a : 𝓞 F, Ψ (algebraMap F (Ainf F) (algebraMap (𝓞 F) F a)) = mixedEmbedding F (algebraMap (𝓞 F) F a)` using `fun a => toMixed_coord_algebraMap F _`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΛmem : ∀ g : Λ, ∃ a : 𝓞 F, (g : mixedEmbedding.mixedSpace F) = mixedEmbedding F (algebraMap (𝓞 F) F a)`. Introduce and unpack `⟨_, a, rfl⟩`. Conclude with `⟨a, rfl⟩`. Establish `hΛmem' : ∀ a : 𝓞 F, mixedEmbedding F (algebraMap (𝓞 F) F a) ∈ Λ` using `fun a => ⟨a, rfl⟩`. Use `choose a ha using hΛmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `m : Λ → Γ` to `fun g => ⟨algebraMap F (Ainf F) (algebraMap (𝓞 F) F (a g)), ⟨a g, rfl⟩⟩`. Establish `hmΨ : ∀ g : Λ, Ψ (m g : Ainf F) = g` using `fun g => by`. Rewrite using `[ha g]`. Conclude with `hΨalg _`. Establish `hmbij : Function.Bijective m`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g g' h => ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hmΨ g, ← hmΨ g', h]`. Introduce and unpack `⟨_, b, rfl⟩`. Use `⟨⟨_, hΛmem' b⟩, Subtype.ext (hΨinj ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hmΨ]`. Conclude with `(hΨalg b).symm`. Establish `hq : Measure.QuasiMeasurePreserving Ψ lam volume`. Use `hmp.quasiMeasurePreserving.comp ⟨coord_measurable F, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Simplify using `[hs]`. Establish `hFD : IsAddFundamentalDomain Γ (Ψ ⁻¹' P) lam` using `(mixedEmbedding.fundamentalDomain_integerLattice F).preimage_of_equiv hq hmbij (fun g x => by`. Express the relevant statement in the definitionally equal form `Ψ ((m g : Ainf F) + x) = (g : mixedEmbedding.mixedSpace F) + Ψ x`. Rewrite using `[hΨadd, hmΨ])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Countable Γ := hmbij.surjective.countable`. Establish `h1 : lam (Ψ ⁻¹' P) = 1`. Rewrite using `[← hD1]`. Conclude with `hFD.measure_eq hD`. Establish `hQm : MeasurableSet (toMixed F ⁻¹' P)` using `hmp.measurable hPm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `h2 : (c : ℝ≥0∞) * volume (toMixed F ⁻¹' P) = 1`. Use `Measure.map_apply (μ := lam) (coord_measurable F) hQm` as an intermediate fact. Rewrite `this` using `[hc]`. Establish `e : Ψ ⁻¹' P = coord F ⁻¹' (toMixed F ⁻¹' P)` using `rfl`. Rewrite using `[← h1, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `using this`. Establish `h3 : volume (toMixed F ⁻¹' P) = ENNReal.ofReal (Real.sqrt |(discr F : ℝ)|)`. Rewrite using `[hmp.measure_preimage hPm.nullMeasurableSet, hP, mixedEmbedding.volume_fundamentalDomain_latticeBasis, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, one_mul, ← ENNReal.ofReal_coe_nnreal, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]`. Establish `hd : 0 < Real.sqrt |(discr F : ℝ)|`. Establish `: (discr F : ℝ) ≠ 0` using `by exact_mod_cast discr_ne_zero F`.
-
-Check the signs of the components of the expression. Rewrite `h2` using `[h3]`. Establish `h4 : (c : ℝ≥0∞) = ENNReal.ofReal (Real.sqrt |(discr F : ℝ)|)⁻¹`. Rewrite using `[ENNReal.ofReal_inv_of_pos hd]`. Conclude with `ENNReal.eq_inv_of_mul_eq_one_left h2`.
-
-Rewrite using `[hc, ← h4]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem map_coord_eq (lam : Measure (Ainf F)) (hl : IsStdInf lam) :
     lam.map (coord F) = ENNReal.ofReal (Real.sqrt |(discr F : ℝ)|)⁻¹ • (volume : Measure (InfinitePlace F → ℝ)) := by
@@ -232,7 +228,7 @@ end GlobalTheory.CompanionTheory.SW.RealCoord
 
 open GlobalTheory.CompanionTheory.SW.RealCoord in
 /- English proof (translation)
-Introduce `F _ _ hF`. Use `haveI := hF`. Conclude with `⟨rho F, coord F, rho_coe F, isHomeomorph_coord F, coord_algebraMap F, abs_coord F, map_coord_eq F⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.real_iso : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∃ (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) ∧ IsHomeomorph e ∧ (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) ∧ (∀ y w, |e y w| = ‖y w‖) ∧ ∀ lam : Measure (Ainf F), IsStdInf lam → lam.map e = ENNReal.ofReal (Real.sqrt |(discr F : ℝ)|)⁻¹ • (volume : Measure (InfinitePlace F → ℝ)) := by
   intro F _ _ hF

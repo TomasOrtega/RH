@@ -25,14 +25,14 @@ section Side
 variable {Γ : Type} [Group Γ]
 
 /- English proof (translation)
-Use `⟨fun hu => ⟨heckeLevel_le K h⁻¹ hu, by simpa using conj_mem_of_mem_heckeLevel hu⟩, fun hu => ⟨hu.1, ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨h * u * h⁻¹, hu.2, by simp [MulAut.conj_apply, _root_.mul_assoc]⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem mem_heckeLevel_inv {K : Subgroup Γ} {h u : Γ} : u ∈ heckeLevel K h⁻¹ ↔ u ∈ K ∧ h * u * h⁻¹ ∈ K := by
   refine ⟨fun hu => ⟨heckeLevel_le K h⁻¹ hu, by simpa using conj_mem_of_mem_heckeLevel hu⟩, fun hu => ⟨hu.1, ?_⟩⟩
   exact ⟨h * u * h⁻¹, hu.2, by simp [MulAut.conj_apply, _root_.mul_assoc]⟩
 
 /- English proof (translation)
-Use extensionality with `u`. Rewrite using `[mem_heckeLevel_inv, hc u, mul_inv_cancel_right, and_self]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeLevel_inv_of_comm (K : Subgroup Γ) {h : Γ} (hc : ∀ u, h * u = u * h) : heckeLevel K h⁻¹ = K := by
   ext u
@@ -41,43 +41,41 @@ theorem heckeLevel_inv_of_comm (K : Subgroup Γ) {h : Γ} (hc : ∀ u, h * u = u
 open Classical in
 
 /- English proof (translation)
-Use `haveI : Finite (K ⧸ K'.subgroupOf K) := Nat.finite_of_card_ne_zero hfin`. Use `haveI := Fintype.ofFinite (K ⧸ K'.subgroupOf K)`. Set `f : K ⧸ K'.subgroupOf K → Γ ⧸ K` to `fun u => (((u.out : K) : Γ) * g : Γ)`. Establish `hout : ∀ (a : K) (u : K ⧸ K'.subgroupOf K), (a : K ⧸ K'.subgroupOf K) = u → (a : Γ)⁻¹ * u.out ∈ K'`. Introduce `a u h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[← u.out_eq', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Conclude with `h`. Establish `h1 : cosetTrace (hle.trans (heckeLevel_le K g)) (φ ∘ cosetTr K' K g fun _ hu => conj_mem_of_mem_heckeLevel (hle hu)) (x : Γ ⧸ K) = ∑ u, φ (x • f u)`. Unfold `cosetTrace`. Establish `hsum : ∑ u, φ (x • f u) = ∑ᶠ u ∈ (Set.univ : Set (K ⧸ K'.subgroupOf K)), φ (x • f u)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[finsum_mem_univ, finsum_eq_sum_of_fintype]`. Rewrite using `[hsum]`. Use `symm`. Use `finsum_mem_eq_of_bijOn (fun u : K ⧸ K'.subgroupOf K => ((x * (u.out : K) : Γ) : Γ ⧸ K')) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `u _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Subgroup.quotientMapOfLE_apply_mk, QuotientGroup.eq]`. Simplify using `using u.out.2`. Introduce `u _ v _ huv`. Simplify using `only at huv`. Rewrite `huv` using `[QuotientGroup.eq]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← u.out_eq', ← v.out_eq', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `huv` using `[_root_.mul_assoc]`. Introduce `y hy`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H y`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Subgroup.quotientMapOfLE_apply_mk, QuotientGroup.eq] at hy`. Establish `hu : x⁻¹ * y ∈ K` using `by simpa using K.inv_mem hy`. Use `⟨((⟨_, hu⟩ : K) : K ⧸ K'.subgroupOf K), Set.mem_univ _, ?_⟩` and prove the remaining obligations. Use `K'.inv_mem (hout ⟨_, hu⟩ _ rfl)` as an intermediate fact. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[QuotientGroup.eq]`. Simplify `this` using `[_root_.mul_assoc]`. Introduce `u _`. Simplify using `only [Function.comp_apply, cosetTr_mk, f, MulAction.Quotient.smul_mk, smul_eq_mul, _root_.mul_assoc]`. Establish `h2 : ∀ u₀, (Finset.univ.filter fun u => f u = f u₀).card = K'.relIndex (heckeLevel K g)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u₀`. Set `e : heckeLevel K g ⧸ K'.subgroupOf (heckeLevel K g) → {u // f u = f u₀}` to `fun a => ⟨((u₀.out * ⟨a.out, heckeLevel_le K g a.out.2⟩ : K) : K ⧸ K'.subgroupOf K), by`. Establish `h` using `hle (hout (u₀.out * ⟨a.out, heckeLevel_le K g a.out.2⟩) _ rfl)`. Establish `h'` using `conj_mem_of_mem_heckeLevel ((heckeLevel K g).mul_mem a.out.2 h)`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [f]`. Rewrite using `[QuotientGroup.eq]`. Simplify `h'⟩` using `[_root_.mul_assoc]`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Establish `h` using `congrArg Subtype.val hab`. Simplify using `only [e] at h`. Rewrite `h` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Rewrite using `[← a.out_eq', ← b.out_eq', QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify `h` using `[_root_.mul_assoc]`. Introduce and unpack `⟨u, hu⟩`. Establish `hu'` using `hu.symm`. Simplify using `only [f] at hu'`. Rewrite `hu'` using `[QuotientGroup.eq]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : ((u₀.out : K) : Γ)⁻¹ * u.out ∈ heckeLevel K g` using `⟨K.mul_mem (K.inv_mem u₀.out.2) u.out.2, _, hu', by simp [MulAut.conj_apply, _root_.mul_assoc]⟩`. Use `⟨((⟨_, hm⟩ : heckeLevel K g) : _ ⧸ K'.subgroupOf (heckeLevel K g)), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h` using `(QuotientGroup.out_eq' ((⟨_, hm⟩ : heckeLevel K g) : _ ⧸ K'.subgroupOf (heckeLevel K g)))`. Rewrite `h` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [e]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Eq.trans ?_ u.out_eq'` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `h` using `[_root_.mul_assoc]`. Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card, ← Nat.card_congr (Equiv.ofBijective e he)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ z : Γ ⧸ K, z.out ∈ DoubleCoset.doubleCoset g (K : Set Γ) K ↔ z ∈ Finset.univ.image f`. Introduce `z`. Rewrite using `[DoubleCoset.mem_doubleCoset, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, hz⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((⟨a, ha⟩ : K) : K ⧸ K'.subgroupOf K), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `h` using `conj_mem_of_mem_heckeLevel (hle (K'.inv_mem (hout ⟨a, ha⟩ _ rfl)))`. Rewrite using `[← z.out_eq', hz]`. Simplify using `only [f]`. Rewrite using `[QuotientGroup.eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `K.mul_mem h hb` using `[_root_.mul_assoc]`. Introduce and unpack `⟨u, -, hu⟩`. Rewrite `hu` using `[← z.out_eq']`. Simplify using `only [f] at hu`. Rewrite `hu` using `[QuotientGroup.eq]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, u.out.2, _, hu, by simp [_root_.mul_assoc]⟩`. Rewrite using `[h1, Finset.sum_comp (fun z => φ (x • z)) f, Formalism.UG.hAct, finsum_eq_sum_of_support_subset (s := Finset.univ.image f), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Take `⟨u₀, -, rfl⟩` from `Finset.mem_image.1 hz`. Rewrite using `[h2, Formalism.UG.dosetInd, Set.indicator_of_mem ((h3 _).2 hz), Pi.one_apply, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 2`. Use `conv_lhs => rw [← (f u₀).out_eq']`. Both sides reduce to the same expression. Introduce `z hz`. Assume the negation of the conclusion as `hn`.
-
-Apply `hz` to reduce the goal to its premises. Simplify using `only [Formalism.UG.dosetInd]`. Rewrite using `[Set.indicator_of_notMem (fun h => hn (Finset.mem_coe.2 ((h3 z).1 h))), zero_smul]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetTrace_cosetTr_eq_hAct {K' K : Subgroup Γ} {g : Γ} (hle : K' ≤ heckeLevel K g)
     (hfin : K'.relIndex K ≠ 0) {W : Type} [AddCommGroup W] [Module ℂ W] (φ : Γ ⧸ K → W) (x : Γ) :
@@ -206,7 +204,7 @@ structure Corr {N N' : ℕ} (X : GenModel gb N) (X' : GenModel gb N') where
   φ2_w : φ2 ≫ X.univ.A.hom = X'.univ.A.hom ≫ q2
 
 /- English proof (translation)
-Rewrite using `[zs, ← Category.assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matEnd_zs {N : ℕ} (X : GenModel gb N) {k : ℕ} (α : Matrix (Fin k) (Fin k) G₀.O) :
     (GlobalTheory.KS.matEnd X.univ.act α).left ≫ zs X k = zs X k := by
@@ -229,13 +227,13 @@ variable {k} in
 def c2Tw (α : Matrix (Fin k) (Fin k) G₀.O) : Z X' k ⟶ Z X k := C.c2 k ≫ (GlobalTheory.KS.matEnd X.univ.act α).left
 
 /- English proof (translation)
-Rewrite using `[zs, zs, c1, ← Category.assoc, GlobalTheory.KS.PowPB.powMap_w, Category.assoc, C.firstProjection_structure]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem firstLeg_overComplex : C.c1 k ≫ zs X k = zs X' k := by
   rw [zs, zs, c1, ← Category.assoc, GlobalTheory.KS.PowPB.powMap_w, Category.assoc, C.firstProjection_structure]
 
 /- English proof (translation)
-Rewrite using `[zs, zs, c2, ← Category.assoc, GlobalTheory.KS.PowPB.powMap_w, Category.assoc, C.secondProjection_structure]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secondLeg_overComplex : C.c2 k ≫ zs X k = zs X' k := by
   rw [zs, zs, c2, ← Category.assoc, GlobalTheory.KS.PowPB.powMap_w, Category.assoc, C.secondProjection_structure]
@@ -243,13 +241,13 @@ theorem secondLeg_overComplex : C.c2 k ≫ zs X k = zs X' k := by
 variable {k} in
 
 /- English proof (translation)
-Rewrite using `[c2Tw, Category.assoc, matEnd_zs, secondLeg_overComplex]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistedSecondLeg_overComplex (α : Matrix (Fin k) (Fin k) G₀.O) : C.c2Tw α ≫ zs X k = zs X' k := by
   rw [c2Tw, Category.assoc, matEnd_zs, secondLeg_overComplex]
 
 /- English proof (translation)
-Rewrite using `[c2Tw, GlobalTheory.KS.Model.matEnd_one, Over.id_left, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistedSecondLeg_one : C.c2Tw (1 : Matrix (Fin k) (Fin k) G₀.O) = C.c2 k := by
   rw [c2Tw, GlobalTheory.KS.Model.matEnd_one, Over.id_left, Category.comp_id]
@@ -266,7 +264,7 @@ def opTw [IsFinite (C.c1 k)] [Etale (C.c1 k)] (α : Matrix (Fin k) (Fin k) G₀.
 variable {k} in
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `congrArg (hodgeTrace (C.firstLeg_overComplex k) a b) (hodgePull_comp (matEnd_zs X α) (C.secondLeg_overComplex k) (C.twistedSecondLeg_overComplex α) a b x).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opTw_eq [IsFinite (C.c1 k)] [Etale (C.c1 k)] (α : Matrix (Fin k) (Fin k) G₀.O) (a b : ℕ) :
     C.opTw α a b = C.op k a b ∘ₗ twistPull X α a b := by
@@ -285,7 +283,7 @@ def mulBy (X : GenModel gb N) (c : ℕ) : Corr X X where
   φ2_w := by simp
 
 /- English proof (translation)
-Rewrite using `[c2, GlobalTheory.KS.PowPB.powMap_pr]`. Use `show _ ≫ (𝟙 X.univ.A ^ c).left = _`. Rewrite using `[← Over.comp_left, GlobalTheory.DrinLev.HT.MulModel.comp_pow', Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulBy_secondLeg_projection (X : GenModel gb N) (c : ℕ) (i : Fin k) :
     (mulBy X c).c2 k ≫ (GlobalTheory.KS.pr X.univ.A i).left = (GlobalTheory.KS.pr X.univ.A i ^ c).left := by
@@ -297,7 +295,7 @@ def IsForget {k' : ℕ} {X' : GenModel gb (N * k')} (C : Corr X X') : Prop :=
   ∃ (hN : 0 < N) (hk : 0 < k') (m : GObjMap (X'.univ.forgetMul hN hk) X.univ C.q1), C.φ1 = m.φ
 
 /- English proof (translation)
-Take `⟨hN, hk, m, e⟩` from `h`. Conclude with `⟨C.firstProjection_structure, _, 𝟙 _, m, isGHecke_forgetMul hN hk X'.univ, e.trans (Category.id_comp _).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsForget.isHeckeLift {k' : ℕ} {X' : GenModel gb (N * k')} {C : Corr X X'} (h : C.IsForget) :
     IsHeckeLift X X' (k' • LinearMap.id) (k' ^ 2) C.q1 C.φ1 := by
@@ -307,7 +305,7 @@ theorem IsForget.isHeckeLift {k' : ℕ} {X' : GenModel gb (N * k')} {C : Corr X 
 end Corr
 
 /- English proof (translation)
-Apply `GlobalTheory.KS.PowPB.pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.KS.PowPB.powMap_w]`. Simplify using the standard rewrite rules. Introduce `i`. Rewrite using `[GlobalTheory.KS.PowPB.powMap_pr]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -318,7 +316,7 @@ theorem powMap_id_eq {S : Scheme.{0}} (A : Over S) (h : 𝟙 A.left ≫ A.hom = 
   · intro i; rw [GlobalTheory.KS.PowPB.powMap_pr]; simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `LinearMap.ext fun x => hodgeTrace_id s a b _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem corrOp_of_eq_id {Y : Scheme.{0}} {s : Y ⟶ Sp ℂ} {c1 c2 : Y ⟶ Y} [IsFinite c1] [Etale c1] (e : c1 = 𝟙 Y)
     (h1 : c1 ≫ s = s) (h2 : c2 ≫ s = s) (a b : ℕ) : corrOp c1 c2 h1 h2 a b = hodgePull h2 a b := by
@@ -356,9 +354,9 @@ def GInducesAt {gb : GBase G₀ R} {S : Scheme.{0}} {s : S ⟶ Sp R} {N : ℕ} (
   ∀ y, toUnit _ ≫ o.eta y = I.ev N y
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Establish `h` using `I.add n 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[zero_nsmul, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel (a := I.ev n 0) (by rw [_root_.mul_one]; exact h.symm)`. Consider the case `succ c ih => rw [succ_nsmul, I.add, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gTateIso_ev_nsmul {k : Type} [Field k] {Q : Type} [Group Q] {act : G₀.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
     (I : GTateIso G₀ k Q act e) (n c : ℕ) (x : G₀.La) : I.ev n (c • x) = I.ev n x ^ c := by
@@ -397,7 +395,7 @@ def latMonoid : Submonoid G.GAf where
   mul_mem' := fun {a b} ha hb v hv => by rw [map_mul, Module.End.mul_apply]; exact ha _ (hb v hv)
 
 /- English proof (translation)
-Introduce `v hv` and use `by obtain ⟨w, hw, e⟩ := hh.1 v hv rw [e] exact add_mem hv (nsmul_mem hw N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_latMonoid_of_mem_KN {N : ℕ} {h : G.GAf} (hh : h ∈ L.KN N) : h ∈ latMonoid L := fun v hv => by
   obtain ⟨w, hw, e⟩ := hh.1 v hv
@@ -405,11 +403,9 @@ theorem mem_latMonoid_of_mem_KN {N : ℕ} {h : G.GAf} (hh : h ∈ L.KN N) : h �
   exact add_mem hv (nsmul_mem hw N)
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨a', x, ha', rfl⟩` from `hu`. Use `AddSubgroup.subset_closure ⟨a * a', x, fun w => ?_, by rw [TensorProduct.smul_tmul', smul_eq_mul]⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (ha w) (ha' w)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add u u' _ _ hu hu' => rw [smul_add]`. Conclude with `add_mem hu hu'`.
-
-Consider the case `neg u _ hu => rw [smul_neg]`. Conclude with `neg_mem hu`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_laHat {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) : a • v ∈ LaHat D := by
   induction hv using AddSubgroup.closure_induction with
@@ -423,13 +419,11 @@ theorem smul_mem_laHat {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (h
   | neg u _ hu => rw [smul_neg]; exact neg_mem hu
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨a, x, ha, rfl⟩` from `hu`. Establish `e1 : I'.ev 1 x = 1` using `(I'.ker 1 one_pos x).2 ⟨x, (one_nsmul _).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : I''.ev 1 (0 : D.La) = 1` using `(I''.ker 1 one_pos _).2 ⟨(0 : D.La), (one_nsmul _).symm⟩`. Take `⟨w, hw, e⟩` from `(H 1 one_pos (Nat.coprime_one_left p) x 0).1 (by rw [e1, e2, MonObj.one_comp])`. Establish `e0 : inAf D 0 = 0` using `map_zero (ForgetHecke.inAfHom D)`. Rewrite `e` using `[one_smul, e0, zero_add, one_nsmul]`. Establish `e3 : a ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x) = a • inAf D x` using `by rw [inAf, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e3, map_smul, e]`. Conclude with `smul_mem_laHat ha hw`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add u u' _ _ hu hu' => rw [map_add]`.
-
-Conclude with `add_mem hu hu'`. Consider the case `neg u _ hu => rw [map_neg]`. Conclude with `neg_mem hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GActsAt.mem_latMonoid {S : Scheme.{0}} {s : S ⟶ Sp R} {N N' : ℕ} {o' : GObj gb N' s} {o'' : GObj gb N s}
     {k : Type} [Field k] {t : Sp k ⟶ S} {I' : GTIsoAt o' t} {I'' : GTIsoAt o'' t} {ψ : o'.A ⟶ o''.A} [IsMonHom ψ]
@@ -451,11 +445,11 @@ theorem GActsAt.mem_latMonoid {S : Scheme.{0}} {s : S ⟶ Sp R} {N N' : ℕ} {o'
   | neg u _ hu => rw [map_neg]; exact neg_mem hu
 
 /- English proof (translation)
-Establish `hΔ` using `H₂.mem_latMonoid`. Introduce `n hn hnp x z`. Establish `ht : (I₁.ev n x ≫ ψ₁) ^ n = 1`. Rewrite using `[← GlobalTheory.DrinLev.HT.MulModel.pow_comp', (I₁.onto n hn _).2 ⟨x, rfl⟩, MonObj.one_comp]`. Take `⟨y, hy⟩` from `(I₂.onto n hn _).1 ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e⟩` from `(H₁ n hn hnp x y).1 hy.symm`. Rewrite using `[← Category.assoc, ← hy, H₂ n hn hnp y z]`. Simplify using `only [one_smul] at e ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, e, map_add, map_nsmul]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v, hv, e'⟩`. Conclude with `⟨v + L.actG h₂ w, add_mem hv (hΔ w hw), by rw [e', smul_add, add_assoc]⟩`. Introduce and unpack `⟨v, hv, e'⟩`. Conclude with `⟨v - L.actG h₂ w, sub_mem hv (hΔ w hw), by rw [smul_sub, ← add_sub_assoc, ← e', add_sub_cancel_right]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem GActsAt.comp {S : Scheme.{0}} {s : S ⟶ Sp R} {N₁ N₂ N₃ : ℕ} {o₁ : GObj gb N₁ s} {o₂ : GObj gb N₂ s}
     {o₃ : GObj gb N₃ s} {k : Type} [Field k] {t : Sp k ⟶ S} {I₁ : GTIsoAt o₁ t} {I₂ : GTIsoAt o₂ t}
@@ -485,20 +479,20 @@ def scalarAf (G : HTGroup p) (a : (AfP p)ˣ) : G.GAf :=
     rw [map_mul, e, starT_tmul, map_one, MulOpposite.unop_one]⟩
 
 /- English proof (translation)
-Use `show actOn L.rep (AfP p) (algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) a) v = _`. Rewrite using `[AlgHom.commutes, Module.algebraMap_end_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actG_scalarAf (a : (AfP p)ˣ) (v : AfP p ⊗[ℚ] VQ D) : L.actG (scalarAf G a) v = (a : AfP p) • v := by
   show actOn L.rep (AfP p) (algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) a) v = _
   rw [AlgHom.commutes, Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [actG_scalarAf]; exact smul_mem_laHat ha hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem scalarAf_mem_latMonoid {a : (AfP p)ˣ} (ha : IsIntAf (a : AfP p)) : scalarAf G a ∈ latMonoid L := fun v hv => by
   rw [actG_scalarAf]; exact smul_mem_laHat ha hv
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (Units.ext (Algebra.commutes (a : AfP p) _)) (mul_comm _ _))`.
+A detailed English derivation is pending.
 -/
 theorem scalarAf_comm (a : (AfP p)ˣ) (u : G.GAf) : scalarAf G a * u = u * scalarAf G a :=
   Subtype.ext (Prod.ext (Units.ext (Algebra.commutes (a : AfP p) _)) (mul_comm _ _))
@@ -507,7 +501,7 @@ def natUnit (p : ℕ) (c : ℕ) (hc : c ≠ 0) : (AfP p)ˣ :=
   Units.map (algebraMap ℚ (AfP p)).toMonoidHom (Units.mk0 (c : ℚ) (Nat.cast_ne_zero.2 hc))
 
 /- English proof (translation)
-Rewrite using `[actG_scalarAf]`. Use `show algebraMap ℚ (AfP p) (c : ℚ) • v = _`. Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actG_natScalar (c : ℕ) (hc : c ≠ 0) (v : AfP p ⊗[ℚ] VQ D) :
     L.actG (scalarAf G (natUnit p c hc)) v = c • v := by
@@ -516,15 +510,13 @@ theorem actG_natScalar (c : ℕ) (hc : c ≠ 0) (v : AfP p ⊗[ℚ] VQ D) :
   rw [map_natCast, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `show IsGIsogWit L h o o (𝟙 o.A ^ c) (𝟙 o.A ^ c) m (c * c)`. Use `haveI := GlobalTheory.DrinLev.HT.MulModel.isMonHom_id_pow o.A c`. Use `⟨inferInstance, inferInstance, fun a => ?_, fun a => ?_, ?_, ?_, hm, Nat.Coprime.mul hc hc, fun k _ _ t β ht => ?_⟩` and prove the remaining obligations. Use `haveI := o.act.hom a`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_pow, GlobalTheory.DrinLev.HT.MulModel.pow_comp', Category.comp_id, Category.id_comp]`. Use `haveI := o.act.hom a`. Rewrite using `[MonObj.comp_pow, GlobalTheory.DrinLev.HT.MulModel.pow_comp', Category.comp_id, Category.id_comp]`. Rewrite using `[MonObj.comp_pow, Category.comp_id, ← pow_mul]`. Rewrite using `[MonObj.comp_pow, Category.comp_id, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨I, hI⟩` from `o.geom k t β ht`. Use `⟨I, I, hI, hI, fun n hn hnp x y => ?_⟩` and prove the remaining obligations. Establish `e1 : (m : ℤ) • L.actG h (inAf D x) = ((1 : ℕ) : ℤ) • L.actG 1 (inAf D (c • x))`. Rewrite using `[hh]`. Simplify using `only [map_one, Module.End.one_apply, Nat.cast_one, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_nsmul (ForgetHecke.inAfHom D) c x).symm`. Use `show I.ev n x ≫ 𝟙 o.A ^ c = I.ev n y ↔ _`. Rewrite using `[e1, ForgetHecke.acts_one_iff L n hn hnp (c • x) y, MonObj.comp_pow, Category.comp_id]`. Use `Iff.trans ?_ (I.ker n hn (c • x - y))` and prove the remaining obligations. Establish `hx : I.ev n x ^ c = I.ev n (c • x - y) * I.ev n y` using `(gTateIso_ev_nsmul I n c x).symm.trans ((congrArg (I.ev n) (sub_add_cancel (c • x) y).symm).trans (I.add n (c • x - y) y))`.
-
-Rewrite using `[hx]`. Conclude with `mul_eq_right`.
+A detailed English derivation is pending.
 -/
 theorem isGIsogWit_mul {S : Scheme.{0}} {s : S ⟶ Sp R} {N M : ℕ} (e : N = M) (o : GObj gb N s) {h : G.GAf} {m c : ℕ}
     (hm : m.Coprime p) (hc : c.Coprime p) (hh : ∀ v, (m : ℤ) • L.actG h v = c • v) :
@@ -556,7 +548,7 @@ theorem isGIsogWit_mul {S : Scheme.{0}} {s : S ⟶ Sp R} {N M : ℕ} (e : N = M)
   exact mul_eq_right
 
 /- English proof (translation)
-Establish `h` using `isGIsogWit_mul L rfl o (h := 1) (m := 1) (c := 1) (Nat.coprime_one_left p) (Nat.coprime_one_left p) (fun v => by simp)`. Rewrite `h` using `[pow_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGIsogWit_refl {S : Scheme.{0}} {s : S ⟶ Sp R} {N : ℕ} (o : GObj gb N s) :
     IsGIsogWit L 1 o o (𝟙 o.A) (𝟙 o.A) 1 1 := by
@@ -566,11 +558,9 @@ theorem isGIsogWit_refl {S : Scheme.{0}} {s : S ⟶ Sp R} {N : ℕ} (o : GObj gb
   exact h
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, -⟩` from `isGIsogWit_refl L o`. Use `⟨h1, h2, h3, h4, h5, h6, h7, h8, fun k _ _ t β ht => ?_⟩` and prove the remaining obligations. Take `⟨I, hI⟩` from `o.geom k t β ht`. Use `⟨I, I, hI, fun y => ?_, fun n hn hnp x y => ?_⟩` and prove the remaining obligations. Use `show toUnit _ ≫ o.eta (k' • y) = I.ev N y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o.eta_nsmul, MonObj.comp_pow, hI, I.tower N k' hN hk]`. Use `show I.ev n x ≫ 𝟙 o.A = I.ev n y ↔ _`. Rewrite using `[ForgetHecke.acts_one_iff L n hn hnp x y, Category.comp_id]`. Use `Iff.trans ?_ (I.ker n hn (x - y))` and prove the remaining obligations. Establish `hx : I.ev n x = I.ev n (x - y) * I.ev n y` using `(congrArg (I.ev n) (sub_add_cancel x y).symm).trans (I.add n (x - y) y)`.
-
-Rewrite using `[hx]`. Conclude with `mul_eq_right`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGIsogWit_forgetMul {S : Scheme.{0}} {s : S ⟶ Sp R} {N k' : ℕ} (hN : 0 < N) (hk : 0 < k')
     (o : GObj gb (N * k') s) : IsGIsogWit L 1 o (o.forgetMul hN hk) (𝟙 o.A) (𝟙 o.A) 1 1 := by
@@ -597,9 +587,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {
 def hkIndex (N N' : ℕ) (h : G.GAf) : ℕ := (L.KN N').relIndex (heckeLevel (L.KN N) h⁻¹)
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p D G L N hN`. Take `⟨K', hK'⟩` from `GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p D G L N' hN'`. Use `haveI : CompactSpace (L.KN N) := isCompact_iff_compactSpace.1 (hK ▸ K.compact)`. Establish `ho : IsOpen ((L.KN N').subgroupOf (L.KN N) : Set (L.KN N))` using `(show IsOpen (L.KN N' : Set G.GAf) from hK' ▸ K'.K.isOpen).preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`.
-
-Conclude with `Nat.card_pos.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_KN_ne_zero {N N' : ℕ} (hN : 0 < N) (hN' : 0 < N') : (L.KN N').relIndex (L.KN N) ≠ 0 := by
   obtain ⟨K, hK⟩ := GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p D G L N hN
@@ -611,7 +599,7 @@ theorem relIndex_KN_ne_zero {N N' : ℕ} (hN : 0 < N) (hN' : 0 < N') : (L.KN N')
   exact Nat.card_pos.ne'
 
 /- English proof (translation)
-Introduce `h0` and use `relIndex_KN_ne_zero L hN hN' (Subgroup.relIndex_eq_zero_of_le_right (heckeLevel_le _ _) h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hkIndex_ne_zero {N N' : ℕ} (hN : 0 < N) (hN' : 0 < N') (h : G.GAf) : hkIndex L N N' h ≠ 0 := fun h0 =>
   relIndex_KN_ne_zero L hN hN' (Subgroup.relIndex_eq_zero_of_le_right (heckeLevel_le _ _) h0)
@@ -622,7 +610,7 @@ def IsAdelicHecke (h : G.GAf) {k' : ℕ} {X : GenModel gb N} {X' : GenModel gb (
       IsGHeckeWit L h X' X C.q2 o'' ψ ψ' 1 d φ ∧ C.φ2 = ψ.left ≫ φ.φ
 
 /- English proof (translation)
-Take `⟨hN, hk, -⟩` from `H.2.2.1`. Conclude with `GlobalTheory.W2.hkIndex_ne_zero L hN (Nat.mul_pos hN hk) h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsAdelicHecke.hkIndex_ne_zero {h : G.GAf} {k' : ℕ} {X : GenModel gb N} {X' : GenModel gb (N * k')}
     {C : Corr X X'} (H : IsAdelicHecke L h C) : hkIndex L N (N * k') h ≠ 0 := by
@@ -630,14 +618,14 @@ theorem IsAdelicHecke.hkIndex_ne_zero {h : G.GAf} {k' : ℕ} {X : GenModel gb N}
   exact GlobalTheory.W2.hkIndex_ne_zero L hN (Nat.mul_pos hN hk) h
 
 /- English proof (translation)
-The claim follows from `(mem_heckeLevel_inv.1 (H.2.1 hu)).2`.
+A detailed English derivation is pending.
 -/
 theorem IsAdelicHecke.conj_mem {h : G.GAf} {k' : ℕ} {X : GenModel gb N} {X' : GenModel gb (N * k')}
     {C : Corr X X'} (H : IsAdelicHecke L h C) {u : G.GAf} (hu : u ∈ L.KN (N * k')) : h * u * h⁻¹ ∈ L.KN N :=
   (mem_heckeLevel_inv.1 (H.2.1 hu)).2
 
 /- English proof (translation)
-Establish `key : ∀ g, L.CongOne (N * k') g → L.CongOne N g` using `fun g hg v hv => by`. Take `⟨w, hw, e⟩` from `hg v hv`. Conclude with `⟨k' • w, nsmul_mem hw k', by rw [e, mul_smul]⟩`. Conclude with `fun g hg => ⟨key _ hg.1, key _ hg.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem KN_mul_le (N k' : ℕ) : L.KN (N * k') ≤ L.KN N := by
   have key : ∀ g, L.CongOne (N * k') g → L.CongOne N g := fun g hg v hv => by
@@ -646,9 +634,9 @@ theorem KN_mul_le (N k' : ℕ) : L.KN (N * k') ≤ L.KN N := by
   exact fun g hg => ⟨key _ hg.1, key _ hg.2⟩
 
 /- English proof (translation)
-Establish `h0 : N * k' ≠ 0` using `fun h0 => (Fact.out : p.Prime).ne_one (by simpa [h0] using hp)`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (left_ne_zero_of_mul h0)`. Establish `hk : 0 < k'` using `Nat.pos_of_ne_zero (right_ne_zero_of_mul h0)`. Take `⟨q, ⟨hq, ⟨m⟩⟩, -⟩` from `X.rep X'.X X'.s (X'.univ.forgetMul hN hk)`. Use `⟨⟨q, q, hq, hq, m.φ, m.φ, m.cart.1.w, m.cart.1.w⟩, ⟨hp, ?_, ⟨hN, hk, m, rfl⟩, _, 𝟙 X'.univ.A, 𝟙 X'.univ.A, 1, m, ⟨hq, isGIsogWit_forgetMul L hN hk X'.univ⟩, (Category.id_comp _).symm⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heckeLevel_inv_of_comm _ fun u => by simp]`. Conclude with `KN_mul_le L N k'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAdelicHecke_one {k' : ℕ} (hp : (N * k').Coprime p) (X : GenModel gb N) (X' : GenModel gb (N * k')) :
     ∃ C : Corr X X', IsAdelicHecke L 1 C ∧ C.q1 = C.q2 := by
@@ -666,7 +654,7 @@ def IsHeckeOpZ (X : GenModel gb N) (k : ℕ) (h : G.GAf) (a b : ℕ) (T : Module
     IsAdelicHecke L h C ∧ T = ((hkIndex L N (N * k') h : ℂ))⁻¹ • C.op k a b
 
 /- English proof (translation)
-Rewrite using `[cosetTrace_cosetTr_eq_hAct hle (relIndex_KN_ne_zero L hN hN'), ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Conclude with `(congrArg (· • _) (inv_mul_cancel₀ (Nat.cast_ne_zero.2 (hkIndex_ne_zero L hN hN' h)))).trans (one_smul _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalised_model_eq_hAct {N N' : ℕ} (hN : 0 < N) (hN' : 0 < N') {h : G.GAf}
     (hle : L.KN N' ≤ heckeLevel (L.KN N) h⁻¹) {W : Type} [AddCommGroup W] [Module ℂ W] (φ : G.GAf ⧸ L.KN N → W)
@@ -681,9 +669,9 @@ def mulPull {G₀ : GDatum} {gb : GBase G₀ ℂ} (X : GenModel gb N) (k c a b :
   hodgePull ((Corr.mulBy X c).secondLeg_overComplex k) a b
 
 /- English proof (translation)
-Establish `e : (Corr.mulBy X 1).c2 k = 𝟙 _`. Apply `GlobalTheory.KS.PowPB.pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[Corr.c2, GlobalTheory.KS.PowPB.powMap_w]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Corr.mulBy_secondLeg_projection, pow_one, Category.id_comp]`. Establish `key : ∀ (f : Z X k ⟶ Z X k) (hf : f ≫ zs X k = zs X k), f = 𝟙 _ → hodgePull hf a b = 1`. Introduce and unpack `_ hf rfl`. Conclude with `LinearMap.ext fun x => hodgePull_id _ a b x`. Conclude with `key _ _ e`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mulPull_one {G₀ : GDatum} {gb : GBase G₀ ℂ} (X : GenModel gb N) (k a b : ℕ) : mulPull X k 1 a b = 1 := by
   have e : (Corr.mulBy X 1).c2 k = 𝟙 _ := by
@@ -696,13 +684,11 @@ theorem mulPull_one {G₀ : GDatum} {gb : GBase G₀ ℂ} (X : GenModel gb N) (k
   exact key _ _ e
 
 /- English proof (translation)
-Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero fun h0 => (Fact.out : p.Prime).ne_one (by simpa [h0] using hN)`. Set `X' : GenModel gb (N * 1)` to `relevelModel (Nat.mul_one N).symm X`. Set `C₀` to `Corr.mulBy X c`. Set `C : Corr X X'` to `⟨C₀.q1, C₀.q2, C₀.firstProjection_structure, C₀.secondProjection_structure, C₀.φ1, C₀.φ2, C₀.φ1_w, C₀.φ2_w⟩`. Establish `e1 : C.c1 k = 𝟙 (Z X k)` using `powMap_id_eq X.univ.A _ k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : IsFinite (C.c1 k)` using `by rw [e1]; exact inferInstanceAs (IsFinite (𝟙 (Z X k)))`. Establish `he : Etale (C.c1 k)` using `by rw [e1]; exact inferInstanceAs (Etale (𝟙 (Z X k)))`. Set `m₀ : GObjMap X.univ X.univ (𝟙 X.X)` to `{ φ := 𝟙 _, φ₂ := 𝟙 _, cart := GlobalTheory.SiegLower.isGrpPullback_id X.univ.A, sq := ⟨by simp, by simp⟩, act := fun c => by simp, pol := GlobalTheory.SiegLower.lbIso_pull_id X.univ.isLB, eta := fun y => by simp }`. Establish `hlev : heckeLevel (L.KN N) h⁻¹ = L.KN (N * 1)` using `by rw [heckeLevel_inv_of_comm _ hcomm, Nat.mul_one]`. Use `⟨1, X', C, hf, he, ⟨by rwa [Nat.mul_one], hlev.ge, ⟨hN0, one_pos, ⟨m₀.φ, m₀.φ₂, m₀.cart, m₀.sq, m₀.act, m₀.pol, fun y => ?_⟩, rfl⟩, X.univ, 𝟙 X.univ.A ^ c, 𝟙 X.univ.A ^ c, c * c, m₀, ⟨Category.id_comp _, isGIsogWit_mul L (Nat.mul_one N).symm X.univ (Nat.coprime_one_left p) hc fun …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (X.univ.eta (1 • y)).left ≫ _ = _`. Rewrite using `[one_nsmul]`. Conclude with `m₀.eta y`. Rewrite using `[Nat.cast_one, one_smul, hh]`. Rewrite using `[hkIndex, hlev, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_smul]`.
-
-Conclude with `(@corrOp_of_eq_id _ (zs X k) (C.c1 k) (C.c2 k) hf he e1 (C.firstLeg_overComplex k) (C.secondLeg_overComplex k) a b).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeckeOpZ_of_mul (hN : N.Coprime p) (X : GenModel gb N) (k : ℕ) {h : G.GAf} {c : ℕ} (hc : c.Coprime p)
     (hcomm : ∀ u, h * u = u * h) (hh : ∀ v, L.actG h v = c • v) (a b : ℕ) :
@@ -730,14 +716,14 @@ theorem isHeckeOpZ_of_mul (hN : N.Coprime p) (X : GenModel gb N) (k : ℕ) {h : 
     exact (@corrOp_of_eq_id _ (zs X k) (C.c1 k) (C.c2 k) hf he e1 (C.firstLeg_overComplex k) (C.secondLeg_overComplex k) a b).symm
 
 /- English proof (translation)
-Rewrite using `[← mulPull_one X k a b]`. Conclude with `isHeckeOpZ_of_mul L hN X k (Nat.coprime_one_left p) (fun u => by simp) (fun v => by simp) a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeckeOpZ_one (hN : N.Coprime p) (X : GenModel gb N) (k a b : ℕ) : IsHeckeOpZ L X k 1 a b 1 := by
   rw [← mulPull_one X k a b]
   exact isHeckeOpZ_of_mul L hN X k (Nat.coprime_one_left p) (fun u => by simp) (fun v => by simp) a b
 
 /- English proof (translation)
-The claim follows from `isHeckeOpZ_of_mul L hN X k hc (scalarAf_comm _) (actG_natScalar L c hc0) a b`.
+A detailed English derivation is pending.
 -/
 theorem isHeckeOpZ_natScalar (hN : N.Coprime p) (X : GenModel gb N) (k : ℕ) {c : ℕ} (hc0 : c ≠ 0) (hc : c.Coprime p)
     (a b : ℕ) : IsHeckeOpZ L X k (scalarAf G (natUnit p c hc0)) a b (mulPull X k c a b) :=
@@ -752,7 +738,7 @@ def IsHeckeOpFun (X : GenModel gb N) (k : ℕ) (f : G.GAf → ℂ) (a b : ℕ) (
 variable {L}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, {()}, fun _ => h, fun _ => 1, fun _ => T, fun _ _ => H, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsHeckeOpZ.isHeckeOpFun {X : GenModel gb N} {k : ℕ} {h : G.GAf} {a b : ℕ}
     {T : Module.End ℂ (hodgeH (zs X k) a b)} (H : IsHeckeOpZ L X k h a b T) :
@@ -760,13 +746,13 @@ theorem IsHeckeOpZ.isHeckeOpFun {X : GenModel gb N} {k : ℕ} {h : G.GAf} {a b :
   ⟨Unit, {()}, fun _ => h, fun _ => 1, fun _ => T, fun _ _ => H, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, ∅, fun _ => 1, fun _ => 0, fun _ => 0, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeOpFun_zero (X : GenModel gb N) (k a b : ℕ) : IsHeckeOpFun L X k 0 a b 0 :=
   ⟨Unit, ∅, fun _ => 1, fun _ => 0, fun _ => 0, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨J, s, h, c, Th, h1, rfl, rfl⟩` from `H`. Conclude with `⟨J, s, h, fun i => z * c i, Th, h1, by simp [Finset.smul_sum, mul_smul], by simp [Finset.smul_sum, mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsHeckeOpFun.smul {X : GenModel gb N} {k : ℕ} {f : G.GAf → ℂ} {a b : ℕ}
     {T : Module.End ℂ (hodgeH (zs X k) a b)} (H : IsHeckeOpFun L X k f a b T) (z : ℂ) :
@@ -775,9 +761,7 @@ theorem IsHeckeOpFun.smul {X : GenModel gb N} {k : ℕ} {f : G.GAf → ℂ} {a b
   exact ⟨J, s, h, fun i => z * c i, Th, h1, by simp [Finset.smul_sum, mul_smul], by simp [Finset.smul_sum, mul_smul]⟩
 
 /- English proof (translation)
-Take `⟨J, s, h, c, Th, h1, rfl, rfl⟩` from `H`. Take `⟨J', s', h', c', Th', h1', rfl, rfl⟩` from `H'`. Use `⟨J ⊕ J', s.disjSum s', Sum.elim h h', Sum.elim c c', Sum.elim Th Th', ?_, by simp [Finset.sum_disjSum], by simp [Finset.sum_disjSum]⟩` and prove the remaining obligations. Introduce and unpack `(i | i) hi`. Conclude with `h1 i (Finset.inl_mem_disjSum.1 hi)`.
-
-Conclude with `h1' i (Finset.inr_mem_disjSum.1 hi)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsHeckeOpFun.add {X : GenModel gb N} {k : ℕ} {f f' : G.GAf → ℂ} {a b : ℕ}
     {T T' : Module.End ℂ (hodgeH (zs X k) a b)} (H : IsHeckeOpFun L X k f a b T) (H' : IsHeckeOpFun L X k f' a b T') :
@@ -791,7 +775,7 @@ theorem IsHeckeOpFun.add {X : GenModel gb N} {k : ℕ} {f f' : G.GAf → ℂ} {a
   · exact h1' i (Finset.inr_mem_disjSum.1 hi)
 
 /- English proof (translation)
-Take `⟨J, s, h, c, -, -, rfl, -⟩` from `H`. Conclude with `Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (Formalism.UG.Final.DosetIndMem _ _ _ _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsHeckeOpFun.mem_hecke {X : GenModel gb N} {k : ℕ} {f : G.GAf → ℂ} {a b : ℕ}
     {T : Module.End ℂ (hodgeH (zs X k) a b)} (H : IsHeckeOpFun L X k f a b T) : f ∈ Formalism.UG.Hecke ℂ (L.KN N) := by
@@ -815,16 +799,14 @@ def awayGrp (G : HTGroup p) (S : Finset ℕ) : Subgroup G.GAf :=
   ⨅ (v : AwayP p) (_ : ∃ q ∈ S, q.Prime ∧ (q : ℤ) ∈ v.1.asIdeal), (ubcMap (AfP.eval v)).ker
 
 /- English proof (translation)
-Simplify using `only [awayGrp, Subgroup.mem_iInf, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_awayGrp {S : Finset ℕ} {g : G.GAf} :
     g ∈ awayGrp G S ↔ ∀ v : AwayP p, (∃ q ∈ S, q.Prime ∧ (q : ℤ) ∈ v.1.asIdeal) → ubcMap (AfP.eval v) g = 1 := by
   simp only [awayGrp, Subgroup.mem_iInf, MonoidHom.mem_ker]
 
 /- English proof (translation)
-Use `mem_awayGrp.2 fun v hv => Subtype.ext (Prod.ext (Units.ext ?_) (Units.ext ?_))` and prove the remaining obligations. Use `show Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C) ((a : AfP p) ⊗ₜ[ℚ] (1 : G.C)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, ha v hv, map_one]`. Both sides reduce to the same expression. Use `show AfP.eval v ((a : AfP p) * a) = 1`.
-
-Rewrite using `[map_mul, ha v hv, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalarAf_mem_awayGrp {S : Finset ℕ} {a : (AfP p)ˣ}
     (ha : ∀ v : AwayP p, (∃ q ∈ S, q.Prime ∧ (q : ℤ) ∈ v.1.asIdeal) → AfP.eval v (a : AfP p) = 1) :
@@ -847,7 +829,7 @@ def locUnit (v : AwayP p) (x : (v.1.adicCompletion ℚ)ˣ) : (AfP p)ˣ :=
       (by rw [Units.inv_mul]; exact RestrictedProduct.mulSingle_one _ _) }
 
 /- English proof (translation)
-Use `letI := Classical.decEq (AwayP p)`. Conclude with `RestrictedProduct.mulSingle_eq_same (fun w : AwayP p => w.1.adicCompletionIntegers ℚ) v _`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eval_locUnit_same (v : AwayP p) (x : (v.1.adicCompletion ℚ)ˣ) :
     AfP.eval v (locUnit v x : AfP p) = x := by
@@ -855,7 +837,7 @@ theorem eval_locUnit_same (v : AwayP p) (x : (v.1.adicCompletion ℚ)ˣ) :
   exact RestrictedProduct.mulSingle_eq_same (fun w : AwayP p => w.1.adicCompletionIntegers ℚ) v _
 
 /- English proof (translation)
-Use `letI := Classical.decEq (AwayP p)`. Conclude with `RestrictedProduct.mulSingle_eq_of_ne (fun w : AwayP p => w.1.adicCompletionIntegers ℚ) _ hw`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eval_locUnit_of_ne {v w : AwayP p} (hw : w ≠ v) (x : (v.1.adicCompletion ℚ)ˣ) :
     AfP.eval w (locUnit v x : AfP p) = 1 := by
@@ -865,9 +847,9 @@ theorem eval_locUnit_of_ne {v w : AwayP p} (hw : w ≠ v) (x : (v.1.adicCompleti
 variable (L : Link D G)
 
 /- English proof (translation)
-Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.finBasis ℤ D.La`. Establish `hr : 0 < Module.finrank ℤ D.La`. Rewrite using `[D.rankLa]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Nat.mul_pos (Nat.mul_pos D.m_pos D.n_pos) Module.finrank_pos`. Establish `h` using `GlobalTheory.LKGeo.KNLevel.repr_isIntAf b _ (ha _ (GlobalTheory.LKGeo.KNLevel.bA_mem b ⟨0, hr⟩)) ⟨0, hr⟩`. Rewrite `h` using `[actG_scalarAf, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, _root_.mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isIntAf_of_scalarAf_mem {a : (AfP p)ˣ} (ha : scalarAf G a ∈ latMonoid L) : IsIntAf (a : AfP p) := by
   classical
@@ -882,9 +864,9 @@ theorem isIntAf_of_scalarAf_mem {a : (AfP p)ˣ} (ha : scalarAf G a ∈ latMonoid
     _root_.mul_one] at h
 
 /- English proof (translation)
-Use `⟨scalarAf_mem_awayGrp fun w ⟨q, hq, hqp, hw⟩ => eval_locUnit_of_ne (fun (e : w = v) => hv q hq hqp (by rw [← e]; exact hw)) x, scalarAf_mem_latMonoid L fun w => ?_, fun hK => hx' ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Rewrite using `[eval_locUnit_same]` and apply the resulting hypothesis. Rewrite using `[eval_locUnit_of_ne e]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `e : (scalarAf G (locUnit v x))⁻¹ = scalarAf G (locUnit v x⁻¹)` using `Subtype.ext (Prod.ext (Units.ext rfl) (Units.ext rfl))`. Establish `h` using `isIntAf_of_scalarAf_mem L (e ▸ mem_latMonoid_of_mem_KN L ((L.KN N).inv_mem hK)) v`. Rewrite `h` using `[eval_locUnit_same]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem scalarAf_locUnit_spec {S : Finset ℕ} {v : AwayP p} (hv : ∀ q ∈ S, q.Prime → (q : ℤ) ∉ v.1.asIdeal)
     {x : (v.1.adicCompletion ℚ)ˣ} (hx : (x : v.1.adicCompletion ℚ) ∈ v.1.adicCompletionIntegers ℚ)
@@ -915,20 +897,20 @@ def heckeAway (N : ℕ) (S : Finset ℕ) : Submodule ℂ (G.GAf → ℂ) :=
       smul_mem' := fun c f hf g hg => hf g fun h => hg (by simp [h]) }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_heckeAway {N : ℕ} {S : Finset ℕ} {f : G.GAf → ℂ} :
     f ∈ heckeAway L N S ↔ f ∈ Formalism.UG.Hecke ℂ (L.KN N) ∧ ∀ g, f g ≠ 0 → g ∈ awaySupp L N S := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.UG.Final.DosetIndMem _ _ _ _, fun _ hg => ⟨h, hS, hΔ, Set.mem_of_indicator_ne_zero hg⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem dosetInd_mem_heckeAway {N : ℕ} {S : Finset ℕ} {h : G.GAf} (hS : h ∈ awayGrp G S) (hΔ : h ∈ latMonoid L) :
     Formalism.UG.dosetInd ℂ (L.KN N) h⁻¹ ∈ heckeAway L N S :=
   ⟨Formalism.UG.Final.DosetIndMem _ _ _ _, fun _ hg => ⟨h, hS, hΔ, Set.mem_of_indicator_ne_zero hg⟩⟩
 
 /- English proof (translation)
-Take `⟨h, -, hΔ, hg⟩` from `hg`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`. Rewrite using `[mul_inv_rev, mul_inv_rev, inv_inv]`. Conclude with `mul_mem (mem_latMonoid_of_mem_KN L ((L.KN N).inv_mem hb)) (mul_mem hΔ (mem_latMonoid_of_mem_KN L ((L.KN N).inv_mem ha)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_latMonoid_of_mem_awaySupp {N : ℕ} {S : Finset ℕ} {g : G.GAf} (hg : g ∈ awaySupp L N S) :
     g⁻¹ ∈ latMonoid L := by
@@ -945,7 +927,7 @@ section Basic₂
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {gb : GBase D.toG ℂ} {N : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `dosetInd_mem_heckeAway L (N := N) (S := S) (one_mem _) (one_mem _)`. Establish `h2` using `(isHeckeOpZ_one L hN X k a b).isHeckeOpFun`. Rewrite `h1`, `h2` using `[inv_one]`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 example (hN : N.Coprime p) (S : Finset ℕ) (X : GenModel gb N) (k a b : ℕ) :
     Formalism.UG.dosetInd ℂ (L.KN N) 1 ∈ heckeAway L N S ∧ IsHeckeOpFun L X k (Formalism.UG.dosetInd ℂ (L.KN N) 1) a b 1 := by
@@ -955,19 +937,19 @@ example (hN : N.Coprime p) (S : Finset ℕ) (X : GenModel gb N) (k a b : ℕ) :
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [actG_natScalar]; exact nsmul_mem hv c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (c : ℕ) (hc : c ≠ 0) : scalarAf G (natUnit p c hc) ∈ latMonoid L := fun v hv => by
   rw [actG_natScalar]; exact nsmul_mem hv c
 
 /- English proof (translation)
-Rewrite using `[hkIndex, heckeLevel_inv_of_comm _ (scalarAf_comm a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (a : (AfP p)ˣ) (N' : ℕ) : hkIndex L N N' (scalarAf G a) = (L.KN N').relIndex (L.KN N) := by
   rw [hkIndex, heckeLevel_inv_of_comm _ (scalarAf_comm a)]
 
 /- English proof (translation)
-Introduce and unpack `⟨k', X', C, _, _, H, -⟩`. Conclude with `(Fact.out : p.Prime).ne_one (Nat.Coprime.eq_one_of_dvd H.1.symm (hN.mul_right k'))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 example (hN : p ∣ N) (X : GenModel gb N) (k : ℕ) (h : G.GAf) (a b : ℕ) (T : Module.End ℂ (hodgeH (zs X k) a b)) :
     ¬ IsHeckeOpZ L X k h a b T := by
@@ -975,7 +957,7 @@ example (hN : p ∣ N) (X : GenModel gb N) (k : ℕ) (h : G.GAf) (a b : ℕ) (T 
   exact (Fact.out : p.Prime).ne_one (Nat.Coprime.eq_one_of_dvd H.1.symm (hN.mul_right k'))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.splitP, D.perfP, h⟩`.
+Supply the required witnesses or components.
 -/
 example (h : ¬ (p : ℤ) ∣ NumberField.discr D.F) : IsGoodPrime D.toG p := ⟨D.splitP, D.perfP, h⟩
 

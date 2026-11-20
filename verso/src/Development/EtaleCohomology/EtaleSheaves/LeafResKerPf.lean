@@ -6,23 +6,21 @@ open LateralTheory.E.LeafCoordsPf LateralTheory.E.LeafCoordsPointPf
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `d e A B _ _ _ I _ _ P _ hIP`. Use `set K := P.ResidueField`. Use `set C := B ⧸ I`. Use `set S : Submodule K (K ⊗[B] Ω[B⁄A]) := Submodule.span K (Set.range fun x : I => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (x : B))`. Set `g : Ω[B⁄A] →ₗ[B] Ω[C⁄A]` to `(KaehlerDifferential.map A A B C).restrictScalars B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hI : ∀ a ∈ I, (Algebra.ofId B K) a = 0` using `fun a ha => by`. Simplify using `only [Algebra.ofId_apply]`. Conclude with `(Ideal.algebraMap_residueField_eq_zero).mpr (hIP ha)`. Set `φ : C →ₗ[B] K` to `(Ideal.Quotient.liftₐ I (Algebra.ofId B K) hI).toLinearMap`. Establish `hφ1 : φ 1 = 1` using `by simp [φ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ ω : Ω[B⁄A], g ω = 0 → (1 : K) ⊗ₜ[B] ω ∈ S`. Introduce `ω hω`. Establish `hm : KaehlerDifferential.mapBaseChange A B C ((1 : C) ⊗ₜ[B] ω) = 0`. Rewrite using `[KaehlerDifferential.mapBaseChange_tmul, one_smul]`. Conclude with `hω`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange A B C Ideal.Quotient.mk_surjective ((1 : C) ⊗ₜ[B] ω)).mp hm`. Take `⟨x, rfl⟩` from `Ideal.toCotangent_surjective _ y`. Rewrite `hy` using `[KaehlerDifferential.kerCotangentToTensor_toCotangent]`. Establish `hx : (x : B) ∈ I`. Use `x.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[RingHom.mem_ker]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp this`. Use `congrArg (LinearMap.rTensor (Ω[B⁄A]) φ) hy` as an intermediate fact. Simplify using `only [LinearMap.rTensor_tmul, hφ1] at this`. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`. Establish `hex` using `lTensor_exact K (LinearMap.exact_subtype_ker_map g) (KaehlerDifferential.map_surjective_of_surjective A A B C Ideal.Quotient.mk_surjective)`. Introduce `z hz`. Rewrite `hz` using `[LinearMap.mem_ker]`. Establish `hz' : LinearMap.lTensor K g z = 0`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz, nu]`. Both sides reduce to the same expression. Take `⟨w, rfl⟩` from `(hex z).mp hz'`. Use `clear hz hz'`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul k n`. Rewrite using `[LinearMap.lTensor_tmul]`. Establish `: k ⊗ₜ[B] ((LinearMap.ker g).subtype n) = k • ((1 : K) ⊗ₜ[B] (n : Ω[B⁄A]))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
-
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `S.smul_mem k (h2 n n.2)`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `S.add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem LeafResKer_of : LeafResKer := by
   intro d e A B _ _ _ I _ _ P _ hIP

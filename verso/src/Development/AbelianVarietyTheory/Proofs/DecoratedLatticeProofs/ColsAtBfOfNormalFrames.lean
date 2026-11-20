@@ -20,17 +20,17 @@ noncomputable section
 namespace GlobalTheory.ColsBFSplit
 
 /- English proof (translation)
-Establish `hpe : q.pr q.e = 1`. Establish `h` using `q.pr_sec 1`. Rewrite `h` using `[show q.sec 1 = q.e by simpa using q.sec_pr 1]`. Then use the resulting hypothesis. Establish `hpce : q.pr (cA D q.e) = 0`. Establish `h : q.pr (q.e * cA D q.e) = 0` using `by rw [q.split.2.1, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_mul, hpe, one_mul]`. Then use the resulting hypothesis. Establish `heI` using `GlobalTheory.FinPl.LatIndHalf.e_mem_idAt q`. Establish `heInt : q.e ∈ GlobalTheory.FinPl.intAt D (· = q.v)` using `(GlobalTheory.T.splitPlace_integralAdele_iff_both_components D k q q.e heI).2 ⟨by rw [hpe]; exact one_mem _, by rw [hpce]; exact zero_mem _⟩`. Take `⟨h1, h2⟩` from `hU.1 q.e heInt`. Establish `a1` using `((GlobalTheory.T.splitPlace_integralAdele_iff_both_components D k q _ h1.1).1 h1).1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a2` using `((GlobalTheory.T.splitPlace_integralAdele_iff_both_components D k q _ h2.1).1 h2).1`. Rewrite `a1`, `a2` using `[map_mul, hpe, mul_one]`. Establish `hne : q.pr (incA D D.host.xi0) ≠ 0`. Introduce `h0`. Establish `: q.pr (incA D D.host.xi0⁻¹) * q.pr (incA D D.host.xi0) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel₀ (GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero (D := D)), map_one, map_one]`. Rewrite `this` using `[h0, mul_zero]`. Conclude with `zero_ne_one this`. Establish `hinv : q.pr (incA D D.host.xi0⁻¹) = (q.pr (incA D D.host.xi0))⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel₀ (GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero (D := D)), map_one, map_one]`. Rewrite `a2` using `[hinv]`. Establish `b1` using `(Valuation.mem_integer_iff _ _).1 a1`. Establish `b2` using `(Valuation.mem_integer_iff _ _).1 a2`. Rewrite `b2` using `[map_inv₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `valuation k (q.pr (incA D D.host.xi0)) = 1`. Establish `hv0 : valuation k (q.pr (incA D D.host.xi0)) ≠ 0` using `by simpa using hne`. Conclude with `le_antisymm b1 ((inv_le_one₀ (zero_lt_iff.2 hv0)).1 b2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem xi_unit {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) (hU : q.UnitAA) : valuation k ((ofSplit q).xi) = 1 := by
@@ -65,7 +65,7 @@ theorem xi_unit {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   exact le_antisymm b1 ((inv_le_one₀ (zero_lt_iff.2 hv0)).1 b2)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.splitPlace_mem_latticeCompletion_iff_parts D k q S L _ (fun r => Ideal.mul_mem_right _ _ ha), GlobalTheory.T.splitPlace_wPart_frameColumnMultiple_mem_iff D k q S L Y F u m₀ c₀ hI h0 hc0 a, GlobalTheory.T.splitPlace_conjPart_lineMultiple_mem_iff D k q S L Y F u u' …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem line_crit {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) {S : HSp D} {L : GlobalTheory.FinPl.Lat S} {Y : Type} [Fintype Y] [DecidableEq Y]

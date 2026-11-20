@@ -13,17 +13,17 @@ open Formalism.REAL (UJ KG toM expG inG)
 namespace GlobalTheory.PsCo.Pc1
 
 /- English proof (translation)
-Introduce `n ε μ _ s hs dt _ _ φ hφ`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.T.indefiniteUnitaryGroup_haar_isMulRightInvariant n ε μ`. Establish `hp` using `isProperOrbit_realUJ hs`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, H, P, hZ, hH, rfl⟩` from `hφ`. Establish `hZ' : inG ε Z` using `(GlobalTheory.T.indefiniteUnitaryLieAlgebra_mem_iff_entries n ε Z).2 hZ`. Take `⟨hc, hinv⟩` from `GlobalTheory.expG_continuous_inv n ε Z hZ'`. Take `⟨hsh, hd⟩` from `GlobalTheory.PsCo.Pc1.B.cutoffPolynomial_conjugation_deriv_mem_shapeSpan n ε Z H P hZ hH`. Establish `hb : bas ε H P ∈ ShapeM ε P.totalDegree` using `Submodule.subset_span ⟨H, P, hH, le_rfl, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h1, h2⟩` from `GlobalTheory.T.pseudoCoeffShape_smooth_compactSupport n ε _ _ hb`. Take `⟨-, -, h3, h4⟩` from `GlobalTheory.T.pseudoCoeffShape_smooth_compactSupport n ε _ _ hsh`. Use `hasOrbInt_zero_of_hasDerivAt_conj (UJ ε) μ s hp dt (fun t => expG ε Z t) hc _ _ h1 h2 h3 h4 fun g u => ?_` and prove the remaining obligations. Establish `e : ∀ v : ℝ, toM ((expG ε Z v)⁻¹ * g * expG ε Z v) = NormedSpace.exp (-((v : ℂ) • Z)) * toM g * NormedSpace.exp ((v : ℂ) • Z)` using `fun v => by`. Rewrite using `[← hinv v, ← Formalism.REAL.toM_expG ε Z v hZ']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [e]`. Conclude with `hd (toM g) u`. Consider the case `zero`. Establish `h` using `(hp.hasOrbInt (dh := μ) (dt := dt) (f := fun _ => (0 : ℂ)) continuous_const HasCompactSupport.zero).smul 0`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Rewrite `h` using `[zero_mul, zero_smul]`. Conclude with `h`. Consider the case `add φ ψ _ _ h1 h2`. Establish `h` using `h1.add h2`. Rewrite `h` using `[add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Consider the case `smul a φ _ h1`. Establish `h` using `h1.smul a`. Rewrite `h` using `[mul_zero]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem orbInt_adSpan_eq_zero : GlobalTheory.PsCo.Pc1.StOrbAd := by
   intro n ε μ _ s hs dt _ _ φ hφ

@@ -50,13 +50,13 @@ def derOpen {S X Y : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X} {π' : Y ⟶ S} {e
       exact (hinv _ _).trans (appLE_appLE w _ _ _ a).symm }
 
 /- English proof (translation)
-Set `ψ (V : S.Opens) : (Γ(F₁, V) × Γ(F₂, V)) ≃ₗ[Γ(S, V)] Γ(F, V)` to `LinearEquiv.ofBijective ((QCoh.appLinear p₁ V).coprod (QCoh.appLinear p₂ V)) ⟨by`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨a, b⟩ hab`. Express the relevant statement in the definitionally equal form `p₁.app V a + p₂.app V b = 0 at hab`. Establish `a₁` using `congrArg (i₁.app V) hab`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `a₂` using `congrArg (i₂.app V) hab`. Rewrite `a₁`, `a₂` using `[map_add, map_zero, QCoh.app_app, QCoh.app_app]`. Rewrite `a₁` using `[h₁, h₄]`. Rewrite `a₂` using `[h₃, h₂]`. Use `ext`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `using a₁`. Simplify using `using a₂, fun c => ⟨(i₁.app V c, i₂.app V c), congr(($h).app V c)⟩⟩`. Use `isFrame_of_basis (fun V k => (((he₁.basis k).prod (he₂.basis k)).map (ψ V)).reindex finSumFinEquiv) fun V k i => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_apply_apply, Module.Basis.map_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `i with i | i` into its components or cases. Express the relevant statement in the definitionally equal form `p₁.app V _ + p₂.app V _ = _`. Simplify using `[app_resM]`. Express the relevant statement in the definitionally equal form `p₁.app V _ + p₂.app V _ = _`. Simplify using `[app_resM]`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isFrame_append {S : Scheme.{0}} {F F₁ F₂ : S.Modules} {p₁ : F₁ ⟶ F} {p₂ : F₂ ⟶ F} {i₁ : F ⟶ F₁}
     {i₂ : F ⟶ F₂} (h : i₁ ≫ p₁ + i₂ ≫ p₂ = 𝟙 _) (h₁ : p₁ ≫ i₁ = 𝟙 _) (h₂ : p₂ ≫ i₂ = 𝟙 _) (h₃ : p₁ ≫ i₂ = 0)

@@ -14,7 +14,7 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.MixHt.DimBasic
 
 /- English proof (translation)
-Establish `h` using `topologicalKrullDim_eq_of_isEmbedding (he.comp Topology.IsEmbedding.subtypeVal) (Z := e '' S) (by rw [Set.range_comp, Subtype.range_coe])`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_image {W T : Type*} [TopologicalSpace W] [TopologicalSpace T] {e : W → T}
     (he : Topology.IsEmbedding e) (S : Set W) :
@@ -24,15 +24,15 @@ theorem dim_image {W T : Type*} [TopologicalSpace W] [TopologicalSpace T] {e : W
   exact h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hmax` using `Order.krullDim_nonpos_iff_forall_isMax.1 (show Order.krullDim (IrreducibleCloseds (closure ({x} : Set T))) ≤ 0 from h.le)`. Use `closure_subset_iff_isClosed.1 fun w hw => ?_` and prove the remaining obligations. Set `s : closure ({x} : Set T)` to `⟨x, subset_closure rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `t : closure ({x} : Set T)` to `⟨w, hw⟩`. Establish `hst : s ⤳ t` using `Topology.IsInducing.subtypeVal.specializes_iff.1 (specializes_iff_mem_closure.2 hw)`. Set `A : IrreducibleCloseds (closure ({x} : Set T))` to `⟨closure {t}, isIrreducible_singleton.closure, isClosed_closure⟩`. Set `B : IrreducibleCloseds (closure ({x} : Set T))` to `⟨closure {s}, isIrreducible_singleton.closure, isClosed_closure⟩`. Establish `hAB : A ≤ B` using `specializes_iff_closure_subset.1 hst`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hBA : B ≤ A` using `hmax A hAB`. Establish `hts : t ⤳ s` using `specializes_iff_closure_subset.2 hBA`. Establish `e` using `(hst.antisymm hts).eq`. Conclude with `Set.mem_singleton_iff.2 (congrArg Subtype.val e).symm`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.closure_eq]`. Establish `: Subsingleton ({x} : Set T)` using `Set.subsingleton_singleton.coe_sort`. Set `pt : ({x} : Set T)` to `⟨x, rfl⟩`. Establish `: Nonempty (IrreducibleCloseds ({x} : Set T))` using `⟨⟨closure {pt}, isIrreducible_singleton.closure, isClosed_closure⟩⟩`. Use `le_antisymm (Order.krullDim_nonpos_iff_forall_isMax.2 fun a b _ => ?_) Order.krullDim_nonneg` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _`. Establish `ha : (a : Set ({x} : Set T)) = Set.univ` using `a.isIrreducible.nonempty.eq_univ`. Use `show y ∈ (a : Set ({x} : Set T))`. Rewrite using `[ha]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem dim_closure_eq_zero_iff {T : Type*} [TopologicalSpace T] [T0Space T] (x : T) :
     topologicalKrullDim (closure ({x} : Set T)) = 0 ↔ IsClosed ({x} : Set T) := by
@@ -67,7 +67,7 @@ theorem dim_closure_eq_zero_iff {T : Type*} [TopologicalSpace T] [T0Space T] (x 
     rw [ha]; trivial
 
 /- English proof (translation)
-Establish `: Algebra.IsIntegral ℤ k` using `inferInstance`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ringKrullDim_le_one (k : Type) [CommRing k] [Module.Finite ℤ k] : ringKrullDim k ≤ 1 := by
   have : Algebra.IsIntegral ℤ k := inferInstance
@@ -77,9 +77,9 @@ theorem ringKrullDim_le_one (k : Type) [CommRing k] [Module.Finite ℤ k] : ring
     _ = 1 := IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField
 
 /- English proof (translation)
-Use `IsNoetherianRing.of_finite ℤ k` as an intermediate fact. Establish `hk` using `ringKrullDim_le_one k`. Use `topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `ProjSpace.exists_mem_chart k N x`. Use `⟨_, (ProjSpace.chart k N i).isOpen, hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[topologicalKrullDim_eq_of_isEmbedding (ProjSpace.chartι k N i).isOpenEmbedding.isEmbedding (congrArg SetLike.coe (ProjSpace.opensRange_chartι k N i))]`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := MvPolynomial {j // j ≠ i} k)).trans_le ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing]`. Simplify using the standard rewrite rules. Conclude with `(add_le_add_left hk _).trans_eq (add_comm _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dim_pspace_le (k : Type) [CommRing k] [Module.Finite ℤ k] (N : ℕ) :
     topologicalKrullDim (PSpace k N) ≤ (N + 1 : ℕ) := by
@@ -97,11 +97,11 @@ theorem dim_pspace_le (k : Type) [CommRing k] [Module.Finite ℤ k] (N : ℕ) :
   exact (add_le_add_left hk _).trans_eq (add_comm _ _)
 
 /- English proof (translation)
-Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Take `⟨N, j, _, hj⟩` from `hp`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hj ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsFinite (X.fromSpecResidueField x ≫ p ≫ spMap (Int.castRingHom k))` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Rewrite `hf` using `[← Spec.map_preimage (X.fromSpecResidueField x ≫ _), IsFinite.SpecMap_iff, RingHom.ext_int (Spec.preimage (X.fromSpecResidueField x ≫ p ≫ spMap (Int.castRingHom k))).hom (algebraMap ℤ (X.residueField x)), RingHom.finite_algebraMap]`. Take `⟨ℓ, _⟩` from `CharP.exists (X.residueField x)`. Break down `CharP.char_is_prime_or_zero (X.residueField x) ℓ with hℓ | rfl` into its components or cases. Use `Fact.mk hℓ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Set `` to `ZMod.algebra (X.residueField x) ℓ`. Use `Module.Finite.of_restrictScalars_finite ℤ (ZMod ℓ) (X.residueField x)` as an intermediate fact. Conclude with `Module.finite_of_finite (ZMod ℓ)`. Use `CharP.charP_to_charZero (X.residueField x)` as an intermediate fact. Conclude with `absurd (isField_of_isIntegral_of_isField (R := ℤ) (S := X.residueField x) (RingHom.injective_int _) (Field.toIsField _)) Int.not_isField`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_residueField (k : Type) [CommRing k] [Module.Finite ℤ k] {X : Scheme.{0}}
     (p : X ⟶ Sp k) (hp : IsProjOver p) {x : X} (hx : IsClosed ({x} : Set X)) :
@@ -128,7 +128,7 @@ theorem finite_residueField (k : Type) [CommRing k] [Module.Finite ℤ k] {X : S
       (RingHom.injective_int _) (Field.toIsField _)) Int.not_isField
 
 /- English proof (translation)
-Unfold `HasDim`. Rewrite using `[← Set.image_singleton, i.isClosedEmbedding.closure_image_eq, dim_image i.isClosedEmbedding.isEmbedding]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDim_map_iff {X Y : Scheme.{0}} (i : Y ⟶ X) [IsClosedImmersion i] (y : Y) (d : ℕ) :
     HasDim (i y) d ↔ HasDim y d := by
@@ -137,7 +137,7 @@ theorem hasDim_map_iff {X Y : Scheme.{0}} (i : Y ⟶ X) [IsClosedImmersion i] (y
     dim_image i.isClosedEmbedding.isEmbedding]
 
 /- English proof (translation)
-Unfold `HasDim`. Rewrite using `[(genericPoint_spec Y).def]`. Rewrite using `[IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ Y).isHomeomorph]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDim_genericPoint_iff (Y : Scheme.{0}) [IsIntegral Y] (d : ℕ) :
     HasDim (genericPoint Y) d ↔ topologicalKrullDim Y = d := by
@@ -152,15 +152,13 @@ namespace GlobalTheory.MixHt
 open DimBasic in
 
 /- English proof (translation)
-Introduce `k _ X p h`. Use `h.finite` as an intermediate fact. Use `⟨?_, fun x d d' hd hd' => ?_, fun x => ?_, fun x hx => finite_residueField k p h.isProjOver hx, fun Y i _ y d => hasDim_map_iff i y d, fun Y _ d => hasDim_genericPoint_iff Y d⟩` and prove the remaining obligations. Take `⟨N, j, _, -⟩` from `h.isProjOver`. Use `⟨N + 1, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁ : topologicalKrullDim (closure ({x} : Set X)) ≤ (N + 1 : ℕ)` using `(topologicalKrullDim_subspace_le X _).trans (j.isClosedEmbedding.isInducing.topologicalKrullDim_le.trans (dim_pspace_le k N))`. Set `pt : closure ({x} : Set X)` to `⟨x, subset_closure rfl⟩`. Establish `: Nonempty (IrreducibleCloseds (closure ({x} : Set X)))` using `⟨⟨closure {pt}, isIrreducible_singleton.closure, isClosed_closure⟩⟩`. Establish `h₂ : (0 : WithBot ℕ∞) ≤ topologicalKrullDim (closure ({x} : Set X))` using `Order.krullDim_nonneg`. Unfold `HasDim`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Generalize the expression as in `topologicalKrullDim (closure ({x} : Set X)) = a at *`. Proceed by induction on `a with`. Consider the case `bot => exact absurd h₂ (by simp)`. Consider the case `coe a`. Proceed by induction on `a with`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top => exact absurd h₁ (by rw [not_le]; exact WithBot.coe_lt_coe.2 (ENat.coe_lt_top _))`. Consider the case `coe a => exact ⟨a, by exact_mod_cast h₁, rfl⟩`. Unfold `HasDim at hd hd'`. Conclude with `hd.symm.trans hd'` after adjusting the coercions. Unfold `HasDim`.
-
-Conclude with `dim_closure_eq_zero_iff x` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 -/
 theorem hasDim_basic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsAmb p →
     (∃ m : ℕ, ∀ x : X, ∃ d ≤ m, HasDim x d) ∧

@@ -30,7 +30,7 @@ abbrev cosInd (a : F) (r : κ → FiniteAdeleRing (𝓞 F) F) : (κ → FiniteAd
   {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ a}.indicator (fun _ => (1 : ℂ))
 
 /- English proof (translation)
-Simplify using `[InfiniteAdeleRing.ringEquiv_mixedSpace]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem inf_rat (q : F) :
     InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (AF F) q).1 = mixedEmbedding F q := by
@@ -38,7 +38,7 @@ theorem inf_rat (q : F) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.scaled_coset_indicator_schwartz F κ a ha 0`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem boxInd_mem_SB {a : F} (ha : a ≠ 0) : boxInd F κ a ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) := by
   have h := GlobalTheory.T.scaled_coset_indicator_schwartz F κ a ha 0
@@ -47,14 +47,14 @@ theorem boxInd_mem_SB {a : F} (ha : a ≠ 0) : boxInd F κ a ∈ SB (κ → Fini
   simp
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pure_mem (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schr, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_trans (ψ : AddChar (AF F) ℂ) (ξ : κ → F) (Φ : (κ → AF F) → ℂ) :
     schr ψ ((fun i => algebraMap F (AF F) (ξ i)), (fun i => algebraMap F (AF F) ((0 : κ → F) i))) Φ =
@@ -63,9 +63,9 @@ theorem schr_trans (ψ : AddChar (AF F) ℂ) (ξ : κ → F) (Φ : (κ → AF F)
   simp [schr, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [pureA, hf, hg]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i + algebraMap F (AF F) (ξ i)).1) = InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 + mixedEmbedding F (ξ i)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inf_rat]`. Conclude with `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pure_shift (f f' : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (ξ : κ → F)
     (g g' : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (hf : ∀ x, f' x = f (x + fun i => mixedEmbedding F (ξ i)))
@@ -81,7 +81,7 @@ theorem pure_shift (f f' : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
   exact map_add _ _ _
 
 /- English proof (translation)
-Establish `h` using `hinv ξ 0 Φ hΦ`. Rewrite `h` using `[schr_trans]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem L_shift (ψ : AddChar (AF F) ℂ) (L : ((κ → AF F) → ℂ) → ℂ)
     (hinv : ∀ a b : κ → F, ∀ Φ ∈ schA F κ,
@@ -92,7 +92,7 @@ theorem L_shift (ψ : AddChar (AF F) ℂ) (L : ((κ → AF F) → ℂ) → ℂ)
   rwa [schr_trans] at h
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F ψ hψ.2.1 ξ 0 Φ`. Rewrite `h` using `[schr_trans]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem theta_shift (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (ξ : κ → F) (Φ : (κ → AF F) → ℂ) :
     thetaSum F (fun x => Φ (x + fun i => algebraMap F (AF F) (ξ i))) = thetaSum F Φ := by
@@ -100,15 +100,13 @@ theorem theta_shift (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (ξ : κ → F) (
   rwa [schr_trans] at h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.T.scaled_lattice_translation_invariant F κ a ha T (fun ξ hξ f f' hf => by`. Rewrite using `[← hT, ← hT]`. Establish `e` using `pure_shift f f' ξ (boxInd F κ a) (boxInd F κ a) hf (fun y => by`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, AddSubgroup.add_mem_cancel_right _ hξ])`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L_shift ψ L hinv ξ (pure_mem f (boxInd_mem_SB ha)))`. Use the proof step `(fun b hb f f' hf => by`. Rewrite using `[← hT, ← hT, ← GlobalTheory.T.scaled_lattice_fourier_invariant F ψ hψ κ a ha b hb f f' hf]`. Establish `h` using `hinv 0 b _ (pure_mem f (boxInd_mem_SB ha))`. Establish `e0 : (fun i => algebraMap F (AF F) ((0 : κ → F) i)) = 0` using `by funext i; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[e0]`. Conclude with `h)`. Use `⟨c, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hT, hc f]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `thetaSum`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Establish `e1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) i).1) = fun i => mixedEmbedding F (ξ i)`. Use function extensionality and compare the values at `i`. Conclude with `inf_rat (ξ i)`.
-
-Establish `e2 : (fun i => ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) i).2) = fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)` using `rfl`. Simplify using `only [pureA, e1, e2, Set.indicator_apply, SetLike.mem_coe, Set.mem_setOf_eq]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem box_eq (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (L : ((κ → AF F) → ℂ) → ℂ)
     (hinv : ∀ a b : κ → F, ∀ Φ ∈ schA F κ,
@@ -148,22 +146,22 @@ namespace GlobalTheory.ThetaFunctionalUnique
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.scaled_coset_indicator_schwartz F κ a ha r`.
+A detailed English derivation is pending.
 -/
 theorem cosInd_mem_SB {a : F} (ha : a ≠ 0) (r : κ → FiniteAdeleRing (𝓞 F) F) :
     cosInd F κ a r ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) :=
   GlobalTheory.T.scaled_coset_indicator_schwartz F κ a ha r
 
 /- English proof (translation)
-Take `⟨ξ, hξ⟩` from `GlobalTheory.T.finite_adele_approx_scaled F κ a ha r`. Establish `hs : {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ a} = {y | y - (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `add_mem h hξ` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `h`. Use `sub_mem h hξ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hr : cosInd F κ a r = cosInd F κ a (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))`. Simplify using `only [cosInd, hs]`. Rewrite using `[hr]`. Use `set f' := SchwartzMap.compSubConstCLM ℂ (-(fun i => mixedEmbedding F (ξ i))) f with hf'def`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf' : ∀ x, f' x = f (x + fun i => mixedEmbedding F (ξ i))`. Introduce `x`. Simplify using `[hf'def, SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add]`. Establish `e` using `pure_shift f f' ξ (cosInd F κ a (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))) (boxInd F κ a) hf' (fun y => by simp only [Set.indicator_apply, SetLike.mem_coe, Set.mem_setOf_eq, add_sub_cancel_right])`. Establish `hm` using `pure_mem f (cosInd_mem_SB ha (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← L_shift ψ L hinv ξ hm, ← theta_shift ψ hψ ξ, e, hc f']`.
+A detailed English derivation is pending.
 -/
 theorem cos_eq (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (L : ((κ → AF F) → ℂ) → ℂ)
     (hinv : ∀ a b : κ → F, ∀ Φ ∈ schA F κ,
@@ -198,9 +196,9 @@ theorem cos_eq (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (L : ((κ → AF F) �
   rw [← L_shift ψ L hinv ξ hm, ← theta_shift ψ hψ ξ, e, hc f']
 
 /- English proof (translation)
-Establish `hL0 : L 0 = 0`. Establish `h` using `hsmul 0 0 (zero_mem _)`. Simplify using `using h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hL0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hadd _ (hΦ j (Finset.mem_insert_self _ _)) _ (Submodule.sum_mem _ fun k hk => hΦ k (Finset.mem_insert_of_mem hk)), ih fun k hk => hΦ k (Finset.mem_insert_of_mem hk)]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem L_sum (L : ((κ → AF F) → ℂ) → ℂ) (hadd : ∀ Φ ∈ schA F κ, ∀ Ψ ∈ schA F κ, L (Φ + Ψ) = L Φ + L Ψ)
     (hsmul : ∀ (c : ℂ), ∀ Φ ∈ schA F κ, L (c • Φ) = c * L Φ) {ι : Type} (s : Finset ι)
@@ -216,7 +214,7 @@ theorem L_sum (L : ((κ → AF F) → ℂ) → ℂ) (hadd : ∀ Φ ∈ schA F κ
       ih fun k hk => hΦ k (Finset.mem_insert_of_mem hk)]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [thetaSum]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, GlobalTheory.WeilM.thetaSum_add F (hΦ j (Finset.mem_insert_self _ _)) (Submodule.sum_mem _ fun k hk => hΦ k (Finset.mem_insert_of_mem hk)), ih fun k hk => hΦ k (Finset.mem_insert_of_mem hk)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_sum {ι : Type} (s : Finset ι) (Φ : ι → (κ → AF F) → ℂ) (hΦ : ∀ j ∈ s, Φ j ∈ schA F κ) :
     thetaSum F (∑ j ∈ s, Φ j) = ∑ j ∈ s, thetaSum F (Φ j) := by
@@ -229,7 +227,7 @@ theorem theta_sum {ι : Type} (s : Finset ι) (Φ : ι → (κ → AF F) → ℂ
       ih fun k hk => hΦ k (Finset.mem_insert_of_mem hk)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pure_sum (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {ι : Type} (s : Finset ι)
     (w : ι → ℂ) (g : ι → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
@@ -240,15 +238,15 @@ theorem pure_sum (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {ι 
   ring
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `GlobalTheory.T.scaled_indicator_coset_sum F κ a ha m hm`. Take `⟨f, hf⟩` from `GlobalTheory.T.theta_sum_indicator_nonzero F κ a ha`. Establish `ham : a * (m : F) ≠ 0` using `mul_ne_zero ha (by simpa using hm)`. Establish `hb : boxInd F κ a = cosInd F κ a 0`. Unfold `boxInd cosInd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `hsplit : pureA F f (boxInd F κ a) = ∑ ξ ∈ R, (1 : ℂ) • pureA F f (cosInd F κ (a * m) (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)))`. Rewrite using `[← pure_sum]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[show boxInd F κ a = _ from hR]`. Simplify using the standard rewrite rules. Establish `hmem : ∀ ξ ∈ R, (1 : ℂ) • pureA F f (cosInd F κ (a * m) (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))) ∈ schA F κ` using `fun ξ _ => Submodule.smul_mem _ _ (pure_mem f (cosInd_mem_SB ham _))`. Establish `h1` using `hc a ha 0 f`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hb]`. Establish `h2 : L (pureA F f (boxInd F κ a)) = c (a * m) * thetaSum F (pureA F f (boxInd F κ a))`. Rewrite using `[hsplit, L_sum L hadd hsmul R _ hmem, theta_sum R _ hmem, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Rewrite using `[one_smul, hc _ ham]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hf (h1.symm.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem const_mul (L : ((κ → AF F) → ℂ) → ℂ) (hadd : ∀ Φ ∈ schA F κ, ∀ Ψ ∈ schA F κ, L (Φ + Ψ) = L Φ + L Ψ)
     (hsmul : ∀ (c : ℂ), ∀ Φ ∈ schA F κ, L (c • Φ) = c * L Φ) (c : F → ℂ)
@@ -285,27 +283,27 @@ end GlobalTheory.ThetaFunctionalUnique
 namespace GlobalTheory.ThetaFunctionalUnique
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ L hadd hsmul hadm hinv`. Establish `hbox : ∀ a : F, ∃ c : ℂ, a ≠ 0 → ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, L (pureA F f (boxInd F κ a)) = c * thetaSum F (pureA F f (boxInd F κ a))`. Introduce `a`. Distinguish the cases in `ha : a = 0`. Conclude with `⟨0, fun h => absurd ha h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨T, hT⟩` from `hadm _ (boxInd_mem_SB ha)`. Take `⟨c, hc⟩` from `box_eq ψ hψ L hinv ha T hT`. Conclude with `⟨c, fun _ => hc⟩`. Use `choose c hc using hbox`. Establish `hcos : ∀ a : F, a ≠ 0 → ∀ (r : κ → FiniteAdeleRing (𝓞 F) F) (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ), L (pureA F f (cosInd F κ a r)) = c a * thetaSum F (pureA F f (cosInd F κ a r))` using `fun a ha r f => cos_eq ψ hψ L hinv ha (hc a ha) r f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ a : F, a ≠ 0 → c a = c 1`. Introduce `a ha`. Take `⟨p, q, hq, hpq⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) a`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hqF : (algebraMap (𝓞 F) F q) ≠ 0` using `by simpa using hq0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← hpq]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : a * (q : F) = 1 * (p : F)`. Rewrite using `[← hpq]`. Establish `: (algebraMap (𝓞 F) F q) = (q : F)` using `rfl`. Establish `: (algebraMap (𝓞 F) F p) = (p : F)` using `rfl`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨c 1, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hΦ' : Φ ∈ Submodule.span ℂ {Φ | ∃ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) ∧ Φ = pureA F f g}` using `hΦ`. Proceed by induction on `hΦ' using Submodule.span_induction with`. Consider the case `mem x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f, g, hg, rfl⟩` from `hx`. Take `⟨a, ha, R, hR⟩` from `GlobalTheory.EvAdm.exists_sum_cosets hg`. Establish `hsplit : pureA F f g = ∑ r ∈ R, g r • pureA F f (cosInd F κ a r)`. Rewrite using `[← pure_sum]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hmem : ∀ r ∈ R, g r • pureA F f (cosInd F κ a r) ∈ schA F κ` using `fun r _ => Submodule.smul_mem _ _ (pure_mem f (cosInd_mem_SB ha r))`. Rewrite using `[hsplit, L_sum L hadd hsmul R _ hmem, theta_sum R _ hmem, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hsmul _ _ (pure_mem f (cosInd_mem_SB ha r)), GlobalTheory.WeilM.thetaSum_smul F, hcos a ha r f, hall a ha]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero`. Establish `h` using `hsmul 0 0 (zero_mem _)`. Simplify using `only [zero_smul, zero_mul] at h`. Rewrite using `[h]`. Simplify using `[thetaSum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y hx hy ihx ihy`. Rewrite using `[hadd x hx y hy, GlobalTheory.WeilM.thetaSum_add F hx hy, ihx hx, ihy hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul t x hx ih`. Rewrite using `[hsmul t x hx, GlobalTheory.WeilM.thetaSum_smul F, ih hx]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (L : ((κ → AF F) → ℂ) → ℂ),

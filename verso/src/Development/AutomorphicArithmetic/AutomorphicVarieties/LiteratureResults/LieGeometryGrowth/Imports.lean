@@ -9,15 +9,15 @@ open UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Geo.Cs
 open scoped Topology
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U Ξ f lam hf hl Φ hD hΦ q k A B R hA hB s p hp hR`. Take `⟨c, hc⟩` from `UpperTheory.V.Lit.Geo.Cs.locBd E a p hp`. Take `⟨D, hD0, hmv⟩` from `UpperTheory.V.Lit.Geo.Cs.move E a ho U Ξ q k c`. Take `⟨B₀, hB₀⟩` from `hl.bdd c`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ContinuousAt (Φ (y : GL (Fin a) (Af E) ⧸ U)) p` using `((hΦ.1 _).continuousOn.continuousAt (ho.mem_nhds hp))`. Establish `hev : ∀ᶠ x in 𝓝 p, R < Φ (y : GL (Fin a) (Af E) ⧸ U) x` using `hcont.eventually (lt_mem_nhds hR)`. Use `⟨_, hc.and hev, D * Real.exp (B * (B₀ + |lam (finGL E a y)|)), fun M hM w hw x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨h, hh, rfl⟩, hx⟩` from `hx`. Rewrite `hx` using `[hD h y]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hw h y hx.le`. Establish `h2` using `hmv w 1 y h _ hh (by rw [one_mul]; exact h1)`. Rewrite `h2` using `[Tw_one]`. Use `h2.mono ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_comm _ M]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hM) hD0` and prove the remaining obligations. Establish `h3 : |lam (pt h y)| ≤ B₀ + |lam (finGL E a y)|`. Rewrite using `[pt, hl.add]`. Conclude with `(abs_add_le _ _).trans (add_le_add (hB₀ h hh) le_rfl)`. Establish `h4` using `mul_nonneg hA (hf (pt h y))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `mul_le_mul_of_nonneg_left h3 hB`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.loc :
     UpperTheory.V.Lit.Geo.Cs.Loc := by

@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 theorem toUpl_coe (g : G (W.Lp L) Ω) : (toUpl Ω L g).1 = galEmb ℚ (W.Lp L) Ω g := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨s, hs⟩`. Use `⟨AlgEquiv.ofRingEquiv (f := s.toRingEquiv) (fun x => hs x.1 x.2), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/
@@ -48,7 +48,7 @@ theorem toUpl_surj : Function.Surjective (toUpl Ω L) := by
   rfl
 
 /- English proof (translation)
-Introduce `g h hgh`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Use `congrArg (fun u : upl Ω L => (u : G ℚ Ω) x) hgh` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toUpl_inj : Function.Injective (toUpl Ω L) := by
   intro g h hgh
@@ -68,11 +68,11 @@ Both sides reduce to the same expression.
 theorem GalLink.galois_link_projection_coe (k : GalLink η Ψ σ g₁ B M L Φ) (g : G L Ω) : (k.p0 g).1 = k.p (toUpl Ω L (W.resP L Ω g)) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Rewrite using `[galEmb_resP]`. Establish `hm : galEmb ℚ L Ω h ∈ galOf ℚ L Ω` using `fun x => h.commutes x`. Rewrite `hm` using `[k.2]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm.2`. Introduce `hη`. Establish `hm : galEmb ℚ (W.Lp L) Ω g ∈ upl Ω L ⊓ η.ker` using `⟨(toUpl Ω L g).2, hη⟩`. Rewrite `hm` using `[← k.2]`. Use `⟨AlgEquiv.ofRingEquiv (f := (galEmb ℚ (W.Lp L) Ω g).toRingEquiv) (fun x => hm x), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GalLink.mem_range_resP (k : GalLink η Ψ σ g₁ B M L Φ) (g : G (W.Lp L) Ω) :
     g ∈ (W.resP L Ω).range ↔ η (galEmb ℚ (W.Lp L) Ω g) = 1 := by
@@ -96,11 +96,11 @@ def GalLink.p0h (k : GalLink η Ψ σ g₁ B M L Φ) : G L Ω →* Φ.G0 where
   map_mul' g h := Subtype.ext (by rw [Subgroup.coe_mul, k.galois_link_projection_coe, k.galois_link_projection_coe, k.galois_link_projection_coe, map_mul, map_mul, map_mul])
 
 /- English proof (translation)
-Introduce and unpack `⟨y, hy⟩`. Take `⟨s, hs⟩` from `k.p_surj y`. Establish `hη : η s = 1`. Rewrite using `[← k.del s, hs]`. Conclude with `hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'⟩` from `toUpl_surj s`. Establish `hη' : η (galEmb ℚ (W.Lp L) Ω g') = 1`. Rewrite `hη` using `[← hg']`. Conclude with `hη`. Take `⟨g, rfl⟩` from `(k.mem_range_resP g').2 hη'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[k.galois_link_projection_coe, hg', hs]`.
+A detailed English derivation is pending.
 -/
 theorem GalLink.surjective_levelChangeBaseGroupHom (k : GalLink η Ψ σ g₁ B M L Φ) : Function.Surjective k.p0 := by
   rintro ⟨y, hy⟩
@@ -124,17 +124,17 @@ variable {k E Ω : Type} [Field k] [NumberField k] [Field E] [NumberField E] [Fi
   [IsScalarTower k E Ω]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem galEmb_mem_Dec (A : ValuationSubring Ω) (g : G E Ω) : galEmb k E Ω g ∈ Dec (F := k) A ↔ g ∈ Dec (F := E) A := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem galEmb_mem_Ine (A : ValuationSubring Ω) (g : G E Ω) : galEmb k E Ω g ∈ Ine (F := k) A ↔ g ∈ Ine (F := E) A := Iff.rfl
 
 /- English proof (translation)
-Unfold `IsPlaceOver at h`. Rewrite using `[← h (m : 𝓞 E)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natCast_place {A : ValuationSubring Ω} {v : W.Plc E} (h : IsPlaceOver A v) (m : ℕ) :
     A.valuation (m : Ω) < 1 ↔ ((m : ℕ) : 𝓞 E) ∈ v.asIdeal := by
@@ -145,9 +145,9 @@ theorem natCast_place {A : ValuationSubring Ω} {v : W.Plc E} (h : IsPlaceOver A
 end
 
 /- English proof (translation)
-Introduce and unpack `⟨y, hy⟩`. Establish `hs : Function.Surjective (toGS Ω V.S')`. Unfold `toGS`. Conclude with `QuotientGroup.mk'_surjective _`. Take `⟨g', rfl⟩` from `hs y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `(V.6 g').1 hy`. Conclude with `⟨g, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pr_surj {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) : Function.Surjective V.pr := by

@@ -7,7 +7,7 @@ namespace GlobalTheory
 open WittVector in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_pow, h, ← pow_mul, pow_succ', mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittVector_iterate_frobenius_of_eq_pow {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     (y : WittVector l O) (h : frobenius y = y ^ l) (k : ℕ) :
@@ -20,7 +20,7 @@ theorem wittVector_iterate_frobenius_of_eq_pow {l : ℕ} [Fact l.Prime] {O : Typ
 open WittVector in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', WittVector.coeff_frobenius_charP, ih, ← pow_mul, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittVector_coeff_iterate_frobenius {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     [CharP O l] (y : WittVector l O) (k n : ℕ) :
@@ -33,17 +33,17 @@ theorem wittVector_coeff_iterate_frobenius {l : ℕ} [Fact l.Prime] {O : Type} [
 open WittVector in
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ y h`. Establish `hdiv : (l : WittVector l O) ∣ y - WittVector.teichmuller l (y.coeff 0)`. Establish `h0 : ∀ i < 1, (y - WittVector.teichmuller l (y.coeff 0)).coeff i = 0`. Introduce `i hi`. Take `rfl : i = 0` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `map_sub (WittVector.constantCoeff (p := l) (R := O)) y (WittVector.teichmuller l (y.coeff 0))`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, sub_self] at hc`. Conclude with `hc`. Take `⟨w, hw⟩` from `(WittVector.frobenius_bijective l O).2 ((y - WittVector.teichmuller l (y.coeff 0)).shift 1)`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WittVector.eq_iterate_verschiebung h0, Function.iterate_one, ← hw, WittVector.verschiebung_frobenius, mul_comm]`. Use extensionality with `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[WittVector.teichmuller_coeff_pos l _ n hn]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `dvd_sub_pow_of_dvd_sub hdiv n`. Establish `hy : y ^ l ^ n = WittVector.teichmuller l (y.coeff 0 ^ l ^ n) + c * (l : WittVector l O) ^ (n + 1)`. Rewrite using `[map_pow, mul_comm c]`. Conclude with `sub_eq_iff_eq_add'.mp hc`. Establish `hcoeff : (y ^ l ^ n).coeff n = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, WittVector.coeff_add_of_disjoint]`. Rewrite using `[WittVector.teichmuller_coeff_pos l _ n hn, WittVector.mul_pow_charP_coeff_zero _ (by omega : n < n + 1), add_zero]`. Introduce `m`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Conclude with `Or.inr (WittVector.mul_pow_charP_coeff_zero _ (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Or.inl (WittVector.teichmuller_coeff_pos l _ m hm)`. Rewrite `hcoeff` using `[← wittVector_iterate_frobenius_of_eq_pow y h n, wittVector_coeff_iterate_frobenius]`. Apply `(bijective_iterateFrobenius O l n).1` to reduce the goal to its premises. Use `show y.coeff n ^ l ^ n = (0 : O) ^ l ^ n`. Rewrite using `[hcoeff, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittVector_eq_teichmuller_of_frobenius_eq_pow :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [CharP O l] [PerfectRing O l]

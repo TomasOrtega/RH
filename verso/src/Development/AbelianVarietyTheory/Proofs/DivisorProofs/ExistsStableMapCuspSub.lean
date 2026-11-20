@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCuspImageOfSplit
 open NumberField
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspQuot.exists_cuspSub_map`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspQuot.exists_stable_map_cuspSub : GlobalTheory.Published.CuspidalSpectrumGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (d : ℕ) (f : GlobalTheory.CuspRep.Sm E d),
     GlobalTheory.CuspRep.IsCuspForm f → f ≠ 0 →

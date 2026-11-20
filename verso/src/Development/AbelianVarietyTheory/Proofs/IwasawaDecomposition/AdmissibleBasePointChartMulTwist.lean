@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.TC.ChTw
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[hg x, hh, _root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_mul_self {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     {g h : GL (Fin N) (TensorProduct F E (Formalism.L2.Herm.Af F))} {L : Submodule (𝓞 E) (Fin N → E)}
@@ -21,23 +21,19 @@ theorem carries_mul_self {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI u a i Ch0 chOf0 Lb0 U0 chi0 y0 st0 k0 hR g t hstd hoff h0`. Use `⟨fun β => ?_, fun β v hT hQ hd => ?_, fun β P r j hr => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hN⟩` from `hR.k_std (g β)`. Take `⟨q, hq, hN'⟩` from `hstd β`. Establish `h1` using `hp.lat`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hq.lat`. Rewrite `h1` using `[hN]`. Rewrite `h2` using `[hN']`. Use `⟨p, ⟨mul_mem hp.uni hq.uni, ?_, fun P => ?_, fun w => ?_, fun P => ?_⟩, hN⟩` and prove the remaining obligations. Rewrite using `[hN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `carries_mul_self h1 h2`. Conclude with `absurd P.2 (Finset.notMem_empty _)`. Conclude with `absurd w.2 (Finset.notMem_empty _)`. Conclude with `absurd P.2 (Finset.notMem_empty _)`. Establish `hq0 : I.Q I.mu0 = ∅` using `ColIn.twistPrimes_reference_tuple_eq_empty _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : bc (prV (E` using `B.host.E) v) (k0 (g β)) = 1 := hR.k_off (g β) v hT (by rintro ⟨P, hP, -⟩; rw [hq0] at hP; simp at hP) (Or.inl rfl)`. Establish `ht : bc (prV (E` using `B.host.E) v) (t β) = 1 := by`. Break down `hd with rfl | hd` into its components or cases. Rewrite using `[h0 rfl β, map_one]`. Conclude with `hoff β v (Or.inr hd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `map_mul (bc (prV (E := B.host.E) v)) (k0 (g β)) (t β)`. Rewrite `hm` using `[hk, ht, one_mul]`. Conclude with `hm`. Establish `hv : (B.T u : 𝓞 B.host.F) ∈ (P.1.under (𝓞 B.host.F)).asIdeal`. Use `T_mem_vT (GlobalTheory.BasePrimes.primes_ok B X).1 u P` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[HeightOneSpectrum.under, Ideal.mem_comap, map_natCast]`. Conclude with `this`. Establish `ht` using `hoff β _ (Or.inl hv)`. Establish `ht'` using `(map_inv (bc (prV (E := B.host.E) (P.1.under (𝓞 B.host.F)))) (t β)).trans (by rw [ht, inv_one])`. Establish `hent : ∀ r l, adAt B.host.F P.1 (((t β)⁻¹ : GA B (B.R.N i)).1 r l) = if r = l then 1 else 0`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `r l`. Establish `e` using `congrArg (fun g => g.1 r l) ht'`. Simplify using `only [bc, Units.coe_map, Units.val_one, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at e`. Use `split_ifs with h`. Substitute `h` using the available equality.
-
-Conclude with `FullDt.adAt_eq_one_of_prV P.1 (by simpa using e)`. Conclude with `TilX.adAt_eq_zero_of_prV P.1 _ (by simpa [Matrix.one_apply_ne h] using e)`. Establish `key : adAt B.host.F P.1 (((k0 (g β) * t β)⁻¹ : GA B (B.R.N i)).1 r j) = adAt B.host.F P.1 (((k0 (g β))⁻¹ : GA B (B.R.N i)).1 r j)`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul, hent, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
-
-Rewrite using `[key]`. Conclude with `hR.k_T (g β) P r j hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissibleBasePoint_chart_mul_twist : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (Ch0 : Type) (chOf0 : (I.stp u I.mu0 i).Cl → Ch0) (Lb0 : Ch0 → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)) (U0 : Ch0 → Subgroup (GA B (B.R.N i))) (chi0 : ∀ β, U0 β →* ℂˣ) (y0 : (I.stp u I.mu0 i).Cl → GA B (B.R.N i)) (st0 : ∀ c, (I.stp u I.mu0 i).Stab c → GL (Fin (B.R.N i)) B.host.E) (k0 : Ch0 → GA B (B.R.N i)), I.Reads u I.mu0 i chOf0 Lb0 U0 chi0 y0 st0 k0 → ∀ (g : GlobalTheory.Mem.Col2.TC.ChTw.Chart I u a i → Ch0) (t : GlobalTheory.Mem.Col2.TC.ChTw.Chart I u a i → GA B (B.R.N i)), (∀ β, ∃ p : DecoF B.fields.E (B.R.N i) ∅ ∅ ∅, PtOf (t β) p ∧ p.deco.1.N = stdLat B.fields.E (B.R.N i)) → (∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), ((B.T u : 𝓞 B.host.F) ∈ v.asIdeal ∨ ∀ j, (B.host.g j : 𝓞 B.host.F) ∉ v.asIdeal) → bc (prV (E := B.host.E) v) (t β) = 1) → (a = I.mu0 → ∀ β, t β = 1) → GlobalTheory.Mem.Col2.TC.ChTw.AdmK I u a i (fun β => k0 (g β) * t β) := by
   intro B X I hI u a i Ch0 chOf0 Lb0 U0 chi0 y0 st0 k0 hR g t hstd hoff h0

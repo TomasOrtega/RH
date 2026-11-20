@@ -6,11 +6,11 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Vol
 
 /- English proof (translation)
-Introduce `E _ _ _ W`. Use `⟨W.L0.map (W.frame.equivFun.toLinearMap.restrictScalars (𝓞 E)), ?_, W.standardTuple_isLattice.fg.map _, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [latC, SetLike.mem_coe, Submodule.mem_map, Set.mem_ofPred_eq]`. Rewrite using `[← W.frame.equivFun_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`. Conclude with `⟨_, h, W.frame.equivFun.apply_symm_apply x⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `h` using `W.standardTuple_isLattice.span_eq_top`. Establish `: ((W.L0.map (W.frame.equivFun.toLinearMap.restrictScalars (𝓞 E)) : Submodule (𝓞 E) (Fin W.rank → E)) : Set (Fin W.rank → E)) = W.frame.equivFun.toLinearMap '' (W.L0 : Set W.V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, h, Submodule.map_top, LinearEquiv.range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem latC_full_lattice : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (W : HSpace E), ∃ L : Submodule (𝓞 E) (Fin W.rank → E), (L : Set (Fin W.rank → E)) = latC W ∧ L.FG ∧ Submodule.span E (L : Set (Fin W.rank → E)) = ⊤ := by
   intro E _ _ _ W

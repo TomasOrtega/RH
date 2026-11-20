@@ -12,29 +12,29 @@ open PositivityTheory.Rg.Sw
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_toBlocks M, ← fromBlocks_toBlocks N, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projected_block_lower_sum (M N : M2 n) : (M * N).toBlocks₂₁ = M.toBlocks₂₁ * N.toBlocks₁₁ + M.toBlocks₂₂ * N.toBlocks₂₁ := by
   rw [← fromBlocks_toBlocks M, ← fromBlocks_toBlocks N, fromBlocks_multiply]
   simp
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_toBlocks M, ← fromBlocks_toBlocks N, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lowerDiagonalBlockAsGL (M N : M2 n) : (M * N).toBlocks₂₂ = M.toBlocks₂₁ * N.toBlocks₁₂ + M.toBlocks₂₂ * N.toBlocks₂₂ := by
   rw [← fromBlocks_toBlocks M, ← fromBlocks_toBlocks N, fromBlocks_multiply]
   simp
 
 /- English proof (translation)
-Simplify using `[mR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mR_mul (g h : GR n) : mR (g * h) = mR g * mR h := by
   simp [mR]
 
 /- English proof (translation)
-Establish `hK : InK (mR k)` using `hk`. Establish `h2 : mR k * (mR k)ᴴ = 1` using `mul_eq_one_comm.1 hK.2`. Establish `h3 : JJ n * mR k = mR k * JJ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[← fromBlocks_toBlocks (mR k)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `JJ at h3`. Rewrite `h3` using `[fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.zero_mul, Matrix.one_mul, Matrix.neg_mul, Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, fromBlocks_inj] at h3`. Take `⟨h11, h12, _, _⟩` from `h3`. Conclude with `⟨h11, h12⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem k_blocks {k : GR n} (hk : k ∈ KR n) :
     (mR k).toBlocks₂₁ = -(mR k).toBlocks₁₂ ∧ (mR k).toBlocks₂₂ = (mR k).toBlocks₁₁ := by
@@ -53,7 +53,7 @@ theorem k_blocks {k : GR n} (hk : k ∈ KR n) :
   exact ⟨h11, h12⟩
 
 /- English proof (translation)
-Take `⟨hC, hD⟩` from `k_blocks hk`. Simplify using `only [u1, projected_block_lower_sum, lowerDiagonalBlockAsGL, hC, hD]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Complex.I_mul_I, Matrix.mul_neg, smul_add, smul_neg, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem first_block_mul_compact (g : M2 n) {k : GR n} (hk : k ∈ KR n) : u1 (g * mR k) = u1 g * u1 (mR k) := by
   obtain ⟨hC, hD⟩ := k_blocks hk
@@ -63,7 +63,7 @@ theorem first_block_mul_compact (g : M2 n) {k : GR n} (hk : k ∈ KR n) : u1 (g 
   abel
 
 /- English proof (translation)
-Take `⟨h21, h22⟩` from `k_blocks hk`. Unfold `u2`. Rewrite using `[projected_block_lower_sum, lowerDiagonalBlockAsGL, h21, h22]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul, smul_neg, neg_neg, smul_smul, Complex.I_mul_I, neg_smul, one_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem second_block_mul_compact (g : M2 n) {k : GR n} (hk : k ∈ KR n) : u2 (g * mR k) = u2 g * u2 (mR k) := by
   obtain ⟨h21, h22⟩ := k_blocks hk
@@ -74,9 +74,9 @@ theorem second_block_mul_compact (g : M2 n) {k : GR n} (hk : k ∈ KR n) : u2 (g
   abel
 
 /- English proof (translation)
-Take `⟨h21, h22⟩` from `k_blocks hk`. Establish `hK : InK (mR k)` using `hk`. Establish `e` using `hK.2`. Rewrite `e` using `[← fromBlocks_toBlocks (mR k), h21, h22, fromBlocks_conjTranspose, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Take `⟨e11, e12, _, _⟩` from `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `u1`. Rewrite using `[h21, h22]`. Simplify using `only [conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg] at e11 e12`. Simplify using `only [conjTranspose_add, conjTranspose_smul, conjTranspose_neg, Complex.star_def, Complex.conj_I, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul, smul_neg, neg_neg, smul_smul, neg_mul, Complex.I_mul_I, neg_smul, one_smul, neg_neg]`. Rewrite using `[(add_neg_eq_zero.1 e12).symm, smul_add, smul_smul, Complex.I_mul_I, neg_one_smul, ← e11]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -97,9 +97,9 @@ theorem first_block_compact_unitary {k : GR n} (hk : k ∈ KR n) : (u1 (mR k))�
   abel
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (first_block_compact_unitary hk)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Establish `h2 : Complex.normSq (u1 (mR k)).det = 1`. Establish `: ((Complex.normSq (u1 (mR k)).det : ℝ) : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `[Complex.star_def]`. Conclude with `this` after adjusting the coercions. Establish `h3 : ‖(u1 (mR k)).det‖ ^ 2 = 1` using `by rw [← Complex.normSq_eq_norm_sq]; exact h2`. Establish `h4 : 0 ≤ ‖(u1 (mR k)).det‖` using `norm_nonneg _`. Use polynomial arithmetic with `[h3, h4]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_det_first_block_compact {k : GR n} (hk : k ∈ KR n) : ‖(u1 (mR k)).det‖ = 1 := by
   have h := congrArg Matrix.det (first_block_compact_unitary hk)
@@ -114,7 +114,7 @@ theorem norm_det_first_block_compact {k : GR n} (hk : k ∈ KR n) : ‖(u1 (mR k
   nlinarith [h3, h4]
 
 /- English proof (translation)
-Establish `hy' : (mR y).toBlocks₂₁ = 0` using `hy`. Unfold `u1`. Rewrite using `[projected_block_lower_sum, lowerDiagonalBlockAsGL, hy']`. Simplify using `[Matrix.mul_add, Matrix.mul_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem first_block_upper_mul (y : GR n) (g : M2 n) (hy : IsUp y) : u1 (mR y * g) = (mR y).toBlocks₂₂ * u1 g := by
   have hy' : (mR y).toBlocks₂₁ = 0 := hy
@@ -123,7 +123,7 @@ theorem first_block_upper_mul (y : GR n) (g : M2 n) (hy : IsUp y) : u1 (mR y * g
   simp [Matrix.mul_add, Matrix.mul_smul]
 
 /- English proof (translation)
-Establish `hy' : (mR y).toBlocks₂₁ = 0` using `hy`. Unfold `u2`. Rewrite using `[projected_block_lower_sum, lowerDiagonalBlockAsGL, hy']`. Simplify using `[Matrix.mul_add, Matrix.mul_smul, Matrix.mul_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem second_block_upper_mul (y : GR n) (g : M2 n) (hy : IsUp y) : u2 (mR y * g) = (mR y).toBlocks₂₂ * u2 g := by
   have hy' : (mR y).toBlocks₂₁ = 0 := hy
@@ -132,7 +132,7 @@ theorem second_block_upper_mul (y : GR n) (g : M2 n) (hy : IsUp y) : u2 (mR y * 
   simp [Matrix.mul_add, Matrix.mul_smul, Matrix.mul_neg]
 
 /- English proof (translation)
-Establish `hy' : (mR y).toBlocks₂₁ = 0` using `hy`. Unfold `u1`. Rewrite using `[hy']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem first_block_of_upper (y : GR n) (hy : IsUp y) : u1 (mR y) = (mR y).toBlocks₂₂ := by
   have hy' : (mR y).toBlocks₂₁ = 0 := hy
@@ -141,7 +141,7 @@ theorem first_block_of_upper (y : GR n) (hy : IsUp y) : u1 (mR y) = (mR y).toBlo
   simp
 
 /- English proof (translation)
-Establish `hy' : (mR y).toBlocks₂₁ = 0` using `hy`. Unfold `u2`. Rewrite using `[hy']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem second_block_of_upper (y : GR n) (hy : IsUp y) : u2 (mR y) = (mR y).toBlocks₂₂ := by
   have hy' : (mR y).toBlocks₂₁ = 0 := hy
@@ -150,13 +150,13 @@ theorem second_block_of_upper (y : GR n) (hy : IsUp y) : u2 (mR y) = (mR y).toBl
   simp
 
 /- English proof (translation)
-Introduce `n p q e`. Prove the components needed by the constructor for the conclusion. Introduce `g k hk`. Prove the components needed by the constructor for the conclusion. Unfold `F0 f0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[mR_mul, first_block_mul_compact _ hk, second_block_mul_compact _ hk, det_mul, det_mul, det_mul, mul_zpow, mul_zpow, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Unfold `hLoc`. Rewrite using `[mR_mul, first_block_mul_compact _ hk, det_mul, norm_mul, norm_det_first_block_compact hk, mul_one]`. Introduce `y g hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Unfold `F0 f0`. Rewrite using `[mR_mul, first_block_upper_mul y _ hy, second_block_upper_mul y _ hy, first_block_of_upper y hy, second_block_of_upper y hy, det_mul, det_mul, det_mul, mul_zpow, mul_zpow, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Unfold `hLoc`.
+Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[mR_mul, first_block_upper_mul y _ hy, first_block_of_upper y hy, det_mul, norm_mul, mul_pow, mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mult : Mult := by
   intro n p q e

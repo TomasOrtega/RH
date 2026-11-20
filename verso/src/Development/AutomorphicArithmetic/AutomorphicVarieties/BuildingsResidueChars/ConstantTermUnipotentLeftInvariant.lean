@@ -5,9 +5,9 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `K _ _ n r φ hφ X g`. Establish `hfd` using `isAddFundamentalDomain_unipFundamentalDomain (K := K) (n := n) (r := r)`. Establish `hfd'` using `hfd.vadd_of_comm X`. Rewrite using `[constantTerm_eq_setIntegral hφ hfd, constantTerm_eq_setIntegral hφ hfd' g, ← Set.image_vadd]`. Simplify using `only [vadd_eq_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(measurePreserving_add_left (unipMeasure K n r) X).setIntegral_image_emb (MeasurableEquiv.addLeft X).measurableEmbedding]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun Y => ?_)` and prove the remaining obligations. Use `show φ (unipGL Y * (unipGL X * g)) = φ (unipGL (X + Y) * g)`. Rewrite using `[add_comm X Y, unipGL_add, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.constantTerm_unipotent_left_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ), IsLeftInvariant φ → ∀ (X : UPos n r → AdeleRing (𝓞 K) K) g, constantTerm r φ (unipGL X * g) = constantTerm r φ g := by

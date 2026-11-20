@@ -18,7 +18,7 @@ variable {F L Ω : Type u} [Field F] [Field L] [Field Ω] [Algebra F L] [Algebra
 
 include h in
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_restrictScalars_eq {x : Ω} (hx : x ∈ E') : x ∈ E := by
   rw [← h]
@@ -26,7 +26,7 @@ theorem mem_of_restrictScalars_eq {x : Ω} (hx : x ∈ E') : x ∈ E := by
 
 include h in
 /- English proof (translation)
-Rewrite `hx` using `[← h]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_restrictScalars_eq' {x : Ω} (hx : x ∈ E) : x ∈ E' := by
   rw [← h] at hx
@@ -43,7 +43,7 @@ def fieldEquivOfRestrictScalarsEq : E ≃ₐ[F] E' where
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_fieldEquivOfRestrictScalarsEq (x : E) :
     ((fieldEquivOfRestrictScalarsEq h x : E') : Ω) = x :=
@@ -80,9 +80,9 @@ def fixingOfRestrictScalarsEq : Subgroup Gal(E/F) :=
   (embeddingOfRestrictScalarsEq h).fieldRange.fixingSubgroup
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `σ ∈ (embeddingOfRestrictScalarsEq h).fieldRange.fixingSubgroup ↔ _`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hσ x`. Conclude with `hσ _ ⟨x, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `hσ _ ⟨x, rfl⟩`. Conclude with `hσ x`.
+A detailed English derivation is pending.
 -/
 theorem mem_fixingOfRestrictScalarsEq_iff (σ : Gal(E/F)) :
     σ ∈ fixingOfRestrictScalarsEq h ↔
@@ -107,7 +107,7 @@ def autOfRestrictScalarsEqInv (τ : Gal(E'/L)) : Gal(E/F) :=
     (fieldEquivOfRestrictScalarsEq h).symm)
 
 /- English proof (translation)
-Rewrite using `[mem_fixingOfRestrictScalarsEq_iff]`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((τ (algebraMap L E' x) : E') : Ω) = algebraMap L Ω x`. Rewrite using `[τ.commutes]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -152,15 +152,15 @@ theorem coe_fixingMulEquivOfRestrictScalarsEq_symm_apply (τ : Gal(E'/L)) (x : E
   rfl
 
 /- English proof (translation)
-Set `f : Gal(E'/L) →* Gal(E/F)` to `(fixingOfRestrictScalarsEq h).subtype.comp (fixingMulEquivOfRestrictScalarsEq h).symm.toMonoidHom`. Express the relevant statement in the definitionally equal form `Continuous f`. Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨K, hK, hKs⟩` from `(krullTopology_mem_nhds_one_iff F E s).1 hs`. Set `b` to `Module.finBasis F K`. Set `K' : IntermediateField L E'` to `IntermediateField.adjoin L (Set.range fun i => fieldEquivOfRestrictScalarsEq h (b i : E))`. Establish `hK' : FiniteDimensional L K'` using `IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Rewrite using `[Filter.mem_map]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.mem_of_superset ((krullTopology_mem_nhds_one_iff L E' _).2 ⟨K', hK', le_rfl⟩) fun τ hτ => hKs ?_` and prove the remaining obligations. Rewrite `hτ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hb : ∀ i, f τ (b i : E) = b i` using `fun i => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((τ (fieldEquivOfRestrictScalarsEq h (b i : E)) : E') : Ω) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hτ _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)]`. Both sides reduce to the same expression. Introduce `y hy`. Establish `hy' : y = ∑ i, b.repr ⟨y, hy⟩ i • (b i : E)`. Use `congrArg K.val (b.sum_repr ⟨y, hy⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sum]`. Simplify using `only [map_smul] at this`. Conclude with `this.symm`. Rewrite using `[hy', map_sum]`. Simplify using `only [map_smul, hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_coe_fixingMulEquivOfRestrictScalarsEq_symm [Algebra.IsIntegral L E'] :
     Continuous fun τ : Gal(E'/L) =>
@@ -207,11 +207,11 @@ variable (S : Set (HeightOneSpectrum (𝓞 F)))
 variable [IsGalois F Ω]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F L`. Take `⟨E, hf, hu, hE⟩` from `exists_subset_of_subset_maxUnramifiedOutside S (Finset.univ.image fun i => algebraMap L Ω (b i)) fun x hx => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hL (b i)`. Use `⟨E, hf, hu, fun x => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : algebraMap L Ω x = ∑ i, b.repr x i • algebraMap L Ω (b i)` using `by conv_lhs => rw [← b.sum_repr x]`. Express the relevant statement in the definitionally equal form `IsScalarTower.toAlgHom F L Ω _ = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `sum_mem fun i _ => E.smul_mem (hE _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_le_of_algebraMap_mem (hL : ∀ x : L, algebraMap L Ω x ∈ maxUnramifiedOutside F Ω S) :
     ∃ E : IntermediateField F Ω, FiniteDimensional F E ∧ IsUnramifiedOutside S E ∧
@@ -233,11 +233,11 @@ theorem exists_le_of_algebraMap_mem (hL : ∀ x : L, algebraMap L Ω x ∈ maxUn
   exact sum_mem fun i _ => E.smul_mem (hE _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))
 
 /- English proof (translation)
-Take `⟨E, hf, hu, hE⟩` from `exists_le_of_algebraMap_mem S hL`. Set `j : L →ₐ[F] E` to `(IsScalarTower.toAlgHom F L Ω).codRestrict E.toSubalgebra hE`. Set `_ : Algebra L E` to `j.toRingHom.toAlgebra`. Establish `: IsScalarTower F L E` using `IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `NumberField.of_module_finite F E` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv P hP hPv`. Take `⟨⟨Q, hQ, hQP⟩⟩` from `(inferInstance : Nonempty (P.primesOver (𝓞 E)))`. Establish `: Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q P v.asIdeal`. Establish `h` using `((isUnramifiedAt_tower_iff (F := F) (L := L) Q).1 (hu v hv Q hQ this)).1`. Establish `e : P = Q.under (𝓞 L)` using `Ideal.over_def Q P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isUnramifiedIn_of_algebraMap_mem
     (hL : ∀ x : L, algebraMap L Ω x ∈ maxUnramifiedOutside F Ω S) :
@@ -258,17 +258,15 @@ theorem isUnramifiedIn_of_algebraMap_mem
 omit [IsGalois F Ω] in
 
 /- English proof (translation)
-Establish `: FiniteDimensional F M` using `FiniteDimensional.trans F L M`. Use `NumberField.of_module_finite L M` as an intermediate fact. Express the relevant statement in the definitionally equal form `(∀ v ∉ S, Algebra.IsUnramifiedIn (𝓞 M) v.asIdeal) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hM w hw Q hQ hQw`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv0 : w.asIdeal.under (𝓞 F) ≠ ⊥` using `Ideal.under_ne_bot (𝓞 F) w.ne_bot`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨w.asIdeal.under (𝓞 F), inferInstance, hv0⟩`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `hv : v ∉ S` using `fun hvS => hw ⟨v, hvS, hwv⟩`. Establish `: Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q w.asIdeal v.asIdeal`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((isUnramifiedAt_tower_iff (F := F) (L := L) Q).1 (hM v hv Q hQ this)).2`. Introduce `hM v hv Q hQ hQv`. Establish `hP0 : Q.under (𝓞 L) ≠ ⊥`. Establish `: (Q.under (𝓞 L)).LiesOver v.asIdeal` using `⟨by rw [Ideal.under_under]; exact hQv.over⟩`. Conclude with `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot (Q.under (𝓞 L))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w : HeightOneSpectrum (𝓞 L)` to `⟨Q.under (𝓞 L), inferInstance, hP0⟩`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `⟨by`. Express the relevant statement in the definitionally equal form `v.asIdeal = (Q.under (𝓞 L)).under (𝓞 F)`. Rewrite using `[Ideal.under_under]`. Conclude with `hQv.over⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hw : w ∉ placesOver S`. Introduce and unpack `⟨u, huS, hwu⟩`. Establish `huv : u = v` using `HeightOneSpectrum.ext (hwu.over.trans hwv.over.symm)`. Conclude with `hv (huv ▸ huS)`. Establish `h1` using `hM w hw Q hQ ⟨rfl⟩`.
-
-Establish `h2` using `hL v hv (Q.under (𝓞 L)) inferInstance hwv`. Conclude with `(isUnramifiedAt_tower_iff (F := F) (L := L) Q).2 ⟨h2, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnramifiedOutside_restrictScalars_iff_of_isUnramifiedIn
     (hL : ∀ v ∉ S, Algebra.IsUnramifiedIn (𝓞 L) v.asIdeal) (M : IntermediateField L Ω)
@@ -303,15 +301,15 @@ theorem isUnramifiedOutside_restrictScalars_iff_of_isUnramifiedIn
     exact (isUnramifiedAt_tower_iff (F := F) (L := L) Q).2 ⟨h2, h1⟩
 
 /- English proof (translation)
-Establish `hLu` using `isUnramifiedIn_of_algebraMap_mem S hL`. Establish `: IsGalois L Ω` using `IsGalois.tower_top_of_isGalois F L Ω`. Use extensionality with `x`. Rewrite using `[IntermediateField.mem_restrictScalars]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨M, hf, hu, hxM⟩` from `(mem_maxUnramifiedOutside_iff (placesOver S)).1 hx`. Establish `: FiniteDimensional F (M.restrictScalars F)` using `FiniteDimensional.trans F L M`. Conclude with `le_maxUnramifiedOutside S ((isUnramifiedOutside_restrictScalars_iff_of_isUnramifiedIn S hLu M).2 hu) hxM`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hf, hu, hxE⟩` from `(mem_maxUnramifiedOutside_iff S).1 hx`. Take `⟨E₀, hf₀, hu₀, hE₀⟩` from `exists_le_of_algebraMap_mem S hL`. Set `E' : IntermediateField F Ω` to `E₀ ⊔ E`. Establish `hE' : ∀ y : L, algebraMap L Ω y ∈ E'.toSubfield` using `fun y => le_sup_left (α := IntermediateField F Ω) (hE₀ y)`. Set `M : IntermediateField L Ω` to `E'.toSubfield.toIntermediateField hE'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hMF : M.restrictScalars F = E'`. Use extensionality with `y`. Conclude with `Iff.rfl`. Establish `: FiniteDimensional F M` using `(inferInstance : FiniteDimensional F E')`. Establish `: FiniteDimensional L M` using `Module.Finite.of_restrictScalars_finite F L M`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMu : IsUnramifiedOutside S (M.restrictScalars F)`. Rewrite using `[hMF]`. Conclude with `hu₀.sup hu`. Conclude with `le_maxUnramifiedOutside (placesOver S) ((isUnramifiedOutside_restrictScalars_iff_of_isUnramifiedIn S hLu M).1 hMu) (le_sup_right (α := IntermediateField F Ω) hxE)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictScalars_maxUnramifiedOutside_eq
     (hL : ∀ x : L, algebraMap L Ω x ∈ maxUnramifiedOutside F Ω S) :
@@ -379,7 +377,7 @@ theorem coe_gsOpenSubgroup : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutsi
   rfl
 
 /- English proof (translation)
-The claim follows from `mem_fixingOfRestrictScalarsEq_iff _ σ`.
+A detailed English derivation is pending.
 -/
 theorem mem_gsOpenSubgroup_iff (σ : galUnramifiedOutside F Ω S) :
     σ ∈ gsOpenSubgroup S hL ↔ ∀ x : L, σ (gsEmbedding hL x) = gsEmbedding hL x :=
@@ -410,7 +408,7 @@ theorem gsBaseChange_toMulEquiv : (gsBaseChange S hL).toMulEquiv =
 variable {S}
 
 /- English proof (translation)
-The claim follows from `coe_fixingMulEquivOfRestrictScalarsEq_apply _ σ x`.
+A detailed English derivation is pending.
 -/
 theorem coe_gsBaseChange_apply (σ : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)))
     (x : maxUnramifiedOutside L Ω (placesOver S)) :
@@ -419,7 +417,7 @@ theorem coe_gsBaseChange_apply (σ : (gsOpenSubgroup S hL : Subgroup (galUnramif
   coe_fixingMulEquivOfRestrictScalarsEq_apply _ σ x
 
 /- English proof (translation)
-The claim follows from `fieldEquivOfRestrictScalarsEq_apply_apply _ σ x`.
+A detailed English derivation is pending.
 -/
 theorem gsFieldEquiv_apply_apply (σ : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside F Ω S)))
     (x : maxUnramifiedOutside F Ω S) :
@@ -427,7 +425,7 @@ theorem gsFieldEquiv_apply_apply (σ : (gsOpenSubgroup S hL : Subgroup (galUnram
   fieldEquivOfRestrictScalarsEq_apply_apply _ σ x
 
 /- English proof (translation)
-The claim follows from `coe_fixingMulEquivOfRestrictScalarsEq_symm_apply _ τ x`.
+A detailed English derivation is pending.
 -/
 theorem coe_gsBaseChange_symm_apply (τ : galUnramifiedOutside L Ω (placesOver S))
     (x : maxUnramifiedOutside F Ω S) :

@@ -25,9 +25,9 @@ open GlobalTheory.SplitGLLift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
 /- English proof (translation)
-Establish `hv : (((Units.map (oneAdd (liftPair h t))).comp MulEquiv.prodUnits.symm.toMonoidHom (y, 1) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = 1 + liftPair h t ((y : Fv F v) - 1, ((1 : (Fv F v)ˣ) : Fv F v) - 1)` using `rfl`. Use `⟨(Units.map (oneAdd (liftPair h t))).comp MulEquiv.prodUnits.symm.toMonoidHom (y, 1), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, map_add, map_one, piW_liftPair, add_sub_cancel]`. Rewrite using `[hv, map_add, map_one, piW_comp_liftPair, add_sub_cancel]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hv, add_sub_cancel_left]`. Conclude with `at_liftPair h t _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idele (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (y : (Fv F v)ˣ) :
     ∃ s : (AF F ⊗[F] E)ˣ, piW t (s : AF F ⊗[F] E) = y ∧ piW (t.comp σ) (s : AF F ⊗[F] E) = 1 ∧
@@ -40,9 +40,7 @@ theorem exists_idele (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (y : (Fv F v)
   · rw [hv, add_sub_cancel_left]; exact at_liftPair h t _
 
 /- English proof (translation)
-Establish `hN : ∀ z : Fv F v ⊗[F] E, Algebra.norm (Fv F v) z = splitProj t z * splitProj (t.comp σ) z` using `fun z => by`. Use `congrArg (splitProj t) (GlobalTheory.Doubling.algebraMap_norm_eq h z)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes, map_mul, ← splitProj_comp]`. Conclude with `this`. Rewrite using `[absE_of_mem (v := v) (mem_idelesAt.2 h3), GlobalTheory.Doubling.absEv_apply, coe_nnnorm, hN, norm_mul, ← ((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 y).1]`.
-
-Conclude with `(congrArg₂ (fun p q : Fv F v => ‖p‖ * ‖q‖) h1 h2).trans (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absE_eq (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (s : (AF F ⊗[F] E)ˣ) (y : (Fv F v)ˣ)
     (h1 : piW t (s : AF F ⊗[F] E) = y) (h2 : piW (t.comp σ) (s : AF F ⊗[F] E) = 1)
@@ -58,13 +56,13 @@ theorem absE_eq (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (s : (AF F ⊗[F] 
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ v hv w hw`. Take `⟨τ⟩` from `GlobalTheory.SplitEmbed.exists_algHom_of_splitsFully F E σ hσ v hv`. Take `⟨t, rfl⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq hσ (GlobalTheory.LFun.SplitChart.isSplit_of_algHom hσ τ) hw`. Set `e : ((splitPrime t).adicCompletion E)ˣ →* (Fv F v)ˣ` to `Units.map (GlobalTheory.LFun.SplitTie.complEquiv t (splitPrime_under t)).symm.toMonoidHom`. Establish `he : ∀ x, Units.map (GlobalTheory.LFun.complMap (splitPrime_under t)).toMonoidHom (e x) = x` using `fun x => Units.ext ((GlobalTheory.LFun.SplitTie.complEquiv t (splitPrime_under t)).apply_symm_apply (x : (splitPrime t).adicCompletion E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ x, piW t ((locIdele F (splitPrime t) x : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (e x : Fv F v) ∧ piW (t.comp σ) ((locIdele F (splitPrime t) x : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = 1 ∧ At (evFin F v) (((locIdele F (splitPrime t) x : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1)` using `fun x => by`. Take `⟨s, h1, h2, h3⟩` from `exists_idele hσ t (e x)`. Establish `a` using `GlobalTheory.ChrLocal.eq_locIdele_splitPrime hσ t s h3 h2`. Establish `hp : Units.map (piW t).toMonoidHom s = e x` using `Units.ext h1`. Rewrite `a` using `[hp, he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← a]`. Conclude with `⟨h1, h2, h3⟩`. Use `⟨t, fun x => e x, fun x => (key x).1, fun x => (key x).2.1, fun x => (key x).2.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ x`. Express the relevant statement in the definitionally equal form `((Circle.toUnits (χ (locIdele F (splitPrime t) (Units.map _ (e x))))) : ℂ) = _`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[he]`. Both sides reduce to the same expression. Introduce `x z`. Rewrite using `[absE_eq hσ t _ (e x) (key x).1 (key x).2.1 (key x).2.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem local_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ v : Pl F, SplitsFully E v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v →
   ∃ (t : E →ₐ[F] Fv F v) (e : (w.adicCompletion E)ˣ → (Fv F v)ˣ),

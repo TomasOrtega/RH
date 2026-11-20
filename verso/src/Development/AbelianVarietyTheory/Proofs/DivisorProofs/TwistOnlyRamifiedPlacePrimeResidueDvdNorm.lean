@@ -8,11 +8,9 @@ namespace GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `σ : 𝓞 D.host.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv (starRingAut : D.host.E ≃+* D.host.E)`. Establish `hle : P.asIdeal.map σ ≤ P'.asIdeal`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Take `⟨c', h1, h2⟩` from `h c hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : σ c = c'` using `RingOfIntegers.ext h2.symm`. Use `show σ c ∈ P'.asIdeal`. Rewrite using `[e]`. Conclude with `h1`. Establish `hmax : (P.asIdeal.map σ).IsMaximal` using `Ideal.map_isMaximal_of_equiv σ (hp := P.isMaximal)`.
-
-Establish `e : P'.asIdeal = P.asIdeal.map σ` using `(hmax.eq_of_le P'.isPrime.ne_top hle).symm`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv P.asIdeal P'.asIdeal σ e).toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_quot_of_isConjPl {D : D7} {P P' : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.IndefR.Lev.IsConjPl P P') :
     Nat.card (𝓞 D.host.E ⧸ P'.asIdeal) = Nat.card (𝓞 D.host.E ⧸ P.asIdeal) := by
@@ -29,19 +27,17 @@ theorem card_quot_of_isConjPl {D : D7} {P P' : HeightOneSpectrum (𝓞 D.host.E)
   exact (Nat.card_congr (Ideal.quotientEquiv P.asIdeal P'.asIdeal σ e).toEquiv).symm
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ hL i j t w hxi hnu`. Establish `hS0 : w.under (𝓞 D.host.F) ∉ G.pl.S0`. Introduce `hS`. Establish `hv` using `(Model.isValChar_nu hL G i j (s := 0) (Nat.zero_le _)).1`. Establish `hE` using `hv.2.2.2 (w.under (𝓞 D.host.F)) w rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp` using `(hE.2 (Finset.notMem_empty _) 0).1 ((Formalism.L2.Host.HChar.unrAt_iff _ _).1 hnu)`. Rewrite `hexp` using `[Model.expIn_condF, if_pos hS, condExp]`. Apply the tactic sequence `split_ifs at hexp <;> omega`. Choose the witnesses or unpack the hypotheses as in `⟨PP, hPP, hw⟩ : ∃ PP ∈ Lc.Q t, w = PP ∨ Formalism.IndefR.Lev.IsConjPl PP w := by`. Break down `(hL.Q_ram t w).1 hxi with h | ⟨PP, h, hc⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨w, h, Or.inl rfl⟩`. Conclude with `⟨PP, h, Or.inr hc⟩`. Establish `hunder : PP.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)`. Break down `hw with rfl | hc` into its components or cases. Both sides reduce to the same expression.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Conclude with `GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc`. Establish `hW0 : PP ∉ G.pl.W0`. Introduce `h`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Apply `hS0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hunder, G.pl.under_w hv]`. Conclude with `hv`. Establish `hloc : PP ∈ GlobalTheory.FunObj.locPl G t` using `Finset.mem_union_right _ hPP`. Establish `htw : PP ∈ twPl G t` using `Finset.mem_filter.2 ⟨hloc, hW0⟩`. Take `⟨⟨q, hq, hcard, -, -⟩, -⟩` from `hL.Q_pl t PP hPP`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : Ideal.absNorm PP.asIdeal = q`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, ← hcard]`. Use `⟨q, hq, ?_, ?_, PP, hloc, hnorm⟩` and prove the remaining obligations. Break down `hw with rfl | hc` into its components or cases. Conclude with `hcard`.
-
-Rewrite using `[card_quot_of_isConjPl hc]`. Conclude with `hcard`. Rewrite using `[← hnorm]`. Conclude with `Finset.dvd_prod_of_mem _ htw`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_ram_prime_dvd_Qn : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ → ∀ (i j : Fin D.R.m) (t : T) (w : HeightOneSpectrum (𝓞 D.host.E)), ¬ (Lc.xiH t).UnrAt w → (nuH G μ₀ i j).UnrAt w → ∃ q : ℕ, q.Prime ∧ Nat.card (𝓞 D.host.E ⧸ w.asIdeal) = q ∧ q ∣ GlobalTheory.SqTop.Qn G t ∧ ∃ w' ∈ GlobalTheory.FunObj.locPl G t, Ideal.absNorm w'.asIdeal = q := by
   classical

@@ -18,7 +18,7 @@ theorem shG_apply {M : Type*} (n : ℕ) (g : Fin n → M → ℂ) (s : V n → M
     shG n g s y i = g i (s y) := rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shG_norm_sq {M : Type*} (n : ℕ) (g : Fin n → M → ℂ) (s : V n → M) (y : V n) :
     ‖shG n g s y‖ ^ 2 = ∑ i, ‖g i (s y)‖ ^ 2 := by
@@ -26,7 +26,7 @@ theorem shG_norm_sq {M : Type*} (n : ℕ) (g : Fin n → M → ℂ) (s : V n →
   rfl
 
 /- English proof (translation)
-Rewrite using `[contDiffOn_euclidean]`. Introduce `i`. Conclude with `contDiffOn_of_differentiableOn n _ _ e.open_target (hg i e he)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem shG_contDiffOn {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) (e : OpenPartialHomeomorph M (V n))
@@ -36,7 +36,7 @@ theorem shG_contDiffOn {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n
   exact contDiffOn_of_differentiableOn n _ _ e.open_target (hg i e he)
 
 /- English proof (translation)
-Establish `h` using `(hf.hasFDerivAt.restrictScalars ℝ).fderiv`. Rewrite using `[wd, h]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul, smul_eq_mul]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -50,11 +50,11 @@ theorem sh_wd_eq (n : ℕ) (j : Fin n) (f : V n → ℂ) (y : V n) (hf : Differe
   ring
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℂ (shG n g e.symm) y` using `((shG_contDiffOn n z g hg e he).contDiffAt (e.open_target.mem_nhds hy)).differentiableAt (by simp)`. Rewrite using `[← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis]`. Unfold `jac`. Use `congr 1`. Use extensionality with `i k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.of_apply, d_comp_symm n z e he k (g i) y hy, LinearMap.toMatrix_apply]`. Establish `hdi : DifferentiableAt ℂ (g i ∘ e.symm) y` using `(hg i e he).differentiableAt (e.open_target.mem_nhds hy)`. Rewrite using `[sh_wd_eq n k _ y hdi]`. Establish `hcomp : HasFDerivAt (g i ∘ e.symm) ((EuclideanSpace.proj i : V n →L[ℂ] ℂ).comp (fderiv ℂ (shG n g e.symm) y)) y` using `(EuclideanSpace.proj i : V n →L[ℂ] ℂ).hasFDerivAt.comp y hd.hasFDerivAt`. Rewrite using `[hcomp.fderiv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bas]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_jac {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) (e : OpenPartialHomeomorph M (V n))
@@ -78,21 +78,19 @@ theorem sh_jac {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   simp [bas]
 
 /- English proof (translation)
-Establish `hy0 : e p ∈ e.target` using `e.map_source hpe`. Establish `hcd : ContDiffAt ℂ ∞ (shG n g e.symm) (e p)` using `(shG_contDiffOn n z g hg e he).contDiffAt (e.open_target.mem_nhds hy0)`. Establish `hdet : (fderiv ℂ (shG n g e.symm) (e p)).det ≠ 0`. Establish `h` using `sh_jac n z g hg e he (e p) hy0`. Rewrite `h` using `[e.left_inv hpe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.det, ← h]`. Conclude with `hJ`. Use `set f' := (fderiv ℂ (shG n g e.symm) (e p)).toContinuousLinearEquivOfDetNeZero hdet`. Establish `hf' : HasFDerivAt (shG n g e.symm) (f' : V n →L[ℂ] V n) (e p)`. Rewrite using `[ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hcd.differentiableAt (by simp)).hasFDerivAt`. Establish `hn0 : (∞ : WithTop ℕ∞) ≠ 0` using `by simp`. Use `set Φ := hcd.toOpenPartialHomeomorph (shG n g e.symm) hf' hn0`. Establish `hΦ : (Φ : V n → V n) = shG n g e.symm` using `rfl`. Establish `hsrc : e p ∈ Φ.source` using `hcd.mem_toOpenPartialHomeomorph_source hf' hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `htgt : shG n g e.symm (e p) ∈ Φ.target` using `hcd.image_mem_toOpenPartialHomeomorph_target hf' hn0`. Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 (e.open_target.inter Φ.open_source) (e p) ⟨hy0, hsrc⟩`. Use `⟨ρ, hρ, fun y hy => (hball hy).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ]`. Conclude with `Φ.injOn.mono fun y hy => (hball hy).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ρ' hρ'`. Establish `hG0 : shG n g e.symm (e p) = 0`. Use extensionality with `i`. Rewrite using `[shG_apply, e.left_inv hpe]`. Conclude with `hp i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsymm : Φ.symm (shG n g e.symm (e p)) = e p`. Rewrite using `[← hΦ]`. Conclude with `Φ.left_inv hsrc`. Establish `hc : ContinuousAt Φ.symm (shG n g e.symm (e p))` using `Φ.continuousAt_symm htgt`. Establish `hmem : Φ.symm ⁻¹' ball (e p) ρ' ∈ 𝓝 (shG n g e.symm (e p))` using `hc.preimage_mem_nhds (by rw [hsymm]; exact ball_mem_nhds _ hρ')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨κ, hκ, hκb⟩` from `Metric.mem_nhds_iff.1 hmem`. Use `⟨κ, hκ, fun y hy hGy => ?_⟩` and prove the remaining obligations. Establish `h1 : shG n g e.symm y ∈ ball (shG n g e.symm (e p)) κ`. Rewrite using `[hG0, mem_ball_zero_iff]`. Conclude with `hGy`.
-
-Establish `h2` using `hκb h1`. Simplify using `only [mem_preimage] at h2`. Rewrite `h2` using `[← hΦ, Φ.left_inv (hball hy).2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem sh_local {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) (p : M) (hp : p ∈ zeroSet n g)
@@ -144,11 +142,11 @@ theorem sh_local {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   rwa [← hΦ, Φ.left_inv (hball hy).2] at h2
 
 /- English proof (translation)
-Use `set θ := min (τ / 10) (1 / 4) with hθ`. Establish `h0 : 0 < θ` using `lt_min (by positivity) (by norm_num)`. Establish `h1 : θ ≤ τ / 10` using `min_le_left _ _`. Establish `h2 : θ ≤ 1 / 4` using `min_le_right _ _`. Establish `hexp : Real.exp θ ≤ 1 + 2 * θ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.exp_bound_div_one_sub_of_interval' h0 (by linarith)` as an intermediate fact. Establish `h3 : 1 / (1 - θ) ≤ 1 + 2 * θ`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hl1` using `Real.log_two_gt_d9`. Establish `hl2` using `Real.log_two_lt_d9`. Establish `hpos : 0 ≤ Real.log 2 + 2 * θ` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sh_num (τ : ℝ) (hτ : 0 < τ) :
     Real.exp (min (τ / 10) (1 / 4)) * (Real.log 2 + 2 * min (τ / 10) (1 / 4)) ≤
@@ -171,9 +169,9 @@ theorem sh_num (τ : ℝ) (hτ : 0 < τ) :
     _ ≤ (1 + τ) * Real.log 2 := by nlinarith
 
 /- English proof (translation)
-Establish `hX : 0 < Real.exp (-a) / r ^ 2` using `by positivity`. Rewrite using `[mul_div_assoc, Real.mul_rpow hS.le hX.le, Real.rpow_neg hX.le, Real.rpow_natCast, div_pow, ← Real.exp_nat_mul, pow_mul]`. Establish `hE : Real.exp (-b - ((n : ℝ) + j) * a) = Real.exp (-b - (j : ℝ) * a) * Real.exp (↑n * -a)`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[hE]`. Establish `h1 : 0 < Real.exp (↑n * -a)` using `Real.exp_pos _`. Establish `h2 : 0 < (r ^ 2) ^ n` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sh_val (n j : ℕ) (S r a b : ℝ) (hS : 0 < S) (hr : 0 < r) :
     Real.exp (-b - ((n : ℝ) + j) * a) * (S * Real.exp (-a) / r ^ 2) ^ (-(n : ℝ)) =

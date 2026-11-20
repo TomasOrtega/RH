@@ -14,7 +14,7 @@ def pr : (n : ℕ) → ((Fin (n + 1) → Y) → ℝ) → (Fin n → Y) → (Fin 
   | n + 1, F, a, b => F (Fin.cons (a 0) b) - pr n (fun x => F (Fin.cons (a 0) x)) (Fin.tail a) (Fin.tail b)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [pr]`. Consider the case `succ n ih`. Simplify using `only [pr]`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -28,7 +28,7 @@ theorem pr_sub (n : ℕ) (F F' : (Fin (n + 1) → Y) → ℝ) (a b : Fin n → Y
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [pr, ih, sub_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pr_zero (n : ℕ) (a b : Fin n → Y) : pr n (fun _ => 0) a b = 0 := by
   induction n with
@@ -36,7 +36,7 @@ theorem pr_zero (n : ℕ) (a b : Fin n → Y) : pr n (fun _ => 0) a b = 0 := by
   | succ n ih => simp only [pr, ih, sub_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_smul {H : Type} [Monoid H] [MulAction H Y] {n : ℕ} (h : H) (v : Y) (x : Fin n → Y) :
     (Fin.cons (h • v) (fun j => h • x j) : Fin (n + 1) → Y) = fun j => h • (Fin.cons v x : Fin (n + 1) → Y) j := by
@@ -44,9 +44,9 @@ theorem cons_smul {H : Type} [Monoid H] [MulAction H Y] {n : ℕ} (h : H) (v : Y
   refine Fin.cases ?_ (fun j => ?_) j <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Simplify using `only [pr]`. Rewrite using `[cons_smul, hF]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `ih (fun x => F (Fin.cons (h • a 0) x)) (fun x => F' (Fin.cons (a 0) x)) (fun x => by rw [cons_smul, hF]) (Fin.tail a) (Fin.tail b)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pr_smul {H : Type} [Monoid H] [MulAction H Y] (h : H) (n : ℕ) (F F' : (Fin (n + 1) → Y) → ℝ)
     (hF : ∀ x, F (fun j => h • x j) = F' x) (a b : Fin n → Y) :
@@ -61,7 +61,7 @@ theorem pr_smul {H : Type} [Monoid H] [MulAction H Y] (h : H) (n : ℕ) (F F' : 
       (fun x => by rw [cons_smul, hF]) (Fin.tail a) (Fin.tail b)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp [Fin.succ_succAbove_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_succAbove_succ {n : ℕ} (v : Y) (x : Fin (n + 1) → Y) (i : Fin (n + 1)) :
     (fun j : Fin (n + 1) => (Fin.cons v x : Fin (n + 2) → Y) ((Fin.succ i).succAbove j)) =
@@ -70,7 +70,7 @@ theorem cons_succAbove_succ {n : ℕ} (v : Y) (x : Fin (n + 1) → Y) (i : Fin (
   refine Fin.cases ?_ (fun j => ?_) j <;> simp [Fin.succ_succAbove_succ]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Fin.cons_self_tail a]`. Conclude with `cons_succAbove_succ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem succAbove_succ_eq_cons {n : ℕ} (a : Fin (n + 2) → Y) (i : Fin (n + 1)) :
     (fun j : Fin (n + 1) => a ((Fin.succ i).succAbove j)) =
@@ -79,9 +79,9 @@ theorem succAbove_succ_eq_cons {n : ℕ} (a : Fin (n + 2) → Y) (i : Fin (n + 1
   exact cons_succAbove_succ _ _ _
 
 /- English proof (translation)
-Unfold `cob`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.val_zero, pow_zero, one_mul, Fin.val_succ, pow_succ, cons_succAbove_succ]`. Establish `h0 : (fun j : Fin (m + 2) => (Fin.cons v x : Fin (m + 3) → Y) ((0 : Fin (m + 3)).succAbove j)) = x`. Use function extensionality and compare the values at `j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cob_cons {m : ℕ} (F : (Fin (m + 2) → Y) → ℝ) (v : Y) (x : Fin (m + 2) → Y) :
     cob F (Fin.cons v x) = F x - cob (fun u => F (Fin.cons v u)) x := by
@@ -96,25 +96,23 @@ theorem cob_cons {m : ℕ} (F : (Fin (m + 2) → Y) → ℝ) (v : Y) (x : Fin (m
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0 : (fun j : Fin 1 => (Fin.cons (a 0) b : Fin 2 → Y) ((0 : Fin 2).succAbove j)) = b`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1 : (fun j : Fin 1 => (Fin.cons (a 0) b : Fin 2 → Y) ((1 : Fin 2).succAbove j)) = a`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Use `show cob F (Fin.cons (a 0) b) - 0 + ∑ l : Fin 1, (-1 : ℝ) ^ (l : ℕ) * 0 = F b - F a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cob`. Rewrite using `[Fin.sum_univ_two, h0, h1]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n ih => set v := a 0 set Fv : (Fin (n + 1) → Y) → ℝ := fun u => F (Fin.cons v u) with hFv set S1 := ∑ l : Fin (n + 1), (-1 : ℝ) ^ (l : ℕ) * pr n Fv (fun j => Fin.tail a (l.succAbove j)) (fun j => Fin.tail b (l.succAbove j)) set S2 := ∑ l : Fin (n + 1), (-1 : ℝ) ^ (l : ℕ) * F …`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ l : Fin (n + 1), (-1 : ℝ) ^ ((Fin.succ l : Fin (n + 2)) : ℕ) * pr (n + 1) F (fun j => a ((Fin.succ l).succAbove j)) (fun j => b ((Fin.succ l).succAbove j)) = (-1 : ℝ) ^ (l : ℕ) * pr n Fv (fun j => Fin.tail a (l.succAbove j)) (fun j => Fin.tail b (l.succAbove j)) - (-1 : …`. Introduce `l`. Rewrite using `[succAbove_succ_eq_cons a l]`. Establish `ht : Fin.tail (fun j => b ((Fin.succ l).succAbove j)) = fun j => Fin.tail b (l.succAbove j)`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.tail, Fin.succ_succAbove_succ]`. Simplify using `only [pr, Fin.cons_zero, Fin.tail_cons, ht, Fin.val_succ, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ l : Fin (n + 2), (-1 : ℝ) ^ (l : ℕ) * pr (n + 1) F (fun j => a (l.succAbove j)) (fun j => b (l.succAbove j)) = pr (n + 1) F (Fin.tail a) (Fin.tail b) + S1 - S2`. Rewrite using `[Fin.sum_univ_succ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hterm, Finset.sum_sub_distrib, Fin.val_zero, pow_zero, one_mul]`. Rewrite using `[add_sub_assoc]`. Both sides reduce to the same expression. Establish `hcob : cob Fv b = Fv (Fin.tail b) - S2`. Unfold `cob`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.val_zero, pow_zero, one_mul, Fin.val_succ, pow_succ]`. Rewrite using `[sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcone : cob F (Fin.cons v b) = F b - cob Fv b` using `cob_cons F v b`. Establish `hpr : pr (n + 1) (fun x => cob F (Fin.cons v x)) (Fin.tail a) (Fin.tail b) = pr (n + 1) F (Fin.tail a) (Fin.tail b) - pr (n + 1) (cob Fv) (Fin.tail a) (Fin.tail b)`. Rewrite using `[← pr_sub]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `cob_cons F v x`. Establish `hFa : Fv (Fin.tail a) = F a`. Simplify using `only [hFv, v, Fin.cons_self_tail]`. Establish `ih'` using `ih Fv (Fin.tail a) (Fin.tail b)`.
-
-Use `show cob F (Fin.cons v b) - pr (n + 1) (fun x => cob F (Fin.cons v x)) (Fin.tail a) (Fin.tail b) + _ = _`. Rewrite using `[hsum, hcone, hpr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem prism (n : ℕ) (F : (Fin (n + 1) → Y) → ℝ) (a b : Fin (n + 1) → Y) :
     pr (n + 1) (cob F) a b +

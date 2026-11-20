@@ -37,26 +37,26 @@ def Rep (d : ℕ) (a : AA k r E) : Prop :=
 section RepLemmas
 
 /- English proof (translation)
-Take `⟨L, hL, h'⟩` from `ha`. Conclude with `⟨L, fun p hp => (hL p hp).trans h, h'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Rep.mono {d d' : ℕ} (h : d ≤ d') {a : AA k r E} (ha : Rep d a) : Rep d' a := by
   obtain ⟨L, hL, h'⟩ := ha
   exact ⟨L, fun p hp => (hL p hp).trans h, h'⟩
 
 /- English proof (translation)
-Conclude with `⟨[], by simp, fun Φ w => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_zero (d : ℕ) : Rep d (0 : AA k r E) := by
   exact ⟨[], by simp, fun Φ w => by simp⟩
 
 /- English proof (translation)
-Conclude with `⟨[(1, [x])], by simp, fun Φ w => by simp [ell_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_ell (x : Ix k r) : Rep 1 (ell x : AA k r E) := by
   exact ⟨[(1, [x])], by simp, fun Φ w => by simp [ell_apply]⟩
 
 /- English proof (translation)
-Take `⟨La, hLa, ha'⟩` from `ha`. Take `⟨Lb, hLb, hb'⟩` from `hb`. Use `⟨La ++ Lb, fun p hp => ?_, fun Φ w => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.mp hp with h | h exacts [hLa p h, hLb p h]` into its components or cases. Rewrite using `[LinearMap.add_apply, Pi.add_apply, ha', hb', List.map_append, List.sum_append]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_add {d : ℕ} {a b : AA k r E} (ha : Rep d a) (hb : Rep d b) : Rep d (a + b) := by
   obtain ⟨La, hLa, ha'⟩ := ha
@@ -67,9 +67,9 @@ theorem rep_add {d : ℕ} {a b : AA k r E} (ha : Rep d a) (hb : Rep d b) : Rep d
   · rw [LinearMap.add_apply, Pi.add_apply, ha', hb', List.map_append, List.sum_append]
 
 /- English proof (translation)
-Take `⟨L, hL, h⟩` from `ha`. Use `⟨L.map fun p => (c * p.1, p.2), ?_, fun Φ w => ?_⟩` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [List.mem_map] at hp`. Take `⟨q, hq, rfl⟩` from `hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hL q hq`. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, h, List.smul_sum]`. Simplify using `only [List.map_map, Function.comp_def, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_smul {d : ℕ} (c : ℂ) {a : AA k r E} (ha : Rep d a) : Rep d (c • a) := by
   obtain ⟨L, hL, h⟩ := ha
@@ -82,7 +82,7 @@ theorem rep_smul {d : ℕ} (c : ℂ) {a : AA k r E} (ha : Rep d a) : Rep d (c �
     simp only [List.map_map, Function.comp_def, mul_smul]
 
 /- English proof (translation)
-Establish `h1` using `rep_add ha (rep_smul (-1) hb)`. Use `first`. Consider the case `(simpa [neg_one_smul] using h1)`. Consider the case `(simpa [sub_eq_add_neg, neg_one_smul] using h1)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rep_sub {d : ℕ} {a b : AA k r E} (ha : Rep d a) (hb : Rep d b) : Rep d (a - b) := by
   have h1 := rep_add ha (rep_smul (-1) hb)
@@ -91,13 +91,13 @@ theorem rep_sub {d : ℕ} {a b : AA k r E} (ha : Rep d a) (hb : Rep d b) : Rep d
     | (simpa [sub_eq_add_neg, neg_one_smul] using h1)
 
 /- English proof (translation)
-Introduce `La`. Proceed by induction on `La with`. Consider the case `nil => intro _; exact ⟨[], by simp, fun _ _ => by simp⟩`. Consider the case `cons p La ih`. Introduce `hLa`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, hL, hL'⟩` from `ih (fun q hq => hLa q (by simp [hq]))`. Use `⟨(Lb.map fun q => (p.1 * q.1, p.2 ++ q.2)) ++ L, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [List.mem_append, List.mem_map] at hq`. Break down `hq with ⟨q', hq', rfl⟩ | hq` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `hLa p (by simp)`. Establish `h2` using `hLb q' hq'`. Simplify using `only [List.length_append]`. Use linear arithmetic over natural numbers and integers. Conclude with `hL q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ w`. Rewrite using `[List.map_cons, List.sum_cons, hL' Φ w, List.map_append, List.sum_append, hb, List.smul_sum]`. Use `congr 1`. Simplify using `only [List.map_map, Function.comp_def, mul_smul, List.append_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_word_expansion_length_le_add {d e : ℕ} {b : AA k r E} (Lb : List (ℂ × List (Ix k r)))
     (hLb : ∀ q ∈ Lb, q.2.length ≤ e) (hb : ∀ Φ w, b Φ w = (Lb.map fun q => q.1 • Φ (w ++ q.2)).sum) :
@@ -125,9 +125,9 @@ private theorem exists_word_expansion_length_le_add {d e : ℕ} {b : AA k r E} (
       simp only [List.map_map, Function.comp_def, mul_smul, List.append_assoc]
 
 /- English proof (translation)
-Take `⟨La, hLa, ha'⟩` from `ha`. Take `⟨Lb, hLb, hb'⟩` from `hb`. Take `⟨L, hL, hL'⟩` from `exists_word_expansion_length_le_add Lb hLb hb' La hLa`. Use `⟨L, hL, fun Φ w => ?_⟩` and prove the remaining obligations. Use `show a (b Φ) w = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha', hL']`.
+A detailed English derivation is pending.
 -/
 theorem rep_mul {d e : ℕ} {a b : AA k r E} (ha : Rep d a) (hb : Rep e b) : Rep (d + e) (a * b) := by
   obtain ⟨La, hLa, ha'⟩ := ha
@@ -172,17 +172,15 @@ section Words
 variable (Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → E) → (Mat k r → E))
 
 /- English proof (translation)
-Simplify using `[Fw, List.foldr_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Fw_append (w q : List (Ix k r)) (f : Mat k r → E) : Fw Eop (w ++ q) f = Fw Eop w (Fw Eop q f) := by
   simp [Fw, List.foldr_append]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro m f hf`. Simplify `hf` using `[Fw]`. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `m f hf`. Establish `h1 : CkOn (((m + 1) + w.length : ℕ) : ℕ∞) (GV k r) f`. Establish `e : (m + 1) + w.length = m + (x :: w).length` using `by simp only [List.length_cons]; omega`. Rewrite using `[e]`. Conclude with `hf`.
-
-Conclude with `hC x.1 x.2 m _ (ih (m + 1) f h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Fw_ck (hC : HC Eop) : ∀ (w : List (Ix k r)) (m : ℕ) (f : Mat k r → E),
     CkOn ((m + w.length : ℕ) : ℕ∞) (GV k r) f → CkOn (m : ℕ∞) (GV k r) (Fw Eop w f) := by
@@ -197,7 +195,7 @@ theorem Fw_ck (hC : HC Eop) : ∀ (w : List (Ix k r)) (m : ℕ) (f : Mat k r →
     exact hC x.1 x.2 m _ (ih (m + 1) f h1)
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg, hcd, hfe⟩` from `hf g₀ hg₀`. Use `⟨U, f', hU, hg, hcd.of_le ?_, hfe⟩` and prove the remaining obligations. Apply the tactic sequence `first | exact_mod_cast h | exact WithTop.coe_le_coe.mpr (Nat.cast_le.mpr h) | (norm_cast)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ck_mono' {m m' : ℕ} (h : m ≤ m') {f : Mat k r → E} (hf : CkOn ((m' : ℕ) : ℕ∞) (GV k r) f) :
     CkOn ((m : ℕ) : ℕ∞) (GV k r) f := by
@@ -207,13 +205,13 @@ theorem ck_mono' {m m' : ℕ} (h : m ≤ m') {f : Mat k r → E} (hf : CkOn ((m'
   first | exact_mod_cast h | exact WithTop.coe_le_coe.mpr (Nat.cast_le.mpr h) | (norm_cast)
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro f f₂ _ _ g _`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `f f₂ hf hf₂ g hg`. Establish `hf' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f` using `ck_mono' (by simp) hf`. Establish `hf₂' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f₂` using `ck_mono' (by simp) hf₂`. Establish `e : 1 + w.length = (x :: w).length` using `by simp only [List.length_cons]; omega`. Establish `c1 : CkOn 1 (GV k r) (Fw Eop w f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : CkOn ((1 + w.length : ℕ) : ℕ∞) (GV k r) f` using `by rw [e]; exact hf`. Simplify using `using Fw_ck Eop hC w 1 f h'`. Establish `c2 : CkOn 1 (GV k r) (Fw Eop w f₂)`. Establish `h' : CkOn ((1 + w.length : ℕ) : ℕ∞) (GV k r) f₂` using `by rw [e]; exact hf₂`. Simplify using `using Fw_ck Eop hC w 1 f₂ h'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show Eop x.1 x.2 (Fw Eop w (fun y => f y + f₂ y)) g = Eop x.1 x.2 (Fw Eop w f) g + Eop x.1 x.2 (Fw Eop w f₂) g`. Rewrite using `[hL x.1 x.2 _ (fun y => Fw Eop w f y + Fw Eop w f₂ y) (ih f f₂ hf' hf₂') g hg]`. Conclude with `hA x.1 x.2 _ _ c1 c2 g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Fw_add (hC : HC Eop) (hL : HL Eop) (hA : HA Eop) : ∀ (w : List (Ix k r)) (f f₂ : Mat k r → E),
     CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f → CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f₂ →
@@ -238,11 +236,11 @@ theorem Fw_add (hC : HC Eop) (hL : HL Eop) (hA : HA Eop) : ∀ (w : List (Ix k r
     exact hA x.1 x.2 _ _ c1 c2 g hg
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro c f _ g _`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `c f hf g hg`. Establish `hf' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f` using `ck_mono' (by simp) hf`. Establish `e : 1 + w.length = (x :: w).length` using `by simp only [List.length_cons]; omega`. Establish `c1 : CkOn 1 (GV k r) (Fw Eop w f)`. Establish `h' : CkOn ((1 + w.length : ℕ) : ℕ∞) (GV k r) f` using `by rw [e]; exact hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Fw_ck Eop hC w 1 f h'`. Use `show Eop x.1 x.2 (Fw Eop w (fun y => c • f y)) g = c • Eop x.1 x.2 (Fw Eop w f) g`. Rewrite using `[hL x.1 x.2 _ (fun y => c • Fw Eop w f y) (ih c f hf') g hg]`. Conclude with `hS x.1 x.2 c _ c1 g hg`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Fw_smul (hC : HC Eop) (hL : HL Eop) (hS : HS Eop) : ∀ (w : List (Ix k r)) (c : ℂ) (f : Mat k r → E),
     CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f → ∀ g ∈ GV k r, Fw Eop w (fun x => c • f x) g = c • Fw Eop w f g := by
@@ -261,7 +259,7 @@ theorem Fw_smul (hC : HC Eop) (hL : HL Eop) (hS : HS Eop) : ∀ (w : List (Ix k 
     exact hS x.1 x.2 c _ c1 g hg
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h0 : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) (fun _ : Mat k r => (0 : E))` using `fun g₀ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`. Establish `h1` using `Fw_smul Eop hC hL hS w 0 (fun _ => (0 : E)) h0 g hg`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Fw_zero (hC : HC Eop) (hL : HL Eop) (hS : HS Eop) (w : List (Ix k r)) :
     ∀ g ∈ GV k r, Fw Eop w (fun _ => (0 : E)) g = 0 := by
@@ -272,11 +270,11 @@ theorem Fw_zero (hC : HC Eop) (hL : HL Eop) (hS : HS Eop) (w : List (Ix k r)) :
   simpa using h1
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => by simp⟩`. Consider the case `cons p L ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `g₀ hg₀`. Take `⟨U1, f1, hU1, hg1, hc1, he1⟩` from `h p (by simp) g₀ hg₀`. Take `⟨U2, f2, hU2, hg2, hc2, he2⟩` from `ih (fun q hq => h q (by simp [hq])) g₀ hg₀`. Use `⟨U1 ∩ U2, fun x => p.1 • f1 x + f2 x, hU1.inter hU2, ⟨hg1, hg2⟩, ((hc1.mono Set.inter_subset_left).const_smul p.1).add (hc2.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.map_cons, List.sum_cons]`. Rewrite using `[he1 g hg.1 hgG]`. Use `congr 1`. Conclude with `he2 g hg.2 hgG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ck_lsum {m : ℕ∞} (L : List (ℂ × (Mat k r → E))) (h : ∀ p ∈ L, CkOn m (GV k r) p.2) :
     CkOn m (GV k r) (fun x => (L.map fun p => p.1 • p.2 x).sum) := by
@@ -297,13 +295,13 @@ theorem ck_lsum {m : ℕ∞} (L : List (ℂ × (Mat k r → E))) (h : ∀ p ∈ 
     exact he2 g hg.2 hgG
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_ g hg`. Simplify using `only [List.map_nil, List.sum_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Fw_zero Eop hC hL hS w g hg`. Consider the case `cons p L ih`. Introduce `h g hg`. Establish `hL' : ∀ q ∈ L, CkOn ((w.length : ℕ) : ℕ∞) (GV k r) q.2` using `fun q hq => h q (by simp [hq])`. Establish `hs : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) (fun x => p.1 • p.2 x)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg', hc, he⟩` from `h p (by simp) g₀ hg₀`. Conclude with `⟨U, fun x => p.1 • f' x, hU, hg', hc.const_smul p.1, fun g hg hgG => by simp only [he g hg hgG]⟩`. Establish `hr` using `ck_lsum L hL'`. Simplify using `only [List.map_cons, List.sum_cons]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fw_add Eop hC hL hA w (fun x => p.1 • p.2 x) _ hs hr g hg, Fw_smul Eop hC hL hS w p.1 p.2 (h p (by simp)) g hg, ih hL' g hg]`.
+A detailed English derivation is pending.
 -/
 theorem Fw_lsum (hC : HC Eop) (hL : HL Eop) (hA : HA Eop) (hS : HS Eop) (w : List (Ix k r)) :
     ∀ (L : List (ℂ × (Mat k r → E))), (∀ p ∈ L, CkOn ((w.length : ℕ) : ℕ∞) (GV k r) p.2) →
@@ -333,7 +331,7 @@ section Values
 variable (Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → E) → (Mat k r → E))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lsum_apply {ι : Type*} (l : List ι) (F : ι → Mat k r → E) (x : Mat k r) :
     (l.map F).sum x = (l.map fun i => F i x).sum := by
@@ -342,7 +340,7 @@ theorem lsum_apply {ι : Type*} (l : List ι) (F : ι → Mat k r → E) (x : Ma
   | cons i l ih => simp [ih]
 
 /- English proof (translation)
-Take `⟨L, hL, h⟩` from `ha`. Use `⟨L, hL, fun f x => ?_⟩` and prove the remaining obligations. Simplify using `only [ev, h, lsum_apply, List.nil_append, Pi.smul_apply, Phi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ev_rep_ex {d : ℕ} {a : AA k r E} (ha : Rep d a) :
     ∃ L : List (ℂ × List (Ix k r)), (∀ p ∈ L, p.2.length ≤ d) ∧
@@ -352,11 +350,11 @@ theorem ev_rep_ex {d : ℕ} {a : AA k r E} (ha : Rep d a) :
   simp only [ev, h, lsum_apply, List.nil_append, Pi.smul_apply, Phi]
 
 /- English proof (translation)
-Take `⟨L, hL, h⟩` from `ev_rep_ex Eop ha`. Establish `e : ev Eop a f = fun x => ((L.map fun p => (p.1, Fw Eop p.2 f)).map fun q => q.1 • q.2 x).sum`. Use function extensionality and compare the values at `x`. Rewrite using `[h]`. Simplify using `[List.map_map, Function.comp_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Apply `ck_lsum` to reduce the goal to its premises. Introduce `q hq`. Simplify using `only [List.mem_map] at hq`. Take `⟨p, hp, rfl⟩` from `hq`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `Fw_ck Eop hC p.2 m f (ck_mono' (by have := hL p hp; omega) hf)`.
+A detailed English derivation is pending.
 -/
 theorem ev_ck (hC : HC Eop) {d : ℕ} {a : AA k r E} (ha : Rep d a) (m : ℕ) (f : Mat k r → E)
     (hf : CkOn ((m + d : ℕ) : ℕ∞) (GV k r) f) : CkOn (m : ℕ∞) (GV k r) (ev Eop a f) := by
@@ -373,9 +371,9 @@ theorem ev_ck (hC : HC Eop) {d : ℕ} {a : AA k r E} (ha : Rep d a) (m : ℕ) (f
   exact Fw_ck Eop hC p.2 m f (ck_mono' (by have := hL p hp; omega) hf)
 
 /- English proof (translation)
-Take `⟨L, _, hrep⟩` from `ev_rep_ex Eop ha`. Introduce `g hg`. Rewrite using `[hrep]`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.mem_map] at hy`. Take `⟨p, _, rfl⟩` from `hy`. Rewrite using `[Fw_zero Eop hC hL hS p.2 g hg, smul_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_zero (hC : HC Eop) (hL : HL Eop) (hS : HS Eop) {d : ℕ} {a : AA k r E} (ha : Rep d a) :
     ∀ g ∈ GV k r, ev Eop a (fun _ => (0 : E)) g = 0 := by
@@ -407,7 +405,7 @@ theorem ev_smul (c : ℂ) (a : AA k r E) (f : Mat k r → E) (x : Mat k r) : ev 
   rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [ev, LinearMap.sum_apply, Finset.sum_apply]; done)`. Consider the case `(simp only [ev, LinearMap.coeFn_sum, Finset.sum_apply])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ev_fsum {ι : Type*} (s : Finset ι) (F : ι → AA k r E) (f : Mat k r → E) (x : Mat k r) :
     ev Eop (∑ i ∈ s, F i) f x = ∑ i ∈ s, ev Eop (F i) f x := by
@@ -421,7 +419,7 @@ Both sides reduce to the same expression.
 theorem ev_zero_el (f : Mat k r → E) (x : Mat k r) : ev Eop (0 : AA k r E) f x = 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_intCast (algebraMap ℂ (AA k r E)) z]`. Use `first`. Consider the case `(simp only [ev, Module.End.mul_apply, Module.algebraMap_end_apply, Pi.smul_apply]; done)`. Consider the case `(simp only [ev, LinearMap.mul_apply, Module.algebraMap_end_apply, Pi.smul_apply]; done)`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ev_intCast_mul (z : ℤ) (a : AA k r E) (f : Mat k r → E) (x : Mat k r) :
     ev Eop ((z : AA k r E) * a) f x = (z : ℂ) • ev Eop a f x := by
@@ -432,15 +430,13 @@ theorem ev_intCast_mul (z : ℤ) (a : AA k r E) (f : Mat k r → E) (x : Mat k r
     | rfl
 
 /- English proof (translation)
-Take `⟨La, hLa, ha'⟩` from `ha`. Take `⟨Lb, hLb, hb'⟩` from `hb`. Establish `hev : ev Eop b f = fun x => ((Lb.map fun q => (q.1, Fw Eop q.2 f)).map fun q => q.1 • q.2 x).sum`. Use function extensionality and compare the values at `x`. Simplify using `only [ev, hb', lsum_apply, List.nil_append, Pi.smul_apply, Phi, List.map_map, Function.comp_def]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Use `show a (b (Phi Eop f)) [] g = a (Phi Eop (ev Eop b f)) [] g`. Rewrite using `[ha', ha', lsum_apply, lsum_apply]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Simplify using `only [List.nil_append, Pi.smul_apply]`. Use `congr 1`. Establish `hck : ∀ q ∈ Lb.map (fun q => (q.1, Fw Eop q.2 f)), CkOn ((p.2.length : ℕ) : ℕ∞) (GV k r) q.2`. Introduce `q' hq'`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_map] at hq'`. Take `⟨q, hq, rfl⟩` from `hq'`. Conclude with `Fw_ck Eop hC q.2 p.2.length f (ck_mono' (by have := hLa p hp; have := hLb q hq; omega) hf)`. Use `show b (Phi Eop f) p.2 g = Fw Eop p.2 (ev Eop b f) g`. Rewrite using `[hev, Fw_lsum Eop hC hL hA hS p.2 _ hck g hg, hb', lsum_apply]`.
-
-Simplify using `only [List.map_map, Function.comp_def, Pi.smul_apply, Phi, Fw_append]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_mul (hC : HC Eop) (hL : HL Eop) (hA : HA Eop) (hS : HS Eop) {d e : ℕ} {a b : AA k r E}
     (ha : Rep d a) (hb : Rep e b) (f : Mat k r → E) (hf : CkOn ((d + e : ℕ) : ℕ∞) (GV k r) f) :

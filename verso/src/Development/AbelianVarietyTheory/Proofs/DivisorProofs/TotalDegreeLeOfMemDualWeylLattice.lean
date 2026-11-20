@@ -5,11 +5,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.GenCoef
 namespace GlobalTheory.DualWeylDeg
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, colW, smul_eq_mul]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Pi.single_apply]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using the standard rewrite rules. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h.symm hb`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_colW_apply {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (t : Fin N) :
     (Finsupp.weight (colW N N) m) t = ∑ a : Fin N, m (a, t) := by
@@ -25,11 +25,11 @@ theorem weight_colW_apply {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (t : Fin N) 
   · simp
 
 /- English proof (translation)
-Introduce `O _ N ν f hf`. Establish `h1 : f ∈ weightedHomogeneousSubmodule O (colW N N) ν` using `(Submodule.mem_inf.mp hf).1`. Rewrite `h1` using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[totalDegree]`. Use `Finset.sup_le fun m hm => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Finsupp.weight (colW N N) m = ν` using `h1 (mem_support_iff.mp hm)`. Establish `h3 : m.sum (fun _ e => e) = ∑ t, ∑ a : Fin N, m (a, t)`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type, Finset.sum_comm]`. Rewrite using `[h3]`. Use `le_of_eq (Finset.sum_congr rfl fun t _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← weight_colW_apply, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_le_of_mem_dualWeyl : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) O), f ∈ dualWeyl O N N ν → f.totalDegree ≤ ∑ a, ν a := by

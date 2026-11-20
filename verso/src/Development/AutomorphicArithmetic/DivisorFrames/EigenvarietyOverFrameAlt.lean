@@ -8,23 +8,21 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e B Y ρB ρ f φ hov hB g g' g₁ hg τ XB X jB j π hj M hM dual A A' hA hA' hco q q' hq G h hmet`. Establish `hY : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str`. Rewrite using `[← hov.1, Category.assoc, hB, hov.2.1]`. Use `UpperTheory.frame_generic_complex E H Dw l Xo c O β Z F e Y ρ hY g₁ τ X j _ (hM.pullback π) dual A' q' G _ hA' fun x => ?_` and prove the remaining obligations. Take `⟨U, s, hU, hs⟩` from `hM (π x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `ch : Chart M (Dw.mult τ)` to `⟨U, s, hs⟩`. Use `⟨ch.pull hM π, hU, ?_⟩` and prove the remaining obligations. Introduce `σ p z hz hzU φ₁ f₁ hf₁ yc hyc gg hgg`. Set `p' : Pts B σ` to `⟨p.1 ≫ f, by rw [Category.assoc, hov.2.1]; exact p.2⟩`. Establish `hz' : (Points.PtsOver.map π hq _ z).1 = p'.1 ≫ jB`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `z.1 ≫ π = (p.1 ≫ f) ≫ jB`. Rewrite using `[hz, Category.assoc, hj, Category.assoc]`. Establish `hzU' : Points.PtsOver.map π hq _ z ∈ CxPts.ptsIn q _ ch.U` using `hzU`. Establish `hb : jB (f (Var.base p)) ∈ ch.U`. Use `CxPts.mem_ptsIn.1 hzU'` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hz']`. Conclude with `this`. Take `⟨φ₀, k, hk⟩` from `hA.2 ch (f (Var.base p)) hb`. Take `⟨k₁, hkk, hk₁⟩` from `hk.pull hov hg g₁`. Rewrite `hf₁` using `[hco ch (gen_le jB hb), lieMat_mul, lieMat_lieMat _ (g₁.isUnit_det_co g' τ), lieMat_map _ _ (hA.1.1 ch (gen_le jB hb))]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hf₁.φ_eq hk₁`. Establish `hone : k₁.co f₁ τ = 1` using `hk₁.co_eq (by`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `hf₁)`. Establish `hp : spMap (Var.evStalk p) ≫ stalkPt Y (Var.base p) = p.1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk p.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (Var.evStalk p).comp (f.stalkMap (Var.base p)).hom = Var.evStalk p'` using `(congrArg CommRingCat.Hom.hom (Scheme.stalkClosedPointTo_comp p.1 f)).symm`. Establish `hφ : embOf e σ = (Var.evStalk p).comp ((f.stalkMap (Var.base p)).hom.comp φ₀)` using `RingHom.ext fun a => by`. Establish `h3 : ((f.stalkMap (Var.base p)).hom.comp φ₀) a = algebraMap F _ (e.symm a)` using `toFn_injective _ ((RingHom.congr_fun hk₁.1 a).symm.trans ((Y.stalkIncl (Var.base p)).commutes _).symm)`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, h3]`. Conclude with `((Var.evStalk_germ (U := ⊤) trivial _).trans (CxPts.ev_algX CxPts.mem_ptsIn_top _)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx : yc.1 ≫ genι Z = spMap (Var.evStalk p) ≫ stalkPt Y (Var.base p) ≫ ρ ≫ genι Z`. Rewrite using `[← Category.assoc, hp, hyc, Category.assoc]`. Take `⟨g₂, hg₂⟩` from `k₁.exists_isMap (Var.evStalk p) hφ hx`. Establish `hkg : k.IsMap (Var.evStalk p') g₂` using `fun τ i => by`. Rewrite using `[hg₂ τ i, hkk τ i, ← hev, GlobalTheory.GradedPieces.dual_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hgram : (G _).gram yc gg τ = (G _).gram yc g₂ τ`. Rewrite using `[(G _).change yc g₂ gg τ, hg₂.co τ hgg hx, hone, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules. Use `hmet ch σ p' _ hz' hzU' φ₀ k hk yc (by rw [hyc, ← hov.1]; exact (Category.assoc _ _ _).symm) g₂ hkg` as an intermediate fact. Rewrite using `[hgram, ← this]`.
-
-Conclude with `(h.met _).pull_G π hq ch hzU'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eigenvariety_over_frame_alt :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (B Y : Var F) (ρB : B.X ⟶ gen Z) (ρ : Y.X ⟶ gen Z) (f : Y.X ⟶ B.X) (φ : B.Fn →+* Y.Fn), IsOver e ρB ρ f φ → ρB ≫ genStr Z ≫ spMap e.toRingHom = B.str → ∀ (g : GenFrame e ρB) (g' g₁ : GenFrame e ρ), g.IsMap φ g' → ∀ (τ : E →+* ℂ) (XB X : Scheme.{0}) (jB : B.X ⟶ XB) (j : Y.X ⟶ X) (π : X ⟶ XB), j ≫ π = f ≫ jB → ∀ (M : XB.Modules) (hM : IsVB M (Dw.mult τ)) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) B.Fn) (A' : Chart ((Scheme.Modules.pullback π).obj M) (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn), IsLie g τ jB dual A → IsLie g₁ τ j dual A' → IsPullCo jB π hM dual φ g' g₁ A A' → ∀ (q : XB ⟶ Sp (𝓞 F)) (q' : X ⟶ Sp (𝓞 F)) (hq : π ≫ q = q') (G : ∀ σ : c.F →+* ℂ, EigMet Z σ) (h : VMetric q M (Dw.mult τ)), IsMet g τ jB dual A G h → IsMet g₁ τ j dual A' G (h.pull π hq) := by

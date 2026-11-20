@@ -18,7 +18,7 @@ private def Qm (a b : k) : Matrix (Fin 4) (Fin 2 ⊕ Fin 2) k :=
 private def J4 (k : Type) [Field k] : M4 k := !![0, 0, 0, 1; 0, 0, 1, 0; 0, -1, 0, 0; -1, 0, 0, 0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Pm, Qm, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two] <;> field_simp <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma QP {a b : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) : Qm a b * Pm a b = 1 := by
   ext i j
@@ -26,7 +26,7 @@ private lemma QP {a b : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) : 
     simp [Pm, Qm, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two] <;> field_simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Pm, Qm, Matrix.mul_apply, Fin.sum_univ_four] <;> field_simp <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma PQ {a b : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) : Pm a b * Qm a b = 1 := by
   ext i j
@@ -34,9 +34,9 @@ private lemma PQ {a b : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) : 
     simp [Pm, Qm, Matrix.mul_apply, Fin.sum_univ_four] <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `ha` using `a.ne_zero`. Establish `hb` using `b.ne_zero`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_four]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [Pm, Qm, mix] <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Qmix {a b : kˣ} (h2 : (2 : k) ≠ 0) (A B : Matrix (Fin 2) (Fin 2) k) :
     Qm (a : k) b * Matrix.fromBlocks A 0 0 B * Pm (a : k) b = mix (b / a) A B := by
@@ -48,7 +48,7 @@ private lemma Qmix {a b : kˣ} (h2 : (2 : k) ≠ 0) (A B : Matrix (Fin 2) (Fin 2
     simp [Pm, Qm, mix] <;> field_simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_four]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Pm, Qm] <;> field_simp <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Qoff {a b : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) :
     Qm a b * Matrix.fromBlocks (0 : Matrix (Fin 2) (Fin 2) k) (Matrix.diagonal ![a ^ 2, b ^ 2]) (1 : Matrix (Fin 2) (Fin 2) k)
@@ -59,7 +59,7 @@ private lemma Qoff {a b : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) 
     simp [Pm, Qm] <;> field_simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_four]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Pm, J4] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma gram (a b : k) :
     (Pm a b)ᵀ * Matrix.fromBlocks (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) k) (0 : Matrix (Fin 2) (Fin 2) k) (0 : Matrix (Fin 2) (Fin 2) k)
@@ -70,7 +70,7 @@ private lemma gram (a b : k) :
     simp [Pm, J4] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_four]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[J4, adj_apply, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private lemma adj_eq (Y : M4 k) : adj Y = -J4 k * Yᵀ * J4 k := by
   ext i j
@@ -79,7 +79,7 @@ private lemma adj_eq (Y : M4 k) : adj Y = -J4 k * Yᵀ * J4 k := by
     simp [J4, adj_apply, sgn, Fin.rev]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[J4, Matrix.mul_apply, Fin.sum_univ_four]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private lemma JJ : -J4 k * J4 k = 1 := by
   ext i j
@@ -87,11 +87,11 @@ private lemma JJ : -J4 k * J4 k = 1 := by
     simp [J4, Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Establish `hc : (-2 * (a * b)) ≠ 0` using `mul_ne_zero (neg_ne_zero.mpr h2) (mul_ne_zero ha hb)`. Establish `hPY : Pm a b * (Qm a b * X * Pm a b) = X * Pm a b`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, PQ h2 ha hb, Matrix.one_mul]`. Generalize the expression as in `Qm a b * X * Pm a b = Y at hPY`. Establish `h1 : (-2 * (a * b)) • (Yᵀ * J4 k * Y) = (-2 * (a * b)) • (ν • J4 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = (Pm a b)ᵀ * (Xᵀ * B * X) * Pm a b := by`. Rewrite using `[hPY]`. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = _ := by rw [hX, Matrix.mul_smul, Matrix.smul_mul, hB, smul_comm]`. Establish `h3 : Yᵀ * J4 k * Y = ν • J4 k` using `smul_right_injective _ hc h1`. Unfold `IsGSp`. Rewrite using `[adj_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma gsp {a b ν : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0)
     (X B : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) k) (hB : (Pm a b)ᵀ * B * Pm a b = (-2 * (a * b)) • J4 k)
@@ -116,19 +116,19 @@ private lemma gsp {a b ν : k} (h2 : (2 : k) ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0
 end
 
 /- English proof (translation)
-Introduce `k Γ₀ Γ _ _ _ j t α β ρ μ h2 hj hi ht hsq hdet hαβ`. Establish `ha` using `α.ne_zero`. Establish `hb` using `β.ne_zero`. Set `e : Γ₀ ≃* j.range` to `MonoidHom.ofInjective hj`. Establish `he : ∀ h, ((e h : j.range) : Γ) = j h` using `fun h => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : j.range →* GL (Fin 2) k` to `ρ.comp e.symm.toMonoidHom`. Establish `hr : ∀ h, r (e h) = ρ h` using `fun h => by simp [r]`. Take `⟨I, hI1, hI2⟩` from `UpperTheory.V.AlgebraTools.indTwo j.range t hi ht r`. Establish `hS` using `UpperTheory.V.AlgebraTools.indSymp j.range t hi ht r μ I (by`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, rfl⟩` from `e.surjective h`. Rewrite using `[hr, he, ← hdet, Matrix.GeneralLinearGroup.val_det_apply]) hI1 hI2`. Set `M : Γ →* M4 k` to `{ toFun := fun g => Qm (α : k) β * (I g : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) k) * Pm (α : k) β map_one' := by rw [map_one, Units.val_one, Matrix.mul_one, QP h2 ha hb] map_mul' := by`. Introduce `x y`. Rewrite using `[map_mul, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[PQ h2 ha hb]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc] }`. Establish `hM : ∀ g, ((M.toHomUnits g : GL (Fin 4) k) : M4 k) = Qm (α : k) β * (I g : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) k) * Pm (α : k) β` using `fun g => rfl`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M.toHomUnits, ⟨h2, hj, hi, ht, hsq, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h h' hh`. Use `hI1 (e h) (e h') hh` as an intermediate fact. Rewrite `this` using `[he, hr, hr]`. Rewrite using `[hM, this, Qmix h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `Subgroup.mul_self_mem_of_index_two hi t`. Use `hI2 (e u) hu` as an intermediate fact. Rewrite `this` using `[hr, hsq u hu]`. Rewrite using `[hM, this, Qoff h2 ha hb]`. Introduce `g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM]`. Use `gsp h2 ha hb _ _ ?_ (hS g)` and prove the remaining obligations. Rewrite using `[← hαβ, Units.val_mul]`. Conclude with `gram _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.symmetric_square_mixed_exists :
     UpperTheory.V.Sd.S2.MixEx := by

@@ -8,13 +8,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.FinalJoin2
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[FO, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `e` using `h (Q.eO.symm y)`. Rewrite `e` using `[RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : D.what₂.phiO y = ((Q.eO.symm y : Q.c.F) : ℂ)` using `e`. Rewrite using `[e']`. Conclude with `SetLike.coe_mem _`. Introduce `z hz haveI := Q.c.fin haveI : NumberField Q.c.F := NumberField.mk`. Establish `hint : ∀ x : 𝓞 Q.c.F, ((algebraMap (𝓞 Q.c.F) Q.c.F x : Q.c.F) : ℂ) ∈ FO D` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : D.what₂.phiO (Q.eO x) = ((algebraMap (𝓞 Q.c.F) Q.c.F x : Q.c.F) : ℂ)` using `h x`. Rewrite using `[← e]`. Conclude with `phiO_mem_FO D _`. Take `⟨x, y, -, hxy⟩` from `IsFractionRing.div_surjective (A := 𝓞 Q.c.F) (⟨z, hz⟩ : Q.c.F)`. Establish `: z = ((algebraMap (𝓞 Q.c.F) Q.c.F x : Q.c.F) : ℂ) / ((algebraMap (𝓞 Q.c.F) Q.c.F y : Q.c.F) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun t : Q.c.F => (t : ℂ)) hxy` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[this]`. Conclude with `div_mem (hint x) (hint y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FO_eq_coeff {D : D7} (Q : Par D) (h : Q.PinField) : FO D = Q.c.F := by
   apply le_antisymm
@@ -40,9 +40,9 @@ theorem FO_eq_coeff {D : D7} (Q : Par D) (h : Q.PinField) : FO D = Q.c.F := by
     exact div_mem (hint x) (hint y)
 
 /- English proof (translation)
-Introduce `D T h large₂`. Establish `hF : FO D = T.Q.c.F` using `FO_eq_coeff T.Q h.toLawsCore.pins.2.2.1`. Use `letI : NumberField (FO D) := NumberField.mk`. Set `e : FO D ≃+* (recB h.toLawsCore).KO` to `(IntermediateField.equivOfEq hF).toRingEquiv`. Establish `h1 : Module.finrank ℚ (FO D) = Module.finrank ℚ (recB h.toLawsCore).KO` using `(LinearEquiv.ofBijective e.toRingHom.toRatAlgHom.toLinearMap e.bijective).finrank_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : NumberField.discr (FO D) = NumberField.discr (recB h.toLawsCore).KO` using `NumberField.discr_eq_discr_of_ringEquiv _ e`. Unfold `FieldSmall OPO`. Rewrite using `[← h1, ← h2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldSmall_iff_opo : ∀ (D : D7) (T : Top D) (h : LawsP T) (large₂ : SizeData₂ D),
     FieldSmall D large₂ ↔ OPO large₂ (recB h.toLawsCore) := by

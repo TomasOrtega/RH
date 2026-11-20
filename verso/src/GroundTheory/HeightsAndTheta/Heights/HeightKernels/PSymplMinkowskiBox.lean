@@ -9,7 +9,7 @@ open Matrix MeasureTheory
 namespace PSymplMinkowskiBox
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[mulVec_neg, Pi.neg_apply, abs_neg]`. Conclude with `hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_neg {ι : Type} [Fintype ι] (A : Matrix ι ι ℝ) (a : ι → ℝ) (x : ι → ℝ)
     (hx : ∀ i, |(A *ᵥ x) i| < a i) : ∀ i, |(A *ᵥ (-x)) i| < a i := by
@@ -18,9 +18,9 @@ theorem box_neg {ι : Type} [Fintype ι] (A : Matrix ι ι ℝ) (a : ι → ℝ)
   exact hx i
 
 /- English proof (translation)
-Introduce `x hx y hy s t hs ht hst i`. Establish `hlt : s • |(A *ᵥ x) i| + t • |(A *ᵥ y) i| ∈ Set.Iio (a i)` using `convex_Iio (a i) (hx i) (hy i) hs ht hst`. Rewrite `hlt` using `[Set.mem_Iio, smul_eq_mul, smul_eq_mul]`. Rewrite using `[mulVec_add, mulVec_smul, mulVec_smul, Pi.add_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[abs_mul, abs_mul, abs_of_nonneg hs, abs_of_nonneg ht]`. Use `_ < a i := hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_convex {ι : Type} [Fintype ι] (A : Matrix ι ι ℝ) (a : ι → ℝ) :
     Convex ℝ {x : ι → ℝ | ∀ i, |(A *ᵥ x) i| < a i} := by
@@ -36,7 +36,7 @@ theorem box_convex {ι : Type} [Fintype ι] (A : Matrix ι ι ℝ) (a : ι → �
     _ < a i := hlt
 
 /- English proof (translation)
-Rewrite using `[ZSpan.fundamentalDomain_pi_basisFun, volume_pi, Measure.pi_pi]`. Simplify using `[Real.volume_Ico]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_fundamentalDomain_basisFun (ι : Type) [Fintype ι] :
     volume (ZSpan.fundamentalDomain (Pi.basisFun ℝ ι)) = 1 := by
@@ -48,17 +48,15 @@ end PSymplMinkowskiBox
 open PSymplMinkowskiBox in
 
 /- English proof (translation)
-Introduce `ι _ _ A a hdet ha hprod`. Establish `hdet0 : A.det ≠ 0`. Introduce `h`. Rewrite `hdet` using `[h, abs_zero]`. Conclude with `zero_ne_one hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set s : Set (ι → ℝ) := {x | ∀ i, |(A *ᵥ x) i| < a i} with hs`. Establish `hvol : volume s = ENNReal.ofReal (2 ^ Fintype.card ι * ∏ i, a i)`. Rewrite using `[hs, h1 ι A a hdet0 ha, hdet, div_one, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Establish `hP : (0 : ℝ) < 2 ^ Fintype.card ι` using `by positivity`. Establish `hbig : volume (ZSpan.fundamentalDomain (Pi.basisFun ℝ ι)) * 2 ^ Module.finrank ℝ (ι → ℝ) < volume s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[volume_fundamentalDomain_basisFun, one_mul, Module.finrank_fintype_fun_eq_card, hvol, ← ENNReal.ofReal_ofNat, ← ENNReal.ofReal_pow (by norm_num), ENNReal.ofReal_lt_ofReal_iff (by positivity)]`. Conclude with `lt_mul_of_one_lt_right hP hprod`. Establish `: Countable (Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι))).toAddSubgroup`. Express the relevant statement in the definitionally equal form `Countable (Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι)))`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx0, hxs⟩` from `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure (L := (Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι))).toAddSubgroup) (ZSpan.isAddFundamentalDomain (Pi.basisFun ℝ ι) volume) (fun y hy => box_neg A a y hy) (box_convex A a) hbig`. Establish `hint : ∀ i, ∃ z : ℤ, (z : ℝ) = (x : ι → ℝ) i`. Introduce `i`. Take `⟨z, hz⟩` from `((Pi.basisFun ℝ ι).mem_span_iff_repr_mem ℤ (x : ι → ℝ)).mp x.2 i`. Conclude with `⟨z, by simpa using hz⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose v hv using hint`. Establish `hxv : intVec v = (x : ι → ℝ)` using `funext hv`. Use `⟨v, ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hx0` to reduce the goal to its premises.
-
-Use extensionality with `i`. Rewrite using `[← hv i]`. Simplify using the standard rewrite rules. Rewrite using `[hxv]`. Conclude with `hxs i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SymplMinkowskiBox.proof (h1 : SymplBoxVolume.Statement) : SymplMinkowskiBox.Statement := by
   intro ι _ _ A a hdet ha hprod

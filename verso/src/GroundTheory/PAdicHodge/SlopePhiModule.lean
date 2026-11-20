@@ -28,7 +28,7 @@ theorem phiMatrix_apply (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (i j : ι) :
     phiMatrix b Φ i j = b.repr (Φ (b j)) i := rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x]`. Use function extensionality and compare the values at `i`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, map_smul, Finset.sum_apply, Finsupp.coe_finsetSum, Finsupp.smul_apply, smul_eq_mul, mulVec, dotProduct, phiMatrix_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_phi (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (x : M) :
     ⇑(b.repr (Φ x)) = (phiMatrix b Φ).mulVec (fun j => φ (b.repr x j)) := by
@@ -39,7 +39,7 @@ theorem repr_phi (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (x : M) :
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr (Φ (b j))]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phi_basis (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (j : ι) :
     Φ (b j) = ∑ i, phiMatrix b Φ i j • b i := by
@@ -47,9 +47,9 @@ theorem phi_basis (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (j : ι) :
   rfl
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono (Set.range_comp_subset_range _ _))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_range_eq (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
     Submodule.span R (Set.range Φ) = Submodule.span R (Set.range (Φ ∘ b)) := by
@@ -61,13 +61,13 @@ theorem span_range_eq (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← isUnit_iff_isUnit_det, ← mulVec_surjective_iff_isUnit, IsPhiModule, span_range_eq b Φ, eq_top_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (h (Submodule.mem_top (x := b.equivFun.symm v)))`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg b.equivFun hc` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← this]`. Use function extensionality and compare the values at `i`. Simplify using `[Function.comp, phi_basis, map_sum, Finset.sum_apply, mulVec, dotProduct, mul_comm, Finsupp.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `h x _`. Take `⟨c, hc⟩` from `h (b.equivFun x)`. Use `(Submodule.mem_span_range_iff_exists_fun R).2 ⟨c, ?_⟩` and prove the remaining obligations. Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[← hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Function.comp, phi_basis, map_sum, Finset.sum_apply, mulVec, dotProduct, mul_comm, Finsupp.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isPhiModule_iff_isUnit_det (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
     IsPhiModule Φ ↔ IsUnit (phiMatrix b Φ).det := by
@@ -93,7 +93,7 @@ theorem isPhiModule_iff_isUnit_det (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
       Finsupp.single_apply]
 
 /- English proof (translation)
-Use `congrArg (fun z => b.repr z i) (b'.sum_repr y)` as an intermediate fact. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_repr_mul_repr (b b' : Basis ι R M) (y : M) (i : ι) :
     ∑ k, b.repr (b' k) i * b'.repr y k = b.repr y i := by
@@ -104,9 +104,9 @@ theorem sum_repr_mul_repr (b b' : Basis ι R M) (y : M) (i : ι) :
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : (b.toMatrix b' * phiMatrix b' Φ) i j = b.repr (Φ (b' j)) i`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Basis.toMatrix_apply, phiMatrix_apply]`. Conclude with `sum_repr_mul_repr b b' _ i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (phiMatrix b Φ * (b.toMatrix b').map φ) i j = b.repr (Φ (b' j)) i`. Rewrite using `[repr_phi b Φ (b' j)]`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct, Basis.toMatrix_apply]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMatrix_mul_phiMatrix (b b' : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
     b.toMatrix b' * phiMatrix b' Φ = phiMatrix b Φ * (b.toMatrix b').map φ := by
@@ -121,7 +121,7 @@ theorem toMatrix_mul_phiMatrix (b b' : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
   rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[← det_mul, toMatrix_mul_phiMatrix, det_mul, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_toMatrix_mul_det (b b' : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
     (b.toMatrix b').det * (phiMatrix b' Φ).det = (phiMatrix b Φ).det * φ (b.toMatrix b').det := by
@@ -129,14 +129,14 @@ theorem det_toMatrix_mul_det (b b' : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
   rfl
 
 /- English proof (translation)
-Use `isUnit_iff_exists_inv.2 ⟨(b'.toMatrix b).det, ?_⟩` and prove the remaining obligations. Rewrite using `[← det_mul, Basis.toMatrix_mul_toMatrix_flip, det_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_det_toMatrix (b b' : Basis ι R M) : IsUnit (b.toMatrix b').det := by
   refine isUnit_iff_exists_inv.2 ⟨(b'.toMatrix b).det, ?_⟩
   rw [← det_mul, Basis.toMatrix_mul_toMatrix_flip, det_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[phiMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiMatrix_reindex {ι' : Type*} [Fintype ι'] [DecidableEq ι'] (b : Basis ι R M)
     (e : ι ≃ ι') (Φ : M →ₛₗ[φ] M) :
@@ -145,7 +145,7 @@ theorem phiMatrix_reindex {ι' : Type*} [Fintype ι'] [DecidableEq ι'] (b : Bas
   simp [phiMatrix_apply]
 
 /- English proof (translation)
-Rewrite using `[phiMatrix_reindex, det_submatrix_equiv_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_phiMatrix_reindex {ι' : Type*} [Fintype ι'] [DecidableEq ι'] (b : Basis ι R M)
     (e : ι ≃ ι') (Φ : M →ₛₗ[φ] M) :
@@ -165,7 +165,7 @@ namespace UnitOrd
 variable (v : UnitOrd R φ)
 
 /- English proof (translation)
-Use `v.map_mul 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem map_one : v.ord 1 = 0 := by
   have := v.map_mul 1 1
@@ -173,7 +173,7 @@ theorem map_one : v.ord 1 = 0 := by
   omega
 
 /- English proof (translation)
-Use `v.map_mul a a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, v.map_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem map_inv (a : Rˣ) : v.ord a⁻¹ = -v.ord a := by
   have := v.map_mul a a⁻¹
@@ -181,7 +181,7 @@ theorem map_inv (a : Rˣ) : v.ord a⁻¹ = -v.ord a := by
   omega
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [v.map_one]`. Consider the case `succ n ih => rw [pow_succ, v.map_mul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_pow (a : Rˣ) (n : ℕ) : v.ord (a ^ n) = n * v.ord a := by
   induction n with
@@ -189,21 +189,21 @@ theorem map_pow (a : Rˣ) (n : ℕ) : v.ord (a ^ n) = n * v.ord a := by
   | succ n ih => rw [pow_succ, v.map_mul, ih]; push_cast; ring
 
 /- English proof (translation)
-Use `congr 1`. Use `ext`. Simplify using `[h]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ord_unit_eq {x y : R} (hx : IsUnit x) (hy : IsUnit y) (h : x = y) :
     v.ord hx.unit = v.ord hy.unit := by
   congr 1; ext; simp [h]
 
 /- English proof (translation)
-Rewrite using `[← v.map_mul]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ord_unit_mul {x y : R} (hx : IsUnit x) (hy : IsUnit y) :
     v.ord (hx.mul hy).unit = v.ord hx.unit + v.ord hy.unit := by
   rw [← v.map_mul]; congr 1; ext; simp
 
 /- English proof (translation)
-Rewrite using `[← v.map_phi hx.unit]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ord_unit_phi {x : R} (hx : IsUnit x) :
     v.ord (hx.map φ).unit = v.ord hx.unit := by
@@ -229,11 +229,11 @@ def degIn (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (h : IsPhiModule Φ) : ℤ
   v.ord ((isPhiModule_iff_isUnit_det b Φ).1 h).unit
 
 /- English proof (translation)
-Set `e : ι' ≃ ι` to `b'.indexEquiv b`. Establish `hre : degIn v b' Φ h = degIn v (b'.reindex e) Φ h` using `v.ord_unit_eq _ _ (det_phiMatrix_reindex b' e Φ).symm`. Rewrite using `[hre]`. Use `set b'' := b'.reindex e`. Establish `hP` using `isUnit_det_toMatrix b b''`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `(isPhiModule_iff_isUnit_det b Φ).1 h`. Establish `hA'` using `(isPhiModule_iff_isUnit_det b'' Φ).1 h`. Establish `key : v.ord (hP.mul hA').unit = v.ord (hA.mul (hP.map φ)).unit` using `v.ord_unit_eq _ _ (det_toMatrix_mul_det b b'' Φ)`. Rewrite `key` using `[v.ord_unit_mul hP hA', v.ord_unit_mul hA (hP.map φ), v.ord_unit_phi hP]`. Unfold `degIn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem degIn_eq {ι' : Type*} [Fintype ι'] [DecidableEq ι'] (b : Basis ι R M) (b' : Basis ι' R M)
     (Φ : M →ₛₗ[φ] M) (h : IsPhiModule Φ) : degIn v b Φ h = degIn v b' Φ h := by
@@ -260,7 +260,7 @@ def deg (Φ : M →ₛₗ[φ] M) : ℤ :=
   if h : IsPhiModule Φ then degIn v (Module.Free.chooseBasis R M) Φ h else 0
 
 /- English proof (translation)
-Rewrite using `[deg, dif_pos h]`. Conclude with `degIn_eq v _ _ Φ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_eq (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (h : IsPhiModule Φ) :
     deg v Φ = degIn v b Φ h := by
@@ -269,7 +269,7 @@ theorem deg_eq (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (h : IsPhiModule Φ) 
   exact degIn_eq v _ _ Φ h
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[phiMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiMatrix_smul (b : Basis ι R M) (c : R) (Φ : M →ₛₗ[φ] M) :
     phiMatrix b (c • Φ) = c • phiMatrix b Φ := by
@@ -277,7 +277,7 @@ theorem phiMatrix_smul (b : Basis ι R M) (c : R) (Φ : M →ₛₗ[φ] M) :
   simp [phiMatrix_apply]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite `h`, the goal using `[isPhiModule_iff_isUnit_det b]`. Rewrite using `[phiMatrix_smul, det_smul]`. Conclude with `(c.isUnit.pow _).mul h`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiModule_smul {Φ : M →ₛₗ[φ] M} (h : IsPhiModule Φ) (c : Rˣ) :
     IsPhiModule ((c : R) • Φ) := by
@@ -288,9 +288,9 @@ theorem isPhiModule_smul {Φ : M →ₛₗ[φ] M} (h : IsPhiModule Φ) (c : Rˣ)
   exact (c.isUnit.pow _).mul h
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite using `[deg_eq v b _ (isPhiModule_smul h c), deg_eq v b _ h, degIn, degIn]`. Establish `hA` using `(isPhiModule_iff_isUnit_det b Φ).1 h`. Establish `e` using `v.ord_unit_eq ((isPhiModule_iff_isUnit_det b _).1 (isPhiModule_smul h c)) ((c.isUnit.pow (Fintype.card (Module.Free.ChooseBasisIndex R M))).mul hA) (by rw [phiMatrix_smul, det_smul])`. Rewrite using `[e, v.ord_unit_mul (c.isUnit.pow _) hA, Module.finrank_eq_card_chooseBasisIndex]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: v.ord (c.isUnit.pow (Fintype.card (Module.Free.ChooseBasisIndex R M))).unit = v.ord (c ^ Fintype.card (Module.Free.ChooseBasisIndex R M))` using `by congr 1; ext; simp`. Rewrite using `[this, v.map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_smul {Φ : M →ₛₗ[φ] M} (h : IsPhiModule Φ) (c : Rˣ) :
     deg v ((c : R) • Φ) = deg v Φ + Module.finrank R M * v.ord c := by
@@ -325,13 +325,13 @@ Both sides reduce to the same expression.
 theorem iterate_apply (Φ : M →ₛₗ[φ] M) (d : ℕ) (x : M) : iterate Φ d x = Φ^[d] x := rfl
 
 /- English proof (translation)
-The claim follows from `Function.iterate_succ_apply' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iterate_succ_apply (Φ : M →ₛₗ[φ] M) (d : ℕ) (x : M) :
     iterate Φ (d + 1) x = Φ (iterate Φ d x) := Function.iterate_succ_apply' _ _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[phiMatrix_apply, iterate_apply, Matrix.one_apply, Finsupp.single_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiMatrix_iterate_zero (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
     phiMatrix b (iterate Φ 0) = 1 := by
@@ -339,7 +339,7 @@ theorem phiMatrix_iterate_zero (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) :
   simp [phiMatrix_apply, iterate_apply, Matrix.one_apply, Finsupp.single_apply, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[phiMatrix_apply, iterate_succ_apply, repr_phi]`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct, phiMatrix_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phiMatrix_iterate_succ (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (d : ℕ) :
     phiMatrix b (iterate Φ (d + 1)) = phiMatrix b Φ * (phiMatrix b (iterate Φ d)).map φ := by
@@ -348,7 +348,7 @@ theorem phiMatrix_iterate_succ (b : Basis ι R M) (Φ : M →ₛₗ[φ] M) (d : 
   simp [Matrix.mul_apply, mulVec, dotProduct, phiMatrix_apply]
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [phiMatrix_iterate_zero, det_one]; exact isUnit_one | d + 1 => by rw [phiMatrix_iterate_succ, det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det] exact h.mul ((isUnit_det_iterate b h d).map φ)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_iterate (b : Basis ι R M) {Φ : M →ₛₗ[φ] M} (h : IsUnit (phiMatrix b Φ).det) :
     ∀ d, IsUnit (phiMatrix b (iterate Φ d)).det
@@ -358,7 +358,7 @@ theorem isUnit_det_iterate (b : Basis ι R M) {Φ : M →ₛₗ[φ] M} (h : IsUn
     exact h.mul ((isUnit_det_iterate b h d).map φ)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite `h`, the goal using `[isPhiModule_iff_isUnit_det b]`. Conclude with `isUnit_det_iterate b h d`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiModule_iterate {Φ : M →ₛₗ[φ] M}
     (h : IsPhiModule Φ) (d : ℕ) : IsPhiModule (iterate Φ d) := by
@@ -368,13 +368,13 @@ theorem isPhiModule_iterate {Φ : M →ₛₗ[φ] M}
   exact isUnit_det_iterate b h d
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Simplify using `only [degIn, CharP.cast_eq_zero, zero_mul]`. Use `v.ord_unit_eq ((isPhiModule_iff_isUnit_det b _).1 (h' 0)) isUnit_one (by rw [phiMatrix_iterate_zero, det_one])` as an intermediate fact. Rewrite using `[show (v.pow 0).ord = v.ord from rfl, this]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (isUnit_one : IsUnit (1 : R)).unit = 1` using `by ext; simp`. Rewrite using `[e, v.map_one]`. Consider the case `succ d ih`. Establish `hA` using `(isPhiModule_iff_isUnit_det b Φ).1 h`. Establish `hd` using `(isPhiModule_iff_isUnit_det b _).1 (h' d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `v.ord_unit_eq ((isPhiModule_iff_isUnit_det b _).1 (h' (d + 1))) (hA.mul (hd.map φ)) (by rw [phiMatrix_iterate_succ, det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det])`. Simplify using `only [degIn] at ih ⊢`. Rewrite using `[show (v.pow (d + 1)).ord = v.ord from rfl, key, v.ord_unit_mul hA (hd.map φ), v.ord_unit_phi hd]`. Rewrite `ih` using `[show (v.pow d).ord = v.ord from rfl]`. Rewrite using `[ih]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degIn_iterate (b : Basis ι R M) {Φ : M →ₛₗ[φ] M} (h : IsPhiModule Φ)
     (h' : ∀ d, IsPhiModule (iterate Φ d)) (d : ℕ) :
@@ -399,7 +399,7 @@ theorem degIn_iterate (b : Basis ι R M) {Φ : M →ₛₗ[φ] M} (h : IsPhiModu
     rw [ih]; push_cast; ring
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite using `[deg_eq (v.pow d) b _ (isPhiModule_iterate h d), deg_eq v b _ h]`. Conclude with `degIn_iterate v b h (isPhiModule_iterate h) d`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_iterate {Φ : M →ₛₗ[φ] M} (h : IsPhiModule Φ)
     (d : ℕ) : deg (v.pow d) (iterate Φ d) = d * deg v Φ := by

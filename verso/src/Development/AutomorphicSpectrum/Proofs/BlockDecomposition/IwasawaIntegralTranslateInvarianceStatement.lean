@@ -10,7 +10,7 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RInvB.integral_right_invariant | exact GlobalTheory.CompanionTheory.RInvB.integral_right_invariant | (intros; apply GlobalTheory.CompanionTheory.RInvB.integral_right_invariant <;> assumption) | exact @GlobalTheory.CompanionTheory.RInvB. …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.iwasawa_integral_translate_invariance : ForS fun F _ _ _ _ _ _ ψ => ∀ B : GL (Fin 2) F → ℂ, Continuous B → (∀ x h, B (uni2 x * h) = B h) →
   ∀ g : GL (Fin 2) F, ∫ p, ((wR p : ℝ) : ℂ) * B (hI p * g) ∂mIw ψ = ∫ p, ((wR p : ℝ) : ℂ) * B (hI p) ∂mIw ψ := by

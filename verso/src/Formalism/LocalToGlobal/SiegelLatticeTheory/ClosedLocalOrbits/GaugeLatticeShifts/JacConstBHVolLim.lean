@@ -12,11 +12,11 @@ namespace Formalism.L2.SG.Pf.BH.VL
 open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH
 
 /- English proof (translation)
-Break down `eq_or_ne x ⊤ with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Use `lift x to NNReal using hx`. Establish `hx2 : ((x : ℝ≥0∞)) ^ 2 = ENNReal.ofReal ((x : ℝ) ^ 2)`. Rewrite using `[ENNReal.ofReal_pow (NNReal.coe_nonneg x), ENNReal.ofReal_coe_nnreal]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx2, ← ENNReal.ofReal_add h1 (by positivity), ← ENNReal.ofReal_add (by positivity) h2, ENNReal.ofReal_lt_ofReal_iff (by positivity), ← ENNReal.ofReal_coe_nnreal, ENNReal.ofReal_lt_ofReal_iff']`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hpos : 0 < s ^ 2 - R1 - R2` using `by nlinarith [sq_nonneg (x : ℝ)]`. Conclude with `⟨Real.lt_sqrt (NNReal.coe_nonneg x) |>.2 (by linarith), Real.sqrt_pos.2 hpos⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, -⟩`. Use `(Real.lt_sqrt (NNReal.coe_nonneg x)).1 h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sq_cond {R1 R2 s : ℝ} (hs : 0 < s) (h1 : 0 ≤ R1) (h2 : 0 ≤ R2) (x : ℝ≥0∞) :
     ENNReal.ofReal R1 + x ^ 2 + ENNReal.ofReal R2 < ENNReal.ofReal (s ^ 2) ↔
@@ -39,11 +39,11 @@ theorem sq_cond {R1 R2 s : ℝ} (hs : 0 < s) (h1 : 0 ≤ R1) (h2 : 0 ≤ R2) (x 
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [Set.mem_setOf_eq, rhoS, iInf_lt_iff, expBall, Set.mem_image, Metric.mem_ball, dist_zero_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, hY, hlt⟩`. Use `⟨Y, ?_, hY⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hlt` using `[← ENNReal.ofReal_coe_nnreal, coe_nnnorm, ENNReal.ofReal_lt_ofReal_iff']`. Conclude with `hlt.1`. Introduce and unpack `⟨Y, hlt, hY⟩`. Use `⟨Y, hY, ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_coe_nnreal, coe_nnnorm, ENNReal.ofReal_lt_ofReal_iff']`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hlt, lt_of_le_of_lt (norm_nonneg _) hlt⟩`.
+A detailed English derivation is pending.
 -/
 theorem rho_lt (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (t : ℝ) :
     {m : Mt k r | rhoS k r S m < ENNReal.ofReal t} = expBall (k := k) (r := r) S t := by
@@ -60,9 +60,9 @@ theorem rho_lt (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     exact ⟨hlt, lt_of_le_of_lt (norm_nonneg _) hlt⟩
 
 /- English proof (translation)
-Use extensionality with `Z`. Simplify using `only [Set.mem_setOf_eq, Metric.mem_ball, dist_zero_right]`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, coe_nnnorm, ENNReal.ofReal_lt_ofReal_iff']`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => ⟨h, lt_of_le_of_lt (norm_nonneg _) h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem norm_lt {E : Type*} [NormedAddCommGroup E] (t : ℝ) :
     {Z : E | (‖Z‖₊ : ℝ≥0∞) < ENNReal.ofReal t} = Metric.ball 0 t := by
@@ -74,9 +74,7 @@ theorem norm_lt {E : Type*} [NormedAddCommGroup E] (t : ℝ) :
   · exact fun h => ⟨h, lt_of_le_of_lt (norm_nonneg _) h⟩
 
 /- English proof (translation)
-Break down `lt_or_ge 0 t with ht | ht` into its components or cases. Conclude with `measurableSet_expBall S t ht`. Establish `: Metric.ball (0 : Formalism.MainNotions.S.lieE S) t = ∅` using `Metric.ball_eq_empty.2 ht`. Unfold `expBall`. Rewrite using `[this, Set.image_empty]`.
-
-Conclude with `MeasurableSet.empty`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_expBall' (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (t : ℝ) :
     MeasurableSet (expBall (k := k) (r := r) S t) := by
@@ -86,7 +84,7 @@ theorem measurableSet_expBall' (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * 
     unfold expBall; rw [this, Set.image_empty]; exact MeasurableSet.empty
 
 /- English proof (translation)
-Rewrite using `[← rho_lt, ← lintegral_indicator_one (by rw [rho_lt]; exact measurableSet_expBall' _ _)]`. Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator, Set.mem_setOf_eq, Pi.one_apply, sq_cond hs h1 h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem m_int (μb : Measure (Mt k r)) {R1 R2 s : ℝ} (hs : 0 < s) (h1 : 0 ≤ R1) (h2 : 0 ≤ R2) :
     ∫⁻ m, (if ENNReal.ofReal R1 + rhoS k r (Formalism.FourierDecayAlt.B2.UWb k r) m ^ 2 + ENNReal.ofReal R2 < ENNReal.ofReal (s ^ 2)
@@ -97,7 +95,7 @@ theorem m_int (μb : Measure (Mt k r)) {R1 R2 s : ℝ} (hs : 0 < s) (h1 : 0 ≤ 
   simp only [Set.indicator, Set.mem_setOf_eq, Pi.one_apply, sq_cond hs h1 h2]
 
 /- English proof (translation)
-Rewrite using `[← norm_lt, ← lintegral_indicator_one (by rw [norm_lt]; exact measurableSet_ball)]`. Use `lintegral_congr fun Z => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator, Set.mem_setOf_eq, Pi.one_apply, sq_cond hs h1 h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem z_int {E : Type*} [NormedAddCommGroup E] [MeasurableSpace E] [BorelSpace E] (ν : Measure E)
     {R1 R2 s : ℝ} (hs : 0 < s) (h1 : 0 ≤ R1) (h2 : 0 ≤ R2) :
@@ -116,17 +114,17 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hT` using `hμ.2`. Establish `hev : ∀ᶠ ρ in 𝓝[>] (0 : ℝ), (μ (expBall (k` using `k) (r := r) S ρ)).toReal / (volume (Metric.ball (0 : Formalism.MainNotions.S.lieE S) ρ)).toReal ∈ Set.Ioo (1 - ε) (1 + ε) := hT (Ioo_mem_nhds (by linarith) (by linarith))`. Rewrite `hev` using `[eventually_nhdsWithin_iff, Metric.eventually_nhds_iff]`. Take `⟨δ, hδ, hb⟩` from `hev`. Use `⟨δ, hδ, fun t ht0 htδ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_lt_of_le ht0 with rfl | htpos` into its components or cases. Establish `h1 : Metric.ball (0 : Formalism.MainNotions.S.lieE S) 0 = ∅` using `Metric.ball_zero`. Establish `h2 : expBall (k` using `k) (r := r) S 0 = ∅ := by unfold expBall; rw [h1, Set.image_empty]`. Simplify using `[h1, h2]`. Establish `hmem` using `hb (by rw [Real.dist_eq, sub_zero, abs_of_pos htpos]; exact htδ) htpos`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set V := volume (Metric.ball (0 : Formalism.MainNotions.S.lieE S) t) with hV`. Establish `hV0 : V ≠ 0` using `(Metric.measure_ball_pos _ _ htpos).ne'`. Establish `hVt : V ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hVr : 0 < V.toReal` using `ENNReal.toReal_pos hV0 hVt`. Use `set M := μ (expBall (k := k) (r := r) S t) with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMt : M ≠ ⊤`. Introduce `h`. Rewrite `hmem` using `[h, ENNReal.toReal_top, zero_div]`. Combine the linear relations using `[hmem.1]`. Establish `hlo : (1 - ε) * V.toReal < M.toReal`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hmem.1` as an intermediate fact. Rewrite `this` using `[lt_div_iff₀ hVr]`. Then use the resulting hypothesis. Establish `hhi : M.toReal < (1 + ε) * V.toReal`. Use `hmem.2` as an intermediate fact. Rewrite `this` using `[div_lt_iff₀ hVr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← ENNReal.ofReal_toReal hMt, ← ENNReal.ofReal_toReal hVt, ← ENNReal.ofReal_mul (by linarith)]`. Conclude with `ENNReal.ofReal_le_ofReal hhi.le`. Rewrite using `[← ENNReal.ofReal_toReal hMt, ← ENNReal.ofReal_toReal hVt, ← ENNReal.ofReal_mul (by linarith)]`. Conclude with `ENNReal.ofReal_le_ofReal hlo.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauge_bound {S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)} {μ : Measure (Mt k r)}
     (hμ : IsGaugeOn S μ) {ε : ℝ} (hε : 0 < ε) (hε1 : ε < 1) :
@@ -165,19 +163,19 @@ theorem gauge_bound {S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     exact ENNReal.ofReal_le_ofReal hlo.le
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B2.cWeight`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cWeight_cont : Continuous (Formalism.FourierDecayAlt.B2.cWeight k r) := by
   unfold Formalism.FourierDecayAlt.B2.cWeight; fun_prop
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B2.cWeight`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cWeight_one : Formalism.FourierDecayAlt.B2.cWeight k r 1 = 1 := by
   unfold Formalism.FourierDecayAlt.B2.cWeight; simp
 
 /- English proof (translation)
-The claim follows from `|Formalism.FourierDecayAlt.B2.cWeight k r c - 1| < ε := by obtain ⟨η, hη, h⟩ := Metric.continuousAt_iff.1 (cWeight_cont (k := k) (r := r)).continuousAt ε hε refine ⟨η, hη, fun c hc => ?_⟩ have hd : dist c 1 < η := by rw [dist_pi_lt_iff hη] intro a rw [dist_eq_norm, Pi.one_apply] …`.
+A detailed English derivation is pending.
 -/
 theorem cw_bound {ε : ℝ} (hε : 0 < ε) : ∃ δ > 0, ∀ c : Fin r → ℂ, 2 * ∑ a, ‖c a - 1‖ ^ 2 < δ ^ 2 →
     |Formalism.FourierDecayAlt.B2.cWeight k r c - 1| < ε := by
@@ -202,26 +200,26 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.haarLie`. Rewrite using `[one_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lie_haar_nilradical_eq_map_exp : Formalism.MainNotions.S.haarLie (Nset k r) 1 = Measure.map (expL k r (Nset k r)) volume := by
   unfold Formalism.MainNotions.S.haarLie; rw [one_smul]; rfl
 
 /- English proof (translation)
-The claim follows from `(Formalism.MainNotions.BridgeCSB.continuous_expLie (k := k) (r := r) (Nset k r)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_expL' : Measurable (expL k r (Nset k r)) :=
   (Formalism.MainNotions.BridgeCSB.continuous_expLie (k := k) (r := r) (Nset k r)).measurable
 
 /- English proof (translation)
-Rewrite using `[lie_haar_nilradical_eq_map_exp]`. Conclude with `lintegral_map hG meas_expL'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_lie_haar_nilradical (G : Mt k r → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ n, G n ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1) = ∫⁻ Y : Formalism.MainNotions.S.lieE (Nset k r), G (expL k r (Nset k r) Y) := by
   rw [lie_haar_nilradical_eq_map_exp]; exact lintegral_map hG meas_expL'
 
 /- English proof (translation)
-The claim follows from `(Formalism.MainNotions.BridgeCSB.continuous_expLie (k := k) (r := r) S).measurable`.
+A detailed English derivation is pending.
 -/
 theorem meas_expL (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) : Measurable (expL k r S) :=
   (Formalism.MainNotions.BridgeCSB.continuous_expLie (k := k) (r := r) S).measurable
@@ -230,9 +228,7 @@ def ind (c : Fin r → ℂ) (s : ℝ) (n m n' : Mt k r) : ℝ≥0∞ :=
   if Qf k r n c m n' < ENNReal.ofReal (s ^ 2) then 1 else 0
 
 /- English proof (translation)
-Establish `hN` using `rhoMeas k r (Nset k r)`. Establish `hW` using `rhoMeas k r (Formalism.FourierDecayAlt.B2.UWb k r)`. Establish `hQ : Measurable fun p : Mt k r × Mt k r × Mt k r => Qf k r p.1 c p.2.1 p.2.2`. Unfold `Qf`. Conclude with `(((hN.comp measurable_fst).pow_const 2).add measurable_const |>.add ((hW.comp measurable_snd.fst).pow_const 2)).add ((hN.comp measurable_snd.snd).pow_const 2)`.
-
-Conclude with `Measurable.ite (measurableSet_lt hQ measurable_const) measurable_const measurable_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem meas_ind (c : Fin r → ℂ) (s : ℝ) :
     Measurable fun p : Mt k r × Mt k r × Mt k r => ind (k := k) (r := r) c s p.1 p.2.1 p.2.2 := by
@@ -245,9 +241,9 @@ theorem meas_ind (c : Fin r → ℂ) (s : ℝ) :
   exact Measurable.ite (measurableSet_lt hQ measurable_const) measurable_const measurable_const
 
 /- English proof (translation)
-Establish `hN` using `rhoMeas k r (Nset k r)`. Establish `hW` using `rhoMeas k r (Formalism.FourierDecayAlt.B2.UWb k r)`. Establish `hQ : Measurable fun a => Qf k r (f a) c (g a) (h a)`. Unfold `Qf`. Conclude with `((((hN.comp hf).pow_const 2).add measurable_const).add ((hW.comp hg).pow_const 2)).add ((hN.comp hh).pow_const 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `ind`. Conclude with `Measurable.ite (measurableSet_lt hQ measurable_const) measurable_const measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem meas_ind_gen {α : Type*} [MeasurableSpace α] (c : Fin r → ℂ) (s : ℝ) {f g h : α → Mt k r}
     (hf : Measurable f) (hg : Measurable g) (hh : Measurable h) :
@@ -262,21 +258,19 @@ theorem meas_ind_gen {α : Type*} [MeasurableSpace α] (c : Fin r → ℂ) (s : 
   exact Measurable.ite (measurableSet_lt hQ measurable_const) measurable_const measurable_const
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.BH.Model.enn_sq y`.
+A detailed English derivation is pending.
 -/
 theorem enn_sq' {E : Type*} [NormedAddCommGroup E] (y : E) : ((‖y‖₊ : ℝ≥0∞)) ^ 2 = ENNReal.ofReal (‖y‖ ^ 2) :=
   Formalism.L2.SG.Pf.BH.Model.enn_sq y
 
 /- English proof (translation)
-Establish `: SFinite (Formalism.MainNotions.S.haarLie (Nset k r) 1)` using `by rw [lie_haar_nilradical_eq_map_exp]; infer_instance`. Establish `hswap : ∀ n : Mt k r, ∫⁻ m, ∫⁻ n', ind c s n m n' ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1) ∂μb = ∫⁻ n', ∫⁻ m, ind c s n m n' ∂μb ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1)`. Introduce `n`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Conclude with `(meas_ind_gen c s (f := fun _ : Mt k r × Mt k r => n) (g := fun p => p.1) (h := fun p => p.2) measurable_const measurable_fst measurable_snd).aemeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hswap]`. Establish `hG : Measurable fun n : Mt k r => ∫⁻ n', ∫⁻ m, ind c s n m n' ∂μb ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1)`. Establish `h3 : Measurable fun p : (Mt k r × Mt k r) × Mt k r => ind (k` using `k) (r := r) c s p.1.1 p.2 p.1.2 := meas_ind_gen c s (f := fun p : (Mt k r × Mt k r) × Mt k r => p.1.1) (g := fun p => p.2) (h := fun p => p.1.2) measurable_fst.fst measurable_snd measurable_fst.snd`. Conclude with `h3.lintegral_prod_right'.lintegral_prod_right'`. Rewrite using `[lintegral_lie_haar_nilradical _ hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_congr fun Y => ?_` and prove the remaining obligations. Establish `hG' : Measurable fun n' : Mt k r => ∫⁻ m, ind c s (expL k r (Nset k r) Y) m n' ∂μb`. Establish `h2 : Measurable fun p : Mt k r × Mt k r => ind (k` using `k) (r := r) c s (expL k r (Nset k r) Y) p.2 p.1 := meas_ind_gen c s (f := fun _ : Mt k r × Mt k r => expL k r (Nset k r) Y) (g := fun p => p.2) (h := fun p => p.1) measurable_const measurable_snd measurable_fst`. Conclude with `h2.lintegral_prod_right'`. Rewrite using `[lintegral_lie_haar_nilradical _ hG']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lintegral_congr fun Y' => ?_` and prove the remaining obligations. Establish `hB : 0 ≤ 2 * ∑ a, ‖c a - 1‖ ^ 2` using `by positivity`. Establish `e : ∀ m : Mt k r, ind c s (expL k r (Nset k r) Y) m (expL k r (Nset k r) Y') = if ENNReal.ofReal (‖Y‖ ^ 2 + 2 * ∑ a, ‖c a - 1‖ ^ 2) + rhoS k r (Formalism.FourierDecayAlt.B2.UWb k r) m ^ 2 + ENNReal.ofReal (‖Y'‖ ^ 2) < ENNReal.ofReal (s ^ 2) then 1 else 0`. Introduce `m`. Unfold `ind Qf`.
-
-Rewrite using `[rhoN k r Y, rhoN k r Y', enn_sq', enn_sq', ← ENNReal.ofReal_add (by positivity) hB]`. Repeatedly rewrite using `[e]`. Conclude with `m_int μb hs (by positivity) (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq (μb : Measure (Mt k r)) [SFinite μb] (c : Fin r → ℂ) {s : ℝ} (hs : 0 < s) :
     ∫⁻ n, ∫⁻ m, ∫⁻ n', ind c s n m n' ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1) ∂μb ∂(Formalism.MainNotions.S.haarLie (Nset k r) 1) =
@@ -325,11 +319,9 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `lintegral_congr fun y1 => ?_` and prove the remaining obligations. Establish `hmeas : Measurable fun p : E2 × E1 => (if (‖y1‖₊ : ℝ≥0∞) ^ 2 + ENNReal.ofReal B + (‖p.1‖₊ : ℝ≥0∞) ^ 2 + (‖p.2‖₊ : ℝ≥0∞) ^ 2 < ENNReal.ofReal (s ^ 2) then (1 : ℝ≥0∞) else 0)`. Use `Measurable.ite (measurableSet_lt ?_ measurable_const) measurable_const measurable_const` and prove the remaining obligations. Use `fun_prop`. Rewrite using `[lintegral_lintegral_swap hmeas.aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun y3 => ?_` and prove the remaining obligations. Establish `e : ∀ y2 : E2, (if (‖y1‖₊ : ℝ≥0∞) ^ 2 + ENNReal.ofReal B + (‖y2‖₊ : ℝ≥0∞) ^ 2 + (‖y3‖₊ : ℝ≥0∞) ^ 2 < ENNReal.ofReal (s ^ 2) then (1 : ℝ≥0∞) else 0) = (if ENNReal.ofReal (‖y1‖ ^ 2 + B) + (‖y2‖₊ : ℝ≥0∞) ^ 2 + ENNReal.ofReal (‖y3‖ ^ 2) < ENNReal.ofReal (s ^ 2) then (1 : ℝ≥0∞) else 0 …`. Introduce `y2`. Rewrite using `[enn_sq' y1, enn_sq' y3, ← ENNReal.ofReal_add (by positivity) hB]`. Repeatedly rewrite using `[e]`.
-
-Conclude with `z_int volume hs (by positivity) (by positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_inner (E1 E2 : Type) [NormedAddCommGroup E1] [InnerProductSpace ℝ E1] [FiniteDimensional ℝ E1]
     [MeasurableSpace E1] [BorelSpace E1] [NormedAddCommGroup E2] [InnerProductSpace ℝ E2] [FiniteDimensional ℝ E2]
@@ -356,14 +348,14 @@ theorem model_inner (E1 E2 : Type) [NormedAddCommGroup E1] [InnerProductSpace �
   exact z_int volume hs (by positivity) (by positivity)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ball_cast (a b : ℕ) (h : a = b) (s : ℝ) :
     volume (Metric.ball (0 : EuclideanSpace ℝ (Fin a)) s) = volume (Metric.ball (0 : EuclideanSpace ℝ (Fin b)) s) := by
   subst h; rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sqrt_sq_sub_le_self {s R : ℝ} (hs : 0 < s) (hR : 0 ≤ R) : Real.sqrt (s ^ 2 - R) ≤ s := by
   calc Real.sqrt (s ^ 2 - R) ≤ Real.sqrt (s ^ 2) := Real.sqrt_le_sqrt (by linarith)
@@ -378,15 +370,15 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `set B := 2 * ∑ a, ‖c a - 1‖ ^ 2 with hBdef`. Establish `hB : 0 ≤ B` using `by positivity`. Use `set t := Real.sqrt (s ^ 2 - (u + B) - v) with htdef`. Establish `ht0 : 0 ≤ t` using `Real.sqrt_nonneg _`. Break down `eq_or_lt_of_le ht0 with ht | ht` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ht]`. Establish `h1 : Metric.ball (0 : Formalism.MainNotions.S.lieE (Formalism.FourierDecayAlt.B2.UWb k r)) 0 = ∅` using `Metric.ball_zero`. Establish `h2 : expBall (k` using `k) (r := r) (Formalism.FourierDecayAlt.B2.UWb k r) 0 = ∅ := by unfold expBall; rw [h1, Set.image_empty]`. Simplify using `[h1, h2]`. Establish `hpos : 0 < s ^ 2 - (u + B) - v` using `Real.sqrt_pos.1 ht`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBs : B < δc ^ 2` using `by nlinarith`. Establish `hcw` using `hc c hBs`. Establish `hts : t ≤ s`. Use `sqrt_sq_sub_le_self (s := s) (R := u + B + v) hs (by positivity)` as an intermediate fact. Rewrite using `[htdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨hup, hlo⟩` from `hg t ht0 (lt_of_le_of_lt hts hsg)`. Rewrite `hcw` using `[abs_lt]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by linarith), sq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by linarith), sq]`. Use `_ ≤ ENNReal.ofReal (Formalism.FourierDecayAlt.B2.cWeight k r c) * μb (expBall (Formalism.FourierDecayAlt.B2.UWb k r) t) := mul_le_mul' (ENNReal.ofReal_le_ofReal (by linarith)) hlo`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_bound {μb : Measure (Mt k r)} {ε δg δc s : ℝ} (hε : 0 < ε) (hε1 : ε < 1)
     (hg : ∀ t : ℝ, 0 ≤ t → t < δg →
@@ -446,7 +438,7 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← lintegral_const_mul' _ _ ha]`. Use `lintegral_congr fun Y => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem const_mul_double_lintegral {X : Type*} [MeasurableSpace X] (μ : Measure X) (a : ℝ≥0∞) (ha : a ≠ ⊤) (f : X → X → ℝ≥0∞) :
     a * ∫⁻ Y, ∫⁻ Y', f Y Y' ∂μ ∂μ = ∫⁻ Y, ∫⁻ Y', a * f Y Y' ∂μ ∂μ := by
@@ -455,39 +447,35 @@ theorem const_mul_double_lintegral {X : Type*} [MeasurableSpace X] (μ : Measure
   rw [← lintegral_const_mul' _ _ ha]
 
 /- English proof (translation)
-Introduce `k r μb hμb`. Establish `sμ : SigmaFinite μb` using `hμb.1.1`. Use `set D := 2 * Module.finrank ℝ (Formalism.MainNotions.S.lieE (Nset k r)) + 2 * r + Module.finrank ℝ (Formalism.MainNotions.S.lieE (Formalism.FourierDecayAlt.B2.UWb k r)) with hD`. Use `set L : ℝ := ((2 : ℝ) ^ r)⁻¹ with hLdef`. Establish `hL : 0 < L` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set W : ℝ → ℝ≥0∞ := fun s => volume (Metric.ball (0 : EuclideanSpace ℝ (Fin D)) s) with hWdef`. Establish `hVol : ∀ s, 0 < s → Vol k r μb s = ∫⁻ c : Fin r → ℂ, ENNReal.ofReal (Formalism.FourierDecayAlt.B2.cWeight k r c) * ∫⁻ Y : Formalism.MainNotions.S.lieE (Nset k r), ∫⁻ Y' : Formalism.MainNotions.S.lieE (Nset k r), μb (expBall (k` using `k) (r := r) (Formalism.FourierDecayAlt.B2.UWb k r) (Real.sqrt (s ^ 2 - (‖Y‖ ^ 2 + 2 * ∑ a, ‖c a - 1‖ ^ 2) - ‖Y'‖ ^ 2))) := by`. Introduce `s hs`. Unfold `Vol`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Conclude with `inner_eq μb c hs`. Establish `hMod : ∀ s, 0 < s → ∫⁻ c : Fin r → ℂ, ∫⁻ Y : Formalism.MainNotions.S.lieE (Nset k r), ∫⁻ Y' : Formalism.MainNotions.S.lieE (Nset k r), volume (Metric.ball (0 : Formalism.MainNotions.S.lieE (Formalism.FourierDecayAlt.B2.UWb k r)) (Real.sqrt (s ^ 2 - (‖Y‖ ^ 2 + 2 * ∑ a, ‖c a - 1‖ ^ …`. Introduce `s hs`. Rewrite using `[hWdef, hLdef, ← Model.modelVol _ _ r s hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Conclude with `(model_inner _ _ _ (by positivity) hs).symm`. Establish `hgV : ∀ s, gVol k r s = (W s).toReal`. Introduce `s`. Unfold `gVol`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ballDim, ball_cast _ D (Sw.dimG k r) s]`. Establish `key : ∀ ε : ℝ, 0 < ε → ε < 1 → ∀ᶠ s in 𝓝[>] (0 : ℝ), ENNReal.ofReal ((1 - ε) ^ 2) * (ENNReal.ofReal L * W s) ≤ Vol k r μb s ∧ Vol k r μb s ≤ ENNReal.ofReal ((1 + ε) ^ 2) * (ENNReal.ofReal L * W s)`. Introduce `ε hε hε1`. Take `⟨δg, hδg, hg⟩` from `gauge_bound hμb hε hε1`. Take `⟨δc, hδc, hc⟩` from `cw_bound (k := k) (r := r) hε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hδg hδc)] with s ⟨hs0, hsδ⟩`. Establish `hsg : s < δg` using `lt_of_lt_of_le hsδ (min_le_left _ _)`. Establish `hsc : s < δc` using `lt_of_lt_of_le hsδ (min_le_right _ _)`. Rewrite using `[hVol s hs0, ← hMod s hs0]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun c => ?_` and prove the remaining obligations. Rewrite using `[const_mul_double_lintegral _ _ ENNReal.ofReal_ne_top, const_mul_double_lintegral _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun Y => lintegral_mono fun Y' => ?_` and prove the remaining obligations. Conclude with `(pt_bound hε hε1 hg hc hs0 hsg hsc c _ _ (by positivity) (by positivity)).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun c => ?_` and prove the remaining obligations. Rewrite using `[const_mul_double_lintegral _ _ ENNReal.ofReal_ne_top, const_mul_double_lintegral _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun Y => lintegral_mono fun Y' => ?_` and prove the remaining obligations. Conclude with `(pt_bound hε hε1 hg hc hs0 hsg hsc c _ _ (by positivity) (by positivity)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWpos : ∀ s, 0 < s → 0 < (W s).toReal` using `fun s hs => ENNReal.toReal_pos (Metric.measure_ball_pos _ _ hs).ne' measure_ball_lt_top.ne`. Establish `hWt : ∀ s, W s ≠ ⊤` using `fun s => measure_ball_lt_top.ne`. Establish `toR : ∀ (a : ℝ) (ha : 0 ≤ a) (s : ℝ), (ENNReal.ofReal a * (ENNReal.ofReal L * W s)).toReal = a * L * (W s).toReal`. Introduce `a ha s`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal ha, ENNReal.toReal_ofReal hL.le, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tendsto_order]`. Prove the components needed by the constructor for the conclusion. Introduce `a ha set ε := min (1 / 2) ((L - a) / (4 * L)) with hε`. Establish `hε0 : 0 < ε` using `lt_min (by norm_num) (div_pos (by linarith) (by positivity))`. Establish `hε1 : ε < 1` using `lt_of_le_of_lt (min_le_left _ _) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hεa : ε ≤ (L - a) / (4 * L)` using `min_le_right _ _`. Establish `hgt : a < (1 - ε) ^ 2 * L`. Establish `h1 : 1 - 2 * ε ≤ (1 - ε) ^ 2` using `by nlinarith`. Establish `h2 : 2 * ε * L ≤ (L - a) / 2`. Use `mul_le_mul_of_nonneg_right hεa (by positivity : (0 : ℝ) ≤ 2 * L)` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[div_mul_eq_mul_div]`. Establish `e : (L - a) * (2 * L) / (4 * L) = (L - a) / 2` using `by field_simp; ring`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `filter_upwards [key ε hε0 hε1, self_mem_nhdsWithin] with s ⟨hlo, hup⟩ hs`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVt : Vol k r μb s ≠ ⊤` using `ne_top_of_le_ne_top (by simp [ENNReal.mul_eq_top, hWt]) hup`. Rewrite using `[hgV s, lt_div_iff₀ (hWpos s hs)]`. Use `ENNReal.toReal_mono hVt hlo` as an intermediate fact. Rewrite `this` using `[toR _ (sq_nonneg _) s]`. Use polynomial arithmetic with `[hWpos s hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb set ε := min (1 / 2) ((b - L) / (4 * L)) with hε`. Establish `hε0 : 0 < ε` using `lt_min (by norm_num) (div_pos (by linarith) (by positivity))`. Establish `hε1 : ε < 1` using `lt_of_le_of_lt (min_le_left _ _) (by norm_num)`. Establish `hεb : ε ≤ (b - L) / (4 * L)` using `min_le_right _ _`. Establish `hεh : ε ≤ 1 / 2` using `min_le_left _ _`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : (1 + ε) ^ 2 * L < b`. Establish `h1 : (1 + ε) ^ 2 ≤ 1 + 3 * ε` using `by nlinarith`. Establish `h2 : 3 * ε * L ≤ 3 * (b - L) / 4`. Use `mul_le_mul_of_nonneg_right hεb (by positivity : (0 : ℝ) ≤ 3 * L)` as an intermediate fact. Establish `e : (b - L) / (4 * L) * (3 * L) = 3 * (b - L) / 4` using `by field_simp`.
-
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `filter_upwards [key ε hε0 hε1, self_mem_nhdsWithin] with s ⟨hlo, hup⟩ hs`. Rewrite using `[hgV s, div_lt_iff₀ (hWpos s hs)]`. Use `ENNReal.toReal_mono (by simp [ENNReal.mul_eq_top, hWt]) hup` as an intermediate fact.
-
-Rewrite `this` using `[toR _ (sq_nonneg _) s]`. Use polynomial arithmetic with `[hWpos s hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem volLim : VolLim := by
   intro k r μb hμb

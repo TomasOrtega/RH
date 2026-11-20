@@ -14,53 +14,47 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StrictStarFunction
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hb q ψ w hdom hψ hcs`. Take `⟨D₀, hD₀, hint⟩` from `GlobalTheory.T.star_depth_bounded_denominator O bar hb q ψ w hψ hcs`. Take `⟨N₀, C₀, hdata⟩` from `GlobalTheory.T.uniform_cell_bound_polyhedral_fan O bar hb q ψ hdom hψ`. Take `⟨b, hgens⟩` from `GlobalTheory.T.balanced_form_decomposition_bound O bar hb q ψ w hψ hcs`. Establish `hD₀r : (0 : ℝ) < D₀` using `by exact_mod_cast hD₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1, D₀, by omega, hD₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX β hβ hp`. Take `⟨n₁, hn₁⟩` from `(hψ X hX).integral β hβ hp`. Take `⟨n₂, hn₂⟩` from `hint X hX β hβ hp`. Use `⟨D₀ * (N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1) * n₁ + n₂, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[starFun_evalZ, hn₁]`. Use `push_cast`. Take the linear combination `hn₂`. Introduce `X _ _ _ _ hX m γ hγ hnoc`. Take `⟨N, ℓ, hN, hNN, hsw, -⟩` from `hdata X hX m γ hγ`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hgap` using `GlobalTheory.T.star_depth_gap_on_cell O bar hb q ψ w hψ hcs X hX m γ N ℓ hγ hnoc hN hsw`. Establish `hnn : ∀ β : LinearMap.BilinForm ℤ X, 0 ≤ (starDepth bar ψ w).evalZ β` using `fun β => starDepth_eval_nonneg (fun a b => (β a b : ℝ))`. Use `set K := N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1 with hKdef`. Establish `hKN : (N : ℝ) + 1 ≤ K`. Establish `: N + 1 ≤ K` using `by rw [hKdef]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use `⟨N, ((D₀ * K : ℕ) : ℤ) • ℓ, hN, fun i => ?_, fun β hβ hp => ?_, fun β hβ hp he => ?_⟩` and prove the remaining obligations. Establish `h0` using `hsw.1 i`. Establish `hps : (starDepth bar ψ w).evalZ (γ i) = 0` using `le_antisymm (by have := hgap (γ i) (hγ.mem i) (hγ.nonneg i); linarith) (hnn _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[starFun_evalZ, hps]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hgap β hβ hp`. Establish `hf` using `hsw.2.1 β hβ hp`. Establish `hps` using `hnn β`. Rewrite using `[starFun_evalZ]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Use `set P := (starDepth bar ψ w).evalZ β`. Use `set Ψ := ψ.evalZ β`. Use `set L : ℝ := (ℓ β : ℝ)`. Establish `k1 : (N : ℝ) * P ≤ K * (L - N * Ψ)` using `by nlinarith [mul_le_mul_of_nonneg_left hg hN0]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left k1 hD₀r.le]`. Establish `hg` using `hgap β hβ hp`. Establish `hf` using `hsw.2.1 β hβ hp`. Establish `hps` using `hnn β`. Rewrite `he` using `[starFun_evalZ]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at he`. Move the coercions through the operations in `at he`. Use `set P := (starDepth bar ψ w).evalZ β`. Use `set Ψ := ψ.evalZ β`. Use `set L : ℝ := (ℓ β : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : (N : ℝ) * P = K * (L - N * Ψ)`. Use `mul_left_cancel₀ hD₀r.ne' (show (D₀ : ℝ) * (N * P) = D₀ * (K * (L - N * Ψ)) by linear_combination he)` as an intermediate fact. Conclude with `this`. Establish `e2 : L - N * Ψ = 0` using `by nlinarith [mul_le_mul_of_nonneg_left hg hN0]`. Conclude with `hsw.2.2 β hβ hp (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `X _ _ _ _ hX m γ hγ β₀ hβ₀ hp₀ hw₀ hin₀ m' s h hcut hpos`. Take `⟨N, ℓ, hN, hNN, hsw, hcuts⟩` from `hdata X hX m γ hγ`. Take `⟨h', hcut', hpos', hdom'⟩` from `hcuts m' s h hcut`. Establish `hp' : 0 < h' β₀` using `hpos' β₀ hin₀ hpos`. Take `⟨hin, hone, hzero, heq⟩` from `GlobalTheory.T.mul_starDepth_le_faceCut_on_cell O bar hb q ψ w hψ hcs X hX m γ hγ β₀ hβ₀ hp₀ hw₀ hin₀ m' s h' hcut' hp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set K := N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1 with hKdef`. Establish `hKb : N + N * C₀ + N ^ 2 * C₀ * b + 1 ≤ K`. Rewrite using `[hKdef]`. Establish `h1 : N * C₀ ≤ N₀ * C₀` using `Nat.mul_le_mul_right _ hNN`. Establish `h2 : N ^ 2 * C₀ * b ≤ N₀ ^ 2 * C₀ * b` using `Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (Nat.pow_le_pow_left hNN 2))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hoff` using `GlobalTheory.T.star_function_off_cell O bar hb q ψ w b hψ hcs X hX (hgens X hX) m γ N ℓ hγ hN hsw β₀ hβ₀ hp₀ hw₀ hin₀ m' s h' hcut' hp' C₀ hdom' K hKb`. Establish `hlinγ : ∀ β, InRCone γ β → (ℓ β : ℝ) = N * ψ.evalZ β` using `fun β hβ => StarKey.ell_eq_of_inRCone hγ.linear hsw hβ`. Establish `hcast : (((h' β₀).toNat : ℕ) : ℝ) = (h' β₀ : ℝ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hp'.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hH0 : (0 : ℝ) < h' β₀` using `by exact_mod_cast hp'`. Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `⟨N * (h' β₀).toNat, (D₀ : ℤ) • (((K : ℤ) * h' β₀) • ℓ + (N : ℤ) • h'), by` and prove the remaining obligations. Establish `: 0 < (h' β₀).toNat` using `by omega`. Use the proof step `positivity, fun i => ?_, fun β hβ hp => ?_, fun β hβ hp he => ?_⟩`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Rewrite using `[starFun_evalZ, hone]`. Establish `hl` using `hlinγ β₀ hin₀`. Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[hcast, hl]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.cons_succ]`. Establish `hh : h' (γ (s j)) = 0` using `(hcut'.2 (s j)).2 ⟨j, rfl⟩`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[starFun_evalZ, hzero j]`. Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul, hh]`. Use `push_cast`. Rewrite using `[hcast, hsw.1 (s j)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[starFun_evalZ]`. Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[hcast]`. Use `set P := (starDepth bar ψ w).evalZ β`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `set Ψ := ψ.evalZ β`. Distinguish the cases in `hc : InRCone γ β`. Establish `hl` using `hlinγ β hc`. Establish `hi` using `hin β hβ hp hc`. Rewrite using `[hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hi (mul_nonneg hD₀r.le hN0.le)]`. Establish `ho` using `hoff β hβ hp hc`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left ho hD₀r]`. Rewrite `he` using `[starFun_evalZ]`. Simplify using `only [LinearMap.smul_apply, LinearMap.add_apply, smul_eq_mul] at he`.
-
-Move the coercions through the operations in `at he`. Rewrite `he` using `[hcast]`. Use `set P := (starDepth bar ψ w).evalZ β`. Use `set Ψ := ψ.evalZ β`. Distinguish the cases in `hc : InRCone γ β`.
-
-Establish `hl` using `hlinγ β hc`. Rewrite `he` using `[hl]`. Use `heq β hβ hp hc ?_` and prove the remaining obligations. Establish `: ((D₀ : ℝ) * N) * ((h' β₀ : ℝ) * P) = ((D₀ : ℝ) * N) * (h' β : ℝ)` using `by linear_combination he`. Conclude with `mul_left_cancel₀ (mul_pos hD₀r hN0).ne' this`.
-
-Establish `ho` using `hoff β hβ hp hc`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left ho hD₀r]`.
+A detailed English derivation is pending.
 -/
 theorem exists_starFun_strict : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ w : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsCentreSet bar q ψ w → ∃ K D : ℕ, 0 < K ∧ 0 < D ∧ (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℤ, (starFun bar ψ w K D).evalZ β = n) ∧ (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ → (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) → IsStrict bar (starFun bar ψ w K D) γ) ∧ (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ → ∀ β₀ ∈ balForms bar X, (∀ y, 0 ≤ β₀ y y) → w.evalZ β₀ = 1 → InRCone γ β₀ → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h → 0 < h β₀ → IsStrict bar (starFun bar ψ w K D) (Fin.cons β₀ fun j => γ (s j))) := by
   intro O _ _ _ _ bar hb q ψ w hdom hψ hcs

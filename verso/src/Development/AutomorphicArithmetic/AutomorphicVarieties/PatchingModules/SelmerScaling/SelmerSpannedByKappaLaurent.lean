@@ -107,7 +107,7 @@ abbrev F : Type := S.x.Fr
 abbrev ρ (X : Type) [CommRing X] [Algebra S.x.A X] (g : S.G.G₀) : Matrix (Fin S.n) (Fin S.n) X := S.x.ρX X (S.h.p₀ g)
 
 /- English proof (translation)
-Establish `: a ∈ (1 : Submodule S.Bh S.U.AA) ⊔ S.U.N` using `by rw [S.U.compl.sup_eq_top]; trivial`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 this`. Take `⟨b, rfl⟩` from `Submodule.mem_one.1 hy`. Conclude with `⟨b, by simpa using hz⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pr (a : S.U.AA) : ∃ b : S.Bh, a - algebraMap S.Bh S.U.AA b ∈ S.U.N := by
   have : a ∈ (1 : Submodule S.Bh S.U.AA) ⊔ S.U.N := by rw [S.U.compl.sup_eq_top]; trivial

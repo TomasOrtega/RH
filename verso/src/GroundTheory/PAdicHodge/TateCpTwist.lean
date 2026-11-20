@@ -27,7 +27,7 @@ theorem algebraMap_intermediateField_cp (k : K) :
 instance : IsScalarTower K (PadicAlgCl p) ℂ_[p] := IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `(Completion.continuous_coe _).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_algebraMap_intermediateField_cp : Continuous (algebraMap K ℂ_[p]) :=
   (Completion.continuous_coe _).comp continuous_subtype_val
@@ -40,14 +40,14 @@ instance : ContinuousSMul K ℂ_[p] :=
     exact ((continuous_algebraMap_intermediateField_cp K).comp continuous_fst).mul continuous_snd⟩
 
 /- English proof (translation)
-The claim follows from `gal_smul_coe_of_mem σ k`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_algebraMap_intermediateField (σ : Gal(PadicAlgCl p/K)) (k : K) :
     σ • algebraMap K ℂ_[p] k = algebraMap K ℂ_[p] k :=
   gal_smul_coe_of_mem σ k
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', gal_smul_algebraMap_intermediateField]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_smul_intermediateField (σ : Gal(PadicAlgCl p/K)) (k : K) (x : ℂ_[p]) :
     σ • (k • x) = k • (σ • x) := by
@@ -58,13 +58,13 @@ noncomputable def cycloChar : Gal(PadicAlgCl p/K) →* ℤ_[p]ˣ :=
     (MulSemiringAction.toRingAut Gal(PadicAlgCl p/K) (PadicAlgCl p))
 
 /- English proof (translation)
-The claim follows from `cyclotomicCharacter.continuous p K (PadicAlgCl p)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cycloChar : Continuous (cycloChar K) :=
   cyclotomicCharacter.continuous p K (PadicAlgCl p)
 
 /- English proof (translation)
-The claim follows from `cyclotomicCharacter.spec p (MulSemiringAction.toRingAut Gal(PadicAlgCl p/K) (PadicAlgCl p) σ) ζ hζ`.
+A detailed English derivation is pending.
 -/
 theorem cycloChar_spec (σ : Gal(PadicAlgCl p/K)) {n : ℕ} {ζ : PadicAlgCl p} (hζ : ζ ^ p ^ n = 1) :
     σ ζ = ζ ^ ((cycloChar K σ : ℤ_[p]).toZModPow n).val :=
@@ -74,26 +74,26 @@ noncomputable def twistScalar (j : ℤ) (σ : Gal(PadicAlgCl p/K)) : ℂ_[p] :=
   algebraMap ℚ_[p] ℂ_[p] (((cycloChar K σ ^ j : ℤ_[p]ˣ) : ℤ_[p]) : ℚ_[p])
 
 /- English proof (translation)
-Simplify using `[twistScalar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twistScalar_one (j : ℤ) : twistScalar K j 1 = 1 := by
   simp [twistScalar]
 
 /- English proof (translation)
-Simplify using `only [twistScalar, map_mul, mul_zpow, Units.val_mul, PadicInt.coe_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twistScalar_mul (j : ℤ) (σ τ : Gal(PadicAlgCl p/K)) :
     twistScalar K j (σ * τ) = twistScalar K j σ * twistScalar K j τ := by
   simp only [twistScalar, map_mul, mul_zpow, Units.val_mul, PadicInt.coe_mul]
 
 /- English proof (translation)
-Simplify using `[twistScalar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twistScalar_zero (σ : Gal(PadicAlgCl p/K)) : twistScalar K 0 σ = 1 := by
   simp [twistScalar]
 
 /- English proof (translation)
-The claim follows from `gal_smul_algebraMap σ _`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_twistScalar (j : ℤ) (σ τ : Gal(PadicAlgCl p/K)) :
     σ • twistScalar K j τ = twistScalar K j τ :=

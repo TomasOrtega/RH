@@ -19,19 +19,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin.ModelNZ
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ D A G _ _ hsemi U`. Use `haveI : GeometricallyConnected G.hom := hsemi.geomConnected`. Establish `hLaws` using `GlobalTheory.abelianSchemeLaws_all`. Take `⟨th, hth, -⟩` from `GlobalTheory.PsiRing.exists_basis_fibNZ hLaws.2.secTwist R D.toPre`. Choose the witnesses or unpack the hypotheses as in `⟨f₀, hf₀⟩ : ∃ f₀ : D.toPre.SecB 1 0, ∀ (Z : Scheme.{0}) (r : Z ⟶ _) (z : Z) (J), Good D.toPre.P.L z J → sval th r z J = sval f₀ (r ≫ (snd (𝟙_ _) D.toPre.P.A).left) z J := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PsiExpansion.exists_sec_of_retract D.toPre.P.isLB _ _ (GlobalTheory.PsiExpansion.snd_lift_unit D.toPre.P.A) (fun i => ?_) th` and prove the remaining obligations. Use `fin_cases i`. Conclude with `congrArg CommaMorphism.left (lift_snd (toUnit D.toPre.P.A) (𝟙 D.toPre.P.A))`. Use `congrArg CommaMorphism.left (show lift (toUnit D.toPre.P.A) (𝟙 D.toPre.P.A) ≫ padd D.toPre.P.A (snd _ _) (toUnit _ ≫ D.toPre.c 0) = padd D.toPre.P.A (𝟙 _) (toUnit _ ≫ D.toPre.c 0) from ?_)` and prove the remaining obligations. Simplify using `only [padd, ← Category.assoc, comp_lift, lift_snd, comp_toUnit]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg CommaMorphism.left (show lift (toUnit D.toPre.P.A) (𝟙 D.toPre.P.A) ≫ toUnit _ ≫ D.toPre.c 0 = toUnit _ ≫ D.toPre.c 0 from ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, comp_toUnit]`. Use `congrArg CommaMorphism.left (show lift (toUnit D.toPre.P.A) (𝟙 D.toPre.P.A) ≫ toUnit _ ≫ η[D.toPre.P.A] = toUnit _ ≫ η[D.toPre.P.A] from ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, comp_toUnit]`. Take `⟨z₀, hz₀, hn₀⟩` from `hth (IsLocalRing.closedPoint R)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : D.toPre.P.A.hom ((snd (𝟙_ (Over (Sp R))) D.toPre.P.A).left z₀) = IsLocalRing.closedPoint R` using `(congrArg (fun q => q z₀) (Over.w (snd (𝟙_ (Over (Sp R))) D.toPre.P.A))).trans hz₀`. Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' D.toPre.P.isLB z₀`. Establish `hu : IsUnit (sval th (𝟙 _) z₀ J)` using `(isUnit_sval_iff th (𝟙 _) z₀ hJ).2 hn₀`. Rewrite `hu` using `[hf₀ _ _ z₀ J hJ, Category.id_comp]`. Establish `hxn` using `(isUnit_sval_iff f₀ _ z₀ hJ).1 hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, fam, hfam0, hσ, hmem, -⟩` from `GlobalTheory.ThetaUnit.exists_theta hLaws.1.globalFns hLaws.1.secBaseChange le_rfl U f₀ ⟨_, hx, hxn⟩`. Take `⟨g, hg, hn⟩ : ∃ g, G.hom g = IsLocalRing.closedPoint R ∧ g ∈ nonzeroLocus σ` from `GlobalTheory.ThetaUnit.exists_mem_nonzeroLocus le_rfl U.toUnifPre (hσ 0) (by rw [hfam0]; exact ⟨_, hx, hxn⟩) hmem`. Use `⟨GlobalTheory.TorRef.upSec G σ, GlobalTheory.Ex.OnModel.toBase G g, ?_, ?_⟩` and prove the remaining obligations. Establish `a : GlobalTheory.Ex.OnModel.toBase G ≫ (fst (Over.mk (𝟙 (Sp R))) G).left = G.hom`. Rewrite using `[GlobalTheory.Ex.OnModel.toBase, ← Over.comp_left, lift_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[← Scheme.Hom.comp_apply, a]`. Conclude with `hg`. Use `GlobalTheory.Ex.OnModel.mem_nonzeroLocus_pullTo σ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, GlobalTheory.Ex.OnModel.toBase_snd]`.
-
-Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_nz : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CharZero W], IsAdicComplete (IsLocalRing.maximalIdeal W) W → ∀ (D : DegData W (IsLocalRing.maximalIdeal W)) (A : PolAV (Sp (FractionRing W))) (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (IsLocalRing.maximalIdeal W) D A G), ∃ σ : SecAt G U.LG.L (𝟙 (Sp W)), NZ G U.LG.L (𝟙 (Sp W)) σ := by
   intro R _ _ _ _ _ D A G _ _ hsemi U

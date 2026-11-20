@@ -26,7 +26,7 @@ theorem scalOfP_base {D : D7} {B : WeightFamilies.Prov D} (n : SecNorm B) (hinj 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem indexBoundConclusion_secondNorm_iff {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (n : SecNorm B) (X : PJ D B P j) (S : Scal B)
     (ka wL wF : WeightFamilies.Wt D j) (Tn : ℕ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (a b c d : ℝ) :
@@ -37,9 +37,9 @@ theorem indexBoundConclusion_secondNorm_iff {D : D7} {B : WeightFamilies.Prov D}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨n, hR⟩` from `GlobalTheory.T.exists_secNorm_inputsR_of_inputsNet D B P j (X j h1 h2) large₂ (kR CL) H 1 4 Cq 4 C2 A2 7 CT S ka wL wF Tn nP nW h0 nus hn`. Establish `hR'` using `GlobalTheory.T.indexBoundIntrinsicHypotheses_netBound_degreeTwo D _ P j _ large₂ CL H 1 4 Cq 4 C2 A2 7 CT _ ka wL wF Tn nP nW h0 _ hR`. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `ht`. Establish `hT : TieC (k4 large₂ CL) H 1 4 Cq 4 C2 A2 7` using `⟨t1, t2, t3, t4, t5, rfl, rfl, t6, le_rfl, le_rfl, le_rfl, by norm_num [k4], le_rfl, le_rfl, by norm_num⟩`. Set `Y : WeightAlgebra.Prov D n.base P` to `fun j h1 h2 => PJ.tol2NormAlt n.N n.h0 n.h1 n.h2 n.h3 n.h4 (X j h1 h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h4` using `GlobalTheory.T.indexBoundChosenFamily_of_intrinsicHypotheses D n.base P Y j h1 h2 large₂ (k4 large₂ CL) H 1 4 Cq 4 C2 A2 7 CT (scalarsWithNorm n.N n.h0 n.h1 n.h2 n.h3 n.h4 S) ka wL wF Tn nP nW h0 nus hR' hT hp hs`. Conclude with `⟨n, h4, concl_of_inputs4 large₂ Y (k4 large₂ CL) H 1 4 Cq 4 C2 A2 7 CT j h1 h2 _ ka wL wF Tn nP nW h0 nus h4⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem inputs4_of_net {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} (X : WeightAlgebra.Prov D B P) (j : ℕ) (h1 : 1 ≤ j)
     (h2 : j ≤ D.R.m) (large₂ : SizeData₂ D) (CL : ℝ) (H : KHyp) (Cq C2 A2 CT : ℝ) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
@@ -67,11 +67,9 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨CL, Cq, Z₀, hrec⟩` from `GlobalTheory.T.exists_indexBoundHypothesesWithNet_allValuedPoints`. Take `⟨x₀, hx⟩` from `GlobalTheory.T.runNumericalConditions_of_indexBound_beyond_threshold Z₀`. Use `⟨x₀, fun D T h hinj EX p hpar j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hrun hx0 => ?_⟩` and prove the remaining obligations. Take `⟨hok, hZ⟩` from `hx D _ _ j _ large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hj hrun hx0`. Take `⟨hn, hs⟩` from `hrec D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 (hpar j hj) hok hZ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, h4, hc⟩` from `inputs4_of_net (fun j h1 h2 => recPlus h j ⟨h1, h2⟩) j hj.1 hj.2 large₂ CL H (Cq H.CA H.CK) C2 A2 CT _ ka wL wF Tn nP nW h0 _ hn hrun.tie hrun.page hs`. Use `⟨⟨n, k4 large₂ CL, Cq H.CA H.CK, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[scalOfP_base]`. Conclude with `h4`. Rewrite using `[scalOfP_base]`.
-
-Conclude with `hc`. Conclude with `(hypC_xplus (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) large₂ H C2 A2 7 0 CT _ Tn nP nW h0 _).1 hn.1.1`. Conclude with `(concl_xplus (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) _ ka wL wF Tn _ _).1 ((indexBoundConclusion_secondNorm_iff n _ _ ka wL wF Tn _ _ _ _ _).1 hc)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem runHolds_of_parOK : ∃ x₀ : ℝ → ℝ → ℝ, ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ), (∀ j, InR D j → ParOK T EX p j) → RunHolds x₀ h hinj EX p := by
   obtain ⟨CL, Cq, Z₀, hrec⟩ := GlobalTheory.T.exists_indexBoundHypothesesWithNet_allValuedPoints

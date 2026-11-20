@@ -30,16 +30,16 @@ def br {A : Type} [CommRing A] [Algebra S A] (f : overAt x0 A ⟶ G) : sp (R₀ 
 variable {G x0}
 
 /- English proof (translation)
-Introduce `f g h`. Conclude with `((Over.mapPullbackAdj x0).homEquiv _ _).injective h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem br_injective {A : Type} [CommRing A] [Algebra S A] : Function.Injective (br G x0 (A := A)) := by
   intro f g h
   exact ((Over.mapPullbackAdj x0).homEquiv _ _).injective h
 
 /- English proof (translation)
-Simplify using `only [br, Adjunction.homEquiv_unit]`. Use `first`. Consider the case `rw [Functor.map_mul, comp_mul]`. Consider the case `rw [Functor.map_mul, Hom.comp_mul]`. Consider the case `rw [Functor.map_mul, MonObj.comp_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [Functor.map_mul, Mon_Class.comp_mul]`.
+A detailed English derivation is pending.
 -/
 theorem br_mul {A : Type} [CommRing A] [Algebra S A] (f g : overAt x0 A ⟶ G) :
     br G x0 (f * g) = br G x0 f * br G x0 g := by
@@ -51,13 +51,13 @@ theorem br_mul {A : Type} [CommRing A] [Algebra S A] (f g : overAt x0 A ⟶ G) :
   | rw [Functor.map_mul, Mon_Class.comp_mul]
 
 /- English proof (translation)
-Simplify using `[br, Adjunction.homEquiv_unit]`.
+Simplify using the standard rewrite rules.
 -/
 theorem br_one {A : Type} [CommRing A] [Algebra S A] : br G x0 (1 : overAt x0 A ⟶ G) = 1 := by
   simp [br, Adjunction.homEquiv_unit]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Over.OverMorphism.ext rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem homAt_eq {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] (ψ : A →ₐ[S] B) :
     homAt x0 ψ = (Over.map x0).map (spMap ψ) := by
@@ -66,7 +66,7 @@ theorem homAt_eq {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S
   | exact Over.OverMorphism.ext rfl
 
 /- English proof (translation)
-Unfold `br`. Rewrite using `[homAt_eq, Adjunction.homEquiv_naturality_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem br_comp {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] (ψ : A →ₐ[S] B)
     (f : overAt x0 A ⟶ G) : br G x0 (homAt x0 ψ ≫ f) = spMap ψ ≫ br G x0 f := by
@@ -76,15 +76,15 @@ theorem br_comp {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S 
 end Bridge
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S _ _ _ x0 d x x' hx hx' ht`. Use `haveI : IsCommMonObj Xo.univ.t.G := Xo.univ.t.semi.comm`. Use `haveI : Smooth Xo.univ.t.G.hom := Xo.univ.t.semi.smooth`. Use `haveI : Smooth (GS Xo.univ.t.G x0).hom := by show Smooth (pullback.snd Xo.univ.t.G.hom x0) infer_instance`. Take `⟨n, xu, hxu⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.univChartLoc (GS Xo.univ.t.G x0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ m, br Xo.univ.t.G x0 (x' m * (x m)⁻¹) = 1`. Use `trivT hxu (fun m => br Xo.univ.t.G x0 (x' m * (x m)⁻¹)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `m`. Rewrite using `[← br_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonObj.comp_mul, GrpObj.comp_inv, hx.1 m, hx'.1 m]`. Introduce `m`. Rewrite using `[← br_comp, ← br_comp, ← br_comp, ← br_mul]`. Use `congr 1`. Simplify using `only [MonObj.comp_mul, GrpObj.comp_inv]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx.2 m, hx'.2 m, _root_.mul_inv, _root_.mul_mul_mul_comm]`. Introduce `j`. Rewrite using `[← br_comp, ← br_one (A := DualNumber S)]`. Use `congr 1`. Simplify using `only [MonObj.comp_mul, GrpObj.comp_inv, ht j, _root_.mul_inv_cancel]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Establish `h` using `key m`. Rewrite `h` using `[← br_one]`. Conclude with `(_root_.mul_inv_eq_one.1 (br_injective h)).symm`.
+A detailed English derivation is pending.
 -/
 theorem expUniqLoc : ExpUniqLocSt := by
   intro E _ _ _ H Dw l Xo S _ _ _ x0 d x x' hx hx' ht

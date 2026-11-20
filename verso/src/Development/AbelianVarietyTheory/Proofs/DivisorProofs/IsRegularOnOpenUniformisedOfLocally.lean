@@ -11,15 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `A _ g L u hA U k h`. Use `choose! W hWU hzW hreg using h`. Set `K : Type` to `{z // z ∈ pre u.ex U}`. Set `V : K → A.left.Opens` to `fun z => W z.1`. Establish `hVU : ∀ i : K, V i ≤ U` using `fun i => hWU i.1 i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ i : K, ∃ b : Γ(A.left, V i), ∀ z ∈ pre u.ex (V i), k z = val u.ex (V i) b z` using `fun i => hreg i.1 i.2`. Use `choose b hb using hb`. Establish `hcov : U ≤ ⨆ i, V i` using `GlobalTheory.T.le_iSup_of_uniformisationParameters_cover A g L u hA U K V fun z hz => ⟨⟨z, hz⟩, hzW z hz⟩`. Establish `hcompat : TopCat.Presheaf.IsCompatible A.left.sheaf.1 V b`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA (V i ⊓ V j) _ fun z hz => ?_` and prove the remaining obligations. Establish `hz'` using `(GlobalTheory.top_le_preimage_inf (u.ex z).left (V i) (V j)).1 hz`. Establish `e1` using `GlobalTheory.valAt'_map (u.ex z).left (TopologicalSpace.Opens.infLELeft (V i) (V j)).op (b i) hz`. Establish `e2` using `GlobalTheory.valAt'_map (u.ex z).left (TopologicalSpace.Opens.infLERight (V i) (V j)).op (b j) hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.valAt'_sub (u.ex z).left (V i ⊓ V j) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[sub_eq_zero]`. Conclude with `e1.trans (((hb i z hz'.1).symm.trans (hb j z hz'.2)).trans e2.symm)`. Take `⟨s, hs, -⟩` from `A.left.sheaf.existsUnique_gluing' V U (fun i => homOfLE (hVU i)) hcov b hcompat`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hb ⟨z, hz⟩ z (hzW z hz)`. Establish `h2` using `GlobalTheory.valAt'_map (u.ex z).left (homOfLE (hVU ⟨z, hz⟩)).op s (hzW z hz)`. Rewrite using `[h1, ← hs ⟨z, hz⟩]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem isReg_of_locally : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (U : A.left.Opens) (k : (Fin g → ℂ) → ℂ), (∀ z ∈ pre u.ex U, ∃ W : A.left.Opens, W ≤ U ∧ z ∈ pre u.ex W ∧ IsReg u.ex W k) → IsReg u.ex U k := by
   intro A _ g L u hA U k h

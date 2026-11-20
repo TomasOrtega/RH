@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.Flat.PeriodRank
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ hP` and use `(GlobalTheory.FibreExp.free_finite_finrank_of_isPeriod hP).2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finrank_la_eq_two_mul :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ)

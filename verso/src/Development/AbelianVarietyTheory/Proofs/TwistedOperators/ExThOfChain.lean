@@ -6,7 +6,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ProjectedLift
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R h0 hf hm hr t`. Take `⟨Th, hTh⟩` from `GlobalTheory.ProjectedLift.exists_chain_Th D G Pl0 T A Ks R h0 hf hm hr`. Conclude with `⟨Th t, fun x => hTh t x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ex_Th_of_chain : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → R.grp_record → R.ex_Th := by
   intro D G _ _ Pl0 T A Ks _ _ _ R h0 hf hm hr t

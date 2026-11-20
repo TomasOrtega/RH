@@ -10,15 +10,15 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.TopSpan
 
 /- English proof (translation)
-Set `Pj : M →ₗ[ℂ] M` to `(Nat.card P : ℂ)⁻¹ • ∑ p : P, σ ((ψ p⁻¹ : Kˣ) : K) • T p`. Establish `hPj : ∀ x, Pj x = (Nat.card P : ℂ)⁻¹ • ∑ p : P, σ ((ψ p⁻¹ : Kˣ) : K) • T p x`. Introduce `x`. Simplify using `only [Pj, LinearMap.smul_apply, LinearMap.sum_apply]`. Establish `hcard : (Nat.card P : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfix : Pj Fn = Fn`. Establish `hterm : ∀ p : P, σ ((ψ p⁻¹ : Kˣ) : K) • T p Fn = Fn`. Introduce `p`. Rewrite using `[hFn, smul_smul, ← map_mul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, map_one, one_smul]`. Rewrite using `[hPj, Finset.sum_congr rfl fun p _ => hterm p, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : ∀ v, Pj (j v) ∈ S`. Introduce `v`. Establish `e : Pj (j v) = j ((Nat.card P : K)⁻¹ • ∑ p : P, ((ψ p⁻¹ : Kˣ) : K) • r p v)`. Rewrite using `[hPj, map_smulₛₗ, map_sum, map_inv₀, map_natCast]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hT]`. Rewrite using `[e]`. Conclude with `hS _ (avg_level K V G r P ψ v)`. Establish `hle : Submodule.span ℂ (Set.range j) ≤ S.comap Pj` using `Submodule.span_le.2 (by rintro _ ⟨v, rfl⟩; exact hmap v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPF : Pj Fn ∈ S` using `hle hF`. Rewrite `hPF` using `[hfix]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_avg {K : Type} [Field K] (σ : K →+* ℂ) {V : Type} [AddCommGroup V] [Module K V] {G : Type} [Group G]
     (r : Representation K G V) (P : Subgroup G) [Fintype P] (ψ : P →* Kˣ) {M : Type} [AddCommGroup M] [Module ℂ M]
@@ -51,7 +51,7 @@ theorem mem_of_avg {K : Type} [Field K] (σ : K →+* ℂ) {V : Type} [AddCommGr
   rwa [hfix] at hPF
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.levelCharacterSpace_coords_iff_level_acts_by_char _ _ _ (A.fam.R t).r P ψ f).2 hlv`.
+A detailed English derivation is pending.
 -/
 theorem exists_rowForm (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G)
     (ψ : P →* D.what₂.LLˣ) (t : T) (f : A.fam.amb.FR t) (hlv : ∀ h : P, (A.fam.R t).r h f = ((ψ h : D.what₂.LLˣ) : D.what₂.LL) • f) :
@@ -59,7 +59,7 @@ theorem exists_rowForm (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) 
   (GlobalTheory.T.levelCharacterSpace_coords_iff_level_acts_by_char _ _ _ (A.fam.R t).r P ψ f).2 hlv
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_rowForm D G Pl0 T A (F.lvl b).P (F.lvl b).ψ t g hg`. Substitute `hY` using the available equality. Substitute `hx` using the available equality. Conclude with `Submodule.subset_span ⟨x, rfl⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem jR_mem_span (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (b : Bool) (t : T) (g : A.fam.amb.FR t)
@@ -74,13 +74,13 @@ theorem jR_mem_span (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F b t Fn hF hQ`. Establish `hB` using `Bridge.ClassPres.extBij_holds (R.B.R t).pres`. Establish `hF0 : Fn ∈ Submodule.span ℂ (Set.range (R.B.R t).pres.extL)` using `by rw [hB.2]; exact hF`. Establish `hF' : Fn ∈ Submodule.span ℂ (Set.range (R.B.jR t))` using `hF0`. Take `⟨κ, hκ⟩ : ∃ κ : (F.lvl b).P → (levEnv D.sp.X' R.βX (R.datXt t)).Q, ∀ p, (R.B.R t).act_tie.red (κ p) = (p : G)` from `⟨fun p => ((R.B.R t).act_tie.red_surj (p : G)).choose, fun p => ((R.B.R t).act_tie.red_surj (p : G)).choose_spec⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨gl, gl_apply⟩ : ∃ gl : (F.lvl b).P → (Bridge.Gf D.sp.X' → R.cX.W) →ₗ[ℂ] (Bridge.Gf D.sp.X' → R.cX.W), ∀ p H, gl p H = Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch (κ p) H` from `⟨fun p => { toFun := fun H => Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch (κ p) H map_add' := by intro H H'; funext h; simp only [Bridge.g0Act, Pi.add_apply, smul_add] map_smul' := by intro c H; funext h; simp only [Bridge.g0Act, Pi.smul_apply, RingHom.id_apply]; rw [smul_c …`. Establish `hact : ∀ (p : (F.lvl b).P) (f : A.fam.amb.FR t), gl p (R.B.jR t f) = R.B.jR t ((A.fam.R t).r p f)`. Introduce `p f`. Establish `e : (R.B.R t).pres.extL (A.leftGroupActionRight t (p : G) f) = Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch (κ p) ((R.B.R t).pres.extL f)` using `(R.B.R t).act_tie.act_eq (p : G) (κ p) (hκ p) f`. Conclude with `(gl_apply p _).trans e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ p : (F.lvl b).P, gl p Fn = D.what₂.embLL (((F.lvl b).ψ p : D.what₂.LLˣ) : D.what₂.LL) • Fn`. Introduce `p`. Establish `hq : (R.B.R t).act_tie.red (κ p) ∈ (F.lvl b).P` using `by rw [hκ p]; exact p.2`. Rewrite using `[gl_apply]`. Use function extensionality and compare the values at `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Bridge.g0Act, Pi.smul_apply]`. Rewrite using `[hQ (κ p) hq h]`. Establish `hp : (⟨_, hq⟩ : (F.lvl b).P) = p` using `Subtype.ext (hκ p)`. Rewrite using `[hp, smul_smul, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `mem_of_avg D.what₂.embLL (A.fam.R t).r (F.lvl b).P (F.lvl b).ψ (R.B.jR t) gl hact _ (fun v hv => jR_mem_span D G Pl0 T A Ks R F b t v hv _ rfl) Fn hF' hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_span : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (b : Bool) (t : T) (Fn : Bridge.Gf D.sp.X' → R.cX.W), Fn ∈ Bridge.AdForms (Bridge.ratF D.sp.X') R.cX.coef.ρ (levEnv D.sp.X' R.βX (R.datXt t)).J (levEnv D.sp.X' R.βX (R.datXt t)).χ → (∀ (q : (levEnv D.sp.X' R.βX (R.datXt t)).Q) (hq : (R.B.R t).act_tie.red q ∈ (F.lvl b).P) (h : Bridge.Gf D.sp.X'), Fn (h * q) = (((levEnv D.sp.X' R.βX (R.datXt t)).ch q : ℂ) * D.what₂.embLL (((F.lvl b).ψ ⟨_, hq⟩ : D.what₂.LLˣ) : D.what₂.LL)) • Fn h) → Fn ∈ Submodule.span ℂ (Set.range fun x => R.B.jR t (rowForm A (F.lvl b).P (F.lvl b).ψ t x)) := by
   classical

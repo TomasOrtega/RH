@@ -12,11 +12,11 @@ variable (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Use `set e := (b.ofZLatticeBasis ℝ L).equivFunL with he`. Establish `h` using `Measure.addHaarMeasure_unique (μ.map e) (TopologicalSpace.PositiveCompacts.piIcc01 ι)`. Rewrite `h` using `[addHaarMeasure_eq_volume_pi]`. Establish `hF` using `ZLattice.isAddFundamentalDomain b μ`. Establish `hc : (μ.map e) (TopologicalSpace.PositiveCompacts.piIcc01 ι) = ENNReal.ofReal (covolume L μ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (μ.map e) (Set.univ.pi fun _ : ι => Set.Ico (0 : ℝ) 1) = (μ.map e) (TopologicalSpace.PositiveCompacts.piIcc01 ι)` using `by conv_lhs => rw [h]`. Rewrite using `[Measure.smul_apply, Real.volume_pi_Ico]`. Simplify using the standard rewrite rules. Rewrite using `[← h1, Measure.map_apply e.continuous.measurable (MeasurableSet.univ_pi fun _ => measurableSet_Ico), covolume_eq_measure_fundamentalDomain L μ hF, measureReal_def, ENNReal.ofReal_toReal (ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[ZSpan.mem_fundamentalDomain, Set.mem_pi, he]`. Rewrite using `[h, hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_equivFun (μ : Measure E) [μ.IsAddHaarMeasure] (b : Basis ι ℤ L) :
     μ.map (b.ofZLatticeBasis ℝ L).equivFunL = ENNReal.ofReal (covolume L μ) • volume := by
@@ -41,29 +41,29 @@ theorem map_equivFun (μ : Measure E) [μ.IsAddHaarMeasure] (b : Basis ι ℤ L)
   rw [h, hc]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ L`. Set `e` to `(b.ofZLatticeBasis ℝ L).equivFunL`. Set `eM` to `e.toHomeomorph.toMeasurableEquiv`. Establish `heM : ∀ x, eM x = e x` using `fun _ => rfl`. Establish `hcov : 0 < covolume L μ` using `ZLattice.covolume_pos L μ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ENNReal.ofReal (covolume L μ) ≠ 0` using `by simpa using hcov`. Establish `hmap : μ.map eM = ENNReal.ofReal (covolume L μ) • volume` using `map_equivFun L μ b`. Establish `hL : e '' (L : Set E) = (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Module.Free.ChooseBasisIndex ℤ L))) : Set (Module.Free.ChooseBasisIndex ℤ L → ℝ))`. Establish `hspan` using `b.ofZLatticeBasis_span ℝ L`. Establish `hstep : e '' (L : Set E) = e '' (Submodule.span ℤ (Set.range (b.ofZLatticeBasis ℝ L)) : Set E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hspan]`. Rewrite using `[hstep]`. Establish `hm` using `Submodule.map_coe (e.toLinearEquiv.toLinearMap.restrictScalars ℤ) (Submodule.span ℤ (Set.range (b.ofZLatticeBasis ℝ L)))`. Rewrite `hm` using `[Submodule.map_span]`. Rewrite using `[show e '' (Submodule.span ℤ (Set.range (b.ofZLatticeBasis ℝ L)) : Set E) = ((e.toLinearEquiv.toLinearMap.restrictScalars ℤ) '' (Submodule.span ℤ (Set.range (b.ofZLatticeBasis ℝ L)) : Set E)) from rfl, ← hm, ← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : ⇑(e.toLinearEquiv.toLinearMap.restrictScalars ℤ) ∘ ⇑(b.ofZLatticeBasis ℝ L) = ⇑(Pi.basisFun ℝ (Module.Free.ChooseBasisIndex ℤ L))`. Use function extensionality and compare the values at `i`. Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[e]`. Simplify using `[e, h, Ne.symm h]`. Rewrite using `[hfun]`. Establish `himg : ∀ n : ℕ, e '' (s ∩ (n : ℝ)⁻¹ • (L : Set E)) = e '' s ∩ (n : ℝ)⁻¹ • (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Module.Free.ChooseBasisIndex ℤ L))) : Set (Module.Free.ChooseBasisIndex ℤ L → ℝ))`. Introduce `n`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.image_inter e.injective, ← hL]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨a, ha, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e a, ⟨a, ha, rfl⟩, (e.map_smul _ a).symm⟩`. Introduce and unpack `⟨z, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `⟨_ • a, ⟨a, ha, rfl⟩, e.map_smul _ a⟩`. Establish `hsum : ∀ n : ℕ, (∑' x : ↑(s ∩ (n : ℝ)⁻¹ • (L : Set E)), G x) = ∑' y : ↑(e '' s ∩ (n : ℝ)⁻¹ • (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Module.Free.ChooseBasisIndex ℤ L))) : Set (Module.Free.ChooseBasisIndex ℤ L → ℝ))), G (e.symm y)`. Introduce `n`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← himg n, tsum_image (fun y => G (e.symm y)) e.injective.injOn]`. Simplify using the standard rewrite rules. Establish `hdim : finrank ℝ E = Fintype.card (Module.Free.ChooseBasisIndex ℤ L)`. Rewrite using `[← ZLattice.rank ℝ L]`. Conclude with `Module.finrank_eq_card_chooseBasisIndex ℤ L`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpre : eM ⁻¹' (e '' s) = s` using `Set.preimage_image_eq s e.injective`. Establish `hint : (∫ y in e '' s, G (e.symm y)) = (∫ x in s, G x ∂μ) / covolume L μ`. Establish `h1` using `setIntegral_map_equiv (μ := μ) eM (fun y => G (e.symm y)) (e '' s)`. Rewrite `h1` using `[hpre, hmap, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_ofReal hcov.le]`. Simplify using `only [heM, ContinuousLinearEquiv.symm_apply_apply] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, smul_eq_mul, mul_div_cancel_left₀ _ hcov.ne']`. Establish `hfr : volume (frontier (e '' s)) = 0`. Establish `h2` using `MeasurableEquiv.map_apply (μ := μ) eM (frontier (e '' s))`. Establish `h3 : eM ⁻¹' frontier (e '' s) = frontier s`. Establish `hfe : frontier (e '' s) = e '' frontier s` using `(e.toHomeomorph.image_frontier s).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfe]`. Conclude with `Set.preimage_image_eq _ e.injective`. Rewrite `h2` using `[h3, hs₃, hmap, Measure.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hne`. Establish `hlim` using `tendsto_tsum_div_pow_atTop_integral (e '' s) (fun y => G (e.symm y)) (hG.comp e.symm.continuous) (e.lipschitz.isBounded_image hs₁) (eM.measurableSet_image.2 hs₂) hfr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hlim` using `[hint]`. Use `hlim.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[hsum n, hdim]`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_tsum_div_pow (μ : Measure E) [μ.IsAddHaarMeasure] {s : Set E} (hs₁ : IsBounded s)
     (hs₂ : MeasurableSet s) (hs₃ : μ (frontier s) = 0) {G : E → ℝ} (hG : Continuous G) :

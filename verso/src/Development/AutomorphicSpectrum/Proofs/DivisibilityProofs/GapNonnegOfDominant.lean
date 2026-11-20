@@ -10,7 +10,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Establish `h1 : j - 1 < N` using `by omega`. Establish `hle : mu τ ⟨j, hjN⟩ ≤ mu τ ⟨j - 1, h1⟩` using `hd τ ⟨j - 1, h1⟩ ⟨j, hjN⟩ (by rw [Fin.mk_le_mk]; omega)`. Simplify using `only [gap, ent, dif_pos h1, dif_pos hjN]`. Conclude with `sub_nonneg.mpr hle`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gap_nonneg_of_dominant {Ψ : Type} [Fintype Ψ] {N : ℕ} {j : ℕ} (hj1 : 1 ≤ j) (hjN : j < N)
     {mu : Wt Ψ N} (hd : Dominant mu) (τ : Ψ) : 0 ≤ gap j mu τ := by
@@ -20,7 +20,7 @@ theorem gap_nonneg_of_dominant {Ψ : Type} [Fintype Ψ] {N : ℕ} {j : ℕ} (hj1
   exact sub_nonneg.mpr hle
 
 /- English proof (translation)
-Introduce `τ`. Establish `hg : 0 ≤ gap j mu τ` using `gap_nonneg_of_dominant hj1 hjN hd τ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem NefThreshold.mono {Ψ : Type} [Fintype Ψ] {N : ℕ} {j : ℕ} (hj1 : 1 ≤ j) (hjN : j < N)
     {mu : Wt Ψ N} (hd : Dominant mu) {b b' : ℝ} (hb : b ≤ b') (h : NefThreshold j b mu) :
@@ -31,9 +31,9 @@ theorem NefThreshold.mono {Ψ : Type} [Fintype Ψ] {N : ℕ} {j : ℕ} (hj1 : 1 
     _ ≤ (b' - 2) * gap j mu τ := mul_le_mul_of_nonneg_right (by linarith) hg
 
 /- English proof (translation)
-Introduce `Ψ _ _ N T h1 h2 B c mu hd hB p hp`. Distinguish the cases in `hS : T.InS B p`. Conclude with `h1 B c p hS mu hd`. Establish `hBp : B < p`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hS (show p.Prime ∧ (p ≤ B ∨ p ∈ T.bad) from ⟨hp, Or.inl (not_lt.mp hc)⟩)`. Use `h2 B c p hp hS mu hd ?_` and prove the remaining obligations. Conclude with `NefThreshold.mono T.j_pos T.j_lt hd (by exact_mod_cast hBp.le) hB`.
+A detailed English derivation is pending.
 -/
 theorem RootTower.nefFib_of_nefThreshold :
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N), T.ModelNefStatement → T.M2 →

@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.CLiftEx
 
 /- English proof (translation)
-Distinguish the cases in `hp : b.p = 0`. Take `⟨k, hk⟩` from `T.adm.2 hp`. Use `⟨k, ?_⟩` and prove the remaining obligations. Simplify `Ideal.pow_mem_pow hx k` using `[hk]`. Take `⟨k, hk⟩` from `T.adm.1 hp`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨b.p * k, ?_⟩` and prove the remaining obligations. Establish `hfac : ((b.p.factorial : ℕ) : T.B) = (b.p : T.B) * ((b.p - 1).factorial : T.B)`. Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp]`. Rewrite using `[pow_mul, ← T.δ.factorial_mul_dpow_eq_pow hx, hfac, mul_assoc, mul_pow, hk, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem thick_isNilpotent {b : Base} {L : b.Fun} (T : Thick L) (x : T.B) (hx : x ∈ T.J) :
     IsNilpotent x := by
@@ -27,9 +27,9 @@ theorem thick_isNilpotent {b : Base} {L : b.Fun} (T : Thick L) (x : T.B) (hx : x
     rw [pow_mul, ← T.δ.factorial_mul_dpow_eq_pow hx, hfac, mul_assoc, mul_pow, hk, zero_mul]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : B ⧸ J)`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective ((u⁻¹ : (B ⧸ J)ˣ) : B ⧸ J)`. Establish `hmem : a * c - 1 ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ha, hc, Units.mul_inv, map_one, sub_self]`. Establish `hunit : IsUnit (a * c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(hJ _ hmem).isUnit_one_add`. Establish `h2 : (1 : B) + (a * c - 1) = a * c` using `by ring`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Take `⟨w, hw⟩` from `isUnit_of_mul_isUnit_left hunit`. Conclude with `⟨w, by rw [hw, ha]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unit_lift {B : Type} [CommRing B] (J : Ideal B) (hJ : ∀ x ∈ J, IsNilpotent x) (u : (B ⧸ J)ˣ) :
     ∃ w : Bˣ, Ideal.Quotient.mk J (w : B) = (u : B ⧸ J) := by
@@ -45,7 +45,7 @@ theorem unit_lift {B : Type} [CommRing B] (J : Ideal B) (hJ : ∀ x ∈ J, IsNil
   exact ⟨w, by rw [hw, ha]⟩
 
 /- English proof (translation)
-Introduce `O _ X q b ht κ C _ G D h`. Use `choose p hp using h`. Use `⟨⟨p, hp, fun {T T'} φ => if h : (B.thSp (G.map φ) ≫ p T) ≫ D.f = p T' ≫ D.f then (unit_lift (G.obj T').J (fun x hx => thick_isNilpotent (G.obj T') x hx) (Units.map (Scheme.ΓSpecIso (CommRingCat.of ((G.obj T').B ⧸ (G.obj T').J))).hom.hom.toMonoidHom (D.u (B.thSp (G.map φ) ≫ p T) ( …` and prove the remaining obligations. Rewrite using `[dif_pos h]`. Conclude with `(unit_lift (G.obj T').J (fun x hx => thick_isNilpotent (G.obj T') x hx) (Units.map (Scheme.ΓSpecIso (CommRingCat.of ((G.obj T').B ⧸ (G.obj T').J))).hom.hom.toMonoidHom (D.u (B.thSp (G.map φ) ≫ p T) (p T') h))).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_cLift : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {b : Base} {ht : b.t = 1}
     {κ : O →+* b.R ⧸ b.I} {C : Type 1} [Category.{0} C] (G : C ⥤ Thick ((B.schFn q).cr b ht κ)) (D : E.LineData X),

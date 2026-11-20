@@ -21,13 +21,13 @@ def trM (g : GA E k) : GA E k :=
     by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Conclude with `Units.ext (Matrix.det_transpose g.val)`.
+A detailed English derivation is pending.
 -/
 theorem det_trM (g : GA E k) : GeneralLinearGroup.det (trM g) = GeneralLinearGroup.det g := by
   exact Units.ext (Matrix.det_transpose g.val)
 
 /- English proof (translation)
-Unfold `Dt`. Rewrite using `[det_trM]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dt_trM (g : GA E k) : Dt (trM g) = Dt g := by
   unfold Dt
@@ -39,9 +39,9 @@ Both sides reduce to the same expression.
 theorem vecMeasure_eq : vecMeasure E (Fin k) = GroundTheory.Automorphic.GJMatrix.adeleMeasurePi E := rfl
 
 /- English proof (translation)
-Establish `hm : Measurable fun x : Fin k → Ad E => x ᵥ* g.val` using `GroundTheory.Automorphic.GJGlobal.Modulus.measurable_vecMul' g`. Establish `e1 : ∫⁻ x, F x ∂((GroundTheory.Automorphic.GJMatrix.adeleMeasurePi E).map fun x : Fin k → Ad E => x ᵥ* g.val) = ∫⁻ x, F (x ᵥ* g.val) ∂GroundTheory.Automorphic.GJMatrix.adeleMeasurePi E` using `lintegral_map hF hm`. Establish `h` using `GroundTheory.Automorphic.GJGlobal.Modulus.map_vecMul_adeleMeasurePi g`. Unfold `Dt`. Rewrite using `[vecMeasure_eq, ← e1, h, lintegral_smul_measure]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rw [smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem vecMul_eq (g : GA E k) (F : (Fin k → Ad E) → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ x, F (x ᵥ* g.val) ∂vecMeasure E (Fin k) = ENNReal.ofReal (Dt g)⁻¹ * ∫⁻ x, F x ∂vecMeasure E (Fin k) := by
@@ -54,7 +54,7 @@ theorem vecMul_eq (g : GA E k) (F : (Fin k → Ad E) → ℝ≥0∞) (hF : Measu
   try rw [smul_eq_mul]
 
 /- English proof (translation)
-Establish `e : ∀ x : Fin k → Ad E, F (g.val *ᵥ x) = F (x ᵥ* (trM g).val)` using `fun x => by show F (g.val *ᵥ x) = F (x ᵥ* (g.val)ᵀ)`. Rewrite using `[Matrix.vecMul_transpose]`. Use `(lintegral_congr e).trans ?_` and prove the remaining obligations. Rewrite using `[vecMul_eq (trM g) F hF, Dt_trM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_eq (g : GA E k) (F : (Fin k → Ad E) → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ x, F (g.val *ᵥ x) ∂vecMeasure E (Fin k) = ENNReal.ofReal (Dt g)⁻¹ * ∫⁻ x, F x ∂vecMeasure E (Fin k) := by
@@ -67,7 +67,7 @@ theorem mulVec_eq (g : GA E k) (F : (Fin k → Ad E) → ℝ≥0∞) (hF : Measu
 end VectorMeasureTranspose
 
 /- English proof (translation)
-Introduce `_ E _ _ _ k g F hF`. Conclude with `⟨VectorMeasureTranspose.mulVec_eq g F hF, VectorMeasureTranspose.vecMul_eq g F hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem linear_change_variables_of : D0 → AdelicLinearChange := by
   intro _ E _ _ _ k g F hF

@@ -18,7 +18,7 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `hL R _ _ _ A G _ _ hS gen _ L c hsym`. Take `⟨s, hs, hr⟩` from `GlobalTheory.SymmetricBundle.gen_of_isSymmetric L hsym`. Use `hS.smooth` as an intermediate fact. Establish `: Flat (G3 G).hom` using `by show Flat (pullback.fst G.hom (pullback.fst G.hom G.hom ≫ G.hom) ≫ G.hom) infer_instance`. Conclude with `⟨⟨L, c, s, hs, hr, GlobalTheory.ValueForm.sym_cub_of_baseChange (jK R) (GlobalTheory.ValueForm.app_generic_injective _) (GlobalTheory.ValueForm.surjective_cube_baseChange hL.globalFns _ A.isAb gen) c s hs hr⟩, rfl, HEq.rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_cp_of_isSymmetric :
     Laws → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → ∀ (L : RigLB G) (c : CubicalStr G L), L.IsSymmetric → ∃ P : CP G, P.L = L ∧ HEq P.c c := by

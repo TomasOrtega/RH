@@ -16,7 +16,7 @@ def cut (F : X.Modules) {M : LB X} (hM : M.IsLB) (σ : LB.Sec M) : twistZ F M (-
   Twist.mulSecOfEq F (Twist.zofSec σ) (neg_add_cancel 1) ≫ (Twist.twistZZeroIso F hM).inv
 
 /- English proof (translation)
-Rewrite using `[interNum_cons k F hM hP, interNum_cokernel _ hP (hF.twist (Twist.isLB_lbZPow hM (-1))) hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_cons_eq_cokernel (F : X.Modules) {M : LB X} (hM : M.IsLB) (σ : LB.Sec M)
     [Mono (cut F hM σ)] (hF : FiniteCohTwists k F) {d : ℕ} {P : Fin d → LB X}
@@ -26,7 +26,7 @@ theorem interNum_cons_eq_cokernel (F : X.Modules) {M : LB X} (hM : M.IsLB) (σ :
     interNum_cokernel _ hP (hF.twist (Twist.isLB_lbZPow hM (-1))) hF]
 
 /- English proof (translation)
-The claim follows from `(interNum_cons_eq_cokernel F hM σ hF (P := ![]) isEmptyElim).trans ((interNum_of_isEmpty k _ _).trans (chi_eq_hdim_zero k h))`.
+A detailed English derivation is pending.
 -/
 theorem interNum_one_eq_hdim (F : X.Modules) {M : LB X} (hM : M.IsLB) (σ : LB.Sec M)
     [Mono (cut F hM σ)] (hF : FiniteCohTwists k F)
@@ -38,7 +38,7 @@ theorem interNum_one_eq_hdim (F : X.Modules) {M : LB X} (hM : M.IsLB) (σ : LB.S
 variable (k) {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[← interNumOn_id, interNumOn_eq_interNumSub]`. Use `congr 1`. Conclude with `(Scheme.Hom.ker_eq_bot_of_isIso _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem interNumSub_bot (L : ι → LB X) :
     interNumSub k ⊥ L = interNum k (structureModule X) L := by
@@ -47,9 +47,9 @@ theorem interNumSub_bot (L : ι → LB X) :
   exact (Scheme.Hom.ker_eq_bot_of_isIso _).symm
 
 /- English proof (translation)
-Use extensionality with `U : 2`. Rewrite using `[Scheme.IdealSheafData.radical_ideal, Scheme.Hom.ker_apply]`. Use `Ideal.IsRadical.radical fun a ⟨n, hn⟩ => ?_` and prove the remaining obligations. Rewrite `hn`, the goal using `[RingHom.mem_ker]`. Rewrite `hn` using `[map_pow]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `IsNilpotent.eq_zero ⟨n, hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem radical_ker (f : Z ⟶ X) [QuasiCompact f] [IsReduced Z] : f.ker.radical = f.ker := by
   ext U : 2
@@ -60,7 +60,7 @@ theorem radical_ker (f : Z ⟶ X) [QuasiCompact f] [IsReduced Z] : f.ker.radical
   exact IsNilpotent.eq_zero ⟨n, hn⟩
 
 /- English proof (translation)
-Rewrite using `[interNumOn_eq_interNumSub, interNumRed_def, ← radical_ker f, ← Scheme.IdealSheafData.vanishingIdeal_support]`. Use `congr 2`. Use `ext1`. Rewrite using `[Scheme.Hom.support_ker, h, C.isClosed.closure_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNumRed_eq_interNumOn (f : Z ⟶ X) [IsClosedImmersion f] [IsReduced Z]
     (C : Closeds X) (h : Set.range f = C) (L : ι → LB X) :
@@ -72,9 +72,9 @@ theorem interNumRed_eq_interNumOn (f : Z ⟶ X) [IsClosedImmersion f] [IsReduced
   rw [Scheme.Hom.support_ker, h, C.isClosed.closure_eq]
 
 /- English proof (translation)
-Rewrite using `[IsZero.iff_id_eq_zero]`. Use extensionality with `U x`. Establish `: U = ⊥` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Establish `: Subsingleton Γ(X, ⊥)` using `inferInstance`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `Module.subsingleton Γ(X, ⊥) Γ(F, ⊥)` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_of_isEmpty [IsEmpty X] (F : X.Modules) : IsZero F := by
   rw [IsZero.iff_id_eq_zero]
@@ -86,22 +86,22 @@ theorem isZero_of_isEmpty [IsEmpty X] (F : X.Modules) : IsZero F := by
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `: IsEmpty (⊤ : X.IdealSheafData).subscheme` using `inferInstance`. Conclude with `interNum_eq_zero_of_isZero k (Functor.map_isZero _ (isZero_of_isEmpty _)) hL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem interNumSub_top {L : ι → LB X} (hL : ∀ i, (L i).IsLB) : interNumSub k ⊤ L = 0 := by
   have : IsEmpty (⊤ : X.IdealSheafData).subscheme := inferInstance
   exact interNum_eq_zero_of_isZero k (Functor.map_isZero _ (isZero_of_isEmpty _)) hL
 
 /- English proof (translation)
-Rewrite using `[interNumRed_def, Scheme.IdealSheafData.vanishingIdeal_bot, interNumSub_top k hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNumRed_bot {L : ι → LB X} (hL : ∀ i, (L i).IsLB) : interNumRed k ⊥ L = 0 := by
   rw [interNumRed_def, Scheme.IdealSheafData.vanishingIdeal_bot, interNumSub_top k hL]
 
 /- English proof (translation)
-Establish `h0` using `h 0`. Establish `h1` using `h (-1)`. Establish `h2` using `h (-2)`. Establish `h3` using `h (-3)`. Simplify using `only [interNum_const_eq_sum k F hM, Finset.sum_range_succ, Finset.sum_range_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions using `[Nat.choose] at *`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> omega`.
+Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem plane_values (F : X.Modules) {M : LB X} (hM : M.IsLB)
     (h : ∀ n : ℤ, 2 * chi k (twistZ F M n) = (n + 1) * (n + 2)) :
@@ -116,15 +116,15 @@ theorem plane_values (F : X.Modules) {M : LB X} (hM : M.IsLB)
   refine ⟨?_, ?_, ?_⟩ <;> omega
 
 /- English proof (translation)
-Use `letI := algebraΓSpecOf k (.of (DualNumber k))`. Use `isScalarTower_algebraΓSpecOf k (.of (DualNumber k))` as an intermediate fact. Use `letI := algebraΓSpecOf k (.of k)`. Use `isScalarTower_algebraΓSpecOf k (.of k)` as an intermediate fact. Prove the components needed by the constructor for the conclusion.
+Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[interNumSub_bot, interNum_of_isEmpty, chi_structureModule_Spec]`. Establish `: Module.finrank k (k × k) = 2` using `by simp`. Conclude with `congrArg Nat.cast this`. Set `φ : CommRingCat.of (DualNumber k) ⟶ CommRingCat.of k` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom`. Establish `hφ : Function.Surjective φ` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (Spec.map φ)` using `IsClosedImmersion.spec_of_surjective φ hφ`. Rewrite using `[interNumRed_eq_interNumOn k (Spec.map φ) ⊤ ?_, interNumOn_eq_interNum_pull ?_ isEmptyElim, interNum_of_isEmpty, chi_structureModule_Spec]`. Simplify using the standard rewrite rules. Introduce `r`. Use `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_inv_naturality φ) (algebraMap k _ r)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (Scheme.ΓSpecIso (.of k)).inv ((TrivSqZeroExt.fstHom k k k).commutes r)`. Establish `: Subsingleton (PrimeSpectrum (DualNumber k))`. Establish `key (p : PrimeSpectrum (DualNumber k)) : Ideal.span {DualNumber.eps} = p.asIdeal` using `DualNumber.isMaximal_span_singleton_eps.eq_of_le p.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 (p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, DualNumber.eps_mul_eps]; exact zero_mem _)))`. Conclude with `⟨fun p q => PrimeSpectrum.ext ((key p).symm.trans (key q))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Subsingleton (Spec (.of (DualNumber k)) : Scheme)` using `this`. Use `Set.eq_univ_of_forall fun x => ⟨(default : PrimeSpectrum k), Subsingleton.elim _ _⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem dualNumber_example :
     letI := algebraΓSpecOf k (.of (DualNumber k))

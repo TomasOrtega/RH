@@ -12,15 +12,15 @@ set_option autoImplicit false
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `O E _ _ _ d μ hμ f m n`. Take `⟨hL, hmap⟩` from `GlobalTheory.T.isCommFormalGroupLaw_map_natMultiple O d μ hμ E (algebraMap O E)`. Establish `hup : ∀ k, up E (nmul μ k) = nmul (up E μ) k` using `fun k =>`. Use function extensionality and compare the values at `fun i => (hmap k i).2`. Establish `hc : ∀ i, constantCoeff (up E μ i) = 0` using `hL.const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hk : ∀ k, HasSubst (up E (nmul μ k))` using `fun k => hasSubst_of_constantCoeff_zero fun i => by`. Rewrite using `[hup k]`. Conclude with `((GlobalTheory.T.formalGroupLawNatMultiple_add_mul_laws E d (up E μ) hL 0 k).1 i)`. Establish `hsub : ∀ a b : MvPowerSeries (Fin d) E, cob1 (up E μ) (a - b) = cob1 (up E μ) a - cob1 (up E μ) b` using `fun a b => by rw [eq_sub_iff_add_eq, ← formalCoboundary_add hc, sub_add_cancel]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `defect`. Rewrite using `[hsub, formalCoboundary_smul hc, hup n]`. Rewrite using `[GlobalTheory.T.coboundary_subst_eq_pullback_of_is_hom E d (up E μ) (up E μ) (nmul (up E μ) n) hc hc (GlobalTheory.T.isFormalGroupLawHom_formalGroupLawNatMultiple E d (up E μ) hL n) f]`. Establish `hcomp : subst (up E (nmul μ n)) (subst (up E (nmul μ m)) f) = subst (up E (nmul μ (m * n))) f`. Rewrite using `[subst_comp_subst_apply (hk m) (hk n)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hup, hup, hup, (GlobalTheory.T.formalGroupLawNatMultiple_add_mul_laws E d (up E μ) hL m n).2.2.1 i]`. Unfold `defect`. Rewrite using `[subst_sub (hk n), subst_smul (hk n), hcomp, smul_sub, Nat.cast_mul, mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem cob1_defect_and_defect_mul_of_isLaw : ∀ (O E : Type) [CommRing O] [CommRing E] [Algebra O E] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O), IsLaw μ → ∀ (f : MvPowerSeries (Fin d) E) (m n : ℕ),

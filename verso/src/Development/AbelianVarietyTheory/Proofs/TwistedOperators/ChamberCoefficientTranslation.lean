@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.Chamber
 
 /- English proof (translation)
-Unfold `sumM`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Establish `hP'` using `(mem_parP.1 hP).2.1`. Establish `e : pr P h = 𝔞.starProjection h` using `by subst hP'; rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [expFam, hY P hP, e, eL, inner_add_right, Complex.ofReal_add, mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sumM_expFam_shift {k : ℕ} (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) (X Y : Finset (SV k) → A0 k) (h : A0 k)
     (hY : ∀ P ∈ parP 𝔞 Q, Y P = X P + pr P h) (l : A0 k) :
@@ -23,13 +23,13 @@ theorem sumM_expFam_shift {k : ℕ} (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (S
   ring
 
 /- English proof (translation)
-Introduce `hFS k 𝔞 hL Q hQ X Y hX h hY`. Establish `hc` using `(hFS k 𝔞 hL (expFam X) hX.isGMFam Q hQ).1`. Establish `t1 : Tendsto (sumM 𝔞 Q (expFam X)) (𝓝[generic k] 0) (𝓝 (cM 𝔞 Q (expFam X) 0))` using `((hc.1.continuous.tendsto 0).mono_left nhdsWithin_le_nhds).congr' (eventually_nhdsWithin_of_forall fun l hl => hc.2 hl)`. Establish `hg : Continuous fun l : A0 k => eL l (𝔞.starProjection h)`. Unfold `eL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Establish `t2 : Tendsto (fun l : A0 k => eL l (𝔞.starProjection h)) (𝓝[generic k] 0) (𝓝 1)`. Use `(hg.tendsto 0).mono_left (nhdsWithin_le_nhds (s := generic k))` as an intermediate fact. Simplify `this` using `[eL]`. Establish `t3` using `t2.mul t1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t3` using `[one_mul]`. Unfold `cM`. Use `extendFrom_eq (dense_generic 0) ?_` and prove the remaining obligations. Establish `e : sumM 𝔞 Q (expFam Y) = fun l => eL l (𝔞.starProjection h) * sumM 𝔞 Q (expFam X) l`. Use function extensionality and compare the values at `(sumM_expFam_shift 𝔞 Q X Y h hY)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `t3`.
+A detailed English derivation is pending.
 -/
 theorem cM_expFam_shift_zero : FamilySmooth → ∀ (k : ℕ) (𝔞 : Submodule ℝ (A0 k)), IsLevi 𝔞 → ∀ Q ∈ parF 𝔞 ∅,
     ∀ X Y : Finset (SV k) → A0 k, IsOrth 𝔞 X → ∀ h : A0 k, (∀ P ∈ parP 𝔞 Q, Y P = X P + pr P h) →

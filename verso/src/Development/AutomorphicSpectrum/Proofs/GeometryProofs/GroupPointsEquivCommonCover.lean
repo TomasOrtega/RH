@@ -15,17 +15,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.MarkFibre
 
 /- English proof (translation)
-Introduce `E _ _ _ H S₁ S₂ V t₁ t₂ tV f₁ f₂ m₁ m₂ x y₁ y₂ h₁ h₂`. Substitute `h₁ h₂` using the available equality. Establish `hw₁ : m₁.cm.F ≫ t₁.G.hom = tV.G.hom ≫ f₁` using `m₁.cart.1.w`. Establish `hw₂ : m₂.cm.F ≫ t₂.G.hom = tV.G.hom ≫ f₂` using `m₂.cart.1.w`. Take `⟨e₁, he₁, -⟩` from `GlobalTheory.AlphaPair.exists_pullEquiv m₁ 0 x (x ≫ f₁) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, he₂, -⟩` from `GlobalTheory.AlphaPair.exists_pullEquiv m₂ 0 x (x ≫ f₂) rfl`. Establish `mul₁ : ∀ (T : Over V) (a b : T ⟶ tV.G), Out.toBase hw₁ (a * b) = Out.toBase hw₁ a * Out.toBase hw₁ b` using `fun T a b => Over.OverMorphism.ext (m₁.cart.2 T a b (Out.toBase hw₁ a) (Out.toBase hw₁ b) rfl rfl).symm`. Establish `mul₂ : ∀ (T : Over V) (a b : T ⟶ tV.G), Out.toBase hw₂ (a * b) = Out.toBase hw₂ a * Out.toBase hw₂ b` using `fun T a b => Over.OverMorphism.ext (m₂.cart.2 T a b (Out.toBase hw₂ a) (Out.toBase hw₂ b) rfl rfl).symm`. Establish `b₁ : ∀ p, Out.toBase hw₁ (e₁ p) = p` using `fun p => Over.OverMorphism.ext (he₁ p)`. Establish `b₂ : ∀ p, Out.toBase hw₂ (e₂ p) = p` using `fun p => Over.OverMorphism.ext (he₂ p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ q, e₁ ((e₂.trans e₁.symm) q) = e₂ q` using `fun q => e₁.apply_symm_apply _`. Use `⟨(e₂.trans e₁.symm).toEquiv, fun q q' => map_mul (e₂.trans e₁.symm) q q', fun q => ⟨(e₂ q).left, Over.w (e₂ q), he₂ q, ?_⟩, fun N q q' ζ h => ?_⟩` and prove the remaining obligations. Use `he₁ ((e₂.trans e₁.symm) q)` as an intermediate fact. Rewrite `this` using `[key]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : e₂ q ^ N = 1`. Rewrite using `[← key, ← map_pow]`. Conclude with `(congrArg e₁ h.1).trans (map_one e₁)`. Establish `ha' : e₂ q' ^ N = 1`. Rewrite using `[← key, ← map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg e₁ h.2.1).trans (map_one e₁)`. Take `⟨ζ', hζ', -⟩` from `GlobalTheory.UU.existsUnique_cubWeil tV.cub ha ha'`. Establish `c₁` using `GlobalTheory.UU.cubWeil_of_isPullCubical _ _ f₁ _ _ m₁.cm hw₁ mul₁ _ _ t₁.cub tV.cub m₁.lin N _ _ _ ζ' hζ'`. Establish `c₂` using `GlobalTheory.UU.cubWeil_of_isPullCubical _ _ f₂ _ _ m₂.cm hw₂ mul₂ _ _ t₂.cub tV.cub m₂.lin N _ _ _ ζ' hζ'`. Rewrite `c₂` using `[b₂, b₂]`.
-
-Rewrite `c₁` using `[← key q, ← key q', b₁, b₁]`. Take `rfl : ζ' = ζ` from `c₁.unique h`. Conclude with `c₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_fibre_equiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S₁ S₂ V : Scheme.{0}) (t₁ : SAB H S₁) (t₂ : SAB H S₂) (tV : SAB H V) (f₁ : V ⟶ S₁) (f₂ : V ⟶ S₂) (m₁ : SABMap tV t₁ f₁) (m₂ : SABMap tV t₂ f₂) (x : Sp ℂ ⟶ V) (y₁ : Sp ℂ ⟶ S₁) (y₂ : Sp ℂ ⟶ S₂), x ≫ f₁ = y₁ → x ≫ f₂ = y₂ → ∃ Φ : (Over.mk y₂ ⟶ t₂.G) ≃ (Over.mk y₁ ⟶ t₁.G), (∀ q q', Φ (q * q') = Φ q * Φ q') ∧ (∀ q, ∃ w : Sp ℂ ⟶ tV.G.left, w ≫ tV.G.hom = x ∧ w ≫ m₂.φ = q.left ∧ w ≫ m₁.φ = (Φ q).left) ∧ ∀ (N : ℕ) (q q' : Over.mk y₂ ⟶ t₂.G) (ζ : (Γ(Sp ℂ, ⊤))ˣ), GlobalTheory.UU.CubWeil t₁.cub N (Φ q) (Φ q') ζ → GlobalTheory.UU.CubWeil t₂.cub N q q' ζ := by
   intro E _ _ _ H S₁ S₂ V t₁ t₂ tV f₁ f₂ m₁ m₂ x y₁ y₂ h₁ h₂

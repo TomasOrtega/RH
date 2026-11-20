@@ -19,25 +19,23 @@ open Classical
 namespace GlobalTheory.ZRepBlock
 
 /- English proof (translation)
-Introduce `D S T m k Λ Λ' e Q fm _hsub H1 H2 H3`. Set `Ix` to `∀ PP : Q, Matrix (Fin m) (Fin k) (kP (PP : Pl D.host.E))`. Use `haveI : ∀ PP : Pl D.host.E, Fintype (kP PP) := fun PP => Fintype.ofFinite _`. Set `ext : Ix → ∀ PP : Pl D.host.E, Matrix (Fin m) (Fin k) (kP PP)` to `fun Y PP => if h : PP ∈ Q then Y ⟨PP, h⟩ else 0`. Use `choose w hwh hwi hwr using H3`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : Ix → WO S T` to `fun Y => w (ext Y)`. Establish `hgr : ∀ Y : Ix, ∀ PP (h : PP ∈ Q), redM PP (fm (g Y)) = Y ⟨PP, h⟩`. Introduce `Y PP h`. Use `hwr (ext Y) PP h` as an intermediate fact. Simplify `this` using `[g, ext, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hginj : Function.Injective g`. Introduce `Y Y' hYY`. Use function extensionality and compare the values at `PP`. Rewrite using `[← hgr Y PP.1 PP.2, ← hgr Y' PP.1 PP.2, hYY]`. Establish `hgΛ : ∀ Y, g Y ∈ Λ ∧ IsHalf e (g Y)` using `fun Y => ⟨(H1 _ (hwh _)).2 (hwi _), hwh _⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Finset.univ.image g, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨Y, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hgΛ Y`. Introduce `v hv hvh`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `Y : Ix` to `fun PP => redM (PP : Pl D.host.E) (fm v)`. Use `⟨g Y, ⟨Finset.mem_image.2 ⟨Y, Finset.mem_univ _, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(H2 v hv (g Y) (hgΛ Y).1 hvh (hgΛ Y).2).2 ?_` and prove the remaining obligations. Introduce `PP h`. Rewrite using `[hgr Y PP h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Introduce and unpack `x ⟨hx, hvx⟩`. Take `⟨Y', -, rfl⟩` from `Finset.mem_image.1 hx`. Use `congr 1`. Use function extensionality and compare the values at `PP`. Establish `h1` using `(H2 v hv (g Y') (hgΛ Y').1 hvh (hgΛ Y').2).1 hvx PP.1 PP.2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[hgr Y' PP.1 PP.2]`. Conclude with `h1.symm`. Rewrite using `[Finset.card_image_of_injective _ hginj, Finset.card_univ, Fintype.card_pi]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fintype.card_fun, Fintype.card_fin, Nat.card_eq_fintype_card]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (∏ PP ∈ Q, Nat.card (kP PP)) ^ (m * k) := by`. Rewrite using `[Finset.prod_pow, Finset.prod_coe_sort Q (fun PP => Nat.card (kP PP))]`. Introduce `Y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Set `Y' : Ix` to `fun PP => Y PP`. Use `⟨g Y', ⟨Finset.mem_image.2 ⟨Y', Finset.mem_univ _, rfl⟩, fun PP h => hgr Y' PP h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxr⟩`. Take `⟨Y'', -, rfl⟩` from `Finset.mem_image.1 hx`. Use `congr 1`.
-
-Use function extensionality and compare the values at `PP`. Rewrite using `[← hgr Y'' PP.1 PP.2, hxr PP.1 PP.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zrep_block : ∀ (D : D7) (S T : HSp D) {m k : ℕ} (Λ Λ' : AddSubgroup (WO S T)) (e : AE D) (Q : Finset (Pl D.host.E)) (fm : WO S T → Matrix (Fin m) (Fin k) (EAf D)), (∀ w w', fm (w - w') = fm w - fm w') → (∀ w, IsHalf e w → (w ∈ Λ ↔ IsIntM (fm w))) → (∀ w ∈ Λ, ∀ w' ∈ Λ, IsHalf e w → IsHalf e w' → (w - w' ∈ Λ' ↔ ∀ PP ∈ Q, redM PP (fm w) = redM PP (fm w'))) → (∀ Y : ∀ PP : Pl D.host.E, Matrix (Fin m) (Fin k) (kP PP), ∃ w, IsHalf e w ∧ IsIntM (fm w) ∧ ∀ PP ∈ Q, redM PP (fm w) = Y PP) → ∃ X : Finset (WO S T), (∀ x ∈ X, x ∈ Λ ∧ IsHalf e x) ∧ (∀ w ∈ Λ, IsHalf e w → ∃! x, x ∈ X ∧ w - x ∈ Λ') ∧ X.card = (∏ PP ∈ Q, Nat.card (kP PP)) ^ (m * k) ∧ (∀ Y : ∀ PP : Pl D.host.E, Matrix (Fin m) (Fin k) (kP PP), ∃! x, x ∈ X ∧ ∀ PP ∈ Q, redM PP (fm x) = Y PP) := by
   intro D S T m k Λ Λ' e Q fm _hsub H1 H2 H3

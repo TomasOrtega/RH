@@ -14,11 +14,9 @@ open scoped Matrix ContDiff ComplexOrder
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Use `choose U hyU g e using fun a => (hf a).exists_fnOf`. Set `W : X.X.Opens` to `⟨⋂ a, U a, isOpen_iInter_of_finite fun a => (U a).isOpen⟩`. Establish `hW : y ∈ ptsIn X.str σ W` using `mem_ptsIn.2 (Set.mem_iInter.2 hyU)`. Establish `hle (a) : W ≤ U a` using `Set.iInter_subset (fun a => (U a : Set X.X)) a`. Establish `hev (z : CxPts X.str σ) (hz : z ∈ ptsIn X.str σ W) : (fun a => ev X.str σ W (resG X.X (hle a) (g a)) z) = fun a => ratVal (f a) z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[ev_res (hle a) hz, ← e a, ratVal_fnOf (ptsIn_mono (hle a) hz)]`. Use `⟨W, κ, inferInstance, fun a => resG X.X (hle a) (g a), G, O, hW, hO, ?_, hG, ?_⟩` and prove the remaining obligations. Rewrite using `[hev y hW]`. Conclude with `hy`.
-
-Use `filter_upwards [(isOpen_ptsIn W).mem_nhds hW] with z hz`. Rewrite using `[hev z hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cInfAt_ratVal_on {F : Type} [Field F] {X : Var F} {σ : F →+* ℂ} {κ : Type} [Fintype κ] {f : κ → X.Fn}
     {y : CxPts X.str σ} (hf : ∀ a, RegAt (under y) (f a)) {G : (κ → ℂ) → ℝ} {O : Set (κ → ℂ)} (hO : IsOpen O)
@@ -38,9 +36,9 @@ theorem cInfAt_ratVal_on {F : Type} [Field F] {X : Var F} {σ : F →+* ℂ} {κ
     rw [hev z hz]
 
 /- English proof (translation)
-Establish `hO : IsOpen {w : Unit → ℂ | w () ≠ 0}` using `isOpen_ne_fun (continuous_apply ()) continuous_const`. Establish `hG : ContDiffOn ℝ ∞ (fun w : Unit → ℂ => -Real.log (‖w ()‖ ^ 2)) {w | w () ≠ 0}`. Introduce `w hw`. Establish `h1 : ContDiffAt ℝ ∞ (fun w : Unit → ℂ => ‖w ()‖ ^ 2) w` using `((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ ())).contDiffAt`. Establish `h2 : ‖w ()‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.log h2).neg.contDiffWithinAt`. Conclude with `cInfAt_ratVal_on (κ := Unit) (f := fun _ => u) (fun _ => hu.regAt) hO hG (ratVal_ne_zero hu)`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_neg_log_normSq_ratVal {F : Type} [Field F] {X : Var F} {σ : F →+* ℂ} {y : CxPts X.str σ} {u : X.Fn}
     (hu : UnitAt (under y) u) : CInfAt (fun z => -Real.log (‖ratVal u z‖ ^ 2)) y := by
@@ -57,13 +55,13 @@ end GlobalTheory.ChernCalc
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `F _ σ X ι _ m k E H hH y A hA u hu τ i`. Use `(GlobalTheory.ChernCalc.cInfAt_neg_log_normSq_ratVal hu).add ?_ |>.congr (Eventually.of_forall fun z => sub_eq_add_neg _ _)` and prove the remaining obligations. Use `X.smooth_str` as an intermediate fact. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (p := X.str) (σ := σ) (D := X.dim) y`. Establish `hev` using `((GlobalTheory.T.flaggedBundleMetric_smoothUnit_etaleChart F σ X ι m k E H hH y A hA τ).2 c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨O, hOP, hOo, hyO⟩` from `eventually_nhds_iff.1 hev`. Establish `hS : IsOpen (c.e.source ∩ c.e ⁻¹' O)` using `c.e.isOpen_inter_preimage hOo`. Use `cInfAt_of_chart hS c ?_ hc ⟨hc, hyO⟩` and prove the remaining obligations. Introduce `v hv`. Establish `hvO : v ∈ O`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hv.2.2` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, c.e.right_inv hv.1]`. Then use the resulting hypothesis. Take `⟨hsm, hpd⟩` from `hOP v hvO`. Establish `hd` using `(ldPart_grD_smooth _ _ _ v hsm hpd).2 i`. Establish `hpos` using `((GlobalTheory.T.gramLowerTriangularFactor_posDef_properties _ _ hpd).2.1 i).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hd.log hpos.ne').neg.contDiffWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChernCalc.cInfAt_logUnit_grD : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m k : ι → ℕ) (E : Fr (ratOf X) m k)
     (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ (y : CxPts X.str σ), ∀ A ∈ E.S (under y),

@@ -12,7 +12,7 @@ open Matrix
 namespace GlobalTheory.PMon.DRvec
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.blockDiagonal_apply, Fintype.sum_prod_type, ite_mul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockDiag_mulVec {R : Type*} [CommRing R] {n o : Type} [Fintype n] [Fintype o] [DecidableEq o]
     (M : o → Matrix n n R) (v : n × o → R) (i : n) (m : o) :
@@ -20,7 +20,7 @@ theorem blockDiag_mulVec {R : Type*} [CommRing R] {n o : Type} [Fintype n] [Fint
   simp [Matrix.mulVec, dotProduct, Matrix.blockDiagonal_apply, Fintype.sum_prod_type, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `show algebraMap (Om l) P.R.BdR (algebraMap ↥(MaximalUnramifiedExtension l) (Om l) (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q)) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kd_q {l : ℕ} [Fact l.Prime] (P : LocPrime l) (q : ℚ_[l]) :
     kd P (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) = algebraMap ℚ_[l] P.R.BdR q := by
@@ -28,25 +28,21 @@ theorem kd_q {l : ℕ} [Fact l.Prime] (P : LocPrime l) (q : ℚ_[l]) :
   rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `l _ P n _ _ K r σ ρ₀ p c c₀ hp hconj hpc hdr`. Use `choose b hb using hdr`. Set `pG : GL (n × Fin r) P.R.BdR` to `Matrix.GeneralLinearGroup.map (kd P) p`. Set `β' : n × Fin r → P.R.BdR` to `fun x => b x.2 x.1`. Establish `hinvmul : ((pG⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR) * (pG : Matrix (n × Fin r) (n × Fin r) P.R.BdR) = 1` using `pG.inv_mul`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmulinv : (pG : Matrix (n × Fin r) (n × Fin r) P.R.BdR) * ((pG⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR) = 1` using `pG.mul_inv`. Establish `hpG : ∀ i j, (pG : Matrix (n × Fin r) (n × Fin r) P.R.BdR) i j = kd P ((p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) i j)` using `fun i j => rfl`. Use `⟨((pG⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR) *ᵥ β', fun g => ?_⟩` and prove the remaining obligations. Use `set pinv := ((pG⁻¹ : GL (n × Fin r) P.R.BdR) : Matrix (n × Fin r) (n × Fin r) P.R.BdR) with hpinv`. Use `set pM := (pG : Matrix (n × Fin r) (n × Fin r) P.R.BdR) with hpM`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set BD := Matrix.blockDiagonal (fun m : Fin r => matD P σ m g) with hBD`. Use `set R0 := (ρ₀ g : Matrix (n × Fin r) (n × Fin r) ℚ_[l]).map (algebraMap ℚ_[l] P.R.BdR) with hR0`. Establish `hfix : ∀ i j, P.actQdR (g : GQ l) (pinv i j) = pinv i j`. Set `φ : P.R.BdR →+* P.R.BdR` to `(P.actQdR (g : GQ l)).toAlgHom.toRingHom`. Establish `h1 : Matrix.GeneralLinearGroup.map φ pG = pG`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `i j`. Use `show φ (kd P _) = kd P _`. Conclude with `act_kd P g (hp i j)`. Establish `h2 : Matrix.GeneralLinearGroup.map φ pG⁻¹ = pG⁻¹` using `by rw [map_inv, h1]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun A : GL (n × Fin r) P.R.BdR => (A : Matrix (n × Fin r) (n × Fin r) P.R.BdR) i j) h2`. Establish `hactv : (fun x => P.actQdR (g : GQ l) ((pinv *ᵥ β') x)) = pinv *ᵥ (fun x => P.actQdR (g : GQ l) (β' x))`. Use function extensionality and compare the values at `x`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, hfix]`. Establish `hd : pM * R0 = BD * pM`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : pM = (p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)).map (kd P)` using `rfl`. Establish `h2 : R0 = ((ρ₀ g : Matrix (n × Fin r) (n × Fin r) ℚ_[l]).map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l))).map (kd P)`. Use extensionality with `i j`. Simplify using `[hR0, kd_q]`. Establish `h3 : BD = (Matrix.blockDiagonal fun m : Fin r => (σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m)).map (kd P)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hBD, Matrix.blockDiagonal_map _ _ (map_zero (kd P))]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, h3, ← Matrix.map_mul, ← Matrix.map_mul, hconj g]`. Establish `hR : R0 * pinv = pinv * BD`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = pinv * (BD * pM) * pinv := by rw [hd]`. Use `_ = pinv * BD := by rw [Matrix.mul_assoc, Matrix.mul_assoc, hmulinv, Matrix.mul_one]`. Establish `hvec : (fun x : n × Fin r => kd P (fr l x.2 (c g x.1))) = pM *ᵥ fun x => algebraMap ℚ_[l] P.R.BdR (c₀ g x)`. Use function extensionality and compare the values at `x`. Establish `h` using `congrArg (fun v => kd P (v x)) (hpc g)`.
-
-Simplify using `only [Matrix.mulVec, dotProduct] at h ⊢`. Rewrite using `[← h, map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, kd_q, hpG]`. Establish `hbt : (fun x : n × Fin r => kd P (fr l x.2 (c g x.1))) = BD *ᵥ (fun x => P.actQdR (g : GQ l) (β' x)) - β'`.
-
-Use function extensionality and compare the values at `⟨i, m⟩`. Rewrite using `[Pi.sub_apply, hBD, blockDiag_mulVec]`. Conclude with `congrFun (hb m g) i`. Rewrite using `[hactv, Matrix.mulVec_mulVec, hR, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_sub, ← hbt, hvec, Matrix.mulVec_mulVec, hinvmul, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratCocycle_trivial : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ)
     (σ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (ρ₀ : ↥(GK K) →* GL (n × Fin r) ℚ_[l]) (p : GL (n × Fin r) ↥(MaximalUnramifiedExtension l))

@@ -20,11 +20,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] {Γ : Grid k}
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro St _ _ _ hT`. Conclude with `hT`. Consider the case `cons x l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `St hν hc hJ hT`. Take `_ | ⟨hp, hc'⟩` from `hc`. Use `ih (St.flip .one ψ ϖ e x) (fun y hy => hν y (List.mem_cons_of_mem _ hy)) hc' (fun X => ?_) (GlobalTheory.T.splitThetaGrid_isAdmissible_flipTensor ψ ϖ e hϖ hψ he St x (hν x List.mem_cons_self) hp hJ hT)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsOpen (Γ.flipLevel x.1 x.2 St.level X : Set (GL (Fin (Γ.rank X)) k)) ∧ Γ.flipLevel x.1 x.2 St.level X ≤ _`. Distinguish the cases in `hX : X = (x.1 + 1, x.2 + 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hX` using the available equality. Simplify using `only [Grid.flipLevel, Function.update_self]`. Conclude with `⟨isOpen_KO, le_rfl⟩`. Simplify using `only [Grid.flipLevel, Function.update_of_ne hX]`. Conclude with `hJ X`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAdmissible_flips {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ) (hψ : HasConductor ψ 1) (he : 1 ≤ e) :
     ∀ (l : List (ℕ × ℕ)) (St : Γ.PiLocalization₂), (∀ x ∈ l, CondLE ϖ e (Γ.nu x.1 x.2)) → CanFlip St.path l →
@@ -46,17 +46,17 @@ theorem isAdmissible_flips {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : I
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `hd : ∀ Y, gdet ((Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) Y) = if Y = (Γ.m, j + 1) then gdet g else 1` using `fun Y => by split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hv : ∀ Y, valuation k (((if Y = (Γ.m, j + 1) then gdet g else 1 : kˣ)⁻¹ : kˣ) : k) = 1` using `fun Y => by split_ifs`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hg, inv_one]`. Simplify using the standard rewrite rules. Establish `hf : ∀ b, Γ.edgeFactor .one (Pi.mulSingle (Γ.m, j + 1) g) b = (Γ.kappa b b.src (if b.src = (Γ.m, j + 1) then gdet g else 1) : ℂ) * (((Γ.kappa b b.tgt (if b.tgt = (Γ.m, j + 1) then gdet g else 1))⁻¹ : ℂˣ) : ℂ)` using `fun b => by`. Simplify using `only [Grid.edgeFactor, Assignment.read, gdet_invT, hd, apow_of_valuation_eq_one (hv _), mul_one]`. Rewrite using `[oppositePath, List.map_append, List.prod_append, List.map_map, List.map_map, List.map_reverse, List.prod_reverse, List.prod_eq_one, one_mul, ← List.prod_toFinset _ List.nodup_range, List.toFinset_range]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp, hf, Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_eq_single j, Finset.prod_eq_single (j + 1)]`. Simplify using `only [if_true, Grid.kappa, Grid.blockChar, MonoidHom.div_apply]`. Simplify using `only [Units.val_div_eq_div_val, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `c hc`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hc`. Simplify using `[hf, show Γ.m ≠ j + 1 by omega]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem prod_edgeFactor_col {j : ℕ} (hj : j + 1 < Γ.m) (g : GL (Fin (Γ.rank (Γ.m, j + 1))) k)
     (hg : valuation k (gdet g : k) = 1) :
@@ -90,17 +90,17 @@ theorem prod_edgeFactor_col {j : ℕ} (hj : j + 1 < Γ.m) (g : GL (Fin (Γ.rank 
     simp [hf, show Γ.m ≠ j + 1 by omega]
 
 /- English proof (translation)
-Take `⟨u, hu, v, hv, h, hdet⟩` from `exists_of_mem_symPr hs hj hκ`. Establish `hu1 : valuation k (gdet u : k) = 1` using `valuation_gdet_of_mem_KO (hJ hu)`. Use `set h' := ρ.elt β`. Use `set g := h' (Γ.m, j + 1) * u * (h' (Γ.m, j + 1))⁻¹ with hg`. Establish `hgd : gdet g = gdet κ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← gdet_toFrame hs hj, h, gdet_mul, gdet_of_mem_symN hv, one_mul, gdet_embX]`. Establish `hin : (Γ.m, j + 1) ∈ innerVertices (oppositePath Γ.m)`. Take `⟨m, hm⟩ : ∃ m, Γ.m = m + 1` from `⟨Γ.m - 1, by omega⟩`. Use `List.mem_map.2 ⟨.theta Γ.m j, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[oppositePath, List.tail_append_of_ne_nil (by simp; omega)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `List.mem_append_right _ (by simp; omega)`. Establish `hcomm : (Pi.mulSingle (Γ.m, j + 1) g : Γ.VertexGroup) * h' = h' * Pi.mulSingle (Γ.m, j + 1) u`. Use function extensionality and compare the values at `Y`. Distinguish the cases in `hY : Y = (Γ.m, j + 1)`. Substitute `hY` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hg]`. Simplify using `[hY]`. Establish `hinv : Γ.pathAct .one (oppositePath Γ.m) (Pi.mulSingle (Γ.m, j + 1) g) (Γ.pathAct .one (oppositePath Γ.m) h' F) = Γ.pathAct .one (oppositePath Γ.m) h' F`. Rewrite using `[← Grid.pathAct_mul, hcomm, Grid.pathAct_mul, hF _ hin u hu]`. Establish `hmv : moved Γ keep h' F = fun z => ((Γ.mu (j + 1) (gdet κ) : ℂ) * (((Γ.mu (j + 1 + 1) (gdet κ))⁻¹ : ℂˣ) : ℂ)) * moved Γ keep h' F (Γ.moveArgs .one (Pi.mulSingle (Γ.m, j + 1) g) z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Use `congrFun hinv z` as an intermediate fact. Rewrite `this` using `[Grid.pathAct, prod_edgeFactor_col hj g (by rw [hgd, hdet, hu1]), hgd]`. Rewrite using `[moved, moved, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ * flatTensor hs ψ ν (moved Γ keep h' F) _ _ = flatTensor hs ψ ν (moved Γ keep h' F) _ _`. Rewrite using `[← GlobalTheory.T.flatTensor_moveArguments_lastRow_vertex hs ψ ν (moved Γ keep h' F) j hj g κ (by rw [hdet, hu1]) v hv h x y]`. Use `conv_rhs => rw [hmv]`. Simplify using `only [flatTensor, flatIntegrand, mul_assoc, integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem datum_colMove (hs : 1 ≤ Γ.s) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] {J : Γ.Level} (keep : Bool)
     (ρ : Reps hs J) {F : Γ.Args → ℂ} (hF : Γ.IsAdmissible .one (oppositePath Γ.m) J F) (β : Cosets hs J) {j : ℕ}
@@ -144,11 +144,9 @@ end Local
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Establish `hg` using `(Good.locGrid_isGood hL G W t hde hc).1 w hw`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `h00` using `hg.square 0 hm 0 hm`. Establish `hν : ∀ x ∈ flipOrder D.R.m, CondLE (unifAt w) (depthAt G w) ((locGrid G t w).nu x.1 x.2)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [flipOrder, List.mem_flatMap, List.mem_map, List.mem_range] at hx`. Take `⟨i, hi, j, hj, rfl⟩` from `hx`. Rewrite using `[← Grid.alpha_div_beta]`. Conclude with `(hg.square i hi j hj).condν`. Rewrite using `[← (flipStage_path_level t w B W Φ).1, ← (flipStage_path_level t w B W Φ).2]`.
-
-Conclude with `(isAdmissible_flips h00.unif h00.cond h00.one_le (flipOrder D.R.m) (givenStage t w B Φ) hν (canFlip_flipOrder _).1 (fun X => GivenAdm.givenLevel_open hL hw X) (GivenAdm.givenStage_isAdmissible hL B t Φ hw)).invariant`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_Tflip {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (Φ : G.Datum)
     (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
@@ -168,7 +166,7 @@ theorem isAdmissible_Tflip {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frame
     (fun X => GivenAdm.givenLevel_open hL hw X) (GivenAdm.givenStage_isAdmissible hL B t Φ hw)).invariant
 
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨⟨q, hq⟩, hall⟩ := (S.Z.vac_is p hp).2.norm have := hall q hq rw [h0] at this simp [nrm2] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vac_ne_zero (S : GridChoice W U) {p : Pair T} (hp : DefPair D.R.m p) : S.Z.vac p ≠ 0 := fun h0 => by
   obtain ⟨⟨q, hq⟩, hall⟩ := (S.Z.vac_is p hp).2.norm
@@ -177,7 +175,7 @@ theorem vac_ne_zero (S : GridChoice W U) {p : Pair T} (hp : DefPair D.R.m p) : S
   simp [nrm2] at this
 
 /- English proof (translation)
-Establish `hf' : f' ≠ 0` using `fun h0 => hf (by`. Use `congrArg (om g⁻¹) h` as an intermediate fact. Rewrite using `[h0, smul_zero, map_zero, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at this)` and apply the resulting hypothesis. Conclude with `smul_left_injective ℂ hf' (h.symm.trans h')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smul_unique {H M : Type} [Group H] [AddCommGroup M] [Module ℂ M] (om : H →* Module.End ℂ M) {f f' : M} (hf : f ≠ 0)
     {g : H} {c c' : ℂ} (h : om g f = c • f') (h' : om g f = c' • f') : c = c' := by
@@ -187,19 +185,15 @@ theorem smul_unique {H M : Type} [Group H] [AddCommGroup M] [Module ℂ M] (om :
   exact smul_left_injective ℂ hf' (h.symm.trans h')
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t μ₀ hL hde hc ht Φ β τ _ hexp j hj k hk e he hte T₁ T₂ hT₁ hT₂ c₁ c₂ hc₁ hc₂ x y`. Establish `e₁` using `smul_unique _ (vac_ne_zero S (p := .top t j) (show j + 1 ≤ D.R.m by omega)) hc₁ (GlobalTheory.T.weil_conj_level_moves_vacuum_by_character S hL ht j hj k hk e he T₁ hT₁)`. Establish `e₂` using `smul_unique _ (vac_ne_zero S (p := .top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega)) hc₂ (GlobalTheory.T.weilAction_moves_standardVacuum_topNode_eq_char_smul S hL ht j hj k hk e he T₂ hT₂)`. Take `⟨e', -, hsupp, hF⟩` from `hexp`. Use `set g : FinPt G (.top (j + 1)) := (S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hhalf : ∀ j', IsHalf e' (movedPt t j hj g x j') ↔ IsHalf e' (x j')` using `fun j' => by`. Break down `eq_or_ne j' ⟨j + 1, hj⟩ with rfl | h1` into its components or cases. Simplify using `only [movedPt, Function.update_self]`. Conclude with `GlobalTheory.SchrMove.isHalf_actO_iff _ _ _`. Break down `eq_or_ne j' ⟨j, by omega⟩ with rfl | h2` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [movedPt, Function.update_of_ne h1, Function.update_self]`. Conclude with `GlobalTheory.SchrMove.isHalf_actO_iff _ _ _`. Simplify using `only [movedPt, Function.update_of_ne h1, Function.update_of_ne h2]`. Establish `hL' : (τ.sum fun d a => a * (c₁ * c₂) * (∏ j', movedFn S d j hj g j' (x j')) * ∏ i, (d.2 i).fn (y i)) = c₁ * c₂ * τ.sum fun d a => a * (∏ j', (d.1 j').fn (movedPt t j hj g x j')) * ∏ i, (d.2 i).fn (y i)`. Simplify using `only [Finsupp.sum, Finset.mul_sum, movedFn_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Rewrite using `[hL']`. Establish `hzero : ∀ x' : ∀ j' : Fin D.R.m, WO (G.pS (.top t j' : Pair T)) (G.pT (.top t j' : Pair T)), ¬ ((∀ j', IsHalf e' (x' j')) ∧ ∀ i, IsHalf e' (y i)) → (τ.sum fun d a => a * (∏ j', (d.1 j').fn (x' j')) * ∏ i, (d.2 i).fn (y i)) = 0` using `fun x' hx' => by`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `hx' ⟨fun j' => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← ((hsupp d hd).1 j').2.1]`. Conclude with `(d.1 j').sb.1 _ fun h => h0 (by beta_reduce; rw [Finset.prod_eq_zero (f := fun j' => (d.1 j').fn (x' j')) (Finset.mem_univ j') h]; simp)`. Rewrite using `[← ((hsupp d hd).2 i).2.1]`. Conclude with `(d.2 i).sb.1 _ fun h => h0 (by beta_reduce; rw [Finset.prod_eq_zero (f := fun i => (d.2 i).fn (y i)) (Finset.mem_univ i) h]; simp)`.
-
-Distinguish the cases in `hx : (∀ j', IsHalf e' (x j')) ∧ ∀ i, IsHalf e' (y i)`. Rewrite using `[hF _ y (fun j' => (hhalf j').2 (hx.1 j')) hx.2, hF x y hx.1 hx.2, e₁, e₂, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.unfoldingColumnArgs_movedPoint_conj_atPlace S ht j hj k w.1 w.2 x]`. Use `haveI := (isUnitVol_unitVol w.1).1`.
-
-Conclude with `datum_colMove (Γ := locGrid G t w.1) one_le_sLen _ _ _ _ (isAdmissible_Tflip hL W S.B t Φ hde hc w.2) (β w) hj (givenLevel_col t w.1 j).le (kapAt_mem S hj hk w) _ _`. Rewrite using `[hzero x hx, hzero _ fun h => hx ⟨fun j' => (hhalf j').1 (h.1 j'), h.2⟩, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_invariant : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {μ₀ : T},
     L.Is μ₀ → (Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) →

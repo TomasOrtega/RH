@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeRes
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `congrArg (fun f => f.hom y) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.map φ (Sec.res g y) = Sec.res g (Sec.map φ y) := by
@@ -13,15 +13,13 @@ theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : 
   exact congrArg (fun f => f.hom y) h
 
 /- English proof (translation)
-Introduce `hS hB hZ hX hgen q _ C _ P i`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c c' φ x`. Establish `h1` using `(hS q i (P.U c) (P.ζ c) x).2.2 (P.U c') (P.S.map φ).unop`. Rewrite `h1` using `[P.ζ_nat φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `sec_map_res (resι _ (tw q i)) (P.S.map φ).unop (kap i (P.ζ c) x)`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Introduce `s c c' φ x`. Conclude with `sec_map_res ((GlobalTheory.EtC.res _ (tw q i)).d (s : ℤ) ((s + 1 : ℕ) : ℤ)) (P.S.map φ).unop x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c a b h`. Conclude with `(hB hgen q i (P.U c) (P.ζ c)).1 ((hZ _ (tw q i) (P.U c)).1 h)`. Introduce `c y`. Establish `h` using `(hZ _ (tw q i) (P.U c)).2.1 y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Take `⟨t, ht⟩` from `h.1 h0`. Take `⟨f, hf⟩` from `(hB hgen q i (P.U c) (P.ζ c)).2 t`. Conclude with `⟨f, by rw [← ht, ← hf]; rfl⟩`. Introduce and unpack `⟨f, rfl⟩`.
-
-Conclude with `h.2 ⟨_, rfl⟩`. Introduce `s c`. Conclude with `hX _ (tw q i) (P.U c) (P.split c) s`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem resGood : CrystallineSemistableComparison.E.KapSpec → CrystallineSemistableComparison.E.KapBij → CrystallineSemistableComparison.E.ResZero → CrystallineSemistableComparison.E.ResSplit → CrystallineSemistableComparison.E.ResGood := by
   intro hS hB hZ hX hgen q _ C _ P i

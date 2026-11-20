@@ -9,9 +9,9 @@ open GlobalTheory.AdelicU Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolu
 open scoped TensorProduct NNReal
 
 /- English proof (translation)
-Unfold `opNorm`. Establish `h1 : (Matrix.toEuclideanCLM (n` using `n) (𝕜 := ℂ) A (EuclideanSpace.single j 1)) i = A i j := by`. Express the relevant statement in the definitionally equal form `∑ d, A i d * (EuclideanSpace.single j (1 : ℂ) : EuclideanSpace ℂ n) d = A i j`. Simplify using `[EuclideanSpace.single_apply]`. Establish `h2` using `ContinuousLinearMap.le_opNNNorm (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) A) (EuclideanSpace.single j 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[PiLp.nnnorm_single, nnnorm_one, mul_one]`. Rewrite using `[← h1]`. Conclude with `(PiLp.nnnorm_apply_le _ i).trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nnnorm_entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) (i j : n) :
     ‖A i j‖₊ ≤ opNorm A := by
@@ -25,15 +25,13 @@ theorem nnnorm_entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (A : Matri
   exact (PiLp.nnnorm_apply_le _ i).trans h2
 
 /- English proof (translation)
-Use `set x : E := (γ : Matrix (Fin N) (Fin N) E) i j with hx`. Use `set g := Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) γ with hg`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 F), max 1 (absFin F v ((1 : Fv F v) ⊗ₜ[F] x)) ≤ htFin F v (bc (compFin F E v) g)`. Introduce `v`. Use `max_le (one_le_htOf _ _) (le_trans ?_ (le_htOf _ _))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `he : ((bc (compFin F E v) g : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) i j = (1 : Fv F v) ⊗ₜ[F] x`. Express the relevant statement in the definitionally equal form `compFin F E v ((1 : AF F) ⊗ₜ[F] x) = _`. Simplify using `[compFin, Algebra.TensorProduct.map_tmul]`. Rewrite using `[← he]`. Conclude with `absFin_le_normFin F v _ i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinf : ∀ w : InfinitePlace F, max 1 (Finset.univ.sup fun τ : EmbOver E w => ‖τ.1 x‖₊) ≤ htInf F w (bc (compInf F E w) g)`. Introduce `w`. Use `max_le (one_le_htOf _ _) (le_trans ?_ (le_htOf _ _))` and prove the remaining obligations. Use `Finset.sup_le fun τ _ => ?_` and prove the remaining obligations. Establish `he : (((bc (compInf F E w) g : GL (Fin N) _) : Matrix (Fin N) (Fin N) _).map (infEmb τ)) i j = τ.1 x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w ((1 : AF F) ⊗ₜ[F] x)) = _`. Simplify using `[compInf, Algebra.TensorProduct.map_tmul, infEmb_tmul]`. Rewrite using `[← he]`. Conclude with `(nnnorm_entry_le_opNorm _ i j).trans ((normInf_le_iff F w).1 le_rfl τ)`. Unfold `htE heightGL`.
-
-Use `mul_le_mul' (Finset.prod_le_prod' fun w _ => hinf w) ?_` and prove the remaining obligations. Establish `hg'` using `finite_mulSupport_htFin F g`. Use `finprod_le_finprod' (hg'.subset fun v hv hv' => hv ?_) hg' hfin` and prove the remaining obligations. Conclude with `le_antisymm ((hfin v).trans (le_of_eq hv')) (le_max_left _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem htE_entry_le_heightGL (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (N : ℕ) (γ : GL (Fin N) E) (i j : Fin N) :

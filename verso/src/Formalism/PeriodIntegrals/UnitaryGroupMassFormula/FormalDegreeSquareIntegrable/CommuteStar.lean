@@ -14,9 +14,9 @@ variable {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   (π : G →* (H →L[ℂ] H))
 
 /- English proof (translation)
-Establish `hinner : ∀ (h : G) (x y : H), ⟪π h x, π h y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun h x y => (⟨(π h).toLinearMap, hπ h⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y`. Establish `hinv : ∀ x, π g (π g⁻¹ x) = x` using `fun x => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Use `symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Use `conv_rhs => rw [← hinv x]`. Rewrite using `[hinner]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma adjoint_rep (hπ : ∀ g v, ‖π g v‖ = ‖v‖) (g : G) : adjoint (π g) = π g⁻¹ := by
   have hinner : ∀ (h : G) (x y : H), ⟪π h x, π h y⟫_ℂ = ⟪x, y⟫_ℂ := fun h x y =>
@@ -31,7 +31,7 @@ lemma adjoint_rep (hπ : ∀ g v, ‖π g v‖ = ‖v‖) (g : G) : adjoint (π 
   rw [hinner]
 
 /- English proof (translation)
-Establish `h1 : star (π g⁻¹) = π g`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, adjoint_rep π hπ, inv_inv]`. Establish `h2 : T * π g⁻¹ = π g⁻¹ * T` using `hT g⁻¹`. Use `show star T * π g = π g * star T`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma commute_star (hπ : ∀ g v, ‖π g v‖ = ‖v‖) (T : H →L[ℂ] H) (hT : ∀ g, Commute T (π g))
     (g : G) : Commute (star T) (π g) := by
@@ -46,37 +46,31 @@ lemma commute_star (hπ : ∀ g v, ‖π g v‖ = ‖v‖) (T : H →L[ℂ] H) (
     _ = π g * star T := by rw [h1]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial H with hH | hH` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `Subsingleton.elim _ _`. Take `⟨v0, hv0⟩` from `exists_ne (0 : H)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (H →L[ℂ] H) := ⟨⟨0, 1, fun h => hv0 (by`. Establish `h1` using `congrArg (fun T : H →L[ℂ] H => T v0) h`. Simplify using `only [ContinuousLinearMap.zero_apply, ContinuousLinearMap.one_apply] at h1`. Conclude with `h1.symm)⟩⟩`. Establish `hcom : ∀ (f : ℝ → ℝ) (g : G), Commute (cfc f A) (π g)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Introduce `f g`. Use `first`. Consider the case `exact (hc g).cfc_real f`. Consider the case `exact Commute.cfc_real (hc g) f`. Consider the case `exact (hc g).cfc (by rw [hA.star_eq]; exact hc g) f`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Consider the case `exact Commute.cfc (hc g) (by rw [hA.star_eq]; exact hc g) f`. Establish `hsub : ∀ s ∈ spectrum ℝ A, ∀ t ∈ spectrum ℝ A, s < t → False`. Introduce `s hs t ht hst`. Use `set m := (s + t) / 2 with hm`. Set `f : ℝ → ℝ` to `fun x => max 0 (m - x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `g : ℝ → ℝ` to `fun x => max 0 (x - m)`. Establish `hf : Continuous f` using `by fun_prop`. Establish `hg : Continuous g` using `by fun_prop`. Establish `hgf : (fun x => g x * f x) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `x`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total x m with h | h` into its components or cases. Establish `: g x = 0` using `max_eq_left (by linarith)`. Rewrite using `[this, zero_mul]`. Establish `: f x = 0` using `max_eq_left (by linarith)`. Rewrite using `[this, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hYX : cfc g A * cfc f A = 0`. Rewrite using `[← cfc_mul g f A (hf := hg.continuousOn) (hg := hf.continuousOn), hgf, cfc_const (0 : ℝ) A, map_zero]`. Establish `hne0 : ∀ (k : ℝ → ℝ), Continuous k → ∀ x ∈ spectrum ℝ A, k x ≠ 0 → cfc k A ≠ 0`. Introduce `k hk x hx hkx h0`. Establish `h1` using `cfc_map_spectrum k A (hf := hk.continuousOn)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h0, spectrum.zero_eq]`. Establish `h2 : k x ∈ k '' spectrum ℝ A` using `⟨x, hx, rfl⟩`. Rewrite `h2` using `[← h1]`. Conclude with `hkx h2`. Establish `hX : cfc f A ≠ 0` using `hne0 f hf s hs (by show max 0 (m - s) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[max_eq_right (by linarith)]`. Use the proof step `linarith)`. Establish `hY : cfc g A ≠ 0` using `hne0 g hg t ht (by show max 0 (t - m) ≠ 0`. Rewrite using `[max_eq_right (by linarith)]`. Use the proof step `linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `S : Submodule ℂ H` to `LinearMap.ker ((cfc g A : H →L[ℂ] H) : H →ₗ[ℂ] H)`. Establish `hSc : IsClosed (S : Set H)` using `ContinuousLinearMap.isClosed_ker (cfc g A)`. Establish `hSi : ∀ g' : G, ∀ v ∈ S, π g' v ∈ S`. Introduce `g' v hv`. Establish `hv' : (cfc g A) v = 0` using `hv`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (cfc g A) (π g' v) = 0`. Establish `h1 : (cfc g A * π g') v = (π g' * cfc g A) v` using `by rw [(hcom g g').eq]`. Simplify using `only [ContinuousLinearMap.mul_apply] at h1`. Rewrite using `[h1, hv', map_zero]`. Break down `hirr S hSc hSi with hS | hS` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Apply `hX` to reduce the goal to its premises. Use extensionality with `v`. Establish `h1 : (cfc f A) v ∈ S` using `by show (cfc g A) ((cfc f A) v) = 0`. Rewrite using `[← ContinuousLinearMap.mul_apply, hYX, ContinuousLinearMap.zero_apply]`. Rewrite `h1` using `[hS, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1, ContinuousLinearMap.zero_apply]`. Apply `hY` to reduce the goal to its premises. Use extensionality with `v`. Establish `h1 : v ∈ S` using `by rw [hS]; exact Submodule.mem_top`. Conclude with `h1`.
-
-Take `⟨r, hr⟩ : (spectrum ℝ A).Nonempty` from `by first`. Consider the case `exact CFC.spectrum_nonempty ℝ A hA`. Consider the case `exact hA.spectrum_nonempty`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `heq : Set.EqOn (fun x : ℝ => x) (fun _ => r) (spectrum ℝ A)`.
-
-Introduce `x hx`. Break down `lt_trichotomy x r with h | h | h` into its components or cases. Conclude with `(hsub x hx r hr h).elim`. Conclude with `h`. Conclude with `(hsub r hr x hx h).elim`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma sa_scalar (hirr : Irr π) (A : H →L[ℂ] H) (hA : IsSelfAdjoint A)
     (hc : ∀ g, Commute A (π g)) : ∃ r : ℝ, A = algebraMap ℝ (H →L[ℂ] H) r := by
@@ -167,13 +161,11 @@ lemma sa_scalar (hirr : Irr π) (A : H →L[ℂ] H) (hA : IsSelfAdjoint A)
 end Schur
 
 /- English proof (translation)
-Introduce `G H iG iH iI iC π hπ hirr T hT`. Establish `hc : ∀ g, Commute T (π g)` using `fun g => by first`. Consider the case `exact hT g`. Consider the case `simpa [Commute, SemiconjBy, ContinuousLinearMap.mul_def] using hT g`. Establish `hcs : ∀ g, Commute (star T) (π g)` using `fun g => commute_star π hπ T hc g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨r1, h1⟩` from `sa_scalar π hirr (ℜ T : H →L[ℂ] H) (ℜ T).2 (fun g => by`. Rewrite using `[realPart_apply_coe]`. Conclude with `((hc g).add_left (hcs g)).smul_left _)`. Take `⟨r2, h2⟩` from `sa_scalar π hirr (ℑ T : H →L[ℂ] H) (ℑ T).2 (fun g => by`. Rewrite using `[imaginaryPart_apply_coe]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(((hc g).sub_left (hcs g)).smul_left _).smul_left _)`. Use `⟨(r1 : ℂ) + Complex.I * r2, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← realPart_add_I_smul_imaginaryPart T]`. Rewrite using `[h1, h2]`. Use extensionality with `v`.
-
-Simplify using `[Algebra.algebraMap_eq_smul_one, add_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stSchur : StSchur := by
   intro G H iG iH iI iC π hπ hirr T hT

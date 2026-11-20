@@ -12,14 +12,14 @@ inductive SigmaRel {ι : Type} {α β : ι → Type} (R : ∀ i, α i → β i �
   | mk {i : ι} {a : α i} {b : β i} : R i a b → SigmaRel R ⟨i, a⟩ ⟨i, b⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by cases h; assumption, SigmaRel.mk⟩`.
+Supply the required witnesses or components.
 -/
 theorem sigmaRel_mk {ι : Type} {α β : ι → Type} {R : ∀ i, α i → β i → Prop} {i : ι} {a : α i} {b : β i} :
     SigmaRel R ⟨i, a⟩ ⟨i, b⟩ ↔ R i a b :=
   ⟨fun h => by cases h; assumption, SigmaRel.mk⟩
 
 /- English proof (translation)
-Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem SigmaRel.fst_eq {ι : Type} {α β : ι → Type} {R : ∀ i, α i → β i → Prop} {a : Σ i, α i} {b : Σ i, β i}
     (h : SigmaRel R a b) : a.1 = b.1 := by
@@ -161,7 +161,7 @@ def Loc.pi (L : ι → ModuliIntegralCharts.Loc D r j p) : ModuliIntegralCharts.
   degLdR c := (L c.1).degLdR c.2
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Loc.bs_pi (L : ι → ModuliIntegralCharts.Loc D r j p) (b : Option ℕ) :
     ModuliIntegralCharts.bs (Loc.pi L) b = fun v => ModuliIntegralCharts.bs (L v) b := by
@@ -433,7 +433,7 @@ Both sides reduce to the same expression.
     (Loc.pi L).be (Z := Z) ⟨v, y⟩ = (L v).be y := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_good {Z : (Loc.pi L).Mdl} (v : ι) (y : (L v).Pt (Z v)) :
     (Loc.pi L).good (Z := Z) ⟨v, y⟩ ↔ (L v).good y := Iff.rfl
@@ -457,7 +457,7 @@ Both sides reduce to the same expression.
     (Loc.pi L).cJ (Z := Z) ⟨v, y⟩ n DF = (L v).cJ y n DF := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_isCp {Z : (Loc.pi L).Mdl} (v : ι) (y : (L v).Pt (Z v)) :
     ModuliIntegralCharts.isCp (Loc.pi L) (Z := Z) ⟨v, y⟩ ↔ ModuliIntegralCharts.isCp (L v) y := Iff.rfl
@@ -481,19 +481,19 @@ Both sides reduce to the same expression.
     (Loc.pi L).om (Z := Z) ⟨v, y⟩ = (L v).om y := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_abAt {Z : (Loc.pi L).Mdl} (v : ι) (η : (L v).Gen (Z v)) :
     (Loc.pi L).abAt (Z := Z) ⟨v, η⟩ ↔ (L v).abAt η := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_isInv {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) :
     (Loc.pi L).IsInv F ↔ ∀ v, (L v).IsInv (F v) := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_isLocFree {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) :
     (Loc.pi L).IsLocFree F ↔ ∀ v, (L v).IsLocFree (F v) := Iff.rfl
@@ -532,7 +532,7 @@ Both sides reduce to the same expression.
     (Loc.pi L).dvRho ⟨v, y⟩ = (L v).dvRho y := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_isChart {Z : (Loc.pi L).Mdl} (v : ι) (y : (L v).DVP) (e : (L v).Ext y)
     (χ : (L v).Chart (Z v) y e) :
@@ -570,7 +570,7 @@ Both sides reduce to the same expression.
     (Loc.pi L).latStd n v = (L v).latStd n := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_symLift (v : ι) (y : (L v).Pt (L v).Xm) (La : (Loc.pi L).Unim) (n : ℕ)
     (sg : (L v).At y (La v) n → (L v).Th y (La v) n) :
@@ -590,7 +590,7 @@ Both sides reduce to the same expression.
     (Loc.pi L).intJet ⟨v, y⟩ La n DF = (L v).intJet y (La v) n DF := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem Loc.pi_isHTBlowup (Z' Z : (Loc.pi L).Mdl) :
     (Loc.pi L).IsHTBlowup Z' Z ↔ ∀ v, (L v).IsHTBlowup (Z' v) (Z v) := Iff.rfl
@@ -602,21 +602,21 @@ Both sides reduce to the same expression.
     (Loc.pi L).degLdR ⟨v, c⟩ = (L v).degLdR c := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h v => h v (Set.mem_univ _), fun h v _ => h v⟩`.
+Supply the required witnesses or components.
 -/
 @[simp] theorem Loc.mem_sections_pi_iff {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) (f : (Loc.pi L).Sec F) :
     f ∈ (Loc.pi L).H0 F ↔ ∀ v, f v ∈ (L v).H0 (F v) :=
   ⟨fun h v => h v (Set.mem_univ _), fun h v _ => h v⟩
 
 /- English proof (translation)
-Conclude with `⟨Function.update (β := fun w => (L w).Mdl) (fun w => (L w).Xm) v Z, Function.update_self ..⟩`.
+Supply the required witnesses or components.
 -/
 theorem Loc.exists_pi_mdl (v : ι) (Z : (L v).Mdl) : ∃ Z' : (Loc.pi L).Mdl, Z' v = Z := by
   classical
   exact ⟨Function.update (β := fun w => (L w).Mdl) (fun w => (L w).Xm) v Z, Function.update_self ..⟩
 
 /- English proof (translation)
-Conclude with `⟨Function.update (β := fun w => (L w).Unim) (fun w => (L w).latStd 0) v La, Function.update_self ..⟩`.
+Supply the required witnesses or components.
 -/
 theorem Loc.exists_pi_unim (v : ι) (La : (L v).Unim) : ∃ La' : (Loc.pi L).Unim, La' v = La := by
   classical
@@ -625,7 +625,7 @@ theorem Loc.exists_pi_unim (v : ι) (La : (L v).Unim) : ∃ La' : (Loc.pi L).Uni
 variable {L} in
 
 /- English proof (translation)
-Conclude with `⟨Function.update (β := fun w => (L w).Sec (F w)) (fun _ => 0) v f, Function.update_self .., fun _ h => Function.update_of_ne h _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem Loc.exists_pi_sec {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) (v : ι) (f : (L v).Sec (F v)) :
     ∃ f' : (Loc.pi L).Sec F, f' v = f ∧ ∀ w, w ≠ v → f' w = 0 := by
@@ -634,7 +634,7 @@ theorem Loc.exists_pi_sec {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) (v : ι) (f
     fun _ h => Function.update_of_ne h _ _⟩
 
 /- English proof (translation)
-Use `choose P h₁ h₂ h₃ h₄ using H`. Conclude with `⟨P, funext h₁, h₂, h₃, fun y => h₄ y.1 y.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Loc.thetaExt_pi (La : (Loc.pi L).Unim)
     (H : ∀ v, ∃ P : (L v).LBG (La v), (L v).resQ P = (L v).PPq (La v) ∧ (L v).symmG P ∧ (L v).rigG P ∧
@@ -699,19 +699,19 @@ Both sides reduce to the same expression.
     (ExtA.pi G).omP h ⟨v, y⟩ = (G v).omP (h v) y := rfl
 
 /- English proof (translation)
-The claim follows from `sigmaRel_mk`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ExtA.pi_spz {Z : (Loc.pi L).Mdl} (v : ι) (x x' : (G v).ZP (Z v)) :
     (ExtA.pi G).spz (Z := Z) ⟨v, x⟩ ⟨v, x'⟩ ↔ (G v).spz x x' := sigmaRel_mk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ExtA.pi_isHT {n : ℕ} (h : (ExtA.pi G).HTn n) : (ExtA.pi G).IsHT h ↔ ∀ v, (G v).IsHT (h v) :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ExtA.pi_blowUp_jIdl (b : Option ℕ) (d : (ExtA.pi G).IvD b) (v : ι) :
     (ExtA.pi G).blowUp (ModuliIntegralCharts.bs (Loc.pi L) b) ((ExtA.pi G).jIdl b d) v =
@@ -719,9 +719,9 @@ theorem ExtA.pi_blowUp_jIdl (b : Option ℕ) (d : (ExtA.pi G).IvD b) (v : ι) :
   cases b <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `base b hb => rw [Loc.bs_pi]`. Conclude with `.base b hb`. Consider the case `flag s _ ih => exact .flag (s v) ih`. Consider the case `blow I _ hp hc ih => exact .blow (I v) ih (hp v) fun y e χ => hc ⟨v, y⟩ e χ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `diag c _ _ ih₁ ih₂ => exact .diag (c v) ih₁ ih₂`. Consider the case `jblow b d hb => rw [ExtA.pi_blowUp_jIdl]`. Conclude with `.jblow b (d v) hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ExtA.zz_of_pi {N : ℕ} {Z : (Loc.pi L).Mdl} (h : (ExtA.pi G).ZZ N Z) (v : ι) : (G v).ZZ N (Z v) := by
   induction h with
@@ -732,7 +732,7 @@ theorem ExtA.zz_of_pi {N : ℕ} {Z : (Loc.pi L).Mdl} (h : (ExtA.pi G).ZZ N Z) (v
   | jblow b d hb => rw [ExtA.pi_blowUp_jIdl]; exact .jblow b (d v) hb
 
 /- English proof (translation)
-Use `⟨fun H v Z y => ?_, fun H Z y => H y.1 (Z y.1) y.2⟩` and prove the remaining obligations. Take `⟨Z, rfl⟩` from `Loc.exists_pi_mdl L v Z`. Conclude with `H Z ⟨v, y⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ExtA.aHT_pi_iff : (ExtA.pi G).aHT ↔ ∀ v, (G v).aHT := by
   refine ⟨fun H v Z y => ?_, fun H Z y => H y.1 (Z y.1) y.2⟩
@@ -740,9 +740,9 @@ theorem ExtA.aHT_pi_iff : (ExtA.pi G).aHT ↔ ∀ v, (G v).aHT := by
   exact H Z ⟨v, y⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H v Z η x hx`. Take `⟨Z, rfl⟩` from `Loc.exists_pi_mdl L v Z`. Conclude with `(H Z ⟨v, η⟩ ⟨v, x⟩ (SigmaRel.mk hx)).imp (fun h => sigma_mk_injective (β := fun w => (G w).ZP (Z w)) h) id`. Introduce and unpack `H Z ⟨v, η⟩ ⟨w, x⟩ hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl : w = v` from `SigmaRel.fst_eq hx`. Conclude with `(H w (Z w) η x ((ExtA.pi_spz G w _ _).1 hx)).imp (congrArg (Sigma.mk (β := fun w => (G w).ZP (Z w)) w)) id`.
+A detailed English derivation is pending.
 -/
 theorem ExtA.aKrull_pi_iff : (ExtA.pi G).aKrull ↔ ∀ v, (G v).aKrull := by
   constructor
@@ -756,14 +756,14 @@ theorem ExtA.aKrull_pi_iff : (ExtA.pi G).aKrull ↔ ∀ v, (G v).aKrull := by
       (congrArg (Sigma.mk (β := fun w => (G w).ZP (Z w)) w)) id
 
 /- English proof (translation)
-Introduce `Z F hF f` and use `⟨fun h v _ => (H v (Z v) (F v) (hF v) (f v)).1 fun η => h ⟨v, η⟩, fun B h y => (H y.1 (Z y.1) (F y.1) (hF y.1) (f y.1)).2 B (fun η => h ⟨y.1, η⟩) y.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtA.aNorm_pi (H : ∀ v, (G v).aNorm) : (ExtA.pi G).aNorm := fun Z F hF f =>
   ⟨fun h v _ => (H v (Z v) (F v) (hF v) (f v)).1 fun η => h ⟨v, η⟩,
     fun B h y => (H y.1 (Z y.1) (F y.1) (hF y.1) (f y.1)).2 B (fun η => h ⟨y.1, η⟩) y.2⟩
 
 /- English proof (translation)
-Introduce and unpack `Z ⟨v, η⟩ hη F hF f`. Take `⟨y, hy⟩` from `H v (Z v) η hη (F v) (hF v) (f v)`. Conclude with `⟨⟨v, y⟩, hy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ExtA.aTube_pi (H : ∀ v, (G v).aTube) : (ExtA.pi G).aTube := by
   rintro Z ⟨v, η⟩ hη F hF f
@@ -771,33 +771,33 @@ theorem ExtA.aTube_pi (H : ∀ v, (G v).aTube) : (ExtA.pi G).aTube := by
   exact ⟨⟨v, y⟩, hy⟩
 
 /- English proof (translation)
-Introduce `Z y e χ hχ F hF et i φ h` and use `H y.1 (Z y.1) y.2 e χ hχ (F y.1) (hF y.1) (et y.1) i (φ y.1) (h y.1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.aOrd1_pi (H : ∀ v, (G v).aOrd1) : (ExtA.pi G).aOrd1 := fun Z y e χ hχ F hF et i φ h =>
   H y.1 (Z y.1) y.2 e χ hχ (F y.1) (hF y.1) (et y.1) i (φ y.1) (h y.1)
 
 /- English proof (translation)
-Introduce `Z y e χ hχ F hF et het a h` and use `H y.1 (Z y.1) y.2 e χ hχ (F y.1) (hF y.1) (et y.1) (het y.1 (Set.mem_univ _)) a h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.aOrd2_pi (H : ∀ v, (G v).aOrd2) : (ExtA.pi G).aOrd2 := fun Z y e χ hχ F hF et het a h =>
   H y.1 (Z y.1) y.2 e χ hχ (F y.1) (hF y.1) (et y.1) (het y.1 (Set.mem_univ _)) a h
 
 /- English proof (translation)
-Introduce `Z F hF et i φ h y` and use `H y.1 (Z y.1) (F y.1) (hF y.1) (et y.1) i (φ y.1) (fun y' => h ⟨y.1, y'⟩) y.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.aOrd3_pi (H : ∀ v, (G v).aOrd3) : (ExtA.pi G).aOrd3 := fun Z F hF et i φ h y =>
   H y.1 (Z y.1) (F y.1) (hF y.1) (et y.1) i (φ y.1) (fun y' => h ⟨y.1, y'⟩) y.2
 
 /- English proof (translation)
-Introduce `n Z' hn hZ h C` and use `H C.1 n (Z' C.1) hn (hZ C.1) (fun τ => h τ C.1) C.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.aSub_pi (H : ∀ v, (G v).aSub) : (ExtA.pi G).aSub := fun n Z' hn hZ h C =>
   H C.1 n (Z' C.1) hn (hZ C.1) (fun τ => h τ C.1) C.2
 
 /- English proof (translation)
-Introduce and unpack `n Z' hn hZ ⟨v, CQ⟩`. Take `⟨c, s, m, hc, h⟩` from `H v n (Z' v) hn (hZ v) CQ`. Establish `hi : Function.Injective (Sigma.mk (β` using `fun w => (G w).CrvS (Z' w)) v) := sigma_mk_injective`. Use `⟨c, s.map ⟨_, hi⟩, Function.extend (Sigma.mk v) m 0, hc, fun τ i h₁ h₂ => ?_⟩` and prove the remaining obligations. Use `(h τ i h₁ h₂).trans (Eq.trans ?_ (Finset.sum_map s ⟨_, hi⟩ _).symm)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun k : ℕ => (k : ℤ) * (G v).degGr C τ i) (hi.extend_apply m 0 C).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ExtA.aClose_pi (H : ∀ v, (G v).aClose) : (ExtA.pi G).aClose := by
   rintro n Z' hn hZ ⟨v, CQ⟩
@@ -809,9 +809,9 @@ theorem ExtA.aClose_pi (H : ∀ v, (G v).aClose) : (ExtA.pi G).aClose := by
   exact congrArg (fun k : ℕ => (k : ℤ) * (G v).degGr C τ i) (hi.extend_apply m 0 C).symm
 
 /- English proof (translation)
-Introduce and unpack `⟨v, y⟩ hy N`. Take `⟨e, φ, h⟩` from `H v y hy N`. Use `⟨e, φ, fun b hb => ?_⟩` and prove the remaining obligations. Consider the cases of `b with`. Consider the case `none => exact h none hb`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some n => exact h (some n) hb`.
+Treat this case separately.
 -/
 theorem ExtA.baseCharts_pi (H : ∀ v, (G v).ChartLiftsThroughSteps) : (ExtA.pi G).ChartLiftsThroughSteps := by
   rintro ⟨v, y⟩ hy N
@@ -822,7 +822,7 @@ theorem ExtA.baseCharts_pi (H : ∀ v, (G v).ChartLiftsThroughSteps) : (ExtA.pi 
   | some n => exact h (some n) hb
 
 /- English proof (translation)
-Use `⟨fun Z s y e χ => (H y.1).1 (Z y.1) (s y.1) y.2 e χ, fun Z I y e χ hχ hp => (H y.1).2.1 (Z y.1) (I y.1) y.2 e χ hχ (hp y.1), fun Z₁ Z₂ c y e => (H y.1).2.2.1 (Z₁ y.1) (Z₂ y.1) (c y.1) y.2 e, fun b d y e => ?_⟩` and prove the remaining obligations. Consider the cases of `b with`. Consider the case `none => exact (H y.1).2.2.2 none (d y.1) y.2 e`. Consider the case `some n => exact (H y.1).2.2.2 (some n) (d y.1) y.2 e`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem ExtA.aCl_pi (H : ∀ v, (G v).aCl) : (ExtA.pi G).aCl := by
   refine ⟨fun Z s y e χ => (H y.1).1 (Z y.1) (s y.1) y.2 e χ,
@@ -833,14 +833,14 @@ theorem ExtA.aCl_pi (H : ∀ v, (G v).aCl) : (ExtA.pi G).aCl := by
   | some n => exact (H y.1).2.2.2 (some n) (d y.1) y.2 e
 
 /- English proof (translation)
-Introduce `n hn h hh` and use `⟨fun v => (H v n hn (h v) fun y => hh ⟨v, y⟩).1, fun y e => (H y.1 n hn (h y.1) fun y' => hh ⟨y.1, y'⟩).2 y.2 e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtA.aHTI_pi (H : ∀ v, (G v).aHTI) : (ExtA.pi G).aHTI := fun n hn h hh =>
   ⟨fun v => (H v n hn (h v) fun y => hh ⟨v, y⟩).1,
     fun y e => (H y.1 n hn (h y.1) fun y' => hh ⟨y.1, y'⟩).2 y.2 e⟩
 
 /- English proof (translation)
-Introduce `l` and use `⟨fun f y => (H y.1 l).1 (f y.1) y.2, Set.ext fun f => ⟨fun h y => ((Set.ext_iff.1 (H y.1 l).2 (f y.1)).1 (h y.1 (Set.mem_univ _))) y.2, fun h v _ => (Set.ext_iff.1 (H v l).2 (f v)).2 fun y => h ⟨v, y⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtA.extensionProperty_pi (H : ∀ v, (G v).p0) : (ExtA.pi G).p0 := fun l =>
   ⟨fun f y => (H y.1 l).1 (f y.1) y.2, Set.ext fun f =>
@@ -848,9 +848,9 @@ theorem ExtA.extensionProperty_pi (H : ∀ v, (G v).p0) : (ExtA.pi G).p0 := fun 
       fun h v _ => (Set.ext_iff.1 (H v l).2 (f v)).2 fun y => h ⟨v, y⟩⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨v, y⟩ hy N`. Take `⟨⟨e, h₁⟩, h₂⟩` from `H v y hy N`. Use `⟨⟨e, fun Z hZ => h₁ (Z v) (ExtA.zz_of_pi G hZ v)⟩, fun b hb => ?_⟩` and prove the remaining obligations. Consider the cases of `b with`. Consider the case `none => exact fun e χ hχ d => h₂ none hb e χ hχ (d v)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some n => exact fun e χ hχ d => h₂ (some n) hb e χ hχ (d v)`.
+Treat this case separately.
 -/
 theorem ExtA.pC_pi (H : ∀ v, (G v).pC) : (ExtA.pi G).pC := by
   rintro ⟨v, y⟩ hy N
@@ -861,13 +861,13 @@ theorem ExtA.pC_pi (H : ∀ v, (G v).pC) : (ExtA.pi G).pC := by
   | some n => exact fun e χ hχ d => h₂ (some n) hb e χ hχ (d v)
 
 /- English proof (translation)
-Introduce `N Z hZ η` and use `H η.1 N (Z η.1) (ExtA.zz_of_pi G hZ η.1) η.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.pNV_pi (H : ∀ v, (G v).pNV) : (ExtA.pi G).pNV := fun N Z hZ η =>
   H η.1 N (Z η.1) (ExtA.zz_of_pi G hZ η.1) η.2
 
 /- English proof (translation)
-Introduce `N Z hZ`. Use `⟨fun F hF f => ?_, fun F₁ F₂ h₁ h₂ φ a b h y => (H y.1 N (Z y.1) (ExtA.zz_of_pi G hZ y.1)).2 (F₁ y.1) (F₂ y.1) (h₁ y.1) (h₂ y.1) (φ y.1) a b (fun y' => h ⟨y.1, y'⟩) y.2⟩` and prove the remaining obligations. Use `choose y₀ hg hle using fun v => (H v N (Z v) (ExtA.zz_of_pi G hZ v)).1 (F v) (hF v) (f v)`. Take `⟨v, hv⟩` from `Finite.exists_max fun v => (L v).nrm (F v) (f v) (y₀ v)`. Conclude with `⟨⟨v, y₀ v⟩, hg v, fun y => (hle y.1 y.2).trans (hv y.1)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ExtA.pTR_pi (H : ∀ v, (G v).pTR) : (ExtA.pi G).pTR := by
   intro N Z hZ
@@ -879,21 +879,21 @@ theorem ExtA.pTR_pi (H : ∀ v, (G v).pTR) : (ExtA.pi G).pTR := by
   exact ⟨⟨v, y₀ v⟩, hg v, fun y => (hle y.1 y.2).trans (hv y.1)⟩
 
 /- English proof (translation)
-Introduce `N Z hZ F hF et het i φ h y` and use `H y.1 N (Z y.1) (ExtA.zz_of_pi G hZ y.1) (F y.1) (hF y.1) (et y.1) (het y.1 (Set.mem_univ _)) i (φ y.1) (h y.1) y.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.pORD_pi (H : ∀ v, (G v).pORD) : (ExtA.pi G).pORD := fun N Z hZ F hF et het i φ h y =>
   H y.1 N (Z y.1) (ExtA.zz_of_pi G hZ y.1) (F y.1) (hF y.1) (et y.1) (het y.1 (Set.mem_univ _)) i (φ y.1) (h y.1) y.2
 
 /- English proof (translation)
-Introduce `l f h t` and use `H t.1 l (f t.1) (fun y => h ⟨t.1, y⟩) t.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.pFJ_pi (H : ∀ v, (G v).pFJ) : (ExtA.pi G).pFJ := fun l f h t =>
   H t.1 l (f t.1) (fun y => h ⟨t.1, y⟩) t.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H v n hn`. Take `⟨⟨h, hh⟩, h₂⟩` from `H n hn`. Conclude with `⟨⟨h v, fun y => hh ⟨v, y⟩⟩, fun y => h₂ ⟨v, y⟩⟩`. Introduce `H n hn choose h hh using fun v => (H v n hn).1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨h, fun y => hh y.1 y.2⟩, fun y => (H y.1 n hn).2 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ExtA.pHTa_pi_iff : (ExtA.pi G).pHTa ↔ ∀ v, (G v).pHTa := by
   constructor
@@ -905,7 +905,7 @@ theorem ExtA.pHTa_pi_iff : (ExtA.pi G).pHTa ↔ ∀ v, (G v).pHTa := by
     exact ⟨⟨h, fun y => hh y.1 y.2⟩, fun y => (H y.1 n hn).2 y.2⟩
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `((ExtA.pi G).IsHTBlowup_def n Z' hn).1 hZ`. Take `⟨h₁, h₂⟩` from `ExtA.aHTI_pi G HI n hn h hh`. Conclude with `.blow _ (.base (some n) ⟨hn, le_rfl⟩) h₁ h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ExtA.zz_of_isHTBlowup (HI : ∀ v, (G v).aHTI) {n : ℕ} (hn : 3 ≤ n) {Z' : (Loc.pi L).Mdl}
     (hZ : (Loc.pi L).IsHTBlowup Z' ((Loc.pi L).Xn n)) : (ExtA.pi G).ZZ n Z' := by
@@ -914,7 +914,7 @@ theorem ExtA.zz_of_isHTBlowup (HI : ∀ v, (G v).aHTI) {n : ℕ} (hn : 3 ≤ n) 
   exact .blow _ (.base (some n) ⟨hn, le_rfl⟩) h₁ h₂
 
 /- English proof (translation)
-Introduce `n hn` and use `⟨fun h hh y => (H y.1 n hn).1 (h y.1) (fun y' => hh ⟨y.1, y'⟩) y.2, fun Z' hZ => ⟨ExtA.zz_of_isHTBlowup G HI hn hZ, .flag _ (ExtA.zz_of_isHTBlowup G HI hn hZ), fun y => ((H y.1 n hn).2 (Z' y.1) (hZ y.1)).2.2.1 y.2, fun v => ((H v n hn).2 (Z' v) (hZ v)).2.2.2.1, fun s τ v => ((H v …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtA.pHTb_pi (HI : ∀ v, (G v).aHTI) (H : ∀ v, (G v).pHTb) : (ExtA.pi G).pHTb := fun n hn =>
   ⟨fun h hh y => (H y.1 n hn).1 (h y.1) (fun y' => hh ⟨y.1, y'⟩) y.2, fun Z' hZ =>
@@ -925,20 +925,20 @@ theorem ExtA.pHTb_pi (HI : ∀ v, (G v).aHTI) (H : ∀ v, (G v).pHTb) : (ExtA.pi
       fun τ v => ((H v n hn).2 (Z' v) (hZ v)).2.2.2.2.2 τ⟩⟩
 
 /- English proof (translation)
-Introduce `n hn Z' hZ` and use `⟨fun l hl => ⟨fun v => ((H v n hn (Z' v) (hZ v)).1 l hl).1, fun v => ((H v n hn (Z' v) (hZ v)).1 l hl).2⟩, fun y => (H y.1 n hn (Z' y.1) (hZ y.1)).2.1 y.2, fun v => (H v n hn (Z' v) (hZ v)).2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtA.pHTc_pi (H : ∀ v, (G v).pHTc) : (ExtA.pi G).pHTc := fun n hn Z' hZ =>
   ⟨fun l hl => ⟨fun v => ((H v n hn (Z' v) (hZ v)).1 l hl).1, fun v => ((H v n hn (Z' v) (hZ v)).1 l hl).2⟩,
     fun y => (H y.1 n hn (Z' y.1) (hZ y.1)).2.1 y.2, fun v => (H v n hn (Z' v) (hZ v)).2.2⟩
 
 /- English proof (translation)
-Introduce `n hn Z' hZ l v` and use `H v n hn (Z' v) (hZ v) l`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExtA.pHTd_pi (H : ∀ v, (G v).pHTd) : (ExtA.pi G).pHTd := fun n hn Z' hZ l v =>
   H v n hn (Z' v) (hZ v) l
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, h₁, h₂⟩ v`. Conclude with `⟨fun n hn => B n hn v, fun n hn => h₁ n hn v, fun n hn => h₂ n hn v⟩`. Introduce `H choose B h₁ h₂ using H`. Conclude with `⟨fun n hn v => B v n hn, fun n hn v => h₁ v n hn, fun n hn v => h₂ v n hn⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ExtA.pGG_pi_iff : (ExtA.pi G).pGG ↔ ∀ v, (G v).pGG := by
   constructor
@@ -949,7 +949,7 @@ theorem ExtA.pGG_pi_iff : (ExtA.pi G).pGG ↔ ∀ v, (G v).pGG := by
     exact ⟨fun n hn v => B v n hn, fun n hn v => h₁ v n hn, fun n hn v => h₂ v n hn⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v => ⟨fun c => H.1 ⟨v, c⟩, fun μ h₁ h₂ c => H.2 μ h₁ h₂ ⟨v, c⟩⟩, fun H => ⟨fun c => (H c.1).1 c.2, fun μ h₁ h₂ c => (H c.1).2 μ h₁ h₂ c.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ExtA.pDR_pi_iff : (ExtA.pi G).pDR ↔ ∀ v, (G v).pDR :=
   ⟨fun H v => ⟨fun c => H.1 ⟨v, c⟩, fun μ h₁ h₂ c => H.2 μ h₁ h₂ ⟨v, c⟩⟩,
@@ -1024,7 +1024,7 @@ Both sides reduce to the same expression.
     (LocB.pi B α hα).NN ⟨v, y⟩ nW n = (B v).NN y nW n := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨φ, h⟩ v => ⟨φ v, congrFun h v⟩, fun H => ⟨fun v => (H v).choose, funext fun v => (H v).choose_spec⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.exists_secOf_pi_iff {F : (Loc.pi L).Sh (Loc.pi L).Xm} (s : (Loc.pi L).Sec F) :
     (∃ φ : (Loc.pi L).GIso (LocB.pi B α hα).oX F, (LocB.pi B α hα).secOf φ = s) ↔
@@ -1032,7 +1032,7 @@ theorem LocB.exists_secOf_pi_iff {F : (Loc.pi L).Sh (Loc.pi L).Xm} (s : (Loc.pi 
   ⟨fun ⟨φ, h⟩ v => ⟨φ v, congrFun h v⟩, fun H => ⟨fun v => (H v).choose, funext fun v => (H v).choose_spec⟩⟩
 
 /- English proof (translation)
-Use `choose P h₁ h₂ h₃ h₄ h₅ using H`. Conclude with `⟨P, funext h₁, h₂, h₃, h₄, fun y => h₅ y.1 y.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LocB.poincareExt_pi (La : (Loc.pi L).Unim)
     (H : ∀ v, ∃ P : (B v).StrictHenselianAcyclic (La v), (B v).res2 P = (B v).PoiQ (La v) ∧ (B v).biext P ∧
@@ -1046,7 +1046,7 @@ theorem LocB.poincareExt_pi (La : (Loc.pi L).Unim)
   exact ⟨P, funext h₁, h₂, h₃, h₄, fun y => h₅ y.1 y.2⟩
 
 /- English proof (translation)
-Use `⟨fun H v Z y => ?_, fun H Z y => H y.1 y.2⟩` and prove the remaining obligations. Take `⟨Z, rfl⟩` from `Loc.exists_pi_mdl L v Z`. Conclude with `H (Z := Z) ⟨v, y⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LocB.mul_pi_iff : (LocB.pi B α hα).Mul ↔ ∀ v, (B v).Mul := by
   refine ⟨fun H v Z y => ?_, fun H Z y => H y.1 y.2⟩
@@ -1054,51 +1054,51 @@ theorem LocB.mul_pi_iff : (LocB.pi B α hα).Mul ↔ ∀ v, (B v).Mul := by
   exact H (Z := Z) ⟨v, y⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.fer_pi_iff : (LocB.pi B α hα).FER ↔ ∀ v, (B v).FER :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.regR_pi_iff : (LocB.pi B α hα).RegR ↔ ∀ v, (B v).RegR :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.locFree_pi_iff : (LocB.pi B α hα).LocFree ↔ ∀ v, (B v).LocFree :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.fou_pi_iff : (LocB.pi B α hα).Fou ↔ ∀ v, (B v).Fou :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.freeB_pi_iff : (LocB.pi B α hα).FreeB ↔ ∀ v, (B v).FreeB :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.actF_pi_iff : (LocB.pi B α hα).ActF ↔ ∀ v, (B v).ActF :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocB.jetB_pi_iff : (LocB.pi B α hα).JetB ↔ ∀ v, (B v).JetB :=
   ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H v y`. Take `rfl` from `hα v`. Conclude with `H ⟨v, y⟩`. Introduce and unpack `H ⟨v, y⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hα v`. Conclude with `H v y`.
+A detailed English derivation is pending.
 -/
 theorem LocB.vthF_pi_iff : (LocB.pi B α hα).VthF ↔ ∀ v, (B v).VthF := by
   constructor
@@ -1110,14 +1110,14 @@ theorem LocB.vthF_pi_iff : (LocB.pi B α hα).VthF ↔ ∀ v, (B v).VthF := by
     exact H v y
 
 /- English proof (translation)
-Introduce `h v` and use `H v fun z => h ⟨v, z⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocB.desc_pi (H : ∀ v, (B v).Desc) : (LocB.pi B α hα).Desc := fun h v => H v fun z => h ⟨v, z⟩
 
 omit [Nonempty ι] in
 
 /- English proof (translation)
-Use `⟨fun H v y La => ?_, fun H y La => H y.1 y.2 (La y.1)⟩` and prove the remaining obligations. Take `⟨La, rfl⟩` from `Loc.exists_pi_unim L v La`. Conclude with `H ⟨v, y⟩ La`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Loc.perf_pi_iff : BoundaryLocalData.LocB.Perf (Loc.pi L) ↔ ∀ v, BoundaryLocalData.LocB.Perf (L v) := by
   refine ⟨fun H v y La => ?_, fun H y La => H y.1 y.2 (La y.1)⟩
@@ -1127,7 +1127,7 @@ theorem Loc.perf_pi_iff : BoundaryLocalData.LocB.Perf (Loc.pi L) ↔ ∀ v, Boun
 end TransferB
 
 /- English proof (translation)
-Use `haveI := fun v => (G v).genFin (Z v)`. Conclude with `Nat.card_sigma`.
+A detailed English derivation is pending.
 -/
 example [Fintype ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p} (G : ∀ v, ModuliIntegralCharts.ExtA D (L v)) (Z : (Loc.pi L).Mdl) :
     Nat.card ((Loc.pi L).Gen Z) = ∑ v, Nat.card ((L v).Gen (Z v)) := by
@@ -1135,20 +1135,20 @@ example [Fintype ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p}
   exact Nat.card_sigma
 
 /- English proof (translation)
-Introduce `hs` and use `h (SigmaRel.fst_eq hs)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example [Finite ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p} (G : ∀ v, ModuliIntegralCharts.ExtA D (L v)) (Z : (Loc.pi L).Mdl)
     {v w : ι} (h : v ≠ w) (x : (G v).ZP (Z v)) (x' : (G w).ZP (Z w)) :
     ¬ (ExtA.pi G).spz (Z := Z) ⟨v, x⟩ ⟨w, x'⟩ := fun hs => h (SigmaRel.fst_eq hs)
 
 /- English proof (translation)
-The claim follows from `Equiv.uniqueSigma fun _ : Unit => L.Pt L.Xm`.
+A detailed English derivation is pending.
 -/
 example (L : ModuliIntegralCharts.Loc D r j p) : (Loc.pi fun _ : Unit => L).Pt (Loc.pi fun _ : Unit => L).Xm ≃ L.Pt L.Xm :=
   Equiv.uniqueSigma fun _ : Unit => L.Pt L.Xm
 
 /- English proof (translation)
-The claim follows from `Sigma.forall`.
+A detailed English derivation is pending.
 -/
 example (L : ι → ModuliIntegralCharts.Loc D r j p) {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) (f : (Loc.pi L).Sec F) :
     (∀ y, (Loc.pi L).nrm F f y ≤ 1) ↔ ∀ v y, (L v).nrm (F v) (f v) y ≤ 1 := Sigma.forall

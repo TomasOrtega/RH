@@ -22,11 +22,11 @@ namespace GlobalTheory.ThK.InducedCons
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Set `j : Ainf F →ₗ[F] AF F` to `LinearMap.inl F (Ainf F) (Af F)`. Establish `hj : ∀ a b, j (a * b) = j a * j b` using `fun _ _ => Prod.ext rfl (mul_zero _).symm`. Establish `h : ∀ a : AF F, j (fstA F a) = j 1 * a` using `fun a => Prod.ext (one_mul a.1).symm (zero_mul a.2).symm`. Establish `key : ∀ z : AF F ⊗[F] E, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU j hj (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z) = GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E` using `E) j hj 1 * z := fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a x => simp [Algebra.TensorProduct.one_def, h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (E := E) j hj 1, by rw [← map_mul, mul_one], ?_, fun n J g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ (j 1 ⊗ₜ[F] (1 : E)) = j 1 ⊗ₜ[F] (1 : E)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_one σ]`. Both sides reduce to the same expression. Use extensionality with `r s`. Use `(GlobalTheory.AutFunCompare.mat_extH σ J j hj _ r s).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.projInf, GlobalTheory.AutFunCompare.mat_mapH, key]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -58,7 +58,7 @@ def mixUnit {R : Type*} [CommRing R] {e : R} (he : e * e = e) (t : Rˣ) : Rˣ wh
   inv_val := by linear_combination (1 - t.1 - (t⁻¹).1 + t.1 * (t⁻¹).1) * he + e * t.mul_inv
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [mixUnit])`.
+A detailed English derivation is pending.
 -/
 theorem mixUnit_one {R : Type*} [CommRing R] {e : R} (he : e * e = e) : mixUnit he 1 = 1 :=
   Units.ext (by simp [mixUnit])
@@ -66,9 +66,9 @@ theorem mixUnit_one {R : Type*} [CommRing R] {e : R} (he : e * e = e) : mixUnit 
 variable {n n₁ : ℕ} {H : Plane E n n₁} {W : Spc F E n} {W₁ : Spc F E n₁} {e : AE F E}
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm', Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hm.1, smul_smul, ← add_smul]`. Both sides reduce to the same expression. Rewrite using `[hm', Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hm.2.1, smul_smul, ← add_smul]`. Express the relevant statement in the definitionally equal form `_ = cA σ ((1 - e) + e * (t⁻¹).1) • _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_add, map_sub, map_mul, map_one, hce]`. Rewrite using `[hm', hy', Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, hm.2.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLevi_mix (he : e * e = e) (hce : cA σ e = e) {t : (AE F E)ˣ} {y y' : UA σ W₁.J} {m m' : UA σ W.J}
     (hm : IsLevi (W₁ := W₁) H t y m) (hy' : mat y' = (1 - e) • (1 : Matrix _ _ (AE F E)) + e • mat y)
@@ -83,9 +83,9 @@ theorem isLevi_mix (he : e * e = e) (hce : cA σ e = e) {t : (AE F E)ˣ} {y y' :
       Matrix.one_mul, Matrix.mul_one, hm.2.2]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.ThK.CuspTransfer.actsOnFlag_unip hu`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hu', Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, h1, smul_smul, ← add_smul, mul_one, sub_add_cancel, one_smul]`. Take `⟨a, ha⟩` from `h2 z`. Use `⟨e * a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu', Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, ha, Matrix.one_mulVec, smul_add, smul_smul, ← add_assoc, ← add_smul, sub_add_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unip_mix {u u' : UA σ W.J} (hu : u ∈ unip σ W H)
     (hu' : mat u' = (1 - e) • (1 : Matrix _ _ (AE F E)) + e • mat u) : u' ∈ unip σ W H := by
@@ -99,13 +99,13 @@ theorem unip_mix {u u' : UA σ W.J} (hu : u ∈ unip σ W H)
       smul_smul, ← add_assoc, ← add_smul, sub_add_cancel, one_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hg c₀ hc₀ hJ₁ hJ M _ hM _ r Xf Yf _ X' Y' hW hX _ _ t y g ⟨u, hu, m, hm, hdec⟩`. Establish `h : GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, horth, hg⟩`. Establish `hd : W₁.J.det ≠ 0` using `fun h0 => hJ₁.2 (by`. Establish `e : (W₁.J.map σ).det = (σ : E →+* E) W₁.J.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[Matrix.det_smul, e, h0, map_zero, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he, hce, hπ⟩` from `exists_realIdem σ`. Set `φ` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀`. Set `φ₁` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀`. Take `⟨u, rfl⟩` from `φ.surjective u`. Establish `hu' : u ∈ unip σ W H` using `(h.mem_unip_iff hσ hsk hd hc₀ hW (Nat.succ_pos r) hX u).2 hu`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨mixUnit he t, ofInf σ _ (projInf σ _ (φ u)), ?_, φ.symm (ofInf σ _ (projInf σ _ (φ m))), ?_, ?_⟩` and prove the remaining obligations. Use `(h.mem_unip_iff hσ hsk hd hc₀ hW (Nat.succ_pos r) hX (φ.symm (ofInf σ _ (projInf σ _ (φ u))))).1 (unip_mix hu' (hπ _ _ (φ u)))` as an intermediate fact. Conclude with `this`. Conclude with `isLevi_mix he hce hm (by rw [mat_one, ← add_smul, sub_add_cancel, one_smul]) (hπ _ _ (φ m))`. Establish `h1` using `isLevi_mix (y' := φ₁.symm (ofInf σ _ (projInf σ _ y))) (m' := φ.symm (ofInf σ _ (projInf σ _ (φ (M (φ₁.symm y)))))) he hce (hM (φ₁.symm y)) (hπ _ _ y) (hπ _ _ (φ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mixUnit_one]`. Establish `h2` using `congrArg φ (h.levi_unique hσ hsk hd h1 (hM _))`. Rewrite `h2` using `[φ.apply_symm_apply]`. Rewrite using `[hdec, map_mul, map_mul, map_mul, map_mul]`. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) rfl (φ.apply_symm_apply _).symm) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isParDec_realPart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

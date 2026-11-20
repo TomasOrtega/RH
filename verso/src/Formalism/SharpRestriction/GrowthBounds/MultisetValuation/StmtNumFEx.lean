@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NdBNonneg
 namespace Formalism.MainNotions.FormalGroupSystem.Pf
 
 /- English proof (translation)
-The claim follows from `numericalComparisonUniform_of_size nd_size`.
+A detailed English derivation is pending.
 -/
 theorem stmtNumE : Formalism.MainNotions.FormalGroupSystem.NumericalComparisonUniform := numericalComparisonUniform_of_size nd_size
 

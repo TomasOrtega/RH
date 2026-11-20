@@ -11,7 +11,7 @@ noncomputable section
 attribute [local instance] Classical.propDecidable
 
 /- English proof (translation)
-Establish `h : (fun a => (f a)⁻¹) = fun a => (f a).det⁻¹ • (f a).adjugate`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[h]`. Conclude with `(hf.matrix_det.inv₀ hd).smul hf.matrix_adjugate`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_inv {α : Type*} [TopologicalSpace α] {n : ℕ} {f : α → Matrix (Fin n) (Fin n) ℂ}
     (hf : Continuous f) (hd : ∀ a, (f a).det ≠ 0) : Continuous fun a => (f a)⁻¹ := by
@@ -22,11 +22,9 @@ theorem cont_inv {α : Type*} [TopologicalSpace α] {n : ℕ} {f : α → Matrix
   exact (hf.matrix_det.inv₀ hd).smul hf.matrix_adjugate
 
 /- English proof (translation)
-Use `continuous_pi fun j => continuous_pi fun c => ?_` and prove the remaining obligations. Simplify using `only [uMat, Matrix.of_apply]`. Use `split_ifs with h1 h2`. Conclude with `continuous_const`. Establish `hb : Continuous fun a => blk (g a) c`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `blk`. Conclude with `hg.matrix_submatrix _ _`. Establish `hi` using `cont_inv hb (fun a => hd a c)`. Establish `hr : Continuous fun a => rowc (g a) c`. Unfold `rowc`.
-
-Conclude with `continuous_pi fun m => (continuous_apply _).comp ((continuous_apply c).comp hg)`. Conclude with `((continuous_apply (⟨j, h2⟩ : Fin c)).comp (hr.matrix_vecMul hi)).neg`. Conclude with `continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_uMat {α : Type*} [TopologicalSpace α] {n : ℕ} {g : α → Matrix (Fin n) (Fin n) ℂ}
     (hg : Continuous g) (hd : ∀ a c, (blk (g a) c).det ≠ 0) : Continuous fun a => uMat (g a) := by
@@ -47,13 +45,13 @@ theorem cont_uMat {α : Type*} [TopologicalSpace α] {n : ℕ} {g : α → Matri
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Conclude with `continuous_pi fun a => continuous_pi fun b => continuous_coord X τ a b`.
+A detailed English derivation is pending.
 -/
 theorem cont_mat (τ : X.Ψ) : Continuous fun y : Frame X.Ψ r => mat y τ := by
   exact continuous_pi fun a => continuous_pi fun b => continuous_coord X τ a b
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply]`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp ((continuous_apply a).comp hf)).mul continuous_const).mul (Complex.continuous_conj.comp ((continuous_apply j).comp ((continuous_apply b).comp hf)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_gram_comp {α : Type*} [TopologicalSpace α] (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     {f : α → Matrix (Fin r) (Fin r) ℂ} (hf : Continuous f) :
@@ -65,20 +63,20 @@ private theorem continuous_gram_comp {α : Type*} [TopologicalSpace α] (τ : E 
     (Complex.continuous_conj.comp ((continuous_apply j).comp ((continuous_apply b).comp hf)))
 
 /- English proof (translation)
-Conclude with `continuous_gram_comp τ.1 X.Gm (cont_mat X τ)`.
+A detailed English derivation is pending.
 -/
 theorem cont_gram (τ : X.Ψ) : Continuous fun y : Frame X.Ψ r => gram τ.1 X.Gm (mat y τ) := by
   exact continuous_gram_comp τ.1 X.Gm (cont_mat X τ)
 
 /- English proof (translation)
-Establish `hg : Continuous fun y : X.dom => gram τ.1 X.Gm (mat y.1 τ)` using `(cont_gram X τ).comp continuous_subtype_val`. Conclude with `cont_uMat hg fun y c => blk_det X y.2 τ c`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_uOf (τ : X.Ψ) : Continuous fun y : X.dom => uOf X y.1 τ := by
   have hg : Continuous fun y : X.dom => gram τ.1 X.Gm (mat y.1 τ) := (cont_gram X τ).comp continuous_subtype_val
   exact cont_uMat hg fun y c => blk_det X y.2 τ c
 
 /- English proof (translation)
-Establish `hm : Continuous fun y : X.dom => mat y.1 τ * uOf X y.1 τ` using `((cont_mat X τ).comp continuous_subtype_val).matrix_mul (cont_uOf X τ)`. Conclude with `(continuous_apply k).comp ((continuous_apply k).comp (continuous_gram_comp τ.1 X.Gm hm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_dOf (τ : X.Ψ) (k : Fin r) : Continuous fun y : X.dom => dOf X y.1 τ k := by
   have hm : Continuous fun y : X.dom => mat y.1 τ * uOf X y.1 τ :=
@@ -86,7 +84,7 @@ theorem cont_dOf (τ : X.Ψ) (k : Fin r) : Continuous fun y : X.dom => dOf X y.1
   exact (continuous_apply k).comp ((continuous_apply k).comp (continuous_gram_comp τ.1 X.Gm hm))
 
 /- English proof (translation)
-Establish `hd` using `cont_dOf X τ k`. Establish `hr : Continuous fun y : X.dom => Real.sqrt |(dOf X y.1 τ k).re|` using `(Complex.continuous_re.comp hd).abs.sqrt`. Establish `hne : ∀ y : X.dom, Real.sqrt |(dOf X y.1 τ k).re| ≠ 0` using `fun y => (Real.sqrt_pos.mpr (abs_re_pos X y.2 τ k)).ne'`. Conclude with `Complex.continuous_ofReal.comp (hr.inv₀ hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_sOf (τ : X.Ψ) (k : Fin r) : Continuous fun y : X.dom => sOf X y.1 τ k := by
   have hd := cont_dOf X τ k
@@ -97,23 +95,21 @@ theorem cont_sOf (τ : X.Ψ) (k : Fin r) : Continuous fun y : X.dom => sOf X y.1
   exact Complex.continuous_ofReal.comp (hr.inv₀ hne)
 
 /- English proof (translation)
-Conclude with `(cont_uOf X τ).matrix_mul (Continuous.matrix_diagonal (continuous_pi fun k => cont_sOf X τ k))`.
+A detailed English derivation is pending.
 -/
 theorem cont_bOf (τ : X.Ψ) : Continuous fun y : X.dom => mat (bOf X y.1) τ := by
   exact (cont_uOf X τ).matrix_mul (Continuous.matrix_diagonal (continuous_pi fun k => cont_sOf X τ k))
 
 /- English proof (translation)
-Conclude with `cont_inv (cont_bOf X τ) (fun y => bOf_det X y.2 τ)`.
+A detailed English derivation is pending.
 -/
 theorem cont_β0 (τ : X.Ψ) : Continuous fun y : X.dom => β0 X y.1 τ := by
   exact cont_inv (cont_bOf X τ) (fun y => bOf_det X y.2 τ)
 
 /- English proof (translation)
-Establish `hcont : ∀ (τ : X.Ψ) (a b : Fin r), ContinuousOn (fun x => ‖β0 X x τ a b‖) C`. Introduce `τ a b`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `h1 : Continuous fun y : X.dom => ‖β0 X y.1 τ a b‖` using `((continuous_apply b).comp ((continuous_apply a).comp (cont_β0 X τ))).norm`. Use `show Continuous fun x : C => ‖β0 X x.1 τ a b‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1.comp (continuous_inclusion hCd)).congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Set.coe_inclusion]`. Use `choose R hR using fun (τ : X.Ψ) (a b : Fin r) => hC.bddAbove_image (hcont τ a b)`. Use `⟨∑ τ, ∑ a, ∑ b, max (R τ a b) 0, fun x hx τ a b => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖β0 X x τ a b‖ ≤ R τ a b` using `hR τ a b ⟨x, hx, rfl⟩`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem β0_bound {C : Set (Frame X.Ψ r)} (hC : IsCompact C) (hCd : C ⊆ X.dom) :
     ∃ R0 : ℝ, ∀ x ∈ C, ∀ τ a b, ‖β0 X x τ a b‖ ≤ R0 := by

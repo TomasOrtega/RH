@@ -12,11 +12,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h1 : |η ^ i| = 1`. Apply the tactic sequence `rcases hη with rfl | rfl <;> simp [abs_pow]`. Break down `Nat.eq_zero_or_pos (q ^ i) with h | h` into its components or cases. Establish `h' : ((q : ℕ) : ℝ) ^ i = 0` using `by exact_mod_cast h`. Rewrite using `[h', div_zero]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `h' : (1 : ℝ) ≤ ((q : ℕ) : ℝ) ^ i` using `by exact_mod_cast (show 1 ≤ q ^ i from h)`. Establish `h2 : η ^ i / ((q : ℕ) : ℝ) ^ i ≤ 1`. Rewrite using `[div_le_one (by linarith)]`. Conclude with `(le_abs_self _).trans (h1.le.trans h')`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem one_sub_eta_nonneg (η : ℝ) (hη : η = 1 ∨ η = -1) (q i : ℕ) : 0 ≤ 1 - η ^ i / ((q : ℕ) : ℝ) ^ i := by
   have h1 : |η ^ i| = 1 := by
@@ -32,7 +32,7 @@ theorem one_sub_eta_nonneg (η : ℝ) (hη : η = 1 ∨ η = -1) (q i : ℕ) : 0
     linarith
 
 /- English proof (translation)
-Unfold `eta₃`. Use `split_ifs`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`.
+Replace the relevant objects with their definitions. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem etaP_pm {D : D7} (p : PlF D) : eta₃ p = 1 ∨ eta₃ p = -1 := by
   unfold eta₃
@@ -41,7 +41,7 @@ theorem etaP_pm {D : D7} (p : PlF D) : eta₃ p = 1 ∨ eta₃ p = -1 := by
   · exact Or.inr rfl
 
 /- English proof (translation)
-Unfold `aPD`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `i _`. Conclude with `one_sub_eta_nonneg _ (etaP_pm p) _ _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem aPD_nonneg {D : D7} (p : PlF D) (T : ℕ) : 0 ≤ aPD p T := by
   unfold aPD
@@ -50,7 +50,7 @@ theorem aPD_nonneg {D : D7} (p : PlF D) (T : ℕ) : 0 ≤ aPD p T := by
   exact one_sub_eta_nonneg _ (etaP_pm p) _ _
 
 /- English proof (translation)
-Unfold `alpD`. Use `split_ifs`. Conclude with `aPD_nonneg p _`. Conclude with `mul_nonneg (aPD_nonneg p _) (aPD_nonneg p _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem alpD_nonneg {D : D7} (u u' : D.what₂.Word) (p : PlF D) : 0 ≤ alpD u u' p := by
   unfold alpD
@@ -59,7 +59,7 @@ theorem alpD_nonneg {D : D7} (u u' : D.what₂.Word) (p : PlF D) : 0 ≤ alpD u 
   · exact mul_nonneg (aPD_nonneg p _) (aPD_nonneg p _)
 
 /- English proof (translation)
-Unfold `densP Formalism.MainNotions.S.Loc.HermSp.dens`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem densP_nonneg {D : D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (L : LocSp D M)
     (δ : ∀ p : PlF D, (D.s.atP p).Fp) (ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp]) (T T' : D.host.E) (Z : MatZ D) (p : PlF D) :
@@ -68,9 +68,9 @@ theorem densP_nonneg {D : D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.
   positivity
 
 /- English proof (translation)
-Introduce `D T u u' Lsp ϖ`. Apply `div_nonneg` to reduce the goal to its premises. Unfold `supDens`. Apply `Real.sSup_nonneg` to reduce the goal to its premises. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [densSet, Set.mem_setOf_eq] at hd`. Take `⟨Z, -, rfl⟩` from `hd`. Conclude with `tprod_nonneg fun p => densP_nonneg _ _ _ _ _ _ _`. Conclude with `tprod_nonneg fun p => alpD_nonneg u u' p`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem densNonnegAll_holds : Formalism.L2.SG.PoincareAmplitudeLowerBounds.DensNonnegAll := by
   intro D T u u' Lsp ϖ

@@ -20,13 +20,13 @@ open GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShF
 namespace GlobalTheory.ProjPointExt
 
 /- English proof (translation)
-Introduce `F _ _ X s hs K _ _ fK yK hy`. Set `jO : 𝓞 F →+* 𝓞 K` to `RingOfIntegers.mapRingHom fK`. Establish `hring : (algebraMap (𝓞 K) K).comp jO = fK.comp (algebraMap (𝓞 F) F)`. Use extensionality with `x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use `haveI : IsProper s := GlobalTheory.SchemeWords.isProper_of_isProjOver hs`. Set `X' : Over (Sp (𝓞 K))` to `Over.mk (Limits.pullback.snd s (spMap jO))`. Establish `hP : IsProper X'.hom` using `by show IsProper (Limits.pullback.snd s (spMap jO)) infer_instance`. Establish `hsq : yK ≫ s = spMap (algebraMap (𝓞 K) K) ≫ spMap jO`. Rewrite using `[hy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[hring]`. Set `x : Sp K ⟶ X'.left` to `Limits.pullback.lift _ _ hsq`. Establish `hx : x ≫ X'.hom = Formalism.L2.Pj.abelian₂.gmap K` using `Limits.pullback.lift_snd _ _ _`. Take `⟨t, ht⟩` from `GlobalTheory.CuspFamilyCompare.exists_integral_point K X' hP x hx`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t.left ≫ Limits.pullback.fst _ _, ?_⟩` and prove the remaining obligations. Establish `: x ≫ Limits.pullback.fst _ _ = yK` using `Limits.pullback.lift_fst _ _ _`. Rewrite using `[← this, ht, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_extension : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (s : X ⟶ Sp (𝓞 F)), IsProjOver s → ∀ (K : Type) [Field K] [NumberField K] (fK : F →+* K) (yK : Sp K ⟶ X), yK ≫ s = spMap (fK.comp (algebraMap (𝓞 F) F)) → ∃ xO : Sp (𝓞 K) ⟶ X, spMap (algebraMap (𝓞 K) K) ≫ xO = yK := by
   intro F _ _ X s hs K _ _ fK yK hy

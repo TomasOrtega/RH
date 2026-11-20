@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.RawLift.Pointwise
 
 /- English proof (translation)
-Unfold `thetaIP`. Rewrite using `[Complex.star_def, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[map_mul, Complex.conj_conj, ← Complex.star_def, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaInner_swap {D : D7} {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (f g : WO S T' → ℂ) :
     thetaIP μ 𝓕 g f = star (thetaIP μ 𝓕 f g) := by
@@ -25,25 +25,25 @@ theorem thetaInner_swap {D : D7} {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 :
   rw [map_mul, Complex.conj_conj, ← Complex.star_def, mul_comm]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t hLF hFI hRL hLP μ 𝓕 hμ v hv w x y hS γ hγ h hh`. Take `⟨u, hu, k, hk, rfl⟩` from `hh`. Establish `hkf : k ∈ GfC (Wc D i)` using `hLP.1 hk`. Establish `hcomm : u * γ = γ * u` using `(GlobalTheory.AutMult.commute_inf_fin ⟨u, hu⟩ ⟨γ, hγ⟩).eq`. Take `⟨Pc, hPc⟩ : ∃ Pc, (∏ ρ, ⟪((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ), (R.MW i (sg0 D A)).rep ρ (infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) u) ((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)⟫_ℂ) = Pc` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hω : R.ωP i t (1, γ * (u * k)) (jointVec R i t v w) = R.ωP i t (1, u * γ) (jointVec R i t v w)`. Establish `e : ((1 : GA D (Vc D i)), γ * (u * k)) = (1, u * γ) * (1, k)`. Rewrite using `[Prod.mk_mul_mk, one_mul, hcomm, mul_assoc]`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hLF k hk _`. Establish `h1 : thetaIP μ 𝓕 (R.ωP i t (1, γ * (u * k)) (jointVec R i t v w)) (jointVec R i t v w) = thetaIP μ 𝓕 (jointVec R i t v w) (jointVec R i t v w) * star Pc * coef R i t μ 𝓕 γ`. Rewrite using `[hω]`. Establish `hF` using `hFI μ 𝓕 hμ u hu γ hγ (R.ioP i (PiTensorProduct.tprod ℂ v) w) (R.ioP i (PiTensorProduct.tprod ℂ v) w)`. Establish `hR` using `hRL μ 𝓕 hμ v hv w u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hR` using `[hPc]`. Unfold `jointVec at hR ⊢`. Rewrite using `[hF, thetaInner_swap, hR, star_mul', ← thetaInner_swap]`. Establish `hval : ∀ z, val R i v y (z * (γ * (u * k))) = val R i v y (z * (u * γ))`. Introduce `z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : (R.HW i (sg0 D A)).e y ∈ R.Wall i (sg0 D A)`. Rewrite using `[← (hL.models.HW i (sg0 D A)).2.1]`. Conclude with `LinearMap.mem_range_self _ y`. Establish `hm` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hmem`. Establish `hl` using `hm.lev (fun ρ => v ρ) k hk (z * (u * γ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `val`. Rewrite `hl` using `[hLP.2.1 k hk, one_mul]`. Rewrite using `[← hl, hcomm]`. Simplify using `only [mul_assoc]`. Establish `h2` using `hS u hu γ hγ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[hPc]`. Simplify using `only [← hval] at h2`. Establish `hinf : ∀ ρ, infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) (u * k) = infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) u`. Introduce `ρ`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.infMat_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : infHom (Wc D i) k = 1` using `hkf`. Establish `e : infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) k = 1` using `by show ((infHom (Wc D i) k).1).map (R.θ ρ) = 1`. Rewrite using `[hk1, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e, Matrix.mul_one]`. Establish `h3 : ((lowCoefSq R i v (u * k) : ℝ) : ℂ) = star Pc * Pc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `lowCoefSq`. Simplify using `only [hinf]`. Rewrite using `[hPc]`. Use `push_cast`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `rallisF`. Rewrite using `[h1, h3]`. Take the linear combination `(thetaIP μ 𝓕 (jointVec R i t v w) (jointVec R i t v w) * star Pc * coef R i t μ 𝓕 γ) * h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rallisF_point : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ (i : Fin D.R.m) (t : T), LevFix R i t → FactInf R i t → RealLow R i t → LevProd R i → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∀ v, IsUnitVec R i v → ∀ (w : (R.cV i).W) (x y : (R.HW i (sg0 D A)).H), (∀ u ∈ GinfC (Wc D i), ∀ γ ∈ GfC (Wc D i), dimProd A i * ∫ z in R.fdW i, star (val R i v x z) * val R i v y (z * (u * γ)) ∂(R.νW i) = trPair R i γ x y * ∏ ρ, ⟪((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ), (R.MW i (sg0 D A)).rep ρ (infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) u) ((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)⟫_ℂ) → ∀ γ ∈ GfC (Wc D i), ∀ h ∈ realLev R i, dimProd A i * rallisF R i t μ 𝓕 v (jointVec R i t v w) x y (γ * h) = thetaIP μ 𝓕 (jointVec R i t v w) (jointVec R i t v w) * coef R i t μ 𝓕 γ * trPair R i γ x y * (lowCoefSq R i v h : ℂ) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i t hLF hFI hRL hLP μ 𝓕 hμ v hv w x y hS γ hγ h hh

@@ -13,19 +13,19 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S
 variable {k r : ℕ}
 
 /- English proof (translation)
-Conclude with `Formalism.MainNotions.FrameBoundFromBesselTorus.sFinite_haarLie _ _`.
+A detailed English derivation is pending.
 -/
 theorem sfin_muN (L : LocBessel k r) : SFinite L.μN := by
   exact Formalism.MainNotions.FrameBoundFromBesselTorus.sFinite_haarLie _ _
 
 /- English proof (translation)
-Use `haveI : SFinite L.μN := sfin_muN L`. Use `haveI : SigmaFinite L.μW := L.hμW.1.1`. Use `haveI : SigmaFinite L.μW' := L.hμW'.1.1`. Establish `hN : L.μN {x | Matrix.of x ∉ Nset k r} = 0`. Take `⟨c, -, hform⟩` from `Formalism.MainNotions.BridgeCSB.haarLie_N_eq (k := k) (r := r)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(Formalism.MainNotions.BridgeCSB.haarLieN k r 1 one_ne_zero ENNReal.one_ne_top).2.2.1`. Rewrite `h1` using `[hform, one_smul]`. Rewrite using `[LocBessel.μN, hform, Measure.smul_apply, h1, smul_zero]`. Establish `hW : L.μW {x | Matrix.of x ∉ UWset k r L.z} = 0` using `L.hμW.1.2.2.1`. Establish `hW' : L.μW' {x | Matrix.of x ∉ UWset k r L.z'} = 0` using `L.hμW'.1.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsub : {x : PairSp k r | ¬ Good L x} ⊆ ((Set.univ ×ˢ {x | Matrix.of x ∉ Nset k r}) ×ˢ Set.univ ∪ Set.univ ×ˢ (Set.univ ×ˢ {x | Matrix.of x ∉ Nset k r})) ∪ (({x | Matrix.of x ∉ UWset k r L.z} ×ˢ Set.univ) ×ˢ Set.univ ∪ Set.univ ×ˢ ({x | Matrix.of x ∉ UWset k r L.z'} ×ˢ Set.univ))`. Introduce `x hx`. Simplify using `only [Set.mem_union, Set.mem_prod, Set.mem_univ, Set.mem_setOf_eq, true_and, and_true]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `hx (by unfold Good; exact ⟨hc.1.1, hc.1.2, hc.2.1, hc.2.2⟩)`. Use `measure_mono_null hsub ?_` and prove the remaining obligations. Unfold `pairMeas`. Apply the tactic sequence `refine measure_union_null (measure_union_null ?_ ?_) (measure_union_null ?_ ?_) <;>`. Simplify using `only [Measure.prod_prod, hN, hW, hW', mul_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pairMeas_bad (L : LocBessel k r) : pairMeas L {x | ¬ Good L x} = 0 := by
   haveI : SFinite L.μN := sfin_muN L
@@ -54,11 +54,11 @@ theorem pairMeas_bad (L : LocBessel k r) : pairMeas L {x | ¬ Good L x} = 0 := b
     simp only [Measure.prod_prod, hN, hW, hW', mul_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hm : MeasurableSet {x : PairSp k r | ¬ Good L x}` using `(good_mset L).compl`. Establish `h` using `hQ ({x : PairSp k r | ¬ Good L x}.indicator 1) (measurable_one.indicator hm)`. Rewrite `h` using `[lintegral_indicator_one hm, pairMeas_bad]`. Establish `hin : ∀ x, ∫⁻ a, {x : PairSp k r | ¬ Good L x}.indicator 1 (stabAct γ (Matrix.of a) x) ∂μR = μR Set.univ * {x : PairSp k r | ¬ Good L x}.indicator 1 x`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hst : ∀ᵐ a ∂μR, Matrix.of a ∈ RStab k r γ`. Rewrite using `[ae_iff]`. Conclude with `hRc`. Establish `hae : ∀ᵐ a ∂μR, {x : PairSp k r | ¬ Good L x}.indicator (1 : PairSp k r → ℝ≥0∞) (stabAct γ (Matrix.of a) x) = {x : PairSp k r | ¬ Good L x}.indicator 1 x` using `by filter_upwards [hst] with a ha classical`. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply, good_stabAct L ha x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_congr_ae hae, lintegral_const, mul_comm]`. Rewrite `h` using `[hin]`. Rewrite `h` using `[lintegral_const_mul _ (measurable_one.indicator hm), lintegral_indicator_one hm]`. Establish `hR : μR Set.univ ≠ 0` using `by rwa [Ne, Measure.measure_univ_eq_zero]`. Conclude with `(mul_eq_zero.1 h.symm).resolve_left hR`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nu_bad (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {μR : Measure (Mt k r)} (hR0 : μR ≠ 0) (hRc : μR {x | Matrix.of x ∉ RStab k r γ} = 0)

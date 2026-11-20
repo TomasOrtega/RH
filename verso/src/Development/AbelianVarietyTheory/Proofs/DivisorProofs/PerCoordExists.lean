@@ -17,7 +17,7 @@ noncomputable section
 variable {g : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [matrix_eq_sum_single S]`. Simplify using `only [map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single i j (S i j) = S i j • Matrix.single i j (1 : ℂ) by rw [smul_single, smul_eq_mul, mul_one], map_smul, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_sum {d : ℕ} (π : Matrix (Fin g) (Fin g) ℂ →ₗ[ℂ] (Fin d → ℂ)) (S : Matrix (Fin g) (Fin g) ℂ) (k : Fin d) :
     π S k = ∑ i, ∑ j, S i j * π (Matrix.single i j 1) k := by
@@ -28,47 +28,43 @@ theorem coords_sum {d : ℕ} (π : Matrix (Fin g) (Fin g) ℂ →ₗ[ℂ] (Fin d
     map_smul, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `O _ bar g ρ D`. Use `⟨Module.finrank ℂ (Tsp bar ρ), fun P₀ hP₀ => ?_⟩` and prove the remaining obligations. Use `set d := Module.finrank ℂ (Tsp bar ρ)`. Set `bV` to `Module.finBasis ℂ (Tsp bar ρ)`. Take `⟨p, hp⟩` from `(Tsp bar ρ).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ι : (Fin d → ℂ) →ₗ[ℂ] Matrix (Fin g) (Fin g) ℂ` to `(Tsp bar ρ).subtype ∘ₗ bV.equivFun.symm.toLinearMap`. Set `π : Matrix (Fin g) (Fin g) ℂ →ₗ[ℂ] (Fin d → ℂ)` to `bV.equivFun.toLinearMap ∘ₗ p`. Establish `hιeq : ∀ b, ι b = ((bV.equivFun.symm b : Tsp bar ρ) : Matrix (Fin g) (Fin g) ℂ)` using `fun b => rfl`. Establish `hιT : ∀ b, ι b ∈ Tsp bar ρ` using `fun b => by rw [hιeq]; exact Submodule.coe_mem _`. Establish `hpv : ∀ v : Tsp bar ρ, p ((Tsp bar ρ).subtype v) = v` using `fun v => LinearMap.congr_fun hp v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπι : ∀ b, π (ι b) = b` using `fun b => by`. Rewrite using `[hιeq]`. Simplify using `only [π, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[show ((bV.equivFun.symm b : Tsp bar ρ) : Matrix (Fin g) (Fin g) ℂ) = (Tsp bar ρ).subtype (bV.equivFun.symm b) from rfl, hpv, LinearEquiv.apply_symm_apply]`. Establish `hιπ : ∀ S ∈ Tsp bar ρ, ι (π S) = S` using `fun S hS => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hιeq]`. Simplify using `only [π, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[show S = (Tsp bar ρ).subtype ⟨S, hS⟩ from rfl, hpv, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Take `⟨α, β, hαβ⟩` from `exists_colMat_per hP₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M₀, hM₀h, hpos₀, hM₀⟩` from `hP₀.2.2.2.2`. Establish `hdet₀ : M₀.det ≠ 0` using `det_ne_zero_of_pos hpos₀`. Establish `hu₀ : IsUnit M₀.det` using `isUnit_iff_ne_zero.2 hdet₀`. Establish `hA₀ : colMat α P₀ = 1 ∧ colMat β P₀ = 0` using `realMap_inj (ext_per hP₀ fun x => by rw [← hαβ P₀ hP₀]; simp [realMap_apply])`. Set `Cf : (D.La → Fin g → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun f => (colMat α f)⁻¹ * colMat β f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Z : (D.La →+ (Fin g → ℂ)) → (Fin d → ℂ)` to `fun P => π ((Cf P)ᵀ * M₀)`. Set `Cof : (Fin d → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun b => (ι b * M₀⁻¹)ᵀ`. Set `Q : (Fin d → ℂ) → (D.La →+ (Fin g → ℂ))` to `fun b => (realMap 1 (Cof b)).toAddMonoidHom.comp P₀`. Establish `hQ : ∀ b x, Q b x = realMap 1 (Cof b) (P₀ x)` using `fun b x => rfl`. Establish `hCofT : ∀ b, (Cof b)ᵀ * M₀ = ι b` using `fun b => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Cof, transpose_transpose, nonsing_inv_mul_cancel_right _ _ hu₀]`. Take `⟨U, hUg, hUo, hU0⟩` from `mem_nhds_iff.1 (GlobalTheory.T.eventually_posDef_hermForm_near_zero_matrix M₀ hpos₀)`. Establish `hQper : ∀ b, Cof b ∈ U → IsPeriod D ρ (Q b)` using `fun b hb => by`. Take `⟨hY, hX, hpos⟩` from `hUg hb`. Establish `hT : (Cof b)ᵀ * M₀ ∈ Tsp bar ρ` using `by rw [hCofT]; exact hιT b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hMh, hMim⟩` from `GlobalTheory.T.riemann_relation_converse_conjAffine M₀ (Cof b) hM₀h hdet₀ hT.1 hY`. Use `GlobalTheory.T.isPeriodMap_comp_injective_realLinear D ρ P₀ (realMap 1 (Cof b)) _ hP₀ (realMap_one_injective hX) (fun a x => ?_) hMh hpos (fun x y => ?_)` and prove the remaining obligations. Rewrite using `[realMap_apply, realMap_apply, one_mulVec, one_mulVec, star_mulVec_map, mulVec_mulVec, ← comm_of_mem_Tsp hP₀ hM₀ hdet₀ hT a, ← mulVec_mulVec, mulVec_add]`. Rewrite using `[realMap_apply, realMap_apply, one_mulVec, one_mulVec, hMim, hM₀]`. Establish `hCofc : Continuous Cof`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Continuous.matrix_mul ι.continuous_of_finiteDimensional continuous_const).matrix_transpose`. Establish `hCof0 : Cof 0 = 0` using `by simp [Cof, ι]`. Establish `hZ0 : Z P₀ = 0` using `by simp [Z, Cf, hA₀]`. Establish `hcol : ∀ γ : Fin g → (D.La →₀ ℂ), Continuous fun f : D.La → Fin g → ℂ => colMat γ f` using `fun γ => continuous_matrix fun i j => by simp only [colMat, of_apply]; fun_prop`. Establish `hCfc : ContinuousAt Cf ⇑P₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousAt.mul ?_ (hcol β).continuousAt` and prove the remaining obligations. Use `ContinuousAt.comp (f := fun f => colMat α f) ?_ (hcol α).continuousAt` and prove the remaining obligations. Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Rewrite using `[hA₀.1, det_one]`. Conclude with `(Ring.inverse_eq_inv' (G₀ := ℂ)) ▸ continuousAt_inv₀ one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCf0 : Cf P₀ = 0` using `by simp [Cf, hA₀]`. Establish `hdetc : Continuous fun f : D.La → Fin g → ℂ => (colMat α f).det` using `(hcol α).matrix_det`. Take `⟨s, ε, hε, hs⟩` from `exists_finset_of_mem_nhds ((hdetc.continuousAt (x := ⇑P₀)).eventually_ne (show (colMat α P₀).det ≠ 0 by simp [hA₀.1]) |>.and (hCfc.preimage_mem_nhds (hUo.mem_nhds (by rw [hCf0]; exact hU0))))`. Use `⟨Cof ⁻¹' U, Q, Z, s, ε, hUo.preimage hCofc, hε, ⟨fun b hb => hQper b hb, fun x => ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Set `F : (Fin d → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := fun b => Cof b *ᵥ star (P₀ x) map_add' := fun b b' => by simp only [Cof, map_add, Matrix.add_mul, transpose_add, add_mulVec] map_smul' := fun c b => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Cof, map_smul, Matrix.smul_mul, transpose_smul, smul_mulVec, RingHom.id_apply] }`. Establish `hF : Differentiable ℂ (fun b => F b)` using `(LinearMap.toContinuousLinearMap F).differentiable`. Use `((differentiableOn_const (P₀ x)).add hF.differentiableOn).congr fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hQ, realMap_apply, one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show Cof (Z P₀) ∈ U`. Rewrite using `[hZ0, hCof0]`. Conclude with `hU0`. Use extensionality with `x`. Rewrite using `[hZ0, hQ, hCof0, realMap_apply, one_mulVec, zero_mulVec, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb _`. Establish `h1` using `hαβ (Q b) (hQper b hb)`. Establish `key : colMat α (Q b) = 1 ∧ colMat β (Q b) = Cof b` using `realMap_inj (ext_per hP₀ fun x => by rw [← h1 x, hQ])`. Use `show π (((colMat α (Q b))⁻¹ * colMat β (Q b))ᵀ * M₀) = b`. Rewrite using `[key.1, key.2, inv_one, Matrix.one_mul, hCofT, hπι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `P hP hn`. Take `⟨hdetA, hCU⟩` from `hs _ hn`. Establish `hu : IsUnit (colMat α P).det` using `isUnit_iff_ne_zero.2 hdetA`. Establish `hT` using `mem_Tsp_of_period hP₀ hP hM₀ (hαβ P hP) hdetA`. Establish `hCofZ : Cof (Z P) = Cf P` using `by show (ι (π ((Cf P)ᵀ * M₀)) * M₀⁻¹)ᵀ = Cf P`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hιπ _ hT, mul_nonsing_inv_cancel_right _ _ hu₀, transpose_transpose]`. Use `⟨show Cof (Z P) ∈ U by rw [hCofZ]; exact hCU, Matrix.toLinearEquiv' _ (invertibleOfIsUnitDet _ hu), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, hCofZ]`. Express the relevant statement in the definitionally equal form `P x = colMat α P *ᵥ realMap 1 ((colMat α P)⁻¹ * colMat β P) (P₀ x)`. Rewrite using `[hαβ P hP x, realMap_apply, realMap_apply, one_mulVec, mulVec_add, mulVec_mulVec, mul_nonsing_inv_cancel_left _ _ hu]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `P P' hP hP' _ _ h hh`. Set `H` to `LinearMap.toMatrix' h.toLinearMap`. Establish `hHv : ∀ v, h v = H *ᵥ v` using `fun v => (LinearMap.toMatrix'_mulVec _ v).symm`. Establish `hHinv : LinearMap.toMatrix' h.symm.toLinearMap * H = 1`. Rewrite using `[← LinearMap.toMatrix'_comp, show h.symm.toLinearMap ∘ₗ h.toLinearMap = LinearMap.id from LinearMap.ext fun v => h.symm_apply_apply v, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hHu : IsUnit H.det` using `isUnit_det_of_left_inverse hHinv`. Establish `key : colMat α P' = H * colMat α P ∧ colMat β P' = H * colMat β P` using `realMap_inj (ext_per hP₀ fun x => by`. Rewrite using `[← hαβ P' hP' x, hh x, hαβ P hP x, hHv]`. Simplify using `only [realMap_apply, mulVec_add, mulVec_mulVec])`. Use `show π (((colMat α P')⁻¹ * colMat β P')ᵀ * M₀) = π (((colMat α P)⁻¹ * colMat β P)ᵀ * M₀)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[key.1, key.2, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc H⁻¹ H, nonsing_inv_mul _ hHu, Matrix.one_mul]`. Introduce `m B' P _ hP hnear`. Establish `hc : ∀ (γ : Fin g → (D.La →₀ ℂ)) i j, DifferentiableOn ℂ (fun b => colMat γ (P b) i j) B'` using `fun γ i j => by`. Simplify using `only [colMat, of_apply]`. Conclude with `DifferentiableOn.fun_sum fun x _ => (differentiableOn_pi.1 (hP.2 x) i).const_mul _`.
-
-Establish `hinv` using `RiemannRel.differentiableOn_left_inverse (fun b => colMat α (P b)) (fun b => (colMat α (P b))⁻¹) (hc α) (fun b hb => nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (hs _ (hnear b hb)).1))`. Use `differentiableOn_pi.2 fun k => ?_` and prove the remaining obligations. Use `show DifferentiableOn ℂ (fun b => π (((colMat α (P b))⁻¹ * colMat β (P b))ᵀ * M₀) k) B'`. Rewrite using `[show (fun b => π (((colMat α (P b))⁻¹ * colMat β (P b))ᵀ * M₀) k) = fun b => ∑ i, ∑ j, (((colMat α (P b))⁻¹ * colMat β (P b))ᵀ * M₀) i j * π (Matrix.single i j 1) k from`. Use function extensionality and compare the values at `fun b => coords_sum π _ k]`.
-
-Simplify using `only [mul_apply, transpose_apply]`. Conclude with `DifferentiableOn.fun_sum fun i _ => DifferentiableOn.fun_sum fun j _ => (DifferentiableOn.fun_sum fun l _ => (DifferentiableOn.fun_sum fun n _ => (hinv _ _).mul (hc β _ _)).mul_const _).mul_const _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perCoord_exists : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ)
     (D : PLat O bar), ∃ d, PerCoord D ρ d := by

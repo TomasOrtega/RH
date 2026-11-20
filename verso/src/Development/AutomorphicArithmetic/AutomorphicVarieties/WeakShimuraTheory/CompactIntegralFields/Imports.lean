@@ -11,9 +11,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `hP hFW h2 h3 hPM Ω _ _ _ h t hB l _ c e _ he0 het ψ hψ D hD hcase`. Establish `hctx : Ctx2 D ∨ Ctx3 D` using `hcase.imp (fun hc => ⟨hD, h, t, e, ψ, hB, he0, het, hψ, hc.1, hc.2⟩) (fun hc => ⟨hD, h, t, e, ψ, hB, he0, het, hψ, hc.1, hc.2⟩)`. Take `⟨ι⟩` from `(UpperTheory.V.Ws.ambZero l).2`. Establish `hA` using `UpperTheory.V.Ws.thmA hP hFW h2 h3 hPM D hctx ι`. Establish `hcon : Con D` using `fun 𝔞 hch r u hK hS => UpperTheory.V.Ws.con D hD ι 𝔞 hch r u hK (hA 𝔞 r u hK hS) hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpur : Pur D ι` using `fun 𝔞 e' he' r u hK hS => UpperTheory.V.Ws.pur D hD ι 𝔞 e' he' r (hA 𝔞 r u hK hS)`. Establish `haut : Autm D ι` using `fun 𝔞 e' he' r u hK hI => UpperTheory.V.Ws.aut D hD ι 𝔞 e' he' r u hK (hA 𝔞 r u hK (Or.inl hI)) hI`. Take `⟨hF, hN, hAll⟩` from `UpperTheory.V.Ws.sp4Of hP D hD ι hcon hpur haut`. Conclude with `⟨hF, hN, ι, hAll⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Ws.main :
     CohomologyHyp → UpperTheory.V.Published.FerreroWashington → SeedII → SeedIII → PMEx → UpperTheory.V.Aut.Sp4In := by

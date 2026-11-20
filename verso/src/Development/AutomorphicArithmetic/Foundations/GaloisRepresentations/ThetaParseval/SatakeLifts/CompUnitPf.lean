@@ -6,21 +6,19 @@ open NumberField IsDedekindDomain ValuativeRel Formalism.MainNotions.GlobalTheor
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ n U hU w hw τ hτ`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E n w hw`. Take `⟨B, hh, hp, hd, hi⟩` from `GlobalTheory.DefU.Petersson.exists_invariant_pos_form E n`. Take `⟨hirr, f, h0, hf, h2⟩` from `hτ`. Establish `key : ∀ g, ∃ x : GlobalTheory.UnitaryBC.UA E n, ∀ v, f (τ.ρ g v) = GlobalTheory.UnitaryBC.RU E n x (f v)` using `fun g => ⟨(e.symm g).1, fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `h2 (e.symm g) v`. Establish `hy : ((GlobalTheory.UnitaryBC.cLoc w).comp (GlobalTheory.UnitaryBC.locU n w).subtype) (e.symm g) = g`. Use `he (e.symm g)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hy]`. Conclude with `h3⟩`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Establish `hst : ∀ g, ∀ v ∈ LinearMap.ker f, τ.ρ g v ∈ LinearMap.ker f` using `fun g v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `key g`. Rewrite using `[LinearMap.mem_ker, hx, LinearMap.mem_ker.1 hv, map_zero]`. Break down `((GlobalTheory.CuspRep.isIrreducible_iff _).1 hirr).2 (LinearMap.ker f) hst with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) h0`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `f' : τ.V →ₗ[ℂ] GlobalTheory.DefU.autU E n` to `f.codRestrict _ (fun v => hU.aut _ (hf v))`. Establish `hf' : ∀ v, f' v = 0 → v = 0` using `fun v h => hinj ((congrArg Subtype.val h).trans (map_zero f).symm)`. Establish `heq : ∀ g, ∃ x, ∀ v, f' (τ.ρ g v) = GlobalTheory.DefU.autRep E n x (f' v)` using `fun g => by`. Take `⟨x, hx⟩` from `key g`. Conclude with `⟨x, fun v => Subtype.ext (hx v)⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v u => B (f' u) (f' v)) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v u`. Simplify using `using (hh (f' u) (f' v)).symm`. Introduce `v hv`. Establish `hne : B (f' v) (f' v) ≠ 0` using `fun h => hv (hf' v (hd _ h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `him : (B (f' v) (f' v)).im = 0`. Use `congrArg Complex.im (hh (f' v) (f' v))` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : (B (f' v) (f' v)).re ≠ 0` using `fun h => hne (Complex.ext h him)`.
-
-Conclude with `lt_of_le_of_ne (hp _) (Ne.symm (by simpa using hre))`. Introduce `g v u`. Take `⟨x, hx⟩` from `heq g`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, hx]`. Conclude with `hi x _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.compUnit :
     UpperTheory.Gal.TP.Loc.CompUnit := by

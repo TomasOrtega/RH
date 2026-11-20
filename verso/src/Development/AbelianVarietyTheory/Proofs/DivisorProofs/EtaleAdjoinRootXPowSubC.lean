@@ -4,15 +4,13 @@ open IsLocalRing Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ n u hn hu`. Use `set f : R[X] := X ^ n - C u with hfdef`. Establish `key : f.Monic ∧ IsUnit (AdjoinRoot.mk f (derivative f))`. Distinguish the cases in `hn0 : n = 0`. Substitute `hn0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h01 : (0 : R) = 1` using `isUnit_zero_iff.1 (by simpa using hn)`. Establish `: Subsingleton R` using `subsingleton_of_zero_eq_one h01`. Establish `: Subsingleton (AdjoinRoot f)` using `(AdjoinRoot.of f).codomain_trivial`. Conclude with `⟨Subsingleton.elim _ _, isUnit_of_subsingleton _⟩`. Establish `hm : f.Monic` using `monic_X_pow_sub_C _ hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : AdjoinRoot.root f ^ n = algebraMap R _ u`. Use `AdjoinRoot.eval₂_root f` as an intermediate fact. Simplify `this` using `[hfdef, sub_eq_zero]`. Establish `hr : IsUnit (AdjoinRoot.root f)` using `(isUnit_pow_iff hn0).1 (h1 ▸ hu.map _)`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : AdjoinRoot.mk f (derivative f) = algebraMap R _ (n : R) * AdjoinRoot.root f ^ (n - 1)`. Simplify using `[hfdef, derivative_X_pow, AdjoinRoot.algebraMap_eq]`. Rewrite using `[e]`. Conclude with `(hn.map _).mul (hr.pow _)`. Take `⟨hm, h⟩` from `key`.
-
-Set `P : StandardEtalePair R` to `⟨f, hm, derivative f, 1, 0, 1, by simp⟩`. Conclude with `.of_equiv (P.equivAwayAdjoinRoot.trans ((IsLocalization.atUnit _ (Localization.Away (AdjoinRoot.mk f (derivative f))) _ h).symm.restrictScalars R))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem etale_adjoinRoot_X_pow_sub_C : ∀ (R : Type) [CommRing R] (n : ℕ) (u : R), IsUnit (n : R) →
     IsUnit u → Algebra.Etale R (AdjoinRoot (Polynomial.X ^ n - Polynomial.C u : Polynomial R)) := by

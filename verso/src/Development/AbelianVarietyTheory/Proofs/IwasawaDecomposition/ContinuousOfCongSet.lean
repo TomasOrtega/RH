@@ -33,19 +33,19 @@ Both sides reduce to the same expression.
 theorem toIdl_snd (y : (AfE F E)ˣ) : (toIdl F E y : AdeleRing (𝓞 E) E).2 = afIso F E y := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Prod.ext rfl (afIso_finAf F E a))`.
+A detailed English derivation is pending.
 -/
 theorem toIdl_finAf (a : Ideles E) : toIdl F E (finAf F E a) = finPartI E a :=
   Units.ext (Prod.ext rfl (afIso_finAf F E a))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ P`. Establish `k1 : Valued.v (afIso F E (y : AfE F E) P) ≤ 1` using `(mem_rInt_iff F E _).1 h1 P`. Establish `k2 : Valued.v (afIso F E ((y⁻¹ : (AfE F E)ˣ) : AfE F E) P) ≤ 1` using `(mem_rInt_iff F E _).1 h2 P`. Establish `h : afIso F E (y : AfE F E) P * afIso F E ((y⁻¹ : (AfE F E)ˣ) : AfE F E) P = 1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z => afIso F E z P) y.mul_inv` as an intermediate fact. Simplify using `only [map_mul, map_one] at this`. Conclude with `this`. Establish `h3` using `congrArg (Valued.v : Valuation (P.adicCompletion E) _) h`. Rewrite `h3` using `[map_mul, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm k1 ?_` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `mul_le_of_le_one_right' k2`. Introduce `h`. Use `⟨(mem_rInt_iff F E _).2 fun P => (h P).le, (mem_rInt_iff F E _).2 fun P => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `(unitIdl E).inv_mem h`. Rewrite `h'` using `[← map_inv]`. Conclude with `(h' P).le`.
+A detailed English derivation is pending.
 -/
 theorem mem_intU_iff (y : (AfE F E)ˣ) : y ∈ intU F E ↔ toIdl F E y ∈ unitIdl E := by
   constructor
@@ -68,9 +68,9 @@ theorem mem_intU_iff (y : (AfE F E)ˣ) : y ∈ intU F E ↔ toIdl F E y ∈ unit
     exact (h' P).le
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨⟨(u : RInt F E).2, ((u⁻¹ : (RInt F E)ˣ) : RInt F E).2⟩, _, (Formalism.L2.DIV.mem_kerRed I u).1 hu, rfl⟩`. Introduce and unpack `⟨⟨h1, h2⟩, z, hz, e⟩`. Use `⟨⟨⟨_, h1⟩, ⟨_, h2⟩, Subtype.ext y.mul_inv, Subtype.ext y.inv_mul⟩, (Formalism.L2.DIV.mem_kerRed I _).2 ?_, Units.ext rfl⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `hz using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext e.symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_congU_iff (I : Ideal (RInt F E)) (y : (AfE F E)ˣ) :
     y ∈ congU F E I ↔ y ∈ intU F E ∧ ∃ z ∈ I, (z : AfE F E) = y - 1 := by
@@ -84,9 +84,9 @@ theorem mem_congU_iff (I : Ideal (RInt F E)) (y : (AfE F E)ˣ) :
     exact Subtype.ext e.symm
 
 /- English proof (translation)
-Unfold `congN`. Rewrite using `[mem_congU_iff]`. Use `and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz, e⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, c.2, by simpa using e⟩`. Introduce and unpack `⟨c, hc, e⟩`. Conclude with `⟨⟨c, hc⟩ * N, Ideal.mem_span_singleton'.2 ⟨_, rfl⟩, by simpa using e⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_congN_iff (N : ℕ) (y : (AfE F E)ˣ) :
     y ∈ congN F E N ↔ y ∈ intU F E ∧ ∃ c ∈ RInt F E, c * N = y - 1 := by
@@ -104,7 +104,7 @@ def congSet (L : Type) [Field L] [NumberField L] (N : ℕ) : Set (Ideles L) :=
     v.adicCompletionIntegers L}
 
 /- English proof (translation)
-Establish `hV : IsOpen {a : FiniteAdeleRing (𝓞 L) L | ∀ v, a v ∈ v.adicCompletionIntegers L}` using `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`. Establish `c1 : Continuous fun a : Ideles L => (a : AdeleRing (𝓞 L) L).2` using `continuous_snd.comp Units.continuous_val`. Conclude with `UnitOpen.isOpen_unitIdl.inter (hV.preimage (continuous_const.mul (c1.sub continuous_const)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_congSet (L : Type) [Field L] [NumberField L] (N : ℕ) : IsOpen (congSet L N) := by
   have hV : IsOpen {a : FiniteAdeleRing (𝓞 L) L | ∀ v, a v ∈ v.adicCompletionIntegers L} :=
@@ -113,7 +113,7 @@ theorem isOpen_congSet (L : Type) [Field L] [NumberField L] (N : ℕ) : IsOpen (
   exact UnitOpen.isOpen_unitIdl.inter (hV.preimage (continuous_const.mul (c1.sub continuous_const)))
 
 /- English proof (translation)
-Use `⟨one_mem _, fun v => ?_⟩` and prove the remaining obligations. Establish `h : ((1 : Ideles L) : AdeleRing (𝓞 L) L).2 = 1` using `rfl`. Rewrite using `[h, sub_self, mul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_congSet (L : Type) [Field L] [NumberField L] (N : ℕ) : (1 : Ideles L) ∈ congSet L N := by
   refine ⟨one_mem _, fun v => ?_⟩
@@ -122,7 +122,7 @@ theorem one_mem_congSet (L : Type) [Field L] [NumberField L] (N : ℕ) : (1 : Id
   exact zero_mem _
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one ψ ?_` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : ℂˣ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_congSet L N).mem_nhds (one_mem_congSet L N)] with a ha`. Conclude with `(h a ha).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_congSet {L : Type} [Field L] [NumberField L] (ψ : Ideles L →* ℂˣ) (N : ℕ)
     (h : ∀ a ∈ congSet L N, ψ a = 1) : Continuous ψ := by
@@ -132,7 +132,7 @@ theorem continuous_of_congSet {L : Type} [Field L] [NumberField L] (ψ : Ideles 
   exact (h a ha).symm
 
 /- English proof (translation)
-Rewrite using `[mul_right_comm, ← map_natCast (algebraMap L (FiniteAdeleRing (𝓞 L) L)), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_mul_nat {L : Type} [Field L] [NumberField L] {N : ℕ} (hN : 0 < N) (z : FiniteAdeleRing (𝓞 L) L) :
     algebraMap L (FiniteAdeleRing (𝓞 L) L) (N : L)⁻¹ * z * N = z := by
@@ -140,9 +140,9 @@ theorem inv_mul_mul_nat {L : Type} [Field L] [NumberField L] {N : ℕ} (hN : 0 <
     inv_mul_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[mem_congN_iff, mem_intU_iff, toIdl_finAf]`. Use `⟨ha.1, (afIso F E).symm (algebraMap E _ (N : E)⁻¹ * ((a : AdeleRing (𝓞 E) E).2 - 1)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_rInt_iff, RingEquiv.apply_symm_apply]`. Conclude with `ha.2`. Apply `(afIso F E).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, RingEquiv.apply_symm_apply, map_natCast, inv_mul_mul_nat hN, map_sub, map_one, afIso_finAf]`.
+A detailed English derivation is pending.
 -/
 theorem finAf_mem_congN {N : ℕ} (hN : 0 < N) {a : Ideles E} (ha : a ∈ congSet E N) : finAf F E a ∈ congN F E N := by
   rw [mem_congN_iff, mem_intU_iff, toIdl_finAf]
@@ -153,15 +153,15 @@ theorem finAf_mem_congN {N : ℕ} (hN : 0 < N) {a : Ideles E} (ha : a ∈ congSe
     rw [map_mul, RingEquiv.apply_symm_apply, map_natCast, inv_mul_mul_nat hN, map_sub, map_one, afIso_finAf]
 
 /- English proof (translation)
-The claim follows from `Units.ext ((afIso F E).injective ((afIso_finAf F E _).trans (afIso_tmul_one F E k).symm))`.
+A detailed English derivation is pending.
 -/
 theorem finAf_diag (k : Eˣ) : finAf F E (diagUnits E k) = ratId F E k :=
   Units.ext ((afIso F E).injective ((afIso_finAf F E _).trans (afIso_tmul_one F E k).symm))
 
 /- English proof (translation)
-Take `⟨N, hN, h2⟩` from `h2`. Use `⟨⟨(Units.map (σ : K →* ℂ)).comp (μ.comp (finAf F E)), continuous_of_congSet _ N fun a ha => ?_, fun k => ?_⟩, fun a => rfl⟩` and prove the remaining obligations. Establish `h : μ (finAf F E a) = 1` using `h2 (finAf_mem_congN hN ha)`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, h, map_one]`. Establish `h : μ (ratId F E k) = 1` using `h1 ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, finAf_diag, h, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_reads {K : Type} [Field K] (σ : K →+* ℂ) (μ : Formalism.L2.DIV.Chr F E K) (h1 : (ratId F E).range ≤ μ.ker)
     (h2 : μ ∈ Formalism.L2.DIV.openChr F E K) : ∃ ξ : HChar E, Reads σ μ ξ := by
@@ -174,9 +174,9 @@ theorem exists_reads {K : Type} [Field K] (σ : K →+* ℂ) (μ : Formalism.L2.
     rw [MonoidHom.comp_apply, MonoidHom.comp_apply, finAf_diag, h, map_one]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Determ.exists_prod_inf_mul_finPart a`. Establish `key : ∀ (w : InfinitePlace E) (x : (w.Completion)ˣ), ξ.1 (infIdele E w x) = 1` using `fun w x => by`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e x) hn`. Establish `hz' : (e.symm z) ^ n = x` using `by rw [← map_pow, hz, e.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : e.symm z ≠ 0` using `fun h0 => x.ne_zero (by rw [← hz', h0, zero_pow hn.ne'])`. Establish `hx : x = Units.mk0 _ h0 ^ n` using `Units.ext hz'.symm`. Rewrite using `[hx, map_pow, map_pow]`. Conclude with `congrArg (fun χ : HChar E => χ.1 (infIdele E w (Units.mk0 _ h0))) h`. Use `conv_rhs => rw [← hy, map_mul, map_prod, Finset.prod_eq_one fun w _ => key w _, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_finPartI [IsTotallyComplex E] {ξ : HChar E} {n : ℕ} (hn : 0 < n) (h : ξ.OrderDvd n) (a : Ideles E) :
     ξ.1 (finPartI E a) = ξ.1 a := by
@@ -192,11 +192,11 @@ theorem map_finPartI [IsTotallyComplex E] {ξ : HChar E} {n : ℕ} (hn : 0 < n) 
   conv_rhs => rw [← hy, map_mul, map_prod, Finset.prod_eq_one fun w _ => key w _, one_mul]
 
 /- English proof (translation)
-Establish `hi : Function.Injective (Units.map (σ : K →* ℂ))` using `Units.map_injective σ.injective`. Establish `h3 : ∀ y, ∃ k : Kˣ, Units.map (σ : K →* ℂ) k = ξ.1 (toIdl F E y)` using `fun y => by`. Take `⟨k, hk⟩` from `h2 (toIdl F E y)`. Establish `h0 : k ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Units.ne_zero _ (hk.symm.trans (map_zero σ))`. Conclude with `⟨Units.mk0 k h0, Units.ext hk⟩`. Use `choose f hf using h3`. Use `⟨MonoidHom.mk' f fun y z => hi ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hf, hf, hf, map_mul, map_mul]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1, ← toIdl_finAf (F := F), ← hf]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_read {K : Type} [Field K] (σ : K →+* ℂ) (ξ : HChar E) (h1 : ∀ a, ξ.1 (finPartI E a) = ξ.1 a)
     (h2 : ∀ a, ((ξ.1 a : ℂˣ) : ℂ) ∈ σ.range) : ∃ μ : Formalism.L2.DIV.Chr F E K, Reads σ μ ξ := by
@@ -214,7 +214,7 @@ theorem exists_read {K : Type} [Field K] (σ : K →+* ℂ) (ξ : HChar E) (h1 :
     rfl
 
 /- English proof (translation)
-Establish `h1` using `h.apply (toIdl F E y) y rfl`. Rewrite `h1` using `[hy]`. Conclude with `Units.ext (σ.injective (h1.symm.trans (map_one σ).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_of_reads {K : Type} [Field K] {σ : K →+* ℂ} {μ : Formalism.L2.DIV.Chr F E K} {ξ : HChar E} (h : Reads σ μ ξ)
     {y : (AfE F E)ˣ} (hy : ξ.1 (toIdl F E y) = 1) : y ∈ μ.ker := by
@@ -232,9 +232,9 @@ def evP (P : HeightOneSpectrum (𝓞 E)) : AfE F E →+* P.adicCompletion E wher
   map_add' a b := by rw [map_add]; rfl
 
 /- English proof (translation)
-Break down `eq_or_ne γ 0 with rfl | h0` into its components or cases. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one {γ : WithZero (Multiplicative ℤ)} (h : γ < 1) : γ ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
   rcases eq_or_ne γ 0 with rfl | h0
@@ -245,9 +245,9 @@ theorem le_exp_neg_one {γ : WithZero (Multiplicative ℤ)} (h : γ < 1) : γ �
     omega
 
 /- English proof (translation)
-Establish `h1 : Valued.v (N : P.adicCompletion E) < 1`. Rewrite using `[← map_natCast (algebraMap E (P.adicCompletion E)), Formalism.UG.P.levelaf_valued_algebraMap, ← map_natCast (algebraMap (𝓞 E) E), HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hN`. Establish `h2 : Valued.v (evP F P c) ≤ 1` using `(mem_rInt_iff F E c).1 hc P`. Establish `h3` using `congrArg (fun t => Valued.v (evP F P t)) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, map_natCast] at h3`. Use `le_exp_neg_one (lt_of_not_ge fun h4 => ?_)` and prove the remaining obligations. Establish `h5` using `one_le_pow_of_one_le' h4 m`. Rewrite `h5` using `[← h3]`. Conclude with `absurd (h5.trans (mul_le_of_le_one_left' h2)) h1.not_ge`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_le_of_pow {P : HeightOneSpectrum (𝓞 E)} {z c : AfE F E} (hc : c ∈ RInt F E) {m N : ℕ}
     (hN : (N : 𝓞 E) ∈ P.asIdeal) (h : c * N = z ^ m) : Valued.v (evP F P z) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
@@ -264,11 +264,11 @@ theorem valued_le_of_pow {P : HeightOneSpectrum (𝓞 E)} {z c : AfE F E} (hc : 
   exact absurd (h5.trans (mul_le_of_le_one_left' h2)) h1.not_ge
 
 /- English proof (translation)
-Establish `hu` using `(mem_intU_iff y).1 hy`. Use `LocTriv.eq_one_of_local E ξ.1 ξ.2.1 _ hu (fun _ => rfl) fun P x hx => ?_` and prove the remaining obligations. Establish `hx1 : IsUnitAt P x`. Unfold `IsUnitAt`. Rewrite using `[hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu P`. Distinguish the cases in `hP : ξ.UnrAt P`. Conclude with `hP x hx1`. Use `ht P x hx1 ?_` and prove the remaining obligations. Establish `h1` using `h P hP`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_sub, map_one]`. Rewrite using `[hx]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem map_toIdl_eq_one {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {y : (AfE F E)ˣ} (hy : y ∈ intU F E)
     (h : ∀ P, ¬ ξ.UnrAt P → Valued.v (evP F P (y - 1)) ≤ WithZero.exp (-((1 : ℕ) : ℤ))) : ξ.1 (toIdl F E y) = 1 := by
@@ -287,7 +287,7 @@ theorem map_toIdl_eq_one {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {y : (AfE F E)
     exact h1
 
 /- English proof (translation)
-Establish `h : evP F P y = 1` using `(mem_suppAt_iff F E v y).1 hy P hP`. Rewrite using `[map_sub, h, map_one, sub_self, map_zero]`. Conclude with `zero_le'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_le_of_supp {v : HeightOneSpectrum (𝓞 F)} {y : (AfE F E)ˣ} (hy : y ∈ suppAt E v)
     {P : HeightOneSpectrum (𝓞 E)} (hP : P.under (𝓞 F) ≠ v) :
@@ -297,9 +297,9 @@ theorem valued_le_of_supp {v : HeightOneSpectrum (𝓞 F)} {y : (AfE F E)ˣ} (hy
   exact zero_le'
 
 /- English proof (translation)
-Establish `hf` using `UnrAe.finite_ramified ξ`. Use `⟨∏ P ∈ hf.toFinset, Ideal.absNorm P.asIdeal, Finset.prod_pos fun P _ => Nat.pos_of_ne_zero fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨h1, c, hc, e⟩` from `(mem_congN_iff _ y).1 hy`. Use `map_toIdl_eq_one ht h1 fun P hP => valued_le_of_pow hc (m := 1) ?_ (by rw [e, pow_one])` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (hf.mem_toFinset.2 hP), Nat.cast_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_congN {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) :
     ∃ N : ℕ, 0 < N ∧ ∀ y ∈ congN F E N, ξ.1 (toIdl F E y) = 1 := by
@@ -313,11 +313,11 @@ theorem exists_congN {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) :
   exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Take `⟨⟨h1, z, ⟨m, hz⟩, e⟩, h2⟩` from `And.intro ((mem_congU_iff _ y).1 hy.1) hy.2`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hz`. Use `map_toIdl_eq_one ht h1 fun P _ => ?_` and prove the remaining obligations. Distinguish the cases in `hP : P.under (𝓞 F) = v`. Use `valued_le_of_pow c.2 (m := m) (N := Formalism.EigenvalueLevelCeiling.plc v) ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ((Formalism.EigenvalueLevelCeiling.plc v : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`. Substitute `hP` using the available equality. Rewrite using `[← map_natCast (algebraMap (𝓞 F) (𝓞 E))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Rewrite using `[← e]`. Simplify using `using congrArg (RInt F E).subtype hc`. Conclude with `valued_le_of_supp h2 hP`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_wildAt {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {v : HeightOneSpectrum (𝓞 F)} {y : (AfE F E)ˣ}
     (hy : y ∈ wildAt E v) : ξ.1 (toIdl F E y) = 1 := by
@@ -337,7 +337,7 @@ theorem map_wildAt {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {v : HeightOneSpectr
   · exact valued_le_of_supp h2 hP
 
 /- English proof (translation)
-The claim follows from `map_toIdl_eq_one ht hy.1 fun P hP => valued_le_of_supp hy.2 fun e => hP (hv P e)`.
+A detailed English derivation is pending.
 -/
 theorem map_inertAt {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {v : HeightOneSpectrum (𝓞 F)}
     (hv : ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) = v → ξ.UnrAt P) {y : (AfE F E)ˣ}
@@ -345,9 +345,9 @@ theorem map_inertAt {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {v : HeightOneSpect
   map_toIdl_eq_one ht hy.1 fun P hP => valued_le_of_supp hy.2 fun e => hP (hv P e)
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℕ, Valued.v (afIso F E (1 ⊗ₜ[F] a) P - algebraMap E _ (algebraMap F E k)) ≤ WithZero.exp (-(n : ℤ))` using `fun n => (GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.2.2 a k P n (by rw [h, sub_self, map_zero]; exact zero_le')`. Assume the negation of the conclusion as `hne`. Establish `h0 : Valued.v (afIso F E (1 ⊗ₜ[F] a) P - algebraMap E _ (algebraMap F E k)) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `sub_ne_zero.2 hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h1 (1 - WithZero.log (Valued.v (afIso F E (1 ⊗ₜ[F] a) P - algebraMap E _ (algebraMap F E k)))).toNat`. Use `conv_lhs at h2 => rw [← WithZero.exp_log h0]`. Rewrite `h2` using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem afIso_one_tmul {a : FiniteAdeleRing (𝓞 F) F} {k : F} {P : HeightOneSpectrum (𝓞 E)}
     (h : a (P.under (𝓞 F)) = algebraMap F _ k) : afIso F E (1 ⊗ₜ[F] a) P = algebraMap E _ (algebraMap F E k) := by
@@ -374,14 +374,14 @@ Both sides reduce to the same expression.
 theorem coe_finF (a : Ideles F) : (finF F E a : AfE F E) = 1 ⊗ₜ[F] (a : AdeleRing (𝓞 F) F).2 := rfl
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_mem {a : FiniteAdeleRing (𝓞 F) F} (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) :
     (1 : E) ⊗ₜ[F] a ∈ RInt F E :=
   Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[mem_congN_iff]`. Use `⟨⟨one_tmul_mem fun v => (ha.1 v).le, one_tmul_mem fun v => ((unitIdl F).inv_mem ha.1 v).le⟩, _, one_tmul_mem ha.2, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_finF, ← map_natCast (Algebra.TensorProduct.includeRight : FiniteAdeleRing (𝓞 F) F →ₐ[F] AfE F E), Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, inv_mul_mul_nat hN, one_mul, TensorProduct.tmul_sub, Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finF_mem_congN {N : ℕ} (hN : 0 < N) {a : Ideles F} (ha : a ∈ congSet F N) : finF F E a ∈ congN F E N := by
   rw [mem_congN_iff]
@@ -392,11 +392,11 @@ theorem finF_mem_congN {N : ℕ} (hN : 0 < N) {a : Ideles F} (ha : a ∈ congSet
     TensorProduct.tmul_sub, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Establish `hm : ∀ Q, Q ∈ aboveF (L` using `E) F v ↔ Q.under (𝓞 F) = v := fun Q => (finite_aboveF F v).mem_toFinset`. Establish `h1 : toIdl F E (finF F E (localIdele F v (atFin v k))) = LocTriv.part (toIdl F E (finF F E (localIdele F v (atFin v k)))) (aboveF F v)`. Use `Units.ext (Prod.ext (LocTriv.part_fst _ _).symm (FiniteAdeleRing.ext _ fun P => ?_))` and prove the remaining obligations. Distinguish the cases in `hP : P ∈ aboveF (L := E) F v`. Conclude with `(LocTriv.ev_part_mem _ hP).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (LocTriv.ev_part_not_mem _ hP).symm` and prove the remaining obligations. Establish `h2` using `afIso_one_tmul (P := P) (k := (1 : F)) (a := (localIdele F v (atFin v k) : AdeleRing (𝓞 F) F).2) ((LocTriv.ev_local_ne (fun e => hP ((hm P).2 e)) (atFin v k)).trans (map_one (algebraMap F _)).symm)`. Rewrite `h2` using `[map_one, map_one]`. Conclude with `h2`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.prod_congr rfl fun P hP => congrArg _ (Units.ext ?_)` and prove the remaining obligations. Take `rfl` from `(hm P).1 hP`. Conclude with `afIso_one_tmul (P := P) (k := (k : F)) (LocTriv.ev_local_self _ (atFin _ k))`.
+A detailed English derivation is pending.
 -/
 theorem toIdl_finF_local (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     toIdl F E (finF F E (localIdele F v (atFin v k))) = locF F v k := by
@@ -417,11 +417,11 @@ theorem toIdl_finF_local (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
   exact afIso_one_tmul (P := P) (k := (k : F)) (LocTriv.ev_local_self _ (atFin _ k))
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `exists_congN (F := F) ht`. Set `ψ : Ideles F →* ℂˣ` to `ξ.1.comp ((toIdl F E).comp (finF F E))`. Establish `hψ : Continuous ψ` using `continuous_of_congSet ψ N fun a ha => h _ (finF_mem_congN hN ha)`. Use `Determ.eq_one_of_components hψ (fun v k => ?_) (fun k => ?_) (Units.map (MonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) b)` and prove the remaining obligations. Establish `h1` using `hF.1 v k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[HChar.resFin, MonoidHom.finsetProd_apply]`. Use `show ξ.1 (toIdl F E (finF F E (localIdele F v (atFin v k)))) = 1`. Rewrite using `[toIdl_finF_local, locF, map_prod]`. Conclude with `h1`. Rewrite using `[infDiag, MonoidHom.finsetProd_apply, map_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `h1 : finF F E (((infIdele F w).comp (atInf w)) k) = 1` using `Units.ext rfl`. Use `show ξ.1 (toIdl F E (finF F E (((infIdele F w).comp (atInf w)) k))) = 1`. Rewrite using `[h1, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_idF {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) (hF : ξ.TrivOn F) (b : (FiniteAdeleRing (𝓞 F) F)ˣ) :
     ξ.1 (toIdl F E (idF F E b)) = 1 := by
@@ -442,17 +442,15 @@ theorem map_idF {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) (hF : ξ.TrivOn F) (b :
     rw [h1, map_one, map_one]
 
 /- English proof (translation)
-Introduce `R H K _ σ S`. Use `⟨fun μ => exists_reads σ μ.1 μ.2.1.1.1.1.1 μ.2.1.1.1.1.2, ?_⟩` and prove the remaining obligations. Introduce and unpack `ξ ⟨⟨n, hn, hord⟩, hF, ht, hr⟩ hσ`. Take `⟨c, -, hcm, -⟩` from `HostCM.host_cm R H`. Use `hcm.cplx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin` using `map_finPartI hn hord`. Take `⟨μ, hμ⟩` from `exists_read (F := H.F) σ ξ hfin hσ`. Use `⟨⟨μ, ⟨⟨⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩, ?_⟩, ?_⟩⟩, hμ⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `ker_of_reads hμ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← finAf_diag, toIdl_finAf, hfin]`. Conclude with `ξ.2.2 k`. Take `⟨N, hN, h⟩` from `exists_congN (F := H.F) ht`. Conclude with `⟨N, hN, fun y hy => ker_of_reads hμ (h y hy)⟩`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, MonoidHom.ext fun y => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : y ^ n ∈ μ.ker` using `ker_of_reads hμ (by`. Rewrite using `[map_pow, map_pow]`. Conclude with `congrArg (fun χ : HChar H.E => χ.1 (toIdl H.F H.E y)) hord)`. Rewrite `h1` using `[MonoidHom.mem_ker, map_pow]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `ker_of_reads hμ (map_idF ht hF b)`. Conclude with `Subgroup.mem_iInf.2 fun v y hy => ker_of_reads hμ (map_wildAt ht hy)`. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv y hy => ker_of_reads hμ (map_inertAt ht (fun P hP => by_contra fun hn => hv ?_) hy)` and prove the remaining obligations. Substitute `hP` using the available equality.
-
-Conclude with `(GoodPlace.goodPl_under_iff R H S P).2 (hr P hn)`.
+A detailed English derivation is pending.
 -/
 theorem exists_reads_tup : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (K : Type) [Field K] (σ : K →+* ℂ) (S : Set ℕ), (∀ μ : Formalism.L2.DIV.Tup H.F H.E K S, ∃ ξ : HChar H.E, Reads σ (μ.1 : Formalism.L2.DIV.Chr H.F H.E K) ξ) ∧ ∀ ξ : HChar H.E, IsTwist H S ξ → (∀ a, ((ξ.1 a : ℂˣ) : ℂ) ∈ σ.range) → ∃ μ : Formalism.L2.DIV.Tup H.F H.E K S, Reads σ (μ.1 : Formalism.L2.DIV.Chr H.F H.E K) ξ := by
   intro R H K _ σ S

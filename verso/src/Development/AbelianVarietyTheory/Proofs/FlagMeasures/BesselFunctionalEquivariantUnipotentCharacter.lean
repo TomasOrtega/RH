@@ -10,13 +10,13 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu v hv ξ`. Introduce `h hh m hm g hg`. Establish `hRep : IsURepOn (GG k r) σ` using `hStd.2.1`. Establish `hDec : Decay σ (DD σ w) a` using `hStd.2.2.2.2.2.2.2.1`. Establish `hz : inWb k r z` using `hSide.1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : 0 < Tz k r z` using `hSide.2.1`. Establish `hπ : IsURepOn (UWset k r z) π` using `hSide.2.2.1`. Establish `hCl` using `GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT`. Establish `hSsub : Sset k r z ⊆ GG k r` using `hCl.2.2.2.1.1`. Establish `hhm : h * m ∈ Sset k r z` using `⟨h, hh, m, hm, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab` using `(GlobalTheory.T.smooth_vectors_dense_invariant k r σ w hRep).1`. Establish `hgu : σ g u ∈ DD σ w` using `hstab g hg u hu`. Establish `hmul : σ (h * m * g) = (σ (h * m)).comp (σ g)` using `hRep.1.2 _ (hSsub hhm) _ hg`. Establish `hD1` using `(GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hStd hSide (DD σ w : Set H) (fun g hg v hv => hstab g hg v hv) hDec (σ g u) hgu v hv).2.1 (h * m) hhm`. Establish `hPi` using `((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ).1 h hh m hm).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Afun`. Rewrite using `[hmul, ContinuousLinearMap.comp_apply, hD1.1, hPi]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Afun_isSPsiEquiv : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ u ∈ DD σ w, ∀ v ∈ DD σ w, ∀ ξ : Wp, IsSPsiEquiv z (psiGen k r z c) π (Afun (psiGen k r z c) π μS σ u v ξ) := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu v hv ξ

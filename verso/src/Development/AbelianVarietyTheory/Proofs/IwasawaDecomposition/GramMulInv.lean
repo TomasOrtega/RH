@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `: V.frame.equivFun.symm v = 0`. Apply `V.nondeg.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Establish `hx : x = ∑ i, V.frame.repr x i • V.frame i` using `(V.frame.sum_repr x).symm`. Rewrite using `[hx, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ∑ j, V.gram i j * v j = 0` using `congr_fun h0 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : V.hT (V.frame i) (V.frame.equivFun.symm v) = ∑ j, V.gram i j * v j`. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, h2, h1, smul_zero]`. Conclude with `V.frame.equivFun.symm.injective (this.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
   intro h
@@ -42,14 +42,14 @@ theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
   exact V.frame.equivFun.symm.injective (this.trans (map_zero _).symm)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_mul_inv (V : HSp D) : V.gram.map (incA D) * V.gram⁻¹.map (incA D) = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(cA_incA _).trans (congrArg (incA D) (gram_star V j i))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gram_conj (V : HSp D) : ((V.gram.map (incA D)).map (cA D))ᵀ = V.gram.map (incA D) := by
   ext i j
@@ -59,7 +59,7 @@ section Generic
 variable {A : Type} [CommRing A] {m n : ℕ}
 
 /- English proof (translation)
-Establish `h' : Pi * P = 1` using `mul_eq_one_comm.1 h`. Establish `h2 : P * (Pi.map σ)ᵀ = 1`. Rewrite using `[← hP, ← Matrix.transpose_mul, ← Matrix.map_mul, h', Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_conj (σ : A →+* A) (P Pi : Matrix (Fin n) (Fin n) A) (h : P * Pi = 1) (hP : (P.map σ)ᵀ = P) :
     (Pi.map σ)ᵀ = Pi := by

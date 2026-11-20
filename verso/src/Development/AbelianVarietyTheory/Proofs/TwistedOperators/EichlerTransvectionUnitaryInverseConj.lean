@@ -5,25 +5,25 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ _ ι _ _ G hG h hh E hE`. Establish `addl : ∀ x x' y, h (x + x') y = h x y + h x' y`. Introduce `x x' y`. Simplify using `only [hh, mulVec_add, dotProduct_add]`. Establish `subl : ∀ x x' y, h (x - x') y = h x y - h x' y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x x' y`. Simplify using `only [hh, mulVec_sub, dotProduct_sub]`. Establish `negl : ∀ x y, h (-x) y = - h x y`. Introduce `x y`. Simplify using `only [hh, mulVec_neg, dotProduct_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `smull : ∀ (a : A) x y, h (a • x) y = a * h x y`. Introduce `a x y`. Simplify using `only [hh, mulVec_smul, dotProduct_smul, smul_eq_mul]`. Establish `addr : ∀ x y y', h x (y + y') = h x y + h x y'`. Introduce `x y y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hh, star_add, add_dotProduct]`. Establish `subr : ∀ x y y', h x (y - y') = h x y - h x y'`. Introduce `x y y'`. Simplify using `only [hh, star_sub, sub_dotProduct]`. Establish `negr : ∀ x y, h x (-y) = - h x y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x y`. Simplify using `only [hh, star_neg, neg_dotProduct]`. Establish `smulr : ∀ (a : A) x y, h x (a • y) = star a * h x y`. Introduce `a x y`. Simplify using `only [hh, star_smul, smul_dotProduct, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `symm : ∀ x y, star (h x y) = h y x`. Introduce `x y`. Rewrite using `[hh, hh, ← star_dotProduct_star, star_star, star_mulVec, hG, dotProduct_mulVec]`. Establish `h2 : ⅟(2 : A) * 2 = 1` using `invOf_mul_self _`. Establish `s2 : star (⅟(2 : A)) = ⅟(2 : A)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg star h2` as an intermediate fact. Rewrite `this` using `[star_mul', star_one, star_ofNat]`. Take the linear combination `(⅟(2 : A)) * this - (star (⅟(2 : A))) * h2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w v hww hwv x y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvw : h v w = 0` using `by rw [← symm, hwv, star_zero]`. Rewrite using `[hE, hE]`. Simplify using `only [addl, subl, smull, addr, subr, smulr, star_mul', symm, s2, hww, hwv, hvw]`. Take the linear combination `(-(h v v * h x w * h w y)) * h2`. Introduce `w v hww hwv y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvw : h v w = 0` using `by rw [← symm, hwv, star_zero]`. Rewrite using `[hE w (-v), hE w v]`. Simplify using `only [addl, subl, smull, negl, negr, hww, hwv, hvw]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(h v v * h y w * w i)) * h2`. Introduce `g hg w v y`. Rewrite using `[hE, hE]`. Simplify using `only [hg, mulVec_add, mulVec_sub, mulVec_smul]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eichlerTransvection_unitary_inverse_conj :
     ∀ (A : Type) [CommRing A] [StarRing A] [Invertible (2 : A)] (ι : Type) [Fintype ι] [DecidableEq ι] (G : Matrix ι ι A) (_ : Gᴴ = G) (h : (ι → A) → (ι → A) → A) (_ : ∀ x y, h x y = star y ⬝ᵥ G.mulVec x) (E : (ι → A) → (ι → A) → (ι → A) → (ι → A)) (_ : ∀ w v y, E w v y = y + h y v • w - h y w • v - (⅟(2 : A) * h v v * h y w) • w), (∀ w v, h w w = 0 → h w v = 0 → ∀ x y, h (E w v x) (E w v y) = h x y) ∧ (∀ w v, h w w = 0 → h w v = 0 → ∀ y, E w (-v) (E w v y) = y) ∧ ∀ (g : Matrix ι ι A), (∀ x y, h (g.mulVec x) (g.mulVec y) = h x y) → ∀ w v y, g.mulVec (E w v y) = E (g.mulVec w) (g.mulVec v) (g.mulVec y) := by

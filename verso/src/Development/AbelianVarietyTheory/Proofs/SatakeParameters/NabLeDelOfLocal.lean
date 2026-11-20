@@ -14,7 +14,7 @@ variable {K : Type} [Field K] [NumberField K]
 
 omit [NumberField K] in
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx⟩`. Take `⟨t, ht, h'⟩` from `h hx`. Conclude with `⟨t * s, mul_mem ht hs, by rw [mul_smul]; exact h'⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem localized_le_of_le_localized {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K))
     {N N' : Submodule (𝓞 K) V} (h : N ≤ localization₂ w.asIdeal N') : localization₂ w.asIdeal N ≤ localization₂ w.asIdeal N' := by
@@ -24,7 +24,7 @@ theorem localized_le_of_le_localized {V : Type} [AddCommGroup V] [Module (𝓞 K
 
 omit [NumberField K] in
 /- English proof (translation)
-Introduce `ha`. Establish `hco : IsCoprime (p : ℤ) c` using `(Nat.prime_iff_prime_int.1 hp).irreducible.coprime_iff_not_dvd.2 hc`. Take `⟨x, y, e⟩` from `hco.map (Int.castRingHom (𝓞 K))`. Simplify using `only [eq_intCast, Int.cast_natCast] at e`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ hw) (w.asIdeal.mul_mem_left _ ha)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intCast_notMem {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈ w.asIdeal) {c : ℤ}
     (hc : ¬ (p : ℤ) ∣ c) : (c : 𝓞 K) ∉ w.asIdeal := by
@@ -36,11 +36,11 @@ theorem intCast_notMem {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 K))
     (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ hw) (w.asIdeal.mul_mem_left _ ha)))
 
 /- English proof (translation)
-Unfold `nablaSq`. Rewrite using `[GlobalTheory.StdDual.dualWeyl_eq, Submodule.map_span, Submodule.span_le, ← GlobalTheory.StdDual.image_bidSet (Int.castRingHom (𝓞 K))]`. Introduce and unpack `_ ⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Establish `hf' : f ∈ nablaSq ℤ n lam`. Unfold `nablaSq`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[GlobalTheory.StdDual.dualWeyl_eq]`. Conclude with `Submodule.subset_span hf`. Take `⟨c, hc, hcf⟩` from `h n lam p hp hs f hf'`. Use `⟨(c : 𝓞 K), intCast_notMem hp w hw hc, map (Int.castRingHom (𝓞 K)) (c • f), GlobalTheory.TestLat.WeylLocal.map_mem_weyl _ _ hcf, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul (𝓞 K), map_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem nablaSq_le_locP (h : NablaMemDeltaLocallyAtLargePrime) {n : ℕ} (lam : DomWeight n) {p : ℕ} (hp : p.Prime)
     (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈ w.asIdeal) (hs : lam.spread < p) :
@@ -60,7 +60,7 @@ theorem nablaSq_le_locP (h : NablaMemDeltaLocallyAtLargePrime) {n : ℕ} (lam : 
   rfl
 
 /- English proof (translation)
-Unfold `nabStd Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `GlobalTheory.TestLat.WeylLocal.ten_mem_locP w _ f fun τ => nablaSq_le_locP h (lam τ) hp w hw (hs τ) (hf τ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nabStd_le_locP (h : NablaMemDeltaLocallyAtLargePrime) {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) {p : ℕ} (hp : p.Prime)
     (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈ w.asIdeal) (hs : ∀ τ, (lam τ).spread < p) :
@@ -71,9 +71,9 @@ theorem nabStd_le_locP (h : NablaMemDeltaLocallyAtLargePrime) {ι : Type} [Finty
   exact GlobalTheory.TestLat.WeylLocal.ten_mem_locP w _ f fun τ => nablaSq_le_locP h (lam τ) hp w hw (hs τ) (hf τ)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam M hM p w hp hw hs x hx`. Use `choose B hB using fun τ => GlobalTheory.LatBasisAt.basisAtEx K n (M τ) (hM τ) w`. Establish `h1` using `GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι n lam M hM w B hB`. Establish `hx' : x.1 ∈ localization₂ w.asIdeal (nabP lam M)` using `hx`. Express the relevant statement in the definitionally equal form `x.1 ∈ localization₂ w.asIdeal (delP lam M)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[h1.1]`. Rewrite using `[h1.2]`. Conclude with `Submodule.map_mono (localized_le_of_le_localized w (nabStd_le_locP h lam hp w hw hs)) hx'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabLeDel_of_local (h : NablaMemDeltaLocallyAtLargePrime) : GlobalTheory.ColPeriod.NabLeDel := by
   intro K _ _ ι _ n lam M hM p w hp hw hs x hx

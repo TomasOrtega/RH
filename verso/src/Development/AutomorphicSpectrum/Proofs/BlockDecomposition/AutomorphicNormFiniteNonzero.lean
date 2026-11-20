@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FinDisc
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ _ μ _ F hF φ hA hS hne`. Conclude with `⟨(GlobalTheory.CompanionTheory.SqIntFD.sqIntAt E N μ F hF φ hA hS).ne, (GlobalTheory.CompanionTheory.PosNormFD.posNorm E N μ F hF φ hA hS hne).ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sqMass_ne_top_and_ne_zero :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)]
